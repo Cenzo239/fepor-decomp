@@ -501,6 +501,74 @@ void fn_801EB7A8(s32 arg0) {
     }
 }
 
+void fn_801EB81C(s32 arg0) {
+    void Ui_CreateMenu(void *,s32,s32);
+    extern u8 gUiContext[];
+    extern u8 gUiMenuDrawVtbl[], lbl_80286664[], lbl_80286590[], lbl_8029A144[], lbl_8029A2D4[];
+    extern u8 lbl_803683AC;
+    extern void *lbl_803683B0[2];
+    extern u8 lbl_80368375, lbl_8029A54C[];
+    extern void *lbl_80368378;
+    extern u8 lbl_8036837C, lbl_8029A4F8[];
+    extern void *lbl_80368380;
+    extern u8 lbl_80368384, lbl_8029A4A4[];
+    extern void *lbl_80368388;
+    extern u8 lbl_8036838C, lbl_8029A450[];
+    extern void *lbl_80368390;
+    extern u8 lbl_80368394, lbl_8029A3FC[];
+    extern void *lbl_80368398;
+    extern u8 lbl_8036839C, lbl_8029A3A8[];
+    extern void *lbl_803683A0;
+    extern u8 lbl_803683A4, lbl_8029A354[];
+    extern void *lbl_803683A8;
+    u8 *entry;
+    if ((s8)lbl_80368375 == 0) {
+        entry=lbl_8029A54C;
+        lbl_80368378=entry;
+        lbl_80368375=1;
+    }
+    if ((s8)lbl_8036837C == 0) {
+        entry=lbl_8029A4F8;
+        lbl_80368380=entry;
+        lbl_8036837C=1;
+    }
+    if ((s8)lbl_80368384 == 0) {
+        entry=lbl_8029A4A4;
+        lbl_80368388=entry;
+        lbl_80368384=1;
+    }
+    if ((s8)lbl_8036838C == 0) {
+        entry=lbl_8029A450;
+        lbl_80368390=entry;
+        lbl_8036838C=1;
+    }
+    if ((s8)lbl_80368394 == 0) {
+        entry=lbl_8029A3FC;
+        lbl_80368398=entry;
+        lbl_80368394=1;
+    }
+    if ((s8)lbl_8036839C == 0) {
+        entry=lbl_8029A3A8;
+        lbl_803683A0=entry;
+        lbl_8036839C=1;
+    }
+    if ((s8)lbl_803683A4 == 0) {
+        entry=lbl_8029A354;
+        lbl_803683A8=entry;
+        lbl_803683A4=1;
+    }
+    if ((s8)lbl_803683AC == 0) {
+        lbl_803683B0[1]=gUiMenuDrawVtbl;
+        lbl_803683B0[1]=lbl_80286664;
+        lbl_803683B0[1]=lbl_80286590;
+        lbl_803683B0[0]=lbl_8029A144;
+        lbl_803683B0[1]=lbl_8029A2D4;
+        lbl_803683AC=1;
+    }
+    gUiContext[8]=0;
+    Ui_CreateMenu(lbl_803683B0,arg0,0);
+}
+
 void fn_801EBB00(void *arg0) {
 void fn_801EBE88(void); void String_CStr(void *); void fn_80106BCC(void); void fn_800A8400(void); void Map_RefreshUnitMap(void *); void fn_80161F7C(void); void fn_8003F670(void *); void EventLock_Dec(void); void fn_80018B04(void); void String_Destroy(void *, s32); void Ui_DtorPanelBase(void *, s32);
 extern u8 gUnitLists[], gBattleMap[], gEventLockDepth;
@@ -1538,6 +1606,32 @@ ins_d:
     gAramUsedList = alloc_list;
 }
 
+void fn_801ED3D4(void) {
+    extern u8 gAramSlotPool[];
+    extern void *gAramUsedList, *gAramFreeList;
+    extern s32 gAramBase, gAramHeapSize;
+    AramSlot *p;
+    AramSlot *result;
+    s32 i;
+    p = (AramSlot *)gAramSlotPool;
+    for (i = 0; i < 256; i++, p++) {
+        p->size = 0;
+        p->flags = 0;
+    }
+    gAramUsedList = 0;
+    p = (AramSlot *)gAramSlotPool;
+    for (i=255; i>=0; i--,p++) {
+        if (p->size == 0) { result=p; goto found; }
+    }
+    result=0;
+found:
+    gAramFreeList=result;
+    result->next=0;
+    ((AramSlot*)gAramFreeList)->prev=0;
+    ((AramSlot*)gAramFreeList)->size=gAramHeapSize;
+    ((AramSlot*)gAramFreeList)->addr=gAramBase;
+}
+
 void fn_801ED52C(s32 arg0) {
     s32 fn_80214184(s32);
     void fn_80215D2C(void);
@@ -1994,16 +2088,17 @@ void fn_801EDF7C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801EDFCC(void) {
- extern u8 gFxChannels[];
- void fn_80146AF0(void);
- void Fx_FadeIn(void *, s32);
- void fn_8014876C(void *, s32, s32);
- u8 *p = &gFxChannels[0];
- fn_80146AF0();
- Fx_FadeIn(p, 1000);
- fn_8014876C(p, 100, 1000);
+    extern u8 lbl_8032FF08[];
+    void fn_80146AF0(void);
+    void fn_801487D0(void *, s32);
+    void fn_8014876C(void *, s32, s32);
+    void *p = lbl_8032FF08;
+
+    fn_80146AF0();
+    fn_801487D0(p, 0x3E8);
+    fn_8014876C(p, 0x64, 0x3E8);
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 void fn_801EE018(void *arg0) {
     extern u8 gFxChannels[];
     void fn_80148980(void *, s32, s32);
@@ -3153,6 +3248,48 @@ extern "C" void fn_801F0A08(void *arg0) {
     }
     fn_8005376C();
 }
+
+extern "C" void fn_801F0A74(void *arg0) {
+    void *Heap_Alloc(u32);
+    void String_Init(void *, void *, void *);
+    void String_Destroy(void *, s32);
+    void fn_800C992C(void *, void *, s32);
+    void fn_800E8154(void *, void *);
+    void *fn_800E8504(void *, s32, void *);
+    s16 fn_801CAF50(s32);
+    u32 strlen(const char *);
+    extern char gGActorPathExt[];
+    String name;
+    String path;
+    u32 allocator1, allocator0;
+    struct Obj { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual s32 v2(void *, void *)=0; };
+    void *actor;
+    register u8 *self;
+    s8 constructed;
+    void *object;
+    self = (u8*)arg0;
+    constructed = 0;
+    actor = Heap_Alloc(0x48);
+    if (actor) {
+        String_Init(&name, gGActorPathExt+0x221, &allocator0);
+        constructed=1;
+        actor=fn_800E8504(actor,0,&name);
+    }
+    *(void **)((u8*)self+0x30)=actor;
+    if (constructed) String_Destroy(&name,-1);
+    String_Init(&path,gGActorPathExt+0x273,&allocator1);
+    fn_800C992C(&path,gGActorPathExt+0x279,strlen(gGActorPathExt+0x279));
+    fn_800E8154(*(void **)((u8*)self+0x30),&path);
+    object=*(void **)((u8*)self+0x30);
+    *(s32*)((u8*)self+0x34)=((Obj*)object)->v2(gGActorPathExt+0x287,gGActorPathExt+0x293);
+    *(s16*)((u8*)self+0x4A)=fn_801CAF50(*(s32*)((u8*)self+0x34));
+    *(void **)((u8*)self+0x38)=Heap_Alloc(0x1C);
+    *(void **)((u8*)self+0x3C)=Heap_Alloc(0x1C);
+    *(void **)((u8*)self+0x40)=Heap_Alloc(0x1C);
+    *(void **)((u8*)self+0x44)=Heap_Alloc(0x1C);
+    String_Destroy(&path,-1);
+}
+
 #pragma cplusplus reset
 void fn_801F0E4C(void *arg0) {
     f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
@@ -3404,6 +3541,40 @@ s32 fn_801F16D4(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
     gUiContext[0x14] = *(u8 *)((u8 *)arg2 + 0x3A);
     return 5;
+}
+
+void fn_801F16EC(void **arg0, void *arg1, void *arg2) {
+    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32,f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    extern f32 lbl_8036B7C8;
+    f32 x;
+    s16 y;
+    s32 width;
+    void *object;
+    void *text;
+    text = (*(void *(**)(void *))((u8*)*arg0+0xC))(arg0);
+    width=Text_MeasureWidth(text,-1,lbl_8036B7C8);
+    x=(f32)(*(s16*)((u8*)arg2+0x30)-(width>>1));
+    object=*(void **)((u8*)arg1+0x3C);
+    y=(*(s32 (**)(void *))((u8*)*(void **)((u8*)object+4)+0x58))(object);
+    y=*(s16*)((u8*)arg2+0x32)+((y-Text_MeasureHeight(-1,lbl_8036B7C8))>>1);
+    (*(void (**)(void *,void *))((u8*)*arg0+0x4C))(arg0,arg1);
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(x,(f32)y);
+    (*(void (**)(void *,void *))((u8*)*arg0+0x50))(arg0,arg2);
+    text=(*(void *(**)(void *))((u8*)*arg0+0xC))(arg0);
+    Prim2D_SetText(text);
+    Prim2D_EndPrim();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B7C8);
+    Prim2D_PrepareTex();
 }
 
 void fn_801F1848(void *arg0, void *arg1) {
