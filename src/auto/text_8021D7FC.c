@@ -1018,21 +1018,12 @@ void __GXWriteFifoIntEnable(u32 arg0, u8 arg1) {
 
 void __GXWriteFifoIntReset(u32 arg0, u8 arg1)
 {
-    extern u8 *__GXData;
-    extern u8 *__cpReg;
-
-    u32 value;
-
-    value = *(u32 *)(__GXData + 0x10);
-    value = (value & ~1U) | (arg0 & 1);
-    *(u32 *)(__GXData + 0x10) = value;
-
-    value = *(u32 *)(__GXData + 0x10);
-    value = (value & ~2U) | ((arg1 & 1) << 1);
-    *(u32 *)(__GXData + 0x10) = value;
-
-    value = *(u32 *)(__GXData + 0x10);
-    *(volatile u16 *)(__cpReg + 4) = (u16)value;
+extern u16 *const __GXData;
+extern u8 *__cpReg;
+u8 *gx = (u8*)__GXData;
+*(u32*)(gx+0x10) = __rlwimi(*(u32*)(gx+0x10),arg0,0,31,31);
+*(u32*)(gx+0x10) = __rlwimi(*(u32*)(gx+0x10),(u32)arg1,1,30,30);
+*(volatile u16*)(__cpReg+4) = *(u32*)(gx+0x10);
 }
 
 s32 fn_8021F4CC(void) {
