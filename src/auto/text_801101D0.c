@@ -1666,10 +1666,8 @@ void fn_80113F88(void *arg0) {
     f32 fz;
     Vec3f pos;
     void *child;
-    void (*getpos)(Vec3f *, void *, s32);
 
-    getpos = (*(void (***)(Vec3f *, void *, s32))((u8 *)arg0 + 0x40))[0xe];
-    getpos(&pos, arg0, 0);
+    (*(void (**)(Vec3f *, void *, s32))(*(u8 **)((u8 *)arg0 + 0x40) + 0x38))(&pos, arg0, 0);
     fx = pos.x;
     fy = pos.y;
     fz = pos.z;
@@ -1687,12 +1685,15 @@ void fn_80113F88(void *arg0) {
     SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
 void fn_80114078(void *arg0) {
- *(u8 *)((u8 *)arg0+0x184)=1;
- Actor_LoadAnim(arg0,(u8 *)gActorXmlStrs+0x498,*(s32 *)((u8 *)arg0+0x188)*2,0,1);
- { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x160,text,len); }
- { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x16C,text,len); }
- *(u8 *)((u8 *)arg0+0x1A4)=1;
- *(u8 *)((u8 *)arg0+0x1A6)=1;
+    s32 n;
+    *(u8 *)((u8 *)arg0 + 0x184) = 1;
+    Actor_LoadAnim(arg0, (u8 *)&gActorXmlStrs + 0x498, *(s32 *)((u8 *)arg0 + 0x188) * 2, 0, 1);
+    n = strlen((char *)&gActorXmlStrs + 0x1C);
+    String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x1C, n);
+    n = strlen((char *)&gActorXmlStrs + 0x1C);
+    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x1C, n);
+    *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
+    *(u8 *)((u8 *)arg0 + 0x1A6) = 1;
 }
 
 #pragma cplusplus on
@@ -2053,6 +2054,33 @@ s32 fn_80114AF0(void *arg0) {
     return 0;
 }
 
+s32 fn_80115AF0(void *actor) {
+#pragma global_optimizer off
+    s32 n;
+    extern u16 gActorXmlStrs[];
+    s32 strlen(char *);
+    s32 String_Compare(void *, s32, void *, char *, s32);
+    s32 String_Find(void *, char *, s32, s32);
+
+    n = strlen((char *)gActorXmlStrs + 0x4ED);
+    if (String_Compare((u8 *)actor + 0x160, 0, (void *)*(s32 *)((u8 *)actor + 0x160),
+                      (char *)gActorXmlStrs + 0x4ED, n) == 0 ||
+        (n = strlen((char *)gActorXmlStrs + 0x444),
+         String_Compare((u8 *)actor + 0x160, 0, (void *)*(s32 *)((u8 *)actor + 0x160),
+                       (char *)gActorXmlStrs + 0x444, n) == 0)) {
+        n = strlen((char *)gActorXmlStrs + 0x43F);
+        if (String_Compare((u8 *)actor + 0x178, 0, (void *)*(s32 *)((u8 *)actor + 0x178),
+                          (char *)gActorXmlStrs + 0x43F, n) == 0 ||
+            (u32)(String_Find((u8 *)actor + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
+                             strlen((char *)gActorXmlStrs + 0x43F)) + 0x10000) != 0xFFFF) {
+            return 1;
+        }
+        return 0;
+    }
+    return 0;
+#pragma global_optimizer on
+}
+
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
@@ -2401,6 +2429,45 @@ void fn_80116760(s32 arg0, s32 arg1) {
     String_ConcatCStr(&sp8, arg1, (u8 *)gActorXmlStrs + 0xfc);
     String_Assign((void *)(arg0 + 0x154), &sp8, 0, -1);
     String_Destroy(&sp8, -1);
+}
+
+void fn_801167BC(void *actor, u32 arg1) {
+    void *scratch;
+    String str24;
+    String str18;
+    String strC;
+    s32 kind;
+    s32 fn_80199310(void *);
+    void fn_800DF670(void *);
+    void fn_800E4FE8(void *, void *, char *);
+    char *fn_801992F8(void *);
+    void String_JoinCStr(void *, char *, void *);
+    void String_ConcatCStr(void *, void *, char *);
+    s32 fn_800DDAA4(void *, void *);
+
+    if (arg1 != 0) {
+        *(u32 *)((u8 *)actor + 0x11C) = arg1;
+    }
+    if (*(u32 *)((u8 *)actor + 0x11C) != 0) {
+        kind = fn_80199310(*(void **)((u8 *)actor + 0x11C));
+        fn_800DF670(*(void **)((u8 *)actor + 0x11C));
+        if (kind == 3) {
+            fn_800E4FE8(*(void **)((u8 *)actor + 0x11C), actor, (char *)gActorXmlStrs + 0xEE);
+        } else {
+            fn_800E4FE8(*(void **)((u8 *)actor + 0x11C), actor, (char *)gActorXmlStrs + 0xF5);
+        }
+        String_Init(&str24, (char *)gActorXmlStrs + 0xFC, &scratch);
+        String_JoinCStr(&str18, fn_801992F8(*(void **)((u8 *)actor + 0x11C)), &str24);
+        String_Assign((u8 *)actor + 0x154, &str18, 0, -1);
+        String_Destroy(&str18, -1);
+        String_Destroy(&str24, -1);
+    }
+    String_ConcatCStr(&strC, (u8 *)actor + 0x154, (char *)gActorXmlStrs + 0xFE);
+    kind = fn_800DDAA4(*(void **)((u8 *)actor + 0xDC), &strC) == 0;
+    String_Destroy(&strC, -1);
+    if ((u8)kind != 0) {
+        *(u8 *)((u8 *)actor + 0x1A4) = 1;
+    }
 }
 
 void fn_801168F4(void *arg0, char *arg1) {
@@ -4059,6 +4126,42 @@ void *fn_8011AC78(void *arg0)
     return result;
 }
 
+void fn_8011ACFC(void) {
+    void fn_8001594C(void *, s8);
+    void fn_800156A0(void *, void *);
+    void fn_80015718(void *, void *);
+    extern u8 gUnitLists[];
+    void *list[3];
+    u32 flags;
+    u8 *next;
+    u8 *node;
+    fn_8001594C(list,0);
+    node=*(u8 **)gUnitLists;
+    for(;node;node=next) {
+        next=*(u8 **)(node+0x184);
+        if(!(*(u32 *)(node+0x1A0)&0x010000DC)) {
+            fn_800156A0(*(void **)(node+0x190),node);
+            fn_80015718(list,node);
+        }
+    }
+    node=*(u8 **)gUnitLists;
+    for(;node;node=next) {
+        next=*(u8 **)(node+0x184);
+        if(!(*(u32 *)(node+0x1A0)&0x010000DC)) break;
+        fn_800156A0(*(void **)(node+0x190),node);
+        fn_80015718(list,node);
+        *(u32 *)(node+0x1A0)|=0x010000DC;
+    }
+    node=list[0];
+    for(;node;node=next) {
+        next=*(u8 **)(node+0x184);
+        flags=*(u32 *)(node+0x1A0)&0x010000DC;
+        fn_800156A0(*(void **)(node+0x190),node);
+        fn_80015718(gUnitLists,node);
+        if(flags) *(u32 *)(node+0x1A0)|=0x010000DC;
+    }
+}
+
 void fn_8011AE2C(void *arg0) {
     M2C_UNK Unit_SetMapPos(s32, u8, u8);
     M2C_UNK fn_80050C90(s32);
@@ -5364,6 +5467,44 @@ u32 fn_8011D484(void) {
     return 0U;
 }
 
+void fn_8011D4C8(void) {
+    void fn_80122C84(void *);
+    void fn_8007AD6C(void *);
+    void fn_80109020(void *);
+    void Process_Unlink(void *);
+    void fn_80120F0C(void);
+    void fn_800AA208(void);
+    void *Process_Find(void *);
+    extern u8 gUiPanelProc[];
+    extern u32 lbl_80367A5C;
+    u8 *p;
+    s32 i;
+    u8 *self;
+    self=Process_Find(gUiPanelProc);
+    if(self) {
+    i=0; p=self;
+    do {
+        void *obj=*(void **)(p+0x34);
+        if(obj) { fn_80122C84(obj); *(void **)(p+0x34)=0; }
+        i++; p+=4;
+    } while(i<4);
+    i=0; p=self;
+    do {
+        void *obj=*(void **)(p+0x48);
+        if(obj) { fn_8007AD6C(obj); *(void **)(p+0x48)=0; }
+        i++; p+=4;
+    } while(i<4);
+    *(s32 *)(self+0x30)=0;
+    if(lbl_80367A5C) { fn_80109020((void *)lbl_80367A5C); lbl_80367A5C=0; }
+    if(*(void **)(self+0x58)) { Process_Unlink(*(void **)(self+0x58)); *(void **)(self+0x58)=0; }
+    fn_80120F0C();
+    if(gUiPanelFlags&0x80) { fn_800AA208(); gUiPanelFlags &= ~0x80; }
+    gUiPanelFlags=0;
+    gUiInputFlags &= ~2;
+    Process_Unlink(self);
+    }
+}
+
 void fn_8011D5EC(void) {
     extern u8 gUiPanelProc[];
     extern u16 gUiPanelFlags;
@@ -5674,52 +5815,31 @@ void fn_8011DD80(void *arg0)
 }
 
 extern u32 lbl_80367A5C;
-void fn_8011DDCC(void* arg0) {
-    int i;
-    
-    // First loop: iterate through 4 units, check and process
-    for (i = 0; i < 4; i++) {
-        if (*(void**)((char*)arg0 + i * 4) != NULL) {
-            fn_80122C84();
-            *(void**)((char*)arg0 + i * 4) = NULL;
-        }
+void fn_8011DDCC(void *arg0) {
+    void fn_80122C84(void *);
+    void fn_8007AD6C(void *);
+    void fn_80109020(void *);
+    void Process_Unlink(void *);
+    void fn_80120F0C(void);
+    void fn_800AA208(void);
+    u8 *self = arg0;
+    u8 *p;
+    s32 i;
+    s32 zero;
+    for(i=0,p=self,zero=i;i<4;i++,p+=4) {
+        void *obj=*(void **)(p+0x34);
+        if(obj) { fn_80122C84(obj); *(s32 *)(p+0x34)=zero; }
     }
-    
-    // Second loop: iterate through 4 units, check and process
-    for (i = 0; i < 4; i++) {
-        if (*(void**)((char*)arg0 + 0x10 + i * 4) != NULL) {
-            fn_8007AD6C();
-            *(void**)((char*)arg0 + 0x10 + i * 4) = NULL;
-        }
+    for(i=0,p=self,zero=i;i<4;i++,p+=4) {
+        void *obj=*(void **)(p+0x48);
+        if(obj) { fn_8007AD6C(obj); *(s32 *)(p+0x48)=zero; }
     }
-    
-    // Clear unk30 - this is likely at offset 0x20
-    *(s32*)((char*)arg0 + 0x20) = 0;
-    
-    // Check and process lbl_80367A5C
-    if (lbl_80367A5C != 0) {
-        fn_80109020();
-        lbl_80367A5C = 0;
-    }
-    
-    // Check and process unk58 - at offset 0x58 
-    if (*(s32*)((char*)arg0 + 0x58) != 0) {
-        Process_Unlink();
-        *(s32*)((char*)arg0 + 0x58) = 0;
-    }
-    
-    // Call fn_80120F0C
+    *(s32 *)(self+0x30)=0;
+    if(lbl_80367A5C) { fn_80109020((void *)lbl_80367A5C); lbl_80367A5C=0; }
+    if(*(void **)(self+0x58)) { Process_Unlink(*(void **)(self+0x58)); *(void **)(self+0x58)=0; }
     fn_80120F0C();
-    
-    // Check bit 7 of gUiPanelFlags and process if set
-    if (gUiPanelFlags & 0x80) {
-        fn_800AA208();
-        gUiPanelFlags &= 0xFFFFFF7F;
-    }
-    
-    // Clear gUiPanelFlags and update gUiInputFlags
-    gUiPanelFlags = 0;
-    gUiInputFlags &= 0xFFFFFFFD;
+    if(gUiPanelFlags&0x80) { fn_800AA208(); gUiPanelFlags &= ~0x80; }
+    { u32 flags=gUiInputFlags & ~2; gUiPanelFlags=0; gUiInputFlags=flags; }
 }
 
 void UiPanel_Finish(void *arg0) {
