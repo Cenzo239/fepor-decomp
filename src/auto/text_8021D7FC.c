@@ -1354,6 +1354,21 @@ u16 fn_80220970(void) {
     return M2C_FIELD(__peReg, u16 *, 0xE);
 }
 
+#ifndef GXWGFifo_DEFINED
+#define GXWGFifo_DEFINED
+typedef union {
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    s8 s8;
+    s16 s16;
+    s32 s32;
+    f32 f32;
+} PPCWGPipe;
+
+volatile PPCWGPipe GXWGFifo : 0xCC008000;
+#endif
+
 void fn_802209FC(void)
 {
   extern u16 *__GXData;
