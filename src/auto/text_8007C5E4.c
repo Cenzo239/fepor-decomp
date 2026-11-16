@@ -142,11 +142,11 @@ s32 fn_8007C74C(void) {
 #pragma global_optimizer off
 s32 fn_8007C8F4(void)
 {
-  extern void *gActiveFace;
+  extern void *lbl_80367488;
   u8 *obj;
   u16 flags;
   s32 value;
-  obj = (u8 *) gActiveFace;
+  obj = (u8 *) lbl_80367488;
   value = 0x20;
   obj = *((u8 **) (obj + 0x50));
   if (!obj)
@@ -169,7 +169,7 @@ s32 fn_8007C8F4(void)
   *((u16 *) (obj + 0x46)) = ((*((u16 *) (obj + 0x46))) & (~0xE0)) & 0xFFFFFFFF;
   *((u16 *) (obj + 0x36)) = 1;
   ;
-  *((u16 *) (((u8 *) gActiveFace) + 0x46)) = (*((u16 *) (((u8 *) gActiveFace) + 0x46))) | ((u16) value);
+  *((u16 *) (((u8 *) lbl_80367488) + 0x46)) = (*((u16 *) (((u8 *) lbl_80367488) + 0x46))) | ((u16) value);
   return 0;
 }
 #pragma global_optimizer on
@@ -360,16 +360,16 @@ void fn_8007D044(void) {
 }
 
 void fn_8007D064(s32 arg0, s32 arg1, s32 arg2) {
-    void *Process_CreateChild(void *, s32);
-    void Ui_PlaySeCue(void *, s32, void *);
-    extern u8 lbl_80289894[];
-    extern u8 gUiStrings[];
-    void *temp_r3;
-
-    temp_r3 = Process_CreateChild(lbl_80289894, arg1);
-    *(s32 *)((u8 *)temp_r3 + 0x34) = arg0;
-    *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
-    Ui_PlaySeCue(gUiStrings + 0x140, 0x64, gUiStrings);
+ void *Process_CreateChild(void *, s32);
+ void Ui_PlaySeCue(void *, s32, void *);
+ extern u8 lbl_80289894[];
+ extern u8 gUiStrings[];
+ s32 *p = Process_CreateChild(lbl_80289894, arg1);
+ u8 *cue = gUiStrings;
+ s32 volume = 100;
+ p[13] = arg0;
+ p[14] = arg2;
+ Ui_PlaySeCue(cue + 0x140, volume, cue);
 }
 
 void fn_8007D0C0(void *arg0) {

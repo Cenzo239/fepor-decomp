@@ -1657,9 +1657,11 @@ void fn_80221034(s32 arg0) {
 
 void fn_80221068(void) {
     extern void *__GXData;
-    
-    *(u8*)0xCC008000 = 0x61;
-    *(u32*)0xCC008000 = *(u32*)((u8*)__GXData + 0x204);
+    u8 command = 0x61;
+    u8 *data = __GXData;
+    *(u8 *)0xCC008000 = command;
+    *(u32 *)0xCC008000 = *(u32 *)(data + 0x204);
+    *(u16 *)(data + 2) = 0;
 }
 
 extern u32 lbl_80368738;

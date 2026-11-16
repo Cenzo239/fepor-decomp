@@ -402,31 +402,17 @@ s32 fn_800A9E10(void *arg0) {
 }
 
 s32 fn_800AA078(void *arg0) {
-    s32 Rand_Range(s32);
-    void Unit_ResetAll(void);
-    void *fn_80019ED0(s32);
-    void Battle_SetPhase(void *, u8);
-    void fn_8014D698(void *, u8, s32, s32, s32);
-    extern u8 gBattleState[];
-    extern u64 gSystemSave[];
-    u8 *s;
-    u8 saved;
-    void *unit;
-
-    s = gBattleState;
-    saved = s[0xA6];
-    Unit_ResetAll();
-    fn_8014D698(gBattleState, (u8)(Rand_Range(0x1E) + 1), 0, 0, 1);
-    s[0xA6] = saved;
-    unit = fn_80019ED0((s32)*(s8 *)((u8 *)arg0 + 4));
-    {
-        u8 *p;
-        p = gBattleState;
-        Battle_SetPhase(p, *(u8 *)((u8 *)unit + 0x3C));
-    }
-    gSystemSave[1] = 0x0123456789ABCDEFULL;
-    Game_SetState(0xA);
-    return 5;
+ s32 Rand_Range(s32); void Unit_ResetAll(void); void *fn_80019ED0(s32);
+ void Battle_SetPhase(void *, u32); void fn_8014D698(void *,u8,s32,s32,s32);
+ extern u8 gBattleState[]; extern u64 gSystemSave[];
+ u8 *s=gBattleState; u8 saved; void *unit;
+ saved=s[0xA6]; Unit_ResetAll();
+ fn_8014D698(gBattleState,(u8)(Rand_Range(0x1E)+1),0,0,1);
+ s[0xA6]=saved;
+ unit=fn_80019ED0((s32)*(s8 *)((u8 *)arg0+4));
+ { u32 phase=*(u8 *)((u8 *)unit+0x3C); Battle_SetPhase(gBattleState,phase); }
+ gSystemSave[1]=0x0123456789ABCDEFULL;
+ Game_SetState(0xA); return 5;
 }
 
 void fn_800AA134(void) {

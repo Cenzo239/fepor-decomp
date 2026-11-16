@@ -13541,119 +13541,54 @@ s32 fn_80260EA8(s32 arg0) {
     }
 }
 
-s32 fn_80260F18(s32 arg0, s32 arg1, s32 *arg2, s32 *arg3) {
-    s32 var_r3;
-    s32 var_r4;
-    s32 var_r5;
-    s32 var_r6;
-    s32 var_r7;
-    s32 var_r8;
-    s32 var_r9;
-    s32 var_r10;
-    s32 var_r11;
-    s32 var_r12;
-    s32 var_r13;
-    s32 *var_r14;
-    s32 var_r15;
-    s32 var_r16;
-    s32 var_r17;
-    s32 var_r18;
-    s32 var_r19;
-    s32 var_r20;
-    s32 var_r21;
-    s32 var_r22;
-    s32 var_r23;
-    s32 var_r24;
-    s32 var_r25;
-    s32 var_r26;
-    s32 var_r27;
-    s32 var_r28;
-    s32 var_r29;
-    s32 var_r30;
-    s32 var_r31;
-    
-    if (arg1 == 0) {
+u16 fn_80260F18(void *arg0, s32 arg1) {
+    s32 mapped;
+    s32 key;
+
+    mapped = arg1;
+    switch ((u8)arg1) {
+    case 0x80:
+        mapped = 0x80;
+        break;
+    case 0x81:
+        mapped = 0x82;
+        break;
+    case 0x82:
+        mapped = 0xa0;
+        break;
+    case 0x83:
+        mapped = 0xa1;
+        break;
+    case 0x84:
+        mapped = 0x83;
+        break;
+    case 0x85:
+        mapped = 0x84;
+        break;
+    case 0x86:
+        mapped = 0xa2;
+        break;
+    case 0x87:
+        mapped = 0xa3;
+        break;
+    case 0x88:
+        mapped = 0xa4;
+        break;
+    }
+
+    key = (u8)mapped;
+    if (key >= 0xa1) {
+        if (key == 0xa1) {
+            return (u16)((*(s16 *)((u8 *)arg0 + 0x1d4) << 1) + 0x2000);
+        }
+    } else if (key >= 0xa0) {
+        return (u16)((*(s16 *)((u8 *)arg0 + 0x1c8) << 1) + 0x2000);
+    }
+
+    if (((u8 *)arg0)[0x121] == 0xff) {
         return 0;
     }
-    
-    if (*arg2 != 0) {
-        *arg2 = 0;
-        return 1;
-    }
-
-    if ((arg0 >= 0x15) || (arg0 < 0)) {
-        return 0;
-    }
-
-    var_r3 = 0;
-    var_r4 = 0;
-
-    while (var_r3 != 0) {
-        if (var_r4 >= 0x14) {
-            break;
-        }
-        
-        if (*arg2 == 0) {
-            *arg2 = 1;
-        }
-
-        // This is a complex nested logic that's hard to match
-        var_r6 = *(arg3 + var_r4) * 4;
-        var_r7 = (arg0 - (var_r6 & 0xFFFF)) << 8;
-        var_r8 = 0x10000;
-        
-        if ((s32) var_r7 < 0) {
-            var_r8 = 0;
-        }
-
-        var_r9 = var_r7 + var_r8;
-        var_r10 = var_r9 >> 0x10;
-        
-        if ((s32) var_r10 < 0) {
-            var_r10 = 0;
-        }
-
-        var_r11 = var_r10 * 0x10000;
-        var_r12 = 0x100000000ULL; // This is the high part of a u64
-        var_r13 = (s32)var_r12 + var_r11;
-        
-        if ((s32) var_r13 < 0) {
-            var_r13 = 0;
-        }
-
-        if (arg0 == 0x14) {
-            *arg2 = 0;
-            return 1;
-        }
-
-        var_r8 = 0;
-
-        // This part is also complex and needs accurate logic
-        if (var_r3 != 0) {
-            *arg2 = 0;
-            return 1;
-        }
-        
-        var_r14 = arg3 + var_r4;
-        var_r15 = var_r6 & 0xFFFF;
-        var_r16 = ((s32) var_r11 < 0x10000) ? 0x100 : (var_r11 >> 0x10);
-        
-        if (var_r15 == 0x14) {
-            *arg2 = 0;
-            return 1;
-        }
-
-        var_r3 = 0;
-        var_r4++;
-    }
-
-    if (arg0 != 0x14) {
-        *arg2 = 0;
-        return 1;
-    }
-    
-    *arg2 = 1;
-    return 0;
+    return Sound_GetChanParam((u8)arg1, ((u8 *)arg0)[0x121], ((u8 *)arg0)[0x122]);
 }
 
 s32 fn_80261014(u32 *arg0, u8 arg1, u8 arg2, u32 arg3) {

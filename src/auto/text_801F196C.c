@@ -5240,10 +5240,12 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
 }
 #pragma opt_common_subs on
 void Tree_Init(s32 arg0, s32 arg1, s32 arg2) {
-    s32 temp_arg2 = (arg2 < 0 ? 0 : arg2);
-    
-    *(s32*)(arg0 + 0x4) = arg1;
-    *(u32*)(arg0 + 0x8) = (u32)temp_arg2;
+    u8 value;
+    *(s32 *)arg0 = 0;
+    value = *(u8 *)arg1;
+    *(s32 *)(arg0 + 4) = *(s32 *)arg0;
+    *(u8 *)(arg0 + 8) = value;
+    *(s32 *)(arg0 + 8) = arg0 + 4;
 }
 
 #pragma use_lmw_stmw on

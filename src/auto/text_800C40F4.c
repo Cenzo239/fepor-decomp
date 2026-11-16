@@ -5580,16 +5580,12 @@ void fn_800D6874(void) {
 }
 
 void fn_800D6878(u8 *arg0, u32 arg1) {
-    s32 zero;
-    u8 *ptr;
-
-    zero = 0;
-    arg1 = *(u8 *)arg1;
-    *(s32 *)arg0 = zero;
-    ptr = arg0 + 4;
-    *(s32 *)(arg0 + 4) = zero;
-    arg0[8] = (u8)arg1;
-    *(u8 **)(arg0 + 0xC) = ptr;
+ *(u32 *)arg0 = 0;
+ { u8 value = *(u8 *)arg1;
+ *(u32 *)(arg0+4) = *(u32 *)arg0;
+ arg0[8] = value;
+ *(u8 **)(arg0+12) = arg0+4;
+ }
 }
 
 #pragma use_lmw_stmw on
@@ -8714,18 +8710,12 @@ void fn_800DEF00(void *arg0) {
 }
 
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-    u8 *ptr;
-    u32 zero;
     u8 value;
-
-    ptr = (u8 *)arg0 + 4;
-    zero = 0;
-    value = *(volatile u8 *)arg1;
-
-    *(u32 *)arg0 = zero;
-    *(u32 *)ptr = zero;
+    *(u32 *)arg0 = 0;
+    value = *arg1;
+    *(u32 *)((u8 *)arg0 + 4) = *(u32 *)arg0;
     *((u8 *)arg0 + 8) = value;
-    *(u32 *)((u8 *)arg0 + 0xC) = (u32)ptr;
+    *(u32 *)((u8 *)arg0 + 12) = (u32)((u8 *)arg0 + 4);
 }
 
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
@@ -21646,17 +21636,16 @@ s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     s32 dy;
     s32 dist;
     u8 bonus;
-
+    s32 mov;
     b = M2C_FIELD(arg1, u8 *, 0x19E);
     a = M2C_FIELD(arg0, u8 *, 0x19E);
     dy = Abs((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
-    dist = Abs((s8)a - (s8)b) + dy;
-    if (*arg2 != NULL) {
-        bonus = (u8)Item_GetRangeForUnit(*arg2, arg1);
-    } else {
-        bonus = 0;
-    }
-    return dist <= ((s8)Unit_GetMov(arg1) + bonus + (s8)Unit_GetMov(arg0));
+    dist = Abs((s8)a - (s8)b);
+    dist = dist + dy;
+    if (*arg2 != NULL) bonus = (u8)Item_GetRangeForUnit(*arg2, arg1);
+    else bonus = 0;
+    mov = (s8)Unit_GetMov(arg1);
+    return dist <= (mov + bonus + (s8)Unit_GetMov(arg0));
 }
 
 #pragma global_optimizer off
@@ -22635,15 +22624,15 @@ void fn_80103200(void *arg0, s8 arg1, s8 arg2) {
     extern u8 gBattleMap[];
     u8 *base;
     u8 *row;
-    s32 x;
     s32 yoff;
+    s8 x;
     u8 id;
 
     base = gBattleMap;
     x = arg1;
     row = base + 0x10000;
     row += x;
-    yoff = arg2 << 6;
+    yoff = (s8)arg2 << 6;
     if ((s8)row[yoff - 0x1E72] == 0) {
         if ((*(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 0x254) & 0x20000) == 0 ||
             (*(base + x + yoff + 0x300D) & 2) == 0) {

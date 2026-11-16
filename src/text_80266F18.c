@@ -321,6 +321,8 @@ void fn_80266F18(s32 arg0, void *arg1)
     u8 *entry;
     u8 *src40;
     u8 *buf;
+    void *cb0;
+    void *cb1;
 
     entry = lbl_803669A0 + (arg0 << 8);
     src40 = entry + 0x40;
@@ -337,9 +339,11 @@ void fn_80266F18(s32 arg0, void *arg1)
     *(s32 *)(entry + 0xB8) = 0x380;
     *(s32 *)(entry + 0xBC) = 0;
     *(u16 *)(entry + 0xCC) = 0x10;
-    *(void **)(entry + 0xD0) = fn_80266D94;
+    cb0 = fn_80266D94;
+    *(void **)(entry + 0xD0) = cb0;
     *(s32 *)(entry + 0xD4) = 0;
-    *(void **)(entry + 0xD8) = fn_80266E70;
+    cb1 = fn_80266E70;
+    *(void **)(entry + 0xD8) = cb1;
     *(s32 *)(entry + 0xDC) = 0;
     fn_80216050(entry + 0xA8);
 }

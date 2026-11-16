@@ -419,14 +419,14 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
 
 #pragma optimization_level 2
 void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 gBattleHelpStrings[];
+    extern u8 lbl_8026CD60[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(u8 *, s32);
     s32 fn_8001D070(void **, s32);
-    s32 UnitRef_GetName(void **);
-    s32 Status_Test(s32, s32);
-    void Ui_OpenHelpPopup(s32, void *, s32, s32);
+    s32 fn_8001D2C8(void **);
+    s32 fn_80105BC0(s32, s32);
+    void fn_801B79A0(s32, void *, s32, s32);
     char sp8[0x80];
     void *entry;
     s32 result;
@@ -438,22 +438,22 @@ void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
     } else {
         type = 0;
     }
-    result = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    result = fn_8001D2C8(arg0);
+    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910(gBattleHelpStrings + 0x270, Status_Test(arg2 + 0x1BC, 1)), gBattleHelpStrings + 0x23E, arg1, 0);
+    fn_801B79A0(fn_8000D910(lbl_8026CD60 + 0x270, fn_80105BC0(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x23E, arg1, 0);
 }
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 gBattleHelpStrings[];
+    extern u8 lbl_8026CD60[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(u8 *, s32);
     s32 fn_8001D070(void **, s32);
-    s32 UnitRef_GetName(void **);
-    s32 Status_Test(s32, s32);
-    void Ui_OpenHelpPopup(s32, void *, s32, s32);
+    s32 fn_8001D2C8(void **);
+    s32 fn_80105BC0(s32, s32);
+    void fn_801B79A0(s32, void *, s32, s32);
     char sp8[0x80];
     void *entry;
     s32 result;
@@ -465,10 +465,10 @@ void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
     } else {
         type = 0;
     }
-    result = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    result = fn_8001D2C8(arg0);
+    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910(gBattleHelpStrings + 0x27B, Status_Test(arg2 + 0x1BC, 1)), gBattleHelpStrings + 0x1AC, arg1, 0);
+    fn_801B79A0(fn_8000D910(lbl_8026CD60 + 0x27B, fn_80105BC0(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x1AC, arg1, 0);
 }
 #pragma global_optimizer on
 #pragma use_lmw_stmw off

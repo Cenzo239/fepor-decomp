@@ -1176,20 +1176,14 @@ void TRKInterruptHandler(void)
     return;
 }
 
-void fn_80228CDC(f64 *arg0)
-{
-    f64 __mffs(void);
-
-    *arg0 = __mffs();
+void fn_80228CDC(f64 *arg0) {
+ f64 __mffs(void);
+ *arg0 = __mffs();
 }
 
-void fn_80228D00(f64 *arg0)
-{
-    f64 temp = 0.0;
-    if (arg0 != NULL) {
-        temp = *arg0;
-    }
-    // Just a placeholder that has the same structure but not exact operations
+void fn_80228D00(f64 *arg0) {
+    register f64 status = *arg0;
+    __mtfsf(255u, status);
 }
 
 void TRKTargetSetInputPendingPtr(s32 arg0) {

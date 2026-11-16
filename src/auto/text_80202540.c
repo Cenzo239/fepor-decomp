@@ -567,6 +567,8 @@ f32 Vec_Length(void *arg0) {
     return var_f1;
 }
 
+f32 fn_80203270(const f32 *a, const f32 *b) { return a[0]*b[0] + (a[1]*b[1] + a[2]*b[2]); }
+
 f32 PSVECDistance(void) {
     extern f32 lbl_8036BC70;
     extern f32 lbl_8036BC74;

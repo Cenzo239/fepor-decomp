@@ -822,9 +822,9 @@ void fn_80133EA4(s32 *arg0, void *arg1) {
     extern f32 lbl_8036A5AC;
     struct Point out;
     struct Point in;
-    s16 colW;
-    s16 kind;
-    s32 quot;
+    s32 kind;
+    s32 colW;
+    u32 quot;
     s16 rowH;
     s32 t;
     s32 rem;
@@ -851,8 +851,9 @@ void fn_80133EA4(s32 *arg0, void *arg1) {
     rem = (s16)rem;
     rem = t * rem;
     x = (s16)(rem + off48);
-    y = (s16)((s16)(rowH * (s16)quot) + off4a);
-    half = (s16)((rowH - Text_MeasureHeight(-1, lbl_8036A5AC)) >> 1);
+    y = (s16)(rowH * (s16)quot + off4a);
+    t = Text_MeasureHeight(-1, lbl_8036A5AC);
+    half = (s16)((rowH - t) >> 1);
     if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
         x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
         y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
@@ -1317,63 +1318,26 @@ void fn_80134C24(s32 *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void Ui_LayoutListPanel(void *arg0) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual s16 v10() = 0;
-        u8 pad4[6];
-        s16 unkA;
-        s16 unkC;
-        s16 unkE;
-        s16 unk10;
-        s16 unk12;
-        s16 unk14;
-        s16 unk16;
-        s16 unk18;
-        u8 pad1A[0x2A];
-        s16 unk44;
-        s16 unk46;
-        u8 pad48[2];
-        s16 unk4A;
-    };
-    Obj *self = (Obj *)arg0;
-    s16 h;
-    s16 v;
-    s16 t;
-    s16 tmp;
-    s16 c;
-    s16 ten;
-    s16 a;
-    s16 e;
-    s16 dh;
-    s16 dw;
-
-    h = self->unk44;
-    v = self->v10();
-    tmp = self->unk46;
-    t = (s16)((h + v - 1) / h);
-    tmp = (s16)(self->unk4A * 2 + t * tmp);
-    tmp = (s16)(tmp + 0x10);
-    self->unk10 = (s16)(self->unkC + tmp);
-    c = self->unkC;
-    ten = self->unk10;
-    a = self->unkA;
-    e = self->unkE;
-    dh = (s16)(ten - c);
-    self->unk12 = 2;
-    dw = (s16)(e - a);
-    dh = (s16)(dh - 8);
-    self->unk14 = 8;
-    self->unk16 = (s16)(dw - 2);
-    self->unk18 = dh;
+struct Obj {
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual s16 v10()=0;
+u8 pad4[6]; s16 unkA,unkC,unkE,unk10,unk12,unk14,unk16,unk18; u8 pad1A[0x2A]; s16 unk44,unk46; u8 pad48[2]; s16 unk4A;
+};
+Obj *self=(Obj*)arg0;
+s16 h=self->unk44;
+s16 v=self->v10();
+s32 sum=h+v;
+s16 t=(sum + -1)/h;
+s32 tmp=t*self->unk46+self->unk4A*2;
+tmp+=0x10;
+self->unk10=self->unkC+(s16)tmp;
+s16 dw;
+s16 dh=self->unk10-self->unkC;
+dw=self->unkE-self->unkA;
+self->unk12=2;
+dh-=8;
+self->unk14=8;
+self->unk16=dw-2;
+self->unk18=dh;
 }
 #pragma cplusplus reset
 void *fn_80134DA8(void *arg0, s16 arg1) {
@@ -4062,64 +4026,31 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual s32 v11() = 0;
-    };
-    struct Point {
-        s16 x;
-        s16 y;
-    };
-    struct Point *fn_8013F748(void *, struct Point *, struct Point *);
-    struct Point out2;
-    struct Point in2;
-    struct Point in;
-    struct Point out;
-    unsigned vret;
-    s16 v4e;
-    s16 v58;
-    s16 v56;
-    s16 v5a;
-    s16 v62;
-    s16 v64;
-    u32 quot;
-    s16 rem;
-    s16 adj;
-
-    v4e = *(s16 *)((u8 *)arg1 + 0x4E);
-    if (v4e != 0x7FFF) {
-        vret = ((Obj *)arg1)->v11();
-        v4e = *(s16 *)((u8 *)arg1 + 0x4E);
-        v58 = *(s16 *)((u8 *)arg1 + 0x58);
-        v56 = *(s16 *)((u8 *)arg1 + 0x56);
-        quot = v4e / v58;
-        v5a = *(s16 *)((u8 *)arg1 + 0x5A);
-        v62 = *(s16 *)((u8 *)arg1 + 0x62);
-        v64 = *(s16 *)((u8 *)arg1 + 0x64);
-        rem = (s16)(v4e - quot * v58);
-        adj = (s16)((s16)quot - v56);
-        in.x = (s16)(vret * rem + v62);
-        in.y = (s16)(v5a * adj + v64);
-        *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
-    } else {
-        s16 a14;
-        s16 a18;
-        a14 = *(s16 *)((u8 *)arg1 + 0x14);
-        a18 = *(s16 *)((u8 *)arg1 + 0x18);
-        in2.x = *(s16 *)((u8 *)arg1 + 0x62);
-        in2.y = a18 - a14;
-        *arg0 = *(s32 *)fn_8013F748(arg1, &out2, &in2);
-    }
+struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual s32 v11()=0; };
+struct Point { s16 x; s16 y; };
+struct Point *fn_8013F748(void *, struct Point *, struct Point *);
+Point out2,in2,in,out;
+if (*(s16 *)((u8 *)arg1+0x4e)!=0x7fff) {
+s32 width=((Obj*)arg1)->v11();
+s32 index=*(s16*)((u8*)arg1+0x4e);
+s32 cols=*(s16*)((u8*)arg1+0x58);
+s32 scroll=*(s16*)((u8*)arg1+0x56);
+s32 height=*(s16*)((u8*)arg1+0x5a);
+s32 x=*(s16*)((u8*)arg1+0x62);
+s32 y=*(s16*)((u8*)arg1+0x64);
+s16 row=index/cols;
+s16 col=index%cols;
+s16 adj=row-scroll;
+in.x=width*col+x;
+in.y=height*adj+y;
+*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
+} else {
+s32 top=*(s16*)((u8*)arg1+0x14);
+s32 bottom=*(s16*)((u8*)arg1+0x18);
+s32 x=*(s16*)((u8*)arg1+0x62);
+in2.x=x; in2.y=bottom-top;
+*arg0=*(s32*)fn_8013F748(arg1,&out2,&in2);
+}
 }
 #pragma cplusplus reset
 
@@ -4255,17 +4186,19 @@ extern "C" void fn_80139D60(void *arg0, void *arg1) {
     void fn_8015547C(s16, s16, s32, s32, u8, s32);
     extern f32 lbl_8036A66C;
     extern f32 lbl_8036A668;
+    void *self = arg0;
     void *other = arg1;
-    u8 flag;
-    u8 sel;
+    bool flag;
+    bool sel;
     void *p;
     f32 f;
 
-    ((Obj *)arg0)->v2();
-    fn_8015547C(0, 0,
-                (s16)(*(s16 *)((u8 *)arg0 + 0xE) - *(s16 *)((u8 *)arg0 + 0xA)),
-                (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xC)),
-                0xFF, 0x10);
+    ((Obj *)self)->v2();
+    s32 left=*(s16*)((u8*)self+0xA);
+    s32 right=*(s16*)((u8*)self+0xE);
+    s32 top=*(s16*)((u8*)self+0xC);
+    s32 bottom=*(s16*)((u8*)self+0x10);
+    fn_8015547C(0,0,(s16)(right-left),(s16)(bottom-top),0xFF,0x10);
 
     sel = 0;
     flag = sel;
@@ -4278,14 +4211,14 @@ extern "C" void fn_80139D60(void *arg0, void *arg1) {
         } else {
             p = NULL;
         }
-        if (p == arg0) {
+        if (p == self) {
             sel = 1;
         }
     }
     f = sel ? lbl_8036A66C : lbl_8036A668;
-    *(f32 *)((u8 *)arg0 + 0xA8) = f;
+    *(f32 *)((u8 *)self + 0xA8) = f;
     f = sel ? lbl_8036A66C : lbl_8036A668;
-    *(f32 *)((u8 *)arg0 + 0xD0) = f;
+    *(f32 *)((u8 *)self + 0xD0) = f;
 }
 extern "C" void fn_80139E5C(void *arg0) {
     struct Obj {
@@ -5340,8 +5273,7 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     a = last->prev;
     first->prev->next = a->next;
     a->next->prev = first->prev;
-    goto check;
-loop:
+    while ((node = (struct Node *)*start) != (struct Node *)*end) {
     value = (u8 *)node + 8;
     if (value != NULL && *(void **)((u8 *)value + 4) != NULL) {
         fn_800616A0(*(void **)((u8 *)value + 4));
@@ -5350,10 +5282,6 @@ loop:
     *start = node->next;
     Heap_Free(node);
     (*list)--;
-check:
-    node = (struct Node *)*start;
-    if (node != (struct Node *)*end) {
-        goto loop;
     }
     *ret = *end;
 }
@@ -7180,17 +7108,16 @@ extern "C" void fn_8013EF00(void *arg0) {
     void Prim2D_EndPrim(void);
     extern f32 lbl_8036A708;
     s32 sp8;
-    s32 w;
-    s32 h;
+    struct { s16 w, h; } size;
 
     ((Obj *)arg0)->v3();
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 2));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    w = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12));
-    h = (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14));
-    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)w, (f32)h);
+    size.w = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12));
+    size.h = (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14));
+    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)size.w, (f32)size.h);
     sp8 = *(s32 *)((u8 *)arg0 + 0x1E);
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();

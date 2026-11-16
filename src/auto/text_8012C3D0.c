@@ -2532,12 +2532,12 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     void fn_80009B8C(s32);
     void fn_8000A248(void);
     void *fn_80105C5C(void *, u8);
-    void Ui_DrawIcon(void *, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     void Ui_ScissorUnitListRightRows(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern u8 gItemIconDrawer[];
-    u8 *base;
+    s32 base;
     s32 off;
     s32 unit;
     s32 i;
@@ -2549,13 +2549,13 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     fn_80009B8C(0xFF);
     fn_8000A248();
     unit = (s32)*(void **)arg1;
-    base = gItemIconDrawer;
     off = 0x102;
+    base = (s32)gItemIconDrawer;
     i = 0;
     do {
         temp = fn_80105C5C((void *)(unit + 0x1BC), (u8)i);
         if (temp != NULL && *(u8 *)((u8 *)temp + 0x19) != 0) {
-            Ui_DrawIcon(base, off, 0);
+            Ui_DrawIcon((void *)base, off, 0, *(u8 *)((u8 *)temp + 0x19));
             off += 0x20;
         }
         i += 1;

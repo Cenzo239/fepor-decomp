@@ -67,13 +67,11 @@ s32 fn_80073474(s32 unused, s32 arg1) {
 }
 
 u8 fn_800734B0(void) {
-    u8 fn_801E3620(void *);
-    extern u8 gSystemSave[];
-
-    if (fn_801E3620(gSystemSave) == 0) {
-        return 2;
-    }
-    return 0;
+ u8 fn_801E3620(void *);
+ extern u8 gSystemSave[];
+ u8 result;
+ if(fn_801E3620(gSystemSave)) result=0; else result=2;
+ return result;
 }
 
 void fn_800734EC(void) {

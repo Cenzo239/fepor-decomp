@@ -62,7 +62,10 @@ s32 fn_8014E458(void) {
     extern s32 gMsgDebugPage;
     extern s32 gMsgDebugPageCount;
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x01000001) {
-        gMsgDebugPage = (gMsgDebugPage + (gMsgDebugPageCount - 1)) % gMsgDebugPageCount;
+        s32 previous = gMsgDebugPageCount;
+        --previous;
+        previous += gMsgDebugPage;
+        gMsgDebugPage = previous % gMsgDebugPageCount;
     }
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x02000002) {
         gMsgDebugPage = (gMsgDebugPage + 1) % gMsgDebugPageCount;
@@ -5612,8 +5615,9 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     extern f64 lbl_8036A868;
     extern f32 lbl_8036A870;
     s32 sp8;
-    s32 a, b, c, d;
+    f32 a, b, c, d;
 
+    (void)lbl_8036A868;
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(arg4 | 2));
     Prim2D_PrepareTex();

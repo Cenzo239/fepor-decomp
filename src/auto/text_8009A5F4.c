@@ -86,51 +86,29 @@ void fn_8009A660(u8 *arg0) {
 #pragma global_optimizer reset
 #pragma scheduling on
 void fn_8009A67C(void *arg0) {
-    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
-    f32 Math_EaseOutPow(M2C_UNK, u8, f32, f32, f32, f32);
-    extern f32 lbl_803697E4;
-    extern f32 lbl_803697E8;
-    u8 temp_r3;
-    u8 temp_r3_2;
-    u8 temp_r4;
-    u8 temp_r5;
-
-    temp_r3 = M2C_FIELD(arg0, u8 *, 0x3E);
-    if (temp_r3 != 0) {
-        M2C_FIELD(arg0, u8 *, 0x3E) = (u8) (temp_r3 - 1);
-    }
-    temp_r5 = M2C_FIELD(arg0, u8 *, 0x3F);
-    temp_r3_2 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) Math_Lerp(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
-    temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, f32 *, 0x30) = Math_EaseOutPow(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == 0) {
-        Process_ClearFunc(arg0);
-    }
+ f32 Math_Lerp(f32,f32,f32,f32); f32 Math_EaseOutPow(s32,f32,f32,f32,f32);
+ extern f32 lbl_803697E4; extern f32 lbl_803697E8;
+ u8 t; u32 duration; u32 start;
+ t=M2C_FIELD(arg0,u8*,0x3e); if(t) M2C_FIELD(arg0,u8*,0x3e)=t-1;
+ start=M2C_FIELD(arg0,u8*,0x3f); duration=M2C_FIELD(arg0,u8*,0x40);
+ M2C_FIELD(arg0,s8*,0x3d)=(s8)Math_Lerp(lbl_803697E4,(f32)start,(f32)duration,(f32)(u32)M2C_FIELD(arg0,u8*,0x3e));
+ M2C_FIELD(arg0,f32*,0x30)=Math_EaseOutPow(2,lbl_803697E8,lbl_803697E4,(f32)(u32)M2C_FIELD(arg0,u8*,0x40),(f32)(u32)M2C_FIELD(arg0,u8*,0x3e));
+ if(M2C_FIELD(arg0,u8*,0x3e)==0) Process_ClearFunc(arg0);
 }
 
 void fn_8009A76C(void *arg0) {
-    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
-    f32 Math_EaseOutPow(M2C_UNK, u8, f32, f32, f32, f32);
-    extern f32 lbl_803697E4;
-    extern f32 lbl_803697E8;
-    u8 temp_r3;
-    u8 temp_r3_2;
-    u8 temp_r4;
-    u8 temp_r5;
-
-    temp_r3 = M2C_FIELD(arg0, u8 *, 0x3E);
-    if (temp_r3 < (u8) M2C_FIELD(arg0, u8 *, 0x40)) {
-        M2C_FIELD(arg0, u8 *, 0x3E) = (u8) (temp_r3 + 1);
-    }
-    temp_r5 = M2C_FIELD(arg0, u8 *, 0x3F);
-    temp_r3_2 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) Math_Lerp(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
-    temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, f32 *, 0x30) = Math_EaseOutPow(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == (u8) M2C_FIELD(arg0, u8 *, 0x40)) {
-        Process_ClearFunc(arg0);
-    }
+ f32 Math_Lerp(f32,f32,f32,f32);
+ f32 Math_EaseOutPow(s32,f32,f32,f32,f32);
+ extern f32 lbl_803697E4, lbl_803697E8;
+ u8 *p=arg0;
+ f32 start, end;
+ if(p[0x3E]<p[0x40]) ++p[0x3E];
+ start=lbl_803697E4;
+ p[0x3D]=(s8)Math_Lerp(start,(f32)p[0x3F],(f32)p[0x40],(f32)p[0x3E]);
+ start=lbl_803697E8;
+ end=lbl_803697E4;
+ *(f32*)(p+0x30)=Math_EaseOutPow(2,start,end,(f32)(u32)p[0x40],(f32)(u32)p[0x3E]);
+ if(p[0x3E]==p[0x40]) Process_ClearFunc(arg0);
 }
 
 void fn_8009A864(void *arg0) {

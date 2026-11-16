@@ -662,11 +662,12 @@ void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 fa
 }
 
 void fn_80225034(u32 arg0, u32 *dst) {
-    u32 *src = (u32*)((u8*)__GXData + 0x4f4); // offset from the assembly
-
-    dst[0] = src[arg0 + 0];
-    dst[1] = src[arg0 + 1];
-    dst[2] = src[arg0 + 2];
+    double *source = (double *)((u8 *)__GXData + 0x4f4);
+    double *out = (double *)arg0;
+    double a = source[0], b = source[1], c = source[2];
+    out[0] = a;
+    out[1] = b;
+    out[2] = c;
 }
 
 void GXSetScissor(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -709,11 +710,15 @@ void fn_80225118(void)
     *ptr = 0;
 }
 
-void fn_80225158(void)
+void fn_80225158(u32 arg0)
 {
-    u16 *temp_r4 = __GXData;
-    temp_r4[0x40] = 0x1005;
-    temp_r4[0x41] = 1;
+    *(volatile u8*)0xCC008000 = 0x10;
+    {
+        u16 *data = (u16*)__GXData;
+        *(volatile u32*)0xCC008000 = 0x1005;
+        *(volatile u32*)0xCC008000 = arg0;
+        data[1] = 1;
+    }
 }
 
 void fn_80225180(s32 arg0) {

@@ -1891,30 +1891,25 @@ void fn_80089970(void) {
     M2C_FIELD(lbl_803674EC, s16 *, 0x32) = 0;
 }
 
-void fn_80089980(s32 arg0)
-{
-    extern f32 lbl_803696C8;
-    extern void *lbl_803674EC;
-    u8 *ptr;
-    s32 result;
-
-    result = (s32)((f32)arg0 / lbl_803696C8);
-    ptr = (u8 *)lbl_803674EC;
-    *(u16 *)(ptr + 0x32) = 3;
-    *(u16 *)(ptr + 0x34) = 0;
-    *(u16 *)(ptr + 0x36) = (u16)result;
+void fn_80089980(s32 arg0) {
+ extern f32 lbl_803696C8;
+ extern void *lbl_803674EC;
+ f32 value = (f32)arg0 / lbl_803696C8;
+ u8 *ptr = (u8 *)lbl_803674EC;
+ *(u16 *)(ptr+0x32) = 3;
+ *(u16 *)(ptr+0x34) = 0;
+ *(u16 *)(ptr+0x36) = (s32)value;
 }
 
-void fn_800899D4(s32 arg0)
-{
-    extern f32 lbl_803696C8;
-    extern void *lbl_803674EC;
-    u8 *ptr = (u8 *)lbl_803674EC;
-    f32 div = lbl_803696C8;
-
-    *(u16 *)(ptr + 0x32) = 1;
-    *(u16 *)(ptr + 0x34) = 0;
-    *(u16 *)(ptr + 0x36) = (u16)(s32)((f32)arg0 / div);
+void fn_800899D4(s32 arg0) {
+ extern f32 lbl_803696C8;
+ extern void *lbl_803674EC;
+ f32 value = (f32)arg0;
+ f32 div = lbl_803696C8;
+ u8 *ptr = (u8 *)lbl_803674EC;
+ *(u16 *)(ptr+0x32)=1;
+ *(u16 *)(ptr+0x34)=0;
+ *(u16 *)(ptr+0x36)=(s32)(value/div);
 }
 
 void fn_80089A28(void *arg0) {

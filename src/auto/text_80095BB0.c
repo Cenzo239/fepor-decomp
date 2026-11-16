@@ -644,46 +644,26 @@ s32 fn_80096EEC(s32 *arg0, u32 arg1) {
 }
 
 s32 Event_GetCmdKind(s32 arg0) {
-    typedef struct {
-        u8 pad[0x8A0];
-        s16 idx;
-    } Scr;
-    extern Scr gBattle;
-    Scr *s;
-    s16 saved;
-    s32 result;
-    s16 n;
-    s32 c;
-
-    s = &gBattle;
-    result = -1;
-    saved = s->idx;
-    s->idx = (s16)arg0;
-    s->idx = (s16)arg0 + 1;
-    for (;;) {
-        n = s->idx;
-        c = *((u8 *)s + 0x8A0 + (n << 2) + 4);
-        switch (c) {
-        case 0:
-            s->idx = n + 1;
-            continue;
-        case 0x20:
-        case 0x21:
-        case 0x22:
-        case 0x24:
-            break;
-        case 0x50:
-        case 0x51:
-        case 0x52:
-            result = *((u8 *)s + 0x8A0 + (n << 2) + 4);
-            break;
-        default:
-            s->idx = saved;
-            break;
-        }
-        break;
-    }
-    return result;
+ extern u8 gBattle[];
+ s16 *s = (s16 *)(gBattle + 0x8A0);
+ s32 result=-1;
+ s16 saved=*(s16 *)(gBattle+0x8A0);
+ *(s16 *)(gBattle+0x8A0)=arg0;
+ *(s16 *)(gBattle+0x8A0)=(s16)arg0+1;
+ for (;;) {
+ s32 c=((u8 *)s)[(*s << 2)+4];
+ switch(c) {
+ case 0x20: case 0x21: case 0x22: case 0x24: goto done;
+ case 0x50: case 0x51: case 0x52:
+ result=((u8 *)s)[(*s << 2)+4]; goto done;
+ case 0: ++*s; continue;
+ default: goto restore;
+ }
+ }
+restore:
+ *s=saved;
+done:
+ return result;
 }
 
 s32 fn_80097168(s32 arg0) {
@@ -892,32 +872,20 @@ void fn_8009799C(void) {
 }
 
 void fn_800979FC(void) {
-    s8 fn_8004ABD4(void *, s32);
-    extern u8 gBattle[];
-    extern u8 gEventSlots[];
-    u8 *it;
-    u8 *tbl;
-    s32 i;
-    void *p;
-    void *q;
-    s32 ca8;
-
-    it = gEventSlots;
-    tbl = gBattle;
-    for (i = 0; i < 3; i++) {
-        p = *(void **)it;
-        if (p != NULL && *(u32 *)((u8 *)p + 0x280) != 0) {
-            if (p == NULL) {
-                q = NULL;
-            } else if (*(u32 *)(q = (u8 *)p + 0x28C) == 0) {
-                q = NULL;
-            }
-            ca8 = *(s32 *)(tbl + 0xCA8);
-            *(u8 *)((u8 *)*(void **)((u8 *)*(void **)it + 0x280) + 0x16C) =
-                fn_8004ABD4(q, (u32)ca8 < 1U);
-        }
-        it += 0x14;
-    }
+ s8 fn_8004ABD4(void *,s32);
+ extern u8 gBattle[]; extern u8 gEventSlots[];
+ u8 *tbl; u8 *it; s32 i; void *p; void *q; s32 ca8;
+ it=gEventSlots; tbl=gBattle;
+ for(i=0;i<3;i++) {
+ p=*(void **)it;
+ if(p!=NULL && *(u32 *)((u8 *)p+0x280)!=0) {
+ if(p==NULL) q=NULL;
+ else if(*(u32 *)(q=(u8 *)p+0x28C)==0) q=NULL;
+ ca8=*(s32 *)(tbl+0xCA8);
+ *(u8 *)((u8 *)*(void **)((u8 *)*(void **)it+0x280)+0x16C)=fn_8004ABD4(q,ca8<=1);
+ }
+ it+=0x14;
+ }
 }
 
 void fn_80097AB4(void) {

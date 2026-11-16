@@ -4,10 +4,10 @@
 
 void fn_8001EE58(void)
 {
-    void Icon_FreeSlot(void *, s32);
-    void Item_Destroy(void);
+    void fn_800C3220(void *, s32);
+    void fn_8001C5F8(void);
     extern u8 lbl_80367218;
-    extern u8 gIconSlots[];
+    extern u8 lbl_803206EC[];
     extern u8 lbl_802CA4B0[];
 
     typedef struct {
@@ -26,8 +26,8 @@ void fn_8001EE58(void)
     bf->flag = 0;
     mask = *((u8 *)&lbl_80367218 + 5) & 0x3F;
     if (mask != 0) {
-        Icon_FreeSlot(gIconSlots, mask);
+        fn_800C3220(lbl_803206EC, mask);
         bf->rest = 0;
     }
-    __register_global_object(&lbl_80367218, Item_Destroy, lbl_802CA4B0);
+    __register_global_object(&lbl_80367218, fn_8001C5F8, lbl_802CA4B0);
 }

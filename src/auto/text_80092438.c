@@ -514,22 +514,12 @@ u8 fn_80092C50(void *arg0, u8 arg1, u8 arg2) {
 }
 
 u8 fn_80092F38(void *arg0) {
-    u8 var_r4;
-
-    var_r4 = 0;
-    if (M2C_FIELD(arg0, u32 *, 0x1EC) != 0) {
-        var_r4 = 1;
-    }
-    if (M2C_FIELD(arg0, u32 *, 0x1F4) != 0) {
-        var_r4 = (u8)var_r4 + 1;
-    }
-    if (M2C_FIELD(arg0, u32 *, 0x1FC) != 0) {
-        var_r4 = (u8)var_r4 + 1;
-    }
-    if (M2C_FIELD(arg0, u32 *, 0x204) != 0) {
-        var_r4 = (u8)var_r4 + 1;
-    }
-    return var_r4;
+ u8 n=0;
+ if(M2C_FIELD(arg0,u32 *,0x1EC)) n=1;
+ if(M2C_FIELD(arg0,u32 *,0x1F4)) n = 1 + (u8)n;
+ if(M2C_FIELD(arg0,u32 *,0x1FC)) n = 1 + (u8)n;
+ if(M2C_FIELD(arg0,u32 *,0x204)) n = 1 + (u8)n;
+ return n;
 }
 
 u8 fn_80092F9C(void *arg0)
@@ -572,76 +562,19 @@ s32 fn_80093010(void *arg0, void *arg1)
     return -1;
 }
 
-s32 fn_80093088(void *arg0)
-{
-  void *Unit_GetHeldItemSlot(void *, s32);
-  s32 i;
-  u32 new_var3;
-  int new_var2;
-  s32 r;
-  int new_var;
-  unsigned char ok;
-  new_var = 3;
-  i = 0;
-  loop:
-  if ((*((u32 *) Unit_GetHeldItemSlot(arg0, i))) == 0)
-  {
-  }
-  else
-  {
-    i += 1;
-    if (i >= 4)
-    {
-      i = (ok = -1);
-    }
-    else
-    {
-      goto loop;
-    }
-  }
-
-  r = i == 0;
-  ok = r;
-  new_var = !i;
-  if (ok)
-  {
-    new_var3 = *((u32 *) (((u8 *) arg0) + 0x1ec));
-    new_var2 = 2;
-    if (!new_var3)
-    {
-      r = 0;
-      if (((!i) && new_var) && (!i))
-      {
-      }
-    }
-    else
-      if ((*((u32 *) (((u8 *) arg0) + 0x1f4))) == 0)
-    {
-      if (new_var)
-      {
-      }
-      r = 1;
-    }
-    else
-      if ((*((u32 *) (((u8 *) arg0) + 0x1fc))) == 0)
-    {
-      r = new_var2;
-      if (1)
-      {
-      }
-    }
-    else
-      if ((*((u32 *) (((u8 *) arg0) + 0x204))) == 0)
-    {
-      r = new_var;
-    }
-    else
-    {
-      r = -1;
-    }
-    return r == 0;
-  }
-  return r;
+s32 fn_80093088(void *arg0) {
+void *Unit_GetHeldItemSlot(void *, s32);
+s32 i=0; s32 r; u8 ok;
+for(i=0;i<4;i++) { if(*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) goto found; } i=-1; found:;
+r=i==0; ok=r;
+if(ok) {
+ if(*(u32 *)((u8*)arg0+0x1ec)==0) i=0;
+ else if(*(u32 *)((u8*)arg0+0x1f4)==0) i=1;
+ else if(*(u32 *)((u8*)arg0+0x1fc)==0) i=2;
+ else if(*(u32 *)((u8*)arg0+0x204)==0) i=3;
+ else i=-1;
+ r=i==0;
+} return r;
 }
 
 void Unit_SetHeldItem(s32 arg0, s32 arg1, s32 arg2) {
@@ -1456,18 +1389,18 @@ s32 fn_80094A08(s32 arg0) {
 
 s32 fn_80094A54(s32 arg0, s32 arg1)
 {
-  M2C_UNK Item_Destroy(M2C_UNK *, M2C_UNK);
-  M2C_UNK Item_Init(M2C_UNK *);
+  M2C_UNK fn_8001C5F8(M2C_UNK *, M2C_UNK);
+  M2C_UNK fn_8001C76C(M2C_UNK *);
   M2C_UNK *new_var;
-  M2C_UNK Item_SetByName(M2C_UNK *, s32);
+  M2C_UNK fn_8001D780(M2C_UNK *, s32);
   s32 fn_80094ABC(s32, M2C_UNK *);
   M2C_UNK sp8;
   short temp_r31;
-  Item_Init(&sp8);
-  Item_SetByName(&sp8, arg1);
+  fn_8001C76C(&sp8);
+  fn_8001D780(&sp8, arg1);
   new_var = &sp8;
   temp_r31 = fn_80094ABC(arg0, new_var);
-  Item_Destroy(&sp8, -1);
+  fn_8001C5F8(&sp8, -1);
   return temp_r31;
 }
 

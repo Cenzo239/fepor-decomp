@@ -591,16 +591,16 @@ do_call:
 }
 
 void fn_800AE444(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
     extern f32 lbl_80369C78;
-    extern f32 gPhaseBannerZero;
+    extern f32 lbl_80369C7C;
     extern f32 lbl_80369C80;
     M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) - 1);
-    M2C_FIELD(arg0, f32 *, 0x38) = Math_EaseOutPow(2, lbl_80369C78, gPhaseBannerZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, f32 *, 0x38) = fn_8005A028(2, lbl_80369C78, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) fn_80059F64(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x30) <= 0) {
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
 }
 
@@ -639,22 +639,13 @@ void fn_800AE52C(void *arg0)
 }
 
 void fn_800AE5A8(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    void Process_ClearFunc(void *);
-    extern f64 lbl_80369C88;
-    extern f32 gPhaseBannerZero;
-    extern f32 lbl_80369C80;
-    extern f32 lbl_80369C90;
-    void *self;
-
-    self = arg0;
-    *(s32 *)((u8 *)self + 0x30) = *(s32 *)((u8 *)self + 0x30) + 1;
-    *(f32 *)((u8 *)self + 0x38) = Math_EaseOutPow(2, lbl_80369C90, gPhaseBannerZero, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
-    *(s32 *)((u8 *)self + 0x34) = (s32)Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
-    if (*(s32 *)((u8 *)self + 0x30) >= *(s32 *)((u8 *)self + 0x44)) {
-        Process_ClearFunc(self);
-    }
+ f32 Math_Lerp(f32,f32,f32,f32); f32 Math_EaseOutPow(M2C_UNK,f32,f32,f32,f32);
+ extern f32 lbl_80369C90; extern f32 gPhaseBannerZero; extern f32 lbl_80369C80;
+ f32 start; f32 end; f32 duration; f32 time;
+ M2C_FIELD(arg0,s32*,0x30)++; start=lbl_80369C90; end=gPhaseBannerZero; duration=(f32)M2C_FIELD(arg0,s32*,0x44); time=(f32)M2C_FIELD(arg0,s32*,0x30);
+ M2C_FIELD(arg0,f32*,0x38)=Math_EaseOutPow(2,start,end,duration,time);
+ M2C_FIELD(arg0,s32*,0x34)=(s32)Math_Lerp(gPhaseBannerZero,lbl_80369C80,(f32)M2C_FIELD(arg0,s32*,0x44),(f32)M2C_FIELD(arg0,s32*,0x30));
+ if(M2C_FIELD(arg0,s32*,0x30)>=M2C_FIELD(arg0,s32*,0x44)) Process_ClearFunc(arg0);
 }
 
 /* Set up the phase-change banner: ambient FX for this army, banner widget, and draw callback. */

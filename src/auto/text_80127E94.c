@@ -138,8 +138,8 @@ void fn_80128134(void) {
 }
 
 void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
-    void *Process_Create(void *, u32);
-    u32 Sound_FindByName(s32);
+    void *fn_8000CAF0(void *, u32);
+    u32 fn_801090C0(s32);
     extern u8 lbl_802905C0[];
     extern f32 lbl_8036A3C0;
     extern f32 lbl_8036A3C4;
@@ -149,9 +149,9 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
     f32 f44;
     f32 f3c;
 
-    temp_r3 = Sound_FindByName(arg0);
+    temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        obj = Process_Create(lbl_802905C0, temp_r3);
+        obj = fn_8000CAF0(lbl_802905C0, temp_r3);
         f40 = lbl_8036A3C0;
         f44 = lbl_8036A3C4;
         f3c = (f32)arg2;
@@ -163,16 +163,16 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80128268(s32 arg0, s32 arg1, s32 arg2) {
-    void *Process_Create(void *, u32);
-    u32 Sound_FindByName(s32);
+    void *fn_8000CAF0(void *, u32);
+    u32 fn_801090C0(s32);
     extern u8 lbl_802905C0[];
     extern f32 lbl_8036A3C0;
     u32 temp_r3;
     void *obj;
 
-    temp_r3 = Sound_FindByName(arg0);
+    temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        obj = Process_Create(lbl_802905C0, temp_r3);
+        obj = fn_8000CAF0(lbl_802905C0, temp_r3);
         *(s32 *)((u8 *)obj + 0x38) = arg1;
         *(f32 *)((u8 *)obj + 0x3C) = (f32)arg2;
         *(f32 *)((u8 *)obj + 0x40) = lbl_8036A3C0;
@@ -308,7 +308,7 @@ void fn_80128618(void *arg0) {
 }
 
 void fn_80128630(void *arg0) {
-    f64 sin(f32);
+    f64 fn_80238638(f32);
     u32 OSGetTick(void);
     extern f32 lbl_8036A3F0;
     void *obj;
@@ -324,7 +324,7 @@ void fn_80128630(void *arg0) {
     ms = OSGetTick() / ((*(u32 *)0x800000F8 >> 2) / 1000);
     period = *(s32 *)((u8 *)arg0 + 0x38);
     rem = ms % period;
-    wave = (f32)sin(((f32)rem / (f32)period) * lbl_8036A3F0);
+    wave = (f32)fn_80238638(((f32)rem / (f32)period) * lbl_8036A3F0);
     scale = *(f32 *)((u8 *)arg0 + 0x3C);
     y = *(f32 *)((u8 *)arg0 + 0x34);
     x = *(f32 *)((u8 *)arg0 + 0x30);
@@ -464,7 +464,6 @@ void fn_80129464(void *arg0) {
 
     f32 f31;
     f32 f30;
-    s32 path;
     s32 b0;
     s32 b1;
     void *ptr;
@@ -475,12 +474,10 @@ void fn_80129464(void *arg0) {
     b0 = *(s8 *)ptr;
     b1 = *((s8 *)ptr + 1);
     fn_800498A4(ptr, self, 0);
-    path = Effect_Create(lbl_80275740 + 0x15B, self);
-    f31 = (f32)b1;
-    f31 = gTileCenter + f31;
-    f30 = (f32)b0;
-    f30 = gTileCenter + f30;
-    Effect_SetPos(path, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
+    ptr = (void *)Effect_Create(lbl_80275740 + 0x15B, self);
+    f31 = gTileCenter + (f32)b1;
+    f30 = gTileCenter + (f32)b0;
+    Effect_SetPos((s32)ptr, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
 }
 
 void fn_8012955C(void) {

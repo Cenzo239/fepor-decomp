@@ -178,12 +178,13 @@ s32 PPCMfl2cr(void) {
     return 0;
 }
 
+#pragma dont_inline on
 void PPCMtl2cr(void) {
     M2C_ERROR(/* unknown instruction: mtspr L2CR, $r3 */);
 }
-
+#pragma dont_inline reset
 s32 PPCMtdec(void) {
-    return 0;
+    return M2C_ERROR(/* unknown instruction: mtdec $r3 */);
 }
 
 s32 PPCSync(void) {

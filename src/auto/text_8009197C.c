@@ -78,29 +78,39 @@ void fn_80091A1C(void *arg0) {
     *(u8*)((u8*)arg0 + 0x9) = (u8)(temp_r0 & 0xFF);
 }
 
-void fn_80091B38(void *arg0) {
-    extern f32 gZeroF;
-    extern f32 lbl_803697A4;
-    f32 w;
-    f32 z;
-    f32 y;
-    f32 x;
-
-    x = *(f32 *)((u8 *)arg0 + 0x38);
-    y = *(f32 *)((u8 *)arg0 + 0x34);
-    z = *(f32 *)((u8 *)arg0 + 0x30);
-    w = lbl_803697A4;
-    *(f32 *)((u8 *)arg0 + 0x3C) = z;
-    z = gZeroF;
-    *(f32 *)((u8 *)arg0 + 0x40) = y;
-    *(f32 *)((u8 *)arg0 + 0x44) = x;
-    y = *(f32 *)((u8 *)arg0 + 0x34);
-    *(f32 *)((u8 *)arg0 + 0x48) = w;
-    *(f32 *)((u8 *)arg0 + 0x4C) = y;
-    *(f32 *)((u8 *)arg0 + 0x50) = z;
-    *(u8 *)((u8 *)arg0 + 0x54) = 0;
-    *(u8 *)((u8 *)arg0 + 0x55) = 8;
-    *(u8 *)((u8 *)arg0 + 0x56) = 3;
+void fn_80091B38(void *arg0)
+{
+  u8 *new_var;
+  extern f32 lbl_80369764;
+  extern f32 lbl_803697A4;
+  s32 zero;
+  s32 eight;
+  s32 three;
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 w;
+  z++;
+  z--;
+  zero = 0;
+  eight = 8;
+  new_var = ((u8 *) arg0) + 0x3C;
+  three = 3;
+  x = *((f32 *) (((u8 *) arg0) + 0x38));
+  y = *((f32 *) (((u8 *) arg0) + 0x34));
+  z = *((f32 *) (((u8 *) arg0) + 0x30));
+  w = lbl_803697A4;
+  *((f32 *) new_var) = z;
+  z = lbl_80369764;
+  *((f32 *) (((u8 *) arg0) + 0x40)) = y;
+  *((f32 *) (((u8 *) arg0) + 0x44)) = x;
+  y = *((f32 *) (((u8 *) arg0) + 0x34));
+  *((f32 *) (((u8 *) arg0) + 0x48)) = w;
+  *((f32 *) (((u8 *) arg0) + 0x4C)) = y;
+  *((f32 *) (((u8 *) arg0) + 0x50)) = z;
+  *((u8 *) (((u8 *) arg0) + 0x54)) = (u8) zero;
+  *((u8 *) (((u8 *) arg0) + 0x55)) = (u8) eight;
+  *((u8 *) (((u8 *) arg0) + 0x56)) = (u8) three;
 }
 
 void fn_80091B84(void *arg0) {
@@ -245,16 +255,11 @@ block_19:
 
 #pragma global_optimizer off
 u8 Unit_CanUseItem(s32 arg0, void *arg1) {
-    u8 fn_800940B0(s32, void *);
-    u32 z = 0;
-    u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
-    if (flags & 5ULL) {
-        return fn_800940B0(arg0, arg1) != 0;
-    }
-    if (flags & 0x18ULL) {
-        return fn_800940B0(arg0, arg1);
-    }
-    return z;
+ u8 fn_800940B0(s32, void *);
+ u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+ if (flags & 5ULL) return fn_800940B0(arg0, arg1) != 0;
+ if (flags & 0x18ULL) return fn_800940B0(arg0, arg1);
+ else return (flags & 0x18ULL);
 }
 #pragma global_optimizer reset
 /* If the item's _UFX resource allows the current game state, invoke it. */

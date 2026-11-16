@@ -340,6 +340,8 @@ void fn_80209C10(void) {
     lbl_80368644 = *(void **)0x80000110;
 }
 
+void fn_80209DE4(void) { }
+
 void __OSInitSystemCall(void) {
     memcpy(0x80000C00, &__OSSystemCallVectorStart, &__OSSystemCallVectorEnd - &__OSSystemCallVectorStart);
     DCFlushRangeNoSync(0x80000C00, 0x100);

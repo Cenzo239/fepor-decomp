@@ -1477,6 +1477,8 @@ void fn_8011390C(void *arg0) {
 extern "C" void fn_80113930(void *arg0) {
     struct Vec3 {
         f32 x, y, z;
+Vec3() {}
+Vec3(f32 v) { z=v; y=v; x=v; }
     };
     struct Actor {
         u8 pad0[0x40];
@@ -1500,22 +1502,13 @@ extern "C" void fn_80113930(void *arg0) {
     void fn_801985C4(void *);
     extern f32 lbl_8036A184;
     extern u16 gActorXmlStrs[];
-    Vec3 a;
-    Vec3 b;
-    Vec3 c;
+    Vec3 a(lbl_8036A184);
+    Vec3 b(lbl_8036A184);
+    Vec3 c(lbl_8036A184);
     Vec3 tmpA;
     Vec3 tmpB;
     Actor *other;
 
-    a.z = lbl_8036A184;
-    a.y = lbl_8036A184;
-    a.x = lbl_8036A184;
-    b.z = lbl_8036A184;
-    b.y = lbl_8036A184;
-    b.x = lbl_8036A184;
-    c.z = lbl_8036A184;
-    c.y = lbl_8036A184;
-    c.x = lbl_8036A184;
 
     fn_800E4E7C(&tmpA, arg0, (char *)gActorXmlStrs + 0x464);
     a.x = tmpA.x;
@@ -4232,8 +4225,8 @@ void fn_8011B204(void *arg0) {
     extern f32 lbl_8036A1E8;
     extern f32 lbl_8036A230;
     f32 c1;
-    s32 num;
-    s32 den;
+    s16 num;
+    s16 den;
     f32 c2;
     f32 p1y;
     f32 tn;
@@ -4250,7 +4243,7 @@ void fn_8011B204(void *arg0) {
     void *out;
     f32 u;
     f32 t2;
-    f32 tmp;
+    f32 w;
     f32 u2;
     f32 x;
     f32 y;
@@ -4262,9 +4255,9 @@ void fn_8011B204(void *arg0) {
     den = *(s16 *)((u8 *)arg0 + 0x5C);
     c2 = lbl_8036A230;
     p1y = *(f32 *)((u8 *)arg0 + 0x44);
-    tn = num;
+    tn = (f32)num;
     p1x = *(f32 *)((u8 *)arg0 + 0x40);
-    td = den;
+    td = (f32)den;
     p1z = *(f32 *)((u8 *)arg0 + 0x48);
     p0x = *(f32 *)((u8 *)arg0 + 0x34);
     p0y = *(f32 *)((u8 *)arg0 + 0x38);
@@ -4277,13 +4270,13 @@ void fn_8011B204(void *arg0) {
 
     u = c1 - t;
     t2 = t * t;
-    tmp = c2 * u;
+    w = c2 * u;
     u2 = u * u;
-    tmp = tmp * t;
+    w = w * t;
 
-    x = p1x * tmp;
-    y = p1y * tmp;
-    z = p1z * tmp;
+    x = p1x * w;
+    y = p1y * w;
+    z = p1z * w;
     x = p0x * u2 + x;
     y = p0y * u2 + y;
     z = p0z * u2 + z;
@@ -6548,7 +6541,7 @@ void fn_801207D8(void *arg0) {
     void fn_80079198(void *, void *);
     void fn_80122238(void *, void *);
     void fn_80120F94(void);
-    void *Sound_FindByName(void *);
+    void *fn_801090C0(void *);
     void fn_80109BB4(void *, u8);
     extern u32 lbl_80367A5C;
     void *self = arg0;
@@ -6581,7 +6574,7 @@ void fn_801207D8(void *arg0) {
     }
     fn_80120F94();
     if (lbl_80367A5C != 0) {
-        fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), 8);
+        fn_80109BB4(fn_801090C0((void *)lbl_80367A5C), 8);
     }
     Process_ClearFunc(self);
 }

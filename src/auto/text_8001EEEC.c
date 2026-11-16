@@ -1386,17 +1386,12 @@ void fn_80022748(u8 *map, u8 *arg1) {
 
 #pragma scheduling off
 void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
-s32 base;
-s32 off;
-s16 val;
-s32 negative;
-base=arg0+0x10000;
-off=arg1<<1;
-val=arg2;
-negative=arg2<0;
-base+=off;
-*(s16 *)(base+0x4214)=val;
-if(negative) *(s16 *)(base+0x4214)=0x7ffe;
+    s32 base = arg0 + 0x10000;
+    arg0 = arg1 << 1;
+    arg1 = (s16)arg2;
+    base += arg0;
+    *(s16 *)(base + 0x4214) = arg1;
+    if ((s8)arg1 < 0) *(s16 *)(base + 0x4214) = 0x7FFE;
 }
 #pragma scheduling on
 void fn_800227F8(void* arg0, s32 arg1)

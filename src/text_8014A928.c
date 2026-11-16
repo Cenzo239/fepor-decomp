@@ -170,18 +170,15 @@ s32 fn_8014AC68(void) {
     extern void *gPadInput;
     extern u8 lbl_80367B0D;
     extern u8 lbl_80367B0E;
-    s32 e;
-    void *p = gPadInput;
-
-    if (*(u32 *)((u8 *)p + 0x10) & 0x1000001) {
-        e = (s8)lbl_80367B0E;
-        {
-            s32 em1 = e;
-            em1 -= 1;
-            lbl_80367B0D = ((s8)lbl_80367B0D + em1) % e;
-        }
+    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x1000001) {
+        s32 previous;
+        s32 count = (s8)lbl_80367B0E;
+        previous = count;
+        --previous;
+        previous += (s8)lbl_80367B0D;
+        lbl_80367B0D = previous % count;
     }
-    if (*(u32 *)((u8 *)p + 0x10) & 0x2000002) {
+    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x2000002) {
         lbl_80367B0D = ((s8)lbl_80367B0D + 1) % (s8)lbl_80367B0E;
     }
     return 0;

@@ -344,52 +344,42 @@ void fn_8026649C(s32 arg0, s32 arg1)
 void fn_802665F8(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
-    extern int fn_80266904(s32 channel, void *input, void *callback,
-                           void *outputCallback);
-    extern void fn_802666F4(s32 channel, void *arg1);
+    s32 fn_80266904(s32, void *, void *, void *);
+    void fn_802666F4(void);
 
     u8 *entry;
     u8 *queue;
+    s32 result;
     u32 value;
     u32 checksum;
-    s32 result;
     void (*callback)(s32, s32);
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
+    result = arg1;
 
-    if (arg1 == 0) {
+    if (result == 0) {
         value = *(u32 *)(queue + 0x60);
-
-        checksum = ((u32)queue[0x18] ^ value)
-                 | ((u32)queue[0x19] ^ (value >> 8))
+        checksum = ((u32)queue[0x1B] ^ (value >> 24))
                  | ((u32)queue[0x1A] ^ (value >> 16))
-                 | ((u32)queue[0x1B] ^ (value >> 24));
-
+                 | ((u32)queue[0x19] ^ (value >> 8))
+                 | ((u32)queue[0x18] ^ value);
         if ((checksum << 24) != 0) {
             result = 3;
         } else {
-            result = fn_80266904(
-                arg0,
-                queue + 0x18,
-                *(void **)(queue + 0x10),
-                fn_802666F4
-            );
+            result = fn_80266904(arg0, queue + 0x18, *(void **)(queue + 0x10), fn_802666F4);
         }
-
         if (result != 0) {
             *(u32 *)(queue + 0x2C) = 0;
             *(u32 *)(queue + 0x28) = 0;
-
             callback = *(void (**)(s32, s32))(queue + 0x14);
             if (callback != 0) {
                 *(u32 *)(queue + 0x14) = 0;
                 callback(arg0, result);
             }
         }
-
-        *(s32 *)(entry + 0x20) = result;
     }
+    *(s32 *)(entry + 0x20) = result;
 }
 
 void fn_802666F4(s32 arg0, void *arg1)

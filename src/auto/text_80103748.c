@@ -166,7 +166,7 @@ s32 fn_80103998(void) {
     return 0;
 }
 
-s32 fn_801039A0(void *, void *, void *arg2) {
+s32 fn_801039A0(void *arg0, void *arg1, void *arg2) {
     s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void fn_800A8400(void);
@@ -175,28 +175,18 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
     extern u8 gBattleState[];
-    s32 temp_r31;
-    u8 *temp_r5;
+    s32 proc;
+    s8 y, x;
     u8 *table;
-    u8 *dst;
-    u8 *str;
-    f32 f1;
-    f32 f0;
-
-    if ((u8)M2C_FIELD(arg2, u8 *, 0x39) == 2) {
-        return 0x10;
-    }
-    table = gBattleMap;
-    dst = gUiContext;
-    f1 = *(f32 *)(gBattleState + 0x534);
-    str = lbl_802734D0;
-    f0 = *(f32 *)(gBattleState + 0x538);
-    temp_r5 = table + (s8)(s32)f1 + (((s32)(s8)(s32)f0) << 6);
-    dst[0x14] = temp_r5[0xD];
-    temp_r31 = Process_FindByName(str + 0xC4);
+    if (M2C_FIELD(arg2, u8 *, 0x39) == 2) return 0x10;
+    x = (s8)(s32)*(f32 *)(gBattleState + 0x534);
+    y = (s8)(s32)*(f32 *)(gBattleState + 0x538);
+    table = x + gBattleMap;
+    gUiContext[0x14] = table[(y << 6) + 0xD];
+    proc = Process_FindByName(lbl_802734D0 + 0xC4);
     fn_800A8400();
-    Process_Goto(temp_r31, 0);
-    fn_80168E90(temp_r31);
+    Process_Goto(proc, 0);
+    fn_80168E90(proc);
     return 6;
 }
 
@@ -373,19 +363,15 @@ s32 fn_80103D74(void) {
 }
 
 s32 fn_80103D7C(void) {
-    void fn_800C3AB0(void *, void *);
-    s32 Convoy_FindEmpty(void *);
-    extern char lbl_802734D0[];
-    extern u8 gConvoy[0x640];
-    char *str;
-    u8 *obj;
-
-    obj = gConvoy;
-    str = lbl_802734D0;
-    while (Convoy_FindEmpty(obj) >= 0) {
-        fn_800C3AB0(obj, str + 0x1B1);
-    }
-    return 6;
+void fn_800C3AB0(void *, void *);
+s32 Convoy_FindEmpty(void *);
+extern char lbl_802734D0[];
+extern u8 gConvoy[0x640];
+char *str = lbl_802734D0;
+while (Convoy_FindEmpty(gConvoy) >= 0) {
+fn_800C3AB0(gConvoy, str + 0x1B1);
+}
+return 6;
 }
 
 #pragma global_optimizer off
@@ -455,16 +441,16 @@ s32 Options_AdjustRatioPad(s32 unused, void *menu) {
 
 #pragma global_optimizer off
 char *fn_80103FA4(s32 arg0, void *arg1) {
-    void fn_80231D94(void *, void *, ...);
-    extern char lbl_8032BAD8[];
-    extern u8 lbl_802734D0[];
-    extern f32 lbl_8036A0E8;
-    void *p;
-
-    p = *(void **)((u8 *)arg1 + 0x18);
-    p = *(void **)((u8 *)p + 0x3c);
-    fn_80231D94(lbl_8032BAD8, lbl_802734D0 + 0x1eb, *(f32 *)((u8 *)p + 8) * lbl_8036A0E8);
-    return lbl_8032BAD8;
+void fn_80231D94(void *, void *, ...);
+extern char lbl_8032BAD8[];
+extern u8 lbl_802734D0[];
+extern f32 lbl_8036A0E8;
+f32 scale = lbl_8036A0E8;
+u8 *strings = lbl_802734D0;
+f32 value = *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x18) + 0x3C) + 8);
+value *= scale;
+fn_80231D94(lbl_8032BAD8, strings + 0x1EB, value);
+return lbl_8032BAD8;
 }
 #pragma global_optimizer reset
 
@@ -942,36 +928,62 @@ void* fn_8010494C(void* arg0) {
     return temp_r0;
 }
 
-u8 *fn_80104970(u8 *arg0) {
-    u8 flag;
-    u8 c;
+u8 *fn_80104970(u8 *arg0)
+{
+  int flag;
+  int new_var2;
+  u8 *new_var;
+  u8 c;
+  c = arg0[0];
+  if (c < 0x81U)
+  {
+    goto fail;
+  }
+  if (c <= 0x9FU)
+  {
+    goto trail;
+  }
+  if (((((((((c & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) < 0xE0U)
+  {
+    goto fail;
+  }
+  if (c > 0xFCU)
+  {
+    goto fail;
+  }
+  trail:
+  c = arg0[1];
 
-    c = arg0[0];
-    if (c < 0x81U)
-        goto fail;
-    if (c <= 0x9FU)
-        goto trail;
-    if (c < 0xE0U)
-        goto fail;
-    if (c > 0xFCU)
-        goto fail;
-trail:
+  if (c < 0x40U)
+  {
+    goto fail;
+  }
+  if (c <= 0x7EU)
+  {
+    goto success;
+  }
+  c += (double) 0;
+  new_var2 = 1;
+  if (c < 0x80U)
+  {
+    goto fail;
     c = arg0[1];
-    if (c < 0x40U)
-        goto fail;
-    if (c <= 0x7EU)
-        goto success;
-    if (c < 0x80U)
-        goto fail;
-    if (c > 0xFCU)
-        goto fail;
-success:
-    flag = 1;
-    goto done;
-fail:
-    flag = 0;
-done:
-    return arg0 + 1 + (flag != 0);
+  }
+  if (c > 0xFCU)
+  {
+    goto fail;
+  }
+  success:
+  flag = new_var2;
+
+  goto done;
+  fail:
+  flag = (c < 0x40U) * 0;
+
+  new_var = arg0;
+  done:
+  return (new_var + new_var2) + ((long long) (flag != 0));
+
 }
 
 #pragma use_lmw_stmw on
@@ -1254,26 +1266,23 @@ s32 fn_801053E4(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
 }
 #pragma use_lmw_stmw on
 s32 fn_80105474(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, u16)) {
-    s32 key;
-    s32 count;
-    s32 mid_ptr;
-    s32 mid;
-    u8 (*pred)(s32, u16);
+s32 key;
+s32 count;
+s32 mid_ptr;
+s32 mid;
 
-    count = (arg1 - arg0) / 16;
-    key = *arg2;
-    pred = arg3;
-    while (count > 0) {
-        mid = count / 2;
-        mid_ptr = arg0 + (mid << 4);
-        if (pred(mid_ptr, (u16)key) != 0) {
-            arg0 = mid_ptr + 0x10;
-            count -= mid + 1;
-        } else {
-            count = mid;
-        }
-    }
-    return arg0;
+key=*arg2;
+count=(arg1-arg0)/16;
+
+while(count>0) {
+mid=count/2;
+mid_ptr=arg0+(mid<<4);
+if(arg3(mid_ptr,(u16)key)!=0) {
+arg0=mid_ptr+0x10;
+count-=mid+1;
+} else count=mid;
+}
+return arg0;
 }
 #pragma use_lmw_stmw off
 extern u16 lbl_802734D0;

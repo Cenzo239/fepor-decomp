@@ -1070,9 +1070,10 @@ s32 fn_80215F60(void) {
     return (__PADRegs[2] << 16) | __PADRegs[3];
 }
 
-void fn_80215F78(u16 arg0) {
-    *(u16 *)0xCC005000 = (arg0 >> 16);
-    *(u16 *)0xCC005002 = arg0;
+void fn_80215F78(u32 arg0) {
+    volatile u16 *regs = (volatile u16 *)0xCC005000;
+    regs[0] = arg0 >> 16;
+    regs[1] = arg0;
 }
 
 void fn_80216050(void) {

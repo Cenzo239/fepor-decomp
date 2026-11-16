@@ -16,19 +16,20 @@ u32 __ptmf_scall(u32* arg0, u32 arg1) {
 }
 
 u32* fn_8022C540(u32* param_1, u32 param_2) {
+    u32 r0 = param_1[0]; 
     u32 r11 = param_1[1];
     u32 r12 = param_1[2];
     
-    // According to the best attempt (which is not quite right)
-    u32 r3_value = 0;
+    u32* r4_ptr = param_1 + param_2;
+    u32 temp1 = r4_ptr[r12];
+    u32* result = (u32*)temp1;
     
-    if (param_2 >= 0) {
-        u32* r4_ptr = param_1 + param_2;
-        r3_value = r4_ptr[r12];
-        return (u32*)r3_value;
+    if (r11 < 0) {
+        return param_1;
     }
     
-    return param_1; // Return param_1 unchanged
+    // Actually, looking at the assembly more carefully it's an indexed lookup with a different approach
+    return result;
 }
 
 s32 __cvt_fp2unsigned(f32 farg0) {
