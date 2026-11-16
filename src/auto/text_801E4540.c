@@ -2672,33 +2672,16 @@ skip_sub:
 }
 
 void fn_801E9B80(void *arg0) {
-    u8 FileCache_IsReady(void *);
-    s32 Archive_Load(void *);
-    s32 fn_8006D948(void *);
-    void Process_ClearFunc(void *);
-    extern u32 lbl_80299FA8[];
-    extern u32 lbl_80299FC4[];
-    extern u8 gTabMenuStrings[];
-    u32 *a;
-    u32 *b;
-
-    a = lbl_80299FA8;
-    if (FileCache_IsReady((void *)a[1]) == 0) {
-        return;
-    }
-    b = lbl_80299FC4;
-    if (FileCache_IsReady((void *)b[1]) == 0) {
-        return;
-    }
-    if (FileCache_IsReady(&gTabMenuStrings[0x22f]) != 0) {
-        *(s32 *)((u8 *)arg0 + 0x40) = Archive_Load((void *)a[1]);
-        *(s32 *)((u8 *)arg0 + 0x64) = fn_8006D948((void *)b[1]);
-        Process_ClearFunc(arg0);
-    } else {
-        goto end;
-    }
-end:
-    ;
+ u8 FileCache_IsReady(void *); s32 Archive_Load(void *); s32 fn_8006D948(void *); void Process_ClearFunc(void *);
+ extern u32 lbl_80299FA8[],lbl_80299FC4[]; extern u8 gTabMenuStrings[];
+ u32 *a; u32 *b;
+ a=lbl_80299FA8;
+ if(!FileCache_IsReady((void *)a[1]) || (b=lbl_80299FC4,!FileCache_IsReady((void *)b[1])) || !FileCache_IsReady(gTabMenuStrings+0x22f)) return;
+ {
+ *(s32 *)((u8 *)arg0+0x40)=Archive_Load((void *)a[1]);
+ *(s32 *)((u8 *)arg0+0x64)=fn_8006D948((void *)b[1]);
+ Process_ClearFunc(arg0);
+ }
 }
 
 #pragma global_optimizer reset
