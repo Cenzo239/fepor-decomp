@@ -591,6 +591,34 @@ void fn_8009E844(void) {
     *(u32 *)((u8 *)lbl_80312100 + 0x4) = OSGetTick();
 }
 
+void fn_8009E870(void) {
+s32 OSGetTick(void);
+s32 fn_8006EB9C(void);
+void fn_8021F1B8(s32,void *,void *);
+void fn_80225A4C(void *,void *);
+void fn_80225204(s32,s32);
+void fn_80225C04(void *,void *,void *,void *,void *,void *);
+void fn_80225D3C(void);
+extern u8 lbl_80312100[];
+extern u8 lbl_803121C8[];
+extern s32 lbl_80289F28[];
+extern s32 lbl_80289F5C[];
+s32 sp8;
+u8 *p;
+s32 tick=OSGetTick();
+*(s32 *)(lbl_80312100+0x18)=tick-*(s32 *)lbl_80312100;
+p=lbl_803121C8;
+fn_80225A4C(p+*(s16 *)(p+0x80)*4,p+*(s16 *)(p+0x82)*4+0x40);
+++*(s16 *)(p+0x80);
+if(lbl_80289F28[*(s16 *)(p+0x80)]<0) *(s16 *)(p+0x80)=0;
+++*(s16 *)(p+0x82);
+if(lbl_80289F5C[*(s16 *)(p+0x82)]<0) *(s16 *)(p+0x82)=0;
+fn_80225204(lbl_80289F28[*(s16 *)(p+0x80)],lbl_80289F5C[*(s16 *)(p+0x82)]);
+fn_80225C04(lbl_803121C8+0x84,lbl_803121C8+0x88,lbl_803121C8+0x8C,lbl_803121C8+0x90,lbl_803121C8+0x94,lbl_803121C8+0x98);
+fn_8021F1B8(fn_8006EB9C(),&sp8,lbl_803121C8+0xA4);
+fn_80225D3C();
+}
+
 void fn_8009E9A0(void) {
     s32 OSGetTick();
     extern s32 lbl_80312100[];
