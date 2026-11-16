@@ -964,9 +964,9 @@ void fn_8020D724(void) {
 }
 
 void fn_8020D804(void) {
-    /* DVD Disc ID Check */
-    void fn_8020C1A4(u8, s32, void *);
-    void fn_8020DAE0(void);
+      /* DVD Disc ID Check */
+      void fn_8020C1A4(u8, s32, void *);
+      void fn_8020DAE0(u32);
     extern void *IDShouldBe_8036859C;
 
     fn_8020C1A4(
