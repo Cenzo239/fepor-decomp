@@ -749,7 +749,23 @@ void fn_8021EB88(s32 arg0, void *arg1)
 }
 
 #pragma peephole on
-void GXInitFifoBase(void *arg0, void *arg1, u32 arg2) { void fn_8021ED98(void *, s32, s32); void fn_8021ED28(void *, s32, s32); u32 *fifo = arg0; fifo[0] = (u32)arg1; fifo[1] = (u32)((u8 *)arg1 + (arg2 - 4)); fifo[2] = arg2; fifo[7] = 0; fn_8021ED98(arg0, arg2 - 0x4000, (arg2 >> 1) & ~31); fn_8021ED28(arg0, (s32)arg1, (s32)arg1); }
+void GXInitFifoBase(__GXFifoObj *fifo, void *base, u32 size) {
+    void fn_8021ED98(__GXFifoObj *, s32, s32);
+    void fn_8021ED28(__GXFifoObj *, void *, void *);
+    u32 tmp;
+    void *b;
+    __GXFifoObj *f;
+
+    tmp = size - 4;
+    b = base;
+    f = fifo;
+    fifo->base = (u8 *)b;
+    fifo->top = (u8 *)(tmp + (u32)b);
+    fifo->size = size;
+    f->count = 0;
+    fn_8021ED98(fifo, (s32)(size - 0x4000), (s32)((size >> 1) & ~0x1F));
+    fn_8021ED28(f, b, b);
+}
 
 void fn_8021ED28(void *arg0, s32 arg1, s32 arg2) {
     s32 OSDisableInterrupts(void);
@@ -1479,18 +1495,26 @@ s32 fn_80220B68(s32 arg0) {
     return old;
 }
 
-void fn_80220BAC(void *arg0, void *arg1, s32 arg2, u32 arg3) {
-    s32 temp_r4;
-    void* r6;
-
-    // Align the address
-    temp_r4 = (s32)((u64)arg1 / 8);
-    if ((temp_r4 >= 0) && ((temp_r4 & 0x7F) == 0)) {
-        r6 = (void*)((u64)arg0 + temp_r4 * 0x30);
-        if (arg2 >= 0) {
-            *(u32*)r6 = arg3;
-        }
-    }
+void fn_80220BAC(s32 arg0, void *context) {
+ extern void (*lbl_80368790)(u16);
+ void OSClearContext(void *);
+ void OSSetCurrentContext(void *);
+ u64 tempContext[0x2C8 / 8];
+ u16 token;
+ u16 *pe;
+ u32 value;
+ token=((u16 *)__peReg)[7];
+ if(lbl_80368790!=0) {
+ OSClearContext(&tempContext);
+ OSSetCurrentContext(&tempContext);
+ lbl_80368790(token);
+ OSClearContext(&tempContext);
+ OSSetCurrentContext(context);
+ }
+ pe=(u16 *)__peReg;
+ value=pe[5];
+ value=__rlwimi(value,1,2,29,29);
+ pe[5]=value;
 }
 
 s32 fn_80220C34(s32 arg0) {
