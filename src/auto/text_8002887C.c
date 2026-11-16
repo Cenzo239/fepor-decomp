@@ -78,44 +78,35 @@ void fn_80028950(void) {
 }
 
 void fn_800289D0(void *arg0) {
-    extern u8 gUiContext[];
-    
-    u8* ptr = &gUiContext[0];
-    u8 val = *(u8 *)(ptr + 8);
-
-    if (val < 0x1B) {
-        switch (val) {
-            case 0:
-                if ((u8) *(ptr + 0x16) == 0) {
-                    s32 temp_r31 = *(s32*)ptr;
-                    fn_8002807C(ptr);
-                    MapUi_ShowUnitRanges(temp_r31);
-                    Process_Unlink(0x1C); // arg0, not 0
-                    return;
-                }
-                break;
-            case 7:
-                *(u8 *)(ptr + 0x16) = (u8) (*(u8 *)(ptr + 0x16) | 1);
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (val) {
-            case 35:
-                Process_Goto(0x09, 0); // arg0, not 6
-                return;
-            case 40:
-            case 6:
-                *(u8 *)(ptr + 0x16) = (u8) (*(u8 *)(ptr + 0x16) | 2);
-                break;
-            default:
-                *(u8 *)(ptr + 0x16) = (u8) (*(u8 *)(ptr + 0x16) | 4);
-                break;
+    extern u8 gUiContext[],gBattleState[],gBattleMap[];
+    void *BattleMap_GetPath(void *);
+    void fn_800F0B18(void *);
+    s32 Status_Test(void *,s32);
+    u8 fn_8001FB04(void *,s8 *,s8 *,s32,s32);
+    void BattleState_SetCamPos(void *,f32,f32);
+    void MoveAnim_BindMapPath(void *,void *);
+    s8 x;
+    s8 y;
+    void *unit;
+    unit=*(void**)gUiContext;
+    gBattleState[0x51d]=0;
+    fn_800F0B18(BattleMap_GetPath(gBattleMap));
+    {
+        s32 status=Status_Test((u8*)unit+0x1bc,4);
+        x=*((s8*)unit+0x19e);
+        y=*((s8*)unit+0x19f);
+        switch(fn_8001FB04(gBattleMap,&x,&y,status,0)) {
+        case 1:
+            BattleState_SetCamPos(gBattleState,x,y);
+            gUiContext[8]=0x24;
+            break;
+        case 2:
+            BattleState_SetCamPos(gBattleState,x,y);
+            gUiContext[8]=0x2d;
+            break;
         }
     }
-
-    fn_800271C8(ptr, 0x1C); // arg0, not 'arg0'
+    MoveAnim_BindMapPath(unit,arg0);
 }
 
 void fn_80028B4C(s32 arg0) {
@@ -556,24 +547,25 @@ s32 fn_80029E4C(s32 arg0, void *arg1) {
 }
 
 void fn_8002A4F4(struct Unit* unit) {
-#pragma cplusplus on
-    void fn_8001EDA0(void *);
+void fn_8001EDA0(void *);
     void fn_8002F728(void *);
+#pragma cplusplus on
     extern u8 lbl_80284DB0[];
     extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern s32 gBattleMap[];
     struct Visitor { virtual void v0(s8,s8)=0; virtual void visit(s8,s8)=0; };
     struct { void *vtbl; u8 flag; } obj;
-    s8 y;
-    register s8 x;
+    
     obj.vtbl=lbl_80284E20;
-    obj.flag=0;
     obj.vtbl=lbl_80284DB0;
+    obj.flag=0;
     obj.flag=1;
     fn_8001EDA0(&obj.flag);
     fn_8002F728(gTargetList);
     if(obj.flag&3) {
+        s8 y;
+        s8 x;
         y=*((s8*)unit+0x19f);
         x=*((s8*)unit+0x19e);
         if(y-1>=0) ((Visitor*)&obj)->visit(x,y-1);
@@ -626,6 +618,41 @@ extern "C" void fn_8002A63C(void *arg0) {
         }
     }
 }
+
+#pragma cplusplus on
+extern "C" void fn_8002A784(void *unit, u8 *arg1) {
+    void fn_8001EDA0(void *);
+    void fn_8002F728(void *);
+    extern u8 lbl_80284DB0[];
+    extern u8 lbl_80284E20[];
+    extern u8 gTargetList[];
+    extern s32 gBattleMap[];
+    struct Visitor { virtual void v0(s8, s8) = 0; virtual void visit(s8, s8) = 0; };
+    struct { void *vtbl; u8 flag; } obj;
+    register s8 x;
+    register s8 y;
+
+    obj.vtbl = lbl_80284E20;
+    obj.flag = 0;
+    obj.vtbl = lbl_80284DB0;
+    obj.flag = *arg1;
+    fn_8001EDA0(&obj.flag);
+    fn_8002F728(gTargetList);
+    if (obj.flag & 3) {
+        y = *((s8 *)unit + 0x19f);
+        x = *((s8 *)unit + 0x19e);
+        if (y - 1 >= 0)
+            ((Visitor *)&obj)->visit(x, y - 1);
+        if (x + 1 < gBattleMap[0])
+            ((Visitor *)&obj)->visit(x + 1, y);
+        if (y + 1 < gBattleMap[1])
+            ((Visitor *)&obj)->visit(x, y + 1);
+        if (x - 1 >= 0)
+            ((Visitor *)&obj)->visit(x - 1, y);
+    }
+}
+#pragma cplusplus reset
+
 #pragma cplusplus reset
 
 void fn_8002AD04(void) {
@@ -3213,6 +3240,40 @@ void fn_8002F82C(s32 arg0) {
         lbl_80367280 = 1;
     }
     fn_8002EB54(lbl_802EFDA0, arg0);
+}
+
+void fn_8002F8DC(void) {
+    void fn_8002FC64(u32,s32,s32,s32);
+    void Item_Init(void *);
+    void Item_SetByName(void *,void *);
+    void Item_Destroy(void *,s32);
+    u8 Allegiance_CompareIds(u8,u8);
+    void Battle_SetupPair(void *,void *,void *);
+    void fn_801A7528(void *,void *);
+    void fn_801A6F34(void *,s32);
+    extern u8 gBattleState[],gBattleMap[],gUnits[],gMapUiStrs[],gUiContext[],gBattle[];
+    u32 item[2];
+    s32 row;
+    s32 x;
+    u8 id;
+    void *unit;
+    x=(s8)*(f32*)(gBattleState+0x524);
+    row=(s8)*(f32*)(gBattleState+0x528)<<6;
+    if(((u16*)(gBattleMap+0x10000))[(x+row)-0x1f39]!=0) {
+        id=*(gBattleMap+x+row+0xd);
+        if(id) unit=gUnits+(id-1)*0x280;
+        else unit=0;
+        if(unit && Allegiance_CompareIds(*(u8*)(*(u8**)((u8*)unit+0x190)+8),gBattleState[0x11])==1) {
+            Item_Init(item);
+            Item_SetByName(item,gMapUiStrs+0xf1);
+            Battle_SetupPair(gBattle,*(void**)gUiContext,unit);
+            fn_801A7528(gBattle,item);
+            fn_801A6F34(gBattle,15);
+            if(!((gBattleState[0x9d]>>6)&3)) *(s16*)(gBattle+0x57a)=*(s16*)(gBattle+0x298)-1;
+            fn_8002FC64((u32)unit,0,0,255);
+            Item_Destroy(item,-1);
+        }
+    }
 }
 
 void fn_8002FA54(void) {
