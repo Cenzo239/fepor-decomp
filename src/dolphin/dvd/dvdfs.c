@@ -2234,18 +2234,18 @@ u8 ErrorCode2Num(s32 error)
 
 void __DVDStoreErrorCode(u32 arg0) {
     u8 ErrorCode2Num(s32);
-    void *__OSLockSramEx();
-    M2C_UNK __OSUnlockSramEx(M2C_UNK);
-    s8 var_r31;
+    void *__OSLockSramEx(void);
+    void __OSUnlockSramEx(s32);
+    u8 var_r31;
     u32 temp_r0;
     u32 var_r31_2;
     u8 temp_r3;
 
     temp_r0 = arg0 + 0xFEDD0000;
     if (temp_r0 == 0x4567U) {
-        var_r31 = 0xFF;
+        var_r31 = 0xFFU;
     } else if (temp_r0 == 0x4568U) {
-        var_r31 = 0xFE;
+        var_r31 = 0xFEU;
     } else {
         var_r31_2 = arg0 >> 0x18U;
         temp_r3 = ErrorCode2Num(arg0 & 0xFFFFFF);
@@ -2254,7 +2254,7 @@ void __DVDStoreErrorCode(u32 arg0) {
         }
         var_r31 = temp_r3 + (var_r31_2 * 0x1E);
     }
-    M2C_FIELD(__OSLockSramEx(), s8 *, 0x24) = var_r31;
+    M2C_FIELD(__OSLockSramEx(), u8 *, 0x24) = var_r31;
     __OSUnlockSramEx(1);
 }
 
