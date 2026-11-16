@@ -3018,13 +3018,13 @@ s32 fn_8021CBC8(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     return fn_80217C64(*arg0);
 }
 
-void fn_8021CDC4(void) {
-    s32 temp_r3;
-    
-    temp_r3 = fn_8021CCB4(0);
-    if (temp_r3 >= 0) {
-        fn_80217C64(temp_r3);
-    }
+s32 fn_8021CDC4(s32 arg0,s32 arg1) {
+s32 fn_8021CCB4(s32,s32,void*);
+s32 fn_80217C64(s32);
+void fn_80216998(s32,s32);
+s32 result=fn_8021CCB4(arg0,arg1,fn_80216998);
+if(result<0) return result;
+return fn_80217C64(arg0);
 }
 
 void fn_8021CE0C(void *arg0, void *arg1) {
