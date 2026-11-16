@@ -135,22 +135,25 @@ void fn_800748E8(void) {
     void *result;
     void *obj;
     u64 flags;
-    void *unit;
     s32 offset;
-    index = gUiContext[0xA];
-    index = (s8)index;
-    if (index == 4) result = &lbl_8036746C;
-    else {
+
+    index = *(s8 *)(gUiContext + 0xA);
+    if (index == 4) {
+        result = &lbl_8036746C;
+    } else {
         flags = *Item_GetFlagsPtr(&lbl_8036746C);
-        unit = lbl_80367468;
-        offset = (flags & 5ULL) ? 0 : 4;
-        result = Unit_GetItemSlot(unit, offset + index);
+        offset = ((flags & 5ULL) != 0ULL) ? 0 : 4;
+        result = Unit_GetItemSlot(lbl_80367468, offset + index);
     }
     obj = *(void **)result;
-    if(obj) index=*((u8 *)obj+0x15); else index=0;
-    sprintf(lbl_80312010,lbl_8026C0B8+0x122,(u8)index+0x60,UnitRef_GetName(result));
-    fn_8000D864(0,lbl_80312010);
-    Msg_Expand(lbl_8026C0B8+0x12B);
+    if (obj) {
+        index = *((u8 *)obj + 0x15);
+    } else {
+        index = 0;
+    }
+    sprintf(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)index + 0x60, UnitRef_GetName(result));
+    fn_8000D864(0, lbl_80312010);
+    Msg_Expand(lbl_8026C0B8 + 0x12B);
 }
 
 void fn_800749D4(void) {
@@ -3839,77 +3842,94 @@ void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4) {
     }
 }
 
-void fn_8007B4D8(s32 arg0,s32 arg1,u32 a2,void *a3) {
+void fn_8007B4D8(s32 arg0, s32 arg1, u32 a2, void *a3) {
 #pragma opt_common_subs off
 #pragma dont_inline off
- void **fn_8006EDD8(void *,s32);
- void Prim2D_Begin(void);
- void fn_80009EB0(void *,s32,u8,s32);
- void Prim2D_PrepareTex(void);
- void Prim2D_AddPrim(s32);
- void Prim2D_SetQuadMin(f32,f32,f32,f32);
- void Prim2D_SetQuadMax(f32,f32,f32,f32);
- void Prim2D_SetColor(u8,u8,u8,u8);
- void Prim2D_EndPrim(void);
- void fn_8007B1C4(void *,s32,s32,u32,s32);
- extern f32 lbl_803693D4;
- u16 *dim;
- void *meta;
- u8 shade;
- s32 x,y,xx,yy;
- s32 height,width,hh,ww;
- void *arg3;
- u32 arg2;
- s32 mode;
- u16 flags;
-  arg2=a2;arg3=a3;
- shade=M2C_FIELD(arg3,u8 *,0x41);
- dim=*fn_8006EDD8(M2C_FIELD(arg3,void * *,0x30),0);
- width=dim[1];height=dim[0];
- x=arg0-(width>>1);y=arg1-height;
- Prim2D_Begin();fn_80009EB0(M2C_FIELD(arg3,void * *,0x30),0,M2C_FIELD(arg3,u8 *,0x40),0x11);Prim2D_PrepareTex();
- Prim2D_AddPrim(1);
- if(M2C_FIELD(arg3,u16 *,0x46)&1) {
- f32 scale;
- Prim2D_SetQuadMin((f32)x,(f32)y,(f32)width,lbl_803693D4);
- scale=M2C_FIELD(arg3,f32 *,0x4C);
- Prim2D_SetQuadMax((f32)width*scale+(f32)x,(f32)height*scale+(f32)y,lbl_803693D4,(f32)height);
- } else {
- f32 scale;
- Prim2D_SetQuadMin((f32)x,(f32)y,lbl_803693D4,lbl_803693D4);
- scale=M2C_FIELD(arg3,f32 *,0x4C);
- Prim2D_SetQuadMax((f32)width*scale+(f32)x,(f32)height*scale+(f32)y,(f32)width,(f32)height);
- }
- Prim2D_SetColor(shade,shade,shade,arg2);Prim2D_EndPrim();
- meta=M2C_FIELD(arg3,void * *,0x34);
- if(M2C_FIELD(meta,u16 *,0x18)&2) {
- flags=M2C_FIELD(arg3,u16 *,0x46);
- mode=get_B4D8_mode(flags);
- xx=M2C_FIELD(meta,u16 *,0x14);yy=M2C_FIELD(meta,u16 *,0x16);
- if(flags&1)xx=width-xx;
- xx+=x; yy+=y;
- dim=*fn_8006EDD8(M2C_FIELD(arg3,void * *,0x30),mode);
- ww=dim[1];hh=dim[0];
- if(M2C_FIELD(arg3,u16 *,0x46)&1)xx-=ww;
- Prim2D_Begin();fn_80009EB0(M2C_FIELD(arg3,void * *,0x30),mode,M2C_FIELD(arg3,u8 *,0x40),0x11);Prim2D_PrepareTex();
- Prim2D_AddPrim(1);
- if(M2C_FIELD(arg3,u16 *,0x46)&1) {
- f32 scale;
- Prim2D_SetQuadMin((f32)xx,(f32)yy,(f32)ww,lbl_803693D4);
- scale=M2C_FIELD(arg3,f32 *,0x4C);
- Prim2D_SetQuadMax((f32)ww*scale+(f32)xx,(f32)hh*scale+(f32)yy,lbl_803693D4,(f32)hh);
- } else {
- f32 scale;
- Prim2D_SetQuadMin((f32)xx,(f32)yy,lbl_803693D4,lbl_803693D4);
- scale=M2C_FIELD(arg3,f32 *,0x4C);
- Prim2D_SetQuadMax((f32)ww*scale+(f32)xx,(f32)hh*scale+(f32)yy,(f32)ww,(f32)hh);
- }
- Prim2D_SetColor(shade,shade,shade,arg2);Prim2D_EndPrim();
- }
- if(M2C_FIELD(M2C_FIELD(arg3,void * *,0x34),u16 *,0x18)&1) {
- fn_8007B1C4(arg3,arg0,arg1,arg2,7);
- fn_8007B1C4(arg3,arg0,arg1,arg2,10);
- }
+    void **fn_8006EDD8(void *, s32);
+    void Prim2D_Begin(void);
+    void fn_80009EB0(void *, s32, u8, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
+    void Prim2D_SetColor(u8, u8, u8, u8);
+    void Prim2D_EndPrim(void);
+    void fn_8007B1C4(void *, s32, s32, u32, s32);
+    extern f32 lbl_803693D4;
+    u16 *dim;
+    void *meta;
+    u8 shade;
+    s32 x, y, xx;
+    s32 height, width;
+    void *arg3;
+    u32 arg2;
+    s32 mode;
+    u16 flags;
+
+    arg2 = a2;
+    arg3 = a3;
+    shade = M2C_FIELD(arg3, u8 *, 0x41);
+    dim = *fn_8006EDD8(M2C_FIELD(arg3, void **, 0x30), 0);
+    width = dim[1];
+    height = dim[0];
+    x = arg0 - (width >> 1);
+    y = arg1 - height;
+    Prim2D_Begin();
+    fn_80009EB0(M2C_FIELD(arg3, void **, 0x30), 0, M2C_FIELD(arg3, u8 *, 0x40), 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    if (M2C_FIELD(arg3, u16 *, 0x46) & 1) {
+        f32 scale;
+        Prim2D_SetQuadMin((f32)x, (f32)y, (f32)width, lbl_803693D4);
+        scale = M2C_FIELD(arg3, f32 *, 0x4C);
+        Prim2D_SetQuadMax((f32)width * scale + (f32)x, (f32)height * scale + (f32)y, lbl_803693D4, (f32)height);
+    } else {
+        f32 scale;
+        Prim2D_SetQuadMin((f32)x, (f32)y, lbl_803693D4, lbl_803693D4);
+        scale = M2C_FIELD(arg3, f32 *, 0x4C);
+        Prim2D_SetQuadMax((f32)width * scale + (f32)x, (f32)height * scale + (f32)y, (f32)width, (f32)height);
+    }
+    Prim2D_SetColor(shade, shade, shade, arg2);
+    Prim2D_EndPrim();
+    meta = M2C_FIELD(arg3, void **, 0x34);
+    if (M2C_FIELD(meta, u16 *, 0x18) & 2) {
+        flags = M2C_FIELD(arg3, u16 *, 0x46);
+        mode = get_B4D8_mode(flags);
+        xx = M2C_FIELD(meta, u16 *, 0x14);
+        height = M2C_FIELD(meta, u16 *, 0x16);
+        if (flags & 1) {
+            xx = width - xx;
+        }
+        xx += x;
+        height += y;
+        dim = *fn_8006EDD8(M2C_FIELD(arg3, void **, 0x30), mode);
+        y = dim[1];
+        x = dim[0];
+        if (M2C_FIELD(arg3, u16 *, 0x46) & 1) {
+            xx -= y;
+        }
+        Prim2D_Begin();
+        fn_80009EB0(M2C_FIELD(arg3, void **, 0x30), mode, M2C_FIELD(arg3, u8 *, 0x40), 0x11);
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        if (M2C_FIELD(arg3, u16 *, 0x46) & 1) {
+            f32 scale;
+            Prim2D_SetQuadMin((f32)xx, (f32)height, (f32)y, lbl_803693D4);
+            scale = M2C_FIELD(arg3, f32 *, 0x4C);
+            Prim2D_SetQuadMax((f32)y * scale + (f32)xx, (f32)x * scale + (f32)height, lbl_803693D4, (f32)x);
+        } else {
+            f32 scale;
+            Prim2D_SetQuadMin((f32)xx, (f32)height, lbl_803693D4, lbl_803693D4);
+            scale = M2C_FIELD(arg3, f32 *, 0x4C);
+            Prim2D_SetQuadMax((f32)y * scale + (f32)xx, (f32)x * scale + (f32)height, (f32)y, (f32)x);
+        }
+        Prim2D_SetColor(shade, shade, shade, arg2);
+        Prim2D_EndPrim();
+    }
+    if (M2C_FIELD(M2C_FIELD(arg3, void **, 0x34), u16 *, 0x18) & 1) {
+        fn_8007B1C4(arg3, arg0, arg1, arg2, 7);
+        fn_8007B1C4(arg3, arg0, arg1, arg2, 10);
+    }
 }
 
 #pragma global_optimizer reset
