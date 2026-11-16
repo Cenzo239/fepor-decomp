@@ -8075,6 +8075,54 @@ s32 fn_800BE914(void)
   return count;
 }
 
+s32 fn_800BE968(u8 arg0, s8 arg1, s8 arg2) {
+    extern s16 gTalkState[];
+    void *Event_NextEntry(void *);
+    s32 Event_GetString(void *, u16);
+    u8 EventFlag_IsSet(void *, s32);
+    s16 *state;
+    s8 *entry;
+    u8 *flags;
+    s16 value;
+    u8 found;
+
+    state = gTalkState;
+    state[0] = arg1;
+    state[1] = arg2;
+    state[2] = arg0;
+
+    entry = Event_NextEntry(0);
+    flags = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        if (entry[0xC] == 5) {
+            value = gTalkState[0];
+            if (value >= 0 && value != *(s16 *)(entry + 0x14)) {
+                found = 0;
+            } else {
+                value = state[1];
+                if (value >= 0 && value != *(s16 *)(entry + 0x16)) {
+                    found = 0;
+                } else {
+                    value = state[2];
+                    if (value != 0 && value != *(s16 *)(entry + 0x18)) {
+                        found = 0;
+                    } else if (EventFlag_IsSet(flags, Event_GetString(entry, (u16)*(s16 *)(entry + 0x1A))) != 0) {
+                        found = 0;
+                    } else {
+                        found = 1;
+                        gTalkState[0] = *(s16 *)(entry + 0x14);
+                        state[1] = *(s16 *)(entry + 0x16);
+                        state[2] = *(s16 *)(entry + 0x18);
+                    }
+                }
+            }
+            if (found) return 1;
+        }
+        entry = Event_NextEntry(entry);
+    }
+    return 0;
+}
+
 void fn_800BEAC0(void* arg0, void* arg1, int arg2) {
     s32 temp_r3;
     s32 temp_r4;
