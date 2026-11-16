@@ -971,20 +971,7 @@ void __GXFifoReadEnable(void) {
  *(u16 *)(__cpReg+2) = *(u32 *)(gx+8);
 }
 
-void __GXFifoReadDisable(void) {
-    extern u8 *__GXData;
-    extern u8 *__cpReg;
-    volatile u32 *ptr;
-    u32 value;
-
-    ptr = (volatile u32 *)(__GXData + 0x8);
-    value = *ptr;
-    value &= 0xFFFFFFFE;
-    *ptr = value;
-
-    value = *ptr;
-    *(u16 *)(__cpReg + 0x2) = (u16)value;
-}
+void __GXFifoReadDisable(void) { extern u16 *const __GXData; extern u8 *__cpReg; u8 *gx = (u8 *)__GXData; *(u32 *)(gx+8) = __rlwimi(*(u32 *)(gx+8), 0, 0, 31, 31); *(u16 *)(__cpReg+2) = *(u32 *)(gx+8); }
 
 void __GXFifoLink(u8 en) {
     extern u16* const __GXData;
@@ -1364,16 +1351,14 @@ u16 fn_80220970(void) {
 }
 
 void fn_802209FC(void) {
-    extern void *__GXData;
-    volatile u8 *fifo;
-    u8 *gx;
-
-    fifo = (volatile u8 *)0xCC008000;
-    gx = (u8 *)__GXData;
-
-    *fifo = 0x61;
-    *(volatile u32 *)fifo = *(u32 *)(gx + 0x1DC);
-    *(volatile u16 *)(gx + 2) = 0;
+    extern u16 *__GXData;
+    volatile u8 *fifo = (volatile u8 *)0xCC008000;
+    u32 *gx;
+    u8 command = 0x61;
+    gx = (u32 *)__GXData;
+    *fifo = command;
+    *(volatile u32 *)fifo = gx[0x1DC / 4];
+    ((u16 *)gx)[1] = 0;
 }
 
 void fn_80220A20(s32 arg0, u8 arg1) {
