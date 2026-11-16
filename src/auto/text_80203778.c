@@ -280,15 +280,7 @@ void DBInit(void) {
     DBVerbose = 1;
 }
 
-void fn_802038C0(void) {
-    extern char lbl_8029B910[24];
-    s32 temp_r4;
-
-    temp_r4 = *(s32 *)0xC0;
-    OSReport(lbl_8029B910, temp_r4);
-    OSDumpContext((OSContext *)(temp_r4 + 0x80000000));
-    PPCHalt();
-}
+void fn_802038C0(void) { extern char lbl_8029B910[24]; s32 physical=*(s32*)0xC0; OSContext *context=(OSContext*)(physical+0x80000000); OSReport(lbl_8029B910); OSDumpContext(context); PPCHalt(); }
 
 void __DBExceptionDestination(void);
 void fn_802038C0(void);
@@ -969,32 +961,15 @@ void DCInvalidateRange(void *addr, u32 nBytes) {
 }
 
 void DCFlushRange(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do {
-        __dcbf(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes);
-    __sync();
+ if (nBytes <= 0) return;
+ nBytes += (u32)addr & 31;
+ nBytes += 31;
+ nBytes >>= 5;
+ do { __dcbf(0, (int)addr); addr = (u8*)addr + 32; } while (--nBytes > 0);
+ __sync();
 }
 
-void fn_80205110(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do {
-        __dcbst(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes);
-    __sync();
-}
+void fn_80205110(void *addr, u32 nBytes) { u32 count; if (nBytes <= 0) return; nBytes += (u32)addr & 31; nBytes += 31; count = nBytes >> 5; do { __dcbst((void*)0, (int)addr); addr=(u8*)addr+32; count--; } while (count); __sync(); }
 
 void DCFlushRangeNoSync(void* addr, u32 nBytes) {
     if (nBytes == 0) return;
@@ -1020,20 +995,7 @@ void fn_80205198(void *addr, u32 nBytes) {
 }
 
 #pragma intrinsic __icbi
-void ICInvalidateRange(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do {
-        __icbi(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes);
-    __sync();
-    __isync();
-}
+void ICInvalidateRange(void *addr, u32 nBytes) { if (nBytes <= 0) return; nBytes += (u32)addr & 31; nBytes += 31; nBytes >>= 5; do { __icbi(0, (int)addr); addr=(u8*)addr+32; } while (--nBytes); __sync(); __isync(); }
 s32 ICFlashInvalidate(void) {
     M2C_ERROR(/* unknown instruction: mtspr HID0, $r3 */);
     return M2C_ERROR(/* unknown instruction: mfspr $r3, HID0 */) | 0x800;
