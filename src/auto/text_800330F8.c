@@ -274,20 +274,20 @@ void BattleAnim_Queue(s16 *arg0, s32 arg1, s8 arg2) {
     s8 fn_80033F18(s16 *, s32);
     u8 *entry;
     s8 ret;
-    s32 off;
+    s32 p;
 
     ret = fn_80033F18(arg0, arg1);
-    off = *arg0 << 2;
-    entry = (u8 *)arg0 + off + 4;
+    entry = (u8 *)arg0 + (*arg0 << 2) + 4;
     *entry = ret;
     *(s16 *)(entry + 2) = arg2;
     (*arg0)++;
-    off = *arg0 << 2;
-    entry = (u8 *)arg0 + off + 4;
-    *entry = 0;
-    *(s16 *)(entry + 2) = 0;
+    p = *arg0 << 2;
+    p = p + 4;
+    p = (s32)arg0 + p;
+    *(u8 *)p = 0;
+    *(s16 *)(p + 2) = 0;
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 void fn_800340E4(s16 *arg0) {
     *arg0 = 0;
 }
@@ -1609,14 +1609,12 @@ check:
 
     return -1;
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
 {
     s32 offset;
-    s32 index;
     u8 *obj;
-    u8 *table;
-    s32 count;
+    s32 index;
 
     obj = *(u8 **)((u8 *)arg0 + 0x188);
     index = 0;
@@ -1625,32 +1623,41 @@ s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
     goto check;
 
 loop:
-    table = *(u8 **)(obj + 0x50);
+    {
+        u8 *table;
+        u32 entry;
+        table = *(u8 **)(obj + 0x50);
+        entry = *(u32 *)(table + offset + 8);
 
-    if (*(u32 *)(table + offset + 8) == arg1) {
-        return (s8)index;
+        if (entry == arg1) {
+            return (s8)index;
+        }
     }
 
     offset += 8;
     index++;
 
 check:
-    table = *(u8 **)(obj + 0x50);
+    {
+        u8 *table;
+        u8 lim;
+        table = *(u8 **)(obj + 0x50);
 
-    if (table == NULL) {
-        count = 0;
-    } else {
-        count = (u8)*(u32 *)(table + 4);
-        count = (u8)count;
-    }
+        if (table == NULL) {
+            lim = 0;
+        } else {
+            lim = (u8)*(u32 *)(table + 4);
+            lim = (u8)(lim & 0xFF);
+        }
 
-    if (index < count) {
-        goto loop;
+        if (index < (s32)lim) {
+            goto loop;
+        }
     }
 
     return -1;
 }
-
+#pragma global_optimizer on
 s32 fn_80036EAC(void *arg0, s32 arg1) {
     s32 result;
     u8 value;
@@ -1701,14 +1708,15 @@ s32 Unit_GetSupportRank(void *arg0, s32 arg1)
     if (entry == 0) {
         return 0;
     }
-    value = ((u8 *)arg0)[arg1 + 0x214];
+    arg0 = (u8 *)arg0 + arg1;
+    value = *((u8 *)arg0 + 0x214);
     if (value <= entry[4]) {
         return 0;
     }
     if (value <= entry[5]) {
         return 1;
     }
-    return 2 + (value > entry[6]);
+    return (value > entry[6]) ? 3 : 2;
 }
 
 #pragma peephole off
