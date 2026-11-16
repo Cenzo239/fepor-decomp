@@ -820,7 +820,18 @@ void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u3
     *copy_clks = __GXReadPECounterU32(0x16, 0x17);
 }
 
-void fn_80225D3C(void){u32 a=0x57000000; u16 *gx=__GXData; u8 cmd=0x61; GXWGFifo.u8=cmd; GXWGFifo.u32=a; GXWGFifo.u8=cmd; GXWGFifo.u32=a+0xAAA; gx[1]=0;}
+void fn_80225D3C(void)
+{
+  extern u16 *__GXData;
+  u8 cmd = 0x61;
+  u16 *gx;
+  u32 a = 0x57000000;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = a;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = a + 0xAAA;
+  __GXData[1] = 0;
+}
 
 void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     u16 temp_r5;
