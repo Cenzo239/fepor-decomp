@@ -248,6 +248,18 @@ void fn_802245D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(u16*)((char*)__GXData + 0x2) = 0;
 }
 
+typedef union {
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    s8 s8;
+    s16 s16;
+    s32 s32;
+    f32 f32;
+} PPCWGPipe;
+
+volatile PPCWGPipe GXWGFifo : 0xCC008000;
+
 #pragma peephole off
 void fn_8022462C(s32 arg0) {
  u8 *gx = (u8 *)__GXData;
@@ -257,16 +269,16 @@ void fn_8022462C(s32 arg0) {
  *(u32 *)(gx + 0x1d0) = value;
  *(u16 *)(gx + 2) = 0;
 }
-#pragma peephole on
+#pragma peephole off
 void fn_80224658(s32 arg0) {
- u32 *gx = (u32 *)__GXData;
- u32 value = __rlwimi(gx[0x1d0/4], arg0, 4, 27, 27);
- *(volatile u8 *)0xCC008000 = 0x61;
- *(volatile u32 *)0xCC008000 = value;
- gx[0x1d0/4] = value;
- ((u16 *)gx)[1] = 0;
+ u8 *gx = (u8 *)__GXData;
+ u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 4, 27, 27);
+ *(u8 *)0xCC008000 = 0x61;
+ *(u32 *)0xCC008000 = value;
+ *(u32 *)(gx + 0x1d0) = value;
+ *(u16 *)(gx + 2) = 0;
 }
-
+#pragma peephole on
 void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
     u16 *temp_r6;
     u16 temp_r7;
@@ -379,13 +391,12 @@ void fn_802247EC(u32 arg0, u32 arg1) {
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
-  u16 *gx = __GXData;
-  u32 value = 0;
-  value = __rlwimi(value, (u32)arg1, 0, 31, 31);
-  value = __rlwimi(value, arg0, 1, 30, 30);
-  *(u8 *)0xCC008000 = 0x61;
-  *(u32 *)0xCC008000 = __rlwimi(value, 0x44, 24, 0, 7);
-  gx[1] = 0;
+u32 value=__rlwimi(0,(u32)arg1,0,31,31);
+u16 *gx=__GXData;
+value=__rlwimi(value,arg0,1,30,30);
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=__rlwimi(value,0x44,24,0,7);
+gx[1]=0;
 }
 
 void fn_80224860(u8 arg0, u8 arg1) {
@@ -801,7 +812,18 @@ void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u3
     *copy_clks = __GXReadPECounterU32(0x16, 0x17);
 }
 
-void fn_80225D3C(void) { u8 cmd=0x61; u32 a=0x57000000; u16 *gx=__GXData; *(volatile u8 *)0xCC008000=cmd; *(volatile u32 *)0xCC008000=a; *(volatile u8 *)0xCC008000=cmd; *(volatile u32 *)0xCC008000=a+0xAAA; gx[1]=0; }
+void fn_80225D3C(void)
+{
+    u32 a = 0x57000000;
+    u8 cmd = 0x61;
+    u16 *gx = __GXData;
+    u32 b = a + 0xAAA;
+    *(u8 *)0xCC008000 = cmd;
+    *(u32 *)0xCC008000 = a;
+    *(u8 *)0xCC008000 = cmd;
+    *(u32 *)0xCC008000 = b;
+    gx[1] = 0;
+}
 
 void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     u16 temp_r5;
