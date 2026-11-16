@@ -552,47 +552,37 @@ void fn_801AF148(void *arg0) {
 }
 
 void fn_801AF1C8(void *arg0) {
-    s16 sp12;
-    s16 sp10;
-    s16 spE;
-    s16 spC;
-    s16 spA;
-    s16 sp8;
-    s16 temp_r5;
-    s16 temp_r7;
-    s16 temp_r7_2;
-    void *temp_r28;
-    void *temp_r29;
-    void *temp_r31;
-
-    temp_r29 = M2C_FIELD(arg0, void **, 0x54);
-    temp_r31 = M2C_FIELD(arg0, void **, 0x64);
-    temp_r28 = (void *)Ui_FindChild(4, 0);
-    
-    temp_r7 = M2C_FIELD(temp_r29, s16 *, 0xC);
-    sp10 = 0x260;
-    sp12 = temp_r7;
-    Ui_SlideWidgetChild(arg0, temp_r29, &sp10, 0, temp_r7);
-    
-    spC = 0x138;
-    spE = 0x74;
-    Ui_SlideWidgetChildMode1(arg0, temp_r28, &spC, 0);
-    
-    temp_r5 = M2C_FIELD(temp_r28, s16 *, 0xA) + 0x108;
-    M2C_FIELD(temp_r28, s16 *, 0xE) = temp_r5;
-    M2C_FIELD(temp_r28, s16 *, 0x4A) = 0x14;
-    M2C_FIELD(temp_r28, s16 *, 0x4C) = 0;
-    M2C_FIELD(M2C_FIELD(temp_r28, void **, 0), M2C_UNK (**)(void *, M2C_UNK, s16), 0x28)(temp_r28, 0x14, temp_r5);
-    M2C_FIELD(temp_r28, s8 *, 0x48) = 1;
-    M2C_FIELD(temp_r28, s8 *, 0x44) = 2;
-    
-    temp_r7_2 = M2C_FIELD(temp_r31, s16 *, 0xA);
-    sp8 = temp_r7_2;
-    spA = 0xA7;
-    fn_801402A0(arg0, temp_r31, &sp8, 0, temp_r7_2);
-    
-    M2C_FIELD(temp_r31, s32 *, 0x3C) = 0;
-    TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x6C), s32 *, 0x34));
+void *Ui_FindChild(void *,s32,s32);
+void Ui_SlideWidgetChild(void *,void *,s16 *,s32);
+void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
+void fn_801402A0(void *,void *,s16 *,s32);
+void TalkUi_ShowMsg(s32);
+s16 pos1[2],pos2[2],pos3[2];
+void *panel;
+void *child;
+void *other;
+s16 y;
+panel=M2C_FIELD(arg0,void **,0x54);
+child=Ui_FindChild(arg0,4,0);
+other=M2C_FIELD(arg0,void **,0x64);
+y=M2C_FIELD(panel,s16 *,0xC);
+pos1[0]=0x260;
+pos1[1]=y;
+Ui_SlideWidgetChild(arg0,panel,pos1,0);
+pos2[0]=0x138;
+pos2[1]=0x74;
+Ui_SlideWidgetChildMode1(arg0,child,pos2,0);
+M2C_FIELD(child,s16 *,0xE)=M2C_FIELD(child,s16 *,0xA)+0x108;
+M2C_FIELD(child,s16 *,0x4A)=0x14;
+M2C_FIELD(child,s16 *,0x4C)=0;
+M2C_FIELD(M2C_FIELD(child,void **,0),void (**)(void *),0x28)(child);
+M2C_FIELD(child,u8 *,0x48)=1;
+M2C_FIELD(child,u8 *,0x44)=2;
+pos3[0]=M2C_FIELD(other,s16 *,0xA);
+pos3[1]=0xA7;
+fn_801402A0(arg0,other,pos3,0);
+M2C_FIELD(other,s32 *,0x3C)=0;
+TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6C),s32 *,0x34));
 }
 
 void fn_801AF40C(void *arg0) {
@@ -1391,6 +1381,30 @@ void fn_801B0D6C(void *arg0) {
         fn_801658DC(res, saved);
     }
 }
+
+void fn_801B0E38(void *arg0) {
+ void Ui_SlideWidgetChild(void *,void *,s16 *,s32);
+ void Process_Goto(void *,s32);
+ extern u8 gUiContext[];
+ s16 a[2],b[2],c[2],d[2],e[2];
+ void *p;
+ s16 y;
+ switch(gUiContext[8]) {
+ case 0x81:
+ p=M2C_FIELD(arg0,void **,0x4c);y=M2C_FIELD(p,s16 *,12);a[0]=0x260;a[1]=y;Ui_SlideWidgetChild(arg0,p,a,0);
+ p=M2C_FIELD(arg0,void **,0x48);y=M2C_FIELD(p,s16 *,12);b[0]=0x260;b[1]=y;Ui_SlideWidgetChild(arg0,p,b,0);
+ if(M2C_FIELD(M2C_FIELD(arg0,void **,0x40),s16 *,0x3e)!=4) {
+ p=M2C_FIELD(arg0,void **,0x50);y=M2C_FIELD(p,s16 *,12);c[0]=0x260;c[1]=y;Ui_SlideWidgetChild(arg0,p,c,0);
+ } break;
+ case 0x80:
+ if(M2C_FIELD(M2C_FIELD(arg0,void **,0x40),s16 *,0x3e)!=4) {
+ p=M2C_FIELD(arg0,void **,0x50);y=M2C_FIELD(p,s16 *,12);d[0]=0x260;d[1]=y;Ui_SlideWidgetChild(arg0,p,d,0);
+ }
+ p=M2C_FIELD(arg0,void **,0x48);y=M2C_FIELD(p,s16 *,12);e[0]=0x260;e[1]=y;Ui_SlideWidgetChild(arg0,p,e,0);
+ Process_Goto(arg0,0x16);break;
+ }
+}
+
 void fn_801B0F60(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
