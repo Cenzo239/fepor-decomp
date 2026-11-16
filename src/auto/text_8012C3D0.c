@@ -690,35 +690,13 @@ s32 fn_8012D554(void) {
     return 0;
 }
 
-void fn_8012D55C(void *arg0) {
-    s32 Msg_Expand(void *);
-    M2C_UNK TextBanner_SetString(s32, s32);
-    extern u8 gUiSelectMenuStrings[];
-
-    M2C_FIELD(arg0, u8 *, 0x62) = -1;
-    if ((s8) M2C_FIELD(arg0, u8 *, 0x62) >= 0) {
-        return;
-    }
-    
-    switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
-        case 0:
-        case 1:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x5A]));
-            break;
-        case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x6B]));
-            break;
-        case 3:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x7B]));
-            break;
-        case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x7B]));
-            break;
-        default: // All cases 5-39 fall here
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0xAB]));
-            break;
-    }
-}
+void fn_8012D55C(void *proc) {
+s32 Msg_Expand(void *);
+void TextBanner_SetString(s32, s32);
+extern u8 gUiSelectMenuStrings[];
+u8 mode;
+*(s8 *)((char *)proc+0x62)=-1;
+if (*(s8 *)((char *)proc+0x62)<0) {mode=*(u8 *)((char *)proc+0x6C); switch(mode) {case 1: case 2: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+90)); break;case 4: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+107)); break;default: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+123)); break;}} else {mode=*(u8 *)((char *)proc+0x6C); switch(mode) {case 1: case 2: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+138)); break;case 4: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+155)); break;default: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+171)); break;}}}
 
 void fn_8012D6A4(void *arg0) {
     void Process_Goto(void *, s32);
