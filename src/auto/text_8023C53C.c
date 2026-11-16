@@ -9480,10 +9480,10 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     f32 factor;
     f32 tval;
     f32 frac;
-    f32 rate;
     u32 pitch;
     u32 hi;
-    u32 masked;
+    f64 pad0;
+    f64 pad1;
 
     pitch = (u32)arg1;
     if ((u32)(arg1 + 0x10000) == 0xFFFFU) {
@@ -9491,9 +9491,8 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     }
     hi = pitch >> 24;
     factor = lbl_8036C278;
-    masked = pitch & 0xFFFFFF;
     if (arg0 != hi) {
-        frac = (f32)masked;
+        frac = (f32)(pitch & 0xFFFFFF);
         if (hi < arg0) {
             tval = lbl_8029F5F8[arg0 - hi];
         } else {
@@ -9501,10 +9500,11 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
         }
         scale = frac * tval;
     } else {
-        scale = (f32)masked;
+        pad0 = (f32)(pitch & 0xFFFFFF);
+        scale = (f32)pad0;
     }
-    rate = (f32)(*(u32 *)gSoundData);
-    return __cvt_fp2unsigned((factor * scale) / rate);
+    pad1 = (f32)(*(u32 *)gSoundData);
+    return __cvt_fp2unsigned((factor * scale) / (f32)pad1);
 }
 
 s32 fn_80257820(u16 arg0) {
