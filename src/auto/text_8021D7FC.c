@@ -1619,27 +1619,14 @@ void fn_80220EBC(void)
     *(u16 *)((u8 *)__GXData + 2) = 1;
 }
 
-void fn_80220F44(u32 arg0, u32 arg1)
-{
-    extern u32 __GXData;
-
-    u8 *gx;
-    u32 value;
-
-    gx = (u8 *)__GXData;
-
-    value = *(u32 *)(gx + 0x7C);
-    value = (value & ~0x000000FF) | (arg0 & 0xFF);
-    *(u32 *)(gx + 0x7C) = value;
-
-    value = *(u32 *)(gx + 0x7C);
-    value = (value & ~0x00070000) | ((arg1 << 16) & 0x00070000);
-    *(u32 *)(gx + 0x7C) = value;
-
-    *(volatile u8 *)0xCC008000 = 0x61;
-    *(volatile u32 *)0xCC008000 = *(u32 *)(gx + 0x7C);
-
-    *(u16 *)(gx + 2) = 0;
+void fn_80220F44(u32 arg0, u32 arg1) {
+extern u32 __GXData;
+u8 *gx=(u8*)__GXData;
+*(u32*)(gx+0x7C)=__rlwimi(*(u32*)(gx+0x7C),(u8)arg0,0,24,31);
+*(u32*)(gx+0x7C)=__rlwimi(*(u32*)(gx+0x7C),arg1,16,13,15);
+*(volatile u8*)0xCC008000=0x61;
+*(volatile u32*)0xCC008000=*(u32*)(gx+0x7C);
+*(u16*)(gx+2)=0;
 }
 
 void fn_80220F84(u32 arg0, u32 arg1)
