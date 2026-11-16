@@ -7366,7 +7366,12 @@ void fn_800BDB78(s32 arg0, s32 arg1) {
     *(u8 *)(addr + 0x300) = v | bit;
 }
 
-s32 fn_800BDB9C(s32 arg0, s32 arg1) { u8 *p = (u8 *)(arg1 >> 3); p = arg0 + p; return (p[0x300] & (1U << (arg1 & 7))) != 0; }
+s32 fn_800BDB9C(s32 arg0, s32 arg1) {
+    u8 *p = (u8 *)(arg1 >> 3);
+    s32 bit = arg1 & 7;
+    p = (u8 *)(arg0 + (s32)p);
+    return (p[0x300] & (1U << bit)) != 0;
+}
 
 #pragma use_lmw_stmw on
 void EventFlag_Clear(s32 arg0, s32 arg1) {
@@ -7425,10 +7430,13 @@ s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
  if (*(s8 *)arg1 == 0) return 0;
  hash=fn_8000D598(arg1); row=arg0; i=0;
  do {
- if(hash==*(u32 *)(row+0x180) && Str_Cmp(*(s32 *)row,arg1)==0) { break; }
+ if(hash==*(u32 *)(row+0x180)) {
+ if(Str_Cmp(*(s32 *)row,arg1)==0) goto found;
+ }
  i++; row+=4;
- if(i>=0x60) { i=-1; break; }
- } while(1);
+ } while(i<0x60);
+ i=-1;
+found:
  if(i<0) return 0;
  p=(u8 *)arg0; p+=i>>3;
  return (p[0x300] & (1<<(i&7)))!=0;
@@ -8702,27 +8710,20 @@ void fn_800C0EEC(u8 *obj) {
 }
 
 void fn_800C0F94(void) {
-    void Process_UnlinkByKey(void *);
-    void fn_800C4588(void *);
-    extern u8 lbl_8028D588[];
-    extern u8 lbl_8028D560[];
-    extern void *gMapBlendBufs[];
-    void *zero;
-    void **p;
-    s32 i;
-
-    Process_UnlinkByKey(lbl_8028D588);
-    Process_UnlinkByKey(lbl_8028D560);
-    i = 0;
-    zero = NULL;
-    p = gMapBlendBufs;
-    do {
-        fn_800C4588(*p);
-        *p = zero;
-        i += 1;
-        *p = zero;
-        p += 1;
-    } while (i < 3);
+ void Process_UnlinkByKey(void *);
+ void fn_800C4588(void *);
+ extern u8 lbl_8028D588[], lbl_8028D560[];
+ extern void *gMapBlendBufs[];
+ void *zero;
+ u32 *p;
+ s32 i;
+ Process_UnlinkByKey(lbl_8028D588);
+ Process_UnlinkByKey(lbl_8028D560);
+ for(i=0,p=(u32*)gMapBlendBufs,zero=NULL;i<3;++i,++p) {
+ fn_800C4588((void*)*p);
+ *p=(u32)zero;
+ *p=(u32)zero;
+ }
 }
 
 s32 fn_800C1010(void)
@@ -9168,52 +9169,12 @@ s32 fn_800C29D0(s32 arg0, s32 arg1) {
 }
 
 s32 fn_800C29E8(u8 *arg0, s32 arg1, u8 *arg2) {
-    s32 off;
-    u8 *p;
-    u8 *q;
-    u8 b0, b1, b2, b3;
-    u8 flag;
-
-    off = arg1 * 0x18;
-    b0 = arg2[0];
-    b1 = arg2[1];
-    flag = 0;
-    b2 = arg2[2];
-    b3 = arg2[3];
-    p = arg0 + off;
-    p[-4] = b0;
-    p[-3] = b1;
-    p[-2] = b2;
-    p[-1] = b3;
-    if ((s8)p[-0x17] == 0 &&
-        (s8)p[-8] == 0 &&
-        (s8)p[-7] == 0 &&
-        (s8)p[-6] == 0 &&
-        (s8)p[-5] == 0 &&
-        p[-4] == 0x80 &&
-        p[-3] == 0x80 &&
-        p[-2] == 0x80 &&
-        p[-1] == 0xFF) {
-        flag = 1;
-    }
-    if (flag != 0) {
-        q = arg0 + off;
-        b0 = 0;
-        q[-0x18] = b0;
-        b1 = 0x80;
-        b2 = 0xFF;
-        p[-0x17] = b0;
-        q[-5] = b0;
-        q[-6] = b0;
-        q[-7] = b0;
-        q[-8] = b0;
-        p[-2] = b1;
-        p[-3] = b1;
-        p[-4] = b1;
-        p[-1] = b2;
-        return b0;
-    }
-    return 0;
+s32 off; u8 *p; u8 *q; u8 b3,b2,b1,b0; u8 flag;
+off=arg1*0x18; b0=arg2[0]; b1=arg2[1]; flag=0; b2=arg2[2]; b3=arg2[3];
+p=arg0+off; p[-4]=b0;p[-3]=b1;p[-2]=b2;p[-1]=b3;
+if ((s8)p[-0x17]==0 && (s8)p[-8]==0 && (s8)p[-7]==0 && (s8)p[-6]==0 && (s8)p[-5]==0 && p[-4]==0x80 && p[-3]==0x80 && p[-2]==0x80 && p[-1]==0xFF) flag=1;
+if(flag) {q=arg0+off; arg1=0; q[-0x18]=arg1;p[-0x17]=arg1;q[-5]=arg1;q[-6]=arg1;q[-7]=arg1;q[-8]=arg1;p[-2]=0x80;p[-3]=0x80;p[-4]=0x80;p[-1]=0xFF;}
+return arg1;
 }
 
 s8 fn_800C2ACC(Unk800C2ACC *arg0, s32 arg1) {
