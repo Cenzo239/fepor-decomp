@@ -278,27 +278,33 @@ s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_802264B4(void *arg0, u8 *arg1) {
-    extern s32 gTRKBigEndian;
+    extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, s32);
     u8 temp[8];
-    u8 *source;
+    u8 *dest;
+    register u8 *source;
     s32 result;
     u32 length;
-    if (gTRKBigEndian) source = arg1;
+    u32 position;
+    u32 remaining;
+    dest = arg1;
+    if (*(s32 *)gTRKBigEndian) source = dest;
     else source = temp;
+    position = *(u32 *)((u8 *)arg0+12);
     length = 8;
     result = 0;
-    if (length > *(u32 *)((u8 *)arg0+8) - *(u32 *)((u8 *)arg0+12)) {
+    remaining = *(u32 *)((u8 *)arg0+8) - position;
+    if ((s32)remaining < (s32)length) {
         result = 0x302;
-        length = *(u32 *)((u8 *)arg0+8) - *(u32 *)((u8 *)arg0+12);
+        length = remaining;
     }
-    fn_80003488(source, (u8 *)arg0 + (*(u32 *)((u8 *)arg0+12) + 16), length);
+    fn_80003488(source, (void *)((u32)arg0 + ((s32)position+16)), length);
     *(u32 *)((u8 *)arg0+12) += length;
-    if (!gTRKBigEndian && !result) {
-        arg1[0]=source[7]; arg1[1]=source[6];
-        arg1[2]=source[5]; arg1[3]=source[4];
-        arg1[4]=source[3]; arg1[5]=source[2];
-        arg1[6]=source[1]; arg1[7]=source[0];
+    if (!*(s32 *)gTRKBigEndian && !result) {
+        dest[0]=source[7]; dest[1]=source[6];
+        dest[2]=source[5]; dest[3]=source[4];
+        dest[4]=source[3]; dest[5]=source[2];
+        dest[6]=source[1]; dest[7]=source[0];
     }
     return result;
 }
@@ -1100,6 +1106,43 @@ void fn_80227FEC(const u8 *bytes, s32 count) {
     }
 
     MWTRACE(8, lbl_802826A4);
+}
+
+s32 fn_802281A4(s32 arg0, s32 *arg1) {
+    void *TRKGetBuffer(s32);
+    s32 TRKAppendBuffer(void *, void *, s32);
+    void fn_8022699C(s32);
+    s32 fn_80226A2C(s32 *, s32 *);
+    s32 fn_802283A8(s32, s32 *, s32, s32, s32);
+
+    u8 msg[0x40];
+    s32 sp10;
+    s32 spC;
+    s32 sp8;
+    s32 err;
+    void *buf;
+
+    memset(msg, 0, 0x40);
+    msg[4] = 0xD3;
+    *(s32 *)msg = 0x40;
+    *(s32 *)(msg + 8) = arg0;
+    err = fn_80226A2C(&spC, &sp8);
+    if (err == 0) {
+        err = TRKAppendBuffer((void *)sp8, msg, 0x40);
+    }
+    if (err == 0) {
+        *arg1 = 0;
+        err = fn_802283A8(sp8, &sp10, 3, 3, 0);
+        if (err == 0) {
+            buf = TRKGetBuffer(sp10);
+        }
+        if (err == 0) {
+            *arg1 = *(s32 *)((u8 *)buf + 0x20);
+        }
+        fn_8022699C(sp10);
+    }
+    fn_8022699C(spC);
+    return err;
 }
 
 void fn_802283A8(void) {
@@ -2361,6 +2404,33 @@ s32 ddh_cc_pre_continue(void) {
 
 void ddh_cc_write(s32 arg0, s32 arg1, u32 arg2) {
     *(u32 *)(arg1 + arg0) = arg2;
+}
+
+u32 ddh_cc_read(void *arg0, register u32 arg1) {
+    extern s32 lbl_803687B8;
+    extern u8 lbl_8028295C[], lbl_80282984[], lbl_8033D7E8[];
+    void MWTRACE(s32, const char *, ...);
+    void fn_8022BA34(void *, void *, u32);
+    void fn_8022BB3C(void *, void *, s32);
+    u32 fn_8022BC94(void *);
+    s32 fn_8023C544(void);
+    u32 fn_8023C54C(void *, s32);
+    u8 buffer[0x800];
+    s32 size;
+    u32 error = 0;
+    if (!lbl_803687B8) return -0x2711;
+    MWTRACE(1, (const char *)lbl_8028295C, arg1, arg1);
+    while (fn_8022BC94(lbl_8033D7E8) < arg1) {
+        error = 0;
+        size = fn_8023C544();
+        if (size != 0) {
+            error = fn_8023C54C(buffer, size);
+            if (!error) fn_8022BB3C(lbl_8033D7E8, buffer, size);
+        }
+    }
+    if (!error) fn_8022BA34(lbl_8033D7E8, arg0, arg1);
+    else MWTRACE(8, (const char *)lbl_80282984, error);
+    return error;
 }
 
 s32 ddh_cc_close(void) {
