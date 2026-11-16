@@ -24,7 +24,7 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     return 0;
 }
 
-#pragma optimization_level 4
+#pragma global_optimizer off
 void fn_80006298(u32 *dst, u32 val, u32 n) {
     n >>= 2;
     dst--;
@@ -32,17 +32,17 @@ void fn_80006298(u32 *dst, u32 val, u32 n) {
         *++dst = val;
     } while (--n);
 }
-#pragma opt_strength_reduction off
-void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
-    u32 count;
-
-    count = arg2 >> 3;
-    arg0--;
-
-    do {
-        *++arg0 = arg1;
-        *++arg0 = arg1;
-    } while (--count != 0);
+#pragma global_optimizer on
+void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2)
+{
+ u32 count = arg2 >> 3;
+ --arg0;
+ do {
+  arg0[1] = arg1;
+  arg0[2] = arg1;
+  arg0 += 2;
+  count -= 1;
+ } while (count);
 }
 #pragma opt_strength_reduction reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
@@ -55,13 +55,13 @@ void fn_800062CC(u32 *dst, u32 *src, u32 n) {
 }
 
 void fn_800062EC(u32 *dst, u32 *src, u32 n) {
-u32 a,b;
---dst; n>>=3; --src;
-do {
-a=*++src; *++dst=a;
-b=*++src; *++dst=b;
-n--;
-} while(n!=0);
+    dst--;
+    n >>= 3;
+    src--;
+    do {
+        *++dst = *++src;
+        *++dst = *++src;
+    } while (--n);
 }
 
 void fn_80006314(void) {
@@ -227,18 +227,18 @@ void fn_800065B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_80006608(s16 *arg0) {
-    s16 dx;
-    s16 y;
     s16 x;
+    s16 dy;
+    s16 dx;
 
     x = arg0[0];
-    y = arg0[1];
+    dy = arg0[1];
     dx = -x;
-    y = -y;
+    dy = -dy;
     arg0[0] = x + dx;
-    arg0[1] = arg0[1] + y;
+    arg0[1] = arg0[1] + dy;
     arg0[2] = arg0[2] + dx;
-    arg0[3] = arg0[3] + y;
+    arg0[3] = arg0[3] + dy;
 }
 
 s32 fn_80006650(s16 *arg0, s16 *arg1) {
@@ -272,7 +272,7 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
 
 void fn_80006754(void)
 {
-    extern u32 lbl_80367118;
+    extern u32 gFrameCount;
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
@@ -285,11 +285,11 @@ void fn_80006754(void)
     u32 low;
     u64 time;
 
-    count = lbl_80367118;
+    count = gFrameCount;
     high = lbl_80367128;
     low = lbl_8036712C;
 
-    lbl_80367118 = count + 1;
+    gFrameCount = count + 1;
     lbl_80367124 = low;
     lbl_80367120 = high;
 
@@ -355,22 +355,12 @@ s32 fn_80006AC0(u8 *arg0) {
     return t + ((b1 << 16) & 0xFF0000);
 }
 
-#pragma optimization_level 4
-s32 fn_80006AF4(s32 *arg0) {
-    s32 n;
-    s32 sum;
-    arg0--;
-    n = 0x1c;
-    sum = 0;
-    do {
-        sum += *++arg0;
-    } while (--n);
-    return sum;
-}
-#pragma optimization_level reset
+#pragma opt_unroll off
+s32 fn_80006AF4(s32 *arg0) { s32 sum=0; s32 n=0; --arg0; do { sum+=*++arg0; } while (++n !=28); return sum; }
+#pragma opt_unroll reset
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
-    extern u16 gPrim2D;
+    extern void *gPrim2D;
     extern char lbl_80366DA4[];
     extern double lbl_80368B88;
 
@@ -389,7 +379,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
     s32 allocationSize;
     float yPosition;
 
-    prim = *(u8 **)&gPrim2D;
+    prim = (u8 *)gPrim2D;
     value = arg4;
     i = 0;
 
