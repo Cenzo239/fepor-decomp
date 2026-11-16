@@ -1341,6 +1341,8 @@ int fn_802204F8(void)
     return 0;
 }
 
+void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_80203854() & 1) { } PPCMtwpar(0x0C008000); }
+
 void fn_802206F4(void) {
     OSGetTime();
 }
