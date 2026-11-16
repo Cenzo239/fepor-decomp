@@ -1661,7 +1661,6 @@ void fn_801E7FC0(void *arg0) {
     s16 y;
     s32 flag;
     s32 y1;
-
     self = arg0;
     v = (s8)fn_801E4A60(self, (s8)*(u8 *)((u8 *)self + 0x32));
     row = (s8)(v - (*(s16 *)((u8 *)self + 0x38) / 32));
@@ -1672,16 +1671,14 @@ void fn_801E7FC0(void *arg0) {
         *(s16 *)((u8 *)self + 0x3C) = 0x28;
         *(s16 *)((u8 *)self + 0x3E) = y;
     } else {
-        y1 = y + 1;
+        y1 = (u16)(y + 1);
         *(s16 *)((u8 *)self + 0x3C) = (s16)((x + 0x29) >> 1);
-        *(s16 *)((u8 *)self + 0x3E) = (s16)((y1 + *(s16 *)((u8 *)self + 0x3E)) >> 1);
+        *(s16 *)((u8 *)self + 0x3E) = (s16)((*(s16 *)((u8 *)self + 0x3E) + y1) >> 1);
     }
     flag = 0;
     x = *(s16 *)((u8 *)self + 0x3C);
     y = *(s16 *)((u8 *)self + 0x3E);
-    if (*(u8 *)((u8 *)self + 0x2D) == 0 && *(u8 *)((u8 *)self + 0x2E) == 0) {
-        flag = 1;
-    }
+    if (*(u8 *)((u8 *)self + 0x2D) == 0 && *(u8 *)((u8 *)self + 0x2E) == 0) flag = 1;
     Ui_DrawRouteIconEx(x, y, flag);
 }
 
@@ -2463,20 +2460,31 @@ void TabMenu_ClearSelectedStatus(void *menu) {
     Event_StartByName(gTabMenuStrings + 0x1D6, menu);
 }
 
-void fn_801E96D0(void *arg0, void *arg1) {
-    s32 temp_r3;
-    s32 r31;
-    
-    if (arg0 == NULL) {
-        return;
-    }
-
-    temp_r3 = *(s32*)((char*)arg0 + 0x58);
-    r31 = *(s32*)((char*)arg0 + 0x4);
-    
-    if (r31 < temp_r3) {
-        *(s32*)((char*)arg0 + 0x4) = temp_r3;
-    }
+void fn_801E96D0(void *menu) {
+u8 Status_Test(void *,u8);
+void Process_Goto(void *,s32);
+void Ui_PlaySeCue(void *,s32);
+extern u8 gBattleState[],gTabMenuStrings[];
+void **node;
+s8 idx;
+u8 cursor;
+cursor=*(u8 *)((u8 *)menu+0x33);
+node=*(void ***)((u8 *)menu+0x58);
+idx=(s8)cursor;
+if(idx>=0) {
+while(idx>0) { node=(void **)node[1]; idx--; }
+} else {
+while(idx<0) { node=(void **)*node; idx++; }
+}
+if(!Status_Test(gBattleState+0x74,*(u8 *)node[2])) {
+Process_Goto(menu,1);
+Ui_PlaySeCue(gTabMenuStrings+0x1e3,100);
+} else if(!*(void **)((u8 *)node[2]+0x10) || !*(void **)((u8 *)node[2]+0x14)) {
+Process_Goto(menu,1);
+Ui_PlaySeCue(gTabMenuStrings+0x1e3,100);
+} else {
+Ui_PlaySeCue(gTabMenuStrings+0x1f1,100);
+}
 }
 
 #pragma optimization_level 2
@@ -2910,40 +2918,178 @@ void fn_801EA430(void *arg0) {
     void *head;
     void *cur;
     void *end;
+    void *self = arg0;
     void *node;
     void *a;
-
-    head = (u8 *)arg0 + 4;
-    cur = *(void **)((u8 *)arg0 + 8);
+    head = (u8 *)self + 4;
+    cur = *(void **)((u8 *)self + 8);
     while (cur != head) {
         if ((s8)*(u8 *)*(void **)((u8 *)cur + 8) < 0) {
             end = *(void **)((u8 *)cur + 4);
             while (end != head) {
-                if ((s8)*(u8 *)*(void **)((u8 *)end + 8) >= 0) {
-                    break;
-                }
+                if ((s8)*(u8 *)*(void **)((u8 *)end + 8) >= 0) break;
                 end = *(void **)((u8 *)end + 4);
             }
-            if (cur != end) {
-                a = *(void **)end;
-                *(void **)((u8 *)*(void **)cur + 4) = *(void **)((u8 *)a + 4);
-                **(void ***)((u8 *)a + 4) = *(void **)cur;
-                while (cur != end) {
-                    node = cur;
-                    cur = *(void **)((u8 *)cur + 4);
-                    Heap_Free(node);
-                    *(s32 *)arg0 = *(s32 *)arg0 - 1;
-                }
+            if (cur != end) goto erase;
+            goto done;
+erase:
+            a = *(void **)end;
+            *(void **)((u8 *)*(void **)cur + 4) = *(void **)((u8 *)a + 4);
+            **(void ***)((u8 *)a + 4) = *(void **)cur;
+            while (cur != end) {
+                node = cur;
+                cur = *(void **)((u8 *)cur + 4);
+                Heap_Free(node);
+                --*(s32 *)self;
             }
-            if (end == head) {
-                return;
-            }
-            cur = *(void **)((u8 *)end + 4);
-        } else {
-            cur = *(void **)((u8 *)cur + 4);
+done:
+            cur = end;
+            if (end == head) break;
         }
+        cur = *(void **)((u8 *)cur + 4);
     }
 }
+
+void fn_801EA514(s32 *arg0, s32 *arg1) {
+    void fn_80182514(s32 *, void **, s32 *);
+
+    void **node;
+    void **node2;
+    void **walk;
+    void *sentinel1;
+    void *sentinel2;
+    void *last;
+    void *previous;
+    void *remaining;
+    s8 key;
+    s32 count;
+
+    if (arg0 == arg1) {
+        return;
+    }
+
+    node = (void **)arg0[2];
+    sentinel1 = arg0 + 1;
+    node2 = (void **)arg1[2];
+    sentinel2 = arg1 + 1;
+
+    while (node != sentinel1 && node2 != sentinel2) {
+        if (*(s8 *)node2[2] < *(s8 *)node[2]) {
+            walk = (void **)node2[1];
+            count = 1;
+            key = *(s8 *)node[2];
+
+            while (walk != sentinel2) {
+                if (*(s8 *)walk[2] >= key) {
+                    break;
+                }
+                walk = (void **)walk[1];
+                count++;
+            }
+
+            last = walk[0];
+            previous = node2[0];
+
+            ((void **)previous)[1] = ((void **)last)[1];
+            walk[0] = previous;
+
+            ((void **)node[0])[1] = node2;
+            node2[0] = node[0];
+
+            node2 = walk;
+            node[0] = last;
+            ((void **)last)[1] = node;
+
+            *arg1 -= count;
+            *arg0 += count;
+        }
+
+        node = (void **)node[1];
+    }
+
+    if (node2 != sentinel2) {
+        remaining = node;
+        fn_80182514(arg0, &remaining, arg1);
+    }
+}
+
+void fn_801EA7BC(void *arg0, void *arg1) {
+    typedef struct Node {
+        struct Node *prev;
+        struct Node *next;
+        u8 *data;
+    } Node;
+
+    typedef struct List {
+        s32 count;
+        Node sentinel;
+    } List;
+
+    void fn_80182514(u32 *, Node **, List *);
+
+    List *dst;
+    List *src;
+    Node *first;
+    Node *second;
+    Node *dstEnd;
+    Node *srcEnd;
+    Node *scan;
+    Node *last;
+    s32 count;
+    s8 value;
+
+    dst = (List *)arg0;
+    src = (List *)arg1;
+
+    if (dst == src) {
+        return;
+    }
+
+    first = dst->sentinel.next;
+    dstEnd = &dst->sentinel;
+    second = src->sentinel.next;
+    srcEnd = &src->sentinel;
+
+    while (first != dstEnd && second != srcEnd) {
+        if ((s8)second->data[3] < (s8)first->data[3]) {
+            scan = second->next;
+            count = 1;
+            value = (s8)first->data[3];
+
+            while (scan != srcEnd) {
+                if ((s8)scan->data[3] >= value) {
+                    break;
+                }
+
+                scan = scan->next;
+                count++;
+            }
+
+            last = scan->prev;
+
+            second->prev->next = last->next;
+            last->next->prev = second->prev;
+
+            first->prev->next = second;
+            second->prev = first->prev;
+
+            second = scan;
+            first->prev = last;
+            last->next = first;
+
+            src->count -= count;
+            dst->count += count;
+        }
+
+        first = first->next;
+    }
+
+    if (second != srcEnd) {
+        Node *remaining = first;
+        fn_80182514((u32 *)dst, &remaining, src);
+    }
+}
+
 /* Functions from 0x801E4540 to 0x801EA8C0, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
