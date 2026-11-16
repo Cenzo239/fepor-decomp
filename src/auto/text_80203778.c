@@ -1368,6 +1368,14 @@ void __OSContextInit(void)
     *(u32 *)0x800000D8 = 0;
     DBPrintf(lbl_8029BF94);
 }
+
+int OSReport(void *msg, ...) {
+struct { unsigned char gpr, fpr; unsigned char reserved[2]; void *input_arg_area; void *reg_save_area; } args[1];
+int vprintf(const char *, void *);
+__builtin_va_info(args);
+vprintf(msg,args);
+}
+
 #pragma peephole on
 
 void OSPanic(void) {
@@ -2294,6 +2302,24 @@ s32 __OSGetInterruptHandler(s16 arg0) {
     return ((u32 *)InterruptHandlerTable_803684C8)[arg0];
 }
 
+void __OSInterruptInit(void) {
+extern void *InterruptHandlerTable_803684C8;
+extern void ExternalInterruptHandler(void);
+void *memset(void *, int, u32);
+void __OSSetExceptionHandler(s32, void *);
+u32 __OSMaskInterrupts(u32);
+u32 *base=(u32 *)0x80000000;
+extern volatile u32 OS_PIRegs[16];
+
+InterruptHandlerTable_803684C8=(void *)((u8 *)base+0x3040);
+memset(InterruptHandlerTable_803684C8,0,0x80);
+base[0xC4/4]=0;
+base[0xC8/4]=0;
+OS_PIRegs[1]=0xF0;
+__OSMaskInterrupts(-0x20);
+__OSSetExceptionHandler(4,ExternalInterruptHandler);
+}
+
 volatile u16 OS_MEMRegs[64] : 0xCC004000;
 volatile u16 OS_DSPRegs[64] : 0xCC005000;
 volatile u32 OS_PIRegs[16] : 0xCC003000;
@@ -2669,29 +2695,50 @@ void MEMIntrruptHandler(s32 interrupt, OSContext *context)
 
 #pragma scheduling on
 #pragma peephole on
-s32 Config24MB(void) {
-    s32 r4 = 0x00000002;
-    s32 r3 = 0x80001ff;
-    s32 r6 = 0x01000002;
-    s32 r5 = 0x810000ff;
-    
-    __builtin_ppc_mtdbatu(0, 0);
-    __builtin_ppc_mtdbatl(0, r4);
-    __builtin_ppc_mtdbatu(0, r3);
-    __builtin_ppc_mtibatu(0, 0);
-    __builtin_ppc_mtibatl(0, r4);
-    __builtin_ppc_mtibatu(0, r3);
-    
-    __builtin_ppc_mtdbatu(2, 0);
-    __builtin_ppc_mtdbatl(2, r6);
-    __builtin_ppc_mtdbatu(2, r5);
-    __builtin_ppc_mtibatu(2, 0);
-    __builtin_ppc_mtibatl(2, r6);
-    __builtin_ppc_mtibatu(2, r5);
+void Config24MB(void) {
+__isync();
+__mtspr(536,0);
+__mtspr(537,2);
+__mtspr(536,0x800001FF);
+__isync();
+__mtspr(528,0);
+__mtspr(529,2);
+__mtspr(528,0x800001FF);
+__isync();
+__mtspr(540,0);
+__mtspr(541,0x01000002);
+__mtspr(540,0x810000FF);
+__isync();
+__mtspr(532,0);
+__mtspr(533,0x01000002);
+__mtspr(532,0x810000FF);
+__isync();
+__mtspr(27,__mfmsr()|0x30);
+__mtspr(26,__mfspr(8));
+__rfi();
+}
 
-    // Set up MSR bits to enable interrupt and other required features for 24MB mode on GameCube
-    // The function returns 0 always, but the logic here sets up proper hardware registers.
-    return 0;
+void Config48MB(void) {
+__isync();
+__mtspr(536,0);
+__mtspr(537,2);
+__mtspr(536,0x800003FF);
+__isync();
+__mtspr(528,0);
+__mtspr(529,2);
+__mtspr(528,0x800003FF);
+__isync();
+__mtspr(540,0);
+__mtspr(541,0x02000002);
+__mtspr(540,0x820001FF);
+__isync();
+__mtspr(532,0);
+__mtspr(533,0x02000002);
+__mtspr(532,0x820001FF);
+__isync();
+__mtspr(27,__mfmsr()|0x30);
+__mtspr(26,__mfspr(8));
+__rfi();
 }
 
 u32 RealMode(u32 addr)
@@ -2699,26 +2746,30 @@ u32 RealMode(u32 addr)
     return addr & 0x3FFFFFFF;
 }
 
-void fn_802086A0(void* arg0) {
-    void* temp_r4;
-    void* temp_r5;
-    s32 r31 = 0;
+void fn_802086A0(void *arg0) {
+    void fn_8020AEC4(void *);
+    void *node;
+    void *next;
+    void *tmp;
 
-    loop_5:
-        temp_r4 = M2C_FIELD(arg0, void**, 0x2F4);
-        if (temp_r4 != NULL) {
-            temp_r5 = M2C_FIELD(temp_r4, void**, 0x10);
-            if (temp_r5 == NULL) {
-                M2C_FIELD(arg0, s32*, 0x2F8) = r31;
-            } else {
-                M2C_FIELD(temp_r5, s32*, 0x14) = r31;
-            }
-            M2C_FIELD(arg0, void**, 0x2F4) = temp_r5;
-            M2C_FIELD(temp_r4, s32*, 0xC) = r31;
-            M2C_FIELD(temp_r4, s32*, 0x8) = r31;
-            fn_8020AEC4(temp_r4);
-            goto loop_5;
-        }
+    goto check;
+loop:
+    next = *(void **)((u8 *)node + 0x10);
+    tmp = node;
+    if ((u32)next == 0U) {
+        *(s32 *)((u8 *)arg0 + 0x2F8) = 0;
+    } else {
+        *(s32 *)((u8 *)next + 0x14) = 0;
+    }
+    *(void **)((u8 *)arg0 + 0x2F4) = next;
+    *(s32 *)((u8 *)node + 0xC) = 0;
+    *(s32 *)((u8 *)node + 0x8) = 0;
+    fn_8020AEC4(tmp);
+check:
+    node = *(void **)((u8 *)arg0 + 0x2F4);
+    if ((u32)node != 0U) {
+        goto loop;
+    }
 }
 
 extern u16 StopAtNextInt_80368530;
