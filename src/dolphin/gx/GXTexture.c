@@ -1122,16 +1122,22 @@ void fn_80223CDC(s32 arg0, s32 arg1) {
     __GXData[1] = 0;
 }
 
-void* fn_80223D38(u32 arg0) {
-    extern u16 *__GXData;
-    void *ret;
+void fn_80223D38(s32 arg0, s32 arg1) {
+    u8 cmd;
+    u16 *gx;
+    u32 *reg;
 
-    if (arg0 >= 0x14) {
-        ret = 0;
+    gx = __GXData;
+    reg = (u32 *)((u8 *)gx + (arg0 >> 1) * 4 + 0x1B0);
+    if (arg0 & 1) {
+        *reg = __rlwimi(*reg, arg1, 19, 8, 12);
     } else {
-        ret = __GXData + 0x388 + arg0 * 0x10;
+        *reg = __rlwimi(*reg, arg1, 9, 18, 22);
     }
-    return ret;
+    cmd = 0x61;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = *reg;
+    __GXData[1] = 0;
 }
 
 void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
