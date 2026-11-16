@@ -5711,14 +5711,7 @@ void fn_801C1824(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     ret->node = end->node;
 }
 
-int fn_801C18E4(void *arg0) {
-    u32 *ptr;
-
-    ptr = (u32 *)((u8 *)arg0 + 0x4);
-    *(u32 *)arg0 = 0;
-    ptr[1] = (u32)ptr;
-    ptr[0] = (u32)ptr;
-}
+int fn_801C18E4(void *arg0) { u32 *p=arg0; u32 *head=p+1; *p++=0; head[1]=(u32)p; head[0]=(u32)p; }
 
 void fn_801C18FC(s32 arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *, void *);
@@ -11650,8 +11643,10 @@ void fn_801CF5A4(s32 *arg0, void *arg1) {
 }
 
 s32 fn_801CF5FC(void *arg0) {
-    extern s32 lbl_80298720[];
-    return lbl_80298720[M2C_FIELD(arg0, s16 *, 0x3C)];
+#pragma global_optimizer on
+extern s32 lbl_80298720[];
+return lbl_80298720[*(s16*)((u8*)arg0+0x3c)];
+#pragma global_optimizer reset
 }
 
 s32 fn_801CF614(void *arg0) {
@@ -11741,7 +11736,6 @@ void *ScriptObj_FindByName(void *arg0) {
     return NULL;
 }
 
-/* Look up a named RID effect, claim a free script-object slot, and spawn its falling-particle process. */
 void ScriptObj_Start(void *name, void *parent) {
     s32 Str_Cmp(void *, void *);
     void fn_801CFAB8(void *, u8, void *);
@@ -12078,10 +12072,11 @@ void fn_801D041C(void *arg0, u8 arg1) {
 }
 
 void fn_801D0444(s16 *arg0, s32 arg1) {
-    if (arg1 >= 3) {
-        return;
-    }
-    arg0[arg1 + 7] = 0;
+ if (arg1 < 3) {
+ u8 *element = (u8 *)arg0 + arg1 * 2;
+ s16 zero = 0;
+ *(s16 *)(element + 14) = zero;
+ }
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
@@ -16033,9 +16028,12 @@ void fn_801DE2FC(s32 arg0) {
 }
 
 void fn_801DE338(void *arg0) {
-    *(s32*)((char*)arg0 + 0x0) = -1;
-    *(s32*)((char*)arg0 + 0x4) = -1;
-    *(s8*)((char*)arg0 + 0x44) = 1;
+ s32 *p = arg0;
+ s32 invalid = -1;
+ u8 active = (u8)-invalid;
+ p[0] = invalid;
+ p[1] = invalid;
+ *((u8 *)arg0 + 0x44) = active;
 }
 
 u8 fn_801DE350(void *arg0) {
@@ -19159,40 +19157,48 @@ s32 Save_BumpVersionChecksum(void *slot) {
     return 1;
 }
 
+#pragma peephole off
 s32 Save_IsValid(void *slot) {
-    /* True if slot magic is FE8J and checksum is uninit, skipped, or matches CRC32 of the payload. */
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 gSaveStrings[];
-    u32 sum;
-    void *crcTable;
-    u8 ok;
 
-    /* *(u32*)(slot+0x40) + 0xB9BB0000 == 0x384A  iff  magic == SAVE_SLOT_MAGIC */
-    if ((u32)(*(u32 *)((u8 *)slot + 0x40) + 0xB9BB0000) != 0x384AU) {
+    u8 *save;
+    void *crcTable;
+    u32 sum;
+    u32 value;
+    u8 ok;
+    u8 *message;
+
+    save = (u8 *)slot;
+
+    if (*(u32 *)(save + 0x40) != 0x4645384A) {
         return 0;
     }
-    /* *(u32*)(slot+0x50) + 0xEDCC0000 == 0x5678  iff  checksum == SAVE_CHECKSUM_UNINIT */
-    if ((u32)(*(u32 *)((u8 *)slot + 0x50) + 0xEDCC0000) == 0x5678U) {
+
+    if (*(u32 *)(save + 0x50) == 0x12345678) {
         ok = 1;
-    } else if (*(u8 *)((u8 *)slot + 0x60) == 1) {
+    } else if (save[0x60] == 1) {
         ok = 1;
     } else {
-        crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+        message = gSaveStrings;
+        crcTable = fn_800C4638(0x400, message + 0x14E, 0);
         Crc32_InitTable();
-        sum = Crc32_Calc(crcTable, (u8 *)slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)((u8 *)slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
+        sum = Crc32_Calc(crcTable, save + 0x70, *(s32 *)(save + 0x4C) - 0x70);
         fn_800C4588(crcTable);
-        if (*(u32 *)((u8 *)slot + 0x50) != sum) {
+        if (*(u32 *)(save + 0x50) != sum) {
             ok = 0;
         } else {
             ok = 1;
         }
     }
-    return ok != 0;
-}
 
+    value = (u8)ok;
+    return ((-value) | value) >> 31;
+}
+#pragma peephole on
 s32 fn_801E434C(void *arg0) {
     if ((u32) (M2C_FIELD(arg0, s32 *, 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
