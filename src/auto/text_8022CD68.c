@@ -31,7 +31,7 @@ extern s32 lbl_80366F28;
 extern char lbl_80282AE8[];
 extern char lbl_80282B20[];
 extern void *__stdio_exit;
-extern u8 __close_all[];
+extern void __close_all(void);
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
@@ -516,6 +516,51 @@ s32 __flush_all(void) {
         }
     }
     return ret;
+}
+
+void __close_all(void) {
+    typedef struct Stream {
+        u8 pad0[4];
+        u16 modePrefix : 7;
+        u16 mode : 3;
+        u16 modeSuffix : 6;
+        u8 pad6[6];
+        u8 dynamicallyAllocated;
+        u8 padD[0x4C - 0xD];
+        struct Stream *next;
+    } Stream;
+
+    extern char __files[];
+    void __begin_critical_region(s32);
+    void __end_critical_region(s32);
+    s32 fn_802312B0(void *);
+    void fn_8022D014(void *);
+
+    Stream *stream;
+    Stream *closed;
+
+    stream = (Stream *)__files;
+    __begin_critical_region(2);
+
+    while (stream != NULL) {
+        if (stream->mode != 0) {
+            fn_802312B0(stream);
+        }
+
+        closed = stream;
+        stream = closed->next;
+
+        if (closed->dynamicallyAllocated != 0) {
+            fn_8022D014(closed);
+        } else {
+            closed->mode = 3;
+            if (stream != NULL && stream->dynamicallyAllocated != 0) {
+                closed->next = NULL;
+            }
+        }
+    }
+
+    __end_critical_region(2);
 }
 
 f64 fn_802380A8(f64, f64);
