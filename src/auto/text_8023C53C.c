@@ -420,17 +420,16 @@ notInit:return 0x1d;
 #pragma use_lmw_stmw reset
 
 void fn_8023C7B0(void) {
-    extern M2C_UNK lbl_8033E578;
-    extern s32 lbl_8036894C;
-    s32 temp_r6;
-
-    temp_r6 = (lbl_8036894C + 0x1F) & 0xFFFFFFE0;
-    M2C_FIELD(&lbl_8033E578, s32 *, 0) = temp_r6;
-    M2C_FIELD(&lbl_8033E578, s32 *, 4) = (s32) (temp_r6 + 0x80);
-    M2C_FIELD(&lbl_8033E578, s32 *, 8) = (s32) (temp_r6 + 0x100);
-    M2C_FIELD(&lbl_8033E578, s32 *, 0xC) = (s32) (temp_r6 + 0x180);
-    M2C_FIELD(&lbl_8033E578, s32 *, 0x10) = (s32) (temp_r6 + 0x200);
-    M2C_FIELD(&lbl_8033E578, s32 *, 0x14) = (s32) (temp_r6 + 0x280);
+  extern u32 lbl_8033E578[6];
+  extern s32 lbl_8036894C;
+  volatile u32 *p = lbl_8033E578;
+  u32 base = (lbl_8036894C + 31) & ~31;
+  p[0] = base;
+  p[1] = base + 0x80;
+  p[2] = base + 0x100;
+  p[3] = base + 0x180;
+  p[4] = base + 0x200;
+  p[5] = base + 0x280;
 }
 
 s32 fn_8023C7F4(void) {
@@ -503,41 +502,54 @@ void fn_8023D0D8(void)
 {
     extern u8 *lbl_803688E8;
     extern u16 *lbl_803688EC;
+    s32 one;
+    u8 current;
+    u16 *dst;
+    u8 *src;
+    u16 count;
+    u16 index;
+    u32 cur_ext;
 
-    u32 index;
-    u32 count;
-    u32 value;
-    u32 current;
-    u32 shift;
-
+    src = lbl_803688E8;
     index = 0;
+    dst = lbl_803688EC;
     count = 0;
-    current = lbl_803688E8[0];
-    shift = 1;
+    current = src[0];
+    one = 1;
+    goto loop_cond;
 
-    while (lbl_803688E8[index] != 0) {
-        value = lbl_803688E8[index];
-
-        if (current == value) {
-            lbl_803688EC[index] = count;
-            index++;
-            count++;
-        } else {
-            count <<= shift;
-            current++;
-        }
+store:
+    dst[index] = count;
+    index++;
+    count++;
+compare:
+    if (cur_ext == src[index]) {
+        goto store;
+    }
+    count <<= one;
+    current++;
+loop_cond:
+    if (src[index] != 0) {
+        cur_ext = current;
+        goto compare;
     }
 }
 
 void fn_8023D2FC(void) {
-    extern u16 *lbl_80368950;
-    
-    u16* ptr = lbl_80368950;
-    u16 temp_r3 = ptr[0x1A6];
-    ptr[0x1A6] = temp_r3 + 2;
-    ptr[0x1A7] = (u16)((ptr[temp_r3+1] & 0xFF) << 8 | (ptr[temp_r3] & 0xFF00));
-    ptr[0x1A6] = temp_r3 + 2;
-    ptr[0x1A9] = ptr[0x1A7];
+    extern u8 *lbl_80368950;
+    u8 *base;
+    u8 *p;
+
+    base = lbl_80368950;
+    base[0x6a9] = 1;
+    p = *(u8 **)(lbl_80368950 + 0x69c);
+    *(u8 **)(base + 0x69c) = p + 2;
+    p = *(u8 **)(lbl_80368950 + 0x69c);
+    *(u16 *)(lbl_80368950 + 0x6aa) = (p[0] << 8) | p[1];
+    p = *(u8 **)(lbl_80368950 + 0x69c);
+    *(u8 **)(lbl_80368950 + 0x69c) = p + 2;
+    *(u16 *)(lbl_80368950 + 0x6ac) = *(u16 *)(lbl_80368950 + 0x6aa);
+    (void)base;
 }
 
 #pragma use_lmw_stmw on
@@ -7647,33 +7659,43 @@ void fn_80253E10(SynthVmState *arg0, u32 *arg1) {
 }
 
 void fn_80253E90(u8 *self, u32 *arg1) {
-extern u8 gSoundData[];
-extern s32 gSynthVoices;
-void fn_80255100(void *);
-void fn_80256FF0(u32);
-u8 *voice;
-u32 word;
-u32 offset;
-u32 i;
-u32 midByte;
-u32 nonzero;
-u32 hiByte;
-u8 *sd;
-self[0x106]=(offset=0);
-word=*arg1;
-hiByte=(word>>16)&255;
-midByte=(word>>8)&255;
-nonzero=hiByte!=0;
-if(midByte!=0) {
-i=0; sd=gSoundData;
-for(;i<sd[0x210];offset+=0x458,i++) {
-voice=(u8*)gSynthVoices+offset;
-if(*(u32*)(voice+0x34)==0) continue;
-if((*(u64*)(voice+0x114)&2ULL)!=0) continue;
-if(midByte!=voice[0x106]) continue;
-if(nonzero==0) fn_80255100(voice); else fn_80256FF0(i);
-}}
-self[0x106]=midByte;
+  extern u8 gSoundData[];
+  extern s32 gSynthVoices;
+  void fn_80255100(void *);
+  void fn_80256FF0(u32);
+  u8 *voice;
+  u32 word;
+  u32 offset;
+  u32 i;
+  u32 midByte;
+  u32 nonzero;
+  u32 hiByte;
+  u8 *sd;
+
+  self[0x106] = (offset = 0);
+  word = *arg1;
+  hiByte = (word >> 16) & 255;
+  midByte = (word >> 8) & 255;
+  nonzero = hiByte != 0;
+  if (midByte == 0)
+    goto tail;
+  i = 0;
+  sd = gSoundData;
+  for (; i < sd[0x210]; offset += 0x458, i++) {
+    voice = (u8 *)gSynthVoices + offset;
+    if (*(u32 *)(voice + 0x34) == 0)
+      continue;
+    if ((*(u64 *)(voice + 0x114) & 2ULL) != 0)
+      continue;
+    if (midByte != voice[0x106])
+      continue;
+    if (nonzero == 0)
+      fn_80255100(voice);
+    else
+      fn_80256FF0(i);
+  }
+tail:
+  self[0x106] = midByte;
 }
 
 void fn_80254F00(u32 arg0)
@@ -9454,12 +9476,14 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     extern f32 lbl_8036C278;
     extern f32 lbl_8029F5F8[];
     extern f32 lbl_8029F7F8[];
-          f32 scale;
+    f32 scale;
     f32 factor;
     f32 tval;
     f32 frac;
+    f32 rate;
     u32 pitch;
     u32 hi;
+    u32 masked;
 
     pitch = (u32)arg1;
     if ((u32)(arg1 + 0x10000) == 0xFFFFU) {
@@ -9467,8 +9491,9 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     }
     hi = pitch >> 24;
     factor = lbl_8036C278;
+    masked = pitch & 0xFFFFFF;
     if (arg0 != hi) {
-        frac = (f32)(pitch & 0xFFFFFF);
+        frac = (f32)masked;
         if (hi < arg0) {
             tval = lbl_8029F5F8[arg0 - hi];
         } else {
@@ -9476,9 +9501,10 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
         }
         scale = frac * tval;
     } else {
-        scale = (f32)(pitch & 0xFFFFFF);
+        scale = (f32)masked;
     }
-    return __cvt_fp2unsigned((factor * scale) / (f32)(*(u32 *)gSoundData));
+    rate = (f32)(*(u32 *)gSoundData);
+    return __cvt_fp2unsigned((factor * scale) / rate);
 }
 
 s32 fn_80257820(u16 arg0) {
@@ -15124,37 +15150,37 @@ s32 fn_80263534(void)
     extern void Audio_Lock(void);
 
     u8 *config;
-    s32 result;
+    u32 zero;
 
     config = lbl_80364840;
-    result = 1;
+    zero = 0;
 
     *(void **)(config + 0x0C) = lbl_802A26A0;
     *(u32 *)(config + 0x10) = lbl_803670D0;
-    *(u32 *)(config + 0x14) = 0;
+    *(u32 *)(config + 0x14) = zero;
     *(void **)(config + 0x18) = lbl_803648A0;
     *(u32 *)(config + 0x1C) = 0x2000;
-    *(u32 *)(config + 0x20) = 0;
+    *(u32 *)(config + 0x20) = zero;
     *(u16 *)(config + 0x24) = 0x10;
     *(u16 *)(config + 0x26) = 0x30;
     *(void **)(config + 0x28) = fn_80263384;
     *(void **)(config + 0x2C) = fn_80263394;
     *(void **)(config + 0x30) = fn_802633F8;
-    *(u32 *)(config + 0x34) = 0;
-    *(u32 *)(config + 0x04) = 0;
+    *(u32 *)(config + 0x34) = zero;
+    *(u32 *)(config + 0x04) = zero;
 
     OSInitThreadQueue(&lbl_80368B00);
     fn_80215F8C();
     fn_80216050(config);
 
-    lbl_80368B08 = 0;
+    lbl_80368B08 = zero;
     Audio_Unlock();
 
-    if (lbl_80368B08 != 0) {
+    if (lbl_80368B08) {
         Audio_Lock();
     }
 
-    return result;
+    return 1;
 }
 
 #pragma peephole off
@@ -15221,11 +15247,8 @@ int Audio_Lock(void) {
     int OSDisableInterrupts(void);
     extern u16 lbl_80368AFC;
     extern int lbl_80368AF8;
-    int count;
 
-    count = lbl_80368AFC;
-    lbl_80368AFC = count + 1;
-    if ((u16)count == 0) {
+    if ((u16)lbl_80368AFC++ == 0) {
         lbl_80368AF8 = OSDisableInterrupts();
     }
 }
