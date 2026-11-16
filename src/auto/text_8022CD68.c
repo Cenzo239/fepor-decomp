@@ -3703,15 +3703,20 @@ f64 fn_802380A8(f64 farg0, f64 farg1) {
     return x;
 }
 
-void fn_802380D0(void* arg0, s32 arg1, s32 arg2) {
-    if (arg1 != 0) {
-        *(u16*)((char*)arg0 + 0x6) = (u16)arg1;
-        *(u16*)((char*)arg0 + 0x8) = (u16)arg2;
-        *(u16*)((char*)arg0 + 0xA) = (u16)arg1;
-        *(u16*)((char*)arg0 + 0xC) = (u16)arg2;
-        *(u16*)((char*)arg0 + 0xE) = (u16)arg1;
-        *(u16*)((char*)arg0 + 0x10) = (u16)arg2;
-    }
+f64 fn_802380D0(f64 x) {
+ f64 __kernel_cos(f64, f64);
+ f64 fn_80237BDC(f64, f64, s32);
+ s32 fn_802368F4(f64 *, f64);
+ f64 y[2];
+ s32 ix=(*(s32 *)&x)&0x7fffffff;
+ if(ix<=0x3fe921fb) return __kernel_cos(x,0.0);
+ if(ix>=0x7ff00000) return x-x;
+ switch(fn_802368F4(y,x)&3) {
+ case 0: return __kernel_cos(y[0],y[1]);
+ case 1: return -fn_80237BDC(y[0],y[1],1);
+ case 2: return -__kernel_cos(y[0],y[1]);
+ default: return fn_80237BDC(y[0],y[1],1);
+ }
 }
 
 extern f64 __floor_huge;
