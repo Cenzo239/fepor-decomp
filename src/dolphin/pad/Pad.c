@@ -888,9 +888,21 @@ u8 fn_80213B34(void) {
     return (u8) ((u32) *(u32 *)0xCC006C04 >> 8U);
 }
 
-void fn_80213CB0(s32 arg0)
+void fn_80213CB0(s32 arg0, OSContext *context)
 {
-    lbl_80368698(arg0);
+    extern void (*lbl_80368698)(u32);
+    OSContext tempContext;
+    OSContext *saved;
+    *(u32 *)0xCC006C00 |= 8;
+    saved = context;
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(&tempContext);
+    if (lbl_80368698 != 0) {
+ u32 *regs = (u32 *)0xCC006C00;
+ lbl_80368698(regs[2]);
+ }
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(saved);
 }
 
 void fn_80213D2C(s32 arg0, OSContext *context) {
@@ -987,9 +999,29 @@ s32 fn_802142B8(void) {
     return lbl_803686DC;
 }
 
-BOOL fn_802142C0(void)
+void fn_802142C0(s32 arg0, OSContext *context)
 {
-    return OSGetResetButtonState() != 0;
+    void OSClearContext(void *);
+    void OSSetCurrentContext(void *);
+    extern volatile u16 __PADRegs[];
+    typedef struct { u8 pad[0xA]; u16 val; } PadReg;
+    volatile PadReg *p;
+    u16 v;
+    OSContext tempContext;
+
+    p = (volatile PadReg *)__PADRegs;
+    v = p->val;
+    p->val = (u16)((v & -0x89) | 0x20);
+
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(&tempContext);
+
+    if ((u32)lbl_803686D8 != 0) {
+        ((void (*)(void))lbl_803686D8)();
+    }
+
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(context);
 }
 
 void fn_80214338(void) {
