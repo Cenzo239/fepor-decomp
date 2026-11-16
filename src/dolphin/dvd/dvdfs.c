@@ -1104,6 +1104,56 @@ void fn_8020DA08(u32 arg0) {
     }
 }
 
+void fn_8020DAE0(u32 arg0) {
+    void __DVDStoreErrorCode(u32);
+    void DVDReset(void);
+    void cbForStateError(u32);
+    void fn_8020BF58(void *);
+    void stateBusy_8020E178(void *);
+    void fn_8020D27C(void);
+
+    extern s32 lbl_803685CC;
+    extern s32 ResumeFromHere_803685C0;
+
+    DVDReadyCommand *finished;
+    s32 cleaned;
+    u32 busy;
+
+    if (arg0 == 0x10) {
+        __DVDStoreErrorCode(0x01234568);
+        DVDReset();
+        cbForStateError(0);
+        return;
+    }
+
+    if (arg0 & 1) {
+        cleaned = 0;
+        lbl_803685CC = cleaned;
+        busy = lbl_803685B8;
+        if (busy != 0) {
+            ResumeFromHere_803685C0 = cleaned;
+            finished = (DVDReadyCommand *)executing_80368598;
+            lbl_803685B8 = cleaned;
+            executing_80368598 = DummyCommandBlock_80339F80;
+            finished->state = 10;
+            if (finished->callback != 0) {
+                finished->callback(-3, finished);
+            }
+            if (lbl_803685BC != 0) {
+                lbl_803685BC(0, finished);
+            }
+            stateReady();
+            cleaned = 1;
+        }
+        if (cleaned == 0) {
+            ((DVDReadyCommand *)executing_80368598)->state = 1;
+            stateBusy_8020E178(executing_80368598);
+        }
+    } else {
+        fn_8020BF58((void *)fn_8020D27C);
+    }
+}
+
 void AlarmHandler(void *alarm, void *context) {
     void DVDReset(void);
     void DCInvalidateRange(void *, u32);
@@ -1933,6 +1983,7 @@ s32 fn_8020F058(s32 arg0) {
 }
 
 #pragma peephole off
+#pragma global_optimizer off
 void fn_8020F068(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
@@ -1946,6 +1997,7 @@ void fn_8020F068(void) {
     }
     OSRestoreInterrupts(enabled);
 }
+#pragma global_optimizer on
 #pragma peephole on
 void fn_8020F3E0(void) {
     extern void* __DVDThreadQueue;
@@ -2112,23 +2164,29 @@ s32 __DVDPopWaitingQueue(void)
 }
 
 s32 __DVDCheckWaitingQueue(void) {
-    extern u32 WaitingQueue_80339FD8[];
+    struct DVDQueue {
+        struct DVDQueue *next;
+        struct DVDQueue *prev;
+    };
+    extern struct DVDQueue WaitingQueue_80339FD8[4];
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
 
+    u32 enabled;
+    struct DVDQueue *q;
     s32 i;
-    u32 *queue;
 
-    OSDisableInterrupts();
-
-    queue = WaitingQueue_80339FD8;
+    enabled = OSDisableInterrupts();
 
     for (i = 0; i < 4; i++) {
-        if (queue[i * 2] != (u32)&queue[i * 2]) {
-            OSRestoreInterrupts();
+        q = &WaitingQueue_80339FD8[i];
+        if (q->next != q) {
+            OSRestoreInterrupts(enabled);
             return 1;
         }
     }
 
-    OSRestoreInterrupts();
+    OSRestoreInterrupts(enabled);
     return 0;
 }
 
