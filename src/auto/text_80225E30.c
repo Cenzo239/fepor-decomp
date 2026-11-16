@@ -2054,19 +2054,39 @@ s32 fn_8022A098(u32 *arg0, u32 arg1) {
     return var_r3;
 }
 
-s32 fn_8022A0E4(void *arg0, void *arg1) {
-    s32 var_r3;
-    if (arg0 == 0) {
-        return 0x203;
-    }
-    if (arg1 == 0) {
-        return 0x203;
-    }
-    var_r3 = 0;
-    if (*(u16 *)((char *)arg0 + 0x8) < *(u16 *)((char *)arg1 + 0x8)) {
-        var_r3 = 0x301;
-    }
-    return var_r3;
+s32 fn_8022A0E4(u32 *arg0, u32 arg1, u32 *arg2, s32 arg3, s32 arg4) {
+extern u8 gTRKExceptionStatus_8029E574[];
+u32 fn_8022AE34(u32);
+s32 fn_8022A230(u32,s32,s32);
+u32 fn_80228948(void);
+void fn_80228858(u32,u32);
+void fn_80228958(u32,u32,u32,u32,u32);
+typedef struct { u32 words[4]; } ExceptionStatus;
+ExceptionStatus saved;
+u32 translated;
+s32 result;
+u8 *status=gTRKExceptionStatus_8029E574;
+u32 msr, targetMsr;
+s32 mode;
+saved=*(ExceptionStatus *)status;
+status[0xd]=0;
+translated=fn_8022AE34(arg1);
+mode=arg4==0;
+result=fn_8022A230(translated,*arg2,mode);
+if(result!=0) *arg2=0;
+else {
+msr=fn_80228948();
+targetMsr=msr | (*(u32 *)(gTRKCPUState+0x1f8)&0x10);
+if(arg4) fn_80228958((u32)arg0,translated,*arg2,msr,targetMsr);
+else {
+fn_80228958(translated,(u32)arg0,*arg2,targetMsr,msr);
+fn_80228858(translated,*arg2);
+if(arg1!=translated) fn_80228858(arg1,*arg2);
+}
+}
+if(status[0xd]) {result=0x702;*arg2=0;}
+*(ExceptionStatus *)gTRKExceptionStatus_8029E574=saved;
+return result;
 }
 
 #pragma use_lmw_stmw on
