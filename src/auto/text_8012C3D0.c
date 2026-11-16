@@ -2824,58 +2824,31 @@ void fn_80131524(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
     }
 }
 
-void fn_801315B0(void* arg0, s32 arg1) {
-    if (arg1 > 6) {
-        return;
-    }
-    switch(arg1) {
-    case 0:
-        return;
-    case 1:
-        {
-            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
-            sprintf(ptr);
-        }
-        break;
-    case 2:
-        {
-            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
-            sprintf(ptr);
-        }
-        break;
-    case 3:
-        {
-            // Check if byte at offset 0x21 is zero
-            if (((u8*)arg0)[0x21] == 0) {
-                u8* ptr = &((u8*)arg0)[0x340]; // gUiSelectMenuStrings + 0x340
-                sprintf(ptr);
-            }
-        }
-        break;
-    case 4:
-        {
-            // Compare byte at offset 0x22 to something
-            u8 r6 = ((u8*)arg0)[0x22];
-            if (arg1 == r6) {
-                u8* ptr = &((u8*)arg0)[0x345]; // gUiSelectMenuStrings + 0x345
-                sprintf(ptr);
-            }
-        }
-        break;
-    case 5:
-        {
-            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
-            sprintf(ptr);
-        }
-        break;
-    case 6:
-        {
-            s32 r3 = arg1; // value is not used in this case, probably just to pass it to a helper function
-            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
-            sprintf(ptr);
-        }
-        break;
-    }
+void *fn_801315B0(void *arg0,void *arg1,s32 index) {
+s32 sprintf(char *,const char *,...);
+s8 Unit_GetMov(void *);
+s8 Unit_GetCon(void *);
+s8 fn_8003A1E0(void *);
+extern char gUiSelectMenuStrings[];
+void *unit=*(void **)arg1;
+u32 a,b;
+switch(index) {
+case 0:return 0;
+case 1:sprintf(arg0,gUiSelectMenuStrings+0x33c,*(u8 *)((u8 *)arg1+0x1f)); break;
+case 2:sprintf(arg0,gUiSelectMenuStrings+0x33c,*(u8 *)((u8 *)arg1+0x20)); break;
+case 3:
+a=*(u8 *)((u8 *)arg1+0x21);
+if(a==0) sprintf(arg0,gUiSelectMenuStrings+0x340);
+else { b=*(u8 *)((u8 *)arg1+0x22);
+if(a!=b) sprintf(arg0,gUiSelectMenuStrings+0x345,a,b);
+else sprintf(arg0,gUiSelectMenuStrings+0x33c,a);
+}
+break;
+case 4:sprintf(arg0,gUiSelectMenuStrings+0x33c,Unit_GetMov(unit));break;
+case 5:sprintf(arg0,gUiSelectMenuStrings+0x33c,Unit_GetCon(unit));break;
+case 6:sprintf(arg0,gUiSelectMenuStrings+0x33c,fn_8003A1E0(unit));break;
+}
+return arg0;
 }
 
 s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
