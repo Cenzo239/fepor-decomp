@@ -732,6 +732,48 @@ s32 fn_80226E24(u8 *arg0) {
     }
     return result;
 }
+
+s32 TRKDispatchMessage(void *arg0) {
+void TRKSetBufferPosition(void *,u32);
+void MWTRACE(s32,const char *,...);
+extern char lbl_80282480[],lbl_8028249C[];
+s32 fn_80227F6C(void *);
+s32 fn_80227EF4(void *);
+s32 fn_80227E9C(void *);
+s32 fn_80227E44(void *);
+s32 fn_80227E3C(void *);
+s32 fn_80227E34(void *);
+s32 fn_80227BF0(void *);
+s32 fn_802279B4(void *);
+s32 TRKDoReadRegisters(void *);
+s32 TRKDoWriteRegisters(void *);
+s32 fn_80227394(void *);
+s32 fn_80227174(void *);
+s32 fn_802270CC(void *);
+s32 fn_80227024(void *);
+s32 result=0x500;
+TRKSetBufferPosition(arg0,0);
+MWTRACE(1,lbl_80282480,((u8 *)arg0)[0x14]);
+switch(((u8 *)arg0)[0x14]) {
+case 1: result=fn_80227F6C(arg0); break;
+case 2: result=fn_80227EF4(arg0); break;
+case 3: result=fn_80227E9C(arg0); break;
+case 7: result=fn_80227E44(arg0); break;
+case 4: result=fn_80227E3C(arg0); break;
+case 5: result=fn_80227E34(arg0); break;
+case 16: result=fn_80227BF0(arg0); break;
+case 17: result=fn_802279B4(arg0); break;
+case 18: result=TRKDoReadRegisters(arg0); break;
+case 19: result=TRKDoWriteRegisters(arg0); break;
+case 24: result=fn_80227394(arg0); break;
+case 25: result=fn_80227174(arg0); break;
+case 26: result=fn_802270CC(arg0); break;
+case 23: result=fn_80227024(arg0); break;
+}
+MWTRACE(1,lbl_8028249C,result);
+return result;
+}
+
 #pragma global_optimizer reset
 s32 TRKInitializeDispatcher(void) {
     return 0;
