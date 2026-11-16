@@ -477,7 +477,10 @@ dolphin/os/OSSram_tail.c:
 	.text       start:0x802096A0 end:0x80209FE0
 
 dolphin/os/OSThread_sched.c:
-	.text       start:0x80209FE0 end:0x8020A2C4
+	.text       start:0x80209FE0 end:0x8020A060
+
+dolphin/os/OSThread_queue.c:
+	.text       start:0x8020A060 end:0x8020A2C4
 
 dolphin/os/OSThread.c:
 	.text       start:0x8020A2C4 end:0x8020A4EC
