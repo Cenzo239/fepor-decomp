@@ -1732,7 +1732,14 @@ s32 sprintf(char *dest, const char *fmt, ...) {
 }
 
 s32 fn_80231E74(char *dest, s32 dest_len, const char *fmt, ...) {
-    return 0;
+ va_list args;
+ __OutStr out;
+ s32 n;
+ __builtin_va_info(&args);
+ out.buffer=dest; out.length=dest_len; out.position=0;
+ n=__pformatter(fn_80232220,&out,fmt,args);
+ if(dest != NULL) { u32 idx=(u32)dest_len-1; if((u32)n<(u32)dest_len) idx=(u32)n; dest[idx]=0; }
+ return n;
 }
 
 #pragma use_lmw_stmw reset
