@@ -314,7 +314,7 @@ s32 fn_801838CC(void) {
 
 s32 fn_801838D4(void) {
     extern u8 lbl_803681F0;
-    return lbl_803681F0 != 0x33 ? 3 : 0;
+    return lbl_803681F0 == 0x33 ? 0 : 3;
 }
 
 void fn_801838F4(void) {
@@ -2064,6 +2064,101 @@ void MoveAnim_AttachClassCue(void *anim) {
             *(s8 *)((u8 *)anim + 0x6A) = SeCue_PlayAt(cuePath, 0x64, x, y, z);
         }
     }
+}
+
+void fn_80188B4C(void *anim) {
+    void fn_80050C90(void *);
+    void fn_8004FE98(void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void MuFade_UnlinkSame(void *, void *);
+    void Unit_SetModelAlpha(void *, s32);
+    s32 DebugPrint(const char *, ...);
+    void SeCue_FadeOut(s8, s16);
+    void fn_800C4588(void *);
+
+    extern u16 E_MuFade_script[36];
+    extern f32 lbl_8036ACE8;
+    extern u8 gMapBlendMode;
+    extern u8 gBattleMap[];
+    extern u8 gSeCueSlots[];
+    extern u8 MoveAnim_str[];
+
+    void *fadeKey[13];
+    u8 *self;
+    u8 *unit;
+    s32 x;
+    s32 y;
+    s16 degrees;
+    f32 angle;
+    f32 scale;
+    u16 flags;
+    u8 alpha;
+    u8 slot;
+
+    self = (u8 *)anim;
+    if (M2C_FIELD(self, u16 *, 0x52) & 0x80) {
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        x = (s8)unit[0x19E];
+        y = (s8)unit[0x19F];
+        fn_80050C90(unit);
+
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        switch (self[0x5A]) {
+        case 4:  degrees = 0;   break;
+        case 6:  degrees = 45;  break;
+        case 2:  degrees = 90;  break;
+        case 10: degrees = 135; break;
+        case 8:  degrees = 180; break;
+        case 9:  degrees = 225; break;
+        case 1:  degrees = 270; break;
+        case 5:  degrees = 315; break;
+        default: degrees = 0;   break;
+        }
+
+        angle = (f32)degrees;
+        fadeKey[12] = unit;
+        GfxEnt_ForEachKey(E_MuFade_script, MuFade_UnlinkSame, fadeKey);
+
+        scale = lbl_8036ACE8;
+        if (angle != (f32)M2C_FIELD(unit, s16 *, 0x15C) / scale) {
+            M2C_FIELD(unit, s16 *, 0x15C) = (s16)(s32)(scale * angle);
+        }
+
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        if (unit[2] != 0) {
+            fn_8004FE98(unit, 0);
+        }
+
+        flags = M2C_FIELD(self, u16 *, 0x52);
+        alpha = 0xFF;
+        if (flags & 0x10) {
+            alpha = 0xFF;
+        }
+        if (flags & 0x20) {
+            alpha = 0;
+        }
+        if ((u8)(gMapBlendMode - 1) <= 1) {
+            unit = M2C_FIELD(self, u8 **, 0x30);
+            if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
+                (gBattleMap + x + y * 0x40)[0x200D] == 0) {
+                alpha = 0;
+            }
+        }
+
+        Unit_SetModelAlpha(M2C_FIELD(self, void **, 0x30), alpha);
+    }
+
+    slot = self[0x6A];
+    if ((s8)slot != -1) {
+        DebugPrint((const char *)(MoveAnim_str + 0x4C3),
+                   **(const char ***)(gSeCueSlots + slot * 0x30));
+        SeCue_FadeOut((s8)self[0x6A], 0xFA);
+    }
+
+    fn_800C4588(M2C_FIELD(self, void **, 0x54));
+    M2C_FIELD(self, void **, 0x54) = NULL;
+    fn_800C4588(M2C_FIELD(self, void **, 0x6C));
+    M2C_FIELD(self, void **, 0x6C) = NULL;
 }
 
 void fn_80188EF4(void *arg0) {
