@@ -1162,15 +1162,7 @@ void fn_8021FA94(void)
     *(u16 *)(gx + 6) = (u16)count;
 }
 
-void GXClearVtxDesc(void) {
-    u32* temp_r4 = (u32*)0x803B81A0;
-    temp_r4[0x14/4] = 0;
-    temp_r4[0x14/4] = (temp_r4[0x14/4] & ~0x600) | 0x200;
-    temp_r4[0x18/4] = 0;
-    ((u8*)0x803B81A0)[0x4D4] = 0;
-    ((u8*)0x803B81A0)[0x4D5] = 0;
-    temp_r4[0x5AC/4] |= 0x8;
-}
+void GXClearVtxDesc(void) { extern u16 *const __GXData; u32 zero=0; u32 *gx=(u32*)__GXData; gx[0x14/4]=zero; gx[0x14/4]=__rlwimi(gx[0x14/4],1,9,21,22); gx[0x18/4]=zero; ((u8*)gx)[0x4D4]=zero; ((u8*)gx)[0x4D5]=zero; gx[0x5AC/4]|=8; }
 
 s32 GXSetVtxAttrFmtv(s32 arg0)
 {
@@ -1352,15 +1344,16 @@ u16 fn_80220970(void) {
     return M2C_FIELD(__peReg, u16 *, 0xE);
 }
 
-void fn_802209FC(void) {
-    extern u16 *__GXData;
-    volatile u8 *fifo = (volatile u8 *)0xCC008000;
-    u32 *gx;
-    u8 command = 0x61;
-    gx = (u32 *)__GXData;
-    *fifo = command;
-    *(volatile u32 *)fifo = gx[0x1DC / 4];
-    ((u16 *)gx)[1] = 0;
+void fn_802209FC(void)
+{
+  extern u16 *__GXData;
+  u8 cmd;
+  u16 *gx;
+  cmd = 0x61;
+  gx = __GXData;
+  *(u8 *)0xCC008000 = cmd;
+  *(u32 *)0xCC008000 = *(u32 *)((u8 *)gx + 0x1DC);
+  gx[1] = 0;
 }
 
 void fn_80220A20(s32 arg0, u8 arg1) {
@@ -1641,8 +1634,15 @@ void fn_80220F84(u32 arg0, u32 arg1) {
     *(u16 *)(gx + 2) = 0;
 }
 
-s32 fn_80220FC4(s32 arg0, s32 arg1) {
-    return (arg0 - arg1) * 0x1400 >> 0x10;
+void fn_80220FC4(u32 arg0,u32 arg1,u32 arg2) {
+extern u32 __GXData;
+u8 *gx=(u8*)__GXData;
+u8 *reg=gx+arg0*4;
+*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),arg1,18,13,13);
+*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),(u8)arg2,19,12,12);
+*(volatile u8*)0xCC008000=0x61;
+*(volatile u32*)0xCC008000=*(u32*)(reg+0xB8);
+*(u16*)(gx+2)=0;
 }
 
 void fn_8022100C(u32 arg0) {
@@ -1654,6 +1654,8 @@ void fn_8022100C(u32 arg0) {
  gxData[0x5ac / 4] |= 4;
 }
 
+#ifndef GXWGFifo_DEFINED
+#define GXWGFifo_DEFINED
 typedef union {
     u8 u8;
     u16 u16;
@@ -1665,15 +1667,16 @@ typedef union {
 } PPCWGPipe;
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
+#endif
 
 void fn_80221034(s32 arg0) {
 extern u16 *__GXData;
 u32 *gx=(u32*)__GXData;
 gx[0x204/4]=__rlwimi(gx[0x204/4],arg0,19,12,12);
-*(u8*)0xCC008000=0x61;
-*(u32*)0xCC008000=0xFE080000;
-*(u8*)0xCC008000=0x61;
-*(u32*)0xCC008000=gx[0x204/4];
+*(volatile u8*)0xCC008000=0x61;
+*(volatile u32*)0xCC008000=0xFE080000;
+*(volatile u8*)0xCC008000=0x61;
+*(volatile u32*)0xCC008000=gx[0x204/4];
 }
 
 void fn_80221068(void)
