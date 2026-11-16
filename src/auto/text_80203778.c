@@ -213,17 +213,19 @@ void PPCMtpmc4(u32 arg0) {
     (void)arg0;
 }
 
-u32 PPCMffpscr(void) {
+#pragma intrinsic __mffs
+u32 PPCMffpscr(void)
+{
+    f64 pad;
     f64 value;
     u32 result;
 
+    pad = value;
     value = __mffs();
-    result = *(u32 *)((u8 *)&value + 4);
-    value = 0.0;
-
+    result = ((u32 *)&value)[1];
+    value = pad;
     return result;
 }
-
 s32 PPCMfhid2(void) {
     return M2C_ERROR(/* unknown instruction: mfspr $r3, HID2 */);
 }
@@ -274,6 +276,12 @@ void fn_802038C0(void) {
     OSReport(lbl_8029B910, temp_r4);
     OSDumpContext((OSContext *)(temp_r4 + 0x80000000));
     PPCHalt();
+}
+
+void __DBExceptionDestination(void);
+void fn_802038C0(void);
+void __DBExceptionDestination(void) {
+    fn_802038C0();
 }
 
 s32 __DBIsExceptionMarked(u8 arg0) {
@@ -467,14 +475,17 @@ void OSExceptionInit(void) {
 }
 #pragma use_lmw_stmw reset
 
-void __OSDBIntegrator(void) {
-    volatile u32 *ptr;
+void __OSDBIntegrator(void)
+{
+    u32 *ptr = (u32 *)0x40;
+    u32 lr;
     u32 value;
 
-    ptr = (volatile u32 *)0x40;
-    ptr[3] = (u32)__builtin_return_address(0);
-    value = ptr[2];
+    lr = (u32)__builtin_return_address(0);
+    *(ptr + 3) = lr;
+    value = *(ptr + 2);
     value |= 0x80000000;
+    __builtin_mtlr(value);
     __builtin_mtmsr(0x30);
 }
 
@@ -526,12 +537,13 @@ volatile u32 __PIRegs[64] : 0xCC006000;
 u8 fn_80204410(void) {
     return (u8)__PIRegs[9];
 }
-#pragma peephole on
+#pragma peephole off
 void OSRegisterVersion(s32 arg0) {
+    void OSReport(void *, ...);
     extern u32 lbl_80366F24;
-    OSReport(&lbl_80366F24, (u32)arg0);
+    OSReport(&lbl_80366F24, arg0);
 }
-
+#pragma peephole on
 void OSInitAlarm(void) {
     struct AlarmQueue {
         void *head;
@@ -925,6 +937,11 @@ u32 OSAllocFromArenaLo(u32 arg0, u32 arg1) {
     return temp_r6;
 }
 
+void DCEnable(void)
+{
+    __sync();
+}
+
 void DCInvalidateRange(s32 arg0, u32 arg1) {
     s32 var_r3;
     u32 var_ctr;
@@ -997,7 +1014,22 @@ void ICInvalidateRange(void *addr, u32 nBytes) {
     __isync();
 }
 
+s32 ICFlashInvalidate(void) {
+    M2C_ERROR(/* unknown instruction: mtspr HID0, $r3 */);
+    return M2C_ERROR(/* unknown instruction: mfspr $r3, HID0 */) | 0x800;
+}
+
+void ICEnable(void)
+{
+    __isync();
+}
+
 void fn_80205348(s32 arg0, s32 arg1, u32 arg2) {
+    M2C_ERROR(/* unknown instruction: mtspr DMA_U, $r6 */);
+    M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r6 */);
+}
+
+void fn_8020536C(s32 arg0, s32 arg1, u32 arg2) {
     M2C_ERROR(/* unknown instruction: mtspr DMA_U, $r6 */);
     M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r6 */);
 }
@@ -1483,13 +1515,13 @@ void fn_80206658(void) {
 }
 
 void fn_802067E0(s32 arg0) {
+    M2C_UNK ICFlashInvalidate();
     ICFlashInvalidate();
-    sync();
-    isync();
+    M2C_SYNC();
+    M2C_SYNC();
 }
 
 void fn_80206808(void) {
-    return;
 }
 
 void fn_8020681C(s32 arg0, s32 arg1, s32 arg2) {
@@ -2139,6 +2171,11 @@ color=palette[(color>>(6-(sx%4)*2))&3];
 if(arg4) *arg4=((u8*)h)[h->widthOffset+index];
 return arg0;
 }
+
+s32 OSEnableInterrupts(void) {
+    return 0;
+}
+
 #pragma global_optimizer reset
 void *__OSSetInterruptHandler(s32 arg0, void *arg1) {
     extern void *InterruptHandlerTable_803684C8;
@@ -2505,11 +2542,13 @@ int __OSModuleInit(void)
 }
 
 s32 fn_802083C8(s32 arg0) {
-    if (arg0 != 0) {
-        *(s16 *)0xCC004010 = 0xFF;
-        __OSMaskInterrupts(0xF0000000);
-    }
-    return 1;
+s32 __OSMaskInterrupts(u32);
+if (arg0 != 0) {
+u16 *regs = (u16*)0xCC000000;
+regs[0x4010/2] = 0xFF;
+__OSMaskInterrupts(0xF0000000);
+}
+return 1;
 }
 
 s32 Config24MB(void) {
@@ -2537,11 +2576,9 @@ s32 Config24MB(void) {
     return 0;
 }
 
-s32 RealMode(s32 arg0) {
-    M2C_ERROR(/* unknown instruction: mtsrr0 $r3 */);
-    M2C_ERROR(/* unknown instruction: mfmsr $r3 */);
-    M2C_ERROR(/* unknown instruction: rfi */);
-    return M2C_ERROR(/* unknown instruction: mtsrr1 $r3 */);
+u32 RealMode(u32 addr)
+{
+    return addr & 0x3FFFFFFF;
 }
 
 void fn_802086A0(void* arg0) {
