@@ -1184,31 +1184,23 @@ s32 fn_802190A4(s32 chan, u32 addr, u32 length, void *dst, void *callback) {
     return __CARDReadPage(chan, fn_80218FC8);
 }
 
-s32 fn_802191F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, s32)) {
+s32 fn_802191F0(s32 chan, u32 addr, s32 length, void *dst, void *callback) {
     extern u16 __CARDBlock[];
-    extern void *fn_80219108;
-    s32 temp_r5;
-    u16 move_cost;
-    void *unit_ptr;
-    
-    // Set up pointer using the original register sequence
-    s32 r9 = arg0 * 0x110;
-    unit_ptr = (void *)&__CARDBlock[r9 / sizeof(u16)];
-    
-    if (*(s32 *)unit_ptr == 0) {
+    void fn_80219108();
+    s32 fn_802177E0(s32, void *);
+    u8 *card;
+    s32 sector;
+
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (*(s32 *)card == 0) {
         return -3;
     }
-    
-    *(void **)((char *)unit_ptr + 0xD4) = arg4;
-    
-    move_cost = *(u16 *)((char *)unit_ptr + 0xA);
-    temp_r5 = arg2 / (s32)move_cost;
-    
-    *(s32 *)((char *)unit_ptr + 0xAC) = temp_r5;
-    *(s32 *)((char *)unit_ptr + 0xB0) = arg1;
-    *(s32 *)((char *)unit_ptr + 0xB4) = arg3;
-    
-    return fn_802177E0(&fn_80219108, temp_r5, move_cost);
+    *(void **)(card + 0xD4) = callback;
+    sector = *(u16 *)(card + 0xA);
+    *(u32 *)(card + 0xAC) = length / sector;
+    *(u32 *)(card + 0xB0) = addr;
+    *(void **)(card + 0xB4) = dst;
+    return fn_802177E0(chan, fn_80219108);
 }
 
 s32 __CARDGetFatBlock(void *arg0) {
@@ -2555,12 +2547,12 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
 
 void fn_8021C02C(s32 *arg0) {
     s32 fn_80217B18(s32, s32 *);
-    void __CARDPutControlBlock(s32, s32);
+    void fn_80217BD0(s32, s32);
     s32 spC;
 
     if (fn_80217B18(*arg0, &spC) < 0) {
         *arg0 = -1;
-        __CARDPutControlBlock(spC, 0);
+        fn_80217BD0(spC, 0);
         return;
     }
     return;
