@@ -651,16 +651,18 @@ void GXCopyTex(void *dest, u8 clear) {
     M2C_FIELD(__GXData, u16 *, 0x2) = 0;
 }
 
-void fn_80221D34(void) {
-    register unsigned short *gx_data = __GXData;
-    register volatile u8 *fifo8 = (volatile u8 *)0xCC008000;
-    register volatile u32 *fifo32 = (volatile u32 *)0xCC008000;
-
-    *fifo8 = 0x61;
-    *fifo32 = 0x550003FF;
-    *fifo8 = 0x61;
-    *fifo32 = 0x560003FF;
-    *(volatile u16 *)((u8 *)gx_data + 2) = 0;
+void fn_80221D34(void)
+{
+  u8 cmd = 0x61;
+  u16 *gx = __GXData;
+  u32 a = 0x55000000;
+  u32 b;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = a + 0x3FF;
+  b = 0x56000000;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = b + 0x3FF;
+  __GXData[1] = 0;
 }
 
 void fn_80221D6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
@@ -846,15 +848,15 @@ void GXSetChanMatColor(s32 arg0, void *arg1) {
 
 #pragma scheduling off
 void GXSetCullMode(u32 arg0) {
-    u32 lo;
-    u32 reg;
-
-    lo = (u8)arg0;
-    reg = M2C_FIELD(__GXData, u32 *, 0x204);
-    M2C_FIELD(__GXData, u32 *, 0x204) = __rlwimi(reg, arg0, 4, 25, 27);
-    GXWGFifo.u8 = 0x10;
-    GXWGFifo.u32 = 0x1009;
-    GXWGFifo.u32 = lo;
-    M2C_FIELD(__GXData, u32 *, 0x5AC) |= 4;
+u32 *gxData = (u32 *)__GXData;
+u32 count = (u8)arg0;
+u8 command = 0x10;
+u32 value = __rlwimi(gxData[0x204/4], count, 4,25,27);
+u8 *fifo = (u8 *)0xCC008000;
+gxData[0x204/4] = value;
+*(volatile u8 *)fifo = command;
+*(volatile u32 *)fifo = 0x1009;
+*(volatile u32 *)fifo = count;
+gxData[0x5AC/4] |= 4;
 }
-#pragma scheduling on
+#pragma scheduling reset
