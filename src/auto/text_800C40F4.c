@@ -527,13 +527,17 @@ s32 fn_800C4638(s32 arg0) {
 
 void Heap_AdjustExtent(s32 arg0) {
     extern HeapC55 *lbl_80367868;
-    HeapC55 *g = lbl_80367868;
     HeapC55 *node;
+    HeapC55 *g;
+    HeapC55 *next;
 
-    for (node = g->free; node->next != NULL; node = node->next) {
+    g = lbl_80367868;
+    node = g->free;
+    while ((next = node->next) != NULL) {
+        node = next;
     }
-    g->extent += arg0;
     node->size += arg0;
+    g->extent += arg0;
 }
 
 #pragma global_optimizer off
@@ -1914,15 +1918,62 @@ void fn_800C8F48(void *arg0) {
     fn_800C802C(arg0, *(s32 *)((u8 *)arg0 + 0x20) + 1);
 }
 
+int fn_800C8F70(void *arg0, int arg1) {
+    void *strcpy(char *, const char *);
+    void Str_CopyPad(void *, void *, u32);
+    extern char gStringErrorMsgs[];
+
+    typedef struct {
+        u32 words[8];
+    } Val32;
+
+    u8 *self;
+    int index;
+    Val32 temp;
+    Val32 copy;
+    u32 value;
+
+    self = (u8 *)arg0;
+    index = arg1;
+
+    if (index >= *(int *)(self + 0x18)) {
+        *(u32 *)(self + 0x1C) = 0;
+        return 0;
+    }
+
+    strcpy((char *)(self + 0x28), gStringErrorMsgs + 4);
+
+    temp.words[0] = 0;
+    temp.words[1] = 0;
+    temp.words[2] = 0;
+    temp.words[3] = 0;
+
+    Str_CopyPad(&temp, gStringErrorMsgs + 4, 0x20);
+
+    copy = temp;
+    *(Val32 *)(self + 0x40) = copy;
+
+    if (index < *(int *)(self + 0x18)) {
+        value = ((u32 *)(*(void **)(self + 0x14)))[index];
+    } else {
+        value = 0;
+    }
+
+    *(u32 *)(self + 0x1C) = value;
+    *(int *)(self + 0x20) = index;
+
+    return 1;
+}
+
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
-    M2C_UNK *String_CStr(void *);
-    char *strcpy(char *, const char *);
+    M2C_UNK *fn_800C93EC(void *);
+    char *fn_80234450(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    strcpy((char *)arg0 + 0x28, (char *)String_CStr(arg1));
+    fn_80234450((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
     b = arg2[1];
     a = arg2[0];
@@ -2669,6 +2720,58 @@ void String_InitFromRange(String *str, char *begin, char *end) {
         *(u8 *)(self->data + len) = gStringNulChar;
     }
 }
+
+#pragma use_lmw_stmw on
+void String_Resize(String *self, u32 newSize, s32 doCopy) {
+    void *Heap_Alloc(u32);
+    void Heap_Free(void *);
+    void *memcpy(void *, void *, u32);
+    void fprintf(void *, const char *, ...);
+    void abort(void);
+    extern char __files[];
+    extern char gStringErrorMsgs[];
+    extern u8 lbl_80366E43;
+
+    u32 minCap;
+    u32 *pCap;
+    char *buf;
+    u32 cap;
+
+    if (newSize > (u32)-2) {
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x171);
+        abort();
+    }
+    if (newSize > self->cap) {
+        minCap = 3;
+        if (self->cap < 3) {
+            pCap = &minCap;
+        } else {
+            pCap = &self->cap;
+        }
+        cap = *pCap;
+        while (cap < newSize) {
+            cap = (cap * 2 + 3) - ((cap * 2) & 3);
+        }
+        buf = (char *)Heap_Alloc(cap + 1);
+        if (buf == NULL) {
+            fprintf(__files + 0xA0, gStringErrorMsgs + 0x7C);
+            abort();
+        }
+        if (self->data != NULL) {
+            if ((u8)doCopy != 0) {
+                memcpy(buf, self->data, self->size);
+            }
+            Heap_Free(self->data);
+        }
+        self->data = buf;
+        self->cap = cap;
+    }
+    if (self->data != NULL) {
+        *(u8 *)(self->data + newSize) = lbl_80366E43;
+    }
+    self->size = newSize;
+}
+#pragma use_lmw_stmw reset
 
 void fn_800CA91C(void *arg0)
 {
@@ -4288,6 +4391,82 @@ void fn_800CF27C(s32 arg0, s32 arg1, s32 arg2)
     fn_801C6CBC(&color, arg1, lbl_80367884, arg2);
 }
 
+void fn_800CF2C8(void *arg0, s32 arg1, s32 arg2) {
+    void fn_801C6CBC(u32 *, s32, s32, s32);
+    s32 Unit_GetActor(void *);
+    s32 fn_801C6E60(s32);
+    s32 fn_80116604(void *);
+
+    extern u8 *gGame;
+    extern s32 lbl_80367884;
+
+    u8 *self;
+    u8 tmp[4];
+    u32 color;
+    u8 value;
+    void *unit;
+    void *other;
+    s32 actor;
+
+    self = (u8 *)arg0;
+
+    value = *(u32 *)(gGame + 0x18C);
+
+    tmp[0] = value;
+    tmp[1] = value;
+    tmp[2] = value;
+    tmp[3] = 0xFF;
+
+    color = *(u32 *)tmp;
+
+    fn_801C6CBC(&color, arg1, lbl_80367884, arg2);
+
+    unit = *(void **)(self + 0x84);
+
+    if (unit != NULL) {
+        actor = Unit_GetActor(unit);
+        fn_801C6E60(actor);
+
+        other = (void *)fn_80116604(unit);
+
+        if (other != NULL) {
+            if (Unit_GetActor(other) != 0) {
+                fn_801C6E60(Unit_GetActor(other));
+            }
+        }
+    }
+
+    unit = *(void **)(self + 0x88);
+
+    if (unit != NULL) {
+        actor = Unit_GetActor(unit);
+        fn_801C6E60(actor);
+
+        other = (void *)fn_80116604(unit);
+
+        if (other != NULL) {
+            if (Unit_GetActor(other) != 0) {
+                fn_801C6E60(Unit_GetActor(other));
+            }
+        }
+    }
+
+    unit = *(void **)(self + 0x8C);
+
+    if (unit != NULL) {
+        actor = Unit_GetActor(unit);
+        fn_801C6E60(actor);
+
+        other = (void *)fn_80116604(unit);
+
+        if (other != NULL) {
+            if (Unit_GetActor(other) != 0) {
+                fn_801C6E60(Unit_GetActor(other));
+            }
+        }
+    }
+}
+
 void fn_800CF500(void *arg0, void *arg1, void *arg2)
 {
     void fn_800E7AD4(void *, void *, s32, u8, u8);
@@ -5721,18 +5900,15 @@ void fn_800D6874(void) {
 }
 
 #pragma scheduling off
-void fn_800D6878(void *arg0, u8 *arg1) {
-    u32 z;
+void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
     u8 v;
-    u8 *mid;
-
-    z = 0;
+    void *mid;
     v = *arg1;
-    *(u32 *)arg0 = z;
+    *(u32 *)arg0 = (u32)arg2;
     mid = (u8 *)arg0 + 4;
-    *(u32 *)mid = z;
+    *(u32 *)((u8 *)arg0 + 4) = (u32)arg2;
     *((u8 *)arg0 + 8) = v;
-    *(u8 **)((u8 *)arg0 + 12) = mid;
+    *(void **)((u8 *)arg0 + 0xC) = mid;
 }
 #pragma scheduling reset
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
@@ -10125,25 +10301,27 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 }
 #pragma cplusplus off
 
-#pragma optimization_level 1
-void fn_800E2138(void *arg0, void *arg1, s32 arg2) {
-    volatile s32 spC;
-    volatile s32 sp8;
-    s32 temp_r6;
-    s32 temp_r0;
-    s32 temp_r4;
+#pragma scheduling off
+void fn_800E2138(s32 *arg0, s32 *arg1, s32 arg2) {
+    s32 t6;
+    s32 t0;
 
-    temp_r6 = M2C_FIELD(arg1, s32 *, 0);
-    temp_r0 = temp_r6 + (arg2 * 4);
-    temp_r4 = M2C_FIELD(arg1, s32 *, 4);
+    t6 = arg1[0];
+    t0 = t6 + (arg2 * 4);
+    {
+        volatile s32 spC;
+        volatile s32 sp8;
+        s32 t4;
 
-    sp8 = temp_r6;
-    M2C_FIELD(arg0, s32 *, 0) = temp_r0;
-    spC = temp_r4;
-    sp8 = temp_r0;
-    M2C_FIELD(arg0, s32 *, 4) = temp_r4;
+        t4 = arg1[1];
+        sp8 = t6;
+        arg0[0] = t0;
+        spC = t4;
+        sp8 = t0;
+        arg0[1] = t4;
+    }
 }
-#pragma optimization_level reset
+#pragma scheduling on
 s32 fn_800E2168(s32 *arg0, s32 *arg1) {
     return (s32) (*arg0 - *arg1) / 4;
 }
@@ -11454,6 +11632,59 @@ u32 Actor_SetNodeLink(void *actor, u32 nodeNameA, u32 nodeNameB, u8 activate) {
         GActor_SetNodeLinkActive(*(u32 *)((char *)actor + 0xE8), 1);
     }
     return *(u32 *)((char *)actor + 0xE8);
+}
+
+void fn_800E4D24(void *arg0) {
+    void *GActor_Create(void);
+    void Model_SetColor(void *, s32, s32, s32);
+    void Model_SetAlpha(void *, u8);
+    u8 *Light_GetChannel(s32);
+
+    u8 *self;
+    u8 *model;
+    u8 *light;
+    s32 a;
+    s32 b;
+    s32 alpha;
+
+    self = (u8 *)arg0;
+
+    if (*(void **)(self + 0xDC) != 0) {
+        model = (u8 *)GActor_Create();
+        *(void **)(self + 0xE4) = model;
+
+        *(u32 *)(model + 4) = *(u32 *)(self + 0xE0);
+        self[0xD3] = 1;
+
+        Model_SetColor(
+            *(void **)(self + 0xE4),
+            0,
+            0,
+            0
+        );
+
+        light = Light_GetChannel(0);
+
+        a = (light[0] + light[1] + light[2]) / 3;
+        b = (light[4] + light[5] + light[6]) / 3;
+
+        alpha = (b * (255 - a)) / 255;
+
+        if (alpha < 0) {
+            alpha = 0;
+        }
+
+        if (alpha > 0xC0) {
+            alpha = 0xC0;
+        }
+
+        Model_SetAlpha(*(void **)(self + 0xE4), (u8)alpha);
+
+        model = *(u8 **)(self + 0xE4);
+        model[0x87] = 0;
+
+        *(u32 *)model |= 0x4001E400;
+    }
 }
 
 void fn_800E4E3C(void *arg0) {
@@ -23396,19 +23627,15 @@ s32 TagWin_OnOk(void) {
     String s10;
     void *scratchC;
     void *scratch8;
-    char *cstr28;
     s32 id;
     void *inner;
-    char *cstr34;
 
     String_Init(&s34, (char *)fn_800DC3C0(*(void **)((u8 *)lbl_80367918 + 0x424)), &scratchC);
     String_Init(&s28, (char *)fn_800DC3C0(*(void **)((u8 *)lbl_803678A8 + 0x424)), &scratch8);
     inner = *(void **)((u8 *)gWin3 + 0x424);
     id = *(s32 *)((u8 *)inner + 0xB4);
     fn_800D758C(lbl_80367918);
-    cstr28 = String_CStr(&s28);
-    cstr34 = String_CStr(&s34);
-    fn_80232138(TagWin_str, cstr34, cstr28, id);
+    fn_80232138(TagWin_str, String_CStr(&s34), String_CStr(&s28), id);
     String_Copy(&s1C, &s34);
     String_Copy(&s10, &s28);
     fn_800DA530(&s1C, &s10, id);
