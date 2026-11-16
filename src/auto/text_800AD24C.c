@@ -573,6 +573,53 @@ s32 fn_800ADEB0(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + ((arg1 & 0xFF) << 8) + ((arg2 & 0xFF) << 16);
 }
 
+s32 fn_800AE0D4(s32 arg0) {
+    void fn_8002F728(void *);
+    void Allegiance_FillMask(s32, void *);
+    u8 Map_IsInViewBounds(void *, u8, u8);
+    u8 Unit_TickTransformGaugeFast(void *);
+    void fn_8002F6E8(void *, u8, u8, u8, s32);
+    void *Process_CreateChild(void *, s32);
+    extern u8 gTargetList[];
+    extern u8 gUnits[];
+    extern u8 gBattleMap[];
+    extern u8 lbl_8028CF68[];
+
+    u8 allegMask;
+    s32 i;
+    u8 *unit;
+
+    fn_8002F728(gTargetList);
+    Allegiance_FillMask(0, &allegMask);
+    i = 1;
+    do {
+        if ((u8)i != 0) {
+            unit = gUnits + (((u8)i - 1) * 0x280);
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0
+            && *((u8 *)&allegMask + *((u8 *)*(void **)(unit + 0x190) + 8)) != 0
+            && !(*(u32 *)(unit + 0x1A0) & 4)
+            && Map_IsInViewBounds(gBattleMap, unit[0x19E], unit[0x19F]) != 0
+            && Unit_TickTransformGaugeFast(unit) != 0) {
+            fn_8002F6E8(
+                gTargetList,
+                unit[0x19E],
+                unit[0x19F],
+                unit[0x198],
+                0
+            );
+        }
+        i += 1;
+    } while (i <= 0x9F);
+    if (*(s32 *)gTargetList != 0) {
+        Process_CreateChild(lbl_8028CF68, arg0);
+        return 1;
+    }
+    return 0;
+}
+
 extern void Unit_ApplyTransform(void);
 void fn_800AE1FC(void) {
     TargetList_GetCurrent(&gTargetList);
