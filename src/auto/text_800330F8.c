@@ -2541,21 +2541,14 @@ u8 fn_8003863C(u8 *arg0) {
     return arg0[0x19A];
 }
 
-#pragma optimization_level 2
+#pragma scheduling off
 void fn_8003868C(void *arg0, s32 arg1) {
-    if (arg1 != 0xff) {
-        if (arg1 < 0) {
-            return;
-        }
-        if (arg1 <= 0x64) {
-            goto store;
-        }
+    if (arg1 != 0xff && (arg1 < 0 || arg1 > 0x64)) {
         return;
     }
-store:
     *(u8 *)((u8 *)arg0 + 0x19B) = (u8)arg1;
 }
-#pragma optimization_level 4
+#pragma scheduling reset
 u8 fn_800386B0(void *arg0) {
     u8 temp_r0;
 
@@ -9557,7 +9550,11 @@ void fn_80049CB4(s32 arg0, void *arg1) {
 }
 
 #pragma peephole off
-void fn_80049D08(void *arg0) { void fn_8005FEE8(void *, f32); fn_8005FEE8(&((f32*)arg0)[5], (f32)0); }
+void fn_80049D08(void *arg0) {
+    extern f32 lbl_80368F2C;
+    void fn_8005FEE8(void *, f32);
+    fn_8005FEE8((char *)arg0 + 0x14, lbl_80368F2C);
+}
 #pragma peephole on
 void fn_80049D30(s32 arg0) {
     void fn_8005FEE8(s32, f32);
