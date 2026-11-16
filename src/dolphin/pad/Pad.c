@@ -434,23 +434,28 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
     OSRestoreInterrupts(enabled);
 }
 
-void PADSetSpec(s32 arg0) {
+void PADSetSpec(s32 arg0)
+{
     extern s32 __PADSpec;
-    extern M2C_UNK SPEC0_MakeStatus;
-    extern M2C_UNK SPEC1_MakeStatus;
-    extern M2C_UNK PADMakeStatus;
     extern s32 lbl_80366FB0;
-    extern M2C_UNK *lbl_80366FB4;
+    extern void (*lbl_80366FB4)(s32, PADStatus *, u32 *);
+    void SPEC0_MakeStatus(s32, PADStatus *, u32 *);
+    void SPEC1_MakeStatus(s32, PADStatus *, u32 *);
+    void PADMakeStatus(s32, PADStatus *, u32 *);
+
     __PADSpec = 0;
-    switch (arg0) {                                 /* irregular */
+    switch (arg0) {
     case 0:
-        lbl_80366FB4 = &SPEC0_MakeStatus;
+        lbl_80366FB4 = SPEC0_MakeStatus;
         break;
     case 1:
-        lbl_80366FB4 = &SPEC1_MakeStatus;
+        lbl_80366FB4 = SPEC1_MakeStatus;
         break;
-    default:
-        lbl_80366FB4 = &PADMakeStatus;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        lbl_80366FB4 = PADMakeStatus;
         break;
     }
     lbl_80366FB0 = arg0;
@@ -923,7 +928,7 @@ void fn_80213D2C(s32 arg0, OSContext *context) {
 }
 
 void fn_80213DD8(void) {
-    void (*funcPtr)(void) = (void (*)(void))lbl_803685E8;
+    void (*funcPtr)(void) = lbl_803685E8;
     if (funcPtr != NULL) {
         funcPtr();
     }
