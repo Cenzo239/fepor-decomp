@@ -465,6 +465,7 @@ void fn_80129464(void *arg0) {
     f32 f31;
     f32 f30;
     s32 b0;
+    s32 t;
     s32 b1;
     void *ptr;
     void *self;
@@ -474,10 +475,11 @@ void fn_80129464(void *arg0) {
     b0 = *(s8 *)ptr;
     b1 = *((s8 *)ptr + 1);
     fn_800498A4(ptr, self, 0);
-    ptr = (void *)Effect_Create(lbl_80275740 + 0x15B, self);
-    f31 = gTileCenter + (f32)b1;
+    t = b1;
+    b1 = Effect_Create(lbl_80275740 + 0x15B, self);
+    f31 = gTileCenter + (f32)t;
     f30 = gTileCenter + (f32)b0;
-    Effect_SetPos((s32)ptr, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
+    Effect_SetPos(b1, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
 }
 
 void fn_8012955C(void) {
@@ -1274,6 +1276,27 @@ s32 fn_8012AA68(void *arg0) {
     return 1;
 }
 
+void fn_8012AA90(s32 arg0,s32 arg1,void *arg2) {
+void MapObjEvent_Remove(void *,s8,s8,s32);
+void MapObjEvent_Push(void *,s8,s8,s32,s32);
+void *Map_Get(void);
+void *Map_FindObjAt(void *,s32,s32,s32,s32);
+void fn_800056A0(s32);
+void *Process_CreateChild(void *,void *);
+void *Process_Create(void *,s32);
+void BattleState_SetCamPos(void *,f32,f32);
+void *obj;
+void *proc;
+MapObjEvent_Remove(gMapObjEventList,arg0,arg1,9);
+MapObjEvent_Push(gMapObjEventList,arg0,arg1,0x26,0);
+obj=Map_FindObjAt(Map_Get(),arg0,arg1,0x800,0x10);
+if(!obj) { fn_800056A0(0); return; }
+if(arg2) proc=Process_CreateChild(lbl_80290AA0,arg2);
+else proc=Process_Create(lbl_80290AA0,3);
+M2C_FIELD(proc,void **,0x30)=obj;
+BattleState_SetCamPos(gBattleState,(f32)arg0,(f32)arg1);
+}
+
 /* Fade the map object at +0x30 out if visible, else in; collect linked objs into the fade process. */
 void MapObj_ToggleLinkedFade(void *proc) {
     u8 MapObj_IsVisible(void *);
@@ -1506,20 +1529,20 @@ void fn_8012B488(s32 arg0) {
     extern u8 lbl_80290C44[];
     extern u8 lbl_802758F8[];
     void *self;
-    void *src;
     s32 i;
+    void *src;
     s32 off;
-    s32 v;
+    void *arr;
 
     self = Process_CreateChild(lbl_80290C44, arg0);
     src = FileCache_Load(lbl_802758F8 + 0x21);
     *(s32 *)((u8 *)self + 0x38) = fn_8003F47C();
-    v = (s32)Heap_AllocRaw(*(s32 *)((u8 *)self + 0x38) << 2);
+    arr = Heap_AllocRaw(*(s32 *)((u8 *)self + 0x38) << 2);
     i = 0;
-    *(s32 *)((u8 *)self + 0x3C) = v;
     off = i;
+    *(void **)((u8 *)self + 0x3C) = arr;
     while (i < *(s32 *)((u8 *)self + 0x38)) {
-        v = fn_8003F224(src, i);
+        s32 v = fn_8003F224(src, i);
         i += 1;
         *(s32 *)((u8 *)*(void **)((u8 *)self + 0x3C) + off) = v;
         off += 4;
