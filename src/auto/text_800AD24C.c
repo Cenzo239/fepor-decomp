@@ -974,6 +974,44 @@ void Battle_DrawPhaseBanner(void *proc) {
     Prim2D_ResetState();
 }
 
+void fn_800AEB90(void) {
+    extern u16 gSoundSys[];
+    void DCFlushRange(void *, u32);
+    u8 *sys;
+    s16 *out;
+    u32 count;
+    s16 *read;
+    u32 size;
+    u8 *src;
+    s16 *tmp;
+    void (*callback)(void) = *(void (**)(void))((u8 *)gSoundSys+0x6D8);
+    if (callback) callback();
+    sys=(u8 *)gSoundSys;
+    DCFlushRange(*(void **)(sys+0x450),*(u32 *)(sys+0x454));
+    src=*(u8 **)(sys+0x450);
+    size=*(u32 *)(sys+0x454);
+    read=(s16 *)((u8 *)gSoundSys+0x458);
+    tmp=read;
+    while ((s32)size != 0) {
+        *tmp++ = (src[0]<<8) | src[1];
+        src+=2;
+        size-=2;
+    }
+    count=*(u32 *)(sys+0x454)>>1;
+    out=(s16 *)((u8 *)gSoundSys+(*(u16 *)((u8 *)gSoundSys+0x44C)<<11)+0x6DC);
+    out+=*(u32 *)((u8 *)gSoundSys+0x26DC);
+    while ((s32)count != 0) {
+        *out++ = *read;
+        read+=2;
+        if (++*(u32 *)((u8 *)gSoundSys+0x26DC)>=0x400) {
+            *(u32 *)((u8 *)gSoundSys+0x26DC)=0;
+            if (++*(u16 *)((u8 *)gSoundSys+0x44C)>=4) *(u16 *)((u8 *)gSoundSys+0x44C)=0;
+            out=(s16 *)((u8 *)gSoundSys+(*(u16 *)((u8 *)gSoundSys+0x44C)<<11)+0x6DC);
+        }
+        count-=2;
+    }
+}
+
 #pragma use_lmw_stmw on
 void fn_800AECC0(void) {
     void fn_800B1720(void *);
@@ -9855,6 +9893,28 @@ s32 fn_800C39A4(void *convoy, void *item) {
  if(*(void **)((u8 *)convoy+i*8)==item) return i;
  }
  return -1;
+}
+
+s32 fn_800C3C1C(void *arg0, void *arg1) {
+    void Item_Copy(void *, void *);
+    s32 i;
+    u32 v;
+
+    i = 0;
+    v = *((u8 *)arg1 + 5);
+    v = __rlwimi(v, i, 7, 24, 24);
+    *((u8 *)arg1 + 5) = v;
+
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((char *)arg0 + i * 8) == NULL) {
+            goto found;
+        }
+    }
+    return 0;
+
+found:
+    Item_Copy((char *)arg0 + i * 8, arg1);
+    return 1;
 }
 
 /* Return index of first empty convoy item slot, or -1 if full. */
