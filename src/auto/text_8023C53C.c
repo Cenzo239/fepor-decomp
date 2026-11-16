@@ -6069,16 +6069,10 @@ int Sound_FindEntry(int arg0)
 }
 
 void fn_80250A74(s32 arg0, s32 arg1) {
-    void fn_80262354(void);
-    extern u16 gAudioGroupCount;
-    extern u16 gAudioWaveKeyCount;
-    extern u16 lbl_80368A0E;
-    extern u16 gSampleKeyCount;
-    extern u16 lbl_80368A08;
-    extern u16 gAudioTableCount;
+    void fn_80262354(s32, s32);
+    extern u16 gAudioGroupCount, gAudioWaveKeyCount, lbl_80368A0E, gSampleKeyCount, lbl_80368A08, gAudioTableCount;
     extern u16 gAudioTableRanges[];
     s32 i;
-
     gAudioGroupCount = 0;
     gAudioWaveKeyCount = 0;
     lbl_80368A0E = 0;
@@ -6089,7 +6083,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
         gAudioTableRanges[i * 2] = 0;
         gAudioTableRanges[i * 2 + 1] = 0;
     }
-    fn_80262354();
+    fn_80262354(arg0, arg1);
 }
 
 int fn_80250B58(void *arg0, u32 *arg1)
