@@ -150,6 +150,51 @@ void fn_80225F4C(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = -1;
 }
 
+s32 fn_80225F64(void *event) {
+    void fn_802287B0(void *);
+    void fn_802287A8(void *);
+    void fn_80003488(void *, void *, s32);
+
+    u8 *queue;
+    s32 result;
+    s32 index;
+    s32 offset;
+    u32 id;
+
+    result = 0;
+
+    fn_802287B0(&lbl_8033B048);
+
+    queue = (u8 *)&lbl_8033B048;
+
+    if (*(s32 *)(queue + 4) == 2) {
+        result = 0x100;
+    } else {
+        index = (*(s32 *)(queue + 8) +
+                 *(s32 *)(queue + 4)) % 2;
+
+        offset = index * 0xC;
+
+        fn_80003488(queue + 0xC + offset, event, 0xC);
+
+        id = *(u32 *)(queue + 0x24);
+        *(u32 *)(queue + 0x10 + offset) = id;
+
+        id++;
+        *(u32 *)(queue + 0x24) = id;
+
+        if (id < 0x100) {
+            *(u32 *)(queue + 0x24) = 0x100;
+        }
+
+        *(s32 *)(queue + 4) += 1;
+    }
+
+    fn_802287A8(&lbl_8033B048);
+
+    return result;
+}
+
 s32 TRKGetNextEvent(void *event) {
     void fn_802287B0(void *);
     void fn_802287A8(void *);
@@ -2162,6 +2207,24 @@ s32 fn_8022B4AC(s32 arg0) {
         return 2;
     default:
         return 1;
+    }
+}
+
+s32 fn_8022B530(s32 arg0, s32 arg1, s32 *arg2) {
+    s32 fn_80227FDC(void);
+    u8 fn_8022A4E0(u8, s32, s32 *, s32);
+    u8 fn_8022B490(void);
+    s32 length;
+    u8 result;
+    if (fn_8022B490() == 0) return 1;
+    if (fn_80227FDC() == 0) return 1;
+    length = *arg2;
+    result = fn_8022A4E0(0xd0, 1, &length, arg1);
+    *arg2 = length;
+    switch ((s32)result) {
+    case 0: return 0;
+    case 2: return 2;
+    default: return 1;
     }
 }
 
