@@ -294,6 +294,26 @@ void fn_8014D3B4(void *arg0) {
     }
 }
 
+void fn_8014D41C(void) {
+void Allegiance_FillMask(s32, u8 *);
+u8 mask[4];
+s32 i;
+u8 *next;
+u8 *unit;
+Allegiance_FillMask(4,mask);
+for(i=1;i<160;i++){
+u8 id=(u8)i;
+unit=id ? (u8*)gUnits+(id-1)*0x280 : 0;
+if(*(void**)(unit+0x188) && mask[(*(u8**)(unit+0x190))[8]]) *(u16*)(unit+0x22c)=0;
+}
+unit=*(u8**)((u8*)gUnitLists+0x48);
+while(unit) {
+next=*(u8**)(unit+0x184);
+*(u32*)(unit+0x1a0)&=~0x8000;
+unit=next;
+}
+}
+
 void fn_8014D55C(void *arg0) {
 extern u8 gBattle[],gConvoy[],gIconSlots[];
 void fn_8001520C(void *,s32);
