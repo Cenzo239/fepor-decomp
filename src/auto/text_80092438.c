@@ -467,6 +467,22 @@ clamp:
     return arg2;
 }
 
+s32 fn_80092DC4(void *arg0, u16 *arg1) {
+    u8 Status_Test(void *, s32);
+    void *fn_80037C20(void *);
+    u64 *Item_GetFlagsPtr(void *);
+    u16 flags;
+    void *item;
+    if ((*arg1 & 0x800) && Status_Test((u8 *)arg0+0x1BC,6)) return 1;
+    if ((*arg1 & 0x200) && Status_Test((u8 *)arg0+0x1BC,7)) return 1;
+    flags=*arg1;
+    item=fn_80037C20(arg0);
+    if(item && (*Item_GetFlagsPtr(item)&0x40000ULL)) return 0;
+    if(item && (*Item_GetFlagsPtr(item)&0x8000ULL)) flags &= ~2;
+    if(item && (*Item_GetFlagsPtr(item)&0x10000ULL)) flags &= ~0x10;
+    return (*(u16 *)(*(u8 **)((u8 *)arg0+0x18C)+0x3A)&flags)!=0;
+}
+
 u8 fn_80092F38(void *arg0) {
  u8 n=0;
  if(M2C_FIELD(arg0,u32 *,0x1EC)) n=1;
