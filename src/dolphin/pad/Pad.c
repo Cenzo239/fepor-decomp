@@ -1085,6 +1085,42 @@ s32 fn_80214058(void) {
     return temp_r31;
 }
 
+void fn_80214094(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    s32 enabled;
+    u32 ha;
+    u32 t;
+    u32 a1;
+    s32 a0;
+    u32 a2;
+    u32 a3;
+
+    a3 = arg3;
+    a2 = arg2;
+    a0 = arg0;
+    a1 = arg1;
+    enabled = OSDisableInterrupts();
+    ha = 0xCC000000U;
+    t = *(u16 *)(ha + 0x5020);
+    *(u16 *)(ha + 0x5020) = (t & ~0x3FFu) | (a1 >> 16);
+    t = *(u16 *)(ha + 0x5022);
+    *(u16 *)(ha + 0x5022) = __rlwinm(t, 0, 27, 15) | (a1 & 0xFFFF);
+    t = *(u16 *)(ha + 0x5024);
+    *(u16 *)(ha + 0x5024) = (t & ~0x3FFu) | (a2 >> 16);
+    t = *(u16 *)(ha + 0x5026);
+    *(u16 *)(ha + 0x5026) = __rlwinm(t, 0, 27, 15) | (a2 & 0xFFFF);
+    t = *(u16 *)(ha + 0x5028);
+    t = __rlwinm(t, 0, 17, 15);
+    t = __rlwimi(t, a0, 15, 0, 16);
+    *(u16 *)(ha + 0x5028) = t;
+    t = *(u16 *)(ha + 0x5028);
+    *(u16 *)(ha + 0x5028) = (t & ~0x3FFu) | (a3 >> 16);
+    t = *(u16 *)(ha + 0x502A);
+    *(u16 *)(ha + 0x502A) = __rlwinm(t, 0, 27, 15) | (a3 & 0xFFFF);
+    OSRestoreInterrupts(enabled);
+}
+
 #pragma peephole off
 s32 fn_80214184(s32 arg0) {
     s32 OSDisableInterrupts(void);
@@ -1256,6 +1292,33 @@ void fn_80214368(void) {
         memset(slots[5], 0, 0x20);
         DCFlushRange(slots[5], 0x20);
     }
+}
+
+void fn_80215B5C(void) {
+extern u32 *lbl_80368700, *lbl_8036870C;
+extern u32 lbl_80368714, lbl_80368718;
+void fn_80214094(u32,u32,u32,u32);
+if (!lbl_8036870C && lbl_80368700) {
+lbl_8036870C=lbl_80368700;
+lbl_80368700=(u32*)lbl_80368700[0];
+}
+if (lbl_8036870C) {
+if (lbl_8036870C[6] <= lbl_80368718) {
+if (lbl_8036870C[2]==0)
+fn_80214094(lbl_8036870C[2],lbl_8036870C[4],lbl_8036870C[5],lbl_8036870C[6]);
+else
+fn_80214094(lbl_8036870C[2],lbl_8036870C[5],lbl_8036870C[4],lbl_8036870C[6]);
+lbl_80368714=lbl_8036870C[7];
+} else {
+if (lbl_8036870C[2]==0)
+fn_80214094(lbl_8036870C[2],lbl_8036870C[4],lbl_8036870C[5],lbl_80368718);
+else
+fn_80214094(lbl_8036870C[2],lbl_8036870C[5],lbl_8036870C[4],lbl_80368718);
+}
+lbl_8036870C[6]-=lbl_80368718;
+lbl_8036870C[4]+=lbl_80368718;
+lbl_8036870C[5]+=lbl_80368718;
+}
 }
 
 void fn_80215C5C(void) {
