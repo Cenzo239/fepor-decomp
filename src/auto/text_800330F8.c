@@ -250,23 +250,21 @@ void fn_80033E70(void *arg0) {
     M2C_FIELD(arg0, void **, 0x400) = NULL;
 }
 
-void fn_80033E90(void *arg0) {
-    s8 fn_80033F18(void);
-    void *self;
+void fn_80033E90(void *arg0, s32 arg1) {
+    s8 fn_80033F18(void *, s32);
     s8 ret;
     u8 *e;
 
-    self = arg0;
-    *(void **)((u8 *)arg0 + 0x400) = (u8 *)self + *(s16 *)self * 4 + 4;
-    ret = fn_80033F18();
-    e = (u8 *)self + *(s16 *)self * 4 + 4;
+    *(void **)((u8 *)arg0 + 0x400) = (u8 *)arg0 + *(s16 *)arg0 * 4 + 4;
+    ret = fn_80033F18(arg0, arg1);
+    e = (u8 *)arg0 + *(s16 *)arg0 * 4 + 4;
     *e = ret;
     *(s16 *)(e + 2) = 0;
-    *(s16 *)self = *(s16 *)self + 1;
-    e = (u8 *)self + *(s16 *)self * 4 + 4;
+    *(s16 *)arg0 = *(s16 *)arg0 + 1;
+    e = (u8 *)arg0 + *(s16 *)arg0 * 4 + 4;
     *e = 0;
     *(s16 *)(e + 2) = 0;
-    *(s16 *)((u8 *)self + 2) = *(s16 *)self;
+    *(s16 *)((u8 *)arg0 + 2) = *(s16 *)arg0;
 }
 
 #pragma global_optimizer off
@@ -9388,6 +9386,52 @@ void fn_80049144(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x3E) = (u8) M2C_FIELD(temp_r5, u8 *, 0x1E);
     M2C_FIELD(arg0, u8 *, 0x3F) = (u8) M2C_FIELD(temp_r5, u8 *, 0x1F);
     M2C_FIELD(arg0, s32 *, 0x34) = 0;
+}
+
+void fn_80049174(void *arg0, void *arg1, void *arg2, void *arg3) {
+    void Model_SetColor(void *, u8, u8, u8);
+    void Model_SetAlpha(void *, u8);
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, s32);
+    extern u8 lbl_80285710[];
+
+    u8 *self;
+    u8 *color;
+    u8 *process;
+    u32 rgba;
+    u8 *model;
+
+    self = (u8 *)arg0;
+    color = (u8 *)arg2;
+
+    if (arg3 == NULL) {
+        rgba = *(u32 *)color;
+        model = self + 0x14;
+
+        Model_SetColor(
+            model,
+            ((u8 *)&rgba)[0],
+            ((u8 *)&rgba)[1],
+            ((u8 *)&rgba)[2]
+        );
+
+        Model_SetAlpha(model, ((u8 *)&rgba)[3]);
+        return;
+    }
+
+    if (arg1 != NULL) {
+        process = Process_CreateChild(lbl_80285710, arg1);
+    } else {
+        process = Process_Create(lbl_80285710, 3);
+    }
+
+    process[0x40] = color[0];
+    process[0x41] = color[1];
+    process[0x42] = color[2];
+    process[0x43] = color[3];
+
+    *(void **)(process + 0x38) = arg3;
+    *(void **)(process + 0x30) = arg0;
 }
 
 void fn_8004949C(void *arg0) {
