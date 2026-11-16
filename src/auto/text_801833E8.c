@@ -8588,7 +8588,6 @@ void fn_801985F8(void *arg0, s32 arg1) {
 s32 fn_80198640(void *arg0) {
     f32 PSVECDistance(f32 *, f32 *);
     void fn_800DBBC8(f32 *, void *);
-    extern f32 lbl_8036AEA8;
     extern void *gGame;
     f32 result[3];
     f32 pos2[3];
@@ -8597,12 +8596,12 @@ s32 fn_80198640(void *arg0) {
 
     p = pos1;
     p[0] = *(f32 *)((u8 *)arg0 + 0x78);
-    p[1] = lbl_8036AEA8;
-    p[2] = lbl_8036AEA8;
+    p[1] = 0.0f;
+    p[2] = 0.0f;
     p = pos2;
     p[0] = *(f32 *)((u8 *)arg0 + 0x48);
-    p[1] = lbl_8036AEA8;
-    p[2] = lbl_8036AEA8;
+    p[1] = 0.0f;
+    p[2] = 0.0f;
 
     if (PSVECDistance(pos1, pos2) < *(f32 *)((u8 *)gGame + 0x144)) {
         *(u8 *)((u8 *)arg0 + 0x14D) = 1;
