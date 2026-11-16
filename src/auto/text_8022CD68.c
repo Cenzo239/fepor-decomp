@@ -1509,6 +1509,54 @@ s32 fn_80231748(void *arg0) {
  return result;
 }
 
+u32 wcstombs(char *arg0, const u16 *src, u32 arg2) {
+    char *Str_CopyPad(char *,const char *,s32);
+    extern u32 lbl_8036BDF8;
+    char buffer[3];
+    u32 prefixes;
+    s32 count;
+    char *dest;
+    u32 limit;
+    const u16 *p;
+    u32 total;
+    u32 result;
+
+    register u32 ch;
+    char *out;
+    dest=arg0;
+    limit=arg2;
+    total=0;
+    if(dest==0 || src==0) return 0;
+    p=src;
+    while((result=total)<=limit) {
+        ch=*p;
+        if(ch==0) {
+            dest[total]=0;
+            break;
+        }
+        p++;
+        prefixes=lbl_8036BDF8;
+        if(ch<0x80) count=1;
+        else if(ch<0x800) count=2;
+        else count=3;
+        out=buffer+count;
+        switch(count) {
+        case 3:
+            *--out=(ch&0x3F)|0x80;
+            ch=(u16)ch>>6;
+        case 2:
+            *--out=(ch&0x3F)|0x80;
+            ch=(u16)ch>>6;
+        case 1:
+            *--out=ch|((u8*)&prefixes)[count];
+        }
+        if(total+count>limit) break;
+        Str_CopyPad(dest+total,buffer,count);
+        total+=count;
+    }
+    return result;
+}
+
 int fn_80231944(const char *str1, const char *str2, int count) {
  const u8 *s1=(const u8*)str1-1;
  const u8 *s2=(const u8*)str2-1;
@@ -2134,95 +2182,29 @@ do_f:
 }
 
 void fn_80233174(void *arg0, s32 arg1) {
-    s32 var_r4;
-    u8 *var_r5;
-    u8 *var_r8;
-    u8 temp_r0;
-    u8 temp_r7;
-    s32 temp_r0_2;
-    s32 temp_r0_3;
-    s32 temp_r0_4;
-    s32 temp_r0_5;
-    s32 temp_r6;
-    s32 temp_r7_2;
-    s32 temp_r7_3;
-    u8 *temp_r6_2;
-    u8 *temp_r8;
-    
-    var_r4 = arg1;
-    if (var_r4 < 0) {
-        *(u16*)arg0 = 0;
-        ((u8*)arg0)[2] = 1;
-        ((u8*)arg0)[3] = 0x30;
-        return;
-    }
-    temp_r7 = ((u8*)arg0)[2];
-    if (var_r4 >= (s32)temp_r7) {
-        goto block_3;
-    }
-    temp_r6_2 = (u8*)arg0 + var_r4;
-    var_r8 = temp_r6_2 + 5;
-    temp_r0 = *(temp_r6_2 + 5);
-    temp_r0_2 = temp_r0 - 0x30;
-    temp_r7_2 = temp_r0_2;
-    if (temp_r7_2 == 5) {
-        var_r5 = (u8*)arg0 + temp_r7 + 5;
-        goto block_9;
-    } else {
-        if (temp_r7_2 <= 5) {
-            temp_r0_3 = 0;
-            goto block_15;
-        }
-        temp_r0_3 = 1;
-        goto block_15;
-    }
-    
-block_9:
-    var_r5 -= 1;
-    if (var_r5 > var_r8) {
-        temp_r0 = *var_r5;
-        if (temp_r0 == 0x30) {
-            temp_r6 = (u32)temp_r0;
-            goto block_9;
-        } else {
-            temp_r0_3 = 1;
-        }
-    } else {
-        temp_r0_3 = 1;
-    }
-    
-block_15: 
-    if (var_r4 != 0) {
-        temp_r8 = var_r8 - 1;
-        temp_r0 = *temp_r8;
-        temp_r0_5 = temp_r0 + temp_r0_3 - 0x30;
-        temp_r7_3 = temp_r0_5;
-        temp_r0_4 = (temp_r7_3 ^ 9) >> 1;
-        temp_r6 = (u32)(temp_r0_4 - (temp_r0_4 & temp_r7_3));
-        temp_r0_2 = temp_r6 >> 0x1F;
-        
-        if ((temp_r0_2 != 0) || (temp_r7_3 == 0)) {
-            var_r4 -= 1;
-            goto block_15;
-        }
-        *var_r8 = temp_r7_3 + 0x30;
-    }
-    
-    if (temp_r0_3 != 0) {
-        *(u16*)arg0 = (*(u16*)arg0) + 1;
-        ((u8*)arg0)[2] = 1;
-        ((u8*)arg0)[3] = 0x31;
-        return;
-    }
-    
-block_3:
-    if (var_r4 != 0) {
-        ((u8*)arg0)[2] = var_r4;
-        return;
-    }
-    *(u16*)arg0 = 0;
-    ((u8*)arg0)[2] = 1;
-    ((u8*)arg0)[3] = 0x30;
+ u8 *p, *end;
+ s32 carry;
+ s8 digit;
+ if(arg1<0) { zero: *(s16*)((u8*)arg0+2)=0; ((u8*)arg0)[4]=1; ((u8*)arg0)[5]='0'; return; }
+ if(arg1>=((u8*)arg0)[4]) return;
+ p=(u8*)arg0+arg1;
+ digit=p[5]; p+=5;
+ digit=digit-'0';
+ if(digit==5) {
+ end=(u8*)arg0+((u8*)arg0)[4]; end+=5;
+ while(--end>p && (s32)*end=='0') {}
+ if(end==p) carry=p[-1]&1; else carry=1;
+ } else carry=digit>5;
+ digit=9;
+ while(arg1!=0) {
+ s8 value; carry = *--p + carry; value=carry-'0';
+ carry=value>digit;
+ if(carry || value==0) --arg1;
+ else { *p=value+'0'; break; }
+ }
+ if(carry) { ++*(s16*)((u8*)arg0+2); ((u8*)arg0)[4]=1; ((u8*)arg0)[5]='1'; return; }
+ if(arg1==0) goto zero;
+ ((u8*)arg0)[4]=arg1;
 }
 
 char *double2hex(char *buffer, void *format, f64 value) {
@@ -2831,10 +2813,10 @@ bytecopy:
     return 0;
 }
 
-void strcat(u8 *dest, u8 *src)
+u8 *strcat(u8 *dest, u8 *src)
 {
-    u8 *d;
     u8 *s;
+    u8 *d;
 
     s = src - 1;
     d = dest - 1;
@@ -2843,6 +2825,7 @@ void strcat(u8 *dest, u8 *src)
     d--;
     while ((*++d = *++s) != 0) {
     }
+    return dest;
 }
 
 char *Str_CopyPad(char *dest, const char *src, s32 count) { const unsigned char *s=(const unsigned char*)src-1; unsigned char *d=(unsigned char*)dest-1; count++; while (--count != 0) { unsigned char value=*++s; *++d=value; if (value==0) { while (--count != 0) *++d=0; return dest; } } return dest; }
