@@ -655,22 +655,7 @@ void fn_80224F04(u16 *arg0)
     *fifoFloat = result6;
 }
 
-void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    f32 var_f2;
-
-    var_f2 = farg1;
-    if (arg0 == 0U) {
-        var_f2 -= lbl_8036BDC0;
-    }
-    *(f32*)((char*)__GXData + 0x4F4) = farg0;
-    *(f32*)((char*)__GXData + 0x4F8) = var_f2;
-    *(f32*)((char*)__GXData + 0x4FC) = farg2;
-    *(f32*)((char*)__GXData + 0x500) = farg3;
-    *(f32*)((char*)__GXData + 0x504) = farg4;
-    *(f32*)((char*)__GXData + 0x508) = farg5;
-    fn_80224F04(__GXData);
-    *(u16*)((char*)__GXData + 0x2) = 1;
-}
+void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx; if(arg0==0) farg1-=lbl_8036BDC0; gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
 
 void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
 
