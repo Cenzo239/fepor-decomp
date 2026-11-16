@@ -12,19 +12,9 @@ extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
-    a--;
-    n >>= 2;
-    b--;
-    do {
-        if (*++a != *++b) {
-            return 1;
-        }
-    } while (--n);
-    return 0;
-}
+s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; for(;;) { if(*++a!=*++b) goto different; if(!--n) break; } return 0; different: return 1; }
 
-#pragma global_optimizer off
+#pragma opt_strength_reduction on
 void fn_80006298(u32 *dst, u32 val, u32 n) {
     n >>= 2;
     dst--;
@@ -32,19 +22,15 @@ void fn_80006298(u32 *dst, u32 val, u32 n) {
         *++dst = val;
     } while (--n);
 }
-#pragma global_optimizer on
-void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2)
-{
- u32 count = arg2 >> 3;
- --arg0;
- do {
-  arg0[1] = arg1;
-  arg0[2] = arg1;
-  arg0 += 2;
-  count -= 1;
- } while (count);
+#pragma opt_strength_reduction on
+void fn_800062B0(u32 *dst, u32 val, u32 n) {
+    n >>= 3;
+    dst--;
+    do {
+        *++dst = val;
+        *++dst = val;
+    } while (--n);
 }
-#pragma opt_strength_reduction reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     dst--;
     n >>= 2;
@@ -54,16 +40,23 @@ void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     } while (--n);
 }
 
+#pragma global_optimizer off
+#pragma opt_strength_reduction off
 void fn_800062EC(u32 *dst, u32 *src, u32 n) {
-    dst--;
-    n >>= 3;
-    src--;
+    dst = dst - 1;
+    n = n >> 3;
+    src = src - 1;
     do {
-        *++dst = *++src;
-        *++dst = *++src;
+        dst[1] = src[1];
+        dst += 1;
+        src += 1;
+        dst[1] = src[1];
+        dst += 1;
+        src += 1;
     } while (--n);
 }
-
+#pragma global_optimizer on
+#pragma opt_strength_reduction on
 void fn_80006314(void) {
     void OSInitThreadQueue(void *);
     s32 fn_80209FD4(void);
@@ -584,19 +577,19 @@ end:
 
 extern f64 lbl_80368C28;
 void fn_800070C8(s32 *arg0, s16 *arg1, s16 *arg2, s32 *arg3) {
-    extern u8 *gPrim2D;
+    extern void *gPrim2D;
 
     if (arg0 != NULL) {
-        *arg0 = *(s32 *)(gPrim2D + 0xA4);
+        *arg0 = *(s32 *)((u8 *)gPrim2D + 0xA4);
     }
     if (arg1 != NULL) {
-        *arg1 = *(s16 *)(gPrim2D + 0x92);
+        *arg1 = *(s16 *)((u8 *)gPrim2D + 0x92);
     }
     if (arg2 != NULL) {
-        *arg2 = *(s16 *)(gPrim2D + 0x90);
+        *arg2 = *(s16 *)((u8 *)gPrim2D + 0x90);
     }
     if (arg3 != NULL) {
-        *arg3 = *(s32 *)(gPrim2D + 8) - *(s32 *)gPrim2D;
+        *arg3 = *(s32 *)((u8 *)gPrim2D + 8) - *(s32 *)gPrim2D;
     }
 }
 
@@ -643,7 +636,7 @@ void Prim2D_SetText(u8 *arg0) {
 void fn_800071D8(u32 arg0, f32 arg1)
 {
     extern f32 lbl_80368B90;
-    extern void *gPrim2D;
+    extern void *lbl_80367140;
 
     u32 flag;
     int value;
@@ -651,7 +644,7 @@ void fn_800071D8(u32 arg0, f32 arg1)
 
     flag = (arg0 & 0xFF) != 0;
     value = (int)(lbl_80368B90 * arg1);
-    object = *(void **)((u8 *)*(void **)gPrim2D + 0xC);
+    object = *(void **)((u8 *)*(void **)lbl_80367140 + 0xC);
     object = *(void **)((u8 *)object + 4);
 
     value = (s16)value;
