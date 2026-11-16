@@ -525,22 +525,32 @@ void *__OSGetExceptionHandler(u8 exception) {
     return OSExceptionTable_8036847C[exception];
 }
 #pragma peephole reset
-s32 __OSPSInit(void) {
-    M2C_UNK ICFlashInvalidate();
-    s32 PPCMfhid2();
-    M2C_UNK PPCMthid2(s32);
-    PPCMthid2(PPCMfhid2() | 0xA0000000);
+void __OSPSInit(void) {
+    u32 hid;
+    extern u32 __SPR_912;
+    extern u32 __SPR_913;
+    extern u32 __SPR_914;
+    extern u32 __SPR_915;
+    extern u32 __SPR_916;
+    extern u32 __SPR_917;
+    extern u32 __SPR_918;
+    extern u32 __SPR_919;
+    void ICFlashInvalidate(void);
+    u32 PPCMfhid2(void);
+    void PPCMthid2(u32);
+
+    hid = PPCMfhid2();
+    PPCMthid2(hid | 0xA0000000);
     ICFlashInvalidate();
-    M2C_SYNC();
-    M2C_ERROR(/* unknown instruction: mtspr GQR0, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR1, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR2, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR3, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR4, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR5, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR6, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR7, $r3 */);
-    return 0;
+    __sync();
+    __SPR_912 = 0;
+    __SPR_913 = 0;
+    __SPR_914 = 0;
+    __SPR_915 = 0;
+    __SPR_916 = 0;
+    __SPR_917 = 0;
+    __SPR_918 = 0;
+    __SPR_919 = 0;
 }
 
 volatile u32 __PIRegs[64] : 0xCC006000;
@@ -776,7 +786,6 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
 #pragma use_lmw_stmw reset
 void DecrementerExceptionCallback(u8 type, OSContext *context);
 void DecrementerExceptionHandler(u8 type, OSContext *context) {
-    /* SDK asm: OS_EXCEPTION_SAVE_GPRS then b DecrementerExceptionCallback */
     DecrementerExceptionCallback(type, context);
 }
 
@@ -1003,10 +1012,7 @@ s32 ICFlashInvalidate(void) {
 
 void ICEnable(void)
 {
-    register u32 hid0;
     __isync();
-    hid0 = 0x8000;
-    (void)hid0;
 }
 
 void fn_802052E8(void) {
@@ -1264,22 +1270,19 @@ void OSDumpContext(OSContext *context) {
     }
 }
 
+#pragma peephole off
 void __OSContextInit(void)
 {
     void __OSSetExceptionHandler(s32, void *);
     void OSSwitchFPUContext(void);
-    void DBPrintf(const char *, ...);
-
+    void DBPrintf(char *, ...);
     extern char lbl_8029BF94[];
 
-    __OSSetExceptionHandler(7, (void *)OSSwitchFPUContext);
-
-    *(volatile u32 *)0x800000D8 = 0;
-
+    __OSSetExceptionHandler(7, OSSwitchFPUContext);
+    *(u32 *)0x800000D8 = 0;
     DBPrintf(lbl_8029BF94);
 }
-
-#pragma use_lmw_stmw reset
+#pragma peephole on
 
 void OSPanic(void) {
     s32 obj;
