@@ -869,6 +869,49 @@ void fn_8023BB34(void *alarm, void *context) {
     }
 }
 
+s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback, s64 delay) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    s64 __OSGetSystemTime(void);
+    void OSSetAlarm(void *, s64, void (*)(void *, void *));
+    extern s32 Si_8029EFAC[];
+    s32 enabled;
+    s64 fire;
+    s64 now;
+    SIPacket *packet;
+    u8 *base;
+    u8 *alarm;
+    base = (u8 *)Packet_8033E248;
+    packet = &Packet_8033E248[chan];
+    enabled = OSDisableInterrupts();
+    if (packet->chan != -1 || Si_8029EFAC[0] == chan) {
+        OSRestoreInterrupts(enabled);
+        return 0;
+    }
+    now = __OSGetSystemTime();
+    if (delay == 0) fire = now;
+    else {
+        fire = delay + XferTime[chan];
+    }
+    if (now < fire) {
+        delay = fire - now;
+        alarm = base + chan * 0x28;
+        OSSetAlarm(alarm + 0x80, delay, fn_8023BB34);
+    } else if (fn_8023B57C(chan, output, outputBytes, input, inputBytes, callback)) {
+        OSRestoreInterrupts(enabled);
+        return 1;
+    }
+    packet->chan = chan;
+    packet->output = output;
+    packet->outputBytes = outputBytes;
+    packet->input = input;
+    packet->inputBytes = inputBytes;
+    packet->callback = callback;
+    packet->fire = fire;
+    OSRestoreInterrupts(enabled);
+    return 1;
+}
+
 #pragma global_optimizer off
 #pragma opt_common_subs off
 void GetTypeCallback(s32 chan, u32 type) {
