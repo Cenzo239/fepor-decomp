@@ -889,14 +889,23 @@ void fn_802238CC(s32 arg0) {
     fn_80223494(arg0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
-void fn_80223914(s32 arg0, s32 arg1) {
-    if (arg0 != 0) {
-        return;
+void fn_80223914(s32 arg0, s32 arg1, u8 arg2, u8 arg3, s32 arg4) {
+    void fn_80223494(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    s32 tmp;
+    s32 a;
+
+    if (arg3) {
+        tmp = 6;
+    } else {
+        tmp = 0;
     }
-    if (arg1 <= 0) {
-        return;
+    a = tmp;
+    if (arg2) {
+        tmp = 7;
+    } else {
+        tmp = 0;
     }
-    OSReport("Error: Invalid texture ID %d\n", arg1);
+    fn_80223494(arg0, arg1, 0, tmp, arg4, a, a, 0, 0, 0);
 }
 
 void fn_80223978(void) {
@@ -1032,29 +1041,35 @@ u16* GXSetTevAlphaOp(s32 arg0) {
     return __GXData + 0x388 + (arg0 * 0x10);
 }
 
-void GXSetTevColor(s32 arg0, u32 *arg1) {
-    s32 r6;
-    u32 r8;
-    
-    // The target uses slwi instruction directly; we need to make sure the
-    // shift and multiplication is handled correctly in register usage.
-    r6 = arg0 << 1; // equivalent to arg0 * 2, but using the proper instruction
-    
-    r8 = *arg1;
-    
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = (r6 + 0xE0) << 0x18 | (r8 >> 0x18U) & 0xFF | (r8 << 0xC) & 0xFF000;
-    
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = (r6 + 0xE1) << 0x18 | (r8 >> 0x8U) & 0xFF | (r8 >> 0x4U) & 0xFF000;
-    
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = (r6 + 0xE1) << 0x18 | (r8 >> 0x8U) & 0xFF | (r8 >> 0x4U) & 0xFF000;
-    
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = (r6 + 0xE1) << 0x18 | (r8 >> 0x8U) & 0xFF | (r8 >> 0x4U) & 0xFF000;
-    
-    __GXData[1] = 0;
+void GXSetTevColor(s32 id, u32 *color)
+{
+    u32 idx;
+    u32 c;
+    u32 val;
+    u8 cmd;
+    u16 *gx;
+
+    idx = id << 1;
+    c = color[0];
+    val = idx + 0xE0;
+    gx = __GXData;
+    val = val << 24;
+    cmd = 0x61;
+    val = __rlwimi(val, c, 8, 24, 31);
+    GXWGFifo.u8 = cmd;
+    val = __rlwimi(val, c, 12, 12, 19);
+    GXWGFifo.u32 = val;
+    val = idx + 0xE1;
+    val = val << 24;
+    val = __rlwimi(val, c, 24, 24, 31);
+    GXWGFifo.u8 = cmd;
+    val = __rlwimi(val, c, 28, 12, 19);
+    GXWGFifo.u32 = val;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = val;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = val;
+    gx[1] = 0;
 }
 
 void fn_80223C14(void* arg0) {
