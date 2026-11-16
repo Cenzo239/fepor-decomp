@@ -293,7 +293,8 @@ void fn_802038C0(void) {
 void __DBExceptionDestination(void);
 void fn_802038C0(void);
 void __DBExceptionDestination(void) {
-    fn_802038C0();
+ PPCMtmsr((u32)PPCMfmsr() | 0x30);
+ fn_802038C0();
 }
 
 s32 __DBIsExceptionMarked(u8 arg0) {
@@ -312,6 +313,7 @@ u32 OSGetConsoleType(void)
 
     if (!BootInfo_80368458 || !(console = *(u32 *)((char *)BootInfo_80368458 + 0x2C))) {
         console = 0x10000002;
+        return console;
     }
     return console;
 }
@@ -959,14 +961,11 @@ void DCEnable(void)
     __sync();
 }
 
-void DCInvalidateRange(void* addr, u32 nBytes) {
-    u32 i;
-    u32 count;
-    if (nBytes == 0) return;
-    count = (nBytes + ((u32)addr & 0x1F) + 0x1F) >> 5;
-    for (i = 0; i < count; i++) {
-        __dcbi((u8*)addr + i * 0x20);
-    }
+void DCInvalidateRange(void *addr, u32 nBytes) {
+ if(nBytes>0) {
+ u32 count=(nBytes+((u32)addr&31)+31)>>5;
+ do { __dcbi(addr); addr=(u8 *)addr+32; } while(--count);
+ }
 }
 
 void DCFlushRange(void *addr, u32 nBytes) {
@@ -1002,14 +1001,11 @@ void DCFlushRangeNoSync(void* addr, u32 nBytes) {
 }
 
 void fn_8020516C(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes = (nBytes + ((u32)addr & 31) + 31) >> 5;
-    do {
-        __dcbst(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes);
+ if(nBytes <= 0) return;
+ nBytes += (u32)addr & 31;
+ nBytes += 31;
+ nBytes >>= 5;
+ do { __dcbst(0, (int)addr); addr = (u8 *)addr + 32; } while (--nBytes > 0);
 }
 
 void fn_80205198(void *addr, u32 nBytes) {
@@ -1064,15 +1060,10 @@ void fn_802052E8(void) {
 }
 
 void LCDisable(void) {
-    u32 i;
-    u8* addr = (u8*)0xE0000000;
-    u32 hid2;
-    for (i = 0; i < 0x200; i++) {
-        __dcbi(addr);
-        addr += 0x20;
-    }
-    hid2 = PPCMfhid2();
-    PPCMthid2(hid2 & ~0x10000000);
+ u32 count=0x200;
+ u8 *addr=(u8 *)0xe0000000;
+ do { __dcbi(addr); addr+=32; } while (--count);
+ PPCMthid2(PPCMfhid2() & ~0x10000000U);
 }
 
 void fn_80205348(s32 arg0, s32 arg1, u32 arg2) {
