@@ -1386,6 +1386,23 @@ void fn_80228D00(f64 *arg0) {
     __mtfsf(255, status);
 }
 
+s32 fn_80228D24(s32 arg0, u32 arg1, s32 *arg2, s32 arg3) {
+    extern u8 gTRKExceptionStatus_8029E574[];
+    void fn_8022AB88(s32, u32, s32 *);
+    void fn_8022A99C(s32, u32, s32 *);
+    typedef struct { u32 words[4]; } ExceptionStatus;
+    ExceptionStatus saved;
+    s32 result = 0;
+    u8 *status = gTRKExceptionStatus_8029E574;
+    saved = *(ExceptionStatus *)status;
+    status[0xd] = 0;
+    if (arg3) fn_8022AB88(arg0, arg1, arg2);
+    else fn_8022A99C(arg0, arg1, arg2);
+    if (status[0xd]) { result = 0x702; *arg2 = 0; }
+    *(ExceptionStatus *)gTRKExceptionStatus_8029E574 = saved;
+    return result;
+}
+
 void TRKTargetSetInputPendingPtr(s32 arg0) {
     extern u16 gTRKState[0xA4];
     *(s32 *)((u8 *)gTRKState + 0xA0) = arg0;
