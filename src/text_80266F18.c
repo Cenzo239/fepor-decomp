@@ -309,43 +309,38 @@ extern s32 lbl_8033E578[];
 
 void fn_80266F18(s32 arg0, void *arg1)
 {
-    extern u8 lbl_803669A0[];
-    extern u8 lbl_802A4E18[];
-    void *memcpy(void *, void *, u32);
-    void DCInvalidateRange(void *, u32);
-    void DCFlushRange(void *, u32);
-    void fn_80216050(void *);
-    void fn_80266D94(void *);
-    void fn_80266E70(void *);
-
-    u8 *entry;
-    u8 *src40;
-    u8 *buf;
-    void *cb0;
-    void *cb1;
-
-    entry = lbl_803669A0 + (arg0 << 8);
-    src40 = entry + 0x40;
-    buf = *(u8 **)(entry + 0xF8);
-    memcpy(buf, arg1, 4);
-    *(s32 *)(buf + 4) = *(s32 *)(src40 + 0);
-    *(s32 *)(buf + 8) = *(s32 *)(src40 + 4);
-    *(s32 *)(buf + 0xC) = *(s32 *)(src40 + 0xC);
-    *(u8 **)(buf + 0x10) = buf + 0x20;
-    DCInvalidateRange(buf + 0x20, 0x20);
-    DCFlushRange(buf, 0x20);
-    *(s32 *)(entry + 0xAC) = 0xFF;
-    *(u32 *)(entry + 0xB4) = (u32)lbl_802A4E18 + 0x80000000;
-    *(s32 *)(entry + 0xB8) = 0x380;
-    *(s32 *)(entry + 0xBC) = 0;
-    *(u16 *)(entry + 0xCC) = 0x10;
-    cb0 = fn_80266D94;
-    *(void **)(entry + 0xD0) = cb0;
-    *(s32 *)(entry + 0xD4) = 0;
-    cb1 = fn_80266E70;
-    *(void **)(entry + 0xD8) = cb1;
-    *(s32 *)(entry + 0xDC) = 0;
-    fn_80216050(entry + 0xA8);
+ extern u8 lbl_803669A0[], lbl_802A4E18[];
+ void *memcpy(void *, void *, u32);
+ void DCInvalidateRange(void *, u32);
+ void DCFlushRange(void *, u32);
+ void fn_80216050(void *);
+ void fn_80266D94(void *);
+ void fn_80266E70(void *);
+ u8 *entry;
+ u8 *src40;
+ u8 *buf;
+ u8 *task;
+ entry=lbl_803669A0+(arg0<<8);
+ src40=entry+0x40;
+ buf=*(u8**)(entry+0xF8);
+ memcpy(buf,arg1,4);
+ *(s32*)(buf+4)=*(s32*)src40;
+ *(s32*)(buf+8)=*(s32*)(src40+4);
+ *(s32*)(buf+0xC)=*(s32*)(src40+0xC);
+ *(u8**)(buf+0x10)=buf+0x20;
+ DCInvalidateRange(buf+0x20,0x20);
+ DCFlushRange(buf,0x20);
+ task=entry+0xA8;
+ *(s32*)(task+4)=0xFF;
+ *(u32*)(task+0xC)=(u32)lbl_802A4E18+0x80000000;
+ *(s32*)(task+0x10)=0x380;
+ *(s32*)(task+0x14)=0;
+ *(u16*)(task+0x24)=0x10;
+ *(void**)(task+0x28)=fn_80266D94;
+ *(s32*)(task+0x2C)=0;
+ *(void**)(task+0x30)=fn_80266E70;
+ *(s32*)(task+0x34)=0;
+ fn_80216050(task);
 }
 
 void fn_80266FFC(void) {
@@ -419,18 +414,10 @@ void fn_802673E0(s32 *arg0, s32 arg1)
     extern void __OSMaskInterrupts(u32);
     extern s32 lbl_80368B40;
     extern s32 lbl_80368B30;
-    s32 *out;
-    s32 cb;
-    u32 enabled;
-    s32 tmp;
-
-    out = arg0;
-    cb = arg1;
-    enabled = OSDisableInterrupts();
+    u32 enabled = OSDisableInterrupts();
     lbl_80368B40 = (s32)&lbl_80368B44;
-    tmp = lbl_80368B40;
-    *out = tmp;
-    lbl_80368B30 = cb;
+    *arg0 = lbl_80368B40;
+    lbl_80368B30 = arg1;
     __OSMaskInterrupts(0x18000U);
     *(u32 *)0xCC006828 = 0;
     OSRestoreInterrupts(enabled);
