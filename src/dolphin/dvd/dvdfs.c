@@ -2524,6 +2524,25 @@ void VISetNextFrameBuffer(void *frameBuffer)
     OSRestoreInterrupts(enabled);
 }
 
+void fn_80211614(s32 arg0)
+{
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    void fn_80210AD0(u16, u16, u8, u16, u16, u16, u16, u16, s32);
+    extern u8 lbl_8033A068[];
+    u32 enabled;
+    u8 *base = lbl_8033A068;
+    u8 *timing;
+    enabled = OSDisableInterrupts();
+    *(s32 *)(base + 0x130) = arg0;
+    timing = *(u8 **)(base + 0x144);
+    fn_80210AD0(*(u16 *)(base + 0xFA), *(u16 *)(base + 0xF6),
+        timing[0], *(u16 *)(timing + 2), *(u16 *)(timing + 4),
+        *(u16 *)(timing + 6), *(u16 *)(timing + 8), *(u16 *)(timing + 10),
+        *(s32 *)(base + 0x130));
+    OSRestoreInterrupts(enabled);
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma peephole on
