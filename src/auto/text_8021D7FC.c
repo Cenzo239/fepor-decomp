@@ -964,16 +964,11 @@ void __GXFifoInit(void)
 }
 
 void __GXFifoReadEnable(void) {
-    extern u8 *__GXData;
-    extern u8 *__cpReg;
-    u32 value;
-
-    value = *(u32 *)(__GXData + 0x8);
-    value = (value & 0xFFFFFFFE) | 1;
-    *(u32 *)(__GXData + 0x8) = value;
-
-    value = *(u32 *)(__GXData + 0x8);
-    *(u16 *)(__cpReg + 0x2) = (u16)value;
+ extern u16 *const __GXData;
+ extern u8 *__cpReg;
+ u8 *gx = (u8 *)__GXData;
+ *(u32 *)(gx+8) = __rlwimi(*(u32 *)(gx+8), 1, 0, 31, 31);
+ *(u16 *)(__cpReg+2) = *(u32 *)(gx+8);
 }
 
 void __GXFifoReadDisable(void) {
