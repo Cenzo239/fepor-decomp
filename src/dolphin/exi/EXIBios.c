@@ -569,32 +569,18 @@ s32 fn_80239488(s32 chan) {
 }
 
 #pragma scheduling reset
-s32 fn_80239508(s32 arg0) {
-    s32 temp_r4;
-    s32 var_r3;
-    u16 *ptr;
-
-    temp_r4 = arg0 << 6;
-    var_r3 = __EXIProbe(arg0);
-    if (var_r3 != 0) {
-        ptr = (u16 *)&Ecb_8033E188[temp_r4];
-        if (ptr[0x20 / sizeof(u16)] == 0) {
-            if (EXIGetID(arg0, 0, (u32 *)&arg0) != 0) {
-                var_r3 = 1;
-            } else {
-                var_r3 = 0;
-            }
-        }
+s32 fn_80239508(s32 chan) {
+    EXIControl *exi;
+    s32 err;
+    u32 id;
+    exi = &Ecb_8033E188[chan];
+    err = __EXIProbe(chan);
+    if (err != 0 && exi->idTime == 0) {
+        if (EXIGetID(chan, 0, &id) != 0) err = 1;
+        else err = 0;
     }
-
-    if (var_r3 != 0) {
-        return 1;
-    }
-    
-    if ((*(u32 *)(0x800030C0 + (arg0 * 4))) != 0) {
-        return 0;
-    }
-    
+    if (err != 0) return 1;
+    if (__EXIProbeStartTime[chan] != 0) return 0;
     return -1;
 }
 
