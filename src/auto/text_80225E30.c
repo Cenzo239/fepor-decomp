@@ -2567,6 +2567,31 @@ fn_8022C038(self+6);
 return 0;
 }
 
+s32 fn_8022BB3C(void *arg0, void *arg1, u32 arg2) {
+void fn_8022C05C(void *);
+void fn_8022C038(void *);
+void *memcpy(void *, const void *, u32);
+u32 *self=arg0;
+u32 remaining;
+u8 *dest=arg1;
+if(arg2>self[5]) return -1;
+fn_8022C05C(self+6);
+remaining=self[3]-(self[1]-self[2]);
+if(remaining>=arg2) {
+memcpy((void*)self[1],dest,arg2);
+self[1]+=arg2;
+} else {
+memcpy((void*)self[1],dest,remaining);
+memcpy((void*)self[2],dest+remaining,arg2-remaining);
+self[1]=self[2]+arg2-remaining;
+}
+if(self[3]==self[1]-self[2]) self[1]=self[2];
+self[5]-=arg2;
+self[4]+=arg2;
+fn_8022C038(self+6);
+return 0;
+}
+
 void fn_8022BC44(void *arg0, s32 arg1, s32 arg2) {
     void fn_8022C08C(void *, s32, s32);
     void *self;
