@@ -243,9 +243,18 @@ void fn_80224304(s16 *arg0, u16 arg1, f32 *arg2) {
 }
 
 void fn_802245D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    *(u8 *)0xCC008000 = 0x61;
-    *(u16*)((char*)__GXData + 0x1d0) = *(u16*)((char*)__GXData + 0x1d0) & ~0x800 | ((0x1F - CLZ(3 - arg0)) & 1) << 6 | (arg0 & 1) & 1 | ((0x1F - CLZ(2 - arg0)) << 4) & 2 | (arg3 << 0xC) & 0xF000 | (arg1 << 8) & 0x700 | (arg2 << 5) & 0xE0;
-    *(u16*)((char*)__GXData + 0x2) = 0;
+    u32 *ptr = (u32 *)__GXData;
+    u32 value = ptr[0x1D0 / 4];
+    value = __rlwimi(value, (arg0 == 3), 11, 20, 20);
+    value = __rlwimi(value, arg0, 0, 31, 31);
+    value = __rlwimi(value, (arg0 == 2), 1, 30, 30);
+    value = __rlwimi(value, arg3, 12, 16, 19);
+    value = __rlwimi(value, arg1, 8, 21, 23);
+    value = __rlwimi(value, arg2, 5, 24, 26);
+    *(volatile u8 *)0xCC008000 = 0x61;
+    *(volatile u32 *)0xCC008000 = value;
+    ptr[0x1D0 / 4] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
 typedef union {
@@ -368,35 +377,27 @@ void fn_802247C0(s32 arg0) {
  *(u16 *)(gx + 2) = 0;
 }
 
-void fn_802247EC(u32 arg0, u32 arg1) {
-    extern unsigned short *__GXData;
-    register unsigned short *gx_data = __GXData;
-    register volatile u8 *fifo8 = (volatile u8 *)0xCC008000;
-    register volatile u32 *fifo32 = (volatile u32 *)0xCC008000;
+void fn_802247EC(u8 arg0, u8 arg1) {
+    extern u16 *__GXData;
+    u16 *gx;
     u32 value;
-    u32 result;
 
-    value = *(u32 *)((u8 *)gx_data + 0x1D4);
-    value = (value & 0xFFFFFF00) | (arg1 & 0xFF);
-
-    *fifo8 = 0x61;
-
-    result = value;
-    result = (result & ~(1 << 8)) | ((arg0 & 1) << 8);
-
-    *fifo32 = result;
-
-    *(u32 *)((u8 *)gx_data + 0x1D4) = result;
-    *(volatile u16 *)((u8 *)gx_data + 2) = 0;
+    gx = __GXData;
+    value = __rlwimi(*(u32 *)((u8 *)gx + 0x1D4), (u32)arg1, 0, 24, 31);
+    *(volatile u8 *)0xCC008000 = 0x61;
+    value = __rlwimi(value, (u32)arg0, 8, 23, 23);
+    *(volatile u32 *)0xCC008000 = value;
+    *(u32 *)((u8 *)gx + 0x1D4) = value;
+    gx[1] = 0;
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
-u32 value=__rlwimi(0,(u32)arg1,0,31,31);
-u16 *gx=__GXData;
-value=__rlwimi(value,arg0,1,30,30);
-*(u8*)0xCC008000=0x61;
-*(u32*)0xCC008000=__rlwimi(value,0x44,24,0,7);
-gx[1]=0;
+    u32 value = __rlwimi(0, (u32)arg1, 0, 31, 31);
+    u16 *gx = __GXData;
+    value = __rlwimi(value, arg0, 1, 30, 30);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = __rlwimi(value, 0x44, 24, 0, 7);
+    gx[1] = 0;
 }
 
 void fn_80224860(u8 arg0, u8 arg1) {
@@ -514,11 +515,29 @@ f32 GXLoadPosMtxImm(s32 arg1) {
     return M2C_ERROR(/* psq_l unimplemented */);
 }
 
-void fn_80224DCC(void *arg0, s32 arg1) {
-    u32 temp_r5 = (arg1 * 3) + 0x400;
-    
-    *(u8 *)0xCC008000 = 0x10;
-    *(u32 *)0xCC008000 = (temp_r5 | 0x80000);
+void fn_80224DCC(f32 mtx[3][4], s32 id)
+{
+    f64 a, b, c;
+    f32 d, e, f;
+    u32 reg;
+    u8 *fifo;
+
+    reg = (id * 3) + 0x400;
+    fifo = (u8 *)0xCC008000;
+    *fifo = 0x10;
+    *(u32 *)fifo = reg | 0x80000;
+    a = *(f64 *)&mtx[0][0];
+    d = mtx[0][2];
+    b = *(f64 *)&mtx[1][0];
+    e = mtx[1][2];
+    c = *(f64 *)&mtx[2][0];
+    f = mtx[2][2];
+    *(f64 *)fifo = a;
+    *(f32 *)fifo = d;
+    *(f64 *)fifo = b;
+    *(f32 *)fifo = e;
+    *(f64 *)fifo = c;
+    *(f32 *)fifo = f;
 }
 
 void GXSetCurrentMtx(u32 arg0) {
@@ -696,20 +715,28 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     *arg3 = (temp_r8 & 0x7FF) - (temp_r7 & 0x7FF) + 1;
 }
 
+#pragma peephole off
 void fn_80225118(s32 x, s32 y)
 {
-u32 value;
-u32 xoff = x+342;
-u16 *data = __GXData;
-u32 yoff = y+342;
-value = __rlwimi(0,xoff,31,22,31);
-value = __rlwimi(value,yoff,9,12,21);
-*(volatile u8*)0xCC008000 = 0x61;
-value = __rlwimi(value,0x59,24,0,7);
-*(volatile u32*)0xCC008000 = value;
-data[1] = 0;
-}
+  u32 xoff;
+  u16 *gx;
+  u32 yoff;
+  u32 value;
 
+  xoff = x;
+  xoff = xoff + 0x156;
+  gx = __GXData;
+  yoff = y + 0x156;
+  value = 0;
+  value = __rlwimi(value, xoff, 31, 22, 31);
+  value = value + 0;
+  value = __rlwimi(value, yoff, 9, 12, 21);
+  GXWGFifo.u8 = 0x61;
+  value = __rlwimi(value, 0x59, 24, 0, 7);
+  GXWGFifo.u32 = value;
+  gx[1] = 0;
+}
+#pragma peephole on
 void fn_80225158(u32 arg0)
 {
   u8 cmd = 0x10;
