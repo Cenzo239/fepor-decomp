@@ -2536,7 +2536,7 @@ extern "C" s32 fn_80136CD4(void *arg0) {
  };
  Obj *self=(Obj *)arg0;
  s16 v;
- switch(*(s32 *)((u8 *)arg0+8)) {
+ switch(self->kind) {
  case 0: case 1: v=self->v5(); break;
  case 2: case 3: v=self->v4(); break;
  }
@@ -4990,8 +4990,11 @@ void fn_8013B254(void *arg0)
   s16 new_a;
   void *q;
   void *p;
+  s16 t;
+  t = *((s16 *) (((s8 *) arg0) + 0x64));
   zero = 0;
-  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
+  t += 8;
+  *((s16 *) (((s8 *) arg0) + 0x64)) = t;
   left = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = left;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
@@ -7191,7 +7194,8 @@ extern "C" void *fn_8013F038(void *arg0, s16 arg1, u8 arg2) {
         Iter(const Iter &other) : node(other.node) {}
         ~Iter() {}
     };
-    Iter begin((Node *)((char *)arg0 + 0x40));
+    Node *cursor = (Node *)((char *)arg0 + 0x40);
+    Iter begin(cursor);
     Iter first(begin);
     Iter current(first);
     Iter it(current);
@@ -7199,7 +7203,6 @@ extern "C" void *fn_8013F038(void *arg0, s16 arg1, u8 arg2) {
     Iter last(end);
     Iter finish(last);
     Iter stop(finish);
-    Node *cursor = it.node;
     Item *res = 0;
     while (cursor != stop.node) {
         Item *item = cursor->next->item;
