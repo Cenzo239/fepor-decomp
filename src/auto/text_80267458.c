@@ -268,14 +268,9 @@ void fn_80267458(s16 arg0) {
 }
 
 void fn_80267498(s32 arg0) {
-    s32 var = arg0;
-    if (var != 0) {
-        *(s8*)&lbl_80368B44 = (s8)var;
-        if (lbl_80368B30 != 0) {
-            // Jump to lbl_80368B30
-            ((void(*)())lbl_80368B30)();
-        }
-    }
+ void (*callback)(s32) = (void (*)(s32))lbl_80368B30;
+ *(u8 *)&lbl_80368B44 = 1;
+ if (callback) callback(0);
 }
 
 #pragma use_lmw_stmw on
