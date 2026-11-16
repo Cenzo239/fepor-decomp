@@ -11312,11 +11312,9 @@ void *fn_80179274(void) {
 
 u8 fn_80179284(void) {
  s32 fn_800C3E54(void *);
- extern u8 gConvoy[];
- s32 result=fn_800C3E54(gConvoy);
- result=(u32)(-result|result)>>31;
- if(result) result=0; else result=2;
- return (u8)result;
+ extern u8 lbl_803200AC[];
+ s32 result=fn_800C3E54(lbl_803200AC);
+ return (u8)(((u32)(-result | result)>>31) ? 0 : 2);
 }
 
 s32 Ui_ConfirmListCmd80(s32 unused, void *parent, void *entry) {
@@ -11979,14 +11977,17 @@ void *fn_8017A764(void *arg0, void *arg1) {
 }
 
 void fn_8017A7D4(void *arg0, s32 arg1) {
- extern u8 gStreamBaseVtbl[],lbl_802842B8[];
- u32 *p=(u32*)arg0;
- p[4]=(u32)gStreamBaseVtbl;
- p[2]=p[0]=p[1]=0;
- *((u8*)arg0+12)=0;
- p[4]=(u32)lbl_802842B8;
- p[0]=p[1]=arg1;
- *((u8*)arg0+12)=0;
+    extern u8 lbl_802842A4[];
+    extern u8 lbl_802842B8[];
+    *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+    *(s32 *)((char *)arg0 + 4) = 0;
+    *(s32 *)arg0 = 0;
+    *(s32 *)((char *)arg0 + 8) = 0;
+    *(u8 *)((char *)arg0 + 0xC) = 0;
+    *(void **)((char *)arg0 + 0x10) = lbl_802842B8;
+    *(s32 *)((char *)arg0 + 4) = arg1;
+    *(s32 *)arg0 = arg1;
+    *(u8 *)((char *)arg0 + 0xC) = 0;
 }
 
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
@@ -13739,32 +13740,37 @@ void FloatAnim_SnapEnd(void *arg0) {
     *(f32*)((u8*)*(void**)((u8*)arg0 + 0x30) + 0x4) = temp;
 }
 
-#pragma optimization_level 2
-void fn_8017E2BC(void) {
+#pragma global_optimizer off
+void fn_8017E2BC(void)
+{
     void *Process_Find(void *);
-    extern u16 lbl_80295550[24]; // 48 bytes / 2 bytes per u16 = 24
+    extern u8 lbl_80295550[];
+    s32 vF;
+    s32 v2;
+    s32 v0;
+    void *p;
+    void *proc;
 
-    void *temp_r3;
-    void *temp_r6;
-    void *temp_r6_2;
-
-    temp_r3 = Process_Find(lbl_80295550);
-    if (temp_r3 != NULL) {
-        temp_r6 = *(void **)((u8 *)temp_r3 + 0x38);
-        if (temp_r6 != NULL) {
-            *(u8 *)((u8 *)temp_r6 + 0x43) = 2;
-            *(u8 *)((u8 *)temp_r6 + 0x42) = 0xF;
-            *(u8 *)((u8 *)temp_r6 + 0x41) = 0;
+    proc = Process_Find(lbl_80295550);
+    if (proc) {
+        p = *(void **)((u8 *)proc + 0x38);
+        v0 = 0;
+        v2 = 2;
+        vF = 0xF;
+        if (p) {
+            *((u8 *)p + 0x43) = v2;
+            *((u8 *)p + 0x42) = vF;
+            *((u8 *)p + 0x41) = v0;
         }
-        temp_r6_2 = *(void **)((u8 *)temp_r3 + 0x3C);
-        if (temp_r6_2 != NULL) {
-            *(u8 *)((u8 *)temp_r6_2 + 0x43) = 2;
-            *(u8 *)((u8 *)temp_r6_2 + 0x42) = 0xF;
-            *(u8 *)((u8 *)temp_r6_2 + 0x41) = 0;
+        p = *(void **)((u8 *)proc + 0x3C);
+        if (p) {
+            *((u8 *)p + 0x43) = v2;
+            *((u8 *)p + 0x42) = vF;
+            *((u8 *)p + 0x41) = v0;
         }
     }
 }
-#pragma optimization_level 4
+#pragma global_optimizer on
 s32 fn_8017E328(void) {
     extern u16 lbl_80295550[];
     s32 v = Process_Find(lbl_80295550);
