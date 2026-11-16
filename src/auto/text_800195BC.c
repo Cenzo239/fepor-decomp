@@ -2573,26 +2573,25 @@ char *WpnType_GetName(u8 kind, u8 flag)
     }
 }
 
-void fn_8001E5D0(u32 arg0, u32 arg1)
-{
-    // Early return if argument exceeds bounds
-    if (arg0 > 0xB) {
-        return;
-    }
-
-    // Jump table dispatch logic - the original code uses:
-    // lis r4, jumptable_802844A0@ha
-    // addi r4, r4, jumptable_802844A0@l
-    // slwi r5, arg0, 2
-    // lwzx r3, r4, r5
-    // mtctr r3
-    // bctr
-
-    // Since we can't write inline assembly and the jump table itself isn't easily replicated,
-    // this function is likely to be a stub or require special handling.
-
-    // For now let's write it as an empty stub and rely on decomp-toolkit for correct match.
-    return;
+char *fn_8001E5D0(u8 arg0, u8 arg1) {
+extern u8 gDataStr[];
+char *Msg_Expand(void *);
+switch(arg0) {
+case 0: return Msg_Expand(gDataStr+0x317);
+case 1: return Msg_Expand(gDataStr+0x31e);
+case 2: return Msg_Expand(gDataStr+0x325);
+case 3: return Msg_Expand(gDataStr+0x32c);
+case 4: return Msg_Expand(gDataStr+0x333);
+case 5: return Msg_Expand(gDataStr+0x33a);
+case 6: return Msg_Expand(gDataStr+0x341);
+case 7: if(arg1) return Msg_Expand(gDataStr+0x348);
+return Msg_Expand(gDataStr+0x34F);
+case 8: return Msg_Expand(gDataStr+0x356);
+case 9: return (char *)gDataStr+0x30B;
+case 10: return (char *)gDataStr+0x30E;
+case 11: return (char *)gDataStr+0x311;
+default: return (char *)gDataStr+0x314;
+}
 }
 
 void fn_8001E71C(u8 *arg0) {
