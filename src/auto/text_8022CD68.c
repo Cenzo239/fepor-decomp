@@ -947,90 +947,26 @@ out->length=p-base+1;
 }
 
 extern s32 D_8022EF64;
-void fn_8022F0B4(void) {
-    u8* temp_r3;
-    s32 r5, r7, r6, r9, r8;
-    
-    temp_r3 = (u8*)0x8022CD68 + 0x5;
-    r5 = *temp_r3;
-    
-    if (r5 != 0) {
-        temp_r3 = (u8*)0x8022F0B4 + 0x5;
-        r5 = *temp_r3;
-        r5 = __cntlzw(r5);
-        r5 = r5 >> 5;
-        return;
-    }
-    
-    temp_r3 = (u8*)0x8022F0B4 + 0x5;  
-    r5 = *temp_r3;
-    
-    if (r5 != 0) {
-        r5 = __cntlzw(r5);
-        r5 = r5 >> 5;
-        return;
-    } 
-    
-    // Continue with the other checks...
-    r7 = *(u8*)(0x4 + (s8*)0x8022CD68);
-    r6 = *(u8*)(0x4 + (s8*)0x8022F0B4);  
-
-    if (r7 <= r6) {
-        r9 = r7;
-    } else {
-        r9 = r6; 
-    }
-
-    r8 = 0;
-
-    while (r8 < r9) {
-        u8* addr1 = (u8*)0x8022CD68 + 0x5 + (r8 * 1);
-        u8* addr2 = (u8*)0x8022F0B4 + 0x5 + (r8 * 1);
-        
-        if (*addr1 != *addr2) {
-            return;
+s32 fn_8022F0B4(RuntimeDecimal *a, RuntimeDecimal *b) {
+    s32 blen,alen,i,n;
+    if(a->digits[0]==0) return b->digits[0]==0;
+    if(b->digits[0]==0) return a->digits[0]==0;
+    if(a->exponent==b->exponent) {
+        alen=a->length;
+        blen=b->length;
+        n=alen;
+        if(alen>blen) n=blen;
+        for(i=0;i<n;i++) {
+            if(a->digits[i]!=b->digits[i]) return 0;
         }
-        r8 += 1;
-    }
-
-    // Handle return cases
-    if (r9 == r7) {
-        r8 = r8 - r6;
-        if (r8 >= r6) {
-            u8* addr = (u8*)0x8022F0B4 + 0x5 + r8;
-            if (*addr == 0) {
-                return;
-            }
-            r8++;
-            while (r8 != 0) {
-                addr = (u8*)0x8022F0B4 + 0x5 + r8;
-                if (*addr == 0) {
-                    return;
-                }
-                r8++; 
-            }
+        if(n==alen) {
+            for(;i<blen;i++) if(b->digits[i]!=0) return 0;
         } else {
-            return;
+            for(;i<alen;i++) if(a->digits[i]!=0) return 0;
         }
-    } else {
-        r8 = r8 - r7;
-        if (r8 >= r7) {
-            u8* addr = (u8*)0x8022CD68 + 0x5 + r8;
-            if (*addr == 0) {
-                return;
-            }
-            r8++;
-            while (r8 != 0) {
-                addr = (u8*)0x8022CD68 + 0x5 + r8; 
-                if (*addr == 0) {
-                    return;
-                }
-                r8++; 
-            }
-        } else {
-            // Default case - we're not handling this yet, just return 1
-        }
+        return 1;
     }
+    return 0;
 }
 
 #pragma use_lmw_stmw on
@@ -2546,33 +2482,20 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     for (;;) {
         cont = 1;
         switch (c) {
-        case '-':
-            f.just = 0;
-            break;
-        case '+':
-            f.sign = 1;
-            break;
+        case '-': f.just = 0; break;
+        case '+': f.sign = 1; break;
         case ' ':
-            if (f.sign != 1) {
-                f.sign = 2;
-            }
+            if (f.sign != 1) f.sign = 2;
             break;
-        case '#':
-            f.alt = 1;
-            break;
+        case '#': f.alt = 1; break;
         case '0':
-            if (f.just != 0) {
-                f.just = 2;
-            }
+            if (f.just != 0) f.just = 2;
             break;
-        default:
-            cont = 0;
-            break;
+        default: cont = 0; break;
         }
-        if (cont == 0) {
-            break;
-        }
-        c = (s8)*++p;
+        if (cont == 0) break;
+        p++;
+        c = (s8)*p;
     }
 
     if (c == '*') {
@@ -2583,11 +2506,13 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
             f.just = 0;
             f.width = -v;
         }
-        c = (s8)*++p;
+        p++;
+        c = (s8)*p;
     } else {
         while (lbl_8029E8A8[(u8)c] & 0x10) {
             f.width = f.width * 10 + (c - '0');
-            c = (s8)*++p;
+            p++;
+            c = (s8)*p;
         }
     }
 
@@ -2602,7 +2527,8 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
 
     if (c == '.') {
         f.prec_set = 1;
-        c = (s8)*++p;
+        p++;
+        c = (s8)*p;
         if (c == '*') {
             vp = __va_arg(ap, 1);
             v = *vp;
@@ -2610,11 +2536,13 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
             if (v < 0) {
                 f.prec_set = 0;
             }
-            c = (s8)*++p;
+            p++;
+            c = (s8)*p;
         } else {
             while (lbl_8029E8A8[(u8)c] & 0x10) {
                 f.precision = f.precision * 10 + (c - '0');
-                c = (s8)*++p;
+                p++;
+                c = (s8)*p;
             }
         }
     }
@@ -2628,7 +2556,7 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
             c = (s8)p[1];
             p += 1;
         }
-    break;
+        break;
     case 'l':
         f.size = 3;
         if ((s8)p[1] == 'l') {
@@ -2636,7 +2564,7 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
             c = (s8)p[1];
             p += 1;
         }
-    break;
+        break;
     case 'L':
         f.size = 5;
         break;
@@ -2645,74 +2573,43 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
         break;
     }
     if (cont != 0) {
-        c = (s8)*++p;
+        p++;
+        c = (s8)*p;
     }
 
     f.conv = (u8)c;
     switch (c) {
-    case 'd':
-    case 'i':
-    case 'o':
-    case 'u':
-    case 'x':
-    case 'X':
-        if (f.size == 5) {
-            f.conv = 0xFF;
-        } else if (f.prec_set == 0) {
-            f.precision = 1;
-        } else if (f.just == 2) {
-            f.just = 1;
-        }
+    case 'd': case 'i': case 'o': case 'u': case 'x': case 'X':
+        if (f.size == 5) f.conv = 0xFF;
+        else if (f.prec_set == 0) f.precision = 1;
+        else if (f.just == 2) f.just = 1;
         break;
-    case 'f':
-    case 'F':
-    case 'e':
-    case 'E':
-        if (f.size == 2 || f.size == 4) {
-            f.conv = 0xFF;
-        } else if (f.prec_set == 0) {
-            f.precision = 6;
-        }
+    case 'f': case 'F': case 'e': case 'E':
+        if (f.size == 2 || f.size == 4) f.conv = 0xFF;
+        else if (f.prec_set == 0) f.precision = 6;
         break;
-    case 'a':
-    case 'A':
-        if (f.prec_set == 0) {
-            f.precision = 0xD;
-        }
-        if (f.size == 2 || f.size == 4 || f.size == 1) {
-            f.conv = 0xFF;
-        }
+    case 'a': case 'A':
+        if (f.prec_set == 0) f.precision = 0xD;
+        if (f.size == 2 || f.size == 4 || f.size == 1) f.conv = 0xFF;
         break;
-    case 'g':
-    case 'G':
+    case 'g': case 'G':
         if (f.precision == 0) f.precision = 1;
         if (f.size == 2 || f.size == 4 || f.size == 1) f.conv = 0xFF;
         else if (f.prec_set == 0) f.precision = 6;
         break;
     case 'p':
-        f.conv = 'x';
-        f.alt = 1;
-        f.size = 3;
-        f.precision = 8;
+        f.conv = 'x'; f.alt = 1; f.size = 3; f.precision = 8;
         break;
     case 'n':
-        if (f.size == 3) {
-            f.size = 6;
-        } else if (f.prec_set != 0 || f.size != 0) {
-            f.conv = 0xFF;
-        }
+        if (f.size == 3) f.size = 6;
+        else if (f.prec_set != 0 || f.size != 0) f.conv = 0xFF;
         break;
     case 's':
-        if (f.size == 3) {
-            f.size = 6;
-        } else if (f.size != 0) {
-            f.conv = 0xFF;
-        }
+        if (f.size == 3) f.size = 6;
+        else if (f.size != 0) f.conv = 0xFF;
         break;
     case 'c':
-        if (f.size == 5) {
-            f.conv = 0xFF;
-        }
+        if (f.size == 5) f.conv = 0xFF;
         break;
     default:
         f.conv = 0xFF;
