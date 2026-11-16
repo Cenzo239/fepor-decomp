@@ -146,19 +146,19 @@ extern s32 RunQueueHint_8036851C;
 s32 fn_80209010(s32 arg0, s32 arg1, s32 arg2) {
     s32 EXIDeselect(M2C_UNK);
     s32 EXIImm(M2C_UNK, s32 *, M2C_UNK, M2C_UNK, M2C_UNK);
-    s32 EXILock(M2C_UNK, M2C_UNK, M2C_UNK *, M2C_UNK *);
+    s32 EXILock(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     s32 EXISelect(M2C_UNK, M2C_UNK, M2C_UNK);
     s32 EXISync(M2C_UNK);
     M2C_UNK EXIUnlock(M2C_UNK);
     s32 EXIImmEx(M2C_UNK, s32, s32, M2C_UNK);
-    extern M2C_UNK fn_80208FB0;
+    void fn_80208FB0(void);
     s32 sp14;
     s32 temp_r31;
     s32 temp_r31_2;
     s32 temp_r31_3;
     s32 temp_r31_4;
 
-    if (EXILock(0, 1, &fn_80208FB0, &fn_80208FB0) == 0) {
+    if (EXILock(0, 1, (M2C_UNK)fn_80208FB0, (M2C_UNK)fn_80208FB0) == 0) {
         return 0;
     }
     if (EXISelect(0, 1, 3) == 0) {
