@@ -226,6 +226,20 @@ u32 PPCMffpscr(void)
     value = pad;
     return result;
 }
+
+#pragma intrinsic __mtfsf
+void PPCMtfpscr(u32 arg0)
+{
+    f64 pad;
+    f64 value;
+
+    pad = value;
+    ((u32 *)&value)[0] = 0;
+    ((u32 *)&value)[1] = arg0;
+    __mtfsf(255, value);
+    value = pad;
+}
+
 s32 PPCMfhid2(void) {
     return M2C_ERROR(/* unknown instruction: mfspr $r3, HID2 */);
 }
@@ -247,9 +261,7 @@ void PPCMtwpar(u32 wpar) {
 
 #pragma dont_inline on
 void PPCDisableSpeculation(void) {
-    __builtin_mfspr(0x398);
-    __builtin_mtspr(0x398, 0x4000);
-    __builtin_isync();
+    fn_80203790(PPCMfhid0() | 0x200);
 }
 
 void PPCSetFpNonIEEEMode(void) {
