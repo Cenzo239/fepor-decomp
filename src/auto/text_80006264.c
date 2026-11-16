@@ -368,7 +368,7 @@ s32 fn_80006AF4(s32 *arg0) {
 
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
-    extern void *gPrim2D;
+    extern u16 gPrim2D;
     extern char lbl_80366DA4[];
     extern double lbl_80368B88;
 
