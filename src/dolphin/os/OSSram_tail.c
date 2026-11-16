@@ -149,79 +149,38 @@ s32 __OSSyncSram(void) {
     return M2C_FIELD(&Scb_80339420, s32 *, 0x4C);
 }
 
-s32 fn_802098F8(void) {
-    u16 *scb;
-    
-    scb = Scb_80339420;
-    OSDisableInterrupts();
-    if (scb[0x48 / 2] != 0) {
-        OSRestoreInterrupts();
-        return 0;
-    } else {
-        scb[0x44 / 2] = 0; // OSDisableInterrupts() returns void, so we can't cast it
-        scb[0x48 / 2] = 1;
-    }
-    
-    return (scb[0x13 / 2] >> 7) & 1;
-}
-
-void fn_80209968(u32 arg0) {
-    extern u16 Scb_80339420[];
-
+#pragma scheduling off
+s32 fn_802097D4(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
-    s32 fn_8020931C(s32, s32);
+    void fn_8020931C(s32, s32);
 
-    volatile u8 *scb;
-    volatile u32 *lock;
+    u8 *scb;
+    s32 *locked;
     u32 interrupts;
-    u32 mode;
-    u32 flags;
+    u8 flags;
 
-    scb = (volatile u8 *)Scb_80339420;
-    mode = (arg0 & 1) << 7;
-
+    scb = (u8 *)Scb_80339420;
     interrupts = OSDisableInterrupts();
-
-    lock = (volatile u32 *)(scb + 0x48);
-
-    if (*lock != 0) {
+    locked = (s32 *)(scb + 0x48);
+    if (*locked != 0) {
         OSRestoreInterrupts(interrupts);
-        return;
-    }
-
-    *(volatile u32 *)(scb + 0x44) = interrupts;
-    *lock = 1;
-
-    flags = scb[0x13];
-
-    if ((flags & 0x80) == mode) {
-        fn_8020931C(0, 0);
+        scb = NULL;
     } else {
-        scb[0x13] = flags & ~0x80;
-
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
         flags = scb[0x13];
-        scb[0x13] = flags | mode;
-
-        fn_8020931C(1, 0);
+        if (flags & 4) {
+            scb = (u8 *)1;
+        } else {
+            scb = (u8 *)0;
+        }
+        fn_8020931C(0, 0);
     }
+    return (s32)scb;
 }
+#pragma scheduling reset
 
-u8 fn_80209A0C(void) {
- u32 OSDisableInterrupts(void);
- void OSRestoreInterrupts(u32);
- void fn_8020931C(s32, s32);
- u8 *scb;
- s32 *locked;
- u32 interrupts;
- u8 value;
- scb = (u8 *)Scb_80339420;
- interrupts = OSDisableInterrupts();
- locked = (s32 *)(scb += 0x48);
- if (*locked != 0) { OSRestoreInterrupts(interrupts); scb = NULL; }
- else { *(u32 *)(scb - 4) = interrupts; *locked = 1; }
- value = scb[-0x36];
- fn_8020931C(0,0);
- return value;
-}
+#pragma scheduling off
 
+#pragma scheduling reset
