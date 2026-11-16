@@ -458,31 +458,20 @@ void fn_80266BD8(s32 arg0, u32 arg1)
     }
 }
 
-s32 fn_80266CFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
-{
-    extern u8 lbl_803669A0[];
-    extern u32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(u32 level);
-    extern void fn_8023C188(s32, void (*)(s32, u32));
-    void fn_80266BD8(s32, u32);
-
-    s32 chan;
-    s32 cmd;
-    s32 len;
-    s32 cb;
-    u8 *entry;
-    u32 interruptState;
-
-    chan = arg0;
-    entry = lbl_803669A0 + (chan << 8);
-    cmd = arg1;
-    len = arg2;
-    cb = arg3;
-    interruptState = OSDisableInterrupts();
-    *(s32 *)(entry + 0x38) = cb;
-    *(s32 *)(entry + 0xC) = cmd;
-    *(s32 *)(entry + 0x10) = len;
-    fn_8023C188(chan, fn_80266BD8);
-    OSRestoreInterrupts(interruptState);
-    return 0;
+s32 fn_80266CFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+extern u8 lbl_803669A0[];
+extern u32 OSDisableInterrupts(void);
+extern void OSRestoreInterrupts(u32);
+extern void fn_8023C188(s32, void (*)(s32,u32));
+void fn_80266BD8(s32,u32);
+u32 interruptState;
+u8 *entry;
+entry=lbl_803669A0+(arg0<<8);
+interruptState=OSDisableInterrupts();
+*(s32 *)(entry+0x38)=arg3;
+*(s32 *)(entry+0xC)=arg1;
+*(s32 *)(entry+0x10)=arg2;
+fn_8023C188(arg0,fn_80266BD8);
+OSRestoreInterrupts(interruptState);
+return 0;
 }
