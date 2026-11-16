@@ -539,6 +539,34 @@ void fn_8001F91C(void *map, s8 cx, s8 cy, s8 rad) {
         yext = (s8)y;
     } while (yext < *(s32 *)((u8 *)map + 4));
 }
+
+s32 fn_8001FB04(void *arg0, s8 *x, s8 *y, u8 arg3, u8 *path) {
+ s8 oldx,oldy;
+ u8 *last;
+ if(path==0) path=(u8*)arg0+0x14194;
+ oldx=*x; oldy=*y; last=path;
+ for(;;) {
+ u8 *cell;
+ s32 index;
+ s8 cx,cy;
+ switch(*path++) {
+ case 1: --*x; break;
+ case 2: ++*x; break;
+ case 4: ++*y; break;
+ case 8: --*y; break;
+ case 16: goto done;
+ }
+ cy=*y; cx=*x;
+ index=cx+(cy<<6); index=(s32)arg0+index; cell=(u8*)index;
+ if(cell[0x300d]&1) goto blocked;
+ if((cell[0x300d]&2) && !arg3) goto stop;
+ if(*(s8*)(cell+0xe18e)==0) { oldx=cx; oldy=cy; last=path; }
+ }
+ done: return 0;
+ blocked: *x=oldx; *y=oldy; *last=16; return 1;
+ stop: last[1]=16; return 2;
+}
+
 #pragma global_optimizer reset
 u8 *fn_8001FC24(u8 *arg0) {
 arg0+=0x14194;
