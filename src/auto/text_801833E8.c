@@ -4488,6 +4488,22 @@ void *fn_80190130(void *arg0, s16 arg1) {
     return arg0;
 }
 
+void fn_8019019C(void *arg0) {
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    p[0x40/2] = 0x18;
+    p[0x42/2] = 0;
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 2;
+    right = width - 2;
+    p[0x12/2] = 2;
+    p[0x14/2] = 2;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
+}
+
 void *fn_801901EC(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *lbl_802961F4[];
@@ -10241,6 +10257,46 @@ void fn_8019C1F8(void *arg0)
     );
 
     fn_8005306C(result);
+}
+
+void fn_8019C244(void *arg0) {
+    void TargetList_GetAt(s32 *, s32);
+    void *UnitRef_GetUnit(void);
+    f32 fn_8004BDA8(void *, f32, f32);
+    void *Unit_FadeFacing(void *, s32, s32, f32);
+    void GActor_RequestRes(void *);
+    extern s32 gTargetList[];
+    extern f32 lbl_8036AF20;
+    extern f32 lbl_8036AF00;
+    s32 *list;
+    s32 i;
+    f32 sumX;
+    f32 sumY;
+    void *unit;
+    f32 angle;
+    s8 y;
+    s8 x;
+    s32 count;
+
+    sumX = lbl_8036AF20;
+    sumY = sumX;
+    list = gTargetList;
+    for (i = 0; i < list[0];) {
+        TargetList_GetAt(list, i);
+        unit = UnitRef_GetUnit();
+        y = *(s8 *)((u8 *)unit + 0x19F);
+        i++;
+        x = *(s8 *)((u8 *)unit + 0x19E);
+        sumX += (f32)x;
+        sumY += (f32)y;
+    }
+    count = list[0];
+    unit = *(void **)((u8 *)arg0 + 0x38);
+    sumX /= (f32)count;
+    sumY /= (f32)count;
+    angle = fn_8004BDA8(unit, lbl_8036AF00 + sumX, lbl_8036AF00 + sumY);
+    Unit_FadeFacing(*(void **)((u8 *)arg0 + 0x38), 0x10, (s32)arg0, angle);
+    GActor_RequestRes((u8 *)arg0 + 0x41);
 }
 
 extern u16 gUnkGlobalVar_80296B20[];
