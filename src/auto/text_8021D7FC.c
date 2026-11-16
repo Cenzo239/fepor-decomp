@@ -897,6 +897,7 @@ void GXSetGPFifo(void *fifo) {
 }
 
 void fn_8021F06C(s32 arg0) {
+    void fn_802204F8(void);
     s32 sp14;
     
     sp14 = arg0;
@@ -1339,8 +1340,6 @@ int fn_802204F8(void)
     }
 
     PPCSync();
-
-    return 0;
 }
 
 void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_80203854() & 1) { } PPCMtwpar(0x0C008000); }
