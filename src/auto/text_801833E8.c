@@ -12102,12 +12102,11 @@ s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
 
 s32 fn_801A0060(s32 arg0, s32 arg1, s32 arg2) {
     void *Camera_GetActive(void);
-    extern f32 lbl_8036AF88;
     void *obj;
     f32 scale;
 
     obj = Camera_GetActive();
-    scale = lbl_8036AF88;
+    scale = 2.0f;
     *(f32 *)((u8 *)obj + 4) = (f32)arg0;
     *(f32 *)((u8 *)obj + 8) = (f32)arg1;
     *(f32 *)((u8 *)obj + 0xC) = (f32)arg2;
