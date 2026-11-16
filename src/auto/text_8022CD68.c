@@ -232,17 +232,17 @@ u32 fn_80204CE4(u32,u32,s32);
 s32 fn_80204D54(u32,u32);
 void fn_80204CD4(s32);
 void fn_80204C58(s32,void *);
-u32 hi, lo;
+u32 lo, hi, start;
 if (lbl_80366F28 == -1) {
 OSReport(lbl_80282AE8);
 OSReport(lbl_80282B20);
 lo=OSGetArenaLo();
 hi=OSGetArenaHi();
-lo=fn_80204CE4(lo,hi,1);
-OSSetArenaLo(lo);
-lo=(lo+31)&~31;
+start=fn_80204CE4(lo,hi,1);
+OSSetArenaLo(start);
+start=(start+31)&~31;
 hi &= ~31;
-fn_80204CD4(fn_80204D54(lo,hi));
+fn_80204CD4(fn_80204D54(start,hi));
 OSSetArenaLo(hi);
 }
 fn_80204C58(lbl_80366F28,arg0);
@@ -1526,6 +1526,88 @@ void *memchr(const void *ptr, int value, unsigned long count) {
     return NULL;
 }
 
+void *memmove(void *dst, const void *src, u32 n) {
+    void fn_80231B60(void *, const void *, u32);
+    void fn_80231AB4(void *, const void *, u32);
+    void fn_80231CC8(void *, const void *, u32);
+    void fn_80231C20(void *, const void *, u32);
+    u8 *d;
+    const u8 *s;
+    u32 rev;
+    u32 count;
+
+    rev = (u32)src < (u32)dst;
+    if (n >= 0x20U) {
+        if (((u32)dst ^ (u32)src) & 3) {
+            if (rev == 0) {
+                fn_80231B60(dst, src, n);
+            } else {
+                fn_80231AB4(dst, src, n);
+            }
+        } else if (rev == 0) {
+            fn_80231CC8(dst, src, n);
+        } else {
+            fn_80231C20(dst, src, n);
+        }
+        return dst;
+    }
+    count = n;
+    if (rev == 0) {
+        s = (const u8 *)src - 1;
+        d = (u8 *)dst - 1;
+        count++;
+        while (--count != 0) {
+            *++d = *++s;
+        }
+    } else {
+        s = (const u8 *)src + count;
+        d = (u8 *)dst + count;
+        count++;
+        while (--count != 0) {
+            *--d = *--s;
+        }
+    }
+    return dst;
+}
+
+void fn_80231B60(void *dst, const void *src, u32 size) {
+u32 *d;
+u32 n, blocks;
+const u8 *tail;
+const u8 *sb;
+u32 offset, shift, back;
+u32 a,b;
+u8 *db;
+sb=(const u8*)src-1;
+db=(u8*)dst-1;
+n=(-(u32)dst)&3;
+if(n) {
+size-=n;
+do { *++db=*++sb; } while(--n);
+}
+offset=(u32)(sb+1)&3;
+d=(u32*)(db-3);
+blocks=size>>3;
+sb-=offset;
+shift=offset*8;
+back=32-shift;
+a=*(const u32*)(sb+=1);
+do {
+b=*(const u32*)(sb+=4);
+*++d=(a<<shift)|(b>>back);
+a=*(const u32*)(sb+=4);
+*++d=(b<<shift)|(a>>back);
+} while(--blocks);
+if(size&4) { b=*(const u32*)(sb+=4); *++d=(a<<shift)|(b>>back); }
+size &=3;
+tail=sb+3;
+db=(u8*)d+3;
+if(size) {
+tail-=4-offset;
+do { *++db=*++tail; } while(--size);
+}
+}
+
 void fn_80231C20(void *dst, const void *src, u32 count) {
     u8 *out;
     const u8 *in;
@@ -1586,6 +1668,43 @@ void fn_80231C20(void *dst, const void *src, u32 count) {
             *--out = *--in;
         } while (--count != 0);
     }
+}
+
+void fn_80231CC8(void *dst, const void *src, u32 size) {
+const u8 *sb;
+u8 *db;
+u32 *d;
+const u32 *s;
+u32 b,a;
+u32 n;
+sb=(const u8*)src-1;
+db=(u8*)dst-1;
+n=(-(u32)dst)&3;
+if(n) {
+size-=n;
+do { *++db=*++sb; } while(--n);
+}
+n=size>>5;
+s=(const u32*)(sb-3);
+d=(u32*)(db-3);
+if(n) {
+do {
+a=*++s; b=*++s; *++d=a;
+a=*++s; *++d=b;
+b=*++s; *++d=a;
+a=*++s; *++d=b;
+b=*++s; *++d=a;
+a=*++s; *++d=b;
+b=*++s; *++d=a;
+*++d=b;
+} while(--n);
+}
+n=(size>>2)&7;
+if(n) { do { *++d=*++s; } while(--n); }
+size &=3;
+sb=(const u8*)s+3;
+db=(u8*)d+3;
+if(size) { do { *++db=*++sb; } while(--size); }
 }
 
 void __stdio_atexit(void) {
@@ -2732,56 +2851,52 @@ void strcat(u8 *dest, u8 *src)
 
 char *Str_CopyPad(char *dest, const char *src, s32 count) { const unsigned char *s=(const unsigned char*)src-1; unsigned char *d=(unsigned char*)dest-1; count++; while (--count != 0) { unsigned char value=*++s; *++d=value; if (value==0) { while (--count != 0) *++d=0; return dest; } } return dest; }
 
-void strcpy(s32 arg0, s32 arg1) {
-    u32 r3_r4_diff;
-    u32 temp_r5;
-    u32 var_ctr;
-    u8 temp_r0;
-    
-    r3_r4_diff = arg0 & 3;
-    temp_r5 = arg1 & 3;
-    
-    if (r3_r4_diff == temp_r5) {
-        if (temp_r5 != 0) {
-            temp_r0 = *(u8 *)arg1;
-            *(u8 *)arg0 = temp_r0;
-            
-            if (temp_r0 != 0) {
-                var_ctr = 3 - temp_r5;
-                if (var_ctr != 0) {
-                    do {
-                        u8 r0_val;
-                        arg1 += 1;
-                        arg0 += 1;
-                        r0_val = *(u8 *)arg1;
-                        *(u8 *)arg0 = r0_val;
-                        
-                        if (r0_val == 0) {
-                            break;
-                        }
-                        var_ctr -= 1;
-                    } while (var_ctr != 0);
-                }
+char *strcpy(char *dst, const char *src) {
+    register u8 *d = (u8 *)dst;
+    register u8 *s = (u8 *)src;
+    u32 align;
+    u32 mask;
+    register u32 w;
+    register u32 c;
+
+    if ((align = (u32)d & 3) != ((u32)s & 3)) {
+        goto bytecopy;
+    }
+    if (align != 0) {
+        c = *d = *s;
+        if (c == 0) {
+            return dst;
+        }
+        for (align = 3 - align; align != 0; align--) {
+            c = *++s;
+            *++d = c;
+            if (c == 0) {
+                return dst;
             }
         }
-    } else {
-        temp_r0 = *(u8 *)arg1;
-        *(u8 *)arg0 = temp_r0;
-        
-        if (temp_r0 != 0) {
-            do {
-                u8 r0_val;
-                arg1 += 1;
-                arg0 += 1;
-                r0_val = *(u8 *)arg1;
-                *(u8 *)arg0 = r0_val;
-                
-                if (r0_val == 0) {
-                    break;
-                }
-            } while (1);
-        }
+        d++;
+        s++;
     }
+    w = *(u32 *)s;
+    mask = 0x80808080;
+    if (((w - 0x01010101) & mask) == 0) {
+        d -= 4;
+        do {
+            *(u32 *)(d += 4) = w;
+            w = *(u32 *)(s += 4);
+        } while (((w - 0x01010101) & mask) == 0);
+        d += 4;
+    }
+bytecopy:
+    c = *d = *s;
+    if (c == 0) {
+        return dst;
+    }
+    do {
+        c = *++s;
+        *++d = c;
+    } while (c != 0);
+    return dst;
 }
 
 s32 strlen(const char *str) {
