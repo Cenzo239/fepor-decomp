@@ -3192,44 +3192,31 @@ case 7: *left=0; *top=240; *right=0x30; *bottom=260; return;
 }
 }
 
-void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
-    u8 fn_800386B0(void *);
-    s8 Unit_GetMaxHp(void *);
-    void *fn_800A8978(void *);
-    extern M2C_UNK gUiSelectMenuStrings;
-    s8 temp_r3;
-    void *temp_r30;
-
-    temp_r30 = *arg1;
-    switch (arg2) {                                 /* irregular */
-    case 1:
-        return fn_800A8978(M2C_FIELD(temp_r30, void **, 0x18C));
-    case 2:
-        sprintf(&gUiSelectMenuStrings + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x19A));
-block_19:
-    default:
-        return arg0;
-    case 3:
-        if (fn_800386B0(temp_r30) == 0xFF) {
-            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x340));
-        } else {
-            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x33C), (void *) fn_800386B0(temp_r30));
-        }
-        goto block_19;
-    case 4:
-        sprintf(&gUiSelectMenuStrings + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
-        goto block_19;
-    case 5:
-        temp_r3 = Unit_GetMaxHp(temp_r30);
-        if (temp_r3 >= (s8) M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x18C), u8 *, 0x4C)) {
-            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x4B6), &gUiSelectMenuStrings + 0x423, &gUiSelectMenuStrings + 0x428);
-        } else {
-            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x4BF), (void *) temp_r3);
-        }
-        goto block_19;
-    case 0:
-        return NULL;
-    }
+void *fn_801321F4(void *arg0,void **arg1,s32 arg2) {
+u8 fn_800386B0(void *);
+s8 Unit_GetMaxHp(void *);
+void *fn_800A8978(void *);
+s32 sprintf(char *,const char *,...);
+extern char gUiSelectMenuStrings[];
+s8 hp;
+void *unit=*arg1;
+switch(arg2) {
+case 0:return 0;
+case 1:return fn_800A8978(*(void **)((u8 *)unit+0x18c));
+case 2:sprintf(arg0,gUiSelectMenuStrings+0x33c,*(s8 *)((u8 *)unit+0x19a));break;
+case 3:
+if(fn_800386B0(unit)==0xff) sprintf(arg0,gUiSelectMenuStrings+0x340);
+else sprintf(arg0,gUiSelectMenuStrings+0x33c,fn_800386B0(unit));
+break;
+case 4:sprintf(arg0,gUiSelectMenuStrings+0x33c,*(s8 *)((u8 *)unit+0x1a8));break;
+case 5:
+hp=Unit_GetMaxHp(unit);
+if(hp>=*(s8 *)((u8 *)*(void **)((u8 *)unit+0x18c)+0x4c))
+sprintf(arg0,gUiSelectMenuStrings+0x4b6,gUiSelectMenuStrings+0x423,hp,gUiSelectMenuStrings+0x428);
+else sprintf(arg0,gUiSelectMenuStrings+0x4bf,hp);
+break;
+}
+return arg0;
 }
 
 s32 fn_8013236C(s32 unused, void **arg1, s32 arg2) {
