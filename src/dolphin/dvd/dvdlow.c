@@ -32,6 +32,8 @@ extern void* lbl_80368654;
 
 u8 ErrorCode2Num(s32);
 
+volatile u32 __DIRegs[16] : 0xCC006000;
+
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
