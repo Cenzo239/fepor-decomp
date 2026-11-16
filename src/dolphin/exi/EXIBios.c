@@ -1011,82 +1011,30 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
 #pragma use_lmw_stmw reset
 #pragma scheduling reset
 
-void fn_8023A504(s32 *arg2) {
-    u32 sp14;
-    s32 temp_r0;
-    s32 temp_r4;
-    s32 temp_r5;
-
-    if (EXIGetID(0, 0, &sp14) == 0) {
-        return;
-    }
-    temp_r5 = sp14 & 0xFFFFFF00;
-    if (temp_r5 != 0x04020300) {
-        if (temp_r5 < 0x04020300) {
-            if (temp_r5 != 0x04020200) {
-                if (temp_r5 < 0x04020200) {
-                    if (temp_r5 != 0x04020100) {
-                        goto block_11;
-                    }
-                    goto block_10;
-                }
-                goto block_11;
-            }
-            goto block_10;
-        }
-        if (temp_r5 != 0x04060000) {
-block_11:
-            temp_r4 = sp14 & 0xFFFF0000;
-            switch (temp_r4) {                      /* irregular */
-            case 0x0:
-                if (!(sp14 & 0x3803)) {
-                    temp_r0 = sp14 & 0xFC;
-                    if (temp_r0 != 0x20) {
-                        if (temp_r0 < 0x20) {
-                            if (temp_r0 != 8) {
-                                if (temp_r0 < 8) {
-                                    if (temp_r0 != 4) {
-                                        goto block_30;
-                                    }
-                                    goto block_28;
-                                }
-                                if (temp_r0 != 0x10) {
-                                    goto block_30;
-                                }
-                                goto block_28;
-                            }
-                            goto block_28;
-                        }
-                        if (temp_r0 != 0x80) {
-                            if (temp_r0 < 0x80) {
-                                if (temp_r0 != 0x40) {
-                                    goto block_30;
-                                }
-                                goto block_28;
-                            }
-                            goto block_30;
-                        }
-                        goto block_28;
-                    }
-block_28:
-                    *arg2 = temp_r0;
-                    return;
-                }
-            default:
-block_30:
-                *arg2 = sp14;
-                return;
-            case 0x5070000:
-                *arg2 = 0x05070000;
-                return;
-            }
-        } else {
-            goto block_10;
-        }
-    } else {
-block_10:
-        *arg2 = temp_r5;
-    }
+s32 fn_8023A504(s32 chan, u32 dev, u32 *type) {
+ u32 id;
+ s32 result;
+ s32 value;
+ result = EXIGetID(chan, dev, &id);
+ if (result == 0) return result;
+ value = id & 0xFFFFFF00;
+ switch (value) {
+ case 0x04020100: case 0x04020200: case 0x04020300: case 0x04060000:
+ *type = value; return result;
+ }
+ switch ((s32)(id & 0xFFFF0000)) {
+ case 0:
+ if (!(id & 0x3803)) {
+ switch ((s32)(id & 0xFC)) {
+ case 4: case 8: case 0x10: case 0x20: case 0x40: case 0x80:
+ *type = id & 0xFC; return result;
+ }
+ }
+ break;
+ case 0x05070000: *type = 0x05070000; return result;
+ }
+ *type = id;
+ return result;
 }
 
 s32 fn_8023A61C(s32 arg0, u32 arg1, s32 *arg2) {
