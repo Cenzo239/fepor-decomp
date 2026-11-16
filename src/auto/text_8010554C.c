@@ -2497,20 +2497,30 @@ void Sound_FadeVolProc(void *proc) {
     }
 }
 
-void fn_80109DC0(void) {
-    u32 i;
-    s32 j;
-
-    for (i = 0; i < 0x60; i++) {
-        j = i;
-        if ((u32)j >= 0x20) {
-            if (lbl_802737A0[i] & 0x1000) {
-                if (i != 0x5F) {
-                    j = i + 1;
-                    lbl_802737A0[j] |= 0x2000;
-                }
-            }
-        }
+void fn_80109DC0(void *arg0, u32 kind) {
+    f32 width;
+    f32 height;
+    f32 x,y,cx,cy;
+    u8 *image=*(u8**)(*(u8**)((u8*)arg0+0x30)+0x14);
+    width=height=0.0f;
+    switch(image[0]) {
+    case 1:
+        width=(f32)(*(u16*)(image+0x20)-*(u16*)(image+0x1C));
+        height=(f32)(*(u16*)(image+0x22)-*(u16*)(image+0x1E));
+        break;
+    }
+    x=608.0f-width; y=448.0f-height;
+    cx=x/2.0f; cy=y/2.0f;
+    switch(kind) {
+case 1: *(f32*)((u8*)arg0+0x40)=0.0f; *(f32*)((u8*)arg0+0x44)=y; break;
+case 2: *(f32*)((u8*)arg0+0x40)=cx; *(f32*)((u8*)arg0+0x44)=y; break;
+case 3: *(f32*)((u8*)arg0+0x40)=x; *(f32*)((u8*)arg0+0x44)=y; break;
+case 4: *(f32*)((u8*)arg0+0x40)=0.0f; *(f32*)((u8*)arg0+0x44)=cy; break;
+case 5: *(f32*)((u8*)arg0+0x40)=cx; *(f32*)((u8*)arg0+0x44)=cy; break;
+case 6: *(f32*)((u8*)arg0+0x40)=x; *(f32*)((u8*)arg0+0x44)=cy; break;
+case 7: *(f32*)((u8*)arg0+0x40)=0.0f; *(f32*)((u8*)arg0+0x44)=0.0f; break;
+case 8: *(f32*)((u8*)arg0+0x40)=cx; *(f32*)((u8*)arg0+0x44)=0.0f; break;
+case 9: *(f32*)((u8*)arg0+0x40)=x; *(f32*)((u8*)arg0+0x44)=0.0f; break;
     }
 }
 
