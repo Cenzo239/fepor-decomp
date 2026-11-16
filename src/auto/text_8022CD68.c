@@ -1496,6 +1496,37 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
+s32 fn_80231748(void *arg0) {
+ void __begin_critical_region(s32);
+ void __end_critical_region(s32);
+ extern s32 errno;
+ u8 *file=arg0;
+ s32 result;
+ u8 *p;
+ s32 n;
+ u32 mode;
+ u32 state;
+ s32 count;
+ s32 adj;
+ __begin_critical_region(2);
+ adj=0;
+ mode=(*(u16 *)(file+4)>>6)&7;
+ if((mode!=1 && mode!=2)||file[10]!=0) { errno=40; result=-1; }
+ else {
+ state=(file[8]>>5)&7;
+ if(state==0) result=*(s32 *)(file+0x18);
+ else {
+ p=*(u8 **)(file+0x1c);
+ n=*(u8 **)(file+0x24)-p;
+ result=n+*(s32 *)(file+0x34);
+ if(state>=3) {adj=state-2; result-=adj;}
+ if(!((file[5]>>3)&1)) { count=n-adj; while(count!=0) {if(*p++==10) result++; count--;}}
+ }
+ }
+ __end_critical_region(2);
+ return result;
+}
+
 int fn_80231944(const char *str1, const char *str2, int count) {
  const u8 *s1=(const u8*)str1-1;
  const u8 *s2=(const u8*)str2-1;
@@ -1819,6 +1850,23 @@ s32 fprintf(void *stream, const char *format, ...)
     __end_critical_region(2);
 
     return result;
+}
+
+s32 fn_80232138(const char *format, ...) {
+ extern u8 __files[];
+ s32 fwide(void *, s32);
+ void __begin_critical_region(s32);
+ void __end_critical_region(s32);
+ s32 __FileWrite(void *, const char *, u32);
+ s32 result;
+ va_list args;
+ void *stream=__files+0x50;
+ if(fwide(stream,-1)>=0) return -1;
+ __begin_critical_region(2);
+ __builtin_va_info(&args);
+ result=__pformatter(__FileWrite,stream,format,args);
+ __end_critical_region(2);
+ return result;
 }
 
 s32 __StringWrite(void *arg0, const void *arg1, s32 arg2) {
