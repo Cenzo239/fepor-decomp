@@ -11306,32 +11306,32 @@ void fn_800E4F0C(void *arg0) {
 void fn_800E4F30(void *arg0)
 {
     void fn_80060F70(void *, s32, f32 *);
-    void Camera_GetLookAt(f32 *, void *);
+    void fn_800DBB74(f32 *, void *);
     f32 out[3];
     f32 pos[3];
-    f32 z;
-    f32 y;
+    register f32 z;
     f32 x;
-    void *obj;
+    register void *obj;
+    register f32 y;
 
     obj = *(void **)((u8 *)arg0 + 0xEC);
     if (obj != NULL) {
         fn_80060F70(*(void **)((u8 *)obj + 0xE0), *(s32 *)((u8 *)arg0 + 0xF0), pos);
         x = pos[0];
         if (x > lbl_80369F5C && x < lbl_80369F60) {
-            y = pos[1];
             z = pos[2];
+            y = pos[1];
         } else {
             z = lbl_80369F3C;
-            y = z;
             x = z;
+            y = z;
         }
-        *(f32 *)((u8 *)arg0 + 0x48) = x;
         *(f32 *)((u8 *)arg0 + 0x4C) = y;
+        *(f32 *)((u8 *)arg0 + 0x48) = x;
         *(f32 *)((u8 *)arg0 + 0x50) = z;
-        Camera_GetLookAt(out, *(void **)((u8 *)arg0 + 0xEC));
-        x = out[0];
+        fn_800DBB74(out, *(void **)((u8 *)arg0 + 0xEC));
         y = out[1];
+        x = out[0];
         z = out[2];
         *(f32 *)((u8 *)arg0 + 0x54) = x;
         *(f32 *)((u8 *)arg0 + 0x58) = y;
@@ -19366,44 +19366,22 @@ u8 fn_800FB6FC(void) {
 }
 
 u8 fn_800FB7A8(void) {
-    extern u8 gUiContext[];
-    extern u8 *gAiCmd;
-    extern u8 gAiCmdOk;
-    extern s32 gAiCmdIsAlt;
-    extern u8 gAiState[];
-    extern u8 lbl_80273000[];
-    extern u8 lbl_80272FC8[];
-    void *fn_800FB918(void *, void *, s32 *, u8 *);
-
-    u8 *obj;
-    u8 *entry;
-    s32 val;
-    s32 off;
-    u8 flag;
-    s32 key;
-    s32 gap;
-
-    obj = *(u8 **)gUiContext;
-    entry = lbl_80272FC8;
-    gAiCmd = entry;
-    off = obj[0x250] * 0x1C;
-    gAiCmdIsAlt = 1;
-    gAiCmdOk = 0;
-    entry += off;
-    gAiCmd = entry;
-    obj[0x260] = 0x10;
-
-    val = *(s32 *)(entry + 8);
-    if (val != 0) {
-        *(s16 *)(gAiState + 4) = (s16)val;
-    }
-
-    key = *(s32 *)entry;
-    flag = *(u8 *)&gap;
-    entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
-    (*(void (**)(void *, void *))(entry + 4))(obj, entry);
-
-    return gAiCmdOk;
+extern u8 gUiContext[], gAiState[], lbl_80273000[], lbl_80272FC8[];
+extern u8 *gAiCmd; extern u8 gAiCmdOk; extern s32 gAiCmdIsAlt;
+void *fn_800FB918(void *, void *, s32 *, u8 *);
+u8 *obj; u8 *entry; s32 val; s32 off; u8 flag; s32 key; s32 gap;
+obj=*(u8**)gUiContext;
+entry=lbl_80272FC8; gAiCmd=entry;
+off=obj[0x250]*0x1C;
+gAiCmdOk=0; gAiCmdIsAlt=1;
+entry+=off; gAiCmd=entry; obj[0x260]=0x10;
+entry=gAiCmd;
+val=*(s32*)(entry+8);
+if(val!=0) *(s16*)(gAiState+4)=(s16)val;
+key=*(s32*)entry; flag=*(u8*)&gap;
+entry=fn_800FB918(lbl_80273000,lbl_80273000+0x1A0,&key,&flag);
+(*(void (**)(void*,void*))(entry+4))(obj,entry);
+return gAiCmdOk;
 }
 
 u8 fn_800FB868(void) {
