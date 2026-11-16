@@ -1277,23 +1277,15 @@ u32 fn_8001B8E0(u8 **arg0)
     result = b0 + result;
     return result;
 }
-#pragma global_optimizer reset
-#pragma scheduling reset
+#pragma peephole off
 u16 fn_8001B91C(u8 **arg0) {
-    u8 *p;
-    u8 *next;
-    u32 hi;
-    u32 lo;
-
-    p = *arg0;
-    hi = p[0];
-    next = p + 2;
-    lo = p[1];
-    hi = (hi << 8) + lo;
-    *arg0 = next;
-    return (u16)hi;
+ u8 *p; u8 *next; u16 hi; u32 lo;
+ p=*arg0; hi=p[0]; next=p+2; lo=p[1];
+ hi = (hi << 8) + lo;
+ *arg0=next;
+ return hi;
 }
-
+#pragma peephole on
 u8 Bin_ReadU8(u8 **arg0) {
     u8 *temp_r4;
 
