@@ -395,7 +395,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSSram_tail.c"),
             Object(NonMatching, "dolphin/os/OSSram_lockbits2.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram_lockbits3.c"),
-            Object(NonMatching, "dolphin/os/OSSram_lockbits.c"),
+            Object(NonMatching, "dolphin/os/OSSram_lockbits.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram_tail2.c"),
             Object(Matching, "dolphin/os/OSThread_sched.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSThread_queue.c"),
