@@ -12078,12 +12078,14 @@ void fn_801D041C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) | 4);
 }
 
-void fn_801D0444(s16 *arg0, s32 arg1) {
- if (arg1 < 3) {
- u8 *element = (u8 *)arg0 + arg1 * 2;
- s16 zero = 0;
- *(s16 *)(element + 14) = zero;
- }
+void fn_801D0444(u8 *base, s32 idx) {
+    s32 t;
+    if (idx < 3) {
+        t = idx;
+        idx = 0;
+        base += t * 2;
+        *(s16 *)(base + 0xe) = idx;
+    }
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
@@ -19162,47 +19164,40 @@ s32 Save_BumpVersionChecksum(void *slot) {
     return 1;
 }
 
-#pragma peephole off
+#pragma optimization_level 3
 s32 Save_IsValid(void *slot) {
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 gSaveStrings[];
-
-    u8 *save;
     void *crcTable;
     u32 sum;
+    u8 ok;
     u32 value;
-    BOOL ok;
 
-    if (*(u32 *)((u8 *)slot + 0x40) != 0x4645384A) {
+    if (*(u32 *)((u8 *)slot + 0x40) != 0x4645384AU) {
         return 0;
     }
-
-    save = (u8 *)slot;
-
-    if (*(u32 *)(save + 0x50) == 0x12345678) {
-        ok = TRUE;
-    } else if (save[0x60] == 1) {
-        ok = TRUE;
+    if (*(u32 *)((u8 *)slot + 0x50) == 0x12345678U) {
+        ok = 1;
+    } else if (*(u8 *)((u8 *)slot + 0x60) == 1) {
+        ok = 1;
     } else {
         crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
         Crc32_InitTable();
-        sum = Crc32_Calc(crcTable, save + 0x70, *(s32 *)(save + 0x4C) - 0x70);
+        sum = Crc32_Calc(crcTable, (u8 *)slot + 0x70, *(s32 *)((u8 *)slot + 0x4C) - 0x70);
         fn_800C4588(crcTable);
-
-        if (*(u32 *)(save + 0x50) != sum) {
-            ok = FALSE;
+        if (*(u32 *)((u8 *)slot + 0x50) != sum) {
+            ok = 0;
         } else {
-            ok = TRUE;
+            ok = 1;
         }
     }
-
     value = (u8)ok;
     return ((-value) | value) >> 31;
 }
-#pragma peephole on
+#pragma optimization_level reset
 s32 fn_801E434C(void *arg0) {
     if ((u32) (M2C_FIELD(arg0, s32 *, 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
