@@ -24,7 +24,7 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     return 0;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 4
 void fn_80006298(u32 *dst, u32 val, u32 n) {
     n >>= 2;
     dst--;
@@ -32,13 +32,19 @@ void fn_80006298(u32 *dst, u32 val, u32 n) {
         *++dst = val;
     } while (--n);
 }
-#pragma optimization_level reset
+#pragma opt_strength_reduction off
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
- s32 count = arg2 >> 3;
- arg0--;
- do { *++arg0 = arg1; *++arg0 = arg1; } while (--count > 0);
-}
+    u32 count;
 
+    count = arg2 >> 3;
+    arg0--;
+
+    do {
+        *++arg0 = arg1;
+        *++arg0 = arg1;
+    } while (--count != 0);
+}
+#pragma opt_strength_reduction reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     dst--;
     n >>= 2;
@@ -2069,17 +2075,14 @@ void Prim2D_SetTransform(f32 x, f32 y, f32 z, f32 scale) {
 }
 
 #pragma peephole off
-void *Prim2D_PushZ(f32 *arg0)
-{
+void *Prim2D_PushZ(f32 *arg0) {
     extern u16 gPrim2D;
-    f32 *out;
 
-    out = arg0;
-    if (out != NULL) {
-        *out = *(f32 *)(*(u8 **)&gPrim2D + 0x28);
-        out = (f32 *)(*(u8 **)&gPrim2D + 0x60);
+    if (arg0 != NULL) {
+        *arg0 = *(f32 *)(*(u8 *volatile *)&gPrim2D + 0x28);
     }
-    return out;
+
+    return *(u8 *volatile *)&gPrim2D + 0x60;
 }
 #pragma peephole on
 void Prim2D_PopZ(void *src, f32 farg0) {
