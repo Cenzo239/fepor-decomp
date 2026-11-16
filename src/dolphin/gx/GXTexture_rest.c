@@ -280,12 +280,16 @@ void fn_8022462C(s32 arg0) {
 }
 #pragma peephole off
 void fn_80224658(s32 arg0) {
- u8 *gx = (u8 *)__GXData;
- u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 4, 27, 27);
- *(volatile u8 *)0xCC008000 = 0x61;
- *(volatile u32 *)0xCC008000 = value;
- *(u32 *)(gx + 0x1d0) = value;
- *(u16 *)(gx + 2) = 0;
+  u8 cmd;
+  u8 *gx;
+  u32 value;
+  gx = (u8 *)__GXData;
+  cmd = 0x61;
+  value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 4, 27, 27);
+  *(u8 *)0xCC008000 = cmd;
+  *(u32 *)0xCC008000 = value;
+  *(u32 *)(gx + 0x1d0) = value;
+  *(u16 *)(gx + 2) = 0;
 }
 #pragma peephole on
 void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
@@ -367,16 +371,20 @@ void fn_802246EC(u32 arg0, u32 arg1)
     }
 }
 
+#pragma peephole off
 void fn_802247C0(s32 arg0) {
- u8 *gx = (u8 *)__GXData;
- u8 *fifo = (u8 *)0xCC008000;
- u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 2, 29, 29);
- *fifo = 0x61;
- *(u32 *)fifo = value;
- *(u32 *)(gx + 0x1d0) = value;
- *(u16 *)(gx + 2) = 0;
+  u8 cmd;
+  u8 *gx;
+  u32 value;
+  gx = (u8 *)__GXData;
+  cmd = 0x61;
+  value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 2, 29, 29);
+  *(u8 *)0xCC008000 = cmd;
+  *(u32 *)0xCC008000 = value;
+  *(u32 *)(gx + 0x1d0) = value;
+  *(u16 *)(gx + 2) = 0;
 }
-
+#pragma peephole on
 void fn_802247EC(u8 arg0, u8 arg1) {
     extern u16 *__GXData;
     u16 *gx;
@@ -392,12 +400,12 @@ void fn_802247EC(u8 arg0, u8 arg1) {
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
-    u32 value = __rlwimi(0, (u32)arg1, 0, 31, 31);
-    u16 *gx = __GXData;
-    value = __rlwimi(value, arg0, 1, 30, 30);
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = __rlwimi(value, 0x44, 24, 0, 7);
-    gx[1] = 0;
+ u32 value=__rlwimi(0,(u32)arg1,0,31,31);
+ u8 *gx=(u8*)__GXData;
+ value=__rlwimi(value,arg0,1,30,30);
+ *(u8*)0xCC008000=0x61;
+ *(u32*)0xCC008000=__rlwimi(value,0x44,24,0,7);
+ *(u16 *)(gx+2)=0;
 }
 
 void fn_80224860(u8 arg0, u8 arg1)
@@ -463,11 +471,34 @@ void GXProject(f32 x, f32 y, f32 z, f32 mtx[3][4], f32 *pm, f32 *vp, f32 *sx, f3
     *sz = vp[5] + (wc * (zc * (vp[5] - vp[4])));
 }
 
-void GXSetProjection(s32 arg0, s32 arg1, s32 arg2)
+void GXSetProjection(f32 *mtx, s32 type)
 {
-    if (arg2 != 0) {
-        arg0 = arg0 + arg1 - arg2;
-    }
+ u8 *gx = (u8 *)__GXData;
+ f32 *p;
+ *(s32 *)(gx+0x4D8)=type;
+ *(f32 *)(gx+0x4DC)=mtx[0];
+ *(f32 *)(gx+0x4E4)=mtx[5];
+ *(f32 *)(gx+0x4EC)=mtx[10];
+ *(f32 *)(gx+0x4F0)=mtx[11];
+ if(type==1) {
+ *(f32 *)(gx+0x4E0)=mtx[3];
+ *(f32 *)(gx+0x4E8)=mtx[7];
+ } else {
+ *(f32 *)(gx+0x4E0)=mtx[2];
+ *(f32 *)(gx+0x4E8)=mtx[6];
+ }
+ gx=(u8 *)__GXData;
+ *(volatile u8 *)0xCC008000=0x10;
+ *(volatile u32 *)0xCC008000=0x61020;
+ p=(f32 *)(gx+0x4DC);
+ *(volatile f32 *)0xCC008000=p[0];
+ *(volatile f32 *)0xCC008000=p[1];
+ *(volatile f32 *)0xCC008000=p[2];
+ *(volatile f32 *)0xCC008000=p[3];
+ *(volatile f32 *)0xCC008000=p[4];
+ *(volatile f32 *)0xCC008000=p[5];
+ *(volatile u32 *)0xCC008000=*(u32 *)(gx+0x4D8);
+ *(u16 *)(gx+2)=1;
 }
 
 void fn_80224CF0(f32 *arg0)
@@ -573,91 +604,57 @@ f32 fn_80224E50(u32 arg1, s32 arg2) {
     return M2C_ERROR(/* psq_l unimplemented */);
 }
 
-void fn_80224F04(u16 *arg0)
-{
+void fn_80224F04(u16 *unused) {
     extern f32 lbl_8036BDC0;
     extern f32 lbl_8036BDC4;
-
     u8 *gx;
-    volatile u8 *fifo8;
-    volatile u32 *fifo32;
-    volatile f32 *fifoFloat;
-
     f32 scale;
-    f32 bias;
     f32 a;
     f32 b;
     f32 c;
     f32 d;
-    f32 e;
     f32 f;
+    f32 e;
     f32 g;
     f32 h;
     f32 negA;
+    f32 mul_b;
+    f32 mul_neg;
+    f32 mul_ef;
+    f32 mul_gf;
+    f32 bias;
 
-    f32 result1;
-    f32 result2;
-    f32 result3;
-    f32 result4;
-    f32 result5;
-    f32 result6;
-    f32 product1;
-    f32 product2;
-    f32 product3;
-
-    gx = (u8 *)arg0;
-
-    fifo8 = (volatile u8 *)0xCC008000;
-    fifo32 = (volatile u32 *)0xCC008000;
-    fifoFloat = (volatile f32 *)0xCC008000;
-
+    gx = (u8 *)__GXData;
     scale = lbl_8036BDC0;
-
     a = *(f32 *)(gx + 0x500);
     b = *(f32 *)(gx + 0x4FC);
+    negA = -a;
     c = *(f32 *)(gx + 0x4F4);
+    mul_b = b * scale;
     d = *(f32 *)(gx + 0x4F8);
-    e = *(f32 *)(gx + 0x508);
+    a = a * scale;
     f = *(f32 *)(gx + 0x510);
+    e = *(f32 *)(gx + 0x508);
+    mul_neg = negA * scale;
     g = *(f32 *)(gx + 0x504);
     h = *(f32 *)(gx + 0x50C);
-
-    negA = -a;
-
-    result1 = b * scale;
-    product1 = a * scale;
-    result2 = negA * scale;
-
-    product2 = e * f;
-    product3 = g * f;
-
+    mul_ef = e * f;
+    mul_gf = g * f;
     bias = lbl_8036BDC4;
-
-    *fifo8 = 0x10;
-
-    result4 = c + result1;
-
-    *fifo32 = 0x5101A;
-
-    result5 = d + product1;
-
-    *fifoFloat = result1;
-
-    result3 = product2 - product3;
-
-    result4 = bias + result4;
-
-    *fifoFloat = result2;
-
-    result5 = bias + result5;
-
-    *fifoFloat = result3;
-    *fifoFloat = result4;
-    *fifoFloat = result5;
-
-    result6 = product2 + h;
-
-    *fifoFloat = result6;
+    *(u8 *)0xCC008000 = 0x10;
+    c = c + mul_b;
+    *(u32 *)0xCC008000 = 0x0005101A;
+    d = d + a;
+    *(f32 *)0xCC008000 = mul_b;
+    mul_gf = mul_ef - mul_gf;
+    c = bias + c;
+    *(f32 *)0xCC008000 = mul_neg;
+    d = bias + d;
+    *(f32 *)0xCC008000 = mul_gf;
+    h = mul_ef + h;
+    *(f32 *)0xCC008000 = c;
+    *(f32 *)0xCC008000 = d;
+    *(f32 *)0xCC008000 = h;
 }
 
 void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx; if(arg0==0) farg1-=lbl_8036BDC0; gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
@@ -673,22 +670,31 @@ void fn_80225034(u32 arg0, u32 *dst) {
     out[2] = c;
 }
 
-void GXSetScissor(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    u32 temp_r4;
-    u32 temp_r6;
-    u32 temp_r7;
-    
-    temp_r6 = (s32)(arg1 + 0x156);
-    temp_r4 = (s32)(arg0 + 0x156);
-    *(u32*)((char*)__GXData + 0xF8) = (s32)((*(u32*)((char*)__GXData + 0xF8) & ~0x7FF) | (temp_r6 & 0x7FF));
-    *(u32*)((char*)__GXData + 0xF8) = (s32)((*(u32*)((char*)__GXData + 0xF8) & ~0x7FF000) | ((temp_r4 << 0xC) & 0x7FF000));
-    *(u32*)((char*)__GXData + 0xFC) = (s32)((*(u32*)((char*)__GXData + 0xFC) & ~0x7FF) | ((temp_r6 + (arg3 - 1)) & 0x7FF));
-    *(u32*)((char*)__GXData + 0xFC) = (s32)((*(u32*)((char*)__GXData + 0xFC) & ~0x7FF000) | (((temp_r4 + (arg2 - 1)) << 0xC) & 0x7FF000));
-    *(char*)0xCC008000 = 0x61;
-    *(char*)0xCC008000 = *(u32*)((char*)__GXData + 0xF8);
-    *(char*)0xCC008000 = 0x61;
-    *(char*)0xCC008000 = *(u32*)((char*)__GXData + 0xFC);
-    *(u16*)((char*)__GXData + 0x2) = 0;
+void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
+    u8 *gx;
+    u32 x0;
+    u32 y0;
+    u32 x1;
+    u32 y1;
+    s32 hm1;
+    s32 wm1;
+
+    gx = (u8 *)__GXData;
+    y0 = top + 0x156;
+    hm1 = ht - 1;
+    *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), y0, 0, 21, 31);
+    x0 = left + 0x156;
+    wm1 = wd - 1;
+    y1 = y0 + hm1;
+    *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), x0, 12, 9, 19);
+    x1 = x0 + wm1;
+    *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), y1, 0, 21, 31);
+    *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), x1, 12, 9, 19);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = *(u32 *)(gx + 0xF8);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = *(u32 *)(gx + 0xFC);
+    *(u16 *)(gx + 2) = 0;
 }
 
 void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
@@ -737,28 +743,36 @@ void fn_80225158(u32 arg0)
   __GXData[1] = 1;
 }
 
-void fn_80225180(s32 arg0) {
-    s32 temp_r4;
-    s32 temp_r4_2;
-
-    if (arg0 < 5) {
-        *(u8*)0xCC008000 = 8;
-        *(u8*)0xCC008000 = 0x30;
-        temp_r4 = *(u32*)((char*)__GXData + 0x80);
-        *(u8*)0xCC008000 = temp_r4;
-        *(u8*)0xCC008000 = 0x10;
-        *(u8*)0xCC008000 = 0x1018;
-        *(u8*)0xCC008000 = temp_r4;
-    } else {
-        *(u8*)0xCC008000 = 8;
-        *(u8*)0xCC008000 = 0x40;
-        temp_r4_2 = *(u32*)((char*)__GXData + 0x84);
-        *(u8*)0xCC008000 = temp_r4_2;
-        *(u8*)0xCC008000 = 0x10;
-        *(u8*)0xCC008000 = 0x1019;
-        *(u8*)0xCC008000 = temp_r4_2;
-    }
-    *(u16*)((char*)__GXData + 0x2) = 1;
+void fn_80225180(s32 arg0)
+{
+  int new_var2;
+  u32 value;
+  int new_var;
+  u16 *gx;
+  new_var = 0;
+  new_var2 = 5;
+  if (arg0 < new_var2)
+  {
+    gx = __GXData;
+    GXWGFifo.u8 = 8;
+    GXWGFifo.u8 = 0x30;
+    value = (GXWGFifo.u32 = *((u32 *) (((u8 *) gx) + 0x80)));
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x1018;
+    GXWGFifo.u32 = value;
+  }
+  else
+  {
+    gx = __GXData;
+    GXWGFifo.u8 = 8;
+    arg0 += new_var;
+    GXWGFifo.u8 = 0x40;
+    value = (GXWGFifo.u32 = *((u32 *) (((u8 *) gx) + 0x84)));
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x1019;
+    GXWGFifo.u32 = value;
+  }
+  __GXData[1] = 1;
 }
 
 void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
