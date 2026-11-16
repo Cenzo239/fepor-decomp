@@ -1295,21 +1295,16 @@ void fn_802201A8(void) {
 }
 
 void GXSetNumChans(u32 arg0) {
-    extern unsigned short *__GXData;
-    register unsigned short *gx_data = __GXData;
-    register volatile u32 *fifo = (volatile u32 *)0xCC008000;
-    u32 value;
-
-    value = *(u32 *)((u8 *)gx_data + 0x204);
-    value = (value & 0xFFFFFFF0) | (arg0 & 0xF);
-    *(u32 *)((u8 *)gx_data + 0x204) = value;
-
-    *(volatile u8 *)fifo = 0x10;
-    *fifo = 0x103F;
-    *fifo = arg0 & 0xFF;
-
-    value = *(u32 *)((u8 *)gx_data + 0x5AC);
-    *(u32 *)((u8 *)gx_data + 0x5AC) = value | 4;
+ extern unsigned short *__GXData;
+ u8 count;
+ u32 *gxData;
+ gxData = (u32 *)__GXData;
+ count = arg0;
+ gxData[0x204/4] = __rlwimi(gxData[0x204/4], count, 0, 28, 31);
+ *(volatile u8 *)0xCC008000 = 0x10;
+ *(volatile u32 *)0xCC008000 = 0x103F;
+ *(volatile u32 *)0xCC008000 = count;
+ gxData[0x5AC/4] |= 4;
 }
 
 void GXSetMisc(s32 arg0, u32 arg1) {
