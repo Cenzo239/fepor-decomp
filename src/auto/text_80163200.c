@@ -423,24 +423,22 @@ loop_test:
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
-    s16 sp8[2];
-    s16 var5;
+    struct { s16 x; s16 y; } sp8;
+    s16 temp;
     s16 var0;
-    s32 temp;
+    s16 var5;
+
     temp = *(s16 *)((u8 *)arg1 + 0x4C);
-    if ((s16)temp < 0) {
+    if (temp < 0) {
         var0 = 0;
         var5 = 0;
     } else {
-        s32 stride = *(s16 *)((u8 *)arg1 + 0x54);
-        temp = (s16)temp & 3;
         var5 = *(s16 *)((u8 *)arg1 + 0x64);
-        temp *= stride;
-        var0 = temp + *(s16 *)((u8 *)arg1 + 0x66);
+        var0 = (s16)(*(s16 *)((u8 *)arg1 + 0x54) * (temp & 3) + *(s16 *)((u8 *)arg1 + 0x66));
     }
-    sp8[0] = var5;
-    sp8[1] = var0;
-    *arg0 = *fn_8013F748(arg1, &spC, sp8);
+    sp8.x = var5;
+    sp8.y = var0;
+    *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
 
 void fn_80163E50(void *arg0) {
@@ -2119,7 +2117,7 @@ void Ui_HideUnitInfoPopup(void *arg0) {
  extern u8 lbl_80277A20[]; extern s32 lbl_8036A938;
  extern f32 lbl_8036A93C; extern f32 lbl_8036A940; extern f32 lbl_8036A92C;
  s32 flags; s32 mask; s32 eight; u8 *base;
- f32 zero; f32 t; f32 dy; f32 dx;
+ f32 t; f32 zero; f32 dy; f32 dx;
  flags=*(s32 *)arg0;
  if(!(flags&1)) {
  mask=lbl_8036A938; dx=lbl_8036A93C; eight=8;
@@ -6428,9 +6426,9 @@ extern "C" void fn_8016FD08(void *arg0) {
 }
 
 extern "C" u8 fn_8016FDA4(u32 *arg0) {
-    u32 *Item_GetFlagsPtr(void *);
+    u64 *Item_GetFlagsPtr(void *);
     s32 var_r31;
-    u32 *bits;
+    u64 *bits;
     s32 zero;
 
     if (arg0 == NULL || *arg0 == 0U) {
@@ -6439,10 +6437,10 @@ extern "C" u8 fn_8016FDA4(u32 *arg0) {
     var_r31 = 0;
     bits = Item_GetFlagsPtr(arg0);
     zero = 0;
-    if ((*(u64 *)bits & 0x20000000000ULL) == zero) {
+    if ((*(s64 *)bits & 0x20000000000LL) == (s64)zero) {
         bits = Item_GetFlagsPtr(arg0);
         zero = 0;
-        if ((*(u64 *)bits & 0x200ULL) == zero) {
+        if ((*(s64 *)bits & 0x200LL) == (s64)zero) {
             var_r31 = 1;
         }
     }
@@ -6497,6 +6495,7 @@ void Ui_RefocusUnitListPanel(void *panel) {
     }
 }
 
+#pragma use_lmw_stmw on
 void fn_8016FF34(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
@@ -6539,7 +6538,7 @@ void fn_8016FF34(void *arg0) {
     gUiContext[1] = 0;
     Process_CreateChild(lbl_80294B10, arg0);
 }
-
+#pragma use_lmw_stmw reset
 void fn_80170034(void *arg0) {
     M2C_UNK Process_AdvanceStep(s32);
     Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x5C));
@@ -7968,37 +7967,31 @@ extern "C" void fn_80172DA4(void *arg0) {
 
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
-    s16 UnitInv_FindFilledUp(void *, s32, void *);
+    s16 UnitInv_FindFilledUp(void *, s32, s32);
     void Ui_BringChildToFront(void *, void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, void *);
-    u8 fn_80173220(u32 *, void *);
+    void fn_80173220(void);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    void *self;
     void *obj;
-    void *cb;
     void *p;
     u32 ret;
-    s16 index;
+    s32 val;
 
-    self = arg0;
-    obj = *(void **)((u8 *)self + 0x4C);
+    obj = *(void **)((u8 *)arg0 + 0x4C);
     *(u8 *)((u8 *)obj + 0x48) = 1;
     p = *(void **)gUiContext;
     if (Status_Test((u8 *)*(void **)((u8 *)p + 0x18C) + 0x1C, 8) != 0) {
         *(s32 *)((u8 *)obj + 0x60) = 2;
         *(u8 *)((u8 *)obj + 0x4B) = 1;
     }
-    p = (void *)gUiContext;
-    cb = (void *)fn_80173220;
-    p = *(void **)p;
-    *(void **)((u8 *)obj + 0x70) = cb;
-    *(void **)((u8 *)obj + 0x74) = p;
-    index = UnitInv_FindFilledUp(obj, 0, p);
-    *(s16 *)((u8 *)obj + 0x4C) = index;
-    Ui_BringChildToFront(self, obj);
-    ret = Ui_FindChild(self, -0x1000, 0);
+    val = gUiContext[0];
+    *(void **)((u8 *)obj + 0x70) = (void *)fn_80173220;
+    *(s32 *)((u8 *)obj + 0x74) = val;
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(obj, 0, val);
+    Ui_BringChildToFront(arg0, obj);
+    ret = Ui_FindChild(arg0, -0x1000, 0);
     if (ret != 0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x370);
     }
@@ -8013,8 +8006,8 @@ void fn_801731FC(void *arg0) {
 }
 
 u8 fn_80173220(u32 *arg0, void *arg1) {
-    u64 *Item_GetFlagsPtr(void *);
-    u8 Unit_CanUseItem(void *, void *);
+    u64 *fn_8001CB64(void *);
+    u8 fn_80091EF0(void *, void *);
     u32 *p;
     u8 var_r4;
 
@@ -8024,12 +8017,12 @@ u8 fn_80173220(u32 *arg0, void *arg1) {
             return 0;
         }
     } else {
-        p = (u32 *)Item_GetFlagsPtr(p);
+        p = (u32 *)fn_8001CB64(p);
     }
     if ((*(u64 *)p & 4ULL) != 0) {
         var_r4 = 0;
     } else {
-        var_r4 = (u8)Unit_CanUseItem(arg1, (void *)*arg0);
+        var_r4 = (u8)fn_80091EF0(arg1, (void *)*arg0);
     }
     return var_r4;
 }
@@ -9346,10 +9339,10 @@ u8 fn_80175924(s32 **arg0, s32 arg1) {
 }
 
 void fn_80175954(void *arg0) {
-void *Ui_CreateMenu(void *, void *, s32);
-u8 fn_8011AC10(void); u32 Ui_FindChild(void *, s32, s32);
-void Ui_SetWidgetText(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
-extern u16 gUiMsgStrings[]; extern f32 lbl_8036AB78; extern f32 lbl_8036AB7C;
+void *fn_80024398(void *, void *, s32);
+u8 fn_8011AC10(void); u32 fn_8013FF94(void *, s32, s32);
+void fn_801658DC(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
+extern u16 lbl_80278080[]; extern f32 lbl_8036AB78; extern f32 lbl_8036AB7C;
 struct Params { u8 pad[8]; s16 x,y,z; u8 padE[6]; s16 a; u8 pad16[2]; f32 scale; u8 pad1c[2]; s16 mode; };
 void *self; struct Params *obj; u32 ret;
 f32 value=lbl_8036AB78;
@@ -9365,9 +9358,9 @@ obj->z=0xc8;
 obj->a=0;
 obj->scale=value;
 obj->mode=4;
-*(void**)((u8*)self+0x5c)=Ui_CreateMenu(obj,self,0);
-ret=Ui_FindChild(self,-0x1000,0);
-if(ret) Ui_SetWidgetText(ret,(u8*)gUiMsgStrings+0x1fd);
+*(void**)((u8*)self+0x5c)=fn_80024398(obj,self,0);
+ret=fn_8013FF94(self,-0x1000,0);
+if(ret) fn_801658DC(ret,(u8*)lbl_80278080+0x1fd);
 }
 
 void *fn_80175C34(void *arg0, s16 arg1) {
@@ -10671,13 +10664,11 @@ void *fn_801784C8(void) {
 s32 fn_801784D8(void) {
  u8 fn_801EAA88(void); s32 fn_80015680(void *); u8 fn_8014D8DC(void *);
  extern u8 gUnitLists[]; extern u8 gBattleState[];
- s32 result;
  s32 count=0;
  if(fn_801EAA88()==0) count=fn_80015680(gUnitLists);
  count+=fn_80015680(gUnitLists+0x3C);
- if(count<=1 && fn_8014D8DC(gBattleState)==0) result=2;
- else result=0;
- return result;
+ if(count<=1 && fn_8014D8DC(gBattleState)==0) return 2;
+ return 0;
 }
 
 #pragma scheduling reset
@@ -11400,15 +11391,44 @@ void *fn_801795C0(void) {
 }
 
 s32 fn_801795D0(void *arg0) {
-void *Item_GetFlagsPtr(void *); u32 *Unit_GetItemSlot(void *, s32); u8 fn_80093088(void *); s32 Convoy_FindEmpty(void *); u8 Status_Test(void *, s32);
-extern u32 gUiContext[]; extern u8 gConvoy[];
-s8 i; u8 flag; void *base;
-flag=1; base=(void*)gUiContext[0];
-if(Status_Test((u8*)base+0x1BC,8)) {
-for(i=0;i<8;i++) { u32 *slot=Unit_GetItemSlot(base,i); if(*slot) { if((*(unsigned long long*)Item_GetFlagsPtr(slot)&0x200ULL)==0) {flag=0; break;} } }
-} else flag=fn_80093088(base);
-if(flag) { *((u8*)arg0+4)=0; return 2; }
-if(Convoy_FindEmpty(gConvoy)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
+    void *Item_GetFlagsPtr(void *);
+    u32 *Unit_GetItemSlot(void *, s32);
+    u8 fn_80093088(void *);
+    s32 Convoy_FindEmpty(void *);
+    u8 Status_Test(void *, s32);
+    extern u32 gUiContext[];
+    extern u8 gConvoy[];
+    s8 i;
+    u8 flag;
+    void *base;
+    u32 z;
+
+    flag = 1;
+    base = (void *)gUiContext[0];
+    if (Status_Test((u8 *)base + 0x1BC, 8)) {
+        i = 0;
+        z = i;
+        for (; i < 8; i++) {
+            u32 *slot = Unit_GetItemSlot(base, i);
+            if (*slot) {
+                if ((*(unsigned long long *)Item_GetFlagsPtr(slot) & 0x200ULL) == 0) {
+                    flag = z;
+                    break;
+                }
+            }
+        }
+    } else {
+        flag = fn_80093088(base);
+    }
+    if (flag) {
+        *((u8 *)arg0 + 4) = 0;
+        return 2;
+    }
+    if (Convoy_FindEmpty(gConvoy) < 0) {
+        *((u8 *)arg0 + 4) = 1;
+        return 2;
+    }
+    return 0;
 }
 
 #pragma cplusplus on
@@ -12750,29 +12770,32 @@ void fn_8017BB94(void *arg0) {
 
 #pragma use_lmw_stmw reset
 
+#pragma scheduling off
 s32 fn_8017BC94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
-    s32 base;
     void *self;
+    s32 base;
     s32 count;
     s32 i;
     void *p;
+    u8 slot;
     u8 r;
     u8 r2;
 
+    self = arg0;
+    base = *(s32 *)((u8 *)arg0 + 0x4C);
     count = 0;
     i = 0;
-    self = arg0;
-    base = *(s32 *)((u8 *)self + 0x4C);
     do {
         p = fn_80105C5C((void *)(base + 0x1BC), (u8)i);
         if (p != NULL) {
             if (*(u8 *)((u8 *)p + 0x19) != 0) {
                 if (*(u8 *)((u8 *)p + 0x19) != 0) {
+                    slot = *(u8 *)((u8 *)p + 0x18);
                     r = Status_Test(
                         (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x18C) + 0x1C,
-                        *(u8 *)((u8 *)p + 0x18));
+                        slot);
                 } else {
                     r = 0;
                 }
@@ -12795,7 +12818,7 @@ s32 fn_8017BC94(void *arg0) {
     } while (i < 0x62);
     return count;
 }
-
+#pragma scheduling on
 s32 Unit_CountExtraSkills(void *arg0) {
 u8 Status_Test(void *, u8);
 void *fn_80105C5C(void *, u8);
@@ -12824,6 +12847,54 @@ void fn_8017BE00(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s8 *, 0x3C) = 0;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x58) = 0;
 }
+
+#pragma global_optimizer off
+void fn_8017BE54(void *arg0) {
+u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
+extern f32 lbl_8036ABBC;
+void *unit; void *parent; void *item; void *self;
+s32 i; u8 check; u8 found;
+f32 f;
+f = lbl_8036ABBC;
+self = arg0;
+i = 0;
+*(s32 *)((u8 *)self + 0x34) = i;
+*(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x5c) = *(void **)((u8 *)self + 0x38);
+*(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 0x60) = f;
+unit = *(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x4c);
+for (; i < 0x62; i++) {
+item = fn_80105C5C((u8 *)unit + 0x1bc, (u8)i);
+if (item && *(u8 *)((u8 *)item + 0x19)) {
+parent = *(void **)((u8 *)self + 0x30);
+if (*(u8 *)((u8 *)item + 0x19) == 0)
+check = 0;
+else {
+if (*(u8 *)((u8 *)item + 0x19) != 0)
+check = Status_Test((u8 *)*(void **)((u8 *)*(void **)((u8 *)parent + 0x4c) + 0x18c) + 0x1c, *(u8 *)((u8 *)item + 0x18));
+else
+check = 0;
+if (check)
+check = 0;
+else
+check = Status_Test((u8 *)*(void **)((u8 *)parent + 0x4c) + 0x1bc, *(u8 *)((u8 *)item + 0x18));
+}
+if (check && *(u8 *)((u8 *)*(void **)((u8 *)self + 0x38) + 0x18) < *(u8 *)((u8 *)item + 0x18)) {
+found = 1;
+goto done;
+}
+}
+}
+found = 0;
+done:
+if (found) {
+void *p = *(void **)((u8 *)self + 0x30);
+*(s32 *)((u8 *)p + 0x58) = 1;
+} else {
+void *p = *(void **)((u8 *)self + 0x30);
+*(s32 *)((u8 *)p + 0x58) = 2;
+}
+}
+#pragma global_optimizer on
 
 void fn_8017BF6C(void *arg0) {
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
@@ -12938,33 +13009,36 @@ void fn_8017C170(void *arg0) {
         Math_Ease(5, temp_r4, lbl_8036AB94, lbl_8036ABBC, (f32)temp_r4, lbl_8036ABA0);
 }
 
-#pragma use_lmw_stmw on
+#pragma global_optimizer off
 s32 fn_8017C22C(void *arg0) {
 u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
 void *parent; void *unit; void *item; void *self;
 s32 i; u8 check;
-self=arg0;
-unit=*(void**)((u8*)*(void**)((u8*)self+0x30)+0x4c);
-i=0;
-loop: {
-item=fn_80105C5C((u8*)unit+0x1bc,(u8)i);
-if(item && *(u8*)((u8*)item+0x19)){
-parent=*(void**)((u8*)self+0x30);
-if(*(u8*)((u8*)item+0x19)==0) check=0;
+self = arg0;
+unit = *(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x4c);
+for (i = 0; i < 0x62; i++) {
+item = fn_80105C5C((u8 *)unit + 0x1bc, (u8)i);
+if (item && *(u8 *)((u8 *)item + 0x19)) {
+parent = *(void **)((u8 *)self + 0x30);
+if (*(u8 *)((u8 *)item + 0x19) == 0)
+check = 0;
 else {
-if(*(u8*)((u8*)item+0x19)!=0)
-check=Status_Test((u8*)*(void**)((u8*)*(void**)((u8*)parent+0x4c)+0x18c)+0x1c,*(u8*)((u8*)item+0x18));
-else check=0;
-if(check) check=0;
-else check=Status_Test((u8*)*(void**)((u8*)parent+0x4c)+0x1bc,*(u8*)((u8*)item+0x18));
+if (*(u8 *)((u8 *)item + 0x19) != 0)
+check = Status_Test((u8 *)*(void **)((u8 *)*(void **)((u8 *)parent + 0x4c) + 0x18c) + 0x1c, *(u8 *)((u8 *)item + 0x18));
+else
+check = 0;
+if (check)
+check = 0;
+else
+check = Status_Test((u8 *)*(void **)((u8 *)parent + 0x4c) + 0x1bc, *(u8 *)((u8 *)item + 0x18));
 }
-if(check && *(u8*)((u8*)*(void**)((u8*)self+0x38)+0x18)<*(u8*)((u8*)item+0x18))return 1;
+if (check && *(u8 *)((u8 *)*(void **)((u8 *)self + 0x38) + 0x18) < *(u8 *)((u8 *)item + 0x18))
+return 1;
 }
 }
-if(++i<0x62) goto loop;
 return 0;
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 void fn_8017C304(void *arg0) {
     s32 temp_r5;
 
