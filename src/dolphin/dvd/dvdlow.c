@@ -33,6 +33,7 @@ extern void* lbl_80368654;
 u8 ErrorCode2Num(s32);
 
 volatile u32 __DIRegs[16] : 0xCC006000;
+volatile u32 DI_CFG : 0xCC006004;
 
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
@@ -481,19 +482,18 @@ BOOL fn_8020BD68(u32 offset, void *callback) {
     return TRUE;
 }
 
+#pragma opt_common_subs off
 BOOL DVDLowWaitCoverClose(void *callback) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
-    volatile u32 *di;
 
     Callback_80368538 = callback;
-    WaitingCoverClose_8036854C = TRUE;
-    di = __DIRegs;
-    StopAtNextInt_80368530 = FALSE;
-    di[1] = 2;
+    WaitingCoverClose_8036854C = 1;
+    StopAtNextInt_80368530 = 0;
+    __DIRegs[1] = 2;
     return TRUE;
 }
-
+#pragma opt_common_subs reset
 BOOL fn_8020BE28(void *addr, void *callback) {
     extern void *Callback_80368538;
     u32 timeout;
@@ -703,22 +703,21 @@ BOOL fn_8020C2FC(void) {
     return TRUE;
 }
 
+#pragma peephole off
 #pragma scheduling off
 void *fn_8020C310(void) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
     void *cb;
-    u32 base;
 
-    base = 0xCC000000;
-    *(u32 *)(base + 0x6004) = 0;
+    __DIRegs[1] = 0;
     cb = Callback_80368538;
     WaitingCoverClose_8036854C = 0;
-    Callback_80368538 = 0;
+    Callback_80368538 = NULL;
     return cb;
 }
-
-#pragma scheduling on
+#pragma scheduling reset
+#pragma peephole on
 void __DVDLowSetWAType(u32 type, u32 location) {
     extern volatile u32 WorkAroundType_80368554;
     extern u32 WorkAroundSeekLocation_80368558;
