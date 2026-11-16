@@ -904,17 +904,17 @@ void fn_8021F06C(s32 arg0) {
     fn_8021F0A0(sp14);
 }
 
-void* fn_8021F168(u32 arg0) {
-    u32* var_r3;
-    s32 temp_r4;
-    
-    temp_r4 = arg0 - 0x14;
-    if (temp_r4 < 0) {
-        var_r3 = (u32*)((u32)&lbl_803685E8 + (arg0 * 4));
-    } else {
-        var_r3 = NULL;
-    }
-    return var_r3;
+void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
+{
+  extern u16 * const __GXData;
+  extern u16 *__cpReg;
+  u32 *gx;
+  ((u32 *) __GXData)[3] = __cpReg[0];
+  *arg0 = ((u32 *) __GXData)[3] & 1;
+  *arg1 = (((u32 *) __GXData)[3] >> 1) & 1;
+  *arg2 = (((u32 *) __GXData)[3] >> 2) & 1;
+  *arg3 = (((u32 *) __GXData)[3] >> 3) & 1;
+  *arg4 = (((u32 *) __GXData)[3] >> 4) & 1;
 }
 
 void fn_8021F1B8(u32 arg0, void* arg1) {
