@@ -1112,9 +1112,15 @@ s32 fn_80215F60(void) {
     return (__PADRegs[2] << 16) | __PADRegs[3];
 }
 
-#pragma scheduling off
-void fn_80215F78(u32 arg0) { volatile u16 *regs=(volatile u16*)0xCC005000; u16 high=arg0/65536; u16 low=arg0; *regs++=high; *regs=low; }
-#pragma scheduling reset
+#pragma global_optimizer off
+void fn_80215F78(u32 arg0)
+{
+    extern volatile u16 __PADRegs[];
+
+    __PADRegs[0] = (u16)(arg0 >> 16);
+    __PADRegs[1] = (u16)arg0;
+}
+#pragma global_optimizer on
 void fn_80216050(void) {
     OSDisableInterrupts();
 }
