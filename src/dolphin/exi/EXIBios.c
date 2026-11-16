@@ -896,8 +896,9 @@ s32 EXIUnlock(s32 arg0) {
     return 1;
 }
 
-s32 fn_8023A114(s32 arg0) {
-    return M2C_FIELD((&Ecb_8033E188 + (arg0 << 6)), s32 *, 0xC);
+s32 fn_8023A114(s32 chan) {
+    s32 off = chan << 6;
+    return *(s32 *)((u8 *)Ecb_8033E188 + off + 0xC);
 }
 
 void UnlockedHandler(s32 chan, void *context) {
