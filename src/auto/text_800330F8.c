@@ -12511,59 +12511,66 @@ void fn_80052B44(void *arg0) {
     M2C_FIELD(arg0, s32 *, 4) = 0;
 }
 
-void fn_80052B54(void *arg0) {
-    void **temp_r31;
-    void *temp_r30;
-    
-    if (arg0 == 0) {
-        return;
+void *fn_80052B54(void *name, u32 priority) {
+    extern u8 lbl_80285A00[];
+    extern u32 lbl_80369080;
+    extern const f32 lbl_80369084;
+    extern const f32 lbl_80369088;
+    extern const f32 lbl_8036908C;
+    void *Process_Create(void *, s32);
+    void *Heap_Alloc(s32);
+    void *Res_GetByName(void *);
+    void *nameSave;
+    void *init;
+    void *proc;
+    u32 color;
+    f32 zero;
+
+    nameSave = name;
+    if (priority == 0) {
+        priority = 4;
     }
-    temp_r31 = (void **)((char *)arg0 + 0x30);
-    if (*temp_r31 == 0) {
-        return;
+    proc = Process_Create(lbl_80285A00, priority);
+    *(void **)((u8 *)proc + 0x30) = Heap_Alloc(0x60);
+    init = *(void **)((u8 *)proc + 0x30);
+    zero = lbl_80369084;
+    *(f32 *)((u8 *)init + 0xC) = zero;
+    *(f32 *)((u8 *)init + 0x10) = zero;
+    *(f32 *)((u8 *)init + 0x14) = zero;
+    *(u16 *)((u8 *)init + 0) = 0;
+    *(s8 *)((u8 *)init + 3) = -1;
+    *(s8 *)((u8 *)init + 4) = -1;
+    *(u32 *)((u8 *)init + 0x30) = 0;
+    *(u32 *)((u8 *)init + 0x34) = 0;
+    *(u32 *)((u8 *)init + 0x3C) = 0;
+    *(u32 *)((u8 *)init + 0x40) = 0;
+    *(u32 *)((u8 *)init + 0x44) = 0;
+    *(u32 *)((u8 *)init + 8) = 0;
+    *(u32 *)((u8 *)init + 0x5C) = 0;
+    *(u32 *)((u8 *)init + 0x48) = 0;
+    color = lbl_80369080;
+    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
+    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
+    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
+    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
+    ((u8 *)init)[5] = 3;
+    *(u32 *)((u8 *)init + 0x4C) = 0;
+    *(u32 *)((u8 *)init + 0x50) = 0;
+    *(u32 *)((u8 *)init + 0x54) = 0;
+    *(u32 *)((u8 *)init + 0x58) = 0;
+    init = *(void **)((u8 *)proc + 0x30);
+    *(u32 *)((u8 *)init + 8) |= 0x08000000;
+    init = *(void **)((u8 *)proc + 0x30);
+    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
+        *(u32 *)((u8 *)init + 8) |= 0x20000000;
     }
-    temp_r30 = *(void **)((char *)arg0 + 0x34);
-    *(s32 *)((char *)temp_r30 + 0x30) = 0x0;
-    
-    *(f32 *)((char *)*temp_r31 + 0xc) = *(f32 *)0x80369084;
-    *(f32 *)((char *)*temp_r31 + 0x10) = *(f32 *)0x80369084;
-    *(f32 *)((char *)*temp_r31 + 0x14) = *(f32 *)0x80369084;
-    *(s16 *)((char *)*temp_r31 + 0x0) = 0x0;
-    *(s8 *)((char *)*temp_r31 + 0x3) = -0x1;
-    *(s8 *)((char *)*temp_r31 + 0x4) = -0x1;
-    *(s32 *)((char *)*temp_r31 + 0x30) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x34) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x3c) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x40) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x44) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x8) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x5c) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x48) = 0x0;
-    
-    *(s32 *)((char *)arg0 + 0x8) = *(s32 *)0x80369080;
-    *(s8 *)((char *)arg0 + 0x8) = *(s8 *)((char *)arg0 + 0x8);
-    *(s8 *)((char *)arg0 + 0x9) = *(s8 *)((char *)arg0 + 0x9);
-    *(s8 *)((char *)arg0 + 0x38) = *(s8 *)((char *)arg0 + 0x8);
-    *(s8 *)((char *)arg0 + 0xa) = *(s8 *)((char *)arg0 + 0xa);
-    *(s8 *)((char *)arg0 + 0x39) = *(s8 *)((char *)arg0 + 0x9);
-    *(s8 *)((char *)arg0 + 0xb) = *(s8 *)((char *)arg0 + 0xb);
-    *(s8 *)((char *)arg0 + 0x3a) = *(s8 *)((char *)arg0 + 0xa);
-    *(s8 *)((char *)arg0 + 0x3b) = *(s8 *)((char *)arg0 + 0xb);
-    
-    *(s32 *)((char *)*temp_r31 + 0x2c) = 0x0;
-    *(f32 *)((char *)*temp_r31 + 0x20) = *(f32 *)0x80369084;
-    *(f32 *)((char *)*temp_r31 + 0x24) = *(f32 *)0x80369084;
-    *(f32 *)((char *)*temp_r31 + 0x28) = *(f32 *)0x80369084;
-    *(f32 *)((char *)*temp_r31 + 0x1c) = *(f32 *)0x80369088;
-    *(f32 *)((char *)*temp_r31 + 0x18) = *(f32 *)0x8036908C;
-    *(s8 *)((char *)*temp_r31 + 0x5) = 0x3;
-    *(s32 *)((char *)*temp_r31 + 0x4c) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x50) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x54) = 0x0;
-    *(s32 *)((char *)*temp_r31 + 0x58) = 0x0;
-    
-    *(s32 *)((char *)*temp_r31 + 0x8) |= 0x800;
-    *(s32 *)((char *)*temp_r31 + 0x8) |= 0x2000;
+    return proc;
 }
 
 void MapObj_LerpPosProc(u8 *proc) {
