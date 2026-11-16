@@ -1531,10 +1531,9 @@ void *memmove(void *dst, const void *src, u32 n) {
     void fn_80231AB4(void *, const void *, u32);
     void fn_80231CC8(void *, const void *, u32);
     void fn_80231C20(void *, const void *, u32);
-    u8 *d;
     const u8 *s;
-    u32 rev;
-    u32 count;
+    u8 *d;
+    s32 rev;
 
     rev = (u32)src < (u32)dst;
     if (n >= 0x20U) {
@@ -1551,19 +1550,18 @@ void *memmove(void *dst, const void *src, u32 n) {
         }
         return dst;
     }
-    count = n;
     if (rev == 0) {
         s = (const u8 *)src - 1;
         d = (u8 *)dst - 1;
-        count++;
-        while (--count != 0) {
+        n++;
+        while (--n != 0) {
             *++d = *++s;
         }
     } else {
-        s = (const u8 *)src + count;
-        d = (u8 *)dst + count;
-        count++;
-        while (--count != 0) {
+        s = (const u8 *)src + n;
+        d = (u8 *)dst + n;
+        n++;
+        while (--n != 0) {
             *--d = *--s;
         }
     }
