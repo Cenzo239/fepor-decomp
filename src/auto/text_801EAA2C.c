@@ -502,49 +502,15 @@ void fn_801EB7A8(s32 arg0) {
 }
 
 void fn_801EBB00(void *arg0) {
-    void fn_801EBE88(void);
-    void String_CStr(void *);
-    void fn_80106BCC(void);
-    void fn_800A8400(void);
-    void Map_RefreshUnitMap(void *);
-    void fn_80161F7C(void);
-    void fn_8003F670(void *);
-    void EventLock_Dec(void);
-    void fn_80018B04(void);
-    void String_Destroy(void *, s32);
-    void Ui_DtorPanelBase(void *, s32);
-    extern u8 gUnitLists[];
-    extern u8 gBattleMap[];
-    extern u8 gEventLockDepth;
-    void *iter;
-    void *next;
-    u32 flags;
-
-    iter = *(void **)(gUnitLists + 0xC);
-    while (iter != NULL) {
-        flags = *(u32 *)((u8 *)iter + 0x1A0);
-        next = *(void **)((u8 *)iter + 0x184);
-        *(u32 *)((u8 *)iter + 0x1A0) = flags & ~0x800;
-        iter = next;
-    }
-    fn_801EBE88();
-    String_CStr((u8 *)arg0 + 0x40);
-    fn_80106BCC();
-    fn_800A8400();
-    Map_RefreshUnitMap(gBattleMap);
-    fn_80161F7C();
-    fn_8003F670(*(void **)((u8 *)arg0 + 0x4C));
-    goto end;
-    EventLock_Dec();
-    if (gEventLockDepth == 0) {
-        if (arg0 == NULL) {
-            return;
-        }
-        String_Destroy((u8 *)arg0 + 0x40, -1);
-        Ui_DtorPanelBase(arg0, 0);
-    }
-end:
-    fn_80018B04();
+void fn_801EBE88(void); void String_CStr(void *); void fn_80106BCC(void); void fn_800A8400(void); void Map_RefreshUnitMap(void *); void fn_80161F7C(void); void fn_8003F670(void *); void EventLock_Dec(void); void fn_80018B04(void); void String_Destroy(void *, s32); void Ui_DtorPanelBase(void *, s32);
+extern u8 gUnitLists[], gBattleMap[], gEventLockDepth;
+void *next; void *iter; u32 flags;
+iter = *(void **)(gUnitLists + 12);
+while(iter) { flags=*(u32*)((u8*)iter+0x1A0); next=*(void**)((u8*)iter+0x184); *(u32*)((u8*)iter+0x1A0)=flags&~0x800; iter=next; }
+fn_801EBE88(); String_CStr((u8*)arg0+0x40); fn_80106BCC(); fn_800A8400(); Map_RefreshUnitMap(gBattleMap); fn_80161F7C(); fn_8003F670(*(void**)((u8*)arg0+0x4c));
+while(gEventLockDepth != 0) EventLock_Dec();
+if(arg0) { String_Destroy((void*)((u32)arg0+0x40),-1); Ui_DtorPanelBase(arg0,0); }
+fn_80018B04();
 }
 
 #pragma use_lmw_stmw on
@@ -2028,16 +1994,14 @@ void fn_801EDF7C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801EDFCC(void) {
-    extern u8 gFxChannels[];
-    void fn_80146AF0(void);
-    void Fx_FadeIn(void *, s32);
-    void fn_8014876C(void *, s32, s32);
-    s32 p;
-
-    p = (s32)gFxChannels;
-    fn_80146AF0();
-    Fx_FadeIn((void *)p, 0x3E8);
-    fn_8014876C((void *)p, 0x64, 0x3E8);
+ extern u8 gFxChannels[];
+ void fn_80146AF0(void);
+ void Fx_FadeIn(void *, s32);
+ void fn_8014876C(void *, s32, s32);
+ u8 *p = &gFxChannels[0];
+ fn_80146AF0();
+ Fx_FadeIn(p, 1000);
+ fn_8014876C(p, 100, 1000);
 }
 #pragma global_optimizer on
 void fn_801EE018(void *arg0) {
