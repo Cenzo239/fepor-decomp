@@ -2743,30 +2743,17 @@ s32 fn_80247F60(void *arg0) {
 #pragma opt_strength_reduction off
 #pragma global_optimizer off
 void fn_80247F94(void *arg0) {
-    u32 hi;
-    u32 lo;
-    u32 zero;
-    u32 a;
-    u32 b;
-
-    hi = *(u32 *)((char *)arg0 + 0x114);
-    zero = 0;
-    lo = *(u32 *)((char *)arg0 + 0x118);
-    a = hi & zero;
-    b = lo & 0x20000;
-    if (((b ^ zero) | (a ^ zero)) != 0) {
-        return;
-    }
-    if (*(u8 *)((char *)arg0 + 0x133) == 1) {
-        if ((((lo & 0x1000) ^ zero) | (a ^ zero)) == 0) {
-            *(u32 *)((char *)arg0 + 0x140) = zero;
-        } else {
-            *(u32 *)((char *)arg0 + 0x140) = *(u32 *)((char *)arg0 + 0x138);
-        }
-    } else {
-        *(u32 *)((char *)arg0 + 0x140) = *(u32 *)((char *)arg0 + 0x138);
-    }
-    *(u32 *)((char *)arg0 + 0x13C) = (u32)*(u8 *)((char *)arg0 + 0x132) << 16;
+u64 flags = *(u64 *)((u8 *)arg0 + 0x114);
+if ((flags & 0x20000ULL) != 0) return;
+if (*(u8 *)((u8 *)arg0 + 0x133) == 1) {
+if ((flags & 0x1000ULL) == 0)
+*(u32 *)((u8 *)arg0 + 0x140) = 0;
+else
+*(u32 *)((u8 *)arg0 + 0x140) = *(u32 *)((u8 *)arg0 + 0x138);
+} else {
+*(u32 *)((u8 *)arg0 + 0x140) = *(u32 *)((u8 *)arg0 + 0x138);
+}
+*(u32 *)((u8 *)arg0 + 0x13C) = (u32)*(u8 *)((u8 *)arg0 + 0x132) << 16;
 }
 #pragma global_optimizer reset
 #pragma opt_strength_reduction reset
@@ -8233,14 +8220,14 @@ s32 fn_802555A0(
 }
 
 void fn_802559D8(void) {
-    s32 zero;
     s32 offset;
     u32 i;
+    s32 zero;
     s32 two;
 
     zero = 0;
     gSynthIdleList = zero;
-    offset = gSynthIdleList;
+    offset = zero;
     i = 0;
     gSynthSchedList = zero;
     two = 2;
@@ -8250,7 +8237,7 @@ void fn_802559D8(void) {
     while (i < gSoundData[0x210]) {
         *(s32 *)(gSynthVoices + offset + 0x34) = zero;
         *(s32 *)(gSynthVoices + offset + 0x4C) = two;
-        *(u16 *)(gSynthVoices + offset + 0xAA) = zero;
+        *(u16 *)(gSynthVoices + offset + 0xAA) = (u16)zero;
         offset += 0x458;
         i++;
     }
@@ -15343,28 +15330,18 @@ void fn_80263384(void) {
 }
 
 #pragma global_optimizer off
-void fn_80263394(void)
-{
-    extern u32 lbl_80368B18;
-    extern u32 lbl_80368B14;
-    extern u32 lbl_80368B10;
-    extern void (*lbl_80368B24)(void);
-    u32 one;
-
-    one = 1;
-    lbl_80368B18 = one;
-    if (lbl_80368B14 == 0) {
-        return;
-    }
-    lbl_80368B14 = 0;
-    if (lbl_80368B10 != 0) {
-        return;
-    }
-    lbl_80368B10 = one;
-    OSEnableInterrupts();
-    lbl_80368B24();
-    OSDisableInterrupts();
-    lbl_80368B10 = 0;
+void fn_80263394(void) {
+extern u32 lbl_80368B18, lbl_80368B14, lbl_80368B10;
+extern void (*lbl_80368B24)(void);
+u32 one; u32 zero;
+one=1;
+lbl_80368B18=one;
+if(lbl_80368B14) {
+zero=0; lbl_80368B14=zero;
+if(!lbl_80368B10) {
+lbl_80368B10=one; OSEnableInterrupts(); lbl_80368B24(); OSDisableInterrupts(); lbl_80368B10=0;
+}
+}
 }
 #pragma global_optimizer reset
 void fn_802633F8(void) {
@@ -16662,19 +16639,17 @@ void fn_80265484(void) {
 #pragma use_lmw_stmw reset
 
 int fn_80265544(int arg0, int arg1, u32 arg2) {
-    extern u8 lbl_803669A0[];
-    extern int fn_80266CFC(int channel, int command, int inputLength, void *callback);
-    void fn_80265430(void);
-    u8 *entry;
-
-    entry = lbl_803669A0 + (arg0 << 8);
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        return 2;
-    }
-    *entry = 0;
-    *(int *)(entry + 0x14) = arg1;
-    *(u32 *)(entry + 0x1C) = arg2;
-    return fn_80266CFC(arg0, 1, 3, (void *)fn_80265430);
+extern u8 lbl_803669A0[];
+extern int fn_80266CFC(int,int,int,void*);
+void fn_80265430(void);
+u8 *entry = lbl_803669A0 + (arg0 << 8);
+if (*(u32 *)(entry+0x1C)) return 2;
+else {
+entry[0] = 0;
+*(int *)(entry+0x14) = arg1;
+*(u32 *)(entry+0x1C) = arg2;
+return fn_80266CFC(arg0,1,3,(void*)fn_80265430);
+}
 }
 
 #pragma scheduling off
@@ -16706,19 +16681,18 @@ void GBAGetStatus(s32 chan, s32 dest) {
 }
 #pragma scheduling on
 s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
-    extern u8 lbl_803669A0[];
-    extern int fn_80266CFC(int, int, int, void *);
-    void fn_80265430(void);
-    u8 *entry;
-
-    entry = lbl_803669A0 + (arg0 << 8);
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        return 2;
-    }
-    *entry = 0xFF;
-    *(s32 *)(entry + 0x14) = arg1;
-    *(u32 *)(entry + 0x1C) = arg2;
-    return fn_80266CFC(arg0, 1, 3, fn_80265430);
+extern u8 lbl_803669A0[];
+extern int fn_80266CFC(int, int, int, void *);
+void fn_80265430(void);
+u8 *entry = lbl_803669A0 + (arg0 << 8);
+s32 result;
+if (*(u32 *)(entry + 0x1C) != 0) { result = 2; } else {
+*entry = 0xFF;
+*(s32 *)(entry + 0x14) = arg1;
+*(u32 *)(entry + 0x1C) = arg2;
+result = fn_80266CFC(arg0, 1, 3, fn_80265430);
+}
+return result;
 }
 
 #pragma global_optimizer off
