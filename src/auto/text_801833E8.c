@@ -4521,13 +4521,19 @@ void *fn_801901EC(void *arg0, s16 arg1) {
 }
 
 void fn_80190258(void *arg0) {
-    s16* ptr = (s16*)arg0;
-    ptr[0x40/2] = 0x18;
-    ptr[0x42/2] = 0;
-    ptr[0x12/2] = 0x2;
-    ptr[0x14/2] = 0x2;
-    ptr[0x16/2] = (ptr[0xC/2] - ptr[0x10/2]) - 0x2;
-    ptr[0x18/2] = (ptr[0xA/2] - ptr[0xE/2]) - 0x2;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    p[0x40/2] = 0x18;
+    p[0x42/2] = 0;
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 2;
+    right = width - 2;
+    p[0x12/2] = 2;
+    p[0x14/2] = 2;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
 }
 
 #pragma cplusplus on
