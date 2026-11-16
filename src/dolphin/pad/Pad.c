@@ -1091,33 +1091,25 @@ void fn_80214094(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     s32 enabled;
     u32 ha;
     u32 t;
-    u32 a1;
-    s32 a0;
-    u32 a2;
-    u32 a3;
 
-    a3 = arg3;
-    a2 = arg2;
-    a0 = arg0;
-    a1 = arg1;
     enabled = OSDisableInterrupts();
     ha = 0xCC000000U;
     t = *(u16 *)(ha + 0x5020);
-    *(u16 *)(ha + 0x5020) = (t & ~0x3FFu) | (a1 >> 16);
+    *(u16 *)(ha + 0x5020) = (t & ~0x3FFu) | (arg1 >> 16);
     t = *(u16 *)(ha + 0x5022);
-    *(u16 *)(ha + 0x5022) = __rlwinm(t, 0, 27, 15) | (a1 & 0xFFFF);
+    *(u16 *)(ha + 0x5022) = __rlwinm(t, 0, 27, 15) | (arg1 & 0xFFFF);
     t = *(u16 *)(ha + 0x5024);
-    *(u16 *)(ha + 0x5024) = (t & ~0x3FFu) | (a2 >> 16);
+    *(u16 *)(ha + 0x5024) = (t & ~0x3FFu) | (arg2 >> 16);
     t = *(u16 *)(ha + 0x5026);
-    *(u16 *)(ha + 0x5026) = __rlwinm(t, 0, 27, 15) | (a2 & 0xFFFF);
+    *(u16 *)(ha + 0x5026) = __rlwinm(t, 0, 27, 15) | (arg2 & 0xFFFF);
     t = *(u16 *)(ha + 0x5028);
     t = __rlwinm(t, 0, 17, 15);
-    t = __rlwimi(t, a0, 15, 0, 16);
+    t = __rlwimi(t, arg0, 15, 0, 16);
     *(u16 *)(ha + 0x5028) = t;
     t = *(u16 *)(ha + 0x5028);
-    *(u16 *)(ha + 0x5028) = (t & ~0x3FFu) | (a3 >> 16);
+    *(u16 *)(ha + 0x5028) = (t & ~0x3FFu) | (arg3 >> 16);
     t = *(u16 *)(ha + 0x502A);
-    *(u16 *)(ha + 0x502A) = __rlwinm(t, 0, 27, 15) | (a3 & 0xFFFF);
+    *(u16 *)(ha + 0x502A) = __rlwinm(t, 0, 27, 15) | (arg3 & 0xFFFF);
     OSRestoreInterrupts(enabled);
 }
 
@@ -1355,22 +1347,35 @@ lbl_803686F8=(u32 *)request[0];
 if (!lbl_80368708) fn_80215B5C();
 }
 
+#pragma dont_inline on
 void fn_80215D2C(void) {
- extern s32 lbl_8036871C, lbl_80366FD0, lbl_80368700, lbl_803686F8, lbl_80368718;
- extern s32 lbl_80368708, lbl_8036870C, lbl_80368710, lbl_80368714;
- if (lbl_8036871C == 1) return;
- OSRegisterVersion(lbl_80366FD0);
- lbl_80368700 = 0;
- lbl_803686F8 = 0;
- lbl_80368718 = 0x1000;
- ((void (*)(void (*)(void)))fn_80214014)(fn_80215C60);
- lbl_80368708 = 0;
- lbl_8036870C = 0;
- lbl_80368710 = 0;
- lbl_80368714 = 0;
- lbl_8036871C = 1;
-}
+    extern s32 lbl_8036871C;
+    extern s32 lbl_80366FD0;
+    extern s32 lbl_80368700;
+    extern s32 lbl_803686F8;
+    extern s32 lbl_80368718;
+    extern s32 lbl_80368708;
+    extern s32 lbl_8036870C;
+    extern s32 lbl_80368710;
+    extern s32 lbl_80368714;
+    s32 fn_80214014(s32);
+    void fn_80215C60(void);
 
+    if (lbl_8036871C == 1) {
+        return;
+    }
+    OSRegisterVersion(lbl_80366FD0);
+    lbl_80368700 = 0;
+    lbl_803686F8 = 0;
+    lbl_80368718 = 0x1000;
+    fn_80214014((s32)fn_80215C60);
+    lbl_80368708 = 0;
+    lbl_8036870C = 0;
+    lbl_80368710 = 0;
+    lbl_80368714 = 0;
+    lbl_8036871C = 1;
+}
+#pragma dont_inline reset
 void ARQPostRequest(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
     u32 r31;
     u32 r30;
