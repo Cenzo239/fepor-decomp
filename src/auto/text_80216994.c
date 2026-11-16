@@ -705,8 +705,8 @@ s32 fn_80218018(void) {
     u32 var_r30;
     s32 var_r3;
 
-    var_r30 = 0;
-    var_r29 = 1U;
+    var_r30 = 1;
+    var_r29 = 0;
     lbl_80366FE8 = OSGetTick();
     lbl_80366FE8 = (lbl_80366FE8 * 0x41C64E6D) + 0x3039;
     var_r3 = (((u32) lbl_80366FE8 >> 0x10U) & 0x1F) + 1;
@@ -1243,6 +1243,26 @@ void __CARDUpdateFatCallback(s32 chan, s32 result) {
     if (callback != NULL) {
         *(void **)(card + 0xD8) = NULL;
         callback(chan, result);
+    }
+}
+
+void fn_80219334(s32 arg0, s32 arg1) {
+    extern u16 __CARDBlock[];
+    s32 fn_802191F0(s32,u32,s32,void *,void (*)(s32,s32));
+    s32 __CARDPutControlBlock(void *,s32);
+    void (*callback)(s32,s32);
+    u8 *fat;
+    s32 result;
+    u8 *card;
+    result = arg1;
+    card = (u8 *)__CARDBlock + arg0 * 0x110;
+    if ((result < 0) || (fat = *(u8 **)(card+0x88), result = fn_802191F0(arg0, *(u32 *)(card+0xC) * ((u32)(fat - *(u8 **)(card+0x80)) >> 13), 0x2000, fat, __CARDUpdateFatCallback), result < 0)) {
+        if (*(u32 *)(card+0xD0) == 0) __CARDPutControlBlock(card,result);
+        callback = *(void (**)(s32,s32))(card+0xD8);
+        if (callback) {
+            *(void **)(card+0xD8) = 0;
+            callback(arg0,result);
+        }
     }
 }
 
