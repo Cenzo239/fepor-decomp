@@ -1924,6 +1924,15 @@ void fn_8022B120(void) {
     }
 }
 
+s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
+    extern u8 gDBCommTable[40];
+    void TRKEXICallBack(s32, s32);
+
+    ((s32 (*)(void *, void *))*(void **)gDBCommTable)(arg3, (void *)TRKEXICallBack);
+    ((s32 (*)(u8 *))*(void **)(gDBCommTable + 0x18))(gDBCommTable);
+    return 0;
+}
+
 void TRKEXICallBack(s32 arg0, s32 arg1) {
     M2C_UNK OSEnableScheduler();
     M2C_UNK TRKLoadContext(s32, M2C_UNK);
