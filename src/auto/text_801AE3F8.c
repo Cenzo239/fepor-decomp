@@ -585,6 +585,47 @@ M2C_FIELD(other,s32 *,0x3C)=0;
 TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6C),s32 *,0x34));
 }
 
+void fn_801AF2E0(void *panel) {
+    extern u8 gUiContext[],gBattleState[],gConvoy[];
+    s32 Ui_ListGetSelected(void *);
+    void fn_80094ABC(s32,void *);
+    u8 fn_8014D8DC(void *);
+    void fn_800C3C1C(void *,void *);
+    void Ui_SlideWidgetChild(void *,void *,s16 *,s32);
+    void TalkUi_ShowMsg(s32);
+    void Ui_LayoutUnitPanelList(void *);
+    void *Ui_FindChild(void *,s32,s32);
+    void Ui_SetWidgetText(void *,s32);
+    void Process_Goto(void *,s32);
+    void *widget;
+    void *captionSrc;
+    s32 captionText;
+    s16 pos[2];
+    s16 y;
+    widget=Ui_FindChild(panel,9,0);
+    switch(gUiContext[8]) {
+    case 0x81:
+        widget=(u8 *)M2C_FIELD(panel,void **,0x48)+0x60;
+        if(M2C_FIELD(M2C_FIELD(panel,void **,0x54),s16 *,0x4e)!=0x7fff)
+            fn_80094ABC(Ui_ListGetSelected(M2C_FIELD(panel,void **,0x54)),widget);
+        else if(fn_8014D8DC(gBattleState)) fn_800C3C1C(gConvoy,widget);
+        gBattleState[0x51]=1;
+        break;
+    case 0x80:
+        y=M2C_FIELD(widget,s16 *,12);
+        pos[0]=0x260;pos[1]=y;
+        Ui_SlideWidgetChild(panel,widget,pos,0);
+        TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(panel,void **,0x6c),s32 *,0x2c));
+        Ui_LayoutUnitPanelList(panel);
+        captionSrc=M2C_FIELD(panel,void **,0x6c);
+        captionText=M2C_FIELD(captionSrc,s32 *,0x6c);
+        widget=Ui_FindChild(panel,-0x1000,0);
+        if(widget) Ui_SetWidgetText(widget,captionText);
+        Process_Goto(panel,0x18);
+        break;
+    }
+}
+
 void fn_801AF40C(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
