@@ -1000,20 +1000,14 @@ void __GXFifoLink(u8 en) {
     __cpReg[1] = (u16) M2C_FIELD(__GXData, u32 *, 0x8);
 }
 
-void __GXWriteFifoIntEnable(u32 arg0, u8 arg1) {
-    extern u32 __GXData[];
-    extern u8 *__cpReg;
-    u32 value;
-
-    value = __GXData[2];
-    value = (value & 0xFFFFFFFB) | ((arg0 << 2) & 0x4);
-    __GXData[2] = value;
-
-    value = __GXData[2];
-    value = (value & 0xFFFFFFF7) | ((arg1 << 3) & 0x8);
-    __GXData[2] = value;
-
-    *(u16 *)(__cpReg + 2) = (u16)__GXData[2];
+void __GXWriteFifoIntEnable(u32 arg0, u8 arg1)
+{
+extern u16 *const __GXData;
+extern u8 *__cpReg;
+u8 *gx = (u8*)__GXData;
+*(u32*)(gx+8) = __rlwimi(*(u32*)(gx+8),arg0,2,29,29);
+*(u32*)(gx+8) = __rlwimi(*(u32*)(gx+8),(u32)arg1,3,28,28);
+*(volatile u16*)(__cpReg+2) = *(u32*)(gx+8);
 }
 
 void __GXWriteFifoIntReset(u32 arg0, u8 arg1)
