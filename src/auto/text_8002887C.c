@@ -1679,19 +1679,17 @@ void fn_8002CC64(void *arg0, void *arg1) {
 void fn_8002CCF0(void *arg0, void *arg1) {
     void fn_8002F6E8(void *, u8, u8, u8, u8);
     u8 fn_8003DD7C(void *);
-    extern u8 gTargetList[];
+    extern u8 lbl_802EF4E0[];
     void *inner;
-    u32 id;
     u32 flags;
 
     inner = *(void **)((u8 *)arg0 + 4);
-    id = *(u32 *)((u8 *)arg1 + 0x190);
-    if (*(u32 *)((u8 *)inner + 0x190) == id) {
+    if (*(u32 *)((u8 *)inner + 0x190) == *(u32 *)((u8 *)arg1 + 0x190)) {
         flags = *(u32 *)((u8 *)arg1 + 0x1A0);
         if ((flags & 2) && !(flags & 0x100000)
             && fn_8003DD7C(*(void **)((u8 *)arg1 + 0x194)) != 0) {
             fn_8002F6E8(
-                gTargetList,
+                lbl_802EF4E0,
                 *(u8 *)((u8 *)arg1 + 0x19E),
                 *(u8 *)((u8 *)arg1 + 0x19F),
                 *(u8 *)((u8 *)arg1 + 0x198),
@@ -1868,13 +1866,12 @@ void fn_8002D24C(void *arg0, void *arg1) {
     }
 }
 
-#pragma optimization_level 2
+#pragma global_optimizer off
 void fn_8002D2B4(void *arg0, void *arg1) {
     u8 Allegiance_Compare(s32, s32);
     u8 Status_Test(void *, s32);
     void fn_8002F6E8(void *, u8, u8, u8, u8);
     extern u8 gTargetList[];
-    u8 a, b, c;
 
     if (Allegiance_Compare(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 0x190), *(s32 *)((u8 *)arg1 + 0x190)) != 1)
         return;
@@ -1882,12 +1879,9 @@ void fn_8002D2B4(void *arg0, void *arg1) {
         return;
     if (Status_Test((u8 *)arg1 + 0x1bc, 7) != 0)
         return;
-    a = *(u8 *)((u8 *)arg1 + 0x19e);
-    b = *(u8 *)((u8 *)arg1 + 0x19f);
-    c = *(u8 *)((u8 *)arg1 + 0x198);
-    fn_8002F6E8(gTargetList, a, b, c, 0);
+    fn_8002F6E8(gTargetList, *(u8 *)((u8 *)arg1 + 0x19e), *(u8 *)((u8 *)arg1 + 0x19f), *(u8 *)((u8 *)arg1 + 0x198), 0);
 }
-#pragma optimization_level 4
+#pragma global_optimizer on
 void fn_8002D33C(void *arg0, s8 arg1, s8 arg2) {
     extern u8 gBattleMap[];
     extern u8 gTargetList[];
