@@ -1371,14 +1371,12 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 void fn_802209FC(void)
 {
-  extern u16 *__GXData;
-  u8 cmd;
+  extern u16 * const __GXData;
+  u8 cmd = 0x61;
   u16 *gx;
-  cmd = 0x61;
-  gx = __GXData;
-  *(u8 *)0xCC008000 = cmd;
-  *(u32 *)0xCC008000 = *(u32 *)((u8 *)gx + 0x1DC);
-  gx[1] = 0;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = *((u32 *) (((u8 *) __GXData) + 0x1DC));
+  __GXData[1] = 0;
 }
 
 void fn_80220A20(s32 arg0, u8 arg1) {
