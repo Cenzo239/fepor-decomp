@@ -771,26 +771,20 @@ void fn_801A9600(void *arg0, void *arg1) {
     }
 }
 #pragma opt_common_subs reset
-s32 fn_801A99E8(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
-{
-    s32 var_r31;
-    s32 var_r30;
-    
-    if (arg0 == 0) {
-        return 0;
+void fn_801A99E8(void *arg0, void *arg1) {
+    void *Item_GetFlagsPtr(void *);
+    void Item_Clear(void *);
+    void *slot;
+    if (*(s8 *)((u8 *)arg1+0x2C8)<=0) slot=&lbl_80367218;
+    else slot=(u8 *)arg1+0x284;
+    if (*(u64 *)Item_GetFlagsPtr(slot)&0x400ULL) Item_Clear((u8 *)arg0+0x284);
+    if (*(s8 *)((u8 *)arg0+0x2C8)<=0) slot=&lbl_80367218;
+    else slot=(u8 *)arg0+0x284;
+    if (*(u64 *)Item_GetFlagsPtr(slot)&0x400ULL) {
+        if (*(s8 *)((u8 *)arg1+0x2C8)<=0) slot=&lbl_80367218;
+        else slot=(u8 *)arg1+0x284;
+        if (!(*(u64 *)Item_GetFlagsPtr(slot)&0x400ULL)) Item_Clear((u8 *)arg0+0x284);
     }
-    
-    var_r31 = arg1 + 1;
-    if (var_r31 > 1) {
-        var_r31 = 1;
-    }
-    
-    var_r30 = arg2 + 1;
-    if (var_r30 > 1) {
-        var_r30 = 1;
-    }
-    
-    return (arg3 * var_r30 + (var_r31 * arg2)) * arg0;
 }
 
 #pragma opt_common_subs off
@@ -1116,11 +1110,12 @@ void fn_801AA1B0(void *arg0) {
 void fn_801AAD74(void *arg0)
 {
     void fn_801AA228(void *);
+    s16 v = *(s16 *)((char *)arg0 + 0x32);
 
-    if (*(s16 *)((char *)arg0 + 0x32) == 0) {
-    } else {
-        fn_801AA228(arg0);
+    if (v == 0) {
+        return;
     }
+    fn_801AA228(arg0);
 }
 
 #pragma optimization_level 4
