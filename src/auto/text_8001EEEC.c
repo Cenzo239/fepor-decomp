@@ -2282,14 +2282,20 @@ extern "C" void Ui_DrawMenuTextItem(void *unused, void *parent, void *item) {
     }
     Prim2D_EndPrim();
 }
-#pragma cplusplus reset
-void fn_80024364(void *arg0) {
-    void (**vtbl)(void *);
-
-    vtbl = *(void (***)(void *))arg0;
-    vtbl[8](arg0);
+#pragma cplusplus on
+extern "C" void fn_80024364(void *arg0) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+    };
+    ((Obj *)arg0)->v6();
 }
-
+#pragma cplusplus off
 s32 fn_80024390(void) {
     return 0;
 }
