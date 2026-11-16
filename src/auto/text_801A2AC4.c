@@ -133,8 +133,32 @@ s32 fn_801A2C30(s32 arg0) {
     return fn_801044E0(gUiContext + 0x1A4);
 }
 
-s32 fn_801A2D2C(void) {
-    return 0;
+s32 fn_801A2D2C(s32 arg0) {
+void **UiCtx_GetItemSlot(void*);
+void *UnitRef_GetName(void*);
+void DebugPrint(void*,...);
+void **Unit_GetHeldItemSlot(void*,u8);
+void Battle_SetupPair(void*,void*,void*);
+void Battle_SelectWeapon(void*,u8);
+void fn_80036150(void*);
+void MapAnim_DispatchByIid(void*,s32,s32);
+extern u8 gUiContext[];
+extern u8 gMapAnimStr[];
+extern u8 gBattle[];
+u8 *context;
+u8 *slot;
+u8 *item;
+DebugPrint(gMapAnimStr+0x1D4,UnitRef_GetName(UiCtx_GetItemSlot(gUiContext)));
+context=gUiContext;
+DebugPrint(gMapAnimStr+0x1DD,UnitRef_GetName(Unit_GetHeldItemSlot(*(void**)(context+4),context[0x14])));
+slot=(u8*)Unit_GetHeldItemSlot(*(void**)(context+4),context[0x14]);
+item=*(u8**)slot;
+slot[4]=item ? item[0x18]:0;
+Battle_SetupPair(gBattle,*(void**)gUiContext,*(void**)(context+4));
+Battle_SelectWeapon(gBattle,gUiContext[0xA]);
+fn_80036150(gBattle);
+MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext),arg0,0);
+return 0;
 }
 
 extern u8 lbl_80297144[16];
