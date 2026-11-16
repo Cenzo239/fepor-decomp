@@ -459,62 +459,9 @@ void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {
 }
 
 s32 fn_8014DC04(void *arg0) {
-    s32 var_r4;
-    s32 var_ctr;
-    void *var_r3;
-
-    var_r3 = arg0;
-    var_r4 = 0;
-    var_ctr = 4;
-
-loop_1:
-    if (((u16*)var_r3)[1] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[5] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[9] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[13] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[17] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[21] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[25] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[29] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[33] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    if (((u16*)var_r3)[37] == 0) {
-        return var_r4;
-    }
-    var_r4 += 1;
-    var_r3 = (char*)var_r3 + 0x50;
-    var_r4 += 1;
-    var_ctr -= 1;
-    if (var_ctr == 0) {
-        return -1;
-    }
-    goto loop_1;
+ s32 i;
+ for(i=0;i<40;i++) { if (*(u16*)((u8*)arg0+i*8+2)==0) return i; }
+ return -1;
 }
 
 void fn_8014DE70(s32 arg0) {
