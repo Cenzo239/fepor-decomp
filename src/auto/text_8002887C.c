@@ -2273,6 +2273,45 @@ void fn_8002DF54(void) {
     lbl_80367AF6 = 0;
 }
 
+void fn_8002DF8C(void) {
+void Allegiance_FillMask(s32,u8 *);
+void Unit_SeparateRescue(void *,u8,u8);
+void fn_80104410(void *);
+s32 Unit_GetMaxHp(void *);
+void Unit_SetHp(void *,s32);
+void fn_8003BBD4(void *,s32);
+void fn_8003C1B4(void *);
+void fn_8014DA88(void *,s32);
+extern u8 gUnits[],gBattleState[];
+u8 mask[8];
+s32 i;
+u8 *unit;
+u8 *rescued;
+u32 flags;
+Allegiance_FillMask(4,mask);
+i=1;
+do {
+if ((u8)i != 0) unit=gUnits+((u8)i-1)*0x280; else unit=0;
+if (*(u32 *)(unit+0x188)!=0 && mask[(*(u8 **)(unit+0x190))[8]]!=0) {
+flags=*(u32 *)(unit+0x1A0);
+if ((flags&2) && !(flags&0x100000)) {
+rescued=*(u8 **)(unit+0x194);
+Unit_SeparateRescue(unit,unit[0x19E],unit[0x19F]);
+if (rescued) *(u32 *)(rescued+0x1A0)&=~1;
+}
+*(u32 *)(unit+0x1A0)&=0xFF88C7FE;
+fn_80104410(unit+0x1A4);
+Unit_SetHp(unit,(s8)Unit_GetMaxHp(unit));
+fn_8003BBD4(unit,0);
+fn_8003C1B4(unit);
+}
+i++;
+} while (i<=0x9F);
+fn_8014DA88(gBattleState+0x3C4,1);
+*(u16 *)(gBattleState+0x12)=1;
+gBattleState[0x11]=0;
+}
+
 void Battle_AdvancePhase(void) {
     void Game_SetState(s32);
     void Allegiance_FillMask(s32, void *);
@@ -3999,6 +4038,38 @@ extern "C" void fn_80032DB4(void *arg0, void *arg1) {
         fn_8002FC64(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), x, y, z);
     }
 }
+
+extern "C" void fn_80032E3C(void *arg0, void *arg1) {
+#pragma global_optimizer off
+void fn_801848D8(void *,s8,s8,s32,s32);
+void *UnitRef_GetUnit(void *);
+void Unit_FaceToward(void *,void *,s32,s32);
+void Battle_SetupPair(void *,void *,void *);
+void fn_801A7528(void *,s32);
+void fn_801A6F34(void *,u32);
+extern u8 gUiContext[],gBattle[];
+struct Obj { u8 pad[4]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual s32 get()=0; };
+void *ref;
+register void *unit;
+register u8 *ctx=gUiContext;
+u32 mode;
+u8 *battle;
+fn_801848D8(*(void **)ctx,(s8)((u8 *)arg1)[0x3E],(s8)((u8 *)arg1)[0x3F],8,0);
+ref=*(void **)((u8 *)arg1+0x40);
+if (ref && UnitRef_GetUnit(ref)) {
+unit=*(void **)gUiContext;
+Unit_FaceToward(UnitRef_GetUnit(ref),unit,8,0);
+unit=*(void **)gUiContext;
+Battle_SetupPair(gBattle,unit,UnitRef_GetUnit(ref));
+fn_801A7528(gBattle,((Obj *)arg0)->get());
+battle=gBattle;
+mode=15;
+if (gUiContext[8]==0x15) mode=0x15;
+fn_801A6F34(battle,(u8)mode);
+}
+#pragma global_optimizer reset
+}
+
 #pragma cplusplus reset
 void fn_80032F50(void) {
     void Unit_GetActiveItemPtr(void *);
