@@ -386,19 +386,24 @@ void fn_801A8AF4(void *arg0) {
     }
 }
 
-void fn_801A8B48(s32 arg0) {
-    if (arg0 >= 0) {
-        if (arg0 < 0x14) {
-            s32 var_r3 = arg0;
-            lbl_80367218 = 0x910 + var_r3;
-            var_r3 = (var_r3 * 0x28) - 0x1010;
-            if (var_r3 >= 0) {
-                lbl_80367218 = arg0;
-            } else if (var_r3 < 0x14) {
-                lbl_80367218 = var_r3 + 0x10A;
-            }
-        }
+void fn_801A8B48(void *arg0, void *arg1) {
+    u8 Status_Test(void *, s32);
+    void *Item_GetFlagsPtr(void *);
+    void *fn_80037C20(void *);
+    void *slot;
+    if (Status_Test((void *)((u32)arg0+0x1BC),0x35)) *(s16 *)((u8 *)arg0+0x2A2)*=2;
+    if (Status_Test((u8 *)arg0+0x1BC,0x3F)) {
+        *(s16 *)((u8 *)arg0+0x2A2)/=2;
+        *(s16 *)((u8 *)arg0+0x2A8)*=2;
     }
+    if (*(u8 *)((u8 *)arg1+0x1A5)&7) *(s16 *)((u8 *)arg0+0x2A2)=100;
+    if (*(u32 *)((u8 *)arg1+0x28C) && (*(u64 *)Item_GetFlagsPtr((void *)((u32)arg1+0x28C))&0x4000ULL))
+        *(s16 *)((u8 *)arg0+0x2A8)=0;
+    slot=fn_80037C20(arg0);
+    if (slot && *(u32 *)slot && (*(u64 *)Item_GetFlagsPtr(slot)&0x4000ULL))
+        *(s16 *)((u8 *)arg0+0x2A8)=0;
+    if (Status_Test((u8 *)arg1+0x1BC,0x5F) && !(*(u64 *)Item_GetFlagsPtr((u8 *)arg0+0x28C)&0x2000000000ULL))
+        *(s16 *)((u8 *)arg0+0x298)=0;
 }
 
 /* Sum affinity bonuses from same-unk190 support partners within 3 tiles into info, then halve. */
@@ -724,6 +729,45 @@ void fn_801A949C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x2B6) = 0;
 }
 
+void fn_801A94B0(void *arg0) {
+    void *Terrain_GetEntry(u8);
+    u8 Status_Test(void *, s32);
+    void *fn_8005B73C(void *);
+    void *Msg_ResolveName(void *);
+    s32 DebugPrint(const char *, ...);
+    extern u8 gBattleMap[];
+    extern u8 gBattleDebugMsgs[];
+    void *entry;
+    void *name;
+    void *tname;
+    u8 *tp;
+
+    entry = Terrain_GetEntry(gBattleMap[(s8)*((u8 *)arg0 + 0x19E) + ((s8)*((u8 *)arg0 + 0x19F) << 6) + 0x100D]);
+    *(void **)((u8 *)arg0 + 0x2B0) = entry;
+    if (entry == NULL) {
+        DebugPrint((const char *)(gBattleDebugMsgs + 0x175));
+        return;
+    }
+    if (Status_Test((u8 *)arg0 + 0x1BC, 4) != 0) {
+        tp = *(u8 **)((u8 *)entry + 8);
+        *((u8 *)arg0 + 0x2B4) = tp[4];
+        *((u8 *)arg0 + 0x2B5) = tp[5];
+        *((u8 *)arg0 + 0x2B6) = tp[3];
+    } else {
+        tp = *(u8 **)((u8 *)entry + 8);
+        *((u8 *)arg0 + 0x2B4) = tp[1];
+        *((u8 *)arg0 + 0x2B5) = tp[2];
+        *((u8 *)arg0 + 0x2B6) = tp[0];
+    }
+    name = *(void **)((u8 *)arg0 + 0x188);
+    tname = fn_8005B73C(*(void **)((u8 *)arg0 + 0x2B0));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x18D),
+               Msg_ResolveName(name), tname,
+               (s8)*((u8 *)arg0 + 0x2B4),
+               (s8)*((u8 *)arg0 + 0x2B5),
+               (s8)*((u8 *)arg0 + 0x2B6));
+}
+
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
@@ -770,6 +814,46 @@ void fn_801A9600(void *arg0, void *arg1) {
         }
     }
 }
+
+void fn_801A96FC(void *arg0, u8 arg1) {
+    void Item_Clear(void *);
+    void Item_Copy(void *,void *);
+    void *Unit_GetItemSlot(void *,s8);
+    u8 Unit_CanEquipItem(void *,void *);
+    void **fn_80037C20(void *);
+    void *slot;
+    void *item;
+    void **held;
+    u8 count;
+    u8 *self=arg0;
+    self[0x294]=arg1;
+    if((s8)self[0x294]<0) {
+        Item_Clear(self+0x284);
+        Item_Clear(self+0x28C);
+        return;
+    }
+    Item_Copy(self+0x284,Unit_GetItemSlot(self,(s8)self[0x294]));
+    count=self[0x294];
+    Item_Copy(self+0x28C,Unit_GetItemSlot(self,(s8)count));
+    self[0x2C8]=self[0x288];
+    count=self[0x2C8];
+    if((s8)count<=0) slot=&lbl_80367218;
+    else slot=self+0x284;
+    if(*(void **)slot) {
+        if((s8)count<=0) slot=&lbl_80367218;
+        else slot=self+0x284;
+        item=*(void **)slot;
+        if(!Unit_CanEquipItem(self,item)) Item_Clear(self+0x284);
+    }
+    item=*(void **)(self+0x28C);
+    if(item) *(u16 *)(self+0x2AE)|=*(u16 *)((u8 *)item+0xC);
+    held=fn_80037C20(self);
+    if(held) {
+        item=*held;
+        if(item) *(u16 *)(self+0x2AE)|=*(u16 *)((u8 *)item+0xC);
+    }
+}
+
 #pragma opt_common_subs reset
 void fn_801A99E8(void *arg0, void *arg1) {
     void *Item_GetFlagsPtr(void *);
