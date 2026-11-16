@@ -227,18 +227,18 @@ void fn_800065B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_80006608(s16 *arg0) {
-    s16 y;
     s16 x;
+    s16 dy;
     s16 dx;
 
     x = arg0[0];
-    y = arg0[1];
+    dy = arg0[1];
     dx = -x;
-    y = -y;
+    dy = -dy;
     arg0[0] = x + dx;
-    arg0[1] = arg0[1] + y;
+    arg0[1] = arg0[1] + dy;
     arg0[2] = arg0[2] + dx;
-    arg0[3] = arg0[3] + y;
+    arg0[3] = arg0[3] + dy;
 }
 
 s32 fn_80006650(s16 *arg0, s16 *arg1) {
@@ -272,7 +272,7 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
 
 void fn_80006754(void)
 {
-    extern u32 gFrameCount;
+    extern u32 lbl_80367118;
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
@@ -281,23 +281,22 @@ void fn_80006754(void)
     extern u64 OSGetTime(void);
 
     u32 count;
-    u32 stack_hi;
-    u32 stack_lo;
+    u32 high;
+    u32 low;
     u64 time;
 
-    count = gFrameCount;
-    stack_hi = lbl_80367128;
-    stack_lo = lbl_8036712C;
-    count += 1;
-    gFrameCount = count;
-    lbl_80367124 = stack_lo;
-    lbl_80367120 = stack_hi;
+    count = lbl_80367118;
+    high = lbl_80367128;
+    low = lbl_8036712C;
+
+    lbl_80367118 = count + 1;
+    lbl_80367124 = low;
+    lbl_80367120 = high;
 
     time = OSGetTime();
-    stack_lo = (u32)time;
-    stack_hi = (u32)(time >> 32);
-    lbl_8036712C = stack_lo;
-    lbl_80367128 = stack_hi;
+
+    lbl_8036712C = (u32)time;
+    lbl_80367128 = (u32)(time >> 32);
 }
 
 s64 fn_80006798(void) {
@@ -344,31 +343,34 @@ void Math_Ease(s32 arg0, void *arg1) {
 }
 
 s32 fn_80006AC0(u8 *arg0) {
-    s32 t;
+    u32 t;
+    u32 b1;
 
     if (arg0[0] != 0x10) {
         return 0;
     }
-    t = (arg0[2] << 8) & 0xFF00;
-    t = arg0[1] + t;
-    t = t + ((arg0[3] << 16) & 0xFF0000);
-    return t;
+    t = arg0[2];
+    b1 = arg0[3];
+    t = ((t << 8) & 0xFF00) + arg0[1];
+    return t + ((b1 << 16) & 0xFF0000);
 }
 
+#pragma optimization_level 2
 s32 fn_80006AF4(s32 *arg0) {
-    s32 sum = 0;
-    u32 n = 28;
-    --arg0;
+    s32 n;
+    s32 sum;
+    arg0--;
+    n = 0x1c;
+    sum = 0;
     do {
-        s32 value = *++arg0;
-        sum = value + sum;
-    } while (--n != 0);
+        sum += *++arg0;
+    } while (--n);
     return sum;
 }
-
+#pragma optimization_level reset
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
-    extern u16 gPrim2D;
+    extern void *gPrim2D;
     extern char lbl_80366DA4[];
     extern double lbl_80368B88;
 
