@@ -208,48 +208,31 @@ break;
 }
 }
 
-void fn_80028DBC(s32 arg0) {
-    void fn_800271C8(void *, s32);
-    void fn_8002807C(void *);
-    s32 MapUi_ShowUnitRanges(s32);
-
-    extern u8 gUiContext[];
-    u8 *ptr = &gUiContext[0];
-    u8 val = ptr[8];
-    
-    if (val < 0x1B) {
-        switch (val) {
-            case 0:
-                if ((u8) ptr[0x16] == 0) {
-                    s32 temp_r31 = *(s32*)ptr;
-                    fn_8002807C(ptr);
-                    MapUi_ShowUnitRanges(temp_r31);
-                    Process_Goto(arg0, 3);
-                    return;
-                }
-                break;
-            case 7:
-                ptr[0x16] = (u8) (ptr[0x16] | 1);
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (val) {
-            case 35:
-                Process_Goto(6);
-                return;
-            case 40:
-            case 6:
-                ptr[0x16] = (u8) (ptr[0x16] | 2);
-                break;
-            default:
-                ptr[0x16] = (u8) (ptr[0x16] | 4);
-                break;
-        }
-    }
-
-    fn_800271C8(ptr, arg0);
+void fn_80028DBC(void *arg0) {
+void fn_800271C8(void *, void *);
+void fn_8002807C(void *);
+void MapUi_ShowUnitRanges(void *);
+void Process_Goto(void *, s32);
+extern u8 gUiContext[];
+u8 *ctx=gUiContext;
+s32 mode=ctx[8];
+void *unit;
+switch (mode) {
+case 0x23: Process_Goto(arg0,6); return;
+case 0:
+if (ctx[0x16]==0) {
+unit=*(void **)ctx;
+fn_8002807C(ctx);
+MapUi_ShowUnitRanges(unit);
+Process_Goto(arg0,3);
+return;
+}
+break;
+case 7: ctx[0x16]|=1; break;
+case 6: case 0x28: gUiContext[0x16]|=2; break;
+case 0x1B: case 0x1C: ctx[0x16]|=4; break;
+}
+fn_800271C8(gUiContext,arg0);
 }
 
 void fn_80028EC8(s32 arg0) {
@@ -1311,7 +1294,6 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
 }
 
 extern "C" void fn_8002C3D8(void *arg0, void *arg1) {
-#pragma scheduling off
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -1319,11 +1301,9 @@ extern "C" void fn_8002C3D8(void *arg0, void *arg1) {
     void fn_8002F6E8(void *, u8, u8, u8, s32);
     extern u8 gTargetList[];
     void *child;
-    u32 left;
 
     child = *(void **)((u8 *)arg0 + 4);
-    left = *(u32 *)((u8 *)arg1 + 0x190);
-    if (left == *(u32 *)((u8 *)child + 0x190)) {
+    if (*(u32 *)((u8 *)arg1 + 0x190) == *(u32 *)((u8 *)child + 0x190)) {
         if (fn_80093088(child) == 0 || fn_80093088(arg1) == 0) {
             fn_8002F6E8(
                 gTargetList,
@@ -1338,7 +1318,6 @@ extern "C" void fn_8002C3D8(void *arg0, void *arg1) {
     if ((*(u32 *)((u8 *)arg1 + 0x1A0) & 2) != 0) {
         ((Visitor *)arg0)->apply(*(void **)((u8 *)arg1 + 0x194));
     }
-#pragma scheduling reset
 }
 
 #pragma use_lmw_stmw reset
