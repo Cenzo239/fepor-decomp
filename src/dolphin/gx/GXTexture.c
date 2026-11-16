@@ -1255,9 +1255,9 @@ void GXSetTevOrder(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod,
 }
 
 void GXSetNumTevStages(u8 arg0) {
-    u32 temp = (u32)arg0;
-    __GXData[0x81] = (__GXData[0x81] & ~0x3C00) | (((temp - 1) << 0xA) & 0x3C00);
-    __GXData[0x16B] = __GXData[0x16B] | 4;
+    u32 *gxData = (u32 *)__GXData;
+    gxData[0x204 / 4] = __rlwimi(gxData[0x204 / 4], (u32)arg0 - 1, 10, 18, 21);
+    gxData[0x5AC / 4] |= 4;
 }
 
 #pragma use_lmw_stmw on
