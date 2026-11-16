@@ -546,10 +546,13 @@ void GXInitTlutRegion(s32 *arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80222EB4(void) {
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = 0x66001000;
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = 0x66001100;
+void __GXFlushTextureState(void);
+__GXFlushTextureState();
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=0x66001000;
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=0x66001100;
+__GXFlushTextureState();
 }
 
 s32 fn_80222EFC(s32 arg0) {
@@ -890,12 +893,10 @@ void __GXSetIndirectMask(s32 arg0) {
 }
 
 void __GXFlushTextureState(void) {
-    u8 *addr = (u8 *)0xCC008000;
-    u32 *gx_data = (u32 *)__GXData;
-    
-    *addr = 0x61;
-    *(u32 *)(*(u32 *)__GXData + 0x124) = *(u32 *)(*(u32 *)__GXData + 0x124);
-    *(u16 *)__GXData = 0;
+ u8 *gx = (u8 *)__GXData;
+ *(volatile u8 *)0xCC008000 = 0x61;
+ *(volatile u32 *)0xCC008000 = *(u32 *)(gx + 0x124);
+ *(u16 *)(gx + 2) = 0;
 }
 
 void GXSetNumTexGens(s32 arg0, u32 arg1)
@@ -944,25 +945,24 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
 }
 
 void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    u32 *temp_r8;
-    u32 temp_r10;
-    u32 temp_r9;
-    u32 temp_r4;
-    
-    temp_r8 = (u32 *)((u8 *)__GXData + (arg0 << 2));
-    *(u8 *)0xCC008000 = 0x61;
-    temp_r10 = *temp_r8;
-    temp_r9 = temp_r10 & 0xFFFF0000;
-    temp_r4 = ((arg1 & 0xF) << 12) | ((arg2 & 0xF) << 8) | ((arg3 & 0xF) << 4) | (arg4 & 0xF);
-    // This order seems to match the target more closely - might need to be careful with bit positions
-    temp_r10 = temp_r9 | temp_r4;
-    *(u8 *)0xCC008000 = temp_r10;
-    *temp_r8 = temp_r10; 
-    *(u16 *)__GXData = 0;
+u16 *gx = __GXData;
+u32 *stage = (u32 *)((u8 *)gx + (arg0 << 2));
+arg1 = __rlwimi(stage[0x130/4], arg1, 12, 16, 19);
+*(u8 *)0xCC008000 = 0x61;
+arg1 = __rlwimi(__rlwimi(__rlwimi(arg1, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
+*(u32 *)0xCC008000 = arg1;
+stage[0x130/4] = arg1;
+gx[1] = 0;
 }
 
-u16 GXSetTevAlphaIn(u16 arg0) {
-    return __GXData[0x388 + arg0 * 0x10];
+void GXSetTevAlphaIn(s32 stage,s32 a,s32 b,s32 c,s32 d) {
+ u32 v; u32 *gx; u32 *p;
+ gx=(u32 *)__GXData; p=(u32 *)((u8 *)gx+stage*4);
+ v=p[0x170/4];
+ a=__rlwimi(v,a,13,16,18);
+ v=__rlwimi(a,b,10,19,21); v=__rlwimi(v,c,7,22,24); v=__rlwimi(v,d,4,25,27);
+ *(volatile u8 *)0xCC008000=0x61; *(volatile u32 *)0xCC008000=v;
+ p[0x170/4]=v; ((u16 *)gx)[1]=0;
 }
 
 void GXSetTevColorOp(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
@@ -1107,16 +1107,13 @@ void* fn_80223D38(u32 arg0) {
 }
 
 void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
-    u32 *temp_r8;
-    u32 temp_r6;
-    
-    temp_r8 = (u32 *)((char *)__GXData + ((arg0 << 2) + 0x170));
-    *temp_r8 = (*temp_r8 & ~3) | (arg1 & 3);
-    temp_r6 = *temp_r8;
-    temp_r6 = (temp_r6 & ~0xC) | ((arg2 << 2) & 0xC);
-    *(u32 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = *temp_r8;
-    *(u16 *)__GXData = 0;
+u8 *gx=(u8*)__GXData;
+u32 *reg=(u32*)(gx+((arg0+0x5C)<<2));
+*reg=__rlwimi(*reg,arg1,0,30,31);
+*reg=__rlwimi(*reg,arg2,2,28,29);
+*(volatile u8*)0xCC008000=0x61;
+*(volatile u32*)0xCC008000=*reg;
+*(u16*)(gx+2)=0;
 }
 
 void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
@@ -1128,35 +1125,16 @@ void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg
     M2C_FIELD(arg0, f32 *, 0x24) = farg5;
 }
 
-void fn_80223E5C(s32 arg0, u8 arg1, s32 arg2, s32 arg3, u8 arg4) {
-    u32 temp;
-    u32 r7_val;
-
-    *(u8 *)0xCC008000 = 0x61;
-    temp = (arg1 & 0xFF);
-    r7_val = 0xF3000000 | temp;
-    temp = ((arg4 << 8) & 0xFF00);
-    r7_val |= temp;
-    temp = ((arg0 << 0x10) & 0x70000);
-    r7_val |= temp;
-    temp = ((arg3 << 0x13) & 0x380000);
-    r7_val |= temp;
-    temp = ((arg2 << 0x16) & 0xC00000);
-    r7_val |= temp;
-    // The following lines are not necessary as they overwrite previous assignments with the same value
-    temp = ((arg4 << 0x14) & 0x30000);
-    r7_val |= temp;
-    temp = ((arg4 << 0x16) & 0xC0000);
-    r7_val |= temp;
-    temp = ((arg4 << 0x18) & 0x300000);
-    r7_val |= temp;
-    temp = ((arg4 << 0x19) & 0x3FC000);
-    r7_val |= temp;
-    temp = ((arg4 << 0x1A) & 0xC00000);
-    r7_val |= temp;
-    
-    *(u32 *)0xCC008000 = r7_val;
-    *(u16 *)__GXData = 0;
+void fn_80223E5C(s32 arg0,u8 arg1,s32 arg2,s32 arg3,u8 arg4) {
+ u16 *gx=__GXData;
+ u32 v=__rlwimi(0xF3000000,(u32)arg1,0,24,31);
+ v=__rlwimi(v,(u32)arg4 << 8,0,16,23);
+ v=__rlwimi(v,arg0,16,13,15);
+ v=__rlwimi(v,arg3,19,10,12);
+ v=__rlwimi(v,arg2,22,8,9);
+ *(volatile u8 *)0xCC008000=0x61;
+ *(volatile u32 *)0xCC008000=v;
+ gx[1]=0;
 }
 
 void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2) {
