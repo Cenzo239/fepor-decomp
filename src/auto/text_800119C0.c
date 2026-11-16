@@ -484,6 +484,37 @@ s32 ScriptCmd_CmFreeScript(void)
     return 1;
 }
 
+s32 ScriptCmd_CmLoadScript(s32 arg0) {
+    void fn_800140B4(void *, u8);
+    u32 FileCache_GetFlags(s32);
+    void *FileCache_Load(s32);
+    void FileCache_OrFlags(s32, u32);
+    extern void *gCmScriptList;
+    extern s32 gCmScriptStatus;
+    u32 loaded;
+    u8 *p;
+    u8 *node;
+    u8 *next;
+    u8 a,b,c;
+    loaded=(FileCache_GetFlags(arg0)>>14)&1;
+    p=FileCache_Load(arg0);
+    if (!loaded) { a=p[26]; b=p[25]; c=p[24]; p[24]=p[27]; p[25]=a; p[26]=b; p[27]=c;
+a=p[30]; b=p[29]; c=p[28]; p[28]=p[31]; p[29]=a; p[30]=b; p[31]=c;
+a=p[0x22]; p[0x22]=p[0x23]; p[0x23]=a;
+a=p[38]; b=p[37]; c=p[36]; p[36]=p[39]; p[37]=a; p[38]=b; p[39]=c;
+a=p[42]; b=p[41]; c=p[40]; p[40]=p[43]; p[41]=a; p[42]=b; p[43]=c; }
+    node=gCmScriptList;
+    gCmScriptStatus=0;
+    if (node==0) gCmScriptList=p;
+    else {
+        while ((next=*(u8 **)(node+0x1c))!=0) node=next;
+        *(u8 **)(node+0x1c)=p;
+    }
+    fn_800140B4(p, loaded);
+    FileCache_OrFlags(arg0,0x4000);
+    return 1;
+}
+
 void fn_80013F48(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x18) = (s32) M2C_FIELD(arg0, s32 *, 0);
     M2C_FIELD(arg0, s32 *, 0x10) = 0;
@@ -1887,15 +1918,23 @@ void Unit_DrawAll(void) {
     }
 }
 
-void fn_80015FA4(void* arg0, void* arg1)
-{
-    char* ptr0 = (char*)arg0;
-    char* ptr1 = (char*)arg1;
-    
-    int i;
-    for (i = 0; i < 8; i++)
-    {
-        *ptr0++ = *ptr1++;
+void fn_80015FA4(void) {
+    void Allegiance_FillMask(s32, u8 *);
+    void fn_8004DF20(u8 *);
+    void Unit_UpdateVisual(u8 *);
+    u32 fn_80055D94(s32);
+    extern u8 gUnits[];
+    extern s32 gGameFlags;
+    u8 allegMask[8];
+    u8 *units;
+    s32 i;
+    u8 *unit;
+    u8 *faction;
+
+    if (fn_80055D94(0x200) == 0U) {
+        if (gGameFlags & 2) {
+            Allegiance_FillMask(3, allegMask + 8); /* placeholder */
+        }
     }
 }
 
