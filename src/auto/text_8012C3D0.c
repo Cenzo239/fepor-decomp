@@ -3230,58 +3230,18 @@ void *fn_80132018(s32 arg0, u32 arg1) {
     }
 }
 
-void fn_801320B8(void* arg0, f32 arg1) {
-    void** reg = (void**)arg0;
-    s32 temp_r5;
-    
-    if ((s32)arg1 < 7) {
-        temp_r5 = *(s32*)((u8*)arg0 + 0x4);
-        
-        switch ((s32)arg1) {
-        case 0:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0x1b8;
-            *(u32*)&reg[3] = 0x14;
-            break;
-        case 1:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0x8c;
-            *(u32*)&reg[3] = 0x78;
-            break;
-        case 2:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0xa0;
-            *(u32*)&reg[3] = 0x8c;
-            break;
-        case 3:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0xb4;
-            *(u32*)&reg[3] = 0xa0;
-            break;
-        case 4:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0xc8;
-            *(u32*)&reg[3] = 0xb4;
-            break;
-        case 5:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0xdc;
-            *(u32*)&reg[3] = 0xc8;
-            break;
-        case 6:
-            *(u32*)&reg[0] = 0;
-            *(u32*)&reg[1] = 0x30;
-            *(u32*)&reg[2] = 0xf0;
-            *(u32*)&reg[3] = 0xdc;
-            break;
-        }
-    }
+void fn_801320B8(s32 unused, s32 index, s32 *left, s32 *top, s32 *right, s32 *bottom)
+{
+ switch(index) {
+case 0: *left=0; *top=0; *right=0x30; *bottom=20; return;
+case 1: *left=0; *top=120; *right=0x30; *bottom=140; return;
+case 2: *left=0; *top=140; *right=0x30; *bottom=160; return;
+case 3: *left=0; *top=160; *right=0x30; *bottom=180; return;
+case 4: *left=0; *top=180; *right=0x30; *bottom=200; return;
+case 5: *left=0; *top=200; *right=0x30; *bottom=220; return;
+case 6: *left=0; *top=220; *right=0x30; *bottom=240; return;
+case 7: *left=0; *top=240; *right=0x30; *bottom=260; return;
+}
 }
 
 void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
