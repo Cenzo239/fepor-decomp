@@ -1856,35 +1856,57 @@ void fn_80077568(s8 *arg0) {
     *arg0 = 2;
 }
 
-void fn_80077574(void *arg0, u32 arg1, void *arg2) {
-    s32 r31;
-    s32 temp_r3;
-    s32 temp_r4;
-    
-    temp_r3 = (s32)arg1 & 0xFFFF;
-    r31 = *(s32*)((char*)arg0 + 0x14);
-    
-    if (temp_r3 == 0) {
-        *(s32*)((char*)arg0 + 0x48) = *(s32*)arg2;
+s32 fn_80077574(void *arg0) {
+#pragma cplusplus on
+    struct Flags {
+        u8 bits;
+        Flags() {}
+        Flags(const Flags &other) : bits(other.bits) {}
+    };
+#pragma cplusplus reset
+    {
+    struct Flags fn_8009233C(void *);
+    void fn_8002A784(void *, void *);
+    extern u8 gUiContext[];
+    extern s32 gTargetList[];
+#pragma cplusplus on
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual Flags flags() = 0;
+    };
+    u8 bits;
+    void *unit;
+    Obj *obj = (Obj *)arg0;
+    if (*(s8 *)(gUiContext + 0x12)) return 3;
+    bits = fn_8009233C(*(void **)gUiContext).bits;
+    if (!(bits & 0x38) && !(u8)(bits & obj->flags().bits)) return 3;
+    unit = *(void **)gUiContext;
+    fn_8002A784(unit, &obj->flags());
+    if (gTargetList[0] == 0) return 3;
+    if ((bits & 0x20) && !(u8)(bits & obj->flags().bits)) return 2;
+    return 0;
+#pragma cplusplus reset
     }
-    
-    if ((r31 & 0x06000000) != 0) {
-        temp_r4 = *(s32*)((char*)arg0 + 0x10);
-        if (temp_r4 == 0x03) {
-            // Return early
-            return;
-        }
-    }
-    
-    if ((r31 & 0x01000000) != 0) {
-        temp_r4 = *(s32*)((char*)arg0 + 0x8);
-        if (temp_r4 == 0x02) {
-            // Return early
-            return;
-        }
-    }
-    
-   fn_80019D60(arg0, temp_r3, arg2);
 }
 
 void fn_80077694(s8 *arg0) {
@@ -2439,6 +2461,39 @@ s32 fn_8007849C(void) {
     u8 *p = gUiContext;
     p[8] = 0x15;
     return 5;
+}
+
+s32 fn_800784B4(void) {
+    u64 *Item_GetFlagsPtr(void *);
+    void fn_8002C034(void *, u32);
+    u32 *Unit_GetHeldItemSlot(void *, s32);
+    u8 fn_8009339C(void *, u32);
+    u8 Status_Test(void *, s32);
+    extern u8 gUiContext[];
+    extern s32 gTargetList[];
+    u32 *entry;
+    s32 i;
+    u8 *ctx;
+    {
+        u8 *initial = gUiContext;
+        if (*(s8 *)(initial + 0x12)) return 3;
+        if (!Status_Test(*(u8 **)initial + 0x1BC, 0x3F)) return 3;
+        if (*(s8 *)(initial + 0x12)) return 3;
+    }
+    ctx = gUiContext;
+    i = 0;
+    do {
+        entry = Unit_GetHeldItemSlot(*(void **)ctx, i);
+        if (*entry != 0) {
+            if ((*Item_GetFlagsPtr(entry) & 1) != 0 &&
+                fn_8009339C(*(void **)gUiContext, *entry)) {
+                fn_8002C034(*(void **)gUiContext, *entry);
+                if (gTargetList[0]) return 0;
+            }
+            i++;
+        } else break;
+    } while (i < 4);
+    return 3;
 }
 
 s32 fn_800785E4(void) {
