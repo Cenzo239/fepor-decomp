@@ -467,6 +467,49 @@ void *fn_80183BE4(void *arg0, void *arg1) {
     return temp_r31;
 }
 
+void *fn_80183C6C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    void *Process_CreateEx(void *, s32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
+
+    extern u8 lbl_80295B38[];
+    extern u8 gBattleMap[];
+    extern f32 gHalf;
+
+    u8 *proc;
+    f32 x;
+    f32 y;
+
+    proc = (u8 *)Process_CreateEx(lbl_80295B38, arg5);
+
+    *(void **)(proc + 0x30) = arg0;
+
+    x = gHalf + (f32)arg1;
+    y = gHalf + (f32)arg2;
+
+    *(f32 *)(proc + 0x34) = x;
+    *(f32 *)(proc + 0x38) = y;
+
+    *(f32 *)(proc + 0x3C) = Map_SampleHeightRaw(
+        gBattleMap,
+        *(f32 *)(proc + 0x34),
+        *(f32 *)(proc + 0x38)
+    );
+
+    x = gHalf + (f32)arg3;
+    y = gHalf + (f32)arg4;
+
+    *(f32 *)(proc + 0x40) = x;
+    *(f32 *)(proc + 0x44) = y;
+
+    *(f32 *)(proc + 0x48) = Map_SampleHeightRaw(
+        gBattleMap,
+        *(f32 *)(proc + 0x40),
+        *(f32 *)(proc + 0x44)
+    );
+
+    return proc;
+}
+
 void fn_80183D7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *Process_CreateEx(void *, s32, s32);
     extern u8 lbl_80295CE4[];
@@ -1020,6 +1063,67 @@ void fn_801854D8(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x3C) != 0) {
         Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0xFF);
     }
+}
+
+void fn_80185564(void *arg0) {
+    void fn_8004E9D8(void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void MuFade_UnlinkSame(void *, void *);
+    void *Process_CreateEx(void *, void *);
+    u32 Mu_GetFlashColor(s32);
+    extern u8 E_MuColorChange_script[];
+
+    u8 *self;
+    u8 *unit;
+    u8 *flash;
+    u8 key[0x44];
+    u32 color;
+    s32 duration;
+
+    self = (u8 *)arg0;
+
+    self[0x3D] = 1;
+
+    unit = *(u8 **)(self + 0x30);
+    unit[3] |= 4;
+
+    fn_8004E9D8(*(void **)(self + 0x30), 0);
+
+    unit = *(u8 **)(self + 0x30);
+    unit[3] &= ~4;
+
+    duration = 16 / *(s32 *)(self + 0x34);
+
+    unit = *(u8 **)(self + 0x30);
+    *(void **)(key + 0x30) = unit;
+
+    GfxEnt_ForEachKey(
+        E_MuColorChange_script,
+        MuFade_UnlinkSame,
+        key
+    );
+
+    flash = (u8 *)Process_CreateEx(
+        E_MuColorChange_script,
+        self
+    );
+
+    *(void **)(flash + 0x30) = unit;
+    *(s32 *)(flash + 0x3C) = duration;
+
+    color = Mu_GetFlashColor(0);
+
+    flash[0x38] = ((u8 *)&color)[0];
+    flash[0x39] = ((u8 *)&color)[1];
+    flash[0x3A] = ((u8 *)&color)[2];
+    flash[0x3B] = ((u8 *)&color)[3];
+
+    flash[0x34] = unit[0x24];
+    flash[0x35] = unit[0x25];
+    flash[0x36] = unit[0x26];
+    flash[0x37] = unit[0x27];
+
+    *(s32 *)(self + 0x38) = 0;
 }
 
 void fn_801857F0(void *arg0) {
@@ -6445,12 +6549,13 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
 void ItemList_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     void Item_Destroy(void *, s32);
-    void Heap_Free(void *);
-    ListNode *first = start->node;
-    ListNode *last = end->node;
+    ListNode *first;
+    ListNode *last;
     ListNode *a;
     ListNode *node;
 
+    first = start->node;
+    last = end->node;
     if (first == last) {
         ret->node = last;
         return;
@@ -6458,7 +6563,7 @@ void ItemList_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *e
     a = last->prev;
     first->prev->next = a->next;
     a->next->prev = first->prev;
-    while (start->node != end->node) {
+    for (; start->node != end->node;) {
         Item_Destroy(&start->node->val, -1);
         node = start->node;
         start->node = node->next;
@@ -10117,22 +10222,23 @@ void fn_8019BE54(void *arg0, void *arg1)
 
 #pragma global_optimizer off
 void fn_8019BEA4(void *arg0) {
-    void TargetList_GetAt(s32 *, s32);
+    void fn_8002F658(s32 *, s32);
     void *UnitRef_GetUnit(void);
     void fn_80053658(void *, s32, void *);
     void fn_80053680(void *, void *);
     void *Effect_Create(u8 *, void *);
     extern void fn_8019BF5C(void);
     extern s32 gTargetList[];
-    s32 *table = gTargetList;
+    s32 *table;
     s32 i;
     void *item;
     void *obj;
 
+    table = gTargetList;
     i = 0;
     goto check;
 loop:
-    TargetList_GetAt(table, i);
+    fn_8002F658(table, i);
     item = UnitRef_GetUnit();
     obj = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (obj) {
@@ -12428,6 +12534,70 @@ s32 MuDead_StartForUnit(u8 unitId) {
         parent = Process_Create(Proc_MuEventInst, tmp);
     }
     MuDead_Start(unit, parent);
+    return 1;
+}
+
+s32 fn_801A0A10(u8 arg0, s32 arg1) {
+    extern u8 gUnits[];
+    extern u8 lbl_80296FE0[];
+    extern u8 Proc_MuEventInst[];
+    extern u32 gUiInputFlags;
+
+    void *GfxEnt_ForEachKey(void *, void *, void *);
+    void fn_801A0C3C(void *, u32);
+    void fn_8004FE98(void *, s32);
+    void fn_8004BF24(void *);
+    void *Process_Find(void *);
+    void *Process_Create(void *, s32);
+    void *Process_CreateChild(void *, void *);
+    u32 fn_80127C48(void);
+    s32 fn_800C0658(void);
+
+    u8 *unit;
+    void *parent;
+    u8 *proc;
+    s32 result;
+
+    if (arg0 != 0) {
+        unit = gUnits + ((arg0 - 1) * 0x280);
+    } else {
+        unit = 0;
+    }
+
+    if (unit == 0 || *(u32 *)(unit + 0x188) == 0) {
+        return 0;
+    }
+
+    GfxEnt_ForEachKey(
+        lbl_80296FE0,
+        fn_801A0C3C,
+        unit
+    );
+
+    if (gUiInputFlags & 1) {
+        fn_8004FE98(unit, arg1);
+        fn_8004BF24(unit);
+        return 0;
+    }
+
+    parent = Process_Find(Proc_MuEventInst);
+
+    if (parent == 0) {
+        result = fn_80127C48();
+
+        if (result == 0) {
+            result = fn_800C0658();
+        }
+
+        parent = Process_Create(Proc_MuEventInst, result);
+    }
+
+    proc = Process_CreateChild(lbl_80296FE0, parent);
+
+    *(void **)(proc + 0x54) = unit;
+    *(s32 *)(proc + 0x60) = arg1;
+    *(s32 *)(proc + 0x64) = 0x10;
+
     return 1;
 }
 
