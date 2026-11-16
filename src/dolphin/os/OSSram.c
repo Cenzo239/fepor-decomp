@@ -197,15 +197,11 @@ void *__OSLockSramEx(void)
     return scb + 0x14;
 }
 
-void fn_8020931C(u32 param_1) {
-    if (param_1 < 0x14) {
-        return;
-    }
-}
+s32 fn_8020931C(s32 commit, s32 offset);
 
-void __OSUnlockSram(void) {
-    fn_8020931C(0);
-    return;
+s32 __OSUnlockSram(s32 commit) {
+    s32 fn_8020931C(s32, s32);
+    return fn_8020931C(commit, 0);
 }
 
 s32 __OSSyncSram(void) {
@@ -408,22 +404,18 @@ void fn_8020A060(void *arg0) {
 }
 
 s32 fn_8020A0C8(void *arg0) {
-    s32 var_r4;
-    void *var_r5;
-
-    var_r4 = M2C_FIELD(arg0, s32 *, 0x2D4);
-    var_r5 = M2C_FIELD(arg0, void **, 0x2F4);
-loop_5:
-    if (var_r5 != NULL) {
-        void *temp_r3 = M2C_FIELD(var_r5, void **, 0);
-        if (temp_r3 != NULL) {
-            s32 temp_r0 = M2C_FIELD(temp_r3, s32 *, 0x2D0);
-            if (temp_r0 < var_r4) {
-                var_r4 = temp_r0;
-            }
-        }
-        var_r5 = M2C_FIELD(var_r5, void **, 0x10);
-        goto loop_5;
-    }
-    return var_r4;
+ void *node;
+ s32 priority;
+ s32 value;
+ priority = M2C_FIELD(arg0, s32 *, 0x2D4);
+ node = M2C_FIELD(arg0, void **, 0x2F4);
+ while (node != NULL) {
+  arg0 = M2C_FIELD(node, void **, 0);
+  if (arg0 != NULL) {
+   value = M2C_FIELD(arg0, s32 *, 0x2D0);
+   priority = value < priority ? value : priority;
+  }
+  node = M2C_FIELD(node, void **, 0x10);
+ }
+ return priority;
 }
