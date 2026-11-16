@@ -2536,32 +2536,29 @@ u16 Ui_DrawMsgPanelAlt(s32 x, s32 y) {
 }
 
 u16 fn_8008B09C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
-    u16 GXGetTexObjWidth(M2C_UNK *);
-    s16 GXGetTexObjHeight(M2C_UNK *);
+    s32 Ui_LoadAtlasTex(s32, void *, s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
     extern s32 gUiAtlas;
     extern f32 lbl_80369704;
     extern f32 lbl_80369708;
-    s16 sp2A;
-    u16 sp28;
-    M2C_UNK sp8;
-
-    Ui_LoadAtlasTex(gUiAtlas, &sp8, 0x37);
-    sp28 = GXGetTexObjWidth(&sp8);
-    sp2A = GXGetTexObjHeight(&sp8);
+    struct { u8 buf[0x20]; u16 w; u16 h; } sp;
+    Ui_LoadAtlasTex(gUiAtlas, sp.buf, 0x37);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    Prim2D_SetTex(&sp8, 0x10);
+    Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32) arg0, (f32) arg1, (f32) arg2, (f32) arg3);
+    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)arg2, (f32)arg3);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
-    return sp28;
+    return sp.w;
 }
 
 u16 Ui_DrawMsgPanelBg(s32 x, s32 y) {
