@@ -536,24 +536,23 @@ void fn_80226C34(s32 arg0) {
     fn_80225F64(event, lbl_8033CA28);
 }
 
-void TRKGetInput(void) {
-    void* fn_80226CE4(void);
+void TRKGetInput(void)
+{
+    void *fn_80226CE4(void);
     void TRKGetBuffer(void);
-    void fn_80225F4C(void*, s32);
-    void fn_80225F64(void*, void*);
-    extern u16 lbl_8033CA28[12]; // 24 bytes = 12 * 2-byte words
+    void fn_80225F4C(void *, s32);
+    void fn_80225F64(void *, s32 *);
+    extern s32 lbl_8033CA28[6];
+    s32 event[3];
+    s32 temp;
 
-    void* temp_r3;
-    s32 sp10;
-    s32 sp8;
-
-    temp_r3 = fn_80226CE4();
-    if (temp_r3 != (void*)-1) {
+    temp = (s32)fn_80226CE4();
+    if (temp != -1) {
         TRKGetBuffer();
-        fn_80225F4C(&sp8, 2);
-        sp10 = (s32)temp_r3;
+        fn_80225F4C(event, 2);
+        event[2] = temp;
         lbl_8033CA28[0] = -1;
-        fn_80225F64(&sp8, &lbl_8033CA28[0]);
+        fn_80225F64(event, lbl_8033CA28);
     }
 }
 
