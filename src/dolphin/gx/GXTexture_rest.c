@@ -273,8 +273,8 @@ void fn_8022462C(s32 arg0) {
 void fn_80224658(s32 arg0) {
  u8 *gx = (u8 *)__GXData;
  u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 4, 27, 27);
- *(u8 *)0xCC008000 = 0x61;
- *(u32 *)0xCC008000 = value;
+ *(volatile u8 *)0xCC008000 = 0x61;
+ *(volatile u32 *)0xCC008000 = value;
  *(u32 *)(gx + 0x1d0) = value;
  *(u16 *)(gx + 2) = 0;
 }
@@ -359,11 +359,11 @@ void fn_802246EC(u32 arg0, u32 arg1)
 }
 
 void fn_802247C0(s32 arg0) {
- u32 value;
  u8 *gx = (u8 *)__GXData;
- value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 2, 29, 29);
- *(volatile u8 *)0xCC008000 = 0x61;
- *(volatile u32 *)0xCC008000 = value;
+ u8 *fifo = (u8 *)0xCC008000;
+ u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 2, 29, 29);
+ *fifo = 0x61;
+ *(u32 *)fifo = value;
  *(u32 *)(gx + 0x1d0) = value;
  *(u16 *)(gx + 2) = 0;
 }
@@ -506,6 +506,12 @@ void fn_80224CF0(f32 *arg0)
     *fifo32 = *(u32 *)(gx + 0x4D8);
 
     *(u16 *)(gx + 2) = 1;
+}
+
+f32 GXLoadPosMtxImm(s32 arg1) {
+    *(s8 *)0xCC008000 = 0x10;
+    *(s8 *)0xCC008000 = (s32) ((arg1 * 4) | 0xB0000);
+    return M2C_ERROR(/* psq_l unimplemented */);
 }
 
 void fn_80224DCC(void *arg0, s32 arg1) {
@@ -706,10 +712,12 @@ data[1] = 0;
 
 void fn_80225158(u32 arg0)
 {
-    *(volatile u8*)0xCC008000 = 0x10;
-    *(volatile u32*)0xCC008000 = 0x1005;
-    *(volatile u32*)0xCC008000 = arg0;
-    ((u16*)__GXData)[1] = 1;
+  u8 cmd = 0x10;
+  u16 *gx;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = 0x1005;
+  GXWGFifo.u32 = arg0;
+  __GXData[1] = 1;
 }
 
 void fn_80225180(s32 arg0) {
@@ -812,18 +820,7 @@ void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u3
     *copy_clks = __GXReadPECounterU32(0x16, 0x17);
 }
 
-void fn_80225D3C(void)
-{
-    u32 a = 0x57000000;
-    u8 cmd = 0x61;
-    u16 *gx = __GXData;
-    u32 b = a + 0xAAA;
-    *(u8 *)0xCC008000 = cmd;
-    *(u32 *)0xCC008000 = a;
-    *(u8 *)0xCC008000 = cmd;
-    *(u32 *)0xCC008000 = b;
-    gx[1] = 0;
-}
+void fn_80225D3C(void){u32 a=0x57000000; u16 *gx=__GXData; u8 cmd=0x61; GXWGFifo.u8=cmd; GXWGFifo.u32=a; GXWGFifo.u8=cmd; GXWGFifo.u32=a+0xAAA; gx[1]=0;}
 
 void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     u16 temp_r5;
