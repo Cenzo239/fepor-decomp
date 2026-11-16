@@ -580,33 +580,16 @@ s32 fn_8020BFE4(u32 arg0, void *arg1) {
     return 1;
 }
 
-void fn_8020C080(void) {
-    s32 var_r3;
-    var_r3 = 0;
-    if (lbl_80368614 == 0) {
-        lbl_80368618 = NULL;
-        lbl_8036861C = NULL;
-        lbl_80368620 = NULL;
-        lbl_80368624 = NULL;
-        lbl_80368628 = NULL;
-        lbl_8036862C = NULL;
-        lbl_80368630 = NULL;
-        lbl_80368634 = NULL;
-        lbl_80368638 = NULL;
-        lbl_8036863C = NULL;
-        lbl_80368640 = NULL;
-        lbl_80368644 = NULL;
-        lbl_80368648 = NULL;
-        lbl_8036864C = NULL;
-        lbl_80368650 = NULL;
-        lbl_80368654 = NULL;
-        if (gSaveDataBase == 0x1A83) {
-            var_r3 = 1;
-        }
-    } else {
-        var_r3 = 0;
-    }
-    lbl_803685E8 = (void (*)(void))fn_80013E50(var_r3);
+s32 fn_8020C080(u32 command, u32 length, u32 offset, void *callback) {
+ extern void *Callback_80368538;
+ Callback_80368538 = callback;
+ StopAtNextInt_80368530 = 0;
+ __DIRegs[2] = command | 0xE1000000;
+ __DIRegs[3] = offset >> 2;
+ __DIRegs[4] = length;
+ __DIRegs[7] = 1;
+ SetTimeoutAlarm((*(u32 *)0x800000F8 / 4) * 10);
+ return 1;
 }
 
 s32 fn_8020C118(u32 command, void *callback)
