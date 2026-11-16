@@ -44,3 +44,4 @@ lbl_80367384=lbl_80286F70; lbl_80367388[0]=&lbl_80366DF0; b[1]=lbl_80286590;
 lbl_80367390[0]=lbl_80286F58; c[1]=base;
 }
 #pragma global_optimizer on
+__declspec(section ".ctors") static void (*const lbl_80267AB0)(void) = fn_800732BC;
