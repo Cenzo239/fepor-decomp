@@ -982,6 +982,81 @@ s32 fn_80075C04(void) {
     return 0;
 }
 
+s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
+    s32 Msg_Expand(void *);
+    void fn_80166AE8(s32, s32, s32, void *);
+    void Ui_PlaySeCue(void *, s32);
+    void *UiCtx_GetItemSlot(void *);
+    u64 *Item_GetFlagsPtr(void *);
+    void Process_CreateChild(void *, void *);
+    void Ui_RebuildListEntries(void *);
+    extern u8 lbl_8026C0B8[];
+    extern u8 lbl_802872B0[];
+    extern u8 gUiContext[];
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual s16 v21() = 0;
+        virtual s16 v22() = 0;
+    };
+
+    u8 saved;
+    s32 adjustedY;
+    s16 y;
+    s32 vy;
+    s32 str;
+    s16 x;
+    Obj *obj;
+    s32 vx;
+    u8 *slot;
+    u8 *parent;
+    if (*((u8 *)arg2 + 0x39)) {
+        obj = *(Obj **)((u8 *)arg1 + 0x3C);
+        y = *(s16 *)((u8 *)arg2 + 0x32);
+        x = *(s16 *)((u8 *)arg2 + 0x30);
+        str = Msg_Expand(lbl_8026C0B8 + 0x270);
+        vy = obj->v22();
+        adjustedY = y - 0x3C;
+        vx = obj->v21();
+        fn_80166AE8(vx + x, vy + adjustedY, str, arg1);
+        return 0;
+    }
+    Ui_PlaySeCue(lbl_8026C0B8 + 0x277, 100);
+    slot = (u8 *)UiCtx_GetItemSlot(gUiContext);
+    { struct Slot { u8 pad[5]; u8 enabled:1; u8 other:7; };
+      ((Slot *)slot)->enabled = 0;
+    }
+    if (*Item_GetFlagsPtr(UiCtx_GetItemSlot(gUiContext)) & 0x100000000ULL)
+        Process_CreateChild(lbl_802872B0, *(void **)((u8 *)arg1 + 0x18));
+    parent = *(u8 **)((u8 *)arg1 + 0x18);
+    saved = parent[0x62];
+    Ui_RebuildListEntries(parent);
+    parent[0x62] = saved;
+    return 5;
+#pragma cplusplus reset
+}
+
 void fn_80075DAC(void) {
     extern u16 lbl_8026C0B8[];
     Msg_Expand((u8 *)lbl_8026C0B8 + 0x28a);
@@ -3109,12 +3184,32 @@ void Face_DebugScaleProc(void *proc) {
     }
 }
 
-void fn_80079B9C(void *arg1, void *arg2) {
-    // Placeholder function to examine structure; we'll need exact matching later
-    
-    // This function likely does coordinate processing and calls
-    // Based on the pattern in other functions in this file:
-    // It's modifying coordinates and making calls that use global state
+void fn_80079B9C(void *unused, void *parent, void *node) {
+    void Prim2D_SetText(void *);
+    void Prim2D_SetScale(f32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    extern u8 *lbl_80367478;
+    extern s32 lbl_80367480;
+    extern f32 lbl_803693D4, lbl_803693D8, gFaceDbgTextScale;
+    void *text = *(void **)(lbl_80367478 + lbl_80367480 * 32);
+    Prim2D_Begin();
+    Prim2D_SetTransform((f32)*(s16*)((u8*)parent+0x30), (f32)*(s16*)((u8*)parent+0x32), lbl_803693D4, lbl_803693D8);
+    Prim2D_SetTex(0,3);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(5);
+    Prim2D_SetPos((f32)*(s16*)((u8*)node+0x30), (f32)*(s16*)((u8*)node+0x32));
+    Prim2D_SetText(text);
+    Prim2D_SetScale(gFaceDbgTextScale);
+    if (*(u8*)((u8*)node+0x38)) Prim2D_SetTint(255,255,0,255);
+    if (*(u8*)((u8*)node+0x39)==2) Prim2D_SetTint(0,0,0,255);
+    Prim2D_EndPrim();
 }
 
 void fn_80079CD8(void *arg0) {
