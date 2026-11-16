@@ -9703,9 +9703,8 @@ void fn_80049CB4(s32 arg0, void *arg1) {
 }
 
 void fn_80049D08(s32 arg0) {
-    extern f32 lbl_80368F2C;
     void fn_8005FEE8(s32, f32);
-    fn_8005FEE8(arg0 + 0x14, lbl_80368F2C);
+    fn_8005FEE8(arg0 + 0x14, -1.0f);
 }
 void fn_80049D30(s32 arg0) {
     void fn_8005FEE8(s32, f32);
