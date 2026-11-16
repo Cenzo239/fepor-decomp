@@ -5627,20 +5627,30 @@ extern void *Battle_GetActiveCombatant(u32 *);
 extern s32 Res_GetByName();
 extern s32 fn_800A87D4(s32);
 s32 fn_800BA9BC(void) {
-    void *temp_r3;
-    
-    temp_r3 = Battle_GetActiveCombatant((u32*)0x80330EAC);
-    if (temp_r3 == 0) {
-        return 0;
+    extern u8 gBattle[];
+    extern char lbl_8026ECB8[];
+    extern u8 gFxChannels[];
+    void fn_80146B00(void);
+    void fn_80148980(void *, s32);
+    void fn_80147FA8(s32);
+    void fn_80148618(char *, s32);
+    u8 *unit;
+    s32 msg;
+    s32 TalkUi_ShowMsg(s32);
+    s32 fn_8011D908(s32, s32);
+    unit = Battle_GetActiveCombatant((void *)gBattle);
+    if (!unit) return 0;
+    msg = fn_800A87D4(*(s32 *)(unit+0x188));
+    if ((void *)Res_GetByName(msg) == 0) return 0;
+    if ((void *)Process_FindByName(lbl_8026ECB8+0xA50) != 0) TalkUi_ShowMsg(msg);
+    else fn_8011D908(msg, fn_800C0658());
+    if ((*(u8 **)(unit+0x190))[8] == 0 || (*(u8 **)(unit+0x190))[8] == 6) {
+        fn_80147FA8(1);
+        fn_80148980((u8 *)&gFxChannels+0x30,250);
+        if ((u8)Status_Test(unit+0x1BC,0)) fn_80148618(lbl_8026ECB8+0xA57,1);
+        else fn_80148618(lbl_8026ECB8+0xA61,1);
+        fn_80146B00();
     }
-    
-    if (Res_GetByName() == 0) {
-        return 0;
-    }
-    
-    // Call with constant offset
-    fn_800A87D4(*(s32*)((char*)temp_r3 + 0x188));
-    
     return 1;
 }
 
@@ -9885,27 +9895,25 @@ void fn_800AFC54(s32 arg0)
 }
 
 void fn_800AFCFC(s32 arg0) {
-    u16 *temp_r5;
-    f32 var_f3;
-    s32 var_r3;
-    f32 temp_f4;
-    
-    temp_r5 = &gSoundSys[arg0 * 0x13C / 2];
-    if ((u16) temp_r5[0] != 0) {
-        var_f3 = (f32) temp_r5[0x122/2] / lbl_80369CC8;
-        if (var_f3 < lbl_80369CCC) {
-            var_f3 = lbl_80369CCC;
-        }
-        temp_f4 = temp_r5[0x10/2];
-        var_r3 = (s32) ((temp_r5[0xC/2] * lbl_80369CB0) / lbl_80369CD0);
-        if ((f32) var_r3 > temp_f4) {
-            var_r3 = (s32) temp_f4;
-        }
-        temp_r5[0x14/2] = (f32) var_r3;
-        temp_r5[0x18/2] = (f32) ((temp_r5[0x10/2] - temp_r5[0x14/2]) / var_f3);
-        temp_r5[0] = (u16) (temp_r5[0] | 0x40);
-        temp_r5[0] = (u16) (temp_r5[0] & 0xFFFFFFEF);
-        temp_r5[0] = (u16) (temp_r5[0] & 0xFFFFFFDF);
+    s32 ticks;
+    u8 *p;
+    f32 max;
+    s32 volume;
+    f32 time;
+    ticks = *(u16 *)((u8 *)gSoundSys + 0x122);
+    p = *(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C;
+    if (*(u16 *)p != 0) {
+        time = (f32)ticks;
+        time /= lbl_80369CC8;
+        if (lbl_80369CCC > time) time = lbl_80369CCC;
+        max = *(f32 *)(p+0x10);
+        volume = (s32)((*(f32 *)(p+0xC) * lbl_80369CB0) / lbl_80369CD0);
+        if ((f32)volume > max) volume = (s32)max;
+        *(f32 *)(p+0x14) = (f32)volume;
+        *(f32 *)(p+0x18) = (*(f32 *)(p+0x10) - *(f32 *)(p+0x14)) / time;
+        *(u16 *)p |= 0x40;
+        *(u16 *)p &= ~0x10;
+        *(u16 *)p &= ~0x20;
     }
 }
 
@@ -10506,31 +10514,49 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
     return *(s32 *)(entry + 0x28);
 }
 
-s32 fn_800B125C(s32 arg0, s32 arg1) {
-    extern u16 gSoundSys[4976];
-    void *entry;
-    s32 result;
-    
-    entry = &gSoundSys[0xF0] + arg0 * 16;
-    if (*(u32*)((char*)entry + 0xC) == 0xFFFFFFFF) {
-        return -1;
+void fn_800B125C(s32 arg0, u32 arg1) {
+    void DCFlushRange(void *, u32);
+    void ARQPostRequest(void *, u32, s32, s32, u32, u32, u32, void *);
+    void fn_800B1368(u32);
+    extern s32 lbl_80367818;
+
+    u32 dest;
+    u8 *entry;
+    s32 i;
+    s32 owner;
+    u8 *p;
+    u32 len;
+
+    entry = *(u8 **)((u8 *)gSoundSys + 0xF8);
+    for (i = 0; i < 3; entry += 0x13C, i++) {
+        if (*(u16 *)entry != 0) {
+            if (*(u32 *)(entry + 0x2C) + 0x40 == arg1) {
+                if (arg0 >= 0) {
+                    len = 0x8000;
+                    *(u32 *)(entry + 0x60) =
+                        *(u32 *)(entry + 0x60) + *(u32 *)(entry + 0x74);
+                    p = (u8 *)gSoundSys + (*(u16 *)(entry + 2) << 2);
+                    dest = *(u32 *)(entry + 0x64) + *(u32 *)(p + 0x134);
+                    DCFlushRange(*(void **)(entry + 0x58), len);
+                    owner = lbl_80367818;
+                    lbl_80367818 = owner + 1;
+                    ARQPostRequest(
+                        entry + 0x30,
+                        (owner << 16) | i,
+                        0,
+                        0,
+                        *(u32 *)(entry + 0x58),
+                        dest,
+                        len,
+                        fn_800B1368
+                    );
+                    *(u32 *)(entry + 0x64) =
+                        *(u32 *)(entry + 0x64) + *(u32 *)(entry + 0x74);
+                }
+                break;
+            }
+        }
     }
-    
-    result = *(s32*)((char*)entry + 0x8);
-    if (result < 0) {
-        return 0;
-    }
-    
-    if ((arg1 & 0x80000000) != 0) {
-        *(u32*)((char*)entry + 0x4) = arg1 & 0x7FFFFFFF;
-        return result;
-    }
-    
-    if (arg1 >= result) {
-        return result;
-    }
-    
-    return arg1;
 }
 
 #pragma opt_strength_reduction on
