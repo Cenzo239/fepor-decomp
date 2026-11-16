@@ -10393,6 +10393,7 @@ void *fn_800E37CC(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma global_optimizer off
 void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     void fn_800DF7A0(void);
     void String_Init(String *, char *, void *);
@@ -10433,10 +10434,10 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     void *allocC;
     void *alloc8;
     void **tmp;
-    s32 r29;
+    s32 flag;
     u32 len;
-    void *self;
     void *path;
+    void *self;
 
     (void)arg1;
     path = arg2;
@@ -10455,9 +10456,9 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     *(u32 *)((u8 *)self + 0x48) = 0;
     String_Init(&str80, lbl_80271DF8 + 8, &alloc1C);
     Xml_GetNamedValue(buf144, path, &str80);
-    r29 = (s32)buf144;
-    len = strlen((char *)r29);
-    String_AssignCStr(&str98, (char *)r29, len);
+    flag = (s32)buf144;
+    len = strlen((char *)flag);
+    String_AssignCStr(&str98, (char *)flag, len);
     String_Destroy(&str80, -1);
     String_Init(&str74, lbl_80271DF8 + 0x11, &alloc18);
     Xml_GetNamedValue(buf124, path, &str74);
@@ -10477,7 +10478,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     String_Destroy(&str50, -1);
     String_Init(&str44, lbl_80271DF8 + 0x21, &alloc8);
     Xml_GetNamedValue(bufA4, path, &str44);
-    r29 = *(s32 *)bufA4;
+    flag = *(s32 *)bufA4;
     String_Destroy(&str44, -1);
     String_JoinCStr(&str38, lbl_80271DF8 + 0x25, &str98);
     String_ConcatCStr(&str2C, &str38, lbl_80271DF8 + 0x26);
@@ -10492,7 +10493,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
         *(s32 *)((u8 *)self + 0x4C) = *(u16 *)((u8 *)*tmp + 2);
         *(s32 *)((u8 *)self + 0x50) = *(u16 *)((u8 *)*tmp + 0);
     }
-    if (r29 != 0) {
+    if (flag != 0) {
         *(s32 *)((u8 *)self + 0x6C) = 0x21;
     } else {
         *(s32 *)((u8 *)self + 0x6C) = 0x11;
@@ -10511,7 +10512,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     String_Destroy(&str98, -1);
     return self;
 }
-
+#pragma global_optimizer on
 void *fn_800E3B68(void *arg0, s16 arg1) {
     void fn_800E45EC(void *, s32);
     void Heap_Free(void *);
@@ -19218,6 +19219,73 @@ void AiCmd_SeekLabelNoOk(void *unit)
     }
 }
 
+void fn_800FAF70(void *arg0) {
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    extern u8 gAiCmdOk;
+    extern u8 gAiState[];
+
+    void fn_8003C634(void *, s32);
+    void fn_8003C5EC(void *, s32);
+
+    u8 *unit;
+    u8 *cmd;
+    u32 first;
+    u32 second;
+    s32 alt;
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+
+    first = *(u32 *)(cmd + 0x14);
+    second = *(u32 *)(cmd + 0x18);
+
+    if (first != 0) {
+        fn_8003C634(unit, first);
+        unit[0x250] = 0;
+    }
+
+    if (second != 0) {
+        fn_8003C5EC(unit, second);
+        unit[0x251] = 0;
+    }
+
+    *(u32 *)(unit + 0x254) &= ~8U;
+
+    alt = gAiCmdIsAlt;
+
+    if (alt == 0) {
+        if (first == 0) {
+            goto advance;
+        }
+        if (alt != 1) {
+            goto success;
+        }
+    } else {
+        if (second != 0) {
+            goto success;
+        }
+    }
+
+advance:
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
+    goto finish;
+
+success:
+    gAiCmdOk = 1;
+    gAiState[0] = 0;
+
+finish:
+    if (first != 0 && second != 0) {
+        *(s16 *)(unit + 0x258) = 0;
+        *(s16 *)(unit + 0x25A) = 0;
+    }
+}
+
 void fn_800FB074(void *arg0)
 {
     extern s32 gAiCmdIsAlt;
@@ -19863,8 +19931,8 @@ void fn_800FC560(void) {
 
 void fn_800FC580(void)
 {
-    extern u8 gAiState[];
-    extern u8 gBattleMap[];
+    extern u8 lbl_8032B3C0[];
+    extern u8 lbl_802CA518[];
     extern u8 lbl_802731D0[];
     extern void *lbl_80367904;
 
@@ -19876,7 +19944,7 @@ void fn_800FC580(void)
     u8 *obj;
     void *result;
 
-    obj = gAiState;
+    obj = lbl_8032B3C0;
 
     *(u16 *)(obj + 4) = 0xFFFF;
     *(u8 *)(obj + 6) = 2;
@@ -19885,7 +19953,7 @@ void fn_800FC580(void)
 
     memset(obj + 8, 0, 0x10);
 
-    result = fn_80022FC4(gBattleMap);
+    result = fn_80022FC4(lbl_802CA518);
 
     lbl_80367904 = fn_800C4638(
         (s32)result,
