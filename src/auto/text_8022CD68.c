@@ -2770,29 +2770,21 @@ s32 strlen(const char *str) {
     return length;
 }
 
-void fn_80234524(s32 arg0) {
-    f32 fn_802345B0(M2C_UNK, s32 (*)(), s32 *, M2C_UNK *, s32 *);
-    extern s32 __StringRead();
-    extern f64 lbl_80367070;
-    extern f64 lbl_80367078;
-    extern s32 errno;
-    extern f64 lbl_8036BE10;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 temp_r0;
-    f32 temp_f1;
-    f32 temp_f2;
-
-    sp10 = arg0;
-    sp14 = 0;
-
-    temp_f1 = fn_802345B0(0x7FFFFFFF, __StringRead, &sp10, &temp_r0, &spC);
-    temp_f2 = fabs(temp_f1);
-
-    if ((spC != 0) || (temp_f1 != lbl_8036BE10 && ((temp_f2 < lbl_80367070) || (temp_f2 > lbl_80367078)))) {
-        errno = 0x22;
-    }
+f64 fn_80234524(char *arg0) {
+f64 fn_802345B0(s32,s32 (*)(),void *,s32 *,s32 *);
+extern s32 __StringRead();
+extern f64 lbl_80367070[], lbl_80367078[];
+extern f64 lbl_8036BE10;
+extern s32 errno;
+f64 value, magnitude;
+__InStrCtrl isc;
+s32 overflow, count;
+isc.NextChar=arg0;
+isc.NullCharDetected=0;
+value=fn_802345B0(0x7fffffff,__StringRead,&isc,&count,&overflow);
+magnitude=__fabs(value);
+if (overflow || (lbl_8036BE10 != value && (magnitude < lbl_80367070[0] || magnitude > lbl_80367078[0]))) errno=0x22;
+return value;
 }
 
 f64 fn_8022D5E0(void *);
