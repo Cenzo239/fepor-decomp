@@ -498,6 +498,39 @@ s32 __CARDReadPage(s32 chan, void *callback) {
     return result;
 }
 
+int __CARDEraseSector(s32 chan, u32 addr, void *callback) {
+    extern u16 __CARDBlock[];
+    s32 EXIImmEx(s32,void*,s32,s32);
+    void EXIDeselect(s32);
+    void EXIUnlock(s32);
+    u8 *card;
+    s32 result;
+    u32 low;
+    card=(u8*)__CARDBlock+chan*0x110;
+    if(*(u16*)(card+0xa)>0x80) {
+        if(callback) ((void(*)(s32,s32))callback)(chan,0);
+        return 0;
+    }
+    card[0x94]=0xf1;
+    low=(addr>>9)&0xff;
+    card[0x95]=(addr>>17)&0x7f;
+    card[0x96]=low;
+    *(s32*)(card+0xa0)=3;
+    *(s32*)(card+0xa4)=-1;
+    *(s32*)(card+0xa8)=3;
+    result=__CARDStart(chan,0,callback);
+    if(result==-1) result=0;
+    else if(result>=0) {
+        if(!EXIImmEx(chan,card+0x94,*(s32*)(card+0xa0),1)) {
+            *(void**)(card+0xcc)=0;
+            result=-3;
+        } else result=0;
+        EXIDeselect(chan);
+        EXIUnlock(chan);
+    }
+    return result;
+}
+
 void PADInit(void) {
     extern u16 __CARDBlock[];
     extern u16 lbl_80368740;
@@ -1107,28 +1140,30 @@ s32 fn_802180DC(s32 chan, void *out) {
 void fn_80218C34(void *arg0)
 {
     extern void fn_80215F78(u32);
-    extern s32 fn_80215F40(void);
+    extern u32 fn_80215F40(void);
 
     u8 *base;
     u32 previous;
 
     base = (u8 *)__CARDBlock;
 
-    if (arg0 == base + 0x30) {
+    if (base + 0x30 == (u8 *)arg0) {
         return;
     }
 
-    if (arg0 == base + 0x140) {
+    if (base + 0x140 == (u8 *)arg0) {
         return;
     }
 
-    previous = *(u32 *)(base + 0x190);
+    base += 0x110;
+    previous = *(u32 *)(base + 0x80);
 
     fn_80215F78(0xFF000000);
 
     if (fn_80215F40() == 0) {
         fn_80215F78(previous);
-        fn_80215F40();
+        if (fn_80215F40() == 0) {
+        }
     }
 }
 
