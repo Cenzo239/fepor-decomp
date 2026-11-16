@@ -1685,12 +1685,15 @@ s32 __StringWrite(void *arg0, const void *arg1, s32 arg2) {
     return 1;
 }
 
-s32 __FileWrite(s32 arg0, s32 arg1, u32 arg2) {
-    u32 fwrite(s32 arg1, s32 arg2, s32 arg0);
-    if (arg2 == fwrite(arg1, 1, arg0)) {
-        return arg0;
+s32 __FileWrite(void *file, const char *buf, u32 n) {
+    u32 fwrite(const void *, u32, u32, void *);
+    u32 written;
+
+    written = fwrite(buf, 1, n, file);
+    if (n == written) {
+        return (s32)file;
     }
-    return -1;
+    return 0;
 }
 
 char *float2str(char *buffer, void *format, f64 value)
