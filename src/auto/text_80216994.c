@@ -109,6 +109,12 @@ void fn_80216994(void) {
 
 }
 
+void fn_80216998(s32 chan, s32 result) {
+    void fn_8020AEC4(void *);
+    extern u8 __CARDBlock[];
+    fn_8020AEC4(__CARDBlock + chan * 0x110 + 0x8c);
+}
+
 void __CARDTxHandler(s32 arg0) {
     s32 EXIDeselect(s32, s32);
     M2C_UNK EXIUnlock(s32);
