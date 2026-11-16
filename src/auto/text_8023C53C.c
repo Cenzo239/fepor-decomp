@@ -3761,28 +3761,19 @@ void fn_8024A674(s32 arg0, s32 arg1) {
 }
 
 s32 fn_8024A6F8(void) {
-    s32 Sound_LookupVid(void);
-    void fn_80255100(void *);
-    s32 voiceOff;
-    s32 ret;
-    s32 vid;
-    char *voice;
-    u8 idx;
-
-    ret = 0;
-    if (gSoundReady != 0) {
-        for (vid = Sound_LookupVid(); (u32)(vid + 0x10000) != 0xFFFF;
-             vid = *(s32 *)((char *)gSynthVoices + voiceOff + 0xEC)) {
-            idx = (u8)vid;
-            voiceOff = idx * 0x458;
-            voice = (char *)gSynthVoices + voiceOff;
-            if ((u32)vid == *(u32 *)(voice + 0xF4)) {
-                fn_80255100(voice);
-                ret = 1;
-            }
-        }
-    }
-    return ret;
+ s32 Sound_LookupVid(void); void fn_80255100(void*);
+ s32 voiceOff; s32 ret; s32 vid; u8 *base; u8 *voice;
+ ret=0;
+ if(gSoundReady!=0) {
+ vid=Sound_LookupVid();
+ while((u32)(vid+0x10000)!=0xFFFF) {
+ base=(u8*)gSynthVoices;
+ voiceOff=(u8)vid*0x458;
+ voice=voiceOff+base;
+ if((u32)vid==*(u32*)(voice+0xF4)) { fn_80255100(voice); ret=1; }
+ vid=*(s32*)((u8*)gSynthVoices+voiceOff+0xEC);
+ }
+ } return ret;
 }
 
 void fn_8024A780(u8 arg0, u16 arg1, u8 arg2, u8 arg3, s32 arg4) {
@@ -14584,28 +14575,17 @@ void fn_80262410(void) {
     fn_80262B1C();
 }
 
-void fn_80262430(void *arg0, s32 arg1) {
-    s32 fn_80262F98(s32, s32);
-    u32 temp_r3;
-    u32 temp_r0;
-    u32 var_r6;
-
-    temp_r3 = *(u32 *)((u8 *)arg0 + 4);
-    temp_r0 = temp_r3 >> 24;
-    var_r6 = temp_r3 & 0xFFFFFF;
-    switch ((s32)temp_r0) {
-    case 0:
-    case 1:
-    case 4:
-    case 5:
-        var_r6 = (((var_r6 + 0xD) / 7u) << 2) & ~7u;
-        break;
-    case 2:
-    case 6:
-        var_r6 *= 2;
-        break;
-    }
-    fn_80262F98(arg1, (s32)var_r6);
+void fn_80262430(void *arg0, s32 arg1, void *arg2) {
+ void fn_80262F98(s32,s32,void*);
+ u32 temp_r3; u32 temp_r0; u32 var_r6;
+ temp_r3=*(u32*)((u8*)arg0+4);
+ temp_r0=temp_r3>>24;
+ var_r6=temp_r3&0xFFFFFF;
+ switch((s32)temp_r0) {
+ case 0: case 1: case 4: case 5: var_r6=(((var_r6+13)/7u)<<2)&~7u; break;
+ case 2: case 6: var_r6*=2; break;
+ }
+ fn_80262F98(arg1,(s32)var_r6,arg2);
 }
 
 void fn_802624B8(void) {
@@ -16930,6 +16910,7 @@ void fn_80265C34(s32 arg0, s32 arg1)
     void fn_80266F18(s32, void *);
     u8 *entry;
     u8 *queue;
+    void (*callback)(s32, s32);
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
@@ -16937,13 +16918,14 @@ void fn_80265C34(s32 arg0, s32 arg1)
     if (arg1 == 0) {
         fn_80266F18(arg0, queue + 0x18);
     } else {
-        void (*func)(s32, s32);
         *(u32 *)(queue + 0x2C) = 0;
         *(u32 *)(queue + 0x28) = 0;
-        func = *(void (**)(s32, s32))(queue + 0x14);
-        if (func != NULL) {
+
+        callback = *(void (**)(s32, s32))(queue + 0x14);
+
+        if (callback != 0) {
             *(u32 *)(queue + 0x14) = 0;
-            func(arg0, arg1);
+            callback(arg0, arg1);
         }
     }
 
