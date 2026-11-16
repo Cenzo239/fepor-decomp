@@ -765,11 +765,16 @@ void fn_802137E8(void) {
     __PADRegs[0x1B] |= 0x8000;
 }
 
-s32 fn_80213800(void) {
-    u16* addr = (u16*)0xCC005000;
-    u16 low = *(addr + 0x30/2);
-    u16 high = *(addr + 0x32/2);
-    return (high & 0xFFE0) | ((low << 16) & 0x03FF0000);
+s32 fn_80213800(void)
+{
+  extern volatile u16 __PADRegs[];
+  int new_var3[2];
+  u16 a = __PADRegs[0x18];
+  u16 b = __PADRegs[0x19];
+  new_var3[1] = a;
+  new_var3[0] = a & 0xFFE0;
+  return __rlwimi(new_var3[0], new_var3[1], 16, 6, 15);
+  a = (u32) b;
 }
 
 s32 fn_8021381C(void) {
@@ -853,22 +858,26 @@ s32 fn_80213ADC(void) {
     return ((u32) *(u32 *)0xCC006C00 >> 1U) & 1;
 }
 
-void fn_80213AEC(s32 arg0) {
-    u32 *ptr = (u32 *)0xCC000000 + 0x1B00;
-    u32 temp = ptr[1];
-    temp = (temp & 0xFFFFFF00) | ((u32)arg0 & 0xFF);
-    ptr[1] = temp;
+#pragma optimization_level 1
+void fn_80213AEC(u32 arg0) {
+    u32 *base;
+    u32 temp;
+    base = (u32 *)(0xCC000000 + 0x6C00);
+    temp = base[1];
+    temp = __rlwimi(temp & 0xFFFFFF00, arg0, 0, 24, 31);
+    base[1] = temp;
 }
-
+#pragma optimization_level reset
 u8 fn_80213B08(void) {
     return (u8) *(s32 *)0xCC006C04;
 }
 
 void fn_80213B18(s32 arg0) {
-    struct R { u32 a; u32 b; } *p = (struct R *)0xCC006C00;
-    u32 t = p->b;
-    t = (t & 0xFFFF00FF) | ((arg0 << 8) & 0xFF00);
-    p->b = t;
+    extern volatile u32 OS_AIRegs[8];
+    u32 *regs = (u32 *)OS_AIRegs;
+    u32 value = regs[1];
+    value = __rlwimi(value & 0xFFFF00FF, (u32)arg0, 8, 16, 23);
+    regs[1] = value;
 }
 
 u8 fn_80213B34(void) {
@@ -878,6 +887,40 @@ u8 fn_80213B34(void) {
 void fn_80213CB0(s32 arg0)
 {
     lbl_80368698(arg0);
+}
+
+void fn_80213D2C(s32 arg0, OSContext *context) {
+    extern s32 lbl_803686A0;
+    extern s32 lbl_803686AC;
+
+    void fn_80213DD8(void);
+
+    volatile u16 *regs;
+    OSContext tempContext;
+    void (*callback)(void);
+
+    regs = (volatile u16 *)0xCC005000;
+    regs[5] = (regs[5] & ~0xA0) | 8;
+
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(&tempContext);
+
+    callback = (void (*)(void))lbl_8036869C;
+
+    if (callback != NULL && lbl_803686AC == 0) {
+        lbl_803686AC = 1;
+
+        if (lbl_803686A0 != 0) {
+            fn_80213DD8();
+        } else {
+            callback();
+        }
+
+        lbl_803686AC = 0;
+    }
+
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(context);
 }
 
 void fn_80213DD8(void) {
@@ -1070,12 +1113,9 @@ s32 fn_80215F60(void) {
     return (__PADRegs[2] << 16) | __PADRegs[3];
 }
 
-void fn_80215F78(u32 arg0) {
-    volatile u16 *regs = (volatile u16 *)0xCC005000;
-    regs[0] = arg0 >> 16;
-    regs[1] = arg0;
-}
-
+#pragma scheduling off
+void fn_80215F78(u32 arg0) { volatile u16 *regs=(volatile u16*)0xCC005000; u16 high=arg0/65536; u16 low=arg0; *regs++=high; *regs=low; }
+#pragma scheduling reset
 void fn_80216050(void) {
     OSDisableInterrupts();
 }
