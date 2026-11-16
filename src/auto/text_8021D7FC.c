@@ -1655,18 +1655,13 @@ void fn_8022100C(u32 arg0) {
 }
 
 void fn_80221034(s32 arg0) {
-    u32 temp_r5;
-    u32 *temp_r6;
-
-    temp_r6 = (u32 *)0x803B81A0;
-    temp_r5 = *temp_r6;
-    temp_r5 = (temp_r5 & ~0x80000) | ((arg0 << 0x13) & 0x80000);
-    *temp_r6 = temp_r5;
-
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = 0xFE080000;
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = temp_r5;
+extern u16 *__GXData;
+u32 *gx=(u32*)__GXData;
+gx[0x204/4]=__rlwimi(gx[0x204/4],arg0,19,12,12);
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=0xFE080000;
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=gx[0x204/4];
 }
 
 void fn_80221068(void) {
@@ -1686,6 +1681,18 @@ extern s32 jumptable_8029E0B8[];
 extern u16* __GXData;
 
 extern u16 *__GXData;
+
+typedef union {
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    s8 s8;
+    s16 s16;
+    s32 s32;
+    f32 f32;
+} PPCWGPipe;
+
+volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 extern f32 lbl_8036BDC0;
 
