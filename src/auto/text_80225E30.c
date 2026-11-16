@@ -524,6 +524,18 @@ s32 TRKInitializeSerialHandler(void) {
     return 0;
 }
 
+void fn_80226C34(s32 arg0) {
+    void fn_80225F4C(void *, s32);
+    void fn_80225F64(void *, s32 *);
+    extern s32 lbl_8033CA28[6];
+    s32 event[3];
+
+    fn_80225F4C(event, 2);
+    event[2] = arg0;
+    lbl_8033CA28[0] = -1;
+    fn_80225F64(event, lbl_8033CA28);
+}
+
 void TRKGetInput(void) {
     void* fn_80226CE4(void);
     void TRKGetBuffer(void);
@@ -1135,19 +1147,7 @@ s32 fn_802287C0(s32 arg0) {
     return var_r31;
 }
 
-void fn_80228858(s32 arg0, s32 arg1) {
- s32 p = arg0 & 0xFFFFFFF1;
- arg1 += arg0 - p;
- do {
-  __dcbst(0, p);
-  __dcbf(0, p);
-  __sync();
-  __icbi(0, p);
-  p += 8;
-  arg1 -= 8;
- } while (arg1 >= 0);
- __isync();
-}
+void fn_80228858(s32 arg0,s32 arg1) { u32 address=(u32)arg0 & 0xFFFFFFF1U; s32 remaining=arg1+((u32)arg0-address); do { __dcbst(0,address); __dcbf(0,address); __sync(); __icbi(0,address); remaining-=8; address+=8; } while(remaining>=0); __isync(); }
 
 s32 fn_80228950(void) {
     return M2C_ERROR(/* unknown instruction: mtmsr $r3 */);
