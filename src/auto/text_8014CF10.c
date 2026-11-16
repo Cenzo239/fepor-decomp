@@ -294,6 +294,32 @@ void fn_8014D3B4(void *arg0) {
     }
 }
 
+void fn_8014D55C(void *arg0) {
+extern u8 gBattle[],gConvoy[],gIconSlots[];
+void fn_8001520C(void *,s32);
+void fn_800BDED8(void *);
+void EventFlag_Clear(void *,void *);
+void fn_801A7CDC(void *);
+void Unit_ResetAll(void);
+void fn_800C341C(void *);
+void fn_800C32A4(void *);
+void fn_8010FF90(void *);
+u8 *p=arg0;
+s32 delta, value;
+p[0x10]=0; *(u16*)(p+0x12)=1; p[0x11]=0; p[0x50]=0;
+p[0x14]=1; p[0x15]=2; p[0x16]=2; p[0x17]=2;
+p[0x20]=0; p[0x2c]=0; p[0x38]=0; p[0x44]=0;
+fn_8001520C(p+0x94,0); fn_8001520C(p+0x98,3);
+value=*(s32*)(p+0x18); delta=1000-value;
+if(delta<0) { value+=*(s32*)(p+0x6c); *(s32*)(p+0x6c)=value-1000; }
+else *(s32*)(p+0x68)+=delta;
+*(s32*)(p+0x18)=1000; *(s32*)(p+0x1c)=1000;
+fn_800BDED8(p+0xb4);
+EventFlag_Clear(p+0xb4,lbl_80277060+0x17e);
+EventFlag_Clear(p+0xb4,lbl_80277060+0x18a);
+fn_801A7CDC(gBattle); Unit_ResetAll(); fn_800C341C(gConvoy); fn_800C32A4(gIconSlots); fn_8010FF90(gMapObjEventList);
+}
+
 void fn_8014D678(void *arg0) {
  *(s32 *)((u8 *)arg0 + 0x64) = 0;
  *(s32 *)((u8 *)arg0 + 0x60) = 0;
