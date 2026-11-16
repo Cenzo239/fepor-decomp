@@ -315,18 +315,19 @@ u32 OSGetConsoleType(void)
     }
     return console;
 }
-#pragma peephole on
-void InquiryCallback(void *arg1) {
-    u32 val = *(u32 *)((u8 *)arg1 + 0xC);
-    if (val == 0) {
-        *(u16 *)0x800030E6 = (*(u16 *)((u8 *)arg1 + 0x2) | 0x8000);
-    } else {
+#pragma peephole off
+void InquiryCallback(void *unused, void *arg1) {
+    extern u8 DriveInfo_80339360[];
+    switch (*(s32 *)((u8 *)arg1 + 0xC)) {
+    case 0:
+        *(u16 *)0x800030E6 = *(u16 *)(DriveInfo_80339360 + 2) | 0x8000;
+        break;
+    default:
         *(u16 *)0x800030E6 = 1;
+        break;
     }
 }
-
-#pragma global_optimizer off
-#pragma peephole off
+#pragma peephole on
 void OSInit(void){
 extern s32 AreWeInitialized_80368478,__OSInIPL,__OSIsGcam,__DVDLongFileNameFlag,__PADSpec;extern u32 *BI2DebugFlag_8036845C;extern u32 BI2DebugFlagHolder_80368460;extern u8 *BootInfo_80368458;
 extern u8 DriveInfo_80339360[],lbl_8029B928[],lbl_80366F1C[8],__ArenaLo[],__ArenaHi[],_stack_addr[];extern s64 __OSStartTime;extern char *__OSVersion;
