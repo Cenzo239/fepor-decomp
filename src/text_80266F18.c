@@ -401,6 +401,17 @@ s32 fn_802672F0(void)
     return lbl_80368B3C;
 }
 
+void fn_8026738C(void) {
+void __OSMaskInterrupts(u32); void __OSUnmaskInterrupts(u32);
+void __OSSetInterruptHandler(s32, void (*)(void));
+void fn_80267498(s32); void fn_80267458(void);
+__OSMaskInterrupts(0x18000);
+__OSMaskInterrupts(0x40);
+lbl_80368B34 = (void (*)(s16))fn_80267498;
+__OSSetInterruptHandler(0x19, fn_80267458);
+__OSUnmaskInterrupts(0x40);
+}
+
 void fn_802673E0(s32 *arg0, s32 arg1)
 {
     extern u32 OSDisableInterrupts(void);
