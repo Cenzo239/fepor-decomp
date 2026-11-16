@@ -182,6 +182,39 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         Prim2D_EndPrim();
     }
 }
+
+extern "C" void fn_8005AABC(void *arg0,s32 arg1,s32 arg2,s32 arg3,u8 arg4) {
+extern s32 lbl_80369180;
+extern f32 lbl_80369188,lbl_80369198,lbl_8036919C;
+long long OSGetTime(void);
+f32 Math_Ease(s32,f32,f32,f32,f32);
+struct Color { u8 r,g,b,a; };
+struct Obj {
+u8 pad[0x44];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3(s32,s32,s32)=0;
+virtual void v4()=0;
+virtual void v5(s32,s32,s32,Color)=0;
+};
+Color color;
+u32 time;
+s32 level;
+if(!arg4) {
+((Obj *)arg0)->v3(arg1,arg2,arg3);
+return;
+}
+time=(u32)(OSGetTime()/((*(u32 *)0x800000F8>>2)/1000))%600;
+if(time<300) level=(s32)Math_Ease(0,lbl_80369188,lbl_80369198,(f32)time,lbl_8036919C);
+else level=(s32)Math_Ease(0,lbl_80369198,lbl_80369188,(f32)(time-300),lbl_8036919C);
+*(u32 *)&color=lbl_80369180;
+color.r=level;
+color.g=level;
+color.b=level;
+((Obj *)arg0)->v5(arg1,arg2,arg3,color);
+}
+
 #pragma cplusplus reset
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
@@ -220,39 +253,51 @@ extern s32 D_800F1354;
 extern s32 D_800F1358;
 extern s32 D_800F135C;
 extern s32 D_803B9610;
-s32 Ui_InitIconDrawer(s32 arg0, s32 arg1) {
-    s32 temp1;
-    s32 temp2;
-
-    if (arg0 <= 0) {
-        D_800F1340 = 0;
-        D_800F1344 = 0;
-        D_800F1348 = 0;
-        D_800F134C = 0;
-        D_800F1350 = 0;
-        D_800F1354 = 0;
-        D_800F1358 = 0;
-        D_800F135C = 0;
-        return 0;
-    }
-
-    temp1 = arg1 < 0 ? -arg1 : arg1;
-    temp2 = arg0 * arg0;
-
-    // First part
-    D_800F1340 = (temp1 + temp2 - 1) / temp2;
-    D_800F1344 = 0;
-    D_800F1348 = 0;
-    D_800F134C = 0;
-    D_800F1350 = 0;
-    D_800F1354 = 0;
-    D_800F1358 = 0;
-    D_800F135C = 0;
-
-    return D_800F1340;
-}
-
 #pragma cplusplus on
+extern "C" void fn_8006EEFC(void *, s32);
+extern "C" void *fn_8006EDD8(void *, s32);
+extern "C" void fn_8006EBC4(void *, void *, void *, s32, s32);
+extern "C" void *fn_800C4638(s32, char *, s32);
+extern "C" void fn_80222CA4(u32 *, u32, u32, u16);
+extern "C" void Ui_LoadAtlasTex(void *, void *, s32);
+#pragma cplusplus on
+#pragma global_optimizer off
+extern "C" void Ui_InitIconDrawer(void *arg0) {
+    struct Obj {
+        u8 pad[0x44];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual s32 v8() = 0;
+        virtual s32 v9() = 0;
+    };
+    extern char lbl_8026AE88[];
+    extern void fn_80222CA4(u32 *, u32, u32, u32);
+    u32 count;
+    void *tmp;
+
+    if (*(u32 *)arg0 == 0) {
+        fn_8006EEFC(arg0, ((Obj *)arg0)->v8());
+        tmp = fn_8006EDD8(*(void **)arg0, ((Obj *)arg0)->v9());
+        if (*(u32 *)((u8 *)tmp + 4) != 0) {
+            ((u8 *)arg0)[0x40] = 1;
+            fn_8006EBC4(*(void **)arg0, (u8 *)arg0 + 4, (u8 *)arg0 + 0x24, 0, ((Obj *)arg0)->v9());
+            fn_80222CDC((u8 *)arg0 + 0x24);
+            count = fn_80222CE8((u8 *)arg0 + 0x24);
+            *(void **)((u8 *)arg0 + 0x3C) = fn_800C4638(((u16)count) << 1, lbl_8026AE88 + 8, 0);
+            fn_80222CA4((u32 *)((u8 *)arg0 + 0x30), (u32)*(void **)((u8 *)arg0 + 0x3C), 2, count);
+        } else {
+            ((u8 *)arg0)[0x40] = 0;
+            Ui_LoadAtlasTex(*(void **)arg0, (u8 *)arg0 + 4, ((Obj *)arg0)->v9());
+        }
+    }
+}
+#pragma global_optimizer reset
 extern "C" void fn_8005C8B4(s32);
 extern "C" void fn_8005ADB4(void *arg0) {
     struct Obj {
