@@ -227,18 +227,18 @@ void fn_800065B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_80006608(s16 *arg0) {
-    s16 x;
-    s16 dy;
     s16 dx;
+    s16 y;
+    s16 x;
 
     x = arg0[0];
-    dy = arg0[1];
+    y = arg0[1];
     dx = -x;
-    dy = -dy;
+    y = -y;
     arg0[0] = x + dx;
-    arg0[1] = arg0[1] + dy;
+    arg0[1] = arg0[1] + y;
     arg0[2] = arg0[2] + dx;
-    arg0[3] = arg0[3] + dy;
+    arg0[3] = arg0[3] + y;
 }
 
 s32 fn_80006650(s16 *arg0, s16 *arg1) {
@@ -355,7 +355,7 @@ s32 fn_80006AC0(u8 *arg0) {
     return t + ((b1 << 16) & 0xFF0000);
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 4
 s32 fn_80006AF4(s32 *arg0) {
     s32 n;
     s32 sum;
@@ -370,7 +370,7 @@ s32 fn_80006AF4(s32 *arg0) {
 #pragma optimization_level reset
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
-    extern void *gPrim2D;
+    extern u16 gPrim2D;
     extern char lbl_80366DA4[];
     extern double lbl_80368B88;
 
@@ -379,6 +379,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
     char *source;
     void *text;
     void *textBuffer;
+    u8 *prim;
     s32 value;
     s32 length;
     s32 width;
@@ -388,6 +389,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
     s32 allocationSize;
     float yPosition;
 
+    prim = *(u8 **)&gPrim2D;
     value = arg4;
     i = 0;
 
@@ -425,7 +427,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
     }
 
 format_done:
-    text = *(void **)((u8 *)gPrim2D + 0xC);
+    text = *(void **)(prim + 0xC);
     textBuffer = *(void **)((u8 *)text + 4);
 
     width = Text_MeasureWidth(buffer, -1, *(float *)((u8 *)textBuffer + 0x1C));
@@ -454,11 +456,11 @@ format_done:
         allocationSize = 0xD4;
     }
 
-    textBuffer = *(void **)((u8 *)gPrim2D + 8);
+    textBuffer = *(void **)(prim + 8);
     destination = (char *)textBuffer;
     destination += allocationSize;
 
-    *(void **)((u8 *)gPrim2D + 8) = destination;
+    *(void **)(prim + 8) = destination;
 
     source = buffer;
 
