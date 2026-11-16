@@ -1162,7 +1162,17 @@ void fn_8021FA94(void)
     *(u16 *)(gx + 6) = (u16)count;
 }
 
-void GXClearVtxDesc(void) { extern u16 *const __GXData; u32 zero=0; u32 *gx=(u32*)__GXData; gx[0x14/4]=zero; gx[0x14/4]=__rlwimi(gx[0x14/4],1,9,21,22); gx[0x18/4]=zero; ((u8*)gx)[0x4D4]=zero; ((u8*)gx)[0x4D5]=zero; gx[0x5AC/4]|=8; }
+void GXClearVtxDesc(void)
+{
+  extern u16 * const __GXData;
+  u32 *gx;
+  ((u32 *) __GXData)[0x14 / 4] = 0;
+  ((u32 *) __GXData)[0x14 / 4] = __rlwimi(((u32 *) __GXData)[0x14 / 4], 1, 9, 21, 22);
+  ((u32 *) __GXData)[0x18 / 4] = 0;
+  ((u8 *) ((u32 *) __GXData))[0x4D4] = 0;
+  ((u8 *) ((u32 *) __GXData))[0x4D5] = 0;
+  ((u32 *) __GXData)[0x5AC / 4] |= 8;
+}
 
 s32 GXSetVtxAttrFmtv(s32 arg0)
 {
