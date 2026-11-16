@@ -2434,7 +2434,7 @@ void fn_8008A5AC(void *arg0) {
 void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     s64 OSGetTime(void);
     s64 __div2i(s64, s64);
-    s64 fn_8022C9FC(s64, s64);
+    s64 __mod2i(s64, s64);
     f32 fn_8022CB78(s64);
     f64 sin(f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
@@ -2468,7 +2468,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     width = arg2; x = arg0; y = arg1; cidx = arg3; lo = arg4; hi = arg5; alpha = arg6;
     handle = gUiAtlas;
     if (width <= 0x50) width = 0x50;
-    phase = fn_8022CB78(fn_8022C9FC(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x5DC)) / lbl_803696F8;
+    phase = fn_8022CB78(__mod2i(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x5DC)) / lbl_803696F8;
     if ((u8)alpha == 0) alpha = lo;
     else {
         s = (f32)sin(lbl_803696FC * phase);

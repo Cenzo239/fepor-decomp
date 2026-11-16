@@ -6326,7 +6326,7 @@ void fn_801C36E8(void *arg0) {
     void fn_801C4394(s32, s16 *);
     s64 OSGetTime(void);
     s64 __div2i(s64, s64);
-    s64 fn_8022C9FC(s64, s64);
+    s64 __mod2i(s64, s64);
     f32 fn_8022CB78(s64);
     f64 sin(f32);
     extern s8 lbl_80368288;
@@ -6603,7 +6603,7 @@ void fn_801C36E8(void *arg0) {
     Prim2D_AddZ(lbl_8036B3C4);
     Prim2D_PrepareTex();
 
-    c = fn_8022CB78(fn_8022C9FC(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x7D0)) / lbl_8036B3C8;
+    c = fn_8022CB78(__mod2i(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x7D0)) / lbl_8036B3C8;
     d = lbl_8036B37C * (f32)sin(lbl_8036B3CC * (lbl_8036B3BC * c));
     b = (f32)(*(s16 *)((u8 *)self + 0x146) - 8) + d;
     a = (f32)(*(s16 *)((u8 *)self + 0x144) - 0x24);
@@ -7054,28 +7054,36 @@ void fn_801C6008(s32 arg0) {
     M2C_FIELD(Process_Create(&lbl_80298224, 4), s32 *, 0x30) = arg0;
 }
 
-void fn_801C6044(u8 *arg0) {
+void fn_801C6044(void *arg0) {
     void Heap_FreeRaw(void *);
     void Heap_Free(void *);
-    u8 *work;
+
+    u8 *obj;
+    u8 *data;
     void *ptr;
 
-    work = *(u8 **)(arg0 + 0x44);
-    if (work != NULL) {
-        ptr = *(void **)work;
+    obj = (u8 *)arg0;
+    data = *(u8 **)(obj + 0x44);
+
+    if (data != NULL) {
+        ptr = *(void **)data;
+
         if (ptr != NULL) {
             if (ptr != NULL) {
                 Heap_FreeRaw((u8 *)ptr - 0x10);
             }
-            *(void **)work = NULL;
+            *(void **)data = NULL;
         }
-        ptr = *(void **)(work + 4);
+
+        ptr = *(void **)(data + 4);
+
         if (ptr != NULL) {
             Heap_FreeRaw(ptr);
-            *(void **)(work + 4) = NULL;
+            *(void **)(data + 4) = NULL;
         }
-        Heap_Free(work);
-        *(u32 *)(arg0 + 0x44) = 0;
+
+        Heap_Free(data);
+        *(void **)(obj + 0x44) = NULL;
     }
 }
 
@@ -10262,10 +10270,9 @@ extern "C" void fn_801CCE7C(void *arg0) {
 #pragma cplusplus reset
 
 void *NameGrid_GetCharAtCursor(void *arg0) {
-    void *fn_801CD480(void *, s16, s16);
-    s16 x = *(s16 *)((u8 *)arg0 + 0x48);
-    s16 y = *(s16 *)((u8 *)arg0 + 0x4A);
-    return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), x, y);
+ void *fn_801CD480(void *,s16,s16);
+ s16 *cursor=(s16*)((u8*)arg0+0x48);
+ return fn_801CD480(*(void**)((u8*)arg0+0x3C),cursor[0],cursor[1]);
 }
 
 #pragma cplusplus on
@@ -12203,7 +12210,7 @@ void fn_801D107C(void *arg0) {
 void fn_801D15D4(void *arg0) {
     s64 OSGetTime(void);
     s64 __div2i(s32, s32, s32, s32);
-    s64 fn_8022C9FC(s32, s32, s32, s32);
+    s64 __mod2i(s32, s32, s32, s32);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_Unlink(void *);
     extern u32 lbl_8036C528;
@@ -12242,7 +12249,7 @@ void fn_801D15D4(void *arg0) {
     bus = bus >> 2;
     div = (u32)(((u64)mag * bus) >> 32) >> 6;
     t = __div2i((s32)(t >> 32), (s32)t, 0, (s32)div);
-    t = fn_8022C9FC((s32)(t >> 32), (s32)t, 0, 0xBB8);
+    t = __mod2i((s32)(t >> 32), (s32)t, 0, 0xBB8);
     *(u32 *)((u8 *)self + 0x14C) = (u32)t;
 
     if (*(u32 *)((u8 *)self + 8) & 2) {

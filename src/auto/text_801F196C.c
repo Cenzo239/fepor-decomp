@@ -1073,7 +1073,7 @@ void fn_801F3E60(void *arg0) {
     Color *Ui_GetColor(s32);
     u8 fn_801E3570(void *, s32, void *);
     void fn_801F52A8(s32, s16 *);
-    void fn_8022C9FC(s32, s32);
+    void __mod2i(s32, s32);
     f32 fn_8022CB78(void);
     f64 sin(f32);
     extern s32 OSGetTime(void);
@@ -1347,7 +1347,7 @@ void fn_801F3E60(void *arg0) {
     (void)Prim2D_SetCallback; (void)fn_801F52A8; (void)fn_8015F24C;
     (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
     (void)Msg_ResolveName; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
-    (void)Ui_DrawRouteIconEx; (void)fn_8022C9FC; (void)fn_8022CB78;
+    (void)Ui_DrawRouteIconEx; (void)__mod2i; (void)fn_8022CB78;
     (void)sin; (void)OSGetTime; (void)__div2i;
     (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
 }
@@ -3636,28 +3636,22 @@ void *fn_801F9D50(void *arg0)
     extern f32 lbl_8036BA00;
     void *Process_CreateChild(void *, void *);
     void StaffRoll_VecReserve(void *, u32);
-    struct Entry {
-        u8 pad[0x30];
-        u32 unk30;
-        u32 unk34;
-        u32 unk38;
-        f32 unk3c;
-        u8 pad40[0xc];
-        u32 unk4c;
-    } *entry;
-    struct Entry *tmp;
-    u32 *p;
+    u8 *entry;
+    u8 *tmp;
+    u32 *vec;
+    f32 zero;
 
-    entry = (struct Entry *)Process_CreateChild(lbl_8029B32C, arg0);
+    entry = (u8 *)Process_CreateChild(lbl_8029B32C, arg0);
     tmp = entry;
-    if (tmp != NULL) {
-        p = &tmp->unk30;
-        tmp->unk30 = 0;
-        tmp->unk34 = 0;
-        p[2] = 0;
-        tmp->unk3c = lbl_8036BA00;
-        tmp->unk4c = 0;
-        StaffRoll_VecReserve(p, 0x28);
+    if (entry != NULL) {
+        vec = (u32 *)(tmp + 0x30);
+        *(u32 *)(tmp + 0x30) = 0;
+        zero = lbl_8036BA00;
+        *(u32 *)(tmp + 0x34) = 0;
+        vec[2] = 0;
+        *(f32 *)(tmp + 0x3C) = zero;
+        *(u32 *)(tmp + 0x4C) = 0;
+        StaffRoll_VecReserve(vec, 0x28);
     }
     return entry;
 }
@@ -4553,12 +4547,15 @@ void fn_801FB428(void *arg0, void *arg1, s32 (*compare)(void *, void *))
 
 #pragma global_optimizer off
 void StaffRoll_VecClear(u32 *arg0) {
-    u8 (*start)[8];
-    u8 (*end)[8];
+    typedef struct {
+        u8 pad[8];
+    } Elem;
+    Elem *start;
+    Elem *end;
 
-    start = (u8 (*)[8])arg0[2];
+    start = (Elem *)arg0[2];
     end = start + arg0[1];
-    for (; start < end; start++) {
+    for (; !(start >= end); start++) {
     }
     arg0[1] = 0;
 }
@@ -5209,7 +5206,7 @@ void Tree_Init(void *arg0, u8 *arg1) {
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 8) = mid;
 }
-#pragma scheduling on
+#pragma scheduling reset
 /* Allocate and link a new RB-tree node with u16 key under parent; rebalance and return it. */
 void *Tree_InsertNode(void *tree, void *parent, s32 asLeft, s32 setFirst, u16 *key) {
     void *Heap_Alloc(u32);
