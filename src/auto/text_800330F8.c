@@ -2541,18 +2541,21 @@ u8 fn_8003863C(u8 *arg0) {
     return arg0[0x19A];
 }
 
+#pragma optimization_level 2
 void fn_8003868C(void *arg0, s32 arg1) {
     if (arg1 != 0xff) {
         if (arg1 < 0) {
             return;
         }
-        if (arg1 > 0x64) {
-            return;
+        if (arg1 <= 0x64) {
+            goto store;
         }
+        return;
     }
+store:
     *(u8 *)((u8 *)arg0 + 0x19B) = (u8)arg1;
 }
-
+#pragma optimization_level 4
 u8 fn_800386B0(void *arg0) {
     u8 temp_r0;
 
@@ -9554,11 +9557,7 @@ void fn_80049CB4(s32 arg0, void *arg1) {
 }
 
 #pragma peephole off
-void fn_80049D08(void *arg0) {
- extern f32 lbl_80368F2C;
- void fn_8005FEE8(void *, f32);
- fn_8005FEE8(&((u32*)arg0)[5], lbl_80368F2C);
-}
+void fn_80049D08(void *arg0) { void fn_8005FEE8(void *, f32); fn_8005FEE8(&((f32*)arg0)[5], (f32)0); }
 #pragma peephole on
 void fn_80049D30(s32 arg0) {
     void fn_8005FEE8(s32, f32);
@@ -12617,20 +12616,31 @@ void fn_8005366C(void *arg0, s32 arg1, s32 arg2) {
     *(s32 *)(p + 0x4C) = arg2;
 }
 
-void fn_80053680(void *arg0, void *arg1) {
+#pragma scheduling off
+#pragma global_optimizer off
+void fn_80053680(void *arg0, void *arg1)
+{
     extern f32 lbl_8036909C;
-    f32 z;
-    f32 y;
     f32 x;
-    z = *(f32 *)((char *)arg1 + 0xC);
-    y = *(f32 *)((char *)arg1 + 0x8);
-    x = *(f32 *)((char *)arg1 + 0x4);
-    *(f32 *)((char *)*(void **)((char *)arg0 + 0x30) + 0xC) = x;
-    z = lbl_8036909C + z;
-    *(f32 *)((char *)*(void **)((char *)arg0 + 0x30) + 0x10) = y;
-    *(f32 *)((char *)*(void **)((char *)arg0 + 0x30) + 0x14) = z;
-}
+    f32 z;
+    f32 bias;
+    f32 y;
+    f32 *dst;
 
+    z = *(f32 *)((u8 *)arg1 + 0xC);
+    y = *(f32 *)((u8 *)arg1 + 0x8);
+    x = *(f32 *)((u8 *)arg1 + 0x4);
+    dst = *(f32 **)((u8 *)arg0 + 0x30);
+    bias = lbl_8036909C;
+    dst[3] = x;
+    x = bias + z;
+    dst = *(f32 **)((u8 *)arg0 + 0x30);
+    dst[4] = y;
+    arg0 = *(f32 **)((u8 *)arg0 + 0x30);
+    ((f32 *)arg0)[5] = x;
+}
+#pragma global_optimizer on
+#pragma scheduling on
 void Effect_SetPos(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0xC) = farg0;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = farg1;
