@@ -19119,15 +19119,16 @@ void fn_801E3CA8(void *arg0) {
     DebugPrint(gSaveStrings + 0x1E9, *(s32 *)((u8 *)arg0 + 0x50));
 }
 u32 fn_801E417C(void *arg0) {
-    u32 size = *(u32 *)((u8 *)arg0 + 0x48);
+    u32 size;
+
+    size = *(u32 *)((u8 *)arg0 + 0x48);
     if (size > 0x100000U) {
-        return 0;
+        size = 0;
     }
     return size;
 }
 
 s32 Save_BumpVersionChecksum(void *slot) {
-    /* Stamp SAVE_VER_20050201 on a valid FE8J slot (and payload header) and recompute CRC32. */
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
@@ -19184,10 +19185,23 @@ s32 Save_IsValid(void *slot) {
         ok = 1;
     } else {
         message = gSaveStrings;
-        crcTable = fn_800C4638(0x400, message + 0x14E, 0);
+
+        crcTable = fn_800C4638(
+            0x400,
+            message + 0x14E,
+            0
+        );
+
         Crc32_InitTable();
-        sum = Crc32_Calc(crcTable, save + 0x70, *(s32 *)(save + 0x4C) - 0x70);
+
+        sum = Crc32_Calc(
+            crcTable,
+            save + 0x70,
+            *(s32 *)(save + 0x4C) - 0x70
+        );
+
         fn_800C4588(crcTable);
+
         if (*(u32 *)(save + 0x50) != sum) {
             ok = 0;
         } else {
