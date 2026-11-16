@@ -190,24 +190,20 @@ void fn_8020B294(s64 ticks, void *td) {
     *(s32 *)((u8 *)cal + 0x0) = secs % 60;
 }
 #pragma use_lmw_stmw reset
+void __init_cpp(void);
+
 void __init_user(void) {
     __init_cpp();
 }
 
-int __init_cpp(void)
+void __init_cpp(void)
 {
     extern void (*_ctors[])(void);
-
     void (**ctor)(void);
 
-    ctor = _ctors;
-
-    while (*ctor != 0) {
+    for (ctor = _ctors; *ctor; ctor++) {
         (*ctor)();
-        ctor++;
     }
-
-    return 0;
 }
 
 void _ExitProcess(void) {
