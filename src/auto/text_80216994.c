@@ -2279,12 +2279,16 @@ void fn_8021BA54(s32 arg0, s32 arg1) {
 }
 #pragma dont_inline reset
 s32 fn_8021BA9C(void *arg0, char *name) {
-    char *p = (char *)arg0 + 8;
-    s32 n = 0x20;
+    char *p;
+    s8 a;
+    s8 b;
+    s32 n;
 
-    while (n-- > 0) {
-        char a = *p++;
-        char b = *name++;
+    p = (char *)arg0 + 8;
+    n = 0x20;
+    while (--n >= 0) {
+        a = *p++;
+        b = *name++;
         if (a != b) {
             return 0;
         }
@@ -2292,7 +2296,7 @@ s32 fn_8021BA9C(void *arg0, char *name) {
             return 1;
         }
     }
-    if (*name == 0) {
+    if ((s8)*name == 0) {
         return 1;
     }
     return 0;
