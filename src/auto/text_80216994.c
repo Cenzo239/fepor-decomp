@@ -729,6 +729,7 @@ s32 fn_80218018(void) {
     u32 var_r30;
     u32 var_r29;
     s32 var_r3;
+    u32 stack_pad;
 
     var_r30 = 1;
     var_r29 = 0;
