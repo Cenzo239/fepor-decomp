@@ -553,6 +553,15 @@ void usr_put_initialize(void) {
 
 }
 
+s32 fn_80226E24(u8 *arg0) {
+ void fn_80227FD0(s32); s32 fn_80227FDC(void); void OSReport(char *);
+ char buffer[2]; s32 result=0; s32 ch;
+ while (result==0 && (ch=(s8)*arg0++)!=0) {
+ s32 saved=fn_80227FDC(); buffer[0]=ch; buffer[1]=0;
+ fn_80227FD0(0); OSReport(buffer); fn_80227FD0(saved); result=0;
+ } return result;
+}
+
 s32 TRKInitializeDispatcher(void) {
     return 0;
 }
@@ -646,6 +655,40 @@ s32 fn_80227174(void *arg0) {
         return 0;
     }
     return 0;
+}
+
+s32 fn_80227394(void) {
+    void MWTRACE(u8, char *, ...);
+    s32 TRKTargetStopped(void);
+    s32 TRKTargetContinue(void);
+    s32 TRK_cc_write(s32, s32);
+    void *memset(void *, s32, s32);
+    extern char lbl_802824F4[];
+
+    u8 replies[2][0x40];
+
+    MWTRACE(1, lbl_802824F4);
+
+    if (TRKTargetStopped() == 0) {
+        memset(replies[1], 0, 0x40);
+
+        replies[1][4] = 0x80;
+        *(u32 *)replies[1] = 0x40;
+        replies[1][8] = 0x16;
+
+        TRK_cc_write((s32)replies[1], 0x40);
+        return 0;
+    }
+
+    memset(replies[0], 0, 0x40);
+
+    replies[0][4] = 0x80;
+    *(u32 *)replies[0] = 0x40;
+    replies[0][8] = 0;
+
+    TRK_cc_write((s32)replies[0], 0x40);
+
+    return TRKTargetContinue();
 }
 
 s32 TRKDoWriteRegisters(void *buffer) {
@@ -1151,6 +1194,69 @@ void fn_80228858(s32 arg0, s32 arg1) {
  arg1-=8;
  } while(arg1>=0);
  __isync();
+}
+
+void fn_80228890(void *arg0, s32 arg1, u32 arg2) {
+    u8 *dest;
+    u32 value;
+    u32 align;
+    u32 blocks;
+    u32 words;
+    u32 *p;
+
+    dest = (u8 *)arg0 - 1;
+    value = (u8)arg1;
+
+    if (arg2 >= 0x20) {
+        align = (~(u32)dest) & 3;
+
+        if (align != 0) {
+            arg2 -= align;
+
+            do {
+                *++dest = (u8)value;
+            } while (--align != 0);
+        }
+
+        if (value != 0) {
+            value = (value << 24) | (value << 16) |
+                    (value << 8) | value;
+        }
+
+        blocks = arg2 >> 5;
+        p = (u32 *)(dest - 3);
+
+        if (blocks != 0) {
+            do {
+                p[1] = value;
+                p[2] = value;
+                p[3] = value;
+                p[4] = value;
+                p[5] = value;
+                p[6] = value;
+                p[7] = value;
+                p += 8;
+                *p = value;
+            } while (--blocks != 0);
+        }
+
+        words = (arg2 >> 2) & 7;
+
+        if (words != 0) {
+            do {
+                *++p = value;
+            } while (--words != 0);
+        }
+
+        dest = (u8 *)p + 3;
+        arg2 &= 3;
+    }
+
+    if (arg2 != 0) {
+        do {
+            *++dest = (u8)value;
+        } while (--arg2 != 0);
+    }
 }
 
 s32 fn_80228950(void) {
@@ -2133,8 +2239,16 @@ s32 ddh_cc_shutdown(void) {
     return 0;
 }
 
-void ddh_cc_initialize(void) {
-    return;
+s32 ddh_cc_initialize(void *arg0, void *arg1) {
+ extern u8 lbl_802829B4[], lbl_802829C8[], lbl_8033D7E8[], lbl_8033CFE8[];
+ void MWTRACE(s32, const char *, ...);
+ void fn_8023C53C(void *, void *);
+ void fn_8022BC44(void *, void *, s32);
+ MWTRACE(1, (const char *)lbl_802829B4);
+ fn_8023C53C(arg0, arg1);
+ MWTRACE(1, (const char *)lbl_802829C8);
+ fn_8022BC44(lbl_8033D7E8, lbl_8033CFE8, 0x800);
+ return 0;
 }
 
 void fn_8022BA34(void* arg0)
@@ -2208,6 +2322,44 @@ s32 gdev_cc_post_stop(void) {
 s32 gdev_cc_pre_continue(void) {
     M2C_UNK fn_80266FFC();
     fn_80266FFC();
+    return 0;
+}
+
+s32 gdev_cc_write(void *arg0, s32 arg1) {
+    void MWTRACE(u8, char *, ...);
+    s32 fn_80267004(void *, s32);
+
+    extern s32 lbl_803687C0;
+    extern char lbl_802829E0[];
+
+    u8 *buffer;
+    s32 remaining;
+    s32 written;
+    char *messages;
+
+    buffer = (u8 *)arg0;
+    remaining = arg1;
+    messages = lbl_802829E0;
+
+    if (lbl_803687C0 == 0) {
+        MWTRACE(8, messages);
+        return -0x2711;
+    }
+
+    MWTRACE(8, messages + 0x14, arg0, arg1);
+
+    while (remaining > 0) {
+        MWTRACE(1, messages + 0x40, remaining);
+
+        written = fn_80267004(buffer, remaining);
+        if (written == 0) {
+            break;
+        }
+
+        buffer += written;
+        remaining -= written;
+    }
+
     return 0;
 }
 
