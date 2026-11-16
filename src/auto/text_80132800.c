@@ -1284,6 +1284,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
+#pragma use_lmw_stmw on
 void fn_80134C24(s32 *arg0, void *arg1) {
     s32 fn_800102BC(M2C_UNK, s32, s16, s32, s16, s16, s16, f32);
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *);
