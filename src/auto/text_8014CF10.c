@@ -490,10 +490,60 @@ void fn_8014D8FC(void *arg0) {
     fn_80019F04(M2C_FIELD(arg0, u8 *, 0x10));
 }
 
+void fn_8014D920(void) {
+void fn_8001520C(void *,s32);
+void fn_800BDED8(void *);
+void EventFlag_Clear(void *,void *);
+void fn_8010FF90(void *);
+void ScriptCtx_Begin(void *);
+void ScriptCtx_Call(void);
+void *fn_8016614C(void *,s32);
+u8 *p;
+s32 i;
+u8 *entry;
+void *str;
+p=gBattleState; i=0; entry=p;
+p[0x11]=i; *(u16*)(p+0x12)=1; p[0x50]=i; p[0x56]=i;
+p[0x14]=1; p[0x15]=2; p[0x16]=2; p[0x17]=2;
+p[0x20]=i; p[0x2c]=i; p[0x38]=i; p[0x44]=i;
+do {
+str=fn_8016614C(fn_80019F04(p[0x10]),i);
+if(str)strcpy((s32)(entry+0x20),(u32)str);
+i++; entry+=12;
+}while(i<4);
+fn_8001520C(gBattleState+0x94,0);
+fn_8001520C(gBattleState+0x98,3);
+entry=gBattleState+0xb4;
+fn_800BDED8(entry);
+EventFlag_Clear(entry,lbl_80277060+0x17e);
+EventFlag_Clear(entry,lbl_80277060+0x18a);
+fn_8010FF90(gMapObjEventList);
+ScriptCtx_Begin(lbl_80277060+0x196); ScriptCtx_Call();
+ScriptCtx_Begin(lbl_80277060+0x19e); ScriptCtx_Call();
+}
+
 s32 fn_8014DA68(void) {
  extern u8 gBattleState[];
  unsigned int flag = (gBattleState[0x9F] >> 7) & 1;
  return (unsigned int)(-flag | flag) >> 31;
+}
+
+void fn_8014DA88(void *arg0, s8 arg1) {
+s32 i;
+s32 offset;
+u8 *base=arg0;
+u8 *entry;
+for(i=0;i<40;i++) {
+if(*(u16*)(base+i*8+2)==0) goto found;
+}
+i=-1;
+found:
+offset=i*8;
+entry=base+offset;
+base[offset]=gBattleState[0x10];
+entry[1]=arg1;
+*(s16*)(entry+2)=*(s16*)(gBattleState+0x12);
+*(u32*)(base+offset+4)=(s64)*(s64*)(gBattleState+0x58)/(u32)(*(u32*)0x800000f8>>2);
 }
 
 void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {
@@ -508,6 +558,22 @@ s32 fn_8014DC04(void *arg0) {
  s32 i;
  for(i=0;i<40;i++) { if (*(u16*)((u8*)arg0+i*8+2)==0) return i; }
  return -1;
+}
+
+void fn_8014DD10(void *arg0) {
+void DebugPrint(const char *, ...);
+u8 *entry;
+s32 i;
+u8 *strings;
+if(fn_8014DC04(arg0)!=0) {
+entry=arg0;
+strings=lbl_80277060;
+for(i=0;i<40;i++,entry+=8) {
+u16 value=*(u16*)(entry+2);
+if(value==0) break;
+DebugPrint((const char*)(strings+0x1b8),i,entry[0],value);
+}
+}
 }
 
 void fn_8014DE70(s32 arg0) {
