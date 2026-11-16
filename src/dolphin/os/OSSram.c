@@ -195,26 +195,23 @@ void *__OSLockSram(void) {
     return scb;
 }
 
-void *__OSLockSramEx(void)
-{
+void *__OSLockSramEx(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
 
     u8 *scb;
+    s32 *locked;
     u32 interrupts;
 
     scb = (u8 *)Scb_80339420;
-
     interrupts = OSDisableInterrupts();
-
-    if (*(u32 *)(scb + 0x48) != 0) {
+    locked = (s32 *)(scb + 0x48);
+    if (*locked != 0) {
         OSRestoreInterrupts(interrupts);
-        return 0;
+        return NULL;
     }
-
     *(u32 *)(scb + 0x44) = interrupts;
-    *(u32 *)(scb + 0x48) = 1;
-
+    *locked = 1;
     return scb + 0x14;
 }
 
