@@ -4057,31 +4057,20 @@ f64 fn_80237BDC(f64 x, f64 y, s32 iy) {
 }
 
 #pragma global_optimizer reset
-f64 sin(f64 farg0) {
-    f64 sp10[2];
-    f64 sp8;
-    s32 temp_r0;
-    s32 temp_r3;
-
-    sp8 = farg0;
-    temp_r3 = *(s32 *)&sp8 & 0x7FFFFFFF;
-    if (temp_r3 <= 0x3FE921FB) {
-        return fn_80237BDC(0, farg0, 0.0);
-    }
-    if (temp_r3 >= 0x7FF00000) {
-        return farg0 - farg0;
-    }
-    temp_r0 = fn_802368F4(sp10, farg0) & 3;
-    switch (temp_r0) {
-    case 1:
-        return __kernel_cos(sp10[0], sp10[1]);
-    case 2:
-        return -fn_80237BDC(1, sp10[0], sp10[1]);
-    case 0:
-        return fn_80237BDC(1, sp10[0], sp10[1]);
-    default:
-        return -__kernel_cos(sp10[0], sp10[1]);
-    }
+f64 sin(f64 x) {
+ f64 __kernel_cos(f64, f64);
+ f64 fn_80237BDC(f64, f64, s32);
+ s32 fn_802368F4(f64 *, f64);
+ f64 y[2];
+ s32 ix=(*(s32 *)&x)&0x7fffffff;
+ if(ix<=0x3fe921fb) return fn_80237BDC(x,0.0,0);
+ if(ix>=0x7ff00000) return x-x;
+ switch(fn_802368F4(y,x)&3) {
+ case 0: return fn_80237BDC(y[0],y[1],1);
+ case 1: return __kernel_cos(y[0],y[1]);
+ case 2: return -fn_80237BDC(y[0],y[1],1);
+ default: return -__kernel_cos(y[0],y[1]);
+ }
 }
 
   extern f64 lbl_8036C180;
