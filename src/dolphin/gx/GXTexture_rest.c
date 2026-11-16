@@ -249,23 +249,21 @@ void fn_802245D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_8022462C(s32 arg0) {
-    u16 *reg_ptr;
-    
-    reg_ptr = (u16*)((char*)__GXData + 0x1D0);
-    *reg_ptr = (*reg_ptr & ~0x8) | ((arg0 << 3) & 0x8);
-    *(u8*)0xCC008000 = 0x61;
-    *(u8*)0xCC008000 = *reg_ptr & 0xFF;
-    *(u16*)((char*)__GXData + 0x2) = 0;
+ u8 *gx = (u8 *)__GXData;
+ u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 3, 28, 28);
+ *(u8 *)0xCC008000 = 0x61;
+ *(u32 *)0xCC008000 = value;
+ *(u32 *)(gx + 0x1d0) = value;
+ *(u16 *)(gx + 2) = 0;
 }
 
 void fn_80224658(s32 arg0) {
-    u16 temp_r6;
-    
-    temp_r6 = (__GXData[0x1D0/2] & ~0x10) | ((arg0 << 4) & 0x10);
-    *(u8 *)0xCC008000 = 0x61;
-    *(u8 *)0xCC008000 = (u8)temp_r6;
-    __GXData[0x1D0/2] = temp_r6;
-    __GXData[1] = 0;
+ u32 *gx = (u32 *)__GXData;
+ u32 value = __rlwimi(gx[0x1d0/4], arg0, 4, 27, 27);
+ *(volatile u8 *)0xCC008000 = 0x61;
+ *(volatile u32 *)0xCC008000 = value;
+ gx[0x1d0/4] = value;
+ ((u16 *)gx)[1] = 0;
 }
 
 void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
@@ -281,24 +279,11 @@ void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_802246B8(u8 arg0) {
-    u32 *ptr;
-    u32 value;
-    u32 input;
-    u32 command;
-
-    ptr = (u32 *)__GXData;
-    command = 0x61;
-    input = arg0;
-    value = ptr[0x1DC / 4];
-
-    value = (value & ~0x40) | ((input << 6) & 0x40);
-    ptr[0x1DC / 4] = value;
-
-    *(volatile u8 *)0xCC008000 = (u8)command;
-    value = ptr[0x1DC / 4];
-    *(volatile u32 *)0xCC008000 = value;
-
-    *(volatile u16 *)((u8 *)__GXData + 2) = 0;
+u32 *ptr = (u32*)__GXData;
+ptr[0x1DC/4] = __rlwimi(ptr[0x1DC/4], (u32)arg0,6,25,25);
+*(volatile u8*)0xCC008000 = 0x61;
+*(volatile u32*)0xCC008000 = ptr[0x1DC/4];
+*(u16*)((u8*)ptr+2) = 0;
 }
 
 void fn_802246EC(u32 arg0, u32 arg1)
@@ -361,13 +346,13 @@ void fn_802246EC(u32 arg0, u32 arg1)
 }
 
 void fn_802247C0(s32 arg0) {
-    u16 temp_r6;
-    
-    temp_r6 = (__GXData[0x1D0/2] & ~0x4) | ((arg0 << 2) & 0x4);
-    *(u8*)0xCC008000 = 0x61;
-    *(u16*)0xCC008000 = temp_r6;
-    __GXData[0x1D0/2] = temp_r6;
-    __GXData[0x2/2] = 0;
+ u32 value;
+ u8 *gx = (u8 *)__GXData;
+ value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 2, 29, 29);
+ *(volatile u8 *)0xCC008000 = 0x61;
+ *(volatile u32 *)0xCC008000 = value;
+ *(u32 *)(gx + 0x1d0) = value;
+ *(u16 *)(gx + 2) = 0;
 }
 
 void fn_802247EC(u32 arg0, u32 arg1) {
@@ -823,8 +808,15 @@ void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u3
 }
 
 void fn_80225D3C(void) {
-    extern u16 *__cpReg;
-    M2C_FIELD(__cpReg, s16 *, 2) = 0x4;
+ u32 command = 0x61;
+ u16 *gx = __GXData;
+ u32 first = 0x57000000;
+ u32 second = first + 0xAAA;
+ *(volatile u8 *)0xCC008000 = command;
+ *(volatile u32 *)0xCC008000 = first;
+ *(volatile u8 *)0xCC008000 = command;
+ *(volatile u32 *)0xCC008000 = second;
+ gx[1] = 0;
 }
 
 void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
