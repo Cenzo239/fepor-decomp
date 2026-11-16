@@ -3800,12 +3800,15 @@ void fn_8018DCC0(s32 arg0) {
     }
 }
 
-void fn_8018DD0C(void *arg0)
-{
+void fn_8018DD0C(void *arg0) {
     void FileCache_ReleaseSlot(void *);
+    void *base;
+    void *field;
 
-    if (*(void **)((u8 *)arg0 + 0x34) != NULL) {
-        FileCache_ReleaseSlot((u8 *)arg0 + 0x34);
+    base = arg0;
+    field = (u8 *)base + 0x34;
+    if (*(void **)field != NULL) {
+        FileCache_ReleaseSlot(field);
     }
 }
 
@@ -7214,25 +7217,9 @@ void fn_801950FC(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x30) = fn_8022C414(Heap_AllocRaw(0x19290), fn_80196018, 0, 0x3250, 8);
 }
 
-void fn_8019514C(u8 *dst, u8 *src)
-{
-  u8 a;
-  int new_var;
-  u8 b;
-  new_var = 1;
-  if (new_var)
-  {
-    a = src[0];
-    b = src[new_var];
-    dst[0] = a;
-  }
-  a = src[2];
-  dst[new_var] = b;
-  b = src[3];
-  dst[2] = a;
-  dst[3] = b;
-}
-
+#pragma scheduling off
+void fn_8019514C(void *dst, void *src) { u8 *d=dst; const u8 *s=src; unsigned int a=s[0]; unsigned char b=s[1]; d[0]=a; a=s[2]; d[1]=b; b=s[3]; d[2]=a; d[3]=b; }
+#pragma scheduling reset
 void fn_80195170(void *arg0, s8 arg1) {
     M2C_FIELD(arg0, s8 *, 4) = arg1;
 }
