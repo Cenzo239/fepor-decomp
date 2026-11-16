@@ -1553,14 +1553,14 @@ void *memmove(void *dst, const void *src, u32 n) {
     if (rev == 0) {
         s = (const u8 *)src - 1;
         d = (u8 *)dst - 1;
-        n++;
+        n += 1;
         while (--n != 0) {
             *++d = *++s;
         }
     } else {
         s = (const u8 *)src + n;
         d = (u8 *)dst + n;
-        n++;
+        n += 1;
         while (--n != 0) {
             *--d = *--s;
         }
