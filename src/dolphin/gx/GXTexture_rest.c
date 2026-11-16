@@ -248,6 +248,7 @@ void fn_802245D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(u16*)((char*)__GXData + 0x2) = 0;
 }
 
+#pragma peephole off
 void fn_8022462C(s32 arg0) {
  u8 *gx = (u8 *)__GXData;
  u32 value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 3, 28, 28);
@@ -256,7 +257,7 @@ void fn_8022462C(s32 arg0) {
  *(u32 *)(gx + 0x1d0) = value;
  *(u16 *)(gx + 2) = 0;
 }
-
+#pragma peephole on
 void fn_80224658(s32 arg0) {
  u32 *gx = (u32 *)__GXData;
  u32 value = __rlwimi(gx[0x1d0/4], arg0, 4, 27, 27);
@@ -378,14 +379,13 @@ void fn_802247EC(u32 arg0, u32 arg1) {
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
-    u32 temp_r5;
-    
-    temp_r5 = (u32)arg1 & 0x1;
-    temp_r5 |= ((u32)arg0 << 1) & 0x2;
-    temp_r5 |= 0x44000000;
-    *(u8*)0xCC008000 = 0x61;
-    *(u32*)(0xCC008000) = temp_r5;
-    *(u16*)(__GXData + 1) = 0;
+  u16 *gx = __GXData;
+  u32 value = 0;
+  value = __rlwimi(value, (u32)arg1, 0, 31, 31);
+  value = __rlwimi(value, arg0, 1, 30, 30);
+  *(u8 *)0xCC008000 = 0x61;
+  *(u32 *)0xCC008000 = __rlwimi(value, 0x44, 24, 0, 7);
+  gx[1] = 0;
 }
 
 void fn_80224860(u8 arg0, u8 arg1) {
@@ -636,16 +636,7 @@ void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4
     *(u16*)((char*)__GXData + 0x2) = 1;
 }
 
-void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    *(f32*)((char*)__GXData + 0x4F4) = farg0;
-    *(f32*)((char*)__GXData + 0x4F8) = farg1;
-    *(f32*)((char*)__GXData + 0x4FC) = farg2;
-    *(f32*)((char*)__GXData + 0x500) = farg3;
-    *(f32*)((char*)__GXData + 0x504) = farg4;
-    *(f32*)((char*)__GXData + 0x508) = farg5;
-    fn_80224F04(__GXData);
-    *(u16*)((char*)__GXData + 0x2) = 1;
-}
+void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
 
 void fn_80225034(u32 arg0, u32 *dst) {
     double *source = (double *)((u8 *)__GXData + 0x4f4);
@@ -688,23 +679,26 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     *arg3 = (temp_r8 & 0x7FF) - (temp_r7 & 0x7FF) + 1;
 }
 
-void fn_80225118(void)
+void fn_80225118(s32 x, s32 y)
 {
-    u16* ptr = &__GXData[0x4E];
-    *ptr = 0;
-    ptr++;
-    *ptr = 0;
+u32 value;
+u32 xoff = x+342;
+u16 *data = __GXData;
+u32 yoff = y+342;
+value = __rlwimi(0,xoff,31,22,31);
+value = __rlwimi(value,yoff,9,12,21);
+*(volatile u8*)0xCC008000 = 0x61;
+value = __rlwimi(value,0x59,24,0,7);
+*(volatile u32*)0xCC008000 = value;
+data[1] = 0;
 }
 
 void fn_80225158(u32 arg0)
 {
     *(volatile u8*)0xCC008000 = 0x10;
-    {
-        u16 *data = (u16*)__GXData;
-        *(volatile u32*)0xCC008000 = 0x1005;
-        *(volatile u32*)0xCC008000 = arg0;
-        data[1] = 1;
-    }
+    *(volatile u32*)0xCC008000 = 0x1005;
+    *(volatile u32*)0xCC008000 = arg0;
+    ((u16*)__GXData)[1] = 1;
 }
 
 void fn_80225180(s32 arg0) {
@@ -807,17 +801,7 @@ void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u3
     *copy_clks = __GXReadPECounterU32(0x16, 0x17);
 }
 
-void fn_80225D3C(void) {
- u32 command = 0x61;
- u16 *gx = __GXData;
- u32 first = 0x57000000;
- u32 second = first + 0xAAA;
- *(volatile u8 *)0xCC008000 = command;
- *(volatile u32 *)0xCC008000 = first;
- *(volatile u8 *)0xCC008000 = command;
- *(volatile u32 *)0xCC008000 = second;
- gx[1] = 0;
-}
+void fn_80225D3C(void) { u8 cmd=0x61; u32 a=0x57000000; u16 *gx=__GXData; *(volatile u8 *)0xCC008000=cmd; *(volatile u32 *)0xCC008000=a; *(volatile u8 *)0xCC008000=cmd; *(volatile u32 *)0xCC008000=a+0xAAA; gx[1]=0; }
 
 void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     u16 temp_r5;
