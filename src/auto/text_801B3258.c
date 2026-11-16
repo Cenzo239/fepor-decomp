@@ -8268,39 +8268,20 @@ void fn_801C84BC(s32 arg0) {
 void fn_801C8504(void *arg0) {
     void *fn_8006E658(void);
     void fn_8006EEFC(void *, void *);
-    extern s16 lbl_80366E98;
-    extern s16 lbl_80366E9A;
-    extern u8 lbl_80366E9C;
-    extern u8 lbl_802983A4[];
-    void *p;
+    extern s16 lbl_80366E98, lbl_80366E9A;
+    extern u8 lbl_80366E9C, lbl_802983A4[];
+    u8 *p = fn_8006E658();
     u8 z;
-    u8 t;
-    s32 sum;
-
-    p = fn_8006E658();
+    int i;
     if (lbl_80366E98 < 0 || lbl_80366E9A < 0) {
         z = 0;
-        lbl_80366E98 = *(u16 *)((u8 *)p + 0xA);
-        lbl_80366E9A = *(u16 *)((u8 *)p + 0xC);
+        lbl_80366E98 = *(u16 *)(p + 0xA);
+        lbl_80366E9A = *(u16 *)(p + 0xC);
         lbl_80366E9C = z;
-        t = *(u8 *)((u8 *)p + 0x32);
-        lbl_80366E9C = t;
-        sum = t;
-        sum = sum + *(u8 *)((u8 *)p + 0x33);
-        lbl_80366E9C = sum;
-        sum = (u8)sum + *(u8 *)((u8 *)p + 0x34);
-        lbl_80366E9C = sum;
-        sum = (u8)sum + *(u8 *)((u8 *)p + 0x35);
-        lbl_80366E9C = sum;
-        sum = (u8)sum + *(u8 *)((u8 *)p + 0x36);
-        lbl_80366E9C = sum;
-        sum = (u8)sum + *(u8 *)((u8 *)p + 0x37);
-        lbl_80366E9C = sum;
-        sum = (u8)sum + *(u8 *)((u8 *)p + 0x38);
-        lbl_80366E9C = sum;
-        *(u8 *)((u8 *)arg0 + 0x34) = z;
+        for (i=0; i<7; i++) lbl_80366E9C += p[0x32+i];
+        *((u8 *)arg0+0x34) = z;
     }
-    fn_8006EEFC((u8 *)arg0 + 0x30, *(void **)(lbl_802983A4 + 4));
+    fn_8006EEFC((u8 *)arg0+0x30, *(void **)(lbl_802983A4+4));
 }
 
 #pragma use_lmw_stmw on
@@ -11448,51 +11429,38 @@ s32 fn_801CF614(void *arg0) {
 
 #pragma opt_common_subs off
 void *fn_801CF62C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
-    extern void *lbl_8028FDB0[];
-    extern void *lbl_80292230[];
-    extern void *lbl_80298730[];
-    extern f32 lbl_8036B518;
-    f32 zero;
-    s16 neg;
-    s16 w;
-    s16 h;
-    s32 z;
-
-    neg = -1;
-    z = 0;
-    w = 0x67;
-    h = 0x9D;
-    *(void **)arg0 = lbl_8028FDB0;
-    zero = lbl_8036B518;
-    *(s32 *)((u8 *)arg0 + 4) = z;
-    *(void **)arg0 = lbl_80292230;
-    *(s16 *)((u8 *)arg0 + 8) = neg;
-    *(s16 *)((u8 *)arg0 + 0xA) = arg1;
-    *(s16 *)((u8 *)arg0 + 0xC) = arg2;
-    *(s16 *)((u8 *)arg0 + 0xE) = (s16)(arg1 + w);
-    *(s16 *)((u8 *)arg0 + 0x10) = (s16)(arg2 + h);
-    *(s16 *)((u8 *)arg0 + 0x12) = z;
-    *(s16 *)((u8 *)arg0 + 0x14) = z;
-    *(s16 *)((u8 *)arg0 + 0x16) = w;
-    *(s16 *)((u8 *)arg0 + 0x18) = h;
-    *(s16 *)((u8 *)arg0 + 0x1A) = z;
-    *(s16 *)((u8 *)arg0 + 0x1C) = z;
-    *(u8 *)((u8 *)arg0 + 0x1E) = 0xFF;
-    *(u8 *)((u8 *)arg0 + 0x1F) = 0xFF;
-    *(u8 *)((u8 *)arg0 + 0x20) = 0xFF;
-    *(u8 *)((u8 *)arg0 + 0x21) = 0xFF;
-    *(s16 *)((u8 *)arg0 + 0x22) = arg3;
-    *(s16 *)((u8 *)arg0 + 0x24) = z;
-    *(f32 *)((u8 *)arg0 + 0x28) = zero;
-    *(f32 *)((u8 *)arg0 + 0x2C) = zero;
-    *(f32 *)((u8 *)arg0 + 0x30) = zero;
-    *(s32 *)((u8 *)arg0 + 0x34) = z;
-    *(s32 *)((u8 *)arg0 + 0x38) = z;
-    *(void **)arg0 = lbl_80298730;
-    *(s16 *)((u8 *)arg0 + 0x3C) = z;
-    *(s16 *)((u8 *)arg0 + 0x3E) = neg;
-    *(s16 *)((u8 *)arg0 + 0x40) = neg;
-    return arg0;
+extern void *lbl_8028FDB0[], *lbl_80292230[], *lbl_80298730[];
+extern f32 lbl_8036B518;
+*(void**)arg0=lbl_8028FDB0;
+*(s32*)((u8*)arg0+4)=0;
+*(void**)arg0=lbl_80292230;
+*(s16*)((u8*)arg0+8)=-1;
+*(s16*)((u8*)arg0+10)=arg1;
+*(s16*)((u8*)arg0+12)=arg2;
+*(s16*)((u8*)arg0+14)=arg1+0x67;
+*(s16*)((u8*)arg0+16)=arg2+0x9d;
+*(s16*)((u8*)arg0+18)=0;
+*(s16*)((u8*)arg0+20)=0;
+*(s16*)((u8*)arg0+22)=0x67;
+*(s16*)((u8*)arg0+24)=0x9d;
+*(s16*)((u8*)arg0+26)=0;
+*(s16*)((u8*)arg0+28)=0;
+*(u8*)((u8*)arg0+30)=255;
+*(u8*)((u8*)arg0+31)=255;
+*(u8*)((u8*)arg0+32)=255;
+*(u8*)((u8*)arg0+33)=255;
+*(s16*)((u8*)arg0+34)=arg3;
+*(s16*)((u8*)arg0+36)=0;
+*(f32*)((u8*)arg0+40)=lbl_8036B518;
+*(f32*)((u8*)arg0+44)=lbl_8036B518;
+*(f32*)((u8*)arg0+48)=lbl_8036B518;
+*(s32*)((u8*)arg0+52)=0;
+*(s32*)((u8*)arg0+56)=0;
+*(void**)arg0=lbl_80298730;
+*(s16*)((u8*)arg0+60)=0;
+*(s16*)((u8*)arg0+62)=-1;
+*(s16*)((u8*)arg0+64)=-1;
+return arg0;
 }
 #pragma opt_common_subs on
 void *fn_801CF6F4(void *arg0, s16 arg1) {
