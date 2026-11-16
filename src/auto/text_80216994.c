@@ -115,6 +115,31 @@ void fn_80216998(s32 chan, s32 result) {
     fn_8020AEC4(__CARDBlock + chan * 0x110 + 0x8c);
 }
 
+void fn_802169CC(s32 chan) {
+    extern u16 __CARDBlock[];
+    void fn_80239298(s32, void *);
+    void OSCancelAlarm(void *);
+    u8 *card;
+    void (*callback)(s32,s32);
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (*(s32 *)card != 0) {
+        *(s32 *)card = 0;
+        fn_80239298(chan, 0);
+        OSCancelAlarm(card + 0xE0);
+        callback = *(void (**)(s32,s32))(card + 0xCC);
+        if (callback) {
+            *(void **)(card + 0xCC) = 0;
+            callback(chan, -3);
+        }
+        if (*(s32 *)(card + 4) != -1) *(s32 *)(card + 4) = -3;
+        callback = *(void (**)(s32,s32))(card + 0xC4);
+        if (callback && *(s32 *)(card + 0x24) >= 7) {
+            *(void **)(card + 0xC4) = 0;
+            callback(chan, -3);
+        }
+    }
+}
+
 void __CARDTxHandler(s32 chan) {
     s32 EXIDeselect(s32);
     s32 EXIUnlock(s32);
