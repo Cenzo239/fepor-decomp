@@ -1341,7 +1341,54 @@ void Actor_LoadAnim(void *actor, void *relPath, s32 flag, s32 arg3, s32 arg4) {
     }
     String_Destroy(&fullPath, -1);
 }
-#pragma use_lmw_stmw reset
+
+#pragma global_optimizer off
+void fn_801134EC(void *out, void *actor, void *name) {
+    s32 strlen(char *);
+    s32 String_Compare(void *, s32, void *, char *, s32);
+    void String_Assign(void *, void *, s32, s32);
+    void String_Destroy(void *, s32);
+    void String_Concat(void *, void *, void *);
+    void String_Copy(void *, void *);
+    void fn_800C992C(void *, char *, u32);
+    void fn_800C99A0(void *, void *, s32, s32);
+    s32 fn_800DDC04(void *, void *);
+    String path;
+    String joined;
+    void *self;
+    void *anim;
+    void *dst;
+    u32 n;
+    s32 ok;
+
+    self = actor;
+    anim = name;
+    dst = out;
+    path.cap = 0;
+    path.size = 0;
+    path.data = 0;
+    path.cap = 0;
+    String_Assign(&path, anim, 0, -1);
+    n = strlen((char *)gActorXmlStrs + 0x1C);
+    if (String_Compare((u8 *)self + 0x160, 0, (void *)*(u32 *)((u8 *)self + 0x160),
+                       (char *)gActorXmlStrs + 0x1C, n) != 0) {
+        fn_800C992C(&path, (char *)gActorXmlStrs + 0xFC,
+                    strlen((char *)gActorXmlStrs + 0xFC));
+        fn_800C99A0(&path, (u8 *)self + 0x160, 0, -1);
+    }
+    String_Concat(&joined, (u8 *)self + 0x154, &path);
+    ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &joined) == 0;
+    String_Destroy(&joined, -1);
+    if ((u8)ok != 0) {
+        String_Assign(&path, anim, 0, -1);
+        *(u8 *)((u8 *)self + 0x184) = 1;
+    } else {
+        *(u8 *)((u8 *)self + 0x184) = 1;
+    }
+    String_Copy(dst, &path);
+    String_Destroy(&path, -1);
+}
+#pragma global_optimizer on
 
 void Actor_SetRadius(void *arg0, f32 farg0) {
     M2C_FIELD(arg0, f32 *, 0x128) = farg0;
@@ -4702,55 +4749,59 @@ u8 fn_8011BB34(void) {
     return (u8)(lbl_80367A48 == 0x87);
 }
 
-void fn_8011BBA4(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
-    s32 temp_r3;
-    f32 temp_f1;
-    s32 *temp_r30;
-    s32 *temp_r31;
-    
-    temp_r3 = arg2;
-    if (arg1 < 0) {
-        temp_r3 = 0;
-    }
-    if (temp_r3 >= 0x59) {
-        temp_r3 = 0x58;
-    }
-    
-    if ((arg1 == 0) || (arg1 > 8)) {
-        arg1 = 1;
-    }
-    
-    if (arg1 <= 0) {
-        arg1 = 1;
-    }
-    
-    if (arg1 >= 0x32) {
-        arg1 = 0x31;
-    }
-    
-    temp_r31 = (s32*)arg3 + arg1;
-    temp_r30 = (s32*)arg3 + arg1;
-    
-    if (arg0 < 1) {
-        return;
-    }
-    
-    while (arg0 != 0) {
-        temp_f1 = *(f32*)temp_r31;
-        temp_f1 += *(f32*)temp_r30;
-        *(f32*)temp_r31 = temp_f1;
-        
-        if ((*(s32*)temp_r31 < 0x40) && (arg2 == 1)) {
-            *(s32*)temp_r31 = 0x40;
-        }
-        
-        arg1--;
-        arg0--;
-        temp_r31--;
-        temp_r30--;
-    }
-}
+#pragma cplusplus on
+extern "C" s32 fn_8011BBA4(void *arg0, void *panel, void *entry) {
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
+    u8 fn_801E3620(void *);
+    extern u8 lbl_80274508[];
+    extern u8 gSystemSave[];
+    extern u8 gUiContext[];
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual s16 v21() = 0;
+        virtual s16 v22() = 0;
+    };
+    f32 fx;
+    f32 fy;
+    s16 base;
 
+    if (*(u8 *)((u8 *)entry + 0x39) == 2) {
+        base = ((Obj *)*(void **)((u8 *)panel + 0x3C))->v21();
+        fx = (f32)(base + *(s16 *)((u8 *)entry + 0x30));
+        base = ((Obj *)*(void **)((u8 *)panel + 0x3C))->v22();
+        fy = (f32)(base + *(s16 *)((u8 *)entry + 0x32));
+        if (((u8 *)gBattleState)[0x10] > 0x1FU) {
+            Ui_CreateMsgPopup(lbl_80274508 + 0x398, panel, fx, fy);
+        } else if (!(gUiInputFlags & 0x10) && fn_801E3620(gSystemSave) == 0) {
+            Ui_CreateMsgPopup(lbl_80274508 + 0x3AD, panel, fx, fy);
+        }
+        return 0;
+    }
+    gUiContext[8] = 0x87;
+    return 5;
+}
+#pragma cplusplus reset
 void fn_8011BD08(void) {
     extern u8 lbl_80274508[];
     extern void Msg_Expand(void *);
@@ -4916,146 +4967,273 @@ s32 fn_8011C000(void) {
     return 5;
 }
 
-s32 fn_8011C2B8(void *arg0) {
-    void *TargetList_GetAt(s32 *, s32);
-    extern s32 gTargetList;
-    s16 temp_r4_2;
-    s16 var_r30;
-    s32 var_r0;
-    s32 var_r28;
-    s32 var_r8;
-    u8 temp_r0;
-    u8 temp_r0_2;
-    u8 temp_r4;
-    u8 temp_r6;
-    u8 temp_r7;
-    u8 var_r0_2;
-    void *temp_r3;
-    void *var_r29;
-    void *var_r3;
+#pragma use_lmw_stmw on
+s32 fn_8011C018(void *self) {
+    void *TargetList_GetAt(void *, s32);
+    extern u8 gTargetList[];
+    s16 bestDist;
+    void *best;
+    s32 i;
+    void *other;
+    s32 dy;
+    s32 dx;
+    s16 dist;
+    u8 prefer;
+    void *result;
+    u32 oy;
+    u32 ox;
+    u32 sy;
+    u32 sx;
+    s32 neg;
 
-    var_r30 = 0x7FFF;
-    var_r29 = NULL;
-    var_r28 = 0;
-loop_16:
-    if (var_r28 < (s32) gTargetList) {
-        temp_r3 = TargetList_GetAt(&gTargetList, var_r28);
-        if (arg0 != temp_r3) {
-            temp_r6 = M2C_FIELD(temp_r3, u8 *, 1);
-            temp_r4 = M2C_FIELD(arg0, u8 *, 1);
-            if ((s8) temp_r4 > (s8) temp_r6) {
-                var_r8 = (s8) temp_r4 - (s8) temp_r6;
-                if (var_r8 < 0) {
-                    var_r8 = -var_r8;
-                }
-                temp_r7 = M2C_FIELD(temp_r3, u8 *, 0);
-                temp_r0 = M2C_FIELD(arg0, u8 *, 0);
-                var_r0 = (s8) temp_r0 - (s8) temp_r7;
-                if (((s8) temp_r0 - (s8) temp_r7) < 0) {
-                    var_r0 = -var_r0;
-                }
-                temp_r4_2 = var_r0 + var_r8;
-                if (var_r30 >= temp_r4_2) {
-                    if ((var_r29 != NULL) && (var_r30 == temp_r4_2)) {
-                        temp_r0_2 = M2C_FIELD(var_r29, u8 *, 1);
-                        if ((s8) temp_r0_2 == (s8) temp_r6) {
-                            var_r0_2 = (s8) M2C_FIELD(var_r29, u8 *, 0) < (s8) temp_r7;
-                        } else {
-                            var_r0_2 = (s8) temp_r0_2 < (s8) temp_r6;
-                        }
-                        if (var_r0_2 != 0) {
-                            goto block_14;
-                        }
-                    } else {
-block_14:
-                        var_r30 = temp_r4_2;
-                        var_r29 = temp_r3;
-                    }
-                }
+    bestDist = 0x7FFF;
+    best = NULL;
+    for (i = 0; i < *(s32 *)gTargetList; i++) {
+        other = TargetList_GetAt(gTargetList, i);
+        if (self == other) {
+            continue;
+        }
+        oy = ((u8 *)other)[1];
+        sy = ((u8 *)self)[1];
+        if ((s8)sy >= (s8)oy) {
+            continue;
+        }
+        dy = (s8)sy - (s8)oy;
+        neg = dy < 0;
+        if (neg) {
+            dy = -dy;
+        }
+        ox = ((u8 *)other)[0];
+        sx = ((u8 *)self)[0];
+        dx = (s8)sx - (s8)ox;
+        if ((s8)sx - (s8)ox < 0) {
+            dx = -dx;
+        }
+        dist = (s16)(dx + dy);
+        if (bestDist < dist) {
+            continue;
+        }
+        if (best != NULL && bestDist == dist) {
+            if ((s8)((u8 *)best)[1] == (s8)oy) {
+                prefer = (s8)((u8 *)best)[0] < (s8)ox;
+            } else {
+                prefer = (s8)((u8 *)best)[1] < (s8)oy;
+            }
+            if (prefer == 0) {
+                continue;
             }
         }
-        var_r28 += 1;
-        goto loop_16;
+        bestDist = dist;
+        best = other;
     }
-    if (var_r29 != NULL) {
-        var_r3 = var_r29;
+    if (best != NULL) {
+        result = best;
     } else {
-        var_r3 = arg0;
+        result = self;
     }
-    M2C_FIELD(arg0, void **, 0xC) = var_r3;
-    return var_r29 != NULL;
+    *(void **)((u8 *)self + 0x10) = result;
+    return best != NULL;
 }
 
-s32 fn_8011C404(void *arg0) {
-    void *TargetList_GetAt(s32 *, s32);
-    extern u16 gTargetList[1004];
-    s16 temp_r4;
-    s16 var_r30;
-    s32 var_r0;
-    s32 var_r28;
-    s32 var_r5;
-    u8 temp_r0;
-    u8 temp_r0_2;
-    u8 temp_r6;
-    u8 temp_r7;
-    u8 temp_r8;
-    u8 var_r0_2;
-    void *temp_r3;
-    void *var_r29;
-    void *var_r3;
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+s32 fn_8011C164(void *self) {
+    void *TargetList_GetAt(void *, s32);
+    extern u8 gTargetList[];
+    s16 bestDist;
+    void *best;
+    s32 i;
+    void *other;
+    s32 dy;
+    s32 dx;
+    s16 dist;
+    u8 prefer;
+    void *result;
+    u32 oy;
+    u32 ox;
+    u32 sy;
+    u32 sx;
 
-    var_r30 = 0x7FFF;
-    var_r29 = NULL;
-    var_r28 = 0;
-loop_16:
-    if (var_r28 < (s32) gTargetList[0]) {
-        temp_r3 = TargetList_GetAt((s32 *)gTargetList, var_r28);
-        if (arg0 != temp_r3) {
-            temp_r7 = M2C_FIELD(temp_r3, u8 *, 0);
-            temp_r8 = M2C_FIELD(arg0, u8 *, 0);
-            if ((s8) temp_r8 > (s8) temp_r7) {
-                temp_r6 = M2C_FIELD(temp_r3, u8 *, 1);
-                temp_r0 = M2C_FIELD(arg0, u8 *, 1);
-                var_r5 = (s8) temp_r0 - (s8) temp_r6;
-                if (((s8) temp_r0 - (s8) temp_r6) < 0) {
-                    var_r5 = -var_r5;
-                }
-                var_r0 = (s8) temp_r8 - (s8) temp_r7;
-                if (var_r0 < 0) {
-                    var_r0 = -var_r0;
-                }
-                temp_r4 = var_r0 + var_r5;
-                if (var_r30 >= temp_r4) {
-                    if ((var_r29 != NULL) && (var_r30 == temp_r4)) {
-                        temp_r0_2 = M2C_FIELD(var_r29, u8 *, 0);
-                        if ((s8) temp_r0_2 == (s8) temp_r7) {
-                            var_r0_2 = (s8) temp_r6 < (s8) M2C_FIELD(var_r29, u8 *, 1);
-                        } else {
-                            var_r0_2 = (s8) temp_r0_2 < (s8) temp_r7;
-                        }
-                        if (var_r0_2 != 0) {
-                            goto block_14;
-                        }
-                    } else {
-block_14:
-                        var_r30 = temp_r4;
-                        var_r29 = temp_r3;
-                    }
-                }
+    bestDist = 0x7FFF;
+    best = NULL;
+    for (i = 0; i < *(s32 *)gTargetList; i++) {
+        other = TargetList_GetAt(gTargetList, i);
+        if (self == other) {
+            continue;
+        }
+        ox = ((u8 *)other)[0];
+        sx = ((u8 *)self)[0];
+        if ((s8)sx >= (s8)ox) {
+            continue;
+        }
+        oy = ((u8 *)other)[1];
+        sy = ((u8 *)self)[1];
+        dy = (s8)sy - (s8)oy;
+        if ((s8)sy - (s8)oy < 0) {
+            dy = -dy;
+        }
+        dx = (s8)sx - (s8)ox;
+        if (dx < 0) {
+            dx = -dx;
+        }
+        dist = (s16)(dx + dy);
+        if (bestDist < dist) {
+            continue;
+        }
+        if (best != NULL && bestDist == dist) {
+            if ((s8)((u8 *)best)[0] == (s8)ox) {
+                prefer = (s8)oy < (s8)((u8 *)best)[1];
+            } else {
+                prefer = (s8)((u8 *)best)[0] < (s8)ox;
+            }
+            if (prefer == 0) {
+                continue;
             }
         }
-        var_r28 += 1;
-        goto loop_16;
+        bestDist = dist;
+        best = other;
     }
-    if (var_r29 != NULL) {
-        var_r3 = var_r29;
+    if (best != NULL) {
+        result = best;
     } else {
-        var_r3 = arg0;
+        result = self;
     }
-    M2C_FIELD(arg0, void **, 4) = var_r3;
-    return var_r29 != NULL;
+    *(void **)((u8 *)self + 0x8) = result;
+    return best != NULL;
 }
+#pragma global_optimizer on
+s32 fn_8011C2B8(void *self) {
+    void *TargetList_GetAt(void *, s32);
+    extern u8 gTargetList[];
+    s16 bestDist;
+    void *best;
+    s32 i;
+    void *other;
+    s32 dy;
+    s32 dx;
+    s16 dist;
+    u8 prefer;
+    void *result;
+    u32 oy;
+    u32 ox;
+    u32 sy;
+    u32 sx;
 
+    bestDist = 0x7FFF;
+    best = NULL;
+    for (i = 0; i < *(s32 *)gTargetList; i++) {
+        other = TargetList_GetAt(gTargetList, i);
+        if (self == other) {
+            continue;
+        }
+        oy = ((u8 *)other)[1];
+        sy = ((u8 *)self)[1];
+        if ((s8)sy <= (s8)oy) {
+            continue;
+        }
+        dy = (s8)sy - (s8)oy;
+        if ((s8)sy - (s8)oy < 0) {
+            dy = -dy;
+        }
+        ox = ((u8 *)other)[0];
+        sx = ((u8 *)self)[0];
+        dx = (s8)sx - (s8)ox;
+        if ((s8)sx - (s8)ox < 0) {
+            dx = -dx;
+        }
+        dist = (s16)(dx + dy);
+        if (bestDist < dist) {
+            continue;
+        }
+        if (best != NULL && bestDist == dist) {
+            if ((s8)((u8 *)best)[1] == (s8)oy) {
+                prefer = (s8)ox < (s8)((u8 *)best)[0];
+            } else {
+                prefer = (s8)oy < (s8)((u8 *)best)[1];
+            }
+            if (prefer == 0) {
+                continue;
+            }
+        }
+        bestDist = dist;
+        best = other;
+    }
+    if (best != NULL) {
+        result = best;
+    } else {
+        result = self;
+    }
+    *(void **)((u8 *)self + 0xC) = result;
+    return best != NULL;
+}
+#pragma global_optimizer off
+s32 fn_8011C404(void *self) {
+    void *TargetList_GetAt(void *, s32);
+    extern u8 gTargetList[];
+    s16 bestDist;
+    void *best;
+    s32 i;
+    u8 *op;
+    void *other;
+    s32 dy;
+    s32 dx;
+    s16 dist;
+    u8 prefer;
+    void *result;
+    u32 sx;
+    u32 sy;
+    u32 ox;
+    u32 oy;
+
+    bestDist = 0x7FFF;
+    best = NULL;
+    for (i = 0; i < *(s32 *)gTargetList; i++) {
+        other = TargetList_GetAt(gTargetList, i);
+        if (self == other) {
+            continue;
+        }
+        op = (u8 *)other;
+        ox = op[0];
+        sx = ((u8 *)self)[0];
+        if ((s8)sx <= (s8)ox) {
+            continue;
+        }
+        oy = op[1];
+        sy = ((u8 *)self)[1];
+        dy = (s8)sy - (s8)oy;
+        if ((s8)sy - (s8)oy < 0) {
+            dy = -dy;
+        }
+        dx = (s8)sx - (s8)ox;
+        if (dx < 0) {
+            dx = -dx;
+        }
+        dist = (s16)(dx + dy);
+        if (bestDist < dist) {
+            continue;
+        }
+        if (best != NULL && bestDist == dist) {
+            if ((s8)((u8 *)best)[0] == (s8)ox) {
+                prefer = (s8)((u8 *)best)[1] < (s8)oy;
+            } else {
+                prefer = (s8)ox < (s8)((u8 *)best)[0];
+            }
+            if (prefer == 0) {
+                continue;
+            }
+        }
+        bestDist = dist;
+        best = other;
+    }
+    if (best != NULL) {
+        result = best;
+    } else {
+        result = self;
+    }
+    *(void **)((u8 *)self + 0x4) = result;
+    return best != NULL;
+}
+#pragma global_optimizer on
 void *fn_8011C558(void *arg0, s16 arg1) {
     void Heap_Free(void *);
 
