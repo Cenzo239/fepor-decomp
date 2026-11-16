@@ -4257,30 +4257,7 @@ void fn_80238ABC(void) {
     fn_8023108C();
 }
 
-u8 *fn_80238ADC(u8 *arg0) {
-    extern u16 lbl_8029E9A8[256];
-    u8 *p;
-    s32 c;
-    s32 tmp;
-    u8 *table;
-
-    table = (u8 *)lbl_8029E9A8;
-    p = arg0;
-    goto check;
-    do {
-        tmp = (s8)c;
-        if (tmp == -1) {
-            tmp = -1;
-        } else {
-            tmp = table[(u8)tmp];
-        }
-        *p = (u8)tmp;
-        p += 1;
-    check:
-        c = (u8)*p;
-    } while ((s8)c != 0);
-    return arg0;
-}
+u8 *fn_80238ADC(u8 *arg0) { extern u16 lbl_8029E9A8[256]; u8 *table=(u8*)lbl_8029E9A8; s32 tmp; s32 c; u8 *p=arg0; goto check; do { tmp=(s8)c; if (tmp == -1) tmp=-1; else tmp=table[(u8)tmp]; *p++=(u8)tmp; check: c=*p; } while ((s8)c != 0); return arg0; }
 
 s32 Hu_IsStub(void) {
     return 0;
