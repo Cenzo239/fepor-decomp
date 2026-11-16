@@ -958,6 +958,26 @@ s32 fn_80214058(void) {
     return temp_r31;
 }
 
+#pragma peephole off
+s32 fn_80214184(s32 arg0) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    extern s32 lbl_803686E8;
+    extern s32 lbl_803686EC;
+    extern s32 lbl_803686F0;
+    unsigned long old;
+    s32 enabled;
+
+    enabled = OSDisableInterrupts();
+    old = lbl_803686E8;
+    lbl_803686E8 = old + arg0;
+    *(s32 *)lbl_803686F0 = arg0;
+    lbl_803686F0 = lbl_803686F0 + 4;
+    lbl_803686EC = lbl_803686EC - 1;
+    OSRestoreInterrupts(enabled);
+    return old;
+}
+#pragma peephole on
 s32 fn_802142B0(void) {
     return 0x4000;
 }
