@@ -3543,17 +3543,7 @@ void *fn_8016AC5C(void) {
     return &lbl_80277BC0[0x1C8 / sizeof(u16)];
 }
 
-u8 fn_8016AC6C(void) {
-    u8 fn_801E3620(M2C_UNK *);
-    extern M2C_UNK gSystemSave;
-    u8 var_r3;
-
-    var_r3 = 2;
-    if (fn_801E3620(&gSystemSave) != 0) {
-        var_r3 = 0;
-    }
-    return var_r3;
-}
+u8 fn_8016AC6C(void) { u8 fn_801E3620(void*); extern u8 gSystemSave[]; s32 result; u8 ready=fn_801E3620(gSystemSave); result=2; if(ready!=0) result=0; return (u8)result; }
 
 s32 fn_8016ACA8(void *arg1, void *arg2) {
     M2C_UNK Process_Goto(M2C_UNK);
@@ -12717,8 +12707,8 @@ void fn_8017BB94(void *arg0) {
     u8 r;
     u8 r2;
     s32 lim;
-    s32 total;
     s32 cur;
+    s32 total;
 
     count = 0;
     self = arg0;
