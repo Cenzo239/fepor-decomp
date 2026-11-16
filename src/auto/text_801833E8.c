@@ -191,26 +191,59 @@ s32 fn_8018361C(void) {
     return 4;
 }
 
-void fn_80183624(void **arg0) {
- u8 *BattleState_GetFactionInfo(void *,u8);
- s32 *Ui_GetColor(u8);
- void Prim2D_SetColorPacked(s32 *);
- extern u8 gBattleState[],lbl_803681F0;
- s32 sp8; void *table; u8 *temp; u8 saved; s32 mode;
- u8 result;
- u8 (*method)(void **);
- table=gBattleState; mode=3;
- if(lbl_803681F0==0x32) mode=0;
- temp=BattleState_GetFactionInfo(table,(u8)mode);
- if(temp) {
- saved=*temp;
- method=*(u8 (**)(void **))((u8 *)*arg0+0x54);
- result=method(arg0);
- if(saved==result) {
- mode=6; if(lbl_803681F0==0x32) mode=7;
- sp8=*Ui_GetColor((u8)mode); Prim2D_SetColorPacked(&sp8);
- }
- }
+void fn_80183624(void *arg0) {
+#pragma cplusplus on
+    u8 *BattleState_GetFactionInfo(void *, u8);
+    s32 *Ui_GetColor(u8);
+    void Prim2D_SetColorPacked(s32 *);
+    extern u8 gBattleState[];
+    extern u8 lbl_803681F0;
+    struct Obj {
+        virtual void v00() = 0;
+        virtual void v01() = 0;
+        virtual void v02() = 0;
+        virtual void v03() = 0;
+        virtual void v04() = 0;
+        virtual void v05() = 0;
+        virtual void v06() = 0;
+        virtual void v07() = 0;
+        virtual void v08() = 0;
+        virtual void v09() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual u8 v19() = 0;
+    };
+    s32 sp8;
+    void *table;
+    u8 *temp;
+    u8 saved;
+    s32 mode;
+
+    table = gBattleState;
+    mode = 3;
+    if (lbl_803681F0 == 0x32) {
+        mode = 0;
+    }
+    temp = BattleState_GetFactionInfo(table, (u8)mode);
+    if (temp != NULL) {
+        saved = *temp;
+        if (saved == ((Obj *)arg0)->v19()) {
+            mode = 6;
+            if (lbl_803681F0 == 0x32) {
+                mode = 7;
+            }
+            sp8 = *Ui_GetColor((u8)mode);
+            Prim2D_SetColorPacked(&sp8);
+        }
+    }
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on
