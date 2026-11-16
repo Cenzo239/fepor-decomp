@@ -556,7 +556,32 @@ s32 fn_80029E4C(s32 arg0, void *arg1) {
 }
 
 void fn_8002A4F4(struct Unit* unit) {
-    // Empty stub to satisfy compilation
+#pragma cplusplus on
+    void fn_8001EDA0(void *);
+    void fn_8002F728(void *);
+    extern u8 lbl_80284DB0[];
+    extern u8 lbl_80284E20[];
+    extern u8 gTargetList[];
+    extern s32 gBattleMap[];
+    struct Visitor { virtual void v0(s8,s8)=0; virtual void visit(s8,s8)=0; };
+    struct { void *vtbl; u8 flag; } obj;
+    s8 y;
+    register s8 x;
+    obj.vtbl=lbl_80284E20;
+    obj.flag=0;
+    obj.vtbl=lbl_80284DB0;
+    obj.flag=1;
+    fn_8001EDA0(&obj.flag);
+    fn_8002F728(gTargetList);
+    if(obj.flag&3) {
+        y=*((s8*)unit+0x19f);
+        x=*((s8*)unit+0x19e);
+        if(y-1>=0) ((Visitor*)&obj)->visit(x,y-1);
+        if(x+1<gBattleMap[0]) ((Visitor*)&obj)->visit(x+1,y);
+        if(y+1<gBattleMap[1]) ((Visitor*)&obj)->visit(x,y+1);
+        if(x-1>=0) ((Visitor*)&obj)->visit(x-1,y);
+    }
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on
@@ -2656,6 +2681,53 @@ void fn_8002E880(void) {
     if (gBattleState[0x11] == 0) {
         fn_8010FBD4(gMapObjEventList);
     }
+}
+
+void fn_8002E93C(void) {
+    void UnitList_GainSupportPoints(void *);
+    void fn_8014D678(void *);
+    void Allegiance_SetMask(s8, s8, s8, s8, s8, s8, s8, s8, void *);
+    void Status_Set(void *, s32);
+    void fn_800163F8(void);
+    extern u8 gBattleState[];
+    extern u8 gUnitLists[];
+    extern u8 gUnits[];
+    u8 allegMask[8];
+    u8 *unit;
+    s32 i;
+    void *next;
+    void *p;
+
+    if (gBattleState[0x10] != 0x1D) {
+        if (gBattleState[0x10] != 0x12 || (s32)gBattleState[0x54] >= 8 || (s32)gBattleState[0x54] < 5) {
+            UnitList_GainSupportPoints(gUnitLists);
+        }
+    }
+    fn_8014D678(gBattleState);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 1, 1, allegMask);
+    for (i = 1; i <= 0x9F; i++) {
+        if ((u8)i != 0) {
+            unit = gUnits + ((u8)i - 1) * 0x280;
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0
+            && allegMask[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
+            *(u32 *)(unit + 0x1A0) &= ~0x4400;
+            Status_Set(unit + 0x1BC, 0x5C);
+        }
+    }
+    p = *(void **)gUnitLists;
+    goto test;
+body:
+    next = *(void **)((u8 *)p + 0x184);
+    *(u32 *)((u8 *)p + 0x1A0) |= 0x400;
+    p = next;
+test:
+    if (p != NULL) {
+        goto body;
+    }
+    fn_800163F8();
 }
 
 s32 fn_8002EA74(void) {
