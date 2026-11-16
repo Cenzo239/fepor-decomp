@@ -1087,9 +1087,19 @@ void fn_80215C60(void) {
 }
 
 void fn_80215D2C(void) {
-    char* text = "%s\n";
-    OSRegisterVersion(0x43);
-    OSReport(text, "ResetSW");
+ extern s32 lbl_8036871C, lbl_80366FD0, lbl_80368700, lbl_803686F8, lbl_80368718;
+ extern s32 lbl_80368708, lbl_8036870C, lbl_80368710, lbl_80368714;
+ if (lbl_8036871C == 1) return;
+ OSRegisterVersion(lbl_80366FD0);
+ lbl_80368700 = 0;
+ lbl_803686F8 = 0;
+ lbl_80368718 = 0x1000;
+ ((void (*)(void (*)(void)))fn_80214014)(fn_80215C60);
+ lbl_80368708 = 0;
+ lbl_8036870C = 0;
+ lbl_80368710 = 0;
+ lbl_80368714 = 0;
+ lbl_8036871C = 1;
 }
 
 void ARQPostRequest(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
@@ -1146,8 +1156,16 @@ void fn_80215F78(u32 arg0)
     __PADRegs[1] = (u16)arg0;
 }
 #pragma global_optimizer on
-void fn_80216050(void) {
-    OSDisableInterrupts();
+void *fn_80216050(void *arg0) {
+extern void *lbl_80368738;
+void fn_80216860(void *); void fn_802166D4(void *); void OSRestoreInterrupts(s32); s32 OSDisableInterrupts(void);
+s32 enabled=OSDisableInterrupts();
+fn_80216860(arg0);
+*(s32 *)arg0=0;
+*((s32 *)arg0+2)=1;
+OSRestoreInterrupts(enabled);
+if(arg0==lbl_80368738) fn_802166D4(arg0);
+return arg0;
 }
 
 void fn_802160C0(u8 level, char *fmt, ...) {
