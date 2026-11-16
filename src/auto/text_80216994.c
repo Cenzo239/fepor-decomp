@@ -2666,17 +2666,18 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
     return __CARDPutControlBlock(handle, result);
 }
 
-void fn_8021C02C(s32 *arg0) {
+s32 fn_8021C02C(s32 *arg0) {
     s32 fn_80217B18(s32, s32 *);
-    void fn_80217BD0(s32, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     s32 spC;
+    s32 result;
 
-    if (fn_80217B18(*arg0, &spC) < 0) {
-        *arg0 = -1;
-        fn_80217BD0(spC, 0);
-        return;
+    result = fn_80217B18(*arg0, &spC);
+    if (result < 0) {
+        return result;
     }
-    return;
+    *arg0 = -1;
+    return __CARDPutControlBlock((void *)spC, 0);
 }
 
 s32 fn_8021C080(void) {
