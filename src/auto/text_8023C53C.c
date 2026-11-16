@@ -9916,57 +9916,7 @@ s32 fn_8025807C(s32 arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void fn_80258100(void)
-{
-    extern u8 gSoundStreamCtrl[];
-    u8 *base;
-    s32 n;
-    s32 v;
-
-    base = gSoundStreamCtrl;
-    n = 0;
-    base[0] = (u8)n;
-    n = 2;
-    v = 0xFF;
-    do {
-        base[0xB08] = (u8)v;
-        base[0xB09] = (u8)v;
-        base[0xB0A] = (u8)v;
-        base[0xB0B] = (u8)v;
-        base[0xB0C] = (u8)v;
-        base[0xB0D] = (u8)v;
-        base[0xB0E] = (u8)v;
-        base[0xB0F] = (u8)v;
-        base[0xB10] = (u8)v;
-        base[0xB11] = (u8)v;
-        base[0xB12] = (u8)v;
-        base[0xB13] = (u8)v;
-        base[0xB14] = (u8)v;
-        base[0xB15] = (u8)v;
-        base[0xB16] = (u8)v;
-        base[0xB17] = (u8)v;
-        base[0xB18] = (u8)v;
-        base[0xB19] = (u8)v;
-        base[0xB1A] = (u8)v;
-        base[0xB1B] = (u8)v;
-        base[0xB1C] = (u8)v;
-        base[0xB1D] = (u8)v;
-        base[0xB1E] = (u8)v;
-        base[0xB1F] = (u8)v;
-        base[0xB20] = (u8)v;
-        base[0xB21] = (u8)v;
-        base[0xB22] = (u8)v;
-        base[0xB23] = (u8)v;
-        base[0xB24] = (u8)v;
-        base[0xB25] = (u8)v;
-        base[0xB26] = (u8)v;
-        base[0xB27] = (u8)v;
-        base += 0x20;
-    } while (--n);
-    base = gSoundStreamCtrl;
-    *(u16 *)(base + 0xB48) = 0;
-    *(u32 *)(base + 0xB4C) = 0;
-}
+void fn_80258100(void) { extern u8 gSoundStreamCtrl[]; u32 i; gSoundStreamCtrl[0]=0; for(i=0;i<64;i++) gSoundStreamCtrl[0xB08+i]=0xFF; *(u16*)(gSoundStreamCtrl+0xB48)=0; *(u32*)(gSoundStreamCtrl+0xB4C)=0; }
 
 #pragma global_optimizer off
 #pragma inline_depth(0)
@@ -12409,38 +12359,18 @@ void fn_8025ED88(f32 *m, f32 *v, f32 *out)
 #pragma fp_contract off
 void fn_8025EE34(f32 *arg0)
 {
-    extern f32 lbl_8036C330;
-    extern f64 lbl_8036C338;
-    extern f64 lbl_8036C340;
-    f32 sp8;
-    f32 *ps;
-    f32 x;
-    f32 y;
-    f32 z;
-    f32 len2;
-    f64 est;
-    f64 half;
-    f64 three;
-
-    ps = &sp8;
-    x = arg0[0];
-    y = arg0[1];
-    len2 = x * x;
-    z = arg0[2];
-    len2 = len2 + y * y;
-    len2 = len2 + z * z;
-    if (len2 > lbl_8036C330) {
-        est = __frsqrte(len2);
-        half = lbl_8036C338;
-        three = lbl_8036C340;
-        est = (half * est) * (three - (len2 * (est * est)));
-        est = (half * est) * (three - (len2 * (est * est)));
-        est = (half * est) * (three - (len2 * (est * est)));
-        *ps = (f32)(len2 * est);
-        arg0[0] = arg0[0] / *ps;
-        arg0[1] = arg0[1] / *ps;
-        arg0[2] = arg0[2] / *ps;
-    }
+ extern f32 lbl_8036C330; extern f64 lbl_8036C338; extern f64 lbl_8036C340;
+ f32 sp8; f32 *ps=&sp8;
+ f32 len2=arg0[2]*arg0[2]+(arg0[0]*arg0[0]+arg0[1]*arg0[1]);
+ if(len2>lbl_8036C330){
+ f64 est=__frsqrte(len2); f64 half=lbl_8036C338; f64 three=lbl_8036C340;
+ est=(half*est)*(three-len2*(est*est));
+ est=(half*est)*(three-len2*(est*est));
+ est=(half*est)*(three-len2*(est*est));
+ *ps=(f32)(len2*est);
+ len2=*ps;
+ arg0[0]/=len2; arg0[1]/=len2; arg0[2]/=len2;
+ }
 }
 #pragma fp_contract reset
 void fn_8025EEE8(s32 arg0, s32 arg1, s32 arg2) {
@@ -16628,30 +16558,21 @@ return fn_80266CFC(arg0,1,3,(void*)fn_80265430);
 
 #pragma scheduling off
 void GBAGetStatus(s32 chan, s32 dest) {
-    extern u8 lbl_803669A0[];
-    extern s32 fn_80266CFC(s32, s32, s32, void *);
-    extern void fn_80266B6C(s32);
-    void fn_80265430(s32);
-    void fn_80266B38(void);
-    u8 *entry;
-    s32 ret;
-    s32 chan_s;
-
-    chan_s = chan;
-    entry = lbl_803669A0 + (chan_s << 8);
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        ret = 2;
-    } else {
-        *entry = 0;
-        *(s32 *)(entry + 0x14) = dest;
-        *(void **)(entry + 0x1C) = fn_80266B38;
-        ret = fn_80266CFC(chan_s, 1, 3, fn_80265430);
-    }
-    if (ret != 0) {
-
-    } else {
-        fn_80266B6C(chan_s);
-    }
+extern u8 lbl_803669A0[];
+extern s32 fn_80266CFC(s32,s32,s32,void*);
+extern void fn_80266B6C(s32);
+void fn_80265430(s32); void fn_80266B38(void);
+u8 *entry;
+s32 ret;
+entry = lbl_803669A0 + (chan << 8);
+if (*(u32*)(entry+0x1c)) ret=2;
+else {
+*entry=0;
+*(s32*)(entry+0x14)=dest;
+*(void**)(entry+0x1c)=fn_80266B38;
+ret=fn_80266CFC(chan,1,3,fn_80265430);
+}
+switch(ret) { case 0: fn_80266B6C(chan); break; default: break; }
 }
 #pragma scheduling on
 s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
@@ -16672,30 +16593,22 @@ return result;
 #pragma global_optimizer off
 #pragma peephole off
 void fn_8026569C(s32 chan, s32 dest) {
-    extern u8 lbl_803669A0[];
-    extern s32 fn_80266CFC(s32, s32, s32, void *);
-    extern void fn_80266B6C(s32);
-    void fn_80265430(s32);
-    void fn_80266B38(void);
-    u8 *entry;
-    s32 ret;
-    s32 chan_s;
-
-    chan_s = chan;
-    entry = lbl_803669A0 + (chan_s << 8);
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        ret = 2;
-    } else {
-        *entry = 0xFF;
-        *(s32 *)(entry + 0x14) = dest;
-        *(void **)(entry + 0x1C) = fn_80266B38;
-        ret = fn_80266CFC(chan_s, 1, 3, fn_80265430);
-    }
-    if (ret != 0) {
-
-    } else {
-        fn_80266B6C(chan_s);
-    }
+extern u8 lbl_803669A0[];
+extern s32 fn_80266CFC(s32,s32,s32,void*);
+extern void fn_80266B6C(s32);
+void fn_80265430(s32);
+void fn_80266B38(void);
+s32 ret;
+s32 channel=chan;
+u8 *entry = &lbl_803669A0[(u32)channel * 256];
+if (*(u32*)(entry+0x1C)) ret=2;
+else {
+entry[0]=0xFF;
+*(s32*)(entry+0x14)=dest;
+*(void**)(entry+0x1C)=fn_80266B38;
+ret=fn_80266CFC(channel,1,3,fn_80265430);
+}
+switch(ret) { case 0: fn_80266B6C(channel); break; default: return; }
 }
 #pragma peephole on
 #pragma global_optimizer reset
@@ -16778,36 +16691,23 @@ void fn_802658B0(void)
 }
 
 #pragma scheduling off
-void fn_802659EC(s32 arg0, s32 arg1)
-{
-    extern u8 lbl_803669A0[];
-    s32 fn_80265638(s32, s32, void *);
-    void fn_80265A94(s32, s32);
-
-    u8 *entry;
-    u8 *queue;
-    s32 result;
-    void (*callback)(s32, s32);
-
-    result = arg1;
-    entry = lbl_803669A0 + (arg0 << 8);
-    queue = entry + 0x40;
-
-    if (result == 0) {
-        result = fn_80265638(arg0, *(s32 *)(queue + 0x10), fn_80265A94);
-    }
-
-    if (result != 0) {
-        *(u32 *)(queue + 0x2C) = 0;
-        *(u32 *)(queue + 0x28) = 0;
-        callback = *(void (**)(s32, s32))(queue + 0x14);
-        if (callback != 0) {
-            *(u32 *)(queue + 0x14) = 0;
-            callback(arg0, result);
-        }
-    }
-
-    *(s32 *)(entry + 0x20) = result;
+void fn_802659EC(s32 arg0,s32 arg1) {
+extern u8 lbl_803669A0[];
+s32 fn_80265638(s32,s32,void*);
+void fn_80265A94(s32,s32);
+u8 *entry;
+u8 *queue;
+s32 result=arg1;
+void (*callback)(s32,s32);
+entry=lbl_803669A0+(arg0<<8);
+queue=entry+0x40;
+if(result==0) {
+if((result=fn_80265638(arg0,*(s32*)(queue+0x10),fn_80265A94))==0) goto done;
+}
+*(u32*)(queue+0x28)=*(u32*)(queue+0x2C)=0;
+callback=*(void(**)(s32,s32))(queue+0x14);
+if(callback != NULL) {*(u32*)(queue+0x14)=0; callback(arg0,result);}
+done: *(s32*)(entry+0x20)=result;
 }
 #pragma scheduling on
 void fn_80265A94(s32 arg0, s32 arg1)
