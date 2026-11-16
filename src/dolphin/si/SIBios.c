@@ -602,52 +602,21 @@ BOOL SIRegisterPollingHandler(void *handler) {
     return FALSE;
 }
 
-s32 fn_8023B3D4(u32 arg0) {
-    M2C_UNK OSRestoreInterrupts(s32);
-    M2C_UNK SIEnablePollingInterrupt(M2C_UNK);
-    extern u32 PollingHandler[4];
-    s32 temp_r31;
-    s32 var_ctr;
-    s32 var_r4;
-    s32 var_r4_2;
-    u32 *temp_r3;
-    u32 *var_r3;
-
-    var_ctr = 4;
-    temp_r31 = OSDisableInterrupts();
-    var_r3 = PollingHandler;
-    var_r4 = 0;
-loop_1:
-    if ((u32) *var_r3 == arg0) {
-        PollingHandler[var_r4] = 0U;
-        var_r4_2 = 0;
-        if ((u32) M2C_FIELD(PollingHandler, u32 *, 0) == 0U) {
-            temp_r3 = PollingHandler + 4;
-            var_r4_2 = 1;
-            if ((u32) M2C_FIELD(PollingHandler, u32 *, 4) == 0U) {
-                var_r4_2 = 2;
-                if ((u32) M2C_FIELD(temp_r3, u32 *, 4) == 0U) {
-                    var_r4_2 = 3;
-                    if ((u32) M2C_FIELD((temp_r3 + 4), u32 *, 4) == 0U) {
-                        var_r4_2 = 4;
-                    }
-                }
-            }
-        }
-        if (var_r4_2 == 4) {
-            SIEnablePollingInterrupt(0);
-        }
-        OSRestoreInterrupts(temp_r31);
-        return 1;
-    }
-    var_r3 += 4;
-    var_r4 += 1;
-    var_ctr -= 1;
-    if (var_ctr == 0) {
-        OSRestoreInterrupts(temp_r31);
-        return 0;
-    }
-    goto loop_1;
+s32 fn_8023B3D4(void *handler) {
+ BOOL enabled;
+ int i, j;
+ enabled=OSDisableInterrupts();
+ for(i=0;i<4;i++) {
+ if((void *)PollingHandler[i]==handler) {
+ PollingHandler[i]=0;
+ for(j=0;j<4;j++) { if(PollingHandler[j]!=0) break; }
+ if(j==4) SIEnablePollingInterrupt(0);
+ OSRestoreInterrupts(enabled);
+ return 1;
+ }
+ }
+ OSRestoreInterrupts(enabled);
+ return 0;
 }
 
 void SIInit(void) {
@@ -821,9 +790,20 @@ u32 fn_8023B930(u32 type) {
     return type;
 }
 
-void fn_8023B99C(void)
-{
-    D_80368AD0 = 0;
+s32 fn_8023B99C(s32 chan) {
+ struct SIState { u8 pad[0x1B0]; u32 ready[4]; u32 response[4][2]; };
+ struct SIState *packet=(struct SIState *)Packet_8033E248;
+ u32 *si;
+ u32 offset;
+ if (fn_8023B788(chan) & 0x20) {
+ si=(u32 *)&__SIRegs[chan*3];
+ offset=chan<<3;
+ packet->response[chan][0]=si[1];
+ packet->response[chan][1]=si[2];
+ packet->ready[chan]=1;
+ return 1;
+ }
+ return 0;
 }
 
 s32 fn_8023BA70(s32 chan, void *arg1)
@@ -1021,6 +1001,29 @@ u32 fn_8023C410(s32 chan) {
     u32 SIGetType(s32);
     u32 fn_8023C2C4(u32);
     return fn_8023C2C4(SIGetType(chan));
+}
+
+void SISetSamplingRate(u32 rate) {
+ extern u8 XYNTSC_8029F080[];
+ extern u32 SamplingRate_80368828;
+ s32 VIGetTvFormat(void);
+ void OSReport(const char *, ...);
+ BOOL enabled;
+ u8 *table;
+ u8 *base;
+ u32 scale;
+ base=XYNTSC_8029F080;
+ if(rate>11) rate=11;
+ enabled=OSDisableInterrupts();
+ SamplingRate_80368828=rate;
+ switch(VIGetTvFormat()) {
+ case 0: case 2: case 5: table=base; break;
+ case 1: table=base+0x30; break;
+ default: OSReport((char *)base+0x60); rate=0; table=base; break;
+ }
+ if(*(volatile u16 *)0xCC00206C & 1) scale=2; else scale=1;
+ SISetXY(scale * *(u16 *)(table+rate*4), table[rate*4+2]);
+ OSRestoreInterrupts(enabled);
 }
 
 void fn_8023C518(void) {
