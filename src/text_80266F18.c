@@ -357,26 +357,19 @@ void fn_80267000(void) {
 }
 
 s32 fn_80267264(s32 arg0, s32 arg1) {
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-    void fn_8026765C(s32, s32, s32);
-    s32 arg0_local;
-    s32 arg1_local;
-    u32 enabled;
-    s32 base;
+    s32 temp_r31;
+    s32 var_r3;
 
-    arg1_local = arg1;
-    arg0_local = arg0;
-    enabled = OSDisableInterrupts();
+    temp_r31 = OSDisableInterrupts();
     if (lbl_80368B38 & 0x10000) {
-        base = 0x1000;
+        var_r3 = 0x1000;
     } else {
-        base = 0;
+        var_r3 = 0;
     }
-    fn_8026765C(base + 0x20000 - 0x2000, arg0_local, (arg1_local + 3) & ~3);
+    fn_8026765C(var_r3 + 0x1E000, arg0, (arg1 + 3) & 0xFFFFFFFC);
     lbl_80368B3C = 0;
     lbl_80368B44 = 0;
-    OSRestoreInterrupts(enabled);
+    OSRestoreInterrupts(temp_r31);
     return 0;
 }
 
