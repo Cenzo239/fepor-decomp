@@ -182,126 +182,34 @@ extern u16* lbl_80368790;
 extern u16* __peReg;
 extern u16 *__GXData;
 
-s32 GXGetTexBufferSize(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
+u32 GXGetTexBufferSize(u16 width, u16 height, u32 fmt, u8 mipmap, u8 maxlod)
 {
-    u16 var_r3;
-    u16 var_r4;
-    u16 var_r5;
-    s32 var_r6;
-    s32 var_r7;
-    s32 var_r8;
-    s32 var_r9;
-    u32 var_r10;
-    s32 var_r11;
-    s32 var_r12;
-    s32 var_r31;
-
-    if (arg0 >= 0x3C)
-        return 0x3;
-
-    var_r3 = arg0;
-    var_r4 = arg1;
-    var_r5 = arg2;
-    var_r6 = arg3;
-    var_r7 = 0;
-    var_r8 = 0;
-    var_r9 = 0;
-    var_r10 = 0;
-    var_r11 = 0;
-    var_r12 = 0;
-    var_r31 = 0;
-
-    switch (arg0)
-    {
-    case 0:
-        return 0x3;
-    case 1:
-        return 0x2;
-    case 2:
-        return 0x2;
-    case 0x6:
-        arg0 = 0x40;
-        goto case_0x16;
-    case 0x16:
-    case_0x16:
-        arg0 = 0x20;
-        var_r31 = 0;
-        break;
-    default:
-        return 0x1;
+    s32 shiftW, shiftH;
+    u32 size, tile, i;
+    s32 tilesW, tilesH;
+    switch(fmt) {
+    case 0: case 8: case 14: case 0x20: case 0x30: shiftW=3; shiftH=3; break;
+    case 1: case 2: case 9: case 0x11: case 0x22: case 0x25: case 0x26: case 0x27: case 0x28: case 0x39: case 0x3A: shiftW=3; shiftH=2; break;
+    case 3: case 4: case 5: case 6: case 10: case 0x13: case 0x16: case 0x23: case 0x29: case 0x2A: case 0x3C: shiftW=2; shiftH=2; break;
+    default: shiftH=0; shiftW=0; break;
     }
-
-    if ((var_r6 & 0xFF) == 0x1)
-    {
-        var_r9 = (var_r4 & 0xFF);
-        var_r8 = 0x1;
-        if (var_r8 != 0)
-        {
-            var_r7 = var_r8 * arg2;
-            var_r6 = var_r8 * arg3;
-            var_r10 = var_r6 - 1;
-            var_r7 = var_r7 - 1;
-            var_r31 = 0;
-
-            if (var_r9 > 0)
-            {
-                do
-                {
-                    var_r11 = var_r3 & 0xFFFF;
-                    var_r12 = var_r4 & 0xFFFF;
-
-                    var_r11 = (var_r11 + var_r10) & 0xFFFF;
-                    var_r12 = (var_r12 + var_r7) & 0xFFFF;
-
-                    var_r6 = (var_r12 >> arg3) & 0xFFFF;
-                    var_r7 = (var_r11 >> arg2) & 0xFFFF;
-
-                    var_r6 = var_r7 * var_r6;
-                    var_r6 = arg0 * var_r6;
-
-                    var_r31 += var_r6;
-                } while (--var_r9 != 0);
-            }
-
-            if ((var_r4 & 0xFF) == 0x1)
-                goto end;
-
-            var_r3 = (var_r3 & 0xFFFF) >> 0x10;
-            var_r5 = (var_r4 & 0xFFFF) >> 0x10;
-
-            if (var_r3 > 0)
-            {
-                var_r6 = var_r3 >> 0x1;
-            }
-            else
-            {
-                var_r6 = 0x1;
-            }
-
-            var_r3 = (var_r4 & 0xFFFF) >> 0x10;
-
-            if ((var_r3 & 0xFFFF) > 0)
-            {
-                var_r4 = var_r4 >> 0x1;
-            }
-            else
-            {
-                var_r4 = 0x1;
-            }
-
-            var_r3 = (var_r3 << arg2) - 1;
-            var_r7 = (var_r4 << arg3) - 1;
-
-            var_r6 = (var_r3 + (var_r4 & 0xFFFF)) >> arg3;
-            var_r6 = (var_r4 >> arg2) * var_r6;
-            var_r6 = arg0 * var_r6;
-
-            var_r31 = var_r6;
+    if(fmt==6 || fmt==0x16) tile=64; else tile=32;
+    if(mipmap==1) {
+        size=0;
+        for(i=0;i<maxlod;i++) {
+            tilesW=(width+(1<<shiftW)-1)>>shiftW;
+            tilesH=(height+(1<<shiftH)-1)>>shiftH;
+            size+=tile*(tilesW*tilesH);
+            if(width==1 && height==1) break;
+            width=width>1?width>>1:1;
+            height=height>1?height>>1:1;
         }
+    } else {
+        tilesW=(width+(1<<shiftW)-1)>>shiftW;
+        tilesH=(height+(1<<shiftH)-1)>>shiftH;
+        size=tile*(tilesW*tilesH);
     }
-
-end:
-    return var_r31;
+    return size;
 }
 
 void fn_8022257C(s32 fmt, u16 width, u16 height, u32 *outW, u32 *outH, u32 *outTile) {
