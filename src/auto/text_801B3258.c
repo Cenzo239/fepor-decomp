@@ -11905,12 +11905,11 @@ void fn_801D041C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) | 4);
 }
 
-void fn_801D0444(u8 *arg0, s32 arg1) {
+void fn_801D0444(s16 *arg0, s32 arg1) {
     if (arg1 >= 3) {
         return;
     }
-    arg0 += arg1 * 2;
-    *(s16 *)(arg0 + 0xe) = 0;
+    arg0[arg1 + 7] = 0;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
