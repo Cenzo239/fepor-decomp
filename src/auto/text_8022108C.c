@@ -828,15 +828,37 @@ void GXSetChanMatColor(s32 arg0, void *arg1) {
 
 #pragma scheduling off
 void GXSetCullMode(u32 arg0) {
-u32 *gxData = (u32 *)__GXData;
+u32 *gxData = (u32*)__GXData;
 u32 count = (u8)arg0;
-u8 command = 0x10;
-u32 value = __rlwimi(gxData[0x204/4], count, 4,25,27);
-u8 *fifo = (u8 *)0xCC008000;
-gxData[0x204/4] = value;
-*(volatile u8 *)fifo = command;
-*(volatile u32 *)fifo = 0x1009;
-*(volatile u32 *)fifo = count;
+gxData[0x204/4] = __rlwimi(gxData[0x204/4],count,4,25,27);
+*(volatile u8*)0xCC008000 = 0x10;
+*(volatile u32*)0xCC008000 = 0x1009;
+*(volatile u32*)0xCC008000 = count;
 gxData[0x5AC/4] |= 4;
 }
+
+void GXSetBlendMode(s32 arg0, u8 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+#pragma scheduling on
+ u32 value=0;
+ u32 channel=arg0&3;
+ value=__rlwimi(value,arg1,1,30,30);
+ value=__rlwimi(value,arg3,0,31,31);
+ value=__rlwimi(value,arg2,6,25,25);
+ if(arg6==0) arg5=0;
+ value=__rlwimi(value,arg5,7,23,24);
+ value=__rlwimi(value,arg6!=2,9,22,22);
+ value=__rlwimi(value,arg6!=0,10,21,21);
+ value=__rlwimi(value,arg4,2,26,29);
+ value=__rlwimi(value,arg4,7,17,20);
+ GXWGFifo.u8=0x10;
+ GXWGFifo.u32=channel+0x100E;
+ GXWGFifo.u32=value;
+ if(arg0==4) {
+ GXWGFifo.u8=0x10; GXWGFifo.u32=0x1010; GXWGFifo.u32=value;
+ } else if(arg0==5) {
+ GXWGFifo.u8=0x10; GXWGFifo.u32=0x1011; GXWGFifo.u32=value;
+ }
+ __GXData[1]=1;
+}
+
 #pragma scheduling reset
