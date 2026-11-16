@@ -5660,6 +5660,64 @@ void fn_8011D87C(void *arg0)
     Process_Goto(obj, 1);
 }
 
+void fn_8011D908(void *msg, void *parent) {
+    s32 DebugPrint(const char *, ...);
+    void *Msg_Expand(void *);
+    void Str_CopyPad(void *, const void *, s32);
+    void UiPanel_ClearFlags(u16 *);
+    void *Process_CreateEx(void *, void *);
+    void fn_8012205C(void *);
+    void UiPanel_PollSkip(u16 *);
+    void UiPanel_Finish(void *);
+    void Process_Unlink(void *);
+    void fn_80013864(void);
+    extern u16 TalkUi_str[];
+    extern u16 gTalkUiLastMsg[];
+    extern u16 gUiPanelFlags;
+    extern u16 gUiPanelProc[];
+    extern u8 lbl_8032BDE8[];
+    extern s32 gUiInputFlags;
+    void *expanded;
+    u8 *panel;
+
+    DebugPrint((char *)TalkUi_str + 0x52, msg);
+    expanded = Msg_Expand(msg);
+    Str_CopyPad(gTalkUiLastMsg, msg, 0x1E);
+    UiPanel_ClearFlags(&gUiPanelFlags);
+    panel = (u8 *)Process_CreateEx(gUiPanelProc, parent);
+    *(s32 *)(panel + 0x34) = 0;
+    *(s32 *)(panel + 0x38) = 0;
+    *(s32 *)(panel + 0x3C) = 0;
+    *(s32 *)(panel + 0x40) = 0;
+    *(s32 *)(panel + 0x48) = 0;
+    *(s32 *)(panel + 0x4C) = 0;
+    *(s32 *)(panel + 0x50) = 0;
+    *(s32 *)(panel + 0x54) = 0;
+    *(s32 *)(panel + 0x58) = 0;
+    *(s32 *)(panel + 0x44) = 0;
+    *(s8 *)(panel + 0x5E) = -1;
+    *(s8 *)(panel + 0x65) = -1;
+    *(void **)(panel + 0x30) = expanded;
+    panel[0x5F] = 1;
+    *(s16 *)(panel + 0x68) = 0x10B;
+    panel[0x63] = 0;
+    *(s16 *)(panel + 0x5C) = 0x82;
+    panel[0x61] = 0;
+    panel[0x60] = 0;
+    panel[0x62] = 1;
+    fn_8012205C(lbl_8032BDE8);
+    panel[0x66] = 1;
+    UiPanel_PollSkip(&gUiPanelFlags);
+    if (gUiInputFlags & 1) {
+        UiPanel_Finish(panel);
+        if (!(gUiPanelFlags & 0x10)) {
+            Process_Unlink(panel);
+        }
+    } else {
+        fn_80013864();
+    }
+}
+
 void UiPanel_Create(void *owner, void *parent) {
     void UiPanel_ClearFlags(void *);
     void *Process_CreateEx(void *, void *);
