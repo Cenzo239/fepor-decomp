@@ -72,10 +72,34 @@ void fn_800919D8(void) {
 }
 
 void fn_80091A1C(void *arg0) {
-    u32 **temp_r30 = (u32**)((u8*)arg0 + 0x8);
-    u16 temp_r0 = *(u16*)((u8*)*temp_r30 + 0x2C);
-    *(void**)arg0 = *temp_r30;
-    *(u8*)((u8*)arg0 + 0x9) = (u8)(temp_r0 & 0xFF);
+    extern s32 gProcessQueueCount;
+    extern u8 *gProcessQueue[];
+    extern u8 E_CmdPlate_script[];
+    extern f32 lbl_803697A4, gZeroF, lbl_803697A8, lbl_803697AC;
+    u8 *Process_Create(void *, s32);
+    s32 Str_Cmp(void *, void *);
+    char *strcpy(char *, const char *);
+    u8 *p;
+    s32 index;
+    f32 a, b, c;
+    if (gProcessQueueCount > 0 && Str_Cmp(gProcessQueue[gProcessQueueCount - 1] + 0x58, arg0) == 0) return;
+    p = Process_Create(E_CmdPlate_script, 4);
+    gProcessQueue[gProcessQueueCount++] = p;
+    index = gProcessQueueCount - 1;
+    strcpy((char *)p + 0x58, arg0);
+    *(f32 *)(p + 0x3C) = lbl_803697A4;
+    a = gZeroF;
+    b = lbl_803697A8;
+    c = lbl_803697AC;
+    *(f32 *)(p + 0x40) = index * 31 + 24;
+    *(f32 *)(p + 0x44) = a;
+    *(f32 *)(p + 0x48) = b;
+    *(f32 *)(p + 0x4C) = index * 31 + 24;
+    *(f32 *)(p + 0x50) = c;
+    p[0x54] = 0;
+    p[0x55] = 8;
+    p[0x56] = 6;
+    p[0x6F] = index;
 }
 
 void fn_80091B38(void *arg0)
@@ -113,55 +137,39 @@ void fn_80091B38(void *arg0)
   *((u8 *) (((u8 *) arg0) + 0x56)) = (u8) three;
 }
 
+f32 Math_Ease(s32, f32, f32, f32, f32);
+s32 fn_800AA188(void);
+void fn_8008B2B0(s32, s32, s32, s32, void *);
+void Prim2D_ResetState(void);
 void fn_80091B84(void *arg0) {
-    u8 r3, r4;
-    
-    r3 = ((u8*)arg0)[0x54];
-    r4 = ((u8*)arg0)[0x55];
-    
-    if (r3 <= r4) {
-        f32 f0, f1, f2, f3, f4;
-        
-        // First call
-        f0 = *(f32*)((u8*)arg0 + 0x3C);
-        f1 = *(f32*)((u8*)arg0 + 0x48);
-        f2 = (f32)r3;
-        f3 = (f32)r4;
-        f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)Math_Ease(0U, f0, f1, f2, f3, f4);
-        
-        *(f32*)((u8*)arg0 + 0x30) = *(f32*)((u8*)arg0 + 0x30);
-        
-        // Second call
-        f0 = *(f32*)((u8*)arg0 + 0x40);
-        f1 = *(f32*)((u8*)arg0 + 0x4C);
-        f2 = (f32)r3;
-        f3 = (f32)r4;
-        f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)Math_Ease(0U, f0, f1, f2, f3, f4);
-        
-        *(f32*)((u8*)arg0 + 0x34) = *(f32*)((u8*)arg0 + 0x34);
-        
-        // Third call
-        r4 = ((u8*)arg0)[0x54];
-        f1 = *(f32*)((u8*)arg0 + 0x44);
-        f2 = (f32)r4;
-        f3 = *(f32*)((u8*)arg0 + 0x50);
-        f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)Math_Ease(0U, f1, f2, f3, f4, 0);
-        
-        *(f32*)((u8*)arg0 + 0x38) = *(f32*)((u8*)arg0 + 0x38);
-        
-        ((u8*)arg0)[0x54] = r4 + 1;
+    if (((u8 *)arg0)[0x54] <= ((u8 *)arg0)[0x55]) {
+        *(f32 *)((u8 *)arg0 + 0x30) = Math_Ease(
+            ((u8 *)arg0)[0x56],
+            *(f32 *)((u8 *)arg0 + 0x3C),
+            *(f32 *)((u8 *)arg0 + 0x48),
+            (f32)((u8 *)arg0)[0x54],
+            (f32)((u8 *)arg0)[0x55]);
+        *(f32 *)((u8 *)arg0 + 0x34) = Math_Ease(
+            ((u8 *)arg0)[0x56],
+            *(f32 *)((u8 *)arg0 + 0x40),
+            *(f32 *)((u8 *)arg0 + 0x4C),
+            (f32)((u8 *)arg0)[0x54],
+            (f32)((u8 *)arg0)[0x55]);
+        *(f32 *)((u8 *)arg0 + 0x38) = Math_Ease(
+            0,
+            *(f32 *)((u8 *)arg0 + 0x44),
+            *(f32 *)((u8 *)arg0 + 0x50),
+            (f32)((u8 *)arg0)[0x54],
+            (f32)((u8 *)arg0)[0x55]);
+        ((u8 *)arg0)[0x54]++;
     }
-    
-    if (fn_800AA188() != 0) {
-        f32 f0, f1, f2;
-        f0 = *(f32*)((u8*)arg0 + 0x30);
-        f1 = *(f32*)((u8*)arg0 + 0x34);
-        f2 = *(f32*)((u8*)arg0 + 0x38);
-        
-        arg0 = (void*)fn_8008B2B0((s32)f0, (s32)f1, (s32)f2, ((u8*)arg0)[0x6F], (u8*)arg0 + 0x58);
+    if ((u8)fn_800AA188()) {
+        fn_8008B2B0(
+            (s32)*(f32 *)((u8 *)arg0 + 0x30),
+            (s32)*(f32 *)((u8 *)arg0 + 0x34),
+            (s32)*(f32 *)((u8 *)arg0 + 0x38),
+            ((u8 *)arg0)[0x6F],
+            (u8 *)arg0 + 0x58);
         Prim2D_ResetState();
     }
 }
@@ -280,62 +288,29 @@ s32 Item_TryCallUfx(s32 unit, s32 item) {
     return Item_CallUfx(unit, item);
 }
 
-void fn_8009204C(void *arg0, void *arg1) {
-    s32 temp_r3;
-    s32 temp_r5;
-    s32 temp_r3_2;
-    s32 temp_r4;
-    s32 temp_r5_2;
-    s32 temp_r5_3;
-    s32 temp_r0;
-    s32 temp_r3_3;
-    s32 temp_r0_2;
-    s32 temp_r3_4;
-    s32 temp_r0_3;
-    s32 temp_r5_4;
-    s32 temp_r3_5;
-    s32 temp_r0_4;
-    u8 *temp_r31;
-    void *temp_r30;
-    void *temp_r29;
-    void *temp_r28;
-    
-    if (arg0 == NULL) {
-        return;
+s32 fn_8009204C(void *arg0, void *arg1) {
+    u8 Status_Test(void *, s32);
+    u8 fn_800940B0(void *, void *);
+    s32 Item_CallUfx(void *, void *);
+    u8 ok = 0;
+    s32 result;
+    u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+    if (!(flags & 4)) {
+        ok = 0;
+    } else {
+        if (flags & 0x200) { if (Status_Test((u8 *)arg0 + 0x1BC, 9)) ok = 1; else ok = 0; }
+        else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) ok = 1;
+        else if (flags & 2) ok = 0;
+        else if (flags & 4) ok = 0;
+        else if (flags & 0x40) ok = 1;
+        else ok = 1;
+        if (!ok) ok = 0;
+        else if (!fn_800940B0(arg0, arg1)) ok = 0;
+        else ok = 1;
     }
-    arg0 = *(void**)((u8*)arg0 + 0x8);
-    if (arg0 == NULL) {
-        return;
-    }
-    temp_r31 = (u8*)arg0;
-    temp_r30 = arg1;
-    if ((*(u16 *)((u8*)arg1 + 0x10) & 0x4000) != 0) {
-        *(u32*)((u8*)temp_r31 + 0x5C) = 1;
-        *(u8*)((u8*)temp_r31 + 0x9) = 1;
-        if (*(u32*)((u8*)arg1 + 0x30)) {
-            fn_8004B984(arg1);
-        }
-    }
-    *(s32*)((u8*)temp_r31 + 0x58) = *(s32*)((u8*)arg1 + 0x30);
-    *(f32*)((u8*)temp_r31 + 0x50) = *(f32*)((u8*)arg1 + 0x24);
-    *(f32*)((u8*)temp_r31 + 0x54) = *(f32*)((u8*)arg1 + 0x28);
-    temp_r3 = *(s32*)((u8*)arg1 + 0x30);
-    if (temp_r3 == 0) {
-        return;
-    }
-    temp_r5 = *(s32*)((u8*)temp_r31 + 0x5C);
-    if (temp_r5 != 0) {
-        Unit_FocusCamera(temp_r3, 1);
-        *(u8*)((u8*)temp_r31 + 0x9) = *(u8*)((u8*)arg1 + 0x3C);
-        *(s32*)((u8*)temp_r31 + 0xAC) = temp_r3;
-        if (*(u32*)((u8*)arg1 + 0x40)) {
-            Face_ClearSlot();
-        }
-        if (*(u32*)((u8*)arg1 + 0x44)) {
-            fn_800616A0();
-        }
-    }
-    fn_800C4588(temp_r31);
+    if (!ok) result = 0;
+    else result = Item_CallUfx(arg0, arg1);
+    return result;
 }
 
 /* Find first 0x1EC item slot matching key mask; -2 if status-blocked, -1 if none. */
