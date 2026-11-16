@@ -13639,22 +13639,7 @@ void fn_800EA7CC(s32 arg0, s32 arg1) {
 }
 
 void fn_800EA808(void) {
-    struct CardWork {
-        u8 workArea[0xA000];
-        s32 chan;
-        volatile s32 result;
-        s32 sectorSize;
-        s32 unkA00C;
-        s32 unkA010;
-        s32 unkA014;
-        u8 unkA018;
-        u8 unkA019;
-        u8 busy;
-        u8 padA01B;
-        u8 fileInfo[0x14];
-        u32 tick;
-        s32 unkA034;
-    };
+    struct CardWork { u8 workArea[0xA000]; s32 chan; volatile s32 result; s32 sectorSize; s32 unkA00C; s32 unkA010; s32 unkA014; u8 unkA018; u8 unkA019; u8 busy; u8 padA01B; u8 fileInfo[0x14]; u32 tick; s32 unkA034; };
     s32 OSGetTick(void);
     void fn_800C4588(u32 *);
     void fn_8021C02C(void *);
@@ -13662,23 +13647,18 @@ void fn_800EA808(void) {
     void DebugPrint(void *, ...);
     extern struct CardWork gCardWork;
     extern u8 gCardStrings[];
+    u8 *msg;
     u32 tickRate;
     u32 conv;
-
     fn_800C4588((u32 *)gCardWork.unkA034);
     gCardWork.unkA034 = 0;
-    if (gCardWork.unkA019 != 0) {
-        fn_8021C02C(gCardWork.fileInfo);
-        gCardWork.unkA019 = 0;
-    }
-    if (gCardWork.unkA018 != 0 && gCardWork.unkA018 != 0) {
-        fn_8021B20C(gCardWork.chan);
-        gCardWork.unkA018 = 0;
-    }
+    if (gCardWork.unkA019 != 0) { fn_8021C02C(gCardWork.fileInfo); gCardWork.unkA019 = 0; }
+    if (gCardWork.unkA018 != 0 && gCardWork.unkA018 != 0) { fn_8021B20C(gCardWork.chan); gCardWork.unkA018 = 0; }
     gCardWork.tick = OSGetTick() - gCardWork.tick;
-    tickRate = *(volatile u32 *)0x800000F8;
+    msg = gCardStrings + 0xC5;
+    tickRate = *(u32 *)0x800000F8;
     conv = (tickRate >> 2) / 1000U;
-    DebugPrint(gCardStrings + 0xC5, gCardWork.tick / conv);
+    DebugPrint(msg, gCardWork.tick / conv);
 }
 
 #pragma use_lmw_stmw on
@@ -20507,39 +20487,18 @@ void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
-    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
-    void fn_80022748(void *, s32);
-    void fn_800227F8(void *, void *);
-    void Map_SelectRangeBuffer(void *, s32);
-    u8 Status_Test(void *, s32);
-    extern u8 gBattleMap[];
-    u32 flags;
-    s32 y;
-    s32 x;
-    s32 t14;
-    u8 *map;
-    void *obj;
-    s32 t15;
-
-    x = arg0;
-    y = arg1;
-    obj = arg2;
-    flags = arg4;
-    map = gBattleMap;
-    Map_SelectRangeBuffer(map, arg3);
-    fn_800227F8(map, obj);
-    fn_80022748(map, 0);
-    if (obj != NULL) {
-        t14 = Status_Test((u8 *)obj + 0x1C, 0x14) != 0;
-    } else {
-        t14 = 1;
-    }
-    if (obj != NULL) {
-        t15 = Status_Test((u8 *)obj + 0x1C, 0x15) != 0;
-    } else {
-        t15 = 0;
-    }
-    Map_FloodMoveRange(map, x, y, flags, t14, t15);
+void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
+void fn_80022748(void *, s32);
+void fn_800227F8(void *, void *);
+void Map_SelectRangeBuffer(void *, s32);
+u8 Status_Test(void *, s32);
+extern u8 gBattleMap[];
+u32 flags; s32 y; s32 x; register s32 t14; u8 *map; void *obj; s32 t15;
+x=arg0; y=arg1; obj=arg2; flags=arg4; map=gBattleMap;
+Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
+t14 = obj ? Status_Test((u8*)obj+0x1C,0x14)!=0 : 1;
+t15 = obj ? Status_Test((u8*)obj+0x1C,0x15)!=0 : 0;
+Map_FloodMoveRange(map,x,y,flags,t14,t15);
 }
 #pragma use_lmw_stmw reset
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
