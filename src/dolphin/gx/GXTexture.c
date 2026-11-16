@@ -554,15 +554,13 @@ void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even,
     *((s8 *)region + 0xD) = 1;
 }
 
-void GXInitTlutRegion(s32 *arg0, s32 arg1, s32 arg2) {
-    s32 temp_r4;
-    s32 temp_r5;
+void GXInitTlutRegion(u32 *arg0, u32 arg1, u32 arg2) {
+    u32 t;
     *arg0 = 0;
-    temp_r4 = (arg1 + 0xFFF80000);
-    temp_r5 = temp_r4 >> 9;
-    *arg0 = (*arg0 & ~0x3FF) | (temp_r5 & 0x3FF);
-    *arg0 = (*arg0 & ~0x1FFC00) | ((arg2 << 0xA) & 0x1FFC00);
-    *arg0 = (*arg0 & ~0xFF000000) | 0x65000000;
+    t = arg1 - 0x80000;
+    *arg0 = __rlwimi(*arg0, t, 23, 22, 31);
+    *arg0 = __rlwimi(*arg0, arg2, 10, 11, 21);
+    *arg0 = __rlwimi(*arg0, 0x65, 24, 0, 7);
 }
 
 void fn_80222EB4(void) {
@@ -968,24 +966,32 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
 }
 
 void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-u16 *gx = __GXData;
-u32 *stage = (u32 *)((u8 *)gx + (arg0 << 2));
-arg1 = __rlwimi(stage[0x130/4], arg1, 12, 16, 19);
-*(u8 *)0xCC008000 = 0x61;
-arg1 = __rlwimi(__rlwimi(__rlwimi(arg1, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
-*(u32 *)0xCC008000 = arg1;
-stage[0x130/4] = arg1;
-gx[1] = 0;
+  u32 value;
+  u8 cmd;
+  u32 *stage;
+  u16 *gx;
+  cmd = 0x61;
+  gx = __GXData;
+  stage = (u32 *)((u8 *)gx + (arg0 * 4));
+  value = __rlwimi(stage[0x130 / 4], arg1, 12, 16, 19);
+  GXWGFifo.u8 = cmd;
+  value = __rlwimi(__rlwimi(__rlwimi(value, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
+  GXWGFifo.u32 = value;
+  stage[0x130 / 4] = value;
+  gx[1] = 0;
 }
 
 void GXSetTevAlphaIn(s32 stage,s32 a,s32 b,s32 c,s32 d) {
- u32 v; u32 *gx; u32 *p;
- gx=(u32 *)__GXData; p=(u32 *)((u8 *)gx+stage*4);
- v=p[0x170/4];
- a=__rlwimi(v,a,13,16,18);
- v=__rlwimi(a,b,10,19,21); v=__rlwimi(v,c,7,22,24); v=__rlwimi(v,d,4,25,27);
- *(volatile u8 *)0xCC008000=0x61; *(volatile u32 *)0xCC008000=v;
- p[0x170/4]=v; ((u16 *)gx)[1]=0;
+ u32 *gx=(u32 *)__GXData;
+ u32 *p=gx+stage;
+ u32 v=__rlwimi(p[0x170/4],a,13,16,18);
+ v=__rlwimi(v,b,10,19,21);
+ v=__rlwimi(v,c,7,22,24);
+ v=__rlwimi(v,d,4,25,27);
+ *(volatile u8 *)0xCC008000=0x61;
+ *(volatile u32 *)0xCC008000=v;
+ p[0x170/4]=v;
+ ((u16 *)gx)[1]=0;
 }
 
 void GXSetTevColorOp(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
@@ -1130,13 +1136,13 @@ void* fn_80223D38(u32 arg0) {
 }
 
 void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
-u8 *gx=(u8*)__GXData;
-u32 *reg=(u32*)(gx+((arg0+0x5C)<<2));
-*reg=__rlwimi(*reg,arg1,0,30,31);
-*reg=__rlwimi(*reg,arg2,2,28,29);
-*(volatile u8*)0xCC008000=0x61;
-*(volatile u32*)0xCC008000=*reg;
-*(u16*)(gx+2)=0;
+    u8 *gx = (u8 *)__GXData;
+    u32 *reg = (u32 *)(gx + arg0 * 4 + 0x170);
+    *reg = __rlwimi(*reg, arg1, 0, 30, 31);
+    *reg = __rlwimi(*reg, arg2, 2, 28, 29);
+    *(volatile u8 *)0xCC008000 = 0x61;
+    *(volatile u32 *)0xCC008000 = *reg;
+    *(u16 *)(gx + 2) = 0;
 }
 
 void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
@@ -1151,7 +1157,7 @@ void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg
 void fn_80223E5C(s32 arg0,u8 arg1,s32 arg2,s32 arg3,u8 arg4) {
  u16 *gx=__GXData;
  u32 v=__rlwimi(0xF3000000,(u32)arg1,0,24,31);
- v=__rlwimi(v,(u32)arg4 << 8,0,16,23);
+ v=__rlwimi(v,(u32)arg4,8,16,23);
  v=__rlwimi(v,arg0,16,13,15);
  v=__rlwimi(v,arg3,19,10,12);
  v=__rlwimi(v,arg2,22,8,9);
