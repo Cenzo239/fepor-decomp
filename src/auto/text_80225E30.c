@@ -1891,11 +1891,10 @@ void InitializeProgramEndTrap(void)
     void ICInvalidateRange(void *, u32);
     void DCFlushRange(void *, u32);
     void PPCHalt(void);
-    static const u8 EndofProgramInstruction[4] = {0x00, 0x45, 0x4E, 0x44};
     u8 *halt;
 
     halt = (u8 *)PPCHalt;
-    fn_80003488(halt + 4, EndofProgramInstruction, 4);
+    fn_80003488(halt + 4, &EndofProgramInstruction, 4);
     ICInvalidateRange(halt + 4, 4);
     DCFlushRange(halt + 4, 4);
 }
