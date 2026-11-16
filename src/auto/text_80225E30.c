@@ -1460,6 +1460,21 @@ void fn_802291A4(void *b) {
     TRKAppendBuffer(b, &msg, sizeof(msg));
 }
 
+void fn_80229228(void *b) {
+ void *memset(void *, int, u32);
+ s32 fn_8022A098(u32 *, u32);
+ s32 TRKAppendBuffer(void *, void *, u32);
+ struct { u32 size; u8 command; u32 exceptionPC; u32 instruction; u32 exceptionID; u8 pad[0x2C]; } msg;
+ u32 instruction;
+ memset(&msg, 0, sizeof(msg));
+ msg.size=sizeof(msg); msg.command=0x90;
+ msg.exceptionPC=*(u32 *)(gTRKCPUState+0x80);
+ fn_8022A098(&instruction, *(u32 *)(gTRKCPUState+0x80));
+ msg.instruction=instruction;
+ msg.exceptionID=(u16)*(u32 *)(gTRKCPUState+0x2F8);
+ TRKAppendBuffer(b,&msg,sizeof(msg));
+}
+
 #pragma use_lmw_stmw on
 #pragma optimization_level 1
 s32 TRKTargetAccessExtended2(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
