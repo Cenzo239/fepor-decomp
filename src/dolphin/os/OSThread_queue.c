@@ -170,19 +170,25 @@ void fn_8020A060(void *arg0) {
     M2C_FIELD(arg0, void **, 0x2DC) = NULL;
 }
 
-s32 fn_8020A0C8(void *arg0) {
- void *node;
- s32 priority;
- s32 value;
- priority = M2C_FIELD(arg0, s32 *, 0x2D4);
- node = M2C_FIELD(arg0, void **, 0x2F4);
- while (node != NULL) {
-  arg0 = M2C_FIELD(node, void **, 0);
-  if (arg0 != NULL) {
-   value = M2C_FIELD(arg0, s32 *, 0x2D0);
-   priority = value < priority ? value : priority;
+s32 fn_8020A0C8(void *arg0)
+{
+  s32 value;
+  void *thread;
+  s32 priority = *((s32 *) (((s8 *) arg0) + 0x2D4));
+  void *node = *((void **) (((s8 *) arg0) + 0x2F4));
+  while (node != NULL)
+  {
+    thread = *((void **) node);
+    if (NULL != thread)
+    {
+      value = *((s32 *) (((s8 *) thread) + 0x2D0));
+      if (value < priority)
+      {
+        priority = value;
+      }
+    }
+    node = *((void **) (((s8 *) node) + 0x10));
   }
-  node = M2C_FIELD(node, void **, 0x10);
- }
- return priority;
+
+  return priority;
 }
