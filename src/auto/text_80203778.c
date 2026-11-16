@@ -2532,7 +2532,6 @@ void __OSInterruptInit(void) {
     __OSMaskInterrupts(-0x20);
     __OSSetExceptionHandler(4, ExternalInterruptHandler);
 }
-#pragma opt_common_subs reset
 volatile u16 OS_MEMRegs[64] : 0xCC004000;
 volatile u16 OS_DSPRegs[64] : 0xCC005000;
 volatile u32 OS_PIRegs[16] : 0xCC003000;
