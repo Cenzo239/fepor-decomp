@@ -2722,11 +2722,9 @@ void fn_80247D74(void)
 }
 
 void fn_80247F1C(u32 arg0, u8 arg1, u8 arg2) {
-    extern u8 lbl_8034BED0[];
-    if (arg1 == 0xFF) {
-        *(u32 *)(lbl_8034BED0 + ((u8)8 << 6) + (arg2 << 2)) =
-            ((arg0 << 3) * 0x600u) / 240u;
-    }
+extern u8 lbl_8034BED0[];
+if (arg1 == 0xFF) arg1=8;
+*(u32 *)(lbl_8034BED0 + (arg1 << 6) + (arg2 << 2)) = ((arg0 << 3)*0x600u)/240u;
 }
 
 s32 fn_80247F60(void *arg0) {
