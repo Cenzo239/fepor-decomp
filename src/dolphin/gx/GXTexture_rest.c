@@ -386,17 +386,16 @@ void fn_802247C0(s32 arg0) {
 }
 #pragma peephole on
 void fn_802247EC(u8 arg0, u8 arg1) {
-    extern u16 *__GXData;
-    u16 *gx;
+    u32 *ptr;
     u32 value;
-
-    gx = __GXData;
-    value = __rlwimi(*(u32 *)((u8 *)gx + 0x1D4), (u32)arg1, 0, 24, 31);
-    *(volatile u8 *)0xCC008000 = 0x61;
+    ptr = (u32 *)__GXData;
+    value = ptr[0x1D4 / 4];
+    value = __rlwimi(value, (u32)arg1, 0, 24, 31);
+    *(u8 *)0xCC008000 = 0x61;
     value = __rlwimi(value, (u32)arg0, 8, 23, 23);
-    *(volatile u32 *)0xCC008000 = value;
-    *(u32 *)((u8 *)gx + 0x1D4) = value;
-    gx[1] = 0;
+    *(u32 *)0xCC008000 = value;
+    ptr[0x1D4 / 4] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
@@ -425,6 +424,63 @@ void fn_80224860(u8 arg0, u8 arg1)
   GXWGFifo.u8 = cmd;
   GXWGFifo.u32 = ((u32) arg0) | 0x68000000;
   __GXFlushTextureState();
+}
+
+void fn_802248D8(s32 base, s32 size) {
+ extern u8 lbl_8033AA70[];
+ extern void *lbl_803687A8;
+ void *fn_8021F4CC(void);
+ void fn_80220D6C(void);
+ void fn_8021F06C(void *);
+ void GXSetCPUFifo(void *);
+ void fn_80220554(void);
+ void *memcpy(void *, const void *, u32);
+ u8 *save=lbl_8033AA70;
+ void *fifo;
+ fifo=fn_8021F4CC();
+ if(*(u32 *)((u8 *)__GXData+0x5AC)!=0) fn_80220D6C();
+ if(((u8 *)__GXData)[0x5A9]!=0) memcpy(save+0x24,__GXData,0x5B0);
+ *(s32 *)(save+0)=base;
+ *(s32 *)(save+4)=base+(size-4);
+ *(s32 *)(save+8)=size;
+ *(s32 *)(save+0x1C)=0;
+ *(s32 *)(save+0x14)=base;
+ *(s32 *)(save+0x18)=base;
+ ((u8 *)__GXData)[0x5A8]=1;
+ fn_8021F06C(fifo);
+ lbl_803687A8=fifo;
+ GXSetCPUFifo(save);
+ fn_80220554();
+}
+
+s32 fn_802249A4(void) {
+ s32 OSDisableInterrupts(void);
+ void OSRestoreInterrupts(s32);
+ extern u8 lbl_8033AA70[];
+ extern u32 *__piReg;
+ extern void *lbl_803687A8;
+ void fn_802204F8(void);
+ void fn_8021F0A0(void *);
+ void GXSetCPUFifo(void *);
+ void *memcpy(void *, const void *, u32);
+ register u8 *save=lbl_8033AA70;
+ u32 flag;
+ s32 interrupts;
+ u32 old;
+ fn_802204F8();
+ flag=(__piReg[5]>>26)&1;
+ fn_8021F0A0(save);
+ GXSetCPUFifo(lbl_803687A8);
+ if(((u8 *)__GXData)[0x5A9]!=0) {
+ interrupts=OSDisableInterrupts();
+ old=*(u32 *)((u8 *)__GXData+8);
+ memcpy(__GXData,save+0x24,0x5B0);
+ *(u32 *)((u8 *)__GXData+8)=old;
+ OSRestoreInterrupts(interrupts);
+ }
+ ((u8 *)__GXData)[0x5A8]=0;
+ if(flag==0) return *(s32 *)(save+0x1C);
+ return 0;
 }
 
 void fn_80224A68(s32 arg0, s32 arg1) {
