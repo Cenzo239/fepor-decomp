@@ -19122,10 +19122,7 @@ u32 fn_801E417C(void *arg0) {
     u32 size;
 
     size = *(u32 *)((u8 *)arg0 + 0x48);
-    if (size > 0x100000U) {
-        size = 0;
-    }
-    return size;
+    return size & ~-(size > 0x100000U);
 }
 
 s32 Save_BumpVersionChecksum(void *slot) {
@@ -19165,54 +19162,26 @@ s32 Save_IsValid(void *slot) {
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 gSaveStrings[];
-
     u8 *save;
     void *crcTable;
     u32 sum;
     u32 value;
     u8 ok;
-    u8 *message;
-
-    save = (u8 *)slot;
-
-    if (*(u32 *)(save + 0x40) != 0x4645384A) {
-        return 0;
-    }
-
-    if (*(u32 *)(save + 0x50) == 0x12345678) {
-        ok = 1;
-    } else if (save[0x60] == 1) {
-        ok = 1;
-    } else {
-        message = gSaveStrings;
-
-        crcTable = fn_800C4638(
-            0x400,
-            message + 0x14E,
-            0
-        );
-
+    save = slot;
+    if (*(u32 *)(save + 0x40) != 0x4645384A) return 0;
+    if (*(u32 *)(save + 0x50) == 0x12345678) { ok = 1; }
+    else if (save[0x60] == 1) { ok = 1; }
+    else {
+        crcTable = fn_800C4638(0x400, (void *)(gSaveStrings + 0x14E), 0);
         Crc32_InitTable();
-
-        sum = Crc32_Calc(
-            crcTable,
-            save + 0x70,
-            *(s32 *)(save + 0x4C) - 0x70
-        );
-
+        sum = Crc32_Calc(crcTable, save + 0x70, *(s32 *)(save + 0x4C) - 0x70);
         fn_800C4588(crcTable);
-
-        if (*(u32 *)(save + 0x50) != sum) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
+        if (*(u32 *)(save + 0x50) != sum) { ok = 0; } else { ok = 1; }
     }
-
-    value = (u8)ok;
+    value = ok;
     return ((-value) | value) >> 31;
 }
-#pragma peephole on
+#pragma peephole reset
 s32 fn_801E434C(void *arg0) {
     if ((u32) (M2C_FIELD(arg0, s32 *, 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
