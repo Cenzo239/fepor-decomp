@@ -1552,6 +1552,41 @@ void __GXPEInit(void)
     pe[5] = value;
 }
 
+void fn_80220D6C(void) {
+    extern u16 *__GXData;
+    void fn_80222FC4(void);
+    void fn_80223978(void);
+    void fn_80221068(void);
+    void fn_8021F9D8(void);
+    void fn_802200CC(void);
+    void fn_8021FA94(void);
+
+    u32 dirty;
+
+    dirty = M2C_FIELD(__GXData, u32 *, 0x5AC);
+
+    if (dirty & 0x01) {
+        fn_80222FC4();
+    }
+    if (dirty & 0x02) {
+        fn_80223978();
+    }
+    if (dirty & 0x04) {
+        fn_80221068();
+    }
+    if (dirty & 0x08) {
+        fn_8021F9D8();
+    }
+    if (dirty & 0x10) {
+        fn_802200CC();
+    }
+    if (dirty & 0x18) {
+        fn_8021FA94();
+    }
+
+    M2C_FIELD(__GXData, u32 *, 0x5AC) = 0;
+}
+
 void fn_80220EBC(void)
 {
     extern void *__GXData;
