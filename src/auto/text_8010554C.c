@@ -1917,10 +1917,8 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
     void *Hash_Lookup(void *);
     void *p;
     s32 a;
-        s32 b;
-    s32 c;
-    s32 d;
- s32 sum;
+    s32 b;
+    s32 sum;
 
     arg0 = Hash_Lookup(arg0);
     p = *(void **)((u8 *)arg0 + 0x14);
@@ -1928,13 +1926,13 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
     sum = x + w;
     b = y + 2;
     *(s16 *)((u8 *)p + 0x8) = a;
-    c = sum - 4;
-    d = y + 0x72;
+    a = sum - 4;
+    b = y + 0x72;
     sum -= 0x32;
-    *(s16 *)((u8 *)p + 0xA) = b;
+    *(s16 *)((u8 *)p + 0xA) = y + 2;
+    *(s16 *)((u8 *)p + 0xC) = a;
+    *(s16 *)((u8 *)p + 0xE) = b;
     a = x + 0x32;
-    *(s16 *)((u8 *)p + 0xC) = c;
-    *(s16 *)((u8 *)p + 0xE) = d;
 
     p = *(void **)((u8 *)arg0 + 0x18);
     *(s16 *)((u8 *)p + 0x18) = x;
@@ -2117,17 +2115,17 @@ void *Sound_Create(s32 arg0, u32 arg1) {
     extern u8 lbl_8028F390[];
     void *tbl;
     void *result;
-    s32 a0;
+    u32 n;
 
-    a0 = arg0;
     tbl = lbl_8028F390;
-    if (arg1 != 0U) {
-
-    } else {
-        arg1 = 3U;
+    n = arg1;
+    switch (n) {
+    case 0U:
+        n = 3U;
+        break;
     }
-    result = Process_Create(tbl, arg1);
-    fn_80109F88(result, a0);
+    result = Process_Create(tbl, n);
+    fn_80109F88(result, arg0);
     return result;
 }
 
@@ -2271,51 +2269,36 @@ void fn_801097DC(void *arg0) {
     }
 }
 #pragma global_optimizer reset
-void fn_80109890(s32 arg0, s32 arg1) {
-    void *fn_800B2754(void);
-    M2C_UNK fn_800336A0(M2C_UNK *, M2C_UNK *, s32);
-
-    s32 temp_r5;
-    s32 *var_r4;
-    s32 var_r6;
-    s32 var_r7;
-    
-    void* temp_r3 = fn_800B2754();
-    if (arg1 < 0) {
-        arg1 = -arg1;
-        arg0 = -arg0;
+void fn_80109890(void *arg0) {
+    extern f32 lbl_8036A138, lbl_8036A13C;
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
+    f32 zero;
+    f32 val;
+    u8 kind;
+    void *target;
+    *(f32*)((u8*)arg0+0x38) += 16.666666f;
+    if (*(f32*)((u8*)arg0+0x38) >= *(f32*)((u8*)arg0+0x3C)) {
+        *(f32*)((u8*)arg0+0x38) = *(f32*)((u8*)arg0+0x3C);
+        Process_ClearFunc(arg0);
     }
-    var_r6 = arg0;
-    var_r7 = arg1;
-    temp_r5 = *(s32*)((uintptr_t)temp_r3 + 0x1C) >> 2;
-    
-    if (var_r6 >= 0) { }
-    
-    if (var_r7 < temp_r5) {
-        if (var_r7 >= 0) {
-            var_r4 = (s32*)((uintptr_t)temp_r3 + 0x48);
-            if (arg0 - arg1 > 0) {
-                *(var_r4) = -(*(var_r4));
-                *(var_r4 + 0x14) = -(*(var_r4 + 0x14));
-                *(var_r4 + 0x1C) = *var_r4;
-                *(var_r4 + 0x28) = *(var_r4 + 0x14);
-                *(var_r4 + 0x30) = -(*var_r4 + *(var_r4 + 0x14));
-                *(var_r4 + 0x34) = *var_r4;
-                *(var_r4 + 0x38) = *(var_r4 + 0x14);
-            } else if (arg0 - arg1 < 0) {
-                *(var_r4 + 0x1C) = *var_r4;
-                *(var_r4 + 0x28) = *(var_r4 + 0x14);
-                *(var_r4 + 0x30) = (*var_r4 + *(var_r4 + 0x14));
-                *(var_r4 + 0x34) = *var_r4;
-                *(var_r4 + 0x38) = *(var_r4 + 0x14);
-            }
-        }
-    } else {
-        var_r4 = (s32*)((uintptr_t)temp_r3 + 0x48);
-        if (arg0 < 0) {
-            var_r4 = (s32*)((uintptr_t)temp_r3 + 0x4C);
-        }
-        fn_800336A0(var_r4, var_r4 + 0xA, var_r7 - temp_r5);
+    val = Math_Ease(*(u8*)((u8*)arg0+0x35), *(f32*)((u8*)arg0+0x40), *(f32*)((u8*)arg0+0x44), *(f32*)((u8*)arg0+0x38), *(f32*)((u8*)arg0+0x3C));
+    zero=lbl_8036A138;
+    kind=*(u8*)((u8*)arg0+0x34);
+    target=*(void**)((u8*)arg0+0x30);
+    if(zero==val) return;
+    switch(kind) {
+case 0: *(f32*)((u8*)target+64)=val; break;
+case 1: *(f32*)((u8*)target+68)=val; break;
+case 2: *(f32*)((u8*)target+72)=val; break;
+case 3: *(f32*)((u8*)target+76)=val; break;
+case 4: *(f32*)((u8*)target+80)=val; break;
+case 5: *(f32*)((u8*)target+84)=val; break;
+case 6: *(f32*)((u8*)target+88)=val; break;
+    case 7: *(f32*)((u8*)target+0x54)=val; *(f32*)((u8*)target+0x58)=val; break;
+    case 8: *(f32*)((u8*)target+0x5C)=val; break;
+    case 9: *(u8*)((u8*)target+0x60)=(u8)(s32)val; break;
+    case 10: *(u8*)((u8*)target+0x61)=(u8)(s32)val; break;
     }
 }
 
@@ -2717,21 +2700,22 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
 
 extern u16 lbl_80312060[32];
 void fn_8010A4D4(void *arg0) {
+    s32 off;
+    s16 a;
+    s16 b;
+    u8 c;
+    char *p;
+    u8 *out;
     s32 i;
     s32 dest;
-    u8 *out;
-    char *p;
-    u8 c;
-    s16 b;
-    s16 a;
-    s32 off;
 
     p = arg0;
     dest = 0;
     i = 0;
     while (i < *(s16 *)((char *)arg0 + 8)) {
         switch (*(u8 *)(p + 0xE)) {
-        default: break;
+        default:
+            break;
         case 0: {
             off = (s8)dest * 6;
             c = *(u8 *)(p + 0x10);
@@ -5646,27 +5630,29 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
 
 void fn_8010FAA8(void) {
     void fn_8001F91C(void *, u8, u8, s8);
-    extern u8 gMapObjEventList[];
+    extern u8 lbl_8032BB58[];
     extern u8 gBattleMap[];
-    struct { s32 i; u8 *base; u8 *p; } walk;
-    walk.i = 0;
-    walk.base = gMapObjEventList;
-    walk.p = walk.base;
-    while (walk.i < *(s32 *)(walk.base + 0x200)) {
-        switch (walk.p[2]) {
+    s32 i;
+    u8 *base;
+    u8 *p;
+    i = 0;
+    base = lbl_8032BB58;
+    p = base;
+    while (i < *(s32 *)(base + 0x200)) {
+        switch (p[2]) {
         case 6:
-            fn_8001F91C(gBattleMap, walk.p[0], walk.p[1], (s8)walk.p[3]);
+            fn_8001F91C(gBattleMap, p[0], p[1], (s8)p[3]);
             break;
         case 9: {
-            s32 y = (s8)walk.p[1];
-            s32 x = (s8)walk.p[0];
+            s32 y = (s8)p[1];
+            s32 x = (s8)p[0];
             u8 *cell = gBattleMap + x + (y << 6);
             if (cell[0xd] == 0) cell[0x300d] |= 2;
             break;
         }
         }
-        walk.p += 8;
-        walk.i++;
+        p += 8;
+        i++;
     }
 }
 
