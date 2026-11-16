@@ -143,6 +143,23 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
+void fn_80208FB0(s32 chan, void *ctx) {
+    s32 fn_80209010(void *, s32, s32);
+    u8 *scb;
+    s32 *p40;
+    s32 off;
+    s32 sync;
+
+    scb = (u8 *)Scb_80339420;
+    p40 = (s32 *)(scb + 0x40);
+    off = *p40;
+    sync = fn_80209010(scb + off, off, 0x40 - off);
+    *(s32 *)(scb + 0x4C) = sync;
+    if (*(s32 *)(scb + 0x4C) != 0) {
+        *p40 = 0x40;
+    }
+}
+
 s32 fn_80209010(s32 arg0, s32 arg1, s32 arg2) {
     s32 EXIDeselect(M2C_UNK);
     s32 EXIImm(M2C_UNK, s32 *, M2C_UNK, M2C_UNK, M2C_UNK);
