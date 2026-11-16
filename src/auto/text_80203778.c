@@ -304,15 +304,18 @@ s32 __DBIsExceptionMarked(u8 arg0) {
 void DBPrintf(u8 level, char *fmt, ...) {
 }
 
-u32 OSGetConsoleType(void) {
+#pragma peephole off
+u32 OSGetConsoleType(void)
+{
     extern void *BootInfo_80368458;
-    
-    if (BootInfo_80368458 == NULL || *(u32*)((char*)BootInfo_80368458 + 0x2C) == 0) {
-        return 0x10000002;
-    }
-    return *(u32*)((char*)BootInfo_80368458 + 0x2C);
-}
+    u32 console;
 
+    if (!BootInfo_80368458 || !(console = *(u32 *)((char *)BootInfo_80368458 + 0x2C))) {
+        console = 0x10000002;
+    }
+    return console;
+}
+#pragma peephole on
 void InquiryCallback(void *arg1) {
     u32 val = *(u32 *)((u8 *)arg1 + 0xC);
     if (val == 0) {
@@ -489,15 +492,16 @@ void OSExceptionInit(void) {
 
 void __OSDBIntegrator(void)
 {
-    u32 *ptr = (u32 *)0x40;
-    u32 lr;
-    u32 value;
+    register u32 *ptr;
+    register u32 lr;
+    register u32 value;
 
+    ptr = (u32 *)0x40;
     lr = (u32)__builtin_return_address(0);
-    *(ptr + 3) = lr;
-    value = *(ptr + 2);
+    ptr[3] = lr;
+    value = ptr[2];
     value |= 0x80000000;
-    __builtin_mtlr(value);
+    __builtin_mtlr((void *)value);
     __builtin_mtmsr(0x30);
 }
 
@@ -954,52 +958,57 @@ void DCEnable(void)
     __sync();
 }
 
-void DCInvalidateRange(s32 arg0, u32 arg1) {
-    s32 var_r3;
-    u32 var_ctr;
-
-    if (arg1 > 0U) {
-        // Adjusted loop based on instruction sequence from target
-        var_r3 = arg0 & 0x1F;
-        var_ctr = (arg1 + var_r3 + 0x1F) >> 5U;
-        do {
-            M2C_DCACHE_INVALIDATE(arg0);
-            arg0 += 0x20;
-            var_ctr -= 1;
-        } while (var_ctr != 0);
+void DCInvalidateRange(void* addr, u32 nBytes) {
+    u32 i;
+    u32 count;
+    if (nBytes == 0) return;
+    count = (nBytes + ((u32)addr & 0x1F) + 0x1F) >> 5;
+    for (i = 0; i < count; i++) {
+        __dcbi((u8*)addr + i * 0x20);
     }
 }
 
-void DCFlushRange(void* addr, u32 len) {
-    if (len != 0) {
-        osDCFlushRange(addr, len);
+void DCFlushRange(void *addr, u32 nBytes) {
+    if (nBytes <= 0) {
+        return;
     }
+    nBytes += (u32)addr & 31;
+    nBytes += 31;
+    nBytes >>= 5;
+    do {
+        __dcbf(0, (int)addr);
+        addr = (u8 *)addr + 32;
+    } while (--nBytes);
+    __sync();
 }
 
-void fn_80205110(void* addr, u32 len) {
-    if (len != 0) {
-        osL2GlobalInvalidate(addr, len);
+void fn_80205110(void *addr, u32 nBytes) {
+    if (nBytes <= 0) {
+        return;
     }
+    nBytes += (u32)addr & 31;
+    nBytes += 31;
+    nBytes >>= 5;
+    do {
+        __dcbst(0, (int)addr);
+        addr = (u8 *)addr + 32;
+    } while (--nBytes);
+    __sync();
 }
 
-void DCFlushRangeNoSync(s32 arg0, u32 arg1) {
-    if (arg1 > 0) {
-        s32 temp_r5 = (arg1 + (arg0 & 0x1F) + 0x1F) >> 5;
-        s32 r3 = arg0;
-        u32 ctr = temp_r5;
-        
-        do {
-            M2C_DCACHE_CLEAN_INVALIDATE(r3);
-            r3 += 0x20;
-            ctr--;
-        } while (ctr != 0);
-    }
+void DCFlushRangeNoSync(void* addr, u32 nBytes) {
+    if (nBytes == 0) return;
 }
 
-void fn_8020516C(void* addr, u32 len) {
-    if (len != 0) {
-        DCFlushRange(addr, len);
+void fn_8020516C(void *addr, u32 nBytes) {
+    if (nBytes <= 0) {
+        return;
     }
+    nBytes = (nBytes + ((u32)addr & 31) + 31) >> 5;
+    do {
+        __dcbst(0, (int)addr);
+        addr = (u8 *)addr + 32;
+    } while (--nBytes);
 }
 
 void fn_80205198(void *addr, u32 nBytes) {
@@ -1013,19 +1022,21 @@ void fn_80205198(void *addr, u32 nBytes) {
     } while (--nBytes);
 }
 
+#pragma intrinsic __icbi
 void ICInvalidateRange(void *addr, u32 nBytes) {
     if (nBytes <= 0) {
         return;
     }
-    nBytes = (nBytes + ((u32) addr & 31) + 31) >> 5;
+    nBytes += (u32)addr & 31;
+    nBytes += 31;
+    nBytes >>= 5;
     do {
-        __icbi(addr, 0);
-        addr = (u8 *) addr + 32;
+        __icbi(0, (int)addr);
+        addr = (u8 *)addr + 32;
     } while (--nBytes);
     __sync();
     __isync();
 }
-
 s32 ICFlashInvalidate(void) {
     M2C_ERROR(/* unknown instruction: mtspr HID0, $r3 */);
     return M2C_ERROR(/* unknown instruction: mfspr $r3, HID0 */) | 0x800;
@@ -1034,6 +1045,30 @@ s32 ICFlashInvalidate(void) {
 void ICEnable(void)
 {
     __isync();
+}
+
+void fn_802052E8(void) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    void fn_8020521C(void);
+
+    u32 interrupts;
+
+    interrupts = OSDisableInterrupts();
+    fn_8020521C();
+    OSRestoreInterrupts(interrupts);
+}
+
+void LCDisable(void) {
+    u32 i;
+    u8* addr = (u8*)0xE0000000;
+    u32 hid2;
+    for (i = 0; i < 0x200; i++) {
+        __dcbi(addr);
+        addr += 0x20;
+    }
+    hid2 = PPCMfhid2();
+    PPCMthid2(hid2 & ~0x10000000);
 }
 
 void fn_80205348(s32 arg0, s32 arg1, u32 arg2) {
@@ -1074,14 +1109,7 @@ loop_6:
 }
 
 extern u32 __SPR_392;
-s32 fn_8020543C(s32 arg0)
-{
-    s32 r4 = __SPR_392;
-    r4 = (r4 >> 4) & 0xF;
-    if (r4 > arg0)
-        return 1;
-    return 0;
-}
+void fn_8020543C(s32 arg0) { s32 value; do { value = ((u32)__SPR_392 >> 24) & 15; } while(value > arg0); }
 
 void L2GlobalInvalidate(void* addr, u32 len) {
     if (len != 0) {
@@ -1533,8 +1561,7 @@ void fn_802067E0(s32 arg0) {
     M2C_SYNC();
 }
 
-void fn_80206808(void) {
-}
+void fn_80206808(void) { return; }
 
 void fn_8020681C(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp14;
@@ -2185,6 +2212,12 @@ return arg0;
 }
 
 s32 OSEnableInterrupts(void) {
+    return 0;
+}
+
+int OSRestoreInterrupts(int enabled)
+{
+    (void)enabled;
     return 0;
 }
 
