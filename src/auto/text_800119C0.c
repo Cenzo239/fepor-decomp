@@ -299,27 +299,23 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     extern u8 *lbl_803671A0;
     extern s32 gCmScriptStatus;
     void fn_8000D3EC(void *, void *);
-    s16 index;
-    s16 limit;
+    s32 index;
     s16 next;
-    u8 *base;
-    void *entry;
+    u8 *entry;
 
     index = lbl_8036719E;
-    limit = lbl_8036719C;
     next = index + 1;
-    base = lbl_803671A0;
+    entry = lbl_803671A0 + (index << 4);
     lbl_8036719E = next;
-    entry = base + (index * 16);
-    if (next > limit) {
+    if (next > lbl_8036719C) {
         gCmScriptStatus = 9;
         return 0;
     }
-    *(void **)((u8 *)entry + 0) = arg0;
-    *(void **)((u8 *)entry + 4) = arg1;
-    *(u32 *)((u8 *)entry + 8) = 0;
-    ((u8 *)entry)[0xD] = arg2;
-    ((u8 *)entry)[0xC] = 0;
+    *(void **)(entry + 0) = arg0;
+    *(void **)(entry + 4) = arg1;
+    *(u32 *)(entry + 8) = 0;
+    entry[0xD] = arg2;
+    entry[0xC] = 0;
     fn_8000D3EC(arg0, entry);
     return 1;
 }
@@ -1911,22 +1907,18 @@ void fn_80016180(void)
     extern u8 gUnits[];
     u8 sp8[8];
     s32 i;
-    u8 *base;
-    u8 *flags;
     u8 *unit;
 
     Allegiance_FillMask(3, sp8);
-    flags = sp8;
-    base = gUnits;
     i = 1;
     do {
         if ((u8)i != 0) {
-            unit = base + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0) {
-            if (flags[(*(u8 **)(unit + 0x190))[8]] != 0) {
+            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 fn_80050C90(unit);
             }
         }
@@ -2263,19 +2255,22 @@ void *fn_800169A8(void *arg0, s16 arg1)
     return arg0;
 }
 
+#pragma global_optimizer off
 void Unit_WriteAll(s32 arg0) {
     extern u8 gUnits[];
     void Unit_Write(void *, s32);
-    u8 *var_r31;
-    s32 var_r30;
+    u8 *unit;
+    s32 i;
 
-    var_r31 = gUnits;
-    for (var_r30 = 0; var_r30 < 0x9F; var_r30++) {
-        Unit_Write(var_r31, arg0);
-        var_r31 += 0x280;
-    }
+    unit = gUnits;
+    i = 0;
+    do {
+        Unit_Write(unit, arg0);
+        i += 1;
+        unit += 0x280;
+    } while (i < 0x9F);
 }
-
+#pragma global_optimizer reset
 s32 fn_80016A9C(s32 arg0) {
     s32 Unit_FindDisposLeader(s32);
     extern u32 gUnitLists[];
