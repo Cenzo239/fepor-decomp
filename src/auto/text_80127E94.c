@@ -371,6 +371,28 @@ u8 fn_801287C0(void) {
     return 0;
 }
 
+u8 fn_80128C3C(void *arg0, s32 arg1) {
+    u8 fn_801001B8(void *, s32, s16 *, s16 *);
+    void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
+    void *TargetList_GetAt(void *,s32);
+    void fn_800FB96C(s32,u8,u8,s32,s8,s8,s8,s32,s32);
+    extern u8 gAiState[], gUiContext[], gTargetList[];
+    s16 x,y;
+    s32 tx;
+    s32 ty;
+    s32 slot;
+    if (!(*(u32 *)((u8 *)arg0+0x254)&0x10000000)) return 0;
+    if (!fn_801001B8(arg0,0,&x,&y)) return 0;
+    Ai_SetUnitMoveTo(arg0,x,y,1,*(u16 *)(gAiState+4),0,0,-1);
+    if(gAiState[0x21c] && x==(s8)gUiContext[13] && y==(s8)gUiContext[14]) {
+        tx=*(s8 *)TargetList_GetAt(gTargetList,0);
+        ty=((s8 *)TargetList_GetAt(gTargetList,0))[1];
+        
+        fn_800FB96C(11,gUiContext[13],gUiContext[14],*(s32 *)(gUiContext+4),tx,(s8)ty,(s8)(arg1<0?arg1:arg1+4),0,0);
+    }
+    return gAiState[0x21c];
+}
+
 u8 fn_80129104(void *arg0) {
     typedef struct {
         char *name;
@@ -417,6 +439,41 @@ u8 fn_80129104(void *arg0) {
         }
     }
     return gAiState[0x21c];
+}
+
+u8 fn_8012923C(void *arg0) {
+extern u8 gAiState[];
+typedef struct { char *name; u32 key; u8 (*fn)(void *,s32); } Tbl;
+extern Tbl lbl_802909F8[];
+u8 fn_801001F0(u32);
+s32 Unit_FindKeyItemSlot(void *,u8);
+u8 fn_80093218(void *,u32);
+u8 fn_801287C0(void *);
+Tbl *entry;
+u32 key;
+u8 kind;
+u8 *p;
+s32 i;
+if ((gAiState[1]&2) || (M2C_FIELD(arg0,u32 *,0x254)&0x03000000)) return 0;
+if(fn_801287C0(arg0)==0) {
+for(i=0,p=arg0;i<4;i++,p+=8) {
+if(M2C_FIELD(p,u32 *,0x1EC)==0) break;
+kind=fn_801001F0(M2C_FIELD(p,u32 *,0x1EC));
+if(kind==0 || i==Unit_FindKeyItemSlot(arg0,kind)) {
+key=M2C_FIELD(p,u32 *,0x1EC);
+if(fn_80093218(arg0,key)) {
+Tbl *walk;
+for(walk=lbl_802909F8;walk->key;walk++) {
+if(key==walk->key && walk->fn) { entry=walk; goto found; }
+}
+}
+entry=0;
+found:
+if(entry && entry->fn(arg0,i)) break;
+}
+}
+}
+return gAiState[0x21C];
 }
 
 void fn_80129374(void) {
