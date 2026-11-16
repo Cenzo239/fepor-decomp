@@ -1659,6 +1659,80 @@ s32 fn_801B8550(void *arg0) {
     return 0;
 }
 
+s8 fn_801B8674(void *arg0) {
+    void *Unit_FindByPerson(void *);
+    u8 Unit_GetDistance(void *, void *);
+    s32 fn_8001F85C(void *, s32, s32, s32, s32);
+
+    extern u8 gBattleMap[];
+    extern struct {
+        void *personA;
+        void *personB;
+        u8 flag;
+        s8 value;
+    } *lbl_80367214;
+
+    u8 *unit;
+    u8 *unitA;
+    u8 *unitB;
+    s32 total;
+    s32 valid;
+    struct {
+        void *personA;
+        void *personB;
+        u8 flag;
+        s8 value;
+    } *entry;
+
+    unit = (u8 *)arg0;
+    entry = (void *)lbl_80367214;
+    total = 0;
+
+    while (entry->personA != NULL) {
+        if (entry->flag == 1) {
+            if (*(void **)(unit + 0x188) == entry->personA) {
+                valid = 0;
+            } else if (*(void **)(unit + 0x188) == entry->personB) {
+                unitA = Unit_FindByPerson(entry->personB);
+                unitB = Unit_FindByPerson(entry->personA);
+
+                if (unitB == NULL || unitA == NULL) {
+                    valid = 0;
+                } else if ((u8)Unit_GetDistance(unitB, unitA) != 1) {
+                    valid = 0;
+                } else {
+                    gBattleMap[0x24EEA] = 0;
+
+                    if ((u8)fn_8001F85C(
+                            gBattleMap,
+                            unitB[0x19E],
+                            unitB[0x19F],
+                            unitA[0x19E],
+                            unitA[0x19F]
+                        ) == 0) {
+                        valid = 0;
+                    } else if (*(void **)(unitB + 0x190) !=
+                               *(void **)(unitA + 0x190)) {
+                        valid = 0;
+                    } else {
+                        valid = 1;
+                    }
+                }
+            } else {
+                valid = 0;
+            }
+
+            if ((u8)valid != 0) {
+                total += entry->value;
+            }
+        }
+
+        entry++;
+    }
+
+    return (s8)total;
+}
+
 #pragma opt_loop_invariants reset
 void fn_801B8798(void) {
     u32 Person_GetByPid(u32);
@@ -9827,15 +9901,12 @@ void *fn_801CBFD0(void *arg0, s16 arg1) {
 }
 
 void fn_801CC030(u32 *arg0) {
-    u32 start;
-    u32 end;
-    s32 ctr;
-    start = arg0[2];
-    end = start + (arg0[1] << 5);
-    ctr = (s32)((end + 0x1F - start) >> 5);
-    if (end > start) {
-        for (; ctr > 0; ctr--) {
-        }
+    u8 (*start)[0x20];
+    u8 (*end)[0x20];
+
+    start = (u8 (*)[0x20])arg0[2];
+    end = start + arg0[1];
+    for (; start < end; start++) {
     }
     arg0[1] = 0;
 }
@@ -10392,12 +10463,9 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-void *NameGrid_GetCharAtCursor(void *arg0) {
+void *NameGrid_GetCharAtCursor(void *self) {
     void *fn_801CD480(void *, s16, s16);
-    s16 x = *(s16 *)((u8 *)arg0 + 0x48);
-    s16 y = *(s16 *)((u8 *)arg0 + 0x4A);
-    void *p = *(void **)((u8 *)arg0 + 0x3C);
-    return fn_801CD480(p, x, y);
+    return fn_801CD480(*(void **)((u8 *)self + 0x3C), *(s16 *)((u8 *)self + 0x48), *(s16 *)((u8 *)self + 0x4A));
 }
 
 #pragma cplusplus on
@@ -13549,10 +13617,8 @@ extern "C" void *Ui_DtorScrollListPanel(void *self, s16 doFree) {
 }
 #pragma cplusplus reset
 
-s16 fn_801D2FC0(void *arg0) {
-    s16 a = M2C_FIELD(arg0, s16 *, 0x16);
-    s16 b = M2C_FIELD(arg0, s16 *, 0x12);
-    return (s16) (a - b);
+s32 fn_801D2FC0(void *arg0) {
+ return (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12));
 }
 
 void fn_801D2FD4(void *arg0, s16 arg1) {
@@ -15794,17 +15860,15 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg0;
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void fn_801DDE44(void *arg0) {
+    void Process_ClearFunc(void *);
     extern f32 lbl_8036B630;
-    f32 step = lbl_8036B630;
-    f32 *timer = (f32 *)((u8 *)arg0 + 0x30);
-    *timer = *timer + step;
-    if (timer[0] >= timer[1]) {
+    *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
+    if (*(f32 *)((u8 *)arg0 + 0x30) >= *(f32 *)((u8 *)arg0 + 0x34)) {
         Process_ClearFunc(arg0);
     }
 }
-#pragma scheduling on
 void fn_801DDE88(s16 arg0, s16 arg1, s32 arg2) {
     M2C_UNK Prim2D_SetQuadMax(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetQuadMin(f32, f32, f32, f32);
