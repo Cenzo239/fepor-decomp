@@ -209,12 +209,16 @@ extern void OSDisableInterrupts(void);
 extern void OSRestoreInterrupts(void);
 
 void __DVDFSInit(void) {
-    *(u32 *)0x80368578 = 0x80000000;
-    *(void **)0x8036857C = *(void **)0x80000038;
-    if (*(void **)0x8036857C != NULL) {
-        *(s32 *)0x80368584 = *(s32 *)((u8 *)*(void **)0x8036857C + 0x8);
-        *(void **)0x80368580 = (void *)((u8 *)*(void **)0x8036857C + *(s32 *)0x80368584 * 0xC);
-    }
+extern void *BootInfo_80368578;
+extern u32 MaxEntryNum_80368584;
+FSTEntry *fst;
+BootInfo_80368578=(void*)0x80000000;
+FstStart_8036857C=*(FSTEntry**)0x80000038;
+fst=FstStart_8036857C;
+if(fst) {
+MaxEntryNum_80368584=fst->nextEntryOrLength;
+FstStringStart_80368580=(char*)(fst+MaxEntryNum_80368584);
+}
 }
 
 u32 fn_8020C3E0(char *path) {
