@@ -1313,31 +1313,30 @@ void GXSetMisc(s32 arg0, u32 arg1) {
     }
 }
 
-int fn_802204F8(void)
+void fn_802204F8(void)
 {
     void fn_80220D6C(void);
     void PPCSync(void);
-    extern u32 __GXData;
-
+    extern u16 *__GXData;
     u8 *gx;
     volatile u32 *fifo;
 
     gx = (u8 *)__GXData;
-
-    if (*(u32 *)(gx + 0x5AC) != 0) {
-        fn_80220D6C();
-
-        fifo = (volatile u32 *)0xCC008000;
-
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
-        *fifo = 0;
+    if (*(u32 *)(gx + 0x5AC) == 0) {
+        return;
     }
+
+    fn_80220D6C();
+
+    fifo = (volatile u32 *)0xCC008000;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
+    *fifo = 0;
 
     PPCSync();
 }
@@ -1400,7 +1399,25 @@ void fn_80220A54(u8 arg0) {
 
 void fn_80220A6C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 {
-    *(u16 *)(__peReg + 1) = 0x0001;
+    extern u16 *__peReg;
+    s32 c;
+    u32 val;
+
+    c = 1;
+    val = __peReg[1];
+    if (arg0 != 1) {
+        if (arg0 != 3) {
+            c = 0;
+        }
+    }
+    val = __rlwimi(val, c, 0, 31, 31);
+    val = __rlwimi(val, arg0 == 3, 11, 20, 20);
+    val = __rlwimi(val, arg0 == 2, 1, 30, 30);
+    val = __rlwimi(val, arg3, 12, 16, 19);
+    val = __rlwimi(val, arg1, 8, 21, 23);
+    val = __rlwimi(val, arg2, 5, 24, 26);
+    val = __rlwimi(val, 0x41, 24, 0, 7);
+    __peReg[1] = (u16)val;
 }
 
 extern u16* __peReg;
