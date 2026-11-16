@@ -1496,24 +1496,14 @@ void *__memrchr(void *arg0, int arg1, u32 arg2) {
     return NULL;
 }
 
-void *memchr(const void *ptr, int value, unsigned long count)
-{
-    const unsigned char *p;
-    unsigned char c;
-
-    p = (const unsigned char *)ptr;
-    c = (unsigned char)value;
-
-    while (count != 0) {
-        if (*p == c) {
-            return (void *)p;
-        }
-
-        p++;
-        count--;
+void *memchr(const void *ptr, int value, unsigned long count) {
+    u32 c = (u8)value;
+    const u8 *p = (const u8 *)ptr - 1;
+    ++count;
+    while (--count != 0) {
+        if (*++p == c) return (void *)p;
     }
-
-    return 0;
+    return NULL;
 }
 
 void fn_80231C20(void *dst, const void *src, u32 count) {
