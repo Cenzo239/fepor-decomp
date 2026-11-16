@@ -1465,23 +1465,14 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-int fn_80231944(const char *str1, const char *str2, int count)
-{
-    str1--;
-    str2--;
-
-    count++;
-
-    while (--count != 0) {
-        u8 c1 = (u8)*++str1;
-        u8 c2 = (u8)*++str2;
-
-        if (c1 != c2) {
-            return c1 >= c2 ? 1 : -1;
-        }
-    }
-
-    return 0;
+int fn_80231944(const char *str1, const char *str2, int count) {
+ const u8 *s1=(const u8*)str1-1;
+ const u8 *s2=(const u8*)str2-1;
+ int n=count+1;
+ while (--n != 0) {
+ if (*++s1 != *++s2) return *s1 < *s2 ? -1 : 1;
+ }
+ return 0;
 }
 
 void *__memrchr(void *arg0, int arg1, u32 arg2) {
