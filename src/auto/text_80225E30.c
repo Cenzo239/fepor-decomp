@@ -277,25 +277,30 @@ s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
  return result;
 }
 
-void fn_802264B4(void* arg0, void** arg1)
-{
-    if (arg0 != NULL) {
-        u32 temp = *(u32*)arg0;
-        if ((*(u16*)&temp == 0x0)) {
-            *(u32*)arg1 = temp;
-            *(u32*)((u8*)arg0 + 0xC) += 8;
-        } else {
-            *(u32*)arg1 = 0x302;
-            if (arg1 != NULL && *(u32*)arg1 == 0) {
-                u8* dest = *(u8**)arg1;
-                u8* src = (u8*)arg0 + 0x10;
-                int i;
-                for (i = 0; i < 8; i++) {
-                    dest[i] = src[i];
-                }
-            }
-        }
+s32 fn_802264B4(void *arg0, u8 *arg1) {
+    extern s32 gTRKBigEndian;
+    void fn_80003488(void *, void *, s32);
+    u8 temp[8];
+    u8 *source;
+    s32 result;
+    u32 length;
+    if (gTRKBigEndian) source = arg1;
+    else source = temp;
+    length = 8;
+    result = 0;
+    if (length > *(u32 *)((u8 *)arg0+8) - *(u32 *)((u8 *)arg0+12)) {
+        result = 0x302;
+        length = *(u32 *)((u8 *)arg0+8) - *(u32 *)((u8 *)arg0+12);
     }
+    fn_80003488(source, (u8 *)arg0 + (*(u32 *)((u8 *)arg0+12) + 16), length);
+    *(u32 *)((u8 *)arg0+12) += length;
+    if (!gTRKBigEndian && !result) {
+        arg1[0]=source[7]; arg1[1]=source[6];
+        arg1[2]=source[5]; arg1[3]=source[4];
+        arg1[4]=source[3]; arg1[5]=source[2];
+        arg1[6]=source[1]; arg1[7]=source[0];
+    }
+    return result;
 }
 
 #pragma use_lmw_stmw on
@@ -2323,22 +2328,23 @@ s32 ddh_cc_initinterrupts(void) {
 }
 
 s32 ddh_cc_peek(void) {
-    M2C_UNK fn_8022BB3C(M2C_UNK *, M2C_UNK *, s32);
-    s32 fn_8023C544();
-    s32 fn_8023C54C(M2C_UNK *, s32);
-    extern M2C_UNK lbl_8033D7E8;
-    M2C_UNK sp8;
-    s32 temp_r3;
+    void fn_8022BB3C(u8 *, u8 *, s32);
+    s32 fn_8023C544(void);
+    s32 fn_8023C54C(u8 *, s32);
+    extern u8 lbl_8033D7E8[];
+    u8 buf[0x800];
+    s32 size;
 
-    temp_r3 = fn_8023C544();
-    if (temp_r3 <= 0) {
+    size = fn_8023C544();
+    if (size <= 0) {
         return 0;
     }
-    if (fn_8023C54C(&sp8, temp_r3) == 0) {
-        fn_8022BB3C(&lbl_8033D7E8, &sp8, temp_r3);
-        return temp_r3;
+    if (fn_8023C54C(buf, size) == 0) {
+        fn_8022BB3C(lbl_8033D7E8, buf, size);
+    } else {
+        return -0x2719;
     }
-    return -0x2719;
+    return size;
 }
 
 s32 ddh_cc_post_stop(void) {
@@ -2555,63 +2561,52 @@ void fn_8022C08C(void) {
 }
 
 s32 __va_arg(u8 *arg0, s32 arg1) {
-    s32 temp_r0;
-    s32 temp_r7;
-    s32 var_r0;
-    s32 var_r10;
-    s32 var_r11;
-    s32 var_r5;
-    s32 var_r6;
-    s32 var_r8;
-    s32 var_r9;
-    s8 var_r7;
-
-    var_r7 = *arg0;
-    var_r0 = 8;
-    var_r8 = 4;
-    var_r9 = 1;
-    var_r5 = 0;
-    var_r10 = 0;
-    var_r11 = 4;
+    u8 *value;
+    s32 pad;
+    u8 *counter;
+    s32 index;
     
+    s32 limit;
+    s32 size;
+    s32 count;
+    s32 offset;
+    s32 stride;
+    u32 result;
+    index = *(s8 *)arg0;
+    counter = arg0;
+    limit = 8;
+    size = 4;
+    count = 1;
+    pad = 0;
+    offset = 0;
+    stride = 4;
     if (arg1 == 3) {
-        var_r7 = *(arg0 + 1);
-        arg0++;
-        var_r8 = 8;
-        var_r10 = 0x20;
-        var_r7 = *(arg0 + 1);
-        var_r11 = 8;
+        index = *(s8 *)(arg0+1);
+        counter = arg0+1;
+        size = 8;
+        offset = 0x20;
+        stride = 8;
     }
-    
     if (arg1 == 2) {
-        var_r8 = 8;
-        var_r0 = 7;
-        if (var_r7 & 1) {
-            var_r5 = 1;
-        }
-        var_r9 = 2;
+        size = 8;
+        limit = 7;
+        if (index & 1) pad = 1;
+        count = 2;
     }
-
-    if (var_r7 < var_r0) {
-        temp_r7 = var_r7 + var_r5;
-        temp_r0 = temp_r7 + var_r9;
-        *arg0 = temp_r0;
-        
-        var_r6 = *(arg0 + 8);
-        var_r6 = var_r10 + (temp_r7 * var_r11);
-        var_r6 = var_r6 + var_r6;
+    if (index < limit) {
+        index += pad;
+        result = *(u32 *)(arg0+8);
+        *counter = index + count;
+        value = (u8 *)result + offset + index*stride;
     } else {
-        temp_r0 = var_r8 - 1;
-        *arg0 = 8;
-        var_r6 = ~temp_r0 & ((var_r8 + *(arg0 + 4)) - 1);
-        *(arg0 + 4) = (s32) (var_r6 + var_r8);
+        *counter = 8;
+        value = (u8 *)~(size-1);
+        result = size + *(u32 *)(arg0+4);
+        value = (u8 *)((u32)value & (result - 1));
+        *(u32 *)(arg0+4) = (u32)value + size;
     }
-    
-    if (arg1 == 0) {
-        var_r6 = *(u8*)*(arg0 + 0);
-    }
-    
-    return var_r6;
+    if (arg1 == 0) value = *(u8 **)value;
+    return (s32)value;
 }
 
 void __destroy_global_chain(void)
