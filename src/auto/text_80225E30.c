@@ -1849,7 +1849,7 @@ void TRK_main(void) {
     return;
 }
 
-void TRKInitializeIntDrivenUART(void);
+s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3);
 void TRKLoadContext(void);
 void TRK_main(void);
 u32 fn_8022AE34(u32 arg0);
