@@ -420,6 +420,38 @@ s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, void
 
 void fn_8020CBF8(s32 result, void *arg1) { if (*(void (**)(s32, void *))((char *)arg1+0x38) != NULL) (*(void (**)(s32, void *))((char *)arg1+0x38))(result,arg1); }
 
+s32 fn_8020CC28(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void OSPanic(void *, s32, char *, ...);
+    void fn_8020CD40(void);
+    s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(void), s32);
+    void OSSleepThread(void *);
+    extern void *__DVDThreadQueue;
+    extern char lbl_8029D01C[];
+    s32 state;
+    s32 interrupts;
+    s32 end;
+    s32 result;
+    if (arg3 < 0 || (u32)arg3 > *(u32 *)((u8 *)arg0 + 0x34))
+        OSPanic(&lbl_80366F60, 0x334, lbl_8029D01C);
+    end = arg3 + arg2;
+    if (end < 0 || (u32)end >= *(u32 *)((u8 *)arg0 + 0x34) + 0x20)
+        OSPanic(&lbl_80366F60, 0x33A, lbl_8029D01C);
+    if (!DVDReadAbsAsyncPrio(arg0, arg1, arg2, *(u32 *)((u8 *)arg0+0x30)+arg3, fn_8020CD40, arg4))
+        return -1;
+    interrupts = OSDisableInterrupts();
+    for (;;) {
+        state = ((DVDReadyCommand *)arg0)->state;
+        if (state == 0) { result = *(s32 *)((u8 *)arg0+0x20); break; }
+        if (state == -1) { result = -1; break; }
+        if (state == 10) { result = -3; break; }
+        OSSleepThread(&__DVDThreadQueue);
+    }
+    OSRestoreInterrupts(interrupts);
+    return result;
+}
+
 void fn_8020CD40(void) {
     extern void* __DVDThreadQueue;
     fn_8020AEC4(&__DVDThreadQueue);
@@ -2101,6 +2133,34 @@ s32 DVDKeepAlive(void)
     return result;
 }
 
+void fn_8020F504(void (*arg0)(void *, void *)) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void fn_8020F0B8(void *, void (*)(void *, void *));
+s32 inner, resume, outer, pause;
+void *block;
+outer = OSDisableInterrupts();
+__DVDClearWaitingQueue();
+if (lbl_803685B8 != 0) lbl_803685BC = arg0;
+else {
+if (executing_80368598 != 0) ((DVDReadyCommand *)executing_80368598)->callback = 0;
+inner = OSDisableInterrupts();
+pause = OSDisableInterrupts();
+PauseFlag_803685A4 = 1;
+if (executing_80368598 == 0) PausingFlag_803685A8 = 1;
+OSRestoreInterrupts(pause);
+while ((block = (void *)__DVDPopWaitingQueue()) != 0) fn_8020F0B8(block, 0);
+if (executing_80368598 != 0) fn_8020F0B8(executing_80368598, arg0);
+else if (arg0 != 0) arg0(0,0);
+resume = OSDisableInterrupts();
+PauseFlag_803685A4 = 0;
+if (PausingFlag_803685A8 != 0) { PausingFlag_803685A8 = 0; stateReady(); }
+OSRestoreInterrupts(resume);
+OSRestoreInterrupts(inner);
+}
+OSRestoreInterrupts(outer);
+}
+
 int fn_8020F620(void *arg0) {
     extern u8 lbl_80339FB0[];
 
@@ -2353,7 +2413,40 @@ void cb(s32 arg0, void *arg1) {
 }
 
 void __fstLoad(void) {
-    // A simple placeholder to test the compilation process
+void *OSGetArenaHi(void);
+void OSSetArenaHi(void *);
+void DVDReset(void);
+void OSReport(char *, ...);
+void *memcpy(void *, const void *, u32);
+extern u8 *bb2_803685F4;
+extern void *idTmp_803685F8;
+extern char lbl_8029D258[];
+extern char lbl_80366F80[2], lbl_80366F84[4], lbl_80366F88[3];
+static u8 block[48];
+u8 idBuffer[64];
+register char *format;
+u8 *id;
+u8 *boot;
+format = lbl_8029D258;
+OSGetArenaHi();
+idTmp_803685F8 = (void *)(((u32)idBuffer + 31) & ~31);
+bb2_803685F4 = (u8 *)(((u32)bb2Buf_80339FF8 + 31) & ~31);
+DVDReset();
+DVDReadDiskID(block,idTmp_803685F8,(void *)cb);
+while (DVDGetDriveStatus() != 0) {}
+id=(u8 *)0x80000000;
+boot=(u8 *)0x80000000;
+*(u32 *)(boot+0x38)=*(u32 *)(bb2_803685F4+0x10);
+*(u32 *)(boot+0x3C)=*(u32 *)(bb2_803685F4+0xC);
+memcpy(id,idTmp_803685F8,32);
+OSReport(lbl_80366F80);
+OSReport(format,(s8)id[0],(s8)id[1],(s8)id[2],(s8)id[3]);
+OSReport(format+0x1C,(s8)id[4],(s8)id[5]);
+OSReport(format+0x34,id[6]);
+OSReport(format+0x48,id[7]);
+OSReport(format+0x5C,boot[8] == 0 ? lbl_80366F84 : lbl_80366F88);
+OSReport(lbl_80366F80);
+OSSetArenaHi(*(void **)(bb2_803685F4+0x10));
 }
 
 #pragma use_lmw_stmw on
@@ -2960,6 +3053,31 @@ path_ok:
     OSRestoreInterrupts(irq);
 }
 
+void VIFlush(void) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+extern u8 lbl_8033A068[];
+extern s32 lbl_80368608;
+u8 *base = lbl_8033A068;
+s32 interrupts;
+u64 bits;
+s32 bit;
+interrupts = OSDisableInterrupts();
+lbl_80368638 = (void *)((u32)lbl_80368638 | (u32)lbl_80368628);
+lbl_80368628 = 0;
+*(u64 *)&lbl_80368640 |= *(u64 *)&lbl_80368630;
+while (*(u64 *)&lbl_80368630 != 0) {
+bits = *(u64 *)&lbl_80368630;
+bit = __cntlzw((u32)(bits >> 32));
+if (bit >= 32) bit = __cntlzw((u32)bits) + 32;
+*(u16 *)(base + 0x78 + bit*2) = *(u16 *)(base + bit*2);
+*(u64 *)&lbl_80368630 &= ~((u64)1 << (63-bit));
+}
+lbl_80368608 = 1;
+lbl_80368650 = *(void **)(base + 0x120);
+OSRestoreInterrupts(interrupts);
+}
+
 void VISetNextFrameBuffer(void *frameBuffer)
 {
     u32 OSDisableInterrupts(void);
@@ -3237,70 +3355,64 @@ void fn_80211B30(s32 arg0, s32 arg1) {
     fn_80211914(horizontal, vertical, arg0, arg1);
 }
 
-void fn_80211B90(u8 *arg0, u8 *arg1, s8 arg2, s8 arg3, s8 arg4) {
-    s32 temp_r10;
-    s32 temp_r7;
-    s32 temp_r7_2;
-    s32 temp_r7_3;
-    s32 temp_r9;
-    s32 temp_r9_2;
-    s32 var_r0;
-    s32 var_r8;
-    s8 var_r11;
-    s8 var_r11_2;
-    s8 var_r12;
-    s8 var_r12_2;
-    u8 temp_r0;
+void fn_80211B90(s8 *arg0, s8 *arg1, s8 arg2, s8 arg3, s8 arg4) {
+    s32 sa;
+    s32 a;
+    s32 b;
+    s32 sb;
+    s32 t9;
+    s32 t7;
+    s32 t;
 
-    temp_r0 = *arg0;
-    var_r12 = (s8) *arg1;
-    var_r11 = (s8) temp_r0;
-    if ((s8) temp_r0 >= 0) {
-        var_r0 = 1;
+    sa = *arg0;
+    b = *arg1;
+    a = sa;
+    if (sa >= 0) {
+        sa = 1;
     } else {
-        var_r0 = -1;
-        var_r11 = -var_r11;
+        sa = -1;
+        a = -a;
     }
-    if (var_r12 >= 0) {
-        var_r8 = 1;
+    if (b >= 0) {
+        sb = 1;
     } else {
-        var_r8 = -1;
-        var_r12 = -var_r12;
+        sb = -1;
+        b = -b;
     }
-    if (var_r11 <= arg4) {
-        var_r11_2 = 0;
+    if (a <= arg4) {
+        a = 0;
     } else {
-        var_r11_2 = var_r11 - arg4;
+        a = a - arg4;
     }
-    if (var_r12 <= arg4) {
-        var_r12_2 = 0;
+    if (b <= arg4) {
+        b = 0;
     } else {
-        var_r12_2 = var_r12 - arg4;
+        b = b - arg4;
     }
-    if ((var_r11_2 == 0) && (var_r12_2 == 0)) {
+    if (a == 0 && b == 0) {
         *arg1 = 0;
         *arg0 = 0;
         return;
     }
-    temp_r9 = arg3 * var_r12_2;
-    temp_r7 = arg3 * var_r11_2;
-    if (temp_r9 <= temp_r7) {
-        temp_r9_2 = arg3 * arg2;
-        temp_r7_2 = temp_r7 + (var_r12_2 * (arg2 - arg3));
-        if (temp_r9_2 < temp_r7_2) {
-            var_r11_2 = (s8) ((s32) (var_r11_2 * temp_r9_2) / temp_r7_2);
-            var_r12_2 = (s8) ((s32) (var_r12_2 * temp_r9_2) / temp_r7_2);
+    t9 = arg3 * b;
+    t7 = arg3 * a;
+    if (t9 <= t7) {
+        t = arg3 * arg2;
+        t7 = t7 + b * (arg2 - arg3);
+        if (t < t7) {
+            a = (s8)((a * t) / t7);
+            b = (s8)((b * t) / t7);
         }
     } else {
-        temp_r10 = arg3 * arg2;
-        temp_r7_3 = temp_r9 + (var_r11_2 * (arg2 - arg3));
-        if (temp_r10 < temp_r7_3) {
-            var_r11_2 = (s8) ((s32) (var_r11_2 * temp_r10) / temp_r7_3);
-            var_r12_2 = (s8) ((s32) (var_r12_2 * temp_r10) / temp_r7_3);
+        t = arg3 * arg2;
+        t7 = t9 + a * (arg2 - arg3);
+        if (t < t7) {
+            a = (s8)((a * t) / t7);
+            b = (s8)((b * t) / t7);
         }
     }
-    *arg0 = var_r0 * var_r11_2;
-    *arg1 = var_r8 * var_r12_2;
+    *arg0 = sa * a;
+    *arg1 = sb * b;
 }
 
 extern u16 Scb_80339420[4];
