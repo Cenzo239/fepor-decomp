@@ -365,6 +365,54 @@ p = *(void **)(self + 0x30);
 fn_80199CC0(self);
 }
 
+s32 fn_800ADA4C(s32 arg0) {
+    void fn_8002F728(void *);
+    void Allegiance_FillMask(s32, void *);
+    u8 fn_80104628(void *, s32);
+    void Unit_DecSkillRanks(void *, s32);
+    void fn_8002F6E8(void *, u8, u8, u8, s32);
+    void *Process_CreateChild(void *, s32);
+    extern u8 gTargetList[];
+    extern u8 gUnits[];
+    extern u8 lbl_8028D028[];
+
+    u8 allegMask;
+    s32 i;
+    u8 *unit;
+
+    fn_8002F728(gTargetList);
+    Allegiance_FillMask(0, &allegMask);
+    i = 1;
+    do {
+        if ((u8)i != 0) {
+            unit = gUnits + (((u8)i - 1) * 0x280);
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0
+            && *((u8 *)&allegMask + *((u8 *)*(void **)(unit + 0x190) + 8)) != 0) {
+            if (fn_80104628(unit + 0x1A4, 0) == 0
+                || (*(u32 *)(unit + 0x1A0) & 0x010000DC) != 0) {
+                Unit_DecSkillRanks(unit + 0x1A4, 0);
+            } else {
+                fn_8002F6E8(
+                    gTargetList,
+                    unit[0x19E],
+                    unit[0x19F],
+                    unit[0x198],
+                    0
+                );
+            }
+        }
+        i += 1;
+    } while (i <= 0x9F);
+    if (*(s32 *)gTargetList == 0) {
+        return 0;
+    }
+    Process_CreateChild(lbl_8028D028, arg0);
+    return 1;
+}
+
 s32 fn_800ADB74(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp0, temp1, temp2, temp3;
     s32 var_r3, var_r4;
@@ -9723,25 +9771,12 @@ void fn_800C3864(s32 arg0, s32 arg1) {
 
 extern struct Unit;
 s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
-    s32 temp_r3;
+    void *item;
     s32 i;
-    s32 j;
-    
-    temp_r3 = Item_GetByIid(arg1);
-    
-    for (i = 0; i < 0x14; i++) {
-      if (arg0[i * 0x14 + 0] == temp_r3) return i;
-      if (arg0[i * 0x14 + 2] == temp_r3) return i + 1;
-      if (arg0[i * 0x14 + 4] == temp_r3) return i + 2;
-      if (arg0[i * 0x14 + 6] == temp_r3) return i + 3;
-      if (arg0[i * 0x14 + 8] == temp_r3) return i + 4;
-      if (arg0[i * 0x14 + 10] == temp_r3) return i + 5;
-      if (arg0[i * 0x14 + 12] == temp_r3) return i + 6;
-      if (arg0[i * 0x14 + 14] == temp_r3) return i + 7;
-      if (arg0[i * 0x14 + 16] == temp_r3) return i + 8;
-      if (arg0[i * 0x14 + 18] == temp_r3) return i + 9;
+    item = (void *)Item_GetByIid(arg1);
+    for (i=0; i<200; i++) {
+        if (*(void **)((u8 *)arg0+i*8) == item) return i;
     }
-    
     return -1;
 }
 
@@ -9918,37 +9953,32 @@ void fn_800AFCFC(s32 arg0) {
 }
 
 void fn_800AFE0C(s32 arg0) {
-    u16* temp_r31;
-    
-    temp_r31 = &gSoundSys[arg0 * 0x13C];
-    if (temp_r31[0] != 0) {
-        if (!(temp_r31[0] & 8)) {
-            temp_r31[0] = temp_r31[0] | 4;
-            return;
+    #pragma auto_inline off
+    u8 *sys;
+    u8 *entry;
+    u16 nest;
+    sys = (u8 *)gSoundSys;
+    entry = *(u8 **)(sys+0xF8) + arg0*0x13C;
+    if (*(u16 *)entry != 0) {
+        if (!(*(u16 *)entry & 8)) { *(u16 *)entry |= 4; return; }
+        if (*(u16 *)entry & 0x400) *(u16 *)(sys+*(u16 *)(entry+2)*2+0x13E)=0;
+        *(u16 *)entry=0;
+        sys = (u8 *)gSoundSys;
+        if (*(u16 *)(sys+0x124)==0) *(s32 *)((u8 *)gSoundSys+0x128)=OSDisableInterrupts();
+        *(u16 *)(sys+0x124) += 1;
+        fn_800B49D0(*(void **)(entry+0x2C));
+        fn_800B49D0(*(void **)(entry+0xB4));
+        fn_8024DA2C(*(void **)(entry+0x50));
+        if (*(u16 *)(entry+0x1E)==2) fn_8024DA2C(*(void **)(entry+0xD8));
+        nest = *(u16 *)(sys+0x124);
+        if (nest != 0) {
+            nest -= 1;
+            *(u16 *)(sys+0x124)=nest;
+            if ((u16)nest==0) OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys+0x128));
         }
-        if (temp_r31[0] & 0x400) {
-            gSoundSys[(temp_r31[1] * 2) + 0x13E] = 0;
-        }
-        temp_r31[0] = 0;
-        if (gSoundSys[0x124/2] == 0) {
-            gSoundSys[0x128/2] = OSDisableInterrupts();
-        }
-        gSoundSys[0x124/2] = gSoundSys[0x124/2] + 1;
-        fn_800B49D0((void *)(u32)temp_r31[0x2C/2]);
-        fn_800B49D0((void *)(u32)temp_r31[0xB4/2]);
-        fn_8024DA2C((void *)(u32)temp_r31[0x50/2]);
-        if (temp_r31[0x1E/2] == 2) {
-            fn_8024DA2C((void *)(u32)temp_r31[0xD8/2]);
-        }
-        if (gSoundSys[0x124/2] != 0) {
-            u16 temp_r3_2 = gSoundSys[0x124/2] - 1;
-            gSoundSys[0x124/2] = temp_r3_2;
-            if (temp_r3_2 == 0) {
-                OSRestoreInterrupts(gSoundSys[0x128/2]);
-            }
-        }
-        gSoundSys[0xFC/2] = -1;
+        *(s32 *)((u8 *)gSoundSys+0xFC)=-1;
     }
+    #pragma auto_inline reset
 }
 
 #pragma use_lmw_stmw on
@@ -10525,19 +10555,20 @@ void fn_800B125C(s32 arg0, u32 arg1) {
     s32 i;
     s32 owner;
     u8 *p;
-    u32 len;
+    u32 sum;
 
     entry = *(u8 **)((u8 *)gSoundSys + 0xF8);
     for (i = 0; i < 3; entry += 0x13C, i++) {
         if (*(u16 *)entry != 0) {
             if (*(u32 *)(entry + 0x2C) + 0x40 == arg1) {
                 if (arg0 >= 0) {
-                    len = 0x8000;
-                    *(u32 *)(entry + 0x60) =
-                        *(u32 *)(entry + 0x60) + *(u32 *)(entry + 0x74);
-                    p = (u8 *)gSoundSys + (*(u16 *)(entry + 2) << 2);
+                    sum = *(u32 *)(entry + 0x60);
+                    p = (u8 *)gSoundSys;
+                    sum += *(u32 *)(entry + 0x74);
+                    *(u32 *)(entry + 0x60) = sum;
+                    p += *(u16 *)(entry + 2) << 2;
                     dest = *(u32 *)(entry + 0x64) + *(u32 *)(p + 0x134);
-                    DCFlushRange(*(void **)(entry + 0x58), len);
+                    DCFlushRange(*(void **)(entry + 0x58), 0x8000);
                     owner = lbl_80367818;
                     lbl_80367818 = owner + 1;
                     ARQPostRequest(
@@ -10547,11 +10578,10 @@ void fn_800B125C(s32 arg0, u32 arg1) {
                         0,
                         *(u32 *)(entry + 0x58),
                         dest,
-                        len,
+                        0x8000,
                         fn_800B1368
                     );
-                    *(u32 *)(entry + 0x64) =
-                        *(u32 *)(entry + 0x64) + *(u32 *)(entry + 0x74);
+                    *(u32 *)(entry + 0x64) += *(u32 *)(entry + 0x74);
                 }
                 break;
             }
