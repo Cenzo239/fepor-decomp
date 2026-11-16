@@ -1487,21 +1487,12 @@ int fn_80231944(const char *str1, const char *str2, int count)
 }
 
 void *__memrchr(void *arg0, int arg1, u32 arg2) {
-    u8 *ptr;
-    u8 value;
-
-    ptr = (u8 *)arg0 + arg2;
-    value = (u8)arg1;
-
-    while (arg2 != 0) {
-        arg2--;
-        ptr--;
-
-        if (*ptr == value) {
-            return ptr;
-        }
+    u32 value = (u8)arg1;
+    u8 *ptr = (u8 *)arg0 + arg2;
+    ++arg2;
+    while (--arg2 != 0) {
+        if (*--ptr == value) return ptr;
     }
-
     return NULL;
 }
 
