@@ -6050,6 +6050,63 @@ s32 fn_800BB9E8(u8 arg0) {
     return temp_r3;
 }
 
+s32 fn_800BBA38(void *arg0, void *arg1, s32 arg2) {
+    void *Unit_FindByName(void *);
+    s8 fn_80036DE0(void *, void *);
+    void fn_80036FC4(void *, s32);
+
+    u8 *unitA;
+    u8 *unitB;
+    s32 indexA;
+    s32 indexB;
+    u8 *entry;
+    u8 value;
+    s32 result;
+
+    unitA = Unit_FindByName(arg0);
+    unitB = Unit_FindByName(arg1);
+
+    if (unitA == NULL || unitB == NULL) {
+        return -1;
+    }
+
+    indexA = fn_80036DE0(unitA, unitB);
+    indexB = fn_80036DE0(unitB, unitA);
+
+    if ((s8)indexA < 0 || (s8)indexB < 0) {
+        return -1;
+    }
+
+    indexA = (s8)indexA;
+    fn_80036FC4(unitA, indexA);
+
+    entry = *(u8 **)(*(u8 **)(unitA + 0x188) + 0x50);
+    entry += indexA * 8 + 8;
+
+    switch (arg2) {
+    case 0:
+        value = entry[4];
+        break;
+    case 1:
+        value = entry[5];
+        break;
+    case 2:
+    case 3:
+        value = entry[6];
+        break;
+    default:
+        value = entry[6];
+        break;
+    }
+
+    result = (u8)(value + 1);
+
+    unitA[0x214 + indexA] = result;
+    unitB[0x214 + (s8)indexB] = result;
+
+    return result;
+}
+
 s32 fn_800BBB58(s32 arg0, s32 arg1) {
     u32 Unit_FindByName(s32);
     s8 fn_80036DE0(u32, u32);
@@ -9678,22 +9735,12 @@ s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     return -1;
 }
 
-s32 fn_800C39A4(s32 arg0, s32 arg1, s32 arg2)
-{
-    if (arg0 < 0) {
-        return -1;
-    }
-    
-    if (arg0 >= arg1) {
-        return -1;
-    }
-    
-    if ((arg2 & 0xF) != 0) {
-        return -1;
-    }
-    
-    // Simple lookup based on what we can tell from the structure
-    return ((u16*)0x80317338)[arg0];
+s32 fn_800C39A4(void *convoy, void *item) {
+ s32 i;
+ for(i=0;i<200;i++) {
+ if(*(void **)((u8 *)convoy+i*8)==item) return i;
+ }
+ return -1;
 }
 
 /* Return index of first empty convoy item slot, or -1 if full. */
