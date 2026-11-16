@@ -245,10 +245,97 @@ s32 fn_800138BC(void *arg0) {
     return (s32)*stack;
 }
 
-u32 ScriptCtx_Call(u32 arg0, u32 arg1) {
-    if (arg0 < 0x10000000)
-        return (arg0 * 0x10000000) + (arg1 * 0x1000000);
-    return 0;
+u32 ScriptCtx_Call(void) {
+#pragma dont_inline on
+    void fn_800142B0(s32);
+    extern u8 *lbl_80367184;
+    extern u8 *lbl_80367180;
+    extern void *lbl_8036718C;
+    u8 *command;
+    u8 *ctx;
+    u32 *sp;
+    fn_800142B0(0);
+    command=lbl_80367184;
+    if (command==0) {
+        *(void **)(lbl_80367180+0x18)=lbl_8036718C;
+        fn_800142B0(5);
+        return 0;
+    }
+    if (*(void **)(command+8)==0) {
+        fn_80011A5C(command);
+        ctx=lbl_80367180;
+        sp=*(u32 **)(ctx+0x18)-1;
+        *(u32 **)(ctx+0x18)=sp;
+        return *sp;
+    }
+    { void *context=lbl_80367180; 
+    extern void *lbl_803671A4;
+    extern void *lbl_80367198;
+    extern void *lbl_80367180;
+
+    s32 base;
+    s32 i;
+    s32 *p;
+    s32 *stack;
+    s32 val;
+    void *table;
+    u8 *inner;
+    s32 zero;
+    void *saved;
+
+    if (context == NULL) {
+        context = lbl_803671A4;
+    }
+
+    zero = 0;
+    inner = *(u8 **)(command + 8);
+    base = *(s32 *)((u8 *)context + 0x18) - ((s8)command[0xd] * 4);
+    *(s32 *)((u8 *)context + 0x18) = base + (*(s16 *)(command + 0x12) * 4);
+    table = (u8 *)lbl_80367198 + (*(u16 *)(inner + 0x20) * 4);
+
+    i = (s8)command[0xd];
+    p = (s32 *)(base + (i * 4));
+    while (i < *(s16 *)(command + 0x12)) {
+        *p = zero;
+        p += 1;
+        i += 1;
+    }
+
+    lbl_80367180 = context;
+
+    stack = *(s32 **)((u8 *)context + 0x18);
+    val = *(s32 *)((u8 *)context + 0xc);
+    *(s32 **)((u8 *)context + 0x18) = (s32 *)((u8 *)stack + 4);
+    *stack = val;
+
+    saved = lbl_80367180;
+    val = *(s32 *)((u8 *)context + 0x8);
+    stack = *(s32 **)((u8 *)saved + 0x18);
+    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    *stack = val;
+
+    saved = lbl_80367180;
+    val = *(s32 *)((u8 *)context + 0x10);
+    stack = *(s32 **)((u8 *)saved + 0x18);
+    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    *stack = val;
+
+    saved = lbl_80367180;
+    val = *(s32 *)((u8 *)context + 0x14);
+    stack = *(s32 **)((u8 *)saved + 0x18);
+    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    *stack = val;
+
+    *(s32 *)((u8 *)context + 0xc) = *(s32 *)(command + 4);
+    *(void **)((u8 *)context + 0x8) = command;
+    *(void **)((u8 *)context + 0x10) = table;
+    *(s32 *)((u8 *)context + 0x14) = base;
+ }
+    fn_80011EDC(lbl_80367180);
+    ctx=lbl_80367180;
+    sp=*(u32 **)(ctx+0x18)-1;
+    *(u32 **)(ctx+0x18)=sp;
+    return *sp;
 }
 
 #pragma scheduling off
@@ -1851,13 +1938,14 @@ void fn_80015D54(void)
 }
 
 void fn_80015DEC(void) {
-    void Allegiance_FillMask(s32, void *);
-    void Unit_SetWorldXY(f32, f32, f32);
+    void Allegiance_FillMask(s32, u8 *);
+    void Unit_SetWorldXY(void *, f32, f32);
     extern u8 gUnits[];
     extern f32 lbl_80368C78;
     u8 sp8[8];
     s32 i;
-    void *unit;
+    u8 *unit;
+    u8 *sub;
 
     Allegiance_FillMask(3, sp8);
     i = 1;
@@ -1867,8 +1955,13 @@ void fn_80015DEC(void) {
         } else {
             unit = NULL;
         }
-        if ((*(u32 *)((u8 *)unit + 0x188) != 0) && (sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0)) {
-            Unit_SetWorldXY(lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 4), lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 8), lbl_80368C78);
+        if (*(u32 *)(unit + 0x188) != 0) {
+            sub = *(u8 **)(unit + 0x190);
+            if (sp8[sub[8]] != 0) {
+                Unit_SetWorldXY(unit,
+                                lbl_80368C78 + (f32)(s32)*(f32 *)(unit + 4),
+                                lbl_80368C78 + (f32)(s32)*(f32 *)(unit + 8));
+            }
         }
         i += 1;
     } while (i <= 0x9F);
@@ -1925,15 +2018,49 @@ void fn_80015FA4(void) {
     u32 fn_80055D94(s32);
     extern u8 gUnits[];
     extern s32 gGameFlags;
-    u8 allegMask[8];
+    u8 sp10[8];
+    u8 sp8[8];
     u8 *units;
     s32 i;
-    u8 *unit;
     u8 *faction;
 
     if (fn_80055D94(0x200) == 0U) {
         if (gGameFlags & 2) {
-            Allegiance_FillMask(3, allegMask + 8); /* placeholder */
+            Allegiance_FillMask(3, sp10);
+            units = gUnits;
+            i = 1;
+            do {
+                if ((u8)i != 0) {
+                    faction = units + ((u8)i - 1) * 0x280;
+                } else {
+                    faction = NULL;
+                }
+                if (*(u32 *)(faction + 0x188) != 0U) {
+                    u8 *f = *(u8 **)(faction + 0x190);
+                    if (sp10[f[8]] != 0) {
+                        fn_8004DF20(faction);
+                    }
+                }
+                i += 1;
+            } while (i <= 0x9F);
+        } else {
+            Allegiance_FillMask(3, sp8);
+            i = 1;
+            do {
+                if ((u8)i != 0) {
+                    units = gUnits + ((u8)i - 1) * 0x280;
+                } else {
+                    units = NULL;
+                }
+                if (*(u32 *)(units + 0x188) != 0U) {
+                    faction = *(u8 **)(units + 0x190);
+                    if (sp8[faction[8]] != 0) {
+                        fn_8004DF20(units);
+                        Unit_UpdateVisual(units);
+                    }
+                }
+                i += 1;
+            } while (i <= 0x9F);
         }
     }
 }
