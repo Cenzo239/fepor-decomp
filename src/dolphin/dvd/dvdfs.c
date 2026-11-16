@@ -406,6 +406,44 @@ void fn_8020CD40(void) {
     fn_8020AEC4(&__DVDThreadQueue);
 }
 
+s32 fn_8020CD64(char *path, void *dir) {
+    extern char lbl_8029D04C[];
+
+    char currentPath[0x80];
+    s32 entry;
+    u32 offset;
+    u32 flags;
+    FSTEntry *fst;
+
+    entry = fn_8020C3E0(path);
+
+    if (entry < 0) {
+        DVDConvertEntrynumToPath(
+            currentDirectory,
+            currentPath,
+            0x80
+        );
+
+        OSReport(lbl_8029D04C, path, currentPath);
+        return 0;
+    }
+
+    offset = entry * 0xC;
+    fst = FstStart_8036857C;
+    flags = *(u32 *)((u8 *)fst + offset);
+
+    if ((flags & 0xFF000000U) == 0) {
+        return 0;
+    }
+
+    *(s32 *)dir = entry;
+    *(s32 *)((u8 *)dir + 4) = entry + 1;
+    *(u32 *)((u8 *)dir + 8) =
+        *(u32 *)((u8 *)fst + offset + 8);
+
+    return 1;
+}
+
 s32 fn_8020CE24(void *arg0, void *arg1) {
     u8 *dir;
     u8 *entry;
@@ -2063,6 +2101,30 @@ void* fn_80210008(void* arg0) {
     return temp_r31;
 }
 
+VITiming *fn_8021004C(u32 arg0) {
+extern u8 lbl_8029D2C8[];
+extern VITiming *lbl_8036865C;
+u8 *data = lbl_8029D2C8;
+switch(arg0) {
+case 0: return (VITiming *)(data+0x44);
+case 1: return (VITiming *)(data+0x6A);
+case 4: return (VITiming *)(data+0x90);
+case 5: return (VITiming *)(data+0xB6);
+case 20: return (VITiming *)(data+0x44);
+case 21: return (VITiming *)(data+0x6A);
+case 8: return (VITiming *)(data+0xDC);
+case 9: return (VITiming *)(data+0x102);
+case 2: return (VITiming *)(data+0x128);
+case 3: return (VITiming *)(data+0x14E);
+case 16: return (VITiming *)(data+0x90);
+case 17: return (VITiming *)(data+0xB6);
+case 24: return (VITiming *)(data+0x174);
+case 25: return (VITiming *)(data+0x19A);
+case 30: return lbl_8036865C;
+default: return 0;
+}
+}
+
 VITiming *fn_8021004C(u32 arg0);
 
 void fn_802100F4(u32 arg0) {
@@ -2595,29 +2657,46 @@ s32 fn_802116D4(void) {
     return 0;
 }
 
-u32 fn_802117D8(void) {
-    u16 temp_r0;
-    u32 r5;
-    u32 r6;
-    u32 r30;
-    void *r31;
+s32 fn_8021173C(void) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+extern u8 lbl_8033A158[];
+s32 field;
+s32 enabled;
+s32 horizontal;
+u32 vertical;
+void (*getPosition)(s32 *, u32 *) = fn_80211698;
+enabled = OSDisableInterrupts();
+getPosition(&horizontal, &vertical);
+{
+u32 halfLine = (vertical-1)*2 + (u32)(horizontal-1)/lbl_80368648[13];
+field = halfLine < lbl_80368648[12] ? 1 : 0;
+}
+OSRestoreInterrupts(enabled);
+return field ^ 1 ^ (*(u16 *)(lbl_8033A158+0xA)&1);
+}
 
-    r31 = lbl_80368648;
-    OSDisableInterrupts();
-    r6 = M2C_FIELD((void *)0xCC002000, u16 *, 0x2C) & 0x7FF;
-    do {
-        r6 = M2C_FIELD((void *)0xCC002000, u16 *, 0x2C) & 0x7FF;
-    } while (r6 != r30);
-    r5 = (M2C_FIELD((void *)0xCC002000, u16 *, 0x2E) & 0x7FF) - 1;
-    r6 = r30 - 1;
-    r6 *= 2;
-    r30 = (r6 + (r5 / M2C_FIELD(r31, u16 *, 0x1A))) & 0xFFFF;
-    OSRestoreInterrupts();
-    temp_r0 = M2C_FIELD(r31, u16 *, 0x18);
-    if (r30 >= temp_r0) {
-        r30 -= temp_r0;
-    }
-    return r30 >> 1U;
+u32 fn_802117D8(void) {
+u32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(u32);
+u32 h, v, old, irq;
+u16 *timing;
+u32 line;
+volatile u16 *regs;
+timing = lbl_80368648;
+irq = OSDisableInterrupts();
+regs = (volatile u16 *)0xCC002000;
+v = regs[22] & 0x7FF;
+do {
+old = v;
+v = regs[22] & 0x7FF;
+h = regs[23] & 0x7FF;
+} while (old != v);
+h--; v--;
+line = v*2 + h/lbl_80368648[13];
+OSRestoreInterrupts(irq);
+if (line >= timing[12]) line -= timing[12];
+return line >> 1;
 }
 
 u32 VIGetTvFormat(void) {
