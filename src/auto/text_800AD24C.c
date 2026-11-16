@@ -1675,35 +1675,30 @@ void fn_800B2648(s32 arg0) {
 }
 
 extern void *vidListRoot;
-s32 fn_800B26B0(u32 arg0) {
-    u32 temp_r0;
-    void *var_r4;
-    
-    if ((u32)(arg0 + 0x10000) != -1U) {
-        var_r4 = vidListRoot;
-        if (var_r4 == NULL) {
-            return -1;
-        }
-        
-        do {
-            temp_r0 = *(u32 *)((char *)var_r4 + 0x8);
-            if (temp_r0 == arg0) {
-                return *(s32 *)((char *)var_r4 + 0xC);
-            }
-            if (temp_r0 > arg0) {
-                var_r4 = *(void **)((char *)var_r4 + 0x0);
-                if (var_r4 == NULL) {
-                    return -1;
-                }
-            } else {
-                var_r4 = *(void **)((char *)var_r4 + 0x4);
-                if (var_r4 == NULL) {
-                    return -1;
-                }
-            }
-        } while (1);
-    }
-    return -1;
+void fn_800B26B0(s32 arg0, u32 arg1) {
+ extern u8 gSoundSys[];
+ u8 fn_8024B370(s32); void fn_8024B3A0(s32); s32 fn_80259584(u16,u16,void *,s32,s32);
+ void fn_8024B4B0(u8,s32,s32,s32); void fn_8024B420(s32); void fn_8024B458(s32,s32,s32);
+ u8 *node; s32 *entry; u32 id;
+ entry=(s32 *)(*(u8 **)(gSoundSys+0xf0)+arg0*16);
+ if(fn_8024B370(entry[0])==1) fn_8024B3A0(entry[0]);
+ entry[1]=127;
+ id=(u8)arg1;
+ node=*(u8 **)(gSoundSys+0xec);
+ for(;;) {
+ if(!node) { node=0; break; }
+ if(*(u16 *)(node+2)==id) break;
+ node=*(u8 **)(node+12);
+ }
+ if(node) {
+ entry[2]=(s32)node;
+ *(u16 *)(node+4)=(arg1>>16)&255;
+ *(u16 *)(node+6)=(arg1>>8)&255;
+ entry[3]=-1;
+ entry[0]=fn_80259584(*(u16 *)(node+4),*(u16 *)(node+6),*(void **)(node+8),0,0);
+ fn_8024B4B0((u8)entry[1],0,entry[0],0);
+ fn_8024B420(entry[0]); fn_8024B458(entry[0],entry[3],0);
+ }
 }
 
 void fn_800B27BC(void) {
