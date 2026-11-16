@@ -4980,26 +4980,10 @@ glyph_cond:
     }
 }
 s32 fn_801FBF98(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
-    s32 temp_r29;
-    s32 temp_r30;
-    s32 var_r26;
-    u32 var_r31;
-
-    var_r26 = arg0;
-    var_r31 = (arg1 - var_r26) / 320;
-loop_4:
-    if ((s32) var_r31 > 0) {
-        temp_r29 = (s32) ((var_r31 >> 0x1FU) + var_r31) >> 1;
-        temp_r30 = var_r26 + (temp_r29 * 0x140);
-        if (arg3(temp_r30, *arg2) != 0) {
-            var_r26 = temp_r30 + 0x140;
-            var_r31 -= temp_r29 + 1;
-        } else {
-            var_r31 = (u32) temp_r29;
-        }
-        goto loop_4;
-    }
-    return var_r26;
+ s32 count; s32 mid_ptr; s32 mid;
+ count=(arg1-arg0)/320;
+ while(count>0) { mid=count/2; mid_ptr=arg0+mid*320; if(arg3(mid_ptr,*arg2)!=0) {arg0=mid_ptr+320; count-=mid+1;} else count=mid; }
+ return arg0;
 }
 
 #pragma use_lmw_stmw on
