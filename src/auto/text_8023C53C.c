@@ -14342,24 +14342,14 @@ void fn_80261D90(s32 arg0, u8 arg1, u16 arg2, u16 arg3)
 
 #pragma global_optimizer off
 void fn_80261E10(s32 arg0, u8 arg1) {
-    extern u8 *gSoundVoices;
-    u8 *entry;
-    s32 offset;
-    u16 ten;
-
-    if (arg1 == 0) {
-        offset = arg0 * 0xF8;
-        ten = 0x10;
-        entry = gSoundVoices + offset;
-        *(u32 *)(entry + 0xF4) |= 0x80000000;
-        entry = gSoundVoices + offset;
-        *(u16 *)(entry + 0xD0) = ten;
-        entry = gSoundVoices + offset;
-        *(u16 *)(entry + 0xD2) = ten;
-    } else {
-        entry = gSoundVoices + arg0 * 0xF8;
-        *(u32 *)(entry + 0xF4) &= 0x7FFFFFFF;
-    }
+extern u8 *gSoundVoices;
+u8 *entry; u16 ten; s32 offset;
+if(arg1==0) {
+offset=arg0*0xF8; ten=0x10;
+entry=gSoundVoices+offset; *(u32 *)(entry+0xF4)|=0x80000000;
+entry=gSoundVoices+offset; *(u16 *)(entry+0xD0)=ten;
+entry=gSoundVoices+offset; *(u16 *)(entry+0xD2)=ten;
+} else { entry=gSoundVoices+arg0*0xF8; *(u32 *)(entry+0xF4)&=0x7FFFFFFF; }
 }
 #pragma global_optimizer reset
 void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
