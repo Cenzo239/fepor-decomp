@@ -3454,32 +3454,39 @@ void Event_StartRoundSky(s32 arg0) {
     Process_CreateChild(E_RoundSky_script, arg0);
 }
 
-s32 fn_800263A0(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
-{
-    if (arg0 >= 0 || arg0 < -0x200)
-        goto label_check_arg1;
-    return 3;
-
-label_check_arg1:
-    if (arg1 < 0)
-        return 4;
-    if (arg1 >= 0x200)
-        return 5;
-
-    if (arg2 < 0)
-    {
-        if (arg2 < -0x800)
-            return 6;
-        else
-            return 1;
-    }
-    else
-    {
-        if (arg2 < 0x800)
-            return 0;
-        else
-            return 2;
-    }
+void fn_800263A0(void *arg0) {
+ void Battle_SetupUnit(void *, void *, s32);
+ void Battle_QueueDeathAnim(void *);
+ void *TargetList_GetAt(s32 *, s32);
+ void *UnitRef_GetUnit(void);
+ void Battle_ApplyHpDelta(void *, u8);
+ void Battle_Apply(void *);
+ void fn_80033418(void *);
+ void fn_8019C00C(void *,s32);
+ void Process_Goto(void *,s32);
+ extern s32 gTargetList[];
+ extern u8 gUiContext[],gBattle[];
+ s32 idx;
+ void *obj;
+ u8 *entry;
+ s32 *p=gTargetList;
+ idx=*(s32*)((u8*)arg0+0x60);
+ if(idx==*p) {
+ Battle_SetupUnit(gBattle,*(void**)gUiContext,-1);
+ Battle_QueueDeathAnim(gBattle);
+ } else {
+ TargetList_GetAt(p,idx);
+ obj=UnitRef_GetUnit();
+ entry=TargetList_GetAt(gTargetList,idx);
+ Battle_SetupUnit(gBattle,obj,-1);
+ Battle_QueueDeathAnim(gBattle);
+ if((s8)entry[1]!=0) Battle_ApplyHpDelta(gBattle,entry[1]);
+ Battle_Apply(gBattle);
+ fn_80033418(gBattle+0x8a0);
+ fn_8019C00C(arg0,0);
+ ++*(s32*)((u8*)arg0+0x60);
+ Process_Goto(arg0,0);
+ }
 }
 
 void fn_800264BC(s32 *arg0, s32 arg1) {
