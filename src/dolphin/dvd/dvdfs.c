@@ -116,7 +116,7 @@ extern u16 lbl_8029B7A4[10];
 #pragma opt_common_subs reset
 
 extern void *IDShouldBe_8036859C;
-extern void *fn_8020DAE0;
+void fn_8020DAE0(u32 arg0);
 extern void fn_8020C1A4(u8, u32, void *);
 
 extern u8 lbl_80289EB8[16];
@@ -1193,6 +1193,42 @@ void fn_8020DD7C(void) {
     void DVDLowWaitCoverClose(void (*)(void));
     extern void cbForStateMotorStopped(void);
     DVDLowWaitCoverClose(cbForStateMotorStopped);
+}
+
+void cbForStateMotorStopped(void) {
+    extern u16 BB2_80339F40[];
+    extern volatile s32 CurrCommand_803685B4;
+    extern u32 MotorState_803685D8;
+    void DVDReset(void);
+    void OSCreateAlarm(void *);
+    void OSSetAlarm(void *, u64, void (*)(void *, void *));
+    void AlarmHandler(void *, void *);
+    void __DVDClearWaitingQueue(void);
+    u8 *bb2;
+    DVDReadyCommand *block;
+    bb2 = (u8 *)BB2_80339F40;
+    *(u32 *)0xCC006004=0;
+    ((DVDReadyCommand *)executing_80368598)->state=3;
+    switch (CurrCommand_803685B4) {
+    case 4:
+    case 5:
+    case 13:
+    case 15:
+        __DVDClearWaitingQueue();
+        block = (DVDReadyCommand *)executing_80368598;
+        executing_80368598 = bb2 + 0x40;
+        if (block->callback != 0) {
+            block->callback(-4, block);
+        }
+        stateReady();
+        break;
+    default:
+        MotorState_803685D8 = 0;
+        DVDReset();
+        OSCreateAlarm(bb2 + 0x70);
+        OSSetAlarm(bb2 + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
+        break;
+    }
 }
 
 #pragma opt_common_subs off
