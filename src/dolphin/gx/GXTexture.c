@@ -1105,22 +1105,20 @@ void fn_80223C78(s32 arg0, u32 *arg1) {
 }
 
 void fn_80223CDC(s32 arg0, s32 arg1) {
-    s32 temp_r5;
-    u16 *temp_r6;
-    u32 *temp_r7;
+    u8 cmd;
+    u16 *gx;
+    u32 *reg;
 
-    temp_r5 = arg0 >> 1;
-    temp_r6 = __GXData;
-    temp_r7 = (u32 *)((char *)temp_r6 + temp_r5 * 4 + 0x1B0);
-
+    gx = __GXData;
+    reg = (u32 *)((u8 *)gx + (arg0 >> 1) * 4 + 0x1B0);
     if (arg0 & 1) {
-        *temp_r7 = (*temp_r7 & ~0x7C000) | ((arg1 & 0x1F) << 14);
+        *reg = __rlwimi(*reg, arg1, 14, 13, 17);
     } else {
-        *temp_r7 = (*temp_r7 & ~0x1F0) | ((arg1 & 0x1F) << 4);
+        *reg = __rlwimi(*reg, arg1, 4, 23, 27);
     }
-
-    *(u8 *)0xCC008000 = 0x61;
-    *(u32 *)0xCC008000 = *temp_r7;
+    cmd = 0x61;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = *reg;
     __GXData[1] = 0;
 }
 
