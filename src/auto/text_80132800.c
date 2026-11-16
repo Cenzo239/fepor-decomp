@@ -1316,6 +1316,7 @@ void fn_80134C24(s32 *arg0, void *arg1) {
     spA = temp_r27 + (s16) ((s32) (temp_r29 - temp_r3) >> 1);
     *arg0 = *fn_8013F748(arg1, (M2C_UNK *)&sp8, &spA);
 }
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus on
 extern "C" void Ui_LayoutListPanel(void *arg0) {
