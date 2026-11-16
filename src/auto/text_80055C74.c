@@ -1237,13 +1237,17 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     ((u8 *)arg0)[0x3D] = ((u8 *)arg0)[0x39];
     ((u8 *)arg0)[0x3E] = ((u8 *)arg0)[0x3A];
     ((u8 *)arg0)[0x3F] = ((u8 *)arg0)[0x3B];
-    if (chk < 0x80 && arg1[1] < 0x80 && arg1[2] < 0x80) {
-        *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~1);
-        *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 2);
-    } else {
-        *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~2);
-        *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
+    if (chk < 0x80) {
+        if (arg1[1] < 0x80) {
+            if (arg1[2] < 0x80) {
+                *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~1);
+                *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 2);
+                return;
+            }
+        }
     }
+    *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~2);
+    *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
 #pragma scheduling reset
 void GActor_InitNodeLink(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -1382,20 +1386,17 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
 }
 
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
- extern f32 lbl_80369104;
- extern f32 lbl_8036912C;
- extern f32 lbl_8036915C;
- extern f64 lbl_80369160;
- f32 temp_f10;
- f32 temp_f6;
- f32 temp_f12;
- temp_f12=lbl_80369104*farg4;
- temp_f10=farg4-lbl_8036912C;
- temp_f6=lbl_8036912C-farg4;
- return (f32)((f64)(farg4*(temp_f10*farg4))*(lbl_80369160*(f64)(farg3-farg1))+
- ((f64)(farg4*(temp_f6*temp_f6))*(lbl_80369160*(f64)(farg2-farg0))+
- (f64)(((lbl_8036912C+temp_f12)*(temp_f10*temp_f10))*farg1+
- ((lbl_8036915C-(lbl_80369104*farg4))*(farg4*farg4))*farg2)));
+  extern f32 lbl_80369104;
+  extern f32 lbl_8036912C;
+  extern f32 lbl_8036915C;
+  extern f64 lbl_80369160;
+  f32 temp_f10;
+  f32 temp_f12;
+  f32 temp_f6;
+  temp_f12 = lbl_80369104 * farg4;
+  temp_f10 = farg4 - lbl_8036912C;
+  temp_f6 = lbl_8036912C - farg4;
+  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (lbl_80369160 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (lbl_80369160 * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
 }
 
 #pragma use_lmw_stmw on
@@ -1625,6 +1626,26 @@ f32 y=farg2;
 s32 i;
 for(i=1;i<arg0;i++) {x*=step; y*=farg2;}
 return farg0+(diff-diff*x/y);
+}
+
+void fn_8005A0E0(void *arg0, void *arg1, f32 *arg2) {
+    void *Camera_Get(void);
+    void fn_80202D1C(void *, void *);
+    void fn_8020310C(void *, void *, void *);
+    extern f32 lbl_80369144;
+    f32 matrix[16];
+    struct Vector { f32 x,y,z; } a,b;
+    if(arg0==0) arg0=Camera_Get();
+    fn_80202D1C((u8 *)arg0+0x64,matrix);
+    a=*(struct Vector *)arg1;
+    b=a;
+    b.z+=lbl_80369144;
+    fn_8020310C(matrix,&a,&a);
+    fn_8020310C(matrix,&b,&b);
+    arg2[0]=a.x+((arg2[2]-a.z)*(b.x-a.x))/(b.z-a.z);
+    { f32 y=a.y; f32 z=a.z;
+    arg2[1]=y+((arg2[2]-z)*(b.y-y))/(b.z-z); }
+    arg2[2]=((f32 *)arg1)[2];
 }
 
 void fn_8005A1E8(void *arg0, f32 *arg1, f32 *arg2) {
