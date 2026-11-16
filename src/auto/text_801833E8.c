@@ -2659,13 +2659,17 @@ void fn_8018B31C(void *arg0) {
 #pragma global_optimizer on
 #pragma fp_contract on
 void fn_8018B3AC(void *arg0) {
- extern f32 lbl_8036ACEC;
- f32 v; f32 c; f32 *ptr;
- ptr=*(f32 **)((u8 *)arg0+0x30); v=ptr[1]; c=lbl_8036ACEC;
- *(f32 *)((u8 *)arg0+0x34)=v;
- *(f32 *)((u8 *)arg0+0x38)=(*(f32 **)((u8 *)arg0+0x30))[2];
- *(f32 *)((u8 *)arg0+0x3c)=(*(f32 **)((u8 *)arg0+0x30))[3];
- *(f32 *)((u8 *)arg0+0x48)=c;
+    extern f32 lbl_8036ACEC;
+    f32 *p;
+    f32 z = lbl_8036ACEC;
+
+    p = *(f32 **)((u8 *)arg0 + 0x30);
+    *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)p + 4);
+    p = *(f32 **)((u8 *)arg0 + 0x30);
+    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)p + 8);
+    p = *(f32 **)((u8 *)arg0 + 0x30);
+    *(f32 *)((u8 *)arg0 + 0x3C) = *(f32 *)((u8 *)p + 0xC);
+    *(f32 *)((u8 *)arg0 + 0x48) = z;
 }
 
 void fn_8018B3DC(void *arg0) {
@@ -10005,7 +10009,7 @@ void fn_8019BCC0(s32 arg0, s32 arg1, s32 arg2) {
 
 void fn_8019BD30(u8 *arg0) {
     s32 fn_80098110(void);
-    void MuEvent_Create(s32, u16, s32, s32, s32);
+    void MuEvent_Create(s32, u16, s32, s32, u8 *);
     s32 ret;
     u16 flags;
 
@@ -10014,7 +10018,7 @@ void fn_8019BD30(u8 *arg0) {
     if (arg0[0x5c] != 0) {
         flags |= 0x20;
     }
-    MuEvent_Create(ret, flags, (s8)arg0[0x5d], (s8)arg0[0x5e], (s32)arg0);
+    MuEvent_Create(ret, flags, *(s8 *)(arg0 + 0x5d), *(s8 *)(arg0 + 0x5e), arg0);
 }
 
 void fn_8019BD8C(s32 arg0, s32 arg1) {
