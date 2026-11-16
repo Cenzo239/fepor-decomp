@@ -2218,13 +2218,11 @@ void cb(s32 arg0, void *arg1) {
             break;
         }
     } else {
-        switch (arg0) {
-        case -1: break;
-        case -4:
+        if (arg0 == -1) return;
+        if (arg0 == -4) {
             lbl_803685F0=0;
             DVDReset();
             DVDReadDiskID(arg1,idTmp_803685F8,(void *)cb);
-            break;
         }
     }
 }
