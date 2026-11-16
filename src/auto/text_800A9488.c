@@ -55,6 +55,92 @@ s32 fn_800A94B8(void) {
     return 0;
 }
 
+#pragma cplusplus on
+extern "C" void fn_800A94C0(void *arg0) {
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(void *, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetText(void *);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    struct Obj {
+        u8 pad[4];
+        virtual void *v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+    };
+    extern s32 gUiRouteAtlas;
+    extern f32 lbl_80369BA8;
+    extern f32 lbl_80369C14;
+    extern f32 gOptionsIdentityScale;
+    extern f32 lbl_80369C18;
+    struct {
+        u8 buf[0x20];
+        u16 w;
+        u16 h;
+    } sp;
+    f32 x;
+    Obj *self = (Obj *)arg0;
+
+    self->v29();
+    Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x15);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
+    Prim2D_Begin();
+    Prim2D_SetTex(sp.buf, 0x10);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect(lbl_80369BA8, lbl_80369BA8, (f32)sp.w, (f32)sp.h);
+    Prim2D_EndPrim();
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369C14);
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+    x = (f32)(0xB3 - (Text_MeasureWidth(self->v0(), -1, gOptionsIdentityScale) / 2));
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(x, lbl_80369C18);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
+    Prim2D_SetText(self->v0());
+    Prim2D_EndPrim();
+}
+#pragma cplusplus reset
+
 void *fn_800A9638(void) {
     extern u8 gOptionsStr[];
     return (void *)((u32)gOptionsStr + 0x110);
@@ -634,85 +720,96 @@ void MapUi_ShowUnitRanges(void *unit) {
     Map_ShowMoveLimitView();
 }
 
-void *fn_800AA5F0(void *arg0) {
-    extern void *gUnitLists;
-    u32 var_r0;
-    void *var_r3;
-    void *var_r4;
-    void *var_r5;
+void *fn_800AA5F0(void *unit) {
+    extern u32 gUnitLists[];
+    void *head;
+    void *stop;
+    void *next;
+    void *faction;
+    u8 ok;
 
-    var_r4 = *(void **)gUnitLists;
-    if (var_r4 == NULL) {
+    head = gUnitLists;
+    head = *(void **)head;
+    if (head == NULL) {
         return NULL;
     }
 
-    if (arg0 != NULL) {
-        u8 *temp_r0 = *(u8 **)((char *)arg0 + 0x190);
-        temp_r0 = *(u8 **)((char *)temp_r0 + 8);
-        if ((temp_r0 != NULL) && (*temp_r0 != 0)) {
-            arg0 = NULL;
+    if (unit != NULL) {
+        faction = *(void **)((u8 *)unit + 0x190);
+        if (*(u8 *)((u8 *)faction + 8) != 0) {
+            unit = NULL;
         }
     }
 
-    if (arg0 == NULL) {
-    loop_40:
-        var_r3 = var_r4;
-        do {
-            s32 *temp_r0 = *(s32 **)((char *)var_r4 + 0x1A0);
-            if (*temp_r0 & 5) {
-                var_r0 = 0;
-            } else {
-                u16 *temp_r1 = *(u16 **)((char *)var_r4 + 0x1A4);
-                if (((*temp_r1 >> 7) & 7) == 0) {
-                    u8 *temp_r2 = *(u8 **)((char *)var_r4 + 0x1A5);
-                    if ((*temp_r2 & 7) != 0) {
-                        var_r0 = 0;
-                    } else {
-                        var_r0 = 1;
-                    }
-                } else {
-                    var_r0 = 0;
-                }
-            }
-
-            if (var_r0 != 0) {
-                return var_r4;
-            }
-            var_r4 = *(void **)((char *)var_r4 + 0x184);
-        } while (var_r4 != NULL);
-        return NULL;
-    } else {
-        var_r5 = *(void **)((char *)arg0 + 0x184);
-        if (var_r5 == NULL) {
-            var_r5 = var_r4;
-        }
-    loop_15:
-        var_r3 = var_r5;
-        do {
-            s32 *temp_r0 = *(s32 **)((char *)var_r3 + 0x1A0);
-            if (*temp_r0 & 5) {
-                var_r0 = 0;
-            } else {
-                u16 *temp_r1 = *(u16 **)((char *)var_r3 + 0x1A4);
-                if (((*temp_r1 >> 7) & 7) == 0) {
-                    u8 *temp_r2 = *(u8 **)((char *)var_r3 + 0x1A5);
-                    if ((*temp_r2 & 7) != 0) {
-                        var_r0 = 0;
-                    } else {
-                        var_r0 = 1;
-                    }
-                } else {
-                    var_r0 = 0;
-                }
-            }
-
-            if (var_r0 == 0) {
-                var_r3 = *(void **)((char *)var_r3 + 0x184);
-                goto loop_15;
-            }
-            return var_r3;
-        } while (0); /* Never reached */
+    if (unit == NULL) {
+        goto check_null;
     }
+
+    next = *(void **)((u8 *)unit + 0x184);
+    stop = next;
+    if (next == NULL) {
+        stop = head;
+    }
+    unit = stop;
+    goto check_unit;
+    do {
+        if (*(u32 *)((u8 *)unit + 0x1A0) & 5) {
+            ok = 0;
+        } else if ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) {
+            ok = 0;
+        } else if (*(u8 *)((u8 *)unit + 0x1A5) & 7) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok) {
+            return unit;
+        }
+        unit = *(void **)((u8 *)unit + 0x184);
+    check_unit:
+        ;
+    } while (unit != NULL);
+
+    goto check_wrap;
+    do {
+        if (*(u32 *)((u8 *)head + 0x1A0) & 5) {
+            ok = 0;
+        } else if ((*(u16 *)((u8 *)head + 0x1A4) >> 7) & 7) {
+            ok = 0;
+        } else if (*(u8 *)((u8 *)head + 0x1A5) & 7) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok) {
+            return head;
+        }
+        head = *(void **)((u8 *)head + 0x184);
+    check_wrap:
+        ;
+    } while (head != stop);
+    goto ret_null;
+
+    do {
+        if (*(u32 *)((u8 *)head + 0x1A0) & 5) {
+            ok = 0;
+        } else if ((*(u16 *)((u8 *)head + 0x1A4) >> 7) & 7) {
+            ok = 0;
+        } else if (*(u8 *)((u8 *)head + 0x1A5) & 7) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok) {
+            return head;
+        }
+        head = *(void **)((u8 *)head + 0x184);
+    check_null:
+        ;
+    } while (head != NULL);
+
+ret_null:
+    return NULL;
 }
 
 s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
@@ -1237,6 +1334,54 @@ void fn_800AB2A4(void *arg0) {
         Process_Goto(self, 3);
     }
 }
+
+void fn_800AB5DC(void *arg0) {
+void fn_800931E4(void*,u8,void*);
+void fn_800931B0(void*,u8,void*);
+s8 Unit_GetActiveItemSlot(void*);
+void fn_800951D0(void*,s32);
+void fn_80037CCC(void*);
+void Item_Clear(void*);
+extern u8 gUiContext[];
+extern u8 gMapUiResult;
+extern u8 lbl_80312ACC[];
+s32 rowIndex;
+s32 col;
+u8 *other;
+u8 *entry;
+s32 slot;
+u8 *base;
+u8 *self;
+self=arg0;
+if(self[0x43]==0) {
+gUiContext[8]=0x23;
+gMapUiResult=9;
+} else {
+base=lbl_80312ACC;
+for(slot=0,entry=base;slot<4;++slot,entry+=0x10) {
+fn_800931E4(*(void**)(self+0x30),(u8)slot,entry+4);
+other=base+((slot+4)*0x10);
+fn_800931B0(*(void**)(self+0x30),(u8)slot,other+4);
+fn_800931E4(*(void**)(self+0x34),(u8)slot,entry+0x84);
+fn_800931B0(*(void**)(self+0x34),(u8)slot,other+0x84);
+}
+if(Unit_GetActiveItemSlot(*(void**)(self+0x30))<0) fn_800951D0(*(void**)(self+0x30),-1);
+fn_80037CCC(*(void**)(self+0x30));
+if(Unit_GetActiveItemSlot(*(void**)(self+0x34))<0) fn_800951D0(*(void**)(self+0x34),-1);
+fn_80037CCC(*(void**)(self+0x34));
+gMapUiResult=5;
+}
+self[0x42]=2;
+base=lbl_80312ACC;
+*(u16*)(self+0x28)=4;
+for(rowIndex=0;rowIndex<2;++rowIndex,base+=0x80) {
+for(col=0,entry=base;col<8;++col,entry+=0x10) {
+Item_Clear(entry+4);
+entry[0xC]=0;
+}
+}
+}
+
 void fn_800AB73C(void) {
     M2C_UNK fn_800AB75C();
     fn_800AB75C();
