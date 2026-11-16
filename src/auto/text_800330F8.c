@@ -194,42 +194,48 @@ void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
     }
 }
 
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
 void fn_8003333C(u8 *arg0, s32 arg1) {
-#pragma scheduling off
-    s32 t1;
-    s32 t2;
     s32 t3;
+    s32 t2;
+    s32 t1;
     s32 t4;
     s32 idx;
     u8 *p;
+    s32 n;
 
+    n = arg0[0x60];
     t1 = arg1 + 1;
     t2 = arg1 + 2;
     t3 = arg1 + 3;
-    idx = arg0[0x60] + arg1;
+    idx = n + arg1;
     t4 = arg1 + 4;
     p = arg0 + (idx * 2);
     *(u16 *)(p + 0x20) |= 1;
 
-    idx = arg0[0x60] + t1;
+    n = arg0[0x60];
+    idx = n + t1;
     p = arg0 + (idx * 2);
     *(u16 *)(p + 0x20) |= 1;
 
-    idx = arg0[0x60] + t2;
+    n = arg0[0x60];
+    idx = n + t2;
     p = arg0 + (idx * 2);
     *(u16 *)(p + 0x20) |= 1;
 
-    idx = arg0[0x60] + t3;
+    n = arg0[0x60];
+    idx = n + t3;
     p = arg0 + (idx * 2);
     *(u16 *)(p + 0x20) |= 1;
 
-    idx = arg0[0x60] + t4;
-    p = arg0 + (idx * 2);
-    *(u16 *)(p + 0x20) |= 1;
-#pragma scheduling reset
+    n = arg0[0x60];
+    idx = n + t4;
+    arg0 = arg0 + (idx * 2);
+    *(u16 *)(arg0 + 0x20) |= 1;
 }
-
-#pragma opt_strength_reduction off
+#pragma global_optimizer on
+#pragma opt_strength_reduction on
 void fn_800333DC(u8 *arg0, s32 arg1) {
     u8 *p;
     u16 v;
@@ -4591,21 +4597,22 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003A778(void *);
     s32 fn_8003AF28(void *);
     u8 Unit_GetDistance(void *, void *);
-    s32 t;
     s32 u;
-    s32 v;
+    s32 t;
+    u8 d;
 
     t = (s8)Unit_GetMagAtk(arg0);
     t = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
-    v = t + u + 0x1E - ((u8)Unit_GetDistance(arg0, arg1) << 1);
-    if (v > 0x64) {
-        v = 0x64;
+    d = Unit_GetDistance(arg0, arg1);
+    t = (t + u + 0x1E) - ((u8)d << 1);
+    if (t > 0x64) {
+        t = 0x64;
     }
-    if (v < 0) {
-        v = 0;
+    if (t < 0) {
+        t = 0;
     }
-    return (u8)v;
+    return (u8)t;
 }
 
 u8 fn_8003D094(s32 arg0, u8 arg1) {
@@ -6088,41 +6095,52 @@ label_1:
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_8003FED8(u8 *arg0) {
-void Hash_Remove(void *);
-u32 *p30;
-u32 j;
-u8 *p29;
-u32 *p28;
-u32 *scan;
-u32 count;
-u32 i;
-void *da;
-j=0;
-{
-u32 t4=*(u32 *)(arg0+4);
-u32 t8=*(u32 *)(arg0+8);
-u32 tC=*(u32 *)(arg0+0xC);
-u32 t10=*(u32 *)(arg0+0x10);
-p30=(u32 *)(arg0+(t4&~3u));
-t8<<=2; tC<<=3; t10<<=3;
-p30=(u32 *)((u8 *)p30+0x20);
-p28=(u32 *)((u8 *)p30+t8);
-p29=(u8 *)p28+tC+t10;
+    void Hash_Remove(void *);
+    u32 j;
+    u8 *obj;
+    u32 *p30;
+    u8 *p29;
+    u32 *p28;
+    u32 t4;
+    u32 t8;
+    u32 masked;
+    u32 tC;
+    u32 t10;
+
+    obj = arg0;
+    j = 0;
+    t4 = *(u32 *)(arg0 + 4);
+    t8 = *(u32 *)(arg0 + 8);
+    masked = t4 & ~3u;
+    tC = *(u32 *)(arg0 + 0xC);
+    t10 = *(u32 *)(obj + 0x10);
+    p30 = (u32 *)(obj + masked);
+    t8 <<= 2;
+    tC <<= 3;
+    t10 <<= 3;
+    p30 = (u32 *)((u8 *)p30 + 0x20);
+    p28 = (u32 *)((u8 *)p30 + t8);
+    p29 = (u8 *)((u8 *)p28 + tC + t10);
+    while (j < *(u32 *)(obj + 0xC)) {
+        u32 *scan = p30;
+        u32 count = *(u32 *)(obj + 8);
+        void *da = p29 + p28[1];
+        u32 i;
+        for (i = 0; i < count; i++) {
+            if (*p28 == *scan) {
+                break;
+            }
+            scan++;
+        }
+        Hash_Remove(da);
+        p28 += 2;
+        j++;
+    }
+    obj[0x1F] = 0;
 }
-while(j<*(u32 *)(arg0+0xC)) {
-scan=p30;
-count=*(u32 *)(arg0+8);
-da=p29+p28[1];
-for(i=0;i<count;i++) {
-if(*p28==*scan) break;
-scan++;
-}
-Hash_Remove(da);
-p28+=2; j++;
-}
-arg0[0x1F]=0;
-}
+#pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
 void fn_8003FF90(void *arg0, u32 arg1) {
@@ -7574,6 +7592,47 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
         mtx[7] = z;
         mtx[3] = z;
     }
+}
+
+u8 fn_8004434C(void *arg0, s32 x, s32 y) {
+    u8 *map;
+    u8 *entry;
+    u32 flags;
+    u32 type;
+    s32 count;
+
+    map = (u8 *)arg0;
+
+    if ((*(u32 *)(map + 0x64) & 0x10000000U) == 0) {
+        return 0;
+    }
+
+    count = *(s16 *)(map + 6);
+    entry = *(u8 **)(map + 0x14);
+
+    while (count > 0) {
+        flags = *(u32 *)(*(u8 **)(entry + 0x10) + 0xBC);
+
+        if ((flags & 0x10) == 0 &&
+            (flags & 0x1800) != 0) {
+
+            if ((flags & 0x100000) == 0 &&
+                (entry[2] & 3) == 0) {
+
+                if (x >= (s8)entry[4] &&
+                    x <= (s8)entry[6] &&
+                    y >= (s8)entry[5] &&
+                    y <= (s8)entry[7]) {
+                    return 1;
+                }
+            }
+        }
+
+        entry += 0xB4;
+        count--;
+    }
+
+    return 0;
 }
 
 #pragma global_optimizer off
@@ -9643,16 +9702,11 @@ void fn_80049CB4(s32 arg0, void *arg1) {
     Model_SetAlpha(temp_r31, M2C_FIELD(arg1, u8 *, 3));
 }
 
-#pragma scheduling off
-void fn_80049D08(void *arg0) {
-#pragma scheduling on
+void fn_80049D08(s32 arg0) {
     extern f32 lbl_80368F2C;
-    void fn_8005FEE8(void *, f32);
-
-    fn_8005FEE8((u8 *)arg0 + 0x14, lbl_80368F2C);
-#pragma scheduling reset
+    void fn_8005FEE8(s32, f32);
+    fn_8005FEE8(arg0 + 0x14, lbl_80368F2C);
 }
-#pragma scheduling reset
 void fn_80049D30(s32 arg0) {
     void fn_8005FEE8(s32, f32);
     fn_8005FEE8(arg0 + 0x14, 0.0f);
@@ -10168,6 +10222,58 @@ block_16:
         }
     } else {
         return 0;
+    }
+}
+
+void fn_8004AD20(void *arg0, f32 *arg1) {
+    s32 fn_80146B10(s32);
+    void DebugPrint(void *, ...);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
+    void Ui_PlaySeCue(void *, s32);
+
+    extern u16 lbl_8026A9B0[40];
+    extern f32 lbl_80368FA0;
+
+    u16 *entry;
+    s32 cue;
+    s32 i;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    z = arg1[2];
+    y = arg1[1];
+    x = arg1[0];
+
+    entry = (u16 *)arg0;
+    i = 0;
+
+    while (i < 4) {
+        u16 id = *(u16 *)((u8 *)entry + 0x7C);
+
+        if (id == 0xFFFF) {
+            cue = 0;
+        } else if (id < 0x3E8) {
+            cue = 0;
+        } else {
+            cue = fn_80146B10(id);
+        }
+
+        if (cue != 0) {
+            DebugPrint(
+                (u8 *)lbl_8026A9B0 + 0x8A,
+                cue
+            );
+
+            if (z > lbl_80368FA0) {
+                SeCue_PlayAt((void *)cue, 0x64, x, y, z);
+            } else {
+                Ui_PlaySeCue((void *)cue, 0x64);
+            }
+        }
+
+        i++;
+        entry++;
     }
 }
 
