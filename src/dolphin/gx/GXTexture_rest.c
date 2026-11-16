@@ -11,6 +11,8 @@ typedef struct {
 
 #pragma fp_contract off
 
+typedef struct { f32 x, y; } F32Pair;
+
 extern u16 lbl_80368784;
 extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
