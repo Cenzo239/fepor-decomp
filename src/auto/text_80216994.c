@@ -421,6 +421,54 @@ s32 __CARDReadPage(s32 chan, void *callback) {
     return result;
 }
 
+void PADInit(void) {
+    extern u16 __CARDBlock[];
+    extern u16 lbl_80368740;
+    extern char *lbl_80366FE0;
+    extern u8 lbl_8029D9E8[];
+
+    u16 fn_802072A0(void);
+    void OSRegisterVersion(char *);
+    void fn_80215F8C(void);
+    void OSInitAlarm(void);
+    void OSInitThreadQueue(void *);
+    void OSCreateAlarm(void *);
+    void fn_80217AE0(void *);
+    void OSRegisterResetFunction(void *);
+
+    u8 *card;
+    s32 i;
+    s32 result;
+
+    card = (u8 *)__CARDBlock;
+
+    if (*(u32 *)(card + 0x10C) != 0) {
+        if (*(u32 *)(card + 0x21C) != 0) {
+            return;
+        }
+    }
+
+    lbl_80368740 = fn_802072A0();
+    OSRegisterVersion(lbl_80366FE0);
+    fn_80215F8C();
+    OSInitAlarm();
+
+    i = 0;
+    result = -3;
+
+    do {
+        *(s32 *)(card + 4) = result;
+        OSInitThreadQueue(card + 0x8C);
+        OSCreateAlarm(card + 0xE0);
+
+        i++;
+        card += 0x110;
+    } while (i < 2);
+
+    fn_80217AE0((void *)0x80000000);
+    OSRegisterResetFunction(lbl_8029D9E8);
+}
+
 u16 fn_80217AD8(void) {
     extern u16 lbl_80368740;
     return lbl_80368740;
@@ -2663,9 +2711,9 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
 void fn_8021C3D8(s32 arg0) {
     s32 CARDCreateAsync(void *arg0);
     void fn_80217C64(s32 arg0);
-    extern void *fn_80216998;
-    
-    if (CARDCreateAsync(&fn_80216998) >= 0) {
+    void fn_80216998(s32, s32);
+
+    if (CARDCreateAsync(fn_80216998) >= 0) {
         fn_80217C64(arg0);
     }
 }
