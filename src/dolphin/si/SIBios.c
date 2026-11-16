@@ -784,6 +784,25 @@ u32 SISetXY(s32 chan, s32 xy) {
     return cmd;
 }
 
+u32 fn_8023B894(u32 type) {
+ extern u32 Si_8029EFAC[];
+ BOOL enabled; u32 *p; u32 mask;
+ if (type == 0) return Si_8029EFAC[1];
+ enabled=OSDisableInterrupts();
+ p=&Si_8029EFAC[1];
+ type >>= 24;
+ mask=(type >> 4)&15;
+ *p &= ~mask;
+ type &= mask | 0x03FFFFF0;
+ type &= 0xFC0000FF;
+ *p |= type;
+ type=*p;
+ __SIRegs[14]=0x80000000;
+ __SIRegs[12]=type;
+ OSRestoreInterrupts(enabled);
+ return type;
+}
+
 u32 fn_8023B930(u32 type) {
     extern u32 Si_8029EFAC[];
     BOOL enabled;
