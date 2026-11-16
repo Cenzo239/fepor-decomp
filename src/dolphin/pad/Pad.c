@@ -256,7 +256,7 @@ void fn_80212108(s32 chan, u32 type) {
 /* On SI type/status: GetOrigin if a standard PAD, else disable the channel. */
 void PADTypeAndStatusCallback(s32 chan, u32 type) {
     s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback, s64 delay);
-    extern void PADOriginCallback(void);
+    void PADOriginCallback(s32 chan, u32 error);
     extern u8 Origin[];
     extern u32 cmdGetOrigin;
     extern u32 EnabledBits;
