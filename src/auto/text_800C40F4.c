@@ -19227,6 +19227,57 @@ void fn_800FAA7C(void *arg0) {
     }
 }
 
+void fn_800FAB28(void *arg0) {
+    s32 Rand_Range(s32);
+    u8 Ai_TryAttackAction(u8 (*)(void *), u8);
+    s32 fn_800FB45C(void *);
+    s32 fn_800FB3E4(void *);
+    s32 fn_80100CC8();
+    void *Unit_FindByName();
+
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    extern u8 gAiState[];
+
+    u8 *unit;
+    u8 *cmd;
+    u8 *other;
+    u8 (*filter)(void *);
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+
+    if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
+        filter = (u8 (*)(void *))fn_800FB45C;
+
+        if (*(s32 *)(cmd + 0x10) != 0) {
+            filter = (u8 (*)(void *))fn_800FB3E4;
+        }
+
+        if (*(s32 *)(cmd + 0x10) != 0) {
+            Ai_TryAttackAction(filter, 0xF);
+        } else {
+            if ((u8)fn_80100CC8(*(void **)(cmd + 0x14)) == 1) {
+                other = Unit_FindByName(*(void **)(cmd + 0x14));
+
+                if (*(u32 *)(other + 0x1A0) & 4) {
+                    *(s32 *)(gAiState + 8) = 4;
+                } else {
+                    Ai_TryAttackAction(filter, 0xF);
+                }
+            } else {
+                *(s32 *)(gAiState + 8) = 1;
+            }
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
+}
+
 void fn_800FAC30(void *arg0) {
     extern int gAiCmdIsAlt;
     extern u8 gAiState[];
@@ -20642,6 +20693,49 @@ retry_loop:
         return result;
     }
 }
+
+#pragma use_lmw_stmw on
+#pragma dont_inline on
+#pragma global_optimizer off
+void Map_BuildUnitMoveRange(void *unit, s32 mode, s32 arg2) {
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void fn_80022748(void *, void *);
+    void fn_800227D0(void *, s32, s32);
+    void fn_800227F8(void *, void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    s8 Unit_GetMov(void *);
+    u8 Status_Test(void *, s32);
+    extern u8 gBattleMap[];
+    s32 t14;
+    s32 t15;
+    s32 slot;
+    s32 mov;
+    u8 *u;
+    u8 *map;
+    u8 *p;
+
+    u = unit;
+    mov = arg2;
+    map = gBattleMap;
+    p = u + 0x1BC;
+    t14 = Status_Test(p, 0x14) != 0;
+    t15 = Status_Test(u + 0x1BC, 0x15) != 0;
+    Map_SelectRangeBuffer(gBattleMap, mode);
+    fn_800227F8(gBattleMap, *(void **)(u + 0x18C));
+    fn_80022748(gBattleMap, *(void **)(u + 0x190));
+    if (*(u32 *)(u + 0x254) & 0x20000) {
+        fn_800227D0(map, 0x37, 0x30);
+    }
+    if (mov != -1) {
+        slot = mov;
+    } else {
+        slot = Unit_GetMov(u);
+    }
+    Map_FloodMoveRange(map, u[0x19E], u[0x19F], (u16)slot, t14, t15);
+}
+#pragma global_optimizer reset
+#pragma dont_inline reset
+#pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
 void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
