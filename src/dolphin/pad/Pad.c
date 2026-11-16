@@ -912,16 +912,10 @@ void fn_802137E8(void) {
     __PADRegs[0x1B] |= 0x8000;
 }
 
-s32 fn_80213800(void)
-{
-  extern volatile u16 __PADRegs[];
-  int new_var3[2];
-  u16 a = __PADRegs[0x18];
-  u16 b = __PADRegs[0x19];
-  new_var3[1] = a;
-  new_var3[0] = a & 0xFFE0;
-  return __rlwimi(new_var3[0], new_var3[1], 16, 6, 15);
-  a = (u32) b;
+s32 fn_80213800(void) {
+    extern volatile u16 __PADRegs[];
+    u32 a = __PADRegs[0x18];
+    return ((a & 0x3FF) << 16) | (__PADRegs[0x19] & 0xFFE0);
 }
 
 s32 fn_8021381C(void) {
@@ -1104,6 +1098,42 @@ void fn_80213B18(s32 arg0) {
 
 u8 fn_80213B34(void) {
     return (u8) ((u32) *(u32 *)0xCC006C04 >> 8U);
+}
+
+void fn_80213B44(s32 arg0) {
+void OSRegisterVersion(const char *);
+void __OSSetInterruptHandler(s32, void *);
+void __OSUnmaskInterrupts(u32);
+void fn_80213CB0(void);
+void fn_80213D2C(void);
+extern char *lbl_80366FC0;
+extern s32 lbl_803686A8, lbl_80368698, lbl_8036869C, lbl_803686A0;
+extern u64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
+extern volatile u32 OS_AIRegs[8];
+u32 rate;
+u32 *regs = (u32 *)OS_AIRegs;
+if(lbl_803686A8 == 1) return;
+OSRegisterVersion(lbl_80366FC0);
+rate = (*(u32 *)0x800000f8 / 4) / 125000;
+lbl_803686B0 = rate * 31524 / 8000;
+lbl_803686B8 = rate * 42024 / 8000;
+lbl_803686C0 = rate * 42000 / 8000;
+lbl_803686C8 = rate * 63000 / 8000;
+lbl_803686D0 = rate * 3000 / 8000;
+regs[0] = (regs[0] & ~0x20) | 0x20;
+regs[1] = __rlwimi(regs[1] & 0xffff00ff, 0, 8, 16, 23);
+regs[1] = __rlwimi(regs[1] & 0xffffff00, 0, 0, 24, 31);
+regs[3] = 0;
+fn_80213A08(1);
+fn_80213914(0);
+lbl_80368698=0;
+lbl_8036869C=0;
+lbl_803686A0=arg0;
+__OSSetInterruptHandler(5,fn_80213D2C);
+__OSUnmaskInterrupts(0x04000000);
+__OSSetInterruptHandler(8,fn_80213CB0);
+__OSUnmaskInterrupts(0x00800000);
+lbl_803686A8=1;
 }
 
 void fn_80213CB0(s32 arg0, OSContext *context)
