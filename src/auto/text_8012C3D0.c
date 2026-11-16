@@ -2723,55 +2723,52 @@ void *fn_801310F4(s32 arg0, u32 arg1) {
     }
 }
 
-s32 fn_801311A4(void* arg0, void** arg1, s32 arg2) {
-    if (arg2 >= 8) {
-        return 0;
-    }
-    
-    switch (arg2) {
-        case 0:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x14;
-            break;
-        case 1:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x208;
-            break;
-        case 2:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x21c;
-            break;
-        case 3:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x230;
-            break;
-        case 4:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x244;
-            break;
-        case 5:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x258;
-            break;
-        case 6:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x26c;
-            break;
-        case 7:
-            *(u8*)arg1[0] = 0;
-            arg1[1] = (void*)0x30;
-            arg1[2] = (void*)0x280;
-            break;
-    }
-    
-    return 1;
+void fn_801311A4(s32 unused,s32 index,s32 *left,s32 *top,s32 *right,s32 *bottom) { switch(index) {case 0: *left=0; *top=1; *right=0x30; *bottom=20; return;
+case 1: *left=0; *top=500; *right=0x30; *bottom=520; return;
+case 2: *left=0; *top=520; *right=0x30; *bottom=540; return;
+case 3: *left=0; *top=540; *right=0x30; *bottom=560; return;
+case 4: *left=0; *top=560; *right=0x30; *bottom=580; return;
+case 5: *left=0; *top=580; *right=0x30; *bottom=600; return;
+case 6: *left=0; *top=600; *right=0x30; *bottom=620; return;
+case 7: *left=0; *top=620; *right=0x30; *bottom=640; return;
+case 8: *left=0; *top=640; *right=0x30; *bottom=660; return;
+}}
+
+void *fn_80131308(void *arg0, void **arg1, s32 arg2) {
+s32 Msg_ResolveName(s32);
+s32 fn_8010418C(void *,s32);
+s32 fn_8010424C(void *);
+s32 sprintf(char *,const char *,...);
+char *strcat(char *,const char *);
+extern char gUiSelectMenuStrings[];
+char buf[8];
+void *out;
+s32 i;
+void *list;
+void *unit;
+void *name;
+out=arg0;
+unit=*arg1;
+list=(u8 *)unit+0x1a4;
+switch(arg2) {
+case 0: return 0;
+case 1:
+name=*(void **)((u8 *)unit+0x194);
+if(name) sprintf(out,gUiSelectMenuStrings+0x264,Msg_ResolveName(*(s32 *)((u8 *)name+0x188)));
+else sprintf(out,gUiSelectMenuStrings+0x25b);
+break;
+case 2:
+if(fn_8010424C(list)==0) sprintf(out,gUiSelectMenuStrings+0x25b);
+else {
+sprintf(out,gUiSelectMenuStrings+0x30c);
+for(i=0;i<fn_8010424C(list);i++) {
+sprintf(buf,gUiSelectMenuStrings+0x30d,fn_8010418C(list,i)-1);
+strcat(out,buf);
+}
+}
+break;
+}
+return out;
 }
 
 extern s32 fn_8010424C(void*);
