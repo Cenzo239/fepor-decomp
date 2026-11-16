@@ -413,43 +413,52 @@ s32 fn_800ADA4C(s32 arg0) {
     return 1;
 }
 
-s32 fn_800ADB74(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 temp0, temp1, temp2, temp3;
-    s32 var_r3, var_r4;
-    
-    if (arg0 < 0) {
-        temp0 = (arg0 + 0x1F) >> 5;
-    } else {
-        temp0 = arg0 >> 5;
-    }
+s32 fn_800ADB74(s32 arg0) {
+    void fn_8002F728(void *);
+    void Allegiance_FillMask(s32, void *);
+    u8 fn_80104628(void *, s32);
+    void Unit_DecSkillRanks(void *, s32);
+    void fn_8002F6E8(void *, u8, u8, u8, s32);
+    void *Process_CreateChild(void *, s32);
+    extern u8 gTargetList[];
+    extern u8 gUnits[];
+    extern u8 lbl_8028D028[];
 
-    if (arg1 < 0) {
-        temp1 = (arg1 + 0x1F) >> 5;
-    } else {
-        temp1 = arg1 >> 5;
-    }
-    
-    if (arg2 < 0) {
-        temp2 = (arg2 + 0x1F) >> 5;
-    } else {
-        temp2 = arg2 >> 5;
-    }
+    u8 allegMask;
+    s32 i;
+    u8 *unit;
 
-    if (arg3 < 0) {
-        temp3 = (arg3 + 0x1F) >> 5;
-    } else {
-        temp3 = arg3 >> 5;
+    fn_8002F728(gTargetList);
+    Allegiance_FillMask(0, &allegMask);
+    i = 1;
+    do {
+        if ((u8)i != 0) {
+            unit = gUnits + (((u8)i - 1) * 0x280);
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0
+            && *((u8 *)&allegMask + *((u8 *)*(void **)(unit + 0x190) + 8)) != 0) {
+            if (fn_80104628(unit + 0x1A4, 1) == 0
+                || (*(u32 *)(unit + 0x1A0) & 0x010000DC) != 0) {
+                Unit_DecSkillRanks(unit + 0x1A4, 1);
+            } else {
+                fn_8002F6E8(
+                    gTargetList,
+                    unit[0x19E],
+                    unit[0x19F],
+                    unit[0x198],
+                    1
+                );
+            }
+        }
+        i += 1;
+    } while (i <= 0x9F);
+    if (*(s32 *)gTargetList == 0) {
+        return 0;
     }
-    
-    var_r4 = temp1 * 0x32E100;
-    var_r3 = temp0 * 0x7D8600;
-    var_r3 += var_r4;
-    var_r4 = temp2 * 0x19400;
-    var_r3 += var_r4;
-    var_r4 = temp3 * 0x564;
-    var_r3 += var_r4;
-    
-    return var_r3 + 0x800000;
+    Process_CreateChild(lbl_8028D028, arg0);
+    return 1;
 }
 
 void fn_800ADD04(void);
@@ -9953,15 +9962,15 @@ void fn_800AFCFC(s32 arg0) {
 }
 
 void fn_800AFE0C(s32 arg0) {
-    #pragma auto_inline off
     u8 *sys;
     u8 *entry;
     u16 nest;
+    struct SlotRef { u8 pad[0x13E]; u16 value; };
     sys = (u8 *)gSoundSys;
     entry = *(u8 **)(sys+0xF8) + arg0*0x13C;
     if (*(u16 *)entry != 0) {
         if (!(*(u16 *)entry & 8)) { *(u16 *)entry |= 4; return; }
-        if (*(u16 *)entry & 0x400) *(u16 *)(sys+*(u16 *)(entry+2)*2+0x13E)=0;
+        if (*(u16 *)entry & 0x400) ((struct SlotRef *)(sys+*(u16 *)(entry+2)*2))->value=0;
         *(u16 *)entry=0;
         sys = (u8 *)gSoundSys;
         if (*(u16 *)(sys+0x124)==0) *(s32 *)((u8 *)gSoundSys+0x128)=OSDisableInterrupts();
@@ -9978,7 +9987,6 @@ void fn_800AFE0C(s32 arg0) {
         }
         *(s32 *)((u8 *)gSoundSys+0xFC)=-1;
     }
-    #pragma auto_inline reset
 }
 
 #pragma use_lmw_stmw on
