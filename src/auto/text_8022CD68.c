@@ -223,6 +223,31 @@ s32 __register_fragment(s32 arg0, s32 arg1) {
     return -1;
 }
 
+void fn_8022CDD0(void *arg0) {
+u32 OSGetArenaLo(void);
+u32 OSGetArenaHi(void);
+void OSSetArenaLo(u32);
+void OSReport(const char *,...);
+u32 fn_80204CE4(u32,u32,s32);
+s32 fn_80204D54(u32,u32);
+void fn_80204CD4(s32);
+void fn_80204C58(s32,void *);
+u32 hi, lo;
+if (lbl_80366F28 == -1) {
+OSReport(lbl_80282AE8);
+OSReport(lbl_80282B20);
+lo=OSGetArenaLo();
+hi=OSGetArenaHi();
+lo=fn_80204CE4(lo,hi,1);
+OSSetArenaLo(lo);
+lo=(lo+31)&~31;
+hi &= ~31;
+fn_80204CD4(fn_80204D54(lo,hi));
+OSSetArenaLo(hi);
+}
+fn_80204C58(lbl_80366F28,arg0);
+}
+
 void abort(void) {
     extern s32 __aborting;
     extern s32 __atexit_curr_func;
@@ -3638,26 +3663,23 @@ f64 floor(f64 x) {
 
 extern f64 lbl_8036C148;
 f64 fn_802382EC(s32 *arg0, f64 farg0) {
-    f64 sp8;
-    s32 var_r4;
-    s32 var_r5;
-    s32 var_r0;
-
-    sp8 = farg0;
-    *arg0 = 0;
-    var_r4 = (s32)(sp8) & 0x7FFFFFFF;
-    if ((var_r4 >= 0x7FF00000) || ((var_r4 | 0) == 0)) {
-        return sp8;
-    }
-    if (var_r4 < 0x100000) {
-        *arg0 = -0x36;
-        sp8 = farg0 * lbl_8036C148;
-        var_r4 = (s32)(sp8) & 0x7FFFFFFF;
-    }
-    var_r0 = (var_r4 & 0x800FFFFF) | 0x3FE00000;
-    var_r5 = (var_r4 >> 0x14) + *arg0;
-    *arg0 = var_r5 - 0x3FE;
-    return (f64)var_r0;
+s32 high, magnitude;
+u32 low;
+high=*(s32*)&farg0;
+low=((u32*)&farg0)[1];
+*arg0=0;
+magnitude=high & 0x7fffffff;
+if (magnitude>=0x7ff00000 || (magnitude | low)==0) return farg0;
+if (magnitude<0x100000) {
+f64 scale=lbl_8036C148;
+*arg0=-54;
+farg0=farg0*scale;
+high=*(s32*)&farg0;
+magnitude=high & 0x7fffffff;
+}
+*arg0 += (magnitude>>20)-0x3fe;
+*(s32*)&farg0=(high & 0x800fffff) | 0x3fe00000;
+return farg0;
 }
 
 extern f64 lbl_8036C150;
@@ -3877,6 +3899,36 @@ s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
 
     *arg1 = buf58[0];
     return expn & 7;
+}
+
+f64 fn_80237BDC(f64 x, f64 y, s32 iy) {
+    extern f64 lbl_8036C098;
+    extern f64 lbl_8036C0A0;
+    extern f64 lbl_8036C0A8;
+    extern f64 lbl_8036C0B0;
+    extern f64 lbl_8036C0B8;
+    extern f64 lbl_8036C0C0;
+    extern f64 lbl_8036C0C8;
+    f64 xLocal;
+    f64 z;
+    f64 r;
+    f64 v;
+    s32 ix;
+
+    xLocal = x;
+    ix = ((s32 *)&xLocal)[0] & 0x7FFFFFFF;
+    if (ix < 0x3E400000) {
+        if ((s32)x == 0) {
+            return x;
+        }
+    }
+    z = xLocal * xLocal;
+    v = z * xLocal;
+    r = ((((lbl_8036C0B8 * z + lbl_8036C0B0) * z + lbl_8036C0A8) * z + lbl_8036C0A0) * z + lbl_8036C098);
+    if (iy == 0) {
+        return xLocal + (v * (lbl_8036C0C0 + z * r));
+    }
+    return xLocal - ((z * (lbl_8036C0C8 * y - v * r) - y) - lbl_8036C0C0 * v);
 }
 
 #pragma global_optimizer reset
