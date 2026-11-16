@@ -5711,7 +5711,14 @@ void fn_801C1824(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     ret->node = end->node;
 }
 
-int fn_801C18E4(void *arg0) { u32 *p=arg0; u32 *head=p+1; *p++=0; head[1]=(u32)p; head[0]=(u32)p; }
+int fn_801C18E4(void *arg0) {
+    u32 *ptr;
+
+    ptr = (u32 *)((u8 *)arg0 + 0x4);
+    *(u32 *)arg0 = 0;
+    ptr[1] = (u32)ptr;
+    ptr[0] = (u32)ptr;
+}
 
 void fn_801C18FC(s32 arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *, void *);
@@ -19162,26 +19169,40 @@ s32 Save_IsValid(void *slot) {
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 gSaveStrings[];
+
     u8 *save;
     void *crcTable;
     u32 sum;
     u32 value;
-    u8 ok;
-    save = slot;
-    if (*(u32 *)(save + 0x40) != 0x4645384A) return 0;
-    if (*(u32 *)(save + 0x50) == 0x12345678) { ok = 1; }
-    else if (save[0x60] == 1) { ok = 1; }
-    else {
-        crcTable = fn_800C4638(0x400, (void *)(gSaveStrings + 0x14E), 0);
+    BOOL ok;
+
+    if (*(u32 *)((u8 *)slot + 0x40) != 0x4645384A) {
+        return 0;
+    }
+
+    save = (u8 *)slot;
+
+    if (*(u32 *)(save + 0x50) == 0x12345678) {
+        ok = TRUE;
+    } else if (save[0x60] == 1) {
+        ok = TRUE;
+    } else {
+        crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
         Crc32_InitTable();
         sum = Crc32_Calc(crcTable, save + 0x70, *(s32 *)(save + 0x4C) - 0x70);
         fn_800C4588(crcTable);
-        if (*(u32 *)(save + 0x50) != sum) { ok = 0; } else { ok = 1; }
+
+        if (*(u32 *)(save + 0x50) != sum) {
+            ok = FALSE;
+        } else {
+            ok = TRUE;
+        }
     }
-    value = ok;
+
+    value = (u8)ok;
     return ((-value) | value) >> 31;
 }
-#pragma peephole reset
+#pragma peephole on
 s32 fn_801E434C(void *arg0) {
     if ((u32) (M2C_FIELD(arg0, s32 *, 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
