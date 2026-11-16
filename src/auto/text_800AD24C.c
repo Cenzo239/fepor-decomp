@@ -8188,48 +8188,48 @@ s32 fn_800BF0A8(void *entry) {
     }
     return 1;
 }
-#pragma optimization_level reset
-s32 fn_800BF1E8(s32 arg0, s32 arg1, s32 arg2)
-{
-    M2C_UNK fn_801A5430(s32);
-    M2C_UNK fn_801A92F0(s32, s32, s32);
-    M2C_UNK fn_801A9290(s32, s32, s32);
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    
-    if (arg0 == 0) {
-        arg0 = fn_801A5430(arg2);
-    }
-    else {
-        temp_r3 = arg0;
-        
-        if (arg1 < 0)
-            arg1 += 0x1F;
-            
-        arg1 >>= 5;
-        
-        if (arg2 < 0)
-            arg2 += 0x1F;
-            
-        arg2 >>= 5;
-        
-        temp_r4 = arg2 * 0x564;
-        temp_r5 = arg1 * 0x7D8600;
-        temp_r5 += temp_r4;
-        if (temp_r3 == 1) {
-            temp_r3 = fn_801A92F0(temp_r5, 0, 0);
-            return temp_r3;
-        }
-        else {
-            temp_r3 = fn_801A9290(temp_r5, 0, 0);
-            return temp_r3;
-        }
-    }
-    
-    return arg0;
-}
+#pragma optimization_level 3
+s32 fn_800BF1E8(void) {
+    void *Event_NextEntry(void *);
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void);
+    extern u16 gBattleState[700];
+    extern u8 gUiContext[24];
+    void *entry;
+    u8 *flags;
+    void *personA, *personB, *uiA, *uiB;
 
+    entry = Event_NextEntry(0);
+    flags = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        u8 found;
+        if (*(s8 *)((u8 *)entry + 0xC) == 8) {
+            if (EventFlag_IsSet(flags,
+                    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1A))) != 0) {
+                found = 0;
+            } else {
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+                personA = Person_GetByPid();
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+                personB = Person_GetByPid();
+                uiA = *(void **)(*(u8 **)gUiContext + 0x188);
+                uiB = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
+                if (uiA == personA && uiB == personB) {
+                    found = 1;
+                } else if (*(s16 *)((u8 *)entry + 0x18) != 0 && uiA == personB && uiB == personA) {
+                    found = 1;
+                } else {
+                    found = 0;
+                }
+            }
+            if (found != 0) return 1;
+        }
+        entry = Event_NextEntry(entry);
+    }
+    return 0;
+}
+#pragma optimization_level reset
 s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
     s32* ptr = (s32*)arg0;
     s32 count = arg2 >> 2;
