@@ -790,20 +790,27 @@ u32 fn_8023B930(u32 type) {
     return type;
 }
 
-s32 fn_8023B99C(s32 chan) {
- struct SIState { u8 pad[0x1B0]; u32 ready[4]; u32 response[4][2]; };
- struct SIState *packet=(struct SIState *)Packet_8033E248;
- u32 *si;
- u32 offset;
- if (fn_8023B788(chan) & 0x20) {
- si=(u32 *)&__SIRegs[chan*3];
- offset=chan<<3;
- packet->response[chan][0]=si[1];
- packet->response[chan][1]=si[2];
- packet->ready[chan]=1;
- return 1;
- }
- return 0;
+s32 fn_8023B99C(s32 chan)
+{
+  struct SIState
+  {
+    u8 pad[0x1B0];
+    u32 ready[4];
+    u32 response[4][2];
+  };
+  struct SIState *packet = (struct SIState *) Packet_8033E248;
+  volatile u32 *si;
+  u32 offset;
+  if (fn_8023B788(chan) & 0x20)
+  {
+    ;
+    offset = chan << 3;
+    packet->response[chan][0] = (&__SIRegs[chan * 3])[1];
+    packet->response[chan][1] = (&__SIRegs[chan * 3])[2];
+    packet->ready[chan] = 1;
+    return 1;
+  }
+  return 0;
 }
 
 s32 fn_8023BA70(s32 chan, void *arg1)
