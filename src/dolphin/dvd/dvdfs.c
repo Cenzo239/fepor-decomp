@@ -395,14 +395,7 @@ s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return 1;
 }
 
-void fn_8020CBF8(void *arg1) {
-    void (*temp_r12)(void);
-
-    temp_r12 = *(void (**)(void))((char *)arg1 + 0x38);
-    if (temp_r12 != NULL) {
-        temp_r12();
-    }
-}
+void fn_8020CBF8(s32 result, void *arg1) { if (*(void (**)(s32, void *))((char *)arg1+0x38) != NULL) (*(void (**)(s32, void *))((char *)arg1+0x38))(result,arg1); }
 
 void fn_8020CD40(void) {
     extern void* __DVDThreadQueue;
@@ -520,6 +513,43 @@ void fn_8020CFAC(void) {
         *(u32 *)(bb2 + 4),
         fn_8020D040
     );
+}
+
+void cbForStateError(u32 arg0) {
+    void fn_8020D16C(void);
+    void fn_8020FAE0(void);
+    void stateReady(void);
+
+    DVDReadyCommand *block;
+    void (*callback)(void *, void *);
+
+    ((DVDReadyCommand *)executing_80368598)->state = -1;
+
+    if (arg0 == 0x10) {
+        fn_8020D16C();
+        return;
+    }
+
+    fn_8020FAE0();
+
+    block = (DVDReadyCommand *)executing_80368598;
+    executing_80368598 = DummyCommandBlock_80339F80;
+    FatalErrorFlag_803685B0 = 1;
+
+    if (block->callback != NULL) {
+        block->callback(-1, block);
+    }
+
+    if (lbl_803685B8 != 0) {
+        callback = lbl_803685BC;
+        lbl_803685B8 = 0;
+
+        if (callback != NULL) {
+            callback(0, block);
+        }
+    }
+
+    stateReady();
 }
 
 void fn_8020D16C(void) {
@@ -2447,17 +2477,17 @@ s32 fn_80211690(void) {
 }
 
 void fn_80211698(s32 *arg0, u32 *arg1) {
-    u16 *addr = (u16 *)0xCC002000;
-    u32 temp_r8;
-    u32 var_r9;
-
-    do {
-        var_r9 = addr[0x17] & 0x7FF;
-        temp_r8 = var_r9;
-        var_r9 = addr[0x17] & 0x7FF;
-    } while (temp_r8 != var_r9);
-    *arg0 = addr[0x17] & 0x7FF;
-    *arg1 = var_r9;
+ volatile u16 *addr = (volatile u16 *)0xCC002000;
+ u32 horizontal, vertical, previous;
+ vertical = addr[0x16] & 0x7FF;
+ do {
+ previous = vertical;
+ horizontal = addr[0x17];
+ vertical = addr[0x16] & 0x7FF;
+ horizontal &= 0x7FF;
+ } while(previous != vertical);
+ *arg0 = horizontal;
+ *arg1 = vertical;
 }
 
 s32 fn_802116D4(void) {
