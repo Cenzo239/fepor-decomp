@@ -2406,7 +2406,7 @@ void ddh_cc_write(s32 arg0, s32 arg1, u32 arg2) {
     *(u32 *)(arg1 + arg0) = arg2;
 }
 
-u32 ddh_cc_read(void *arg0, register u32 arg1) {
+u32 ddh_cc_read(void *arg0, u32 arg1) {
     extern s32 lbl_803687B8;
     extern u8 lbl_8028295C[], lbl_80282984[], lbl_8033D7E8[];
     void MWTRACE(s32, const char *, ...);
@@ -2572,6 +2572,36 @@ s32 gdev_cc_write(void *arg0, s32 arg1) {
     }
 
     return 0;
+}
+
+u32 gdev_cc_read(void *arg0, u32 arg1) {
+    extern s32 lbl_803687C0;
+    extern u8 lbl_80282A3C[], lbl_80282A64[], lbl_8033DD08[];
+    void MWTRACE(s32, const char *, ...);
+    void fn_8022BA34(void *, void *, u32);
+    void fn_8022BB3C(void *, void *, s32);
+    u32 fn_8022BC94(void *);
+    s32 fn_802672F0(void);
+    u32 fn_80267264(void *, u32);
+    u8 buffer[0x500];
+    u32 requested;
+    u32 length;
+    u32 error = 0;
+    if (!lbl_803687C0) return -0x2711;
+    MWTRACE(1, (const char *)lbl_80282A3C, arg1, arg1);
+    length = arg1;
+    requested = arg1;
+    while (fn_8022BC94(lbl_8033DD08) < requested) {
+        error = 0;
+        arg1 = fn_802672F0();
+        if (arg1 != 0) {
+            error = fn_80267264(buffer, requested);
+            if (!error) fn_8022BB3C(lbl_8033DD08, buffer, arg1);
+        }
+    }
+    if (!error) fn_8022BA34(lbl_8033DD08, arg0, length);
+    else MWTRACE(8, (const char *)lbl_80282A64, error);
+    return error;
 }
 
 s32 gdev_cc_close(void) {
