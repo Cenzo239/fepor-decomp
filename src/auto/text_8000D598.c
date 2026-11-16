@@ -729,6 +729,22 @@ s32 fn_8000E684(void* arg0) {
     return fn_80004610(arg0);
 }
 
+void Text_Draw(s32 x, s32 y, s32 color, const char *fmt, ...) {
+ void Prim2D_SetPos(f32, f32);
+ u32 *Ui_GetColor(s32);
+ char text[256];
+ struct { unsigned char gpr, fpr; unsigned char reserved[2]; void *input_arg_area; void *reg_save_area; } args[1];
+ u32 packed;
+ __builtin_va_info(args);
+ vsprintf(text, fmt, args);
+ Prim2D_AddPrim(6);
+ Prim2D_SetPos((f32)(s16)x, (f32)(s16)y);
+ packed = *Ui_GetColor(color);
+ Prim2D_SetColorPacked(&packed);
+ Prim2D_SetText(text);
+ Prim2D_EndPrim();
+}
+
 s32 Text_MeasureHeight(s32 arg0, f32 arg1)
 {
     extern s32 lbl_802AEE20[5];
