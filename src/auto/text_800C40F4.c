@@ -1410,6 +1410,45 @@ void fn_800C79C8(void) {
     fn_801FEFA0();
 }
 
+void fn_800C79FC(void) {
+    u32 OSGetResetCode(void);
+    u32 fn_802118D8(void);
+    u32 fn_802098F8(void);
+    void fn_80209968(s32);
+    extern u32 gGameFlags;
+    extern u32 *gPadInput;
+    u32 flags;
+    u8 var;
+
+    flags = gGameFlags;
+    if (flags & 0x60000) {
+        if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 0x20)) {
+            gGameFlags &= ~0x20;
+        } else {
+            gGameFlags |= 0x20;
+        }
+    } else if (flags & 0x10000) {
+        var = 0;
+        if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
+            if (fn_802118D8() != 0) {
+                if (fn_802098F8() == 1 || (gPadInput[1] & 0x200)) {
+                    var = 1;
+                }
+            } else {
+                fn_80209968(0);
+                gGameFlags &= ~0x40;
+            }
+        }
+        if (var == 0) {
+            gGameFlags |= 0x20;
+        } else {
+            gGameFlags &= ~0x20;
+        }
+    } else if (flags & 0x80000) {
+        gGameFlags = flags | 0x20;
+    }
+}
+
 s32 fn_800C7B04(void *arg1, s32 arg2, s32 arg3, s32 *arg4) {
     M2C_UNK strcpy(s32, u8 *);
     u8 sp8;
@@ -2946,6 +2985,67 @@ void *fn_800CB27C(void) {
     if (inner != NULL) {
         return (u8 *)inner + 4;
     }
+    return 0;
+}
+
+void *fn_800CB37C(void) {
+    u64 *Item_GetFlagsPtr(void *);
+    u8 Status_Test(void *, s32);
+
+    extern u8 gBattleReplayActive;
+    extern u8 *gBattleReplayScene;
+    extern u32 gBattle[];
+
+    u8 *base;
+    void **slot;
+    void *obj;
+    void *inner;
+    s8 *p;
+    u64 bits;
+
+    if (gBattleReplayActive != 0) {
+        p = (s8 *)(gBattleReplayScene + 0x40);
+        if (*p != 0) {
+            return p;
+        }
+        return 0;
+    }
+
+    base = (u8 *)gBattle;
+    slot = (void **)(base + 0x28C);
+
+    bits = *Item_GetFlagsPtr(slot);
+
+    if ((bits & 0x200ULL) != 0) {
+        base += 0x1BC;
+
+        if (Status_Test(base, 8) != 0) {
+            if (Status_Test(base, 9) == 0) {
+                return 0;
+            }
+        }
+    }
+
+    if (slot == NULL) {
+        return 0;
+    }
+
+    obj = *slot;
+
+    if (obj == NULL) {
+        return 0;
+    }
+
+    if (obj != NULL) {
+        inner = *(void **)obj;
+    } else {
+        inner = 0;
+    }
+
+    if (inner != NULL) {
+        return (u8 *)inner + 4;
+    }
+
     return 0;
 }
 
@@ -18550,63 +18650,37 @@ void fn_800F9924(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
+#pragma global_optimizer off
 void fn_800F9950(void *arg0) {
     extern u8 gAiState[];
-    extern u8 *gAiCmd;
+    extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
     u8 fn_80101D8C(void (*)(void *), void *, s16 *, s16 *);
-    void fn_80101448(s32, s32, s32, s32, s32, s32, s32, s32);
-
-    u8 *unit;
-    u8 *cmd;
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+    void *cmd;
     void (*filter)(void *);
     s16 x;
     s16 y;
-    s32 flag;
 
-    unit = (u8 *)arg0;
     cmd = gAiCmd;
-
-    if (!(gAiState[1] & 2) &&
-        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
-
-        if (*(u32 *)(cmd + 0x14) == 0) {
-            filter = Ai_UnitIsHostileToActive;
-        } else {
-            filter = Ai_UnitNameInCmdList;
-
-            if (*(s32 *)(cmd + 0x10) != 0) {
-                filter = Ai_UnitHostileNotInCmdList;
-            }
-        }
-
-        if (fn_80101D8C(filter, unit, &x, &y) == 1) {
-            flag = *(s32 *)(cmd + 0xC) != 0;
-
-            fn_80101448(
-                (s32)unit,
-                x,
-                y,
-                1,
-                *(u16 *)(gAiState + 4),
-                1,
-                flag,
-                -1
-            );
+    if (!(gAiState[1] & 2) && !(*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
+        filter = *(u32 *)((u8 *)cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
+            : (*(s32 *)((u8 *)cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
+        if (fn_80101D8C(filter, arg0, &x, &y) == 1) {
+            Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1,
+                             *(s32 *)((u8 *)cmd + 0xC) != 0, -1);
         }
     }
-
     if (gAiCmdIsAlt == 0) {
-        unit[0x250]++;
+        ((u8 *)arg0)[0x250]++;
     } else {
-        unit[0x251]++;
+        ((u8 *)arg0)[0x251]++;
     }
 }
-
+#pragma global_optimizer on
 void fn_800F9A54(void *arg0) {
     extern u8 gAiState[];
     extern u8 *gAiCmd;
