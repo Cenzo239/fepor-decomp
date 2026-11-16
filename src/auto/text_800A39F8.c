@@ -96,6 +96,44 @@ s32 fn_800A3A68(s32 arg0, s32 arg1) {
     return 0;
 }
 
+void fn_800A3B90(void) {
+extern s32 lbl_803677C4,lbl_803677B4;
+extern u32 lbl_803677BC,lbl_803677C0,lbl_803677B8;
+extern u8 lbl_80312580[];
+void fn_80213760(void *,u32);
+u32 fn_80213800(void);
+void fn_800A3DBC(void *,u32,s32);
+s32 OSEnableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void DCFlushRange(void *,u32);
+void DCInvalidateRange(u32,u32);
+s32 interrupts;
+if(lbl_803677C4==0){
+lbl_803677B4^=1;
+fn_80213760(lbl_80312580+lbl_803677B4*0x280,0x280);
+interrupts=OSEnableInterrupts();
+fn_800A3DBC(lbl_80312580+lbl_803677B4*0x280,0,0xA0);
+DCFlushRange(lbl_80312580+lbl_803677B4*0x280,0x280);
+OSRestoreInterrupts(interrupts);
+return;
+}
+if(lbl_803677C4==1){
+if(lbl_803677BC!=0) lbl_803677C0=lbl_803677BC;
+((void (*)(void))lbl_803677B8)();
+lbl_803677BC=fn_80213800()+0x80000000;
+}else{
+((void (*)(void))lbl_803677B8)();
+lbl_803677C0=fn_80213800()+0x80000000;
+}
+lbl_803677B4^=1;
+fn_80213760(lbl_80312580+lbl_803677B4*0x280,0x280);
+interrupts=OSEnableInterrupts();
+if(lbl_803677C0!=0) DCInvalidateRange(lbl_803677C0,0x280);
+fn_800A3DBC(lbl_80312580+lbl_803677B4*0x280,lbl_803677C0,0xA0);
+DCFlushRange(lbl_80312580+lbl_803677B4*0x280,0x280);
+OSRestoreInterrupts(interrupts);
+}
+
 s32 fn_800A3D08(void) {
     extern u8 lbl_803123A0[];
     if (*(s32 *)(lbl_803123A0 + 0xA0) != 0) {
