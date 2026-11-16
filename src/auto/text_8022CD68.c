@@ -1351,7 +1351,13 @@ s32 fn_802312B0(void *arg0) {
 
 extern s32 fn_802314D8(s32, s32, s32);
 s32 fseek(s32 arg0, s32 arg1, s32 arg2) {
-    return fn_802314D8(arg0, arg1, arg2);
+extern void __begin_critical_region(s32);
+extern void __end_critical_region(s32);
+s32 result;
+__begin_critical_region(2);
+result = fn_802314D8(arg0, arg1, arg2);
+__end_critical_region(2);
+return result;
 }
 
 s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
@@ -2532,23 +2538,48 @@ s32 signal_raise(s32 sig) {
     return 0;
 }
 
-void *fn_80234198(void *arg0, u8 *arg1) {
-    u8 temp_r4;
-    void *var_r3;
-    void *var_r5;
+u8 *fn_80234198(u8 *str, u8 *pat) {
+    u8 *p;
+    u8 c;
+    u8 *r;
+    u8 *q;
+    u8 d;
+    u8 e;
 
-    var_r5 = (void*)((uintptr_t)arg0 - 1);
-    var_r3 = NULL;
-loop_3:
-    temp_r4 = *(u8*)var_r5;
-    var_r5 = (void*)((uintptr_t)var_r5 + 1);
-    if (temp_r4 != 0) {
-        if (temp_r4 == *arg1) {
-            var_r3 = var_r5;
-        }
-        goto loop_3;
+    p = str - 1;
+    if (pat == 0) {
+        return str;
     }
-    return var_r3 == NULL ? (*arg1 != 0 ? NULL : var_r5) : var_r3;
+    c = *pat;
+    if (c == 0) {
+        return str;
+    }
+    goto outer;
+
+match_check:
+    if (d != c) {
+        goto outer;
+    }
+    q = p - 1;
+    r = pat - 1;
+    do {
+        d = *++q;
+        e = *++r;
+        if (d != e) {
+            goto outer;
+        }
+    } while (d != 0);
+    if (e != 0) {
+        goto outer;
+    }
+    return p;
+
+outer:
+    d = *++p;
+    if (d != 0) {
+        goto match_check;
+    }
+    return 0;
 }
 
 void *fn_80234200(s32 arg0, u8 arg1) { u8 *p=(u8*)arg0-1; u32 needle=arg1; u8 *last=NULL; u32 c; while((c=*++p)!=0) { if(c==needle) last=p; } if(last!=NULL) return last; if(needle!=0) return NULL; return p; }
@@ -2662,16 +2693,15 @@ bytecopy:
 
 void strcat(u8 *dest, u8 *src)
 {
-    u8 *keep;
     u8 *d;
+    u8 *s;
 
-    keep = dest;
-    src--;
-    d = keep - 1;
+    s = src - 1;
+    d = dest - 1;
     while (*++d != 0) {
     }
     d--;
-    while ((*++d = *++src) != 0) {
+    while ((*++d = *++s) != 0) {
     }
 }
 
