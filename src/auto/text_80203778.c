@@ -674,6 +674,23 @@ void InsertAlarm(void *alarm_p, s64 fire, void (*handler)(void *, OSContext *)) 
         PPCMtdec(0x7FFFFFFF);
     }
 }
+
+#pragma use_lmw_stmw on
+void OSSetAlarm(void *alarm, s64 tick, void (*handler)(void *, OSContext *)) {
+    extern u32 OSDisableInterrupts(void);
+    extern void OSRestoreInterrupts(u32);
+    extern s64 __OSGetSystemTime(void);
+    extern void InsertAlarm(void *, s64, void (*)(void *, OSContext *));
+    u32 enabled;
+
+    enabled = OSDisableInterrupts();
+    *(s32 *)((u8 *)alarm + 0x1C) = 0;
+    *(s32 *)((u8 *)alarm + 0x18) = 0;
+    InsertAlarm(alarm, __OSGetSystemTime() + tick, handler);
+    OSRestoreInterrupts(enabled);
+}
+#pragma use_lmw_stmw reset
+
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
