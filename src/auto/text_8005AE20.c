@@ -278,7 +278,16 @@ void fn_8005B73C(void *arg0) {
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
 
-s32 fn_8005B760(s32 arg0) { switch ((u32)(arg0-10)) {case 0: goto L26;case 1: goto L0;case 2: goto L0;case 3: goto L0;case 4: goto L0;case 5: goto L0;case 6: goto L0;case 7: goto L0;case 8: goto L0;case 9: goto L0;case 10: goto L0;case 11: goto L0;case 12: goto L0;case 13: goto L0;case 14: goto L24;case 15: goto L25;case 16: goto L26;case 17: goto L0;case 18: goto L0;case 19: goto L0;case 20: goto L0;case 21: goto L0;case 22: goto L0;case 23: goto L0;case 24: goto L0;case 25: goto L0;case 26: goto L0;case 27: goto L0;case 28: goto L0;case 29: goto L0;case 30: goto L0;case 31: goto L0;case 32: goto L0;case 33: goto L0;case 34: goto L0;case 35: goto L0;case 36: goto L0;case 37: goto L0;case 38: goto L0;case 39: goto L0;case 40: goto L0;case 41: goto L0;case 42: goto L0;case 43: goto L0;case 44: goto L0;case 45: goto L0;case 46: goto L0;case 47: goto L0;case 48: goto L0;case 49: goto L0;case 50: goto L0;case 51: goto L0;case 52: goto L0;case 53: goto L0;case 54: goto L0;case 55: goto L0;case 56: goto L0;case 57: goto L0;case 58: goto L0;case 59: goto L0;case 60: goto L0;case 61: goto L0;case 62: goto L0;case 63: goto L0;case 64: goto L0;case 65: goto L0;case 66: goto L0;default: goto L26;} L26:return 26; L24:return 24; L25:return 25; L0:return 0;}
+s32 fn_8005B760(s32 arg0) {
+ s32 result;
+ switch (arg0) {
+ case 10: case 26: result=26; break;
+ case 24: result=24; break;
+ case 25: result=25; break;
+ default: result=0; break;
+ }
+ return result;
+}
 
 u8 fn_8005B7A4(u8 *s) {
 extern u32 lbl_802F03A8[0x4D];
@@ -1242,6 +1251,7 @@ void FileCache_ExpandBuffer(void *a)
     s32 strlen(void *);
     extern u8 fn_8005DF60[];
     u32 n;
+    u8 ch_u;
     s8 ch;
     u32 old;
     s32 len;
@@ -1250,8 +1260,9 @@ void FileCache_ExpandBuffer(void *a)
     old = *(u32 *)((u8 *)a + 0x38);
     n = fn_80006AC0(old);
     *(u32 *)((u8 *)a + 0x3c) = n;
-    ch = *(u8 *)((u8 *)a + 0x29);
+    ch_u = *(u8 *)((u8 *)a + 0x29);
     n = *(u32 *)((u8 *)a + 0x3c);
+    ch = (s8)ch_u;
     if (fn_800C44F4(ch) < n) {
         result = 0;
     } else {
@@ -2176,15 +2187,17 @@ loop_5:
 }
 
 #pragma peephole off
-void fn_8005F410(void *arg0) {
+void *fn_8005F410(void *arg0)
+{
     void *next;
+
     for (;;) {
         next = *(void **)((u8 *)arg0 + 4);
         if (next == NULL) {
-            return;
+            return arg0;
         }
         if (*(void **)((u8 *)next + 0x8c) == NULL) {
-            return;
+            return arg0;
         }
         arg0 = next;
     }
@@ -2283,17 +2296,26 @@ void Model_SetColor(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     M2C_FIELD(arg0, s8 *, 0xA) = arg3;
 }
 
+#pragma global_optimizer off
 #pragma opt_strength_reduction off
 s32 Pad_IsActive(u8 *arg0) {
- u16 *p = (u16 *)arg0;
- s32 i;
- for (i=0;i<2;i++,p+=2) {
- if (p[62] != 65535) return 1;
- if (p[63] != 65535) return 1;
- }
- return 0;
+    if (*(u16 *)(arg0 + 0x7C) != 0xFFFF) {
+        return 1;
+    }
+    if (*(u16 *)(arg0 + 0x7E) != 0xFFFF) {
+        return 1;
+    }
+    arg0 += 4;
+    if (*(u16 *)(arg0 + 0x7C) != 0xFFFF) {
+        return 1;
+    }
+    if (*(u16 *)(arg0 + 0x7E) != 0xFFFF) {
+        return 1;
+    }
+    return 0;
 }
 #pragma opt_strength_reduction reset
+#pragma global_optimizer reset
 static inline u32 GetListField44(void *p) {
     while (p != NULL) {
         u32 v = *(u32 *)((u8 *)p + 0x44);
@@ -2702,30 +2724,23 @@ s32 GActor_FindNode(void *arg0, void *name) {
     goto check;
 body:
     node = *(void **)((u8 *)cur + 0x40);
-    if (node == NULL) goto next;
-    else goto search;
+    if (node == NULL)
+        goto next;
+    goto search;
 next:
     cur = *(void **)((u8 *)cur + 4);
 check:
-    if (cur != NULL) {
+    if (cur != NULL)
         goto body;
-    }
     node = NULL;
 search:
     entry = *(void **)((u8 *)node + 0xC);
-    i = 0;
-    goto inner_check;
-inner:
-    if (*(u32 *)((u8 *)entry + 0xC) & 0x80000000U) {
-        if (Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0), name) != 0) {
-            return i;
+    for (i = 0; i < *(s32 *)((u8 *)node + 8); i++, entry = (void *)((u8 *)entry + 0xF4)) {
+        if (*(u32 *)((u8 *)entry + 0xC) & 0x80000000U) {
+            if (Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0), name) != 0) {
+                return i;
+            }
         }
-    }
-    i += 1;
-    entry = (void *)((u8 *)entry + 0xF4);
-inner_check:
-    if (i < *(s32 *)((u8 *)node + 8)) {
-        goto inner;
     }
     return -1;
 }
@@ -4893,12 +4908,12 @@ void fn_80066F64(void)
     extern s32 lbl_8036C444;
     extern s32 lbl_8036C448;
     extern s32 lbl_80366DDC;
+    f32 f20;
+    f32 f24;
     u32 col2;
     u32 col1;
     Vec3 b;
     Vec3 a;
-    f32 f20;
-    f32 f24;
     u8 *p;
     s32 i;
 
@@ -5007,13 +5022,13 @@ void fn_80067304(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x10) = b.z;
     *(f32 *)((u8 *)arg0 + 0x20) = f20;
 
-    col1 = (u32)lbl_8036C444;
+    col1 = lbl_8036C444;
     ((u8 *)arg0)[0] = ((u8 *)&col1)[0];
     ((u8 *)arg0)[1] = ((u8 *)&col1)[1];
     ((u8 *)arg0)[2] = ((u8 *)&col1)[2];
     ((u8 *)arg0)[3] = ((u8 *)&col1)[3];
 
-    col2 = (u32)lbl_8036C448;
+    col2 = lbl_8036C448;
     ((u8 *)arg0)[4] = ((u8 *)&col2)[0];
     ((u8 *)arg0)[5] = ((u8 *)&col2)[1];
     ((u8 *)arg0)[6] = ((u8 *)&col2)[2];
