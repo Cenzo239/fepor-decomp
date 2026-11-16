@@ -1867,73 +1867,35 @@ u32 Item_GetUfx(void *arg0) {
 }
 
 s32 fn_8001CA2C(void *arg0) {
-    void *temp_r6;
-    s32 temp_r8;
-    s32 var_r4;
-    u16 var_r5_2;
-
-    if (arg0 == NULL) {
-        return 0;
-    }
-
-    if ((s8) gItemFlagsDummyReady == 0) {
-        gItemFlagsDummyHi = 0;
-        gItemFlagsDummy = 0;
-        gItemFlagsDummyReady = 1;
-    }
-
-    temp_r6 = *(void **)arg0;
-    if (temp_r6 != NULL) {
-        var_r5_2 = *(u16 *)((char *)temp_r6 + 0x38);
-    } else {
-        var_r5_2 = *(u16 *)gItemFlagsDummy;
-    }
-
-    temp_r8 = *(s32 *)((char *)var_r5_2 + 4);
-    if ((temp_r8 & 0x7FF80000) != 0) {
-        var_r4 = 0xC350; // 50000
-    } else {
-        var_r4 = 0;
-    }
-
-    if (temp_r6 != NULL) {
-        var_r5_2 = *(u16 *)((char *)temp_r6 + 0x10);
-    }
-
-    var_r4 += (s32) ((u16) var_r5_2 * *(u8 *)((char *)arg0 + 4));
-    
-    if (temp_r8 & 4) {
-        var_r4 += 0x2710; // 10000
-    }
-    if (temp_r8 & 0x10) {
-        var_r4 += 0x2710;
-    }
-    if (temp_r8 & 8) {
-        var_r4 += 0x2710;
-    }
-    if (temp_r8 & 0x20) {
-        var_r4 += 0x7D0; // 2000
-    }
-    if (temp_r8 & 0x80) {
-        var_r4 += 0x7D0;
-    }
-    if ((temp_r8 & 0) != 0) {
-        var_r4 += 0x7D0;
-    }
-    if (temp_r8 & 0x40) {
-        var_r4 += 0x7D0;
-    }
-    if (temp_r8 & 0x400) {
-        var_r4 += 0x7D0;
-    }
-    if (temp_r8 & 0x800) {
-        var_r4 += 0x3E8; // 1000
-    }
-    if (temp_r8 & 0x4000) {
-        var_r4 += 0x3E8;
-    }
-
-    return var_r4;
+void *data;
+u64 *ptr;
+u32 flags;
+s32 value;
+u32 price;
+if (*(void **)arg0==0) return 0;
+value=0;
+if ((s8)gItemFlagsDummyReady==0) {
+gItemFlagsDummyHi=0;gItemFlagsDummy=0;gItemFlagsDummyReady=1;
+}
+if(*(void **)arg0) ptr=(u64 *)((u8 *)*(void **)arg0+0x38);
+else ptr=(u64 *)&gItemFlagsDummy;
+flags=(u32)*ptr;
+if(flags&0x3007FF80000ULL) value+=50000;
+price=0;
+data=*(void **)arg0;
+if(data) price=*(u16 *)((u8 *)data+0x10);
+value+=(u16)(price * *(u8 *)((u8 *)arg0+4));
+if(flags&4) value+=10000;
+if(flags&0x10) value+=10000;
+if(flags&8) value+=10000;
+if(flags&0x20) value+=2000;
+if(flags&0x80) value+=2000;
+if(flags&0x1000000000ULL) value+=2000;
+if(flags&0x40) value+=2000;
+if(flags&0x400) value+=2000;
+if(flags&0x800) value+=1000;
+if(flags&0x4000) value+=1000;
+return value;
 }
 
 void *Item_GetFlagsPtr(void *arg0)
