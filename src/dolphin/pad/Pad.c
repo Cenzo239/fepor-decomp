@@ -296,7 +296,7 @@ u32 fn_802129C0(PADStatus *status)
   u32 SIGetType(s32);
   s32 fn_8023BA70(s32, void *);
   void fn_8023C188(s32, void *);
-  void PADOriginCallback(void);
+  void PADOriginCallback(s32 chan, u32 error);
   void PADTypeAndStatusCallback(s32, u32);
   s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
   void *memset(void *, s32, u32);
