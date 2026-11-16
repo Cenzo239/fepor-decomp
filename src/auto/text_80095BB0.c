@@ -46,10 +46,20 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 s32 fn_80095BB0(s32 arg0) {
-    if (arg0 == 0x10000) { return 0; }
-    
-    /* Default case */
-    return 0;
+    extern s32 lbl_80367500, lbl_80367504;
+    switch(arg0) {
+    case (s32)0x80000000:
+    case 0x100: case 0x200: case 0x400: case 0x800:
+    case 0x2000: case 0x8000: case 0x40000:
+    case 0x800000: case 0x1000000: case 0x2000000:
+    case 0x4000000: case 0x8000000: case 0x10000000:
+    case 0x20000000: case 0x40000000:
+        return lbl_80367500;
+    case 2: case 8: case 0x10: case 0x20: case 0x80:
+    case 0x1000: case 0x4000: case 0x10000:
+        return lbl_80367504;
+    default: return 0;
+    }
 }
 
 /* Return the debug name string for a single event command flag bit. */
@@ -643,29 +653,48 @@ s32 fn_80096EEC(s32 *arg0, u32 arg1) {
     return var_r5;
 }
 
+#pragma global_optimizer off
+#pragma opt_strength_reduction off
 s32 Event_GetCmdKind(s32 arg0) {
- extern u8 gBattle[];
- s16 *s = (s16 *)(gBattle + 0x8A0);
- s32 result=-1;
- s16 saved=*(s16 *)(gBattle+0x8A0);
- *(s16 *)(gBattle+0x8A0)=arg0;
- *(s16 *)(gBattle+0x8A0)=(s16)arg0+1;
- for (;;) {
- s32 c=((u8 *)s)[(*s << 2)+4];
- switch(c) {
- case 0x20: case 0x21: case 0x22: case 0x24: goto done;
- case 0x50: case 0x51: case 0x52:
- result=((u8 *)s)[(*s << 2)+4]; goto done;
- case 0: ++*s; continue;
- default: goto restore;
- }
- }
+    extern u8 gBattle[];
+    u8 *base = gBattle;
+    s16 *s = (s16 *)(base + 0x8A0);
+    s32 result = -1;
+    s16 next = (s16)arg0 + 1;
+    s16 saved = *(s16 *)(base + 0x8A0);
+    *(s16 *)(base + 0x8A0) = arg0;
+    *(s16 *)(base + 0x8A0) = next;
+    for (;;) {
+        s16 idx = *s;
+        s32 c = *((u8 *)s + (idx << 2) + 4);
+        switch (c) {
+        case 0x20:
+        case 0x21:
+        case 0x22:
+        case 0x24:
+            goto done;
+        case 0x50:
+        case 0x51:
+        case 0x52:
+            result = *((u8 *)s + (*s << 2) + 4);
+            goto done;
+        case 0:
+            {
+                s16 t = *s;
+                *s = t + 1;
+            }
+            continue;
+        default:
+            goto restore;
+        }
+    }
 restore:
- *s=saved;
+    *s = saved;
 done:
- return result;
+    return result;
 }
-
+#pragma opt_strength_reduction reset
+#pragma global_optimizer reset
 s32 fn_80097168(s32 arg0) {
  extern u8 gBattle[];
  s16 *s = (s16 *)(gBattle + 0x8A0);
