@@ -321,6 +321,25 @@ u32 fn_8020C3E0(char *path) {
     }
 }
 
+s32 fn_8020C6D4(char *path, void *info) {
+BOOL DVDGetCurrentDir(char *, u32);
+void OSReport(char *, ...);
+extern char lbl_8029CFB0[];
+char currentPath[0x80];
+s32 entry = fn_8020C3E0(path);
+if (entry < 0) {
+DVDGetCurrentDir(currentPath, 0x80);
+OSReport(lbl_8029CFB0, path, currentPath);
+return 0;
+}
+if (entryIsDir(entry)) return 0;
+*(u32 *)((u8 *)info+0x30)=FstStart_8036857C[entry].parentOrPosition;
+*(u32 *)((u8 *)info+0x34)=FstStart_8036857C[entry].nextEntryOrLength;
+*(u32 *)((u8 *)info+0x38)=0;
+*(u32 *)((u8 *)info+0xC)=0;
+return 1;
+}
+
 s32 fn_8020C79C(void) {
     M2C_UNK fn_8020F334();
     fn_8020F334();
@@ -379,23 +398,23 @@ BOOL DVDGetCurrentDir(char *path, u32 maxlen) {
     return DVDConvertEntrynumToPath((s32)currentDirectory, path, maxlen);
 }
 
-s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    M2C_UNK OSPanic(M2C_UNK *, M2C_UNK, M2C_UNK *);
-    M2C_UNK DVDReadAbsAsyncPrio(void *, s32, s32, s32, M2C_UNK *, s32);
-    extern M2C_UNK fn_8020CBF8;
-    extern M2C_UNK lbl_8029CFE8;
-    extern M2C_UNK lbl_80366F60;
+s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, void *), s32 arg5) {
+    void OSPanic(void *, s32, char *, ...);
+    s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(s32, void *), s32);
+    void fn_8020CBF8(s32, void *);
+    extern s32 lbl_8029CFE8;
+    extern s32 lbl_80366F60;
     s32 temp_r4;
 
-    if ((arg3 < 0) || ((u32) arg3 > (u32) M2C_FIELD(arg0, u32 *, 0x34))) {
-        OSPanic(&lbl_80366F60, 0x2EE, &lbl_8029CFE8);
+    if ((arg3 < 0) || ((u32)arg3 > *(u32 *)((u8 *)arg0 + 0x34))) {
+        OSPanic(&lbl_80366F60, 0x2EE, (char *)&lbl_8029CFE8);
     }
     temp_r4 = arg3 + arg2;
-    if ((temp_r4 < 0) || ((u32) temp_r4 >= (u32) (M2C_FIELD(arg0, u32 *, 0x34) + 0x20))) {
-        OSPanic(&lbl_80366F60, 0x2F4, &lbl_8029CFE8);
+    if ((temp_r4 < 0) || ((u32)temp_r4 >= *(u32 *)((u8 *)arg0 + 0x34) + 0x20)) {
+        OSPanic(&lbl_80366F60, 0x2F4, (char *)&lbl_8029CFE8);
     }
-    M2C_FIELD(arg0, s32 *, 0x38) = arg4;
-    DVDReadAbsAsyncPrio(arg0, arg1, arg2, M2C_FIELD(arg0, s32 *, 0x30) + arg3, &fn_8020CBF8, arg5);
+    *(void (**)(s32, void *))((u8 *)arg0 + 0x38) = arg4;
+    DVDReadAbsAsyncPrio(arg0, arg1, arg2, *(s32 *)((u8 *)arg0 + 0x30) + arg3, fn_8020CBF8, arg5);
     return 1;
 }
 
@@ -1586,9 +1605,30 @@ void fn_8020EBEC(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     // No additional functions calls or logic
 }
 
-u32 fn_8020ED90(void)
+s32 fn_8020ED90(u8 *block, u32 callback) {
+void DCInvalidateRange(void *, u32);
+u32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(u32);
+s32 __DVDPushWaitingQueue(s32, void *);
+extern s32 autoInvalidation_80366F6C;
+s32 result;
+*(u32 *)(block+8)=7;
+*(u32 *)(block+0x28)=callback;
 {
-    return __OSGetResetSWState();
+u32 interrupts;
+u32 command;
+if (autoInvalidation_80366F6C != 0) {
+command = *(u32 *)(block+8);
+if (command == 1 || command-4 <= 1 || command == 14)
+DCInvalidateRange(*(void **)(block+0x18), *(u32 *)(block+0x14));
+}
+interrupts=OSDisableInterrupts();
+*(u32 *)(block+0xC)=2;
+result=__DVDPushWaitingQueue(1,block);
+if (executing_80368598 == 0 && PauseFlag_803685A4 == 0) stateReady();
+OSRestoreInterrupts(interrupts);
+}
+return result;
 }
 
 void DVDReset(void) {
