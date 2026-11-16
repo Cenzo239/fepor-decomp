@@ -576,6 +576,37 @@ void fn_8020CFAC(void) {
     );
 }
 
+void fn_8020D040(u32 arg0) {
+    void __DVDFSInit(void);
+    void fn_8020D16C(void);
+    void fn_8020D1A0(void);
+    void stateReady(void);
+    extern s32 lbl_803685CC;
+    extern void *executing_80368598;
+    extern u8 DummyCommandBlock_80339F80[];
+    DVDReadyCommand *block;
+    s32 zero;
+
+    if (arg0 == 0x10) {
+        fn_8020D16C();
+        return;
+    }
+    if (arg0 & 1) {
+        zero = 0;
+        lbl_803685CC = zero;
+        __DVDFSInit();
+        block = (DVDReadyCommand *)executing_80368598;
+        executing_80368598 = DummyCommandBlock_80339F80;
+        block->state = zero;
+        if (block->callback != NULL) {
+            (*block->callback)(0, block);
+        }
+        stateReady();
+        return;
+    }
+    fn_8020D1A0();
+}
+
 void cbForStateError(u32 arg0) {
     void fn_8020D16C(void);
     void fn_8020FAE0(void);
