@@ -8862,23 +8862,17 @@ s32 fn_802562A0(u8 arg0, u8 arg1, s32 arg2, u8 arg3)
 
 #pragma global_optimizer on
 s32 fn_80256738(u8 arg0, u8 arg1, s32 arg2, u8 arg3, s32 *out) {
-    s32 fn_802562A0(u8, u8, s32, u8);
-    s32 idx;
-    u8 *p;
-    u8 *table;
-
-    idx = fn_802562A0(arg0, arg1, arg2, arg3);
-    if (idx == -1) {
-        return 0;
-    }
-    p = (u8 *)lbl_8035A510;
-    if (*(u16 *)(p + idx * 4 + 2) == 1) {
-        return 0;
-    }
-    table = (u8 *)gSynthVoices;
-    table += idx * 0x458;
-    *out = *(s32 *)(table + 0x100);
-    return 1;
+s32 fn_802562A0(u8,u8,s32,u8);
+s32 idx; u8 *table; u16 *flag;
+idx=fn_802562A0(arg0,arg1,arg2,arg3);
+if(idx == -1) return 0;
+flag=lbl_8035A510;
+flag += idx * 2;
+if(flag[1] == 1) return 0;
+table=(u8 *)gSynthVoices;
+table += idx * 0x458;
+*out=*(s32 *)(table+0x100);
+return 1;
 }
 
 void fn_802567B0(void *arg0) {
