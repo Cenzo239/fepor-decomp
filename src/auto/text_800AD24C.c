@@ -7895,6 +7895,60 @@ void fn_800BEAC0(void* arg0, void* arg1, int arg2) {
     }
 }
 
+s32 fn_800BEC5C(void *arg0) {
+    extern s16 gTalkState[];
+    s32 Event_GetString(void *, u16);
+    s32 EventFlag_IsSet(s32, s32);
+
+    u8 *entry;
+    s16 *state1;
+    s16 *state2;
+    s16 value;
+
+    entry = (u8 *)arg0;
+
+    value = gTalkState[0];
+    if (value >= 0) {
+        if (value != *(s16 *)(entry + 0x14)) {
+            return 0;
+        }
+    }
+
+    state1 = gTalkState;
+    value = state1[1];
+
+    if (value >= 0) {
+        if (value != *(s16 *)(entry + 0x16)) {
+            return 0;
+        }
+    }
+
+    state2 = gTalkState;
+    value = state2[2];
+
+    if (value != 0) {
+        if (value != *(s16 *)(entry + 0x18)) {
+            return 0;
+        }
+    }
+
+    if (EventFlag_IsSet(
+            (s32)((u8 *)gBattleState + 0xB4),
+            Event_GetString(
+                entry,
+                (u16)*(s16 *)(entry + 0x1A)
+            )
+        ) != 0) {
+        return 0;
+    }
+
+    gTalkState[0] = *(s16 *)(entry + 0x14);
+    state1[1] = *(s16 *)(entry + 0x16);
+    state2[2] = *(s16 *)(entry + 0x18);
+
+    return 1;
+}
+
 s32 fn_800BF1E8(s32 arg0, s32 arg1, s32 arg2)
 {
     M2C_UNK fn_801A5430(s32);
@@ -8150,34 +8204,87 @@ void EventEntry_FlagIsSet(void *arg0) {
     EventFlag_IsSet((u8 *)gBattleState + 0xB4, Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14)), gBattleState);
 }
 
-u32 fn_800C02D4(void *arg0) {
-    extern void *gCmScriptList;
-    u32 ret;
+s32 fn_800C01CC(s32 parent) {
+    void *Event_NextEntry(void *);
+    void *Process_CreateChild(void *, s32);
+    s32 fn_800C03DC(void *);
 
-    if (arg0 == NULL) {
-        return **(u32 **)((u8 *)gCmScriptList + 0x28);
-    }
-    
-    ret = (*(u32 **)((u8 *)*(void **)((u8 *)arg0 + 8) + 0x28))[*(s16 *)((u8 *)arg0 + 0x10) + 1];
-    
-    if (ret != 0) {
-        return ret;
-    }
-    
-    {
-        void *p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 8) + 0x1C);
-        while (p != NULL) {
-            if ((s32)*(u8 *)((u8 *)p + 3) != 0x53) {
-                break;
+    u8 *entry;
+    u8 *battle;
+    u8 found;
+    s16 value;
+    s16 turn;
+    void *proc;
+
+    entry = (u8 *)Event_NextEntry(0);
+    battle = (u8 *)gBattleState;
+
+    while (entry != NULL) {
+        if (entry[0xC] == 6) {
+            value = *(s16 *)(entry + 0x18);
+
+            if (value < 0 || value == battle[0x11]) {
+                value = *(s16 *)(entry + 0x14);
+
+                if (value == 0) {
+                    found = 1;
+                    goto check;
+                }
+
+                turn = *(s16 *)(battle + 0x12);
+
+                if (value <= turn &&
+                    *(s16 *)(entry + 0x16) >= turn) {
+                    found = 1;
+                    goto check;
+                }
             }
-            p = *(void **)((u8 *)p + 0x1C);
         }
-        
-        if (p == NULL) {
-            return 0;
-        }
-        return **(u32 **)((u8 *)p + 0x28);
+
+        entry = (u8 *)Event_NextEntry(entry);
     }
+
+    found = 0;
+
+check:
+    if (found == 0) {
+        return 0;
+    }
+
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 6;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)fn_800C03DC;
+
+    return 1;
+}
+
+u32 fn_800C02D4(void *arg0) {
+ void *Event_NextEntry(void *); void *Process_CreateChild(void *,void *); s32 fn_800C03DC(void *);
+ u8 *entry; u8 *battle; u8 found; u8 valid; s16 value; s16 turn; void *proc;
+ entry=Event_NextEntry(0); battle=(u8 *)gBattleState;
+ while(entry) {
+ if((s32)entry[0xc]==3) {
+ value=*(s16 *)(entry+0x18);
+ if(value>=0 && value!=battle[0x11]) valid=0;
+ else {
+ value=*(s16 *)(entry+0x14);
+ if(value==0) valid=1;
+ else { turn=*(s16 *)(battle+0x12);
+ if(value>turn) valid=0;
+ else if(*(s16 *)(entry+0x16)<turn) valid=0;
+ else valid=1;
+ }}
+ if(valid) { found=1; goto check; }
+ }
+ entry=Event_NextEntry(entry);
+ }
+ found=0;
+ check:
+ if(!found) return 0;
+ proc=Process_CreateChild(E_EventCaller_script,arg0);
+ *(s32 *)((u8 *)proc+0x34)=3;
+ *(void **)((u8 *)proc+0x38)=(void *)fn_800C03DC;
+ return 1;
 }
 
 s32 fn_800C03DC(void *arg0)
