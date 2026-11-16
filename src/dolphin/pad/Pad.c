@@ -748,21 +748,23 @@ s32 fn_8021371C(s32 arg0) {
     return temp_r31;
 }
 
-void fn_80213760(u16 arg0, u32 arg1) {
-    u16 temp_r4;
-    void *temp_r5;
-    void *temp_r6;
-    void *temp_r7;
+void fn_80213760(u32 arg0, u32 arg1) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    s32 enabled;
+    u32 ha;
+    u32 t;
 
-    OSDisableInterrupts();
-    temp_r5 = (u16 *)0xCC000000 + 0x5000;
-    temp_r6 = (u16 *)0xCC000000 + 0x5000;
-    temp_r7 = (u16 *)0xCC000000 + 0x5000;
-    M2C_FIELD(temp_r5, u16 *, 0x30) = (arg0 >> 16) | (*(u16 *)0xCC005030 & 0xFC00);
-    M2C_FIELD(temp_r6, u16 *, 0x32) = (M2C_FIELD(temp_r6, u16 *, 0x32) & 0x001F) | arg0;
-    temp_r4 = M2C_FIELD(temp_r7, u16 *, 0x36) & 0x8000;
-    M2C_FIELD(temp_r7, u16 *, 0x36) = temp_r4 | (arg1 >> 5);
-    OSRestoreInterrupts();
+    enabled = OSDisableInterrupts();
+    ha = 0xCC000000U;
+    t = *(u16 *)(ha + 0x5030);
+    *(u16 *)(ha + 0x5030) = (t & ~0x3FFu) | (arg0 >> 16);
+    t = *(u16 *)(ha + 0x5032);
+    t = __rlwinm(t, 0, 27, 15);
+    *(u16 *)(ha + 0x5032) = t | (arg0 & 0xFFFF);
+    t = *(u16 *)(ha + 0x5036);
+    *(u16 *)(ha + 0x5036) = (t & ~0x7FFFu) | ((arg1 >> 5) & 0xFFFF);
+    OSRestoreInterrupts(enabled);
 }
 
 volatile u16 __PADRegs[32] : 0xCC005000;
@@ -989,6 +991,42 @@ s32 fn_80214184(s32 arg0) {
     OSRestoreInterrupts(enabled);
     return old;
 }
+
+s32 fn_802141EC(s32 arg0, s32 arg1) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void OSRegisterVersion(const char *);
+void fn_802142C0(s32, OSContext *);
+void fn_80214368(void);
+extern char *lbl_80366FC8;
+extern s32 lbl_803686F4;
+extern s32 lbl_803686E8;
+extern s32 lbl_803686EC;
+extern s32 lbl_803686F0;
+typedef struct { u8 pad[0x1a]; u16 val; } PadInitReg;
+s32 enabled;
+volatile PadInitReg *regs;
+u32 value;
+if (lbl_803686F4 == 1) return 0x4000;
+OSRegisterVersion(lbl_80366FC8);
+enabled=OSDisableInterrupts();
+lbl_803686D8=0;
+__OSSetInterruptHandler(6,fn_802142C0);
+__OSUnmaskInterrupts(0x02000000);
+lbl_803686EC=arg1;
+lbl_803686E8=0x4000;
+lbl_803686F0=arg0;
+regs=(volatile PadInitReg *)__PADRegs;
+value=regs->val;
+value &= ~0xff;
+value = __rlwimi(value, *(volatile u16 *)0xCC00501A,0,24,31);
+regs->val = value;
+fn_80214368();
+lbl_803686F4=1;
+OSRestoreInterrupts(enabled);
+return lbl_803686E8;
+}
+
 #pragma peephole on
 s32 fn_802142B0(void) {
     return 0x4000;
@@ -1112,10 +1150,33 @@ void fn_80215C5C(void) {
 }
 
 void fn_80215C60(void) {
-    if (Scb_803394 & 0x2000) {
-        Scb_803394 = 0;
-        OSResetSystem(1, 0, 0);
-    }
+extern void (*lbl_80368710)(void *);
+extern void (*lbl_80368714)(void *);
+extern void *lbl_80368708;
+extern void *lbl_8036870C;
+extern u32 *lbl_803686F8;
+void fn_80214094(u32,u32,u32,u32);
+void fn_80215B5C(void);
+u32 *request;
+if (lbl_80368710) {
+lbl_80368710(lbl_80368708);
+lbl_80368708=0;
+lbl_80368710=0;
+} else if (lbl_80368714) {
+lbl_80368714(lbl_8036870C);
+lbl_8036870C=0;
+lbl_80368714=0;
+}
+request=lbl_803686F8;
+if (request) {
+if (request[2]==0) fn_80214094(request[2],request[4],request[5],request[6]);
+else fn_80214094(request[2],request[5],request[4],request[6]);
+request=lbl_803686F8;
+lbl_80368710=(void (*)(void *))request[7];
+lbl_80368708=request;
+lbl_803686F8=(u32 *)request[0];
+}
+if (!lbl_80368708) fn_80215B5C();
 }
 
 void fn_80215D2C(void) {
@@ -1187,6 +1248,43 @@ void fn_80215F78(u32 arg0)
     __PADRegs[0] = (u16)(arg0 >> 16);
     __PADRegs[1] = (u16)arg0;
 }
+
+void fn_80215F8C(void) {
+void fn_802160C0(char *, ...);
+void fn_80216110(s32, OSContext *);
+void OSRegisterVersion(const char *);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+extern char lbl_8029D7E0[];
+extern char *lbl_80366FD8;
+extern s32 lbl_80368720;
+extern void *lbl_80368730;
+extern void *lbl_8036873C;
+extern void *lbl_80368734;
+extern void *lbl_80368738;
+typedef struct { u8 pad[0xa]; u16 val; } PadReg;
+s32 enabled;
+volatile PadReg *p;
+u16 v;
+fn_802160C0(lbl_8029D7E0+0x48,lbl_8029D7E0+0x68,lbl_8029D7E0+0x74);
+if (lbl_80368720 != 1) {
+OSRegisterVersion(lbl_80366FD8);
+enabled=OSDisableInterrupts();
+__OSSetInterruptHandler(7,fn_80216110);
+__OSUnmaskInterrupts(0x01000000);
+p=(volatile PadReg *)__PADRegs;
+p->val=(p->val & ~0xa8)|0x800;
+v=p->val;
+p->val=v & ~0xac;
+lbl_80368730=0;
+lbl_8036873C=0;
+lbl_80368734=0;
+lbl_80368738=0;
+lbl_80368720=1;
+OSRestoreInterrupts(enabled);
+}
+}
+
 #pragma global_optimizer on
 void *fn_80216050(void *arg0) {
 extern void *lbl_80368738;
