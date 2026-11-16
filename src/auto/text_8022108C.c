@@ -248,9 +248,9 @@ void fn_8022124C(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
 }
 
 void fn_802212C8(s32 arg0) {
-    __GXData[0x1E8/2] = 0;
-    __GXData[0x1E8/2] = (__GXData[0x1E8/2] & ~0x3FF) | ((arg0 >> 5) & 0x3FF);
-    __GXData[0x1E8/2] = (__GXData[0x1E8/2] & ~0xFF000000) | 0x4D000000;
+ M2C_FIELD(__GXData, u32 *, 0x1E8) = 0;
+ M2C_FIELD(__GXData, u32 *, 0x1E8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1E8), (s32)((arg0 & 0x7FFF) << 1) >> 5, 0, 22, 31);
+ M2C_FIELD(__GXData, u32 *, 0x1E8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1E8), 0x4D, 24, 0, 7);
 }
 
 void fn_8022142C(u32 arg0) {
