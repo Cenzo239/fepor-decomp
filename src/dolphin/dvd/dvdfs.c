@@ -1039,6 +1039,32 @@ void fn_8020DCE8(void *block) {
     fn_8020BE28(lbl_80339F60, fn_8020DD18);
 }
 
+void fn_8020DD18(u32 arg0)
+{
+    void __DVDStoreErrorCode(u32);
+    void DVDReset(void);
+    void cbForStateError(u32);
+    void fn_8020BF58(void *);
+    void fn_8020D724(void);
+    void fn_8020D27C(void);
+    extern s32 lbl_803685CC;
+
+    if (arg0 == 0x10) {
+        __DVDStoreErrorCode(0x01234568);
+        DVDReset();
+        cbForStateError(0);
+        return;
+    }
+
+    if (arg0 & 1) {
+        lbl_803685CC = 0;
+        fn_8020D724();
+        return;
+    }
+
+    fn_8020BF58((void *)fn_8020D27C);
+}
+
 void fn_8020DD7C(void) {
     void DVDLowWaitCoverClose(void (*)(void));
     extern void cbForStateMotorStopped(void);
@@ -1593,6 +1619,21 @@ s32 fn_8020F058(s32 arg0) {
     return temp_r0;
 }
 
+#pragma peephole off
+void fn_8020F068(void) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    u32 enabled;
+
+    enabled = OSDisableInterrupts();
+    PauseFlag_803685A4 = 0;
+    if (PausingFlag_803685A8 != 0) {
+        PausingFlag_803685A8 = 0;
+        stateReady();
+    }
+    OSRestoreInterrupts(enabled);
+}
+#pragma peephole on
 void fn_8020F3E0(void) {
     extern void* __DVDThreadQueue;
     fn_8020AEC4(&__DVDThreadQueue);
@@ -2481,17 +2522,22 @@ s32 fn_80211690(void) {
 }
 
 void fn_80211698(s32 *arg0, u32 *arg1) {
- volatile u16 *addr = (volatile u16 *)0xCC002000;
- u32 horizontal, vertical, previous;
- vertical = addr[0x16] & 0x7FF;
- do {
- previous = vertical;
- horizontal = addr[0x17];
- vertical = addr[0x16] & 0x7FF;
- horizontal &= 0x7FF;
- } while(previous != vertical);
- *arg0 = horizontal;
- *arg1 = vertical;
+    u32 horizontal;
+    u32 previous;
+    u32 vertical;
+    volatile u16 *bump = (volatile u16 *)0xCC002000;
+    volatile u16 *base;
+
+    vertical = *(bump += 0x16) & 0x7FF;
+    base = (volatile u16 *)0xCC002000;
+    do {
+        previous = vertical;
+        horizontal = base[0x17];
+        vertical = *bump & 0x7FF;
+        horizontal &= 0x7FF;
+    } while (previous != vertical);
+    *arg0 = horizontal;
+    *arg1 = vertical;
 }
 
 s32 fn_802116D4(void) {
@@ -2639,20 +2685,22 @@ void fn_80211914(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_80211B30(s32 arg0, s32 arg1) {
-    u32 temp_r7;
-    u32 var_r8;
-    
-    // Load the value from 0xCC00202C and mask to get the lower 11 bits
-    var_r8 = *(u16*)0xCC00202C & 0x7FF;
-    
-    // Loop until the value stops changing
+    void fn_80211914(s32, s32, s32, s32);
+    u32 horizontal;
+    u32 previous;
+    u32 vertical;
+    volatile u16 *bump = (volatile u16 *)0xCC002000;
+    volatile u16 *base;
+
+    vertical = *(bump += 0x16) & 0x7FF;
+    base = (volatile u16 *)0xCC002000;
     do {
-        temp_r7 = var_r8;
-        var_r8 = *(u16*)0xCC00202C & 0x7FF;
-    } while (temp_r7 != var_r8);
-    
-    // Call fn_80211914 with masked value and arguments
-    fn_80211914(*(u16*)0xCC00202E & 0x7FF, var_r8, arg0, arg1);
+        previous = vertical;
+        horizontal = base[0x17];
+        vertical = *bump & 0x7FF;
+        horizontal &= 0x7FF;
+    } while (previous != vertical);
+    fn_80211914(horizontal, vertical, arg0, arg1);
 }
 
 void fn_80211B90(u8 *arg0, u8 *arg1, s8 arg2, s8 arg3, s8 arg4) {
