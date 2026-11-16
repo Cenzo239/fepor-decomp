@@ -1286,35 +1286,46 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_80134C24(s32 *arg0, void *arg1) {
-    s32 fn_800102BC(M2C_UNK, s32, s16, s32, s16, s16, s16, f32);
-    s32 *fn_8013F748(void *, M2C_UNK *, s16 *);
+    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
+    s32 Text_MeasureHeight(s32, f32);
     extern f32 lbl_8036A5AC;
-    s16 sp8;
-    s16 spA;
-    s16 temp_r27;
-    s16 temp_r29;
-    s16 temp_r5;
-    s16 temp_r7;
-    s16 temp_r9;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r6;
-    s32 temp_r8;
-    s32 temp_r10;
+    Vec2s out;
+    Vec2s in;
+    s32 kind;
+    s32 colW;
+    u32 quot;
+    s16 rowH;
+    s32 t;
+    s32 rem;
+    s32 hdiv;
+    s16 x;
+    s16 y;
+    s16 half;
+    s16 off48;
+    s16 off4a;
 
-    temp_r9 = M2C_FIELD(arg1, s16 *, 0x44);
-    temp_r7 = M2C_FIELD(arg1, s16 *, 0x3e);
-    temp_r29 = M2C_FIELD(arg1, s16 *, 0x46);
-    temp_r8 = (s16) ((M2C_FIELD(arg1, s16 *, 0x16) - M2C_FIELD(arg1, s16 *, 0x12)) / temp_r9);
-    temp_r10 = (s16) temp_r8;
-    temp_r6 = (s16) (temp_r10 * (M2C_FIELD(arg1, s16 *, 0x3e) % temp_r9));
-    temp_r4 = temp_r29 * (s16) (temp_r7 / temp_r9);
-    temp_r5 = temp_r6 + M2C_FIELD(arg1, s16 *, 0x48);
-    temp_r27 = temp_r4 + M2C_FIELD(arg1, s16 *, 0x4a);
-    temp_r3 = fn_800102BC(-1, temp_r4, temp_r5, temp_r6, temp_r7, (s16) temp_r8, temp_r9, lbl_8036A5AC);
-    sp8 = temp_r5;
-    spA = temp_r27 + (s16) ((s32) (temp_r29 - temp_r3) >> 1);
-    *arg0 = *fn_8013F748(arg1, (M2C_UNK *)&sp8, &spA);
+    colW = *(s16 *)((u8 *)arg1 + 0x44);
+    kind = *(s16 *)((u8 *)arg1 + 0x3E);
+    quot = kind / colW;
+    t = *(s16 *)((u8 *)arg1 + 0x12);
+    rem = *(s16 *)((u8 *)arg1 + 0x16) - t;
+    rowH = *(s16 *)((u8 *)arg1 + 0x46);
+    off48 = *(s16 *)((u8 *)arg1 + 0x48);
+    off4a = *(s16 *)((u8 *)arg1 + 0x4A);
+    t = (s16)rem;
+    hdiv = t / colW;
+    rem = quot * colW;
+    t = (s16)hdiv;
+    rem = kind - rem;
+    rem = (s16)rem;
+    rem = t * rem;
+    x = (s16)(rem + off48);
+    y = (s16)(rowH * (s16)quot + off4a);
+    t = Text_MeasureHeight(-1, lbl_8036A5AC);
+    half = (s16)((rowH - t) >> 1);
+    in.x = x;
+    in.y = (s16)(y + half);
+    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
 #pragma use_lmw_stmw reset
 
@@ -2120,7 +2131,7 @@ void Prim2D_AddPrim(s32); void Prim2D_SetColorPacked(void *);
 void Prim2D_SetTextScale(s32,f32); void fn_80006B18(s32,s32,s32,s32,u8);
 void Prim2D_EndPrim(void); void Ui_DrawIcon(void *,s16,s16,u8);
 s32 fn_8010586C(void *); s32 *Ui_GetColor(s32);
-extern u8 lbl_80276720[],gItemIconDrawer[]; extern f32 lbl_8036A5E0;
+extern u8 lbl_80276720[],lbl_802F0350[]; extern f32 lbl_8036A5E0;
 s32 sp8; s32 y,tx,x,name; s32 flag;
 flag=arg5!=0;
 Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)arg0+0x34)|0x13)); Prim2D_PrepareTex();
@@ -2130,7 +2141,7 @@ Text_Draw(tx,y+4,flag,lbl_80276720+0x1d,name);
 Prim2D_AddPrim(6); sp8=*Ui_GetColor(flag); Prim2D_SetColorPacked(&sp8);
 Prim2D_SetTextScale(1,lbl_8036A5E0);
 fn_80006B18(tx,y+8,0,0,((u8 *)arg4)[0x1a]);
-Prim2D_EndPrim(); Ui_DrawIcon(gItemIconDrawer,x,y,((u8 *)arg4)[0x19]);
+Prim2D_EndPrim(); Ui_DrawIcon(lbl_802F0350,x,y,((u8 *)arg4)[0x19]);
 }
 
 s32 fn_80136268(void *arg0, void *arg1) {
@@ -5263,32 +5274,40 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     };
     void fn_800616A0(void *);
     void Heap_Free(void *);
+    void **end_p;
+    void **start_p;
+    s32 *list_p;
+    void **ret_p;
     struct Node *first;
     struct Node *last;
     struct Node *a;
     struct Node *node;
     void *value;
 
+    end_p = end;
+    start_p = start;
     first = (struct Node *)*start;
+    list_p = list;
+    ret_p = ret;
     last = (struct Node *)*end;
     if (first == last) {
-        *ret = last;
+        *ret_p = last;
         return;
     }
     a = last->prev;
     first->prev->next = a->next;
     a->next->prev = first->prev;
-    while ((node = (struct Node *)*start) != (struct Node *)*end) {
-    value = (u8 *)node + 8;
-    if (value != NULL && *(void **)((u8 *)value + 4) != NULL) {
-        fn_800616A0(*(void **)((u8 *)value + 4));
+    while ((node = (struct Node *)*start_p) != (struct Node *)*end_p) {
+        value = (u8 *)node + 8;
+        if (value != NULL && *(void **)((u8 *)value + 4) != NULL) {
+            fn_800616A0(*(void **)((u8 *)value + 4));
+        }
+        node = (struct Node *)*start_p;
+        *start_p = node->next;
+        Heap_Free(node);
+        (*list_p)--;
     }
-    node = (struct Node *)*start;
-    *start = node->next;
-    Heap_Free(node);
-    (*list)--;
-    }
-    *ret = *end;
+    *ret_p = *end_p;
 }
 
 int fn_8013BBF8(void *arg0) {
@@ -7398,6 +7417,7 @@ s32 fn_8013FBD4(s32 arg0) {
     return arg0 + 0xA;
 }
 
+#pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
   s16 x = src[0];
@@ -7407,7 +7427,7 @@ void fn_8013FBDC(s16 *dst, s16 *src)
   dst[0] = dst[0] + x;
   dst[1] = y + dst[1];
 }
-
+#pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
@@ -8240,14 +8260,24 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     return NULL;
 }
 
-void fn_80142018(Vec2s *out, void *arg0) {
-    s16 w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
-    s16 h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
-    out->x = w;
-    out->y = h;
-}
-
 #pragma scheduling off
+void fn_80142018(Vec2s *out, s16 *arg0)
+{
+  s16 top;
+  s16 bottom;
+  s16 left;
+  s16 right;
+  bottom = arg0[5];
+  left = bottom;
+  top = left;
+  bottom = arg0[7];
+  left = arg0[6];
+  bottom = bottom;
+  bottom = bottom - top;
+  right = arg0[8];
+  out->x = bottom;
+  out->y = right - left;
+}
 void fn_8014203C(void *arg0, Vec2s *size)
 {
   s16 xa;
@@ -10940,12 +10970,15 @@ extern "C" void SeCue_FadeOut(s8 slot, s16 durationMs) {
 
 s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
-#pragma peephole off
-s32 SeCue_PlayAtPos(void *arg0, f32 *arg1, s32 arg2) {
+#pragma scheduling off
+s32 SeCue_PlayAtPos(void *arg0, f32 *pos, s32 flag) {
     s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
-    return SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
+    f32 x = pos[0];
+    f32 y = pos[1];
+    f32 z = pos[2];
+    return SeCue_PlayAt(arg0, x, y, z, flag);
 }
-#pragma peephole on
+#pragma scheduling reset
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
     extern u8 gSeCueSlots[1344];
