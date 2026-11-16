@@ -212,44 +212,24 @@ s32 fn_80091D74(void) {
 }
 
 s8 Unit_FindItemSlot(void* arg0, void* arg1) {
-    s8 var_r31;
-    u32 temp_r0;
-
-    if ((((u32)arg1 & 5) ^ 0) != 0) {
-        var_r31 = 3;
-loop_2:
-        temp_r0 = *(u32*)((u32)arg0 + (var_r31 * 8) + 0x1CC);
-        if ((temp_r0 != 0U) && (temp_r0 == (u32)arg1)) {
-            return var_r31;
+    void **Unit_GetHeldItemSlot(void *, s32);
+    s32 i;
+    void *item;
+    if (*(u64 *)((u8 *)arg1 + 0x38) & 5ULL) {
+        for (i = 3; i >= 0; i--) {
+            item = *Unit_GetHeldItemSlot(arg0, i);
+            if (item != 0 && item == arg1) return (s8)i;
         }
-        var_r31 -= 1;
-        if (var_r31 < 0) {
-            goto block_19;
-        }
-        goto loop_2;
+    } else {
+        item = *(void **)((u8 *)arg0 + 0x204);
+        if (item != 0 && item == arg1) return 7;
+        item = *(void **)((u8 *)arg0 + 0x1FC);
+        if (item != 0 && item == arg1) return 6;
+        item = *(void **)((u8 *)arg0 + 0x1F4);
+        if (item != 0 && item == arg1) return 5;
+        item = *(void **)((u8 *)arg0 + 0x1EC);
+        if (item != 0 && item == arg1) return 4;
     }
-    
-    temp_r0 = *(u32*)((u32)arg0 + 0x204);
-    if ((temp_r0 != 0U) && (temp_r0 == (u32)arg1)) {
-        return 7;
-    }
-    
-    temp_r0 = *(u32*)((u32)arg0 + 0x200);
-    if ((temp_r0 != 0U) && (temp_r0 == (u32)arg1)) {
-        return 6;
-    }
-    
-    temp_r0 = *(u32*)((u32)arg0 + 0x1FC);
-    if ((temp_r0 != 0U) && (temp_r0 == (u32)arg1)) {
-        return 5;
-    }
-    
-    temp_r0 = *(u32*)((u32)arg0 + 0x1F8);
-    if ((temp_r0 != 0U) && (temp_r0 == (u32)arg1)) {
-        return 4;
-    }
-    
-block_19:
     return -1;
 }
 
