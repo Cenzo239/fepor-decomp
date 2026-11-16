@@ -734,6 +734,40 @@ void fn_800A4FF8(void) {
     lbl_803677B0 = 0;
 }
 
+s32 fn_800A5048(s32 arg0) {
+extern u8 lbl_803123A0[],lbl_80312580[];
+extern s32 lbl_803677C4,lbl_803677B4,lbl_803677BC,lbl_803677C0,lbl_803677B0;
+extern u32 lbl_803677B8;
+void fn_800A3B90(void);
+u32 fn_8021371C(void (*)(void));
+void fn_80213760(void *,u32);
+void fn_802137E8(void);
+s32 fn_80243A34(void);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void DCFlushRange(void *,u32);
+void *memset(void *,s32,u32);
+s32 interrupts;
+memset(lbl_803123A0,0,0x188);
+if(fn_80243A34()==0) return 0;
+interrupts=OSDisableInterrupts();
+lbl_803677C4=arg0;
+lbl_803677B4=0;lbl_803677BC=0;lbl_803677C0=0;
+lbl_803677B8=fn_8021371C(fn_800A3B90);
+if(lbl_803677B8==0 && lbl_803677C4!=0) {
+fn_8021371C(0);OSRestoreInterrupts(interrupts);return 0;
+}
+OSRestoreInterrupts(interrupts);
+if(lbl_803677C4==0){
+memset(lbl_80312580,0,0x500);
+DCFlushRange(lbl_80312580,0x500);
+fn_80213760(lbl_80312580+lbl_803677B4*0x280,0x280);
+fn_802137E8();
+}
+lbl_803677B0=1;
+return 1;
+}
+
 void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16 arg6, s16 arg7, s16 arg_sp8) {
     M2C_UNK GXBegin(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, s32, u16, u16, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
