@@ -2347,6 +2347,7 @@ void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     void Unit_SetWorldXY(void *, f32, f32);
     extern f32 lbl_80368EC0;
     void *child;
+    f32 base;
     f32 fx;
     f32 fy;
 
@@ -2354,10 +2355,13 @@ void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     *(s8 *)((u8 *)arg0 + 0x19F) = arg2;
     child = *(void **)((u8 *)arg0 + 0x194);
     if (child != NULL) {
+        base = lbl_80368EC0;
         *(s8 *)((u8 *)child + 0x19E) = arg1;
-        fx = lbl_80368EC0 + (f32)arg1;
+        fx = (f32)arg1;
+        fx = base + fx;
         *(s8 *)((u8 *)child + 0x19F) = arg2;
-        fy = lbl_80368EC0 + (f32)arg2;
+        fy = (f32)arg2;
+        fy = base + fy;
         Unit_SetWorldXY(child, fx, fy);
     }
 }
@@ -4292,6 +4296,44 @@ void Unit_WriteExtra(void *unit, s32 stream) {
     Stream_WriteU8(stream, *((u8 *)unit + 0x248));
 }
 
+void fn_8003C4B0(void *arg0, void *arg1)
+{
+  void *Res_GetByName(void *);
+  void *resource;
+  void *name1;
+  void **new_var;
+  void *name2;
+  u8 *self;
+  u8 *source;
+  self = (u8 *) arg0;
+  source = (u8 *) arg1;
+  name2 = *((void **) (source + 0x40));
+  name1 = *((void **) (source + 0x3C));
+  resource = Res_GetByName(*((void **) (source + 0x38)));
+  if (resource != NULL)
+  {
+    *((void **) (self + 0x238)) = *((void **) (((u8 *) resource) + 0x14));
+    self[0x250] = 0;
+  }
+  resource = Res_GetByName(name1);
+  if (resource != NULL)
+  {
+    new_var = (void **) (self + 0x23C);
+    *new_var = *((void **) (((u8 *) resource) + 0x14));
+    self[0x251] = 0;
+  }
+  resource = Res_GetByName(name2);
+  if (resource != NULL)
+  {
+    *((void **) (self + 0x240)) = *((void **) resource);
+  }
+  resource = Res_GetByName(*((void **) (source + 0x44)));
+  if (resource != NULL)
+  {
+    *((void **) (self + 0x244)) = *((void **) resource);
+  }
+}
+
 void fn_8003C56C(void *arg0, s32 arg1) {
     s32 *Res_GetByName(s32);
     s32 *temp_r3;
@@ -4760,26 +4802,20 @@ void Unit_SetDisposId(void *arg0, u8 arg1) {
     }
 }
 
-void Unit_MoveToList(void *arg0, s32 arg1) {
+void Unit_MoveToList(void *unit, s32 listId) {
     void fn_800156A0(void *, void *);
-    void fn_80015718(void *, void *, s32);
+    void fn_80015718(void *, void *);
     void fn_800946F0(void *);
     extern u8 gUnitLists[];
-    s32 listId;
-    void *unit;
-    s32 off;
 
-    listId = arg1;
-    unit = arg0;
     switch (listId) {
     case 0:
     case 2:
     case 3:
         fn_800946F0(unit);
         fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
-        off = listId * 0xC;
-        fn_80015718(gUnitLists + off, unit, off);
-        break;
+        fn_80015718(gUnitLists + listId * 0xC, unit);
+        return;
     }
 }
 
