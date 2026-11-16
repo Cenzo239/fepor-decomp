@@ -7143,6 +7143,66 @@ void fn_8013ED84(void *arg0, s16 arg1) {
     }
 }
 
+void *fn_8013EDD4(void *arg0, s16 arg1) {
+    extern u8 lbl_802921B0[];
+    extern u8 lbl_80291914[];
+    extern u8 lbl_802918E0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_8028FDB0[];
+    extern u8 gEmptyVtbl[];
+    void Heap_Free(void *);
+
+    u8 *self;
+    u8 *sub;
+    void (**vtbl)(void *);
+
+    self = (u8 *)arg0;
+
+    if (self != NULL) {
+        *(void **)self = lbl_802921B0;
+
+        if (self != NULL) {
+            *(void **)self = lbl_80291914;
+
+            if (self + 0x74 != NULL) {
+                *(void **)(self + 0x74) = lbl_802918E0;
+
+                if (self + 0x74 != NULL) {
+                    sub = self + 0x74;
+                    *(void **)sub = gEmptyVtbl;
+                    vtbl = *(void (***)(void *))sub;
+                    vtbl[4](sub);
+                }
+            }
+
+            if (self + 0x4C != NULL) {
+                *(void **)(self + 0x4C) = lbl_802918E0;
+
+                if (self + 0x4C != NULL) {
+                    sub = self + 0x4C;
+                    *(void **)sub = gEmptyVtbl;
+                    vtbl = *(void (***)(void *))sub;
+                    vtbl[4](sub);
+                }
+            }
+
+            if (self != NULL) {
+                *(void **)self = lbl_80292230;
+
+                if (self != NULL) {
+                    *(void **)self = lbl_8028FDB0;
+                }
+            }
+        }
+
+        if (arg1 > 0) {
+            Heap_Free(self);
+        }
+    }
+
+    return self;
+}
+
 s16 fn_8013EED8(void *arg0) {
     return (s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA));
 }
@@ -7287,6 +7347,72 @@ loop_3:
     }
 }
 
+extern "C" void *fn_8013F2A4(void *self, s16 doFree) {
+    struct Obj {
+        virtual void destroy(s32) = 0;
+        s32 refcount;
+    };
+    typedef struct {
+        u32 unk0;
+        ListNode node;
+    } DtorList;
+    typedef struct Owner {
+        void *vtbl;
+        u8 pad[0x38];
+        DtorList list;
+    } Owner;
+    void List_Erase(void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
+    void Heap_Free(void *);
+    extern u8 lbl_80292208[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_8028FDB0[];
+
+    void *found;
+    u8 ret[4];
+    ListNode *sp10;
+    ListNode *spC;
+    u8 sp8[4];
+    ListNode *end;
+    Owner *owner;
+    Obj *obj;
+
+    owner = (Owner *)self;
+    if (self != NULL) {
+        owner->vtbl = lbl_80292208;
+        while (owner->list.unk0 != 0) {
+            obj = (Obj *)owner->list.node.prev->val;
+            if (obj != NULL) {
+                if (--obj->refcount == 0 && obj != NULL) {
+                    obj->destroy(1);
+                }
+            }
+            found = owner->list.node.prev;
+            List_Erase(ret, &owner->list, &found);
+        }
+        if (&owner->list != NULL) {
+            if (&owner->list != NULL) {
+                if (&owner->list != NULL) {
+                    end = &owner->list.node;
+                    sp10 = end;
+                    spC = end->next;
+                    List_EraseRange(sp8, &owner->list, &spC, &sp10);
+                }
+            }
+        }
+        if (self != NULL) {
+            owner->vtbl = lbl_80292230;
+            if (self != NULL) {
+                owner->vtbl = lbl_8028FDB0;
+            }
+        }
+        if (doFree > 0) {
+            Heap_Free(self);
+        }
+    }
+    return self;
+}
+
 #pragma cplusplus off
 
 void fn_8013F3C0(void) {
@@ -7420,14 +7546,22 @@ s32 fn_8013FBD4(s32 arg0) {
 #pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
-  s16 x = src[0];
-  s16 y = src[1];
-  {
-  }
-  dst[0] = dst[0] + x;
-  dst[1] = y + dst[1];
+    s16 *p;
+    s16 c;
+    s16 b;
+    s16 a;
+
+    a = dst[0];
+    p = src;
+    b = p[0];
+    c = p[1];
+    a = a + b;
+    dst[0] = a;
+    a = dst[1];
+    a = a + c;
+    dst[1] = a;
 }
-#pragma scheduling reset
+#pragma scheduling on
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
@@ -11963,11 +12097,11 @@ extern "C" void fn_801490C8(void *arg0) {
     s32 fn_8014953C(void);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
-    extern u8 gBgmQuietVol;
+    extern u8 lbl_80367AEC;
     extern u8 lbl_80367AED;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
-    extern u8 gFxChannels[];
+    extern u8 lbl_8032FF08[];
     struct Obj {
         u8 pad0[8];
         virtual u8 v0() = 0;
@@ -12015,7 +12149,6 @@ extern "C" void fn_801490C8(void *arg0) {
     s32 rate;
     Obj *self = (Obj *)arg0;
     s32 flags;
- register u8 delay;
     
     u8 factor;
     u8 alive;
@@ -12023,7 +12156,7 @@ extern "C" void fn_801490C8(void *arg0) {
     rate = 0x64;
     flags = self->flags;
     if (flags & 1) {
-        delay = self->delay;
+        register u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
                 rate = fn_8014953C();
@@ -12040,14 +12173,14 @@ extern "C" void fn_801490C8(void *arg0) {
                     self->flags &= ~8;
                 }
             }
-            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || gBgmQuietVol != lbl_80367AED || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
-                if((void *)gFxChannels==self) {
- rate=(u8)(rate*(gBgmQuietVol*lbl_80367AF0)/10000);
+            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEC != lbl_80367AED || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
+                if((void *)lbl_8032FF08==self) {
+ rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  } else {
  factor=lbl_80367AE8;
- rate=(u8)(gBgmQuietVol*rate/100);
+ rate=(u8)(lbl_80367AEC*rate/100);
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  }
                 self->prev = self->cur;
@@ -12066,13 +12199,13 @@ extern "C" void fn_801490C8(void *arg0) {
                 if (self->flags & 2) {
                     rate = fn_8014953C();
                 }
-                if((void *)gFxChannels==self) {
- rate=(u8)(rate*(gBgmQuietVol*lbl_80367AF0)/10000);
+                if((void *)lbl_8032FF08==self) {
+ rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  } else {
  factor=lbl_80367AE8;
- rate=(u8)(gBgmQuietVol*rate/100);
+ rate=(u8)(lbl_80367AEC*rate/100);
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  }
                 ((DrawIface *)self)->Set(self->unk_d, self->unk_e, self->unk_10, (u16)self->unk_12);
