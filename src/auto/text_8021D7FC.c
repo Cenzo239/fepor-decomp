@@ -903,13 +903,15 @@ void GXSetGPFifo(void *fifo) {
     OSRestoreInterrupts(enabled);
 }
 
+void fn_8021F0A0(__GXFifoObj *fifo);
+
 void fn_8021F06C(s32 arg0) {
     void fn_802204F8(void);
     s32 sp14;
     
     sp14 = arg0;
     fn_802204F8();
-    fn_8021F0A0(sp14);
+    fn_8021F0A0((__GXFifoObj *)sp14);
 }
 
 void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
@@ -925,15 +927,23 @@ void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
   *arg4 = (((u32 *) __GXData)[3] >> 4) & 1;
 }
 
-void fn_8021F1B8(u32 arg0, void* arg1) {
-    u32* ptr;
-    
-    if (arg0 >= 0x14) {
-        return;
-    }
-    
-    ptr = (u32*)((u32)&lbl_803685E8 + (arg0 * 4));
-    *ptr = (u32)arg1;
+void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write) {
+extern void *__GXCurrentCPUFifo;
+extern void *__GXCurrentGPFifo;
+extern u32 *__piReg;
+extern u16 *__cpReg;
+if (fifo == __GXCurrentCPUFifo) fifo->wrPtr = (void *)((__piReg[5] & ~0x04000000) + 0x80000000);
+if (fifo == __GXCurrentGPFifo) {
+u32 hi = __cpReg[29] << 16;
+fifo->rdPtr = (void *)((__cpReg[28] | hi) + 0x80000000);
+hi = __cpReg[25] << 16;
+fifo->count = __cpReg[24] | hi;
+} else {
+fifo->count = (u8 *)fifo->wrPtr - (u8 *)fifo->rdPtr;
+if (fifo->count < 0) fifo->count += fifo->size;
+}
+*read = fifo->rdPtr;
+*write = fifo->wrPtr;
 }
 
 s32 fn_8021F250(s32 *arg0) {
@@ -1109,6 +1119,30 @@ void GXSetVtxDescv(s32 arg0, s32 arg1) {
                 break;
         }
     }
+}
+
+void fn_8021F9D8(void) {
+extern u16 *const __GXData;
+u8 cmd=8;
+u8 *gx=(u8 *)__GXData;
+u32 n;
+u32 colors;
+u32 tex;
+*(volatile u8 *)0xCC008000=cmd;
+*(volatile u8 *)0xCC008000=0x50;
+*(volatile u32 *)0xCC008000=*(u32 *)(gx+0x14);
+*(volatile u8 *)0xCC008000=cmd;
+*(volatile u8 *)0xCC008000=0x60;
+*(volatile u32 *)0xCC008000=*(u32 *)(gx+0x18);
+if(gx[0x4d5]) n=2;
+else if(gx[0x4d4]) n=1;
+else n=0;
+colors=(33-(u32)__cntlzw((*(u32 *)(gx+0x14)>>13)&15))>>1;
+tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
+*(volatile u8 *)0xCC008000=0x10;
+*(volatile u32 *)0xCC008000=0x1008;
+*(volatile u32 *)0xCC008000=(tex<<4)|(colors|(n<<2));
+__GXData[1]=1;
 }
 
 void fn_8021FA94(void)
@@ -1352,6 +1386,38 @@ void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_8
 
 void fn_802206F4(void) {
     OSGetTime();
+}
+
+void fn_802208BC(u16 arg0) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void fn_80220D6C(void);
+void PPCSync(void);
+extern u16 *__GXData;
+s32 enabled = OSDisableInterrupts();
+u8 *gx;
+u8 cmd = 0x61;
+u32 value;
+gx = (u8 *)__GXData;
+*(u8 *)0xCC008000 = cmd;
+value = (u32)arg0 | 0x48000000;
+*(u32 *)0xCC008000 = value;
+value = __rlwimi(value,arg0,0,16,31);
+*(u8 *)0xCC008000 = cmd;
+value = __rlwimi(value,0x47,24,0,7);
+*(u32 *)0xCC008000 = value;
+if (*(u32 *)(gx+0x5ac)) fn_80220D6C();
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+*(volatile u32 *)0xCC008000 = 0;
+PPCSync();
+OSRestoreInterrupts(enabled);
+__GXData[1] = 0;
 }
 
 u16 fn_80220970(void) {
