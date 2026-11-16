@@ -5593,25 +5593,21 @@ void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 
 
 #pragma use_lmw_stmw on
 void fn_801C1AC8(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    void *Process_Create(void *, s32);
-    extern u8 lbl_80297FF8[];
-    extern f32 lbl_8036B328;
-    extern f64 lbl_8036B330;
-    void *obj;
-    f32 div;
-
-    obj = Process_Create(lbl_80297FF8, arg7);
-    div = lbl_8036B328;
-    (void)lbl_8036B330;
-    *(s16 *)((u8 *)obj + 0x3C) = arg0;
-    *(s16 *)((u8 *)obj + 0x3E) = arg1;
-    *(s16 *)((u8 *)obj + 0x40) = arg2;
-    *(s32 *)((u8 *)obj + 0x44) = arg3;
-    *(s8 *)((u8 *)obj + 0x30) = -1;
-    *(s16 *)((u8 *)obj + 0x36) = (s16)((f32)arg4 / div);
-    *(s16 *)((u8 *)obj + 0x38) = (s16)((f32)arg5 / div);
-    *(s16 *)((u8 *)obj + 0x3A) = (s16)((f32)arg6 / div);
-    *(u8 *)((u8 *)obj + 0x48) = 1;
+void *Process_Create(void *, s32);
+extern u8 lbl_80297FF8[];
+extern f32 lbl_8036B328;
+void *obj = Process_Create(lbl_80297FF8, arg7);
+f32 x = (f32)arg4;
+f32 div = lbl_8036B328;
+*(s16 *)((u8 *)obj + 0x3C) = arg0;
+*(s16 *)((u8 *)obj + 0x3E) = arg1;
+*(s16 *)((u8 *)obj + 0x40) = arg2;
+*(s32 *)((u8 *)obj + 0x44) = arg3;
+*(s8 *)((u8 *)obj + 0x30) = -1;
+*(s16 *)((u8 *)obj + 0x36) = (s16)(x / div);
+*(s16 *)((u8 *)obj + 0x38) = (s16)((f32)arg5 / div);
+*(s16 *)((u8 *)obj + 0x3A) = (s16)((f32)arg6 / div);
+*(u8 *)((u8 *)obj + 0x48) = 1;
 }
 void fn_801C1BC0(s8 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *Process_Create(void *, s32);
@@ -10265,10 +10261,14 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-void *NameGrid_GetCharAtCursor(s16 *arg0) {
+#pragma scheduling off
+void *NameGrid_GetCharAtCursor(void *arg0) {
     void *fn_801CD480(void *, s16, s16);
-    return fn_801CD480(*(void **)(arg0 + 0x1e), arg0[0x24], arg0[0x25]);
+    s16 x = *(s16 *)((u8 *)arg0 + 0x48);
+    s16 y = *(s16 *)((u8 *)arg0 + 0x4A);
+    return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), x, y);
 }
+#pragma scheduling on
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
@@ -11324,54 +11324,33 @@ extern "C" void fn_801CF018(void *arg0) {
 }
 
 extern "C" void fn_801CF044(void *arg0) {
-    void Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_8027DED8[];
-    extern s32 gUiInputFlags;
-    extern void *gPadInput;
-    u8 skip;
-    s32 flags;
-    s16 old;
-    s16 now;
-    void *pad;
-    s32 buttons;
-    s32 held;
-    s32 edge;
-    s32 tmp;
-
-    skip = 0;
-    flags = gUiInputFlags;
-    old = *(s16 *)((u8 *)arg0 + 0x3C);
-    if ((flags & 0x10) && !(flags & 0x20)) {
-        skip = 1;
-    }
-    if (skip == 0) {
-        pad = gPadInput;
-        now = *(s16 *)((u8 *)arg0 + 0x3C);
-        buttons = *(s32 *)((u8 *)pad + 0xC);
-        held = *(s32 *)((u8 *)pad + 4);
-        edge = held & (*(s32 *)((u8 *)pad + 8) ^ held);
-        if (buttons & 0x08000008) {
-            if (old == 0) {
-                if (buttons == edge) {
-                    *(s16 *)((u8 *)arg0 + 0x3C) = 3;
-                }
-            } else {
-                *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(now - 1);
-            }
-        } else if (buttons & 0x04000004) {
-            tmp = old;
-            if (tmp == 3) {
-                if (buttons == edge) {
-                    *(s16 *)((u8 *)arg0 + 0x3C) = 0;
-                }
-            } else {
-                *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(now + 1);
-            }
-        }
-        if (now != *(s16 *)((u8 *)arg0 + 0x3C)) {
-            Ui_PlaySeCue(lbl_8027DED8 + 0x2C, 0x64);
-        }
-    }
+void Ui_PlaySeCue(void *, s32);
+extern u8 lbl_8027DED8[];
+extern s32 gUiInputFlags;
+extern void *gPadInput;
+u8 skip;
+s32 old;
+s32 flags;
+s32 buttons, held, edge;
+s16 now;
+skip=0;
+flags=gUiInputFlags;
+old=*(s16*)((u8*)arg0+0x3C);
+if ((flags&0x10)&&!(flags&0x20)) skip=1;
+if (!skip) {
+now=*(s16*)((u8*)arg0+0x3C);
+buttons=*(s32*)((u8*)gPadInput+0xC);
+held=*(s32*)((u8*)gPadInput+4);
+edge=held&(*(s32*)((u8*)gPadInput+8)^held);
+if(buttons&0x08000008) {
+if((s16)old==0) { if(buttons==edge) *(s16*)((u8*)arg0+0x3C)=3; }
+else *(s16*)((u8*)arg0+0x3C)=now-1;
+} else if(buttons&0x04000004) {
+if((s16)old==3) { if(buttons==edge) *(s16*)((u8*)arg0+0x3C)=0; }
+else *(s16*)((u8*)arg0+0x3C)=now+1;
+}
+if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
+}
 }
 
 #pragma cplusplus on
