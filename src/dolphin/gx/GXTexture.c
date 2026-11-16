@@ -456,6 +456,14 @@ void fn_80222C50(s32 arg0, s32 arg1) {
     fn_80222AD4(arg0, (s32)__GXData, arg1);
 }
 
+void fn_80222CA4(u32 *obj, u32 arg1, u32 arg2, u16 arg3) {
+    obj[0] = 0;
+    obj[0] = __rlwimi(obj[0], arg2, 10, 20, 21);
+    obj[1] = __rlwimi(obj[1], arg1, 27, 11, 31);
+    obj[1] = __rlwimi(obj[1], 0x64, 24, 0, 7);
+    *(u16 *)(obj + 2) = arg3;
+}
+
 s32 fn_80222CDC(void *arg0) {
     return (M2C_FIELD(arg0, s32 *, 4) << 5) & 0x03FFFFE0;
 }
