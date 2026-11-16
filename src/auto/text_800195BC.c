@@ -1201,28 +1201,36 @@ void fn_8001B134(void) {
     DebugPrint(lbl_80268510 + 0x2A3);
     DebugPrint(lbl_80268510 + 0x2CD);
 }
-#pragma global_optimizer reset
+#pragma scheduling off
+#pragma global_optimizer off
 f32 fn_8001B84C(u8 **arg0) {
-    u32 value;
-    u8 *data = *arg0;
-    u8 *next = data + 4;
-    u32 b2 = data[2];
-    u32 b1 = data[1];
-    u32 b0 = data[0];
+    u8 **stream;
+    u8 *data;
+    u8 *next;
+    u32 b1;
+    u32 b2;
+    u32 b0;
     u32 b3;
-    b2 <<= 8;
-    b1 <<= 16;
+    u32 value;
+
+    stream = arg0;
+    data = *stream;
+    b2 = data[2];
+    next = data + 4;
+    b1 = data[1];
+    b0 = data[0];
+    b2 = b2 << 8;
+    b1 = b1 << 16;
     b3 = data[3];
-    b1 += b2;
-    b0 <<= 24;
-    b1 += b3;
-    *arg0 = next;
+    b1 = b1 + b2;
+    b0 = b0 << 24;
+    b1 = b1 + b3;
+    *stream = next;
     value = b0 + b1;
     return *(f32 *)&value;
 }
-
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma global_optimizer reset
+#pragma scheduling reset
 u32 Bin_ReadU32(u8 **arg0) {
     u8 **stream;
     u8 *data;
@@ -1772,15 +1780,15 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 void strcpy(void *, s32);
 void strcat(void *, void *);
 void *Res_GetByName(void *);
-extern void *gItemUfxCache;
-extern u8 gItemUfxPath[], gDataStr[];
+extern void *lbl_80367230;
+extern u8 lbl_802CA4FC[], gDataStr[];
 void *obj;
-if(gItemUfxCache != arg1) {
-gItemUfxCache=arg1;
-strcpy(gItemUfxPath,*(s32 *)arg1);
-strcat(gItemUfxPath,gDataStr+0x3C);
+if(lbl_80367230 != arg1) {
+lbl_80367230=arg1;
+strcpy(lbl_802CA4FC,*(s32 *)arg1);
+strcat(lbl_802CA4FC,gDataStr+0x3C);
 }
-obj=Res_GetByName(gItemUfxPath);
+obj=Res_GetByName(lbl_802CA4FC);
 if(obj==0) {
 (*(void (**)(void *))((u8 *)obj+0xC))(arg2);
 }
@@ -2077,6 +2085,20 @@ void *WpnRank_GetLetter(u8 arg0)
         return gDataStr + 0x45;
     }
     return gDataStr;
+}
+
+s32 fn_8001CE78(void *arg0) {
+s32 Str_Cmp(void *,void *);
+extern u8 gDataStr[];
+if (!arg0) return 0;
+if (Str_Cmp(arg0,gDataStr+0x41)==0) return 0xFB;
+if (Str_Cmp(arg0,gDataStr+6)==0) return 0xB5;
+if (Str_Cmp(arg0,gDataStr+4)==0) return 0x79;
+if (Str_Cmp(arg0,gDataStr+2)==0) return 0x47;
+if (Str_Cmp(arg0,gDataStr+0x43)==0) return 0x1F;
+if (Str_Cmp(arg0,gDataStr+0x45)==0) return 1;
+if (Str_Cmp(arg0,gDataStr+0x47)!=0) return 0;
+return 0;
 }
 
 #pragma peephole off
