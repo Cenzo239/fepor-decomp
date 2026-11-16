@@ -714,22 +714,42 @@ void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
     }
 }
 
-s16 fn_8002134C(u8 *map, s8 x, s8 y) {
-extern u8 gUnits[];
-u8 *cell = map + x;
-u8 *hi = map + 0x10000;
-u8 tid,uid; s16 val; u8 *unit; u8 *cls;
-cell += y << 6;
-tid=cell[0x100D]; uid=cell[0xD];
-cell = hi + (tid << 1);
-val=*(u16 *)(cell+0x4214);
-if(uid != 0) {
-unit=uid ? gUnits+(uid-1)*0x280 : NULL;
-cls=*(u8 **)(unit+0x190);
-map += 0x20000;
-if((map+cls[8])[0x4EE4]) return 0x7FFE;
-}
-return val;
+s16 fn_8002134C(u8 *map, s8 x, s8 y)
+{
+  extern u8 gUnits[];
+  u8 *cell;
+  u8 *hi;
+  u8 *entry;
+  u8 tid;
+  u8 uid;
+  s16 val;
+  int new_var;
+  u8 *unit;
+  u8 *cls;
+  cell = map + x;
+  hi = map + 0x10000;
+  cell += y << 6;
+  if ((map && map) && map)
+  {
+  }
+  tid = cell[0x100D];
+  uid = cell[0xD];
+  entry = hi;
+  entry += tid << 1;
+  val = (s16) (*((u16 *) (entry + 0x4214)));
+  if (uid != 0)
+  {
+    new_var = 1;
+    unit = (uid != 0) ? (gUnits + ((uid - new_var) * 0x280)) : (NULL);
+    cls = *((u8 **) (unit + 0x190));
+    map += 0x20000;
+    map += cls[8];
+    if (map[0x4EE4] != 0)
+    {
+      return 0x7FFE;
+    }
+  }
+  return val;
 }
 
 void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
@@ -1393,7 +1413,7 @@ void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
     *(s16 *)(base + 0x4214) = arg1;
     if ((s8)arg1 < 0) *(s16 *)(base + 0x4214) = 0x7FFE;
 }
-#pragma scheduling on
+#pragma scheduling reset
 void fn_800227F8(void* arg0, s32 arg1)
 {
     s32 r30;
@@ -1760,8 +1780,9 @@ f32 Map_GetTileCornerHeight(void *arg0, s8 arg1, s8 arg2, u8 arg3)
     u8 *base;
     s32 index;
 
+    index = arg2;
     base = (u8 *)arg0 + 0x20000;
-    index = arg1 + (arg2 << 6);
+    index = arg1 + (index << 6);
     index = (u8)arg3 + (index << 2);
     return (f32)((s16 *)(base - 0x3D28))[index] * *(f32 *)(base - 0x3D2C);
 }
@@ -3537,11 +3558,11 @@ void fn_80026724(void *arg0) {
     }
 }
 
-void fn_80026770(void *arg0) {
-    void fn_8001EDA0(s32, void *);
-    u8 *src = (u8 *)arg0 + 0x13;
-    *(u8 *)arg0 = *src;
-    fn_8001EDA0((s32)arg0 + 0x13, arg0);
+void fn_80026770(void *arg0, u8 *arg1) {
+    void fn_8001EDA0(char *, void *);
+    char *p = (char *)arg0;
+    p[0x13] = *arg1;
+    fn_8001EDA0(p + 0x13, p);
 }
 
 void fn_800267A0(s32 arg0) {
@@ -4074,18 +4095,31 @@ void fn_800286C8(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80028724(void) {
-u8 EventFlag_IsSet(void *, void *);
-void fn_80146AF0(void);
-void Fx_FadeIn(void *, s32);
-void fn_8014876C(void *, s32, s32);
-extern u8 lbl_80268E40[], gFxChannels[], gBattleState[];
-register u8 *buf = gFxChannels;
-if (!EventFlag_IsSet(gBattleState + 0xB4, lbl_80268E40 + 0x21E)) {
-fn_80146AF0(); Fx_FadeIn(buf,1000); fn_8014876C(buf,100,1000);
-}
-}
+    u8 EventFlag_IsSet(void *, void *);
+    void fn_80146AF0(void);
+    void Fx_FadeIn(void *, s32);
+    void fn_8014876C(void *, s32, s32);
+    extern u8 gFxChannels[];
+    extern u8 gBattleState[];
+    extern u8 lbl_80268E40[];
+    u8 *channels;
+    u8 *battle;
+    u8 *msg;
+    u8 flag;
 
+    channels = gFxChannels;
+    battle = gBattleState + 0xB4;
+    msg = lbl_80268E40 + 0x21E;
+    flag = EventFlag_IsSet(battle, msg);
+    if (flag == 0) {
+        fn_80146AF0();
+        Fx_FadeIn(channels, 0x3E8);
+        fn_8014876C(channels, 0x64, 0x3E8);
+    }
+}
+#pragma global_optimizer reset
 void fn_80028794(void) {
     void *fn_80145FE8(void);
     void fn_80146B00(void);
