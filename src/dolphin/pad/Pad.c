@@ -215,6 +215,43 @@ void fn_80211F78(s32 arg0, s32 arg1) {
     }
 }
 
+void PADOriginCallback(s32 chan, u32 error) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void fn_80209C10(s32 chan, u16 id);
+    u32 fn_8023B930(u32 poll);
+    void fn_80211DD4(s32);
+    extern u32 EnabledBits;
+    extern u32 WaitingBits;
+    extern u32 CheckingBits;
+    extern u32 lbl_80368680;
+    extern u32 __PADFixBits;
+    u32 e;
+    u32 chanBit;
+    s32 c;
+
+    e = error;
+    c = chan;
+    chanBit = 0x80000000U >> c;
+    if (!(EnabledBits & chanBit)) {
+        return;
+    }
+    if ((e & 0xF) == 0) {
+        fn_80211DD4(c);
+    }
+    if (e & 8) {
+        e = OSDisableInterrupts();
+        fn_8023B930(chanBit);
+        EnabledBits &= ~chanBit;
+        WaitingBits &= ~chanBit;
+        CheckingBits &= ~chanBit;
+        lbl_80368680 &= ~chanBit;
+        __PADFixBits &= ~chanBit;
+        fn_80209C10(c, 0);
+        OSRestoreInterrupts(e);
+    }
+}
+
 void fn_80212108(s32 chan, u32 type) {
     void fn_8023B804(s32, u32);
     void fn_8023B894(u32);
@@ -788,6 +825,37 @@ s32 fn_8021381C(void) {
     return (*(u16 *)0xCC005036 << 5) & 0xFFFE0;
 }
 
+void fn_8021382C(u32 arg0) {
+u32 fn_80213904(void);
+u32 fn_80213ADC(void);
+u32 fn_80213B34(void);
+u32 fn_80213B08(void);
+void fn_80213B18(u32);
+void fn_80213AEC(u32);
+void fn_80213E30(void);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+s32 interrupts;
+u32 right, left;
+if (arg0 != fn_80213904()) {
+if (fn_80213ADC() == 0 && arg0 == 1) {
+right=fn_80213B34();
+left=fn_80213B08();
+fn_80213B18(0);
+fn_80213AEC(0);
+interrupts=OSDisableInterrupts();
+fn_80213E30();
+*(volatile u32*)0xCC006C00=(*(volatile u32*)0xCC006C00 & ~0x20) | 0x20;
+*(volatile u32*)0xCC006C00=(*(volatile u32*)0xCC006C00 & ~1) | 1;
+OSRestoreInterrupts(interrupts);
+fn_80213AEC(right);
+fn_80213B18(left);
+} else {
+*(volatile u32*)0xCC006C00=(*(volatile u32*)0xCC006C00 & ~1) | arg0;
+}
+}
+}
+
 s32 fn_80213904(void) {
     return *(s32 *)0xCC006C00 & 1;
 }
@@ -859,6 +927,51 @@ void fn_80213914(u32 arg0) {
 
 s32 fn_802139F4(void) {
     return (((u32) *(u32 *)0xCC006C00 >> 6U) & 1) ^ 1;
+}
+
+void fn_80213A08(u32 arg0) {
+u32 fn_80213ADC(void);
+u32 fn_80213B08(void);
+u32 fn_80213B34(void);
+void fn_80213B18(u32);
+void fn_80213AEC(u32);
+void fn_80213E30(void);
+void fn_8021382C(u32);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+volatile u32 *reg;
+s32 interrupts;
+u32 play;
+u32 left;
+u32 right;
+u32 rate;
+u32 value;
+if (arg0 != fn_80213ADC()) {
+reg=(volatile u32 *)0xCC006C00;
+play=__rlwinm(*reg,0,31,31);
+left=fn_80213B08();
+right=fn_80213B34();
+fn_80213B18(0);
+fn_80213AEC(0);
+value=*reg;
+rate=__rlwinm(value,0,25,25);
+value=*reg;
+*reg=value & ~0x40;
+interrupts=OSDisableInterrupts();
+fn_80213E30();
+*reg |= rate;
+value=*reg;
+value &= ~0x20;
+value |= 0x20;
+*reg=value;
+value=*reg;
+value &= ~2;
+*reg=value | (arg0<<1);
+OSRestoreInterrupts(interrupts);
+fn_8021382C(play);
+fn_80213AEC(left);
+fn_80213B18(right);
+}
 }
 
 s32 fn_80213ADC(void) {
