@@ -8703,7 +8703,7 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
     *((u8 *)arg0 + 8) = v;
     *(u8 **)((u8 *)arg0 + 12) = mid;
 }
-#pragma scheduling on
+#pragma scheduling reset
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
     /* Set cubic Vec3 tween target; duration 0 snaps. Else shift history, store controls, set speed from distance. */
     f32 PSVECDistance(f32 *, f32 *);
@@ -9225,8 +9225,8 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
 
 void fn_800DFC2C(void *arg0) {
     void fn_800E01EC(s32, s32, u8 *);
-    u8 spC;
     u32 pad;
+    u8 spC;
     s32 base;
     s32 idx;
 
@@ -9916,9 +9916,9 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 void fn_800E2138(void *arg0, void *arg1, s32 arg2) {
     volatile s32 spC;
     volatile s32 sp8;
+    s32 temp_r6;
     s32 temp_r0;
     s32 temp_r4;
-    s32 temp_r6;
 
     temp_r6 = M2C_FIELD(arg1, s32 *, 0);
     temp_r0 = temp_r6 + (arg2 * 4);
@@ -12928,6 +12928,64 @@ void fn_800E8BF8(u8 *self, f32 *vec, f32 *vec2, s32 arg3, f32 farg0) {
     fn_800DF41C(self + 0x134, (f32 *)(self + 0xf0), (f32 *)(self + 0xf4), *(f32 *)(self + 0xf8));
     fn_800DF41C(self + 0x194, (f32 *)(self + 0x54), (f32 *)(self + 0x58), *(f32 *)(self + 0x5c));
     fn_800DF410((f32 *)(self + 0x254), (f32 *)(self + 0x104));
+}
+
+void fn_800E8CEC(void *arg0) {
+    void Vec3Interp_Update(void *);
+    void fn_800DF41C();
+    void fn_800DF410(f32 *, f32 *);
+
+    u8 *self;
+    s32 remaining;
+
+    self = (u8 *)arg0;
+
+    if (*(s32 *)(self + 0x9C) != 0) {
+        *(f32 *)(self + 0xE4) += *(f32 *)(self + 0x84);
+        *(f32 *)(self + 0xE8) += *(f32 *)(self + 0x88);
+        *(f32 *)(self + 0xEC) += *(f32 *)(self + 0x8C);
+
+        remaining = *(s32 *)(self + 0x9C) - 1;
+        *(s32 *)(self + 0x9C) = remaining;
+
+        if (remaining <= 0) {
+            *(f32 *)(self + 0xE4) = *(f32 *)(self + 0x78);
+            *(f32 *)(self + 0xE8) = *(f32 *)(self + 0x7C);
+            *(f32 *)(self + 0xEC) = *(f32 *)(self + 0x80);
+            *(s32 *)(self + 0x9C) = 0;
+        }
+    }
+
+    if (*(s32 *)(self + 0x160) != 0) {
+        Vec3Interp_Update(self + 0x134);
+    }
+
+    fn_800DF41C(
+        self + 0x134,
+        (f32 *)(self + 0xF0),
+        (f32 *)(self + 0xF4),
+        *(f32 *)(self + 0xF8)
+    );
+
+    if (*(s32 *)(self + 0x1C0) != 0) {
+        Vec3Interp_Update(self + 0x194);
+    }
+
+    fn_800DF41C(
+        self + 0x194,
+        (f32 *)(self + 0x54),
+        (f32 *)(self + 0x58),
+        *(f32 *)(self + 0x5C)
+    );
+
+    if (*(s32 *)(self + 0x280) != 0) {
+        Vec3Interp_Update(self + 0x254);
+    }
+
+    fn_800DF410(
+        (f32 *)(self + 0x254),
+        (f32 *)(self + 0x104)
+    );
 }
 
 #pragma cplusplus on
@@ -18491,6 +18549,119 @@ void fn_800F9924(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
+void fn_800F9950(void *arg0) {
+    extern u8 gAiState[];
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+
+    void Ai_UnitIsHostileToActive(void *);
+    void Ai_UnitNameInCmdList(void *);
+    void Ai_UnitHostileNotInCmdList(void *);
+    u8 fn_80101D8C(void (*)(void *), void *, s16 *, s16 *);
+    void fn_80101448(s32, s32, s32, s32, s32, s32, s32, s32);
+
+    u8 *unit;
+    u8 *cmd;
+    void (*filter)(void *);
+    s16 x;
+    s16 y;
+    s32 flag;
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+
+    if (!(gAiState[1] & 2) &&
+        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
+
+        if (*(u32 *)(cmd + 0x14) == 0) {
+            filter = Ai_UnitIsHostileToActive;
+        } else {
+            filter = Ai_UnitNameInCmdList;
+
+            if (*(s32 *)(cmd + 0x10) != 0) {
+                filter = Ai_UnitHostileNotInCmdList;
+            }
+        }
+
+        if (fn_80101D8C(filter, unit, &x, &y) == 1) {
+            flag = *(s32 *)(cmd + 0xC) != 0;
+
+            fn_80101448(
+                (s32)unit,
+                x,
+                y,
+                1,
+                *(u16 *)(gAiState + 4),
+                1,
+                flag,
+                -1
+            );
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
+}
+
+void fn_800F9A54(void *arg0) {
+    extern u8 gAiState[];
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+
+    void Ai_UnitIsHostileToActive(void *);
+    void Ai_UnitNameInCmdList(void *);
+    void Ai_UnitHostileNotInCmdList(void *);
+    u8 Ai_FindLowestCostUnitTile(void (*)(void *), void *, s16 *, s16 *);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+
+    u8 *unit;
+    u8 *cmd;
+    void (*filter)(void *);
+    s16 x;
+    s16 y;
+    s32 flag;
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+
+    if (!(gAiState[1] & 2) &&
+        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
+
+        if (*(u32 *)(cmd + 0x14) == 0) {
+            filter = Ai_UnitIsHostileToActive;
+        } else {
+            filter = Ai_UnitNameInCmdList;
+            if (*(s32 *)(cmd + 0x10) != 0) {
+                filter = Ai_UnitHostileNotInCmdList;
+            }
+        }
+
+        if (Ai_FindLowestCostUnitTile(filter, unit, &x, &y) == 1) {
+            flag = *(s32 *)(cmd + 0xC) != 0;
+
+            Ai_SetUnitMoveTo(
+                unit,
+                x,
+                y,
+                1,
+                *(u16 *)(gAiState + 4),
+                1,
+                flag,
+                -1
+            );
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
+}
+
 void fn_800F9B58(void *arg0) {
     void fn_800FB96C(s32, s8, s8, s32, s8, s8, s32, s32, s32);
     u8 fn_801025BC(void *, s16 *, s16 *);
@@ -21419,6 +21590,33 @@ void fn_801007A0(void *arg0) {
         M2C_FIELD(unit, u32 *, 0x254) |= 0x01000000;
     }
 }
+
+void fn_80100B08(void)
+{
+    void Allegiance_FillMask(s32, u8 *);
+    void fn_801007A0(u8 *);
+    extern u8 gUnits[];
+    u8 sp8[8];
+    s32 i;
+    u8 *unit;
+
+    Allegiance_FillMask(3, sp8);
+    i = 1;
+    do {
+        if ((u8)i != 0) {
+            unit = gUnits + ((u8)i - 1) * 0x280;
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0) {
+            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
+                fn_801007A0(unit);
+            }
+        }
+        i += 1;
+    } while (i <= 0x9F);
+}
+
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 s32 fn_80100CC8(void) {
