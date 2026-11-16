@@ -1006,39 +1006,14 @@ void fn_801F3890(void) {
 
 #pragma cplusplus on
 extern "C" void fn_801F3C1C(void *arg0) {
-    void FileCache_ReleaseSlot(void *);
-    void fn_80161F7C(void);
-    void fn_80057A10(void *, s32);
-    void fn_800C4588(void *);
-    struct Obj {
-        u8 pad[0x2C];
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6(s32) = 0;
-    };
-    void *obj;
-    Obj *p;
-
-    obj = *(void **)((u8 *)arg0 + 0x30);
-    if (*(u32 *)((u8 *)obj + 4) != 0) {
-        if (*(u32 *)((u8 *)obj + 4) != 0) {
-            FileCache_ReleaseSlot((u8 *)obj + 4);
-            *(u32 *)((u8 *)obj + 4) = 0;
-        }
-    }
-    FileCache_ReleaseSlot(obj);
-    fn_80161F7C();
-    fn_80057A10(*(void **)((u8 *)obj + 0xDC), 1);
-    fn_80057A10(*(void **)((u8 *)obj + 0xE0), 1);
-    p = *(Obj **)((u8 *)obj + 0xE4);
-    if (p != NULL) {
-        p->v6(1);
-    }
-    fn_800C4588(obj);
+ void FileCache_ReleaseSlot(void *); void fn_80161F7C(void); void fn_80057A10(void *, s32); void fn_800C4588(void *);
+ struct Obj { u8 pad[0x2C]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6(s32)=0; };
+ u32 *obj=*(u32 **)((u8 *)arg0+0x30); Obj *p;
+ if(obj[1]) { if(obj[1]) { FileCache_ReleaseSlot(obj+1); obj[1]=0; } }
+ FileCache_ReleaseSlot(obj); fn_80161F7C();
+ fn_80057A10((void *)obj[0xDC/4],1); fn_80057A10((void *)obj[0xE0/4],1);
+ p=(Obj *)obj[0xE4/4]; if(p) p->v6(1);
+ fn_800C4588(obj);
 }
 #pragma cplusplus reset
 
@@ -5238,17 +5213,19 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
         *((u8 *)self + 4) = lbl_80366F09;
     }
 }
-#pragma opt_common_subs on
-void Tree_Init(s32 arg0, s32 arg1, s32 arg2) {
-    u8 value;
-    *(s32 *)arg0 = 0;
-    value = *(u8 *)arg1;
-    *(s32 *)(arg0 + 4) = *(s32 *)arg0;
-    *(u8 *)(arg0 + 8) = value;
-    *(s32 *)(arg0 + 8) = arg0 + 4;
+#pragma scheduling off
+void Tree_Init(void *arg0, u8 *arg1) {
+    u32 z = 0;
+    u8 v;
+    u8 *mid;
+    v = *arg1;
+    *(u32 *)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(u32 *)mid = z;
+    *((u8 *)arg0 + 8) = v;
+    *(void **)((u8 *)arg0 + 8) = mid;
 }
-
-#pragma use_lmw_stmw on
+#pragma scheduling on
 /* Allocate and link a new RB-tree node with u16 key under parent; rebalance and return it. */
 void *Tree_InsertNode(void *tree, void *parent, s32 asLeft, s32 setFirst, u16 *key) {
     void *Heap_Alloc(u32);
