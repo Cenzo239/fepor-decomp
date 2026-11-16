@@ -393,7 +393,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSSram.c", mw_version="GC/1.2.5n"),
             Object(Matching, "dolphin/os/OSSram_unlock.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram_tail.c"),
-            Object(NonMatching, "dolphin/os/OSSram_lockbits2.c"),
+            Object(NonMatching, "dolphin/os/OSSram_lockbits2.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram_lockbits3.c"),
             Object(NonMatching, "dolphin/os/OSSram_lockbits.c"),
             Object(NonMatching, "dolphin/os/OSSram_tail2.c"),
