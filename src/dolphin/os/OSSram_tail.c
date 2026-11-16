@@ -123,8 +123,8 @@ extern void (*lbl_803684F8)();
 
 #pragma peephole reset
 
-extern void* __OSSystemCallVectorStart;
-extern void* __OSSystemCallVectorEnd;
+extern u8 __OSSystemCallVectorStart[];
+extern u8 __OSSystemCallVectorEnd[];
 
 #pragma use_lmw_stmw on
 
@@ -280,10 +280,18 @@ void fn_80209C10(void) {
 void fn_80209DE4(void) { }
 
 void __OSInitSystemCall(void) {
-    memcpy(0x80000C00, &__OSSystemCallVectorStart, &__OSSystemCallVectorEnd - &__OSSystemCallVectorStart);
-    DCFlushRangeNoSync(0x80000C00, 0x100);
-    sync();
-    ICInvalidateRange(0x80000C00, 0x100);
+    void PPCSync(void);
+    void *addr;
+    u8 *start;
+    u8 *end;
+
+    addr = (void *)0x80000C00;
+    start = (u8 *)&__OSSystemCallVectorStart;
+    end = (u8 *)&__OSSystemCallVectorEnd;
+    memcpy(addr, start, end - start);
+    DCFlushRangeNoSync(addr, 0x100);
+    PPCSync();
+    ICInvalidateRange(addr, 0x100);
 }
 
 void fn_80209E68(void) {
