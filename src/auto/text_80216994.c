@@ -140,6 +140,51 @@ void fn_802169CC(s32 chan) {
     }
 }
 
+void fn_80216AA4(s32 chan) {
+    extern u16 __CARDBlock[];
+    void OSCancelAlarm(void *);
+    s32 EXILock(s32,s32,void*);
+    void EXIUnlock(s32);
+    s32 fn_80216DA8(s32,s32*);
+    s32 fn_80216F88(s32);
+    s32 __CARDRetry(s32);
+    u8 status;
+    void (*callback)(s32,s32);
+    u8 *card;
+    s32 result;
+    s32 error;
+    card=(u8*)__CARDBlock+chan*0x110;
+    OSCancelAlarm(card+0xe0);
+    if(*(s32*)card) {
+        if(!EXILock(chan,0,0)) {
+            result=-128;
+            goto done;
+        }
+        result=fn_80216DA8(chan,(s32*)&status);
+        if(result>=0) {
+            result=fn_80216F88(chan);
+            if(result>=0) {
+                error=(status&0x18)?-5:0;
+                result=error;
+                if(result==-5) {
+                    if(--*(s32*)(card+0xa8)>0) {
+                        result=__CARDRetry(chan);
+                        if(result>=0) return;
+                        goto done;
+                    }
+                }
+            }
+        }
+        EXIUnlock(chan);
+done:
+        callback=*(void(**)(s32,s32))(card+0xcc);
+        if(callback) {
+            *(void**)(card+0xcc)=0;
+            callback(chan,result);
+        }
+    }
+}
+
 void __CARDTxHandler(s32 chan) {
     s32 EXIDeselect(s32);
     s32 EXIUnlock(s32);
@@ -3165,6 +3210,27 @@ s32 fn_8021CBC8(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     return fn_80217C64(*arg0);
 }
 
+s32 fn_8021CCB4(s32 chan, char *name, void *callback) {
+    void fn_8021CC10(void);
+    s32 fn_8021C080();
+    s32 card;
+    s32 index;
+    s32 result;
+    u8 *entry;
+    result=fn_80217B18(chan,&card);
+    if(result<0) return result;
+    result=fn_8021BDC0((void*)card,name,&index);
+    if(result<0) return ((s32 (*)())__CARDPutControlBlock)((void*)card,result);
+    if(fn_8021C080((void*)card,index)!=0) return ((s32 (*)())__CARDPutControlBlock)((void*)card,-1);
+    entry=(u8*)((s32 (*)())__CARDGetDirBlock)((void*)card)+(index<<6);
+    *(u16*)(card+0xbe)=*(u16*)(entry+0x36);
+    memset(entry,255,64);
+    *(void**)(card+0xd0)=callback?callback:(void*)fn_80216994;
+    result=((s32 (*)())__CARDUpdateDir)(chan,(s32)fn_8021CC10);
+    if(result<0) ((s32 (*)())__CARDPutControlBlock)((void*)card,result);
+    return result;
+}
+
 s32 fn_8021CDC4(s32 arg0,s32 arg1) {
 s32 fn_8021CCB4(s32,s32,void*);
 s32 fn_80217C64(s32);
@@ -3292,21 +3358,29 @@ void fn_8021CE0C(void *arg0, void *arg1) {
 }
 
 s32 fn_8021D004(s32 arg0, s32 arg1, s32 arg2) {
-    s32 stack[0x14]; // 0x14 = 20 bytes
-    
-    if (arg2 == 0) {
-        return 0;
+    s32 card;
+    s32 result;
+    u8 *entry;
+    u8 *stat=(u8*)arg2;
+    if(arg1<0 || arg1>=127) return -128;
+    result=fn_80217B18(arg0,&card);
+    if(result<0) return result;
+    entry=(u8*)__CARDGetDirBlock((void*)card)+(arg1<<6);
+    result=fn_8021BCCC((void*)card,entry);
+    if(result>=0) {
+        memcpy(stat+0x28,entry,4);
+        memcpy(stat+0x2c,entry+4,2);
+        *(u32*)(stat+0x20)=*(u16*)(entry+0x38)* *(u32*)(card+0xc);
+        memcpy(stat,entry+8,32);
+        *(u32*)(stat+0x24)=*(u32*)(entry+0x28);
+        stat[0x2e]=entry[7];
+        *(u32*)(stat+0x30)=*(u32*)(entry+0x2c);
+        *(u16*)(stat+0x34)=*(u16*)(entry+0x30);
+        *(u16*)(stat+0x36)=*(u16*)(entry+0x32);
+        *(u32*)(stat+0x38)=*(u32*)(entry+0x3c);
+        fn_8021CE0C(entry,stat);
     }
-    
-    if (arg1 == 0) {
-        return 0;
-    }
-    
-    if (arg1 > 0x7F) {
-        return -0x80;
-    }
-    
-          return -0x80;
+    return __CARDPutControlBlock((void*)card,result);
 }
 
 s32 fn_8021D118(s32 chan, s32 fileNo, void *stat, s32 callback) {
