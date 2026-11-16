@@ -3281,6 +3281,25 @@ check:
     (*rp)(rpa, c, 1);
     return value;
 }
+
+s32 fwide(void *arg0, s32 arg1) {
+u8 *stream=arg0;
+s32 orientation;
+u8 flags;
+if (!stream || !((*(u16*)(stream+4)>>6)&7)) return 0;
+flags=stream[5];
+orientation=(flags>>4)&3;
+switch (orientation) {
+case 0:
+if (arg1>0) stream[5]=__rlwimi(flags,2,4,26,27);
+else if (arg1<0) stream[5]=__rlwimi(flags,1,4,26,27);
+return arg1;
+case 2: return 1;
+case 1: return -1;
+}
+return (s32)arg0;
+}
+
 /* MSL console write: on non-TDEV, init/write EXI UART then always hand off to GDEV path. */
 s32 __write_console(s32 handle, s32 buffer, s32 *count, s32 ref) {
     s32 OSGetConsoleType(void);
