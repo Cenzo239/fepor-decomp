@@ -151,6 +151,32 @@ void fn_80098524(void **arg0) {
     }
 }
 
+s32 fn_80098568(void **arg0) {
+extern u8 gBattle[];
+void fn_800340E4(void *);
+s16 saved;
+u8 *queue;
+s32 result = 0;
+void *p = *arg0;
+void *unit;
+if(p) unit = *(void **)((u8 *)p+0x280); else unit = 0;
+if(!unit) return 0;
+queue = gBattle+0x8A0;
+saved = *(s16 *)queue;
+fn_800340E4(queue);
+for (;;) {
+switch(queue[*(s16 *)queue*4+4]) {
+case 0: goto done;
+case 11: if((void *)gBattle == *arg0) result=1; break;
+case 23: if((void *)(gBattle+0x2E0) == *arg0) result=1; break;
+}
+++*(s16 *)queue;
+}
+done:
+*(s16 *)queue=saved;
+return result;
+}
+
 #pragma use_lmw_stmw on
 /* Handle pad input for event-script item commands (opcodes 0x50-0x52): confirm give/take/trade. */
 s32 Event_HandleItemCmd(void *arg0)
