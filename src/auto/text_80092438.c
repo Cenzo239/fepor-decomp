@@ -447,70 +447,24 @@ done:
 }
 
 u8 fn_80092C50(void *arg0, u8 arg1, u8 arg2) {
-    void *r29;
-    u8 r30;
-    u8 r31;
-    
-    if ((arg1 & 0x7) != 7) {
-        r29 = (u8 *)arg0 + 0x1BC;
-        if (Status_Test(r29, 0x28) == 0) {
-            return 0;
+    u8 Status_Test(void *, s32);
+    if (arg1==7 && Status_Test((u8 *)arg0+0x1BC,0x28)) goto clamp;
+    if ((*(u8 **)((u8 *)arg0+0x18C))[arg1+0x2C]==0) {
+        switch(arg1) {
+        case 0: if(!Status_Test((u8 *)arg0+0x1BC,0x24)) return 0; break;
+        case 1: if(!Status_Test((u8 *)arg0+0x1BC,0x25)) return 0; break;
+        case 2: if(!Status_Test((u8 *)arg0+0x1BC,0x26)) return 0; break;
+        case 3: if(!Status_Test((u8 *)arg0+0x1BC,0x27)) return 0; break;
+        case 7: if(!Status_Test((u8 *)arg0+0x1BC,0x28)) return 0; break;
         }
-        
-        r30 = *((u8 *)arg0 + 0x18C + arg1);
-        if (r30 == 0) {
-            switch (arg1) {
-                case 0:
-                    if (Status_Test(r29, 0x24) == 0) {
-                        return 0;
-                    }
-                    break;
-                case 1:
-                    if (Status_Test(r29, 0x25) == 0) {
-                        return 0;
-                    }
-                    break;
-                case 2:
-                    if (Status_Test(r29, 0x26) == 0) {
-                        return 0;
-                    }
-                    break;
-                case 3:
-                    if (Status_Test(r29, 0x27) == 0) {
-                        return 0;
-                    }
-                    break;
-                case 7:
-                    if (Status_Test(r29, 0x28) == 0) {
-                        return 0;
-                    }
-                    break;
-                default:
-                    return 0;
-            }
-        } else {
-            r31 = arg2;
-            if (r31 > 0xFB) {
-                r31 = 0xFB;
-            }
-            if (Status_Test(r29, 2) != 0) {
-                return r31;
-            } else {
-                if (r31 > 0x79) {
-                    r31 = 0x79;
-                }
-                return r31;
-            }
-        }
-    } else {
-        r31 = arg2;
-        if (r31 > 0x79) {
-            r31 = 0x79;
-        }
-        return r31;
     }
-    
-    return 0;
+    if(Status_Test((u8 *)arg0+0x1BC,2)) {
+        if(arg2>0xFB) arg2=0xFB;
+        return arg2;
+    }
+clamp:
+    if(arg2>0x79) arg2=0x79;
+    return arg2;
 }
 
 u8 fn_80092F38(void *arg0) {
@@ -644,35 +598,26 @@ u8 fn_8009326C(void *arg0, void *arg1) {
     return fn_800940B0(arg0, arg1) != 0;
 }
 
-s32 fn_8009339C(void *arg0, void *arg1) {
-    u8 fn_800940B0(void *, void *);
-    s32 temp_r4;
-    s32 temp_r7;
-    u8 var_r6;
-
-    var_r6 = 1;
-    temp_r7 = *(u32*)((u8*)arg1 + 0x3c);
-    temp_r4 = *(u32*)((u8*)arg1 + 0x38);
-    if ((temp_r7 & 1) == 0) {
-        return 0;
-    }
-    if ((temp_r7 & 0x200) != 0) {
-        if (Status_Test((u8*)arg0 + 0x1bc, 9) != 0) {
-            var_r6 = 1;
-        } else {
-            var_r6 = 0;
-        }
-    } else if (((*(u8*)((u8*)arg0 + 0x1a5) >> 4U) & 7) == 0) {
-
-    } else if ((temp_r7 & 2) != 0) {
-        var_r6 = 0;
-    } else if ((temp_r7 & 4) != 0) {
-        var_r6 = 0;
-    }
-    if (var_r6 == 0) {
-        return 0;
-    }
-    return fn_800940B0(arg0, arg1) != 0;
+s32 fn_8009339C(void *arg0,void *arg1) {
+u8 fn_800940B0(void*,void*);
+u8 Status_Test(void*,s32);
+u64 flags;
+u8 allowed=1;
+flags=*(u64*)((u8*)arg1+0x38);
+if((flags&1)==0) return 0;
+if(flags&0x200) {
+if(Status_Test((u8*)arg0+0x1BC,9)!=0) allowed=1;
+else allowed=0;
+} else if((((u8*)arg0)[0x1A5]>>4&7)==0) {
+} else if(flags&2) {
+allowed=0;
+} else if(flags&4) {
+allowed=0;
+} else if(flags&0x40) {
+allowed=1;
+}
+if(allowed==0) return 0;
+return fn_800940B0(arg0,arg1)!=0;
 }
 
 u8 fn_800934CC(void *arg0, void *arg1) {
@@ -1404,6 +1349,35 @@ s32 fn_80094A54(s32 arg0, s32 arg1)
   return temp_r31;
 }
 
+s32 fn_80094ABC(void *arg0, void **arg1) {
+    void *Unit_GetHeldItemSlot(void *, s32);
+    s32 Unit_TryEquipItem(s32, void *);
+    M2C_UNK Item_Copy(s32, s32);
+    s32 i;
+    Unk80037BD0 *slot;
+    i=0;
+    if (*(u64 *)((u8 *)*arg1 + 0x38) & 5ULL) {
+        for (;i<4;i++) { if (*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) goto found; }
+        i=-1;
+found:
+        if(i<0) return 0;
+        slot=Unit_GetHeldItemSlot(arg0,i);
+    } else {
+        s32 index;
+        if (*(u32 *)((u8 *)arg0+0x1EC)==0) index=0;
+        else if (*(u32 *)((u8 *)arg0+0x1F4)==0) index=1;
+        else if (*(u32 *)((u8 *)arg0+0x1FC)==0) index=2;
+        else if (*(u32 *)((u8 *)arg0+0x204)==0) index=3;
+        else index=-1;
+        if(index<0) return 0;
+        slot=(Unk80037BD0 *)((u8 *)arg0+(index*8+0x1EC));
+    }
+    Item_Copy((s32)slot,(s32)arg1);
+    slot->unk5_bit7=0;
+    Unit_TryEquipItem((s32)arg0,slot);
+    return 1;
+}
+
 s32 Unit_TryEquipItem(s32 unit, void *item) {
     /* If the unit has no equipped item and may use this weapon, mark the item equipped (bit7) and return 1. */
     u64 *Item_GetFlagsPtr(void *);
@@ -1579,21 +1553,39 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
         }
     }
 }
-void fn_80095070(void* arg0, void* arg1, s32 arg2) {
-    s32* r3 = (s32*)arg0;
-    s32* r4 = (s32*)arg1;
-    
-    if (arg2 == 1) {
-        s32 i;
-        for (i = 0; i < 9; i++) {
-            *(r3 + i) = *(r4 + i);
-        }
-    } else {
-        s32 i;
-        for (i = 0; i < 9; i++) {
-            *(r3 + i) = 0;
-        }
+void *fn_80095070(void *arg0, s32 arg1) {
+    u8 fn_800940B0(void *, void *);
+    Unk80037BD0 *slot;
+    void *self;
+    u8 *p;
+    s32 i;
+    void *obj;
+    u8 result;
+    self=arg0;
+    ((Unk80037BD0 *)((u8 *)self+0x1EC))->unk5_bit7=0;
+    ((Unk80037BD0 *)((u8 *)self+0x1F4))->unk5_bit7=0;
+    ((Unk80037BD0 *)((u8 *)self+0x1FC))->unk5_bit7=0;
+    ((Unk80037BD0 *)((u8 *)self+0x204))->unk5_bit7=0;
+    if(arg1>=0) {
+        slot=(Unk80037BD0 *)(arg1*8+0x1EC);
+        slot=(Unk80037BD0 *)((u8 *)self+(s32)slot);
+        obj=*(void **)slot;
+        if (*(u64 *)((u8 *)obj+0x38)&0x10ULL) result=fn_800940B0(self,obj);
+        else result=0;
+        if(result) { slot->unk5_bit7=1; return slot; }
+        return 0;
     }
+    i=0; p=self;
+    do {
+        slot=(Unk80037BD0 *)(p+0x1EC);
+        obj=*(void **)slot;
+        if(!obj) break;
+        if(*(u64 *)((u8 *)obj+0x38)&0x10ULL) result=fn_800940B0(self,obj);
+        else result=0;
+        if(result) { slot->unk5_bit7=1; return slot; }
+        i++; p+=8;
+    } while(i<4);
+    return 0;
 }
 
 #pragma optimization_level 2
