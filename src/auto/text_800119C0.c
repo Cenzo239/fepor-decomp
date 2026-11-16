@@ -253,16 +253,15 @@ u32 ScriptCtx_Call(u32 arg0, u32 arg1) {
 
 #pragma scheduling off
 void ScriptCtx_Push(s32 arg0) {
-    extern void *lbl_80367180;
+    extern u8 *lbl_80367180;
     extern s32 lbl_80367188;
-    s32 *cursor;
-    void *obj;
 
-    obj = lbl_80367180;
-    cursor = *(s32 **)((u8 *)obj + 0x18);
-    *(s32 **)((u8 *)obj + 0x18) = (s32 *)((u8 *)cursor + 4);
-    *cursor = arg0;
-    lbl_80367188 += 1;
+    s32 **top;
+
+    top = (s32 **)(lbl_80367180 + 0x18);
+    *(*top)++ = arg0;
+
+    lbl_80367188++;
 }
 
 #pragma scheduling reset
