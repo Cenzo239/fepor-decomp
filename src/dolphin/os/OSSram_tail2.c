@@ -145,6 +145,44 @@ extern s32 RunQueueHint_8036851C;
 
 s32 fn_8020931C(s32 commit, s32 offset);
 
+void fn_80209AE8(u32 arg0) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+    extern u16 Scb_80339420[];
+
+    u8 *scb;
+    volatile s32 *locked;
+    u32 interrupts;
+    u32 mode;
+    u8 flags;
+    u8 pad[0x10];
+
+    scb = (u8 *)Scb_80339420;
+    mode = (arg0 & 1) << 6;
+
+    interrupts = OSDisableInterrupts();
+    locked = (volatile s32 *)(scb + 0x48);
+
+    if (*locked != 0) {
+        OSRestoreInterrupts(interrupts);
+        scb = NULL;
+    } else {
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
+    }
+
+    flags = scb[0x11];
+    if (mode == (flags & 0x40)) {
+        fn_8020931C(0, 0);
+    } else {
+        scb[0x11] = flags & ~0x40;
+        flags = scb[0x11];
+        scb[0x11] = flags | mode;
+        fn_8020931C(1, 0);
+    }
+}
+
 s32 fn_80209B8C(s32 arg0)
 {
     extern u16 Scb_80339420[];
@@ -175,28 +213,42 @@ s32 fn_80209B8C(s32 arg0)
     return result;
 }
 
-void fn_80209C10(void) {
-    u16 *scb = Scb_80339420;
-    OSDisableInterrupts();
-    if (scb[0x24] != 0) {
-        OSRestoreInterrupts();
-        return;
+void fn_80209C10(s32 arg0, u32 arg1) {
+u32 OSDisableInterrupts(void); void OSRestoreInterrupts(u32);
+u8 *scb=(u8*)Scb_80339420; u32 irq; s32 *locked; u16 *entry;
+irq=OSDisableInterrupts(); locked=(s32*)scb;
+if(*(locked+=18)) { OSRestoreInterrupts(irq); scb=0; }
+else { *(u32*)(scb+0x44)=irq; *locked=1; scb+=0x14; }
+entry=(u16*)(scb+(arg0<<1)); ;
+if(*(entry+=14) != (u16)arg1) { *entry=arg1; fn_8020931C(1,0x14); }
+else fn_8020931C(0,0x14);
+}
+
+u16 OSGetGbsMode(void) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+
+    u8 *scb;
+    s32 *locked;
+    u32 irq;
+    u16 result;
+    u8 pad[8];
+
+    scb = (u8 *)Scb_80339420;
+    irq = OSDisableInterrupts();
+    locked = (s32 *)(scb + 0x48);
+    if (*locked) {
+        OSRestoreInterrupts(irq);
+        scb = 0;
     } else {
-        scb[0x24] = 1;
+        *(u32 *)(scb + 0x44) = irq;
+        *locked = 1;
+        scb += 0x14;
     }
-    lbl_80368614 = *(u32 *)0x800000E0;
-    lbl_80368618 = *(void **)0x800000E4;
-    lbl_8036861C = *(void **)0x800000E8;
-    lbl_80368620 = *(void **)0x800000EC;
-    lbl_80368624 = *(void **)0x800000F0;
-    lbl_80368628 = *(void **)0x800000F4;
-    lbl_8036862C = *(void **)0x800000F8;
-    lbl_80368630 = *(void **)0x800000FC;
-    lbl_80368634 = *(void **)0x80000100;
-    lbl_80368638 = *(void **)0x80000104;
-    lbl_8036863C = *(void **)0x80000108;
-    lbl_80368640 = *(void **)0x8000010C;
-    lbl_80368644 = *(void **)0x80000110;
+    result = *(u16 *)(scb + 0x28);
+    fn_8020931C(0, 0x14);
+    return result;
 }
 
 void fn_80209DE4(void) { }
