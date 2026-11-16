@@ -13287,14 +13287,16 @@ int fn_801D2AAC(void *arg0) {
         struct Node *next;
         s32 unk8;
     };
-    struct Node *node;
+    s32 tmp;
     s16 n;
+    struct Node *node;
 
     if (*(u32 *)((u8 *)arg0 + 0x6C) == 0) {
         return 0;
     }
-    n = *(s16 *)((u8 *)arg0 + 0x4E);
+    tmp = *(s16 *)((u8 *)arg0 + 0x4E);
     node = *(struct Node **)((u8 *)arg0 + 0x74);
+    n = (s16)tmp;
     if (n >= 0) {
         goto loop_pos;
         do {
