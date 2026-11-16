@@ -1898,6 +1898,61 @@ void Xml_GetChildValue(void *arg0, void *arg1)
     *(Block *)arg0 = *(Block *)(p + 0x18);
 }
 
+void Xml_GetNamedValue(void *arg0, void *arg1, String *arg2) {
+    u32 strlen(const char *);
+    s32 String_Compare(String *, u32, u32, char *, u32);
+
+    typedef struct { u32 a,b,c,d,e,f,g,h; } Block;
+    u8 *out;
+    u8 *xml;
+    s32 index;
+    u8 *list;
+    u8 *entry;
+    s32 offset;
+    Block fallback;
+    s32 zero;
+
+    out = (u8 *)arg0;
+    xml = (u8 *)arg1;
+    list = *(u8 **)(xml + 0x1C);
+
+    if (list != NULL) {
+        zero = 0;
+        index = zero;
+        offset = zero;
+
+        while (index < *(s32 *)list) {
+            if (list != NULL && index < *(s32 *)list) {
+                entry = *(u8 **)(list + 4) + offset;
+            } else {
+                entry = NULL;
+            }
+
+            if (String_Compare(
+                    arg2,
+                    0,
+                    arg2->size,
+                    (char *)entry,
+                    strlen((char *)entry)
+                ) == 0) {
+                *(s32 *)(xml + 0x24) = index;
+
+                *(Block *)out = *(Block *)(entry + 0x18);
+                return;
+            }
+
+            offset += 0x38;
+            index++;
+        }
+    }
+
+    fallback.a = 0;
+    fallback.b = 0;
+    fallback.c = 0;
+    fallback.d = 0;
+    *(Block *)out = fallback;
+}
+
 s32 Xml_AdvanceChild(void *arg0) {
     s32 var_r6;
 
@@ -9619,10 +9674,11 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
 #pragma dont_inline reset
 #pragma cplusplus reset
 
-void fn_800DFC2C(void *arg0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, u8 arg8) {
-    u8 spC;
-    spC = arg8;
-    fn_800E01EC(*(s32 *)((u8 *)arg0 + 8), (*(s32 *)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 2)), &spC);
+void fn_800DFC2C(void *arg0) {
+    volatile u8 src;
+    u32 spC;
+    *(u8 *)&spC = src;
+    fn_800E01EC(*(s32 *)((u8 *)arg0 + 8), (*(s32 *)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 2)), (u8 *)&spC);
 }
 
 #pragma cplusplus on
@@ -10303,23 +10359,16 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 
 #pragma scheduling off
 void fn_800E2138(s32 *arg0, s32 *arg1, s32 arg2) {
-    s32 t6;
-    s32 t0;
-
-    t6 = arg1[0];
-    t0 = t6 + (arg2 * 4);
-    {
-        volatile s32 spC;
-        volatile s32 sp8;
-        s32 t4;
-
-        t4 = arg1[1];
-        sp8 = t6;
-        arg0[0] = t0;
-        spC = t4;
-        sp8 = t0;
-        arg0[1] = t4;
-    }
+    register s32 t6 = arg1[0];
+    register s32 t0 = t6 + (arg2 * 4);
+    register s32 t4 = arg1[1];
+    volatile s32 spC;
+    volatile s32 sp8;
+    sp8 = t6;
+    arg0[0] = t0;
+    spC = t4;
+    sp8 = t0;
+    arg0[1] = t4;
 }
 #pragma scheduling on
 s32 fn_800E2168(s32 *arg0, s32 *arg1) {
@@ -18104,8 +18153,103 @@ score+=(s32)(lbl_8036A06C*(amount*(f32)(s8)cfg[9]));
 score+=(s32)(lbl_8036A06C*((f32)fn_800386E0(unit)*(f32)(s8)cfg[10]));
 M2C_FIELD(arg1,s32 *,8)=score;
 }
-#pragma use_lmw_stmw on
-#pragma fp_contract off
+
+#pragma optimization_level 3
+void Battle_ScoreTarget(s32 arg0, void *arg1) {
+    void *Res_GetByName(void *);
+    s32 fn_800F6F94(void *, s32);
+    s8 Unit_GetMaxHp(void *);
+    s8 fn_800386E0(void *);
+    s32 fn_800F6B10(void *, s32);
+    u32 fn_800FCF48(u8, u8);
+    extern u32 gBattle[];
+    extern u8 lbl_80272F44[], gBattleMap[], gUnits[], gBattleState[];
+    void *out = arg1;
+    u8 *cfg;
+    u8 *unit;
+    s32 total;
+    u8 *p;
+    s32 score;
+    u8 *battle;
+    u8 *map;
+    f32 maxhp;
+    s32 remaining;
+    s32 percent;
+    s32 x, y;
+    u8 outside, id;
+    u8 *other_unit;
+    u32 flags;
+    s32 bonus;
+    f32 amount;
+    u8 saved_hp;
+
+    cfg = Res_GetByName(*(void **)((u8 *)arg0 + 0x244));
+    score = fn_800F6F94(cfg, 1);
+    unit = (u8 *)gBattle + 0x2E0;
+    maxhp = (f32)Unit_GetMaxHp(unit);
+    remaining = Unit_GetMaxHp(unit) - (s8)unit[0x1A8];
+    p = lbl_80272F44;
+    battle = (u8 *)gBattle;
+    map = gBattleMap;
+    total = 0;
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    score += (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[6]));
+    for (; (s32)p[0] != 0x7F; p += 3) {
+        outside = 0;
+        x = (s16)((s8)p[0] + (s8)battle[0x19E]);
+        y = (s16)((s8)p[1] + (s8)battle[0x19F]);
+        if (x < (s8)map[8] || (s8)map[10] - 1 < x || y < (s8)map[9] || (s8)map[11] - 1 < y)
+            outside = 1;
+        if (outside == 0) {
+            id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
+            if (id != 0) {
+                if (id != 0)
+                    other_unit = gUnits + (id - 1) * 0x280;
+                else
+                    other_unit = 0;
+                if (relation_is_one(*(void **)(*(u8 **)(battle + 0x280) + 0x190),
+                                    *(void **)(other_unit + 0x190)) == 0)
+                    total += (s8)p[2];
+            }
+        }
+    }
+    flags = *(u16 *)(*(u8 **)(*(u8 **)(unit + 0x280) + 0x18C) + 0x3A);
+    score += (s32)(0.03125f * ((f32)total * (f32)(s8)cfg[7]));
+    bonus = 0;
+    if (flags & 1)
+        bonus = (s8)cfg[0xE];
+    if (flags & 2)
+        bonus += (s8)cfg[0xF];
+    if (flags & 4)
+        bonus += (s8)cfg[0x10];
+    if (flags & 8)
+        bonus += (s8)cfg[0x11];
+    if (flags & 0x10)
+        bonus += (s8)cfg[0x12];
+    if (flags & 0x20)
+        bonus += (s8)cfg[0x13];
+    if (flags & 0x40)
+        bonus += (s8)cfg[0x14];
+    if (flags & 0x80)
+        bonus += (s8)cfg[0x15];
+    if (flags & 0x100)
+        bonus += (s8)cfg[0x16];
+    if (flags & 0x400)
+        bonus += (s8)cfg[0x17];
+    amount = (f32)*(s16 *)(gBattleState + 0x12);
+    score += (s32)(0.03125f * ((f32)bonus * (f32)(s8)cfg[8]));
+    score += (s32)(0.03125f * (amount * (f32)(s8)cfg[9]));
+    score += (s32)(0.03125f * ((f32)fn_800386E0(unit) * (f32)(s8)cfg[10]));
+    score -= fn_800F6B10(cfg, 1);
+    score -= (s32)(0.03125f * ((f32)((fn_800FCF48(((u8 *)gBattle)[0x19E], ((u8 *)gBattle)[0x19F]) >> 4) & 0xFFF) * (f32)(s8)cfg[0xC]));
+    saved_hp = ((u8 *)gBattle)[0x1A8];
+    maxhp = (f32)Unit_GetMaxHp(gBattle);
+    remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
+    *(s32 *)((u8 *)out + 8) = score;
+}
+#pragma optimization_level reset
 s32 fn_800F6B10(void *arg0, u8 arg1) {
 void **BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
@@ -19282,6 +19426,67 @@ void fn_800F9E64(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
+}
+
+void fn_800F9FC4(void *arg0) {
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+
+    extern u8 gAiState[];
+    extern u8 gUiContext[];
+    extern void *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+
+    u8 *unit;
+    u8 *cmd;
+    s16 x;
+    s16 y;
+    s32 dx;
+    s32 dy;
+
+    unit = (u8 *)arg0;
+    cmd = (u8 *)gAiCmd;
+
+    if (!(gAiState[1] & 2) &&
+        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
+
+        y = (s16)*(s32 *)(cmd + 0xC);
+        x = (s16)*(s32 *)(cmd + 0x10);
+
+        Ai_SetUnitMoveTo(
+            unit,
+            y,
+            x,
+            1,
+            *(u16 *)(gAiState + 4),
+            1,
+            0,
+            -1
+        );
+
+        if (gAiState[0x21C] != 0) {
+            dx = x - (s8)gUiContext[0xE];
+
+            if (dx < 0) {
+                dx = -dx;
+            }
+
+            dy = y - (s8)gUiContext[0xD];
+
+            if (dy < 0) {
+                dy = -dy;
+            }
+
+            if (dx + dy <= *(s32 *)(cmd + 4)) {
+                *(s32 *)(gAiState + 8) = 8;
+            }
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
 }
 
 /* On chance: try attack AI with cmd unit filter (primary then alternate scorer); advance AI PC. */
@@ -21308,6 +21513,64 @@ void fn_800FE074(void *arg0, s32 arg1, s32 arg2) {
     );
 }
 
+void fn_800FE180(void *arg0, s32 arg1, s32 arg2) {
+    u8 Status_Test(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
+    void fn_800227F8(void *, void *);
+    void fn_800227D0(void *, s32, s32);
+    void fn_80022748(void *, s32);
+    s8 Unit_GetMov(void *);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    extern u8 gBattleMap[];
+
+    u8 *unit;
+    u8 *map;
+    s32 rangeType;
+    s32 movement;
+    s32 status14;
+    s32 status15;
+    u8 result;
+
+    unit = (u8 *)arg0;
+    rangeType = arg1;
+    movement = arg2;
+    map = gBattleMap;
+
+    result = Status_Test(unit + 0x1BC, 0x14);
+    status14 = result != 0;
+
+    result = Status_Test(unit + 0x1BC, 0x15);
+    status15 = result != 0;
+
+    Map_SelectRangeBuffer(gBattleMap, rangeType);
+
+    fn_800227F8(
+        gBattleMap,
+        *(void **)(unit + 0x18C)
+    );
+
+    fn_800227D0(gBattleMap, 0x1C, 1);
+    fn_800227D0(gBattleMap, 0x21, 1);
+    fn_80022748(gBattleMap, 0);
+
+    if (*(u32 *)(unit + 0x254) & 0x20000) {
+        fn_800227D0(map, 0x37, 0x30);
+    }
+
+    if (movement == -1) {
+        movement = (s8)Unit_GetMov(unit);
+    }
+
+    Map_FloodMoveRange(
+        map,
+        unit[0x19E],
+        unit[0x19F],
+        (u16)movement,
+        status14,
+        status15
+    );
+}
+
 #pragma use_lmw_stmw on
 #pragma dont_inline on
 #pragma global_optimizer off
@@ -22467,6 +22730,54 @@ void fn_80100B08(void)
     } while (i <= 0x9F);
 }
 
+s32 fn_80100BA4(s16 x, s16 y, s16 x2, s16 y2) {
+    extern u8 gBattleMap[];
+
+    s32 dx;
+    s32 dy;
+    u16 flags;
+
+    dy = (s16)y - (s16)y2;
+    if (dy < 0) {
+        dy = -dy;
+    }
+
+    dx = (s16)x - (s16)x2;
+    if (dx < 0) {
+        dx = -dx;
+    }
+
+    if (dx + dy > 1) {
+        return 0;
+    }
+
+    if ((s16)y2 == (s16)y - 1) {
+        flags = *(u16 *)(gBattleMap + 0x408E +
+            (((s8)x + ((s8)y << 6)) << 1));
+        return (flags >> 3) & 1;
+    }
+
+    if ((s16)y2 == (s16)y + 1) {
+        flags = *(u16 *)(gBattleMap + 0x408E +
+            (((s8)x + ((s8)y << 6)) << 1));
+        return (flags >> 2) & 1;
+    }
+
+    if ((s16)x2 == (s16)x - 1) {
+        flags = *(u16 *)(gBattleMap + 0x408E +
+            (((s8)x + ((s8)y << 6)) << 1));
+        return flags & 1;
+    }
+
+    if ((s16)x2 == (s16)x + 1) {
+        flags = *(u16 *)(gBattleMap + 0x408E +
+            (((s8)x + ((s8)y << 6)) << 1));
+        return (flags >> 1) & 1;
+    }
+
+    return 0;
+}
+
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 s32 fn_80100CC8(void) {
@@ -23034,7 +23345,79 @@ for (; var_r17 <= var_r19; var_r17++) {
         fn_800FB96C(sp10, (s8) var_r14, (s8) var_r23, 0, (s8) var_r14, (s8) var_r23, -1, 0, 0);
     }
 }
-#pragma opt_strength_reduction reset
+
+#pragma use_lmw_stmw on
+s32 Ai_FindLowestCostUnitTile(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
+    void fn_800FE398(void *, s32, s32);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    extern struct {
+        s32 width;
+        s32 height;
+        s8 xMin;
+        s8 yMin;
+        s8 xMax;
+        s8 yMax;
+        u8 pad0C;
+        u8 unitMap[8][64][64];
+        u8 pad800D[0x181];
+        s16 costMap[3][64 * 64];
+        s8 fogMap[64][64];
+    } gBattleMap;
+    extern u8 gUnits[];
+
+    s16 *cost;
+    s16 best;
+    s16 bestX;
+    s16 bestY;
+    s32 y;
+    s32 x;
+    u8 id;
+    u8 *unit;
+
+    best = 0x7FFF;
+    fn_800FE398(arg1, 5, gBattleMap.width * gBattleMap.height);
+
+    for (y = gBattleMap.yMin; y <= gBattleMap.yMax - 1; y++) {
+        for (x = gBattleMap.xMin; x <= gBattleMap.xMax - 1; x++) {
+            cost = &gBattleMap.costMap[0][(s8)x + ((s8)y << 6)];
+            if (*cost < 0) {
+                continue;
+            }
+            if (gBattleMap.fogMap[(s8)y][(s8)x] != 0) {
+                continue;
+            }
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
+                continue;
+            }
+            id = gBattleMap.unitMap[0][(s8)y][(s8)x];
+            if (id == 0) {
+                continue;
+            }
+            if (id != 0) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = NULL;
+            }
+            if (filter(unit) == 0) {
+                continue;
+            }
+            if (*cost >= best) {
+                continue;
+            }
+            best = *cost;
+            bestX = (s16)x;
+            bestY = (s16)y;
+        }
+    }
+
+    if ((s16)best != 0x7FFF) {
+        *outX = bestX;
+        *outY = bestY;
+        return 1;
+    } else {
+        return 0;
+    }
+}
 /* Find the reachable same-faction occupied tile with lowest AI move cost; write x/y. */
 s32 Ai_FindLowestCostAllyTile(s32 arg0, s16 *outX, s16 *outY) {
     void fn_800FE398(s32, s32, s32);
