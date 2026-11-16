@@ -969,23 +969,23 @@ void fn_801854B4(void *arg0) {
 }
 
 void fn_801854D8(void *arg0) {
-    M2C_UNK fn_8004E9D8(void *, M2C_UNK);
-    M2C_UNK fn_80050C90(void *);
+    void fn_8004E9D8(void *, s32);
+    void fn_80050C90(void *);
     extern f32 lbl_8036ACF8;
-    void *temp_r3;
-    void *temp_r3_2;
+    void *unit;
 
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x78) = (f32) lbl_8036ACF8;
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x3D) == 0) {
-        temp_r3 = M2C_FIELD(arg0, void **, 0x30);
-        M2C_FIELD(temp_r3, u8 *, 3) = (u8) (M2C_FIELD(temp_r3, u8 *, 3) | 4);
-        fn_8004E9D8(M2C_FIELD(arg0, void **, 0x30), 0);
-        temp_r3_2 = M2C_FIELD(arg0, void **, 0x30);
-        M2C_FIELD(temp_r3_2, u8 *, 3) = (u8) (M2C_FIELD(temp_r3_2, u8 *, 3) & 0xFFFFFFFB);
-        fn_80050C90(M2C_FIELD(arg0, void **, 0x30));
+    unit = *(void **)((u8 *)arg0 + 0x30);
+    *(f32 *)((u8 *)unit + 0x78) = lbl_8036ACF8;
+    if (*(u8 *)((u8 *)arg0 + 0x3D) == 0) {
+        unit = *(void **)((u8 *)arg0 + 0x30);
+        *(u8 *)((u8 *)unit + 3) |= 4;
+        fn_8004E9D8(*(void **)((u8 *)arg0 + 0x30), 0);
+        unit = *(void **)((u8 *)arg0 + 0x30);
+        *(u8 *)((u8 *)unit + 3) &= ~4;
+        fn_80050C90(*(void **)((u8 *)arg0 + 0x30));
     }
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x3C) != 0) {
-        Unit_SetModelAlpha(M2C_FIELD(arg0, void **, 0x30), 0xFF);
+    if (*(u8 *)((u8 *)arg0 + 0x3C) != 0) {
+        Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0xFF);
     }
 }
 
@@ -2634,27 +2634,36 @@ void fn_8018B2FC(void *arg0) {
 #pragma fp_contract off
 #pragma global_optimizer off
 void fn_8018B31C(void *arg0) {
- extern f32 lbl_8036ACEC, lbl_8036ACF8, lbl_8036AD40;
- void Process_ClearFunc(void *);
- f32 f0; f32 f1; f32 f2; f32 f3; f32 f4; void *r4;
- f1=*(f32 *)((u8 *)arg0+0x48); f0=lbl_8036ACF8;
- *(f32 *)((u8 *)arg0+0x48)=f1+f0;
- f3=*(f32 *)((u8 *)arg0+0x48);
- f0=*(f32 *)((u8 *)arg0+0x44);
- r4=*(void **)((u8 *)arg0+0x30);
- f1=f0*f3;
- f4=*(f32 *)((u8 *)arg0+0x40);
- f2=*(f32 *)((u8 *)r4+0xc);
- f0=*(f32 *)((u8 *)arg0+0x3c);
- f1=f3*f1; f1=f4-f1; f1=f2-f1;
- if(f1>f0) {
- f1=*(f32 *)((u8 *)arg0+0x4c); f0=lbl_8036ACEC; f1=f4*f1;
- *(f32 *)((u8 *)arg0+0x40)=f1; *(f32 *)((u8 *)arg0+0x48)=f0;
- }
- f1=*(f32 *)((u8 *)arg0+0x3c); r4=*(void **)((u8 *)arg0+0x30);
- f0=lbl_8036AD40; *(f32 *)((u8 *)r4+0xc)=f1;
- f1=*(f32 *)((u8 *)arg0+0x40);
- if(f1<f0) Process_ClearFunc(arg0);
+    extern f32 lbl_8036ACEC, lbl_8036ACF8, lbl_8036AD40;
+    void Process_ClearFunc(void *);
+    f32 f0; f32 f1; f32 f2; f32 f3; f32 f4; void *r4;
+    f0 = lbl_8036ACF8;
+    f1 = *(f32 *)((u8 *)arg0 + 0x48);
+    *(f32 *)((u8 *)arg0 + 0x48) = f1 + f0;
+    f3 = *(f32 *)((u8 *)arg0 + 0x48);
+    f0 = *(f32 *)((u8 *)arg0 + 0x44);
+    r4 = *(void **)((u8 *)arg0 + 0x30);
+    f1 = f0 * f3;
+    f4 = *(f32 *)((u8 *)arg0 + 0x40);
+    f2 = *(f32 *)((u8 *)r4 + 0xc);
+    f0 = *(f32 *)((u8 *)arg0 + 0x3c);
+    f1 = f3 * f1;
+    f1 = f4 - f1;
+    f1 = f2 - f1;
+    if (f1 > f0) {
+        f1 = *(f32 *)((u8 *)arg0 + 0x4c);
+        f0 = lbl_8036ACEC;
+        f1 = f4 * f1;
+        *(f32 *)((u8 *)arg0 + 0x40) = f1;
+        *(f32 *)((u8 *)arg0 + 0x48) = f0;
+    }
+    f1 = *(f32 *)((u8 *)arg0 + 0x3c);
+    r4 = *(void **)((u8 *)arg0 + 0x30);
+    f0 = lbl_8036AD40;
+    *(f32 *)((u8 *)r4 + 0xc) = f1;
+    f1 = *(f32 *)((u8 *)arg0 + 0x40);
+    if (f1 < f0)
+        Process_ClearFunc(arg0);
 }
 #pragma global_optimizer on
 #pragma fp_contract on
@@ -9122,6 +9131,7 @@ void fn_80199CEC(void *arg0) {
     fn_800498A4(M2C_FIELD(arg0, s32 *, 0x34), 0, 2);
 }
 
+#pragma fp_contract off
 void fn_80199D18(void *arg0) {
     void *Effect_Create(void *, s32);
     void Effect_SetPos(void *, f32, f32, f32);
@@ -9150,7 +9160,7 @@ void fn_80199D18(void *arg0) {
         Process_ClearFunc(arg0);
     }
 }
-
+#pragma fp_contract reset
 void MapSelect_StartMove(void *arg0) {
     /* Start a map-select cursor slide from (x0,y0) to (x1,y1): length, duration, actor, camera. */
     void fn_80053658(void *, s32, void *);
@@ -9762,31 +9772,32 @@ void fn_8019B6B4(s32 arg0, s32 arg1) {
     fn_8019D51C(Process_CreateChild(lbl_80296938, arg0), arg1, MapSelect_str + 0x166);
 }
 
+#pragma global_optimizer off
 void fn_8019B704(s32 arg0, s32 arg1) {
     void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     void fn_8004FC70(void *, s32);
     extern u8 lbl_80296D5C[];
     extern u8 MapSelect_str[];
-    void *temp_r30;
-    void *temp_r31;
+    void *r30;
+    void *child;
+    void *t;
 
-    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x17A);
-    temp_r30 = 0;
-    M2C_FIELD(temp_r31, u8 *, 0x5C) = (u8)(s32)temp_r30;
-    {
-        void *t = *(void **)(*(void **)((u8 *)temp_r31 + 0x34));
-        if (t != NULL) {
-            temp_r30 = *(void **)((u8 *)t + 0x280);
-            if (temp_r30 != NULL) {
-                fn_8004FC70(temp_r30, 8);
-                fn_8004FC70(temp_r30, 9);
-            }
-        }
+    r30 = (void *)arg1;
+    child = Process_CreateChild(lbl_80296D5C, arg0);
+    fn_8019D51C(child, (s32)r30, MapSelect_str + 0x17A);
+    r30 = 0;
+    ((u8 *)child)[0x5C] = (u8)(s32)r30;
+    t = *(void **)(*(void **)((u8 *)child + 0x34));
+    if (t) {
+        r30 = *(void **)((u8 *)t + 0x280);
+    }
+    if (r30) {
+        fn_8004FC70(r30, 8);
+        fn_8004FC70(r30, 9);
     }
 }
-
+#pragma global_optimizer reset
 void fn_8019B79C(s32 arg0, s32 arg1) {
     void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
