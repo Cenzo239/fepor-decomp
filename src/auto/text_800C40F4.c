@@ -500,10 +500,10 @@ s32 fn_800C44F4(s32 arg0) {
 }
 
 void fn_800C4588(void *arg0) {
-    if (arg0 != NULL) {
-        s32 *ptr = (s32*)arg0;
-        fn_800C53B0(ptr[-3], (void*)((char*)arg0 - 0x20));
-    }
+ if (arg0) {
+ void *header = (char*)arg0 - 0x20;
+ fn_800C53B0(*(s32*)((char*)header + 0x14), header);
+ }
 }
 
 s32 fn_800C45B8(s32 arg0) {
@@ -5579,16 +5579,21 @@ void fn_800D6874(void) {
 
 }
 
-void fn_800D6878(u8 *arg0, u32 arg1) {
- *(u32 *)arg0 = 0;
- { u8 value = *(u8 *)arg1;
- *(u32 *)(arg0+4) = *(u32 *)arg0;
- arg0[8] = value;
- *(u8 **)(arg0+12) = arg0+4;
- }
-}
+#pragma scheduling off
+void fn_800D6878(void *arg0, u8 *arg1) {
+    u32 z;
+    u8 v;
+    u8 *mid;
 
-#pragma use_lmw_stmw on
+    z = 0;
+    v = *arg1;
+    *(u32 *)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(u32 *)mid = z;
+    *((u8 *)arg0 + 8) = v;
+    *(u8 **)((u8 *)arg0 + 12) = mid;
+}
+#pragma scheduling reset
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
 {
     struct Tag { u8 b; } tag;
@@ -8709,15 +8714,21 @@ void fn_800DEF00(void *arg0) {
     }
 }
 
+#pragma scheduling off
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-    u8 value;
-    *(u32 *)arg0 = 0;
-    value = *arg1;
-    *(u32 *)((u8 *)arg0 + 4) = *(u32 *)arg0;
-    *((u8 *)arg0 + 8) = value;
-    *(u32 *)((u8 *)arg0 + 12) = (u32)((u8 *)arg0 + 4);
-}
+    u32 z;
+    u8 v;
+    u8 *mid;
 
+    z = 0;
+    v = *arg1;
+    *(u32 *)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(u32 *)mid = z;
+    *((u8 *)arg0 + 8) = v;
+    *(u8 **)((u8 *)arg0 + 12) = mid;
+}
+#pragma scheduling on
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
     /* Set cubic Vec3 tween target; duration 0 snaps. Else shift history, store controls, set speed from distance. */
     f32 PSVECDistance(f32 *, f32 *);
@@ -9927,17 +9938,22 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 #pragma cplusplus off
 
 #pragma optimization_level 1
-void fn_800E2138(s32 *out, s32 *in, s32 idx)
-{
-    struct { s32 a; s32 b; } tmp;
-    s32 p;
+void fn_800E2138(void *arg0, void *arg1, s32 arg2) {
+    volatile s32 spC;
+    volatile s32 sp8;
+    s32 temp_r0;
+    s32 temp_r4;
+    s32 temp_r6;
 
-    tmp.a = in[0];
-    p = tmp.a + (idx << 2);
-    tmp.b = in[1];
-    out[0] = p;
-    tmp.a = p;
-    out[1] = tmp.b;
+    temp_r6 = M2C_FIELD(arg1, s32 *, 0);
+    temp_r0 = temp_r6 + (arg2 * 4);
+    temp_r4 = M2C_FIELD(arg1, s32 *, 4);
+
+    sp8 = temp_r6;
+    M2C_FIELD(arg0, s32 *, 0) = temp_r0;
+    spC = temp_r4;
+    sp8 = temp_r0;
+    M2C_FIELD(arg0, s32 *, 4) = temp_r4;
 }
 #pragma optimization_level reset
 s32 fn_800E2168(s32 *arg0, s32 *arg1) {
