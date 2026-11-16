@@ -341,6 +341,76 @@ s32 fn_8020A9E0(void *arg0)
     return prevSuspend;
 }
 
+s32 fn_8020AC68(void *arg0) {
+    typedef struct Thread Thread;
+    typedef struct Queue { Thread *head, *tail; } Queue;
+    struct Thread {
+        u8 pad[0x2C8];
+        u16 state, attr;
+        s32 suspend, priority, basePriority;
+        void *value;
+        Queue *queue;
+        Thread *next, *prev;
+        u8 pad2[8];
+        void *mutex;
+    };
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void SelectThread_8020A2C4(s32);
+    void fn_8020A060(void *);
+    s32 fn_8020A0C8(void *);
+    void *fn_8020A104(void *, s32);
+    Thread *thread = arg0;
+    s32 enabled;
+    s32 previous;
+    Thread *next, *prev, *tail;
+    Queue *queue;
+    void *mutex;
+    s32 priority;
+    enabled = OSDisableInterrupts();
+    previous = thread->suspend++;
+    if (previous == 0) {
+        switch (thread->state) {
+        case 3: break;
+        case 2:
+            RunQueueHint_8036851C = 1;
+            thread->state = 1;
+            break;
+        case 1:
+            fn_8020A060(thread);
+            break;
+        case 4:
+            next = thread->next;
+            prev = thread->prev;
+            if (next == 0) thread->queue->tail = prev;
+            else next->prev = prev;
+            if (prev == 0) thread->queue->head = next;
+            else prev->next = next;
+            thread->priority = 32;
+            tail = thread->queue->tail;
+            if (tail == 0) thread->queue->head = thread;
+            else tail->next = thread;
+            thread->prev = tail;
+            thread->next = 0;
+            thread->queue->tail = thread;
+            mutex = thread->mutex;
+            if (mutex != 0) {
+                thread = M2C_FIELD(mutex, void **, 8);
+                do {
+                    if (thread->suspend > 0) break;
+                    priority = fn_8020A0C8(thread);
+                    if (thread->priority == priority) break;
+                    thread = fn_8020A104(thread, priority);
+                } while (thread != 0);
+            }
+            break;
+        }
+        if (RunQueueHint_8036851C != 0) SelectThread_8020A2C4(0);
+    }
+    OSRestoreInterrupts(enabled);
+    return previous;
+}
+
 void OSSleepThread(void *arg0) {
 s32 OSDisableInterrupts(void); void OSRestoreInterrupts(s32);
 s32 enabled; u8 *thread; u8 *cur; u8 *prev; u8 **queue=(u8**)arg0;
@@ -356,6 +426,70 @@ prev=queue[1]; if(prev==0) queue[0]=thread; else *(u8**)(prev+0x2e0)=thread;
 *(u8**)(thread+0x2e4)=prev; if(prev==0) queue[0]=thread; else *(u8**)(prev+0x2e0)=thread;
 }
 RunQueueHint_8036851C=1; __OSReschedule(); OSRestoreInterrupts(enabled);
+}
+
+void fn_8020AEC4(void *arg0) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void SelectThread_8020A2C4(s32);
+    extern void *RunQueue_80339478[];
+    extern s32 RunQueueBits_80368518;
+    extern s32 RunQueueHint_8036851C;
+
+    typedef struct OSThread OSThread;
+    typedef struct OSThreadQueue {
+        OSThread *head;
+        OSThread *tail;
+    } OSThreadQueue;
+    struct OSThread {
+        u8 pad[0x2C8];
+        u16 state;
+        u16 pad2CA;
+        s32 suspend;
+        s32 priority;
+        s32 basePriority;
+        u8 pad2D8[4];
+        OSThreadQueue *queue;
+        OSThread *next;
+        OSThread *prev;
+    };
+
+    OSThreadQueue *wakeQueue;
+    s32 enabled;
+    OSThread *thread;
+    OSThread *next;
+    OSThread *prev;
+
+    enabled = OSDisableInterrupts();
+    wakeQueue = (OSThreadQueue *)arg0;
+    while ((thread = wakeQueue->head) != NULL) {
+        next = thread->next;
+        if (next == NULL) {
+            wakeQueue->tail = NULL;
+        } else {
+            next->prev = NULL;
+        }
+        wakeQueue->head = next;
+        thread->state = 1;
+        if (thread->suspend <= 0) {
+            thread->queue = &((OSThreadQueue *)RunQueue_80339478)[thread->priority];
+            prev = thread->queue->tail;
+            if (prev == NULL) {
+                thread->queue->head = thread;
+            } else {
+                prev->next = thread;
+            }
+            thread->prev = prev;
+            thread->next = NULL;
+            thread->queue->tail = thread;
+            RunQueueBits_80368518 |= 1 << (31 - thread->priority);
+            RunQueueHint_8036851C = thread->state;
+        }
+    }
+    if (RunQueueHint_8036851C != 0) {
+        SelectThread_8020A2C4(0);
+    }
+    OSRestoreInterrupts(enabled);
 }
 
 void OSClearStack(u8 fill) {
