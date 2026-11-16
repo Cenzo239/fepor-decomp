@@ -115,34 +115,23 @@ void fn_80216998(s32 chan, s32 result) {
     fn_8020AEC4(__CARDBlock + chan * 0x110 + 0x8c);
 }
 
-void __CARDTxHandler(s32 arg0) {
-    s32 EXIDeselect(s32, s32);
-    M2C_UNK EXIUnlock(s32);
+void __CARDTxHandler(s32 chan) {
+    s32 EXIDeselect(s32);
+    s32 EXIUnlock(s32);
     s32 fn_80239488(s32);
-    extern M2C_UNK __CARDBlock;
-    M2C_UNK (*temp_r0)(s32, M2C_UNK);
-    s32 temp_r31;
-    s32 temp_r4;
-    s32 var_r30;
-    void *temp_r29;
-
-    temp_r4 = arg0 * 0x110;
-    temp_r29 = &__CARDBlock + temp_r4;
-    temp_r31 = EXIDeselect(arg0, temp_r4) == 0;
-    EXIUnlock(arg0);
-    temp_r0 = M2C_FIELD(temp_r29, M2C_UNK (**)(s32, M2C_UNK), 0xC8);
-    if (temp_r0 != NULL) {
-        var_r30 = 0;
-        M2C_FIELD(temp_r29, M2C_UNK (**)(s32, M2C_UNK), 0xC8) = NULL;
-        if ((temp_r31 == 0) && (fn_80239488(arg0) != 0)) {
-            var_r30 = 1;
-        }
-        if (var_r30 != 0) {
-            temp_r4 = 0;
-        } else {
-            temp_r4 = -3;
-        }
-        temp_r0(arg0, temp_r4);
+    extern u16 __CARDBlock[];
+    s32 failed;
+    s32 success;
+    u8 *card;
+    void (*callback)(s32,s32);
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    failed = !EXIDeselect(chan);
+    EXIUnlock(chan);
+    callback = *(void (**)(s32,s32))(card+0xC8);
+    if (callback) {
+        *(void (**)(s32,s32))(card+0xC8) = 0;
+        success = !failed && fn_80239488(chan);
+        callback(chan, success ? 0 : -3);
     }
 }
 
