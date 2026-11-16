@@ -1181,6 +1181,12 @@ void __kill_critical_regions(void) {
 
 }
 
+s32 fn_80230CE0(s32 arg0) {
+ extern u16 lbl_8029E9A8[256];
+ if (arg0 == -1) return -1;
+ return ((u8 *)lbl_8029E9A8)[(u8)arg0];
+}
+
 u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
 {
     extern void __begin_critical_region(s32);
@@ -1517,6 +1523,68 @@ void *memchr(const void *ptr, int value, unsigned long count)
     }
 
     return 0;
+}
+
+void fn_80231C20(void *dst, const void *src, u32 count) {
+    u8 *out;
+    const u8 *in;
+    u32 align;
+    u32 blocks;
+    u32 words;
+    u32 a;
+    u32 b;
+
+    out = (u8 *)dst + count;
+    in = (const u8 *)src + count;
+    align = (u32)out & 3U;
+
+    if (align != 0) {
+        count -= align;
+        do {
+            *--out = *--in;
+        } while (--align != 0);
+    }
+
+    blocks = count >> 5;
+    if (blocks != 0) {
+        do {
+            a = *(const u32 *)(in - 4);
+            b = *(const u32 *)(in - 8);
+            *(u32 *)(out - 4) = a;
+            a = *(const u32 *)(in - 0xC);
+            *(u32 *)(out - 8) = b;
+            b = *(const u32 *)(in - 0x10);
+            *(u32 *)(out - 0xC) = a;
+            a = *(const u32 *)(in - 0x14);
+            *(u32 *)(out - 0x10) = b;
+            b = *(const u32 *)(in - 0x18);
+            *(u32 *)(out - 0x14) = a;
+            a = *(const u32 *)(in - 0x1C);
+            *(u32 *)(out - 0x18) = b;
+            in -= 0x20;
+            b = *(const u32 *)in;
+            *(u32 *)(out - 0x1C) = a;
+            out -= 0x20;
+            *(u32 *)out = b;
+        } while (--blocks != 0);
+    }
+
+    words = (count >> 2) & 7U;
+    if (words != 0) {
+        do {
+            in -= 4;
+            a = *(const u32 *)in;
+            out -= 4;
+            *(u32 *)out = a;
+        } while (--words != 0);
+    }
+
+    count &= 3U;
+    if (count != 0) {
+        do {
+            *--out = *--in;
+        } while (--count != 0);
+    }
 }
 
 void __stdio_atexit(void) {
