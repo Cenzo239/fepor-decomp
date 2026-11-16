@@ -487,42 +487,59 @@ s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
     return b != 0;
 }
 
-void fn_8001F91C(void *map, s8 centerX, s8 centerY, s8 radius) {
-    u8 *row;
-    u8 *cell;
-    s8 x;
-    s8 y;
-    s32 dy;
-    s32 negDy;
-    s32 absDy;
-    s32 dx;
+#pragma global_optimizer off
+void fn_8001F91C(void *map, s8 cx, s8 cy, s8 rad) {
+    s32 cy_s = cy;
+    u8 *row = (u8 *)map;
+    s32 cx_s = cx;
+    s32 rad_s = rad;
+    s32 x;
+    s32 y;
+    s32 yext;
+    s32 xext;
 
-    row = (u8 *)map;
-    for (y = 0; y < *(s32 *)((u8 *)map + 4); y++) {
-        dy = y - centerY;
+    y = 0;
+    goto y_check;
+    do {
+        s32 dy;
+        u8 *cell;
+        s32 one;
+        s32 ndy;
+
+        dy = yext - cy_s;
         cell = row;
-        negDy = -dy;
+        x = 0;
+        one = 1;
+        ndy = -dy;
+        goto x_check;
+        do {
+            s32 ady;
+            s32 dx;
 
-        for (x = 0; x < *(s32 *)map; x++) {
-            absDy = dy;
+            ady = dy;
             if (dy < 0) {
-                absDy = negDy;
+                ady = ndy;
             }
-
-            dx = x - centerX;
+            dx = xext - cx_s;
             if (dx < 0) {
                 dx = -dx;
             }
-
-            if (dx + absDy <= radius) {
-                cell[0x200D] = 1;
+            if (ady + dx <= rad_s) {
+                cell[0x200D] = one;
             }
             cell++;
-        }
-        row += 0x40;
-    }
-}
+            x++;
+        x_check:
+            xext = (s8)x;
+        } while (xext < *(s32 *)map);
 
+        row += 0x40;
+        y++;
+    y_check:
+        yext = (s8)y;
+    } while (yext < *(s32 *)((u8 *)map + 4));
+}
+#pragma global_optimizer reset
 u8 *fn_8001FC24(u8 *arg0) {
 arg0+=0x14194;
 *arg0=0x10;
@@ -2823,6 +2840,31 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *node) {
     Prim2D_SetCornerColors(&colorTL, &colorTR, &colorBL, &colorBR);
     Prim2D_EndPrim();
 }
+
+extern "C" void fn_80025338(void *arg0) {
+#pragma cplusplus on
+ struct Controller { u32 pad; virtual void v0()=0; virtual void v1()=0; virtual void draw(void*)=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void finish(void*)=0; };
+ struct Item { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void draw(void*,void*)=0; };
+ extern f32 fn_80009C00(void);
+ extern void fn_80009BF4(f32);
+ extern void Prim2D_ResetState(void);
+ u8 *item;
+ s32 i;
+ u8 *self=(u8*)arg0;
+ f32 saved;
+ (*(Controller**)(self+0x3c))->draw(self);
+ saved=fn_80009C00();
+ for(i=0;i<*(s8*)(self+0x60);++i) {
+ item=(u8*)GfxEnt_Get(self[i+0x40]);
+ *(s8*)(item+0x38)=(item==(u8*)GfxEnt_Get(self[*(s8*)(self+0x62)+0x40]));
+ (*(Item**)(item+0x34))->draw(self,item);
+ fn_80009BF4(saved);
+ }
+ if(self[0x61]==0 && *(s8*)(self+0x62)>=0) (*(Controller**)(self+0x3c))->finish(self);
+ Prim2D_ResetState();
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 s32 fn_80025440(void) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -3130,7 +3172,7 @@ void *fn_8002595C(s32 arg0) {
 void fn_80025BA0(void) {
 void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
 extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
-s32 i; u8 *dst; u8 *pads; u8 *src;
+u8 *src; u8 *pads; u8 *dst; s32 i;
 SISetSamplingRate(1); fn_80212870();
 src=&lbl_80368DC8; pads=lbl_802EF408; dst=lbl_802EF438;
 for(i=0;i<4;i++){dst[0x1c]=src[i]; *(u8**)dst=pads; *(s32*)(dst+0x18)=0; dst[0x20]=0; dst+=0x24; pads+=12;}
@@ -3857,31 +3899,29 @@ void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     extern u8 gMapBlendMode;
     u8 t;
     u8 f;
-    void *p;
+    u8 *p;
+    s32 v;
 
     if ((s8)*(u8 *)((u8 *)arg0 + 0x12) == 0) {
         *(u8 *)((u8 *)arg0 + 9) = *(u8 *)((u8 *)arg0 + 8);
     }
     *(u8 *)((u8 *)arg0 + 0x12) = 0;
     Map_RefreshUnitMap(&gBattleMap);
-#pragma optimization_level 1
     f = 1;
     t = (u8)(gMapBlendMode - 1);
     if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
         f = 0;
     }
-#pragma optimization_level reset
     if (f != 0) {
         fn_800C1060(0);
     }
     if ((s8)*(u8 *)((u8 *)*(void **)arg0 + 0x1A8) != 0) {
-        s8 v = Unit_GetMov();
-        p = *(void **)arg0;
-        *(u16 *)((u8 *)p + 0x22E) =
-            *(u16 *)((u8 *)p + 0x22E) + (u16)(v - *(u8 *)((u8 *)arg0 + 0x11));
+        v = Unit_GetMov();
+        p = *(u8 **)arg0;
+        *(u16 *)(p + 0x22E) = *(u16 *)(p + 0x22E) + (u16)(v - ((u8 *)arg0)[0x11]);
         if (arg1 == 0) {
-            p = *(void **)arg0;
-            *(s32 *)((u8 *)p + 0x1A0) |= 1;
+            p = *(u8 **)arg0;
+            *(s32 *)(p + 0x1A0) |= 1;
         }
     }
 }
