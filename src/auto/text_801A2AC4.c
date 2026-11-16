@@ -695,11 +695,27 @@ void fn_801A442C(void *arg0) {
     *(s32 *)(self + 0xCB8) = gBattleSkyIndex;
 }
 
-s32 fn_801A44AC(void *arg0, s32 arg1) {
-    if (arg1 == 0) {
-        return 0;
-    }
-    return 0;
+s32 fn_801A44AC(void *arg0,s32 arg1) {
+void *BattleUnit_GetWeaponSlot(void*);
+void *Item_GetFlagsPtr(void*);
+s32 count;
+u8 *self=arg0;
+if(arg1==0) { if(*(void**)BattleUnit_GetWeaponSlot(self)==NULL) count=0;
+else if(((*(u16*)(self+0x1a4)>>7)&7)!=0 || (self[0x1a5]&7)!=0) count=0;
+else {
+count=1;
+if((*(u64*)Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(self))&0x20ULL)!=0) count<<=1;
+if((*(u32*)(self+0xCAC)&0x200)==0 && *(s16*)(self+0x29C)>=*(s16*)(self+0x57C)+4) count<<=1;
+}
+return count; }
+else { if(*(void**)BattleUnit_GetWeaponSlot(self+0x2E0)==NULL) count=0;
+else if(((*(u16*)(self+0x484)>>7)&7)!=0 || (self[0x485]&7)!=0) count=0;
+else {
+count=1;
+if((*(u64*)Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(self+0x2E0))&0x20ULL)!=0) count<<=1;
+if((*(u32*)(self+0xCAC)&0x200)==0 && *(s16*)(self+0x57C)>=*(s16*)(self+0x29C)+4) count<<=1;
+}
+return count; }
 }
 
 void *Battle_GetOpponent(void *arg0) {
@@ -2379,6 +2395,49 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
         }
     }
     fn_801A601C(var_r30, var_r30, 0, 0);
+}
+
+void fn_801A73E4(void *arg0, void *arg1, void *arg2) {
+void BattleUnit_Reset(void*);
+void fn_800340F0(void*);
+void fn_801A9CB8(void*,void*);
+void fn_801A9C0C(void*);
+void Map_SelectRangeBuffer(void*,s32);
+void Map_FillAttackRange(void*,u8,u8,s32,s32);
+void Unit_SetHp(void*,u8);
+void Unit_SetMapPos(void*,u8,u8);
+void fn_801A981C(void*,s32,s32);
+void fn_801A94B0(void*);
+extern u8 gBattleMap[];
+void *unit;
+u8 *self;
+u8 *target;
+target=arg2;
+self=arg0;
+unit=arg1;
+BattleUnit_Reset(arg0);
+BattleUnit_Reset(self+0x2E0);
+BattleUnit_Reset(self+0x5C0);
+fn_800340F0(self+0x8A0);
+*(s32*)(self+0xCA8)=0;
+*(s32*)(self+0xCAC)=0;
+*(s32*)(self+0xCB0)=0;
+*(s32*)(self+0xCB4)=0;
+*(s32*)(self+0xCBC)=0;
+*(s32*)(self+0xCC0)=0;
+fn_801A9CB8(self,unit);
+fn_801A9C0C(self+0x2E0);
+*(s32*)(self+0x560)=0;
+Map_SelectRangeBuffer(gBattleMap,6);
+Map_FillAttackRange(gBattleMap,self[0x19E],self[0x19F],100,15);
+*(s32*)(self+0xCA8)=(*(s16**)(gBattleMap+0x14190))[(s8)target[0]+((s8)target[1]<<6)];
+self[0x48B]=target[5];
+Unit_SetHp(self+0x2E0,target[4]);
+*(s32*)(self+0x474)=0;
+Unit_SetMapPos(self+0x2E0,target[0],target[1]);
+*(u32*)(self+0xCAC)|=0x101;
+fn_801A981C(self,*(s32*)(self+0xCA8),-1);
+fn_801A94B0(self);
 }
 
 #pragma opt_strength_reduction off
