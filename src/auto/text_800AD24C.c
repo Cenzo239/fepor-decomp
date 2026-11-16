@@ -9558,6 +9558,46 @@ s32 Event_GetString(void *arg0, u16 arg1) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 8), s32 *, 0x24) + arg1;
 }
 
+void fn_800C2750(void) {
+    M2C_UNK fn_80014000(s32, s32);
+    M2C_UNK fn_80013F6C(void *, s32);
+    M2C_UNK EventWork_Set(void *);
+    M2C_UNK Script_RegisterCommands(void);
+    M2C_UNK Script_RegisterEventArrowCommands(void);
+    M2C_UNK fn_8019DB68(void);
+    M2C_UNK ScriptCmd_CmLoadScript(void *);
+    M2C_UNK ScriptCtx_Begin(void *);
+    M2C_UNK ScriptCtx_Call(void);
+    extern u8 gEventWork[];
+    extern u8 lbl_8026FE18[];
+    extern u16 gBattleState[700];
+    s32 *flags;
+
+    fn_80014000(0x20, 0x1A0);
+    fn_80013F6C(gEventWork + 0x0, 0x80);
+    fn_80013F6C(gEventWork + 0x20, 0x80);
+    fn_80013F6C(gEventWork + 0x40, 0x80);
+    EventWork_Set(gEventWork + 0x0);
+    fn_800BB0E8();
+    fn_800B5708();
+    Script_RegisterCommands();
+    Script_RegisterEventArrowCommands();
+    fn_8019DB68();
+    ScriptCmd_CmLoadScript(lbl_8026FE18 + 0x167);
+    flags = (s32 *)((u8 *)gBattleState + 0xB4);
+    EventFlag_Reset(flags);
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x17B));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x187));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x193));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x19F));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x1AC));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x1B9));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x1C6));
+    fn_800BDE40(flags, (s32)(lbl_8026FE18 + 0x1CE));
+    ScriptCtx_Begin(lbl_8026FE18 + 0x1D6);
+    ScriptCtx_Call();
+}
+
 extern u8 lbl_8028D768[16];
 void fn_800C28A0(s32 arg0) {
     void Process_CreateChild(void *, s32);
@@ -9803,56 +9843,52 @@ s32 Icon_GetSlot(s32 arg0, s32 arg1) {
     return arg0 + ((arg1 - 1) * 0x18);
 }
 
+#pragma optimization_level 3
 s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
-    s32 temp_r31;
-    u8 temp_r6;
-    void *temp_r30;
-    void *temp_r5;
-    
-    temp_r6 = *(u8*)arg2;
-    temp_r31 = arg1 * 0x18;
-    temp_r30 = (u8*)arg0 + temp_r31;
-    *(u8*)((u8*)temp_r30 - 0x18) = temp_r6;
-    
-    fn_8022C1B8(((u8*)arg0 + (((arg1 - 1) * 0x18) + 1)), 
-                (u8*)arg2 + 1, 
-                0xF, 
-                temp_r6);
-    
-    *(u8*)((u8*)temp_r30 - 0x8) = *(u8*)((u8*)arg2 + 0x10);
-    *(u8*)((u8*)temp_r30 - 0x7) = *(u8*)((u8*)arg2 + 0x11);
-    *(u8*)((u8*)temp_r30 - 0x6) = *(u8*)((u8*)arg2 + 0x12);
-    *(u8*)((u8*)temp_r30 - 0x5) = *(u8*)((u8*)arg2 + 0x13);
-    *(u32*)((u8*)temp_r30 - 0x4) = *(u32*)((u8*)arg2 + 0x14);
-    
-    if (((s8)*(u8*)((u8*)temp_r30 - 0x17) == 0) && 
-        ((s8)*(u8*)((u8*)temp_r30 - 0x8) == 0) && 
-        ((s8)*(u8*)((u8*)temp_r30 - 0x7) == 0) && 
-        ((s8)*(u8*)((u8*)temp_r30 - 0x6) == 0) && 
-        ((s8)*(u8*)((u8*)temp_r30 - 0x5) == 0) && 
-        (*(u8*)((u8*)temp_r30 - 0x4) == 0x80) && 
-        (*(u8*)((u8*)temp_r30 - 0x3) == 0x80) && 
-        (*(u8*)((u8*)temp_r30 - 0x2) == 0x80) && 
-        (*(u8*)((u8*)temp_r30 - 0x1) == 0xFF)) {
-        
-        temp_r5 = (u8*)arg0 + temp_r31;
-        *(u8*)((u8*)temp_r30 - 0x18) = 0;
-        *(u8*)((u8*)temp_r30 - 0x17) = 0;
-        *(u8*)((u8*)temp_r30 - 0x5) = 0;
-        *(u8*)((u8*)temp_r30 - 0x6) = 0;
-        *(u8*)((u8*)temp_r30 - 0x7) = 0;
-        *(u8*)((u8*)temp_r30 - 0x8) = 0;
-        *(u8*)((u8*)temp_r5 - 0x2) = 0x80;
-        *(u8*)((u8*)temp_r5 - 0x3) = 0x80;
-        *(u8*)((u8*)temp_r30 - 0x4) = 0x80;
-        *(u8*)((u8*)temp_r5 - 0x1) = 0xFF;
-        
+    void fn_8022C1B8(u8 *, u8 *, s32, u8);
+    u8 *src;
+    u8 *base;
+    s32 slot;
+    u8 *dst;
+    s32 offset;
+    u8 byte;
+    u8 *p;
+
+    byte = *(u8 *)arg2;
+    slot = arg1;
+    src = (u8 *)arg2;
+    base = (u8 *)arg0;
+    offset = slot * 0x18;
+    dst = base + offset;
+    *(u8 *)(dst - 0x18) = byte;
+    fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
+    p = dst;
+    *(u8 *)(dst - 0x8) = *(u8 *)(src + 0x10);
+    *(u8 *)(dst - 0x7) = *(u8 *)(src + 0x11);
+    *(u8 *)(dst - 0x6) = *(u8 *)(src + 0x12);
+    *(u8 *)(dst - 0x5) = *(u8 *)(src + 0x13);
+    *(u32 *)(dst - 0x4) = *(u32 *)(src + 0x14);
+
+    if ((s8)*(u8 *)(dst - 0x17) == 0 && (s8)*p == 0 && (s8)*(u8 *)(p - 0x7) == 0 &&
+        (s8)*(u8 *)(p - 0x6) == 0 && (s8)*(u8 *)(p - 0x5) == 0 &&
+        *(u8 *)(p - 0x4) == 0x80 && *(u8 *)(p - 0x3) == 0x80 &&
+        *(u8 *)(p - 0x2) == 0x80 && *(u8 *)(p - 0x1) == 0xFF) {
+        u8 *dst2 = base + offset;
+        *(u8 *)(dst - 0x18) = 0;
+        *(u8 *)(p - 0x17) = 0;
+        *(u8 *)(p - 0x5) = 0;
+        *(u8 *)(p - 0x6) = 0;
+        *(u8 *)(p - 0x7) = 0;
+        *(u8 *)p = 0;
+        *(u8 *)(dst2 - 0x2) = 0x80;
+        *(u8 *)(dst2 - 0x3) = 0x80;
+        *(u8 *)(p - 0x4) = 0x80;
+        *(u8 *)(dst2 - 0x1) = 0xFF;
         return 1;
     }
-    
     return arg1;
 }
-
+#pragma optimization_level reset
 void Icon_FreeSlot(s32 arg0, s32 arg1) {
     u8 *temp_r3;
 
