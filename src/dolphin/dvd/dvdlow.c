@@ -291,26 +291,15 @@ after_cover:
 #pragma use_lmw_stmw reset
 
 void fn_8020B84C(void) {
-    extern u16 Scb_80339420[];
-    extern s32 NextCommandNumber_80368574;
-    
-    s32 cmd_idx = NextCommandNumber_80368574 * 0x14;
-    s32 cmd = Scb_80339420[cmd_idx];
-    
-    switch (cmd) {
-        case 1:
-            NextCommandNumber_80368574++;
-            fn_8020B940(Scb_80339420[cmd_idx + 1], 
-                       Scb_80339420[cmd_idx + 2], 
-                       Scb_80339420[cmd_idx + 3], 
-                       Scb_80339420[cmd_idx + 4]);
-            return;
-        case 2:
-            NextCommandNumber_80368574++;
-            fn_8020BD68(Scb_80339420[cmd_idx + 3], 
-                       Scb_80339420[cmd_idx + 4]);
-            return;
-    }
+ extern s32 NextCommandNumber_80368574;
+ DVDCommand *cmd = &CommandList_80339E70[NextCommandNumber_80368574];
+ if (cmd->command == 1) {
+ ++NextCommandNumber_80368574;
+ fn_8020B940(cmd->addr, cmd->length, cmd->offset, cmd->callback);
+ } else if (cmd->command == 2) {
+ ++NextCommandNumber_80368574;
+ fn_8020BD68(cmd->offset, cmd->callback);
+ }
 }
 
 void AlarmHandlerForTimeout(void *arg0, void *arg1)
@@ -483,14 +472,18 @@ BOOL fn_8020BD68(u32 offset, void *callback) {
 }
 
 #pragma opt_common_subs off
-BOOL DVDLowWaitCoverClose(void *callback) {
+BOOL DVDLowWaitCoverClose(void *callback)
+{
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
+    extern s32 StopAtNextInt_80368530;
+    volatile u32 *di;
 
     Callback_80368538 = callback;
-    WaitingCoverClose_8036854C = 1;
-    StopAtNextInt_80368530 = 0;
-    __DIRegs[1] = 2;
+    WaitingCoverClose_8036854C = TRUE;
+    di = __DIRegs;
+    StopAtNextInt_80368530 = FALSE;
+    di[1] = 2;
     return TRUE;
 }
 #pragma opt_common_subs reset
@@ -515,10 +508,17 @@ BOOL fn_8020BE28(void *addr, void *callback) {
     return TRUE;
 }
 
-void DVDLowStopMotor(void) {
-    OSDisableInterrupts();
-    lbl_803685E8 = 0;
-    OSRestoreInterrupts();
+s32 DVDLowStopMotor(void *callback) {
+ extern void *Callback_80368538;
+ u32 ticks;
+ Callback_80368538 = callback;
+ StopAtNextInt_80368530 = 0;
+ __DIRegs[2] = 0xE3000000;
+ __DIRegs[7] = 1;
+ ticks = (*(u32 *)0x800000F8 >> 2) * 10;
+ OSCreateAlarm(AlarmForTimeout_80339ED8);
+ OSSetAlarm(AlarmForTimeout_80339ED8, (s64)(u32)ticks, AlarmHandlerForTimeout);
+ return 1;
 }
 
 s32 fn_8020BF58(void *callback)
