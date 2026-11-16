@@ -174,7 +174,7 @@ void fn_80203790(u32 arg0) {
     (void)arg0;
 }
 
-s32 PPCMfl2cr(void) {
+u32 PPCMfl2cr(void) {
     return 0;
 }
 
@@ -689,7 +689,64 @@ void OSSetAlarm(void *alarm, s64 tick, void (*handler)(void *, OSContext *)) {
     InsertAlarm(alarm, __OSGetSystemTime() + tick, handler);
     OSRestoreInterrupts(enabled);
 }
-#pragma use_lmw_stmw reset
+
+#pragma use_lmw_stmw on
+void OSCancelAlarm(void *alarm_p) {
+    struct AlarmQueue {
+        struct OSAlarm *head;
+        struct OSAlarm *tail;
+    };
+    struct OSAlarm {
+        void (*handler)(void *, OSContext *);
+        u32 tag;
+        s64 fire;
+        struct OSAlarm *prev;
+        struct OSAlarm *next;
+        s64 period;
+        s64 start;
+    };
+    extern struct AlarmQueue AlarmQueue_80368490;
+    extern u32 OSDisableInterrupts(void);
+    extern void OSRestoreInterrupts(u32);
+    extern s64 __OSGetSystemTime(void);
+    extern void PPCMtdec(u32);
+    struct OSAlarm *alarm;
+    struct OSAlarm *next;
+    u32 enabled;
+    s64 time;
+
+    alarm = (struct OSAlarm *)alarm_p;
+    enabled = OSDisableInterrupts();
+    if (alarm->handler == 0) {
+        OSRestoreInterrupts(enabled);
+        return;
+    }
+
+    next = alarm->next;
+    if (next == 0) {
+        AlarmQueue_80368490.tail = alarm->prev;
+    } else {
+        next->prev = alarm->prev;
+    }
+    if (alarm->prev != 0) {
+        alarm->prev->next = next;
+    } else {
+        AlarmQueue_80368490.head = next;
+        if (next != 0) {
+            time = __OSGetSystemTime();
+            time = next->fire - time;
+            if (time < 0) {
+                PPCMtdec(0);
+            } else if (time < 0x80000000LL) {
+                PPCMtdec((u32)time);
+            } else {
+                PPCMtdec(0x7FFFFFFF);
+            }
+        }
+    }
+    alarm->handler = 0;
+    OSRestoreInterrupts(enabled);
+}
 
 #pragma use_lmw_stmw reset
 
