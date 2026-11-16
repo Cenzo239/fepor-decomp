@@ -1328,43 +1328,23 @@ s32 fn_802193FC(s32 arg0, u32 arg1)
     return fn_802195B0(arg0, data);
 }
 
-s32 fn_80219514(s32 arg0, u16 arg1) {
-    u16* r9;
-    u16* r8;
-    u16 r0;
-    u16 r4;
-    
-    // Set up r9: __CARDBlock + (arg0 * 0x110)
-    r9 = (u16*)((char*)__CARDBlock + (arg0 * 0x110));
-    
-    // Load first word of structure
-    r0 = r9[0]; 
-    if (r0 == 0) {
-        return -3;
+s32 fn_80219514(s32 chan, u16 block, void *callback) {
+    s32 fn_802195B0(s32, void *, void *);
+    u8 *card;
+    u16 *fat;
+    u16 next;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (*(s32 *)card == 0) return -3;
+    fat = *(u16 **)(card + 0x88);
+    while (block != 0xFFFF) {
+        u16 *entry;
+        if (block < 5 || block >= *(u16 *)(card+0x10)) return -6;
+        entry = &fat[block];
+        block = *entry;
+        *entry = 0;
+        fat[3] = fat[3] + 1;
     }
-    
-    // Check bounds: arg1 >= 5 && arg1 < r9[0x220/2]
-    // This uses the same register r4 for arg1
-    r4 = arg1;
-    if (r4 < 5) {
-        return -6;
-    }
-    
-    if (r4 >= r9[0x220/2]) {   // This is an hz instruction
-        return -6;
-    }
-
-    // Set up data area pointer in r8 
-    r8 = (u16*)((char*)r9 + 0x88);
-    
-    // Loop
-    while (r4 != 0xFFFF) {
-        u16 next = r8[r4];
-        r8[r4] = 0;
-        r4 = next;
-    }
-    
-    return fn_802195B0((char*)r9 + 0x88);
+    return fn_802195B0(chan,fat,callback);
 }
 
 int fn_802195B0(int arg0, void *arg1, void *arg2)
@@ -2024,32 +2004,22 @@ EXIUnlock(chan);fn_8021B170(chan,result);return result;
 }
 #pragma opt_strength_reduction off
 
-void fn_8021B170(s32 arg0, s32 arg1) {
-    // This is an exact structural match to the original instruction sequence.
-    // The function appears to:
-    // 1. Set up stack frame and save registers
-    // 2. Do arithmetic on argument 1 to calculate offset
-    // 3. Read some memory value to decide what path to take
-    // 4. Call three other functions based on a conditional
-    // 5. Zero out parts of a data structure if the conditional matched
-    // 6. Restore state and return normally
-    
-    int r28 = arg1;
-    
-    // The original assembly has specific load/shift patterns that we need to match exactly.
-    // This is likely a table-based lookup operation
-    
-    // We know from analysis of related code this does something with interrupt handling and state reset
-    if (r28 != 0) {
-        fn_80239298(r28, 0);  
-        fn_802396C8(r28);
-        OSCancelAlarm((char*)__CARDBlock + r28 * 0x110 + 0xe0);
+void fn_8021B170(s32 chan, s32 result) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    u32 enabled;
+    u8 *card;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    enabled = OSDisableInterrupts();
+    if (*(s32 *)card != 0) {
+        fn_80239298(chan,0);
+        fn_802396C8(chan);
+        OSCancelAlarm(card+0xE0);
+        *(s32 *)card = 0;
+        *(s32 *)(card+4) = result;
+        *(s32 *)(card+0x24) = 0;
     }
-    
-    // This is probably just clearing some flags/data when the condition passes
-    *(int*)((char*)__CARDBlock + r28 * 0x110) = 0;
-    *(int*)((char*)__CARDBlock + r28 * 0x110 + 0x4) = 0;
-    *(int*)((char*)__CARDBlock + r28 * 0x110 + 0x24) = 0;
+    OSRestoreInterrupts(enabled);
 }
 
 s32 fn_8021B20C(s32 arg0)
