@@ -720,96 +720,137 @@ void MapUi_ShowUnitRanges(void *unit) {
     Map_ShowMoveLimitView();
 }
 
-void *fn_800AA5F0(void *unit) {
-    extern u32 gUnitLists[];
-    void *head;
-    void *stop;
-    void *next;
-    void *faction;
-    u8 ok;
-
-    head = gUnitLists;
-    head = *(void **)head;
-    if (head == NULL) {
-        return NULL;
-    }
-
-    if (unit != NULL) {
-        faction = *(void **)((u8 *)unit + 0x190);
-        if (*(u8 *)((u8 *)faction + 8) != 0) {
-            unit = NULL;
-        }
-    }
-
-    if (unit == NULL) {
-        goto check_null;
-    }
-
-    next = *(void **)((u8 *)unit + 0x184);
-    stop = next;
-    if (next == NULL) {
-        stop = head;
-    }
-    unit = stop;
-    goto check_unit;
-    do {
-        if (*(u32 *)((u8 *)unit + 0x1A0) & 5) {
-            ok = 0;
-        } else if ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) {
-            ok = 0;
-        } else if (*(u8 *)((u8 *)unit + 0x1A5) & 7) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok) {
-            return unit;
-        }
-        unit = *(void **)((u8 *)unit + 0x184);
-    check_unit:
-        ;
-    } while (unit != NULL);
-
-    goto check_wrap;
-    do {
-        if (*(u32 *)((u8 *)head + 0x1A0) & 5) {
-            ok = 0;
-        } else if ((*(u16 *)((u8 *)head + 0x1A4) >> 7) & 7) {
-            ok = 0;
-        } else if (*(u8 *)((u8 *)head + 0x1A5) & 7) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok) {
-            return head;
-        }
-        head = *(void **)((u8 *)head + 0x184);
-    check_wrap:
-        ;
-    } while (head != stop);
-    goto ret_null;
-
-    do {
-        if (*(u32 *)((u8 *)head + 0x1A0) & 5) {
-            ok = 0;
-        } else if ((*(u16 *)((u8 *)head + 0x1A4) >> 7) & 7) {
-            ok = 0;
-        } else if (*(u8 *)((u8 *)head + 0x1A5) & 7) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok) {
-            return head;
-        }
-        head = *(void **)((u8 *)head + 0x184);
-    check_null:
-        ;
-    } while (head != NULL);
-
-ret_null:
+void *fn_800AA5F0(void *unit)
+{
+  u8 ok;
+  extern u32 gUnitLists[];
+  void *head;
+  void *stop;
+  void *next;
+  void *faction;
+  head = (void *) gUnitLists[0];
+  if (head == NULL)
+  {
     return NULL;
+  }
+  if (unit != NULL)
+  {
+    faction = *((void **) (((u8 *) unit) + 0x190));
+    if ((*((u8 *) (((u8 *) faction) + 8))) != 0)
+    {
+      unit = NULL;
+    }
+  }
+  if (unit == NULL)
+  {
+    goto check_null;
+  }
+  next = *((void **) (((u8 *) unit) + 0x184));
+  stop = next;
+  if (next == NULL)
+  {
+    stop = head;
+  }
+  unit = stop;
+  goto check_unit;
+  do
+  {
+    if ((*((u32 *) (((u8 *) unit) + 0x1A0))) & 5)
+    {
+      ok = 0;
+    }
+    else
+      if (((*((u16 *) (((u8 *) unit) + 0x1A4))) >> 7) & 7)
+    {
+      ok = 0;
+    }
+    else
+      if ((*((u8 *) (((u8 *) unit) + 0x1A5))) & 7)
+    {
+      ok = 0;
+    }
+    else
+    {
+      ok = 1;
+    }
+    if (ok)
+    {
+      return unit;
+    }
+    unit = *((void **) (((u8 *) unit) + 0x184));
+    check_unit:
+    ;
+
+    ;
+  }
+  while (unit != NULL);
+  goto check_wrap;
+  do
+  {
+    if ((*((u32 *) (((u8 *) head) + 0x1A0))) & 5)
+    {
+      ok = 0;
+    }
+    else
+      if (((*((u16 *) (((u8 *) head) + 0x1A4))) >> 7) & 7)
+    {
+      ok = 0;
+    }
+    else
+      if ((*((u8 *) (((u8 *) head) + 0x1A5))) & 7)
+    {
+      ok = 0;
+    }
+    else
+    {
+      ok = 1;
+    }
+    if (ok)
+    {
+      return head;
+    }
+    head = *((void **) (((u8 *) head) + 0x184));
+    check_wrap:
+    ;
+
+    ;
+  }
+  while (head != stop);
+  goto ret_null;
+  do
+  {
+    if ((*((u32 *) (((u8 *) head) + 0x1A0))) & 5)
+    {
+      ok = 0;
+    }
+    else
+      if (((*((u16 *) (((u8 *) head) + 0x1A4))) >> 7) & 7)
+    {
+      ok = 0;
+    }
+    else
+      if ((*((u8 *) (((u8 *) head) + 0x1A5))) & 7)
+    {
+      ok = 0;
+    }
+    else
+    {
+      ok = 1;
+    }
+    if (ok)
+    {
+      return head;
+    }
+    head = *((void **) (((u8 *) head) + 0x184));
+    check_null:
+    ;
+
+    ;
+  }
+  while (head != NULL);
+  ret_null:
+  return NULL;
+
 }
 
 s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
