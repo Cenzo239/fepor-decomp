@@ -400,18 +400,23 @@ void fn_80224828(s32 arg0, u8 arg1) {
     gx[1] = 0;
 }
 
-void fn_80224860(u8 arg0, u8 arg1) {
-    u32 temp_r4;
-    u16* gxData = __GXData;
-    
-    temp_r4 = (gxData[0x1F] & ~0x400000) | ((arg1 << 0x16) & 0x400000);
-    gxData[0x1F] = temp_r4;
-    *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u8*)0xCC008000 = (u8)temp_r4;
-    __GXFlushTextureState();
-    *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u8*)0xCC008000 = ((arg0 | 0x6800) & 0xFF); // Only low byte matters in final operation
-    __GXFlushTextureState();
+void fn_80224860(u8 arg0, u8 arg1)
+{
+  extern u16 *__GXData;
+  u16 *gx;
+  u32 value;
+  u8 cmd;
+  gx = __GXData;
+  value = *((u32 *) (((u8 *) gx) + 0x7c));
+  value = __rlwimi(value, arg1, 22, 9, 9);
+  *((u32 *) (((u8 *) __GXData) + 0x7c)) = value;
+  cmd = 0x61;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = *((u32 *) (((u8 *) gx) + 0x7c));
+  __GXFlushTextureState();
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = ((u32) arg0) | 0x68000000;
+  __GXFlushTextureState();
 }
 
 void fn_80224A68(s32 arg0, s32 arg1) {
