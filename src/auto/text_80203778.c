@@ -982,15 +982,27 @@ void *fn_80204CE4(void *arenaStart, void *arenaEnd, s32 maxHeaps) {
     return arenaStart;
 }
 
-void fn_80204D54(void) {
-    extern u32 lbl_8036B044;
-    extern u32 lbl_803660F4;
-    extern void fn_802017E0(u32);
-    
-    if (lbl_8036B044 & 0x20) {
-        lbl_803660F4 = 0;
-        fn_802017E0(0x9);
+s32 fn_80204D54(void *start, void *end)
+{
+    s32 i;
+    Cell *cell;
+    HeapDesc *hd;
+    start = (void *)(((u32)start + 31) & ~31);
+    end = (void *)((u32)end & ~31);
+    for (i = 0; i < lbl_8036849C; i++) {
+        hd = &lbl_80368498[i];
+        if (hd->size < 0) {
+            hd->size = (u32)end - (u32)start;
+            cell = start;
+            cell->prev = NULL;
+            cell->next = NULL;
+            cell->size = hd->size;
+            hd->free = cell;
+            hd->allocated = NULL;
+            return i;
+        }
     }
+    return -1;
 }
 
 s32 OSGetArenaHi(void) {
