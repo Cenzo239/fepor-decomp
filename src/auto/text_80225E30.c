@@ -262,6 +262,63 @@ s32 TRKMessageSend(void *arg0)
     return 0;
 }
 
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+s32 fn_8022632C(void *arg0, u32 *arg1, s32 arg2) {
+    extern u8 gTRKBigEndian[];
+    void fn_80003488(void *, void *, s32);
+    u32 temp;
+    void *buffer;
+    s32 count;
+    u8 *dest;
+    s32 i;
+    s32 *endian;
+    s32 error;
+    u8 *source;
+    u32 length;
+    s32 result;
+    u32 position;
+    u32 remaining;
+    u32 offset;
+
+    buffer = arg0;
+    count = arg2;
+    dest = (u8 *)arg1;
+    endian = (s32 *)gTRKBigEndian;
+    i = 0;
+    result = 0;
+    while (result == 0 && i < count) {
+        if (*endian != 0) {
+            source = dest;
+        } else {
+            source = (u8 *)&temp;
+        }
+        position = *(u32 *)((u8 *)buffer + 0xC);
+        length = 4;
+        error = 0;
+        remaining = *(u32 *)((u8 *)buffer + 8) - position;
+        if (length > remaining) {
+            error = 0x302;
+            length = remaining;
+        }
+        offset = position + 0x10;
+        fn_80003488(source, (u8 *)buffer + offset, length);
+        *(u32 *)((u8 *)buffer + 0xC) = *(u32 *)((u8 *)buffer + 0xC) + length;
+        if (*endian == 0 && error == 0) {
+            dest[0] = source[3];
+            dest[1] = source[2];
+            dest[2] = source[1];
+            dest[3] = source[0];
+        }
+        result = error;
+        dest = dest + 4;
+        i = i + 1;
+    }
+    return result;
+}
+#pragma global_optimizer on
+#pragma use_lmw_stmw reset
+
 s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
  s32 error; u32 count; s32 i=0; s32 result=0;
  while (result==0 && i<arg2) {
@@ -395,6 +452,28 @@ s32 TRKAppendBuffer(void *arg0, u8 *arg1, s32 arg2) {
     return err;
 }
 
+s32 fn_80226700(void *arg0, u64 value) {
+ extern u8 gTRKBigEndian[];
+ void fn_80003488(void *, void *, u32);
+ u8 rev[8]; u8 *src; s32 result; u32 size; s32 pos; u32 remaining;
+ if (*(s32 *)gTRKBigEndian) src=(u8 *)&value;
+ else {
+ src=rev;
+ rev[0]=((u8 *)&value)[7]; rev[1]=((u8 *)&value)[6];
+ rev[2]=((u8 *)&value)[5]; rev[3]=((u8 *)&value)[4];
+ rev[4]=((u8 *)&value)[3]; rev[5]=((u8 *)&value)[2];
+ rev[6]=((u8 *)&value)[1]; rev[7]=((u8 *)&value)[0];
+ }
+ pos=*(u32 *)((u8 *)arg0+12); size=8; result=0;
+ remaining=0x880-pos;
+ if(remaining<8) {result=0x301;size=remaining;}
+ if(size==1) *((u8 *)arg0+pos+16)=*src;
+ else fn_80003488((void *)((u32)arg0+(pos+16)),src,size);
+ *(u32 *)((u8 *)arg0+12)+=size;
+ *(u32 *)((u8 *)arg0+8)=*(u32 *)((u8 *)arg0+12);
+ return result;
+}
+
 s32 fn_802267FC(void *arg0, void *arg1, u32 arg2)
 {
     void fn_80003488(void *, void *, s32);
@@ -518,22 +597,23 @@ s32 fn_80226A2C(void) {
 }
 
 int TRKInitializeMessageBuffers(void) {
+    extern u8 lbl_8033B078[];
+    void fn_802287B8(void *);
+    void fn_802287B0(void *);
+    void fn_802287A8(void *);
     u8 *queue;
     s32 i;
+    s32 zero;
 
-    queue = &((u8 *)&lbl_8033B078)[0];
-
+    queue = lbl_8033B078;
+    zero = 0;
     for (i = 0; i < 3; i++) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-
-        *(u32 *)(queue + 0x4) = 0;
-
+        *(u32 *)(queue + 4) = zero;
         fn_802287A8(queue);
-
         queue += 0x890;
     }
-
     return 0;
 }
 
@@ -2462,17 +2542,29 @@ s32 ddh_cc_initialize(void *arg0, void *arg1) {
  return 0;
 }
 
-void fn_8022BA34(void* arg0)
-{
-    if (arg0 != NULL) {
-        s32 temp = *(s32*)((u8*)arg0 + 8);
-        if (temp < 0x400) {
-            s32 arg1 = *(s32*)((u8*)arg0 + 0x10);
-            fn_8022C0B4(arg0, ((temp * 0xA) + (arg1 * 0x1E4)), 0, 0);
-        } else {
-            *(s32*)((u8*)arg0 + 0x8) = 0;
-        }
-    }
+s32 fn_8022BA34(void *arg0, void *arg1, u32 arg2) {
+void fn_8022C05C(void *);
+void fn_8022C038(void *);
+void *memcpy(void *, const void *, u32);
+u32 *self=arg0;
+u32 remaining;
+u8 *dest=arg1;
+if(arg2>self[4]) return -1;
+fn_8022C05C(self+6);
+remaining=self[3]-(self[0]-self[2]);
+if(arg2<remaining) {
+memcpy(dest,(void*)self[0],arg2);
+self[0]+=arg2;
+} else {
+memcpy(dest,(void*)self[0],remaining);
+memcpy(dest+remaining,(void*)self[2],arg2-remaining);
+self[0]=self[2]+arg2-remaining;
+}
+if(self[3]==self[0]-self[2]) self[0]=self[2];
+self[5]+=arg2;
+self[4]-=arg2;
+fn_8022C038(self+6);
+return 0;
 }
 
 void fn_8022BC44(void *arg0, s32 arg1, s32 arg2) {
