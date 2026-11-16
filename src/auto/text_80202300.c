@@ -98,13 +98,67 @@ extern u8 gFallingParticleAlphaMax;
 extern f32 gFloatZero;
 extern f32 gFloatOne;
 
-void PSMTXRotRad(s32 arg0, s32 arg1, f32 farg0) {
+#pragma peephole off
+void PSMTXRotRad(void *m, s32 axis, f32 rad) {
     f32 sinf(f32);
     f32 cosf(f32);
-    void fn_80202370(s32, s32, f32, f32);
+    void fn_80202370(void *, s32, f32, f32);
+    f32 s;
+    f32 c;
 
-    f32 temp_f31 = sinf(farg0);
-    fn_80202370(arg0, arg1, temp_f31, cosf(farg0));
+    s = sinf(rad);
+    c = cosf(rad);
+    fn_80202370(m, axis, s, c);
+}
+#pragma peephole on
+f32 fn_80202370(s32 arg1, f64 farg0, f64 farg1) {
+    extern f32 lbl_8036BC38;
+    u32 temp_r0;
+
+    temp_r0 = arg1 | 0x20;
+    M2C_ERROR(/* unknown instruction: ps_neg $f2, $f5 */);
+    switch (temp_r0) {                              /* irregular */
+    case 0x78:
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f3, $f5, $f4 */);
+        return M2C_ERROR(/* unknown instruction: ps_merge00 $f1, $f4, $f2 */);
+    case 0x79:
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f3, $f4, $f0 */);
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f2, $f2, $f0 */);
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f0, $f5, $f0 */);
+        return M2C_ERROR(/* unknown instruction: ps_merge00 $f1, $f0, $f1 */);
+    case 0x7A:
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f3, $f5, $f4 */);
+        M2C_ERROR(/* unknown instruction: ps_merge00 $f2, $f4, $f2 */);
+        return M2C_ERROR(/* unknown instruction: ps_merge00 $f1, $f1, $f0 */);
+    default:
+        return lbl_8036BC38;
+    }
+}
+
+f32 fn_80202420(void *arg1, f64 farg0, f64 farg1) {
+    extern f32 lbl_8036BC40;
+    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f3, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f3, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_merge00 $f11, $f11, $f11 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f2, $f2, $f7 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f3, $f3, $f7 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f2, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f10, $f2, $f12 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f3, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_muls1 $f5, $f6, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f4, $f6, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f6, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_neg $f2, $f10 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f9, $f6, $f1, $f10 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f4, $f4, $f0, $f11 */);
+    M2C_ERROR(/* unknown instruction: ps_sum1 $f5, $f11, $f8, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f0, $f2, $f1, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f2, $f6, $f6, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f7, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_sum1 $f6, $f10, $f2, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f7, $f7, $f1, $f11 */);
+    return lbl_8036BC40 - lbl_8036BC40;
 }
 
 void fn_802024D0(s32 arg0, s32 arg1, f32 farg0) {
