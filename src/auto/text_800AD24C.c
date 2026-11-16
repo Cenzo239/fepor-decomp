@@ -8153,6 +8153,42 @@ s32 fn_800BEC5C(void *arg0) {
     return 1;
 }
 
+#pragma optimization_level 3
+s32 fn_800BF0A8(void *entry) {
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void);
+    extern u16 gBattleState[700];
+    extern u8 gUiContext[24];
+    void *personA;
+    void *personB;
+    void *uiA;
+    void *uiB;
+
+    if (EventFlag_IsSet((u8 *)gBattleState + 0xB4,
+                        Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1A))) != 0) {
+        return 0;
+    }
+    if (*(void **)(gUiContext + 4) == 0) {
+        return 0;
+    }
+    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+    personA = Person_GetByPid();
+    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+    personB = Person_GetByPid();
+    uiA = *(void **)(*(u8 **)gUiContext + 0x188);
+    uiB = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
+
+    if (*(s16 *)((u8 *)entry + 0x18) == 0) {
+        if (personA != uiA) return 0;
+        if (personB != 0 && personB != uiB) return 0;
+    } else {
+        if (personA != 0 && personA != uiA && personA != uiB) return 0;
+        if (personB != 0 && personB != uiA && personB != uiB) return 0;
+    }
+    return 1;
+}
+#pragma optimization_level reset
 s32 fn_800BF1E8(s32 arg0, s32 arg1, s32 arg2)
 {
     M2C_UNK fn_801A5430(s32);
@@ -8305,28 +8341,33 @@ s32 fn_800BF694(void) {
     return 1;
 }
 
-s32 fn_800BF9D8(void)
-{
-    extern u32 *gSoundSys;
-    extern s8 gSoundIdSlots[];
-    extern s32 E_EventCaller_script[];
-    s32 i;
-    
-    void fn_802C7610(void);
-    
-    while (gSoundSys[0x31] != 0) {
-        fn_802C7610();
-        gSoundSys[0x31]--;
+s32 fn_800BF9D8(void *arg0) {
+    extern u8 gBattle[];
+    extern u8 gMapEventFlagNames[];
+    u8 Status_Test(void *, s32);
+    u8 EventFlag_IsSet(void *, void *);
+    void fn_800BDC68(void *, void *);
+    void *fn_800A8704(void *);
+    void *Res_GetByName(void *);
+    void fn_8011D908(void *, void *);
+    u8 *unit;
+    void *msg;
+    void *flags;
+    if (!(*(u32 *)(gBattle+0xCAC)&0x1000)) return 0;
+    unit=*(u8 **)(gBattle+0x280);
+    if (Status_Test(unit+0x1BC,0x54)) {
+        flags=(u8 *)gBattleState+0xB4;
+        if (EventFlag_IsSet(flags,gMapEventFlagNames+0x128)) return 0;
+        fn_800BDC68(flags,gMapEventFlagNames+0x128);
     }
-    
-    for (i = 0; i < 16; i++) {
-        gSoundIdSlots[i] = 0;
+    if (Status_Test(unit+0x1BC,0x55)) {
+        flags=(u8 *)gBattleState+0xB4;
+        if (EventFlag_IsSet(flags,gMapEventFlagNames+0x130)) return 0;
+        fn_800BDC68(flags,gMapEventFlagNames+0x130);
     }
-    
-    if (gSoundSys[0x111] != 0) {
-        gSoundSys[0x111] = 0;
-    }
-    
+    msg=fn_800A8704(*(void **)(unit+0x188));
+    if (!Res_GetByName(msg)) return 0;
+    fn_8011D908(msg,arg0);
     return 1;
 }
 
@@ -9064,6 +9105,75 @@ void fn_800C1060(s32 arg0) {
 void fn_800C10B4(void) {
     M2C_UNK fn_80016180();
     fn_80016180();
+}
+
+void fn_800C10D4(void *arg0) {
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Model_SetAlpha(void *, u8);
+
+    extern u16 gUnits[];
+
+    u8 *self;
+    u8 *unit;
+    u8 *allegiance;
+    u8 mask[8];
+    s32 index;
+    s32 alpha;
+    u32 flags;
+
+    self = (u8 *)arg0;
+
+    *(s32 *)(self + 0x60) += 0x10;
+
+    Allegiance_SetMask(0, 1, 0, 0, 0, 0, 0, 0, mask);
+
+    for (index = 1; index <= 0x9F; index++) {
+        if ((u8)index != 0) {
+            unit = (u8 *)gUnits + ((u8)(index - 1) * 0x280);
+        } else {
+            unit = NULL;
+        }
+
+        if (*(void **)(unit + 0x188) == NULL) {
+            continue;
+        }
+
+        allegiance = *(u8 **)(unit + 0x190);
+
+        if (mask[allegiance[8]] == 0) {
+            continue;
+        }
+
+        flags = *(u32 *)(unit + 0x1A0);
+
+        if ((flags & 0x200) == 0) {
+            continue;
+        }
+
+        if (flags & 0x40) {
+            alpha = 0xFF - *(s32 *)(self + 0x60);
+
+            if (alpha < 0) {
+                alpha = 0;
+            }
+
+            if (unit[0x27] == 0) {
+                continue;
+            }
+        } else {
+            alpha = *(s32 *)(self + 0x60);
+
+            if (alpha > 0xFF) {
+                alpha = 0xFF;
+            }
+
+            if (unit[0x27] == 0xFF) {
+                continue;
+            }
+        }
+
+        Model_SetAlpha(unit + 0x1C, (u8)alpha);
+    }
 }
 
 void fn_800C11F4(void *arg0) {
@@ -9898,22 +10008,23 @@ s32 fn_800C39A4(void *convoy, void *item) {
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
-    u32 v;
+    u8 t;
 
     i = 0;
-    v = *((u8 *)arg1 + 5);
-    v = __rlwimi(v, i, 7, 24, 24);
-    *((u8 *)arg1 + 5) = v;
+    t = *((u8 *)arg1 + 5);
+    *((u8 *)arg1 + 5) = (u8)__rlwimi(t, i, 7, 24, 24);
 
-    for (i = 0; i < 200; i++) {
+    for (; i < 200; i++) {
         if (*(void **)((char *)arg0 + i * 8) == NULL) {
             goto found;
         }
     }
-    return 0;
-
+    i = -1;
 found:
-    Item_Copy((char *)arg0 + i * 8, arg1);
+    if (i < 0) {
+        return 0;
+    }
+    Item_Copy((char *)arg0 + (i << 3), arg1);
     return 1;
 }
 
