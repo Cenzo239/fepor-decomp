@@ -1049,6 +1049,28 @@ u8 *gx = (u8*)__GXData;
 *(volatile u16*)(__cpReg+4) = *(u32*)(gx+0x10);
 }
 
+void fn_8021F3CC(void) {
+void *fn_8021F4D4(void);
+void *fn_8021F4CC(void);
+struct FifoCopy { u8 bytes[128]; };
+struct FifoCopy copy;
+__GXFifoObj *gp;
+void *cpu;
+void *base;
+gp = fn_8021F4D4();
+if (gp) {
+cpu = fn_8021F4CC();
+base = gp->base;
+copy = *(struct FifoCopy *)gp;
+fn_8021ED28(&copy,(s32)base,(s32)base);
+GXSetGPFifo(&copy);
+if (cpu == gp) GXSetCPUFifo(&copy);
+fn_8021ED28(gp,(s32)base,(s32)base);
+GXSetGPFifo(gp);
+if (cpu == gp) GXSetCPUFifo(cpu);
+}
+}
+
 s32 fn_8021F4CC(void) {
     extern s32 __GXCurrentCPUFifo;
     return __GXCurrentCPUFifo;
@@ -1388,11 +1410,9 @@ void fn_802204F8(void)
     volatile u32 *fifo;
 
     gx = (u8 *)__GXData;
-    if (*(u32 *)(gx + 0x5AC) == 0) {
-        return;
+    if (*(u32 *)(gx + 0x5AC) != 0) {
+        fn_80220D6C();
     }
-
-    fn_80220D6C();
 
     fifo = (volatile u32 *)0xCC008000;
     *fifo = 0;
@@ -1413,36 +1433,56 @@ void fn_802206F4(void) {
     OSGetTime();
 }
 
-void fn_802208BC(u16 arg0) {
-s32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(s32);
-void fn_80220D6C(void);
-void PPCSync(void);
-extern u16 *__GXData;
-s32 enabled = OSDisableInterrupts();
-u8 *gx;
-u8 cmd = 0x61;
-u32 value;
-gx = (u8 *)__GXData;
-*(u8 *)0xCC008000 = cmd;
-value = (u32)arg0 | 0x48000000;
-*(u32 *)0xCC008000 = value;
-value = __rlwimi(value,arg0,0,16,31);
-*(u8 *)0xCC008000 = cmd;
-value = __rlwimi(value,0x47,24,0,7);
-*(u32 *)0xCC008000 = value;
-if (*(u32 *)(gx+0x5ac)) fn_80220D6C();
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-*(volatile u32 *)0xCC008000 = 0;
-PPCSync();
-OSRestoreInterrupts(enabled);
-__GXData[1] = 0;
+void fn_802208BC(u32 token) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void fn_80220D6C(void);
+    void PPCSync(void);
+    extern u16 *__GXData;
+
+    u8 *gx;
+    u32 opcode;
+    u32 command;
+    u32 reg;
+    u32 zero;
+    s32 interrupts;
+
+    interrupts = OSDisableInterrupts();
+
+    opcode = 0x61;
+    gx = (u8 *)__GXData;
+
+    command = token & 0xFFFF;
+
+    *(u8 *)0xCC008000 = opcode;
+    command |= 0x48000000;
+    *(u32 *)0xCC008000 = command;
+
+    command = __rlwimi(command, token, 0, 16, 31);
+    reg = 0x47;
+
+    *(u8 *)0xCC008000 = opcode;
+    command = __rlwimi(command, reg, 24, 0, 7);
+    *(u32 *)0xCC008000 = command;
+
+    if (*(u32 *)(gx + 0x5AC) != 0) {
+        fn_80220D6C();
+    }
+
+    zero = 0;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+    *(u32 *)0xCC008000 = zero;
+
+    PPCSync();
+    OSRestoreInterrupts(interrupts);
+
+    *(u16 *)((u8 *)__GXData + 2) = zero;
 }
 
 u16 fn_80220970(void) {
