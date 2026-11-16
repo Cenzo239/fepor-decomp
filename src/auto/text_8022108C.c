@@ -253,6 +253,27 @@ void fn_802212C8(s32 arg0) {
  M2C_FIELD(__GXData, u32 *, 0x1E8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1E8), 0x4D, 24, 0, 7);
 }
 
+void fn_802212FC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+ u32 x, y, z;
+ u32 format = arg2 & 15;
+ M2C_FIELD(__GXData, u8 *, 0x200) = 0;
+ if (arg2 == 0x13) format = 11;
+ switch(arg2) {
+ case 0: case 1: case 2: case 3: case 0x26:
+ M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),3,15,15,16); break;
+ default: M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),2,15,15,16); break;
+ }
+ M2C_FIELD(__GXData,u8 *,0x200) = (arg2 & 0x10) == 0x10;
+ M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),format,0,28,28);
+ format &= 7;
+ fn_8022257C(arg2,arg0,arg1,&x,&y,&z);
+ M2C_FIELD(__GXData, u32 *, 0x1F8) = 0;
+ M2C_FIELD(__GXData, u32 *, 0x1F8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1F8),x*z,0,22,31);
+ M2C_FIELD(__GXData, u32 *, 0x1F8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1F8),0x4D,24,0,7);
+ M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),arg3,9,22,22);
+ M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),format,4,25,27);
+}
+
 void fn_8022142C(u32 arg0) {
     M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), arg0, 12, 18, 19);
     M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC), 0, 12, 18, 19);
@@ -369,13 +390,28 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
 }
 #pragma use_lmw_stmw reset
 
-s32 fn_802216E0(s32 arg0) {
-    u16 *ptr;
-    s32 ret;
-    
-    ptr = (u16*)0x8036C260 + 0x388 + arg0 * 0x10;
-    ret = *ptr;
-    return (ret - *(ptr + 7)) + 0x4000;
+u32 fn_802216E0(f32 scale) {
+ u32 yscale;
+ u32 enabled;
+ u32 reg=0;
+ u32 height;
+ u32 result;
+ yscale=(u32)__cvt_fp2unsigned(lbl_8036BCD0/scale)&511;
+ enabled=(yscale!=256);
+ reg=__rlwimi(reg,yscale,0,23,31);
+ reg=__rlwimi(reg,0x4E,24,0,7);
+ GXWGFifo.u8=0x61;
+ GXWGFifo.u32=reg;
+ __GXData[1]=0;
+ *(u32 *)((u8 *)__GXData+0x1EC)=__rlwimi(*(u32 *)((u8 *)__GXData+0x1EC),enabled,10,21,21);
+ height=((*(u32 *)((u8 *)__GXData+0x1E4)>>10)&1023)+1;
+ result=((height-1)*256)/yscale+1;
+ if(yscale>128 && yscale<256) {
+ while(!(yscale&1)) yscale>>=1;
+ if(height%yscale==0) result++;
+ }
+ if(result>1024) result=1024;
+ return result;
 }
 
 void GXSetCopyClear(u8 *arg0, u32 arg1)
@@ -550,16 +586,68 @@ void fn_80221A2C(s32 arg0) {
     M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), arg0, 7, 23, 24);
 }
 
-void GXCopyDisp(void)
-{
-    if (0 == 0) 
-    {
-        return;
+void GXCopyDisp(void *dest, u8 clear) {
+    u32 reg;
+    u32 tempPeCtrl;
+    u32 phyAddr;
+    u8 changePeCtrl;
+
+    if (clear) {
+        reg = M2C_FIELD(__GXData, u32 *, 0x1D8);
+        reg = __rlwimi(reg, 1, 0, 31, 31);
+        reg = __rlwimi(reg, 7, 1, 28, 30);
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = reg;
+
+        reg = M2C_FIELD(__GXData, u32 *, 0x1D0);
+        reg = __rlwimi(reg, 0, 0, 31, 31);
+        reg = __rlwimi(reg, 0, 1, 30, 30);
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = reg;
     }
-    else 
-    {
-        return;
+
+    changePeCtrl = 0;
+    if (clear || (M2C_FIELD(__GXData, u32 *, 0x1DC) & 7) == 3) {
+        if (((M2C_FIELD(__GXData, u32 *, 0x1DC) >> 6) & 1) == 1) {
+            tempPeCtrl = M2C_FIELD(__GXData, u32 *, 0x1DC);
+            GXWGFifo.u8 = 0x61;
+            tempPeCtrl = __rlwimi(tempPeCtrl, 0, 6, 25, 25);
+            GXWGFifo.u32 = tempPeCtrl;
+            changePeCtrl = 1;
+        }
     }
+
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1E0);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1E4);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1E8);
+
+    phyAddr = (u32)dest & 0x3FFFFFFF;
+    reg = 0;
+    reg = __rlwimi(reg, phyAddr >> 5, 0, 11, 31);
+    reg = __rlwimi(reg, 0x4B, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg;
+
+    M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), clear, 11, 20, 20);
+    M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), 1, 14, 17, 17);
+    M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), 0x52, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1EC);
+
+    if (clear) {
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1D8);
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = M2C_FIELD(__GXData, u32 *, 0x1D0);
+    }
+    if (changePeCtrl) {
+ GXWGFifo.u8 = 0x61;
+ GXWGFifo.u32 = M2C_FIELD(__GXData,u32 *,0x1DC);
+ }
+ M2C_FIELD(__GXData,u16 *,2) = 0;
 }
 
 /* Copy the EFB into dest as a texture; optionally clear the EFB afterward. */
@@ -737,38 +825,35 @@ void fn_80221FE8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
 }
 
 void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
-    extern f32 lbl_8036BCE0;
-    extern f32 lbl_8036BCF8;
-    extern f64 lbl_8036BD10;
-    extern f64 lbl_8036BD18;
-    extern f32 lbl_8036BD20;
-    
-    f32 temp_f0 = -farg0;
-    f32 temp_f4 = -farg1;
-    f32 temp_f5 = lbl_8036BCF8 - farg2;
-    f32 temp_f7 = (temp_f5 * temp_f5) + ((temp_f0 * temp_f0) + (temp_f4 * temp_f4));
-    f32 var_f10 = temp_f7;
-    
-    if (lbl_8036BCE0 != temp_f7) {
-        f32 var_f7;
-        if (var_f10 > lbl_8036BCE0) {
-            f64 temp_f7_2 = __frsqrte(var_f10);
-            f64 temp_f7_3 = lbl_8036BD10 * temp_f7_2 * (lbl_8036BD18 - ((f64) var_f10 * (temp_f7_2 * temp_f7_2)));
-            f64 temp_f7_4 = lbl_8036BD10 * temp_f7_3 * (lbl_8036BD18 - ((f64) var_f10 * (temp_f7_3 * temp_f7_3)));
-            f32 sp18 = (f32) ((f64) var_f10 * (lbl_8036BD10 * temp_f7_4 * (lbl_8036BD18 - ((f64) var_f10 * (temp_f7_4 * temp_f7_4)))));
-            var_f7 = sp18;
-        } else {
-            var_f7 = var_f10;
-        }
-        var_f10 = lbl_8036BCF8 / var_f7;
+    extern f32 lbl_8036BCE0, lbl_8036BCF8, lbl_8036BD20;
+    extern f64 lbl_8036BD10, lbl_8036BD18;
+    f32 x = -farg0, y = -farg1, z = lbl_8036BCF8 - farg2;
+    f32 xx = x*x;
+    f32 yy = y*y;
+    f32 zz = z*z;
+    f32 mag = zz + (xx + yy);
+    f32 scale = mag;
+    f32 root;
+    f32 px, py, pz;
+    if (lbl_8036BCE0 != mag) {
+        if (scale > lbl_8036BCE0) {
+            f64 r = __frsqrte(scale);
+            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
+            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
+            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
+            root = (f32)((f64)scale*r);
+        } else root = scale;
+        scale = lbl_8036BCF8/root;
     }
-    
-    M2C_FIELD(arg0, f32 *, 0x34) = (f32) (temp_f0 * var_f10);
-    M2C_FIELD(arg0, f32 *, 0x38) = (f32) (temp_f4 * var_f10);
-    M2C_FIELD(arg0, f32 *, 0x3C) = (f32) (temp_f5 * var_f10);
-    M2C_FIELD(arg0, f32 *, 0x28) = (f32) (lbl_8036BD20 * farg0);
-    M2C_FIELD(arg0, f32 *, 0x2C) = (f32) (lbl_8036BD20 * farg1);
-    M2C_FIELD(arg0, f32 *, 0x30) = (f32) (lbl_8036BD20 * farg2);
+    M2C_FIELD(arg0, f32 *, 0x34) = x*scale;
+    M2C_FIELD(arg0, f32 *, 0x38) = y*scale;
+    M2C_FIELD(arg0, f32 *, 0x3C) = z*scale;
+    px = lbl_8036BD20*farg0;
+    py = lbl_8036BD20*farg1;
+    pz = lbl_8036BD20*farg2;
+    M2C_FIELD(arg0, f32 *, 0x28) = px;
+    M2C_FIELD(arg0, f32 *, 0x2C) = py;
+    M2C_FIELD(arg0, f32 *, 0x30) = pz;
 }
 
 void fn_802220DC(void *arg0, s32 *arg1) {
@@ -816,14 +901,48 @@ void fn_802220E8(void *arg0, u32 arg1)
     *(u16 *)((u8 *)__GXData + 2) = 1;
 }
 
-void GXSetChanMatColor(s32 arg0, void *arg1) {
-    switch (arg0) {
-        case 0:
-            *(u32 *)0xCC008000 = (*(u8 *)arg1 & 0xFF) | 0x10000000;
-            break;
-        default:
-            break;
+void fn_80222164(s32 arg0, void *arg1) {
+    s32 index;
+    u32 value;
+    u16 *gx;
+    struct { u8 pad[0xA8]; u32 color; } *reg;
+    switch(arg0) {
+    case 0: index=0; value=*(u32 *)((u8 *)__GXData+0xA8); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
+    case 1: index=1; value=*(u32 *)((u8 *)__GXData+0xAC); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
+    case 2: index=0; value=*(u32 *)((u8 *)__GXData+0xA8); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
+    case 3: index=1; value=*(u32 *)((u8 *)__GXData+0xAC); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
+    case 4: value=*(u32 *)arg1; index=0; break;
+    case 5: value=*(u32 *)arg1; index=1; break;
+    default: return;
     }
+    GXWGFifo.u8=0x10;
+    gx=__GXData;
+    GXWGFifo.u32=index+0x100A;
+    GXWGFifo.u32=value;
+    gx[1]=1;
+    reg = (void *)((u8 *)gx+index*4);
+    reg->color=value;
+}
+
+void GXSetChanMatColor(s32 arg0, void *arg1) {
+    u32 value;
+    u32 index;
+    struct GXChanData { u16 unused, dirty; u8 pad[0xAC]; u32 color[2]; } *gx;
+    switch(arg0) {
+    case 0: index=0; value=*(u32 *)((u8 *)__GXData+0xB0); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
+    case 1: index=1; value=*(u32 *)((u8 *)__GXData+0xB4); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
+    case 2: index=0; value=*(u32 *)((u8 *)__GXData+0xB0); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
+    case 3: index=1; value=*(u32 *)((u8 *)__GXData+0xB4); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
+    case 4: value=*(u32 *)arg1; index=0; break;
+    case 5: value=*(u32 *)arg1; index=1; break;
+    default: return;
+    }
+    gx=(void *)__GXData;
+    GXWGFifo.u8=0x10;
+    GXWGFifo.u32=index+0x100C;
+    GXWGFifo.u32=value;
+    gx->dirty=1;
+    gx->color[index]=value;
 }
 
 #pragma scheduling off
