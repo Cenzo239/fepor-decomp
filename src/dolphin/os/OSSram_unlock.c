@@ -149,3 +149,7 @@ void __OSUnlockSram(s32 commit) {
     fn_8020931C(commit, 0);
 }
 
+void __OSUnlockSramEx(s32 commit) {
+    fn_8020931C(commit, 0x14);
+}
+
