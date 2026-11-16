@@ -174,6 +174,27 @@ s32 fn_80209010(s32 arg0, s32 arg1, s32 arg2) {
     return temp_r31 == 0;
 }
 
+void *__OSLockSram(void) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+
+    u8 *scb;
+    s32 *locked;
+    u32 interrupts;
+
+    scb = (u8 *)Scb_80339420;
+    interrupts = OSDisableInterrupts();
+    locked = (s32 *)(scb + 0x48);
+    if (*locked != 0) {
+        OSRestoreInterrupts(interrupts);
+        scb = NULL;
+    } else {
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
+    }
+    return scb;
+}
+
 void *__OSLockSramEx(void)
 {
     u32 OSDisableInterrupts(void);
