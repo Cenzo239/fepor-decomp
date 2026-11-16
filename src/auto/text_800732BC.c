@@ -28,42 +28,19 @@ extern void *lbl_80367384;
 extern void *lbl_80367388[2];
 extern void *lbl_80367390[2];
 
-#pragma no_register_save_helpers on
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_800732BC(void) {
-    void **a;
-    void **b;
-    void **c;
-
-    a = lbl_8036737C;
-    b = lbl_80367388;
-    c = lbl_80367390;
-
-    a[1] = gUiMenuDrawVtbl;
-    b[1] = gUiMenuDrawVtbl;
-    c[1] = gUiMenuDrawVtbl;
-
-    a[1] = lbl_80286664;
-    b[1] = lbl_80286664;
-
-    lbl_80367360 = lbl_802871BC;
-    lbl_80367364 = lbl_80287168;
-    lbl_80367368 = lbl_80287114;
-    lbl_8036736C = lbl_802870C0;
-    lbl_80367370 = lbl_8028706C;
-    lbl_80367374 = lbl_80287018;
-    lbl_80367378 = lbl_80286FC4;
-
-    lbl_8036737C[0] = lbl_80286F40;
-    a[1] = lbl_80286590;
-
-    lbl_80367384 = lbl_80286F70;
-
-    lbl_80367388[0] = &lbl_80366DF0;
-    b[1] = lbl_80286590;
-
-    lbl_80367390[0] = lbl_80286F58;
-    c[1] = lbl_80286664;
+void *pBC; void *p68; void **a; void **b; void **c; void *vtbl; void *base; void *entry; void *e114; void *eC0; void *e6C; void *e18; void *eC4;
+pBC=lbl_802871BC; p68=lbl_80287168;
+a=lbl_8036737C; b=lbl_80367388; c=lbl_80367390;
+e114=lbl_80287114; eC0=lbl_802870C0; e6C=lbl_8028706C; e18=lbl_80287018; eC4=lbl_80286FC4; entry=lbl_80286F40;
+vtbl=gUiMenuDrawVtbl; a[1]=vtbl; b[1]=vtbl; c[1]=vtbl;
+base=lbl_80286664; a[1]=base; b[1]=base;
+lbl_80367360=pBC; lbl_80367364=p68; lbl_80367368=e114;
+lbl_8036736C=eC0; lbl_80367370=e6C; lbl_80367374=e18; lbl_80367378=eC4;
+lbl_8036737C[0]=entry; a[1]=lbl_80286590;
+lbl_80367384=lbl_80286F70; lbl_80367388[0]=&lbl_80366DF0; b[1]=lbl_80286590;
+lbl_80367390[0]=lbl_80286F58; c[1]=base;
 }
-#pragma use_lmw_stmw reset
-#pragma no_register_save_helpers reset
+#pragma global_optimizer on
