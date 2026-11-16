@@ -2523,6 +2523,9 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     s32 *vp;
     s32 v;
 
+    c = (s8)format[1];
+    p = format + 1;
+
     f.sign = 0;
     f.just = 1;
     f.prec_set = 0;
@@ -2530,9 +2533,6 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     f.size = 0;
     f.width = 0;
     f.precision = 0;
-
-    c = (s8)format[1];
-    p = format + 1;
 
     if (c == '%') {
         f.conv = (u8)c;
