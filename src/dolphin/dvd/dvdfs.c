@@ -1731,32 +1731,26 @@ void __DVDClearWaitingQueue(void) {
     }
 }
 
-int __DVDPushWaitingQueue(s32 priority, void *block)
-{
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-
-    extern u8 WaitingQueue_80339FD8[];
-
+int __DVDPushWaitingQueue(s32 priority, void *block) {
+    struct DVDQueue {
+        struct DVDQueue *next;
+        struct DVDQueue *prev;
+    };
+    extern struct DVDQueue WaitingQueue_80339FD8[4];
+    extern u32 OSDisableInterrupts(void);
+    extern void OSRestoreInterrupts(u32);
+    struct DVDQueue *queue;
+    struct DVDQueue *entry;
     u32 interrupts;
-    u8 *queue;
-    u8 *tail;
-    u8 *entry;
 
-    entry = (u8 *)block;
-
+    entry = (struct DVDQueue *)block;
     interrupts = OSDisableInterrupts();
-
-    queue = WaitingQueue_80339FD8 + (priority << 3);
-    tail = *(u8 **)(queue + 4);
-
-    *(void **)tail = block;
-    *(void **)(entry + 4) = tail;
-    *(void **)entry = queue;
-    *(void **)(queue + 4) = block;
-
+    queue = &WaitingQueue_80339FD8[priority];
+    queue->prev->next = entry;
+    entry->prev = queue->prev;
+    entry->next = queue;
+    queue->prev = entry;
     OSRestoreInterrupts(interrupts);
-
     return 1;
 }
 
