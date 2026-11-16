@@ -3908,6 +3908,34 @@ void fn_8011A0CC(void *arg0) {
     gUiContext[0xE] = -1;
 }
 
+void fn_8011A184(void *arg0) {
+ void fn_8011ACFC(void); void Unit_MoveToList(void *,s32); s32 fn_80015680(void *);
+ void fn_800A8400(void); void Map_RefreshUnitMap(void *); void fn_80161F7C(void); void fn_8003F670(void *);
+ void EventLock_Dec(void); void Ui_DtorPanelBase(void *,s32); void fn_801481CC(void *,s32); void fn_80148980(void *,s32); void fn_80018B04(void);
+ extern u8 gUnitLists[],gTargetList[],gBattleMap[],gFxChannels[],lbl_80274508[];
+ extern s16 lbl_80366E88; extern u8 gEventLockDepth;
+ s16 count; s16 *limit; u8 *next; u8 *unit; s32 n;
+ unit=*(u8 **)(gUnitLists+0xc);
+ while(unit) { next=*(u8 **)(unit+0x184); *(u32 *)(unit+0x1a0)&=~0x800; unit=next; }
+ fn_8011ACFC();
+ unit=*(u8 **)gUnitLists;
+ while(unit) {
+ u32 flags=*(u32 *)(unit+0x1a0); next=*(u8 **)(unit+0x184);
+ if(flags&0x010000DC) { *(u32 *)(unit+0x1a0)=flags&~0x010000DC; Unit_MoveToList(unit,5); }
+ unit=next;
+ }
+ n=*(s32 *)gTargetList;
+ count=n-fn_80015680(gUnitLists);
+ limit=&count;
+ if(count<lbl_80366E88) limit=&lbl_80366E88;
+ ((u8 *)gBattleState)[0x56]=*limit;
+ fn_800A8400(); Map_RefreshUnitMap(gBattleMap); fn_80161F7C(); fn_8003F670(*(void **)((u8 *)arg0+0x40));
+ while(gEventLockDepth) EventLock_Dec();
+ if(arg0) Ui_DtorPanelBase(arg0,0);
+ if(!(gUiInputFlags&0x10)) { fn_801481CC(lbl_80274508+0x2e9,250); fn_80148980(gFxChannels,500); }
+ fn_80018B04();
+}
+
 #pragma use_lmw_stmw reset
 void fn_8011A2FC(s32 arg0) {
     s32 temp_r3;
@@ -4090,6 +4118,69 @@ void fn_8011A4E4(s32 arg0) {
     }
     M2C_FIELD(&gUiContext, s8 *, 8) = 0;
     Ui_CreateMenu(&lbl_80367A40, arg0, 0);
+}
+
+void fn_8011A694(void) {
+    void Unit_MoveToListHead(void *, s32);
+    void Unit_MoveToList(void *, s32);
+    void *Unit_FindByName(void *);
+    void Map_RefreshUnitMap(void *);
+    void fn_800C1060(s32);
+    extern u8 gUnitLists[];
+    extern u8 lbl_80274508[];
+    extern u8 gBattleMap[];
+    extern u8 gMapBlendMode;
+
+    void *next;
+    void *head;
+    void *unit;
+    void *found;
+    s32 var_r4;
+    s32 temp;
+
+    head = *(void **)gUnitLists;
+    unit = *(void **)(gUnitLists + 4);
+    while (unit != NULL) {
+        next = *(void **)((u8 *)unit + 0x180);
+        if ((*(u32 *)((u8 *)unit + 0x1A0) & 0x10000) != 0) {
+            Unit_MoveToListHead(unit, 0);
+            if (unit == head) {
+                break;
+            }
+        }
+        unit = next;
+    }
+
+    unit = *(void **)(gUnitLists + 0x3C);
+    while (unit != NULL) {
+        next = *(void **)((u8 *)unit + 0x184);
+        Unit_MoveToList(unit, 0);
+        *(u32 *)((u8 *)unit + 0x1A0) |= 0x010000DC;
+        unit = next;
+    }
+
+    found = Unit_FindByName(lbl_80274508 + 0x130);
+    next = *(void **)gUnitLists;
+    while (next != NULL) {
+        unit = *(void **)((u8 *)next + 0x184);
+        if (next != found) {
+            *(s16 *)((u8 *)next + 0x15C) =
+                (s16)(50.0f * ((f32)*(s16 *)((u8 *)found + 0x15C) / 50.0f));
+        }
+        next = unit;
+    }
+
+    Map_RefreshUnitMap(gBattleMap);
+#pragma optimization_level 1
+    var_r4 = 1;
+    temp = (u8)(gMapBlendMode - 1);
+    if (((u32)((var_r4 | ~temp) - ((u32)(var_r4 - temp) >> 1)) >> 31) == 0) {
+        var_r4 = 0;
+    }
+#pragma optimization_level reset
+    if ((u8)var_r4 != 0) {
+        fn_800C1060(0);
+    }
 }
 
 void fn_8011AB38(void *arg0) {
@@ -5946,60 +6037,33 @@ void UiPanel_Create(void *owner, void *parent) {
     }
 }
 
-s32 fn_8011DB48(void* arg0) {
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 var_r3;
-    s32* var_r4;
-    s32* var_r5;
-    s32* var_r6;
-    s32* var_r7;
-    s32* var_r8;
-    
-    // Load and setup
-    temp_r3 = (s32)arg0;
-    temp_r4 = *(s32*)(temp_r3 + 0x4);
-    temp_r5 = *(s32*)(temp_r3 + 0x8);
-    
-    if (temp_r4 > 0) {
-        var_r4 = (s32*)(temp_r3 + 0x10);
-        temp_r6 = 0;
-        
-        do {
-            // Check for null pointer
-            if (*var_r4 == 0) {
-                return 0;
-            }
-            
-            var_r5 = (s32*)*var_r4;
-            var_r6 = (s32*)*(var_r5 + 0x4);
-            var_r7 = *(s32**)(var_r5 + 0x8);
-            var_r8 = *(s32**)(var_r5 + 0xC);
-            
-            // Process unit or exit if not found
-            if (var_r6 == 0) {
-                return 0;
-            }
-            
-            temp_r3 = *var_r7;
-            var_r3 = *(s32*)(temp_r3 + 0xC);
-            
-            if (var_r3 != 0) {
-                temp_r3 = *(s32*)var_r8;
-                if (temp_r3 == 19) { // Assuming ID for 'item'
-                    *(u8*)(var_r5 + 0x10) = 1;
-                }
-            }
-            
-            var_r4 = (s32*)*var_r4;
-            temp_r6 += 1;
-        } while (temp_r6 < temp_r4);
-    }
-    
-    // Return success
-    return 1;
+void fn_8011DB48(void *arg0) {
+ void *Process_Find(void *); void *fn_80122998(void *); void *fn_80122CE0(void *);
+ void fn_80122E34(void *,u32); void fn_80122E28(void *,s32,s32); void fn_80122E10(void *,s32);
+ void fn_80122E04(void *,u32,u32); void fn_80122E20(void *,u32); void fn_80122E18(void *,u32); void fn_80122DFC(void *,u32);
+ void fn_80122DEC(void *,u32,s32,s32); void *Sound_Create(void *,void *); void Sound_FadeFromZero(void *,u8);
+ extern u16 gUiPanelProc[]; extern u32 lbl_80367A5C;
+ s32 i; u8 *item; u8 *data=arg0; u8 *panel; u8 *entry;
+ panel=Process_Find(gUiPanelProc); item=0;
+ for(i=(s32)item;i<4;i++) {
+ if (((void **)(panel+i*4))[13]==0) {
+ void *slot=fn_80122998(panel);
+ entry=panel+i*4;
+ *(void **)(entry+0x34)=slot;
+ slot=fn_80122CE0(*(void **)(entry+0x34));
+ *(void **)(panel+0x44)=*(void **)(entry+0x34);
+ item=slot; break;
+ }}
+ fn_80122E34(item,*(u32 *)(data+8));
+ fn_80122E28(item,*(s16 *)(data+0x14),*(s16 *)(data+0x16));
+ fn_80122E10(item,*(s16 *)(data+0x1c));
+ fn_80122E04(item,data[0x1e],data[0x1f]);
+ fn_80122E20(item,data[0x20]); fn_80122E18(item,data[0x21]); fn_80122DFC(item,data[0x22]);
+ item[0x6a]=data[0x23];
+ fn_80122DEC(item,*(u32 *)(data+0x10),*(s16 *)(data+0x18),*(s16 *)(data+0x1a));
+ item[0x6b]=data[0x25]; lbl_80367A5C=*(u32 *)(data+0xc);
+ panel[0x63]=data[0x24]!=0;
+ if(data[0x24]==0 && *(void **)(data+0xc)!=0) Sound_FadeFromZero(Sound_Create(*(void **)(data+0xc),panel),(u8)*(s16 *)(panel+0x68));
 }
 
 void fn_8011DCB4(void) {
