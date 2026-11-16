@@ -9,6 +9,13 @@ extern u8 lbl_80285458[];
 extern u8 lbl_80367278;
 void Item_Destroy(void);
 
+struct Record {
+    void *data;
+    void *volatile table;
+};
+
+#pragma global_optimizer off
+#pragma opt_propagation off
 void fn_80033080(void) {
     void *Item_Init(void *);
     void Item_Destroy(void);
@@ -30,3 +37,4 @@ void fn_80033080(void) {
     *slot1 = lbl_80285424;
     __register_global_object(Item_Init(&lbl_80367278), Item_Destroy, base + 0xdc);
 }
+#pragma global_optimizer reset
