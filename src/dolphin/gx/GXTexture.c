@@ -882,12 +882,11 @@ void fn_80223978(void) {
 }
 
 void __GXSetIndirectMask(s32 arg0) {
-    u32 temp = __GXData[0x124/2];
-    temp = (temp & ~0xFF) | (arg0 & 0xFF);
-    __GXData[0x124/2] = temp;
-    *(u8*)0xCC008000 = 0x61;
-    *(u8*)0xCC008000 = (u8)(__GXData[0x124/2] & 0xFF);
-    __GXData[0x2/2] = 0;
+ u8 *gx = (u8 *)__GXData;
+ *(u32 *)(gx + 0x124) = __rlwimi(*(u32 *)(gx + 0x124), arg0, 0, 24, 31);
+ *(volatile u8 *)0xCC008000 = 0x61;
+ *(volatile u32 *)0xCC008000 = *(u32 *)(gx + 0x124);
+ *(u16 *)(gx + 2) = 0;
 }
 
 void __GXFlushTextureState(void) {
