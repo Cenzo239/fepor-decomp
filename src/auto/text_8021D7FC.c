@@ -1629,26 +1629,13 @@ u8 *gx=(u8*)__GXData;
 *(u16*)(gx+2)=0;
 }
 
-void fn_80220F84(u32 arg0, u32 arg1)
-{
+void fn_80220F84(u32 arg0, u32 arg1) {
     extern u32 __GXData;
-
-    u8 *gx;
-    u32 value;
-
-    gx = (u8 *)__GXData;
-
-    value = *(u32 *)(gx + 0x7C);
-    value = (value & ~0x0000FF00) | ((arg0 & 0xFF) << 8);
-    *(u32 *)(gx + 0x7C) = value;
-
-    value = *(u32 *)(gx + 0x7C);
-    value = (value & ~0x00380000) | ((arg1 << 19) & 0x00380000);
-    *(u32 *)(gx + 0x7C) = value;
-
+    u8 *gx = (u8 *)__GXData;
+    *(u32 *)(gx + 0x7C) = __rlwimi(*(u32 *)(gx + 0x7C), (u8)arg0, 8, 16, 23);
+    *(u32 *)(gx + 0x7C) = __rlwimi(*(u32 *)(gx + 0x7C), arg1, 19, 10, 12);
     *(volatile u8 *)0xCC008000 = 0x61;
     *(volatile u32 *)0xCC008000 = *(u32 *)(gx + 0x7C);
-
     *(u16 *)(gx + 2) = 0;
 }
 
