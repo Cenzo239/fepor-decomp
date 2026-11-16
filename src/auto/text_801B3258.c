@@ -5539,7 +5539,7 @@ void fn_801C18FC(s32 arg0) {
 
 void fn_801C1970(s8 arg0, s32 arg1)
 {
-    void GfxEnt_ForEachKey(void *, void *, void *, void *);
+    void fn_8000A388(void *, void *, void *, void *);
     extern void fn_801C19E4(void *, s32);
     extern u8 lbl_80297FF8[];
     extern s8 lbl_80368280;
@@ -5549,7 +5549,7 @@ void fn_801C1970(s8 arg0, s32 arg1)
     lbl_80368280 = arg0;
     temp = (f32)arg1 / lbl_8036B328;
     *(s32 *)((char *)&lbl_80368280 + 4) = (s32)temp;
-    GfxEnt_ForEachKey(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, &lbl_80368280);
+    fn_8000A388(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, &lbl_80368280);
 }
 
 void fn_801C19E4(u8 *arg0, u8 *arg1) {
@@ -11841,43 +11841,9 @@ void fn_801CFEA4(s32 arg0, s32 arg1) {
 }
 
 #pragma opt_strength_reduction off
-void fn_801D0200(void *arg0)
-{
-    struct T {
-        char pad0[0x28];
-        signed char a;
-        char pad1[7];
-        signed char b;
-        char pad2[7];
-        signed char c;
-        char pad3[7];
-        signed char d;
-        char pad4[7];
-        signed char e;
-    } *p = arg0;
-
-    if (p->a) {
-        p->a = 5;
-    }
-    if (p->b) {
-        p->b = 5;
-    }
-    p = (void *)((char *)p + 0x10);
-    if (p->a) {
-        p->a = 5;
-    }
-    if (p->b) {
-        p->b = 5;
-    }
-    if (p->c) {
-        p->c = 5;
-    }
-    if (p->d) {
-        p->d = 5;
-    }
-    if (p->e) {
-        p->e = 5;
-    }
+void fn_801D0200(void *arg0) {
+ s8 *p = arg0; s32 i;
+ for (i=0;i<7;i++,p+=8) { if (p[0x28]) p[0x28]=5; }
 }
 #pragma opt_strength_reduction on
 void fn_801D027C(s32 arg0, s32 arg1) {
@@ -15119,27 +15085,36 @@ void fn_801DBD84(struct efUnit* arg0)
 
 s32 fn_801DBFF8(void)
 {
-    void *fn_801E2324(void *, s32);
-    extern s32 gSaveDataBase;
-    s32 i;
-    s32 count;
-    void *obj;
-
-    count = 0;
-    for (i = 0; i < 5; i++) {
-        obj = fn_801E2324(&gSaveDataBase, i);
-        if (obj != NULL) {
-            if (*((u8 *)obj + 0x60) == 2) {
-                goto matched;
-            }
-        }
+  void *fn_801E2324(void *, s32);
+  extern s32 lbl_803682F0;
+  s32 i;
+  s32 count;
+  void *obj;
+  count = 0;
+  for (i = 0; i < 5; i++)
+  {
+    obj = fn_801E2324(&lbl_803682F0, i);
+    if (obj != NULL)
+    {
+      if ((*(((u8 *) obj) + 0x60)) == 2)
+      {
         obj = NULL;
-    matched:
-        if (obj != NULL) {
-            count += 1;
-        }
+      }
+      else
+      {
+      }
     }
-    return count;
+    else
+    {
+      obj = NULL;
+    }
+    if (obj != NULL)
+    {
+      count += 1;
+    }
+  }
+
+  return count;
 }
 
 void *fn_801DC070(void *arg0)
@@ -15355,6 +15330,91 @@ not_mode1:
     }
 done:
     ;
+}
+
+void MsgBox_Layout(MsgBox *arg0) {
+    u8 *Msg_Expand(u8 *);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    extern u8 gUiSeCues[];
+    extern f32 lbl_8036B630;
+    extern f32 lbl_8036B650;
+    extern f32 lbl_8036B664;
+    extern f32 lbl_8036B668;
+    extern f32 lbl_8036B698;
+    extern f32 lbl_8036B69C;
+
+    f32 width0;
+    f32 width1;
+    f32 width2;
+    f32 gap;
+    s32 lastWidth;
+    s32 width;
+    s32 centeredY;
+
+    switch (arg0->type) {
+    case 0:
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5C7), -1, lbl_8036B630);
+        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5CE), -1, lbl_8036B630);
+        width = arg0->width;
+        M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
+        centeredY = 0x1E0 - arg0->height;
+        gap = (((f32)width - width0) - (f32)lastWidth) / lbl_8036B698;
+        M2C_FIELD(arg0, s16 *, 8) = centeredY / 2;
+        M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
+        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        return;
+
+    case 1:
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5D4), -1, lbl_8036B630);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5DE), -1, lbl_8036B630);
+        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5E6), -1, lbl_8036B630);
+        width = arg0->width;
+        M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
+        M2C_FIELD(arg0, s16 *, 8) = (0x1E0 - arg0->height) / 2;
+        gap = ((((f32)width - width0) - width1) - (f32)lastWidth) * lbl_8036B69C;
+        M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
+        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(lbl_8036B698 * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
+        M2C_FIELD(arg0, s16 *, 0x18) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        return;
+
+    case 2:
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F0), -1, lbl_8036B630);
+        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F7), -1, lbl_8036B630);
+        width = arg0->width;
+        M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
+        centeredY = 0x1E0 - arg0->height;
+        gap = (((f32)width - width0) - (f32)lastWidth) / lbl_8036B698;
+        M2C_FIELD(arg0, s16 *, 8) = centeredY / 2;
+        M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
+        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        return;
+
+    case 3:
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x600), -1, lbl_8036B630);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x609), -1, lbl_8036B630);
+        width2 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x612), -1, lbl_8036B630);
+        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x61C), -1, lbl_8036B630);
+        width = arg0->width;
+        M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
+        M2C_FIELD(arg0, s16 *, 8) = (0x1E0 - arg0->height) / 2;
+        gap = (((((f32)width - width0) - width1) - width2) - (f32)lastWidth) / lbl_8036B650;
+        M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
+        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(lbl_8036B698 * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
+        M2C_FIELD(arg0, s16 *, 0x18) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x1A) = (s16)(lbl_8036B668 * gap + ((width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)) + width2));
+        M2C_FIELD(arg0, s16 *, 0x1C) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        return;
+    }
 }
 
 void fn_801DCD3C(u8 *arg0)
