@@ -1173,6 +1173,13 @@ void TRKInterruptHandler(void)
     return;
 }
 
+void TRKInterruptHandlerEnableInterrupts(void) {
+    extern u8 gTRKState[];
+    void TRKPostInterruptEvent(void);
+    (void)gTRKState;
+    TRKPostInterruptEvent();
+}
+
 #pragma intrinsic __mffs
 void fn_80228CDC(f64 *arg0) {
     register f64 fpscr;
@@ -1845,8 +1852,22 @@ void EnableMetroTRKInterrupts(void) {
 }
 
 void TRK_main(void) {
-    // Empty implementation for now - this appears to be related to debugging/tracing
-    return;
+    extern void MWTRACE(s32, const char *, ...);
+    extern s32 TRKInitializeNub(void);
+    extern void TRKNubWelcome(void);
+    extern void TRKNubMainLoop(void);
+    extern s32 TRKTerminateNub(void);
+    extern s32 TRK_mainError_8033CFD0[];
+    s32 err;
+
+    MWTRACE(1, "TRK_Main \n");
+    err = TRKInitializeNub();
+    TRK_mainError_8033CFD0[0] = err;
+    if (err == 0) {
+        TRKNubWelcome();
+        TRKNubMainLoop();
+        TRK_mainError_8033CFD0[0] = TRKTerminateNub();
+    }
 }
 
 s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3);
@@ -1862,20 +1883,21 @@ void TRKUARTInterruptHandler(void) {
 
 }
 
+__declspec(section ".rodata") static const u32 EndofProgramInstruction = 0x00454E44;
+
 void InitializeProgramEndTrap(void)
 {
     void *fn_80003488(void *, const void *, u32);
     void ICInvalidateRange(void *, u32);
     void DCFlushRange(void *, u32);
     void PPCHalt(void);
+    static const u8 EndofProgramInstruction[4] = {0x00, 0x45, 0x4E, 0x44};
+    u8 *halt;
 
-    u8 *address;
-
-    address = (u8 *)PPCHalt + 4;
-
-    fn_80003488(address, (const void *)0x802827F8, 4);
-    ICInvalidateRange(address, 4);
-    DCFlushRange(address, 4);
+    halt = (u8 *)PPCHalt;
+    fn_80003488(halt + 4, EndofProgramInstruction, 4);
+    ICInvalidateRange(halt + 4, 4);
+    DCFlushRange(halt + 4, 4);
 }
 
 int TRK_board_display(char *arg0) { int OSReport(char *, ...); extern char lbl_802827FC[]; return OSReport(lbl_802827FC, arg0); }
