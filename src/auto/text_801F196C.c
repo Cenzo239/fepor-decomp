@@ -1032,6 +1032,56 @@ void fn_801F3CB0(s32 arg0) {
     }
 }
 
+void fn_801F3D08(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *fn_80057A64(void *,s32);
+    void *fn_80057998(void *);
+    void fn_80057E98(void *,s32,s32);
+    void fn_80057E5C(void *,s32);
+    void fn_80057E64(void *,s32);
+    void ScrollBar_RecreateArrows(void *,s32);
+    void fn_80147188(s32);
+    void fn_8006EEFC(void *,void *);
+    void fn_80162018(void);
+    extern char gOptionsStrs[];
+    u8 *p=*(u8 **)((u8 *)arg0+0x30);
+    void *obj;
+    *(s32*)(p+4)=0;
+    *(s32*)(p+8)=0;
+    *(s16*)(p+0xC)=0;
+    *(s16*)(p+0xE)=0;
+    *(s16*)(p+0x12)=-100;
+    *(s16*)(p+0x14)=-100;
+    p[0x54]=0;
+    p[0xB4]=0;
+    *(s16*)(p+0x38)=0;
+    *(s16*)(p+0x3A)=255;
+    obj=Heap_Alloc(0x58);
+    if(obj) obj=fn_80057A64(obj,8);
+    *(void **)(p+0xDC)=obj;
+    fn_80057E98(*(void **)(p+0xDC),300,24);
+    fn_80057E5C(*(void **)(p+0xDC),1);
+    obj=Heap_Alloc(0x58);
+    if(obj) obj=fn_80057A64(obj,4);
+    *(void **)(p+0xE0)=obj;
+    fn_80057E98(*(void **)(p+0xE0),300,400);
+    fn_80057E5C(*(void **)(p+0xE0),1);
+    fn_80057E64(*(void **)(p+0xDC),0);
+    fn_80057E64(*(void **)(p+0xE0),0);
+    obj=Heap_Alloc(0x30);
+    if(obj) obj=fn_80057998(obj);
+    *(void **)(p+0xE4)=obj;
+    ScrollBar_RecreateArrows(*(void **)(p+0xE4),1);
+    fn_80147188(0);
+    *(s16*)(p+0x16)=4;
+    *(s16*)(p+0x18)=*(s16*)(p+0x12);
+    *(s16*)(p+0x1A)=*(s16*)(p+0x14);
+    *(s16*)(p+0x1C)=-100;
+    *(s16*)(p+0x1E)=-100;
+    fn_8006EEFC(p,gOptionsStrs+0x1293);
+    fn_80162018();
+}
+
 #pragma use_lmw_stmw on
 void fn_801F3E60(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
