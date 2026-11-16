@@ -1074,6 +1074,36 @@ void fn_8020D90C(u32 arg0) {
     fn_8020DD7C();
 }
 
+void fn_8020DA08(u32 arg0) {
+    void __DVDStoreErrorCode(u32);
+    void DVDReset(void);
+    void fn_8020BF58(void *);
+    s32 fn_8020BAD0(void *, u32, u32, void (*)(u32));
+    void fn_8020D040(u32);
+    void OSPanic(void *, s32, char *, ...);
+    extern void (*lbl_803685E0)(void *);
+    extern u8 *bootInfo_803685A0;
+    extern u16 BB2_80339F40[];
+    extern s32 lbl_80366F74;
+    extern char lbl_8029D0DC[];
+    extern s32 lbl_803685CC;
+    if (arg0 == 0x10) {
+        __DVDStoreErrorCode(0x01234568);
+        DVDReset();
+        cbForStateError(0);
+    } else if (arg0 & 1) {
+        u32 *length;
+        lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
+        lbl_803685CC = 0;
+        length = (u32 *)((u8 *)BB2_80339F40+8);
+        if (*(u32 *)(bootInfo_803685A0+0x3C) < *length)
+            OSPanic(&lbl_80366F74,0x295,lbl_8029D0DC);
+        fn_8020BAD0(*(void **)(bootInfo_803685A0+0x38),(*length+31)&~31,*(u32 *)((u8 *)BB2_80339F40+4),fn_8020D040);
+    } else {
+        fn_8020BF58((void *)fn_8020D27C);
+    }
+}
+
 void AlarmHandler(void *alarm, void *context) {
     void DVDReset(void);
     void DCInvalidateRange(void *, u32);
@@ -1086,6 +1116,43 @@ void AlarmHandler(void *alarm, void *context) {
     DCInvalidateRange(lbl_80339F60, 0x20);
     lbl_803685E0 = fn_8020DCE8;
     fn_8020DCE8(executing_80368598);
+}
+
+void fn_8020DC14(void) {
+    extern u16 BB2_80339F40[];
+    extern volatile s32 CurrCommand_803685B4;
+    extern u32 MotorState_803685D8;
+    void DVDReset(void);
+    void OSCreateAlarm(void *);
+    void OSSetAlarm(void *, u64, void (*)(void *, void *));
+    void AlarmHandler(void *, void *);
+    void __DVDClearWaitingQueue(void);
+
+    u8 *bb2;
+    DVDReadyCommand *block;
+
+    bb2 = (u8 *)BB2_80339F40;
+
+    switch (CurrCommand_803685B4) {
+    case 4:
+    case 5:
+    case 13:
+    case 15:
+        __DVDClearWaitingQueue();
+        block = (DVDReadyCommand *)executing_80368598;
+        executing_80368598 = bb2 + 0x40;
+        if (block->callback != 0) {
+            block->callback(-4, block);
+        }
+        stateReady();
+        break;
+    default:
+        MotorState_803685D8 = 0;
+        DVDReset();
+        OSCreateAlarm(bb2 + 0x70);
+        OSSetAlarm(bb2 + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
+        break;
+    }
 }
 
 void fn_8020DCE8(void *block) {
@@ -2131,6 +2198,34 @@ s32 fn_8020F9E8(u8 *arg0, u8 *arg1)
 void fn_8020FAE0(void) {
     if (lbl_803685E8 != NULL) {
         lbl_803685E8();
+    }
+}
+
+void cb(s32 arg0, void *arg1) {
+    extern u8 *bb2_803685F4;
+    extern void *idTmp_803685F8;
+    extern s32 lbl_803685F0;
+    void DVDReset(void);
+    if (arg0 > 0) {
+        switch (lbl_803685F0) {
+        case 0:
+            lbl_803685F0=1;
+            fn_8020EBEC(arg1,(u32)bb2_803685F4,32,0x420,(u32)cb);
+            break;
+        case 1:
+            lbl_803685F0=2;
+            fn_8020EBEC(arg1,*(u32 *)(bb2_803685F4+0x10),(*(u32 *)(bb2_803685F4+8)+31)&~31,*(u32 *)(bb2_803685F4+4),(u32)cb);
+            break;
+        }
+    } else {
+        switch (arg0) {
+        case -1: break;
+        case -4:
+            lbl_803685F0=0;
+            DVDReset();
+            DVDReadDiskID(arg1,idTmp_803685F8,(void *)cb);
+            break;
+        }
     }
 }
 
