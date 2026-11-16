@@ -858,16 +858,15 @@ s32 fn_80213ADC(void) {
     return ((u32) *(u32 *)0xCC006C00 >> 1U) & 1;
 }
 
-#pragma optimization_level 1
-void fn_80213AEC(u32 arg0) {
-    u32 *base;
-    u32 temp;
-    base = (u32 *)(0xCC000000 + 0x6C00);
-    temp = base[1];
-    temp = __rlwimi(temp & 0xFFFFFF00, arg0, 0, 24, 31);
-    base[1] = temp;
+#pragma peephole off
+void fn_80213AEC(s32 arg0) {
+    extern volatile u32 OS_AIRegs[8];
+    u32 *regs = (u32 *)OS_AIRegs;
+    u32 value = regs[1];
+    value = __rlwimi(value & 0xFFFFFF00, (u32)arg0, 0, 24, 31);
+    regs[1] = value;
 }
-#pragma optimization_level reset
+#pragma peephole on
 u8 fn_80213B08(void) {
     return (u8) *(s32 *)0xCC006C04;
 }
