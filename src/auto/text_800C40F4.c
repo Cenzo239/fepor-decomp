@@ -17914,8 +17914,11 @@ s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     void *terrain;
     u8 *tp;
     s32 sum;
-
-    terrain = Terrain_GetEntry(M2C_FIELD(gBattleMap + arg1 + (arg2 << 6), u8 *, 0x100D));
+    u8 *map = gBattleMap;
+    s32 x = arg1;
+    s32 y = arg2;
+    map += x;
+    terrain = Terrain_GetEntry(map[y * 64 + 0x100D]);
     if (Status_Test((s32)((u8 *)arg0 + 0x1BC), 4) != 0) {
         tp = M2C_FIELD(terrain, u8 **, 8);
         sum = (s8)tp[3] + (s8)tp[4];
