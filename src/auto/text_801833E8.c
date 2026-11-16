@@ -243,10 +243,8 @@ void fn_80183624(void *arg0) {
             sp8 = *Ui_GetColor((u8)mode);
             Prim2D_SetColorPacked(&sp8);
         }
-#pragma cplusplus on
-        }
-#pragma cplusplus reset
     }
+}
 
 #pragma cplusplus on
 extern "C" s32 fn_801836D4(void *arg0) {
