@@ -7652,56 +7652,34 @@ void fn_80253E10(SynthVmState *arg0, u32 *arg1) {
     }
 }
 
-void fn_80253E90(u8 *self, u32 *arg1)
-{
-    extern u8 gSoundData[];
-    extern s32 gSynthVoices;
-    void fn_80255100(void *);
-    void fn_80256FF0(u32);
-
-    u32 nonzero;
-    u32 midByte;
-    u32 i;
-    s32 offset;
-    u8 *sd;
-
-    offset = 0;
-    self[0x106] = offset;
-    {
-        u32 word;
-        u32 hiByte;
-
-        word = *arg1;
-        hiByte = (word >> 16) & 0xFF;
-        midByte = (word >> 8) & 0xFF;
-        nonzero = (hiByte != 0);
-    }
-
-    if (midByte != 0) {
-        i = 0;
-        sd = gSoundData;
-        for (; i < sd[0x210]; offset += 0x458, i++) {
-            u8 *voice;
-
-            voice = (u8 *)gSynthVoices + offset;
-            if (*(u32 *)(voice + 0x34) == 0) {
-                continue;
-            }
-            if ((*(u64 *)(voice + 0x114) & 2ULL) != 0) {
-                continue;
-            }
-            if (voice[0x106] != midByte) {
-                continue;
-            }
-            if (nonzero == 0) {
-                fn_80255100(voice);
-            } else {
-                fn_80256FF0(i);
-            }
-        }
-    }
-
-    self[0x106] = midByte;
+void fn_80253E90(u8 *self, u32 *arg1) {
+extern u8 gSoundData[];
+extern s32 gSynthVoices;
+void fn_80255100(void *);
+void fn_80256FF0(u32);
+u8 *voice;
+u32 word;
+u32 offset;
+u32 i;
+u32 midByte;
+u32 nonzero;
+u32 hiByte;
+u8 *sd;
+self[0x106]=(offset=0);
+word=*arg1;
+hiByte=(word>>16)&255;
+midByte=(word>>8)&255;
+nonzero=hiByte!=0;
+if(midByte!=0) {
+i=0; sd=gSoundData;
+for(;i<sd[0x210];offset+=0x458,i++) {
+voice=(u8*)gSynthVoices+offset;
+if(*(u32*)(voice+0x34)==0) continue;
+if((*(u64*)(voice+0x114)&2ULL)!=0) continue;
+if(midByte!=voice[0x106]) continue;
+if(nonzero==0) fn_80255100(voice); else fn_80256FF0(i);
+}}
+self[0x106]=midByte;
 }
 
 void fn_80254F00(u32 arg0)
@@ -8221,81 +8199,19 @@ void fn_802559D8(void) {
 
 void fn_80255A40(void)
 {
-    extern u8 lbl_80359710[];
-    extern void *vidListRoot;
-    extern void *vidListFree;
-    VidList *cur;
-    VidList *prev;
-    s32 i;
-    s32 ctr;
-
-    cur = (VidList *)lbl_80359710;
-    vidGenerator = 0;
-    prev = NULL;
-    i = 0;
-    vidListRoot = NULL;
-    vidListFree = cur;
-
-    for (ctr = 16; ctr != 0; ctr--) {
-        cur->prev = prev;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur[1].prev = prev;
-        cur += 1;
-        if (prev != NULL) {
-            prev->next = cur;
-        }
-
-        prev = cur;
-        cur += 1;
-        i += 7;
-    }
-    prev->next = NULL;
+ extern u8 lbl_80359710[];
+ extern void *vidListRoot;
+ extern void *vidListFree;
+ VidList *cur; s32 i; VidList *prev;
+ vidGenerator = 0; vidListRoot = NULL;
+ cur = (VidList *)lbl_80359710; prev = NULL;
+ vidListFree = cur;
+ for (i=0; i<128; ++i) {
+ cur->prev=prev;
+ if(prev) prev->next=cur;
+ prev=cur++;
+ }
+ prev->next=NULL;
 }
 
 void fn_80255B20(void *arg0) {
@@ -16680,15 +16596,13 @@ void fn_80265B64(s32 arg0, s32 arg1)
     u8 *queue;
     s32 result;
     void (*callback)(s32, s32);
-    u8 expect;
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
     result = arg1;
 
     if (arg1 == 0) {
-        expect = lbl_802A4DE8[0];
-        if (*(u8 *)*(u32 *)(queue + 0x10) != expect) {
+        if (*(u8 *)*(u32 *)(queue + 0x10) != lbl_802A4DE8[0]) {
             result = 3;
         }
     }
