@@ -543,6 +543,42 @@ s32 __CARDReadPage(s32 chan, void *callback) {
     return result;
 }
 
+s32 fn_802177E0(s32 chan, void *callback) {
+    extern u16 __CARDBlock[];
+    extern s32 EXIDma(s32, s32, s32, s32, void *);
+    extern void EXIDeselect(s32);
+    extern void EXIUnlock(s32);
+    s32 EXIImmEx(s32, void *, s32, s32);
+    void __CARDTxHandler(s32);
+    u8 *card;
+    s32 result;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    card[0x94] = 0xF2;
+    if (*(u16 *)(card + 0xA) > 0x80)
+        card[0x95] = ((*(u32 *)(card + 0xB0) >> 17) & 0x7F) | 0x80;
+    else
+        card[0x95] = (*(u32 *)(card + 0xB0) >> 17) & 0x7F;
+    result = (*(u32 *)(card + 0xB0) >> 9) & 0xFF;
+    card[0x96] = result;
+    card[0x97] = (*(u32 *)(card + 0xB0) >> 7) & 3;
+    card[0x98] = *(u32 *)(card + 0xB0) & 0x7F;
+    *(s32 *)(card + 0xA0) = 5;
+    *(s32 *)(card + 0xA4) = 1;
+    *(s32 *)(card + 0xA8) = 3;
+    result = __CARDStart(chan, 0, callback);
+    if (result == -1) result = 0;
+    else if (result >= 0) {
+        if (!EXIImmEx(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) ||
+            !EXIDma(chan, *(s32 *)(card + 0xB4), *(u16 *)(card + 0xA), *(s32 *)(card + 0xA4), __CARDTxHandler)) {
+            *(void **)(card + 0xCC) = 0;
+            EXIDeselect(chan);
+            EXIUnlock(chan);
+            result = -3;
+        } else result = 0;
+    }
+    return result;
+}
+
 int __CARDEraseSector(s32 chan, u32 addr, void *callback) {
     extern u16 __CARDBlock[];
     s32 EXIImmEx(s32,void*,s32,s32);
@@ -2213,6 +2249,43 @@ return rc;
 fail:
 EXIUnlock(chan);fn_8021B170(chan,result);return result;
 }
+
+void fn_8021AE98(s32 chan, s32 result) {
+    extern u16 __CARDBlock[];
+    s32 EXILock(s32,s32,void*);
+    s32 fn_8021A1B8(void*);
+    s32 fn_8021AA44(s32);
+    void fn_8021B170(s32,s32);
+    void (*callback)(s32,s32);
+    u8 *card;
+    card=(u8*)__CARDBlock+chan*0x110;
+    switch(result) {
+    case 0:
+        if(++*(s32*)(card+0x24)<7) {
+            result=fn_8021AA44(chan);
+            if(result>=0) return;
+        } else {
+            result=fn_8021A1B8(card);
+        }
+        break;
+    case 1:
+        *(void(**)(s32,s32))(card+0xdc)=fn_8021AE98;
+        if(!EXILock(chan,0,__CARDLockCallback)) return;
+        *(void**)(card+0xdc)=0;
+        result=fn_8021AA44(chan);
+        if(result>=0) return;
+        break;
+    case -3:
+    case -5:
+        fn_8021B170(chan,result);
+        break;
+    }
+    callback=*(void(**)(s32,s32))(card+0xd0);
+    *(void**)(card+0xd0)=0;
+    __CARDPutControlBlock(card,result);
+    callback(chan,result);
+}
+
 #pragma opt_strength_reduction off
 
 void fn_8021B170(s32 chan, s32 result) {
