@@ -7785,13 +7785,7 @@ void fn_80255100(void *arg0) {
     u32 var_r0;
     u32 flags_hi;
     u32 flags_lo;
-    u32 t0;
-    u32 t1;
-
-    t0 = *(u32 *)((u8 *)arg0 + 0x118);
-    t1 = *(u32 *)((u8 *)arg0 + 0x114);
-    *(u32 *)((u8 *)arg0 + 0x118) = t0 | 8;
-
+    *(u64 *)((u8 *)arg0 + 0x114) |= 8ULL;
     if (*(u32 *)((u8 *)arg0 + 0x34) != 0) {
         flags_hi = *(u32 *)((u8 *)arg0 + 0x114);
         flags_lo = *(u32 *)((u8 *)arg0 + 0x118);
@@ -7802,9 +7796,7 @@ void fn_80255100(void *arg0) {
                 *(void **)((u8 *)arg0 + 0x50) = NULL;
                 Sound_DeactivateSynthVoice(arg0);
                 var_r0 = 1;
-            } else {
-                var_r0 = 0;
-            }
+            } else { var_r0 = 0; }
             if (var_r0 == 0 && (*(u64 *)((u8 *)arg0 + 0x114) & 4ULL)) {
                 Sound_DeactivateSynthVoice(arg0);
             }
