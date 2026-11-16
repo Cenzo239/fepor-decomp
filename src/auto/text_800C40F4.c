@@ -646,38 +646,16 @@ s32 Heap_GetFree(void) {
 }
 
 void fn_800C5300(void) {
-    s32 OSGetArenaLo(void);
-    s32 OSGetArenaHi(void);
-    void DebugPrint(void *, ...);
-    extern u8 lbl_802700D8[];
-    extern u32 lbl_80320B88[];
-    u32 *p;
-    u8 *base;
-
-    lbl_80367860 = (u32 *)OSGetArenaLo();
-    lbl_80367864 = (u32)OSGetArenaHi();
-    p = lbl_80320B88;
-    base = lbl_802700D8;
-    p[0] = 0;
-    p[1] = 0;
-    p[2] = 0;
-    p[3] = 0;
-    p[4] = 0;
-    p[5] = 0;
-    p[6] = 0;
-    p[7] = 0;
-    p[8] = 0;
-    p[9] = 0;
-    p[10] = 0;
-    p[11] = 0;
-    p[12] = 0;
-    p[13] = 0;
-    p[14] = 0;
-    lbl_80367868 = 0;
-    lbl_8036786C = 0;
-    p[15] = 0;
-    DebugPrint(base + 0x13D);
-    DebugPrint(base + 0x152, lbl_80367860, lbl_80367864);
+s32 OSGetArenaLo(void); s32 OSGetArenaHi(void); void DebugPrint(void *, ...);
+extern u8 lbl_802700D8[]; extern u32 lbl_80320B88[];
+u32 *p; int i;
+lbl_80367860=(u32*)OSGetArenaLo();
+lbl_80367864=(u32)OSGetArenaHi();
+p=lbl_80320B88;
+for(i=0;i<15;i++) p[i]=0;
+lbl_80367868=0; lbl_8036786C=0; p[15]=0;
+DebugPrint(lbl_802700D8+0x13D);
+DebugPrint(lbl_802700D8+0x152,lbl_80367860,lbl_80367864);
 }
 
 #pragma global_optimizer off
@@ -8493,17 +8471,14 @@ void fn_800DE9FC(void **arg0)
             cur = (void **)*cur;
         }
         *arg0 = cur;
-        return;
+    } else {
+        *arg0 = cur;
+        node = (void **)*arg0;
+        parent = (void **)((u32)node[2] & ~1);
+        if (node == (void **)*parent) {
+            *arg0 = parent;
+        }
     }
-    *arg0 = cur;
-    node = (void **)*arg0;
-    parent = (void **)((u32)node[2] & ~1);
-    if (node != (void **)*parent) {
-        goto done;
-    }
-    *arg0 = parent;
-done:
-    ;
 }
 #pragma peephole on
 void fn_800DEA50(s32 arg0, void *arg1) {
@@ -18243,24 +18218,24 @@ void fn_800F8538(void *arg0) {
 }
 
 void fn_800F86D4(void *arg0) {
-    extern void *gAiCmd;
-    extern s32 gAiCmdIsAlt;
-    extern u8 gAiState[];
-    u8 Status_Test(void *, s32);
+    extern void *lbl_803678F8;
+    extern s32 lbl_803678F4;
+    extern u8 lbl_8032B3C0[];
+    u8 fn_80105BC0(void *, s32);
     u8 *obj;
     u8 *state;
     s32 index;
 
     obj = (u8 *)arg0;
-    state = (u8 *)gAiCmd;
-    if (Status_Test(obj + 0x1BC, 9) != 0) {
+    state = (u8 *)lbl_803678F8;
+    if (fn_80105BC0(obj + 0x1BC, 9) != 0) {
         index = *(s32 *)(state + 4);
-        *(s32 *)&gAiState[(index << 2) + 8] = 0xB;
+        *(s32 *)&lbl_8032B3C0[(index << 2) + 8] = 0xB;
     } else {
         index = *(s32 *)(state + 4);
-        *(s32 *)&gAiState[(index << 2) + 8] = 0;
+        *(s32 *)&lbl_8032B3C0[(index << 2) + 8] = 0;
     }
-    if (gAiCmdIsAlt == 0) {
+    if (lbl_803678F4 == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
