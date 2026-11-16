@@ -749,16 +749,7 @@ void fn_8021EB88(s32 arg0, void *arg1)
 }
 
 #pragma peephole on
-void GXInitFifoBase(void* arg0, void* arg1, u32 arg2) {
-    u32 temp_r3;
-    u32* fifo_ptr;
-
-    fifo_ptr = (u32*)arg0;
-    temp_r3 = arg2 & 0xFFFF;
-    
-    fifo_ptr[3] = (u32)arg1;  // offset 0xC
-    fifo_ptr[4] = temp_r3;    // offset 0x10
-}
+void GXInitFifoBase(void *arg0, void *arg1, u32 arg2) { void fn_8021ED98(void *, s32, s32); void fn_8021ED28(void *, s32, s32); u32 *fifo = arg0; fifo[0] = (u32)arg1; fifo[1] = (u32)((u8 *)arg1 + (arg2 - 4)); fifo[2] = arg2; fifo[7] = 0; fn_8021ED98(arg0, arg2 - 0x4000, (arg2 >> 1) & ~31); fn_8021ED28(arg0, (s32)arg1, (s32)arg1); }
 
 void fn_8021ED28(void *arg0, s32 arg1, s32 arg2) {
     s32 OSDisableInterrupts(void);
@@ -1350,6 +1341,27 @@ void fn_802206F4(void) {
 u16 fn_80220970(void) {
     extern void *__peReg;
     return M2C_FIELD(__peReg, u16 *, 0xE);
+}
+
+void fn_8022097C(void) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void OSSleepThread(void *);
+void fn_802204F8(void);
+extern u8 lbl_80368798;
+extern u32 lbl_8036879C;
+u8 cmd = 0x61;
+u32 token = 0x45000002;
+s32 waitEnabled;
+s32 enabled = OSDisableInterrupts();
+*(volatile u8 *)0xCC008000 = cmd;
+*(volatile u32 *)0xCC008000 = token;
+fn_802204F8();
+lbl_80368798=0;
+OSRestoreInterrupts(enabled);
+waitEnabled=OSDisableInterrupts();
+while (!lbl_80368798) OSSleepThread(&lbl_8036879C);
+OSRestoreInterrupts(waitEnabled);
 }
 
 #ifndef GXWGFifo_DEFINED
