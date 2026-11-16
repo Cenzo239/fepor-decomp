@@ -196,6 +196,24 @@ s32 fn_80216CE8(s32 arg0, s32 arg1) {
     return 0;
 }
 
+s32 fn_80216E98(s32 arg0, s32 *arg1) {
+    s32 EXIDeselect(s32);
+    s32 EXIImm(s32, s32 *, s32, s32, s32);
+    s32 EXISelect(s32, s32, s32);
+    s32 EXISync(s32);
+    s32 command;
+    s32 error;
+    if (EXISelect(arg0, 0, 4) == 0) return -3;
+    command = 0x85000000;
+    error = !EXIImm(arg0, &command, 2, 1, 0);
+    error |= !EXISync(arg0);
+    error |= !EXIImm(arg0, arg1, 2, 0, 0);
+    error |= !EXISync(arg0);
+    error |= !EXIDeselect(arg0);
+    if (error != 0) return -3;
+    return 0;
+}
+
 s32 fn_80216F88(s32 arg0) {
     s32 EXIDeselect(s32);
     s32 EXIImm(s32, s32 *, s32, s32, s32);
