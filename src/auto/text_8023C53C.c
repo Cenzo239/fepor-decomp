@@ -3999,38 +3999,23 @@ void fn_80255054(void *arg0);
 void fn_80256FF0(Fn80256FF0Arg arg0);
 
 s32 fn_8024AD2C(s32 arg0, s32 arg1) {
-    s32 offset;
-    s32 ret;
-    u8 *base;
-
-    ret = 0;
-    switch (arg0) {
-    case 0:
-        offset = (u8)arg1 * 0x458;
-        base = (u8 *)gSynthVoices;
-        base += offset;
-        if (base[0x11c] == 0) {
-            fn_80262510((u8)arg1);
-            fn_80258488();
-            base = (u8 *)gSynthVoices;
-            base += offset;
-            if ((u32)arg1 == *(u32 *)&base[0xf4]) {
-                fn_80255054(base);
-            }
-        }
-        break;
-    case 1:
-        fn_80256FF0((u8)arg1);
-        break;
-    case 2:
-        ret = Sound_AllocStream(arg1);
-        break;
-    case 3:
-        fn_80262510((u8)arg1);
-        fn_80258488();
-        break;
-    }
-    return ret;
+s32 offset; s32 ret; u8 *base; u32 address;
+ret=0;
+switch(arg0) {
+case 0:
+offset=(u8)arg1*0x458;
+address=(u32)gSynthVoices; base=(u8*)(address+offset);
+if(base[0x11c]==0) {
+fn_80262510((u8)arg1); fn_80258488();
+address=(u32)gSynthVoices; base=(u8*)(address+offset);
+if((u32)arg1==*(u32*)(base+0xf4)) fn_80255054(base);
+}
+break;
+case 1: fn_80256FF0((u8)arg1); break;
+case 2: ret=Sound_AllocStream(arg1); break;
+case 3: fn_80262510((u8)arg1); fn_80258488(); break;
+}
+return ret;
 }
 
 void fn_8024ADFC(s32 arg0, u32 arg1) {
@@ -9295,57 +9280,18 @@ void fn_80256FF0(Fn80256FF0Arg arg0) {
 }
 
 s32 fn_80257224(u32 arg0) {
-    extern u8 gSoundReady;
-    extern VidList *vidListRoot;
-    extern s32 gSynthVoices;
-    void fn_80256FF0(Fn80256FF0Arg);
-    VidList *vl;
-    s32 result;
-    s32 root;
-    u8 *voice;
-    s32 next;
-    u32 cur;
-
-    result = -1;
-    if (gSoundReady != 0) {
-        if ((u32)(arg0 + 0x10000) != 0xFFFFU) {
-            vl = vidListRoot;
-            goto check;
-        loop:
-            if (vl->vid != arg0)
-                goto not_eq;
-            goto done;
-        not_eq:
-            if (vl->vid > arg0)
-                goto set_null;
-            vl = vl->next;
-        check:
-            if (vl != NULL)
-                goto loop;
-        set_null:
-            vl = NULL;
-        done:
-            if (vl == NULL) {
-                goto no_root;
-            }
-            root = (s32)vl->root;
-            goto have_root;
-        }
-    no_root:
-        root = -1;
-    have_root:
-        cur = (u32)root;
-        while ((u32)(cur + 0x10000) != 0xFFFFU) {
-            voice = (u8 *)gSynthVoices + (u8)cur * 0x458;
-            next = *(s32 *)(voice + 0xEC);
-            if (cur == *(u32 *)(voice + 0xF4)) {
-                fn_80256FF0((u8)cur);
-                result = 0;
-            }
-            cur = (u32)next;
-        }
-    }
-    return result;
+extern u8 gSoundReady; extern VidList *vidListRoot; extern s32 gSynthVoices; void fn_80256FF0(Fn80256FF0Arg);
+VidList *vl; s32 result=-1; s32 root; u8 *voice; s32 next; u32 cur;
+if(gSoundReady){
+if((u32)(arg0+0x10000)!=0xFFFFU){
+vl=vidListRoot;
+while(vl){if(vl->vid==arg0) goto found; if(vl->vid>arg0) break; vl=vl->next;} vl=NULL; found:
+if(vl){root=(s32)vl->root;goto have_root;}
+}
+root=-1;
+have_root: cur=(u32)root;
+while((u32)(cur+0x10000)!=0xFFFFU){voice=(u8*)gSynthVoices+(u8)cur*0x458;next=*(s32*)(voice+0xEC);if(cur==*(u32*)(voice+0xF4)){fn_80256FF0((u8)cur);result=0;}cur=(u32)next;}
+}return result;
 }
 
 void fn_802572E8(void)
@@ -16497,49 +16443,16 @@ void fn_80265430(s32 arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80265484(void) {
-    void OSRegisterVersion(char *);
-    void OSInitThreadQueue(void *);
-    void OSInitAlarm(void);
-    void OSRegisterResetFunction(void *);
-    void fn_80215F8C(void);
-    extern s32 lbl_80368B28;
-    extern char *lbl_803670D8;
-    extern u8 lbl_803669A0[];
-    extern u8 lbl_803668A0[];
-    extern s32 lbl_80368B2C;
-    extern u8 lbl_802A4DD8[];
-    s32 i;
-    u8 *buf;
-    u8 *chan;
-    u32 period;
-    s32 zero;
-
-    if (lbl_80368B28 == 0) {
-        lbl_80368B28 = 1;
-        OSRegisterVersion(lbl_803670D8);
-        period = *(u32 *)0x800000F8;
-        period >>= 2;
-        period = __mulhwu(0x431BDE83, period);
-        period >>= 15;
-        period = period * 0x3C;
-        period >>= 3;
-        chan = lbl_803669A0;
-        buf = lbl_803668A0;
-        zero = 0;
-        for (i = 0; i < 4; i++) {
-            *(u32 *)(chan + 0x34) = period;
-            *(u32 *)(chan + 0x30) = zero;
-            OSInitThreadQueue(chan + 0x24);
-            *(u8 **)(chan + 0xF8) = buf;
-            chan += 0x100;
-            buf += 0x40;
-        }
-        OSInitAlarm();
-        fn_80215F8C();
-        lbl_80368B2C = 0;
-        OSRegisterResetFunction(lbl_802A4DD8);
-    }
-}
+void OSRegisterVersion(char *); void OSInitThreadQueue(void *); void OSInitAlarm(void); void OSRegisterResetFunction(void *); void fn_80215F8C(void);
+extern s32 lbl_80368B28; extern char *lbl_803670D8; extern u8 lbl_803669A0[]; extern u8 lbl_803668A0[]; extern s32 lbl_80368B2C; extern u8 lbl_802A4DD8[];
+s32 zero; u32 period; u8 *chan; u8 *buf; s32 i;
+if(lbl_80368B28==0) {
+lbl_80368B28=1; OSRegisterVersion(lbl_803670D8);
+period=((*(u32*)0x800000F8 / 4)/125000 * 60)/8;
+zero=0;
+for(i=0;i<4;i++){chan=lbl_803669A0+i*0x100; buf=lbl_803668A0+i*0x40; *(u32*)(chan+0x34)=period; *(u32*)(chan+0x30)=zero; OSInitThreadQueue(chan+0x24); *(u8**)(chan+0xF8)=buf; }
+OSInitAlarm(); fn_80215F8C(); lbl_80368B2C=0; OSRegisterResetFunction(lbl_802A4DD8);
+}}
 #pragma use_lmw_stmw reset
 
 int fn_80265544(int arg0, int arg1, u32 arg2) {
