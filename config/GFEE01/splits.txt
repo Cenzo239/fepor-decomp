@@ -477,7 +477,10 @@ dolphin/os/OSSram_tail.c:
 	.text       start:0x802096A0 end:0x802098F8
 
 dolphin/os/OSSram_lockbits2.c:
-	.text       start:0x802098F8 end:0x80209A78
+	.text       start:0x802098F8 end:0x80209968
+
+dolphin/os/OSSram_lockbits3.c:
+	.text       start:0x80209968 end:0x80209A78
 
 dolphin/os/OSSram_lockbits.c:
 	.text       start:0x80209A78 end:0x80209AE8
