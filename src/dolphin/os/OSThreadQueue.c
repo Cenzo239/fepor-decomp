@@ -154,30 +154,21 @@ void OS_YieldThread(void) {
 }
 
 void fn_8020A740(void *arg0) {
-    void **r3 = (void **)arg0;
-    void **r4 = (void **)M2C_FIELD(arg0, void **, 0x2DC);
-    void **r5 = (void **)M2C_FIELD(arg0, void **, 0x2E0);
-    void **r6 = (void **)M2C_FIELD(arg0, void **, 0x2E4);
-
-    if (r5 == NULL) {
-        M2C_FIELD(r4, void **, 4) = r6;
-    } else {
-        M2C_FIELD(r5, void **, 0x2E4) = r6;
-    }
-
-    if (r6 == NULL) {
-        M2C_FIELD(r4, void **, 0) = r5;
-    } else {
-        M2C_FIELD(r6, void **, 0x2E0) = r5;
-    }
-
-    if ((void *)M2C_FIELD(r4, void **, 0) == NULL) {
-        extern s32 RunQueueBits_80368518;
-        s32 shift = 0x1F - M2C_FIELD(arg0, s32 *, 0x2D0);
-        RunQueueBits_80368518 &= ~(1 << shift);
-    }
-
-    M2C_FIELD(arg0, void **, 0x2DC) = NULL;
+s32 OSDisableInterrupts(void); void OSRestoreInterrupts(s32);
+void fn_802086A0(void*); void fn_8020AEC4(void*); void SelectThread_8020A2C4(s32);
+u8 *thread; s32 enabled; u8 *next; u8 *prev;
+enabled=OSDisableInterrupts(); thread=*(u8**)0x800000e4;
+OSClearContext((OSContext*)thread);
+if (*(u16*)(thread+0x2ca)&1) {
+prev=*(u8**)(thread+0x300); next=*(u8**)(thread+0x2fc);
+if(next==0) *(u8**)0x800000e0=prev; else *(u8**)(next+0x300)=prev;
+if(prev==0) *(u8**)0x800000dc=next; else *(u8**)(prev+0x2fc)=next;
+*(u16*)(thread+0x2c8)=0;
+} else { *(u16*)(thread+0x2c8)=8; *(void**)(thread+0x2d8)=arg0; }
+fn_802086A0(thread); fn_8020AEC4(thread+0x2e8);
+RunQueueHint_8036851C=1;
+__OSReschedule();
+OSRestoreInterrupts(enabled);
 }
 
 #pragma use_lmw_stmw on
@@ -349,6 +340,64 @@ s32 fn_8020A9E0(void *arg0)
     OSRestoreInterrupts(enabled);
     return prevSuspend;
 }
+
+void OSSleepThread(void *arg0) {
+s32 OSDisableInterrupts(void); void OSRestoreInterrupts(s32);
+s32 enabled; u8 *thread; u8 *cur; u8 *prev; u8 **queue=(u8**)arg0;
+enabled=OSDisableInterrupts(); thread=*(u8**)0x800000e4;
+*(u16*)(thread+0x2c8)=4; *(void**)(thread+0x2dc)=arg0;
+cur=queue[0];
+while(cur && *(s32*)(cur+0x2d0)<=*(s32*)(thread+0x2d0)) cur=*(u8**)(cur+0x2e0);
+if(cur==0) {
+prev=queue[1]; if(prev==0) queue[0]=thread; else *(u8**)(prev+0x2e0)=thread;
+*(u8**)(thread+0x2e4)=prev; *(u8**)(thread+0x2e0)=0; queue[1]=thread;
+} else {
+*(u8**)(thread+0x2e0)=cur; prev=*(u8**)(cur+0x2e4); *(u8**)(cur+0x2e4)=thread;
+*(u8**)(thread+0x2e4)=prev; if(prev==0) queue[0]=thread; else *(u8**)(prev+0x2e0)=thread;
+}
+RunQueueHint_8036851C=1; __OSReschedule(); OSRestoreInterrupts(enabled);
+}
+
+void OSClearStack(u8 fill) {
+    void *fn_80205B50(void);
+
+    u32 pattern;
+    u32 stack;
+    u32 *out;
+    u32 count;
+    u32 blocks;
+
+    pattern = ((u32)fill << 24) | ((u32)fill << 16) |
+              ((u32)fill << 8) | (u32)fill;
+    stack = (u32)fn_80205B50();
+    out = *(u32 **)((u8 *)*(void **)0x800000E4 + 0x308) + 1;
+    count = (stack + 3 - (u32)out) >> 2;
+
+    if ((u32)out < stack) {
+        blocks = count >> 3;
+        if (blocks != 0) {
+            do {
+                out[0] = pattern;
+                out[1] = pattern;
+                out[2] = pattern;
+                out[3] = pattern;
+                out[4] = pattern;
+                out[5] = pattern;
+                out[6] = pattern;
+                out[7] = pattern;
+                out += 8;
+            } while (--blocks != 0);
+        }
+
+        count &= 7;
+        if (count != 0) {
+            do {
+                *out++ = pattern;
+            } while (--count != 0);
+        }
+    }
+}
+
 #pragma use_lmw_stmw reset
 
 s64 OSGetTime(void) {
