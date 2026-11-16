@@ -196,6 +196,7 @@ void __init_user(void) {
     __init_cpp();
 }
 
+#pragma peephole off
 void __init_cpp(void)
 {
     extern void (*_ctors[])(void);
@@ -205,7 +206,7 @@ void __init_cpp(void)
         (*ctor)();
     }
 }
-
+#pragma peephole on
 void _ExitProcess(void) {
     M2C_UNK PPCHalt();
     PPCHalt();
