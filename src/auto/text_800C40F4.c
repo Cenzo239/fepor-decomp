@@ -2937,6 +2937,69 @@ void fn_800CB070(String *arg0) {
     fn_800C9A60(&str, -1);
 }
 
+void *fn_800CB16C(void) {
+    u64 *Item_GetFlagsPtr(void *);
+    u8 Status_Test(void *, s32);
+
+    extern u8 gBattleReplayActive;
+    extern u8 *gBattleReplayScene;
+    extern u32 gBattle[];
+
+    u8 *base;
+    void **slot;
+    void *obj;
+    void *inner;
+    s8 *p;
+    u64 bits;
+
+    if (gBattleReplayActive != 0) {
+        p = (s8 *)(gBattleReplayScene + 0x310);
+        if (*p != 0) {
+            return p;
+        }
+        return 0;
+    }
+
+    base = (u8 *)gBattle + 0x5C0;
+    if (base == NULL) {
+        return 0;
+    }
+
+    slot = (void **)(base + 0x28C);
+    bits = *Item_GetFlagsPtr(slot);
+
+    if ((bits & 0x20000000000ULL) != 0) {
+        base += 0x1BC;
+
+        if (Status_Test(base, 8) != 0) {
+            if (Status_Test(base, 9) == 0) {
+                return 0;
+            }
+        }
+    }
+
+    if (slot == NULL) {
+        return 0;
+    }
+
+    obj = *slot;
+    if (obj == NULL) {
+        return 0;
+    }
+
+    if (obj != NULL) {
+        inner = *(void **)obj;
+    } else {
+        inner = 0;
+    }
+
+    if (inner != NULL) {
+        return (u8 *)inner + 4;
+    }
+
+    return 0;
+}
+
 void *fn_800CB27C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
@@ -7085,6 +7148,63 @@ void fn_800DB1FC(void *arg0, void *arg1) {
     String_Assign((void *)((char *)arg0 + 0xAC), arg1, 0, -1);
 }
 
+void fn_800DB228(void *arg0) {
+    void *fn_800E7E4C(void *, void *);
+    M2C_UNK *String_CStr(void *);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    extern f32 lbl_80369E60;
+
+    u8 *self;
+    u8 *obj;
+    s32 offset;
+    s32 x;
+    s32 y;
+    s32 halfWidth;
+    f32 drawX;
+    f32 fontX;
+    f32 drawY;
+    void **vtable;
+
+    self = (u8 *)arg0;
+    obj = fn_800E7E4C(*(void **)self, self + 0x1C);
+    halfWidth = 0;
+
+    if (self[0xB9] != 0) {
+        halfWidth = -Text_MeasureWidth(
+            String_CStr(self + 0xAC),
+            -1,
+            lbl_80369E60
+        ) / 2;
+    }
+
+    x = *(s32 *)(self + 0x48) +
+        *(s32 *)(obj + 0x60);
+
+    drawX = (f32)x;
+    fontX = *(f32 *)(*(u8 **)(self + 0x38) + 0x68);
+    drawX += fontX;
+    drawX += (f32)halfWidth;
+
+    offset = (s32)drawX;
+    y = *(s32 *)(self + 0x4C) +
+        *(s32 *)(obj + 0x64);
+
+    drawY = (f32)*(s32 *)(self + 0xBC);
+
+    vtable = *(void ***)(self + 0x40);
+
+    ((void (*)(void *, s32, s32, void *, u8, s32, f32))
+        vtable[8])(
+        self,
+        offset,
+        y,
+        self + 0xAC,
+        self[0xB8],
+        6,
+        drawY
+    );
+}
+
 void fn_800DB520(void) {
 
 }
@@ -9323,17 +9443,10 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
 #pragma dont_inline reset
 #pragma cplusplus reset
 
-void fn_800DFC2C(void *arg0) {
-    void fn_800E01EC(s32, s32, u8 *);
-    u32 pad;
+void fn_800DFC2C(void *arg0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, u8 arg8) {
     u8 spC;
-    s32 base;
-    s32 idx;
-
-    spC = *(u8 *)&pad;
-    idx = *(s32 *)((u8 *)arg0 + 4);
-    base = *(s32 *)((u8 *)arg0 + 8);
-    fn_800E01EC(base, base + (idx << 2), &spC);
+    spC = arg8;
+    fn_800E01EC(*(s32 *)((u8 *)arg0 + 8), (*(s32 *)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 2)), &spC);
 }
 
 #pragma cplusplus on
@@ -11474,6 +11587,53 @@ s32 fn_800E5070(void *arg0, s32 arg1) {
     return M2C_FIELD(arg0, s32 *, 0xFC) + (arg1 * 0x1C);
 }
 
+#pragma auto_inline off
+#pragma global_optimizer off
+void *fn_800E509C(void *self, String *arg1, String *arg2) {
+    extern char lbl_802720E0[];
+    u32 strlen(const char *);
+    s32 String_Compare(String *, u32, u32, char *, u32);
+
+    u8 *entry;
+    u8 matched;
+    u32 index;
+
+    index = 0;
+
+    while (index < *(u32 *)((u8 *)self + 0xF8)) {
+        entry = *(u8 **)((u8 *)self + 0xFC) + index * 0x1C;
+        matched = 0;
+
+        if (*(u32 *)(entry + 0xC) == arg1->size) {
+            if (String_Compare((String *)(entry + 0xC), 0, *(u32 *)(entry + 0xC), arg1->data, arg1->size) == 0) {
+                matched = 1;
+            }
+        }
+
+        if (matched != 0) {
+            u32 emptyLen;
+            emptyLen = strlen(lbl_802720E0 + 5);
+            if (String_Compare(arg2, 0, arg2->size, lbl_802720E0 + 5, emptyLen) != 0) {
+                matched = 0;
+                if (*(u32 *)entry == arg2->size) {
+                    if (String_Compare((String *)entry, 0, *(u32 *)entry, arg2->data, arg2->size) == 0) {
+                        matched = 1;
+                    }
+                }
+                if (matched == 0) {
+                    goto next;
+                }
+            }
+            return entry;
+        }
+    next:
+        index += 1;
+    }
+
+    return NULL;
+}
+#pragma global_optimizer on
+#pragma auto_inline on
 void fn_800E51A8(void *arg0, void *arg1) {
     void String_Copy(void *, void *);
     void String_Init(void *, void *, void *);
@@ -13087,6 +13247,51 @@ void fn_800E8CEC(void *arg0) {
         (f32 *)(self + 0x254),
         (f32 *)(self + 0x104)
     );
+}
+
+void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
+    f32 PSVECDistance(f32 *, f32 *);
+    void fn_802031A8(f32 *, f32 *, f32 *);
+    void fn_802031E8(f32 *, f32 *);
+    void fn_802031CC(f32 *, f32 *, f32);
+
+    f32 destination[3];
+    f32 current[3];
+    f32 delta[3];
+    f32 distance;
+    f32 step;
+    u8 *self;
+
+    self = (u8 *)arg0;
+    step = arg2;
+
+    *(f32 *)(self + 0x78) = arg1[0];
+    *(f32 *)(self + 0x7C) = arg1[1];
+    *(f32 *)(self + 0x80) = arg1[2];
+
+    current[0] = *(f32 *)(self + 0xE4);
+    current[1] = *(f32 *)(self + 0xE8);
+    current[2] = *(f32 *)(self + 0xEC);
+
+    destination[0] = *(f32 *)(self + 0x78);
+    destination[1] = *(f32 *)(self + 0x7C);
+    destination[2] = *(f32 *)(self + 0x80);
+
+    distance = PSVECDistance(destination, current);
+
+    if (distance < step) {
+        *(s32 *)(self + 0x9C) = 0;
+    } else {
+        fn_802031A8(destination, current, delta);
+        fn_802031E8(delta, delta);
+        fn_802031CC(delta, delta, step);
+
+        *(f32 *)(self + 0x84) = delta[0];
+        *(f32 *)(self + 0x88) = delta[1];
+        *(f32 *)(self + 0x8C) = delta[2];
+
+        *(s32 *)(self + 0x9C) = (s32)(distance / step);
+    }
 }
 
 #pragma cplusplus on
@@ -18335,6 +18540,68 @@ void fn_800F8538(void *arg0) {
     }
 }
 
+void fn_800F85C8(void *arg0) {
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    extern u8 gAiState[];
+    extern u8 gUiContext[];
+
+    void *Item_GetByIid(char *);
+    s8 Unit_FindItemSlot(void *, void *);
+    s32 Item_TryCallUfx(s32, s32);
+    void fn_800FB96C(u8, s8, s8, void *, s8, s8, s8, s32, s32);
+
+    u8 *unit;
+    void *item;
+    s32 slot;
+    u8 x;
+    u8 y;
+
+    unit = (u8 *)arg0;
+
+    item = Item_GetByIid(
+        *(char **)(gAiCmd + 0x14)
+    );
+
+    slot = Unit_FindItemSlot(unit, item);
+
+    if ((s8)slot >= 0) {
+        if ((u8)Item_TryCallUfx((s32)unit, (s32)item) == 0) {
+            gAiState[0x21C] = 0;
+            goto advance;
+        }
+    }
+
+    slot = Unit_FindItemSlot(unit, item);
+
+    x = unit[0x19E];
+    y = unit[0x19F];
+
+    if (gAiState[0x21C] != 0) {
+        gUiContext[8] = 4;
+        gUiContext[0xA] = (u8)slot;
+    } else {
+        fn_800FB96C(
+            4,
+            (s8)x,
+            (s8)y,
+            unit,
+            (s8)x,
+            (s8)y,
+            (s8)slot,
+            0,
+            0
+        );
+    }
+
+advance:
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
+}
+
 void fn_800F86D4(void *arg0) {
     extern void *lbl_803678F8;
     extern s32 lbl_803678F4;
@@ -19992,6 +20259,65 @@ void Ai_ConfirmBestMove(s32 proc) {
     Process_ClearFunc(saved);
 }
 
+u8 fn_800FC040(void *arg0) {
+    void Unit_IsLowHp(void *);
+    s32 Unit_HasLowHpAi(void *);
+    s32 Ai_TryHandleLowHp(void *);
+    u8 Ui_CanConfirmUnitSelect(void *);
+
+    extern u8 gUiContext[];
+    extern u8 gAiState[];
+    extern u8 gBattleState[];
+    extern u8 lbl_8028E6F8[];
+
+    u8 *self;
+    u8 *ctx;
+    u8 *unit;
+    u8 *table;
+    u32 flags;
+    u32 index;
+    void *handler;
+
+    self = (u8 *)arg0;
+    ctx = gUiContext;
+    unit = *(u8 **)ctx;
+
+    if ((s8)unit[0x1A8] == 0) {
+        return 0;
+    }
+
+    Unit_IsLowHp(unit);
+
+    flags = *(u32 *)(unit + 0x254);
+
+    if ((flags & 1) != 0) {
+        if (Unit_HasLowHpAi(unit) != 0) {
+            table = lbl_8028E6F8 + self[0x30] * 0x18;
+            index = gAiState[0] * 4;
+            handler = *(void **)(table + index);
+
+            if (handler == (void *)Ai_TryHandleLowHp) {
+                return 0;
+            }
+        }
+    }
+
+    if ((gAiState[1] & 2) == 0) {
+        flags = *(u32 *)(unit + 0x254);
+
+        if ((flags & 0x03000000) != 0) {
+            return 0;
+        }
+    }
+
+    if (gBattleState[0x11] !=
+        (*(u8 **)(unit + 0x190))[8]) {
+        return 0;
+    }
+
+    return Ui_CanConfirmUnitSelect(ctx);
+}
+
 void fn_800FC150(void) {
     M2C_UNK fn_800FF918();
     fn_800FF918();
@@ -20692,6 +21018,63 @@ retry_loop:
         
         return result;
     }
+}
+
+void fn_800FE074(void *arg0, s32 arg1, s32 arg2) {
+    u8 Status_Test(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
+    void fn_800227F8(void *, void *);
+    void fn_800227D0(void *, s32, s32);
+    void fn_80022748(void *, s32);
+    s8 Unit_GetMov(void *);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    extern u8 gBattleMap[];
+
+    u8 *unit;
+    u8 *map;
+    s32 rangeType;
+    s32 movement;
+    s32 status14;
+    s32 status15;
+    u8 result;
+
+    unit = (u8 *)arg0;
+    rangeType = arg1;
+    movement = arg2;
+    map = gBattleMap;
+
+    result = Status_Test(unit + 0x1BC, 0x14);
+    status14 = result != 0;
+
+    result = Status_Test(unit + 0x1BC, 0x15);
+    status15 = result != 0;
+
+    Map_SelectRangeBuffer(gBattleMap, rangeType);
+
+    fn_800227F8(
+        gBattleMap,
+        *(void **)(unit + 0x18C)
+    );
+
+    fn_800227D0(gBattleMap, 0x21, 1);
+    fn_80022748(gBattleMap, 0);
+
+    if (*(u32 *)(unit + 0x254) & 0x20000) {
+        fn_800227D0(map, 0x37, 0x30);
+    }
+
+    if (movement == -1) {
+        movement = (s8)Unit_GetMov(unit);
+    }
+
+    Map_FloodMoveRange(
+        map,
+        unit[0x19E],
+        unit[0x19F],
+        (u16)movement,
+        status14,
+        status15
+    );
 }
 
 #pragma use_lmw_stmw on
@@ -22991,6 +23374,52 @@ s32 TagWin_OnCancel(void) {
     return 0;
 }
 
+#pragma global_optimizer off
+s32 TagWin_OnOk(void) {
+    void *fn_800DC3C0(void *);
+    void String_Init(String *, char *, void *);
+    char *String_CStr(String *);
+    void String_Copy(String *, String *);
+    void String_Destroy(String *, s32);
+    void fn_800D758C(void *);
+    void fn_800DA530(String *, String *, s32);
+    void fn_800DA368(void);
+    void fn_80232138(char *, ...);
+    extern void *lbl_80367918;
+    extern void *lbl_803678A8;
+    extern u16 *gWin3;
+    extern char TagWin_str[];
+
+    String s34;
+    String s28;
+    String s1C;
+    String s10;
+    void *scratchC;
+    void *scratch8;
+    char *cstr28;
+    s32 id;
+    void *inner;
+    char *cstr34;
+
+    String_Init(&s34, (char *)fn_800DC3C0(*(void **)((u8 *)lbl_80367918 + 0x424)), &scratchC);
+    String_Init(&s28, (char *)fn_800DC3C0(*(void **)((u8 *)lbl_803678A8 + 0x424)), &scratch8);
+    inner = *(void **)((u8 *)gWin3 + 0x424);
+    id = *(s32 *)((u8 *)inner + 0xB4);
+    fn_800D758C(lbl_80367918);
+    cstr28 = String_CStr(&s28);
+    cstr34 = String_CStr(&s34);
+    fn_80232138(TagWin_str, cstr34, cstr28, id);
+    String_Copy(&s1C, &s34);
+    String_Copy(&s10, &s28);
+    fn_800DA530(&s1C, &s10, id);
+    String_Destroy(&s10, -1);
+    String_Destroy(&s1C, -1);
+    fn_800DA368();
+    String_Destroy(&s28, -1);
+    String_Destroy(&s34, -1);
+    return 0;
+}
+#pragma global_optimizer on
 void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     /* Construct the ztool TagWin window and wire its TagList/Ok/Cancel controls. */
