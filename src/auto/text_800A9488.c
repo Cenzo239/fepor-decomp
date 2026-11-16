@@ -903,59 +903,41 @@ y2_cmp:
 #pragma use_lmw_stmw reset
 
 void fn_800AAB3C(void *arg0) {
-    u8 Item_GetMaxRange(void);
-    void Map_FillAttackRange(void *, u8, u8, u8);
-    void Map_FillLayer(void *, s32, s32);
-    void Map_SelectRangeBuffer(void *, s32);
-    void **Unit_GetHeldItemSlot(void *, s32);
-    u8 fn_8009339C(void *);
-    extern u16 gBattleMap;
-
-    s32 var_r27;
-    s8 var_r28;
-    s8 var_r29;
-    u8 var_r0;
-    u8 var_r0_2;
-    void **temp_r3;
-    void *temp_r3_2;
-    u8 temp_r31;
-
-    Map_FillLayer(&gBattleMap, 5, -1);
-    Map_FillLayer(&gBattleMap, 8, 0);
-    Map_SelectRangeBuffer(&gBattleMap, 6);
-    var_r29 = 0x64;
-    var_r28 = 0;
-    var_r27 = 0;
-loop_1:
-    temp_r3 = Unit_GetHeldItemSlot(arg0, var_r27);
-    if ((void *) *temp_r3 != NULL) {
-        if (fn_8009339C(arg0) != 0) {
-            temp_r3_2 = *temp_r3;
-            if (temp_r3_2 != NULL) {
-                var_r0 = M2C_FIELD(temp_r3_2, u8 *, 0x1D);
-            } else {
-                var_r0 = 0;
-            }
-            if (temp_r3_2 != NULL) {
-                var_r0_2 = Item_GetMaxRange();
-            } else {
-                var_r0_2 = 0;
-            }
-            if ((var_r29 > (s32) var_r0) || ((s32) var_r0_2 > var_r28)) {
-                if ((s32) var_r0 < var_r29) {
-                    var_r29 = (s8) var_r0;
-                }
-                if (var_r28 < (s32) var_r0_2) {
-                    var_r28 = (s8) var_r0_2;
-                }
-                Map_FillAttackRange(&gBattleMap, M2C_FIELD(arg0, u8 *, 0x19E), M2C_FIELD(arg0, u8 *, 0x19F), var_r0);
-            }
-        }
-        var_r27 += 1;
-        if (var_r27 < 4) {
-            goto loop_1;
-        }
-    }
+u8 Item_GetMaxRange(void *);
+void Map_FillAttackRange(void *, u8, u8, u8, u8);
+void Map_FillLayer(void *, s32, s32);
+void Map_SelectRangeBuffer(void *, s32);
+void **Unit_GetHeldItemSlot(void *, s32);
+u8 fn_8009339C(void *,void *);
+extern u8 gBattleMap[];
+s8 bestMin;
+s8 bestMax;
+s32 slot;
+u32 min,max;
+void **held;
+void *item;
+void *self;
+self=arg0;
+Map_FillLayer(gBattleMap,5,-1);
+Map_FillLayer(gBattleMap,8,0);
+Map_SelectRangeBuffer(gBattleMap,6);
+bestMin=100;
+bestMax=0;
+for(slot=0;slot<4;++slot) {
+held=Unit_GetHeldItemSlot(self,slot);
+item=*held;
+if(item==NULL) break;
+if(fn_8009339C(self,item)!=0) {
+item=*held;
+min=(u8)(item ? ((u8*)item)[0x1D]:0);
+max=(u8)(item ? Item_GetMaxRange(item):0);
+if(bestMin>(s32)min || (s32)max>bestMax) {
+if((s32)min<bestMin) bestMin=(s8)min;
+if(bestMax<(s32)max) bestMax=(s8)max;
+Map_FillAttackRange(gBattleMap,((u8*)self)[0x19E],((u8*)self)[0x19F],min,max);
+}
+}
+}
 }
 
 void fn_800AAC64(void *arg0) {
@@ -1888,6 +1870,25 @@ void fn_800AC810(void *arg0) {
             Ui_ShowUnitInfoPopup(gUnitInfoPopup, entry + 4, (f32)x, (f32)(y + 0x28));
         }
     }
+}
+
+void fn_800ACBD8(void *arg0) {
+extern u8 lbl_80312ACC[];
+s32 j;
+s32 i;
+u8 *entry;
+register u8 *row;
+((u8*)arg0)[0x42]=0;
+row=lbl_80312ACC;
+i=0;
+((u8*)arg0)[0x41]=0;
+for(;i<2;++i,row+=0x80) {
+entry=row;
+for(j=0;j<8;entry+=0x10,++j) {
+if(j<4 && ((u8*)arg0)[0x44]!=0) entry[0xC]=0;
+else entry[0xC]=(*(u32*)(entry+4)!=0);
+}
+}
 }
 
 void fn_800ACCF8(void) {
