@@ -9573,16 +9573,16 @@ s32 MapObj_IsHidden(void *arg0) {
     return (M2C_FIELD(arg0, u8 *, 2) & 3) != 0;
 }
 
-#pragma optimization_level 1
+#pragma global_optimizer off
 s32 fn_80049D84(s32 arg0) {
     arg0 = *(s32 *)(arg0 + 0x10);
     arg0 = *(s32 *)(arg0 + 0xBC);
-    if ((arg0 & 0x400) == 0) {
-        return (arg0 >> 9) & 1;
+    if (arg0 & 0x400) {
+        return 0;
     }
-    return 0;
+    return (arg0 >> 9) & 1;
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 void *fn_80049DA4(s32 arg0, s32 arg1, u32 arg2) {
     void strcpy(void *, s32);
     void strcat(void *, s32);
