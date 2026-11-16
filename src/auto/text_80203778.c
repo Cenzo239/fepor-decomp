@@ -201,6 +201,10 @@ loop_1:
 void PPCMtmmcr0(u32 arg0) {
 }
 
+void PPCMtmmcr1(void) {
+    M2C_ERROR(/* unknown instruction: mtspr MMCR1, $r3 */);
+}
+
 void PPCMtpmc3(u32 arg0) {
     M2C_ERROR(/* unknown instruction: mtspr PMC3, $r3 */);
 }
@@ -506,11 +510,11 @@ s32 __OSPSInit(void) {
 }
 
 volatile u32 __PIRegs[64] : 0xCC006000;
+#pragma peephole off
 u8 fn_80204410(void) {
-    volatile u32 *di = __PIRegs;
-    return (u8)di[9];
+    return (u8)__PIRegs[9];
 }
-
+#pragma peephole on
 void OSRegisterVersion(s32 arg0) {
     extern u32 lbl_80366F24;
     OSReport(&lbl_80366F24, (u32)arg0);
@@ -2517,6 +2521,13 @@ s32 Config24MB(void) {
     // Set up MSR bits to enable interrupt and other required features for 24MB mode on GameCube
     // The function returns 0 always, but the logic here sets up proper hardware registers.
     return 0;
+}
+
+s32 RealMode(s32 arg0) {
+    M2C_ERROR(/* unknown instruction: mtsrr0 $r3 */);
+    M2C_ERROR(/* unknown instruction: mfmsr $r3 */);
+    M2C_ERROR(/* unknown instruction: rfi */);
+    return M2C_ERROR(/* unknown instruction: mtsrr1 $r3 */);
 }
 
 void fn_802086A0(void* arg0) {
