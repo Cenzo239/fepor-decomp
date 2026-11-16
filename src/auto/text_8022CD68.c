@@ -2681,25 +2681,7 @@ void strcat(u8 *dest, u8 *src)
     }
 }
 
-void Str_CopyPad(char *dest, const char *src, s32 count)
-{
-    char *dst = dest - 1;
-    const char *srcPtr = src - 1;
-
-    count++;
-
-    while (--count != 0) {
-        char value = *++srcPtr;
-        *++dst = value;
-
-        if (value == '\0') {
-            while (--count != 0) {
-                *++dst = '\0';
-            }
-            return;
-        }
-    }
-}
+char *Str_CopyPad(char *dest, const char *src, s32 count) { const unsigned char *s=(const unsigned char*)src-1; unsigned char *d=(unsigned char*)dest-1; count++; while (--count != 0) { unsigned char value=*++s; *++d=value; if (value==0) { while (--count != 0) *++d=0; return dest; } } return dest; }
 
 void strcpy(s32 arg0, s32 arg1) {
     u32 r3_r4_diff;
