@@ -217,32 +217,19 @@ s32 TRKMessageSend(void *arg0)
     return 0;
 }
 
-void fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
-    s32 var_r29;
-    u32 temp_r0;
-    u32 var_r30;
-    s32 var_r31;
-    
-    var_r29 = 0;
-    if (arg0 != NULL) {
-        for (;;) {
-            u32 temp_r3 = *(u32 *)((char *)arg0 + 0xC);
-            if (temp_r3 == 0)
-                break;
-            var_r30 = 1;
-            var_r31 = 0;
-            temp_r0 = *(u32 *)((char *)arg0 + 0x8) - temp_r3;
-            if (temp_r0 < 1) {
-                var_r31 = 0x302;
-                var_r30 = temp_r0;
-            }
-            fn_80003488(arg1 + var_r29, (char *)arg0 + temp_r3 + 0x10, var_r30);
-            var_r29 += 1;
-            if (var_r29 >= arg2)
-                break;
-            *(u32 *)((char *)arg0 + 0xC) = temp_r3 + var_r30;
-        }
-    }
+s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
+ s32 error; u32 count; s32 i=0; s32 result=0;
+ while (result==0 && i<arg2) {
+ u32 pos=*(u32 *)((u8 *)arg0+0xC);
+ u32 remaining;
+ count=1; error=0;
+ remaining=*(u32 *)((u8 *)arg0+8)-pos;
+ if (remaining>=count) { } else { error=0x302; count=remaining; }
+ fn_80003488(arg1+i, &((u8 *)arg0)[pos+0x10], count);
+ *(u32 *)((u8 *)arg0+0xC)+=count;
+ result=error; i++;
+ }
+ return result;
 }
 
 void fn_802264B4(void* arg0, void** arg1)
@@ -563,6 +550,47 @@ s32 fn_80226E24(u8 *arg0) {
 }
 
 s32 TRKInitializeDispatcher(void) {
+    return 0;
+}
+
+s32 fn_80227024(void *arg0) {
+ extern char gTRK_str_SerialIO[];
+ void fn_8022B4A0(u8);
+ s32 TRK_cc_write(void *, s32);
+ void *memset(void *, int, u32);
+ struct { u32 size; u8 command; u8 pad[3]; u8 error; u8 rest[55]; } reply;
+ u8 enabled=*((u8 *)arg0+0x1C);
+ char *strings=gTRK_str_SerialIO;
+ s32 (*report)(u8 *)=fn_80226E24;
+ if (*((u8 *)arg0+0x18)==1) {
+ report((u8 *)strings);
+ if (enabled) report((u8 *)strings+0x20);
+ else report((u8 *)strings+0x28);
+ fn_8022B4A0(enabled);
+ }
+ memset(&reply,0,0x40);
+ reply.command=0x80; reply.size=0x40; reply.error=0;
+ TRK_cc_write(&reply,0x40);
+ return 0;
+}
+
+s32 fn_802270CC(void) {
+    s32 fn_80228DF8(void);
+    s32 TRK_cc_write(s32, s32);
+    u8 buffer[0x40];
+    s8 status;
+    switch (fn_80228DF8()) {
+    case 0: status = 0; break;
+    case 0x704: status = 0x21; break;
+    case 0x705: status = 0x22; break;
+    case 0x706: status = 0x20; break;
+    default: status = 1; break;
+    }
+    memset(buffer, 0, 0x40);
+    buffer[4] = 0x80;
+    *(u32 *)buffer = 0x40;
+    buffer[8] = status;
+    TRK_cc_write((s32)buffer, 0x40);
     return 0;
 }
 
@@ -1281,6 +1309,18 @@ void TRKInterruptHandler(void)
 {
     // This is a stub for now - need to properly decompile this interrupt handler
     return;
+}
+
+void TRKExceptionHandler(u16 exception) {
+ extern u8 gTRKExceptionStatus_8029E574[];
+ u32 pc=__mfspr(26);
+ *(u16 *)(gTRKExceptionStatus_8029E574+8)=exception;
+ *(u32 *)gTRKExceptionStatus_8029E574=pc;
+ if (exception==0x200 || exception==0x300 || exception==0x400 ||
+ exception==0x600 || exception==0x700 || exception==0x800 ||
+ exception==0x1000 || exception==0x1100 || exception==0x1200 || exception==0x1300)
+ __mtspr(26,pc+4);
+ gTRKExceptionStatus_8029E574[0xD]=1;
 }
 
 void TRKInterruptHandlerEnableInterrupts(void) {
