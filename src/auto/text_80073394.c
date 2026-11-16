@@ -66,13 +66,7 @@ s32 fn_80073474(s32 unused, s32 arg1) {
     return 5;
 }
 
-u8 fn_800734B0(void) {
- u8 fn_801E3620(void *);
- extern u8 gSystemSave[];
- u8 result;
- if(fn_801E3620(gSystemSave)) result=0; else result=2;
- return result;
-}
+u8 fn_800734B0(void) { u8 fn_801E3620(void*); extern u8 gSystemSave[]; s32 result; u8 ready=fn_801E3620(gSystemSave); result=2; if(ready!=0) result=0; return (u8)result; }
 
 void fn_800734EC(void) {
     M2C_UNK Msg_Expand(void *);
