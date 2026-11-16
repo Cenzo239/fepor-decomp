@@ -618,51 +618,30 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     }
 }
 
-void fn_801505A8(s32 arg0, s32 arg1, s32 arg2) {
-    // Analyzing the assembly:
-    // It seems to be working with pointers in r3,r4,r5
-    // Looking at r3,r4,r5 registers usage, this looks like C++ method with multiple parameters
-    // Based on common patterns for this game, it's probably a unit or player class method
-    
-    s32 temp_r3 = arg0;
-    s32 temp_r4 = arg1;
-    s32 temp_r5 = arg2;
-    
-    if (temp_r3 < 0) {
-        return;
-    }
-    
-    if (temp_r4 < 0) {
-        return;
-    }
-    
-    // The function seems to be doing some kind of initialization or update
-    // based on the presence of calls to other functions.
-    
-    // It's very similar to fn_80150014 and fn_801502A0 which are also
-    // handling units and seem related
-    
-    if (temp_r5 < 0) {
-        return;
-    }
-    
-    // Based on patterns from similar functions, it looks like this does some 
-    // initialization of unit or entity data with values pulled from the stack parameters
-    // The calls here are likely to helper functions in that file or elsewhere
-    
-    // Try to match the assembly by handling r3,r4,r5 carefully:
-    temp_r3 = arg0;
-    temp_r4 = arg1; 
-    temp_r5 = arg2;
-    
-    if (temp_r3 == 0) {
-        temp_r3 = 1;
-    }
-    
-    // Additional processing logic here
-    // The original assembly shows specific register usage and flow that we need to preserve
-    
-    return;
+void fn_801505A8(void *arg0,void *arg1) {
+typedef struct {u32 x,y,z;} Triple;
+typedef struct {Triple position; Triple rotation; f32 a,b,c,d; u8 e,f,g,h;} Entry;
+Entry *b;
+Entry *a;
+s32 innerOffset, outerOffset;
+u8 *src=*(u8 **)((u8 *)arg0+0x54);
+u8 *dst=*(u8 **)((u8 *)arg1+0x54);
+u8 *header;
+u8 *group;
+s32 i,j;
+if(src==0 || dst==0) return;
+header=*(u8 **)(src+0x34);
+group=header+8;
+for(i=0,outerOffset=0;i<*(u16 *)(header+6);outerOffset+=4,i++,group+=0x34) {
+for(j=0,innerOffset=0;j<*(u16 *)(group+0x1e);j++,innerOffset+=0x2c) {
+a=(Entry *)((u8 *)*(Entry **)(outerOffset+*(u32 *)(src+0x38))+innerOffset);
+b=(Entry *)((u8 *)*(Entry **)(outerOffset+*(u32 *)(dst+0x38))+innerOffset);
+b->position=a->position;
+b->rotation=a->rotation;
+b->a=a->a; b->b=a->b; b->c=a->c; b->d=a->d;
+b->e=a->e; b->f=a->f; b->g=a->g; b->h=a->h;
+}
+}
 }
 
 s32 fn_801506AC(void* arg0) {
@@ -5614,10 +5593,10 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     void Prim2D_EndPrim(void);
     extern f64 lbl_8036A868;
     extern f32 lbl_8036A870;
-    s32 sp8;
-    f32 a, b, c, d;
+    s32 packedColor;
+    s32 a, b, c, d;
+    f32 half;
 
-    (void)lbl_8036A868;
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(arg4 | 2));
     Prim2D_PrepareTex();
@@ -5626,10 +5605,12 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     b = arg1;
     c = arg2;
     d = arg3;
-    Prim2D_SetPosCorners(lbl_8036A870 + (f32)a, lbl_8036A870 + (f32)b, lbl_8036A870 + (f32)c, lbl_8036A870 + (f32)d, lbl_8036A870);
-    sp8 = *arg5;
-    Prim2D_SetColorPacked(&sp8);
+    half = lbl_8036A870;
+    Prim2D_SetPosCorners(half + (f32)a, half + (f32)b, half + (f32)c, half + (f32)d, half);
+    packedColor = *arg5;
+    Prim2D_SetColorPacked(&packedColor);
     Prim2D_EndPrim();
+    (void)lbl_8036A868;
 }
 #pragma use_lmw_stmw reset
 void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s32 *arg6, s32 arg7) {
