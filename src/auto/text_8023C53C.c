@@ -13290,53 +13290,28 @@ s32 fn_80260EA8(s32 arg0) {
 }
 
 u16 fn_80260F18(void *arg0, s32 arg1) {
-    s32 mapped;
-    s32 key;
-
-    mapped = arg1;
-    switch ((u8)arg1) {
-    case 0x80:
-        mapped = 0x80;
-        break;
-    case 0x81:
-        mapped = 0x82;
-        break;
-    case 0x82:
-        mapped = 0xa0;
-        break;
-    case 0x83:
-        mapped = 0xa1;
-        break;
-    case 0x84:
-        mapped = 0x83;
-        break;
-    case 0x85:
-        mapped = 0x84;
-        break;
-    case 0x86:
-        mapped = 0xa2;
-        break;
-    case 0x87:
-        mapped = 0xa3;
-        break;
-    case 0x88:
-        mapped = 0xa4;
-        break;
-    }
-
-    key = (u8)mapped;
-    if (key >= 0xa1) {
-        if (key == 0xa1) {
-            return (u16)((*(s16 *)((u8 *)arg0 + 0x1d4) << 1) + 0x2000);
-        }
-    } else if (key >= 0xa0) {
-        return (u16)((*(s16 *)((u8 *)arg0 + 0x1c8) << 1) + 0x2000);
-    }
-
-    if (((u8 *)arg0)[0x121] == 0xff) {
-        return 0;
-    }
-    return Sound_GetChanParam((u8)arg1, ((u8 *)arg0)[0x121], ((u8 *)arg0)[0x122]);
+u32 Sound_GetChanParam(s32, u8, u8);
+s32 mapped=arg1;
+u32 result;
+switch ((u8)arg1) {
+case 128: mapped=128; break;
+case 129: mapped=130; break;
+case 130: mapped=160; break;
+case 131: mapped=161; break;
+case 132: mapped=131; break;
+case 133: mapped=132; break;
+case 134: mapped=162; break;
+case 135: mapped=163; break;
+case 136: mapped=164; break;
+}
+switch ((u8)mapped) {
+case 0xa0: return (u16)((*(s16 *)((u8 *)arg0+0x1c8)<<1)+0x2000);
+case 0xa1: return (u16)((*(s16 *)((u8 *)arg0+0x1d4)<<1)+0x2000);
+default:
+if (((u8 *)arg0)[0x121]!=0xff) result=(u16)Sound_GetChanParam(arg1,((u8 *)arg0)[0x121],((u8 *)arg0)[0x122]);
+else result=0;
+return result;
+}
 }
 
 s32 fn_80261014(u32 *arg0, u8 arg1, u8 arg2, u32 arg3) {
@@ -14021,44 +13996,15 @@ void fn_80261C6C(s32 arg0, s32 arg1) {
 }
 
 void fn_80261C98(u32 arg0, s16 *arg1, s16 *arg2) {
-    f32 fn_80261398(f32);
-    f32 fn_80261344(f32);
-    extern f32 lbl_8036C350;
-    extern f32 lbl_8036C354;
-    extern f32 lbl_8036C358;
-    extern f32 lbl_8036C35C;
-    extern f32 lbl_8036C360;
-    extern f32 lbl_8036C364;
-
-    f32 temp_f31;
-    f32 var_f0;
-    f32 var_f3;
-    f32 t1;
-    f32 t2;
-    f32 pad;
-
-    temp_f31 = lbl_8036C350 - fn_80261398((lbl_8036C354 * (f32)arg0) / lbl_8036C358);
-    if (temp_f31 > lbl_8036C35C) {
-        var_f0 = fn_80261344((temp_f31 * temp_f31) - lbl_8036C35C) - temp_f31;
-    } else {
-        var_f0 = lbl_8036C360;
-    }
-    var_f3 = lbl_8036C35C;
-    if (var_f0 > var_f3) {
-    } else {
-        var_f3 = lbl_8036C360;
-        if (var_f0 < var_f3) {
-        } else {
-            var_f3 = var_f0;
-        }
-    }
-    t2 = -var_f3;
-    t1 = lbl_8036C35C + var_f3;
-    pad = lbl_8036C364;
-    t2 = pad * t2;
-    t1 = pad * t1;
-    *arg1 = (s16)t1;
-    *arg2 = (s16)t2;
+f32 fn_80261398(f32); f32 fn_80261344(f32);
+extern f32 lbl_8036C350,lbl_8036C354,lbl_8036C358,lbl_8036C35C,lbl_8036C360,lbl_8036C364;
+f32 a,b,c; s16 x,y;
+a=lbl_8036C350-fn_80261398(lbl_8036C354*(f32)arg0/lbl_8036C358);
+if(a>lbl_8036C35C) b=fn_80261344(a*a-lbl_8036C35C)-a; else b=lbl_8036C360;
+c=b>lbl_8036C35C?lbl_8036C35C:b<lbl_8036C360?lbl_8036C360:b;
+x=lbl_8036C364*(lbl_8036C35C+c);
+y=lbl_8036C364*-c;
+*arg1=x; *arg2=y;
 }
 
 void fn_80261D90(s32 arg0, u8 arg1, u16 arg2, u16 arg3)
