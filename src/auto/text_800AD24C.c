@@ -9558,6 +9558,7 @@ s32 Event_GetString(void *arg0, u16 arg1) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 8), s32 *, 0x24) + arg1;
 }
 
+#pragma global_optimizer off
 void fn_800C2750(void) {
     M2C_UNK fn_80014000(s32, s32);
     M2C_UNK fn_80013F6C(void *, s32);
@@ -9600,7 +9601,7 @@ void fn_800C2750(void) {
     ScriptCtx_Begin(lbl_8026FE18 + 0x1D6);
     ScriptCtx_Call();
 }
-
+#pragma global_optimizer reset
 extern u8 lbl_8028D768[16];
 void fn_800C28A0(s32 arg0) {
     void Process_CreateChild(void *, s32);
@@ -10164,6 +10165,36 @@ void Fx_SetVolume(s32 slot, u16 volume) {
                 if ((u16)nest == 0) {
                     OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys + 0x128));
                 }
+            }
+        }
+    }
+}
+
+void fn_800AFAFC(s32 arg0, u8 arg1) {
+    void fn_8024CE60(void *, s32, u8, u8, s32);
+    extern u16 gSoundSys[4976];
+    extern f32 lbl_80369CB4;
+    u8 *e2;
+    f32 f;
+    f32 f31;
+
+    e2 = *(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C;
+    if (*(u16 *)e2 != 0) {
+        *(u16 *)(e2 + 6) = arg1;
+        if (*(u16 *)e2 & 8) {
+            if (*(u16 *)(e2 + 0x1E) == 1) {
+                fn_8024CE60(*(void **)(e2 + 0x50), (s32)*(f32 *)(e2 + 0x10), arg1, (u8)*(u16 *)(e2 + 8), 0);
+            } else {
+                f = *(f32 *)(e2 + 0x10);
+                f31 = f;
+                if (arg1 < 0x40) {
+                    f31 = ((f32)arg1 * f) / lbl_80369CB4;
+                }
+                if ((u32)(arg1 - 0x40) >> 31 == 0) {
+                    f = ((f32)(s32)(0x7F - arg1) * f) / lbl_80369CB4;
+                }
+                fn_8024CE60(*(void **)(e2 + 0x50), (s32)f, 0, (u8)*(u16 *)(e2 + 8), 0);
+                fn_8024CE60(*(void **)(e2 + 0xD8), (s32)f31, 0x7F, (u8)*(u16 *)(e2 + 8), 0);
             }
         }
     }
