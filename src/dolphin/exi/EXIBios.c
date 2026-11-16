@@ -710,56 +710,23 @@ s32 EXISelect(s32 chan, u32 dev, u32 freq)
     return 1;
 }
 
-void EXIDeselect(void)
-{
-    u32 *ecb;
-    u32 mask;
-    s32 channel;
-    u32 status;
-
-    BOOL enabled;
-
-    ecb = (u32 *)Ecb_8033E188;
-    channel = 0;
-
-    // Disable interrupts
-    enabled = OSDisableInterrupts();
-    
-    while (channel < 3) {
-        // Get mask for this channel
-        mask = 1 << (channel + 0x1A);
-        
-        // Check if the channel is busy
-        status = ecb[channel * 8 + 3];  // offset 0xc, 3rd word of channel structure
-        
-        if ((status & 0x20000000) != 0) {  // bit 29
-            goto restore_interrupts;
-        }
-        
-        // Clear the EXI channel
-        ecb[channel * 8 + 3] = status & ~0x20000000;  // clear bit 29
-        
-        // Get device ID if available
-        if (channel != 0) {
-            // Set up the EXI transaction
-            ecb[channel * 8 + 3] = (status & ~0x10000000) | 0x40000000;
-            
-            status = ecb[channel * 8 + 3];
-            if ((status & 0x10000000) == 0) {  // bit 28
-                goto restore_interrupts;
-            }
-        }
-        
-        // Perform EXI probe
-        if (channel <= 1) {
-            __EXIProbe(channel);
-        }
-        
-        channel++;
-    }
-
-restore_interrupts:
-    OSRestoreInterrupts(enabled);
+s32 EXIDeselect(s32 channel) {
+ u32 csr;
+ s32 enabled;
+ EXIControl *exi;
+ s32 chan = channel;
+ exi = &Ecb_8033E188[chan];
+ enabled = OSDisableInterrupts();
+ if (!(exi->state & 4)) { OSRestoreInterrupts(enabled); return 0; }
+ exi->state &= ~4;
+ csr = __EXIRegs[chan * 5];
+ __EXIRegs[chan * 5] = csr & 0x405;
+ if (exi->state & 8) {
+ switch (chan) { case 0: __OSUnmaskInterrupts(0x100000); break; case 1: __OSUnmaskInterrupts(0x20000); break; }
+ }
+ OSRestoreInterrupts(enabled);
+ if (chan != 2 && (csr & 0x80)) { if (__EXIProbe(chan)) return 1; else return 0; }
+ return 1;
 }
 
 void EXIIntrruptHandler(s16 interrupt, OSContext *context)
@@ -1281,6 +1248,7 @@ block_42:
     }
 }
 
+#pragma global_optimizer off
 s32 InitializeUART(void) {
     u32 OSGetConsoleType(void);
     extern u32 lbl_80368808;
@@ -1288,7 +1256,8 @@ s32 InitializeUART(void) {
     extern u32 lbl_80368810;
     extern u32 lbl_80368814;
     u32 magic;
-    s32 zero;
+    s32 result;
+    s32 ret;
 
     if ((u32)(lbl_80368814 + 0x5A010000) == 0x5AU) {
         return 0;
@@ -1298,10 +1267,14 @@ s32 InitializeUART(void) {
         return 2;
     }
     magic = 0xA5FF005A;
-    zero = 0;
+    result = 0;
     lbl_80368810 = magic;
-    lbl_80368808 = zero;
-    lbl_8036880C = 1;
-    return zero;
+    {
+        u32 one = 1;
+        lbl_80368808 = result;
+        ret = 0;
+        lbl_8036880C = one;
+        return ret;
+    }
 }
-
+#pragma global_optimizer reset
