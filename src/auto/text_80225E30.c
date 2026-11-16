@@ -672,19 +672,67 @@ void TRKGetInput(void)
     }
 }
 
+s32 fn_80226CE4(void) {
+s32 fn_8022B0F0(void);
+void TRKSetBufferPosition(void *,u32);
+s32 fn_8022B0B4(s32,s32);
+s32 fn_80226A2C(s32 *, s32 *);
+s32 TRKAppendBuffer(void *,void *,s32);
+void MWTRACE(s32,const char *,...);
+void fn_8022699C(s32);
+u8 body[0x880];
+u8 header[0x40];
+s32 id;
+s32 buffer;
+s32 result;
+s32 remaining;
+char *strings=(char *)lbl_802822F0;
+if(fn_8022B0F0()<=0) return -1;
+result=fn_80226A2C(&id,&buffer);
+MWTRACE(4,strings+0xD0,result);
+TRKSetBufferPosition((void *)buffer,0);
+if(fn_8022B0B4((s32)header,0x40)==0) {
+TRKAppendBuffer((void *)buffer,header,0x40);
+result=id;
+remaining=*(s32 *)header-0x40;
+if(remaining>0) {
+MWTRACE(1,strings+0xF4,remaining);
+if(fn_8022B0B4((s32)body,*(s32 *)header-0x40)==0)
+TRKAppendBuffer((void *)buffer,body,*(s32 *)header);
+else { MWTRACE(8,strings+0x110); fn_8022699C(result); result=-1; }
+}
+} else { MWTRACE(8,strings+0x144); fn_8022699C(result); result=-1; }
+MWTRACE(1,strings+0x16C,result);
+return result;
+}
+
 void usr_put_initialize(void) {
 
 }
 
+#pragma global_optimizer off
 s32 fn_80226E24(u8 *arg0) {
- void fn_80227FD0(s32); s32 fn_80227FDC(void); void OSReport(char *);
- char buffer[2]; s32 result=0; s32 ch;
- while (result==0 && (ch=(s8)*arg0++)!=0) {
- s32 saved=fn_80227FDC(); buffer[0]=ch; buffer[1]=0;
- fn_80227FD0(0); OSReport(buffer); fn_80227FD0(saved); result=0;
- } return result;
-}
+    void fn_80227FD0(s32);
+    s32 fn_80227FDC(void);
+    void OSReport(char *);
+    char buffer[2];
+    s32 ch;
+    s32 saved;
+    s32 result;
 
+    result = 0;
+    while (result == 0 && (ch = (s8)*arg0++) != 0) {
+        saved = fn_80227FDC();
+        buffer[0] = ch;
+        buffer[1] = 0;
+        fn_80227FD0(0);
+        OSReport(buffer);
+        fn_80227FD0(saved);
+        result = 0;
+    }
+    return result;
+}
+#pragma global_optimizer reset
 s32 TRKInitializeDispatcher(void) {
     return 0;
 }
@@ -1260,6 +1308,40 @@ s32 fn_802281A4(s32 arg0, s32 *arg1) {
     }
     fn_8022699C(spC);
     return err;
+}
+
+s32 fn_8022828C(u32 arg0, s8 arg1, u32 arg2, s32 *arg3) {
+#pragma push
+#pragma use_lmw_stmw on
+void *TRKGetBuffer(s32);
+s32 TRKAppendBuffer(void *, void *, s32);
+void fn_8022699C(s32);
+s32 fn_80226A2C(s32 *, s32 *);
+s32 fn_802283A8(s32, s32 *, s32, s32, s32);
+u8 msg[0x40];
+s32 sp10, spC, sp8;
+s32 err;
+void *buf;
+memset(msg,0,0x40);
+*(s32 *)arg2=0;
+msg[4]=0xD2;
+*(s32 *)msg=strlen((char *)arg0)+0x41;
+msg[8]=arg1;
+*(u16 *)(msg+12)=strlen((char *)arg0)+1;
+fn_80226A2C(&spC,&sp8);
+err=TRKAppendBuffer((void *)sp8,msg,0x40);
+if(err==0) err=TRKAppendBuffer((void *)sp8,(void *)arg0,strlen((char *)arg0)+1);
+if(err==0){
+*arg3=0;
+err=fn_802283A8(sp8,&sp10,7,3,0);
+if(err==0) buf=TRKGetBuffer(sp10);
+*arg3=*(s32 *)((u8 *)buf+0x20);
+*(s32 *)arg2=*(s32 *)((u8 *)buf+0x18);
+fn_8022699C(sp10);
+}
+fn_8022699C(spC);
+return err;
+#pragma pop
 }
 
 void fn_802283A8(void) {
@@ -2093,84 +2175,27 @@ void InitMetroTRK_BBA(void) {
 }
 
 void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
-    u32 fn_80214058();
-    M2C_UNK fn_80214094(M2C_UNK, s32, s32, u32);
-    M2C_UNK fn_80214338();
-    u16 fn_80214358();
-    s32 temp_r4;
-    s32 temp_r4_2;
-    s32 temp_r4_3;
-    s32 temp_r4_4;
-    s32 temp_r4_5;
-    s32 temp_r4_6;
-    s32 temp_r4_7;
-    s32 temp_r5;
-    s32 var_r4;
-    u16 temp_r31;
-    u32 temp_r0;
-    u32 temp_r29;
-    u32 var_ctr;
-    u32 var_ctr_2;
-    u32 var_r3;
-
-    if (arg1 >= 0x4000U) {
-        temp_r5 = *arg2;
-        if ((u32) (arg1 + temp_r5) > 0x08000000U) {
-            return;
-        }
-        var_r4 = 0;
-        temp_r29 = (temp_r5 + (arg1 & 0x1F) + 0x1F) & 0xFFFFFFE0;
-        var_r3 = (u32) (temp_r29 + 0x1F) >> 5U;
-        if (temp_r29 > 0U) {
-            temp_r0 = var_r3 >> 3U;
-            var_ctr = temp_r0;
-            if (temp_r0 != 0) {
-                do {
-                    M2C_DCACHE_INVALIDATE(var_r4 + arg0);
-                    temp_r4 = var_r4 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4 + arg0);
-                    temp_r4_2 = temp_r4 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_2 + arg0);
-                    temp_r4_3 = temp_r4_2 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_3 + arg0);
-                    temp_r4_4 = temp_r4_3 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_4 + arg0);
-                    temp_r4_5 = temp_r4_4 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_5 + arg0);
-                    temp_r4_6 = temp_r4_5 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_6 + arg0);
-                    temp_r4_7 = temp_r4_6 + 0x20;
-                    M2C_DCACHE_INVALIDATE(temp_r4_7 + arg0);
-                    var_r4 = temp_r4_7 + 0x20;
-                    var_ctr -= 1;
-                } while (var_ctr != 0);
-                var_r3 &= 7;
-                if (var_r3 != 0) {
-                    goto block_7;
-                }
-            } else {
-block_7:
-                var_ctr_2 = var_r3;
-                do {
-                    M2C_DCACHE_INVALIDATE(var_r4 + arg0);
-                    var_r4 += 0x20;
-                    var_ctr_2 -= 1;
-                } while (var_ctr_2 != 0);
-            }
-        }
-        do {
-
-        } while (fn_80214058() != 0U);
-        temp_r31 = fn_80214358();
-        fn_80214338();
-        fn_80214094(1, arg0, arg1 & 0xFFFFFFE0, temp_r29);
-        do {
-
-        } while (fn_80214358() == 0);
-        if (temp_r31 == 0) {
-            fn_80214338();
-        }
-    }
+u32 fn_80214058(void);
+void fn_80214094(s32,s32,u32,u32);
+void fn_80214338(void);
+u16 fn_80214358(void);
+u16 old;
+u32 address, length, offset;
+if(arg1 >= 0x4000) {
+ length=*arg2;
+ if(arg1+length <= 0x08000000) {
+ address=arg1 & ~31;
+ length += arg1 & 31;
+ length=(length+31)&~31;
+ for(offset=0;offset<length;offset+=32) __dcbf((void *)arg0,offset);
+ while(fn_80214058()!=0) {}
+ old=fn_80214358();
+ fn_80214338();
+ fn_80214094(1,arg0,address,length);
+ while(fn_80214358()==0) {}
+ if(old==0) fn_80214338();
+ }
+}
 }
 
 s32 TRKInitializeTarget(void) {
@@ -2267,8 +2292,6 @@ void TRKLoadContext(void);
 void TRK_main(void);
 u32 fn_8022AE34(u32 arg0);
 void TRKLoadContext(void) {
-    // Empty implementation for now - this appears to be related to debugging/tracing
-    return;
 }
 
 void TRKUARTInterruptHandler(void) {
