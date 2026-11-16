@@ -1657,12 +1657,12 @@ void fn_80220F84(u32 arg0, u32 arg1) {
     *(u16 *)(gx + 2) = 0;
 }
 
-void fn_80220FC4(u32 arg0,u32 arg1,u32 arg2) {
+void fn_80220FC4(u32 arg0,u32 arg1,u8 arg2) {
 extern u32 __GXData;
 u8 *gx=(u8*)__GXData;
 u8 *reg=gx+arg0*4;
 *(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),arg1,18,13,13);
-*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),(u8)arg2,19,12,12);
+*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),(u32)arg2,19,12,12);
 *(volatile u8*)0xCC008000=0x61;
 *(volatile u32*)0xCC008000=*(u32*)(reg+0xB8);
 *(u16*)(gx+2)=0;
@@ -1692,14 +1692,24 @@ typedef union {
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 #endif
 
-void fn_80221034(s32 arg0) {
-extern u16 *__GXData;
-u32 *gx=(u32*)__GXData;
-gx[0x204/4]=__rlwimi(gx[0x204/4],arg0,19,12,12);
-*(volatile u8*)0xCC008000=0x61;
-*(volatile u32*)0xCC008000=0xFE080000;
-*(volatile u8*)0xCC008000=0x61;
-*(volatile u32*)0xCC008000=gx[0x204/4];
+void fn_80221034(s32 arg0)
+{
+  u32 val;
+  extern u16 *__GXData;
+  u32 *gx;
+  u8 cmd;
+  u32 fe08;
+  unsigned char pad;
+  gx = (u32 *) __GXData;
+  cmd = 0x61;
+  fe08 = 0xFE080000;
+  val = gx[0x204 / 4];
+  val = __rlwimi(val, ((u32) arg0) & 0xFFFFu, 19, 12, 12);
+  gx[0x204 / 4] = val;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = fe08;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = gx[0x204 / 4];
 }
 
 void fn_80221068(void)
