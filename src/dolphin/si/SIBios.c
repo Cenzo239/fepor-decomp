@@ -991,17 +991,32 @@ s32 SIGetType(void)
 extern u16 lbl_802822F0[200];
 extern s32 SIEnablePolling(s32 param_1);
 extern s32 SIDisablePolling(s32 param_1);
-void fn_8023C188(s32 arg0)
-{
-    u16* ptr;
-    ptr = &lbl_802822F0[arg0 * 2];
-    if (*ptr & 0x400) {
-        *ptr = *ptr & 0xFBFF;
-        SIEnablePolling(arg0);
+u32 fn_8023C188(s32 chan, void (*callback)(s32, u32)) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    u32 SIGetType(s32);
+    extern void (*lbl_8033E3A8[4][4])(s32, u32);
+    extern u32 Type_8029EFC0[4];
+    s32 enabled;
+    u32 type;
+    s32 i;
+    void (**callbacks)(s32, u32);
+    enabled = OSDisableInterrupts();
+    type = SIGetType(chan);
+    if (Type_8029EFC0[chan] & 0x80) {
+        callbacks = lbl_8033E3A8[chan];
+        for (i = 0; i < 4; i++) {
+            if (callbacks[i] == callback) break;
+            if (callbacks[i] == 0) {
+                callbacks[i] = callback;
+                break;
+            }
+        }
+    } else {
+        callback(chan, type);
     }
-    else {
-        SIDisablePolling(arg0);
-    }
+    OSRestoreInterrupts(enabled);
+    return type;
 }
 
 u32 fn_8023C410(s32 chan) {
