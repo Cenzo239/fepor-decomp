@@ -1469,6 +1469,28 @@ void fn_801B0F60(void *arg0) {
     }
 }
 
+void fn_801B0FE0(void *arg0) {
+ void *Ui_FindChild(void *,s32,s32);
+ void Ui_AddChild(void *,void *);
+ void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
+ void TalkUi_ShowMsg(s32);
+ s16 a[2],b[2],c[2];
+ void *p;
+ s16 y;
+ p=Ui_FindChild(arg0,4,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x4c);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){a[0]=0x138;a[1]=0x74;Ui_SlideWidgetChildMode1(arg0,p,a,0);}
+ p=Ui_FindChild(arg0,6,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x48);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);b[0]=0x138;b[1]=y;Ui_SlideWidgetChildMode1(arg0,p,b,0);}
+ if(M2C_FIELD(M2C_FIELD(arg0,void **,0x40),s16 *,0x3e)!=4){
+ p=Ui_FindChild(arg0,5,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x50);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);c[0]=0x138;c[1]=y;Ui_SlideWidgetChildMode1(arg0,p,c,0);}
+ }
+ TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x20));
+}
+
 void fn_801B1130(void *arg0)
 {
     extern void Forge_BindWeaponActor(void *, void *);
