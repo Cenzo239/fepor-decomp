@@ -355,6 +355,75 @@ s32 fn_8021264C(u32 mask) {
     return 1;
 }
 
+s32 fn_8021275C(u32 mask) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void fn_8023B930(u32);
+    void fn_8023C188(s32, void (*)(void));
+    void fn_802121E0(void);
+    void *memset(void *, s32, u32);
+    extern u8 Origin[];
+    extern u32 lbl_80368680, WaitingBits, CheckingBits, lbl_80368670, lbl_80366FB0, EnabledBits, __PADFixBits, lbl_80368674;
+    extern s32 lbl_80366FA4;
+    u32 flags;
+    u32 disable;
+    s32 interrupts;
+    interrupts=OSDisableInterrupts();
+    mask |= lbl_80368680;
+    mask &= ~(WaitingBits | CheckingBits);
+    flags = *(u8 *)0x800030E3;
+    lbl_80368670 |= mask;
+    lbl_80368680=0;
+    disable=lbl_80368670 & EnabledBits;
+    EnabledBits &= ~mask;
+    __PADFixBits &= ~mask;
+    if (!(flags & 0x40)) lbl_80368674 |= mask;
+    fn_8023B930(disable);
+    if (lbl_80366FA4==32) {
+        lbl_80366FA4=__cntlzw(lbl_80368670);
+        if (lbl_80366FA4!=32) {
+            lbl_80368670 &= ~(0x80000000U >> lbl_80366FA4);
+            memset(Origin+lbl_80366FA4*12,0,12);
+            fn_8023C188(lbl_80366FA4,fn_802121E0);
+        }
+    }
+    OSRestoreInterrupts(interrupts);
+    return 1;
+}
+
+s32 fn_80212870(void) {
+extern s32 lbl_80368668;
+extern char *lbl_80366FA0;
+extern u32 __PADSpec, lbl_80368820, lbl_80368674;
+extern u32 PADType[];
+extern OSResetFunctionInfo lbl_8029D6F8;
+void OSRegisterVersion(const char *);
+void PADSetSpec(u32);
+s64 OSGetTime(void);
+void fn_8023C518(void);
+s32 fn_8021264C(u32);
+s64 time;
+u64 sum;
+u32 *types = PADType;
+if (lbl_80368668) return 1;
+OSRegisterVersion(lbl_80366FA0);
+if (__PADSpec) PADSetSpec(__PADSpec);
+lbl_80368668 = 1;
+if (lbl_80368820) {
+time = OSGetTime();
+sum = (time & 0xffff) + ((time >> 16) & 0xffff) + ((time >> 32) & 0xffff) + ((time >> 48) & 0xffff);
+lbl_80368674 = 0xf0000000;
+*(u16 *)0x800030e0 = sum & 0x3fff;
+}
+types[16] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d000000;
+types[17] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d400000;
+types[18] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d800000;
+types[19] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4dc00000;
+fn_8023C518();
+OSRegisterResetFunction(&lbl_8029D6F8);
+return fn_8021264C(0xf0000000);
+}
+
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 u32 fn_802129C0(PADStatus *status)
@@ -1408,14 +1477,48 @@ void fn_80215D2C(void) {
     lbl_8036871C = 1;
 }
 #pragma dont_inline reset
-void ARQPostRequest(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
-    u32 r31;
-    u32 r30;
-    u32 r29;
-    
-    if (arg0 != NULL) {
-        *(u32*)((char*)arg0 + 0x1c) = 0;
-    }
+void ARQPostRequest(u32 *request, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
+extern u32 *lbl_80368700,*lbl_80368704,*lbl_803686F8,*lbl_803686FC,*lbl_80368708,*lbl_8036870C;
+extern u32 lbl_80368710;
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void fn_80214094(u32,u32,u32,u32);
+s32 enabled;
+u32 *next;
+request[0]=0;
+request[1]=arg1;
+request[2]=arg2;
+request[4]=arg4;
+request[5]=(u32)arg5;
+request[6]=arg6;
+if(arg7) request[7]=(u32)arg7;
+else request[7]=(u32)fn_80215C5C;
+enabled=OSDisableInterrupts();
+switch(arg3) {
+case 0:
+if(lbl_80368700) lbl_80368704[0]=(u32)request;
+else lbl_80368700=request;
+lbl_80368704=request;
+break;
+case 1:
+if(lbl_803686F8) lbl_803686FC[0]=(u32)request;
+else lbl_803686F8=request;
+lbl_803686FC=request;
+break;
+}
+if(!lbl_80368708 && !lbl_8036870C) {
+next=lbl_803686F8;
+if(next) {
+if(next[2]==0) fn_80214094(next[2],next[4],next[5],next[6]);
+else fn_80214094(next[2],next[5],next[4],next[6]);
+next=lbl_803686F8;
+lbl_80368710=next[7];
+lbl_80368708=next;
+lbl_803686F8=(u32*)next[0];
+}
+if(!lbl_80368708) fn_80215B5C();
+}
+OSRestoreInterrupts(enabled);
 }
 
 void fn_80215EF8(void) {
