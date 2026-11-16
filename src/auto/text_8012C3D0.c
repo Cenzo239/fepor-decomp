@@ -3009,6 +3009,35 @@ void Ui_GetSelectMenuIconRect(s32 unused, s32 index, s32 *left, s32 *top, s32 *r
   }
 }
 
+void *fn_8013196C(void *arg0,void *arg1,s32 arg2) {
+ void *fn_8001ED58(u32);
+ s32 sprintf(char *,const char *,...);
+ extern char gUiSelectMenuStrings[];
+ u32 value;
+ switch(arg2) {
+ case 0: return 0;
+ case 1:
+ value=M2C_FIELD(arg1,u32 *,8);
+ if(value==0) sprintf(arg0,gUiSelectMenuStrings+0x25b);
+ else sprintf(arg0,gUiSelectMenuStrings+0x264,fn_8001ED58(value));
+ break;
+ case 2:
+ value=M2C_FIELD(arg1,u8 *,0x1c);
+ if(value==0) sprintf(arg0,gUiSelectMenuStrings+0x340);
+ else sprintf(arg0,gUiSelectMenuStrings+0x3ca,value);
+ break;
+ case 3:
+ value=M2C_FIELD(arg1,u8 *,0x1d);
+ if(value==0) sprintf(arg0,gUiSelectMenuStrings+0x340);
+ else sprintf(arg0,gUiSelectMenuStrings+0x3ca,value);
+ break;
+ case 4:
+ sprintf(arg0,gUiSelectMenuStrings+0x3ca,M2C_FIELD(arg1,u8 *,0x1e));
+ break;
+ }
+ return arg0;
+}
+
 s32 fn_80131AA8(s32 arg0, void *arg1, s32 arg2) {
     void *temp_r3;
     u16 temp_r0;
