@@ -304,25 +304,24 @@ void fn_8020B84C(void) {
 
 void AlarmHandlerForTimeout(void *arg0, void *arg1)
 {
-    extern void (*Callback_80368538)(int);
+    extern void (*Callback_80368538)(u32);
 
-    void (*callback)(int);
-    OSContext context;
-
-    callback = Callback_80368538;
+    OSContext tempContext;
+    void (*callback)(u32);
 
     __OSMaskInterrupts(0x400);
 
-    OSClearContext(&context);
-    OSSetCurrentContext(&context);
+    OSClearContext(&tempContext);
+    OSSetCurrentContext(&tempContext);
 
+    callback = Callback_80368538;
     Callback_80368538 = 0;
 
     if (callback != 0) {
         callback(0x10);
     }
 
-    OSClearContext(&context);
+    OSClearContext(&tempContext);
     OSSetCurrentContext((OSContext *)arg1);
 }
 
@@ -652,32 +651,23 @@ void fn_8020C1A4(u8 arg0, u32 arg1, void *arg2) {
 }
 
 void DVDLowReset(void) {
-    u32 temp_r30;
-    u32 temp_r4;
-    u32 temp_r26;
-    u32 temp_r28;
-    u64 temp_r27;
-    u64 temp_ret;
-    
-    *(u32 *)0xCC006004 = 2;
-    temp_r30 = *(u32 *)0xCC003024;
-    *(u32 *)0xCC003024 = (temp_r30 & 0xFFFFFFFB) | 1;
-    temp_ret = __OSGetSystemTime();
-    temp_r26 = (u32) temp_ret;
-    temp_r27 = temp_ret;
-    
-    // Calculate delay based on system time
-    temp_r28 = ((*(u32 *)0x800000F8 / 500000) * 0xC) >> 3U;
-    
-    do {
-        temp_r4 = ((__OSGetSystemTime() - temp_r27) ^ 0x80000000);
-    } while (-((temp_r4 - temp_r4) ^ 0x80000000) != 0);
-    
-    *(u32 *)0xCC003024 = temp_r30 | 5;
-    *(s32 *)0x80368548 = 1;
-    temp_ret = __OSGetSystemTime();
-    *(u32 *)0x80368540 = (u32) temp_ret;
-    *(u32 *)0x80368544 = (u32) temp_ret;
+ extern s32 ResetOccurred_80368548;
+ extern s64 LastResetEnd_80368540;
+ s64 __OSGetSystemTime(void);
+ s64 start;
+ u32 delay;
+ u32 old;
+ volatile u32 *reg;
+ *(volatile u32 *)0xCC006004 = 2;
+ reg = (volatile u32 *)0xCC003000;
+ old = reg[9];
+ *(reg += 9) = (old & ~4) | 1;
+ start = __OSGetSystemTime();
+ delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
+ while (__OSGetSystemTime() - start < (s64)delay) {}
+ *reg = old | 5;
+ ResetOccurred_80368548 = 1;
+ LastResetEnd_80368540 = __OSGetSystemTime();
 }
 
 BOOL fn_8020C2FC(void) {
