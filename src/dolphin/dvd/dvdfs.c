@@ -2507,6 +2507,23 @@ path_ok:
     }
     OSRestoreInterrupts(irq);
 }
+
+void VISetNextFrameBuffer(void *frameBuffer)
+{
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    void fn_802107FC(void *, void *, void *, void *, void *);
+    extern u8 lbl_8033A068[];
+    extern u32 lbl_80368658;
+    u32 enabled;
+    u8 *base = lbl_8033A068;
+    enabled = OSDisableInterrupts();
+    *(void **)(base + 0x120) = frameBuffer;
+    lbl_80368658 = 1;
+    fn_802107FC(base + 0xF0, base + 0x124, base + 0x128, base + 0x13C, base + 0x140);
+    OSRestoreInterrupts(enabled);
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma peephole on
@@ -2535,19 +2552,28 @@ void fn_80211698(s32 *arg0, u32 *arg1) {
 }
 
 s32 fn_802116D4(void) {
-    extern u16* lbl_80368648;
-    u16 r5, r6, r3, r4;
-    
-    r5 = *(u16*)0xCC00202C;
-    do {
-        r6 = r5;
-        r5 = *(u16*)0xCC00202C;
-    } while (r6 != r5);
-    
-    r3 = *(u16*)0xCC00202E;
-    r4 = *lbl_80368648;
-    
-    return (((r5 - 1) * 2) + ((r3 - 1) / r4)) < lbl_80368648[14] ? 1 : 0;
+    u16 *r7;
+    u16 *r4;
+    u32 first;
+    u32 second;
+    u32 third;
+    VITiming *info;
+    u16 tmp;
+
+    r7 = (u16 *)0xCC002000;
+    tmp = *(u16 *)((u8 *)r7 + 0x2C);
+    r7 = (u16 *)((u8 *)r7 + 0x2C);
+    r4 = (u16 *)0xCC002000;
+    first = tmp & 0x7FF;
+    second = *r7 & 0x7FF;
+    third = *(u16 *)((u8 *)r4 + 0x2E) & 0x7FF;
+    if (first == second) {
+        info = (VITiming *)lbl_80368648;
+        if ((((second - 1) << 1) + ((third - 1) / info->unk1A)) < info->unk18) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 u32 fn_802117D8(void) {
@@ -2576,14 +2602,30 @@ u32 fn_802117D8(void) {
 }
 
 u32 VIGetTvFormat(void) {
+    extern u32 CurrTvMode_8036864C;
     u32 mode;
-    
-    mode = *(u32*)0x8036864C;
-    if (mode > 7) {
-        return 0;
+    u32 format;
+
+    OSDisableInterrupts();
+    mode = CurrTvMode_8036864C;
+    switch (mode) {
+    case 0:
+    case 3:
+    case 6:
+    case 7:
+        format = 0;
+        break;
+    case 1:
+    case 4:
+        format = 1;
+        break;
+    case 2:
+    case 5:
+        format = mode;
+        break;
     }
-    
-    return ((u16*)0x8029D68C)[mode];
+    OSRestoreInterrupts();
+    return format;
 }
 
 s32 fn_802118D8(void) {
