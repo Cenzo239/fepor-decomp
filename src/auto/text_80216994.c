@@ -701,8 +701,8 @@ s32 fn_80217ED4(s32 arg0) {
 s32 fn_80218018(void) {
     extern u32 lbl_80366FE8;
     u32 temp_r0;
-    u32 var_r29;
     u32 var_r30;
+    u32 var_r29;
     s32 var_r3;
 
     var_r30 = 1;
