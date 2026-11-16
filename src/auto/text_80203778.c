@@ -1609,19 +1609,22 @@ void fn_802067E0(s32 arg0) {
 
 void fn_80206808(void) { return; }
 
-void fn_8020681C(s32 arg0, s32 arg1, s32 arg2) {
-    s32 sp14;
-    
-    DVDReadAbsAsyncPrio(&sp14, arg0, arg1, arg2, 0, 0);
-loop_5:
-    if (DVDGetCommandBlockStatus(&sp14) != 0) {
+#pragma peephole off
+void fn_8020681C(u32 arg0, s32 arg1, s32 arg2) {
+    void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
+    s32 DVDGetCommandBlockStatus(void *);
+    s32 DVDKeepAlive(void);
+    void __OSHotReset(s32);
+    u8 cmd[0x30];
+
+    DVDReadAbsAsyncPrio(cmd, arg0, arg1, arg2, 0, 0);
+    while (DVDGetCommandBlockStatus(cmd) != 0) {
         if (DVDKeepAlive() == 0) {
             __OSHotReset(0);
         }
-        goto loop_5;
     }
 }
-
+#pragma peephole on
 void fn_80206888(void) {
     extern s32 lbl_803684B0;
     lbl_803684B0 = 1;
@@ -2645,6 +2648,25 @@ s32 fn_802083C8(s32 arg0) {
     }
     return 1;
 }
+
+void MEMIntrruptHandler(s32 interrupt, OSContext *context)
+{
+    u16 *regs = (u16 *)0xCC004000;
+    u32 high;
+    u32 address;
+    u32 cause;
+    high = regs[0x24 / 2];
+    address = regs[0x22 / 2];
+    cause = regs[0x1E / 2];
+    address = __rlwimi(address, high, 16, 6, 15);
+    regs[0x20 / 2] = 0;
+    if (__OSErrorTable[15] != 0) {
+        __OSErrorTable[15](15, context, cause, address);
+    } else {
+        __OSUnhandledException(15, context, cause, address);
+    }
+}
+
 #pragma scheduling on
 #pragma peephole on
 s32 Config24MB(void) {
