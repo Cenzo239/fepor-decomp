@@ -146,6 +146,22 @@ void __CARDTxHandler(s32 arg0) {
     }
 }
 
+void __CARDLockCallback(s32 chan) {
+    s32 fn_80239488(s32);
+    extern u16 __CARDBlock[];
+    u8 *card;
+    void (*callback)(s32,s32);
+    s32 result;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    callback = *(void (**)(s32,s32))(card+0xDC);
+    if (callback != 0) {
+        *(void (**)(s32,s32))(card+0xDC) = 0;
+        if (fn_80239488(chan) != 0) result = 1;
+        else result = -3;
+        callback(chan,result);
+    }
+}
+
 s32 fn_80216CE8(s32 arg0, s32 arg1) {
     s32 EXIDeselect(s32);
     s32 EXIImm(s32, s32 *, s32, s32, s32);
