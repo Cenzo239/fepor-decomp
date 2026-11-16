@@ -914,6 +914,30 @@ void fn_8021F06C(s32 arg0) {
     fn_8021F0A0((__GXFifoObj *)sp14);
 }
 
+void fn_8021F0A0(__GXFifoObj *fifo) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    extern void *__piReg;
+    extern u16 *__cpReg;
+    extern u8 __GXGPFifoAttached;
+    s32 enabled;
+
+    enabled = OSDisableInterrupts();
+    fifo->base = (u8 *)(((u32 *)__piReg)[3] + 0x80000000);
+    fifo->top = (u8 *)(((u32 *)__piReg)[4] + 0x80000000);
+    fifo->wrPtr = (void *)((((u32 *)__piReg)[5] & ~0x04000000U) + 0x80000000);
+    if (__GXGPFifoAttached != 0) {
+        fifo->rdPtr = (void *)((__cpReg[28] | (__cpReg[29] << 16)) + 0x80000000);
+        fifo->count = (s32)(__cpReg[24] | (__cpReg[25] << 16));
+    } else {
+        fifo->count = (s32)((u8 *)fifo->wrPtr - (u8 *)fifo->rdPtr);
+        if (fifo->count < 0) {
+            fifo->count += (s32)fifo->size;
+        }
+    }
+    OSRestoreInterrupts(enabled);
+}
+
 void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
 {
   extern u16 * const __GXData;
@@ -1124,11 +1148,12 @@ void GXSetVtxDescv(s32 arg0, s32 arg1) {
 void fn_8021F9D8(void) {
 extern u16 *const __GXData;
 u8 cmd=8;
-u8 *gx=(u8 *)__GXData;
+u8 *gx;
 u32 n;
 u32 colors;
 u32 tex;
 *(volatile u8 *)0xCC008000=cmd;
+gx=(u8 *)__GXData;
 *(volatile u8 *)0xCC008000=0x50;
 *(volatile u32 *)0xCC008000=*(u32 *)(gx+0x14);
 *(volatile u8 *)0xCC008000=cmd;
