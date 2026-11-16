@@ -845,37 +845,34 @@ s32 fn_80217D68(u32 arg0) {
     return var_r7;
 }
 
-s32 fn_80217ED4(s32 arg0) {
-    s32 temp_r3;
-    s32 r6_var;
-    s32 r5_var;
-    s32 r4_var;
-    s32 r3_var;
-
-    if (arg0 == 0) {
-        return 0;
-    }
-    temp_r3 = arg0 + 0x10;
-    r6_var = *(s32*)temp_r3;
-    if (r6_var < 0) {
-        return -1;
-    }
-    r5_var = *(s32*)(temp_r3 + 0x4);
-    if (r5_var < 0) {
-        return -1;
-    }
-    r4_var = *(s32*)(temp_r3 + 0x8);
-    if (r4_var < 0) {
-        return -1;
-    }
-    r3_var = *(s32*)(temp_r3 + 0xC);
-    if (r3_var < 0) {
-        return -1;
-    }
-
-    // It seems the function returns 0 at the end, matching the
-    // instruction sequence in the original.
-    return 0;
+s32 fn_80217ED4(s32 chan, u32 addr, void *buffer, s32 length, s32 mode) {
+extern u16 __CARDBlock[];
+s32 EXISelect(s32,s32,s32);
+s32 EXIImmEx(s32,void*,s32,s32);
+s32 EXIDeselect(s32);
+u8 command[5];
+u8 *card;
+s32 error;
+card=(u8*)__CARDBlock+chan*0x110;
+if (!EXISelect(chan,0,4)) return -3;
+addr &= ~0xFFF;
+memset(command,0,5);
+command[0]=0x52;
+if(mode==0) {
+command[1]=(addr>>29)&3;
+command[2]=addr>>21;
+command[3]=(addr>>19)&3;
+command[4]=(addr>>12)&0x7F;
+} else {
+command[1]=addr>>24;
+command[2]=addr>>16;
+}
+error=!EXIImmEx(chan,command,5,1);
+error|=!EXIImmEx(chan,*(u8**)(card+0x80)+0x200,*(s32*)(card+0x14),1);
+error|=!EXIImmEx(chan,buffer,length,0);
+error|=!EXIDeselect(chan);
+if(error) return -3;
+return 0;
 }
 
 s32 fn_80218018(void) {
