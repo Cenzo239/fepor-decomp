@@ -149,6 +149,29 @@ s32 __OSSyncSram(void) {
     return M2C_FIELD(&Scb_80339420, s32 *, 0x4C);
 }
 
+s32 fn_802096B0(void *arg0, s32 arg1, s32 arg2) {
+s32 EXILock(s32,s32,void *);
+s32 EXISelect(s32,s32,s32);
+s32 EXIUnlock(s32);
+s32 EXIImm(s32,void *,s32,s32,s32);
+s32 EXISync(s32);
+s32 EXIDma(s32,void *,s32,s32,s32);
+s32 EXIDeselect(s32);
+s32 command;
+s32 error;
+DCInvalidateRange(arg0,arg1);
+if(!EXILock(0,1,0)) return 0;
+if(!EXISelect(0,1,3)){EXIUnlock(0);return 0;}
+command=arg2<<6;
+error=!EXIImm(0,&command,4,1,0);
+error|=!EXISync(0);
+error|=!EXIDma(0,arg0,arg1,0,0);
+error|=!EXISync(0);
+error|=!EXIDeselect(0);
+EXIUnlock(0);
+return !error;
+}
+
 #pragma scheduling off
 s32 fn_802097D4(void) {
     u32 OSDisableInterrupts(void);
