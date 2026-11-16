@@ -200,7 +200,7 @@ loop_1:
 }
 
 void PPCMtmmcr0(u32 arg0) {
-    extern u32 __SPR_952;
+    extern volatile u32 __SPR_952;
     __SPR_952 = arg0;
 }
 
@@ -1145,15 +1145,20 @@ void DCInvalidateRange(void *addr, u32 nBytes) {
  }
 }
 
+#pragma opt_unroll_loops off
 void DCFlushRange(void *addr, u32 nBytes) {
- if (nBytes <= 0) return;
- nBytes += (u32)addr & 31;
- nBytes += 31;
- nBytes >>= 5;
- do { __dcbf(0, (int)addr); addr = (u8*)addr + 32; } while (--nBytes > 0);
- __sync();
+    if (nBytes <= 0) {
+        return;
+    }
+    nBytes += (u32)addr & 31;
+    nBytes += 31;
+    nBytes >>= 5;
+    do {
+        __dcbf(0, (int)addr);
+        addr = (u8 *)addr + 32;
+    } while (--nBytes);
+    __sync();
 }
-
 void fn_80205110(void *addr, u32 nBytes) { u32 count; if (nBytes <= 0) return; nBytes += (u32)addr & 31; nBytes += 31; count = nBytes >> 5; do { __dcbst((void*)0, (int)addr); addr=(u8*)addr+32; count--; } while (count); __sync(); }
 
 void DCFlushRangeNoSync(void *addr, u32 nBytes) {
@@ -1165,11 +1170,15 @@ void DCFlushRangeNoSync(void *addr, u32 nBytes) {
 }
 
 void fn_8020516C(void *addr, u32 nBytes) {
- if(nBytes <= 0) return;
- nBytes += (u32)addr & 31;
- nBytes += 31;
- nBytes >>= 5;
- do { __dcbst(0, (int)addr); addr = (u8 *)addr + 32; } while (--nBytes > 0);
+    if (nBytes <= 0)
+        return;
+    nBytes += (u32)addr & 31;
+    nBytes += 31;
+    nBytes >>= 5;
+    do {
+        __dcbst(0, (int)addr);
+        addr = (u8 *)addr + 32;
+    } while (--nBytes > 0);
 }
 
 void fn_80205198(void *addr, u32 nBytes) {
@@ -2505,14 +2514,13 @@ s32 __OSGetInterruptHandler(s16 arg0) {
     return ((u32 *)InterruptHandlerTable_803684C8)[arg0];
 }
 
-#pragma opt_common_subs off
 void __OSInterruptInit(void) {
     extern void *InterruptHandlerTable_803684C8;
     extern void ExternalInterruptHandler(void);
     void *memset(void *, s32, u32);
     void __OSSetExceptionHandler(s32, void *);
     u32 __OSMaskInterrupts(u32);
-    extern volatile u32 OS_PIRegs[16];
+    extern volatile u32 OS_PIRegs[];
     u32 *base;
 
     base = (u32 *)0x80000000;
@@ -2520,7 +2528,7 @@ void __OSInterruptInit(void) {
     memset(InterruptHandlerTable_803684C8, 0, 0x80);
     base[0xC4 / 4] = 0;
     base[0xC8 / 4] = 0;
-    ((u32 *)OS_PIRegs)[1] = 0xF0;
+    OS_PIRegs[1] = 0xF0;
     __OSMaskInterrupts(-0x20);
     __OSSetExceptionHandler(4, ExternalInterruptHandler);
 }
@@ -2892,36 +2900,33 @@ int __OSModuleInit(void)
 #pragma peephole off
 #pragma scheduling off
 s32 fn_802083C8(s32 arg0) {
-    s32 __OSMaskInterrupts(u32);
-    s32 flag = arg0;
-    if (flag != 0) {
-        u16 *regs = (u16 *)0xCC000000;
-        regs[0x4010 / 2] = 0xFF;
-        __OSMaskInterrupts(0xF0000000);
-    }
-    return 1;
+s32 __OSMaskInterrupts(u32);
+if (arg0 != 0) {
+u16 *regs = (u16*)0xCC000000;
+regs[0x4010/2] = 0xFF;
+__OSMaskInterrupts(0xF0000000);
+}
+return 1;
 }
 
 #pragma scheduling on
 #pragma peephole on
 void MEMIntrruptHandler(s32 interrupt, OSContext *context)
 {
-    u8 *base;
-    u32 high;
     volatile u16 *regs;
+    u32 high;
+    u8 *base;
     u32 address;
     u32 cause;
     OSErrorHandler handler;
-    u32 off;
 
     base = (u8 *)0xCC000000;
+    regs = OS_MEMRegs;
     high = *(volatile u16 *)(base + 0x4024);
-    regs = (volatile u16 *)(base + 0x4000);
-    off = 0x22;
-    address = *(volatile u16 *)((u8 *)regs + off);
-    cause = *(volatile u16 *)((u8 *)regs + 0x1E);
+    address = regs[0x11];
+    cause = regs[0x0F];
     address = __rlwimi(address, high, 16, 6, 15);
-    *(volatile u16 *)((u8 *)regs + 0x20) = 0;
+    regs[0x10] = 0;
     handler = __OSErrorTable[15];
     if (handler != 0) {
         handler(15, context, cause, address);
