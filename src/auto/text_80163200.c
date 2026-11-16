@@ -9156,43 +9156,43 @@ extern "C" void fn_801752EC(void *arg0) {
                 add = 1;
             } else if (unit1 == (void *)player) {
                 add = 0;
-            } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
-                bits = Item_GetFlagsPtr((u32)entry);
-                add = 0;
-                if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    add = 1;
-                }
-            } else {
-                add = 1;
-            }
-            if ((u8)add != 0) {
-                fn_801439F0(dst1, entry, unit1);
-            }
-        }
-        i = 0;
-        walk = (u32 *)unit1;
-        while (i < 4) {
-            slot = (u8 *)walk + 0x1EC;
-            if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
-                break;
-            }
-            player = gUiContext[0];
-            if (unit1 == NULL) {
-                add = 1;
-            } else if (unit1 == (void *)player) {
-                add = 0;
-            } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
-                bits = Item_GetFlagsPtr((u32)slot);
-                add = 0;
-                if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    add = 1;
-                }
-            } else {
-                add = 1;
-            }
-            if ((u8)add != 0) {
-                fn_801439F0(dst1, slot, unit1);
-            }
+                          } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) == 0) {
+                  add = 0;
+              } else {
+                  bits = Item_GetFlagsPtr((u32)entry);
+                  add = 0;
+                  if ((*(u64 *)bits & 0x200ULL) != 0) {
+                      add = 1;
+                  }
+              }
+              if ((u8)add != 0) {
+                  fn_801439F0(dst1, entry, unit1);
+              }
+          }
+          i = 0;
+          walk = (u32 *)unit1;
+          while (i < 4) {
+              slot = (u8 *)walk + 0x1EC;
+              if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+                  break;
+              }
+              player = gUiContext[0];
+              if (unit1 == NULL) {
+                  add = 1;
+              } else if (unit1 == (void *)player) {
+                  add = 0;
+              } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) == 0) {
+                  add = 0;
+              } else {
+                  bits = Item_GetFlagsPtr((u32)slot);
+                  add = 0;
+                  if ((*(u64 *)bits & 0x200ULL) != 0) {
+                      add = 1;
+                  }
+              }
+              if ((u8)add != 0) {
+                  fn_801439F0(dst1, slot, unit1);
+              }
             i += 1;
             walk += 2;
         }
