@@ -4394,6 +4394,70 @@ void fn_8003C67C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x260) = 0x10;
 }
 
+void fn_8003C6BC(void *arg0, void *arg1, void *arg2) {
+    void *Job_GetByJid(void *);
+    void *Res_GetByName(void *);
+    u8 Status_Test(void *, s32);
+    void *fn_800951D0(void *, s32);
+    void fn_8004E9D8(void *, s32);
+    void fn_80050C90(void *);
+
+    u8 *unit;
+    u8 *job;
+    void *resource;
+    void *person;
+
+    unit = (u8 *)arg0;
+    person = arg1;
+    job = (u8 *)arg2;
+
+    if (person != NULL) {
+        *(void **)(unit + 0x188) = person;
+
+        job = (u8 *)Job_GetByJid(*(void **)((u8 *)person + 0x10));
+
+        if (*(void **)(job + 0xC) != NULL) {
+            resource = Res_GetByName(*(void **)(job + 0xC));
+        } else {
+            resource = NULL;
+        }
+
+        if (resource == NULL) {
+            goto finish;
+        }
+
+        if (Status_Test(
+                *(u8 **)(unit + 0x18C) + 0x1C,
+                2
+            ) != 0) {
+            if (Status_Test(job + 0x1C, 2) == 0) {
+                if (*(void **)(job + 0xC) != NULL) {
+                    job = (u8 *)Res_GetByName(*(void **)(job + 0xC));
+                } else {
+                    job = NULL;
+                }
+            }
+        } else {
+            if (Status_Test(job + 0x1C, 2) != 0) {
+                if (*(void **)(job + 0xC) != NULL) {
+                    job = (u8 *)Res_GetByName(*(void **)(job + 0xC));
+                } else {
+                    job = NULL;
+                }
+            }
+        }
+    }
+
+finish:
+    if (job != NULL) {
+        *(void **)(unit + 0x18C) = job;
+
+        fn_800951D0(unit, -1);
+        fn_8004E9D8(unit, 0);
+        fn_80050C90(unit);
+    }
+}
+
 s32 Unit_HasHitBlockStatus(s32 arg0) {
     u8 Status_Test(s32, M2C_UNK);
     if (Status_Test(arg0 + 0x1BC, 6) != 0) {
@@ -12912,6 +12976,68 @@ s32 fn_800537E8(void) {
     extern u16 lbl_80285990[];
     s32 v = Process_Find(lbl_80285990);
     return v != 0;
+}
+
+void *Effect_Create(void *name, u32 priority) {
+    extern u8 lbl_80285990[];
+    extern u32 lbl_80369080;
+    extern const f32 lbl_80369084;
+    extern const f32 lbl_80369088;
+    extern const f32 lbl_8036908C;
+    void *Process_Create(void *, s32);
+    void *Heap_Alloc(s32);
+    void *Res_GetByName(void *);
+    void *nameSave;
+    void *init;
+    void *proc;
+    u32 color;
+    f32 zero;
+
+    nameSave = name;
+    if (priority == 0) {
+        priority = 4;
+    }
+    proc = Process_Create(lbl_80285990, priority);
+    *(void **)((u8 *)proc + 0x30) = Heap_Alloc(0x60);
+    init = *(void **)((u8 *)proc + 0x30);
+    zero = lbl_80369084;
+    *(f32 *)((u8 *)init + 0xC) = zero;
+    *(f32 *)((u8 *)init + 0x10) = zero;
+    *(f32 *)((u8 *)init + 0x14) = zero;
+    *(u16 *)((u8 *)init + 0) = 0;
+    *(s8 *)((u8 *)init + 3) = -1;
+    *(s8 *)((u8 *)init + 4) = -1;
+    *(u32 *)((u8 *)init + 0x30) = 0;
+    *(u32 *)((u8 *)init + 0x34) = 0;
+    *(u32 *)((u8 *)init + 0x3C) = 0;
+    *(u32 *)((u8 *)init + 0x40) = 0;
+    *(u32 *)((u8 *)init + 0x44) = 0;
+    *(u32 *)((u8 *)init + 8) = 0;
+    *(u32 *)((u8 *)init + 0x5C) = 0;
+    *(u32 *)((u8 *)init + 0x48) = 0;
+    color = lbl_80369080;
+    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
+    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
+    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
+    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
+    ((u8 *)init)[5] = 3;
+    *(u32 *)((u8 *)init + 0x4C) = 0;
+    *(u32 *)((u8 *)init + 0x50) = 0;
+    *(u32 *)((u8 *)init + 0x54) = 0;
+    *(u32 *)((u8 *)init + 0x58) = 0;
+    init = *(void **)((u8 *)proc + 0x30);
+    *(u32 *)((u8 *)init + 8) |= 0x08000000;
+    init = *(void **)((u8 *)proc + 0x30);
+    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
+        *(u32 *)((u8 *)init + 8) |= 0x20000000;
+    }
+    return proc;
 }
 
 void fn_80053D84(void *arg0) {
