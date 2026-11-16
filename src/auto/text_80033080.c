@@ -30,4 +30,3 @@ void fn_80033080(void) {
     *slot1 = lbl_80285424;
     __register_global_object(Item_Init(&lbl_80367278), Item_Destroy, base + 0xdc);
 }
-#pragma cplusplus reset
