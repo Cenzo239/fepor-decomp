@@ -3109,10 +3109,41 @@ s32 fn_8010AD94(void *arg0) {
     return 0;
 }
 
-void fn_8010AEC8(void) {
-    // This function appears to be a stub or placeholder.
-    // It does not perform any operations but exists in the ROM.
-    return;
+s32 fn_8010AEC8(void *arg0, s32 arg1) {
+u8 fn_80102EA8(void);
+u8 fn_8010B30C(void *, s8, s16);
+s32 fn_8010B01C(void *, s8, s8);
+u8 fn_8018D294(void *, void *);
+u8 Status_Test(void *, u8);
+void Map_SelectRangeBuffer(void *, s32);
+void Map_FillLayer(void *, s32, s32);
+extern u8 gUiContext[], gBattleMap[], gAiState[], Ai_UnitIsHostileToActive[];
+#pragma cplusplus on
+struct Range {
+static u8 Test(void *arg0, s32 x, s32 y) {
+u8 *map;
+u8 result;
+map=gBattleMap;
+if(Status_Test((u8*)arg0+0x1BC,0x3C) &&
+(Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
+(*(s16**)(map+0x14190))[x+(y<<6)]=0,
+fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
+else result=0;
+
+return result;
+}
+};
+s32 x;
+s32 y;
+u8 result;
+if(fn_80102EA8()) return 0;
+if(arg1==gUiContext[8]) return 0;
+x=((s8*)gUiContext)[0xD]; y=((s8*)gUiContext)[0xE];
+if(fn_8010B30C(arg0,x,y)) return 1;
+result=Range::Test(arg0,x,y);
+if(result) return 1;
+return (u8)fn_8010B01C(arg0,x,y)!=0;
+#pragma cplusplus reset
 }
 
 #pragma use_lmw_stmw on
@@ -5649,9 +5680,41 @@ s32 fn_8010F3F4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5)
 
 #pragma opt_strength_reduction reset
 
-void fn_8010F52C(void* arg0, int arg1)
-{
-    *(u32*)arg0 = arg1;
+u8 fn_8010F52C(void *arg0, s32 arg1) {
+#pragma use_lmw_stmw on
+void **Unit_GetHeldItemSlot(void *, s32);
+u8 fn_8009326C(void *, void *);
+extern u32 lbl_8028F5F8[48];
+extern u8 gAiState[];
+u8 best;
+s32 i;
+void **slot;
+u8 *item;
+u32 *entry;
+if((((u8*)arg0)[0x1A5]>>4&7)==0) {
+best=0;
+for(i=0;i<4;i++) {
+slot=Unit_GetHeldItemSlot(arg0,i);
+item=*slot;
+if(item==NULL) break;
+if((u8)(item ? item[0x14]:0xC)==0x81) continue;
+if((u8)(item ? item[0x16]:0)<best) continue;
+if(fn_8009326C(arg0,item)) {
+for(entry=lbl_8028F5F8;entry[1]!=0;entry+=3) {
+if(item==(u8*)entry[1]) {
+if(entry[2]!=0) { goto found; }
+}
+}
+}
+entry=NULL;
+found:
+if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(arg0,i,arg1)) {
+item=*slot;
+best=item ? item[0x16]:0;
+}
+}
+}
+return gAiState[0x21C];
 }
 
 void fn_8010F970(void) {
@@ -5940,6 +6003,48 @@ extern u16 lbl_8028F3AC;
 extern u8 D_801A39D4;
 extern u8 D_8017C3CC;
 
-void fn_8010F670(void) {
-    D_8017C3CC = (D_801A39D4 & 0x20) ? 1 : 0;
+u8 fn_8010F670(void *arg0, s32 arg1) {
+#pragma use_lmw_stmw on
+void **Unit_GetHeldItemSlot(void *, s32);
+u8 fn_8009326C(void *, void *);
+extern u32 lbl_8028F5F8[48];
+extern u8 gAiState[];
+#pragma cplusplus on
+struct Handler {
+static u32 *Find(void *unit, u8 *item) {
+u32 *p;
+if(fn_8009326C(unit,item)) {
+for(p=lbl_8028F5F8;p[1]!=0;p+=3) {
+if(item==(u8*)p[1] && p[2]!=0) return p;
+}
+}
+return NULL;
+}
+};
+u8 *item;
+void **slot;
+u8 best;
+s32 i;
+u32 *entry;
+void *unit;
+s32 mode;
+unit=arg0;
+mode=arg1;
+if((((u8*)unit)[0x1A5]>>4&7)==0) {
+best=0;
+for(i=0;i<4;i++) {
+slot=Unit_GetHeldItemSlot(unit,i);
+item=(u8*)*slot;
+if(item==NULL) break;
+if((u8)(item ? item[0x14]:0xC)!=0x81) continue;
+if((u8)(item ? item[0x16]:0)<best) continue;
+entry=Handler::Find(unit,item);
+if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(unit,i,mode)) {
+item=(u8*)*slot;
+best=item ? item[0x16]:0;
+}
+}
+}
+return gAiState[0x21C];
+#pragma cplusplus reset
 }
