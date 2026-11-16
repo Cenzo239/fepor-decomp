@@ -214,11 +214,14 @@ void __unregister_fragment(s32 arg0) {
 
 s32 __register_fragment(s32 arg0, s32 arg1) {
     extern s32 fragmentinfo_8033DD28[3];
-    if (fragmentinfo_8033DD28[2] == 0) {
-        fragmentinfo_8033DD28[0] = arg0;
-        fragmentinfo_8033DD28[1] = arg1;
-        fragmentinfo_8033DD28[2] = 1;
-        return 0;
+    s32 *p = fragmentinfo_8033DD28;
+    if (p[2] == 0) {
+        s32 ret;
+        p[0] = arg0;
+        ret = 0;
+        p[1] = arg1;
+        p[2] = 1;
+        return ret;
     }
     return -1;
 }
@@ -2520,9 +2523,6 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     s32 *vp;
     s32 v;
 
-    c = (s8)format[1];
-    p = format + 1;
-
     f.sign = 0;
     f.just = 1;
     f.prec_set = 0;
@@ -2530,6 +2530,9 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     f.size = 0;
     f.width = 0;
     f.precision = 0;
+
+    c = (s8)format[1];
+    p = format + 1;
 
     if (c == '%') {
         f.conv = (u8)c;
