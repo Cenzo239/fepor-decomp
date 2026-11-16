@@ -4447,24 +4447,19 @@ void *fn_80190074(void *arg0, s16 arg1) {
 }
 
 void fn_801900E0(void *arg0) {
-    s16 a, b, c, d, h, w, two;
-
-    *(s16 *)((u8 *)arg0 + 0x40) = 0x18;
-    two = 2;
-    *(s16 *)((u8 *)arg0 + 0x42) = 0;
-    a = *(s16 *)((u8 *)arg0 + 0xc);
-    b = *(s16 *)((u8 *)arg0 + 0x10);
-    c = *(s16 *)((u8 *)arg0 + 0xa);
-    d = *(s16 *)((u8 *)arg0 + 0xe);
-    h = (s16)(b - a);
-    w = d - c;
-    *(s16 *)((u8 *)arg0 + 0x12) = two;
-    w = (s16)w;
-    h -= 2;
-    *(s16 *)((u8 *)arg0 + 0x14) = two;
-    w -= 2;
-    *(s16 *)((u8 *)arg0 + 0x16) = w;
-    *(s16 *)((u8 *)arg0 + 0x18) = h;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    p[0x40/2] = 0x18;
+    p[0x42/2] = 0;
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 2;
+    right = width - 2;
+    p[0x12/2] = 2;
+    p[0x14/2] = 2;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
 }
 
 void *fn_80190130(void *arg0, s16 arg1) {
