@@ -2316,24 +2316,25 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
-    s8 t0;
-    s8 t1;
 
-    t0 = *(s8 *)((u8 *)b + 0x19F);
-    t1 = *(s8 *)((u8 *)a + 0x19F);
-    dy = t1 - t0;
+    dy = *(s8 *)((u8 *)b + 0x19F);
+    dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
-    t1 = *(s8 *)((u8 *)a + 0x19E);
-    t0 = *(s8 *)((u8 *)b + 0x19E);
-    dx = t1 - t0;
+    {
+        s8 xa;
+        s8 xb;
+        xa = *(s8 *)((u8 *)a + 0x19E);
+        xb = *(s8 *)((u8 *)b + 0x19E);
+        dx = xa - xb;
+    }
     if (dx < 0) {
         dx = -dx;
     }
     return (u8)(dx + dy);
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     void Unit_SetWorldXY(void *, f32, f32);
     extern f32 lbl_80368EC0;
@@ -3736,26 +3737,28 @@ s8 Unit_GetRes(void *arg0) {
     }
     return var_r3;
 }
-#pragma opt_peephole reset
+#pragma opt_peephole off
 s8 Unit_GetDef(void *arg0) {
-    void *temp_r4;
-    s8 temp_r6_2;
-    u8 temp_r5;
-    s8 var_r3;
+    void *p18c;
+    void *p188;
+    u8 t;
+    s8 lim;
+    s8 var;
 
-    temp_r4 = *(void **)((u8 *)arg0 + 0x18C);
-    temp_r5 = *(u8 *)((u8 *)arg0 + 0x1B1);
-    temp_r6_2 = *(u8 *)((u8 *)temp_r4 + 0x52);
-    var_r3 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x23) + *(u8 *)((u8 *)temp_r4 + 0x4A)) + temp_r5;
-    if (var_r3 > temp_r6_2) {
-        var_r3 = temp_r6_2;
+    p18c = *(void **)((u8 *)arg0 + 0x18C);
+    p188 = *(void **)((u8 *)arg0 + 0x188);
+    t = *(u8 *)((u8 *)arg0 + 0x1B1);
+    lim = *(u8 *)((u8 *)p18c + 0x52);
+    var = (*(u8 *)((u8 *)p188 + 0x23) + *(u8 *)((u8 *)p18c + 0x4A)) + t;
+    if (var > lim) {
+        var = lim;
     }
-    if (var_r3 < 0) {
+    if (var < 0) {
         return 0;
     }
-    return var_r3;
+    return var;
 }
-
+#pragma opt_peephole reset
 s8 Unit_GetLck(void *arg0) {
     s8 var_r3;
 
@@ -3769,16 +3772,21 @@ s8 Unit_GetLck(void *arg0) {
     return var_r3;
 }
 
+#pragma opt_peephole off
 s8 Unit_GetSpd(void *arg0) {
     void *p18c;
-    s8 lim;
+    void *p188;
     u8 t;
+    u8 a;
+    s8 lim;
     s8 var;
 
     p18c = *(void **)((u8 *)arg0 + 0x18C);
+    p188 = *(void **)((u8 *)arg0 + 0x188);
     t = *(u8 *)((u8 *)arg0 + 0x1AF);
+    a = *(u8 *)((u8 *)p18c + 0x48);
     lim = *(u8 *)((u8 *)p18c + 0x50);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x21) + *(u8 *)((u8 *)p18c + 0x48)) + t;
+    var = (*(u8 *)((u8 *)p188 + 0x21) + a) + t;
     if (var > lim) {
         var = lim;
     }
@@ -3787,25 +3795,24 @@ s8 Unit_GetSpd(void *arg0) {
     }
     return var;
 }
-
-#pragma opt_peephole off
+#pragma opt_peephole reset
 s8 Unit_GetSkl(void *arg0) {
-    void *temp_r4;
-    s8 temp_r6_2;
-    u8 temp_r5;
-    s8 var_r3;
+    void *p18c;
+    s8 lim;
+    u8 t;
+    s8 var;
 
-    temp_r4 = *(void **)((u8 *)arg0 + 0x18C);
-    temp_r5 = *(u8 *)((u8 *)arg0 + 0x1AE);
-    temp_r6_2 = *(u8 *)((u8 *)temp_r4 + 0x4F);
-    var_r3 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x20) + *(u8 *)((u8 *)temp_r4 + 0x47)) + temp_r5;
-    if (var_r3 > temp_r6_2) {
-        var_r3 = temp_r6_2;
+    p18c = *(void **)((u8 *)arg0 + 0x18C);
+    t = *(u8 *)((u8 *)arg0 + 0x1AE);
+    lim = *(u8 *)((u8 *)p18c + 0x4F);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x20) + *(u8 *)((u8 *)p18c + 0x47)) + t;
+    if (var > lim) {
+        var = lim;
     }
-    if (var_r3 < 0) {
+    if (var < 0) {
         return 0;
     }
-    return var_r3;
+    return var;
 }
 #pragma opt_peephole reset
 s8 Unit_GetMag(void *arg0) {
@@ -4968,16 +4975,16 @@ void fn_8003DCDC(u8 *arg0, u8 *arg1, s32 arg2, s8 *arg3, s8 *arg4) {
     s32 b19f;
     s32 d0;
     s32 d1;
-    s32 product;
-    b19e = arg1[0x19E];
+    int new_var;
+
+    b19e = *(s8 *)(arg1 + 0x19E);
     a19e = arg0[0x19E];
-    b19e = (s8)b19e;
     a19f = arg0[0x19F];
     d0 = (s8)(b19e - a19e);
     b19f = arg1[0x19F];
     d1 = (s8)(b19f - a19f);
-    product = arg2 * d0;
-    *arg3 = (s8)(product + b19e);
+    new_var = arg2 * d0;
+    *arg3 = (s8)(new_var + b19e);
     d1 = d1 * arg2;
     *arg4 = (s8)(d1 + arg1[0x19F]);
 }
@@ -9549,13 +9556,16 @@ void fn_80049CB4(s32 arg0, void *arg1) {
     Model_SetAlpha(temp_r31, M2C_FIELD(arg1, u8 *, 3));
 }
 
-#pragma peephole off
+#pragma scheduling off
 void fn_80049D08(void *arg0) {
+#pragma scheduling on
     extern f32 lbl_80368F2C;
     void fn_8005FEE8(void *, f32);
-    fn_8005FEE8((char *)arg0 + 0x14, lbl_80368F2C);
+
+    fn_8005FEE8((u8 *)arg0 + 0x14, lbl_80368F2C);
+#pragma scheduling reset
 }
-#pragma peephole on
+#pragma scheduling reset
 void fn_80049D30(s32 arg0) {
     void fn_8005FEE8(s32, f32);
     fn_8005FEE8(arg0 + 0x14, 0.0f);
