@@ -327,36 +327,29 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
 }
 #pragma use_lmw_stmw reset
 s32 TRKAppendBuffer(void *arg0, u8 *arg1, s32 arg2) {
-    s32 var_r0;
-    s32 var_r7;
-    s32 var_r9;
-    u32 temp_r7;
-    u8 *var_r4;
+    u8 byte;
+    u32 var;
+    s32 err;
+    s32 i;
 
-    var_r4 = arg1;
-    var_r9 = 0;
-    var_r0 = 0;
-loop_5:
-    if ((var_r0 == 0) && (var_r9 < arg2)) {
-        temp_r7 = *(u32 *)((char *)arg0 + 0xC);
-        if (temp_r7 >= 0x880U) {
-            var_r7 = 0x301;
+    i = 0;
+    err = 0;
+    while (err == 0 && i < arg2) {
+        var = *(u32 *)((u8 *)arg0 + 0xC);
+        byte = *arg1;
+        if (var >= 0x880U) {
+            var = 0x301;
         } else {
-            if (temp_r7 >= 0x880U) {
-                var_r7 = 0x301;
-            } else {
-                *(u32 *)((char *)arg0 + 0xC) = temp_r7 + 1;
-                var_r7 = 0;
-                *(u8 *)((char *)arg0 + (temp_r7 + 0x10)) = *var_r4;
-                *(u32 *)((char *)arg0 + 0x8) = *(u32 *)((char *)arg0 + 0x8) + 1;
-            }
+            *(u32 *)((u8 *)arg0 + 0xC) = var + 1;
+            *((u8 *)arg0 + (var + 0x10)) = byte;
+            var = 0;
+            *(u32 *)((u8 *)arg0 + 0x8) = *(u32 *)((u8 *)arg0 + 0x8) + 1;
         }
-        var_r0 = var_r7;
-        var_r9 += 1;
-        var_r4 += 1;
-        goto loop_5;
+        err = var;
+        i += 1;
+        arg1 += 1;
     }
-    return var_r0;
+    return err;
 }
 
 s32 fn_802267FC(void *arg0, void *arg1, u32 arg2)
@@ -1146,7 +1139,19 @@ s32 fn_802287C0(s32 arg0) {
     return var_r31;
 }
 
-void fn_80228858(s32 arg0,s32 arg1) { u32 address=(u32)arg0 & 0xFFFFFFF1U; s32 remaining=arg1+((u32)arg0-address); do { __dcbst(0,address); __dcbf(0,address); __sync(); __icbi(0,address); remaining-=8; address+=8; } while(remaining>=0); __isync(); }
+void fn_80228858(s32 arg0, s32 arg1) {
+ u32 address=(u32)arg0 & ~14U;
+ arg1+=(u32)arg0-address;
+ do {
+ __dcbst(0,address);
+ __dcbf(0,address);
+ __sync();
+ __icbi(0,address);
+ address+=8;
+ arg1-=8;
+ } while(arg1>=0);
+ __isync();
+}
 
 s32 fn_80228950(void) {
     return M2C_ERROR(/* unknown instruction: mtmsr $r3 */);
