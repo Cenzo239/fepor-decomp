@@ -633,6 +633,25 @@ done:
     return result;
 }
 
+s32 fn_802396C8(s32 chan) {
+    EXIControl *exi;
+    s32 enabled;
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
+    if (!(exi->state & 8)) {
+        OSRestoreInterrupts(enabled);
+        return 1;
+    }
+    if ((exi->state & 0x10) && exi->dev == 0) {
+        OSRestoreInterrupts(enabled);
+        return 0;
+    }
+    exi->state &= ~8;
+    __OSMaskInterrupts(0x500000U >> (chan * 3));
+    OSRestoreInterrupts(enabled);
+    return 1;
+}
+
 s32 EXISelect(s32 chan, u32 dev, u32 freq)
 {
     u8 *ecb;
