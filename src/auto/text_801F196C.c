@@ -2385,32 +2385,46 @@ loop_1:
     }
 }
 
-void fn_801F75D4(void* arg0) {
-    s32 temp_r3;
-    s32 temp_r4;
-    u8* ptr;
-    
-    if (arg0 == NULL) {
-        return;
+void fn_801F75D4(void *arg0) {
+    void Ui_PlaySeCue(void *,s32);
+    void Process_Goto(void *,s32);
+    void Game_SetState(s32);
+    extern char gBattlePreviewStrings[];
+    u8 *p=*(u8**)((u8*)arg0+0x30);
+    u32 held=*(u32*)((u8*)gPadInput+4);
+    u32 pressed=held & (*(u32*)((u8*)gPadInput+8)^held);
+    u32 repeat=*(u32*)((u8*)gPadInput+12);
+    s16 previous=*(s16*)(p+6);
+    s32 selected=*(s16*)(p+6);
+    if(pressed&0x100) {
+        Ui_PlaySeCue(gBattlePreviewStrings+0x196,100);
+        Process_Goto(arg0,1);
+    } else if(pressed&0x200) {
+        Ui_PlaySeCue(gBattlePreviewStrings+0x1A6,100);
+        Game_SetState(6);
+        Process_Goto(arg0,2);
+    } else {
+        if(repeat&0x08000008) {
+            *(s16*)(p+6)=previous-1;
+            if(*(s16*)(p+6)<0) *(s16*)(p+6)=0;
+        }
+        if(repeat&0x04000004) {
+            *(s16*)(p+6)+=1;
+            if(*(s16*)(p+6)>p[0x94]-1) *(s16*)(p+6)=p[0x94]-1;
+        }
+        selected=*(s16*)(p+6);
+        if(previous!=selected) {
+            *(s16*)(p+0xC)=4;
+            *(s16*)(p+0xE)=*(s16*)(p+8);
+            *(s16*)(p+0x10)=*(s16*)(p+0xA);
+            *(s16*)(p+0x12)=0x31;
+            *(s16*)(p+0x14)=selected*24+0x78;
+            Ui_PlaySeCue(gBattlePreviewStrings+0x222,100);
+            p[0x8A]=p[0x89];
+            p[0x89]=p[0xC8+*(s16*)(p+6)];
+            *(s16*)(p+0x8C)=0;
+        }
     }
-
-    temp_r3 = *(s32*)((char*)arg0 + 0x50);
-    if (temp_r3 == 0) {
-        return;
-    }
-    
-    ptr = (u8*)(*(u32*)((char*)arg0 + 0x50));
-    *(u32*)((char*)ptr + 0x64) = 0;
-
-    temp_r4 = *(s32*)((char*)arg0 + 0x78);
-    if (temp_r4 != 0) {
-        *(s32*)((char*)arg0 + 0x16C) = 0;
-        *(s32*)((char*)arg0 + 0x170) = 0;
-        *(u32*)((char*)arg0 + 0x54) = 0;
-        *ptr = 0;
-    }
-    
-    *(u32*)((char*)arg0 + 0x198) = 0;
 }
 
 /* Layout the battle-preview caption widget and build its text from message fragments. */
@@ -4855,6 +4869,53 @@ s32 fn_801FB9E0(u8 *arg0)
         return var_r31;
     }
 }
+
+s32 fn_801FBAD4(u8 *arg0) {
+    u16 fn_802072A0(s32);
+    void *fn_801FBF98(void *,void *,u16 *,u32 (*)(void *,u16));
+    u32 fn_801FB9CC(void *,u16);
+    extern u32 lbl_80368410[2];
+    u16 code;
+    u8 *end;
+    u8 *base;
+    u32 *table;
+    s32 maximum;
+    s32 width;
+    register u8 *p;
+    u8 ch,a,b,multibyte;
+    s32 c;
+    u8 *found;
+    maximum=0;
+    p=arg0;
+    width=0;
+    table=lbl_80368410;
+    while((s8)(ch=*p)!=0) {
+        if((s8)ch==10) {
+            if(maximum<width) maximum=width;
+            width=0;
+            p++;
+            continue;
+        }
+        if(fn_802072A0(ch)!=1) {
+            { c=*(s8*)p; p++; }
+        } else {
+            a=p[0];
+            if(((a>=0x81U && a<=0x9FU)||(a>=0xE0U && a<=0xFCU)) &&
+               (((b=p[1],b>=0x40U)&&b<=0x7EU)||(b>=0x80U && b<=0xFCU))) multibyte=1;
+            else multibyte=0;
+            if(!multibyte) { c=*(s8*)p; p++; }
+            else { c=*(u16*)p; p+=2; }
+        }
+        base=(u8*)lbl_80368410[0];
+        end=base+table[1]*0x140;
+        code=c;
+        found=fn_801FBF98(base,end,&code,fn_801FB9CC);
+        if(end==found || *(u16*)(found+0x120)!=code) found=base;
+        width+=*(u16*)(found+0x122);
+    }
+    return maximum<width?width:maximum;
+}
+
 #pragma opt_common_subs on
 extern u16 lbl_8029B520[];
 s32 fn_801FBC30(s32 arg0) {
