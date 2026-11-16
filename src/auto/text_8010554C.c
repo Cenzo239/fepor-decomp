@@ -258,6 +258,45 @@ void *fn_8010586C(void *arg0) {
     return base;
 }
 
+s32 Skill_UnitMeetsReqs(void *arg0, void *arg1) {
+#pragma use_lmw_stmw on
+u8 Unit_MatchesId(void *, void *);
+u8 *skill=arg0;
+s32 offset;
+s32 count;
+s32 i;
+s32 result;
+s32 j;
+s32 off;
+if(skill[0x19]==0) return 0;
+if(skill[0x1B]==0) return 0;
+count=0;
+i=0;
+offset=0;
+while(i<skill[0x1B]) {
+if(Unit_MatchesId(arg1,*(void **)((u8*)*(void **)(skill+0x20)+offset))) count++;
+offset+=4; i++;
+}
+if(count!=skill[0x1B]) return 0;
+result=0; j=0; off=0;
+while(j<skill[0x1C]) {
+if(Unit_MatchesId(arg1,*(void **)((u8*)*(void **)(skill+0x24)+off))) {result=1; break;}
+off+=4; j++;
+}
+if(skill[0x1C]==0) result=1;
+if(skill[0x18]==0x45) {
+void *Res_GetEntry(u8);
+void *entry;
+s32 bit=0x44;
+u32 *bits=(u32*)((u8*)arg1+0x1BC);
+while(bit>=32) { bits++; bit-=32; }
+if(*bits&(1<<bit)) entry=Res_GetEntry(0x44);
+else entry=NULL;
+if(entry==NULL) return 0;
+}
+return result;
+}
+
 void fn_80105A04(s32 arg0, s32 arg1) {
     M2C_UNK Stream_Read(s32, M2C_UNK, s32);
     Stream_Read(arg1, 0x10, arg0);
@@ -3016,30 +3055,58 @@ void fn_8010AC54(void) {
 
 }
 
-s32 fn_8010AC58(s32 arg0, s32 arg1) {
-    extern u32 lbl_802F757C;
-    extern u32 gBattle[];
-    extern u32 lbl_80330E64[];
-    
-    // Function signature appears to be: s32 fn_8010AC58(s32 arg0, s32 arg1)
-    if (arg0 < 0) {
-        return 0;
-    }
-    
-    if ((s32) lbl_802F757C != 0) {
-        return 0;
-    }
-    
-    if ((s32) gBattle[arg1] == 0) {
-        return 0;
-    }
-    
-    if ((s32) lbl_80330E64[arg1] == 0) {
-        return 0;
-    }
-    
-    // Return 1 if all conditions are satisfied
-    return 1;
+s32 fn_8010AC58(void *arg0) {
+u8 fn_80102EA8(void);
+u8 fn_8010B30C(void *, s8, s16);
+s32 fn_8010B01C(void *, s8, s8);
+u8 fn_8018D294(void *, void *);
+u8 Status_Test(void *, u8);
+void Map_SelectRangeBuffer(void *, s32);
+void Map_FillLayer(void *, s32, s32);
+extern u8 gUiContext[], gBattleMap[], gAiState[], Ai_UnitIsHostileToActive[];
+register u8 *map;
+register s32 y;
+register s32 x;
+u8 result;
+if(fn_80102EA8()) return 0;
+x=gUiContext[0xD]; y=gUiContext[0xE];
+x=(s8)x; y=(s8)y;
+if(fn_8010B30C(arg0,x,y)) return 1;
+map=gBattleMap;
+if(Status_Test((u8*)arg0+0x1BC,0x3C) &&
+(Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
+(*(s16**)(map+0x14190))[x+(y<<6)]=0,
+fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
+else result=0;
+if(result) return 1;
+return (u8)fn_8010B01C(arg0,x,y)!=0;
+}
+
+s32 fn_8010AD94(void *arg0) {
+    u8 fn_80102EA8(void);
+    u8 fn_8010B30C(void *, s8, s16);
+    u8 fn_8018D294(void *, void *);
+    u8 Status_Test(void *, u8);
+    void Map_SelectRangeBuffer(void *, s32);
+    void Map_FillLayer(void *, s32, s32);
+    extern u8 gUiContext[], gBattleMap[], gAiState[], Ai_UnitIsHostileToActive[];
+    u8 *map;
+    u8 *ui;
+    s32 x;
+    s32 y;
+    u8 result;
+    if(fn_80102EA8()) return 0;
+    ui=gUiContext;
+    if(ui[8]==0x2C) return 0;
+    x=(s8)ui[0xD]; y=(s8)ui[0xE];
+    if(fn_8010B30C(arg0,x,y)) return 1;
+    if((map=gBattleMap, Status_Test((u8*)arg0+0x1BC,0x3C)) &&
+       (Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
+        (*(s16**)(map+0x14190))[x+(y<<6)]=0,
+        fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
+    else result=0;
+    if(result) return 1;
+    return 0;
 }
 
 void fn_8010AEC8(void) {
