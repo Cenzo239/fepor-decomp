@@ -1676,13 +1676,14 @@ gx[0x204/4]=__rlwimi(gx[0x204/4],arg0,19,12,12);
 *(u32*)0xCC008000=gx[0x204/4];
 }
 
-void fn_80221068(void) {
-    extern void *__GXData;
-    u8 command = 0x61;
-    u8 *data = __GXData;
-    *(u8 *)0xCC008000 = command;
-    *(u32 *)0xCC008000 = *(u32 *)(data + 0x204);
-    *(u16 *)(data + 2) = 0;
+void fn_80221068(void)
+{
+  extern u16 * const __GXData;
+  u8 cmd = 0x61;
+  u16 *gx;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = *((u32 *) (((u8 *) __GXData) + 0x204));
+  __GXData[1] = 0;
 }
 
 extern u32 lbl_80368738;
