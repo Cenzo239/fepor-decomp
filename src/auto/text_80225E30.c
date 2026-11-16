@@ -1136,20 +1136,17 @@ s32 fn_802287C0(s32 arg0) {
 }
 
 void fn_80228858(s32 arg0, s32 arg1) {
-    s32 var_r3;
-    s32 var_r4;
-
-    var_r3 = 0xFFFFFFF1 & arg0;
-    var_r4 = arg1 + (arg0 - var_r3);
-    do {
-        M2C_DCACHE_CLEAN(var_r3);
-        M2C_DCACHE_CLEAN_INVALIDATE(var_r3);
-        M2C_SYNC();
-        M2C_ICACHE_INVALIDATE(var_r3);
-        var_r3 += 8;
-        var_r4 -= 8;
-    } while (var_r4 >= 0);
-    M2C_SYNC();
+ s32 p = arg0 & 0xFFFFFFF1;
+ arg1 += arg0 - p;
+ do {
+  __dcbst(0, p);
+  __dcbf(0, p);
+  __sync();
+  __icbi(0, p);
+  p += 8;
+  arg1 -= 8;
+ } while (arg1 >= 0);
+ __isync();
 }
 
 s32 fn_80228950(void) {
@@ -1157,15 +1154,15 @@ s32 fn_80228950(void) {
 }
 
 void fn_80228958(s32 arg0, s32 arg1, s32 arg2) {
-    s32 var_r6;
-    u8 temp_r0;
+    s32 var_r10;
+    u8 temp_r9;
 
-    var_r6 = 0;
+    var_r10 = 0;
 loop_1:
-    if (var_r6 != arg2) {
-        temp_r0 = *(u8*)(arg1 + var_r6);
-        *(u8*)(arg0 + var_r6) = temp_r0;
-        var_r6 += 1;
+    if (var_r10 != arg2) {
+        temp_r9 = *(u8*)(arg1 + var_r10);
+        *(u8*)(arg0 + var_r10) = temp_r9;
+        var_r10 += 1;
         goto loop_1;
     }
 }
@@ -1176,14 +1173,15 @@ void TRKInterruptHandler(void)
     return;
 }
 
+#pragma intrinsic __mffs
 void fn_80228CDC(f64 *arg0) {
- f64 __mffs(void);
- *arg0 = __mffs();
+    register f64 fpscr;
+    fpscr = __mffs();
+    *arg0 = fpscr;
 }
-
 void fn_80228D00(f64 *arg0) {
-    register f64 status = *arg0;
-    __mtfsf(255u, status);
+    f64 status = *arg0;
+    __mtfsf(255, status);
 }
 
 void TRKTargetSetInputPendingPtr(s32 arg0) {
@@ -1879,6 +1877,8 @@ void InitializeProgramEndTrap(void)
     ICInvalidateRange(address, 4);
     DCFlushRange(address, 4);
 }
+
+int TRK_board_display(char *arg0) { int OSReport(char *, ...); extern char lbl_802827FC[]; return OSReport(lbl_802827FC, arg0); }
 
 void UnreserveEXI2Port(void) {
     extern u8 gDBCommTable[40];
