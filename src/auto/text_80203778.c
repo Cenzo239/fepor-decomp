@@ -238,8 +238,9 @@ s32 fn_80203854(void) {
 
 #pragma dont_inline reset
 
-void PPCMtwpar(void) {
-    M2C_ERROR(/* unknown instruction: mtspr WPAR, $r3 */);
+void PPCMtwpar(u32 wpar) {
+    extern u32 __SPR_921;
+    __SPR_921 = wpar;
 }
 
 #pragma dont_inline on
@@ -480,16 +481,23 @@ void __OSDBIntegrator(void) {
 void fn_80204294(void) {
 }
 
+#pragma peephole off
 void *__OSSetExceptionHandler(u8 exception, void *handler) {
-    extern void **OSExceptionTable_8036847C;
+    extern void *OSExceptionTable_8036847C;
+    void **table;
+    void **entry;
     void *oldHandler;
+    u32 index;
 
-    oldHandler = OSExceptionTable_8036847C[exception];
-    OSExceptionTable_8036847C[exception] = handler;
+    index = exception;
+    table = (void **)OSExceptionTable_8036847C;
+    entry = table + index;
+
+    oldHandler = *entry;
+    *entry = handler;
+
     return oldHandler;
 }
-
-#pragma peephole off
 void *__OSGetExceptionHandler(u8 exception) {
     extern void **OSExceptionTable_8036847C;
     return OSExceptionTable_8036847C[exception];
@@ -1073,9 +1081,9 @@ void __OSSaveFPUContext(void* context) {
 
 #pragma dont_inline on
 void OSSaveFPUContext(void *arg0) {
-    __OSSaveFPUContext(arg0);
+    void __OSSaveFPUContext(void *, void *, void *);
+    __OSSaveFPUContext(arg0, arg0, arg0);
 }
-
 void OSSetCurrentContext(struct OSContext *arg0) {
     *(s32 *)0x800000D4 = (s32)arg0;
     *(s32 *)0x800000C0 = (s32)arg0 & 0x3FFFFFFF;
