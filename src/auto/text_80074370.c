@@ -526,42 +526,39 @@ s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
     return (Unit_CanReceiveItem(*(s32 *)gUiContext, temp) == 0) ? 2 : 0;
 }
 
-s32 fn_80075178(void *arg1, void *arg2) {
+s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
     s32 Unit_GetItemSlot(s32, u8);
-    u8 Unit_CheckReceiveItem(s32, s32, M2C_UNK *);
-    M2C_UNK fn_80166AE8(s32, s16, s32, void *);
-    extern M2C_UNK lbl_8026C0B8;
-    extern M2C_UNK gUiContext;
-    s16 temp_r28;
-    s16 temp_r29;
-    s32 temp_r30;
-    u8 temp_r3;
-    void *temp_r27;
-    void *var_r27;
-
-    if ((u8) M2C_FIELD(arg2, u8 *, 0x39) != 0) {
-        var_r27 = NULL;
-        temp_r3 = Unit_CheckReceiveItem(M2C_FIELD(&gUiContext, s32 *, 0), Unit_GetItemSlot(M2C_FIELD(&gUiContext, s32 *, 4), M2C_FIELD(arg2, u8 *, 0x3A)), &gUiContext);
-        switch ((s32) temp_r3) {                    /* irregular */
-        case 1:
-            var_r27 = &lbl_8026C0B8 + 0x1B3;
-            break;
-        case 2:
-            var_r27 = &lbl_8026C0B8 + 0x1BA;
-            break;
-        case 3:
-            var_r27 = &lbl_8026C0B8 + 0x1C1;
-            break;
+    u8 Unit_CheckReceiveItem(s32, s32, void *);
+    void fn_80166AE8(s32, s32, s32, void *);
+    extern u8 lbl_8026C0B8[];
+    extern u8 gUiContext[];
+    struct Vtbl { u8 pad[0x5C]; s16 (*getx)(void *); };
+    typedef struct Obj { u8 pad[4]; struct Vtbl *vtbl; } Obj;
+    s32 str;
+    s16 y;
+    s16 x;
+    Obj *obj;
+    void *msg;
+    s32 vx;
+    s32 slot;
+    if (*(((u8 *)arg2) + 0x39)) {
+        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(((u8 *)arg2) + 0x3A));
+        msg = 0;
+        switch (Unit_CheckReceiveItem(*(s32 *)gUiContext, slot, gUiContext)) {
+        case 1: msg = lbl_8026C0B8 + 0x1B3; break;
+        case 2: msg = lbl_8026C0B8 + 0x1BA; break;
+        case 3: msg = lbl_8026C0B8 + 0x1C1; break;
         }
-        temp_r29 = M2C_FIELD(arg2, s16 *, 0x32);
-        temp_r28 = M2C_FIELD(arg2, s16 *, 0x30);
-        temp_r27 = M2C_FIELD(arg1, void **, 0x3C);
-        temp_r30 = Msg_Expand(var_r27);
-        fn_80166AE8(M2C_FIELD(M2C_FIELD(temp_r27, void **, 4), s16 (**)(void *), 0x5C)(temp_r27) + temp_r28, temp_r29, temp_r30, arg1);
+        y = *(s16 *)(((u8 *)arg2) + 0x32);
+        x = *(s16 *)(((u8 *)arg2) + 0x30);
+        obj = *(Obj **)((u8 *)arg1 + 0x3C);
+        str = Msg_Expand(msg);
+        vx = obj->vtbl->getx(obj);
+        fn_80166AE8(vx + x, y, str, arg1);
         return 0;
     }
-    M2C_FIELD(&gUiContext, u8 *, 0xA) = (u8) M2C_FIELD(arg2, u8 *, 0x3A);
+    gUiContext[0xA] = *(((u8 *)arg2) + 0x3A);
     return 5;
 }
 
@@ -733,6 +730,32 @@ void fn_80075630(void) {
 
 s32 fn_8007565C(void) {
     return 0;
+}
+
+s32 fn_80075664(void *arg0, void *arg1) {
+    void Process_CreateChild(void *, void *);
+    u64 *Item_GetFlagsPtr(void *);
+    void Ui_RebuildListEntries(void *);
+    void *fn_800241C8(void *);
+    void *UiCtx_GetItemSlot(void *);
+    u8 fn_80093088(void *);
+    void Unit_RemoveItem(void *, u8);
+    void Process_ClearFunc(void *);
+    extern u8 lbl_802872B0[];
+    extern u8 gUiContext[];
+    u8 flag = 0;
+    if ((*Item_GetFlagsPtr(UiCtx_GetItemSlot(gUiContext)) & 0x100000000ULL) &&
+        (*(u32 *)(*(u8 **)gUiContext + 0x1A0) & 0x800000)) flag = 1;
+    Unit_RemoveItem(*(void **)gUiContext, gUiContext[0xA]);
+    if (fn_80093088(*(void **)gUiContext)) {
+        gUiContext[8] = 0;
+        if (flag) Process_CreateChild(lbl_802872B0, *(void **)((u8 *)fn_800241C8(arg1) + 0x18));
+        return 6;
+    }
+    Ui_RebuildListEntries(*(void **)(*(u8 **)((u8 *)arg1 + 0x18) + 0x18));
+    Process_ClearFunc(*(void **)((u8 *)arg1 + 0x18));
+    if (flag) Process_CreateChild(lbl_802872B0, *(void **)((u8 *)arg1 + 0x18));
+    return 5;
 }
 
 #pragma cplusplus on
@@ -2295,6 +2318,75 @@ s32 Ui_CanMapObjAttack(void) {
         return 2;
     }
     return 0;
+}
+
+s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
+    char *Msg_Expand(void *);
+    void fn_80166AE8(s32, s32, s32, void *);
+    void *MapObjEvent_Find(void *, u8, u8, s32);
+    void *Item_GetByIid(void *);
+    extern u8 lbl_8026C0B8[];
+    extern u8 gUiContext[];
+    extern u8 gMapObjEventList[];
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual s16 v21() = 0;
+        virtual s16 v22() = 0;
+    };
+    s32 vy;
+    char *str;
+    s16 y;
+    s16 x;
+    Obj *obj;
+    s32 vx;
+    u8 *event;
+    u8 *unit;
+    u8 *item;
+    s32 ux;
+    s32 uy;
+    if (*((u8 *)arg2 + 0x39)) {
+        obj = *(Obj **)((u8 *)arg1 + 0x3C);
+        y = *(s16 *)((u8 *)arg2 + 0x32);
+        x = *(s16 *)((u8 *)arg2 + 0x30);
+        str = Msg_Expand(lbl_8026C0B8 + 0x4C6);
+        vy = obj->v22();
+        vx = obj->v21();
+        fn_80166AE8(vx + x, vy + y, (s32)str, arg1);
+        return 0;
+    }
+#pragma cplusplus reset
+    unit = *(u8 **)gUiContext;
+    uy = unit[0x19F];
+    ux = unit[0x19E];
+    event = (u8 *)MapObjEvent_Find(gMapObjEventList, ux, uy, 7);
+    item = (u8 *)Item_GetByIid(lbl_8026C0B8 + 0x4CF);
+    if (event[4] == *(u16 *)(item + 0xE))
+        gUiContext[8] = 0x31;
+    else
+        gUiContext[8] = 0x2A;
+    return 5;
 }
 
 /* Show move-limit overlay for the type-7 map-obj event at the UI cursor. */
