@@ -1573,6 +1573,32 @@ Vec3(f32 v) { z=v; y=v; x=v; }
     fn_8019914C(*(void **)((u8 *)arg0 + 0x11C), &a, &b, &c);
     fn_801985C4(*(void **)((u8 *)arg0 + 0x11C));
 }
+
+extern "C" void fn_80113A24(void *arg0, u8 arg1) {
+ struct Vec3 { f32 x,y,z; Vec3() {} Vec3(f32 f) { z=f; y=f; x=f; } };
+ struct Actor {
+ u8 pad[0x40];
+ virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+ virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
+ virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0;
+ virtual Vec3 GetPos(s32)=0;
+ };
+ Vec3 Camera_GetLookAt(void *); s32 fn_801992F0(void *); void fn_8019914C(void *,void *,void *,void *);
+ Vec3 a(0.0f), b(0.0f), c(0.0f);
+ if(arg1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==2) {
+ typedef Vec3 (*GetPosFn)(void *,s32);
+ GetPosFn *table=*(GetPosFn **)((u8 *)arg0+0x40);
+ a=table[14](arg0,0);
+ b=Camera_GetLookAt(arg0);
+ } else {
+ a=(*(Actor **)((u8 *)arg0+0x118))->GetPos(0);
+ b=Camera_GetLookAt(*(void **)((u8 *)arg0+0x118));
+ }
+ c=(*(Actor **)((u8 *)arg0+0x118))->GetPos(0);
+ a.y=0.0f;
+ fn_8019914C(*(void **)((u8 *)arg0+0x11c),&a,&b,&c);
+}
+
 extern "C" void fn_80113BA0(void *arg0) {
     struct V3 {
         f32 x, y, z;
@@ -5691,20 +5717,26 @@ void ListBox_HandleInput(void *list) {
     }
 }
 
-void fn_8011D2AC(void *arg0, void *arg1) {
-    s32 r30;
-    u8 *ptr;
-    
-    if (arg0 == NULL || arg1 == NULL) {
-        return;
-    }
-
-    ptr = (u8 *)arg0 + 0x1A4;
-    if (*ptr != 0) {
-        *ptr = 0;
-        r30 = *(s32 *)((u8 *)arg1 + 0x28);
-        *(s32 *)((u8 *)arg0 + 0x28) = r30;
-    }
+void fn_8011D2AC(void *arg0) {
+ void **fn_8007C3BC(void *); void *fn_8007BC3C(void *,s32,s32,u16,void *);
+ u8 fn_80109B24(void *); void fn_80079300(void *,u8); void fn_800791F0(void *,void *); void fn_80120F94(void);
+ s32 i; u8 *unit=(u8 *)arg0+0x30; u8 *self=*(u8 **)((u8 *)arg0+0x18); u8 *entry;
+ for(i=0;i<4;i++) {
+ if(*(void **)(self+0x48+i*4)==0) {
+ u8 *info; u8 flag; u8 v; void *obj;
+ if(gUiInputFlags&3) *(u16 *)(self+0x5c)=0x180;
+ info=*fn_8007C3BC(unit); flag=0;
+ if((s8)info[3]==(s8)info[5] && (s32)info[4]==0x4c) flag=1;
+ if(!flag) *(u16 *)(self+0x5c)|=0x4000;
+ obj=fn_8007BC3C(unit,0,0,*(u16 *)(self+0x5c),self);
+ entry=self+i*4; *(void **)(entry+0x48)=obj; *(u16 *)(self+0x5c)=0x82;
+ if(*(void **)(self+0x58) && fn_80109B24(*(void **)(self+0x58))!=0 && fn_80109B24(*(void **)(self+0x58))!=255) v=fn_80109B24(*(void **)(self+0x58)); else v=255;
+ (*(u8 **)(entry+0x48))[0x41]=v-0x4d;
+ fn_80079300(*(void **)(entry+0x48),self[0x5e]);
+ if(!(gUiInputFlags&3)) fn_800791F0(*(void **)(entry+0x48),self);
+ { s32 s=(s8)self[0x5e]; u8 t=self[0x5e]; if(s!=(s8)t) { self[0x65]=t; self[0x5e]=s; fn_80120F94(); } }
+ break;
+ }}
 }
 
 void fn_8011D428(void *arg0) {
