@@ -5918,11 +5918,14 @@ void fn_8013CD7C(void)
     gUiContext[8] = 0x80;
 }
 
+#pragma peephole off
 void *fn_8013CD90(void *arg0) {
- void *Msg_Expand(void *); extern u8 lbl_80276908[];
- return *(void **)((u8 *)arg0 + 0x20) ? Msg_Expand(*(void **)((u8 *)arg0 + 0x20)) : lbl_80276908 + 0x72;
+    void *Msg_Expand(void *);
+    extern u8 lbl_80276908[];
+    void *p = *(void **)((u8 *)arg0 + 0x20);
+    return p != NULL ? Msg_Expand(p) : (void *)(lbl_80276908 + 0x72);
 }
-
+#pragma peephole on
 s32 fn_8013CDCC(void) {
     s8 Ui_PlaySeCue(void *, int);
     extern u8 gUiContext[24];
@@ -6090,21 +6093,54 @@ void fn_8013D13C(void) {
 
 }
 
-void fn_8013D140(void *arg0) {
-    M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
-    M2C_UNK Ui_DrawAtlasLCorner(M2C_UNK, M2C_UNK, M2C_UNK);
-    void (**vtable)(void *);
-    void (*method)(void *);
-    vtable = *(void (***)(void *))((u8 *)arg0 + 4);
-    method = vtable[32];
-    method(arg0);
+#pragma cplusplus on
+extern "C" void fn_8013D140(void *arg0) {
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+    };
+    void Ui_DrawAtlasLCorner(s32, s32, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetAlphaByte(s32);
+    void Prim2D_PrepareTex(void);
+
+    ((Obj *)arg0)->v30();
     Ui_DrawAtlasLCorner(0, 0, 0x10);
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 
-#pragma cplusplus on
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
@@ -7357,12 +7393,14 @@ s32 fn_8013FBD4(s32 arg0) {
     return arg0 + 0xA;
 }
 
-void fn_8013FBDC(s16 *dst, s16 *src) {
-    s32 dx = dst[0];
-    s32 sx = src[0];
-    s32 sy = src[1];
-    dst[0] = sx + dx;
-    dst[1] = sy + dst[1];
+void fn_8013FBDC(s16 *dst, s16 *src)
+{
+  s16 x = src[0];
+  s16 y = src[1];
+  {
+  }
+  dst[0] = dst[0] + x;
+  dst[1] = y + dst[1];
 }
 
 void fn_8013FC00(s16 *dst, s16 *src)
@@ -9924,7 +9962,8 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     Node *pos;
     Node *n;
     void *list;
-    s32 *dst;
+    s32 a;
+    s32 b;
 
     list = (s32 *)arg1 + 1;
     node = (Node *)Heap_Alloc(0x10);
@@ -9934,14 +9973,11 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     }
     {
         Holder h(list, node);
-        dst = &h.node->data[0];
-        if (dst != 0) {
-            s32 b;
-            s32 a;
+        if (&node->data[0] != 0) {
             a = ((s32 *)arg3)[0];
             b = ((s32 *)arg3)[1];
-            dst[1] = b;
-            dst[0] = a;
+            node->data[0] = a;
+            node->data[1] = b;
         }
         pos = *(Node **)arg2;
         n = h.node;
@@ -10018,7 +10054,7 @@ extern "C" void fn_801451BC(void) {
         u8 pad2[0x23];
     } Entry;
     extern u8 lbl_80276BC8[];
-    extern u8 gSeCueSlots[1344];
+    extern u8 lbl_803301A8[1344];
     void fn_800B3194(void);
 
     Entry *entry;
@@ -10029,7 +10065,7 @@ extern "C" void fn_801451BC(void) {
     s32 i;
 
     str = (s8 *)(lbl_80276BC8 + 0x8a);
-    entry = (Entry *)gSeCueSlots;
+    entry = (Entry *)lbl_803301A8;
     i = 0;
     do {
         if (entry->flags & 1) {
@@ -10040,7 +10076,7 @@ extern "C" void fn_801451BC(void) {
             ca = *a;
             if (ca == 0) {
                 if ((s8)i >= 0) {
-                    Obj *obj = (Obj *)(gSeCueSlots + (s8)i * 0x30);
+                    Obj *obj = (Obj *)(lbl_803301A8 + (s8)i * 0x30);
                     if (*((u8 *)obj + 0xC) & 1) {
                         obj->v2();
                     }
@@ -10079,12 +10115,12 @@ void fn_801452E8(void) {
 }
 
 s32 fn_80145308(void) {
-extern u8 lbl_80276BC8[]; extern u8 gSeCueSlots[1344];
+extern u8 lbl_80276BC8[]; extern u8 lbl_803301A8[1344];
 s8 *str=(s8*)lbl_80276BC8+0x8a;
-Anim *entry;
+u8 *entry;
 s32 i;
-for(i=0,entry=(Anim*)gSeCueSlots;i<28;entry++,i++){
-if(entry->flags&1){
+for(i=0,entry=lbl_803301A8;i<28;entry+=0x30,i++){
+if(entry[0xc]&1){
 s8 *b; s8 *a;
 a=str;
 b=**(s8***)entry;
@@ -10098,30 +10134,30 @@ return 0;
 }
 
 void fn_801453F0(void) {
-    void Process_UnlinkByKey(void *);
-    void *Process_Create(void *, s32);
-    extern u8 gBgmVolFadeProcs[];
-    extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
+    void fn_8000BF00(void *);
+    void *fn_8000CAF0(void *, s32);
+    extern u8 lbl_80292558[];
+    extern u8 lbl_80367AEE;
+    extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
-    f32 b;
     f32 a;
+    f32 b;
 
-    base = (s32)gBgmVolFadeProcs;
-    Process_UnlinkByKey((void *)(base + 0x28));
-    Process_UnlinkByKey((void *)(base + 0x3C));
-    Process_UnlinkByKey((void *)(base + 0x50));
-    Process_UnlinkByKey((void *)(base + 0x64));
-    Process_UnlinkByKey((void *)(base + 0x78));
-    Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = Process_Create((void *)(base + 0x8C), 3);
-    a = gBgmVolTimerZero;
+    base = (s32)lbl_80292558;
+    fn_8000BF00((void *)(base + 0x28));
+    fn_8000BF00((void *)(base + 0x3C));
+    fn_8000BF00((void *)(base + 0x50));
+    fn_8000BF00((void *)(base + 0x64));
+    fn_8000BF00((void *)(base + 0x78));
+    fn_8000BF00((void *)(base + 0x8C));
+    temp_r3 = fn_8000CAF0((void *)(base + 0x8C), 3);
+    a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)gBgmVol;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
 }
 
 void fn_80145488(void) {
@@ -10139,13 +10175,32 @@ void fn_80145488(void) {
 }
 
 void fn_80145520(void) {
-void Process_UnlinkByKey(void *); void *Process_Create(void *, s32);
-extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
-extern f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
-s32 base=(s32)gBgmVolFadeProcs; f32 *p; f32 a,b;
-Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
-p=Process_Create((void*)(base+0x64),3);
-b=lbl_8036A77C; a=gBgmVolTimerZero; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
+    void Process_UnlinkByKey(void *);
+    void *Process_Create(void *, s32);
+    extern u8 gBgmVolFadeProcs[];
+    extern u8 gBgmVol;
+    extern f32 gBgmVolTimerZero;
+    extern f32 lbl_8036A77C;
+    extern f64 lbl_8036A780;
+    s32 base;
+    void *temp_r3;
+    f32 a;
+    f32 b;
+
+    (void)lbl_8036A780;
+    base = (s32)gBgmVolFadeProcs;
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
+    temp_r3 = Process_Create((void *)(base + 0x64), 3);
+    a = gBgmVolTimerZero;
+    b = lbl_8036A77C;
+    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
+    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 /* Stop BGM volume fades; snap gBgmVol to 0, or start a fade-out over `frames` ticks. */
@@ -10182,30 +10237,30 @@ void BgmVol_FadeOut(s32 frames) {
 }
 
 void fn_80145684(void) {
-    void Process_UnlinkByKey(void *);
-    void *Process_Create(void *, s32);
-    extern u8 gBgmVolFadeProcs[];
-    extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
+    void fn_8000BF00(void *);
+    void *fn_8000CAF0(void *, s32);
+    extern u8 lbl_80292558[];
+    extern u8 lbl_80367AEE;
+    extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
     f32 a;
     f32 b;
 
-    base = (s32)gBgmVolFadeProcs;
-    Process_UnlinkByKey((void *)(base + 0x28));
-    Process_UnlinkByKey((void *)(base + 0x3C));
-    Process_UnlinkByKey((void *)(base + 0x50));
-    Process_UnlinkByKey((void *)(base + 0x64));
-    Process_UnlinkByKey((void *)(base + 0x78));
-    Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = Process_Create((void *)(base + 0x3C), 3);
-    a = gBgmVolTimerZero;
+    base = (s32)lbl_80292558;
+    fn_8000BF00((void *)(base + 0x28));
+    fn_8000BF00((void *)(base + 0x3C));
+    fn_8000BF00((void *)(base + 0x50));
+    fn_8000BF00((void *)(base + 0x64));
+    fn_8000BF00((void *)(base + 0x78));
+    fn_8000BF00((void *)(base + 0x8C));
+    temp_r3 = fn_8000CAF0((void *)(base + 0x3C), 3);
+    a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
 }
 
 void fn_8014571C(void) {
@@ -10236,23 +10291,25 @@ void fn_8014571C(void) {
 }
 
 void fn_801457B4(void) {
-    void Process_UnlinkByKey(void *);
-    void *Process_Create(void *, s32);
-    extern u8 gBgmVolFadeProcs[];
+    void fn_8000BF00(void *);
+    void *fn_8000CAF0(void *, s32);
+    extern u8 lbl_80292558[];
     extern u8 lbl_8029256C[];
-    extern u8 gBgmQuietVol;
-    extern f32 gBgmVolTimerZero;
+    extern u8 lbl_80367AEC;
+    extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
-    f32 *p;
-    f32 a, b;
-    Process_UnlinkByKey(gBgmVolFadeProcs);
-    Process_UnlinkByKey(lbl_8029256C);
-    p = Process_Create(lbl_8029256C, 3);
+    void *temp_r3;
+    f32 a;
+    f32 b;
+
+    fn_8000BF00(lbl_80292558);
+    fn_8000BF00(lbl_8029256C);
+    temp_r3 = fn_8000CAF0(lbl_8029256C, 3);
+    a = lbl_8036A778;
     b = lbl_8036A77C;
-    a = gBgmVolTimerZero;
-    p[12] = a;
-    p[13] = b;
-    p[14] = (f32)(u32)gBgmQuietVol;
+    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
+    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEC;
 }
 
 void BgmVol_FadeInProcess3(void *proc) {
@@ -10878,15 +10935,12 @@ extern "C" void SeCue_FadeOut(s8 slot, s16 durationMs) {
 
 s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
-#pragma scheduling off
+#pragma peephole off
 s32 SeCue_PlayAtPos(void *arg0, f32 *arg1, s32 arg2) {
- s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
- f32 z = arg1[2];
- f32 y = arg1[1];
- f32 x = arg1[0];
- return SeCue_PlayAt(arg0, x, y, z, arg2);
+    s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
+    return SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
 }
-#pragma scheduling reset
+#pragma peephole on
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
     extern u8 gSeCueSlots[1344];
@@ -11019,8 +11073,8 @@ extern "C" void fn_801478D0(s32 arg0) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern u8 gFxSlots[];
-    extern f32 gMsPerFrame;
+    extern u8 lbl_8032FFC8[];
+    extern f32 lbl_8036A7A0;
     s16 a;
     u8 *entry;
     s32 i;
@@ -11029,14 +11083,15 @@ extern "C" void fn_801478D0(s32 arg0) {
     u8 flags;
 
     a = (s16)arg0;
+    entry = lbl_8032FFC8;
     i = 0;
-    for (entry = gFxSlots; i < 0xA; entry += 0x30, ++i) {
+    do {
         flags = entry[0xC];
         if (flags & 1) {
             if ((s16)arg0 <= 0) {
                 ((Obj *)entry)->v2();
             } else if (!(flags & 8)) {
-                temp = (s32)((f32)a / gMsPerFrame);
+                temp = (s32)((f32)a / lbl_8036A7A0);
                 var_r5 = (s16)temp;
                 if (var_r5 <= 0) {
                     var_r5 = 1;
@@ -11048,7 +11103,9 @@ extern "C" void fn_801478D0(s32 arg0) {
                 entry[0xC] = entry[0xC] | 8;
             }
         }
-    }
+        i += 1;
+        entry += 0x30;
+    } while (i < 0xA);
 }
 #pragma cplusplus reset
 s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
@@ -11501,12 +11558,13 @@ after_search:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-void fn_8014876C(void *arg0, s8 arg1, s32 arg2) {
+void fn_8014876C(void *arg0, s8 arg1, s16 arg2) {
     extern f32 gMsPerFrame;
-    s32 temp = (s32)((f32)(s16)arg2 / gMsPerFrame);
-    s16 frames = temp;
-    if (frames <= 0) frames = 1;
-    M2C_FIELD(arg0, u8 *, 0x28) = M2C_FIELD(arg0, u8 *, 0x16);
+    s16 frames = (s16)((s32)((f32)arg2 / gMsPerFrame));
+    if (frames <= 0) {
+        frames = 1;
+    }
+    M2C_FIELD(arg0, u8 *, 0x28) = (u8)M2C_FIELD(arg0, u8 *, 0x16);
     M2C_FIELD(arg0, s8 *, 0x29) = arg1;
     M2C_FIELD(arg0, s16 *, 0x2E) = frames;
     M2C_FIELD(arg0, s16 *, 0x2C) = 0;
