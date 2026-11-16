@@ -851,49 +851,32 @@ void EXTIntrruptHandler(s16 interrupt, OSContext *context)
 }
 
 #pragma scheduling reset
-s32 EXILock(s32 arg0, u32 arg1, u32 arg2) {
-    s32 temp_r29;
-    s32 temp_r4;
-    s32 temp_r4_2;
-    s32 var_ctr;
-    void *temp_r30;
-    void *var_r3;
+s32 EXILock(s32 chan, u32 dev, void (*callback)(s32, void *)) {
+    EXIControl *exi;
+    s32 enabled;
+    s32 i;
 
-    temp_r4 = arg0 << 6;
-    temp_r30 = &Ecb_8033E188[temp_r4];
-    temp_r29 = OSDisableInterrupts();
-    if (*(u32*)((uintptr_t)temp_r30 + 0xC) & 0x10) {
-        if (arg2 != 0U) {
-            var_r3 = temp_r30;
-            temp_r4_2 = *(u32*)((uintptr_t)temp_r30 + 0x24);
-            var_ctr = temp_r4_2;
-            if (temp_r4_2 > 0) {
-loop_3:
-                if (*(u32*)((uintptr_t)var_r3 + 0x28) == arg1) {
-                    OSRestoreInterrupts(temp_r29);
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
+    if (exi->state & 0x10) {
+        if (callback) {
+            for (i = 0; i < exi->items; i++) {
+                if (exi->queue[i].dev == dev) {
+                    OSRestoreInterrupts(enabled);
                     return 0;
                 }
-                var_r3 = (char*)var_r3 + 8;
-                var_ctr -= 1;
-                if (var_ctr == 0) {
-                    goto block_6;
-                }
-                goto loop_3;
             }
-block_6:
-            *(u32*)((uintptr_t)temp_r30 + 0x2C) = arg2;
-            *(u32*)((uintptr_t)temp_r30 + (temp_r4_2 * 8) + 0x28) = arg1;
-            *(u32*)((uintptr_t)temp_r30 + 0x24) = (s32) (*(u32*)((uintptr_t)temp_r30 + 0x24) + 1);
-            goto block_7;
+            exi->queue[exi->items].callback = callback;
+            exi->queue[exi->items].dev = dev;
+            exi->items++;
         }
-block_7:
-        OSRestoreInterrupts(temp_r29);
+        OSRestoreInterrupts(enabled);
         return 0;
     }
-    *(u32*)((uintptr_t)temp_r30 + 0xC) = (s32) (*(u32*)((uintptr_t)temp_r30 + 0xC) | 0x10);
-    *(u32*)((uintptr_t)temp_r30 + 0x18) = arg1;
-    SetExiInterruptMask(arg0, temp_r30);
-    OSRestoreInterrupts(temp_r29);
+    exi->state |= 0x10;
+    exi->dev = dev;
+    SetExiInterruptMask(chan, exi);
+    OSRestoreInterrupts(enabled);
     return 1;
 }
 
