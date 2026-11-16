@@ -897,7 +897,26 @@ block_7:
     return 1;
 }
 
-s32 EXIUnlock(s32 arg0) {
+s32 EXIUnlock(s32 chan) {
+    EXIControl *exi;
+    s32 enabled;
+    void (*callback)(s32, void *);
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
+    if (!(exi->state & 0x10)) {
+        OSRestoreInterrupts(enabled);
+        return 0;
+    }
+    exi->state &= ~0x10;
+    SetExiInterruptMask(chan, exi);
+    if (exi->items > 0) {
+        callback = exi->queue[0].callback;
+        if (--exi->items > 0) {
+            memmove(&exi->queue[0], &exi->queue[1], exi->items * sizeof(exi->queue[0]));
+        }
+        callback(chan, 0);
+    }
+    OSRestoreInterrupts(enabled);
     return 1;
 }
 
