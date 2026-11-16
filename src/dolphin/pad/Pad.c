@@ -321,6 +321,40 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     }
 }
 
+s32 fn_8021264C(u32 mask) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void fn_8023B930(u32);
+    void fn_8023C188(s32, void (*)(void));
+    void fn_802121E0(void);
+    void *memset(void *, s32, u32);
+    extern u8 Origin[];
+    extern u32 lbl_80368680, WaitingBits, CheckingBits, lbl_80368670, lbl_80366FB0, EnabledBits, __PADFixBits, lbl_80368674;
+    extern s32 lbl_80366FA4;
+    s32 interrupts;
+    u32 disable;
+    interrupts=OSDisableInterrupts();
+    mask |= lbl_80368680;
+    mask &= ~(WaitingBits | CheckingBits);
+    lbl_80368670 |= mask;
+    lbl_80368680=0;
+    disable=lbl_80368670 & EnabledBits;
+    EnabledBits &= ~mask;
+    __PADFixBits &= ~mask;
+    if (lbl_80366FB0==4) lbl_80368674 |= mask;
+    fn_8023B930(disable);
+    if (lbl_80366FA4==32) {
+        lbl_80366FA4=__cntlzw(lbl_80368670);
+        if (lbl_80366FA4!=32) {
+            lbl_80368670 &= ~(0x80000000U >> lbl_80366FA4);
+            memset(Origin+lbl_80366FA4*12,0,12);
+            fn_8023C188(lbl_80366FA4,fn_802121E0);
+        }
+    }
+    OSRestoreInterrupts(interrupts);
+    return 1;
+}
+
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 u32 fn_802129C0(PADStatus *status)
@@ -1007,9 +1041,7 @@ void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
     OSContext tempContext;
-    OSContext *saved;
     *(u32 *)0xCC006C00 |= 8;
-    saved = context;
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
     if (lbl_80368698 != 0) {
@@ -1017,7 +1049,7 @@ void fn_80213CB0(s32 arg0, OSContext *context)
  lbl_80368698(regs[2]);
  }
     OSClearContext(&tempContext);
-    OSSetCurrentContext(saved);
+    OSSetCurrentContext(context);
 }
 
 void fn_80213D2C(s32 arg0, OSContext *context) {
