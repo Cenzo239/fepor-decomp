@@ -1188,6 +1188,43 @@ void fn_80227FEC(const u8 *bytes, s32 count) {
     MWTRACE(8, lbl_802826A4);
 }
 
+s32 fn_80228094(s32 arg0, s32 *arg1, s8 arg2, s32 *arg3, s32 arg4) {
+void *TRKGetBuffer(s32);
+s32 TRKAppendBuffer(void *, void *, s32);
+void fn_8022699C(s32);
+s32 fn_80226A2C(s32 *, s32 *);
+s32 fn_802283A8(s32, s32 *, s32, s32, s32);
+u8 msg[0x40];
+s32 sp10;
+s32 spC;
+s32 sp8;
+s32 err;
+void *buf;
+memset(msg,0,0x40);
+msg[4]=0xD4;
+*(s32*)msg=0x40;
+*(s32*)(msg+8)=arg0;
+*(s32*)(msg+12)=*arg1;
+msg[16]=arg2;
+err=fn_80226A2C(&spC,&sp8);
+if(err==0) err=TRKAppendBuffer((void*)sp8,msg,0x40);
+if(err==0) {
+*arg3=0;
+*arg1=-1;
+err=fn_802283A8(sp8,&sp10,3,3,0);
+if(err==0) {
+buf=TRKGetBuffer(sp10);
+if(buf!=NULL) {
+*arg3=*(s32*)((u8*)buf+0x20);
+*arg1=*(s32*)((u8*)buf+0x28);
+}
+}
+fn_8022699C(sp10);
+}
+fn_8022699C(spC);
+return err;
+}
+
 s32 fn_802281A4(s32 arg0, s32 *arg1) {
     void *TRKGetBuffer(s32);
     s32 TRKAppendBuffer(void *, void *, s32);
