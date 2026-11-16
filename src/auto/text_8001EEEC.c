@@ -540,6 +540,51 @@ void fn_8001F91C(void *map, s8 cx, s8 cy, s8 rad) {
     } while (yext < *(s32 *)((u8 *)map + 4));
 }
 
+void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
+ s32 dy;
+ s8 xmin;
+ s8 y;
+ s8 x;
+ s32 offset;
+ s8 ymax;
+ s8 xmax;
+ s32 ady;
+ s32 dx;
+ s8 ymin;
+ s32 row,index;
+ s32 radius=arg3;
+ s32 centerX=arg1;
+ s32 centerY;
+ s32 delta;
+ s32 negdy;
+ u8 *rowptr,*cell;
+ s16 *values;
+ xmin=centerX-radius; if(xmin<0) xmin=0;
+ centerY=arg2;
+ ymin=centerY-radius; if(ymin<0) ymin=0;
+ xmax=centerX+radius; if(xmax>*(s32*)arg0-1) xmax=*(s32*)arg0-1;
+ ymax=centerY+radius; if(ymax>*(s32*)((u8*)arg0+4)-1) ymax=*(s32*)((u8*)arg0+4)-1;
+ delta=arg4;
+ row=ymin<<6;
+ rowptr=(u8*)arg0+row;
+ for(y=ymin;y<=ymax;y++) {
+ dy=y-centerY; negdy=-dy;
+ index=xmin+row;
+ cell=rowptr+xmin;
+ offset=index*2;
+ for(x=xmin;x<=xmax;x++) {
+ ady=dy; if(dy<0) ady=negdy;
+ dx=x-centerX; if(dx<0) dx=-dx;
+ if(dx+ady<=radius && *(s8*)(cell+0xe18e)==0) {
+ values=*(s16**)((u8*)arg0+0x14190);
+ values[index]=delta+values[index];
+ }
+ cell++; index++; offset+=2;
+ }
+ rowptr+=0x40; row+=0x40;
+ }
+}
+
 s32 fn_8001FB04(void *arg0, s8 *x, s8 *y, u8 arg3, u8 *path) {
  s8 oldx,oldy;
  u8 *last;
@@ -2088,6 +2133,31 @@ outer_test:
     if (y < gBattleMap.height) {
         goto outer;
     }
+}
+
+void fn_80023A4C(void *arg0) {
+ void *Map_Get(void);
+ s32 fn_80047AF8(void *);
+ s32 margin=(u8)fn_80047AF8(Map_Get());
+ s32 i;
+ s32 off;
+ u16 *p;
+ for(i=margin;i<*(s32*)arg0-margin;i++) {
+ off=((s8)i+((s8)margin<<6))*2+0x408e;
+ p=(u16*)((u8*)arg0+off);
+ *p=(u16)(*p & ~0x808)|0x80;
+ off=((s8)i+((s8)(*(s32*)((u8*)arg0+4)-margin-1)<<6))*2+0x408e;
+ p=(u16*)((u8*)arg0+off);
+ *p=(u16)(*p & ~0x404)|0x40;
+ }
+ for(i=margin;i<*(s32*)((u8*)arg0+4)-margin;i++) {
+ off=((s8)margin+((s8)i<<6))*2+0x408e;
+ p=(u16*)((u8*)arg0+off);
+ *p=(u16)(*p & ~0x101)|0x10;
+ off=((s8)(*(s32*)arg0-margin-1)+((s8)i<<6))*2+0x408e;
+ p=(u16*)((u8*)arg0+off);
+ *p=(u16)(*p & ~0x202)|0x20;
+ }
 }
 
 void fn_80023D14(void *arg0) {
@@ -4012,6 +4082,26 @@ void Ui_ConfirmUnitAction(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x12) = 1;
     temp_r3 = M2C_FIELD(arg0, void **, 0);
     M2C_FIELD(temp_r3, s32 *, 0x1A0) = (s32) (M2C_FIELD(temp_r3, s32 *, 0x1A0) & 0xFFFFFFFE);
+}
+
+s32 Ui_CanConfirmUnitSelect(void *arg0) {
+ u8 Status_Test(void *,s32);
+ u32 *fn_80037C20(void *);
+ u64 *Item_GetFlagsPtr(void *);
+ extern u8 gBattleState[];
+ u32 *item;
+ u8 *unit=*(u8**)arg0;
+ if(!Status_Test(unit+0x1bc,3)) {
+ item=fn_80037C20(unit);
+ if(item==0 || *item==0 || (*Item_GetFlagsPtr(item)&0x400000000ULL)==0) return 0;
+ }
+ if(*(s8*)((u8*)arg0+0x12)!=0) return 0;
+ if(((u8*)arg0)[0x11]==0) return 0;
+ switch((s32)((u8*)arg0)[8]) {
+ case 1: case 13: case 14: case 36: case 41: case 44: case 45: return 0;
+ }
+ if(*(s8*)(unit+0x1a8)==0) return 0;
+ return (*(u8**)(unit+0x190))[8]==gBattleState[0x11];
 }
 
 void UiCtx_BindUnit(void *arg0, void *arg1) {
