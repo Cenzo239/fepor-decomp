@@ -710,8 +710,7 @@ s32 fn_80218018(void) {
     lbl_80366FE8 = OSGetTick();
     lbl_80366FE8 = (lbl_80366FE8 * 0x41C64E6D) + 0x3039;
     var_r3 = (((u32) lbl_80366FE8 >> 0x10U) & 0x1F) + 1;
-loop_4:
-    if ((var_r3 < 4) && (var_r29 < 0xAU)) {
+    while ((var_r3 < 4) && (var_r29 < 0xAU)) {
         temp_r0 = OSGetTick() << var_r30;
         var_r30 += 1;
         if (var_r30 > 0x10U) {
@@ -721,7 +720,6 @@ loop_4:
         var_r29 += 1;
         lbl_80366FE8 = (lbl_80366FE8 * 0x41C64E6D) + 0x3039;
         var_r3 = (((u32) lbl_80366FE8 >> 0x10U) & 0x1F) + 1;
-        goto loop_4;
     }
     if (var_r3 < 4) {
         var_r3 = 4;
@@ -1387,6 +1385,36 @@ int fn_802195B0(int arg0, void *arg1, void *arg2)
 
 s32 __CARDGetDirBlock(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x84);
+}
+
+void fn_80219664(s32 chan, s32 result) {
+    extern u16 __CARDBlock[];
+    void *memcpy(void *, const void *, u32);
+    s32 __CARDPutControlBlock(void *, s32);
+    u8 *card;
+    u8 *workArea;
+    u8 *dir0;
+    u8 *dir1;
+    void (*callback)(s32, s32);
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (result >= 0) {
+        workArea = *(u8 **)(card + 0x80);
+        dir0 = workArea + 0x2000;
+        dir1 = workArea + 0x4000;
+        if (*(u8 **)(card + 0x84) == dir0) {
+            *(u8 **)(card + 0x84) = dir1;
+            memcpy(dir1, dir0, 0x2000);
+        } else {
+            *(u8 **)(card + 0x84) = dir0;
+            memcpy(dir0, dir1, 0x2000);
+        }
+    }
+    if (*(u32 *)(card + 0xD0) == 0) __CARDPutControlBlock(card, result);
+    callback = *(void (**)(s32, s32))(card + 0xD8);
+    if (callback != NULL) {
+        *(void **)(card + 0xD8) = NULL;
+        callback(chan, result);
+    }
 }
 
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
