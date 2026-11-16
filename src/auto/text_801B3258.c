@@ -12078,14 +12078,9 @@ void fn_801D041C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) | 4);
 }
 
-void fn_801D0444(u8 *base, s32 idx) {
-    s32 t;
-    if (idx < 3) {
-        t = idx;
-        idx = 0;
-        base += t * 2;
-        *(s16 *)(base + 0xe) = idx;
-    }
+void fn_801D0444(s16 *arg0, s32 idx) {
+    if (idx < 3)
+        arg0[idx + 7] = 0;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
@@ -16526,12 +16521,11 @@ void fn_801DF4A4(void *arg0, s32 arg1) {
         u8 r, g, b, a;
     };
     void Ui_DrawLine(s32, s32, s16, s32, s32, struct Color *);
-    s16 *arg0_s16;
     s16 h;
     struct Color col;
 
-    arg0_s16 = (s16 *)arg0;
-    h = arg0_s16[0x16/2] - arg0_s16[0x12/2];
+    h = *(s16 *)((u8 *)arg0 + 0x12);
+    h = *(s16 *)((u8 *)arg0 + 0x16) - h;
     col.r = 0x80;
     col.g = 0x78;
     col.b = 0x50;
