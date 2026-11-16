@@ -213,13 +213,11 @@ void __unregister_fragment(s32 arg0) {
 }
 
 s32 __register_fragment(s32 arg0, s32 arg1) {
-    extern u8 fragmentinfo_8033DD28[];
-    s32 *p = (s32 *)fragmentinfo_8033DD28;
-
-    if (p[2] == 0) {
-        p[0] = arg0;
-        p[1] = arg1;
-        p[2] = 1;
+    extern s32 fragmentinfo_8033DD28[3];
+    if (fragmentinfo_8033DD28[2] == 0) {
+        fragmentinfo_8033DD28[0] = arg0;
+        fragmentinfo_8033DD28[1] = arg1;
+        fragmentinfo_8033DD28[2] = 1;
         return 0;
     }
     return -1;
@@ -2559,24 +2557,7 @@ loop_3:
     return var_r3 == NULL ? (*arg1 != 0 ? NULL : var_r5) : var_r3;
 }
 
-void *fn_80234200(s32 arg0, u8 arg1) {
-    u8 temp_r4;
-    void *var_r3;
-    void *var_r5;
-
-    var_r5 = (void*)(arg0 - 1);
-    var_r3 = NULL;
-loop_3:
-    temp_r4 = *(u8*)var_r5;
-    var_r5 = (void*)((uintptr_t)var_r5 + 1);
-    if (temp_r4 != 0) {
-        if (temp_r4 == arg1) {
-            var_r3 = var_r5;
-        }
-        goto loop_3;
-    }
-    return var_r3 == NULL ? (arg1 != 0 ? NULL : var_r5) : var_r3;
-}
+void *fn_80234200(s32 arg0, u8 arg1) { u8 *p=(u8*)arg0-1; u32 needle=arg1; u8 *last=NULL; u32 c; while((c=*++p)!=0) { if(c==needle) last=p; } if(last!=NULL) return last; if(needle!=0) return NULL; return p; }
 
 void *strchr(void *arg0, u8 arg1) {
     u8 *p = (u8 *)arg0 - 1;
@@ -2685,11 +2666,14 @@ bytecopy:
     return 0;
 }
 
-void strcat(u8 *dest, u8 *src) {
+void strcat(u8 *dest, u8 *src)
+{
+    u8 *keep;
     u8 *d;
 
+    keep = dest;
     src--;
-    d = dest - 1;
+    d = keep - 1;
     while (*++d != 0) {
     }
     d--;
