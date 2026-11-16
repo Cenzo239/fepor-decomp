@@ -50,6 +50,27 @@ void fn_8008D86C(u8 *arg0) {
     *(&gMsgTipSlots + (s8)arg0[0x3d]) = 0;
 }
 
+void fn_8008D884(u8 *arg0) {
+ extern f32 lbl_8036975C, lbl_80369760, gZeroF, lbl_80369754;
+ f32 Math_Ease(s32, f32, f32, f32, f32);
+ void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
+ void Prim2D_PrepareTex(void); void Prim2D_SetTex(s32,s32);
+ void Prim2D_AddZ(f32); void fn_8008A998(s32,s32,s32);
+ void fn_8001003C(s32,s32,s32,s32,s32,void *,...);
+ u16 fn_8008A56C(void); void Process_Unlink(void *);
+ f32 y; u16 flags;
+ y=Math_Ease(6,*(f32 *)(arg0+0x30),*(f32 *)(arg0+0x34),(f32)(s8)arg0[0x3A],lbl_8036975C);
+ Prim2D_Begin();
+ Prim2D_SetTransform(lbl_80369760,y,gZeroF,lbl_80369754);
+ Prim2D_PrepareTex();
+ fn_8008A998(0,0,*(s16 *)(arg0+0x38));
+ Prim2D_Begin(); Prim2D_SetTex(0,0x13); Prim2D_AddZ(lbl_80369768);
+ Prim2D_PrepareTex();
+ fn_8001003C(0x30,14,1,1,0,arg0+0x3E,lbl_80369754,gZeroF);
+ flags=fn_8008A56C();
+ if((flags&12)&&(flags&2)) Process_Unlink(arg0);
+}
+
 s32 fn_8008D988(void) {
     extern u16 gBattleHelpStrings[];
     GfxEnt_UnlinkByName((u8 *)gBattleHelpStrings + 0xE3);
