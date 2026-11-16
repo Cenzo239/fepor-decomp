@@ -519,9 +519,10 @@ void fn_80224DCC(void *arg0, s32 arg1) {
     *(u32 *)0xCC008000 = (temp_r5 | 0x80000);
 }
 
-void GXSetCurrentMtx(void *arg0, s32 arg1) {
-    *(s32*)((u8*)arg0 + 0x50) = arg1;
-    *(s32*)((u8*)arg0 + 0x54) = arg1;
+void GXSetCurrentMtx(u32 arg0) {
+ void fn_80225180(s32);
+ M2C_FIELD(__GXData, u32 *, 0x80) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x80), arg0, 0, 26, 31);
+ fn_80225180(0);
 }
 
 f32 fn_80224E50(u32 arg1, s32 arg2) {
