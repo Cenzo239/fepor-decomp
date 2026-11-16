@@ -750,17 +750,15 @@ void fn_8021EB88(s32 arg0, void *arg1)
 
 #pragma peephole on
 void GXInitFifoBase(__GXFifoObj *fifo, void *base, u32 size) {
-    void fn_8021ED98(__GXFifoObj *, s32, s32);
+    void fn_8021ED98(void *, s32, s32);
     void fn_8021ED28(__GXFifoObj *, void *, void *);
-    u32 tmp;
-    void *b;
+    u8 *b;
     __GXFifoObj *f;
 
-    tmp = size - 4;
-    b = base;
+    b = (u8 *)base;
     f = fifo;
-    fifo->base = (u8 *)b;
-    fifo->top = (u8 *)(tmp + (u32)b);
+    fifo->base = b;
+    fifo->top = b + (size - 4);
     fifo->size = size;
     f->count = 0;
     fn_8021ED98(fifo, (s32)(size - 0x4000), (s32)((size >> 1) & ~0x1F));
@@ -1440,32 +1438,18 @@ void fn_802208BC(u32 token) {
     void PPCSync(void);
     extern u16 *__GXData;
 
-    u8 *gx;
-    u32 opcode;
-    u32 command;
-    u32 reg;
-    u32 zero;
     s32 interrupts;
+    u32 zero;
 
     interrupts = OSDisableInterrupts();
 
-    opcode = 0x61;
-    gx = (u8 *)__GXData;
+    *(u8 *)0xCC008000 = 0x61;
+    *(u32 *)0xCC008000 = (token & 0xFFFF) | 0x48000000;
 
-    command = token & 0xFFFF;
+    *(u8 *)0xCC008000 = 0x61;
+    *(u32 *)0xCC008000 = __rlwimi(__rlwimi((token & 0xFFFF) | 0x48000000, token, 0, 16, 31), 0x47, 24, 0, 7);
 
-    *(u8 *)0xCC008000 = opcode;
-    command |= 0x48000000;
-    *(u32 *)0xCC008000 = command;
-
-    command = __rlwimi(command, token, 0, 16, 31);
-    reg = 0x47;
-
-    *(u8 *)0xCC008000 = opcode;
-    command = __rlwimi(command, reg, 24, 0, 7);
-    *(u32 *)0xCC008000 = command;
-
-    if (*(u32 *)(gx + 0x5AC) != 0) {
+    if (*(u32 *)((u8 *)__GXData + 0x5AC) != 0) {
         fn_80220D6C();
     }
 
@@ -1481,7 +1465,6 @@ void fn_802208BC(u32 token) {
 
     PPCSync();
     OSRestoreInterrupts(interrupts);
-
     *(u16 *)((u8 *)__GXData + 2) = zero;
 }
 
@@ -1693,9 +1676,10 @@ void __GXPEInit(void)
     void fn_80220C78(void);
 
     extern u32 lbl_8036879C;
+    extern u16 *__peReg;
 
-    volatile u16 *pe;
-    u16 value;
+    u16 *pe;
+    u32 value;
 
     __OSSetInterruptHandler(0x12, (void *)fn_80220BAC);
     __OSSetInterruptHandler(0x13, (void *)fn_80220C78);
@@ -1705,13 +1689,12 @@ void __GXPEInit(void)
     __OSUnmaskInterrupts(0x2000);
     __OSUnmaskInterrupts(0x1000);
 
-    pe = (volatile u16 *)__peReg;
-
+    pe = __peReg;
     value = pe[5];
-    value |= 4;
-    value |= 8;
-    value |= 1;
-    value |= 2;
+    value = __rlwimi(value, 1, 2, 29, 29);
+    value = __rlwimi(value, 1, 3, 28, 28);
+    value = __rlwimi(value, 1, 0, 31, 31);
+    value = __rlwimi(value, 1, 1, 30, 30);
     pe[5] = value;
 }
 
