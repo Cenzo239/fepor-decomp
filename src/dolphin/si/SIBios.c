@@ -1019,6 +1019,34 @@ u32 fn_8023C188(s32 chan, void (*callback)(s32, u32)) {
     return type;
 }
 
+u32 fn_8023C2C4(u32 type) {
+    u32 error = type & 0xFF;
+    u32 device = type & 0xFFFFFF00;
+    if (type & 8) return 8;
+    if (error & 0x47) return 0x40;
+    if (error != 0) return 0x80;
+    if ((device & 0x18000000) == 0) {
+        switch ((s32)(device & 0xFFFF0000)) {
+        case 0x10000: case 0x20000: case 0x40000: case 0x02000000: case 0x05000000:
+            return device & 0xFFFF0000;
+        default: return 0x40;
+        }
+    }
+    if ((device & 0x18000000) != 0x08000000) return 0x40;
+    {
+        switch ((s32)(device & 0xFFFF0000)) {
+        case 0x08000000: case 0x09000000: return device & 0xFFFF0000;
+        }
+        if ((device & 0xFFE00000) == 0x08200000) return 0x08200000;
+        if ((device & 0x80000000) && !(device & 0x04000000)) {
+            if ((device & 0x8B100000) == 0x8B100000) return 0x8B100000;
+            if (!(device & 0x02000000)) return 0x88000000;
+        }
+        if ((device & 0x09000000) == 0x09000000) return 0x09000000;
+        return 0x40;
+    }
+}
+
 u32 fn_8023C410(s32 chan) {
     u32 SIGetType(s32);
     u32 fn_8023C2C4(u32);
