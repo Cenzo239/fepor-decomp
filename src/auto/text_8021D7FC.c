@@ -1705,9 +1705,12 @@ s32 fn_80220FC4(s32 arg0, s32 arg1) {
 }
 
 void fn_8022100C(u32 arg0) {
-    // Based on disassembly, the code is directly manipulating __GXData which isn't directly accessible
-    // This is an inline ASM replacement or needs to be done by accessing memory addresses
-    // We'll try with direct memory access patterns as per the instruction behavior
+ extern u16 *const __GXData;
+ u32 *gxData = (u32 *)__GXData;
+ u32 mode = (arg0 >> 1) & 1;
+ mode = __rlwimi(mode, arg0, 1, 30, 30);
+ gxData[0x204 / 4] = __rlwimi(gxData[0x204 / 4], mode, 14, 16, 17);
+ gxData[0x5ac / 4] |= 4;
 }
 
 void fn_80221034(s32 arg0) {
