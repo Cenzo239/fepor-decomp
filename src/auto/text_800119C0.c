@@ -1636,23 +1636,23 @@ void fn_8001598C(void)
     void fn_8004EB14(u8 *, s32);
     extern u8 gUnits[];
     u8 sp8[8];
-    u8 *a;
-    u8 *b;
+    u8 *mask;
+    u8 *units;
     s32 i;
     u8 *unit;
 
     Allegiance_FillMask(5, sp8);
-    a = sp8;
-    b = gUnits;
+    mask = sp8;
+    units = gUnits;
     i = 1;
     do {
         if ((u8)i != 0) {
-            unit = b + ((u8)i - 1) * 0x280;
+            unit = units + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0) {
-            if (a[(*(u8 **)(unit + 0x190))[8]] != 0) {
+            if (mask[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 fn_8004EB14(unit, 0);
             }
         }
@@ -1698,6 +1698,34 @@ void E_DispLoadWhole_Wait(void *proc) {
 after:
     if (ready != 0 || *(s32 *)((u8 *)proc + 0x60) > 0x4650) {
         Process_ClearFunc(proc);
+    }
+}
+
+void fn_80015B00(void *arg0) {
+    void Allegiance_FillMask(s32, u8 *);
+    u8 Unit_IsDisplayReady(void *);
+    void fn_8004F5EC(void *, s32);
+    extern u8 gUnits[];
+    u8 mask2[8];
+    u8 mask1[8];
+    s32 i;
+    u8 *unit;
+    *(s32 *)((u8 *)arg0+0x60)=0;
+    Allegiance_FillMask(3, mask1);
+    for (i=1;i<=0x9F;i++) {
+        if ((u8)i != 0) unit=gUnits+((u8)i-1)*0x280;
+        else unit=0;
+        if (*(u32 *)(unit+0x188) && mask1[(*(u8 **)(unit+0x190))[8]]) {
+            if (!Unit_IsDisplayReady(unit)) break;
+        }
+    }
+    Allegiance_FillMask(5, mask2);
+    for (i=1;i<=0x9F;i++) {
+        if ((u8)i != 0) unit=gUnits+((u8)i-1)*0x280;
+        else unit=0;
+        if (*(u32 *)(unit+0x188) && mask2[(*(u8 **)(unit+0x190))[8]]) {
+            fn_8004F5EC(unit,0x100);
+        }
     }
 }
 
@@ -2428,31 +2456,32 @@ s32 fn_80016C58(s32 arg0)
 }
 
 void Unit_ResetAll(void) {
+#pragma dont_inline on
+#pragma global_optimizer off
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK Unit_Clear(M2C_UNK *, s32);
-    extern M2C_UNK gUnits;
-    extern M2C_UNK gUnitLists;
-    M2C_UNK *temp_r30;
-    M2C_UNK *var_r31;
-    s32 var_r29;
-
-    fn_8001594C(&gUnitLists, 0);
-    fn_8001594C(&gUnitLists + 0xC, 1);
-    fn_8001594C(&gUnitLists + 0x18, 2);
-    fn_8001594C(&gUnitLists + 0x24, 3);
-    temp_r30 = &gUnitLists + 0x30;
-    fn_8001594C(temp_r30, 4);
-    fn_8001594C(&gUnitLists + 0x3C, 5);
-    fn_8001594C(&gUnitLists + 0x48, 6);
-    fn_8001594C(&gUnitLists + 0x54, 7);
-    var_r29 = 0;
-    var_r31 = &gUnits;
+    extern u8 gUnits[];
+    extern u8 gUnitLists[];
+    register u8 *unit;
+    u8 *list;
+    s32 i;
+    fn_8001594C(gUnitLists, 0);
+    fn_8001594C(gUnitLists + 0xC, 1);
+    fn_8001594C(gUnitLists + 0x18, 2);
+    fn_8001594C(gUnitLists + 0x24, 3);
+    list = gUnitLists + 0x30;
+    fn_8001594C(list, 4);
+    fn_8001594C(gUnitLists + 0x3C, 5);
+    fn_8001594C(gUnitLists + 0x48, 6);
+    fn_8001594C(gUnitLists + 0x54, 7);
+    i = 0;
+    unit = &gUnits[i];
     do {
-        Unit_Clear(var_r31, var_r29 + 1);
-        fn_80015718(temp_r30, var_r31);
-        var_r29 += 1;
-        var_r31 += 0x280;
-    } while (var_r29 < 0x9F);
+        Unit_Clear((M2C_UNK *)unit, i + 1);
+        fn_80015718((M2C_UNK *)list, (M2C_UNK *)unit);
+        i++;
+        unit += 0x280;
+    } while (i < 0x9F);
 }
 
 #include "common.h"
