@@ -3224,14 +3224,12 @@ valid:
 #pragma dont_inline reset
 }
 
-void fn_8021D28C(s32 arg0) {
-    s32 fn_8021D118(void *);
-    void fn_80217C64(s32);
-    extern u32 lbl_80216998;
-
-    if (fn_8021D118(&lbl_80216998) >= 0) {
-        fn_80217C64(arg0);
-    }
+s32 fn_8021D28C(s32 chan, s32 fileNo, void *stat) {
+ s32 fn_80217C64(s32);
+ void fn_80216998(s32,s32);
+ s32 result = fn_8021D118(chan,fileNo,stat,(s32)fn_80216998);
+ if(result < 0) return result;
+ return fn_80217C64(chan);
 }
 
 s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
