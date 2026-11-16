@@ -449,11 +449,12 @@ void fn_80222AD4(void* obj, void* obj2, s32 arg2)
 }
 
 void fn_80222C50(s32 arg0, s32 arg1) {
-    s32 fn_80222AD4(s32, s32, s32);                       /* extern */
-    void *__GXData;
-    
-    __GXData = *(void**)((char*)__GXData + 0x4C8);
-    fn_80222AD4(arg0, (s32)__GXData, arg1);
+    s32 fn_80222AD4(s32, s32, s32);
+    extern u16 *__GXData;
+    s32 (*callback)(void);
+
+    callback = *(s32 (**)(void))((u8 *)__GXData + 0x4C8);
+    fn_80222AD4(arg0, callback(), arg1);
 }
 
 void fn_80222CA4(u32 *obj, u32 arg1, u32 arg2, u16 arg3) {
