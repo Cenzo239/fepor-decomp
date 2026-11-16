@@ -1448,12 +1448,11 @@ void fn_80036984(s32 arg0, s32 arg1) {
 #pragma global_optimizer off
 void Unit_AddSupportPoints(void *arg0, s32 arg1) {
     u8 fn_80036B20(void *, s32);
+    u8 cur;
+    u8 *table;
+    s32 off8;
     u8 *target;
     s32 offset;
-    s32 off8;
-    u8 *table;
-    u8 *row;
-    u8 cur;
 
     if (fn_80036B20(arg0, arg1)) {
         return;
@@ -1463,9 +1462,9 @@ void Unit_AddSupportPoints(void *arg0, s32 arg1) {
     target[0x214]++;
     off8 = offset + 8;
     table = *(u8 **)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x50);
-    row = table + off8;
+    off8 = (s32)table + off8;
     cur = target[0x214];
-    if (cur > (u8)(row[6] + 1)) {
+    if (cur > (u8)(*(u8 *)(off8 + 6) + 1)) {
         target[0x214] = *(table + offset + 0xE) + 1;
     }
 }
