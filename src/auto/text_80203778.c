@@ -209,6 +209,10 @@ void PPCMtpmc3(u32 arg0) {
     M2C_ERROR(/* unknown instruction: mtspr PMC3, $r3 */);
 }
 
+void PPCMtpmc4(u32 arg0) {
+    (void)arg0;
+}
+
 u32 PPCMffpscr(void) {
     f64 value;
     u32 result;
@@ -221,7 +225,7 @@ u32 PPCMffpscr(void) {
 }
 
 s32 PPCMfhid2(void) {
-    return 0x392;
+    return M2C_ERROR(/* unknown instruction: mfspr $r3, HID2 */);
 }
 
 void PPCMthid2(u32 arg0) {
@@ -2483,11 +2487,13 @@ void fn_8020801C(u8 unused, OSContext *context) {
     }
     OSLoadContext(context);
 }
-void __OSModuleInit(void) {
-    s32 *ptr = (s32 *)0x800030CC;
-    ptr[0] = 0;
-    ptr[-1] = 0;
-    ptr[1] = 0;
+int __OSModuleInit(void)
+{
+  u8 *base;
+  base = (u8 *) 0x80000000;
+  *((s32 *) (base + 0x30CC)) = 0;
+  *((s32 *) (base + 0x30C8)) = 0;
+  *((s32 *) (base + 0x30D0)) = 0;
 }
 
 s32 fn_802083C8(s32 arg0) {
