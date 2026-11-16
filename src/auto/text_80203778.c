@@ -1045,7 +1045,10 @@ s32 ICFlashInvalidate(void) {
 
 void ICEnable(void)
 {
+    register u32 hid0;
     __isync();
+    hid0 = 0x8000;
+    (void)hid0;
 }
 
 void fn_802052E8(void) {
@@ -1582,6 +1585,7 @@ void fn_80206888(void) {
     lbl_803684B0 = 1;
 }
 
+#pragma peephole off
 void __OSGetExecParams(s32 *arg0) {
     void *memcpy(void *, const void *, u32);
 
@@ -1591,6 +1595,7 @@ void __OSGetExecParams(s32 *arg0) {
         *arg0 = 0;
     }
 }
+#pragma peephole on
 
 #pragma peephole off
 /* Return disc offset of the apploader (cached); default 0x2440 when BI2 has none. */
@@ -2216,8 +2221,7 @@ s32 OSEnableInterrupts(void) {
     return 0;
 }
 
-int OSRestoreInterrupts(int enabled)
-{
+int OSRestoreInterrupts(int enabled) {
     (void)enabled;
     return 0;
 }
@@ -2587,16 +2591,20 @@ int __OSModuleInit(void)
   *((s32 *) (base + 0x30D0)) = 0;
 }
 
+#pragma peephole off
+#pragma scheduling off
 s32 fn_802083C8(s32 arg0) {
-s32 __OSMaskInterrupts(u32);
-if (arg0 != 0) {
-u16 *regs = (u16*)0xCC000000;
-regs[0x4010/2] = 0xFF;
-__OSMaskInterrupts(0xF0000000);
+    s32 __OSMaskInterrupts(u32);
+    s32 flag = arg0;
+    if (flag != 0) {
+        u16 *regs = (u16 *)0xCC000000;
+        regs[0x4010 / 2] = 0xFF;
+        __OSMaskInterrupts(0xF0000000);
+    }
+    return 1;
 }
-return 1;
-}
-
+#pragma scheduling on
+#pragma peephole on
 s32 Config24MB(void) {
     s32 r4 = 0x00000002;
     s32 r3 = 0x80001ff;
