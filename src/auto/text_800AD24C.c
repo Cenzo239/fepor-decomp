@@ -9300,22 +9300,35 @@ void fn_800C1E24(void) {
     fn_800C1BDC();
 }
 
-s32 fn_800C1F1C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
-{
-    s32 temp0 = (arg0 < 0) ? ((arg0 + 0x1F) >> 5) : (arg0 >> 5);
-    s32 temp1 = (arg1 < 0) ? ((arg1 + 0x1F) >> 5) : (arg1 >> 5);
-    s32 temp2 = (arg2 < 0) ? ((arg2 + 0x1F) >> 5) : (arg2 >> 5);
-    s32 temp3 = (arg3 < 0) ? ((arg3 + 0x1F) >> 5) : (arg3 >> 5);
-    
-    s32 var_r4 = temp1 * 0x32E100;
-    s32 var_r3 = temp0 * 0x7D8600;
-    var_r3 += var_r4;
-    var_r4 = temp2 * 0x19400;
-    var_r3 += var_r4;
-    var_r4 = temp3 * 0x564;
-    var_r3 += var_r4;
-
-    return var_r3 + 0x800000;
+s32 fn_800C1F1C(void *arg0, void **arg1) {
+    void *Event_NextEntry(void *);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void *);
+    void *Unit_FindByPerson(void *);
+    void *personA;
+    void *other;
+    void *personB;
+    u8 *unit;
+    s32 count = 0;
+    u8 *entry;
+    for (entry=Event_NextEntry(0); entry; entry=Event_NextEntry(entry)) {
+        if ((s32)entry[0xC] == 8) {
+            if (EventFlag_IsSet((u8 *)gBattleState+0xB4, *(u8 **)(*(u8 **)(entry+8)+0x24)+(u16)*(s16 *)(entry+0x1A))) continue;
+            personA=Person_GetByPid(*(u8 **)(*(u8 **)(entry+8)+0x24)+(u16)*(s16 *)(entry+0x14));
+            personB=Person_GetByPid(*(u8 **)(*(u8 **)(entry+8)+0x24)+(u16)*(s16 *)(entry+0x16));
+            if (*(void **)((u8 *)arg0+0x188)==personA) {
+                other=personB;
+            } else {
+                if (*(s16 *)(entry+0x18)==0 || *(void **)((u8 *)arg0+0x188)!=personB) continue;
+                other=personA;
+            }
+            unit=Unit_FindByPerson(other);
+            if (!unit || !*(void **)(unit+0x188) || (*(u32 *)(unit+0x1A0)&0xD8)) continue;
+            arg1[count++]=unit;
+            if(count==4) break;
+        }
+    }
+    return count;
 }
 
 char *fn_800C2048(s8 arg0, s8 arg1) {
