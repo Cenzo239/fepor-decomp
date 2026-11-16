@@ -2855,47 +2855,47 @@ void fn_800CAF74(void *arg0) {
 }
 
 void fn_800CB070(String *arg0) {
-    void String_Init(void *, char *, void *);
-    void String_AssignCStr(String *, char *, u32);
-    void *String_Destroy(void *, s16);
-    void String_Copy(void *, void *);
-    void sprintf(char *, char *, ...);
+    void fn_800C9ABC(void *, char *, void *);
+    void fn_800C96F8(String *, char *, u32);
+    void *fn_800C9A60(void *, s16);
+    void fn_800C9B6C(void *, void *);
+    void fn_80231D94(char *, char *, ...);
     s32 strlen(char *);
-    s32 UnitRef_GetName(void);
+    s32 fn_8001D2C8(void);
     extern char lbl_802704F8[];
-    extern u8 gBattleReplayActive;
-    extern void *gBattleReplayScene;
-    extern u32 gBattle[];
+    extern u8 lbl_80367878;
+    extern void *lbl_8036787C;
+    extern u32 lbl_80330EAC[];
     char buf[0x40];
-    String str;
+    u8 **slot;
     void *scratch;
     String *out;
-    u32 tmp;
-    u8 **slot;
+    unsigned long tmp;
+    String str;
     u8 *entry;
 
     out = arg0;
-    String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
-    if (gBattleReplayActive != 0) {
-        tmp = (u32)((char *)gBattleReplayScene + 0x100);
-        String_AssignCStr(&str, (char *)tmp, strlen((char *)tmp));
+    fn_800C9ABC(&str, lbl_802704F8 + 0x1B0, &scratch);
+    if (lbl_80367878 != 0) {
+        tmp = (u32)((char *)lbl_8036787C + 0x100);
+        fn_800C96F8(&str, (char *)tmp, strlen((char *)tmp));
     } else {
-        slot = (u8 **)((u8 *)gBattle + 0x28C);
-        if (slot != NULL) {
+        slot = (u8 **)((u8 *)lbl_80330EAC + 0x28C);
+        if (slot != (u32)NULL) {
             entry = *slot;
             if (entry != NULL) {
-                if (entry != NULL) {
+                if ((short)entry != (unsigned)NULL) {
                     tmp = entry[0x15];
                 } else {
                     tmp = 0;
                 }
-                sprintf(buf, lbl_802704F8 + 0x1B1, (u8)tmp + 0x60, UnitRef_GetName());
-                String_AssignCStr(&str, buf, strlen(buf));
+                fn_80231D94(buf, lbl_802704F8 + 0x1B1, (u8)tmp + 0x60, fn_8001D2C8());
+                fn_800C96F8(&str, buf, strlen(buf));
             }
         }
     }
-    String_Copy(out, &str);
-    String_Destroy(&str, -1);
+    fn_800C9B6C(out, &str);
+    fn_800C9A60(&str, -1);
 }
 
 void *fn_800CB27C(void) {
@@ -12497,7 +12497,6 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     void String_Destroy(void *, s32);
     void fn_800E9044(void *);
     void fn_800E9050(void *);
-    u8 match;
     s32 count;
     u32 key;
     void *item;
@@ -12509,6 +12508,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     key = *(u32 *)arg1;
     for (i = 0; i < count; i++) {
+        u8 match;
         item = (void *)ObjList_Get(list, i);
         fn_800DF6DC(str, item);
         match = 0;
@@ -13954,49 +13954,25 @@ void fn_800EB374(s32 arg0) {
 }
 
 s32 fn_800EB428(s32 arg0) {
-    struct CardWork {
-        u8 workArea[0xA000];
-        s32 chan;
-        volatile s32 result;
-        s32 sectorSize;
-        s32 unkA00C;
-        s32 unkA010;
-        s32 unkA014;
-        u8 unkA018;
-        u8 unkA019;
-        u8 busy;
-    };
+    struct CardWork { u8 workArea[0xA000]; s32 chan; volatile s32 result; s32 sectorSize; s32 unkA00C; s32 unkA010; s32 unkA014; u8 unkA018; u8 unkA019; u8 busy; };
     s32 CARDProbeEx(s32, s32, void *);
     void Process_Goto(s32, s32);
     extern struct CardWork gCardWork;
-    u8 flag;
-    u8 ok;
-    s32 ret;
-
+    u8 flag; u8 ok; s32 ret; s32 result;
     gCardWork.chan = 0;
     gCardWork.unkA018 = 0;
     gCardWork.unkA019 = 0;
     gCardWork.busy = 0;
     gCardWork.result = CARDProbeEx(gCardWork.chan, 0, &gCardWork.sectorSize);
     flag = 0;
-    if (gCardWork.result == -1 || gCardWork.busy != 0) {
-        flag = 1;
-    }
-    if (flag != 0) {
-        return 1;
-    }
+    result = gCardWork.result;
+    if (result == -1 || gCardWork.busy != 0) flag = 1;
+    if (flag != 0) return 1;
     ok = 0;
-    if (gCardWork.result == 0 && gCardWork.busy == 0) {
-        ok = 1;
-    }
-    if (ok == 0) {
-        Process_Goto(arg0, 0x63);
-        return 1;
-    }
+    if (result == 0 && gCardWork.busy == 0) ok = 1;
+    if (ok == 0) { Process_Goto(arg0, 0x63); return 1; }
     ret = 0;
-    if (gCardWork.result == -1 || gCardWork.busy != 0) {
-        ret = 1;
-    }
+    if (result == -1 || gCardWork.busy != 0) ret = 1;
     return ret;
 }
 
@@ -20388,35 +20364,20 @@ void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
 
 #pragma use_lmw_stmw on
 void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
-    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
-    void fn_80022748(void *, void *);
-    void fn_800227D0(void *, s32, s32);
-    void fn_800227F8(void *, void *);
-    void Map_SelectRangeBuffer(void *, s32);
-    s8 Unit_GetMov(void *);
-    u8 Status_Test(void *, s32);
-    extern u8 gBattleMap[];
-    u8 *map;
-    s32 t14;
-    s32 slot;
-    s32 mode;
-
-    map = gBattleMap;
-    mode = arg3;
-    t14 = Status_Test(unit + 0x1BC, 0x14) != 0;
-    arg3 = Status_Test(unit + 0x1BC, 0x15) != 0;
-    Map_SelectRangeBuffer(gBattleMap, mode);
-    fn_800227F8(gBattleMap, *(void **)(unit + 0x18C));
-    fn_80022748(gBattleMap, *(void **)(unit + 0x190));
-    if (*(u32 *)(unit + 0x254) & 0x20000) {
-        fn_800227D0(map, 0x37, 0x30);
-    }
-    if (arg4 != -1) {
-        slot = arg4;
-    } else {
-        slot = (s8)Unit_GetMov(unit);
-    }
-    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)slot, t14, arg3);
+void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
+void fn_80022748(void *, void *); void fn_800227D0(void *, s32, s32);
+void fn_800227F8(void *, void *); void Map_SelectRangeBuffer(void *, s32);
+s8 Unit_GetMov(void *); u8 Status_Test(void *, s32); extern u8 gBattleMap[];
+s32 t14; s32 slot; s32 mode; u8 *map;
+map=gBattleMap; mode=arg3;
+t14=Status_Test(unit+0x1BC,0x14)!=0;
+arg3=Status_Test(unit+0x1BC,0x15)!=0;
+Map_SelectRangeBuffer(gBattleMap,mode);
+fn_800227F8(gBattleMap,*(void **)(unit+0x18C));
+fn_80022748(gBattleMap,*(void **)(unit+0x190));
+if (*(u32 *)(unit+0x254)&0x20000) fn_800227D0(map,0x37,0x30);
+if(arg4!=-1) slot=arg4; else slot=Unit_GetMov(unit);
+Map_FloodMoveRange(map,(s8)arg0,(s8)arg1,(u16)slot,t14,arg3);
 }
 #pragma use_lmw_stmw reset
 
