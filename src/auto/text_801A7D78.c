@@ -83,12 +83,11 @@ u16 *BattleUnit_GetWeaponSlot(void *arg0) {
 }
 
 void fn_801A8010(void *arg0) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001DDE8(s32);
     extern u16 lbl_80367218;
     void *base;
     s8 flag;
-    u64 bits;
 
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
     if (flag > 0) {
@@ -97,8 +96,7 @@ void fn_801A8010(void *arg0) {
         } else {
             base = (u8 *)arg0 + 0x284;
         }
-        bits = *fn_8001CB64(base);
-        if ((bits & 0x100ULL) == 0) {
+        if ((*Item_GetFlagsPtr(base) & 0x10000000000ULL) == 0) {
             if (*(u8 *)((u8 *)arg0 + 0x295) == 0x52) {
                 if (*(s8 *)((u8 *)arg0 + 0x2C8) <= 0) {
                     base = &lbl_80367218;
@@ -446,54 +444,58 @@ void Unit_FillAffinityBonuses(void *unit, void *info) {
     AffinityBonuses_Halve(info);
 }
 
-void fn_801A8DA4(void *arg0) {
+#pragma opt_propagation off
+#pragma opt_common_subs off
+void fn_801A8DA4(void *unit) {
+    void Unit_AddAffinityBonuses(void *, s32, void *);
+    void Unit_FindSupportPartnerIndex(void *, s32);
     s32 Unit_GetSupportRank(void *, s32);
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     u8 Unit_GetDistance(void *, void *);
-    M2C_UNK Unit_FindSupportPartnerIndex(void *, s32);
-    M2C_UNK Unit_AddAffinityBonuses(void *, s32, M2C_UNK *);
-    M2C_UNK AffinityBonuses_Halve(M2C_UNK *);
-    
-    s32 var_r28;
-    void *temp_r3;
-    u8 sp11;
-    u8 sp10;
-    u8 spF;
-    u8 spE;
-    u8 spD;
-    u8 spC;
-    M2C_UNK sp8;
+    void AffinityBonuses_Halve(void *);
+    s32 rank;
+    void *partner;
+    s32 i;
+    struct {
+        u32 unk00;
+        s8 bonuses[6];
+    } info;
 
-    M2C_FIELD(arg0, u8 *, 0xC) = 0;
-    M2C_FIELD(arg0, u8 *, 0x10) = 0;
-    M2C_FIELD(arg0, u8 *, 0xF) = 0;
-    M2C_FIELD(arg0, u8 *, 0xE) = 0;
-    M2C_FIELD(arg0, u8 *, 0xD) = 0;
-    M2C_FIELD(arg0, u8 *, 0x11) = 0;
-    
-    var_r28 = 0;
-loop_6:
-    if (var_r28 < (s32) Unit_CountSupportPartners(arg0)) {
-        temp_r3 = Unit_GetSupportPartner(arg0, var_r28);
-        if ((temp_r3 != NULL) && ((u32) M2C_FIELD(arg0, u32 *, 0x190) == (u32) M2C_FIELD(temp_r3, u32 *, 0x190)) && (Unit_GetDistance(arg0, temp_r3) <= 3U)) {
-            Unit_FindSupportPartnerIndex(temp_r3, M2C_FIELD(arg0, s32 *, 0x188));
-            Unit_GetSupportRank(arg0, var_r28);
-            Unit_AddAffinityBonuses(arg0, 0, &sp8);
-            Unit_AddAffinityBonuses(temp_r3, 0, &sp8);
+    i = 0;
+    *(u8 *)((u8 *)&info + 9) = i;
+    *(u8 *)((u8 *)&info + 8) = i;
+    *(u8 *)((u8 *)&info + 7) = i;
+    *(u8 *)((u8 *)&info + 6) = i;
+    *(u8 *)((u8 *)&info + 5) = i;
+    *(u8 *)((u8 *)&info + 4) = i;
+
+    for (; i < (s32)Unit_CountSupportPartners(unit); i++) {
+        partner = Unit_GetSupportPartner(unit, i);
+        if (partner == NULL) {
+            continue;
         }
-        var_r28 += 1;
-        goto loop_6;
+        if (*(void **)((u8 *)unit + 0x190) != *(void **)((u8 *)partner + 0x190)) {
+            continue;
+        }
+        if ((u8)Unit_GetDistance(unit, partner) > 3) {
+            continue;
+        }
+        Unit_FindSupportPartnerIndex(partner, *(s32 *)((u8 *)unit + 0x188));
+        rank = Unit_GetSupportRank(unit, i);
+        Unit_AddAffinityBonuses(unit, rank, &info);
+        Unit_AddAffinityBonuses(partner, rank, &info);
     }
-    AffinityBonuses_Halve(&sp8);
-    M2C_FIELD(arg0, s16 *, 0x298) = (s16) (M2C_FIELD(arg0, s16 *, 0x298) + (s8) spC);
-    M2C_FIELD(arg0, s16 *, 0x29A) = (s16) (M2C_FIELD(arg0, s16 *, 0x29A) + (s8) spD);
-    M2C_FIELD(arg0, s16 *, 0x29E) = (s16) (M2C_FIELD(arg0, s16 *, 0x29E) + (s8) spE);
-    M2C_FIELD(arg0, s16 *, 0x2A0) = (s16) (M2C_FIELD(arg0, s16 *, 0x2A0) + (s8) spF);
-    M2C_FIELD(arg0, s16 *, 0x2A4) = (s16) (M2C_FIELD(arg0, s16 *, 0x2A4) + (s8) sp10);
-    M2C_FIELD(arg0, s16 *, 0x2A6) = (s16) (M2C_FIELD(arg0, s16 *, 0x2A6) + (s8) sp11);
+    AffinityBonuses_Halve(&info);
+    *(s16 *)((u8 *)unit + 0x298) = (s16)(*(s16 *)((u8 *)unit + 0x298) + *(s8 *)((u8 *)&info + 4));
+    *(s16 *)((u8 *)unit + 0x29A) = (s16)(*(s16 *)((u8 *)unit + 0x29A) + *(s8 *)((u8 *)&info + 5));
+    *(s16 *)((u8 *)unit + 0x29E) = (s16)(*(s16 *)((u8 *)unit + 0x29E) + *(s8 *)((u8 *)&info + 6));
+    *(s16 *)((u8 *)unit + 0x2A0) = (s16)(*(s16 *)((u8 *)unit + 0x2A0) + *(s8 *)((u8 *)&info + 7));
+    *(s16 *)((u8 *)unit + 0x2A4) = (s16)(*(s16 *)((u8 *)unit + 0x2A4) + *(s8 *)((u8 *)&info + 8));
+    *(s16 *)((u8 *)unit + 0x2A6) = (s16)(*(s16 *)((u8 *)unit + 0x2A6) + *(s8 *)((u8 *)&info + 9));
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 void fn_801A8F14(void *arg0, void *arg1) {
     u8 fn_801B8550(s32);
     if (fn_801B8550(M2C_FIELD(arg1, s32 *, 0x280)) != 0) {
@@ -729,6 +731,7 @@ void fn_801A949C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x2B6) = 0;
 }
 
+#pragma use_lmw_stmw off
 void fn_801A94B0(void *arg0) {
     void *Terrain_GetEntry(u8);
     u8 Status_Test(void *, s32);
@@ -737,27 +740,23 @@ void fn_801A94B0(void *arg0) {
     s32 DebugPrint(const char *, ...);
     extern u8 gBattleMap[];
     extern u8 gBattleDebugMsgs[];
-    void *entry;
-    void *name;
     void *tname;
-    u8 *tp;
+    void *name;
 
-    entry = Terrain_GetEntry(gBattleMap[(s8)*((u8 *)arg0 + 0x19E) + ((s8)*((u8 *)arg0 + 0x19F) << 6) + 0x100D]);
-    *(void **)((u8 *)arg0 + 0x2B0) = entry;
-    if (entry == NULL) {
+    *(void **)((u8 *)arg0 + 0x2B0) = Terrain_GetEntry(
+        gBattleMap[(s8)*((u8 *)arg0 + 0x19E) + ((s8)*((u8 *)arg0 + 0x19F) << 6) + 0x100D]);
+    if (*(void **)((u8 *)arg0 + 0x2B0) == NULL) {
         DebugPrint((const char *)(gBattleDebugMsgs + 0x175));
         return;
     }
     if (Status_Test((u8 *)arg0 + 0x1BC, 4) != 0) {
-        tp = *(u8 **)((u8 *)entry + 8);
-        *((u8 *)arg0 + 0x2B4) = tp[4];
-        *((u8 *)arg0 + 0x2B5) = tp[5];
-        *((u8 *)arg0 + 0x2B6) = tp[3];
+        *((u8 *)arg0 + 0x2B4) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[4];
+        *((u8 *)arg0 + 0x2B5) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[5];
+        *((u8 *)arg0 + 0x2B6) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[3];
     } else {
-        tp = *(u8 **)((u8 *)entry + 8);
-        *((u8 *)arg0 + 0x2B4) = tp[1];
-        *((u8 *)arg0 + 0x2B5) = tp[2];
-        *((u8 *)arg0 + 0x2B6) = tp[0];
+        *((u8 *)arg0 + 0x2B4) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[1];
+        *((u8 *)arg0 + 0x2B5) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[2];
+        *((u8 *)arg0 + 0x2B6) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[0];
     }
     name = *(void **)((u8 *)arg0 + 0x188);
     tname = fn_8005B73C(*(void **)((u8 *)arg0 + 0x2B0));
@@ -767,8 +766,7 @@ void fn_801A94B0(void *arg0) {
                (s8)*((u8 *)arg0 + 0x2B5),
                (s8)*((u8 *)arg0 + 0x2B6));
 }
-
-#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void fn_801A9600(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     u8 Unit_CanEquipItem(void *, void *);
@@ -1127,11 +1125,13 @@ u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
         goto check;
         do {
             if ((s32)key == entry[0]) {
-                if (handler == NULL) {
-                } else {
+                if (handler != NULL) {
                     goto found;
+                } else {
+                    goto next;
                 }
             }
+        next:
             entry += 2;
         check:
             handler = (void (*)(void *, void *))entry[1];
@@ -2027,15 +2027,17 @@ extern "C" void fn_801AE154(void *arg0) {
 }
 #pragma cplusplus reset
 void fn_801AE1B0(s32 *arg0, void *arg1) {
-    s32 *fn_8013F748(void *, M2C_UNK *, s16 *);
-    M2C_UNK spC;
+    s32 *fn_8013F748(void *, void *, s16 *);
+    void *spC;
     s16 sp8[2];
     s16 a;
     s16 b;
+    s16 sel;
 
-    switch (*(s16 *)((u8 *)arg1 + 0x3E)) {
+    sel = *(s16 *)((u8 *)arg1 + 0x3E);
+    switch (sel) {
     case 0:
-        a = *(s16 *)((u8 *)arg1 + 0x40) * 0x1A + 0x28;
+        a = (s16)(*(s16 *)((u8 *)arg1 + 0x40) * 0x1A + 0x28);
         b = 0x18;
         break;
     case 1:
@@ -2049,7 +2051,7 @@ void fn_801AE1B0(s32 *arg0, void *arg1) {
     }
     sp8[0] = a;
     sp8[1] = b;
-    *arg0 = *(s32 *)fn_8013F748(arg1, &spC, sp8);
+    *arg0 = *fn_8013F748(arg1, &spC, sp8);
 }
 
 s32 fn_801AE24C(void *arg0) {
