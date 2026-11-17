@@ -7834,6 +7834,32 @@ void fn_8013F3D0(void) {
     fn_80059C2C(0, 0, 0x260, 0x1C0, 0);
 }
 
+void fn_8013F54C(void *arg0) {
+void fn_8013F748(void *,void *,void *);
+f32 fn_8013FA44(void *);
+s32 fn_80138908(void *);
+s32 fn_8013FA10(void *);
+void fn_80009C20(f32,f32,f32,f32,f32,f32,f32,f32);
+void Prim2D_SetColorByte(s32);
+void Prim2D_SetAlphaByte(s32);
+extern f32 lbl_8036A718;
+struct Point { s16 x,y; } pt;
+s16 width,height,z;
+f32 scale;
+*(u32 *)&pt=M2C_FIELD(arg0,u32 *,0xA);
+if(M2C_FIELD(arg0,void **,0x38)) fn_8013F748(M2C_FIELD(arg0,void **,0x38),&pt,&pt);
+Prim2D_Begin();
+height=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
+width=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
+z=M2C_FIELD(arg0,s16 *,0x22);
+scale=fn_8013FA44(arg0);
+fn_80009C20((f32)pt.x,(f32)pt.y,(f32)z,(f32)(width>>1),(f32)(height>>1),fn_8013FA44(arg0),scale,lbl_8036A718);
+Prim2D_SetTex(0,(u16)(M2C_FIELD(arg0,u32 *,0x34)|2));
+Prim2D_SetColorByte(fn_80138908(arg0));
+Prim2D_SetAlphaByte(fn_8013FA10(arg0));
+Prim2D_PrepareTex();
+}
+
 void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
     void fn_8013F748(void *, void *, void *);
     struct Point {
@@ -8613,33 +8639,38 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void fn_80142060(void *);
     void fn_8014127C(void *);
     extern u8 lbl_80292278[];
+    typedef struct {
+        u8 pad[0x34];
+        u8 list;
+    } Panel;
     void *sp10;
     void *spC;
     void *sp8;
     void *end;
     void *node;
-    void *obj;
+    Panel *obj;
     s16 t[5];
 
     if (arg3 != 0) {
-        obj = Process_CreateChild(lbl_80292278, arg0);
+        obj = (Panel *)Process_CreateChild(lbl_80292278, arg0);
     } else {
-        obj = Process_Create(lbl_80292278, arg0);
+        obj = (Panel *)Process_Create(lbl_80292278, arg0);
     }
     if (obj != NULL) {
-        *(u8 *)((u8 *)obj + 0x30) = 0;
-        fn_80142060((u8 *)obj + 0x34);
+        ((u8 *)obj)[0x30] = 0;
+        fn_80142060(&obj->list);
     }
     sp10 = arg1;
     if (arg1 != NULL) {
-        end = fn_80140B04((u8 *)obj + 0x34);
-        node = *(void **)((u8 *)fn_80140B04((u8 *)obj + 0x34) + 4);
+        end = fn_80140B04(&obj->list);
+        node = fn_80140B04(&obj->list);
+        node = ((void **)node)[1];
         goto check;
         for (;;) {
-            node = *(void **)((u8 *)node + 4);
+            node = ((void **)node)[1];
         check:
             if (node != end) {
-                if (*(void **)((u8 *)node + 8) != sp10) {
+                if (((void **)node)[2] != sp10) {
                     continue;
                 }
             }
@@ -8647,7 +8678,7 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
         }
         if (node == (u8 *)obj + 0x38) {
             spC = (u8 *)obj + 0x38;
-            List_Insert(&sp8, (u8 *)obj + 0x34, &spC, &sp10);
+            List_Insert(&sp8, &obj->list, &spC, &sp10);
             if (sp10 != NULL) {
                 *(s32 *)((u8 *)sp10 + 4) = *(s32 *)((u8 *)sp10 + 4) + 1;
             }
@@ -9819,23 +9850,23 @@ extern "C" s16 fn_80143C58(void *arg0) {
     return obj->unk64[((Obj *)arg0)->v10()];
 }
 #pragma cplusplus reset
-void fn_80143E0C(void *unit, s16 arg1) {
+extern "C" void fn_80143E0C(void *unit, s16 arg1) {
 #pragma cplusplus on
 struct Panel {
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
 virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
 virtual void v8()=0; virtual void v9()=0; virtual s32 page()=0;
+u32 size(){ return *(u32 *)((u8 *)this+page()*12+0x90); }
 };
 u8 *p;
-u32 count;
 s16 visible;
-Panel *self=(Panel *)unit;
-if((u32)arg1 > *(u32 *)((u8 *)unit+self->page()*12+0x90)-1) {
-arg1=*(u32 *)((u8 *)unit+self->page()*12+0x90)-1;
+u32 count;
+if((u32)arg1 > ((Panel *)unit)->size()-1) {
+arg1=((Panel *)unit)->size()-1;
 }
 if(arg1<0) arg1=0;
-p=(u8 *)unit+self->page()*2;
-count=*(u32 *)((u8 *)unit+self->page()*12+0x90);
+p=(u8 *)unit+((Panel *)unit)->page()*2;
+count=((Panel *)unit)->size();
 visible=*(s16 *)((u8 *)unit+0x80);
 if(count<=(u32)visible) {
 *(s16 *)(p+0x64)=arg1;
@@ -11808,6 +11839,80 @@ extern "C" void fn_801478D0(s32 arg0) {
         entry += 0x30;
     } while (i < 0xA);
 }
+
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+extern "C" void fn_801479C4(void *arg0, s16 arg1) {
+    void *Hash_Lookup(void *);
+    struct Entry {
+        void **names;
+        u8 pad4[4];
+        virtual u8 v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        u8 flags;
+        u8 pad_d[9];
+        u8 unk_16;
+        u8 pad_17[0x11];
+        u8 unk_28;
+        u8 unk_29;
+        u8 pad_2a[2];
+        s16 unk_2c;
+        s16 unk_2e;
+    };
+    extern Entry gFxSlots[];
+    extern f32 gMsPerFrame;
+
+    u8 active;
+    s32 i;
+    Entry *entry;
+    Entry *base;
+    void *h1;
+    s8 slot;
+    Entry *fx;
+    s32 temp;
+    s16 frames;
+
+    base = gFxSlots;
+    i = 0;
+    do {
+        active = 0;
+        entry = (Entry *)((u8 *)base + ((u8)i * 0x30));
+        if ((entry->flags & 1) && entry->v0() != 0) {
+            active = 1;
+        }
+        if (active != 0) {
+            h1 = Hash_Lookup(arg0);
+            if (h1 == Hash_Lookup(*entry->names)) {
+                slot = (s8)i;
+                goto found;
+            }
+        }
+        i += 1;
+    } while (i < 0xA);
+    slot = -1;
+found:
+    if (slot != -1) {
+        fx = (Entry *)((u8 *)gFxSlots + ((u8)slot * 0x30));
+        if (arg1 <= 0) {
+            fx->v2();
+        } else if (!(fx->flags & 8)) {
+            temp = (s32)((f32)arg1 / gMsPerFrame);
+            frames = (s16)temp;
+            if (frames <= 0) {
+                frames = 1;
+            }
+            fx->unk_28 = fx->unk_16;
+            fx->unk_29 = 0;
+            fx->unk_2e = frames;
+            fx->unk_2c = 0;
+            fx->flags = (u8)(fx->flags | 8);
+        }
+    }
+}
+#pragma cplusplus reset
+#pragma use_lmw_stmw reset
+
 #pragma cplusplus reset
 s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
     s32 Fx_AllocSlot(void);
