@@ -2070,80 +2070,46 @@ s32 Sound_HasId(s32 id) {
 }
 
 extern u16 lbl_80319A18[];
+#pragma opt_strength_reduction off
 s32 fn_800B2FF4(u8 arg0) {
     extern u16 lbl_80319A18[];
     s32 *ptr;
+    s32 outer;
     s32 i;
     u8 val;
 
     if (arg0 == 0) {
         ptr = (s32 *)lbl_80319A18;
-        i = 0;
-        do {
-            if (ptr[0] != 0) {
+        for (outer = 0; outer < 2; outer++) {
+            if (*ptr != 0) {
                 return 0;
             }
-            if (ptr[1] != 0) {
-                return 0;
+            for (i = 0; i < 7; i++) {
+                if (*++ptr != 0) {
+                    return 0;
+                }
             }
-            if (ptr[2] != 0) {
-                return 0;
-            }
-            if (ptr[3] != 0) {
-                return 0;
-            }
-            if (ptr[4] != 0) {
-                return 0;
-            }
-            if (ptr[5] != 0) {
-                return 0;
-            }
-            if (ptr[6] != 0) {
-                return 0;
-            }
-            if (ptr[7] != 0) {
-                return 0;
-            }
-            ptr += 8;
-            i += 7;
-        } while (i < 14);
+            ptr++;
+        }
         return 1;
     }
 
     val = arg0 + 1;
     ptr = (s32 *)lbl_80319A18;
-    i = 0;
-    do {
-        if (ptr[0] == val) {
+    for (outer = 0; outer < 2; outer++) {
+        if ((s32)val == *ptr) {
             return 0;
         }
-        if (ptr[1] == val) {
-            return 0;
+        for (i = 0; i < 7; i++) {
+            if ((s32)val == *++ptr) {
+                return 0;
+            }
         }
-        if (ptr[2] == val) {
-            return 0;
-        }
-        if (ptr[3] == val) {
-            return 0;
-        }
-        if (ptr[4] == val) {
-            return 0;
-        }
-        if (ptr[5] == val) {
-            return 0;
-        }
-        if (ptr[6] == val) {
-            return 0;
-        }
-        if (ptr[7] == val) {
-            return 0;
-        }
-        ptr += 8;
-        i += 7;
-    } while (i < 14);
+        ptr++;
+    }
     return 1;
 }
-
+#pragma opt_strength_reduction reset
 s32 fn_800B3194(void) {
     void fn_802590E0(void);
     extern u8 gSoundSys[];
@@ -2160,6 +2126,108 @@ s32 fn_800B3194(void) {
     if (M2C_FIELD(gSoundSys, u32 *, 0x444) != 0) {
         M2C_FIELD(gSoundSys, u32 *, 0x444) = 0;
     }
+    return 1;
+}
+
+s32 fn_800B3248(u8 arg0) {
+    extern u8 gSoundIdSlots[16];
+    extern u16 lbl_80319A18[];
+    u8 *slots;
+    u8 *p;
+    s32 *wp;
+    s32 i;
+    s32 count;
+    u8 val;
+    s32 slot;
+
+    slots = gSoundIdSlots;
+    p = slots;
+    slot = 0;
+    for (i = 0; i < 16; i++) {
+        if (*p == 0) {
+            gSoundIdSlots[slot] = arg0 + 1;
+            goto after_alloc;
+        }
+        p++;
+        slot++;
+    }
+after_alloc:
+
+    val = (u8)((u8)arg0 + 1);
+    count = 0;
+    p = slots;
+    for (i = 0; i < 14; i += 7) {
+        if (*p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        if (*++p == val) {
+            count++;
+        }
+        p++;
+    }
+
+    if (count > 1) {
+        return 0;
+    }
+
+    wp = (s32 *)lbl_80319A18;
+    count = 0;
+    for (i = 0; i < 2; i++) {
+        if (*wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        if (*++wp == 0) {
+            goto store;
+        }
+        count++;
+        wp++;
+        count++;
+    }
+store:
+    ((s32 *)lbl_80319A18)[count] = val;
     return 1;
 }
 
@@ -7905,7 +7973,90 @@ s32 Battle_CheckEndFlags(void) {
     }
     return 0;
 }
-#pragma global_optimizer off
+
+#pragma optimization_level 3
+s32 fn_800BE3CC(void *arg0, void *arg1, u8 arg2, s32 arg3) {
+    void *Event_NextEntry(void *);
+    void *Event_GetString(void *, u32);
+    void *Person_GetByPid(void);
+    void *Person_Get(s32);
+    void *Process_CreateChild(void *, s32);
+    s32 Talk_MatchesStoredPair(void *);
+    void *fn_800A8524(void *, void *, u8);
+    void *Res_GetByName(void *);
+    void fn_8011D908(void *, s32);
+    extern s16 gTalkState[];
+    s16 *state;
+    void *unitA;
+    void *unitB;
+    u8 mode;
+    s32 parent;
+    void *entry;
+    void *personA;
+    void *personB;
+    void *statePerson0;
+    void *statePerson1;
+    u8 found;
+
+    unitA = arg0;
+    unitB = arg1;
+    mode = arg2;
+    parent = arg3;
+    if (unitA == 0 || unitB == 0) {
+        return 0;
+    }
+    state = gTalkState;
+    state[3] = *(u16 *)((u8 *)unitA + 0x18);
+    state[4] = *(u16 *)((u8 *)unitB + 0x18);
+    state[0] = mode;
+
+    entry = Event_NextEntry(0);
+    while (entry != 0) {
+        if (*(s8 *)((u8 *)entry + 0xC) == 0xD) {
+            if (gTalkState[0] != *(s16 *)((u8 *)entry + 0x18)) {
+                found = 0;
+            } else {
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+                personA = Person_GetByPid();
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+                personB = Person_GetByPid();
+                statePerson0 = Person_Get(state[3]);
+                statePerson1 = Person_Get(state[4]);
+                if (statePerson0 == personA && statePerson1 == personB) {
+                    found = 1;
+                } else if (statePerson0 == personB && statePerson1 == personA) {
+                    found = 1;
+                } else {
+                    found = 0;
+                }
+            }
+            if (found == 0) {
+
+            } else {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+check:
+    if (found == 0) {
+
+    } else {
+        entry = Process_CreateChild(E_EventCaller_script, parent);
+        *(s32 *)((u8 *)entry + 0x34) = 0xD;
+        *(s32 *)((u8 *)entry + 0x38) = (s32)Talk_MatchesStoredPair;
+        return 1;
+    }
+    entry = fn_800A8524(unitA, unitB, mode);
+    if (Res_GetByName(entry) != 0) {
+        fn_8011D908(entry, parent);
+        return 1;
+    }
+    return 0;
+}
+#pragma optimization_level reset
 /* True if this talk entry's mode and persons match gTalkState (either order). */
 s32 Talk_MatchesStoredPair(void *entry) {
     void Event_GetString(void *, u32);
@@ -8295,6 +8446,77 @@ success:
     }
     return 0;
 }
+
+#pragma optimization_level 3
+s32 fn_800BEEF4(s32 parent) {
+    void *Event_NextEntry(void *);
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void);
+    void *Process_CreateChild(void *, s32);
+    s32 fn_800BF0A8(void *);
+    extern u16 gBattleState[700];
+    extern u8 gUiContext[24];
+    void *entry;
+    u8 *flags;
+    void *personA, *personB, *uiA, *uiB;
+    u8 found;
+    void *proc;
+
+    entry = Event_NextEntry(0);
+    flags = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        if (*(s8 *)((u8 *)entry + 0xC) == 9) {
+            if (EventFlag_IsSet(flags,
+                    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1A))) != 0) {
+                found = 0;
+            } else if (*(void **)(gUiContext + 4) == 0) {
+                found = 0;
+            } else {
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+                personA = Person_GetByPid();
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+                personB = Person_GetByPid();
+                uiA = *(void **)(*(u8 **)gUiContext + 0x188);
+                uiB = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
+                if (*(s16 *)((u8 *)entry + 0x18) == 0) {
+                    if (personA != uiA) {
+                        found = 0;
+                    } else if (personB != 0 && personB != uiB) {
+                        found = 0;
+                    } else {
+                        goto success;
+                    }
+                } else if (personA != 0 && personA != uiA && personA != uiB) {
+                    found = 0;
+                } else if (personB != 0 && personB != uiA && personB != uiB) {
+                    found = 0;
+                } else {
+success:
+                    found = 1;
+                }
+            }
+            if (found == 0) {
+
+            } else {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+check:
+    if (found == 0) {
+        return 0;
+    }
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 9;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)fn_800BF0A8;
+    return 1;
+}
+#pragma optimization_level reset
+
 #pragma optimization_level reset
 
 #pragma optimization_level reset
