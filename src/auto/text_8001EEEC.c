@@ -2642,6 +2642,66 @@ Ui_OpenUnitInfoPopup(gUnitInfoPopup,arg0,q,x,y);
 *(u32*)gUnitInfoPopup|=gUnitInfoPopupFlag;
 }else if(flags&64)Ui_HideUnitInfoPopup(gUnitInfoPopup);
 }
+
+extern "C" s32 fn_80024B6C(void *unused, u8 *obj) {
+void *GfxEnt_Get(u8);
+u8 Ui_IsUnitInfoPopupOpen(void *);
+extern u32 gPadInput;
+extern u8 gUnitInfoPopup[];
+#pragma cplusplus on
+class Handler { public:
+virtual s32 v0(void*,void*)=0;
+virtual s32 v1(void*,void*)=0;
+virtual s32 v2(void*,void*)=0;
+virtual s32 v3(void*,void*)=0;
+virtual s32 v4(void*,void*)=0;
+virtual s32 v5(void*,void*)=0;
+virtual s32 v6(void*,void*)=0;
+virtual s32 v7(void*,void*)=0;
+virtual s32 v8(void*,void*)=0;
+virtual s32 v9(void*,void*)=0;
+virtual s32 v10(void*,void*)=0;
+virtual s32 v11(void*,void*)=0;
+virtual s32 v12(void*,void*)=0;
+virtual s32 v13(void*,void*)=0;
+virtual s32 v14(void*,void*)=0;
+virtual s32 v15(void*,void*)=0;
+};
+class Base { public: int word; };
+class Handler2: public Base { public:
+virtual s32 v0(void*,void*)=0;
+virtual s32 v1(void*,void*)=0;
+virtual s32 v2(void*,void*)=0;
+virtual s32 v3(void*,void*)=0;
+virtual s32 v4(void*,void*)=0;
+virtual s32 v5(void*,void*)=0;
+virtual s32 v6(void*,void*)=0;
+virtual s32 v7(void*,void*)=0;
+virtual s32 v8(void*,void*)=0;
+virtual s32 v9(void*,void*)=0;
+virtual s32 v10(void*,void*)=0;
+virtual s32 v11(void*,void*)=0;
+};
+u8 *ent;
+u32 pressed, held, previous;
+s32 result, second;
+held=((u32 *)gPadInput)[1]; previous=((u32 *)gPadInput)[2];
+pressed=held & (previous ^ held);
+ent=(u8 *)GfxEnt_Get(obj[0x40+(s8)obj[0x62]]);
+if((pressed&0x100)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) return (*(Handler **)(ent+0x34))->v9(obj,ent);
+if(pressed&0x200) return (*(Handler2 **)(obj+0x3c))->v6(obj,ent);
+if(pressed&0x400) return (*(Handler **)(ent+0x34))->v10(obj,ent);
+if(pressed&0x800) return (*(Handler2 **)(obj+0x3c))->v7(obj,ent);
+if(pressed&0x10) {
+result=(*(Handler **)(ent+0x34))->v11(obj,ent);
+second=(*(Handler2 **)(obj+0x3c))->v8(obj,ent);
+return (u8)(second|result);
+}
+if(pressed&0x1000) return (*(Handler2 **)(obj+0x3c))->v9(obj,ent);
+return (*(Handler **)(ent+0x34))->v13(obj,ent);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus reset
