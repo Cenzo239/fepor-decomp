@@ -7604,16 +7604,16 @@ void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
     f32 destination[3];
     f32 delta[3];
     f32 distance;
-    f32 x;
-    f32 y;
     f32 z;
+    f32 y;
+    f32 x;
     u8 *self;
 
     self = (u8 *)arg0;
     x = arg1[0];
     y = arg1[1];
     z = arg1[2];
-    *(f32 *)(self + 0x78) = x;
+    *(f32 *)((u8 *)arg0 + 0x78) = x;
     *(f32 *)(self + 0x7C) = y;
     *(f32 *)(self + 0x80) = z;
 
@@ -14424,6 +14424,7 @@ void fn_800EA418(s32 proc) {
     extern struct CardWork gCardWork;
     extern char gCardStrings[];
     u8 skip;
+    u8 *hi;
     void *fileInfo;
 
     if (gCardWork.result < 0) {
@@ -14434,20 +14435,28 @@ void fn_800EA418(s32 proc) {
         skip = 0;
     }
     if (skip == 0) {
-        fileInfo = gCardWork.fileInfo;
-        gCardWork.result = fn_8021BF10(gCardWork.chan, gCardStrings + 0x70, fileInfo);
-        if (gCardWork.result != -4) {
-            gCardWork.unkA019 = 1;
-            gCardWork.busy = 1;
-            gCardWork.result = fn_8021CAB4(fileInfo, gCardWork.unkA034, gCardWork.unkA00C,
-                                          gCardWork.unkA010, Card_AsyncDone);
-            if (gCardWork.result < 0) {
-                Process_Goto(proc, 0x63);
-                gCardWork.busy = 0;
-            }
+        hi = (u8 *)&gCardWork + 0x10000;
+        fileInfo = hi - 0x5FE4;
+        gCardWork.result = fn_8021BF10(*(s32 *)(hi - 0x6000), gCardStrings + 0x70, fileInfo);
+        if (gCardWork.result == -4) {
+            goto do_unlink;
         } else {
-            Process_Unlink(proc);
+            goto do_cab4;
         }
+    do_unlink:
+        Process_Unlink(proc);
+        goto done;
+    do_cab4:
+        gCardWork.unkA019 = 1;
+        gCardWork.busy = 1;
+        gCardWork.result = fn_8021CAB4(fileInfo, gCardWork.unkA034, gCardWork.unkA00C,
+                                      gCardWork.unkA010, Card_AsyncDone);
+        if (gCardWork.result < 0) {
+            Process_Goto(proc, 0x63);
+            gCardWork.busy = 0;
+        }
+    done:
+        ;
     }
 }
 
@@ -19300,6 +19309,36 @@ void fn_800F8780(void *arg0) {
     }
 }
 
+void fn_800F8868(u8 *self) {
+extern u8 *gAiCmd;
+extern u8 gUiContext[],gAiState[],gTargetList[];
+extern s32 gAiCmdIsAlt;
+u8 fn_801021F0(void *,s16 *,s16 *);
+void *Unit_FindByName(void *);
+u8 fn_800BF1E8(void *);
+void fn_800FFB4C(void *,s32,s32);
+u32 fn_8002F680(void *,u8,u8);
+void fn_800FB96C(s32,u8,u8,void *,s8,s8,s32,s32,s32);
+#pragma cplusplus on
+struct Context { u32 unk; void *unit; Context *set(void *u) { unit=u; return this; } };
+s16 x,y;
+u8 *other=gAiCmd;
+if(fn_801021F0(*(void **)(other+0x14),&x,&y)) {
+other=(u8 *)Unit_FindByName(*(void **)(other+0x14));
+if(!fn_800BF1E8(((Context *)gUiContext)->set(other))) {
+*(s32 *)(gAiState+8)=9; *(s32 *)(gAiState+0xC)=9;
+} else {
+fn_800FFB4C(self,-1,-1);
+if(fn_8002F680(gTargetList,other[0x19E],other[0x19F]) && *(s32 *)(gAiState+8)!=4) {
+*(s32 *)(gAiState+8)=3;
+fn_800FB96C(7,self[0x19E],self[0x19F],other,(s8)x,(s8)y,-1,0,0);
+}
+}
+}
+if(!gAiCmdIsAlt) self[0x250]++; else self[0x251]++;
+#pragma cplusplus reset
+}
+
 void fn_800F8E5C(void* arg0, void* arg1, s32 arg2) {
     s32 temp_r4;
     s32* temp_r30;
@@ -19348,19 +19387,30 @@ void fn_800F9020(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void fn_800F904C(void* arg0, s32 arg1) {
-    s32 temp;
-    
-    if (arg0 == NULL) {
-        return;
+void fn_800F904C(void *arg0, s32 arg1) {
+    extern u8 gAiState[544];
+    extern s32 gAiCmdIsAlt;
+    s32 fn_800FFEFC();
+    s32 fn_800F9178();
+    void fn_800FB96C();
+    void Ai_SetUnitMoveTo();
+    s16 x, y, tx, ty;
+    u8 item;
+    if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0,u32 *,0x254) & 0x03000000)) {
+        if ((u8)fn_800FFEFC(arg0,0,&x,&y)) {
+            if ((u8)fn_800F9178(arg0,x,y,&tx,&ty,&item)) {
+                fn_800FB96C(0x27,(s8)tx,(s8)ty,0,(s8)x,(s8)y,item,0,0);
+            } else {
+                Ai_SetUnitMoveTo(arg0,x,y,1,*(u16 *)(gAiState+4),1,0,-1);
+            }
+        } else {
+            *(u32 *)(gAiState+8)=9;
+        }
     }
-    
-    *(u32*)arg0 = 0x15;
-    ((s16*)arg0)[0x5] = 0x15;
-    
-    temp = *(u32*)((u8*)arg0 + 0x14);
-    if (temp != 0) {
-        fn_801021F0(temp, arg1);
+    if (gAiCmdIsAlt == 0) {
+        M2C_FIELD(arg0,u8 *,0x250)++;
+    } else {
+        M2C_FIELD(arg0,u8 *,0x251)++;
     }
 }
 
