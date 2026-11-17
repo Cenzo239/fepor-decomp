@@ -4251,6 +4251,7 @@ s32 fn_800B7A2C(u32 arg0) {
 
 #pragma cplusplus on
 extern "C" s32 fn_800B7A80(void) {
+    #pragma opt_common_subs off
     struct Obj {
         u8 pad[8];
         virtual u8 v0() = 0;
@@ -4315,6 +4316,7 @@ extern "C" s32 fn_800B7A80(void) {
         fn_80148980(obj, 0xC8);
     }
 
+    #pragma opt_common_subs reset
     return 1;
 }
 #pragma cplusplus reset
@@ -7802,14 +7804,13 @@ s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
  s32 i; u32 hash; s32 row; u8 *p;
  if (*(s8 *)arg1 == 0) return 0;
  hash=fn_8000D598(arg1); row=arg0; i=0;
- do {
- if(hash==*(u32 *)(row+0x180)) {
- if(Str_Cmp(*(s32 *)row,arg1)==0) goto found;
+ for (;;) {
+ if ((hash==*(u32 *)(row+0x180)) && (Str_Cmp(*(s32 *)row,arg1)==0)) {
+ break;
  }
  i++; row+=4;
- } while(i<0x60);
- i=-1;
-found:
+ if(i>=0x60) { i=-1; break; }
+ }
  if(i<0) return 0;
  p=(u8 *)arg0; p+=i>>3;
  return (p[0x300] & (1<<(i&7)))!=0;
@@ -7855,32 +7856,27 @@ void fn_800BDE40(void *arg0, s32 arg1) {
 }
 
 void fn_800BDED8(void *arg0) {
-    int i;
-    u32 *ptr;
-    u8 *byte_ptr;
+    u32 *p;
+    s32 i;
+    u32 z;
 
-    // First loop: clear 10 fields starting at arg0 + 0x17C
-    ptr = (u32*)((char*)arg0 + 0x17C);
-    for (i = 0; i < 10; i++) {
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x60) = 0; // offset 0x180
+    p = (u32 *)((u8 *)arg0 + 0x17C);
+    i = 0x5F;
+    z = 0;
+    for (; i >= 0; i--) {
+        if (*p == 0) break;
+        {
+            *p = z;
+            *(p + 0x60) = z;
         }
-        ptr -= 0x8; // move to next field
+        p--;
     }
 
-    // Second loop: clear bits in a bitset
-    byte_ptr = (u8*)arg0;
-    for (i = 0; i < 0x18; i++) {
-        if (*(u32*)((char*)arg0 + i * 0x4) != 0) {
-            s32 index = i >> 3;
-            s32 bit = i & 7;
-            u32 mask = (1 << bit);
-            byte_ptr[index + 0x300] &= ~mask;
+    for (i = 0; i < 0x60; i++) {
+        if (((u32 *)arg0)[i] == 0) {
+            ((u8 *)arg0)[0x300 + (i >> 3)] &= ~(1 << (i & 7));
         }
     }
-
-    // This function is complete - no additional work needed
 }
 
 #pragma optimization_level 1
