@@ -10662,6 +10662,35 @@ void Win_DrawColorRect(void *win) {
     Prim2D_EndPrim();
 }
 
+void *fn_800E2884(u8 *self, void *arg1, void *arg2) {
+    void fn_800E2CF4();
+    void Xml_GetNamedValue(void *,void *,void *);
+    extern u8 lbl_8028E058[];
+    extern char lbl_80271D58[];
+    struct Value { u32 v[8]; } value, temp, flag;
+    String name, name2;
+    s32 scratch, scratch2;
+    fn_800E2CF4(self,arg1);
+    *(void **)(self+0x40)=lbl_8028E058;
+    *(u32 *)(self+0x60)=0;
+    *(u32 *)(self+0x5C)=0;
+    *(u32 *)(self+0x58)=0;
+    *(u32 *)(self+0x54)=0;
+    String_Init(&name,lbl_80271D58,&scratch);
+    Xml_GetNamedValue(&temp,arg2,&name);
+    value=temp;
+    String_Destroy(&name,-1);
+    String_Init(&name2,lbl_80271D58+5,&scratch2);
+    Xml_GetNamedValue(&flag,arg2,&name2);
+    self[0x64]=flag.v[0]!=0;
+    String_Destroy(&name2,-1);
+    *(u32 *)(self+0x54)=value.v[0];
+    *(u32 *)(self+0x58)=value.v[1];
+    *(u32 *)(self+0x5C)=value.v[2];
+    *(u32 *)(self+0x60)=value.v[3];
+    return self;
+}
+
 void fn_800E29B8(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     M2C_FIELD(arg0, s8 *, 0x50) = arg1;
     M2C_FIELD(arg0, s8 *, 0x51) = arg2;
@@ -19739,6 +19768,37 @@ void fn_800F9E64(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
+}
+
+void fn_800F9E90(void *arg0) {
+    extern u8 gAiState[544];
+    extern s32 gAiCmdIsAlt;
+    extern void *gAiCmd;
+    extern u8 gUiContext[];
+    u8 fn_801021F0(void *, s16 *, s16 *);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+    u8 fn_80100BA4(s16, s16, s8, s8);
+    void *Unit_FindByName(void *);
+    void *cmd;
+    s16 x;
+    s16 y;
+
+    cmd = gAiCmd;
+    if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
+        fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
+        Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
+        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], (s8)gUiContext[0xe]) &&
+            *(s32 *)(gAiState + 8) != 4) {
+            *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
+            *(s32 *)(gAiState + 8) = 2;
+            gAiState[0x21C] = 0;
+        }
+    }
+    if (gAiCmdIsAlt == 0) {
+        M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
+        return;
+    }
+    M2C_FIELD(arg0, u8 *, 0x251) = (u8)(M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
 void fn_800F9FC4(void *arg0) {
