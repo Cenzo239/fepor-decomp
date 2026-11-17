@@ -12529,43 +12529,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     return self;
 }
 
-void *fn_800E6418(void *arg0, void *owner, s32 a2, s32 a3, void *str, s32 a5) {
-    typedef struct {
-        u8 pad[0x40];
-        void *vtbl;
-        u8 pad44[0x58];
-        s32 unk9C;
-        u8 padA0[0xC];
-        void *unkAC;
-        s32 strB0_size;
-        void *strB0_data;
-        s32 strB0_cap;
-        s32 strBC_size;
-        void *strBC_data;
-        s32 strBC_cap;
-        s32 unkC8;
-        s32 unkCC;
-        u8 unkD0;
-        u8 unkD1;
-        u8 padD2;
-        u8 unkD3;
-        u8 padD4[8];
-        void *unkDC;
-        void *unkE0;
-        s32 unkE4;
-        s32 unkE8;
-        s32 unkEC;
-        s32 unkF0;
-        s32 unkF4;
-        s32 unkF8;
-        s32 unkFC;
-        s32 unk100;
-        f32 unk104;
-        f32 unk108;
-        f32 unk10C;
-        f32 unk110;
-        s32 unk114;
-    } Self;
+void *fn_800E6418(void *self, void *owner, s32 a2, s32 a3, void *str, s32 a5) {
     void *fn_800DBE34(void *, void *, s32, s32, s32);
     void String_Assign(void *, void *, s32, s32);
     void String_AssignCStr(void *, char *, u32);
@@ -12574,47 +12538,49 @@ void *fn_800E6418(void *arg0, void *owner, s32 a2, s32 a3, void *str, s32 a5) {
     u32 strlen(char *);
     extern void *gActorVtbl[];
     extern char lbl_802720E0[];
-    Self *self = (Self *)arg0;
-    s32 zero = 0;
-    f32 f0;
-    f32 f1;
+    s32 zero;
+    s32 neg1;
+    f32 fzero;
+    f32 fone;
 
     fn_800DBE34(self, owner, a2, a3, a5);
-    self->vtbl = gActorVtbl;
-    self->strB0_size = 0;
-    self->strB0_data = 0;
-    self->strB0_cap = 0;
-    self->strB0_cap = 0;
-    self->strBC_size = 0;
-    self->strBC_data = 0;
-    self->strBC_cap = 0;
-    self->strBC_cap = 0;
-    self->unkF4 = 0;
-    self->unkF8 = 0;
-    self->unkFC = 0;
-    self->unkAC = owner;
-    String_Assign(&self->strB0_size, str, 0, -1);
-    String_AssignCStr(&self->strBC_size, lbl_802720E0 + 5, strlen(lbl_802720E0 + 5));
-    self->unkDC = fn_800E8008(owner, str);
-    self->unkCC = 0;
-    self->unkD0 = 0;
-    self->unkD1 = 0;
-    self->unkD3 = 0;
-    self->unk9C = 0;
-    self->unk100 = 0;
-    self->unkE0 = fn_800DDC90(self->unkDC);
-    *(s32 *)((u8 *)self->unkE0 + 0x44) = 0;
-    self->unkE4 = 0;
-    self->unkE8 = 0;
-    self->unkEC = 0;
-    self->unkF0 = -1;
-    f0 = 0.0f;
-    f1 = 1.0f;
-    self->unk104 = f0;
-    self->unk108 = f1;
-    self->unk10C = f0;
-    self->unk110 = f0;
-    self->unk114 = 0;
+    *(void **)((u8 *)self + 0x40) = gActorVtbl;
+    *(s32 *)((u8 *)self + 0xB0) = 0;
+    *(s32 *)((u8 *)self + 0xB4) = 0;
+    *(void **)((u8 *)self + 0xB8) = 0;
+    *(s32 *)((u8 *)self + 0xB4) = 0;
+    *(s32 *)((u8 *)self + 0xBC) = 0;
+    *(s32 *)((u8 *)self + 0xC0) = 0;
+    *(void **)((u8 *)self + 0xC4) = 0;
+    *(s32 *)((u8 *)self + 0xC0) = 0;
+    *(s32 *)((u8 *)self + 0xF4) = 0;
+    *(s32 *)((u8 *)self + 0xF8) = 0;
+    *(s32 *)((u8 *)self + 0xFC) = 0;
+    *(void **)((u8 *)self + 0xAC) = owner;
+    String_Assign((u8 *)self + 0xB0, str, 0, -1);
+    String_AssignCStr((u8 *)self + 0xBC, lbl_802720E0 + 5, strlen(lbl_802720E0 + 5));
+    *(void **)((u8 *)self + 0xDC) = fn_800E8008(owner, str);
+    *(s32 *)((u8 *)self + 0xCC) = 0;
+    *((u8 *)self + 0xD0) = 0;
+    *((u8 *)self + 0xD1) = 0;
+    *((u8 *)self + 0xD3) = 0;
+    *(s32 *)((u8 *)self + 0x9C) = 0;
+    *(s32 *)((u8 *)self + 0x100) = 0;
+    *(void **)((u8 *)self + 0xE0) = fn_800DDC90(*(void **)((u8 *)self + 0xDC));
+    zero = 0;
+    neg1 = -1;
+    fzero = 0.0f;
+    *(s32 *)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x44) = zero;
+    fone = 1.0f;
+    *(s32 *)((u8 *)self + 0xE4) = zero;
+    *(s32 *)((u8 *)self + 0xE8) = zero;
+    *(s32 *)((u8 *)self + 0xEC) = zero;
+    *(s32 *)((u8 *)self + 0xF0) = neg1;
+    *(f32 *)((u8 *)self + 0x104) = fzero;
+    *(f32 *)((u8 *)self + 0x108) = fone;
+    *(f32 *)((u8 *)self + 0x10C) = fzero;
+    *(f32 *)((u8 *)self + 0x110) = fzero;
+    *(s32 *)((u8 *)self + 0x114) = zero;
     return self;
 }
 
@@ -19086,7 +19052,7 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     void UnitRef_Set(void *, void *);
     u8 Unit_GetActiveItemSlot(void *);
     void Battle_SetupFromParams(void *, void *, void *);
-    void fn_801A6F34(void *, u8);
+    void fn_801A6F34(void *, s32);
     void fn_800F5B14(s32, void *);
     extern u8 gUiContext[];
     extern u32 gBattle[];
@@ -19099,10 +19065,11 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     extern Param lbl_80272F34;
     extern Param lbl_80272F24;
     u8 item[8];
-    Param def;
     Param atk;
-    u8 mode;
+    Param def;
+    s32 mode;
     void *unit;
+    void *battle;
 
     Item_Init(item);
     UnitRef_Set(item, Item_Get(*(u16 *)((u8 *)target + 2)));
@@ -19118,11 +19085,13 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     atk.b4[1] = ((u8 *)target)[1];
     atk.x8 = (s32)item;
     Battle_SetupFromParams(gBattle, &atk, &def);
+    battle = gBattle;
     mode = 0xF;
     if (gUiContext[8] == 0x15) {
         mode = 0x15;
+        mode = (u8)mode;
     }
-    fn_801A6F34(gBattle, mode);
+    fn_801A6F34(battle, mode);
     fn_800F5B14(attacker, target);
     Item_Destroy(item, -1);
     return 1;
@@ -20040,22 +20009,24 @@ void fn_800F9E90(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80100BA4(s16, s16, s8, s8);
     void *Unit_FindByName(void *);
-    void *cmd;
+    void *cmd = gAiCmd;
     s16 x;
     s16 y;
 
-    cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
+        (u8)fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], (s8)gUiContext[0xe]) &&
-            *(s32 *)(gAiState + 8) != 4) {
-            *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
-            *(s32 *)(gAiState + 8) = 2;
-            gAiState[0x21C] = 0;
+        {
+            u8 *ctx = gUiContext;
+            if ((u8)fn_80100BA4(x, y, (s8)ctx[0xd], (s8)ctx[0xe]) &&
+                *(s32 *)(gAiState + 8) != 4) {
+                *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
+                *(s32 *)(gAiState + 8) = 2;
+                gAiState[0x21C] = 0;
+            }
         }
     }
-    if (!gAiCmdIsAlt) {
+    if (gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -22114,36 +22085,27 @@ void fn_800FD774(void *arg0) {
     Map_FillLayer(gBattleMap, 7, 0);
 }
 
-s32 fn_800FDF38(s32 arg0, s32 arg1) {
-    extern u32 lbl_80367870;
-    
-    s32 r3 = 0;
-    s32 new_arg = 0;
-    u32 temp;
-
-retry_loop:
-    if (arg0 == 0) {
-        return -1;
+void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
+    extern u8 gBattleMap[];
+    void Map_SelectRangeBuffer(void *,s32);
+    u8 *map=gBattleMap;
+    Map_SelectRangeBuffer(map,mode);
+    {
+        u16 *buffer=*(u16 **)(gBattleMap+0x14190);
+        buffer[(s8)x+((s8)y<<6)]=value;
     }
-
-    if ((arg0 & 0x1000) != 0) {
-        arg0 = arg0 & ~0x1000;
-        new_arg = 0x1000;
-    }
-
-    temp = (arg0 & 0xFFFF);
-    if ((temp == 0) || (temp >= 0x100)) {
-        arg0 = new_arg + (arg0 & ~0xFFFF);
-        goto retry_loop;
-    } else {
-        s32 result;
-        result = 0x20 + fn_800C5A48(lbl_80367870, temp);
-        
-        if (new_arg != 0) {
-            result = result + 0x20;
+    while(*path) {
+        u8 outside;
+        switch(*path) {
+        case '4': x--; break;
+        case '6': x++; break;
+        case '8': y--; break;
+        case '2': y++; break;
         }
-        
-        return result;
+        outside=0;
+        if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<y) outside=1;
+        if(!outside) (*(u16 **)(map+0x14190))[(s8)x+((s8)y<<6)]=value;
+        path++;
     }
 }
 
