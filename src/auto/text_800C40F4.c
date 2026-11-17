@@ -3883,6 +3883,7 @@ else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,s
 
 }
 
+#pragma cplusplus reset
 #pragma use_lmw_stmw on
 void fn_800CC9D8(u8 *self, char *arg1) {
 void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
