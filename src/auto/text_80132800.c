@@ -4333,27 +4333,29 @@ done:
     Prim2D_PrepareTex();
 }
 
-void fn_80139538(void *arg0, s32 arg1) {
+extern "C" void fn_80139538(void *arg0, s32 arg1) {
  void fn_80139E88(void *,s32);
  void Ui_PlaySeCue(void *,s32);
  extern u32 gUiInputFlags;
  extern u32 *gPadInput;
  extern u8 lbl_802768A0[];
- s16 visible, pages, row, page, old;
+ s32 visible, row; s16 page, old, total; s32 pages;
+ struct Menu { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0; virtual void v12()=0;  virtual s32 count()=0; };
  s32 size, held, edge, repeat;
  u8 blocked;
- visible=M2C_FIELD(M2C_FIELD(arg0,void **,0),s32 (**)(void *),0x3C)(arg0);
+ visible=((Menu *)arg0)->count();
  size=M2C_FIELD(arg0,s16 *,0x58);
- pages=(size+(s16)M2C_FIELD(arg0,s32 *,0x70)-1)/size;
- if(visible>pages) visible=pages;
+ total=M2C_FIELD(arg0,s32 *,0x70);
+ pages=size+total; pages=(s16)((pages-1)/size);
+ if((s16)visible>pages) visible=pages;
  row=M2C_FIELD(arg0,s16 *,0x4E);
  blocked=0;
  page=row/size;
  if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
  if(!blocked) {
- held=gPadInput[1]; edge=held^(s32)gPadInput[2]; repeat=gPadInput[3]; edge=held&edge;
+ held=gPadInput[1]; edge=(s32)gPadInput[2]^held; repeat=gPadInput[3]; edge=held&edge;
  old=M2C_FIELD(arg0,s16 *,0x4E);
- if(row==0x7FFF) {
+ if((s16)row==0x7FFF) {
  s32 last=(pages-1)*size;
  if(edge&0x08000008) M2C_FIELD(arg0,s16 *,0x4E)=last;
  else if(edge&0x04000004) {M2C_FIELD(arg0,s16 *,0x4E)=0;M2C_FIELD(arg0,s16 *,0x56)=0;}
@@ -4864,6 +4866,37 @@ extern "C" void fn_80139E88(void *arg0) {
     fn_8013ED84(*(void **)((u8 *)arg0 + 0x48),
                 (s16)((*(s16 *)((u8 *)arg0 + 0x5A) * *(s16 *)((u8 *)arg0 + 0x56)) - (s32)*(f32 *)((u8 *)arg0 + 0x5C)));
 }
+
+extern "C" void fn_8013A20C(void *arg0) {
+    void Prim2D_Begin(void); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(void);
+    void Prim2D_SetAlphaByte(s32); void Prim2D_ClearCallbacks(void);
+    s32 Text_MeasureHeight(s32,f32); void Ui_DrawRouteIconEx(s16,s32,u8);
+    extern f32 lbl_8036A674, lbl_8036A698, lbl_8036A69C;
+    u8 *self=(u8 *)arg0;
+    s32 width, y, drawY;
+    s16 x, height, half;
+    if(self[0x4D]) {
+        (*(void (**)(void *))(*(u8 **)self+0x14))(self);
+        Prim2D_Begin(); Prim2D_AddZ(lbl_8036A698); Prim2D_PrepareTex();
+        width=(*(s32 (**)(void *))(*(u8 **)self+0x34))(self);
+        height=*(s16 *)(self+0x5A);
+        x=(s16)(width*(s16)(*(s16 *)(self+0x50)%*(s16 *)(self+0x58))+*(s16 *)(self+0x62));
+        y=(s16)((s16)height*(s16)((s16)(*(s16 *)(self+0x50)/ *(s16 *)(self+0x58))-*(s16 *)(self+0x56))+*(s16 *)(self+0x64));
+        half=(s16)(((s16)height-Text_MeasureHeight(-1,lbl_8036A674))>>1);
+        drawY=y+(half+*(s16 *)(self+0x60));
+        if(drawY>=*(s16 *)(self+0x64)) {
+            y+=*(s16 *)(self+0x60);
+            if((s16)(*(s16 *)(self+0x18)-*(s16 *)(self+0x14))-*(s16 *)(self+0x64)>=((s16)height+y)-half) {
+                Prim2D_Begin(); Prim2D_SetAlphaByte(0x40); Prim2D_PrepareTex();
+                Ui_DrawRouteIconEx(x,drawY,0);
+                Prim2D_Begin(); Prim2D_AddZ(lbl_8036A69C); Prim2D_PrepareTex();
+                (*(void (**)(void *,s16,s16,s32,s16,s32))(*(u8 **)self+0x48))(self,(s16)(x-*(s16 *)(self+0x62)),(s16)y,width,height,0);
+            }
+        }
+    }
+    Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
+}
+
 #pragma cplusplus reset
 #pragma global_optimizer reset
 
@@ -9828,9 +9861,9 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *node;
     void *key;
     Panel *obj;
-    s16 a[1];
-    s16 b[1];
     s16 c[1];
+    s16 b[1];
+    s16 a[1];
 
     if (arg3 != 0) {
         obj = (Panel *)Process_CreateChild(lbl_80292278, arg0);
@@ -14426,7 +14459,6 @@ extern "C" void fn_80148D54(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801490C8(void *arg0) {
-    s32 fn_8014953C(void);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
     extern u8 lbl_80367AEC;
@@ -14491,7 +14523,7 @@ extern "C" void fn_801490C8(void *arg0) {
         register u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
-                rate = fn_8014953C();
+                rate = fn_8014953C((u8 *)self);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -14529,7 +14561,7 @@ extern "C" void fn_801490C8(void *arg0) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C();
+                    rate = fn_8014953C((u8 *)self);
                 }
                 if((void *)lbl_8032FF08==self) {
  rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
