@@ -54,11 +54,6 @@ static inline u32 SoundReadSizeB(u32 offset, u32 limit) {
 }
 
 typedef struct StreamB { u8 pad[0x2C]; s32 buffers[2]; u8 pad34[0x14]; u32 size; u16 index; } StreamB;
-static inline u8 *StreamB_CurrentBytes(StreamB *stream) {
-    StreamB *slot = (StreamB *)((u8 *)stream + stream->index * 4);
-    u8 *buffer = (u8 *)slot->buffers[0];
-    return buffer + *(u32 *)((u8 *)stream + 0x44);
-}
 typedef struct {
     u8 pad[0x30];
     void *entries[0xC];
