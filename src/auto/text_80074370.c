@@ -4363,38 +4363,27 @@ void fn_8007B9EC(void *arg0) {
     }
 }
 
-s32 Face_Create(s32 arg0) {
-    s32 sp30;
-    s32 *var_r29;
-    u32 r28;
-    s32 r31;
-
-    sp30 = 0x0;
-    if (arg0 == 0x0) {
-        r31 = 0x15;
-    } else if (arg0 == 0x1) {
-        r31 = 0xE;
-    } else if (arg0 == 0x2) {
-        r31 = 0xD;
-    } else if (arg0 == 0x3) {
-        r31 = 0xB;
-    } else if (arg0 == 0x4) {
-        r31 = 0xC;
-    } else {
-        r31 = 0x8;
-    }
-    
-    var_r29 = &sp30;
-    r28 = r31 * 0x8;
-    if (r31 < 0x20) {
-        while (1) {
-            *(var_r29 + r28) = 0x0;
-            r28 -= 0x1;
-            if ((s32)(r28 + 0x1) <= 0x0) break;
-        }
-    }
-    
-    return sp30;
+void *Face_Create(void *name, s32 flags) {
+ extern void *gFaceSlots[]; extern u8 lbl_80288AD8[],lbl_8026C640[];
+ extern f32 lbl_803693D8,lbl_803693D4;
+ void *Process_Create(void*,s32); void *Res_GetByName(void*); void *fn_802002F0(void*);
+ s32 index,i; u8 *face; void *res; void **p=gFaceSlots;
+ for(i=0;i<8;i++,p++) { if(*p==0) {index=i;break;} }
+ if(i==8) return 0;
+ if(gFaceSlots[index]!=0) return 0;
+ face=Process_Create(lbl_80288AD8,3);
+ res=Res_GetByName(name); res=res?res:Res_GetByName(lbl_8026C640+0xEF);
+ *(void**)(face+0x34)=res;
+ face[0x40]=index; *(u16*)(face+0x46)=flags;
+ face[0x41]=0xFF; face[0x42]=0;
+ *(f32*)(face+0x4C)=1.0f; *(f32*)(face+0x48)=0.0f;
+ *(u16*)(face+0x46)|=0x200;
+ if(*(u16*)(face+0x46)&0x200) {
+ *(u16*)(face+0x46)&=~0x202;
+ if((*(u8**)(face+0x34))[0x1C]==0) *(u16*)(face+0x46)|=2;
+ }
+ *(s8*)(face+0x43)=-1; gFaceSlots[index]=face;
+ *(void**)(face+0x30)=fn_802002F0(**(void***)(face+0x34)); return face;
 }
 
 void fn_8007BC3C(s32 a, s32 b, s32 c, s32 d, s32 e)
