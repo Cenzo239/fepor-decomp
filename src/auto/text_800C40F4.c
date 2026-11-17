@@ -14467,25 +14467,21 @@ void fn_800EA418(s32 proc) {
         hi = (u8 *)&gCardWork + 0x10000;
         fileInfo = hi - 0x5FE4;
         gCardWork.result = fn_8021BF10(*(s32 *)(hi - 0x6000), gCardStrings + 0x70, fileInfo);
-        if (gCardWork.result == -4) {
-            goto do_unlink;
-        } else {
-            goto do_cab4;
+        switch (gCardWork.result) {
+        case -4:
+            Process_Unlink(proc);
+            break;
+        default:
+            gCardWork.unkA019 = 1;
+            gCardWork.busy = 1;
+            gCardWork.result = fn_8021CAB4(fileInfo, gCardWork.unkA034, gCardWork.unkA00C,
+                                          gCardWork.unkA010, Card_AsyncDone);
+            if (gCardWork.result < 0) {
+                Process_Goto(proc, 0x63);
+                gCardWork.busy = 0;
+            }
+            break;
         }
-    do_unlink:
-        Process_Unlink(proc);
-        goto done;
-    do_cab4:
-        gCardWork.unkA019 = 1;
-        gCardWork.busy = 1;
-        gCardWork.result = fn_8021CAB4(fileInfo, gCardWork.unkA034, gCardWork.unkA00C,
-                                      gCardWork.unkA010, Card_AsyncDone);
-        if (gCardWork.result < 0) {
-            Process_Goto(proc, 0x63);
-            gCardWork.busy = 0;
-        }
-    done:
-        ;
     }
 }
 
@@ -19782,13 +19778,18 @@ void fn_800F9E90(void *arg0) {
     void *cmd;
     s16 x;
     s16 y;
+    s8 a;
+    s8 b;
+    u8 *ctx;
 
     cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
         fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], (s8)gUiContext[0xe]) &&
-            *(s32 *)(gAiState + 8) != 4) {
+        ctx = gUiContext;
+        a = ctx[0xd];
+        b = ctx[0xe];
+        if (fn_80100BA4(x, y, a, b) && *(s32 *)(gAiState + 8) != 4) {
             *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
             *(s32 *)(gAiState + 8) = 2;
             gAiState[0x21C] = 0;
