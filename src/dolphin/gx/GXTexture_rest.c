@@ -303,13 +303,13 @@ void fn_8022462C(u8 arg0) {
     u32 value;
     ptr = (u32 *)__GXData;
     value = ptr[0x1D0 / 4];
-    value = __rlwimi(value, arg0, 3, 28, 28);
+    value = __rlwimi(value, (u32)arg0, 3, 28, 28);
     *(u8 *)0xCC008000 = 0x61;
     *(u32 *)0xCC008000 = value;
     ptr[0x1D0 / 4] = value;
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
-#pragma peephole off
+#pragma peephole on
 void fn_80224658(u8 arg0) {
     u32 *ptr;
     u32 value;
