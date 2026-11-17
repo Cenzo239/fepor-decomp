@@ -1617,13 +1617,37 @@ void fn_80219664(s32 chan, s32 result) {
     }
 }
 
+void fn_80219734(s32 arg0, s32 arg1) {
+    extern u16 __CARDBlock[];
+    s32 fn_802191F0(s32,u32,s32,void *,void (*)(s32,s32));
+    s32 __CARDPutControlBlock(void *,s32);
+    void fn_80219664(s32,s32);
+    void (*callback)(s32,s32);
+    u8 *dir;
+    s32 result;
+    u8 *card;
+
+    result = arg1;
+    card = (u8 *)__CARDBlock + arg0 * 0x110;
+    if ((result < 0) || (dir = *(u8 **)(card+0x84), result = fn_802191F0(arg0, *(u32 *)(card+0xC) * ((u32)(dir - *(u8 **)(card+0x80)) >> 13), 0x2000, dir, fn_80219664), result < 0)) {
+        if (*(u32 *)(card+0xD0) == 0) __CARDPutControlBlock(card,result);
+        callback = *(void (**)(s32,s32))(card+0xD8);
+        if (callback) {
+            *(void **)(card+0xD8) = 0;
+            callback(arg0,result);
+        }
+    }
+}
+
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
 s32 fn_80205110(void *, s32);
 void fn_80219734(s32, s32);
+#pragma optimization_level 3
 s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
-    u8 *temp_r31;
     u8 *temp_r30;
+    u8 *temp_r31;
     void *temp_r6;
+    u32 pad[2];
 
     temp_r30 = (u8 *)__CARDBlock + arg0 * 0x110;
     if (*(s32 *)temp_r30 == 0) {
@@ -1637,8 +1661,7 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     *(s32 *)(temp_r30 + 0xD8) = arg1;
     return __CARDEraseSector(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
 }
-
-#pragma opt_strength_reduction off
+#pragma optimization_level reset
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;
     u16 temp;
@@ -2119,6 +2142,44 @@ void fn_8021A7D4(void *arg0, s32 arg1) {
     s32 sp10;
 
     fn_8021A244(arg0, &sp10, arg1);
+}
+
+s32 fn_8021A7FC(u32 id) {
+    extern u32 lbl_8029DB60[];
+    extern u16 lbl_80366FF0;
+    s32 sectorSize;
+    s32 memSize;
+
+    if (id & 0xFFFF0000) {
+        if ((id + 0x80000000) == 4) {
+            if (lbl_80366FF0 == 0xFFFF) {
+                return 0;
+            }
+        }
+    }
+    if (id & 3) {
+        return 0;
+    }
+    memSize = id & 0xFC;
+    switch (memSize) {
+    case 4:
+    case 8:
+    case 0x10:
+    case 0x20:
+    case 0x40:
+    case 0x80:
+        break;
+    default:
+        return 0;
+    }
+    sectorSize = *(s32 *)((u8 *)lbl_8029DB60 + ((id >> 9) & 0x1C));
+    if (sectorSize == 0) {
+        return 0;
+    }
+    if ((u32)((memSize << 17) / (u32)sectorSize) < 8) {
+        return 0;
+    }
+    return 1;
 }
 
 #pragma use_lmw_stmw on
