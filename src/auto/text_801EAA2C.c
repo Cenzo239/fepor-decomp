@@ -168,6 +168,79 @@ void fn_801EAC4C(s32 arg0) {
     fn_8007D064(gUiContext[0], arg0, 0);
 }
 
+void fn_801EAC90(void *arg0) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],lbl_8027EE08[];
+extern f32 lbl_8036B780;
+void *Heap_Alloc(s32); void String_AssignCStr(void*,void*,s32); s32 strlen(const char*);
+void Ui_AddChild(void*,void*); void *Ui_FindChild(void*,s32,s32);
+void Process_RetreatStep(void*); void Process_ClearFunc(void*);
+Unk5C *temp_r3;
+Unk5C *child;
+s32 len;
+extern u8 gUiContext[];
+void Process_Goto(void*,s32); void fn_801EBE88(void);
+switch(gUiContext[8]) {
+case 0x81: Process_Goto(arg0,11); break;
+default:
+Process_RetreatStep(*(void**)((u8*)arg0+0x50));
+temp_r3=Heap_Alloc(0x5c);
+if(temp_r3) {
+        temp_r3->unk0 = lbl_8028FDB0;
+        temp_r3->unk4 = NULL;
+        temp_r3->unk0 = lbl_80292230;
+        temp_r3->unk8 = -1;
+        temp_r3->unkA = 0;
+        temp_r3->unkC = 0x190;
+        temp_r3->unkE = 0x260;
+        temp_r3->unk10 = 0x1c0;
+        temp_r3->unk12 = 0;
+        temp_r3->unk14 = 0;
+        temp_r3->unk16 = 0x260;
+        temp_r3->unk18 = 0x30;
+        temp_r3->unk1A = 0;
+        temp_r3->unk1C = 0;
+        temp_r3->unk1E = 0xff;
+        temp_r3->unk1F = 0xff;
+        temp_r3->unk20 = 0xff;
+        temp_r3->unk21 = 0xff;
+        temp_r3->unk22 = 0x316;
+        temp_r3->unk24 = 0;
+        temp_r3->unk28 = 0.0f;
+        temp_r3->unk2C = 0.0f;
+        temp_r3->unk30 = 0.0f;
+        temp_r3->unk34 = 0;
+        temp_r3->unk38 = 0;
+        temp_r3->unk0 = lbl_80293C84;
+        temp_r3->unk3C = 0;
+        temp_r3->unk40 = 0;
+        temp_r3->unk44 = 0;
+        temp_r3->unk40 = 0;
+        temp_r3->unk48 = 0;
+        temp_r3->unk4C = 1;
+        temp_r3->unk4E = 0;
+        temp_r3->unk50 = 0;
+        temp_r3->unk52 = 0;
+        temp_r3->unk54 = 0;
+        temp_r3->unk0 = lbl_80293C58;
+        temp_r3->unk58 = 1;
+        temp_r3->unk4E = 0x30;
+        temp_r3->unk52 = 0x30;
+
+}
+temp_r3->unk8=-0x1000;
+temp_r3->unk48=1;
+len=strlen((const char*)lbl_8027EE08+0x147);
+String_AssignCStr(&temp_r3->unk3C,lbl_8027EE08+0x147,len);
+temp_r3->unk34|=0x10;
+temp_r3->unk58=1;
+Ui_AddChild(arg0,temp_r3);
+child=Ui_FindChild(arg0,-0x1000,0);
+if(child) child->unk58=0;
+fn_801EBE88();
+Process_ClearFunc(arg0);
+}
+}
+
 void fn_801EAE68(void *arg0) {
     void fn_8012C788(void *, void *);
     void Process_AdvanceStep(s32);
