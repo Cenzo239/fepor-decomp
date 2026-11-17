@@ -2636,22 +2636,11 @@ void fn_801E97D4(void *arg0) {
 
 void fn_801E9864(void *arg0)
 {
-#pragma cplusplus on
     typedef struct ListNode {
         struct ListNode *prev;
         struct ListNode *next;
         void *val;
     } ListNode;
-    struct Widget {
-        u8 pad[0x2C];
-        virtual void v0(s32) = 0;
-        virtual void v1(s32) = 0;
-        virtual void v2(s32) = 0;
-        virtual void v3(s32) = 0;
-        virtual void v4(s32) = 0;
-        virtual void v5(s32) = 0;
-        virtual void v6(s32) = 0;
-    };
     typedef struct Owner {
         u8 pad[0x50];
         u32 list;
@@ -2672,7 +2661,6 @@ void fn_801E9864(void *arg0)
     Owner *self;
     s16 *p68;
     void *obj;
-    Widget *w;
     ListNode *sp10;
     ListNode *spC;
     u8 sp8[4];
@@ -2693,8 +2681,19 @@ void fn_801E9864(void *arg0)
     fn_8006D8E8(*(void **)((u8 *)arg0 + 0x64));
     obj = *(void **)((u8 *)arg0 + 0x5C);
     if (obj != NULL) {
-        w = (Widget *)obj;
-        w->v6(1);
+#pragma cplusplus on
+        struct Widget {
+            u8 pad[0x2C];
+            virtual void v0(s32) = 0;
+            virtual void v1(s32) = 0;
+            virtual void v2(s32) = 0;
+            virtual void v3(s32) = 0;
+            virtual void v4(s32) = 0;
+            virtual void v5(s32) = 0;
+            virtual void v6(s32) = 0;
+        };
+        ((Widget *)obj)->v6(1);
+#pragma cplusplus reset
     }
     fn_80056A04(*(void **)((u8 *)arg0 + 0x60), 1);
     if (arg0 != NULL) {
@@ -2709,7 +2708,6 @@ void fn_801E9864(void *arg0)
             }
         }
     }
-#pragma cplusplus reset
 }
 
 #pragma optimization_level reset
