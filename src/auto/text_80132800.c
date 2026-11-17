@@ -5310,6 +5310,100 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     *ret_p = *end_p;
 }
 
+void fn_8013BAD4(void *arg0, void *arg1, void *arg2, void *arg3) {
+    void *Heap_Alloc(s32);
+    void Heap_Free(void *);
+    void fprintf(void *, void *, ...);
+    void abort(void);
+    void fn_800616A0(void *);
+    void *GActor_Create(void);
+    void fn_800506E0(void *, s32, void *);
+    s32 fn_800639B4(void);
+    void GActor_Finalize(void *);
+
+    extern char __files[];
+    extern u8 lbl_802768A0[];
+
+    struct Node {
+        struct Node *prev;
+        struct Node *next;
+        void *unit;
+        void *actor;
+    };
+
+    struct Node *node;
+    struct Node *position;
+    struct Node *previous;
+    struct Node *owned;
+    u8 *data;
+    void *unit;
+    void *actor;
+    void *list;
+    struct Node *holder;
+
+    list = (u8 *)arg1 + 4;
+
+    node = (struct Node *)Heap_Alloc(0x10);
+
+    if (node == NULL) {
+        fprintf(
+            __files + 0xA0,
+            lbl_802768A0 + 0x47,
+            __files
+        );
+        abort();
+    }
+
+    data = (u8 *)node + 8;
+    holder = node;
+    owned = node;
+
+    if (data != NULL) {
+        unit = *(void **)arg3;
+
+        *(void **)(data + 0) = unit;
+        *(void **)(data + 4) = NULL;
+
+        actor = *(void **)(data + 4);
+
+        if (actor != NULL) {
+            fn_800616A0(actor);
+        }
+
+        actor = GActor_Create();
+        *(void **)(data + 4) = actor;
+
+        *(void **)((u8 *)actor + 4) = (u8 *)unit + 0x1C;
+        *(u32 *)actor |= 0x50028400;
+
+        fn_800506E0(unit, 0, actor);
+
+        *(s32 *)((u8 *)actor + 0x44) = fn_800639B4();
+
+        GActor_Finalize(actor);
+    }
+
+    position = *(struct Node **)arg2;
+
+    owned = NULL;
+
+    previous = position->prev;
+
+    previous->next = holder;
+    holder->prev = previous;
+
+    position->prev = holder;
+    holder->next = position;
+
+    (*(s32 *)arg1)++;
+
+    *(struct Node **)arg0 = holder;
+
+    if (owned != NULL) {
+        Heap_Free(owned);
+    }
+}
+
 int fn_8013BBF8(void *arg0) {
     u32 *ptr;
 
@@ -7543,25 +7637,23 @@ s32 fn_8013FBD4(s32 arg0) {
     return arg0 + 0xA;
 }
 
-#pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
-    s16 *p;
-    s16 c;
-    s16 b;
-    s16 a;
+  s16 c;
+  s16 b;
+  s16 a;
 
-    a = dst[0];
-    p = src;
-    b = p[0];
-    c = p[1];
-    a = a + b;
-    dst[0] = a;
-    a = dst[1];
-    a = a + c;
-    dst[1] = a;
+  a = dst[0];
+  if (!src[0]) {}
+  b = src[0];
+  c = src[1];
+  a = a + b;
+  dst[0] = a;
+  a = dst[1];
+  a = a + c;
+  dst[1] = a;
 }
-#pragma scheduling on
+#pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
