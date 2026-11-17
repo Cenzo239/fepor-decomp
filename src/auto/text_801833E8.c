@@ -8233,12 +8233,6 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 
-static inline void *Ui_CopyPtr(void *p) {
-    void *q;
-    q = p;
-    return q;
-}
-
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -8270,8 +8264,8 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 8) = -1;
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
-    *(s16 *)((u8 *)self + 0xE) = (s16)(e1 + 0x108);
     *(s16 *)((u8 *)self + 0x10) = (s16)(e2 + 0x88);
+    *(s16 *)((u8 *)self + 0xE) = (s16)(e1 + 0x108);
     *(s16 *)((u8 *)self + 0x12) = z;
     *(s16 *)((u8 *)self + 0x14) = z;
     *(s16 *)((u8 *)self + 0x16) = 0x108;
