@@ -10240,20 +10240,80 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
 
 #pragma opt_common_subs on
 #pragma global_optimizer on
-void fn_801766C0(s32 param_1, s32 param_2, s32 param_3, s32 param_4)
-{
-    u32 *puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    
-    puVar1 = gUiContext;
-    iVar2 = *puVar1;
-    iVar3 = (iVar2 + 1) & 0xff;
-    if (iVar3 < 0) {
-        iVar3 += 0x100;
+void fn_801766C0(void *arg0) {
+    void *Heap_Alloc(s32);
+    void String_AssignCStr(void *, void *, s32);
+    s32 strlen(char *);
+    void Ui_AddChild(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    u8 fn_8011AC10(void);
+    u8 fn_801EAA88(void);
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_80293C84[];
+    extern u8 lbl_80293C58[];
+    extern u16 gUiMsgStrings[];
+    extern u32 gUiContext[];
+
+    void *caption;
+    void *found;
+
+    caption = Heap_Alloc(0x5C);
+    if (caption != NULL) {
+        M2C_FIELD(caption, void **, 0) = lbl_8028FDB0;
+        M2C_FIELD(caption, u32 *, 4) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80292230;
+        M2C_FIELD(caption, s16 *, 8) = -1;
+        M2C_FIELD(caption, s16 *, 0xA) = 0;
+        M2C_FIELD(caption, s16 *, 0xC) = 0x190;
+        M2C_FIELD(caption, s16 *, 0xE) = 0x260;
+        M2C_FIELD(caption, s16 *, 0x10) = 0x1C0;
+        M2C_FIELD(caption, s16 *, 0x12) = 0;
+        M2C_FIELD(caption, s16 *, 0x14) = 0;
+        M2C_FIELD(caption, s16 *, 0x16) = 0x260;
+        M2C_FIELD(caption, s16 *, 0x18) = 0x30;
+        M2C_FIELD(caption, s16 *, 0x1A) = 0;
+        M2C_FIELD(caption, s16 *, 0x1C) = 0;
+        M2C_FIELD(caption, u8 *, 0x1E) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x1F) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x20) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x21) = 0xFF;
+        M2C_FIELD(caption, s16 *, 0x22) = 0x64;
+        M2C_FIELD(caption, s16 *, 0x24) = 0;
+        M2C_FIELD(caption, f32 *, 0x28) = 1.0f;
+        M2C_FIELD(caption, f32 *, 0x2C) = 1.0f;
+        M2C_FIELD(caption, f32 *, 0x30) = 1.0f;
+        M2C_FIELD(caption, u32 *, 0x34) = 0;
+        M2C_FIELD(caption, u32 *, 0x38) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80293C84;
+        M2C_FIELD(caption, u32 *, 0x3C) = 0;
+        M2C_FIELD(caption, u32 *, 0x40) = 0;
+        M2C_FIELD(caption, u32 *, 0x44) = 0;
+        M2C_FIELD(caption, u32 *, 0x40) = 0;
+        M2C_FIELD(caption, u32 *, 0x48) = 0;
+        M2C_FIELD(caption, u8 *, 0x4C) = 1;
+        M2C_FIELD(caption, s16 *, 0x4E) = 0;
+        M2C_FIELD(caption, s16 *, 0x50) = 0;
+        M2C_FIELD(caption, s16 *, 0x52) = 0;
+        M2C_FIELD(caption, s16 *, 0x54) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80293C58;
+        M2C_FIELD(caption, u32 *, 0x58) = 1;
+        M2C_FIELD(caption, s16 *, 0x4E) = 0x30;
+        M2C_FIELD(caption, s16 *, 0x52) = 0x30;
     }
-    puVar1[0x4b] = param_3;
-    puVar1[0x4c] = param_4;
+    M2C_FIELD(caption, s16 *, 8) = -0x1000;
+    M2C_FIELD(caption, u32 *, 0x48) = 1;
+    String_AssignCStr((u8 *)caption + 0x3C, (char *)((u32)gUiMsgStrings + 0x424), strlen((char *)((u8 *)gUiMsgStrings + 0x424)));
+    M2C_FIELD(caption, u32 *, 0x34) |= 0x10;
+    M2C_FIELD(caption, u32 *, 0x58) = 1;
+    Ui_AddChild(arg0, caption);
+    gUiContext[1] = 0;
+    if (fn_8011AC10() != 0 || fn_801EAA88() != 0) {
+        found = Ui_FindChild(arg0, -0x1000, 0);
+        if (found != NULL) {
+            M2C_FIELD(found, u32 *, 0x58) = 0;
+        }
+    }
 }
 
 void Ui_CreateMsgPopup(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
