@@ -6507,6 +6507,57 @@ void fn_800661A8(void *arg0) {
     }
 }
 
+void fn_80066D00(s32 mode) {
+void fn_802245D8(s32,s32,s32,s32);
+void fn_802246B8(s32);
+void fn_80223E5C(s32,s32,s32,s32,s32);
+void GXSetZMode(s32,s32,s32);
+void fn_8022462C(s32);
+void fn_80224658(s32);
+void GXSetTevSwapMode(s32,s32,s32);
+void fn_802240F0(s32,s32 *,f32,f32,f32,f32);
+void fn_80224304(void *,s32,void *);
+void fn_802244B4(s32,s32,void *);
+extern u8 *lbl_80366DD4;
+extern u8 lbl_80366DD8;
+extern s8 lbl_80366DD0;
+extern u8 *gCamera;
+extern s32 lbl_80285E70[],lbl_80369220,lbl_8036C440;
+extern f32 lbl_80369240,lbl_80369234,lbl_80369224,lbl_80369244;
+u16 buf[10];
+s32 copy,clear,color;
+u8 *cam,*fog;
+s32 type;
+u32 old=(u32)mode>>31;
+if(old) mode=lbl_80366DD0;
+if(!old) lbl_80366DD0=mode;
+switch(mode) {
+case 0: case 3:
+fn_802245D8(0,1,0,7);fn_802246B8(1);fn_80223E5C(0,0,1,7,0);GXSetZMode(1,3,1);break;
+case 1:
+fn_802245D8(0,4,5,7);fn_802246B8(0);fn_80223E5C(6,128,1,0,0);GXSetZMode(1,3,1);break;
+case 2: case 4:
+fn_802245D8(1,4,5,7);fn_802246B8(1);fn_80223E5C(4,0,1,0,0);GXSetZMode(1,3,0);break;
+case 5: fn_80223E5C(7,0,1,7,0);GXSetZMode(1,3,0);break;
+}
+fn_8022462C(1);fn_80224658(0);GXSetTevSwapMode(0,0,0);
+fog=lbl_80366DD4;
+if(lbl_80366DD8!=6) {
+type=fog[0];lbl_80366DD8=8;
+if(type==0) {
+clear=lbl_8036C440;
+fn_802240F0(0,&clear,lbl_80369240,lbl_80369234,lbl_80369224,lbl_80369244);
+fn_802244B4(0,0,0);
+} else {
+color=lbl_80369220;
+((u8 *)&color)[0]=fog[1];((u8 *)&color)[1]=fog[2];((u8 *)&color)[2]=fog[3];
+cam=gCamera;copy=color;
+fn_802240F0(lbl_80285E70[type],&copy,*(f32 *)(fog+4),*(f32 *)(fog+8),*(f32 *)(cam+0x180),*(f32 *)(cam+0x184));
+fn_80224304(buf,0x280,cam+0x24);fn_802244B4(1,0x140,buf);
+}
+}
+}
+
 void fn_80066F64(void)
 {
     typedef struct { f32 x, y, z; } Vec3;
