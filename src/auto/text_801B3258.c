@@ -5884,7 +5884,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 #pragma dont_inline on
-#pragma global_optimizer on
+#pragma global_optimizer off
 extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B2D8,lbl_8036B2E0;
@@ -5908,7 +5908,7 @@ base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
 *(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
 *(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
 *(void **)self=gUiGoldCostPanelVtbl;
-*(s16 *)(self+0x3C)=*(s32 *)(gBattleState+0x1C);*(s16 *)(self+0x3E)=0;*(s32 *)(self+0x40)=0;
+*(s16 *)(self+0x3C)=*(s32 *)(gBattleState+0x1C);*(s16 *)(self+0x3E)=zero;*(s32 *)(self+0x40)=zero;
 *(void **)(self+68)=gEmptyVtbl;
 *(s32 *)(self+72)=0;
 *(s32 *)(self+76)=2;
@@ -15987,20 +15987,60 @@ void fn_801D3810(s32 arg0) {
     }
 }
 
-void fn_801D3860(s32 arg0, s32 arg1, s32 arg2) {
-    if (arg1 < 0) {
-        return;
-    }
-    
-    // This part was my initial guess - let's see if we can match this assignment
-    // from the assembly. Looking at last diff it seems like there's more logic.
-    if (arg2 >= 0x400) {
-        arg2 = 0x3FF;
-    }
-    
-    gScriptObjSlots[arg0] = ((arg1 & 0xFFFF) << 0xA) | (arg2 & 0x3FF);
+#pragma cplusplus on
+#pragma opt_common_subs off
+#pragma dont_inline on
+#pragma global_optimizer on
+extern "C" void *fn_801D3860(void *arg0,s32 x,s32 y,s32 id) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[],gBattleState[];
+extern const f32 lbl_8036B618,lbl_8036B61C;
+struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
+u8 *base; s32 zero; s16 right; s16 bottom; u8 *self; u8 *initial; f32 scale; f32 one;
+self=(u8 *)arg0;
+zero=0;
+right=(s16)x;bottom=(s16)y;
+right+=0x1E0;bottom+=0x100;
+initial=self;
+base=initial;
+*(void **)self=lbl_8028FDB0;
+one=lbl_8036B618;scale=lbl_8036B61C;
+*(s32 *)(initial+4)=zero;
+*(void **)base=lbl_80292230;
+*(s16 *)(base+8)=-1;
+*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x1E0;*(s16 *)(base+0x18)=0x100;
+*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
+base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
+*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
+*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
+*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
+*(void **)self=gUiPanelDVtbl;
+*(s16 *)(self+0x3C)=0x20;*(s16 *)(self+0x3E)=8;*(s16 *)(self+0x40)=0;*(f32 *)(self+0x44)=scale;
+*(void **)(self+80)=gEmptyVtbl;
+*(s32 *)(self+84)=0;
+*(s32 *)(self+88)=2;
+self[92]=1;self[93]=1;
+*(s16 *)(self+100)=0;*(s16 *)(self+102)=0;
+*(f32 *)(self+104)=one;*(f32 *)(self+108)=one;
+self[112]=255;self[113]=255;self[114]=255;self[115]=255;
+*(f32 *)(self+116)=scale;
+((Obj *)(self+80))->v1();
+one=lbl_8036B618;scale=lbl_8036B61C;
+*(void **)(self+120)=gEmptyVtbl;
+*(s32 *)(self+124)=0;
+*(s32 *)(self+128)=3;
+self[132]=1;self[133]=1;
+*(s16 *)(self+140)=0;*(s16 *)(self+142)=0;
+*(f32 *)(self+144)=one;*(f32 *)(self+148)=one;
+self[152]=255;self[153]=255;self[154]=255;self[155]=255;
+*(f32 *)(self+156)=scale;
+((Obj *)(self+120))->v1();
+((Obj *)self)->v8();return self;
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
+#pragma opt_common_subs reset
+#pragma cplusplus reset
 void fn_801D3A4C(u8 *arg0) {
     s16 x;
     s16 four;
