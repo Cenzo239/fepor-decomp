@@ -1470,6 +1470,92 @@ void fn_80123300(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x68) = arg1;
 }
 
+#pragma use_lmw_stmw on
+void fn_80123308(void *arg0, s32 arg1)
+{
+    char *fn_80238ABC(s32, char *, s32);
+    void String_Init(void *, void *, void *);
+    void String_Destroy(void *, s32);
+    u8 *fn_80117CC0(void *, s32);
+    s32 fn_800E2E68(void *);
+    s32 fn_800E2E60(void *);
+    void fn_800E3040(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    void SpriteSheet_DrawFrame(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+
+    char buf[0x28];
+    u32 str_size;
+    u32 str_cap;
+    char *str_data;
+    void *alloc;
+    void *ctx;
+    s32 x;
+    s32 y;
+    s32 w;
+    s32 h;
+    s32 spacing;
+    s32 i;
+    s32 len;
+    u8 *ch;
+
+    if (M2C_FIELD(arg0, s32 *, 0x64) == 0) {
+        String_Init(&str_size, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf, 10), &alloc);
+        ctx = M2C_FIELD(arg0, void **, 0x38);
+        x = (s32)(M2C_FIELD(ctx, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(ctx, s32 *, 0x60)));
+        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(ctx, s32 *, 0x64);
+        w = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E68(M2C_FIELD(arg0, void **, 0x60)));
+        h = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
+        x = x + (s32)M2C_FIELD(arg0, f32 *, 0x88);
+        y = y + (s32)M2C_FIELD(arg0, f32 *, 0x8C);
+        y = y - (h - fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
+        i = (s32)str_size - 1;
+        spacing = (s32)(M2C_FIELD(ctx, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
+        while (i >= 0) {
+            ch = fn_80117CC0(&str_size, i);
+            fn_800E3040(
+                M2C_FIELD(arg0, void **, 0x60),
+                arg1,
+                (s8)ch[0] - 0x30,
+                x,
+                y,
+                M2C_FIELD(arg0, s32 *, 0x44),
+                w,
+                h,
+                M2C_FIELD(arg0, u8 *, 0x50),
+                M2C_FIELD(arg0, u8 *, 0x51),
+                M2C_FIELD(arg0, u8 *, 0x52),
+                spacing,
+                0);
+            i -= 1;
+            x -= w + M2C_FIELD(arg0, s32 *, 0x94);
+        }
+        String_Destroy(&str_size, -1);
+    } else {
+        String_Init(&str_size, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf, 10), &alloc);
+        ctx = M2C_FIELD(arg0, void **, 0x38);
+        x = (s32)(M2C_FIELD(ctx, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(ctx, s32 *, 0x60)));
+        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(ctx, s32 *, 0x64);
+        spacing = (s32)(M2C_FIELD(ctx, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
+        len = (s32)str_size;
+        for (i = 0; i < len; i++) {
+            ch = fn_80117CC0(&str_size, i);
+            SpriteSheet_DrawFrame(
+                M2C_FIELD(arg0, void **, 0x60),
+                arg1,
+                (s8)ch[0] - 0x30,
+                x,
+                y,
+                M2C_FIELD(arg0, s32 *, 0x44),
+                M2C_FIELD(arg0, u8 *, 0x50),
+                M2C_FIELD(arg0, u8 *, 0x51),
+                M2C_FIELD(arg0, u8 *, 0x52),
+                spacing,
+                0);
+            x = M2C_FIELD(arg0, s32 *, 0x94) + fn_800E2E68(M2C_FIELD(arg0, void **, 0x60)) + x;
+        }
+        String_Destroy(&str_size, -1);
+    }
+}
+
 #pragma cplusplus on
 extern "C" void fn_80123634(void *arg0) {
     struct Obj {
