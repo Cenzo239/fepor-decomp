@@ -10463,9 +10463,11 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-void *NameGrid_GetCharAtCursor(void *self) {
-    void *fn_801CD480(void *, s16, s16);
-    return fn_801CD480(*(void **)((u8 *)self + 0x3C), *(s16 *)((u8 *)self + 0x48), *(s16 *)((u8 *)self + 0x4A));
+void NameGrid_GetCharAtCursor(void *self) {
+    M2C_UNK fn_801CD480(s32, s16, s16);
+    fn_801CD480(M2C_FIELD(self, s32 *, 0x3C),
+                M2C_FIELD(self, s16 *, 0x48),
+                M2C_FIELD(self, s16 *, 0x4A));
 }
 
 #pragma cplusplus on
@@ -18706,30 +18708,54 @@ void fn_801E2F9C(s32 *arg0, s32 arg1) {
     fn_800EA540(*arg0, arg1);
 }
 
-void SaveData_Init(void* arg0) {
-    u32* ptr = (u32*)arg0;
-    if (ptr[0] & 0x400000) {
-        s32 temp = ((ptr[0] >> 0xD) & 0x7FFF) + 1;
-        ptr[0] -= temp;
-        ptr[2] += temp;
-    }
-    if (ptr[1] & 0x400000) {
-        s32 temp2 = ((ptr[1] >> 0xD) & 0x7FFF) + 1;
-        ptr[1] -= temp2;
-        ptr[3] += temp2;
-    }
-    if (ptr[0] < 0x400000) {
-        ptr[0] = 0;
-    }
-    if (ptr[1] < 0x400000) {
-        ptr[1] = 0;
-    }
-    if (ptr[2] & 0x400000) {
-        ptr[2] = 0;
-    }
-    if (ptr[3] & 0x400000) {
-        ptr[3] = 0;
-    }
+void SaveData_Init(void **arg0) {
+    void *memset(void *, int, unsigned long);
+    void fn_800EB760(s32);
+    u8 *buf;
+    u32 bus;
+    u32 magic;
+    u32 ver;
+
+    memset(*arg0, 0, SAVE_CARD_FILE_SIZE);
+    buf = *arg0;
+
+    magic = SAVE_SLOT_MAGIC;
+    ver = SAVE_VER_20050201;
+
+    *(u32 *)(buf + 0x2040) = magic;
+    *(u32 *)(buf + 0x2044) = ver;
+    *(u32 *)(buf + 0x2048) = 1;
+    buf[0x2060] = 2;
+    buf[0x2062] = 0;
+    buf[0x2064] = 3;
+    buf[0x2065] = 4;
+    buf[0x2066] = 0;
+
+    bus = *(u32 *)0x800000F8 >> 2;
+    *(u32 *)(buf + 0x205C) = bus * 0xE10;
+    *(u32 *)(buf + 0x2058) = (u32)(((u64)bus * 0xE10ULL) >> 32);
+
+    buf = *arg0;
+    *(u32 *)(buf + 0x6040) = magic;
+    *(u32 *)(buf + 0x6044) = ver;
+    *(u32 *)(buf + 0x6048) = 2;
+    buf[0x6060] = 2;
+    buf[0x6062] = 1;
+    buf[0x6064] = 4;
+    buf[0x6065] = 4;
+    buf[0x6066] = 0;
+
+    buf = *arg0;
+    *(u32 *)(buf + 0xA040) = magic;
+    *(u32 *)(buf + 0xA044) = ver;
+    *(u32 *)(buf + 0xA048) = 3;
+    buf[0xA060] = 2;
+    buf[0xA062] = 2;
+    buf[0xA064] = 5;
+    buf[0xA065] = 4;
+    buf[0xA066] = 0;
+
+    fn_800EB760(0);
 }
 
 void fn_801E3118(s32 *arg0, s32 arg1, u8 arg2) {
