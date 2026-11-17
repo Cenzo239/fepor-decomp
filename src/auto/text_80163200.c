@@ -2008,23 +2008,24 @@ void *fn_801662F0(void **arg0) {
     return Msg_Expand(v);
 }
 
+#pragma cplusplus on
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-void fn_8016632C(void *arg0) {
-    extern f32 lbl_8036A8F0;
-    extern f32 lbl_8036A8F4;
-    extern f32 lbl_8036A8F8;
-    extern f32 lbl_8036A8FC;
-    extern f32 lbl_8036A900;
-    extern f32 lbl_8036A904;
-    extern f32 lbl_8036A908;
-    extern f32 lbl_8036A90C;
-    extern f32 lbl_8036A910;
-    extern f32 lbl_8036A914;
-    extern f32 lbl_8036A918;
-    extern f32 lbl_8036A91C;
-    extern f32 lbl_8036A920;
-    extern f32 lbl_8036A924;
+extern "C" void fn_8016632C(void *arg0) {
+    extern const f32 lbl_8036A8F0;
+    extern const f32 lbl_8036A8F4;
+    extern const f32 lbl_8036A8F8;
+    extern const f32 lbl_8036A8FC;
+    extern const f32 lbl_8036A900;
+    extern const f32 lbl_8036A904;
+    extern const f32 lbl_8036A908;
+    extern const f32 lbl_8036A90C;
+    extern const f32 lbl_8036A910;
+    extern const f32 lbl_8036A914;
+    extern const f32 lbl_8036A918;
+    extern const f32 lbl_8036A91C;
+    extern const f32 lbl_8036A920;
+    extern const f32 lbl_8036A924;
     extern char lbl_80277990[];
     void String_Init(void *, void *, void *);
     void String_Destroy(void *, s32);
@@ -2068,21 +2069,20 @@ void fn_8016632C(void *arg0) {
     s32 scratch3;
     s32 scratch4;
     void *inner;
-    void *self;
-    void *found;
     f32 dist;
     f32 sy;
     f32 sx;
     f32 scaleFactor;
     s32 iy;
     s32 ix;
+    s32 fade;
     s32 i;
     s32 alpha;
+    void *found;
     u8 lr;
     u8 lg;
     u8 lb;
 
-    self = arg0;
     inner = *(void **)arg0;
     screen[1] = 0;
     screen[0] = 0;
@@ -2103,8 +2103,7 @@ void fn_8016632C(void *arg0) {
         } else {
             fn_800E4E7C(sun, found, lbl_80277990 + 5);
             {
-                void (**vt)(void) = *(void (***)(void))((u8 *)self + 0x40);
-                ((void (*)(void *, f32, f32, f32))vt[9])(self, sun[0], sun[1], sun[2]);
+                ((LensFlareView *)arg0)->setPosition(sun[0], sun[1], sun[2]);
             }
         }
     } else {
@@ -2114,23 +2113,26 @@ void fn_8016632C(void *arg0) {
         return;
     }
 
-    fn_800DB9E8(view, self);
-    fn_800DBA50(proj, self);
+    fn_800DB9E8(view, arg0);
+    fn_800DBA50(proj, arg0);
     {
-        f32 py = proj[1];
-        f32 px = proj[0];
-        f32 zeroF = lbl_8036A8F0;
+        f32 zeroF;
+        f32 py;
+        f32 px;
+        py = proj[1];
+        px = proj[0];
+        zeroF = lbl_8036A8F0;
         sx = lbl_8036A8F4 * px + lbl_8036A8F4;
         sy = lbl_8036A8F8 * (-py) + lbl_8036A8F8;
         pos[0] = px;
         pos[1] = py;
         pos[2] = zeroF;
+    }
 
-    if (sx >= zeroF && sx < lbl_8036A8FC && sy >= zeroF && sy < lbl_8036A900) {
+    if (sx >= lbl_8036A8F0 && sx < lbl_8036A8FC && sy >= lbl_8036A8F0 && sy < lbl_8036A900) {
         fn_80220B44((s32)sx, (s32)sy, &hit);
     } else {
         hit = 0;
-    }
     }
 
     if ((u32)hit <= 0xFFC000u) {
@@ -2143,30 +2145,31 @@ void fn_8016632C(void *arg0) {
         String_Destroy(str4, -1);
     }
 
-    delta[0] = pos[0] - *(f32 *)((u8 *)self + 0x12C);
-    delta[1] = pos[1] - *(f32 *)((u8 *)self + 0x130);
+    delta[0] = pos[0] - *(f32 *)((u8 *)arg0 + 0x12C);
+    delta[1] = pos[1] - *(f32 *)((u8 *)arg0 + 0x130);
     if (Vec_Length(delta) == lbl_8036A8F0) {
-        *(f32 *)((u8 *)self + 0x144) += *(f32 *)((u8 *)self + 0x138);
-        *(f32 *)((u8 *)self + 0x148) += *(f32 *)((u8 *)self + 0x13C);
-        *(f32 *)((u8 *)self + 0x138) *= lbl_8036A90C;
-        *(f32 *)((u8 *)self + 0x13C) *= lbl_8036A90C;
+        *(f32 *)((u8 *)arg0 + 0x144) += *(f32 *)((u8 *)arg0 + 0x138);
+        *(f32 *)((u8 *)arg0 + 0x148) += *(f32 *)((u8 *)arg0 + 0x13C);
+        *(f32 *)((u8 *)arg0 + 0x138) *= lbl_8036A90C;
+        *(f32 *)((u8 *)arg0 + 0x13C) *= lbl_8036A90C;
     } else {
         fn_802031E8(delta, delta);
-        *(f32 *)((u8 *)self + 0x138) = lbl_8036A910 * delta[0];
-        *(f32 *)((u8 *)self + 0x13C) = lbl_8036A910 * delta[1];
-        *(f32 *)((u8 *)self + 0x148) = lbl_8036A8F0;
-        *(f32 *)((u8 *)self + 0x144) = lbl_8036A8F0;
+        *(f32 *)((u8 *)arg0 + 0x138) = lbl_8036A910 * delta[0];
+        *(f32 *)((u8 *)arg0 + 0x13C) = lbl_8036A910 * delta[1];
+        *(f32 *)((u8 *)arg0 + 0x148) = lbl_8036A8F0;
+        *(f32 *)((u8 *)arg0 + 0x144) = lbl_8036A8F0;
     }
-    *(f32 *)((u8 *)self + 0x12C) = pos[0];
-    *(f32 *)((u8 *)self + 0x130) = pos[1];
-    pos[0] += *(f32 *)((u8 *)self + 0x144);
-    pos[1] += *(f32 *)((u8 *)self + 0x148);
+    *(f32 *)((u8 *)arg0 + 0x12C) = pos[0];
+    *(f32 *)((u8 *)arg0 + 0x130) = pos[1];
+    pos[0] += *(f32 *)((u8 *)arg0 + 0x144);
+    pos[1] += *(f32 *)((u8 *)arg0 + 0x148);
 
     {
         void *cam = (void *)UiObj_FindEnabledCamera(inner);
         fn_800DBBC8(camPos, cam);
     }
-    scaleFactor = (lbl_8036A914 + camPos[2]) / lbl_8036A918;
+    scaleFactor = lbl_8036A914 + camPos[2];
+    scaleFactor /= lbl_8036A918;
     dist = PSVECDistance(zero, pos);
     fn_802031A8(zero, pos, dir);
     if (Vec_Length(dir) == lbl_8036A8F0) {
@@ -2192,15 +2195,15 @@ void fn_8016632C(void *arg0) {
     ix = (s32)sx;
 
     for (i = 0; i < 16; i++) {
-        f32 sc = *(f32 *)((u8 *)self + 0xEC);
-        if (sc == lbl_8036A8F0) {
-            void *child = *(void **)((u8 *)self + 0xAC);
+        f32 sc = *(f32 *)((u8 *)arg0 + 0xEC);
+        if (lbl_8036A8F0 == sc) {
+            void *child = *(void **)((u8 *)arg0 + 0xAC);
             if (child != 0) {
-                void (**vt)(void) = *(void (***)(void))((u8 *)child + 0x40);
-                ((void (*)(void *, s32, s32))vt[11])(child, ix, iy);
-                child = *(void **)((u8 *)self + 0xAC);
-                vt = *(void (***)(void))((u8 *)child + 0x40);
-                ((void (*)(void *, u8, u8, u8, u8))vt[13])(child, lr, lg, lb, (u8)alpha);
+
+                ((LensFlareView *)child)->setScreen(ix, iy);
+                child = *(void **)((u8 *)arg0 + 0xAC);
+
+                ((LensFlareView *)child)->setColor(lr, lg, lb, (u8)alpha);
             }
         } else {
             void *child;
@@ -2211,23 +2214,22 @@ void fn_8016632C(void *arg0) {
             tmp[1] = lbl_8036A8F8 * (-tmp[1]) + lbl_8036A8F8;
             screen[0] = (s32)tmp[0];
             screen[1] = (s32)tmp[1];
-            child = *(void **)((u8 *)self + 0xAC);
+            child = *(void **)((u8 *)arg0 + 0xAC);
             if (child != 0) {
                 pair[0] = screen[0];
                 pair[1] = screen[1];
-                vt = *(void (***)(void))((u8 *)child + 0x40);
-                ((void (*)(void *, s32 *))vt[10])(child, pair);
-                child = *(void **)((u8 *)self + 0xAC);
-                vt = *(void (***)(void))((u8 *)child + 0x40);
-                ((void (*)(void *, u8, u8, u8, u8))vt[13])(child, lr, lg, lb, (u8)alpha);
+
+                ((LensFlareView *)child)->setPoint(pair);
+                child = *(void **)((u8 *)arg0 + 0xAC);
+
+                ((LensFlareView *)child)->setColor(lr, lg, lb, (u8)alpha);
             }
         }
-        self = (void *)((u8 *)self + 4);
+        arg0 = (void *)((u8 *)arg0 + 4);
     }
 
     {
         f32 d2 = dist * lbl_8036A924;
-        s32 fade;
         void **vtbl;
         void *rect;
         void (**vt)(void);
@@ -2238,14 +2240,15 @@ void fn_8016632C(void *arg0) {
         } else {
             fade = (s32)(lbl_8036A920 * (lbl_8036A91C - d2));
         }
-        vtbl = *(void ***)((u8 *)inner + 0x10);
-        rect = ((void *(*)(void *, char *, char *))vtbl[4])(inner, lbl_80277990 + 0x13, lbl_80277990 + 0x18);
-        vt = *(void (***)(void))((u8 *)rect + 0x40);
-        ((void (*)(void *, u8, u8, u8, u8))vt[13])(rect, lr, lg, lb, (u8)fade);
+
+        rect = ((LensFlareOwner *)inner)->find(lbl_80277990 + 0x13, lbl_80277990 + 0x18);
+
+        ((LensFlareView *)rect)->setColor(lr, lg, lb, (u8)fade);
     }
 }
 #pragma use_lmw_stmw reset
 #pragma global_optimizer reset
+#pragma cplusplus reset
 extern u16 lbl_8028DED0[];
 void *fn_80166940(void *arg0, s16 arg1) {
     void fn_800DF724(void *, s32);
