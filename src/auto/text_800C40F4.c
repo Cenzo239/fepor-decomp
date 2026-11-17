@@ -7917,6 +7917,72 @@ void fn_800DA748(s32 arg0)
     }
     String_Destroy(&str, -1);
 }
+
+#pragma cplusplus on
+extern "C" void fn_800DA894(s32 index, s32 arg1) {
+    struct Host {
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5(void *);
+        virtual void v6(const char *, const char *);
+    };
+    void *Heap_Alloc(u32);
+    String *String_Assign(String *, void *, s32, s32);
+    void String_AssignCStr(String *, char *, u32);
+    void fn_800C992C(String *, char *, u32);
+    void fn_800C99A0(String *, String *, s32, s32);
+    void *String_Init(String *, char *, void *);
+    void *String_Destroy(String *, s32);
+    void *BattleTerrain_Create(void *, void *, String *, String *);
+    void fn_800D8E14(void *, s32);
+    u32 strlen(const char *);
+    extern char lbl_802711B0[];
+    extern void *lbl_803678B8;
+
+    String sp24;
+    String sp18;
+    String spC;
+    void *scratch;
+    void *self;
+    void *tmp;
+    s8 made;
+
+    self = lbl_803678B8;
+    spC.cap = 0;
+    sp18.cap = 0;
+    spC.size = 0;
+    spC.data = 0;
+    spC.cap = 0;
+    sp18.size = 0;
+    sp18.data = 0;
+    sp18.cap = 0;
+
+    String_Assign(&spC, (u8 *)*(void **)((u8 *)self + 0x54) + index * 0xC, 0, -1);
+    ((Host *)*(void **)((u8 *)self + 4))->v6(lbl_802711B0 + 0x1B7, lbl_802711B0 + 0x1C5);
+    String_AssignCStr(&sp18, lbl_802711B0 + 0x1A4, strlen(lbl_802711B0 + 0x1A4));
+    fn_800C99A0(&sp18, &spC, 0, -1);
+    fn_800C992C(&sp18, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
+    made = 0;
+    tmp = Heap_Alloc(0x54);
+    if (tmp) {
+        String_Init(&sp24, lbl_802711B0 + 0x1C5, &scratch);
+        made = 1;
+        tmp = BattleTerrain_Create(tmp, *(void **)((u8 *)self + 4), &sp24, &sp18);
+    }
+    if (made) {
+        String_Destroy(&sp24, -1);
+    }
+    ((Host *)*(void **)((u8 *)self + 4))->v5(tmp);
+    String_Destroy(&sp18, -1);
+    String_Destroy(&spC, -1);
+    fn_800D8E14(lbl_803678B8, arg1);
+}
+#pragma cplusplus reset
+
 #pragma global_optimizer on
 
 void fn_800DAA38(void *arg0) {
@@ -9889,6 +9955,72 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
     *((u8 *)arg0 + 8) = v;
     *(u8 **)((u8 *)arg0 + 12) = mid;
 }
+
+void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
+    void *Heap_Alloc(u32);
+    void Tree_InsertFixup(void *, void *);
+    void abort(void);
+    void fprintf(void *, const char *, ...);
+    void memcpy(void *, void *, u32);
+    extern char __files[];
+    extern char lbl_80271860[];
+    extern u8 lbl_80366E58;
+
+    void *node;
+    u8 *value;
+    u8 *src;
+    u8 *end;
+    u32 len;
+    u8 *buf;
+
+    if (*(u32 *)((char *)tree + 0) > (u32)-2) {
+        fprintf(__files + 0xA0, lbl_80271860 + 0x1B0);
+        abort();
+    }
+    node = Heap_Alloc(0x1C);
+    if (node == NULL) {
+        fprintf(__files + 0xA0, lbl_80271860 + 0x152);
+        abort();
+    }
+    value = (u8 *)((char *)node + 0xC);
+    if (value != NULL) {
+        *(u32 *)(value + 4) = *(u32 *)((char *)key + 4);
+        *(u32 *)(value + 8) = 0;
+        src = *(u8 **)((char *)key + 8);
+        *(u32 *)(value + 0) = 0;
+        end = src + *(u32 *)((char *)key + 0);
+        *(u32 *)(value + 4) = 0;
+        if (src != end) {
+            len = end - src;
+            *(u32 *)(value + 4) = (len + 3) - (len & 3);
+            buf = Heap_Alloc(*(u32 *)(value + 4) + 1);
+            if (buf == NULL) {
+                fprintf(__files + 0xA0, lbl_80271860 + 0x152);
+                abort();
+            }
+            *(u8 **)(value + 8) = buf;
+            memcpy(buf, src, len);
+            *(u32 *)(value + 0) = len;
+            buf[len] = lbl_80366E58;
+            *(u32 *)(value + 0xC) = *(u32 *)((char *)key + 0xC);
+        }
+    }
+    *(u32 *)((char *)node + 4) = 0;
+    *(u32 *)((char *)node + 0) = 0;
+    *(u32 *)((char *)node + 8) = (u32)parent | (*(u32 *)((char *)node + 8) & 1);
+    if ((u8)asLeft) {
+        *(void **)((char *)parent + 0) = node;
+    } else {
+        *(void **)((char *)parent + 4) = node;
+    }
+    *(u32 *)((char *)tree + 0) += 1;
+    Tree_InsertFixup(node, *(void **)((char *)tree + 4));
+    if ((u8)setFirst) {
+        *(void **)((char *)tree + 0xC) = node;
+    }
+    return node;
+}
+
 #pragma scheduling reset
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
     /* Set cubic Vec3 tween target; duration 0 snaps. Else shift history, store controls, set speed from distance. */
@@ -10966,38 +11098,46 @@ extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,Sor
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-#pragma dont_inline on
 #pragma global_optimizer off
 extern "C" void fn_800E1340(SortIterator first1, SortIterator last1, SortIterator first2, SortIterator last2, s32 *result, SortCompare comp) {
     s32 Sort_GetKey(void *);
     s32 key;
     while (first1.ptr != last1.ptr && first2.ptr != last2.ptr) {
-        key = Sort_GetKey((void *)*first2.ptr);
-        if (Sort_GetKey((void *)*first1.ptr) > key) {
-            *result = *first2.ptr;
-            ++first2;
+        SortIterator t1 = first1;
+        SortIterator t2 = first2;
+        key = Sort_GetKey((void *)*t2.ptr);
+        if (Sort_GetKey((void *)*t1.ptr) > key) {
+            SortIterator tmp = first2;
+            *result = *tmp.ptr;
+            first2.ptr++;
         } else {
-            *result = *first1.ptr;
-            ++first1;
+            SortIterator tmp = first1;
+            *result = *tmp.ptr;
+            first1.ptr++;
         }
-        ++result;
+        result++;
     }
     if (first1.ptr == last1.ptr) {
-        while (first2.ptr != last2.ptr) {
-            *result = *first2.ptr;
-            ++first2;
-            ++result;
+        SortIterator end = last2;
+        SortIterator cur = first2;
+        while (cur.ptr != end.ptr) {
+            SortIterator tmp = cur;
+            *result = *tmp.ptr;
+            cur.ptr++;
+            result++;
         }
     } else {
-        while (first1.ptr != last1.ptr) {
-            *result = *first1.ptr;
-            ++first1;
-            ++result;
+        SortIterator end = last1;
+        SortIterator cur = first1;
+        while (cur.ptr != end.ptr) {
+            SortIterator tmp = cur;
+            *result = *tmp.ptr;
+            cur.ptr++;
+            result++;
         }
     }
 }
 #pragma global_optimizer reset
-#pragma dont_inline reset
 #pragma cplusplus off
 
 #pragma cplusplus on
