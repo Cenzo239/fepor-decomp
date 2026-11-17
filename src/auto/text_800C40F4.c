@@ -6000,17 +6000,18 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma optimization_level 3
 void fn_800D6940(u32 *arg0) {
-    u8 (*start)[0x58];
-    u8 (*end)[0x58];
+    u8 *start;
+    u8 *end;
 
-    start = (u8 (*)[0x58])arg0[2];
-    end = start + arg0[1];
-    for (; start < end; start++) {
+    start = (u8 *)arg0[2];
+    end = start + arg0[1] * 0x58;
+    for (; start < end; start += 0x58) {
     }
     arg0[1] = 0;
 }
-
+#pragma optimization_level reset
 void fn_800D697C(u8 *arg0, u32 arg1, s32 arg2) {
     if (arg2 <= 0) {
         return;
@@ -6224,17 +6225,19 @@ void *fn_800D7060(void *arg0, s16 arg1) {
 }
 
 void fn_800D74FC(void *arg0) {
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[0xC];
+        virtual void v0(s32, s32, s32) = 0;
+        virtual void v1(s32, s32, s32) = 0;
+    };
     extern void *gPadInput;
-    s32 buttons;
-    s32 prev;
-    s32 repeat;
-    void (*meth)(void *, s32, s32, s32);
+    s32 buttons = *(s32 *)((u8 *)gPadInput + 4);
+    s32 prev = *(s32 *)((u8 *)gPadInput + 8);
+    s32 repeat = *(s32 *)((u8 *)gPadInput + 0xC);
 
-    buttons = *(s32 *)((u8 *)gPadInput + 4);
-    prev = *(s32 *)((u8 *)gPadInput + 8);
-    repeat = *(s32 *)((u8 *)gPadInput + 0xC);
-    meth = *(void (**)(void *, s32, s32, s32))(*(u8 **)((u8 *)arg0 + 0xC) + 0xC);
-    meth(arg0, buttons, buttons & (prev ^ buttons), repeat);
+    ((Obj *)arg0)->v1(buttons, buttons & (prev ^ buttons), repeat);
+#pragma cplusplus reset
 }
 
 void fn_800D7540(void *arg0) {
