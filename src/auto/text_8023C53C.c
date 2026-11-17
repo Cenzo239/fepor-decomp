@@ -14615,28 +14615,27 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
     return NULL;
 }
 
+#pragma fp_contract on
 f64 fn_80261344(f32 x) {
     extern f32 lbl_802831B8[];
     extern f32 lbl_802831B0[];
     extern f32 lbl_802831B4[];
-    f64 zero;
-    f64 three;
-    f64 half;
     f64 guess;
-
+    f64 half;
+    f64 three;
+    f64 zero;
+    f64 square;
     zero = lbl_802831B8[0];
-    three = lbl_802831B0[0];
-    half = lbl_802831B4[0];
+    three = lbl_802831B8[-2];
+    half = lbl_802831B8[-1];
+    if (x == (f32)zero) return x;
     guess = __frsqrte(x);
-    if (x == (f32)zero) {
-        return x;
-    }
-    guess = half * guess * (three - x * (guess * guess));
-    guess = half * guess * (three - x * (guess * guess));
-    guess = half * guess * (three - x * (guess * guess));
+    guess = (half * guess) * (three - x * (guess * guess));
+    guess = (half * guess) * (three - x * (guess * guess));
+    guess = (half * guess) * (three - x * (guess * guess));
     return x * guess;
 }
-
+#pragma fp_contract off
 f32 fn_80261398(f32 x) {
     extern f32 lbl_802831BC[];
     return x * lbl_802831BC[3];
@@ -17409,3 +17408,4 @@ s32 fn_80265230(s32 arg0)
     
     return arg0;
 }
+
