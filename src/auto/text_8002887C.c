@@ -637,6 +637,222 @@ s32 fn_80029E4C(s32 arg0, void *arg1) {
     return 0;
 }
 
+void fn_8002A084(void *arg0, void *arg1, void *arg2)
+{
+    void fn_8002F728(void *);
+
+    extern u8 lbl_80284DD0[];
+    extern u8 lbl_80284E20[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    struct {
+        void *vtable;
+        void *unit;
+    } obj;
+
+    u8 *map;
+    u8 *unit;
+    u8 id;
+    s8 x;
+    s8 y;
+    s32 yOffset;
+    u16 *flags;
+    void *target;
+
+    obj.vtable = lbl_80284E20;
+    obj.unit = arg0;
+    obj.vtable = lbl_80284DD0;
+
+    fn_8002F728(gTargetList);
+
+    unit = (u8 *)obj.unit;
+    map = gBattleMap;
+
+    y = (s8)unit[0x19F];
+    x = (s8)unit[0x19E];
+
+    yOffset = y << 6;
+
+    flags = (u16 *)(map + ((x + yOffset) << 1) + 0x408E);
+
+    if (*flags & 8) {
+        id = map[x + ((s8)(y - 1) << 6) + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 2) {
+        id = map[(s8)(x + 1) + yOffset + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 4) {
+        id = map[x + ((s8)(y + 1) << 6) + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 1) {
+        id = map[(s8)(x - 1) + yOffset + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+}
+
+void fn_8002A2BC(void *arg0)
+{
+    void fn_8002F728(void *);
+
+    extern u8 lbl_80284DC0[];
+    extern u8 lbl_80284E20[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    struct {
+        void *vtable;
+        void *unit;
+    } obj;
+
+    u8 id;
+    register s32 y;
+    register s32 x;
+    register u16 *flags;
+    register s32 yOffset;
+    void *target;
+
+    obj.vtable = lbl_80284E20;
+    obj.unit = arg0;
+    obj.vtable = lbl_80284DC0;
+
+    fn_8002F728(gTargetList);
+
+
+    y = ((u8 *)obj.unit)[0x19F];
+    x = ((u8 *)obj.unit)[0x19E];
+    y = (s8)y;
+    x = (s8)x;
+
+    yOffset = y << 6;
+
+    flags = (u16 *)(gBattleMap + ((x + yOffset) << 1) + 0x408E);
+
+    if (*flags & 8) {
+        id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 2) {
+        id = gBattleMap[(s8)(x + 1) + yOffset + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 4) {
+        id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+
+    if (*flags & 1) {
+        id = gBattleMap[(s8)(x - 1) + yOffset + 0xD];
+
+        if (id != 0) {
+            target = gUnits + (id - 1) * 0x280;
+        } else {
+            target = 0;
+        }
+
+        if (target != 0) {
+            ((void (*)(void *, void *))
+                (*(void **)((u8 *)obj.vtable + 8)))(
+                    &obj, target
+                );
+        }
+    }
+}
+
 void fn_8002A4F4(struct Unit* unit) {
 void fn_8001EDA0(void *);
     void fn_8002F728(void *);
@@ -770,6 +986,185 @@ if(id){void *unit;if(id)unit=gUnits+(id-1)*0x280;else unit=0;
 }
 }
 
+extern "C" void fn_8002AA34(void *arg0, void *arg1)
+{
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+    extern u8 lbl_80284E20[];
+    extern u8 lbl_80284DA0[];
+    extern u8 lbl_80284D80[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    void fn_8002F728(void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    s32 Item_GetRangeForUnit(void *, void *);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
+
+    struct { void *vtable; void *unit; } visitor;
+    u8 *map;
+    u8 *row;
+    u8 *cell;
+    u8 *item;
+    u8 range;
+    u8 y;
+    u8 x;
+    u8 id;
+    void *target;
+    s32 rowOffset;
+    s32 bufferOffset;
+    s32 rowIndex;
+    s32 colIndex;
+
+    visitor.vtable = lbl_80284E20;
+    visitor.vtable = lbl_80284DA0;
+    visitor.unit = arg0;
+    visitor.vtable = lbl_80284D80;
+
+    fn_8002F728(gTargetList);
+    Map_SelectRangeBuffer(gBattleMap, 6);
+
+    item = (u8 *)arg1;
+    range = item[0x1D];
+    y = ((u8 *)visitor.unit)[0x19F];
+    x = ((u8 *)visitor.unit)[0x19E];
+
+    Map_FillAttackRange(
+        gBattleMap,
+        x,
+        y,
+        range,
+        Item_GetRangeForUnit(arg1, visitor.unit)
+    );
+
+    map = gBattleMap;
+    range = (s8)item[0x1D];
+
+    rowOffset = rowIndex = 0;
+    row = map;
+
+    while ((s8)rowIndex < *(s32 *)(map + 4)) {
+        bufferOffset = rowOffset;
+        cell = row;
+        colIndex = 0;
+
+        while ((s8)colIndex < *(s32 *)map) {
+            if (*(s16 *)((u8 *)*(void **)(map + 0x14190)
+                        + bufferOffset * 2) >= (s8)range) {
+                id = cell[0xD];
+
+                if (id != 0) {
+                    if (id != 0) {
+                        target = gUnits + (id - 1) * 0x280;
+                    } else {
+                        target = 0;
+                    }
+
+                    ((void (*)(void *, void *))
+                        ((void **)visitor.vtable)[2])(
+                            (void *)&visitor.vtable,
+                            target
+                        );
+                }
+            }
+
+            bufferOffset++;
+            cell++;
+            colIndex++;
+        }
+
+        rowOffset += 0x40;
+        row += 0x40;
+        rowIndex++;
+    }
+}
+
+extern "C" void fn_8002AB9C(s32 arg0, s32 arg1)
+{
+    extern u8 lbl_80284E20[];
+    extern u8 lbl_80284DA0[];
+    extern u8 lbl_80284D70[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    void fn_8002F728(void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    s32 Item_GetRangeForUnit(void *, void *);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
+
+    struct Visitor {
+        virtual void visit(void *) = 0;
+    };
+
+    struct {
+        void *vtbl;
+        void *unit;
+    } obj;
+
+    s32 y;
+    s32 x;
+    s32 rowOffset;
+    s32 index;
+    s32 range;
+    u8 *row;
+    u8 *cell;
+    u8 *map;
+    u8 ir;
+    u8 iy;
+    u8 ix;
+
+    obj.vtbl = lbl_80284E20;
+    obj.vtbl = lbl_80284DA0;
+    obj.unit = (void *)arg0;
+    obj.vtbl = lbl_80284D70;
+
+    fn_8002F728(gTargetList);
+    Map_SelectRangeBuffer(gBattleMap, 6);
+
+    ir = ((u8 *)arg1)[0x1D];
+    iy = ((u8 *)obj.unit)[0x19F];
+    ix = ((u8 *)obj.unit)[0x19E];
+
+    Map_FillAttackRange(
+        gBattleMap,
+        ix,
+        iy,
+        ir,
+        Item_GetRangeForUnit((void *)arg1, obj.unit)
+    );
+
+    range = ((s8 *)arg1)[0x1D];
+    map = gBattleMap;
+
+    for (y = 0, rowOffset = 0, row = map;
+         (s8)y < *(s32 *)(map + 4);
+         y++, rowOffset += 64, row += 64) {
+
+        for (x = 0, index = rowOffset, cell = row;
+             (s8)x < *(s32 *)map;
+             x++, index++, cell++) {
+
+            if ((*(s16 **)(map + 0x14190))[index] >= range) {
+                u8 id = cell[0xD];
+
+                if (id != 0) {
+                    void *unit;
+
+                    if (id != 0) {
+                        unit = gUnits + (id - 1) * 0x280;
+                    } else {
+                        unit = 0;
+                    }
+
+                    ((Visitor *)&obj)->visit(unit);
+                }
+            }
+        }
+    }
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus reset
@@ -777,6 +1172,162 @@ if(id){void *unit;if(id)unit=gUnits+(id-1)*0x280;else unit=0;
 void fn_8002AD04(void) {
     // Function body reconstructed from disassembly
     // Based on similar functions and the original assembly
+}
+
+#pragma cplusplus on
+extern "C" void fn_8002AE6C(void *arg0) {
+    void fn_8002F728(void *);
+    extern u8 lbl_80284E20[];
+    extern u8 lbl_80284D50[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    struct Visitor {
+        virtual void apply(void *unit) = 0;
+    };
+    struct {
+        void *vtbl;
+        void *arg;
+    } obj;
+    void *unit;
+    u8 id;
+    s8 x;
+    s8 y;
+    u16 *flags;
+    unsigned yOff;
+    u16 f;
+
+    obj.vtbl = lbl_80284E20;
+    obj.arg = arg0;
+    obj.vtbl = lbl_80284D50;
+    fn_8002F728(gTargetList);
+    x = (s8)*((u8 *)obj.arg + 0x19E);
+    y = (s8)*((u8 *)obj.arg + 0x19F);
+    yOff = y << 6;
+    flags = (u16 *)(gBattleMap + ((x + (s32)yOff) << 1));
+    f = *(u16 *)((u8 *)flags + (unsigned)0x408E);
+    flags = (u16 *)((u8 *)flags + 0x408E);
+    if ((f & 8) != 0) {
+        id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit) {
+            ((Visitor *)&obj)->apply(unit);
+        }
+    }
+    if ((*flags & 2) != 0) {
+        id = gBattleMap[(s8)(x + 1) + (s32)yOff + 0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
+        }
+    }
+    if ((*flags & 4) != 0) {
+        id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit) {
+            ((Visitor *)&obj)->apply(unit);
+        }
+    }
+    if ((*flags & 1) != 0) {
+        id = gBattleMap[(s8)(x - 1) + (s32)yOff + 0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
+        }
+    }
+}
+#pragma cplusplus reset
+
+#pragma cplusplus on
+extern "C" void fn_8002B0A4(void *arg0) {
+extern u8 lbl_80284E20[],lbl_80284D40[],gTargetList[],gBattleMap[],gUnits[],gUiContext[];
+void fn_8002F728(void *);
+struct Visitor { virtual void apply(void *) = 0; };
+void **vt;
+s32 row;
+u16 *flags;
+s8 x;
+s8 y;
+u8 id;
+void *unit;
+vt=(void **)lbl_80284E20;
+vt=(void **)lbl_80284D40;
+fn_8002F728(gTargetList);
+y=(s8)((u8*)arg0)[0x19f];
+x=(s8)((u8*)arg0)[0x19e];
+row=y<<6;
+flags=(u16 *)(gBattleMap+2*(x+row)+0x408e);
+if (*flags & 8) { id=*(gBattleMap+x+((s8)(y-1)<<6)+0xd); if(id) unit=gUnits+(id-1)*0x280; else unit=0; if(unit) ((Visitor *)&vt)->apply(unit); }
+if (*flags & 2) { id=*(gBattleMap+(s8)(x+1)+row+0xd); if(id) unit=gUnits+(id-1)*0x280; else unit=0; if(unit) ((Visitor *)&vt)->apply(unit); }
+if (*flags & 4) { id=*(gBattleMap+x+((s8)(y+1)<<6)+0xd); if(id) unit=gUnits+(id-1)*0x280; else unit=0; if(unit) ((Visitor *)&vt)->apply(unit); }
+if (*flags & 1) { id=*(gBattleMap+(s8)(x-1)+row+0xd); if(id) unit=gUnits+(id-1)*0x280; else unit=0; if(unit) ((Visitor *)&vt)->apply(unit); }
+*(u32 *)(gUiContext+4)=0;
+}
+
+#pragma cplusplus reset
+
+void fn_8002B2E8(void *arg0) {
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    extern u8 gTargetList[];
+    extern u8 lbl_80284D30[];
+    extern u8 lbl_80284E20[];
+    void fn_8002F728(void *, void *, void *);
+    struct CB { u8 pad[8]; void (*fn)(void *); };
+    struct Locals { struct CB *sp8; void *spC; } l;
+    s32 x, y, row;
+    u16 *flags;
+    u16 *p;
+    u8 id;
+    void *unit;
+
+    l.sp8 = (struct CB *)lbl_80284E20;
+    l.spC = arg0;
+    l.sp8 = (struct CB *)lbl_80284D30;
+    fn_8002F728(gTargetList, gTargetList, l.sp8);
+
+    y = (s8)*(u8 *)((u8 *)l.spC + 0x19f);
+    x = (s8)*(u8 *)((u8 *)l.spC + 0x19e);
+    row = y << 6;
+    flags = (u16 *)(gBattleMap + (x + row) * 2);
+    p = (u16 *)((u8 *)flags + 0x408e);
+
+    if (*p & 8) {
+        id = *(gBattleMap + x + (((s8)(y - 1)) << 6) + 0xd);
+        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
+        if (unit) l.sp8->fn(&l.sp8);
+    }
+    if (*p & 2) {
+        id = *(gBattleMap + (s8)(x + 1) + row + 0xd);
+        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
+        if (unit) l.sp8->fn(&l.sp8);
+    }
+    if (*p & 4) {
+        id = *(gBattleMap + x + (((s8)(y + 1)) << 6) + 0xd);
+        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
+        if (unit) l.sp8->fn(&l.sp8);
+    }
+    if (*p & 1) {
+        id = *(gBattleMap + (s8)(x - 1) + row + 0xd);
+        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
+        if (unit) l.sp8->fn(&l.sp8);
+    }
 }
 
 void fn_8002B520(void *arg0)
@@ -1091,7 +1642,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
     }
 }
 
-void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
+extern "C" void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
 {
     extern u8 gMapObjEventList[];
     extern u8 lbl_80284E20[];
@@ -1125,6 +1676,10 @@ void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
     s32 columnOffset;
     s32 count;
     void *localObject[2];
+#pragma cplusplus on
+struct Visitor { virtual void apply(void *)=0; };
+u8 minRange,py,px;
+u8 id;
     void *vtable;
 
     source = (u8 *)arg1;
@@ -1153,13 +1708,14 @@ void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
 
     unit = (u8 *)Item_Get(source[4]);
 
-    result = Item_GetMaxRange(unit);
+    py=source[1]; minRange=unit[0x1D]; px=source[0];
+result = Item_GetMaxRange(unit);
 
     Map_FillAttackRange(
         gBattleMap,
-        source[0],
-        source[1],
-        unit[0x1D],
+        px,
+        py,
+        minRange,
         result
     );
 
@@ -1177,35 +1733,30 @@ void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
     rowOffset = 0;
     row = base;
 
-    table = *(u8 **)(base + 0x14190);
+    table = base + 0x10000;
 
     while ((s8)rowIndex < *(s32 *)(base + 4)) {
+        count = rowOffset;
         columnIndex = 0;
-        columnOffset = rowOffset * 2;
+        
         cell = row;
 
         while ((s8)columnIndex < *(s32 *)base) {
-            if (*(s16 *)(table + columnOffset) >= threshold) {
-                count = cell[0xD];
+            columnOffset=count*2;
+            if (*(s16 *)(*(u8 **)(table+0x4190) + columnOffset) >= threshold) {
+                id = cell[0xD];
 
-                if (count != 0) {
-                    if (count == 1) {
-                        entry = 0;
-                    } else {
-                        entry = gUnits + (count - 1) * 0x280;
-                    }
+                if (id != 0) {
+                    if (id != 0) {
+entry = gUnits + (id - 1) * 0x280;
+} else { entry = 0; }
 
-                    vtable = localObject[0];
-
-                    ((void (*)(void *, void *))
-                        (*(void **)((u8 *)vtable + 8)))(
-                            localObject,
-                            entry
-                        );
+                    ((Visitor *)localObject)->apply(entry);
                 }
             }
 
-            columnOffset += 2;
+            count++;
+            
             cell++;
             columnIndex++;
         }
@@ -1214,6 +1765,7 @@ void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
         row += 0x40;
         rowIndex++;
     }
+#pragma cplusplus reset
 }
 
 void fn_8002BEFC(void *arg0, void *arg1)
