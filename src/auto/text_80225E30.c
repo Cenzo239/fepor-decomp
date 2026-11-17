@@ -1198,6 +1198,80 @@ s32 TRKDoReadRegisters(void *buffer) {
     return result;
 }
 
+s32 fn_802279B4(void *buffer) {
+#pragma inline_depth(0)
+ s32 fn_80228D24(s32,u32,s32 *,s32);
+ s32 fn_8022A0E4(u32 *,u32,u32 *,s32,s32);
+ void MWTRACE(u8,char *,...);
+ void *memset(void *,s32,s32);
+ s32 TRK_cc_write(void *,s32);
+ void TRKSetBufferPosition(void *,u32);
+ void TRKResetBuffer(void *,u32);
+ s32 TRKAppendBuffer_ui8x(void *,void *,s32);
+ s32 TRKMessageSend(void *);
+ extern char gTRK_str_SerialIO[];
+ u8 data[0x820] __attribute__((aligned(32)));
+ u8 ack[0x40],invalid[0x40],error[0x40];
+ u32 length;
+ s32 err;
+ s32 options;
+ u16 size;
+ u32 address;
+ s32 result;
+ char *strings=gTRK_str_SerialIO;
+ address=*(u32 *)((u8 *)buffer+0x20);
+ size=*(u16 *)((u8 *)buffer+0x1C);
+ options=((u8 *)buffer)[0x18];
+ MWTRACE(1,strings+0x180,((u8 *)buffer)[0x14],address,size,options);
+ if(options&2) {
+ memset(invalid,0,0x40);
+ invalid[4]=0x80;
+ *(u32 *)invalid=0x40;
+ invalid[8]=0x12;
+ TRK_cc_write(invalid,0x40);
+ return 0;
+ }
+ length=size;
+ TRKSetBufferPosition(buffer,0x40);
+ if(options&0x40) {
+ fn_802267FC(buffer,data+(address&31),length);
+ options=fn_80228D24((s32)data,address,(s32 *)&length,0);
+ } else {
+ fn_802267FC(buffer,data,length);
+ options=fn_8022A0E4((u32 *)data,address,&length,((options >> 3)&1)^1,0);
+ }
+ err=options;
+ TRKResetBuffer(buffer,0);
+ if(err==0) {
+ memset(ack,0,0x40);
+ *(u32 *)ack=0x40;
+ ack[4]=0x80;
+ ack[8]=err;
+ err=TRKAppendBuffer_ui8x(buffer,ack,0x40);
+ }
+ if(err!=0) {
+ switch(err) {
+ case 0x702:err=0x15;break;
+ case 0x700:err=0x13;break;
+ case 0x704:err=0x21;break;
+ case 0x705:err=0x22;break;
+ case 0x706:err=0x20;break;
+ default:err=3;break;
+ }
+ memset(error,0,0x40);
+ error[4]=0x80;
+ *(u32 *)error=0x40;
+ error[8]=err;
+ TRK_cc_write(error,0x40);
+ return 0;
+ }
+ MWTRACE(1,strings+0x60);
+ {result=TRKMessageSend(buffer);
+ MWTRACE(1,strings+0x80,result);
+ return result;}
+#pragma inline_depth reset
+}
+
 #pragma use_lmw_stmw reset
 void fn_80227BF0(void) {
     OSReport("Error: Unknown unit type for %s\n", "null");
@@ -1614,18 +1688,18 @@ s32 fn_802287C0(s32 arg0) {
     return var_r31;
 }
 
-void fn_80228858(s32 arg0, s32 arg1) {
- u32 address=(u32)arg0 & ~14U;
- arg1+=(u32)arg0-address;
- do {
- __dcbst(0,address);
- __dcbf(0,address);
- __sync();
- __icbi(0,address);
- address+=8;
- arg1-=8;
- } while(arg1>=0);
- __isync();
+void fn_80228858(u32 arg0, s32 arg1) {
+    u32 address = arg0 & 0xFFFFFFF1u;
+    s32 count = arg1 + (s32)(arg0 - address);
+    do {
+        __dcbst(0, address);
+        __dcbf(0, address);
+        __sync();
+        __icbi(0, address);
+        address += 8;
+        count -= 8;
+    } while (count >= 0);
+    __isync();
 }
 
 #pragma optimization_level 3
@@ -2687,6 +2761,94 @@ s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
     return 0;
 }
 
+s32 udp_cc_initialize(void);
+s32 udp_cc_open(void);
+s32 udp_cc_close(void);
+s32 udp_cc_read(void);
+s32 udp_cc_write(void);
+s32 udp_cc_shutdown(void);
+s32 udp_cc_peek(void);
+s32 udp_cc_pre_continue(void);
+s32 udp_cc_post_stop(void);
+s32 ddh_cc_initialize(void *, void *);
+s32 ddh_cc_open(void);
+s32 ddh_cc_close(void);
+u32 ddh_cc_read(void *, u32);
+s32 ddh_cc_write(void *, s32);
+s32 ddh_cc_shutdown(void);
+s32 ddh_cc_peek(void);
+s32 ddh_cc_pre_continue(void);
+s32 ddh_cc_post_stop(void);
+s32 ddh_cc_initinterrupts(void);
+s32 gdev_cc_initialize(void *, void *);
+s32 gdev_cc_open(void);
+s32 gdev_cc_close(void);
+u32 gdev_cc_read(void *, u32);
+s32 gdev_cc_write(void *, s32);
+s32 gdev_cc_shutdown(void);
+s32 gdev_cc_peek(void);
+s32 gdev_cc_pre_continue(void);
+s32 gdev_cc_post_stop(void);
+s32 gdev_cc_initinterrupts(void);
+#pragma push
+#pragma options sdata=0
+s32 InitMetroTRKCommTable(s32 arg0) {
+extern u8 TRK_Use_BBA[];
+extern u32 gDBCommTable[10];
+s32 Hu_IsStub(void);
+s32 AMC_IsStub(void);
+void OSReport(const char *, ...);
+const char *base = (const char *)&EndofProgramInstruction;
+s32 device = arg0;
+s32 result = 1;
+OSReport(base+8,device);
+TRK_Use_BBA[0]=0;
+if (device==2) {
+OSReport(base+32);
+TRK_Use_BBA[0]=1;
+gDBCommTable[0]=(u32)udp_cc_initialize;
+gDBCommTable[6]=(u32)udp_cc_open;
+gDBCommTable[7]=(u32)udp_cc_close;
+gDBCommTable[4]=(u32)udp_cc_read;
+gDBCommTable[5]=(u32)udp_cc_write;
+gDBCommTable[2]=(u32)udp_cc_shutdown;
+gDBCommTable[3]=(u32)udp_cc_peek;
+gDBCommTable[8]=(u32)udp_cc_pre_continue;
+gDBCommTable[9]=(u32)udp_cc_post_stop;
+gDBCommTable[1]=0;
+return 0;
+}
+else if (device==1) {
+OSReport(base+56);
+result=Hu_IsStub();
+gDBCommTable[0]=(u32)gdev_cc_initialize;
+gDBCommTable[6]=(u32)gdev_cc_open;
+gDBCommTable[7]=(u32)gdev_cc_close;
+gDBCommTable[4]=(u32)gdev_cc_read;
+gDBCommTable[5]=(u32)gdev_cc_write;
+gDBCommTable[2]=(u32)gdev_cc_shutdown;
+gDBCommTable[3]=(u32)gdev_cc_peek;
+gDBCommTable[8]=(u32)gdev_cc_pre_continue;
+gDBCommTable[9]=(u32)gdev_cc_post_stop;
+gDBCommTable[1]=(u32)gdev_cc_initinterrupts;
+}
+else if (device==0) {
+OSReport(base+92);
+result=AMC_IsStub();
+gDBCommTable[0]=(u32)ddh_cc_initialize;
+gDBCommTable[6]=(u32)ddh_cc_open;
+gDBCommTable[7]=(u32)ddh_cc_close;
+gDBCommTable[4]=(u32)ddh_cc_read;
+gDBCommTable[5]=(u32)ddh_cc_write;
+gDBCommTable[2]=(u32)ddh_cc_shutdown;
+gDBCommTable[3]=(u32)ddh_cc_peek;
+gDBCommTable[8]=(u32)ddh_cc_pre_continue;
+gDBCommTable[9]=(u32)ddh_cc_post_stop;
+gDBCommTable[1]=(u32)ddh_cc_initinterrupts;
+}
+else {OSReport(base+0x80,device);OSReport(base+0xAC);OSReport(base+0xDC);}return result;
+}
+#pragma pop
 void TRKEXICallBack(s32 arg0, s32 arg1) {
     M2C_UNK OSEnableScheduler();
     M2C_UNK TRKLoadContext(s32, M2C_UNK);
