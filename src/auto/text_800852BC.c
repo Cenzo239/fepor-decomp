@@ -10,6 +10,7 @@ typedef struct {
 } Menu888Entry;
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
+extern f64 lbl_80369688;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
@@ -2450,7 +2451,53 @@ void fn_8008A5AC(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
+void fn_8008A998(s32 x, s32 y, s32 width) {
+    s32 Ui_LoadAtlasTex(s32, void *, s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(void *, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_SetUvCorners(f32, f32, f32, f32);
+    void Prim2D_EndPrim(void);
+    extern s32 gUiRouteAtlas;
+    extern f32 lbl_803696D8;
+    extern f32 lbl_803696DC;
+    extern f32 lbl_803696E0;
+    extern f64 lbl_803696E8;
+    extern f64 lbl_803696F0;
+    struct {
+        u8 buf[0x20];
+        u16 w;
+        u16 h;
+    } sp;
+    s32 mid;
+
+    Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x15);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
+    mid = width - sp.w;
+    Prim2D_Begin();
+    Prim2D_SetTex(sp.buf, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect((f32)x, (f32)y, lbl_803696D8, lbl_803696DC);
+    Prim2D_SetUvCorners(lbl_803696E0, lbl_803696E0, lbl_803696D8, lbl_803696DC);
+    Prim2D_EndPrim();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect((f32)(x + 0x41), (f32)y, (f32)mid, lbl_803696DC);
+    Prim2D_SetUvCorners(lbl_803696D8, lbl_803696E0, lbl_803696D8, lbl_803696DC);
+    Prim2D_EndPrim();
+    Prim2D_AddPrim(1);
+    mid += 0x41;
+    Prim2D_SetRect((f32)(x + mid), (f32)y, (f32)(sp.w - 0x41), lbl_803696DC);
+    Prim2D_SetUvCorners(lbl_803696D8, lbl_803696E0, (f32)sp.w, lbl_803696DC);
+    Prim2D_EndPrim();
+}
+#pragma optimization_level reset
 void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     s64 OSGetTime(void);
     s64 __div2i(s64, s64);
