@@ -191,6 +191,7 @@ typedef struct SIControl {
     u32 inputBytes;
     void *input;
     void *callback;
+    volatile u32 pad[2];
 } SIControl;
 extern SIControl lbl_8029EF68;
 
@@ -243,7 +244,7 @@ s32 fn_8023ABF4(s32 arg0) {
     return var_r5;
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 u32 fn_8023AC30(void) {
     s64 __OSGetSystemTime(void);
     extern u32 Type_8029EFC0[4];
@@ -251,121 +252,57 @@ u32 fn_8023AC30(void) {
     u32 *comcsr;
     SIControl *si;
     u32 sr;
-    u32 *dst;
+    u8 *dst;
     u32 i;
     u32 nWords;
     u32 nBytes;
     u32 data;
-    u32 err;
     u32 chan;
-    s64 time;
     u32 *pInputBytes;
-    u8 *src;
-    u32 ctr;
-    s32 left;
-    u32 pad;
+    u32 *type;
 
     siRegs = (u8 *)0xCC006400;
     comcsr = (u32 *)(siRegs + 0x34);
-    sr = *(u32 *)0xCC006438;
-    *(u32 *)(siRegs + 0x34) = (*(u32 *)0xCC006434 | 0x80000000) & ~1;
+    sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
+    *comcsr = (((volatile u32 *)0xCC000000)[0x6434 / 4] | 0x80000000) & ~1;
     si = &lbl_8029EF68;
-    err = sr;
-    pad = 0;
     if (si->chan != -1) {
-        time = __OSGetSystemTime();
+        XferTime[si->chan] = __OSGetSystemTime();
         pInputBytes = &si->inputBytes;
         i = 0;
-        XferTime[si->chan] = time;
-        dst = (u32 *)si->input;
+        dst = (u8 *)si->input;
         nWords = *pInputBytes >> 2;
-        if (nWords > 0) {
-            if (nWords > 8) {
-                left = (s32)(nWords - 8);
-                ctr = (u32)(left + 7) >> 3;
-                if (left > 0) {
-                    do {
-                        i += 8;
-                        *dst = *(u32 *)(siRegs + 0x80);
-                        *(dst + 1) = *(u32 *)(siRegs + 0x84);
-                        *(dst + 2) = *(u32 *)(siRegs + 0x88);
-                        *(dst + 3) = *(u32 *)(siRegs + 0x8C);
-                        *(dst + 4) = *(u32 *)(siRegs + 0x90);
-                        *(dst + 5) = *(u32 *)(siRegs + 0x94);
-                        *(dst + 6) = *(u32 *)(siRegs + 0x98);
-                        data = *(u32 *)(siRegs + 0x9C);
-                        siRegs += 0x20;
-                        *(dst + 7) = data;
-                        dst += 8;
-                    } while (--ctr);
-                }
-            }
-        rem_words:
-            src = (u8 *)0xCC006400 + (i << 2);
-            left = (s32)(nWords - i);
-            if (i < nWords) {
-                do {
-                    data = *(u32 *)(src + 0x80);
-                    src += 4;
-                    i += 1;
-                    *dst = data;
-                    dst += 1;
-                } while (--left);
-            }
+        for (i = 0; i < nWords; i++) {
+            *(u32 *)dst = __SIRegs[32 + i];
+            dst += 4;
         }
         nBytes = *pInputBytes & 3;
         if (nBytes != 0) {
-            data = *(u32 *)((u8 *)0xCC006400 + (i << 2) + 0x80);
-            i = 0;
-            if (nBytes > 0) {
-                if (nBytes > 8) {
-                    left = (s32)(nBytes - 8);
-                    ctr = (u32)(left + 7) >> 3;
-                    if (left > 0) {
-                        do {
-                            ((u8 *)dst)[0] = (u8)(data >> ((3 - i) << 3));
-                            ((u8 *)dst)[1] = (u8)(data >> ((3 - (i + 1)) << 3));
-                            ((u8 *)dst)[2] = (u8)(data >> ((3 - (i + 2)) << 3));
-                            ((u8 *)dst)[3] = (u8)(data >> (-i << 3));
-                            ((u8 *)dst)[4] = (u8)(data >> ((3 - (i + 4)) << 3));
-                            ((u8 *)dst)[5] = (u8)(data >> ((3 - (i + 5)) << 3));
-                            ((u8 *)dst)[6] = (u8)(data >> ((3 - (i + 6)) << 3));
-                            ((u8 *)dst)[7] = (u8)(data >> ((3 - (i + 7)) << 3));
-                            dst = (u32 *)((u8 *)dst + 8);
-                            i += 8;
-                        } while (--ctr);
-                    }
-                }
-                left = (s32)(nBytes - i);
-                if (i < nBytes) {
-                    do {
-                        *(u8 *)dst = (u8)(data >> ((3 - i) << 3));
-                        dst = (u32 *)((u8 *)dst + 1);
-                        i += 1;
-                    } while (--left);
-                }
+            data = *(u32 *)(siRegs + 0x80 + (i << 2));
+            for (i = 0; i < nBytes; i++) {
+                *dst = (u8)(data >> ((3 - i) * 8));
+                dst++;
             }
         }
         if (*comcsr & 0x20000000) {
             chan = (u32)si->chan;
-            err = (sr >> ((3 - chan) << 3)) & 0xF;
-            if (err & 8) {
-                if (!(Type_8029EFC0[chan] & 0x80)) {
-                    Type_8029EFC0[chan] = 8;
+            sr = (sr >> ((3 - chan) << 3)) & 0xF;
+            if (sr & 8) {
+                type = (u32 *)((u8 *)si + 0x58 + chan * 4);
+                if (!(*type & 0x80)) {
+                    *type = 8;
                 }
             }
-            if (err == 0) {
-                err = 4;
+            if (sr == 0) {
+                sr = 4;
             }
         } else {
-            time = __OSGetSystemTime();
-            TypeTime[si->chan] = time;
-            err = 0;
+            TypeTime[si->chan] = __OSGetSystemTime();
+            sr = 0;
         }
         si->chan = -1;
     }
-    (void)pad;
-    return err;
+    return sr;
 }
 void SIInterruptHandler(s32 interrupt, s32 context) {
     s64 __OSGetSystemTime(void);
@@ -389,14 +326,13 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
     void (*cb)(s32, u32, s32);
     u32 *typep;
     s32 ok;
-    u32 vc;
-    u32 rdst;
-    volatile u32 *vcp;
     u32 *pollp;
     s32 channel;
+    u32 rdst;
+    u32 vc;
     volatile u32 *cursor;
+    volatile u32 *vcp;
     u32 poll;
-    u32 bit;
     volatile u32 *vp;
     void (**rdstCb)(s32, s32);
     void (*handler)(s32, s32);
@@ -404,8 +340,7 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
     u32 delay;
     u8 *alarm;
     u32 hi;
-    u32 sh;
-    void *gtc;
+    u32 bit;
     u32 half;
     u32 *r3base;
     u32 *r4sic;
@@ -506,8 +441,7 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
             rdstCb += 1;
         } while (channel < 4);
     }
-out:
-    ;
+
 }
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
