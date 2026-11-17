@@ -2315,6 +2315,80 @@ void fn_801B97C8(s32 arg0) {
     }
 }
 
+void fn_801B9818(void *arg0) {
+    extern u8 gUiUnitPanelStrings[];
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, void *);
+    void *fn_8013BC10(void *, void *);
+    void Ui_CreateMenu(void *, void *, s32);
+    s32 strlen(const char *);
+    void String_AssignCStr(void *, const void *, s32);
+#pragma cplusplus on
+    struct Item {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void set2(s32) = 0;
+        virtual void v19() = 0;
+        virtual void set3(s32) = 0;
+    };
+    struct Base { u32 unknown; };
+    struct Menu: Base {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual Item *get(s32) = 0;
+    };
+    void *self = arg0;
+    Menu *menu;
+    s32 i;
+    Item *item;
+    void *child;
+    menu = (Menu *)fn_8013BC10(gUiUnitPanelStrings + 0xDF, gUiUnitPanelStrings + 0xEC);
+    M2C_FIELD(menu, s16 *, 0xC) = 0xE8;
+    M2C_FIELD(menu, s16 *, 8) = 0x148;
+    M2C_FIELD(menu, s16 *, 0xA) = 0x38;
+    M2C_FIELD(menu, u8 *, 0x24) = 1;
+    for (i = 0; menu->get(i) != 0; i++) {
+        item = menu->get(i);
+        item->set2(2);
+        item->set3(3);
+    }
+    Ui_CreateMenu(menu, self, 0);
+    child = Ui_FindChild(self, 0x82, 0);
+    String_AssignCStr((u8 *)child + 0x3C, gUiUnitPanelStrings + 0xF7, strlen((char *)gUiUnitPanelStrings + 0xF7));
+    child = Ui_FindChild(self, -0x1000, 0);
+    if (child) Ui_SetWidgetText(child, gUiUnitPanelStrings + 0xF8);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 /* Handle unit select-list input: A picks the unit, X opens info, B hides/backs out. */
@@ -2740,29 +2814,48 @@ Ui_PlaySeCue(gUiUnitPanelStrings+0x11c,100); Process_Goto(self,0x11);
 }
 #pragma cplusplus reset
 
-s32 fn_801BAC40(struct efUnit* arg0, s32 arg1)
-{
-    struct efUnit* temp_r3;
-    s32 temp_r5;
-    s32 temp_r6;
-    
-    if (arg0 == NULL) {
-        return 0;
+void fn_801BAC40(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_SetWidgetText(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
+    extern u8 gUiUnitPanelStrings[];
+    s16 a[2], b[2], c[2];
+    void *first;
+    void *child;
+    void *caption;
+    s16 x, y;
+    first = Ui_FindChild(arg0, 0x107, 0);
+    if (!first) {
+        first = M2C_FIELD(arg0, void **, 0x68);
+        Ui_AddChild(arg0, first);
     }
-
-    temp_r3 = arg0;
-    temp_r5 = 0;
-    temp_r6 = 0;
-
-    while ((temp_r6 < 9) && (temp_r3 != NULL)) {
-        if (temp_r3->field_0x4 >= 0) {
-            temp_r5 += 1;
-        }
-        temp_r3++;
-        temp_r6 += 1;
+    if (M2C_FIELD(first, s16 *, 0xA) != 0x148) {
+        y = M2C_FIELD(first, s16 *, 0xC);
+        a[0] = 0x148; a[1] = y;
+        Ui_SlideWidgetChildMode1(arg0, first, a, 0);
     }
-
-    return temp_r5;
+    child = Ui_FindChild(arg0, 0x109, 0);
+    if (!child) {
+        child = M2C_FIELD(arg0, void **, 0x6C);
+        Ui_AddChild(arg0, child);
+    }
+    if (M2C_FIELD(child, s16 *, 0xA) != 0x14C) {
+        y = M2C_FIELD(child, s16 *, 0xC);
+        b[0] = 0x14C; b[1] = y;
+        Ui_SlideWidgetChildMode1(arg0, child, b, 0);
+    }
+    caption = Ui_FindChild(arg0, 0x82, 0);
+    if (M2C_FIELD(caption, s16 *, 0xC) != 0x28) {
+        x = M2C_FIELD(caption, s16 *, 0xA);
+        c[0] = x; c[1] = 0x28;
+        Ui_SlideWidgetChildMode1(arg0, caption, c, 0);
+    }
+    Ui_SetWidgetText(caption, gUiUnitPanelStrings + 0x12C);
+    Ui_BringChildToFront(arg0, first);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child) Ui_SetWidgetText(child, gUiUnitPanelStrings + 0x142);
 }
 
 #pragma cplusplus on
@@ -18042,7 +18135,6 @@ found_slot:
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-#pragma opt_common_subs off
 void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 lbl_80299E9C[];
@@ -18104,8 +18196,8 @@ void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
 create:
     proc = Process_CreateChild(lbl_80299E9C, arg2);
     *(s32 *)((u8 *)proc + 0x60) = arg1;
+    i = 0;
 }
-#pragma opt_common_subs reset
 #pragma opt_strength_reduction reset
 #pragma global_optimizer on
 void fn_801E1168(void *arg0) {
@@ -19552,37 +19644,34 @@ s32 SystemSave_TestFlag0(void *arg0) {
     return M2C_FIELD(arg0, u16 *, 0x10) & 1;
 }
 
-void fn_801E3400(void *arg0, u8 arg1) {
-    u8 *ptr;
+void fn_801E3400(u8 *arg0, u8 arg1) {
+    extern u8 gBattleState[];
     s32 i;
-    u16 *status_ptr;
+    u8 v;
 
-    status_ptr = (u16 *)(((u8 *)arg0) + 0xa6);
-    
-    switch (*status_ptr) {
-        case 2:
-            break;
-        case 1:
-            *(u16*)(((u8 *)arg0) + 0x10) |= 4;
-            /* fallthrough */
-        case 0:
-            *(u16*)(((u8 *)arg0) + 0x10) |= 2;
-            /* fallthrough */
-        case 3:
-            *(u16*)(((u8 *)arg0) + 0x10) |= 1;
-            break;
+    switch (gBattleState[0xa6]) {
+    case 1:
+        *(u16 *)(arg0 + 0x10) |= 4;
+        /* fallthrough */
+    case 0:
+        *(u16 *)(arg0 + 0x10) |= 2;
+        /* fallthrough */
+    case 3:
+        *(u16 *)(arg0 + 0x10) |= 1;
+        break;
+    case 2:
+        break;
     }
 
-    ptr = (u8 *)arg0 + 0x12;
     for (i = 0; i < 5; i++) {
-        if (*ptr != arg1 && *ptr != 0) {
-            ptr++;
-            continue;
+        v = arg0[0x12 + i];
+        if (v == arg1) {
+            return;
         }
-        if (*ptr == 0) {
-            *ptr = arg1;
+        if (v == 0) {
+            arg0[0x12 + i] = arg1;
+            return;
         }
-        return;
     }
 }
 
