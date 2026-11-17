@@ -671,6 +671,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         OSRestoreInterrupts(enabled);
         return FALSE;
     }
+    i = 0;
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
     sr &= (u32)((s32)0x0F000000 >> (chan << 3));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
@@ -679,7 +680,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
     si->callback = callback;
     si->inputBytes = inputBytes;
     si->input = input;
-    for (i = 0; rlen > i; ++i) {
+    for (; i < rlen; i++) {
         __SIRegs[32 + i] = ((u32 *)output)[i];
     }
     comcsr.value = __SIRegs[13];
@@ -891,8 +892,6 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
 
 #pragma global_optimizer off
 #pragma opt_common_subs off
-#pragma opt_propagation off
-#pragma optimization_level 1
 void GetTypeCallback(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     s64 __OSGetSystemTime(void);
@@ -1104,9 +1103,9 @@ u32 fn_8023C410(s32 chan) {
     return fn_8023C2C4(SIGetType(chan));
 }
 
-#pragma optimization_level 4
+#pragma opt_strength_reduction off
 void SISetSamplingRate(u32 rate) {
-    extern u8 XYNTSC_8029F080[48];
+    extern u8 XYNTSC_8029F080[];
     extern u32 SamplingRate_80368828;
     s32 VIGetTvFormat(void);
     void OSReport(const char *, ...);
@@ -1116,7 +1115,7 @@ void SISetSamplingRate(u32 rate) {
     BOOL enabled;
     u32 scale;
 
-    base = &XYNTSC_8029F080[0];
+    base = XYNTSC_8029F080;
     if (rate > 11) {
         rate = 11;
     }
@@ -1145,6 +1144,7 @@ void SISetSamplingRate(u32 rate) {
     SISetXY((s32)(scale * *(u16 *)(table + rate * 4)), (s32)table[rate * 4 + 2]);
     OSRestoreInterrupts(enabled);
 }
+#pragma opt_strength_reduction reset
 void fn_8023C518(void) {
     void SISetSamplingRate(u32);
     extern u32 SamplingRate_80368828;
