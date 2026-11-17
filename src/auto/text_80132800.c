@@ -815,9 +815,9 @@ extern "C" void fn_80133C74(void *arg0)
     void Prim2D_PrepareTex(void);
     void fn_80152CAC(s16, s16, s32);
 
-    u8 *self;
-    s32 y, x, column, row, yOffset, xOffset, height, width, rowHeight, columnWidth;
-    s32 halfHeight, textHeight, x2, y2;
+    register u8 *self;
+    register s32 y, x, column, row, yOffset, xOffset, height, width, rowHeight, columnWidth;
+    s32 textHeight, halfHeight, x2, y2, columns, rows;
     u8 color[4];
 
     self = (u8 *)arg0;
@@ -8728,20 +8728,20 @@ s32 fn_8013FBD4(s32 arg0) {
 }
 
 #pragma scheduling off
-void fn_8013FBDC(s16 *arg0, s16 *arg1) {
-Vec2s *dst=(Vec2s *)arg0;
-Vec2s *src=(Vec2s *)arg1;
-s16 y;
-s16 x;
-s16 v;
-v=dst->x;
-x=src->x;
-y=src->y;
-v+=x;
-dst->x=v;
-v=dst->y;
-v+=y;
-dst->y=v;
+void fn_8013FBDC(s16 *dst, s16 *src)
+{
+  s16 c;
+  s16 b;
+  s16 a;
+
+  a = dst[0];
+  b = src[0];
+  c = src[1];
+  a = a + b;
+  dst[0] = a;
+  a = dst[1];
+  a = a + c;
+  dst[1] = a;
 }
 #pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
@@ -9282,6 +9282,58 @@ p+=self->start;
 #pragma cplusplus reset
 }
 
+void *fn_80140830(void *arg0, void *arg1, Vec2s *arg2, void *arg3, void (*arg4)(Vec2s *, void *), u8 arg5) {
+void *Process_CreateChild(void *,void *); void *Process_Create(void *,void *);
+void *fn_80140B04(void *); void fn_80142060(void *);
+void List_Insert(void *,void *,void *,void *);
+void fn_8022C518(void *,void *);
+f32 Math_Ease(s32,f32,f32,f32,f32);
+extern u8 lbl_802922B8[]; extern u32 lbl_80282AC0[];
+extern f32 lbl_8036A730, lbl_8036A740;
+typedef struct { u32 a,b,c; } Triple;
+Vec2s start;
+void *value;
+Vec2s pos;
+void *iter, *result;
+Vec2s delta;
+u8 *obj; void *end; ListNode *node; void *child;
+f32 duration, scale;
+if(arg5) obj=Process_CreateChild(lbl_802922B8,arg0);
+else obj=Process_Create(lbl_802922B8,arg0);
+if(obj) {
+obj[0x30]=0; fn_80142060(obj+0x34);
+*(Triple *)(obj+0x48)=*(Triple *)lbl_80282AC0;
+}
+value=arg1;
+if(arg1) {
+end=fn_80140B04(obj+0x34);
+node=((ListNode *)fn_80140B04(obj+0x34))->next;
+while(node!=end && node->val!=value) node=node->next;
+if(node==(void *)(obj+0x38)) {
+iter=obj+0x38; List_Insert(&result,obj+0x34,&iter,&value);
+if(value) ++*(u32 *)((u8 *)value+4);
+}
+}
+*(s16 *)(obj+0x28)=*(s16 *)((u8 *)arg1+0x24);
+arg4(&start,arg1);
+{ s16 x=arg2->x, y=arg2->y;
+*(s16 *)(obj+0x40)=start.x;
+*(s16 *)(obj+0x42)=start.y;
+*(s16 *)(obj+0x44)=x;
+*(s16 *)(obj+0x46)=y; }
+*(Triple *)(obj+0x48)=*(Triple *)arg3;
+if(*(u32 *)(obj+0x34)) child=(*(ListNode **)(obj+0x38))->val; else child=0;
+duration=(f32)(*(s16 *)((u8 *)child+0x24)+1);
+scale=Math_Ease(5,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-(f32)(*(s16 *)(obj+0x28)+1)),lbl_8036A730);
+delta=*(Vec2s *)(obj+0x44);
+delta.x-=*(s16 *)(obj+0x40); delta.y-=*(s16 *)(obj+0x42);
+pos=delta; pos.x=(s16)(pos.x*scale); pos.y=(s16)(pos.y*scale);
+pos.x+=*(s16 *)(obj+0x40); pos.y+=*(s16 *)(obj+0x42);
+if(*(u32 *)(obj+0x34)) child=(*(ListNode **)(obj+0x38))->val; else child=0;
+fn_8022C518(child,&pos);
+return obj;
+}
+
 s32 fn_80140B04(s32 arg0) {
     return arg0 + 4;
 }
@@ -9458,6 +9510,110 @@ if(temp_r7!=0U) var_r3=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r3=NULL;
 *(f32*)((u8*)var_r3+0x2C)=var_f2;
 }
 
+void *fn_80140E58(void *arg0, void *arg1, u8 arg2, s32 arg3)
+{
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, void *);
+    void *List_Insert(void *, void *, void *, void *);
+    void *fn_80140B04(void *);
+    void fn_80142060(void *);
+
+    extern u8 lbl_80292298[];
+    extern f32 lbl_8036A730;
+
+    u8 *obj;
+    u8 *node;
+    void *end;
+    void *child;
+    void *sp10;
+    void *spC;
+    void *sp8;
+    s32 duration;
+    s32 time;
+    f32 f31;
+    f32 f2;
+    f32 f3;
+
+    if (arg2 != 0) {
+        obj = Process_CreateChild(lbl_80292298, arg0);
+    } else {
+        obj = Process_Create(lbl_80292298, arg0);
+    }
+
+    if (obj != NULL) {
+        obj[0x30] = 0;
+        fn_80142060(obj + 0x34);
+    }
+
+    sp10 = arg1;
+
+    if (arg1 != NULL) {
+        end = fn_80140B04(obj + 0x34);
+        node = (u8 *)fn_80140B04(obj + 0x34);
+        node = *(u8 **)(node + 4);
+
+        while (node != (u8 *)end) {
+            if (*(void **)(node + 8) == arg1) {
+                break;
+            }
+            node = *(u8 **)(node + 4);
+        }
+
+        if (node == obj + 0x38) {
+            spC = obj + 0x38;
+
+            List_Insert(
+                &sp8,
+                obj + 0x34,
+                &spC,
+                &sp10
+            );
+        }
+    }
+
+    if (sp10 != NULL) {
+        *(u32 *)((u8 *)sp10 + 4) =
+            *(u32 *)((u8 *)sp10 + 4) + 1;
+    }
+
+    *(s16 *)(obj + 0x28) =
+        *(s16 *)((u8 *)arg1 + 0x24);
+
+    *(s32 *)(obj + 0x40) = arg3;
+
+    if (*(u32 *)(obj + 0x34) != 0) {
+        child = *(void **)(*(u8 **)(obj + 0x38) + 8);
+    } else {
+        child = NULL;
+    }
+
+    duration = (s32)*(s16 *)((u8 *)child + 0x24) + 1;
+    time = (s32)*(s16 *)(obj + 0x28) + 1;
+
+    f3 = (f32)duration;
+    f2 = (f32)time;
+
+    switch (arg3) {
+    case 0:
+        f31 = (lbl_8036A730 / f3) * (f3 - f2);
+        break;
+
+    case 1:
+        f31 = (lbl_8036A730 / f3) * f2;
+        break;
+    }
+
+    if (*(u32 *)(obj + 0x34) != 0) {
+        child = *(void **)(*(u8 **)(obj + 0x38) + 8);
+    } else {
+        child = NULL;
+    }
+
+    *(f32 *)((u8 *)child + 0x2C) = f31;
+
+    return obj;
+}
+
 void fn_80141040(void *self) {
     void fn_8014127C(void *);
     void *fn_80140B04(void *);
@@ -9588,13 +9744,35 @@ extern "C" void Ui_ClearPanelChildrenB(void *self) {
 #pragma cplusplus reset
 
 void fn_8014127C(void *arg0) {
-    extern f32 lbl_8036A730;
-    extern f32 lbl_8036A740;
-    f32 Math_Ease(s32, f32, f32, f32, f32);
-    (void)lbl_8036A730;
-    (void)lbl_8036A740;
-    (void)Math_Ease;
-    (void)arg0;
+extern f32 lbl_8036A730,lbl_8036A740;
+f32 Math_Ease(s32,f32,f32,f32,f32);
+#pragma cplusplus on
+struct Point { s16 x,y;
+Point operator-(const Point &p) const { struct Point q=*this; q.x-=p.x; q.y-=p.y; return q; }
+Point &operator*=(f32 t) { x=x*t; y=y*t; return *this; }
+Point &operator+=(const Point &p) { x+=p.x; y+=p.y; return *this; }
+};
+struct Target { u8 pad[10]; s16 x,y,right,bottom; u8 pad12[18]; s16 duration; u8 pad26[6]; f32 alpha;
+void move(Point *p) { s16 width=right-x; s16 height; right=p->x+width; x=p->x; height=bottom-y; bottom=p->y+height; y=p->y; }
+};
+struct Link { void *prev,*next; Target *value; };
+struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; s32 mode;
+f32 opacity() { s32 d=get()->duration+1; s32 t=time+1; f32 duration=d, elapsed=t; f32 a; switch(mode) {case 0:a=lbl_8036A730;break;case 1:a=(lbl_8036A730/duration)*(duration-elapsed);break;case 2: { f32 inverse=lbl_8036A730/duration; a=inverse*elapsed; break; }} return a; }
+Target *get() { return count?first->value:0; }};
+State *self=(State *)arg0;
+s32 durationInt=self->get()->duration+1;
+s32 timeInt=self->time+1;
+f32 duration=durationInt;
+f32 time=timeInt;
+f32 inverse=lbl_8036A730/duration;
+f32 progress=inverse*(duration-time);
+f32 alpha=self->opacity();
+f32 t=Math_Ease(5,lbl_8036A740,lbl_8036A730,progress,lbl_8036A730);
+Point p=self->end-self->start;
+p*=t; p+=self->start;
+self->get()->move(&p);
+self->get()->alpha=alpha;
+#pragma cplusplus reset
 }
 
 void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
@@ -9669,25 +9847,69 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     return obj;
 }
 
-void fn_80141630(void *arg0, s32 arg1) {
-    extern f32 lbl_8036A730;
-    extern f32 lbl_8036A740;
-    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    void *List_Erase(void *, s32, void **);
-    void *fn_80140B04(s32);
-    void Ui_ClearPanelChildrenEx(void *);
-    char buf[0x40];
-
-    (void)lbl_8036A730;
-    (void)lbl_8036A740;
-    (void)Math_Ease;
-    (void)List_Erase;
-    (void)fn_80140B04;
-    (void)Ui_ClearPanelChildrenEx;
-    (void)buf;
-
-    (void)arg0;
-    (void)arg1;
+void fn_80141630(void *self, s32 arg1) {
+void *fn_80140B04(void *);
+void List_Erase(void *,void *,void *);
+void Ui_ClearPanelChildrenEx(void *);
+f32 Math_Ease(s32,f32,f32,f32,f32);
+extern f32 lbl_8036A740;
+void *child,*end;
+u8 *parent;
+void *node,*found;
+u32 ret;
+f32 alpha[1],t;
+s32 time,duration;
+#pragma cplusplus on
+struct Obj { virtual void destroy(s32)=0; s32 refcount; };
+#pragma cplusplus reset
+alpha[0]=1.0f;
+parent=*(u8 **)((u8 *)self+0x18);
+time=*(s16 *)((u8 *)self+0x28)+1;
+switch(*(s32 *)((u8 *)self+0x40)) {
+case 0:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+alpha[0]=(1.0f/(f32)duration)*(f32)(duration-time);
+break;
+case 1:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+{ f32 inverse=1.0f/(f32)duration; alpha[0]=inverse*(f32)time; }
+break;
+}
+t=Math_Ease(5,lbl_8036A740,1.0f,alpha[0],1.0f);
+alpha[0]=*((u8 *)self+0x44)?alpha[0]:1.0f;
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x2c)=alpha[0];
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x28)=t;
+if(*(s32 *)((u8 *)self+0x40)==1) {
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+if(child) {
+end=fn_80140B04(parent+0x34);
+node=((void **)fn_80140B04(parent+0x34))[1];
+goto check;
+for(;;) {
+node=((void **)node)[1];
+check:
+if(node!=end) { if(((void **)node)[2]!=child) continue; }
+break;
+}
+if(node!=parent+0x38) {
+found=node; List_Erase(&ret,parent+0x34,&found);
+if(child) {
+if(--*(s32 *)((u8 *)child+4)==0) {
+if(child) {
+#pragma cplusplus on
+((Obj *)child)->destroy(1);
+#pragma cplusplus reset
+}
+}
+}
+}
+}
+}
+Ui_ClearPanelChildrenEx(self);
 }
 
 #pragma cplusplus on
