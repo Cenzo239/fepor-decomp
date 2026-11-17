@@ -5884,21 +5884,20 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 #pragma dont_inline on
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma use_lmw_stmw on
 extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B2D8,lbl_8036B2E0;
 struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
-register u8 *base; s32 zero; s32 right; s32 bottom; u8 *self; register u8 *initial; f32 scale; f32 one;
+u8 *base; s32 zero; s32 right; s32 bottom; u8 *self; f32 scale; f32 one;
 self=(u8 *)arg0;
 zero=0;
 right=x+0x130;bottom=y+0x90;
-initial=self;
-base=initial;
+base=self;
 one=lbl_8036B2D8;scale=lbl_8036B2E0;
 *(void **)self=lbl_8028FDB0;
-*(s32 *)(initial+4)=zero;
+*(s32 *)(base+4)=zero;
 *(void **)base=lbl_80292230;
 *(s16 *)(base+8)=-1;
 *(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
