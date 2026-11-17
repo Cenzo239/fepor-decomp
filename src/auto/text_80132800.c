@@ -1729,6 +1729,52 @@ extern "C" void fn_8013547C(void *arg0) {
         (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xC)),
         0xB3, 0x10);
 }
+
+extern "C" void fn_801354E8(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5) {
+#pragma cplusplus reset
+void Prim2D_Begin(void); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex(void);
+void Text_Draw(s16,s16,s32,void *,...);
+s32 Text_MeasureHeight(s32,f32);
+void Prim2D_AddPrim(s32); void Prim2D_SetColorPacked(void *);
+void Prim2D_SetTextScale(s32,f32); void fn_80006B18(s32,s32,s32,s32,u8);
+void Prim2D_EndPrim(void); void Ui_DrawIcon(void *,s16,s16,u8);
+s32 fn_8010586C(void *); s32 *Ui_GetColor(s32);
+u16 Unit_GetSkillCapacityUsed(void *);
+extern u8 lbl_80276720[],gItemIconDrawer[];
+extern f32 lbl_8036A5DC,lbl_8036A5E0;
+s32 color;
+s32 textY,x,y;
+s16 offset;
+s32 drawFlag,flag;
+s32 name;
+void *unit;
+u8 capacity,cost;
+flag=arg5!=0;
+Prim2D_Begin();
+Prim2D_SetTex(0,(u16)(M2C_FIELD(arg0,u32 *,0x34)|3));
+Prim2D_PrepareTex();
+offset=(32-Text_MeasureHeight(-1,lbl_8036A5DC))>>1;
+name=fn_8010586C(arg4);
+x=arg1; y=arg2;
+textY=y+offset;
+Text_Draw((s16)(x+32),(s16)textY,flag,lbl_80276720+0x1D,name);
+unit=M2C_FIELD(arg0,void **,0xCC);
+drawFlag=flag;
+if(arg5) {
+void *data=M2C_FIELD(unit,void **,0x18C);
+cost=M2C_FIELD(arg4,u8 *,0x1A);
+capacity=M2C_FIELD(data,u8 *,0x40);
+if(cost>capacity-Unit_GetSkillCapacityUsed(unit)) drawFlag=0;
+}
+Prim2D_AddPrim(6);
+color=*Ui_GetColor(drawFlag);
+Prim2D_SetColorPacked(&color);
+Prim2D_SetTextScale(1,lbl_8036A5E0);
+fn_80006B18(x+(s16)((s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))/M2C_FIELD(arg0,s16 *,0x56))-2*M2C_FIELD(arg0,s16 *,0x5C)-24,textY,0,0,M2C_FIELD(arg4,u8 *,0x1A));
+Prim2D_EndPrim();
+Ui_DrawIcon(gItemIconDrawer,x,y,M2C_FIELD(arg4,u8 *,0x19));
+}
+
 #pragma cplusplus reset
 
 s32 fn_80135664(void *arg0, void *arg1) {
@@ -7835,6 +7881,7 @@ void fn_8013F3D0(void) {
 }
 
 void fn_8013F54C(void *arg0) {
+#pragma opt_common_subs off
 void fn_8013F748(void *,void *,void *);
 f32 fn_8013FA44(void *);
 s32 fn_80138908(void *);
@@ -7844,7 +7891,7 @@ void Prim2D_SetColorByte(s32);
 void Prim2D_SetAlphaByte(s32);
 extern f32 lbl_8036A718;
 struct Point { s16 x,y; } pt;
-s16 width,height,z;
+s16 z,height,width;
 f32 scale;
 *(u32 *)&pt=M2C_FIELD(arg0,u32 *,0xA);
 if(M2C_FIELD(arg0,void **,0x38)) fn_8013F748(M2C_FIELD(arg0,void **,0x38),&pt,&pt);
@@ -7858,6 +7905,7 @@ Prim2D_SetTex(0,(u16)(M2C_FIELD(arg0,u32 *,0x34)|2));
 Prim2D_SetColorByte(fn_80138908(arg0));
 Prim2D_SetAlphaByte(fn_8013FA10(arg0));
 Prim2D_PrepareTex();
+#pragma opt_common_subs reset
 }
 
 void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
@@ -8560,10 +8608,79 @@ if(temp_r7!=0U) var_r3=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r3=NULL;
 *(f32*)((u8*)var_r3+0x2C)=var_f2;
 }
 
-void fn_80141040(void)
-{
-    // Based on the assembly, this appears to be a simple function that just returns.
-    return;
+void fn_80141040(void *self) {
+    void fn_8014127C(void *);
+    void *fn_80140B04(void *);
+    void List_Erase(void *, void *, void *);
+    void Ui_ClearPanelChildrenB(void *);
+    void *child;
+    void *end;
+    void *parent;
+    void *node;
+    void *found;
+    u32 ret;
+    s16 tmp;
+#pragma cplusplus on
+    struct Obj {
+        virtual void destroy(s32) = 0;
+        s32 refcount;
+    };
+#pragma cplusplus reset
+
+    parent = *(void **)((u8 *)self + 0x18);
+
+    if (*(u32 *)((u8 *)self + 0x34) != 0) {
+        child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
+    } else {
+        child = NULL;
+    }
+
+    tmp = *(s16 *)((u8 *)self + 0x44);
+    *(s16 *)((u8 *)child + 0xE) = (s16)(tmp + (s16)(*(s16 *)((u8 *)child + 0xE) - *(s16 *)((u8 *)child + 0xA)));
+    *(s16 *)((u8 *)child + 0xA) = tmp;
+    tmp = *(s16 *)((u8 *)self + 0x46);
+    *(s16 *)((u8 *)child + 0x10) = (s16)(tmp + (s16)(*(s16 *)((u8 *)child + 0x10) - *(s16 *)((u8 *)child + 0xC)));
+    *(s16 *)((u8 *)child + 0xC) = tmp;
+
+    fn_8014127C(self);
+
+    if (*(s32 *)((u8 *)self + 0x48) == 2) {
+        if (*(u32 *)((u8 *)self + 0x34) != 0) {
+            child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
+        } else {
+            child = NULL;
+        }
+        if (child != NULL) {
+            end = fn_80140B04((u8 *)parent + 0x34);
+            node = fn_80140B04((u8 *)parent + 0x34);
+            node = ((void **)node)[1];
+            goto check;
+            for (;;) {
+                node = ((void **)node)[1];
+            check:
+                if (node != end) {
+                    if (((void **)node)[2] != child) {
+                        continue;
+                    }
+                }
+                break;
+            }
+            if (node != (u8 *)parent + 0x38) {
+                found = node;
+                List_Erase(&ret, (u8 *)parent + 0x34, &found);
+                if (child != NULL) {
+                    if (--*(s32 *)((u8 *)child + 4) == 0) {
+                        if (child != NULL) {
+#pragma cplusplus on
+                            ((Obj *)child)->destroy(1);
+#pragma cplusplus reset
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ui_ClearPanelChildrenB(self);
 }
 
 #pragma cplusplus on
@@ -8648,8 +8765,11 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *sp8;
     void *end;
     void *node;
+    void *key;
     Panel *obj;
-    s16 t[5];
+    s16 a[1];
+    s16 b[1];
+    s16 c[1];
 
     if (arg3 != 0) {
         obj = (Panel *)Process_CreateChild(lbl_80292278, arg0);
@@ -8664,13 +8784,14 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     if (arg1 != NULL) {
         end = fn_80140B04(&obj->list);
         node = fn_80140B04(&obj->list);
-        node = ((void **)node)[1];
+        node = *(void **)((u8 *)node + 4);
+        key = sp10;
         goto check;
         for (;;) {
-            node = ((void **)node)[1];
+            node = *(void **)((u8 *)node + 4);
         check:
             if (node != end) {
-                if (((void **)node)[2] != sp10) {
+                if (*(void **)((u8 *)node + 8) != key) {
                     continue;
                 }
             }
@@ -8684,16 +8805,16 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
             }
         }
     }
-    t[0] = *(s16 *)((u8 *)arg1 + 0x24);
-    t[1] = arg2[0];
-    *(s16 *)((u8 *)obj + 0x28) = t[0];
-    t[2] = arg2[1];
-    t[3] = *(s16 *)((u8 *)arg1 + 0xA);
-    *(s16 *)((u8 *)obj + 0x40) = t[3];
-    t[4] = *(s16 *)((u8 *)arg1 + 0xC);
-    *(s16 *)((u8 *)obj + 0x42) = t[4];
-    *(s16 *)((u8 *)obj + 0x44) = t[1];
-    *(s16 *)((u8 *)obj + 0x46) = t[2];
+    a[0] = *(s16 *)((u8 *)arg1 + 0x24);
+    b[0] = arg2[0];
+    *(s16 *)((u8 *)obj + 0x28) = a[0];
+    c[0] = *(s16 *)((u8 *)arg1 + 0xA);
+    a[0] = arg2[1];
+    *(s16 *)((u8 *)obj + 0x40) = c[0];
+    c[0] = *(s16 *)((u8 *)arg1 + 0xC);
+    *(s16 *)((u8 *)obj + 0x42) = c[0];
+    *(s16 *)((u8 *)obj + 0x44) = b[0];
+    *(s16 *)((u8 *)obj + 0x46) = a[0];
     *(s32 *)((u8 *)obj + 0x48) = arg4;
     fn_8014127C(obj);
     return obj;
@@ -9849,6 +9970,46 @@ extern "C" s16 fn_80143C58(void *arg0) {
 
     return obj->unk64[((Obj *)arg0)->v10()];
 }
+
+extern "C" void fn_80143C9C(void *unit) {
+#pragma cplusplus on
+struct Panel {
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
+virtual void v8()=0; virtual void v9()=0; virtual s32 page()=0;
+};
+s16 arg1;
+u8 *p;
+u8 *initial;
+s16 visible;
+u32 count;
+initial=(u8 *)unit+((Panel *)unit)->page()*2;
+arg1=*(s16 *)(initial+0x64);
+if(arg1 > *(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90)-1) {
+arg1=*(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90)-1;
+}
+if(arg1<0) arg1=0;
+p=(u8 *)unit+((Panel *)unit)->page()*2;
+count=*(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90);
+visible=*(s16 *)((u8 *)unit+0x80);
+if(count<=visible) {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=0;
+} else if(count-arg1<visible) {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=(int)count-visible;
+} else if(*(s16 *)(p+0x4E)<arg1 && arg1-*(s16 *)(p+0x4E)<visible-1) {
+*(s16 *)(p+0x64)=arg1;
+} else if(arg1==0) {
+*(s16 *)(p+0x4E)=arg1;
+*(s16 *)(p+0x64)=arg1;
+} else {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=arg1-1;
+}
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 extern "C" void fn_80143E0C(void *unit, s16 arg1) {
 #pragma cplusplus on
