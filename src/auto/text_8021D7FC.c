@@ -105,40 +105,43 @@ extern u8 lbl_80289EB8[16];
 
 void *fn_8021D7FC(s32 arg0, s32 arg1)
 {
-    extern u32 __GXData;
-
+    extern u8 *__GXData;
     s32 fn_80222AA0(s32);
     s32 fn_80222AA8(s32);
-
     s32 type;
     s32 flag;
     s32 index;
-    u8 *gx;
 
     type = fn_80222AA0(arg0);
     flag = fn_80222AA8(arg0);
+    index = arg1 % 8;
 
-    index = arg1 - (arg1 / 8) * 8;
-
-    gx = (u8 *)__GXData;
-
-    if (type == 6) {
-        if ((u8)flag != 0) {
-            return gx + 0x308 + (index << 4);
-        }
-
-        return gx + 0x288 + (index << 4);
+    if (type == 7) {
+        goto def;
+    } else if (type >= 7) {
+        goto check11;
     }
-
-    if (type >= 7 && type <= 10) {
-        if ((u8)flag != 0) {
-            return gx + 0x288 + (index << 4);
-        }
-
-        return gx + 0x208 + (index << 4);
+    if (type >= 6) {
+        goto case6;
     }
-
-    return gx + 0x208 + (index << 4);
+    goto def;
+check11:
+    if (type >= 11) {
+        goto def;
+    }
+    goto case810;
+case6:
+    if ((u8)flag != 0) {
+        return __GXData + (index << 4) + 0x308;
+    }
+    return __GXData + (index << 4) + 0x288;
+case810:
+    return __GXData + (index << 4) + 0x208;
+def:
+    if ((u8)flag != 0) {
+        return __GXData + (index << 4) + 0x288;
+    }
+    return __GXData + (index << 4) + 0x208;
 }
 
 #pragma peephole off
@@ -154,6 +157,84 @@ void *fn_8021D8F8(u32 arg0)
     }
 
     return result;
+}
+
+s32 fn_8021D91C(s32 arg0) {
+    s64 OSGetTime(void);
+    void fn_8021F260(s32);
+    void fn_80220B68(s32);
+    void fn_80220C34(s32);
+    void PPCSync(void);
+    void fn_80220588(void);
+    extern void *__memReg;
+    extern volatile u16 *__cpReg;
+    extern u8 *__GXData;
+    extern u32 lbl_80368758;
+    extern s64 lbl_80368760;
+    extern u32 lbl_80368768;
+    volatile u32 *fifo;
+    u32 lo;
+    u32 hi;
+    u32 old;
+    u32 val;
+    s64 now;
+    volatile u16 *high;
+    volatile u16 *low;
+    u8 pad[8];
+
+    if (arg0 == 0) {
+        if (lbl_80368768 == 0) {
+            high = (volatile u16 *)__memReg + 0x27;
+            low = (volatile u16 *)__memReg + 0x28;
+            hi = *high;
+            do {
+                old = hi;
+                hi = *high;
+                lo = *low;
+            } while (hi != old);
+            lbl_80368758 = (hi << 16) | lo;
+            lbl_80368760 = OSGetTime();
+            lbl_80368768 = 1;
+            return 0;
+        }
+        now = OSGetTime();
+        high = (volatile u16 *)__memReg + 0x27;
+        low = (volatile u16 *)__memReg + 0x28;
+        hi = *high;
+        do {
+            old = hi;
+            hi = *high;
+            lo = *low;
+        } while (hi != old);
+        val = (hi << 16) | lo;
+        if (now - lbl_80368760 < 10) {
+            return 0;
+        }
+        if (val != lbl_80368758) {
+            lbl_80368760 = now;
+            lbl_80368758 = val;
+            return 0;
+        }
+    } else {
+        fn_8021F260(0);
+        fn_80220B68(0);
+        fn_80220C34(0);
+        fifo = (volatile u32 *)0xCC008000;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        *fifo = 0;
+        PPCSync();
+        *(volatile u16 *)((u8 *)__cpReg + 2) = 0;
+        *(volatile u16 *)((u8 *)__cpReg + 4) = 3;
+        __GXData[0x5AA] = 1;
+        fn_80220588();
+    }
+    return 1;
 }
 
 void __GXInitRevisionBits(void) {
@@ -1138,25 +1219,30 @@ u8 *gx = (u8*)__GXData;
 }
 
 void fn_8021F3CC(void) {
-void *fn_8021F4D4(void);
-void *fn_8021F4CC(void);
-struct FifoCopy { u8 bytes[128]; };
-struct FifoCopy copy;
-__GXFifoObj *gp;
-void *cpu;
-void *base;
-gp = fn_8021F4D4();
-if (gp) {
-cpu = fn_8021F4CC();
-base = gp->base;
-copy = *(struct FifoCopy *)gp;
-fn_8021ED28(&copy,(s32)base,(s32)base);
-GXSetGPFifo(&copy);
-if (cpu == gp) GXSetCPUFifo(&copy);
-fn_8021ED28(gp,(s32)base,(s32)base);
-GXSetGPFifo(gp);
-if (cpu == gp) GXSetCPUFifo(cpu);
-}
+    void *fn_8021F4D4(void);
+    void *fn_8021F4CC(void);
+    struct FifoCopy { u8 bytes[128]; };
+    u8 pad[0xC];
+    struct FifoCopy copy;
+    __GXFifoObj *gp;
+    void *cpu;
+    void *base;
+
+    (void)pad;
+    gp = fn_8021F4D4();
+    if (gp) {
+        cpu = fn_8021F4CC();
+        base = gp->base;
+        copy = *(struct FifoCopy *)gp;
+        fn_8021ED28(&copy, (s32)base, (s32)base);
+        GXSetGPFifo(&copy);
+        if (cpu == gp)
+            GXSetCPUFifo(&copy);
+        fn_8021ED28(gp, (s32)base, (s32)base);
+        GXSetGPFifo(gp);
+        if (cpu == gp)
+            GXSetCPUFifo(cpu);
+    }
 }
 
 s32 fn_8021F4CC(void) {
@@ -1665,7 +1751,61 @@ start=OSGetTime(); while(OSGetTime()-start<=5) {}
 }
 
 void fn_802206F4(void) {
-    OSGetTime();
+    s64 OSGetTime(void);
+    void *fn_8021F4D4(void);
+#pragma inline_depth(0)
+#pragma inline_max_size(0)
+    extern u8 *const __GXData;
+    extern volatile u16 *__memReg;
+    void __GXInitRevisionBits(void);
+    void fn_80220D6C(void);
+    void PPCSync(void);
+    u32 count, next;
+    u32 old, lo, hi;
+    s64 start;
+    volatile u16 *regs, *low, *high;
+    volatile u32 *reset;
+    if (__GXData[0x5AA] && fn_8021F4D4()) {
+        regs = __memReg;
+        high = regs + 0x27; low = regs + 0x28;
+        hi = *high;
+        do { old = hi; hi = *high; lo = *low; } while (hi != old);
+        count = (hi << 16) | lo;
+        do {
+            start = OSGetTime();
+            while (OSGetTime() - start <= 8) {}
+            regs = __memReg;
+            high = regs + 0x27; low = regs + 0x28;
+        hi = *high;
+            do { old = hi; hi = *high; lo = *low; } while (hi != old);
+            next = (hi << 16) | lo;
+            old = count; count = next;
+        } while (next != old);
+    }
+    reset = (volatile u32 *)0xCC003000;
+    *(reset += 6) = 1;
+    start = OSGetTime();
+    while (OSGetTime() - start <= 50) {}
+    *reset = 0;
+    start = OSGetTime();
+    while (OSGetTime() - start <= 5) {}
+    if (fn_8021F4D4()) {
+        fn_8021F3CC();
+        __GXInitRevisionBits();
+        *(u32 *)(__GXData + 0x5AC) = 0;
+        if (*(u32 *)(__GXData + 0x5AC)) fn_80220D6C();
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        *(volatile u32 *)0xCC008000 = 0;
+        PPCSync();
+    }
+#pragma inline_depth reset
+#pragma inline_max_size reset
 }
 
 void fn_802208BC(u32 token) {
@@ -1833,17 +1973,14 @@ void fn_80220B44(u16 arg0, s32 arg1, s32 *arg2) {
 }
 
 s32 fn_80220B68(s32 arg0) {
-    s32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(s32);
     extern s32 lbl_80368790;
-    s32 old;
-    s32 enabled;
+    s32 temp_r31;
 
-    old = lbl_80368790;
-    enabled = OSDisableInterrupts();
+    temp_r31 = lbl_80368790;
+    OSDisableInterrupts();
     lbl_80368790 = arg0;
-    OSRestoreInterrupts(enabled);
-    return old;
+    OSRestoreInterrupts();
+    return temp_r31;
 }
 
 void fn_80220BAC(s32 arg0, void *context) {
@@ -1869,17 +2006,14 @@ void fn_80220BAC(s32 arg0, void *context) {
 }
 
 s32 fn_80220C34(s32 arg0) {
-    s32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(s32);
     extern s32 lbl_80368794;
-    s32 old;
-    s32 enabled;
+    s32 temp_r31;
 
-    old = lbl_80368794;
-    enabled = OSDisableInterrupts();
+    temp_r31 = lbl_80368794;
+    OSDisableInterrupts();
     lbl_80368794 = arg0;
-    OSRestoreInterrupts(enabled);
-    return old;
+    OSRestoreInterrupts();
+    return temp_r31;
 }
 
 void fn_80220C78(s32 arg0, void *context) {
