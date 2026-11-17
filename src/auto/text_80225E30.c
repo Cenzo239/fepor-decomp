@@ -1557,18 +1557,16 @@ void fn_80228858(s32 arg0, s32 arg1) {
  __isync();
 }
 
-void fn_80228890(void *arg0, s32 arg1, u32 arg2) {
+#pragma optimization_level 3
+void fn_80228890(void *arg0, u32 arg1, u32 arg2) {
     u8 *dest;
     u32 value;
     u32 align;
-    u32 blocks;
-    u32 words;
-    u32 *p;
 
     dest = (u8 *)arg0 - 1;
     value = (u8)arg1;
 
-    if (arg2 >= 0x20) {
+    if (arg2 >= 0x20U) {
         align = (~(u32)dest) & 3;
 
         if (align != 0) {
@@ -1580,36 +1578,32 @@ void fn_80228890(void *arg0, s32 arg1, u32 arg2) {
         }
 
         if (value != 0) {
-            value = (value << 24) | (value << 16) |
-                    (value << 8) | value;
+            value |= (value << 24) | (value << 16) | (value << 8);
         }
 
-        blocks = arg2 >> 5;
-        p = (u32 *)(dest - 3);
-
-        if (blocks != 0) {
+        arg0 = dest - 3;
+        if ((arg1 = arg2 >> 5) != 0) {
             do {
-                p[1] = value;
-                p[2] = value;
-                p[3] = value;
-                p[4] = value;
-                p[5] = value;
-                p[6] = value;
-                p[7] = value;
-                p += 8;
-                *p = value;
-            } while (--blocks != 0);
+                ((u32 *)arg0)[1] = value;
+                ((u32 *)arg0)[2] = value;
+                ((u32 *)arg0)[3] = value;
+                ((u32 *)arg0)[4] = value;
+                ((u32 *)arg0)[5] = value;
+                ((u32 *)arg0)[6] = value;
+                ((u32 *)arg0)[7] = value;
+                arg0 = (u8 *)arg0 + 0x20;
+                *(u32 *)arg0 = value;
+            } while (--arg1 != 0);
         }
 
-        words = (arg2 >> 2) & 7;
-
-        if (words != 0) {
+        if ((arg1 = (arg2 >> 2) & 7) != 0) {
             do {
-                *++p = value;
-            } while (--words != 0);
+                arg0 = (u8 *)arg0 + 4;
+                *(u32 *)arg0 = value;
+            } while (--arg1 != 0);
         }
 
-        dest = (u8 *)p + 3;
+        dest = (u8 *)arg0 + 3;
         arg2 &= 3;
     }
 
@@ -1619,7 +1613,7 @@ void fn_80228890(void *arg0, s32 arg1, u32 arg2) {
         } while (--arg2 != 0);
     }
 }
-
+#pragma optimization_level reset
 s32 fn_80228950(void) {
     return M2C_ERROR(/* unknown instruction: mtmsr $r3 */);
 }
@@ -2568,39 +2562,22 @@ s32 fn_8022B530(s32 arg0, s32 arg1, s32 *arg2) {
     }
 }
 
-s32 fn_8022B5EC(s32 arg1, s32 *arg2) {
-    s32 sp8;
-    s32 temp_cr0_eq;
-    s32 temp_cr0_lt;
-    u8 temp_r0;
-    u8 temp_r3;
-
-    if (fn_8022B490() == 0) {
-        return 1;
+s32 fn_8022B5EC(s32 arg0, s32 arg1, s32 *arg2) {
+    s32 fn_80227FDC(void);
+    u8 fn_8022A4E0(u8, s32, s32 *, s32);
+    u8 fn_8022B490(void);
+    s32 length;
+    u8 result;
+    if (fn_8022B490() == 0) return 1;
+    if (fn_80227FDC() == 0) return 1;
+    length = *arg2;
+    result = fn_8022A4E0(0xd1, 0, &length, arg1);
+    *arg2 = length;
+    switch ((s32)result) {
+    case 0: return 0;
+    case 2: return 2;
+    default: return 1;
     }
-    if (fn_80227FDC() == 0) {
-        return 1;
-    }
-    sp8 = *arg2;
-    temp_r3 = fn_8022A4E0(0xD1, 0, &sp8, arg1);
-    temp_r0 = temp_r3;
-    temp_cr0_eq = (s32) temp_r0 == 1;
-    temp_cr0_lt = (s32) temp_r0 < 1;
-    *arg2 = sp8;
-    if (temp_cr0_eq == 0) {
-        if (temp_cr0_lt != 0) {
-            if ((s32) temp_r0 < 0) {
-                goto block_12;
-            }
-            return 0;
-        }
-        if ((s32) temp_r0 < 3) {
-            return 2;
-        }
-        goto block_12;
-    }
-block_12:
-    return 1;
 }
 
 s32 udp_cc_post_stop(void) {
