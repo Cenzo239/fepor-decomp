@@ -35,6 +35,9 @@ extern u16 lbl_80289A60[];
 
 extern u8 lbl_80289B00[16];
 
+extern f64 lbl_80369440;
+extern f64 lbl_80369470;
+
 extern void* fn_800980D4(s32 arg0);
 extern void fn_8017E394(void* arg0, void* arg1, void* arg2, s32 arg3);
 
@@ -47,6 +50,7 @@ extern f32 lbl_803697E4;
 void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     typedef struct { u8 r, g, b, a; } Color;
     typedef struct { f32 v[9]; } Arr9;
+    typedef union { u32 w; u8 b[4]; } ColorWord;
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void fn_80007628(f32, f32, f32, f32);
@@ -80,6 +84,8 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     extern f32 lbl_80369418;
     extern f32 lbl_80369430;
     extern f32 lbl_80369438;
+    extern f64 lbl_80369440;
+    extern f64 lbl_80369470;
     extern f32 lbl_803694CC;
     extern f32 lbl_803694E4;
     extern f32 lbl_80369514;
@@ -102,8 +108,8 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     Color col;
     u32 sp24;
     u32 sp20;
-    u8 sp28, sp29, sp2A, sp2B;
-    s32 sp8, sp10, sp14, sp18, sp1C;
+    ColorWord cw;
+    s32 sp1C, sp18, sp14, sp10, sp8;
     s32 iz;
     f32 frac;
     f32 f21, f20;
@@ -114,17 +120,29 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     f32 *pA, *pB;
     u16 *tex;
     s32 id;
-    s32 i, j;
+    s32 i;
+    s32 j;
     f32 t;
     f32 k28, k29, k31, k17, k18;
-    f32 yOff;
+    f32 yOff, yOff2;
     u8 *bp;
+    f32 cr, cg, cb;
+    f64 magic_u;
+    f64 magic_s;
+    f32 tv0, tv1;
+
+    magic_u = lbl_80369440;
+    magic_s = lbl_80369470;
+    (void)magic_u;
+    (void)magic_s;
 
     iz = (s32)fz;
     frac = fz - (f32)iz;
     tex = *fn_8006EDD8(gUiAtlas, 0x1B);
-    sh = (f32)tex[0] * lbl_80369430;
-    sw = (f32)tex[1] * lbl_80369430;
+    tv0 = tex[0];
+    tv1 = tex[1];
+    sh = tv0 * lbl_80369430;
+    sw = tv1 * lbl_80369430;
     col = *Ui_GetColor(1);
     id = gUiAtlas;
     tex = *fn_8006EDD8(id, 0x1B);
@@ -144,8 +162,9 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     Prim2D_AddZ(lbl_80369520);
     Prim2D_PrepareTex();
     yOff = lbl_80369528 + fy;
+    yOff2 = lbl_80369528 + fy;
     fn_8001003C((s32)(lbl_80369524 + fx), (s32)yOff, 2, 0, 0, gUiStrings + 0x240, iz, lbl_80369430, lbl_80369418);
-    fn_8001003C((s32)(lbl_8036952C + fx), (s32)yOff, 0xC, 0, 0, gUiStrings + 0x244, arg0, lbl_80369430, lbl_80369418);
+    fn_8001003C((s32)(lbl_8036952C + fx), (s32)yOff2, 0xC, 0, 0, gUiStrings + 0x244, arg0, lbl_80369430, lbl_80369418);
 
     arrA = lbl_8026C824;
     arrB = lbl_8026C848;
@@ -207,27 +226,30 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
                 if (i == 0) {
                     sp24 = lbl_80369410;
                     bp = (u8 *)&sp24;
-                    sp28 = bp[0];
-                    sp29 = bp[1];
-                    sp2A = bp[2];
-                    sp2B = bp[3];
+                    cw.b[0] = bp[0];
+                    cw.b[1] = bp[1];
+                    cw.b[2] = bp[2];
+                    cw.b[3] = bp[3];
                 } else {
                     sp20 = lbl_80369414;
                     bp = (u8 *)&sp20;
-                    bp[1] = (u8)((s32)(lbl_80369438 * lbl_803674C4) + 0xA);
-                    bp[0] = (u8)(s32)(lbl_803694E4 * lbl_803674C4);
-                    bp[2] = (u8)((s32)(lbl_80369548 * lbl_803674C4) + 0xA);
-                    sp28 = bp[0];
-                    sp29 = bp[1];
-                    sp2A = bp[2];
-                    sp2B = bp[3];
+                    cr = lbl_803694E4 * lbl_803674C4;
+                    cg = lbl_80369438 * lbl_803674C4;
+                    cb = lbl_80369548 * lbl_803674C4;
+                    bp[0] = (u8)(s32)cr;
+                    bp[1] = (u8)((s32)cg + 0xA);
+                    bp[2] = (u8)((s32)cb + 0xA);
+                    cw.b[0] = bp[0];
+                    cw.b[1] = bp[1];
+                    cw.b[2] = bp[2];
+                    cw.b[3] = bp[3];
                 }
                 Prim2D_AddPrim(3);
                 Prim2D_SetQuadMin(c0 * k17 + f21, f20 - s0 * k17, lbl_80369418, lbl_80369418);
                 fn_80007648(c0 * k18 + f21, f20 - s0 * k18, lbl_80369418, lbl_80369418);
                 fn_80007628(c1 * k17 + f21, f20 - s1 * k17, lbl_80369418, lbl_80369418);
                 Prim2D_SetQuadMax(c1 * k18 + f21, f20 - s1 * k18, lbl_80369418, lbl_80369418);
-                sp8 = *(s32 *)&sp28;
+                sp8 = cw.w;
                 sp10 = sp8;
                 sp14 = sp8;
                 sp18 = sp8;
