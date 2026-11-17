@@ -4333,6 +4333,40 @@ done:
     Prim2D_PrepareTex();
 }
 
+void fn_80139538(void *arg0, s32 arg1) {
+ void fn_80139E88(void *,s32);
+ void Ui_PlaySeCue(void *,s32);
+ extern u32 gUiInputFlags;
+ extern u32 *gPadInput;
+ extern u8 lbl_802768A0[];
+ s16 visible, pages, row, page, old;
+ s32 size, held, edge, repeat;
+ u8 blocked;
+ visible=M2C_FIELD(M2C_FIELD(arg0,void **,0),s32 (**)(void *),0x3C)(arg0);
+ size=M2C_FIELD(arg0,s16 *,0x58);
+ pages=(size+(s16)M2C_FIELD(arg0,s32 *,0x70)-1)/size;
+ if(visible>pages) visible=pages;
+ row=M2C_FIELD(arg0,s16 *,0x4E);
+ blocked=0;
+ page=row/size;
+ if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
+ if(!blocked) {
+ held=gPadInput[1]; edge=held^(s32)gPadInput[2]; repeat=gPadInput[3]; edge=held&edge;
+ old=M2C_FIELD(arg0,s16 *,0x4E);
+ if(row==0x7FFF) {
+ s32 last=(pages-1)*size;
+ if(edge&0x08000008) M2C_FIELD(arg0,s16 *,0x4E)=last;
+ else if(edge&0x04000004) {M2C_FIELD(arg0,s16 *,0x4E)=0;M2C_FIELD(arg0,s16 *,0x56)=0;}
+ goto changed;
+ }
+ if(page==pages-1&&(repeat&0x04000004)) {M2C_FIELD(arg0,s16 *,0x4E)=0x7FFF;goto changed;}
+ if(page==0&&(edge&0x08000008)) {M2C_FIELD(arg0,s16 *,0x56)=pages-visible;M2C_FIELD(arg0,s16 *,0x4E)=0x7FFF;goto changed;}
+ }
+ fn_80139E88(arg0,arg1); return;
+changed:
+ if(old!=M2C_FIELD(arg0,s16 *,0x4E)) Ui_PlaySeCue(lbl_802768A0+0x1D,100);
+}
+
 extern "C" void fn_801396C4(void *self, void *other) {
 struct Obj {
 virtual void v0()=0;
@@ -14281,7 +14315,7 @@ extern "C" void fn_80148A28(void *arg0) {
 }
 
 extern "C" void fn_80148D54(void *arg0) {
-    s32 fn_8014953C(void);
+    s32 fn_8014953C(u8 *);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
     extern u8 lbl_80367AEE;
@@ -14346,7 +14380,7 @@ extern "C" void fn_80148D54(void *arg0) {
         register u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
-                rate = fn_8014953C();
+                rate = fn_8014953C((u8 *)self);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -14378,7 +14412,7 @@ extern "C" void fn_80148D54(void *arg0) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C();
+                    rate = fn_8014953C((u8 *)self);
                 }
                 level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
                 factor = lbl_80367AE8;
