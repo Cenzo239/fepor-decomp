@@ -8380,6 +8380,7 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
 void ItemList_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     void Item_Destroy(void *, s32);
+    void Heap_Free(void *);
     ListNode *first;
     ListNode *last;
     ListNode *a;
