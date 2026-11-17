@@ -5573,13 +5573,12 @@ void fn_800B9C14(u32 name, s32 x, s32 y, s32 frames, u32 arg4) {
 }
 
 void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
- void fn_800B9CD4(s32,s32,s32,s32,s32);
  extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
- f32 x; f32 y; f32 scale;
+ f32 scale; f32 x; f32 y;
  scale=(f32)arg3/lbl_80369D08;
  x=lbl_80369D0C-scale*(f32)arg1;
  y=lbl_80369D10-scale*(f32)arg2;
- fn_800B9CD4(arg0,(s32)x,(s32)y,arg4,arg5);
+ fn_800B9CD4(arg0,(s32)x,(s32)y,arg4,arg5,scale);
 }
 
 s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
