@@ -1887,6 +1887,33 @@ void fn_80229228(void *b) {
  TRKAppendBuffer(b,&msg,sizeof(msg));
 }
 
+s32 TRKTargetInterrupt(s32 *event) {
+#pragma inline_depth(0)
+ extern u8 gTRKState[]; extern char lbl_802827D8[];
+ s32 result=0;
+ switch(*event) {case 3: case 4:
+ if(lbl_8029E584.active) {
+ s32 done=1;
+ *(u32*)(gTRKCPUState+0x1F8)&=~0x400;
+ if(lbl_8029E584.active && (u16)*(u32*)(gTRKCPUState+0x2F8)==0xD00) {
+ switch(lbl_8029E584.type) {
+ case 0: if(lbl_8029E584.count) done=0; break;
+ case 1: if(*(u32*)(gTRKCPUState+0x80)>=lbl_8029E584.rangeStart && *(u32*)(gTRKCPUState+0x80)<=lbl_8029E584.rangeEnd) done=0; break;
+ }
+ }
+ if(done) lbl_8029E584.active=0;
+ else { lbl_8029E584.active=1; MWTRACE(1,lbl_802827D8);
+ *(u32*)(gTRKCPUState+0x1F8)|=0x400;
+ if(lbl_8029E584.type==0 || lbl_8029E584.type==0x10) lbl_8029E584.count--;
+ *(s32*)(gTRKState+0x98)=0; }
+ }
+ if(!lbl_8029E584.active) { *(s32*)(gTRKState+0x98)=1; result=fn_802287C0(0x90); }
+ break;
+ }
+ return result;
+#pragma inline_depth reset
+}
+
 #pragma global_optimizer off
 void TRKPostInterruptEvent(void) {
     void fn_80225F4C(void *, s32);
