@@ -7197,6 +7197,108 @@ void *fn_800D7060(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma opt_common_subs off
+void fn_800D7254(void *self, u32 pad, s32 flags, s32 keys) {
+    void fn_800E3F48(void *);
+    void fn_800E3F54(void *);
+    void fn_800E4078(void *, s32, s32);
+    void fn_800E4110(void *, s32, s32);
+    s32 var_r31;
+    s32 var_r30;
+
+    var_r30 = 0;
+    var_r31 = 0;
+    if (!(pad & 0x100)) {
+        if (keys & 1) {
+            var_r31 = -1;
+        } else if (keys & 2) {
+            var_r31 = 1;
+        } else if (keys & 8) {
+            var_r30 = -1;
+        } else if (keys & 4) {
+            var_r30 = 1;
+        }
+    }
+
+    if (var_r31 != 0 || var_r30 != 0) {
+        if (M2C_FIELD(self, void **, 0x414) != NULL) {
+            fn_800E3F48(M2C_FIELD(self, void **, 0x414));
+        }
+        if (M2C_FIELD(self, void **, 0x14) == NULL) {
+            M2C_FIELD(self, void **, 0x414) = NULL;
+        } else {
+            M2C_FIELD(self, s32 *, 0) = M2C_FIELD(self, s32 *, 0) + var_r31;
+            if (M2C_FIELD(self, s32 *, 0) < 0) {
+                M2C_FIELD(self, s32 *, 0) = 0xF;
+            }
+            if (M2C_FIELD(self, s32 *, 0) >= 0x10) {
+                M2C_FIELD(self, s32 *, 0) = 0;
+            }
+            M2C_FIELD(self, s32 *, 4) = M2C_FIELD(self, s32 *, 4) + var_r30;
+            if (M2C_FIELD(self, s32 *, 4) < 0) {
+                M2C_FIELD(self, s32 *, 4) = 0xF;
+            }
+            if (M2C_FIELD(self, s32 *, 4) >= 0x10) {
+                M2C_FIELD(self, s32 *, 4) = 0;
+            }
+
+            if (var_r31 != 0) {
+                s32 zero = 0;
+                while (*(void **)((u8 *)self + (M2C_FIELD(self, s32 *, 4) << 6) + (M2C_FIELD(self, s32 *, 0) * 4) + 0x14) == NULL) {
+                    M2C_FIELD(self, s32 *, 0) = M2C_FIELD(self, s32 *, 0) + var_r31;
+                    if (M2C_FIELD(self, s32 *, 0) >= 0x10) {
+                        M2C_FIELD(self, s32 *, 0) = zero;
+                    }
+                }
+            } else {
+                s32 x;
+                while (*(void **)(((u8 *)self + (M2C_FIELD(self, s32 *, 4) << 6)) + ((x = M2C_FIELD(self, s32 *, 0)) * 4) + 0x14) == NULL) {
+                    if (x != 0) {
+                        M2C_FIELD(self, s32 *, 0) = M2C_FIELD(self, s32 *, 0) - 1;
+                    } else {
+                        M2C_FIELD(self, s32 *, 4) = M2C_FIELD(self, s32 *, 4) + var_r30;
+                        if (M2C_FIELD(self, s32 *, 4) < 0) {
+                            M2C_FIELD(self, s32 *, 4) = 0xF;
+                        }
+                        if (M2C_FIELD(self, s32 *, 4) >= 0x10) {
+                            M2C_FIELD(self, s32 *, 4) = 0;
+                        }
+                    }
+                }
+            }
+
+            {
+                u8 *p = (u8 *)self + (M2C_FIELD(self, s32 *, 4) << 6);
+                p += M2C_FIELD(self, s32 *, 0) << 2;
+                M2C_FIELD(self, void **, 0x414) = *(void **)(p + 0x14);
+            }
+            fn_800E3F54(M2C_FIELD(self, void **, 0x414));
+        }
+    }
+
+    if (flags & 0x100) {
+        if (M2C_FIELD(self, void **, 0x414) != NULL) {
+            fn_800E4110(M2C_FIELD(self, void **, 0x414), 0, 0);
+        }
+        M2C_FIELD(self, u8 *, 8) = 1;
+    }
+
+    if (pad == 0) {
+        if (M2C_FIELD(self, u8 *, 8) != 0 && M2C_FIELD(self, void **, 0x414) != NULL) {
+            fn_800E4078(M2C_FIELD(self, void **, 0x414), 0, 0);
+        }
+        M2C_FIELD(self, u8 *, 8) = 0;
+    }
+
+    if ((flags & 0x200) && M2C_FIELD(self, void **, 0x41C) != NULL) {
+        fn_800E4078(M2C_FIELD(self, void **, 0x41C), 0, 0);
+    }
+
+    if ((flags & 0x1000) && M2C_FIELD(self, void **, 0x418) != NULL) {
+        fn_800E4078(M2C_FIELD(self, void **, 0x418), 0, 0);
+    }
+}
+#pragma opt_common_subs reset
 void fn_800D74FC(void *arg0) {
 #pragma cplusplus on
     struct Obj {
@@ -17689,6 +17791,113 @@ s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
 }
 
+void fn_800EBACC(void *arg0, void *arg1) {
+    void *Heap_Alloc(s32);
+    void *fn_8017A7D4(void *, void *);
+    s32 Stream_LoadFile(void *, void *);
+    void DebugPrint(void *, ...);
+    void fn_800EBF58(void);
+    void fn_8021CDC4(s32, void *);
+    s32 fn_8021C3D8(s32, void *, s32, void *);
+    s32 fn_8021CBC8(void *, void *, s32, s32);
+    s32 fn_8021C02C(void *);
+    void fn_8021D004(s32, s32, void *);
+    void fn_8021D28C(s32, s32, void *);
+    extern u8 gCardStrings[];
+    extern u8 gCardWork[];
+
+    u8 stat[0x48];
+    void *path;
+    void *name;
+    void *stream;
+    void *fileInfo;
+    s32 size;
+    s32 fileNo;
+    u8 *work;
+    u8 *hi;
+    u8 ok;
+    u16 value;
+    u8 attr;
+    void **vt;
+
+    path = arg0;
+    name = arg1;
+    if (path == NULL) {
+        path = gCardStrings + 0x27D;
+    }
+    if (name == NULL) {
+        name = gCardStrings + 0x70;
+    }
+    stream = Heap_Alloc(0x14);
+    if (stream != NULL) {
+        stream = fn_8017A7D4(stream, path);
+    }
+    size = Stream_LoadFile(stream, path);
+    DebugPrint(gCardStrings + 0x288, size);
+    if (size > 0) {
+        fn_800EBF58();
+        hi = gCardWork + 0x10000;
+        fn_8021CDC4(*(s32 *)(hi - 0x6000), name);
+        fileInfo = hi - 0x5FE4;
+        ok = 0;
+        *(s32 *)(hi - 0x5FFC) = fn_8021C3D8(*(s32 *)(hi - 0x6000), name, size, fileInfo);
+        if (*(s32 *)(hi - 0x5FFC) == 0 && hi[-0x5FE6] == 0) {
+            ok = 1;
+        }
+        if (ok != 0) {
+            vt = *(void ***)((u8 *)stream + 0x10);
+            *(s32 *)(hi - 0x5FFC) = fn_8021CBC8(fileInfo, ((void *(*)(void *))vt[2])(stream), size, 0);
+            ok = 0;
+            if (*(s32 *)(hi - 0x5FFC) == 0 && hi[-0x5FE6] == 0) {
+                ok = 1;
+            }
+            if (ok != 0) {
+                *(s32 *)(hi - 0x5FFC) = fn_8021C02C(fileInfo);
+                ok = 0;
+                if (*(s32 *)(hi - 0x5FFC) == 0 && (gCardWork + 0x10000)[-0x5FE6] == 0) {
+                    ok = 1;
+                }
+                if (ok != 0) {
+                    work = gCardWork + 0x10000;
+                    fileNo = *(s32 *)(work - 0x5FE0);
+                    fn_8021D004(*(s32 *)(hi - 0x6000), fileNo, stat);
+                    value = *(u16 *)(stat + 0x34);
+                    value = (value & ~3) | 1;
+                    *(u16 *)(stat + 0x34) = value;
+                    value = *(u16 *)(stat + 0x36);
+                    value = (value & ~3) | 3;
+                    *(u16 *)(stat + 0x36) = value;
+                    attr = stat[0x2E];
+                    attr = (attr & ~3) | 1;
+                    value = *(u16 *)(stat + 0x34);
+                    value = (value & ~0xC) | 4;
+                    *(u16 *)(stat + 0x34) = value;
+                    value = *(u16 *)(stat + 0x36);
+                    value = (value & ~0xC) | 8;
+                    *(u16 *)(stat + 0x36) = value;
+                    value = *(u16 *)(stat + 0x34);
+                    value = (value & ~0x30) | 0x10;
+                    *(u16 *)(stat + 0x34) = value;
+                    value = *(u16 *)(stat + 0x36);
+                    value = (value & ~0x30) | 0x30;
+                    *(u16 *)(stat + 0x36) = value;
+                    attr = (attr & ~4) | 4;
+                    stat[0x2E] = attr;
+                    *(u16 *)(stat + 0x34) &= ~0xC0;
+                    *(u16 *)(stat + 0x36) &= ~0xC0;
+                    *(u32 *)(stat + 0x38) = 0x2000;
+                    *(u32 *)(stat + 0x30) = 0;
+                    fn_8021D28C(*(s32 *)(hi - 0x6000), fileNo, stat);
+                }
+            }
+        }
+    }
+    if (stream != NULL) {
+        vt = *(void ***)((u8 *)stream + 0x10);
+        ((void (*)(void *, s32))vt[4])(stream, 1);
+    }
+}
+
 void fn_800EBD78(void *arg0, void *arg1)
 {
     extern u8 gCardStrings[];
@@ -20560,6 +20769,45 @@ t=p[13]; if(!t || t==M2C_FIELD(arg0,u8*,0x198))return 1;
 }}return 0;
 }
 
+s32 fn_800F35B0(u8 (*filter)(void *),s32 name,u8 *out,s8 mode) {
+extern u8 gUiContext[],gBattleMap[],gUnits[];
+void Item_Init(void *); void Item_SetByName(void *,s32); void *Item_Destroy(void *,s16);
+void Allegiance_FillMask(s32,void *);
+int Abs(int); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
+void fn_800FDDBC(s8,s8,u8,u8,s32); u8 fn_800F7D28(void *,void *);
+u8 result[12]; u8 weapon[8]; u8 mask[8];
+u8 *map; u8 *unit; u8 *self;
+s32 id; s32 dist; int dy; u8 ux,sx,range,outside,cx,cy,r,t; s32 ret;
+gUiContext[8]=mode;self=*(u8 **)gUiContext;
+*(s32 *)(out+8)=(s32)0x80000000; *(void **)(out+4)=0;
+Item_Init(weapon);Item_SetByName(weapon,name);
+*(u16 *)(result+2)=M2C_FIELD(*(void **)weapon,u16 *,14);
+Allegiance_FillMask(1,mask);map=gBattleMap;
+for(id=1;id<=159;id++){
+unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
+if(!M2C_FIELD(unit,u32 *,0x188)||!mask[M2C_FIELD(M2C_FIELD(unit,u8 **,0x190),u8 *,8)]||!filter(unit))continue;
+ux=unit[0x19E];sx=self[0x19E];
+dy=Abs((s8)self[0x19F]-(s8)unit[0x19F]);
+dist=Abs((s8)sx-(s8)ux);
+dist+=dy;
+range=*(void **)weapon?Item_GetRangeForUnit(*(void **)weapon,self):0;
+dy=(s8)Unit_GetMov(self);dy+=range;
+if(dist>dy||(M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
+outside=0;cx=unit[0x19E];cy=unit[0x19F];
+if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
+if(outside)continue;
+r=*(void **)weapon?Item_GetRangeForUnit(*(void **)weapon,unit):0;
+t=*(void **)weapon?M2C_FIELD(*(void **)weapon,u8 *,29):0;
+fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
+*(void **)(result+4)=unit;
+if(fn_800F7D28(self,result)&&*(s32 *)(result+8)>*(s32 *)(out+8)) {
+out[0]=result[0];out[1]=result[1];*(u16 *)(out+2)=*(u16 *)(result+2);*(void **)(out+4)=*(void **)(result+4);*(s32 *)(out+8)=*(s32 *)(result+8);
+}
+}
+ret=*(void **)(out+4)!=0;
+Item_Destroy(weapon,-1);return ret;
+}
+
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 extern u8 gAiState[],gUiContext[],gBattleMap[];
 int Abs(int);
@@ -22804,6 +23052,52 @@ fn_800FB96C(7,self[0x19E],self[0x19F],other,(s8)x,(s8)y,-1,0,0);
 }
 if(!gAiCmdIsAlt) self[0x250]++; else self[0x251]++;
 #pragma cplusplus reset
+}
+
+void fn_800F8994(void *arg0) {
+ extern u8 gAiState[],gBattleMap[]; extern u8 *gAiCmd; extern s32 gAiCmdIsAlt;
+ void Ai_UnitIsHostileToActive(void *);void Ai_UnitNameInCmdList(void *);void Ai_UnitHostileNotInCmdList(void *);
+ u8 Ai_FindLowestCostUnitTile(void (*)(void *),void *,s16 *,s16 *);
+ void Ai_SetUnitMoveTo(void *,s32,s32,s32,s32,s32,s32,s32);
+ void fn_80101960(void *,s32,s32,s32,s32,s32,s32,s32);
+ void **Unit_GetHeldItemSlot(void *,s32); u8 fn_8009339C(void *,void *); s8 Unit_GetMov(void *);
+ void fn_8001F9C4(void *,s8,s8,s8,s16);
+ s16 x2,y2,y1,x1;
+ u8 *unit=arg0;
+ s32 i;  void (*filter)(void *); u32 flags; s32 flag;
+ flags=*(u32 *)(unit+0x254);
+ if(!(flags&0x2000)) {
+ s16 min; void **slot; u8 *cmd=gAiCmd;
+ if(!(gAiState[1]&2) && !(flags&0x03000000)) {
+ filter=*(u32 *)(cmd+0x14)==0?Ai_UnitIsHostileToActive:(*(s32 *)(cmd+0x10)!=0?Ai_UnitHostileNotInCmdList:Ai_UnitNameInCmdList);
+ if(Ai_FindLowestCostUnitTile(filter,unit,&x1,&y1)==1) {
+ Ai_SetUnitMoveTo(unit,x1,y1,1,*(u16 *)(gAiState+4),1,*(s32 *)(cmd+12)!=0,-1);
+ }
+ }
+ if(!gAiCmdIsAlt) unit[0x250]++; else unit[0x251]++;
+ } else {
+ s16 min; void **slot; u8 *cmd=gAiCmd;
+ if(!(gAiState[1]&2) && !(flags&0x03000000)) {
+ filter=*(u32 *)(cmd+0x14)==0?Ai_UnitIsHostileToActive:(*(s32 *)(cmd+0x10)!=0?Ai_UnitHostileNotInCmdList:Ai_UnitNameInCmdList);
+ if(Ai_FindLowestCostUnitTile(filter,unit,&x2,&y2)==1) {
+ min=0x7FFF;
+ for(i=0;i<4;i++) {
+ void *item;
+ slot=Unit_GetHeldItemSlot(unit,i); item=*slot;
+ if(!item)break;
+ if(fn_8009339C(unit,item)) {
+ u8 value; item=*slot;
+ value=item?M2C_FIELD(item,u8 *,0x1D):0;
+ if(value<min) { value=item?M2C_FIELD(item,u8 *,0x1D):0; min=value; }
+ }
+ }
+ Map_BuildUnitMoveRange(unit,5,-1);
+ fn_8001F9C4(gBattleMap,(s8)x2,(s8)y2,(s8)(min-1),(s16)-(Unit_GetMov(unit)+1));
+ fn_80101960(unit,x2,y2,1,*(u16 *)(gAiState+4),1,*(s32 *)(cmd+12)!=0,-1);
+ }
+ }
+ if(!gAiCmdIsAlt) unit[0x250]++; else unit[0x251]++;
+}
 }
 
 void fn_800F8E5C(void* arg0, void* arg1, s32 arg2) {
