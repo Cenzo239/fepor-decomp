@@ -13503,6 +13503,45 @@ extern "C" void fn_800E8154(void *arg0) {
     ((Obj *)arg0)->v12();
     ((Obj *)arg0)->v0();
 }
+
+void fn_800E81A0(void *arg0, void *arg1) {
+#pragma cplusplus on
+    struct Owner { u8 pad[0x10]; virtual void v0(); virtual void v1(); virtual void *v2(char *,void *); };
+    struct Child { u8 pad[0x40]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(int); };
+    void fn_800DF700(void *);
+    void fn_800DF6DC(void *,void *);
+    s32 fn_800DC018(void *);
+    void fn_800DC010(void *,s32);
+    void fn_800DFFB8(void *,void *);
+    s32 String_Compare(void *,u32,u32,char *,u32);
+    void *String_CStr(void *);
+    extern char gUiClassNames[];
+    String name, id;
+    s32 cmp;
+    void *found;
+    if(arg1) {
+        fn_800DF700(&name);
+        cmp=String_Compare(&name,0,name.size,gUiClassNames+6,strlen(gUiClassNames+6));
+        String_Destroy(&name,-1);
+        if(cmp==0) {
+            fn_800DF6DC(&id,arg1);
+            found=((Owner *)arg0)->v2(gUiClassNames+6,String_CStr(&id));
+            String_Destroy(&id,-1);
+            if(found) {
+                if(arg1) ((Child *)arg1)->v4(1);
+                return;
+            }
+            if(fn_800DC018(arg1)==-1) {
+                s32 n=*(s32 *)((u8 *)arg0+0x20);
+                *(s32 *)((u8 *)arg0+0x20)=n+1;
+                fn_800DC010(arg1,n);
+            }
+        }
+        fn_800DFFB8(arg0,arg1);
+    }
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 void *fn_800E8488(void *arg0, s16 arg1)
 {
@@ -14773,6 +14812,59 @@ void Card_SetNoCopyAttr(s32 proc) {
         attr |= 8;
         gCardWork.busy = 1;
         gCardWork.result = Card_SetFileAttr(gCardWork.chan, fileNo, attr, Card_AsyncDone);
+        if (gCardWork.result < 0) {
+            Process_Goto(proc, 0x63);
+            gCardWork.busy = 0;
+        }
+    }
+}
+
+void fn_800EAEF0(s32 proc) {
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 padA01B;
+        u8 fileInfo[0x14];
+        u8 padA030[4];
+        s32 unkA034;
+    };
+    void Process_Goto(s32, s32);
+    void Card_AsyncDone(void);
+    void fn_80006298(s32, s32, s32);
+    char *strcpy(char *, char *);
+    void fn_801DF7C8(s32);
+    void fn_801E3B08(s32);
+    s32 fn_8021CAB4(void *, s32, s32, s32, void *);
+    extern struct CardWork gCardWork;
+    extern char gCardStrings[];
+    u8 skip;
+    u8 *hi;
+
+    if (gCardWork.result < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork.busy = 0;
+        skip = 1;
+    } else {
+        skip = 0;
+    }
+    if (skip == 0) {
+        hi = (u8 *)&gCardWork + 0x10000;
+        gCardWork.unkA019 = 1;
+        fn_80006298(gCardWork.unkA034, 0, SAVE_CARD_FILE_SIZE);
+        strcpy((char *)gCardWork.unkA034, gCardStrings + 0xE0);
+        fn_801DF7C8(gCardWork.unkA034 + 0x2000);
+        fn_801E3B08(gCardWork.unkA034 + 0x2000);
+        gCardWork.busy = 1;
+        gCardWork.result = fn_8021CAB4(hi - 0x5FE4, gCardWork.unkA034, SAVE_CARD_FILE_SIZE,
+                                      0, Card_AsyncDone);
         if (gCardWork.result < 0) {
             Process_Goto(proc, 0x63);
             gCardWork.busy = 0;
