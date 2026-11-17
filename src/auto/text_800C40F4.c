@@ -4202,7 +4202,9 @@ u32 f44;
 u32 f48;
 u32 f4c;
 u32 f50;
-u32 f54; };
+u32 f54;
+Entry(const Entry &other):f0(other.f0),f4(other.f4),f8(other.f8),fc(other.fc),f10(other.f10),f14(other.f14),f18(other.f18),f1c(other.f1c),f20(other.f20),f24(other.f24),f28(other.f28),f2c(other.f2c),f30(other.f30),f34(other.f34),f38(other.f38),f3c(other.f3c),f40(other.f40),f44(other.f44),f48(other.f48),f4c(other.f4c),f50(other.f50),f54(other.f54) {}
+};
 if (*(u32*)(self+0x20c)<*(u32*)(self+0x204)) {
 u32 index=(*(u32*)(self+0x20c))++;
 Entry entry = (*(Entry**)(self+0x208))[index];
