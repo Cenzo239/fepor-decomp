@@ -253,21 +253,20 @@ s32 TRKMessageSend(void *arg0)
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 s32 fn_8022632C(void *arg0, u32 *arg1, s32 arg2) {
-    extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, s32);
-    u32 temp;
+    extern u8 gTRKBigEndian[];
+    s32 error;
+    u8 *source;
+    u32 length;
+    s32 *endian;
     void *buffer;
     s32 count;
     u8 *dest;
     s32 i;
-    s32 *endian;
-    s32 error;
-    u8 *source;
-    u32 length;
-    s32 result;
+    u32 temp;
     u32 position;
     u32 remaining;
-    u32 offset;
+    s32 result;
 
     buffer = arg0;
     count = arg2;
@@ -289,8 +288,7 @@ s32 fn_8022632C(void *arg0, u32 *arg1, s32 arg2) {
             error = 0x302;
             length = remaining;
         }
-        offset = position + 0x10;
-        fn_80003488(source, (u8 *)buffer + offset, length);
+        fn_80003488(source, (u8 *)buffer + position + 0x10, length);
         *(u32 *)((u8 *)buffer + 0xC) = *(u32 *)((u8 *)buffer + 0xC) + length;
         if (*endian == 0 && error == 0) {
             dest[0] = source[3];
@@ -299,13 +297,12 @@ s32 fn_8022632C(void *arg0, u32 *arg1, s32 arg2) {
             dest[3] = source[0];
         }
         result = error;
-        dest = dest + 4;
-        i = i + 1;
+        dest += 4;
+        i += 1;
     }
     return result;
 }
 #pragma global_optimizer on
-#pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
 s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2)
@@ -2864,13 +2861,11 @@ u32 ddh_cc_read(void *arg0, u32 arg1) {
     s32 fn_8023C544(void);
     u32 fn_8023C54C(void *, s32);
     u8 buffer[0x800];
-    s32 size;
-    u32 length;
+    s32 size = 0;
     u32 error = 0;
     if (!lbl_803687B8) return -0x2711;
     MWTRACE(1, (const char *)lbl_8028295C, arg1, arg1);
-    length = arg1;
-    while (fn_8022BC94(lbl_8033D7E8) < length) {
+    while (fn_8022BC94(lbl_8033D7E8) < arg1) {
         error = 0;
         size = fn_8023C544();
         if (size != 0) {
@@ -2878,7 +2873,7 @@ u32 ddh_cc_read(void *arg0, u32 arg1) {
             if (!error) fn_8022BB3C(lbl_8033D7E8, buffer, size);
         }
     }
-    if (!error) fn_8022BA34(lbl_8033D7E8, arg0, length);
+    if (!error) fn_8022BA34(lbl_8033D7E8, arg0, arg1);
     else MWTRACE(8, (const char *)lbl_80282984, error);
     return error;
 }
