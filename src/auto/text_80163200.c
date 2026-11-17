@@ -2458,6 +2458,36 @@ void fn_80168F54(s32 arg0) {
     }
 }
 
+void fn_80168F90(void *arg0) {
+void fn_80162054(void);
+void *fn_8014D8FC(void *);
+void fn_8016A5DC(void *,s32,f32);
+void Ui_CreateMsgPopup(void *,void *,f32,f32);
+void Process_Goto(void *,s32);
+void *Heap_Alloc(s32);
+void *fn_80169104(void *,s16,s16,s16,s16);
+void fn_8013B064(void *,void *);
+void Ui_AddChild(void *,void *);
+extern u8 lbl_80277B7C[],gUnitLists[];
+extern f32 lbl_8036A9A0,lbl_8036A9A4,lbl_8036A9A8;
+void *panel,*unit;
+fn_80162054();
+fn_8016A5DC(arg0,M2C_FIELD(fn_8014D8FC(gBattleState),s32 *,0x44),lbl_8036A9A0);
+if(M2C_FIELD(gUiContext,u8 *,0x14)==0) {
+Ui_CreateMsgPopup(lbl_80277B7C+0x2B,arg0,lbl_8036A9A4,lbl_8036A9A8);
+Process_Goto(arg0,1);
+} else {
+panel=Heap_Alloc(0xD8);
+if(panel) panel=fn_80169104(panel,0x138,0x50,0xD3,0x1F4);
+M2C_FIELD(panel,s16 *,0x58)=2;
+unit=M2C_FIELD(gUnitLists,void **,0);
+while(unit) { fn_8013B064(panel,unit); unit=M2C_FIELD(unit,void **,0x184); }
+unit=M2C_FIELD(gUnitLists,void **,0x3C);
+while(unit) { fn_8013B064(panel,unit); unit=M2C_FIELD(unit,void **,0x184); }
+Ui_AddChild(arg0,panel);
+}
+}
+
 void fn_801690B0(s32 arg0) {
  void Process_Goto(s32, s32);
  void Ui_UpdatePanelWidgets(s32);
@@ -13691,6 +13721,29 @@ extern "C" void *Ui_DtorGoldCostPanel(void *self, s16 doFree) {
     }
     return self;
 }
+
+extern "C" void fn_8017D8CC(void *arg0) {
+extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
+s32 h = (s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
+s32 w = (s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
+s16 right=w-3;
+s16 bottom=h-5;
+M2C_FIELD(arg0,s16 *,0x12)=3;
+M2C_FIELD(arg0,s16 *,0x14)=5;
+M2C_FIELD(arg0,s16 *,0x16)=w-3;
+M2C_FIELD(arg0,s16 *,0x18)=h-5;
+h=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
+w=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
+M2C_FIELD(arg0,s16 *,0x52)=w>>2;
+M2C_FIELD(arg0,s16 *,0x54)=(s16)(lbl_8036ABC0*h-lbl_8036ABC4);
+M2C_FIELD(arg0,s16 *,0x56)=0;
+h=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
+w=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
+M2C_FIELD(arg0,s16 *,0x7A)=w>>2;
+M2C_FIELD(arg0,s16 *,0x7C)=(s16)(lbl_8036ABC0*h+lbl_8036ABC8);
+M2C_FIELD(arg0,s16 *,0x7E)=0;
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus on
@@ -14609,40 +14662,38 @@ void fn_8017FC38(void *arg0) {
     fn_8013AD70(Ui_FindChild(arg0, 0x81, 0), *(s32 *)((u8 *)&gBattleState + 0xAC));
 }
 
-void fn_8017FC70(void *arg0, s32 arg1) {
-    void Ui_FindChild(s32, s32);
-    u32 *Unit_GetItemSlot(s32, s16);
-    s16 var_r3;
-    s16 var_r31;
-    u32 *temp_r29;
-    u8 var_r0;
-    
-    M2C_FIELD(arg0, s32 *, 0x58) = arg1;
-    var_r31 = 0;
-loop_18:
-    if (var_r31 < 8) {
-        if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-            var_r0 = 0;
-        } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-            var_r0 = 0;
-        } else {
-            temp_r29 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
-            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
-                var_r0 = 1;
-            } else {
-                var_r0 = *temp_r29 != 0U;
-            }
-        }
-        if (var_r0 == 0) {
-            var_r31 += 1;
-            goto loop_18;
-        }
-    }
-    var_r3 = -1;
-    if (var_r31 < 8) {
-        var_r3 = var_r31;
-    }
-    M2C_FIELD(arg0, s16 *, 0x4C) = var_r3;
+void fn_8017FC70(void *arg0) {
+void *Ui_FindChild(void *,s32,s32);
+void *Ui_ListGetSelected(void *);
+void *Unit_FindByPerson(void *);
+s32 fn_80036DE0(void *,void *);
+void fn_80036984(void *,s8);
+void fn_8013FEE0(void);
+void fn_8016A57C(void *);
+void fn_8014876C(void *,s32,s32);
+void Process_ClearFunc(void *);
+void fn_8008A290(s32,s32);
+extern u8 gFxChannels[];
+void *first, *second, *unit, *other, *node;
+s32 a,b;
+s16 index;
+first=Ui_FindChild(arg0,0x81,0);
+second=Ui_FindChild(arg0,0x82,0);
+unit=Ui_ListGetSelected(first);
+index=M2C_FIELD(second,s16 *,0x4E);
+node=M2C_FIELD(second,void **,0x64);
+if(index>=0) { while(index>0) { node=M2C_FIELD(node,void **,4); index--; } }
+else { while(index<0) { node=M2C_FIELD(node,void **,0); index++; } }
+other=Unit_FindByPerson(M2C_FIELD(node,void **,8));
+a=fn_80036DE0(unit,other);
+b=fn_80036DE0(other,unit);
+fn_80036984(unit,(s8)a);
+fn_80036984(other,(s8)b);
+fn_8013FEE0();
+fn_8016A57C(M2C_FIELD(arg0,void **,0x18));
+fn_8014876C(gFxChannels,100,250);
+Process_ClearFunc(arg0);
+fn_8008A290(1,0);
 }
 
 #pragma use_lmw_stmw on
