@@ -3280,6 +3280,30 @@ s32 fn_8021CBC8(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     return fn_80217C64(*arg0);
 }
 
+#pragma scheduling off
+void fn_8021CC10(s32 arg0, s32 arg1) {
+    extern u16 __CARDBlock[];
+    s32 fn_80219514(s32, u16, void *);
+    s32 __CARDPutControlBlock(void *, s32);
+
+    u8 *card;
+    void (*callback)(s32, s32);
+    s32 result;
+    s32 chan;
+
+    result = arg1;
+    chan = arg0;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    callback = *(void (**)(s32, s32))(card + 0xD0);
+    *(void **)(card + 0xD0) = NULL;
+    if ((result < 0) || (result = fn_80219514(chan, *(u16 *)(card + 0xBE), callback), result < 0)) {
+        __CARDPutControlBlock(card, result);
+        if (callback != NULL) {
+            (*callback)(chan, result);
+        }
+    }
+}
+#pragma scheduling reset
 s32 fn_8021CCB4(s32 chan, char *name, void *callback) {
     void fn_8021CC10(void);
     s32 fn_8021C080();
@@ -3525,37 +3549,32 @@ s32 fn_8021D28C(s32 chan, s32 fileNo, void *stat) {
  return fn_80217C64(chan);
 }
 
-s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
+#pragma inline_depth(0)
+s32 fn_8021D2D4(s32 chan, s32 index, void *dst) {
     s32 fn_80217B18(s32, s32 *);
-    s32 __CARDPutControlBlock(s32, s32);
-    s32 fn_8021BCCC(s32, u8 *);
+    s32 __CARDPutControlBlock(void *, s32);
+    s32 __CARDGetDirBlock(void *);
+    s32 fn_8021BCCC(void *, u8 *);
     void *memcpy(void *, const void *, u32);
-    s32 stack[0x14];
-    s32 ret;
+    s32 card;
+    s32 result;
     u8 *entry;
 
     if (index < 0 || index >= 0x7F) {
         return -0x80;
     }
-    
-    ret = fn_80217B18(arg0, &stack[0]);
-    if (ret < 0) {
-        return ret;
+    result = fn_80217B18(chan, &card);
+    if (result < 0) {
+        return result;
     }
-    
-    entry = (u8 *)__CARDGetDirBlock((void *)stack[0]) + (index << 6);
-    ret = fn_8021BCCC(stack[0], entry);
-    if (ret >= 0) {
+    entry = (u8 *)__CARDGetDirBlock((void *)card) + (index << 6);
+    result = fn_8021BCCC((void *)card, entry);
+    if (result >= 0) {
         memcpy(dst, entry, 0x40);
     }
-    
-    return __CARDPutControlBlock(stack[0], ret);
+    return __CARDPutControlBlock((void *)card, result);
 }
-
-#pragma opt_unroll off
-#pragma opt_strength_reduction off
-#pragma opt_common_subs off
-#pragma use_lmw_stmw on
+#pragma inline_depth(8)
 s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 fn_80217B18(s32, s32 *);
     s32 __CARDPutControlBlock(void *, s32);
