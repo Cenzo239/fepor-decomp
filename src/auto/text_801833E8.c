@@ -8232,7 +8232,6 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
-#pragma optimization_level 2
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -8263,8 +8262,8 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     z = 0;
     one = lbl_8036AE20;
     self = arg0;
-    tmp = self;
-    self2 = self;
+    tmp = arg0;
+    self2 = arg0;
     *(void **)self = lbl_8028FDB0;
     e1 = (s16)arg1;
     *(s32 *)((u8 *)self + 4) = z;
