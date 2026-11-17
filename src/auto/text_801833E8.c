@@ -2862,12 +2862,11 @@ void fn_8018B31C(void *arg0) {
 #pragma global_optimizer on
 #pragma fp_contract on
 void fn_8018B3AC(void *arg0) {
-    extern f32 lbl_8036ACEC;
-    f32 v;
-    f32 c;
     f32 *ptr;
+    f32 c;
+    f32 v;
 
-    c = lbl_8036ACEC;
+    c = 0.0f;
     ptr = *(f32 **)((u8 *)arg0 + 0x30);
     v = ptr[1];
     *(f32 *)((u8 *)arg0 + 0x34) = v;
