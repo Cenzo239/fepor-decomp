@@ -18367,68 +18367,30 @@ void fn_801E21B0(void *arg0) {
 }
 
 extern u8 gSystemSave[72];
-void fn_801E21EC(void *arg0, s8 arg1) {
-    s32 var_ctr;
-    void *var_r7;
-    u32 temp_r5;
-    s32 temp_r8;
-    s32 temp_r8_2;
-
-    var_ctr = 2;
-    var_r7 = arg0;
-loop_1:
-    temp_r8 = (s32) var_r7 + 0x2000;
-    var_r7 = (void *) temp_r8;
-    temp_r5 = *(u32 *) ((s32) var_r7 + 0x40);
-    if ((temp_r5 - 0x4645) != 0x384a) {
-        goto skip1;
-    }
-    temp_r5 = *(u32 *) ((s32) var_r7 + 0x44);
-    if ((temp_r5 - 0x2005) != 0x201) {
-skip1:
-        temp_r8_2 = temp_r8 + 0x4000;
-        var_r7 = (void *) temp_r8_2;
-        temp_r5 = *(u32 *) ((s32) var_r7 + 0x40);
-        if ((temp_r5 - 0x4645) != 0x384a) {
-            goto skip2;
-        }
-        temp_r5 = *(u32 *) ((s32) var_r7 + 0x44);
-        if ((temp_r5 - 0x2005) != 0x201) {
-skip2:
-            temp_r8_2 = temp_r8_2 + 0x4000;
-            var_r7 = (void *) temp_r8_2;
-            temp_r5 = *(u32 *) ((s32) var_r7 + 0x40);
-            if ((temp_r5 - 0x4645) != 0x384a) {
-                goto skip3;
-            }
-            temp_r5 = *(u32 *) ((s32) var_r7 + 0x44);
-            if ((temp_r5 - 0x2005) != 0x201) {
-skip3:
-                temp_r8 = temp_r8_2 + 0x4000;
-                var_ctr -= 1;
-                if (var_ctr == 0) {
-                    var_r7 = NULL;
-                } else {
-                    goto loop_1;
-                }
-            } else {
-                if ((u8) arg1 != *(u8 *) ((s32) var_r7 + 0x62)) {
-                    goto skip3;
-                }
-            }
-        } else {
-            if ((u8) arg1 != *(u8 *) ((s32) var_r7 + 0x62)) {
-                goto skip2;
-            }
-        }
-    } else {
-        if ((u8) arg1 != *(u8 *) ((s32) var_r7 + 0x62)) {
-            goto skip1;
-        }
-    }
-
-    *(void **) ((s32) arg0 + 4) = var_r7;
-    gSystemSave[0x47] = arg1;
+void fn_801E21EC(void **arg0,s32 arg1) {
+#pragma cplusplus on
+struct Save {
+u8 *base;
+void *find(s32 id) {
+s32 off;
+u8 *slot;
+s32 i;
+u8 valid;
+i=0; off=0x2000;
+for(;i<6;i++) {
+slot=base+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && id==*(u8 *)(slot+0x62)) return slot;
+off+=0x4000;
+}
+return NULL;
+}
+};
+arg0[1]=((Save *)arg0)->find(arg1);
+gSystemSave[0x47]=arg1;
+#pragma cplusplus reset
 }
 
 void *fn_801E2324(void **arg0,s32 arg1) {
