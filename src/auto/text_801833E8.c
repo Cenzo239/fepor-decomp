@@ -4929,8 +4929,8 @@ extern "C" void fn_801903D8(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v10(arg1);
 }
 
-void fn_80190440(void *arg0) {
 #pragma cplusplus on
+extern "C" void fn_80190440(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -4993,9 +4993,8 @@ void fn_80190440(void *arg0) {
         Prim2D_ClearCallbacks();
         Prim2D_PrepareTex();
     }
-#pragma cplusplus reset
 }
-
+#pragma cplusplus reset
 extern "C" void fn_80190590(void *arg0) {
     void fn_80159898(s32, s32, s16, s16, s32, s32);
     struct Obj {
@@ -11561,6 +11560,27 @@ s32 fn_8019D958(s32 arg0, s32 arg1) {
     temp_f1 = (f32) arg1;
     fn_8019588C(obj, (s32) (temp_f1 / lbl_8036AF48));
     return 1;
+}
+
+s32 fn_8019D9BC(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4) {
+typedef struct { f32 x,y,z; } Vec3;
+extern Vec3 lbl_8027AC38;
+extern u8 gBattleMap[];
+extern f32 lbl_8036AF48,lbl_8036AF58,lbl_8036AF5C;
+void *EventArrow_Get(s32);
+f32 Map_SampleHeight(void*,f32,f32);
+void fn_801958C8(void*,s32,void*);
+Vec3 copy;
+Vec3 pos;
+void *obj=EventArrow_Get(arg0);
+if(arg4<=-1000) arg4=(s32)(Map_SampleHeight(gBattleMap,lbl_8036AF58+(f32)arg2,lbl_8036AF58+(f32)arg3)-lbl_8036AF5C);
+pos=lbl_8027AC38;
+pos.x=lbl_8036AF58+(f32)arg2;
+pos.y=lbl_8036AF58+(f32)arg3;
+pos.z=(f32)arg4;
+copy=pos;
+fn_801958C8(obj,(s32)((f32)arg1/lbl_8036AF48),&copy);
+return 1;
 }
 
 void fn_8019DB28(void) {
