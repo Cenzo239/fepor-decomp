@@ -664,6 +664,7 @@ s32 fn_8005BB2C(void) {
     return 1;
 }
 
+void fn_8005C8D8();
 void fn_8005BC8C() {
     void fn_8005C8D8();
     fn_8005C8D8();
