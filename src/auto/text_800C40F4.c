@@ -14080,6 +14080,19 @@ void Card_RequestWrite(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Process_CreateChild(lbl_8028E420, arg4);
 }
 
+void fn_800E9BCC(s32 proc) {
+struct CardWork { u8 workArea[0xA000]; s32 chan; volatile s32 result; s32 sectorSize; s32 unkA00C; s32 unkA010; s32 unkA014; u8 unkA018; u8 unkA019; u8 busy; u8 padA01B; u8 fileInfo[0x14]; u32 tick; s32 unkA034; };
+s32 OSGetTick(void); void fn_8021C02C(void*);void fn_8021B20C(s32);void DebugPrint(void*,...);
+extern struct CardWork gCardWork;extern u8 gCardStrings[];
+u8 skip;u8 *msg;u32 tickRate,conv;
+if(gCardWork.result<0){Process_Goto(proc,0x63);gCardWork.busy=0;skip=1;}else skip=0;
+if(skip==0){
+if(gCardWork.unkA019!=0){fn_8021C02C(gCardWork.fileInfo);gCardWork.unkA019=0;}
+if(gCardWork.unkA018!=0&&gCardWork.unkA018!=0){fn_8021B20C(gCardWork.chan);gCardWork.unkA018=0;}
+gCardWork.tick=OSGetTick()-gCardWork.tick;msg=gCardStrings+0x7d;tickRate=*(u32*)0x800000f8;conv=(tickRate>>2)/1000U;
+DebugPrint(msg,gCardWork.tick/conv);
+}}
+
 void fn_800E9CE4(s32 arg0) {
     void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
