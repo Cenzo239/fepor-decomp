@@ -872,6 +872,7 @@ fail:
 }
 
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 #pragma cplusplus on
 extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     s32 strlen(char *);
@@ -930,19 +931,22 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     void *scratch;
     void *obj;
     s8 flag;
+    s32 n;
+    void *sz;
 
     *(f32 *)&pos.z = 0.0f;
     *(f32 *)&pos.y = 0.0f;
     *(f32 *)&pos.x = 0.0f;
-    if (String_Compare(name, 0, (void *)name->size, (char *)gActorXmlStrs + 0x4E, strlen((char *)gActorXmlStrs + 0x4E)) != 0) {
+    n = strlen((char *)gActorXmlStrs + 0x4E);
+    sz = (void *)name->size;
+    if (String_Compare(name, 0, sz, (char *)gActorXmlStrs + 0x4E, n) != 0) {
         ((GetPosFn)((void **)*(void **)((u8 *)self + 0x40))[0xE])(&got, self, 0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
         *(f32 *)&pos.x = got.x;
         *(f32 *)&pos.z = got.z;
         *(f32 *)&pos.y = 0.0f;
-        obj = Heap_Alloc(0xC8);
-        if (obj != NULL) {
+        if ((obj = Heap_Alloc(0xC8)) != 0) {
             Camera_GetLookAt(&tmpVec, self);
             copyA = tmpVec;
             copyB = pos;
@@ -964,6 +968,7 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     }
 }
 #pragma cplusplus reset
+#pragma optimization_level reset
 #pragma use_lmw_stmw reset
 
 extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
@@ -4374,88 +4379,89 @@ void fn_8011A470(s32 arg0) {
 }
 
 void fn_8011A4E4(s32 arg0) {
-    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK gUiMenuDrawVtbl;
-    extern M2C_UNK lbl_80286590;
-    extern M2C_UNK lbl_80286664;
-    extern M2C_UNK lbl_8028F7EC;
-    extern M2C_UNK lbl_8028FA3C;
-    extern M2C_UNK lbl_8028FABC;
-    extern M2C_UNK lbl_8028FB10;
-    extern M2C_UNK lbl_8028FB64;
-    extern M2C_UNK lbl_8028FBB8;
-    extern M2C_UNK lbl_8028FC0C;
-    extern M2C_UNK lbl_8028FC60;
-    extern M2C_UNK lbl_8028FCB4;
-    extern M2C_UNK lbl_8028FD08;
-    extern M2C_UNK lbl_8028FD5C;
-    extern M2C_UNK gUiContext;
-    extern u8 lbl_803679F5;
-    extern M2C_UNK *lbl_803679F8;
-    extern u8 lbl_803679FC;
-    extern M2C_UNK *lbl_80367A00;
-    extern u8 lbl_80367A04;
-    extern M2C_UNK *lbl_80367A08;
-    extern u8 lbl_80367A0C;
-    extern M2C_UNK *lbl_80367A10;
-    extern u8 lbl_80367A14;
-    extern M2C_UNK *lbl_80367A18;
-    extern u8 lbl_80367A1C;
-    extern M2C_UNK *lbl_80367A20;
-    extern u8 lbl_80367A24;
-    extern M2C_UNK *lbl_80367A28;
-    extern u8 lbl_80367A2C;
-    extern M2C_UNK *lbl_80367A30;
-    extern u8 lbl_80367A34;
-    extern M2C_UNK *lbl_80367A38;
-    extern u8 lbl_80367A3C;
-    extern M2C_UNK lbl_80367A40;
-    if ((s8) lbl_803679F5 == 0) {
+    void Ui_CreateMenu(void *, s32, s32);
+    extern u8 gUiContext[];
+    extern u8 gUiMenuDrawVtbl[];
+    extern u8 lbl_80286664[];
+    extern u8 lbl_80286590[];
+    extern u8 lbl_8028F7EC[];
+    extern u8 lbl_8028FA3C[];
+    extern u8 lbl_8028FABC[];
+    extern u8 lbl_8028FB10[];
+    extern u8 lbl_8028FB64[];
+    extern u8 lbl_8028FBB8[];
+    extern u8 lbl_8028FC0C[];
+    extern u8 lbl_8028FC60[];
+    extern u8 lbl_8028FCB4[];
+    extern u8 lbl_8028FD08[];
+    extern u8 lbl_8028FD5C[];
+    extern s8 lbl_803679F5;
+    extern void *lbl_803679F8;
+    extern s8 lbl_803679FC;
+    extern void *lbl_80367A00;
+    extern s8 lbl_80367A04;
+    extern void *lbl_80367A08;
+    extern s8 lbl_80367A0C;
+    extern void *lbl_80367A10;
+    extern s8 lbl_80367A14;
+    extern void *lbl_80367A18;
+    extern s8 lbl_80367A1C;
+    extern void *lbl_80367A20;
+    extern s8 lbl_80367A24;
+    extern void *lbl_80367A28;
+    extern s8 lbl_80367A2C;
+    extern void *lbl_80367A30;
+    extern s8 lbl_80367A34;
+    extern void *lbl_80367A38;
+    extern s8 lbl_80367A3C;
+    extern void *lbl_80367A40[2];
+
+    if (lbl_803679F5 == 0) {
+        lbl_803679F8 = lbl_8028FD5C;
         lbl_803679F5 = 1;
-        lbl_803679F8 = &lbl_8028FD5C;
     }
-    if ((s8) lbl_803679FC == 0) {
+    if (lbl_803679FC == 0) {
+        lbl_80367A00 = lbl_8028FD08;
         lbl_803679FC = 1;
-        lbl_80367A00 = &lbl_8028FD08;
     }
-    if ((s8) lbl_80367A04 == 0) {
+    if (lbl_80367A04 == 0) {
+        lbl_80367A08 = lbl_8028FCB4;
         lbl_80367A04 = 1;
-        lbl_80367A08 = &lbl_8028FCB4;
     }
-    if ((s8) lbl_80367A0C == 0) {
+    if (lbl_80367A0C == 0) {
+        lbl_80367A10 = lbl_8028FC60;
         lbl_80367A0C = 1;
-        lbl_80367A10 = &lbl_8028FC60;
     }
-    if ((s8) lbl_80367A14 == 0) {
+    if (lbl_80367A14 == 0) {
+        lbl_80367A18 = lbl_8028FC0C;
         lbl_80367A14 = 1;
-        lbl_80367A18 = &lbl_8028FC0C;
     }
-    if ((s8) lbl_80367A1C == 0) {
+    if (lbl_80367A1C == 0) {
+        lbl_80367A20 = lbl_8028FBB8;
         lbl_80367A1C = 1;
-        lbl_80367A20 = &lbl_8028FBB8;
     }
-    if ((s8) lbl_80367A24 == 0) {
+    if (lbl_80367A24 == 0) {
+        lbl_80367A28 = lbl_8028FB64;
         lbl_80367A24 = 1;
-        lbl_80367A28 = &lbl_8028FB64;
     }
-    if ((s8) lbl_80367A2C == 0) {
+    if (lbl_80367A2C == 0) {
+        lbl_80367A30 = lbl_8028FB10;
         lbl_80367A2C = 1;
-        lbl_80367A30 = &lbl_8028FB10;
     }
-    if ((s8) lbl_80367A34 == 0) {
+    if (lbl_80367A34 == 0) {
+        lbl_80367A38 = lbl_8028FABC;
         lbl_80367A34 = 1;
-        lbl_80367A38 = &lbl_8028FABC;
     }
-    if ((s8) lbl_80367A3C == 0) {
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &gUiMenuDrawVtbl;
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_80286664;
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_80286590;
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 0) = &lbl_8028F7EC;
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_8028FA3C;
+    if (lbl_80367A3C == 0) {
+        lbl_80367A40[1] = gUiMenuDrawVtbl;
+        lbl_80367A40[1] = lbl_80286664;
+        lbl_80367A40[1] = lbl_80286590;
+        lbl_80367A40[0] = lbl_8028F7EC;
+        lbl_80367A40[1] = lbl_8028FA3C;
         lbl_80367A3C = 1;
     }
-    M2C_FIELD(&gUiContext, s8 *, 8) = 0;
-    Ui_CreateMenu(&lbl_80367A40, arg0, 0);
+    gUiContext[8] = 0;
+    Ui_CreateMenu(lbl_80367A40, arg0, 0);
 }
 
 void fn_8011A694(void) {
