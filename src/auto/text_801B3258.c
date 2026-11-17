@@ -72,6 +72,12 @@ static inline void InitUnitHireWidget(u8 *w) {
         *(s16 *)(w+0x40) = 20;
         *(s16 *)(w+0x42) = 8;
 }
+struct UnitHireWidgetFields {
+    void *vtable; s32 refcount;
+    s16 id, x, y, right, bottom, offX, offY, width, height, scrollX, scrollY;
+    u8 color[4]; s16 style, mode; f32 scale[3]; u32 flags, unk38;
+    void *entry; s16 unk40, unk42;
+};
 struct UnitHireWidget {
 virtual void v0();
 virtual void v1();
@@ -3132,7 +3138,6 @@ extern "C" void fn_801BA3E8(void *arg0) {
 }
 
 #pragma cplusplus on
-#pragma optimization_level 3
 #pragma opt_common_subs off
 extern "C" void fn_801BA47C(void *arg0) {
     void *Heap_Alloc(s32);
@@ -3148,17 +3153,18 @@ extern "C" void fn_801BA47C(void *arg0) {
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029186C[], gUiContext[], gUiUnitPanelStrings[];
     extern f32 lbl_8036B2D8;
     s16 pos[2];
-    UnitHireMenu *menu;
     s32 i;
+    UnitHireMenu *menu;
     UnitHireItem *item;
     u8 *w;
     void *self = arg0;
     void *child;
     w = (u8 *)Heap_Alloc(0x4C);
     if (w) {
-        *(void **)(w+0) = lbl_8028FDB0;
+        void **vt = (void **)w;
+        *vt = lbl_8028FDB0;
         *(s32 *)(w+4) = 0;
-        *(void **)(w+0) = lbl_80292230;
+        *vt = lbl_80292230;
         *(s16 *)(w+8) = -1;
         *(s16 *)(w+0xA) = 0x260;
         *(s16 *)(w+0xC) = 0x7C;
@@ -3178,7 +3184,7 @@ extern "C" void fn_801BA47C(void *arg0) {
         *(f32 *)(w+0x30) = 1.0f;
         *(s32 *)(w+0x34) = 0;
         *(s32 *)(w+0x38) = 0;
-        *(void **)(w+0) = lbl_8029186C;
+        *vt = lbl_8029186C;
         *(s32 *)(w+0x3C) = 0;
         *(s16 *)(w+0x40) = 20;
         *(s16 *)(w+0x42) = 8;
@@ -3210,7 +3216,6 @@ extern "C" void fn_801BA47C(void *arg0) {
     child=Ui_FindChild(self,-0x1000,0);
     if(child) Ui_SetWidgetText(child,gUiUnitPanelStrings+0xF8);
 }
-#pragma optimization_level reset
 #pragma opt_common_subs reset
 #pragma cplusplus reset
 
@@ -11986,15 +11991,10 @@ extern "C" void fn_801CCE7C(void *arg0) {
 
 #pragma scheduling on
 u32 NameGrid_GetCharAtCursor(void *arg0) {
-    u32 fn_801CD480(void *, s16, s16);
-    struct NameGrid {
-        u8 pad0[0x3C];
-        void *grid;
-        u8 pad40[8];
-        s16 x;
-        s16 y;
-    } *self = (struct NameGrid *)arg0;
-    return fn_801CD480(self->grid, self->x, self->y);
+ u32 fn_801CD480(void *, s16, s16);
+ s16 x = *(s16 *)((u8 *)arg0 + 0x48);
+ s16 y = *(s16 *)((u8 *)arg0 + 0x4A);
+ return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), x, y);
 }
 #pragma scheduling reset
 #pragma cplusplus on
