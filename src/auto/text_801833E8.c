@@ -6116,6 +6116,72 @@ void fn_801919B8(void *arg0) {
 #pragma cplusplus reset
 }
 
+void fn_80191AD0(void *panel) {
+    extern u8 gUiContext[], gBattleState[], gConvoy[];
+    void *Ui_FindChild(void *, s32, s32);
+    u32 UnitRef_GetValue(void *);
+    void fn_8014D268(void *, s32);
+    s32 Ui_ListGetSelected(void *);
+    void fn_80094A54(s32, void *);
+    u8 fn_8014D8DC(void *);
+    void fn_800C3AB0(void *, void *);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void TalkUi_ShowMsg(s32);
+    void Ui_LayoutUnitList(void *);
+    void Ui_SetWidgetText(void *, s32);
+    void Process_Goto(void *, s32);
+    s16 pos[2];
+    void *list;
+    void *item;
+    void *widget;
+    void *unit;
+    void *child;
+    s32 text;
+    s32 price;
+    u8 *state;
+    void *entry;
+
+    widget = Ui_FindChild(panel, 4, 0);
+    switch (gUiContext[8]) {
+    case 0x81:
+        list = M2C_FIELD(panel, void **, 0x50);
+        item = M2C_FIELD(Ui_FindChild(panel, 2, 0), void **, 0x3C);
+        price = (u16)UnitRef_GetValue(item);
+        price = (s32)(M2C_FIELD(panel, f32 *, 0x64) * (f32)price);
+        state = gBattleState;
+        fn_8014D268(state, M2C_FIELD(state, s32 *, 0x18) - price);
+        if (M2C_FIELD(list, s16 *, 0x4E) != 0x7FFF) {
+            s32 selected = Ui_ListGetSelected(list);
+            entry = M2C_FIELD(item, void **, 0);
+            if (entry)
+                unit = M2C_FIELD(entry, void **, 0);
+            else
+                unit = 0;
+            fn_80094A54(selected, unit);
+        } else if (fn_8014D8DC(gBattleState)) {
+            entry = M2C_FIELD(item, void **, 0);
+            if (entry)
+                unit = M2C_FIELD(entry, void **, 0);
+            else
+                unit = 0;
+            fn_800C3AB0(gConvoy, unit);
+        }
+        break;
+    case 0x80:
+        pos[1] = M2C_FIELD(widget, s16 *, 0xC);
+        pos[0] = 0x260;
+        Ui_SlideWidgetChild(panel, widget, pos, 0);
+        TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(panel, void **, 0x68), s32 *, 0x14));
+        Ui_LayoutUnitList(panel);
+        text = M2C_FIELD(M2C_FIELD(panel, void **, 0x68), s32 *, 0x48);
+        child = Ui_FindChild(panel, -0x1000, 0);
+        if (child)
+            Ui_SetWidgetText(child, text);
+        Process_Goto(panel, 7);
+        break;
+    }
+}
+
 void fn_80191C7C(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
@@ -8773,53 +8839,42 @@ s32 fn_801964C8(s32 arg0) {
 }
 #pragma global_optimizer on
 s32 fn_80196558(void *arg0, void *arg1) {
-    s8 fn_8003A778(void *);
-    s8 fn_8003AA40(void *);
-    s8 fn_8003ACF8(void *);
-    s8 fn_8003AEB0(void *);
-    s8 fn_8003AF28(void *);
-    s8 Unit_GetMagAtk(void *);
-    s8 Unit_GetCarryWtLimit();
-    s8 temp_r26;
-    s8 temp_r27;
-    s8 temp_r28;
-    s8 temp_r29;
-    s8 temp_r30;
-    s8 temp_r31;
-    s8 temp_r3;
-    s8 temp_r5;
-    u8 temp_r24;
-    u8 var_r0;
-
-    temp_r24 = M2C_FIELD(arg0, u8 *, 0x1A8);
-    temp_r26 = Unit_GetCarryWtLimit();
-    temp_r27 = Unit_GetMagAtk(arg0);
-    temp_r28 = fn_8003AF28(arg0);
-    temp_r29 = fn_8003AEB0(arg0);
-    temp_r30 = fn_8003ACF8(arg0);
-    temp_r31 = fn_8003AA40(arg0);
-    temp_r3 = fn_8003A778(arg0);
-    temp_r5 = temp_r3 + M2C_FIELD(arg1, u8 *, 0x26);
-    if ((s8) temp_r24 != (s8) ((s8) temp_r24 + M2C_FIELD(arg1, u8 *, 0x1F))) {
-        var_r0 = 0;
-    } else if (temp_r26 != (s8) (temp_r26 + M2C_FIELD(arg1, u8 *, 0x20))) {
-        var_r0 = 0;
-    } else if (temp_r27 != (s8) (temp_r27 + M2C_FIELD(arg1, u8 *, 0x21))) {
-        var_r0 = 0;
-    } else if (temp_r29 != (s8) (temp_r29 + M2C_FIELD(arg1, u8 *, 0x23))) {
-        var_r0 = 0;
-    } else if (temp_r28 != (s8) (temp_r28 + M2C_FIELD(arg1, u8 *, 0x22))) {
-        var_r0 = 0;
-    } else if (temp_r30 != (s8) (temp_r30 + M2C_FIELD(arg1, u8 *, 0x24))) {
-        var_r0 = 0;
-    } else if (temp_r31 != (s8) (temp_r31 + M2C_FIELD(arg1, u8 *, 0x25))) {
-        var_r0 = 0;
-    } else if (temp_r3 != temp_r5) {
-        var_r0 = 0;
-    } else {
-        var_r0 = 1;
-    }
-    return var_r0 == 0;
+    u8 Unit_GetCarryWtLimit(void *);
+    u8 Unit_GetMagAtk(void *);
+    u8 fn_8003AF28(void *);
+    u8 fn_8003AEB0(void *);
+    u8 fn_8003ACF8(void *);
+    u8 fn_8003AA40(void *);
+    u8 fn_8003A778(void *);
+    u8 a,b,c,d,e,f,g,h;
+    s32 aa,bb,cc,dd,ee,ff,gg,hh;
+    u8 same;
+    a=M2C_FIELD(arg0,u8 *,0x1A8);
+    b=Unit_GetCarryWtLimit(arg0);
+    c=Unit_GetMagAtk(arg0);
+    d=fn_8003AF28(arg0);
+    e=fn_8003AEB0(arg0);
+    f=fn_8003ACF8(arg0);
+    g=fn_8003AA40(arg0);
+    h=fn_8003A778(arg0);
+    aa=(s8)a+M2C_FIELD(arg1,u8 *,0x1F);
+    bb=(s8)b+M2C_FIELD(arg1,u8 *,0x20);
+    cc=(s8)c+M2C_FIELD(arg1,u8 *,0x21);
+    dd=(s8)d+M2C_FIELD(arg1,u8 *,0x22);
+    ee=(s8)e+M2C_FIELD(arg1,u8 *,0x23);
+    ff=(s8)f+M2C_FIELD(arg1,u8 *,0x24);
+    gg=(s8)g+M2C_FIELD(arg1,u8 *,0x25);
+    hh=(s8)h+M2C_FIELD(arg1,u8 *,0x26);
+    if((s8)a!=(s8)aa) same=0;
+    else if((s8)b!=(s8)bb) same=0;
+    else if((s8)c!=(s8)cc) same=0;
+    else if((s8)e!=(s8)ee) same=0;
+    else if((s8)d!=(s8)dd) same=0;
+    else if((s8)f!=(s8)ff) same=0;
+    else if((s8)g!=(s8)gg) same=0;
+    else if((s8)h!=(s8)hh) same=0;
+    else same=1;
+    return same==0;
 }
 
 s32 fn_80196704(s32 arg0) {
@@ -11972,6 +12027,88 @@ void fn_8019D4B4(void *arg0) {
 void fn_8019D4F4(void *arg0) {
     M2C_UNK fn_8004FC70(s32, M2C_UNK);
     fn_8004FC70(M2C_FIELD(arg0, s32 *, 0x30), 5);
+}
+
+void fn_8019D51C(void *arg0, s32 arg1, char *arg2) {
+    void fn_80097AB4(void);
+    s16 fn_80097740(void);
+    void Event_AdvanceCmd(s32);
+    void **fn_80098094(void);
+    void **fn_8009809C(void);
+    void fn_80050BA8(void *, s32, s32);
+    char *strcpy(char *, char *);
+    void Process_Goto(void *, s32);
+    extern u8 gBattleMap[];
+    u8 *self;
+    void *tmp;
+    void *u38;
+    void *u3c;
+    u8 flag;
+    s8 x;
+    s8 y;
+    void *info;
+
+    self = (u8 *)arg0;
+    self[0x40] = 0;
+    *(s32 *)(self + 0x58) = arg1;
+    fn_80097AB4();
+    *(s16 *)(self + 0x56) = fn_80097740();
+    Event_AdvanceCmd(*(s16 *)(self + 0x56));
+    *(void **)(self + 0x30) = (void *)fn_80098094();
+    *(void **)(self + 0x34) = (void *)fn_8009809C();
+    tmp = *(void **)(*(void **)(self + 0x30));
+    if (tmp != 0) {
+        u38 = *(void **)((u8 *)tmp + 0x280);
+    } else {
+        u38 = 0;
+    }
+    *(void **)(self + 0x38) = u38;
+    tmp = *(void **)(*(void **)(self + 0x34));
+    if (tmp != 0) {
+        u3c = *(void **)((u8 *)tmp + 0x280);
+    } else {
+        u3c = 0;
+    }
+    *(void **)(self + 0x3C) = u3c;
+    if (*(void **)(self + 0x38) != 0) {
+        fn_80050BA8(*(void **)(self + 0x38), 0, 1);
+    }
+    if (*(void **)(self + 0x3C) != 0) {
+        fn_80050BA8(*(void **)(self + 0x3C), 0, 1);
+    }
+    if (arg2 != 0) {
+        strcpy((char *)(self + 0x41), arg2);
+    } else {
+        self[0x41] = 0;
+    }
+    u38 = *(void **)(self + 0x38);
+    flag = 0;
+    if (u38 != 0) {
+        info = *(void **)((u8 *)u38 + 0x190);
+        if (*(u8 *)((u8 *)info + 8) != 1) {
+            flag = 1;
+            goto check_done;
+        }
+    }
+    if (u38 != 0) {
+        x = ((s8 *)u38)[0x19E];
+        y = ((s8 *)u38)[0x19F];
+        if ((gBattleMap + x + (y << 6))[0x200D] != 0) {
+            flag = 1;
+        }
+    }
+    u3c = *(void **)(self + 0x3C);
+    if (u3c != 0) {
+        x = ((s8 *)u3c)[0x19E];
+        y = ((s8 *)u3c)[0x19F];
+        if ((gBattleMap + x + (y << 6))[0x200D] != 0) {
+            flag = 1;
+        }
+    }
+check_done:
+    if (flag == 0) {
+        Process_Goto(arg0, 0x63);
+    }
 }
 
 /* Register event-arrow script command handlers. */
