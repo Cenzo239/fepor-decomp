@@ -8984,6 +8984,38 @@ loop2_cond:
     }
     Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
 }
+
+extern "C" void fn_80174998(void *p, s32 x, s32 y, s32 style) {
+extern u16 lbl_802951B8[],lbl_80295160[];
+s16 width,height;
+struct Rect { static void set(void *p,s16 x,s16 y,s16 w,s16 h) {
+M2C_FIELD(p,s16 *,0x12)=x; M2C_FIELD(p,s16 *,0x14)=y; M2C_FIELD(p,s16 *,0x16)=w; M2C_FIELD(p,s16 *,0x18)=h; } };
+extern u16 lbl_8028FDB0[],lbl_80292230[];
+M2C_FIELD(p,void **,0)=lbl_8028FDB0;
+M2C_FIELD(p,s32 *,4)=0;
+M2C_FIELD(p,void **,0)=lbl_80292230;
+M2C_FIELD(p,s16 *,8)=-1;
+M2C_FIELD(p,s16 *,10)=x;
+M2C_FIELD(p,s16 *,12)=y;
+M2C_FIELD(p,s16 *,14)=(s16)x+0x108;
+M2C_FIELD(p,s16 *,16)=(s16)y+32;
+M2C_FIELD(p,s16 *,18)=0; M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0x108; M2C_FIELD(p,s16 *,24)=32;
+M2C_FIELD(p,s16 *,26)=0; M2C_FIELD(p,s16 *,28)=0;
+M2C_FIELD(p,u8 *,30)=255; M2C_FIELD(p,u8 *,31)=255; M2C_FIELD(p,u8 *,32)=255; M2C_FIELD(p,u8 *,33)=255;
+M2C_FIELD(p,s16 *,34)=style; M2C_FIELD(p,s16 *,36)=0;
+M2C_FIELD(p,f32 *,40)=1.0f; M2C_FIELD(p,f32 *,44)=1.0f; M2C_FIELD(p,f32 *,48)=1.0f;
+M2C_FIELD(p,u32 *,52)=0; M2C_FIELD(p,u32 *,56)=0;
+M2C_FIELD(p,void **,0)=lbl_802951B8;
+M2C_FIELD(p,s16 *,0x3c)=0; M2C_FIELD(p,s16 *,0x3e)=0;
+Rect::set(p,2,8,(s16)(M2C_FIELD(p,s16 *,0xe)-M2C_FIELD(p,s16 *,0xa))-2,(s16)(M2C_FIELD(p,s16 *,0x10)-M2C_FIELD(p,s16 *,0xc))-8);
+M2C_FIELD(p,void **,0)=lbl_80295160;
+M2C_FIELD(p,u32 *,0x40)=0;
+Rect::set(p,0x54,4,(s16)(M2C_FIELD(p,s16 *,0xe)-M2C_FIELD(p,s16 *,0xa))-6,(s16)(M2C_FIELD(p,s16 *,0x10)-M2C_FIELD(p,s16 *,0xc))-6);
+M2C_FIELD(p,s16 *,0x3c)=0; M2C_FIELD(p,s16 *,0x3e)=0;
+M2C_FIELD(p,u32 *,0x34)|=0x10;
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus on
@@ -11794,10 +11826,17 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     void fn_8013F1A0(void *, void *);
     void *fn_80179BC8(void *, s16, s16, s32, s32, s16);
     extern void *lbl_80292434[];
+    typedef struct {
+        u8 pad[0xa];
+        s16 a;
+        s16 c;
+        s16 e;
+        s16 ten;
+    } Pan;
     s32 x;
     s32 y;
     s32 half;
-    void *panel;
+    Pan *panel;
     void *child;
 
     fn_80179BC8(arg0, arg1, arg2, arg3, arg4, arg5);
@@ -11812,20 +11851,19 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     }
     *(void **)((u8 *)arg0 + 0x128) = child;
     half = (arg3 - 0x108) >> 1;
-    panel = *(void **)((u8 *)arg0 + 0x128);
+    panel = *(Pan **)((u8 *)arg0 + 0x128);
     x = half + -*(s16 *)((u8 *)arg0 + 0x12);
     {
         s16 p14 = *(s16 *)((u8 *)arg0 + 0x14);
-        s32 w = *(s16 *)((u8 *)panel + 0xe) - *(s16 *)((u8 *)panel + 0xa);
-        s32 h = *(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc);
-        *(s16 *)((u8 *)panel + 0xe) = (s16)((s16)x + (s16)w);
+        s32 w = panel->e - panel->a;
+        s32 h = panel->ten - panel->c;
+        panel->e = (s16)((s16)x + (s16)w);
         y = p14 + (s16)h;
-        *(s16 *)((u8 *)panel + 0xa) = x;
+        panel->a = x;
         y = -y;
     }
-    *(s16 *)((u8 *)panel + 0x10) =
-        (s16)((s16)y + (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
-    *(s16 *)((u8 *)panel + 0xc) = y;
+    panel->ten = (s16)((s16)y + (s16)(panel->ten - panel->c));
+    panel->c = y;
     fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x128));
     *(s16 *)((u8 *)arg0 + 0x88) = 0x14;
     *(s16 *)((u8 *)arg0 + 0x8a) = 0;
@@ -12002,6 +12040,47 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0xC2) = 0;
     return self;
 }
+
+extern "C" void *fn_80179BC8(void *p,s32 x,s32 y,s32 w,s32 h,s32 style) {
+void fn_80142060(void *);
+void fn_80143B24(void *);
+void fn_8022C260(void *,void *,void *,s32,s32);
+s32 fn_80179D40(s32);
+void *fn_80144610(void *,s16);
+extern u8 lbl_80292208[],lbl_80292488[];
+struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; };
+extern u16 lbl_8028FDB0[],lbl_80292230[];
+M2C_FIELD(p,void **,0)=lbl_8028FDB0;
+M2C_FIELD(p,s32 *,4)=0;
+M2C_FIELD(p,void **,0)=lbl_80292230;
+M2C_FIELD(p,s16 *,8)=-1;
+M2C_FIELD(p,s16 *,10)=x;
+M2C_FIELD(p,s16 *,12)=y;
+M2C_FIELD(p,s16 *,14)=(s16)x+(s16)w;
+M2C_FIELD(p,s16 *,16)=(s16)y+(s16)h;
+M2C_FIELD(p,s16 *,18)=0; M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=w; M2C_FIELD(p,s16 *,24)=h;
+M2C_FIELD(p,s16 *,26)=0; M2C_FIELD(p,s16 *,28)=0;
+M2C_FIELD(p,u8 *,30)=255; M2C_FIELD(p,u8 *,31)=255; M2C_FIELD(p,u8 *,32)=255; M2C_FIELD(p,u8 *,33)=255;
+M2C_FIELD(p,s16 *,34)=style; M2C_FIELD(p,s16 *,36)=0;
+M2C_FIELD(p,f32 *,40)=1.0f; M2C_FIELD(p,f32 *,44)=1.0f; M2C_FIELD(p,f32 *,48)=1.0f;
+M2C_FIELD(p,u32 *,52)=0; M2C_FIELD(p,u32 *,56)=0;
+
+M2C_FIELD(p,void **,0)=lbl_80292208;
+fn_80142060((u8 *)p+0x3c);
+M2C_FIELD(p,void **,0)=lbl_80292488;
+M2C_FIELD(p,u32 *,0x48)=0;
+M2C_FIELD(p,u8 *,0x4c)=1;
+M2C_FIELD(p,u8 *,0x4d)=0;
+M2C_FIELD(p,s16 *,0x7c)=-1; M2C_FIELD(p,s16 *,0x7e)=-1;
+M2C_FIELD(p,s16 *,0x80)=0; M2C_FIELD(p,f32 *,0x84)=0.0f;
+M2C_FIELD(p,s16 *,0x88)=0; M2C_FIELD(p,s16 *,0x8a)=0;
+M2C_FIELD(p,s16 *,0x8c)=0; M2C_FIELD(p,s16 *,0x8e)=0;
+fn_8022C260((u8 *)p+0x90,(void *)fn_80179D40,(void *)fn_80144610,12,11);
+M2C_FIELD(p,u32 *,0x11c)=0; M2C_FIELD(p,u32 *,0x120)=0;
+fn_80143B24(p); ((Obj *)p)->v8(); return p;
+}
+
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
@@ -16782,6 +16861,53 @@ void fn_80182F50(void) {
     Map_HideMoveLimitView();
 }
 
+#pragma global_optimizer off
+void fn_80183184(void *arg0) {
+    void Map_FillLayer(void *, s32, s32);
+    void Map_SelectRangeBuffer(void *, s32);
+    void *Job_GetByJid(void *);
+    void fn_800227F8(void *, void *);
+    void fn_80022748(void *, s32);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void Map_ShowMoveLimitView(void);
+    void BattleState_SetCamPos(void *, f32, f32);
+    extern u8 gBattleMap[];
+    extern u8 gBattleState[];
+    extern u8 lbl_80278BB8[];
+    u8 *unit;
+    u8 *coords;
+    u8 y;
+    u8 x;
+    u8 camX;
+    u8 camY;
+
+    unit = *(u8 **)gUiContext;
+    Map_FillLayer(gBattleMap, 8, 0);
+    Map_SelectRangeBuffer(gBattleMap, 5);
+    fn_800227F8(gBattleMap, Job_GetByJid(lbl_80278BB8 + 0xEE));
+    fn_80022748(gBattleMap, 0);
+    Map_FloodMoveRange(gBattleMap, unit[0x19E], unit[0x19F], 0xC8, 0, 0);
+    Map_ShowMoveLimitView();
+
+    coords = *(u8 **)((u8 *)arg0 + 0x30);
+    ((u8 *)arg0)[0x34] = coords[0];
+    ((u8 *)arg0)[0x35] = coords[1];
+    ((u8 *)arg0)[0x36] = coords[2];
+    ((u8 *)arg0)[0x37] = coords[3];
+
+    coords = *(u8 **)((u8 *)arg0 + 0x30);
+    x = coords[2];
+    if ((s8)x < 0 || (y = coords[3], (s8)y < 0) ||
+        ((s16 *)(gBattleMap + 0x610E))[(s8)x + ((s8)y << 6)] < 0) {
+        camX = unit[0x19E];
+        camY = unit[0x19F];
+    } else {
+        camX = x;
+        camY = y;
+    }
+    BattleState_SetCamPos(gBattleState, (f32)(s8)camX, (f32)(s8)camY);
+}
+#pragma global_optimizer on
 void fn_801832F8(s32 arg0) {
     extern u8 lbl_803681F0;
     extern u8 lbl_80278BB8[440];
