@@ -5660,72 +5660,43 @@ s32 fn_800BA75C(s8 arg0, s8 arg1, s8 arg2) {
 }
 
 s32 fn_800BA784(void) {
-    M2C_UNK Allegiance_FillMask(M2C_UNK, M2C_UNK *);
-    M2C_UNK Map_RefreshUnitMap(M2C_UNK *);
-    M2C_UNK fn_8003DFB8();
-    M2C_UNK Unit_SeparateRescue(u8, u8);
-    M2C_UNK fn_800C1060();
-    extern M2C_UNK gUnits;
-    extern M2C_UNK gUnitLists;
-    extern M2C_UNK gBattleMap;
-    
-    s32 sp10;
-    s32 sp8;
-    u8 var_r29;
-    u8 var_r31;
-    void *temp_r30;
-    void *temp_r30_2;
-    void *var_r3;
-    void *var_r3_2;
-    void *var_r3_3;
-
-    Allegiance_FillMask(3, &sp10);
-    var_r31 = 1;
-    do {
-        if (var_r31 != 0) {
-            var_r3 = &gUnits + ((var_r31 - 1) * 0x280);
-        } else {
-            var_r3 = NULL;
-        }
-        if (((u32) M2C_FIELD(var_r3, u32 *, 0x188) != 0U) && ((u8) *(&sp10 + M2C_FIELD(M2C_FIELD(var_r3, void **, 0x190), u8 *, 8)) != 0)) {
-            temp_r30 = M2C_FIELD(var_r3, void **, 0x194);
-            if ((temp_r30 != NULL) && (M2C_FIELD(var_r3, s32 *, 0x1A0) & 2)) {
-                Unit_SeparateRescue(M2C_FIELD(var_r3, u8 *, 0x19E), M2C_FIELD(var_r3, u8 *, 0x19F));
-                if (temp_r30 != NULL) {
-                    M2C_FIELD(temp_r30, s32 *, 0x1A0) = (s32) (M2C_FIELD(temp_r30, s32 *, 0x1A0) & 0xFFFFFFFE);
-                }
-            }
-        }
-        var_r31 += 1;
-    } while ((s32) var_r31 <= 0x9F);
-    
-    var_r3_2 = M2C_FIELD(&gUnitLists, void **, 4);
-loop_13:
-    if (var_r3_2 != NULL) {
-        temp_r30_2 = M2C_FIELD(var_r3_2, void **, 0x180);
-        fn_8003DFB8();
-        var_r3_2 = temp_r30_2;
-        goto loop_13;
-    }
-    
-    Allegiance_FillMask(3, &sp8);
-    var_r29 = 1;
-    do {
-        if (var_r29 != 0) {
-            var_r3_3 = &gUnits + ((var_r29 - 1) * 0x280);
-        } else {
-            var_r3_3 = NULL;
-        }
-        if (((u32) M2C_FIELD(var_r3_3, u32 *, 0x188) != 0U) && ((u8) *(&sp8 + M2C_FIELD(M2C_FIELD(var_r3_3, void **, 0x190), u8 *, 8)) != 0)) {
-            fn_8003DFB8();
-        }
-        var_r29 += 1;
-    } while ((s32) var_r29 <= 0x9F);
-    
-    Map_RefreshUnitMap(&gBattleMap);
-    fn_800C0658();
-    fn_800C1060();
-    return 1;
+void Allegiance_FillMask(s32,u8 *);
+void Unit_SeparateRescue(void *,u8,u8);
+void fn_8003DFB8(void *);
+void Map_RefreshUnitMap(void *);
+void fn_800C0658(void);
+void fn_800C1060(void);
+extern u8 gUnits[],gUnitLists[],gBattleMap[];
+u8 mask1[8],mask2[8];
+u8 *unit,*rescued;
+s32 i;
+{
+Allegiance_FillMask(3,mask1);
+for(i=1;i<=159;i++){
+unit=(u8)i ? gUnits+((u8)i-1)*0x280:0;
+if(*(u32*)(unit+0x188)&&mask1[(*(u8**)(unit+0x190))[8]]){
+rescued=*(u8**)(unit+0x194);
+if(rescued&&(*(u32*)(unit+0x1a0)&2)){
+Unit_SeparateRescue(unit,unit[0x19e],unit[0x19f]);
+if(rescued) *(u32*)(rescued+0x1a0)&=~1;
+}
+}
+}
+}
+for(unit=*(u8**)(gUnitLists+4);unit;unit=rescued){
+rescued=*(u8**)(unit+0x180);
+fn_8003DFB8(unit);
+}
+{
+s32 j;
+Allegiance_FillMask(3,mask2);
+for(j=1;j<=159;j++){
+unit=(u8)j ? gUnits+((u8)j-1)*0x280:0;
+if(*(u32*)(unit+0x188)&&mask2[(*(u8**)(unit+0x190))[8]]) fn_8003DFB8(unit);
+}
+}
+Map_RefreshUnitMap(gBattleMap);
+fn_800C0658();fn_800C1060();return 1;
 }
 
 s32 fn_800BA8F8(u8 arg0) {
@@ -9343,53 +9314,41 @@ void fn_800C1208(void) {
     DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
 }
 
-s32 fn_800C1360(s32 arg0, s32 arg1, s32 arg2)
+void fn_800C1360(void *arg0)
 {
-    s32 var_r30;
-    s32 var_r29;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 temp_r7;
-    s32 temp_r8;
-    
-    if (arg0 <= 0)
-        return -1;
-        
-    if (arg2 < 0)
-        arg2 = 0;
-        
-    var_r30 = 0;
-    var_r29 = 0;
-    
-    do {
-        temp_r3 = var_r30;
-        if ((temp_r3 & 0x1) == 0)
-            temp_r4 = arg2;
-        else
-            temp_r4 = 0;
-            
-        temp_r5 = (arg1 - arg1 * temp_r4) >> 14;
-        temp_r6 = temp_r5 + arg2;
-        
-        if (arg0 < temp_r6) {
-            temp_r7 = var_r30;
-            if ((temp_r7 & 0x1) == 0)
-                temp_r8 = 0;
-            else
-                temp_r8 = arg2;
-                
-            arg2 = temp_r8 + arg2;
-            var_r30++;
-        } else {
-            arg2 = temp_r6;
-            var_r30++;
+    extern u8 *gMapBlendBufs[4];
+    extern s32 gMapBlendBufIndex;
+    void DCFlushRange(void *, u32);
+    void Process_ClearFunc(void *);
+    s32 i, j;
+    u8 *dst;
+    s32 t, inv;
+    s32 a, b, loA, loB;
+    u8 *src, *next;
+    M2C_FIELD(arg0, s32*, 0x60)++;
+    next = gMapBlendBufs[(gMapBlendBufIndex + 2) % 3];
+    src = gMapBlendBufs[(gMapBlendBufIndex + 1) % 3];
+    dst = gMapBlendBufs[gMapBlendBufIndex];
+    t = M2C_FIELD(arg0, s32*, 0x60);
+    inv = 16 - t;
+    for (i=0;i<128;i++) {
+        for (j=0;j<32;j++) {
+            {
+            a = *src++;
+            b = *next++;
+            loA = a & 15; a &= 240; loB = b & 15; b &= 240;
+            *dst++ = ((loB*t + loA*inv)>>4) + (((b*t + a*inv)>>4)&240);
+            }
+            {
+            a = *src++;
+            b = *next++;
+            loA = a & 15; a &= 240; loB = b & 15; b &= 240;
+            *dst++ = ((loB*t + loA*inv)>>4) + (((b*t + a*inv)>>4)&240);
+            }
         }
-        
-    } while (var_r30 < 10);
-    
-    return arg2;
+    }
+    DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
+    if (M2C_FIELD(arg0, s32*, 0x60)==16) Process_ClearFunc(arg0);
 }
 
 void Map_SyncBlendBuffers(void *proc) {
@@ -10239,6 +10198,42 @@ s32 fn_800C39A4(void *convoy, void *item) {
  return -1;
 }
 
+#pragma optimization_level 3
+s32 fn_800C3AB0(void *convoy, s32 name) {
+    void Item_Init(void *);
+    void Item_SetByName(void *, s32);
+    void Item_Copy(void *, void *);
+    void Item_Destroy(void *, s32);
+    u8 item[8];
+    s32 i;
+    s32 result;
+    s32 slot;
+    u8 t;
+
+    Item_Init(item);
+    Item_SetByName(item, name);
+    i = 0;
+    t = item[5];
+    item[5] = (u8)__rlwimi(t, i, 7, 24, 24);
+
+    for (; i < 200; i++) {
+        if (*(void **)((char *)convoy + i * 8) == NULL) {
+            slot = i;
+            goto found;
+        }
+    }
+    slot = -1;
+found:
+    if (slot < 0) {
+        result = 0;
+    } else {
+        Item_Copy((char *)convoy + (slot << 3), item);
+        result = 1;
+    }
+    Item_Destroy(item, -1);
+    return result;
+}
+#pragma optimization_level reset
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
