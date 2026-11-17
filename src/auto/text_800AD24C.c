@@ -1916,47 +1916,43 @@ void fn_800B26B0(s32 arg0, u32 arg1) {
 
 void fn_800B27BC(void) {
     u8 Sound_IsReady(void);
-    extern u8 gSoundSys[];
+    extern u16 gSoundSys[];
     u8 *base;
-    void *unit;
+    u16 bits;
+    u8 *unit;
     s32 flag;
 
     if (Sound_IsReady() != 0) {
-        base = gSoundSys;
+        base = (u8 *)gSoundSys;
         if (*(u16 *)(base + 0x12C) == 1) {
-            unit = *(void **)(base + 0xF8);
+            bits = 0;
+            unit = *(u8 **)(base + 0xF8);
             flag = 0;
-            {
-                u16 bits = *(u16 *)unit;
-                if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
-                    if (bits & 0x1000) {
-                        flag = 1;
-                    }
-                    if (*(u16 *)((u8 *)unit + 0x1E) == 2 && (bits & 0x2000)) {
-                        flag = 1;
-                    }
+            bits = *(u16 *)unit;
+            if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
+                if (bits & 0x1000) {
+                    flag = 1;
+                }
+                if (*(u16 *)(unit + 0x1E) == 2 && (bits & 0x2000)) {
+                    flag = 1;
                 }
             }
-            {
-                u16 bits = *(u16 *)((u8 *)unit + 0x13C);
-                if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
-                    if (bits & 0x1000) {
-                        flag = 1;
-                    }
-                    if (*(u16 *)((u8 *)unit + 0x15A) == 2 && (bits & 0x2000)) {
-                        flag = 1;
-                    }
+            bits = *(u16 *)(unit + 0x13C);
+            if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
+                if (bits & 0x1000) {
+                    flag = 1;
+                }
+                if (*(u16 *)(unit + 0x15A) == 2 && (bits & 0x2000)) {
+                    flag = 1;
                 }
             }
-            {
-                u16 bits = *(u16 *)((u8 *)unit + 0x278);
-                if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
-                    if (bits & 0x1000) {
-                        flag = 1;
-                    }
-                    if (*(u16 *)((u8 *)unit + 0x296) == 2 && (bits & 0x2000)) {
-                        flag = 1;
-                    }
+            bits = *(u16 *)(unit + 0x278);
+            if ((bits & 8) && !(bits & 0x400) && !(bits & 2)) {
+                if (bits & 0x1000) {
+                    flag = 1;
+                }
+                if (*(u16 *)(unit + 0x296) == 2 && (bits & 0x2000)) {
+                    flag = 1;
                 }
             }
             if (flag != 0) {
@@ -6388,63 +6384,49 @@ s32 fn_800BB9E8(u8 arg0) {
     return temp_r3;
 }
 
-s32 fn_800BBA38(void *arg0, void *arg1, s32 arg2) {
+#pragma use_lmw_stmw on
+s32 fn_800BBA38(void *arg0, void *arg1, s32 mode) {
     void *Unit_FindByName(void *);
-    s8 fn_80036DE0(void *, void *);
+    s32 fn_80036DE0(void *, void *);
     void fn_80036FC4(void *, s32);
-
-    u8 *unitA;
-    u8 *unitB;
+    void *unitA;
+    void *unitB;
     s32 indexA;
     s32 indexB;
-    u8 *entry;
+    u8 *row;
     u8 value;
-    s32 result;
 
     unitA = Unit_FindByName(arg0);
     unitB = Unit_FindByName(arg1);
-
     if (unitA == NULL || unitB == NULL) {
         return -1;
     }
-
     indexA = fn_80036DE0(unitA, unitB);
     indexB = fn_80036DE0(unitB, unitA);
-
     if ((s8)indexA < 0 || (s8)indexB < 0) {
         return -1;
     }
-
     indexA = (s8)indexA;
     fn_80036FC4(unitA, indexA);
-
-    entry = *(u8 **)(*(u8 **)(unitA + 0x188) + 0x50);
-    entry += indexA * 8 + 8;
-
-    switch (arg2) {
+    row = *(u8 **)((u8 *)*(void **)((u8 *)unitA + 0x188) + 0x50) + indexA * 8 + 8;
+    switch (mode) {
     case 0:
-        value = entry[4];
+        value = row[4];
         break;
     case 1:
-        value = entry[5];
+        value = row[5];
         break;
     case 2:
-    case 3:
-        value = entry[6];
+        value = row[6];
         break;
-    default:
-        value = entry[6];
+    case 3:
+        value = (u8)(row[6] + 1);
         break;
     }
-
-    result = (u8)(value + 1);
-
-    unitA[0x214 + indexA] = result;
-    unitB[0x214 + (s8)indexB] = result;
-
-    return result;
+    ((u8 *)unitA + indexA)[0x214] = value;
+    ((u8 *)unitB + (s8)indexB)[0x214] = value;
+    return (u8)value;
 }
-
 s32 fn_800BBB58(s32 arg0, s32 arg1) {
     u32 Unit_FindByName(s32);
     s8 fn_80036DE0(u32, u32);
@@ -8450,48 +8432,47 @@ s32 fn_800BEC5C(void *arg0) {
     extern s16 gTalkState[];
     s32 Event_GetString(void *, u16);
     u8 EventFlag_IsSet(void *, s32);
-    u8 *entry;
+    s16 *state1;
+    s16 *state2;
     s16 value;
 
-    entry = (u8 *)arg0;
     value = gTalkState[0];
     if (value >= 0) {
-        if (value != *(s16 *)(entry + 0x14)) {
+        if (value != *(s16 *)((u8 *)arg0 + 0x14)) {
             return 0;
         }
     }
-    {
-        s16 *state1;
-        s16 *state2;
 
-        state1 = gTalkState;
-        value = state1[1];
-        if (value >= 0) {
-            if (value != *(s16 *)(entry + 0x16)) {
-                return 0;
-            }
-        }
+    state1 = gTalkState;
+    value = state1[1];
 
-        state2 = gTalkState;
-        value = state2[2];
-        if (value != 0) {
-            if (value != *(s16 *)(entry + 0x18)) {
-                return 0;
-            }
-        }
-
-        if (EventFlag_IsSet(
-                (u8 *)gBattleState + 0xB4,
-                Event_GetString(entry, (u16)*(s16 *)(entry + 0x1A))
-            ) != 0) {
+    if (value >= 0) {
+        if (value != *(s16 *)((u8 *)arg0 + 0x16)) {
             return 0;
         }
-
-        gTalkState[0] = *(s16 *)(entry + 0x14);
-        state1[1] = *(s16 *)(entry + 0x16);
-        state2[2] = *(s16 *)(entry + 0x18);
-        return 1;
     }
+
+    state2 = gTalkState;
+    value = state2[2];
+
+    if (value != 0) {
+        if (value != *(s16 *)((u8 *)arg0 + 0x18)) {
+            return 0;
+        }
+    }
+
+    if (EventFlag_IsSet(
+            (u8 *)gBattleState + 0xB4,
+            Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x1A))
+        ) != 0) {
+        return 0;
+    }
+
+    gTalkState[0] = *(s16 *)((u8 *)arg0 + 0x14);
+    state1[1] = *(s16 *)((u8 *)arg0 + 0x16);
+    state2[2] = *(s16 *)((u8 *)arg0 + 0x18);
+
+    return 1;
 }
 
 #pragma optimization_level 3
@@ -8970,6 +8951,7 @@ s32 fn_800BF87C(void *arg0) {
     return (s8)ctx[0xE] <= y1;
 }
 
+#pragma opt_common_subs off
 s32 fn_800BF9D8(void *arg0) {
     extern u8 gBattle[];
     extern u8 gMapEventFlagNames[];
@@ -8980,26 +8962,37 @@ s32 fn_800BF9D8(void *arg0) {
     void *Res_GetByName(void *);
     void fn_8011D908(void *, void *);
     u8 *unit;
-    void *msg;
     void *flags;
-    if (!(*(u32 *)(gBattle+0xCAC)&0x1000)) return 0;
-    unit=*(u8 **)(gBattle+0x280);
-    if (Status_Test(unit+0x1BC,0x54)) {
-        flags=(u8 *)gBattleState+0xB4;
-        if (EventFlag_IsSet(flags,gMapEventFlagNames+0x128)) return 0;
-        fn_800BDC68(flags,gMapEventFlagNames+0x128);
+    void *msg;
+    void *self;
+
+    self = arg0;
+    if ((*(u32 *)(gBattle + 0xCAC) & 0x1000) == 0) {
+        return 0;
     }
-    if (Status_Test(unit+0x1BC,0x55)) {
-        flags=(u8 *)gBattleState+0xB4;
-        if (EventFlag_IsSet(flags,gMapEventFlagNames+0x130)) return 0;
-        fn_800BDC68(flags,gMapEventFlagNames+0x130);
+    unit = *(u8 **)(gBattle + 0x280);
+    if (Status_Test(unit + 0x1BC, 0x54)) {
+        flags = (u8 *)gBattleState + 0xB4;
+        if (EventFlag_IsSet(flags, gMapEventFlagNames + 0x128)) {
+            return 0;
+        }
+        fn_800BDC68(flags, gMapEventFlagNames + 0x128);
     }
-    msg=fn_800A8704(*(void **)(unit+0x188));
-    if (!Res_GetByName(msg)) return 0;
-    fn_8011D908(msg,arg0);
+    if (Status_Test(unit + 0x1BC, 0x55)) {
+        flags = (u8 *)gBattleState + 0xB4;
+        if (EventFlag_IsSet(flags, gMapEventFlagNames + 0x130)) {
+            return 0;
+        }
+        fn_800BDC68(flags, gMapEventFlagNames + 0x130);
+    }
+    msg = fn_800A8704(*(void **)(unit + 0x188));
+    if (Res_GetByName(msg) == 0) {
+        return 0;
+    }
+    fn_8011D908(msg, self);
     return 1;
 }
-
+#pragma opt_common_subs reset
 s32 fn_800BFB10(void) {
     void *Battle_GetActiveCombatant(void *);
     void *Event_NextEntry(void *);
@@ -11298,35 +11291,52 @@ void fn_800AFCFC(s32 arg0) {
     }
 }
 
+#pragma optimization_level 3
 void fn_800AFE0C(s32 arg0) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void fn_800B49D0(void *);
+    void fn_8024DA2C(void *);
     u8 *sys;
     u8 *entry;
+    u8 *p;
     u16 nest;
-    struct SlotRef { u8 pad[0x13E]; u16 value; };
+
     sys = (u8 *)gSoundSys;
-    entry = *(u8 **)(sys+0xF8) + arg0*0x13C;
+    entry = *(u8 **)(sys + 0xF8) + arg0 * 0x13C;
     if (*(u16 *)entry != 0) {
-        if (!(*(u16 *)entry & 8)) { *(u16 *)entry |= 4; return; }
-        if (*(u16 *)entry & 0x400) ((struct SlotRef *)(sys+*(u16 *)(entry+2)*2))->value=0;
-        *(u16 *)entry=0;
+        if (!(*(u16 *)entry & 8)) {
+            *(u16 *)entry |= 4;
+            return;
+        }
+        if (*(u16 *)entry & 0x400) {
+            p = sys + (*(u16 *)(entry + 2) * 2);
+            *(u16 *)(p + 0x13E) = 0;
+        }
+        *(u16 *)entry = 0;
         sys = (u8 *)gSoundSys;
-        if (*(u16 *)(sys+0x124)==0) *(s32 *)((u8 *)gSoundSys+0x128)=OSDisableInterrupts();
-        *(u16 *)(sys+0x124) += 1;
-        fn_800B49D0(*(void **)(entry+0x2C));
-        fn_800B49D0(*(void **)(entry+0xB4));
-        fn_8024DA2C(*(void **)(entry+0x50));
-        if (*(u16 *)(entry+0x1E)==2) fn_8024DA2C(*(void **)(entry+0xD8));
-        nest = *(u16 *)(sys+0x124);
+        if (*(u16 *)(sys + 0x124) == 0) {
+            *(s32 *)((u8 *)gSoundSys + 0x128) = OSDisableInterrupts();
+        }
+        *(u16 *)(sys + 0x124) += 1;
+        fn_800B49D0(*(void **)(entry + 0x2C));
+        fn_800B49D0(*(void **)(entry + 0xB4));
+        fn_8024DA2C(*(void **)(entry + 0x50));
+        if (*(u16 *)(entry + 0x1E) == 2) {
+            fn_8024DA2C(*(void **)(entry + 0xD8));
+        }
+        nest = *(u16 *)(sys + 0x124);
         if (nest != 0) {
             nest -= 1;
-            *(u16 *)(sys+0x124)=nest;
-            if ((u16)nest==0) OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys+0x128));
+            *(u16 *)(sys + 0x124) = nest;
+            if ((u16)nest == 0) {
+                OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys + 0x128));
+            }
         }
-        *(s32 *)((u8 *)gSoundSys+0xFC)=-1;
+        *(s32 *)((u8 *)gSoundSys + 0xFC) = -1;
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma optimization_level reset
 void fn_800AFF28(s32 arg0, u32 arg1) {
     void fn_800062EC(void *, void *, s32);
     void fn_800B1720(void *);
