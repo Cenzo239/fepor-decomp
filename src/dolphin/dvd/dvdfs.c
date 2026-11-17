@@ -1901,29 +1901,34 @@ s32 DVDReadDiskID(void *arg0, void *arg1, void *callback) {
 }
 
 s32 fn_8020ED90(u8 *block, u32 callback) {
-void DCInvalidateRange(void *, u32);
-u32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(u32);
-s32 __DVDPushWaitingQueue(s32, void *);
-extern s32 autoInvalidation_80366F6C;
-s32 result;
-*(u32 *)(block+8)=7;
-*(u32 *)(block+0x28)=callback;
-{
-u32 interrupts;
-u32 command;
-if (autoInvalidation_80366F6C != 0) {
-command = *(u32 *)(block+8);
-if (command == 1 || command-4 <= 1 || command == 14)
-DCInvalidateRange(*(void **)(block+0x18), *(u32 *)(block+0x14));
-}
-interrupts=OSDisableInterrupts();
-*(u32 *)(block+0xC)=2;
-result=__DVDPushWaitingQueue(1,block);
-if (executing_80368598 == 0 && PauseFlag_803685A4 == 0) stateReady();
-OSRestoreInterrupts(interrupts);
-}
-return result;
+  void DCInvalidateRange(void *, u32);
+  u32 OSDisableInterrupts(void);
+  void OSRestoreInterrupts(u32);
+  s32 __DVDPushWaitingQueue(s32, void *);
+  void stateReady(void);
+  extern s32 autoInvalidation_80366F6C;
+  extern void *executing_80368598;
+  extern s32 PauseFlag_803685A4;
+  s32 result;
+  u32 interrupts;
+  u32 command;
+  u32 pad[2];
+
+  (void)pad;
+  *(u32 *)(block + 8) = 7;
+  *(u32 *)(block + 0x28) = callback;
+  if (autoInvalidation_80366F6C != 0) {
+    command = *(u32 *)(block + 8);
+    if (command == 1 || command - 4 <= 1 || command == 14)
+      DCInvalidateRange(*(void **)(block + 0x18), *(u32 *)(block + 0x14));
+  }
+  interrupts = OSDisableInterrupts();
+  *(u32 *)(block + 0xC) = 2;
+  result = __DVDPushWaitingQueue(1, block);
+  if (executing_80368598 == 0 && PauseFlag_803685A4 == 0)
+    stateReady();
+  OSRestoreInterrupts(interrupts);
+  return result;
 }
 
 s32 DVDInquiryAsync(u8 *block, s32 arg1, s32 arg2) {
