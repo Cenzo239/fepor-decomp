@@ -9141,17 +9141,15 @@ void fn_800DEF00(void *arg0) {
 
 #pragma scheduling off
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-    u32 z;
-    u8 v;
-    u8 *mid;
-
-    z = 0;
-    v = *arg1;
-    *(u32 *)arg0 = z;
-    mid = (u8 *)arg0 + 4;
-    *(u32 *)mid = z;
-    *((u8 *)arg0 + 8) = v;
-    *(u8 **)((u8 *)arg0 + 12) = mid;
+#pragma cplusplus on
+    struct Node {
+        unsigned count, root;
+        unsigned char value;
+        void *link;
+        void init(unsigned z, unsigned char v) { count = z; root = z; value = v; link = &root; }
+    };
+    ((Node *)arg0)->init(0, *arg1);
+#pragma cplusplus reset
 }
 #pragma scheduling reset
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
@@ -14749,16 +14747,18 @@ void Card_AsyncDone(void) {
 
 #pragma peephole off
 s32 fn_800EB854(void) {
-    extern u8 lbl_80320C20[];
+    extern u8 gCardWork[];
+    u8 *base = gCardWork + 0x10000;
     s32 result = 0;
-    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
-        if (lbl_80320C20[0xA01A] != 0) {
-            result = 1;
-        }
-    }
+    if (*(s32 *)(base - 0x5FFC) == -1)
+        goto end;
+    if (*(u8 *)(base - 0x5FE6) == 0)
+        goto end;
+    result = 1;
+end:
     return result;
 }
-#pragma peephole on
+#pragma peephole reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
 }
@@ -18149,7 +18149,6 @@ score+=(s32)(lbl_8036A06C*((f32)fn_800386E0(unit)*(f32)(s8)cfg[10]));
 M2C_FIELD(arg1,s32 *,8)=score;
 }
 
-#pragma optimization_level 3
 void Battle_ScoreTarget(s32 arg0, void *arg1) {
     void *Res_GetByName(void *);
     s32 fn_800F6F94(void *, s32);
