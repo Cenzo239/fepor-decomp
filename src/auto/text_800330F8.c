@@ -3017,8 +3017,11 @@ void fn_8003868C(void *arg0, s32 arg1) {
 }
 #pragma scheduling reset
 u8 fn_800386B0(void *arg0) {
+    u8 one = 1;
+    u8 two = 2;
+    u8 three = 3;
     u8 value = M2C_FIELD(M2C_FIELD(arg0, void **, 0x190), u8 *, 8);
-    if (value == 1 || value == 3 || value == 2) return 0xFF;
+    if (value == one || value == two || value == three) return 0xFF;
     return M2C_FIELD(arg0, u8 *, 0x19B);
 }
 
@@ -3585,50 +3588,32 @@ s8 fn_8003A1C4(void *arg0) {
     return (s8) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x41) + (((u8) M2C_FIELD(arg0, u8 *, 0x1A6) >> 2U) & 7));
 }
 
-s8 fn_8003A1E0(void *arg0) {
-    s8 var_r4;
-    s8 var_r5;
-    s8 var_r6;
-    void *ptr;
-
-    var_r5 = *(s8 *)((u8 *)M2C_FIELD(arg0, void **, 0x188) + 0x1C) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3D);
-    var_r6 = 0;
-
-    if (((M2C_FIELD(arg0, u8 *, 0x1D1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1CC) != 0)
-        var_r4 = 0;
-    else if (((M2C_FIELD(arg0, u8 *, 0x1D9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1D4) != 0)
-        var_r4 = 1;
-    else if (((M2C_FIELD(arg0, u8 *, 0x1E1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1DC) != 0)
-        var_r4 = 2;
-    else if (((M2C_FIELD(arg0, u8 *, 0x1E9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1E4) != 0)
-        var_r4 = 3;
-    else
-        var_r4 = -1;
-
-    ptr = (var_r4 < 0) ? NULL : (u8 *)arg0 + (var_r4 * 8 + 0x1CC);
-    if (ptr != NULL)
-        var_r6 = *(s8 *)((u8 *)M2C_FIELD(ptr, void **, 0) + 0x28);
-
-    if (((M2C_FIELD(arg0, u8 *, 0x1F1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1EC) != 0)
-        var_r4 = 0;
-    else if (((M2C_FIELD(arg0, u8 *, 0x1F9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1F4) != 0)
-        var_r4 = 1;
-    else if (((M2C_FIELD(arg0, u8 *, 0x201) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1FC) != 0)
-        var_r4 = 2;
-    else if (((M2C_FIELD(arg0, u8 *, 0x209) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x204) != 0)
-        var_r4 = 3;
-    else
-        var_r4 = -1;
-
-    ptr = (var_r4 < 0) ? NULL : (u8 *)arg0 + (var_r4 * 8 + 0x1EC);
-    if (ptr != NULL)
-        var_r6 += *(s8 *)((u8 *)M2C_FIELD(ptr, void **, 0) + 0x28);
-
-    var_r5 = var_r6 + var_r5;
-    var_r5 = *(s8 *)M2C_FIELD(arg0, u8 *, 0x1A9) + var_r5;
-    if (var_r5 > 0x63)
-        var_r5 = 0x63;
-    return var_r5;
+s8 fn_8003A1E0(void *arg0)
+{
+  u32 value;
+  int new_var;
+  s32 bonus;
+  void *ptr;
+  bonus = 0;
+  new_var = 0x188;
+  value = (*((s8 *) (((s8 *) (*((void **) (((s8 *) arg0) + new_var)))) + 0x1C))) + (*((u8 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x18C)))) + 0x3D)));
+  ptr = Unit_GetActiveItemPtr(arg0);
+  if (ptr)
+  {
+    bonus = *((s8 *) (((s8 *) (*((void **) (((s8 *) ptr) + 0)))) + 0x28));
+  }
+  ptr = fn_80037C20(arg0);
+  if (ptr)
+  {
+    bonus = (s8) (bonus + (*((u8 *) (((s8 *) (*((void **) (((s8 *) ptr) + 0)))) + 0x28))));
+  }
+  value = ((s8) bonus) + value;
+  value = (*((s8 *) (((s8 *) arg0) + 0x1A9))) + value;
+  if ((s32)value > 99)
+  {
+    value = 99;
+  }
+  return (s8) value;
 }
 
 #pragma opt_strength_reduction off
@@ -3965,6 +3950,35 @@ s8 fn_8003AA40(void *arg0) {
         result = 0;
     }
     return result;
+}
+
+s32 fn_8003ACF8(void *arg0) {
+u8 *unit = arg0;
+s32 temp;
+s8 value;
+s8 bonus;
+s8 result;
+value = (s8)(*(u8 *)(*(u8 **)(unit+0x188)+0x22)+unit[0x1B0]);
+if(value>40) value=40;
+if(value<0) value=0;
+bonus=0;
+if (((unit[465] >> 7)&1) && *(u32 *)(unit+460) != 0) temp=bonus;
+else if (((unit[473] >> 7)&1) && *(u32 *)(unit+468) != 0) temp=1;
+else if (((unit[481] >> 7)&1) && *(u32 *)(unit+476) != 0) temp=2;
+else if (((unit[489] >> 7)&1) && *(u32 *)(unit+484) != 0) temp=3;
+else temp=-1;
+if ((s8)temp<0) temp=0;
+else {temp=(s8)temp*8; temp+=460; temp+=(s32)unit;}
+if(temp!=0) bonus=(s8)*(u8 *)(*(u8 **)temp+0x24);
+if (((unit[497] >> 7)&1) && *(u32 *)(unit+492) != 0) temp=0;
+else if (((unit[505] >> 7)&1) && *(u32 *)(unit+500) != 0) temp=1;
+else if (((unit[513] >> 7)&1) && *(u32 *)(unit+508) != 0) temp=2;
+else if (((unit[521] >> 7)&1) && *(u32 *)(unit+516) != 0) temp=3;
+else temp=-1;
+if ((s8)temp<0) temp=0;
+else {temp=(s8)temp*8; temp+=492; temp+=(s32)unit;}
+if(temp!=0) bonus=(s8)(bonus+*(u8 *)(*(u8 **)temp+0x24));
+result=(s8)(value+bonus); if(result<0) result=0; return result;
 }
 
 s8 fn_8003AEB0(void *arg0) {
