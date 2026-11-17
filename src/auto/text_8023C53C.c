@@ -14637,61 +14637,9 @@ f64 fn_80261344(f32 x) {
     return x * guess;
 }
 
-f32* fn_80261398(void) {
-    register f32 f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12;
-    register s32 r3, r4, r5, r6, r7;
-    f64 temp_f7;
-    s32 temp_r5;
-
-    // Load values from lbl_802831BC
-    f1 = lbl_802831BC[0];
-    f6 = lbl_802831BC[3];
-    f12 = lbl_802831BC[4];
-    
-    // ps_sum0 f1, f1, f1, f6 -> f1 = f1 + f1 + f6 ??
-    f1 = f1 + f1 + f6;
-    // ps_merge10 f11, f6, f6 -> f11 = merge(f6[1], f6[0])
-    f11 = f6; 
-    // fcmpo cr1, f1, f12
-    temp_r5 = (f1 > f12) ? 1 : ((f1 < f12) ? -1 : 0);
-    
-    // Load f64 from lbl_8036C348 
-    temp_f7 = *(s64*)&lbl_8036C348;
-    f7 = *(f32*)&temp_f7; // f7 = low 32 bits, since using s64 to get double, then cast
-
-    // Get the sign bit for a check: f7 & 0x1 
-    r5 = (s32)f7; /* assuming we want 32-bit representation */
-    temp_r5 = r5 & 0x1;
-    
-    // condition checking
-    if (temp_r5 != 0) {
-        f1 = f1 + ((f32)r5);
-        if (f1 < 0.0f) {
-            f1 = -f1;
-        }
-    }
-    
-    f1 = f1 - r5;
-    f4 = f1 * f1;
-    f5 = f4 * f4;
-    // ps_muls1 f1, f1, f6 -> f1 *= f6 (scalar product)
-    f1 = f1 * f6;
-    f8 = lbl_802831BC[1] * f1;
-    f9 = lbl_802831BC[2] * f1;
-    f10 = f1 * f12;
-    f9 = f9 * f5;
-    f10 = f10 * f5;
-    f9 = f9 * f4;
-    f8 = f8 * f4;
-    f9 = f8 + f9;
-    f9 = f9 * f5;
-    f8 = f10 + f9;
-    f8 = f8 * f4;
-    f1 = f8 + f1;
-    if (f1 < 0.0f) {
-        f1 = -f1;
-    }
-    return lbl_802831BC;
+f32 fn_80261398(f32 x) {
+    extern f32 lbl_802831BC[];
+    return x * lbl_802831BC[3];
 }
 
 void fn_8026146C(s32 *arg0) {
@@ -16890,42 +16838,24 @@ s32 fn_80263D30(
     return 1;
 }
 
-void *Sound_MixSampleBuffers(void *arg0, void *arg1) {
-    double temp_f0;
-    s32 var_ctr;
-    float f5, f6, f7, f8;
-    float temp_f8_1;
-    float temp_f8_2;
-    float temp_f9_1;
-    float temp_f9_2;
-    
-    temp_f0 = *(double*)0x8036C3D8;
-    var_ctr = 0x4F;
-    do {
-        f5 = ((float*)arg0)[2] - (float)temp_f0;
-        f6 = ((float*)arg0)[3] - (float)temp_f0;
-        f7 = ((float*)arg1)[2] - (float)temp_f0;
-        f8 = ((float*)arg1)[3] - (float)temp_f0;
-        
-        temp_f8_1 = f5 * ((float*)arg0)[0];
-        temp_f8_2 = f6 * ((float*)arg0)[1];
-        temp_f9_1 = f7 * ((float*)arg1)[0];
-        temp_f9_2 = f8 * ((float*)arg1)[1];
-        
-        temp_f8_1 += temp_f8_2;
-        temp_f9_1 += temp_f9_2;
-        
-        *((s32*)((char*)arg0 + 0xC)) = (s32)temp_f8_1;
-        *((s32*)((char*)arg0 + 0x14)) = (s32)temp_f9_1;
-        
-        arg0 = (char*)arg0 + 8;
-        arg1 = (char*)arg1 + 8;
-        var_ctr -= 1;
-    } while (var_ctr != 0);
-    
-    return arg0;
+#pragma optimization_level 3
+void Sound_MixSampleBuffers(s32 *a, s32 *b, f32 c0, f32 c1) {
+    s32 i;
+    f32 x0, x1, y0, y1;
+    for (i = 0x4f; i != 0; i--) {
+        x0 = (f32)a[0];
+        y0 = (f32)b[0];
+        x1 = (f32)a[1];
+        y1 = (f32)b[1];
+        a[0] = (s32)(x0 * c1 + y0 * c0);
+        b[0] = (s32)(x0 * c0 + y0 * c1);
+        a[1] = (s32)(x1 * c1 + y1 * c0);
+        b[1] = (s32)(x1 * c0 + y1 * c1);
+        a += 2;
+        b += 2;
+    }
 }
-
+#pragma optimization_level reset
 void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
 {
     extern f32 lbl_8036C3E0;
@@ -17274,12 +17204,11 @@ s32 fn_80264BA4(void *arg0) {
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
-    if (p == NULL) {
-    } else {
+    if (p != NULL) {
         fn_80263800(p);
+        fn_80263800(*(void **)((u8 *)arg0 + 0x34));
+        fn_80263800(*(void **)((u8 *)arg0 + 0x38));
     }
-    fn_80263800(*(void **)((u8 *)arg0 + 0x34));
-    fn_80263800(*(void **)((u8 *)arg0 + 0x38));
     return 1;
 }
 
