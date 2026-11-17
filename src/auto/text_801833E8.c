@@ -1790,7 +1790,7 @@ if(*(f32*)((u8*)arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
 #pragma opt_strength_reduction off
 void fn_80186780(void *proc) {
     void GfxEnt_ForEachKey(void *, void *, void *);
-    void *Process_CreateEx(void *, void *);
+    void *Process_CreateEx(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
     void fn_8004FE98(void *, s32);
@@ -1807,15 +1807,15 @@ void fn_80186780(void *proc) {
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036AD04;
-    extern f64 lbl_8036ACE0;
     u8 blendKey[0x34];
     u8 transferKey[0x38];
     void *unit;
-    s32 hitCount;
     void *animSrc;
+    s32 hitCount;
 
     unit = *(void **)((u8 *)proc + 0x34);
-    hitCount = 4;
+    hitCount = 3;
+    hitCount += 1;
     if (fn_8004C0F0(unit) != 0) {
         *(void **)(blendKey + 0x30) = unit;
         GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
