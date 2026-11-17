@@ -403,6 +403,78 @@ void SoundMenu_DrawDistanceItem(void *ctrl, void *parent, void *item) {
 #pragma cplusplus off
 }
 
+#pragma cplusplus on
+extern "C" s32 fn_8014B078(void *arg0) {
+    s8 fn_80146BE4(s32);
+    extern void *gPadInput;
+    extern u8 *lbl_80367B14;
+    extern u8 gSeCueSlots[];
+    struct Ctrl {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual s32 v17() = 0;
+        virtual s32 v18() = 0;
+        virtual s32 v19() = 0;
+        virtual s32 v20() = 0;
+        virtual void v21(s32) = 0;
+    };
+    struct SeCue {
+        u8 pad[8];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6(u8) = 0;
+        virtual void v7() = 0;
+        virtual void v8(u8) = 0;
+    };
+    s32 val;
+    s8 slot;
+    SeCue *cue;
+
+    val = ((Ctrl *)arg0)->v20();
+    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x01000001) {
+        val -= ((Ctrl *)arg0)->v17();
+    }
+    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x02000002) {
+        val += ((Ctrl *)arg0)->v17();
+    }
+    if (val < ((Ctrl *)arg0)->v18()) {
+        val = ((Ctrl *)arg0)->v18();
+    }
+    if (val > ((Ctrl *)arg0)->v19()) {
+        val = ((Ctrl *)arg0)->v19();
+    }
+    ((Ctrl *)arg0)->v21(val);
+    if (lbl_80367B14[5] & 4) {
+        slot = fn_80146BE4(*(s32 *)lbl_80367B14);
+        if (slot >= 0) {
+            cue = (SeCue *)(gSeCueSlots + (u8)slot * 0x30);
+            cue->v8(lbl_80367B14[6]);
+            cue->v6(lbl_80367B14[7]);
+        }
+    }
+    return 0;
+}
+#pragma cplusplus reset
+
 s32 fn_8014B20C(void) {
     return 0x7F;
 }
