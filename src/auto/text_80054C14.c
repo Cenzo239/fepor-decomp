@@ -510,6 +510,124 @@ check2:
 success1:
     return 1;
 }
+
+void fn_800555EC(s32 name, s32 arg1) {
+    void *Res_GetByName(s32);
+    void sprintf(void *, void *, void *, ...);
+    void fn_8005C870(void *, s32);
+    void fn_800056A0(s32);
+    void fn_801451BC(void);
+    void fn_801452A8(u8);
+    u8 fn_801452C8(u8);
+    s32 fn_801452E8(void);
+    void *Process_Create(void *, s32);
+    s32 fn_80055C84(void *);
+    s32 GActor_FormatPath(void *, void *);
+    u8 fn_80055C7C(void *);
+    u32 fn_80055C74(void *);
+    void fn_80055B0C(s32);
+    void fn_80055B64(s32);
+    extern u8 GActor_str[];
+    extern u8 lbl_80285968[];
+    u8 path0[0x40];
+    u8 path1[0x40];
+    u8 path2[0x40];
+    u8 path3[0x40];
+    u8 path4[0x40];
+    void *node;
+    s32 id;
+    void *proc;
+    u8 flag;
+
+    node = Res_GetByName(name);
+    sprintf(path0, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    fn_8005C870(path0, arg1);
+    id = *(u8 *)((u8 *)node + 5);
+    if (id != 0) {
+        if (fn_801452C8((u8)id) == 0) {
+            if (fn_801452E8() >= 0x10) {
+                fn_800056A0(0);
+                fn_801451BC();
+            }
+            fn_801452A8((u8)id);
+        }
+        proc = Process_Create(lbl_80285968, 4);
+        *(s32 *)((u8 *)proc + 0x60) = 0x708;
+    }
+    if (*(u32 *)((u8 *)node + 8) == 0) {
+        return;
+    }
+
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
+    sprintf(path1, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    fn_8005C870(path1, arg1);
+    id = *(u8 *)((u8 *)node + 5);
+    if (id != 0) {
+        if (fn_801452C8((u8)id) == 0) {
+            if (fn_801452E8() >= 0x10) {
+                fn_800056A0(0);
+                fn_801451BC();
+            }
+            fn_801452A8((u8)id);
+        }
+        proc = Process_Create(lbl_80285968, 4);
+        *(s32 *)((u8 *)proc + 0x60) = 0x708;
+    }
+    if (*(u32 *)((u8 *)node + 8) == 0) {
+        return;
+    }
+
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
+    sprintf(path2, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    fn_8005C870(path2, arg1);
+    id = *(u8 *)((u8 *)node + 5);
+    if (id != 0) {
+        if (fn_801452C8((u8)id) == 0) {
+            if (fn_801452E8() >= 0x10) {
+                fn_800056A0(0);
+                fn_801451BC();
+            }
+            fn_801452A8((u8)id);
+        }
+        proc = Process_Create(lbl_80285968, 4);
+        *(s32 *)((u8 *)proc + 0x60) = 0x708;
+    }
+    if (*(u32 *)((u8 *)node + 8) == 0) {
+        return;
+    }
+
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
+    sprintf(path3, GActor_str + 0x120, GActor_str + 0x129, fn_80055C84(node));
+    fn_8005C870(path3, arg1);
+    id = *(u8 *)((u8 *)node + 5);
+    if (id != 0) {
+        if (fn_801452C8((u8)id) == 0) {
+            if (fn_801452E8() >= 0x10) {
+                fn_800056A0(0);
+                fn_801451BC();
+            }
+            fn_801452A8((u8)id);
+        }
+        proc = Process_Create(lbl_80285968, 4);
+        *(s32 *)((u8 *)proc + 0x60) = 0x708;
+    }
+    if (*(u32 *)((u8 *)node + 8) == 0) {
+        return;
+    }
+
+    id = (s32)Res_GetByName(fn_80055C74(node));
+    GActor_FormatPath((void *)id, path4);
+    fn_8005C870(path4, arg1);
+    flag = fn_80055C7C((void *)id);
+    if (flag != 0) {
+        fn_80055B0C(flag);
+        fn_80055B64(0x708);
+    }
+    if (fn_80055C74((void *)id) != 0) {
+        fn_800555EC(fn_80055C74((void *)id), arg1);
+    }
+}
+
 void GActor_RequestRes(s32 arg0) {
     void fn_800555EC(s32, s32);
     fn_800555EC(arg0, 0);
