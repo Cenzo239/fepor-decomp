@@ -8184,6 +8184,61 @@ s32 fn_800BEC5C(void *arg0) {
         return 1;
     }
 }
+
+#pragma optimization_level 3
+s32 fn_800BED64(void) {
+    void *Event_NextEntry(void *);
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void);
+    extern u16 gBattleState[700];
+    extern u8 gUiContext[24];
+    void *entry;
+    u8 *flags;
+    void *personA, *personB, *uiA, *uiB;
+    u8 found;
+
+    entry = Event_NextEntry(0);
+    flags = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        if (*(s8 *)((u8 *)entry + 0xC) == 9) {
+            if (EventFlag_IsSet(flags,
+                    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1A))) != 0) {
+                found = 0;
+            } else if (*(void **)(gUiContext + 4) == 0) {
+                found = 0;
+            } else {
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+                personA = Person_GetByPid();
+                Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+                personB = Person_GetByPid();
+                uiA = *(void **)(*(u8 **)gUiContext + 0x188);
+                uiB = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
+                if (*(s16 *)((u8 *)entry + 0x18) == 0) {
+                    if (personA != uiA) {
+                        found = 0;
+                    } else if (personB != 0 && personB != uiB) {
+                        found = 0;
+                    } else {
+                        goto success;
+                    }
+                } else if (personA != 0 && personA != uiA && personA != uiB) {
+                    found = 0;
+                } else if (personB != 0 && personB != uiA && personB != uiB) {
+                    found = 0;
+                } else {
+success:
+                    found = 1;
+                }
+            }
+            if (found != 0) return 1;
+        }
+        entry = Event_NextEntry(entry);
+    }
+    return 0;
+}
+#pragma optimization_level reset
+
 #pragma optimization_level reset
 s32 fn_800BF0A8(void *entry) {
     void *Event_GetString(void *, u32);
@@ -10543,6 +10598,7 @@ extern f32 lbl_80369CB0;
 extern f32 lbl_80369CD0;
 void fn_800AFC54(s32 arg0)
 {
+  extern u8 lbl_80317338[];
   u8 *sys;
   u16 rate;
   u16 *new_var;
@@ -10550,20 +10606,16 @@ void fn_800AFC54(s32 arg0)
   f32 *new_var2;
   f32 minimum;
   u8 *entry;
-  sys = (u8 *) gSoundSys;
+  sys = (u8 *) lbl_80317338;
   entry = (*((u8 **) (sys + 0xF8))) + (arg0 * 0x13C);
   rate = *((u16 *) (sys + 0x120));
-  if (((struct 
-  {
-    u16 flags;
-  } *) entry)->flags != 0)
+  if (((struct { u16 flags; } *) entry)->flags != 0)
   {
     var_f2 = (f32) ((s32) rate);
     new_var2 = (f32 *) (entry + 0x18);
     var_f2 /= lbl_80369CC8;
-    ;
     new_var = (u16 *) entry;
-    if (lbl_80369CCC > var_f2)
+    if (var_f2 < lbl_80369CCC)
     {
       var_f2 = minimum;
     }
