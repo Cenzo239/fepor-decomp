@@ -54,6 +54,11 @@ static inline u32 SoundReadSizeB(u32 offset, u32 limit) {
 }
 
 typedef struct StreamB { u8 pad[0x2C]; s32 buffers[2]; u8 pad34[0x14]; u32 size; u16 index; } StreamB;
+static inline u8 *StreamB_CurrentBytes(StreamB *stream) {
+    StreamB *slot = (StreamB *)((u8 *)stream + stream->index * 4);
+    u8 *buffer = (u8 *)slot->buffers[0];
+    return buffer + *(u32 *)((u8 *)stream + 0x44);
+}
 typedef struct {
     u8 pad[0x30];
     void *entries[0xC];
@@ -552,29 +557,53 @@ void Battle_SetupTargetSelect(s32 parent) {
     }
 }
 
-s32 fn_800ADEB0(s32 arg0, s32 arg1, s32 arg2) {
-    if (arg0 < 0) {
-        return -1;
-    }
-    if (arg0 >= 0x100) {
-        return -2;
-    }
-    if (arg1 < 0) {
-        return -3;
-    }
-    if (arg1 >= 0x100) {
-        return -4;
-    }
-    if (arg2 < 0) {
-        return -5;
-    }
-    if (arg2 >= 0x100) {
-        return -6;
-    }
-
-    return arg0 + ((arg1 & 0xFF) << 8) + ((arg2 & 0xFF) << 16);
+#pragma use_lmw_stmw on
+s32 fn_800ADEB0(s32 arg0) {
+    void fn_8002F728(void *);
+    void Allegiance_FillMask(s32, void *);
+    void fn_8002F6E8(void *, u8, s8, u8, s32);
+    s8 Unit_GetMaxHp(void *);
+    u8 Status_Test(void *, s32);
+    void *Terrain_GetEntry(u8);
+    s32 Rand_Range(s32);
+    void *Process_CreateChild(void *, s32);
+    extern u8 gTargetList[], gUnits[], gBattleMap[], lbl_8028CFA0[];
+    u8 mask[4];
+    u8 *unit;
+    s32 i;
+    u8 *terrain;
+    u8 hp;
+    u8 statusHp;
+    s8 damage;
+    fn_8002F728(gTargetList);
+    Allegiance_FillMask(0, mask);
+    i = 1;
+    do {
+        unit = (u8)i ? gUnits + ((u8)i - 1) * 0x280 : NULL;
+        if (*(u32 *)(unit + 0x188) && mask[((u8 *)*(void **)(unit + 0x190))[8]] && !(*(u32 *)(unit + 0x1A0) & 4)) {
+            terrain = Terrain_GetEntry(M2C_FIELD(gBattleMap + (s8)unit[0x19E] + ((s8)unit[0x19F] << 6), u8 *, 0x100D));
+            if (((u8 *)*(void **)(terrain+8))[6] != 0) {
+                hp = unit[0x1A8];
+                if ((s8)hp != Unit_GetMaxHp(unit))
+                    fn_8002F6E8(gTargetList, 0, (s8)(((u8 *)*(void **)(terrain+8))[6] * Unit_GetMaxHp(unit) / 100), unit[0x198], 0);
+            }
+            if (Status_Test(unit+0x1BC, 12)) {
+                statusHp = unit[0x1A8];
+                if ((s8)statusHp != Unit_GetMaxHp(unit))
+                    fn_8002F6E8(gTargetList, 1, (s8)(Unit_GetMaxHp(unit) / 10), unit[0x198], 0);
+            }
+            if ((unit[0x1A4] >> 5) & 7) {
+                damage = Rand_Range(3) + 1;
+                fn_8002F6E8(gTargetList, 2, -damage, unit[0x198], 0);
+            }
+        }
+        i++;
+    } while (i <= 0x9F);
+    if (*(s32 *)gTargetList == 0) return 0;
+    Process_CreateChild(lbl_8028CFA0, arg0);
+    return 1;
 }
-
+#pragma use_lmw_stmw reset
 s32 fn_800AE0D4(s32 arg0) {
     void fn_8002F728(void *);
     void Allegiance_FillMask(s32, void *);
@@ -2175,97 +2204,30 @@ s32 fn_800B3248(u8 arg0) {
     s32 *wp;
     s32 i;
     s32 count;
-    u8 val;
-    s32 slot;
-
-    slots = gSoundIdSlots;
-    p = slots;
-    slot = 0;
+    
+    u32 slot = 0;
+    p = slots = gSoundIdSlots;
     for (i = 0; i < 16; i++) {
         if (*p == 0) {
             gSoundIdSlots[slot] = arg0 + 1;
-            goto after_alloc;
+            break;
         }
         p++;
         slot++;
     }
-after_alloc:
-
-    val = (u8)((u8)arg0 + 1);
+    slot = (u8)arg0 + 1;
     count = 0;
-    p = slots;
-    for (i = 0; i < 14; i += 7) {
-        if (*p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        if (*++p == val) {
-            count++;
-        }
-        p++;
+    for (i = 0; i < 16; i++) {
+        if (*slots == (u8)slot) count++;
+        slots++;
     }
-
-    if (count > 1) {
-        return 0;
-    }
-
+    if (count > 1) return 0;
     wp = (s32 *)lbl_80319A18;
-    count = 0;
-    for (i = 0; i < 2; i++) {
-        if (*wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
-        if (*++wp == 0) {
-            goto store;
-        }
-        count++;
+    for (count = 0; count < 16; count++) {
+        if (*wp == 0) break;
         wp++;
-        count++;
     }
-store:
-    ((s32 *)lbl_80319A18)[count] = val;
+    ((s32 *)lbl_80319A18)[count] = (u8)slot;
     return 1;
 }
 
@@ -11823,66 +11785,46 @@ void fn_800B0AC8(void *arg0, void *arg1) {
     fn_800B080C(arg0, arg1, 0);
 }
 
-s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
+s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u32 ch) {
     extern u16 gSoundSys[4976];
-    u8 *sys = (u8 *)gSoundSys;
+    u32 n;
+    u8 *bp;
+    s16 *sp;
     u8 *entry;
     u8 *side;
     u16 flags;
-    u16 *p;
-    u8 *bp;
-    s16 *sp;
-    u32 i, n;
-    u32 *bufs;
     u32 lim;
+    StreamB *bufferSlot;
+    u8 *start;
 
-    entry = *(u8 **)(sys + 0xF8) + ch * 0x13C;
-    if (dstL == NULL && dstR == NULL && nL == 0 && nR == 0) {
+    entry = *(u8 **)((u8 *)gSoundSys + 0xF8) + (u8)ch * 0x13C;
+    if (dstL == 0 && dstR == 0 && nL == 0 && nR == 0) {
         return 0;
     }
     *(s32 *)(entry + 0x28) = 0;
     flags = *(u16 *)entry;
-    if ((flags & 0x8006) != 0 || *(u16 *)(sys + 0x12C) != 0) {
-        if (flags & 0x100) {
-            n = nL / 7;
-            n = ((nL - n) >> 1) + n;
-            n = ((n >> 31) + (n & ~7U)) >> 1;
-            p = dstL;
-            i = n >> 3;
-            while (i--) {
-                p[0] = p[1] = p[2] = p[3] = p[4] = p[5] = p[6] = p[7] = 0;
-                p += 8;
+    if ((flags & 0x8006) != 0 || *(u16 *)((u8 *)gSoundSys + 0x12C) != 0) {
+        if (!(flags & 0x100)) {
+            while (nL != 0) {
+                *dstL++ = 0;
+                nL--;
+                *(s32 *)(entry + 0x28) += 1;
             }
-            n &= 7;
-            while (n--) {
-                *p++ = 0;
+            while (nR != 0) {
+                *dstR++ = 0;
+                nR--;
+                *(s32 *)(entry + 0x28) += 1;
             }
-            n = nR / 7;
-            n = ((nR - n) >> 1) + n;
-            n = ((n >> 31) + (n & ~7U)) >> 1;
-            p = dstR;
-            i = n >> 3;
-            while (i--) {
-                p[0] = p[1] = p[2] = p[3] = p[4] = p[5] = p[6] = p[7] = 0;
-                p += 8;
-            }
-            n &= 7;
-            while (n--) {
-                *p++ = 0;
-            }
-            return (s32)(nL + nR);
+            return *(s32 *)(entry + 0x28);
+        } else {
+            { s32 count = (nL / 14) * 8;
+            count /= 2;
+            while (count != 0) { *dstL++ = 0; count--; } }
+            { s32 count = (nR / 14) * 8;
+            count /= 2;
+            while (count != 0) { *dstR++ = 0; count--; } }
+            return nL + nR;
         }
-        p = dstL;
-        for (i = 0; i < nL; i++) {
-            *p++ = 0;
-            *(s32 *)(entry + 0x28) += 1;
-        }
-        p = dstR;
-        for (i = 0; i < nR; i++) {
-            *p++ = 0;
-            *(s32 *)(entry + 0x28) += 1;
-        }
-        return *(s32 *)(entry + 0x28);
     }
     if (ch & 0x100) {
         side = entry + 0xB4;
@@ -11890,9 +11832,10 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
         side = entry + 0x2C;
     }
     if (flags & 0x100) {
-        n = ((nL + 0xD) / 7) & ~7;
-        bufs = (u32 *)(side + 0x2C);
-        bp = (u8 *)bufs[*(u16 *)(side + 0x4C)] + *(u32 *)(side + 0x44);
+        bufferSlot=(StreamB *)(side + *(u16 *)(side + 0x4C)*4);
+        sp = (s16 *)((u8 *)bufferSlot->buffers[0] + *(u32 *)(side + 0x44));
+        n = ((nL + 0xD) / 14) * 8;
+        bp = (u8 *)sp;
         while (n != 0) {
             *(u8 *)dstL = *bp;
             bp++;
@@ -11900,20 +11843,21 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
             dstL = (u16 *)((u8 *)dstL + 1);
             *(u32 *)(side + 0x44) += 1;
             *(u32 *)(side + 0x38) += 1;
-            lim = *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C);
-            if (*(u32 *)(side + 0x44) >= lim) {
+            if (*(u32 *)(side + 0x44) >= *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C)) {
                 if (*(s16 *)(side + 0x54) == 0 && !(*(u16 *)entry & 0x4000)) {
                     *(u32 *)(side + 0x38) -= *(u32 *)(side + 0x44);
                     *(u32 *)(side + 0x44) = 0;
-                    bp = (u8 *)bufs[*(u16 *)(side + 0x4C)];
+                    bp = (u8 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
+                    continue;
                 } else {
                     *(s16 *)(side + 0x54) = 0;
                     *(u32 *)(side + 0x44) = 0;
                     *(u16 *)(side + 0x4C) = 1 - *(u16 *)(side + 0x4C);
-                    bp = (u8 *)bufs[*(u16 *)(side + 0x4C)];
+                    bp = (u8 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
                 }
             }
             if (*(u32 *)(side + 0x38) >= *(u32 *)(entry + 0x20)) {
+                u16 flags;
                 *(u32 *)(side + 0x38) = *(u32 *)(entry + 0x24);
                 flags = *(u16 *)entry;
                 if (!(flags & 0x200)) {
@@ -11922,28 +11866,30 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
                 }
             }
         }
-        n = ((nR + 0xD) / 7) & ~7;
-        while (n != 0) {
+        {
+        u32 count = ((nR + 0xD) / 14) * 8;
+        while (count != 0) {
             *(u8 *)dstR = *bp;
             bp++;
-            n--;
+            count--;
             dstR = (u16 *)((u8 *)dstR + 1);
             *(u32 *)(side + 0x44) += 1;
             *(u32 *)(side + 0x38) += 1;
-            lim = *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C);
-            if (*(u32 *)(side + 0x44) >= lim) {
+            if (*(u32 *)(side + 0x44) >= *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C)) {
                 if (*(s16 *)(side + 0x54) == 0 && !(*(u16 *)entry & 0x4000)) {
                     *(u32 *)(side + 0x38) -= *(u32 *)(side + 0x44);
                     *(u32 *)(side + 0x44) = 0;
-                    bp = (u8 *)bufs[*(u16 *)(side + 0x4C)];
+                    bp = (u8 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
+                    continue;
                 } else {
                     *(s16 *)(side + 0x54) = 0;
                     *(u32 *)(side + 0x44) = 0;
                     *(u16 *)(side + 0x4C) = 1 - *(u16 *)(side + 0x4C);
-                    bp = (u8 *)bufs[*(u16 *)(side + 0x4C)];
+                    bp = (u8 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
                 }
             }
             if (*(u32 *)(side + 0x38) >= *(u32 *)(entry + 0x20)) {
+                u16 flags;
                 *(u32 *)(side + 0x38) = *(u32 *)(entry + 0x24);
                 flags = *(u16 *)entry;
                 if (!(flags & 0x200)) {
@@ -11952,10 +11898,13 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
                 }
             }
         }
+        }
         *(s32 *)(entry + 0x28) = (s32)(nL + nR);
     } else {
-        bufs = (u32 *)(side + 0x2C);
-        sp = (s16 *)((u8 *)bufs[*(u16 *)(side + 0x4C)] + (*(u32 *)(side + 0x44) & ~1U));
+        StreamB *pcmBufferSlot;
+        
+        pcmBufferSlot=(StreamB *)(side + *(u16 *)(side + 0x4C)*4);
+        sp = (s16 *)((u8 *)pcmBufferSlot->buffers[0] + (*(u32 *)(side + 0x44) & ~1U));
         while (nL != 0) {
             *dstL = *sp;
             sp++;
@@ -11964,20 +11913,21 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
             *(s32 *)(entry + 0x28) += 1;
             *(u32 *)(side + 0x44) += 2;
             *(u32 *)(side + 0x38) += 2;
-            lim = *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C);
-            if (*(u32 *)(side + 0x44) >= lim) {
+            if (*(u32 *)(side + 0x44) >= *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C)) {
                 if (*(s16 *)(side + 0x54) == 0 && !(*(u16 *)entry & 0x4000)) {
                     *(u32 *)(side + 0x38) -= *(u32 *)(side + 0x44);
                     *(u32 *)(side + 0x44) = 0;
-                    sp = (s16 *)bufs[*(u16 *)(side + 0x4C)];
+                    sp = (s16 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
+                    continue;
                 } else {
                     *(s16 *)(side + 0x54) = 0;
                     *(u32 *)(side + 0x44) = 0;
                     *(u16 *)(side + 0x4C) = 1 - *(u16 *)(side + 0x4C);
-                    sp = (s16 *)bufs[*(u16 *)(side + 0x4C)];
+                    sp = (s16 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
                 }
             }
             if (*(u32 *)(side + 0x38) >= *(u32 *)(entry + 0x20)) {
+                u16 flags;
                 *(u32 *)(side + 0x38) = *(u32 *)(entry + 0x24);
                 flags = *(u16 *)entry;
                 if (!(flags & 0x200)) {
@@ -11994,20 +11944,21 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
             *(s32 *)(entry + 0x28) += 1;
             *(u32 *)(side + 0x44) += 2;
             *(u32 *)(side + 0x38) += 2;
-            lim = *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C);
-            if (*(u32 *)(side + 0x44) >= lim) {
+            if (*(u32 *)(side + 0x44) >= *(u32 *)(side + (*(u16 *)(side + 0x4C) * 4) + 0x3C)) {
                 if (*(s16 *)(side + 0x54) == 0 && !(*(u16 *)entry & 0x4000)) {
                     *(u32 *)(side + 0x38) -= *(u32 *)(side + 0x44);
                     *(u32 *)(side + 0x44) = 0;
-                    sp = (s16 *)bufs[*(u16 *)(side + 0x4C)];
+                    sp = (s16 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
+                    continue;
                 } else {
                     *(s16 *)(side + 0x54) = 0;
                     *(u32 *)(side + 0x44) = 0;
                     *(u16 *)(side + 0x4C) = 1 - *(u16 *)(side + 0x4C);
-                    sp = (s16 *)bufs[*(u16 *)(side + 0x4C)];
+                    sp = (s16 *)*(u32 *)(side + *(u16 *)(side + 0x4C) * 4 + 0x2C);
                 }
             }
             if (*(u32 *)(side + 0x38) >= *(u32 *)(entry + 0x20)) {
+                u16 flags;
                 *(u32 *)(side + 0x38) = *(u32 *)(entry + 0x24);
                 flags = *(u16 *)entry;
                 if (!(flags & 0x200)) {
