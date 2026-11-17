@@ -3800,6 +3800,106 @@ s32 fn_8016A984(void) {
     return 8;
 }
 
+#pragma cplusplus on
+extern "C" void fn_8016A9D4(void *unused, u8 *obj) {
+    extern u32 gUiInputFlags;
+    extern void *gPadInput;
+    extern u8 gUnitInfoPopup[];
+    void *GfxEnt_Get(u8);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
+
+    class Handler {
+    public:
+        virtual void v0(void *, void *) = 0;
+        virtual void v1(void *, void *) = 0;
+        virtual void v2(void *, void *) = 0;
+        virtual void v3(void *, void *) = 0;
+        virtual void v4(void *, void *) = 0;
+        virtual void v5(void *, void *) = 0;
+        virtual void v6(void *, void *) = 0;
+        virtual void v7(void *, void *) = 0;
+        virtual void v8(void *, void *) = 0;
+        virtual void v9(void *, void *) = 0;
+        virtual void v10(void *, void *) = 0;
+        virtual void v11(void *, void *) = 0;
+        virtual void v12(void *, void *) = 0;
+        virtual void v13(void *, void *) = 0;
+        virtual void v14(void *, void *) = 0;
+        virtual void v15(void *, void *) = 0;
+    };
+    class Base {
+    public:
+        int word;
+    };
+    class Handler2 : public Base {
+    public:
+        virtual void v0(void *, void *) = 0;
+        virtual void v1(void *, void *) = 0;
+        virtual void v2(void *, void *) = 0;
+        virtual void v3(void *, void *) = 0;
+        virtual void v4(void *, void *) = 0;
+        virtual void v5(void *, void *) = 0;
+        virtual void v6(void *, void *) = 0;
+        virtual void v7(void *, void *) = 0;
+        virtual void v8(void *, void *) = 0;
+        virtual void v9(void *, void *) = 0;
+    };
+
+    u8 *ent;
+    u32 pressed;
+    u32 held;
+    u32 previous;
+    u8 flag;
+    void *handler;
+
+    ent = (u8 *)GfxEnt_Get(obj[0x40 + (s8)obj[0x62]]);
+    flag = 0;
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
+        flag = 1;
+    }
+    if (flag) {
+        handler = *(void **)(ent + 0x34);
+        ((Handler *)handler)->v13(obj, ent);
+        return;
+    }
+    held = *(u32 *)((u8 *)gPadInput + 4);
+    previous = *(u32 *)((u8 *)gPadInput + 8);
+    pressed = held & (previous ^ held);
+    if ((pressed & 0x100) && !Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
+        handler = *(void **)(ent + 0x34);
+        ((Handler *)handler)->v9(obj, ent);
+        return;
+    }
+    if (pressed & 0x200) {
+        handler = *(void **)(obj + 0x3C);
+        ((Handler2 *)handler)->v6(obj, ent);
+        return;
+    }
+    if (pressed & 0x400) {
+        handler = *(void **)(ent + 0x34);
+        ((Handler *)handler)->v10(obj, ent);
+        return;
+    }
+    if (pressed & 0x800) {
+        handler = *(void **)(obj + 0x3C);
+        ((Handler2 *)handler)->v7(obj, ent);
+        return;
+    }
+    if (pressed & 0x10) {
+        handler = *(void **)(ent + 0x34);
+        ((Handler *)handler)->v11(obj, ent);
+        return;
+    }
+    if ((pressed & 0x1000) && !Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
+        handler = *(void **)(obj + 0x3C);
+        ((Handler2 *)handler)->v6(obj, ent);
+        return;
+    }
+    handler = *(void **)(ent + 0x34);
+    ((Handler *)handler)->v13(obj, ent);
+}
+#pragma cplusplus reset
+
 void fn_8016ABB0(void) {
     extern u16 lbl_80277BC0[];
     Msg_Expand((u8 *)lbl_80277BC0 + 0x1ad);
