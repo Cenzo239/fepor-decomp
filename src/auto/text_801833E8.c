@@ -1,6 +1,7 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 
 typedef struct ListNode {
     struct ListNode *prev;
@@ -8146,20 +8147,82 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
-void* fn_80193950(void* arg0, s16 arg1, s16 arg2, s16 arg3) {
-    // Simplified version - just return the input pointer
-    // Most likely this is a structure initializer that directly modifies 
-    // the input structure in place and returns it
-    
-    void* r3 = arg0;
-    
-    // Just write a very basic initialization to see if we can get at least some match
-    *(u32*)((char*)r3 + 0x0) = 0;  
-    *(s16*)((char*)r3 + 0x8) = -1;  
-    *(s16*)((char*)r3 + 0xA) = arg1;
-    *(s16*)((char*)r3 + 0xC) = arg2;
-    
-    return r3;
+extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
+    void fn_80142060(void *);
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_80292208[];
+    extern u8 lbl_80293BB8[];
+    extern u8 lbl_80293B74[];
+    extern f32 lbl_8036AE20;
+    struct Obj {
+        virtual void m08() = 0;
+        virtual void m0C() = 0;
+        virtual void m10() = 0;
+        virtual void m14() = 0;
+        virtual void m18() = 0;
+        virtual void m1C() = 0;
+        virtual void m20() = 0;
+        virtual void m24() = 0;
+        virtual void m28() = 0;
+    };
+    s32 z = 0;
+    f32 one = lbl_8036AE20;
+    void *self = arg0;
+    s32 e1 = (s16)arg1;
+    s32 e2 = (s16)arg2;
+
+    *(void **)self = lbl_8028FDB0;
+    *(s32 *)((u8 *)self + 4) = z;
+    *(void **)self = lbl_80292230;
+    *(s16 *)((u8 *)self + 8) = -1;
+    *(s16 *)((u8 *)self + 0xA) = arg1;
+    *(s16 *)((u8 *)self + 0xC) = arg2;
+    *(s16 *)((u8 *)self + 0xE) = (s16)(e1 + 0x108);
+    *(s16 *)((u8 *)self + 0x10) = (s16)(e2 + 0x88);
+    *(s16 *)((u8 *)self + 0x12) = z;
+    *(s16 *)((u8 *)self + 0x14) = z;
+    *(s16 *)((u8 *)self + 0x16) = 0x108;
+    *(s16 *)((u8 *)self + 0x18) = 0x88;
+    *(s16 *)((u8 *)self + 0x1A) = z;
+    *(s16 *)((u8 *)self + 0x1C) = z;
+    *(u8 *)((u8 *)self + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)self + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)self + 0x20) = 0xFF;
+    *(u8 *)((u8 *)self + 0x21) = 0xFF;
+    *(s16 *)((u8 *)self + 0x22) = arg3;
+    *(s16 *)((u8 *)self + 0x24) = z;
+    *(f32 *)((u8 *)self + 0x28) = one;
+    *(f32 *)((u8 *)self + 0x2C) = one;
+    *(f32 *)((u8 *)self + 0x30) = one;
+    *(s32 *)((u8 *)self + 0x34) = z;
+    *(s32 *)((u8 *)self + 0x38) = z;
+    *(void **)self = lbl_80292208;
+    fn_80142060((u8 *)arg0 + 0x3C);
+
+    *(void **)self = lbl_80293BB8;
+    *(u8 *)((u8 *)self + 0x48) = 1;
+    *(u8 *)((u8 *)self + 0x49) = 0;
+    *(u8 *)((u8 *)self + 0x4A) = 1;
+    *(u8 *)((u8 *)self + 0x4B) = 0;
+    *(s16 *)((u8 *)self + 0x50) = -1;
+    *(s16 *)((u8 *)self + 0x52) = -1;
+    *(s16 *)((u8 *)self + 0x54) = 0x20;
+    *(s32 *)((u8 *)self + 0x58) = 0;
+    *(s32 *)((u8 *)self + 0x5C) = 0;
+    *(s32 *)((u8 *)self + 0x60) = 3;
+    *(s16 *)((u8 *)self + 0x64) = 0x14;
+    *(s16 *)((u8 *)self + 0x66) = 0;
+    *(s32 *)((u8 *)self + 0x70) = 0;
+    ((Obj *)self)->m28();
+
+    *(void **)self = lbl_80293B74;
+    *(s16 *)((u8 *)self + 0x64) = 0x18;
+    *(s16 *)((u8 *)self + 0x66) = 0xA;
+    *(s16 *)((u8 *)self + 0x54) = 0x1C;
+    *(s32 *)((u8 *)self + 0x60) = 1;
+    ((Obj *)self)->m28();
+    return self;
 }
 
 #pragma cplusplus reset
