@@ -10492,126 +10492,54 @@ void fn_8019B388(void *arg0) {
 extern u16 gBattle[0x834];
 #pragma optimization_level 4
 #pragma inline auto
-s32 fn_8019B51C(s16 arg0) {
-    s32 sp8;
-    u16 temp_r31;
-    u8 temp_r0;
-    u8 temp_r0_2;
-    u8 var_r4;
-    void *temp_r30;
-
-    temp_r30 = &gBattle[0x8A0];
-    sp8 = 0;
-    temp_r31 = gBattle[0x8A0];
-    gBattle[0x8A0] = arg0;
-    gBattle[0x8A0] = (u16)(arg0 + 1);
-    
-loop_1:
-    temp_r0 = *(u8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 4));
-    if ((s32)temp_r0 == 0x23) {
-        goto block_21;
+void fn_8019B51C(void *self) {
+    extern u8 gUiContext[];
+    extern u8 MapSelect_str[];
+    s32 Event_GetCmdFlags(s16);
+    s32 Event_GetCmdKind(s16);
+    void *Map_Get(void);
+    void *Map_FindObjNear(void *,s32,s32,u32,s32);
+    void fn_800056A0(s32);
+    void Process_Goto(void *,s32);
+    void GActor_RequestRes(void *);
+    void *fn_80095934(s32,s32,s32);
+    void fn_8004FC70(s32,s32);
+    s32 flags;
+    s32 kind;
+    void *tmp;
+    s32 actor;
+    M2C_FIELD(self,u8 *,0x62)=gUiContext[0xD];
+    M2C_FIELD(self,u8 *,0x63)=gUiContext[0xE];
+    flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x56));
+    kind=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x56));
+    M2C_FIELD(self,void **,0x5C)=Map_FindObjNear(Map_Get(),M2C_FIELD(self,s8 *,0x62),M2C_FIELD(self,s8 *,0x63),0x8000,0);
+    if(!M2C_FIELD(self,void **,0x5C)) {
+        fn_800056A0(0);
+        Process_Goto(self,0x63);
+        return;
     }
-    
-    switch ((s32) temp_r0) {
-    case 0x0:
+    M2C_FIELD(self,u8 *,0x64)=M2C_FIELD(M2C_FIELD(self,void **,0x5C),u8 *,0);
+    M2C_FIELD(self,u8 *,0x65)=M2C_FIELD(M2C_FIELD(self,void **,0x5C),u8 *,1);
+    M2C_FIELD(self,u8 *,0x66)=gUiContext[0xF];
+    M2C_FIELD(self,u8 *,0x67)=gUiContext[0x10];
+    GActor_RequestRes(MapSelect_str+0x15A);
+    tmp=fn_80095934(0,kind,flags);
+    if(tmp) GActor_RequestRes(tmp);
+    tmp=*M2C_FIELD(self,void ***,0x34);
+    if(tmp) actor=M2C_FIELD(tmp,s32 *,0x280); else actor=0;
+    fn_8004FC70(actor,8);
+    switch(kind) {
+    case 0x50: case 0x51:
+        tmp=*M2C_FIELD(self,void ***,0x34);
+        if(tmp) actor=M2C_FIELD(tmp,s32 *,0x280); else actor=0;
+        fn_8004FC70(actor,9);
         break;
-    case 0x9:
-    case 0x15:
-        if (*(s8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 6)) == 0) {
-            sp8 |= 0x20000;
-        }
-        goto block_21;
-    case 0x20:
-    case 0x25:
-    case 0x55:
-        break;
-    case 0x53:
-    case 0x50:
-    case 0x24:
-    case 0x23:
-        break;
-    case 0x1:
-    case 0x2:
-    case 0x3:
-    case 0x4:
-    case 0x5:
-    case 0x6:
-    case 0x7:
-    case 0x8:
-    case 0xA:
-    case 0xB:
-    case 0xC:
-    case 0xD:
-    case 0xE:
-    case 0xF:
-    case 0x10:
-    case 0x11:
-    case 0x12:
-    case 0x13:
-    case 0x14:
-        break;
-    case 0x16:
-    case 0x17:
-    case 0x18:
-    case 0x19:
-    case 0x1A:
-    case 0x1B:
-    case 0x1C:
-    case 0x1D:
-    case 0x1E:
-    case 0x1F:
-        break;
-    case 0x21:
-    case 0x22:
-    case 0x26:
-    case 0x27:
-    case 0x28:
-    case 0x29:
-        break;
-    case 0x2A:
-    case 0x2B:
-    case 0x2C:
-    case 0x2D:
-    case 0x2E:
-    case 0x2F:
-    case 0x30:
-    case 0x31:
-        break;
-    default:
+    case 0x52:
+        tmp=*M2C_FIELD(self,void ***,0x34);
+        if(tmp) actor=M2C_FIELD(tmp,s32 *,0x280); else actor=0;
+        fn_8004FC70(actor,7);
         break;
     }
-    
-block_21:
-    gBattle[0x8A0] = temp_r31;
-    if (sp8 & 0x10000004) {
-        gBattle[0x8A0] = arg0;
-        var_r4 = 0;
-        gBattle[0x8A0] = (u16)(arg0 + 1);
-        
-loop_24:
-        temp_r0_2 = *(u8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 4));
-        switch ((s32)temp_r0_2) {
-        case 0x0:
-        case 0x24:
-            break;
-        case 0x9:
-        case 0x15:
-            if (*(s8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 6)) > 0) {
-                var_r4 = 1;
-            }
-            /* fall through */
-        default:
-            gBattle[0x8A0] = (u16)(gBattle[0x8A0] + 1);
-            goto loop_24;
-        }
-        
-        gBattle[0x8A0] = temp_r31;
-        if (var_r4 != 0) {
-            sp8 |= 0x1;
-        }
-    }
-    
-    return sp8;
 }
 void fn_8019B6B4(s32 arg0, s32 arg1) {
     void *Process_CreateChild(void *, s32);
