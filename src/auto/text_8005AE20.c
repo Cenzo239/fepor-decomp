@@ -11976,7 +11976,7 @@ extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
         virtual void v24() = 0;
         virtual f32 v25() = 0;
     };
-    void fn_800717EC(void *, s32, s32, s32, s32, f32, f32, f32);
+    void Ui_DrawWindowTexture(void *, s32, s32, s32, s32, f32, f32, f32);
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 gUiIconDrawer[];
     extern u8 lbl_8026BB08[];
@@ -12055,7 +12055,7 @@ extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
     if (row == -1) {
         return;
     }
-    fn_800717EC(self, 1, 0xFF, 0x39, 0, x, y, ((Obj *)self)->v25());
+    Ui_DrawWindowTexture(self, 1, 0xFF, 0x39, 0, x, y, ((Obj *)self)->v25());
     p = (s32 *)(tbl + 0x34);
     xOff[0] = p[0];
     xOff[1] = p[1];
@@ -12083,9 +12083,9 @@ extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
     lbl_80367348 = lbl_80367348 + 1;
     lbl_80367348 = lbl_80367348 % 24;
     idx = lbl_80367348 / 8;
-    fn_800717EC(self, 1, 0xFF, 0x3A, 0, x + (f32)xOff[idx], y + (f32)yOff[idx], ((Obj *)self)->v25() - lbl_803692E0);
-    fn_800717EC(self, 1, 0xFF, 0x3B, 0, x + (f32)xOff[idx + 3], y + (f32)yOff[idx + 3], ((Obj *)self)->v25() - lbl_803692E0);
-    fn_800717EC(self, 1, 0xFF, 0x3C, 0, x + (f32)xOff[idx + 6], y + (f32)yOff[idx + 6], ((Obj *)self)->v25() - lbl_803692E0);
+    Ui_DrawWindowTexture(self, 1, 0xFF, 0x3A, 0, x + (f32)xOff[idx], y + (f32)yOff[idx], ((Obj *)self)->v25() - lbl_803692E0);
+    Ui_DrawWindowTexture(self, 1, 0xFF, 0x3B, 0, x + (f32)xOff[idx + 3], y + (f32)yOff[idx + 3], ((Obj *)self)->v25() - lbl_803692E0);
+    Ui_DrawWindowTexture(self, 1, 0xFF, 0x3C, 0, x + (f32)xOff[idx + 6], y + (f32)yOff[idx + 6], ((Obj *)self)->v25() - lbl_803692E0);
     Ui_DrawIcon(gUiIconDrawer, (s32)(lbl_8036933C + x), (s32)(y - lbl_80369340), icons[row][col]);
     Ui_DrawIcon(gUiIconDrawer, (s32)(lbl_80369344 + x), (iy = (s32)(lbl_80369348 + y)), icons[row][(col + 1) % 3]);
     Ui_DrawIcon(gUiIconDrawer, (s32)(x - lbl_8036934C), iy, icons[row][(col + 2) % 3]);
@@ -12234,7 +12234,7 @@ extern "C" void fn_80071740(void *arg0, s32 arg1, f32 x, f32 y) {
     fn_8008B464(arg1, (s32)x, (s32)y);
 }
 
-extern "C" void fn_800717EC(void *arg0, s32 color, s32 alpha, s32 texId, s32 flags, f32 x, f32 y, f32 z) {
+extern "C" void Ui_DrawWindowTexture(void *arg0, s32 color, s32 alpha, s32 texId, s32 flags, f32 x, f32 y, f32 z) {
 #pragma inline_depth(0)
     u32 *Ui_GetColor(s32);
     s32 fn_8006EDD8(void *, u16);
