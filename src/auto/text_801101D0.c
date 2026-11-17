@@ -932,14 +932,12 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     void *obj;
     s8 flag;
     s32 n;
-    void *sz;
 
     *(f32 *)&pos.z = 0.0f;
     *(f32 *)&pos.y = 0.0f;
     *(f32 *)&pos.x = 0.0f;
     n = strlen((char *)gActorXmlStrs + 0x4E);
-    sz = (void *)name->size;
-    if (String_Compare(name, 0, sz, (char *)gActorXmlStrs + 0x4E, n) != 0) {
+    if (String_Compare(name, 0, (void *)name->size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
         ((GetPosFn)((void **)*(void **)((u8 *)self + 0x40))[0xE])(&got, self, 0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
@@ -3273,16 +3271,125 @@ void fn_80117F54(s32 arg0) {
     fn_8007D064(gUiContext[0], arg0, 0);
 }
 
-s32 fn_80117F98(void *arg0) {
-    if (M2C_FIELD(arg0, u8 *, 0x18) != 0) {
-        return 0;
+void fn_80117F98(void *arg0) {
+    typedef struct {
+        void *unk0;
+        s32 unk4;
+        s16 unk8;
+        s16 unkA;
+        s16 unkC;
+        s16 unkE;
+        s16 unk10;
+        s16 unk12;
+        s16 unk14;
+        s16 unk16;
+        s16 unk18;
+        s16 unk1A;
+        s16 unk1C;
+        u8 unk1E;
+        u8 unk1F;
+        u8 unk20;
+        u8 unk21;
+        s16 unk22;
+        s16 unk24;
+        f32 unk28;
+        f32 unk2C;
+        f32 unk30;
+        s32 unk34;
+        s32 unk38;
+        s32 unk3C;
+        s32 unk40;
+        s32 unk44;
+        s32 unk48;
+        u8 unk4C;
+        u8 pad4D;
+        s16 unk4E;
+        s16 unk50;
+        s16 unk52;
+        s16 unk54;
+        s32 unk58;
+    } Unk5C;
+    void *Heap_Alloc(s32);
+    void String_AssignCStr(void *, char *, s32);
+    s32 strlen(char *);
+    void Ui_AddChild(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    void Process_RetreatStep(void *);
+    void Process_ClearFunc(void *);
+    void Process_Goto(void *, s32);
+    void fn_8011ACFC(void);
+    extern u8 gUiContext[];
+    extern u8 lbl_80293C84[];
+    extern u8 lbl_80293C58[];
+    extern u8 lbl_80274508[];
+    Unk5C *temp_r3;
+    Unk5C *found;
+    s32 len;
+
+    switch (gUiContext[8]) {
+    case 0x81:
+        Process_Goto(arg0, 0x13);
+        break;
+    default:
+        Process_RetreatStep(*(void **)((u8 *)arg0 + 0x44));
+        temp_r3 = (Unk5C *)Heap_Alloc(0x5C);
+        if (temp_r3) {
+            temp_r3->unk0 = lbl_8028FDB0;
+            temp_r3->unk4 = 0;
+            temp_r3->unk0 = lbl_80292230;
+            temp_r3->unk8 = -1;
+            temp_r3->unkA = 0;
+            temp_r3->unkC = 0x190;
+            temp_r3->unkE = 0x260;
+            temp_r3->unk10 = 0x1C0;
+            temp_r3->unk12 = 0;
+            temp_r3->unk14 = 0;
+            temp_r3->unk16 = 0x260;
+            temp_r3->unk18 = 0x30;
+            temp_r3->unk1A = 0;
+            temp_r3->unk1C = 0;
+            temp_r3->unk1E = 0xFF;
+            temp_r3->unk1F = 0xFF;
+            temp_r3->unk20 = 0xFF;
+            temp_r3->unk21 = 0xFF;
+            temp_r3->unk22 = 0x316;
+            temp_r3->unk24 = 0;
+            temp_r3->unk28 = 1.0f;
+            temp_r3->unk2C = 1.0f;
+            temp_r3->unk30 = 1.0f;
+            temp_r3->unk34 = 0;
+            temp_r3->unk38 = 0;
+            temp_r3->unk0 = lbl_80293C84;
+            temp_r3->unk3C = 0;
+            temp_r3->unk40 = 0;
+            temp_r3->unk44 = 0;
+            temp_r3->unk40 = 0;
+            temp_r3->unk48 = 0;
+            temp_r3->unk4C = 1;
+            temp_r3->unk4E = 0;
+            temp_r3->unk50 = 0;
+            temp_r3->unk52 = 0;
+            temp_r3->unk54 = 0;
+            temp_r3->unk0 = lbl_80293C58;
+            temp_r3->unk58 = 1;
+            temp_r3->unk4E = 0x30;
+            temp_r3->unk52 = 0x30;
+        }
+        temp_r3->unk8 = -0x1000;
+        temp_r3->unk48 = 1;
+        len = strlen((char *)lbl_80274508 + 0x161);
+        String_AssignCStr(&temp_r3->unk3C, (char *)(lbl_80274508 + 353), len);
+        temp_r3->unk34 |= 0x10;
+        temp_r3->unk58 = 1;
+        Ui_AddChild(arg0, temp_r3);
+        found = (Unk5C *)Ui_FindChild(arg0, -0x1000, 0);
+        if (found) {
+            found->unk58 = 0;
+        }
+        fn_8011ACFC();
+        Process_ClearFunc(arg0);
+        break;
     }
-    
-    // Call Process_RetreatStep
-    Process_RetreatStep(arg0);
-    
-    // If we've reached here, the check is passed and we return M2C_FIELD(arg0, u32 *, 0x18)
-    return M2C_FIELD(arg0, u32 *, 0x18);
 }
 
 void fn_80118170(void *arg0) {
