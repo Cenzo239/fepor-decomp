@@ -14179,9 +14179,9 @@ extern "C" void fn_80148980(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 extern u8 lbl_80367AEA;
 extern u8 lbl_80367AEB;
-s32 fn_8014953C(void);
+s32 fn_8014953C(u8 *);
 #pragma cplusplus on
-extern "C" void fn_80148A28(void *arg0, s32 arg1) {
+extern "C" void fn_80148A28(void *arg0) {
     struct Obj {
         u8 pad0[8];
         virtual u8 v0() = 0;
@@ -14228,15 +14228,17 @@ extern "C" void fn_80148A28(void *arg0, s32 arg1) {
     };
     s32 rate;
     Obj *self = (Obj *)arg0;
+    u8 flags;
     u8 level;
     u8 alive;
 
     rate = 0x64;
-    if (self->flags & 1) {
-        register u8 delay = self->delay;
+    flags = self->flags;
+    if (flags & 1) {
+        u8 delay = self->delay;
         if (delay == 0) {
-            if (self->flags & 2) {
-                rate = fn_8014953C();
+            if (flags & 2) {
+                rate = fn_8014953C((u8 *)self);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -14267,7 +14269,7 @@ extern "C" void fn_80148A28(void *arg0, s32 arg1) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C();
+                    rate = fn_8014953C((u8 *)self);
                 }
                 level = (u8)(lbl_80367AEA * rate / 100);
                 self->unk_d = (u8)(level * (self->cur * self->v19()) / 10000);
@@ -14282,7 +14284,7 @@ extern "C" void fn_80148D54(void *arg0) {
     s32 fn_8014953C(void);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
-    extern u8 gBgmVol;
+    extern u8 lbl_80367AEE;
     extern u8 lbl_80367AEF;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
@@ -14333,7 +14335,7 @@ extern "C" void fn_80148D54(void *arg0) {
     };
     s32 rate;
     Obj *self = (Obj *)arg0;
-    s32 flags;
+    register u8 flags;
     u8 level;
     u8 factor;
     u8 alive;
@@ -14358,8 +14360,8 @@ extern "C" void fn_80148D54(void *arg0) {
                     self->flags &= ~8;
                 }
             }
-            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || gBgmVol != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
-                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
+            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEE != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
+                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 self->prev = self->cur;
@@ -14378,7 +14380,7 @@ extern "C" void fn_80148D54(void *arg0) {
                 if (self->flags & 2) {
                     rate = fn_8014953C();
                 }
-                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
+                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 ((DrawIface *)self)->Set(self->unk_d, self->unk_e, self->unk_10, (u16)self->unk_12);
@@ -14510,6 +14512,52 @@ extern "C" void fn_801490C8(void *arg0) {
         }
     }
 }
+
+s32 fn_8014953C(u8 *self) {
+    void *Camera_Get(void);
+    void fn_802029C4(void *, void *, void *);
+    void fn_802031A8(void *, void *, void *);
+    f32 Vec_Length(void *);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    extern u8 lbl_80366E90, lbl_80367AF6;
+    extern f64 lbl_8036A780;
+    extern f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
+    f32 delta[3], a[3], b[3];
+    f32 scale, den, x, y, len;
+    u8 *cam = (u8 *)Camera_Get();
+    scale = (f32)lbl_80366E90;
+    if (scale <= gBgmVolTimerZero)
+        scale = lbl_8036A790;
+    self[0x10] = lbl_80367AF6 + (*(s32(**)(void *))(*(u8 **)(self + 8) + 0x60))(self);
+    fn_802029C4(cam + 0xA4, self + 0x1C, a);
+    fn_802029C4(cam + 0xA4, cam + 0xE0, b);
+    fn_802031A8(a, b, delta);
+    if (gBgmVolTimerZero == Vec_Length(delta)) {
+        self[0xE] = 0x40;
+        self[0xF] = 0x40;
+    } else {
+        den = lbl_8036A7A4 * scale;
+        x = lbl_8036A7A8 * delta[0] / den;
+        y = lbl_8036A7AC * delta[1] / den;
+        if (x < lbl_8036A7AC)
+            x = lbl_8036A7AC;
+        if (x > lbl_8036A7B0)
+            x = lbl_8036A7B0;
+        if (y < lbl_8036A7AC)
+            y = lbl_8036A7AC;
+        if (y > lbl_8036A7B0)
+            y = lbl_8036A7B0;
+        self[0xE] = (s32)(lbl_8036A7A8 + x);
+        self[0xF] = (s32)(lbl_8036A7A8 + y);
+    }
+    fn_802031A8(self + 0x1C, cam + 0xD4, delta);
+    scale *= (u16)(*(u16(**)(void *))(*(u8 **)(self + 8) + 0x5C))(self);
+    len = Vec_Length(delta);
+    if (len > scale)
+        len = scale;
+    return (s32)Math_Ease(0, lbl_8036A794, gBgmVolTimerZero, len, scale);
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus reset
