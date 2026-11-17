@@ -2574,6 +2574,53 @@ extern "C" void fn_801B9D94(void *arg0) {
     Ui_BringChildToFront(arg0, child);
     Ui_PlaySeCue(gUiUnitPanelStrings + 0x156, 0x64);
 }
+
+extern "C" void fn_801BA0C4(void *arg0) {
+#pragma cplusplus reset
+void *Ui_FindChild(void *,s32,s32);
+void Ui_SlideWidgetChild(void *,void *,s16 *,s32);
+void Process_Goto(void *,s32);
+u32 Unit_CountExtraSkills(void *);
+s32 Unit_GetSkillCapacityUsed(void *);
+void *Res_GetEntry(u8);
+u8 Skill_UnitMeetsReqs(void *,void *);
+extern u8 gUiContext[];
+s16 pos1[2],pos2[2];
+void *unit;
+s32 capacity;
+u8 blocked;
+void *a,*b;
+s32 i;
+s16 y;
+void *skill;
+a=Ui_FindChild(arg0,0x82,0);
+b=Ui_FindChild(arg0,0x108,0);
+y=M2C_FIELD(b,s16 *,0xC);
+pos1[0]=0x260; pos1[1]=y;
+Ui_SlideWidgetChild(arg0,b,pos1,0);
+unit=*(void **)gUiContext;
+if(Unit_CountExtraSkills(M2C_FIELD(arg0,void **,0x60))>=5U) blocked=1;
+else {
+capacity=M2C_FIELD(M2C_FIELD(unit,void **,0x18C),u8 *,0x40);
+if(capacity<=Unit_GetSkillCapacityUsed(unit)) blocked=1;
+else {
+blocked=1;
+for(i=0;i<0x62;i++) {
+skill=Res_GetEntry((u8)i);
+if(M2C_FIELD(skill,u8 *,0x19)!=0 && Skill_UnitMeetsReqs(skill,unit)) { blocked=0;break; }
+}
+}
+}
+if(blocked) {
+pos2[0]=M2C_FIELD(a,s16 *,0xA);pos2[1]=-0x3A;
+Ui_SlideWidgetChild(arg0,a,pos2,0);
+Process_Goto(arg0,0x11);
+} else {
+M2C_FIELD(a,f32 *,0x30)=1.0f;
+M2C_FIELD(b,f32 *,0x30)=1.0f;
+}
+}
+
 #pragma cplusplus reset
 
 void fn_801BA200(void *arg0) {
@@ -7916,6 +7963,7 @@ void fn_801C6DB8(u32 arg0)
     }
 }
 
+#pragma optimization_level 3
 void fn_801C6E60(u32 arg0)
 {
     extern u8 LightFade_script[];
@@ -7943,7 +7991,8 @@ void fn_801C6E60(u32 arg0)
         list = (u8 *)clear;
         for (i = 0; i < 0x40; i++) {
             if (*(u32 *)(list + 0x290) == 0) {
-                *(u32 *)((u8 *)clear + i * 4 + 0x290) = arg0;
+                list = (u8 *)clear + i * 4;
+                *(u32 *)(list + 0x290) = arg0;
                 fn_8005F788(arg0, 1, 1);
                 break;
             }
@@ -7951,7 +8000,7 @@ void fn_801C6E60(u32 arg0)
         }
     }
 }
-
+#pragma optimization_level reset
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
 /* Copy LightFade source channels onto display lights, release extras, restore fog color. */
