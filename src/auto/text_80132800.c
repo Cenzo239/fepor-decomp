@@ -10196,6 +10196,7 @@ void fn_80141970(void *arg0, s32 arg1) {
     *(f32 *)((char *)var_r3_4 + 0x28) = temp_f1;
 }
 
+#pragma opt_common_subs off
 void *fn_80141B00(void *arg0, void *arg1, u8 arg2, u8 arg3) {
 void *Process_CreateChild(void *, void *);
 void *Process_Create(void *, void *);
@@ -10205,34 +10206,41 @@ void List_Insert(void *, void *, void *, void *);
 f32 Math_Ease(s32,f32,f32,f32,f32);
 extern u8 lbl_80292258[];
 extern f32 lbl_8036A740;
-void *self,*child,*end,*node,*pos;
-u32 ret,key;
+void *self,*child,*end,*node,*result;
+u32 key;
+void *pos;
+u32 ret;
 f32 alpha[1],t;
 s32 time,duration;
-alpha[0]=1.0f;
-if(arg2) self=Process_CreateChild(&lbl_80292258,arg0);
-else self=Process_Create(&lbl_80292258,arg0);
-if(self==0) return self;
+result=arg2?Process_CreateChild(&lbl_80292258,arg0):Process_Create(&lbl_80292258,arg0);
+self=result;
+if(result!=0) {
 *(u8 *)((u8 *)self+0x30)=0;
 fn_80142060((u8 *)self+0x34);
+key=(u32)arg1;
 if(arg1!=0) {
 end=fn_80140B04((u8 *)self+0x34);
 node=fn_80140B04((u8 *)self+0x34);
-lwz_node:
 node=*(void **)((u8 *)node+4);
+goto check;
+for(;;) {
+node=*(void **)((u8 *)node+4);
+check:
 if(node!=end) {
-if(*(void **)((u8 *)node+8)!=arg1) goto lwz_node;
+if(*(void **)((u8 *)node+8)!=(void *)key) continue;
+}
+break;
 }
 pos=(u8 *)self+0x38;
-if(node!=pos) goto skip_insert;
-key=(u32)arg1;
-ret=0;
+if(node==pos) {
 List_Insert(&ret,(u8 *)self+0x34,&pos,&key);
-if(arg1!=0) {
-*(s32 *)((u8 *)arg1+4)+=1;
+if(key!=0) {
+*(s32 *)((u8 *)key+4)+=1;
 }
 }
-skip_insert:
+}
+}
+alpha[0]=1.0f;
 *(s16 *)((u8 *)self+0x28)=*(s16 *)((u8 *)arg1+0x24);
 *(s32 *)((u8 *)self+0x40)=1;
 *(u8 *)((u8 *)self+0x44)=arg3;
@@ -10257,7 +10265,7 @@ if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); els
 *(f32 *)((u8 *)child+0x28)=t;
 return self;
 }
-
+#pragma opt_common_subs reset
 void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     extern void *lbl_80292258;
     extern f32 lbl_8036A730;
@@ -10813,7 +10821,7 @@ u8 *page;
 s32 repeat,edge,held;
 s16 old;
 s16 count;
-s32 visible;
+u32 visible;
 u8 blocked;
 index=((UiPageSelector *)arg0)->page();
 page=self+index*2;
@@ -10823,9 +10831,8 @@ if(count==0) {
 *(s16 *)(page+0x64)=0;
 return;
 }
-blocked=0;
-visible=*(s16 *)(self+0x80);
-if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
+visible=*(u16 *)(self+0x80);
+blocked=(gUiInputFlags&0x10)!=0 && (gUiInputFlags&0x20)==0;
 if(!blocked) {
 old=*(s16 *)(page+0x64);
 held=gPadInput[1];
@@ -10874,6 +10881,7 @@ fn_8013ED84(*(void **)(self+0x48),(s16)((*(s16 *)(page+0x4e)<<5)-(s32)*(f32 *)(s
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma global_optimizer on
 extern "C" void fn_80142C00(void *self, void *other) {
     struct Obj {
         virtual void v1() = 0;
