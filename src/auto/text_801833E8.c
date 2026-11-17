@@ -936,6 +936,78 @@ void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     M2C_FIELD(temp_r3, s32 *, 0x3C) = arg2;
 }
 
+void *Mu_StartBlend(s32 unit, s32 arg1, s32 hitCount, void *proc) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, void *);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32, void *);
+    void *fn_800508C4(void *);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void fn_8005FC74(void *, void *, s32);
+    void fn_8005FEE8(void *, f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    extern u8 E_MuTransfer_script[];
+    extern f32 lbl_8036ACEC;
+    extern f32 lbl_8036ACF0;
+    extern f64 lbl_8036ACE0;
+    u8 blendKey[0x34];
+    u8 transferKey[0x38];
+    s32 rangeResult;
+    void *animSrc;
+
+    if (fn_8004C0F0((void *)unit) == 0) {
+        return NULL;
+    }
+    *(void **)(blendKey + 0x30) = (void *)unit;
+    GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
+    *(void **)(transferKey + 0x30) = (void *)unit;
+    GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
+    {
+        u8 level = *(u8 *)((u8 *)fn_800508C4((void *)unit) + 9);
+        if ((s32)level > 0x14) {
+            if ((s32)level > 0x28) {
+                hitCount <<= 1;
+            } else {
+                hitCount = (s32)((f32)hitCount + Math_Lerp(lbl_8036ACEC, (f32)hitCount, lbl_8036ACF0, (f32)((s32)level - 0x14)));
+            }
+        }
+    }
+    if ((hitCount == 0) || (fn_80060440((u8 *)unit + 0x1C) >= 4)) {
+        fn_8004FE98((void *)unit, arg1);
+        return NULL;
+    }
+    proc = Process_CreateEx(E_MuBlend_script, proc);
+    *(void **)((u8 *)proc + 0x30) = (void *)unit;
+    *(s32 *)((u8 *)proc + 0x34) = unit + 0x1C;
+    *(s32 *)((u8 *)proc + 0x38) = arg1;
+    *(s32 *)((u8 *)proc + 0x3C) = hitCount;
+    *(s32 *)((u8 *)proc + 0x40) = 0;
+    fn_800506E0(*(void **)((u8 *)proc + 0x30), arg1, (void *)(unit + 0x1C));
+    animSrc = fn_800639B4();
+    rangeResult = 0;
+    switch (arg1) {
+    case 0:
+    case 1:
+    case 8:
+    case 15:
+        if (*(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44) != NULL) {
+            void *range = *(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44);
+            f32 rangeStart = (f32)*(s32 *)((u8 *)range + 0x14);
+            rangeResult = (s32)Math_Lerp((f32)*(s32 *)((u8 *)animSrc + 0x14), (f32)*(s32 *)((u8 *)animSrc + 0x18), (f32)*(s32 *)((u8 *)range + 0x18) - rangeStart, *(f32 *)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x58) - rangeStart);
+        }
+        break;
+    }
+    fn_8005FC74(*(void **)((u8 *)proc + 0x34), animSrc, 1);
+    fn_8005FEE8(*(void **)((u8 *)proc + 0x34), (f32)rangeResult);
+    fn_8004FE90(*(void **)((u8 *)proc + 0x30), (u8)*(s32 *)((u8 *)proc + 0x38));
+    return proc;
+}
+
 void fn_80184F20(s32 arg0) {
 void GfxEnt_ForEachKey(void*,void*,void*);
 void MuFade_UnlinkSame(void*,void*);
@@ -2823,6 +2895,114 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
     }
 }
 
+void fn_8018A0A8(void *arg0) {
+ void *Process_CreateEx(void *,s32);
+ void GfxEnt_ForEachKey(void *,void *,void *);
+ u8 fn_8004C0F0(void *);
+ void *fn_800508C4(void *);
+ void fn_8004FE98(void *,s32);
+ void fn_800506E0(void *,s32);
+ void *fn_800639B4(void);
+ s32 fn_80060440(void *);
+ void fn_8005FC74(void *,void *,s32);
+ void fn_8005FEE8(void *,f32);
+ void fn_8004FE90(void *,u8);
+ f32 Math_Lerp(f32,f32,f32,f32);
+ extern u8 E_MuBlend_script[];
+ extern f32 lbl_8036ACEC,lbl_8036AD20,lbl_8036AD0C,lbl_8036ACF0,lbl_8036AD24,lbl_8036ACE8;
+ register u8 *base;
+ void *info;
+ base=E_MuBlend_script;
+
+ M2C_FIELD(arg0,u8 *,0x58)=0;
+ M2C_FIELD(arg0,f32 *,0x4c)=lbl_8036ACEC;
+ if(*M2C_FIELD(arg0,u8 **,0x54)==16) {
+ if(M2C_FIELD(arg0,u16 *,0x52)&0x30) Process_Goto(arg0,2); else Process_Goto(arg0,0);
+ return;
+ }
+ info=fn_800508C4(M2C_FIELD(arg0,void **,0x30));
+ M2C_FIELD(arg0,void **,0x34)=(u8*)M2C_FIELD(arg0,void **,0x30)+0x1c;
+ M2C_FIELD(arg0,f32 *,0x38)=(s32)((M2C_FIELD(info,u8 *,9)*10)/16.666666f);
+ if(M2C_FIELD(arg0,f32 *,0x38)<8.0f) M2C_FIELD(arg0,f32 *,0x38)=8.0f;
+ if(M2C_FIELD(arg0,u16 *,0x52)&0x100) {
+ u8 key1a[0x38], key1b[0x38];
+ void *obj = M2C_FIELD(arg0,void **,0x30);
+ s32 count=8;
+ void *proc; s32 frame; void *end; void *old; void *model; s32 lvl; f32 start;
+ if(fn_8004C0F0(obj)) {
+ M2C_FIELD(key1a,void **,0x30)=obj;
+ GfxEnt_ForEachKey(base,MuFade_UnlinkSame,key1a);
+ M2C_FIELD(key1b,void **,0x30)=obj;
+ GfxEnt_ForEachKey(base+0x20,MuFade_UnlinkSame,key1b);
+ lvl=M2C_FIELD(fn_800508C4(obj),u8 *,9);
+ if(lvl>20) { if(lvl>40) count<<=1; else count=(s32)(count+Math_Lerp(lbl_8036ACEC,lbl_8036AD0C,lbl_8036ACF0,(f32)(lvl-20))); }
+ if(count==0 || fn_80060440((u8*)obj+0x1c)>=4) fn_8004FE98(obj,15);
+ else {
+ proc=Process_CreateEx(base,0);
+ M2C_FIELD(proc,void **,0x30)=obj;
+ M2C_FIELD(proc,void **,0x34)=(u8*)obj+0x1c;
+ M2C_FIELD(proc,s32 *,0x38)=15;
+ M2C_FIELD(proc,s32 *,0x3c)=count;
+ M2C_FIELD(proc,s32 *,0x40)=0;
+ fn_800506E0(M2C_FIELD(proc,void **,0x30),15);
+ end=fn_800639B4();
+ model=M2C_FIELD(proc,void **,0x34); frame=0;
+ old=M2C_FIELD(model,void **,0x44);
+ if(old) { start=(f32)M2C_FIELD(old,s32 *,0x14); frame=(s32)Math_Lerp((f32)M2C_FIELD(end,s32 *,0x14),(f32)M2C_FIELD(end,s32 *,0x18),(f32)M2C_FIELD(old,s32 *,0x18)-start,M2C_FIELD(model,f32 *,0x58)-start); }
+ fn_8005FC74(M2C_FIELD(proc,void **,0x34),end,1);
+ fn_8005FEE8(M2C_FIELD(proc,void **,0x34),(f32)frame);
+ fn_8004FE90(M2C_FIELD(proc,void **,0x30),(u8)M2C_FIELD(proc,s32 *,0x38));
+ }
+ }
+ M2C_FIELD(arg0,f32 *,0x38)*=lbl_8036AD24;
+} else {
+ u8 key2a[0x38], key2b[0x38];
+ void *obj = M2C_FIELD(arg0,void **,0x30);
+ s32 count=8;
+ void *proc; s32 frame; void *end; void *old; void *model; s32 lvl; f32 start;
+ if(fn_8004C0F0(obj)) {
+ M2C_FIELD(key2a,void **,0x30)=obj;
+ GfxEnt_ForEachKey(base,MuFade_UnlinkSame,key2a);
+ M2C_FIELD(key2b,void **,0x30)=obj;
+ GfxEnt_ForEachKey(base+0x20,MuFade_UnlinkSame,key2b);
+ lvl=M2C_FIELD(fn_800508C4(obj),u8 *,9);
+ if(lvl>20) { if(lvl>40) count<<=1; else count=(s32)(count+Math_Lerp(lbl_8036ACEC,lbl_8036AD0C,lbl_8036ACF0,(f32)(lvl-20))); }
+ if(count==0 || fn_80060440((u8*)obj+0x1c)>=4) fn_8004FE98(obj,1);
+ else {
+ proc=Process_CreateEx(base,0);
+ M2C_FIELD(proc,void **,0x30)=obj;
+ M2C_FIELD(proc,void **,0x34)=(u8*)obj+0x1c;
+ M2C_FIELD(proc,s32 *,0x38)=1;
+ M2C_FIELD(proc,s32 *,0x3c)=count;
+ M2C_FIELD(proc,s32 *,0x40)=0;
+ fn_800506E0(M2C_FIELD(proc,void **,0x30),1);
+ end=fn_800639B4();
+ model=M2C_FIELD(proc,void **,0x34); frame=0;
+ old=M2C_FIELD(model,void **,0x44);
+ if(old) { start=(f32)M2C_FIELD(old,s32 *,0x14); frame=(s32)Math_Lerp((f32)M2C_FIELD(end,s32 *,0x14),(f32)M2C_FIELD(end,s32 *,0x18),(f32)M2C_FIELD(old,s32 *,0x18)-start,M2C_FIELD(model,f32 *,0x58)-start); }
+ fn_8005FC74(M2C_FIELD(proc,void **,0x34),end,1);
+ fn_8005FEE8(M2C_FIELD(proc,void **,0x34),(f32)frame);
+ fn_8004FE90(M2C_FIELD(proc,void **,0x30),(u8)M2C_FIELD(proc,s32 *,0x38));
+ }
+ }
+ 
+}
+ if(M2C_FIELD(arg0,u16 *,0x52)&0x30) {
+ u8 key[0x38]; s16 angle; f32 degrees; void *obj=M2C_FIELD(arg0,void **,0x30);
+ switch(*M2C_FIELD(arg0,u8 **,0x54)) {
+ case 4:angle=0;break; case 6:angle=45;break; case 2:angle=90;break; case 10:angle=135;break;
+ case 8:angle=180;break;case 9:angle=225;break;case 1:angle=270;break;case 5:angle=315;break;
+ default:angle=0;break;
+ }
+ degrees=(f32)angle;
+ M2C_FIELD(key,void **,0x30)=obj;
+ GfxEnt_ForEachKey(base+0x78,MuFade_UnlinkSame,key);
+ if(degrees!=M2C_FIELD(obj,s16 *,0x15c)/lbl_8036ACE8) M2C_FIELD(obj,s16 *,0x15c)=(s32)(lbl_8036ACE8*degrees);
+ }
+ M2C_FIELD(M2C_FIELD(arg0,void **,0x30),u32 *,0x1a0)&=~0x40;
+ MoveAnim_AttachClassCue(arg0);
+}
+
 void MoveAnim_StartFlagFoot(void *anim) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
@@ -4136,72 +4316,38 @@ extern f32 lbl_8036AD80;
 extern f32 lbl_8036AD84;
 #pragma optimization_level 4
 #pragma inline auto
-void* Ui_GetColor(u8 arg0) {
-    u32 temp_r3;
-    u32 temp_r6;
-    u32 temp_r0;
-    
-    u32 r31;
-    f32 temp_f1;
-    f32 temp_f2;
-    void* temp_r31;
-
-    // Simplified structure based on assembly
-    temp_r31 = &lbl_80296088 + ((arg0 * 4) & 0x3FC);
-    
-    if (arg0 == 0x13 || arg0 == 0x22) {
-        temp_r3 = OSGetTick();
-        temp_r6 = *(u32 *)0x800000F8;
-        temp_r0 = temp_r6 >> 2; 
-        if (temp_r0 != 0) {
-            // Reconstruct the floating-point operation in assembly
-            f32 result = lbl_8036AD74 * ((lbl_8036AD78 * (f32)sin(temp_r3 / temp_r0, 
-                    0x57619F1, 
-                    (temp_r6 >> 2) * 0x10624DD3, 
-                    temp_r6, 
-                    0x10624DD3, 
-                    (lbl_8036AD6C * ((f32)temp_r3 / (f32)temp_r0 / (temp_r0 >> 6) / lbl_8036AD68)), 
-                    (f32)temp_r3 / (f32)temp_r0 / (temp_r0 >> 6))) + lbl_8036AD78);
-
-            temp_f2 = lbl_8036AD70 + result;
-            ((u8*)temp_r31)[0] = (u8)temp_f2;
-            ((u8*)temp_r31)[1] = (u8)(lbl_8036AD7C + result);
-            ((u8*)temp_r31)[2] = (u8)temp_f2;
-        } else {
-            // Handle case where division by zero occurs
-            ((u8*)temp_r31)[0] = 0x14;
-            ((u8*)temp_r31)[1] = 0x14;
-            ((u8*)temp_r31)[2] = 0x14;
-        }
-    } else if (arg0 == 0x14) {
-        temp_r3 = OSGetTick();
-        temp_r6 = *(u32 *)0x800000F8;
-        temp_r0 = temp_r6 >> 2; 
-        if (temp_r0 != 0) {
-            // Reconstruct the floating-point operation
-            f32 result = lbl_8036AD80 * ((lbl_8036AD78 * (f32)sin(temp_r3 / temp_r0, 
-                    0x57619F1,
-                    (temp_r6 >> 2) * 0x10624DD3,
-                    temp_r6,
-                    0x10624DD3,
-                    (lbl_8036AD6C * ((f32)temp_r3 / (f32)temp_r0 / (temp_r0 >> 6) / lbl_8036AD68)),
-                    (f32)temp_r3 / (f32)temp_r0 / (temp_r0 >> 6))) + lbl_8036AD78);
-
-            temp_f2 = lbl_8036AD70 + result;
-            ((u8*)temp_r31)[0] = (u8)temp_f2;
-            ((u8*)temp_r31)[1] = (u8)(lbl_8036AD84 + result);
-            ((u8*)temp_r31)[2] = (u8)temp_f2;
-        } else {
-            // Handle case where division by zero occurs
-            ((u8*)temp_r31)[0] = 0x14;
-            ((u8*)temp_r31)[1] = 0x14;
-            ((u8*)temp_r31)[2] = 0x14;
-        }
-    } else {
-        return temp_r31;
-    }
-    
-    return temp_r31;
+void *Ui_GetColor(u8 arg0) {
+#pragma fp_contract on
+u32 OSGetTick(void);
+f64 sin(f64);
+u8 *color=lbl_80296088+arg0*4;
+f32 phase, level, wave;
+u32 ticks, millis;
+switch(arg0) {
+case 19: case 34:
+ticks=OSGetTick();
+millis=ticks/((*(u32 *)0x800000F8/4)/1000);
+phase=(f32)(millis%1500)/lbl_8036AD68;
+wave=(f32)sin(lbl_8036AD6C*phase);
+wave=lbl_8036AD78*wave+lbl_8036AD78;
+wave=lbl_8036AD74*wave;
+color[0]=(u8)(lbl_8036AD70+wave);
+color[1]=(u8)(lbl_8036AD7C+wave);
+color[2]=(u8)(lbl_8036AD70+wave);
+break;
+case 20:
+ticks=OSGetTick();
+millis=ticks/((*(u32 *)0x800000F8/4)/1000);
+phase=(f32)(millis%1500)/lbl_8036AD68;
+wave=(f32)sin(lbl_8036AD6C*phase);
+wave=lbl_8036AD78*wave+lbl_8036AD78;
+wave=lbl_8036AD80*wave;
+color[0]=(u8)(lbl_8036AD70+wave);
+color[1]=(u8)(lbl_8036AD84+wave);
+color[2]=(u8)(lbl_8036AD70+wave);
+break;
+}
+return color;
 }
 void fn_8018DAD4(void) {
     void *Process_Find(M2C_UNK *);
@@ -4508,6 +4654,46 @@ extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v13();
     ((Obj *)arg0)->v14(arg1);
 }
+
+extern "C" void fn_8018E9E8(void *arg0) {
+#pragma cplusplus on
+struct Obj {
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void prepare()=0;
+virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0;
+virtual void row0(s16)=0; virtual void row1(s16)=0; virtual void row2(s16,s32)=0; virtual void row3(s16)=0;
+};
+extern f32 lbl_8036ADF0, lbl_8036ADF4;
+s32 Text_MeasureHeight(s32,f32);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_SetTex(s32,u16);
+void Prim2D_PrepareTex(void);
+s32 y;
+Obj *self=(Obj *)arg0;
+self->prepare();
+y=*(s16 *)((u8 *)self+0x46);
+y=(s16)(((s16)y+(0x1c-Text_MeasureHeight(-1,lbl_8036ADF0)))>>1);
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036ADF4);
+Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|0x13)); Prim2D_PrepareTex();
+switch(*(s32 *)((u8 *)self+0x3c)) {
+case 0: case 2: self->row0(y);break;
+case 1:self->row1(y);break;
+}
+Prim2D_Begin();
+Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|0x13)); Prim2D_PrepareTex();
+switch(*(s32 *)((u8 *)self+0x3c)) {
+case 0: case 2:self->row1(y+0x1c);break;
+case 1:self->row3(y+0x1c);break;
+}
+Prim2D_Begin();
+Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|0x13)); Prim2D_PrepareTex();
+switch(*(s32 *)((u8 *)self+0x3c)) {
+case 0: case 1:self->row2(y+0x38,1);break;
+case 2:self->row2(y+0x38,0);break;
+}
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 void fn_8018EBC0(void *arg0, s32 arg1) {
     void fn_8001C76C(void *);
@@ -13085,38 +13271,82 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
     return 1;
 }
 
-void fn_8019F2D0(void* arg0) {
-    int temp_r3 = 0;
-    int temp_r4 = 0;
-    int temp_r5 = 0;
-    
-    // Load a value from arg0 + 0x7C
-    int r3_val = *(int*)((char*)arg0 + 0x7C);
-    
-    // Check if the value is 0 or not
-    if (r3_val == 0) {
-        // If it's zero, set to some specific value and continue
-        temp_r3 = *(int*)((char*)arg0 + 0x84);
-        *(int*)((char*)arg0 + 0x80) = temp_r3;
+s32 fn_8019F2D0(s32 x, s32 y) {
+    extern u32 gUiInputFlags;
+    s32 Map_Get(void);
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
+    void fn_800056A0(s32);
+    void MapObjEvent_Remove(void *, s32, s32, s32);
+    void *MapObjEvent_Find(void *, s32, s32, s32);
+    void MapObj_FadeIn(void *, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
+    s32 Map_CollectLinkedObjs(void *, void *, s32 *);
+    u8 MapObj_IsVisible(void *);
+    void MapObj_Show(void *, s32);
+    void fn_80044450(s32, s32);
+    void fn_80016180(void);
+    void fn_80013864(void);
+    s32 fn_800C0658(void);
+    void fn_80129588(void *, s32);
+    extern u8 gMapObjEventList[];
+    s32 count;
+    s32 i;
+    s32 v;
+    s32 *p;
+    s32 linked[10];
+
+    if (gUiInputFlags & 1) {
+        {
+            void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+            if (obj == NULL) {
+                fn_800056A0(0);
+            } else {
+                MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
+                {
+                    void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+                    if (ev != NULL) {
+                        ((u8 *)ev)[4] = ((u8 *)ev)[5];
+                    }
+                }
+                MapObj_FadeIn(obj, 0);
+                obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
+                if (obj != NULL) {
+                    count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
+                    p = linked;
+                    i = 0;
+                    while (i < count) {
+                        v = *p;
+                        if ((u8)MapObj_IsVisible((void *)v) == 0) {
+                            MapObj_Show((void *)v, 0);
+                        }
+                        p++;
+                        i++;
+                    }
+                }
+            }
+        }
+        fn_80044450(Map_Get(), 1);
+        fn_80016180();
+        return 0;
     }
-    
-    // Check if r3_val == 1
-    if (r3_val == 1) {
-        temp_r4 = *(int*)((char*)arg0 + 0x70);
-        temp_r5 = *(int*)((char*)arg0 + 0x74);
-        
-        // Call another function with the loaded values
-        fn_8013467C(arg0, 0x217);
+
+    {
+        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+        if (obj == NULL) {
+            fn_800056A0(0);
+            return 0;
+        }
+        MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
+        {
+            void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+            if (ev != NULL) {
+                ((u8 *)ev)[4] = ((u8 *)ev)[5];
+            }
+        }
+        fn_80129588(obj, fn_800C0658());
     }
-    
-    // Check if r3_val == 2 
-    if (r3_val == 2) {
-        temp_r5 = *(int*)((char*)arg0 + 0x78);
-        *(int*)((char*)arg0 + 0x80) = temp_r5;
-        
-        // Call another function with the loaded value
-        fn_801B70A0(arg0, 0x320, 0x2);
-    }
+    fn_80013864();
+    return 1;
 }
 
 #pragma use_lmw_stmw on
