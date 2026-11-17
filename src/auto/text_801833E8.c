@@ -121,50 +121,61 @@ s32 fn_80183400(void) {
     return 9;
 }
 
+#pragma use_lmw_stmw on
 void fn_80183434(void *arg0, void *arg1) {
-    M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK Prim2D_PrepareTex();
-    M2C_UNK Prim2D_Begin();
-    u32 Text_MeasureHeight(M2C_UNK, f32, f32);
-    M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8008C1D8(M2C_UNK, M2C_UNK, M2C_UNK, s32, M2C_UNK);
-    extern f32 lbl_8036ACC4;
-    extern f32 lbl_8036ACC8;
-    extern f32 lbl_8036ACCC;
-    extern f32 lbl_8036ACD0;
-    M2C_UNK var_r28;
-    f32 temp_f2;
-    s16 temp_r31;
-    s16 temp_r3_2;
-    s32 temp_r29;
-    s32 temp_r30;
-    s8 temp_r28;
-    u32 temp_r3;
-
-    temp_r28 = (s8) M2C_FIELD(arg1, u8 *, 0x60);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(), 0x7C)();
-    fn_8008C1D8(0, 0, 0x90, (temp_r28 << 5) + 0x20, 3);
-    if ((s16) M2C_FIELD(arg1, s16 *, 0x3A) >= 5) {
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036ACC4);
-        Prim2D_PrepareTex();
-        var_r28 = 0;
-        if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
-            var_r28 = 1;
-        }
-        temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        temp_r29 = (s32) (lbl_8036ACCC * temp_f2);
-        temp_r3 = Text_MeasureHeight(-1, lbl_8036ACC8, temp_f2);
-        temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
-        temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
-        temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        fn_8008AB7C((s32) (((u32) temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036ACD0);
-        Prim2D_PrepareTex();
-    }
+#pragma cplusplus on
+struct Obj { u8 pad[4];
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+virtual void v12() = 0;
+virtual void v13() = 0;
+virtual void v14() = 0;
+virtual void v15() = 0;
+virtual void v16() = 0;
+virtual void v17() = 0;
+virtual s16 v18() = 0;
+virtual void v19() = 0;
+virtual void v20() = 0;
+virtual void v21() = 0;
+virtual void v22() = 0;
+virtual void v23() = 0;
+virtual void v24() = 0;
+virtual void v25() = 0;
+virtual void v26() = 0;
+virtual void v27() = 0;
+virtual void v28() = 0;
+virtual void v29() = 0;
+};
+s32 Text_MeasureHeight(s32, f32);
+void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
+void fn_8008C1D8(s32,s32,s32,s32,s32);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_PrepareTex(void);
+s32 flag;
+s32 n = *(s8*)((u8*)arg1+0x60);
+((Obj*)arg0)->v29();
+fn_8008C1D8(0,0,0x90,(n<<5)+0x20,3);
+if (*(s16*)((u8*)arg1+0x3A)>=5) {
+Prim2D_Begin(); Prim2D_AddZ(-0.1f); Prim2D_PrepareTex();
+flag=0;
+if (!*(u8*)((u8*)arg1+0x2D) && !*(u8*)((u8*)arg1+0x2E)) flag=1;
+fn_8008AB7C(((Obj*)arg0)->v18()/2, *(s16*)((u8*)arg1+0x3A)+Text_MeasureHeight(-1,1.0f)/2, (s32)(0.9f*((Obj*)arg0)->v18()),0x18,0x19,0x4B,flag);
+Prim2D_Begin(); Prim2D_AddZ(0.1f); Prim2D_PrepareTex();
 }
-
+#pragma cplusplus reset
+}
+#pragma use_lmw_stmw reset
 void fn_80183584(void) {
     extern u8 lbl_803681F0;
     extern u8 lbl_80278BB8[];
@@ -877,7 +888,6 @@ void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
 }
 
 void fn_80184F20(s32 arg0) {
-#pragma global_optimizer off
 void GfxEnt_ForEachKey(void*,void*,void*);
 void MuFade_UnlinkSame(void*,void*);
 extern u8 E_MuBlend_script[];
@@ -892,7 +902,7 @@ u8 key7[0x38];
 u8 key8[0x38];
 u8 key9[0x38];
 u8 key10[0x38];
-u8 *base=E_MuBlend_script;
+register u8 *base=E_MuBlend_script;
 *(s32*)(key0+0x30)=arg0;
 GfxEnt_ForEachKey(base+0,MuFade_UnlinkSame,key0);
 *(s32*)(key1+0x30)=arg0;
@@ -915,7 +925,6 @@ GfxEnt_ForEachKey(base+96,MuFade_UnlinkSame,key8);
 GfxEnt_ForEachKey(base+356,MuFade_UnlinkSame,key9);
 *(s32*)(key10+0x30)=arg0;
 GfxEnt_ForEachKey(base+1008,MuFade_UnlinkSame,key10);
-#pragma global_optimizer reset
 }
 
 void MoveAnim_MatchUnit(void *arg0, void *arg1) {
@@ -3215,88 +3224,40 @@ void fn_8018BA34(void *arg0) {
     (void)lbl_8036ACE0;
 }
 
-void fn_8018BAC8(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
-    StructEF0C *temp_r31;
-    s32 temp_r28;
-    s32 temp_r29;
-    s32 temp_r30;
-    s32 temp_r3;
-    u16 temp_r4;
-    u16 temp_r5;
-    u16 temp_r6;
-    
-    // First, get the struct member at offset 0x20, and check if it's a valid pointer
-    temp_r31 = (StructEF0C *)M2C_FIELD(arg0, void **, 0x20);
-    if (!temp_r31) {
-        return;
-    }
-
-    // Adjust for bitshifting and load parameter values.
-    if (arg1 < 0x100) {
-        temp_r4 = *(u16 *)0x8036719C;
-    } else {
-        temp_r4 = *(u16 *)0x8036719E;
-    }
-    
-    temp_r5 = temp_r4 & 0x1F;
-    temp_r6 = ((arg2 & 0x1F) >> temp_r5);
-    if (temp_r6 != 0) {
-        return;
-    }
-
-    // Call an external function
-    fn_8005B760(0);
-
-    // Call to external method  
-    M2C_FIELD(temp_r31, void (**)(void *), 0x4A0)(arg0);
-    
-    temp_r3 = (s32)M2C_FIELD(arg0, void **, 0x94);
-    if (!temp_r3) {
-        return;
-    }
-
-    // Load an array element into the loop variable
-    temp_r31 = (StructEF0C *)M2C_FIELD((void**)temp_r3, void **, arg1 * 0xA + 0x10);
-    if (!temp_r31) {
-        return;
-    }
-
-    // Extract and process a field value 
-    temp_r29 = M2C_FIELD(temp_r31, s32 *, 0x84);
-    temp_r28 = M2C_FIELD(temp_r31, s32 *, 0x88);
-
-    if (temp_r28 == 0) {
-        return;
-    }
-
-    // Perform a division
-    temp_r30 = (temp_r29 - temp_r28) / temp_r28;
-
-    // Load and check another field value
-    if ((u16)M2C_FIELD(temp_r31, u16 *, 0x1A0) >= temp_r30) {
-        temp_r31 = (StructEF0C *)M2C_FIELD(arg0, void **, 0x1C);
-        if (!temp_r31) {
-            return;
-        }
-        
-        temp_r31 = (StructEF0C *)M2C_FIELD(temp_r31, void **, 0x48);
-        if (!temp_r31) {
-            return;
-        }
-
-        // Another field check and a call
-        if ((u16)M2C_FIELD(temp_r31, u16 *, 0x5A) == 1) {
-            fn_8005B760(0);
-            M2C_FIELD(temp_r31, void (**)(void *), 0x50)(arg0);
-            return;
-        }
-    }
-
-    // Final call 
-    temp_r31 = (StructEF0C *)M2C_FIELD((void**)temp_r3, void **, arg1*0xA + 0x24);
-    fn_8005B760(0);
-
-    M2C_FIELD(temp_r31, void (**)(void *), 0x294)(arg0);
+void fn_8018BAC8(void *arg0) {
+u8 Pad_IsButton(void*,s32);
+s32 fn_8005B760(s32);
+void fn_80060F70(void*,s32,void*);
+void fn_8004B8F8(s32,s32,f32,f32);
+extern u8 gBattleMap[];
+extern f32 lbl_8036ACE8,lbl_8036AD48;
+f32 pos[3];
+u8 *unit=*(u8**)((u8*)arg0+0x30);
+void *pad=unit+0x1C;
+s32 i;
+if((*(u8**)(unit+0x18C))[0x42]!=9 && Pad_IsButton(pad,0x32)){
+s32 x,y;
+unit=*(u8**)((u8*)arg0+0x30);
+x=(s8)(s32)*(f32*)(unit+4);y=(s8)(s32)*(f32*)(unit+8);
+switch(fn_8005B760((gBattleMap+x+(y<<6))[0x100D])){
+case 0x18: case 0x19:
+for(i=0;i<2;i++){
+s32 index;
+unit=*(u8**)((u8*)arg0+0x30);
+index=*(s8*)(unit+0x168+i);
+if(index>=0){
+fn_80060F70(pad,index,pos);
+unit=*(u8**)((u8*)arg0+0x30);
+fn_8004B8F8((s32)(lbl_8036AD48-(f32)*(s16*)(unit+0x15C)/lbl_8036ACE8),0,pos[0],pos[1]);
+}
+}
+break;
+case 0x1A:
+unit=*(u8**)((u8*)arg0+0x30);
+{ f32 x,y; y=*(f32*)(unit+8); x=*(f32*)(unit+4); fn_8004B8F8(0,1,x,y); }
+break;
+}
+}
 }
 
 void fn_8018BC28(void) {
@@ -4967,6 +4928,74 @@ extern "C" void fn_801903D8(void *arg0, s32 arg1) {
     }
     ((Obj *)arg0)->v10(arg1);
 }
+
+void fn_80190440(void *arg0) {
+#pragma cplusplus on
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+    };
+    void fn_8013F748(void *, void *, void *);
+    void PSMTXScale(f32 *, f32, f32, f32);
+    void fn_80202574(f32 *, void *, f32, f32, f32);
+    void Model_SetColor(void *, u8, u8, u8);
+    void Model_SetAlpha(void *, s32);
+    s32 fn_80138908(void *);
+    void fn_800609DC(void *);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, u16);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
+    void Prim2D_ScissorFromRect(void *);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void fn_80007340(void (*)(void *), void *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_ClearCallbacks(void);
+    void fn_801902A8(void *);
+    f32 mtx[12];
+    void *self;
+    void *rect;
+    s16 w;
+    s16 h;
+
+    self = arg0;
+    ((Obj *)self)->v5();
+    if (*(u32 *)((u8 *)self + 0x3C) != 0) {
+        rect = (u8 *)self + 0x4A;
+        w = (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12));
+        h = (s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14));
+        *(s16 *)((u8 *)self + 0x4A) = 0;
+        *(s16 *)((u8 *)self + 0x4C) = 0;
+        *(s16 *)((u8 *)self + 0x4E) = w;
+        *(s16 *)((u8 *)self + 0x50) = h;
+        fn_8013F748(self, rect, rect);
+        rect = (u8 *)self + 0x4E;
+        fn_8013F748(self, rect, rect);
+        PSMTXScale(mtx, 1.0f, 1.0f, 1.0f);
+        fn_80202574(mtx, (u8 *)*(void **)((u8 *)self + 0x40) + 0x10, 0.0f, 0.0f, -10.0f);
+        Model_SetColor(*(void **)((u8 *)self + 0x40), 0x80, 0x80, 0x80);
+        Model_SetAlpha(*(void **)((u8 *)self + 0x40), fn_80138908(self));
+        fn_800609DC(*(void **)((u8 *)self + 0x40));
+        Prim2D_Begin();
+        Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 0x410));
+        Prim2D_SetColorByte(fn_80138908(self));
+        Prim2D_SetCallback(Prim2D_ScissorFromRect, (s16 *)((u8 *)self + 0x4A));
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(0xB);
+        fn_80007340(fn_801902A8, self);
+        Prim2D_EndPrim();
+        Prim2D_Begin();
+        Prim2D_ClearCallbacks();
+        Prim2D_PrepareTex();
+    }
+#pragma cplusplus reset
+}
+
 extern "C" void fn_80190590(void *arg0) {
     void fn_80159898(s32, s32, s16, s16, s32, s32);
     struct Obj {
