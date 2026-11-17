@@ -3882,6 +3882,38 @@ else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,s
     String_Destroy(&str80, -1);
 
 }
+
+#pragma use_lmw_stmw on
+void fn_800CC9D8(u8 *self, char *arg1) {
+void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
+void Str_CopyPad(void *,void *,u32); void fn_800C908C(void *,void *,void *);
+void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
+void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
+void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
+extern char lbl_802704F8[];
+struct Block { u32 a,b,c,d,e,f,g,h; };
+struct Block sp84,sp64;
+char sp44[32];
+String sp38,sp2C,sp20,sp14;
+u32 sp10,spC,sp8;
+s8 made1,made2; u8 *f; char *buffer; u8 *arg0=self;
+made1=0; made2=0;
+f=(u8 *)Heap_Alloc(0x60);
+if(f) { String_Init(&sp2C,lbl_802704F8+0x1D6,&sp10); made1=1; String_Init(&sp20,arg1,&spC); made2=1; f=(u8 *)Xml_ParseFile(f,&sp20,&sp2C); }
+if(made2 != 0)String_Destroy(&sp20,-1);
+if(made1 != 0)String_Destroy(&sp2C,-1);
+sp38.cap=0;sp38.size=0;sp38.data=0;sp38.cap=0;
+String_Init(&sp14,lbl_802704F8+0x1EB,&sp8);
+Str_CopyPad(&sp64,lbl_802704F8+0x34F,32); sp84=sp64;
+fn_800C908C(f,&sp14,&sp84);String_Destroy(&sp14,-1);
+buffer=sp44;
+for(;Xml_AdvanceChild(f)!=0;){
+Xml_GetChildValue(sp44,f);String_AssignCStr(&sp38,buffer,strlen(buffer));
+fn_800CA18C((void *)(arg0+0x1BC),M2C_FIELD(arg0,s32*,0x1C0)*12+M2C_FIELD(arg0,u8**,0x1C4),1,&sp38);
+}
+Xml_Destroy(f,1);String_Destroy(&sp38,-1);
+}
+
 #pragma cplusplus reset
 #pragma optimization_level 4
 
@@ -8239,6 +8271,81 @@ void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
     }
 }
 
+void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
+    f32 PSVECDistance(f32 *, f32 *);
+    void fn_802031A8(f32 *, f32 *, f32 *);
+    void fn_802031E8(f32 *, f32 *);
+    void fn_802031CC(f32 *, f32 *, f32);
+    extern f32 lbl_80369E70;
+    extern f32 lbl_80369E74;
+    f32 current[3];
+    f32 destination[3];
+    f32 delta[3];
+    f32 scaled[3];
+    f32 distance;
+    f32 zero;
+    f32 x, y, z;
+    void *self;
+
+    x = arg1[0];
+    self = arg0;
+    y = arg1[1];
+    *(f32 *)((u8 *)arg0 + 0x78) = x;
+    z = arg1[2];
+    *(f32 *)((u8 *)self + 0x7C) = y;
+    *(f32 *)((u8 *)self + 0x80) = z;
+
+    current[0] = *(f32 *)((u8 *)self + 0x48);
+    current[1] = *(f32 *)((u8 *)self + 0x4C);
+    current[2] = *(f32 *)((u8 *)self + 0x50);
+    destination[0] = *(f32 *)((u8 *)self + 0x78);
+    destination[1] = *(f32 *)((u8 *)self + 0x7C);
+    destination[2] = *(f32 *)((u8 *)self + 0x80);
+
+    distance = PSVECDistance(destination, current);
+    if (distance < lbl_80369E74) {
+        zero = lbl_80369E70;
+        *(f32 *)((u8 *)self + 0x84) = zero;
+        *(f32 *)((u8 *)self + 0x88) = zero;
+        *(f32 *)((u8 *)self + 0x8C) = zero;
+        *(f32 *)((u8 *)self + 0x90) = zero;
+        *(f32 *)((u8 *)self + 0x94) = zero;
+        *(f32 *)((u8 *)self + 0x98) = zero;
+        return;
+    }
+
+    fn_802031A8(destination, current, delta);
+    fn_802031E8(delta, delta);
+
+    if (lbl_80369E70 == farg1) {
+        fn_802031CC(delta, scaled, speed);
+        zero = lbl_80369E70;
+        *(f32 *)((u8 *)self + 0x84) = scaled[0];
+        *(f32 *)((u8 *)self + 0x88) = scaled[1];
+        *(f32 *)((u8 *)self + 0x8C) = scaled[2];
+        *(f32 *)((u8 *)self + 0x98) = zero;
+        *(f32 *)((u8 *)self + 0x94) = zero;
+        *(f32 *)((u8 *)self + 0x90) = zero;
+        *(f32 *)((u8 *)self + 0xA8) = zero;
+        *(f32 *)((u8 *)self + 0xA4) = zero;
+        *(f32 *)((u8 *)self + 0xA0) = zero;
+        *(s32 *)((u8 *)self + 0x9C) = (s32)(distance / speed);
+    } else {
+        zero = lbl_80369E70;
+        *(f32 *)((u8 *)self + 0x84) = zero;
+        *(f32 *)((u8 *)self + 0x88) = zero;
+        *(f32 *)((u8 *)self + 0x8C) = zero;
+        fn_802031CC(delta, scaled, farg1);
+        *(f32 *)((u8 *)self + 0x90) = scaled[0];
+        *(f32 *)((u8 *)self + 0x94) = scaled[1];
+        *(f32 *)((u8 *)self + 0x98) = scaled[2];
+        *(f32 *)((u8 *)self + 0xA0) = zero;
+        *(f32 *)((u8 *)self + 0xA4) = farg1;
+        *(f32 *)((u8 *)self + 0xA8) = speed;
+        *(s32 *)((u8 *)self + 0x9C) = (s32)(distance / speed);
+    }
+}
+
 void fn_800DB964(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0x48) = (f32) (M2C_FIELD(arg0, f32 *, 0x48) + farg0);
     M2C_FIELD(arg0, f32 *, 0x4C) = (f32) (M2C_FIELD(arg0, f32 *, 0x4C) + farg1);
@@ -10006,15 +10113,15 @@ void fn_800DEF00(void *arg0) {
 
 #pragma scheduling off
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-    void *z;
+    u32 z;
     u8 v;
     u8 *mid;
 
     z = 0;
     v = *arg1;
-    *(void **)arg0 = z;
+    *(u32 *)arg0 = z;
     mid = (u8 *)arg0 + 4;
-    *(void **)mid = z;
+    *(u32 *)mid = z;
     *((u8 *)arg0 + 8) = v;
     *(u8 **)((u8 *)arg0 + 12) = mid;
 }
@@ -12295,26 +12402,68 @@ extern "C" void fn_800E4178(void *arg0, void *arg1) {
     ((Obj *)arg0)->v17(*(s32 *)arg1, *(s32 *)((u8 *)arg1 + 4));
 }
 
-extern "C" void *fn_800E41B0(u8 *self,s32 x,s32 y) {
-struct Window {u8 pad[0x40]; virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual void v4();virtual void v5();virtual void v6();virtual void v7();virtual void v8();virtual void v9();virtual void v10();virtual void v11();virtual void v12();virtual void v13();virtual void v14(); virtual void enter(s32,s32); virtual void leave(s32,s32); virtual Window *hit(s32,s32);};
-struct List {u32 unk; s32 count; u8 pad[8]; virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual Window *get(s32); s32 size(){return this?count:0;} Window *at(s32 i){return i<size()?get(i):0;}};
-s32 i;
-List *list;
-Window *result;
-if(!((u8 (*)(const void *))fn_800DF6A8)(self))return 0;
-if(x>*(s32*)(self+0x48)&&x<*(s32*)(self+0x48)+*(s32*)(self+0x60)&&y>*(s32*)(self+0x4c)&&y<*(s32*)(self+0x4c)+*(s32*)(self+0x64)){
-list=*(List**)(self+0xa0);
-if(list)for(i=list->size()-1;i>=0;--i){
-result=(*(List**)(self+0xa0))->at(i)->hit(x,y);
-if(result)return result;
-}
-self[0x73]=1;
-((Window*)self)->enter(x,y);
-return self;
-}
-self[0x71]=0;self[0x72]=0;self[0x73]=0;
-((Window*)self)->leave(x,y);
-return 0;
+extern "C" void *fn_800E41B0(u8 *self, s32 x, s32 y) {
+    u8 fn_800DF6A8(void *);
+    struct Window {
+        u8 pad[0x40];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+        virtual void v9();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void enter(s32, s32);
+        virtual void leave(s32, s32);
+        virtual Window *hit(s32, s32);
+    };
+    struct List {
+        u32 unk;
+        s32 count;
+        u8 pad[8];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual Window *get(s32);
+        s32 size() { return this ? count : 0; }
+        Window *at(s32 i) { return i < size() ? get(i) : 0; }
+    };
+    s32 i;
+    List *list;
+    Window *result;
+
+    if (!fn_800DF6A8(self)) {
+        return 0;
+    }
+    if (x > *(s32 *)(self + 0x48) && x < *(s32 *)(self + 0x48) + *(s32 *)(self + 0x60)
+        && y > *(s32 *)(self + 0x4c) && y < *(s32 *)(self + 0x4c) + *(s32 *)(self + 0x64)) {
+        list = *(List **)(self + 0xa0);
+        if (list) {
+            for (i = list->size() - 1; i >= 0; --i) {
+                result = (*(List **)(self + 0xa0))->at(i)->hit(x, y);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+        self[0x73] = 1;
+        ((Window *)self)->enter(x, y);
+        return self;
+    }
+    self[0x71] = 0;
+    self[0x72] = 0;
+    self[0x73] = 0;
+    ((Window *)self)->leave(x, y);
+    return 0;
 }
 
 #pragma cplusplus on
@@ -14785,35 +14934,81 @@ void *fn_800E8488(void *arg0, s16 arg1)
     return self;
 }
 
-void *fn_800E8504(u8 *self, s32 arg1, String *arg2) {
-    extern u8 lbl_8028E200[];
-    extern char gUiClassNames[];
-    void *Layer_Create(void *,void *,void *,void *);
-    void *Heap_Alloc(u32);
-    void *String_Init(void *,char *,void *);
-    String temp;
-    u8 scratch;
-    void *layer;
-    s8 made;
-    s32 owner = arg1;
-    ((void (*)(void *))ObjList_Init)(self);
-    *(void **)(self+0x10)=lbl_8028E200;
-    *(u32 *)(self+0x14)=0; *(u32 *)(self+0x18)=0; *(u32 *)(self+0x1C)=0; *(u32 *)(self+0x18)=0;
-    *(u32 *)(self+0x30)=0; *(u32 *)(self+0x34)=0; *(u32 *)(self+0x38)=0; *(u32 *)(self+0x34)=0;
-    *(u32 *)(self+0x20)=0; *(s32 *)(self+0x24)=owner; *(u32 *)(self+0x44)=0;
-    String_AssignCStr((String *)(self+0x30),gUiClassNames+0xB3,strlen(gUiClassNames+0xB3));
-    made=0; self[0x3C]=1; self[0x3D]=1;
-    layer=Heap_Alloc(0x78);
-    if(layer) { String_Init(&temp,gUiClassNames+0xB4,&scratch); made=1; layer=Layer_Create(layer,self,&temp,0); }
-    (*(void (**)(void *,void *))(*(u8 **)(self+0x10)+0x1C))(self,layer);
-    if(made) ((void (*)(void *,s16))String_Destroy)(&temp,-1);
-    if(((s32 (*)(String *,u32,u32,char *,u32))String_Compare)(arg2,0,arg2->size,gUiClassNames+0xB3,strlen(gUiClassNames+0xB3))) {
-      (*(void (**)(void *,void *))(*(u8 **)(self+0x10)+0x38))(self,arg2);
-      (*(void (**)(void *))(*(u8 **)(self+0x10)+8))(self);
-    }
-    self[0x2C]=0; return self;
+#pragma cplusplus on
+#pragma dont_inline on
+extern "C" void *fn_800E8504(void *arg0, s32 arg1, String *arg2) {
+extern u8 lbl_8028E200[];
+extern u8 gUiClassNames[];
+void ObjList_Init(void *);
+void String_AssignCStr(void *, void *, u32);
+u32 strlen(void *);
+void *Heap_Alloc(u32);
+void String_Init(void *, void *, void *);
+void *Layer_Create(void *, void *, void *, s32);
+void String_Destroy(void *, s32);
+s32 String_Compare(void *, s32, u32, void *, u32);
+struct Obj {
+  u8 pad[0x10];
+  virtual void v0() = 0;
+  virtual void v1() = 0;
+  virtual void v2() = 0;
+  virtual void v3() = 0;
+  virtual void v4() = 0;
+  virtual void v5(void *) = 0;
+  virtual void v6() = 0;
+  virtual void v7() = 0;
+  virtual void v8() = 0;
+  virtual void v9() = 0;
+  virtual void v10() = 0;
+  virtual void v11() = 0;
+  virtual void v12(void *) = 0;
+};
+String temp;
+u32 scratch;
+void *layer;
+u8 *key;
+u32 length;
+String *name;
+s32 owner;
+s8 made;
+name = arg2;
+owner = arg1;
+ObjList_Init(arg0);
+*(void **)((u8 *)arg0 + 0x10) = lbl_8028E200;
+*(u32 *)((u8 *)arg0 + 0x14) = 0;
+*(u32 *)((u8 *)arg0 + 0x18) = 0;
+*(u32 *)((u8 *)arg0 + 0x1C) = 0;
+*(u32 *)((u8 *)arg0 + 0x18) = 0;
+*(u32 *)((u8 *)arg0 + 0x30) = 0;
+*(u32 *)((u8 *)arg0 + 0x34) = 0;
+*(u32 *)((u8 *)arg0 + 0x38) = 0;
+*(u32 *)((u8 *)arg0 + 0x34) = 0;
+*(u32 *)((u8 *)arg0 + 0x20) = 0;
+*(s32 *)((u8 *)arg0 + 0x24) = owner;
+*(u32 *)((u8 *)arg0 + 0x44) = 0;
+made = 0;
+String_AssignCStr((u8 *)arg0 + 0x30, gUiClassNames + 0xb3, strlen(gUiClassNames + 0xb3));
+*((u8 *)arg0 + 0x3c) = 1;
+*((u8 *)arg0 + 0x3d) = 1;
+layer = Heap_Alloc(0x78);
+if (layer) {
+  String_Init(&temp, gUiClassNames + 0xb4, &scratch);
+  made = 1;
+  layer = Layer_Create(layer, arg0, &temp, 0);
 }
-
+((Obj *)arg0)->v5(layer);
+if (made) String_Destroy(&temp, -1);
+key = gUiClassNames;
+length = strlen(key + 0xb3);
+if (String_Compare(name, 0, name->size, key + 0xb3, length)) {
+  ((Obj *)arg0)->v12(name);
+  ((Obj *)arg0)->v0();
+}
+*((u8 *)arg0 + 0x2c) = 0;
+return arg0;
+}
+#pragma dont_inline reset
+#pragma cplusplus reset
 void *fn_800E86A4(void *arg0, s16 arg1) {
     void fn_800E45EC(void *, s32);
     void Heap_Free(void *);
@@ -19233,6 +19428,78 @@ void fn_800F2E70(void) {
     fn_800616A0(lbl_8032AC58 + 0x288);
 }
 
+#pragma use_lmw_stmw on
+u8 fn_800F30E0(s32 arg0, u8 arg1) {
+    extern u8 gAiState[];
+    extern u8 gBattleMap[];
+    extern u8 gUiContext[];
+    extern s32 gTargetList[];
+    void Map_FillLayer(void *, s32, s32);
+    void Map_SelectRangeBuffer(void *, s32);
+    void Map_BuildUnitMoveRange(void *, s32, s32);
+    void fn_800FFC00(void *, s32);
+    void *TargetList_GetAt(void *, s32);
+    void *UnitRef_GetUnit(void *);
+    u8 fn_8003863C(void *);
+    void fn_800FB96C(u8, s8, s8, void *, u8, u8, s8, s32, s32);
+
+    u8 *self;
+    u8 *ctx;
+    s32 bestScore;
+    u8 *best;
+    u8 tx;
+    u8 ty;
+    u8 *unit;
+    u8 bx;
+    u8 by;
+    u8 *map;
+    s32 i;
+    void *entry;
+    s32 score;
+    u8 ux, uy;
+
+    ctx = gUiContext;
+    map = gBattleMap;
+    i = arg0;
+    best = 0;
+    ctx[8] = arg1;
+    bestScore = 0x7FFFFFFF;
+    self = *(u8 **)gUiContext;
+
+    if ((gAiState[1] & 2) || (*(u32 *)(self + 0x254) & 0x03000000)) {
+        Map_FillLayer(map, 5, -1);
+        Map_SelectRangeBuffer(map, 5);
+        (*(u16 **)(map + 0x14190))[(s8)self[0x19E] + ((s8)self[0x19F] << 6)] = 0;
+    } else {
+        Map_BuildUnitMoveRange(self, 5, -1);
+    }
+
+    fn_800FFC00(self, i);
+    self = (u8 *)gTargetList;
+    if (*(s32 *)self != 0) {
+        for (i = 0; i < *(s32 *)self; i++) {
+            entry = TargetList_GetAt(self, i);
+            tx = ((u8 *)entry)[0];
+            ty = ((u8 *)entry)[1];
+            unit = UnitRef_GetUnit(entry);
+            uy = unit[0x19F];
+            ux = unit[0x19E];
+            if (map[(s8)((s8)(ux - tx) + ux) + (((s8)((s8)(uy - ty) + uy)) << 6) + 0x300D] & 2) {
+                score = (u8)fn_8003863C(unit);
+                if (score < bestScore) {
+                    bx = tx;
+                    by = ty;
+                    best = unit;
+                    bestScore = score;
+                }
+            }
+        }
+        if ((u32)(bestScore + 0x80010000) != 0xFFFFU) {
+            fn_800FB96C(ctx[8], (s8)bx, (s8)by, best, best[0x19E], best[0x19F], -1, 0, 0);
+        }
+    }
+    return gAiState[0x21C];
+}
 s32 fn_800F32A4(u8 *arg) {
 extern u8 gBattleMap[];
 void Map_BuildUnitMoveRange(void *, s32, s32);
