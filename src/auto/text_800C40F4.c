@@ -3767,6 +3767,7 @@ u8 first,second;
 u8 update=0;
 s32 index;
 s32 offset;
+s32 *queue;
 void *other;
 void *third;
 u32 color;
@@ -3780,7 +3781,8 @@ default:first=1;second=1;break;
 }
 index=*(s32 *)(self+0x260);
 if(first) {
-index=((ActionQueueFields *)self)->first[index];
+queue=((ActionQueueFields *)self)->first;
+index=queue[index];
 if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
 fn_80111AE8(*(void **)(self+0x9c),*(u8 **)(self+0x1c4)+index*12,0);
 ++*(s32 *)(self+0x260);
@@ -3790,7 +3792,8 @@ if(*(s32 *)(self+0x268)!=2) { self[0x1a5]=1; update=1; }
 }
 index=*(s32 *)(self+0x264);
 if(second && index>=0) {
-index=((ActionQueueFields *)self)->second[index];
+queue=((ActionQueueFields *)self)->second;
+index=queue[index];
 if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
 offset=index*12;
 fn_80232138(lbl_802704F8+0x18f,String_CStr(*(u8 **)(self+0x1c4)+offset));
