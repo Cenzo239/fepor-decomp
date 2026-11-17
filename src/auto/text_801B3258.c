@@ -11824,12 +11824,16 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
+#pragma scheduling off
 s32 NameGrid_GetCharAtCursor(void *self) {
-struct GridCursor { u8 pad[0x3C]; void *grid; u8 pad40[8]; s16 x,y; };
-s32 fn_801CD480(void *,s16,s16);
-struct GridCursor *cursor=(struct GridCursor *)self;
-return fn_801CD480(cursor->grid,cursor->x,cursor->y);
+    s32 fn_801CD480(void *, s16, s16);
+    s16 x;
+    s16 y;
+    x = *(s16 *)((u8 *)self + 0x48);
+    y = *(s16 *)((u8 *)self + 0x4A);
+    return fn_801CD480(*(void **)((u8 *)self + 0x3C), x, y);
 }
+#pragma scheduling reset
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
