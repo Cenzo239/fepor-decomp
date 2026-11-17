@@ -9260,7 +9260,6 @@ void *fn_800DD3E8(u8 *self, void *owner, void *xml) {
     *(s32 *)(self+0x104)=((*(s32 *)(self+0x64)-32)* *(s32 *)(self+0x108))/ *(s32 *)(self+0xb0);
     return self;
 }
-#pragma global_optimizer reset
 #pragma inline_depth(8)
 s32 *fn_800DD87C(void *arg0, s32 *pos) {
     s32 *src;
