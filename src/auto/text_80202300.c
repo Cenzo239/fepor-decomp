@@ -170,17 +170,15 @@ void fn_80202420(f32 *m, f32 *axis, f32 s, f32 c) {
     m[8] = zz + cs;
 }
 
-void fn_802024D0(s32 arg0, s32 arg1, f32 farg0) {
+#pragma peephole off
+void fn_802024D0(s32 arg0, s32 arg1, f32 rad) {
     f32 sinf(f32);
     f32 cosf(f32);
     void fn_80202420(s32, s32, f32, f32);
-    f32 a;
-    f32 b;
-    f32 angle;
-
-    angle = farg0;
-    a = sinf(angle);
-    b = cosf(angle);
-    fn_80202420(arg0, arg1, a, b);
+    f32 s;
+    f32 c;
+    s = sinf(rad);
+    c = cosf(rad);
+    fn_80202420(arg0, arg1, s, c);
 }
-
+#pragma peephole reset
