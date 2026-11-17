@@ -729,14 +729,15 @@ s32 CARDGetResultCode(s32 arg0) {
     return *(s32 *)((u8 *)__CARDBlock + arg0 * 0x110 + 4);
 }
 
-#pragma scheduling off
+#pragma global_optimizer off
 s32 fn_80217C64(s32 chan) {
     u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
     void OSSleepThread(void *);
+    void OSRestoreInterrupts(u32);
     u8 *card;
     s32 result;
-    u32 enabled;
+    s32 status;
+    unsigned enabled;
 
     card = (u8 *)__CARDBlock + chan * 0x110;
     enabled = OSDisableInterrupts();
@@ -744,18 +745,19 @@ s32 fn_80217C64(s32 chan) {
 sleep:
     OSSleepThread(card + 0x8C);
 check:
-    if (chan < 0 || chan >= 2) {
-        result = -0x80;
+    if ((int)chan < 0 || chan >= 2) {
+        status = -0x80;
     } else {
-        result = *(s32 *)(card + 4);
+        status = *(s32 *)(card + 4);
     }
+    result = status;
     if (result == -1) {
         goto sleep;
     }
     OSRestoreInterrupts(enabled);
     return result;
 }
-#pragma scheduling reset
+#pragma global_optimizer reset
 s32 fn_80217CFC(s32 arg0) {
     s32 fn_8021B20C(M2C_UNK);
     if ((arg0 == 0) && ((fn_8021B20C(0) == -1) || (fn_8021B20C(1) == -1))) {
