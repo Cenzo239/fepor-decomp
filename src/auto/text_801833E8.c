@@ -2368,6 +2368,58 @@ void fn_8018820C(void *arg0) {
     }
 }
 
+void fn_80188368(void *arg0) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32);
+    void *fn_800508C4(void *);
+    f32 Math_Lerp(f32,f32,f32,f32);
+    void fn_8005FC74(void *,void *,s32);
+    void fn_8005FEE8(void *,f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *,void *);
+    extern u8 E_MuBlend_script[], E_MuTransfer_script[];
+    extern f32 lbl_8036ACEC,lbl_8036AD08,lbl_8036ACF0;
+    u8 sp40[0x34];
+    u8 sp8[0x38];
+    void *obj;
+    s32 count;
+    void *node;
+    s32 level;
+    count=2;
+    obj=M2C_FIELD(M2C_FIELD(arg0,void **,0x18),void **,0x34);
+    if(fn_8004C0F0(obj)) {
+        *(void **)(sp40+0x30)=obj;
+        GfxEnt_ForEachKey(E_MuBlend_script,MuFade_UnlinkSame,sp40);
+        *(void **)(sp8+0x30)=obj;
+        GfxEnt_ForEachKey(E_MuTransfer_script,MuFade_UnlinkSame,sp8);
+        level=M2C_FIELD(fn_800508C4(obj),u8 *,9);
+        if(level>20) {
+            if(level>40) count<<=1;
+            else { f32 delta=Math_Lerp(lbl_8036ACEC,lbl_8036AD08,lbl_8036ACF0,(f32)(level-20)); count+=delta; };
+        }
+        if(count==0 || fn_80060440((u8 *)obj+0x1C)>=4) {
+            fn_8004FE98(obj,9);
+        } else {
+            node=Process_CreateEx(E_MuBlend_script,0);
+            M2C_FIELD(node,void **,0x30)=obj;
+            M2C_FIELD(node,void **,0x34)=(void *)((u32)obj+0x1C);
+            M2C_FIELD(node,s32 *,0x38)=9;
+            M2C_FIELD(node,s32 *,0x3C)=count;
+            M2C_FIELD(node,s32 *,0x40)=0;
+            fn_800506E0(M2C_FIELD(node,void **,0x30),9);
+            fn_8005FC74(M2C_FIELD(node,void **,0x34),fn_800639B4(),1);
+            fn_8005FEE8(M2C_FIELD(node,void **,0x34),lbl_8036ACEC);
+            fn_8004FE90(M2C_FIELD(node,void **,0x30),(u8)M2C_FIELD(node,s32 *,0x38));
+        }
+    }
+    M2C_FIELD(arg0,s32 *,0x60)=0;
+}
+
 #pragma use_lmw_stmw on
 void MoveAnim_BuildPathHeights(void *arg0) {
 f32 Map_SampleHeightRaw(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
@@ -6146,9 +6198,9 @@ void fn_80191AD0(void *panel) {
     case 0x81:
         list = M2C_FIELD(panel, void **, 0x50);
         item = M2C_FIELD(Ui_FindChild(panel, 2, 0), void **, 0x3C);
-        price = (u16)UnitRef_GetValue(item);
-        price = (s32)(M2C_FIELD(panel, f32 *, 0x64) * (f32)price);
+        price = (s32)(u16)UnitRef_GetValue(item);
         state = gBattleState;
+        price = (s32)(M2C_FIELD(panel, f32 *, 0x64) * (f32)price);
         fn_8014D268(state, M2C_FIELD(state, s32 *, 0x18) - price);
         if (M2C_FIELD(list, s16 *, 0x4E) != 0x7FFF) {
             s32 selected = Ui_ListGetSelected(list);
@@ -6167,9 +6219,11 @@ void fn_80191AD0(void *panel) {
             fn_800C3AB0(gConvoy, unit);
         }
         break;
-    case 0x80:
-        pos[1] = M2C_FIELD(widget, s16 *, 0xC);
+    case 0x80: {
+        s16 y;
+        y = M2C_FIELD(widget, s16 *, 0xC);
         pos[0] = 0x260;
+        pos[1] = y;
         Ui_SlideWidgetChild(panel, widget, pos, 0);
         TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(panel, void **, 0x68), s32 *, 0x14));
         Ui_LayoutUnitList(panel);
@@ -6179,6 +6233,7 @@ void fn_80191AD0(void *panel) {
             Ui_SetWidgetText(child, text);
         Process_Goto(panel, 7);
         break;
+    }
     }
 }
 
