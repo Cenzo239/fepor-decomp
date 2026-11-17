@@ -3048,9 +3048,7 @@ void *fn_80169948(void) {
     extern s8 lbl_80368100, lbl_80368108, lbl_80368114, lbl_8036811C, lbl_80368124, lbl_8036812C;
     extern void *lbl_80368104, *lbl_80368118, *lbl_80368120, *lbl_80368128, *lbl_80368130;
     extern void * volatile lbl_8036810C;
-    extern f32 lbl_8036A9C4;
     void *p;
-    f32 f0;
 
     if (!lbl_80368100) {
         lbl_80368104 = lbl_8029440C;
@@ -3085,7 +3083,6 @@ void *fn_80169948(void) {
         M2C_FIELD(p, void **, 0) = lbl_80293D70;
         M2C_FIELD(p, void **, 4) = lbl_802920E0;
         M2C_FIELD(p, s16 *, 8) = 0x1A;
-        f0 = lbl_8036A9C4;
         M2C_FIELD(p, s16 *, 0xA) = 0;
         M2C_FIELD(p, s16 *, 0xC) = 0x94;
         M2C_FIELD(p, s16 *, 0xE) = 0x1C0;
@@ -3093,7 +3090,7 @@ void *fn_80169948(void) {
         M2C_FIELD(p, s16 *, 0x12) = 0x75;
         M2C_FIELD(p, s16 *, 0x14) = -2;
         M2C_FIELD(p, s16 *, 0x16) = 0;
-        M2C_FIELD(p, f32 *, 0x18) = f0;
+        M2C_FIELD(p, f32 *, 0x18) = 10.0f;
         M2C_FIELD(p, s16 *, 0x1C) = 0x20;
         M2C_FIELD(p, s16 *, 0x1E) = 4;
         M2C_FIELD(p, void **, 4) = lbl_80291F60;
