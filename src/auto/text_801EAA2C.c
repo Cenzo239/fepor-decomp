@@ -117,15 +117,17 @@ void *BMapAuxiliary_Create(char *name, void *parent) {
     return obj;
 }
 
+#pragma global_optimizer off
 s32 fn_801EAB90(s32 unused, void *obj) {
     extern u8 gUnitLists[];
     extern s32 gTargetList[];
     u32 flags;
+    void *node;
     s32 count;
     u32 nf;
 
-    flags = *(u32 *)((u8 *)obj + 0x1A0);
     unused = 0;
+    flags = *(u32 *)((u8 *)obj + 0x1A0);
     if (flags & 0x400000) {
         *(u32 *)((u8 *)obj + 0x1A0) = flags & ~0x400000;
         return 1;
@@ -134,17 +136,13 @@ s32 fn_801EAB90(s32 unused, void *obj) {
         return unused;
     }
     count = 0;
-    flags = *(u32 *)(gUnitLists + 0x3C);
-    goto check;
-loop:
-    nf = *(u32 *)((u8 *)flags + 0x1A0);
-    flags = *(u32 *)((u8 *)flags + 0x184);
-    if (nf & 0x400000) {
-        count += 1;
-    }
-check:
-    if (flags != 0) {
-        goto loop;
+    node = *(void **)(gUnitLists + 0x3C);
+    while (node != NULL) {
+        nf = *(u32 *)((u8 *)node + 0x1A0);
+        node = *(void **)((u8 *)node + 0x184);
+        if (nf & 0x400000) {
+            count += 1;
+        }
     }
     if (count >= gTargetList[0]) {
         return unused;
@@ -153,7 +151,7 @@ check:
     *(u32 *)((u8 *)obj + 0x1A0) = flags | 0x400000;
     return 1;
 }
-
+#pragma global_optimizer on
 void fn_801EAC14(void *arg0) {
     M2C_UNK Process_Goto(void *, u8);
     Ui_DecBusy();
@@ -689,19 +687,19 @@ void fn_801EBBB8(void *arg0) {
 }
 #pragma use_lmw_stmw reset
 void fn_801EBE00(void *arg0) {
-    s32 Archive_Load();
-    u8 FileCache_IsReady();
+    s32 fn_8003FCCC();
+    u8 fn_8005BA10();
     s32 fn_80161FB8();
     void fn_80162054();
     fn_801620AC(arg0);
-    if (FileCache_IsReady() != 0) {
+    if (fn_8005BA10() != 0) {
         if (fn_80161FB8() == 0) {
             return;
         }
         fn_80162054();
         fn_801620AC(arg0);
-        *(s32*)((char*)arg0 + 0x4C) = Archive_Load();
-        Process_ClearFunc(arg0);
+        *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
+        fn_8000C188(arg0);
     }
 }
 
@@ -988,12 +986,11 @@ s32 fn_801EC6CC(void) {
 }
 
 #pragma global_optimizer off
-s32 fn_801EC6D4(void *msg, void *a, void *b) {
-    void Ui_CreateMsgPopup(void *, void *, f32, f32);
-    extern char lbl_8027EE08[];
+s32 fn_801EC6D4(s32 unused, void *a, void *b) {
+    void fn_80176888(void *, void *, f32, f32);
+    extern u8 lbl_8027EE08[];
 
-    msg = lbl_8027EE08 + 0x30a;
-    Ui_CreateMsgPopup(msg, a,
+    fn_80176888(lbl_8027EE08 + 0x30a, a,
                 (f32)(*(s16 *)((u8 *)a + 0x30) + *(s16 *)((u8 *)b + 0x30)),
                 (f32)(*(s16 *)((u8 *)a + 0x32) + *(s16 *)((u8 *)b + 0x32)));
     return 0x10;
@@ -2000,7 +1997,6 @@ void fn_801EDDF0(void *arg0) {
     extern u8 gBattle[];
     extern u8 gUiContext[];
     void *temp;
-    u8 *base;
     u8 *base_2e0;
 
     if (*(u32 *)(gBattle + 0x188) != 0) {
@@ -2011,9 +2007,8 @@ void fn_801EDDF0(void *arg0) {
         *(void **)((u8 *)arg0 + 0x4C) = temp;
         BattleUnit_Copy(*(void **)((u8 *)arg0 + 0x4C), gBattle);
     }
-    base = gBattle;
-    base_2e0 = base + 0x2E0;
-    if (base_2e0 != NULL && *(u32 *)(base + 0x468) != 0) {
+    base_2e0 = gBattle + 0x2E0;
+    if (*(u32 *)(base_2e0 + 0x188) != 0) {
         temp = Heap_Alloc(0x2E0);
         if (temp != NULL) {
             temp = fn_801A7FA4(temp);
