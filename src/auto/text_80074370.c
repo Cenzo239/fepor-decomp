@@ -3312,6 +3312,31 @@ void Face_DebugScaleProc(void *proc) {
     }
 }
 
+void fn_80079634(u8 *obj) {
+ extern void *gFaceSlots[]; extern u8 lbl_80288AD8[],lbl_8026C640[];
+ extern f32 lbl_803693D8,lbl_803693D4;
+ void *Process_Create(void*,s32); void *Res_GetByName(void*); void *fn_802002F0(void*);
+ u8 *face; s32 index,i; void *res; void **p=gFaceSlots;
+ for(i=0;i<8;i++,p++) { if(*p==0) {index=i;break;} }
+ if(i==8) face=0;
+ else if(gFaceSlots[index]!=0) face=0;
+ else {
+ face=Process_Create(lbl_80288AD8,3);
+ res=Res_GetByName(lbl_8026C640+0x105); res=res?res:Res_GetByName(lbl_8026C640+0xEF);
+ *(void**)(face+0x34)=res;
+ face[0x40]=index; *(u16*)(face+0x46)=0;
+ face[0x41]=0xFF; face[0x42]=0;
+ *(f32*)(face+0x4C)=1.0f; *(f32*)(face+0x48)=0.0f;
+ *(u16*)(face+0x46)|=0x200;
+ if(*(u16*)(face+0x46)&0x200) {
+ *(u16*)(face+0x46)&=~0x202;
+ if((*(u8**)(face+0x34))[0x1C]==0) *(u16*)(face+0x46)|=2;
+ }
+ *(s8*)(face+0x43)=-1; gFaceSlots[index]=face;
+ *(void**)(face+0x30)=fn_802002F0(**(void***)(face+0x34)); }
+ *(void**)(obj+0x30)=face; *(f32*)(obj+0x34)=1.0f;
+}
+
 void fn_8007982C(s32 arg0) {
     void *fn_8007BD30(s8,s32,s32,s32,s32,s32,s32);
     void *Process_Create(void *,s32);
