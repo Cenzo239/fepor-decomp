@@ -23984,6 +23984,22 @@ void fn_80102F18(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 
+void fn_801030F0(void *arg0,void *arg1){
+extern u8 gBattleMap[];extern u8 gTargetList[];
+u8 fn_8003DD20(void*,void*);
+void fn_800227F8(void*,void*);
+s16 fn_8002134C(void*,s8,s8);
+u8 fn_8001F85C(void*,u8,u8,s8,s8);
+void fn_8002F6E8(void*,u8,u8,u8,s32);
+s32 dx,dy;u8 x;u8 *self=arg0;u8 y;u8 *unit=arg1;
+if((*(u8 (**)(void*))(self+8))(unit)&&fn_8003DD20(*(void**)(self+4),unit)){
+dx=(s8)((x=unit[0x19e])-self[0xc]);dy=(s8)((y=unit[0x19f])-self[0xd]);
+fn_800227F8(gBattleMap,*(void**)(unit+0x18c));
+dx=(s8)x+dx;dy=(s8)y+dy;
+if(gBattleMap[0xd+(s8)dx+((s8)dy<<6)]==0&&fn_8002134C(gBattleMap,(s8)dx,(s8)dy)<=30000&&fn_8001F85C(gBattleMap,x,y,(s8)dx,(s8)dy)){
+fn_8002F6E8(gTargetList,self[0xc],self[0xd],unit[0x198],0);
+}}}
+
 void fn_80103200(void *arg0, s8 arg1, s8 arg2) {
     void fn_8002C6F4(void);
     extern u8 gBattleMap[];
