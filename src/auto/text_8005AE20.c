@@ -482,12 +482,7 @@ void fn_8005B73C(void *arg0) {
 }
 
 s32 fn_8005B760(s32 arg0) {
-switch(arg0) {
-case 10: case 26: return 0x1A;
-case 24: return 0x18;
-case 25: return 0x19;
-default: return 0;
-}
+ switch((u32)arg0) { case 10: case 26: return 0x1A; case 24: return 0x18; case 25: return 0x19; default: return 0; }
 }
 
 u8 fn_8005B7A4(u8 *s) {
@@ -1022,6 +1017,130 @@ void fn_8005C8B4(s32 arg0) {
     fn_8005D330(arg0, 0);
 }
 
+#pragma opt_common_subs off
+void fn_8005C8D8(arg0)
+s8 arg0;
+{
+    void DebugPrint(char *, ...);
+    s64 OSGetTime(void);
+    void OS_YieldThread(void);
+    void fn_8003FED8(void *);
+    void fn_800C4588(void *);
+    extern u8 gFileCache[];
+    extern u8 lbl_8026B330[];
+    u8 *entry;
+    u32 time;
+    s32 index;
+
+    DebugPrint((char *)(lbl_8026B330 + 6), arg0);
+    time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+
+    index = 0;
+    entry = gFileCache;
+    do {
+        if (*(s8 *)entry != 0 && *(u16 *)(entry + 0x32) == 0 &&
+            (arg0 < 0 || *(s8 *)(entry + 0x29) == arg0) &&
+            *(void **)(entry + 0x38) != NULL &&
+            (*(volatile u16 *)(entry + 0x30) & 0x2000) &&
+            !(*(volatile u16 *)(entry + 0x30) & 0x1000)) {
+            if ((*(volatile u16 *)(entry + 0x30) & 0x200) && time < *(u32 *)(entry + 0x34) + 0xA) {
+                DebugPrint((char *)(lbl_8026B330 + 0x1C), entry);
+            } else {
+                DebugPrint((char *)(lbl_8026B330 + 0x4E), entry, *(u32 *)(entry + 0x3C));
+                if (*(volatile u16 *)(entry + 0x30) & 0x1000) {
+                    goto next;
+                }
+                while (*(volatile u16 *)(entry + 0x30) & 0x80) {
+                    OS_YieldThread();
+                }
+                if (*(volatile u16 *)(entry + 0x30) & 0x800) {
+                    if (*(volatile u16 *)(entry + 0x30) & 0x2000) {
+                        s32 i;
+                        u8 *item;
+                        u8 *list;
+                        list = *(u8 **)(entry + 0x38);
+                        i = 0;
+                        item = list + 8;
+                        for (; i < *(u16 *)(list + 4); item += 0x10, i++) {
+                            u8 *found;
+                            u32 j;
+                            u32 key;
+                            u8 *e;
+                            unsigned ctr;
+                            e = gFileCache;
+                            key = *(u32 *)(item + 8);
+                            j = 0;
+                            for (ctr = 0x400; ctr > 0; ctr--) {
+                                if (*(u32 *)(e + 0x38) == key) {
+                                    found = gFileCache + j * 0x7C;
+                                    goto found1;
+                                }
+                                e += 0x7C;
+                                j++;
+                            }
+                            found = 0;
+                        found1:
+                            if (found && (*(u16 *)(found + 0x30) & 1)) {
+                                fn_8003FED8(*(void **)(found + 0x38));
+                                *(u16 *)(found + 0x30) &= 0xFFFE;
+                            }
+                        }
+                    } else if (*(volatile u16 *)(entry + 0x30) & 1) {
+                        fn_8003FED8(*(void **)(entry + 0x38));
+                        *(u16 *)(entry + 0x30) &= 0xFFFE;
+                    }
+                }
+                if ((*(volatile u16 *)(entry + 0x30) & 0x800) && (*(volatile u16 *)(entry + 0x30) & 0x2000)) {
+                    s32 i;
+                    u8 *item;
+                    u8 *list;
+                    list = *(u8 **)(entry + 0x38);
+                    i = 0;
+                    item = list + 8;
+                    for (; i < *(u16 *)(list + 4); item += 0x10, i++) {
+                        u8 *found;
+                        u32 j;
+                        u32 key;
+                        u8 *e;
+                        unsigned ctr;
+                        e = gFileCache;
+                        key = *(u32 *)(item + 8);
+                        j = 0;
+                        for (ctr = 0x400; ctr > 0; ctr--) {
+                            if (*(u32 *)(e + 0x38) == key) {
+                                found = gFileCache + j * 0x7C;
+                                goto found2;
+                            }
+                            e += 0x7C;
+                            j++;
+                        }
+                        found = 0;
+                    found2:
+                        if (found) {
+                            *(found) = 0;
+                            *(u32 *)(found + 0x2C) = 0;
+                            *(u16 *)(found + 0x30) = 0;
+                            *(u16 *)(found + 0x32) = 0;
+                            *(u32 *)(found + 0x38) = 0;
+                            *(u32 *)(found + 0x3C) = 0;
+                        }
+                    }
+                }
+                fn_800C4588(*(void **)(entry + 0x38));
+                *(u8 *)entry = 0;
+                *(u32 *)(entry + 0x2C) = 0;
+                *(u16 *)(entry + 0x30) = 0;
+                *(u16 *)(entry + 0x32) = 0;
+                *(u32 *)(entry + 0x38) = 0;
+                *(u32 *)(entry + 0x3C) = 0;
+            }
+        }
+    next:
+        index++;
+        entry += 0x7C;
+    } while (index < 0x400);
+}
+#pragma opt_common_subs reset
 void fn_8005CBC8(void) {
     extern u8 lbl_803672E9;
     if (lbl_803672E9 != 0) {
@@ -5027,6 +5146,48 @@ void *fn_800639B4(void *arg0) {
  FileCache_MarkRelocated(arg0);
  }
  return result;
+}
+
+void fn_80063A14(SomeStruct *arg0) {
+ void Game_Assert(void *,s32,void *);
+ SomeStruct *inner;
+ u8 *block;
+ void *offset;
+ if((u32)arg0->unkC & 8) Game_Assert(lbl_8026B658,0x201,lbl_8026B658+0x45);
+ offset=arg0->unk4; if(offset) arg0->unk4=(u8 *)offset+(u32)arg0;
+ offset=arg0->unk20; if(offset) arg0->unk20=(u8 *)offset+(u32)arg0;
+ offset=arg0->unk24; if(offset) arg0->unk24=(u8 *)offset+(u32)arg0;
+ offset=arg0->unk28; if(offset) arg0->unk28=(u8 *)offset+(u32)arg0;
+ offset=arg0->unk2C; if(offset) arg0->unk2C=(u8 *)offset+(u32)arg0;
+ offset=arg0->unk0;
+ if(offset) {
+ arg0->unk0=(u8 *)offset+(u32)arg0;
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unkC;
+ if(offset) {inner->unkC=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unkC; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk10;
+ if(offset) {inner->unk10=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk10; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk14;
+ if(offset) {inner->unk14=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk14; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk18;
+ if(offset) {inner->unk18=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk18; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk1C;
+ if(offset) {inner->unk1C=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk1C; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk4;
+ if(offset) {inner->unk4=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk4; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk8;
+ if(offset) {inner->unk8=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk8; *(void **)(block+4)=block+8;}
+ inner=(SomeStruct *)arg0->unk0;offset=inner->unk0;
+ if(offset) {inner->unk0=(u8 *)offset+(u32)arg0;
+ block=(u8 *)((SomeStruct *)arg0->unk0)->unk0; *(void **)(block+4)=block+8;}
+inner=(SomeStruct *)arg0->unk0;offset=inner->unk20;if(offset)inner->unk20=(u8 *)offset+(u32)arg0;
+ }
 }
 
 f32 fn_80063C2C(void **arg0, s32 arg1, f32 frame) {
