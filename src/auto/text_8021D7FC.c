@@ -1218,33 +1218,33 @@ u8 *gx = (u8*)__GXData;
 *(volatile u16*)(__cpReg+4) = *(u32*)(gx+0x10);
 }
 
+#pragma opt_common_subs off
 void fn_8021F3CC(void) {
     void *fn_8021F4D4(void);
     void *fn_8021F4CC(void);
     struct FifoCopy { u8 bytes[128]; };
-    volatile u8 pad[0xC];
-    struct FifoCopy copy;
+    struct FifoPad { u8 pad[0xC]; struct FifoCopy copy; };
+    struct FifoPad fp;
     __GXFifoObj *gp;
     void *cpu;
     void *base;
 
-    (void)pad;
     gp = fn_8021F4D4();
     if (gp) {
         cpu = fn_8021F4CC();
         base = gp->base;
-        copy = *(struct FifoCopy *)gp;
-        fn_8021ED28(&copy, (s32)base, (s32)base);
-        GXSetGPFifo(&copy);
+        fp.copy = *(struct FifoCopy *)gp;
+        fn_8021ED28(&fp.copy, (s32)base, (s32)base);
+        GXSetGPFifo(&fp.copy);
         if (cpu == gp)
-            GXSetCPUFifo(&copy);
+            GXSetCPUFifo(&fp.copy);
         fn_8021ED28(gp, (s32)base, (s32)base);
         GXSetGPFifo(gp);
         if (cpu == gp)
             GXSetCPUFifo(cpu);
     }
 }
-
+#pragma opt_common_subs reset
 s32 fn_8021F4CC(void) {
     extern s32 __GXCurrentCPUFifo;
     return __GXCurrentCPUFifo;
