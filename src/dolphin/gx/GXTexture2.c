@@ -813,10 +813,12 @@ void __GXSetIndirectMask(s32 arg0) {
 
 void __GXFlushTextureState(void)
 {
-  u16 * const gx = __GXData;
-  GXWGFifo.u8 = 0x61;
-  GXWGFifo.u32 = *((u32 *) (((u8 *) gx) + 0x124));
-  gx[1] = 0;
+  extern u16 * const __GXData;
+  u8 cmd = 0x61;
+  u16 *gx;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = *((u32 *) (((u8 *) __GXData) + 0x124));
+  __GXData[1] = 0;
 }
 
 void GXSetNumTexGens(s32 arg0, u32 arg1)
