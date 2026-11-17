@@ -9200,6 +9200,68 @@ void ListWin_HandleInput(void *list) {
     M2C_FIELD(list, s32 *, 0x100) = M2C_FIELD(list, s32 *, 0xF8) + thumbH;
 }
 
+#pragma inline_depth(0)
+void *fn_800DD3E8(u8 *self, void *owner, void *xml) {
+    void *fn_800E4688(void *, void *, void *);
+    u8 Xml_AdvanceChild(void *);
+    extern u8 lbl_8028DF48[];
+    char value[32];
+    char *valuePtr;
+    String name;
+    s32 scratch;
+    s32 width, height;
+    fn_800E4688(self, owner, xml);
+    *(void **)(self+0x40)=lbl_8028DF48;
+    valuePtr = value;
+    *(s32 *)(self+172)=0;
+    *(s32 *)(self+176)=0;
+    *(s32 *)(self+180)=0;
+    *(s32 *)(self+184)=0;
+    *(s32 *)(self+188)=0;
+    *(s32 *)(self+192)=0;
+    *(s32 *)(self+208)=0;
+    *(s32 *)(self+204)=0;
+    *(s32 *)(self+200)=0;
+    *(s32 *)(self+196)=0;
+    *(s32 *)(self+224)=0;
+    *(s32 *)(self+220)=0;
+    *(s32 *)(self+216)=0;
+    *(s32 *)(self+212)=0;
+    *(s32 *)(self+240)=0;
+    *(s32 *)(self+236)=0;
+    *(s32 *)(self+232)=0;
+    *(s32 *)(self+228)=0;
+    *(s32 *)(self+256)=0;
+    *(s32 *)(self+252)=0;
+    *(s32 *)(self+248)=0;
+    *(s32 *)(self+244)=0;
+    *(s32 *)(self+0x110)=-1;
+    while (Xml_AdvanceChild(xml)) {
+        Xml_GetChildValue(value,xml);
+        String_Init(&name,valuePtr,&scratch);
+        fn_800DC518(self,&name,0);
+        String_Destroy(&name,-1);
+    }
+    *(s32 *)(self+0x118)=0;
+    width=*(s32 *)(self+0x60); height=*(s32 *)(self+0x64);
+    *(s32 *)(self+0xc4)=0; *(s32 *)(self+0xc8)=0;
+    *(s32 *)(self+0xcc)=width-16; *(s32 *)(self+0xd0)=height;
+    width=*(s32 *)(self+0x60);
+    *(s32 *)(self+0xd4)=width-16; *(s32 *)(self+0xd8)=0;
+    *(s32 *)(self+0xdc)=width; *(s32 *)(self+0xe0)=16;
+    width=*(s32 *)(self+0x60); height=*(s32 *)(self+0x64);
+    *(s32 *)(self+0xe4)=width-16; *(s32 *)(self+0xe8)=height-16;
+    *(s32 *)(self+0xec)=width; *(s32 *)(self+0xf0)=height;
+    *(s32 *)(self+0x108)=0;
+    *(s32 *)(self+0x10c)=*(s32 *)(self+0x64)/16;
+    *(s32 *)(self+0xf4)=0; *(s32 *)(self+0xf8)=0;
+    *(s32 *)(self+0xfc)=16; *(s32 *)(self+0x100)=16;
+    *(s32 *)(self+0x104)=16; self[0x114]=0; self[0x115]=0;
+    *(s32 *)(self+0x104)=((*(s32 *)(self+0x64)-32)* *(s32 *)(self+0x108))/ *(s32 *)(self+0xb0);
+    return self;
+}
+#pragma global_optimizer reset
+#pragma inline_depth(8)
 s32 *fn_800DD87C(void *arg0, s32 *pos) {
     s32 *src;
     s32 *end;
@@ -9947,15 +10009,14 @@ void fn_800DEF00(void *arg0) {
 void fn_800DEF4C(void *arg0, u8 *arg1) {
     u32 z;
     u8 v;
-    u8 *mid;
-
+    u32 *mid;
     z = 0;
     v = *arg1;
     *(u32 *)arg0 = z;
-    mid = (u8 *)arg0 + 4;
+    mid = (u32 *)((u8 *)arg0 + 4);
     *(u32 *)mid = z;
     *((u8 *)arg0 + 8) = v;
-    *(u8 **)((u8 *)arg0 + 12) = mid;
+    *(u32 **)((u8 *)arg0 + 12) = mid;
 }
 
 void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
@@ -9974,10 +10035,8 @@ void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
     u8 *src;
     u8 *end;
     u8 *buf;
-    u32 sentinel;
 
-    sentinel = 0xFFFFFFFE;
-    if (*(u32 *)((char *)tree + 0) > sentinel) {
+    if (M2C_FIELD(tree, u32 *, 0) > (u32)-2) {
         fprintf(__files + 0xA0, lbl_80271860 + 0x1B0);
         abort();
     }
@@ -9998,7 +10057,7 @@ void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
             len = end - src;
             *(u32 *)(value + 4) = (len + 3) - (len & 3);
             buf = Heap_Alloc(*(u32 *)(value + 4) + 1);
-            if (buf == NULL) {
+            if (!buf) {
                 fprintf(__files + 0xA0, lbl_80271860 + 0x152);
                 abort();
             }
@@ -11107,37 +11166,42 @@ extern "C" void fn_800E1340(SortIterator first1, SortIterator last1, SortIterato
     s32 Sort_GetKey(void *);
     s32 key;
     while (first1.ptr != last1.ptr && first2.ptr != last2.ptr) {
-        SortIterator t1 = first1;
         SortIterator t2 = first2;
+        SortIterator t1 = first1;
+        s32 value = *t1.ptr;
         key = Sort_GetKey((void *)*t2.ptr);
-        if (Sort_GetKey((void *)*t1.ptr) > key) {
+        if (Sort_GetKey((void *)value) > key) {
             SortIterator tmp = first2;
-            *result = *tmp.ptr;
-            first2.ptr++;
+            s32 value = *tmp.ptr;
+            s32 *next = first2.ptr + 1;
+            *result = value;
+            first2.ptr = next;
         } else {
             SortIterator tmp = first1;
-            *result = *tmp.ptr;
-            first1.ptr++;
+            s32 value = *tmp.ptr;
+            s32 *next = first1.ptr + 1;
+            *result = value;
+            first1.ptr = next;
         }
         result++;
     }
     if (first1.ptr == last1.ptr) {
+        s32 *out = result;
         SortIterator end = last2;
         SortIterator cur = first2;
         while (cur.ptr != end.ptr) {
             SortIterator tmp = cur;
-            *result = *tmp.ptr;
+            *out++ = *tmp.ptr;
             cur.ptr++;
-            result++;
         }
     } else {
+        s32 *out = result;
         SortIterator end = last1;
         SortIterator cur = first1;
         while (cur.ptr != end.ptr) {
             SortIterator tmp = cur;
-            *result = *tmp.ptr;
+            *out++ = *tmp.ptr;
             cur.ptr++;
-            result++;
         }
     }
 }
@@ -14631,6 +14695,70 @@ void fn_800E81A0(void *arg0, void *arg1) {
         }
         fn_800DFFB8(arg0,arg1);
     }
+}
+
+extern "C" s32 fn_800E82D8(void *arg0, void *arg1) {
+void String_Assign(void *,void *,s32,s32);
+void String_Init(void *,void *,void *);
+void String_Destroy(void *,s32);
+void Xml_ParseFile(void *,void *,void *);
+void Xml_GetNamedValue(void *,void *,void *);
+u8 fn_800C8F48(void *);
+void Xml_Destroy(void *,s32);
+s32 String_Compare(void *,s32,u32,void *,u32);
+u32 strlen(void *);
+extern u8 gUiClassNames[];
+struct Obj { u8 pad[0x10];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5(void *)=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void *v11(void *)=0;
+};
+u8 xml[0x68];
+u32 value[8];
+u32 name[8];
+String s3c, s30, s24, s18;
+u32 a14,a10,ac,a8;
+s32 count=0;
+void *entry;
+u32 length;
+u8 *key;
+String_Assign((u8 *)arg0+0x14,arg1,0,-1);
+String_Init(&s3c,gUiClassNames+0xae,&a14);
+Xml_ParseFile(xml,arg1,&s3c);
+String_Destroy(&s3c,-1);
+String_Init(&s24,gUiClassNames,&a8);
+Xml_GetNamedValue(name,xml,&s24);
+entry=name;
+String_Init(&s18,entry,&ac);
+String_Destroy(&s24,-1);
+length=strlen(gUiClassNames+0xa0);
+key=gUiClassNames;
+if(String_Compare(&s18,0,s18.size,key+0xa0,length)==0) {
+String_Init(&s30,gUiClassNames+0xa5,&a10);
+Xml_GetNamedValue(value,xml,&s30);
+*(u32 *)((u8 *)arg0+0x40)=value[0];
+String_Destroy(&s30,-1);
+fn_800C8F48(xml);
+} else *(u32 *)((u8 *)arg0+0x40)=0x100000;
+String_Destroy(&s18,-1);
+do {
+entry=((Obj *)arg0)->v11(xml);
+if(entry) {
+((Obj *)arg0)->v5(entry);
+count++;
+}
+} while(fn_800C8F48(xml));
+Xml_Destroy(xml,-1);
+return count;
 }
 
 #pragma cplusplus reset
