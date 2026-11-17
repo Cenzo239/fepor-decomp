@@ -3690,53 +3690,61 @@ s8 Unit_GetMov(void *arg0) {
 }
 #pragma opt_strength_reduction reset
 s8 Unit_GetCon(void *arg0) {
-    s8 var_r4;
-    s8 var_r6;
-    s8 var_r7;
-    void **var_r4_2;
-    
-    var_r6 = 0;
-    
-    // First conditional block
-    if ((((u8*)arg0)[0x1D1] & 0x80) && (*(int*)((char*)arg0 + 0x1CC) != 0)) {
-        var_r4 = 0;
-    } else if ((((u8*)arg0)[0x1D9] & 0x80) && (*(int*)((char*)arg0 + 0x1D4) != 0)) {
-        var_r4 = 1;
-    } else if ((((u8*)arg0)[0x1E1] & 0x80) && (*(int*)((char*)arg0 + 0x1DC) != 0)) {
-        var_r4 = 2;
-    } else if ((((u8*)arg0)[0x1E9] & 0x80) && (*(int*)((char*)arg0 + 0x1E4) != 0)) {
-        var_r4 = 3;
+s8 bonus; s32 ptr; s32 index; s32 sum;
+sum=(s8)M2C_FIELD(M2C_FIELD(arg0,void **,0x188),u8 *,0x1B);
+sum+=M2C_FIELD(M2C_FIELD(arg0,void **,0x18C),u8 *,0x3C);
+sum+=(s8)M2C_FIELD(arg0,u8 *,0x1A9);
+bonus=0;
+    if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
+        index = bonus;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
+        index = 1;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
+        index = 2;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
+        index = 3;
     } else {
-        var_r4 = -1;
+        index = -1;
     }
-    
-    // Handle the pointer calculation
-    if (var_r4 < 0) {
-        var_r4_2 = NULL;
+    if ((s8)index < 0) {
+        ptr = 0;
     } else {
-        var_r4_2 = (void**)((char*)arg0 + (var_r4 * 8) + 0x1CC);
+        ptr = (s8)index * 8;
+        ptr = ptr + 0x1CC;
+        ptr = ptr + (s32)arg0;
     }
-    
-    // Second conditional block - similar logic
-    if (var_r4_2 != NULL) {
-        var_r6 = *(u8*)((char*)(*var_r4_2) + 0x28);
+    if ((u32)ptr != 0) {
+        bonus = (s8)*(u8 *)((u8 *)*(void **)ptr + 0x28);
     }
-    
-    // Calculate final value using known struct offsets
-    var_r7 = ((u8*)arg0)[0x188] + 
-             ((u8*)arg0)[0x18C] + 
-             ((u8*)arg0)[0x1A9] + 
-             var_r6;
-    
-    // Bounds checking
-    if (var_r7 > 99) {
-        var_r7 = 99;
+    if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
+        index = 0;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
+        index = 1;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
+        index = 2;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
+        index = 3;
+    } else {
+        index = -1;
     }
-    if (var_r7 < 0) {
-        var_r7 = 0;
+    if ((s8)index < 0) {
+        ptr = 0;
+    } else {
+        ptr = (s8)index * 8;
+        ptr = ptr + 0x1EC;
+        ptr = ptr + (s32)arg0;
     }
-    
-    return var_r7;
+    if ((u32)ptr != 0) {
+        bonus += *(u8 *)((u8 *)*(void **)ptr + 0x28);
+    }
+    sum = sum + bonus;
+    if (sum > 0x63) {
+        sum = 0x63;
+    }
+    if (sum < 0) {
+        sum = 0;
+    }
+    return (s8)sum;
 }
 
 s8 fn_8003A778(void *arg0) {
@@ -5268,20 +5276,38 @@ void Unit_Write(void *arg0, s32 arg1) {
     Stream_WriteU16(arg1, 0);
 }
 
-void fn_8003CCB0(struct unit* arg0)
-{
-    if (arg0 != NULL) {
-        M2C_FIELD(arg0, s32*, 0x1C) = 0;
-        M2C_FIELD(arg0, s32*, 0x18) = 0;
-        
-        if (M2C_FIELD(arg0, s32*, 0x14) > 0) {
-            M2C_FIELD(arg0, s32*, 0x14) = 0;
-        }
-        
-        M2C_FIELD(arg0, s32*, 0xA8) = 0;
-        
-        lbl_803672A8 = arg0;
-    }
+void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
+ extern u8 gBattleMap[],lbl_8026A520[];
+ void Map_SelectRangeBuffer(void *,s32); void fn_80022748(void *,s32); void fn_800227F8(void *,void *);
+ void *Job_GetByJid(void *); void Map_FloodMoveRange(void *,u8,u8,s32,s32,s32);
+ u8 Map_IsAiTerrainBlocked(s8,s8); s16 fn_8002134C(u8 *,s8,s8);
+ u8 *outY,*outX; void *unit; u8 *map; u8 saved; u8 *layer,*mapHi,*row,*tile;
+ s32 rowOff,index; u16 best; register s32 y,x;
+ outY=arg2; outX=arg1; unit=arg0;
+ map=gBattleMap; layer=map+13;
+ index=(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6);
+ saved=layer[index]; layer[index]=0;
+ Map_SelectRangeBuffer(map,5);
+ fn_80022748(gBattleMap,0);
+ fn_800227F8(gBattleMap,Job_GetByJid(lbl_8026A520+0x50));
+ Map_FloodMoveRange(gBattleMap,*outX,*outY,64,0,0);
+ fn_800227F8(gBattleMap,M2C_FIELD(unit,void **,0x18C));
+ map=gBattleMap; best=9999; mapHi=map+0x10000;
+ for(y=(s8)map[9];y<=(s8)map[11]-1;y++) {
+ rowOff=(s8)y<<6; row=map+rowOff;
+ for(x=(s8)map[8];x<=(s8)map[10]-1;x++) {
+ index=(s8)x+rowOff;
+ if((*(s16 **)(mapHi+0x4190))[index]>=0) {
+ tile=row+(s8)x;
+ if((s8)tile[0xE18E]==0 && !Map_IsAiTerrainBlocked((s8)x,(s8)y) && tile[13]==0 &&
+ fn_8002134C(gBattleMap,(s8)x,(s8)y)<=30000) {
+ s16 cost=(*(s16 **)(mapHi+0x4190))[index];
+ if(best>(u16)cost) { *outX=x; best=(u16)cost; *outY=y; }
+ }
+ }
+ }
+ }
+ layer[(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6)]=saved;
 }
 
 void fn_8003CE88(void *unit, s32 range) {
@@ -8270,12 +8296,60 @@ void fn_80043B20(void) {
     fn_800432D8(gMap);
 }
 
-void fn_80043B44(void* arg0, s32 arg1) {
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    // Just a basic skeleton to test compilation
+void fn_80043B44(void *arg0) {
+void *Camera_Get(void);
+void *fn_800C45B8(s32,void *,s32);
+void fn_80068550(void);
+void fn_800680AC(s32,s32,s32,s32);
+void fn_80068070(f32,f32,f32,f32);
+void fn_8006805C(f32,f32);
+void fn_80202A6C(void *,f32,f32,f32,f32);
+void fn_800680D0(void *,s32);
+void fn_80067FE8(void *,void *,void *);
+void fn_80066124(void *);
+extern u8 gMapTileEdgeVecs[],lbl_8026A660[];
+extern u32 gGameFlags;
+extern f32 lbl_80368EE4,lbl_80368F34,lbl_80368F38,lbl_80368F10,lbl_80368F3C,lbl_80368F40,lbl_80368F44,lbl_80368F48;
+f32 matrix[16]; f32 a[3]; f32 b[3]; f32 c[3];
+u8 *cam; u8 *table=gMapTileEdgeVecs;
+M2C_FIELD(arg0,void **,0x54)=Camera_Get();
+cam=fn_800C45B8(-400,lbl_8026A660+0x245,0);
+fn_80068550(); *(u16 *)cam=2;
+fn_800680AC(0,0,608,448);
+fn_80068070(lbl_80368EE4,lbl_80368EE4,lbl_80368F34,lbl_80368F38);
+fn_8006805C(lbl_80368F10,lbl_80368F3C);
+fn_80202A6C(matrix,lbl_80368F40,*(f32 *)(cam+12)/ *(f32 *)(cam+16),*(f32 *)(cam+0x180),*(f32 *)(cam+0x184));
+fn_800680D0(matrix,1);
+*(u32 *)&a[0]=*(u32 *)(table+172);
+*(u32 *)&a[1]=*(u32 *)(table+176);
+*(u32 *)&a[2]=*(u32 *)(table+180);
+*(f32 *)(cam+212)=a[0];
+*(f32 *)(cam+216)=a[1];
+*(f32 *)(cam+220)=a[2];
+*(u32 *)&b[0]=*(u32 *)(table+184);
+*(u32 *)&b[1]=*(u32 *)(table+188);
+*(u32 *)&b[2]=*(u32 *)(table+192);
+*(f32 *)(cam+224)=b[0];
+*(f32 *)(cam+228)=b[1];
+*(f32 *)(cam+232)=b[2];
+*(u32 *)&c[0]=*(u32 *)(table+196);
+*(u32 *)&c[1]=*(u32 *)(table+200);
+*(u32 *)&c[2]=*(u32 *)(table+204);
+*(f32 *)(cam+236)=c[0];
+*(f32 *)(cam+240)=c[1];
+*(f32 *)(cam+244)=c[2];
+*(f32 *)(cam+0xF8)=80.0f;
+*(f32 *)(cam+0xFC)=0.0f;
+*(f32 *)(cam+0x100)=0.0f;
+*(f32 *)(cam+0x104)=0.0f;
+*(f32 *)(cam+0x18C)=30.0f;
+*(f32 *)(cam+0x188)=1.3333333333333333f;
+fn_80067FE8(cam+0xD4,cam+0xEC,cam+0xE0);
+*(void **)(cam+0x114)=fn_800C45B8(-0x4000,lbl_8026A660+0x245,0);
+*(u16 *)(cam+0x11A)=0x400;
+fn_80066124(cam);
+M2C_FIELD(arg0,void **,0x58)=cam;
+gGameFlags|=8;
 }
 
 s32 fn_80043D18(s32 unused, s32 x, s32 y, f32 *out) {
