@@ -7604,12 +7604,18 @@ void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
     f32 destination[3];
     f32 delta[3];
     f32 distance;
+    f32 x;
+    f32 y;
+    f32 z;
     u8 *self;
 
     self = (u8 *)arg0;
-    *(f32 *)(self + 0x78) = arg1[0];
-    *(f32 *)(self + 0x7C) = arg1[1];
-    *(f32 *)(self + 0x80) = arg1[2];
+    x = arg1[0];
+    y = arg1[1];
+    z = arg1[2];
+    *(f32 *)(self + 0x78) = x;
+    *(f32 *)(self + 0x7C) = y;
+    *(f32 *)(self + 0x80) = z;
 
     current[0] = *(f32 *)(self + 0x48);
     current[1] = *(f32 *)(self + 0x4C);
@@ -14393,6 +14399,58 @@ void fn_800EA27C(void) {
     *(u8*)(gCardWork + 0xA01A) = 0;
 }
 
+void fn_800EA418(s32 proc) {
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 padA01B;
+        u8 fileInfo[0x14];
+        u8 padA030[4];
+        s32 unkA034;
+    };
+    void Process_Goto(s32, s32);
+    void Process_Unlink(s32);
+    void Card_AsyncDone(void);
+    s32 fn_8021BF10(s32, void *, void *);
+    s32 fn_8021CAB4(void *, s32, s32, s32, void *);
+    extern struct CardWork gCardWork;
+    extern char gCardStrings[];
+    u8 skip;
+    void *fileInfo;
+
+    if (gCardWork.result < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork.busy = 0;
+        skip = 1;
+    } else {
+        skip = 0;
+    }
+    if (skip == 0) {
+        fileInfo = gCardWork.fileInfo;
+        gCardWork.result = fn_8021BF10(gCardWork.chan, gCardStrings + 0x70, fileInfo);
+        if (gCardWork.result != -4) {
+            gCardWork.unkA019 = 1;
+            gCardWork.busy = 1;
+            gCardWork.result = fn_8021CAB4(fileInfo, gCardWork.unkA034, gCardWork.unkA00C,
+                                          gCardWork.unkA010, Card_AsyncDone);
+            if (gCardWork.result < 0) {
+                Process_Goto(proc, 0x63);
+                gCardWork.busy = 0;
+            }
+        } else {
+            Process_Unlink(proc);
+        }
+    }
+}
+
 void fn_800EA540(s32 arg0, s32 arg1) {
     struct CardWork {
         u8 workArea[0xA000];
@@ -20197,6 +20255,27 @@ void fn_800FAC30(void *arg0) {
     } else {
         (*(u8 *)((u8 *)arg0 + 0x251))++;
     }
+}
+
+void fn_800FAC6C(void *unit) {
+extern u8 *gAiCmd;
+extern s32 gAiCmdIsAlt;
+extern u8 gAiState[];
+void *Res_GetByName(void *);
+long index;
+u8 *entry;
+long labelId;
+u8 *obj;
+obj=unit;
+if((u32)(*(s32 *)(gAiCmd+4)!=0)==(u32)(gAiState[0x21C]!=0)) {
+index=0; labelId=*(s32 *)(gAiCmd+0x10);
+if(gAiCmdIsAlt == 0) entry=Res_GetByName(*(void **)(obj+0x238));
+else entry=Res_GetByName(*(void **)(obj+0x23C));
+if(labelId) {
+while(*(s32 *)entry!=0 || *(s32 *)(entry+0xC)!=labelId) { entry+=0x1C; index++; }
+if(!gAiCmdIsAlt) obj[0x250]=index; else obj[0x251]=index;
+} else { if(!gAiCmdIsAlt) obj[0x250]=0; else obj[0x251]=0; }
+} else { if(!gAiCmdIsAlt) obj[0x250]++; else obj[0x251]++; }
 }
 
 #pragma use_lmw_stmw on
