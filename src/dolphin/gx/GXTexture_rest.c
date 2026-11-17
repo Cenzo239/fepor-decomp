@@ -297,7 +297,7 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
-#pragma peephole off
+#pragma peephole on
 void fn_8022462C(u8 arg0) {
     u32 *ptr;
     u32 value;
