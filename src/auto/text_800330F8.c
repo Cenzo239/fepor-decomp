@@ -4138,8 +4138,8 @@ s32 fn_8003B938(u8 arg0) {
 }
 
 extern s32 gGameState;
-void fn_8003B9AC(u32 arg0) {
-    void fn_8000E0E4(void *);
+void *fn_8003B9AC(u32 arg0) {
+    void *Msg_Expand(void *);
     extern u16 gAffinityStr[];
     u8 *s;
 
@@ -4171,9 +4171,9 @@ void fn_8003B9AC(u32 arg0) {
     case 8:
     default:
         s = (u8 *)gAffinityStr + 0x43;
-        break;
+        return s;
     }
-    fn_8000E0E4(s);
+    return Msg_Expand(s);
 }
 
 extern u16 gAffinityStr[];
