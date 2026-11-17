@@ -3897,19 +3897,19 @@ struct Block sp84,sp64;
 char sp44[32];
 String sp38,sp2C,sp20,sp14;
 u32 sp10,spC,sp8;
-s8 made1,made2; u8 *f; char *buffer; u8 *arg0=self;
-made1=0; made2=0;
+u32 path; s8 made1,made2; u8 *f; u8 *arg0=self;
+path=(u32)arg1; made1=0; made2=0;
 f=(u8 *)Heap_Alloc(0x60);
-if(f) { String_Init(&sp2C,lbl_802704F8+0x1D6,&sp10); made1=1; String_Init(&sp20,arg1,&spC); made2=1; f=(u8 *)Xml_ParseFile(f,&sp20,&sp2C); }
+if(f) { String_Init(&sp2C,lbl_802704F8+0x1D6,&sp10); made1=1; String_Init(&sp20,(char *)path,&spC); made2=1; f=(u8 *)Xml_ParseFile(f,&sp20,&sp2C); }
 if(made2 != 0)String_Destroy(&sp20,-1);
 if(made1 != 0)String_Destroy(&sp2C,-1);
 sp38.cap=0;sp38.size=0;sp38.data=0;sp38.cap=0;
 String_Init(&sp14,lbl_802704F8+0x1EB,&sp8);
 Str_CopyPad(&sp64,lbl_802704F8+0x34F,32); sp84=sp64;
 fn_800C908C(f,&sp14,&sp84);String_Destroy(&sp14,-1);
-buffer=sp44;
+path=(u32)sp44;
 for(;Xml_AdvanceChild(f)!=0;){
-Xml_GetChildValue(sp44,f);String_AssignCStr(&sp38,buffer,strlen(buffer));
+Xml_GetChildValue(sp44,f);String_AssignCStr(&sp38,(char *)path,strlen((char *)path));
 fn_800CA18C((void *)(arg0+0x1BC),M2C_FIELD(arg0,s32*,0x1C0)*12+M2C_FIELD(arg0,u8**,0x1C4),1,&sp38);
 }
 Xml_Destroy(f,1);String_Destroy(&sp38,-1);
