@@ -20520,8 +20520,7 @@ void fn_800F5B14(s32 arg0, void *arg1) {
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
     *(s32 *)((u8 *)out + 8) = score;
 }
-#pragma global_optimizer reset
-#pragma dont_inline reset
+#pragma optimization_level reset
 
 #pragma cplusplus off
 #pragma use_lmw_stmw on
