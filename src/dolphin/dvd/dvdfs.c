@@ -402,7 +402,6 @@ s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, void
     void OSPanic(void *, s32, char *, ...);
     s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(s32, void *), s32);
     void fn_8020CBF8(s32, void *);
-    extern s32 lbl_8029CFE8;
     extern s32 lbl_80366F60;
     s32 temp_r4;
 
