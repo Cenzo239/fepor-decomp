@@ -7417,48 +7417,7 @@ void Sound_SelectSource12(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x3D4, step, 0x10000000, 0x1000);
 }
 
-void fn_80253194(void *arg0, void *arg1) {
-    u32 temp_r7;
-    u32 temp_r5;
-    s32 temp_r3;
-    u8 temp_r8;
-    u32 temp_r0;
-    s32 var_r5;
-    u32 temp_r4;
-    u32 r31_2;
-
-    temp_r7 = *(u32 *)((u8 *)arg0 + 0x118);
-    temp_r5 = *(u32 *)((u8 *)arg0 + 0x114);
-    
-    if ((temp_r7 & 0x40) == 0 || (temp_r5 & 0) == 0) {
-        *(u32 *)((u8 *)arg0 + 0x118) = temp_r7 | 0x40;
-        *(u32 *)((u8 *)arg0 + 0x114) = temp_r5;
-    } else {
-        temp_r0 = *(u32 *)((u8 *)arg1 + 0x4);
-        temp_r8 = (u8)(temp_r0 >> 8U);
-        r31_2 = 0x51EC7AE1;
-        temp_r3 = ((s32)r31_2 * (s32)((temp_r0 & 0xFFFF0000) >> 16)) >> 19;
-        if (temp_r3 < 0) {
-            s32 r4_val = (s32)(((u32)(temp_r0 >> 16)) << 8);
-            r4_val = r4_val * (s32)r31_2;
-            r4_val >>= 19;
-            var_r5 = temp_r3 - r4_val;
-        } else {
-            s32 r4_val = (s32)(((u32)(temp_r0 >> 16)) << 8);
-            r4_val = r4_val * (s32)r31_2;
-            r4_val >>= 19;
-            var_r5 = temp_r3 + r4_val;
-        }
-        
-        fn_8025FFC8((u8 *)arg0 + 0x3F8, 
-                    (u8)(temp_r0 >> 8U), 
-                    var_r5,
-                    temp_r8 != 0,
-                    temp_r8,
-                    0);
-    }
-    *(u32 *)((u8 *)arg0 + 0x220) |= 0x2000;
-}
+void fn_80253194(void *voice, u32 *step) { SelectSource(voice, (u8 *)voice + 0x3F8, step, 0x40, 0x2000); }
 
 void fn_80253298(void *arg0, u32 *arg1)
 {
