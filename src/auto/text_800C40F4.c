@@ -3748,7 +3748,6 @@ void fn_800CA91C(void *arg0)
 }
 
 typedef struct ActionQueueFields { u8 pad[0x234]; s32 first[4]; s32 second[4]; } ActionQueueFields;
-typedef struct ActionQueueEntry { u8 pad[0x234]; s32 first; u8 pad238[12]; s32 second; } ActionQueueEntry;
 #pragma dont_inline on
 void fn_800CA990(void *arg0) {
 void fn_80111AE8(void *,void *,s32);
