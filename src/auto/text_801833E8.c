@@ -10467,6 +10467,26 @@ void fn_8019B2FC(void *arg0) {
     BattleState_SetCamPos(gBattleState, M2C_FIELD(arg0, s8 *, 0x66), M2C_FIELD(arg0, s8 *, 0x67));
 }
 
+void fn_8019B388(void *arg0) {
+    void fn_80049520(s32, void *, s32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
+    void fn_801848D8(s32, s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
+    void *unit;
+    s32 actor;
+    M2C_FIELD(arg0,s16 *,0x60)=(s32)Math_Angle2D(0.5f+(f32)M2C_FIELD(arg0,s8 *,0x64),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x65),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x66),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x67));
+    fn_80049520(M2C_FIELD(arg0,s32 *,0x5C),arg0,0x14,(f32)M2C_FIELD(arg0,s16 *,0x60));
+    unit=*M2C_FIELD(arg0,void ***,0x34);
+    if(unit) actor=M2C_FIELD(unit,s32 *,0x280); else actor=0;
+    Mu_StartBlend(actor,8,0x10,0);
+    unit=*M2C_FIELD(arg0,void ***,0x34);
+    if(unit) actor=M2C_FIELD(unit,s32 *,0x280); else actor=0;
+    fn_801848D8(actor,M2C_FIELD(arg0,s8 *,0x64),M2C_FIELD(arg0,s8 *,0x65),0x18,0);
+    unit=*M2C_FIELD(arg0,void ***,0x30);
+    if(unit) actor=M2C_FIELD(unit,s32 *,0x280); else actor=0;
+    fn_801848D8(actor,M2C_FIELD(arg0,s8 *,0x64),M2C_FIELD(arg0,s8 *,0x65),0x18,0);
+}
+
 #pragma optimization_level 4
 #pragma inline auto
 extern u16 gBattle[0x834];
