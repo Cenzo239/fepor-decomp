@@ -26,6 +26,7 @@ extern u16 gSystemSave[36]; // 72 bytes
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
 extern f64 lbl_8036A720;
+f64 lbl_8036A700 = 4503601774854144.0;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
@@ -2614,6 +2615,38 @@ fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
 #pragma cplusplus on
 }
 
+extern "C" void fn_8013692C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+struct Sub { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual s16 height()=0; };
+extern u8 lbl_802921B0[];
+extern f32 lbl_8036A5FC;
+void *fn_80136AC4(void *, s32, s32, s32, s32, s32, s32);
+u8 *self = (u8 *)arg0;
+s32 bottom;
+s16 halfWidth, halfHeight;
+fn_80136AC4(self,1,arg1,arg2,arg3,arg4,arg5);
+*(void **)self=lbl_802921B0;
+bottom=(s32)((f32)arg4-lbl_8036A5FC*(f32)((Sub *)(self+0x74))->height());
+{ s16 height=((Sub *)(self+0x4c))->height();
+f32 h;
+f32 scale;
+h=(f32)height;
+scale=lbl_8036A5FC;
+*(s16 *)(self+0x12)=0;
+*(s16 *)(self+0x14)=(s32)(h*scale); }
+*(s16 *)(self+0x16)=arg3;
+*(s16 *)(self+0x18)=bottom;
+halfWidth=((s16)(*(s16 *)(self+0x16)-*(s16 *)(self+0x12))+1)>>1;
+halfHeight=((Sub *)(self+0x74))->height()>>1;
+*(s16 *)(self+0x5a)=halfWidth;
+*(s16 *)(self+0x5c)=-halfHeight;
+*(s16 *)(self+0x5e)=0;
+{ s16 span=*(s16 *)(self+0x18)-*(s16 *)(self+0x14);
+*(s16 *)(self+0x82)=halfWidth;
+*(s16 *)(self+0x84)=halfHeight+span; }
+*(s16 *)(self+0x86)=0;
+
+}
+
 #pragma cplusplus reset
 
 #pragma use_lmw_stmw on
@@ -5019,6 +5052,123 @@ extern "C" void fn_8013ACC4(s32 *arg0, void *arg1) {
     in.x = (s16)(vret * rem + v62);
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
+
+void fn_8013AD70(void *arg0, void *arg1)
+{
+    struct Node {
+        struct Node *prev;
+        struct Node *next;
+        void *obj;
+    };
+
+    struct Node *node;
+    struct Node *head;
+    struct Node *end;
+    u8 *self;
+    s32 index;
+    s16 target;
+    s16 current;
+    s16 rows;
+    s16 count;
+    s16 pages;
+    s16 visible;
+    s16 lastRow;
+    s16 lastIndex;
+    s16 lastPage;
+    s32 quotient;
+
+    self = (u8 *)arg0;
+    end = (struct Node *)(self + 0x74);
+    head = *(struct Node **)(self + 0x78);
+    node = head;
+
+    do {
+        node = node->next;
+        if (node == end) {
+            return;
+        }
+    } while (node->obj != arg1);
+
+    if (node == end) {
+        return;
+    }
+
+    index = 0;
+    while (head != node) {
+        head = head->next;
+        index++;
+    }
+
+    target = (s16)index;
+    current = *(s16 *)(self + 0x4E);
+
+    if (target == current) {
+        return;
+    }
+
+    visible = (s16)((s32 (*)(void *))
+        (*(void ***)((u8 *)self))[15])(self);
+
+    count = (s16)*(s32 *)(self + 0x70);
+    rows = *(s16 *)(self + 0x58);
+    lastRow = rows - 1;
+    pages = (s16)((count + lastRow) / rows);
+
+    if (target < 0 || count <= target) {
+        return;
+    }
+
+    if (visible > pages) {
+        visible = pages;
+    }
+
+    if (target < current) {
+        do {
+            current = *(s16 *)(self + 0x4E);
+            current--;
+            *(s16 *)(self + 0x4E) = current;
+
+            if (current > lastRow) {
+                quotient = current / rows;
+
+                if ((s16)quotient -
+                    *(s16 *)(self + 0x56) == 0) {
+                    *(s16 *)(self + 0x56) =
+                        *(s16 *)(self + 0x56) - 1;
+                }
+            }
+        } while (target < *(s16 *)(self + 0x4E));
+    } else {
+        lastIndex = count - 1;
+        lastPage = pages - 1;
+        visible--;
+
+        do {
+            current = *(s16 *)(self + 0x4E);
+            current++;
+            *(s16 *)(self + 0x4E) = current;
+
+            if (*(s16 *)(self + 0x4E) > lastIndex) {
+                *(s16 *)(self + 0x4E) = lastIndex;
+            }
+
+            quotient = *(s16 *)(self + 0x4E) / rows;
+
+            if ((s16)quotient < lastPage) {
+                if (visible ==
+                    (s16)quotient -
+                    *(s16 *)(self + 0x56)) {
+                    *(s16 *)(self + 0x56) =
+                        *(s16 *)(self + 0x56) + 1;
+                }
+            }
+        } while (*(s16 *)(self + 0x4E) < target);
+    }
+
+    *(s16 *)(self + 0x52) = -1;
+    *(s16 *)(self + 0x54) = -1;
+}
+
 extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -7615,6 +7765,81 @@ void fn_8013EBA8(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x18) = h;
 }
 
+#pragma cplusplus on
+extern "C" void fn_8013EBD8(void *arg0) {
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, u16);
+    void Prim2D_PrepareTex(void);
+    void fn_8015385C(s8, s32, s32, s16, s16, s32, s32, s32);
+    extern f64 lbl_8036A700;
+
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual s16 v9() = 0;
+    };
+    struct Obj2 {
+        virtual void w0() = 0;
+        virtual void w1() = 0;
+        virtual void w2() = 0;
+        virtual void w3() = 0;
+        virtual void w4() = 0;
+        virtual void w5() = 0;
+        virtual void w6() = 0;
+        virtual void w7() = 0;
+        virtual void w8() = 0;
+        virtual void w9(s32) = 0;
+    };
+
+    u8 *self;
+    s16 vret;
+    s32 d, dx, dy;
+    f32 f3;
+    f64 dv;
+
+    self = (u8 *)arg0;
+
+    if (*(s16 *)(self + 0x3C) > *(s16 *)(self + 0x3E)) {
+        ((Obj *)arg0)->v3();
+        Prim2D_Begin();
+        Prim2D_SetTex(0, (u16)(*(u32 *)(self + 0x34) | 0x10));
+        Prim2D_PrepareTex();
+
+        vret = ((Obj *)self)->v9();
+        *((u32 *)&dv + 1) = (u32)((u16)vret ^ 0x8000);
+        *(u32 *)&dv = 0x43300000;
+        f3 = (f32)(dv - lbl_8036A700) / (f32)*(s16 *)(self + 0x3C);
+
+        dx = (s16)(*(s16 *)(self + 0x16) - *(s16 *)(self + 0x12));
+        dy = (s16)(*(s16 *)(self + 0x18) - *(s16 *)(self + 0x14));
+
+        fn_8015385C(
+            (s8)*(s32 *)(self + 0x48),
+            0,
+            0,
+            dx,
+            dy,
+            (s32)(f3 * (f32)*(s16 *)(self + 0x40)),
+            (s32)(f3 * (f32)*(s16 *)(self + 0x3E)),
+            *(u32 *)(self + 0x34) | 0x10
+        );
+
+        *(u8 *)(self + 0x58) = (u8)(*(s16 *)(self + 0x40) > 0);
+        d = *(s16 *)(self + 0x3C) - *(s16 *)(self + 0x3E);
+        *(u8 *)(self + 0x80) = (u8)(*(s16 *)(self + 0x40) < d);
+
+        ((Obj2 *)(self + 0x4C))->w9(*(u32 *)(self + 0x34));
+        ((Obj2 *)(self + 0x74))->w9(*(u32 *)(self + 0x34));
+    }
+}
+#pragma cplusplus reset
 void fn_8013ED84(void *arg0, s16 arg1) {
     s16 temp_r5;
 
@@ -8139,18 +8364,18 @@ s32 fn_8013FBD4(s32 arg0) {
 #pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
-  s32 c;
-  s32 b;
-  s32 a;
+  s16 c;
+  s16 b;
+  s16 a;
 
   a = dst[0];
   b = src[0];
   c = src[1];
   a = a + b;
-  dst[0] = (s16)a;
+  dst[0] = a;
   a = dst[1];
   a = a + c;
-  dst[1] = (s16)a;
+  dst[1] = a;
 }
 #pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
@@ -9246,6 +9471,104 @@ void fn_80142078(void *arg0) {
     temp_f1 = Math_Ease(5, (f32) var_r29, lbl_8036A75C, (f32) M2C_FIELD(arg0, s16 *, 0x40), (f32) temp_r31);
     M2C_FIELD(var_r30, s16 *, 0x8C) = temp_r28;
     M2C_FIELD(var_r30, s16 *, 0x8E) = (s16) temp_f1;
+}
+
+void fn_801422C0(void *arg0)
+{
+    extern u8 gUnitInfoPopup[];
+    extern f64 lbl_8036A750;
+
+    u8 Ui_IsUnitInfoPopupOpen(void *);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
+    void Ui_HideUnitInfoPopup(void *);
+
+    u8 *self;
+    u8 *child;
+    u8 *selected;
+    u8 *entry;
+    u8 *node;
+    s32 index;
+    s16 count;
+    s32 offset;
+    s32 pos[2];
+    s16 x;
+    s16 y;
+
+    self = (u8 *)arg0;
+
+    *(s16 *)(self + 0x40) = 0;
+
+    if (*(void **)(self + 0x34) != 0) {
+        child = *(u8 **)(*(u8 **)(self + 0x38) + 8);
+    } else {
+        child = 0;
+    }
+
+    ((void (*)(void *, void *))
+        (*(void ***)((u8 *)child))[11])(
+            child,
+            *(void **)(self + 0x44)
+        );
+
+    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+        if (*(void **)(self + 0x34) != 0) {
+            child = *(u8 **)(*(u8 **)(self + 0x38) + 8);
+        } else {
+            child = 0;
+        }
+
+        index = ((s32 (*)(void *))
+            (*(void ***)child)[12])(child);
+
+        offset = index * 12;
+        entry = child + 0x90 + offset;
+
+        if (*(void **)entry == 0) {
+            selected = 0;
+        } else {
+            count = *(s16 *)(child + 0x64 + index * 2);
+            node = *(u8 **)(entry + 8);
+
+            if (count >= 0) {
+                while (count > 0) {
+                    node = *(u8 **)(node + 4);
+                    count--;
+                }
+            } else {
+                while (count < 0) {
+                    node = *(u8 **)node;
+                    count++;
+                }
+            }
+
+            selected = node + 8;
+        }
+
+        if (selected != 0) {
+            if (*(void **)(self + 0x34) != 0) {
+                child = *(u8 **)(*(u8 **)(self + 0x38) + 8);
+            } else {
+                child = 0;
+            }
+
+            ((void (*)(void *, void *))
+                (*(void ***)child)[15])(child, pos);
+
+            *(u32 *)((u8 *)pos + 4) = *(u32 *)pos;
+
+            x = *(s16 *)((u8 *)pos + 4);
+            y = *(s16 *)((u8 *)pos + 6);
+
+            Ui_ShowUnitInfoPopup(
+                gUnitInfoPopup,
+                *(void **)selected,
+                (f32)x,
+                (f32)y
+            );
+        } else {
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
+        }
+    }
 }
 
 void fn_8014246C(void *arg0) {
@@ -10914,6 +11237,104 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
         *(void **)arg0 = n;
     }
 }
+
+extern "C" void fn_80144F78(List *dst, List *src)
+{
+#pragma scheduling off
+    typedef struct {
+        u8 pad[0xe];
+        u16 key;
+    } KeyObj;
+    typedef struct {
+        KeyObj *obj;
+        u8 unk4;
+    } Entry;
+    typedef struct Node {
+        struct Node *prev;
+        struct Node *next;
+        Entry *val;
+    } Node;
+
+    void fn_80145124(u32 *, Node **, List *);
+
+    Node *first;
+    Node *second;
+    Node *dstEnd;
+    Node *srcEnd;
+    Node *scan;
+    Node *last;
+    Entry *a;
+    Entry *b;
+    s32 count;
+    u8 less;
+
+    if (dst == src) {
+        return;
+    }
+
+    first = *(Node **)((u8 *)dst + 8);
+    dstEnd = (Node *)((u8 *)dst + 4);
+    second = *(Node **)((u8 *)src + 8);
+    srcEnd = (Node *)((u8 *)src + 4);
+
+    while (first != dstEnd && second != srcEnd) {
+        b = second->val;
+        a = first->val;
+        if (b->obj->key == a->obj->key) {
+            u8 a4 = a->unk4;
+            u8 b4 = b->unk4;
+            if (b4 != a4) {
+                less = b4 < a4;
+            } else {
+                less = (u32)b < (u32)a;
+            }
+        } else {
+            less = b->obj->key < a->obj->key;
+        }
+        if (less) {
+            a = first->val;
+            scan = second->next;
+            count = 1;
+            while (scan != srcEnd) {
+                b = scan->val;
+                if (b->obj->key == a->obj->key) {
+                    u8 a4 = a->unk4;
+                    u8 b4 = b->unk4;
+                    if (b4 != a4) {
+                        less = b4 < a4;
+                    } else {
+                        less = (u32)b < (u32)a;
+                    }
+                } else {
+                    less = b->obj->key < a->obj->key;
+                }
+                if (!less) {
+                    break;
+                }
+                scan = scan->next;
+                count++;
+            }
+            last = scan->prev;
+            second->prev->next = last->next;
+            last->next->prev = second->prev;
+            first->prev->next = second;
+            second->prev = first->prev;
+            second = scan;
+            first->prev = last;
+            last->next = first;
+            *(s32 *)src -= count;
+            *(s32 *)dst += count;
+        }
+        first = first->next;
+    }
+
+    if (second != srcEnd) {
+        Node *remaining = first;
+        fn_80145124((u32 *)dst, &remaining, src);
+    }
+#pragma scheduling reset
+}
+
 #pragma cplusplus reset
 
 int fn_8014510C(void *arg0) {
