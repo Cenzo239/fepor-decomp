@@ -95,6 +95,9 @@ void UnitInfo_DrawCombatStats(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
     *((f32*)var_r5 + 1) = sp34;
 }
 
+#pragma use_lmw_stmw on
+#pragma global_optimizer on
+#pragma opt_strength_reduction on
 void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     void fn_8008BA80(void *, s32, s32, s32);
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
@@ -114,23 +117,16 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     extern f32 lbl_80369754;
     extern u8 gBattleHelpStrings[];
 
-    u8 *unit;
     u8 *por;
-    s32 stat;
-    s32 bonus;
     s32 currentHp;
     s32 maxHp;
     s32 value1;
     s32 value2;
     void *text;
 
-    unit = (u8 *)arg0;
-    stat = arg1;
-    bonus = arg2;
+    fn_8008BA80(arg0, 0, 0, 0);
 
-    fn_8008BA80(unit, 0, 0, 0);
-
-    por = *(u8 **)(unit + 0x190);
+    por = *(u8 **)((u8 *)arg0 + 0x190);
 
     fn_8007D044(
         0xB3,
@@ -144,9 +140,9 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
 
-    currentHp = unit[0x1A8];
+    currentHp = ((u8 *)arg0)[0x1A8];
 
-    maxHp = (s8)Unit_GetMaxHp(unit);
+    maxHp = (s8)Unit_GetMaxHp(arg0);
 
     text = Msg_Expand((char *)gBattleHelpStrings + 0x111);
 
@@ -161,13 +157,13 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
         (s8)currentHp,
         lbl_80369754,
         gZeroF,
-        (s8)maxHp
+        maxHp
     );
 
-    value1 = (s8)fn_800398B0(unit, (u8)stat);
-    value2 = (s8)fn_800398B0(unit, (u8)stat);
+    value1 = (s8)fn_800398B0(arg0, (u8)arg1);
+    value2 = (s8)fn_800398B0(arg0, (u8)arg1);
 
-    text = fn_80017570(stat);
+    text = fn_80017570(arg1);
 
     fn_8001003C(
         0x10,
@@ -177,13 +173,15 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
         0,
         (char *)gBattleHelpStrings + 0x152,
         text,
-        (s8)value2,
+        value2,
         lbl_80369754,
         gZeroF,
-        bonus + value1
+        arg2 + value1
     );
 }
-
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
+#pragma use_lmw_stmw off
 void UnitInfo_DrawInventoryPanel(void *arg0) {
     void fn_8008BA80(void *, s32, s32, u8);
     void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
@@ -629,7 +627,9 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
     Prim2D_EndPrim();
 }
 
-void Ui_OpenWeaponKindHelp(u8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4) {
+#pragma dont_inline on
+#pragma global_optimizer off
+void Ui_OpenWeaponKindHelp(u8 arg0, s32 parent, s8 kind2, s8 kind3, s8 kind4) {
     s32 fn_8005A310(void *, u8, u8);
     s32 sprintf(char *, const char *, ...);
     char *strcat(char *, const char *);
@@ -645,79 +645,29 @@ void Ui_OpenWeaponKindHelp(u8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4) {
     char part2[0x10];
     char part3[0x10];
     char part4[0x10];
-
-    s32 parent;
-    s8 kind2;
-    s8 kind3;
-    s8 kind4;
     u16 kind;
-
-    parent = arg1;
-    kind2 = arg2;
-    kind3 = arg3;
-    kind4 = arg4;
 
     text[0] = 0;
 
-    kind = (u16)fn_8005A310(
-        gUiIconDrawer,
-        (u8)arg0,
-        0
-    );
-
-    sprintf(
-        part1,
-        (char *)gBattleHelpStrings + 0x19B,
-        kind - 1
-    );
-
+    kind = (u16)fn_8005A310(gUiIconDrawer, (u8)arg0, 0);
+    sprintf(part1, (char *)gBattleHelpStrings + 0x19B, kind - 1);
     strcat(text, part1);
 
     if (kind2 >= 0) {
-        kind = (u16)fn_8005A310(
-            gUiIconDrawer,
-            (u8)kind2,
-            0
-        );
-
-        sprintf(
-            part2,
-            (char *)gBattleHelpStrings + 0x19B,
-            kind - 1
-        );
-
+        kind = (u16)fn_8005A310(gUiIconDrawer, (u8)kind2, 0);
+        sprintf(part2, (char *)gBattleHelpStrings + 0x19B, kind - 1);
         strcat(text, part2);
     }
 
     if (kind3 >= 0) {
-        kind = (u16)fn_8005A310(
-            gUiIconDrawer,
-            (u8)kind3,
-            0
-        );
-
-        sprintf(
-            part3,
-            (char *)gBattleHelpStrings + 0x19B,
-            kind - 1
-        );
-
+        kind = (u16)fn_8005A310(gUiIconDrawer, (u8)kind3, 0);
+        sprintf(part3, (char *)gBattleHelpStrings + 0x19B, kind - 1);
         strcat(text, part3);
     }
 
     if (kind4 >= 0) {
-        kind = (u16)fn_8005A310(
-            gUiIconDrawer,
-            (u8)kind4,
-            0
-        );
-
-        sprintf(
-            part4,
-            (char *)gBattleHelpStrings + 0x19B,
-            kind - 1
-        );
-
+        kind = (u16)fn_8005A310(gUiIconDrawer, (u8)kind4, 0);
+        sprintf(part4, (char *)gBattleHelpStrings + 0x19B, kind - 1);
         strcat(text, part4);
     }
 
@@ -730,7 +680,8 @@ void Ui_OpenWeaponKindHelp(u8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4) {
         1
     );
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
 /* Open a help popup naming which stat on a bonus entry is non-zero. */
 void StatBonus_ShowHelp(void *bonus, s32 parent) {
     s32 Msg_Expand(void *);
@@ -764,6 +715,7 @@ void StatBonus_ShowHelp(void *bonus, s32 parent) {
     Ui_OpenHelpPopup(Msg_Expand(msg), gBattleHelpStrings + 0x1AC, parent, 1);
 }
 
+#pragma use_lmw_stmw on
 void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(char *, s32);
@@ -789,7 +741,7 @@ void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x21F, Status_Test(arg2 + 0x1BC, 1)), 0, arg1, 0);
 }
-
+#pragma use_lmw_stmw reset
 void fn_8009149C(s32 arg0, s32 arg1) {
     extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
