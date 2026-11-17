@@ -185,6 +185,34 @@ static void PADDisable(s32 chan) {
     OSRestoreInterrupts(enabled);
 }
 
+void fn_80211DD4(s32 chan) {
+extern u8 Origin[];
+extern u32 PADSpec;
+extern u32 lbl_80366FA8;
+u32 SIGetType(s32);
+PADStatus *origin = (PADStatus *)(Origin + chan * 12);
+u32 bit = 0x80000000U >> chan;
+switch ((s32)(PADSpec & 0x700)) {
+case 0: case 0x500: case 0x600: case 0x700:
+origin->triggerLeft &= ~15; origin->triggerRight &= ~15;
+origin->analogA &= ~15; origin->analogB &= ~15;
+break;
+case 0x100:
+origin->substickX &= ~15; origin->substickY &= ~15;
+origin->analogA &= ~15; origin->analogB &= ~15;
+break;
+case 0x200:
+origin->substickX &= ~15; origin->substickY &= ~15;
+origin->triggerLeft &= ~15; origin->triggerRight &= ~15;
+break;
+case 0x300: case 0x400: break;
+}
+origin->stickX -= 128; origin->stickY -= 128;
+origin->substickX -= 128; origin->substickY -= 128;
+if ((lbl_80366FA8 & bit) && origin->stickX > 64 && (SIGetType(chan) & 0xFFFF0000) == 0x09000000)
+origin->stickX = 0;
+}
+
 void fn_80211F78(s32 arg0, s32 arg1) {
     extern s32 lbl_80366FA4;
     extern s32 lbl_80366FAC;
