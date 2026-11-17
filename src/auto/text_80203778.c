@@ -607,10 +607,9 @@ void __OSPSInit(void) {
 volatile u32 __PIRegs[64] : 0xCC006000;
 #pragma peephole off
 u8 fn_80204410(void) {
-    volatile u32 *di = (volatile u32 *)0xCC006000;
-    return (u8)di[9];
+    u32 *regs = (u32 *)__PIRegs;
+    return (u8)regs[9];
 }
-#pragma peephole off
 void OSRegisterVersion(s32 arg0) {
     void OSReport(void *, ...);
     extern u32 lbl_80366F24;
