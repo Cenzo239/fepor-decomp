@@ -2504,15 +2504,15 @@ void fn_800B4080(void) {
     unsigned long off;
     u8 *sys;
     long i;
-    register u8 *entry;
+    u8 *entry;
     u8 *p;
     unsigned long result;
 
     fn_800B22D8();
     i = 0;
     sys = gSoundSys;
-    entry = *(u8 **)(sys + 0xF4);
     off = i;
+    entry = *(u8 **)(sys + 0xF4);
     while (i < 0x28) {
         if (*(u16 *)entry != 0) {
             entry[9] = (u8)(entry[9] + 1);
@@ -2600,7 +2600,7 @@ void DCInvalidateRange(void *,u32); void fn_8005E0F0(void); void fn_80208780(voi
 extern s32 lbl_8036780C; extern u8 lbl_80367810; extern u8 lbl_80313020[];
 u8 sp8[0x1C]; s32 dest; s32 size; u8 *base;
 if(lbl_8036780C!=0) {
-size=lbl_8036780C; base=(u8*)fn_802142B0()+0x500; lbl_80367810=1; dest=0x81200000-size;
+size=lbl_8036780C; base=(u8*)fn_802142B0()+0x500; dest=0x81200000u-(u32)size; lbl_80367810=1;
 fn_8005E0F0(); fn_8020A824(lbl_80313020); fn_80215EF8(); DCInvalidateRange((void*)dest,size);
 ARQPostRequest(sp8,0,1,0,(s32)base,(void*)dest,size,fn_800B4794);
 while(lbl_80367810!=0) {} fn_80208780((void*)dest,0x81200000);
@@ -4680,50 +4680,50 @@ s32 fn_800B850C(s32 arg0, s8 arg1, s16 arg2) {
 }
 
 s32 fn_800B8534(void) {
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     u8 *p;
-    u8 *q;
+    u16 *q;
     s32 i;
 
-    p = lbl_802EFDB8;
+    p = gBattleHitTbl;
     p[0x61] = 0;
-    q = p;
+    q = (u16 *)p;
     p[0x60] = 0;
     for (i = 0; i < 2; i++) {
         p[0] = 0;
-        *(u16 *)(q + 0x20) = 0;
+        q[0x10] = 0;
         p[1] = 0;
-        *(u16 *)(q + 0x22) = 0;
+        q[0x11] = 0;
         p[2] = 0;
-        *(u16 *)(q + 0x24) = 0;
+        q[0x12] = 0;
         p[3] = 0;
-        *(u16 *)(q + 0x26) = 0;
+        q[0x13] = 0;
         p[4] = 0;
-        *(u16 *)(q + 0x28) = 0;
+        q[0x14] = 0;
         p[5] = 0;
-        *(u16 *)(q + 0x2A) = 0;
+        q[0x15] = 0;
         p[6] = 0;
-        *(u16 *)(q + 0x2C) = 0;
+        q[0x16] = 0;
         p[7] = 0;
-        *(u16 *)(q + 0x2E) = 0;
+        q[0x17] = 0;
         p[8] = 0;
-        *(u16 *)(q + 0x30) = 0;
+        q[0x18] = 0;
         p[9] = 0;
-        *(u16 *)(q + 0x32) = 0;
+        q[0x19] = 0;
         p[10] = 0;
-        *(u16 *)(q + 0x34) = 0;
+        q[0x1a] = 0;
         p[11] = 0;
-        *(u16 *)(q + 0x36) = 0;
+        q[0x1b] = 0;
         p[12] = 0;
-        *(u16 *)(q + 0x38) = 0;
+        q[0x1c] = 0;
         p[13] = 0;
-        *(u16 *)(q + 0x3A) = 0;
+        q[0x1d] = 0;
         p[14] = 0;
-        *(u16 *)(q + 0x3C) = 0;
+        q[0x1e] = 0;
         p[15] = 0;
         p += 0x10;
-        *(u16 *)(q + 0x3E) = 0;
-        q += 0x20;
+        q[0x1f] = 0;
+        q += 0x10;
     }
     return 1;
 }
@@ -4760,7 +4760,7 @@ case 'Z': flags|=0x10; break;
 case 'L': flags|=0x40; break;
 case 'R': flags|=0x20; break;
 case 'S': flags|=0x1000; break;
-case '*': flags=-1; break;
+case '*': flags|=-1; break;
 }
 p++;
 }
