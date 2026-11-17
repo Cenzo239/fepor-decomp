@@ -154,44 +154,32 @@ s32 fn_80225F64(void *event) {
     void fn_802287B0(void *);
     void fn_802287A8(void *);
     void fn_80003488(void *, void *, s32);
-
-    u8 *queue;
     s32 result;
-    s32 index;
+    TRKEventQueue *queue;
     s32 offset;
     u32 id;
+    u8 *dst;
 
     result = 0;
-
     fn_802287B0(&lbl_8033B048);
-
-    queue = (u8 *)&lbl_8033B048;
-
-    if (*(s32 *)(queue + 4) == 2) {
+    queue = &lbl_8033B048;
+    if (queue->unk4 == 2) {
         result = 0x100;
     } else {
-        index = (*(s32 *)(queue + 8) +
-                 *(s32 *)(queue + 4)) % 2;
-
-        offset = index * 0xC;
-
-        fn_80003488(queue + 0xC + offset, event, 0xC);
-
-        id = *(u32 *)(queue + 0x24);
-        *(u32 *)(queue + 0x10 + offset) = id;
-
-        id++;
-        *(u32 *)(queue + 0x24) = id;
-
-        if (id < 0x100) {
-            *(u32 *)(queue + 0x24) = 0x100;
+        offset = ((queue->unk8 + queue->unk4) % 2) * 0xC;
+        dst = (u8 *)queue + offset;
+        dst = (u8 *)((s32)dst + 0xC);
+        fn_80003488(dst, event, 0xC);
+        id = *(u32 *)((u8 *)&lbl_8033B048 + 0x24);
+        *(u32 *)((u8 *)&lbl_8033B048 + offset + 0x10) = id;
+        id = *(u32 *)((u8 *)&lbl_8033B048 + 0x24) + 1;
+        *(u32 *)((u8 *)&lbl_8033B048 + 0x24) = id;
+        if (id < 0x100U) {
+            *(u32 *)((u8 *)&lbl_8033B048 + 0x24) = 0x100;
         }
-
-        *(s32 *)(queue + 4) += 1;
+        queue->unk4 += 1;
     }
-
     fn_802287A8(&lbl_8033B048);
-
     return result;
 }
 
@@ -3006,53 +2994,66 @@ void fn_8022C08C(void) {
 
 }
 
-s32 __va_arg(u8 *arg0, s32 arg1) {
-    u8 *value;
-    s32 pad;
-    u8 *counter;
-    s32 index;
-    
-    s32 limit;
-    s32 size;
-    s32 count;
-    s32 offset;
-    s32 stride;
-    u32 result;
-    index = *(s8 *)arg0;
-    counter = arg0;
-    limit = 8;
-    size = 4;
-    count = 1;
-    pad = 0;
-    offset = 0;
-    stride = 4;
-    if (arg1 == 3) {
-        index = *(s8 *)(arg0+1);
-        counter = arg0+1;
-        size = 8;
-        offset = 0x20;
-        stride = 8;
+s32 __va_arg(u8 *arg0, s32 arg1)
+{
+  u8 *value;
+  s32 pad;
+  u8 *counter;
+  s32 index;
+  s32 limit;
+  s32 size;
+  s32 count;
+  u8 *new_var;
+  s32 offset;
+  s32 stride;
+  u32 result;
+  index = *((s8 *) arg0);
+  counter = arg0;
+  limit = 8;
+  size = 4;
+  count = 1;
+  pad = 0;
+  offset = 0;
+  stride = 4;
+  if (arg1 == 3)
+  {
+    index = *((s8 *) (arg0 + 1));
+    counter = arg0 + 1;
+    size = 8;
+    offset = 0x20;
+    stride = 8;
+  }
+  if (arg1 == 2)
+  {
+    size = 8;
+    limit = 7;
+    if (index & 1)
+    {
+      pad = 1;
     }
-    if (arg1 == 2) {
-        size = 8;
-        limit = 7;
-        if (index & 1) pad = 1;
-        count = 2;
-    }
-    if (index < limit) {
-        index += pad;
-        result = *(u32 *)(arg0+8);
-        *counter = index + count;
-        value = (u8 *)result + offset + index*stride;
-    } else {
-        *counter = 8;
-        value = (u8 *)~(size-1);
-        result = size + *(u32 *)(arg0+4);
-        value = (u8 *)((u32)value & (result - 1));
-        *(u32 *)(arg0+4) = (u32)value + size;
-    }
-    if (arg1 == 0) value = *(u8 **)value;
-    return (s32)value;
+    count = 2;
+  }
+  if (index < limit)
+  {
+    index += pad;
+    result = *((u32 *) (arg0 + 8));
+    *counter = index + count;
+    value = (((u8 *) result) + offset) + (index * stride);
+  }
+  else
+  {
+    *counter = 8;
+    value = (u8 *) (~(size - 1));
+    result = size + (*((u32 *) (arg0 + 4)));
+    new_var = (u8 *) (((u32) value) & (result - 1));
+    ;
+    *((u32 *) (arg0 + 4)) = ((u32) new_var) + size;
+  }
+  if (arg1 == 0)
+  {
+    value = *((u8 **) value);
+  }
+  return (s32) value;
 }
 
 void __destroy_global_chain(void)
