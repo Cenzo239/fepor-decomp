@@ -2668,32 +2668,41 @@ u16 Ui_DrawMsgPanelBg(s32 x, s32 y) {
     return sp.w;
 }
 
-void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
-    M2C_UNK Prim2D_SetText(s32);
-    M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK Prim2D_SetPos(f32, f32);
-    M2C_UNK Prim2D_SetColorByte(u8);
-    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
-    u16 GXGetTexObjWidth(M2C_UNK *);
-    u16 GXGetTexObjHeight(M2C_UNK *);
+#pragma global_optimizer off
+void fn_8008B2B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    void Prim2D_Begin(void);
+    void Prim2D_EndPrim(void);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(void *, s32);
+    void Prim2D_SetColorByte(u8);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetText(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
     extern s32 gUiAtlas;
     extern f32 lbl_803696E0;
+    extern f64 lbl_803696E8;
+    extern f64 lbl_803696F0;
     extern f32 lbl_80369704;
     extern f32 lbl_80369708;
-    u16 sp2A;
-    u16 sp28;
-    M2C_UNK sp8;
+    struct { u8 buf[0x20]; u16 w; u16 h; } sp;
 
-    Ui_LoadAtlasTex(gUiAtlas, &sp8, 0x2A);
-    sp28 = GXGetTexObjWidth(&sp8);
-    sp2A = GXGetTexObjHeight(&sp8);
+    Ui_LoadAtlasTex(gUiAtlas, sp.buf, 0x2A);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_803696E0, lbl_803696E0, (f32) (0x14 - arg3), lbl_80369704);
+    Prim2D_SetTransform(lbl_803696E0, lbl_803696E0, (f32)(0x14 - arg3), lbl_80369704);
     Prim2D_SetTex(NULL, 0x13);
-    Prim2D_SetColorByte(arg2);
+    Prim2D_SetColorByte((u8)arg2);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32) (arg0 + 0x18), (f32) (arg1 - 1));
+    Prim2D_SetPos((f32)(arg0 + 0x18), (f32)(arg1 - 1));
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
     Prim2D_SetText(arg4);
     Prim2D_EndPrim();
@@ -2701,17 +2710,16 @@ void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    Prim2D_SetTex(&sp8, 0x10);
+    Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect(sp28, (f32) (arg0 - 8), (f32) arg1, (f32) sp28, (f32) sp2A);
+    Prim2D_SetRect((f32)(arg0 - 8), (f32)arg1, (f32)sp.w, (f32)sp.h);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer reset
 void fn_8008B464(void *self, s32 x, s32 y) {
     void *fn_8003A114(void *);
     void *Face_Create(void *, s32);
@@ -2865,6 +2873,7 @@ void fn_8008BA50(s32 unused, s32 arg1) {
     GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
 }
 
+#pragma optimization_level 3
 void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
@@ -2878,8 +2887,8 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     extern f32 lbl_80369708;
     struct { u8 buf[0x20]; u16 w; u16 h; } sp;
     void *text;
+    s32 atlas = gUiAtlas;
     u8 *texture = sp.buf;
-    register s32 atlas = gUiAtlas;
     u16 tile = 0x18;
     if (arg3) tile = 0x17;
     Ui_LoadAtlasTex(atlas, texture, tile);
@@ -2903,7 +2912,7 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
 }
-
+#pragma optimization_level reset
 void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     M2C_UNK fn_8007D004(s32, u8, f32, f32, f32, f32);
     s32 var_r5;
