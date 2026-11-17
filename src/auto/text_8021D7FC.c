@@ -1272,48 +1272,54 @@ s32 GXSetVtxAttrFmtv(s32 arg0)
     return arg0;
 }
 
+#pragma global_optimizer off
 void fn_802200CC(void)
 {
-    extern void *__GXData;
-
+    extern u8 *__GXData;
     u8 *gx;
-    volatile u8 *fifo8;
-    volatile u32 *fifo32;
-    u32 offset;
     u32 index;
+    u32 offset;
     u32 flags;
+    u32 a;
+    u32 b;
+    u32 c;
+    u32 t;
+    u32 v;
 
-    gx = (u8 *)__GXData;
-    fifo8 = (volatile u8 *)0xCC008000;
-    fifo32 = (volatile u32 *)0xCC008000;
-
-    offset = 0;
+    gx = __GXData;
     index = 0;
+    offset = 0;
     flags = gx[0x5AB];
 
-    if (flags & 1) {
+    if ((flags & 1) != 0) {
         do {
-            *fifo8 = 8;
-            *fifo8 = index | 0x70;
-            *fifo32 = *(u32 *)(gx + offset + 0x1C);
-
-            *fifo8 = 8;
-            *fifo8 = index | 0x80;
-            *fifo32 = *(u32 *)(gx + offset + 0x3C);
-
-            *fifo8 = 8;
-            *fifo8 = index | 0x90;
-            *fifo32 = *(u32 *)(gx + offset + 0x5C);
-
+            *(u8 *)0xCC008000 = 8;
+            t = index | 0x70;
+            a = offset + 0x1C;
+            *(u8 *)0xCC008000 = t;
+            t = index | 0x80;
+            b = offset + 0x3C;
+            v = *(u32 *)((u32)gx + a);
+            c = index | 0x90;
+            a = offset + 0x5C;
+            *(u32 *)0xCC008000 = v;
+            *(u8 *)0xCC008000 = 8;
+            *(u8 *)0xCC008000 = t;
+            v = *(u32 *)((u32)gx + b);
+            *(u32 *)0xCC008000 = v;
+            *(u8 *)0xCC008000 = 8;
+            *(u8 *)0xCC008000 = c;
+            v = *(u32 *)((u32)gx + a);
+            *(u32 *)0xCC008000 = v;
             flags >>= 1;
             offset += 4;
-            index++;
+            index += 1;
         } while (flags != 0);
     }
 
-    ((u8 *)__GXData)[0x5AB] = 0;
+    __GXData[0x5AB] = 0;
 }
-
+#pragma global_optimizer reset
 void fn_80220154(s32 arg0, s32 arg1, u8 arg2) {
     s32 temp_r3;
     s32 var_r3;
@@ -1365,37 +1371,28 @@ void GXSetNumChans(u32 arg0) {
 
 void GXSetMisc(s32 arg0, u32 arg1) {
     extern u8 *__GXData;
-
     u8 *gx;
-    u16 value;
 
     switch (arg0) {
     case 0:
-        return;
-
+        break;
     case 1:
         gx = __GXData;
-
         *(u16 *)(gx + 4) = (u16)arg1;
-
-        value = *(u16 *)(gx + 4);
-        *(u16 *)(gx + 0) = (value == 0);
+        *(u16 *)(gx + 0) = !*(u16 *)(gx + 4);
         *(u16 *)(gx + 2) = 1;
-
         if (*(u16 *)(gx + 4) != 0) {
             *(u32 *)(gx + 0x5AC) |= 8;
         }
-        return;
-
+        break;
     case 2:
         gx = __GXData;
         gx[0x5A9] = (arg1 != 0);
-        return;
-
+        break;
     case 3:
         gx = __GXData;
         gx[0x5AA] = (arg1 != 0);
-        return;
+        break;
     }
 }
 
@@ -1426,6 +1423,46 @@ void fn_802204F8(void)
 }
 
 void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_80203854() & 1) { } PPCMtwpar(0x0C008000); }
+
+void fn_80220588(void) {
+extern u16 *const __GXData;
+extern void *__memReg;
+s64 OSGetTime(void);
+void *fn_8021F4D4(void);
+volatile u32 *pi=(volatile u32 *)0xCC003000;
+u32 oldcount;
+u32 previous,current;
+s64 start;
+if(*((u8 *)__GXData+0x5AA)!=0 && (u32)fn_8021F4D4()!=0) {
+{
+u32 lo,hi,old;
+volatile u16 *high=(volatile u16 *)__memReg+0x27;
+volatile u16 *low=(volatile u16 *)__memReg+0x28;
+hi=*high;
+do {old=hi; hi=*high; lo=*low;} while(hi!=old);
+previous=(hi<<16)|lo;
+}
+do {
+start=OSGetTime();
+while(OSGetTime()-start<=8) {}
+{
+u32 hi,old,lo;
+volatile u16 *high=(volatile u16 *)__memReg+0x27;
+volatile u16 *low=(volatile u16 *)__memReg+0x28;
+hi=*high;
+do {old=hi; hi=*high; lo=*low;} while(hi!=old);
+current=(hi<<16)|lo;
+}
+oldcount=previous;
+previous=current;
+} while(current!=oldcount);
+}
+pi+=6;
+*pi=1;
+start=OSGetTime(); while(OSGetTime()-start<=50) {}
+*(volatile u32 *)0xCC003018=0;
+start=OSGetTime(); while(OSGetTime()-start<=5) {}
+}
 
 void fn_802206F4(void) {
     OSGetTime();
@@ -1776,33 +1813,38 @@ void GXBegin(s32 primitive, s32 format, s32 count) {
     *(volatile u16 *)0xCC008000 = (u16)count;
 }
 
+#pragma global_optimizer off
 void fn_80220EBC(void)
 {
-    extern void *__GXData;
-
+    extern u8 *__GXData;
     u8 *gx;
-    u32 count;
-    u32 i;
     u16 a;
     u16 b;
+    u32 size;
+    u32 count;
+    u32 zero;
 
-    gx = (u8 *)__GXData;
-
+    gx = __GXData;
     a = *(u16 *)(gx + 4);
+    zero = 0;
     b = *(u16 *)(gx + 6);
+    size = a * b;
 
-    *(volatile u8 *)0xCC008000 = 0x98;
-    *(volatile u16 *)0xCC008000 = a;
+    *(u8 *)0xCC008000 = 0x98;
+    *(u16 *)0xCC008000 = a;
 
-    count = (a * b + 3) >> 2;
-
-    for (i = 0; i < count; i++) {
-        *(volatile u32 *)0xCC008000 = 0;
+    count = size + 3;
+    if (size) {
+        count >>= 2;
+        while (count) {
+            *(u32 *)0xCC008000 = zero;
+            count--;
+        }
     }
 
-    *(u16 *)((u8 *)__GXData + 2) = 1;
+    *(u16 *)(__GXData + 2) = 1;
 }
-
+#pragma global_optimizer reset
 void fn_80220F44(u32 arg0, u32 arg1) {
 extern u32 __GXData;
 u8 *gx=(u8*)__GXData;
