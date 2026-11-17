@@ -1882,7 +1882,7 @@ void TRKPostInterruptEvent(void) {
     case 0x700:
     case 0xD00:
         fn_8022A098(&instruction, *(u32 *)(gTRKCPUState + 0x80));
-        if (instruction == 0xFE000000U) {
+        if (instruction == 0xFE00000U) {
             type = 5;
         } else {
             type = 3;
