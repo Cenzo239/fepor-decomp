@@ -1782,60 +1782,64 @@ s32 TRKTargetStopped(void) {
 }
 
 s32 TRKTargetSupportRequest(void) {
-    s32 temp_r27;
-    s32 var_r30;
-    s32 spC;
-    s32 sp8;
-    s32 temp_r28;
-    s32 temp_r7;
-    u8* r4_temp;
+#pragma inline_depth(0)
+    s32 fn_8022828C(u32, u8, u32, s32 *);
+    s32 fn_80228094(s32, s32 *, u8, s32 *, s32);
+    s32 fn_802281A4(s32, s32 *);
+    s32 fn_80228588(u32, u8 *, u32 *, s32 *, s32, s32);
+    void fn_80228858(u32, s32);
+    void fn_80225F4C(void *, s32);
+    void fn_80225F64(void *);
 
-    temp_r27 = *(u16*) (gTRKCPUState + 0x0C); // offset 0xC
-    if ((temp_r27 != 0xD1) && (temp_r27 != 0xD0) && (temp_r27 != 0xD2) && (temp_r27 != 0xD3) && (temp_r27 != 0xD4)) {
-        fn_80225F4C(&spC, 4);
-        fn_80225F64(&spC);
+    s32 *ptr;
+    s32 err;
+    s32 status;
+    s32 value;
+    s32 command;
+    u8 event[0xC];
+
+    command = *(s32 *)(gTRKCPUState + 0xC);
+    if (command != 0xD1 && command != 0xD0 && command != 0xD2 && command != 0xD3 && command != 0xD4) {
+        fn_80225F4C(event, 4);
+        fn_80225F64(event);
         return 0;
     }
 
-    switch (temp_r27) {
-    case 0xD2:
-        var_r30 = fn_8022828C(*(u16*) (gTRKCPUState + 0x10), (u8) *(u16*) (gTRKCPUState + 0x14), *(u16*) (gTRKCPUState + 0x18), &spC);
-        if ((spC == 0) && (var_r30 != 0)) {
-            spC = 1;
+    if (command == 0xD2) {
+        err = fn_8022828C(*(u32 *)(gTRKCPUState + 0x10), (u8)*(u32 *)(gTRKCPUState + 0x14), *(u32 *)(gTRKCPUState + 0x18), &status);
+        if (status == 0 && err != 0) {
+            status = 1;
         }
-        *(u16*) (gTRKCPUState + 0x0C) = spC;
-        break;
-    case 0xD3:
-        var_r30 = fn_802281A4(*(u16*) (gTRKCPUState + 0x10), &spC);
-        if ((spC == 0) && (var_r30 != 0)) {
-            spC = 1;
+        *(s32 *)(gTRKCPUState + 0xC) = status;
+    } else if (command == 0xD3) {
+        err = fn_802281A4(*(s32 *)(gTRKCPUState + 0x10), &status);
+        if (status == 0 && err != 0) {
+            status = 1;
         }
-        *(u16*) (gTRKCPUState + 0x0C) = spC;
-        break;
-    case 0xD4:
-        temp_r7 = *(u32*) (gTRKCPUState + 0x14);
-        sp8 = temp_r7;
-        var_r30 = fn_80228094(*(u16*) (gTRKCPUState + 0x10), &sp8, (u8) *(u16*) (gTRKCPUState + 0x18), &spC, temp_r7);
-        if ((spC == 0) && (var_r30 != 0)) {
-            spC = 1;
+        *(s32 *)(gTRKCPUState + 0xC) = status;
+    } else if (command == 0xD4) {
+        value = **(s32 **)(gTRKCPUState + 0x14);
+        err = fn_80228094(*(s32 *)(gTRKCPUState + 0x10), &value, (u8)*(u32 *)(gTRKCPUState + 0x18), &status, value);
+        if (status == 0 && err != 0) {
+            status = 1;
         }
-        *(u16*) (gTRKCPUState + 0x0C) = spC;
-        *(u32*) (gTRKCPUState + 0x14) = sp8;
-        break;
-            default:
-            temp_r28 = *(s32 *)(gTRKCPUState + 0x14);
-            var_r30 = fn_80228588(*(u32 *)(gTRKCPUState + 0x10), (u8 *)*(u32 *)(gTRKCPUState + 0x18), (u32 *)temp_r28, &spC, 1, temp_r27 == 0xD1);
-            if ((spC == 0) && (var_r30 != 0)) {
-                spC = 1;
-            }
-            *(u32 *)(gTRKCPUState + 0x0C) = spC;
-            if (temp_r27 == 0xD1) {
-                fn_80228858(*(u32 *)(gTRKCPUState + 0x18), *(u32 *)temp_r28);
-            }
-        break;
+        *(s32 *)(gTRKCPUState + 0xC) = status;
+        **(s32 **)(gTRKCPUState + 0x14) = value;
+    } else {
+        ptr = *(s32 **)(gTRKCPUState + 0x14);
+        err = fn_80228588(*(u32 *)(gTRKCPUState + 0x10), (u8 *)*(u32 *)(gTRKCPUState + 0x18), (u32 *)ptr, &status, 1, command == 0xD1);
+        if (status == 0 && err != 0) {
+            status = 1;
+        }
+        *(s32 *)(gTRKCPUState + 0xC) = status;
+        if (command == 0xD1) {
+            fn_80228858(*(u32 *)(gTRKCPUState + 0x18), *ptr);
+        }
     }
-    *(u16*) (gTRKCPUState + 0x80) = *(u16*) (gTRKCPUState + 0x80) + 4;
-    return var_r30;
+
+    *(u32 *)(gTRKCPUState + 0x80) = *(u32 *)(gTRKCPUState + 0x80) + 4;
+    return err;
+#pragma inline_depth reset
 }
 
 u32 fn_80229030(void) {
