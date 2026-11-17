@@ -11824,7 +11824,6 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-#pragma scheduling off
 s32 NameGrid_GetCharAtCursor(void *self) {
     s32 fn_801CD480(void *, s16, s16);
     s16 x;
@@ -11833,7 +11832,6 @@ s32 NameGrid_GetCharAtCursor(void *self) {
     y = *(s16 *)((u8 *)self + 0x4A);
     return fn_801CD480(*(void **)((u8 *)self + 0x3C), x, y);
 }
-#pragma scheduling reset
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
