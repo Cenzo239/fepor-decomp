@@ -295,8 +295,14 @@ s32 fn_8014CA54(s32 arg0, s32 arg1) {
     return (arg1 * 0xC) + arg0 + 0x20;
 }
 
-void fn_8014CA68(u8 *arg0, s32 arg1) { void Msg_Expand(u8 *, s32); s32 position = arg1 * 12 + 32; u8 *entry = arg0 + position; arg1 = position; Msg_Expand(entry, arg1 - 32); }
-
+#pragma global_optimizer off
+void fn_8014CA68(u8 *arg0,s32 arg1) {
+void Msg_Expand(void *);
+s32 base=(s32)arg0;
+arg0=(u8*)(arg1*12+32);
+Msg_Expand((void*)(base+(s32)arg0));
+}
+#pragma global_optimizer reset
 void fn_8014CA98(s32 arg0, s32 arg1, u32 arg2) {
  M2C_UNK strcpy(s32, u32);
  if (arg2) {
