@@ -3748,20 +3748,22 @@ void fn_800CA91C(void *arg0)
 }
 
 typedef struct ActionQueueFields { u8 pad[0x234]; s32 first[4]; s32 second[4]; } ActionQueueFields;
+typedef struct ActionQueueEntry { u8 pad[0x234]; s32 first; u8 pad238[12]; s32 second; } ActionQueueEntry;
+#pragma dont_inline on
 void fn_800CA990(void *arg0) {
 void fn_80111AE8(void *,void *,s32);
 void fn_8011386C(void *);
 void fn_80232138(char *,...);
 void fn_801C6CBC(u32 *,s32,s32,s32);
-s32 Unit_GetActor(void *);
-s32 fn_801C6E60(s32);
+void *Unit_GetActor(void *);
+s32 fn_801C6E60(void *);
 void *fn_80116604(void *);
 extern u8 *gGame;
 extern s32 lbl_80367884;
 extern char lbl_802704F8[];
 u8 *self=(u8 *)arg0;
-u8 update=0;
 u8 first,second;
+u8 update=0;
 s32 index;
 s32 offset;
 void *other;
@@ -3770,13 +3772,13 @@ u32 color;
 switch(*(s32 *)(self+0x268)) {
 case 0: first=1;second=1;break;
 case 1: first=1;second=0;break;
-case 2: first=0;second=1;break;
+case 2: second=1;first=0;break;
 case 3: first=1;second=0;break;
 default:first=1;second=1;break;
 }
 index=*(s32 *)(self+0x260);
 if(first) {
-index=*(s32 *)(self+0x234+index*4);
+index=((ActionQueueFields *)(self+index*4))->first[0];
 if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
 fn_80111AE8(*(void **)(self+0x9c),*(u8 **)(self+0x1c4)+index*12,0);
 ++*(s32 *)(self+0x260);
@@ -3786,7 +3788,7 @@ if(*(s32 *)(self+0x268)!=2) { self[0x1a5]=1; update=1; }
 }
 index=*(s32 *)(self+0x264);
 if(second && index>=0) {
-index=*(s32 *)(self+0x244+index*4);
+index=((ActionQueueFields *)(self+index*4))->second[0];
 if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
 offset=index*12;
 fn_80232138(lbl_802704F8+0x18f,String_CStr(*(u8 **)(self+0x1c4)+offset));
@@ -3822,8 +3824,7 @@ if(other && Unit_GetActor(other)) fn_801C6E60(Unit_GetActor(other));
 }
 }
 }
-
-#pragma global_optimizer off
+#pragma dont_inline reset
 void fn_800CAC7C(void *arg0) {
     void fn_800CA91C(void *);
     void fn_800CA18C(void *, void *, s32, void *);
