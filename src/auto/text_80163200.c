@@ -11602,17 +11602,58 @@ s32 fn_801795D0(void *arg0) {
     return 0;
 }
 
+s32 fn_801796CC(void *menu, void *parent, void *item) {
+void Process_DetachChild(void *);
+void Process_AdvanceStep(void *);
+void *Process_CreateChild(void *,void *);
+extern u8 gUiMsgPopupProc[];
+void *popup;
+f32 x;
+f32 y;
+if(M2C_FIELD(item,u8 *,0x39)==2) {
+x=M2C_FIELD(parent,s16 *,0x30)+M2C_FIELD(item,s16 *,0x30);
+y=M2C_FIELD(parent,s16 *,0x32)+M2C_FIELD(item,s16 *,0x32);
+switch(M2C_FIELD(menu,s8 *,4)) {
+case 0:
+popup=Process_CreateChild(gUiMsgPopupProc,parent);
+M2C_FIELD(popup,f32 *,0x30)=x;
+M2C_FIELD(popup,f32 *,0x34)=y;
+M2C_FIELD(popup,void **,0x54)=(u8 *)gUiMsgStrings+0x57B;
+break;
+case 1:
+popup=Process_CreateChild(gUiMsgPopupProc,parent);
+M2C_FIELD(popup,f32 *,0x30)=x;
+M2C_FIELD(popup,f32 *,0x34)=y;
+M2C_FIELD(popup,void **,0x54)=(u8 *)gUiMsgStrings+0x224;
+break;
+}
+return 0;
+}
+((u8 *)gUiContext)[8]=0x81;
+Process_DetachChild(parent);
+Process_AdvanceStep(parent);
+return 4;
+}
+
 void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) {
     void *Heap_Alloc(s32);
-    void *fn_8017992C(void *, s16, s16, s16);
+    void *fn_8017992C(void *, s32, s32, s32);
     void fn_8013F1A0(void *, void *);
-    void *fn_80179BC8(void *, s16, s16, s16, s16, s16);
+    void *fn_80179BC8(void *, s16, s16, s32, s32, s16);
     extern void *lbl_80292434[];
     void *child;
+    void *panel;
     s32 half;
     s32 x;
     s32 y;
-    void *panel;
+    s16 p12;
+    s16 p14;
+    s16 pa;
+    s16 pe;
+    s16 pc;
+    s16 pt;
+    s32 w;
+    s32 h;
 
     fn_80179BC8(arg0, arg1, arg2, arg3, arg4, arg5);
     *(void **)arg0 = lbl_80292434;
@@ -11627,15 +11668,21 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     *(void **)((u8 *)arg0 + 0x128) = child;
     half = (arg3 - 0x108) >> 1;
     panel = *(void **)((u8 *)arg0 + 0x128);
-    x = half + -*(s16 *)((u8 *)arg0 + 0x12);
-    *(s16 *)((u8 *)panel + 0xe) =
-        (s16)(x + (s16)(*(s16 *)((u8 *)panel + 0xe) - *(s16 *)((u8 *)panel + 0xa)));
-    *(s16 *)((u8 *)panel + 0xa) = x;
-    y = -(*(s16 *)((u8 *)arg0 + 0x14) +
-         (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
+    p12 = *(s16 *)((u8 *)arg0 + 0x12);
+    pa = *(s16 *)((u8 *)panel + 0xa);
+    pe = *(s16 *)((u8 *)panel + 0xe);
+    x = half + -p12;
+    p14 = *(s16 *)((u8 *)arg0 + 0x14);
+    w = pe - pa;
+    pc = *(s16 *)((u8 *)panel + 0xc);
+    pt = *(s16 *)((u8 *)panel + 0x10);
+    *(s16 *)((u8 *)panel + 0xe) = (s16)((s16)x + (s16)w);
+    h = pt - pc;
+    *(s16 *)((u8 *)panel + 0xa) = (s16)x;
+    y = -(p14 + (s16)h);
     *(s16 *)((u8 *)panel + 0x10) =
-        (s16)(y + (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
-    *(s16 *)((u8 *)panel + 0xc) = y;
+        (s16)((s16)y + (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
+    *(s16 *)((u8 *)panel + 0xc) = (s16)y;
     fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x128));
     *(s16 *)((u8 *)arg0 + 0x88) = 0x14;
     *(s16 *)((u8 *)arg0 + 0x8a) = 0;
