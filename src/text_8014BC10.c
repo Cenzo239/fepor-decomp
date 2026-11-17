@@ -224,6 +224,29 @@ u8 fn_8014BC10(void *arg0) {
     return (u8)(0x45 - score / 3);
 }
 
+s32 fn_8014BEE0(u8 *self) {
+void Allegiance_FillMask(s32,u8*);
+u8 mask[4];
+s32 total,i,grade;
+u8 *unit,*table;
+if(self[0x10]<0x5a)return 0x2d;
+total=0;
+Allegiance_FillMask(4,mask);
+for(i=1;i<160;i++){
+u8 id=(u8)i;
+unit=id?gUnits+(id-1)*0x280:0;
+if(*(void**)(unit+0x188)&&mask[(*(u8**)(unit+0x190))[8]])total+=*(u16*)(unit+0x22c);
+}
+table=fn_80019F04(self[0x10]);
+grade=0x45;
+if(total>=table[0x5f]){grade=0x44;
+if(total>=table[0x5e]){grade=0x43;
+if(total>=table[0x5d]){grade=0x42;
+if(total>=table[0x5c])grade=0x41;
+}}}
+return grade;
+}
+
 unsigned int fn_8014C078(void *arg0) {
     void *fn_80019F04(u8);
     extern u8 gUnitLists[];
