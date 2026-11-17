@@ -1,6 +1,11 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct Menu349 {
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void prepare()=0;
+virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0;
+virtual void draw(s16,s16,s16,s16,u8)=0;
+};
 struct Menu42 {
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0;
 virtual void draw(s32)=0;
