@@ -43,6 +43,7 @@ extern u8 lbl_80289EB8[16];
 extern f32 lbl_803697E0;
 extern f32 lbl_803697E4;
 
+#pragma use_lmw_stmw on
 void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     typedef struct { u8 r, g, b, a; } Color;
     typedef struct { f32 v[9]; } Arr9;
