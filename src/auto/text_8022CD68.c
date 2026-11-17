@@ -656,52 +656,50 @@ f64 fn_8022D5E0(void *arg0)
     return 0.0;
 }
 
-void fn_8022E660(void* arg0, void* arg1, int arg2) {
-    void** v1;
-    int v2;
-    int v5;
-    int v6 = 0x40;
-    int v7 = 0x20;
-    int i;
-
-    if (arg2 >= 0) {
-        v2 = arg2 * 8;
-    } else {
-        v2 = arg2 * -8;
+void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x) {
+    void fn_8022E804(void *, f64);
+    RuntimeDecimal *d = arg1;
+    s16 requested = *(s16 *)((u8 *)format + 2);
+    s32 precision;
+    s32 i;
+    fn_8022E804(d, x);
+    if (d->digits[0] <= 9) {
+        if ((s16)requested > 36) requested = 36;
+        precision = (s16)requested;
+        if (precision > 0 && precision < d->length) {
+            s32 round;
+            u8 *p;
+            if (d->digits[precision] > 5) round = 1;
+            else if (d->digits[precision] < 5) round = -1;
+            else {
+                u8 *end = d->digits + d->length;
+                p = d->digits + precision + 1;
+                while (p < end) {
+                    if (*p != 0) { round = 1; goto rounded; }
+                    ++p;
+                }
+                if (d->digits[precision-1] & 1) round = 1;
+                else round = -1;
+            }
+rounded:
+            d->length = precision;
+            if (round >= 0) {
+                p = d->digits + (precision - 1);
+                for (;;) {
+                    if (*p < 9) { ++*p; break; }
+                    if (p == d->digits) {
+                        *p = 1;
+                        ++d->exponent;
+                        break;
+                    }
+                    *p-- = 0;
+                }
+            }
+        }
+        while (d->length < precision) d->digits[d->length++] = 0;
+        d->exponent -= d->length - 1;
+        for (i=0; i<d->length; i++) d->digits[i] += '0';
     }
-    
-    v1 = (void**)arg0;
-    v1[0] = arg1;
-    v1[1] = arg1;
-    v1[2] = arg1;
-    v1[3] = arg1;
-
-    if (v2 >= 0) {
-        v5 = v2 >> 3;
-    } else {
-        v5 = v2 / 8;
-    }
-    
-    i = 0;
-    while (i < v5) {
-        v1[i + 4] = arg1;
-        i++;
-    }
-
-    if (v6 >= 0) {
-        v7 = v6 >> 5;
-    } else {
-        v7 = v6 / 32;
-    }
-    
-    i = 0;
-    while (i < v7) {
-        v1[i + 4 + v5] = arg1;
-        i++;
-    }
-
-    v1[4 + v5 + v7] = arg1;
-    v1[5 + v5 + v7] = arg1;
 }
 
 #pragma use_lmw_stmw on
@@ -4108,85 +4106,48 @@ extern f64 lbl_8036C158;
 extern f64 lbl_8036C160;
 extern f64 lbl_8036C168;
 extern f64 lbl_8036C170;
-f64 fn_80238378(s32 arg0, f64 farg0) {
-    f64 sp10;
-    f64 sp8;
-    s32 temp_r5;
-    s32 temp_r4;
-    s32 temp_r4_2;
-    s32 temp_r5_2;
-    s32 var_r0;
-    s32 var_r4;
-    u32 temp_r5_3;
-    f64 temp_f1;
-    f64 var_f1;
-
-    var_f1 = farg0;
-    sp10 = var_f1;
-    temp_r5 = *(s32*)(&sp10); // 0x10(r1) 
-    temp_r4 = temp_r5 & 0x7FF00000;
-    sp8 = var_f1; // 0x8(r1)
-
-    switch (temp_r4) {
-        case 0x7FF00000:
-            if ((temp_r5 & 0xFFFFF) || (*((u32*)0x8036A14C) != 0)) {
-                var_r0 = 1;
-            } else {
-                var_r0 = 2;
-            }
-            break;
-        case 0x0:
-            if ((temp_r5 & 0xFFFFF) || (*((u32*)0x8036A14C) != 0)) {
-                var_r0 = 5;
-            } else {
-                var_r0 = 3;
-            }
-            break;
-        default:
-            var_r0 = 4;
-            break;
+f64 fn_80238378(s32 n, f64 x) {
+    f64 fn_802380A8();
+    f64 classified = x;
+    f64 value = x;
+    s32 high = ((s32 *)&classified)[0];
+    s32 kind;
+    s32 exponent;
+    u32 low;
+    switch (high & 0x7FF00000) {
+    case 0x7FF00000:
+        if ((high & 0xFFFFF) || ((s32 *)&classified)[1] != 0) kind=1; else kind=2;
+        break;
+    case 0:
+        if ((high & 0xFFFFF) || ((s32 *)&classified)[1] != 0) kind=5; else kind=3;
+        break;
+    default: kind=4;
     }
-
-    if (var_r0 > 2) {
-        temp_f1 = lbl_8036C150;
-        if (temp_f1 == var_f1) {
-            return var_f1;
-        }
-        temp_r5_2 = *(u32*)(&sp8);
-        var_r4 = (temp_r5_2 >> 0x14U) & 0x7FF;
-        if (var_r4 == 0) {
-            if ((*((u32*)0x8036A120)) == 0) {
-                return var_f1;
-            }
-            temp_f1 = sp8 * lbl_8036C158;
-            sp8 = temp_f1;
-            var_r4 = (((*(u32*)(&sp8)) >> 0x14U) & 0x7FF) - 0x36;
-            if ((arg0 < 0xFFFF3CB0)) {
-                return lbl_8036C160 * temp_f1;
-            }
-        }
-        if (var_r4 == 0x7FF) {
-            return 2.0 * sp8;
-        }
-        temp_r4_2 = var_r4 + arg0;
-        if (temp_r4_2 > 0x7FE) {
-            return lbl_8036C168 * fn_802380A8(lbl_8036C168, sp8);
-        }
-        if (temp_r4_2 > 0) {
-            temp_r5_3 = ((*(u32*)(&sp8) & 0x800FFFFF) | (temp_r4_2 << 0x14));
-            return (f64)(temp_r5_3);
-        }
-        if (temp_r4_2 <= -0x36) {
-            if (arg0 > 0xC350) {
-                return lbl_8036C168 * fn_802380A8(lbl_8036C168, (f64)(sp8));
-            }
-            return lbl_8036C160 * fn_802380A8(lbl_8036C160, (f64)(sp8));
-        }
-        temp_r5_3 = ((*(u32*)(&sp8) & 0x800FFFFF) | ((temp_r4_2 + 0x36) << 0x14));
-        return lbl_8036C170 * (f64)(temp_r5_3);
+    if (kind <= 2 || lbl_8036C150 == x) return x;
+    high=((s32 *)&value)[0];
+    low=((u32 *)&value)[1];
+    exponent=(high >> 20)&0x7FF;
+    if (exponent==0) {
+        if ((low | (high & 0x7FFFFFFF)) == 0) return x;
+        value *= lbl_8036C158;
+        high=((s32 *)&value)[0];
+        exponent=((high>>20)&0x7FF)-54;
+        if (n < -50000) return lbl_8036C160*value;
     }
-
-    return var_f1;
+    if (exponent==0x7FF) return value+value;
+    exponent += n;
+    if (exponent>0x7FE) return lbl_8036C168*fn_802380A8(lbl_8036C168,value);
+    if (exponent>0) {
+        ((s32 *)&value)[0]=(high&0x800FFFFF)|(exponent<<20);
+        return value;
+    }
+    if (exponent<=-54) {
+        if (n>50000) return lbl_8036C168*fn_802380A8(lbl_8036C168,value);
+        return lbl_8036C160*fn_802380A8(lbl_8036C160,value);
+    }
+    exponent += 54;
+    ((s32 *)&value)[0]=(high&0x800FFFFF)|(exponent<<20);
+    return lbl_8036C170*value;
 }
 
 f64 fn_8023853C(f64 *iptr, f64 x) {
