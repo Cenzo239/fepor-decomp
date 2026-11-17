@@ -2604,16 +2604,42 @@ loop_1:
 }
 
 extern u16 lbl_8028D0FC[];
-s32 fn_800B4A84(void* arg0, s32 arg1, s32 arg2) {
-    s32 r31_2 = (s32)arg1;
-    s32 r31_3 = (r31_2 & 0x7F);
-    s32 r31_5 = r31_2 >> 7;
-    s32 r31_4 = E_EventCaller_script[r31_3];
-    if (r31_4 == 0) {
-        *(u16*)arg0 = lbl_8028D0FC[(s32)(r31_5)];
-    } else {
-        *(u16*)arg0 = r31_4;
+void *fn_800B4A84(void *path, s32 mode, s32 arg2) {
+    s32 fn_8020C3E0(void);
+    void *memset(void *, s32, u32);
+    void strcpy(void *, void *);
+    s32 fn_8020C6D4(void *, void *);
+    extern u8 *lbl_80367820;
+    u8 *entry;
+    s32 i;
+
+    if (fn_8020C3E0() == -1) {
+        return 0;
     }
+    entry = lbl_80367820;
+    for (i = 0; i < 0x100; i++, entry += 0x98) {
+        if (!(*(u16 *)(entry + 0x90) & 0x8000)) {
+            break;
+        }
+    }
+    if (i >= 0x100) {
+        return 0;
+    }
+    memset(entry, 0, 0x98);
+    strcpy(entry, path);
+    *(u16 *)(entry + 0x90) = 0;
+    *(u16 *)(entry + 0x92) = (u8)mode;
+    *(u16 *)(entry + 0x94) = (u16)arg2;
+    *(s32 *)(entry + 0x7C) = 0;
+    *(s32 *)(entry + 0x80) = 0;
+    *(s32 *)(entry + 0x84) = 0;
+    *(s32 *)(entry + 0x88) = 0;
+    *(u16 *)(entry + 0x90) |= 0x8000;
+    if (fn_8020C6D4(entry, entry + 0x40) == 0) {
+        memset(entry, 0, 0x98);
+        return 0;
+    }
+    return entry;
 }
 
 #pragma global_optimizer off
@@ -8539,6 +8565,77 @@ s32 fn_800BF9D8(void *arg0) {
     if (!Res_GetByName(msg)) return 0;
     fn_8011D908(msg,arg0);
     return 1;
+}
+
+s32 fn_800BFB10(void) {
+    void *Battle_GetActiveCombatant(void *);
+    void *Event_NextEntry(void *);
+    void *Event_GetString(void *, u16);
+    void *Person_GetByPid(void *);
+    s32 fn_800BA96C(void);
+    extern u8 gBattle[];
+    extern u16 gBattleState[700];
+    void *entry;
+    void *person;
+    void *combatant;
+    u8 found;
+    u8 match;
+
+    if (Battle_GetActiveCombatant(gBattle) == NULL) {
+        return 0;
+    }
+
+    entry = Event_NextEntry(NULL);
+    while (entry != NULL) {
+        if (*(u8 *)((u8 *)entry + 0xC) == 0xB) {
+            person = Person_GetByPid(Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14)));
+            combatant = Battle_GetActiveCombatant(gBattle);
+            if (combatant == NULL) {
+                match = 0;
+            } else {
+                match = (*(void **)((u8 *)combatant + 0x188) == person);
+            }
+            if (match) {
+                found = 1;
+                goto after1;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+after1:
+    if (found) {
+        return 1;
+    }
+
+    if ((((u8 *)gBattleState)[0x9F] >> 3) & 1) {
+        return 0;
+    }
+
+    entry = Event_NextEntry(NULL);
+    while (entry != NULL) {
+        if (*(u8 *)((u8 *)entry + 0xC) == 0xA) {
+            person = Person_GetByPid(Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14)));
+            combatant = Battle_GetActiveCombatant(gBattle);
+            if (combatant == NULL) {
+                match = 0;
+            } else {
+                match = (*(void **)((u8 *)combatant + 0x188) == person);
+            }
+            if (match) {
+                found = 1;
+                goto after2;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+after2:
+    if (found) {
+        return 1;
+    }
+
+    return fn_800BA96C();
 }
 
 extern u16* const lbl_8036A0D0;
