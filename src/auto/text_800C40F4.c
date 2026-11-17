@@ -1160,7 +1160,7 @@ HeapC55 *next, *prev, *head, *owner;
 s32 size;
 if((s32)block->size < 0) {
 block->size = -block->size;
-next = block->next; owner = heap->owner;
+owner = heap->owner; next = block->next;
 if(next) next->prev = block->prev;
 next = block->prev;
 if(next) next->next = block->next; else owner = block->next;
@@ -1186,7 +1186,7 @@ if(next) next->prev = prev;
 heap->free = head;
 return;
 }
-next = block->next; owner = heap->owner;
+owner = heap->owner; next = block->next;
 if(next) next->prev = block->prev;
 next = block->prev;
 if(next) next->next = block->next; else owner = block->next;
@@ -19604,7 +19604,7 @@ void fn_800EE4D0(void *arg0)
             fn_80067708(
                 3,
                 1,
-                (void *)fn_800F047C,
+                fn_800F047C,
                 0
             );
         }
