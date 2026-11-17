@@ -5884,19 +5884,20 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 #pragma dont_inline on
-#pragma global_optimizer off
+#pragma global_optimizer on
 extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B2D8,lbl_8036B2E0;
 struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
-u8 *base; s32 zero; s32 right; s32 bottom; u8 *self; f32 scale; f32 one;
+register u8 *base; s32 zero; s32 right; s32 bottom; u8 *self; register u8 *initial; f32 scale; f32 one;
 self=(u8 *)arg0;
 zero=0;
 right=x+0x130;bottom=y+0x90;
-base=self;
+initial=self;
+base=initial;
 one=lbl_8036B2D8;scale=lbl_8036B2E0;
 *(void **)self=lbl_8028FDB0;
-*(s32 *)(base+4)=zero;
+*(s32 *)(initial+4)=zero;
 *(void **)base=lbl_80292230;
 *(s16 *)(base+8)=-1;
 *(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
@@ -19876,33 +19877,7 @@ return 0;
 void fn_801E080C(void *arg0) {
 extern u8 gSystemSave[];
 u8 **save=(u8 **)arg0;
-u8 *slot,*found;
-s32 off,i,inner,j,id;
-u8 valid;
-i=0; off=0x1a000;
-for(;i<2;i++) {
-slot=*save+off;
-if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid) {
-id=slot[0x63];
-j=0; inner=0x2000;
-for(;j<6;j++) {
-found=*save+inner;
-if(*(u32 *)(found+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(found+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid && id==found[0x62]) break;
-inner+=0x4000;
-}
-if(j==6) found=0;
-if(found) break;
-}
-off+=0x6000;
-}
-if(i==2) slot=0;
-save[1]=slot;
+save[1]=Save_FindLinkedHeader(*save);
 gSystemSave[0x47]=save[1][0x63];
 }
 
