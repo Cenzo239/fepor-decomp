@@ -1,6 +1,73 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct MenuCenteredLabel {
+virtual void v0()=0;
+virtual void *getText()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual void v20()=0;
+virtual u8 test(s32)=0;
+};
+struct MenuCenteredPanel { u32 pad;
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual void v20()=0;
+virtual void v21()=0;
+virtual void v22()=0;
+virtual void v23()=0;
+virtual void v24()=0;
+virtual void v25()=0;
+virtual void v26()=0;
+virtual void v27()=0;
+virtual void v28()=0;
+virtual void v29()=0;
+virtual void v30()=0;
+virtual void v31()=0;
+virtual void v32()=0;
+virtual void v33()=0;
+virtual void v34()=0;
+virtual void v35()=0;
+virtual void v36()=0;
+virtual void v37()=0;
+virtual s32 height()=0;
+};
+#pragma cplusplus reset
+#pragma cplusplus on
 struct MenuDDEntry { u8 pad[0x40]; u8 id; };
 struct MenuDD { u8 pad[4];
 virtual s32 v0()=0;
@@ -6432,6 +6499,25 @@ M2C_FIELD(p,u8 *,36)=0;
 M2C_FIELD(p,s32 *,32)=arg0;
 }
 
+void fn_8013C194(void *self, void *arg1, void *slot) {
+void Prim2D_Begin(void); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32); void Prim2D_SetPos(f32,f32); void Prim2D_SetColorPacked(s32*); void Prim2D_SetTextScale(s32,f32); void fn_800071D8(s32,f32); void Prim2D_SetText(void*); void Prim2D_EndPrim(void);
+s32 Text_MeasureWidth(void*,s32,f32); s32 fn_80010770(void*,s32,f32); s32 *Ui_GetColor(s32);
+extern f32 lbl_8036A6C0;
+s32 color;
+f32 x = (f32)M2C_FIELD(slot,s16*,0x30);
+f32 y = (f32)M2C_FIELD(slot,s16*,0x32);
+void *obj = M2C_FIELD(arg1,void**,0x3c);
+s16 h;
+x -= (f32)(Text_MeasureWidth(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self),-1,lbl_8036A6C0)/2);
+h = M2C_FIELD(M2C_FIELD(obj,void**,4),s16(**)(void*),0xa0)(obj);
+y += (f32)((h-fn_80010770(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self),-1,lbl_8036A6C0))/2);
+Prim2D_Begin(); Prim2D_SetTex(0,0x13); Prim2D_PrepareTex(); Prim2D_AddPrim(6); Prim2D_SetPos(x,y);
+color=*Ui_GetColor(M2C_FIELD(self,u8*,8)); Prim2D_SetColorPacked(&color);
+if(M2C_FIELD(M2C_FIELD(self,void**,0),u8(**)(void*,s32),0x5c)(self,1)) Prim2D_SetTextScale(1,gUiMenuSlotPlainTextScale);
+else if(M2C_FIELD(M2C_FIELD(self,void**,0),u8(**)(void*,s32),0x5c)(self,2)) fn_800071D8(1,lbl_8036A6C0);
+Prim2D_SetText(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self)); Prim2D_EndPrim();
+}
+
 void fn_8013C388(void *arg0) {
     M2C_UNK Msg_Expand(s32);
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
@@ -7399,24 +7485,25 @@ void Ui_DrawRouteIconEx(s16,s32,u8);
 void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
 s32 width,height; s32 x,y; u8 idle; s32 active;
 self->v30();
-x=*(s16*)((u8*)GfxEnt_Get(*(u8*)(ctx+(s8)ctx[0x62]+0x40))+0x30);
-y=*(s16*)((u8*)GfxEnt_Get(*(u8*)(ctx+(s8)ctx[0x62]+0x40))+0x32);
+x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
+y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { s32 nx=x+1,ny=y+1;
-*(s16*)(ctx+0x38)=(*(s16*)(ctx+0x38)+nx)/2;
+else { s32 ny=y+1; s32 current=*(s16*)(ctx+0x38); s32 nx=x+1;
+*(s16*)(ctx+0x38)=(current+nx)/2;
 *(s16*)(ctx+0x3a)=(*(s16*)(ctx+0x3a)+ny)/2;
 }
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A6D0);
 idle=0; if(!ctx[0x2d] && !ctx[0x2e]) idle=1;
 Prim2D_SetAlphaByte(idle?0x80:0x40); Prim2D_PrepareTex();
-s32 iy=*(s16*)(ctx+0x3a); s16 ix=*(s16*)(ctx+0x38);
+s16 ix=*(s16*)(ctx+0x38); s32 iy=*(s16*)(ctx+0x3a);
 u8 iconIdle=0; if(!ctx[0x2d] && !ctx[0x2e]) iconIdle=1;
 Ui_DrawRouteIconEx(ix,iy,iconIdle);
 Prim2D_Begin(); Prim2D_AddZ(gUiMenuSlotPlainTextScale); Prim2D_PrepareTex();
 active=0; if(!ctx[0x2d] && !ctx[0x2e]) active=1;
 s16 w=width; s32 offset=(s16)self->v31();
-fn_8008AB7C((w>>1)+(x-offset),y+((s16)height>>1),w,0x17,0x19,0x4c,active);
+s32 left=x-offset;
+fn_8008AB7C((w>>1)+left,y+((s16)height>>1),w,0x17,0x19,0x4c,active);
 Prim2D_Begin(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
 }
 #pragma global_optimizer reset
@@ -8335,17 +8422,13 @@ extern "C" void fn_8013EBD8(void *arg0) {
         virtual void w9(s32) = 0;
     };
 
-    Obj *self;
-    s16 vret;
-    s16 a, b, c;
-    s16 dx, dy;
+    Obj *self = (Obj *)arg0;
+    s16 vret, a, b, c, dx, dy, cur;
     f32 ratio;
     s32 mulA, mulB;
-    s16 lim;
 
-    self = (Obj *)arg0;
-    lim = *(s16 *)((u8 *)arg0 + 0x3E);
-    if (*(s16 *)((u8 *)arg0 + 0x3C) > lim) {
+    cur = *(s16 *)((u8 *)arg0 + 0x3C);
+    if (cur > *(s16 *)((u8 *)arg0 + 0x3E)) {
         self->v3();
         Prim2D_Begin();
         Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 0x10));
