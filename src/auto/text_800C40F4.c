@@ -5624,8 +5624,8 @@ extern "C" void fn_800CF000(void *arg0) {
     void fn_800340E4(void *);
     void fn_800D5DB0(void *, s32, s32, s32 *);
     void fn_800CE690(void *, s32 *);
-    u8 fn_800CED88(void *);
     void fn_800CE214(void *, s32 *);
+    u8 fn_800CED88(void *);
     void fn_800CDFFC(void *);
     s32 stat[22];
     s32 done;
@@ -5674,7 +5674,7 @@ extern "C" void fn_800CF000(void *arg0) {
         p = *(s16 **)((u8 *)self + 0x1fc);
         idx4 = *p * 4;
         off = idx4 + 4;
-        switch ((s32)*(u8 *)(p + off)) {
+        switch ((s32)*(u8 *)((s32)p + off)) {
         case 0x55: {
             s32 j = (s8)*(s16 *)((s32)p + idx4 + 6);
             ++*p;
@@ -5728,7 +5728,7 @@ extern "C" void fn_800CF000(void *arg0) {
         if (*(s32 *)((u8 *)self + 0x274) == 0) {
             *(s32 *)((u8 *)self + 0x270) = 0;
         } else {
-            *(s32 *)((u8 *)self + (u32)0x270) = 1;
+            *(s32 *)((u8 *)self + 0x270) = 1;
         }
     } else {
         if (*(s32 *)((u8 *)self + 0x274) == 0) {
@@ -5738,7 +5738,7 @@ extern "C" void fn_800CF000(void *arg0) {
         }
     }
 
-    while (ok == 0) {
+    while (!ok) {
         ok = fn_800CED88(self);
     }
 
@@ -8227,27 +8227,36 @@ extern s32 lbl_8036A134;
 extern s32 lbl_8036A138;
 extern s32 lbl_8036A13C;
 extern s32 lbl_8036A140;
-void fn_800D83B0(void* param_1) {
-    // The function is too complex to create an accurate implementation from m2c draft
-    // We'll use the approach of getting simpler matching chunks first or just 
-    // implementing what we understand clearly for now.
-    
-    // Since the assembly shows very specific register usage and control flow,
-    // let's simplify our attempt to just make a minimal working C version
-    
-    if (param_1 == NULL) {
-        return;
-    }
-    
-    // We'll need to match what the machine draft shows - it looks like
-    // this function is doing parameter initialization for units, with:
-    // - Calls to various parameter-setting functions
-    // - Data copying from specific locations  
-    // - Struct field assignments
-    // - Conditional logic
-    
-    // For now we'll create a placeholder that at least matches basic structure
-    return;
+void fn_800D83B0(void *self, String *arg1) {
+void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
+void Str_CopyPad(void *,void *,u32); void fn_800C908C(void *,void *,void *);
+void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
+void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
+void String_Copy(void *,void *); void fn_801513A0(void *,void *);
+void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
+extern char lbl_802711B0[]; extern void *lbl_80367BA0;
+struct Block {u32 a,b,c,d,e,f,g,h;};
+struct Block sp98,sp78;
+char sp58[32];
+String sp4C,sp40,sp34,sp28,sp1C,sp10;
+u32 spC,sp8;
+u32 path; s8 made; u8 *f; u8 *arg0=self;
+path=(u32)arg1;made=0;
+f=Heap_Alloc(0x60);
+if(f) { String_Init(&sp34,lbl_802711B0+0xFA,&spC); made=1; f=Xml_ParseFile(f,(void *)path,&sp34); }
+if(made!=0) String_Destroy(&sp34,-1);
+sp4C.cap=0;sp40.cap=0;sp4C.size=0;sp4C.data=0;sp4C.cap=0;sp40.size=0;sp40.data=0;sp40.cap=0;
+String_Init(&sp28,lbl_802711B0+0xFF,&sp8);
+Str_CopyPad(&sp78,lbl_802711B0+0x105,32);sp98=sp78;
+fn_800C908C(f,&sp28,&sp98);String_Destroy(&sp28,-1);
+path=(u32)sp58;
+for(;Xml_AdvanceChild(f)!=0;) {
+Xml_GetChildName(&sp1C,f);String_Assign(&sp4C,&sp1C,0,-1);String_Destroy(&sp1C,-1);
+Xml_GetChildValue(sp58,f);String_AssignCStr(&sp40,(char *)path,strlen((char *)path));
+String_Copy(&sp10,&sp4C);fn_801513A0(lbl_80367BA0,&sp10);String_Destroy(&sp10,-1);
+fn_800CA18C(arg0+0x64,*(u8 **)(arg0+0x6C)+*(s32 *)(arg0+0x68)*12,1,&sp40);
+}
+Xml_Destroy(f,1);String_Destroy(&sp40,-1);String_Destroy(&sp4C,-1);
 }
 
 #pragma use_lmw_stmw on
@@ -29152,20 +29161,24 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
 }
 
 #pragma dont_inline on
-#pragma global_optimizer off
-s32 fn_800FFEFC(void *arg0, s32 flags, s16 *outX, s16 *outY) {
+#pragma global_optimizer on
+s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
     extern u8 gBattleMap[], gMapObjEventList[], gUnits[];
     extern s16 lbl_802732A0[];
     s32 fn_8010FF88(void *);
     u8 Ai_UnitIsHostileToActive(void *);
-    s32 y, x, i;
-    s16 bestY, bestX, best;
-    s16 *cost;
-    u32 flag;
-    u8 *event;
-    s32 count;
+    u8 *map;
     s16 *nb;
+    s32 count;
+    u8 *event;
+    u32 flag;
+    s16 *cost;
+    s16 best, bestX, bestY;
+    s32 i, x, y;
+    s16 *outY = arg3, *outX = arg2;
+    s32 dx;
     fn_800FE074(arg0, 6, ((s32 *)gBattleMap)[0] * ((s32 *)gBattleMap)[1]);
+    map=gBattleMap;
     best = 0x7FFF;
     flag = flags & 2;
     for (i=0, event=gMapObjEventList; i<fn_8010FF88(gMapObjEventList); i++, event+=8) {
@@ -29176,9 +29189,9 @@ s32 fn_800FFEFC(void *arg0, s32 flags, s16 *outX, s16 *outY) {
         if (flag) {
             count=0;
             nb=lbl_802732A0;
-            while (nb[0] != 0x7FFF) {
-                s32 nx=x+nb[0], ny=y+nb[1], oob=0;
-                if (nx<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<nx || ny<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<ny) oob=1;
+            while ((dx=nb[0]) != 0x7FFF) {
+                s32 nx=x+dx, ny=y+nb[1], oob=0;
+                if (nx<(s8)map[8] || (s8)map[10]-1<nx || ny<(s8)map[9] || (s8)map[11]-1<ny) oob=1;
                 if ((u8)oob == 0) {
                     u8 id=*(gBattleMap+(s8)nx+((s8)ny<<6)+0xD);
                     if (id) {
