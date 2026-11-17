@@ -15352,7 +15352,6 @@ s32 fn_80263534(void)
     return 1;
 }
 
-#pragma peephole off
 void fn_80263608(s32 arg0)
 {
     extern u32 gSoundAuxBuf;
@@ -15379,7 +15378,8 @@ void fn_80263608(s32 arg0)
     fn_80215F78((u32)lbl_80368A84 | 0xBABE0000);
     if (fn_80215F40() == 0) {
         fn_80215F78(aux);
-        if (fn_80215F40() != 0) {
+        if (fn_80215F40() == 0) {
+        } else {
             return;
         }
     }
