@@ -469,6 +469,49 @@ s32 fn_801A376C(void) {
     return *(s32 *) gTargetList != 0;
 }
 
+s32 fn_801A3978(s32 arg0) {
+    void Battle_SetupPair(void *, void *, void *);
+    void Battle_SelectWeapon(void *, u8);
+    void **UiCtx_GetItemSlot(void *);
+    void *Item_GetByIid(void *);
+    s32 Unit_GetMagAtk(void *);
+    void fn_801A4B40(void *, s8);
+    void fn_80036150(void *);
+    void MapAnim_DispatchByIid(void *, s32, s32);
+    extern u16 gUiContext[];
+    extern u16 gBattle[];
+    extern u8 gMapAnimStr[];
+    void *itemDef;
+    void *unit;
+    s32 heal;
+
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
+    itemDef = *UiCtx_GetItemSlot(gUiContext);
+    unit = *(void **)gUiContext;
+
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x1E6)) {
+        heal = 0xA;
+    } else if (itemDef == Item_GetByIid(gMapAnimStr + 0x1EF)) {
+        heal = 0x14;
+    } else if (itemDef == Item_GetByIid(gMapAnimStr + 0x1FA)) {
+        heal = 0x50;
+    } else if (itemDef == Item_GetByIid(gMapAnimStr + 0x206)) {
+        heal = 0xA;
+    } else if (itemDef == Item_GetByIid(gMapAnimStr + 0x211)) {
+        heal = 0xA;
+    } else if (itemDef == Item_GetByIid(gMapAnimStr + 0x21D)) {
+        heal = 0x50;
+    } else {
+        heal = 0;
+    }
+
+    fn_801A4B40(gBattle, (s8)(heal + Unit_GetMagAtk(unit)));
+    fn_80036150(gBattle);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), arg0, 0);
+    return 0;
+}
+
 s32 fn_801A3B08(void) {
     void fn_8002AD04(void);
     extern s32 gTargetList[];
