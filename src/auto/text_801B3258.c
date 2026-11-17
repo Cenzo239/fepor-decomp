@@ -1,5 +1,12 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 *MenuResource_Find(s32 id) {
+extern u8 lbl_80299A78[];
+u8 *p=lbl_80299A78;
+s32 i;
+for(i=0;i<40;i++,p+=12) { if(id==*(s32*)p) return p; }
+return 0;
+}
 #pragma cplusplus on
 struct UnitHireItem {
 virtual void v0();
@@ -3161,10 +3168,9 @@ extern "C" void fn_801BA47C(void *arg0) {
     void *child;
     w = (u8 *)Heap_Alloc(0x4C);
     if (w) {
-        void **vt = (void **)w;
-        *vt = lbl_8028FDB0;
+        *(void **)(w+0) = lbl_8028FDB0;
         *(s32 *)(w+4) = 0;
-        *vt = lbl_80292230;
+        *(void **)(w+0) = lbl_80292230;
         *(s16 *)(w+8) = -1;
         *(s16 *)(w+0xA) = 0x260;
         *(s16 *)(w+0xC) = 0x7C;
@@ -3184,7 +3190,7 @@ extern "C" void fn_801BA47C(void *arg0) {
         *(f32 *)(w+0x30) = 1.0f;
         *(s32 *)(w+0x34) = 0;
         *(s32 *)(w+0x38) = 0;
-        *vt = lbl_8029186C;
+        *(void **)(w+0) = lbl_8029186C;
         *(s32 *)(w+0x3C) = 0;
         *(s16 *)(w+0x40) = 20;
         *(s16 *)(w+0x42) = 8;
@@ -11989,14 +11995,12 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-#pragma scheduling on
+#pragma optimization_level 2
 u32 NameGrid_GetCharAtCursor(void *arg0) {
- u32 fn_801CD480(void *, s16, s16);
- s16 x = *(s16 *)((u8 *)arg0 + 0x48);
- s16 y = *(s16 *)((u8 *)arg0 + 0x4A);
- return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), x, y);
+u32 fn_801CD480(void *, s16, s16);
+return fn_801CD480(*(void **)((u8 *)arg0+0x3C),*(s16 *)((u8 *)arg0+0x48),*(s16 *)((u8 *)arg0+0x4A));
 }
-#pragma scheduling reset
+#pragma optimization_level reset
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801CCED4(s32 *arg0, void *arg1) {
@@ -18635,6 +18639,26 @@ void fn_801DE074(void) {
         *(u32 *)(lbl_80299A78 + i * 0xC + 8) = 0;
         i++;
     } while (i < 0x28);
+}
+
+void fn_801DE0EC(s32 *list, s32 parent) {
+void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
+extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
+char path[64];
+s32 i;
+u8 *p;
+Process_UnlinkByKey(lbl_80299C58);
+for(i=0,p=lbl_80299A78;i<40;i++,p+=12) {
+if(*(u32*)(p+8)) FileCache_ReleaseSlot(p+8);
+*(u32*)(p+8)=0;
+}
+for(;*list!=-1;list++) {
+p=lbl_80299A78;
+for(i=0;i<40;i++,p+=12) { if(*list==*(s32*)p) break; }
+if(i==40) p=0;
+if(p) {sprintf(path,(char*)gUiSeCues+0x661,*(s32*)(p+4));fn_8005C8B4(path);}
+}
+Process_CreateChild(lbl_80299C58,parent);
 }
 
 #pragma opt_loop_invariants off
