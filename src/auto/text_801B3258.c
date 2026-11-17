@@ -7817,8 +7817,7 @@ void fn_801C6E60(u32 arg0)
     s32 i;
     u8 *list;
     void *p;
-    u8 *ptr;
-    s32 n;
+    u8 *walk;
 
     p = Process_Find(LightFade_script);
     if (p == NULL) {
@@ -7827,38 +7826,23 @@ void fn_801C6E60(u32 arg0)
         list = *(u8 **)((u8 *)p + 0x30);
     }
     if (list != NULL && arg0 != 0) {
-        ptr = list;
-        n = 0;
-        for (i = 8; i != 0; i--) {
-            if (*(u32 *)(ptr + 0x290) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x294) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x298) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x29c) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x2a0) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x2a4) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x2a8) == arg0)
-                goto done;
-            if (*(u32 *)(ptr + 0x2ac) == arg0)
-                goto done;
-            ptr += 0x20;
-            n += 7;
-        }
+        walk = list;
         for (i = 0; i < 0x40; i++) {
-            if (*(u32 *)(list + 0x290 + i * 4) == 0) {
-                *(u32 *)(list + 0x290 + i * 4) = arg0;
+            if (*(u32 *)(walk + 0x290) == arg0) {
+                return;
+            }
+            walk += 4;
+        }
+        walk = list;
+        for (i = 0; i < 0x40; i++) {
+            if (*(u32 *)(walk + 0x290) == 0) {
+                *(u32 *)(list + i * 4 + 0x290) = arg0;
                 fn_8005F788(arg0, 1, 1);
                 break;
             }
+            walk += 4;
         }
     }
-done:
-    ;
 }
 
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
@@ -15303,27 +15287,37 @@ static s32 fn_801DB5B4(s32 arg0, s32 arg1) {
     return 0;
 }
 
-void fn_801DBD84(struct efUnit* arg0)
-{
-    volatile struct efUnit* temp = arg0;  // Force usage pattern
-    
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    // Clear some fields directly
-    arg0->unit = NULL;
-    *(u32*)((u8*)arg0 + 0x0C) = 0;
-    *(u32*)((u8*)arg0 + 0x10) = 0;
-    *(u8*)((u8*)arg0 + 0x11) = 0;  
-    *(u8*)((u8*)arg0 + 0x15) = 0;
-    *(s16*)((u8*)arg0 + 0x16) = -1; 
-    *(u8*)((u8*)arg0 + 0x1A) = 0;
-    *(u8*)((u8*)arg0 + 0x5C) = 0;
-    *(s16*)((u8*)arg0 + 0x5E) = 0; 
-    
-    // Use a simpler but more direct approach - clear large blocks with explicit memsets
-    memset((u8*)arg0 + 0x60, 0, 0x1C); 
+void fn_801DBD84(void *arg0) {
+u8 *state=*(u8**)((u8*)arg0+0x30);
+s32 i;
+*(u32*)(state)=0;
+*(u32*)(state+4)=0;
+state[0x11]=0; state[0x15]=0;
+*(s16*)(state+0x16)=-1;
+state[0x1A]=0; state[0x5C]=0;
+*(s16*)(state+0x5E)=0;
+memset(state+0x60,0,0x1C);
+*(s16*)(state+0x62)=0;
+*(s16*)(state+0x60)=0;
+for(i=0;i<6;i++) {
+memset(state+0x7C+i*0x34,0,0x34);
+*(s16*)(state+0x7E+i*0x34)=0;
+*(s16*)(state+0x7C+i*0x34)=0;
+}
+for(i=0;i<5;i++) {
+memset(state+0x1B4+i*0x4C,0,0x4C);
+*(s16*)(state+0x1B6+i*0x4C)=0;
+*(s16*)(state+0x1B4+i*0x4C)=0;
+}
+memset(state+0x330,0,0x1EA);
+*(s16*)(state+0x332)=0;
+*(s16*)(state+0x330)=0;
+*(s16*)(state+0x34E)=0;
+for(i=0;i<2;i++) {
+memset(state+0x51A+i*0x14,0,0x14);
+*(s16*)(state+0x51C+i*0x14)=0;
+*(s16*)(state+0x51A+i*0x14)=0;
+}
 }
 
 s32 fn_801DBFF8(void)
