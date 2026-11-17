@@ -801,6 +801,138 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     fn_80006B18((y0 + divv) - t4a, x0, 0, 0, arg);
     Prim2D_EndPrim();
 }
+
+extern "C" void fn_80133C74(void *arg0)
+{
+    extern f32 lbl_8036A5AC;
+    extern f32 lbl_8036A5D4;
+
+    void fn_80159898(s32, s32, s32, s32, s32, s32);
+    s32 Text_MeasureHeight(s32, f32);
+    void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void fn_80152CAC(s16, s16, s32);
+
+    u8 *self;
+    s32 width;
+    s32 height;
+    s32 columnWidth;
+    s32 rowHeight;
+    s32 column;
+    s32 row;
+    s32 xOffset;
+    s32 yOffset;
+    s32 x;
+    s32 y;
+    s32 textHeight;
+    s32 halfHeight;
+    s32 x2;
+    s32 y2;
+    s32 columns;
+    s32 rows;
+    u8 color[4];
+
+    self = (u8 *)arg0;
+
+    ((void (*)(void *))(*(void ***)self)[4])(self);
+
+    width = (s16)(
+        *(s16 *)(self + 0xE) -
+        *(s16 *)(self + 0xA)
+    );
+
+    height = (s16)(
+        *(s16 *)(self + 0x10) -
+        *(s16 *)(self + 0xC)
+    );
+
+    if (self[0x3D] != 0) {
+        fn_80159898(0, 0, width, height, 0xB3, 0x10);
+    }
+
+    columnWidth = (s16)(
+        (s16)(*(s16 *)(self + 0x16) -
+         *(s16 *)(self + 0x12)) /
+        *(s16 *)(self + 0x44)
+    );
+
+    rowHeight = *(s16 *)(self + 0x46);
+
+    yOffset = 0;
+
+    for (row = 0; (s16)row < (s16)(((s16)(*(s16 *)(self+0x18)-*(s16 *)(self+0x14))-(*(s16 *)(self+0x4A)<<1))/ *(s16 *)(self+0x46)); row++) {
+        xOffset = 0;
+
+        for (column = 0;
+             (s16)column < *(s16 *)(self + 0x44);
+             column++) {
+
+            x = (s16)(
+                *(s16 *)(self + 0x12) +
+                *(s16 *)(self + 0x48) +
+                xOffset
+            );
+
+            y = (s16)(
+                *(s16 *)(self + 0x14) +
+                *(s16 *)(self + 0x4A) +
+                yOffset
+            );
+
+            textHeight = Text_MeasureHeight(
+                -1, lbl_8036A5AC
+            );
+
+            halfHeight = (rowHeight - textHeight) >> 1;
+
+            textHeight = Text_MeasureHeight(
+                -1, lbl_8036A5AC
+            );
+
+            y2 = (s16)(y + (s16)(halfHeight + textHeight));
+
+            x2 = (s16)(
+                x + (s16)(
+                    columnWidth -
+                    (*(s16 *)(self + 0x48) << 1)
+                )
+            );
+
+            color[0] = 0xFF;
+            color[1] = 0xFF;
+            color[2] = 0xFF;
+            color[3] = 0x4C;
+
+            Ui_DrawLine(
+                (s16)x,
+                (s16)y2,
+                (s16)x2,
+                (s16)y2,
+                0x10,
+                color
+            );
+
+            xOffset += columnWidth;
+        }
+
+        yOffset += rowHeight;
+    }
+
+    if (self[0x50] != 0) {
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036A5D4);
+        Prim2D_PrepareTex();
+
+        fn_80152CAC(
+            (s16)(width - 0x5C),
+            (s16)(height - 0x10),
+            0x10
+        );
+    }
+}
+
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
@@ -8445,6 +8577,74 @@ void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
     return arg1;
 }
 
+void fn_8013FBC8(s32 *, s32 *);
+s32 fn_8013FBD4(s32);
+void fn_8013FBDC(s16 *, s16 *);
+void fn_8013FC00(s16 *, s16 *);
+void fn_8013FC14(s16 *, s16 *);
+void fn_8013FC28(s32 *, s32 *, s16 *);
+s32 fn_8013FBC0(s32);
+s32 fn_80138AB8(void *);
+
+Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
+    Vec2s sp3C;
+    Vec2s sp38;
+    Vec2s sp34;
+    Vec2s sp30;
+    Vec2s sp2C;
+    Vec2s sp28;
+    Vec2s sp24;
+    Vec2s sp20;
+    Vec2s sp1C;
+    Vec2s sp18;
+    Vec2s sp14;
+    Vec2s sp10;
+    Vec2s spC;
+    Vec2s sp8;
+    void *r28;
+    void *r26;
+    void *r27;
+
+    r27 = *(void **)((u8 *)arg0 + 0x38);
+    sp3C = *(Vec2s *)((u8 *)arg0 + 0xA);
+    if (r27 != NULL) {
+        sp24 = *(Vec2s *)((u8 *)r27 + 0xA);
+        r26 = *(void **)((u8 *)r27 + 0x38);
+        if (r26 != NULL) {
+            sp18 = *(Vec2s *)fn_8013FBD4((s32)r26);
+            if (*(void **)((u8 *)r26 + 0x38) != NULL) {
+                r28 = (void *)fn_80138AB8(r26);
+                fn_8013FBC8((s32 *)&spC, (s32 *)fn_8013FBD4((s32)r28));
+                if (fn_80138AB8(r28) != 0) {
+                    fn_8013F748((void *)fn_80138AB8(r28), &spC, &spC);
+                }
+                fn_8013FC28((s32 *)&sp14, (s32 *)&spC, (s16 *)fn_8013FBC0((s32)r28));
+                fn_8013FC28((s32 *)&sp10, (s32 *)&sp14, (s16 *)&sp18);
+                fn_8013FC14((s16 *)&sp18, (s16 *)&sp10);
+            }
+            fn_8013FC28((s32 *)&sp20, (s32 *)&sp18, (s16 *)fn_8013FBC0((s32)r26));
+            fn_8013FC28((s32 *)&sp1C, (s32 *)&sp20, (s16 *)&sp24);
+            fn_8013FC00((s16 *)&sp24, (s16 *)&sp1C);
+        }
+        fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)r27));
+        fn_8013FBC8((s32 *)&sp8, (s32 *)&sp2C);
+        fn_8013FBDC((s16 *)&sp8, (s16 *)&sp3C);
+        fn_8013FBC8((s32 *)&sp28, (s32 *)&sp8);
+        sp3C.x = sp28.x;
+        sp3C.y = sp28.y;
+    }
+    sp30 = sp3C;
+    sp30.x = (s16)(sp30.x + *(s16 *)((u8 *)arg0 + 0x12));
+    sp30.y = (s16)(sp30.y + *(s16 *)((u8 *)arg0 + 0x14));
+    sp34 = sp30;
+    sp34.x = (s16)(sp34.x + arg2->x);
+    sp34.y = (s16)(sp34.y + arg2->y);
+    sp38 = sp34;
+    arg1->x = sp38.x;
+    arg1->y = sp38.y;
+    return arg1;
+}
+
 void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
     struct {
@@ -8538,18 +8738,17 @@ s32 fn_8013FBD4(s32 arg0) {
 #pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
-  s16 c;
-  s16 b;
-  s16 a;
-
-  a = dst[0];
-  b = src[0];
-  c = src[1];
-  a = a + b;
-  dst[0] = a;
-  a = dst[1];
-  a = a + c;
-  dst[1] = a;
+s16 b;
+s16 c;
+s16 a;
+a=dst[0];
+b=src[0];
+c=src[1];
+a+=b;
+dst[0]=a;
+a=dst[1];
+a+=c;
+dst[1]=a;
 }
 #pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
@@ -12285,6 +12484,101 @@ extern "C" s8 Fx_FindSlotByName(void *arg0) {
     } while (i < 4);
     return -1;
 }
+
+extern "C" void fn_80146D44(void) {
+    void fn_801490C8(void *);
+    void fn_80148D54(void *);
+    void fn_80148A28(void *);
+    u8 fn_801696E0(void);
+    u8 fn_8011AC10(void);
+    void fn_800B4080(void);
+    extern u8 gFxChannels[];
+    extern u8 lbl_80367AE8, lbl_80367AE9, lbl_80367AEA, lbl_80367AEB;
+    extern u8 gBgmQuietVol, gBgmVol;
+    extern u8 lbl_80367AED, lbl_80367AEF;
+    extern u8 lbl_80367AF0, lbl_80367AF1, lbl_80367AF2, lbl_80367AF3, lbl_80367AF4, lbl_80367AF5;
+    extern s32 lbl_80367AF8, gUiInputFlags;
+    s32 i;
+    s32 t;
+    u8 *p;
+    u8 *base;
+
+    base = gFxChannels;
+    p = (u8 *)((u32)base + 0);
+    i = 0;
+    do {
+        fn_801490C8(p);
+        i++;
+        p += 0x30;
+    } while (i < 4);
+
+    i = 0;
+    p = (u8 *)((u32)base + 0xC0);
+    do {
+        fn_80148D54(p);
+        i++;
+        p += 0x30;
+    } while (i < 0xA);
+
+    i = 0;
+    p = (u8 *)((u32)base + 0x2A0);
+    do {
+        fn_80148A28(p);
+        i++;
+        p += 0x30;
+    } while (i < 0x1C);
+
+    (void)base;
+
+    lbl_80367AE9 = lbl_80367AE8;
+    lbl_80367AEB = lbl_80367AEA;
+    lbl_80367AED = gBgmQuietVol;
+    lbl_80367AEF = gBgmVol;
+
+    if (lbl_80367AF0 > lbl_80367AF2) {
+        t = lbl_80367AF0 - 1;
+        lbl_80367AF1 = lbl_80367AF0;
+        lbl_80367AF0 = t;
+        if ((u8)t < lbl_80367AF2)
+            lbl_80367AF0 = lbl_80367AF2;
+    }
+    if (lbl_80367AF0 < lbl_80367AF2) {
+        t = lbl_80367AF0 + 1;
+        lbl_80367AF1 = lbl_80367AF0;
+        lbl_80367AF0 = t;
+        if ((u8)t > lbl_80367AF2)
+            lbl_80367AF0 = lbl_80367AF2;
+    }
+    if (lbl_80367AF3 > lbl_80367AF5) {
+        t = lbl_80367AF3 - 1;
+        lbl_80367AF4 = lbl_80367AF3;
+        lbl_80367AF3 = t;
+        if ((u8)t < lbl_80367AF5)
+            lbl_80367AF0 = lbl_80367AF5;
+    }
+    if (lbl_80367AF3 < lbl_80367AF5) {
+        t = lbl_80367AF3 + 1;
+        lbl_80367AF4 = lbl_80367AF3;
+        lbl_80367AF3 = t;
+        if ((u8)t > lbl_80367AF5)
+            lbl_80367AF0 = lbl_80367AF5;
+    }
+
+    if (lbl_80367AF8 & 2) {
+        if ((gUiInputFlags & 0x10) || fn_801696E0() || fn_8011AC10()) {
+            lbl_80367AF2 = 100;
+            lbl_80367AF5 = 100;
+        } else {
+            lbl_80367AF2 = 0x37;
+            lbl_80367AF5 = 0x87;
+        }
+    } else {
+        lbl_80367AF2 = 100;
+        lbl_80367AF5 = 100;
+    }
+    fn_800B4080();
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus reset
