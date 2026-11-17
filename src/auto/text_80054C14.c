@@ -515,50 +515,61 @@ void GActor_RequestRes(s32 arg0) {
     fn_800555EC(arg0, 0);
 }
 
-void fn_800558FC(void* arg0)
-{
-    // Load byte and compare with 0x8
-    u8 val = *(u8*)((char*)arg0 + 0x6);
-    
-    if (val >= 0x8) {
-        // Use jump table for cases >= 8
-        void (*func)(void) = (void (*)(void))jumptable_80285ACC[val];
-        
-        // Make the call
-        func();
-    } else {
-        // Switch to handle cases 0-7
-        
-        switch(val) {
-            case 0:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_8036905C;
-                break;
-            case 1:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369060;
-                break;
-            case 2:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369064;
-                break;
-            case 3:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369068;
-                break;
-            case 4:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_8036906C;
-                break;
-            case 5:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369070;
-                break;
-            case 6:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369074;
-                break;
-            case 7:
-                *(u32*)(((char*)arg0) + 0x28) = lbl_80369078;
-                break;
-        }
+u32 fn_800558FC(u8 *arg0) {
+    extern u32 lbl_80369058;
+    extern u32 lbl_8036905C;
+    extern u32 lbl_80369060;
+    extern u32 lbl_80369064;
+    extern u32 lbl_80369068;
+    extern u32 lbl_8036906C;
+    extern u32 lbl_80369070;
+    extern u32 lbl_80369074;
+    extern u32 lbl_80369078;
+    extern u32 lbl_8036907C;
+    typedef struct Color { u8 r, g, b, a; } Color;
+    Color result;
+    Color t0, t1, t2, t3, t4, t5, t6, t7, t8;
 
-        // After switch, just do one final assignment
-        *(u32*)(((char*)arg0) + 0x28) = lbl_8036907C;
+    *(u32 *)&result = lbl_80369058;
+    switch (arg0[6]) {
+    case 0:
+        *(u32 *)&t0 = lbl_8036905C;
+        result.r = t0.r; result.g = t0.g; result.b = t0.b; result.a = t0.a;
+        break;
+    case 1:
+        *(u32 *)&t1 = lbl_80369060;
+        result.r = t1.r; result.g = t1.g; result.b = t1.b; result.a = t1.a;
+        break;
+    case 2:
+        *(u32 *)&t2 = lbl_80369064;
+        result.r = t2.r; result.g = t2.g; result.b = t2.b; result.a = t2.a;
+        break;
+    case 3:
+        *(u32 *)&t3 = lbl_80369068;
+        result.r = t3.r; result.g = t3.g; result.b = t3.b; result.a = t3.a;
+        break;
+    case 4:
+        *(u32 *)&t4 = lbl_8036906C;
+        result.r = t4.r; result.g = t4.g; result.b = t4.b; result.a = t4.a;
+        break;
+    case 5:
+        *(u32 *)&t5 = lbl_80369070;
+        result.r = t5.r; result.g = t5.g; result.b = t5.b; result.a = t5.a;
+        break;
+    case 6:
+        *(u32 *)&t6 = lbl_80369074;
+        result.r = t6.r; result.g = t6.g; result.b = t6.b; result.a = t6.a;
+        break;
+    case 7:
+        *(u32 *)&t7 = lbl_80369078;
+        result.r = t7.r; result.g = t7.g; result.b = t7.b; result.a = t7.a;
+        break;
+    case 8:
+        *(u32 *)&t8 = lbl_8036907C;
+        result.r = t8.r; result.g = t8.g; result.b = t8.b; result.a = t8.a;
+        break;
     }
+    return *(u32 *)&result;
 }
 
 s32 GActor_FormatPath(s32 *arg0, s32 arg1) {
