@@ -1743,15 +1743,16 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
   }
 }
 
+#pragma optimization_level 3
 void fn_80231CC8(void *dst, const void *src, u32 size)
 {
-  const u8 *sb;
-  u8 *db;
+  u32 *d;
   u32 n;
   const u32 *s;
+  const u8 *sb;
   u32 b;
-  u32 *d;
   u32 a;
+  u8 *db;
   sb = ((const u8 *) src) - 1;
   db = ((u8 *) dst) - 1;
   n = (-((u32) dst)) & 3;
@@ -1815,7 +1816,7 @@ void fn_80231CC8(void *dst, const void *src, u32 size)
     while ((--size) != 0);
   }
 }
-
+#pragma optimization_level reset
 void __stdio_atexit(void) {
     __stdio_exit = __close_all;
 }
@@ -1896,30 +1897,21 @@ s32 vprintf(const char *format, void *args) {
     return result;
 }
 
-s32 fprintf(void *stream, const char *format, ...)
-{
+s32 fprintf(void *stream, const char *format, ...) {
     s32 fwide(void *, s32);
     void __begin_critical_region(s32);
     void __end_critical_region(s32);
     s32 __FileWrite(void *, const char *, u32);
-
     s32 result;
     va_list args;
 
     if (fwide(stream, -1) >= 0) {
         return -1;
     }
-
     __begin_critical_region(2);
-
-    va_start(args, format);
-
+    __builtin_va_info(&args);
     result = __pformatter(__FileWrite, stream, format, args);
-
-    va_end(args);
-
     __end_critical_region(2);
-
     return result;
 }
 
