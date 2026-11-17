@@ -4179,6 +4179,61 @@ s32 fn_800CDBA4(s32 *arg1, u32 arg2) {
     return 0;
 }
 
+extern "C" void fn_800CDEB0(u8 *self) {
+#pragma cplusplus on
+struct Entry { u32 f0;
+u32 f4;
+u32 f8;
+u32 fc;
+u32 f10;
+u8 f14;
+u32 f18;
+u32 f1c;
+u32 f20;
+u32 f24;
+u32 f28;
+u32 f2c;
+u32 f30;
+u32 f34;
+u32 f38;
+u32 f3c;
+u32 f40;
+u32 f44;
+u32 f48;
+u32 f4c;
+u32 f50;
+u32 f54; };
+if (*(u32*)(self+0x20c)<*(u32*)(self+0x204)) {
+u32 index=(*(u32*)(self+0x20c))++;
+Entry entry = (*(Entry**)(self+0x208))[index];
+*(u32*)(self+0x9c)=entry.f0;
+*(u32*)(self+0xa0)=entry.f4;
+*(u32*)(self+0xac)=entry.f8;
+*(u32*)(self+0xb0)=entry.fc;
+*(u32*)(self+0x174)=entry.f10;
+*(u8*)(self+0x178)=entry.f14;
+*(u32*)(self+0x210)=entry.f18;
+*(u32*)(self+0x21c)=entry.f1c;
+*(u32*)(self+0x220)=entry.f20;
+*(u32*)(self+0x224)=entry.f24;
+*(u32*)(self+0x214)=entry.f28;
+*(u32*)(self+0x218)=entry.f2c;
+*(u32*)(self+0x254)=entry.f50;
+*(u32*)(self+0x258)=entry.f54;
+*(u32*)(self+0x260)=0;
+*(u32*)(self+0x264)=0;
+*(u32*)(self+0x234)=entry.f30;
+*(u32*)(self+0x244)=entry.f40;
+*(u32*)(self+0x238)=entry.f34;
+*(u32*)(self+0x248)=entry.f44;
+*(u32*)(self+0x23c)=entry.f38;
+*(u32*)(self+0x24c)=entry.f48;
+*(u32*)(self+0x240)=entry.f3c;
+*(u32*)(self+0x250)=entry.f4c;
+}
+#pragma cplusplus reset
+}
+
 void fn_800CDFFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     // Simplest possible version for initial attempt
     return;
@@ -7612,8 +7667,46 @@ extern "C" void fn_800DA608(s32 arg0) {
     ((Host *)*(void **)((u8 *)self + 4))->add(obj);
     if (made)
         String_Destroy(&type, -1);
-    String_Destroy(name, -1);
+          String_Destroy(name, -1);
+  }
+  #pragma cplusplus reset
+  
+  void fn_800DA748(s32 arg0)
+{
+    extern void *lbl_803678B8;
+    extern char lbl_802711B0[];
+    extern char *lbl_8028DE60[];
+    s32 String_Compare(String *, u32, u32, char *, u32);
+    void String_AssignCStr(String *, char *, u32);
+    void fn_800C99A0(String *, String *, s32, s32);
+    void fn_800C992C(String *, char *, u32);
+    char *String_CStr(String *);
+    void fn_800E5044(void *, char *);
+    void String_Destroy(String *, s32);
+    u32 strlen(const char *);
+    String str;
+    void *self;
+    char *name;
+
+    str.cap = 0;
+    self = lbl_803678B8;
+    str.size = 0;
+    str.data = 0;
+    str.cap = 0;
+    if (*(void **)((u8 *)self + 0x10) != 0 &&
+        String_Compare((String *)((u8 *)self + 0x70), 0, *(u32 *)((u8 *)self + 0x70),
+                       lbl_802711B0 + 0x184, strlen(lbl_802711B0 + 0x184)) == 0) {
+        String_AssignCStr(&str, lbl_802711B0 + 0x189, strlen(lbl_802711B0 + 0x189));
+        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+        fn_800C992C(&str, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
+        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+        name = lbl_8028DE60[arg0];
+        fn_800C992C(&str, name, strlen(name));
+        fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
+    }
+    String_Destroy(&str, -1);
 }
+
 #pragma cplusplus reset
 
 void fn_800DAA38(void *arg0) {
