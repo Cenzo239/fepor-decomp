@@ -687,11 +687,11 @@ flags=*(u16 *)(anim+0x52)&15;
 if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
-#pragma opt_common_subs reset
+#pragma optimization_level 3
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void *Process_Create(void *, u32);
-    void MuFade_UnlinkSame(void *, void *);
+    void fn_8000A388(void *, void *, void *);
+    void *fn_8000CAF0(void *, u32);
+    void fn_80185078(void *, void *);
     extern u8 lbl_80295B64[];
     u8 sp8[0x34];
     u32 var_r31;
@@ -703,11 +703,11 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
-    GfxEnt_ForEachKey(lbl_80295B64, MuFade_UnlinkSame, sp8);
+    fn_8000A388(lbl_80295B64, fn_80185078, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = Process_Create(lbl_80295B64, var_r31);
+    temp_r3 = fn_8000CAF0(lbl_80295B64, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     a = arg1[0];
     b = arg1[1];
@@ -718,7 +718,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     ((u8 *)temp_r3)[0x36] = c;
     ((u8 *)temp_r3)[0x37] = d;
 }
-
+#pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
  void GfxEnt_ForEachKey(void *, void *, void *);
  void *Process_Create(void *, u32);
@@ -1338,18 +1338,16 @@ void fn_80185A64(void *arg0) {
     void *obj;
     u8 *flags;
 
-    if (*((u8 *)arg0 + 0x3C) != 0) {
-        GActor_RequestRes(MoveAnim_str + 0x1C1);
-        obj = *(void **)((u8 *)arg0 + 0x30);
-        if (fn_800504FC(obj, 0xA) != 0) {
-            fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
-            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-            *flags |= 4;
-            fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
-            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-            *flags &= ~4;
-        }
-    }
+    if (*((u8 *)arg0 + 0x3C) == 0) return;
+    GActor_RequestRes(MoveAnim_str + 0x1C1);
+    obj = *(void **)((u8 *)arg0 + 0x30);
+    if (fn_800504FC(obj, 0xA) == 0) return;
+    fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
+    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+    *flags |= 4;
+    fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
+    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+    *flags &= ~4;
 }
 
 void fn_80185AF4(void *arg0) {
@@ -3180,7 +3178,7 @@ void fn_8018B89C(void *arg0) {
     void *self;
     void *p;
     f64 d;
-    f32 cos_s;
+    register f32 cos_s;
     f32 scale;
     f32 z;
 
@@ -3242,17 +3240,17 @@ void fn_8018BA34(void *arg0) {
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD2C;
     extern f32 lbl_8036AD48;
-    void *unit;
+    register f32 thresh;
+    register f32 scale;
+    register f32 a;
+    register f32 b;
     s16 raw;
-    f32 scale;
-    f32 thresh;
-    f32 a;
-    f32 b;
+    void *unit;
 
     unit = *(void **)((u8 *)arg0 + 0x30);
     raw = *(s16 *)((u8 *)unit + 0x15C);
-    scale = lbl_8036ACE8;
     thresh = lbl_8036AD2C;
+    scale = lbl_8036ACE8;
     *(f32 *)((u8 *)arg0 + 0x40) = (f32)raw / scale;
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x34);
     a = *(f32 *)((u8 *)arg0 + 0x40);
@@ -8479,18 +8477,18 @@ s32 fn_80196388(s32 arg0) {
     void **UiCtx_GetItemSlot(void *);
     void fn_80037040(s32, u8, u8);
     void fn_80094A08(s32, s32);
-    extern u8 lbl_802EF4C8[];
-    void fn_8009127C(void *, s32, void *);
+    void StatBonus_ShowHelp(s32, s32, u8 *);
+    extern u8 gUiContext[];
+    extern u8 gBattle[];
     s32 temp_r31;
-    extern u8 lbl_80330EAC[];
     void *temp_r30;
 
-    temp_r31 = *(s32 *)lbl_802EF4C8;
-    temp_r30 = *UiCtx_GetItemSlot(lbl_802EF4C8);
+    temp_r31 = *(s32 *)gUiContext;
+    temp_r30 = *UiCtx_GetItemSlot(gUiContext);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
-    fn_80094A08(temp_r31, *(s8 *)&lbl_802EF4C8[0xA]);
-    *(u32 *)((unsigned short)lbl_80330EAC + 0xCAC) |= 0x2000;
-    fn_8009127C(temp_r30, arg0, lbl_80330EAC);
+    fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
+    *(u32 *)((unsigned short)gBattle + 0xCAC) |= 0x2000;
+    StatBonus_ShowHelp((s32)temp_r30, arg0, gBattle);
     return 1;
 }
 
@@ -8518,7 +8516,7 @@ s32 fn_80196420(s32 arg0, void *arg1) {
     return 1;
 }
 
-#pragma opt_common_subs off
+#pragma global_optimizer off
 s32 fn_801964C8(s32 arg0) {
     s32 *UiCtx_GetItemSlot(void *);
     void fn_8003708C(s32, s32);
@@ -8535,7 +8533,7 @@ s32 fn_801964C8(s32 arg0) {
     StatBonus_ShowHelp(temp, arg0, gBattle);
     return 1;
 }
-#pragma opt_common_subs on
+#pragma global_optimizer on
 s32 fn_80196558(void *arg0, void *arg1) {
     s8 fn_8003A778(void *);
     s8 fn_8003AA40(void *);
@@ -12953,32 +12951,21 @@ s32 fn_8019FF68(void) {
     return 1;
 }
 
+#pragma optimization_level 3
 s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
     void *Camera_GetActive(void);
     void fn_800193CC(void *, f32);
     void Camera_SyncFromBattleState(void);
     void *p;
-    s32 a;
-    s32 b;
-    s32 c;
-    f32 fa;
-    f32 fb;
 
-    a = arg0;
-    b = arg1;
-    c = arg2;
     p = Camera_GetActive();
-    fa = (f32)a;
-    *(f32 *)((u8 *)p + 4) = fa;
-    fb = (f32)b;
-    *(f32 *)((u8 *)p + 0x10) = fa;
-    *(f32 *)((u8 *)p + 8) = fb;
-    *(f32 *)((u8 *)p + 0x14) = fb;
-    fn_800193CC(p, (f32)c);
+    *(f32 *)((char *)p + 0x10) = *(f32 *)((char *)p + 4) = (f32)arg0;
+    *(f32 *)((char *)p + 0x14) = *(f32 *)((char *)p + 8) = (f32)arg1;
+    fn_800193CC(p, (f32)arg2);
     Camera_SyncFromBattleState();
     return 1;
 }
-
+#pragma optimization_level reset
 s32 fn_801A0060(s32 arg0, s32 arg1, s32 arg2) {
     void *Camera_GetActive(void);
     void *obj;
