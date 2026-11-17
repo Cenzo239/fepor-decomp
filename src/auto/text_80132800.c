@@ -3176,25 +3176,27 @@ extern void Prim2D_PrepareTex(void);
 extern void *Msg_Expand(s32);
 extern s32 fn_8001003C(s16, s16, u8, u8, u8, void*, f32, f32, f32);
 extern s32 fn_8007CCE8(s32, f32, f32);
-void fn_801377BC(void *arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s8 arg5, s8 arg6) {
-    u16 temp_r0;
-    
-    Prim2D_Begin();
-    temp_r0 = *(u32*)((char*)arg0 + 0x34) | 3;
-    Prim2D_SetTex(0, temp_r0);
-    Prim2D_PrepareTex();
-    
-    // Call to fn_8001003C with correct arguments - first call
-    fn_8001003C(arg1, arg2, 6, 1, 0, Msg_Expand(arg3), lbl_8036A620, lbl_8036A628, lbl_8036A630);
-    
-    // Second call with conditions
-    if (arg4 < arg6) {
-        fn_8001003C((arg1 + 0x2F), arg2, 1, 1, 0, &lbl_802767E0 + 0x44, arg4, lbl_8036A620, lbl_8036A628);
-    } else {
-        fn_8001003C((arg1 + 0x2F), arg2, 0x22, 1, 0, &lbl_802767E0 + 0x44, arg4, lbl_8036A620, lbl_8036A628);
-    }
-    
-    fn_8007CCE8((arg5 - arg4), (f32)(arg1 + 0x46), (f32)(arg2 + 4));
+void fn_801377BC(void *self,s16 x,s16 y,s32 message,s8 current,s8 maximum,s8 threshold) {
+extern f32 lbl_8036A620,lbl_8036A628;
+extern u8 lbl_802767E0[192];
+void Prim2D_Begin(void);
+s32 Prim2D_SetTex(s32,u16);
+void Prim2D_PrepareTex(void);
+void *Msg_Expand(s32);
+s32 fn_8001003C(s16,s16,u8,u8,u8,void *,...);
+s32 fn_8007CCE8(f32,f32,s32);
+s32 color;
+s32 sx;
+s32 value;
+Prim2D_Begin();
+Prim2D_SetTex(0,*(u32*)((u8*)self+0x34)|3);
+Prim2D_PrepareTex();
+fn_8001003C(x,y,6,1,0,Msg_Expand(message),lbl_8036A620,lbl_8036A628);
+color=0x22;
+if(current<threshold)color=1;
+sx=(s16)x;
+fn_8001003C((s16)(sx+47),y,color,1,0,lbl_802767E0+0x44,lbl_8036A620,lbl_8036A628,(value=(s8)current));
+fn_8007CCE8((f32)(sx+70),(f32)((s16)y+4),(s8)maximum-value);
 }
 
 void fn_801378E8(void *arg0, s32 arg1) {
