@@ -2071,85 +2071,77 @@ s32 Sound_HasId(s32 id) {
 
 extern u16 lbl_80319A18[];
 s32 fn_800B2FF4(u8 arg0) {
-    u16 *ptr;
-    s32 count;
-    
+    extern u16 lbl_80319A18[];
+    s32 *ptr;
+    s32 i;
+    u8 val;
+
     if (arg0 == 0) {
-        ptr = &lbl_80319A18[0];
-        count = 2;
-loop_1:
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        if (*ptr != 0) {
-            return 0;
-        }
-        ptr += 1;
-        count -= 1;
-        if (count == 0) {
-            return 1;
-        }
-        goto loop_1;
-    } else {
-        s32 temp_arg0 = arg0 + 1;
-        ptr = &lbl_80319A18[0];
-        count = 2;
-loop_2:
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        if (temp_arg0 == *ptr) {
-            return 0;
-        }
-        ptr += 1;
-        count -= 1;
-        if (count == 0) {
-            return 1;
-        }
-        goto loop_2;
+        ptr = (s32 *)lbl_80319A18;
+        i = 0;
+        do {
+            if (ptr[0] != 0) {
+                return 0;
+            }
+            if (ptr[1] != 0) {
+                return 0;
+            }
+            if (ptr[2] != 0) {
+                return 0;
+            }
+            if (ptr[3] != 0) {
+                return 0;
+            }
+            if (ptr[4] != 0) {
+                return 0;
+            }
+            if (ptr[5] != 0) {
+                return 0;
+            }
+            if (ptr[6] != 0) {
+                return 0;
+            }
+            if (ptr[7] != 0) {
+                return 0;
+            }
+            ptr += 8;
+            i += 7;
+        } while (i < 14);
+        return 1;
     }
+
+    val = arg0 + 1;
+    ptr = (s32 *)lbl_80319A18;
+    i = 0;
+    do {
+        if (ptr[0] == val) {
+            return 0;
+        }
+        if (ptr[1] == val) {
+            return 0;
+        }
+        if (ptr[2] == val) {
+            return 0;
+        }
+        if (ptr[3] == val) {
+            return 0;
+        }
+        if (ptr[4] == val) {
+            return 0;
+        }
+        if (ptr[5] == val) {
+            return 0;
+        }
+        if (ptr[6] == val) {
+            return 0;
+        }
+        if (ptr[7] == val) {
+            return 0;
+        }
+        ptr += 8;
+        i += 7;
+    } while (i < 14);
+    return 1;
 }
 
 s32 fn_800B3194(void) {
@@ -8138,28 +8130,68 @@ s32 fn_800BE968(u8 arg0, s8 arg1, s8 arg2) {
     return 0;
 }
 
-void fn_800BEAC0(void* arg0, void* arg1, int arg2) {
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    
-    if (arg2 < 0) {
-        return;
-    }
+s32 fn_800BEAC0(s32 parent, u8 arg1, s8 arg2, s8 arg3) {
+    extern s16 gTalkState[];
+    void *Event_NextEntry(void *);
+    s32 Event_GetString(void *, u16);
+    u8 EventFlag_IsSet(void *, s32);
+    void *Process_CreateChild(void *, s32);
+    void fn_800BEC5C(void);
+    s16 *state;
+    s8 *entry;
+    u8 *flags;
+    s16 value;
+    u8 found;
+    void *proc;
 
-    temp_r3 = *(s32*)arg1;
-    temp_r4 = *(s32*)((char*)arg1 + 0x1C);
-    temp_r5 = *(s32*)((char*)arg1 + 0x20);
+    state = gTalkState;
+    state[0] = arg2;
+    state[1] = arg3;
+    state[2] = arg1;
 
-    if (temp_r3 < 0) {
-        *(s32*)arg0 = -temp_r3;
-        *(s32*)((char*)arg0 + 0x1C) = -temp_r4;
-        *(s32*)((char*)arg0 + 0x20) = -temp_r5;
-    } else {
-        *(s32*)arg0 = temp_r3;
-        *(s32*)((char*)arg0 + 0x1C) = temp_r4;
-        *(s32*)((char*)arg0 + 0x20) = temp_r5;
+    entry = Event_NextEntry(0);
+    flags = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        if (entry[0xC] == 5) {
+            value = gTalkState[0];
+            if (value >= 0 && value != *(s16 *)(entry + 0x14)) {
+                found = 0;
+            } else {
+                value = state[1];
+                if (value >= 0 && value != *(s16 *)(entry + 0x16)) {
+                    found = 0;
+                } else {
+                    value = state[2];
+                    if (value != 0 && value != *(s16 *)(entry + 0x18)) {
+                        found = 0;
+                    } else if (EventFlag_IsSet(flags, Event_GetString(entry, (u16)*(s16 *)(entry + 0x1A))) != 0) {
+                        found = 0;
+                    } else {
+                        found = 1;
+                        gTalkState[0] = *(s16 *)(entry + 0x14);
+                        state[1] = *(s16 *)(entry + 0x16);
+                        state[2] = *(s16 *)(entry + 0x18);
+                    }
+                }
+            }
+            if (found == 0) {
+
+            } else {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
     }
+    found = 0;
+check:
+    if (found == 0) {
+        return 0;
+    }
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 5;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)fn_800BEC5C;
+    return 1;
 }
 
 #pragma optimization_level 3
