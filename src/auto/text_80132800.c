@@ -5345,6 +5345,43 @@ s16 fn_8013B6A4(void *arg0) {
     return M2C_FIELD(arg0, s16 *, 0xD4);
 }
 
+void fn_8013B6AC(void *arg0) {
+#pragma cplusplus reset
+void *Heap_Alloc(s32);
+void *fn_8013692C(void *,s32,s32,s32,s32,s32);
+void fn_8013F0F0(void *,void *);
+void fn_8013F1A0(void *,void *);
+#pragma cplusplus on
+struct Rect {
+s16 left,top,right,bottom;
+s16 width() { return right-left; }
+s16 height() { return bottom-top; }
+void set(s16 l,s16 t,s16 r,s16 b) { left=l; top=t; right=r; bottom=b; }
+};
+void *child;
+s16 mid,height;
+Rect *outer=(Rect *)((u8 *)arg0+0xA);
+Rect *inner=(Rect *)((u8 *)arg0+0x12);
+inner->set(32,8,outer->width()-32,outer->height()-8);
+M2C_FIELD(arg0,s16 *,0x62)=8;
+M2C_FIELD(arg0,s16 *,0x64)=12;
+if(M2C_FIELD(arg0,void **,0x48)) fn_8013F0F0(arg0,M2C_FIELD(arg0,void **,0x48));
+child=Heap_Alloc(0x9C);
+if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))+16,0,9,(s16)(M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14)),M2C_FIELD(arg0,s16 *,0x22)-5);
+M2C_FIELD(arg0,void **,0x48)=child;
+M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=0;
+fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
+M2C_FIELD(arg0,s16 *,0x92)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+M2C_FIELD(arg0,s16 *,0x94)=0;
+M2C_FIELD(arg0,s16 *,0x96)=0;
+mid=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
+M2C_FIELD(arg0,s16 *,0xBA)=mid;
+M2C_FIELD(arg0,s16 *,0xBC)=height;
+M2C_FIELD(arg0,s16 *,0xBE)=0;
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 extern "C" void *Ui_DtorPanelMid(void *self, s16 doFree) {
     struct Obj {
@@ -5406,6 +5443,56 @@ extern "C" void *Ui_DtorPanelMid(void *self, s16 doFree) {
     }
     return self;
 }
+
+extern "C" void fn_8013B8D8(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *fn_8013692C(void *, s32, s32, s32, s32, s32);
+    void fn_8013F0F0(void *, void *);
+    void fn_8013F1A0(void *, void *);
+    void *child;
+    s16 r5, r7, r8, r9, s, t;
+    s16 mid, height;
+
+    t = 2;
+    s = 8;
+    r9 = *(s16 *)((u8 *)arg0 + 0xC);
+    r8 = *(s16 *)((u8 *)arg0 + 0x10);
+    r7 = *(s16 *)((u8 *)arg0 + 0xA);
+    r5 = *(s16 *)((u8 *)arg0 + 0xE);
+    r8 = (s16)(r8 - r9);
+    *(s16 *)((u8 *)arg0 + 0x12) = t;
+    t = (s16)(r5 - r7);
+    r5 = r8 - 8;
+    *(s16 *)((u8 *)arg0 + 0x14) = s;
+    t = t - 2;
+    *(s16 *)((u8 *)arg0 + 0x16) = t;
+    *(s16 *)((u8 *)arg0 + 0x18) = r5;
+    *(s16 *)((u8 *)arg0 + 0x92) = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) >> 1;
+    *(s16 *)((u8 *)arg0 + 0x94) = 0;
+    *(s16 *)((u8 *)arg0 + 0x96) = 0;
+    mid = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) >> 1;
+    height = *(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14);
+    *(s16 *)((u8 *)arg0 + 0xBA) = mid;
+    *(s16 *)((u8 *)arg0 + 0xBC) = height;
+    *(s16 *)((u8 *)arg0 + 0xBE) = 0;
+    if (*(void **)((u8 *)arg0 + 0x48)) {
+        fn_8013F0F0(arg0, *(void **)((u8 *)arg0 + 0x48));
+    }
+    child = Heap_Alloc(0x9C);
+    if (child) {
+        child = fn_8013692C(
+            child,
+            (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) - 11,
+            0,
+            9,
+            (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14)),
+            *(s16 *)((u8 *)arg0 + 0x22) - 5);
+    }
+    *(void **)((u8 *)arg0 + 0x48) = child;
+    *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x48) = 1;
+    fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x48));
+}
+
 #pragma cplusplus reset
 
 void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
@@ -8480,6 +8567,55 @@ void fn_8014127C(void *arg0) {
     (void)lbl_8036A740;
     (void)Math_Ease;
     (void)arg0;
+}
+
+void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, void *);
+    void List_Insert(void *, void *, void *, void *);
+    void *fn_80140B04(void *);
+    void fn_80142060(void *);
+    void fn_8014127C(void *);
+    extern u8 lbl_80292278[];
+    void *sp10;
+    void *spC;
+    void *sp8;
+    void *end;
+    void *node;
+    void *obj;
+
+    if (arg3 != 0) {
+        obj = Process_CreateChild(lbl_80292278, arg0);
+    } else {
+        obj = Process_Create(lbl_80292278, arg0);
+    }
+    if (obj != NULL) {
+        *(u8 *)((u8 *)obj + 0x30) = 0;
+        fn_80142060((u8 *)obj + 0x34);
+    }
+    sp10 = arg1;
+    if (arg1 != NULL) {
+        end = fn_80140B04((u8 *)obj + 0x34);
+        node = *(void **)((u8 *)fn_80140B04((u8 *)obj + 0x34) + 4);
+        while (node != end && *(void **)((u8 *)node + 8) != sp10) {
+            node = *(void **)((u8 *)node + 4);
+        }
+        if (node == (u8 *)obj + 0x38) {
+            spC = (u8 *)obj + 0x38;
+            List_Insert(&sp8, (u8 *)obj + 0x34, &spC, &sp10);
+            if (sp10 != NULL) {
+                *(s32 *)((u8 *)sp10 + 4) = *(s32 *)((u8 *)sp10 + 4) + 1;
+            }
+        }
+    }
+    *(s16 *)((u8 *)obj + 0x28) = *(s16 *)((u8 *)arg1 + 0x24);
+    *(s16 *)((u8 *)obj + 0x40) = *(s16 *)((u8 *)arg1 + 0xA);
+    *(s16 *)((u8 *)obj + 0x42) = *(s16 *)((u8 *)arg1 + 0xC);
+    *(s16 *)((u8 *)obj + 0x44) = arg2[0];
+    *(s16 *)((u8 *)obj + 0x46) = arg2[1];
+    *(s32 *)((u8 *)obj + 0x48) = arg4;
+    fn_8014127C(obj);
+    return obj;
 }
 
 void fn_80141630(void *arg0, s32 arg1) {
