@@ -6103,25 +6103,31 @@ f32 div = lbl_8036B328;
 *(s16 *)((u8 *)obj + 0x3A) = (s16)((f32)arg6 / div);
 *(u8 *)((u8 *)obj + 0x48) = 1;
 }
+#pragma use_lmw_stmw on
 void fn_801C1BC0(s8 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
     void *obj;
+    union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
+    union { f64 d; struct { f32 hi; f32 lo; } f; } diff;
+    s16 v;
 
     obj = Process_Create(lbl_80297FF8, arg5);
+    conv.w.hi = 0x43300000;
+    conv.w.lo = (u32)arg4 ^ 0x80000000;
+    diff.d = conv.d - lbl_8036B330;
+    v = (s16)(diff.f.hi / lbl_8036B328);
     *(s16 *)((u8 *)obj + 0x3C) = arg1;
     *(s16 *)((u8 *)obj + 0x3E) = arg2;
     *(s32 *)((u8 *)obj + 0x44) = arg3;
     *(s8 *)((u8 *)obj + 0x30) = arg0;
-    *(s16 *)((u8 *)obj + 0x36) = (s16)((f32)arg4 / lbl_8036B328);
+    *(s16 *)((u8 *)obj + 0x36) = v;
     *(s16 *)((u8 *)obj + 0x38) = -1;
     *(s16 *)((u8 *)obj + 0x3A) = 0;
     *(u8 *)((u8 *)obj + 0x48) = 0;
 }
-
-#pragma use_lmw_stmw on
 void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6)
 {
     void *Process_Create(void *, s32);
@@ -7941,32 +7947,33 @@ void fn_801C65E0(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_801C68D0(u32 arg0) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
     void fn_8005FA14(void *, s32);
     void *x;
     u8 *table;
-    u8 *ptr;
     s32 i;
+    u8 *ptr;
     s32 ctr;
     s32 off;
     void *obj;
 
     x = Process_Find(LightFade_script);
-    if (x == NULL) {
+    if ((u32)x == 0U) {
         table = NULL;
     } else {
         table = *(u8 **)((u8 *)x + 0x30);
     }
-    if (table != NULL) {
+    if ((u32)table != 0U) {
         ptr = table;
         i = 0;
         for (ctr = 0x20; ctr != 0; ctr--) {
             if (*(u32 *)(ptr + 4) == arg0) {
                 off = i * 0x14 + 4;
                 obj = *(void **)((s32)table + off);
-                if (obj != NULL) {
+                if ((u32)obj != 0U) {
                     fn_8005FA14(obj, 0);
                     *(u32 *)((s32)table + off) = 0;
                 }
@@ -7977,7 +7984,7 @@ void fn_801C68D0(u32 arg0) {
         }
     }
 }
-
+#pragma global_optimizer on
 void fn_801C6978(u32 arg0) {
     extern u8 LightFade_script[];
     extern u32 lbl_8027D540[];
@@ -11115,30 +11122,28 @@ extern "C" void fn_801CCED4(s32 *arg0, void *arg1) {
         virtual void v6() = 0;
         virtual void v7() = 0;
         virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
+        virtual s32 v9() = 0;
+        virtual s32 v10() = 0;
         virtual s32 v11() = 0;
-        virtual s32 v12() = 0;
-        virtual s32 v13() = 0;
     };
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;
     s32 spC;
+    s32 *out;
     Obj *self;
-    s16 x;
     s16 y;
+    s16 x;
     s32 w;
-    s32 h;
 
+    out = arg0;
     self = (Obj *)arg1;
     x = *(s16 *)((u8 *)self + 0x48);
-    y = (s16)(*(s16 *)((u8 *)self + 0x4A) - self->v13());
-    w = self->v11();
-    h = self->v12();
-    spA = (s16)(y * h);
+    y = (s16)(*(s16 *)((u8 *)self + 0x4A) - self->v11());
+    w = self->v9();
+    spA = (s16)(y * self->v10());
     sp8 = (s16)(x * w);
-    *arg0 = *fn_8013F748(self, &spC, &sp8);
+    *out = *fn_8013F748(self, &spC, &sp8);
 }
 #pragma cplusplus reset
 
