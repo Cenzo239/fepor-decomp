@@ -3800,19 +3800,27 @@ void fn_8024A674(s32 arg0, s32 arg1) {
 }
 
 s32 fn_8024A6F8(void) {
- s32 Sound_LookupVid(void); void fn_80255100(void*);
- s32 voiceOff; s32 ret; s32 vid; u8 *base; u8 *voice;
- ret=0;
- if(gSoundReady!=0) {
- vid=Sound_LookupVid();
- while((u32)(vid+0x10000)!=0xFFFF) {
- base=(u8*)gSynthVoices;
- voiceOff=(u8)vid*0x458;
- voice=voiceOff+base;
- if((u32)vid==*(u32*)(voice+0xF4)) { fn_80255100(voice); ret=1; }
- vid=*(s32*)((u8*)gSynthVoices+voiceOff+0xEC);
- }
- } return ret;
+    s32 Sound_LookupVid(void);
+    void fn_80255100(void *);
+    s32 voiceOff;
+    s32 ret;
+    s32 vid;
+    u8 *voice;
+
+    ret = 0;
+    if (gSoundReady != 0) {
+        for (vid = Sound_LookupVid(); (u32)(vid + 0x10000) != 0xFFFF;
+             vid = *(s32 *)((u8 *)gSynthVoices + voiceOff + 0xEC)) {
+            voice = (u8 *)gSynthVoices;
+            voiceOff = (u8)vid * 0x458;
+            voice += voiceOff;
+            if ((u32)vid == *(u32 *)(voice + 0xF4)) {
+                fn_80255100(voice);
+                ret = 1;
+            }
+        }
+    }
+    return ret;
 }
 
 void fn_8024A780(u8 arg0, u16 arg1, u8 arg2, u8 arg3, s32 arg4) {
@@ -12797,6 +12805,131 @@ void fn_8025F310(u8 arg0, u8 arg1) {
             i += 1;
         }
         return;
+    }
+}
+
+int Sound_WriteParamU8(param,channel,bank,value)
+s32 param;
+s32 channel;
+u8 bank;
+s32 value;
+{
+    void fn_8025EF0C(u8,s32,s32);
+    void fn_8025F0EC(u8,s32);
+    void fn_8025F310(u8,s32);
+    void fn_80249E14(void *);
+    u8 *base=(u8 *)lbl_8035D118;
+    u32 changed;
+    if((u8)channel!=255) {
+        if(bank!=255) {
+switch(param & 255U) {
+        case 6: fn_8025EF0C(bank,channel,value); changed=1; break;
+        case 0x26: {
+            u8 *entry=base+0x200+(u8)bank*0x860+(u8)channel*0x86;
+            u16 code=entry[0x64] | (entry[0x65]<<8);
+            switch(code) {
+            case 0x7F7D: {
+                u8 *control=base+0x4500+(u8)bank*0x90+(u8)channel*9;
+                u32 v=(*(u32 *)(control+1)&0xFE00)|(((u32)value<<2)&0x3FC);
+                u32 i=0;
+                u32 offset=0;
+                *(u32 *)(control+1)=v;
+                while(i<gSoundData[0x210]) {
+                    u8 *voice=(u8 *)gSynthVoices+offset;
+                    if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) *(u32 *)(voice+0x1E0)=v;
+                    offset+=0x458; i++;
+                }
+                break;
+            }
+            case 0x7F7E: {
+                u8 *control=base+0x4500+(u8)bank*0x90+(u8)channel*9;
+                u32 v=(*(u32 *)(control+5)&0xFE00)|(((u32)value<<2)&0x3FC);
+                u32 i=0;
+                u32 offset=0;
+                *(u32 *)(control+5)=v;
+                while(i<gSoundData[0x210]) {
+                    u8 *voice=(u8 *)gSynthVoices+offset;
+                    if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) *(u32 *)(voice+0x1E4)=v;
+                    offset+=0x458; i++;
+                }
+                break;
+            }
+            }
+            changed=1; break;
+        }
+        case 0x60: fn_8025F0EC(bank,channel); changed=1; break;
+        case 0x61: fn_8025F310(bank,channel); changed=1; break;
+        default: changed=(value&0x7F)!=base[0x200+(u8)bank*0x860+(u8)channel*0x86+(u8)param]; break;
+        }
+        base[0x200+(u8)bank*0x860+(u8)channel*0x86+(u8)param]=value&0x7F;
+        if(changed) {
+            u32 i=0;
+            u32 offset=0;
+            while(i<gSoundData[0x210]) {
+                u8 *voice=(u8 *)gSynthVoices+offset;
+                if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) {
+                    *(u32 *)(voice+0x220)=0x7FFF;
+                    fn_80249E14((u8 *)gSynthVoices+offset);
+                }
+                offset+=0x458; i++;
+            }
+            *(u32 *)(base+((u8)bank<<6)+((u8)channel<<2))=255;
+        }
+        } else {
+switch(param & 255U) {
+        case 6: fn_8025EF0C(bank,channel,value); changed=1; break;
+        case 0x26: {
+            u8 *entry=base+0x200+(u8)bank*0x860+(u8)channel*0x86;
+            u16 code=entry[0x64] | (entry[0x65]<<8);
+            switch(code) {
+            case 0x7F7D: {
+                u8 *control=base+0x4500+(u8)bank*0x90+(u8)channel*9;
+                u32 v=(*(u32 *)(control+1)&0xFE00)|(((u32)value<<2)&0x3FC);
+                u32 i=0;
+                u32 offset=0;
+                *(u32 *)(control+1)=v;
+                while(i<gSoundData[0x210]) {
+                    u8 *voice=(u8 *)gSynthVoices+offset;
+                    if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) *(u32 *)(voice+0x1E0)=v;
+                    offset+=0x458; i++;
+                }
+                break;
+            }
+            case 0x7F7E: {
+                u8 *control=base+0x4500+(u8)bank*0x90+(u8)channel*9;
+                u32 v=(*(u32 *)(control+5)&0xFE00)|(((u32)value<<2)&0x3FC);
+                u32 i=0;
+                u32 offset=0;
+                *(u32 *)(control+5)=v;
+                while(i<gSoundData[0x210]) {
+                    u8 *voice=(u8 *)gSynthVoices+offset;
+                    if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) *(u32 *)(voice+0x1E4)=v;
+                    offset+=0x458; i++;
+                }
+                break;
+            }
+            }
+            changed=1; break;
+        }
+        case 0x60: fn_8025F0EC(bank,channel); changed=1; break;
+        case 0x61: fn_8025F310(bank,channel); changed=1; break;
+        default: changed=(value&0x7F)!=base[0x4980+(u8)channel*0x86+(u8)param]; break;
+        }
+        base[0x4980+(u8)channel*0x86+(u8)param]=value&0x7F;
+        if(changed) {
+            u32 i=0;
+            u32 offset=0;
+            while(i<gSoundData[0x210]) {
+                u8 *voice=(u8 *)gSynthVoices+offset;
+                if((u8)bank==voice[0x122] && (u8)channel==voice[0x121]) {
+                    *(u32 *)(voice+0x220)=0x7FFF;
+                    fn_80249E14((u8 *)gSynthVoices+offset);
+                }
+                offset+=0x458; i++;
+            }
+            
+        }
+        }
     }
 }
 
