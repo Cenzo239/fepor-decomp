@@ -1882,7 +1882,7 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 
 #pragma optimization_level 3
 s32 fn_800A2624(void *arg0) {
-    M2C_FIELD(arg0, u16 *, 4) = (u16) M2C_FIELD(M2C_FIELD(fn_800AA794(), void **, 0x18C), u16 *, 0x38);
+    M2C_FIELD(arg0, u16 *, 4) = (u16) M2C_FIELD(M2C_FIELD(Map_GetCursorUnit(), void **, 0x18C), u16 *, 0x38);
     return 0;
 }
 #pragma optimization_level reset
