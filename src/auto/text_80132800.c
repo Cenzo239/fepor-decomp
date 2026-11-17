@@ -816,22 +816,8 @@ extern "C" void fn_80133C74(void *arg0)
     void fn_80152CAC(s16, s16, s32);
 
     u8 *self;
-    s32 width;
-    s32 height;
-    s32 columnWidth;
-    s32 rowHeight;
-    s32 column;
-    s32 row;
-    s32 xOffset;
-    s32 yOffset;
-    s32 x;
-    s32 y;
-    s32 textHeight;
-    s32 halfHeight;
-    s32 x2;
-    s32 y2;
-    s32 columns;
-    s32 rows;
+    s32 y, x, column, row, yOffset, xOffset, height, width, rowHeight, columnWidth;
+    s32 textHeight, halfHeight, x2, y2, columns, rows;
     u8 color[4];
 
     self = (u8 *)arg0;
@@ -891,7 +877,7 @@ extern "C" void fn_80133C74(void *arg0)
                 -1, lbl_8036A5AC
             );
 
-            y2 = (s16)(y + (s16)(halfHeight + textHeight));
+            y2 = (s16)(y + (s16)(textHeight + halfHeight));
 
             x2 = (s16)(
                 x + (s16)(
@@ -8793,8 +8779,8 @@ void fn_8013FC28(s32 *dst, s32 *src, s16 *off) {
     *dst = *(s32 *)local;
 }
 #pragma scheduling on
-void fn_8013FC64(void) {
-
+Vec2s *fn_8013FC64(Vec2s *p) {
+    return p;
 }
 
 void List_Erase(ListIter *ret, List *list, ListIter *it) {
