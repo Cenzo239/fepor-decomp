@@ -7789,21 +7789,19 @@ extern "C" void fn_8013E9BC(void *arg0) {
     extern f32 lbl_8036A6F0;
     extern f32 lbl_8036A6F4;
     extern u8 lbl_802769F8[];
+    s16 ax;
     Obj *self;
     s16 ay;
-    s16 ax;
     void *text;
-    s16 ay_tmp;
 
     self = (Obj *)arg0;
     self->v3();
+    ay = self->unk46;
     ax = self->unk44;
-    ay_tmp = self->unk46;
     {
-        s32 t = Text_MeasureHeight(-1, lbl_8036A6F0);
+        s32 measured = Text_MeasureHeight(-1, lbl_8036A6F0);
         void *msg = self->unk40;
-        t = 0x40 - t;
-        ay = (s16)(((s32)ay_tmp + t) >> 1);
+        ay = (s16)((ay + (0x40 - measured)) >> 1);
         if (msg != NULL) {
             text = Msg_Expand(msg);
         } else {
@@ -7812,19 +7810,19 @@ extern "C" void fn_8013E9BC(void *arg0) {
     }
     if (text != NULL) {
         s16 tw;
-        s32 raw_w;
+        s16 w;
         s16 h;
         s16 *rect;
         s32 color;
         tw = (s16)Text_MeasureWidth(text, -1, lbl_8036A6F0);
-        raw_w = self->unk16 - self->unk12;
+        w = (s16)(self->unk16 - self->unk12);
         h = (s16)(self->unk18 - self->unk14);
         rect = &self->unk48;
         self->unk48 = 0;
         self->unk4A = 0;
-        self->unk4C = (s16)raw_w;
+        self->unk4C = w;
         self->unk4E = h;
-        ax = (s16)(ax + (((s16)raw_w - tw) >> 1));
+        ax = (s16)(ax + ((w - tw) >> 1));
         fn_8013F748(self, rect, rect);
         rect = &self->unk4C;
         fn_8013F748(self, rect, rect);
@@ -8904,6 +8902,7 @@ void *fn_801403F0(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8014042C(void *arg0) {
 extern f32 lbl_8036A730, lbl_8036A740;
+extern f64 lbl_8036A738;
 f32 Math_Ease(s32, s16, f32, f32, f32, f32);
 void Ui_ClearPanelChildrenMid(void *);
 #pragma cplusplus on
@@ -8917,12 +8916,13 @@ struct Target { u8 pad[0x24]; s16 duration; };
 struct Link { void *prev,*next; Target *value; };
 struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
 State *self=(State*)arg0;
+(void)lbl_8036A738;
 (self->get()->*(self->callback))(&self->end);
 {
 s32 durationInt=self->get()->duration+1;
 s32 timeInt=self->time+1;
-f32 time=timeInt;
 f32 duration=durationInt;
+f32 time=timeInt;
 f32 t=Math_Ease(5,self->time,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
 Point p=self->end-self->start;
 p*=t;
@@ -14340,7 +14340,7 @@ extern u32 lbl_802922F0;
 
 extern u8 lbl_80292298[];
 extern f32 lbl_8036A730;
-extern f32 lbl_8036A738;
+extern f64 lbl_8036A738;
 #include "include/structs.h"
 extern s32 gUnknown_0x8013C030;
 #include "global.h"
