@@ -1576,11 +1576,18 @@ void fn_800C7EF8(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x18) = 0;
 }
 
-void fn_800C7F10(void* arg0, void* arg1) {
-    if (arg1 != NULL) {
-        *(s32*)((u32)arg0 + 0x14) = *(s32*)arg1;
-        *(s32*)((u32)arg0 + 0x18) = *(s32*)((u32)arg1 + 0x4);
-    }
+s32 fn_800C7F10(void *self,void *list,s32 index) {
+extern char gStringErrorMsgs[];
+u32 strlen(const char*);s32 String_Compare(String*,u32,u32,char*,u32);
+String *String_Assign(String*,String*,s32,s32);void String_Destroy(String*,s32);
+u8 fn_800C7B04(void*,String*,void*,void*,s32);
+u8 buffer[0x100];u8 values[0x18];String str;
+String *entry; s32 count;char *messages=gStringErrorMsgs;
+str.cap=0;str.size=0;str.data=0;str.cap=0;
+while((entry=*(String**)((u8*)list+8)+index, String_Compare(entry,0,entry->size,gStringErrorMsgs,strlen(gStringErrorMsgs)))!=0)index++;
+count=0;
+while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Compare(entry,0,entry->size,gStringErrorMsgs+2,strlen(gStringErrorMsgs+2)))!=0){if(fn_800C7B04(self,&str,values,buffer,0))count++;}
+String_Destroy(&str,-1);return count;
 }
 
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
@@ -4532,6 +4539,31 @@ void fn_800CF2C8(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 
+void fn_800CF3E0(void *arg0) {
+void *String_Init(void *, char *, void *);
+void *fn_800E7E4C(void *, void *);
+void fn_800E7C94(void *, void *, s32, f32);
+extern char lbl_802704F8[];
+extern f32 lbl_80369DC8, lbl_80369DD4;
+u8 a[12], b[12], c[12], d[12];
+s32 x,y,z,w;
+u8 *self=arg0;
+char *strings=lbl_802704F8;
+*(f32 *)(self+0x1B0)=*(f32 *)(self+0x1B4)=*(f32 *)(self+0x1B8)=0.0f;
+String_Init(a,strings+0x4D2,&x);
+fn_800E7C94(*(void **)(self+4),a,1,lbl_80369DD4);
+String_Destroy(a,-1);
+String_Init(b,strings+0x4DD,&y);
+fn_800E7C94(*(void **)(self+4),b,1,lbl_80369DD4);
+String_Destroy(b,-1);
+String_Init(c,strings+0x4D2,&z);
+*(s32 *)((u8 *)fn_800E7E4C(*(void **)(self+4),c)+0x60)=0;
+String_Destroy(c,-1);
+String_Init(d,strings+0x4DD,&w);
+*(s32 *)((u8 *)fn_800E7E4C(*(void **)(self+4),d)+0x60)=0;
+String_Destroy(d,-1);
+}
+
 void fn_800CF500(void *arg0, void *arg1, void *arg2)
 {
     void fn_800E7AD4(void *, void *, s32, u8, u8);
@@ -6520,19 +6552,27 @@ s32 fn_800D7CC8(void)
     return 0;
 }
 
-void fn_800D7D04(void *arg0) {
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    M2C_FIELD(arg0, u32 *, 0x0) = 0;
-    M2C_FIELD(arg0, u32 *, 0x4) = 0;
-    M2C_FIELD(arg0, u32 *, 0x8) = 0;
-    M2C_FIELD(arg0, s32 *, 0xC) = 0;
-    M2C_FIELD(arg0, u32 *, 0x10) = 0;
-    M2C_FIELD(arg0, u32 *, 0x14) = 0;
-    M2C_FIELD(arg0, u32 *, 0x18) = 0;
-    M2C_FIELD(arg0, s32 *, 0x1C) = 0;
+void fn_800D7D04(void *arg0, s32 arg1, u32 arg2) {
+#pragma cplusplus on
+class Control { public: unsigned char pad[0x40]; virtual void v0(s32,u32); virtual void v1(s32,u32); virtual void v2(s32,u32); virtual void v3(s32,u32); virtual void v4(s32,u32); virtual void v5(s32,u32); virtual void v6(s32,u32); virtual void v7(s32,u32); virtual void v8(s32,u32); virtual void v9(s32,u32); virtual void v10(s32,u32); virtual void v11(s32,u32); virtual void v12(s32,u32); virtual void v13(s32,u32); virtual void v14(s32,u32); virtual void v15(s32,u32); virtual void v16(s32,u32); virtual void v17(s32,u32); virtual void v18(s32,u32); virtual void v19(s32,u32); virtual void input(s32,u32); };
+extern s8 lbl_803678B0;
+extern s32 lbl_803678AC;
+extern void *lbl_803678A8;
+extern u16 *gWin3;
+void fn_800E3F48(void *); void fn_800E3F54(void *);
+void *fn_800DC3C0(void *); void fn_800DA5AC(void *,s32);
+void fn_800D75C4(void *); void fn_800D758C(void *);
+u8 *self=(u8 *)arg0;
+if (!lbl_803678B0) { lbl_803678AC=0; lbl_803678B0=1; }
+((Control *)*(void **)(self+0x424))->input(arg1,arg2);
+if(arg2&0x1000) {
+if(lbl_803678AC) { fn_800E3F48(*(void **)(self+0x42C)); fn_800E3F54(*(void **)(self+0x428)); lbl_803678AC=0; }
+else { fn_800E3F48(*(void **)(self+0x428)); fn_800E3F54(*(void **)(self+0x42C)); lbl_803678AC=1; }
+} else if(arg2&0x100) {
+if(lbl_803678AC) { fn_800DA5AC(fn_800DC3C0(*(void **)((u8 *)lbl_803678A8+0x424)),1); fn_800D75C4(gWin3); }
+else { fn_800DA5AC(fn_800DC3C0(*(void **)((u8 *)lbl_803678A8+0x424)),0); fn_800D75C4(gWin3); }
+} else if(arg2&0x200) { fn_800D758C(lbl_803678A8); fn_800D758C(gWin3); }
+#pragma cplusplus reset
 }
 
 extern s32 lbl_8036A0CC;
@@ -20057,12 +20097,47 @@ void fn_800FAC30(void *arg0) {
     }
 }
 
-void fn_800FAD94(void) {
-    // This function's assembly looks like it may be a simple stub or placeholder,
-    // likely referencing another function or data that isn't fully decoded yet.
-    // From the target assembly, it seems like there are some calls being made
-    // to other functions within this file or elsewhere. For now, writing out
-    // a very basic version without calling any other functions:
+void fn_800FAD94(void *arg0) {
+    extern u8 gUiContext[];
+    extern u8 *gAiCmd;
+    extern u8 gAiState[];
+    extern s32 gAiCmdIsAlt;
+    extern u8 gTargetList[];
+    s32 fn_80102DFC(s32, s32, s32, s32);
+    u8 *TargetList_GetCurrent(void *);
+    void Ai_SetDecision(s8, s32, s8, s8, s8, s8, s8);
+
+    u8 *unit;
+    u8 *cmd;
+    s32 cmdC;
+    s8 x;
+    s8 y;
+    u8 *ui;
+    u8 *tgt;
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+    ui = gUiContext;
+    x = (s8)ui[0xD];
+    y = (s8)ui[0xE];
+    cmdC = *(s32 *)(cmd + 0xC);
+
+    if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
+        if (*(s32 *)(cmd + 0x10) != 0) {
+            tgt = TargetList_GetCurrent(gTargetList);
+            x = (s8)tgt[0];
+            tgt = TargetList_GetCurrent(gTargetList);
+            Ai_SetDecision((u8)cmdC, (s32)unit, x, (s8)tgt[1], -1, 0, 0);
+        } else {
+            *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
 }
 
 /* Find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC; does not set gAiCmdOk. */
