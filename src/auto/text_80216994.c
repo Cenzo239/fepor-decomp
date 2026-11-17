@@ -307,19 +307,20 @@ void __CARDTimeoutHandler(void *alarm, void *context) {
     extern u16 __CARDBlock[];
     void fn_80239298(s32, void *);
 
-    u8 *base = (u8 *)__CARDBlock;
-    u8 *card;
     s32 chan;
+    u8 *card;
+    u8 *base;
     void (*callback)(s32, s32);
 
     (void)context;
 
-    card = base;
+    base = (u8 *)__CARDBlock;
     chan = 0;
+    card = base;
     if (alarm != base + 0xE0) {
-        card = base + 0x110;
+        card = (base += 0x110);
         chan = 1;
-        if (alarm != base + 0x1F0) {
+        if (alarm != (u8 *)__CARDBlock + 0x1F0) {
             chan = 2;
         }
     }
@@ -327,9 +328,9 @@ void __CARDTimeoutHandler(void *alarm, void *context) {
     if (*(s32 *)card != 0) {
         fn_80239298(chan, NULL);
         callback = *(void (**)(s32, s32))(card + 0xCC);
-        if (callback != 0) {
+        if (callback) {
             *(void (**)(s32, s32))(card + 0xCC) = 0;
-            callback(chan, -5);
+            (*callback)(chan, -5);
         }
     }
 }
@@ -728,37 +729,33 @@ s32 CARDGetResultCode(s32 arg0) {
     return *(s32 *)((u8 *)__CARDBlock + arg0 * 0x110 + 4);
 }
 
-s32 fn_80217C64(s32 arg0)
-{
+#pragma scheduling off
+s32 fn_80217C64(s32 chan) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
     void OSSleepThread(void *);
-
-    u8 *entry;
-    u32 interrupts;
+    u8 *card;
     s32 result;
+    u32 enabled;
 
-    entry = (u8 *)__CARDBlock + arg0 * 0x110;
-
-    interrupts = OSDisableInterrupts();
-
-    do {
-        if (arg0 < 0 || arg0 >= 2) {
-            result = -0x80;
-        } else {
-            result = *(s32 *)(entry + 4);
-        }
-
-        if (result == -1) {
-            OSSleepThread(entry + 0x8C);
-        }
-    } while (result == -1);
-
-    OSRestoreInterrupts(interrupts);
-
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    enabled = OSDisableInterrupts();
+    goto check;
+sleep:
+    OSSleepThread(card + 0x8C);
+check:
+    if (chan < 0 || chan >= 2) {
+        result = -0x80;
+    } else {
+        result = *(s32 *)(card + 4);
+    }
+    if (result == -1) {
+        goto sleep;
+    }
+    OSRestoreInterrupts(enabled);
     return result;
 }
-
+#pragma scheduling reset
 s32 fn_80217CFC(s32 arg0) {
     s32 fn_8021B20C(M2C_UNK);
     if ((arg0 == 0) && ((fn_8021B20C(0) == -1) || (fn_8021B20C(1) == -1))) {
@@ -1220,29 +1217,33 @@ void fn_80218C34(void *arg0)
     extern void fn_80215F78(u32);
     extern u32 fn_80215F40(void);
 
-    u8 *base;
+    u8 *card;
     u32 previous;
+    s32 chan;
 
-    base = (u8 *)__CARDBlock;
-
-    if (base + 0x30 == (u8 *)arg0) {
-        return;
+    chan = 0;
+    card = (u8 *)__CARDBlock;
+    if (card + 0x30 != (u8 *)arg0) {
+        card += 0x110;
+        chan = 1;
+        if ((u8 *)__CARDBlock + 0x140 != (u8 *)arg0) {
+            chan = 2;
+        }
     }
 
-    if (base + 0x140 == (u8 *)arg0) {
-        return;
-    }
-
-    base += 0x110;
-    previous = *(u32 *)(base + 0x80);
+    previous = *(u32 *)(card + 0x80);
 
     fn_80215F78(0xFF000000);
 
+#pragma peephole off
     if (fn_80215F40() == 0) {
         fn_80215F78(previous);
         if (fn_80215F40() == 0) {
         }
     }
+#pragma peephole on
+
+    (void)chan;
 }
 
 #pragma use_lmw_stmw on
@@ -1546,17 +1547,16 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
     u8 *card;
     u16 *fat;
-    u16 next;
     card = (u8 *)__CARDBlock + chan * 0x110;
     if (*(s32 *)card == 0) return -3;
     fat = *(u16 **)(card + 0x88);
     while (block != 0xFFFF) {
-        u16 *entry;
+        u16 next;
         if (block < 5 || block >= *(u16 *)(card+0x10)) return -6;
-        entry = &fat[block];
-        block = *entry;
-        *entry = 0;
-        fat[3] = fat[3] + 1;
+        next = fat[block];
+        fat[block] = 0;
+        block = next;
+        fat[3]++;
     }
     return fn_802195B0(chan,fat,callback);
 }
