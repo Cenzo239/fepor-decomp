@@ -13632,6 +13632,30 @@ s16 fn_801D2FDC(void *arg0) {
     return M2C_FIELD(arg0, s16 *, 0x58);
 }
 
+u32 fn_801D3124(void) {
+void Allegiance_SetMask(s32,s32,s32,s32,s32,s32,s32,s32,void *);
+extern u8 gBattleState[],gUnits[];
+u8 mask[8];
+s32 i;
+u8 *unit;
+u32 result=gBattleState[0x10]>=10U;
+if (!result) {
+*(u32*)(gBattleState+0x6C)=0;
+*(u32*)(gBattleState+0x68)=0;
+*(s16*)(gBattleState+0x70)=0;
+*(s16*)(gBattleState+0x72)=0;
+Allegiance_SetMask(1,0,0,0,0,1,1,1,mask);
+for(i=1;i<=0x9F;i++) {
+if ((u8)i) unit=gUnits+((u8)i-1)*0x280; else unit=NULL;
+if (*(u32*)(unit+0x188) && mask[*(u8*)(*(u8**)(unit+0x190)+8)]) {
+*(u32*)(unit+0x1A0)&=0xFFF77FFF;
+*(s16*)(unit+0x22C)=0;
+}
+}
+}
+return result;
+}
+
 void *fn_801D322C(s32 arg0) {
     void *Process_CreateChild(void *, s32);
     void fn_801403F0(void);
