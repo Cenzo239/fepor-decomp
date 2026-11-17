@@ -817,7 +817,7 @@ extern "C" void fn_80133C74(void *arg0)
 
     u8 *self;
     s32 y, x, column, row, yOffset, xOffset, height, width, rowHeight, columnWidth;
-    s32 textHeight, halfHeight, x2, y2, columns, rows;
+    s32 halfHeight, textHeight, x2, y2;
     u8 color[4];
 
     self = (u8 *)arg0;
@@ -3884,9 +3884,11 @@ f32 Ui_GetWorldScale(void *arg0) {
 #pragma cplusplus reset
 }
 
+#pragma dont_inline on
 s32 fn_80138AB8(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x38);
 }
+#pragma dont_inline reset
 
 f32 fn_80138AC0(void *arg0) {
 #pragma cplusplus on
@@ -8572,6 +8574,8 @@ void fn_8013FC28(s32 *, s32 *, s16 *);
 s32 fn_8013FBC0(s32);
 s32 fn_80138AB8(void *);
 
+Vec2s *fn_8013FC64(Vec2s *);
+#pragma inline_depth(0)
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
     Vec2s sp38;
@@ -8587,35 +8591,37 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp10;
     Vec2s spC;
     Vec2s sp8;
-    void *r28;
-    void *r26;
-    void *r27;
+    void *ggf;
+    void *gp;
+    void *parent;
+    s32 *p8;
 
-    r27 = *(void **)((u8 *)arg0 + 0x38);
+    parent = *(void **)((u8 *)arg0 + 0x38);
     sp3C = *(Vec2s *)((u8 *)arg0 + 0xA);
-    if (r27 != NULL) {
-        sp24 = *(Vec2s *)((u8 *)r27 + 0xA);
-        r26 = *(void **)((u8 *)r27 + 0x38);
-        if (r26 != NULL) {
-            sp18 = *(Vec2s *)fn_8013FBD4((s32)r26);
-            if (*(void **)((u8 *)r26 + 0x38) != NULL) {
-                r28 = (void *)fn_80138AB8(r26);
-                fn_8013FBC8((s32 *)&spC, (s32 *)fn_8013FBD4((s32)r28));
-                if (fn_80138AB8(r28) != 0) {
-                    fn_8013F748((void *)fn_80138AB8(r28), &spC, &spC);
+    if (parent != NULL) {
+        sp24 = *fn_8013FC64((Vec2s *)((u8 *)parent + 0xA));
+        gp = *(void **)((u8 *)parent + 0x38);
+        if (gp != NULL) {
+            sp18 = *(Vec2s *)fn_8013FBD4((s32)gp);
+            if (*(u32 *)((u8 *)gp + 0x38) != 0) {
+                ggf = (void *)fn_80138AB8(gp);
+                fn_8013FBC8((s32 *)&spC, (s32 *)fn_8013FBD4((s32)ggf));
+                if ((u32)fn_80138AB8(ggf) != 0) {
+                    fn_8013F748((void *)fn_80138AB8(ggf), &spC, &spC);
                 }
-                fn_8013FC28((s32 *)&sp14, (s32 *)&spC, (s16 *)fn_8013FBC0((s32)r28));
+                fn_8013FC28((s32 *)&sp14, (s32 *)&spC, (s16 *)fn_8013FBC0((s32)ggf));
                 fn_8013FC28((s32 *)&sp10, (s32 *)&sp14, (s16 *)&sp18);
                 fn_8013FC14((s16 *)&sp18, (s16 *)&sp10);
             }
-            fn_8013FC28((s32 *)&sp20, (s32 *)&sp18, (s16 *)fn_8013FBC0((s32)r26));
+            fn_8013FC28((s32 *)&sp20, (s32 *)&sp18, (s16 *)fn_8013FBC0((s32)gp));
             fn_8013FC28((s32 *)&sp1C, (s32 *)&sp20, (s16 *)&sp24);
             fn_8013FC00((s16 *)&sp24, (s16 *)&sp1C);
         }
-        fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)r27));
-        fn_8013FBC8((s32 *)&sp8, (s32 *)&sp2C);
-        fn_8013FBDC((s16 *)&sp8, (s16 *)&sp3C);
-        fn_8013FBC8((s32 *)&sp28, (s32 *)&sp8);
+        fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)parent));
+        p8 = (s32 *)&sp8;
+        fn_8013FBC8(p8, (s32 *)&sp2C);
+        fn_8013FBDC((s16 *)p8, (s16 *)&sp3C);
+        fn_8013FBC8((s32 *)&sp28, p8);
         sp3C.x = sp28.x;
         sp3C.y = sp28.y;
     }
@@ -8630,7 +8636,7 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     arg1->y = sp38.y;
     return arg1;
 }
-
+#pragma inline_depth(8)
 void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
     struct {
@@ -8722,19 +8728,20 @@ s32 fn_8013FBD4(s32 arg0) {
 }
 
 #pragma scheduling off
-void fn_8013FBDC(s16 *dst, s16 *src)
-{
-s16 b;
-s16 c;
-s16 a;
-a=dst[0];
-b=src[0];
-c=src[1];
-a+=b;
-dst[0]=a;
-a=dst[1];
-a+=c;
-dst[1]=a;
+void fn_8013FBDC(s16 *arg0, s16 *arg1) {
+Vec2s *dst=(Vec2s *)arg0;
+Vec2s *src=(Vec2s *)arg1;
+s16 y;
+s16 x;
+s16 v;
+v=dst->x;
+x=src->x;
+y=src->y;
+v+=x;
+dst->x=v;
+v=dst->y;
+v+=y;
+dst->y=v;
 }
 #pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
