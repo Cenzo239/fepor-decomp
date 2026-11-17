@@ -13,6 +13,19 @@ for(i=0;i<40;i++,p+=12) { if(id==*(s32*)p) return p; }
 return 0;
 }
 #pragma cplusplus on
+struct MenuD28 {
+virtual s32 v0()=0;
+virtual s32 v1()=0;
+virtual s32 v2()=0;
+virtual s32 v3()=0;
+virtual s32 v4()=0;
+virtual s32 v5()=0;
+virtual s32 v6()=0;
+virtual s32 v7()=0;
+virtual s32 v8()=0;
+virtual s32 v9()=0;
+virtual s32 v10()=0;
+};
 struct UnitHireItem {
 virtual void v0();
 virtual void v1();
@@ -18652,20 +18665,26 @@ void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
 char path[64];
-s32 i;
-s32 id;
 s32 *cursor=list;
+s32 owner=parent;
+s32 clear;
+s32 i;
 u8 *p;
+u8 *base;
+s32 id;
 Process_UnlinkByKey(lbl_80299C58);
-for(i=0,p=lbl_80299A78;i<40;i++,p+=12) {
+i=0;
+base=lbl_80299A78;
+clear=i;
+for(p=base;i<40;i++,p+=12) {
 if(*(u32*)(p+8)) FileCache_ReleaseSlot(p+8);
-*(u32*)(p+8)=0;
+*(u32*)(p+8)=clear;
 }
 for(;(id=*cursor)!=-1;cursor++) {
-p=MenuResource_Find(id);
+p=MenuResource_FindIn(base,id);
 if(p) {sprintf(path,(char*)gUiSeCues+0x661,*(s32*)(p+4));fn_8005C8B4(path);}
 }
-Process_CreateChild(lbl_80299C58,parent);
+Process_CreateChild(lbl_80299C58,owner);
 }
 #pragma opt_loop_invariants reset
 #pragma global_optimizer reset
