@@ -1310,7 +1310,7 @@ void fn_801B7A74(void *arg0) {
                 fn_80148980(gSeCueSlots + (slot & 0xFF) * 0x30, 0x1F4);
             }
         }
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
     fn_801B7B5C(self, *(s32 *)((u8 *)self + 0x194), (f32)(*(s32 *)((u8 *)self + 0xC) + 0x34));
 }
