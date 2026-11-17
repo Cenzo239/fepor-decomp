@@ -2053,10 +2053,10 @@ void fn_8016632C(void *arg0) {
     void *inner;
     void *self;
     void *found;
-    f32 scaleFactor;
-    f32 sx;
-    f32 sy;
     f32 dist;
+    f32 sy;
+    f32 sx;
+    f32 scaleFactor;
     s32 iy;
     s32 ix;
     s32 i;
@@ -2108,12 +2108,12 @@ void fn_8016632C(void *arg0) {
         pos[0] = px;
         pos[1] = py;
         pos[2] = zeroF;
-    }
 
-    if (sx >= lbl_8036A8F0 && sx < lbl_8036A8FC && sy >= lbl_8036A8F0 && sy < lbl_8036A900) {
+    if (sx >= zeroF && sx < lbl_8036A8FC && sy >= zeroF && sy < lbl_8036A900) {
         fn_80220B44((s32)sx, (s32)sy, &hit);
     } else {
         hit = 0;
+    }
     }
 
     if ((u32)hit <= 0xFFC000u) {
@@ -19312,3 +19312,20 @@ extern f32 gUiMenuSlotTextScale;
 extern f32 gUiMenuSlotFrameZ;
 extern f64 lbl_8036A9B8;
 extern u16 lbl_80293BB8;
+#pragma cplusplus on
+struct LensFlareView {
+    u8 pad[0x40];
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6();
+    virtual void setPosition(f32, f32, f32);
+    virtual void setPoint(s32 *);
+    virtual void setScreen(s32, s32);
+    virtual void v10();
+    virtual void setColor(u8, u8, u8, u8);
+};
+struct LensFlareOwner {
+    u8 pad[0x10];
+    virtual void v0(); virtual void v1();
+    virtual LensFlareView *find(char *, char *);
+};
+#pragma cplusplus reset
