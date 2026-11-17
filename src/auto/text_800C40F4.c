@@ -4055,20 +4055,29 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
 
-void fn_800CDAA0(void *arg0, void *arg1) {
-    s32 tmp;
-    if (arg1 == NULL) {
-        return;
-    }
-    tmp = *(s32 *)((s8 *)arg1 + 0);
-    if (tmp < 0) {
-        return;
-    }
-    if (arg0 != NULL) {
-        *(s32 *)((s8 *)arg0 + 0x0) = tmp;
-        *(s32 *)((s8 *)arg0 + 0x4) = *(s32 *)((s8 *)arg1 + 0x8);
-        *(s32 *)((s8 *)arg0 + 0x8) = *(s32 *)((s8 *)arg1 + 0xC);
-    }
+extern "C" void *fn_800CDAA0(void *arg0, void *arg1) {
+void String_JoinCStr(String*,char*,void*);
+void String_ConcatCStr(String*,String*,char*);
+void String_Assign(String*,String*,s32,s32);
+void String_Destroy(String*,s32);
+char *String_CStr(String*);
+u16 FileCache_Probe(char*);
+void *fn_8005C82C(char*,s32);
+void DebugPrint(char*,...);
+extern char lbl_802704F8[];
+String out; String a; String b;
+
+out.cap=0;out.size=0;out.data=0;out.cap=0;
+String_JoinCStr(&a,lbl_802704F8+0x1c7,arg1);
+String_ConcatCStr(&b,&a,lbl_802704F8+0x3a6);
+String_Assign(&out,&b,0,-1);
+String_Destroy(&b,-1);String_Destroy(&a,-1);
+if(FileCache_Probe(String_CStr(&out))!=0x8000){
+arg0=fn_8005C82C(String_CStr(&out),8);
+String_Destroy(&out,-1);return arg0;
+}
+DebugPrint(lbl_802704F8+0x3af,String_CStr(&out));
+String_Destroy(&out,-1);return 0;
 }
 
 s32 fn_800CDBA4(s32 *arg1, u32 arg2) {
@@ -6013,17 +6022,22 @@ void fn_800D6940(u32 *arg0) {
     arg0[1] = 0;
 }
 #pragma optimization_level reset
-void fn_800D697C(u8 *arg0, u32 arg1, s32 arg2) {
-    if (arg2 <= 0) {
-        return;
-    }
-    
-    while (arg2 > 0) {
-        *(u8 *)arg0 = (u8)arg1;
-        arg0++;
-        arg1 >>= 8;
-        arg2--;
-    }
+void *fn_800D697C(void *tree,void *parent,s32 asLeft,s32 setFirst,void *key) {
+void *Heap_Alloc(u32);void Tree_InsertFixup(void*,void*);
+void abort(void);s32 fprintf(void*,const char*,...);
+void fn_800D6A84(void*,void*,void*);
+extern char __files[];extern char lbl_802704F8[];
+void *node;
+if(*(u32*)tree>(u32)-2){fprintf(__files+0xa0,lbl_802704F8+0xa53);abort();}
+node=Heap_Alloc(0x24);
+if(node==0){fprintf(__files+0xa0,lbl_802704F8+0x999);abort();}
+fn_800D6A84(tree,(u8*)node+0xc,key);
+*(void**)((u8*)node+4)=0;*(void**)node=0;
+*(u32*)((u8*)node+8)=(u32)parent|(*(u32*)((u8*)node+8)&1);
+if((u8)asLeft)*(void**)parent=node;else *(void**)((u8*)parent+4)=node;
+++*(u32*)tree;Tree_InsertFixup(node,*(void**)((u8*)tree+4));
+if((u8)setFirst)*(void**)((u8*)tree+0xc)=node;
+return node;
 }
 
 void fn_800D6A84(void *arg0, u32 arg1, s32 arg2) {
@@ -14491,6 +14505,28 @@ void Card_CreateSaveFile(s32 proc) {
         }
     }
 }
+
+void fn_800EB10C(s32 proc) {    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 unkA01B;
+        u8 fileInfo[0x14];
+    };
+extern struct CardWork gCardWork; extern char gCardStrings[];
+void Card_AsyncDone(void);s32 fn_8021BF10(s32,void*,void*);void fn_8021C02C(void*);s32 fn_8021CCB4(s32,void*,void*);
+u8 skip;void *info;
+if(gCardWork.result<0){Process_Goto(proc,0x63);gCardWork.busy=0;skip=1;}else skip=0;
+if(skip==0){info=gCardWork.fileInfo;
+if(fn_8021BF10(gCardWork.chan,gCardStrings+0x70,info)!=-4){fn_8021C02C(info);gCardWork.busy=1;gCardWork.result=fn_8021CCB4(gCardWork.chan,(void*)((u32)gCardStrings+0x70),Card_AsyncDone);}
+else{gCardWork.result=0;gCardWork.busy=0;}}}
 
 #pragma use_lmw_stmw reset
 
