@@ -416,6 +416,53 @@ s32 FileCache_IsReady(char *name) {
     return (flags >> 15) & 1;
 }
 
+s32 fn_8005BB2C(void) {
+    u8 fn_800B2FF4(s32);
+    s64 OSGetTime(void);
+    extern u8 gFileCache[];
+    u8 *e;
+    u32 time;
+    s32 i;
+    u16 flags;
+
+    if ((u8)fn_800B2FF4(0) == 0) {
+        return 0;
+    }
+    time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+    e = gFileCache;
+    for (i = 0; i < 0x100; i++) {
+        if ((s8)e[0] != 0) {
+            flags = *(u16 *)(e + 0x30);
+            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+                return 0;
+            }
+        }
+        e += 0x7C;
+        if ((s8)e[0] != 0) {
+            flags = *(u16 *)(e + 0x30);
+            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+                return 0;
+            }
+        }
+        e += 0x7C;
+        if ((s8)e[0] != 0) {
+            flags = *(u16 *)(e + 0x30);
+            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+                return 0;
+            }
+        }
+        e += 0x7C;
+        if ((s8)e[0] != 0) {
+            flags = *(u16 *)(e + 0x30);
+            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+                return 0;
+            }
+        }
+        e += 0x7C;
+    }
+    return 1;
+}
+
 void fn_8005BC8C() {
     M2C_UNK fn_8005C8D8();
     fn_8005C8D8();
@@ -2583,6 +2630,44 @@ s32 fn_8005FC74(void *arg0, s32 arg1) {
     *(void **)((u8 *)arg0 + 0x74) = NULL;
     *(f32 *)((u8 *)arg0 + 0x78) = 1.0f;
     return 1;
+}
+
+void fn_8005FEE8(void *arg0, f32 frame) {
+void *fn_80065634(void ***,s32);
+extern f32 lbl_803691C8;
+
+#pragma cplusplus on
+struct Lookup { static u8 *find(u8 *p) { while(p) {u8 *a=*(u8**)(p+0x44); if(a) return a; p=*(u8**)(p+4);} return 0;} };
+u8 *self=(u8*)arg0;
+
+u8 *anim;
+u8 *entry;
+u8 *src;
+u8 *dst;
+s32 i;
+anim=Lookup::find(self);
+if(anim) {
+*(u32*)self &= ~0x10;
+if(frame<0.0f || frame>(f32)*(s32*)(anim+0x18)) {
+frame=(f32)*(s32*)(anim+0x18);
+*(u32*)self |= 0x10;
+}
+if(frame <= (f32)*(s32*)(anim+0x14)) frame=(f32)*(s32*)(anim+0x14);
+*(u16*)(self+0x7C)=0xFFFF;
+*(u16*)(self+0x7E)=0xFFFF;
+*(u16*)(self+0x80)=0xFFFF;
+*(u16*)(self+0x82)=0xFFFF;
+entry=(u8*)fn_80065634((void***)anim,(s32)frame);
+if(entry) {
+src=entry; dst=self;
+for(i=0;i<*(u16*)(entry+2);i++) {
+*(u16*)(dst+0x7C)=*(u16*)(src+4);
+src+=2;dst+=2;
+}
+}
+*(f32*)(self+0x58)=frame;
+}
+#pragma cplusplus reset
 }
 
 #pragma use_lmw_stmw on
