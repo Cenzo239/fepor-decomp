@@ -2691,47 +2691,25 @@ s32 signal_raise(s32 sig) {
 }
 
 u8 *fn_80234198(u8 *str, u8 *pat) {
-    u8 *p;
-    u8 c;
-    u8 *r;
-    u8 *q;
-    u8 d;
-    u8 e;
-
-    p = str - 1;
-    if (pat == 0) {
-        return str;
-    }
-    c = *pat;
-    if (c == 0) {
-        return str;
-    }
-    goto outer;
-
+u8 *p; u8 c; u8 d; u8 e; u8 *q; u8 *r;
+p=str-1;
+if(!pat) return str;
+c=*pat;
+if(!c) return str;
+goto outer;
 match_check:
-    if (d != c) {
-        goto outer;
-    }
-    q = p - 1;
-    r = pat - 1;
-    do {
-        d = *++q;
-        e = *++r;
-        if (d != e) {
-            goto outer;
-        }
-    } while (d != 0);
-    if (e != 0) {
-        goto outer;
-    }
-    return p;
-
+if(d!=c) goto outer;
+q=p-1; r=pat-1;
+do {
+d=*++q; e=*++r;
+if(d!=e) break;
+} while(d!=0);
+if(e!=0) goto outer;
+return p;
 outer:
-    d = *++p;
-    if (d != 0) {
-        goto match_check;
-    }
-    return 0;
+d=*++p;
+if(d!=0) goto match_check;
+return 0;
 }
 
 void *fn_80234200(s32 arg0, u8 arg1) { u8 *p=(u8*)arg0-1; u32 needle=arg1; u8 *last=NULL; u32 c; while((c=*++p)!=0) { if(c==needle) last=p; } if(last!=NULL) return last; if(needle!=0) return NULL; return p; }
