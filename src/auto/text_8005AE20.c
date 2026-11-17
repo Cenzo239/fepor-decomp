@@ -640,23 +640,23 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
 #pragma use_lmw_stmw on
 u16 FileCache_Probe(char *name) {
     s32 fn_8020C3E0(char *);
-    u32 not_found = 0x8000;
     u8 *entry = FindEntryByName(name);
     u16 flags;
-    s32 r;
-    s32 m;
+    s32 tmp;
 
     if (entry == NULL) {
-        flags = not_found;
+        flags = 0x8000;
     } else {
         flags = *(u16 *)(entry + 0x30);
     }
     if (!(flags & 0x8000)) {
         return flags;
     }
-    r = fn_8020C3E0(name);
-    m = (s32)~((r + 1) | (-1 - r)) >> 31;
-    return (u16)(not_found & m);
+    tmp = fn_8020C3E0(name);
+    tmp = ~((tmp + 1) | (-1 - tmp));
+    tmp >>= 31;
+    tmp &= 0x8000;
+    return (u16)tmp;
 }
 #pragma use_lmw_stmw reset
 /* Return the byte size of the named file-cache entry, or 0 if absent. */
@@ -5566,34 +5566,45 @@ void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
     *(void **)(entry + 0xC) = arg2;
 }
 
-s32 fn_80067DA4(s32 arg0, s32 arg1, void *arg2) {
-    u8 temp_r5;
-    s32 var_r27;
-    s32 var_r28;
-    s32 var_r31;
-    
-    if ((arg0 == 0) || (arg1 == 0)) {
-        return 0;
-    }
-    
-    var_r27 = 0;
-    var_r28 = arg0 * arg1;
-
-loop_1:
-    var_r31 = 0;
-    
-loop_2:
-    if (var_r31 >= var_r28) {
-        return var_r27;
-    }
-    
-    temp_r5 = ((u8*)arg2)[var_r31];
-    if ((temp_r5 & 0x0F) <= 0x04) {
-        var_r27 += 1;
-    }
-        
-    var_r31 += 1;
-    goto loop_2;
+void fn_80067DA4(void *camIn) {
+    void fn_80202A6C(void *,s32,f32,f32,f32,f32);
+    void PSMTXIdentity(void *);
+    void GXLoadPosMtxImm(void *,s32);
+    void GXSetCurrentMtx(s32);
+    void fn_802026E4(void *,void *,void *,void *);
+    void PSMTXCopy(void *,void *);
+    void fn_80202C18(void *,void *,void *);
+    void GXSetScissor(u16,u16,u16,u16);
+    void GXSetViewport(f32,f32,f32,f32,f32,f32);
+    void GXSetProjection(void *,s32);
+    extern u8 *gCamera;
+    extern u8 gCameraProjMode;
+    extern f32 lbl_80369228,lbl_80369224;
+    f32 posMtx[12];
+    f32 view[16];
+    s32 negFlag;
+    u8 *cam=camIn;
+    if(!cam) cam=gCamera;
+    if(!cam) return;
+    negFlag=-(*(u16 *)cam & 1);
+    gCameraProjMode=negFlag+2;
+    fn_80202A6C(cam+0x24,negFlag,*(f32 *)(cam+0x18C),*(f32 *)(cam+0x188),*(f32 *)(cam+0x180),*(f32 *)(cam+0x184));
+    *(u16 *)cam |= 1;
+    PSMTXIdentity(posMtx);
+    GXLoadPosMtxImm(posMtx,0);
+    GXSetCurrentMtx(0);
+    fn_802026E4(gCamera+0xA4,cam+0xD4,cam+0xEC,cam+0xE0);
+    PSMTXCopy(gCamera+0xA4,view);
+    view[12]=lbl_80369228;
+    view[13]=lbl_80369228;
+    view[14]=lbl_80369228;
+    view[15]=lbl_80369224;
+    fn_80202C18(gCamera+0x24,view,gCamera+0x64);
+    if(!cam) cam=gCamera;
+    if(!cam) return;
+    GXSetScissor(*(u16 *)(cam+0x1C),*(u16 *)(cam+0x1E),*(u16 *)(cam+0x20),*(u16 *)(cam+0x22));
+    GXSetViewport(*(f32 *)(cam+4),*(f32 *)(cam+8),*(f32 *)(cam+0xC),*(f32 *)(cam+0x10),*(f32 *)(cam+0x14),*(f32 *)(cam+0x18));
+    GXSetProjection(cam+0x24,(*(u16 *)cam & 1)^1);
 }
 
 // Build default 640x480 ortho, reset view/pos matrices, and apply camera scissor/viewport/projection to GX.
