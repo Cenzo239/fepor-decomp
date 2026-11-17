@@ -410,10 +410,10 @@ void FShop_OnItemMaxHelp(void *proc) {
 
 void fn_801AECF8(void *arg0) {
     M2C_UNK fn_8000C188(void *);
-    M2C_UNK Ui_BringChildToFront(void *, s32);
+    M2C_UNK fn_8013FF00(void *, s32);
     s32 fn_8013FF94(void *, s32, s32);
     M2C_UNK fn_801475FC(void *, M2C_UNK);
-    extern u8 gFShopStrings[];
+    extern u8 lbl_8027BD18[];
     extern u32 lbl_80367110;
     extern void *lbl_80367240;
     u8 var;
@@ -423,9 +423,9 @@ void fn_801AECF8(void *arg0) {
     unsigned int mask;
     int flags;
 
-    Ui_BringChildToFront(arg0, fn_8013FF94(arg0, -0x1000, 0));
-    ptr = lbl_80367240;
+    fn_8013FF00(arg0, fn_8013FF94(arg0, -0x1000, 0));
     var = 0;
+    ptr = lbl_80367240;
     flags = lbl_80367110;
     a = *(s32 *)((char *)ptr + 4);
     b = *(s32 *)((char *)ptr + 8);
@@ -434,8 +434,8 @@ void fn_801AECF8(void *arg0) {
         var = 1;
     }
     if (var == 0 && (mask & 0x300)) {
-        Ui_BringChildToFront(arg0, *(s32 *)((char *)arg0 + 0x48));
-        fn_801475FC(&gFShopStrings[0x36E], 0x64);
+        fn_8013FF00(arg0, *(s32 *)((char *)arg0 + 0x48));
+        fn_801475FC(&lbl_8027BD18[0x36E], 0x64);
         fn_8000C188(arg0);
     }
 }
@@ -1346,6 +1346,33 @@ extern "C" void fn_801B0564(void *arg0) {
     }
 }
 
+extern "C" void fn_801B0978(void *arg0) {
+ void *Ui_FindChild(void *,s32,s32);
+ void Ui_AddChild(void *,void *);
+ void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
+ void TalkUi_ShowMsg(s32);
+ void Ui_BringChildToFront(void *,void *);
+ void Ui_SetWidgetText(void *,s32);
+ s16 a[2],b[2],c[2];
+ s32 text;
+ void *p;
+ s16 y;
+ p=Ui_FindChild(arg0,4,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x4c);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){a[0]=0x138;a[1]=0x74;Ui_SlideWidgetChildMode1(arg0,p,a,0);}
+ p=Ui_FindChild(arg0,5,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x50);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);b[0]=0x138;b[1]=y;Ui_SlideWidgetChildMode1(arg0,p,b,0);}
+ p=Ui_FindChild(arg0,7,0);
+ if(!p){p=M2C_FIELD(arg0,void **,0x58);Ui_AddChild(arg0,p);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);c[0]=0x138;c[1]=y;Ui_SlideWidgetChildMode1(arg0,p,c,0);}
+ Ui_BringChildToFront(arg0,p);
+ TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x28));
+ text=M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x7c);
+ p=Ui_FindChild(arg0,-0x1000,0);
+ if(p) Ui_SetWidgetText(p,text);
+}
+
 #pragma cplusplus reset
 #pragma opt_common_subs off
 void fn_801B0C70(void *arg0) {
@@ -1359,59 +1386,56 @@ void fn_801B0C70(void *arg0) {
     extern struct unk_struct lbl_80331C6C;
     extern u8 gUiContext[];
     void *obj48;
-    s32 temp_r31;
-    void *temp_r30;
+    s32 name;
+    void *ptr;
     s32 flag;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
     fn_8011D650();
     fn_8001BD4C((u8 *)obj48 + 0x60, &lbl_80331C6C);
-    flag = *((u8 *)gUiContext + 8);
+    flag = (s32)gUiContext[8];
     switch (flag) {
-    case 0: {
-        temp_r30 = *(void **)((u8 *)obj48 + 0x60);
-        temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
-        if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
+    case 0:
+        ptr = *(void **)((u8 *)obj48 + 0x60);
+        name = UnitRef_GetName((u8 *)obj48 + 0x60);
+        if (Str_Cmp(fn_8001ED58(ptr), name) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
         }
         Process_Goto(arg0, 0xE);
         break;
-    }
-    default: {
-        temp_r30 = *(void **)((u8 *)obj48 + 0x60);
-        temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
-        if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
+    default:
+        ptr = *(void **)((u8 *)obj48 + 0x60);
+        name = UnitRef_GetName((u8 *)obj48 + 0x60);
+        if (Str_Cmp(fn_8001ED58(ptr), name) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
         }
         if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x3E) == 4) {
             Process_Goto(arg0, 0x16);
         }
+        break;
     }
-}
 }
 #pragma opt_common_subs on
 void fn_801B0D6C(void *arg0) {
-    s32 fn_8001D2C8(void *);
+    s32 UnitRef_GetName(void *);
     s32 fn_8001ED58(void);
     void Str_CopyPad(void *, s32, s32);
     void fn_801CE11C(void *, s32, s32, void *);
     void TalkUi_ShowMsg(s32);
     u32 fn_8013FF94(void *, s32, s32, void *);
     void fn_801658DC(u32, s32);
+    struct Obj48 { u8 pad[0x60]; void *p60; };
     s32 saved;
-    void *p60;
     u8 b;
     void *obj6c;
-    void *obj48;
+    struct Obj48 *obj48;
     register unsigned long res;
 
-    obj48 = *(void **)((u8 *)arg0 + 0x48);
-    Str_CopyPad(&lbl_80331C6C, fn_8001D2C8((u8 *)obj48 + 0x60), 0x14);
-    b = 0;
-    ((u8 *)&lbl_80331C6C)[0x14] = b;
-    p60 = *(void **)((u8 *)obj48 + 0x60);
-    if (p60 != NULL) {
-        b = *(u8 *)((u8 *)p60 + 0x15);
+    obj48 = *(struct Obj48 **)((u8 *)arg0 + 0x48);
+    Str_CopyPad(&lbl_80331C6C, UnitRef_GetName(&obj48->p60), 0x14);
+    ((u8 *)&lbl_80331C6C)[0x14] = b = 0;
+    if (obj48->p60 != NULL) {
+        b = *(u8 *)((u8 *)obj48->p60 + 0x15);
     }
     fn_801CE11C(&lbl_80331C6C, fn_8001ED58(), (u8)b + 0x61, arg0);
     TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x24));
