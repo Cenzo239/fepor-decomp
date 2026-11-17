@@ -11833,9 +11833,10 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u32 ch) {
     }
     if (flags & 0x100) {
         bufferSlot=(StreamB *)(side + *(u16 *)(side + 0x4C)*4);
-        sp = (s16 *)((u8 *)bufferSlot->buffers[0] + *(u32 *)(side + 0x44));
+        start = (u8 *)bufferSlot->buffers[0];
+        start += *(u32 *)(side + 0x44);
+        bp = start;
         n = ((nL + 0xD) / 14) * 8;
-        bp = (u8 *)sp;
         while (n != 0) {
             *(u8 *)dstL = *bp;
             bp++;
