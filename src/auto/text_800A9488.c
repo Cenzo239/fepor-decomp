@@ -304,6 +304,69 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     Text_Draw(0x160, 0, 1, gOptionsStr + 0x168, modeName);
     Text_Draw(0x148, 0x18, 1, gOptionsStr + 0x177, *(void **)(gLanguageNamePtrs + 4));
 }
+
+extern "C" void fn_800A9950(void *unused, void *node) {
+void *GfxEnt_Get(u8);
+void Prim2D_Begin(void);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetTex(s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetRect(f32,f32,f32,f32);
+void Prim2D_EmitQuad(void);
+void Prim2D_SetCornerColors(s32*,s32*,s32*,s32*);
+void Prim2D_EndPrim(void);
+extern f32 gOptionsIdentityScale,lbl_80369BA8;
+extern s32 lbl_80369B94,lbl_80369B90,lbl_80369B8C,lbl_80369B88;
+#pragma cplusplus on
+struct Model {u8 pad[4];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual s16 v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual s16 v20()=0;
+virtual void v21()=0;
+virtual void v22()=0;
+virtual void v23()=0;
+virtual void v24()=0;
+virtual f32 v25()=0;
+};
+struct Entry { u8 pad[0x40]; u8 id; };
+s32 tl,tr,bl,br;
+u8 *ent=(u8*)GfxEnt_Get(((Entry*)((u8*)node+*(s8*)((u8*)node+0x62)))->id);
+s16 y=*(s16*)(ent+0x32)+(*(Model**)((u8*)node+0x3C))->v17();
+s16 old=*(s16*)((u8*)node+0x3A);
+if(old<0) *(s16*)((u8*)node+0x3A)=y;
+else *(s16*)((u8*)node+0x3A)=(old+y)/2;
+Prim2D_Begin();
+Prim2D_SetTransform((f32)*(s16*)((u8*)node+0x30),(f32)*(s16*)((u8*)node+0x32),(*(Model**)((u8*)node+0x3C))->v25()-gOptionsIdentityScale,gOptionsIdentityScale);
+Prim2D_SetTex(0,0x12);
+Prim2D_PrepareTex();
+Prim2D_AddPrim(3);
+Prim2D_SetRect(lbl_80369BA8,(f32)*(s16*)((u8*)node+0x3A),(f32)*(s16*)((u8*)node+0x34),(f32)(*(Model**)((u8*)node+0x3C))->v20());
+Prim2D_EmitQuad();
+br=lbl_80369B94;bl=lbl_80369B90;tr=lbl_80369B8C;tl=lbl_80369B88;
+Prim2D_SetCornerColors(&tl,&tr,&bl,&br);
+Prim2D_EndPrim();
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 void *fn_800A9AFC(void) {
@@ -485,6 +548,85 @@ s32 fn_800A9E10(void *arg0) {
     }
     ((u8 *)arg0)[4] = ((u8 *)arg0)[4] + delta;
     return 0;
+}
+
+void fn_800A9EA0(void *arg0, void *parent, void *item) {
+void Prim2D_Begin(void);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetTex(s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_SetColor(s32,s32,s32,s32);
+void Prim2D_SetText(void *);
+void Prim2D_SetScale(f32);
+void Prim2D_EndPrim(void);
+void *fn_80019ED0(s32);
+s32 fn_801662F0(void);
+s32 sprintf(char *,const char*,...);
+extern u8 gOptionsStr[];
+extern f32 gOptionsIdentityScale,gOptionsZBias,gOptionsTextScale;
+#pragma cplusplus on
+struct Model {u8 pad[4];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual void v20()=0;
+virtual void v21()=0;
+virtual void v22()=0;
+virtual void v23()=0;
+virtual void v24()=0;
+virtual f32 v25()=0;
+};
+struct Drawer {
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void *v4(void*)=0;
+};
+char text[64];
+s32 number;
+u8 value;
+u8 *info;
+Prim2D_Begin();
+Prim2D_SetTransform((f32)*(s16*)((u8*)parent+0x30),(f32)*(s16*)((u8*)parent+0x32),(*(Model**)((u8*)parent+0x3C))->v25()-gOptionsZBias,gOptionsIdentityScale);
+Prim2D_SetTex(0,0x13);
+Prim2D_PrepareTex();
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16*)((u8*)item+0x30),(f32)*(s16*)((u8*)item+0x32));
+Prim2D_SetColor(0,0,0,255);
+Prim2D_SetText((*(Drawer**)((u8*)item+0x34))->v4(item));
+Prim2D_SetScale(gOptionsTextScale);
+Prim2D_EndPrim();
+info=(u8*)fn_80019ED0(*(s8*)((u8*)arg0+4));
+number=*(s32*)(info+4);
+value=info[0x3C];
+sprintf(text,(char*)gOptionsStr+0x213,value,number,fn_801662F0());
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16*)((u8*)item+0x30),(f32)*(s16*)((u8*)item+0x32));
+Prim2D_SetColor(0,0,0,255);
+Prim2D_SetText(text);
+Prim2D_SetScale(gOptionsTextScale);
+Prim2D_EndPrim();
+#pragma cplusplus reset
 }
 
 s32 fn_800AA078(void *arg0) {
@@ -1087,6 +1229,67 @@ void fn_800AAC64(void *arg0) {
     Map_FloodMoveRange(gBattleMap, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);
 }
 
+#pragma use_lmw_stmw on
+void Map_SetupUnitMoveLimit(void *unit)
+{
+    void Map_SelectRangeBuffer(void *, s32);
+    void fn_800227F8(void *, s32);
+    void fn_80022748(void *, s32);
+    s8 Unit_GetMov(void *);
+    void Map_FloodMoveRange(void *, u8, u8, s32, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
+    u8 Status_Test(void *, s32);
+    void *Item_Get(s32);
+    s32 Item_GetMaxRange(void *);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
+    void Map_ClipRangeByFacing(void *, s32, s32, s32);
+    s32 fn_8010FF88(void *);
+    void fn_800AA89C(void *);
+    extern u8 gBattleMap[];
+    extern u8 gMapObjEventList[];
+
+    s32 i;
+    u8 *entry;
+    u8 *list;
+    void *self;
+    u8 minRange;
+    u8 y;
+    u8 x;
+    void *item;
+
+    self = unit;
+    Map_SelectRangeBuffer(gBattleMap, 5);
+    fn_800227F8(gBattleMap, *(s32 *)((u8 *)self + 0x18C));
+    fn_80022748(gBattleMap, *(s32 *)((u8 *)self + 0x190));
+    list = (u8 *)(u32)((u8 *)self)[0x19F];
+    entry = (u8 *)(u32)((u8 *)self)[0x19E];
+    Map_FloodMoveRange(gBattleMap, (u32)entry, (u32)list, Unit_GetMov(self), 0, 0);
+    Map_SelectRangeBuffer(gBattleMap, 6);
+    Map_FillLayer(gBattleMap, 8, 0);
+
+    if ((u8)Status_Test((u8 *)self + 0x1BC, 0x4F) != 0) {
+        for (i = 0, entry = gMapObjEventList, list = entry; i < fn_8010FF88(list);
+             entry += 8, i++) {
+            if (entry[2] == 7) {
+                if (*(s16 *)(gBattleMap + 0x610E +
+                    ((((s8)entry[1] << 6) + (s8)entry[0]) << 1)) >= 0 &&
+                    entry[5] != 0) {
+                    item = Item_Get(entry[4]);
+                    minRange = ((u8 *)item)[0x1D];
+                    y = entry[1];
+                    x = entry[0];
+                    Map_FillAttackRange(gBattleMap, x, y, minRange,
+                                        Item_GetMaxRange(item));
+                    Map_ClipRangeByFacing(gBattleMap, entry[0], entry[1],
+                                          entry[3]);
+                }
+            }
+        }
+    }
+
+    fn_800AA89C(self);
+    Map_SelectRangeBuffer(gBattleMap, 5);
+}
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void *Process_CreateChild(void *, void *);
     void *Unit_GetItemSlot(void *, s32);
