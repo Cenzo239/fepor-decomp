@@ -3588,11 +3588,12 @@ s8 fn_8003A1C4(void *arg0) {
     return (s8) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x41) + (((u8) M2C_FIELD(arg0, u8 *, 0x1A6) >> 2U) & 7));
 }
 
+#pragma global_optimizer off
 s8 fn_8003A1E0(void *arg0)
 {
-  u32 value;
-  int new_var;
   s32 bonus;
+  int new_var;
+  s32 value;
   void *ptr;
   bonus = 0;
   new_var = 0x188;
@@ -3609,14 +3610,13 @@ s8 fn_8003A1E0(void *arg0)
   }
   value = ((s8) bonus) + value;
   value = (*((s8 *) (((s8 *) arg0) + 0x1A9))) + value;
-  if ((s32)value > 99)
+  if (value > 99)
   {
     value = 99;
   }
   return (s8) value;
 }
-
-#pragma opt_strength_reduction off
+#pragma global_optimizer reset
 s8 Unit_GetMov(void *arg0) {
     u8 Status_Test(void *, s32);
     s32 sum;
@@ -11231,6 +11231,54 @@ void fn_8004B1B4(u8 *arg0) {
     } else {
         arg0[3] |= 0x20;
     }
+}
+
+void fn_8004B218(void) {
+void Allegiance_FillMask(s32, void *);
+s32 fn_8010424C(void *);
+void PSMTXRotRad(void *, s32, f32);
+void PSMTXScale(void *, f32, f32, f32);
+void PSMTXTrans(void *, f32, f32, f32);
+void PSMTXConcat(void *, void *, void *);
+void Model_SetAlpha(void *, u8);
+void fn_80060060(void *);
+void fn_800609DC(void *);
+void fn_8006CAD4(void *);
+extern u8 gUnits[], lbl_802EFFE8[];
+extern f32 lbl_80368FB8, lbl_80368FBC, lbl_80368FC0;
+f32 rot[3][4], scale[3][4], trans[3][4];
+u8 mask[8];
+s32 id;
+u8 *unit;
+u8 *model;
+Allegiance_FillMask(3,mask);
+for(id=1;id<=159;id++) {
+u8 valid;
+s32 count;
+unit=(u8)id ? gUnits+((u8)id-1)*0x280 : 0;
+if(!M2C_FIELD(unit,void **,0x188)) continue;
+if(!mask[M2C_FIELD(M2C_FIELD(unit,void **,0x190),u8 *,8)]) continue;
+if(M2C_FIELD(unit,u32 *,0x1A0)&0x010000FC) valid=0;
+else if((u8)(unit[3]&0x22)!=2) valid=0;
+else if(!unit[0x27]) valid=0;
+else valid=1;
+if(!valid) continue;
+model=unit+0xBC;
+count=fn_8010424C(unit+0x1A4);
+if(count>5)count=5;
+if(count>0) {
+M2C_FIELD(model,void **,4)=lbl_802EFFE8+(count-1)*0xA0;
+PSMTXRotRad(rot,0x58,lbl_80368FB8);
+PSMTXScale(scale,lbl_80368FBC,lbl_80368FBC,lbl_80368FBC);
+PSMTXTrans(trans,M2C_FIELD(unit,f32 *,4)+M2C_FIELD(unit,f32 *,0x10),M2C_FIELD(unit,f32 *,8)+M2C_FIELD(unit,f32 *,0x14),(M2C_FIELD(unit,f32 *,0xC)+M2C_FIELD(unit,f32 *,0x18))-lbl_80368FC0);
+PSMTXConcat(rot,scale,scale);
+PSMTXConcat(trans,scale,model+0x10);
+Model_SetAlpha(model,unit[0x27]);
+fn_80060060(model);
+fn_800609DC(model);
+fn_8006CAD4(model);
+}
+}
 }
 
 extern s32 gGMaterialCurrent;
