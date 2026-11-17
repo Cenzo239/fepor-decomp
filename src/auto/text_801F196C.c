@@ -1048,11 +1048,11 @@ char *Msg_Expand(char *);
 extern char gOptionsStrs[];
 extern u8 gSystemSave[];
 struct Panel { u8 pad0[8]; s32 state; s16 cursor; s16 unkE; u8 category,previous; s16 x,y,scroll; u8 pad18[0x24]; char title[0x18]; char header[0x88]; s32 dc,e0; };
-register struct Panel *p = *(struct Panel **)((u8 *)arg0+0x30);
-register u8 *list;
+struct Panel *p = *(struct Panel **)((u8 *)arg0+0x30);
+u8 *list;
 s32 n;
 p->state=13;
-list=(u8 *)p+0x20;
+list=(u8 *)p+(short)0x20;
 p->unkE=0;
 p->header[0]=0;
 ((u8 *)p)[0x20]=1;
@@ -1064,7 +1064,7 @@ strcpy(p->title,gOptionsStrs+0x127A);
 list[2]=1;
 n=1;
 if (*(u16 *)(gSystemSave+0x10)&0x10) {list[3]=3;n=2;}
-if (*(u16 *)(gSystemSave+0x10)&0x20) {list[n+2]=4;n++;}
+if (*(u16 *)(gSystemSave+0x10)&(unsigned short)0x20) {list[n+2]=4;n++;}
 list[1]=n;
 p->category=p->previous=list[p->cursor+2];
 p->scroll=0;
