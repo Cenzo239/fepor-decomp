@@ -2,6 +2,7 @@
 #include "common.h"
 #include "global.h"
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
+typedef struct MoveClassKind { u8 value; } MoveClassKind;
 
 typedef struct ListNode {
     struct ListNode *prev;
@@ -4188,10 +4189,93 @@ break;
 }
 }
 
-void fn_8018BC28(void) {
-    // Placeholder implementation for now.
+#pragma dont_inline on
+void fn_8018BC28(void *arg0) {
+ u8 Pad_IsActive(void *);u8 Pad_IsButton(void *,s32);
+ void *fn_80105C5C(void *,s32);s32 fn_8005B760(s32);
+ void SeCue_PlayAt(void *,s32,f32,f32,f32);
+ s32 Str_Cmp(void *,void *);void *fn_80234198(void *,void *);
+ u32 fn_800A883C(void *,s32);
+ void DebugPrint(void *,...);
+ void fn_8004AE28(void *,f32,f32,f32);u16 fn_8005F92C(void *,void *);
+ void fn_8018CFA4(s32,s32,s32,s32,void *);void fn_8018CF08(void);void fn_8018CF48(s32);void fn_80025624(void *,s32);
+ extern u8 MoveAnim_str[],gBattleMap[];
+ extern MoveSoundButtons lbl_80278DE0;
+ extern void *gPadInput;
+ MoveSoundButtons buttons;
+ u8 c0,c1,c2,c3;
+ void *pad;
+ void *cls;
+ s32 volume;
+ void *message;
+ u8 heavy;
+ f32 x,y,z;
+ pad=(u8 *)M2C_FIELD(arg0,void **,0x30)+0x1C;
+ if(Pad_IsActive(pad)){
+ x=M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,4);
+ y=M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,8);
+ z=M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,12);
+ if(Pad_IsButton(pad,0x32)){
+ cls=M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x18C);
+ volume=100;
+ if(M2C_FIELD(cls,u8 *,0x42)!=9){
+ heavy=M2C_FIELD(cls,u8 *,0x42)==7||M2C_FIELD(cls,u8 *,0x42)==8;
+ if((M2C_FIELD(cls,u16 *,0x3A)&0x40)&&fn_80105C5C((u8 *)M2C_FIELD(arg0,void **,0x30)+0x1BC,9))heavy=1;
+ switch(fn_8005B760((gBattleMap+(s8)(s32)x+((s8)(s32)y<<6))[0x100D])){
+ case 26:if(!heavy)SeCue_PlayAt(MoveAnim_str+0x50B,100,x,y,z);else SeCue_PlayAt(MoveAnim_str+0x51F,100,x,y,z);volume=70;break;
+ case 24:if(!heavy)SeCue_PlayAt(MoveAnim_str+0x533,100,x,y,z);else SeCue_PlayAt(MoveAnim_str+0x546,100,x,y,z);volume=70;break;
+ case 25:if(!heavy)SeCue_PlayAt(MoveAnim_str+0x559,100,x,y,z);else SeCue_PlayAt(MoveAnim_str+0x56C,100,x,y,z);volume=70;break;
+ }}
+ switch(M2C_FIELD(cls,u8 *,0x42)){
+ case 7: message=MoveAnim_str+0x57f;SeCue_PlayAt(MoveAnim_str+0x59f,volume,x,y,z);break;
+ case 8:
+ if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x5b3)==0){message=MoveAnim_str+0x57f;SeCue_PlayAt(MoveAnim_str+0x59f,volume,x,y,z);}else{message=MoveAnim_str+0x5c2;SeCue_PlayAt(MoveAnim_str+0x5e2,volume,x,y,z);}break;
+ case 3:case 4:message=MoveAnim_str+0x5f6;SeCue_PlayAt(MoveAnim_str+0x616,volume,x,y,z);break;
+ case 9:
+ if(Str_Cmp(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x188),void **,0),MoveAnim_str+0x4a7)==0){message=MoveAnim_str+0x62a;SeCue_PlayAt(MoveAnim_str+0x64e,volume,x,y,z);}
+ else if((c0=fn_800A883C(cls,0)>>24)==3||(c1=fn_800A883C(cls,1)>>24)==3){message=MoveAnim_str+0x666;SeCue_PlayAt(MoveAnim_str+0x68a,volume,x,y,z);}
+ else if((c2=fn_800A883C(cls,0)>>24)==4||(c3=fn_800A883C(cls,1)>>24)==4){message=MoveAnim_str+0x6a2;SeCue_PlayAt(MoveAnim_str+0x6c6,volume,x,y,z);}
+ else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6de)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6ea)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6f8)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x312)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x332)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x33e)==0){message=MoveAnim_str+0x708;SeCue_PlayAt(MoveAnim_str+0x72c,volume,x,y,z);}
+ else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x744)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x2bc)==0){message=MoveAnim_str+0x750;SeCue_PlayAt(MoveAnim_str+0x774,volume,x,y,z);}
+ else{message=MoveAnim_str+0x78c;SeCue_PlayAt(MoveAnim_str+0x7b0,volume,x,y,z);}break;
+ default:
+ if(M2C_FIELD(cls,u16 *,0x3A)&0x40){
+ if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x21d)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x239)==0){message=MoveAnim_str+0x7c8;SeCue_PlayAt(MoveAnim_str+0x7e8,volume,x,y,z);break;}
+ if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x7fc)==0){message=MoveAnim_str+0x808;SeCue_PlayAt(MoveAnim_str+0x828,volume,x,y,z);break;}
+ if(fn_80105C5C((u8 *)M2C_FIELD(arg0,void **,0x30)+0x1BC,9)){message=MoveAnim_str+0x83c;SeCue_PlayAt(MoveAnim_str+0x85c,volume,x,y,z);break;}
+ }
+ if((M2C_FIELD(cls,u16 *,0x3A)&0x80)&&fn_80105C5C((u8 *)M2C_FIELD(arg0,void **,0x30)+0x1BC,9)){message=MoveAnim_str+0x870;SeCue_PlayAt(MoveAnim_str+0x891,volume,x,y,z);break;}
+ if(Str_Cmp(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x188),void **,0),MoveAnim_str+0x8a6)==0){message=MoveAnim_str+0x5f6;SeCue_PlayAt(MoveAnim_str+0x616,volume,x,y,z);break;}
+ if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8b6)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8c2)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8d0)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8db)==0){message=MoveAnim_str+0x808;SeCue_PlayAt(MoveAnim_str+0x828,volume,x,y,z);break;}
+ if(fn_80234198(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8e6)||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8e9)==0){
+ if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x8f3)==0){message=MoveAnim_str+0x902;SeCue_PlayAt(MoveAnim_str+0x922,volume,x,y,z);}else{message=MoveAnim_str+0x936;SeCue_PlayAt(MoveAnim_str+0x956,volume,x,y,z);}
+ }else{message=MoveAnim_str+0x902;SeCue_PlayAt(MoveAnim_str+0x922,volume,x,y,z);}
+ break;
+ }
+ if(message)DebugPrint(MoveAnim_str+0x96A,message,M2C_FIELD(pad,f32 *,0x58));
+ }
+ fn_8004AE28(pad,x,y,z);
+ buttons=lbl_80278DE0;
+ switch(fn_8005F92C(pad,&buttons)){
+ case 10:fn_8018CFA4(15,6,2,1,arg0);break;
+ case 9:fn_8018CFA4(30,6,2,1,arg0);break;
+ case 11:fn_8018CFA4(60,6,2,1,arg0);break;
+ case 31:fn_8018CFA4(15,6,0,1,arg0);break;
+ case 30:fn_8018CFA4(30,6,0,1,arg0);break;
+ case 32:fn_8018CFA4(60,6,0,1,arg0);break;
+ case 33:fn_8018CF08();break;
+ case 34:fn_8018CF48(-15);break;
+ case 35:fn_8018CF48(-7);break;
+ case 36:fn_8018CF48(-30);break;
+ case 37:fn_8018CF48(15);break;
+ case 38:fn_8018CF48(7);break;
+ case 39:fn_8018CF48(30);break;
+ }
+ if(Pad_IsButton(pad,47))fn_80025624(gPadInput,4);
+ if(Pad_IsButton(pad,48))fn_80025624(gPadInput,16);
+ }
 }
-
+#pragma dont_inline reset
 void fn_8018C680(void *arg0)
 {
     void *Msg_ResolveName(void *);
@@ -8166,15 +8250,23 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    s32 z = 0;
-    f32 one = lbl_8036AE20;
-    void *self = arg0;
-    s32 e1 = (s16)arg1;
-    s32 e2 = (s16)arg2;
+    s32 z;
+    void *self;
+    void *tmp;
+    void *self2;
+    s32 e1;
+    s32 e2;
+    f32 one;
 
+    z = 0;
+    one = lbl_8036AE20;
+    self = arg0;
+    tmp = self;
     *(void **)self = lbl_8028FDB0;
+    e1 = (s16)arg1;
     *(s32 *)((u8 *)self + 4) = z;
     *(void **)self = lbl_80292230;
+    e2 = (s16)arg2;
     *(s16 *)((u8 *)self + 8) = -1;
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
@@ -8198,23 +8290,24 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x34) = z;
     *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)self = lbl_80292208;
-    fn_80142060((u8 *)arg0 + 0x3C);
+    fn_80142060((u8 *)tmp + 0x3C);
 
-    *(void **)self = lbl_80293BB8;
-    *(u8 *)((u8 *)self + 0x48) = 1;
-    *(u8 *)((u8 *)self + 0x49) = 0;
-    *(u8 *)((u8 *)self + 0x4A) = 1;
-    *(u8 *)((u8 *)self + 0x4B) = 0;
-    *(s16 *)((u8 *)self + 0x50) = -1;
-    *(s16 *)((u8 *)self + 0x52) = -1;
-    *(s16 *)((u8 *)self + 0x54) = 0x20;
-    *(s32 *)((u8 *)self + 0x58) = 0;
-    *(s32 *)((u8 *)self + 0x5C) = 0;
-    *(s32 *)((u8 *)self + 0x60) = 3;
-    *(s16 *)((u8 *)self + 0x64) = 0x14;
-    *(s16 *)((u8 *)self + 0x66) = 0;
-    *(s32 *)((u8 *)self + 0x70) = 0;
-    ((Obj *)self)->m28();
+    self2 = self;
+    *(void **)self2 = lbl_80293BB8;
+    *(u8 *)((u8 *)self2 + 0x48) = 1;
+    *(u8 *)((u8 *)self2 + 0x49) = 0;
+    *(u8 *)((u8 *)self2 + 0x4A) = 1;
+    *(u8 *)((u8 *)self2 + 0x4B) = 0;
+    *(s16 *)((u8 *)self2 + 0x50) = -1;
+    *(s16 *)((u8 *)self2 + 0x52) = -1;
+    *(s16 *)((u8 *)self2 + 0x54) = 0x20;
+    *(s32 *)((u8 *)self2 + 0x58) = 0;
+    *(s32 *)((u8 *)self2 + 0x5C) = 0;
+    *(s32 *)((u8 *)self2 + 0x60) = 3;
+    *(s16 *)((u8 *)self2 + 0x64) = 0x14;
+    *(s16 *)((u8 *)self2 + 0x66) = 0;
+    *(s32 *)((u8 *)self2 + 0x70) = 0;
+    ((Obj *)self2)->m28();
 
     *(void **)self = lbl_80293B74;
     *(s16 *)((u8 *)self + 0x64) = 0x18;
