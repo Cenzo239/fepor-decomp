@@ -458,40 +458,20 @@ void fn_8020CD40(void) {
 }
 
 s32 fn_8020CD64(char *path, void *dir) {
+    BOOL DVDConvertEntrynumToPath(s32, char *, u32);
+    void OSReport(char *, ...);
     extern char lbl_8029D04C[];
-
     char currentPath[0x80];
-    s32 entry;
-    u32 offset;
-    u32 flags;
-    FSTEntry *fst;
-
-    entry = fn_8020C3E0(path);
-
+    s32 entry = fn_8020C3E0(path);
     if (entry < 0) {
-        DVDConvertEntrynumToPath(
-            currentDirectory,
-            currentPath,
-            0x80
-        );
-
+        DVDConvertEntrynumToPath(currentDirectory, currentPath, 0x80);
         OSReport(lbl_8029D04C, path, currentPath);
         return 0;
     }
-
-    offset = entry * 0xC;
-    fst = FstStart_8036857C;
-    flags = *(u32 *)((u8 *)fst + offset);
-
-    if ((flags & 0xFF000000U) == 0) {
-        return 0;
-    }
-
+    if (!entryIsDir(entry)) return 0;
     *(s32 *)dir = entry;
     *(s32 *)((u8 *)dir + 4) = entry + 1;
-    *(u32 *)((u8 *)dir + 8) =
-        *(u32 *)((u8 *)fst + offset + 8);
-
+    *(u32 *)((u8 *)dir + 8) = FstStart_8036857C[entry].nextEntryOrLength;
     return 1;
 }
 
@@ -2057,6 +2037,39 @@ void fn_8020F068(void) {
     }
     OSRestoreInterrupts(enabled);
 }
+
+s32 fn_8020F334(void *arg0) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    void OSSleepThread(void *);
+    s32 fn_8020F0B8(void *, void *);
+    extern M2C_UNK __DVDThreadQueue;
+    extern M2C_UNK fn_8020F3E0;
+    s32 interrupts;
+    s32 state;
+    u32 command;
+
+    if (fn_8020F0B8(arg0, &fn_8020F3E0) == 0) {
+        return -1;
+    }
+    interrupts = OSDisableInterrupts();
+loop_3:
+    state = ((DVDReadyCommand *)arg0)->state;
+    if ((u32)(state + 1) <= 1U) goto done;
+    if (state == 10) goto done;
+    if (state == 3) {
+        command = (u32)((DVDReadyCommand *)arg0)->command;
+        if ((u32)(command - 4) <= 1U) goto done;
+        if (command == 13) goto done;
+        if (command == 15) goto done;
+    }
+    OSSleepThread(&__DVDThreadQueue);
+    goto loop_3;
+done:
+    OSRestoreInterrupts(interrupts);
+    return 0;
+}
+
 #pragma global_optimizer on
 #pragma peephole on
 void fn_8020F3E0(void) {
