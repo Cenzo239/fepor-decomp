@@ -812,46 +812,35 @@ s32 fn_8023B99C(s32 chan)
   return 0;
 }
 
-s32 fn_8023BA70(s32 chan, void *arg1)
+#pragma dont_inline on
+s32 fn_8023BA70(s32 chan, u32 *out)
 {
-    u8 *packet;
-    volatile u32 *si;
-    u32 interrupts;
-    s32 result;
-    u32 offset;
+  struct SIState
+  {
+    u8 pad[0x1B0];
+    u32 ready[4];
+    u32 response[4][2];
+  };
+  struct SIState *packet = (struct SIState *)Packet_8033E248;
+  u32 interrupts;
+  s32 result;
 
-    packet = (u8 *)Packet_8033E248;
-
-    interrupts = OSDisableInterrupts();
-
-    if (fn_8023B788(chan) & 0x20) {
-        si = (volatile u32 *)(0xCC006400 + chan * 0xC);
-
-        offset = chan << 3;
-
-        *(u32 *)(packet + 0x1C0 + offset) = si[1];
-        *(u32 *)(packet + 0x1C4 + offset) = si[2];
-
-        *(u32 *)(packet + 0x1B0 + (chan << 2)) = 1;
-    }
-
-    result = *(s32 *)(packet + 0x1B0 + (chan << 2));
-
-    *(u32 *)(packet + 0x1B0 + (chan << 2)) = 0;
-
-    if (result != 0) {
-        offset = chan << 3;
-
-        *(u32 *)arg1 = *(u32 *)(packet + 0x1C0 + offset);
-        *(u32 *)((u8 *)arg1 + 4) =
-            *(u32 *)(packet + 0x1C4 + offset);
-    }
-
-    OSRestoreInterrupts(interrupts);
-
-    return result;
+  interrupts = OSDisableInterrupts();
+  if (fn_8023B788(chan) & 0x20) {
+    packet->response[chan][0] = (&__SIRegs[chan * 3])[1];
+    packet->response[chan][1] = (&__SIRegs[chan * 3])[2];
+    packet->ready[chan] = 1;
+  }
+  result = packet->ready[chan];
+  packet->ready[chan] = 0;
+  if (result != 0) {
+    out[0] = packet->response[chan][0];
+    out[1] = packet->response[chan][1];
+  }
+  OSRestoreInterrupts(interrupts);
+  return result;
 }
-
+#pragma dont_inline reset
 void fn_8023BB34(void *alarm, void *context) {
     extern SIAlarm lbl_8033E2C8[4];
     extern SIPacket Packet_8033E248[4];
