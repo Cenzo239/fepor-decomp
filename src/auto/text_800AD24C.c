@@ -1501,12 +1501,22 @@ void fn_800B1B80(s32 arg0, s16 arg1)
 }
 
 void fn_800B1BFC(s32 arg0, s32 arg1) {
-extern u8 gSoundSys[]; void Snd_SetParamU8(s32,s32,s32);
-u8 *sys; u8 *p; s32 off; u32 value;
-sys=gSoundSys; off=arg0*20+8;
-p=*(u8 **)(sys+0xF4); p[off]=arg1;
-value=*(u32 *)(*(u8 **)(sys+0xF4)+(off+4));
-if(value!=0xFFFFFFFFu) Snd_SetParamU8(value,0x83,arg1);
+    extern u8 gSoundSys[];
+    void Snd_SetParamU8(s32, s32, s32);
+    u8 *sys;
+    u8 *p;
+    s32 off;
+    u32 value;
+
+    sys = gSoundSys;
+    off = arg0 * 20 + 8;
+    p = *(u8 **)(sys + 0xF4);
+    p[off] = arg1;
+    value = *(u32 *)&(*(u8 **)(sys + 0xF4))[off + 4];
+
+    if (value != 0xFFFFFFFFu) {
+        Snd_SetParamU8(value, 0x83, arg1);
+    }
 }
 
 void fn_800B1C54(s32 arg0, s32 arg1)
@@ -7622,32 +7632,38 @@ void fn_800BDDCC(void *arg0, s32 arg1) {
     void *self;
     s32 i;
     u32 *p;
+    s32 off;
     s32 n;
 
     self = arg0;
-    i = 0x5F;
-    n = 0x60;
     p = (u32 *)((u8 *)self + 0x17C);
-    do {
+    for (n = 0x60, i = 0x5F; n != 0; n--, i--) {
         if (*p == 0) {
+            off = i << 2;
             ((s32 *)self)[i] = arg1;
-            *(s32 *)((u8 *)self + (i << 2) + 0x180) = fn_8000D598(arg1);
+            *(s32 *)((u8 *)self + off + 0x180) = fn_8000D598(arg1);
             return;
         }
         p--;
-        i--;
-    } while (--n);
+    }
 }
 
 void fn_800BDE40(void *arg0, s32 arg1) {
-s32 fn_8000D598(s32); void *self; s32 i; u32 *p; s32 off; s32 bitbase;
-self=arg0; p=(u32*)arg0;
-for(i=0;i<0x60;i++) { if(*p==0) { off=i<<2;
-*(s32 *)((u8*)self+off)=arg1;
-*(s32 *)((u8*)self+0x180+off)=fn_8000D598(arg1);
-bitbase=(s32)self+(i>>3);
-*(u8*)(bitbase+0x300)&=~(1<<(i&7));
-return; } p++; }
+    struct Foo {
+        u32 arr[0x60];
+        u32 other[0x60];
+        u8 flags[0x40];
+    };
+    s32 i;
+    struct Foo *self = (struct Foo *)arg0;
+    for (i = 0; i < 0x60; i++) {
+        if (self->arr[i] == 0) {
+            self->arr[i] = arg1;
+            self->other[i] = fn_8000D598(arg1);
+            self->flags[i >> 3] &= ~(1 << (i & 7));
+            return;
+        }
+    }
 }
 
 void fn_800BDED8(void *arg0) {
@@ -7984,6 +8000,7 @@ s32 fn_800BE800(s32 arg0) {
     u8 *entry;
     s32 count;
     s32 kind;
+    s32 result;
 
     kind = 0xE;
     entry = Event_NextEntry(0);
@@ -7998,7 +8015,8 @@ s32 fn_800BE800(s32 arg0) {
     }
     gTalkState[0xa] = 1;
     fn_80013778(0, entry);
-    return fn_80013880() != 0;
+    result = fn_80013880();
+    return result != 0;
 }
 
 extern u8 lbl_80317334[];
