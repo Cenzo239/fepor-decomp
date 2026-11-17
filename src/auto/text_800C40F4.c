@@ -18149,6 +18149,7 @@ score+=(s32)(lbl_8036A06C*((f32)fn_800386E0(unit)*(f32)(s8)cfg[10]));
 M2C_FIELD(arg1,s32 *,8)=score;
 }
 
+#pragma optimization_level 3
 void Battle_ScoreTarget(s32 arg0, void *arg1) {
     void *Res_GetByName(void *);
     s32 fn_800F6F94(void *, s32);
