@@ -663,7 +663,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
     u32 i;
     u32 rlen;
     SIComCSR comcsr;
-    unsigned long sr;
+    u32 sr;
     SIControl *si;
     si = &lbl_8029EF68;
     enabled = OSDisableInterrupts();
@@ -672,14 +672,14 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         return FALSE;
     }
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr &= (u32)((s32)0x0F000000 >> (chan * 8));
+    sr &= (u32)((s32)0x0F000000 >> (chan << 3));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
     rlen = (outputBytes + 3) / 4;
     si->chan = chan;
     si->callback = callback;
     si->inputBytes = inputBytes;
     si->input = input;
-    for (i = 0; i < rlen; i++) {
+    for (i = 0; rlen > i; ++i) {
         __SIRegs[32 + i] = ((u32 *)output)[i];
     }
     comcsr.value = __SIRegs[13];
@@ -892,7 +892,7 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
 #pragma global_optimizer off
 #pragma opt_common_subs off
 #pragma opt_propagation off
-#pragma optimization_level 1
+#pragma optimization_level 2
 void GetTypeCallback(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     s64 __OSGetSystemTime(void);
@@ -1106,16 +1106,17 @@ u32 fn_8023C410(s32 chan) {
 
 #pragma optimization_level 4
 void SISetSamplingRate(u32 rate) {
-    extern u8 XYNTSC_8029F080[];
+    extern u8 XYNTSC_8029F080[48];
     extern u32 SamplingRate_80368828;
     s32 VIGetTvFormat(void);
     void OSReport(const char *, ...);
     u32 SISetXY(s32, s32);
-    register u8 *base = XYNTSC_8029F080;
+    u8 *base;
     u8 *table;
     BOOL enabled;
     u32 scale;
 
+    base = &XYNTSC_8029F080[0];
     if (rate > 11) {
         rate = 11;
     }
