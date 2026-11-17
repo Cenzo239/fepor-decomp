@@ -19685,50 +19685,49 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
     Battle_SetupFromParams(gBattle, &atk, &def);
     fn_801A6F34(gBattle, gUiContext[8]);
     Battle_ScoreTarget(attacker, target);
-    return 1;
-}
+          return 1;
+  }
 
-extern "C" s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
-    u8 Allegiance_Compare(s32, s32);
-    extern u8 lbl_80272E98[];
-    extern u8 gBattleMap[];
-    extern u8 gUnits[];
-    struct U { u8 pad[0x190]; s32 alleg; };
-    s32 baseY = arg2;
-    s32 baseX = arg1;
-    s32 score = 0;
-    s8 *p = (s8 *)lbl_80272E98;
-    bool outside;
-    u8 id;
-    s16 x, y;
-    struct U *unit;
+  #pragma auto_inline reset
+  #pragma cplusplus reset
 
-    while (*p != 0x7F) {
-        x = baseX + p[0];
-        outside = false;
-        y = baseY + p[1];
-        if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
-            outside = true;
-        if (!outside) {
-            id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
-            if (id) {
-                if (id)
-                    unit = (struct U *)(gUnits + (id - 1) * 0x280);
-                else
-                    unit = 0;
-                if ((u8)(Allegiance_Compare(((struct U *)arg0)->alleg, unit->alleg) == 1) == 1)
-                    score -= p[2];
-                else
-                    score += p[2];
-            }
-        }
-        p += 3;
-    }
-    return score;
-}
+  s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
+      u8 Allegiance_Compare(s32, s32);
+      extern u8 lbl_80272E98[];
+      extern u8 gBattleMap[];
+      extern u8 gUnits[];
+      s32 baseY = arg2;
+      s32 baseX = arg1;
+      s32 score = 0;
+      s8 *p = (s8 *)lbl_80272E98;
+      u8 outside;
+      u8 id;
+      s16 x, y;
+      void *unit;
 
-#pragma auto_inline reset
-#pragma cplusplus reset
+      while (*p != 0x7F) {
+          x = baseX + p[0];
+          outside = 0;
+          y = baseY + p[1];
+          if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
+              outside = 1;
+          if (!outside) {
+              id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
+              if (id) {
+                  if (id)
+                      unit = gUnits + (id - 1) * 0x280;
+                  else
+                      unit = 0;
+                  if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
+                      score -= p[2];
+                  else
+                      score += p[2];
+              }
+          }
+          p += 3;
+      }
+      return score;
+  }
 
 s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     void *Terrain_GetEntry(u8);
