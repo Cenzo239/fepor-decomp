@@ -19,22 +19,22 @@ void *fn_800119E0(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern u16 lbl_80283EFC[];
     extern u16 lbl_80283948[];
-    struct { void *vt; u32 unk4; } *obj;
 
-    obj = arg0;
-    if (obj != NULL) {
-        obj->vt = lbl_80283EFC;
-        if (obj != NULL) {
-            obj->vt = lbl_80283948;
-            if (obj->unk4 != 0) {
-                FileCache_ReleaseSlot(&obj->unk4);
+    if (arg0 != NULL) {
+        M2C_FIELD(arg0, void **, 0) = lbl_80283EFC;
+        if (arg0 != NULL) {
+            M2C_FIELD(arg0, void **, 0) = lbl_80283948;
+            if (M2C_FIELD(arg0, u32 *, 4) != 0) {
+                struct { void *vt; u32 unk4; } *p;
+                p = arg0;
+                FileCache_ReleaseSlot(&p->unk4);
             }
         }
         if (arg1 > 0) {
-            Heap_Free(obj);
+            Heap_Free(arg0);
         }
     }
-    return obj;
+    return arg0;
 }
 
 void fn_80011A5C(void *arg0)
