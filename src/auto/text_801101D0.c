@@ -7173,6 +7173,210 @@ void fn_8011E4B8(void) {
     // Will need to decompile it properly step by step.
 }
 
+s32 fn_8011F184(void *self,u8 **text) {
+void fn_80120F94(void);
+s32 fn_80049DA4(void *,void *,s32);
+void fn_8011FB58(void *,s32);
+void fn_800790D4(void *,void *);
+void fn_8007AD6C(void *);
+void fn_8007AD08(void *,s32,s32);
+extern u8 lbl_8032FE24[];
+s32 slot,want,c;
+u8 previous;
+void *child;
+char *out;
+previous=M2C_FIELD(self,u8 *,0x5e);
+want=(s8)previous;
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48);
+
+c=(s8)**text;
+if(c>='0' && c<='9') {
+if(want!=c-'0') {
+M2C_FIELD(self,u8 *,0x65)=previous;
+M2C_FIELD(self,u8 *,0x5e)=c-'0';
+fn_80120F94();
+}
+++*text;
+return 1;
+}
+c=(s8)*(*text)++;
+switch(c) {
+case 'C':
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48);
+
+if(child) *text-=2;
+else {
+out=(char *)lbl_8032FE24;
+while((s32)**text!='|') *out++=*(*text)++;
+*out=0; ++*text;
+fn_8011FB58(self,fn_80049DA4((u8 *)TalkUi_str+0x6f,lbl_8032FE24,0));
+}
+return 2;
+case 'D':
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+
+if(!(gUiInputFlags&3)) {
+fn_800790D4(M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48),self);fn_80120F94();
+} else fn_8007AD6C(M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48));
+M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48)=0;
+M2C_FIELD(self,s8 *,0x5e)=-1;return 2;
+case 'S':
+if(child) M2C_FIELD(child,u16 *,0x46)&=~0x202;
+else M2C_FIELD(self,u16 *,0x5c)&=~0x202;
+return 1;
+case 'A':
+if(child) {M2C_FIELD(child,u16 *,0x46)&=~0x202;M2C_FIELD(child,u16 *,0x46)|=2;}
+else {M2C_FIELD(self,u16 *,0x5c)&=~0x202;M2C_FIELD(self,u16 *,0x5c)|=2;}
+return 1;
+case 'f':
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,2,-1);
+return 1;
+case 's':
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,1,-1);
+return 1;
+case 'd':
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,1,1);
+return 1;
+case 'c':
+if(child) {
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,-1,3);
+} else M2C_FIELD(self,u16 *,0x5c)|=4;
+return 1;
+case 'h':
+if(child) {
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,-1,4);
+} else M2C_FIELD(self,u16 *,0x5c)|=8;
+return 1;
+case 'o':
+if(child) {
+want=M2C_FIELD(self,s8 *,0x5e);
+if(want<0) slot=-1;
+else {
+ child=M2C_FIELD(self,void **,0x48);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
+ else {child=M2C_FIELD(self,void **,0x4c);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
+ else {child=M2C_FIELD(self,void **,0x50);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
+ else {child=M2C_FIELD(self,void **,0x54);
+ if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
+ }}}
+}
+if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+fn_8007AD08(child,5,5);
+} else M2C_FIELD(self,u16 *,0x5c)|=12;
+return 1;
+}
+return 2;
+}
+
 void fn_8011FB58(void *arg0, s32 arg1) {
     s32 Str_Cmp(s32, void *);
     void *fn_8003A114(void *);
