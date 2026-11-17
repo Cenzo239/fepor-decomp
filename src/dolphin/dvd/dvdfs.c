@@ -2327,27 +2327,30 @@ void __DVDStoreErrorCode(u32 arg0) {
 s32 fn_8020F9E8(u8 *arg0, u8 *arg1)
 {
     s32 Str_NCmp(u8 *, u8 *, u32);
+    u8 *b;
+    u8 *a;
 
-    if ((s8)arg0[0] != 0 && (s8)arg1[0] != 0) {
-        if (Str_NCmp(arg0, arg1, 4) != 0) {
+    b = arg1;
+    a = arg0;
+
+    if ((s8)a[0] != 0 && (s8)b[0] != 0) {
+        if (Str_NCmp(a, b, 4) != 0) {
             return 0;
         }
     }
 
-    if ((s8)arg0[4] != 0 && (s8)arg1[4] != 0) {
-        if (Str_NCmp(arg0 + 4, arg1 + 4, 2) != 0) {
+    if (!((s8)a[4] != 0 && (s8)b[4] != 0 && Str_NCmp(a + 4, b + 4, 2) == 0)) {
+        return 0;
+    }
+
+    if (a[6] != 0xFF && b[6] != 0xFF) {
+        if (a[6] != b[6]) {
             return 0;
         }
     }
 
-    if (arg0[6] != 0xFF && arg1[6] != 0xFF) {
-        if (arg0[6] != arg1[6]) {
-            return 0;
-        }
-    }
-
-    if (arg0[7] != 0xFF && arg1[7] != 0xFF) {
-        if (arg0[7] != arg1[7]) {
+    if (a[7] != 0xFF && b[7] != 0xFF) {
+        if (a[7] != b[7]) {
             return 0;
         }
     }
