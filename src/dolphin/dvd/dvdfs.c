@@ -2197,45 +2197,32 @@ int __DVDPushWaitingQueue(s32 priority, void *block) {
 
 s32 __DVDPopWaitingQueue(void)
 {
-    extern u8 WaitingQueue_80339FD8[];
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-
     struct DVDQueue {
         struct DVDQueue *next;
         struct DVDQueue *prev;
     };
-
-    struct DVDQueue *queue;
+    extern struct DVDQueue WaitingQueue_80339FD8[4];
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
     struct DVDQueue *entry;
     s32 i;
+    u32 interrupts;
 
-    OSDisableInterrupts();
-
-    queue = (struct DVDQueue *)WaitingQueue_80339FD8;
-
+    interrupts = OSDisableInterrupts();
     for (i = 0; i < 4; i++) {
-        if (queue[i].next != &queue[i]) {
-            OSRestoreInterrupts(OSDisableInterrupts());
-
-            OSDisableInterrupts();
-
-            entry = ((struct DVDQueue *)WaitingQueue_80339FD8)[i].next;
-
-            queue = &((struct DVDQueue *)WaitingQueue_80339FD8)[i];
-            queue->next = entry->next;
-            entry->next->prev = queue;
-
-            OSRestoreInterrupts(OSDisableInterrupts());
-
+        if (WaitingQueue_80339FD8[i].next != &WaitingQueue_80339FD8[i]) {
+            OSRestoreInterrupts(interrupts);
+            interrupts = OSDisableInterrupts();
+            entry = WaitingQueue_80339FD8[i].next;
+            WaitingQueue_80339FD8[i].next = entry->next;
+            entry->next->prev = &WaitingQueue_80339FD8[i];
+            OSRestoreInterrupts(interrupts);
             entry->next = 0;
             entry->prev = 0;
-
             return (s32)entry;
         }
     }
-
-    OSRestoreInterrupts(OSDisableInterrupts());
+    OSRestoreInterrupts(interrupts);
     return 0;
 }
 
