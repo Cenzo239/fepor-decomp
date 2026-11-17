@@ -689,29 +689,33 @@ void Battle_QueuePromotionGains(s32 battle, void *unit) {
 }
 #pragma use_lmw_stmw reset
 
-u8 fn_80034A8C(s32 arg0, u8 arg1) {
-    s32 temp_r3;
-    s32 temp_r30;
-    s32 temp_r31;
-
-    if (arg1 == 0) {
-        return 0U;
-    }
-    temp_r31 = arg1;
-    if (Status_Test(arg0 + 0x1BC, 0xB) != 0) {
-        temp_r31 *= 2;
-    }
-    if (Status_Test(arg0 + 0x1BC, 0x4B) != 0) {
-        temp_r3 = (temp_r31 * 7) / 10;
-        temp_r31 = temp_r3;
-        if (temp_r31 < 1) {
-            temp_r31 = 1;
-        }
-    }
-    if (temp_r31 > 0x64) {
-        temp_r31 = 0x64;
-    }
-    return temp_r31;
+void fn_80034A8C(void *arg0, void *arg1, u8 arg2, void *arg3, u8 arg4) {
+ u8 fn_8003D094(void *, u8);
+ u8 fn_8003D13C(void *);
+ void Battle_SetupUnit(void *,void *,s32);
+ s32 fn_800386B0(void *);
+ void BattleAnim_Queue(void *,s32,s8);
+ void fn_8014C5F4(void *,u32);
+ void fn_800351FC(void *,u8,s32,void *);
+ void Battle_TryStartGrowSeq(void *);
+ extern u8 gBattleState[];
+ struct BattleUnitView { u8 pad[0x2C9]; u8 gain; u8 pad2[0x5D6]; u8 anim[1]; };
+ void *grow=arg3;
+ u8 value=arg2;
+ void *other=arg1;
+ struct BattleUnitView *unit=arg0;
+ if(arg4) value=fn_8003D094(other,value);
+ if(value>fn_8003D13C(other)) value=fn_8003D13C(other);
+ if(value) {
+ Battle_SetupUnit(unit,other,-1);
+ BattleAnim_Queue(unit->anim,0x27,(s8)fn_800386B0(other));
+ if(value>fn_8003D13C(other)) value=fn_8003D13C(other);
+ BattleAnim_Queue(unit->anim,0x28,(s8)value);
+ unit->gain=value;
+ fn_8014C5F4(gBattleState,(u8)value);
+ fn_800351FC(unit,value,0,unit->anim);
+ Battle_TryStartGrowSeq(grow);
+ }
 }
 
 /* Roll level-up growths from rates, clamp to class caps, and queue non-zero gains. */
@@ -11483,6 +11487,41 @@ void fn_8004DC5C(void *arg0) {
     void fn_80067708(void *, s32, void *, s32);
     extern void fn_8004DC8C(void);
     fn_80067708(arg0, 1, fn_8004DC8C, 0);
+}
+
+void fn_8004DC8C(void) {
+ u32 fn_80055D94(s32);
+ void fn_800680AC(u16,u16,u16,u16);
+ void Camera_ApplyOrtho(s32);
+ void fn_800599D0(s32,s32,s32,s32,s32);
+ void fn_8005956C(f32,s32,s32,s32,s32,u8,void *,s32);
+ void fn_80067984(s32);
+ extern s32 lbl_803672B4;
+ extern u8 lbl_803672BD;
+ struct Color {u8 r,g,b,a;};
+ extern struct Color lbl_803672C0;
+ extern s16 lbl_803672C4,lbl_803672C6,lbl_803672C8,lbl_803672CA;
+ extern f32 lbl_80368FCC;
+ struct Color *p;
+ s16 left;
+ if(fn_80055D94(0x80)==0) {
+ left=lbl_803672C4;
+ p=&lbl_803672C0;
+ p->r=0x30; p->g=0x30; p->b=0x60; p->a=0x60;
+ lbl_803672BD=1;
+ if(left<0) lbl_803672C4=0;
+ if(lbl_803672C6<0) lbl_803672C6=0;
+ if(lbl_803672C8>0x260) lbl_803672C8=0x260;
+ if(lbl_803672CA>0x1C0) lbl_803672CA=0x1C0;
+ if(lbl_803672C4>=lbl_803672C8 || lbl_803672C6>=lbl_803672CA) return;
+ {
+ fn_800680AC((u16)lbl_803672C4,(u16)lbl_803672C6,(u16)(lbl_803672C8-lbl_803672C4),(u16)(lbl_803672CA-lbl_803672C6));
+ Camera_ApplyOrtho(0);
+ fn_800599D0(0,0,0x260,0x1C0,lbl_803672B4);
+ fn_8005956C(lbl_80368FCC,0,0,0x260,0x1C0,lbl_803672BD,&lbl_803672C0,lbl_803672B4);
+ fn_80067984(0);
+ }
+ }
 }
 
 void fn_8004DDB8(s32 arg0) {
