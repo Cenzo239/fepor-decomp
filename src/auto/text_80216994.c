@@ -614,7 +614,7 @@ int __CARDEraseSector(s32 chan, u32 addr, void *callback) {
 }
 
 void PADInit(void) {
-    extern u16 __CARDBlock[];
+    extern u8 __CARDBlock[];
     extern u16 lbl_80368740;
     extern char *lbl_80366FE0;
     extern u8 lbl_8029D9E8[];
@@ -632,33 +632,29 @@ void PADInit(void) {
     s32 i;
     s32 result;
 
-    card = (u8 *)__CARDBlock;
+    card = __CARDBlock;
 
-    if (*(u32 *)(card + 0x10C) != 0) {
-        if (*(u32 *)(card + 0x21C) != 0) {
-            return;
-        }
+    if (*(u32 *)(card + 0x10C) == 0 || *(u32 *)(card + 0x21C) == 0) {
+        lbl_80368740 = fn_802072A0();
+        OSRegisterVersion(lbl_80366FE0);
+        fn_80215F8C();
+        OSInitAlarm();
+
+        i = 0;
+        result = -3;
+
+        do {
+            *(s32 *)(card + 4) = result;
+            OSInitThreadQueue(card + 0x8C);
+            OSCreateAlarm(card + 0xE0);
+
+            i += 1;
+            card += 0x110;
+        } while (i < 2);
+
+        fn_80217AE0((void *)0x80000000);
+        OSRegisterResetFunction(lbl_8029D9E8);
     }
-
-    lbl_80368740 = fn_802072A0();
-    OSRegisterVersion(lbl_80366FE0);
-    fn_80215F8C();
-    OSInitAlarm();
-
-    i = 0;
-    result = -3;
-
-    do {
-        *(s32 *)(card + 4) = result;
-        OSInitThreadQueue(card + 0x8C);
-        OSCreateAlarm(card + 0xE0);
-
-        i++;
-        card += 0x110;
-    } while (i < 2);
-
-    fn_80217AE0((void *)0x80000000);
-    OSRegisterResetFunction(lbl_8029D9E8);
 }
 
 u16 fn_80217AD8(void) {
@@ -1545,12 +1541,13 @@ s32 fn_802193FC(s32 arg0, u32 arg1)
     return fn_802195B0(arg0, data);
 }
 
+#pragma optimization_level 3
 s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
     u8 *card;
     u16 *fat;
+    if (*(s32 *)((u8 *)__CARDBlock + chan * 0x110) == 0) return -3;
     card = (u8 *)__CARDBlock + chan * 0x110;
-    if (*(s32 *)card == 0) return -3;
     fat = *(u16 **)(card + 0x88);
     while (block != 0xFFFF) {
         u16 next;
@@ -1562,7 +1559,7 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     }
     return fn_802195B0(chan,fat,callback);
 }
-
+#pragma optimization_level reset
 int fn_802195B0(int arg0, void *arg1, void *arg2)
 {
     void fn_802198C0(void *, u32, void *, void *);
@@ -3282,19 +3279,15 @@ s32 fn_8021CBC8(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     return fn_80217C64(*arg0);
 }
 
-#pragma scheduling off
-void fn_8021CC10(s32 arg0, s32 arg1) {
+#pragma optimization_level 3
+void fn_8021CC10(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 fn_80219514(s32, u16, void *);
     s32 __CARDPutControlBlock(void *, s32);
 
     u8 *card;
     void (*callback)(s32, s32);
-    s32 result;
-    s32 chan;
 
-    result = arg1;
-    chan = arg0;
     card = (u8 *)__CARDBlock + chan * 0x110;
     callback = *(void (**)(s32, s32))(card + 0xD0);
     *(void **)(card + 0xD0) = NULL;
@@ -3305,7 +3298,7 @@ void fn_8021CC10(s32 arg0, s32 arg1) {
         }
     }
 }
-#pragma scheduling reset
+#pragma optimization_level reset
 s32 fn_8021CCB4(s32 chan, char *name, void *callback) {
     void fn_8021CC10(void);
     s32 fn_8021C080();
