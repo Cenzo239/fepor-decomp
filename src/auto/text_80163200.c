@@ -441,6 +441,57 @@ void fn_80163C98(s32 *arg0, void *arg1) {
     *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
 
+s32 fn_80163D14(void *arg0, void *arg1)
+{
+    u8 *ctx = (u8 *)arg0;
+    s16 i = 0;
+    s32 index;
+    s32 found;
+    s32 result;
+    u32 *item;
+
+    *(void **)(ctx + 0x58) = arg1;
+
+    while (i < 8) {
+        if (i >= 0 && i <= 3 &&
+            !(*(u32 *)(ctx + 0x60) & 1)) {
+            found = 0;
+        } else if (i >= 4 && i <= 7 &&
+                   !(*(u32 *)(ctx + 0x60) & 2)) {
+            found = 0;
+        } else {
+            index = i;
+            item = (u32 *)Unit_GetItemSlot(
+                *(void **)(ctx + 0x58), index);
+
+            if (*(s32 *)(ctx + 0x5C) == 1 &&
+                *item == 0 &&
+                (i == 0 || index == 4 ||
+                 *(u32 *)Unit_GetItemSlot(
+                     *(void **)(ctx + 0x58),
+                     index - 1) != 0)) {
+                found = 1;
+            } else {
+                found = (*item != 0);
+            }
+        }
+
+        if (found) {
+            break;
+        }
+
+        i++;
+    }
+
+    result = -1;
+    if (i < 8) {
+        result = i;
+    }
+
+    *(s16 *)(ctx + 0x4C) = result;
+    return result;
+}
+
 void fn_80163E50(void *arg0) {
     *(s16 *)((char *)arg0 + 0x12) = 2;
     *(s16 *)((char *)arg0 + 0x14) = 2;
@@ -941,6 +992,55 @@ void UnitInv_Refresh(void *arg0) {
     if (x != NULL) {
         Unit_CompactItems(x);
     }
+}
+
+s32 fn_80164A74(void *arg0, void *arg1)
+{
+  u8 *ctx = (u8 *) arg0;
+  s16 i = 0;
+  s32 index;
+  u8 found;
+  u32 *item;
+  s32 result;
+  *((void **) (ctx + 0x58)) = arg1;
+  while (i < 8)
+  {
+    if (((i >= 0) && (i <= 3)) && (!((*((u32 *) (ctx + 0x60))) & 1)))
+    {
+      found = 0;
+    }
+    else
+      if (((i >= 4) && (i <= 7)) && (!((*((u32 *) (ctx + 0x60))) & 2)))
+    {
+      found = 0;
+    }
+    else
+    {
+      index = i;
+      item = (u32 *) Unit_GetItemSlot(*((void **) (ctx + 0x58)), index);
+      if ((((*((s32 *) (ctx + 0x5C))) == 1) && ((*item) == 0)) && (((i == 0) || (i == 4)) || ((*((u32 *) Unit_GetItemSlot(*((void **) (ctx + 0x58)), index - 1))) != 0)))
+      {
+        found = 1;
+      }
+      else
+      {
+        found = (*item) != 0;
+      }
+    }
+    if (found)
+    {
+      break;
+    }
+    i++;
+  }
+
+  result = -1;
+  if (i < 8)
+  {
+    result = i;
+  }
+  *((s16 *) (ctx + 0x4C)) = result;
+  return result;
 }
 
 #pragma global_optimizer off
