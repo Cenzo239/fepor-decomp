@@ -5629,6 +5629,124 @@ s32 String_Find(u32 *arg0, char *arg1, u32 arg2, u32 arg3) {
     return -1;
 }
 
+#pragma global_optimizer off
+void *StringMap_FindOrInsert(void *arg0, String *arg1) {
+    void Heap_Free(void *);
+    void abort(void);
+    s32 fprintf(void *, const char *, ...);
+    s32 fn_80231944(char *, char *, u32);
+    void String_InitFromRange(void *, char *, char *, void *, void *);
+    void *fn_800D697C(void *, void *, s32, s32, void *);
+    extern char __files[];
+    extern char lbl_802704F8[];
+    struct Scratch {
+        u8 pads[0x44];
+        String pair[2];
+    } st;
+    u8 *parent;
+    s32 setFirst;
+    String *key;
+    void *tree;
+    u32 keySize;
+    s32 asLeft;
+    char *errFile;
+    u8 *best;
+    u8 *cur;
+    const u32 *minPtr;
+    s32 cmp;
+    void *node;
+    u8 *result;
+
+    tree = arg0;
+    keySize = arg1->size;
+    key = arg1;
+    parent = (u8 *)tree + 4;
+    best = NULL;
+    asLeft = 1;
+    setFirst = 1;
+    cur = *(u8 **)((u8 *)tree + 4);
+    errFile = __files + 0xA0;
+
+    while (cur) {
+        char *nodeData;
+        nodeData = *(char **)(cur + 0x14);
+        parent = cur;
+        *(u32 *)&st.pads[0x28] = *(u32 *)(cur + 0xC);
+        *(u32 *)&st.pads[0x2C] = keySize;
+        if ((s32)keySize < 0) {
+            fprintf(errFile, lbl_802704F8 + 0x8cc);
+            abort();
+        }
+        *(u32 *)&st.pads[0x34] = keySize;
+        minPtr = StrMin((u32 *)&st.pads[0x34], (u32 *)&st.pads[0x2C]);
+        *(u32 *)&st.pads[0x30] = *minPtr;
+        minPtr = StrMin((u32 *)&st.pads[0x30], (u32 *)&st.pads[0x28]);
+        cmp = fn_80231944(key->data, nodeData, *minPtr);
+        if (cmp == 0) {
+            if (*(u32 *)&st.pads[0x30] < *(u32 *)&st.pads[0x28]) {
+                cmp = -1;
+            } else if (*(u32 *)&st.pads[0x30] == *(u32 *)&st.pads[0x28]) {
+                cmp = 0;
+            } else {
+                cmp = 1;
+            }
+        }
+        if (cmp < 0) {
+            cur = *(u8 **)cur;
+            asLeft = 1;
+        } else {
+            best = cur;
+            cur = *(u8 **)(cur + 4);
+            asLeft = 0;
+            setFirst = 0;
+        }
+    }
+
+    if (best) {
+        char *nodeData;
+        *(u32 *)&st.pads[0x1C] = *(u32 *)(best + 0xC);
+        *(u32 *)&st.pads[0x18] = keySize;
+        nodeData = *(char **)(best + 0x14);
+        if ((s32)*(u32 *)&st.pads[0x1C] < 0) {
+            fprintf(errFile, lbl_802704F8 + 0x8cc);
+            abort();
+        }
+        *(u32 *)&st.pads[0x24] = *(u32 *)&st.pads[0x1C];
+        minPtr = StrMin((u32 *)&st.pads[0x24], (u32 *)&st.pads[0x20]);
+        *(u32 *)&st.pads[0x20] = *minPtr;
+        minPtr = StrMin((u32 *)&st.pads[0x20], (u32 *)&st.pads[0x18]);
+        cmp = fn_80231944(nodeData, key->data, *minPtr);
+        if (cmp == 0) {
+            if (*(u32 *)&st.pads[0x20] < *(u32 *)&st.pads[0x18]) {
+                cmp = -1;
+            } else if (*(u32 *)&st.pads[0x20] == *(u32 *)&st.pads[0x18]) {
+                cmp = 0;
+            } else {
+                cmp = 1;
+            }
+        }
+        if (cmp >= 0) {
+            return best + 0xC;
+        }
+    }
+
+    st.pads[8] = st.pads[0xC];
+    *(u32 *)&st.pads[0x38] = 0;
+    *(u32 *)&st.pads[0x40] = 0;
+    *(u32 *)&st.pads[0x3C] = 0;
+    st.pair[0].cap = key->cap;
+    String_InitFromRange(&st.pair[0], key->data, key->data + keySize, (void *)&st.pads[0x14], &st.pads[8]);
+    st.pair[1].cap = *(u32 *)&st.pads[0x3C];
+    st.pads[0] = st.pads[4];
+    String_InitFromRange(&st.pair[1], (char *)*(u32 *)&st.pads[0x40], (char *)*(u32 *)&st.pads[0x40] + *(u32 *)&st.pads[0x38], &st.pads[0x10], &st.pads[0]);
+    node = fn_800D697C(tree, parent, asLeft, setFirst, &st.pair);
+    result = (u8 *)node + 0xC;
+    if (st.pair[1].data) Heap_Free(st.pair[1].data);
+    if (st.pair[0].data) Heap_Free(st.pair[0].data);
+    if (*(u32 *)&st.pads[0x40]) Heap_Free((void *)*(u32 *)&st.pads[0x40]);
+    return result;
+}
+#pragma global_optimizer on
 void *fn_800D5C88(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     void *self;
@@ -7383,6 +7501,66 @@ s32 fn_800DA5FC(void) {
     extern void *lbl_803678B8;
     return M2C_FIELD(lbl_803678B8, s32 *, 0x10);
 }
+
+#pragma cplusplus on
+extern "C" void fn_800DA608(s32 arg0) {
+    void *Heap_Alloc(u32);
+    void *String_Init(void *, char *, void *);
+    void *String_Destroy(void *, s16);
+    void String_Assign(String *, String *, s32, s32);
+    void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
+    extern void *lbl_803678B8;
+    extern char lbl_802711B0[];
+    extern f32 lbl_80369E34;
+    class Host {
+    public:
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void add(void *);
+    };
+    union Vector {
+        struct { f32 x, y, z; } f;
+        u32 words[3];
+    };
+    String type;
+    Vector b, copyB, a, copyA;
+    u8 name[12];
+    s32 scratch;
+    void *self;
+    void *obj;
+    s8 made;
+
+    self = lbl_803678B8;
+    ((String *)name)->cap = 0;
+    ((String *)name)->size = 0;
+    ((String *)name)->data = 0;
+    ((String *)name)->cap = 0;
+    String_Assign((String *)name, (String *)(*(u8 **)((u8 *)self + 0x6C) + arg0 * 0xC), 0, -1);
+    made = 0;
+    obj = Heap_Alloc(0xC8);
+    if (obj) {
+        a.f.x = a.f.y = a.f.z = lbl_80369E34;
+        b.f.x = b.f.y = b.f.z = lbl_80369E34;
+        copyA.words[0] = a.words[0];
+        copyA.words[1] = a.words[1];
+        copyA.words[2] = a.words[2];
+        copyB.words[0] = b.words[0];
+        copyB.words[1] = b.words[1];
+        copyB.words[2] = b.words[2];
+        String_Init(&type, lbl_802711B0 + 0x17F, &scratch);
+        made = 1;
+        obj = fn_80151D50(obj, *(void **)((u8 *)self + 4), &type, name, &copyB, &copyA, 0);
+    }
+    ((Host *)*(void **)((u8 *)self + 4))->add(obj);
+    if (made)
+        String_Destroy(&type, -1);
+    String_Destroy(name, -1);
+}
+#pragma cplusplus reset
 
 void fn_800DAA38(void *arg0) {
     extern void *lbl_803678B8;
@@ -13636,6 +13814,36 @@ void *fn_800E86A4(void *arg0, s16 arg1) {
 void fn_800E8888(void) {
     M2C_UNK Win_UpdatePos();
     Win_UpdatePos();
+}
+
+void *fn_800E88A8(u8 *self, void *owner, void *xml) {
+void *fn_800E4688(void *,void *,void *);
+void Xml_GetNamedValue(void *,void *,void *);
+void String_Init(void *,void *,void *);
+void String_AssignCStr(void *,void *,s32);
+s32 strlen(char *);
+extern u8 lbl_8028E250[],lbl_802723E8[];
+struct Value { u32 v[8]; } value,flag;
+String name,name2;
+s32 scratch,scratch2;
+char *text;
+fn_800E4688(self,owner,xml);
+*(void **)(self+0x40)=lbl_8028E250;
+*(u32*)(self+0xac)=0; *(u32*)(self+0xb0)=0; *(u32*)(self+0xb4)=0; *(u32*)(self+0xb0)=0;
+if(*(s32*)(self+0x60)==0) *(s32*)(self+0x60)=64;
+if(*(s32*)(self+0x64)==0) *(s32*)(self+0x64)=32;
+*(s32*)(self+0x68)=6;
+*(s32*)(self+0x6c)=*(s32*)(self+0x64)/2-8;
+String_Init(&name,lbl_802723E8+7,&scratch);
+Xml_GetNamedValue(&value,xml,&name);
+text=(char *)&value;
+String_AssignCStr(self+0xac,text,strlen(text));
+String_Destroy(&name,-1);
+String_Init(&name2,lbl_802723E8+12,&scratch2);
+Xml_GetNamedValue(&flag,xml,&name2);
+self[0xb8]=flag.v[0]!=0;
+String_Destroy(&name2,-1);
+return self;
 }
 
 void *fn_800E89EC(void *arg0, s16 arg1) {
@@ -22831,6 +23039,28 @@ void fn_800FF3C4(void *arg0)
         fn_800271C8(p, arg0);
         break;
     }
+}
+
+void fn_800FF424(void *parent) {
+extern u8 gUiContext[], lbl_8028E858[];
+void fn_800280C8(void *, u8, u8);
+void *Process_CreateChild(void *, void *);
+s8 x,y; u8 *unit; u8 *child; u8 *ctx=gUiContext;
+fn_800280C8(ctx,ctx[13],ctx[14]);
+switch(gUiContext[8]) {
+case 0: return;
+case 1: case 4: case 14: case 19: case 20: case 22: case 23:
+x=(s8)ctx[13]; y=(s16)((s8)ctx[14]-1); break;
+case 10: case 11: case 12:
+x=(s8)gUiContext[15]; y=(s8)gUiContext[16]; break;
+case 7: case 15: case 16: case 17: case 18: case 21:
+unit=*(u8**)(ctx+4) ? *(u8**)(ctx+4) : *(u8**)ctx;
+x=(s8)unit[0x19e]; y=(s8)unit[0x19f]; break;
+case 49: default: return;
+}
+child=Process_CreateChild(lbl_8028E858,parent);
+*(f32*)(child+0x30)=(s8)x; *(f32*)(child+0x34)=(s8)y;
+*(u32*)(child+0x60)=0; *(u32*)(child+0x64)=0;
 }
 
 void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
