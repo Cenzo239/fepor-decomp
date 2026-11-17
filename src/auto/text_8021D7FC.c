@@ -1222,7 +1222,7 @@ void fn_8021F3CC(void) {
     void *fn_8021F4D4(void);
     void *fn_8021F4CC(void);
     struct FifoCopy { u8 bytes[128]; };
-    u8 pad[0xC];
+    volatile u8 pad[0xC];
     struct FifoCopy copy;
     __GXFifoObj *gp;
     void *cpu;
@@ -2006,6 +2006,7 @@ void fn_80220BAC(s32 arg0, void *context) {
  pe[5]=value;
 }
 
+#pragma optimization_level 3
 s32 fn_80220C34(s32 arg0) {
     extern s32 lbl_80368794;
     s32 temp_r31;
@@ -2016,7 +2017,7 @@ s32 fn_80220C34(s32 arg0) {
     OSRestoreInterrupts();
     return temp_r31;
 }
-
+#pragma optimization_level reset
 void fn_80220C78(s32 arg0, void *context) {
     extern void (*lbl_80368794)(void);
     extern s8 lbl_80368798;
