@@ -7637,6 +7637,7 @@ s32 fn_8013FBD4(s32 arg0) {
     return arg0 + 0xA;
 }
 
+#pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
   s16 c;
@@ -7644,7 +7645,6 @@ void fn_8013FBDC(s16 *dst, s16 *src)
   s16 a;
 
   a = dst[0];
-  if (!src[0]) {}
   b = src[0];
   c = src[1];
   a = a + b;
@@ -7653,6 +7653,7 @@ void fn_8013FBDC(s16 *dst, s16 *src)
   a = a + c;
   dst[1] = a;
 }
+#pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
