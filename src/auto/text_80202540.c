@@ -180,33 +180,50 @@ void fn_80202640(void) {
     M2C_ERROR(/* unknown instruction: ps_merge01 $f11, $f10, $f9 */);
 }
 
-void fn_802026E4(f32 *out, f32 *arg1, f32 *arg2, f32 *arg3) {
-    f32 sp30;
-    f32 sp34;
-    f32 sp38;
-
-    sp30 = arg2[0] - arg3[0];
-    sp34 = arg2[1] - arg3[1];
-    sp38 = arg2[2] - arg3[2];
-
-    // Assuming fn_802031E8 is some kind of vector normalization
-    // and fn_80203290 is cross product but with different parameters
-    PSVECCrossProduct(&sp30, &sp34, out);
-    out[3] = -(arg2[2] * sp38 + (arg2[0] * sp30 + arg2[1] * sp34));
+void fn_802026E4(register f32 *out, register f32 *eye, register f32 *up, register f32 *target) {
+void fn_802031E8(f32*,f32*);
+void fn_80203290(f32*,f32*,f32*);
+f32 back[3],right[3],vertical[3];
+back[0]=eye[0]-target[0];
+back[1]=eye[1]-target[1];
+back[2]=eye[2]-target[2];
+fn_802031E8(back,back);
+fn_80203290(up,back,right);
+fn_802031E8(right,right);
+fn_80203290(back,right,vertical);
+out[0]=right[0];out[1]=right[1];out[2]=right[2];
+out[3]=-((f32)(eye[2]*right[2])+((f32)(eye[0]*right[0])+(f32)(eye[1]*right[1])));
+out[4]=vertical[0];out[5]=vertical[1];out[6]=vertical[2];
+out[7]=-((f32)(eye[2]*vertical[2])+((f32)(eye[0]*vertical[0])+(f32)(eye[1]*vertical[1])));
+out[8]=back[0];out[9]=back[1];out[10]=back[2];
+out[11]=-((f32)(eye[2]*back[2])+((f32)(eye[0]*back[0])+(f32)(eye[1]*back[1])));
 }
 
-void fn_80202870(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
- f32 fn_80238A0C(f32);
- extern f32 lbl_8036BC38, lbl_8036BC3C, lbl_8036BC40, lbl_8036BC4C, lbl_8036BC50;
- f32 z, t; f32 *m = arg0;
- t = lbl_8036BC38 / fn_80238A0C((farg0 * lbl_8036BC40) * lbl_8036BC50);
- m[0] = farg2 * (t / farg1);
- z = lbl_8036BC3C;
- m[1]=z; m[2]=-farg4; m[3]=z; m[4]=z;
- m[5]=t*farg3; m[6]=-farg5; m[7]=z; m[8]=z; m[9]=z;
- m[10]=lbl_8036BC4C; m[11]=z;
-}
+#pragma scheduling off
+void fn_80202870(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+    f32 fn_80238A0C(f32);
+    extern f32 lbl_8036BC38, lbl_8036BC3C, lbl_8036BC40, lbl_8036BC4C, lbl_8036BC50;
+    f32 t;
+    f32 z;
+    f32 scale;
 
+    scale = lbl_8036BC40 * lbl_8036BC50;
+    farg0 = scale * farg0;
+    t = lbl_8036BC38 / fn_80238A0C(farg0);
+    m[0] = farg2 * (t / farg1);
+    z = lbl_8036BC3C;
+    m[1] = z;
+    m[2] = -farg4;
+    m[3] = z;
+    m[4] = z;
+    m[5] = t * farg3;
+    m[6] = -farg5;
+    m[7] = z;
+    m[8] = z;
+    m[9] = z;
+    m[10] = lbl_8036BC4C;
+    m[11] = z;
+}
 void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx, f32 ty)
 {
   extern f32 lbl_8036BC38;
@@ -260,30 +277,28 @@ f32 fn_802029C4(void) {
     return M2C_ERROR(/* psq_l unimplemented */);
 }
 
-f32 fn_80202A18(void) {
-    M2C_ERROR(/* unknown instruction: ps_mul $f8, $f0, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f2, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f12, $f4, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f8, $f8, $f8, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f10, $f10, $f10, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f12, $f12, $f12, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f9, $f1, $f7, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f11, $f3, $f7, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f13, $f5, $f7, $f12 */);
-    return M2C_ERROR(/* psq_l unimplemented */);
+void fn_80202A18(const f32 m[3][4], const f32 *v, f32 *out) {
+    f32 x=v[0], y=v[1], z=v[2];
+    f32 a=m[0][0]*x+m[0][1]*y;
+    f32 b=m[1][0]*x+m[1][1]*y;
+    f32 c=m[2][0]*x+m[2][1]*y;
+    out[0]=m[0][2]*z+a;
+    out[1]=m[1][2]*z+b;
+    out[2]=m[2][2]*z+c;
 }
 
-void fn_80202A6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
+#pragma scheduling on
+void fn_80202A6C(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
  f32 fn_80238A0C(f32);
  extern f32 lbl_8036BC58, lbl_8036BC60, lbl_8036BC64, lbl_8036BC68, lbl_8036BC6C;
- f32 t, r, one, z, nearTerm, product; f32 *m=arg0;
+ f32 t, r, one, z;
  farg0=lbl_8036BC68*farg0; farg0=lbl_8036BC6C*farg0; t=fn_80238A0C(farg0);
  one=lbl_8036BC58; t=one/t;
  m[0]=t/farg1; r=one/(farg3-farg2); z=lbl_8036BC60;
- m[1]=z; m[2]=z; m[3]=z; m[4]=z; nearTerm=-farg2; product=-(farg3*farg2); m[6]=z; m[5]=t; m[7]=z; m[8]=z; m[9]=z;
- m[10]=nearTerm*r; m[11]=r*product; m[12]=z; m[13]=z; m[14]=lbl_8036BC64; m[15]=z;
+ m[1]=z; m[2]=z; m[3]=z; m[4]=z; m[5]=t; m[6]=z; m[7]=z; m[8]=z; m[9]=z;
+ m[10]=-farg2*r; m[11]=r*-(farg3*farg2); m[12]=z; m[13]=z; m[14]=lbl_8036BC64; m[15]=z;
 }
-
+#pragma scheduling reset
 void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
 {
   extern f32 lbl_8036BC58;
