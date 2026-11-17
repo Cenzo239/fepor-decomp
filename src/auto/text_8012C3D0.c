@@ -333,6 +333,52 @@ void fn_8012CA40(s32 arg0) {
     Process_CreateChild(lbl_80290E88, arg0);
 }
 
+void fn_8012CA6C(void *arg0) {
+    extern u8 gBattleState[];
+    extern u8 gUiSelectMenuStrings[];
+    void fn_80057860(void *, s16);
+    void Sound_Create(void *, void *);
+    void *Process_AttachFunc(void *, void *);
+    void fn_8012F360(void);
+    u8 *object = *(u8 **)((u8 *)arg0 + 0x18);
+    s32 i = 0;
+    u8 *entry;
+    u32 selected;
+    s32 count = object[0x61];
+    s32 delta;
+    u8 index;
+    selected = *(u32 *)(gBattleState + 0xAC);
+    entry = *(u8 **)(object + 0x3C);
+    for (; i < count; i++, entry += 0x24) {
+        if (*(u32 *)entry == selected) { object[0x62] = i; break; }
+    }
+    index = object[0x62];
+    delta = (s8)index - *(s16 *)(object + 0x6A) / 32;
+    if (delta < 1 || delta >= 8) {
+        if (index == 0) *(s16 *)(object + 0x6A) = 0;
+        else {
+            count = object[0x61];
+            if ((s8)index == count - 1) *(s16 *)(object + 0x6A) = (count - 9) << 5;
+            else if (delta <= 0) *(s16 *)(object + 0x6A) = ((s8)index - 1) << 5;
+            else *(s16 *)(object + 0x6A) = ((s8)index - 7) << 5;
+        }
+    }
+    fn_80057860(*(void **)(object + 0x4C), *(s16 *)(object + 0x6A));
+    if ((s8)object[0x62] < 0) {
+        *(s16 *)(object + 0x58) = ((s16 *)((*(u8 ***)(object + 0x38))[object[0x63]] + (s8)object[0x65] * 2))[0x1C];
+        *(s16 *)(object + 0x5A) = 0x42;
+        *(s16 *)(object + 0x5C) = 0;
+        *(s16 *)(object + 0x5E) = 0;
+    } else {
+        *(s16 *)(object + 0x58) = 0x28;
+        *(s16 *)(object + 0x5A) = ((s8)object[0x62] << 5) + 0x60 - *(s16 *)(object + 0x6A);
+        *(s16 *)(object + 0x5C) = 0x1B8;
+        *(s16 *)(object + 0x5E) = 0x16;
+    }
+    Sound_Create(gUiSelectMenuStrings + 0xBA, object);
+    *(void **)(object + 0x34) = Process_AttachFunc(fn_8012F360, object);
+}
+
 void fn_8012CC0C(void *arg0)
 {
     extern u8 gUiSelectMenuStrings[];
@@ -1620,6 +1666,67 @@ void fn_8012EF04(void *arg0) {
     }
 }
 
+void fn_8012EF5C(void *arg0, void *arg1, s32 arg2) {
+#pragma cplusplus on
+    extern f32 lbl_8036A504;
+    extern f32 lbl_8036A508;
+    struct Drawer {
+        u8 pad[0x4C];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void header(void *, f32, f32) = 0;
+        virtual void row(void *, s32, s32, f32, f32) = 0;
+    };
+    f32 x;
+    f32 y;
+    s32 rowY;
+    s32 offset;
+    s32 i;
+    u8 *entry;
+    s32 column;
+    u8 *self = (u8 *)arg1;
+    x = (f32)(arg2 * 0x120 - *(s16 *)(self + 0x68));
+    ((Drawer *)arg0)->header(*(void **)(self + 0x40), lbl_8036A504 + x, lbl_8036A508);
+    entry = *(u8 **)(self + 0x3C);
+    i = 0;
+    rowY = 0x60;
+    offset = 0;
+    while (i < self[0x61]) {
+        s32 scroll = *(s16 *)(self + 0x6A);
+        s32 lo = scroll / 32;
+        s32 hi = lo + 8;
+        u8 visible;
+        y = (f32)(rowY - scroll);
+        if (scroll % 32 != 0) hi++;
+        if (i >= lo && i <= hi) visible = 1;
+        else visible = 0;
+        if (visible) {
+            for (column = 1; column < ((u8 *)arg0)[0x20]; column++) {
+                u8 mode = self[0x6C];
+                s32 color = 1;
+                if (mode == 1) {
+                    u32 flags = *(u32 *)(*(u8 **)entry + 0x1A0);
+                    if (flags & 0x200000) color = 3;
+                    else if (flags & 0x10) color = 0;
+                    else if (flags & 0x10000) color = 0x13;
+                } else if (mode == 2) {
+                    u32 flags = *(u32 *)(*(u8 **)entry + 0x1A0);
+                    if (flags & 0x200000) color = 3;
+                    else if (!(flags & 0x400000)) color = 0;
+                }
+                ((Drawer *)arg0)->row(*(u8 **)(self + 0x3C) + offset, color, column, x, y);
+            }
+        }
+        rowY += 0x20;
+        offset += 0x24;
+        i++;
+        entry += 0x24;
+    }
+#pragma cplusplus reset
+}
+
 void fn_8012F154(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
 #pragma cplusplus on
     void Prim2D_Begin(void);
@@ -2772,6 +2879,48 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
             lbl_8036A510
         );
     }
+}
+
+char *fn_80130E4C(char *buf, void **pUnit, u32 kind) {
+    s32 Unit_GetWpnExp(void *, s32);
+    s32 WpnRank_GetLetter(s32);
+    int sprintf(char *, const char *, ...);
+    extern u8 gUiSelectMenuStrings[];
+    void *unit;
+
+    unit = *pUnit;
+    if (kind > 8) {
+        return buf;
+    }
+    switch (kind) {
+    case 0:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 0)));
+        break;
+    case 1:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 1)));
+        break;
+    case 2:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 2)));
+        break;
+    case 3:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 3)));
+        break;
+    case 4:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 4)));
+        break;
+    case 5:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 5)));
+        break;
+    case 6:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 6)));
+        break;
+    case 7:
+        sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 7)));
+        break;
+    case 8:
+        return NULL;
+    }
+    return buf;
 }
 
 extern u16 jumptable_802911EC[];
