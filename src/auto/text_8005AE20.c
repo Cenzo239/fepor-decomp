@@ -10663,20 +10663,18 @@ extern "C" void fn_800717EC(void *arg0, s32 color, s32 alpha, s32 texId, s32 fla
     void Prim2D_EndPrim(void);
 
     u32 packed;
-    s32 *entry;
-    u16 *dims;
-    u16 h;
-    u16 w;
-    f32 v1;
-    f32 v0;
-    f32 u1;
     f32 u0;
+    f32 u1;
+    f32 v0;
+    f32 v1;
+    u16 w;
+    u16 h;
+    s32 *entry;
 
     packed = *Ui_GetColor(color);
     entry = (s32 *)fn_8006EDD8(*(void **)((u8 *)arg0 + 8), texId);
-    dims = *(u16 **)entry;
-    w = dims[1];
-    h = dims[0];
+    w = (*(u16 **)entry)[1];
+    h = (*(u16 **)entry)[0];
     u0 = 0.0f;
     v0 = u0;
     u1 = (f32)w;
