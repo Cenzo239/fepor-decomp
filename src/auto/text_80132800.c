@@ -10206,13 +10206,14 @@ void List_Insert(void *, void *, void *, void *);
 f32 Math_Ease(s32,f32,f32,f32,f32);
 extern u8 lbl_80292258[];
 extern f32 lbl_8036A740;
-void *self,*child,*end,*node,*result;
+void *result,*self,*child,*end,*node;
 u32 key;
 void *pos;
 u32 ret;
 f32 alpha[1],t;
 s32 time,duration;
-result=arg2?Process_CreateChild(&lbl_80292258,arg0):Process_Create(&lbl_80292258,arg0);
+if(arg2) result=Process_CreateChild(&lbl_80292258,arg0);
+else result=Process_Create(&lbl_80292258,arg0);
 self=result;
 if(result!=0) {
 *(u8 *)((u8 *)self+0x30)=0;
@@ -10738,6 +10739,7 @@ extern "C" void fn_80142934(void *arg0, s32 arg1) {
 }
 
 static inline s16 UiPage_GetVisible(void *self) { return *(s16 *)((u8 *)self+0x80); }
+static inline s32 UiPage_GetLastTop(s32 total,s16 visible) { return total>visible?total-visible:0; }
 struct UiPageSelector {
 virtual void v0()=0;
 virtual void v1()=0;
@@ -10821,7 +10823,6 @@ u8 *page;
 s32 repeat,edge,held;
 s16 old;
 s16 count;
-u32 visible;
 u8 blocked;
 index=((UiPageSelector *)arg0)->page();
 page=self+index*2;
@@ -10831,7 +10832,7 @@ if(count==0) {
 *(s16 *)(page+0x64)=0;
 return;
 }
-visible=*(u16 *)(self+0x80);
+u32 visible=*(u16 *)(self+0x80);
 blocked=(gUiInputFlags&0x10)!=0 && (gUiInputFlags&0x20)==0;
 if(!blocked) {
 old=*(s16 *)(page+0x64);
