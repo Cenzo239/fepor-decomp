@@ -6499,7 +6499,8 @@ M2C_FIELD(p,u8 *,36)=0;
 M2C_FIELD(p,s32 *,32)=arg0;
 }
 
-void fn_8013C194(void *self, void *arg1, void *slot) {
+#pragma cplusplus on
+extern "C" void fn_8013C194(void *self, void *arg1, void *slot) {
 void Prim2D_Begin(void); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32); void Prim2D_SetPos(f32,f32); void Prim2D_SetColorPacked(s32*); void Prim2D_SetTextScale(s32,f32); void fn_800071D8(s32,f32); void Prim2D_SetText(void*); void Prim2D_EndPrim(void);
 s32 Text_MeasureWidth(void*,s32,f32); s32 fn_80010770(void*,s32,f32); s32 *Ui_GetColor(s32);
 extern f32 lbl_8036A6C0;
@@ -6507,17 +6508,17 @@ s32 color;
 f32 x = (f32)M2C_FIELD(slot,s16*,0x30);
 f32 y = (f32)M2C_FIELD(slot,s16*,0x32);
 void *obj = M2C_FIELD(arg1,void**,0x3c);
-s16 h;
-x -= (f32)(Text_MeasureWidth(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self),-1,lbl_8036A6C0)/2);
-h = M2C_FIELD(M2C_FIELD(obj,void**,4),s16(**)(void*),0xa0)(obj);
-y += (f32)((h-fn_80010770(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self),-1,lbl_8036A6C0))/2);
+s32 h;
+x -= (f32)(Text_MeasureWidth(((MenuCenteredLabel*)self)->getText(),-1,lbl_8036A6C0)/2);
+h = (s16)((MenuCenteredPanel*)obj)->height();
+y += (f32)((h-fn_80010770(((MenuCenteredLabel*)self)->getText(),-1,lbl_8036A6C0))/2);
 Prim2D_Begin(); Prim2D_SetTex(0,0x13); Prim2D_PrepareTex(); Prim2D_AddPrim(6); Prim2D_SetPos(x,y);
 color=*Ui_GetColor(M2C_FIELD(self,u8*,8)); Prim2D_SetColorPacked(&color);
-if(M2C_FIELD(M2C_FIELD(self,void**,0),u8(**)(void*,s32),0x5c)(self,1)) Prim2D_SetTextScale(1,gUiMenuSlotPlainTextScale);
-else if(M2C_FIELD(M2C_FIELD(self,void**,0),u8(**)(void*,s32),0x5c)(self,2)) fn_800071D8(1,lbl_8036A6C0);
-Prim2D_SetText(M2C_FIELD(M2C_FIELD(self,void**,0),void*(**)(void*),0xc)(self)); Prim2D_EndPrim();
+if(((MenuCenteredLabel*)self)->test(1)) Prim2D_SetTextScale(1,gUiMenuSlotPlainTextScale);
+else if(((MenuCenteredLabel*)self)->test(2)) fn_800071D8(1,lbl_8036A6C0);
+Prim2D_SetText(((MenuCenteredLabel*)self)->getText()); Prim2D_EndPrim();
 }
-
+#pragma cplusplus reset
 void fn_8013C388(void *arg0) {
     M2C_UNK Msg_Expand(s32);
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
@@ -7489,9 +7490,9 @@ x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
 y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { s32 ny=y+1; s32 current=*(s16*)(ctx+0x38); s32 nx=x+1;
-*(s16*)(ctx+0x38)=(current+nx)/2;
-*(s16*)(ctx+0x3a)=(*(s16*)(ctx+0x3a)+ny)/2;
+else { s32 ny=y+1; s32 nx=x+1;
+nx+=*(s16*)(ctx+0x38); *(s16*)(ctx+0x38)=nx/2;
+ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=ny/2;
 }
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A6D0);
 idle=0; if(!ctx[0x2d] && !ctx[0x2e]) idle=1;
@@ -8423,12 +8424,13 @@ extern "C" void fn_8013EBD8(void *arg0) {
     };
 
     Obj *self = (Obj *)arg0;
-    s16 vret, a, b, c, dx, dy, cur;
+    s16 vret;
+    s16 a, b, c;
+    s16 dx, dy;
     f32 ratio;
     s32 mulA, mulB;
 
-    cur = *(s16 *)((u8 *)arg0 + 0x3C);
-    if (cur > *(s16 *)((u8 *)arg0 + 0x3E)) {
+    if (*(s16 *)((u8 *)arg0 + 0x3C) > *(s16 *)((u8 *)arg0 + 0x3E)) {
         self->v3();
         Prim2D_Begin();
         Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 0x10));
