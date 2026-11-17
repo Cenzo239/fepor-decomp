@@ -102,7 +102,10 @@ auto/text_8005AE20.c:
 	.text       start:0x8005AE20 end:0x8005B760
 
 auto/text_8005B760.c:
-	.text       start:0x8005B760 end:0x80072408
+	.text       start:0x8005B760 end:0x8005B7A4
+
+auto/text_8005B7A4.c:
+	.text       start:0x8005B7A4 end:0x80072408
 
 auto/text_80072408.c:
 	.text       start:0x80072408 end:0x800725C8
