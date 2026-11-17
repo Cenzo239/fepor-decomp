@@ -1,49 +1,7 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
 
-static inline void *GoldPanel_InitRootShared(void *p) {
-extern u8 lbl_8028FDB0[];
-*(void **)p=lbl_8028FDB0;*(s32 *)((u8 *)p+4)=0;return p;
-}
-static inline void *GoldPanel_InitBaseShared(void *p,s32 x,s32 y,s32 id,f32 one) {
-extern u8 lbl_80292230[]; extern f32 lbl_8036B2D8;
-u8 *base=(u8 *)p; s32 zero=0; s32 right=x+0x130; s32 bottom=y+0x90;
-base=(u8 *)GoldPanel_InitRootShared(base);
-*(void **)base=lbl_80292230;
-*(s16 *)(base+8)=-1;
-*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
-*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
-*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
-base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
-*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
-*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
-*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
 
-return base;
-}
-
-#pragma global_optimizer off
-static inline void *GoldPanel_InitRoot(void *p) {
-extern u8 lbl_8028FDB0[];
-*(void **)p=lbl_8028FDB0;*(s32 *)((u8 *)p+4)=0;return p;
-}
-static inline void *GoldPanel_InitBase(void *p,s32 x,s32 y,s32 id) {
-extern u8 lbl_80292230[]; extern f32 lbl_8036B2D8;
-u8 *base=(u8 *)p; s32 zero=0; s32 right=x+0x130; s32 bottom=y+0x90; f32 one=lbl_8036B2D8;
-base=(u8 *)GoldPanel_InitRoot(base);
-*(void **)base=lbl_80292230;
-*(s16 *)(base+8)=-1;
-*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
-*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
-*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
-base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
-*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
-*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
-*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
-
-return base;
-}
-#pragma global_optimizer reset
 
 typedef struct ParseValue801CB41C { f32 v[8]; } ParseValue801CB41C;
 typedef struct String801CB41C { u32 a, b, c; } String801CB41C;
@@ -5925,11 +5883,11 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 
 #pragma cplusplus on
 #pragma opt_common_subs off
-#pragma dont_inline off
-#pragma global_optimizer off
+#pragma dont_inline on
+#pragma global_optimizer on
 extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
-extern f32 lbl_8036B2D8,lbl_8036B2E0;
+extern const f32 lbl_8036B2D8,lbl_8036B2E0;
 struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
 u8 *base; s32 zero; s32 right; s32 bottom; u8 *self; u8 *initial; f32 scale; f32 one;
 self=(u8 *)arg0;
@@ -5938,7 +5896,17 @@ right=x+0x130;bottom=y+0x90;
 initial=self;
 base=initial;
 one=lbl_8036B2D8;scale=lbl_8036B2E0;
-GoldPanel_InitBase(self,x,y,id);
+*(void **)self=lbl_8028FDB0;
+*(s32 *)(initial+4)=zero;
+*(void **)base=lbl_80292230;
+*(s16 *)(base+8)=-1;
+*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
+*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
+base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
+*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
+*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
+*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
 *(void **)self=gUiGoldCostPanelVtbl;
 *(s16 *)(self+0x3C)=*(s32 *)(gBattleState+0x1C);*(s16 *)(self+0x3E)=0;*(s32 *)(self+0x40)=0;
 *(void **)(self+68)=gEmptyVtbl;
