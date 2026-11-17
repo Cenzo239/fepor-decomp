@@ -6,6 +6,8 @@ typedef struct {
     u8 unk : 7;
 } ItemFlagBits;
 
+extern f64 lbl_80369CF8;
+
 static inline u32 LoadSoundBankB(void *path) {
     s32 fn_800B4A84(void *, s32, s32);
     s32 fn_800B49C8(void *);
