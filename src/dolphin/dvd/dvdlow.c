@@ -582,39 +582,24 @@ s32 fn_8020BF58(void *callback)
     return 1;
 }
 
-s32 fn_8020BFE4(u32 arg0, void *arg1) {
+BOOL fn_8020BFE4(u32 arg0, void *callback) {
     extern void *Callback_80368538;
-    extern s32 StopAtNextInt_80368530;
-    extern u16 AlarmForTimeout_80339ED8[20];
+    u32 timeout;
 
-    void OSCreateAlarm(void *);
-    void OSSetAlarm(void *, unsigned long long, void *);
-    void AlarmHandlerForTimeout(void);
-
-    volatile u32 *dvd;
-    u32 ticks;
-
-    Callback_80368538 = arg1;
+    Callback_80368538 = callback;
     StopAtNextInt_80368530 = 0;
 
-    dvd = (volatile u32 *)0xCC006000;
+    __DIRegs[2] = 0x12000000;
+    __DIRegs[4] = 0x20;
+    __DIRegs[5] = arg0;
+    __DIRegs[6] = 0x20;
+    __DIRegs[7] = 3;
 
-    dvd[2] = 0x12000000;
-    dvd[4] = 0x20;
-    dvd[5] = arg0;
-    dvd[6] = 0x20;
-    dvd[7] = 3;
-
-    ticks = (*(volatile u32 *)0x800000F8 >> 2) * 10;
-
+    timeout = (*(u32 *)0x800000F8 >> 2) * 10;
     OSCreateAlarm(AlarmForTimeout_80339ED8);
-    OSSetAlarm(
-        AlarmForTimeout_80339ED8,
-        (unsigned long long)ticks,
-        (void *)AlarmHandlerForTimeout
-    );
+    OSSetAlarm(AlarmForTimeout_80339ED8, (s64)timeout, AlarmHandlerForTimeout);
 
-    return 1;
+    return TRUE;
 }
 
 s32 fn_8020C080(u32 command, u32 length, u32 offset, void *callback) {
