@@ -108,30 +108,49 @@ fn_8005A1E8(0,&result,&result);
 }
 
 void fn_800983E0(void *arg0, void **arg1) {
-f32 Map_SampleHeight(void *, f32, f32, f32);
-extern u8 gBattleMap[];
-extern f32 lbl_803697D0;
-struct Position { f32 x,y,z; } pos;
-void *p=*arg1;
-void *v;
-if(p) v=*(void **)((u8 *)p+0x280); else v=0;
-if(v) {
-if(p) v=*(void **)((u8 *)p+0x280); else v=0;
-pos.x=*(f32 *)((u8 *)v+4);
-if(p) v=*(void **)((u8 *)p+0x280); else v=0;
-pos.y=*(f32 *)((u8 *)v+8);
-if(p) v=*(void **)((u8 *)p+0x280); else v=0;
-pos.z=*(f32 *)((u8 *)v+12);
-} else {
-f32 x,y;
-s32 ix=*(s8 *)((u8 *)p+0x19E);
-s32 iy=*(s8 *)((u8 *)p+0x19F);
-x=lbl_803697D0+ix;
-y=lbl_803697D0+iy;
-pos.x=x; pos.y=y;
-pos.z=Map_SampleHeight(gBattleMap,x,y,lbl_803697D0);
-}
-*(struct Position *)arg0=pos;
+    f32 Map_SampleHeight(void *, f32, f32);
+    extern u8 gBattleMap[];
+    extern f32 lbl_803697D0;
+    extern f64 lbl_803697C8;
+    struct Position { f32 x, y, z; } pos;
+    void *p = *arg1;
+    void *v;
+
+    if (p) {
+        v = M2C_FIELD(p, void **, 0x280);
+    } else {
+        v = 0;
+    }
+    if (v) {
+        if (p) {
+            v = M2C_FIELD(p, void **, 0x280);
+        } else {
+            v = 0;
+        }
+        pos.x = M2C_FIELD(v, f32 *, 4);
+        if (p) {
+            v = M2C_FIELD(p, void **, 0x280);
+        } else {
+            v = 0;
+        }
+        pos.y = M2C_FIELD(v, f32 *, 8);
+        if (p) {
+            v = M2C_FIELD(p, void **, 0x280);
+        } else {
+            v = 0;
+        }
+        pos.z = M2C_FIELD(v, f32 *, 12);
+    } else {
+        f32 x, y;
+        s32 ix = M2C_FIELD(p, s8 *, 0x19e);
+        s32 iy = M2C_FIELD(p, s8 *, 0x19f);
+        x = lbl_803697D0 + ix;
+        y = lbl_803697D0 + iy;
+        pos.x = x;
+        pos.y = y;
+        pos.z = Map_SampleHeight(gBattleMap, x, y);
+    }
+    *(struct Position *)arg0 = pos;
 }
 
 void *fn_800984FC(void **arg0) {
