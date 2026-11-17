@@ -3249,20 +3249,19 @@ void fn_801F897C(void) {
 }
 
 void fn_801F89AC(void *arg0, s32 arg1) {
-    extern u8 lbl_8029B394[];
-    extern f32 lbl_8036BA00;
-    void *fn_8000CAA0(void *, s32);
-    void fn_801FB410(void *);
-    u8 *entry;
-
-    entry = (u8 *)fn_8000CAA0(lbl_8029B394, arg1);
-    if (entry == 0) return;
-    fn_801FB410(entry + 0x30);
-    *(f32 *)(entry + 0x3C) = lbl_8036BA00;
-    *(u32 *)(entry + 0x4C) = 0;
-    *(u32 *)(entry + 0x50) = 0;
-    entry[0x54] = 5;
-    *(void **)(entry + 0x48) = arg0;
+extern u8 lbl_8029B394[];
+extern f32 lbl_8036BA00;
+void *fn_8000CAA0(void *,s32);
+void fn_801FB410(void *);
+u8 *entry=(u8*)fn_8000CAA0(lbl_8029B394,arg1);
+if(entry) {
+fn_801FB410(entry+0x30);
+*(f32*)(entry+0x3c)=lbl_8036BA00;
+*(u32*)(entry+0x4c)=0;
+*(u32*)(entry+0x50)=0;
+entry[0x54]=5;
+}
+*(void**)(entry+0x48)=arg0;
 }
 
 void fn_801F8A18(void *arg0) {
