@@ -1001,8 +1001,6 @@ void GetTypeCallback(s32 chan, u32 type) {
     } while (i < 4);
     (void)padp;
 }
-#pragma optimization_level reset
-#pragma opt_propagation reset
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
 
