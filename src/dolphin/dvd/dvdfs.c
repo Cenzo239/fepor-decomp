@@ -1938,24 +1938,25 @@ s32 DVDInquiryAsync(u8 *block, s32 arg1, s32 arg2) {
     s32 __DVDPushWaitingQueue(s32, void *);
     extern s32 autoInvalidation_80366F6C;
     s32 result;
-    u32 command;
-    *(u32 *)(block+8)=14;
-    *(s32 *)(block+0x18)=arg1;
-    *(u32 *)(block+0x14)=32;
-    *(u32 *)(block+0x20)=0;
-    *(s32 *)(block+0x28)=arg2;
+    u8 pad[8];
+    *(u32 *)(block + 8) = 14;
+    *(s32 *)(block + 0x18) = arg1;
+    *(u32 *)(block + 0x14) = 32;
+    *(u32 *)(block + 0x20) = 0;
+    *(s32 *)(block + 0x28) = arg2;
     {
         u32 enabled;
-
+        u32 command;
         if (autoInvalidation_80366F6C != 0) {
-            command=*(u32 *)(block+8);
-            if (command==1 || command==4 || command==5 || command==14)
-                DCInvalidateRange(*(void **)(block+0x18), *(u32 *)(block+0x14));
+            command = *(u32 *)(block + 8);
+            if (command == 1 || command - 4 <= 1 || command == 14)
+                DCInvalidateRange(*(void **)(block + 0x18), *(u32 *)(block + 0x14));
         }
-        enabled=OSDisableInterrupts();
-        *(u32 *)(block+0xC)=2;
-        result=__DVDPushWaitingQueue(2,block);
-        if (executing_80368598==0 && PauseFlag_803685A4==0) stateReady();
+        enabled = OSDisableInterrupts();
+        *(u32 *)(block + 0xC) = 2;
+        result = __DVDPushWaitingQueue(2, block);
+        if (executing_80368598 == 0 && PauseFlag_803685A4 == 0)
+            stateReady();
         OSRestoreInterrupts(enabled);
     }
     return result;
