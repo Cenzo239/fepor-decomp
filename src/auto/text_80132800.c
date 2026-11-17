@@ -10678,6 +10678,7 @@ extern "C" void fn_80142934(void *arg0, s32 arg1) {
     }
 }
 
+static inline s16 UiPage_GetVisible(void *self) { return *(s16 *)((u8 *)self+0x80); }
 struct UiPageSelector {
 virtual void v0()=0;
 virtual void v1()=0;
@@ -10701,10 +10702,12 @@ void fn_8013ED84(void *,s16);
 u8 *self=(u8 *)arg0;
 s32 index;
 u8 *page;
-s16 count,visible,old;
-u8 blocked;
 s32 held,edge,repeat;
-index=((s32 (*)(void *))(*(void ***)arg0)[12])(arg0);
+register s16 visible;
+s16 count;
+u8 blocked;
+s16 old;
+index=((UiPageSelector *)arg0)->page();
 page=self+index*2;
 count=*(s32 *)(self+0x90+index*12);
 if(count==0) {
@@ -10726,13 +10729,15 @@ if(repeat&0x08000008) {
 if((s16)old==0) {
 if(repeat==edge) {
 *(s16 *)(page+0x64)=count-1;
-*(s16 *)(page+0x4e)=count>visible?count-visible:0;
+*(s16 *)(page+0x4e)=count>(s16)visible?count-(s16)visible:0;
 }
 } else {
 *(s16 *)(page+0x64)=old-1;
 if((s16)*(s16 *)(page+0x64)>0 && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==0) {
-*(s16 *)(page+0x4e)-=1;
-*(f32 *)(self+0x84)=lbl_8036A764;
+s16 scroll=*(s16 *)(page+0x4e)-1;
+f32 offset=-32.0f;
+*(s16 *)(page+0x4e)=scroll;
+*(f32 *)(self+0x84)=offset;
 }
 }
 if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
@@ -10746,8 +10751,10 @@ if(repeat==edge) {
 } else {
 *(s16 *)(page+0x64)=old+1;
 if(*(s16 *)(page+0x64)<last && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==(s16)visible-1) {
-*(s16 *)(page+0x4e)+=1;
-*(f32 *)(self+0x84)=lbl_8036A768;
+s16 scroll=*(s16 *)(page+0x4e)+1;
+f32 offset=32.0f;
+*(s16 *)(page+0x4e)=scroll;
+*(f32 *)(self+0x84)=offset;
 }
 }
 if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
