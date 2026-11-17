@@ -19052,7 +19052,7 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     void UnitRef_Set(void *, void *);
     u8 Unit_GetActiveItemSlot(void *);
     void Battle_SetupFromParams(void *, void *, void *);
-    void fn_801A6F34(void *, s32);
+    void fn_801A6F34(void *, u8);
     void fn_800F5B14(s32, void *);
     extern u8 gUiContext[];
     extern u32 gBattle[];
@@ -19067,9 +19067,7 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     u8 item[8];
     Param atk;
     Param def;
-    s32 mode;
     void *unit;
-    void *battle;
 
     Item_Init(item);
     UnitRef_Set(item, Item_Get(*(u16 *)((u8 *)target + 2)));
@@ -19085,13 +19083,7 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     atk.b4[1] = ((u8 *)target)[1];
     atk.x8 = (s32)item;
     Battle_SetupFromParams(gBattle, &atk, &def);
-    battle = gBattle;
-    mode = 0xF;
-    if (gUiContext[8] == 0x15) {
-        mode = 0x15;
-        mode = (u8)mode;
-    }
-    fn_801A6F34(battle, mode);
+    fn_801A6F34(gBattle, gUiContext[8] == 0x15 ? (u8)0x15 : 0xF);
     fn_800F5B14(attacker, target);
     Item_Destroy(item, -1);
     return 1;
@@ -22090,10 +22082,7 @@ void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
     void Map_SelectRangeBuffer(void *,s32);
     u8 *map=gBattleMap;
     Map_SelectRangeBuffer(map,mode);
-    {
-        u16 *buffer=*(u16 **)(gBattleMap+0x14190);
-        buffer[(s8)x+((s8)y<<6)]=value;
-    }
+    (*(u16 **)(gBattleMap+0x14190))[(s8)x+((s8)y<<6)]=value;
     while(*path) {
         u8 outside;
         switch(*path) {
