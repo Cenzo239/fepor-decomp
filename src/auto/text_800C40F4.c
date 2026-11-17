@@ -19929,18 +19929,15 @@ void fn_800F9E90(void *arg0) {
     void *cmd;
     s16 x;
     s16 y;
-    s8 a;
     s8 b;
-    u8 *ctx;
 
     cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
         fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        ctx = gUiContext;
-        a = ctx[0xd];
-        b = ctx[0xe];
-        if (fn_80100BA4(x, y, a, b) && *(s32 *)(gAiState + 8) != 4) {
+        b = gUiContext[0xe];
+        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], b) &&
+            *(s32 *)(gAiState + 8) != 4) {
             *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
             *(s32 *)(gAiState + 8) = 2;
             gAiState[0x21C] = 0;
