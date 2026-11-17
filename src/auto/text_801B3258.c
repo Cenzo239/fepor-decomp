@@ -19861,9 +19861,10 @@ return 0;
 }
 static inline u8 *Save_FindLinkedHeader(u8 **save)
 {
-s32 off,i;
 u8 *base;
+s32 off;
 u8 *slot;
+s32 i;
 u8 valid;
 i=0; off=0x1a000;
 for(;i<2;i++) {
