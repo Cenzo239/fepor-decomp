@@ -5533,38 +5533,39 @@ void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
     void Game_Assert(void *, s32, void *);
     extern void *gCamera;
     extern u8 lbl_8026B768[];
-    u8 *cam;
+    s32 idx = arg1;
+    void *cb1 = arg2;
+    s32 kind = arg0;
+    void *cb2 = arg3;
+    u8 *cam = (u8 *)gCamera;
+    u16 index = *(u16 *)(cam + 0x118);
+    u8 *buf = *(u8 **)(cam + 0x114);
     u8 *entry;
     u8 **head;
     u8 *node;
-    u16 index;
 
-    cam = (u8 *)gCamera;
-
-    index = *(u16 *)(cam + 0x118);
     *(u16 *)(cam + 0x118) = index + 1;
-
-    entry = *(u8 **)(cam + 0x114) + ((u16)index << 4);
+    entry = buf + ((u16)index << 4);
 
     if (*(u16 *)(cam + 0x118) > *(u16 *)(cam + 0x11A)) {
         Game_Assert(lbl_8026B768, 0x158, lbl_8026B768 + 0xA);
     }
 
-    switch (arg0) {
+    switch (kind) {
+    case 3:
+        head = (u8 **)((u8 *)gCamera + 0x158 + (idx << 2));
+        break;
     case 0:
-        head = (u8 **)((u8 *)gCamera + 0x11c + arg1 * 4);
+        head = (u8 **)((u8 *)gCamera + 0x11c + (idx << 2));
         break;
     case 1:
-        head = (u8 **)((u8 *)gCamera + 0x130 + arg1 * 4);
+        head = (u8 **)((u8 *)gCamera + 0x130 + (idx << 2));
         break;
     case 2:
-        head = (u8 **)((u8 *)gCamera + 0x144 + arg1 * 4);
-        break;
-    case 3:
-        head = (u8 **)((u8 *)gCamera + 0x158 + arg1 * 4);
+        head = (u8 **)((u8 *)gCamera + 0x144 + (idx << 2));
         break;
     case 4:
-        head = (u8 **)((u8 *)gCamera + 0x16c + arg1 * 4);
+        head = (u8 **)((u8 *)gCamera + 0x16c + (idx << 2));
         break;
     default:
         Game_Assert(lbl_8026B768, 0x161, lbl_8026B768 + 0x50);
@@ -5572,7 +5573,6 @@ void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
     }
 
     node = *head;
-
     if (node == NULL) {
         *(u8 **)entry = node;
         *head = entry;
@@ -5582,10 +5582,9 @@ void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
         }
         *(u8 **)node = entry;
     }
-
     *(u32 *)entry = 0;
-    *(void **)(entry + 8) = arg2;
-    *(void **)(entry + 0xC) = arg3;
+    *(void **)(entry + 8) = cb1;
+    *(void **)(entry + 0xC) = cb2;
 }
 #pragma use_lmw_stmw reset
 void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
@@ -6910,6 +6909,40 @@ void fn_8006CC6C(s32 arg0) {
         fn_80068558(arg0, 0, 0);
     }
     fn_8003F670(arg0);
+}
+
+void *fn_8006CCBC(char *name, s32 flags) {
+extern u32 FileCache_GetFlags(void *);
+void *Archive_LoadFlags(char *,s32);
+extern f32 lbl_803692AC;
+u8 fresh=1;
+void *archive;
+u32 *reloc;
+s32 b,g,r;
+u8 *material;
+s32 i;
+s32 offset;
+f32 factor;
+if(FileCache_GetFlags(name)&0x4000) fresh=0;
+archive=Archive_LoadFlags(name,flags);
+if(fresh) {
+reloc=M2C_FIELD(archive,u32 **,0x48);
+if(reloc) {reloc[0]+=(u32)reloc;reloc[1]+=(u32)reloc;}
+i=0;
+factor=lbl_803692AC;
+offset=i;
+for(;i<M2C_FIELD(archive,u16 *,0x54);offset+=0x20,i++) {
+material=M2C_FIELD(archive,u8 **,0x34)+offset;
+r=(s32)(factor*(f32)material[8]);
+g=(s32)(factor*(f32)material[9]);
+b=(s32)(factor*(f32)material[10]);
+if(r>255) r=255;
+if(g>255) g=255;
+if(b>255) b=255;
+material[8]=r;material[9]=g;material[10]=b;
+}
+}
+return archive;
 }
 
 void *fn_8006CE14(char *name) {
