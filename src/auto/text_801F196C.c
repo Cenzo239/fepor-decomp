@@ -1,5 +1,11 @@
 /* Functions from 0x801F196C to 0x801FC620, found by decomp-toolkit. */
 #include "common.h"
+
+typedef struct {
+    u8 pad[0xB0];
+    char *msg;
+} BattlePreviewMsgSlot;
+
 extern void *lbl_803683F4;
 extern struct {
     u32 pad0;
