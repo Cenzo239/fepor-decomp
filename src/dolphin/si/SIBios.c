@@ -628,8 +628,7 @@ void SIInit(void) {
     extern s32 __SIVersion;
     extern s32 Si_8029EFAC[];
     extern void SIInterruptHandler(void);
-    u32 *reg;
-
+    volatile u32 *reg;
     OSRegisterVersion(__SIVersion);
     Packet_8033E248[3].chan = -1;
     Packet_8033E248[2].chan = -1;
@@ -637,10 +636,10 @@ void SIInit(void) {
     Packet_8033E248[0].chan = -1;
     Si_8029EFAC[1] = 0;
     SISetSamplingRate(0);
-    reg = (u32 *)__SIRegs;
-    if (!(reg[13] & 1)) {
-        reg[13] = 0x80000000;
-    }
+    do {
+        reg = __SIRegs;
+    } while (*(reg += 13) & 1);
+    *reg = 0x80000000;
     __OSSetInterruptHandler(0x14, SIInterruptHandler);
     __OSUnmaskInterrupts(0x800);
     SIGetType(0);
