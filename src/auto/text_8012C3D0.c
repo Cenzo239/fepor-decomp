@@ -2889,36 +2889,33 @@ char *fn_80130E4C(char *buf, void **pUnit, u32 kind) {
     void *unit;
 
     unit = *pUnit;
-    if (kind > 8) {
-        return buf;
-    }
     switch (kind) {
     case 0:
+        return NULL;
+    case 1:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 0)));
         break;
-    case 1:
+    case 2:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 1)));
         break;
-    case 2:
+    case 3:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 2)));
         break;
-    case 3:
+    case 4:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 3)));
         break;
-    case 4:
+    case 5:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 4)));
         break;
-    case 5:
+    case 6:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 5)));
         break;
-    case 6:
+    case 7:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 6)));
         break;
-    case 7:
+    case 8:
         sprintf(buf, (char *)gUiSelectMenuStrings + 0x264, WpnRank_GetLetter(Unit_GetWpnExp(unit, 7)));
         break;
-    case 8:
-        return NULL;
     }
     return buf;
 }
