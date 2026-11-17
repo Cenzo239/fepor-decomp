@@ -892,7 +892,7 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
 #pragma global_optimizer off
 #pragma opt_common_subs off
 #pragma opt_propagation off
-#pragma optimization_level 2
+#pragma optimization_level 1
 void GetTypeCallback(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     s64 __OSGetSystemTime(void);
