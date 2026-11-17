@@ -8126,7 +8126,7 @@ void fn_80193668(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_801938F8(void *arg0) {
+extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
@@ -8138,7 +8138,8 @@ extern "C" void *fn_801938F8(void *arg0) {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    fn_80193950(arg0);
+    void *fn_80193950(void *, s16, s16, s16);
+    fn_80193950(arg0, arg1, arg2, arg3);
     *(void **)((u8 *)arg0 + 0x0) = (void *)lbl_8029656C;
     *(s32 *)((u8 *)arg0 + 0x60) = 2;
     ((Obj *) arg0)->m28();
