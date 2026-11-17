@@ -11260,14 +11260,10 @@ void *fn_801CBFD0(void *arg0, s16 arg1) {
 }
 
 void fn_801CC030(u32 *arg0) {
-    typedef struct { u8 pad[0x20]; } ClearElem;
-    ClearElem *start;
-    ClearElem *end;
-
-    start = (ClearElem *)arg0[2];
-    end = start + arg0[1];
-    while (start < end) {
-        start++;
+    u8 *start = (u8 *)arg0[2];
+    u8 *end = start + (arg0[1] << 5);
+    while (end > start) {
+        end -= 0x20;
     }
     arg0[1] = 0;
 }
