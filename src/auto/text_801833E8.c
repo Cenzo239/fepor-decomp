@@ -11520,9 +11520,65 @@ s32 fn_8019CC80(void *arg0) {
     return 0;
 }
 
-void fn_8019CD40(void* arg0, void* arg1) {
-    // This is a function with complex control flow and calls to external functions
-    // For now we'll implement the structure with placeholders for external calls
+s32 fn_8019CD40(void *proc) {
+    void *Camera_GetActive(void);
+    void fn_80052CA8(void *);
+    void fn_80054C14(void *);
+    s32 fn_8005F894(void *, s32);
+    u8 Pad_IsButton(void *, s32);
+    u8 fn_80096B80(void);
+    void fn_8017F474(void *, void *);
+    void fn_800983E0(void *, void *);
+    void fn_80098524(void *);
+    void SeCue_PlayAtPos(void *, void *, s32);
+    void Mu_StartFlash(s32, s32, s32, void *);
+    extern u8 MapSelect_str[];
+    extern f32 gMapSelectCamZoom;
+    typedef struct { s32 x,y,z; } Vec3i;
+    Vec3i copy, pos;
+    void *pad;
+    void *cmd;
+    void *tmp;
+    s32 actor;
+    u8 flags;
+    tmp = M2C_FIELD(proc, void **, 0x30);
+    cmd = M2C_FIELD(tmp, void **, 0x4C);
+    pad = M2C_FIELD(tmp, void **, 0x5C);
+    if (!(M2C_FIELD(cmd,u8 *,0x40)&1)) {
+        if (fn_8005F894(pad,0x12)<0) {
+            tmp=Camera_GetActive();
+            M2C_FIELD(tmp,f32 *,0x70)=gMapSelectCamZoom;
+            fn_80098524(M2C_FIELD(cmd,void **,0x34));
+        }
+        M2C_FIELD(cmd,u8 *,0x40)|=1;
+    }
+    if(pad && Pad_IsButton(pad,0)) {
+        if(fn_80096B80()) {
+            fn_8017F474(M2C_FIELD(cmd,void **,0x34),cmd);
+            fn_800983E0(&pos,M2C_FIELD(cmd,void **,0x34));
+            copy=pos;
+            SeCue_PlayAtPos(MapSelect_str+0xF3,&copy,100);
+        } else {
+            tmp=M2C_FIELD(M2C_FIELD(cmd,void **,0x34),void **,0);
+            if(tmp) actor=M2C_FIELD(tmp,s32 *,0x280); else actor=0;
+            Mu_StartFlash(actor,1,0x20,cmd);
+        }
+        if(M2C_FIELD(cmd,void (**)(void *),0x58)) {
+            flags=M2C_FIELD(cmd,u8 *,0x40);
+            if(!(flags&4)) {
+                M2C_FIELD(cmd,u8 *,0x40)=flags|4;
+                M2C_FIELD(cmd,void (**)(void *),0x58)(cmd);
+            }
+        }
+    }
+    if(Pad_IsButton(pad,0x12)) {
+        fn_80052CA8(proc);
+        tmp=Camera_GetActive();
+        M2C_FIELD(tmp,f32 *,0x70)=gMapSelectCamZoom;
+        fn_80098524(M2C_FIELD(cmd,void **,0x34));
+    }
+    fn_80054C14(proc);
+    return 0;
 }
 
 /* Map-select process tick: init zoom, confirm selection on A, cancel on B. */
@@ -13291,6 +13347,82 @@ void fn_801A06CC(void) {
     Unit_ApplyTransform();
 }
 
+#pragma optimization_level 3
+s32 fn_801A06EC(u8 arg0, u8 arg1, s32 arg2) {
+    extern u8 gUnits[];
+    extern u32 gUiInputFlags;
+    extern u8 Proc_MuEventInst[];
+    void *Process_Find(u8 *);
+    void *Process_Create(u8 *, s32);
+    void Unit_SetMapPos(void *, s8, s8);
+    void fn_80050C90(void *);
+    u32 fn_80127C48(void);
+    s32 fn_800C0658(void);
+    void fn_80183EAC(void *, void *, s32, s32, void *);
+    u8 *unit1;
+    u8 *unit2;
+    s32 var_r29;
+    s32 var_r28;
+    s32 temp;
+    void *host;
+    void *parent;
+    u32 tmp;
+
+    if (arg0 != 0) {
+        unit1 = gUnits + ((arg0 - 1) * 0x280);
+    } else {
+        unit1 = NULL;
+    }
+    if (arg1 != 0) {
+        unit2 = gUnits + ((arg1 - 1) * 0x280);
+    } else {
+        unit2 = NULL;
+    }
+    if (unit1 == NULL || *(u32 *)(unit1 + 0x188) == 0) {
+        return 0;
+    }
+    if (unit2 == NULL || *(u32 *)(unit2 + 0x188) == 0) {
+        return 0;
+    }
+
+    var_r29 = (s8)unit2[0x19E];
+    temp = (s8)unit1[0x19E];
+    var_r28 = (s8)unit2[0x19F];
+    if (var_r29 > temp) {
+        var_r29 = var_r29 + arg2;
+    }
+    if (var_r29 < temp) {
+        var_r29 = var_r29 - arg2;
+    }
+    temp = (s8)unit1[0x19F];
+    if (var_r28 > temp) {
+        var_r28 = var_r28 + arg2;
+    }
+    if (var_r28 < temp) {
+        var_r28 = var_r28 - arg2;
+    }
+
+    Unit_SetMapPos(unit2, (s8)var_r29, (s8)var_r28);
+
+    if (gUiInputFlags & 1) {
+        fn_80050C90(unit2);
+        return 0;
+    }
+
+    host = Process_Find(Proc_MuEventInst);
+    if (host != NULL) {
+        parent = host;
+    } else {
+        tmp = fn_80127C48();
+        if (tmp == 0) {
+            tmp = fn_800C0658();
+        }
+        parent = Process_Create(Proc_MuEventInst, tmp);
+    }
+    fn_80183EAC(unit1, unit2, var_r29, var_r28, parent);
+    return 1;
+}
+#pragma optimization_level reset
 /* Start MU event kind 4 for the unit at the given deployment index. */
 s32 MuEvent_StartForUnit(u8 unitId) {
     extern u32 gUiInputFlags;
