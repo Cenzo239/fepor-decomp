@@ -8004,8 +8004,8 @@ void fn_801C6E60(u32 arg0)
     void *Process_Find(void *);
     void fn_8005F788(u32, s32, s32);
     s32 i;
-    u8 *list;
     s32 clear;
+    u8 *list;
     void *p;
 
     p = Process_Find(LightFade_script);
@@ -9816,7 +9816,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
 void fn_801CACE4(void *arg0, s32 arg1) {
     if (arg1 < *(s32*)((char*)arg0 + 0x70)) {
         s32 temp_r5 = *(s32*)((char*)arg0 + 0x50);
-        fn_801CB7F0((char*)arg0 + 0x48, temp_r5 + (arg1 << 5), temp_r5);
+        fn_801CB7F0((char*)arg0 + 0x48, (void *)(temp_r5 + (arg1 << 5)));
         *(s32*)((char*)arg0 + 0x70) = *(s32*)((char*)arg0 + 0x70) - 1;
     }
 }
@@ -10043,6 +10043,40 @@ fn_801CB934(self+0x48,*(u8 **)(self+0x50)+(*(u32 *)(self+0x4c)<<5),1,(s32)record
 }
 *(s32 *)(self+0x74)=-1;self[0x78]=0;self[0x79]=0;String_Destroy(&str,-1);
 return self;
+}
+
+#pragma cplusplus reset
+int fn_801CB7F0(void *arg0, void *arg1, void *unused) {
+    s32 count;
+    u8 *end;
+    u8 *src;
+    u8 *dst;
+    u32 n;
+    u32 i;
+    (void)unused;
+    count = *(s32 *)((u8 *)arg0 + 4);
+    end = *(u8 **)((u8 *)arg0 + 8) + (count << 5);
+    if ((((s32)(end - (u8 *)arg1) / 32) - 1) != 0) {
+        src = (u8 *)arg1 + 0x20;
+        dst = (u8 *)arg1;
+        n = (u32)((end + 0x1F) - src) >> 5;
+        if (src < end) {
+            for (i = 0; i < n; i++) {
+                ((f32 *)dst)[0] = ((f32 *)src)[0];
+                ((f32 *)dst)[1] = ((f32 *)src)[1];
+                ((f32 *)dst)[2] = ((f32 *)src)[2];
+                ((f32 *)dst)[3] = ((f32 *)src)[3];
+                ((f32 *)dst)[4] = ((f32 *)src)[4];
+                ((f32 *)dst)[5] = ((f32 *)src)[5];
+                ((f32 *)dst)[6] = ((f32 *)src)[6];
+                ((u32 *)dst)[7] = ((u32 *)src)[7];
+                src += 0x20;
+                dst += 0x20;
+            }
+        }
+    }
+    *(s32 *)((u8 *)arg0 + 4) = count - 1;
+    return (int)arg1;
 }
 
 #pragma use_lmw_stmw on
@@ -13865,6 +13899,98 @@ void fn_801D2FD4(void *arg0, s16 arg1) {
 
 s16 fn_801D2FDC(void *arg0) {
     return M2C_FIELD(arg0, s16 *, 0x58);
+}
+
+void fn_801D2FE4(void **outNode, s32 *listHead, void ***insertBefore, s32 *unitPtr) {
+void *Heap_Alloc(s32);
+void Heap_Free(void *);
+void fprintf(void *,void *,...);
+void abort(void);
+void fn_800616A0(void *);
+void *GActor_Create(void);
+void fn_800506E0(s32,s32,void *);
+s32 fn_800639B4(void);
+void GActor_Finalize(void *);
+#pragma cplusplus on
+    struct Obj {
+        u32 flags;
+        s32 unk4;
+        u8 pad8[0x3C];
+        s32 anim;
+        u8 pad48[0x48];
+        s32 source;
+    };
+    struct Value {
+        s32 unit;
+        Obj *actor;
+        s32 source;
+    };
+    struct Node {
+        Node *prev;
+        Node *next;
+        Value value;
+    };
+    struct Holder {
+        void *list;
+        Node *node;
+        Holder(void *l, Node *n) : list(l), node(n) {}
+        ~Holder() {
+            if (node != 0) {
+                Heap_Free(node);
+            }
+        }
+    };
+    extern char __files[];
+    extern char lbl_8027E0F8[];
+    Value *value;
+    Node *node;
+    void *list;
+    u32 unit;
+    Obj *actor;
+    Node *pos;
+    Node *n;
+
+    // Copy the actor value and splice its node into the list.
+    list = listHead + 1;
+    node = (Node *)Heap_Alloc(0x14);
+    if (node == 0) {
+        fprintf(__files + 0xA0, lbl_8027E0F8 + 0x34);
+        abort();
+    }
+    {
+        Holder h(list, node);
+        value = &h.node->value;
+        if (value != 0) {
+            value->unit = unitPtr[0];
+            unit = unitPtr[2];
+            value->actor = 0;
+            value->source = 0;
+            if(unit != 0) {
+            if (value->actor != 0) {
+                fn_800616A0(value->actor);
+            }
+            value->actor = (Obj *)GActor_Create();
+            value->actor->unk4 = unit + 0x1C;
+            actor = value->actor;
+            actor->flags |= 0x50028400;
+            fn_800506E0(unit, 0, actor);
+            value->actor->anim = fn_800639B4();
+            value->source = unit;
+            value->actor->source = unit;
+            GActor_Finalize(value->actor);
+            }
+        }
+        pos = (Node *)*insertBefore;
+        n = h.node;
+        h.node = 0;
+        pos->prev->next = n;
+        n->prev = pos->prev;
+        pos->prev = n;
+        n->next = pos;
+        (*listHead)++;
+        *outNode = n;
+    }
+#pragma cplusplus reset
 }
 
 u32 fn_801D3124(void) {
