@@ -1657,6 +1657,38 @@ block_23:
     return 0;
 }
 
+s32 fn_800C7D3C(void *self,void *list,s32 index,void *out) {
+extern char gStringErrorMsgs[];
+void fn_800C7EF8(void*); s32 fn_800C7F10(void*,void*,s32); void fn_800C8328(void*,void*,s32,String*);
+u32 strlen(const char*);
+s32 String_Compare(String*,u32,u32,char*,u32);
+String *String_Assign(String*,String*,s32,s32);
+void String_Init(void*,void*,void*);
+void *Heap_AllocRaw(u32);
+void *fn_8022C414(void*,void (*)(void*),void*,u32,u32);
+u8 fn_800C7B04(void*,String*,void*,void*,s32*);
+void strcpy(void*,void*);
+u8 buffer[0x100];u8 values[0x18];String str;String tmp;s32 count;u8 alloc;
+u8 *value; s32 total; s32 offset; u8 *dest; String *entry; s32 i;char *messages;
+str.cap=0;str.size=0;str.data=0;str.cap=0;
+*(s32*)out=fn_800C7F10(self,list,index);
+total=*(s32*)out;
+*(void**)((u8*)out+4)=fn_8022C414(Heap_AllocRaw(total*0x38+0x10),fn_800C7EF8,0,0x38,total);
+while((entry=*(String**)((u8*)list+8)+index,String_Compare(entry,0,entry->size,gStringErrorMsgs,strlen(gStringErrorMsgs)))!=0) index++;
+offset=0;messages=gStringErrorMsgs;
+while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Compare(entry,0,entry->size,messages+2,strlen(messages+2)))!=0) {
+dest=*(u8**)((u8*)out+4)+offset;
+if(fn_800C7B04(self,&str,values,buffer,&count)) {
+strcpy(dest,values);
+for(i=0,value=buffer;i<count;value+=0x20,i++) {
+String_Init(&tmp,value,&alloc);fn_800C8328(self,dest,i,&tmp);String_Destroy(&tmp,-1);
+}
+offset+=0x38;
+}
+}
+String_Destroy(&str,-1);return index;
+}
+
 void fn_800C7EF8(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x24) = 0;
     M2C_FIELD(arg0, s32 *, 0x20) = 0;
@@ -8052,6 +8084,131 @@ void fn_800DAB24(void *arg0, void *arg1, s32 arg2) {
     void String_Copy(void *, void *);
 
     String_Copy(arg0, *(u8 **)((u8 *)arg1 + 0x3C) + arg2 * 0xC);
+}
+
+void fn_800DAB50(void *proc) {
+ extern s8 lbl_803678BE;
+ extern char lbl_802711B0[];
+ extern void *gWin3, *gGame, *gPadInput;
+ extern u8 gBattleReplayActive;
+ void *Heap_Alloc(u32); void Heap_Free(void *);
+ void String_Assign(void *,void *,s32,s32);
+ void String_AssignCStr(void *,char *,u32);
+ void fn_800C99A0(void *,void *,s32,s32); void fn_800C992C(void *,char *,u32);
+ void String_Init(void *,char *,void *);
+ void *BattleTerrain_Create(void *,void *,void *,void *);
+ u32 strlen(const char *);
+ void Process_Goto(void *,s32); void Process_ClearFunc(void *);
+ void fn_801C777C(void); void fn_801C77A4(void);
+ void fn_800ED960(void *,s32); void fn_800D74FC(void *); void fn_800D7540(void *); void fn_800D7564(void *);
+ u8 fn_800E7C80(void *); void fn_800D8030(void *);
+ u8 fn_800E5248(void *,s32); s32 fn_8011654C(void *); s32 fn_80116580(void *);
+ void fn_80113BA0(void *); void LightFade_Start(void);
+ void fn_8005C7E8(void *); void fn_800D5894(void *); void fn_80040854(s32); void fn_800CA6C8(void *,s32);
+ String sp24, sp18, spC;
+ void *scratch;
+ u8 *self;
+ void *tmp;
+ s8 made;
+ s32 idx;
+ void *entry;
+ void *host;
+ if ((u8)lbl_803678BC != 0) {
+ host=*(void **)((u8 *)lbl_803678B8+4);
+ (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
+ fn_801C777C(); Process_Goto(proc,1);
+ if ((u8)lbl_803678BD == 0) lbl_803678BC=0;
+ } else if ((u8)lbl_803678BE != 0) {
+ host=*(void **)((u8 *)lbl_803678B8+4);
+ (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
+ Process_Goto(proc,2); lbl_803678BE=0;
+ } else {
+ if ((u8)lbl_803678BF == 0) {
+ fn_801C77A4(); self=(u8 *)lbl_803678B8;
+ spC.cap=0;sp18.cap=0;spC.size=0;spC.data=0;spC.cap=0;sp18.size=0;sp18.data=0;sp18.cap=0;
+ String_Assign(&spC,*(void **)(self+0x54),0,-1);
+ host=*(void **)(self+4);
+ (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
+ String_AssignCStr(&sp18,lbl_802711B0+0x1A4,strlen(lbl_802711B0+0x1A4));
+ fn_800C99A0(&sp18,&spC,0,-1);
+ fn_800C992C(&sp18,lbl_802711B0+0x18D,strlen(lbl_802711B0+0x18D));
+ made=0;tmp=Heap_Alloc(0x54);
+ if(tmp){String_Init(&sp24,lbl_802711B0+0x1C5,&scratch);made=1;tmp=BattleTerrain_Create(tmp,*(void **)(self+4),&sp24,&sp18);}
+ if(made)String_Destroy(&sp24,-1);
+ host=*(void **)(self+4);
+ (*(void (**)(void *,void *))(*(u8 **)((u8 *)host+0x10)+0x1C))(host,tmp);
+ String_Destroy(&sp18,-1);String_Destroy(&spC,-1);lbl_803678BF=1;
+ }
+ self=(u8 *)lbl_803678B8;
+ fn_800ED960(gWin3,1);
+ if ((M2C_FIELD(gPadInput,u32 *,4) ^ M2C_FIELD(gPadInput,u32 *,8)) & M2C_FIELD(gPadInput,u32 *,4) & 0x10) {
+ if(*(void **)(self+0x30))fn_800D7540(*(void **)(self+0x30));
+ *(void **)(self+0x30)=0;
+ idx=*(s32 *)(self+0x2C)+1;
+ while(!*(void **)(self+0x30)){
+ if(idx>=*(s32 *)(self+0x28))idx=0;
+ entry=(*(void ***)(self+0x24))[idx];
+ if(M2C_FIELD(entry,u8 *,0x420)){
+ *(void **)(self+0x30)=entry;
+ fn_800D7564(*(void **)(self+0x30));
+ *(s32 *)(self+0x2C)=idx;
+ }
+ idx++;
+ }
+ }
+ if (*(void **)(self+0x30)) {
+ fn_800D74FC(*(void **)(self+0x30));
+ if (!M2C_FIELD(*(void **)(self+0x30),u8 *,0x420)) {
+ if(*(void **)(self+0x30))fn_800D7540(*(void **)(self+0x30));
+ *(void **)(self+0x30)=0;
+ idx=*(s32 *)(self+0x2C)+1;
+ while(!*(void **)(self+0x30)){
+ if(idx>=*(s32 *)(self+0x28))idx=0;
+ entry=(*(void ***)(self+0x24))[idx];
+ if(M2C_FIELD(entry,u8 *,0x420)){
+ *(void **)(self+0x30)=entry;
+ fn_800D7564(*(void **)(self+0x30));
+ *(s32 *)(self+0x2C)=idx;
+ }
+ idx++;
+ }
+ }
+ }
+ if(!fn_800E7C80(*(void **)(self+4)))fn_800D8030(self);
+ if(*(void **)(self+0x10) && fn_800E5248(*(void **)(self+0x10),2) && fn_8011654C(*(void **)(self+0x10))==1 && fn_80116580(*(void **)(self+0x10))!=3)fn_80113BA0(*(void **)(self+0x10));
+ if(!self[0x89] && *(void **)(self+4)) {
+ host=*(void **)(self+4); (*(void (**)(void *,s32))(*(u8 **)((u8 *)host+0x10)+0x3C))(host,1);
+ host=*(void **)(self+4); (*(void (**)(void *))(*(u8 **)((u8 *)host+0x10)+0x40))(host);
+ host=*(void **)(self+4); (*(void (**)(void *,s32,s32))(*(u8 **)((u8 *)host+0x10)+0x48))(host,0,0);
+ host=*(void **)(self+4); (*(void (**)(void *))(*(u8 **)((u8 *)host+0x10)+0x44))(host);
+ LightFade_Start();
+ }
+ if(self[0x89]) {
+ self=(u8 *)lbl_803678B8;
+ if(self){
+ gBattleReplayActive=0;
+ if(*(void **)(self+4)){
+ host=*(void **)(self+4);
+ (*(void (**)(void *,s32))(*(u8 **)((u8 *)host+0x10)+0xC))(host,1);
+ }
+ *(void **)(self+4)=0;
+ tmp=gGame;
+ if(tmp){String_Destroy((u8 *)tmp+0x1A8,-1);String_Destroy((u8 *)tmp+0x19C,-1);String_Destroy(tmp,-1);Heap_Free(tmp);}
+ fn_801C777C();
+ if(*(void **)(self+0x8C))fn_8005C7E8(*(void **)(self+0x8C));
+ fn_800D5894(self);fn_80040854(0);
+ String_Destroy(self+0x7C,-1);String_Destroy(self+0x70,-1);
+ if(self+100 && self+100)fn_800CA6C8(self+100,0);
+if(self+88 && self+88)fn_800CA6C8(self+88,0);
+if(self+76 && self+76)fn_800CA6C8(self+76,0);
+if(self+64 && self+64)fn_800CA6C8(self+64,0);
+if(self+52 && self+52)fn_800CA6C8(self+52,0);
+ if(self+0x1C && self+0x1C && self+0x1C && *(void **)(self+0x24))Heap_Free(*(void **)(self+0x24));
+ Heap_Free(self);
+ }
+ Process_ClearFunc(proc);
+ }
+ }
 }
 
 void fn_800DB110(void *arg0) {
@@ -20267,6 +20424,104 @@ void fn_800F5A8C(void *arg0, void *arg1) {
                     0);
     }
 }
+
+#pragma optimization_level 3
+void fn_800F5B14(s32 arg0, void *arg1) {
+    void *Res_GetByName(void *);
+    s32 fn_800F6F94(void *, s32);
+    s8 Unit_GetMaxHp(void *);
+    s8 fn_800386E0(void *);
+    s32 fn_800F6B10(void *, s32);
+    u32 fn_800FCF48(u8, u8);
+    extern u32 gBattle[];
+    extern u8 lbl_80272F44[], gBattleMap[], gUnits[], gBattleState[];
+    void *out = arg1;
+    u8 *cfg;
+    u8 *unit;
+    s32 total;
+    u8 *p;
+    s32 score;
+    u8 *battle;
+    u8 *map;
+    f32 maxhp;
+    s32 remaining;
+    s32 percent;
+    s32 x, y;
+    u8 outside, id;
+    u8 *other;
+    u32 flags;
+    s32 bonus;
+    f32 amount;
+    u8 saved_hp;
+
+    cfg = Res_GetByName(*(void **)((u8 *)arg0 + 0x244));
+    score = fn_800F6F94(cfg, 1);
+    unit = (u8 *)gBattle + 0x2E0;
+    maxhp = (f32)Unit_GetMaxHp(unit);
+    remaining = Unit_GetMaxHp(unit) - (s8)unit[0x1A8];
+    p = lbl_80272F44;
+    battle = (u8 *)gBattle;
+    map = gBattleMap;
+    total = 0;
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    score += (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[6]));
+    for (; (s32)p[0] != 0x7F; p += 3) {
+        outside = 0;
+        x = (s16)((s8)p[0] + (s8)battle[0x19E]);
+        y = (s16)((s8)p[1] + (s8)battle[0x19F]);
+        if (x < (s8)map[8] || (s8)map[10] - 1 < x || y < (s8)map[9] || (s8)map[11] - 1 < y)
+            outside = 1;
+        if (outside == 0) {
+            id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
+            if (id != 0) {
+                if (id != 0)
+                    other = gUnits + (id - 1) * 0x280;
+                else
+                    other = 0;
+                if (relation_is_one(*(void **)(*(u8 **)(battle + 0x280) + 0x190),
+                                    *(void **)(other + 0x190)) == 0)
+                    total += (s8)p[2];
+            }
+        }
+    }
+    flags = *(u16 *)(*(u8 **)(*(u8 **)(unit + 0x280) + 0x18C) + 0x3A);
+    score += (s32)(0.03125f * ((f32)total * (f32)(s8)cfg[7]));
+    bonus = 0;
+    if (flags & 1)
+        bonus = (s8)cfg[0xE];
+    if (flags & 2)
+        bonus += (s8)cfg[0xF];
+    if (flags & 4)
+        bonus += (s8)cfg[0x10];
+    if (flags & 8)
+        bonus += (s8)cfg[0x11];
+    if (flags & 0x10)
+        bonus += (s8)cfg[0x12];
+    if (flags & 0x20)
+        bonus += (s8)cfg[0x13];
+    if (flags & 0x40)
+        bonus += (s8)cfg[0x14];
+    if (flags & 0x80)
+        bonus += (s8)cfg[0x15];
+    if (flags & 0x100)
+        bonus += (s8)cfg[0x16];
+    if (flags & 0x400)
+        bonus += (s8)cfg[0x17];
+    amount = (f32)*(s16 *)(gBattleState + 0x12);
+    score += (s32)(0.03125f * ((f32)bonus * (f32)(s8)cfg[8]));
+    score += (s32)(0.03125f * (amount * (f32)(s8)cfg[9]));
+    score += (s32)(0.03125f * ((f32)fn_800386E0(unit) * (f32)(s8)cfg[10]));
+    score -= fn_800F6B10(cfg, 1);
+    score -= (s32)(0.03125f * ((f32)((fn_800FCF48(((u8 *)gBattle)[0x19E], ((u8 *)gBattle)[0x19F]) >> 4) & 0xFFF) * (f32)(s8)cfg[0xC]));
+    saved_hp = ((u8 *)gBattle)[0x1A8];
+    maxhp = (f32)Unit_GetMaxHp(gBattle);
+    remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
+    *(s32 *)((u8 *)out + 8) = score;
+}
+#pragma global_optimizer reset
+#pragma dont_inline reset
 
 #pragma cplusplus off
 #pragma use_lmw_stmw on
