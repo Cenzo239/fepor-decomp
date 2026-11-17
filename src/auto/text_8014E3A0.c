@@ -884,8 +884,62 @@ void fn_801513A0(void *arg0) {
 }
 
 extern u16 lbl_80367BA0;
-s32 fn_801513EC(void) {
-    return fn_800D758C(lbl_80367BA0);
+void *fn_801513EC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    typedef struct { u32 size; u32 cap; char *data; } String;
+    void String_Init(void *, char *, void *);
+    void String_ConcatCStr(void *, void *, char *);
+    void fn_800D764C(void *, s32, s32, s32, void *, void *);
+    void String_Destroy(void *, s32);
+    void *fn_800D75FC(void *, void *);
+    void fn_800E3F54(void *);
+    extern char lbl_80277380[];
+    extern u8 lbl_80293A78[];
+    extern void fn_80151300(void);
+    extern void fn_801512D8(void);
+    String pathBase;
+    String dbxPath;
+    String winName;
+    String ctrl0;
+    String okBtn;
+    String cancelBtn;
+    void *sp18;
+    void *sp14;
+    void *sp10;
+    void *spC;
+    void *sp8;
+    void *temp;
+    void *self;
+
+    self = arg0;
+    String_Init(&pathBase, lbl_80277380, &sp18);
+    String_ConcatCStr(&dbxPath, &pathBase, lbl_80277380 + 7);
+    String_Init(&winName, lbl_80277380 + 0x15, &sp14);
+    fn_800D764C(self, arg1, arg2, arg3, &dbxPath, &winName);
+    String_Destroy(&winName, -1);
+    String_Destroy(&dbxPath, -1);
+    String_Destroy(&pathBase, -1);
+    *(void **)((u8 *)self + 0xC) = lbl_80293A78;
+    String_Init(&ctrl0, lbl_80277380 + 0x1F, &sp10);
+    *(void **)((u8 *)self + 0x424) = fn_800D75FC(self, &ctrl0);
+    String_Destroy(&ctrl0, -1);
+    String_Init(&okBtn, lbl_80277380 + 0x2A, &spC);
+    temp = fn_800D75FC(self, &okBtn);
+    *(void **)((u8 *)self + 0x428) = temp;
+    *(void **)((u8 *)self + 0x418) = temp;
+    String_Destroy(&okBtn, -1);
+    String_Init(&cancelBtn, lbl_80277380 + 0x30, &sp8);
+    temp = fn_800D75FC(self, &cancelBtn);
+    *(void **)((u8 *)self + 0x42C) = temp;
+    *(void **)((u8 *)self + 0x41C) = temp;
+    String_Destroy(&cancelBtn, -1);
+    temp = *(void **)((u8 *)self + 0x428);
+    *(void **)((u8 *)temp + 0xA4) = (void *)fn_80151300;
+    temp = *(void **)((u8 *)self + 0x42C);
+    *(void **)((u8 *)temp + 0xA4) = (void *)fn_801512D8;
+    *(void **)((u8 *)self + 0x14) = *(void **)((u8 *)self + 0x428);
+    *(void **)((u8 *)self + 0x414) = *(void **)((u8 *)self + 0x428);
+    fn_800E3F54(*(void **)((u8 *)self + 0x414));
+    return self;
 }
 
 void fn_801515AC(void) {
@@ -5499,6 +5553,59 @@ void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     }
     Prim2D_PopZ(saved, sp38);
 }
+
+#pragma optimization_level 3
+void fn_80160F00(s16 x, s16 y, s32 flag, s32 texFlags) {
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    void Prim2D_SetTex(void *, u16);
+    void Prim2D_Begin(void);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_EndPrim(void);
+    extern s32 gUiTexAtlas;
+    typedef struct UiRect { s16 f0; s16 f2; s16 f4; s16 f6; } UiRect;
+    extern UiRect lbl_80367F20;
+    extern UiRect lbl_80367F28;
+    s32 fl;
+    s16 xl;
+    s16 yl;
+    s32 tf;
+    s32 texId;
+    s16 h;
+    s16 w;
+
+    fl = flag;
+    xl = x;
+    yl = y;
+    tf = texFlags;
+    texId = 0x15;
+    if ((u8)fl != 0) {
+        texId = 0x14;
+    }
+    Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, texId);
+
+    h = (s16)(((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f6 -
+             ((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f2);
+    w = (s16)(((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f4 -
+             ((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f0);
+
+    if (w != 0 && h != 0) {
+        Prim2D_Begin();
+        Prim2D_SetTex((void *)&gUiTexScratch, (u16)(tf | 1));
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRectUv(
+            (f32)xl,
+            (f32)yl,
+            (f32)((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f0,
+            (f32)((u8)fl != 0 ? &lbl_80367F20 : &lbl_80367F28)->f2,
+            (f32)w,
+            (f32)h);
+        Prim2D_EndPrim();
+    }
+}
+#pragma optimization_level reset
 void fn_801610A8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4) {
     extern u8 lbl_803680D6;
     extern u8 lbl_803680D7;
