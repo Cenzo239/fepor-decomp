@@ -1501,96 +1501,28 @@ void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
     if ((s8)arg1 < 0) *(s16 *)(base + 0x4214) = 0x7FFE;
 }
 #pragma scheduling reset
-void fn_800227F8(void* arg0, s32 arg1)
-{
-    s32 r30;
-    s32 r31;
-    s32 r4;
-    s32 r5;
-    s32 r6;
-    s32 r7;
-    s32 r0;
-    
-    r30 = arg1;
-    r31 = (s32)arg0;
-    
-    // Call to Terrain_GetEntry
-    Terrain_GetEntry();
-    
-    if (r30 != 0) {
-        return;
-    }
-    
-    // Set a bunch of values at fixed offsets from r31 
-    r4 = 1;
-    r5 = r31 + 0x2;
-    r6 = 1;
-    r7 = r31;
-    
-    // Loop to set some values
-    r0 = 0x3;
-    r5 = r31 + 0x2;
-    r6 = 1;
-    
-    // Set several values starting at offset 0x4214 in memory
-    *(u16*)(r5 + 0x4214) = r4;
-    *(u16*)(r5 + 0x4216) = r4;
-    *(u16*)(r5 + 0x4218) = r4;
-    *(u16*)(r5 + 0x421a) = r4;
-    *(u16*)(r5 + 0x421c) = r4;
-    *(u16*)(r5 + 0x421e) = r4;
-    *(u16*)(r5 + 0x4220) = r4;
-    *(u16*)(r5 + 0x4222) = r4;
-    
-    // Add some more memory operations with incrementing addresses
-    
-    // Set another batch of values
-    *(u16*)(r5 + 0x8214) = r4;  // This address seems to be r5 = offset of r31 + 0x4000 + 0x14 (0x4214)
-    *(u16*)(r5 + 0x8216) = r4;
-    *(u16*)(r5 + 0x8218) = r4;
-    *(u16*)(r5 + 0x821a) = r4;
-    *(u16*)(r5 + 0x821c) = r4;
-    *(u16*)(r5 + 0x821e) = r4;
-    *(u16*)(r5 + 0x8220) = r4;
-    *(u16*)(r5 + 0x8222) = r4;
-    
-    // Add more memory operations with different offsets
-    *(u16*)(r5 + 0xc214) = r4;
-    *(u16*)(r5 + 0xc216) = r4;
-    *(u16*)(r5 + 0xc218) = r4;
-    *(u16*)(r5 + 0xc21a) = r4;
-    *(u16*)(r5 + 0xc21c) = r4;
-    *(u16*)(r5 + 0xc21e) = r4;
-    *(u16*)(r5 + 0xc220) = r4;
-    *(u16*)(r5 + 0xc222) = r4;
-    
-    // Another loop with similar operations, but more complex control flow
-    
-    // Final operations
-    *(u16*)(r31 + 0x4214) = 0x7fff;  // Set to maximum value 
-    *(u8*)(r31 + 0x4eea) = 1;
-    
-    // Conditionally set value based on input parameter
-    if (arg1 != 0) {
-        r4 = *(u8*)(arg1 + 0x42);
-        r5 = *(s32*)(arg1 + 0x8);
-        r0 = r4 + 0x8;
-        r4 = *(s32*)(r5 + r0);
-        
-        if (r4 < 0) {
-            r6 = (unsigned char)r4; // sign extend
-            *(u16*)(r7 + 0x4214) = r6;
-            
-            // Set some more values
-            r4 = 0x4;
-            Status_Test(arg1, r4);
-            
-            // Set a value in the end
-            *(u8*)(r31 + 0x4eea) = (u8)((0 - *(u8*)(arg1 + 0x1c)) & 0xFF);
-        }
-    }
-    
-    return;
+void fn_800227F8(void *arg0,void *arg1) {
+struct Map { u8 pad[0x14214]; s16 costs[77]; };
+struct Terrain { u32 unk0,unk4; s8 *data; };
+struct Terrain *Terrain_GetEntry(s32);
+u8 Status_Test(void *,s32);
+struct Map *map=arg0;
+u8 *unit=arg1;
+struct Terrain *terrain;
+s32 i;
+terrain=Terrain_GetEntry(0);
+if(unit==0){
+for(i=1;i<77;i++) map->costs[i]=1;
+map->costs[0]=0x7FFF;
+((u8 *)map)[0x24EEA]=1;
+} else {
+for(i=0;i<77;i++,terrain++){
+s32 cost=0x7FFF;
+if(terrain->data[unit[0x42]+8]>=0) cost=terrain->data[unit[0x42]+8];
+map->costs[i]=cost;
+}
+((u8 *)map)[0x24EEA]=Status_Test(unit+0x1C,4)!=0;
+}
 }
 
 void Map_RefreshUnitMap(void *arg0)
@@ -4137,6 +4069,53 @@ void fn_80026FA0(void *arg0) {
     x = (s32)*(f32 *)((u8 *)arg0 + 0x30);
     y = (s32)*(f32 *)((u8 *)arg0 + 0x34);
     fn_80183EAC(*(s32 *)gUiContext, *(s32 *)(p + 4), x, y, arg0);
+}
+
+void fn_80027038(u8 *arg0) {
+void fn_8003DCDC(void *,void *,u8,u8 *,u8 *);
+void Unit_SetMapPos(void *,u8,u8);
+void fn_80050C90(void *);
+void Unit_Rescue(void *,void *);
+void Unit_OnZeroHp(void *);
+s8 Unit_GetActiveItemSlot(void *);
+void fn_8009542C(void *,u8);
+void Battle_Apply(void *);
+void Unit_SeparateRescue(void *,u8,u8);
+void *TargetList_GetAt(s32 *,s32);
+void *UnitRef_GetUnit(void *);
+extern u8 gBattle[];
+extern s32 gTargetList[];
+s32 i;
+u8 y,x;
+u8 *p=arg0;
+switch(p[8]) {
+case 0x13: case 0x14:
+fn_8003DCDC(*(void **)p,*(void **)(p+4),p[0x14],&x,&y);
+Unit_SetMapPos(*(void **)(p+4),x,y);
+fn_80050C90(*(void **)(p+4)); break;
+case 0x19: Unit_Rescue(*(void **)p,*(void **)(p+4)); break;
+case 0xf: case 0x15: Unit_OnZeroHp(*(void **)p); Unit_OnZeroHp(*(void **)(p+4)); break;
+case 0x10:
+if(Unit_GetActiveItemSlot(*(void **)p)<0 && !gBattle[0x2c7]) fn_8009542C(*(void **)p,p[0xa]);
+break;
+case 4: if(!(*(u32 *)(gBattle+0xcac)&0x2000)) Battle_Apply(gBattle); break;
+case 0x1b: {
+void *rescued=*(void **)(*(u8 **)p+0x194);
+Unit_SeparateRescue(*(void **)p,p[0xd],p[0xe]);
+Unit_Rescue(*(void **)(p+4),rescued); break;
+}
+case 0x34: {
+void *rescued=*(void **)(*(u8 **)(p+4)+0x194);
+Unit_SeparateRescue(*(void **)(p+4),p[0xf],p[0x10]);
+Unit_Rescue(*(void **)p,rescued); break;
+}
+case 0x12:
+for(i=0;i<gTargetList[0];i++) {
+u8 *unit=UnitRef_GetUnit(TargetList_GetAt(gTargetList,i));
+*(u32 *)(unit+0x1a0)&=~1;
+}
+Battle_Apply(gBattle); break;
+}
 }
 
 void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
