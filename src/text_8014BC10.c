@@ -320,3 +320,51 @@ unsigned int fn_8014C12C(void *arg0)
   return grade;
 }
 
+void fn_8014C1B8(void *state, void *stream) {
+    void Stream_Read(void *, s32, void *);
+    u8 Stream_ReadU8(void *);
+    u16 Stream_ReadU16(void *);
+    s32 fn_8017A950(void *);
+    s64 fn_8017A860(void *);
+    void fn_80105A04(void *, void *);
+    void fn_80014F30(void *, void *);
+    void fn_80199A60(void *, void *);
+    void fn_800BDA9C(void *, void *);
+    s32 i;
+
+    Stream_Read(stream, 0x10, state);
+    *(u8 *)((u8 *)state + 0x10) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x51E) = *(u8 *)((u8 *)state + 0x10);
+    *(u8 *)((u8 *)state + 0x11) = Stream_ReadU8(stream);
+    *(u16 *)((u8 *)state + 0x12) = Stream_ReadU16(stream);
+    for (i = 0; i < 4; i++) {
+        *(u8 *)((u8 *)state + 0x14 + i) = Stream_ReadU8(stream);
+    }
+    *(s32 *)((u8 *)state + 0x18) = fn_8017A950(stream);
+    *(s32 *)((u8 *)state + 0x1C) = fn_8017A950(stream);
+    Stream_Read(stream, 0x30, (u8 *)state + 0x20);
+    *(u8 *)((u8 *)state + 0x50) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x51) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x52) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x53) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x54) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x55) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x56) = Stream_ReadU8(stream);
+    *(u8 *)((u8 *)state + 0x57) = Stream_ReadU8(stream);
+    *(s64 *)((u8 *)state + 0x58) = fn_8017A860(stream);
+    *(s64 *)((u8 *)state + 0x60) = fn_8017A860(stream);
+    *(s32 *)((u8 *)state + 0x68) = fn_8017A950(stream);
+    *(s32 *)((u8 *)state + 0x6C) = fn_8017A950(stream);
+    *(u16 *)((u8 *)state + 0x70) = Stream_ReadU16(stream);
+    *(u16 *)((u8 *)state + 0x72) = Stream_ReadU16(stream);
+    fn_80105A04((u8 *)state + 0x74, stream);
+    fn_80105A04((u8 *)state + 0x84, stream);
+    fn_80014F30((u8 *)state + 0x94, stream);
+    fn_80014F30((u8 *)state + 0x98, stream);
+    fn_80199A60((u8 *)state + 0x9C, stream);
+    fn_800BDA9C((u8 *)state + 0xB4, stream);
+    Stream_Read(stream, 0x140, (u8 *)state + 0x3C4);
+    Stream_Read(stream, 0x18, (u8 *)state + 0x504);
+    *(s32 *)((u8 *)stream + 4) = *(s32 *)((u8 *)stream + 4) + 8;
+}
+
