@@ -620,21 +620,17 @@ OSInitAlarm(); fn_80215F8C(); lbl_80368B2C=0; OSRegisterResetFunction(lbl_802A4D
 }}
 #pragma use_lmw_stmw reset
 
-s32 fn_80265544(s32 arg0,s32 arg1,u32 arg2) {
-extern u8 lbl_803669A0[];
-extern int fn_80266CFC(int,int,int,void*);
-void fn_80265430(void);
-u8 *entry=lbl_803669A0+(arg0<<8);
-s32 result;
-void (*callback)(void)=fn_80265430;
-if(*(u32*)(entry+0x1c)) result=2;
-else {
-entry[0]=0;
-*(s32*)(entry+0x14)=arg1;
-*(u32*)(entry+0x1c)=arg2;
-result=fn_80266CFC(arg0,1,3,callback);
-}
-return result;
+s32 fn_80265544(s32 arg0, s32 arg1, u32 arg2) {
+ extern u8 lbl_803669A0[];
+ extern int fn_80266CFC(int,int,int,void *);
+ void fn_80265430(void);
+ u8 *entry;
+ entry=lbl_803669A0+(arg0<<8);
+ if (*(u32 *)(entry+0x1c)!=0) return 2;
+ *entry=0;
+ *(s32 *)(entry+0x14)=arg1;
+ *(u32 *)(entry+0x1c)=arg2;
+ return fn_80266CFC(arg0,1,3,fn_80265430);
 }
 
 #pragma scheduling off
