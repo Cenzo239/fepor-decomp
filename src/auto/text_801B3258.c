@@ -4028,6 +4028,77 @@ void fn_801BCD8C(void *arg0) {
     }
 }
 
+void fn_801BCEC4(void *arg0) {
+extern u8 gUiUnitPanelStrings[];
+void *Ui_FindChild(void *,s32,s32);
+void Ui_SetWidgetText(void *,void *);
+void *fn_8013BC10(s32,s32);
+void Ui_CreateMenu(void *,void *,s32);
+#pragma cplusplus on
+struct Item { virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void set2(s32)=0;
+virtual void v19()=0;
+virtual void set3(s32)=0; };
+struct Base { u32 unknown; };
+struct Menu: Base { virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual Item *get(s32)=0; };
+Menu *menu;
+s32 i;
+Item *item;
+void *child;
+void *a, *b, *c;
+b=M2C_FIELD(arg0,void **,0x54);
+c=M2C_FIELD(arg0,void **,0x58);
+a=M2C_FIELD(arg0,void **,0x4C);
+M2C_FIELD(a,f32 *,0x30)=0.3f;
+M2C_FIELD(b,f32 *,0x30)=0.3f;
+M2C_FIELD(c,f32 *,0x30)=0.3f;
+menu=(Menu *)fn_8013BC10(0,0);
+M2C_FIELD(menu,s16 *,8)=0x198;
+M2C_FIELD(menu,s16 *,0xA)=0x38;
+M2C_FIELD(menu,u8 *,0x24)=1;
+for(i=0;menu->get(i)!=0;i++) {
+item=menu->get(i);
+item->set2(2);
+item->set3(3);
+}
+Ui_CreateMenu(menu,arg0,0);
+child=Ui_FindChild(arg0,-0x1000,0);
+if(child) Ui_SetWidgetText(child,(u8 *)gUiUnitPanelStrings+0x1E6);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 extern "C" void fn_801BCFF4(void *arg0) {
     void Process_Goto(void *, s32);
@@ -18282,9 +18353,9 @@ u8 *fn_801E2458(u8 **arg0) {
 
     for (ctr = 3; ctr != 0; ctr--) {
         slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
             hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
             hdrOk = 0;
         } else {
             hdrOk = 1;
@@ -18298,9 +18369,9 @@ u8 *fn_801E2458(u8 **arg0) {
         }
         off += 0x4000;
         slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
             hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
             hdrOk = 0;
         } else {
             hdrOk = 1;
