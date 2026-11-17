@@ -814,6 +814,39 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
     return 0;
 }
 
+#pragma global_optimizer off
+void fn_801B6DAC(u8 *arg0) {
+    extern u8 gBattle[];
+    void fn_800340E4(void *);
+    s16 saved = *(s16 *)(gBattle + 0x8A0);
+    u8 *p = gBattle + 0x8A0;
+    u32 off;
+    u8 type;
+    fn_800340E4(p);
+    arg0[0] = 0; arg0[1] = 0; arg0[2] = 0; arg0[3] = 0; arg0[4] = 0;
+    arg0[5] = 0; arg0[6] = 0; arg0[7] = 0; arg0[8] = 0; arg0[9] = 0;
+    for (;;) {
+        off = *(s16 *)p * 4;
+        type = *(u8 *)(p + off + 4);
+        switch (type) {
+        case 0: goto done;
+        case 0x2A: arg0[0] = *(s16 *)(p + off + 6); break;
+        case 0x2B: arg0[1] = *(s16 *)(p + off + 6); break;
+        case 0x2C: arg0[2] = *(s16 *)(p + off + 6); break;
+        case 0x2D: arg0[3] = *(s16 *)(p + off + 6); break;
+        case 0x2E: arg0[4] = *(s16 *)(p + off + 6); break;
+        case 0x2F: arg0[5] = *(s16 *)(p + off + 6); break;
+        case 0x30: arg0[6] = *(s16 *)(p + off + 6); break;
+        case 0x31: arg0[7] = *(s16 *)(p + off + 6); break;
+        case 0x32: arg0[9] = *(s16 *)(p + off + 6); break;
+        case 0x33: arg0[8] = *(s16 *)(p + off + 6); break;
+        }
+        *(s16 *)p = *(s16 *)p + 1;
+    }
+done:
+    *(s16 *)p = saved;
+}
+#pragma global_optimizer reset
 void Script_RegisterWinCondCommands(void) {
     /* Register chapter win/lose condition script command handlers. */
     void Script_RegisterCommand(void *, void *, s32);
