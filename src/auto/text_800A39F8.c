@@ -588,6 +588,48 @@ void fn_800A46E0(void) {
     lbl_803123A0[0xA5] = 1;
 }
 
+s32 fn_800A46F4(s32 arg0) {
+    s32 fn_8020CC28(void *, s32, s32, s32, s32);
+    extern u8 lbl_803123A0[];
+    u32 temp_r4;
+    s32 temp_r6_2;
+    u32 var_r29;
+    u32 var_r28;
+    u8 *temp_r6;
+
+    if (((s32) M2C_FIELD(lbl_803123A0, s32 *, 0xA0) != 0) && ((u8) M2C_FIELD(lbl_803123A0, u8 *, 0xA4) == 0)) {
+        var_r28 = 0xAU;
+        if ((arg0 == 0) && ((u32) M2C_FIELD(lbl_803123A0, u32 *, 0x50) < 0xAU)) {
+            var_r28 = M2C_FIELD(lbl_803123A0, u32 *, 0x50);
+        }
+        for(var_r29 = 0; var_r29 < var_r28; var_r29++) {
+        if (fn_8020CC28(lbl_803123A0, M2C_FIELD((lbl_803123A0 + (M2C_FIELD(lbl_803123A0, s32 *, 0xB8) * 0xC)), s32 *, 0xD4), M2C_FIELD(lbl_803123A0, s32 *, 0xBC), M2C_FIELD(lbl_803123A0, s32 *, 0xA8), 2) < 0) {
+            M2C_FIELD(lbl_803123A0, s32 *, 0xAC) = 1;
+            return 0;
+        }
+        M2C_FIELD(lbl_803123A0, s32 *, 0xA8) = (s32) (M2C_FIELD(lbl_803123A0, s32 *, 0xA8) + M2C_FIELD(lbl_803123A0, s32 *, 0xBC));
+        temp_r6 = lbl_803123A0 + (M2C_FIELD(lbl_803123A0, s32 *, 0xB8) * 0xC);
+        M2C_FIELD(lbl_803123A0, s32 *, 0xBC) = (s32) *M2C_FIELD(temp_r6, s32 **, 0xD4);
+        M2C_FIELD(temp_r6, s32 *, 0xDC) = 1;
+        M2C_FIELD((lbl_803123A0 + (M2C_FIELD(lbl_803123A0, s32 *, 0xB8) * 0xC)), u32 *, 0xD8) = (u32) M2C_FIELD(lbl_803123A0, u32 *, 0xC0);
+        temp_r6_2 = M2C_FIELD(lbl_803123A0, s32 *, 0xB8) + 1;
+        temp_r4 = M2C_FIELD(lbl_803123A0, u32 *, 0xC0) + 1;
+        
+        M2C_FIELD(lbl_803123A0, u32 *, 0xC0) = temp_r4;
+        M2C_FIELD(lbl_803123A0, s32 *, 0xB8) = (10 <= temp_r6_2 ? 0 : temp_r6_2);
+        if ((temp_r4 > (u32) (M2C_FIELD(lbl_803123A0, u32 *, 0x50) - 1)) && ((u8) M2C_FIELD(lbl_803123A0, u8 *, 0xA6) == 1)) {
+            M2C_FIELD(lbl_803123A0, u32 *, 0xC0) = 0U;
+            M2C_FIELD(lbl_803123A0, s32 *, 0xA8) = (s32) M2C_FIELD(lbl_803123A0, s32 *, 0x64);
+            M2C_FIELD(lbl_803123A0, s32 *, 0xBC) = (s32) M2C_FIELD(lbl_803123A0, s32 *, 0x54);
+        }
+        }
+        M2C_FIELD(lbl_803123A0, u8 *, 0xA6) = (u8)arg0;
+        M2C_FIELD(lbl_803123A0, u8 *, 0xA4) = 1;
+        return 1;
+    }
+    return 0;
+}
+
 void fn_800A4878(s32 result) {
 extern u8 lbl_803123A0[];
 s32 fn_8020CB38(void *,void *,s32,s32,void (*)(s32),s32);
@@ -2165,43 +2207,47 @@ cleanup:
 #pragma use_lmw_stmw reset
 
 void fn_800A80F0(void *arg0) {
-    M2C_UNK Prim2D_SetTex(M2C_UNK *, M2C_UNK);
-    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, u16);
-    u16 GXGetTexObjWidth(M2C_UNK *);
-    u16 GXGetTexObjHeight(M2C_UNK *);
-    f64 fn_802380D0(f32, f32);
+    M2C_UNK Prim2D_SetTex(void *, M2C_UNK);
+    M2C_UNK Ui_LoadAtlasTex(s32, void *, u16);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
+    f64 fn_802380D0(f32);
+    void Prim2D_SetRect(f32,f32,f32,f32);
+    void Prim2D_SetPrimParam(f32);
+    void Prim2D_SetColor(s32,s32,s32,s32);
     extern f32 lbl_80369B40;
     extern f32 lbl_80369B44;
     extern f32 lbl_80369B48;
     extern f32 lbl_80369B4C;
     extern f32 lbl_80369B50;
     extern f32 lbl_80369B54;
-    u16 sp2A;
-    u16 sp28;
-    M2C_UNK sp8;
+    struct { u32 tex[8]; u16 width,height; } st;
+    f32 rate;
     f32 temp_f0;
     f32 temp_f1;
     f32 temp_f31;
     s32 temp_r3;
     u32 temp_r6;
 
-    temp_f31 = (lbl_80369B44 * (f32) fn_802380D0((lbl_80369B40 / M2C_FIELD(arg0, f32 *, 0x3C)) * M2C_FIELD(arg0, f32 *, 0x40), lbl_80369B40)) + lbl_80369B44;
+    rate = lbl_80369B40 / M2C_FIELD(arg0, f32 *, 0x3C);
+    temp_f31 = (f32) fn_802380D0(rate * M2C_FIELD(arg0, f32 *, 0x40));
+    temp_f31 = lbl_80369B44 * temp_f31 + lbl_80369B44;
     M2C_FIELD(arg0, f32 *, 0x40) = (f32) (M2C_FIELD(arg0, f32 *, 0x40) + lbl_80369B48);
     temp_f0 = M2C_FIELD(arg0, f32 *, 0x40);
     temp_f1 = M2C_FIELD(arg0, f32 *, 0x3C);
     if (temp_f0 > temp_f1) {
         M2C_FIELD(arg0, f32 *, 0x40) = (f32) (temp_f0 - temp_f1);
     }
-    Ui_LoadAtlasTex(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30), &sp8, (u16) M2C_FIELD(arg0, s32 *, 0x44));
-    sp28 = GXGetTexObjWidth(&sp8);
-    sp2A = GXGetTexObjHeight(&sp8);
+    Ui_LoadAtlasTex(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30), st.tex, (u16) M2C_FIELD(arg0, s32 *, 0x44));
+    st.width = GXGetTexObjWidth(st.tex);
+    st.height = GXGetTexObjHeight(st.tex);
     Prim2D_Begin();
-    Prim2D_SetTex(&sp8, 0x20);
+    Prim2D_SetTex(st.tex, 0x20);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     temp_r6 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u32 *, 0x34);
-    temp_r3 = (s32) ((lbl_80369B4C + M2C_FIELD(arg0, f32 *, 0x38)) - (f32) ((s32) ((temp_r6 >> 0x1FU) + temp_r6) >> 1)) & 0x1FF;
-    Prim2D_SetRect(temp_r3, temp_r6, M2C_FIELD(arg0, f32 *, 0x34), (f32) (temp_r3 - 0x20), (f32) sp28, (f32) sp2A);
+    temp_r3 = (s32) ((lbl_80369B4C + M2C_FIELD(arg0, f32 *, 0x38)) - (f32)((s32)temp_r6 / 2)) & 0x1FF;
+    Prim2D_SetRect( M2C_FIELD(arg0, f32 *, 0x34), (f32) (temp_r3 - 0x20), (f32) st.width, (f32) st.height);
     Prim2D_SetColor(0xC0, 0xC0, 0xFF, (s32) (lbl_80369B50 * temp_f31));
     Prim2D_SetPrimParam(lbl_80369B54);
     Prim2D_EndPrim();
