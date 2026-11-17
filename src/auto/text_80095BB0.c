@@ -215,44 +215,29 @@ u32 Event_GetCmdFlagRes(s32 flag) {
     return res;
 }
 
-s32 fn_80096264(u8 arg0) {
-    u32 r31;
-    s32 r0;
-
-    if (arg0 >= 0xFB) {
-        r31 = 0xFB;
-    } else if (arg0 >= 0xB5) {
-        r31 = 0xB5;
-    } else if (arg0 >= 0x79) {
-        r31 = 0x79;
-    } else if (arg0 >= 0x47) {
-        r31 = 0x47;
-    } else if (arg0 >= 0x1F) {
-        r31 = 0x1F;
-    } else if (arg0 >= 1) {
-        r31 = 1;
-    } else {
-        return 0;
-    }
-    
-    switch (r31) {                         /* irregular */
-    case 0x0:
-        return 0;
-    case 0xFB:
-        return 0xFB;
-    case 0x1:
-        return 0x1F;
-    case 0x1F:
-        return 0x47;
-    case 0x47:
-        return 0x79;
-    case 0x79:
-        return 0xB5;
-    case 0xB5:
-        return 0xFB;
-    default:
-        return 0;
-    }
+void fn_80096264(void) {
+extern void **lbl_80367500;
+extern u8 gBattle[];
+void *Item_GetFlagsPtr(void*);
+void *fn_80055204(void *, s32);
+void GActor_RequestRes(void *);
+void *item;
+u8 *unit=*lbl_80367500;
+s32 kind;
+if(!unit) item=0;
+else {item=unit+0x28C;if(!*(u32*)item) item=0;}
+if(item) {
+if(*(u64*)Item_GetFlagsPtr(item)&2ULL) {kind=1;goto done;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x800000000ULL) {kind=2;goto done;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x8000000000ULL) {kind=1;goto done;}
+if(*(s32*)(gBattle+0xCA8)>1) {
+if(*(u64*)Item_GetFlagsPtr(item)&0x40ULL) {kind=1;goto done;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x4000000000ULL) {kind=3;goto done;}
+}
+}
+kind=0;
+done:
+switch(kind) {case 1: case 2: case 3: GActor_RequestRes(fn_80055204(unit,0));break;}
 }
 
 #pragma use_lmw_stmw on
