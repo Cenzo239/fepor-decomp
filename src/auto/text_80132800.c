@@ -12487,6 +12487,76 @@ extern "C" void fn_801480D8(s16 arg0) {
         p = (Obj *)((u8 *)p + 0x30);
     } while (i < 4);
 }
+
+extern "C" void fn_801481CC(void *arg0, s16 arg1) {
+    void *Hash_Lookup(void *);
+    struct Entry {
+        void **names;
+        u8 pad4[4];
+        virtual u8 v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        u8 flags;
+        u8 pad_d[9];
+        u8 unk_16;
+        u8 pad_17[0x11];
+        u8 unk_28;
+        u8 unk_29;
+        u8 pad_2a[2];
+        s16 unk_2c;
+        s16 unk_2e;
+    };
+    extern Entry gFxChannels[];
+    extern f32 gMsPerFrame;
+
+    u8 active;
+    s32 i;
+    Entry *entry;
+    Entry *base;
+    void *h1;
+    s8 slot;
+    Entry *fx;
+    s32 temp;
+    s16 frames;
+
+    base = gFxChannels;
+    i = 0;
+    do {
+        active = 0;
+        entry = (Entry *)((u8 *)base + ((u8)i * 0x30));
+        if ((entry->flags & 1) && entry->v0() != 0) {
+            active = 1;
+        }
+        if (active != 0) {
+            h1 = Hash_Lookup(arg0);
+            if (h1 == Hash_Lookup(*entry->names)) {
+                slot = (s8)i;
+                goto found;
+            }
+        }
+        i += 1;
+    } while (i < 4);
+    slot = -1;
+found:
+    if (slot != -1) {
+        fx = (Entry *)((u8 *)gFxChannels + ((u8)slot * 0x30));
+        if (arg1 <= 0) {
+            fx->v2();
+        } else if (!(fx->flags & 8)) {
+            temp = (s32)((f32)arg1 / gMsPerFrame);
+            frames = (s16)temp;
+            if (frames <= 0) {
+                frames = 1;
+            }
+            fx->unk_28 = fx->unk_16;
+            fx->unk_29 = 0;
+            fx->unk_2e = frames;
+            fx->unk_2c = 0;
+            fx->flags = (u8)(fx->flags | 8);
+        }
+    }
+}
+
 #pragma cplusplus reset
 #pragma peephole reset
 
@@ -12646,6 +12716,75 @@ after_search:
     slot->unk_2c = 0;
     return arg0;
 }
+
+extern "C" s32 fn_80148618(void *arg0, void *arg1) {
+    struct Entry {
+        void **names;
+        u8 pad4[4];
+        virtual u8 v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        u8 flags;
+        u8 pad_d[9];
+        u8 unk_16;
+        u8 pad_17[0x11];
+        u8 unk_28;
+        u8 unk_29;
+        u8 pad_2a[2];
+        s16 unk_2c;
+        s16 unk_2e;
+    };
+    extern Entry gFxChannels[];
+    u32 Hash_Lookup(void *);
+    s32 Fx_StartSlot(u32, void *, s32, void *);
+
+    u8 active;
+    s32 i;
+    Entry *entry;
+    Entry *base;
+    u32 h1;
+    s8 slot;
+    s32 freeSlot;
+
+    base = gFxChannels;
+    i = 0;
+    do {
+        active = 0;
+        entry = (Entry *)((u8 *)base + ((u8)i * 0x30));
+        if ((entry->flags & 1) && entry->v0() != 0) {
+            active = 1;
+        }
+        if (active != 0) {
+            h1 = Hash_Lookup(arg0);
+            if (h1 == Hash_Lookup(*entry->names)) {
+                slot = (s8)i;
+                goto found;
+            }
+        }
+        i += 1;
+    } while (i < 4);
+    slot = -1;
+found:
+    if (slot != -1) {
+        return -1;
+    }
+    if (!(gFxChannels[0].flags & 1)) {
+        freeSlot = 0;
+    } else if (!(gFxChannels[1].flags & 1)) {
+        freeSlot = 1;
+    } else if (!(gFxChannels[2].flags & 1)) {
+        freeSlot = 2;
+    } else if (!(gFxChannels[3].flags & 1)) {
+        freeSlot = 3;
+    } else {
+        freeSlot = -1;
+    }
+    if ((s8)freeSlot == -1) {
+        return -1;
+    }
+    return Fx_StartSlot((u8)freeSlot, arg0, 0x64, arg1);
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
