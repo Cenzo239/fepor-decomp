@@ -1731,6 +1731,65 @@ s32 Sound_PlaySE(u16 soundId, u8 priority, u8 volParam, u8 paramA)
     }
     return idx;
 }
+
+void fn_800B22D8(void) {
+    u8 fn_8024B370(s32);
+    void fn_8024B3A0(s32);
+    void fn_8024B518(s32, u8, s32, u8);
+    extern u16 gSoundSys[];
+    extern s16 lbl_80366E38;
+    extern s16 lbl_80367808;
+    s16 delta;
+    s32 sum;
+    u8 *entry;
+    s32 i;
+    s32 j;
+
+    delta = lbl_80366E38;
+    sum = lbl_80367808 + delta;
+    lbl_80367808 = sum;
+    if (delta > 0) {
+        if ((s16)sum > 0x319C) {
+            lbl_80366E38 = -delta;
+            lbl_80367808 = 0x319C;
+        }
+    } else {
+        if ((s16)sum < -0x3200) {
+            lbl_80366E38 = -delta;
+            lbl_80367808 = -0x3200;
+        }
+    }
+
+    i = 0;
+    entry = *(u8 **)((u8 *)gSoundSys + 0xF0);
+    do {
+        if (*(u32 *)(entry + 8) != 0 && (u32)*(s32 *)entry + 0x10000 != 0xFFFFU) {
+            if (lbl_80367808 >= 0) {
+                j = 0;
+                do {
+                    fn_8024B518(*(s32 *)entry, (u8)j, 0x7F, (u8)(lbl_80367808 / 200));
+                    fn_8024B518(*(s32 *)entry, (u8)j, 0x7E, 0);
+                    j += 1;
+                } while (j < 0x10);
+            } else {
+                j = 0;
+                do {
+                    fn_8024B518(*(s32 *)entry, (u8)j, 0x7F, 0);
+                    fn_8024B518(*(s32 *)entry, (u8)j, 0x7E, (u8)(-lbl_80367808 / 200));
+                    j += 1;
+                } while (j < 0x10);
+            }
+            if (fn_8024B370(*(s32 *)entry) != 1) {
+                *(u16 *)(*(void **)(entry + 8)) |= 2;
+                fn_8024B3A0(*(s32 *)entry);
+                *(s32 *)entry = -1;
+            }
+        }
+        i += 1;
+        entry += 0x10;
+    } while (i < 8);
+}
+
 s32 fn_800B2494(s32 arg0)
 {
     s32 fn_8024B370(void *);
@@ -5507,9 +5566,10 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
     return 1;
 }
 
-void fn_800B9C14(void) {
-    f32 var = 1.0f;
-    fn_800B9CD4(var);
+s32 fn_800B9CD4(u32, s32, s32, s32, u32, f32);
+
+void fn_800B9C14(u32 name, s32 x, s32 y, s32 frames, u32 arg4) {
+    fn_800B9CD4(name, x, y, frames, arg4, 1.0f);
 }
 
 void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
@@ -7781,116 +7841,95 @@ void fn_800BDED8(void *arg0) {
     // This function is complete - no additional work needed
 }
 
+#pragma optimization_level 1
 void fn_800BE068(void *arg0) {
-    s32 i;
-    s32 *ptr;
-    u8 *byte_ptr;
+    s32 z;
+    s32 ctr;
+    s32 *p;
+    s32 n;
+    s32 *q;
+    s32 j;
+    s32 one;
 
-    *(u8*)((uintptr_t)arg0 + 0x300) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x301) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x302) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x303) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x304) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x305) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x306) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x307) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x308) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x309) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x30A) = 0;
-    *(u8*)((uintptr_t)arg0 + 0x30B) = 0;
+    z = 0;
+    ctr = 12;
+    *((u8 *)arg0 + 0x300) = z;
+    p = (s32 *)((u8 *)arg0 + 0x17C);
+    n = 0x5F;
+    *((u8 *)arg0 + 0x301) = z;
+    *((u8 *)arg0 + 0x302) = z;
+    *((u8 *)arg0 + 0x303) = z;
+    *((u8 *)arg0 + 0x304) = z;
+    *((u8 *)arg0 + 0x305) = z;
+    *((u8 *)arg0 + 0x306) = z;
+    *((u8 *)arg0 + 0x307) = z;
+    *((u8 *)arg0 + 0x308) = z;
+    *((u8 *)arg0 + 0x309) = z;
+    *((u8 *)arg0 + 0x30A) = z;
+    *((u8 *)arg0 + 0x30B) = z;
 
-    ptr = (s32*)((uintptr_t)arg0 + 0x17C);
-    for (i = 0xC; i > 0; i--) {
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x60) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5F) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5E) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5D) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5C) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5B) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x5A) = 0;
-        }
-
-        ptr--;
-        if (*ptr != 0) {
-            *ptr = 0;
-            *(ptr + 0x59) = 0;
-        }
-    }
-
-    byte_ptr = (u8*)arg0;
-
-    i = 0;
     do {
-        s32 temp_r5 = i << 3;
-        s32 *ptr = (s32*)(byte_ptr + temp_r5);
-        
-        if (*ptr != 0) {
-            u32 byte_idx = temp_r5 >> 3;
-            u8 bit = temp_r5 & 7;
-            u8* target_byte = (u8*)((uintptr_t)arg0 + 0x300 + byte_idx);
-            *target_byte &= ~((1 << bit));
+        if ((u32)p[0] != 0) {
+            p[0] = z;
+            p[0x60] = z;
+            if ((u32)p[-1] != 0) {
+                p[-1] = z;
+                p[0x5F] = z;
+                if ((u32)p[-2] != 0) {
+                    p[-2] = z;
+                    p[0x5E] = z;
+                    if ((u32)p[-3] != 0) {
+                        p[-3] = z;
+                        p[0x5D] = z;
+                        if ((u32)p[-4] != 0) {
+                            p[-4] = z;
+                            p[0x5C] = z;
+                            if ((u32)p[-5] != 0) {
+                                p[-5] = z;
+                                p[0x5B] = z;
+                                if ((u32)p[-6] != 0) {
+                                    p[-6] = z;
+                                    p[0x5A] = z;
+                                    if ((u32)p[-7] != 0) {
+                                        p[-7] = z;
+                                        n -= 7;
+                                        p[0x59] = z;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-        
-        ptr++;
-        if (*ptr != 0) {
-            u32 byte_idx = (temp_r5 + 4) >> 3;
-            u8 bit = (temp_r5 + 4) & 7;
-            u8* target_byte = (u8*)((uintptr_t)arg0 + 0x300 + byte_idx);
-            *target_byte &= ~((1 << bit));
-        }
-        
-        ptr++;
-        if (*ptr != 0) {
-            u32 byte_idx = (temp_r5 + 8) >> 3;
-            u8 bit = (temp_r5 + 8) & 7;
-            u8* target_byte = (u8*)((uintptr_t)arg0 + 0x300 + byte_idx);
-            *target_byte &= ~((1 << bit));
-        }
-        
-        ptr++;
-        if (*ptr != 0) {
-            u32 byte_idx = (temp_r5 + 12) >> 3;
-            u8 bit = (temp_r5 + 12) & 7;
-            u8* target_byte = (u8*)((uintptr_t)arg0 + 0x300 + byte_idx);
-            *target_byte &= ~((1 << bit));
-        }
+        p -= 8;
+    } while (--ctr);
 
-        i++;
-    } while (i < 0x18);
+    q = (s32 *)arg0;
+    j = 0;
+    one = 1;
+    ctr = 24;
+    do {
+        if ((u32)q[0] == 0) {
+            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+        }
+        j += 1;
+        if ((u32)q[1] == 0) {
+            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+        }
+        j += 1;
+        if ((u32)q[2] == 0) {
+            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+        }
+        j += 1;
+        if ((u32)q[3] == 0) {
+            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+        }
+        q += 4;
+        j += 1;
+    } while (--ctr);
 }
-
+#pragma optimization_level reset
 void EventFlag_Reset(s32 *flags) {
     /* Clear all 0x60 event-flag name/hash slots and the 12-byte occupancy bitset at +0x300. */
     s32 *p;
