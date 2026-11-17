@@ -8615,7 +8615,7 @@ void fn_80141040(void *self) {
     void Ui_ClearPanelChildrenB(void *);
     void *child;
     void *end;
-    void *parent;
+    u8 *parent;
     void *node;
     void *found;
     u32 ret;
@@ -8627,7 +8627,7 @@ void fn_80141040(void *self) {
     };
 #pragma cplusplus reset
 
-    parent = *(void **)((u8 *)self + 0x18);
+    parent = *(u8 **)((u8 *)self + 0x18);
 
     if (*(u32 *)((u8 *)self + 0x34) != 0) {
         child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
@@ -8651,9 +8651,8 @@ void fn_80141040(void *self) {
             child = NULL;
         }
         if (child != NULL) {
-            end = fn_80140B04((u8 *)parent + 0x34);
-            node = fn_80140B04((u8 *)parent + 0x34);
-            node = ((void **)node)[1];
+            end = fn_80140B04(parent + 0x34);
+            node = ((void **)fn_80140B04(parent + 0x34))[1];
             goto check;
             for (;;) {
                 node = ((void **)node)[1];
@@ -8665,9 +8664,9 @@ void fn_80141040(void *self) {
                 }
                 break;
             }
-            if (node != (u8 *)parent + 0x38) {
+            if (node != parent + 0x38) {
                 found = node;
-                List_Erase(&ret, (u8 *)parent + 0x34, &found);
+                List_Erase(&ret, parent + 0x34, &found);
                 if (child != NULL) {
                     if (--*(s32 *)((u8 *)child + 4) == 0) {
                         if (child != NULL) {
