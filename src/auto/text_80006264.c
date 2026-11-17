@@ -253,29 +253,27 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
 #pragma optimization_level 3
 void fn_80006754(void)
 {
-    extern u32 lbl_80367118;
+    extern u32 gFrameCount;
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
     extern u32 lbl_8036712C;
-
     extern u64 OSGetTime(void);
 
-    u32 count;
-    u32 high;
-    u32 low;
+    s32 count;
+    s32 high;
+    s32 low;
     u64 time;
 
-    count = lbl_80367118;
+    count = gFrameCount;
     high = lbl_80367128;
     low = lbl_8036712C;
 
-    lbl_80367118 = count + 1;
+    gFrameCount = count + 1;
     lbl_80367124 = low;
     lbl_80367120 = high;
 
     time = OSGetTime();
-
     lbl_8036712C = (u32)time;
     lbl_80367128 = (u32)(time >> 32);
 }
@@ -323,6 +321,7 @@ void Math_Ease(s32 arg0, void *arg1) {
     }
 }
 
+#pragma optimization_level 3
 s32 fn_80006AC0(u8 *arg0) {
     u32 t;
     u32 b1;
@@ -335,8 +334,7 @@ s32 fn_80006AC0(u8 *arg0) {
     t = ((t << 8) & 0xFF00) + arg0[1];
     return t + ((b1 << 16) & 0xFF0000);
 }
-
-#pragma opt_unroll off
+#pragma optimization_level reset
 s32 fn_80006AF4(s32 *arg0) { s32 sum=0; s32 n=0; --arg0; do { sum+=*++arg0; } while (++n !=28); return sum; }
 #pragma opt_unroll reset
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
@@ -623,22 +621,12 @@ void Prim2D_SetText(u8 *arg0) {
 
 void fn_800071D8(u32 arg0, f32 arg1)
 {
-    extern f32 lbl_80368B90;
-    extern void *lbl_80367140;
-
-    u32 flag;
-    int value;
-    void *object;
-
-    flag = (arg0 & 0xFF) != 0;
-    value = (int)(lbl_80368B90 * arg1);
-    object = *(void **)((u8 *)*(void **)lbl_80367140 + 0xC);
-    object = *(void **)((u8 *)object + 4);
-
-    value = (s16)value;
-    value &= -(int)flag;
-
-    *(s16 *)((u8 *)object + 0x26) = value;
+    extern void *gPrim2D;
+    s16 value = (s16)(256.0f * arg1);
+    u8 disabled = (u8)arg0 == 0;
+    u8 *object = *(u8 **)((u8 *)gPrim2D + 12);
+    object = *(u8 **)(object + 4);
+    *(s16 *)(object + 0x26) = disabled ? 0 : value;
 }
 
 void Prim2D_SetTextScale(u32 arg0, f32 arg1)
