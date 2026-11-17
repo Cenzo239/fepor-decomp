@@ -5581,6 +5581,64 @@ void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
  fn_800B9CD4(arg0,(s32)x,(s32)y,arg4,arg5,scale);
 }
 
+s32 fn_800B9CD4(u32 name, s32 x, s32 y, s32 frames, u32 arg4, f32 scale) {
+    void *Sound_FindByName(u32);
+    void *ScriptObj_FindByName(u32);
+    s32 Str_NCmp(void *, void *, s32);
+    s32 fn_800C0658(void);
+    void *Process_Create(void *, s32);
+    extern u8 lbl_8026ECB8[];
+    extern u8 lbl_8028D1B0[];
+    void *obj;
+    f32 fx;
+    f32 fy;
+    f32 f29;
+    f32 f28;
+
+    if ((name < 0x80000000U) || (name >= 0x81800000U)) {
+        return 0;
+    }
+
+    if (Str_NCmp((void *)name, lbl_8026ECB8 + 0xA47, 8) != 0) {
+        obj = Sound_FindByName(name);
+        if (obj == NULL) {
+            return 0;
+        }
+        fx = *(f32 *)((u8 *)obj + 0x40);
+        fy = *(f32 *)((u8 *)obj + 0x44);
+        f29 = *(f32 *)((u8 *)obj + 0x54);
+        f28 = *(f32 *)((u8 *)obj + 0x58);
+    } else {
+        obj = ScriptObj_FindByName(name);
+        if (obj == NULL) {
+            return 0;
+        }
+        f28 = *(f32 *)((u8 *)obj + 0x1C);
+        f29 = f28;
+        fx = (f32)*(s16 *)((u8 *)obj + 0x18);
+        fy = (f32)*(s16 *)((u8 *)obj + 0x1A);
+    }
+
+    if (frames <= 0) {
+        frames = 1;
+    }
+
+    obj = Process_Create(lbl_8028D1B0, fn_800C0658());
+    *(f32 *)((u8 *)obj + 0x3C) = fx;
+    *(f32 *)((u8 *)obj + 0x48) = (f32)x;
+    *(f32 *)((u8 *)obj + 0x40) = fy;
+    *(f32 *)((u8 *)obj + 0x4C) = (f32)y;
+    *(f32 *)((u8 *)obj + 0x44) = f29;
+    *(f32 *)((u8 *)obj + 0x50) = scale;
+    *(f32 *)((u8 *)obj + 0x30) = f28;
+    *(f32 *)((u8 *)obj + 0x34) = scale;
+    *(s32 *)((u8 *)obj + 0x60) = 0;
+    *(s32 *)((u8 *)obj + 0x64) = frames;
+    *(u32 *)((u8 *)obj + 0x54) = name;
+    *(u32 *)((u8 *)obj + 0x68) = arg4;
+    return 1;
+}
+
 s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
 {
     return fn_80010710(arg0);
@@ -7843,15 +7901,14 @@ void fn_800BDED8(void *arg0) {
 #pragma optimization_level 1
 void fn_800BE068(void *arg0) {
     s32 z;
-    s32 ctr;
     s32 *p;
     s32 n;
     s32 *q;
     s32 j;
     s32 one;
+    s32 i;
 
     z = 0;
-    ctr = 12;
     *((u8 *)arg0 + 0x300) = z;
     p = (s32 *)((u8 *)arg0 + 0x17C);
     n = 0x5F;
@@ -7867,33 +7924,33 @@ void fn_800BE068(void *arg0) {
     *((u8 *)arg0 + 0x30A) = z;
     *((u8 *)arg0 + 0x30B) = z;
 
-    do {
-        if ((u32)p[0] != 0) {
-            p[0] = z;
-            p[0x60] = z;
-            if ((u32)p[-1] != 0) {
-                p[-1] = z;
-                p[0x5F] = z;
-                if ((u32)p[-2] != 0) {
-                    p[-2] = z;
-                    p[0x5E] = z;
-                    if ((u32)p[-3] != 0) {
-                        p[-3] = z;
-                        p[0x5D] = z;
-                        if ((u32)p[-4] != 0) {
-                            p[-4] = z;
-                            p[0x5C] = z;
-                            if ((u32)p[-5] != 0) {
-                                p[-5] = z;
-                                p[0x5B] = z;
-                                if ((u32)p[-6] != 0) {
-                                    p[-6] = z;
-                                    p[0x5A] = z;
-                                    if ((u32)p[-7] != 0) {
-                                        p[-7] = z;
-                                        n -= 7;
-                                        p[0x59] = z;
-                                    }
+    i = 12;
+loop1:
+    if ((u32)p[0] != 0) {
+        p[0] = z;
+        p[0x60] = z;
+        if ((u32)p[-1] != 0) {
+            p[-1] = z;
+            p[0x5F] = z;
+            if ((u32)p[-2] != 0) {
+                p[-2] = z;
+                p[0x5E] = z;
+                if ((u32)p[-3] != 0) {
+                    p[-3] = z;
+                    p[0x5D] = z;
+                    if ((u32)p[-4] != 0) {
+                        p[-4] = z;
+                        p[0x5C] = z;
+                        if ((u32)p[-5] != 0) {
+                            p[-5] = z;
+                            p[0x5B] = z;
+                            if ((u32)p[-6] != 0) {
+                                p[-6] = z;
+                                p[0x5A] = z;
+                                if ((u32)p[-7] != 0) {
+                                    p[-7] = z;
+                                    n -= 7;
+                                    p[0x59] = z;
                                 }
                             }
                         }
@@ -7901,32 +7958,37 @@ void fn_800BE068(void *arg0) {
                 }
             }
         }
-        p -= 8;
-    } while (--ctr);
+    }
+    p -= 8;
+    if (--i != 0) {
+        goto loop1;
+    }
 
     q = (s32 *)arg0;
     j = 0;
     one = 1;
-    ctr = 24;
-    do {
-        if ((u32)q[0] == 0) {
-            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-        }
-        j += 1;
-        if ((u32)q[1] == 0) {
-            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-        }
-        j += 1;
-        if ((u32)q[2] == 0) {
-            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-        }
-        j += 1;
-        if ((u32)q[3] == 0) {
-            ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-        }
-        q += 4;
-        j += 1;
-    } while (--ctr);
+    i = 24;
+loop2:
+    if ((u32)q[0] == 0) {
+        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+    }
+    j += 1;
+    if ((u32)q[1] == 0) {
+        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+    }
+    j += 1;
+    if ((u32)q[2] == 0) {
+        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+    }
+    j += 1;
+    if ((u32)q[3] == 0) {
+        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
+    }
+    q += 4;
+    j += 1;
+    if (--i != 0) {
+        goto loop2;
+    }
 }
 #pragma optimization_level reset
 void EventFlag_Reset(s32 *flags) {
