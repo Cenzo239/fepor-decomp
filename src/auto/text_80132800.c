@@ -26,7 +26,6 @@ extern u16 gSystemSave[36]; // 72 bytes
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
 extern f64 lbl_8036A720;
-f64 lbl_8036A700 = 4503601774854144.0;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
