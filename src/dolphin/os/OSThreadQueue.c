@@ -171,6 +171,58 @@ __OSReschedule();
 OSRestoreInterrupts(enabled);
 }
 
+void fn_8020A824(void *arg0) {
+typedef struct Thread Thread;
+typedef struct Queue {Thread *head,*tail;} Queue;
+struct Thread {u8 pad[0x2C8]; u16 state,attr; s32 suspend,priority,basePriority; void *value; Queue *queue; Thread *next,*prev; Queue join; void *mutex; u8 pad2[8]; Thread *activeNext,*activePrev;};
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void OSClearContext(void*);
+void fn_8020A060(void*);
+s32 fn_8020A0C8(void*);
+void *fn_8020A104(void*,s32);
+void fn_802086A0(void*);
+void fn_8020AEC4(void*);
+void SelectThread_8020A2C4(s32);
+extern s32 RunQueueHint_8036851C;
+s32 enabled;
+Thread *thread=arg0;
+Thread *owner,*next,*prev;
+s32 priority;
+enabled=OSDisableInterrupts();
+switch(thread->state) {
+case 1: if(thread->suspend<=0) fn_8020A060(thread); break;
+case 2: RunQueueHint_8036851C=1; break;
+case 4:
+next=thread->next; prev=thread->prev;
+if(!next) thread->queue->tail=prev; else next->prev=prev;
+if(!prev) thread->queue->head=next; else prev->next=next;
+thread->queue=0;
+if(thread->suspend<=0 && thread->mutex) {
+owner=*(Thread**)((u8*)thread->mutex+8);
+do {
+if(owner->suspend>0) break;
+priority=fn_8020A0C8(owner);
+if(owner->priority==priority) break;
+owner=fn_8020A104(owner,priority);
+} while(owner);
+}
+break;
+default: OSRestoreInterrupts(enabled); return;
+}
+OSClearContext(thread);
+if(thread->attr&1) {
+next=thread->activeNext; prev=thread->activePrev;
+if(!next) *(Thread**)0x800000E0=prev; else next->activePrev=prev;
+if(!prev) *(Thread**)0x800000DC=next; else prev->activeNext=next;
+thread->state=0;
+} else thread->state=8;
+fn_802086A0(thread);
+fn_8020AEC4(&thread->join);
+if(RunQueueHint_8036851C) SelectThread_8020A2C4(0);
+OSRestoreInterrupts(enabled);
+}
+
 #pragma use_lmw_stmw on
 s32 fn_8020A9E0(void *arg0)
 {
@@ -568,72 +620,22 @@ s64 __OSGetSystemTime(void) {
     return result;
 }
 #pragma peephole on
-void fn_8020B0F8(s32 arg0, void *arg1) {
-    extern u16 lbl_8029CEB8[];
-    extern u16 lbl_8029CE88[];
-    
-    s32 r5, r0, r11;
-    s32 temp_r0, temp_r0_2;
-    s32 r3, r7, r7_2, r8;
-    u32 r6;
-    
-    // Initial setup from assembly
-    r5 = arg0 / 365;
-    r11 = r5 * 0x16D;
-    
-loop_4:
-    if (r5 < 1) {
-        r0 = 0;
-    } else {
-        // More complex calculation
-        s32 temp1 = (r5 - 1) / 400;  // mulhw with appropriate constants
-        s32 temp2 = (r5 + 3) / 4;    // Need to handle this carefully
-        s32 temp3 = (r5 - 1) / 100;  // Division with the right constants
-        
-        // The actual implementation based on how the assembly looks
-        r0 = ((r5 - 1) / 400) + (((r5 + 3) / 4) - ((r5 - 1) / 100));
-    }
-    
-    temp_r0 = r11 + r0;
-    if (arg0 < temp_r0) {
-        r11 -= 0x16D;
-        r5 -= 1;
-        goto loop_4;
-    }
-    
-    M2C_FIELD(arg1, u32 *, 0x14) = r5; // Store year
-    
-    temp_r0_2 = arg0 - temp_r0;
-    M2C_FIELD(arg1, s32 *, 0x1C) = temp_r0_2; // Store day of year
-    
-    // Leap year calculation
-    r7 = 1;
-    r8 = 0;
-    
-    if ((r5 % 4) == 0) {
-        r8 = 1;
-    }
-    
-    if ((r8 == 0) && ((r5 % 100) != 0)) {
-        r7 = 0;
-    }
-
-    // Select correct table
-    if (r7 != 0) {
-        r6 = (u32) lbl_8029CEB8;
-    } else {
-        r6 = (u32) lbl_8029CE88;
-    }
-    
-    // Month and day calculation loop  
-    r3 = 0x30;
-    r7_2 = 0xC;
-    
-    do {
-        r3 -= 4;
-        r7_2 -= 1;
-    } while (temp_r0_2 < (s32) *(u16 *) (r6 + r3));
-    
-    M2C_FIELD(arg1, s32 *, 0x10) = r7_2; // Store month
-    M2C_FIELD(arg1, s32 *, 0xC) = (s32) ((temp_r0_2 - *(u16 *) (r6 + r3)) + 1); // Store day
+void fn_8020B0F8(s32 days, void *out) {
+#pragma optimization_level 0
+extern s32 lbl_8029CEB8[],lbl_8029CE88[];
+s32 year, start, leap, day, month;
+s32 *table;
+((s32*)out)[6]=(days+6)%7;
+year=days/365;
+while(days < (start=365*year+(year<1?0:(year+3)/4-(year-1)/100+(year-1)/400))) --year;
+((s32*)out)[5]=year;
+day=days-start;
+((s32*)out)[7]=day;
+leap=(year%4==0 && year%100!=0)||year%400==0;
+table=leap?lbl_8029CEB8:lbl_8029CE88;
+month=12;
+do {--month;} while(day<table[month]);
+((s32*)out)[4]=month;
+((s32*)out)[3]=day-table[month]+1;
+#pragma optimization_level reset
 }
