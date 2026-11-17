@@ -1060,6 +1060,94 @@ void FileCache_Release(u8 *entry) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+void FileCache_SpawnArchiveEntries(u8 *arg0) {
+    s64 OSGetTime(void);
+    void *fn_8005CEC0(void);
+    void strcpy(char *, char *);
+    char path[0x30];
+    u8 *entry;
+    u8 *list;
+    u8 *item;
+    s32 i;
+    char *var_r3;
+    char *var_r4;
+    char *var_r6;
+    unsigned ctr;
+    s32 var_r7;
+    u8 temp_r5;
+
+    if (*(u16 *)(arg0 + 0x30) & 0x800) {
+        list = *(u8 **)(arg0 + 0x38);
+        i = 0;
+        item = list + 8;
+        goto check;
+    body:
+        var_r3 = &path[0];
+        var_r4 = (char *)arg0;
+        var_r6 = var_r3;
+        *(u32 *)(item + 4) = *(u32 *)(item + 4) + (u32)list;
+        var_r7 = 0;
+        *(u32 *)(item + 8) = *(u32 *)(item + 8) + (u32)list;
+        for (ctr = 0x29; ctr > 0; ctr--) {
+            temp_r5 = *(u8 *)var_r4;
+            if ((s8)temp_r5 == 0) {
+                break;
+            }
+            if ((s8)temp_r5 == '\\' || (s8)temp_r5 == '/') {
+                var_r3 = &path[0] + 1;
+                var_r3 = var_r3 + var_r7;
+            }
+            *var_r6 = temp_r5;
+            var_r6 += 1;
+            var_r7 += 1;
+            var_r4 += 1;
+        }
+        strcpy(var_r3, *(char **)(item + 4));
+
+        {
+            u8 *temp_r3 = fn_8005CEC0();
+            entry = temp_r3;
+            *(u16 *)(temp_r3 + 0x32) = 0;
+            var_r6 = &path[0];
+            *(u16 *)(temp_r3 + 0x30) = 0x3000;
+            *(u32 *)(temp_r3 + 0x3C) = *(u32 *)(item + 0xC);
+            *(u32 *)(temp_r3 + 0x38) = *(u32 *)(item + 8);
+            temp_r3[0x29] = arg0[0x29];
+            if ((s8)path[0] == '/') {
+                var_r6 += 1;
+            }
+            var_r7 = 0;
+            *(u32 *)(entry + 0x2C) = 0;
+            var_r3 = (char *)entry;
+            for (ctr = 0x29; ctr > 0; ctr--) {
+                temp_r5 = *(u8 *)var_r6;
+                if ((s8)temp_r5 >= 'A' && (s8)temp_r5 <= 'Z') {
+                    *var_r6 = temp_r5 + 0x20;
+                }
+                *var_r3 = *var_r6;
+                temp_r5 = *(u8 *)var_r6;
+                if ((s8)temp_r5 == 0) {
+                    break;
+                }
+                var_r7 += 1;
+                var_r3 += 1;
+                *(u32 *)(entry + 0x2C) = (s8)temp_r5 + *(u32 *)(entry + 0x2C) * 0x25;
+                var_r6 += 1;
+            }
+            *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+        }
+        item += 0x10;
+        i += 1;
+    check:
+        if (i < *(u16 *)(list + 4)) {
+            goto body;
+        }
+    }
+}
+#pragma global_optimizer on
+
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     s64 OSGetTime(void);
     u32 fn_8005E594(s8, s32, char *);
@@ -2115,6 +2203,77 @@ root_walk:
         ((u8 *)node)[10] = spC[2];
     }
 }
+
+void fn_8005F12C(void *arg0, void *arg1) {
+    void PSMTXCopy(void *, void *);
+    void fn_8006D378(void *);
+    void fn_801505A8(void *, void *);
+
+    u8 *source;
+    u8 *dest;
+    u8 *node;
+    u8 *info;
+    s32 i;
+    s32 offset;
+
+    source = (u8 *)arg0;
+    dest = (u8 *)arg1;
+
+    if (source == NULL || dest == NULL) {
+        return;
+    }
+
+    node = source;
+
+    while (node != NULL) {
+        info = *(u8 **)(node + 0x40);
+        if (info != NULL) {
+            break;
+        }
+        node = *(u8 **)(node + 4);
+    }
+
+    if (node == NULL) {
+        info = NULL;
+    }
+
+    i = 0;
+    offset = 0;
+
+    while (i < *(s32 *)(info + 8)) {
+        PSMTXCopy(
+            *(u8 **)(source + 0x60) + offset,
+            *(u8 **)(dest + 0x60) + offset
+        );
+        offset += 0x30;
+        i++;
+    }
+
+    if (*(void **)(source + 0x64) != NULL) {
+        i = 0;
+        offset = 0;
+
+        while (i < *(s32 *)(info + 8)) {
+            PSMTXCopy(
+                *(u8 **)(source + 0x64) + offset,
+                *(u8 **)(dest + 0x64) + offset
+            );
+            offset += 0x30;
+            i++;
+        }
+    }
+
+    fn_8006D378(dest);
+
+    PSMTXCopy(source + 0x10, dest + 0x10);
+
+    if (*(void **)(source + 0x54) != NULL) {
+        fn_801505A8(source, dest);
+    }
+
+    *(f32 *)(dest + 0x58) = *(f32 *)(source + 0x58);
+}
+
 #pragma global_optimizer on
 s32 fn_8005F230(s32 arg0) {
     s32 var_r31;
@@ -2781,6 +2940,83 @@ void *GActor_Create(void) {
     fn_800618E4(node);
     *(u32 *)node |= 4;
     return node;
+}
+
+int fn_800618E4(void *arg0) {
+    void PSMTXIdentity(void *);
+    void fn_8006DA5C(s32 *, s32);
+    extern char lbl_8026B590[];
+    extern f32 lbl_803691C8;
+    extern f32 lbl_803691D8;
+    extern u32 lbl_803691C0;
+
+    u8 *self;
+    u32 color;
+    u32 zero;
+
+    self = (u8 *)arg0;
+
+    if (self == NULL) {
+        Game_Assert(
+            lbl_8026B590 + 0x28,
+            0x11,
+            lbl_8026B590 + 0xAB
+        );
+    }
+
+    zero = 0;
+
+    *(u32 *)(self + 0x00) = zero;
+    *(u32 *)(self + 0x04) = zero;
+
+    *(u32 *)(self + 0x40) = zero;
+    *(u32 *)(self + 0x44) = zero;
+    *(u32 *)(self + 0x48) = zero;
+    *(u32 *)(self + 0x4C) = zero;
+    *(u32 *)(self + 0x50) = zero;
+
+    *(u32 *)(self + 0x60) = zero;
+    *(u32 *)(self + 0x64) = zero;
+    *(u32 *)(self + 0x68) = zero;
+    *(u32 *)(self + 0x6C) = zero;
+
+    *(u32 *)(self + 0x54) = zero;
+    *(f32 *)(self + 0x58) = lbl_803691C8;
+    *(f32 *)(self + 0x5C) = lbl_803691D8;
+
+    *(u32 *)(self + 0x74) = zero;
+    *(f32 *)(self + 0x78) = lbl_803691D8;
+
+    self[0x08] = 0x80;
+    self[0x09] = 0x80;
+    self[0x0A] = 0x80;
+    self[0x0B] = 0xFF;
+
+    *(u16 *)(self + 0x7C) = 0xFFFF;
+    *(u16 *)(self + 0x7E) = 0xFFFF;
+    *(u16 *)(self + 0x80) = 0xFFFF;
+    *(u16 *)(self + 0x82) = 0xFFFF;
+
+    self[0x84] = 0xFF;
+    self[0x85] = 1;
+    self[0x86] = 0;
+    self[0x87] = 2;
+
+    color = lbl_803691C0;
+
+    self[0x88] = ((u8 *)&color)[0];
+    self[0x89] = ((u8 *)&color)[1];
+    self[0x8A] = ((u8 *)&color)[2];
+    self[0x8B] = ((u8 *)&color)[3];
+
+    *(u32 *)(self + 0x8C) = zero;
+    *(u32 *)(self + 0x90) = zero;
+    *(u32 *)(self + 0x94) = zero;
+
+    fn_8006DA5C((s32 *)(self + 0x0C), 7);
+    PSMTXIdentity(self + 0x10);
+
+    return (int)self;
 }
 
 void fn_800062CC(void *, void *, s32);
@@ -5095,6 +5331,96 @@ s32 Fog_GetColor(void) {
     return lbl_80366DD4;
 }
 
+void fn_800675E8(void *arg0) {
+    void GXSetScissor(u16, u16, u16, u16);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
+    void GXSetProjection(void *, s32);
+    void fn_800661A8(void *);
+
+    extern void *gCamera;
+
+    u8 *cam;
+    u8 *resetCam;
+    u32 flags;
+
+    cam = (u8 *)arg0;
+
+    if (cam == NULL) {
+        cam = (u8 *)gCamera;
+    }
+
+    if (cam == NULL) {
+        return;
+    }
+
+    gCamera = cam;
+
+    if (cam != NULL) {
+        GXSetScissor(
+            *(u16 *)(cam + 0x1C),
+            *(u16 *)(cam + 0x1E),
+            *(u16 *)(cam + 0x20),
+            *(u16 *)(cam + 0x22)
+        );
+
+        GXSetViewport(
+            *(f32 *)(cam + 4),
+            *(f32 *)(cam + 8),
+            *(f32 *)(cam + 0xC),
+            *(f32 *)(cam + 0x10),
+            *(f32 *)(cam + 0x14),
+            *(f32 *)(cam + 0x18)
+        );
+
+        flags = *(u16 *)cam & 1;
+        GXSetProjection(cam + 0x24, flags ^ 1);
+    }
+
+    fn_800661A8(cam);
+
+    resetCam = cam;
+
+    if (resetCam == NULL) {
+        resetCam = (u8 *)gCamera;
+    }
+
+    if (resetCam != NULL) {
+        *(u16 *)(resetCam + 0x118) = 0;
+
+        *(u32 *)(resetCam + 0x11C) = 0;
+        *(u32 *)(resetCam + 0x130) = 0;
+        *(u32 *)(resetCam + 0x144) = 0;
+        *(u32 *)(resetCam + 0x158) = 0;
+        *(u32 *)(resetCam + 0x16C) = 0;
+
+        *(u32 *)(resetCam + 0x120) = 0;
+        *(u32 *)(resetCam + 0x134) = 0;
+        *(u32 *)(resetCam + 0x148) = 0;
+        *(u32 *)(resetCam + 0x15C) = 0;
+        *(u32 *)(resetCam + 0x170) = 0;
+
+        *(u32 *)(resetCam + 0x124) = 0;
+        *(u32 *)(resetCam + 0x138) = 0;
+        *(u32 *)(resetCam + 0x14C) = 0;
+        *(u32 *)(resetCam + 0x160) = 0;
+        *(u32 *)(resetCam + 0x174) = 0;
+
+        *(u32 *)(resetCam + 0x128) = 0;
+        *(u32 *)(resetCam + 0x13C) = 0;
+        *(u32 *)(resetCam + 0x150) = 0;
+        *(u32 *)(resetCam + 0x164) = 0;
+        *(u32 *)(resetCam + 0x178) = 0;
+
+        *(u32 *)(resetCam + 0x12C) = 0;
+        *(u32 *)(resetCam + 0x140) = 0;
+        *(u32 *)(resetCam + 0x154) = 0;
+        *(u32 *)(resetCam + 0x168) = 0;
+        *(u32 *)(resetCam + 0x17C) = 0;
+    }
+
+    cam[3]++;
+}
+
 s32 fn_80067708(s32 arg0) {
     u16 *temp_r3;
     s32 temp_r4;
@@ -5118,6 +5444,79 @@ s32 fn_80067708(s32 arg0) {
     temp_r4 = r4_copy;
     
     return temp_r5 + (temp_r4 << 16) >> 16;
+}
+
+void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
+    extern void *gCamera;
+    extern u8 lbl_8026B768[];
+
+    u8 *cam;
+    u8 *entry;
+    u8 **head;
+    u8 *node;
+    u16 index;
+
+    cam = (u8 *)gCamera;
+
+    index = *(u16 *)(cam + 0x118);
+    *(u16 *)(cam + 0x118) = index + 1;
+
+    entry = *(u8 **)(cam + 0x114) + ((u16)index << 4);
+
+    if (*(u16 *)(cam + 0x118) > *(u16 *)(cam + 0x11A)) {
+        Game_Assert(
+            lbl_8026B768,
+            0x158,
+            lbl_8026B768 + 0xA
+        );
+    }
+
+    switch (arg0) {
+    case 0:
+        head = (u8 **)((u8 *)gCamera + 0x124);
+        break;
+
+    case 1:
+        head = (u8 **)((u8 *)gCamera + 0x138);
+        break;
+
+    case 2:
+        head = (u8 **)((u8 *)gCamera + 0x14C);
+        break;
+
+    case 3:
+        head = (u8 **)((u8 *)gCamera + 0x160);
+        break;
+
+    case 4:
+        head = (u8 **)((u8 *)gCamera + 0x174);
+        break;
+
+    default:
+        Game_Assert(
+            lbl_8026B768,
+            0x161,
+            lbl_8026B768 + 0x50
+        );
+        break;
+    }
+
+    node = *head;
+
+    if (node == NULL) {
+        *(u8 **)entry = node;
+        *head = entry;
+    } else {
+        while (*(u8 **)node != NULL) {
+            node = *(u8 **)node;
+        }
+
+        *(u8 **)node = entry;
+    }
+
+    *(u32 *)entry = 0;
+    *(void **)(entry + 8) = arg1;
+    *(void **)(entry + 0xC) = arg2;
 }
 
 s32 fn_80067DA4(s32 arg0, s32 arg1, void *arg2) {
@@ -7296,6 +7695,61 @@ s32 fn_8006EBA4(void *arg0, s32 arg1) {
     return *(s32 *)(base + (arg1 << 3) + 4) != 0;
 }
 
+void fn_8006EBC4(void *arg0, void *arg1, void *arg2, u32 arg3, s32 arg4) {
+    void fn_80222CA4(u32 *, u32, u32, u16);
+    void GXInitTexObjCI(void *, void *, u16, u16, s32, s32, s32, u8, u32);
+    void GXInitTexObjLOD(void *, s32, s32, f32, f32, f32, u8, u8, s32);
+
+    u8 *table;
+    u8 *entry;
+    u8 *texture;
+    u8 *palette;
+    s32 mipmap;
+
+    table = *(u8 **)((u8 *)arg0 + 8);
+    entry = table + (arg4 << 3);
+
+    texture = *(u8 **)entry;
+    palette = *(u8 **)(entry + 4);
+
+    if (texture[0x21] == texture[0x22]) {
+        mipmap = 0;
+    } else {
+        mipmap = 1;
+    }
+
+    fn_80222CA4(
+        (u32 *)arg2,
+        *(u32 *)(palette + 8),
+        *(u32 *)(palette + 4),
+        *(u16 *)palette
+    );
+
+    GXInitTexObjCI(
+        arg1,
+        *(void **)(texture + 8),
+        *(u16 *)(texture + 2),
+        *(u16 *)texture,
+        *(s32 *)(texture + 4),
+        *(s32 *)(texture + 0xC),
+        *(s32 *)(texture + 0x10),
+        (u8)mipmap,
+        arg3
+    );
+
+    GXInitTexObjLOD(
+        (u32 *)arg1,
+        *(s32 *)(texture + 0x14),
+        *(s32 *)(texture + 0x18),
+        (f32)texture[0x21],
+        (f32)texture[0x22],
+        *(f32 *)(texture + 0x1C),
+        0,
+        texture[0x20],
+        0
+    );
+}
+
 #pragma global_optimizer off
 void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
 {
@@ -7331,6 +7785,135 @@ void FileCache_ReleaseSlot(s32 *arg0)
 
 s32 fn_8006EDD8(void *arg0, s32 arg1) {
     return M2C_FIELD(arg0, s32 *, 8) + (arg1 * 8);
+}
+
+int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
+    u8 *file;
+    u8 *table;
+    u8 *record;
+    u32 offset;
+    u32 value;
+    u32 i;
+
+    file = (u8 *)fn_8005C82C(arg1, arg2);
+    *(u8 **)arg0 = file;
+
+    if (*(u32 *)file == 0x0020AF31U) {
+        return;
+    }
+
+    *(u32 *)file += 1;
+    *(u32 *)(file + 8) += (u32)file;
+
+    i = 0;
+
+    while ((i & 0xFFFF) < *(u32 *)(file + 4)) {
+        table = *(u8 **)(file + 8);
+        offset = (i & 0xFFFF) << 3;
+
+        value = *(u32 *)(table + offset);
+
+        if (value != 0) {
+            *(u32 *)(table + offset) = value + (u32)file;
+
+            table = *(u8 **)(file + 8);
+            record = *(u8 **)(table + offset);
+
+            if (record[0x23] == 0) {
+                *(u32 *)(record + 8) += (u32)file;
+
+                table = *(u8 **)(file + 8);
+                record = *(u8 **)(table + offset);
+                record[0x23] = 1;
+            }
+        }
+
+        table = *(u8 **)(file + 8);
+        offset += 4;
+        value = *(u32 *)(table + offset);
+
+        if (value != 0) {
+            *(u32 *)(table + offset) = value + (u32)file;
+
+            table = *(u8 **)(file + 8);
+            record = *(u8 **)(table + offset);
+
+            if (record[2] == 0) {
+                *(u32 *)(record + 8) += (u32)file;
+
+                table = *(u8 **)(file + 8);
+                record = *(u8 **)(table + offset);
+                record[2] = 1;
+            }
+        }
+
+        i++;
+    }
+}
+
+void fn_8006EEFC(void *arg0, void *arg1) {
+    u8 *file;
+    u8 *table;
+    u8 *record;
+    u32 offset;
+    u32 value;
+    u32 i;
+    u32 count;
+
+    file = ((u8 *(*)(s32))FileCache_Load)((s32)arg1);
+    *(u8 **)arg0 = file;
+
+    if (*(u32 *)file == 0x0020AF31U) {
+        return;
+    }
+
+    *(u32 *)file += 1;
+    *(u32 *)(file + 8) += (u32)file;
+
+    i = 0;
+
+    while (i < *(u32 *)(file + 4)) {
+        table = *(u8 **)(file + 8);
+        offset = (i & 0xFFFF) << 3;
+
+        value = *(u32 *)(table + offset);
+
+        if (value != 0) {
+            *(u32 *)(table + offset) = value + (u32)file;
+
+            table = *(u8 **)(file + 8);
+            record = *(u8 **)(table + offset);
+
+            if (record[0x23] == 0) {
+                *(u32 *)(record + 8) += (u32)file;
+
+                table = *(u8 **)(file + 8);
+                record = *(u8 **)(table + offset);
+                record[0x23] = 1;
+            }
+        }
+
+        table = *(u8 **)(file + 8);
+        offset += 4;
+        value = *(u32 *)(table + offset);
+
+        if (value != 0) {
+            *(u32 *)(table + offset) = value + (u32)file;
+
+            table = *(u8 **)(file + 8);
+            record = *(u8 **)(table + offset);
+
+            if (record[2] == 0) {
+                *(u32 *)(record + 8) += (u32)file;
+
+                table = *(u8 **)(file + 8);
+                record = *(u8 **)(table + offset);
+                record[2] = 1;
+            }
+        }
+
+        i++;
+    }
 }
 
 void fn_8006F00C(s8 arg0) {
@@ -7692,9 +8275,190 @@ s32 fn_800703D4(void) {
     return 0;
 }
 
+void fn_800703DC(void *arg0, void *arg1) {
+    extern u8 *gPadInput;
+    extern char lbl_8026BB84[];
+
+    void *GfxEnt_Get(u8);
+    void Ui_PlaySeCue(void *, s32);
+
+    u8 *self;
+    u8 *entity;
+    void *obj;
+    void **vtable;
+    u32 buttons;
+    s32 index;
+    s32 limit;
+
+    self = (u8 *)arg1;
+    buttons = *(u32 *)(gPadInput + 0xC);
+
+    self[0x63] = self[0x62];
+
+    index = (s8)self[0x62];
+
+    if (index != 0 && (buttons & 0x01000001) != 0) {
+        self[0x62] = index - 1;
+    }
+
+    index = (s8)self[0x62];
+    limit = (s8)self[0x60];
+
+    if (index != limit - 1 && (buttons & 0x02000002) != 0) {
+        self[0x62]++;
+    }
+
+    if ((s8)self[0x62] != (s8)self[0x63]) {
+        entity = (u8 *)GfxEnt_Get(
+            self[0x40 + (s8)self[0x63]]
+        );
+
+        obj = *(void **)(entity + 0x34);
+        vtable = *(void ***)obj;
+        ((void (*)(void *, void *, void *))vtable[0x11])(
+            obj, self, entity
+        );
+
+        entity = (u8 *)GfxEnt_Get(
+            self[0x40 + (s8)self[0x62]]
+        );
+
+        obj = *(void **)(entity + 0x34);
+        vtable = *(void ***)obj;
+        ((void (*)(void *, void *, void *))vtable[0x10])(
+            obj, self, entity
+        );
+
+        Ui_PlaySeCue(lbl_8026BB84 + 0x53, 0x64);
+    }
+}
+
 s32 fn_800704F0(s32 arg0, s32 arg1, s32 arg2)
 {
     return arg0 + arg1 + arg2;
+}
+
+void fn_80070678(void *arg0) {
+    void Ui_DrawMsgPanelBg(s32, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    s32 Text_MeasureWidth(void *, s32, f32);
+
+    extern f32 lbl_80369300;
+    extern f32 lbl_803692E0;
+    extern f32 lbl_8036930C;
+
+    u8 *self;
+    void **vtable;
+    void *text;
+    s32 width;
+    s32 textWidth;
+    s32 x;
+    f32 posX;
+
+    self = (u8 *)arg0;
+
+    vtable = *(void ***)(self + 4);
+    ((void (*)(void *))vtable[0x1F])(self);
+
+    Ui_DrawMsgPanelBg(0, 0);
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369300);
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+
+    vtable = *(void ***)(self + 4);
+    width = (s16)((s32 (*)(void *))vtable[0x14])(self);
+
+    vtable = *(void ***)(self + 4);
+    text = ((void *(*)(void *))vtable[2])(self);
+
+    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
+
+    x = (width - textWidth);
+    x = (x + ((u32)x >> 31)) >> 1;
+    posX = (f32)x;
+
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(posX, lbl_8036930C);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
+
+    vtable = *(void ***)(self + 4);
+    text = ((void *(*)(void *))vtable[2])(self);
+
+    Prim2D_SetText(text);
+    Prim2D_EndPrim();
+}
+
+void fn_80070798(void *arg0, void *arg1) {
+    void *GfxEnt_Get(u8);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    extern f32 lbl_803692E0;
+
+    u8 *self;
+    u8 *group;
+    u8 *entity;
+    void *obj;
+    void **vtable;
+    void *text;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 spacing;
+    s32 x;
+    s32 y;
+    s16 width;
+    s16 available;
+
+    self = (u8 *)arg0;
+    group = (u8 *)arg1;
+
+    *(s16 *)(self + 8) = 0;
+
+    for (i = 0; i < (s8)group[0x60]; i++) {
+        entity = (u8 *)GfxEnt_Get(group[i + 0x40]);
+
+        entity = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        obj = *(void **)(entity + 0x34);
+        vtable = *(void ***)obj;
+
+        text = ((void *(*)(void *, void *))vtable[6])(obj, entity);
+
+        width = (s16)Text_MeasureWidth(text, -1, lbl_803692E0);
+
+        if (width >= *(s16 *)(self + 8)) {
+            *(s16 *)(self + 8) = width;
+        }
+    }
+
+    obj = self;
+    vtable = *(void ***)(self + 4);
+    available = (s16)((s32 (*)(void *))vtable[0x14])(obj);
+
+    count = (s8)group[0x60];
+    spacing = (s16)(available / (count + 1));
+    x = spacing;
+
+    vtable = *(void ***)(self + 4);
+    y = ((s32 (*)(void *))vtable[0x13])(self);
+
+    for (j = 0; j < count; j++) {
+        entity = (u8 *)GfxEnt_Get(group[j + 0x40]);
+        *(s16 *)(entity + 0x30) = (s16)x;
+
+        entity = (u8 *)GfxEnt_Get(group[j + 0x40]);
+        *(s16 *)(entity + 0x32) = (s16)y;
+
+        x += spacing;
+    }
 }
 
 extern u16 lbl_80286860[];
@@ -7985,6 +8749,54 @@ void fn_80071E0C(void *arg0, void *arg1) {
         Prim2D_AddZ(lbl_80369328);
         Prim2D_PrepareTex();
     }
+}
+
+void fn_80071F5C(void *unused, void *win) {
+#pragma cplusplus on
+    void Prim2D_Begin(void);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_SetColorByte(s32);
+    f32 UiWin_GetFade(void *);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void fn_80009C20(f32,f32,f32,f32,f32,f32,f32,f32);
+    extern f32 lbl_803692E0, lbl_80369314, lbl_803692F8;
+    struct Model {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual f32 v25() = 0;
+    };
+    f32 scale = Math_Ease(5, lbl_80369314, lbl_803692E0, UiWin_GetFade(win), lbl_803692E0);
+    Prim2D_Begin();
+    fn_80009C20((f32)M2C_FIELD(win,s16 *,0x30), (f32)M2C_FIELD(win,s16 *,0x32),
+        M2C_FIELD(win,Model **,0x3C)->v25(), (f32)(M2C_FIELD(win,s16 *,0x34)/2),
+        (f32)(M2C_FIELD(win,s16 *,0x36)/2), scale, scale, lbl_80369314);
+    Prim2D_SetColorByte((s32)(lbl_803692F8 * UiWin_GetFade(win)));
+    Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 void fn_80072088(void *arg0, void *arg1) {
