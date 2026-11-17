@@ -1155,6 +1155,63 @@ DebugPrint(lbl_802700D8+0x13D);
 DebugPrint(lbl_802700D8+0x152,lbl_80367860,lbl_80367864);
 }
 
+int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
+HeapC55 *next, *prev, *head, *owner;
+s32 size;
+if((s32)block->size < 0) {
+block->size = -block->size;
+next = block->next; owner = heap->owner;
+if(next) next->prev = block->prev;
+next = block->prev;
+if(next) next->next = block->next; else owner = block->next;
+heap->owner = owner;
+prev = 0; head = heap->free; next = head;
+while(next) {prev = next; next = next->next;}
+while(prev) {if(prev <= block) break; next = prev; prev = prev->prev;}
+block->next = next; block->prev = prev;
+if(next) {
+next->prev = block;
+size = block->size;
+if((u8*)block + size == (u8*)next) {
+block->size = size + next->size;
+next = next->next; block->next = next;
+if(next) next->prev = block;
+}}
+if(prev) {
+prev->next = block; size = prev->size;
+if((u8*)prev + size == (u8*)block) {
+prev->size = size + block->size; prev->next = next;
+if(next) next->prev = prev;
+}} else head = block;
+heap->free = head;
+return;
+}
+next = block->next; owner = heap->owner;
+if(next) next->prev = block->prev;
+next = block->prev;
+if(next) next->next = block->next; else owner = block->next;
+heap->owner = owner;
+prev = 0; head = heap->free; next = head;
+while(next) {if(block <= next) break; prev = next; next = next->next;}
+block->next = next; block->prev = prev;
+if(next) {
+next->prev = block;
+size = block->size;
+if((u8*)block + size == (u8*)next) {
+block->size = size + next->size;
+next = next->next; block->next = next;
+if(next) next->prev = block;
+}}
+if(prev) {
+prev->next = block; size = prev->size;
+if((u8*)prev + size == (u8*)block) {
+prev->size = size + block->size; prev->next = next;
+if(next) next->prev = prev;
+}} else head = block;
+heap->free = head;
+return;
+}
+
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 void *fn_800C55B0(HeapC55 *self,s32 bytes){
@@ -8031,6 +8088,49 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     return;
 }
 
+#pragma optimization_level 3
+void fn_800D8B14(s32 self, char *arg1) {
+void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
+void fn_800C8F70(void *, s32); void fn_800D6FA4(void *, void *);
+void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
+void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
+void String_Copy(void *, void *); void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
+void *fn_800DC3B8(void *); void fn_8011CA3C(void *,void *,void *); void fn_8011C9A8(void *, s32);
+extern char lbl_802711B0[]; extern void *lbl_80367898; extern void *lbl_803678C0;
+char sp68[40];
+String sp5C,sp50,sp44,sp38,sp2C,sp20,sp14; u32 sp10,spC,sp8;
+void *f; s32 arg0; char *path; s8 made;
+void *t;
+arg0=self; made=0;
+f=Heap_Alloc(0x60);
+path=arg1;
+if(f){String_Init(&sp44,lbl_802711B0+0xFA,&sp10);made=1;f=Xml_ParseFile(f,path,&sp44);}
+if((s8)made)String_Destroy(&sp44,-1);
+sp5C.cap=0;sp50.cap=0;sp5C.size=0;sp5C.data=0;sp5C.cap=0;sp50.size=0;sp50.data=0;sp50.cap=0;
+fn_800C8F70(f,0);
+String_Init(&sp38,lbl_802711B0+0x124,&spC);
+fn_800D6FA4(lbl_80367898,&sp38);
+String_Destroy(&sp38,-1);
+String_Init(&sp2C,lbl_802711B0+0x129,&sp8);
+fn_800CA18C((void *)(arg0+0x34),M2C_FIELD(arg0,u8 **,0x3C)+M2C_FIELD(arg0,s32 *,0x38)*12,1,&sp2C);
+String_Destroy(&sp2C,-1);
+path=sp68;
+do{
+Xml_GetChildName(&sp20,f);String_Assign(&sp5C,&sp20,0,-1);String_Destroy(&sp20,-1);
+Xml_GetChildValue(sp68,f);String_AssignCStr(&sp50,path,strlen(path));
+String_Copy(&sp14,&sp5C);
+fn_800D6FA4(lbl_80367898,&sp14);
+String_Destroy(&sp14,-1);
+fn_800CA18C((void *)(arg0+0x34),M2C_FIELD(arg0,u8 **,0x3C)+M2C_FIELD(arg0,s32 *,0x38)*12,1,&sp50);
+}while(Xml_AdvanceChild(f));
+t=fn_800DC3B8(*(void **)((u8 *)lbl_80367898+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x424),t,lbl_803678C0);
+t=fn_800DC3B8(*(void **)((u8 *)lbl_80367898+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x428),t,lbl_803678C0);
+t=fn_800DC3B8(*(void **)((u8 *)lbl_80367898+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x42C),t,lbl_803678C0);
+fn_8011C9A8(*(void **)((u8 *)lbl_803678C0+0x424),1);
+fn_8011C9A8(*(void **)((u8 *)lbl_803678C0+0x428),1);
+Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
+}
+#pragma optimization_level reset
 void fn_800D8D94(void *arg0, void *arg1, void *arg2, s32 arg3)
 {
     void String_Copy(void *, void *);
@@ -12357,6 +12457,8 @@ extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *
     s32 Sort_GetKey(void *);
     s32 takeB_mem[2];
     s32 takeA_mem[2];
+    s32 copyB_mem[2];
+    s32 copyA_mem[2];
     while (first1 != last1 && first2 != last2) {
         s32 value = *first1;
         s32 key = Sort_GetKey((void *)*first2);
@@ -12372,25 +12474,23 @@ extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *
         ++(*out);
     }
     if (first1 == last1) {
-        SortIterator it = *out;
-        SortIterator *pit = &it;
+        *(SortIterator *)copyB_mem = *out;
         s32 *cur = first2;
         while (cur != last2) {
-            *(*pit) = *cur;
+            *(*(SortIterator *)copyB_mem) = *cur;
             cur++;
-            ++(*pit);
+            ((SortIterator *)copyB_mem)->ptr++;
         }
-        *result = *pit;
+        *result = *(SortIterator *)copyB_mem;
     } else {
-        SortIterator it = *out;
-        SortIterator *pit = &it;
+        *(SortIterator *)copyA_mem = *out;
         s32 *cur = first1;
         while (cur != last1) {
-            *(*pit) = *cur;
+            *(*(SortIterator *)copyA_mem) = *cur;
             cur++;
-            ++(*pit);
+            ((SortIterator *)copyA_mem)->ptr++;
         }
-        *result = *pit;
+        *result = *(SortIterator *)copyA_mem;
     }
 }
 #pragma cplusplus off
@@ -19440,7 +19540,7 @@ void fn_800EE4D0(void *arg0)
     extern f32 lbl_80369FA4;
     extern f32 lbl_80369FA8;
     extern f32 lbl_80369FAC;
-    extern void *fn_800F047C;
+    void fn_800F047C(void);
 
     f64 sin(f64);
     void DCFlushRange(void *, u32);
