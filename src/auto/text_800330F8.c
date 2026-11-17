@@ -2778,6 +2778,7 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
+    u8 *pb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
@@ -2788,7 +2789,8 @@ u8 Unit_GetDistance(void *a, void *b) {
         s8 xa;
         s8 xb;
         xa = *(s8 *)((u8 *)a + 0x19E);
-        xb = *(s8 *)((u8 *)b + 0x19E);
+        pb = (u8 *)b + 0x19E;
+        xb = *(s8 *)pb;
         dx = xa - xb;
     }
     if (dx < 0) {
@@ -5874,7 +5876,68 @@ s32 fn_8003DD7C(s32 arg0, s32 arg1) {
     return (temp_r31 <= (temp_r4 - 2));
 }
 
-#pragma use_lmw_stmw on
+#pragma dont_inline on
+void fn_8003DDF8(void *arg0, s8 *arg1, s8 *arg2) {
+    extern u8 gBattleMap[];
+    void Map_SelectRangeBuffer(void *, s32);
+    void fn_800227F8(void *, void *);
+    void fn_80022748(void *, s32);
+    void Map_FloodMoveRange(void *, u8, u8, s32, s32, s32);
+    s16 fn_8002134C(u8 *, s8, s8);
+    s8 *outY;
+    s8 *outX;
+    void *unit;
+    void *other;
+    u8 *layer;
+    u8 *map;
+    u8 *row;
+    u8 *mapHi;
+    s32 x, y;
+    s32 rowOff;
+    s16 cost;
+    u16 bestCost;
+
+    outY = arg2;
+    outX = arg1;
+    unit = arg0;
+    map = gBattleMap;
+    layer = map + 0xD;
+    other = *(void **)((u8 *)unit + 0x194);
+    layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = 0;
+    Map_SelectRangeBuffer(map, 5);
+    fn_800227F8(gBattleMap, *(void **)((u8 *)unit + 0x18C));
+    fn_80022748(gBattleMap, 0);
+    Map_FloodMoveRange(gBattleMap, *((u8 *)unit + 0x19E), *((u8 *)unit + 0x19F), 0x3E8, 0, 0);
+    fn_800227F8(gBattleMap, *(void **)((u8 *)other + 0x18C));
+    fn_80022748(gBattleMap, *(s32 *)((u8 *)other + 0x190));
+    *outX = -1;
+    map = gBattleMap;
+    bestCost = 0x7FFF;
+    *outY = -1;
+    mapHi = map + 0x10000;
+    y = (s8)map[9];
+    while (y <= (s8)map[0xB] - 1) {
+        rowOff = (s8)y << 6;
+        x = (s8)map[8];
+        row = map + rowOff;
+        while (x <= (s8)map[0xA] - 1) {
+            if ((s16)fn_8002134C(map, (s8)x, (s8)y) <= 0x7530) {
+                if (row[(s8)x + 0xD] == 0 && row[(s8)x + 0x100D] != 0x37) {
+                    cost = (*(s16 **)(mapHi + 0x4190))[(s8)x + rowOff];
+                    if (bestCost > (u16)cost) {
+                        *outX = (s8)x;
+                        bestCost = (u16)cost;
+                        *outY = (s8)y;
+                    }
+                }
+            }
+            x = x + 1;
+        }
+        y = y + 1;
+    }
+    layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = *((u8 *)unit + 0x198);
+}
+#pragma dont_inline reset
 void fn_8003DFB8(void *arg0) {
     void fn_800156A0(void *);
     void fn_80015718(void *, void *);
@@ -8090,6 +8153,89 @@ void fn_800432D8(void *arg0) {
     }
     fn_80067708(2, 3, fn_80043DEC, self);
 }
+
+void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6)
+{
+    extern void *lbl_803672A8;
+    extern u8 lbl_8026A660[];
+    extern u8 lbl_80285778[];
+    extern f32 lbl_80368F30;
+
+    void *Heap_Alloc(s32);
+    u32 GXGetTexBufferSize(u32, u32, u32, u32, u32);
+    void *fn_800C45B8(s32, void *, s32);
+    void DCInvalidateRange(void *, u32);
+    void fn_800432D8(void *);
+    void *Process_CreateChild(void *, void *);
+
+    u8 *work;
+    void *buffer;
+    u32 size;
+    f32 width;
+    f32 height;
+    f32 scale;
+    f32 limit;
+
+    work = (u8 *)Heap_Alloc(0x20);
+    lbl_803672A8 = work;
+
+    *(f32 *)(work + 0x00) = arg2;
+    *(f32 *)(work + 0x04) = arg3;
+    *(f32 *)(work + 0x10) = arg5;
+    *(f32 *)(work + 0x14) = arg6;
+
+    scale = arg4 * arg6 / arg5;
+
+    if (scale < arg4) {
+        scale = arg4;
+    }
+
+    if (scale > lbl_80368F30) {
+        scale = lbl_80368F30;
+    }
+
+    work = (u8 *)lbl_803672A8;
+    *(f32 *)(work + 0x08) = scale;
+    *(f32 *)(work + 0x0C) = scale;
+
+    if (arg5 > arg6) {
+        *(f32 *)(work + 0x08) =
+            *(f32 *)(work + 0x08) * (arg5 / arg6);
+    } else {
+        *(f32 *)(work + 0x0C) =
+            *(f32 *)(work + 0x0C) * (arg6 / arg5);
+    }
+
+    width = arg5;
+    height = arg6;
+
+    size = GXGetTexBufferSize(
+        (s32)width,
+        (s32)height,
+        4,
+        0,
+        0
+    );
+
+    buffer = fn_800C45B8(
+        -(s32)size,
+        lbl_8026A660 + 0x245,
+        0
+    );
+
+    work = (u8 *)lbl_803672A8;
+    *(void **)(work + 0x1C) = buffer;
+
+    work = (u8 *)lbl_803672A8;
+    DCInvalidateRange(*(void **)(work + 0x1C), size);
+
+    if (arg1 == 0) {
+        fn_800432D8(arg0);
+    } else {
+        Process_CreateChild(lbl_80285778, arg1);
+    }
+}
+
 void fn_80043A00(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     M2C_UNK fn_80043838(s32, f32, f32, f32, f32, f32, f32);
     extern f32 lbl_80368F00;
@@ -10102,6 +10248,154 @@ void fn_80048478(void *arg0, void *arg1, u32 arg2, u32 arg3) {
         }
     }
 }
+
+void fn_80048518(void *arg0) {
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    void fn_80222C50(void *, s32);
+    void fn_8022100C(s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void *Camera_GetViewMtx(void);
+    void PSMTXConcat(void *, void *, void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void GXSetZMode(s32, s32, s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void fn_80223E5C(s32, s32, s32, s32, s32);
+    void GXSetNumTexGens(s32, s32);
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
+    void QUATMtx(void *, void *);
+    void PSMTXCopy(void *, void *);
+    void Game_Assert(void *, s32, void *);
+    void fn_802029C4(void *, void *, void *);
+    void fn_80051328(s32, void *, f32, f32, f32, f32, f32);
+    void fn_80224E50(void *, s32, s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void fn_80051538(void *, s32, f32, f32);
+    void fn_80066D00(s32);
+    extern void *gMap;
+    extern f32 lbl_80368EE4, lbl_80368F50, lbl_80368EEC, lbl_80368F00;
+    extern u32 lbl_80368EDC;
+    extern u8 lbl_8026A660[];
+    extern u32 lbl_8026A600[3];
+    f32 fx;
+    f32 fy;
+    u8 *self;
+    f32 view[3][4];
+    f32 tmp[3][4];
+    f32 out[3][4];
+    f32 rz[3][4];
+    f32 ry[3][4];
+    f32 rx[3][4];
+    f32 trans[3][4];
+    f32 scale[3][4];
+    u8 tex[0x20];
+    u32 pt[3];
+    u32 color_tmp;
+    u32 color;
+    u8 alpha;
+
+    self = arg0;
+    Ui_LoadAtlasTex(*(s32 *)((u8 *)gMap + 0x38), tex, 0);
+    fn_80222C50(tex, 0);
+    fn_8022100C(2);
+    GXClearVtxDesc();
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(0xb, 1);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 0xb, 1, 5, 0);
+    GXSetCullMode(1);
+    GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
+    GXSetNumTevStages(1);
+    GXSetTevOrder(0, 0, 0, 4);
+    GXSetNumChans(1);
+    PSMTXTrans(tmp, lbl_80368EE4, lbl_80368EE4, lbl_80368F50);
+    PSMTXConcat(Camera_GetViewMtx(), tmp, view);
+    GXLoadPosMtxImm(view, 0);
+    GXSetCurrentMtx(0);
+    GXSetZMode(1, 3, 0);
+    fn_802245D8(1, 4, 5, 7);
+    fn_80223E5C(7, 0, 1, 7, 0);
+    GXSetNumTexGens(0, 0);
+
+    switch (*(u32 *)(self + 0x20)) {
+    case 1:
+        PSMTXRotRad(rx, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        PSMTXRotRad(ry, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        PSMTXRotRad(rz, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        break;
+    case 2:
+        PSMTXRotRad(rx, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        PSMTXRotRad(ry, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        PSMTXRotRad(rz, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        break;
+    case 3:
+        PSMTXRotRad(rx, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        PSMTXRotRad(ry, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        PSMTXRotRad(rz, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        break;
+    case 4:
+        PSMTXRotRad(rx, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        PSMTXRotRad(ry, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        PSMTXRotRad(rz, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        break;
+    case 5:
+        PSMTXRotRad(rx, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        PSMTXRotRad(ry, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        PSMTXRotRad(rz, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        break;
+    case 6:
+        PSMTXRotRad(rx, 0x5A, lbl_80368EEC * *(f32 *)(self + 0x38));
+        PSMTXRotRad(ry, 0x59, lbl_80368EEC * *(f32 *)(self + 0x34));
+        PSMTXRotRad(rz, 0x58, lbl_80368EEC * *(f32 *)(self + 0x30));
+        break;
+    case 8:
+        PSMTXScale(scale, *(f32 *)(self + 0x3C), *(f32 *)(self + 0x40), *(f32 *)(self + 0x44));
+        PSMTXTrans(trans, *(f32 *)(self + 0x24), *(f32 *)(self + 0x28), *(f32 *)(self + 0x2C));
+        QUATMtx(self + 0x24, rx);
+        PSMTXConcat(rx, scale, out);
+        PSMTXConcat(rx, out, out);
+        PSMTXConcat(trans, out, out);
+        goto draw;
+    case 7:
+        PSMTXCopy(self + 0x24, out);
+        goto draw;
+    default:
+        Game_Assert(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
+        break;
+    }
+    PSMTXScale(scale, *(f32 *)(self + 0x3C), *(f32 *)(self + 0x40), *(f32 *)(self + 0x44));
+    PSMTXTrans(trans, *(f32 *)(self + 0x24), *(f32 *)(self + 0x28), *(f32 *)(self + 0x2C));
+    PSMTXConcat(rx, scale, out);
+    PSMTXConcat(ry, out, out);
+    PSMTXConcat(rz, out, out);
+    PSMTXConcat(trans, out, out);
+draw:
+    pt[0] = lbl_8026A600[0];
+    pt[1] = lbl_8026A600[1];
+    pt[2] = lbl_8026A600[2];
+    fn_802029C4(out, pt, pt);
+    fx = *(f32 *)&pt[0];
+    fy = *(f32 *)&pt[1];
+    alpha = self[0x1F];
+    fn_80051328(0, view, fx, fy, lbl_80368F00, lbl_80368F00, lbl_80368EE4);
+    fn_80224E50(view, 0x1E, 0);
+    fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
+    color_tmp = lbl_80368EDC;
+    *((u8 *)&color_tmp + 3) = alpha;
+    color = color_tmp;
+    fn_80051538(&color, 1, fx, fy);
+    fn_80066D00(-1);
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma opt_peephole reset
@@ -10142,6 +10436,83 @@ void fn_80048A70(s8 arg0) {
         var_r3 = 0;
     }
     gMapBlendMode = var_r3;
+}
+
+void fn_80048A90(void *arg0)
+{
+    extern u8 lbl_80367288;
+    extern u8 gMapBlendMode;
+    extern u8 gBattleSkyIndex;
+    extern u8 lbl_8036728C;
+    extern u8 lbl_8036728D;
+    extern u8 lbl_8036728E;
+    extern u8 lbl_80367290[];
+    extern u8 lbl_80367294;
+    extern u8 lbl_80367295;
+    extern u8 lbl_80367298[];
+    extern u8 lbl_8036729C[];
+    extern f32 lbl_80368F6C;
+
+    u8 Stream_ReadU8(void *);
+    u16 Stream_ReadU16(void *);
+    void *Camera_GetActive(void);
+    void fn_80019384(void *, u32);
+
+    void *stream;
+    u8 *camera;
+    u8 value;
+    s16 x;
+    s16 y;
+    s32 i;
+
+    stream = arg0;
+
+    lbl_80367288 = Stream_ReadU8(stream);
+    gMapBlendMode = Stream_ReadU8(stream);
+    gBattleSkyIndex = Stream_ReadU8(stream);
+    lbl_8036728C = Stream_ReadU8(stream);
+    lbl_8036728D = Stream_ReadU8(stream);
+    lbl_8036728E = Stream_ReadU8(stream);
+
+    lbl_80367290[0] = Stream_ReadU8(stream);
+    lbl_80367290[1] = Stream_ReadU8(stream);
+    lbl_80367290[2] = Stream_ReadU8(stream);
+
+    lbl_80367294 = Stream_ReadU8(stream);
+    lbl_80367295 = Stream_ReadU8(stream);
+
+    lbl_80367298[0] = Stream_ReadU8(stream);
+    lbl_80367298[1] = Stream_ReadU8(stream);
+    lbl_80367298[2] = Stream_ReadU8(stream);
+
+    lbl_8036729C[0] = Stream_ReadU8(stream);
+    lbl_8036729C[1] = Stream_ReadU8(stream);
+    lbl_8036729C[2] = Stream_ReadU8(stream);
+
+    value = Stream_ReadU8(stream);
+    x = (s16)Stream_ReadU16(stream);
+    y = (s16)Stream_ReadU16(stream);
+
+    camera = (u8 *)Camera_GetActive();
+
+    if (camera != 0 && lbl_80367288 == 1) {
+        fn_80019384(camera, value);
+
+        *(f32 *)(camera + 4) =
+            (f32)x * lbl_80368F6C;
+
+        *(f32 *)(camera + 8) =
+            (f32)y * lbl_80368F6C;
+    }
+
+    for (i = 0x16; i < 0x20; i++) {
+        Stream_ReadU8(stream);
+    }
+
+    lbl_80367298[3] = 0xFF;
+    lbl_8036729C[3] = 0xFF;
+    lbl_80367290[3] = 0xFF;
+    lbl_80367288 = 1;
 }
 
 void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {
@@ -12412,6 +12783,162 @@ void fn_8004E040(void *obj) {
     PSMTXConcat(mtxTrans, mtxScale, (u8 *)obj + 0x2C);
 }
 
+#pragma global_optimizer off
+void fn_8004E178(void *arg0) {
+void *Camera_GetActive(void);
+f32 Math_Lerp(f32,f32,f32,f32);
+u8 Status_Test(void *,s32);
+void PSMTXRotRad(void *,s32,f32);
+void PSMTXScale(void *,f32,f32,f32);
+void PSMTXTrans(void *,f32,f32,f32);
+void PSMTXConcat(void *,void *,void *);
+void PSMTXCopy(void *,void *);
+void QUATMtx(void *,void *);
+void Game_Assert(void *,s32,void *);
+void fn_8005A1E8(s32,f32 *,f32 *);
+extern f32 lbl_80368FCC,lbl_80369038,lbl_8036903C,lbl_80369028,lbl_80368FF8,lbl_80369040,lbl_80369024,lbl_80369044,lbl_80369048,lbl_80368FD8,lbl_80368FC4;
+extern u8 lbl_8026AB18[];
+extern s16 lbl_803672C4,lbl_803672C6,lbl_803672C8,lbl_803672CA;
+f32 out[12], rz[12], ry[12], rx[12], trans[12], scale[12];
+f32 left,right,top,bottom,margin;
+f32 depth, px;
+void *cam;
+s32 x,y;
+u8 *p=arg0;
+if (!(*(u32 *)(p+0x1A0)&0x10000DC) && (p[3]&2) && p[0x27]) {
+left=lbl_80368FCC; right=lbl_80369038; bottom=lbl_8036903C; top=left;
+cam=Camera_GetActive();
+if(cam) {
+margin=Math_Lerp(lbl_80368FF8,lbl_80369040,lbl_80369024,*(f32 *)((u8 *)cam+0x18)-lbl_80369028);
+if(margin<lbl_80369040) margin=lbl_80369040;
+if(margin>lbl_80368FF8) margin=lbl_80368FF8;
+if(Status_Test(p+0x1BC,7)) margin*=lbl_80369044;
+left-=margin; right+=margin; top-=margin; bottom+=lbl_80369048*margin;
+}
+switch(*(u32 *)(p+0x28)) {
+case 1:
+PSMTXRotRad(rx,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(ry,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(rz,90,lbl_80368FD8 * *(f32 *)(p+64));
+break;
+case 2:
+PSMTXRotRad(rx,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(ry,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(rz,88,lbl_80368FD8 * *(f32 *)(p+56));
+break;
+case 3:
+PSMTXRotRad(rx,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(ry,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(rz,89,lbl_80368FD8 * *(f32 *)(p+60));
+break;
+case 4:
+PSMTXRotRad(rx,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(ry,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(rz,89,lbl_80368FD8 * *(f32 *)(p+60));
+break;
+case 5:
+PSMTXRotRad(rx,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(ry,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(rz,90,lbl_80368FD8 * *(f32 *)(p+64));
+break;
+case 6:
+PSMTXRotRad(rx,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(ry,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(rz,88,lbl_80368FD8 * *(f32 *)(p+56));
+break;
+case 8:
+PSMTXScale(scale,*(f32 *)(p+0x44),*(f32 *)(p+0x48),*(f32 *)(p+0x4C));
+PSMTXTrans(trans,*(f32 *)(p+0x2C),*(f32 *)(p+0x30),*(f32 *)(p+0x34));
+QUATMtx(p+0x2C,rx);
+PSMTXConcat(rx,scale,out); PSMTXConcat(rx,out,out); PSMTXConcat(trans,out,out);
+goto done;
+case 7: PSMTXCopy(p+0x2C,out); goto done;
+default: Game_Assert(lbl_8026AB18+0x2B,0xB8,lbl_8026AB18+0x33); break;
+}
+PSMTXScale(scale,*(f32 *)(p+0x44),*(f32 *)(p+0x48),*(f32 *)(p+0x4C));
+PSMTXTrans(trans,*(f32 *)(p+0x2C),*(f32 *)(p+0x30),*(f32 *)(p+0x34));
+PSMTXConcat(rx,scale,out); PSMTXConcat(ry,out,out); PSMTXConcat(rz,out,out); PSMTXConcat(trans,out,out);
+done:
+px=out[3]; depth=lbl_80368FC4;
+*(f32 *)(p+0x170)=px; *(f32 *)(p+0x174)=out[7]; *(f32 *)(p+0x178)=out[11]-depth;
+fn_8005A1E8(0,(f32 *)(p+0x170),(f32 *)(p+0x170));
+if(*(f32 *)(p+0x170)>left && *(f32 *)(p+0x170)<right && *(f32 *)(p+0x174)>top && *(f32 *)(p+0x174)<bottom) {
+*(u32 *)(p+0x1A0)&=~0x20;
+y=*(f32 *)(p+0x174); x=*(f32 *)(p+0x170);
+if(lbl_803672C4>x-64)lbl_803672C4=x-64;
+if(lbl_803672C6>y-64)lbl_803672C6=y-64;
+if(lbl_803672C8<x+64)lbl_803672C8=x+64;
+if(lbl_803672CA<y+64)lbl_803672CA=y+64;
+} else *(u32 *)(p+0x1A0)|=0x20;
+}}
+
+void fn_8004E670(void *dst, void *arg0, u8 update) {
+void PSMTXRotRad(void *,s32,f32);
+void PSMTXScale(void *,f32,f32,f32);
+void PSMTXTrans(void *,f32,f32,f32);
+void PSMTXConcat(void *,void *,void *);
+void PSMTXCopy(void *,void *);
+void QUATMtx(void *,void *);
+void Game_Assert(void *,s32,void *);
+void fn_8005A1E8(s32,f32 *,f32 *);
+extern f32 lbl_80368FCC,lbl_80369038,lbl_8036903C,lbl_80369028,lbl_80368FF8,lbl_80369040,lbl_80369024,lbl_80369044,lbl_80369048,lbl_80368FD8,lbl_80368FC4;
+extern u8 lbl_8026AB18[];
+f32 out[12], rz[12], ry[12], rx[12], trans[12], scale[12];
+f32 depth,px;
+u8 *p=arg0;
+if(update) {
+switch(*(u32 *)(p+0x28)) {
+case 1:
+PSMTXRotRad(rx,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(ry,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(rz,90,lbl_80368FD8 * *(f32 *)(p+64));
+break;
+case 2:
+PSMTXRotRad(rx,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(ry,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(rz,88,lbl_80368FD8 * *(f32 *)(p+56));
+break;
+case 3:
+PSMTXRotRad(rx,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(ry,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(rz,89,lbl_80368FD8 * *(f32 *)(p+60));
+break;
+case 4:
+PSMTXRotRad(rx,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(ry,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(rz,89,lbl_80368FD8 * *(f32 *)(p+60));
+break;
+case 5:
+PSMTXRotRad(rx,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(ry,88,lbl_80368FD8 * *(f32 *)(p+56));
+PSMTXRotRad(rz,90,lbl_80368FD8 * *(f32 *)(p+64));
+break;
+case 6:
+PSMTXRotRad(rx,90,lbl_80368FD8 * *(f32 *)(p+64));
+PSMTXRotRad(ry,89,lbl_80368FD8 * *(f32 *)(p+60));
+PSMTXRotRad(rz,88,lbl_80368FD8 * *(f32 *)(p+56));
+break;
+case 8:
+PSMTXScale(scale,*(f32 *)(p+0x44),*(f32 *)(p+0x48),*(f32 *)(p+0x4C));
+PSMTXTrans(trans,*(f32 *)(p+0x2C),*(f32 *)(p+0x30),*(f32 *)(p+0x34));
+QUATMtx(p+0x2C,rx);
+PSMTXConcat(rx,scale,out); PSMTXConcat(rx,out,out); PSMTXConcat(trans,out,out);
+goto done;
+case 7: PSMTXCopy(p+0x2C,out); goto done;
+default: Game_Assert(lbl_8026AB18+0x2B,0xB8,lbl_8026AB18+0x33); break;
+}
+PSMTXScale(scale,*(f32 *)(p+0x44),*(f32 *)(p+0x48),*(f32 *)(p+0x4C));
+PSMTXTrans(trans,*(f32 *)(p+0x2C),*(f32 *)(p+0x30),*(f32 *)(p+0x34));
+PSMTXConcat(rx,scale,out); PSMTXConcat(ry,out,out); PSMTXConcat(rz,out,out); PSMTXConcat(trans,out,out);
+done:
+px=out[3];
+*(f32 *)(p+0x170)=px; *(f32 *)(p+0x174)=out[7]; *(f32 *)(p+0x178)=out[11]-0.5f;
+fn_8005A1E8(0,(f32 *)(p+0x170),(f32 *)(p+0x170));
+}
+{ u32 y; u32 x; x=*(u32 *)(p+0x170); y=*(u32 *)(p+0x174); ((u32 *)dst)[0]=x; ((u32 *)dst)[1]=y; ((u32 *)dst)[2]=*(u32 *)(p+0x178); }
+}
+
+#pragma global_optimizer reset
 void fn_8004E9D8(void *arg0, s32 arg1) {
     void fn_800616A0(void *);
     void fn_80184F20(void *);
