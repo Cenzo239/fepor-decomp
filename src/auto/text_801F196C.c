@@ -29,6 +29,7 @@ extern f32 lbl_8036B938;
 extern f32 lbl_8036B93C;
 extern f32 lbl_8036B940;
 extern f32 lbl_8036B944;
+extern f64 lbl_8036B900;
 extern f64 lbl_8036B948;
 extern void* lbl_8029A8C8[];
 extern void fn_80050E80(void);
@@ -1647,6 +1648,48 @@ void CardLink_ApplyBonus(void *proc) {
     Process_UnlinkByKey(&gCardLinkProc);
 }
 
+void fn_801F5830(u8 *self) {
+void *Process_Find(void *);
+s32 Msg_Expand(void *);
+void MsgBox_Init(void *,s32,s32,s32,s32);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetRect(f32,f32,f32,f32);
+void Prim2D_AddZ(f32);
+extern f32 lbl_8036B8E0,lbl_8036B8E4,lbl_8036B8E8,lbl_8036B8EC,lbl_8036B8F0,lbl_8036B8F4,lbl_8036B8F8;
+extern f64 lbl_8036B900;
+u32 progress;
+u8 *p;
+s32 state;
+progress = ((u8 *)Process_Find(&gCardLinkProc))[0x4A];
+if (!(*(s16 *)*(void **)(self+0x50)&1))
+ MsgBox_Init(*(void **)(self+0x50),Msg_Expand((u8 *)gCardLinkStr+0x104),0,0,0);
+if (progress & 0xFF) {
+ Prim2D_Begin();
+ Prim2D_SetTransform(lbl_8036B8E0,lbl_8036B8E4,lbl_8036B8E8,lbl_8036B8EC);
+ Prim2D_SetTex(0,0x10); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+ Prim2D_SetRect(lbl_8036B8E8,lbl_8036B8E8,lbl_8036B8F0,lbl_8036B8F4);
+ Prim2D_SetColor(100,100,100,255); Prim2D_EndPrim();
+ Prim2D_Begin(); Prim2D_AddZ(lbl_8036B8F8);
+ Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+ Prim2D_SetRect(lbl_8036B8E8,lbl_8036B8E8,(f32)((progress & 0xFF)*3),lbl_8036B8F4);
+ Prim2D_SetColor(0,255,0,255); Prim2D_EndPrim();
+} else {
+ self[0x54]++;
+ if(self[0x54]>240) {
+ Ui_PlaySeCue((u8 *)gCardLinkStr+0x77,100);
+ MsgBox_Init(*(void **)(self+0x50),Msg_Expand((u8 *)gCardLinkStr+0x9A),0,1,0);
+ Process_Goto(self,0x59); Process_UnlinkByKey(&gCardLinkProc);
+ }
+ return;
+}
+ p=Process_Find(&gCardLinkProc);
+ if(p==0) state=0; else state=p[0x4C];
+ if(state==3 || state==4) {
+ *(s16 *)(*(u8 **)(self+0x50)+2)=200;
+ Process_ClearFunc(self);
+ }
+}
+
 /* While waiting on a card-link scan: end when status is 2, or cancel on B. */
 void CardLink_UpdateScanWait(void *proc) {
     void *Process_Find(void *);
@@ -3143,22 +3186,21 @@ void fn_801F897C(void) {
     Battle_LoadMap();
 }
 
-void fn_801F89AC(s32 arg0, s32 arg1) {
+void fn_801F89AC(void *arg0, s32 arg1) {
     extern u8 lbl_8029B394[];
     extern f32 lbl_8036BA00;
-    void *Process_CreateChild(void *, s32);
+    void *fn_8000CAA0(void *, s32);
     void fn_801FB410(void *);
-    void *temp_r31;
+    u8 *entry;
 
-    temp_r31 = Process_CreateChild(lbl_8029B394, arg1);
-    if (temp_r31 != 0) {
-        fn_801FB410((u8 *)temp_r31 + 0x30);
-        *(f32 *)((u8 *)temp_r31 + 0x3C) = lbl_8036BA00;
-        *(s32 *)((u8 *)temp_r31 + 0x4C) = 0;
-        *(s32 *)((u8 *)temp_r31 + 0x50) = 0;
-        ((u8 *)temp_r31)[0x54] = 5;
-        *(s32 *)((u8 *)temp_r31 + 0x48) = arg0;
-    }
+    entry = (u8 *)fn_8000CAA0(lbl_8029B394, arg1);
+    if (entry == 0) return;
+    fn_801FB410(entry + 0x30);
+    *(f32 *)(entry + 0x3C) = lbl_8036BA00;
+    *(u32 *)(entry + 0x4C) = 0;
+    *(u32 *)(entry + 0x50) = 0;
+    entry[0x54] = 5;
+    *(void **)(entry + 0x48) = arg0;
 }
 
 void fn_801F8A18(void *arg0) {
@@ -5551,13 +5593,13 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
 }
 #pragma scheduling off
 void Tree_Init(void *arg0, u8 *arg1) {
-    void *z = 0;
+    u32 z = 0;
     u8 v;
     u8 *mid;
     v = *arg1;
-    *(void **)arg0 = z;
+    *(u32 *)arg0 = z;
     mid = (u8 *)arg0 + 4;
-    *(void **)mid = z;
+    *(u32 *)mid = z;
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 8) = mid;
 }
