@@ -12183,13 +12183,13 @@ extern "C" void *fn_800E4454(void *arg0, String *arg1) {
     void fn_800DF6DC(String *, void *);
     s32 fn_800C9400(String *, u32, u32, char *, u32);
     void *fn_800C9A60(String *, s32);
-    void *child;
+    register void *child;
     void *self;
     String *key;
     s32 i;
     Obj *list;
     String str;
-    u8 found;
+    register u8 found;
     s32 n;
 
     self = arg0;
@@ -12636,21 +12636,16 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
+    extern f32 lbl_80369F3C, lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
-    f32 x;
-    f32 y;
     f32 z;
-    s32 index;
-
-    index = GActor_FindNode(
-        *(void **)((u8 *)arg1 + 0xE0),
-        arg2
-    );
+    f32 y;
+    f32 x;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
-        index,
+        GActor_FindNode(*(void **)((u8 *)arg1 + 0xE0), arg2),
         pos
     );
 
@@ -12668,6 +12663,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
+    return;
 }
 
 void fn_800E4F0C(void *arg0) {
@@ -12682,32 +12678,34 @@ void fn_800E4F30(void *arg0)
     f32 out[3];
     f32 pos[3];
     register f32 z;
-    f32 x;
+    f32 y;
     register void *obj;
-    register f32 y;
+    register f32 x;
+    register f32 py;
+    register f32 pz;
 
     obj = *(void **)((u8 *)arg0 + 0xEC);
     if (obj != NULL) {
         fn_80060F70(*(void **)((u8 *)obj + 0xE0), *(s32 *)((u8 *)arg0 + 0xF0), pos);
         x = pos[0];
         if (x > lbl_80369F5C && x < lbl_80369F60) {
-            z = pos[2];
             y = pos[1];
+            z = pos[2];
         } else {
             z = lbl_80369F3C;
-            x = z;
             y = z;
+            x = z;
         }
-        *(f32 *)((u8 *)arg0 + 0x4C) = y;
         *(f32 *)((u8 *)arg0 + 0x48) = x;
+        *(f32 *)((u8 *)arg0 + 0x4C) = y;
         *(f32 *)((u8 *)arg0 + 0x50) = z;
         fn_800DBB74(out, *(void **)((u8 *)arg0 + 0xEC));
-        y = out[1];
+        py = out[1];
+        pz = out[2];
         x = out[0];
-        z = out[2];
         *(f32 *)((u8 *)arg0 + 0x54) = x;
-        *(f32 *)((u8 *)arg0 + 0x58) = y;
-        *(f32 *)((u8 *)arg0 + 0x5C) = z;
+        *(f32 *)((u8 *)arg0 + 0x58) = py;
+        *(f32 *)((u8 *)arg0 + 0x5C) = pz;
         *(void **)((u8 *)arg0 + 0xEC) = NULL;
         *(s32 *)((u8 *)arg0 + 0xF0) = -1;
     }
@@ -23762,6 +23760,7 @@ s32 Battle_BuildUnitScoreList(void) {
     return count;
 }
 
+#pragma opt_common_subs off
 void fn_800FEC0C(void) {
     extern u8 gBattleState[];
     extern u8 gUnitLists[];
@@ -23786,9 +23785,7 @@ void fn_800FEC0C(void) {
 
     *(void **)(gAiState + 0x218) = table;
 }
-
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+#pragma opt_common_subs reset
 
 void Sort_Three(s32 *left, s32 *mid, s32 *right, u8 (*less)(s32, s32)) {
     s32 *c;
