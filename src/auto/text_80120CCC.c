@@ -2725,27 +2725,67 @@ void fn_80125818(void *arg0) {
     }
 }
 
-void fn_801258E4(void* arg0, void* arg1, void* arg2) {
-    void* temp_r5;
-    
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    temp_r5 = arg0;
-    if (M2C_FIELD(arg0, u32*, 0x10) != 0) {
-        while (1) {
-            s32 temp_r4 = M2C_FIELD(temp_r5, u32*, 0x8);
-            if (temp_r4 == 0) {
-                break;
+void fn_801258E4(void *arg0) {
+    typedef struct { f32 v[4][3]; } Quad;
+    typedef struct { u8 v[4][4]; } Colors;
+    extern Quad lbl_80274F10;
+    extern Colors lbl_80274F40;
+    extern f32 lbl_8036A390,lbl_8036A394;
+    void GXBegin(s32,s32,s32);
+    Quad positions=lbl_80274F10;
+    Quad texcoords;
+    Colors colors=lbl_80274F40;
+    u8 *self=arg0;
+    s32 layer;
+    s32 i;
+    f32 z=lbl_8036A30C;
+    f32 height;
+    f32 width;
+    f32 *v;
+    f32 *uv;
+    u8 *color;
+    width=lbl_8036A390;
+    height=lbl_8036A394;
+    for(layer=0;layer<2;layer++) {
+        f32 bottom;
+        f32 right;
+        f32 x=-*(f32 *)(self+0x50+layer*4);
+        f32 y=-*(f32 *)(self+0x58+layer*4);
+        right=x+width;
+        bottom=y+height;
+        texcoords.v[0][0]=x;
+        texcoords.v[0][1]=y;
+        texcoords.v[1][0]=right;
+        texcoords.v[1][1]=y;
+        texcoords.v[2][0]=x;
+        texcoords.v[2][1]=bottom;
+        texcoords.v[3][0]=right;
+        texcoords.v[3][1]=bottom;
+        color=&colors.v[0][0];
+        uv=&texcoords.v[0][0];
+        v=&positions.v[0][0];
+        GXBegin(0x98,0,4);
+        for(i=0;i<4;i++,v+=3,uv+=3,color+=4) {
+            {
+                f32 x=v[0], y=v[1];
+                GXRegs_8036A30C[-0x2000]=x;
+                GXRegs_8036A30C[-0x2000]=y;
+                GXRegs_8036A30C[-0x2000]=z;
             }
-            temp_r5 = (void*)((u8*)temp_r5 + temp_r4);
-            if (arg1 != NULL) {
-                fn_80126E18(temp_r5, arg1);  
+            {
+                u8 r=color[0], g=color[1], b=color[2], a=color[3];
+                *(volatile u8 *)&GXRegs_8036A30C[-0x2000]=r;
+                *(volatile u8 *)&GXRegs_8036A30C[-0x2000]=g;
+                *(volatile u8 *)&GXRegs_8036A30C[-0x2000]=b;
+                *(volatile u8 *)&GXRegs_8036A30C[-0x2000]=a;
+            }
+            {
+                f32 s=uv[0], t=uv[1];
+                GXRegs_8036A30C[-0x2000]=s;
+                GXRegs_8036A30C[-0x2000]=t;
             }
         }
     }
-    fn_80125924(arg0, arg1);
 }
 
 void fn_80125AE0(void *arg0)
@@ -3691,33 +3731,114 @@ void fn_8012767C(void)
     *(u8 *)(*(u8 **)gPadInput + 0x07) = 0;
 }
 
-void fn_80127700(void* arg0, s32 arg1) {
-    s32 temp_r3;
-    SomeStruct* temp_r30;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
+void fn_80127700(void *self) {
+    extern u32 gUiInputFlags;
+    extern void *volatile gPadInput;
+    void Process_ClearFunc(void *);
+    u8 *script;
+    s32 cmd;
+    u32 mask;
 
-    temp_r30 = (SomeStruct*)arg0;
-    temp_r3 = arg1;
-    if (temp_r3 < 0) {
-        temp_r3 = 0;
-    }
-    if (temp_r3 >= 0x100) {
-        temp_r3 = 0xFF;
-    }
-    temp_r4 = temp_r3 * 0x20;
-    temp_r5 = temp_r4 >> 8;
-    temp_r6 = temp_r5 + 0x40;
-    
-    if (temp_r6 < 0) {
-        temp_r6 = 0;
-    }
-    if (temp_r6 >= 0xFF) {
-        temp_r6 = 0xFF;
+    gUiInputFlags |= 0x20;
+    gUiInputFlags &= ~0x80;
+
+    *(u8 *)((u8 *)self + 0x39) = *(u8 *)((u8 *)self + 0x39) - 1;
+
+dispatch:
+    mask = 0;
+    *(u32 *)((u8 *)gPadInput + 0x8) = mask;
+    *(u32 *)((u8 *)gPadInput + 0x4) = mask;
+    *(u32 *)((u8 *)gPadInput + 0xC) = mask;
+    *(u32 *)((u8 *)gPadInput + 0x10) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 2) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 3) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 4) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 5) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 6) = mask;
+    *(u8 *)(*(u8 **)gPadInput + 7) = mask;
+
+    if (*(u8 *)((u8 *)self + 0x39) != 0) {
+        return;
     }
 
-    temp_r30->field_0x84 = temp_r6;
+    script = *(u8 **)((u8 *)self + 0x30);
+    *(u8 **)((u8 *)self + 0x30) = script + 1;
+    cmd = (s8)*script;
+    mask = 0;
+    if ((u32)cmd <= 0x5F) {
+        switch (cmd) {
+        case 1:
+            mask = 0x01000001;
+            break;
+        case 2:
+            mask = 0x02000002;
+            break;
+        case 4:
+            mask = 0x04000004;
+            break;
+        case 5:
+            mask = 0x05000005;
+            break;
+        case 6:
+            mask = 0x06000006;
+            break;
+        case 8:
+            mask = 0x08000008;
+            break;
+        case 9:
+            mask = 0x09000009;
+            break;
+        case 10:
+            mask = 0x0A00000A;
+            break;
+        case 0x10:
+            mask = 0x100;
+            break;
+        case 0x11:
+            mask = 0x200;
+            break;
+        case 0x12:
+            mask = 0x400;
+            break;
+        case 0x13:
+            mask = 0x800;
+            break;
+        case 0x14:
+            mask = 0x10;
+            break;
+        case 0x15:
+            mask = 0x40;
+            break;
+        case 0x16:
+            mask = 0x20;
+            break;
+        case 0x17:
+            mask = 0x1000;
+            break;
+        case 0x1E:
+            *(u8 *)((u8 *)self + 0x38) = (u8)((*(u8 *)((u8 *)self + 0x38) * 2) & 0xFE);
+            goto dispatch;
+        case 0x1F:
+            *(u8 *)((u8 *)self + 0x38) >>= 1;
+            goto dispatch;
+        case 0xF:
+            *(u8 *)((u8 *)self + 0x39) = *(u8 *)((u8 *)self + 0x38);
+            *(u32 *)((u8 *)gPadInput + 0x8) = 0;
+            mask = 0xF;
+            *(u32 *)((u8 *)gPadInput + 0x4) = mask;
+            *(u32 *)((u8 *)gPadInput + 0xC) = mask;
+            *(u32 *)((u8 *)gPadInput + 0x10) = mask;
+            goto check_end;
+        }
+    }
+    *(u32 *)((u8 *)gPadInput + 0x8) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x4) = mask;
+    *(u32 *)((u8 *)gPadInput + 0xC) = mask;
+    *(u32 *)((u8 *)gPadInput + 0x10) = mask;
+check_end:
+    if ((s8)**(u8 **)((u8 *)self + 0x30) == 0) {
+        Process_ClearFunc(self);
+    }
 }
 
 s32 ScriptCmd_GameUnbind(void) {
