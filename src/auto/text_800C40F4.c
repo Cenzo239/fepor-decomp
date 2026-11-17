@@ -27064,6 +27064,8 @@ block_23:
     return 1;
 }
 
+#pragma dont_inline on
+#pragma global_optimizer on
 s32 fn_800FBD38(void *arg0) {
 extern u8 gAiState[],gBattleState[],gBattleMap[];
 u8 Allegiance_CompareIds(s32,u8);
@@ -27073,6 +27075,7 @@ void fn_80101960(void *,s16,s16,s32,s32,s32,s32,s32);
 u8 *map;
 s32 row;
 u8 *rowp;
+u8 *layers;
 u8 *tile;
 s32 uy;
 s16 bestX,bestY;
@@ -27095,12 +27098,13 @@ if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
 maxY=uy+mov;
 if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
 map=gBattleMap;
+layers=map+0x14190;
 for(y=minY;y<=maxY;y++){
 row=(s8)y<<6;
 rowp=map+row;
 for(x=minX;x<=maxX;x++){
 sx=(s8)x;
-if(M2C_FIELD(map,s16 **,0x14190)[sx+row]<0) continue;
+if((*(s16 **)layers)[sx+row]<0) continue;
 tile=rowp+sx;
 if(*(s8 *)(tile+0xe18e)) continue;
 if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
@@ -27112,7 +27116,8 @@ bestX=x;bestY=y;break;
 if(bestX>=0) fn_80101960(arg0,bestX,bestY,1,0xffff,0,0,-1);
 return 1;
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void fn_800FBF54(void) {
     extern u8 gUiContext[24];
     u32 *p;
