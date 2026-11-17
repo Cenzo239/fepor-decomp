@@ -4195,7 +4195,7 @@ void fn_8018BC28(void *arg0) {
  void *fn_80105C5C(void *,s32);s32 fn_8005B760(s32);
  void SeCue_PlayAt(void *,s32,f32,f32,f32);
  s32 Str_Cmp(void *,void *);void *fn_80234198(void *,void *);
- u32 fn_800A883C(void *,s32);
+ MoveClassKind fn_800A883C(void *,s32);
  void DebugPrint(void *,...);
  void fn_8004AE28(void *,f32,f32,f32);u16 fn_8005F92C(void *,void *);
  void fn_8018CFA4(s32,s32,s32,s32,void *);void fn_8018CF08(void);void fn_8018CF48(s32);void fn_80025624(void *,s32);
@@ -4203,7 +4203,7 @@ void fn_8018BC28(void *arg0) {
  extern MoveSoundButtons lbl_80278DE0;
  extern void *gPadInput;
  MoveSoundButtons buttons;
- u8 c0,c1,c2,c3;
+ MoveClassKind c3,c2,c1,c0;
  void *pad;
  void *cls;
  s32 volume;
@@ -4219,7 +4219,8 @@ void fn_8018BC28(void *arg0) {
  cls=M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x18C);
  volume=100;
  if(M2C_FIELD(cls,u8 *,0x42)!=9){
- heavy=M2C_FIELD(cls,u8 *,0x42)==7||M2C_FIELD(cls,u8 *,0x42)==8;
+ heavy=0;
+ if(M2C_FIELD(cls,u8 *,0x42)==7||M2C_FIELD(cls,u8 *,0x42)==8)heavy=1;
  if((M2C_FIELD(cls,u16 *,0x3A)&0x40)&&fn_80105C5C((u8 *)M2C_FIELD(arg0,void **,0x30)+0x1BC,9))heavy=1;
  switch(fn_8005B760((gBattleMap+(s8)(s32)x+((s8)(s32)y<<6))[0x100D])){
  case 26:if(!heavy)SeCue_PlayAt(MoveAnim_str+0x50B,100,x,y,z);else SeCue_PlayAt(MoveAnim_str+0x51F,100,x,y,z);volume=70;break;
@@ -4233,8 +4234,8 @@ void fn_8018BC28(void *arg0) {
  case 3:case 4:message=MoveAnim_str+0x5f6;SeCue_PlayAt(MoveAnim_str+0x616,volume,x,y,z);break;
  case 9:
  if(Str_Cmp(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x188),void **,0),MoveAnim_str+0x4a7)==0){message=MoveAnim_str+0x62a;SeCue_PlayAt(MoveAnim_str+0x64e,volume,x,y,z);}
- else if((c0=fn_800A883C(cls,0)>>24)==3||(c1=fn_800A883C(cls,1)>>24)==3){message=MoveAnim_str+0x666;SeCue_PlayAt(MoveAnim_str+0x68a,volume,x,y,z);}
- else if((c2=fn_800A883C(cls,0)>>24)==4||(c3=fn_800A883C(cls,1)>>24)==4){message=MoveAnim_str+0x6a2;SeCue_PlayAt(MoveAnim_str+0x6c6,volume,x,y,z);}
+ else if((c0=fn_800A883C(cls,0)).value==3||(c1=fn_800A883C(cls,1)).value==3){message=MoveAnim_str+0x666;SeCue_PlayAt(MoveAnim_str+0x68a,volume,x,y,z);}
+ else if((c2=fn_800A883C(cls,0)).value==4||(c3=fn_800A883C(cls,1)).value==4){message=MoveAnim_str+0x6a2;SeCue_PlayAt(MoveAnim_str+0x6c6,volume,x,y,z);}
  else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6de)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6ea)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6f8)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x312)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x332)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x33e)==0){message=MoveAnim_str+0x708;SeCue_PlayAt(MoveAnim_str+0x72c,volume,x,y,z);}
  else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x744)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x2bc)==0){message=MoveAnim_str+0x750;SeCue_PlayAt(MoveAnim_str+0x774,volume,x,y,z);}
  else{message=MoveAnim_str+0x78c;SeCue_PlayAt(MoveAnim_str+0x7b0,volume,x,y,z);}break;
@@ -8231,6 +8232,7 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
+#pragma optimization_level 2
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
