@@ -114,14 +114,40 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
 }
 
 void fn_801FC790(void *arg0) {
-    u8 FileCache_IsReady(void *);
-    void Process_ClearFunc(void *);
-    
-    if (!FileCache_IsReady(lbl_802820B8 + 0x53)) {
-        return;
-    }
-    M2C_FIELD(arg0, u32 *, 0x30) = 0;
-    Process_ClearFunc(arg0);
+typedef struct { u8 r,g,b,a; } Color;
+void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_BindTexture(void *,s32,s32); void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32); void Prim2D_SetRect(f32,f32,f32,f32);
+void Prim2D_SetUvRect(f32,f32,f32,f32);
+void Prim2D_SetCornerColors(Color,Color,Color,Color);
+void Prim2D_EmitQuad(void); void Prim2D_EndPrim(void);
+extern void *gFallingParticleTex;
+extern f32 gFloatZero,gFloatOne,lbl_8036BAE4,lbl_8036BAE8,lbl_8036BAEC,lbl_8036BAF0;
+extern Color lbl_8036BAC8,lbl_8036BACC,lbl_8036BAD0,lbl_8036BAD4;
+#pragma cplusplus on
+struct Colors { static Color alpha(const Color& value, u8 a) { Color c=value; c.a=a; return c; } };
+s32 i;
+u8 *p;
+u8 *self = (u8 *)arg0;
+f32 z;
+p = self;
+i=0;
+do {
+
+*(s16 *)(p+0x30) += *(s16 *)(p+0x34);
+*(s16 *)(p+0x32) += *(s16 *)(p+0x36);
+z=*(f32 *)(self+0x44)-(f32)i;
+Prim2D_Begin();
+Prim2D_SetTransform(gFloatZero,gFloatZero,z,gFloatOne);
+Prim2D_BindTexture(gFallingParticleTex,6,17);
+Prim2D_PrepareTex(); Prim2D_AddPrim(3);
+Prim2D_SetRect(gFloatZero,gFloatZero,lbl_8036BAE4,lbl_8036BAE8);
+Prim2D_SetUvRect((f32)(*(s16 *)(p+0x30)/8),(f32)(*(s16 *)(p+0x32)/8),lbl_8036BAEC,lbl_8036BAF0);
+Prim2D_SetCornerColors(Colors::alpha(lbl_8036BAC8,p[0x38]), Colors::alpha(lbl_8036BACC,p[0x38]), Colors::alpha(lbl_8036BAD0,p[0x39]), Colors::alpha(lbl_8036BAD4,p[0x39]));
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+i++; p+=10;
+} while(i<2);
+#pragma cplusplus reset
 }
 
 void fn_801FC95C(void) {
@@ -173,6 +199,64 @@ void FallingParticle_CreateEx(u32 parent, f32 scale)
     *(s16 *)((u8 *)proc + 0x3e) = 0;
     *(s16 *)((u8 *)proc + 0x3c) = 0;
     fn_8006EEFC(&gFallingParticleTex, lbl_80281EC8 + 0x23);
+}
+
+void fn_801FCA78(void *arg0) {
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_BindTexture(s32, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_SetUvRect(f32, f32, f32, f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_EndPrim(void);
+    extern s32 gFallingParticleTex;
+    extern f32 gFloatZero;
+    extern f32 gFloatOne;
+    extern f64 lbl_8036BAF8;
+    extern f32 lbl_8036BB08;
+    extern f32 lbl_8036BAE4;
+    extern f32 lbl_8036BB04;
+    f64 conv;
+    f32 scale;
+    u8 *self;
+    u8 *entry;
+    s32 i;
+    s32 tex;
+    f32 z;
+
+    self = (u8 *)arg0;
+    conv = lbl_8036BAF8;
+    scale = lbl_8036BB08;
+    entry = self;
+    for (i = 0; i < 2; i++) {
+        z = *(f32 *)(self + 0x48) - (f32)i;
+        Prim2D_Begin();
+        Prim2D_SetTransform(gFloatZero, gFloatZero, z, gFloatOne);
+        tex = 0;
+        switch ((s16)*(u8 *)(entry + 0x3A)) {
+        case 0:
+            tex = 0x10;
+            break;
+        case 1:
+            tex = 0x20;
+            break;
+        case 2:
+            tex = 0x30;
+            break;
+        }
+        Prim2D_BindTexture(gFallingParticleTex, 0xA, (u16)(tex | 1));
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRect(gFloatZero, gFloatZero, lbl_8036BAE4, lbl_8036BB04);
+        Prim2D_SetUvRect((f32)*(s16 *)(entry + 0x30) * scale, (f32)*(s16 *)(entry + 0x32) * scale, lbl_8036BAE4, lbl_8036BB04);
+        Prim2D_SetColor(*(u8 *)(entry + 0x36), *(u8 *)(entry + 0x37), *(u8 *)(entry + 0x38), *(u8 *)(entry + 0x39));
+        Prim2D_EndPrim();
+        *(s16 *)(entry + 0x30) = (*(s16 *)(entry + 0x30) + (s8)*(u8 *)(entry + 0x34)) & 0xFFF;
+        *(s16 *)(entry + 0x32) = (*(s16 *)(entry + 0x32) + (s8)*(u8 *)(entry + 0x35)) & 0xFFF;
+        entry += 0xC;
+    }
 }
 
 void fn_801FCC44(void) {
@@ -616,6 +700,93 @@ void FallingParticle_Spawn(void *parent) {
         }
     }
 }
+
+void fn_801FDC78(void *arg0) {
+    void *Process_Create(void *, void *);
+    s32 Process_CountFree(void);
+    u32 Rand_Next(void);
+    extern u8 gFallingParticleProc[];
+    extern s32 gFallingParticleVelY;
+    extern s32 gFallingParticleVelXCenter;
+    extern s32 gFallingParticleVelYCenter;
+    extern s32 gFallingParticleVelXRange;
+    extern s32 gFallingParticleVelYRange;
+    extern u8 gFallingParticleAlphaMin;
+    extern u8 gFallingParticleAlphaMax;
+    extern f32 gFloatZero;
+    extern f32 gFloatOne;
+
+    s32 slot;
+    void *part;
+    void *ctrl;
+    s32 range;
+    s32 temp;
+    f32 one;
+    f32 zero;
+    s32 r0;
+    s32 r3;
+    s32 r4;
+    s32 r5;
+    s32 r6;
+
+    ctrl = arg0;
+    one = gFloatOne;
+    zero = gFloatZero;
+
+    for (;;) {
+        if (*(f32 *)((u8 *)ctrl + 0x34) < zero) {
+            *(f32 *)((u8 *)ctrl + 0x34) = *(f32 *)((u8 *)ctrl + 0x34) + *(f32 *)((u8 *)ctrl + 0x30);
+            return;
+        }
+        if (0x100 - Process_CountFree() < 1) {
+            return;
+        }
+        part = Process_Create(gFallingParticleProc, ctrl);
+        slot = 0;
+        do {
+            *(s32 *)((u8 *)part + 0x34) = (s32)(Rand_Next() % 0x02600000U);
+            *(s32 *)((u8 *)part + 0x38) = -(s32)(Rand_Next() & 0x3FFFFF);
+            *(s16 *)((u8 *)part + 0x30) = (s16)((Rand_Next() % 300U) + 0x12C);
+            if (slot == 0) {
+                range = gFallingParticleVelYRange;
+                temp = (gFallingParticleVelYCenter - range) + (s32)(Rand_Next() % (u32)(range * 2));
+                gFallingParticleVelY = temp;
+                if (temp <= 0) {
+                    temp = -temp;
+                    gFallingParticleVelY = temp;
+                    if (temp == 0) {
+                        gFallingParticleVelY = 0x4000;
+                    }
+                }
+            }
+            range = gFallingParticleVelXRange;
+            *(s32 *)((u8 *)part + 0x3C) = (gFallingParticleVelXCenter - range) + (s32)(Rand_Next() % (u32)(range * 2));
+            slot += 1;
+            *(s32 *)((u8 *)part + 0x40) = gFallingParticleVelY;
+            r0 = gFallingParticleVelYRange;
+            r5 = gFallingParticleVelYCenter;
+            r3 = *(s32 *)((u8 *)part + 0x40);
+            r4 = r5 - r0;
+            r0 = r5 + r0;
+            r3 = r3 - r4;
+            r3 = r3 * 7;
+            r5 = r0 - r4;
+            *(u8 *)((u8 *)part + 0x32) = (u8)(r3 / r5);
+            *(u8 *)((u8 *)part + 0x32) = (u8)(*(u8 *)((u8 *)part + 0x32) + 2);
+            r3 = *(s32 *)((u8 *)part + 0x40);
+            r6 = gFallingParticleAlphaMin;
+            r0 = gFallingParticleAlphaMax;
+            r3 = r3 - r4;
+            r0 = r0 - r6;
+            r0 = r3 * r0;
+            r0 = r0 / r5;
+            *(u8 *)((u8 *)part + 0x33) = (u8)(r6 + r0);
+            part = (u8 *)part + 0x14;
+        } while (slot < 3);
+        *(f32 *)((u8 *)ctrl + 0x34) = *(f32 *)((u8 *)ctrl + 0x34) - one;
+    }
+}
+
 #pragma use_lmw_stmw reset
 #pragma global_optimizer reset
 
@@ -1237,6 +1408,99 @@ extern "C" void fn_801FF480(void *arg0) {
     temp_r31 = self->v19();
     fn_801FE84C(0, 0, self->v18(), temp_r31, &sp8);
 }
+
+extern "C" void fn_801FF50C(void *arg0) {
+#pragma cplusplus reset
+    void *fn_8013CD90(void *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTex(void *, s32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32,f32);
+    void Prim2D_SetTextScale(s32,f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_SetAlphaByte(s32);
+    extern f32 lbl_8036BB88, lbl_8036BB58, lbl_8036BB8C, lbl_8036BB90;
+#pragma cplusplus on
+    struct Widget {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31() = 0;
+        virtual void v32() = 0;
+        virtual void v33() = 0;
+        virtual void v34() = 0;
+        virtual void v35() = 0;
+        virtual s16 v36() = 0;
+        virtual void v37() = 0;
+        virtual s16 v38() = 0;
+        virtual void v39() = 0;
+    };
+    f32 x;
+    f32 y;
+    s32 top;
+    s32 width;
+    s32 height;
+    s32 offset;
+    Widget *self=(Widget *)arg0;
+    self->v39();
+    if (fn_8013CD90(self)) {
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036BB88);
+        Prim2D_SetTex(0,19);
+        Prim2D_PrepareTex();
+        width=self->v18();
+        x=(f32)((width - Text_MeasureWidth(fn_8013CD90(self),-1,lbl_8036BB58)) >> 1);
+        height=self->v38();
+        offset=(height-Text_MeasureHeight(-1,lbl_8036BB58)) >> 1;
+        top=self->v36();
+        y=(f32)((top-self->v38())+offset);
+        Prim2D_AddPrim(6);
+        Prim2D_SetPos(x,y);
+        Prim2D_SetTextScale(1,lbl_8036BB8C);
+        Prim2D_SetText(fn_8013CD90(self));
+        Prim2D_EndPrim();
+    }
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036BB90);
+    Prim2D_SetAlphaByte(128);
+    Prim2D_PrepareTex();
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
