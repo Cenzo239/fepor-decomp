@@ -3125,6 +3125,7 @@ void BattleScene_InitSides(void *scene) {
     }
 }
 
+#pragma optimization_level 3
 void fn_800CAF74(void *arg0) {
     extern char lbl_802704F8[];
     extern u8 gBattleReplayActive;
@@ -3140,6 +3141,7 @@ void fn_800CAF74(void *arg0) {
     char buf[0x40];
     String str;
     u8 scratch;
+    void *self = arg0;
 
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
     if (gBattleReplayActive != 0) {
@@ -3148,20 +3150,15 @@ void fn_800CAF74(void *arg0) {
     } else if ((u8 *)gBattle + 0x56C != 0) {
         void *obj = *(void **)((u8 *)gBattle + 0x56C);
         if (obj != 0) {
-            u8 ch;
-            if (obj != 0) {
-                ch = ((u8 *)obj)[0x15];
-            } else {
-                ch = 0;
-            }
+            u8 ch = obj != 0 ? ((u8 *)obj)[0x15] : 0;
             sprintf(buf, lbl_802704F8 + 0x1B1, (u8)ch + 0x60, UnitRef_GetName());
             String_AssignCStr(&str, buf, strlen(buf));
         }
     }
-    String_Copy(arg0, &str);
+    String_Copy(self, &str);
     String_Destroy(&str, -1);
 }
-
+#pragma optimization_level 3
 void fn_800CB070(String *arg0) {
     void fn_800C9ABC(void *, char *, void *);
     void fn_800C96F8(String *, char *, u32);
@@ -3181,6 +3178,7 @@ void fn_800CB070(String *arg0) {
     unsigned long tmp;
     String str;
     u8 *entry;
+    s16 s;
 
     out = arg0;
     fn_800C9ABC(&str, lbl_802704F8 + 0x1B0, &scratch);
@@ -3192,7 +3190,8 @@ void fn_800CB070(String *arg0) {
         if (slot != (u32)NULL) {
             entry = *slot;
             if (entry != NULL) {
-                if ((short)entry != (unsigned)NULL) {
+                s = (short)entry;
+                if (s != 0) {
                     tmp = entry[0x15];
                 } else {
                     tmp = 0;
@@ -3205,7 +3204,7 @@ void fn_800CB070(String *arg0) {
     fn_800C9B6C(out, &str);
     fn_800C9A60(&str, -1);
 }
-
+#pragma optimization_level reset
 void *fn_800CB16C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
@@ -3276,6 +3275,7 @@ void *fn_800CB27C(void) {
     extern u8 *gBattleReplayScene;
     extern u32 gBattle[];
     u8 *base;
+    u8 *statusBase;
     void **slot;
     void *obj;
     void *inner;
@@ -3284,38 +3284,33 @@ void *fn_800CB27C(void) {
 
     if (gBattleReplayActive != 0) {
         p = (s8 *)((u8 *)gBattleReplayScene + 0x1A8);
-        if (*p != 0) {
-            return p;
+        if (*p == 0) {
+            return 0;
         }
-        return 0;
+        return p;
     }
 
     base = (u8 *)gBattle;
     slot = (void **)(base + 0x56C);
     bits = *Item_GetFlagsPtr(slot);
-    if ((bits & 0x20000000000ULL) != 0) {
-        base += 0x49C;
-        if (Status_Test(base, 8) != 0) {
-            if (Status_Test(base, 9) == 0) {
+    if ((bits & 0x200ULL) != 0) {
+        statusBase = base + 0x49C;
+        if (Status_Test(statusBase, 8) != 0) {
+            if (Status_Test(statusBase, 9) == 0) {
                 return 0;
             }
         }
     }
 
-    if (slot == NULL) {
-        return 0;
-    }
-    obj = *slot;
-    if (obj == NULL) {
-        return 0;
-    }
-    if (obj != NULL) {
-        inner = *(void **)obj;
-    } else {
-        inner = 0;
-    }
-    if (inner != NULL) {
-        return (u8 *)inner + 4;
+    if (slot != NULL) {
+        obj = *slot;
+        if (obj != NULL) {
+            inner = obj != NULL ? *(void **)obj : 0;
+            if (inner != NULL) {
+                return (u8 *)inner + 4;
+            }
+            return 0;
+        }
     }
     return 0;
 }
@@ -10411,8 +10406,8 @@ void fn_800DFC2C(void *arg0) {
     fn_800E01EC(*(s32 *)((u8 *)arg0 + 8), (*(s32 *)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 2)), (u8 *)&spC);
 }
 
+#pragma optimization_level 3
 #pragma cplusplus on
-#pragma use_lmw_stmw on
 extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char *arg3) {
     u8 fn_800DF298(void *, const char *);
     u8 fn_800DF258(void *, const char *);
@@ -10436,22 +10431,20 @@ extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char 
         s32 count;
         void **items;
     };
-    void *item;
+    List *list;
+    const char *name;
+    const char *filter;
+    u8 flag;
     s32 off;
     u32 match;
+    void *item;
     s32 i;
     s32 count;
-    u8 flag;
-    const char *filter;
-    const char *name;
-    Cb *cb;
-    List *list;
 
     list = (List *)arg0;
-    cb = (Cb *)arg1;
     name = arg2;
     filter = arg3;
-    cb->v9();
+    ((Cb *)arg1)->v9();
     flag = 0;
     if (filter == 0 || Str_Cmp(filter, lbl_80271B50) == 0) {
         flag = 1;
@@ -10464,7 +10457,7 @@ extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char 
         item = *(void **)((u8 *)list->items + off);
         if (fn_800DF298(item, name) != 0) {
             if (match != 0 || fn_800DF258(item, filter) != 0) {
-                cb->v5(item);
+                ((Cb *)arg1)->v5(item);
                 count += 1;
             }
         }
@@ -10473,8 +10466,8 @@ extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char 
     }
     return count;
 }
-#pragma use_lmw_stmw reset
 #pragma cplusplus reset
+#pragma optimization_level reset
 
 #pragma cplusplus on
 extern "C" void fn_800DFD64(void *arg0) {
