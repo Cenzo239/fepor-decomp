@@ -5954,6 +5954,7 @@ void fn_800D6874(void) {
 
 }
 
+#pragma scheduling off
 void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
     u8 v;
     void *mid;
@@ -5964,6 +5965,7 @@ void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 0xC) = mid;
 }
+#pragma scheduling reset
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
     struct Tag { u8 b; } tag;
     M2C_UNK String_InitFromRange(u32 *, char *, char *, void *, struct Tag);
@@ -18157,7 +18159,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     u32 fn_800FCF48(u8, u8);
     extern u32 gBattle[];
     extern u8 lbl_80272F44[], gBattleMap[], gUnits[], gBattleState[];
-    void *outptr = arg1;
+    void *out = arg1;
     u8 *cfg;
     u8 *unit;
     s32 total;
@@ -18240,7 +18242,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
     percent = (s32)((10.0f * (f32)remaining) / maxhp);
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
-    *(s32 *)((u8 *)outptr + 8) = score;
+    *(s32 *)((u8 *)out + 8) = score;
 }
 #pragma optimization_level reset
 s32 fn_800F6B10(void *arg0, u8 arg1) {
