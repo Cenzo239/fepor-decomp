@@ -381,7 +381,7 @@ void *fn_800C412C(void *arg0, s16 arg1)
     return obj;
 }
 
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
 void fn_800C418C(void) {
     void fn_800056CC(const char *, ...);
     extern void *lbl_80367870;
@@ -407,7 +407,7 @@ void fn_800C418C(void) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level reset
 s32 fn_800C4240(s32 arg0) {
     s32 fn_800C5A48(s32, s32);
     extern s32 lbl_80367870;
@@ -9142,26 +9142,20 @@ void ListWin_HandleInput(void *list) {
 }
 
 s32 *fn_800DD87C(void *arg0, s32 *pos) {
-    s32 *buf;
-    s32 count;
-    s32 *end;
     s32 *src;
+    s32 *end;
     s32 *dst;
     s32 dist;
 
-    count = *(s32 *)((u8 *)arg0 + 4);
-    buf = *(s32 **)((u8 *)arg0 + 8);
-    end = buf + count;
+    end = *(s32 **)((u8 *)arg0 + 8) + *(s32 *)((u8 *)arg0 + 4);
     dist = end - pos;
     if (dist - 1 != 0) {
         src = pos + 1;
         dst = pos;
-        if (src < end) {
-            while (src < end) {
-                *dst = *src;
-                src++;
-                dst++;
-            }
+        while (src < end) {
+            *dst = *src;
+            src++;
+            dst++;
         }
     }
     *(s32 *)((u8 *)arg0 + 4) = *(s32 *)((u8 *)arg0 + 4) - 1;
@@ -22192,12 +22186,13 @@ entry=fn_800FB918(lbl_80273000,lbl_80273000+0x1A0,&key,&flag);
 return gAiCmdOk;
 }
 
+#pragma optimization_level 3
 u8 fn_800FB868(void) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 *gAiCmd;
     extern u8 gAiCmdOk;
     extern s32 gAiCmdIsAlt;
-    extern u8 lbl_8032B3C0[];
+    extern u8 gAiState[];
     extern u8 lbl_80273000[];
     extern u8 lbl_80272F90[];
     void *fn_800FB918(void *, void *, s32 *, u8 *);
@@ -22209,19 +22204,21 @@ u8 fn_800FB868(void) {
     u8 flag;
     s32 key;
     s32 gap;
+    s32 *pval;
 
-    obj = *(u8 **)lbl_802EF4C8;
+    obj = *(u8 **)gUiContext;
     entry = lbl_80272F90;
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     gAiCmdOk = 0;
     gAiCmdIsAlt = 0;
     entry += off;
+    pval = (s32 *)(entry + 8);
     gAiCmd = entry;
 
-    val = *(s32 *)(entry + 8);
+    val = *pval;
     if (val != 0) {
-        *(s16 *)(lbl_8032B3C0 + 4) = (s16)val;
+        *(s16 *)(gAiState + 4) = (s16)val;
     }
 
     key = *(s32 *)entry;
@@ -22231,7 +22228,7 @@ u8 fn_800FB868(void) {
 
     return gAiCmdOk;
 }
-
+#pragma optimization_level reset
 void fn_800FB918(void *arg0, void *arg1, s32 *arg2) {
     s32 count;
     s32 key;
