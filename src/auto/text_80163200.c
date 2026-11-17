@@ -15470,6 +15470,85 @@ void fn_8017F9A8(void) {
     fn_8005C8B4((u8 *)lbl_802788B8 + 0x122);
 }
 
+u32 fn_8017F9D4(void) {
+    u8 fn_80036B20(void *, s32);
+    void *Unit_GetSupportPartner(void *, s32);
+    u8 Unit_CountSupportPartners(void *);
+    extern u8 gUnitLists[];
+    void *unit;
+    void *next;
+    void *partner;
+    s32 i;
+    u8 count;
+    u8 found;
+    u32 result;
+
+    unit = *(void **)gUnitLists;
+    while (unit != NULL) {
+        next = *(void **)((u8 *)unit + 0x184);
+        count = Unit_CountSupportPartners(unit);
+        for (i = 0; i < count; i++) {
+            partner = Unit_GetSupportPartner(unit, i);
+            if (partner != NULL) {
+                switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+                case 0:
+                case 5:
+                    if (fn_80036B20(unit, i)) {
+                        found = 1;
+                        goto found1;
+                    }
+                    break;
+                }
+            }
+        }
+        found = 0;
+    found1:
+        if (found) {
+            found = 1;
+            break;
+        }
+        unit = next;
+    }
+    if (unit == NULL) {
+        found = 0;
+    }
+    result = (found != 0);
+    if (result != 0) {
+        return result;
+    }
+
+    unit = *(void **)(gUnitLists + 0x3C);
+    while (unit != NULL) {
+        next = *(void **)((u8 *)unit + 0x184);
+        count = Unit_CountSupportPartners(unit);
+        for (i = 0; i < count; i++) {
+            partner = Unit_GetSupportPartner(unit, i);
+            if (partner != NULL) {
+                switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+                case 0:
+                case 5:
+                    if (fn_80036B20(unit, i)) {
+                        found = 1;
+                        goto found2;
+                    }
+                    break;
+                }
+            }
+        }
+        found = 0;
+    found2:
+        if (found) {
+            found = 1;
+            break;
+        }
+        unit = next;
+    }
+    if (unit == NULL) {
+        found = 0;
+    }
+    return (found != 0);
+}
+
 void *fn_8017FB80(u32 arg0) {
     void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, u32);
