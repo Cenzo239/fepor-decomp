@@ -4232,6 +4232,7 @@ s32 fn_800B7A2C(u32 arg0) {
 
 #pragma cplusplus on
 extern "C" s32 fn_800B7A80(void) {
+    #pragma global_optimizer off
     #pragma opt_common_subs off
     struct Obj {
         u8 pad[8];
@@ -4298,6 +4299,7 @@ extern "C" s32 fn_800B7A80(void) {
     }
 
     #pragma opt_common_subs reset
+    #pragma global_optimizer reset
     return 1;
 }
 #pragma cplusplus reset
@@ -7670,6 +7672,63 @@ s32 ScriptCmd_UnitSet(u8 id, s32 mid, s32 val) {
     return val;
 }
 
+s32 fn_800BD704(u8 id,u32 property) {
+extern u16 gUnits[];
+f32 fn_80037904(void *,s32);
+u8 *unit; void *person; void *p; s32 bonus; s32 value;
+if(id)unit=(u8 *)gUnits+(id-1)*0x280;else unit=0;
+if(!unit || !(person=M2C_FIELD(unit,void **,0x188)))return 0;
+switch(property){
+case 0: case 48: return 0;
+case 1: p=M2C_FIELD(unit,void **,388); return p?M2C_FIELD(p,u8 *,0x198):0;
+case 2: p=M2C_FIELD(unit,void **,384); return p?M2C_FIELD(p,u8 *,0x198):0;
+case 3: return M2C_FIELD(M2C_FIELD(unit,void **,0x190),u8 *,8);
+case 4: p=M2C_FIELD(unit,void **,0x194);return p?M2C_FIELD(p,u8 *,0x198):0;
+case 5: return M2C_FIELD(unit,u8 *,0x198);
+case 6: return M2C_FIELD(unit,s8 *,0x19a);
+case 7: return (u8)fn_800386B0(unit);
+case 8: bonus=(u8)Status_Test(unit+0x1bc,9)?100:0;value = (s8)fn_8003C114(unit); return value + bonus;
+case 9: return M2C_FIELD(unit,s8 *,0x19e);
+case 10: return M2C_FIELD(unit,s8 *,0x19f);
+case 11: return (s32)(100.0f*fn_80037904(unit,-1));
+case 12: return (s8)Unit_GetMaxHp(unit);
+case 13: return M2C_FIELD(unit,s8 *,0x1a8);
+case 14: return (s8)Unit_GetCarryWtLimit(unit);
+case 15: return (s8)Unit_GetMagAtk(unit);
+case 16: return (s8)fn_8003AF28(unit);
+case 17: return (s8)fn_8003AEB0(unit);
+case 18: return (s8)fn_8003ACF8(unit);
+case 19: return (s8)fn_8003AA40(unit);
+case 20: return (s8)fn_8003A778(unit);
+case 21: return (s8)Unit_GetCon(unit);
+case 22: return (s8)Unit_GetMov(unit);
+case 23: return (s8)fn_8003A1C4(unit);
+case 24: return M2C_FIELD(unit,u16 *,552);
+case 25: return M2C_FIELD(unit,u16 *,554);
+case 26: return M2C_FIELD(unit,u16 *,558);
+case 27: return M2C_FIELD(unit,u16 *,560);
+case 28: return M2C_FIELD(unit,u16 *,562);
+case 29: return M2C_FIELD(unit,u8 *,564);
+case 30: return M2C_FIELD(unit,u8 *,565);
+case 31: return (u8)Ai_GetFactionBehavior(unit+0x236);
+case 32: return M2C_FIELD(person,u16 *,0x18);
+case 33: return M2C_FIELD(M2C_FIELD(unit,void **,0x18c),u16 *,0x38);
+case 34: return M2C_FIELD(unit,u8 *,0x199);
+case 35: return (u8)Unit_GetWpnExp(unit,0);
+case 36: return (u8)Unit_GetWpnExp(unit,1);
+case 37: return (u8)Unit_GetWpnExp(unit,2);
+case 38: return (u8)Unit_GetWpnExp(unit,3);
+case 39: return (u8)Unit_GetWpnExp(unit,4);
+case 40: return (u8)Unit_GetWpnExp(unit,5);
+case 41: return (u8)Unit_GetWpnExp(unit,6);
+case 42: return (u8)Unit_GetWpnExp(unit,7);
+case 43: if((u8)Status_Test(unit+0x1bc,0x28))return (u8)Unit_GetWpnExp(unit,7);return 0;
+case 44: return (u8)Status_Test(unit+0x1bc,0x22)!=0;
+default: break;
+}
+return 0;
+}
+
 void fn_800BDA9C(u8 *arg0, void *arg1)
 {
     extern u8 Stream_ReadU8(void *);
@@ -8037,7 +8096,7 @@ s32 Battle_CheckEndFlags(void) {
 }
 
 #pragma optimization_level 3
-s32 fn_800BE3CC(void *arg0, void *arg1, u8 arg2, s32 arg3) {
+s32 fn_800BE3CC(void *unitA, void *unitB, u8 mode, s32 parent) {
     void *Event_NextEntry(void *);
     void *Event_GetString(void *, u32);
     void *Person_GetByPid(void);
@@ -8048,32 +8107,23 @@ s32 fn_800BE3CC(void *arg0, void *arg1, u8 arg2, s32 arg3) {
     void *Res_GetByName(void *);
     void fn_8011D908(void *, s32);
     extern s16 gTalkState[];
-    s16 *state;
-    void *unitA;
-    void *unitB;
-    u8 mode;
-    s32 parent;
     void *entry;
-    void *personA;
-    void *personB;
-    void *statePerson0;
-    void *statePerson1;
+    s16 *state;
+    void *personA, *personB, *statePerson0, *statePerson1;
+    void *proc;
+    void *msg;
     u8 found;
 
-    unitA = arg0;
-    unitB = arg1;
-    mode = arg2;
-    parent = arg3;
     if (unitA == 0 || unitB == 0) {
         return 0;
     }
     state = gTalkState;
-    state[3] = *(u16 *)((u8 *)unitA + 0x18);
     state[4] = *(u16 *)((u8 *)unitB + 0x18);
+    state[3] = *(u16 *)((u8 *)unitA + 0x18);
     state[0] = mode;
 
     entry = Event_NextEntry(0);
-    while (entry != 0) {
+    while (entry) {
         if (*(s8 *)((u8 *)entry + 0xC) == 0xD) {
             if (gTalkState[0] != *(s16 *)((u8 *)entry + 0x18)) {
                 found = 0;
@@ -8092,7 +8142,7 @@ s32 fn_800BE3CC(void *arg0, void *arg1, u8 arg2, s32 arg3) {
                     found = 0;
                 }
             }
-            if (found == 0) {
+            if ((u32)found == 0) {
 
             } else {
                 found = 1;
@@ -8103,17 +8153,17 @@ s32 fn_800BE3CC(void *arg0, void *arg1, u8 arg2, s32 arg3) {
     }
     found = 0;
 check:
-    if (found == 0) {
+    if ((short)found == 0) {
 
     } else {
-        entry = Process_CreateChild(E_EventCaller_script, parent);
-        *(s32 *)((u8 *)entry + 0x34) = 0xD;
-        *(s32 *)((u8 *)entry + 0x38) = (s32)Talk_MatchesStoredPair;
+        proc = Process_CreateChild(E_EventCaller_script, parent);
+        *(s32 *)((u8 *)proc + 0x34) = 0xD;
+        *(s32 *)((u8 *)proc + 0x38) = (s32)Talk_MatchesStoredPair;
         return 1;
     }
-    entry = fn_800A8524(unitA, unitB, mode);
-    if (Res_GetByName(entry) != 0) {
-        fn_8011D908(entry, parent);
+    msg = fn_800A8524(unitA, unitB, mode);
+    if (Res_GetByName(msg) != 0) {
+        fn_8011D908(msg, parent);
         return 1;
     }
     return 0;
