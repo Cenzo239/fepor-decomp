@@ -3076,33 +3076,24 @@ void fn_8018B6A4(void *arg0) {
 }
 
 void fn_8018B6DC(void *arg0) {
-    f32 fn_80059EB8(s32, s32, f32, f32);
-    f32 Math_Lerp(u8, f32, f32, f32, f32);
-    extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036AD44;
-    f32 temp_f1;
-    s32 temp_r29;
-    s32 temp_r30;
-    s32 temp_r31;
-    s32 temp_r4;
-    u8 temp_r4_2;
-    u8 temp_r4_3;
-    u8 temp_r4_4;
-
-    M2C_FIELD(arg0, s32 *, 0x44) = (s32) (M2C_FIELD(arg0, s32 *, 0x44) + 1);
-    temp_r31 = M2C_FIELD(arg0, s32 *, 0x30) + 0x1C;
-    temp_r4 = M2C_FIELD(arg0, s32 *, 0x40);
-    if ((s32) M2C_FIELD(arg0, s32 *, 0x44) >= temp_r4) {
-        M2C_FIELD(arg0, s32 *, 0x44) = temp_r4;
-        Process_ClearFunc();
-    }
-    temp_f1 = fn_80059EB8(M2C_FIELD(arg0, s32 *, 0x40), M2C_FIELD(arg0, s32 *, 0x44), lbl_8036ACEC, lbl_8036AD44);
-    temp_r4_2 = M2C_FIELD(arg0, u8 *, 0x34);
-    temp_r4_3 = M2C_FIELD(arg0, u8 *, 0x35);
-    temp_r30 = (s32) Math_Lerp(temp_r4_2, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, u8 *, 0x38), lbl_8036AD44, temp_f1);
-    temp_r4_4 = M2C_FIELD(arg0, u8 *, 0x36);
-    temp_r29 = (s32) Math_Lerp(temp_r4_3, (f32) temp_r4_3, (f32) M2C_FIELD(arg0, u8 *, 0x39), lbl_8036AD44, temp_f1);
-    Model_SetColor(temp_r31, (u8) temp_r30, (u8) temp_r29, (u8) (s32) Math_Lerp(temp_r4_4, (f32) temp_r4_4, (f32) M2C_FIELD(arg0, u8 *, 0x3A), lbl_8036AD44, temp_f1));
+f32 fn_80059EB8(s32,s32,f32,f32);
+f32 Math_Lerp(f32,f32,f32,f32);
+void Process_ClearFunc(void*);
+void Model_SetColor(void*,u8,u8,u8);
+extern f32 lbl_8036ACEC,lbl_8036AD44;
+f32 t;
+s32 green,red;
+void *model;
+*(s32*)((u8*)arg0+0x44)+=1;
+model=(u8*)*(void**)((u8*)arg0+0x30)+0x1C;
+if(*(s32*)((u8*)arg0+0x44)>=*(s32*)((u8*)arg0+0x40)){
+*(s32*)((u8*)arg0+0x44)=*(s32*)((u8*)arg0+0x40);
+Process_ClearFunc(arg0);
+}
+t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),lbl_8036ACEC,lbl_8036AD44);
+red=(s32)Math_Lerp((f32)*((u8*)arg0+0x34),(f32)*((u8*)arg0+0x38),lbl_8036AD44,t);
+green=(s32)Math_Lerp((f32)*((u8*)arg0+0x35),(f32)*((u8*)arg0+0x39),lbl_8036AD44,t);
+Model_SetColor(model,(u8)red,(u8)green,(u8)(s32)Math_Lerp((f32)*((u8*)arg0+0x36),(f32)*((u8*)arg0+0x3A),lbl_8036AD44,t));
 }
 
 void fn_8018B854(void *arg0) {
@@ -4930,15 +4921,7 @@ extern "C" void fn_801903D8(void *arg0, s32 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80190440(void *arg0) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-    };
+void fn_80190440(void *arg0) {
     void fn_8013F748(void *, void *, void *);
     void PSMTXScale(f32 *, f32, f32, f32);
     void fn_80202574(f32 *, void *, f32, f32, f32);
@@ -4957,27 +4940,27 @@ extern "C" void fn_80190440(void *arg0) {
     void Prim2D_EndPrim(void);
     void Prim2D_ClearCallbacks(void);
     void fn_801902A8(void *);
+    extern f32 lbl_8036ADFC;
+    extern f32 lbl_8036AE10;
+    extern f32 lbl_8036AE14;
     f32 mtx[12];
     void *self;
-    void *rect;
     s16 w;
     s16 h;
 
     self = arg0;
-    ((Obj *)self)->v5();
+    (*(void (**)(void *))(*(u32 *)self + 0x14))(self);
     if (*(u32 *)((u8 *)self + 0x3C) != 0) {
-        rect = (u8 *)self + 0x4A;
         w = (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12));
         h = (s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14));
         *(s16 *)((u8 *)self + 0x4A) = 0;
         *(s16 *)((u8 *)self + 0x4C) = 0;
         *(s16 *)((u8 *)self + 0x4E) = w;
         *(s16 *)((u8 *)self + 0x50) = h;
-        fn_8013F748(self, rect, rect);
-        rect = (u8 *)self + 0x4E;
-        fn_8013F748(self, rect, rect);
-        PSMTXScale(mtx, 1.0f, 1.0f, 1.0f);
-        fn_80202574(mtx, (u8 *)*(void **)((u8 *)self + 0x40) + 0x10, 0.0f, 0.0f, -10.0f);
+        fn_8013F748(self, (u8 *)self + 0x4A, (u8 *)self + 0x4A);
+        fn_8013F748(self, (u8 *)self + 0x4E, (u8 *)self + 0x4E);
+        PSMTXScale(mtx, lbl_8036ADFC, lbl_8036ADFC, lbl_8036ADFC);
+        fn_80202574(mtx, (u8 *)*(void **)((u8 *)self + 0x40) + 0x10, lbl_8036AE10, lbl_8036AE10, lbl_8036AE14);
         Model_SetColor(*(void **)((u8 *)self + 0x40), 0x80, 0x80, 0x80);
         Model_SetAlpha(*(void **)((u8 *)self + 0x40), fn_80138908(self));
         fn_800609DC(*(void **)((u8 *)self + 0x40));
@@ -12221,6 +12204,62 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
     }
     fn_80129888(sel, fn_800C0658());
     MapObjEvent_Remove(gMapObjEventList, (s8) sel[0], (s8) sel[1], 0x22);
+    fn_80013864();
+    return 1;
+}
+
+s32 fn_8019EEE0(s32 x, s32 y) {
+    extern u32 gUiInputFlags;
+    extern u8 gMapObjEventList[];
+    s32 Map_Get(void);
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
+    void fn_80044450(s32, s32);
+    void fn_800056A0(s8);
+    void fn_80016180(void);
+    void fn_80013864(void);
+    s32 MapObj_IsHidden(void *);
+    void MapObj_Hide(void *, u8);
+    s32 fn_800C0658(void);
+    void MapObjEvent_Push(void *, s32, s32, u8, s32);
+    void fn_80129A84(void *, s32);
+    void *obj;
+    s32 linked[10];
+    s32 count;
+    s32 i;
+    s32 entry;
+    s32 *p;
+    u8 *sel;
+
+    if (gUiInputFlags & 1) {
+        obj = Map_FindObjAt((void *) Map_Get(), x, y, 0x800, 0x10);
+        if (obj == NULL) {
+            fn_800056A0(0);
+        } else {
+            MapObjEvent_Push(gMapObjEventList, (s8) x, (s8) y, 0x22, 0);
+            count = Map_CollectLinkedObjs((void *) Map_Get(), obj, linked);
+            p = linked;
+            i = 0;
+            while (i < count) {
+                entry = *p;
+                if ((u8) MapObj_IsHidden((void *) entry) == 0) {
+                    MapObj_Hide((void *) entry, 0);
+                }
+                p++;
+                i++;
+            }
+            fn_80044450(Map_Get(), 1);
+            fn_80016180();
+        }
+        return 0;
+    }
+    sel = (u8 *) Map_FindObjAt((void *) Map_Get(), x, y, 0x800, 0x10);
+    if (sel == NULL) {
+        fn_800056A0(0);
+        return 0;
+    }
+    fn_80129A84(sel, fn_800C0658());
+    MapObjEvent_Push(gMapObjEventList, (s8) sel[0], (s8) sel[1], 0x22, 0);
     fn_80013864();
     return 1;
 }
