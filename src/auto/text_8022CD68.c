@@ -242,9 +242,9 @@ OSReport(lbl_80282B20);
 lo=OSGetArenaLo();
 hi=OSGetArenaHi();
 lo=fn_80204CE4(lo,hi,1);
+hi &= ~31;
 OSSetArenaLo(lo);
 lo=(lo+31)&~31;
-hi &= ~31;
 fn_80204CD4(fn_80204D54(lo,hi));
 OSSetArenaLo(hi);
 }
@@ -1970,6 +1970,163 @@ s32 __FileWrite(void *file, const char *buf, u32 n) {
     return 0;
 }
 
+s32 __pformatter(s32 (*write)(void *, const char *, u32), void *context, const char *format, register va_list args) {
+    typedef struct {
+        u8 just, sign, prec_set, alt, size, conv;
+        u16 pad;
+        s32 width, precision;
+    } Format;
+    void *__va_arg(void *,s32);
+    char *parse_format_80233B44(const char *,void *,void *);
+    char *longlong2str_802335D8(s64,char *,Format);
+    char *long2str_802338EC(s32,char *,Format);
+    char *float2str(char *,Format,f64);
+    char *double2hex(char *,Format,f64);
+    s32 wcstombs(char *,const void *,u32);
+    s32 strlen(const char *);
+    char *strchr(const char *,s32);
+    void *memchr(const void *,s32,u32);
+    extern const char double2hex_strpool[37];
+    char buffer[512];
+    Format f;
+    char pad=' ';
+    char blank;
+    const char *cursor=format;
+    const char *percent;
+    char *text;
+    s32 total=0;
+    s32 number;
+    s64 wide;
+    s32 length, count;
+    f64 real;
+    void *ptr;
+    while(*cursor) {
+        percent=strchr(cursor,'%');
+        if(!percent) {
+            length=strlen(cursor);
+            total+=length;
+            if(length && ((u32)write(context,cursor,length)==0U)) return -1;
+            break;
+        }
+        length=percent-cursor;
+        total+=length;
+        if(length && ((u32)write(context,cursor,length)==0U)) return -1;
+        cursor=parse_format_80233B44(percent,args,&f);
+        switch(f.conv) {
+        case 'd': case 'i':
+            if(f.size==3) number=*(s32 *)__va_arg(args,1);
+            else if(f.size==4) wide=*(s64 *)__va_arg(args,2);
+            else number=*(s32 *)__va_arg(args,1);
+            if(f.size==2) number=(s16)number;
+            if(f.size==1) number=(s8)number;
+            if(f.size==4) {
+                text=longlong2str_802335D8(wide,buffer+512,f);
+                if(!text) goto invalid;
+            } else {
+                text=long2str_802338EC(number,buffer+512,f);
+                if(!text) goto invalid;
+            }
+            length=buffer+511-text;
+            break;
+        case 'o': case 'u': case 'x': case 'X':
+            if(f.size==3) number=*(u32 *)__va_arg(args,1);
+            else if(f.size==4) wide=*(u64 *)__va_arg(args,2);
+            else number=*(u32 *)__va_arg(args,1);
+            if(f.size==2) number=(u16)number;
+            if(f.size==1) number=(u8)number;
+            if(f.size==4) {
+                text=longlong2str_802335D8(wide,buffer+512,f);
+                if(!text) goto invalid;
+            } else {
+                text=long2str_802338EC(number,buffer+512,f);
+                if(!text) goto invalid;
+            }
+            length=buffer+511-text;
+            break;
+        case 'f': case 'F': case 'e': case 'E': case 'g': case 'G':
+            if(f.size==5) real=*(long double *)__va_arg(args,3);
+            else real=*(double *)__va_arg(args,3);
+            text=float2str(buffer+512,f,real);
+            if(!text) goto invalid;
+            length=buffer+511-text;
+            break;
+        case 'a': case 'A':
+            if(f.size==5) real=*(long double *)__va_arg(args,3);
+            else real=*(double *)__va_arg(args,3);
+            text=double2hex(buffer+512,f,real);
+            if(!text) goto invalid;
+            length=buffer+511-text;
+            break;
+        case 's':
+            if(f.size==6) {
+                const void *str=*(void **)__va_arg(args,1);
+                if(!str) str=L"";
+                if(wcstombs(buffer,str,512)<0) goto invalid;
+                text=buffer;
+            } else text=*(char **)__va_arg(args,1);
+            if(!text) text=(char *)double2hex_strpool;
+            if(f.alt) {
+                length=(u8)*text++;
+                if(f.prec_set && length>f.precision) length=f.precision;
+            } else if(f.prec_set) {
+                length=f.precision;
+                ptr=memchr(text,0,length);
+                if(ptr) length=(char *)ptr-text;
+            } else length=strlen(text);
+            break;
+        case 'n':
+            ptr=*(void **)__va_arg(args,1);
+            switch(f.size) {
+            case 0: *(s32 *)ptr=total; break;
+            case 2: *(s16 *)ptr=total; break;
+            case 3: *(s32 *)ptr=total; break;
+            case 4: *(s64 *)ptr=total; break;
+            }
+            continue;
+        case 'c':
+            text=buffer;
+            buffer[0]=*(s32 *)__va_arg(args,1);
+            length=1;
+            break;
+        case '%':
+            text=buffer;
+            buffer[0]='%';
+            length=1;
+            break;
+        case 0xFF: case 'h': case 't':
+        default:
+invalid:
+            length=strlen(percent);
+            total+=length;
+            if(length && ((u32)write(context,percent,length)==0U)) return -1;
+            return total;
+        }
+        count=length;
+        if(f.just) {
+            pad=f.just==2?'0':' ';
+            if((*text=='+' || *text=='-' || *text==' ') && pad=='0') {
+                if(((u32)write(context,text,1)==0U)) return -1;
+                text++;
+                length--;
+            }
+            while(count<f.width) {
+                if(((u32)write(context,&pad,1)==0U)) return -1;
+                count++;
+            }
+        }
+        if(length && ((u32)write(context,text,length)==0U)) return -1;
+        if(!f.just) {
+            while(count<f.width) {
+                blank=' ';
+                if(((u32)write(context,&blank,1)==0U)) return -1;
+                count++;
+            }
+        }
+        total+=count;
+    }
+    return total;
+}
+
 char *float2str(char *buffer, void *format, f64 value)
 {
     void fn_8022E660(void *, void *);
@@ -2405,61 +2562,184 @@ char *double2hex(char *buffer, void *format, f64 value) {
     return out;
 }
 
-char* long2str_802338EC(s32 value, char* buffer, u32 flags) {
-    char* result = buffer;
-    s32 absValue = value;
-    s32 sign = 0;
-    int digitCount = 0;
-    char* ptr = buffer;
-    s32 base = (flags & 0x10) ? 16 : ((flags & 0x8) ? 8 : 10);
-    u32 tempFlags = flags;
+#pragma use_lmw_stmw on
+#pragma optimization_level 3
+char *longlong2str_802335D8(s64 value, char *buffer, void *format)
+{
+    typedef struct {
+        u8 just;
+        u8 sign;
+        u8 prec_set;
+        u8 alt;
+        u8 size;
+        u8 conv;
+        u16 pad;
+        s32 width;
+        s32 precision;
+    } Format;
+    u64 __div2u(u32, u32, u32, u32);
+    u64 __mod2u(u32, u32, u32, u32);
 
-    // Handle special case of zero
-    if (value == 0) {
-        *buffer = '0';
-        *(buffer + 1) = '\0';
-        return buffer;
+    s64 val;
+    u64 base;
+    char *out;
+    s32 count;
+    s32 negative;
+    Format *f;
+    char *buf;
+    s32 digit;
+
+    val = value;
+    f = (Format *)format;
+    buf = buffer;
+    out = buf;
+    negative = 0;
+    count = 0;
+    *--out = 0;
+
+    if (val == 0 && f->precision == 0 && !(f->alt && f->conv == 'o')) {
+        return out;
     }
 
-    // Handle negative numbers
-    if (value < 0) {
-        absValue = -value;
-        sign = 1;
+    switch (f->conv) {
+    case 'd':
+    case 'i':
+        base = 10;
+        if (val < 0) {
+            val = -val;
+            negative = 1;
+        }
+        break;
+    case 'o':
+        base = 8;
+        f->sign = 0;
+        break;
+    case 'u':
+        base = 10;
+        f->sign = 0;
+        break;
+    case 'x':
+    case 'X':
+        base = 16;
+        f->sign = 0;
+        break;
     }
 
-    ptr = buffer;
-
-    // Convert digits to buffer in reverse order
-    while (absValue > 0) {
-        char digit = absValue % base;
-        if (digit > 9) {
+    do {
+        digit = (u32)__mod2u((u32)((u64)val >> 32), (u32)(u64)val,
+                             (u32)(base >> 32), (u32)base);
+        val = (s64)__div2u((u32)((u64)val >> 32), (u32)(u64)val,
+                           (u32)(base >> 32), (u32)base);
+        if (digit < 10) {
+            digit += '0';
+        } else if (f->conv == 'x') {
             digit += 'a' - 10;
         } else {
-            digit += '0';
+            digit += 'A' - 10;
         }
-        *(ptr++) = digit;
-        absValue /= base;
-        digitCount++;
+        *--out = (char)digit;
+        count++;
+    } while (val != 0);
+
+    if (base == 8 && f->alt && *out != '0') {
+        *--out = '0';
+        count++;
     }
 
-    // Add minus sign if needed
-    if (sign) {
-        *(ptr++) = '-';
-    }
-    
-    *(ptr--) = '\0';  // Null terminate
-
-    // Reverse the string
-    while (ptr > buffer) {
-        char temp = *ptr;
-        *buffer = temp;
-        ptr--;
-        buffer++;
+    if (f->just == 2) {
+        f->precision = f->width;
+        if (negative || f->sign) {
+            f->precision--;
+        }
+        if (base == 16 && f->alt) {
+            f->precision -= 2;
+        }
     }
 
-    return result;
+    {
+        s32 precision = f->precision;
+        if (precision + (buf - out) > 509) {
+            return 0;
+        }
+
+        while (count < precision) {
+            *--out = '0';
+            count++;
+        }
+    }
+
+    if (base == 16 && f->alt) {
+        *--out = f->conv;
+        *--out = '0';
+    }
+
+    if (negative) {
+        *--out = '-';
+    } else if (f->sign == 1) {
+        *--out = '+';
+    } else if (f->sign == 2) {
+        *--out = ' ';
+    }
+
+    return out;
 }
-
+#pragma optimization_level 3
+char *long2str_802338EC(s32 value,char *buffer,void *format) {
+    typedef struct {
+        u8 just, sign, prec_set, alt, size, conv;
+        u16 pad;
+        s32 width, precision;
+    } Format;
+    Format *f=(Format *)format;
+    u32 base;
+    char *out=buffer;
+    s32 count;
+    s32 negative;
+    s32 precision;
+    s32 digit;
+    u8 conv;
+    negative=0;
+    count=0;
+    *--out=0;
+    if(value==0 && f->precision==0 && !(f->alt && f->conv=='o')) return out;
+    switch(f->conv) {
+    case 'd': case 'i':
+        base=10;
+        if(value<0) { value=-value; negative=1; }
+        break;
+    case 'o': base=8; f->sign=0; break;
+    case 'u': base=10; f->sign=0; break;
+    case 'x': case 'X': base=16; f->sign=0; break;
+    }
+    conv=f->conv;
+    do {
+        digit=(u32)value%base;
+        value=(u32)value/base;
+        if(digit<10) digit+='0';
+        else if(conv=='x') digit+='a'-10;
+        else digit+='A'-10;
+        *--out=digit;
+        count++;
+    } while((u32)value!=0);
+    if(base==8 && f->alt && *out!='0') { *--out='0'; count++; }
+    if(f->just==2) {
+        f->precision=f->width;
+        if(negative || f->sign) f->precision--;
+        if(base==16 && f->alt) f->precision-=2;
+    }
+    precision=f->precision;
+    if(precision+(buffer-out)>509) return 0;
+    while(count<precision) { *--out='0'; count++; }
+    if(base==16 && f->alt) {
+        *--out=f->conv;
+        *--out='0';
+    }
+    if(negative) *--out='-';
+    else if(f->sign==1) *--out='+';
+    else if(f->sign==2) *--out=' ';
+    return out;
+}
+#pragma optimization_level reset
 char *parse_format_80233B44(char *format, void *ap, void *out)
 {
     void *__va_arg(void *, s32);
@@ -2684,7 +2964,7 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     *(s32 *)((u8 *)out + 12) = f.precision;
     return p + 1;
 }
-
+#pragma optimization_level reset
 s32 __StringRead(void *isc, s32 ch, s32 act)
 {
     char ret;
