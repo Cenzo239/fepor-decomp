@@ -2389,19 +2389,49 @@ use30708:
     Process_Goto(r29, 0xA);
     *(s16 *)((char *)r29 + 0x48) = 0;
 }
-void fn_801EEBC0(void* arg0) {
-    // This is clearly a complex initialization function with multiple operations,
-    // not just simple vtable setting. It involves several calls and conditional
-    // logic based on different data locations.
-    if (arg0 != NULL) {
-        void** obj = (void**)arg0;
-        // Set up some basic structure elements
-        obj[0x11] = *(void**)((char*)obj + 0x44);
-        obj[0x12] = *(void**)((char*)obj + 0x40);
-        obj[0x13] = *(void**)((char*)obj + 0x3c);
-        obj[0x14] = *(void**)((char*)obj + 0x38);
-        obj[0x15] = *(void**)((char*)obj + 0x34);
-    }
+void fn_801EEBC0(void *arg0) {
+void Process_Unlink(void*); void fn_801C777C(void); void fn_801C6DB8(void*);
+void fn_801C4440(void); void Process_UnlinkByKey(void*); void fn_800616A0(void*);
+void fn_8005C7E8(void*); void *Map_Get(void); void fn_80041254(void*);
+void fn_800408A8(s32); void fn_8004084C(void); void fn_801F1888(void*);
+void fn_800D5894(void*); void Array_Destroy(void*,void*,s32,s32);
+void String_Destroy(void*,s32); void BinTree_Destroy(void*,void*);
+void Heap_Free(void*); void fn_8005376C(void);
+extern u8 lbl_8029A5A0[];
+u8 *obj;
+Process_Unlink(*(void**)((u8*)arg0+0x44));
+Process_Unlink(*(void**)((u8*)arg0+0x40));
+fn_801C777C();
+obj=*(u8**)((u8*)arg0+0x48);
+if(*(void**)(obj+0xB4)) {
+fn_801C6DB8(*(void**)(obj+0xB8));
+fn_801C4440();
+Process_UnlinkByKey(lbl_8029A5A0);
+fn_800616A0(*(void**)(obj+0xBC)); *(void**)(obj+0xBC)=0;
+fn_800616A0(*(void**)(obj+0xB8)); *(void**)(obj+0xB8)=0;
+fn_8005C7E8(*(void**)(obj+0xB4)); *(void**)(obj+0xB4)=0;
+}
+obj=*(u8**)((u8*)arg0+0x48);
+if(*(void**)(obj+0xD0)) {
+fn_800616A0(*(void**)(obj+0xD0)); *(void**)(obj+0xD0)=0;
+fn_8005C7E8(*(void**)(obj+0xCC));
+}
+fn_80041254(Map_Get());
+fn_800408A8(0); fn_8004084C();
+obj=*(u8**)((u8*)arg0+0x48);
+fn_801F1888(obj+4); fn_800D5894(obj);
+obj=*(u8**)((u8*)arg0+0x48);
+if(obj) {
+Array_Destroy(obj+140,String_Destroy,12,2);
+Array_Destroy(obj+116,String_Destroy,12,2);
+Array_Destroy(obj+92,String_Destroy,12,2);
+Array_Destroy(obj+68,String_Destroy,12,2);
+Array_Destroy(obj+44,String_Destroy,12,2);
+Array_Destroy(obj+20,String_Destroy,12,2);
+if(obj+4) {if(obj+4) {if(*(void**)(obj+8)) BinTree_Destroy(obj+4,*(void**)(obj+8));}}
+Heap_Free(obj);
+}
+fn_8005376C();
 }
 
 void fn_801EED74(void) {
