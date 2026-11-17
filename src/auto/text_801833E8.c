@@ -6168,6 +6168,7 @@ void fn_801919B8(void *arg0) {
 #pragma cplusplus reset
 }
 
+#pragma opt_common_subs off
 void fn_80191AD0(void *panel) {
     extern u8 gUiContext[], gBattleState[], gConvoy[];
     void *Ui_FindChild(void *, s32, s32);
@@ -6190,7 +6191,6 @@ void fn_80191AD0(void *panel) {
     void *child;
     s32 text;
     s32 price;
-    u8 *state;
     void *entry;
 
     widget = Ui_FindChild(panel, 4, 0);
@@ -6199,9 +6199,7 @@ void fn_80191AD0(void *panel) {
         list = M2C_FIELD(panel, void **, 0x50);
         item = M2C_FIELD(Ui_FindChild(panel, 2, 0), void **, 0x3C);
         price = (s32)(u16)UnitRef_GetValue(item);
-        state = gBattleState;
-        price = (s32)(M2C_FIELD(panel, f32 *, 0x64) * (f32)price);
-        fn_8014D268(state, M2C_FIELD(state, s32 *, 0x18) - price);
+        fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) - (s32)(*(f32 *)((u8 *)panel + 0x64) * (f32)price));
         if (M2C_FIELD(list, s16 *, 0x4E) != 0x7FFF) {
             s32 selected = Ui_ListGetSelected(list);
             entry = M2C_FIELD(item, void **, 0);
@@ -6236,7 +6234,7 @@ void fn_80191AD0(void *panel) {
     }
     }
 }
-
+#pragma opt_common_subs reset
 void fn_80191C7C(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
