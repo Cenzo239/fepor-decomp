@@ -893,19 +893,20 @@ s32 fn_8021371C(s32 arg0) {
 void fn_80213760(u32 arg0, u32 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
+    extern volatile u16 __PADRegs[];
     s32 enabled;
-    u32 ha;
-    u32 t;
+    u8 *base;
+    u16 t;
 
     enabled = OSDisableInterrupts();
-    ha = 0xCC000000U;
-    t = *(u16 *)(ha + 0x5030);
-    *(u16 *)(ha + 0x5030) = (t & ~0x3FFu) | (arg0 >> 16);
-    t = *(u16 *)(ha + 0x5032);
-    t = __rlwinm(t, 0, 27, 15);
-    *(u16 *)(ha + 0x5032) = t | (arg0 & 0xFFFF);
-    t = *(u16 *)(ha + 0x5036);
-    *(u16 *)(ha + 0x5036) = (t & ~0x7FFFu) | ((arg1 >> 5) & 0xFFFF);
+    base = (u8 *)0xCC000000;
+    t = *(u16 *)(base + 0x5030);
+    OS_DSPRegs[0x18] = (t & ~0x3FFu) | (arg0 >> 16);
+    t = __PADRegs[0x19];
+    t = (u16)__rlwinm(t, 0, 27, 15);
+    __PADRegs[0x19] = t | (u16)arg0;
+    t = *(volatile u16 *)0xCC005036;
+    *(volatile u16 *)0xCC005036 = (t & ~0x7FFFu) | (u16)(arg1 >> 5);
     OSRestoreInterrupts(enabled);
 }
 
@@ -2026,31 +2027,28 @@ void fn_80216860(void *arg0) {
     }
 
     cur = (struct Node *)lbl_80368738;
-    goto check;
-loop:
-    if ((u32)node->unk04 < (u32)cur->unk04) {
-        node->prev = cur->prev;
-        cur->prev = node;
-        node->next = cur;
-        tmp = node->prev;
-        if (tmp == NULL) {
-            lbl_80368738 = node;
-        } else {
-            tmp->next = node;
+    while (cur != NULL) {
+        if ((u32)node->unk04 < (u32)cur->unk04) {
+            node->prev = cur->prev;
+            cur->prev = node;
+            node->next = cur;
+            tmp = node->prev;
+            if (tmp == NULL) {
+                lbl_80368738 = node;
+            } else {
+                tmp->next = node;
+            }
+            break;
         }
-    } else {
         cur = cur->next;
-check:
-        if (cur != NULL) {
-            goto loop;
-        }
-        if (cur == NULL) {
-            ((struct Node *)lbl_80368734)->next = node;
-            node->next = NULL;
-            node->prev = (struct Node *)lbl_80368734;
-            lbl_80368734 = node;
-        }
     }
+    if (cur != NULL) {
+        return;
+    }
+    ((struct Node *)lbl_80368734)->next = node;
+    node->next = NULL;
+    node->prev = (struct Node *)lbl_80368734;
+    lbl_80368734 = node;
 }
 
 void fn_80216900(void *arg0) {
