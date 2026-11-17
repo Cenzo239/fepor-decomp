@@ -2107,16 +2107,19 @@ void fn_8002D7BC(s32 arg0) {
     void fn_800C1060(s32);
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
+    s32 var_r4;
     s32 temp;
-    u8 var_r4;
+    s32 a, b;
 
     Map_RefreshUnitMap(gBattleMap);
     var_r4 = 1;
     temp = (u8)(gMapBlendMode - 1);
-    if (((u32)((1 | ~temp) - ((u32)(1 - temp) >> 1)) >> 31) == 0) {
+    b = var_r4 | ~temp;
+    a = (u32)(1 - temp) >> 1;
+    if (((u32)(b - a) >> 31) == 0) {
         var_r4 = 0;
     }
-    if (var_r4 != 0) {
+    if ((u8)var_r4 != 0) {
         fn_800C1060(arg0);
     }
 }
