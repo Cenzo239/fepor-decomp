@@ -475,31 +475,23 @@ s32 fn_80096B80(void) {
  return result;
 }
 
-s32 fn_80096C18(void)
-{
-  extern u8 lbl_80330EAC[];
-  extern u8 lbl_803120C0[];
-  extern u8 *lbl_80367504;
-  u8 *new_var[2];
-  extern f32 lbl_803697BC;
-  if ((*((u32 *) (lbl_80330EAC + 0xCAC))) & 0x100)
-  {
-    new_var[0] = lbl_803120C0 + 0x14;
-  }
-  else
-    if (lbl_80367504 != NULL)
-  {
-    new_var[0] = lbl_80367504;
-  }
-  else
-  {
-    new_var[0] = new_var[1];
-  }
-  if (new_var[1] == NULL)
-  {
-    return 0;
-  }
-  return lbl_803697BC == (*((f32 *) (new_var[0] + 0x10)));
+s32 fn_80096C18(void) {
+    extern u8 gBattle[];
+    extern u8 gEventSlots[];
+    extern u8 *lbl_80367504;
+    extern u8 *lbl_80367500;
+    extern f32 lbl_803697BC;
+    u8 *p[2];
+
+    if (*(u32 *)(gBattle + 0xCAC) & 0x100) {
+        p[0] = gEventSlots + 0x14;
+    } else if (lbl_80367504 != NULL) {
+        p[0] = lbl_80367504;
+    } else {
+        p[0] = lbl_80367500;
+    }
+    if (p[0] == NULL) return 0;
+    return lbl_803697BC == *(f32 *)(p[0] + 0x10);
 }
 
 u8 fn_80096C78(s32 arg0)
@@ -716,6 +708,52 @@ done:
  return count;
 }
 
+u32 Event_GetCmdFlags(s32 arg0) {
+ extern u8 gBattle[];
+ void fn_800973F0(void *, s32);
+ s16 saved;
+ u8 *s;
+ s32 flags;
+ s=gBattle+0x8A0;
+ flags=0;
+ saved=*(s16 *)s;
+ *(s16 *)s=arg0;
+ *(s16 *)s=(s16)(*(s16 *)s)+1;
+ for (;;) {
+ switch(s[(*(s16 *)s * 4)+4]) {
+ case 0: case 0x20: case 0x21: case 0x22: case 0x24:
+ case 0x50: case 0x51: case 0x52: case 0x54: goto done;
+ case 9: case 0x15:
+ if ((s8)*(s16 *)(s+(*(s16 *)s*4)+6)==0) flags|=0x20000;
+ break;
+ default: fn_800973F0(&flags,s[(*(s16 *)s*4)+4]); break;
+ }
+ ++*(s16 *)s;
+ }
+done:
+ *(s16 *)s=saved;
+ if(flags & 0x10000004) {
+ u8 found;
+ *(s16 *)s=arg0;
+ *(s16 *)s=(s16)arg0+1;
+ found=0;
+ for (;;) {
+ switch(s[(*(s16 *)s*4)+4]) {
+ case 0: case 0x20: case 0x21: case 0x22: case 0x24:
+ case 0x50: case 0x51: case 0x52: goto done2;
+ case 9: case 0x15:
+ if ((s8)*(s16 *)(s+(*(s16 *)s*4)+6)>0) found=1;
+ break;
+ }
+ ++*(s16 *)s;
+ }
+done2:
+ *(s16 *)s=saved;
+ if(found) flags|=1;
+ }
+ return flags;
+}
+
 void fn_800973F0(void *arg0, s32 arg1)
 {
     u16* ptr = (u16*)arg0;
@@ -755,12 +793,66 @@ void fn_800973F0(void *arg0, s32 arg1)
     }
 }
 
-void Event_AdvanceCmd(void *arg0) {
-    if (arg0 == NULL) {
-        return;
+void Event_AdvanceCmd(s32 arg0) {
+    extern u8 gBattle[];
+    extern u8 gEventSlots[];
+    extern f32 lbl_803697BC;
+    s16 *idx;
+    s16 saved;
+    s32 c;
+    s32 t;
+    s8 param;
+    f32 sum;
+    f32 lim;
+    u8 *slots;
+
+    idx = (s16 *)(gBattle + 0x8A0);
+    saved = *idx;
+    if (arg0 >= 0) {
+        *idx = arg0;
+        for (;;) {
+            t = *idx;
+            slots = gEventSlots + (t - t);
+            *idx = t + 1;
+            c = ((u8 *)idx)[*idx * 4 + 4];
+            switch (c) {
+            case 9:
+                param = (s8)((s16 *)idx)[*idx * 2 + 3];
+                sum = *(f32 *)(gEventSlots + 0x10) + (f32)param;
+                lim = *(f32 *)(gEventSlots + 0x8);
+                *(f32 *)(gEventSlots + 0x10) = sum;
+                *(f32 *)(gEventSlots + 0xC) = (f32)param;
+                if (sum > lim) {
+                    *(f32 *)(gEventSlots + 0x10) = lim;
+                }
+                if (*(f32 *)(gEventSlots + 0x10) < lbl_803697BC) {
+                    *(f32 *)(gEventSlots + 0x10) = lbl_803697BC;
+                }
+                break;
+            case 0x15:
+                param = (s8)((s16 *)idx)[*idx * 2 + 3];
+                sum = *(f32 *)(slots + 0x24) + (f32)param;
+                lim = *(f32 *)(slots + 0x1C);
+                *(f32 *)(slots + 0x24) = sum;
+                *(f32 *)(slots + 0x20) = (f32)param;
+                if (sum > lim) {
+                    *(f32 *)(slots + 0x24) = lim;
+                }
+                if (*(f32 *)(slots + 0x24) < lbl_803697BC) {
+                    *(f32 *)(slots + 0x24) = lbl_803697BC;
+                }
+                break;
+            case 0:
+            case 0x50:
+            case 0x51:
+            case 0x52:
+                goto done;
+            }
+            *idx = *idx + 1;
+        }
     }
-    
-    *(u16*)((char*)arg0 + 0x30) = 0;
+ done:
+    *idx = saved;
 }
 
 typedef struct {
