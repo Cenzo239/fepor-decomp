@@ -1014,9 +1014,36 @@ void GetTypeCallback(s32 chan, u32 type) {
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
 
-s32 SIGetType(void)
-{
-    return __OSGetSystemTime();
+u32 SIGetType(s32 chan) {
+s64 __OSGetSystemTime(void);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+extern u32 Type_8029EFC0[4];
+extern s32 Si_8029EFAC[];
+extern s64 TypeTime_8033E368[4];
+static u32 cmdTypeAndStatus;
+s32 enabled;
+u32 type;
+s64 elapsed;
+enabled=OSDisableInterrupts();
+type=Type_8029EFC0[chan];
+elapsed=__OSGetSystemTime()-TypeTime_8033E368[chan];
+if(Si_8029EFAC[1] & (0x80>>chan)) {
+if(type!=8) {
+TypeTime_8033E368[chan]=__OSGetSystemTime();
+OSRestoreInterrupts(enabled); return type;
+}
+{Type_8029EFC0[chan]=0x80; type=0x80;}
+} else {
+if(elapsed <= (s64)(50*((*(volatile u32*)0x800000F8/4)/1000)) && type!=8) {
+OSRestoreInterrupts(enabled); return type;
+}
+if(elapsed <= (s64)(75*((*(volatile u32*)0x800000F8/4)/1000))) Type_8029EFC0[chan]=0x80;
+else {Type_8029EFC0[chan]=0x80; type=0x80;}
+}
+TypeTime_8033E368[chan]=__OSGetSystemTime();
+SITransfer(chan,&cmdTypeAndStatus,1,&Type_8029EFC0[chan],3,GetTypeCallback,(s64)((65*((*(volatile u32*)0x800000F8/4)/125000))/8));
+OSRestoreInterrupts(enabled); return type;
 }
 
 extern u16 lbl_802822F0[200];
