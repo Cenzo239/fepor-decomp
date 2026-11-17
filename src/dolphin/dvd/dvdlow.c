@@ -34,6 +34,7 @@ u8 ErrorCode2Num(s32);
 
 volatile u32 __DIRegs[16] : 0xCC006000;
 volatile u32 DI_CFG : 0xCC006004;
+volatile u32 __PIRegs[13] : 0xCC003000;
 
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
@@ -636,7 +637,7 @@ s32 fn_8020C118(u32 command, void *callback)
     return 1;
 }
 
-BOOL fn_8020C1A4(s32 enable, u32 size, void *callback) {
+BOOL fn_8020C1A4(s32 arg0, u32 arg1, void *callback) {
     extern void *Callback_80368538;
     u32 timeout;
     u32 cmd;
@@ -644,40 +645,45 @@ BOOL fn_8020C1A4(s32 enable, u32 size, void *callback) {
     Callback_80368538 = callback;
     StopAtNextInt_80368530 = 0;
 
-    if (enable != 0) {
+    if (arg0 != 0) {
         cmd = 0x10000;
         cmd |= 0xE4000000;
-        __DIRegs[2] = size | cmd;
+        __DIRegs[2] = arg1 | cmd;
         __DIRegs[7] = 1;
 
         timeout = (*(u32 *)0x800000F8 >> 2) * 10;
         OSCreateAlarm(AlarmForTimeout_80339ED8);
-        OSSetAlarm(AlarmForTimeout_80339ED8, (s64)(u32)timeout, AlarmHandlerForTimeout);
+        OSSetAlarm(AlarmForTimeout_80339ED8, (s64)timeout, AlarmHandlerForTimeout);
     }
 
-    return 1;
+    return TRUE;
 }
 
+#pragma use_lmw_stmw on
+#pragma optimization_level 3
 void DVDLowReset(void) {
- extern s32 ResetOccurred_80368548;
- extern s64 LastResetEnd_80368540;
- s64 __OSGetSystemTime(void);
- s64 start;
- u32 delay;
- u32 old;
- volatile u32 *reg;
- *(volatile u32 *)0xCC006004 = 2;
- reg = (volatile u32 *)0xCC003000;
- old = reg[9];
- *(reg += 9) = (old & ~4) | 1;
- start = __OSGetSystemTime();
- delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
- while (__OSGetSystemTime() - start < (s64)delay) {}
- *reg = old | 5;
- ResetOccurred_80368548 = 1;
- LastResetEnd_80368540 = __OSGetSystemTime();
-}
+  extern s32 ResetOccurred_80368548;
+  extern s64 LastResetEnd_80368540;
+  s64 __OSGetSystemTime(void);
+  s64 start;
+  u32 delay;
+  u32 old;
+  u32 *reg;
 
+  reg = (u32 *)0xCC003000;
+  *(u32 *)0xCC006004 = 2;
+  old = *(u32 *)0xCC003024;
+  *(reg += 9) = (old & ~4) | 1;
+  start = __OSGetSystemTime();
+  delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
+  while (__OSGetSystemTime() - start < (s64)delay) {
+  }
+  *reg = old | 5;
+  ResetOccurred_80368548 = 1;
+  LastResetEnd_80368540 = __OSGetSystemTime();
+}
+#pragma optimization_level reset
+#pragma use_lmw_stmw reset
 BOOL fn_8020C2FC(void) {
     StopAtNextInt_80368530 = TRUE;
     lbl_80368550 = TRUE;
