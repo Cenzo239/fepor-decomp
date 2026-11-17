@@ -274,16 +274,17 @@ typedef struct String {
     }
    }
   };
-class SortIterator {
-public:
-    s32 *ptr;
-    s32 state;
-    SortIterator(const SortIterator &o) { ptr=o.ptr; state=o.state; }
-    SortIterator &operator+=(s32 n) { ptr+=n; return *this; }
-    SortIterator operator+(s32 n) const { return SortIterator(*this) += n; }
-    SortOutputProxy operator*() const { return SortOutputProxy(ptr,state); }
-    SortIterator &operator++() { ++ptr; return *this; }
-};
+  class SortIterator {
+  public:
+      s32 *ptr;
+      s32 state;
+      SortIterator(const SortIterator &o) { ptr=o.ptr; state=o.state; }
+      SortIterator &operator+=(s32 n) { ptr+=n; return *this; }
+      SortIterator operator+(s32 n) const { return SortIterator(*this) += n; }
+      SortOutputProxy operator*() const { return SortOutputProxy(ptr,state); }
+      SortIterator &operator++() { ++ptr; return *this; }
+      SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
+  };
 class SortCompare {
 public:
     u8 value;
@@ -9960,8 +9961,8 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
 void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
     void *Heap_Alloc(u32);
     void Tree_InsertFixup(void *, void *);
-    M2C_UNK abort(void);
-    M2C_UNK fprintf(void *, const char *, ...);
+    void abort(void);
+    void fprintf(void *, const char *, ...);
     void memcpy(void *, void *, u32);
     extern char __files[];
     extern char lbl_80271860[];
@@ -9975,7 +9976,7 @@ void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
     u8 *buf;
     u32 sentinel;
 
-    sentinel = -2;
+    sentinel = 0xFFFFFFFE;
     if (*(u32 *)((char *)tree + 0) > sentinel) {
         fprintf(__files + 0xA0, lbl_80271860 + 0x1B0);
         abort();
@@ -14654,6 +14655,35 @@ void *fn_800E8488(void *arg0, s16 arg1)
         }
     }
     return self;
+}
+
+void *fn_800E8504(void *arg0, s32 arg1, String *arg2) {
+    extern u8 lbl_8028E200[];
+    extern char gUiClassNames[];
+    void *Layer_Create(void *,void *,void *,void *);
+    void *Heap_Alloc(u32);
+    void *String_Init(void *,char *,void *);
+    String temp;
+    u8 scratch;
+    s8 made;
+    void *layer;
+    u8 *self=arg0;
+    ObjList_Init(self);
+    *(void **)(self+0x10)=lbl_8028E200;
+    *(u32 *)(self+0x14)=0; *(u32 *)(self+0x18)=0; *(u32 *)(self+0x1C)=0; *(u32 *)(self+0x18)=0;
+    *(u32 *)(self+0x30)=0; *(u32 *)(self+0x34)=0; *(u32 *)(self+0x38)=0; *(u32 *)(self+0x34)=0;
+    *(u32 *)(self+0x20)=0; *(s32 *)(self+0x24)=arg1; *(u32 *)(self+0x44)=0;
+    String_AssignCStr((String *)(self+0x30),gUiClassNames+0xB3,strlen(gUiClassNames+0xB3));
+    made=0; self[0x3C]=1; self[0x3D]=1;
+    layer=Heap_Alloc(0x78);
+    if(layer) { String_Init(&temp,gUiClassNames+0xB4,&scratch); made=1; layer=Layer_Create(layer,self,&temp,0); }
+    ((void (*)(void *,void *))(*(void ***)(self+0x10))[7])(self,layer);
+    if(made) String_Destroy(&temp,-1);
+    if(String_Compare(arg2,0,arg2->size,gUiClassNames+0xB3,strlen(gUiClassNames+0xB3))) {
+      ((void (*)(void *,void *))(*(void ***)(self+0x10))[14])(self,arg2);
+      ((void (*)(void *))(*(void ***)(self+0x10))[2])(self);
+    }
+    self[0x2C]=0; return self;
 }
 
 void *fn_800E86A4(void *arg0, s16 arg1) {
