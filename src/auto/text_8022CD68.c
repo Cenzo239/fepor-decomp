@@ -1667,66 +1667,80 @@ do { *++db=*++tail; } while(--size);
 }
 }
 
-void fn_80231C20(void *dst, const void *src, u32 count) {
-    u8 *out;
-    const u8 *in;
-    u32 align;
-    u32 blocks;
-    u32 words;
-    u32 a;
-    u32 b;
-
-    out = (u8 *)dst + count;
-    in = (const u8 *)src + count;
-    align = (u32)out & 3U;
-
-    if (align != 0) {
-        count -= align;
-        do {
-            *--out = *--in;
-        } while (--align != 0);
+void fn_80231C20(u8 *dst, u8 *src, u32 n)
+{
+  u8 *s;
+  u32 new_var2;
+  u8 *d;
+  unsigned int i;
+  u8 *new_var;
+  s = src + n;
+  d = dst + n;
+  i = ((u32) d) & 3;
+  if (i != 0)
+  {
+    n -= i;
+    do
+    {
+      *(--d) = *(--s);
     }
-
-    blocks = count >> 5;
-    if (blocks != 0) {
-        do {
-            a = *(const u32 *)(in - 4);
-            b = *(const u32 *)(in - 8);
-            *(u32 *)(out - 4) = a;
-            a = *(const u32 *)(in - 0xC);
-            *(u32 *)(out - 8) = b;
-            b = *(const u32 *)(in - 0x10);
-            *(u32 *)(out - 0xC) = a;
-            a = *(const u32 *)(in - 0x14);
-            *(u32 *)(out - 0x10) = b;
-            b = *(const u32 *)(in - 0x18);
-            *(u32 *)(out - 0x14) = a;
-            a = *(const u32 *)(in - 0x1C);
-            *(u32 *)(out - 0x18) = b;
-            in -= 0x20;
-            b = *(const u32 *)in;
-            *(u32 *)(out - 0x1C) = a;
-            out -= 0x20;
-            *(u32 *)out = b;
-        } while (--blocks != 0);
+    while (--i);
+  }
+  i = n >> 5;
+  if (i != 0)
+  {
+    do
+    {
+      u32 b;
+      u32 a;
+      new_var = d - 4;
+      a = *((u32 *) (s - 4));
+      --i;
+      ;
+      new_var2 = *((u32 *) (s - 12));
+      *((u32 *) new_var) = a;
+      a = new_var2;
+      if ((s && s) && s)
+      {
+      }
+      *((u32 *) (d - 8)) = *((u32 *) (s - 8));
+      b = *((u32 *) (s - 16));
+      *((u32 *) (d - 12)) = a;
+      a = *((u32 *) (s - 20));
+      *((u32 *) (d - 16)) = b;
+      b = *((u32 *) (s - 24));
+      *((u32 *) (d - 20)) = a;
+      a = *((u32 *) (s - 28));
+      *((u32 *) (d - 24)) = b;
+      b = *((u32 *) (s - 32));
+      s -= 32;
+      *((u32 *) (d - 28)) = a;
+      d -= 32;
+      *((u32 *) d) = b;
     }
-
-    words = (count >> 2) & 7U;
-    if (words != 0) {
-        do {
-            in -= 4;
-            a = *(const u32 *)in;
-            out -= 4;
-            *(u32 *)out = a;
-        } while (--words != 0);
+    while (i != 0);
+  }
+  i = (n >> 2) & 7;
+  if (i != 0)
+  {
+    do
+    {
+      s -= 4;
+      --i;
+      d -= 4;
+      *((u32 *) d) = *((u32 *) s);
     }
-
-    count &= 3U;
-    if (count != 0) {
-        do {
-            *--out = *--in;
-        } while (--count != 0);
+    while (i != 0);
+  }
+  n &= 3;
+  if (n != 0)
+  {
+    do
+    {
+      *(--d) = *(--s);
     }
+    while (--n);
+  }
 }
 
 void fn_80231CC8(void *dst, const void *src, u32 size) {
@@ -2845,21 +2859,14 @@ char *strcpy(char *dst, const char *src) {
     u32 mask;
     register u32 w;
     register u32 c;
-
-    if ((align = (u32)d & 3) != ((u32)s & 3)) {
-        goto bytecopy;
-    }
+    if (((u32)d & 3) != (align = (u32)s & 3)) goto bytecopy;
     if (align != 0) {
         c = *d = *s;
-        if (c == 0) {
-            return dst;
-        }
+        if (c == 0) return dst;
         for (align = 3 - align; align != 0; align--) {
             c = *++s;
             *++d = c;
-            if (c == 0) {
-                return dst;
-            }
+            if (c == 0) return dst;
         }
         d++;
         s++;
@@ -2876,9 +2883,7 @@ char *strcpy(char *dst, const char *src) {
     }
 bytecopy:
     c = *d = *s;
-    if (c == 0) {
-        return dst;
-    }
+    if (c == 0) return dst;
     do {
         c = *++s;
         *++d = c;
@@ -3769,26 +3774,27 @@ f64 floor(f64 x) {
 }
 
 extern f64 lbl_8036C148;
+#pragma global_optimizer off
 f64 fn_802382EC(s32 *arg0, f64 farg0) {
 s32 high, magnitude;
 u32 low;
-f64 *px = &farg0;
 high=*(s32*)&farg0;
 low=((u32*)&farg0)[1];
 *arg0=0;
 magnitude=high & 0x7fffffff;
 if (magnitude>=0x7ff00000 || (magnitude | low)==0) return farg0;
 if (magnitude<0x100000) {
+f64 scale = lbl_8036C148;
 *arg0=-54;
-*px = farg0 * lbl_8036C148;
-high=*(s32*)px;
+farg0=farg0*scale;
+high=*(s32*)&farg0;
 magnitude=high & 0x7fffffff;
 }
 *arg0 += (magnitude>>20)-0x3fe;
 *(s32*)&farg0=(high & 0x800fffff) | 0x3fe00000;
 return farg0;
 }
-
+#pragma global_optimizer on
 extern f64 lbl_8036C150;
 extern f64 lbl_8036C158;
 extern f64 lbl_8036C160;
