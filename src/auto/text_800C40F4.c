@@ -14520,6 +14520,65 @@ gCardWork.tick=OSGetTick()-gCardWork.tick;msg=gCardStrings+0xac;tickRate=*(u32*)
 DebugPrint(msg,gCardWork.tick/conv);
 }}
 
+void fn_800EA694(s32 proc) {
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 padA01B;
+        u8 fileInfo[0x14];
+        u8 padA030[4];
+        s32 unkA034;
+    };
+    void Process_Goto(s32, s32);
+    void Process_Unlink(s32);
+    void Card_AsyncDone(void);
+    s32 fn_8021BF10(s32, void *, void *);
+    s32 fn_8021C708(void *, s32, s32, s32, void *);
+    void *memset(void *, s32, s32);
+    extern struct CardWork gCardWork;
+    extern char gCardStrings[];
+    u8 skip;
+    u8 *hi;
+    void *fileInfo;
+
+    if (gCardWork.result < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork.busy = 0;
+        skip = 1;
+    } else {
+        skip = 0;
+    }
+    if (skip == 0) {
+        hi = (u8 *)&gCardWork + 0x10000;
+        fileInfo = hi - 0x5FE4;
+        gCardWork.result = fn_8021BF10(*(s32 *)(hi - 0x6000), gCardStrings + 0x70, fileInfo);
+        switch (gCardWork.result) {
+        case -4:
+            Process_Unlink(proc);
+            break;
+        default:
+            memset((void *)gCardWork.unkA034, 0x55555555, SAVE_CARD_FILE_SIZE);
+            gCardWork.unkA019 = 1;
+            gCardWork.busy = 1;
+            gCardWork.result = fn_8021C708(fileInfo, gCardWork.unkA034, SAVE_CARD_FILE_SIZE,
+                                          0, Card_AsyncDone);
+            if (gCardWork.result < 0) {
+                Process_Goto(proc, 0x63);
+                gCardWork.busy = 0;
+            }
+            break;
+        }
+    }
+}
+
 void fn_800EA7CC(s32 arg0, s32 arg1) {
     struct CardWork {
         u8 workArea[0xA000];
