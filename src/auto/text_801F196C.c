@@ -4960,13 +4960,10 @@ void fn_801FB428(void *arg0, void *arg1, s32 (*compare)(void *, void *))
 
 #pragma peephole off
 void StaffRoll_VecClear(u32 *arg0) {
-    u8 (*start)[8];
-    u8 (*end)[8];
-
-    start = (u8 (*)[8])arg0[2];
-    end = start + arg0[1];
-    while (start < end) {
-        start++;
+    u8 *start = (u8 *)arg0[2];
+    u8 *end = start + (arg0[1] << 3);
+    while (end > start) {
+        end -= 8;
     }
     arg0[1] = 0;
 }
