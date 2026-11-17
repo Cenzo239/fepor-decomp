@@ -1899,15 +1899,21 @@ extern Map_802CA518 gBattleMap;
 
 f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 {
+    typedef struct {
+        char pad[0x42D4];
+        s16 val;
+    } T;
     u8 *base;
     u8 *row;
     s32 index;
+    T *t;
 
     base = (u8 *)arg0 + 0x20000;
     row = (u8 *)arg0 + 0x10000;
     index = arg1 + (arg2 << 6);
     index = (u8)arg3 + (index << 2);
-    return (f32)*(s16 *)(row + (index << 1) + 0x42D4) * *(f32 *)(base - 0x3D2C);
+    t = (T *)(row + (index << 1));
+    return (f32)t->val * *(f32 *)(base - 0x3D2C);
 }
 
 #pragma fp_contract on
@@ -2747,15 +2753,15 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
         u8 pad[0x40];
         u8 id;
     };
-    void *item;
+    u8 *base;
     struct Row *row;
-    s8 idx;
+    void *item;
 
     if ((((u32 *)gPadInput)[1] & 0x3000003U) == 0) {
         return;
     }
-    idx = *(s8 *)((u8 *)arg1 + 0x62);
-    row = (struct Row *)((u8 *)arg1 + idx);
+    base = (u8 *)arg1;
+    row = (struct Row *)(base + *(s8 *)(base + 0x62));
     item = GfxEnt_Get(row->id);
     (*(Item **)((u8 *)item + 0x34))->v12(arg1, item);
 }
@@ -3970,22 +3976,24 @@ void fn_80026E2C(s32 arg0) {
 
 void fn_80026E88(s32 arg0) {
     void fn_8003EA24(void *, u8, u8);
-    void fn_80183D7C(void *, s32, s8, s8, s32);
+    void fn_80183D7C(void *, s32, s16, s16, s32);
     extern u8 lbl_802EF4C8[];
     u8 *ctx;
+    s8 *sctx;
     void *unit;
     s32 saved;
     u8 b0;
     u8 b1;
 
     ctx = lbl_802EF4C8;
+    sctx = (s8 *)lbl_802EF4C8;
     unit = *(void **)ctx;
     b0 = ctx[0xF];
     saved = *(s32 *)((u8 *)unit + 0x194);
     b1 = ctx[0x10];
     *(s32 *)(ctx + 4) = saved;
     fn_8003EA24(unit, b0, b1);
-    fn_80183D7C(*(void **)lbl_802EF4C8, saved, (s8)ctx[0xF], (s8)ctx[0x10], arg0);
+    fn_80183D7C(*(void **)lbl_802EF4C8, saved, sctx[0xF], sctx[0x10], arg0);
 }
 
 void fn_80026F08(void)
