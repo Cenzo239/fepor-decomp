@@ -1396,6 +1396,98 @@ void Battle_CalcHits(s32 self) {
         }
     }
 }
+
+void fn_8003670C(void *arg0) {
+    void *Unit_FindByPerson(void *);
+
+    u8 *unit;
+    u8 *partner;
+    u8 *person;
+    u8 *partnerPerson;
+    u8 *table;
+    u8 *partnerTable;
+    s32 i;
+    s32 j;
+    s32 offset;
+    s32 partnerOffset;
+    s32 count;
+    s32 partnerCount;
+    s8 partnerIndex;
+
+    unit = (u8 *)arg0;
+    person = *(u8 **)(unit + 0x188);
+    table = *(u8 **)(person + 0x50);
+
+    if (table != 0) {
+        i = 0;
+        offset = 0;
+
+        while (i < (u8)*(u32 *)(table + 4)) {
+            person = *(u8 **)(unit + 0x188);
+            table = *(u8 **)(person + 0x50);
+
+            partner = (u8 *)Unit_FindByPerson(
+                *(void **)(table + offset + 8)
+            );
+
+            if (partner != 0) {
+                person = *(u8 **)(unit + 0x188);
+                partnerPerson = *(u8 **)(partner + 0x188);
+
+                j = 0;
+                partnerOffset = 0;
+
+                while (1) {
+                    table = *(u8 **)(partner + 0x188);
+                    table = *(u8 **)(table + 0x50);
+
+                    if (*(void **)(table + partnerOffset + 8) == person) {
+                        partnerIndex = (s8)j;
+                        break;
+                    }
+
+                    partnerOffset += 8;
+                    j++;
+
+                    partnerTable = *(u8 **)(partnerPerson + 0x50);
+
+                    if (partnerTable != 0) {
+                        partnerCount = (u8)*(u32 *)(partnerTable + 4);
+                    } else {
+                        partnerCount = 0;
+                    }
+
+                    if (j >= partnerCount) {
+                        partnerIndex = -1;
+                        break;
+                    }
+                }
+
+                if (partnerIndex >= 0) {
+                    unit[0x214 + i] = 0;
+                    partner[0x214 + partnerIndex] = 0;
+                }
+            }
+
+            offset += 8;
+            i++;
+
+            person = *(u8 **)(unit + 0x188);
+            table = *(u8 **)(person + 0x50);
+
+            if (table != 0) {
+                count = (u8)*(u32 *)(table + 4);
+            } else {
+                count = 0;
+            }
+
+            if (i >= count) {
+                break;
+            }
+        }
+    }
+}
+
 #pragma global_optimizer off
 void fn_80036834(u8 *arg0)
 {
@@ -13054,22 +13146,40 @@ void fn_80053D84(void *arg0) {
     M2C_FIELD(temp_r3, s32 *, 8) = (s32) (M2C_FIELD(temp_r3, s32 *, 8) | 0x80000000);
 }
 
-void fn_80053D98(void* arg0, s32 arg1) {
-    u16* r3;
-    void* temp_r3;
-    s32 var_r7;
-    
-    r3 = (u16*)((u8*)arg0 + 0x60);
-    var_r7 = *(u8*)r3;
-    *r3 += 1;
-    
-    temp_r3 = (u8*)arg0 + 0x20;
-    r3 = (u16*)((u8*)temp_r3 + (var_r7 * 2));
-    *r3 |= 0x8000;
-    
-    temp_r3 = (u8*)arg0 + 0x20;
-    r3 = (u16*)((u8*)temp_r3 + ((var_r7 + arg1) * 2));
-    *r3 |= 0x4000;
+void fn_80053D98(void *arg0, s32 arg1) {
+ void fn_80055D9C(void *);
+ void *Process_Create(void *, s32);
+ void fn_800616A0(void *);
+ void sprintf(void *, void *, ...);
+ void fn_8005C7C8(void *);
+ void fn_800C4588(void *);
+ void fn_80053E9C(void *);
+ void fn_80059138(void (*)(void *), void *, s32, s32);
+ extern u32 gGameFlags;
+ extern u8 lbl_80285968[];
+ extern u8 GActor_str[];
+ char buf[0x40];
+ void *obj;
+ void (*callback)(void *, void *);
+ obj=M2C_FIELD(arg0,void **,0x30);
+ callback=M2C_FIELD(obj,void (**)(void *,void *),0x44);
+ if(callback) callback(arg0,obj);
+ fn_80055D9C(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x48));
+ if(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),u32 *,8)&0x40000000) gGameFlags &= ~1U;
+ if(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x2C),u8 *,5)) {
+ void *proc=Process_Create(lbl_80285968,4);
+ M2C_FIELD(proc,s32 *,0x60)=0x708;
+ }
+ arg0=M2C_FIELD(arg0,void **,0x30);
+ if(M2C_FIELD(arg0,u32 *,8)&0x88000000) {
+ obj=M2C_FIELD(arg0,void **,0x5C);
+ if(obj) {
+ fn_800616A0(obj);
+ sprintf(buf,GActor_str+0x120,GActor_str+0x129,**(void ***)((u8 *)arg0+0x2C));
+ fn_8005C7C8(buf);
+ }
+ fn_800C4588(arg0);
+ } else fn_80059138(fn_80053E9C,arg0,1,2);
 }
 
 void fn_80053E9C(void *arg0) {
