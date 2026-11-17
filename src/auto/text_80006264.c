@@ -16,9 +16,16 @@ s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; do { if(*++a!=*++b) goto
 
 #pragma opt_unroll off
 void fn_80006298(u32 *dst, u32 val, u32 n) { n >>= 2; --dst; do { *++dst = val; } while (--n != 0); }
-#pragma optimize_for_size on
-void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) { u32 count = arg2 >> 3; arg0--; do { arg0[1]=arg1; arg0++; arg0[1]=arg1; arg0++; } while (--count); }
-#pragma optimize_for_size reset
+void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
+    u32 count;
+    u32 *p;
+    count = arg2 >> 3;
+    p = arg0 - 1;
+    do {
+        *(++p) = arg1;
+        *(++p) = arg1;
+    } while (--count != 0);
+}
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     register u32 tmp;
     dst--;
@@ -248,7 +255,6 @@ void fn_80006754(void)
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
     extern u32 lbl_8036712C;
-
     extern u64 OSGetTime(void);
 
     u32 count;
@@ -265,7 +271,6 @@ void fn_80006754(void)
     lbl_80367120 = high;
 
     time = OSGetTime();
-
     lbl_8036712C = (u32)time;
     lbl_80367128 = (u32)(time >> 32);
 }
@@ -2140,6 +2145,35 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
         *(u16 *)(*(u8 **)&gPrim2D + 0x20) | flags;
 }
 
+void fn_8000A03C(void *arg0, void *arg1, s8 arg2, u32 arg3) {
+void fn_80006298(void *,s32,u32);
+extern u16 gPrim2D;
+u32 *src;
+u32 b;
+u32 a;
+u8 *g;
+u32 tmp;
+u32 flags=arg3;
+if (arg0) {
+typedef struct { u32 words[8]; } Tex;
+*(Tex *)(*(u8 **)&gPrim2D+0x34)=*(Tex *)arg0;
+} else {
+fn_80006298(*(u8 **)&gPrim2D+0x34,0,0x20);
+if ((flags&3)==0) { flags &= 0xFFFC; tmp=flags|2; flags=tmp&0xFFFF; }
+}
+if (arg1) {
+g=*(u8 **)&gPrim2D;
+flags = (flags | 0x8000)&0xFFFF;
+*(Struct_8000B090 *)(g+0x54)=*(Struct_8000B090 *)arg1;
+(*(u8 **)&gPrim2D)[0x22]=arg2;
+} else {
+fn_80006298(*(u8 **)&gPrim2D+0x54,0,0xC);
+(*(u8 **)&gPrim2D)[0x22]=0xFF;
+}
+*(u16 *)(*(u8 **)&gPrim2D+0x20)&=0xFFFF7B0C;
+*(u16 *)(*(u8 **)&gPrim2D+0x20)|=flags;
+}
+
 #pragma global_optimizer off
 void Prim2D_SetTex(void *arg0, u32 arg1) {
     void fn_80006298(void *, s32, u32);
@@ -3483,7 +3517,8 @@ void *Process_FindByName(u8 *arg0) {
     u8 *entry;
     u8 *a;
     u8 *b;
-    s32 n;
+    s32 i;
+    s32 ctr;
     u32 diff;
     u32 raw1;
     u32 raw2;
@@ -3491,14 +3526,15 @@ void *Process_FindByName(u8 *arg0) {
     s32 c2;
 
     entry = gProcesses;
-    for (n = 0; n < 0x80; n++) {
+    i = 0;
+    for (ctr = 0x80; ctr != 0; ctr--) {
         if (*(u32 *)entry != 0) {
             a = *(u8 **)(entry + 0x14);
             b = arg0;
             goto cmp1_ld;
         cmp1:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c2 - c1);
+                diff = (u32)(c1 - c2);
                 goto cmp1_done;
             }
             a += 1;
@@ -3523,7 +3559,7 @@ void *Process_FindByName(u8 *arg0) {
             goto cmp2_ld;
         cmp2:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c2 - c1);
+                diff = (u32)(c1 - c2);
                 goto cmp2_done;
             }
             a += 1;
@@ -3542,6 +3578,7 @@ void *Process_FindByName(u8 *arg0) {
                 return entry;
             }
         }
+        i += 1;
         entry += 0x70;
     }
     return 0;
@@ -4147,7 +4184,7 @@ extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
 extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
-    extern u8 gProcesses[];
+    extern u8 lbl_802A66D8[];
     extern u8 lbl_80283828[];
     extern void *lbl_80367148;
     u8 *base;
@@ -4158,7 +4195,7 @@ void fn_8000CC88(void) {
     u8 ff;
     u32 zero;
 
-    base = gProcesses;
+    base = lbl_802A66D8;
     p = base;
     q = (u8 **)(base + 0x7000);
     neg1 = -1;
@@ -4227,27 +4264,23 @@ void fn_8000CD80(s32 arg0) {
 s32 Rand_TrueHit(s32 arg0) {
     struct RandSt { u16 a; u16 b; u16 c; };
     extern struct RandSt lbl_80367150;
-    struct RandSt *st;
-    s32 s0;
+    s32 sum;
+    s32 scaled;
+    u16 t6;
     s32 s1;
     s32 s2;
-    s32 t4;
-    s32 combined;
-    u16 t6;
-    s32 scaled;
-    s32 sum;
+    s32 s0;
+    struct RandSt *st;
 
     st = &lbl_80367150;
-
     s0 = lbl_80367150.a;
     s2 = st->c;
     s1 = st->b;
-    t4 = (s2 * 2) & 0xFFFE;
-    combined = (s1 << 11) + (s0 >> 5);
-    st->c = t4;
-    t6 = (u16)combined;
+    s2 = (s2 * 2) & 0xFFFE;
+    t6 = (u16)((s1 << 11) + (s0 >> 5));
+    st->c = s2;
     if (s1 & 0x8000) {
-        st->c = t4 + 1;
+        st->c = s2 + 1;
     }
     t6 ^= st->c;
     st->c = st->b;
@@ -4259,12 +4292,11 @@ s32 Rand_TrueHit(s32 arg0) {
     s0 = lbl_80367150.a;
     s2 = st->c;
     s1 = st->b;
-    t4 = (s2 * 2) & 0xFFFE;
-    combined = (s1 << 11) + (s0 >> 5);
-    st->c = t4;
-    t6 = (u16)combined;
+    s2 = (s2 * 2) & 0xFFFE;
+    t6 = (u16)((s1 << 11) + (s0 >> 5));
+    st->c = s2;
     if (s1 & 0x8000) {
-        st->c = t4 + 1;
+        st->c = s2 + 1;
     }
     t6 ^= st->c;
     st->c = st->b;
