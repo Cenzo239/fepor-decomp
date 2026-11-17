@@ -2360,6 +2360,45 @@ void fn_8021AE98(s32 chan, s32 result) {
     callback(chan,result);
 }
 
+s32 fn_8021AFD0(s32 chan, void *work, void *detach, void *callback) {
+extern u16 __CARDBlock[];
+s32 fn_8023A114(s32);
+s32 fn_802395BC(s32,void *);
+void fn_80239298(s32,void *);
+void OSCancelAlarm(void *);
+s32 EXILock(s32,s32,void *);
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+u8 *card;
+s32 enabled;
+if(chan<0||chan>=2) return -128;
+if(*(u8 *)0x800030E3&0x80) return -3;
+card=(u8 *)__CARDBlock+chan*0x110;
+enabled=OSDisableInterrupts();
+if(*(s32 *)(card+4)==-1) {OSRestoreInterrupts(enabled);return -1;}
+if(*(s32 *)card==0&&(fn_8023A114(chan)&8)) {OSRestoreInterrupts(enabled);return -2;}
+*(s32 *)(card+4)=-1;
+*(void **)(card+0x80)=work;
+*(void **)(card+0xC4)=detach;
+*(void **)(card+0xD0)=callback ? callback : (void *)fn_80216994;
+*(s32 *)(card+0xCC)=0;
+if(*(s32 *)card==0&&!fn_802395BC(chan,fn_802169CC)){
+*(s32 *)(card+4)=-3;
+OSRestoreInterrupts(enabled);return -3;
+}
+*(s32 *)(card+0x24)=0;
+*(s32 *)card=1;
+fn_80239298(chan,0);
+OSCancelAlarm(card+0xE0);
+*(s32 *)(card+0x84)=0;
+*(s32 *)(card+0x88)=0;
+OSRestoreInterrupts(enabled);
+*(void (**)(s32,s32))(card+0xDC)=fn_8021AE98;
+if(!EXILock(chan,0,__CARDLockCallback)) return 0;
+*(s32 *)(card+0xDC)=0;
+return fn_8021AA44(chan);
+}
+
 #pragma opt_strength_reduction off
 
 void fn_8021B170(s32 chan, s32 result) {
@@ -3803,51 +3842,36 @@ s32 Card_SetFileAttr(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u8 entry[0x40];
     s32 result;
     u8 e;
-    u32 bit40;
     u32 bit20;
+    u32 bit40;
     u32 a20;
-
-    if (((u8)arg2 & ~lbl_80366FF2) != 0) {
-        return -0xA;
-    }
+    if ((((u8) arg2) & (~lbl_80366FF2)) != 0) { return -0xA; }
     result = fn_8021D2D4(arg0, arg1, entry);
-    if (result < 0) {
-        return result;
-    }
+    if (result < 0) { return result; }
     e = entry[0x34];
     bit20 = e & 0x20;
+    if ((arg3 && arg3) && arg3) {}
     if (bit20 != 0) {
-        if (((u8)arg2 & 0x20) == 0) {
-            goto err;
-        }
+        if ((((u8) arg2) & 0x20) == 0) { goto err; }
     }
     bit40 = e & 0x40;
-    if ((arg3 && arg3) && arg3) {
-    }
     if (bit40 != 0) {
-        if (((u8)arg2 & 0x40) == 0) {
-        err:
-            return -0xA;
+        if ((((u8) arg2) & 0x40) == 0) {
+          err: return -0xA;
         }
     }
-    a20 = (u8)arg2 & 0x20;
+    a20 = ((u8) arg2) & 0x20;
     if (a20 != 0) {
-        if (((u8)arg2 & 0x40) != 0) {
-            goto ok;
-        }
+        if ((((u8) arg2) & 0x40) != 0) { goto ok; }
     }
     if (a20 != 0) {
-        if (bit40 != 0) {
-            goto ok;
-        }
+        if (bit40 != 0) { goto ok; }
     }
-    if (((u8)arg2 & 0x40) != 0) {
-        if (bit20 != 0) {
-            return -0xA;
-        }
+    if ((((u8) arg2) & 0x40) != 0) {
+        if (bit20 != 0) { return -0xA; }
     }
-ok:
-    entry[0x34] = (u8)arg2;
+  ok:
+    entry[0x34] = arg2;
     return fn_8021D378(arg0, arg1, entry, arg3);
 }
 
