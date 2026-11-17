@@ -858,7 +858,10 @@ void fn_8005D330(char *name, u16 flags) {
     }
     entry = fn_8005CEC0();
     f = (u16)flags | 0x200U;
-    *(u16 *)(entry + 0x30) |= f;
+    {
+        u16 cur = *(u16 *)(entry + 0x30);
+        *(u16 *)(entry + 0x30) = cur | f;
+    }
     fn_8005E12C(entry, name, f);
 }
 #pragma use_lmw_stmw reset
@@ -5525,31 +5528,66 @@ void fn_800675E8(void *arg0) {
     cam[3]++;
 }
 
-s32 fn_80067708(s32 arg0) {
-    u16 *temp_r3;
-    s32 temp_r4;
-    u16 temp_r5;
-    u16 *r3_copy;
-    s32 r4_copy;
+#pragma use_lmw_stmw on
+void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
+    void Game_Assert(void *, s32, void *);
+    extern void *gCamera;
+    extern u8 lbl_8026B768[];
+    u8 *cam;
+    u8 *entry;
+    u8 **head;
+    u8 *node;
+    u16 index;
 
-    if (arg0 < 0) {
-        arg0 = -arg0;
+    cam = (u8 *)gCamera;
+
+    index = *(u16 *)(cam + 0x118);
+    *(u16 *)(cam + 0x118) = index + 1;
+
+    entry = *(u8 **)(cam + 0x114) + ((u16)index << 4);
+
+    if (*(u16 *)(cam + 0x118) > *(u16 *)(cam + 0x11A)) {
+        Game_Assert(lbl_8026B768, 0x158, lbl_8026B768 + 0xA);
     }
 
-    temp_r3 = &gBattleState[arg0];
-    temp_r5 = *temp_r3;
-    
-    if (temp_r5 == 0) {
-        return 0;
+    switch (arg0) {
+    case 0:
+        head = (u8 **)((u8 *)gCamera + 0x11c + arg1 * 4);
+        break;
+    case 1:
+        head = (u8 **)((u8 *)gCamera + 0x130 + arg1 * 4);
+        break;
+    case 2:
+        head = (u8 **)((u8 *)gCamera + 0x144 + arg1 * 4);
+        break;
+    case 3:
+        head = (u8 **)((u8 *)gCamera + 0x158 + arg1 * 4);
+        break;
+    case 4:
+        head = (u8 **)((u8 *)gCamera + 0x16c + arg1 * 4);
+        break;
+    default:
+        Game_Assert(lbl_8026B768, 0x161, lbl_8026B768 + 0x50);
+        break;
     }
-    
-    r3_copy = &gBattleState[arg0 - 1];
-    r4_copy = *(r3_copy + 1);
-    temp_r4 = r4_copy;
-    
-    return temp_r5 + (temp_r4 << 16) >> 16;
+
+    node = *head;
+
+    if (node == NULL) {
+        *(u8 **)entry = node;
+        *head = entry;
+    } else {
+        while (*(u8 **)node != NULL) {
+            node = *(u8 **)node;
+        }
+        *(u8 **)node = entry;
+    }
+
+    *(u32 *)entry = 0;
+    *(void **)(entry + 8) = arg2;
+    *(void **)(entry + 0xC) = arg3;
 }
-
+#pragma use_lmw_stmw reset
 void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
     extern void *gCamera;
     extern u8 lbl_8026B768[];
@@ -6872,6 +6910,45 @@ void fn_8006CC6C(s32 arg0) {
         fn_80068558(arg0, 0, 0);
     }
     fn_8003F670(arg0);
+}
+
+void *fn_8006CE14(char *name) {
+    extern u32 FileCache_GetFlags(void *);
+    void *Archive_LoadFlags(char *,s32);
+    extern f32 lbl_803692AC;
+    u8 fresh=1;
+    void *archive;
+    u32 *reloc;
+    s32 b,g,r;
+    u8 *material;
+    s32 i;
+    s32 offset;
+    f32 factor;
+    if(FileCache_GetFlags(name)&0x4000) fresh=0;
+    archive=Archive_LoadFlags(name,0);
+    if(fresh) {
+        reloc=M2C_FIELD(archive,u32 **,0x48);
+        if(reloc) {
+            reloc[0]+=(u32)reloc;
+            reloc[1]+=(u32)reloc;
+        }
+        i=0;
+        factor=lbl_803692AC;
+        offset=i;
+        for(;i<M2C_FIELD(archive,u16 *,0x54);offset+=0x20,i++) {
+            material=M2C_FIELD(archive,u8 **,0x34)+offset;
+            r=(s32)(factor*(f32)material[8]);
+            g=(s32)(factor*(f32)material[9]);
+            b=(s32)(factor*(f32)material[10]);
+            if(r>255) r=255;
+            if(g>255) g=255;
+            if(b>255) b=255;
+            material[8]=r;
+            material[9]=g;
+            material[10]=b;
+        }
+    }
+    return archive;
 }
 
 #pragma use_lmw_stmw on
@@ -8842,6 +8919,50 @@ extern "C" void fn_80071740(void *arg0, s32 arg1, f32 x, f32 y) {
     Prim2D_PrepareTex();
     fn_8008B464(arg1, (s32)x, (s32)y);
 }
+
+void fn_800719E4(void *arg0, void *arg1) {
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32, f32);
+    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    void fn_8008C1D8(s32, s32, s32, s32, s32);
+    void **vtable;
+    s8 count;
+    s32 pulse;
+    s32 scaled;
+    s32 height;
+    s32 halfH;
+    s16 posY;
+    s32 width;
+
+    count = *(s8 *)((u8 *)arg1 + 0x60);
+    vtable = *(void ***)((u8 *)arg0 + 4);
+    ((void (*)(void *))vtable[0x1F])(arg0);
+    fn_8008C1D8(0, 0, 0, (count << 5) + 0x20, 0);
+    if (*(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
+        Prim2D_Begin();
+        Prim2D_AddZ(-0.1f);
+        Prim2D_PrepareTex();
+        pulse = 0;
+        if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
+            pulse = 1;
+        }
+        vtable = *(void ***)((u8 *)arg0 + 4);
+        width = (s16)((s32 (*)(void *))vtable[0x14])(arg0);
+        scaled = (s32)(0.9f * (f32)width);
+        height = Text_MeasureHeight(-1, 1.0f);
+        posY = *(s16 *)((u8 *)arg1 + 0x3A);
+        halfH = (s32)(height + ((u32)height >> 31)) >> 1;
+        vtable = *(void ***)((u8 *)arg0 + 4);
+        width = (s16)((s32 (*)(void *))vtable[0x14])(arg0);
+        fn_8008AB7C((s32)(width + ((u32)width >> 31)) >> 1, posY + halfH, scaled, 0x17, 0x19, 0x4B, pulse);
+        Prim2D_Begin();
+        Prim2D_AddZ(0.1f);
+        Prim2D_PrepareTex();
+    }
+}
+
 #pragma cplusplus reset
 
 void fn_80071B34(void) {
@@ -8868,55 +8989,28 @@ void fn_80071B88(void) {
 }
 
 #pragma cplusplus on
-void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
+extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
-
-    void *self;
-    void *param;
-    void *win;
-    s32 textWidth;
-    void *obj;
-    void **vtable;
-    void *text;
-    s32 width;
-    s32 diff;
-
-    win = arg2;
-    param = arg1;
-    self = arg0;
-
-    obj = *(void **)((u8 *)arg2 + 0x34);
-    vtable = *(void ***)obj;
-    text = ((void *(*)(void *, void *))vtable[6])(obj, arg2);
-
-    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
-
-    obj = *(void **)((u8 *)param + 0x3C);
-    vtable = *(void ***)((u8 *)obj + 4);
-    width = (s16)((s32 (*)(void *))vtable[0x14])(obj);
-
-    diff = width - textWidth;
-    textWidth = (s32)(diff + ((u32)diff >> 31)) >> 1;
-    vtable = *(void ***)self;
-    ((void (*)(void *, void *, s32))vtable[0x13])(self, param, diff);
-
+    struct T { virtual void *a()=0; virtual void *b()=0; virtual void *c()=0; virtual void *d()=0; virtual void *e(void *)=0; };
+    struct W { u8 pad[4]; virtual s32 a()=0; virtual s32 b()=0; virtual s32 c()=0; virtual s32 d()=0; virtual s32 e()=0; virtual s32 f()=0; virtual s32 g()=0; virtual s32 h()=0; virtual s32 i()=0; virtual s32 j()=0; virtual s32 k()=0; virtual s32 l()=0; virtual s32 m()=0; virtual s32 n()=0; virtual s32 o()=0; virtual s32 p()=0; virtual s32 q()=0; virtual s32 r()=0; virtual s32 s()=0; };
+    struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void*,s32)=0; virtual void s(void*)=0; };
+    void *self; void *param; void *win; s32 textWidth; T *obj; void *text; s32 width; s32 diff;
+    win=arg2; param=arg1; self=arg0;
+    obj=*(T**)((u8*)win+0x34); text=obj->e(win);
+    textWidth=Text_MeasureWidth(text,-1,lbl_803692E0);
+    width=(s16)(*(W**)((u8*)param+0x3C))->s();
+    diff=width-textWidth; textWidth=(s32)(diff+((u32)diff>>31))>>1;
+    ((S*)self)->r(param,diff);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32)textWidth, (f32)*(s16 *)((u8 *)win + 0x32));
-
-    vtable = *(void ***)self;
-    ((void (*)(void *, void *))vtable[0x14])(self, win);
-
-    obj = *(void **)((u8 *)win + 0x34);
-    vtable = *(void ***)obj;
-    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
-
-    Prim2D_SetText(text);
-    Prim2D_EndPrim();
+    Prim2D_SetPos((f32)textWidth,(f32)*(s16*)((u8*)win+0x32));
+    ((S*)self)->s(win);
+    obj=*(T**)((u8*)win+0x34); text=obj->e(win);
+    Prim2D_SetText(text); Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 void fn_80071CE8(void *arg0, void *arg1) {
@@ -8975,44 +9069,55 @@ void Ui_DrawObjRouteIcon(void *unused, void *obj) {
 }
 
 void fn_80071E0C(void *arg0, void *arg1) {
-    u32 Text_MeasureHeight(M2C_UNK, f32, f32);
-    M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8008C1D8(M2C_UNK, M2C_UNK, M2C_UNK, s32, M2C_UNK);
-    extern f32 lbl_803692E0;
-    extern f32 lbl_80369320;
-    extern f32 lbl_80369324;
-    extern f32 lbl_80369328;
-    M2C_UNK var_r28;
-    f32 temp_f2;
-    s16 temp_r31;
-    s16 temp_r3_2;
-    s32 temp_r29;
-    s32 temp_r30;
-    s8 temp_r28;
-    u32 temp_r3;
-
-    temp_r28 = (s8) M2C_FIELD(arg1, u8 *, 0x60);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(), 0x7C)();
-    fn_8008C1D8(0, 0, 0x90, (temp_r28 << 5) + 0x20, 1);
-    if ((s16) M2C_FIELD(arg1, s16 *, 0x3A) >= 5) {
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_80369320);
-        Prim2D_PrepareTex();
-        var_r28 = 0;
-        if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
-            var_r28 = 1;
-        }
-        temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        temp_r29 = (s32) (lbl_80369324 * temp_f2);
-        temp_r3 = Text_MeasureHeight(-1, lbl_803692E0, temp_f2);
-        temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
-        temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
-        temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        fn_8008AB7C((s32) (((u32) temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_80369328);
-        Prim2D_PrepareTex();
-    }
+#pragma cplusplus on
+struct Obj { u8 pad[4];
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+virtual void v12() = 0;
+virtual void v13() = 0;
+virtual void v14() = 0;
+virtual void v15() = 0;
+virtual void v16() = 0;
+virtual void v17() = 0;
+virtual s16 v18() = 0;
+virtual void v19() = 0;
+virtual void v20() = 0;
+virtual void v21() = 0;
+virtual void v22() = 0;
+virtual void v23() = 0;
+virtual void v24() = 0;
+virtual void v25() = 0;
+virtual void v26() = 0;
+virtual void v27() = 0;
+virtual void v28() = 0;
+virtual void v29() = 0;
+};
+s32 Text_MeasureHeight(s32, f32);
+void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
+void fn_8008C1D8(s32,s32,s32,s32,s32);
+void Prim2D_AddZ(f32);
+s32 flag;
+s32 n = *(s8*)((u8*)arg1+0x60);
+((Obj*)arg0)->v29();
+fn_8008C1D8(0,0,0x90,(n<<5)+0x20,1);
+if (*(s16*)((u8*)arg1+0x3A)>=5) {
+Prim2D_Begin(); Prim2D_AddZ(-0.1f); Prim2D_PrepareTex();
+flag=0;
+if (!*(u8*)((u8*)arg1+0x2D) && !*(u8*)((u8*)arg1+0x2E)) flag=1;
+fn_8008AB7C(((Obj*)arg0)->v18()/2, *(s16*)((u8*)arg1+0x3A)+Text_MeasureHeight(-1,1.0f)/2, (s32)(0.9f*((Obj*)arg0)->v18()),0x18,0x19,0x4B,flag);
+Prim2D_Begin(); Prim2D_AddZ(0.1f); Prim2D_PrepareTex();
+}
+#pragma cplusplus reset
 }
 
 void fn_80071F5C(void *unused, void *win) {
