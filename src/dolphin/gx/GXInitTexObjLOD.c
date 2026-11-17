@@ -217,6 +217,8 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 void GXInitTexObjLOD(u32 *obj, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
     extern u8 GX2HWFiltConv[8];
+    s32 mag;
+    s32 edge;
     u8 lbias;
     u8 lmin;
     u8 lmax;
@@ -230,17 +232,19 @@ void GXInitTexObjLOD(u32 *obj, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_
     obj[0] = __rlwimi(obj[0], lbias, 9, 15, 22);
 
     if (mag_filt == 1) {
-        obj[0] = __rlwimi(obj[0], 1, 4, 27, 27);
+        mag = 1;
     } else {
-        obj[0] = __rlwimi(obj[0], 0, 4, 27, 27);
+        mag = 0;
     }
+    obj[0] = __rlwimi(obj[0], mag, 4, 27, 27);
     obj[0] = __rlwimi(obj[0], GX2HWFiltConv[min_filt], 5, 24, 26);
 
     if (do_edge_lod) {
-        obj[0] = __rlwimi(obj[0], 0, 8, 23, 23);
+        edge = 0;
     } else {
-        obj[0] = __rlwimi(obj[0], 1, 8, 23, 23);
+        edge = 1;
     }
+    obj[0] = __rlwimi(obj[0], edge, 8, 23, 23);
     obj[0] = __rlwimi(obj[0], 0, 17, 14, 14);
     obj[0] = __rlwimi(obj[0], 0, 18, 13, 13);
     obj[0] = __rlwimi(obj[0], max_aniso, 19, 11, 12);
