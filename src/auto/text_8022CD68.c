@@ -50,7 +50,7 @@ extern void (*__atexit_funcs[])(void);
 extern s32 __atexit_curr_func;
 extern void (*__console_exit)(void);
 extern s32 __aborting;
-extern void (**_dtors)(void);
+extern void (*_dtors[])(void);
 extern void _ExitProcess(void);
 extern s16 lbl_802A1E90[];
 extern u8 lbl_80368AAE;
@@ -1193,15 +1193,14 @@ char *fn_8023108C(s32 value, char *p, u32 base) {
  s32 length;
  s32 digit;
  s32 i;
+ char temp;
  s32 j;
  char *buffer=p;
- char *q;
- char temp;
  negative=0; length=0;
- if(value<0) {value=-value; negative=1;}
+ if(value<0) {value=-value; negative=1; if(p!=buffer) p=buffer;}
  do {digit=(u32)value%base; if(digit>9) {length++; *p++=digit+0x37;} else {length++; *p++=digit+0x30;} value=(u32)value/base;} while(value!=0);
  if(negative) {buffer[length]='-'; length++;}
- i=0; buffer[length]=i;
+ buffer[length]=(i=0);
  j=strlen(buffer)-1;
  while(i<j) {temp=buffer[i]; buffer[i]=buffer[j]; buffer[j]=temp; i++; j--;}
  return buffer;
