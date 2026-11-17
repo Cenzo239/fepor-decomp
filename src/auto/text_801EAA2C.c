@@ -706,6 +706,38 @@ void fn_801EB81C(s32 arg0) {
     Ui_CreateMenu(lbl_803683B0,arg0,0);
 }
 
+#pragma global_optimizer off
+#pragma opt_common_subs off
+void fn_801EB98C(void *arg0) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_802921E0[];
+extern f32 lbl_8036B784;
+void *Ui_FindChild(void *, s32, s32); void *Heap_Alloc(s32);
+void Ui_AddChild(void *, void *); void Ui_OpenChildAnim(void *, void *, s32);
+Unk5C *widget;
+u8 color[4];
+if (Ui_FindChild(arg0,0x40,0)==0) {
+widget=Heap_Alloc(0x3C);
+if(widget) {
+widget->unk0=lbl_8028FDB0; widget->unk4=NULL; widget->unk0=lbl_80292230;
+widget->unk8=-1; widget->unkA=0; widget->unkC=0;
+widget->unkE=0x260; widget->unk10=0x1C0; widget->unk12=0; widget->unk14=0;
+widget->unk16=0x260; widget->unk18=0x1C0; widget->unk1A=0; widget->unk1C=0;
+widget->unk1E=0xFF; widget->unk1F=0xFF; widget->unk20=0xFF; widget->unk21=0xFF;
+widget->unk22=0x316; widget->unk24=0;
+widget->unk28=0.0f; widget->unk2C=0.0f; widget->unk30=0.0f;
+widget->unk34=0; widget->unk38=0; widget->unk0=lbl_802921E0;
+}
+widget->unk8=0x40;
+color[0]=0; color[1]=0; color[2]=0; color[3]=0x80;
+if (&widget->unk1E != &color[0]) {
+widget->unk1E=color[0]; widget->unk1F=color[1]; widget->unk20=color[2]; widget->unk21=color[3];
+}
+widget->unk34|=0x10; widget->unk24=8; widget->unk2C=0.0f;
+Ui_AddChild(arg0,widget); Ui_OpenChildAnim(arg0,widget,1);
+}
+}
+#pragma opt_common_subs reset
+#pragma global_optimizer reset
 void fn_801EBB00(void *arg0) {
 void fn_801EBE88(void); void String_CStr(void *); void fn_80106BCC(void); void fn_800A8400(void); void Map_RefreshUnitMap(void *); void fn_80161F7C(void); void fn_8003F670(void *); void EventLock_Dec(void); void fn_80018B04(void); void String_Destroy(void *, s32); void Ui_DtorPanelBase(void *, s32);
 extern u8 gUnitLists[], gBattleMap[], gEventLockDepth;
