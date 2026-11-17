@@ -342,47 +342,31 @@ s32 EXIImmEx(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return 1;
 }
 
-s32 EXIDma(s32 chan, void *buffer, s32 length, s32 type, void *callback)
-{
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-    void EXIClearInterrupts(s32, s32, s32, s32);
-    void __OSUnmaskInterrupts(u32);
+BOOL EXIDma(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *)) {
+    BOOL enabled;
+    EXIControl *exi;
 
-    struct EXIControl *ecb;
-    volatile u32 *exi;
-    u32 interrupts;
-    u32 flags;
-
-    ecb = &Ecb_8033E188[chan];
-
-    interrupts = OSDisableInterrupts();
-
-    flags = *(u32 *)((u8 *)ecb + 0xC);
-
-    if ((flags & 3) != 0 || (flags & 4) == 0) {
-        OSRestoreInterrupts(interrupts);
-        return 0;
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
+    if ((exi->state & 3) || !(exi->state & 4)) {
+        OSRestoreInterrupts(enabled);
+        return FALSE;
     }
 
-    *(void **)((u8 *)ecb + 4) = callback;
-
-    if (callback != 0) {
-        EXIClearInterrupts(chan, 0, 1, 0);
-        __OSUnmaskInterrupts(0x200000 >> (chan * 3));
+    exi->tcCallback = callback;
+    if (exi->tcCallback) {
+        EXIClearInterrupts(chan, FALSE, TRUE, FALSE);
+        __OSUnmaskInterrupts(0x200000U >> (chan * 3));
     }
 
-    *(u32 *)((u8 *)ecb + 0xC) |= 1;
+    exi->state |= 1;
 
-    exi = (volatile u32 *)(0xCC006800 + chan * 0x14);
+    __EXIRegs[chan * 5 + 1] = (u32)buf & 0x03FFFFE0;
+    __EXIRegs[chan * 5 + 2] = len;
+    __EXIRegs[chan * 5 + 3] = (type << 2) | 3;
 
-    exi[1] = (u32)buffer & 0x03FFFFE0;
-    exi[2] = length;
-    exi[3] = (type << 2) | 3;
-
-    OSRestoreInterrupts(interrupts);
-
-    return 1;
+    OSRestoreInterrupts(enabled);
+    return TRUE;
 }
 
 s32 fn_80204410(void);
@@ -1054,163 +1038,63 @@ s32 fn_8023A504(s32 chan, u32 dev, u32 *type) {
  return result;
 }
 
-s32 fn_8023A61C(s32 arg0, u32 arg1, s32 *arg2) {
-    s32 EXIDeselect(s32);
-    s32 EXIImm(s32, s32 *, M2C_UNK, M2C_UNK, M2C_UNK);
-    s32 EXILock(s32, u32, M2C_UNK);
-    s32 EXISelect(s32, u32, M2C_UNK);
-    s32 EXISync(s32);
-    M2C_UNK EXIUnlock(s32);
-    s32 fn_802395BC(s32, M2C_UNK);
-    M2C_UNK fn_802396C8(s32);
-    s32 r28;
-    s32 r30; 
-    s32 r31;
+#pragma inline_depth(0)
+#pragma scheduling off
+s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
+    u32 cmd;
+    s32 err;
 
-    if ((arg0 != 2) && (arg1 == 0U) && (fn_802395BC(arg0, 0) == 0)) {
+    if (chan != 2 && dev == 0 && fn_802395BC(chan, 0) == 0) {
         return 0;
     }
-    r30 = EXILock(arg0, arg1, 0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    r30 = EXISelect(arg0, arg1, 0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    *(u32 *)&r31 = 0x20011300;
-    r30 = EXIImm(arg0, &r31, 4, 1, 0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    r30 = EXISync(arg0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    r30 = EXIImm(arg0, arg2, 4, 0, 0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    r30 = EXISync(arg0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    r30 = EXIDeselect(arg0);
-    if (r30 != 0) {
-        goto block_10;
-    }
-    EXIUnlock(arg0);
-    if ((arg0 != 2) && (arg1 == 0U)) {
-        fn_802396C8(arg0);
-    }
-    return 0;
-block_10:
-    EXIUnlock(arg0);
-    if ((arg0 != 2) && (arg1 == 0U)) {
-        fn_802396C8(arg0);
-    }
-    r28 = 0;
-    if ((u32) (*arg2 + 0x10000) != -1U) {
-        r28 = 1;
-    }
-    return r28;
-}
-
-void __OSEnableBarnacle(s32 arg0, s32 arg1) {
-    s32 fn_8023A61C(s32, s32, s32 *);
-    extern u16 lbl_80368808;
-    extern u16 lbl_8036880C;
-    extern u16 lbl_80368810;
-    extern u16 lbl_80368814;
-    s32 sp10;
-
-    if ((EXIGetID(0, 0, (u32 *)&sp10) != 0) && (sp10 != 0x01020000)) {
-        if (sp10 < 0x01020000) {
-            if (sp10 != 4) {
-                if (sp10 < 4) {
-                    if (sp10 != 0x80000010) {
-                        if (sp10 < 0x80000010) {
-                            if (sp10 != 0x80000008) {
-                                if (sp10 < 0x80000008) {
-                                    if (sp10 != 0x80000004) {
-                                        goto block_42;
-                                    }
-                                } else {
-                                    goto block_42;
-                                }
-                            }
-                        } else if (sp10 != -1) {
-                            if (sp10 < -1) {
-                                if (sp10 != 0x80000020) {
-                                    goto block_42;
-                                }
-                            } else {
-                                goto block_42;
-                            }
-                        }
-                    }
-                } else if (sp10 != 0x20) {
-                    if (sp10 < 0x20) {
-                        if (sp10 != 0x10) {
-                            if (sp10 < 0x10) {
-                                if (sp10 != 8) {
-                                    goto block_42;
-                                }
-                            } else {
-                                goto block_42;
-                            }
-                        }
-                    } else if (sp10 != 0x01010000) {
-                        goto block_42;
-                    }
-                }
-            }
-        } else if (sp10 != 0x04040404) {
-            if (sp10 < 0x04040404) {
-                if (sp10 != 0x04020100) {
-                    if (sp10 < 0x04020100) {
-                        if (sp10 != 0x03010000) {
-                            if (sp10 < 0x03010000) {
-                                if (sp10 != 0x02020000) {
-                                    goto block_42;
-                                }
-                            } else {
-                                goto block_42;
-                            }
-                        }
-                    } else if (sp10 != 0x04020300) {
-                        if (sp10 < 0x04020300) {
-                            if (sp10 != 0x04020200) {
-                                goto block_42;
-                            }
-                        } else {
-                            goto block_42;
-                        }
-                    }
-                }
-            } else if (sp10 != 0x04130000) {
-                if (sp10 < 0x04130000) {
-                    if (sp10 != 0x04120000) {
-                        if (sp10 < 0x04120000) {
-                            if (sp10 != 0x04060000) {
-                                goto block_42;
-                            }
-                        } else {
-                            goto block_42;
-                        }
-                    }
-                } else if (sp10 != 0x04220000) {
-block_42:
-                    if (fn_8023A61C(arg0, arg1, &sp10) != 0) {
-                        lbl_80368808 = arg0;
-                        lbl_8036880C = arg1;
-                        lbl_80368814 = 0xA5FF005A;
-                        lbl_80368810 = 0xA5FF005A;
-                    }
-                }
-            }
+    err = !EXILock(chan, dev, 0);
+    if (err == 0) {
+        err = !EXISelect(chan, dev, 0);
+        if (err == 0) {
+            cmd = 0x20011300;
+            err = !EXIImm(chan, &cmd, 4, 1, 0);
+            err |= !EXISync(chan);
+            err |= !EXIImm(chan, id, 4, 0, 0);
+            err |= !EXISync(chan);
+            err |= !EXIDeselect(chan);
         }
     }
+    EXIUnlock(chan);
+    if (chan != 2 && dev == 0) {
+        fn_802396C8(chan);
+    }
+    if (err != 0) {
+        return 0;
+    }
+    if ((u32)(*id + 0x10000) == 0xFFFF) {
+        goto fail;
+    }
+    return 1;
+fail:
+    return 0;
+}
+#pragma scheduling reset
+#pragma inline_depth(8)
+void __OSEnableBarnacle(s32 chan,s32 dev) {
+s32 fn_8023A61C(s32,s32,s32*);
+extern u32 lbl_80368808,lbl_8036880C,lbl_80368814,lbl_80368810;
+s32 id;
+if(!EXIGetID(chan,dev,(u32*)&id)) return;
+switch(id) {
+case (s32)0x80000004:case (s32)0x80000008:case (s32)0x80000010:case (s32)0x80000020:case -1:
+case 4:case 8:case 16:case 32:
+case 0x01010000:case 0x01020000:case 0x02020000:case 0x03010000:
+case 0x04020100:case 0x04020200:case 0x04020300:case 0x04040404:
+case 0x04060000:case 0x04120000:case 0x04130000:case 0x04220000:
+return;
+default:
+if(fn_8023A61C(chan,dev,&id)) {
+lbl_80368808=chan;
+lbl_8036880C=dev;
+lbl_80368814=0xA5FF005A;
+lbl_80368810=0xA5FF005A;
+}
+}
 }
 
 #pragma global_optimizer off
@@ -1240,4 +1124,102 @@ s32 InitializeUART(void) {
     }
     return result;
 }
+
+#pragma optimization_level 3
+#pragma global_optimizer off
+s32 WriteUARTN(void *buf, u32 len) {
+    BOOL EXILock(s32, u32, void *);
+    BOOL EXISelect(s32, u32, u32);
+    BOOL EXIImm(s32, void *, s32, u32, void *);
+    BOOL EXISync(s32);
+    BOOL EXIDeselect(s32);
+    void EXIUnlock(s32);
+    extern u32 lbl_80368808;
+    extern u32 lbl_8036880C;
+    extern u32 lbl_80368810;
+    u32 length;
+    u8 *ptr;
+    u32 probe;
+    s32 chunk;
+    s32 avail;
+    s32 error;
+    char *p;
+    u32 cmd;
+    u32 q;
+
+    ptr = (u8 *)buf;
+    length = len;
+
+    if ((u32)(lbl_80368810 + 0x5A010000) != 0x5AU) {
+        return 2;
+    }
+    if (EXILock(lbl_80368808, lbl_8036880C, 0) == 0) {
+        return 0;
+    }
+
+    for (p = (char *)ptr; (u32)(p - (char *)ptr) < length; p++) {
+        if (*p == '\n') {
+            *p = '\r';
+        }
+    }
+
+    cmd = 0xA0010000;
+    error = 0;
+    probe = 0x20010000;
+
+    while (length != 0) {
+        s32 space;
+        if (EXISelect(lbl_80368808, lbl_8036880C, 3) == 0) {
+            space = -1;
+        } else {
+            q = probe;
+            EXIImm(lbl_80368808, &q, 4, 1, 0);
+            EXISync(lbl_80368808);
+            EXIImm(lbl_80368808, &q, 1, 0, 0);
+            EXISync(lbl_80368808);
+            EXIDeselect(lbl_80368808);
+            space = 0x10 - (s32)(q >> 24);
+        }
+        if ((avail = space) < 0) {
+            error = 3;
+            break;
+        }
+        if (space < 0xC && (u32)space < length) {
+            continue;
+        }
+
+        if (EXISelect(lbl_80368808, lbl_8036880C, 3) == 0) {
+            error = 3;
+            break;
+        }
+        EXIImm(lbl_80368808, &cmd, 4, 1, 0);
+        EXISync(lbl_80368808);
+
+        while (avail != 0 && length != 0) {
+            if (avail < 4 && (u32)avail < length) {
+                break;
+            }
+            if (length < 4U) {
+                chunk = (s32)length;
+            } else {
+                chunk = 4;
+            }
+            EXIImm(lbl_80368808, ptr, chunk, 1, 0);
+            {
+                s32 c = (s32)lbl_80368808;
+                ptr += chunk;
+                length -= chunk;
+                avail -= chunk;
+                EXISync(c);
+            }
+        }
+        EXIDeselect(lbl_80368808);
+    }
+
+    EXIUnlock(lbl_80368808);
+    return error;
+}
+#pragma global_optimizer on
+#pragma optimization_level reset
+
 #pragma global_optimizer on
