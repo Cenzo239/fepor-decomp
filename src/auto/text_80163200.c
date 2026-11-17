@@ -1,4 +1,21 @@
 #include "common.h"
+#pragma cplusplus on
+struct LensFlareView {
+    u8 pad[0x40];
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6();
+    virtual void setPosition(f32, f32, f32);
+    virtual void setPoint(s32 *);
+    virtual void setScreen(s32, s32);
+    virtual void v10();
+    virtual void setColor(u8, u8, u8, u8);
+};
+struct LensFlareOwner {
+    u8 pad[0x10];
+    virtual void v0(); virtual void v1();
+    virtual LensFlareView *find(char *, char *);
+};
+#pragma cplusplus reset
 #pragma opt_common_subs off
 static inline void init_761F8_base(void *p,s16 x,s16 y,s16 w,s16 h,s16 style) {
  extern u16 lbl_8028FDB0[],lbl_80292230[];
