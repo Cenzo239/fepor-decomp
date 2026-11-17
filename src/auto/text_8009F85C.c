@@ -146,66 +146,52 @@ if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
 return 0;
 }
 
-void fn_8009FBE0(s32 arg0, s32 arg1)
-{
-    s32 *ptr1;
-    s32 *ptr2;
-    s32 var1;
-    s32 var2;
-    s32 i;
-    s32 j;
-
-    if (arg0 == 0) {
-        arg0 = 0x58;
-    }
-
-    if (arg1 == 0) {
-        arg1 = 0x78;
-    }
-
-    var1 = (u32)arg0 >> 2;
-    var2 = (u32)arg1 >> 2;
-
-    ptr1 = *(s32**)0x803E54B8;
-
-    if (ptr1 != 0) {
-        ptr2 = ptr1;
-        *(s32**)0x803E54B8 = 0; 
-    } else {
-        ptr2 = 0;
-    }
-
-    // Main processing
-    for (i = 0; i < 0xF; i++) {
-        if (ptr1 != 0 && ptr1[0x162 + i] != 0 && ptr1[0x14C + i] != 0 && ptr1[0x152 + i] != 0) {
-            s32 shift_a = ptr1[0x162 + i] << 6;
-            s32 shift_b = ptr1[0x14C + i] << 4;
-            
-            if (shift_a >= 0 && shift_b >= 0) {
-                // Access base addresses from globals
-                s32 *base_a = *(s32**)0x803E54C0;  
-                s32 *base_b = *(s32**)0x803E54C4;
-                
-                u8 *src = (u8*)(base_a + shift_a);
-                u8 *dst = (u8*)(base_b + shift_b);
-                
-                // Load source data
-                s32 *src_data_ptr = *(s32**)0x803E54E0 + var1;
-                s32 *dst_data_ptr = *(s32**)0x803E54E0 + var2;
-                
-                if (src_data_ptr != 0 && dst_data_ptr != 0) {
-                    for (j = 0; j < 0x30; j++) {
-                        src[0x10 + j] = src_data_ptr[j];
-                        dst[0x10 + j] = dst_data_ptr[j];
-                    }
-                }
-            }
-        }
-    }
-
-    if (ptr2 != 0) {
-        *(s32**)0x803E54B8 = ptr2;
-    }
+void fn_8009FBE0(s32 unused, s32 parent, void *item) {
+void *Map_GetCursorUnit(void);
+void *fn_80105C5C(void *,u8);
+void *fn_8010586C(void *);
+void Prim2D_SetText(void *);
+void Prim2D_SetScale(f32);
+void Prim2D_SetTint(s32,s32,s32,s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_EndPrim(void);
+void Prim2D_AddPrim(s32);
+void Ui_DrawMenuTextItem(s32,s32,void *);
+void sprintf(u8 *,void *,...);
+extern u8 gMenuCmdStrings[];
+extern f32 gItemMenuTextScale;
+u8 buf[32];
+s32 i;
+s32 count;
+s32 slot;
+u8 *unit;
+u8 *status;
+slot=*(u8 *)((u8 *)item+0x3a);
+unit=Map_GetCursorUnit();
+count=0;
+for(i=count;i<0x62;i++) {
+status=fn_80105C5C(unit+0x1bc,(u8)i);
+if(status) {
+if(count!=slot) count++;
+else goto found;
+}
+}
+status=0;
+found:
+if(status) {
+void *name;
+u8 value=status[0x18];
+name=fn_8010586C(status);
+sprintf(buf,gMenuCmdStrings+0x2c7,value,name);
+} else sprintf(buf,gMenuCmdStrings+0x2cf);
+Ui_DrawMenuTextItem(unused,parent,item);
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)(*(s16 *)((u8 *)item+0x30)+0x38),(f32)*(s16 *)((u8 *)item+0x32));
+Prim2D_SetText(buf);
+Prim2D_SetScale(gItemMenuTextScale);
+if(*(u8 *)((u8 *)item+0x38)) Prim2D_SetTint(255,255,0,255);
+if(*(u8 *)((u8 *)item+0x39)==2) Prim2D_SetTint(0,0,0,255);
+Prim2D_EndPrim();
 }
 
 void *fn_8009FD50(void) {
@@ -405,22 +391,22 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-s32 fn_800A011C(void *a, void *b, void *c) {
+#pragma optimization_level 3
+s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
-    u8 t;
-    s8 v;
+    s32 v;
 
-    t = lbl_80366E25;
+    a = (u8)lbl_80366E25;
+    b = a ^ 1;
+    lbl_80366E25 = b;
     v = 2;
-    t = t ^ 1;
-    lbl_80366E25 = t;
-    if (t != 0) {
+    if ((u8)b != 0) {
         v = 0;
     }
-    M2C_FIELD(c, s8 *, 0x39) = v;
+    *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
-
+#pragma optimization_level reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
@@ -439,6 +425,7 @@ void *fn_800A0160(void) {
 }
 
 extern u8 lbl_80367708;
+#pragma optimization_level 3
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
     s32 v;
@@ -453,7 +440,7 @@ s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
-
+#pragma optimization_level reset
 u32 fn_800A0198(void) {
     extern u8 lbl_80367708;
     u32 var_r3;
@@ -1893,7 +1880,13 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     return;
 }
 
-s32 fn_800A2624(void *arg0) { void *Map_GetCursorUnit(void); u16 value; void *p = Map_GetCursorUnit(); p = *(void **)((u8 *)p + 0x18C); value = *(u16 *)((u8 *)p + 0x38); ((u16 *)arg0)[2] = value; return 0; }
+s32 fn_800A2624(void *arg0) {
+    void *Map_GetCursorUnit(void);
+    u16 **unit;
+    unit = (u16 **)((u8 *)Map_GetCursorUnit() + 0x18C);
+    *(u16 *)((u8 *)arg0 + 4) = (*unit)[0x1C];
+    return 0;
+}
 
 char *fn_800A2660(void *arg0) {
     void *Job_Get(s16);
@@ -1958,13 +1951,12 @@ s32 fn_800A2748(void *arg0) {
     return 0;
 }
 
-s32 fn_800A279C(void *arg0)
-{
- void *Map_GetCursorUnit(void);
- void *p = Map_GetCursorUnit();
- return (*(u16 *)((u8 *)arg0+4) = *(u16 *)((u8 *)*(void **)((u8 *)p+0x188)+0x18)), 0;
+#pragma optimization_level 3
+s32 fn_800A279C(void *arg0) {
+    M2C_FIELD(arg0, u16 *, 4) = (u16) M2C_FIELD(M2C_FIELD(fn_800AA794(), void **, 0x188), u16 *, 0x18);
+    return 0;
 }
-
+#pragma optimization_level reset
 char *fn_800A27D8(void *arg0) {
     void *Person_Get(s16);
     s32 Msg_ResolveName(void);
@@ -2089,6 +2081,31 @@ s32 fn_800A2A50(void) {
 void fn_800A2A58(void *arg0, void *arg1) {
     M2C_UNK fn_801043FC(u8);
     fn_801043FC(*(u8 *)((char *)arg1 + 0x3A));
+}
+
+s32 fn_800A2A7C(s32 arg0,s32 arg1,void *arg2) {
+void *Map_GetCursorUnit(void);
+s32 Unit_GetSkillRank(void *,u8);
+void Unit_SetSkillRank(void *,u8,s32);
+extern void *gPadInput;
+struct RankLimits { s32 rank[16]; };
+extern const struct RankLimits lbl_8026D838;
+u8 *unit;
+u32 skill;
+s32 rank;
+u32 flags;
+unit=Map_GetCursorUnit();
+skill=*(u8 *)((u8 *)arg2+0x3a);
+rank=Unit_GetSkillRank(unit+0x1a4,skill);
+flags=*(u32 *)((u8 *)gPadInput+0xc);
+if((flags & 0x01000001) && rank!=0) rank--;
+if(flags & 0x02000002) {
+struct RankLimits limits=lbl_8026D838;
+rank++;
+if(rank>limits.rank[skill]) rank=limits.rank[skill];
+}
+Unit_SetSkillRank(unit+0x1a4,skill,rank);
+return 0;
 }
 
 /* Draw a menu text item, then overlay the cursor unit's skill rank. */
@@ -2218,6 +2235,43 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     }
 }
 
+s32 fn_800A2FC4(s32 arg0, s32 arg1, void *arg2) {
+void *Map_GetCursorUnit(void);
+void *Unit_GetSupportPartner(void *, u8);
+s32 Unit_FindSupportPartnerIndex(void *, void *);
+u8 fn_80036FC4(void *,u8);
+extern void *gPadInput;
+s32 index;
+u8 *unit;
+u8 *partner;
+u8 other;
+u32 slot;
+s32 value;
+u32 flags;
+u8 *table;
+s32 offset;
+s32 row;
+if (*(u8 *)((u8 *)arg2+0x39)) return 0;
+unit=Map_GetCursorUnit();
+slot=*(u8 *)((u8 *)arg2+0x3a);
+partner=Unit_GetSupportPartner(unit,slot);
+index=(u8)Unit_FindSupportPartnerIndex(unit,*(void **)(partner+0x188));
+other=Unit_FindSupportPartnerIndex(partner,*(void **)(unit+0x188));
+value=fn_80036FC4(unit,index);
+flags=*(u32 *)((u8 *)gPadInput+0x10);
+if(flags & 0x01000001) value--;
+if(flags & 0x02000002) value++;
+if(value<0) value=0;
+offset=slot*8;
+row=offset+8;
+table=*(u8 **)(*(u8 **)(unit+0x188)+0x50);
+row=(s32)table+row;
+if(value>(u8)(*(u8 *)(row+6)+1)) { row=offset+14; value=(u8)(table[row]+1); }
+*(unit+index+0x214)=value;
+*(partner+other+0x214)=value;
+return 0;
+}
+
 s32 fn_800A30D8(void) {
     return 0;
 }
@@ -2310,6 +2364,46 @@ s32 fn_800A3278(void *a, void *b, void *arg) {
  if(fn_800BDB9C(base,index)) fn_800BDB54(base,index);
  else fn_800BDB78(base,index);
  return 0;
+}
+
+void fn_800A3314(s32 arg0,s32 arg1,void *item) {
+void sprintf(void *,void *,...);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_SetTex(s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_SetText(void *);
+void Prim2D_SetScale(f32);
+void Prim2D_EndPrim(void);
+u8 fn_800BDB9C(void *,s32);
+extern u8 gBattleState[],gMenuCmdStrings[];
+extern s8 lbl_80367558;
+extern f32 gItemMenuTextZ,gItemMenuTextScale;
+u8 buf[32];
+u8 *base=gBattleState+0xb4;
+s32 index=(lbl_80367558*16)+(*(u8 *)((u8 *)item+0x3a)-1);
+s32 offset=index*4;
+if(*(u32 *)(base+offset)) {
+Prim2D_Begin();
+Prim2D_AddZ(gItemMenuTextZ);
+Prim2D_SetTex(0,19);
+Prim2D_PrepareTex();
+sprintf(buf,gMenuCmdStrings+0x6c7,*(u32 *)(base+offset));
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16 *)((u8 *)item+0x30),(f32)*(s16 *)((u8 *)item+0x32));
+Prim2D_SetText(buf);
+Prim2D_SetScale(gItemMenuTextScale);
+Prim2D_EndPrim();
+if(fn_800BDB9C(base,index)) {
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)(*(s16 *)((u8 *)item+0x30)-16),(f32)*(s16 *)((u8 *)item+0x32));
+Prim2D_SetText(gMenuCmdStrings+0x756);
+Prim2D_SetScale(gItemMenuTextScale);
+Prim2D_EndPrim();
+}
+}
 }
 
 char *fn_800A3490(void) {
