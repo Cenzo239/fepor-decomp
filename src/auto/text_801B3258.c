@@ -1,5 +1,10 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 *MenuResource_FindIn(u8 *p, s32 id) {
+s32 i;
+for(i=0;i<40;p+=12,i++) { if(id==*(s32*)p) return p; }
+return 0;
+}
 static inline u8 *MenuResource_Find(s32 id) {
 extern u8 lbl_80299A78[];
 u8 *p=lbl_80299A78;
@@ -18641,27 +18646,29 @@ void fn_801DE074(void) {
     } while (i < 0x28);
 }
 
+#pragma global_optimizer off
+#pragma opt_loop_invariants off
 void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
 char path[64];
 s32 i;
+s32 id;
+s32 *cursor=list;
 u8 *p;
 Process_UnlinkByKey(lbl_80299C58);
 for(i=0,p=lbl_80299A78;i<40;i++,p+=12) {
 if(*(u32*)(p+8)) FileCache_ReleaseSlot(p+8);
 *(u32*)(p+8)=0;
 }
-for(;*list!=-1;list++) {
-p=lbl_80299A78;
-for(i=0;i<40;i++,p+=12) { if(*list==*(s32*)p) break; }
-if(i==40) p=0;
+for(;(id=*cursor)!=-1;cursor++) {
+p=MenuResource_Find(id);
 if(p) {sprintf(path,(char*)gUiSeCues+0x661,*(s32*)(p+4));fn_8005C8B4(path);}
 }
 Process_CreateChild(lbl_80299C58,parent);
 }
-
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
+#pragma global_optimizer reset
 void fn_801DE274(void) {
     void fn_80231D94(void *, void *, ...);
     s32 fn_8005C6A0(void *);
