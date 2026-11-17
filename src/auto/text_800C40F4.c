@@ -23490,39 +23490,46 @@ void Map_BuildUnitMoveRange(void *unit, s32 mode, s32 arg2) {
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
 
-#pragma use_lmw_stmw on
+#pragma dont_inline on
+#pragma global_optimizer off
 void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
-    void fn_800213D0(void *, u8, u8, u16, s32, s32);
-    void fn_80022748(void *, s32);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
     void Map_SelectRangeBuffer(void *, s32);
-    s8 fn_8003A398(void *);
-    u8 fn_80105BC0(void *, s32);
-    extern u8 lbl_802CA518[];
-    u8 *map;
+    s8 Unit_GetMov(void *);
+    u8 Status_Test(void *, s32);
+    extern u8 gBattleMap[];
     s32 t14;
     s32 t15;
     s32 slot;
+    s32 mov;
+    u8 *u;
+    u8 *map;
+    u8 *p;
 
-    map = lbl_802CA518;
-    t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
-    t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
-    Map_SelectRangeBuffer(lbl_802CA518, arg1);
-    fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
-    fn_80022748(lbl_802CA518, 0);
-    if (*(u32 *)(unit + 0x254) & 0x20000) {
+    u = unit;
+    mov = arg2;
+    map = gBattleMap;
+    p = u + 0x1BC;
+    t14 = Status_Test(p, 0x14) != 0;
+    t15 = Status_Test(u + 0x1BC, 0x15) != 0;
+    Map_SelectRangeBuffer(gBattleMap, arg1);
+    fn_800227F8(gBattleMap, *(void **)(u + 0x18C));
+    fn_80022748(gBattleMap, 0);
+    if (*(u32 *)(u + 0x254) & 0x20000) {
         fn_800227D0(map, 0x37, 0x30);
     }
-    if (arg2 != -1) {
-        slot = arg2;
+    if (mov != -1) {
+        slot = mov;
     } else {
-        slot = (s8)fn_8003A398(unit);
+        slot = Unit_GetMov(u);
     }
-    fn_800213D0(map, unit[0x19E], unit[0x19F], (u16)slot, t14, t15);
+    Map_FloodMoveRange(map, u[0x19E], u[0x19F], (u16)slot, t14, t15);
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
 void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
 void fn_80022748(void *, void *); void fn_800227D0(void *, s32, s32);
