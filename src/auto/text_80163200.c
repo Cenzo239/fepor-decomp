@@ -15,6 +15,13 @@ struct LensFlareOwner {
     virtual void v0(); virtual void v1();
     virtual LensFlareView *find(char *, char *);
 };
+struct UnitPanelView {
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void v6(); virtual void v7(); virtual void v8();
+    virtual void v9(); virtual void v10();
+    virtual void setUnit(u32);
+};
 #pragma cplusplus reset
 #pragma opt_common_subs off
 static inline void init_761F8_base(void *p,s16 x,s16 y,s16 w,s16 h,s16 style) {
@@ -1891,10 +1898,90 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
 }
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
-void fn_80165E90(void *arg0, s32 arg1, f32 arg2) {
-    (void)arg0;
-    (void)arg1;
-    (void)arg2;
+void fn_80165E90(void *arg0, s32 arg1, f32 arg2)
+{
+    extern u8 lbl_80277888[];
+    extern f32 lbl_8036A8C8;
+    extern f32 lbl_8036A8CC;
+    extern f32 lbl_8036A8D0;
+    extern f32 lbl_8036A8D4;
+
+    u8 Status_Test(void *, s32);
+
+    u8 table[25];
+    u8 *dst;
+    u8 *src;
+    u8 index;
+    u32 offset;
+    s32 value;
+
+    dst = (u8 *)arg0;
+
+    *(u32 *)(table + 0) = *(u32 *)(lbl_80277888 + 0);
+    *(u32 *)(table + 4) = *(u32 *)(lbl_80277888 + 4);
+    *(u32 *)(table + 8) = *(u32 *)(lbl_80277888 + 8);
+    *(u32 *)(table + 12) = *(u32 *)(lbl_80277888 + 12);
+    *(u32 *)(table + 16) = *(u32 *)(lbl_80277888 + 16);
+    *(u32 *)(table + 20) = *(u32 *)(lbl_80277888 + 20);
+    table[24] = lbl_80277888[24];
+
+    dst[4] = 0;
+    dst[3] = 0;
+    dst[2] = 0;
+    dst[1] = 0;
+    dst[0] = 0;
+
+    index = 0;
+
+    if (arg2 <= lbl_8036A8C8) {
+        index = 1;
+    }
+
+    if (arg2 <= lbl_8036A8CC) {
+        index = (u8)(index + 1);
+    }
+
+    if (arg2 <= lbl_8036A8D0) {
+        index = (u8)(index + 1);
+    }
+
+    if (arg2 <= lbl_8036A8D4) {
+        index = (u8)(index + 1);
+    }
+
+    offset = (u8)index * 5;
+    src = table + offset;
+
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+    dst[4] = src[4];
+
+    if (Status_Test((void *)arg1, 0x12) != 0) {
+        dst[0] = dst[0] * 2;
+        dst[1] = dst[1] * 2;
+        dst[2] = dst[2] * 2;
+        dst[3] = dst[3] * 2;
+        dst[4] = dst[4] * 2;
+    }
+
+    if (Status_Test((void *)arg1, 0x13) != 0) {
+        value = (s8)dst[0];
+        dst[0] = (value + ((u32)value >> 31)) >> 1;
+
+        value = (s8)dst[1];
+        dst[1] = (value + ((u32)value >> 31)) >> 1;
+
+        value = (s8)dst[2];
+        dst[2] = (value + ((u32)value >> 31)) >> 1;
+
+        value = (s8)dst[3];
+        dst[3] = (value + ((u32)value >> 31)) >> 1;
+
+        value = (s8)dst[4];
+        dst[4] = (value + ((u32)value >> 31)) >> 1;
+    }
 }
 
 #pragma use_lmw_stmw reset
@@ -10243,6 +10330,39 @@ extern "C" void fn_80174C5C(void *arg0) {
     Process_Goto(temp_r31, 0xB);
 }
 
+extern "C" void fn_80174CF4(void *arg0) {
+    u32 *Unit_GetItemSlot(s32, s32);
+    void fn_80143570(void *);
+    void fn_801436AC(void *, void *);
+    void fn_80143784(void *, u32);
+    void fn_80143C9C(void *);
+    void Ui_DecBusy(void *);
+    void Process_ClearFunc(void *);
+    void *Process_CreateChild(void *, void *);
+    extern u8 lbl_80294B10[];
+    void *list;
+    s8 i;
+    void **left;
+    void **right;
+    u32 *item;
+    left = *(void ***)((u8 *)arg0 + 0x4C);
+    right = *(void ***)((u8 *)arg0 + 0x50);
+    (*(void (**)(void *, u32))((u8 *)*left + 0x34))(left, gUiContext[0]);
+    (*(void (**)(void *, u32))((u8 *)*right + 0x34))(right, gUiContext[1]);
+    list = *(void **)((u8 *)arg0 + 0x54);
+    fn_80143784(list, gUiContext[0]);
+    fn_80143784(list, gUiContext[1]);
+    fn_80143570(list);
+    for (i = 0; i < 8; i++) {
+        item = Unit_GetItemSlot(gUiContext[0], i);
+        if (*item != 0) fn_801436AC(list, item);
+    }
+    fn_80143C9C(list);
+    Ui_DecBusy(arg0);
+    Process_CreateChild(lbl_80294B10, arg0);
+    Process_ClearFunc(arg0);
+}
+
 #pragma cplusplus reset
 
 void fn_80174E0C(s32 arg0) {
@@ -18382,8 +18502,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma optimization_level 2
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point {s16 x,y;};
 struct Point *fn_8013F748(void *,struct Point *,struct Point *);
@@ -18398,8 +18517,7 @@ in.x=x;
 in.y=row+y;
 *(struct Point *)arg0=*fn_8013F748(arg1,&out,&in);
 }
-#pragma scheduling reset
-#pragma global_optimizer reset
+#pragma optimization_level reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;
