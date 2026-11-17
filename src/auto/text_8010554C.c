@@ -1873,6 +1873,65 @@ extern "C" void fn_80108718(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_800D7254();
     (*(Obj **)((u8 *)arg0 + 0x424))->v20(arg1, arg2, arg3);
 }
+
+extern "C" void *fn_80108788(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    typedef struct { u32 size; u32 cap; char *data; } String;
+    void String_Init(void *, char *, void *);
+    void String_ConcatCStr(void *, void *, char *);
+    void fn_800D764C(void *, s32, s32, s32, void *, void *);
+    void String_Destroy(void *, s32);
+    void *fn_800D75FC(void *, void *);
+    void fn_800E3F54(void *);
+    extern char lbl_802739B0[];
+    extern u8 lbl_8028F340[];
+    extern void fn_80108694(void);
+    extern void fn_8010866C(void);
+    String pathBase;
+    String dbxPath;
+    String winName;
+    String ctrl0;
+    String okBtn;
+    String cancelBtn;
+    void *sp18;
+    void *sp14;
+    void *sp10;
+    void *spC;
+    void *sp8;
+    void *temp;
+    void *self;
+
+    self = arg0;
+    String_Init(&pathBase, lbl_802739B0, &sp18);
+    String_ConcatCStr(&dbxPath, &pathBase, lbl_802739B0 + 7);
+    String_Init(&winName, lbl_802739B0 + 0x11, &sp14);
+    fn_800D764C(self, arg1, arg2, arg3, &dbxPath, &winName);
+    String_Destroy(&winName, -1);
+    String_Destroy(&dbxPath, -1);
+    String_Destroy(&pathBase, -1);
+    *(void **)((u8 *)self + 0xC) = lbl_8028F340;
+    String_Init(&ctrl0, lbl_802739B0 + 0x17, &sp10);
+    *(void **)((u8 *)self + 0x424) = fn_800D75FC(self, &ctrl0);
+    String_Destroy(&ctrl0, -1);
+    String_Init(&okBtn, lbl_802739B0 + 0x22, &spC);
+    temp = fn_800D75FC(self, &okBtn);
+    *(void **)((u8 *)self + 0x428) = temp;
+    *(void **)((u8 *)self + 0x418) = temp;
+    String_Destroy(&okBtn, -1);
+    String_Init(&cancelBtn, lbl_802739B0 + 0x28, &sp8);
+    temp = fn_800D75FC(self, &cancelBtn);
+    *(void **)((u8 *)self + 0x42C) = temp;
+    *(void **)((u8 *)self + 0x41C) = temp;
+    String_Destroy(&cancelBtn, -1);
+    temp = *(void **)((u8 *)self + 0x428);
+    *(void **)((u8 *)temp + 0xA4) = (void *)fn_80108694;
+    temp = *(void **)((u8 *)self + 0x42C);
+    *(void **)((u8 *)temp + 0xA4) = (void *)fn_8010866C;
+    *(void **)((u8 *)self + 0x14) = *(void **)((u8 *)self + 0x428);
+    *(void **)((u8 *)self + 0x414) = *(void **)((u8 *)self + 0x428);
+    fn_800E3F54(*(void **)((u8 *)self + 0x414));
+    return self;
+}
+
 #pragma cplusplus reset
 s32 fn_80108948(void) {
     M2C_UNK fn_800D758C(s32);
