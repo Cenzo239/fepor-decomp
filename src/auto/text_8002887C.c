@@ -2969,6 +2969,47 @@ extern "C" void fn_8002EEDC(void *arg0) {
     };
     ((Obj *)*(void **)((u8 *)arg0 + 0x30))->v2(arg0);
 }
+
+extern "C" void fn_8002EF10(u8 *self) {
+void Ui_PlaySeCue(void *,s32); void Process_Goto(void *,s32);
+extern u32 gUiInputFlags,lbl_80367258;
+extern u32 *gPadInput;
+extern u8 gMapUiResult,lbl_802694B8[];
+#pragma cplusplus on
+struct Controller { s32 count;
+virtual void v0(void *)=0;
+virtual void v1(void *)=0;
+virtual void v2(void *)=0;
+virtual u8 v3(void *)=0;
+virtual u8 v4(void *)=0;
+virtual void v5(void *)=0;
+virtual void v6(void *)=0;
+virtual void v7(void *)=0;
+virtual void v8(void *)=0;
+virtual void v9(void *)=0;
+virtual void *v10()=0;
+};
+u32 held,pressed;
+if(!*(u32 *)(self+0x40)) (*(Controller **)(self+0x30))->count=0;
+else (*(Controller **)(self+0x30))->count++;
+if(gUiInputFlags&0x80) (*(Controller **)(self+0x30))->v8(self);
+else {
+(*(Controller **)(self+0x30))->v7(self);
+(*(Controller **)(self+0x30))->v8(self);
+lbl_80367258=0;
+held=gPadInput[1];
+pressed=held & (gPadInput[2]^held);
+if(pressed&0x100) lbl_80367258=(*(Controller **)(self+0x30))->v3(self);
+else if(pressed&0x200) lbl_80367258=(*(Controller **)(self+0x30))->v4(self);
+}
+gMapUiResult=lbl_80367258;
+if(lbl_80367258&4) Ui_PlaySeCue((*(Controller **)(self+0x30))->v10(),100);
+if(lbl_80367258&8) Ui_PlaySeCue(lbl_802694B8+0xee,100);
+if(lbl_80367258&16) Ui_PlaySeCue(lbl_802694B8+0xfe,100);
+if(lbl_80367258&1) Process_Goto(self,99);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 void fn_8002F0B0(void) {
