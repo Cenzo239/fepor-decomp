@@ -8278,22 +8278,58 @@ s32 fn_800BF1E8(void) {
     return 0;
 }
 #pragma optimization_level reset
-s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
-    s32* ptr = (s32*)arg0;
-    s32 count = arg2 >> 2;
-    s32 val;
+s32 fn_800BF32C(s32 parent) {
+    void *Event_NextEntry(void *);
+    void *Process_CreateChild(void *, s32);
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void *Person_GetByPid(void);
+    s32 Talk_MatchesUiPair(void *);
+    u8 *entry;
+    u8 *flagBase;
+    u8 *uiCtx;
+    void *personA, *personB, *uiA, *uiB;
+    void *proc;
+    u8 found;
 
-    if (count <= 0)
+    entry = Event_NextEntry(0);
+    flagBase = (u8 *)gBattleState + 0xB4;
+    uiCtx = gUiContext;
+    while (entry != 0) {
+        if ((s8)entry[0xC] == 8) {
+            if (EventFlag_IsSet(flagBase,
+                    Event_GetString(entry, (u16)*(s16 *)(entry + 0x1A))) != 0) {
+                found = 0;
+            } else {
+                Event_GetString(entry, (u16)*(s16 *)(entry + 0x14));
+                personA = Person_GetByPid();
+                Event_GetString(entry, (u16)*(s16 *)(entry + 0x16));
+                personB = Person_GetByPid();
+                uiA = *(void **)(*(u8 **)gUiContext + 0x188);
+                uiB = *(void **)(*(u8 **)(uiCtx + 4) + 0x188);
+                if (uiA == personA && uiB == personB) {
+                    found = 1;
+                } else if (*(s16 *)(entry + 0x18) != 0 && uiA == personB && uiB == personA) {
+                    found = 1;
+                } else {
+                    found = 0;
+                }
+            }
+            if (found != 0) {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+check:
+    if (found == 0) {
         return 0;
-
-    do {
-        val = *ptr++;
-        if (val == 0)
-            return 0;
-        *(ptr - 1) = val;
-        count--;
-    } while (count != 0);
-
+    }
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 8;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)Talk_MatchesUiPair;
     return 1;
 }
 
@@ -10139,12 +10175,44 @@ void fn_800C341C(s32 arg0) {
 }
 
 void fn_800C3468(void *arg0) {
-    s32 i;
-    void **ptr = (void**)arg0;
-    
-    for (i = 0; i < 0xC8; i++) {
-        ptr++;
+    void *UnitRef_GetName(void *);
+    void DebugPrint(void *, ...);
+    extern u8 lbl_80270088[];
+    u8 val;
+    u8 *entry = (u8 *)arg0;
+    s32 i, j, count, idx;
+    u8 *fmt = lbl_80270088;
+    void *unit;
+    u8 *p2;
+
+    for (i = 0; i < 200; i++, entry += 8) {
+        unit = *(void **)entry;
+        if (unit == 0) continue;
+        if (unit != 0) {
+            val = *(u8 *)((u8 *)unit + 0x18);
+        } else {
+            val = 0;
+        }
+        DebugPrint(fmt + 0x13, i, UnitRef_GetName(entry), *(u8 *)(entry + 4), val);
     }
+
+    count = 0;
+    idx = count;
+    p2 = (u8 *)arg0;
+    for (; idx < 180; idx += 9) {
+        if (*(u32 *)(p2 + 0)) count++;
+        if (*(u32 *)(p2 + 8)) count++;
+        if (*(u32 *)(p2 + 0x10)) count++;
+        if (*(u32 *)(p2 + 0x18)) count++;
+        if (*(u32 *)(p2 + 0x20)) count++;
+        if (*(u32 *)(p2 + 0x28)) count++;
+        if (*(u32 *)(p2 + 0x30)) count++;
+        if (*(u32 *)(p2 + 0x38)) count++;
+        if (*(u32 *)(p2 + 0x40)) count++;
+        if (*(u32 *)(p2 + 0x48)) count++;
+        p2 += 0x50;
+    }
+    DebugPrint(fmt + 0x25, count);
 }
 
 void fn_800C3864(s32 arg0, s32 arg1) {
