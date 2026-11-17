@@ -4,7 +4,8 @@
 
 typedef struct BorderColor { u32 rgba; } BorderColor;
 static inline BorderColor Border_GetColor(void *self, s32 index) {
-    return (*(BorderColor **)((u8 *)self + 0x30))[index & 31];
+    s32 Game_GetFrameCount(void);
+    return (*(BorderColor **)((u8 *)self + 0x30))[(index - Game_GetFrameCount()) & 31];
 }
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
