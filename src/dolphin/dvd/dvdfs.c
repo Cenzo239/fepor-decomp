@@ -1142,9 +1142,8 @@ void fn_8020DAE0(u32 arg0) {
     extern s32 lbl_803685CC;
     extern s32 ResumeFromHere_803685C0;
 
-    DVDReadyCommand *finished;
+    DVDReadyCommand *block;
     s32 cleaned;
-    u32 busy;
 
     if (arg0 == 0x10) {
         __DVDStoreErrorCode(0x01234568);
@@ -1155,19 +1154,18 @@ void fn_8020DAE0(u32 arg0) {
 
     if (arg0 & 1) {
         cleaned = 0;
-        lbl_803685CC = cleaned;
-        busy = lbl_803685B8;
-        if (busy != 0) {
-            ResumeFromHere_803685C0 = cleaned;
-            finished = (DVDReadyCommand *)executing_80368598;
-            lbl_803685B8 = cleaned;
+        lbl_803685CC = 0;
+        if (lbl_803685B8 != 0) {
+            ResumeFromHere_803685C0 = 0;
+            block = (DVDReadyCommand *)executing_80368598;
+            lbl_803685B8 = 0;
             executing_80368598 = DummyCommandBlock_80339F80;
-            finished->state = 10;
-            if (finished->callback != 0) {
-                finished->callback(-3, finished);
+            block->state = 10;
+            if (block->callback != 0) {
+                block->callback(-3, block);
             }
             if (lbl_803685BC != 0) {
-                lbl_803685BC(0, finished);
+                lbl_803685BC((void *)0, block);
             }
             stateReady();
             cleaned = 1;
@@ -2059,49 +2057,57 @@ s32 fn_8020F404(void) {
 
 s32 DVDKeepAlive(void)
 {
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
     extern s32 FatalErrorFlag_803685B0;
     extern s32 PausingFlag_803685A8;
+    extern void *executing_80368598;
     extern u32 ResumeFromHere_803685C0;
     extern u8 DummyCommandBlock_80339F80[];
-
-    u32 interrupts;
-    u32 diStatus;
+    extern volatile u32 __DIRegs[16];
+    s32 enabled;
     s32 state;
+    void *exec;
+    u32 diStatus;
     s32 result;
 
-    interrupts = OSDisableInterrupts();
+    enabled = OSDisableInterrupts();
 
     if (FatalErrorFlag_803685B0 != 0) {
         state = -1;
     } else if (PausingFlag_803685A8 != 0) {
         state = 8;
-    } else if (executing_80368598 == 0 ||
-               executing_80368598 == (void *)DummyCommandBlock_80339F80) {
-        state = 0;
     } else {
-        state = *(s32 *)((u8 *)executing_80368598 + 0xC);
+        exec = executing_80368598;
+        if (exec == 0) {
+            state = 0;
+        } else if (exec == (void *)DummyCommandBlock_80339F80) {
+            state = 0;
+        } else {
+            state = *(s32 *)((u8 *)exec + 0xC);
+        }
     }
 
-    result = 0;
-
     switch (state) {
-    case 0:
     case 1:
     case 2:
-    case 3:
+    case 9:
+    case 10:
         result = 1;
         break;
-
+    case -1:
+    case 3:
     case 4:
     case 5:
     case 6:
     case 7:
-        diStatus = *(volatile u32 *)0xCC006004;
-
-        if ((diStatus & 4) == 0 && (diStatus & 1) != 0) {
+    case 11:
+        result = 0;
+        break;
+    case 0:
+    case 8:
+        diStatus = ((u32 *)__DIRegs)[1];
+        if ((((diStatus >> 2) & 1) != 0) || ((diStatus & 1) != 0)) {
             result = 0;
         } else if (ResumeFromHere_803685C0 != 0) {
             result = 0;
@@ -2109,13 +2115,9 @@ s32 DVDKeepAlive(void)
             result = 1;
         }
         break;
-
-    default:
-        result = 0;
-        break;
     }
 
-    OSRestoreInterrupts(interrupts);
+    OSRestoreInterrupts(enabled);
     return result;
 }
 
