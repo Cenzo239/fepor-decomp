@@ -279,17 +279,14 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
     fn_8001003C(*(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32), (u8)flag, 1, 0, ((Obj *)arg0)->v1(), lbl_80369394, lbl_803693A8);
 }
 
-extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
-    extern u8 gUiContext[];
-    u8 *p;
-    u8 v;
-    if (*((u8 *)arg2 + 0x39) != 0) {
-        return 0x10;
-    }
-    v = *((u8 *)arg2 + 0x3A);
-    p = gUiContext;
-    p[0xA] = v;
-    return 5;
+extern "C" s32 fn_80074B78(s32 arg0,s32 arg1,void *arg2) {
+extern u8 gUiContext[];
+u32 value;
+if(*((u8 *)arg2+0x39)) return 16;
+value=*((u8 *)arg2+0x3a);
+gUiContext[10]=value;
+arg0=5;
+return arg0;
 }
 
 extern "C" s32 fn_80074BA4(void *arg0) {
@@ -1199,17 +1196,13 @@ s32 fn_800760E4(s32 arg0, s32 arg1, s32 arg2) {
     return (fn_8009204C(*(s32 *)gUiContext, value) == 0) + 1;
 }
 
-s32 fn_80076148(s32 arg0, s32 arg1, void *arg2) {
-    extern u8 gUiContext[];
-    u8 *p;
-    s32 ret;
-    if (*((u8 *)arg2 + 0x39) == 2) {
-        return 0x10;
-    }
-    p = gUiContext;
-    p[0xA] = *((u8 *)arg2 + 0x3A);
-    ret = 5;
-    return ret;
+s32 fn_80076148(s32 arg0,s32 arg1,void *arg2) {
+extern u8 gUiContext[];
+u8 *selected;
+if(*((u8 *)arg2+0x39)==2) return 16;
+selected=gUiContext+10;
+*selected=*((u8 *)arg2+0x3a);
+return 5;
 }
 
 #pragma cplusplus on
@@ -3371,6 +3364,65 @@ found:
     Ui_CreateMenu(lbl_803674B0,arg0,0);
 }
 
+s32 fn_80079974(void *unused,void *parent) {
+ void Process_CreateChild(void *,void *);
+ void Process_Unlink(void *);
+ void *Process_Create(void *,s32);
+ void *fn_8007BD30(s8,s32,s32,s32,s32,s32,s32);
+ extern u8 *gPadInput;
+ extern u8 lbl_80288C90[],lbl_80288B40[];
+ extern s32 lbl_80367480,lbl_8036747C,lbl_80367484;
+ extern u8 *lbl_80367478;
+ extern void *gActiveFace;
+ extern void *gFaceSlots[];
+ u8 changed=0;
+ u8 *pad=gPadInput;
+ u32 held=*(u32 *)(pad+4);
+ u32 id;
+ s32 text;
+ s32 slot;
+ void **slots;
+ void *face;
+ void *proc;
+ s8 n;
+ s32 i;
+ s32 flags;
+ if(held&(*(u32 *)(pad+8)^held)&0x400) {
+ Process_CreateChild(lbl_80288C90,parent);return 0;
+ }
+ if(*(u32 *)(pad+12)&0x01000001) {
+ changed=1;
+ if(lbl_80367480>0)lbl_80367480--;else lbl_80367480=lbl_8036747C-1;
+ }
+ if(*(u32 *)(pad+12)&0x02000002) {
+ changed=1;
+ if(lbl_80367480<lbl_8036747C-1)lbl_80367480++;else lbl_80367480=0;
+ }
+ if(changed) {
+ text=*(s32 *)(lbl_80367478+lbl_80367480*32);
+ face=gActiveFace;
+ if(face) {
+ if(face) {
+ slot=*((u8 *)face+0x40);
+ slots=gFaceSlots;
+ if(slots[slot])Process_Unlink(slots[slot]);
+ slots[slot]=0;
+ }
+ }
+ flags=lbl_80367484;
+ slots=gFaceSlots;
+ for(i=0;i<8;i++,slots++) {if(*slots==0){n=i;goto found;}}
+ n=-1;
+ found:
+ gActiveFace=fn_8007BD30((s8)n,text,0x1e0,0x17c,flags,0,0);
+ id=*((u8 *)gActiveFace+0x40);
+ proc=Process_Create(lbl_80288B40,3);
+ *(s32 *)((u8 *)proc+0x60)=id;
+ *(s32 *)((u8 *)proc+0x64)=8;
+ }
+ return 0;
+}
+
 void fn_80079B9C(void *unused, void *parent, void *node) {
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
@@ -4423,6 +4475,50 @@ void fn_8007BC3C(s32 a, s32 b, s32 c, s32 d, s32 e)
     n=-1;
 found:
     fn_8007BD30((s8)n,a,b,c,d,0,e);
+}
+
+void *fn_8007BD30(s32 index, void *name, s32 x, s32 y, u32 flags, s32 unused, void *parent) {
+extern void *gFaceSlots[]; extern u8 lbl_80288AD8[],lbl_8026C640[];
+extern f32 lbl_803693D8,lbl_803693D4;
+void *Res_GetByName(void *); void *Process_Create(void *,void *); void Process_Goto(void *,s32); s32 fn_802002F0(s32);
+u8 *found; u8 *res; u8 *face; u8 *child; s32 mode; u8 *scripts=lbl_80288AD8;
+found=Res_GetByName(name);
+if(found) res=found; else res=Res_GetByName(lbl_8026C640+0xef);
+if(gFaceSlots[index]) return 0;
+mode=flags&0x100;
+if(mode) {
+if(!parent) parent=(void *)3;
+face=Process_Create(scripts,parent);
+M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
+M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
+M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
+M2C_FIELD(face,f32 *,0x4c)=1.0f; M2C_FIELD(face,f32 *,0x48)=0.0f;
+if(flags&0x200) { M2C_FIELD(face,u16 *,0x46)&=~0x202; if(M2C_FIELD(M2C_FIELD(face,void **,0x34),u8 *,0x1c)==0) M2C_FIELD(face,u16 *,0x46)|=2; }
+M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
+gFaceSlots[index]=face; M2C_FIELD(face,s32 *,0x30)=0; return face;
+}
+if(!parent) parent=(void *)3;
+face=Process_Create(scripts+0x18,parent);
+M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
+M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
+M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
+M2C_FIELD(face,f32 *,0x4c)=1.0f; M2C_FIELD(face,f32 *,0x48)=0.0f;
+if(flags&0x200) { M2C_FIELD(face,u16 *,0x46)&=~0x202; if(M2C_FIELD(M2C_FIELD(face,void **,0x34),u8 *,0x1c)==0) M2C_FIELD(face,u16 *,0x46)|=2; }
+M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
+if(!mode) {
+if(M2C_FIELD(res,u16 *,0x18)&2) M2C_FIELD(face,void **,0x50)=Process_Create(scripts+0xc8,face);
+if(M2C_FIELD(res,u16 *,0x18)&1) {
+M2C_FIELD(face,void **,0x54)=Process_Create(scripts+0xe4,face);
+switch((s32)(flags&12)) {
+case 12: break;
+case 4: child=M2C_FIELD(face,void **,0x54); if(child) { M2C_FIELD(child,u16 *,0x36)=3; M2C_FIELD(child,u16 *,0x38)=5; Process_Goto(child,8); } break;
+case 8: child=M2C_FIELD(face,void **,0x54); if(child) { M2C_FIELD(child,u16 *,0x36)=4; M2C_FIELD(child,u16 *,0x38)=2; Process_Goto(child,9); } break;
+}
+}
+}
+gFaceSlots[index]=face;
+M2C_FIELD(face,s32 *,0x30)=fn_802002F0(M2C_FIELD(M2C_FIELD(face,void **,0x34),s32 *,0));
+return face;
 }
 
 void fn_8007C018(void *arg0) {
