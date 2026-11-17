@@ -1004,109 +1004,70 @@ u32 Hash_Lookup();                                  /* extern */
 u8 Bin_ReadU8(u32 *);                              /* extern */
 u8 Bin_ReadU32(u32 *);                              /* extern */
 void Dispos_ParseEntry(u32 *, u32 *, u8);                 /* extern */
-void fn_80106F68(s8 *arg1, s8 *arg2) {
-    u32 temp_r3;
-    u8 temp_r3_2;
-    u32 var_r0;
-    u32 sp8;
-    u32 spC;
-    u32 *sp10;
-    s32 var_r25;
-    s32 var_r30;
-    s32 var_r31;
-    u8 var_r26;
-    u8 var_r27;
-    s32 sp20;
-    s32 sp24;
-    s32 sp28;
-    s32 sp2C;
-    s32 sp30;
-    s32 sp34;
-    s32 sp38;
-    s32 sp3C;
-    s32 sp40;
-    s32 sp41;
-    s32 sp42;
-    s32 sp43;
-    s32 sp44;
-    s32 sp45;
-    s32 sp46;
-    s32 sp47;
-    s32 sp58;
-    s32 sp5C;
-    s32 sp60;
-    s32 sp64;
-    s32 sp68;
-    s32 sp6C;
-    s32 sp70;
-    s32 sp74;
+void fn_80106F68(void *name, s8 *outX, s8 *outY)
+{
+  u8 parsed[0x68];
+  u8 new_var2;
+  u32 cursor;
+  u32 header;
+  u8 new_var;
+  u32 data;
+  s32 sumX = 0;
+  s32 sumY = 0;
+  u8 new_var3[2];
+  s32 i;
+  header = Hash_Lookup(name);
+  if (!header)
+  {
+    data = 0;
+  }
+  else
+  {
+    new_var3[0] = Bin_ReadU8(&header);
+    switch (Bin_ReadU8(&header))
+    {
+      case 2:
+        new_var3[1] = 0;
+        break;
 
-    var_r26 = 0;
-    var_r27 = 0;
-    var_r31 = 0;
-    var_r30 = 0;
-    temp_r3 = Hash_Lookup();
-    sp8 = temp_r3;
-    if (temp_r3 == 0) {
-        var_r0 = 0;
-    } else {
-        var_r27 = Bin_ReadU8(&sp8);
-        temp_r3_2 = Bin_ReadU8(&sp8);
-        switch ((s32) temp_r3_2) {                  /* irregular */
-        case 2:
-            var_r26 = 0;
-            break;
-        case 3:
-            Bin_ReadU8(&sp8);
-            var_r26 = Bin_ReadU8(&sp8);
-            Bin_ReadU32(&sp8);
-            break;
-        case 4:
-            Bin_ReadU8(&sp8);
-            var_r26 = Bin_ReadU8(&sp8);
-            break;
-        }
-        var_r0 = (sp8 + 3) & 0xFFFFFFFC;
-        sp8 = var_r0;
+      case 3:
+        Bin_ReadU8(&header);
+        new_var3[1] = Bin_ReadU8(&header);
+        Bin_ReadU32(&header);
+        break;
+
+      case 4:
+        Bin_ReadU8(&header);
+        new_var3[1] = Bin_ReadU8(&header);
+        break;
+
     }
-    spC = var_r0;
-    if (var_r0 != 0) {
-        sp20 = 0;
-        var_r25 = 0;
-        sp40 = 0;
-        sp58 = 0;
-        sp24 = 0;
-        sp41 = 0;
-        sp5C = 0;
-        sp28 = 0;
-        sp42 = 0;
-        sp60 = 0;
-        sp2C = 0;
-        sp43 = 0;
-        sp64 = 0;
-        sp30 = 0;
-        sp44 = 0;
-        sp68 = 0;
-        sp34 = 0;
-        sp45 = 0;
-        sp6C = 0;
-        sp38 = 0;
-        sp46 = 0;
-        sp70 = 0;
-        sp3C = 0;
-        sp47 = 0;
-        sp74 = 0;
-loop_15:
-        if (var_r25 < (s32) var_r27) {
-            Dispos_ParseEntry(&spC, sp10, var_r26);
-            var_r25 += 1;
-            var_r31 += (s8) *(((u8*)sp10)+0x1D);
-            var_r30 += (s8) *(((u8*)sp10)+0x1E);
-            goto loop_15;
-        }
-        *arg1 = (s8) (var_r31 / (s32) var_r27);
-        *arg2 = (s8) (var_r30 / (s32) var_r27);
+
+    header = (header + 3) & (~3);
+    data = header;
+  }
+  cursor = data;
+  if (data)
+  {
+    for (i = 0; i < 8; i++)
+    {
+      *((u32 *) ((parsed + 0x10) + (i * 4))) = 0;
+      parsed[0x30 + i] = 0;
+      *((u32 *) ((parsed + 0x48) + (i * 4))) = 0;
     }
+
+    for (i = 0; i < ((u8) new_var3[0]); i++)
+    {
+      Dispos_ParseEntry(&cursor, (u32 *) parsed, new_var3[1]);
+      sumX += (s8) parsed[0xd];
+      new_var2 = parsed[0xe];
+      sumY += (s8) new_var2;
+    }
+
+    new_var = (u8) new_var3[0];
+    *outX = sumX / new_var;
+    *outY = sumY / ((u8) new_var3[0]);
+  }
 }
 
 extern u16 gUnits[];
