@@ -2154,6 +2154,58 @@ void fn_801877C4(void *arg0) {
     }
     (void)gap;
 }
+
+void fn_80187BD4(void *arg0) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32);
+    void *fn_800508C4(void *);
+    f32 Math_Lerp(f32,f32,f32,f32);
+    void fn_8005FC74(void *,void *,s32);
+    void fn_8005FEE8(void *,f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *,void *);
+    extern u8 E_MuBlend_script[], E_MuTransfer_script[];
+    extern f32 lbl_8036ACEC,lbl_8036AD0C,lbl_8036ACF0;
+    u8 sp40[0x34];
+    u8 sp8[0x38];
+    void *obj;
+    s32 count;
+    void *node;
+    s32 level;
+    count=8;
+    obj=M2C_FIELD(arg0,void **,0x30);
+    if(fn_8004C0F0(obj)) {
+        *(void **)(sp40+0x30)=obj;
+        GfxEnt_ForEachKey(E_MuBlend_script,MuFade_UnlinkSame,sp40);
+        *(void **)(sp8+0x30)=obj;
+        GfxEnt_ForEachKey(E_MuTransfer_script,MuFade_UnlinkSame,sp8);
+        level=M2C_FIELD(fn_800508C4(obj),u8 *,9);
+        if(level>20) {
+            if(level>40) count<<=1;
+            else count=(s32)((f32)count+Math_Lerp(lbl_8036ACEC,lbl_8036AD0C,lbl_8036ACF0,(f32)(level-20)));
+        }
+        if(count==0 || fn_80060440((u8 *)obj+0x1C)>=4) {
+            fn_8004FE98(obj,6);
+        } else {
+            node=Process_CreateEx(E_MuBlend_script,0);
+            M2C_FIELD(node,void **,0x30)=obj;
+            M2C_FIELD(node,void **,0x34)=(u8 *)obj+0x1C;
+            M2C_FIELD(node,s32 *,0x38)=6;
+            M2C_FIELD(node,s32 *,0x3C)=count;
+            M2C_FIELD(node,s32 *,0x40)=0;
+            fn_800506E0(M2C_FIELD(node,void **,0x30),6);
+            fn_8005FC74(M2C_FIELD(node,void **,0x34),fn_800639B4(),1);
+            fn_8005FEE8(M2C_FIELD(node,void **,0x34),lbl_8036ACEC);
+            fn_8004FE90(M2C_FIELD(node,void **,0x30),(u8)M2C_FIELD(node,s32 *,0x38));
+        }
+    }
+}
+
 #pragma global_optimizer reset
 void fn_80187D70(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
@@ -10024,7 +10076,7 @@ void fn_8019A0C8(void *arg0) {
     fn_801848D8(M2C_FIELD(arg0,s32 *,0x30),M2C_FIELD(arg0,s8 *,0x3A),M2C_FIELD(arg0,s8 *,0x3B),0x18,0);
 }
 
-void fn_8019A1E0(void *arg0) {
+void fn_8019A1E0(u8 *self) {
     void *Map_Get(void *);
     void *Map_FindObjNear(void *, s8, s8, s32, s32);
     void fn_800056A0(s32);
@@ -10034,17 +10086,16 @@ void fn_8019A1E0(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
     extern u8 MapSelect_str[];
-
-    u8 *self;
+    void *map;
     s8 x;
     s8 y;
 
-    self = (u8 *)arg0;
     self[0x38] = gUiContext[0xD];
     self[0x39] = gUiContext[0xE];
+    map = Map_Get(gUiContext);
     x = self[0x38];
     y = self[0x39];
-    *(void **)(self + 0x34) = Map_FindObjNear(Map_Get(gUiContext), x, y, 0x8000, 0);
+    *(void **)(self + 0x34) = Map_FindObjNear(map, x, y, 0x8000, 0);
     if (*(void **)(self + 0x34) == NULL) {
         fn_800056A0(0);
         Process_Goto(self, 0x63);
@@ -12298,60 +12349,48 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     return 1;
 }
 
-s32 fn_8019E8B0(s32 arg0, s32 arg1) {
+void fn_8019E8B0(void *self) {
     extern u32 gUiInputFlags;
-    extern u8 gMapObjEventList[];
-    s32 Map_Get(void);
-    void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    s32 Map_CollectLinkedObjs(void *, void *, void *);
-    void fn_80044450(s32, s32);
-    void fn_800056A0(s8);
-    void fn_80016180(void);
-    void fn_80013864(void);
-    s32 MapObj_IsVisible(void *);
-    void MapObj_Show(void *, u8);
-    s32 fn_800C0658(void);
-    void MapObjEvent_Remove(void *, s32, s32, u8);
-    void fn_80129888(void *, s32);
-    void *temp1;
-    s32 sp8[10];
-    s32 count;
-    s32 i;
-    s32 v;
-    s32 *p;
-    u8 *temp2;
-
-    if (gUiInputFlags & 1) {
-        temp1 = Map_FindObjAt((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
-        if (temp1 == NULL) {
-            fn_800056A0(0);
-        } else {
-            MapObjEvent_Remove(gMapObjEventList, (s8) arg0, (s8) arg1, 0x22);
-            count = Map_CollectLinkedObjs((void *) Map_Get(), temp1, sp8);
-            p = sp8;
-            i = 0;
-            while (i < count) {
-                v = *p;
-                if ((u8) MapObj_IsVisible((void *) v) == 0) {
-                    MapObj_Show((void *) v, 0);
-                }
-                p++;
-                i++;
-            }
-            fn_80044450(Map_Get(), 1);
-            fn_80016180();
+    extern u8 Proc_MuEventInst[];
+    extern u8 gBattleMap[];
+    extern f32 lbl_8036AF80, lbl_8036AF84;
+    void Process_ClearFunc(void *);
+    u8 GActor_CheckResources(void *);
+    void *Process_Find(void *);
+    void *fn_80127C48(void);
+    void *fn_800C0658(void);
+    void *Process_Create(void *,void *);
+    void *fn_80053AE8(void *,void *);
+    s32 fn_80052F9C(void *);
+    f32 Map_SampleHeight(void *,f32,f32);
+    void Effect_SetPos(void *,f32,f32,f32);
+    void *parent;
+    void *effect;
+    void *host;
+    f32 height;
+    if(gUiInputFlags&1) {
+        Process_ClearFunc(self);
+        return;
+    }
+    if(GActor_CheckResources((u8 *)self+0x30)) {
+        host=Process_Find(Proc_MuEventInst);
+        if(host) { parent=host; } else {
+            parent=fn_80127C48();
+            if(!parent) parent=fn_800C0658();
+            parent=Process_Create(Proc_MuEventInst,parent);
         }
-        return 0;
+        effect=fn_80053AE8((u8 *)self+0x30,parent);
+        switch(fn_80052F9C(effect)) {
+        case 0: {
+            height=Map_SampleHeight(gBattleMap,(f32)(s8)M2C_FIELD(self,s32 *,0x50),(f32)(s8)M2C_FIELD(self,s32 *,0x54));
+            Effect_SetPos(effect,lbl_8036AF80+(f32)M2C_FIELD(self,s32 *,0x50),lbl_8036AF80+(f32)M2C_FIELD(self,s32 *,0x54),height);
+        break;
+        } default: {
+            Effect_SetPos(effect,(f32)M2C_FIELD(self,s32 *,0x50),(f32)M2C_FIELD(self,s32 *,0x54),lbl_8036AF84);
+        }
+        }
+        Process_ClearFunc(self);
     }
-    temp2 = (u8 *) Map_FindObjAt((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
-    if (temp2 == NULL) {
-        fn_800056A0(0);
-        return 0;
-    }
-    fn_80129888(temp2, fn_800C0658());
-    MapObjEvent_Remove(gMapObjEventList, (s8) temp2[0], (s8) temp2[1], 0x22);
-    fn_80013864();
-    return 1;
 }
 
 s32 fn_8019EA48(void) {
