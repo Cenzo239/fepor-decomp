@@ -7595,6 +7595,47 @@ s32 fn_800DB668(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x9C) != 0;
 }
 
+void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
+    f32 PSVECDistance(f32 *, f32 *);
+    void fn_802031A8(f32 *, f32 *, f32 *);
+    void fn_802031E8(f32 *, f32 *);
+    void fn_802031CC(f32 *, f32 *, f32);
+    f32 current[3];
+    f32 destination[3];
+    f32 delta[3];
+    f32 distance;
+    u8 *self;
+
+    self = (u8 *)arg0;
+    *(f32 *)(self + 0x78) = arg1[0];
+    *(f32 *)(self + 0x7C) = arg1[1];
+    *(f32 *)(self + 0x80) = arg1[2];
+
+    current[0] = *(f32 *)(self + 0x48);
+    current[1] = *(f32 *)(self + 0x4C);
+    current[2] = *(f32 *)(self + 0x50);
+    destination[0] = *(f32 *)(self + 0x78);
+    destination[1] = *(f32 *)(self + 0x7C);
+    destination[2] = *(f32 *)(self + 0x80);
+
+    distance = PSVECDistance(destination, current);
+    if (!(distance < 0.0f)) {
+        fn_802031A8(destination, current, delta);
+        fn_802031E8(delta, delta);
+        fn_802031CC(delta, delta, distance / (f32)arg2);
+        *(f32 *)(self + 0x84) = delta[0];
+        *(f32 *)(self + 0x88) = delta[1];
+        *(f32 *)(self + 0x8C) = delta[2];
+        *(f32 *)(self + 0x98) = 0.0f;
+        *(f32 *)(self + 0x94) = 0.0f;
+        *(f32 *)(self + 0x90) = 0.0f;
+        *(s32 *)(self + 0x9C) = arg2;
+        *(f32 *)(self + 0xA8) = 0.0f;
+        *(f32 *)(self + 0xA4) = 0.0f;
+        *(f32 *)(self + 0xA0) = 0.0f;
+    }
+}
+
 void fn_800DB964(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0x48) = (f32) (M2C_FIELD(arg0, f32 *, 0x48) + farg0);
     M2C_FIELD(arg0, f32 *, 0x4C) = (f32) (M2C_FIELD(arg0, f32 *, 0x4C) + farg1);
@@ -7891,11 +7932,35 @@ extern "C" void fn_800DC020(void *arg0) {
     ((Obj *)arg0)->v6();
 }
 
-void* fn_800DC0BC(void* arg0, s32 arg2, s32 arg3) {
-    // This function is complex, but based on the assembly we can see:
-    // It initializes a structure, sets up some fields and returns the pointer
-    // The original assembly makes use of several function calls and data access.
-    return arg0;
+extern "C" void *fn_800DC0BC(u8 *self,void *arg1,void *arg2,void *arg3) {
+void *fn_800DF7A0(void *,void *,void *);
+void String_Resize(void *,u32,s32);
+void *String_Init(void *,char *,void *);
+void Xml_GetNamedValue(void *,void *,void *);
+extern u8 Layer_vtable[];
+extern char Layer_str[];
+extern f32 lbl_80369E94,lbl_80369E90;
+struct Value { u32 v[8]; } value,temp;
+u8 name[12]; s32 scratch;
+fn_800DF7A0(self,arg1,arg2);
+*(void **)(self+0x40)=Layer_vtable;
+String_Resize(self+0x1C,0,0);
+*(s32 *)(self+0x28)=-49; self[0x3C]=0;
+*(void **)(self+0x48)=arg3;
+String_Init(name,Layer_str,&scratch);
+Xml_GetNamedValue(&temp,arg2,name); value=temp;
+String_Destroy(name,-1);
+*(u32 *)(self+0x60)=value.v[0]; *(u32 *)(self+0x64)=value.v[1];
+*(f32 *)(self+0x6C)=1.0f;
+*(f32 *)(self+0x70)=0.0f;
+*(s32 *)(self+0x74)=0;
+*(f32 *)(self+0x4C)=0.0f;
+*(f32 *)(self+0x54)=0.0f;
+*(f32 *)(self+0x50)=0.0f;
+*(f32 *)(self+0x58)=0.0f;
+*(f32 *)(self+0x68)=0.0f;
+*(s32 *)(self+0x5C)=0;
+return self;
 }
 
 extern "C" void *Layer_Create(void *self, void *host, void *name, void *userData)
@@ -20148,25 +20213,25 @@ void fn_800FAD94(void *arg0) {
     u8 *unit;
     u8 *cmd;
     s32 cmdC;
-    s8 x;
-    s8 y;
+    s8 ux;
+    s8 uy;
     u8 *tgt;
+    s8 tx;
     s8 ty;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
-    x = (s8)gUiContext[0xD];
-    y = (s8)gUiContext[0xE];
+    ux = (s8)gUiContext[0xD];
+    uy = (s8)gUiContext[0xE];
     cmdC = *(s32 *)(cmd + 0xC);
 
-    if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
-        ty = y;
+    if ((u8)fn_80102DFC(ux, uy, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
         if (*(s32 *)(cmd + 0x10) != 0) {
             tgt = TargetList_GetCurrent(gTargetList);
-            x = (s8)tgt[0];
+            tx = (s8)tgt[0];
             tgt = TargetList_GetCurrent(gTargetList);
             ty = (s8)tgt[1];
-            Ai_SetDecision((u8)cmdC, (s32)unit, x, ty, -1, 0, 0);
+            Ai_SetDecision((u8)cmdC, (s32)unit, tx, ty, -1, 0, 0);
         } else {
             *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
         }
