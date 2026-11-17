@@ -8233,8 +8233,6 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 
-static void *operator new(u32, void *p) { return p; }
-
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -8257,8 +8255,10 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 z = 0;
     f32 one = lbl_8036AE20;
     void *self = arg0;
+    void *tmp = (void *)((u32)self + 0);
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
+    void *mid;
 
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = z;
@@ -8286,23 +8286,24 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x34) = z;
     *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)self = lbl_80292208;
-    fn_80142060((u8 *)arg0 + 0x3C);
+    fn_80142060((u8 *)tmp + 0x3C);
+    mid = (void *)((u32)arg0 | 0);
 
-    *(void **)self = lbl_80293BB8;
-    *(u8 *)((u8 *)self + 0x48) = 1;
-    *(u8 *)((u8 *)self + 0x49) = 0;
-    *(u8 *)((u8 *)self + 0x4A) = 1;
-    *(u8 *)((u8 *)self + 0x4B) = 0;
-    *(s16 *)((u8 *)self + 0x50) = -1;
-    *(s16 *)((u8 *)self + 0x52) = -1;
-    *(s16 *)((u8 *)self + 0x54) = 0x20;
-    *(s32 *)((u8 *)self + 0x58) = 0;
-    *(s32 *)((u8 *)self + 0x5C) = 0;
-    *(s32 *)((u8 *)self + 0x60) = 3;
-    *(s16 *)((u8 *)self + 0x64) = 0x14;
-    *(s16 *)((u8 *)self + 0x66) = 0;
-    *(s32 *)((u8 *)self + 0x70) = 0;
-    ((Obj *)self)->m28();
+    *(void **)mid = lbl_80293BB8;
+    *(u8 *)((u8 *)mid + 0x48) = 1;
+    *(u8 *)((u8 *)mid + 0x49) = 0;
+    *(u8 *)((u8 *)mid + 0x4A) = 1;
+    *(u8 *)((u8 *)mid + 0x4B) = 0;
+    *(s16 *)((u8 *)mid + 0x50) = -1;
+    *(s16 *)((u8 *)mid + 0x52) = -1;
+    *(s16 *)((u8 *)mid + 0x54) = 0x20;
+    *(s32 *)((u8 *)mid + 0x58) = 0;
+    *(s32 *)((u8 *)mid + 0x5C) = 0;
+    *(s32 *)((u8 *)mid + 0x60) = 3;
+    *(s16 *)((u8 *)mid + 0x64) = 0x14;
+    *(s16 *)((u8 *)mid + 0x66) = 0;
+    *(s32 *)((u8 *)mid + 0x70) = 0;
+    ((Obj *)mid)->m28();
 
     *(void **)self = lbl_80293B74;
     *(s16 *)((u8 *)self + 0x64) = 0x18;
