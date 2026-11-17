@@ -3122,11 +3122,16 @@ void fn_80211698(s32 *arg0, u32 *arg1)
 }
 
 s32 fn_802116D4(void) {
-volatile u16 *regs=(volatile u16 *)0xCC002000;
-u32 first,second,third;
+volatile u16 *base;
+u32 second;
+u32 first;
+volatile u16 *bump;
+u32 third;
 VITiming *info;
-second=regs[0x16]&0x7ff;
-do { first=second; second=regs[0x16]&0x7ff; third=regs[0x17]&0x7ff; } while(first!=second);
+bump=(volatile u16 *)0xCC002000;
+second=(*(bump += 0x16))&0x7ff;
+base=(volatile u16 *)0xCC002000;
+do { first=second; third=base[0x17]&0x7ff; second=(*bump)&0x7ff; } while(first!=second);
 info=(VITiming *)lbl_80368648;
 if (((second-1)*2+(third-1)/info->unk1A)<info->unk18) return 1;
 return 0;
