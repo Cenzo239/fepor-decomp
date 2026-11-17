@@ -8953,51 +8953,58 @@ extern "C" void fn_80071740(void *arg0, s32 arg1, f32 x, f32 y) {
     fn_8008B464(arg1, (s32)x, (s32)y);
 }
 
-void fn_800719E4(void *arg0, void *arg1) {
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8008C1D8(s32, s32, s32, s32, s32);
-    void **vtable;
-    s8 count;
-    s32 pulse;
-    s32 scaled;
-    s32 height;
-    s32 halfH;
-    s16 posY;
-    s32 width;
-
-    count = *(s8 *)((u8 *)arg1 + 0x60);
-    vtable = *(void ***)((u8 *)arg0 + 4);
-    ((void (*)(void *))vtable[0x1F])(arg0);
-    fn_8008C1D8(0, 0, 0, (count << 5) + 0x20, 0);
-    if (*(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
-        Prim2D_Begin();
-        Prim2D_AddZ(-0.1f);
-        Prim2D_PrepareTex();
-        pulse = 0;
-        if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
-            pulse = 1;
-        }
-        vtable = *(void ***)((u8 *)arg0 + 4);
-        width = (s16)((s32 (*)(void *))vtable[0x14])(arg0);
-        scaled = (s32)(0.9f * (f32)width);
-        height = Text_MeasureHeight(-1, 1.0f);
-        posY = *(s16 *)((u8 *)arg1 + 0x3A);
-        halfH = (s32)(height + ((u32)height >> 31)) >> 1;
-        vtable = *(void ***)((u8 *)arg0 + 4);
-        width = (s16)((s32 (*)(void *))vtable[0x14])(arg0);
-        fn_8008AB7C((s32)(width + ((u32)width >> 31)) >> 1, posY + halfH, scaled, 0x17, 0x19, 0x4B, pulse);
-        Prim2D_Begin();
-        Prim2D_AddZ(0.1f);
-        Prim2D_PrepareTex();
-    }
-}
-
 #pragma cplusplus reset
-
+void fn_800719E4(void *arg0, void *arg1) {
+#pragma cplusplus on
+struct Obj { u8 pad[4];
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+virtual void v12() = 0;
+virtual void v13() = 0;
+virtual void v14() = 0;
+virtual void v15() = 0;
+virtual void v16() = 0;
+virtual void v17() = 0;
+virtual s16 v18() = 0;
+virtual void v19() = 0;
+virtual void v20() = 0;
+virtual void v21() = 0;
+virtual void v22() = 0;
+virtual void v23() = 0;
+virtual void v24() = 0;
+virtual void v25() = 0;
+virtual void v26() = 0;
+virtual void v27() = 0;
+virtual void v28() = 0;
+virtual void v29() = 0;
+};
+s32 Text_MeasureHeight(s32, f32);
+void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
+void fn_8008C1D8(s32,s32,s32,s32,s32);
+void Prim2D_AddZ(f32);
+s32 flag;
+s32 n = *(s8*)((u8*)arg1+0x60);
+((Obj*)arg0)->v29();
+fn_8008C1D8(0,0,0,(n<<5)+0x20,0);
+if (*(s16*)((u8*)arg1+0x3A)>=5) {
+Prim2D_Begin(); Prim2D_AddZ(-0.1f); Prim2D_PrepareTex();
+flag=0;
+if (!*(u8*)((u8*)arg1+0x2D) && !*(u8*)((u8*)arg1+0x2E)) flag=1;
+fn_8008AB7C(((Obj*)arg0)->v18()/2, *(s16*)((u8*)arg1+0x3A)+Text_MeasureHeight(-1,1.0f)/2, (s32)(0.9f*((Obj*)arg0)->v18()),0x17,0x19,0x4B,flag);
+Prim2D_Begin(); Prim2D_AddZ(0.1f); Prim2D_PrepareTex();
+}
+#pragma cplusplus reset
+}
 void fn_80071B34(void) {
     M2C_UNK fn_8018DAD4();
     fn_8018DAD4();
