@@ -1032,7 +1032,7 @@ void fn_8005CBC8(void) {
 
 #pragma global_optimizer off
 void *fn_8005CEC0(void) {
-    void fn_8005C8D8(s32);
+    void fn_8005C8D8();
     extern u8 lbl_802F04E0[];
     u8 *e;
     s32 i;
