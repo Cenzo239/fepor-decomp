@@ -250,6 +250,7 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
     *hours = (s32)(total / 3600);
 }
 
+#pragma optimization_level 3
 void fn_80006754(void)
 {
     extern u32 lbl_80367118;
@@ -278,7 +279,7 @@ void fn_80006754(void)
     lbl_8036712C = (u32)time;
     lbl_80367128 = (u32)(time >> 32);
 }
-
+#pragma optimization_level reset
 s64 fn_80006798(void) {
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
@@ -4182,8 +4183,58 @@ void *Process_CreateChild(void *arg0, s32 arg1, void *arg2) {
     return temp_r3;
 }
 
-void* Process_Create(u32* arg0, s32 arg1) {
-    return (void*)0x80267CB0;
+void *Process_Create(u32 *code, s32 parent) {
+    Process *fn_8000C540(void);
+    extern u8 lbl_80267CB0[];
+    extern Process *lbl_802ADADC[];
+    Process *p;
+    p = fn_8000C540();
+    p->code = code;
+    p->script = (u32 **)code;
+    p->destructor = 0;
+    p->post = 0;
+    p->func = 0;
+    p->name = (char *)lbl_80267CB0 + 0x78;
+    p->parent = 0;
+    p->child = 0;
+    p->prev = 0;
+    p->next = 0;
+    p->timer = -1;
+    p->unk_2A = 255;
+    p->flags = 8;
+    p->lock_cnt = 0;
+    p->pause = 0;
+    if ((u32)parent < 8) {
+        p->unk_2B = 0;
+        if (lbl_802ADADC[parent]) {
+            lbl_802ADADC[parent]->prev = p;
+            p->next = lbl_802ADADC[parent];
+        }
+        p->parent = (Process *)parent;
+        lbl_802ADADC[parent] = p;
+    } else {
+        p->unk_2B = ((Process *)parent)->unk_2B;
+        if (((Process *)parent)->child) {
+            ((Process *)parent)->child->prev = p;
+            p->next = ((Process *)parent)->child;
+        }
+        ((Process *)parent)->child = p;
+        p->parent = (Process *)parent;
+    }
+    if (p->code && p->lock_cnt == 0 && p->pause == 0 && p->func == 0) {
+        u32 *table = gProcessOpcodeTables;
+        for (;;) {
+            u32 x = *(u32 *)p->script;
+            u32 y = table[(x >> 8) & 7];
+            if (((u8 (*)(void *))(*(u32 *)(y + ((x & 255) << 2))))(p)
+                && p->code && p->lock_cnt == 0) {
+                if (p->pause == 0) continue;
+            }
+            break;
+        }
+    }
+    p->flags &= ~8;
+    return p;
 }
 
 extern void *fn_8000A738(void *, s32);
