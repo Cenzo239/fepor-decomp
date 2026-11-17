@@ -10748,6 +10748,45 @@ void fn_8004B8F8(int arg0, int arg1, float arg2, float arg3)
   *((u8 *) (new_var[0] + 8)) = arg1;
 }
 
+void fn_8004B984(void) {
+ void fn_80067708(s32,s32,void *,s32);
+ s32 fn_8004BAC4(s32,s32,s32,s32);
+ extern void *lbl_803672CC;
+ struct Node {struct Node *next,*prev; u8 kind,timer;};
+ struct Pool {u8 pad[8]; struct Node **free; struct Node *head,*tail; s32 count;};
+ struct Pool *pool;
+ struct Node *node;
+ u8 keep;
+ if(lbl_803672CC) {
+ node=0;
+ goto next;
+ do {
+ node->timer++;
+ switch(node->kind) {
+ case 0: if(node->timer==180) {keep=0;break;} goto alive;
+ case 1: if(node->timer==60) {keep=0;break;} goto alive;
+ default: alive: keep=1;break;
+ }
+ if(!keep) {
+ pool=lbl_803672CC;
+ if(node) {
+ if(node->next) node->next->prev=node->prev;
+ if(node->prev) node->prev->next=node->next;
+ if(node==pool->head) pool->head=node->next;
+ if(node==pool->tail) pool->tail=node->prev;
+ pool->free--;
+ pool->count--;
+ *pool->free=node;
+ }
+ }
+ next:
+ pool=lbl_803672CC;
+ node = node == 0 ? pool->head : node->next;
+ } while(node);
+ fn_80067708(2,2,fn_8004BAC4,0);
+ }
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw reset
@@ -11638,10 +11677,29 @@ void Unit_UpdateVisual(void *unit)
 extern double lbl_80368FE0;
 extern float lbl_80368FF8;
 extern float lbl_80368FD8;
-void fn_8004E040(void) {
-    float val = *(float*)lbl_803672A8;
-    *(float*)lbl_803672A8 = (val - lbl_80368FE0) / lbl_80368FF8 * lbl_80368FD8;
-    lbl_80368EF8 = *(float*)lbl_803672A8;
+void fn_8004E040(void *obj) {
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    f32 mtxTrans[3][4];
+    f32 mtxRotX[3][4];
+    f32 mtxRotY[3][4];
+    f32 mtxScale[3][4];
+
+    PSMTXRotRad(mtxRotY, 0x59, 0.017453292f * ((f32)*(s16 *)((u8 *)obj + 0x15C) / 50.0f));
+    PSMTXRotRad(mtxRotX, 0x58, 4.712389f);
+    PSMTXScale(mtxScale,
+        (f32)*(s16 *)((u8 *)obj + 0x15E) / 1000.0f,
+        (f32)*(s16 *)((u8 *)obj + 0x160) / 1000.0f,
+        (f32)*(s16 *)((u8 *)obj + 0x162) / 1000.0f);
+    PSMTXTrans(mtxTrans,
+        *(f32 *)((u8 *)obj + 0x4) + *(f32 *)((u8 *)obj + 0x10),
+        *(f32 *)((u8 *)obj + 0x8) + *(f32 *)((u8 *)obj + 0x14),
+        *(f32 *)((u8 *)obj + 0xC) + *(f32 *)((u8 *)obj + 0x18));
+    PSMTXConcat(mtxRotY, mtxScale, mtxScale);
+    PSMTXConcat(mtxRotX, mtxScale, mtxScale);
+    PSMTXConcat(mtxTrans, mtxScale, (u8 *)obj + 0x2C);
 }
 
 void fn_8004E9D8(void *arg0, s32 arg1) {
