@@ -218,13 +218,11 @@ static BOOL InputBufferValid[4];
 static u32 InputBuffer[4][2];
 static volatile u32 InputBufferVcount[4];
 
-#pragma optimization_level 1
-  static s32 SI_CopyS32(s32 x) {
+static s32 SI_CopyS32(s32 x) {
       s32 y;
       y = x;
       return y;
   }
-  #pragma optimization_level reset
 static u32 cmdTypeAndStatus[4];
 
 s32 fn_8023ABD4(void) {
@@ -570,15 +568,16 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         OSRestoreInterrupts(enabled);
         return FALSE;
     }
+    i = 0;
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr = sr & ((s32)0x0F000000 >> (chan << 3));
+    sr &= (u32)((s32)0x0F000000 >> (chan << 3));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
     rlen = (outputBytes + 3) / 4;
     si->chan = chan;
     si->callback = callback;
     si->inputBytes = inputBytes;
     si->input = input;
-    for (i = 0; i < rlen; i++) {
+    for (; i < rlen; i++) {
         __SIRegs[32 + i] = ((u32 *)output)[i];
     }
     comcsr.value = __SIRegs[13];
