@@ -7745,6 +7745,107 @@ extern "C" void fn_8013E960(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v9();
     ((Obj *)arg0)->v10(arg1);
 }
+
+#pragma cplusplus on
+extern "C" void fn_8013E9BC(void *arg0) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        u8 pad4[0xE];
+        s16 unk12;
+        s16 unk14;
+        s16 unk16;
+        s16 unk18;
+        u8 pad1A[0x1A];
+        u32 unk34;
+        u8 pad38[4];
+        s32 unk3C;
+        void *unk40;
+        s16 unk44;
+        s16 unk46;
+        s16 unk48;
+        s16 unk4A;
+        s16 unk4C;
+        s16 unk4E;
+    };
+    void fn_8013F748(void *, s16 *, s16 *);
+    void Prim2D_Begin(void);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTex(s32, u16);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_ClearCallbacks(void);
+    void Prim2D_ScissorFromRect(void *);
+    s32 Text_MeasureHeight(s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    void *Msg_Expand(void *);
+    extern f32 lbl_8036A6F0;
+    extern f32 lbl_8036A6F4;
+    extern u8 lbl_802769F8[];
+    Obj *self;
+    s16 ay;
+    s16 ax;
+    void *text;
+    s16 ay_tmp;
+
+    self = (Obj *)arg0;
+    self->v3();
+    ax = self->unk44;
+    ay_tmp = self->unk46;
+    {
+        s32 t = Text_MeasureHeight(-1, lbl_8036A6F0);
+        void *msg = self->unk40;
+        t = 0x40 - t;
+        ay = (s16)(((s32)ay_tmp + t) >> 1);
+        if (msg != NULL) {
+            text = Msg_Expand(msg);
+        } else {
+            text = lbl_802769F8;
+        }
+    }
+    if (text != NULL) {
+        s16 tw;
+        s32 raw_w;
+        s16 h;
+        s16 *rect;
+        s32 color;
+        tw = (s16)Text_MeasureWidth(text, -1, lbl_8036A6F0);
+        raw_w = self->unk16 - self->unk12;
+        h = (s16)(self->unk18 - self->unk14);
+        rect = &self->unk48;
+        self->unk48 = 0;
+        self->unk4A = 0;
+        self->unk4C = (s16)raw_w;
+        self->unk4E = h;
+        ax = (s16)(ax + (((s16)raw_w - tw) >> 1));
+        fn_8013F748(self, rect, rect);
+        rect = &self->unk4C;
+        fn_8013F748(self, rect, rect);
+        Prim2D_Begin();
+        Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk48);
+        Prim2D_AddZ(lbl_8036A6F4);
+        Prim2D_SetTex(0, (u16)(self->unk34 | 3));
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(6);
+        Prim2D_SetPos((f32)ax, (f32)ay);
+        color = self->unk3C;
+        Prim2D_SetColorPacked(&color);
+        Prim2D_SetText(text);
+        Prim2D_EndPrim();
+        Prim2D_Begin();
+        Prim2D_ClearCallbacks();
+        Prim2D_PrepareTex();
+    }
+}
+#pragma cplusplus reset
+
 #pragma cplusplus reset
 
 #pragma cplusplus on
@@ -8801,6 +8902,39 @@ void *fn_801403F0(void *arg0) {
 }
 
 #pragma cplusplus on
+extern "C" void fn_8014042C(void *arg0) {
+extern f32 lbl_8036A730, lbl_8036A740;
+f32 Math_Ease(s32, s16, f32, f32, f32, f32);
+void Ui_ClearPanelChildrenMid(void *);
+#pragma cplusplus on
+struct Point {
+s16 x,y;
+Point operator-(const Point &p) const { struct Point q=*this; q.x-=p.x; q.y-=p.y; return q; }
+Point &operator*=(f32 t) { x=x*t; y=y*t; return *this; }
+Point &operator+=(const Point &p) { x+=p.x; y+=p.y; return *this; }
+};
+struct Target { u8 pad[0x24]; s16 duration; };
+struct Link { void *prev,*next; Target *value; };
+struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
+State *self=(State*)arg0;
+(self->get()->*(self->callback))(&self->end);
+{
+s32 durationInt=self->get()->duration+1;
+s32 timeInt=self->time+1;
+f32 time=timeInt;
+f32 duration=durationInt;
+f32 t=Math_Ease(5,self->time,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
+Point p=self->end-self->start;
+p*=t;
+p+=self->start;
+(self->get()->*(self->callback))(&p);
+}
+Ui_ClearPanelChildrenMid(self);
+#pragma cplusplus reset
+}
+#pragma cplusplus reset
+
+#pragma cplusplus on
 extern "C" void Ui_ClearPanelChildrenMid(void *self) {
     /* Release refcounted children on the panel dtor list and clear the list. */
     struct Obj {
@@ -8943,16 +9077,25 @@ extern "C" void Ui_ClearPanelChildren(void *self) {
 void fn_80140D98(void *arg0) {
 extern f32 lbl_8036A730;
 extern f64 lbl_8036A738;
-f32 var_f2; f32 temp_f3; f32 temp_f4;
-s32 temp_r0; u32 temp_r7; void *var_r3; void *var_r4;
+f32 var_f2;
+f32 temp_f3;
+f32 temp_f4;
+f32 inv;
+s32 temp_r0;
+u32 temp_r7;
+void *var_r3;
+void *var_r4;
 (void)lbl_8036A738;
 temp_r7=*(u32*)((u8*)arg0+0x34);
 if(temp_r7!=0U) var_r4=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r4=NULL;
 temp_f4=(f32)(*(s16*)((u8*)var_r4+0x24)+1);
 temp_f3=(f32)(*(s16*)((u8*)arg0+0x28)+1);
 temp_r0=*(s32*)((u8*)arg0+0x40);
-switch(temp_r0) {case 0: var_f2=(lbl_8036A730/temp_f4)*(temp_f4-temp_f3); break;
-case 1: { f32 scale=lbl_8036A730/temp_f4; var_f2=scale; var_f2*=temp_f3; }; break; default: break;}
+switch(temp_r0) {
+case 0: var_f2=(lbl_8036A730/temp_f4)*(temp_f4-temp_f3); break;
+case 1: inv=lbl_8036A730/temp_f4; var_f2=inv*temp_f3; break;
+default: break;
+}
 if(temp_r7!=0U) var_r3=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r3=NULL;
 *(f32*)((u8*)var_r3+0x2C)=var_f2;
 }
