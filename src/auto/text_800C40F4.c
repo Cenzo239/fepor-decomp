@@ -13505,9 +13505,6 @@ extern "C" void fn_800E8154(void *arg0) {
 }
 
 void fn_800E81A0(void *arg0, void *arg1) {
-#pragma cplusplus on
-    struct Owner { u8 pad[0x10]; virtual void v0(); virtual void v1(); virtual void *v2(char *,void *); };
-    struct Child { u8 pad[0x40]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(int); };
     void fn_800DF700(void *);
     void fn_800DF6DC(void *,void *);
     s32 fn_800DC018(void *);
@@ -13525,10 +13522,10 @@ void fn_800E81A0(void *arg0, void *arg1) {
         String_Destroy(&name,-1);
         if(cmp==0) {
             fn_800DF6DC(&id,arg1);
-            found=((Owner *)arg0)->v2(gUiClassNames+6,String_CStr(&id));
+            found=((void *(*)(void *,char *,void *))(*(void ***)((u8 *)arg0+0x10))[4])(arg0,gUiClassNames+6,String_CStr(&id));
             String_Destroy(&id,-1);
             if(found) {
-                if(arg1) ((Child *)arg1)->v4(1);
+                if(arg1) ((void (*)(void *,int))(*(void ***)((u8 *)arg1+0x40))[6])(arg1,1);
                 return;
             }
             if(fn_800DC018(arg1)==-1) {
@@ -13539,7 +13536,6 @@ void fn_800E81A0(void *arg0, void *arg1) {
         }
         fn_800DFFB8(arg0,arg1);
     }
-#pragma cplusplus reset
 }
 
 #pragma cplusplus reset
@@ -16028,6 +16024,28 @@ void fn_800EDF18(void *arg0, s32 arg1) {
 
 void fn_800EDF38(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0xB4) = (s32) ((s32) (M2C_FIELD(arg0, s32 *, 0xB0) * (arg1 - M2C_FIELD(arg0, s32 *, 0x48))) / (s32) M2C_FIELD(arg0, s32 *, 0x60));
+}
+
+void fn_800EDF58(void *arg0,s32 arg1) {
+    void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
+    s32 fn_800E7FB4(s32,void *);
+    void *String_Init(void *,char *,void *);
+    extern char lbl_80272BB0[];
+    String name, name2;
+    s32 scratch,scratch2;
+    s32 owner;
+    s32 item;
+    s32 offset;
+    offset=M2C_FIELD(arg0,s32 *,0xB4)*M2C_FIELD(arg0,s32 *,0x60)/M2C_FIELD(arg0,s32 *,0xB0);
+    owner=*(s32 *)arg0;
+    String_Init(&name,lbl_80272BB0,&scratch);
+    item=fn_800E7FB4(owner,&name);
+    String_Destroy(&name,-1);
+    fn_800E3040(item,arg1,2,M2C_FIELD(arg0,s32 *,0x48)+offset,M2C_FIELD(arg0,s32 *,0x4C),M2C_FIELD(arg0,s32 *,0x44),16,16,255,255,255,255,0);
+    String_Init(&name2,lbl_80272BB0+6,&scratch2);
+    item=fn_800E7FB4(owner,&name2);
+    String_Destroy(&name2,-1);
+    fn_800E3040(item,arg1,0,M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x4C)+6,M2C_FIELD(arg0,s32 *,0x44),M2C_FIELD(arg0,s32 *,0x60),4,255,255,255,255,0);
 }
 
 void fn_800EE090(void) {
@@ -19926,21 +19944,21 @@ void fn_800F9E90(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80100BA4(s16, s16, s8, s8);
     void *Unit_FindByName(void *);
-    void *cmd;
+    void *cmd = gAiCmd;
     s16 x;
     s16 y;
-    s8 b;
 
-    cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
+        (u8)fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        b = gUiContext[0xe];
-        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], b) &&
-            *(s32 *)(gAiState + 8) != 4) {
-            *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
-            *(s32 *)(gAiState + 8) = 2;
-            gAiState[0x21C] = 0;
+        {
+            u8 *ctx = gUiContext;
+            if ((u8)fn_80100BA4(x, y, (s8)ctx[0xd], (s8)ctx[0xe]) &&
+                *(s32 *)(gAiState + 8) != 4) {
+                *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
+                *(s32 *)(gAiState + 8) = 2;
+                gAiState[0x21C] = 0;
+            }
         }
     }
     if (gAiCmdIsAlt == 0) {
