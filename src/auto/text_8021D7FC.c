@@ -156,6 +156,81 @@ void *fn_8021D8F8(u32 arg0)
     return result;
 }
 
+void __GXInitRevisionBits(void) {
+    extern u8 *__GXData;
+
+    volatile u8 *fifo8;
+    volatile u32 *fifo32;
+    u8 *gx;
+    u32 i;
+    u32 offset;
+    u32 value;
+    u32 regA;
+    u32 regB;
+    u32 regC;
+
+    fifo8 = (volatile u8 *)0xCC008000;
+    fifo32 = (volatile u32 *)0xCC008000;
+
+    i = 0;
+    offset = i << 2;
+
+    for (i = 0; i < 8; i++) {
+        gx = __GXData;
+
+        value = *(u32 *)(gx + offset + 0x1C);
+        value = __rlwimi(value, 1, 30, 1, 1);
+        *(u32 *)(gx + offset + 0x1C) = value;
+
+        value = *(u32 *)(gx + offset + 0x3C);
+        value = __rlwimi(value, 1, 31, 0, 0);
+        *(u32 *)(gx + offset + 0x3C) = value;
+
+        *fifo8 = 8;
+        *fifo8 = (u8)(i | 0x80);
+        *fifo32 = *(u32 *)(gx + offset + 0x3C);
+
+        offset += 4;
+    }
+
+    regA = 0;
+    regB = 0;
+    regC = 0;
+
+    regA = __rlwimi(regA, 1, 0, 31, 31);
+    regB = __rlwimi(regB, 1, 0, 31, 31);
+
+    regA = __rlwimi(regA, 1, 1, 30, 30);
+    regA = __rlwimi(regA, 1, 2, 29, 29);
+    regA = __rlwimi(regA, 1, 3, 28, 28);
+    regA = __rlwimi(regA, 1, 4, 27, 27);
+
+    regB = __rlwimi(regB, 1, 1, 30, 30);
+
+    *fifo8 = 0x10;
+    *fifo32 = 0x1000;
+
+    regA = __rlwimi(regA, 1, 5, 26, 26);
+    regB = __rlwimi(regB, 1, 2, 29, 29);
+
+    *fifo32 = regA;
+
+    regC = __rlwimi(regC, 1, 0, 31, 31);
+
+    *fifo8 = 0x10;
+
+    regB = __rlwimi(regB, 1, 3, 28, 28);
+
+    *fifo32 = 0x1012;
+
+    regB = __rlwimi(regB, 0x58, 24, 0, 7);
+
+    *fifo32 = regC;
+
+    *fifo8 = 0x61;
+    *fifo32 = regB;
+}
+
 #pragma use_lmw_stmw on
 void *GXInit(void *base, u32 size) {
     void OSRegisterVersion(char *);
@@ -1278,6 +1353,116 @@ void GXClearVtxDesc(void)
   ((u32 *) __GXData)[0x5AC / 4] |= 8;
 }
 
+#pragma optimization_level 3
+void GXSetVtxAttrFmt(s32 vtxfmt, s32 attr, s32 cnt, s32 type, unsigned char frac)
+{
+  extern u8 *__GXData;
+  u8 *gx;
+  u32 *vatA;
+  u32 *vatB;
+  u32 *vatC;
+  gx = __GXData + (vtxfmt << 2);
+  vatA = (u32 *) (gx + 0x1C);
+  vatB = (u32 *) (gx + 0x3C);
+  vatC = (u32 *) (gx + 0x5C);
+  switch (attr)
+  {
+    case 9:
+      *vatA = __rlwimi(*vatA, cnt, 0, 31, 31);
+      *vatA = __rlwimi(*vatA, type, 1, 28, 30);
+      *vatA = __rlwimi(*vatA, frac, 4, 23, 27);
+      break;
+
+    case 10:
+      *vatA = __rlwimi(*vatA, type, 10, 19, 21);
+      if (cnt == 2)
+    {
+      *vatA = __rlwimi(*vatA, 1, 9, 22, 22);
+      *vatA = __rlwimi(*vatA, 1, 31, 0, 0);
+    }
+    else
+    {
+      *vatA = __rlwimi(*vatA, cnt, 9, 22, 22);
+      *vatA = __rlwimi(*vatA, 0, 31, 0, 0);
+    }
+      break;
+
+    case 11:
+      *vatA = __rlwimi(*vatA, cnt, 13, 18, 18);
+      *vatA = __rlwimi(*vatA, type, 14, 15, 17);
+      break;
+
+    case 12:
+      *vatA = __rlwimi(*vatA, cnt, 17, 14, 14);
+      *vatA = __rlwimi(*vatA, type, 18, 11, 13);
+      break;
+
+    case 13:
+      *vatA = __rlwimi(*vatA, cnt, 21, 10, 10);
+      *vatA = __rlwimi(*vatA, type, 22, 7, 9);
+      *vatA = __rlwimi(*vatA, frac, 25, 2, 6);
+      break;
+
+    case 14:
+      *vatB = __rlwimi(*vatB, cnt, 0, 31, 31);
+      *vatB = __rlwimi(*vatB, type, 1, 28, 30);
+      *vatB = __rlwimi(*vatB, frac, 4, 23, 27);
+      break;
+
+    case 15:
+      *vatB = __rlwimi(*vatB, cnt, 9, 22, 22);
+      *vatB = __rlwimi(*vatB, type, 10, 19, 21);
+      *vatB = __rlwimi(*vatB, frac, 13, 14, 18);
+      break;
+
+    case 16:
+      *vatB = __rlwimi(*vatB, cnt, 18, 13, 13);
+      *vatB = __rlwimi(*vatB, type, 19, 10, 12);
+      *vatB = __rlwimi(*vatB, frac, 22, 5, 9);
+      break;
+
+    case 17:
+      *vatB = __rlwimi(*vatB, cnt, 27, 4, 4);
+      *vatB = __rlwimi(*vatB, type, 28, 1, 3);
+      *vatC = __rlwimi(*vatC, frac, 0, 27, 31);
+      break;
+
+    case 18:
+      *vatC = __rlwimi(*vatC, cnt, 5, 26, 26);
+      *vatC = __rlwimi(*vatC, type, 6, 23, 25);
+      *vatC = __rlwimi(*vatC, frac, 9, 18, 22);
+      break;
+
+    case 19:
+      *vatC = __rlwimi(*vatC, cnt, 14, 17, 17);
+      *vatC = __rlwimi(*vatC, type, 15, 14, 16);
+      *vatC = __rlwimi(*vatC, frac, 18, 9, 13);
+      break;
+
+    case 20:
+      *vatC = __rlwimi(*vatC, cnt, 23, 8, 8);
+      *vatC = __rlwimi(*vatC, type, 24, 5, 7);
+      *vatC = __rlwimi(*vatC, frac, 27, 0, 4);
+      break;
+
+    case 21:
+
+    case 22:
+
+    case 23:
+
+    case 24:
+
+    case 25:
+      break;
+
+  }
+
+  gx = __GXData;
+  *((u32 *) (gx + 0x5AC)) |= 0x10;
+  gx[0x5AB] |= (u8) (1 << ((u8) vtxfmt));
+}
+#pragma optimization_level reset
 s32 GXSetVtxAttrFmtv(s32 arg0)
 {
     if (arg0 < 0) {
