@@ -15475,86 +15475,94 @@ u32 fn_8017F9D4(void) {
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     extern u8 gUnitLists[];
-    void *unit;
     void *next;
     u8 count;
     s32 i;
+    void *unit;
     void *partner;
     u8 found;
     u32 result;
 
+    found = 0;
     unit = *(void **)gUnitLists;
+    goto loop1_test;
 loop1:
-    if (unit == NULL) {
+    next = *(void **)((u8 *)unit + 0x184);
+    count = Unit_CountSupportPartners(unit);
+    i = 0;
+    goto for1_test;
+for1:
+    partner = Unit_GetSupportPartner(unit, i);
+    if (partner != NULL) {
+        switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+        case 0:
+        case 5:
+            if (fn_80036B20(unit, i)) {
+                found = 1;
+                goto after_for1;
+            }
+            break;
+        }
+    }
+    i += 1;
+for1_test:
+    if (i < (s32)count) {
+        goto for1;
+    }
+    found = 0;
+after_for1:
+    if (found) {
+        found = 1;
+        goto after_list1;
+    }
+    unit = next;
+loop1_test:
+    if (unit != NULL) {
+        goto loop1;
+    }
+    found = 0;
+after_list1:
+    result = (u32)(-(s32)found | found) >> 31;
+    if (result == 0) {
         found = 0;
-    } else {
+        unit = *(void **)(gUnitLists + 0x3C);
+        goto loop2_test;
+    loop2:
         next = *(void **)((u8 *)unit + 0x184);
         count = Unit_CountSupportPartners(unit);
         i = 0;
-    for1:
-        if (i >= (s32)count) {
-            found = 0;
-        } else {
-            partner = Unit_GetSupportPartner(unit, i);
-            if (partner != NULL) {
-                switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
-                case 0:
-                case 5:
-                    if (fn_80036B20(unit, i)) {
-                        found = 1;
-                        goto after_for1;
-                    }
-                    break;
+        goto for2_test;
+    for2:
+        partner = Unit_GetSupportPartner(unit, i);
+        if (partner != NULL) {
+            switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+            case 0:
+            case 5:
+                if (fn_80036B20(unit, i)) {
+                    found = 1;
+                    goto after_for2;
                 }
+                break;
             }
-            i += 1;
-            goto for1;
         }
-    after_for1:
-        if (found != 0) {
+        i += 1;
+    for2_test:
+        if (i < (s32)count) {
+            goto for2;
+        }
+        found = 0;
+    after_for2:
+        if (found) {
             found = 1;
-        } else {
-            unit = next;
-            goto loop1;
+            goto after_list2;
         }
-    }
-    result = (u32)(-(s32)found | found) >> 31;
-    if (result == 0) {
-        unit = *(void **)(gUnitLists + 0x3C);
-    loop2:
-        if (unit == NULL) {
-            found = 0;
-        } else {
-            next = *(void **)((u8 *)unit + 0x184);
-            count = Unit_CountSupportPartners(unit);
-            i = 0;
-        for2:
-            if (i >= (s32)count) {
-                found = 0;
-            } else {
-                partner = Unit_GetSupportPartner(unit, i);
-                if (partner != NULL) {
-                    switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
-                    case 0:
-                    case 5:
-                        if (fn_80036B20(unit, i)) {
-                            found = 1;
-                            goto after_for2;
-                        }
-                        break;
-                    }
-                }
-                i += 1;
-                goto for2;
-            }
-        after_for2:
-            if (found != 0) {
-                found = 1;
-            } else {
-                unit = next;
-                goto loop2;
-            }
+        unit = next;
+    loop2_test:
+        if (unit != NULL) {
+            goto loop2;
         }
+        found = 0;
+    after_list2:
         result = (u32)(-(s32)found | found) >> 31;
     }
     return result;
