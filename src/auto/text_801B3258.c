@@ -1285,32 +1285,29 @@ void fn_801B7A74(void *arg0) {
     s8 fn_80146BE4(void *);
     void fn_80148980(void *, s32);
     void fn_801B7B5C(void *, s32, f32);
-    extern void *lbl_80367240;
-    extern u8 lbl_803301A8[1344];
+    extern void *gPadInput;
+    extern u8 gSeCueSlots[1344];
 
     void *self;
-    void *pad;
     s32 count;
-    s32 buttons;
+    s32 btn;
     s32 prev;
     s32 pressed;
     void *p;
     s8 slot;
 
     self = *(void **)((u8 *)arg0 + 0x30);
-    pad = lbl_80367240;
+    btn = *(s32 *)((u8 *)gPadInput + 4);
+    prev = *(s32 *)((u8 *)gPadInput + 8);
     count = *(s32 *)((u8 *)self + 4);
-    buttons = *(s32 *)((u8 *)pad + 4);
-    prev = *(s32 *)((u8 *)pad + 8);
     *(s32 *)((u8 *)self + 4) = count + 1;
-    pressed = buttons & (prev ^ buttons);
-    count = *(s32 *)((u8 *)self + 4);
-    if (count >= 0x78 || (count >= 0x14 && ((pressed & 0x100) != 0 || (pressed & 0x200) != 0))) {
+    pressed = btn & (prev ^ btn);
+    if (*(s32 *)((u8 *)self + 4) >= 0x78 || (*(s32 *)((u8 *)self + 4) >= 0x14 && ((pressed & 0x100) != 0 || (pressed & 0x200) != 0))) {
         p = *(void **)((u8 *)self + 0x90);
         if (p != NULL) {
             slot = fn_80146BE4(p);
             if (slot != -1) {
-                fn_80148980(lbl_803301A8 + (u8)slot * 0x30, 0x1F4);
+                fn_80148980(gSeCueSlots + (slot & 0xFF) * 0x30, 0x1F4);
             }
         }
         fn_8000C188(arg0);
@@ -11585,12 +11582,13 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
     return self + *(s16 *)(self + 0x70) * 4 + 0x3c;
 }
 
+#pragma opt_unroll off
 void *fn_801CDB74(void *arg0) {
     s32 i;
     u32 *p;
     s16 count;
     s32 n;
-    s32 chunks;
+    u32 chunks;
 
     i = 0;
     p = (u32 *)((u8 *)arg0 + 0x3C);
@@ -11630,7 +11628,7 @@ void *fn_801CDB74(void *arg0) {
     }
     return (u8 *)arg0 + ((s32)*(s16 *)((u8 *)arg0 + 0x70) * 4) + 0x3C;
 }
-
+#pragma opt_unroll reset
 s16 NameEntry_MoveCaretRight(void *self, u8 flag) {
     extern s16 lbl_80366EAA;
     extern u8 lbl_8027DE18[];
