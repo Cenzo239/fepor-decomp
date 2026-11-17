@@ -372,28 +372,28 @@ s32 fn_80183974(void) {
     u8 *base;
 
     base = E_MuBlend_script;
-    if (Process_Find(E_MuBlend_script) != 0) {
+    if (Process_Find(&base[0]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0x78) != 0) {
+    if (Process_Find(&base[0x78]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0x98) != 0) {
+    if (Process_Find(&base[0x98]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0xC0) != 0) {
+    if (Process_Find(&base[0xC0]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0x110) != 0) {
+    if (Process_Find(&base[0x110]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0xE8) != 0) {
+    if (Process_Find(&base[0xE8]) != 0) {
         return 1;
     }
-    if (Process_Find(base + 0x20) != 0) {
+    if (Process_Find(&base[0x20]) != 0) {
         return 1;
     }
-    return Process_Find(base + 0x3F0) != 0;
+    return Process_Find(&base[0x3F0]) != 0;
 }
 
 extern u16 E_MuFade_script[36];
@@ -1348,6 +1348,64 @@ void Mu_HideAtTile(void *proc) {
     }
 }
 
+void fn_8018614C(void *arg0) {
+    u8 Pad_IsButton(void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    s32 Mu_GetFlashColor(s32);
+    void MuFade_UnlinkSame(void *, void *);
+    void Process_ClearFunc(void *);
+    extern u8 E_MuColorChange_script[];
+
+    u8 *proc;
+    u8 *unit;
+    u8 *flash;
+    u8 *pad;
+    u8 key[0x34];
+    u32 color;
+
+    proc = (u8 *)arg0;
+    pad = *(u8 **)(*(u8 **)(proc + 0x34) + 0x30);
+    pad = *(u8 **)(pad + 0x5C);
+
+    if ((u8)Pad_IsButton(pad, 0) != 0) {
+        unit = *(u8 **)(proc + 0x30);
+
+        *(void **)(key + 0x30) = unit;
+
+        GfxEnt_ForEachKey(
+            E_MuColorChange_script,
+            MuFade_UnlinkSame,
+            key
+        );
+
+        flash = (u8 *)Process_CreateEx(
+            E_MuColorChange_script,
+            0
+        );
+
+        *(void **)(flash + 0x30) = unit;
+        *(s32 *)(flash + 0x3C) = 0x10;
+
+        color = Mu_GetFlashColor(3);
+
+        flash[0x38] = ((u8 *)&color)[0];
+        flash[0x39] = ((u8 *)&color)[1];
+        flash[0x3A] = ((u8 *)&color)[2];
+        flash[0x3B] = ((u8 *)&color)[3];
+
+        flash[0x34] = unit[0x24];
+        flash[0x35] = unit[0x25];
+        flash[0x36] = unit[0x26];
+        flash[0x37] = unit[0x27];
+    }
+
+    if ((u8)Pad_IsButton(pad, 8) != 0) {
+        *(u32 *)pad |= 0x40;
+        Process_ClearFunc(proc);
+    }
+}
+
 void fn_80186260(void *arg0) {
     s32 fn_8005F894(void *, s32);
     void fn_8005FEE8(void *, f32);
@@ -1561,7 +1619,6 @@ void fn_80186E10(void *arg0) {
     void Unit_SetWorldXY(void *, f32, f32);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
-    extern f32 lbl_8036ACF8;
     extern f32 lbl_8036AD00;
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF4;
@@ -1575,7 +1632,7 @@ void fn_80186E10(void *arg0) {
     f32 end = lbl_8036ACEC;
     f32 duration = lbl_8036ACF4;
 
-    *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x44) + lbl_8036ACF8;
+    *(f32 *)((u8 *)arg0 + 0x44) = 1.0f + *(f32 *)((u8 *)arg0 + 0x44);
     p34 = *(void **)((u8 *)arg0 + 0x34);
     r31 = (u8 *)p34 + 0x1C;
     r30 = (s32)Math_EaseOutPow(2, start, end, duration, *(f32 *)((u8 *)arg0 + 0x44));
@@ -2806,16 +2863,21 @@ void fn_8018B31C(void *arg0) {
 #pragma fp_contract on
 void fn_8018B3AC(void *arg0) {
     extern f32 lbl_8036ACEC;
-    f32 *p;
-    f32 z = lbl_8036ACEC;
+    f32 v;
+    f32 c;
+    f32 *ptr;
 
-    p = *(f32 **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)p + 4);
-    p = *(f32 **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)p + 8);
-    p = *(f32 **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)arg0 + 0x3C) = *(f32 *)((u8 *)p + 0xC);
-    *(f32 *)((u8 *)arg0 + 0x48) = z;
+    c = lbl_8036ACEC;
+    ptr = *(f32 **)((u8 *)arg0 + 0x30);
+    v = ptr[1];
+    *(f32 *)((u8 *)arg0 + 0x34) = v;
+    ptr = *(f32 **)((u8 *)arg0 + 0x30);
+    v = ptr[2];
+    *(f32 *)((u8 *)arg0 + 0x38) = v;
+    ptr = *(f32 **)((u8 *)arg0 + 0x30);
+    v = ptr[3];
+    *(f32 *)((u8 *)arg0 + 0x3C) = v;
+    *(f32 *)((u8 *)arg0 + 0x48) = c;
 }
 
 void fn_8018B3DC(void *arg0) {
@@ -4153,7 +4215,7 @@ extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
 }
 #pragma cplusplus reset
 void fn_8018EBC0(void *arg0, s32 arg1) {
-    void Item_Init(void *);
+    void fn_8001C76C(void *);
     s32 UnitRef_GetName(void *);
     void UnitRef_Set(void *, s32);
     void Item_Destroy(void *, s32);
@@ -4168,7 +4230,7 @@ void fn_8018EBC0(void *arg0, s32 arg1) {
     s16 half;
     s32 x;
     s32 w;
-    Item_Init(sp8);
+    fn_8001C76C(sp8);
     UnitRef_Set(sp8, *(s32 *)((u8 *)arg0 + 0x40));
     y = *(s16 *)((u8 *)arg0 + 0x44);
     half = (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
@@ -7349,6 +7411,80 @@ void *EventArrow_Get(s32 arg0) {
         obj = Process_Create(Proc_EventArrowManager, 3);
     }
     return (void *)(*(s32 *)((u8 *)obj + 0x30) + arg0 * 0x3250);
+}
+
+void fn_80194FAC(void *arg0) {
+    void fn_80195178(void *);
+    void fn_801959FC(void *);
+    void fn_8006785C(s32, void *, void *);
+
+    extern u32 gUiInputFlags;
+
+    u8 *self;
+    u8 *data;
+    s32 i;
+    s32 offset;
+    f32 value;
+
+    self = (u8 *)arg0;
+
+    if (gUiInputFlags & 1) {
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x18);
+        *(f32 *)(data + 0x14) = value;
+        *(f32 *)(data + 0x10) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x3268);
+        *(f32 *)(data + 0x3264) = value;
+        *(f32 *)(data + 0x3260) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x64B8);
+        *(f32 *)(data + 0x64B4) = value;
+        *(f32 *)(data + 0x64B0) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x9708);
+        *(f32 *)(data + 0x9704) = value;
+        *(f32 *)(data + 0x9700) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0xC958);
+        *(f32 *)(data + 0xC954) = value;
+        *(f32 *)(data + 0xC950) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0xFBA8);
+        *(f32 *)(data + 0xFBA4) = value;
+        *(f32 *)(data + 0xFBA0) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x12DF8);
+        *(f32 *)(data + 0x12DF4) = value;
+        *(f32 *)(data + 0x12DF0) = value;
+
+        data = *(u8 **)(self + 0x30);
+        value = *(f32 *)(data + 0x16048);
+        *(f32 *)(data + 0x16044) = value;
+        *(f32 *)(data + 0x16040) = value;
+    }
+
+    offset = 0;
+
+    for (i = 0; i < 8; i++) {
+        fn_80195178(
+            *(u8 **)(self + 0x30) + offset
+        );
+
+        fn_8006785C(
+            2,
+            fn_801959FC,
+            *(u8 **)(self + 0x30) + offset
+        );
+
+        offset += 0x3250;
+    }
 }
 
 void fn_801950CC(void *arg0) {
@@ -11660,6 +11796,81 @@ void fn_8019EAC8(void *arg0) {
     fn_800F18A4(M2C_FIELD(arg0, s32 *, 0x30), M2C_FIELD(arg0, s32 *, 0x34));
 }
 
+s32 fn_8019EAF4(s32 x, s32 y) {
+    s32 Map_Get(void);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
+    void MapObjEvent_Push(void *, s32, s32, s32, s32);
+    void fn_800056A0(s32);
+    void fn_80049D08(void *);
+    void fn_80049CB4(void *, void *);
+    s32 fn_800C0658(void);
+    void fn_8012ADAC(s32, s32, u32);
+    void fn_80013864(void);
+
+    extern u8 gMapObjEventList[];
+    extern u32 gUiInputFlags;
+    extern u32 lbl_8036AF70;
+
+    u8 *obj;
+    u8 *other;
+    s32 objX;
+    s32 objY;
+    u32 value;
+
+    obj = (u8 *)Map_FindObjNear(
+        (void *)Map_Get(),
+        x,
+        y,
+        0xA00,
+        0x10
+    );
+
+    if (obj == NULL) {
+        fn_800056A0(0);
+        return 0;
+    }
+
+    objX = (s8)obj[0];
+    objY = (s8)obj[1];
+
+    MapObjEvent_Push(
+        gMapObjEventList,
+        objX,
+        objY,
+        0x25,
+        0
+    );
+
+    if (gUiInputFlags & 1) {
+        obj[2] |= 1;
+
+        other = (u8 *)Map_FindObjAt(
+            (void *)Map_Get(),
+            objX,
+            objY,
+            0x20000,
+            0
+        );
+
+        if (other != NULL) {
+            fn_80049D08(other);
+
+            value = lbl_8036AF70;
+            fn_80049CB4(other, &value);
+
+            other[2] &= ~1;
+        }
+
+        return 0;
+    }
+
+    fn_8012ADAC(objX, objY, fn_800C0658());
+    fn_80013864();
+
+    return 1;
+}
+
 s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
     void *Map_FindObjAt(void *, s32, s32, s32, s32);
     s32 Map_Get(void);
@@ -12660,6 +12871,63 @@ void fn_801A0D20(void *arg0) {
         fn_8004FE98(temp_r31, temp);
         fn_8004BF24(temp_r31);
     }
+}
+
+s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
+    extern u16 gUnits[];
+    extern u8 Proc_MuEventInst[];
+    extern u32 gUiInputFlags;
+    extern f32 lbl_8036AF74;
+
+    void *Process_Find(void *);
+    void *Process_Create(void *, s32);
+    u32 fn_80127C48(void);
+    s32 fn_800C0658(void);
+
+    u8 *unit;
+    void *parent;
+    s32 duration;
+    u32 temp;
+
+    if (arg0 != 0) {
+        unit = (u8 *)gUnits + ((arg0 - 1) * 0x280);
+    } else {
+        unit = 0;
+    }
+
+    if (unit == 0 || *(u32 *)(unit + 0x188) == 0) {
+        return 0;
+    }
+
+    if (gUiInputFlags & 1) {
+        ((s32 (*)(void *, s32, s32, void *))fn_80184750)(
+            unit, arg1, 0, 0
+        );
+        return 1;
+    }
+
+    parent = Process_Find(Proc_MuEventInst);
+
+    if (parent == 0) {
+        temp = fn_80127C48();
+
+        if (temp == 0) {
+            temp = fn_800C0658();
+        }
+
+        parent = Process_Create(Proc_MuEventInst, temp);
+    }
+
+    duration = (s32)((f32)arg2 / lbl_8036AF74);
+
+    ((s32 (*)(void *, s32, s32, void *))fn_80184750)(
+        unit,
+        arg1,
+        duration,
+        parent
+    );
+
+    return 1;
 }
 
 /* Script command: warp unit unitId to (x, y) instantly and ensure MuEventInst is running. */
