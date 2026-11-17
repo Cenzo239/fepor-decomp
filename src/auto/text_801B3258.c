@@ -5720,6 +5720,42 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     fn_801D2C30((UIListObj *)self);
     return self;
 }
+
+extern "C" void fn_801C16F0(void *arg0) {
+#pragma cplusplus reset
+void *Heap_Alloc(s32);
+void *fn_8013692C(void *,s32,s32,s32,s32,s32);
+void fn_8013F0F0(void *,void *);
+void fn_8013F1A0(void *,void *);
+#pragma cplusplus on
+struct Rect {
+s16 left,top,right,bottom;
+s16 width() { return right-left; }
+s16 height() { return bottom-top; }
+void set(s16 l,s16 t,s16 r,s16 b) { left=l; top=t; right=r; bottom=b; }
+};
+void *child;
+s16 mid,height;
+Rect *outer=(Rect *)((u8 *)arg0+0xA);
+Rect *inner=(Rect *)((u8 *)arg0+0x12);
+inner->set(2,8,outer->width()-2,outer->height()-8);
+M2C_FIELD(arg0,s16 *,0x86)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+M2C_FIELD(arg0,s16 *,0x88)=0;
+M2C_FIELD(arg0,s16 *,0x8A)=0;
+mid=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
+M2C_FIELD(arg0,s16 *,0xAE)=mid;
+M2C_FIELD(arg0,s16 *,0xB0)=height;
+M2C_FIELD(arg0,s16 *,0xB2)=0;
+if(M2C_FIELD(arg0,void **,0x48)) fn_8013F0F0(arg0,M2C_FIELD(arg0,void **,0x48));
+child=Heap_Alloc(0x9C);
+if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))-16,0,9,(s16)(M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14))-16,M2C_FIELD(arg0,s16 *,0x22)-5);
+M2C_FIELD(arg0,void **,0x48)=child;
+M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=2;
+fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 void Heap_Free(void *);
@@ -7907,7 +7943,8 @@ void fn_801C6E60(u32 arg0)
         walk = list;
         for (i = 0; i < 0x40; i++) {
             if (*(u32 *)(walk + 0x290) == 0) {
-                *(u32 *)(list + i * 4 + 0x290) = arg0;
+                walk = list + i * 4;
+                *(u32 *)(walk + 0x290) = arg0;
                 fn_8005F788(arg0, 1, 1);
                 break;
             }
@@ -11140,32 +11177,76 @@ void fn_801CDDC8(void *arg0, char *arg1) {
     }
 }
 
-s32 fn_801CDE2C(struct efUnit* arg0) {
-    struct Unit* unit;
-    
-    if (arg0 == 0) {
-        return 0;
+void fn_801CDE2C(void *self, u8 *str) {
+    s32 fn_80010710(u8 *);
+    void *memset(void *, int, unsigned long);
+    u8 *dest;
+    s32 count;
+    u8 b0;
+    u8 b1;
+    u8 isSjis;
+
+    dest = (u8 *)self + 0x3c;
+    memset(dest, 0, 0x34);
+    count = 0;
+    goto check;
+body:
+    str += fn_80010710(str);
+    if ((s8)*str == 0) {
+        goto done;
     }
-    
-    unit = arg0->unit;
-    if (unit == 0) {
-        return 0;
+    b0 = str[0];
+    if (b0 >= 0x81U) {
+        if (b0 <= 0x9FU) {
+            goto lead_ok;
+        }
+        if (b0 >= 0xE0U) {
+            if (b0 <= 0xFCU) {
+                goto lead_ok;
+            }
+        }
+        goto not_sjis;
+    lead_ok:
+        b1 = str[1];
+        if (b1 >= 0x40U) {
+            if (b1 <= 0x7EU) {
+                goto sjis_yes;
+            }
+            if (b1 >= 0x80U) {
+                if (b1 <= 0xFCU) {
+                    goto sjis_yes;
+                }
+            }
+        }
     }
-    
-    if ((*(u32*)unit & 0x400) != 0) {
-        return 1;
+not_sjis:
+    isSjis = 0;
+    goto after_sjis;
+sjis_yes:
+    isSjis = 1;
+after_sjis:
+    if (isSjis != 0) {
+        dest[0] = str[0];
+        dest[1] = str[1];
+        str += 2;
+        dest += 4;
+    } else {
+        dest[0] = *str;
+        str += 1;
+        dest += 4;
     }
-    
-    if ((*(u32*)unit & 0x800) != 0) {
-        return 1;
+    count += 1;
+check:
+    if ((s8)*str == 0) {
+        goto done;
     }
-    
-    // The rest is the same as before
-    if ((*(u32*)unit & 0x200) == 0) {
-        return 0;
+    if (count < 0xC) {
+        goto body;
     }
-    
-    return (*(u32*)unit >> 8) >= gScriptObjSlots[(*(u32*)unit >> 8) >> 1];
+done:
+    *(s16 *)((u8 *)self + 0x70) = 0;
+    *(s16 *)((u8 *)self + 0x72) = -1;
+    *(s16 *)((u8 *)self + 0x74) = -1;
 }
 
 void *fn_801CDF5C(void *arg0, s16 arg1) {
