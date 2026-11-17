@@ -4212,6 +4212,75 @@ done:
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
+
+extern "C" void fn_801396C4(void *self, void *other) {
+struct Obj {
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual s32 v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16(s16,s16,s32,s16,u8)=0;
+};
+void fn_8013A39C(void *,void *);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_PrepareTex(void);
+void Prim2D_SetAlphaByte(s32);
+s32 Text_MeasureHeight(s32,f32);
+void Ui_DrawRouteIconEx(s16,s32,u8);
+extern f32 lbl_8036A670,lbl_8036A674,lbl_8036A678;
+s32 x;
+s16 height;
+s16 y;
+u8 active;
+s32 width;
+s16 old;
+if(M2C_FIELD(self,s16 *,0x4E)!=0x7FFF) {fn_8013A39C(self,other);return;}
+((Obj *)self)->v3();
+width=((Obj *)self)->v11();
+old=M2C_FIELD(self,s16 *,0x52);
+height=M2C_FIELD(self,s16 *,0x5A);
+y=M2C_FIELD(self,s16 *,0x18)-M2C_FIELD(self,s16 *,0x14);
+x=M2C_FIELD(self,s16 *,0x62);
+if(old<0 || M2C_FIELD(self,s16 *,0x54)<0) {
+M2C_FIELD(self,s16 *,0x52)=x;
+M2C_FIELD(self,s16 *,0x54)=y;
+} else {
+M2C_FIELD(self,s16 *,0x52)=(old+((s16)x+1))>>1;
+M2C_FIELD(self,s16 *,0x54)=(M2C_FIELD(self,s16 *,0x54)+(y+1))>>1;
+}
+if(M2C_FIELD(self,u8 *,0x4C)) {
+u8 flag;
+void *ptr;
+s32 h;
+active=0;
+flag=active;
+if(!M2C_FIELD(other,u8 *,0x2D)&&!M2C_FIELD(other,u8 *,0x2E))flag=1;
+if(flag) {
+ptr=M2C_FIELD(other,u32 *,0x34)?M2C_FIELD(M2C_FIELD(other,void **,0x38),void **,8):0;
+if(ptr==self)active=1;
+}
+Prim2D_Begin();Prim2D_AddZ(lbl_8036A670);Prim2D_PrepareTex();
+h=M2C_FIELD(self,s16 *,0x5A);
+Ui_DrawRouteIconEx(M2C_FIELD(self,s16 *,0x52),M2C_FIELD(self,s16 *,0x54)+(s16)(((s16)h-Text_MeasureHeight(-1,lbl_8036A674))>>1),active);
+Prim2D_Begin();Prim2D_AddZ(lbl_8036A678);Prim2D_PrepareTex();
+((Obj *)self)->v16((s16)(x-M2C_FIELD(self,s16 *,0x62)),y,width,height,active);
+}
+Prim2D_Begin();Prim2D_SetAlphaByte(0x80);Prim2D_PrepareTex();
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
@@ -9023,6 +9092,97 @@ p+=self->start;
 
 s32 fn_80140B04(s32 arg0) {
     return arg0 + 4;
+}
+
+void fn_80140B0C(void *self) {
+    void *fn_80140B04(void *);
+    void List_Erase(void *, void *, void *);
+    void Ui_ClearPanelChildren(void *);
+    extern f32 lbl_8036A730;
+    void *child;
+    void *end;
+    u8 *parent;
+    void *node;
+    void *found;
+    u32 ret;
+    u32 flag;
+    f32 var_f2;
+    f32 temp_f3;
+    f32 temp_f4;
+    f32 inv;
+    s32 mode;
+#pragma cplusplus on
+    struct Obj {
+        virtual void destroy(s32) = 0;
+        s32 refcount;
+    };
+#pragma cplusplus reset
+
+    flag = *(u32 *)((u8 *)self + 0x34);
+    parent = *(u8 **)((u8 *)self + 0x18);
+
+    if (flag != 0) {
+        child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
+    } else {
+        child = NULL;
+    }
+
+    temp_f4 = (f32)(*(s16 *)((u8 *)child + 0x24) + 1);
+    temp_f3 = (f32)(*(s16 *)((u8 *)self + 0x28) + 1);
+    mode = *(s32 *)((u8 *)self + 0x40);
+    switch (mode) {
+    case 0:
+        var_f2 = (lbl_8036A730 / temp_f4) * (temp_f4 - temp_f3);
+        break;
+    case 1:
+        inv = lbl_8036A730 / temp_f4;
+        var_f2 = inv * temp_f3;
+        break;
+    }
+
+    if (flag != 0) {
+        child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
+    } else {
+        child = NULL;
+    }
+    *(f32 *)((u8 *)child + 0x2C) = var_f2;
+
+    if (*(s32 *)((u8 *)self + 0x40) == 1) {
+        if (*(u32 *)((u8 *)self + 0x34) != 0) {
+            child = *(void **)(*(u8 **)((u8 *)self + 0x38) + 8);
+        } else {
+            child = NULL;
+        }
+        if (child != NULL) {
+            end = fn_80140B04(parent + 0x34);
+            node = ((void **)fn_80140B04(parent + 0x34))[1];
+            goto check;
+            for (;;) {
+                node = ((void **)node)[1];
+            check:
+                if (node != end) {
+                    if (((void **)node)[2] != child) {
+                        continue;
+                    }
+                }
+                break;
+            }
+            if (node != parent + 0x38) {
+                found = node;
+                List_Erase(&ret, parent + 0x34, &found);
+                if (child != NULL) {
+                    if (--*(s32 *)((u8 *)child + 4) == 0) {
+                        if (child != NULL) {
+#pragma cplusplus on
+                            ((Obj *)child)->destroy(1);
+#pragma cplusplus reset
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ui_ClearPanelChildren(self);
 }
 
 #pragma cplusplus on
