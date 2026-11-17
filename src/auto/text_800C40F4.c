@@ -7038,8 +7038,8 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     fn_800D6898(arg0, arg1, arg2, *n, &alloc);
 }
 
-#pragma cplusplus on
-extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
+#pragma cplusplus reset
+s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
     void fprintf(void *, char *, ...);
     void abort(void);
     void *Heap_Alloc(s32);
@@ -7204,7 +7204,6 @@ extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
     }
     return 0;
 }
-#pragma cplusplus reset
 
 void *fn_800D6314(void *arg0, s16 arg1) {
     void Heap_Free(void *);
@@ -11639,6 +11638,303 @@ loop_check:
     return self;
 }
 
+void *fn_800DE4F0(void *arg0, void *arg1, String *arg2, String *arg3)
+{
+    void *String_Init(void *, char *, void *);
+    void *String_Destroy(void *, s32);
+    void *fn_800DFAE0(void *, void *, String *, String *, String *);
+    void fn_800DEF4C(void *, void *, void *);
+    void fn_800D6878(void *, void *, void *);
+    void String_ConcatCStr(String *, String *, char *);
+    void String_Assign(String *, String *, s32, s32);
+    char *String_CStr(String *);
+    u16 FileCache_Probe(char *);
+    void *fn_8005C82C(char *, s32);
+    void *fn_80065EE8(char *);
+    void *fn_8006CE14(char *);
+    void *fn_8006D948(char *);
+
+    extern char lbl_80271860[];
+    extern void *lbl_8028DFA8[];
+
+    String str68;
+    String str5C;
+    String str50;
+    String str44;
+    String str38;
+    String str2C;
+    String str20;
+
+    u32 scratch1C;
+    u32 scratch18;
+    u32 scratch14;
+    u32 scratch10;
+    u32 scratchC;
+    u32 scratch8;
+
+    u8 *self;
+    String *name;
+
+    self = (u8 *)arg0;
+    name = arg3;
+
+    String_Init(
+        &str5C,
+        lbl_80271860 + 0x40,
+        &scratch1C
+    );
+
+    String_Init(
+        &str50,
+        lbl_80271860,
+        &scratch18
+    );
+
+    fn_800DFAE0(
+        self,
+        arg1,
+        &str5C,
+        arg2,
+        &str50
+    );
+
+    String_Destroy(&str50, -1);
+    String_Destroy(&str5C, -1);
+
+    *(void **)(self + 0x40) = lbl_8028DFA8;
+
+    fn_800DEF4C(
+        self + 0x58,
+        &scratch10,
+        &scratch14
+    );
+
+    fn_800D6878(
+        self + 0x68,
+        &scratch8,
+        &scratchC
+    );
+
+    str68.cap = 0;
+    str68.size = 0;
+    str68.data = 0;
+    str68.cap = 0;
+
+    *(s32 *)(self + 0x28) = -0x30;
+    self[0x3C] = 0;
+
+    String_ConcatCStr(
+        &str44,
+        name,
+        lbl_80271860 + 0x1E
+    );
+
+    String_Assign(
+        &str68,
+        &str44,
+        0,
+        -1
+    );
+
+    String_Destroy(&str44, -1);
+
+    if (FileCache_Probe(String_CStr(&str68)) != 0x8000) {
+        *(void **)(self + 0x48) =
+            fn_8005C82C(
+                String_CStr(&str68),
+                8
+            );
+    } else {
+        *(void **)(self + 0x48) = 0;
+    }
+
+    String_ConcatCStr(
+        &str38,
+        name,
+        lbl_80271860 + 0x23
+    );
+
+    String_Assign(
+        &str68,
+        &str38,
+        0,
+        -1
+    );
+
+    String_Destroy(&str38, -1);
+
+    *(void **)(self + 0x4C) =
+        fn_80065EE8(String_CStr(&str68));
+
+    String_ConcatCStr(
+        &str2C,
+        name,
+        lbl_80271860 + 0x26
+    );
+
+    String_Assign(
+        &str68,
+        &str2C,
+        0,
+        -1
+    );
+
+    String_Destroy(&str2C, -1);
+
+    *(void **)(self + 0x50) =
+        fn_8006CE14(String_CStr(&str68));
+
+    String_ConcatCStr(
+        &str20,
+        name,
+        lbl_80271860 + 0x2A
+    );
+
+    String_Assign(
+        &str68,
+        &str20,
+        0,
+        -1
+    );
+
+    String_Destroy(&str20, -1);
+
+    *(void **)(self + 0x54) =
+        fn_8006D948(String_CStr(&str68));
+
+    String_Destroy(&str68, -1);
+
+    return self;
+}
+
+#pragma global_optimizer off
+fn_800DE73C(arg0, arg1)
+void *arg0;
+void *arg1;
+{
+    void Heap_Free(void *);
+    void abort(void);
+    s32 fprintf(void *, const char *, ...);
+    s32 fn_80231944(char *, char *, u32);
+    void String_InitFromRange(void *, char *, char *, void *, void *);
+    void *fn_800DEF6C(void *, void *, s32, s32, void *);
+    extern char __files[];
+    extern char lbl_80271860[];
+    struct {
+        u8 tag;
+        u8 pad1[7];
+        u8 tag2;
+        u8 pad2[3];
+        u32 sp14;
+        u32 sp18;
+        u32 sp1C;
+        u32 sp20;
+        u32 sp24;
+        u32 sp28;
+        u32 sp2C;
+        u32 sp30;
+        String str;
+        u32 sp40;
+    } st;
+    s32 setFirst;
+    void *key;
+    void *tree;
+    u32 keySize;
+    s32 asLeft;
+    char *errFile;
+    u8 *best;
+    u8 *parent;
+    u8 *cur;
+    const u32 *minPtr;
+    s32 cmp;
+    void *node;
+    u8 *result;
+
+    tree = arg0;
+    keySize = *(u32 *)arg1;
+    key = arg1;
+    parent = (u8 *)tree + 4;
+    best = NULL;
+    asLeft = 1;
+    setFirst = 1;
+    cur = *(u8 **)((u8 *)arg0 + 4);
+    errFile = __files + 0xA0;
+
+    while (cur) {
+        char *nodeData;
+        nodeData = *(char **)(cur + 0x14);
+        parent = cur;
+        st.sp24 = *(u32 *)(cur + 0xC);
+        st.sp28 = keySize;
+        if ((s32)keySize < 0) {
+            fprintf(errFile, lbl_80271860 + 0x46);
+            abort();
+        }
+        st.sp30 = keySize;
+        minPtr = StrMin(&st.sp30, &st.sp28);
+        st.sp2C = *minPtr;
+        minPtr = StrMin(&st.sp2C, &st.sp24);
+        cmp = fn_80231944(*(char **)((u8 *)key + 8), nodeData, *minPtr);
+        if (cmp == 0) {
+            if (st.sp2C < st.sp24) {
+                cmp = -1;
+            } else if (st.sp2C == st.sp24) {
+                cmp = 0;
+            } else {
+                cmp = 1;
+            }
+        }
+        if (cmp < 0) {
+            cur = *(u8 **)cur;
+            asLeft = 1;
+        } else {
+            best = cur;
+            cur = *(u8 **)(cur + 4);
+            asLeft = 0;
+            setFirst = 0;
+        }
+    }
+
+    if (best) {
+        char *nodeData;
+        st.sp18 = *(u32 *)(best + 0xC);
+        st.sp14 = *(u32 *)key;
+        nodeData = *(char **)(best + 0x14);
+        if ((s32)*(u32 *)(best + 0xC) < 0) {
+            fprintf(errFile, lbl_80271860 + 0x46);
+            abort();
+        }
+        st.sp20 = *(u32 *)(best + 0xC);
+        minPtr = StrMin(&st.sp20, &st.sp18);
+        st.sp1C = *minPtr;
+        minPtr = StrMin(&st.sp1C, &st.sp14);
+        cmp = fn_80231944(nodeData, *(char **)((u8 *)key + 8), *minPtr);
+        if (cmp == 0) {
+            if (st.sp1C < st.sp14) {
+                cmp = -1;
+            } else if (st.sp1C == st.sp14) {
+                cmp = 0;
+            } else {
+                cmp = 1;
+            }
+        }
+        if (cmp >= 0) {
+            return (s32)(best + 0xC);
+        }
+    }
+
+    st.tag = st.pad1[3];
+    st.str.cap = *(u32 *)((u8 *)key + 4);
+    String_InitFromRange(&st.str, *(char **)((u8 *)key + 8), *(char **)((u8 *)key + 8) + keySize, &st.tag2, &st.tag);
+    st.sp40 = 0;
+    node = fn_800DEF6C(tree, parent, asLeft, setFirst, &st.str);
+    result = (u8 *)node + 0xC;
+    if (st.str.data) {
+        Heap_Free(st.str.data);
+    }
+    return (s32)result;
+}
+#pragma global_optimizer reset
 void *fn_800DE99C(void *arg0, s16 arg1) {
     void Heap_Free(void *);
 
@@ -11893,18 +12189,24 @@ void fn_800DEF00(void *arg0) {
     }
 }
 
+#pragma dont_inline on
+#pragma global_optimizer off
 #pragma scheduling off
-void fn_800DEF4C(void *arg0, u8 *arg1, s32 arg2) {
-    u8 v;
+void fn_800DEF4C(void *arg0, u8 *arg1) {
     u8 *mid;
+    u8 v;
+    s32 z;
+    z = 0;
     v = *arg1;
-    *(u32 *)arg0 = (u32)arg2;
+    *(u32 *)arg0 = z;
     mid = (u8 *)arg0 + 4;
-    *(u32 *)((u8 *)arg0 + 4) = (u32)arg2;
+    *(u32 *)((u8 *)arg0 + 4) = z;
     *((u8 *)arg0 + 8) = v;
-    *(u8 **)((u8 *)arg0 + 12) = mid;
+    *(void **)((u8 *)arg0 + 0xC) = mid;
 }
-
+#pragma scheduling reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
     void *Heap_Alloc(u32);
     void Tree_InsertFixup(void *, void *);
@@ -13392,6 +13694,222 @@ if(*(s32*)(self+0x68)) fn_800E2E70(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(se
 else SpriteSheet_DrawFrame(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44),self[0x50],self[0x51],self[0x52],alpha,*(s32*)(self+0x78));
 } else fn_800E320C(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44),self[0x50],self[0x51],self[0x52],alpha,*(s32*)(self+0x78),scale);
 }
+}
+
+void *fn_800E2370(void *arg0, void *arg1, void *arg2)
+{
+    void *fn_800E2CF4(void *, void *, void *);
+    void String_Init(String *, char *, void *);
+    void Xml_GetNamedValue(void *, void *, String *);
+    void String_AssignCStr(String *, const char *, u32);
+    void String_Destroy(String *, s32);
+    void *fn_800E7FB4(void *, String *);
+    s32 fn_800E2E68(void *);
+    s32 fn_800E2E60(void *);
+    u32 strlen(const char *);
+
+    extern u8 lbl_8028E020[];
+    extern char lbl_80271C50[];
+    extern f32 lbl_80369EC8;
+    extern f32 lbl_80369EE0;
+    extern f64 lbl_80369ED0;
+
+    struct Value {
+        u32 v[8];
+    };
+
+    struct Value value0;
+    struct Value value1;
+    struct Value value2;
+    struct Value value3;
+    struct Value value4;
+    struct Value value5;
+
+    String name0;
+    String name1;
+    String name2;
+    String name3;
+    String name4;
+    String name5;
+
+    s32 scratch0;
+    s32 scratch1;
+    s32 scratch2;
+    s32 scratch3;
+    s32 scratch4;
+    s32 scratch5;
+
+    String *str;
+    u8 *self;
+    void *parent;
+    void *resource;
+    s32 enabled;
+    s32 width;
+    s32 height;
+    f32 scale;
+
+    self = (u8 *)arg0;
+    parent = arg2;
+
+    fn_800E2CF4(self, arg1, arg2);
+
+    *(void **)(self + 0x40) = lbl_8028E020;
+
+    *(u32 *)(self + 0x54) = 0;
+    *(u32 *)(self + 0x58) = 0;
+    *(u32 *)(self + 0x5C) = 0;
+    *(u32 *)(self + 0x58) = 0;
+
+    str = (String *)(self + 0x54);
+
+    String_Init(
+        &name0,
+        lbl_80271C50,
+        &scratch0
+    );
+
+    Xml_GetNamedValue(
+        &value0,
+        parent,
+        &name0
+    );
+
+    String_AssignCStr(
+        str,
+        (char *)&value0,
+        strlen((char *)&value0)
+    );
+
+    String_Destroy(&name0, -1);
+
+    String_Init(
+        &name1,
+        lbl_80271C50 + 8,
+        &scratch1
+    );
+
+    Xml_GetNamedValue(
+        &value1,
+        parent,
+        &name1
+    );
+
+    *(u32 *)(self + 0x64) = value1.v[0];
+
+    String_Destroy(&name1, -1);
+
+    String_Init(
+        &name2,
+        lbl_80271C50 + 0xD,
+        &scratch2
+    );
+
+    Xml_GetNamedValue(
+        &value2,
+        parent,
+        &name2
+    );
+
+    *(f32 *)(self + 0x6C) =
+        *(f32 *)&value2.v[0];
+
+    String_Destroy(&name2, -1);
+
+    String_Init(
+        &name3,
+        lbl_80271C50 + 0x13,
+        &scratch3
+    );
+
+    Xml_GetNamedValue(
+        &value3,
+        parent,
+        &name3
+    );
+
+    *(u32 *)(self + 0x68) = value3.v[0];
+
+    String_Destroy(&name3, -1);
+
+    String_Init(
+        &name4,
+        lbl_80271C50 + 0x1A,
+        &scratch4
+    );
+
+    Xml_GetNamedValue(
+        &value4,
+        parent,
+        &name4
+    );
+
+    enabled = value4.v[0];
+
+    String_Destroy(&name4, -1);
+
+    String_Init(
+        &name5,
+        lbl_80271C50 + 0x21,
+        &scratch5
+    );
+
+    Xml_GetNamedValue(
+        &value5,
+        parent,
+        &name5
+    );
+
+    *(u32 *)(self + 0x78) = value5.v[0];
+
+    String_Destroy(&name5, -1);
+
+    if (enabled != 0) {
+        resource = fn_800E7FB4(
+            *(void **)self,
+            (String *)(self + 0x54)
+        );
+
+        scale = *(f32 *)(self + 0x6C);
+
+        if (scale == lbl_80369EC8) {
+            width = fn_800E2E68(resource);
+
+            *(s32 *)(self + 0x70) =
+                (width + ((u32)width >> 31)) >> 1;
+
+            height = fn_800E2E60(resource);
+
+            *(s32 *)(self + 0x74) =
+                (height + ((u32)height >> 31)) >> 1;
+        } else {
+            width = fn_800E2E68(resource);
+
+            *(s32 *)(self + 0x70) =
+                (s32)(
+                    (scale * (f32)width) *
+                    lbl_80369EE0
+                );
+
+            height = fn_800E2E60(resource);
+
+            *(s32 *)(self + 0x74) =
+                (s32)(
+                    (scale * (f32)height) *
+                    lbl_80369EE0
+                );
+        }
+    } else {
+        *(s32 *)(self + 0x74) = 0;
+        *(s32 *)(self + 0x70) = 0;
+    }
+
+    *(void **)(self + 0x60) =
+        fn_800E7FB4(
+            *(void **)self,
+            (String *)(self + 0x54)
+        );
+
+    return self;
 }
 
 void *fn_800E266C(void *arg0, s16 arg1) {
@@ -16759,7 +17277,9 @@ extern "C" void fn_800E8154(void *arg0) {
     ((Obj *)arg0)->v0();
 }
 
-void fn_800E81A0(void *arg0, void *arg1) {
+extern "C" void fn_800E81A0(void *arg0, void *arg1) {
+    struct Owner { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual void *v2(char *,void *)=0; };
+    struct Child { u8 pad[0x40]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4(int)=0; };
     void fn_800DF700(void *);
     void fn_800DF6DC(void *,void *);
     s32 fn_800DC018(void *);
@@ -16773,14 +17293,16 @@ void fn_800E81A0(void *arg0, void *arg1) {
     void *found;
     if(arg1) {
         fn_800DF700(&name);
-        cmp=String_Compare(&name,0,name.size,gUiClassNames+6,strlen(gUiClassNames+6));
+        u32 len=strlen(gUiClassNames+6);
+        char *className=gUiClassNames;
+        cmp=String_Compare(&name,0,name.size,className+6,len);
         String_Destroy(&name,-1);
         if(cmp==0) {
             fn_800DF6DC(&id,arg1);
-            found=((void *(*)(void *,char *,void *))(*(void ***)((u8 *)arg0+0x10))[4])(arg0,gUiClassNames+6,String_CStr(&id));
+            found=((Owner *)arg0)->v2(gUiClassNames+6,String_CStr(&id));
             String_Destroy(&id,-1);
             if(found) {
-                if(arg1) ((void (*)(void *,int))(*(void ***)((u8 *)arg1+0x40))[6])(arg1,1);
+                if(arg1) ((Child *)arg1)->v4(1);
                 return;
             }
             if(fn_800DC018(arg1)==-1) {
