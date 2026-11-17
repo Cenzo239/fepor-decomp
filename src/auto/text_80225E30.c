@@ -2373,12 +2373,13 @@ void TRK_main(void) {
     extern void TRKNubMainLoop(void);
     extern s32 TRKTerminateNub(void);
     extern s32 TRK_mainError_8033CFD0[];
+    extern char lbl_802827E8[];
     s32 err;
 
-    MWTRACE(1, "TRK_Main \n");
+    MWTRACE(1, lbl_802827E8);
     err = TRKInitializeNub();
     TRK_mainError_8033CFD0[0] = err;
-    if (err == 0) {
+    if (!err) {
         TRKNubWelcome();
         TRKNubMainLoop();
         TRK_mainError_8033CFD0[0] = TRKTerminateNub();
@@ -2778,25 +2779,18 @@ s32 gdev_cc_initinterrupts(void) {
 }
 
 s32 gdev_cc_peek(void) {
-    s32 fn_802672F0(void);
-    s32 fn_80267264(void *, s32);
-    void fn_8022BB3C(void *, void *, s32);
-    extern u8 lbl_8033DD08[];
-    u8 sp8[0x500];
-    s32 size;
-    s32 result;
-
-    size = fn_802672F0();
-    if (size <= 0) {
-        return 0;
-    }
-    if (fn_80267264(sp8, size) == 0) {
-        fn_8022BB3C(lbl_8033DD08, sp8, size);
-        result = size;
-    } else {
-        result = -0x2719;
-    }
-    return result;
+s32 fn_802672F0(void);
+s32 fn_80267264(void *,s32);
+void fn_8022BB3C(void *,void *,s32);
+extern u8 lbl_8033DD08[];
+u8 buf[0x500];
+s32 size;
+size=fn_802672F0();
+if(size<=0) return 0;
+if(fn_80267264(buf,size)==0) {
+fn_8022BB3C(lbl_8033DD08,buf,size);
+} else { return -0x2719; }
+return size;
 }
 
 s32 gdev_cc_post_stop(void) {
