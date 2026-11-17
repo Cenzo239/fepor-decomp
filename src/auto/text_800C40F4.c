@@ -20114,79 +20114,41 @@ fail:
     return dist;
 }
 
-u8 fn_800F7D28(void *arg0, void *arg1)
-{
-    extern u8 gBattleMap[];
-    u8 Map_IsAiTerrainBlocked(s8, s8);
-    s32 fn_800F7A60(void *, s32, s32, void *);
-
-    u8 *map;
-    u8 *unit;
-    u8 *out;
-    u8 *row;
-    s32 x;
-    s32 y;
-    s32 rowOffset;
-    s32 index;
-    s32 best;
-    s32 score;
-    s32 id;
-    u8 result;
-
-    map = gBattleMap;
-    unit = (u8 *)arg0;
-    out = (u8 *)arg1;
-    best = (s32)0x80000000;
-
-    for (y = (s8)map[9]; y <= (s8)map[11] - 1; y++) {
-        rowOffset = (s8)y << 6;
-        row = map + rowOffset;
-
-        for (x = (s8)map[8]; x <= (s8)map[10] - 1; x++) {
-            index = ((s8)x + rowOffset) << 1;
-
-            if (*(s16 *)(map + index + 0x610E) < 0) {
-                continue;
-            }
-
-            if ((s8)row[(s8)x + 0xE18E] != 0) {
-                continue;
-            }
-
-            if (Map_IsAiTerrainBlocked((s8)x, (s8)y)) {
-                continue;
-            }
-
-            if (*(u16 *)(map + index + 0xC18E) == 0) {
-                continue;
-            }
-
-            id = row[(s8)x + 0xD];
-
-            if (id != 0 && id != unit[0x198]) {
-                continue;
-            }
-
-            score = fn_800F7A60(arg0, x, y, arg1);
-
-            if (score > best) {
-                out[0] = x;
-                best = score;
-                out[1] = y;
-            }
-        }
-    }
-
-    if (best == (s32)0x80000000) {
-        return 0;
-    }
-
-    result = ((u8 (*)(void *, void *))fn_800F74C0)(
-        arg0, arg1);
-
-    *(s32 *)(out + 8) += best;
-
-    return result;
+u8 fn_800F7D28(u8 *self,u8 *target) {
+extern u8 gBattleMap[];
+u8 Map_IsAiTerrainBlocked(s8,s8);
+s32 fn_800F7A60(void *, s32, s32, void *);
+u8 fn_800F74C0(void *, void *);
+s32 sx;
+u8 *map=gBattleMap;
+s32 row;
+u8 *rowp;
+s32 best=0x80000000;
+s32 y,x;
+s32 offset;
+s32 score;
+u8 occupant;
+u8 result;
+for(y=*(s8 *)(map+9);y<=(s8)map[11]-1;y++) {
+row=(s8)y<<6;
+x=*(s8 *)(map+8);
+rowp=map+row;
+for(;x<=(s8)map[10]-1;x++) {
+sx=(s8)x;
+offset=((int)sx+row)*2;
+if(((s16 *)(map+0x610E))[sx+row]<0) continue;
+if(((s8 *)rowp)[sx+0xE18E]) continue;
+if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
+if(!*(u16 *)(map+offset+0xC18E)) continue;
+occupant=rowp[sx+13];
+if(occupant && occupant!=self[0x198]) continue;
+score=fn_800F7A60(self,x,y,target);
+if(score>best) { target[0]=x; best=score; target[1]=y; }
+}
+}
+result=0;
+if(best!=(s32)0x80000000) {result=fn_800F74C0(self,target); *(s32 *)(target+8)+=best;}
+return result;
 }
 
 #pragma use_lmw_stmw reset
