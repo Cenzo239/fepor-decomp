@@ -13648,6 +13648,47 @@ s32 fn_801A0400(s32 arg0) {
     return 1;
 }
 
+s32 fn_801A0434(u8 arg0,u8 arg1) {
+extern u8 gUnits[],Proc_MuEventInst[];
+extern u32 gUiInputFlags;
+u8 Status_Test(void *,s32);
+void Unit_ApplyTransform(void *);
+void fn_8004E9D8(void *,s32);
+void fn_80050C90(void *);
+void *Process_Find(void *);
+void *Process_Create(void *,void *);
+void *fn_80127C48(void);
+void *fn_800C0658(void);
+void fn_801A06CC(void);
+void *fn_800590D8(void (*)(void),void *,s32,void *);
+void *fn_80183B5C(void *,void *);
+u8 *unit;
+void *proc;
+void *parent;
+void *found;
+void *event;
+if(gUiInputFlags&1) {
+if(arg0) unit=gUnits+(arg0-1)*0x280; else unit=0;
+if(unit && *(u32 *)(unit+0x188) && (!arg1 || !Status_Test(unit+0x1bc,9)) && (arg1 || Status_Test(unit+0x1bc,9))) {
+Unit_ApplyTransform(unit); fn_8004E9D8(unit,0); fn_80050C90(unit);
+}
+return 0;
+}
+if(arg0) unit=gUnits+(arg0-1)*0x280; else unit=0;
+if(!unit || !*(u32 *)(unit+0x188)) return 0;
+if(arg1 && Status_Test(unit+0x1bc,9)) return 0;
+if(!arg1 && !Status_Test(unit+0x1bc,9)) return 0;
+found=Process_Find(Proc_MuEventInst);
+if(found) {proc=found;} else {
+parent=fn_80127C48();
+if(!parent) parent=fn_800C0658();
+proc=Process_Create(Proc_MuEventInst,parent);
+}
+event=fn_800590D8(fn_801A06CC,unit,1,proc);
+fn_80183B5C(unit,event);
+return 1;
+}
+
 s32 ScriptCmd_UnitTransform(u8 unitId, u8 wantTransformed) {
     /* Immediately transform or untransform unitId to match wantTransformed (status 9). */
     void Unit_ApplyTransform(void *);
