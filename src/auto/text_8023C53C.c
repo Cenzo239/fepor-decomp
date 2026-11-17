@@ -437,7 +437,30 @@ s32 fn_8023C7F4(void) {
 }
 
 s32 fn_8023C930(void) {
-    return 0;
+extern u8 *lbl_80368950;
+s32 off;
+u8 i;
+u32 value;
+s32 hi;
+
+*(u8 **)(lbl_80368950+0x69C)+=2;
+if(*(*(u8 **)(lbl_80368950+0x69C))++!=3) return 12;
+for(i=0,off=0;i<3;off+=6,i++) {
+*(u8 **)(lbl_80368950+0x69C)+=1;
+value=*(*(u8 **)(lbl_80368950+0x69C))++;
+hi=(s32)value>>4;
+lbl_80368950[off+0x681]=hi;
+value &= 15;
+lbl_80368950[off+0x682]=value;
+if(!(lbl_80368950[0x6A8] & (1<<hi))) return 15;
+if(!(lbl_80368950[0x6A8] & (1<<(value+1)))) return 15;
+}
+*(u8 **)(lbl_80368950+0x69C)+=3;
+*(u16 *)(lbl_80368950+0x696)=(*(u16 *)(lbl_80368950+0x692)+15)/16;
+*(u16 *)(lbl_80368950+0x684)=0;
+*(u16 *)(lbl_80368950+0x68A)=0;
+*(u16 *)(lbl_80368950+0x690)=0;
+return 0;
 }
 
 #pragma opt_strength_reduction off
@@ -672,53 +695,24 @@ void fn_8023D350(void)
 }
 #pragma use_lmw_stmw reset
 
-void fn_8023D59C(s32 arg0, s32 arg1, s32 arg2) {
-    M2C_UNK fn_8023D350(M2C_UNK, s32, void *);
-    M2C_UNK fn_8023D6A8();
-    M2C_UNK fn_8023F130();
-    M2C_UNK fn_80240BBC();
-    extern s32 lbl_80368944;
-    extern s32 lbl_80368948;
-    extern void *lbl_80368950;
-    s32 temp_r4;
-    u16 temp_r30;
-    u16 var_r31;
-
-    M2C_FIELD(lbl_80368950, s32 *, 0x6B0) = arg0;
-    M2C_FIELD(lbl_80368950, s32 *, 0x6B4) = arg1;
-    M2C_FIELD(lbl_80368950, s32 *, 0x6B8) = arg2;
-    var_r31 = M2C_FIELD(lbl_80368950, u16 *, 0x698);
-    temp_r30 = M2C_FIELD(lbl_80368950, u16 *, 0x694);
-    temp_r4 = M2C_ERROR(/* unknown instruction: mfspr $r4, GQR5 */);
-    lbl_80368944 = temp_r4;
-    lbl_80368948 = M2C_ERROR(/* unknown instruction: mfspr $r0, GQR6 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR5, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR6, $r3 */);
-    fn_8023D350(0x3D043D04, temp_r4, lbl_80368950);
-    if (((u16) M2C_FIELD(lbl_80368950, u16 *, 0x692) == 0x200) && (temp_r30 == 0x1C0)) {
-loop_4:
-        if (var_r31 < temp_r30) {
-            fn_8023D6A8();
-            var_r31 += 0x10;
-            goto loop_4;
-        }
-    } else if (((u16) M2C_FIELD(lbl_80368950, u16 *, 0x692) == 0x280) && (temp_r30 == 0x1E0)) {
-loop_10:
-        if (var_r31 < temp_r30) {
-            fn_8023F130();
-            var_r31 += 0x10;
-            goto loop_10;
-        }
-    } else {
-loop_14:
-        if (var_r31 < temp_r30) {
-            fn_80240BBC();
-            var_r31 += 0x10;
-            goto loop_14;
-        }
-    }
-    M2C_ERROR(/* unknown instruction: mtspr GQR5, $r4 */);
-    M2C_ERROR(/* unknown instruction: mtspr GQR6, $r0 */);
+void fn_8023D59C(s32 arg0,s32 arg1,s32 arg2) {
+extern void *lbl_80368950; extern s32 lbl_80368944,lbl_80368948;
+void fn_8023D350(); void fn_8023D6A8(); void fn_8023F130(); void fn_80240BBC();
+u16 row; u16 height;
+*(s32 *)((u8 *)lbl_80368950+0x6B0)=arg0;
+*(s32 *)((u8 *)lbl_80368950+0x6B4)=arg1;
+*(s32 *)((u8 *)lbl_80368950+0x6B8)=arg2;
+row=*(u16 *)((u8 *)lbl_80368950+0x698);
+height=*(u16 *)((u8 *)lbl_80368950+0x694);
+lbl_80368944=__builtin_mfspr(917); lbl_80368948=__builtin_mfspr(918);
+__builtin_mtspr(917,0x70007); __builtin_mtspr(918,0x3D043D04);
+fn_8023D350();
+if(*(u16 *)((u8 *)lbl_80368950+0x692)==0x200 && height==0x1C0) {
+for(;row<height;row+=16) fn_8023D6A8();
+} else if(*(u16 *)((u8 *)lbl_80368950+0x692)==0x280 && height==0x1E0) {
+for(;row<height;row+=16) fn_8023F130();
+} else {for(;row<height;row+=16) fn_80240BBC();}
+__builtin_mtspr(917,lbl_80368944); __builtin_mtspr(918,lbl_80368948);
 }
 
 void fn_8023D6A8(void) {
@@ -4772,24 +4766,24 @@ void fn_8024C808(void *arg0, u8 arg1, u8 arg2, u8 arg3,
 }
 
 void fn_8024C84C(u32 arg0) {
-    extern u16 *gSoundSlots;
-    s32 i;
-    u16 *entry;
-    
-    entry = gSoundSlots;
-    for (i = 0x14; i != 0; i--) {
-        if ((entry[0] == 1) || (entry[0] == 2)) {
-            if (entry[0x26] == arg0) {
-                if (entry[0] == 2) {
-                    fn_80256DD8(entry[0x26]);
-                }
-                entry[0] = 3;
-                ((void (*)(u32, u32, u32, u32, s32))entry[0x8])(0, 0, 0, 0, entry[0x28]);
-                return;
-            }
-        }
-        entry += 0x34;
-    }
+extern u8 gSoundSlots[],gSoundData[];
+extern u32 lbl_803689A4;
+extern f32 lbl_8036C228;
+void Audio_Lock(void); void Audio_Unlock(void);
+void fn_80261E6C(s32,s32,s32,s32,f32,f32,f32);
+u8 *slot;
+u32 i;
+Audio_Lock();
+for(i=0;i<gSoundData[0x210];i++) {
+slot=&gSoundSlots[i*0x68];
+if(slot[0xC]) {
+slot[0x5A]=slot[0x5E]; slot[0x5B]=slot[0x5F];
+if(lbl_803689A4&1) {slot[0x5A]=0x40;slot[0x5B]=0;}
+else if(!(lbl_803689A4&2)) slot[0x5B]=0;
+if(slot[0xC]!=3) fn_80261E6C(*(s32*)(slot+0x4C),0,slot[0x5A]<<16,slot[0x5B]<<16,lbl_8036C228*(f32)slot[0x59],lbl_8036C228*(f32)slot[0x5C],lbl_8036C228*(f32)slot[0x5D]);
+}
+}
+Audio_Unlock();
 }
 
 #pragma global_optimizer off
@@ -7365,36 +7359,56 @@ void fn_80252A78(void *arg0, u32 *arg1)
     *(u32 *)(voice + 0x220) |= 0x200;
 }
 
-void fn_80252B7C(void *arg0, void *arg1) {
-    u32 r7;
-    u32 r8;
-    s32 r5;
-    u32 r0;
-    u32 temp_r5;
-    u8 temp_r8_2;
-    u8 var_r6;
+#pragma global_optimizer off
+void fn_80252B7C(void *arg0, u32 *arg1) {
+    void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
+    u8 *voice;
+    u32 flags114;
+    u32 flags118;
+    u32 word0;
+    u32 combine;
+    u8 inverse;
+    s32 scale;
+    u32 mask;
 
-    var_r6 = 0;
-    r7 = *(u32*)((char*)arg0 + 0x114);
-    r8 = *(u32*)((char*)arg0 + 0x118);
-    if ((((r8 & 0x20000000) ^ 0) | ((r7 & 0) ^ 0)) == 0) {
-        *(u32*)((char*)arg0 + 0x118) = (r8 | 0x20000000);
-        *(u32*)((char*)arg0 + 0x114) = r7;
+    mask = 0x20000000;
+    combine = 0;
+    voice = (u8 *)arg0;
+
+    flags114 = *(u32 *)(voice + 0x114);
+    flags118 = *(u32 *)(voice + 0x118);
+
+    if ((((flags118 & mask) ^ combine) | ((flags114 & combine) ^ combine)) == 0) {
+        *(u32 *)(voice + 0x118) = flags118 | mask;
+        *(u32 *)(voice + 0x114) = flags114;
     } else {
-        var_r6 = *(u8*)((char*)arg1 + 0x4);
+        combine = arg1[1] & 0xFF;
     }
-    r0 = *(u32*)((char*)arg1 + 0x0);
-    temp_r5 = (r0 & 0xFFFF0000) / 100;
-    if (temp_r5 < 0) {
-        r5 = temp_r5 - (((s8) ((u32) *(u32*)((char*)arg1 + 0x4) >> 0x10U) << 8) / 100);
+
+    word0 = arg1[0];
+
+    scale = (s32)(word0 & 0xFFFF0000) / 100;
+
+    if (scale < 0) {
+        scale -= ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
     } else {
-        r5 = temp_r5 + (((s8) ((u32) *(u32*)((char*)arg1 + 0x4) >> 0x10U) << 8) / 100);
+        scale += ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
     }
-    temp_r8_2 = (u8) ((u32) *(u32*)((char*)arg1 + 0x4) >> 8U);
-    fn_8025FFC8((char*)arg0 + 0x344, (u8) (r0 >> 8U), r5, var_r6, temp_r8_2 != 0, temp_r8_2);
-    *(u32*)((char*)arg0 + 0x220) = (*(u32*)((char*)arg0 + 0x220) | 0x100);
+
+    inverse = (u8)(arg1[1] >> 8);
+
+    fn_8025FFC8(
+        voice + 0x344,
+        (u8)(word0 >> 8),
+        scale,
+        (u8)combine,
+        inverse != 0,
+        inverse
+    );
+
+    *(u32 *)(voice + 0x220) |= 0x100;
 }
-
+#pragma global_optimizer on
 void Sound_SelectSource10(void *voice, u32 *step) {
     /* MusyX select-source macro for modulator slot 10 (voice+0x38C). */
     SelectSource(voice, (u8 *)voice + 0x38C, step, 0x40000000, 0x400);
@@ -8850,6 +8864,27 @@ s32 fn_802562A0(u8 arg0, u8 arg1, s32 arg2, u8 arg3)
     }
 
     return candidate;
+}
+
+s32 fn_80256628(u8 a,u8 b,s32 c,u8 d) {
+extern u8 lbl_80368A4E,lbl_80368A4F,lbl_80368A50,lbl_80368A51;
+struct VoiceFlag { u8 pad[0x11D]; u8 flag; u8 tail[0x33A]; };
+s32 index;
+u8 *node;
+index=fn_802562A0(a,b,c,d);
+if(index != -1) {
+node=(u8 *)lbl_8035A510+index*4;
+if(*(u16 *)(node+2)==1) {
+if((s32)node[0]!=255) ((u8 *)lbl_8035A510+node[0]*4)[1]=node[1];
+else lbl_80368A51=node[1];
+if((s32)node[1]!=255) ((u8 *)lbl_8035A510)[node[1]*4]=node[0];
+if(index==lbl_80368A50) lbl_80368A50=node[0];
+*(u16 *)(node+2)=0;
+} else if(((struct VoiceFlag *)gSynthVoices)[index].flag) --lbl_80368A4F;
+else --lbl_80368A4E;
+if(d) ++lbl_80368A4F; else ++lbl_80368A4E;
+}
+return index;
 }
 
 #pragma global_optimizer on
@@ -12529,6 +12564,17 @@ void fn_8025F310(u8 arg0, u8 arg1) {
     }
 }
 
+int fn_8025FA50(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Sound_WriteParamU8(s32, s32, s32, u8);
+u8 a,b,c;
+if((u8)arg1 != 255) {
+ if((u8)arg0 < 0x40U) { u16 value=(u16)arg3; a=arg0&31; Sound_WriteParamU8(a,arg1,arg2,(u8)(value>>7)); Sound_WriteParamU8((u8)(a+32),arg1,arg2,value&127); }
+ else if((u8)arg0==0x80 || (u8)arg0==0x81) { u16 value=(u16)arg3; b=arg0&254; Sound_WriteParamU8(b,arg1,arg2,(u8)(value>>7)); Sound_WriteParamU8((u8)(b+1),arg1,arg2,value&127); }
+ else if((u8)arg0==0x84 || (u8)arg0==0x85) { u16 value=(u16)arg3; c=arg0&254; Sound_WriteParamU8(c,arg1,arg2,(u8)(value>>7)); Sound_WriteParamU8((u8)(c+1),arg1,arg2,value&127); }
+ else Sound_WriteParamU8(arg0,arg1,arg2,(u8)((u16)arg3>>7));
+}
+}
+
 void fn_8025FB74(u32 arg0, u32 arg1, u32 arg2)
 {
     extern u8 lbl_80283128[];
@@ -12654,56 +12700,12 @@ void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
     *(s32 *)(p + off + 4) = arg2;
 }
 
-void fn_80260060(u8 arg0, void *arg1, void *arg2) {
-    s32 temp_r0;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r5_2;
-    s32 temp_r5_3;
-    s32 temp_r6;
-    s32 temp_r6_2;
-    s32 temp_r6_3;
-    s32 temp_r7;
-    s32 temp_r7_2;
-    s32 temp_r7_3;
-    void *temp_r8;
-    void *temp_r8_2;
-    void *temp_r8_3;
-
-    temp_r4 = *(u32*)((u8*)arg1 + 0xF4);
-    temp_r0 = *(u32*)((u8*)arg2 + 0xF4);
-    if (arg0 < 0x40U) {
-        temp_r6 = (u8) temp_r0 * 0x86;
-        temp_r5 = arg0 & 0x1F;
-        temp_r7 = (u8) temp_r4 * 0x86;
-        temp_r8 = &gSoundChanParamsDefault + 0x20;
-        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7 + temp_r5) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6 + temp_r5);
-        *(u16*)((u8*)temp_r8 + (temp_r7 + temp_r5)) = *(u16*)((u8*)temp_r8 + (temp_r6 + temp_r5));
-        return;
-    }
-    switch (arg0) {                                 /* irregular */
-    case 0x80:
-    case 0x81:
-        temp_r6_2 = (u8) temp_r0 * 0x86;
-        temp_r5_2 = arg0 & 0xFE;
-        temp_r7_2 = (u8) temp_r4 * 0x86;
-        temp_r8_2 = &gSoundChanParamsDefault + 1;
-        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7_2 + temp_r5_2) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6_2 + temp_r5_2);
-        *(u16*)((u8*)temp_r8_2 + (temp_r7_2 + temp_r5_2)) = *(u16*)((u8*)temp_r8_2 + (temp_r6_2 + temp_r5_2));
-        return;
-    case 0x84:
-    case 0x85:
-        temp_r6_3 = (u8) temp_r0 * 0x86;
-        temp_r5_3 = arg0 & 0xFE;
-        temp_r7_3 = (u8) temp_r4 * 0x86;
-        temp_r8_3 = &gSoundChanParamsDefault + 1;
-        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7_3 + temp_r5_3) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6_3 + temp_r5_3);
-        *(u16*)((u8*)temp_r8_3 + (temp_r7_3 + temp_r5_3)) = *(u16*)((u8*)temp_r8_3 + (temp_r6_3 + temp_r5_3));
-        return;
-    default:
-        *(u16*)((u8*)(&gSoundChanParamsDefault) + ((u8) temp_r4 * 0x86) + arg0) = *(u16*)((u8*)(&gSoundChanParamsDefault) + ((u8) temp_r0 * 0x86) + arg0);
-        return;
-    }
+void fn_80260060(u8 op, void *a,void *b) {
+u8 dest=*(u32 *)((u8 *)a+0xF4); u8 source=*(u32 *)((u8 *)b+0xF4);
+if(op<0x40U) {u32 index=op & 31; s32 src=source*0x86; s32 dst=dest*0x86; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+32)[dst+index]=((u8 *)gSoundChanParamsDefault+32)[src+index];}
+else if(op==0x80U || op==0x81U) {u32 index=op & 0xFE; s32 src=source*0x86; s32 dst=dest*0x86; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+1)[dst+index]=((u8 *)gSoundChanParamsDefault+1)[src+index];}
+else if(op==0x84U || op==0x85U) {u32 index=op & 0xFE; s32 src=source*0x86; s32 dst=dest*0x86; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+1)[dst+index]=((u8 *)gSoundChanParamsDefault+1)[src+index];}
+else { ((u8 *)gSoundChanParamsDefault+dest*0x86)[op]=((u8 *)gSoundChanParamsDefault+source*0x86)[op]; }
 }
 
 void fn_80260174(u8 arg0, u8 arg1, u8 arg2) {
