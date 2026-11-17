@@ -12081,7 +12081,7 @@ struct List {u32 unk; s32 count; u8 pad[8]; virtual void v0();virtual void v1();
 s32 i;
 List *list;
 Window *result;
-if(!fn_800DF6A8(self))return 0;
+if(!((u8 (*)(const void *))fn_800DF6A8)(self))return 0;
 if(x>*(s32*)(self+0x48)&&x<*(s32*)(self+0x48)+*(s32*)(self+0x60)&&y>*(s32*)(self+0x4c)&&y<*(s32*)(self+0x4c)+*(s32*)(self+0x64)){
 list=*(List**)(self+0xa0);
 if(list)for(i=list->size()-1;i>=0;--i){
@@ -25258,63 +25258,53 @@ for (; var_r17 <= var_r19; var_r17++) {
 
 #pragma use_lmw_stmw on
 s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
-    void fn_800FE770(s16, s16, s32, s32, s32);
+    void fn_800FE770(s32, s32, s32, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
     extern u8 gUnits[];
 
+    void *costBase;
+    void *tile;
+    s16 *cost;
     s16 best;
     s16 bestX;
     s16 bestY;
     s32 y;
     s32 x;
     s32 row;
-    u8 *rowp;
-    u8 *costBase;
-    s16 *cost;
     u8 id;
-    u8 *unit;
-    s8 sx;
+    void *unit;
 
     best = 0x7FFF;
-    fn_800FE770((s8)((u8 *)arg1)[0x19e], (s8)((u8 *)arg1)[0x19f], 0, 5,
+    fn_800FE770((s8)*(u8 *)((u8 *)arg1 + 0x19e), (s8)*(u8 *)((u8 *)arg1 + 0x19f), 0, 5,
                 *(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4));
 
     for (y = (s8)gBattleMap[9]; y <= (s8)gBattleMap[0xB] - 1; y++) {
         row = (s8)y << 6;
-        x = (s8)gBattleMap[8];
-        rowp = gBattleMap + row;
-        for (; x <= (s8)gBattleMap[0xA] - 1; x++) {
-            sx = (s8)x;
-            costBase = gBattleMap + ((sx + row) * 2);
-            cost = (s16 *)(costBase + 0x610E);
-            if (*(s16 *)(costBase + 0x610E) < 0) {
-                continue;
+        for (x = (s8)gBattleMap[8]; x <= (s8)gBattleMap[0xA] - 1; x++) {
+            costBase = gBattleMap + (((s8)x + row) * 2);
+            cost = (s16 *)((u8 *)costBase + 0x610E);
+            if (*(s16 *)((u8 *)costBase + 0x610E) >= 0) {
+                tile = gBattleMap + row + (s8)x;
+                if ((*(s8 *)((u8 *)tile + 0xE18E) == 0) &&
+                    (Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0)) {
+                    id = *(u8 *)((u8 *)tile + 0xD);
+                    if (id != 0) {
+                        if (id != 0) {
+                            unit = gUnits + (id - 1) * 0x280;
+                        } else {
+                            unit = NULL;
+                        }
+                        if (filter(unit) != 0) {
+                            if (*cost < best) {
+                                best = *cost;
+                                bestX = (s16)x;
+                                bestY = (s16)y;
+                            }
+                        }
+                    }
+                }
             }
-            if (*(s8 *)(rowp + sx + 0xE18E) != 0) {
-                continue;
-            }
-            if (Map_IsAiTerrainBlocked(sx, (s8)y) != 0) {
-                continue;
-            }
-            id = rowp[sx + 0xD];
-            if (id == 0) {
-                continue;
-            }
-            if (id != 0) {
-                unit = gUnits + (id - 1) * 0x280;
-            } else {
-                unit = NULL;
-            }
-            if (filter(unit) == 0) {
-                continue;
-            }
-            if (*cost >= best) {
-                continue;
-            }
-            best = *cost;
-            bestX = (s16)x;
-            bestY = (s16)y;
         }
     }
 
