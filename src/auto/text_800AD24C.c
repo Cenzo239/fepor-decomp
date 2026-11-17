@@ -10464,6 +10464,48 @@ void fn_800AF7F0(s32 arg0, u8 arg1) {
     }
 }
 
+void fn_800AF96C(s32 arg0, u8 arg1) {
+    void fn_8024CE60(void *, s32, u8, u8, s32);
+    extern u16 gSoundSys[4976];
+    extern f32 lbl_80369CB4;
+    u8 *e;
+    u8 *e2;
+    u8 v;
+    f32 f;
+    f32 f31;
+    f32 temp;
+
+    e = *(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C;
+    if (*(u16 *)e != 0) {
+        temp = (f32)arg1;
+        *(f32 *)(e + 0x10) = temp;
+        *(f32 *)(e + 0xC) = temp;
+        if (*(u16 *)e & 8) {
+            v = (u8)*(u16 *)(e + 6);
+            e2 = *(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C;
+            if (*(u16 *)e2 != 0) {
+                *(u16 *)(e2 + 6) = v;
+                if (*(u16 *)e2 & 8) {
+                    if (*(u16 *)(e2 + 0x1E) == 1) {
+                        fn_8024CE60(*(void **)(e2 + 0x50), (s32)*(f32 *)(e2 + 0x10), v, (u8)*(u16 *)(e2 + 8), 0);
+                    } else {
+                        f = *(f32 *)(e2 + 0x10);
+                        f31 = f;
+                        if (v < 0x40) {
+                            f31 = ((f32)v * f) / lbl_80369CB4;
+                        }
+                        if ((u32)(v - 0x40) >> 31 == 0) {
+                            f = ((f32)(s32)(0x7F - v) * f) / lbl_80369CB4;
+                        }
+                        fn_8024CE60(*(void **)(e2 + 0x50), (s32)f, 0, (u8)*(u16 *)(e2 + 8), 0);
+                        fn_8024CE60(*(void **)(e2 + 0xD8), (s32)f31, 0x7F, (u8)*(u16 *)(e2 + 8), 0);
+                    }
+                }
+            }
+        }
+    }
+}
+
 void fn_800AFAFC(s32 arg0, u8 arg1) {
     void fn_8024CE60(void *, s32, u8, u8, s32);
     extern u16 gSoundSys[4976];
