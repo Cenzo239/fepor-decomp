@@ -6396,8 +6396,39 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void fn_80193540(void* unit) {
-    // Implementation to be written
+void fn_80193540(void *self) {
+    void *Heap_Alloc(s32);
+    void *fn_80193BB8(void *,s32,s32,s32,s32,s32);
+    void fn_801439F0(void *,void *,s32);
+    void fn_80143570(void *);
+    void Ui_AddChild(void *,void *);
+    void fn_8011D908(s32,void *);
+    void *Ui_FindChild(void *,s32,s32);
+    void Ui_SetWidgetText(void *,s32);
+    void *p;
+    void *tmp;
+    struct { u8 *node; } it, end;
+    struct { s32 text; } caption;
+    tmp=Heap_Alloc(0x12C);
+    if(tmp) tmp=fn_80193BB8(tmp,0x108,0x6C,0x138,0xD8,0x1F4);
+    M2C_FIELD(self,void **,0x4C)=tmp;
+    tmp=M2C_FIELD(self,void **,0x4C);
+    if(tmp) M2C_FIELD(tmp,s32 *,4)++;
+    p=M2C_FIELD(self,void **,0x4C);
+    M2C_FIELD(p,s16 *,8)=0;
+    M2C_FIELD(p,s16 *,0x24)=8;
+    M2C_FIELD(p,s16 *,0x8A)=2;
+    M2C_FIELD(p,f32 *,0x128)=M2C_FIELD(self,f32 *,0x64);
+    it.node=M2C_FIELD(self,u8 **,0x48);
+    end.node=(u8 *)self+0x44;
+    for(;it.node!=end.node;it.node=M2C_FIELD(it.node,u8 **,4)) fn_801439F0(p,it.node+8,0);
+    fn_80143570(p);
+    M2C_FIELD(p,u8 *,0x4C)=0;
+    Ui_AddChild(self,p);
+    fn_8011D908(M2C_FIELD(M2C_FIELD(self,void **,0x68),s32 *,4),self);
+    caption.text=M2C_FIELD(M2C_FIELD(self,void **,0x68),s32 *,0x50);
+    tmp=Ui_FindChild(self,-0x1000,0);
+    if(tmp) Ui_SetWidgetText(tmp,caption.text);
 }
 
 void fn_80193668(void *arg0) {
@@ -7943,23 +7974,24 @@ void fn_80196018(void *arg0) {
 }
 
 void fn_80196078(void) {
+#pragma optimization_level 3
+    void fn_8000D3EC(void *, void *);
     extern u8 lbl_8027A688[];
     extern u8 lbl_80296700[];
-    
-    // Call fn_8000D3EC with offsets from lbl_8027A688 and lbl_80296700
-    
-    fn_8000D3EC(&lbl_8027A688[0x28], &lbl_80296700[0x34]);
-    fn_8000D3EC(&lbl_8027A688[0x3C], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0x4B], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0x5D], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0x6F], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0x80], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0x92], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0xA3], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0xB3], &lbl_80296700[0x44]);
-    fn_8000D3EC(&lbl_8027A688[0xC2], &lbl_80296700[0x54]);
-    fn_8000D3EC(&lbl_8027A688[0xD0], &lbl_80296700[0x54]);
-    fn_8000D3EC(&lbl_8027A688[0xE1], &lbl_80296700[0x64]);
+    u8 *dst=lbl_80296700;
+    fn_8000D3EC(lbl_8027A688+40,dst+52);
+    fn_8000D3EC(lbl_8027A688+60,dst+68);
+    fn_8000D3EC(lbl_8027A688+75,dst+68);
+    fn_8000D3EC(lbl_8027A688+93,dst+68);
+    fn_8000D3EC(lbl_8027A688+111,dst+68);
+    fn_8000D3EC(lbl_8027A688+128,dst+68);
+    fn_8000D3EC(lbl_8027A688+146,dst+68);
+    fn_8000D3EC(lbl_8027A688+163,dst+68);
+    fn_8000D3EC(lbl_8027A688+179,dst+68);
+    fn_8000D3EC(lbl_8027A688+194,dst+84);
+    fn_8000D3EC(lbl_8027A688+208,dst+84);
+    fn_8000D3EC(lbl_8027A688+225,dst+100);
+#pragma optimization_level reset
 }
 
 /* Advance UI unit's active weapon rank, then open weapon-kind help under parent. */
@@ -12815,24 +12847,51 @@ s32 fn_801A0A10(u8 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_801A0B20(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
-{
-    s32 temp_r3;
-    s32 var_r3;
+s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
+    extern u32 gUiInputFlags;
+    extern u8 gUnits[];
+    extern u8 Proc_MuEventInst[];
+    extern u8 lbl_80296FE0[];
+    void *Process_Find(u8 *);
+    void *Process_Create(u8 *, s32);
+    void *Process_CreateChild(u8 *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void fn_801A0C3C(void *, void *);
+    u32 fn_80127C48(void);
+    s32 fn_800C0658(void);
+    void fn_8004FE98(void *, s32);
+    void fn_8004BF24(void *);
+    void *unit;
+    void *proc;
+    u32 tmp;
 
-    if (arg3 & 0x10000)
-    {
-        temp_r3 = arg1 - arg0;
-        if ((temp_r3 + arg2) >= 0)
-            var_r3 = 1;
-        else
-            var_r3 = 0;
+    if (unitId != 0) {
+        unit = gUnits + ((unitId - 1) * 0x280);
+    } else {
+        unit = NULL;
     }
-    else
-    {
-        var_r3 = 0;
+    if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
+        return 0;
     }
-    return var_r3;
+    GfxEnt_ForEachKey(lbl_80296FE0, fn_801A0C3C, unit);
+    if (!(gUiInputFlags & 1) && arg2 < 0) {
+        fn_8004FE98(unit, arg1);
+        fn_8004BF24(unit);
+        return 0;
+    }
+    proc = Process_Find(Proc_MuEventInst);
+    if (proc == NULL) {
+        tmp = fn_80127C48();
+        if (tmp == 0) {
+            tmp = fn_800C0658();
+        }
+        proc = Process_Create(Proc_MuEventInst, tmp);
+        proc = Process_CreateChild(lbl_80296FE0, proc);
+    }
+    *(void **)((u8 *)proc + 0x54) = unit;
+    *(s32 *)((u8 *)proc + 0x60) = arg1;
+    *(s32 *)((u8 *)proc + 0x64) = arg2;
+    return 1;
 }
 
 void fn_801A0C3C(void *arg0, u32 arg1) {
@@ -13104,6 +13163,57 @@ s32 fn_801A147C(void *arg0, s32 *arg1, s32 *arg2) {
     *arg1 = (s8)sp9;
     *arg2 = (s8)sp8;
     return 0;
+}
+
+s32 fn_801A14D8(s32 arg0) {
+    void *Process_Find(void *);
+    void *Process_Create(void *, s32);
+    void *Process_CreateChild(void *, s32);
+    s32 fn_800C0658(void);
+    void Dispos_Apply(s32, void *, s32);
+    u32 fn_80127C48(void);
+    u8 fn_80183974(void);
+    void fn_80013864(void);
+    void fn_80106BCC(void);
+    void Unit_MoveToList(void *,s32);
+    void fn_80050C90(void *);
+    extern u8 Proc_MuEventInst[];
+    extern u8 lbl_80296FCC[];
+    extern u8 gUnitLists[];
+    void *next;
+    s32 count;
+    void *unit;
+    void *temp;
+    void *proc;
+    u32 parent;
+    fn_80106BCC();
+    count=0;
+    for(unit=*(void **)(gUnitLists+0x3C);unit;unit=next) {
+        u32 flags=M2C_FIELD(unit,u32 *,0x1A0);
+        next=M2C_FIELD(unit,void **,0x184);
+        if(flags&0x400000) {
+            M2C_FIELD(unit,u32 *,0x1A0)=flags&~1;
+            Unit_MoveToList(unit,0);
+            fn_80050C90(unit);
+            count++;
+        }
+    }
+    if(count>0) {
+        temp=Process_Find(Proc_MuEventInst);
+        if(temp) proc=temp;
+        else {
+            parent=fn_80127C48();
+            if(!parent) parent=fn_800C0658();
+            proc=Process_Create(Proc_MuEventInst,parent);
+        }
+        Dispos_Apply(arg0,proc,2);
+        temp=Process_Find(Proc_MuEventInst);
+        if((((u32)(-(s32)temp|(s32)temp)>>31)!=0)||fn_80183974()!=0) {
+            fn_80013864();
+            Process_CreateChild(lbl_80296FCC,fn_800C0658());
+        }
+    }
+    return 1;
 }
 
 s32 fn_801A1604(s32 arg0) {
