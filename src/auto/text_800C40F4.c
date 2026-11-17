@@ -5954,7 +5954,6 @@ void fn_800D6874(void) {
 
 }
 
-#pragma scheduling off
 void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
     u8 v;
     void *mid;
@@ -14750,14 +14749,10 @@ void Card_AsyncDone(void) {
 
 #pragma peephole off
 s32 fn_800EB854(void) {
-    extern u8 gCardWork[];
-    u8 *base;
-    s32 result;
-
-    result = 0;
-    base = gCardWork + 0x10000;
-    if (*(s32 *)(base - 0x5FFC) != -1) {
-        if (base[0xA01A - 0x10000] != 0) {
+    extern u8 lbl_80320C20[];
+    s32 result = 0;
+    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
+        if (lbl_80320C20[0xA01A] != 0) {
             result = 1;
         }
     }
@@ -18164,7 +18159,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     u32 fn_800FCF48(u8, u8);
     extern u32 gBattle[];
     extern u8 lbl_80272F44[], gBattleMap[], gUnits[], gBattleState[];
-    void *out = arg1;
+    void *outptr = arg1;
     u8 *cfg;
     u8 *unit;
     s32 total;
@@ -18177,7 +18172,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     s32 percent;
     s32 x, y;
     u8 outside, id;
-    u8 *other_unit;
+    u8 *other;
     u32 flags;
     s32 bonus;
     f32 amount;
@@ -18204,11 +18199,11 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
             id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
             if (id != 0) {
                 if (id != 0)
-                    other_unit = gUnits + (id - 1) * 0x280;
+                    other = gUnits + (id - 1) * 0x280;
                 else
-                    other_unit = 0;
+                    other = 0;
                 if (relation_is_one(*(void **)(*(u8 **)(battle + 0x280) + 0x190),
-                                    *(void **)(other_unit + 0x190)) == 0)
+                                    *(void **)(other + 0x190)) == 0)
                     total += (s8)p[2];
             }
         }
@@ -18247,7 +18242,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
     percent = (s32)((10.0f * (f32)remaining) / maxhp);
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
-    *(s32 *)((u8 *)out + 8) = score;
+    *(s32 *)((u8 *)outptr + 8) = score;
 }
 #pragma optimization_level reset
 s32 fn_800F6B10(void *arg0, u8 arg1) {
