@@ -95,6 +95,95 @@ void UnitInfo_DrawCombatStats(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
     *((f32*)var_r5 + 1) = sp34;
 }
 
+void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
+    void fn_8008BA80(void *, s32, s32, s32);
+    void fn_8007D044(s32, u8, f32, f32, f32, f32);
+    void fn_8008CD64(f32);
+    void fn_8008CD34(void);
+    s8 Unit_GetMaxHp(void *);
+    void *Msg_Expand(char *);
+    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    s32 fn_800398B0(void *, s32);
+    void *fn_80017570(s32);
+
+    extern f32 gZeroF;
+    extern f32 lbl_80369780;
+    extern f32 lbl_80369784;
+    extern f32 lbl_80369790;
+    extern f32 lbl_80369768;
+    extern f32 lbl_80369754;
+    extern u8 gBattleHelpStrings[];
+
+    u8 *unit;
+    u8 *por;
+    s32 stat;
+    s32 bonus;
+    s32 currentHp;
+    s32 maxHp;
+    s32 value1;
+    s32 value2;
+    void *text;
+
+    unit = (u8 *)arg0;
+    stat = arg1;
+    bonus = arg2;
+
+    fn_8008BA80(unit, 0, 0, 0);
+
+    por = *(u8 **)(unit + 0x190);
+
+    fn_8007D044(
+        0xB3,
+        por[8],
+        gZeroF,
+        lbl_80369780,
+        lbl_80369784,
+        lbl_80369790
+    );
+
+    fn_8008CD64(lbl_80369768);
+    fn_8008CD34();
+
+    currentHp = unit[0x1A8];
+
+    maxHp = (s8)Unit_GetMaxHp(unit);
+
+    text = Msg_Expand((char *)gBattleHelpStrings + 0x111);
+
+    fn_8001003C(
+        0x10,
+        0x2C,
+        1,
+        1,
+        0,
+        (char *)gBattleHelpStrings + 0xFA,
+        text,
+        (s8)currentHp,
+        lbl_80369754,
+        gZeroF,
+        (s8)maxHp
+    );
+
+    value1 = (s8)fn_800398B0(unit, (u8)stat);
+    value2 = (s8)fn_800398B0(unit, (u8)stat);
+
+    text = fn_80017570(stat);
+
+    fn_8001003C(
+        0x10,
+        0x48,
+        1,
+        1,
+        0,
+        (char *)gBattleHelpStrings + 0x152,
+        text,
+        (s8)value2,
+        lbl_80369754,
+        gZeroF,
+        bonus + value1
+    );
+}
+
 void UnitInfo_DrawInventoryPanel(void *arg0) {
     void fn_8008BA80(void *, s32, s32, u8);
     void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
@@ -123,14 +212,15 @@ void UnitInfo_DrawInventoryPanel(void *arg0) {
     } while (i < 4);
 }
 
+#pragma use_lmw_stmw on
 void UnitInfo_DrawItemStats(void *arg0, s32 arg1) {
     void fn_8008BA80(void *, s32, s32, u8);
-    void fn_8008BBF8(s32,s32,s32,s32,u8,s32);
+    void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
     void fn_8008CD64(f32);
     s32 Unit_CanReceiveItem(s32, void *);
-    void *Unit_GetItemSlot(void *,s32);
-    s32 Unit_GetHeldItemSlot(void *,s32);
-    void UnitRef_Draw(s32,s32,s32,s32);
+    void *Unit_GetItemSlot(void *, s32);
+    s32 Unit_GetHeldItemSlot(void *, s32);
+    void UnitRef_Draw(s32, s32, s32, s32);
     u8 flags[8];
     s32 i;
     s32 y;
@@ -140,86 +230,330 @@ void UnitInfo_DrawItemStats(void *arg0, s32 arg1) {
     u8 *p;
     u8 *base;
     u8 *unit;
-    receiver=arg1;
-    fn_8008BA80(arg0,0,0,1);
-    fn_8008BBF8(0,0x20,0x108,0x110,*(u8 *)(*(u8 **)((u8 *)arg0+0x190)+8),0x9A);
-    base=flags;
-    j=0;
-    write=base;
-    do {
-        void *item=Unit_GetItemSlot(arg0,j);
-        if (*(u32 *)item) *write=Unit_CanReceiveItem(receiver,item);
-        j++; write++;
-    } while(j<8);
-    fn_8008CD64(lbl_80369768);
-    p=base; y=0x2C; i=0;
-    do {
-        UnitRef_Draw(Unit_GetHeldItemSlot(arg0,i),*p,0x1C,y);
-        i++; y+=0x1C; p++;
-    } while(i<4);
-    unit=arg0; i=0; y+=0x18;
-    do {
-        UnitRef_Draw((s32)(unit+0x1EC),base[4],0x1C,y);
-        i++; y+=0x1C; unit+=8; base++;
-    } while(i<4);
-}
 
-#pragma use_lmw_stmw on
+    receiver = arg1;
+    fn_8008BA80(arg0, 0, 0, 1);
+    fn_8008BBF8(0, 0x20, 0x108, 0x110, *(u8 *)(*(u8 **)((u8 *)arg0 + 0x190) + 8), 0x9A);
+    base = flags;
+    j = 0;
+    write = base;
+    do {
+        void *item = Unit_GetItemSlot(arg0, j);
+        if (*(u32 *)item) {
+            *write = Unit_CanReceiveItem(receiver, item);
+        }
+        j++;
+        write++;
+    } while (j < 8);
+    fn_8008CD64(0.0f);
+    p = base;
+    y = 0x2C;
+    i = 0;
+    do {
+        UnitRef_Draw(Unit_GetHeldItemSlot(arg0, i), *p, 0x1C, y);
+        i++;
+        y += 0x1C;
+        p++;
+    } while (i < 4);
+    unit = arg0;
+    i = 0;
+    y += 0x18;
+    do {
+        UnitRef_Draw((s32)(unit + 0x1EC), base[4], 0x1C, y);
+        i++;
+        y += 0x1C;
+        unit += 8;
+        base++;
+    } while (i < 4);
+}
+#pragma use_lmw_stmw reset
 void UnitInfo_DrawBagPanel(void *arg0) {
     void fn_8008BA80(void *, s32, s32, u8);
     void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
     void fn_8008CD64(f32);
     void UnitRef_Draw(s32, s32, s32, s32);
     s32 Unit_GetHeldItemSlot(void *, s32);
-    u32 *Unit_GetItemSlot(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     u8 fn_80093DA8(void *);
     extern f32 lbl_80369768;
 
     u8 buf[8];
     s32 j;
-    s32 offset;
-    u8 *p;
+    long var_r30;
+    s32 i;
     u8 *base;
-    void *unit;
+    register void *unit;
 
     unit = arg0;
     fn_8008BA80(unit, 0, 0, 1);
     fn_8008BBF8(0, 0x20, 0x108, 0x110, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8), 0x9A);
 
     base = buf;
-    p = 0;
-    offset = (s32)base;
+    i = 0;
+    var_r30 = (s32)base;
     do {
-        if (*Unit_GetItemSlot(unit, (s32)p) != 0) {
-            *(u8 *)offset = fn_80093DA8(unit);
+        if (*(u32 *)Unit_GetItemSlot(unit, i) != 0) {
+            *(u8 *)var_r30 = fn_80093DA8(unit);
         }
-        p = (u8 *)((s32)p + 1);
-        offset += 1;
-    } while ((s32)p < 8);
+        i += 1;
+        ++var_r30;
+    } while (i < 8);
 
     fn_8008CD64(lbl_80369768);
 
-    p = base;
-    offset = 0x2C;
+    i = (s32)base;
+    var_r30 = 0x2C;
     j = 0;
     do {
-        UnitRef_Draw(Unit_GetHeldItemSlot(unit, j), *p, 0x1C, offset);
+        UnitRef_Draw(Unit_GetHeldItemSlot(unit, j), *(u8 *)i, 0x1C, var_r30);
         j += 1;
-        p += 1;
-        offset += 0x1C;
+        var_r30 += 0x1C;
+        i += 1;
     } while (j < 4);
 
-    p = unit;
     j = 0;
-    offset += 0x18;
+    i = (s32)unit;
+    var_r30 += 0x18;
     do {
-        UnitRef_Draw((s32)(p + 0x1EC), base[4], 0x1C, offset);
+        UnitRef_Draw(i + 0x1EC, base[4], 0x1C, var_r30);
         j += 1;
-        p += 8;
         base += 1;
-        offset += 0x1C;
+        i += 8;
+        var_r30 += 0x1C;
     } while (j < 4);
 }
+
+void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
+    void fn_8008BA80(void *, s32, s32, s32);
+    void fn_8007D044(s32, u8, f32, f32, f32, f32);
+    void fn_8008CD64(f32);
+    void fn_8008CD34(void);
+    s8 Unit_GetMaxHp(void *);
+    void *Msg_Expand(char *);
+    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    s32 fn_8010418C(void *, s32);
+    s32 fn_8010424C(void *);
+    void Ui_DrawIcon(void *, s32, s32, s32);
+
+    extern f32 gZeroF;
+    extern f32 lbl_80369780;
+    extern f32 lbl_80369784;
+    extern f32 lbl_80369790;
+    extern f32 lbl_80369768;
+    extern f32 lbl_80369754;
+    extern char gBattleHelpStrings[];
+    extern u8 gUiIconDrawer[];
+
+    u8 *self;
+    u8 *por;
+    s32 healAmount;
+    s32 currentHp;
+    s32 healedHp;
+    s32 maxHp;
+    s32 maxHp2;
+    s32 i;
+    s32 x;
+    void *text;
+    void *text2;
+    void *drawer;
+
+    self = (u8 *)arg0;
+    healAmount = arg1;
+
+    fn_8008BA80(self, 0, 0, 0);
+
+    por = *(u8 **)(self + 0x190);
+
+    fn_8007D044(
+        0xB3,
+        por[8],
+        gZeroF,
+        lbl_80369780,
+        lbl_80369784,
+        lbl_80369790
+    );
+
+    fn_8008CD64(lbl_80369768);
+    fn_8008CD34();
+
+    healedHp = healAmount + (s8)self[0x1A8];
+
+    if (healedHp > (s8)Unit_GetMaxHp(self)) {
+        healedHp = (s8)Unit_GetMaxHp(self);
+    }
+
+    currentHp = self[0x1A8];
+    maxHp = (s8)Unit_GetMaxHp(self);
+
+    text = Msg_Expand(gBattleHelpStrings + 0x111);
+
+    maxHp2 = (s8)Unit_GetMaxHp(self);
+    text2 = Msg_Expand(gBattleHelpStrings + 0x111);
+
+    fn_8001003C(
+        0x10,
+        0x2C,
+        1,
+        1,
+        0,
+        gBattleHelpStrings + 0x168,
+        text2,
+        (s8)currentHp,
+        lbl_80369754,
+        gZeroF,
+        maxHp2,
+        text,
+        healedHp,
+        maxHp
+    );
+
+    text = Msg_Expand(gBattleHelpStrings + 0x135);
+
+    fn_8001003C(
+        0x10,
+        0x48,
+        1,
+        1,
+        0,
+        gBattleHelpStrings + 0x12D,
+        text,
+        lbl_80369754,
+        gZeroF
+    );
+
+    i = 0;
+    drawer = gUiIconDrawer;
+    x = 0x48;
+
+    while (i < fn_8010424C(self + 0x1A4)) {
+        Ui_DrawIcon(
+            drawer,
+            x,
+            0x4A,
+            fn_8010418C(self + 0x1A4, i)
+        );
+
+        x += 0x1A;
+        i++;
+    }
+}
+
+void UnitInfo_DrawStatus(void *arg0) {
+    void fn_8008BA80(void *, s32, s32, s32);
+    void fn_8007D044(s32, u8, f32, f32, f32, f32);
+    void fn_8008CD64(f32);
+    void fn_8008CD34(void);
+    s8 Unit_GetMaxHp(void *);
+    s8 fn_8003A1E0(void *);
+    void *Msg_Expand(char *);
+    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    s32 fn_8010418C(void *, s32);
+    s32 fn_8010424C(void *);
+    void Ui_DrawIcon(void *, s32, s32, s32);
+
+    extern f32 gZeroF;
+    extern f32 lbl_80369780;
+    extern f32 lbl_80369784;
+    extern f32 lbl_80369790;
+    extern f32 lbl_80369768;
+    extern f32 lbl_80369754;
+    extern char gBattleHelpStrings[];
+    extern u8 gUiIconDrawer[];
+
+    u8 *self;
+    u8 *por;
+    s32 hp;
+    s32 maxHp;
+    s32 i;
+    s32 x;
+    void *text;
+    void *drawer;
+
+    self = (u8 *)arg0;
+
+    fn_8008BA80(self, 0, 0, 0);
+
+    por = *(u8 **)(self + 0x190);
+
+    fn_8007D044(
+        0xB3,
+        por[8],
+        gZeroF,
+        lbl_80369780,
+        lbl_80369784,
+        lbl_80369790
+    );
+
+    fn_8008CD64(lbl_80369768);
+    fn_8008CD34();
+
+    hp = self[0x1A8];
+    maxHp = Unit_GetMaxHp(self);
+
+    text = Msg_Expand(gBattleHelpStrings + 0x111);
+
+    fn_8001003C(
+        0x10,
+        0x2C,
+        1,
+        1,
+        0,
+        gBattleHelpStrings + 0xFA,
+        text,
+        (s8)hp,
+        lbl_80369754,
+        gZeroF,
+        (s8)maxHp
+    );
+
+    maxHp = fn_8003A1E0(self);
+
+    text = Msg_Expand(gBattleHelpStrings + 0x126);
+
+    fn_8001003C(
+        0x86,
+        0x2C,
+        1,
+        1,
+        0,
+        gBattleHelpStrings + 0x117,
+        text,
+        (s8)maxHp,
+        lbl_80369754,
+        gZeroF
+    );
+
+    text = Msg_Expand(gBattleHelpStrings + 0x135);
+
+    fn_8001003C(
+        0x10,
+        0x48,
+        1,
+        1,
+        0,
+        gBattleHelpStrings + 0x12D,
+        text,
+        lbl_80369754,
+        gZeroF
+    );
+
+    i = 0;
+    drawer = gUiIconDrawer;
+    x = 0x48;
+
+    while (i < fn_8010424C(self + 0x1A4)) {
+        Ui_DrawIcon(
+            drawer,
+            x,
+            0x4A,
+            fn_8010418C(self + 0x1A4, i)
+        );
+
+        x += 0x1A;
+        i++;
+    }
+}
+
 #pragma use_lmw_stmw off
 /* Draw a fixed-size unit-info panel fill tinted by allegiance, plus white translucent edge strips. */
 void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
@@ -293,6 +627,108 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
     Prim2D_SetRect((f32)(x + 0xD0), (f32)(y - 3), gZeroF, gUnitInfoPanelOuterH);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
+}
+
+void Ui_OpenWeaponKindHelp(u8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4) {
+    s32 fn_8005A310(void *, u8, u8);
+    s32 sprintf(char *, const char *, ...);
+    char *strcat(char *, const char *);
+    void fn_8000D864(s32, char *);
+    s32 Msg_Expand(void *);
+    void Ui_OpenHelpPopup(s32, void *, s32, s32);
+
+    extern u8 gUiIconDrawer[];
+    extern u8 gBattleHelpStrings[];
+
+    char text[0x40];
+    char part1[0x10];
+    char part2[0x10];
+    char part3[0x10];
+    char part4[0x10];
+
+    s32 parent;
+    s8 kind2;
+    s8 kind3;
+    s8 kind4;
+    u16 kind;
+
+    parent = arg1;
+    kind2 = arg2;
+    kind3 = arg3;
+    kind4 = arg4;
+
+    text[0] = 0;
+
+    kind = (u16)fn_8005A310(
+        gUiIconDrawer,
+        (u8)arg0,
+        0
+    );
+
+    sprintf(
+        part1,
+        (char *)gBattleHelpStrings + 0x19B,
+        kind - 1
+    );
+
+    strcat(text, part1);
+
+    if (kind2 >= 0) {
+        kind = (u16)fn_8005A310(
+            gUiIconDrawer,
+            (u8)kind2,
+            0
+        );
+
+        sprintf(
+            part2,
+            (char *)gBattleHelpStrings + 0x19B,
+            kind - 1
+        );
+
+        strcat(text, part2);
+    }
+
+    if (kind3 >= 0) {
+        kind = (u16)fn_8005A310(
+            gUiIconDrawer,
+            (u8)kind3,
+            0
+        );
+
+        sprintf(
+            part3,
+            (char *)gBattleHelpStrings + 0x19B,
+            kind - 1
+        );
+
+        strcat(text, part3);
+    }
+
+    if (kind4 >= 0) {
+        kind = (u16)fn_8005A310(
+            gUiIconDrawer,
+            (u8)kind4,
+            0
+        );
+
+        sprintf(
+            part4,
+            (char *)gBattleHelpStrings + 0x19B,
+            kind - 1
+        );
+
+        strcat(text, part4);
+    }
+
+    fn_8000D864(0, text);
+
+    Ui_OpenHelpPopup(
+        Msg_Expand(gBattleHelpStrings + 0x1A2),
+        gBattleHelpStrings + 0x1AC,
+        parent,
+        1
+    );
 }
 
 /* Open a help popup naming which stat on a bonus entry is non-zero. */
