@@ -309,6 +309,7 @@ void SIInterruptHandler(s32 interrupt, s32 context)
   SIPacket *pktBase;
   SIControl *si;
   SIPacket *packet;
+  s64 now;
   s32 j;
   s32 i;
   u32 new_var3;
@@ -357,7 +358,8 @@ void SIInterruptHandler(s32 interrupt, s32 context)
       packet = (SIPacket *) (((u8 *) pktBase) + new_var);
       if (packet->chan != (-1))
       {
-        if (!(__OSGetSystemTime() < packet->fire))
+        now = __OSGetSystemTime();
+        if (!(now < packet->fire))
         {
           if (fn_8023B57C(packet->chan, packet->output, packet->outputBytes, packet->input, packet->inputBytes, packet->callback))
           {
@@ -396,8 +398,7 @@ void SIInterruptHandler(s32 interrupt, s32 context)
       if (ok == 0)
       {
         bus = *((u32 *) 0x800000F8);
-        delay = __mulhwu(bus >> 2, 0x431BDE83);
-        delay = delay >> 15;
+        delay = (bus >> 2) / 125000;
         delay = delay * 0x41;
         SITransfer(chan, &lbl_80368818, 1, typep, 3, GetTypeCallback, delay >> 3);
       }
@@ -787,8 +788,9 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
     return 1;
 }
 
+#pragma optimization_level 2
 #pragma global_optimizer off
-#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void GetTypeCallback(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     s64 __OSGetSystemTime(void);
@@ -837,7 +839,7 @@ void GetTypeCallback(s32 chan, u32 type) {
         typeVal = *typep;
         cbs = (void **)(packet + (chan << 4));
         i = 0;
-        clear = SI_CopyS32(i);
+        clear = i;
         cbs = (void **)((u8 *)cbs + 0x160);
         do {
             cb = (void (*)(s32, u32))*cbs;
@@ -885,7 +887,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     typeVal = *typep;
     cbs = (void **)(packet + (chan << 4));
     i = 0;
-    clear = SI_CopyS32(i);
+    clear = i;
     cbs = (void **)((u8 *)cbs + 0x160);
     do {
         cb = (void (*)(s32, u32))*cbs;
@@ -898,8 +900,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     } while (i < 4);
     (void)padp;
 }
-#pragma opt_common_subs reset
-#pragma global_optimizer reset
+#pragma optimization_level reset
 
 u32 SIGetType(s32 chan) {
 s64 __OSGetSystemTime(void);
