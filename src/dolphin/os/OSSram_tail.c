@@ -200,9 +200,52 @@ s32 fn_802097D4(void) {
         }
         fn_8020931C(0, 0);
     }
-    return (s32)scb;
+          return (s32)scb;
+  }
+  #pragma scheduling reset
+  
+  void fn_80209854(u32 arg0) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+    extern u16 Scb_80339420[];
+
+    register u8 *scb;
+    s32 *locked;
+    s32 lockedVal;
+    u32 interrupts;
+    u32 mode;
+    u32 flags;
+    s32 commit;
+    s32 offset;
+    u8 pad[8];
+
+    scb = (u8 *)Scb_80339420;
+    mode = (arg0 & 1) << 2;
+
+    interrupts = OSDisableInterrupts();
+    lockedVal = *(s32 *)(scb + 0x48);
+    locked = (s32 *)(scb + 0x48);
+    if (lockedVal != 0) {
+        OSRestoreInterrupts(interrupts);
+        scb = 0;
+    } else {
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
+    }
+
+    flags = scb[0x13];
+    if (mode == (flags & 4)) {
+        fn_8020931C(0, 0);
+    } else {
+        scb[0x13] = flags & ~4U;
+        commit = 1;
+        offset = 0;
+        scb[0x13] |= mode;
+        fn_8020931C(commit, offset);
+    }
 }
-#pragma scheduling reset
+#pragma optimization_level reset
 
 #pragma scheduling off
 
