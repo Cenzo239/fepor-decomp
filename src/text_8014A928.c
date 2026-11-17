@@ -165,6 +165,40 @@ extern "C" s32 fn_8014AA18(void *arg0, void *arg1, void *arg2) {
     Ui_CreateMenu(&lbl_80367B34, arg1, 0);
     return 0;
 }
+
+extern "C" void fn_8014AAC8(void *unused,u8 *parent,u8 *item){
+struct Model {u8 pad[4]; virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;virtual void v9()=0;virtual void v10()=0;virtual void v11()=0;virtual void v12()=0;virtual void v13()=0;virtual void v14()=0;virtual void v15()=0;virtual void v16()=0;virtual void v17()=0;virtual void v18()=0;virtual void v19()=0;virtual void v20()=0;virtual void v21()=0;virtual void v22()=0;virtual void v23()=0;virtual void v24()=0; virtual f32 v25()=0;};
+struct Drawer {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void *v4(void*)=0;};
+u8 *Hash_Lookup(s32);
+void Prim2D_Begin(void);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetTex(s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_SetText(void*);
+void Prim2D_SetScale(f32);
+void Prim2D_SetTint(s32,s32,s32,s32);
+void Prim2D_EndPrim(void);
+extern f32 gMenuItemZBias,gOneF,gMenuTextScale;
+s32 index;
+s32 page=(s8)lbl_80367B0D;
+index=item[0x3a];
+index+=page*24;
+if(index<lbl_80367B04){
+if(Hash_Lookup(((s32*)lbl_80367B00)[index])[5]&8)item[0x39]=2;else item[0x39]=0;
+}
+Prim2D_Begin();
+Prim2D_SetTransform((f32)*(s16*)(parent+0x30),(f32)*(s16*)(parent+0x32),(*(Model**)(parent+0x3c))->v25()-gMenuItemZBias,gOneF);
+Prim2D_SetTex(0,0x13);Prim2D_PrepareTex();Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16*)(item+0x30),(f32)*(s16*)(item+0x32));
+Prim2D_SetText((*(Drawer**)(item+0x34))->v4(item));
+Prim2D_SetScale(gMenuTextScale);
+if(item[0x38])Prim2D_SetTint(255,255,0,255);
+if(item[0x39]==2)Prim2D_SetTint(0,0,0,255);
+Prim2D_EndPrim();
+}
+
 #pragma cplusplus reset
 s32 fn_8014AC68(void) {
     extern void *gPadInput;
