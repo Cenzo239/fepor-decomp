@@ -2444,6 +2444,54 @@ void fn_801EED94(void) {
     fn_801EE76C();
 }
 
+void fn_801EEDB4(void *arg0) {
+void *Map_Get(void); void Map_UpdateTransforms(void*);
+void PSMTXScale(void*,f32,f32,f32); void PSMTXRotRad(void*,s32,f32);
+void PSMTXConcat(void*,void*,void*); void PSMTXCopy(void*,void*);
+s32 fn_800E49D0(void); void fn_800E4A78(void*,void*); void Model_SetAlpha(void*,s32);
+void *fn_8006049C(void*); void *GActor_GetNodeTable(void*); void MTXRotDegOrder(void*,void*);
+void fn_800606BC(void*); void fn_80060060(void*); void fn_8006CAD4(void*); void LightFade_Start(void);
+extern f32 lbl_8036B7C8,lbl_8036B7B8,lbl_8036B7CC;
+f32 node[3][4],combined[3][4],rotation[3][4],scale[3][4];
+u32 alpha;
+u8 *matrices;
+u8 *obj=*(u8**)((u8*)arg0+0x48);
+void *map=Map_Get();
+++*(s32*)(obj+0xD4);
+if(map) Map_UpdateTransforms(map);
+if(*(void**)(obj+0xB8)) {
+PSMTXScale(scale,lbl_8036B7C8,lbl_8036B7C8,lbl_8036B7C8);
+PSMTXRotRad(rotation,0x59,lbl_8036B7B8);
+PSMTXConcat(rotation,scale,combined);
+PSMTXCopy(combined,*(u8**)(obj+0xB8)+0x10);
+alpha=fn_800E49D0() & 255;
+fn_800E4A78(*(void**)(obj+0xBC),*(void**)(obj+0xB8));
+Model_SetAlpha(*(void**)(obj+0xBC),alpha);
+if(*(void**)(obj+0xC4)) {
+matrices=fn_8006049C(*(void**)(obj+0xB8));
+MTXRotDegOrder(*(u8**)((u8*)GActor_GetNodeTable(*(void**)(obj+0xB8))+12)+*(s32*)(obj+0xA4)*0xF4,node);
+PSMTXConcat(matrices+*(s32*)(obj+0xA4)*0x30,node,node);
+PSMTXConcat(*(u8**)(obj+0xB8)+0x10,node,*(u8**)(obj+0xC4)+0x10);
+fn_800E4A78(*(void**)(obj+0xC8),*(void**)(obj+0xC4));
+Model_SetAlpha(*(void**)(obj+0xC8),alpha);
+}
+}
+if(*(void**)(obj+0xD0)) {
+PSMTXScale(combined,lbl_8036B7CC,lbl_8036B7CC,lbl_8036B7CC);
+PSMTXCopy(combined,*(u8**)(obj+0xD0)+0x10);
+}
+if(*(void**)(obj+0xD0)) fn_800606BC(*(void**)(obj+0xD0));
+if(*(void**)(obj+0xB8)) {
+fn_80060060(*(void**)(obj+0xB8));
+fn_800606BC(*(void**)(obj+0xB8));
+fn_8006CAD4(*(void**)(obj+0xBC));
+if(*(void**)(obj+0xC4)) {
+fn_800606BC(*(void**)(obj+0xC4)); fn_800606BC(*(void**)(obj+0xC8));
+}
+}
+LightFade_Start();
+}
+
 /* Build asset paths for entry arg1 and load model/tex/anim into a new GActor hierarchy. */
 void GActor_LoadResources(void *arg0, s32 arg1)
 {
