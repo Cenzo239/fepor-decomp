@@ -146,54 +146,63 @@ if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
 return 0;
 }
 
+#pragma use_lmw_stmw on
 void fn_8009FBE0(s32 unused, s32 parent, void *item) {
-void *Map_GetCursorUnit(void);
-void *fn_80105C5C(void *,u8);
-void *fn_8010586C(void *);
-void Prim2D_SetText(void *);
-void Prim2D_SetScale(f32);
-void Prim2D_SetTint(s32,s32,s32,s32);
-void Prim2D_SetPos(f32,f32);
-void Prim2D_EndPrim(void);
-void Prim2D_AddPrim(s32);
-void Ui_DrawMenuTextItem(s32,s32,void *);
-void sprintf(u8 *,void *,...);
-extern u8 gMenuCmdStrings[];
-extern f32 gItemMenuTextScale;
-u8 buf[32];
-s32 i;
-s32 count;
-s32 slot;
-u8 *unit;
-u8 *status;
-slot=*(u8 *)((u8 *)item+0x3a);
-unit=Map_GetCursorUnit();
-count=0;
-for(i=count;i<0x62;i++) {
-status=fn_80105C5C(unit+0x1bc,(u8)i);
-if(status) {
-if(count!=slot) count++;
-else goto found;
-}
-}
-status=0;
-found:
-if(status) {
-void *name;
-u8 value=status[0x18];
-name=fn_8010586C(status);
-sprintf(buf,gMenuCmdStrings+0x2c7,value,name);
-} else sprintf(buf,gMenuCmdStrings+0x2cf);
-Ui_DrawMenuTextItem(unused,parent,item);
-Prim2D_AddPrim(5);
-Prim2D_SetPos((f32)(*(s16 *)((u8 *)item+0x30)+0x38),(f32)*(s16 *)((u8 *)item+0x32));
-Prim2D_SetText(buf);
-Prim2D_SetScale(gItemMenuTextScale);
-if(*(u8 *)((u8 *)item+0x38)) Prim2D_SetTint(255,255,0,255);
-if(*(u8 *)((u8 *)item+0x39)==2) Prim2D_SetTint(0,0,0,255);
-Prim2D_EndPrim();
-}
+    void *Map_GetCursorUnit(void);
+    void *fn_80105C5C(void *, u8);
+    void *fn_8010586C(void *);
+    void Prim2D_SetText(void *);
+    void Prim2D_SetScale(f32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Ui_DrawMenuTextItem(s32, s32, void *);
+    void sprintf(u8 *, void *, ...);
+    extern u8 gMenuCmdStrings[];
+    extern f32 gItemMenuTextScale;
+    u8 buf[32];
+    s32 i;
+    s32 count;
+    s32 slot;
+    u8 *unit;
+    u8 *status;
+    void *name;
 
+    slot = *(u8 *)((u8 *)item + 0x3A);
+    unit = Map_GetCursorUnit();
+    count = 0;
+    i = count;
+    for (; i < 0x62; i++) {
+        status = fn_80105C5C(unit + 0x1BC, (u8)i);
+        if (status != 0) {
+            if (count == slot) goto found;
+            count++;
+        }
+    }
+    status = 0;
+found:
+    if (status != 0) {
+        count = status[0x18];
+        name = fn_8010586C(status);
+        sprintf(buf, gMenuCmdStrings + 0x2C7, count, name);
+    } else {
+        sprintf(buf, gMenuCmdStrings + 0x2CF);
+    }
+    Ui_DrawMenuTextItem(unused, parent, item);
+    Prim2D_AddPrim(5);
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)item + 0x30) + 0x38), (f32)*(s16 *)((u8 *)item + 0x32));
+    Prim2D_SetText(buf);
+    Prim2D_SetScale(gItemMenuTextScale);
+    if (*(u8 *)((u8 *)item + 0x38) != 0) {
+        Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
+    }
+    if (*(u8 *)((u8 *)item + 0x39) == 2) {
+        Prim2D_SetTint(0, 0, 0, 0xFF);
+    }
+    Prim2D_EndPrim();
+}
+#pragma use_lmw_stmw reset
 void *fn_8009FD50(void) {
     extern u16 gMenuCmdStrings[];
     return (u8 *)gMenuCmdStrings + 0x2d5;
@@ -391,7 +400,7 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
     s32 v = 2;
@@ -405,7 +414,7 @@ s32 fn_800A011C(s32 a, s32 b, void *c) {
     *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
@@ -427,13 +436,14 @@ extern u8 lbl_80367708;
 #pragma optimization_level 3
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
-    s32 v;
+    u8 c;
+    s32 v = 2;
 
     a = (u8)lbl_80367708;
-    v = 2;
     b = a ^ 1;
     lbl_80367708 = b;
-    if ((u8)b != 0) {
+    c = (u8)b;
+    if (c != 0) {
         v = 0;
     }
     *(u8 *)((char *)arg2 + 0x39) = v;
@@ -533,11 +543,12 @@ void *fn_800A02E4(void) {
 
 s32 fn_800A02F4(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367707;
-    s32 v = 2;
+    s32 v;
 
     a = (u8)lbl_80367707;
     b = a ^ 1;
     lbl_80367707 = b;
+    v = 2;
     if ((u8)b != 0) {
         v = 0;
     }
@@ -1498,7 +1509,7 @@ Prim2D_SetText(gItemMenuTextBuf); Prim2D_SetScale(gItemMenuTextScale); Prim2D_En
 
 s32 fn_800A1658(s32 arg0,s32 arg1,void *arg2) {
 extern u8 *gPadInput; extern u8 gBattleState[]; void fn_8014D244(u8 *,u8,u8);
-u32 previous,current,changed; s32 idx; u8 val; u8 initial;
+u32 previous,current,changed; s32 idx; u8 initial; u8 val;
 previous=*(u32*)(gPadInput+4); current=*(u32*)(gPadInput+8);
 idx=*((u8*)arg2+0x3A)+1; initial=gBattleState[idx+0x14];
 changed=previous & (current ^ previous); val=initial;
@@ -2420,7 +2431,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 s32 fn_800A2FC4(s32 arg0, s32 arg1, void *arg2) {
     void *Map_GetCursorUnit(void);
     void *Unit_GetSupportPartner(void *, u8);
@@ -2437,7 +2448,6 @@ s32 fn_800A2FC4(s32 arg0, s32 arg1, void *arg2) {
     u8 *table;
     s32 offset;
     s32 row;
-    u32 idx;
 
     if (*(u8 *)((u8 *)arg2 + 0x39)) {
         return 0;
@@ -2458,18 +2468,18 @@ s32 fn_800A2FC4(s32 arg0, s32 arg1, void *arg2) {
     if (value < 0) {
         value = 0;
     }
-    table = *(u8 **)(*(u8 **)(unit + 0x188) + 0x50);
     offset = slot * 8;
     row = offset + 8;
+    table = *(u8 **)(*(u8 **)(unit + 0x188) + 0x50);
     row = (s32)table + row;
     if (value > (u8)(*(u8 *)(row + 6) + 1)) {
-        idx = (u32)offset + 0xE;
-        value = (u8)(*(u8 *)((u32)table + idx) + 1);
+        value = (u8)(table[offset + 0xE] + 1);
     }
     *(unit + index + 0x214) = value;
     *(partner + other + 0x214) = value;
     return 0;
 }
+#pragma opt_common_subs reset
 s32 fn_800A30D8(void) {
     return 0;
 }
@@ -2587,11 +2597,11 @@ void Prim2D_SetScale(f32);
 void Prim2D_EndPrim(void);
 u8 fn_800BDB9C(void *,s32);
 extern u8 gBattleState[],gMenuCmdStrings[];
-extern s8 lbl_80367558;
+extern u8 lbl_80367558;
 extern f32 gItemMenuTextZ,gItemMenuTextScale;
 u8 buf[32];
+s32 index=(((s8)lbl_80367558)<<4)+*(u8 *)((u8 *)item+0x3a)-1;
 u8 *base=gBattleState+0xb4;
-s32 index=(lbl_80367558*16)+(*(u8 *)((u8 *)item+0x3a)-1);
 s32 offset=index*4;
 if(*(u32 *)(base+offset)) {
 Prim2D_Begin();
