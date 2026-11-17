@@ -6,6 +6,7 @@ typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
 typedef struct F43Eval { void **vtable; void *entry, *unit; F43Pos *pos; } F43Eval;
 typedef struct F43Range { void *vtable; s32 value; } F43Range;
 typedef struct { s32 a; s32 b; } PairAB;
+typedef struct { s32 *a; s32 b; } SortIteratorFields;
 typedef struct HeapC55 HeapC55;
 struct HeapC55 { u32 unk0, unk4; HeapC55 *prev, *next; u32 size; HeapC55 *owner, *free; u32 extent; };
 static inline u8 relation_is_one(void *a, void *b) {
@@ -13163,8 +13164,67 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     return arg0;
 }
 #pragma dont_inline reset
-s32 *fn_800E0728(s32 *a, s32 *b, s32 *c, s32 d, s32 e, void *f, void *g, u8 h) {
-    return a + e;
+s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, PairAB *from, PairAB *to) {
+    void fn_800E0EE0(s32 *, s32 *, s32 *);
+    PairAB outA, stopA, curA, outB, curB, stopB;
+    PairAB tmpA, tmpB, proxyA, proxyB;
+    s32 available = (to->a - from->a) / 4;
+    if (n1 <= n2 && n1 <= available) {
+        s32 *src;
+        outA=*from;
+        src=first;
+        while(src!=mid) {
+            proxyA=outA;
+            if ((proxyA.a-*(s32 *)(proxyA.b+8))/4 < *(s32 *)(proxyA.b+4)) *(s32 *)proxyA.a=*src;
+            else {
+                if((s32 *)proxyA.a != 0) *(s32 *)proxyA.a=*src;
+                ++*(s32 *)(proxyA.b+4);
+            }
+            ++src;
+            outA.a+=4;
+        }
+        *to=outA;
+        {
+            s32 *dst=first;
+            while(mid<last) *dst++=*mid++;
+        }
+        curA=*to; stopA=*from;
+        while((u32)curA.a!=(u32)stopA.a) {
+            curA.a-=4;
+            tmpA=curA;
+            *--last=*(s32 *)tmpA.a;
+        }
+        return last;
+    } else if (n2<=available) {
+        s32 *src;
+        outB=*from;
+        src=mid;
+        while(src!=last) {
+            proxyB=outB;
+            if ((proxyB.a-*(s32 *)(proxyB.b+8))/4 < *(s32 *)(proxyB.b+4)) *(s32 *)proxyB.a=*src;
+            else {
+                if((s32 *)proxyB.a != 0) *(s32 *)proxyB.a=*src;
+                ++*(s32 *)(proxyB.b+4);
+            }
+            ++src;
+            outB.a+=4;
+        }
+        *to=outB;
+        while(mid>first) *--last=*--mid;
+        stopB=*to; curB=*from;
+        {
+            s32 *dst=first;
+            while((u32)curB.a!=(u32)stopB.a) {
+                tmpB=curB;
+                curB.a+=4;
+                *dst++=*(s32 *)tmpB.a;
+            }
+            return dst;
+        }
+    } else {
+        fn_800E0EE0(first,mid,last);
+        return first+n2;
+    }
 }
 
 void fn_800E0A94(void *arg0, void *arg1, s32 *arg2, u32 arg3, s32 *arg4) {
@@ -19153,14 +19213,10 @@ void Card_AsyncDone(void) {
 
 #pragma global_optimizer off
 s32 fn_800EB854(void) {
-    extern u8 lbl_80320C20[];
-    s32 result = 0;
-    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
-        if (lbl_80320C20[0xA01A] != 0) {
-            result = 1;
-        }
-    }
-    return result;
+    extern u8 gCardWork[];
+    u8 *base;
+    base = gCardWork + 0x10000;
+    return (*(s32 *)(base - 0x5FFC) != -1) && (*(base - 0x5FE6) != 0);
 }
 #pragma global_optimizer reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
