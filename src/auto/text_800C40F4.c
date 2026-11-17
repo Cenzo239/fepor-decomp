@@ -4236,11 +4236,82 @@ extern "C" void fn_800CBF90(void *self, String *name, String *path) {
     }
     String_Destroy(&built, -1);
 }
-#pragma cplusplus reset
-#pragma global_optimizer on
 
-#pragma optimization_level 3
-#pragma use_lmw_stmw on
+#pragma cplusplus reset
+void fn_800CC10C(s32 arg0, void *arg1) {
+    void *Heap_Alloc(u32);
+    void String_Init(void *, void *, void *);
+    void *Xml_ParseFile(void *, void *, void *);
+    void Str_CopyPad(void *, void *, u32);
+    void fn_800C908C(void *, void *, void *);
+    void String_Destroy(void *, s32);
+    u8 Xml_AdvanceChild(void *);
+    void Xml_GetChildName(void *, void *);
+    void Xml_GetChildValue(void *, void *);
+    void String_Assign(void *, void *, s32, s32);
+    void *String_AssignCStr(void *, void *, s32);
+    s32 strlen(char *);
+    s32 String_Find(void *, void *, s32, s32);
+    void String_Substr(void *, void *, s32, s32);
+    void String_JoinCStr(void *, void *, void *);
+    void fn_800C99A0(void *, void *, s32, s32);
+    void Xml_Destroy(void *, s16);
+    void *StringMap_FindOrInsert(void *, void *);
+    extern char lbl_802704F8[];
+    struct Block { u32 a,b,c,d,e,f,g,h; };
+    struct Block spC0, spA0;
+    char sp80[32];
+    String sp74, sp68, sp5C, sp50, sp44, sp38, sp2C, sp20, sp14;
+    u32 sp10, spC, sp8;
+    char *buffer;
+    s8 made1, made2;
+    u8 *f;
+    u8 *arg0p;
+    u32 idx;
+
+    arg0p = (u8 *)arg0;
+    made1 = 0;
+    made2 = 0;
+    f = (u8 *)Heap_Alloc(0x60);
+    if (f != 0) {
+        String_Init(&sp5C, lbl_802704F8 + 0x1D6, &sp10);
+        made1 = 1;
+        String_Init(&sp50, arg1, &spC);
+        made2 = 1;
+        f = (u8 *)Xml_ParseFile(f, &sp50, &sp5C);
+    }
+    if (made2 != 0) String_Destroy(&sp50, -1);
+    if (made1 != 0) String_Destroy(&sp5C, -1);
+    sp74.cap=0; sp68.cap=0; sp74.size=0; sp74.data=0; sp74.cap=0; sp68.size=0; sp68.data=0; sp68.cap=0;
+    String_Init(&sp44, lbl_802704F8 + 0x1EB, &sp8);
+    Str_CopyPad(&spA0, lbl_802704F8 + 0x1F1, 0x20);
+    spC0 = spA0;
+    fn_800C908C(f, &sp44, &spC0);
+    String_Destroy(&sp44, -1);
+    buffer = (char *)&sp80;
+    for (; Xml_AdvanceChild(f) != 0; ) {
+        Xml_GetChildName(&sp38, f);
+        String_Assign(&sp74, &sp38, 0, -1);
+        String_Destroy(&sp38, -1);
+        Xml_GetChildValue(&sp80, f);
+        String_AssignCStr(&sp68, buffer, strlen(buffer));
+        idx = String_Find(&sp68, lbl_802704F8 + 0x1F9, 0, strlen(lbl_802704F8 + 0x1F9));
+        if (idx != 0xFFFFFFFFU) {
+            String_Substr(&sp2C, &sp68, 0, idx);
+            String_JoinCStr(&sp20, lbl_802704F8 + 0x1BA, &sp2C);
+            fn_800C99A0(&sp74, &sp20, 0, -1);
+            String_Destroy(&sp20, -1);
+            String_Destroy(&sp2C, -1);
+            String_Substr(&sp14, &sp68, idx + 1, 4);
+            String_Assign(&sp68, &sp14, 0, -1);
+            String_Destroy(&sp14, -1);
+        }
+        { u8 *entry = StringMap_FindOrInsert(arg0p + 0x1E0, &sp74); entry += 12; String_Assign(entry, &sp68, 0, -1); }
+    }
+    Xml_Destroy(f, 1);
+    String_Destroy(&sp68, -1);
+    String_Destroy(&sp74, -1);
+}
 #pragma cplusplus on
 extern "C" void fn_800CC3D8(void *arg0, s32 arg1) {
     struct Host {
@@ -9063,6 +9134,112 @@ void fn_800DB228(void *arg0) {
     );
 }
 
+void *fn_800DB338(void *arg0, void *arg1, void *arg2)
+{
+    void *fn_800E4688(void *, void *, void *);
+    void Xml_GetNamedValue(void *, void *, void *);
+    void String_Init(void *, char *, void *);
+    void String_Destroy(void *, s32);
+    void String_AssignCStr(void *, char *, u32);
+    u32 strlen(const char *);
+
+    extern void *lbl_8028DE70[];
+    extern char lbl_80271560[];
+
+    struct Value {
+        u32 v[8];
+    };
+
+    u8 *self;
+    String name;
+    String name2;
+    String name3;
+    String name4;
+    struct Value value;
+    struct Value temp;
+    s32 scratch;
+    s32 scratch2;
+    s32 scratch3;
+    s32 scratch4;
+
+    self = (u8 *)arg0;
+
+    fn_800E4688(self, arg1, arg2);
+
+    *(void **)(self + 0x40) = lbl_8028DE70;
+
+    *(u32 *)(self + 0xAC) = 0;
+    *(u32 *)(self + 0xB0) = 0;
+    *(u32 *)(self + 0xB4) = 0;
+    *(u32 *)(self + 0xB0) = 0;
+
+    value.v[0] = 0;
+    value.v[1] = 0;
+    value.v[2] = 0;
+    value.v[3] = 0;
+
+    String_Init(&name, lbl_80271560, &scratch);
+
+    Xml_GetNamedValue(&temp, arg2, &name);
+
+    value = temp;
+
+    String_Destroy(&name, -1);
+
+    String_AssignCStr(
+        self + 0xAC,
+        (char *)&value,
+        strlen((char *)&value)
+    );
+
+    String_Init(
+        &name2,
+        lbl_80271560 + 5,
+        &scratch2
+    );
+
+    Xml_GetNamedValue(&temp, arg2, &name2);
+
+    self[0xB8] = temp.v[0] != 0;
+
+    String_Destroy(&name2, -1);
+
+    String_Init(
+        &name3,
+        lbl_80271560 + 0xA,
+        &scratch3
+    );
+
+    Xml_GetNamedValue(&temp, arg2, &name3);
+
+    self[0xB9] = temp.v[0] != 0;
+
+    String_Destroy(&name3, -1);
+
+    String_Init(
+        &name4,
+        lbl_80271560 + 0x11,
+        &scratch4
+    );
+
+    Xml_GetNamedValue(&temp, arg2, &name4);
+
+    *(u32 *)(self + 0xBC) = temp.v[0];
+
+    String_Destroy(&name4, -1);
+
+    if (*(s32 *)(self + 0xBC) == 0) {
+        *(s32 *)(self + 0xBC) = 0x10;
+    }
+
+    *(s32 *)(self + 0x60) =
+        *(s32 *)(self + 0xAC) * 0xB;
+
+    *(s32 *)(self + 0x64) = 0x10;
+
+    return self;
+}
+
 void fn_800DB520(void) {
 
 }
@@ -12044,6 +12221,35 @@ s32 *fn_800E0728(s32 *a, s32 *b, s32 *c, s32 d, s32 e, void *f, void *g, u8 h) {
 void fn_800E0A94(void *arg0, void *arg1, s32 *arg2, u32 arg3, s32 *arg4) {
     // This function was not fully implemented due to complexity
     // It's a placeholder until more structural understanding is gained
+}
+
+void fn_800E0C44(s32 *begin, s32 *end, PairAB *first, PairAB *last, s32 *out) {
+ s32 Sort_GetKey(void *);
+ if (begin == end) {
+ PairAB cur=*last, stop=*first; s32 *dest=out;
+ while((u32)cur.a != (u32)stop.a) { cur.a-=4; { PairAB tmp=cur; *--dest=*(s32*)tmp.a; } }
+ return;
+ }
+ if((u32)first->a == (u32)last->a) { s32 *dest=out, *src=end; while(src>begin) *--dest=*--src; return; }
+ --end; last->a-=4;
+ for (;;) {
+ PairAB tmp=*last;
+ s32 value=*end;
+ s32 key=Sort_GetKey((void*)*(s32*)tmp.a);
+ if(Sort_GetKey((void*)value)>key) {
+ *--out=*end;
+ if(begin==end) {
+ s32 *dest=out; PairAB stop=*first; last->a+=4; { PairAB cur=*last;
+ while((u32)cur.a!=(u32)stop.a) {cur.a-=4; { PairAB tmp=cur; *--dest=*(s32*)tmp.a; }}
+ return; }
+ }
+ --end;
+ } else {
+ PairAB tmp=*last; *--out=*(s32*)tmp.a;
+ if((u32)first->a==(u32)last->a) { ++end; while(end>begin) *--out=*--end; return; }
+ last->a-=4;
+ }
+ }
 }
 
 void fn_800E0EE0(s32 *left, s32 *mid, s32 *end) {
@@ -18988,6 +19194,94 @@ s32 fn_800EE490(void) {
     return result;
 }
 
+void fn_800EE4D0(void *arg0)
+{
+    extern u32 lbl_803678DC;
+    extern u32 lbl_803678E0;
+    extern f64 lbl_80369FB0;
+    extern f32 lbl_80369F90;
+    extern f64 lbl_80369F98;
+    extern f32 lbl_80369FA0;
+    extern f32 lbl_80369FA4;
+    extern f32 lbl_80369FA8;
+    extern f32 lbl_80369FAC;
+    extern void *fn_800F047C;
+
+    f64 sin(f64);
+    void DCFlushRange(void *, u32);
+    void fn_80067708(s32, s32, void *, s32);
+
+    u8 *self;
+    u8 *dst;
+    u32 temp;
+    s32 i;
+    s32 value;
+    f32 phase;
+    f32 angle;
+    f32 result;
+    f32 time;
+    f32 f31;
+
+    self = (u8 *)arg0;
+
+    if (lbl_803678DC != 0) {
+        dst = (u8 *)lbl_803678E0;
+
+        time = (f32)*(s32 *)(self + 0x30) *
+               lbl_80369F90;
+
+        i = 0;
+
+        do {
+            phase = (f32)i * lbl_80369FA0 + time;
+            angle = (f32)(lbl_80369F98 * (f64)phase);
+
+            result = (f32)sin(angle);
+            result = lbl_80369FA8 +
+                     lbl_80369FA4 * result;
+
+            value = (s32)result;
+
+            temp = (i >> 2) * 16 + (i & 3) * 4;
+
+            dst[(temp + 0) * 2] = (u8)value;
+            dst[(temp + 0) * 2 + 1] = 0x80;
+
+            dst[(temp + 1) * 2] = (u8)value;
+            dst[(temp + 1) * 2 + 1] = 0x80;
+
+            dst[(temp + 2) * 2] = (u8)value;
+            dst[(temp + 2) * 2 + 1] = 0x80;
+
+            dst[(temp + 3) * 2] = (u8)value;
+            dst[(temp + 3) * 2 + 1] = 0x80;
+
+            i++;
+        } while (i < 16);
+
+        DCFlushRange(dst, 0x80);
+
+        temp = lbl_803678DC;
+        lbl_803678DC = lbl_803678E0;
+        lbl_803678E0 = temp;
+
+        if (*(u32 *)(self + 0x3C) != 0) {
+            fn_80067708(
+                3,
+                1,
+                (void *)fn_800F047C,
+                0
+            );
+        }
+    }
+
+    *(s32 *)(self + 0x30) =
+        *(s32 *)(self + 0x30) + 1;
+
+    f31 = *(f32 *)(self + 0x34);
+    *(f32 *)(self + 0x34) = f31 + lbl_80369FAC;
+}
+
 void fn_800EE6BC(void) {
     extern u32 lbl_803678D0;
     extern u8 lbl_803678D4[8];
@@ -19622,6 +19916,105 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     return 1;
 }
 
+#pragma global_optimizer off
+s32 fn_800EFC2C(void *arg0, s32 arg1) {
+    void fn_8006A384(void *);
+    s32 GMaterial_AllocTevStage(void);
+    s32 GMaterial_AllocTexMap(void);
+    s32 GMaterial_AllocTexCoord(void);
+    s32 GMaterial_AllocMtx(void);
+    void *Map_Get(void);
+    void fn_802029C4(void *, void *, void *);
+    void fn_802026E4(void *, void *, void *, void *);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void fn_80224E50(void *, s32, s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void Ui_LoadAtlasTex(s32, void *, u16);
+    void fn_80222C50(void *, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
+    extern u8 lbl_80272C00[];
+    extern f32 lbl_80369FC8;
+
+    f32 spF4[3][4];
+    f32 spC4[3][4];
+    f32 sp94[3][4];
+    f32 sp64[3][4];
+    u8 sp44[0x20];
+    f32 sp2C[6];
+    f32 sp8[3];
+    f32 sp14[3];
+    f32 sp20[3];
+    s32 path;
+    u32 self;
+    s32 texMap;
+    s32 texCoord;
+    s32 tev;
+    u8 *tbl;
+    f32 half;
+
+    tbl = lbl_80272C00;
+    self = (u32)arg0;
+    path = arg1;
+    fn_8006A384(spC4);
+    tev = GMaterial_AllocTevStage();
+    texMap = GMaterial_AllocTexMap();
+    texCoord = GMaterial_AllocTexCoord();
+    {
+        u8 *entry = (u8 *)*(void **)(self + 0x14);
+        entry += *(u8 *)(self + 6) * 0x1C;
+        self = *(u16 *)(entry - 0x18);
+    }
+    {
+        u8 *m = (u8 *)Map_Get();
+        s32 t60;
+        *(s32 *)&sp2C[0] = *(s32 *)(tbl + 0x1C);
+        *(s32 *)&sp2C[2] = *(s32 *)(tbl + 0x24);
+        *(s32 *)&sp2C[3] = *(s32 *)(tbl + 0x28);
+        *(s32 *)&sp2C[5] = *(s32 *)(tbl + 0x30);
+        sp2C[2] = (f32)m[0x5F];
+        sp2C[0] = (f32)m[0x5E];
+        sp2C[5] = (f32)m[0x5F];
+        sp2C[3] = (f32)m[0x5E];
+        *(s32 *)&sp2C[1] = *(s32 *)(tbl + 0x20);
+        t60 = m[0x60];
+        half = (f32)(t60 >> 1);
+        *(s32 *)&sp8[0] = *(s32 *)&sp2C[0];
+        *(s32 *)&sp8[1] = *(s32 *)(tbl + 0x20);
+        *(s32 *)&sp8[2] = *(s32 *)&sp2C[2];
+        *(s32 *)&sp2C[4] = *(s32 *)(tbl + 0x2C);
+        *(s32 *)&sp14[0] = *(s32 *)&sp2C[3];
+        *(s32 *)&sp14[1] = *(s32 *)(tbl + 0x2C);
+        *(s32 *)&sp14[2] = *(s32 *)&sp2C[5];
+        *(s32 *)&sp20[0] = *(s32 *)(tbl + 0x34);
+        *(s32 *)&sp20[1] = *(s32 *)(tbl + 0x38);
+        *(s32 *)&sp20[2] = *(s32 *)(tbl + 0x3C);
+    }
+    tbl = (u8 *)Map_Get();
+    fn_802029C4(tbl + 0x70, sp8, sp8);
+    fn_802029C4(tbl + 0x70, sp14, sp14);
+    fn_802029C4(tbl + 0x70, sp20, sp20);
+    fn_802026E4(sp64, sp8, sp20, sp14);
+    C_MTXLightOrtho(sp94, -half, half, -half, half, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+    PSMTXConcat(sp64, spC4, sp64);
+    PSMTXConcat(sp94, sp64, spF4);
+    tbl = (u8 *)GMaterial_AllocMtx();
+    fn_80224E50(spF4, (s32)tbl, 0);
+    fn_802201A8(texCoord, 0, 0, (s32)tbl, 0, 0x7D);
+    Ui_LoadAtlasTex(path, sp44, (u16)self);
+    fn_80222C50(sp44, texMap);
+    GXSetTevOrder(tev, texCoord, texMap, 4);
+    GXSetTevColorOp(tev, 0, 0, 0, 1, 0);
+    GXSetTevColorIn(tev, 0xF, 0, 8, 0xF);
+    GXSetTevAlphaOp(tev, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn(tev, 7, 7, 7, 0);
+    return 1;
+}
+#pragma global_optimizer reset
 s32 fn_800EFEE0(void *arg0, s32 arg1) {
     void *Map_Get(void);
     void *GMaterial_GetCurrent(void);
@@ -20776,7 +21169,7 @@ void Allegiance_FillMask(s32,void *);
 int Abs(int); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
 void fn_800FDDBC(s8,s8,u8,u8,s32); u8 fn_800F7D28(void *,void *);
 u8 result[12]; u8 weapon[8]; u8 mask[8];
-u8 *map; u8 *unit; u8 *self;
+u8 *self; u8 *unit; u8 *map;
 s32 id; s32 dist; int dy; u8 ux,sx,range,outside,cx,cy,r,t; s32 ret;
 gUiContext[8]=mode;self=*(u8 **)gUiContext;
 *(s32 *)(out+8)=(s32)0x80000000; *(void **)(out+4)=0;
@@ -24413,6 +24806,104 @@ void fn_800FB074(void *arg0)
         *(u8 *)((u8 *)self + 0x250) += 1;
     } else {
         *(u8 *)((u8 *)self + 0x251) += 1;
+    }
+}
+
+void fn_800FB0F0(void *arg0)
+{
+    extern u8 gAiState[];
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+
+    void *Res_GetByName(void *);
+
+    u8 *unit;
+    u8 *cmd;
+    u8 *entry;
+    s32 *state;
+    s32 index;
+    s32 op;
+    s32 value;
+    s32 result;
+    s32 label;
+    s32 i;
+
+    unit = (u8 *)arg0;
+    cmd = gAiCmd;
+
+    index = *(s32 *)(cmd + 4);
+    op = *(s32 *)(cmd + 8);
+    value = *(s32 *)(cmd + 0xC);
+
+    state = (s32 *)(gAiState + 8 + index * 4);
+
+    result = 0;
+
+    switch (op) {
+    case 0:
+        result = *state > value;
+        break;
+
+    case 1:
+        result = *state >= value;
+        break;
+
+    case 2:
+        result = *state == value;
+        break;
+
+    case 3:
+        result = *state < value;
+        break;
+
+    case 4:
+        result = *state <= value;
+        break;
+
+    case 5:
+        result = *state != value;
+        break;
+    }
+
+    if (result != 0) {
+        i = 0;
+        label = *(s32 *)(cmd + 0x10);
+
+        if (gAiCmdIsAlt == 0) {
+            entry = Res_GetByName(
+                *(void **)(unit + 0x238)
+            );
+        } else {
+            entry = Res_GetByName(
+                *(void **)(unit + 0x23C)
+            );
+        }
+
+        if (label != 0) {
+            while (*(s32 *)entry != 0 ||
+                   *(s32 *)(entry + 0xC) != label) {
+                entry += 0x1C;
+                i++;
+            }
+
+            if (gAiCmdIsAlt == 0) {
+                unit[0x250] = i;
+            } else {
+                unit[0x251] = i;
+            }
+        } else {
+            if (gAiCmdIsAlt == 0) {
+                unit[0x250] = 0;
+            } else {
+                unit[0x251] = 0;
+            }
+        }
+    } else {
+        if (gAiCmdIsAlt == 0) {
+            unit[0x250]++;
+        } else {
+            unit[0x251]++;
+        }
     }
 }
 
