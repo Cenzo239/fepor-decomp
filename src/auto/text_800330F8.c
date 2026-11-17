@@ -5472,62 +5472,46 @@ finish:
 }
 #pragma use_lmw_stmw reset
 
-void Unit_OnZeroHp(void *arg0, void *arg1) {
-    u8 temp_r0;
-    u8 temp_r4;
-    u8 temp_r5;
-    u8 temp_r6;
-    u8 temp_r7;
-    void *temp_r3;
-    void *temp_r6_2;
-    void *temp_r6_3;
-    void *temp_r6_4;
-    void *temp_r6_5;
-    void *temp_r6_6;
-    void *temp_r6_7;
-    
-    temp_r3 = M2C_FIELD(arg0, void **, 0x188);
-    if (M2C_FIELD(temp_r3, u32 *, 0x1C) != 0) {
+void Unit_OnZeroHp(void *unit) {
+    u8 Status_Test(void *, s32);
+    void Unit_SetHp(void *, s8);
+    void fn_8004EA60(void *, s32);
+    void fn_800156A0(void *, void *);
+    void fn_800157DC(void *, void *);
+    void fn_80015718(void *, void *);
+    void fn_8003670C(void *);
+    s8 Unit_GetMaxHp(void *);
+    void Unit_Clear(void *, s32);
+    extern u8 gUnitLists[];
+    extern u8 gBattleState[];
+
+    if ((s8)((u8 *)unit)[0x1A8] != 0) {
         return;
     }
-    temp_r0 = M2C_FIELD(arg0, u8 *, 0x19D);
-    if ((temp_r0 == 1) || (temp_r0 == 2)) {
-        temp_r4 = M2C_FIELD(arg0, u8 *, 0x1A4);
-        M2C_FIELD(arg0, u8 *, 0x1A4) = temp_r4 + 1;
-        if ((temp_r4 + 1) == M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x30)) {
-            temp_r5 = M2C_FIELD(arg0, u8 *, 0x1A5);
-            M2C_FIELD(arg0, u8 *, 0x1A5) = temp_r5 + 1;
-        }
+    if ((u8)Status_Test((u8 *)unit + 0x1BC, 0x5C) != 0) {
+        Unit_SetHp(unit, 1);
+        *(u32 *)((u8 *)unit + 0x1A0) &= ~0x800;
         return;
     }
-    if ((temp_r0 != 3) && (temp_r0 != 4)) {
+    *(u32 *)((u8 *)unit + 0x1A0) |= 8;
+    fn_8004EA60(unit, 1);
+    if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) == 0) {
+        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+        fn_800157DC(gUnitLists + 0x48, unit);
+        *(u32 *)((u8 *)unit + 0x1A0) |= 0x8000;
+        ((u8 *)unit)[0x234] = gBattleState[0x10];
+        fn_8003670C(unit);
         return;
     }
-    temp_r6 = M2C_FIELD(arg0, u8 *, 0x1A4);
-    if (temp_r6 != 0) {
-        M2C_FIELD(arg0, u8 *, 0x1A4) = temp_r6 - 1;
-        if ((temp_r6 - 1) == 0) {
-            temp_r7 = M2C_FIELD(arg0, u8 *, 0x1A5);
-            M2C_FIELD(arg0, u8 *, 0x1A5) = temp_r7 - 1;
-        }
-    }
-    if (M2C_FIELD(arg1, s32 *, 0x4) == 0) {
+    if ((u8)Status_Test((u8 *)unit + 0x1BC, 0x59) != 0) {
+        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+        fn_800157DC(gUnitLists + 0x54, unit);
+        Unit_SetHp(unit, Unit_GetMaxHp(unit));
         return;
     }
-    temp_r6_2 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AC) = (s8) ((M2C_FIELD(temp_r6_2, u8 *, 0x4D) - M2C_FIELD(temp_r6_2, u8 *, 0x45)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x1E));
-    temp_r6_3 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AD) = (s8) ((M2C_FIELD(temp_r6_3, u8 *, 0x4E) - M2C_FIELD(temp_r6_3, u8 *, 0x46)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x1F));
-    temp_r6_4 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AE) = (s8) ((M2C_FIELD(temp_r6_4, u8 *, 0x4F) - M2C_FIELD(temp_r6_4, u8 *, 0x47)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x20));
-    temp_r6_5 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AF) = (s8) ((M2C_FIELD(temp_r6_5, u8 *, 0x50) - M2C_FIELD(temp_r6_5, u8 *, 0x48)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x21));
-    M2C_FIELD(arg0, s8 *, 0x1B0) = (s8) (0x28 - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x22));
-    temp_r6_6 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1B1) = (s8) ((M2C_FIELD(temp_r6_6, u8 *, 0x52) - M2C_FIELD(temp_r6_6, u8 *, 0x4A)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x23));
-    temp_r6_7 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1B2) = (s8) ((M2C_FIELD(temp_r6_7, u8 *, 0x53) - M2C_FIELD(temp_r6_7, u8 *, 0x4B)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x24));
-    M2C_FIELD(arg0, s8 *, 0x1AA) = (s8) (0x14 - M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3E));
+    fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+    Unit_Clear(unit, -1);
+    fn_80015718(gUnitLists + 0x30, unit);
 }
 
 void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
@@ -10756,6 +10740,7 @@ void fn_8004B984(void) {
  struct Pool {u8 pad[8]; struct Node **free; struct Node *head,*tail; s32 count;};
  struct Pool *pool;
  struct Node *node;
+ struct Node *link;
  u8 keep;
  if(lbl_803672CC) {
  node=0;
@@ -10770,8 +10755,10 @@ void fn_8004B984(void) {
  if(!keep) {
  pool=lbl_803672CC;
  if(node) {
- if(node->next) node->next->prev=node->prev;
- if(node->prev) node->prev->next=node->next;
+ link=node->next;
+ if(link) link->prev=node->prev;
+ link=node->prev;
+ if(link) link->next=node->next;
  if(node==pool->head) pool->head=node->next;
  if(node==pool->tail) pool->tail=node->prev;
  pool->free--;
@@ -13165,6 +13152,64 @@ s32 fn_800537E8(void) {
     extern u16 lbl_80285990[];
     s32 v = Process_Find(lbl_80285990);
     return v != 0;
+}
+
+void *fn_80053AE8(void *name, void *parent) {
+    extern u8 lbl_80285990[];
+    extern u32 lbl_80369080;
+    extern const f32 lbl_80369084;
+    extern const f32 lbl_80369088;
+    extern const f32 lbl_8036908C;
+    void *Process_CreateChild(void *, void *);
+    void *Heap_Alloc(s32);
+    void *Res_GetByName(void *);
+    void *nameSave;
+    void *init;
+    void *proc;
+    u32 color;
+    f32 zero;
+    nameSave = name;
+    proc = Process_CreateChild(lbl_80285990, parent);
+    *(void **)((u8 *)proc + 0x30) = Heap_Alloc(0x60);
+    init = *(void **)((u8 *)proc + 0x30);
+    zero = lbl_80369084;
+    *(f32 *)((u8 *)init + 0xC) = zero;
+    *(f32 *)((u8 *)init + 0x10) = zero;
+    *(f32 *)((u8 *)init + 0x14) = zero;
+    *(u16 *)((u8 *)init + 0) = 0;
+    *(s8 *)((u8 *)init + 3) = -1;
+    *(s8 *)((u8 *)init + 4) = -1;
+    *(u32 *)((u8 *)init + 0x30) = 0;
+    *(u32 *)((u8 *)init + 0x34) = 0;
+    *(u32 *)((u8 *)init + 0x3C) = 0;
+    *(u32 *)((u8 *)init + 0x40) = 0;
+    *(u32 *)((u8 *)init + 0x44) = 0;
+    *(u32 *)((u8 *)init + 8) = 0;
+    *(u32 *)((u8 *)init + 0x5C) = 0;
+    *(u32 *)((u8 *)init + 0x48) = 0;
+    color = lbl_80369080;
+    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
+    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
+    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
+    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
+    ((u8 *)init)[5] = 3;
+    *(u32 *)((u8 *)init + 0x4C) = 0;
+    *(u32 *)((u8 *)init + 0x50) = 0;
+    *(u32 *)((u8 *)init + 0x54) = 0;
+    *(u32 *)((u8 *)init + 0x58) = 0;
+    init = *(void **)((u8 *)proc + 0x30);
+    *(u32 *)((u8 *)init + 8) |= 0x08000000;
+    init = *(void **)((u8 *)proc + 0x30);
+    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
+        *(u32 *)((u8 *)init + 8) |= 0x20000000;
+    }
+    return proc;
 }
 
 void *Effect_Create(void *name, u32 priority) {
