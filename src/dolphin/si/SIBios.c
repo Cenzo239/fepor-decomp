@@ -191,7 +191,6 @@ typedef struct SIControl {
     u32 inputBytes;
     void *input;
     void *callback;
-    volatile u32 pad[2];
 } SIControl;
 extern SIControl lbl_8029EF68;
 
