@@ -3712,6 +3712,16 @@ s32 fn_80138AB8(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x38);
 }
 
+f32 fn_80138AC0(void *arg0) {
+#pragma cplusplus on
+ struct Node { u8 pad[0x30]; f32 scale; u8 pad34[4]; Node *parent; Node *getParent() { return parent; } };
+ Node *node = (Node *)arg0;
+ f32 scale = node->scale;
+ if (node->getParent() != NULL) scale *= fn_80138AC0(node->getParent());
+ return scale;
+#pragma cplusplus reset
+}
+
 void *fn_80138C3C(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *lbl_80291988[];
