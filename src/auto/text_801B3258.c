@@ -1532,51 +1532,44 @@ void fn_801B8334(void *arg0) {
 
 extern f32 lbl_8036B228;
 void fn_801B839C(void *arg0) {
-    s32 temp_r30;
-    s32 var_r26;
-    s32 var_r3;
-    u8 *var_r27;
-    u8 temp_r3;
-    void *temp_r28;
-
-    if (arg0 != NULL) {
-        temp_r28 = *(void**)((char*)arg0 + 0x30);
-        *(u32*)((char*)temp_r28 + 0x0) = 0;
-        *(u32*)((char*)temp_r28 + 0x4) = 0;
-        fn_8005C8B4(0);
-        if (*(u32*)((char*)temp_r28 + 0x90) != 0) {
-            Ui_PlaySeCue(0x64);
-        }
-        *(u32*)((char*)temp_r28 + 0x194) = 1;
-        strcpy((void*)((char*)temp_r28 + 0x94), (void*)((char*)temp_r28 + 0x10));
-        var_r27 = (u8*)((char*)temp_r28 + 0x10);
-        var_r26 = 0;
-loop_7:
-        temp_r3 = *var_r27;
-        if ((s8) temp_r3 != 0) {
-            if ((s8) temp_r3 == 0xA) {
-                memcpy((void*)((char*)temp_r28 + 0x94), (void*)((char*)temp_r28 + 0x10), var_r26);
-                *(u8*)((char*)temp_r28 + (var_r26 + 0x94)) = 0;
-                strcpy((void*)((char*)temp_r28 + 0x114), (void*)((char*)var_r27 + 1));
-                *(u32*)((char*)temp_r28 + 0x194) = 2;
-            }
-            var_r27 += 1;
-            var_r26 += 1;
-            goto loop_7;
-        }
-        temp_r30 = Text_MeasureWidth((void*)((char*)temp_r28 + 0x94), -1, lbl_8036B228);
-        if (*(u32*)((char*)temp_r28 + 0x194) == 2) {
-            var_r3 = Text_MeasureWidth((void*)((char*)temp_r28 + 0x114), -1, lbl_8036B228);
-        } else {
-            var_r3 = 0;
-        }
-        if (temp_r30 > var_r3) {
-            *(u32*)((char*)temp_r28 + 0xC) = temp_r30;
-        } else {
-            *(u32*)((char*)temp_r28 + 0xC) = var_r3;
-        }
-        Process_ClearFunc(arg0);
-    }
+#pragma push
+#pragma use_lmw_stmw on
+void fn_8005C8B4(void *);
+void Ui_PlaySeCue(void *,s32);
+s32 Text_MeasureWidth(void *,s32,f32);
+void Process_ClearFunc(void *);
+extern u8 lbl_8027C5A8[];
+extern f32 lbl_8036B228;
+s32 width, second;
+struct TextState { s32 a,b,c,width; char text[128]; void *sound; char first[128],second[128]; s32 lines; };
+struct TextState *self;
+u8 *p;
+s32 i;
+u8 c;
+if (arg0 != NULL) {
+self=*(struct TextState**)((u8*)arg0+0x30);
+self->a=0;
+self->b=0;
+fn_8005C8B4(lbl_8027C5A8+10);
+if (self->sound) Ui_PlaySeCue(self->sound,100);
+self->lines=1;
+strcpy(self->first,self->text);
+for(p=(u8*)self->text,i=0;(s8)(c=*p)!=0;++p,++i) {
+if ((s8)c==10) {
+memcpy(self->first,(u8*)self->text,i);
+self->first[i]=0;
+strcpy(self->second,(char*)p+1);
+self->lines=2;
+}
+}
+width=Text_MeasureWidth(self->first,-1,lbl_8036B228);
+if (self->lines==2) second=Text_MeasureWidth(self->second,-1,lbl_8036B228);
+else second=0;
+if(width>second) self->width=width;
+else self->width=second;
+Process_ClearFunc(arg0);
+}
+#pragma pop
 }
 
 #pragma opt_common_subs reset
@@ -1605,58 +1598,32 @@ void fn_801B84C0(void) {
 }
 
 s32 fn_801B8550(void *arg0) {
-    extern u16 gScriptObjSlots[];
-    
-    void **temp_r31_ptr;
-    void *temp_r31;
-    s32 temp_r0;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 var_r3;
-    u16 *var_r4;
-    
-    temp_r31_ptr = (void **)((char *)arg0 + 0x30);
-    temp_r31 = *temp_r31_ptr;
-    if (temp_r31 == NULL) {
-        return 0;
-    }
-    
-    temp_r0 = *(s32 *)((char *)temp_r31 + 0x18);
-    if ((temp_r0 & 0x400) != 0) {
-        return 1;
-    } else if ((temp_r0 & 0x800) != 0) {
-        return 1;
-    }
-    
-    temp_r3 = *(s32 *)((char *)temp_r31 + 0x44);
-    var_r4 = &gScriptObjSlots[temp_r3];
-    if (var_r4[0] == 0) {
-        return 0;
-    }
-    
-    var_r3 = *(s32 *)((char *)temp_r31 + 0x14);
-    if ((var_r3 & 0x80000000) != 0) {
-        return 1;
-    }
-    
-    temp_r3 = *(s32 *)((char *)temp_r31 + 0x1C);
-    if (temp_r3 == 0) {
-        return 0;
-    }
-    
-    if ((*(u8 *)((char *)arg0 + 0x10) & 0xE0) != 0) {
-        return 1;
-    }
-    
-    if ((*(u8 *)((char *)temp_r31 + 0x28) & 0x80) != 0) {
-        return 1;
-    }
-    
-    if ((*(u8 *)((char *)temp_r31 + 0x3D) & 0x80) != 0) {
-        return 1;
-    }
-    
-    return 0;
+void *Unit_FindByPerson(void *);
+u8 Unit_GetDistance(void *,void *);
+s32 fn_8001F85C(void *,s32,s32,s32,s32);
+extern u8 gBattleMap[];
+extern struct { void *personA,*personB; u8 flag; s8 value; } *lbl_80367214;
+struct Entry { void *personA,*personB; u8 flag; s8 value; };
+struct Entry *entry;
+u8 *unit=(u8*)arg0;
+u8 *other;
+u8 *mapFlag=gBattleMap+0x24EEA;
+s32 valid;
+for(entry=(struct Entry*)lbl_80367214;entry->personA;entry++) {
+if (entry->flag==2 && *(void**)(unit+0x188)==entry->personB) {
+other=(u8*)Unit_FindByPerson(entry->personA);
+if(unit==NULL || other==NULL) valid=0;
+else if((u8)Unit_GetDistance(unit,other)!=1) valid=0;
+else {
+*mapFlag=0;
+if((u8)fn_8001F85C(gBattleMap,unit[0x19E],unit[0x19F],other[0x19E],other[0x19F])==0) valid=0;
+else if(*(void**)(unit+0x190)!=*(void**)(other+0x190)) valid=0;
+else valid=1;
+}
+if((u8)valid) return 1;
+}
+}
+return 0;
 }
 
 s8 fn_801B8674(void *arg0) {
@@ -7842,11 +7809,56 @@ void fn_801C6DB8(u32 arg0)
     }
 }
 
-s32 fn_801C6E60(s32 arg0) {
-    if (arg0 == 0) {
-        return 0;
+void fn_801C6E60(u32 arg0)
+{
+    extern u8 LightFade_script[];
+    void *Process_Find(void *);
+    void fn_8005F788(u32, s32, s32);
+    s32 i;
+    u8 *list;
+    void *p;
+    u8 *ptr;
+    s32 n;
+
+    p = Process_Find(LightFade_script);
+    if (p == NULL) {
+        list = NULL;
+    } else {
+        list = *(u8 **)((u8 *)p + 0x30);
     }
-    return 0;
+    if (list != NULL && arg0 != 0) {
+        ptr = list;
+        n = 0;
+        for (i = 8; i != 0; i--) {
+            if (*(u32 *)(ptr + 0x290) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x294) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x298) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x29c) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x2a0) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x2a4) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x2a8) == arg0)
+                goto done;
+            if (*(u32 *)(ptr + 0x2ac) == arg0)
+                goto done;
+            ptr += 0x20;
+            n += 7;
+        }
+        for (i = 0; i < 0x40; i++) {
+            if (*(u32 *)(list + 0x290 + i * 4) == 0) {
+                *(u32 *)(list + 0x290 + i * 4) = arg0;
+                fn_8005F788(arg0, 1, 1);
+                break;
+            }
+        }
+    }
+done:
+    ;
 }
 
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
@@ -18258,20 +18270,61 @@ void* fn_801E2324(u16 arg0) {
     return NULL;
 }
 
-void fn_801E2458(void* unit)
-{
-    void** pUnit = (void**)unit;
-    int i;
+#pragma opt_strength_reduction off
+u8 *fn_801E2458(u8 **arg0) {
+    u32 minSize;
+    s32 off;
+    u8 *best;
+    s32 i;
+    s32 ctr;
+    u8 *slot;
+    u8 hdrOk;
+    u32 clamped;
 
-    for (i = 0; i < 96; i++)
-    {
-        if (*pUnit == 0) 
-            break;
+    minSize = (u32)-1;
+    off = 0x2000;
+    best = NULL;
+    i = 0;
 
-        pUnit = (void**)((u8*)pUnit + 0x10);
+    for (ctr = 3; ctr != 0; ctr--) {
+        slot = *arg0 + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+            hdrOk = 0;
+        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+            hdrOk = 0;
+        } else {
+            hdrOk = 1;
+        }
+        if (hdrOk == 0) {
+            clamped = save_slot_size(slot);
+            if (minSize > clamped) {
+                best = slot;
+                minSize = save_slot_size(slot);
+            }
+        }
+        off += 0x4000;
+        slot = *arg0 + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+            hdrOk = 0;
+        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+            hdrOk = 0;
+        } else {
+            hdrOk = 1;
+        }
+        if (hdrOk == 0) {
+            clamped = save_slot_size(slot);
+            if (minSize > clamped) {
+                best = slot;
+                minSize = save_slot_size(slot);
+            }
+        }
+        off += 0x4000;
+        i += 1;
     }
-}
 
+    return best;
+}
+#pragma opt_strength_reduction reset
 s32 Save_GetLargeSlot(s32 *arg0, s32 arg1) {
     return ((arg1 * 0x6000) + 0x20000 + *arg0) - 0x6000;
 }
