@@ -7653,7 +7653,6 @@ void fn_8013FBDC(s16 *dst, s16 *src)
   a = a + c;
   dst[1] = a;
 }
-#pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
