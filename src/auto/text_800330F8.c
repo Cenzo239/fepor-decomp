@@ -10515,23 +10515,41 @@ void fn_80048A90(void *arg0)
     lbl_80367288 = 1;
 }
 
-void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {
-    u8 *temp_r4;
-    s32 *temp_r5;
-    
-    if ((u32)(arg2 - 8) <= (u32)0x7) {
-        temp_r5 = (s32 *)arg0;
-        arg2 = arg2 << 1;
-        arg2 = (arg1 & 0xFFFF) | (arg2 << 0x10);
-        *temp_r5 = arg2;
-        *(temp_r5 + 4) = arg2 >> 0x10;
-    } else {
-        temp_r5 = (s32 *)arg0;
-        temp_r4 = (u8 *)arg0 + 8;
-        *temp_r5 = arg1;
-        *(u32 *)temp_r4 = arg2;
-        *((s32 *)temp_r4 + 1) = arg2 >> 0x10;
-    }
+void fn_80048C5C(s32 stream) {
+void Stream_WriteU8(s32,u8); void Stream_WriteU16(s32,u16);
+void *Camera_GetActive(void);
+extern u8 lbl_80367288,gMapBlendMode,gBattleSkyIndex,lbl_8036728C,lbl_8036728D,lbl_8036728E,lbl_80367290,lbl_80367294,lbl_80367295,lbl_80367298,lbl_8036729C;
+extern f32 lbl_80368F30;
+u8 mode; s32 x; s32 y;
+u8 *camera;
+s32 i;
+Stream_WriteU8(stream,lbl_80367288);
+Stream_WriteU8(stream,gMapBlendMode);
+Stream_WriteU8(stream,gBattleSkyIndex);
+Stream_WriteU8(stream,lbl_8036728C);
+Stream_WriteU8(stream,lbl_8036728D);
+Stream_WriteU8(stream,lbl_8036728E);
+Stream_WriteU8(stream,lbl_80367290);
+Stream_WriteU8(stream,(&lbl_80367290)[1]);
+Stream_WriteU8(stream,(&lbl_80367290)[2]);
+Stream_WriteU8(stream,lbl_80367294);
+Stream_WriteU8(stream,lbl_80367295);
+Stream_WriteU8(stream,lbl_80367298);
+Stream_WriteU8(stream,(&lbl_80367298)[1]);
+Stream_WriteU8(stream,(&lbl_80367298)[2]);
+Stream_WriteU8(stream,lbl_8036729C);
+Stream_WriteU8(stream,(&lbl_8036729C)[1]);
+Stream_WriteU8(stream,(&lbl_8036729C)[2]);
+mode=0; x=0; y=0;
+camera=Camera_GetActive();
+if(camera) {
+x=(s32)(lbl_80368F30 * *(f32 *)(camera+4));
+y=(s32)(lbl_80368F30 * *(f32 *)(camera+8));
+mode=(u8)*(u32 *)(camera+0x20);
+}
+Stream_WriteU8(stream,mode);
+Stream_WriteU16(stream,x); Stream_WriteU16(stream,y);
+for(i=22;i<32;i++) Stream_WriteU8(stream,0);
 }
 
 void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
