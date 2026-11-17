@@ -3778,9 +3778,9 @@ s32 Card_SetFileAttr(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern u8 lbl_80366FF2;
     u8 entry[0x40];
     s32 result;
-    u32 e;
-    u32 bit20;
+    u8 e;
     u32 bit40;
+    u32 bit20;
     u32 a20;
 
     if (((u8)arg2 & ~lbl_80366FF2) != 0) {
@@ -3798,6 +3798,8 @@ s32 Card_SetFileAttr(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
     }
     bit40 = e & 0x40;
+    if ((arg3 && arg3) && arg3) {
+    }
     if (bit40 != 0) {
         if (((u8)arg2 & 0x40) == 0) {
         err:
@@ -3830,5 +3832,4 @@ extern s32 EXIDma(s32, s32, s32, s32, void *);
 extern void EXIDeselect(s32);
 extern void EXIUnlock(s32);
 extern u16 __CARDBlock[];
-extern void *fn_80219108;
 extern u16 __CARDBlock[];
