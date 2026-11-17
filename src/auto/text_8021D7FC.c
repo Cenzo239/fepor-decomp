@@ -1260,6 +1260,41 @@ s32 fn_8021F4DC(void) {
     return lbl_80368788;
 }
 
+void GXSetVtxDesc(u32 attr, s32 type) {
+ extern u16 *const __GXData;
+ switch (attr) {
+case 0: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,0,31,31); break;
+case 1: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,1,30,30); break;
+case 2: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,2,29,29); break;
+case 3: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,3,28,28); break;
+case 4: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,4,27,27); break;
+case 5: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,5,26,26); break;
+case 6: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,6,25,25); break;
+case 7: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,7,24,24); break;
+case 8: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,8,23,23); break;
+case 9: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,9,21,22); break;
+case 10:
+ if(type) { M2C_FIELD(__GXData,u8 *,0x4d4)=1; M2C_FIELD(__GXData,u8 *,0x4d5)=0; M2C_FIELD(__GXData,u32 *,0x4d0)=type; } else M2C_FIELD(__GXData,u8 *,0x4d4)=0;
+ break;
+case 25:
+ if(type) { M2C_FIELD(__GXData,u8 *,0x4d5)=1; M2C_FIELD(__GXData,u8 *,0x4d4)=0; M2C_FIELD(__GXData,u32 *,0x4d0)=type; } else M2C_FIELD(__GXData,u8 *,0x4d5)=0;
+ break;
+case 11: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,13,17,18); break;
+case 12: M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),type,15,15,16); break;
+case 13: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,0,30,31); break;
+case 14: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,2,28,29); break;
+case 15: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,4,26,27); break;
+case 16: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,6,24,25); break;
+case 17: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,8,22,23); break;
+case 18: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,10,20,21); break;
+case 19: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,12,18,19); break;
+case 20: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),type,14,16,17); break;
+}
+ if (M2C_FIELD(__GXData,u8 *,0x4d4) || M2C_FIELD(__GXData,u8 *,0x4d5)) M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),M2C_FIELD(__GXData,u32 *,0x4d0),11,19,20);
+ else M2C_FIELD(__GXData,u32 *,0x14)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x14),0,11,19,20);
+ M2C_FIELD(__GXData,u32 *,0x5ac)|=8;
+}
+
 void GXSetVtxDescv(s32 arg0, s32 arg1) {
     extern u16 *const __GXData;
     
