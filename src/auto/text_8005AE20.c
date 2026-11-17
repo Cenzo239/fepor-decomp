@@ -273,10 +273,12 @@ s32 fn_8005B4D8(s32 arg0) {
     return 0;
 }
 
-static inline u32 HashString(u8 *s) {
+static inline u32 HashString(void *arg0) {
+    u8 *s;
     u32 hash;
     u8 b;
     hash = 0;
+    s = *(u8 **)arg0;
     while ((b = *s, (s8)b != 0)) {
         hash += b;
         s++;
@@ -316,6 +318,7 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 Str_Cmp(void *, void *);
     extern u8 lbl_8026B308[];
     s32 sp[3];
+    u32 h;
     u32 var_r0;
     s32 off;
     u8 col;
@@ -325,7 +328,8 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 j;
     u32 result;
 
-    var_r0 = HashColFromString(*(u8 **)arg0);
+    h = HashString(arg0);
+    var_r0 = ColFromHash(h);
     col = (u8)var_r0;
     idx = -1;
     sp[2] = Hash_Lookup(lbl_8026B308 + 0x16);
@@ -2659,8 +2663,7 @@ void GActor_LoadGs(void *arg0, void *arg1) {
 void fn_8005F5B4(void *arg0, s32 arg1) {
     void *fn_80063954(s32, s32);
     void fn_80063934(void *);
-    void *fn_80065634(void *, s32);
-    extern f64 lbl_803691D0;
+    void *fn_80065634(void ***, s32);
 #pragma cplusplus on
     struct Lookup {
         static u8 *find(u8 *p) {
@@ -2672,16 +2675,18 @@ void fn_8005F5B4(void *arg0, s32 arg1) {
             return 0;
         }
     };
-    u8 *self = (u8 *)arg0;
-    void *old = *(void **)(self + 0x44);
+    void *old;
+    u8 *self;
     void *neu;
     u8 *anim;
     u8 *entry;
+    s32 i;
     u8 *src;
     u8 *dst;
-    s32 i;
     f32 frame;
 
+    old = *(void **)((u8 *)arg0 + 0x44);
+    self = (u8 *)arg0;
     neu = fn_80063954(arg1, 0);
     if (neu != *(void **)(self + 0x44)) {
         *(void **)(self + 0x44) = neu;
@@ -2693,17 +2698,16 @@ void fn_8005F5B4(void *arg0, s32 arg1) {
                 frame = (f32)*(s32 *)(anim + 0x18);
                 *(u32 *)self |= 0x10;
             }
-            if (frame <= (f32)*(s32 *)(anim + 0x14)) {
+            if (frame <= (f32)*(s32 *)(anim + 0x14))
                 frame = (f32)*(s32 *)(anim + 0x14);
-            }
             *(u16 *)(self + 0x7C) = 0xFFFF;
             *(u16 *)(self + 0x7E) = 0xFFFF;
             *(u16 *)(self + 0x80) = 0xFFFF;
             *(u16 *)(self + 0x82) = 0xFFFF;
-            entry = (u8 *)fn_80065634(anim, (s32)frame);
+            entry = (u8 *)fn_80065634((void ***)anim, (s32)frame);
             if (entry) {
-                src = entry;
                 dst = self;
+                src = entry;
                 for (i = 0; i < *(u16 *)(entry + 2); i++) {
                     *(u16 *)(dst + 0x7C) = *(u16 *)(src + 4);
                     src += 2;
@@ -2713,7 +2717,7 @@ void fn_8005F5B4(void *arg0, s32 arg1) {
             *(f32 *)(self + 0x58) = frame;
         }
     }
-    if (old != NULL) {
+    if (old) {
         fn_80063934(old);
     }
 #pragma cplusplus reset
