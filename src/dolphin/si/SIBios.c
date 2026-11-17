@@ -1,6 +1,16 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
+typedef union SIComCSR {
+    u32 value;
+    struct {
+        u8 tcint:1, tcintmsk:1, rest0:6;
+        u8 rest1:1, outlen:7;
+        u8 rest2:1, inlen:7;
+        u8 rest3:5, channel:2, start:1;
+    } bits;
+} SIComCSR;
+
 extern u16 lbl_80366F28;
 extern char lbl_80282AE8[];
 extern char lbl_80282B20[];
@@ -913,7 +923,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     extern u32 lbl_80368820;
     extern SIPacket Packet_8033E248[4];
     s64 pad;
-    void *clear;
+    s32 clear;
     s32 i;
     u32 typeVal;
     void **cbs;
@@ -952,12 +962,12 @@ void GetTypeCallback(s32 chan, u32 type) {
         typeVal = *typep;
         cbs = (void **)(packet + (chan << 4));
         i = 0;
-        clear = (void *)i;
+        clear = (s32)((u8 *)0 + i);
         cbs = (void **)((u8 *)cbs + 0x160);
         do {
             cb = (void (*)(s32, u32))*cbs;
             if (cb != 0) {
-                *cbs = clear;
+                *cbs = (void *)clear;
                 (*cb)(chan, typeVal);
             }
             i += 1;
@@ -1000,12 +1010,12 @@ void GetTypeCallback(s32 chan, u32 type) {
     typeVal = *typep;
     cbs = (void **)(packet + (chan << 4));
     i = 0;
-    clear = (void *)i;
+    clear = (s32)((u8 *)0 + i);
     cbs = (void **)((u8 *)cbs + 0x160);
     do {
         cb = (void (*)(s32, u32))*cbs;
         if (cb != 0) {
-            *cbs = clear;
+            *cbs = (void *)clear;
             (*cb)(chan, typeVal);
         }
         i += 1;
