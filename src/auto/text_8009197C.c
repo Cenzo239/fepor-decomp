@@ -31,6 +31,7 @@ extern f32 lbl_8036A130;
 extern f32 gTextScale2;
 
 extern f32 lbl_80369768;
+extern f64 lbl_80369770;
 extern u16 lbl_80289A60[];
 
 extern u8 lbl_80289B00[16];
@@ -71,6 +72,7 @@ void fn_800919D8(void) {
     }
 }
 
+#pragma optimization_level 3
 void fn_80091A1C(void *arg0) {
     extern s32 gProcessQueueCount;
     extern u8 *gProcessQueue[];
@@ -81,6 +83,7 @@ void fn_80091A1C(void *arg0) {
     char *strcpy(char *, const char *);
     u8 *p;
     s32 index;
+    s32 val;
     f32 a, b, c;
     if (gProcessQueueCount > 0 && Str_Cmp(gProcessQueue[gProcessQueueCount - 1] + 0x58, arg0) == 0) return;
     p = Process_Create(E_CmdPlate_script, 4);
@@ -91,17 +94,18 @@ void fn_80091A1C(void *arg0) {
     a = gZeroF;
     b = lbl_803697A8;
     c = lbl_803697AC;
-    *(f32 *)(p + 0x40) = index * 31 + 24;
+    val = index * 31 + 24;
+    *(f32 *)(p + 0x40) = val;
     *(f32 *)(p + 0x44) = a;
     *(f32 *)(p + 0x48) = b;
-    *(f32 *)(p + 0x4C) = index * 31 + 24;
+    *(f32 *)(p + 0x4C) = val;
     *(f32 *)(p + 0x50) = c;
     p[0x54] = 0;
     p[0x55] = 8;
     p[0x56] = 6;
     p[0x6F] = index;
 }
-
+#pragma optimization_level reset
 void fn_80091B38(void *arg0)
 {
   u8 *new_var;
