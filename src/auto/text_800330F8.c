@@ -4348,16 +4348,16 @@ s8 Unit_GetStr(void *arg0) {
 }
 
 s8 Unit_GetHp(void *arg0) {
-    void *p18c;
+    u8 *p18c;
     s8 lim;
-    u8 t;
     s8 var;
+    u8 t;
     u8 base;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
+    p18c = *(u8 **)((u8 *)arg0 + 0x18C);
     t = *(u8 *)((u8 *)arg0 + 0x1AB);
-    base = *(u8 *)((u8 *)p18c + 0x44);
-    lim = *(u8 *)((u8 *)p18c + 0x4C);
+    base = p18c[0x44];
+    lim = p18c[0x4C];
     var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + base) + t;
     if (var > lim) {
         var = lim;
@@ -11918,41 +11918,51 @@ void fn_8004B984(void) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw reset
-s32 fn_8004BAC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 temp_r3;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 temp_r3_2;
-
-    if (arg0 < 0x0) {
-        temp_r3 = arg0 + 0x1F;
-    } else {
-        temp_r3 = arg0;
-    }
-    temp_r3 = temp_r3 >> 5;
-    
-    if (arg1 < 0x0) {
-        temp_r6 = arg1 + 0x1F;
-    } else {
-        temp_r6 = arg1;
-    }
-    temp_r6 = temp_r6 >> 5;
-    
-    if (arg2 < 0x0) {
-        temp_r5 = arg2 + 0x1F;
-    } else {
-        temp_r5 = arg2;
-    }
-    temp_r5 = temp_r5 >> 5;
-    
-    if (arg3 < 0x0) {
-        temp_r3_2 = arg3 + 0x1F;
-    } else {
-        temp_r3_2 = arg3;
-    }
-    temp_r3_2 = temp_r3_2 >> 5;
-    
-    return ((temp_r6 * 0x7D8600) + (temp_r3 * 0x32E100)) + ((temp_r5 * 0x7D8600) + (temp_r3_2 * 0x32E100));
+void fn_8004BAC4(void) {
+void *Camera_GetViewMtx(void);
+void PSMTXConcat(void *,void *,void *);
+void PSMTXTrans(void *,f32,f32,f32);
+void GXClearVtxDesc(void);
+void GXSetVtxDesc(s32,s32);
+void GXSetVtxAttrFmt(s32,s32,s32,s32,s32);
+void GXSetCullMode(s32);
+void GXSetBlendMode(s32,s32,s32,s32,s32,s32,s32);
+void GXSetNumTevStages(s32);
+void GXSetTevOrder(s32,s32,s32,s32);
+void GXSetNumChans(s32);
+void GXLoadPosMtxImm(void *,s32);
+void GXSetCurrentMtx(s32);
+void GXSetZMode(s32,s32,s32);
+void fn_8022100C(s32);
+void fn_802245D8(s32,s32,s32,s32);
+void fn_80223E5C(s32,s32,s32,s32,s32);
+void GXSetNumTexGens(s32,s32);
+extern void *lbl_803672CC;
+extern f32 lbl_80368FCC, gUnitShadowZ;
+u8 out[0x30];
+u8 trans[0x30];
+u8 *node;
+if (M2C_FIELD(lbl_803672CC,s32 *,0x14)) {
+fn_8022100C(2);
+GXClearVtxDesc();
+GXSetVtxDesc(9,1); GXSetVtxDesc(11,1);
+GXSetVtxAttrFmt(0,9,1,4,0); GXSetVtxAttrFmt(0,11,1,5,0);
+GXSetCullMode(1); GXSetBlendMode(4,0,1,1,0,0,2);
+GXSetNumTevStages(1); GXSetTevOrder(0,0,0,4); GXSetNumChans(1);
+PSMTXTrans(trans,lbl_80368FCC,lbl_80368FCC,gUnitShadowZ);
+PSMTXConcat(Camera_GetViewMtx(),trans,out);
+GXLoadPosMtxImm(out,0); GXSetCurrentMtx(0);
+GXSetZMode(1,3,0); fn_802245D8(1,4,5,7); fn_80223E5C(7,0,1,7,0); GXSetNumTexGens(0,0);
+node=0;
+goto next;
+do {
+fn_8004B588(node+8);
+next: {
+void *pool=lbl_803672CC;
+if (node==0) node=M2C_FIELD(pool,u8 **,0xC);
+else node=*(u8 **)node;
+} } while (node);
+}
 }
 
 void fn_8004BC48(void *arg0, s32 arg1) {
@@ -13421,6 +13431,117 @@ void fn_800504FC(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x288) = fn_8004B1A0(2);
         M2C_FIELD(arg0, s32 *, 0x28C) = fn_8004B1A0(3);
     }
+}
+
+void fn_800506E0(void *arg0, s32 arg1)
+{
+    void *Unit_GetActiveItemPtr(void *);
+    s32 fn_8004ABD4(void *, s32);
+    u8 Status_Test(void *, s32);
+    void *Res_GetByName(void *);
+    void fn_800056A0(s32);
+    s32 fn_8004B1A0(s32);
+    s32 fn_8004B158(void);
+    u16 FileCache_Probe(void *);
+    void fn_8004AFD4(s32, s32);
+    s32 sprintf(char *, const char *, ...);
+    void DebugPrint(const char *, ...);
+
+    extern u8 lbl_8026AB18[];
+
+    u8 *unit;
+    u8 *classData;
+    u8 *res;
+    u8 *name;
+    s32 item;
+    s32 index;
+    char buffer[0x20];
+
+    unit = (u8 *)arg0;
+
+    item = (s8)unit[0x16C];
+
+    if (item < 0) {
+        item = fn_8004ABD4(
+            Unit_GetActiveItemPtr(unit), 0
+        );
+    }
+
+    classData = *(u8 **)(unit + 0x18C);
+
+    if (unit[3] & 4) {
+        res = *(u8 **)(classData + 0xC);
+
+        if (res != 0) {
+            classData = (u8 *)Res_GetByName(res);
+        } else {
+            classData = 0;
+        }
+    }
+
+    index = 0;
+
+    if (Status_Test(unit + 0x1BC, 8) != 0) {
+        if (Status_Test(classData + 0x1C, 9) == 0) {
+            index = 1;
+        }
+    } else {
+        if (Status_Test(classData + 0x1C, 2) != 0) {
+            index = 1;
+        }
+    }
+
+    res = *(u8 **)(
+        *(u8 **)(unit + 0x188) + 0x5C + index * 4
+    );
+
+    name = res;
+
+    if (name == 0) {
+        name = *(u8 **)(classData + 0x18);
+
+        if (name == 0) {
+            fn_800056A0(0);
+            name = lbl_8026AB18 + 0x52;
+        }
+    }
+
+    if (name != 0) {
+        if ((s8)name[0] == 0) {
+            Res_GetByName(lbl_8026AB18 + 0x53);
+        } else {
+            sprintf(
+                buffer,
+                (char *)lbl_8026AB18 + 0x5F,
+                name,
+                fn_8004B1A0(item)
+            );
+
+            res = (u8 *)Res_GetByName(buffer);
+
+            if (res == 0) {
+                fn_800056A0(0);
+                Res_GetByName(lbl_8026AB18 + 0x53);
+            } else {
+                sprintf(
+                    buffer,
+                    (char *)lbl_8026AB18 + 0x64,
+                    fn_8004B158()
+                );
+
+                if (FileCache_Probe(buffer) == 0x8000) {
+                    DebugPrint(
+                        (char *)lbl_8026AB18 + 0x67,
+                        buffer
+                    );
+
+                    Res_GetByName(lbl_8026AB18 + 0x53);
+                }
+            }
+        }
+    }
+
+    fn_8004AFD4(item, arg1);
 }
 
 void fn_800508C4(void* arg0, s32 arg1, s32 arg2) {
