@@ -12470,8 +12470,8 @@ void fn_800E4A78(void *arg0, void *arg1) {
     PSMTXIdentity(sp8);
     *(f32 *)(sp8 + 0x4) = -f31 / f30;
     *(f32 *)(sp8 + 0x14) = lbl_80369F3C;
-    *(f32 *)(sp8 + 0x1c) = lbl_80369F40;
     *(f32 *)(sp8 + 0x24) = -f29 / f30;
+    *(f32 *)(sp8 + 0x1c) = lbl_80369F40;
     PSMTXConcat(sp8, (u8 *)arg1 + 0x10, sp38);
     PSMTXCopy(sp38, (u8 *)arg0 + 0x10);
 }
@@ -13971,10 +13971,11 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     void String_Destroy(void *, s32);
     void fn_800E9044(void *);
     void fn_800E9050(void *);
-    s32 count;
+    register s32 count;
     u32 key;
     void *item;
     s32 i;
+    register u8 match;
     u8 str[0xC];
     u8 list[0x14];
 
@@ -13982,7 +13983,6 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     key = *(u32 *)arg1;
     for (i = 0; i < count; i++) {
-        u8 match;
         item = (void *)ObjList_Get(list, i);
         fn_800DF6DC(str, item);
         match = 0;
@@ -25257,6 +25257,7 @@ for (; var_r17 <= var_r19; var_r17++) {
 }
 
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
     void fn_800FE770(s32, s32, s32, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
@@ -25315,6 +25316,7 @@ s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
     }
     return 0;
 }
+#pragma optimization_level reset
 s32 Ai_FindLowestCostUnitTile(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
