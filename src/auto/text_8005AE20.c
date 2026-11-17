@@ -3130,6 +3130,81 @@ void GActor_Finalize(void *arg0) {
     }
 }
 
+void fn_800616A0(void *arg0) {
+    void Game_Assert(void *, s32, void *);
+    void fn_800C4588(void *);
+    void fn_80065E68(void *);
+    void fn_8006CC6C(void *);
+    void fn_8006D8E8(void *);
+    void fn_80063934(void *);
+    void fn_80150F38(void *);
+    extern char lbl_8026B590[];
+    void *parent;
+    void *child;
+
+    if (arg0 == NULL) {
+        Game_Assert(lbl_8026B590 + 0x28, 0x56, lbl_8026B590 + 0xAB);
+    }
+    parent = *(void **)((u8 *)arg0 + 4);
+    if (parent != NULL) {
+        if (*(void **)((u8 *)parent + 0x74) == arg0) {
+            *(void **)((u8 *)parent + 0x74) = NULL;
+        }
+        if (*(void **)((u8 *)parent + 0x8C) == arg0) {
+            *(void **)((u8 *)parent + 0x8C) = NULL;
+        }
+    }
+    child = *(void **)((u8 *)arg0 + 0x74);
+    if (child != NULL) {
+        fn_800616A0(child);
+        *(void **)((u8 *)arg0 + 0x74) = NULL;
+    }
+    child = *(void **)((u8 *)arg0 + 0x8C);
+    if (child != NULL) {
+        fn_800616A0(child);
+        *(void **)((u8 *)arg0 + 0x8C) = NULL;
+    }
+    fn_800C4588(*(void **)((u8 *)arg0 + 0x64));
+    *(void **)((u8 *)arg0 + 0x64) = NULL;
+    *(void **)((u8 *)arg0 + 0x64) = NULL;
+    fn_800C4588(*(void **)((u8 *)arg0 + 0x60));
+    *(void **)((u8 *)arg0 + 0x60) = NULL;
+    *(void **)((u8 *)arg0 + 0x60) = NULL;
+    fn_800C4588(*(void **)((u8 *)arg0 + 0x68));
+    *(void **)((u8 *)arg0 + 0x68) = NULL;
+    *(void **)((u8 *)arg0 + 0x68) = NULL;
+    fn_800C4588(*(void **)((u8 *)arg0 + 0x6C));
+    *(void **)((u8 *)arg0 + 0x6C) = NULL;
+    *(void **)((u8 *)arg0 + 0x6C) = NULL;
+    if (*(void **)((u8 *)arg0 + 0x40) != NULL) {
+        fn_80065E68(*(void **)((u8 *)arg0 + 0x40));
+    }
+    if (*(void **)((u8 *)arg0 + 0x48) != NULL) {
+        fn_8006CC6C(*(void **)((u8 *)arg0 + 0x48));
+    }
+    if (*(void **)((u8 *)arg0 + 0x4C) != NULL) {
+        fn_8006D8E8(*(void **)((u8 *)arg0 + 0x4C));
+    }
+    if (*(void **)((u8 *)arg0 + 0x44) != NULL) {
+        fn_80063934(*(void **)((u8 *)arg0 + 0x44));
+    }
+    fn_80150F38(arg0);
+    *(void **)((u8 *)arg0 + 0x74) = NULL;
+    *(void **)((u8 *)arg0 + 0x8C) = NULL;
+    *(void **)((u8 *)arg0 + 0x64) = NULL;
+    *(void **)((u8 *)arg0 + 0x60) = NULL;
+    *(void **)((u8 *)arg0 + 0x68) = NULL;
+    *(void **)((u8 *)arg0 + 0x6C) = NULL;
+    *(void **)((u8 *)arg0 + 0x40) = NULL;
+    *(void **)((u8 *)arg0 + 0x48) = NULL;
+    *(void **)((u8 *)arg0 + 0x4C) = NULL;
+    *(void **)((u8 *)arg0 + 0x44) = NULL;
+    *(void **)((u8 *)arg0 + 0x54) = NULL;
+    if (*(u32 *)arg0 & 4) {
+        fn_800C4588(arg0);
+    }
+}
+
 s32 fn_80061824(s32 arg0) {
     extern char lbl_8026B590[];
     if (arg0 == 0) {
