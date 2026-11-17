@@ -6268,17 +6268,16 @@ void fn_800D75C4(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x420) = 1;
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
     s32 fn_800E4454(s32, M2C_UNK *);
-    M2C_UNK String_Copy(M2C_UNK *);
-    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK sp8;
+    s32 temp_r31;
 
-    String_Copy(&sp8);
-    arg0 = (void *)fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
-    String_Destroy(&sp8, -1);
-    return (s32)arg0;
+    fn_800C9B6C(&sp8);
+    temp_r31 = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+    fn_800C9A60(&sp8, -1);
+    return temp_r31;
 }
 #pragma optimization_level reset
 s32 fn_800D77B0(void) {
@@ -8925,12 +8924,16 @@ void fn_800DE9FC(void **arg0)
         }
         *arg0 = cur;
     } else {
-        *arg0 = cur;
+        goto ascent;
+again:
+        *arg0 = parent;
+ascent:
         node = (void **)*arg0;
         parent = (void **)((u32)node[2] & ~1);
-        if (node == (void **)*parent) {
-            *arg0 = parent;
+        if (node != (void **)*parent) {
+            goto again;
         }
+        *arg0 = parent;
     }
 }
 #pragma peephole on
