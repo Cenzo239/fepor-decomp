@@ -123,6 +123,136 @@ void fn_80011A5C(void *arg0)
     *(u32 **)(context + 0x18) = stack + 1;
 }
 
+void fn_80011D20(void) {
+    extern void *lbl_80367180;
+    extern s32 lbl_803671A4;
+    extern s32 lbl_80367198;
+
+    u32 Res_GetByName(void *);
+    void fn_80011A5C(void *);
+    void fn_800142B0(s32);
+
+    u8 *ctx;
+    u8 *script;
+    u8 *inner;
+    u8 *code;
+    u8 *resource;
+    u32 *stack;
+    u32 *base;
+    s32 index;
+    s32 count;
+    s32 i;
+    s32 value;
+    s32 offset;
+    u32 result;
+    u32 zero;
+
+    ctx = (u8 *)lbl_80367180;
+
+    code = *(u8 **)(ctx + 0xC);
+    *(u8 **)(ctx + 0xC) = code + 1;
+    index = (s8)*code;
+    index <<= 8;
+
+    ctx = (u8 *)lbl_80367180;
+    code = *(u8 **)(ctx + 0xC);
+    *(u8 **)(ctx + 0xC) = code + 1;
+    index += *code;
+
+    ctx = (u8 *)lbl_80367180;
+    inner = *(u8 **)(ctx + 8);
+    resource = *(u8 **)(inner + 8);
+    resource = *(u8 **)(resource + 0x24);
+
+    script = (u8 *)Res_GetByName(resource + index);
+
+    ctx = (u8 *)lbl_80367180;
+    code = *(u8 **)(ctx + 0xC);
+    *(u8 **)(ctx + 0xC) = code + 1;
+
+    count = (s8)*code;
+
+    if (count == 0) {
+        ctx = (u8 *)lbl_80367180;
+
+        stack = *(u32 **)(ctx + 0x18);
+        stack -= count;
+        *(u32 **)(ctx + 0x18) = stack;
+
+        zero = 0;
+        stack = *(u32 **)(ctx + 0x18);
+        *(u32 **)(ctx + 0x18) = stack + 1;
+        *stack = zero;
+
+        fn_800142B0(0);
+        return;
+    }
+
+    inner = *(u8 **)(script + 8);
+
+    if (inner == NULL) {
+        fn_80011A5C(script);
+        return;
+    }
+
+    ctx = (u8 *)lbl_80367180;
+
+    if (ctx == NULL) {
+        ctx = (u8 *)lbl_803671A4;
+    }
+
+    count = (s8)script[0xD];
+    offset = *(s16 *)(script + 0x12);
+
+    stack = *(u32 **)(ctx + 0x18);
+    base = stack - count;
+
+    *(u32 **)(ctx + 0x18) = base + offset;
+
+    index = *(u16 *)(inner + 0x20);
+    resource = (u8 *)lbl_80367198 + (index << 2);
+
+    i = count;
+    stack = base + i;
+    zero = 0;
+
+    while (i < *(s16 *)(script + 0x12)) {
+        *stack = zero;
+        stack++;
+        i++;
+    }
+
+    lbl_80367180 = ctx;
+
+    stack = *(u32 **)(ctx + 0x18);
+    value = *(u32 *)(ctx + 0xC);
+    *(u32 **)(ctx + 0x18) = stack + 1;
+    *stack = value;
+
+    ctx = (u8 *)lbl_80367180;
+    value = *(u32 *)(ctx + 8);
+    stack = *(u32 **)(ctx + 0x18);
+    *(u32 **)(ctx + 0x18) = stack + 1;
+    *stack = value;
+
+    ctx = (u8 *)lbl_80367180;
+    value = *(u32 *)(ctx + 0x10);
+    stack = *(u32 **)(ctx + 0x18);
+    *(u32 **)(ctx + 0x18) = stack + 1;
+    *stack = value;
+
+    ctx = (u8 *)lbl_80367180;
+    value = *(u32 *)(ctx + 0x14);
+    stack = *(u32 **)(ctx + 0x18);
+    *(u32 **)(ctx + 0x18) = stack + 1;
+    *stack = value;
+
+    *(u32 *)(ctx + 0xC) = *(u32 *)(script + 4);
+    *(void **)(ctx + 8) = script;
+    *(void **)(ctx + 0x10) = resource;
+    *(void **)(ctx + 0x14) = base;
+}
+
 void fn_80011EDC(void *arg0) {
     void fn_800142B0(s32);
     extern void *lbl_80367180;
@@ -143,34 +273,44 @@ void fn_80011EDC(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 #pragma scheduling off
 void fn_80013778(void *arg0, u8 *arg1) {
     extern void *lbl_803671A4;
     extern void *lbl_80367198;
     extern void *lbl_80367180;
 
-    s32 base;
-    s32 i;
+    void *table;
+    void *ctx;
+    u8 *inner;
     s32 *p;
     s32 *sp;
     s32 val;
-    void *table;
-    u8 *inner;
+    s32 base;
+    s32 unk18;
+    s32 i;
     s32 zero;
-    void *ctx;
+    s16 lim;
+    s8 d;
+    u8 b;
 
-    if (arg0 == NULL) {
+    if (arg0 != 0) {
+    } else {
         arg0 = lbl_803671A4;
     }
 
+    b = arg1[0xd];
     zero = 0;
     inner = *(u8 **)(arg1 + 8);
-    base = *(s32 *)((u8 *)arg0 + 0x18) - ((s8)arg1[0xd] * 4);
-    *(s32 *)((u8 *)arg0 + 0x18) = base + (*(s16 *)(arg1 + 0x12) * 4);
-    table = (u8 *)lbl_80367198 + (*(u16 *)(inner + 0x20) * 4);
+    d = b;
+    lim = *(s16 *)(arg1 + 0x12);
+    unk18 = *(s32 *)((u8 *)arg0 + 0x18);
+    base = unk18 - (d << 2);
+    table = (void *)((u8 *)lbl_80367198 + (*(u16 *)(inner + 0x20) << 2));
+    *(s32 *)((u8 *)arg0 + 0x18) = base + (lim << 2);
 
     i = (s8)arg1[0xd];
-    p = (s32 *)(base + (i * 4));
+    p = (s32 *)(base + (i << 2));
     while (i < *(s16 *)(arg1 + 0x12)) {
         *p = zero;
         p += 1;
@@ -208,6 +348,7 @@ void fn_80013778(void *arg0, u8 *arg1) {
     *(s32 *)((u8 *)arg0 + 0x14) = base;
 }
 #pragma scheduling reset
+#pragma global_optimizer on
 void fn_80013864(void) {
     extern void *lbl_803671A4;
     M2C_FIELD(lbl_803671A4, s8 *, 0x1C) = 1;
@@ -845,18 +986,14 @@ s32 fn_80014398(void *arg0) {
 s32 fn_80014400(void *arg0) {
     u32 Res_GetByName(s32);
     void Process_Goto(void *, s32);
-    u32 word0;
-    void *next;
     void *ptr;
-    s32 word1;
     s16 hi;
+    s32 word1;
 
     ptr = *(void **)((u8 *)arg0 + 4);
-    word0 = *(u32 *)ptr;
-    next = (u8 *)ptr + 8;
+    hi = (s16)(*(u32 *)ptr >> 16);
     word1 = *(s32 *)((u8 *)ptr + 4);
-    *(void **)((u8 *)arg0 + 4) = next;
-    hi = (s16)(word0 >> 16);
+    *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
     if (Res_GetByName(word1) == 0U) {
         Process_Goto(arg0, hi & 0xFF);
     }
@@ -1209,13 +1346,14 @@ void fn_80014EA8(void) {
     }
 }
 
+#pragma optimization_level 3
 s32 fn_80014EDC(u32 arg0) {
     s32 Res_GetByName(s32);
     s32 Msg_Expand(s32);
     extern void *lbl_80367210;
     s32 var_r31;
-    s32 off;
     u8 *p;
+    u32 off;
 
     off = (arg0 & 0xFF) << 2;
     p = (u8 *)lbl_80367210;
@@ -1226,7 +1364,7 @@ s32 fn_80014EDC(u32 arg0) {
     }
     return var_r31;
 }
-
+#pragma optimization_level reset
 void fn_80014F30(void *arg0, s32 arg1) {
     s8 Stream_ReadU8(s32);
     M2C_FIELD(arg0, s8 *, 0) = Stream_ReadU8(arg1);
@@ -2201,12 +2339,12 @@ void fn_80016498(void)
 #pragma use_lmw_stmw on
 void fn_80016538(void)
 {
-    extern u8 gUnitLists[];
+    extern u8 lbl_802CA264[];
     extern char lbl_802680A8[];
 
     extern s32 fn_80015680(void *);
-    extern void DebugPrint(const char *, ...);
-    extern s32 Msg_ResolveName(void *);
+    extern void fn_800056CC(const char *, ...);
+    extern s32 fn_800A8A88(void *);
 
     u8 *node;
     s32 index;
@@ -2220,13 +2358,13 @@ void fn_80016538(void)
     s32 result;
     void *ptr;
 
-    slot = gUnitLists;
+    slot = lbl_802CA264;
     index = 0;
     strings = lbl_802680A8;
 
     do {
         value = fn_80015680(slot);
-        DebugPrint(strings + 0x23, index, value);
+        fn_800056CC(strings + 0x23, index, value);
 
         node = *(u8 **)slot;
         while (node != 0) {
@@ -2236,8 +2374,8 @@ void fn_80016538(void)
                 byte1 = *(u8 *)(node + 0x19F);
                 byte0 = *(u8 *)(node + 0x19E);
                 byte2 = *(u8 *)(node + 0x198);
-                result = Msg_ResolveName(ptr);
-                DebugPrint(
+                result = fn_800A8A88(ptr);
+                fn_800056CC(
                     strings + 0x3B,
                     byte2,
                     (s8)byte0,
@@ -2246,7 +2384,7 @@ void fn_80016538(void)
                     result
                 );
             } else {
-                DebugPrint(
+                fn_800056CC(
                     lbl_802680A8 + 0x59,
                     *(u8 *)(node + 0x198),
                     (s8)*(u8 *)(node + 0x19E),
