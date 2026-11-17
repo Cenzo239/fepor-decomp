@@ -493,7 +493,7 @@ s32 fn_80266904(s32 channel, void *input, void *callback, void *outputCallback)
     *(void **)(entry + 0x1C) = outputCallback;
     return fn_80266CFC(channel, 5, 1, (void *)fn_802668D4);
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 s32 GBAWrite(s32 chan, void *input, void *callback) {
     extern u8 lbl_803669A0[];
     extern void *memcpy(void *, const void *, u32);
@@ -503,32 +503,26 @@ s32 GBAWrite(s32 chan, void *input, void *callback) {
     void fn_802668D4(void);
     u8 *entry;
     s32 ret;
-    s32 chan_s;
-    void *in;
-    void *cb;
+    u8 dummy[8];
 
-    chan_s = chan;
-    in = input;
-    cb = callback;
-    entry = lbl_803669A0 + (chan_s << 8);
+    entry = lbl_803669A0 + (chan << 8);
     if (*(u32 *)(entry + 0x1C) != 0) {
         ret = 2;
     } else {
         *entry = 0x15;
-        memcpy(entry + 1, in, 4);
-        *(void **)(entry + 0x18) = in;
-        *(void **)(entry + 0x14) = cb;
+        memcpy(entry + 1, input, 4);
+        *(void **)(entry + 0x18) = input;
+        *(void **)(entry + 0x14) = callback;
         *(void **)(entry + 0x1C) = fn_80266B38;
-        ret = fn_80266CFC(chan_s, 5, 1, fn_802668D4);
+        ret = fn_80266CFC(chan, 5, 1, fn_802668D4);
     }
     if (ret != 0) {
+        return ret;
     } else {
-        fn_80266B6C(chan_s);
+        fn_80266B6C(chan);
     }
-    return ret;
 }
-#pragma scheduling on
-#pragma peephole on
+#pragma global_optimizer on
 
 #pragma optimization_level 2
 
