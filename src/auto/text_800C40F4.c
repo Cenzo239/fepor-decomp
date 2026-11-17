@@ -8965,6 +8965,7 @@ s32 *fn_800DD87C(void *arg0, s32 *pos) {
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void *fn_800DD948(void *vec, String *pos)
 {
     void String_Resize(String *, u32, s32);
@@ -8976,14 +8977,14 @@ void *fn_800DD948(void *vec, String *pos)
     extern char __files[];
     extern char lbl_80271730[];
     String *end;
+    char *errFile;
     String *dst;
     String *src;
-    u32 limit;
     u32 sz;
+    u32 limit;
     u32 len;
     u32 newCount;
     String *last;
-    char *errFile;
 
     end = (String *)(*(u8 **)((u8 *)vec + 8) + *(u32 *)((u8 *)vec + 4) * 0xC);
     if (((s32)end - (s32)pos) / 12 - 1 != 0) {
@@ -8992,7 +8993,7 @@ void *fn_800DD948(void *vec, String *pos)
         src = pos + 1;
         while (src < end) {
             limit = (u32)-1;
-            if ((s32)src->size < 0) {
+            if (src->size >= 0x80000000U) {
                 fprintf(errFile, lbl_80271730 + 0x19);
                 abort();
             }
@@ -9005,21 +9006,19 @@ void *fn_800DD948(void *vec, String *pos)
                 String_Resize(dst, len, 0);
                 memcpy(dst->data, src->data, len);
             }
-            src += 1;
-            dst += 1;
+            src++;
+            dst++;
         }
     }
-    newCount = *(u32 *)((u8 *)vec + 4);
-    newCount = newCount - 1;
+    newCount = *(u32 *)((u8 *)vec + 4) - 1;
     *(u32 *)((u8 *)vec + 4) = newCount;
     last = (String *)(*(u8 **)((u8 *)vec + 8) + newCount * 0xC);
-    if (last != 0) {
-        if (last->data != 0) {
-            Heap_Free(last->data);
-        }
+    if (last != 0 && last->data != 0) {
+        Heap_Free(last->data);
     }
     return pos;
 }
+#pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
 s32 fn_800DDAA4(s32 arg0) {
@@ -11653,14 +11652,14 @@ void fn_800E3C04(void* arg0) {
 }
 
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
-#pragma cplusplus on
-class Owner { public: char data[16]; virtual void a(); virtual void b(); virtual void *get(char *,char *); };
 void *fn_800E4688(void *,void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
 void String_AssignCStr(void *,void *,s32);
 void fn_800E4550(void *,void *);
 extern void *lbl_8028E0E8[];
 extern char lbl_80271F28[];
+#pragma cplusplus on
+class Owner { public: char data[16]; virtual void a(); virtual void b(); virtual void *get(char *,char *); };
 u32 value[8];
 String name;
 s32 scratch;
@@ -19626,6 +19625,45 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
     Battle_ScoreTarget(attacker, target);
     return 1;
 }
+
+s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
+    u8 Allegiance_Compare(s32, s32);
+    extern u8 lbl_80272E98[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    s32 baseY = arg2;
+    s32 baseX = arg1;
+    s32 score = 0;
+    u8 *p = lbl_80272E98;
+    u8 outside;
+    u8 id;
+    s32 x, y;
+    void *unit;
+
+    while (p[0] != 0x7F) {
+        x = baseX + (s8)p[0];
+        outside = 0;
+        y = baseY + (s8)p[1];
+        if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
+            outside = 1;
+        if (!outside) {
+            id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
+            if (id) {
+                if (id)
+                    unit = gUnits + (id - 1) * 0x280;
+                else
+                    unit = 0;
+                if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
+                    score -= (s8)p[2];
+                else
+                    score += (s8)p[2];
+            }
+        }
+        p += 3;
+    }
+    return score;
+}
+
 #pragma auto_inline reset
 #pragma cplusplus reset
 
