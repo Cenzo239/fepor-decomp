@@ -1742,28 +1742,52 @@ void *fn_80166940(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_801669B0(void* arg0, s32 arg1) {
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 temp_r7;
-    s32 temp_r8;
-    
-    // Load various data from globals
-    temp_r3 = gUiContext[arg1];
-    temp_r4 = *(u32*)&gUiMsgStrings[temp_r3 * 2 + 0x10];
-    temp_r5 = *(u32*)&gUiListPanelProc[temp_r3 * 2 + 0x10];
-    temp_r6 = *(u16*)&gBattleState[arg1 * 2];
-    temp_r7 = *((u16 *)&lbl_803680E8 + arg1 * 2);
-    temp_r8 = *(u16*)&gUiMsgStrings[temp_r3 * 2 + 0x12];
-    
-    // Store values to arg0
-    *(u32*)arg0 = temp_r4;
-    *(u32*)((char*)arg0 + 4) = temp_r5;
-    *(u16*)((char*)arg0 + 8) = (u16)temp_r6;
-    *(u16*)((char*)arg0 + 0xA) = (u16)temp_r7;
-    *(u16*)((char*)arg0 + 0xC) = (u16)temp_r8;
+void *fn_801669B0(void *self,void *owner,void *xml) {
+void fn_800DBBE4(void *,void *,void *);
+void String_Init(void *,void *,void *);
+void String_Destroy(void *,s16);
+void Xml_GetNamedValue(void *,void *,void *);
+void Xml_AdvanceChild(void *);
+void Xml_GetChildValue(void *,void *);
+void *fn_800E7DF8(void *,void *);
+int sprintf(char *,const char *,...);
+extern u8 lbl_80293CD0[],lbl_80277990[];
+u32 named[8];
+f32 child[8];
+char name[16];
+u32 tag[3];
+u32 str[3];
+u8 scratchTag[4];
+u8 scratchStr[4];
+s32 i;
+fn_800DBBE4(self,owner,xml);
+M2C_FIELD(self,void **,0x40)=lbl_80293CD0;
+M2C_FIELD(self,f32 *,0x134)=0.0f;
+M2C_FIELD(self,f32 *,0x130)=0.0f;
+M2C_FIELD(self,f32 *,0x12C)=0.0f;
+M2C_FIELD(self,f32 *,0x140)=0.0f;
+M2C_FIELD(self,f32 *,0x13C)=0.0f;
+M2C_FIELD(self,f32 *,0x138)=0.0f;
+M2C_FIELD(self,f32 *,0x14C)=0.0f;
+M2C_FIELD(self,f32 *,0x148)=0.0f;
+M2C_FIELD(self,f32 *,0x144)=0.0f;
+String_Init(tag,lbl_80277990+0x21,scratchTag);
+Xml_GetNamedValue(named,xml,tag);
+String_Destroy(tag,-1);
+for(i=0;i<16;i++) {
+sprintf(name,(char *)lbl_80277990+0x2A,i);
+String_Init(str,name,scratchStr);
+*(void **)((u32)self+(0xAC+i*4))=fn_800E7DF8(owner,str);
+String_Destroy(str,-1);
+Xml_AdvanceChild(xml);
+Xml_GetChildValue(child,xml);
+*(f32 *)((u32)self+(0xEC+i*4))=child[0];
+}
+M2C_FIELD(self,f32 *,0x13C)=0.0f;
+M2C_FIELD(self,f32 *,0x138)=0.0f;
+M2C_FIELD(self,f32 *,0x148)=0.0f;
+M2C_FIELD(self,f32 *,0x144)=0.0f;
+return self;
 }
 
 void fn_80166CB0(s32 arg0) {
@@ -7665,6 +7689,51 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
         }
     }
 }
+
+extern "C" void fn_80172268(void *arg0) {
+#pragma cplusplus off
+void *Ui_FindChild(void *,s32,s32);
+s16 UnitInv_FindFilledUp(void *,s32,void *);
+void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
+f32 Ui_GetWorldScale(void *);
+void Ui_OpenChildAnim(void *,void *,s32);
+void Ui_SetWidgetText(void *,void *);
+void Ui_BringChildToFront(void *,void *);
+u8 fn_801723A0(u32 *,s32);
+extern f32 gF32_1;
+s16 pos[2];
+void *self;
+void *inv;
+void *widget;
+void *caption;
+void *list;
+void *unit;
+s16 y;
+self=arg0;
+inv=M2C_FIELD(self,void **,0x4C);
+M2C_FIELD(inv,u8 *,0x48)=1;
+M2C_FIELD(inv,s32 *,0x60)=2;
+M2C_FIELD(inv,u8 *,0x4B)=1;
+unit=(void *)gUiContext[0];
+M2C_FIELD(inv,void **,0x70)=(void *)fn_801723A0;
+M2C_FIELD(inv,void **,0x74)=unit;
+M2C_FIELD(inv,s16 *,0x4C)=UnitInv_FindFilledUp(inv,0,unit);
+list=Ui_FindChild(self,0x107,0);
+if(M2C_FIELD(list,s16 *,0xA)>0x138) {
+y=M2C_FIELD(list,s16 *,0xC);
+pos[0]=0x138;
+pos[1]=y;
+Ui_SlideWidgetChildMode1(self,list,pos,0);
+}
+widget=Ui_FindChild(self,0x106,0);
+if(Ui_GetWorldScale(widget)<gF32_1) Ui_OpenChildAnim(self,widget,0);
+Ui_SetWidgetText(widget,(u8 *)gUiMsgStrings+0x2FF);
+Ui_BringChildToFront(self,inv);
+caption=Ui_FindChild(self,-0x1000,0);
+if(caption) Ui_SetWidgetText(caption,(u8 *)gUiMsgStrings+0x2E7);
+#pragma cplusplus on
+}
+
 #pragma cplusplus off
 
 u8 fn_801723A0(u32 *arg0, s32 arg1) {
@@ -11641,19 +11710,15 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     void fn_8013F1A0(void *, void *);
     void *fn_80179BC8(void *, s16, s16, s32, s32, s16);
     extern void *lbl_80292434[];
-    void *child;
-    void *panel;
-    s32 half;
     s32 x;
     s32 y;
-    s16 p12;
-    s16 p14;
-    s16 pa;
-    s16 pe;
-    s16 pc;
-    s16 pt;
-    s32 w;
+    s32 tmp;
     s32 h;
+    s32 w;
+    s16 p14;
+    s32 half;
+    void *panel;
+    void *child;
 
     fn_80179BC8(arg0, arg1, arg2, arg3, arg4, arg5);
     *(void **)arg0 = lbl_80292434;
@@ -11668,21 +11733,17 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     *(void **)((u8 *)arg0 + 0x128) = child;
     half = (arg3 - 0x108) >> 1;
     panel = *(void **)((u8 *)arg0 + 0x128);
-    p12 = *(s16 *)((u8 *)arg0 + 0x12);
-    pa = *(s16 *)((u8 *)panel + 0xa);
-    pe = *(s16 *)((u8 *)panel + 0xe);
-    x = half + -p12;
+    x = half + -*(s16 *)((u8 *)arg0 + 0x12);
     p14 = *(s16 *)((u8 *)arg0 + 0x14);
-    w = pe - pa;
-    pc = *(s16 *)((u8 *)panel + 0xc);
-    pt = *(s16 *)((u8 *)panel + 0x10);
+    w = *(s16 *)((u8 *)panel + 0xe) - *(s16 *)((u8 *)panel + 0xa);
+    h = *(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc);
     *(s16 *)((u8 *)panel + 0xe) = (s16)((s16)x + (s16)w);
-    h = pt - pc;
-    *(s16 *)((u8 *)panel + 0xa) = (s16)x;
-    y = -(p14 + (s16)h);
+    tmp = p14 + (s16)h;
+    *(s16 *)((u8 *)panel + 0xa) = x;
+    y = -tmp;
     *(s16 *)((u8 *)panel + 0x10) =
         (s16)((s16)y + (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
-    *(s16 *)((u8 *)panel + 0xc) = (s16)y;
+    *(s16 *)((u8 *)panel + 0xc) = y;
     fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x128));
     *(s16 *)((u8 *)arg0 + 0x88) = 0x14;
     *(s16 *)((u8 *)arg0 + 0x8a) = 0;
