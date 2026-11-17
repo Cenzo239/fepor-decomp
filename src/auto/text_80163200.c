@@ -1902,6 +1902,67 @@ M2C_FIELD(self,f32 *,0x144)=0.0f;
 return self;
 }
 
+#pragma use_lmw_stmw on
+void fn_80166AE8(s32 x, s32 y, void *msg, void *parent) {
+    void *Process_CreateChild(void *, void *);
+    void *Msg_Expand(void *);
+    void *Process_Find(void *);
+    void Process_Create(void *, void *);
+    void *memset(void *, s32, s32);
+    void fn_8005C8B4(void *);
+    void Ui_PlaySeCue(void *, s32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
+    extern u8 lbl_80293D40[];
+    extern u8 lbl_80293D20[];
+    extern u8 gUnitInfoPopup[];
+    extern u8 lbl_80277A20[];
+    extern f32 lbl_8036A92C;
+    extern f64 lbl_8036A930;
+    extern s32 gUnitInfoPopupFlag;
+    void *expanded;
+    void *p;
+    u8 open;
+    f32 f0;
+    u8 *base;
+    u8 *popup;
+    f64 conv;
+
+    Process_CreateChild(lbl_80293D40, parent);
+    expanded = Msg_Expand(msg);
+    p = Process_Find(lbl_80293D20);
+    if (p == NULL) {
+        open = 0;
+    } else if (*(u8 *)((u8 *)p + 0x2E) != 0) {
+        open = 0;
+    } else {
+        open = 1;
+    }
+    if (open == 0) {
+        Process_Create(lbl_80293D20, parent);
+        memset(gUnitInfoPopup, 0, 0x124);
+        popup = gUnitInfoPopup;
+        base = lbl_80277A20;
+        conv = lbl_8036A930;
+        f0 = lbl_8036A92C;
+        *(f32 *)(popup + 0xDC) = (f32)x;
+        *(f32 *)(popup + 0xE0) = (f32)y;
+        *(f32 *)(popup + 0xF4) = (f32)x;
+        *(f32 *)(popup + 0xF8) = (f32)y;
+        *(f32 *)(popup + 0x10C) = f0;
+        *(f32 *)(popup + 0x110) = f0;
+        fn_8005C8B4(base + 0x42);
+        Ui_PlaySeCue(base + 0x52, 0x64);
+        Ui_ShowUnitInfoText(popup, expanded, (f32)x, (f32)y);
+        if (conv) {
+            /* keep lbl_8036A930 */
+        }
+    }
+    popup = gUnitInfoPopup;
+    *(s16 *)(popup + 0xD8) = 1;
+    *(s32 *)popup = *(s32 *)popup | gUnitInfoPopupFlag;
+}
+#pragma use_lmw_stmw reset
+
 void fn_80166CB0(s32 arg0) {
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(s32);
@@ -9479,32 +9540,88 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-void fn_80175124(void *arg0, s32 arg1) {
-    s32 temp_r3;
-    u8 var_r0;
-    
-    *(u32 *)arg0 = (arg1 & 0x3F) | ((*(u32 *)arg0) & 0xFFFFFFC0);
-    temp_r3 = *(s32 *)((char *)arg0 + 0x4);
-    if (temp_r3 == 0) {
-        var_r0 = 0;
-    } else {
-        var_r0 = *(u8 *)(temp_r3 + 0x15) & 1;
+#pragma cplusplus on
+extern "C" void fn_80175124(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void *Ui_ListGetSelected(void *);
+    void Ui_BringChildToFront(void *, void *);
+    void Ui_SetWidgetText(void *, void *);
+    extern f32 gF32_1;
+    extern u16 gUiMsgStrings[];
+
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11(void *) = 0;
+    };
+
+    s16 size0[2];
+    s16 size1[2];
+    s16 size2[2];
+    s16 size3[2];
+    void *child104;
+    void *panel;
+    void *child0;
+    void *child;
+    void *inv;
+    s16 savedY;
+
+    panel = arg0;
+    if ((child0 = Ui_FindChild(arg0, 0x100, 0)) == 0) {
+        child0 = *(void **)((u8 *)panel + 0x40);
+        Ui_AddChild(panel, child0);
     }
-    if (var_r0 == 0) {
-        var_r0 = *(u8 *)((char *)arg0 + 0x54) & 1;
+    if (*(s16 *)((u8 *)child0 + 0xC) != 0x10) {
+        size0[0] = *(s16 *)((u8 *)child0 + 0xA);
+        size0[1] = 0x10;
+        Ui_SlideWidgetChildMode1(panel, child0, size0, 0);
     }
-    if ((var_r0 !=0)) {
-        *(s32 *)((char *)arg0 + 0x68) |= 0x80000000;
-        *(u32 *)((char *)arg0 + 0x84) = 0;
-        *(s32 *)((char *)arg0 + 0x7C) = 0x1000000;
-    } else {
-        *(u32 *)((char *)arg0 + 0x80) = (*(u32 *)((char *)arg0 + 0x80) & 0xF0FFFFFF) | 0x4000000;
-        *(s32 *)((char *)arg0 + 0x7C) = 0x1000000;
+    *(f32 *)((u8 *)child0 + 0x30) = gF32_1;
+    *(u8 *)((u8 *)child0 + 0x4D) = 1;
+    inv = *(void **)((u8 *)panel + 0x4C);
+    *(u8 *)((u8 *)inv + 0x78) = 0;
+    *(u8 *)((u8 *)inv + 0x4A) = 1;
+    if ((child = Ui_FindChild(panel, 0x105, 0)) != 0) {
+        savedY = *(s16 *)((u8 *)child + 0xC);
+        size1[0] = 0x260;
+        size1[1] = savedY;
+        Ui_SlideWidgetChild(panel, child, size1, 0);
+    }
+    if ((child = Ui_FindChild(panel, 0x108, 0)) != 0) {
+        savedY = *(s16 *)((u8 *)child + 0xC);
+        size2[0] = 0x260;
+        size2[1] = savedY;
+        Ui_SlideWidgetChild(panel, child, size2, 0);
+    }
+    if ((child104 = Ui_FindChild(panel, 0x104, 0)) == 0) {
+        child104 = *(void **)((u8 *)panel + 0x50);
+        Ui_AddChild(panel, child104);
+    }
+    if (*(s16 *)((u8 *)child104 + 0xA) != 0x138) {
+        savedY = *(s16 *)((u8 *)child104 + 0xC);
+        size3[0] = 0x138;
+        size3[1] = savedY;
+        Ui_SlideWidgetChildMode1(panel, child104, size3, 1);
+    }
+    ((Obj *)child104)->v11(Ui_ListGetSelected(child0));
+    Ui_BringChildToFront(panel, child0);
+    child = Ui_FindChild(panel, -0x1000, 0);
+    if (child != 0) {
+        Ui_SetWidgetText(child, (u8 *)gUiMsgStrings + 0x3F7);
     }
 }
-
-#pragma cplusplus on
-#pragma use_lmw_stmw on
 extern "C" void fn_801752EC(void *arg0) {
     void *fn_800C42D8(s32);
     void *fn_80179DEC(void *, s16, s16, s32);
@@ -12903,12 +13020,13 @@ extern "C" void fn_8017AACC(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_80278780[];
-    s32 count;
+    u32 count;
     s16 saved;
     s32 idx;
+    s32 held;
+    s32 prev;
     s32 buttons;
     s32 edge;
-    s32 held;
     void *base;
     void *item;
     u8 gate;
@@ -12922,11 +13040,12 @@ extern "C" void fn_8017AACC(void *arg0) {
     if (gate == 0) {
         count = 0;
         saved = *(s16 *)((u8 *)arg0 + 0x3E);
-        idx = 0;
+        idx = (s32)count;
         held = *(s32 *)((u8 *)gPadInput + 4);
+        prev = *(s32 *)((u8 *)gPadInput + 8);
         buttons = *(s32 *)((u8 *)gPadInput + 0xC);
+        edge = held & (prev ^ held);
         base = *(void **)((u8 *)arg0 + 0x4C);
-        edge = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
         do {
             item = fn_80105C5C((u8 *)base + 0x1BC, (u8)idx);
             if (item != NULL) {
@@ -12969,7 +13088,7 @@ extern "C" void fn_8017AACC(void *arg0) {
                 }
             } else if (buttons & 0x04000004) {
                 *(s16 *)((u8 *)arg0 + 0x3E) = (s16)(*(s16 *)((u8 *)arg0 + 0x3E) + 1);
-                if ((u32)*(s16 *)((u8 *)arg0 + 0x3E) >= (u32)count) {
+                if ((u32)*(s16 *)((u8 *)arg0 + 0x3E) >= count) {
                     if (buttons == edge) {
                         *(s16 *)((u8 *)arg0 + 0x3E) = 0;
                     } else {
@@ -17908,6 +18027,88 @@ void fn_80182F50(void) {
 
     BattleState_SetCamPos(gBattleState, (f32) (s8) ((u8 *)gUiContext)[0xD], (f32) (s8) ((u8 *)gUiContext)[0xE]);
     Map_HideMoveLimitView();
+}
+
+void fn_80182FC4(void *arg0) {
+    void *Map_GetCursorUnit(void);
+    void Process_Goto(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
+    void fn_8009197C(void);
+    extern void *gPadInput;
+    extern u8 gBattleState[];
+    extern u8 gBattleMap[];
+    extern u32 gUiContext[];
+    extern u8 gMapUiResult;
+    extern u8 lbl_80278BB8[];
+    u32 curr;
+    u32 edge;
+    s32 xRaw;
+    s32 yRaw;
+    s8 x;
+    s8 y;
+    s8 *tilePtr;
+    s8 tile;
+    u8 *coords;
+    s16 mapVal;
+    u8 *mapHi;
+    u8 *mapBase;
+    u8 zero;
+
+    curr = *(u32 *)((u8 *)gPadInput + 4);
+    edge = curr & (*(u32 *)((u8 *)gPadInput + 8) ^ curr);
+    Map_GetCursorUnit();
+    xRaw = (s32)*(f32 *)(gBattleState + 0x524);
+    mapBase = gBattleMap;
+    yRaw = (s32)*(f32 *)(gBattleState + 0x528);
+    mapHi = mapBase + 0x10000;
+    x = (s8)xRaw;
+    y = (s8)yRaw;
+    tilePtr = (s8 *)(mapHi + x);
+    tilePtr = (s8 *)((u8 *)tilePtr + (y << 6));
+    tile = *(tilePtr -= 0x1E72);
+    if (tile == 0) {
+        mapVal = ((s16 *)(mapBase + 0x610E))[x + (y << 6)];
+        if (mapVal < 0) {
+            coords = *(u8 **)((u8 *)arg0 + 0x30);
+            coords[0] = 0;
+            goto after_coords;
+        }
+    }
+    coords = *(u8 **)((u8 *)arg0 + 0x30);
+    coords[0] = 3;
+    if ((s8)xRaw >= 0) {
+        coords[2] = (u8)xRaw;
+    }
+    if ((s8)yRaw >= 0) {
+        coords[3] = (u8)yRaw;
+    }
+after_coords:
+    if (edge & 0x100) {
+        if (*tilePtr == 0) {
+            mapVal = ((s16 *)(gBattleMap + 0x610E))[x + (y << 6)];
+            if (mapVal >= 0) {
+                u8 *ui;
+                zero = 0;
+                ui = (u8 *)gUiContext;
+                gMapUiResult = zero;
+                ui[0xF] = (u8)xRaw;
+                ui[0x10] = (u8)yRaw;
+                Process_Goto(arg0, 0x63);
+                Ui_PlaySeCue(lbl_80278BB8 + 0xCE, 0x64);
+            }
+        }
+    } else if (edge & 0x200) {
+        gMapUiResult = 9;
+        ((u8 *)gUiContext)[8] = 0;
+        fn_8009197C();
+        coords = *(u8 **)((u8 *)arg0 + 0x30);
+        coords[0] = ((u8 *)arg0)[0x34];
+        coords[1] = ((u8 *)arg0)[0x35];
+        coords[2] = ((u8 *)arg0)[0x36];
+        coords[3] = ((u8 *)arg0)[0x37];
+        Process_Goto(arg0, 0x63);
+        Ui_PlaySeCue(lbl_80278BB8 + 0xDE, 0x64);
+    }
 }
 
 #pragma global_optimizer off
