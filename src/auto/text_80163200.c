@@ -7494,11 +7494,11 @@ void Ui_ConfirmItemUse(void *proc) {
 }
 
 void fn_80171DD0(void *arg0) {
-#pragma cplusplus on
 void *Ui_FindChild(void *,s32,s32);
 void Ui_SetWidgetText(void *,void *);
 void *fn_8013BC10(s32,s32);
 void Ui_CreateMenu(void *,void *,s32);
+#pragma cplusplus on
 struct Item { virtual void v0()=0;
 virtual void v1()=0;
 virtual void v2()=0;
