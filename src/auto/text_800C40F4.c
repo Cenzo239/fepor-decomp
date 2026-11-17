@@ -5964,9 +5964,7 @@ void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 0xC) = mid;
 }
-#pragma scheduling reset
-u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
-{
+u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
     struct Tag { u8 b; } tag;
     M2C_UNK String_InitFromRange(u32 *, char *, char *, void *, struct Tag);
     M2C_UNK abort(void);
