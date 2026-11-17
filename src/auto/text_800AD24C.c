@@ -8579,7 +8579,7 @@ s32 fn_800BFB10(void) {
     void *person;
     void *combatant;
     u8 found;
-    u8 match;
+    s32 match;
 
     if (Battle_GetActiveCombatant(gBattle) == NULL) {
         return 0;
@@ -8587,7 +8587,7 @@ s32 fn_800BFB10(void) {
 
     entry = Event_NextEntry(NULL);
     while (entry != NULL) {
-        if (*(u8 *)((u8 *)entry + 0xC) == 0xB) {
+        if ((s32)*(u8 *)((u8 *)entry + 0xC) == 0xB) {
             person = Person_GetByPid(Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14)));
             combatant = Battle_GetActiveCombatant(gBattle);
             if (combatant == NULL) {
@@ -8595,7 +8595,7 @@ s32 fn_800BFB10(void) {
             } else {
                 match = (*(void **)((u8 *)combatant + 0x188) == person);
             }
-            if (match) {
+            if ((u8)match) {
                 found = 1;
                 goto after1;
             }
@@ -8614,7 +8614,7 @@ after1:
 
     entry = Event_NextEntry(NULL);
     while (entry != NULL) {
-        if (*(u8 *)((u8 *)entry + 0xC) == 0xA) {
+        if ((s32)*(u8 *)((u8 *)entry + 0xC) == 0xA) {
             person = Person_GetByPid(Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14)));
             combatant = Battle_GetActiveCombatant(gBattle);
             if (combatant == NULL) {
@@ -8622,7 +8622,7 @@ after1:
             } else {
                 match = (*(void **)((u8 *)combatant + 0x188) == person);
             }
-            if (match) {
+            if ((u8)match) {
                 found = 1;
                 goto after2;
             }
