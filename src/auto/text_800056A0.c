@@ -105,7 +105,7 @@ void fn_800059B0(void) {
 
 }
 
-#pragma peephole off
+#pragma optimization_level 3
 void fn_800059B4(void)
 {
   extern void *lbl_80367100;
@@ -129,7 +129,7 @@ void fn_800059B4(void)
   *((u32 *) (((u8 *) lbl_80367100) + 0x2C)) = 0;
   *((u32 *) (((u8 *) lbl_80367100) + 0x30)) = 0;
 }
-#pragma peephole on
+#pragma optimization_level reset
 void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
     extern void *lbl_80367100;
     s16 x;
@@ -158,18 +158,89 @@ void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
     *(s16 *)((u8 *)lbl_80367100 + 0x14) = d / e;
 }
 
-void fn_80005A84(void* arg0, void* arg1)
-{
-    if (arg0 != 0)
-    {
-        char *temp = (char *)arg0;
-        temp[0x28] = 0;
-        temp[0x29] = 0;
-        temp[0x30] = 0;
-        temp[0x31] = 0;
-        temp[0x38] = 0;
-        temp[0x39] = 0;
+void fn_80005A84(s32 size, s32 count) {
+    void *fn_800C4638(s32, void *, s32);
+    extern void *lbl_80367100;
+    extern u8 lbl_80267B60[];
+
+    u8 *self;
+    u8 *buffer;
+    s32 tableSize;
+    s32 offset;
+    s32 i;
+    s32 zero;
+
+
+    if (size == 0) {
+        size = 0x34;
     }
+
+    if (count == 0) {
+        count = 0x200;
+    }
+
+    self = (u8 *)fn_800C4638(
+        0x40,
+        lbl_80267B60 + 0x1C,
+        0
+    );
+
+    lbl_80367100 = self;
+
+    *(s16 *)(self + 4) = (size + 8) & 0xFC;
+    *(s16 *)(self + 6) = count;
+
+    *(s16 *)(self + 0x34) = 8;
+    *(s16 *)(self + 0x36) = 0;
+    self[0x16] = 0;
+    self[0x17] = 0;
+    self[0x18] = 1;
+    *(s16 *)(self + 0x3C) = 0;
+
+    tableSize = *(s16 *)(self + 6) << 2;
+
+    buffer = (u8 *)fn_800C4638(
+        tableSize + (*(s16 *)(self + 4) * *(s16 *)(self + 6)),
+        lbl_80267B60 + 0x1C,
+        0
+    );
+
+    *(u8 **)self = buffer;
+
+    i = 0;
+    offset = i;
+    zero = i;
+
+    buffer = *(u8 **)self;
+    *(u8 **)buffer = buffer + tableSize;
+
+    while (i < *(s16 *)(self + 6)) {
+        *(u8 **)(*(u8 **)self + offset) =
+            *(u8 **)(*(u8 **)self) +
+            (*(s16 *)(self + 4) * i);
+
+        *(u8 *)(*(u8 **)(*(u8 **)self + offset)) = zero;
+
+        offset += 4;
+        i++;
+    }
+
+    *(s16 *)((u8 *)lbl_80367100 + 8) = 0;
+    *(s16 *)((u8 *)lbl_80367100 + 0xA) = 0x10;
+    *(s16 *)((u8 *)lbl_80367100 + 0xC) = 0x260;
+    *(s16 *)((u8 *)lbl_80367100 + 0xE) = 0x1A0;
+    *(s16 *)((u8 *)lbl_80367100 + 0x12) = 0x10;
+
+    if (*(s16 *)((u8 *)lbl_80367100 + 8) +
+        *(s16 *)((u8 *)lbl_80367100 + 0xC) > 0x280) {
+        *(s16 *)((u8 *)lbl_80367100 + 0xC) =
+            0x27F - *(s16 *)((u8 *)lbl_80367100 + 8);
+    }
+
+    *(s16 *)((u8 *)lbl_80367100 + 0x14) = 0x1A;
+
+    *(s16 *)(self + 0x10) =
+        *(s16 *)(self + 0xE) - 0x41;
 }
 
 void fn_80005C18(void) {
@@ -268,20 +339,24 @@ void fn_80005DC8(void) {
 }
 
 u8 fn_80005E2C(void) {
-    u32 OSGetResetCode();
+    u32 OSGetResetCode(void);
     extern s32 gGameFlags;
     u8 var_r3;
 
-    if ((OSGetResetCode() >> 0x1FU) == 0) {
-        return 0U;
+    if ((OSGetResetCode() >> 31) == 0) {
+        return 0;
     }
+
     var_r3 = 1;
+
     if (gGameFlags & 0x90000) {
-        return (u8) ((OSGetResetCode() & 2) == 0);
+        return (u8)((u32)__cntlzw(OSGetResetCode() & 2) >> 5);
     }
+
     if (gGameFlags & 0x60000) {
-        var_r3 = (OSGetResetCode() & 0x20) == 0;
+        var_r3 = (u8)((u32)__cntlzw(OSGetResetCode() & 0x20) >> 5);
     }
+
     return var_r3;
 }
 
@@ -305,7 +380,7 @@ void fn_80005F04(void)
     void fn_801ED3D4(void);
     void fn_80121414(void);
     void fn_801E379C(void *);
-    void Battle_SetPhase(u32);
+    void Battle_SetPhase(void *, u32);
     void fn_8014D41C(void *);
     void SaveData_Release(void *);
     void *Process_Find(void *);
@@ -327,6 +402,7 @@ void fn_80005F04(void)
     u8 type;
     s8 x;
     s8 y;
+    u32 bit;
 
     object = *(u8 **)((u8 *)&gSaveDataBase + 4);
 
@@ -339,9 +415,10 @@ void fn_80005F04(void)
     switch (type) {
     case 10:
         data = gBattleState;
-        data[0x9F] |= 8;
+        bit = 1;
+        data[0x9F] = __rlwimi(data[0x9F], bit, 3, 28, 28);
 
-        Battle_SetPhase(object[0x64]);
+        Battle_SetPhase(data, object[0x64]);
         fn_8014D41C(data);
 
     case 4:
