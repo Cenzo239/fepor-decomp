@@ -727,42 +727,31 @@ s32 EXIDeselect(s32 channel) {
  return 1;
 }
 
+#pragma scheduling off
 void EXIIntrruptHandler(s16 interrupt, OSContext *context)
 {
     void OSClearContext(void *);
     void OSSetCurrentContext(void *);
 
     s32 chan;
-    u8 *ecb;
-    volatile u32 *exi;
-    u32 value;
-    void (*callback)(s32, OSContext *);
-    OSContext tempContext;
+    EXIControl *exi;
+    void (*callback)(s32, void *);
+    OSContext exceptionContext;
+    u8 filler[8];
 
-    chan = ((s32)interrupt - 9) / 3;
-
-    exi = (volatile u32 *)(0xCC006800 + chan * 0x14);
-
-    value = *exi;
-    value &= 0x7F5;
-    value |= 2;
-    *exi = value;
-
-    ecb = (u8 *)Ecb_8033E188 + (chan << 6);
-
-    callback = *(void (**)(s32, OSContext *))ecb;
-
-    if (callback != 0) {
-        OSClearContext(&tempContext);
-        OSSetCurrentContext(&tempContext);
-
+    (void)filler[0];
+    chan = (interrupt - 9) / 3;
+    exi = &Ecb_8033E188[chan];
+    __EXIRegs[chan * 5] = (__EXIRegs[chan * 5] & 0x7F5) | 2;
+    callback = exi->exiCallback;
+    if (callback) {
+        OSClearContext(&exceptionContext);
+        OSSetCurrentContext(&exceptionContext);
         callback(chan, context);
-
-        OSClearContext(&tempContext);
+        OSClearContext(&exceptionContext);
         OSSetCurrentContext(context);
     }
 }
-
 void OSClearContext(void *);
 void OSSetCurrentContext(void *);
 #pragma scheduling off
