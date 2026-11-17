@@ -13775,10 +13775,12 @@ void fn_801A251C(void) {
     s32 fn_800C0658(void);
     extern u8 Proc_MuEventInst[];
     void *temp;
+    void *var_r4;
     u32 var_r3;
 
     temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
+        var_r4 = temp;
     } else {
         var_r3 = fn_80127C48();
         if (var_r3 == 0) {
