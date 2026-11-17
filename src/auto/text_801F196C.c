@@ -6,12 +6,6 @@ typedef struct {
     char *msg;
 } BattlePreviewMsgSlot;
 
-typedef struct {
-    u32 a;
-    u32 b;
-    union { u8 c; void *p; } u;
-} TreeNode;
-
 extern void *lbl_803683F4;
 extern struct {
     u32 pad0;
