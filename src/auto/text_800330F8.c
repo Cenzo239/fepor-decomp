@@ -4251,16 +4251,28 @@ void Unit_ResetHeldFromClass(void *unit) {
     }
 }
 
-s32 Unit_ApplyTransform(s32 arg0)
-{
-    if (arg0 < 0)
-    {
-        return 0;
-    }
-    else
-    {
-        return arg0;
-    }
+void Unit_ApplyTransform(void *arg0) {
+ void *Res_GetByName(void *);
+ u8 Status_Test(void *, s32);
+ void fn_80091CD8(void *);
+ struct UnitTransform { u8 pad[0x18C]; void *res; u8 pad190[12]; u8 gauge; u8 pad19D[3]; u32 flags; u8 pad1A4[24]; u32 status[4]; };
+ struct UnitTransform *unit=arg0;
+ void *res=unit->res;
+ unit->status[0]&=~M2C_FIELD(res,u32 *,0x1C);
+ unit->status[1]&=~M2C_FIELD(res,u32 *,0x20);
+ unit->status[2]&=~M2C_FIELD(res,u32 *,0x24);
+ unit->status[3]&=~M2C_FIELD(res,u32 *,0x28);
+ res=M2C_FIELD(unit->res,void **,0xC);
+ unit->res=res?Res_GetByName(res):0;
+ res=unit->res;
+ unit->status[0]|=M2C_FIELD(res,u32 *,0x1C);
+ unit->status[1]|=M2C_FIELD(res,u32 *,0x20);
+ unit->status[2]|=M2C_FIELD(res,u32 *,0x24);
+ unit->status[3]|=M2C_FIELD(res,u32 *,0x28);
+ unit->flags&=~0x2000;
+ if(Status_Test(unit->status,9)) unit->gauge=20;
+ else unit->gauge=0;
+ fn_80091CD8(unit);
 }
 
 #pragma global_optimizer off
@@ -10432,29 +10444,32 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     }
 }
 
-s32 fn_8004AE28(s32 arg0, s32 arg1, s32 arg2)
-{
-    s32 var_r3;
-    s32 var_r4;
-    s32 var_r5;
-    s32 var_r6;
-    u8 *ptr;
-    
-    ptr = (u8*)arg0;
-    if (ptr == NULL)
-        return 0;
-    
-    var_r3 = *(ptr + 0x10);
-    if ((var_r3 >= 0) && (var_r3 < 0x40)) {
-        return (s32)*(ptr + 0x8 * var_r3 + 0x14);
-    }
-    
-    var_r4 = *(ptr + arg1 + 0x14);
-    if ((var_r4 >= 0) && (var_r4 < 0x10)) {
-        return (s32)*(ptr + var_r4 * 0x8 + 0x14);
-    }
-    
-    return 0;
+void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
+#pragma global_optimizer off
+ void *fn_80146B10(s32);
+ void DebugPrint(void *, ...);
+ void SeCue_PlayAt(void *, s32, f32, f32, f32);
+ void Ui_PlaySeCue(void *, s32);
+ extern u16 lbl_8026A9B0[40];
+ extern f32 lbl_80368FA0;
+ u16 *entry;
+ void *cue;
+ s32 i;
+ entry=(u16 *)arg0;
+ i=0;
+ while(i<4) {
+ u16 id=*(u16 *)((u8 *)entry+0x7C);
+ if(id==0xFFFF) cue=0;
+ else if(id<0x3E8) cue=0;
+ else cue=fn_80146B10(id);
+ if(cue) {
+ DebugPrint((u8 *)lbl_8026A9B0+0x8A,cue);
+ if(z>lbl_80368FA0) SeCue_PlayAt(cue,0x64,x,y,z);
+ else Ui_PlaySeCue(cue,0x64);
+ }
+ i++; entry++;
+ }
+#pragma global_optimizer on
 }
 
 s32 fn_8004AF30(u16 arg0) {
