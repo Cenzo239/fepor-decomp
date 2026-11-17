@@ -13275,6 +13275,41 @@ s32 fn_8019F9B4(s32 arg0, s32 arg1) {
     return 1;
 }
 
+s32 fn_8019FA50(s32 x,s32 y,s32 mode) {
+void *Map_Get(void);
+void *Map_FindObjAt(void *,s32,s32,s32,s32);
+void MapObjEvent_Push(void *,s8,s8,s32,s32);
+void MapObjEvent_Remove(void *,s8,s8,s32);
+void *Process_Find(void *); void *Process_Create(void *,void *);
+void *fn_80127C48(void); void *fn_800C0658(void);
+void fn_800498A4(void *,void *,u8);
+extern u8 gMapObjEventList[],Proc_MuEventInst[];
+extern s32 gUiInputFlags;
+void *obj;
+void *proc;
+void *found;
+obj=Map_FindObjAt(Map_Get(),x,y,0x200,0x410);
+if(!obj) return 0;
+switch(mode) {
+case 2: break;
+case 0: case 4: MapObjEvent_Push(gMapObjEventList,x,y,0x28,0); break;
+case 1: case 3: MapObjEvent_Remove(gMapObjEventList,x,y,0x28); break;
+}
+switch(mode) {
+case 0: if(gUiInputFlags&1) mode=4; break;
+case 1: if(gUiInputFlags&1) mode=3; break;
+case 2: if(gUiInputFlags&1) return 0; break;
+}
+switch(mode) {
+case 0: case 1: case 2:
+found=Process_Find(Proc_MuEventInst);
+if(found) { proc=found; } else { proc=fn_80127C48(); if(!proc) proc=fn_800C0658(); proc=Process_Create(Proc_MuEventInst,proc); }
+fn_800498A4(obj,proc,(u8)mode); break;
+case 3: case 4: fn_800498A4(obj,0,(u8)mode); break;
+}
+return 1;
+}
+
 s32 fn_8019FC08(void) {
     u8 fn_8001772C(void);
     M2C_UNK Process_CreateChild(void *, s32);
