@@ -1818,6 +1818,7 @@ void fn_80216110(s32 arg0, OSContext *ctx) {
 }
 
 void fn_80216534(void *arg0, void *arg1) {
+#pragma inline_depth(0)
     M2C_UNK fn_80215F78(s32);
     if (arg0 != NULL) {
         fn_80215F78(M2C_FIELD(arg0, s32 *, 0x18));
@@ -1893,6 +1894,7 @@ void fn_80216534(void *arg0, void *arg1) {
     do {
 
     } while (fn_80215F40() != 0U);
+#pragma inline_depth reset
 }
 
 void fn_802166D4(void *arg0) {
