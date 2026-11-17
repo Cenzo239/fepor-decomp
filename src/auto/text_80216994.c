@@ -2736,34 +2736,32 @@ s32 fn_8021BB98(void *arg0, void *arg1)
     return result;
 }
 
+#pragma use_lmw_stmw on
 s32 fn_8021BCCC(void *arg0, void *arg1)
 {
     s32 fn_8021BB04(void *);
     s32 fn_80231944(const void *, const void *, u32);
-
     extern u8 lbl_80366FF2;
     extern u8 lbl_8033A420[];
-
-    u8 *data;
-    u8 *saved;
-    s32 result;
     u8 flags;
+    s32 result;
+    u8 *saved;
+    u8 *data;
 
     data = (u8 *)arg1;
     saved = *(u8 **)((u8 *)arg0 + 0x10C);
-
     result = fn_8021BB04(arg0);
-
     if (result == -10) {
-        flags = data[0x34] & lbl_80366FF2;
-
+        flags = (u8)(data[0x34] & lbl_80366FF2);
         if (flags & 0x20) {
             if (fn_80231944(data, lbl_8033A420, 4) == 0) {
                 if (fn_80231944(data + 4, lbl_8033A420 + 4, 2) == 0) {
                     result = 0;
+                    goto after;
                 }
             }
-        } else if (flags & 0x40) {
+        }
+        if (flags & 0x40) {
             if (fn_80231944(data, lbl_8033A420, 4) == 0) {
                 if (fn_80231944(data + 4, saved + 4, 2) == 0) {
                     result = 0;
@@ -2771,14 +2769,14 @@ s32 fn_8021BCCC(void *arg0, void *arg1)
             }
         }
     }
-
-    if (result == -10 && (data[0x34] & 4)) {
-        return 0;
+after:
+    if (result == -10) {
+        if (data[0x34] & 4) {
+            return 0;
+        }
     }
-
     return result;
 }
-
 s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
 {
     u8 *__CARDGetDirBlock(void *);
