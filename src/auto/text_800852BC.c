@@ -1494,6 +1494,84 @@ void fn_80088CC4(void *arg0) {
     }
 }
 
+void fn_80088D0C(void *arg0) {
+    extern u8 gUiStrings[], gBattle[];
+    void *fn_800C4638(s32, void *, s32);
+    void *fn_8003A114(void *);
+    void *Face_Create(void *, s32);
+    void *GActor_Create(void);
+    void *fn_800506E0(void *, s32);
+    s32 fn_800639B4(void *);
+    void GActor_Finalize(void *);
+    void fn_801A7218(void *, void *, s32);
+    void fn_8007DD78(void *);
+    u8 *p, *unit, *actor, *q;
+    s32 n;
+    p = fn_800C4638(0x68, gUiStrings + 0x3E8, 0);
+    *(void **)((u8 *)arg0+0x30)=p;
+    *(u32 *)(p+0x58)=*(u32 *)((u8 *)arg0+0x34);
+    *(u32 *)p=*(u32 *)((u8 *)arg0+0x38);
+    if(arg0 != NULL) {
+        p=*(void **)((u8 *)arg0+0x30);
+        if(*(void **)(p+0x58) != NULL) {
+            *(s16 *)(p+4)=0;
+            *(s16 *)(p+6)=0;
+            *(f32 *)(p+0x64)=0.0f;
+            *(void **)(p+0x5C)=Face_Create(fn_8003A114(*(void **)(p+0x58)),0);
+            *(void **)(p+0x60)=GActor_Create();
+            *(void **)(*(u8 **)(p+0x60)+4)=*(u8 **)(p+0x58)+0x1C;
+            actor=*(u8 **)(p+0x60);
+            *(u32 *)actor = (*(u32 *)actor | 0x50020000) | 0x8400;
+            *(s32 *)(*(u8 **)(p+0x60)+0x44)=fn_800639B4(fn_800506E0(*(void **)(p+0x58),0));
+            GActor_Finalize(*(void **)(p+0x60));
+            fn_801A7218(gBattle,*(void **)(p+0x58),-1);
+            unit=*(u8 **)(p+0x58);
+            n=0;
+            *(s16 *)(p+0x24)=-1;
+            *(s16 *)(p+0x26)=-1;
+            *(s16 *)(p+0x28)=-1;
+            *(s16 *)(p+0x2A)=-1;
+            *(s16 *)(p+0x2C)=-1;
+            if ((unit[0x1A4] >> 5) & 7) {
+                n=1;
+                *(s16 *)(p+0x24)=0x1B;
+                *(s16 *)(p+0x2E)=(unit[0x1A4] >> 5) & 7;
+            }
+            if ((*(u16 *)(unit+0x1A4) >> 7) & 7) {
+                q=p+n*2;
+                n++;
+                *(s16 *)(q+0x24)=28;
+                *(s16 *)(q+0x2E)=(*(u16 *)(unit+0x1A4) >> 7) & 7;
+            }
+            if ((unit[0x1A5] >> 4) & 7) {
+                q=p+n*2;
+                n++;
+                *(s16 *)(q+0x24)=29;
+                *(s16 *)(q+0x2E)=(unit[0x1A5] >> 4) & 7;
+            }
+            if ((unit[0x1A4] >> 2) & 7) {
+                q=p+n*2;
+                n++;
+                *(s16 *)(q+0x24)=30;
+                *(s16 *)(q+0x2E)=(unit[0x1A4] >> 2) & 7;
+            }
+            if (unit[0x1A5] & 7) {
+                q=p+n*2;
+                *(s16 *)(q+0x24)=31;
+                *(s16 *)(q+0x2E)=unit[0x1A5] & 7;
+            }
+            fn_8007DD78(p);
+            p[8]=0xFF;
+            *(f32 *)(p+0xC)=32.0f;
+            *(f32 *)(p+0x10)=40.0f;
+            p[9]=gBattleState[0xA8];
+            p[0xA]=0xFF;
+            *(f32 *)(p+0x14)=31.0f;
+            *(f32 *)(p+0x18)=139.0f;
+        }
+    }
+}
+
 void fn_80088F34(void) {
     void *Process_Find(void *);
     void Process_Create(void *, s32);
