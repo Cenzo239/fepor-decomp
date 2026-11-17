@@ -7575,45 +7575,23 @@ void fn_80043DEC(void) {
 }
 
 void fn_80043E88(void) {
-    f32 *temp_r3;
-    f32 temp_f26;
-    f32 temp_f27;
-    f32 temp_f28;
-    f32 temp_f29;
-    f32 temp_f30;
-    f32 temp_f31;
-    
-    temp_r3 = (f32*)lbl_803672A8;
-    temp_f31 = temp_r3[0];
-    temp_f30 = temp_r3[1];
-    temp_f29 = temp_r3[4];
-    temp_f28 = temp_r3[5];
-    temp_f27 = temp_r3[2];
-    temp_f26 = temp_r3[3];
-    
-    Camera_Get(temp_r3);
-    
-    temp_r3[0x38] = temp_f31;
-    temp_r3[0x39] = temp_f30;
-    
-    temp_r3[0x3A] = 0.0f;   // lbl_80368EE4
-    temp_r3[0x3B] = 0.0f;   // lbl_80368EE4
-    temp_r3[0x3C] = -1.0f;  // lbl_80368F2C 
-    temp_r3[0x3D] = 0.0f;   // lbl_80368EE4
-    
-    temp_r3[0x35] = temp_f31;
-    temp_r3[0x36] = temp_f30;
-    temp_r3[0x37] = -30.0f; // lbl_80368F4C
-    
-    fn_80068070(0.0f, 0.0f, temp_f29, temp_f28, -1.0f);
-    
-    temp_f29 = (f32)((s32)temp_f29); // fctiwz equivalent
-    temp_f28 = (f32)((s32)temp_f28); // fctiwz equivalent
-    
-    fn_800680AC(0, 0, (s32)temp_f29, (s32)temp_f28);
-    
-    fn_80067C48(0, temp_f27, temp_f26);
-    fn_80067058();
+ void *Camera_Get(void);
+ void fn_80068070(f32,f32,f32,f32);
+ void fn_800680AC(s32,s32,s32,s32);
+ void fn_80067C48(s32,f32,f32);
+ void fn_80067058(void);
+ f32 x,y,w,h,a,b;
+ f32 *p=lbl_803672A8;
+ x=p[0]; y=p[1]; w=p[4]; h=p[5]; a=p[2]; b=p[3];
+ p=Camera_Get();
+ p[0x38]=x; p[0x39]=y;
+ p[0x3A]=0.0f; p[0x3B]=0.0f;
+ p[0x3C]=-1.0f; p[0x3D]=0.0f;
+ p[0x35]=x; p[0x36]=y; p[0x37]=-30.0f;
+ fn_80068070(0.0f,0.0f,w,h);
+ fn_800680AC(0,0,(s32)w,(s32)h);
+ fn_80067C48(0,a,b);
+ fn_80067058();
 }
 
 #pragma global_optimizer off
