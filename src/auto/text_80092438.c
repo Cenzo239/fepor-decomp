@@ -619,28 +619,26 @@ u8 fn_8009326C(void *arg0, void *arg1) {
     return fn_800940B0(arg0, arg1) != 0;
 }
 
+#pragma optimization_level 2
 s32 fn_8009339C(void *arg0,void *arg1) {
 u8 fn_800940B0(void*,void*);
 u8 Status_Test(void*,s32);
-u64 flags;
 u8 allowed=1;
+u64 flags;
 flags=*(u64*)((u8*)arg1+0x38);
 if((flags&1)==0) return 0;
 if(flags&0x200) {
 if(Status_Test((u8*)arg0+0x1BC,9)!=0) allowed=1;
 else allowed=0;
-} else if((((u8*)arg0)[0x1A5]>>4&7)==0) {
-} else if(flags&2) {
-allowed=0;
-} else if(flags&4) {
-allowed=0;
-} else if(flags&0x40) {
-allowed=1;
+} else if((((u8*)arg0)[0x1A5]>>4&7)!=0) {
+if(flags&2) allowed=0;
+else if(flags&4) allowed=0;
+else if(flags&0x40) allowed=1;
 }
 if(allowed==0) return 0;
 return fn_800940B0(arg0,arg1)!=0;
 }
-
+#pragma optimization_level reset
 u8 fn_800934CC(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 Status_Test(void *, s32);
@@ -1540,37 +1538,54 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
 }
 void *fn_80095070(void *arg0, s32 arg1) {
     u8 fn_800940B0(void *, void *);
-    Unk80037BD0 *slot;
-    void *self;
-    u8 *p;
-    s32 i;
     void *obj;
     u8 result;
-    self=arg0;
-    ((Unk80037BD0 *)((u8 *)self+0x1EC))->unk5_bit7=0;
-    ((Unk80037BD0 *)((u8 *)self+0x1F4))->unk5_bit7=0;
-    ((Unk80037BD0 *)((u8 *)self+0x1FC))->unk5_bit7=0;
-    ((Unk80037BD0 *)((u8 *)self+0x204))->unk5_bit7=0;
-    if(arg1>=0) {
-        slot=(Unk80037BD0 *)(arg1*8+0x1EC);
-        slot=(Unk80037BD0 *)((u8 *)self+(s32)slot);
-        obj=*(void **)slot;
-        if (*(u64 *)((u8 *)obj+0x38)&0x10ULL) result=fn_800940B0(self,obj);
-        else result=0;
-        if(result) { slot->unk5_bit7=1; return slot; }
+
+    ((Unk80037BD0 *)((u8 *)arg0 + 0x1EC))->unk5_bit7 = 0;
+    ((Unk80037BD0 *)((u8 *)arg0 + 0x1F4))->unk5_bit7 = 0;
+    ((Unk80037BD0 *)((u8 *)arg0 + 0x1FC))->unk5_bit7 = 0;
+    ((Unk80037BD0 *)((u8 *)arg0 + 0x204))->unk5_bit7 = 0;
+    if (arg1 >= 0) {
+        Unk80037BD0 *slot;
+        slot = (Unk80037BD0 *)((arg1 << 3) + 0x1EC);
+        slot = (Unk80037BD0 *)((u8 *)arg0 + (s32)slot);
+        obj = *(void **)slot;
+        if (*(u64 *)((u8 *)obj + 0x38) & 0x10ULL) {
+            result = fn_800940B0(arg0, obj);
+        } else {
+            result = 0;
+        }
+        if (result) {
+            slot->unk5_bit7 = 1;
+            return slot;
+        }
+        return 0;
+    } else {
+        Unk80037BD0 *slot;
+        u8 *p;
+        s32 i;
+        i = 0;
+        p = arg0;
+        do {
+            slot = (Unk80037BD0 *)(p + 0x1EC);
+            obj = *(void **)slot;
+            if (!obj) {
+                break;
+            }
+            if (*(u64 *)((u8 *)obj + 0x38) & 0x10ULL) {
+                result = fn_800940B0(arg0, obj);
+            } else {
+                result = 0;
+            }
+            if (result) {
+                slot->unk5_bit7 = 1;
+                return slot;
+            }
+            i++;
+            p += 8;
+        } while (i < 4);
         return 0;
     }
-    i=0; p=self;
-    do {
-        slot=(Unk80037BD0 *)(p+0x1EC);
-        obj=*(void **)slot;
-        if(!obj) break;
-        if(*(u64 *)((u8 *)obj+0x38)&0x10ULL) result=fn_800940B0(self,obj);
-        else result=0;
-        if(result) { slot->unk5_bit7=1; return slot; }
-        i++; p+=8;
-    } while(i<4);
-    return 0;
 }
 
 #pragma optimization_level 2
