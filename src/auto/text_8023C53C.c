@@ -15450,6 +15450,7 @@ void fn_802631E4(s32 arg0)
     u8 *entry;
     u8 *current;
     u8 *previous;
+    u8 *next;
     u8 *node;
     u32 value;
     u32 new_aec;
@@ -15491,17 +15492,13 @@ void fn_802631E4(s32 arg0)
         node = lbl_80368ADC;
 
         while (node != 0) {
-            u8 *next;
-
             next = *(u8 **)node;
             if (*(u32 *)(node + 4) < value) {
                 lbl_80368ADC = next;
                 *(void **)node = lbl_80368AD8;
                 lbl_80368AD8 = node;
-                node = next;
-            } else {
-                break;
             }
+            node = next;
         }
 
         new_aec = lbl_80368AF0;
