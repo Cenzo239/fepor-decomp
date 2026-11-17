@@ -19297,6 +19297,29 @@ s32 fn_800F74C0(s32 attacker, void *target) {
     return 1;
 }
 
+s32 fn_800F75F8(s32 attacker, void *target) {
+void *MapObjEvent_Find(void *,s8,s8,s32);
+s32 fn_8010FA2C(void *);
+u8 Unit_GetActiveItemSlot(void *);
+void Battle_SetupFromParams(void *,void *,void *);
+void fn_801A6F34(void *,u8);
+void fn_800F60D4(s32,void *);
+extern u8 gMapObjEventList[],gUiContext[]; extern u32 gBattle[];
+typedef struct Param { void *p; u8 b4[4]; s32 x8; u8 bC[4]; } Param;
+extern Param lbl_80272F14,lbl_80272F04;
+Param atk,def;
+void *event; void *unit;
+event=MapObjEvent_Find(gMapObjEventList,(s8)((u8*)target)[0],(s8)((u8*)target)[1],7);
+def=lbl_80272F14;
+unit=*(void**)((u8*)target+4);
+def.p=unit; def.b4[0]=((u8*)unit)[0x19e]; def.b4[1]=((u8*)unit)[0x19f]; def.b4[2]=Unit_GetActiveItemSlot(unit);
+atk=lbl_80272F04; atk.p=(void*)attacker; atk.b4[0]=((u8*)target)[0]; atk.b4[1]=((u8*)target)[1]; atk.x8=fn_8010FA2C(event);
+Battle_SetupFromParams(gBattle,&atk,&def);
+fn_801A6F34(gBattle,gUiContext[8]==0x15?(u8)0x15:0xf);
+fn_800F60D4(attacker,target);
+return 1;
+}
+
 #pragma cplusplus on
 #pragma auto_inline off
 extern "C" u8 Unit_GetActiveItemSlot(void *);
