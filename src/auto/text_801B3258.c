@@ -10736,6 +10736,8 @@ void *fn_801CCF78(void) {
 }
 
 void fn_801CCF88(void *arg0) {
+    s16 fn_801CD508(s32);
+    s16 fn_801CD548(s32);
 #pragma cplusplus on
     class Window {
     public:
@@ -10744,8 +10746,6 @@ void fn_801CCF88(void *arg0) {
         virtual void v6(); virtual void v7(); virtual void v8();
         virtual s32 width(); virtual s32 height();
     };
-    s16 fn_801CD508(s32);
-    s16 fn_801CD548(s32);
     extern s16 lbl_80366EA0;
     extern f32 lbl_8036B4E0;
     s16 sp8;
