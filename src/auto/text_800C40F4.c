@@ -4004,6 +4004,40 @@ extern "C" s32 fn_800CD630(void *arg0) {
 
     return ((Obj *)M2C_FIELD(arg0, void **, 4))->v2((char *)lbl_802704F8 + 0x3D0, (char *)lbl_802704F8 + 0x3D7) ? 0 : 1;
 }
+
+extern "C" void fn_800CD678(void *arg0, char *arg1) {
+void *Heap_Alloc(u32);
+void *String_Init(void *,char *,void *);
+void *String_Destroy(void *,s16);
+void *fn_80151D50(void *,void *,void *,void *,void *,void *,s32);
+extern char lbl_802704F8[];
+#pragma cplusplus on
+class Host { public: u8 pad[0x10]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void add(void *); };
+union Vector { struct { f32 x,y,z; } f; u32 words[3]; };
+Vector copyA,a,copyB,b;
+u8 name[12],type[12];
+s32 scratchA,scratchB;
+void *obj;
+s8 madeA,madeB;
+char *path;
+void *self;
+self=arg0; path=arg1; madeA=0; madeB=0;
+obj=Heap_Alloc(0xC8);
+if(obj) {
+a.f.x=a.f.y=a.f.z=0.0f;
+b.f.x=b.f.y=b.f.z=0.0f;
+copyA.words[0]=a.words[0]; copyA.words[1]=a.words[1]; copyA.words[2]=a.words[2];
+copyB.words[0]=b.words[0]; copyB.words[1]=b.words[1]; copyB.words[2]=b.words[2];
+String_Init(name,path,&scratchA); madeA=1;
+String_Init(type,lbl_802704F8+0x3D7,&scratchB); madeB=1;
+obj=fn_80151D50(obj,*(void **)((u8 *)self+4),type,name,&copyB,&copyA,0);
+}
+((Host *)*(void **)((u8 *)self+4))->add(obj);
+if(madeB) String_Destroy(type,-1);
+if(madeA) String_Destroy(name,-1);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 #pragma dont_inline on
@@ -20100,6 +20134,7 @@ void fn_800FAC30(void *arg0) {
     }
 }
 
+#pragma use_lmw_stmw on
 void fn_800FAD94(void *arg0) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
@@ -20115,22 +20150,23 @@ void fn_800FAD94(void *arg0) {
     s32 cmdC;
     s8 x;
     s8 y;
-    u8 *ui;
     u8 *tgt;
+    s8 ty;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
-    ui = gUiContext;
-    x = (s8)ui[0xD];
-    y = (s8)ui[0xE];
+    x = (s8)gUiContext[0xD];
+    y = (s8)gUiContext[0xE];
     cmdC = *(s32 *)(cmd + 0xC);
 
     if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
+        ty = y;
         if (*(s32 *)(cmd + 0x10) != 0) {
             tgt = TargetList_GetCurrent(gTargetList);
             x = (s8)tgt[0];
             tgt = TargetList_GetCurrent(gTargetList);
-            Ai_SetDecision((u8)cmdC, (s32)unit, x, (s8)tgt[1], -1, 0, 0);
+            ty = (s8)tgt[1];
+            Ai_SetDecision((u8)cmdC, (s32)unit, x, ty, -1, 0, 0);
         } else {
             *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
         }
@@ -20142,7 +20178,6 @@ void fn_800FAD94(void *arg0) {
         unit[0x251]++;
     }
 }
-
 /* Find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC; does not set gAiCmdOk. */
 void AiCmd_SeekLabelNoOk(void *unit)
 {
@@ -22741,6 +22776,30 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     fn_8002F728(gTargetList);
     return 0;
 }
+
+s32 Map_CountNeighborUnits(s16 arg0,s16 arg1,u8 (*arg2)(void *)) {
+extern s16 lbl_802732A0[];
+extern u8 gBattleMap[],gUnits[];
+s32 baseY=arg1,baseX=arg0;
+s32 count=0;
+s16 *p=lbl_802732A0;
+u8 outside,id;
+s32 x,y;
+void *unit;
+while(p[0]!=0x7FFF) {
+x=baseX+p[0]; outside=0; y=baseY+p[1];
+if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<y) outside=1;
+if(!outside) {
+id=gBattleMap[(s8)x+((s8)y<<6)+0xD];
+if(id) { if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+if(arg2(unit)) count++;
+}
+}
+p+=2;
+}
+return count;
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma opt_loop_invariants off
