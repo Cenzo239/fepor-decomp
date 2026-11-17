@@ -835,6 +835,35 @@ void FileCache_ReleaseByKey(u32 arg0) {
  }
  FileCache_Release(found);
 }
+
+#pragma use_lmw_stmw on
+void fn_8005D330(char *name, u16 flags) {
+    s64 OSGetTime(void);
+    void *fn_8005CEC0(void);
+    void fn_8005E12C(u8 *, char *, u16);
+    void *AramCache_Find(char *);
+    void fn_801ED7D0(void *);
+    u8 *entry;
+    u32 f;
+    void *aram;
+
+    entry = FindEntryByName(name);
+    if (entry) {
+        *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+        return;
+    }
+    aram = AramCache_Find(name);
+    if (aram) {
+        fn_801ED7D0(aram);
+        return;
+    }
+    entry = fn_8005CEC0();
+    f = (u16)flags | 0x200;
+    *(u16 *)(entry + 0x30) = *(u16 *)(entry + 0x30) | f;
+    fn_8005E12C(entry, name, f);
+}
+#pragma use_lmw_stmw reset
+
 #pragma global_optimizer reset
 /* Drop one ref on a file-cache entry; when the count hits zero, cancel loads, wait, and free it. */
 void FileCache_Release(u8 *entry) {
@@ -2239,26 +2268,55 @@ void fn_8005F12C(void *arg0, void *arg1) {
 }
 
 #pragma global_optimizer on
-s32 fn_8005F230(s32 arg0) {
-    s32 var_r31;
-    s32 temp_r3;
-    u32 temp_r4;
-
-    temp_r3 = *(s32 *)((char *)arg0 + 0x9C);
-    if (temp_r3 == 0) {
-        return -1U;
-    }
-    
-    temp_r4 = *(u32 *)((char *)arg0 + 0xC0);
-    if ((temp_r4 & 0xF) == 0) {
-        var_r31 = 0x4000;
-        if (temp_r4 & 0x10000000) {
-            var_r31 = 0x80000;
+void fn_8005F230(void *node) {
+#pragma cplusplus on
+    struct Chain {
+        static void *root(void *p) {
+            for (;;) {
+                void *n=M2C_FIELD(p,void **,4);
+                if(n && M2C_FIELD(n,u32 *,0x8C)) p=n;
+                else return p;
+            }
         }
-        return (*(u32 *)((char *)arg0 + 0xC4) * var_r31) / temp_r3;
+        static s32 count(void *p) {
+            s32 i;
+            p=root(p);
+            i=0;
+            for (;;) {
+                p=M2C_FIELD(p,void **,0x8C);
+                if(p) i++; else break;
+            }
+            return i;
+        }
+        static s32 index(void *node, void *p) {
+            s32 i;
+            i=0;
+            for (;;) {
+                if(p==node) return i;
+                p=M2C_FIELD(p,void **,0x8C);
+                if(p) i++; else break;
+            }
+            return 0;
+        }
+    };
+    u8 color[4];
+    void *root=Chain::root(node);
+    if(root) {
+        s32 count=Chain::count(node);
+        s32 index=Chain::index(node,Chain::root(node));
+        s32 alpha; s32 t;
+        *(u32 *)color=M2C_FIELD(root,u32 *,0x88);
+        t=M2C_FIELD(root,u8 *,0xB);
+        alpha=((t-(t*index)/(count+1))*color[3])/255;
+        color[3]=alpha;
+        M2C_FIELD(node,u8 *,0xB)=alpha;
+        if((u8)alpha!=255) M2C_FIELD(node,u32 *,0)|=0x20;
+        else M2C_FIELD(node,u32 *,0)&=~0x20;
+        M2C_FIELD(node,u8 *,8)=color[0];
+        M2C_FIELD(node,u8 *,9)=color[1];
+        M2C_FIELD(node,u8 *,10)=color[2];
     }
-    
-    return (s32) *(u32 *)((char *)arg0 + 0x9C);
+#pragma cplusplus reset
 }
 
 s32 fn_8005F378(void *node) {
@@ -5751,22 +5809,42 @@ void fn_800680D0(void *arg0, u8 arg1)
     fn_80202BD4(arg0, ptr + 0x24);
 }
 
-s32 fn_80068124(char *name) {
-    extern u16 gBattleState[1400];
-    u8 *e;
-    
-    e = FindEntryByName(name);
-    
-    if (e != NULL) {
-        return M2C_FIELD(e, u16 *, 0x32);
-    }
-    
-    e = FindEntryByName(name);
-    if (e == NULL) {
-        return -1;
-    }
-    
-    return M2C_FIELD(e, u16 *, 0x32);
+void fn_80068124(void *source, void *dest) {
+    void fn_80202BD4(void *,void *);
+    void PSMTXCopy(void *,void *);
+    M2C_FIELD(dest,u16 *,0x0)=M2C_FIELD(source,u16 *,0x0);
+    M2C_FIELD(dest,u8 *,0x2)=M2C_FIELD(source,u8 *,0x2);
+    M2C_FIELD(dest,u8 *,0x3)=M2C_FIELD(source,u8 *,0x3);
+    M2C_FIELD(dest,f32 *,0x4)=M2C_FIELD(source,f32 *,0x4);
+    M2C_FIELD(dest,f32 *,0x8)=M2C_FIELD(source,f32 *,0x8);
+    M2C_FIELD(dest,f32 *,0xc)=M2C_FIELD(source,f32 *,0xc);
+    M2C_FIELD(dest,f32 *,0x10)=M2C_FIELD(source,f32 *,0x10);
+    M2C_FIELD(dest,f32 *,0x14)=M2C_FIELD(source,f32 *,0x14);
+    M2C_FIELD(dest,f32 *,0x18)=M2C_FIELD(source,f32 *,0x18);
+    M2C_FIELD(dest,u16 *,0x1c)=M2C_FIELD(source,u16 *,0x1c);
+    M2C_FIELD(dest,u16 *,0x1e)=M2C_FIELD(source,u16 *,0x1e);
+    M2C_FIELD(dest,u16 *,0x20)=M2C_FIELD(source,u16 *,0x20);
+    M2C_FIELD(dest,u16 *,0x22)=M2C_FIELD(source,u16 *,0x22);
+    fn_80202BD4((u8 *)source+0x24,(u8 *)dest+0x24);
+    fn_80202BD4((u8 *)source+0x64,(u8 *)dest+0x64);
+    PSMTXCopy((u8 *)source+0xA4,(u8 *)dest+0xA4);
+    M2C_FIELD(dest,f32 *,0xd4)=M2C_FIELD(source,f32 *,0xd4);
+    M2C_FIELD(dest,f32 *,0xd8)=M2C_FIELD(source,f32 *,0xd8);
+    M2C_FIELD(dest,f32 *,0xdc)=M2C_FIELD(source,f32 *,0xdc);
+    M2C_FIELD(dest,f32 *,0xe0)=M2C_FIELD(source,f32 *,0xe0);
+    M2C_FIELD(dest,f32 *,0xe4)=M2C_FIELD(source,f32 *,0xe4);
+    M2C_FIELD(dest,f32 *,0xe8)=M2C_FIELD(source,f32 *,0xe8);
+    M2C_FIELD(dest,f32 *,0xec)=M2C_FIELD(source,f32 *,0xec);
+    M2C_FIELD(dest,f32 *,0xf0)=M2C_FIELD(source,f32 *,0xf0);
+    M2C_FIELD(dest,f32 *,0xf4)=M2C_FIELD(source,f32 *,0xf4);
+    M2C_FIELD(dest,f32 *,0xf8)=M2C_FIELD(source,f32 *,0xf8);
+    M2C_FIELD(dest,f32 *,0xfc)=M2C_FIELD(source,f32 *,0xfc);
+    M2C_FIELD(dest,f32 *,0x100)=M2C_FIELD(source,f32 *,0x100);
+    M2C_FIELD(dest,f32 *,0x104)=M2C_FIELD(source,f32 *,0x104);
+    M2C_FIELD(dest,f32 *,0x180)=M2C_FIELD(source,f32 *,0x180);
+    M2C_FIELD(dest,f32 *,0x184)=M2C_FIELD(source,f32 *,0x184);
+    M2C_FIELD(dest,f32 *,0x18c)=M2C_FIELD(source,f32 *,0x18c);
+    M2C_FIELD(dest,f32 *,0x188)=M2C_FIELD(source,f32 *,0x188);
 }
 
 s32 Camera_Get(void) {
@@ -8713,7 +8791,8 @@ void fn_80071B88(void) {
     Prim2D_PrepareTex();
 }
 
-void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
+#pragma cplusplus on
+extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetText(void *);
@@ -8721,51 +8800,100 @@ void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
 
-    u8 *self;
-    u8 *param;
-    u8 *win;
-    void *obj;
-    void **vtable;
+    struct TextObj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void *v6(void *) = 0;
+    };
+    struct WidthObj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual s32 v20() = 0;
+    };
+    struct Self {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19(void *, s32) = 0;
+        virtual void v20(void *) = 0;
+    };
+
+    Self *self;
+    void *param;
+    void *win;
+    TextObj *obj;
     void *text;
     s32 textWidth;
     s32 width;
     s32 diff;
-    s32 half;
 
-    self = (u8 *)arg0;
-    param = (u8 *)arg1;
-    win = (u8 *)arg2;
+    win = arg2;
+    param = arg1;
+    self = (Self *)arg0;
 
-    obj = *(void **)(win + 0x34);
-    vtable = *(void ***)obj;
-    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
+    obj = *(TextObj **)((u8 *)win + 0x34);
+    text = obj->v6(win);
 
     textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
 
-    obj = *(void **)(param + 0x3C);
-    vtable = *(void ***)((u8 *)obj + 4);
-    width = (s16)((s32 (*)(void *))vtable[0x14])(obj);
+    width = (s16)(*(WidthObj **)((u8 *)param + 0x3C))->v20();
 
     diff = width - textWidth;
-    half = (diff + ((u32)diff >> 31)) >> 1;
+    textWidth = (s32)(diff + ((u32)diff >> 31)) >> 1;
 
-    vtable = *(void ***)self;
-    ((void (*)(void *, void *, s32))vtable[0x13])(self, param, diff);
+    self->v19(param, diff);
 
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32)half, (f32)*(s16 *)(win + 0x32));
+    Prim2D_SetPos((f32)textWidth, (f32)*(s16 *)((u8 *)win + 0x32));
 
-    vtable = *(void ***)self;
-    ((void (*)(void *, void *))vtable[0x14])(self, win);
+    self->v20(win);
 
-    obj = *(void **)(win + 0x34);
-    vtable = *(void ***)obj;
-    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
+    obj = *(TextObj **)((u8 *)win + 0x34);
+    text = obj->v6(win);
 
     Prim2D_SetText(text);
     Prim2D_EndPrim();
 }
-
+#pragma cplusplus reset
 void fn_80071CE8(void *arg0, void *arg1) {
     void Prim2D_SetColorPacked(s32 *);
     s32 *Ui_GetColor(s32);
