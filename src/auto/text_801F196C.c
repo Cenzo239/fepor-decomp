@@ -1004,6 +1004,44 @@ void fn_801F3890(void) {
     }
 }
 
+void fn_801F3A88(void *arg0) {
+void fn_80057E64(s32,s32);
+char *strcpy(char *,const char *);
+char *strcat(char *,const char *);
+char *Msg_Expand(char *);
+extern char gOptionsStrs[];
+extern u8 gSystemSave[];
+struct Panel { u8 pad0[8]; s32 state; s16 cursor; s16 unkE; u8 category,previous; s16 x,y,scroll; u8 pad18[0x24]; char title[0x18]; char header[0x88]; s32 dc,e0; };
+register struct Panel *p = *(struct Panel **)((u8 *)arg0+0x30);
+register u8 *list;
+s32 n;
+p->state=13;
+list=(u8 *)p+0x20;
+p->unkE=0;
+p->header[0]=0;
+((u8 *)p)[0x20]=1;
+((u8 *)p)[0x26]=0;
+((u8 *)p)[0x28]=0;
+fn_80057E64(p->dc,0);
+fn_80057E64(p->e0,0);
+strcpy(p->title,gOptionsStrs+0x127A);
+list[2]=1;
+n=1;
+if (*(u16 *)(gSystemSave+0x10)&0x10) {list[3]=3;n=2;}
+if (*(u16 *)(gSystemSave+0x10)&0x20) {list[n+2]=4;n++;}
+list[1]=n;
+p->category=p->previous=list[p->cursor+2];
+p->scroll=0;
+p->x=0x40;
+p->y=p->cursor*0x30+0x78;
+strcpy(p->header,gOptionsStrs+0x11E9);
+strcat(p->header,Msg_Expand(gOptionsStrs+0x11EF));
+strcat(p->header,gOptionsStrs+0x125F);
+strcat(p->header,Msg_Expand(gOptionsStrs+0x1267));
+strcat(p->header,gOptionsStrs+0x1272);
+strcat(p->header,Msg_Expand(gOptionsStrs+0x128B));
+}
+
 #pragma cplusplus on
 extern "C" void fn_801F3C1C(void *arg0) {
  void FileCache_ReleaseSlot(void *); void fn_80161F7C(void); void fn_80057A10(void *, s32); void fn_800C4588(void *);
@@ -2336,6 +2374,54 @@ void fn_801F726C(void *arg0) {
     temp_r31 = M2C_FIELD(arg0, s32 *, 0x30);
     FileCache_ReleaseSlot(temp_r31);
     fn_800C4588(temp_r31);
+}
+
+void fn_801F72A4(void *arg0) {
+    void Ui_PlaySeCue(void *, s32);
+    void Process_Goto(void *, s32);
+    void Game_SetState(s32);
+    void fn_80006160(s32);
+    extern char gBattlePreviewStrings[];
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x30);
+    u32 held = *(u32 *)((u8 *)gPadInput + 4);
+    u32 pressed = held & (*(u32 *)((u8 *)gPadInput + 8) ^ held);
+    u32 repeat = *(u32 *)((u8 *)gPadInput + 12);
+    s32 previous = *(s16 *)(p + 0x18);
+
+    if (pressed & 0x100) {
+        if (previous == 0) {
+            Ui_PlaySeCue(gBattlePreviewStrings + 0x186, 100);
+            fn_80006160(p[0xC8 + *(s16 *)(p + 6)] + 0x5B);
+            Game_SetState(0x1F);
+            Process_Goto(arg0, 2);
+        } else {
+            Ui_PlaySeCue(gBattlePreviewStrings + 0x196, 100);
+            Process_Goto(arg0, 0);
+        }
+    } else if (pressed & 0x200) {
+        Ui_PlaySeCue(gBattlePreviewStrings + 0x1A6, 100);
+        Process_Goto(arg0, 0);
+    } else {
+        if (repeat & 0x01000001) {
+            *(s16 *)(p + 0x18) = 0;
+            *(s16 *)(p + 0x1E) = 4;
+            *(s16 *)(p + 0x20) = *(s16 *)(p + 0x1A);
+            *(s16 *)(p + 0x22) = *(s16 *)(p + 0x1C);
+            *(s16 *)(p + 0x24) = 0x1BD;
+            *(s16 *)(p + 0x26) = 0x3D;
+        }
+        if (repeat & 0x02000002) {
+            *(s16 *)(p + 0x18) = 1;
+            *(s16 *)(p + 0x1E) = 4;
+            *(s16 *)(p + 0x20) = *(s16 *)(p + 0x1A);
+            *(s16 *)(p + 0x22) = *(s16 *)(p + 0x1C);
+            *(s16 *)(p + 0x24) = 0x1FE;
+            *(s16 *)(p + 0x26) = 0x3D;
+        }
+        if (previous != *(s16 *)(p + 0x18)) {
+            Ui_PlaySeCue(gBattlePreviewStrings + 0x1B6, 100);
+        }
+    }
 }
 
 void fn_801F7434(void *arg0) {
@@ -4048,6 +4134,122 @@ void fn_801FA874(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x44) = temp_r0;
     if (temp_r0 < 0) {
         Process_ClearFunc();
+    }
+}
+
+void fn_801FA8B4(void *arg0, s32 (*compare)(void *, void *)) {
+    typedef struct Node {
+        struct Node *prev;
+        struct Node *next;
+        void *unit;
+        void *actor;
+    } Node;
+
+    typedef struct List {
+        s32 count;
+        Node sentinel;
+    } List;
+
+    void fn_801FB428(void *, void *, s32 (*)(void *, void *));
+    void fn_800616A0(void *);
+    void Heap_Free(void *);
+
+    List *list;
+    List other;
+    Node *first;
+    Node *second;
+    Node *node;
+    Node *last;
+    Node *previous;
+    Node *next;
+    Node *temp;
+    s32 half;
+    s32 i;
+
+    list = (List *)arg0;
+
+    switch (list->count) {
+    case 0:
+    case 1:
+        break;
+
+    case 2:
+        first = list->sentinel.next;
+        second = first->next;
+
+        if (compare(
+                (u8 *)second + 8,
+                (u8 *)first + 8
+            )) {
+            temp = first->prev;
+            first->prev = first->next;
+            first->next = temp;
+
+            temp = second->prev;
+            second->prev = second->next;
+            second->next = temp;
+
+            temp = list->sentinel.prev;
+            list->sentinel.prev = list->sentinel.next;
+            list->sentinel.next = temp;
+        }
+        break;
+
+    default:
+        half = (u32)list->count >> 1;
+        node = list->sentinel.next;
+
+        for (i = 0; i < half; i++) {
+            node = node->next;
+        }
+
+        other.count = 0;
+        other.sentinel.prev = &other.sentinel;
+        other.sentinel.next = &other.sentinel;
+
+        last = list->sentinel.prev;
+        previous = node->prev;
+
+        previous->next = last->next;
+        last->next->prev = previous;
+
+        other.sentinel.prev->next = node;
+        node->prev = other.sentinel.prev;
+
+        other.sentinel.prev = last;
+        last->next = &other.sentinel;
+
+        other.count = list->count - half;
+        list->count = half;
+
+        fn_801FA8B4(list, compare);
+        fn_801FA8B4(&other, compare);
+
+        fn_801FB428(list, &other, compare);
+
+        first = other.sentinel.next;
+
+        if (first != &other.sentinel) {
+            last = other.sentinel.prev;
+
+            first->prev->next = last->next;
+            last->next->prev = first->prev;
+
+            while (first != &other.sentinel) {
+                if (&first->unit != NULL) {
+                    if (first->actor != NULL) {
+                        fn_800616A0(first->actor);
+                    }
+                }
+
+                next = first->next;
+                Heap_Free(first);
+                first = next;
+
+                other.count--;
+            }
+        }
+        break;
     }
 }
 
