@@ -3,44 +3,38 @@
 #include "common.h"
 #include "common.h"
 
-extern u16 lbl_8028CD0C[38];
-extern u16 gUiMenuDrawVtbl[64];
-extern u16 lbl_80312AB0[8];
-extern u16 lbl_8028459C[38];
-extern u16 lbl_80286664[64];
-extern u16 lbl_8028CDA4[38];
-extern u16 lbl_8028CCC0[38];
-extern u16 lbl_8028CC74[38];
-extern u16 lbl_8028CC28[38];
-extern u16 lbl_8028CBDC[38];
-extern u16 lbl_8028CB90[38];
-extern u16 lbl_8028CB44[38];
-extern u16 lbl_8028C850[38];
-extern u16 lbl_8028CA74[38];
-extern u16 lbl_8028CA20[38];
-extern u16 lbl_8028CAC8[38];
-extern u16 lbl_8028C9A0[38];
-extern u16 lbl_8028CD58[38];
-extern u16 lbl_802863BC[];
-static inline void SetVtbl(void **obj, s32 off, void *vtbl) {
-    *(void **)((u8 *)obj + off) = vtbl;
-}
+extern u8 lbl_8028CD0C[76];
+extern u8 gUiMenuDrawVtbl[128];
+extern void *lbl_80312AB0[4];
+extern u8 lbl_8028459C[76];
+extern u8 lbl_80286664[128];
+extern u8 lbl_8028CDA4[76];
+extern u8 lbl_8028CCC0[76];
+extern u8 lbl_8028CC74[76];
+extern u8 lbl_8028CC28[76];
+extern u8 lbl_8028CBDC[76];
+extern u8 lbl_8028CB90[76];
+extern u8 lbl_8028CB44[76];
+extern u8 lbl_8028C850[76];
+extern u8 lbl_8028CA74[76];
+extern u8 lbl_8028CA20[76];
+extern u8 lbl_8028CAC8[76];
+extern u8 lbl_8028C9A0[76];
+extern u8 lbl_8028CD58[76];
+extern u8 lbl_802863BC[76];
 
-extern u16 *lbl_803677C8;
-extern u16 *lbl_803677D0;
-extern u16 *lbl_803677D4;
-extern u16 *lbl_803677D8;
-extern u16 *lbl_803677DC;
-extern u16 *lbl_803677E0;
-extern u16 *lbl_803677E4;
-extern u16 *lbl_803677E8;
-extern u16 lbl_803677EC[2];
-extern u16 *lbl_803677F4;
-extern u16 *lbl_803677F8;
-extern u16 lbl_80366E30;
-
-extern u16 lbl_802863BC[];
-extern void *lbl_803677C8_arr[13] : 0x803677C8;
+extern void *lbl_803677C8;
+extern void *lbl_803677D0;
+extern void *lbl_803677D4;
+extern void *lbl_803677D8;
+extern void *lbl_803677DC;
+extern void *lbl_803677E0;
+extern void *lbl_803677E4;
+extern void *lbl_803677E8;
+extern void *lbl_803677EC[2];
+extern void *lbl_803677F4;
+extern void *lbl_803677F8;
+extern u8 lbl_80366E30;
 #pragma use_lmw_stmw on
 void fn_800A9384(void) {
     void **a = (void**)&lbl_80312AB0;
