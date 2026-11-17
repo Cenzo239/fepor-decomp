@@ -1,6 +1,27 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void *GoldPanel_InitRoot(void *p) {
+extern u8 lbl_8028FDB0[];
+*(void **)p=lbl_8028FDB0;*(s32 *)((u8 *)p+4)=0;return p;
+}
+static inline void *GoldPanel_InitBase(void *p,s32 x,s32 y,s32 id) {
+extern u8 lbl_80292230[]; extern f32 lbl_8036B2D8;
+u8 *base=(u8 *)p; s32 zero=0; s32 right=x+0x130; s32 bottom=y+0x90; f32 one=lbl_8036B2D8;
+base=(u8 *)GoldPanel_InitRoot(base);
+*(void **)base=lbl_80292230;
+*(s16 *)(base+8)=-1;
+*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
+*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
+base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
+*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
+*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
+*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
+
+return base;
+}
+
 typedef struct ParseValue801CB41C { f32 v[8]; } ParseValue801CB41C;
 typedef struct String801CB41C { u32 a, b, c; } String801CB41C;
 
@@ -1067,112 +1088,61 @@ void Ui_DrawExpBar(void *bar) {
 }
 
 #pragma global_optimizer off
-void fn_801B6BE4(u8 *out)
-{
-  extern u8 gBattle[];
-  void fn_800340E4(void *);
-  void fn_801B6DAC(u8 *);
-  u8 *unit;
-  u8 *p;
-  u8 *arg0 = out;
-  s32 count;
-  s16 saved;
-  u32 off;
-  u8 type;
-  unit = *((u8 **) (gBattle + 0x280));
-  if (unit && (((type = (*((u8 **) (unit + 0x190)))[8]) == 0) || (type == 5)))
-  {
-  }
-  else
-  {
-    unit = *((u8 **) (gBattle + 0x560));
-    if (unit && (((type = (*((u8 **) (unit + 0x190)))[8]) == 0) || (type == 5)))
-    {
-    }
-    else
-    {
-      unit = 0;
-    }
-  }
-  found:
-  *((u8 **) arg0) = unit;
-
-  count = 0;
-  p = gBattle + 0x8A0;
-  saved = *((s16 *) p);
-  fn_800340E4(p);
-  for (;;)
-  {
-    off = (*((s16 *) p)) * 4;
-    switch (*((u8 *) ((p + off) + 4)))
-    {
-      case 0:
-        goto done1;
-
-      case 0x29:
-        count++;
-        break;
-
-    }
-
-    *((s16 *) p) += 1;
-  }
-
-  done1:
-  *((s16 *) p) = saved;
-
-  arg0[8] = count;
-  {
-    s32 value = 0;
-    s16 saved2 = *((s16 *) p);
-    fn_800340E4(p);
-    for (;;)
-    {
-      off = 4 * (*((s16 *) p));
-      switch (*((u8 *) ((p + off) + 4)))
-      {
-        case 0:
-          goto done2;
-
-        case 0x27:
-          value = (s8) (*((s16 *) ((p + off) + 6)));
-          break;
-
-      }
-
-      *((s16 *) p) += 1;
-    }
-
-    done2:
-    *((s16 *) p) = saved2;
-
-    *((s16 *) (arg0 + 4)) = value;
-  }
-  count = 0;
-  saved = *((s16 *) p);
-  fn_800340E4(p);
-  for (;;)
-  {
-    off = (*((s16 *) p)) * 4;
-    switch (*((u8 *) ((p + off) + 4)))
-    {
-      case 0:
-        goto done3;
-
-      case 0x28:
-        count = (s8) (*((s16 *) ((p + off) + 6)));
-        break;
-
-    }
-
-    *((s16 *) p) += 1;
-  }
-
-  done3:
-  *((s16 *) p) = saved;
-
-  *((s16 *) (arg0 + 6)) = count;
-  fn_801B6DAC(arg0 + 10);
+void fn_801B6BE4(u8 *out) {
+extern u8 gBattle[];
+void fn_800340E4(void *);
+void fn_801B6DAC(u8 *);
+u8 *unit;
+u8 *p;
+u8 *arg0=out;
+s8 count;
+s16 saved;
+u32 off;
+u8 type;
+unit=*(u8 **)(gBattle+0x280);
+if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
+} else {
+unit=*(u8 **)(gBattle+0x560);
+if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
+} else unit=0;
+}
+found:
+*(u8 **)arg0=unit;
+count=0;
+p=gBattle+0x8A0;
+saved=*(s16 *)p;
+fn_800340E4(p);
+for(;;) {
+off=*(s16 *)p*4;
+switch(*(u8 *)(p+off+4)) { case 0: goto done1; case 0x29: count++; break; }
+*(s16 *)p+=1;
+}
+done1:
+*(s16 *)p=saved;
+arg0[8]=count;
+{ s8 value=0; s16 saved2=*(s16 *)p;
+fn_800340E4(p);
+for(;;) {
+off=*(s16 *)p*4;
+switch(*(u8 *)(p+off+4)) { case 0: goto done2; case 0x27: value=(s8)*(s16 *)(p+off+6); break; }
+*(s16 *)p+=1;
+}
+done2:
+*(s16 *)p=saved2;
+*(s16 *)(arg0+4)=value;
+}
+count=0;
+saved=*(s16 *)p;
+fn_800340E4(p);
+for(;;) {
+off=*(s16 *)p*4;
+switch(*(u8 *)(p+off+4)) { case 0: goto done3; case 0x28: count=(s8)*(s16 *)(p+off+6); break; }
+*(s16 *)p+=1;
+}
+done3:
+*(s16 *)p=saved;
+*(s16 *)(arg0+6)=count;
+fn_801B6DAC(arg0+10);
 }
 #pragma global_optimizer reset
 #pragma global_optimizer off
@@ -5930,10 +5900,59 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 #pragma global_optimizer reset
 #pragma cplusplus reset
 
-void fn_801BEDC4(void) {
-    // Function body will be filled in
+#pragma cplusplus on
+#pragma opt_common_subs off
+#pragma dont_inline on
+#pragma global_optimizer off
+extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
+extern f32 lbl_8036B2D8,lbl_8036B2E0;
+struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
+u8 *self; s32 bottom; s32 right; s32 zero; u8 *base; u8 *initial; f32 scale; f32 one;
+self=(u8 *)arg0;
+zero=0;
+right=x+0x130;bottom=y+0x90;
+initial=self;
+base=initial;
+one=lbl_8036B2D8;scale=lbl_8036B2E0;
+*(void **)self=lbl_8028FDB0;
+*(s32 *)(initial+4)=zero;
+*(void **)base=lbl_80292230;
+*(s16 *)(base+8)=-1;
+*(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
+*(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
+base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
+*(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
+*(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
+*(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
+*(void **)self=gUiGoldCostPanelVtbl;
+*(s16 *)(self+0x3C)=*(s32 *)(gBattleState+0x1C);*(s16 *)(self+0x3E)=0;*(s32 *)(self+0x40)=0;
+*(void **)(self+68)=gEmptyVtbl;
+*(s32 *)(self+72)=0;
+*(s32 *)(self+76)=2;
+self[80]=1;self[81]=1;
+*(s16 *)(self+88)=0;*(s16 *)(self+90)=0;
+*(f32 *)(self+92)=one;*(f32 *)(self+96)=one;
+self[100]=255;self[101]=255;self[102]=255;self[103]=255;
+*(f32 *)(self+104)=scale;
+((Obj *)(self+68))->v1();
+one=lbl_8036B2D8;scale=lbl_8036B2E0;
+*(void **)(self+108)=gEmptyVtbl;
+*(s32 *)(self+112)=0;
+*(s32 *)(self+116)=3;
+self[120]=1;self[121]=1;
+*(s16 *)(self+128)=0;*(s16 *)(self+130)=0;
+*(f32 *)(self+132)=one;*(f32 *)(self+136)=one;
+self[140]=255;self[141]=255;self[142]=255;self[143]=255;
+*(f32 *)(self+144)=scale;
+((Obj *)(self+108))->v1();
+((Obj *)self)->v8();return self;
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
+#pragma opt_common_subs reset
+#pragma cplusplus reset
 void *fn_801BEF90(void *arg0) {
     extern f32 lbl_8036B2F0;
     *(s32 *)arg0 = 0;
