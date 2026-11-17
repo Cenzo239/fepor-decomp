@@ -116,6 +116,50 @@ void fn_801A8010(void *arg0) {
     }
 }
 
+void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
+#pragma use_lmw_stmw on
+    void Allegiance_FillMask(s32, void *);
+    u8 Unit_GetDistance(void *, void *);
+    u8 Status_Test(void *, s32);
+    u8 Allegiance_Compare(void *, void *);
+    void *Unit_FindDisposLeader(void *);
+    extern u8 gUnits[];
+    u8 mask[8];
+    s32 i;
+    u8 *other;
+    u8 distance;
+    *hit = 0;
+    *avoid = 0;
+    *crit = 0;
+    Allegiance_FillMask(3, mask);
+    for (i = 1; i <= 159; i++) {
+        if ((u8)i) other = gUnits + ((u8)i - 1) * 0x280;
+        else other = 0;
+        if (*(u32 *)(other + 0x188) == 0) continue;
+        if (mask[(*(u8 **)(other + 0x190))[8]] == 0) continue;
+        distance = Unit_GetDistance(unit, other);
+        if (distance > 3 || distance < 1) continue;
+        if (!Status_Test(other + 0x1BC, 0x3B)) continue;
+        if (Allegiance_Compare(*(void **)((u8 *)unit + 0x190), *(void **)(other + 0x190)) != 1) continue;
+        *hit -= 5;
+        *crit -= 5;
+    }
+    switch ((*(u8 **)((u8 *)unit + 0x190))[8]) {
+    case 0: case 5: case 6: break;
+    default:
+        other = (u8 *)Unit_FindDisposLeader(unit);
+        if (other && Status_Test(other + 0x1BC, 0x3A)) {
+            distance = Unit_GetDistance(unit, other);
+            if (distance >= 1 && distance <= 3) {
+                *hit += 5;
+                *avoid += 5;
+            }
+        }
+        break;
+    }
+#pragma use_lmw_stmw reset
+}
+
 void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 
 #pragma use_lmw_stmw on
@@ -852,6 +896,97 @@ void fn_801A96FC(void *arg0, u8 arg1) {
     }
 }
 
+void fn_801A981C(void *unit, s32 range, s8 slot) {
+    void Item_Clear(void *);
+    void Item_Copy(void *, void *);
+    void *Unit_GetHeldItemSlot(void *, s32);
+    s8 Unit_GetActiveItemSlot(void *);
+    u8 Item_GetMaxRange(void *);
+    u8 Unit_CanEquipItem(void *, void *);
+    void **fn_80037C20(void *);
+    extern u16 lbl_80367218;
+    u8 *self;
+    s8 uses;
+    void *base;
+    void *item;
+    u8 minR;
+    u8 maxR;
+    void **held;
+
+    self = unit;
+    if (slot < 0) {
+        self[0x294] = Unit_GetActiveItemSlot(self);
+    } else {
+        self[0x294] = slot;
+    }
+    uses = *(s8 *)(self + 0x294);
+    if (uses < 0) {
+        Item_Clear(self + 0x284);
+        Item_Clear(self + 0x28C);
+        return;
+    }
+    Item_Copy(self + 0x284, Unit_GetHeldItemSlot(self, uses));
+    uses = *(s8 *)(self + 0x294);
+    Item_Copy(self + 0x28C, Unit_GetHeldItemSlot(self, uses));
+    self[0x2C8] = self[0x288];
+    if (range != 0) {
+        uses = *(s8 *)(self + 0x2C8);
+        if (uses <= 0) {
+            base = &lbl_80367218;
+        } else {
+            base = self + 0x284;
+        }
+        item = *(void **)base;
+        if (item != NULL) {
+            minR = ((u8 *)item)[0x1D];
+        } else {
+            minR = 0;
+        }
+        if ((s32)minR <= range) {
+            if (uses <= 0) {
+                base = &lbl_80367218;
+            } else {
+                base = self + 0x284;
+            }
+            if (*(void **)base != NULL) {
+                maxR = (u8)Item_GetMaxRange(*(void **)base);
+            } else {
+                maxR = 0;
+            }
+            if ((s32)maxR >= range) {
+                goto after_clear;
+            }
+        }
+        Item_Clear(self + 0x284);
+    after_clear:
+        ;
+    }
+    uses = *(s8 *)(self + 0x2C8);
+    if (uses <= 0) {
+        base = &lbl_80367218;
+    } else {
+        base = self + 0x284;
+    }
+    if (*(void **)base != NULL) {
+        if (!Unit_CanEquipItem(
+                (*(void **)(uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)), self),
+                *(void **)(uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)))) {
+            Item_Clear(self + 0x284);
+        }
+    }
+    item = *(void **)(self + 0x28C);
+    if (item != NULL) {
+        *(u16 *)(self + 0x2AE) |= *(u16 *)((u8 *)item + 0xC);
+    }
+    held = fn_80037C20(self);
+    if (held != NULL) {
+        item = *held;
+        if (item != NULL) {
+            *(u16 *)(self + 0x2AE) |= *(u16 *)((u8 *)item + 0xC);
+        }
+    }
+}
+
 #pragma opt_common_subs reset
 void fn_801A99E8(void *arg0, void *arg1) {
     void *Item_GetFlagsPtr(void *);
@@ -1216,6 +1351,74 @@ void fn_801AADA4(void *arg0) {
         *(s32 *)((char *)arg0 + 0x6C) = Process_AttachFunc(fn_801ADA50, arg0);
         Process_ClearFunc(arg0);
     }
+}
+
+void fn_801AAE14(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *fn_80057A64(void *, s32);
+    void fn_80057E98(void *, s32, s32);
+    void fn_80057E5C(void *, s32);
+    void fn_80057E54(void *, s32);
+    void fn_80057E90(void *, f32);
+    void fn_8005C8B4(void *);
+    u8 SystemSave_TestFlag0(void *);
+    void Options_LoadFromBattleState(void *);
+    extern u8 gOptionsTable[];
+    extern u8 gSystemSave[];
+    extern char lbl_8027B838[];
+    u8 *self;
+    void *obj;
+    s32 i;
+    s32 n;
+    s32 a;
+    s32 b;
+
+    n = 0x15;
+    a = 0x14;
+    b = 0x7F;
+    self = (u8 *)arg0;
+    self[0x30] = 0;
+    *(s16 *)(self + 0x32) = 0;
+    *(s16 *)(self + 0x34) = 0;
+    self[0x3D] = 0;
+    self[0x36] = 0;
+    *(f32 *)(self + 0x38) = 0.0f;
+    self[0x3C] = 0;
+    self[0x3D] = 0;
+    *(f32 *)(self + 0x40) = 0.0f;
+    *(s16 *)(self + 0x44) = a;
+    *(s16 *)(self + 0x46) = b;
+    for (i = 0; i < n + 1; i++) {
+        gOptionsTable[i * 0xC] = 1;
+    }
+    if (SystemSave_TestFlag0(gSystemSave) == 0) {
+        self[0x31] = n;
+        gOptionsTable[0xFC] = 0;
+    } else {
+        self[0x31] = 0x16;
+    }
+    Options_LoadFromBattleState(self);
+    obj = Heap_Alloc(0x58);
+    if (obj != 0) {
+        obj = fn_80057A64(obj, 8);
+    }
+    *(void **)(self + 0x54) = obj;
+    fn_80057E98(*(void **)(self + 0x54), 0x22A, 0x7E);
+    fn_80057E5C(*(void **)(self + 0x54), 0);
+    fn_80057E54(*(void **)(self + 0x54), 1);
+    fn_80057E90(*(void **)(self + 0x54), 130.0f);
+    obj = Heap_Alloc(0x58);
+    if (obj != 0) {
+        obj = fn_80057A64(obj, 4);
+    }
+    *(void **)(self + 0x58) = obj;
+    fn_80057E98(*(void **)(self + 0x58), 0x22A, 0x176);
+    fn_80057E5C(*(void **)(self + 0x58), 0);
+    fn_80057E54(*(void **)(self + 0x58), 1);
+    fn_80057E90(*(void **)(self + 0x58), 130.0f);
+    fn_8005C8B4(lbl_8027B838 + 0x320);
+    self[0x69] = 0;
+    *(s32 *)(self + 0x50) = 0;
 }
 
 void Options_LoadFromBattleState(u8 *opt) {
@@ -1924,88 +2127,56 @@ extern "C" void Options_HandleFocusInput(void *opt) {
 
 #pragma cplusplus reset
 void fn_801ADFCC(void *arg0, void *arg1) {
-    s32 temp_r29;
-    s32 temp_r28;
-    s32 temp_r4;
-    s32 temp_r3;
-    
-    if (arg1 != NULL) {
-        M2C_FIELD(arg1, s8 *, 9) = 0;
-        M2C_FIELD(arg1, s8 *, 8) = 0;
-        M2C_FIELD(arg1, s8 *, 7) = 0;
-        M2C_FIELD(arg1, s8 *, 6) = 0;
-        M2C_FIELD(arg1, s8 *, 5) = 0;
-        M2C_FIELD(arg1, s8 *, 4) = 0;
-        M2C_FIELD(arg1, s8 *, 3) = 0;
-        M2C_FIELD(arg1, s8 *, 2) = 0;
-        M2C_FIELD(arg1, s8 *, 1) = 0;
-        M2C_FIELD(arg1, s8 *, 0) = 0;
-        
-        if (arg0 != NULL) {
-            if (M2C_FIELD(arg0, s32 *, 0x10) != 0) {
-                M2C_FIELD(arg1, void **, 0x14) = M2C_FIELD(arg0, void **, 0x14);
-            }
-            
-            // Process some values based on data from arg0
-            temp_r3 = M2C_FIELD(arg0, s16 *, 0x40); // r3 = (u16) *(arg0 + 0x40)
-            temp_r4 = temp_r3 * 0x1a;
-            temp_r4 += 0x1b;
-            temp_r29 = temp_r4;
-            temp_r29 = (s16)temp_r29; // extsh
-            
-            if (M2C_FIELD(arg0, s16 *, 0x42) >= 0) {
-                // If 0x42 field >= 0
-                temp_r28 = temp_r29;
-                temp_r29 = 0x10;
-                M2C_FIELD(arg1, s16 *, 0x42) = temp_r29;
-                M2C_FIELD(arg1, s16 *, 0x44) = temp_r28;
-            } else {
-                // If 0x42 field < 0
-                if (M2C_FIELD(arg0, s16 *, 0x40) != 0) {
-                    temp_r3 = M2C_FIELD(arg0, s16 *, 0x44); // Get r3 from 0x44
-                
-                    // Calculate new values for attributes
-                    temp_r29 += 1; // r29 += 1;
-                    temp_r29 >> 1; // r29 = r29 >> 1;
-                    
-                    temp_r28 += 1; // r28 += 1;
-                    temp_r28 >> 1; // r28 = r28 >> 1;
-                    
-                    M2C_FIELD(arg1, s16 *, 0x42) = temp_r29;
-                    M2C_FIELD(arg1, s16 *, 0x44) = temp_r28;
-                }
-            }
-            
-            // Handle more attribute values
-            if (M2C_FIELD(arg1, u8 *, 0x3c) != 0) {
-                temp_r3 = M2C_FIELD(arg1, u8 *, 0x2d); 
-                if (temp_r3 == 0) {
-                    temp_r3 = M2C_FIELD(arg1, u8 *, 0x2e);
-                    if (temp_r3 != 0) {
-                        temp_r4 = 0;
-                        temp_r3 = 1; 
-                        goto label_0x638c;
-                    } else {
-                        temp_r3 = 0;
-                        temp_r4 = 0;
-                        goto label_0x638c;
-                    }
-                }
-            }
-            temp_r4 = M2C_FIELD(arg1, s32 *, 0x34);
-            if (temp_r4 == 0) {
-                temp_r4 = 1;
-            } else {
-                temp_r3 = M2C_FIELD(arg1, s32 *, 0x38); 
-                temp_r3 = *(s32*)((u8*)arg1 + 0x8);
-            }
-        label_0x638c:
-            // Handle the return value
-            if (temp_r4 != 0) {
-                temp_r3 = 0;
-            }
-        }
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
+    void Prim2D_SetAlphaByte(s32);
+    extern f32 lbl_8036B0A0;
+#pragma cplusplus on
+    struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void update(void *)=0; };
+    struct Coord { s16 value; s16 get() { return value; } void approach(s32 target) { value = (value + target) >> 1; } };
+    s32 active;
+    s16 x;
+    s16 y;
+    s32 currentX;
+    u8 *self = (u8 *)arg0;
+    u8 *ctx = (u8 *)arg1;
+    ((Obj *)arg0)->update(arg1);
+    switch (*(s16 *)(self + 0x3E)) {
+    case 0: x = *(s16 *)(self + 0x40) * 26 + 27; y = 16; break;
+    case 1: x = 36; y = 64; break;
+    case 2: x = 144; y = 64; break;
     }
+    currentX = *(s16 *)(self + 0x42);
+    if ((s16)currentX < 0 || *(s16 *)(self + 0x44) < 0) {
+        *(s16 *)(self + 0x42) = x;
+        *(s16 *)(self + 0x44) = y;
+    } else {
+        u32 nextX = x + 1;
+        u32 nextY = y + 1;
+        *(s16 *)(self + 0x42) = (s32)(currentX + nextX) >> 1;
+        *(s16 *)(self + 0x44) = (s32)(*(s16 *)(self + 0x44) + nextY) >> 1;
+    }
+    if (self[0x3C]) {
+        active = 0;
+        u8 ready = active;
+        if (ctx[0x2D] == 0 && ctx[0x2E] == 0) ready = 1;
+        if (ready) {
+            void *selected;
+            if (*(u32 *)(ctx + 0x34)) selected = *(void **)(*(u8 **)(ctx + 0x38) + 8);
+            else selected = 0;
+            if (selected == self) active = 1;
+        }
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036B0A0);
+        Prim2D_PrepareTex();
+        Ui_DrawRouteIconEx(*(s16 *)(self + 0x42), *(s16 *)(self + 0x44), active);
+    }
+    Prim2D_Begin();
+    Prim2D_SetAlphaByte(0x80);
+    Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on
