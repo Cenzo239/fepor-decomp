@@ -2681,8 +2681,8 @@ void fn_8005F5B4(void *arg0, s32 arg1) {
     u8 *anim;
     u8 *entry;
     s32 i;
-    u8 *src;
-    u8 *dst;
+    u8 *r5;
+    u8 *r6;
     f32 frame;
 
     old = *(void **)((u8 *)arg0 + 0x44);
@@ -2706,12 +2706,12 @@ void fn_8005F5B4(void *arg0, s32 arg1) {
             *(u16 *)(self + 0x82) = 0xFFFF;
             entry = (u8 *)fn_80065634((void ***)anim, (s32)frame);
             if (entry) {
-                dst = self;
-                src = entry;
+                r5 = entry;
+                r6 = self;
                 for (i = 0; i < *(u16 *)(entry + 2); i++) {
-                    *(u16 *)(dst + 0x7C) = *(u16 *)(src + 4);
-                    src += 2;
-                    dst += 2;
+                    *(u16 *)(r6 + 0x7C) = *(u16 *)(r5 + 4);
+                    r5 += 2;
+                    r6 += 2;
                 }
             }
             *(f32 *)(self + 0x58) = frame;
