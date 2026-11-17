@@ -281,6 +281,38 @@ void fn_800294E8(void) {
     }
 }
 
+void fn_80029598(void) {
+void *Map_GetCursorUnit(void);
+void Allegiance_FillMask(s32,u8 *);
+extern u8 gUnits[],gBattleState[];
+u8 mask[4];
+u8 found;
+u8 *unit;
+s32 flags;
+s32 i;
+unit=Map_GetCursorUnit();
+if(!unit) {
+found=0;
+Allegiance_FillMask(1,mask);
+for(i=1;i<160;i++) {
+u8 id=i;
+u8 *p=id?gUnits+(id-1)*0x280:0;
+if(*(u32 *)(p+0x188) && mask[(*(u8 **)(p+0x190))[8]] && (*(u32 *)(p+0x1a0)&0x800)) {found=1;break;}
+}
+if(found) gBattleState[0x51d]=2;
+else gBattleState[0x51d]=1;
+return;
+}
+flags=*(u32 *)(unit+0x1a0);
+if(flags&1) {gBattleState[0x51d]=4;return;}
+switch((s32)(*(u8 **)(unit+0x190))[8]) {
+case 0: gBattleState[0x51d]=3;break;
+case 1: if(flags&0x800) gBattleState[0x51d]=6; else gBattleState[0x51d]=5;break;
+case 2: gBattleState[0x51d]=8;break;
+case 3: gBattleState[0x51d]=7;break;
+}
+}
+
 void fn_80029730(void) {
     void fn_800F214C(void);
     void fn_800F20E0(void);
@@ -651,6 +683,34 @@ extern "C" void fn_8002A784(void *unit, u8 *arg1) {
             ((Visitor *)&obj)->visit(x - 1, y);
     }
 }
+
+extern "C" void fn_8002A8CC(void *arg0, void *arg1) {
+extern u8 lbl_80284E20[],lbl_80284DA0[],lbl_80284D90[],gTargetList[],gBattleMap[],gUnits[];
+void fn_8002F728(void *); void Map_SelectRangeBuffer(void *,s32);
+s32 Item_GetRangeForUnit(void *,void *); void Map_FillAttackRange(void *,s32,s32,s32,s32);
+struct Visitor { virtual void visit(void *)=0; };
+struct {void *vtbl; void *unit;} obj;
+s32 y,x,rowOffset,index;
+u8 *row,*cell,*map;
+s32 range;
+u8 ir,iy,ix;
+obj.vtbl=lbl_80284E20;obj.vtbl=lbl_80284DA0;obj.unit=arg0;obj.vtbl=lbl_80284D90;
+fn_8002F728(gTargetList);Map_SelectRangeBuffer(gBattleMap,6);
+ir=((u8*)arg1)[0x1D];iy=((u8*)obj.unit)[0x19F];ix=((u8*)obj.unit)[0x19E];
+Map_FillAttackRange(gBattleMap,ix,iy,ir,Item_GetRangeForUnit(arg1,obj.unit));
+range=((s8*)arg1)[0x1D];map=gBattleMap;
+for(y=0,rowOffset=0,row=map;(s8)y<*(s32*)(map+4);y++,rowOffset+=64,row+=64){
+for(x=0,index=rowOffset,cell=row;(s8)x<*(s32*)map;x++,index++,cell++){
+if((*(s16**)(map+0x14190))[index]>=range){
+u8 id=cell[13];
+if(id){void *unit;if(id)unit=gUnits+(id-1)*0x280;else unit=0;
+((Visitor*)&obj)->visit(unit);
+}
+}
+}
+}
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus reset
