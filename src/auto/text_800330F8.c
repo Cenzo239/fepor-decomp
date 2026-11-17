@@ -273,6 +273,50 @@ void fn_80033E90(void *arg0, s32 arg1) {
     *(s16 *)((u8 *)arg0 + 2) = *(s16 *)arg0;
 }
 
+s32 fn_80033F18(void *self, s32 code) {
+    u8 c = (u8)code;
+
+    if (c < 0x58) {
+        return code;
+    }
+    if (((u8 *)self)[0x404] == 0) {
+        switch (c - 0x59) {
+        case 0: return 3;
+        case 1: return 4;
+        case 2: return 5;
+        case 3: return 6;
+        case 4: return 7;
+        case 5: return 8;
+        case 6: return 9;
+        case 7: return 0xF;
+        case 8: return 0x10;
+        case 9: return 0x11;
+        case 10: return 0x12;
+        case 11: return 0x13;
+        case 12: return 0x14;
+        case 13: return 0x15;
+        }
+    } else {
+        switch (c - 0x59) {
+        case 0: return 0xF;
+        case 1: return 0x10;
+        case 2: return 0x11;
+        case 3: return 0x12;
+        case 4: return 0x13;
+        case 5: return 0x14;
+        case 6: return 0x15;
+        case 7: return 3;
+        case 8: return 4;
+        case 9: return 5;
+        case 10: return 6;
+        case 11: return 7;
+        case 12: return 8;
+        case 13: return 9;
+        }
+    }
+    return 0;
+}
+
 #pragma global_optimizer off
 void BattleAnim_Queue(s16 *arg0, s32 arg1, s8 arg2) {
     s8 fn_80033F18(s16 *, s32);
