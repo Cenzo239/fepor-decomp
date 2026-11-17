@@ -5653,19 +5653,24 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
         *((u8 *)self + 4) = lbl_80366F09;
     }
 }
+#pragma dont_inline on
+#pragma global_optimizer off
 #pragma scheduling off
 void Tree_Init(void *arg0, u8 *arg1) {
-    u32 z=0;
+    u8 *mid;
     u8 v;
-    u32 *mid;
-    v=*arg1;
-    *(u32 *)arg0=z;
-    mid=(u32 *)arg0+1;
-    *mid=z;
-    *((u8 *)arg0+8)=v;
-    ((u32 **)arg0)[2]=mid;
+    s32 z;
+    z = 0;
+    v = *arg1;
+    *(u32 *)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(u32 *)((u8 *)arg0 + 4) = z;
+    *((u8 *)arg0 + 8) = v;
+    *(void **)((u8 *)arg0 + 8) = mid;
 }
 #pragma scheduling reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 /* Allocate and link a new RB-tree node with u16 key under parent; rebalance and return it. */
 void *Tree_InsertNode(void *tree, void *parent, s32 asLeft, s32 setFirst, u16 *key) {
     void *Heap_Alloc(u32);
