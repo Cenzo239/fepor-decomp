@@ -1,6 +1,7 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct MenuDDEntry { u8 pad[0x40]; u8 id; };
 struct MenuDD { u8 pad[4];
 virtual s32 v0()=0;
 virtual s32 v1()=0;
@@ -7388,20 +7389,38 @@ void fn_8013DD1C(s32 arg0, void *arg1) {
     Prim2D_PrepareTex();
 }
 
-void fn_8013DD90(void* arg0, void* arg1) {
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    *(u16*)arg0 = 0x2000;
-    
-    if (arg1 != NULL) {
-        ((u16*)arg1)[5] = 0;
-        ((u16*)arg1)[0] = 0;
-    }
-}
-
 #pragma cplusplus on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+extern "C" void fn_8013DD90(MenuDD *self,u8 *ctx) {
+void *GfxEnt_Get(s32);
+void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(); void Prim2D_SetAlphaByte(u8);
+void Ui_DrawRouteIconEx(s16,s32,u8);
+void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
+s32 width,height; s32 x,y; u8 idle; s32 active;
+self->v30();
+x=*(s16*)((u8*)GfxEnt_Get(*(u8*)(ctx+(s8)ctx[0x62]+0x40))+0x30);
+y=*(s16*)((u8*)GfxEnt_Get(*(u8*)(ctx+(s8)ctx[0x62]+0x40))+0x32);
+width=self->v35(); height=self->v20();
+if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
+else { s32 nx=x+1,ny=y+1;
+*(s16*)(ctx+0x38)=(*(s16*)(ctx+0x38)+nx)/2;
+*(s16*)(ctx+0x3a)=(*(s16*)(ctx+0x3a)+ny)/2;
+}
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036A6D0);
+idle=0; if(!ctx[0x2d] && !ctx[0x2e]) idle=1;
+Prim2D_SetAlphaByte(idle?0x80:0x40); Prim2D_PrepareTex();
+s32 iy=*(s16*)(ctx+0x3a); s16 ix=*(s16*)(ctx+0x38);
+u8 iconIdle=0; if(!ctx[0x2d] && !ctx[0x2e]) iconIdle=1;
+Ui_DrawRouteIconEx(ix,iy,iconIdle);
+Prim2D_Begin(); Prim2D_AddZ(gUiMenuSlotPlainTextScale); Prim2D_PrepareTex();
+active=0; if(!ctx[0x2d] && !ctx[0x2e]) active=1;
+s16 w=width; s32 offset=(s16)self->v31();
+fn_8008AB7C((w>>1)+(x-offset),y+((s16)height>>1),w,0x17,0x19,0x4c,active);
+Prim2D_Begin(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
+}
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
 extern "C" void Ui_DrawListWindowFrame(s32, s32, s32, s16, s32, s32);
 s32 Prim2D_SetAlphaByte(u8);
 extern "C" void Ui_DrawListPanelBg(void *panel, s32 count) {
