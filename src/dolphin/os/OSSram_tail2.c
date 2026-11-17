@@ -212,15 +212,36 @@ s32 fn_80209B8C(s32 arg0) {
     return result;
 }
 
-void fn_80209C10(s32 arg0, u32 arg1) {
-u32 OSDisableInterrupts(void); void OSRestoreInterrupts(u32);
-u8 *scb=(u8*)Scb_80339420; u32 irq; s32 *locked; u16 *entry;
-irq=OSDisableInterrupts(); locked=(s32*)scb;
-if(*(locked+=18)) { OSRestoreInterrupts(irq); scb=0; }
-else { *(u32*)(scb+0x44)=irq; *locked=1; scb+=0x14; }
-entry=(u16*)(scb+(arg0<<1)); ;
-if(*(entry+=14) != (u16)arg1) { *entry=arg1; fn_8020931C(1,0x14); }
-else fn_8020931C(0,0x14);
+void fn_80209C10(s32 arg0, u16 arg1) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+    extern u16 Scb_80339420[];
+    u8 *scb;
+    volatile s32 *locked;
+    u32 interrupts;
+    u16 *entry;
+    u8 pad[8];
+
+    scb = (u8 *)Scb_80339420;
+    interrupts = OSDisableInterrupts();
+    locked = (volatile s32 *)(scb + 0x48);
+    if (*locked != 0) {
+        OSRestoreInterrupts(interrupts);
+        scb = NULL;
+    } else {
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
+        scb += 0x14;
+    }
+    entry = (u16 *)(scb + (arg0 << 1));
+    if (*(entry += 14) != arg1) {
+        *entry = arg1;
+        fn_8020931C(1, 0x14);
+    } else {
+        fn_8020931C(0, 0x14);
+    }
+    (void)pad;
 }
 
 u16 OSGetGbsMode(void) {
