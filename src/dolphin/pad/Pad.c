@@ -263,12 +263,12 @@ void fn_80212108(s32 chan, u32 type) {
     void fn_8023C188(s32, void (*)(s32, u32));
     void memset(void *, int, u32);
     extern void fn_802121E0(s32, u32);
-    extern u8 lbl_8033A1C0[];
+    extern u8 Origin[];
     extern s32 lbl_80366FA4;
-    extern u32 lbl_80366FAC;
-    extern u32 lbl_8036866C;
+    extern u32 PADSpec;
+    extern u32 EnabledBits;
     extern u32 lbl_80368670;
-    extern u32 lbl_80368678;
+    extern u32 WaitingBits;
     u32 sr[2];
     u32 pad[2];
     u32 chanBit;
@@ -279,17 +279,17 @@ void fn_80212108(s32 chan, u32 type) {
     if (!(type & 0xF)) {
         bitConst = 0x80000000U;
         chanBit = lbl_80366FA4;
-        lbl_8036866C |= bitConst >> chanBit;
+        EnabledBits |= bitConst >> chanBit;
         fn_8023BA70(chanBit, sr);
-        fn_8023B804(chanBit, lbl_80366FAC | 0x400000);
-        fn_8023B894(lbl_8036866C);
-        lbl_80368678 |= bitConst >> lbl_80366FA4;
+        fn_8023B804(chanBit, PADSpec | 0x400000);
+        fn_8023B894(EnabledBits);
+        WaitingBits |= bitConst >> lbl_80366FA4;
     }
     bit = lbl_80368670;
     lbl_80366FA4 = __cntlzw(bit);
     if (lbl_80366FA4 != 0x20) {
         lbl_80368670 = bit & ~(0x80000000U >> lbl_80366FA4);
-        memset(&lbl_8033A1C0[lbl_80366FA4 * 12], 0, 12);
+        memset(&Origin[lbl_80366FA4 * 12], 0, 12);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
 }
