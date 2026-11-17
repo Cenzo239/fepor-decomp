@@ -1385,52 +1385,79 @@ s32 fn_80134E40(void) {
     return 4;
 }
 
-void fn_80134E48(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    extern M2C_UNK lbl_8028FDB0;
-    extern M2C_UNK lbl_8029180C;
-    extern M2C_UNK lbl_80292230;
+#pragma use_lmw_stmw on
+void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_8029180C[];
+    extern u8 lbl_80292230[];
     extern f32 lbl_8036A5AC;
-    M2C_FIELD(arg0, M2C_UNK **, 0) = &lbl_8028FDB0;
-    M2C_FIELD(arg0, s32 *, 4) = 0;
-    M2C_FIELD(arg0, M2C_UNK **, 0) = &lbl_80292230;
-    M2C_FIELD(arg0, s16 *, 8) = -1;
-    M2C_FIELD(arg0, s16 *, 0xA) = arg1;
-    M2C_FIELD(arg0, s16 *, 0xC) = arg2;
-    M2C_FIELD(arg0, s16 *, 0xE) = (s16) (arg1 + arg3);
-    M2C_FIELD(arg0, s16 *, 0x10) = (s16) (arg2 + arg4);
-    M2C_FIELD(arg0, s16 *, 0x12) = 0;
-    M2C_FIELD(arg0, s16 *, 0x14) = 0;
-    M2C_FIELD(arg0, s16 *, 0x16) = arg3;
-    M2C_FIELD(arg0, s16 *, 0x18) = arg4;
-    M2C_FIELD(arg0, s16 *, 0x1A) = 0;
-    M2C_FIELD(arg0, s16 *, 0x1C) = 0;
-    M2C_FIELD(arg0, s8 *, 0x1E) = 0xFF;
-    M2C_FIELD(arg0, s8 *, 0x1F) = 0xFF;
-    M2C_FIELD(arg0, s8 *, 0x20) = 0xFF;
-    M2C_FIELD(arg0, s8 *, 0x21) = 0xFF;
-    M2C_FIELD(arg0, s16 *, 0x22) = arg5;
-    M2C_FIELD(arg0, s16 *, 0x24) = 0;
-    M2C_FIELD(arg0, f32 *, 0x28) = (f32) lbl_8036A5AC;
-    M2C_FIELD(arg0, f32 *, 0x2C) = (f32) lbl_8036A5AC;
-    M2C_FIELD(arg0, f32 *, 0x30) = (f32) lbl_8036A5AC;
-    M2C_FIELD(arg0, s32 *, 0x34) = 0;
-    M2C_FIELD(arg0, s32 *, 0x38) = 0;
-    M2C_FIELD(arg0, M2C_UNK **, 0) = &lbl_8029180C;
-    M2C_FIELD(arg0, s8 *, 0x3C) = 1;
-    M2C_FIELD(arg0, s8 *, 0x3D) = 1;
-    M2C_FIELD(arg0, s16 *, 0x3E) = 0;
-    M2C_FIELD(arg0, s16 *, 0x40) = -1;
-    M2C_FIELD(arg0, s16 *, 0x42) = -1;
-    M2C_FIELD(arg0, s16 *, 0x44) = 2;
-    M2C_FIELD(arg0, s16 *, 0x46) = 0x30;
-    M2C_FIELD(arg0, s16 *, 0x48) = 0x10;
-    M2C_FIELD(arg0, s16 *, 0x4A) = 0;
-    M2C_FIELD(arg0, s16 *, 0x12) = 2;
-    M2C_FIELD(arg0, s16 *, 0x14) = 8;
-    M2C_FIELD(arg0, s16 *, 0x16) = (s16) ((s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) - 2);
-    M2C_FIELD(arg0, s16 *, 0x18) = (s16) ((s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)) - 8);
-}
+    s16 right;
+    s16 bottom;
+    s16 w;
+    s16 h;
+    f32 f;
+    s32 zero;
+    s16 neg1;
+    u8 ff;
+    s16 two;
+    s16 thirty;
+    s16 sixteen;
+    s16 eight;
 
+    zero = 0;
+    neg1 = -1;
+    ff = 0xFF;
+    f = lbl_8036A5AC;
+    thirty = 0x30;
+    two = 2;
+    eight = 8;
+    sixteen = 0x10;
+
+    *(void **)arg0 = lbl_8028FDB0;
+    right = (s16)arg1 + (s16)arg3;
+    *(s32 *)((u8 *)arg0 + 4) = zero;
+    bottom = (s16)arg2 + (s16)arg4;
+    *(void **)arg0 = lbl_80292230;
+    *(s16 *)((u8 *)arg0 + 8) = neg1;
+    *(s16 *)((u8 *)arg0 + 0xA) = (s16)arg1;
+    *(s16 *)((u8 *)arg0 + 0xC) = (s16)arg2;
+    *(s16 *)((u8 *)arg0 + 0xE) = right;
+    *(s16 *)((u8 *)arg0 + 0x10) = bottom;
+    *(s16 *)((u8 *)arg0 + 0x12) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x14) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x16) = (s16)arg3;
+    *(s16 *)((u8 *)arg0 + 0x18) = (s16)arg4;
+    *(s16 *)((u8 *)arg0 + 0x1A) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x1C) = (s16)zero;
+    ((u8 *)arg0)[0x1E] = ff;
+    ((u8 *)arg0)[0x1F] = ff;
+    ((u8 *)arg0)[0x20] = ff;
+    ((u8 *)arg0)[0x21] = ff;
+    *(s16 *)((u8 *)arg0 + 0x22) = (s16)arg5;
+    *(s16 *)((u8 *)arg0 + 0x24) = (s16)zero;
+    *(f32 *)((u8 *)arg0 + 0x28) = f;
+    *(f32 *)((u8 *)arg0 + 0x2C) = f;
+    *(f32 *)((u8 *)arg0 + 0x30) = f;
+    *(s32 *)((u8 *)arg0 + 0x34) = zero;
+    *(s32 *)((u8 *)arg0 + 0x38) = zero;
+    *(void **)arg0 = lbl_8029180C;
+    ((u8 *)arg0)[0x3C] = 1;
+    ((u8 *)arg0)[0x3D] = 1;
+    *(s16 *)((u8 *)arg0 + 0x3E) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x40) = neg1;
+    *(s16 *)((u8 *)arg0 + 0x42) = neg1;
+    *(s16 *)((u8 *)arg0 + 0x44) = two;
+    *(s16 *)((u8 *)arg0 + 0x46) = thirty;
+    *(s16 *)((u8 *)arg0 + 0x48) = sixteen;
+    *(s16 *)((u8 *)arg0 + 0x4A) = (s16)zero;
+    h = (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xC));
+    w = (s16)(*(s16 *)((u8 *)arg0 + 0xE) - *(s16 *)((u8 *)arg0 + 0xA));
+    *(s16 *)((u8 *)arg0 + 0x12) = two;
+    *(s16 *)((u8 *)arg0 + 0x14) = eight;
+    *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
+    *(s16 *)((u8 *)arg0 + 0x18) = (s16)(h - 8);
+}
+#pragma use_lmw_stmw reset
 void *fn_80134F74(void *arg0, s16 arg1) {
     M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
@@ -1645,7 +1672,8 @@ extern "C" void fn_801352F0(void *arg0) {
         0xB3, 0x10);
 }
 
-void fn_8013535C(void *self, s16 x, s16 y, void *item) {
+extern "C" void fn_8013535C(void *self, s32 argX, s32 argY, void *argItem) {
+#pragma cplusplus reset
 #pragma use_lmw_stmw on
 void Prim2D_Begin(void); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex(void);
 s32 Text_MeasureHeight(s32,f32);
@@ -1657,9 +1685,12 @@ void Prim2D_SetColorPacked(void *);
 void Prim2D_SetTextScale(s32,f32);
 void fn_80006B18(s32,s32,s32,s32,u8);
 void Prim2D_EndPrim(void);
-void Ui_DrawIcon(void *,s16,s16,u8);
+void Ui_DrawIcon(void *,s32,s32,u8);
 extern u8 lbl_80276720[],gItemIconDrawer[];
 extern f32 lbl_8036A5DC,lbl_8036A5E0;
+s32 x;
+s32 y;
+void *item=argItem;
 s32 textY;
 u32 color;
 s32 name;
@@ -1668,6 +1699,7 @@ Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|3));
 Prim2D_PrepareTex();
 textY=(s16)((26-Text_MeasureHeight(-1,lbl_8036A5DC))>>1);
 name=fn_8010586C(item);
+x=(s16)argX; y=(s16)argY;
 textY=y+textY;
 Text_Draw((s16)(x+32),(s16)textY,1,lbl_80276720+0x1D,name);
 Prim2D_AddPrim(6);
@@ -1677,6 +1709,7 @@ Prim2D_SetTextScale(1,lbl_8036A5E0);
 fn_80006B18(x+(s16)(*(s16 *)((u8 *)self+0x16)-*(s16 *)((u8 *)self+0x12))-2* *(s16 *)((u8 *)self+0x40),textY,0,0,*((u8 *)item+0x1A));
 Prim2D_EndPrim();
 Ui_DrawIcon(gItemIconDrawer,x,y,*((u8 *)item+0x19));
+#pragma cplusplus on
 }
 
 #pragma cplusplus reset
@@ -2456,6 +2489,46 @@ extern "C" void *Ui_DtorUnitPanelMid(void *self, s16 doFree) {
     }
     return self;
 }
+
+extern "C" void fn_801367FC(void *arg0) {
+#pragma cplusplus reset
+void *Heap_Alloc(s32);
+void *fn_8013692C(void *,s32,s32,s32,s32,s32);
+void fn_8013F0F0(void *,void *);
+void fn_8013F1A0(void *,void *);
+void *child;
+s16 r5,r7,r8,r9,s,t;
+s16 mid,height;
+t=2;s=12;
+r9=M2C_FIELD(arg0,s16 *,0xC);
+r8=M2C_FIELD(arg0,s16 *,0x10);
+r7=M2C_FIELD(arg0,s16 *,0xA);
+r5=M2C_FIELD(arg0,s16 *,0xE);
+r8=(s16)(r8-r9);
+M2C_FIELD(arg0,s16 *,0x12)=t;
+t=(s16)(r5-r7);
+r5=r8-12;
+M2C_FIELD(arg0,s16 *,0x14)=s;
+t=t-2;
+M2C_FIELD(arg0,s16 *,0x16)=t;
+M2C_FIELD(arg0,s16 *,0x18)=r5;
+M2C_FIELD(arg0,s16 *,0x8A)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+M2C_FIELD(arg0,s16 *,0x8C)=0;
+M2C_FIELD(arg0,s16 *,0x8E)=0;
+mid=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
+M2C_FIELD(arg0,s16 *,0xB2)=mid;
+M2C_FIELD(arg0,s16 *,0xB4)=height;
+M2C_FIELD(arg0,s16 *,0xB6)=0;
+if(M2C_FIELD(arg0,void **,0x48)) fn_8013F0F0(arg0,M2C_FIELD(arg0,void **,0x48));
+child=Heap_Alloc(0x9C);
+if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))-11,0,9,(s16)(M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14)),M2C_FIELD(arg0,s16 *,0x22)-5);
+M2C_FIELD(arg0,void **,0x48)=child;
+M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
+fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
+#pragma cplusplus on
+}
+
 #pragma cplusplus reset
 
 #pragma use_lmw_stmw on
@@ -5159,6 +5232,42 @@ extern "C" void *Ui_DtorPanel(void *self, s16 doFree) {
     }
     return self;
 }
+
+extern "C" void fn_8013B464(void *arg0) {
+#pragma cplusplus reset
+void *Heap_Alloc(s32);
+void *fn_8013692C(void *,s32,s32,s32,s32,s32);
+void fn_8013F0F0(void *,void *);
+void fn_8013F1A0(void *,void *);
+#pragma cplusplus on
+struct Rect {
+s16 left,top,right,bottom;
+s16 width() { return right-left; }
+s16 height() { return bottom-top; }
+void set(s16 l,s16 t,s16 r,s16 b) { left=l; top=t; right=r; bottom=b; }
+};
+void *child;
+s16 mid,height;
+Rect *outer=(Rect *)((u8 *)arg0+0xA);
+Rect *inner=(Rect *)((u8 *)arg0+0x12);
+inner->set(2,8,outer->width()-2,outer->height()-38);
+M2C_FIELD(arg0,s16 *,0x92)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+M2C_FIELD(arg0,s16 *,0x94)=0;
+M2C_FIELD(arg0,s16 *,0x96)=0;
+mid=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
+M2C_FIELD(arg0,s16 *,0xBA)=mid;
+M2C_FIELD(arg0,s16 *,0xBC)=height;
+M2C_FIELD(arg0,s16 *,0xBE)=0;
+if(M2C_FIELD(arg0,void **,0x48)) fn_8013F0F0(arg0,M2C_FIELD(arg0,void **,0x48));
+child=Heap_Alloc(0x9C);
+if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))-11,0,9,(s16)(M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14)),M2C_FIELD(arg0,s16 *,0x22)-5);
+M2C_FIELD(arg0,void **,0x48)=child;
+M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
+fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 void fn_8013B594(void *arg0, s16 arg1) {
