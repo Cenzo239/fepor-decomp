@@ -1,5 +1,61 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+#pragma cplusplus on
+struct UnitHireItem {
+virtual void v0();
+virtual void v1();
+virtual void v2();
+virtual void v3();
+virtual void v4();
+virtual void v5();
+virtual void v6();
+virtual void v7();
+virtual void v8();
+virtual void v9();
+virtual void v10();
+virtual void v11();
+virtual void v12();
+virtual void v13();
+virtual void v14();
+virtual void v15();
+virtual void v16();
+virtual void v17();
+virtual void set2(s32);
+virtual void v19();
+virtual void set3(s32);
+};
+struct UnitHireMenuBase { u32 unknown; };
+struct UnitHireMenu : UnitHireMenuBase {
+virtual void v0();
+virtual void v1();
+virtual void v2();
+virtual void v3();
+virtual void v4();
+virtual void v5();
+virtual void v6();
+virtual void v7();
+virtual void v8();
+virtual void v9();
+virtual void v10();
+virtual void v11();
+virtual void v12();
+virtual void v13();
+virtual void v14();
+virtual UnitHireItem *get(s32);
+};
+struct UnitHireWidget {
+virtual void v0();
+virtual void v1();
+virtual void v2();
+virtual void v3();
+virtual void v4();
+virtual void v5();
+virtual void v6();
+virtual void v7();
+virtual void init();
+};
+#pragma cplusplus reset
+
 
 
 
@@ -6377,61 +6433,56 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern f32 lbl_8036B318;
     extern f32 lbl_8036B31C;
     struct Work {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
+        virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
+        virtual void v6() = 0; virtual void v7() = 0; virtual void v8() = 0;
     };
-    struct Sub {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-    };
+    struct Sub { virtual void v0() = 0; virtual void v1() = 0; };
+    u32 pad;
+    s32 z = 0;
     s32 temp_r11;
     s32 temp_r10;
     void *self;
+    f32 one = lbl_8036B318;
 
+    pad = 0;
     self = arg0;
     *(void **)((u8 *)self + 0x0) = lbl_8028FDB0;
-    *(s32 *)((u8 *)self + 0x4) = 0;
+    *(s32 *)((u8 *)self + 0x4) = z;
     *(void **)((u8 *)self + 0x0) = lbl_80292230;
     *(s16 *)((u8 *)self + 0x8) = -1;
-    temp_r11 = arg1 + 0x160;
-    temp_r10 = arg2 + 0xF0;
+    temp_r11 = (s16)(arg1 + 0x160);
+    temp_r10 = (s16)(arg2 + 0xF0);
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
     *(s16 *)((u8 *)self + 0xE) = temp_r11;
     *(s16 *)((u8 *)self + 0x10) = temp_r10;
-    *(s16 *)((u8 *)self + 0x12) = 0;
-    *(s16 *)((u8 *)self + 0x14) = 0;
+    *(s16 *)((u8 *)self + 0x12) = z;
+    *(s16 *)((u8 *)self + 0x14) = z;
     *(s16 *)((u8 *)self + 0x16) = 0x160;
     *(s16 *)((u8 *)self + 0x18) = 0xF0;
-    *(s16 *)((u8 *)self + 0x1A) = 0;
-    *(s16 *)((u8 *)self + 0x1C) = 0;
+    *(s16 *)((u8 *)self + 0x1A) = z;
+    *(s16 *)((u8 *)self + 0x1C) = z;
     *(u8 *)((u8 *)self + 0x1E) = 0xFF;
     *(u8 *)((u8 *)self + 0x1F) = 0xFF;
     *(u8 *)((u8 *)self + 0x20) = 0xFF;
     *(u8 *)((u8 *)self + 0x21) = 0xFF;
     *(s16 *)((u8 *)self + 0x22) = arg3;
-    *(s16 *)((u8 *)self + 0x24) = 0;
-    *(f32 *)((u8 *)self + 0x28) = lbl_8036B318;
-    *(f32 *)((u8 *)self + 0x2C) = lbl_8036B318;
-    *(f32 *)((u8 *)self + 0x30) = lbl_8036B318;
-    *(s32 *)((u8 *)self + 0x34) = 0;
-    *(s32 *)((u8 *)self + 0x38) = 0;
+    *(s16 *)((u8 *)self + 0x24) = z;
+    *(f32 *)((u8 *)self + 0x28) = one;
+    *(f32 *)((u8 *)self + 0x2C) = one;
+    *(f32 *)((u8 *)self + 0x30) = one;
+    *(s32 *)((u8 *)self + 0x34) = z;
+    *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)((u8 *)self + 0x0) = lbl_80292208;
     fn_80142060((u8 *)self + 0x3C);
     *(void **)((u8 *)self + 0x0) = gUiScrollListPanelVtbl;
-    *(s32 *)((u8 *)self + 0x48) = 0;
+    *(s32 *)((u8 *)self + 0x48) = z;
     *(u8 *)((u8 *)self + 0x4C) = 1;
-    *(s16 *)((u8 *)self + 0x4E) = 0;
+    *(s16 *)((u8 *)self + 0x4E) = z;
     *(s16 *)((u8 *)self + 0x50) = -1;
     *(s16 *)((u8 *)self + 0x52) = -1;
-    *(s16 *)((u8 *)self + 0x54) = 0;
+    *(s16 *)((u8 *)self + 0x54) = z;
     *(s16 *)((u8 *)self + 0x56) = 0x20;
     *(s16 *)((u8 *)self + 0x58) = 6;
     *(f32 *)((u8 *)self + 0x5C) = lbl_8036B31C;
@@ -6439,12 +6490,12 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0x62) = 8;
     fn_801C18E4((u8 *)self + 0x6C);
     *(void **)((u8 *)self + 0x78) = gEmptyVtbl;
-    *(s32 *)((u8 *)self + 0x7C) = 0;
+    *(s32 *)((u8 *)self + 0x7C) = z;
     *(s32 *)((u8 *)self + 0x80) = 2;
     *(u8 *)((u8 *)self + 0x84) = 1;
     *(u8 *)((u8 *)self + 0x85) = 1;
-    *(s16 *)((u8 *)self + 0x8C) = 0;
-    *(s16 *)((u8 *)self + 0x8E) = 0;
+    *(s16 *)((u8 *)self + 0x8C) = z;
+    *(s16 *)((u8 *)self + 0x8E) = z;
     *(f32 *)((u8 *)self + 0x90) = lbl_8036B318;
     *(f32 *)((u8 *)self + 0x94) = lbl_8036B318;
     *(u8 *)((u8 *)self + 0x98) = 0xFF;
@@ -6454,12 +6505,12 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(f32 *)((u8 *)self + 0x9C) = lbl_8036B31C;
     ((Sub *)((u8 *)self + 0x78))->v1();
     *(void **)((u8 *)self + 0xA0) = gEmptyVtbl;
-    *(s32 *)((u8 *)self + 0xA4) = 0;
+    *(s32 *)((u8 *)self + 0xA4) = z;
     *(s32 *)((u8 *)self + 0xA8) = 3;
     *(u8 *)((u8 *)self + 0xAC) = 1;
     *(u8 *)((u8 *)self + 0xAD) = 1;
-    *(s16 *)((u8 *)self + 0xB4) = 0;
-    *(s16 *)((u8 *)self + 0xB6) = 0;
+    *(s16 *)((u8 *)self + 0xB4) = z;
+    *(s16 *)((u8 *)self + 0xB6) = z;
     *(f32 *)((u8 *)self + 0xB8) = lbl_8036B318;
     *(f32 *)((u8 *)self + 0xBC) = lbl_8036B318;
     *(u8 *)((u8 *)self + 0xC0) = 0xFF;
@@ -6469,7 +6520,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(f32 *)((u8 *)self + 0xC4) = lbl_8036B31C;
     ((Sub *)((u8 *)self + 0xA0))->v1();
     ((Work *)self)->v8();
-    fn_801D2C30((UIListObj *)self);
+    fn_801D2C30(self);
     return self;
 }
 
@@ -11820,15 +11871,19 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-s32 NameGrid_GetCharAtCursor(void *self) {
-    s32 fn_801CD480(void *, s16, s16);
-    s16 x;
-    s16 y;
-    x = *(s16 *)((u8 *)self + 0x48);
-    y = *(s16 *)((u8 *)self + 0x4A);
-    return fn_801CD480(*(void **)((u8 *)self + 0x3C), x, y);
+#pragma scheduling on
+u32 NameGrid_GetCharAtCursor(void *arg0) {
+    u32 fn_801CD480(void *, s16, s16);
+    struct NameGrid {
+        u8 pad0[0x3C];
+        void *grid;
+        u8 pad40[8];
+        s16 x;
+        s16 y;
+    } *self = (struct NameGrid *)arg0;
+    return fn_801CD480(self->grid, self->x, self->y);
 }
-
+#pragma scheduling reset
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801CCED4(s32 *arg0, void *arg1) {
@@ -12352,21 +12407,110 @@ void fn_801CD764(void *arg0) {
 }
 
 extern struct efUnit* gEfUnitArray;
-s32 fn_801CD940(struct efUnit* unit)
+void fn_801CD940(void *arg0, void *arg1)
 {
-    if (unit == NULL)
-        return 0;
-        
-    if (unit->field_0x28 == 0)
-        return 0;
-        
-    if (unit->unit != NULL)
-    {
-        if (unit->field_0x2C > 0)
-            return 1;
+    void fn_801583D0(s16, s16, s32, s32, u8, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32, f32);
+    s32 fn_8001059C(u8 *, s32, f32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetTextScale(u8, f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+
+    extern u8 gUiIconDrawer[];
+    extern f32 lbl_8036B4EC;
+    extern f32 lbl_8036B4F0;
+    extern f32 lbl_8036B4F4;
+
+    u8 *self;
+    u8 *str;
+    void **vtable;
+    s32 offset;
+    s32 width;
+    s16 y;
+    s16 xOffset;
+    s32 x;
+
+    self = (u8 *)arg0;
+
+    vtable = *(void ***)self;
+    ((void (*)(void *))vtable[4])(self);
+
+    fn_801583D0(
+        0,
+        0,
+        (s16)(*(s16 *)(self + 0xE) -
+              *(s16 *)(self + 0xA)),
+        (s16)(*(s16 *)(self + 0x10) -
+              *(s16 *)(self + 0xC)),
+        0xFF,
+        0x10
+    );
+
+    vtable = *(void ***)self;
+    ((void (*)(void *, void *))vtable[5])(self, arg1);
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B4EC);
+    Prim2D_PrepareTex();
+
+    y = (s16)((0x20 -
+        Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
+
+    offset = 0;
+
+    if (*(s32 *)(self + 0x78) != 0) {
+        Ui_DrawIcon(
+            gUiIconDrawer,
+            0,
+            4,
+            *(s32 *)(self + 0x78)
+        );
+
+        offset = 0x18;
     }
-    
-    return 0;
+
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+
+    str = self + 0x3C;
+
+    while (*(u32 *)str != 0) {
+        width = fn_8001059C(
+            str,
+            -1,
+            lbl_8036B4F0
+        );
+
+        xOffset = (s16)((0x16 - width) >> 1);
+
+        Prim2D_AddPrim(6);
+
+        x = (s16)offset + xOffset;
+
+        Prim2D_SetPos(
+            (f32)x,
+            (f32)y
+        );
+
+        Prim2D_SetTextScale(
+            1,
+            lbl_8036B4F4
+        );
+
+        Prim2D_SetText(str);
+        Prim2D_EndPrim();
+
+        str += 4;
+        offset += 0x16;
+    }
 }
 
 void *NameEntry_InsertChar(void *a, u8 *b) {
