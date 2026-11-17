@@ -250,6 +250,316 @@ void fn_800333DC(u8 *arg0, s32 arg1) {
     v |= 4;
     *(u16 *)(p + 0x22) = v;
 }
+
+void fn_80033418(s16 *script) {
+    void DebugPrint(void *, ...);
+    extern u8 lbl_80269750[];
+    extern u8 gUnits[];
+    u32 i;
+    s8 param;
+    u8 cmd;
+    u8 *base;
+    u8 *unit;
+
+    *script = 0;
+    DebugPrint(lbl_80269750 + 0x1d);
+    i = 0;
+
+    while ((cmd = *((u8 *)script + (*script * 4) + 4)) != 0) {
+        base = (u8 *)script + (*script * 4);
+        switch (base[4]) {
+        case 3:
+            DebugPrint(lbl_80269750 + 0x2b, (s8)*(s16 *)(base + 6));
+            break;
+        case 4:
+            DebugPrint(lbl_80269750 + 0x51, (s8)*(s16 *)(base + 6));
+            break;
+        case 5:
+            DebugPrint(lbl_80269750 + 0x73, (s8)*(s16 *)(base + 6));
+            break;
+        case 6:
+            DebugPrint(lbl_80269750 + 0x97, (s8)*(s16 *)(base + 6));
+            break;
+        case 7:
+            DebugPrint(lbl_80269750 + 0xbb, (s8)*(s16 *)(base + 6));
+            break;
+        case 8:
+            DebugPrint(lbl_80269750 + 0xdf, (s8)*(s16 *)(base + 6));
+            break;
+        case 9:
+            param = (s8)*(s16 *)(base + 6);
+            if (param == 0) {
+                DebugPrint(lbl_80269750 + 0x103);
+            }
+            param = (s8)*(s16 *)((u8 *)script + (*script * 4) + 6);
+            if (param > 0) {
+                DebugPrint(lbl_80269750 + 0x129, param);
+            }
+            param = (s8)*(s16 *)((u8 *)script + (*script * 4) + 6);
+            if (param < 0) {
+                DebugPrint(lbl_80269750 + 0x147, -param);
+            }
+            break;
+        case 0xA:
+            DebugPrint(lbl_80269750 + 0x169);
+            break;
+        case 0xB:
+            DebugPrint(lbl_80269750 + 0x18d);
+            break;
+        case 0x1B:
+            DebugPrint(lbl_80269750 + 0x1a7);
+            break;
+        case 0x1C:
+            DebugPrint(lbl_80269750 + 0x1c3);
+            break;
+        case 0xF:
+            DebugPrint(lbl_80269750 + 0x1e3, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x10:
+            DebugPrint(lbl_80269750 + 0x209, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x11:
+            DebugPrint(lbl_80269750 + 0x22b, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x12:
+            DebugPrint(lbl_80269750 + 0x24f, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x13:
+            DebugPrint(lbl_80269750 + 0x273, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x14:
+            DebugPrint(lbl_80269750 + 0x297, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x15:
+            param = (s8)*(s16 *)(base + 6);
+            if (param == 0) {
+                DebugPrint(lbl_80269750 + 0x2bb);
+            }
+            param = (s8)*(s16 *)((u8 *)script + (*script * 4) + 6);
+            if (param > 0) {
+                DebugPrint(lbl_80269750 + 0x2e1, param);
+            }
+            param = (s8)*(s16 *)((u8 *)script + (*script * 4) + 6);
+            if (param < 0) {
+                DebugPrint(lbl_80269750 + 0x2ff, -param);
+            }
+            break;
+        case 0x16:
+            DebugPrint(lbl_80269750 + 0x321);
+            break;
+        case 0x17:
+            DebugPrint(lbl_80269750 + 0x345);
+            break;
+        case 0x1D:
+            DebugPrint(lbl_80269750 + 0x35f);
+            break;
+        case 0x1E:
+            DebugPrint(lbl_80269750 + 0x387);
+            break;
+        case 0x1F:
+            DebugPrint(lbl_80269750 + 0x3af);
+            break;
+        case 0x20:
+            DebugPrint(lbl_80269750 + 0x3e1);
+            break;
+        case 0x21:
+            DebugPrint(lbl_80269750 + 0x3f9);
+            break;
+        case 0x22:
+            DebugPrint(lbl_80269750 + 0x421);
+            break;
+        case 0xC:
+            DebugPrint(lbl_80269750 + 0x431);
+            break;
+        case 0x18:
+            DebugPrint(lbl_80269750 + 0x44b);
+            break;
+        case 0x23:
+            DebugPrint(lbl_80269750 + 0x465);
+            break;
+        case 0x24:
+            DebugPrint(lbl_80269750 + 0x47d);
+            break;
+        case 0x25:
+            DebugPrint(lbl_80269750 + 0x495);
+            break;
+        case 0x26:
+            DebugPrint(lbl_80269750 + 0x4ad);
+            break;
+        case 0x27:
+            DebugPrint(lbl_80269750 + 0x4c3);
+            break;
+        case 0x28:
+            DebugPrint(lbl_80269750 + 0x4d9);
+            break;
+        case 0x29:
+            DebugPrint(lbl_80269750 + 0x4f3);
+            break;
+        case 0x2A:
+            DebugPrint(lbl_80269750 + 0x50d);
+            break;
+        case 0x2B:
+            DebugPrint(lbl_80269750 + 0x523);
+            break;
+        case 0x2C:
+            DebugPrint(lbl_80269750 + 0x539);
+            break;
+        case 0x2D:
+            DebugPrint(lbl_80269750 + 0x55f);
+            break;
+        case 0x2E:
+            DebugPrint(lbl_80269750 + 0x575);
+            break;
+        case 0x2F:
+            DebugPrint(lbl_80269750 + 0x58f);
+            break;
+        case 0x30:
+            DebugPrint(lbl_80269750 + 0x5a7);
+            break;
+        case 0x31:
+            DebugPrint(lbl_80269750 + 0x5bd);
+            break;
+        case 0x32:
+            DebugPrint(lbl_80269750 + 0x5d5);
+            break;
+        case 0x33:
+            DebugPrint(lbl_80269750 + 0x5f1);
+            break;
+        case 0x34:
+            DebugPrint(lbl_80269750 + 0x607);
+            break;
+        case 0x35:
+            DebugPrint(lbl_80269750 + 0x61d);
+            break;
+        case 0x36:
+            DebugPrint(lbl_80269750 + 0x633);
+            break;
+        case 0x37:
+            DebugPrint(lbl_80269750 + 0x64b);
+            break;
+        case 0x38:
+            DebugPrint(lbl_80269750 + 0x663);
+            break;
+        case 0x39:
+            DebugPrint(lbl_80269750 + 0x679);
+            break;
+        case 0x3A:
+            DebugPrint(lbl_80269750 + 0x69b);
+            break;
+        case 0x3B:
+            DebugPrint(lbl_80269750 + 0x6c1);
+            break;
+        case 0x3C:
+            DebugPrint(lbl_80269750 + 0x6db);
+            break;
+        case 0x3D:
+            DebugPrint(lbl_80269750 + 0x6ef);
+            break;
+        case 0x3E:
+            DebugPrint(lbl_80269750 + 0x709, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x3F:
+            DebugPrint(lbl_80269750 + 0x729, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x40:
+            DebugPrint(lbl_80269750 + 0x745, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x41:
+            DebugPrint(lbl_80269750 + 0x75d);
+            break;
+        case 0x42:
+            DebugPrint(lbl_80269750 + 0x777);
+            break;
+        case 0x43:
+            DebugPrint(lbl_80269750 + 0x791, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x44:
+            DebugPrint(lbl_80269750 + 0x7a2, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x45:
+            DebugPrint(lbl_80269750 + 0x7b1);
+            break;
+        case 0x46:
+            DebugPrint(lbl_80269750 + 0x7c0, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x47:
+            DebugPrint(lbl_80269750 + 0x7d0, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x48:
+            DebugPrint(lbl_80269750 + 0x7e0, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x49:
+            DebugPrint(lbl_80269750 + 0x7f0);
+            break;
+        case 0x4A:
+            DebugPrint(lbl_80269750 + 0x800);
+            break;
+        case 0x4B:
+            DebugPrint(lbl_80269750 + 0x810, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x4C:
+            DebugPrint(lbl_80269750 + 0x820, (s8)*(s16 *)(base + 6));
+            break;
+        case 0x4D:
+            DebugPrint(lbl_80269750 + 0x830);
+            break;
+        case 0x4E:
+            DebugPrint(lbl_80269750 + 0x840);
+            break;
+        case 0x4F:
+            DebugPrint(lbl_80269750 + 0x850);
+            break;
+        case 0x50:
+            DebugPrint(lbl_80269750 + 0x860);
+            break;
+        case 0x51:
+            DebugPrint(lbl_80269750 + 0x870);
+            break;
+        case 0x52:
+            DebugPrint(lbl_80269750 + 0x880);
+            break;
+        case 0x53:
+            DebugPrint(lbl_80269750 + 0x890);
+            break;
+        case 0x54:
+            DebugPrint(lbl_80269750 + 0x8a0);
+            break;
+        case 0x55:
+            DebugPrint(lbl_80269750 + 0x8b0);
+            break;
+        case 0x56:
+            DebugPrint(lbl_80269750 + 0x8c0);
+            break;
+        case 0x57:
+            DebugPrint(lbl_80269750 + 0x8d0);
+            break;
+        case 0x19:
+            param = (s8)*(s16 *)(base + 6);
+            if ((u8)param != 0) {
+                unit = gUnits + ((u8)param - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            DebugPrint(lbl_80269750 + 0x8e0, unit);
+            break;
+        case 0x1A:
+            i = 0;
+            do {
+                unit = gUnits + i * 0x280;
+                if (*(u32 *)(unit + 0x188) != 0) {
+                    DebugPrint(lbl_80269750 + 0x900, i, unit);
+                }
+                i += 1;
+            } while (i < 0x9F);
+            break;
+        case 0xD:
+        case 0xE:
+            break;
+        }
+        *script = (s16)(*script + 1);
+    }
+}
+
 #pragma opt_strength_reduction reset
 void fn_80033E70(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x400), s16 *, 2) = (s16) (M2C_FIELD(arg0, s16 *, 0) - M2C_FIELD(arg0, s16 *, 2));
@@ -1271,13 +1581,13 @@ void fn_80036150(s32 arg0) {
     void fn_800351FC(s32, u8, s32, s32);
     extern u8 gBattleState[];
     u8 var_r30;
-    void *p;
+    u16 *p16;
 
     if (fn_8003D13C(arg0) != 0) {
         BattleAnim_Queue(arg0 + 0x8A0, 0x25, 0);
         BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
-        p = *(void **)(arg0 + 0x28C);
-        var_r30 = fn_8003D094(arg0, (u8)(*(u16 *)((u8 *)p + 0x10) / 20 + 0xA));
+        p16 = (u16 *)((u8 *)*(void **)(arg0 + 0x28C) + 0x10);
+        var_r30 = fn_8003D094(arg0, (u8)(*p16 / 20 + 0xA));
         if (var_r30 > fn_8003D13C(arg0)) {
             var_r30 = fn_8003D13C(arg0);
         }
@@ -2706,12 +3016,8 @@ void fn_8003868C(void *arg0, s32 arg1) {
 }
 #pragma scheduling reset
 u8 fn_800386B0(void *arg0) {
-    u8 temp_r0;
-
-    temp_r0 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x190), u8 *, 8);
-    if ((temp_r0 == 1) || (temp_r0 == 2) || (temp_r0 == 3)) {
-        return 0xFFU;
-    }
+    u8 value = M2C_FIELD(M2C_FIELD(arg0, void **, 0x190), u8 *, 8);
+    if (value == 1 || value == 3 || value == 2) return 0xFF;
     return M2C_FIELD(arg0, u8 *, 0x19B);
 }
 
@@ -4214,6 +4520,84 @@ s32 Affinity_FromName(void *name) {
     return 8; /* telius */
 }
 
+void fn_8003BBD4(void *arg0, s32 arg1)
+{
+    u8 Status_Test(void *, s32);
+    u8 fn_80091D74(void *);
+    void *Res_GetByName(void *);
+    void fn_80091CD8(void *);
+
+    struct UnitTransform {
+        u8 pad[0x18C];
+        void *res;
+        u8 pad190[12];
+        u8 gauge;
+        u8 pad19D[3];
+        u32 flags;
+        u8 pad1A4[24];
+        u32 status[4];
+    };
+
+    struct UnitTransform *unit;
+    void *res;
+
+    unit = (struct UnitTransform *)arg0;
+
+    if (Status_Test(unit->status, 8) == 0) {
+        return;
+    }
+
+    if (Status_Test(unit->status, 10) != 0) {
+        return;
+    }
+
+    if (fn_80091D74(unit) != 0) {
+        return;
+    }
+
+    if ((u8)arg1 != 0) {
+        if (Status_Test(unit->status, 9) != 0) {
+            return;
+        }
+    } else {
+        if (Status_Test(unit->status, 9) == 0) {
+            return;
+        }
+    }
+
+    res = unit->res;
+
+    unit->status[0] &= ~*(u32 *)((u8 *)res + 0x1C);
+    unit->status[1] &= ~*(u32 *)((u8 *)res + 0x20);
+    unit->status[2] &= ~*(u32 *)((u8 *)res + 0x24);
+    unit->status[3] &= ~*(u32 *)((u8 *)res + 0x28);
+
+    res = *(void **)((u8 *)unit->res + 0xC);
+
+    if (res != 0) {
+        unit->res = Res_GetByName(res);
+    } else {
+        unit->res = 0;
+    }
+
+    res = unit->res;
+
+    unit->status[0] |= *(u32 *)((u8 *)res + 0x1C);
+    unit->status[1] |= *(u32 *)((u8 *)res + 0x20);
+    unit->status[2] |= *(u32 *)((u8 *)res + 0x24);
+    unit->status[3] |= *(u32 *)((u8 *)res + 0x28);
+
+    unit->flags &= ~0x2000;
+
+    if (Status_Test(unit->status, 9) != 0) {
+        unit->gauge = 0x14;
+    } else {
+        unit->gauge = 0;
+    }
+
+    fn_80091CD8(unit);
+}
+
 /* If the unit has status flag 8, clear held items and equip the class default weapon. */
 void Unit_ResetHeldFromClass(void *unit) {
     u8 Status_Test(void *, s32);
@@ -4393,6 +4777,81 @@ void fn_8003C1B4(s32 arg0) {
             *(u8 *)(arg0 + 0x19C) = *(u8 *)(*(s32 *)(arg0 + 0x188) + 0x56);
         }
     }
+}
+
+void fn_8003C21C(void *arg0, void *arg1)
+{
+    extern u8 lbl_8026A4D0[];
+
+    void *Hash_Lookup(void *);
+    void *Res_GetByName(void *);
+    u8 Stream_ReadU8(void *);
+    u16 Stream_ReadU16(void *);
+    u32 fn_8017A950(void *);
+
+    u8 *unit;
+    void *stream;
+    void **table;
+    u8 *resource;
+    u32 index;
+
+    unit = (u8 *)arg0;
+    stream = arg1;
+
+    *(u32 *)(unit + 0x238) = 0;
+    *(u32 *)(unit + 0x23C) = 0;
+    *(u32 *)(unit + 0x240) = 0;
+    *(u32 *)(unit + 0x244) = 0;
+    unit[0x248] = 0;
+    *(u32 *)(unit + 0x24C) = 0;
+    unit[0x250] = 0;
+    unit[0x251] = 0;
+    *(u32 *)(unit + 0x254) = 0;
+    *(u16 *)(unit + 0x258) = 0;
+    *(u16 *)(unit + 0x25A) = 0;
+    *(u32 *)(unit + 0x25C) = 0;
+    unit[0x260] = 0x10;
+
+    table = (void **)Hash_Lookup(lbl_8026A4D0 + 8);
+    index = Stream_ReadU8(stream);
+    resource = (u8 *)Res_GetByName(table[(u8)index]);
+
+    if (resource != 0) {
+        *(u32 *)(unit + 0x238) = *(u32 *)(resource + 0x14);
+        unit[0x250] = 0;
+    }
+
+    table = (void **)Hash_Lookup(lbl_8026A4D0 + 0x17);
+    index = Stream_ReadU8(stream);
+    resource = (u8 *)Res_GetByName(table[(u8)index]);
+
+    if (resource != 0) {
+        *(u32 *)(unit + 0x23C) = *(u32 *)(resource + 0x14);
+        unit[0x251] = 0;
+    }
+
+    table = (void **)Hash_Lookup(lbl_8026A4D0 + 0x26);
+    index = Stream_ReadU8(stream);
+    resource = (u8 *)Res_GetByName(table[(u8)index]);
+
+    if (resource != 0) {
+        *(u32 *)(unit + 0x240) = *(u32 *)resource;
+    }
+
+    table = (void **)Hash_Lookup(lbl_8026A4D0 + 0x36);
+    index = Stream_ReadU8(stream);
+    resource = (u8 *)Res_GetByName(table[(u8)index]);
+
+    if (resource != 0) {
+        *(u32 *)(unit + 0x244) = *(u32 *)resource;
+    }
+
+    unit[0x250] = Stream_ReadU8(stream);
+    unit[0x251] = Stream_ReadU8(stream);
+    *(u32 *)(unit + 0x254) = fn_8017A950(stream);
+    *(u16 *)(unit + 0x258) = Stream_ReadU16(stream);
+    *(u16 *)(unit + 0x25A) = Stream_ReadU16(stream);
+    unit[0x248] = Stream_ReadU8(stream);
 }
 
 /* Write unit aux fields (hash refs at +0x238.., counters, ids) to stream. */
@@ -4843,6 +5302,92 @@ u8 fn_8003D094(s32 arg0, u8 arg1) {
         v = 0x64;
     }
     return (u8)v;
+}
+
+u8 fn_8003D13C(void *arg0)
+{
+    extern u8 gBattleState[];
+
+    u8 fn_800386B0(void *);
+    u8 Status_Test(void *, s32);
+    void *Res_GetByName(void *);
+
+    u8 *unit;
+    u8 *classData;
+    s32 limit;
+    s32 result;
+    s32 level;
+    u8 value;
+    void *res;
+
+    unit = (u8 *)arg0;
+
+    if (gBattleState[0x9F] & 8) {
+        return 0;
+    }
+
+    classData = *(u8 **)(unit + 0x190);
+
+    if (classData[8] != 0 && classData[8] != 5) {
+        return 0;
+    }
+
+    if ((s8)unit[0x1A8] == 0) {
+        return 0;
+    }
+
+    value = fn_800386B0(unit);
+
+    if (value == 0xFF) {
+        return 0;
+    }
+
+    limit = 0x76C;
+
+    if (Status_Test(unit + 0x1BC, 2) != 0) {
+        result = 0;
+    } else if (Status_Test(unit + 0x1BC, 8) != 0) {
+        result = 0;
+    } else if (Status_Test(unit + 0x1BC, 0x4D) != 0) {
+        result = 0;
+    } else {
+        res = *(void **)(*(u8 **)(unit + 0x18C) + 0xC);
+
+        if (res != 0) {
+            res = Res_GetByName(res);
+        }
+
+        if (res == 0) {
+            result = 0;
+        } else {
+            level = (s8)unit[0x19A];
+
+            if (level < 10) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+        }
+    }
+
+    if (result != 0) {
+        limit = 0x7D0;
+    }
+
+    value = fn_800386B0(unit);
+    level = (s8)unit[0x19A];
+
+    result = limit - ((level - 1) * 100 + value);
+
+    if (result > 100) {
+        result = 100;
+    }
+
+    if (result < 0) {
+        result = 0;
+    }
+
+    return (u8)result;
 }
 
 #pragma opt_strength_reduction off
@@ -9749,6 +10294,86 @@ void fn_8004983C(void *arg0) {
     }
 }
 
+void fn_800498A4(void *arg0, void *arg1, u8 arg2)
+{
+    extern u8 lbl_802856C8[];
+    extern f32 lbl_80368EE4;
+    extern f32 lbl_80368F10;
+    extern f32 lbl_80368F2C;
+    extern f32 lbl_80368F00;
+
+    void fn_8005FEE8(void *, f32);
+    void *Process_CreateEx(void *);
+
+    u8 *obj;
+    u8 *node;
+    u8 *process;
+    s32 mode;
+    u32 flags;
+    u8 enabled;
+    s32 x;
+    s32 y;
+
+    obj = (u8 *)arg0;
+    flags = *(u32 *)(*(u8 **)(obj + 0x10) + 0xBC);
+
+    if (flags & 0x400) {
+        if (flags & 0x200) {
+            enabled = 1;
+        } else {
+            enabled = 0;
+        }
+    } else {
+        enabled = 0;
+    }
+
+    if (enabled != 0) {
+        mode = (u8)arg2;
+        node = obj + 0x14;
+
+        switch (mode) {
+        case 3:
+            fn_8005FEE8(node, lbl_80368EE4);
+            *(f32 *)(node + 0x5C) = lbl_80368F10;
+            break;
+
+        case 4:
+            fn_8005FEE8(node, lbl_80368F2C);
+            *(f32 *)(node + 0x5C) = lbl_80368F10;
+            break;
+        }
+    } else {
+        mode = (u8)arg2;
+        node = obj + 0x14;
+
+        process = (u8 *)Process_CreateEx(lbl_802856C8);
+
+        *(void **)(process + 0x34) = node;
+        *(void **)(process + 0x30) = obj;
+        *(s32 *)(process + 0x44) = mode;
+        process[0x48] = 0;
+
+        x = (s8)obj[4] + (s8)obj[6];
+        y = (s8)obj[5] + (s8)obj[7];
+
+        *(f32 *)(process + 0x38) = (f32)x * lbl_80368F00;
+        *(f32 *)(process + 0x3C) = (f32)y * lbl_80368F00;
+        *(f32 *)(process + 0x40) = *(f32 *)(obj + 0xC);
+
+        switch (mode) {
+        case 0:
+            fn_8005FEE8(node, lbl_80368EE4);
+            *(f32 *)(node + 0x5C) = lbl_80368F10;
+            break;
+
+        case 1:
+            fn_8005FEE8(node, lbl_80368F2C);
+            *(f32 *)(node + 0x5C) = lbl_80368F2C;
+            break;
+        }
+    }
+}
+
 void fn_80049A3C(void *arg0)
 {
     void fn_8005FEE8(void *, f32);
@@ -12296,6 +12921,76 @@ void Unit_SetWorldXY(void *arg0, f32 farg0, f32 farg1) {
     *(f32 *)((u8 *)arg0 + 4) = farg0;
     *(f32 *)((u8 *)arg0 + 8) = farg1;
     *(f32 *)((u8 *)arg0 + 0xC) = Map_SampleHeightRaw(gBattleMap);
+}
+
+void fn_80050C90(void *arg0)
+{
+    u8 fn_80040824(void *);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
+    void Model_SetAlpha(void *, s32);
+    void *Map_Get(void);
+    u8 fn_8004434C(void *, s32, s32);
+
+    extern u8 gBattleMap[];
+    extern u8 gMapBlendMode;
+    extern f32 lbl_80368FC4;
+    extern f64 lbl_80368FE0;
+
+    u8 *unit;
+    s32 x;
+    s32 y;
+    u32 flags;
+    u8 mode;
+    u8 enabled;
+    u32 value;
+
+    unit = (u8 *)arg0;
+
+    if (fn_80040824(unit) != 0) {
+        x = (s8)unit[0x19E];
+        y = (s8)unit[0x19F];
+
+        *(f32 *)(unit + 4) = lbl_80368FC4 + (f32)x;
+        *(f32 *)(unit + 8) = lbl_80368FC4 + (f32)y;
+
+        *(f32 *)(unit + 0xC) = Map_SampleHeightRaw(
+            gBattleMap,
+            *(f32 *)(unit + 4),
+            *(f32 *)(unit + 8)
+        );
+
+        flags = *(u32 *)(unit + 0x1A0);
+        *(u32 *)(unit + 0x1A0) = flags & ~0x240;
+
+        Model_SetAlpha(unit + 0x1C, 0xFF);
+
+        enabled = 1;
+        mode = gMapBlendMode - 1;
+
+        if (((u32)((1 | ~mode) -
+            ((u32)(1 - mode) >> 1)) >> 31) == 0) {
+            enabled = 0;
+        }
+
+        if (enabled != 0) {
+            if ((*(u8 **)(unit + 0x190))[8] == 1) {
+                if (gBattleMap[x + y * 0x40 + 0x200D] == 0) {
+                    *(u32 *)(unit + 0x1A0) |= 0x40;
+                    Model_SetAlpha(unit + 0x1C, 0);
+                }
+            }
+        }
+
+        if (fn_8004434C(Map_Get(), x, y) != 0) {
+            *(u32 *)(unit + 0x1A0) |= 0x80;
+            return;
+        }
+
+        value = *(u32 *)(unit + 0x1A0);
+        *(u32 *)(unit + 0x1A0) = value & ~0x80;
+    } else {
+        Model_SetAlpha(unit + 0x1C, 0xFF);
+    }
 }
 
 #pragma peephole off
