@@ -19843,36 +19843,36 @@ loop:
 
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
+u8 valid;
+s32 i;
 s32 off;
 u8 *slot;
-s32 i;
-u8 valid;
 i=0; off=0x2000;
 for(;i<6;i++) {
 slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
 else valid=1;
-if(valid && id==slot[0x62]) return slot;
+if(valid && id==*(u8 *)(slot+0x62)) return slot;
 off+=0x4000;
 }
 return 0;
 }
 static inline u8 *Save_FindLinkedHeader(u8 **save)
 {
-u8 *base;
+u8 valid;
+s32 i;
 s32 off;
 u8 *slot;
-s32 i;
-u8 valid;
+u8 *base;
 i=0; off=0x1a000;
-for(;i<2;i++) {
 base=*save;
+for(;i<2;i++) {
 slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
 else valid=1;
-if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
+if(valid && Save_FindLinkedSlot(base,*(u8 *)(slot+0x63))) return slot;
 off+=0x6000;
 }
 return 0;
