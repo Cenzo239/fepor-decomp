@@ -7407,47 +7407,55 @@ void fn_801C6044(void *arg0) {
 
 void fn_801C60C8(void) { int pad; void fn_801C6234(void); fn_801C6234(); }
 
-void fn_801C60E8(struct Unit *arg0, s32 arg1, s32 arg2) {
-    struct Unit *temp_r31;
-    s32 temp_r3;
-    void *temp_r29;
-    s32 *temp_r4;
-    u32 *temp_r5;
-    
-    if (arg1 == 0) {
-        return;
-    }
-    
-    temp_r31 = arg0;
-    
-    // Read from base offset to get data pointer
-    temp_r29 = M2C_FIELD(arg0, void **, 0x4);
-    temp_r3 = *(s32 *)((char *)temp_r29 + 8);
-    
-    if (arg1 < 0) {
-        // Negative value handling
-        temp_r3 = *(s32 *)((char *)temp_r29 + 0xC);
-        arg1 = -arg1;
-        // Set some values to zero for negative case
-        *(u32 *)((char *)temp_r31 + 0x6) = 0;
-        M2C_FIELD(temp_r31, void **, 0x54) = NULL;
-    } else {
-        // Positive value handling
-        temp_r3 = *(s32 *)((char *)temp_r29 + 4);
-    }
-    
-    if (arg1 >= temp_r3) {
-        temp_r3 = arg1 / temp_r3;
-        arg1 %= temp_r3;
-    }
-    
-    temp_r4 = (s32 *)((char *)temp_r31 + 0x58); // Initialize local var from struct
-    *temp_r4 = *(s32 *)((char *)temp_r31 + 0x58) + arg2;
-
-    if (arg1 != 0) {
-        temp_r5 = (u32 *)((char *)temp_r31 + 0x6); 
-        *temp_r5 = *(u32 *)((char *)temp_r31 + 0x6) + arg1;
-    }    
+void fn_801C60E8(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *Heap_AllocRaw(s32);
+    void *fn_8022C414(void *, void (*)(void *), void *, s32, s32);
+    void fn_801C7C08(void *);
+    void DCFlushRange(void *, u32);
+#pragma cplusplus on
+    struct Entry { u8 pad[0x1C]; };
+    struct Pool {
+        Entry *data;
+        Entry **table, **cur;
+        s32 a, b, used, count;
+        void init() {
+            data = 0; table = 0; cur = 0; used = 0; a = 0; b = 0;
+        }
+        void reset() {
+            s32 i;
+            used = 0;
+            for (i = 0; i < count; i++) table[i] = &data[i];
+            table[count] = 0;
+            cur = table; a = 0; b = 0;
+        }
+        void allocate(s32 n) {
+            s32 num;
+            s32 bytes;
+            count = n;
+            num = count;
+            bytes = num * sizeof(struct Entry);
+            data = (struct Entry *)fn_8022C414(Heap_AllocRaw(bytes + 0x10), fn_801C7C08, 0, 0x1C, num);
+            table = (struct Entry **)Heap_AllocRaw((count + 1) * 4);
+            DCFlushRange(data, bytes);
+            DCFlushRange(table, (count + 1) * 4);
+            reset();
+        }
+    };
+    struct Owner {
+        u8 pad[0x34];
+        f32 a,b,c,d;
+        struct Pool *pool;
+        void init() {
+            struct Pool *p = (struct Pool *)Heap_Alloc(0x1C);
+            if (p) p->init();
+            pool = p;
+            pool->allocate(16);
+            a = 0.0f; b = 0.0f; c = 0.0f; d = 0.0f;
+        }
+    };
+    ((Owner *)arg0)->init();
+#pragma cplusplus reset
 }
 
 #pragma use_lmw_stmw on
@@ -9371,6 +9379,66 @@ s32 fn_801C9A90(void) {
     return 0;
 }
 
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+s32 fn_801C9B08(void) {
+    void *fn_800DC3B0(void *);
+    s32 fn_8011C9E4(s32);
+    s32 fn_8011C984(s32, s32);
+    void *CameraAnim_GetCamera(void *);
+    void Camera_GetEyePos(f32 *, void *);
+    void Camera_GetLookAt(f32 *, void *);
+    f32 Camera_GetFov(void *);
+    void fn_801CAD38(s32, s32, void *);
+    void CameraWin_LoadList(void *, s32);
+    extern void *gCameraWin;
+
+    f32 eyeZ;
+    f32 eyeY;
+    f32 eyeX;
+    f32 lookZ;
+    f32 lookY;
+    f32 lookX;
+    void *handle;
+    void *cam;
+    s32 index;
+    f32 eye[3];
+    f32 lookAt[3];
+    f32 fov;
+    struct {
+        f32 eyeX, eyeY, eyeZ;
+        f32 lookX, lookY, lookZ;
+        f32 fov;
+        u32 unk;
+    } data;
+
+    index = (s32)fn_800DC3B0(*(void **)((u8 *)gCameraWin + 0x438));
+    handle = gCameraWin;
+    handle = (void *)fn_8011C984(*(s32 *)((u8 *)handle + 0x430), fn_8011C9E4(*(s32 *)((u8 *)handle + 0x430)));
+    Camera_GetEyePos(eye, cam = CameraAnim_GetCamera(handle));
+    eyeX = eye[0];
+    eyeY = eye[1];
+    eyeZ = eye[2];
+    Camera_GetLookAt(lookAt, cam);
+    lookX = lookAt[0];
+    lookY = lookAt[1];
+    lookZ = lookAt[2];
+    fov = Camera_GetFov(cam);
+    data.eyeX = eyeX;
+    data.eyeY = eyeY;
+    data.eyeZ = eyeZ;
+    data.lookX = lookX;
+    data.lookY = lookY;
+    data.lookZ = lookZ;
+    data.fov = fov;
+    data.unk = 0x14;
+    fn_801CAD38((s32)handle, index, &data);
+    CameraWin_LoadList(gCameraWin, fn_8011C9E4(*(s32 *)((u8 *)gCameraWin + 0x430)));
+    return 0;
+}
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
+
 s32 fn_801C9C5C(void) {
     s32 fn_800DC3B0(s32);
     s32 fn_8011C984(s32, s32);
@@ -9433,6 +9501,46 @@ s32 fn_801C9D58(void) {
     s32 temp_r3 = fn_8011C9E4(*(s32 *)((char *)gCameraWin + 0x430));
     CameraWin_LoadList(gCameraWin, temp_r3);
     return 0;
+}
+
+void fn_801C9D94(void *dst, void *win) {
+    void *__register_global_object(void *, void (*)(void), void *);
+    void *String_Init(void *, char *, void *);
+    void String_Destroy(void);
+    void String_Copy(void *, void *);
+    s32 fn_8011C9E4(void *);
+    extern char CameraWin_str[];
+    extern u8 lbl_80331C88[];
+    extern s8 lbl_803682BC;
+
+    typedef struct Str { u32 size; u32 cap; char *data; } Str;
+    typedef struct Blk {
+        u8 reg[0x3C];
+        Str strs[5];
+    } Blk;
+    void *sp18;
+    void *sp14;
+    void *sp10;
+    void *spC;
+    void *sp8;
+    Blk *base;
+
+    base = (Blk *)lbl_80331C88;
+
+    if ((s8)lbl_803682BC == 0) {
+        __register_global_object(String_Init(&base->strs[0], CameraWin_str + 0x21, &sp18),
+                                 String_Destroy, (u8 *)base + 0);
+        __register_global_object(String_Init(&base->strs[1], CameraWin_str + 0x2C, &sp14),
+                                 String_Destroy, (u8 *)base + 0xC);
+        __register_global_object(String_Init(&base->strs[2], CameraWin_str + 0x37, &sp10),
+                                 String_Destroy, (u8 *)base + 0x18);
+        __register_global_object(String_Init(&base->strs[3], CameraWin_str + 0x42, &spC),
+                                 String_Destroy, (u8 *)base + 0x24);
+        __register_global_object(String_Init(&base->strs[4], CameraWin_str + 0x4D, &sp8),
+                                 String_Destroy, (u8 *)base + 0x30);
+        lbl_803682BC = 1;
+    }
+    String_Copy(dst, &base->strs[fn_8011C9E4(*(void **)((u8 *)win + 0x434))]);
 }
 
 #pragma use_lmw_stmw on
@@ -15726,6 +15834,26 @@ memset(state+0x51A+i*0x14,0,0x14);
 }
 }
 
+void fn_801DBEA8(void *arg0, s32 type) {
+    u8 *self = arg0;
+    *(s16 *)(self + 126) = 0;
+    *(s16 *)(self + 124) = 0;
+    *(s16 *)(self + 178) = 0;
+    *(s16 *)(self + 176) = 0;
+    *(s16 *)(self + 230) = 0;
+    *(s16 *)(self + 228) = 0;
+    *(s16 *)(self + 282) = 0;
+    *(s16 *)(self + 280) = 0;
+    *(s16 *)(self + 334) = 0;
+    *(s16 *)(self + 332) = 0;
+    *(s16 *)(self + 386) = 0;
+    *(s16 *)(self + 384) = 0;
+    FileMenu_InitEntry(self + 0x7C, (s8)self[0x15], type);
+    *(s16 *)(self + 0x7E) = 0x12C;
+    *(s16 *)(self + 0x7C) |= 2;
+    self[0x15] = 1;
+}
+
 s32 fn_801DBFF8(void)
 {
   void *fn_801E2324(void *, s32);
@@ -17911,6 +18039,75 @@ found_slot:
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
     *(void **)((u8 *)self + 0x54) = best;
 }
+
+#pragma global_optimizer off
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
+void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
+    void *Process_CreateChild(void *, void *);
+    extern u8 lbl_80299E9C[];
+    s32 i;
+    s32 off;
+    s32 ctr;
+    u8 *slot;
+    u8 valid;
+    void *proc;
+
+    i = 0;
+    off = 0x2000;
+
+    for (ctr = 2; ctr != 0; ctr--) {
+        slot = *arg0 + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+            valid = 0;
+        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+            valid = 0;
+        } else {
+            valid = 1;
+        }
+        if (valid == 0) {
+        } else if (arg1 != *(u8 *)(slot + 0x62)) {
+        } else {
+            goto create;
+        }
+        off += 0x4000;
+        slot = *arg0 + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+            valid = 0;
+        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+            valid = 0;
+        } else {
+            valid = 1;
+        }
+        if (valid == 0) {
+        } else if (arg1 != *(u8 *)(slot + 0x62)) {
+        } else {
+            goto create;
+        }
+        off += 0x4000;
+        slot = *arg0 + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
+            valid = 0;
+        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
+            valid = 0;
+        } else {
+            valid = 1;
+        }
+        if (valid == 0) {
+        } else if (arg1 != *(u8 *)(slot + 0x62)) {
+        } else {
+            goto create;
+        }
+        off += 0x4000;
+        i += 2;
+    }
+create:
+    proc = Process_CreateChild(lbl_80299E9C, arg2);
+    *(s32 *)((u8 *)proc + 0x60) = arg1;
+}
+#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
+#pragma global_optimizer on
 void fn_801E1168(void *arg0) {
     u8 Card_CheckError(void);
     void fn_801E11AC(void *, void *, s32);
