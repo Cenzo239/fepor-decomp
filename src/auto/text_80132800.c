@@ -10753,63 +10753,6 @@ virtual void v8()=0;
 virtual void v9()=0;
 virtual s32 page()=0;
 };
-static inline void UiPage_ProcessInput(u8 *self,u8 *page,s16 count,s16 visible) {
-extern u32 gUiInputFlags;
-extern u32 *gPadInput;
-extern u8 lbl_80276B3C[];
-void Ui_PlaySeCue(void *,s32);
-void fn_8013ED84(void *,s16);
-s32 repeat,edge,held;
-s16 old;
-u8 blocked;
-blocked=0;
-if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
-if(!blocked) {
-old=*(s16 *)(page+0x64);
-held=gPadInput[1];
-edge=gPadInput[2]^held;
-repeat=gPadInput[3];
-edge=held&edge;
-if((s16)*(f32 *)(self+0x84)==0) {
-if(repeat&0x08000008) {
-if((s16)old==0) {
-if(repeat==edge) {
-*(s16 *)(page+0x64)=count-1;
-*(s16 *)(page+0x4e)=count>(s16)visible?count-(s16)visible:0;
-}
-} else {
-*(s16 *)(page+0x64)=old-1;
-if((s16)*(s16 *)(page+0x64)>0 && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==0) {
-s16 scroll=*(s16 *)(page+0x4e)-1;
-f32 offset=-32.0f;
-*(s16 *)(page+0x4e)=scroll;
-*(f32 *)(self+0x84)=offset;
-}
-}
-if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
-} else if(repeat&0x04000004) {
-s32 last=count-1;
-if(old==last) {
-if(repeat==edge) {
-*(s16 *)(page+0x64)=0;
-*(s16 *)(page+0x4e)=0;
-}
-} else {
-*(s16 *)(page+0x64)=old+1;
-if(*(s16 *)(page+0x64)<last && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==(s16)visible-1) {
-s16 scroll=*(s16 *)(page+0x4e)+1;
-f32 offset=32.0f;
-*(s16 *)(page+0x4e)=scroll;
-*(f32 *)(self+0x84)=offset;
-}
-}
-if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
-}
-}
-}
-fn_8013ED84(*(void **)(self+0x48),(s16)((*(s16 *)(page+0x4e)<<5)-(s32)*(f32 *)(self+0x84)));
-
-}
 extern "C" void fn_801429E0(void *arg0) {
 extern u32 gUiInputFlags;
 extern u32 *gPadInput;
@@ -10820,9 +10763,10 @@ void fn_8013ED84(void *,s16);
 u8 *self=(u8 *)arg0;
 s32 index;
 u8 *page;
-s32 repeat,edge,held;
+s32 repeat,held;
 s16 old;
 s16 count;
+u32 visible;
 u8 blocked;
 index=((UiPageSelector *)arg0)->page();
 page=self+index*2;
@@ -10832,45 +10776,41 @@ if(count==0) {
 *(s16 *)(page+0x64)=0;
 return;
 }
-u32 visible=*(u16 *)(self+0x80);
+visible=*(u16 *)(self+0x80);
 blocked=(gUiInputFlags&0x10)!=0 && (gUiInputFlags&0x20)==0;
 if(!blocked) {
 old=*(s16 *)(page+0x64);
 held=gPadInput[1];
-edge=gPadInput[2]^held;
+s32 previous=gPadInput[2];
 repeat=gPadInput[3];
-edge=held&edge;
+held=held&(previous^held);
 if((s16)*(f32 *)(self+0x84)==0) {
 if(repeat&0x08000008) {
 if((s16)old==0) {
-if(repeat==edge) {
+if(repeat==held) {
 *(s16 *)(page+0x64)=count-1;
 *(s16 *)(page+0x4e)=count>(s16)visible?count-(s16)visible:0;
 }
 } else {
 *(s16 *)(page+0x64)=old-1;
 if((s16)*(s16 *)(page+0x64)>0 && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==0) {
-s16 scroll=*(s16 *)(page+0x4e)-1;
-f32 offset=-32.0f;
-*(s16 *)(page+0x4e)=scroll;
-*(f32 *)(self+0x84)=offset;
+*(s16 *)(page+0x4e)-=1;
+*(f32 *)(self+0x84)=-32.0f;
 }
 }
 if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
 } else if(repeat&0x04000004) {
 s32 last=count-1;
 if(old==last) {
-if(repeat==edge) {
+if(repeat==held) {
 *(s16 *)(page+0x64)=0;
 *(s16 *)(page+0x4e)=0;
 }
 } else {
 *(s16 *)(page+0x64)=old+1;
 if(*(s16 *)(page+0x64)<last && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==(s16)visible-1) {
-s16 scroll=*(s16 *)(page+0x4e)+1;
-f32 offset=32.0f;
-*(s16 *)(page+0x4e)=scroll;
-*(f32 *)(self+0x84)=offset;
+*(s16 *)(page+0x4e)+=1;
+*(f32 *)(self+0x84)=32.0f;
 }
 }
 if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
