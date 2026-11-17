@@ -306,64 +306,68 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
 }
 
 extern "C" void fn_800A9950(void *unused, void *node) {
-void *GfxEnt_Get(u8);
-void Prim2D_Begin(void);
-void Prim2D_SetTransform(f32,f32,f32,f32);
-void Prim2D_SetTex(s32,s32);
-void Prim2D_PrepareTex(void);
-void Prim2D_AddPrim(s32);
-void Prim2D_SetRect(f32,f32,f32,f32);
-void Prim2D_EmitQuad(void);
-void Prim2D_SetCornerColors(s32*,s32*,s32*,s32*);
-void Prim2D_EndPrim(void);
-extern f32 gOptionsIdentityScale,lbl_80369BA8;
-extern s32 lbl_80369B94,lbl_80369B90,lbl_80369B8C,lbl_80369B88;
+#pragma opt_strength_reduction off
+    void *GfxEnt_Get(u8);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_EndPrim(void);
+    extern f32 gOptionsIdentityScale, lbl_80369BA8;
+    extern s32 lbl_80369B94, lbl_80369B90, lbl_80369B8C, lbl_80369B88;
 #pragma cplusplus on
-struct Model {u8 pad[4];
-virtual void v0()=0;
-virtual void v1()=0;
-virtual void v2()=0;
-virtual void v3()=0;
-virtual void v4()=0;
-virtual void v5()=0;
-virtual void v6()=0;
-virtual void v7()=0;
-virtual void v8()=0;
-virtual void v9()=0;
-virtual void v10()=0;
-virtual void v11()=0;
-virtual void v12()=0;
-virtual void v13()=0;
-virtual void v14()=0;
-virtual void v15()=0;
-virtual void v16()=0;
-virtual s16 v17()=0;
-virtual void v18()=0;
-virtual void v19()=0;
-virtual s16 v20()=0;
-virtual void v21()=0;
-virtual void v22()=0;
-virtual void v23()=0;
-virtual void v24()=0;
-virtual f32 v25()=0;
-};
-struct Entry { u8 pad[0x40]; u8 id; };
-s32 tl,tr,bl,br;
-u8 *ent=(u8*)GfxEnt_Get(((Entry*)((u8*)node+*(s8*)((u8*)node+0x62)))->id);
-s16 y=*(s16*)(ent+0x32)+(*(Model**)((u8*)node+0x3C))->v17();
-s16 old=*(s16*)((u8*)node+0x3A);
-if(old<0) *(s16*)((u8*)node+0x3A)=y;
-else *(s16*)((u8*)node+0x3A)=(old+y)/2;
-Prim2D_Begin();
-Prim2D_SetTransform((f32)*(s16*)((u8*)node+0x30),(f32)*(s16*)((u8*)node+0x32),(*(Model**)((u8*)node+0x3C))->v25()-gOptionsIdentityScale,gOptionsIdentityScale);
-Prim2D_SetTex(0,0x12);
-Prim2D_PrepareTex();
-Prim2D_AddPrim(3);
-Prim2D_SetRect(lbl_80369BA8,(f32)*(s16*)((u8*)node+0x3A),(f32)*(s16*)((u8*)node+0x34),(f32)(*(Model**)((u8*)node+0x3C))->v20());
-Prim2D_EmitQuad();
-br=lbl_80369B94;bl=lbl_80369B90;tr=lbl_80369B8C;tl=lbl_80369B88;
-Prim2D_SetCornerColors(&tl,&tr,&bl,&br);
-Prim2D_EndPrim();
+    struct Model {
+        u8 pad[4];
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0;
+        virtual void v4() = 0; virtual void v5() = 0; virtual void v6() = 0; virtual void v7() = 0;
+        virtual void v8() = 0; virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0; virtual void v15() = 0;
+        virtual void v16() = 0; virtual s16 v17() = 0; virtual void v18() = 0; virtual void v19() = 0;
+        virtual s16 v20() = 0; virtual void v21() = 0; virtual void v22() = 0; virtual void v23() = 0;
+        virtual void v24() = 0; virtual f32 v25() = 0;
+    };
+    struct Entry { u8 pad[0x40]; u8 id; };
+    s32 tl, tr, bl, br;
+    Entry *entry;
+    u8 *ent;
+    s16 y;
+    s16 old;
+
+    (void)unused;
+    entry = (Entry *)((u8 *)node + *(s8 *)((u8 *)node + 0x62));
+    ent = (u8 *)GfxEnt_Get(entry->id);
+    y = *(s16 *)(ent + 0x32) + (*(Model **)((u8 *)node + 0x3C))->v17();
+    old = *(s16 *)((u8 *)node + 0x3A);
+    if (old < 0) {
+        *(s16 *)((u8 *)node + 0x3A) = y;
+    } else {
+        *(s16 *)((u8 *)node + 0x3A) = (old + y) / 2;
+    }
+    Prim2D_Begin();
+    Prim2D_SetTransform(
+        (f32)*(s16 *)((u8 *)node + 0x30),
+        (f32)*(s16 *)((u8 *)node + 0x32),
+        (*(Model **)((u8 *)node + 0x3C))->v25() - gOptionsIdentityScale,
+        gOptionsIdentityScale);
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(3);
+    Prim2D_SetRect(
+        lbl_80369BA8,
+        (f32)*(s16 *)((u8 *)node + 0x3A),
+        (f32)*(s16 *)((u8 *)node + 0x34),
+        (f32)(*(Model **)((u8 *)node + 0x3C))->v20());
+    Prim2D_EmitQuad();
+    br = lbl_80369B94;
+    bl = lbl_80369B90;
+    tr = lbl_80369B8C;
+    tl = lbl_80369B88;
+    Prim2D_SetCornerColors(&tl, &tr, &bl, &br);
+    Prim2D_EndPrim();
 #pragma cplusplus reset
 }
 
@@ -630,17 +634,25 @@ Prim2D_EndPrim();
 }
 
 s32 fn_800AA078(void *arg0) {
- s32 Rand_Range(s32); void Unit_ResetAll(void); void *fn_80019ED0(s32);
- void Battle_SetPhase(void *, u32); void fn_8014D698(void *,u8,s32,s32,s32);
- extern u8 gBattleState[]; extern u64 gSystemSave[];
- u8 *s=gBattleState; u8 saved; void *unit;
- saved=s[0xA6]; Unit_ResetAll();
- fn_8014D698(gBattleState,(u8)(Rand_Range(0x1E)+1),0,0,1);
- s[0xA6]=saved;
- unit=fn_80019ED0((s32)*(s8 *)((u8 *)arg0+4));
- { u32 phase=*(u8 *)((u8 *)unit+0x3C); Battle_SetPhase(gBattleState,phase); }
- gSystemSave[1]=0x0123456789ABCDEFULL;
- Game_SetState(0xA); return 5;
+    s32 fn_8000CEE4(M2C_UNK);
+    void fn_80016DE0(void);
+    void *fn_80019ED0(s32);
+    void fn_8014D2B0(void *, u8);
+    void fn_8014D698(void *, u8, M2C_UNK, M2C_UNK, M2C_UNK);
+    void fn_80006220(s32);
+    extern u8 lbl_80330708[];
+    extern u64 lbl_80331FB8[];
+    u8 *s = lbl_80330708;
+    u8 saved;
+
+    saved = s[0xA6];
+    fn_80016DE0();
+    fn_8014D698(lbl_80330708, (u8)(fn_8000CEE4(0x1E) + 1), 0, 0, 1);
+    s[0xA6] = saved;
+    fn_8014D2B0(lbl_80330708, M2C_FIELD(fn_80019ED0(M2C_FIELD(arg0, s8 *, 4)), u8 *, 0x3C));
+    lbl_80331FB8[1] = 0x0123456789ABCDEFULL;
+    fn_80006220(0xA);
+    return 5;
 }
 
 void fn_800AA134(void) {
@@ -2031,12 +2043,76 @@ void fn_800AC0C0(void *arg0) {
     }
 }
 
-void fn_800AC400(void) {
-    M2C_UNK func_8000BF00(void*);
-    extern u16 lbl_8028CDF0[];
-    func_8000BF00(lbl_8028CDF0);
-}
+#pragma global_optimizer off
+void fn_800AC400(u8 *arg0) {
+    extern u8 lbl_80312ACC[];
+    s32 z;
+    s32 j;
+    s32 i;
+    u8 *entry;
+    u8 *row;
+    s32 col;
+    s32 row_off;
+    s32 idx;
+    s32 side;
 
+    z = 0;
+    arg0[0x42] = z;
+    row = lbl_80312ACC;
+    i = z;
+    arg0[0x41] = 1;
+    for (; i < 2; ++i, row += 0x80) {
+        entry = row;
+        for (j = 0; j < 8; entry += 0x10, ++j) {
+            if (j < 4 && arg0[0x44] != 0) {
+                entry[0xC] = z;
+            } else {
+                entry[0xC] = (*(u32 *)(entry + 4) != 0);
+            }
+        }
+    }
+
+    arg0[0x3e] = arg0[0x3c];
+    arg0[0x3f] = arg0[0x3d];
+    arg0[0x3c] ^= 1;
+    arg0[0x40] = arg0[0x3d] & 4;
+
+    side = arg0[0x3c];
+    col = arg0[0x40];
+    side = (s8)side;
+    col = (s8)col;
+    row_off = side << 7;
+    row = lbl_80312ACC + row_off;
+    entry = row + (col << 4);
+    if (entry[0x3c] != 0) {
+        return;
+    }
+
+    idx = col + 3;
+    row += idx << 4;
+    for (;;) {
+        if (idx < 0) {
+            break;
+        }
+        if (row[0xc] != 0) {
+            break;
+        }
+        row -= 0x10;
+        --idx;
+    }
+
+    j = idx + 1;
+    if (j - col < 0) {
+        j = col;
+    }
+
+    row = lbl_80312ACC;
+    row += row_off;
+    row += j << 4;
+    row[0xc] = 1;
+    arg0[0x3d] = j;
+}
+#pragma global_optimizer on
 void fn_800AC5DC(void *arg0) {
     void fn_800AC810(void);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -2261,17 +2337,17 @@ void fn_800AC810(void *arg0) {
     }
 }
 
+#pragma optimization_level 3
 void fn_800ACBD8(void *arg0) {
 extern u8 lbl_80312ACC[];
 s32 j;
 s32 i;
 u8 *entry;
-register u8 *row;
+u8 *row;
 ((u8*)arg0)[0x42]=0;
 row=lbl_80312ACC;
-i=0;
 ((u8*)arg0)[0x41]=0;
-for(;i<2;++i,row+=0x80) {
+for(i=0;i<2;++i,row+=0x80) {
 entry=row;
 for(j=0;j<8;entry+=0x10,++j) {
 if(j<4 && ((u8*)arg0)[0x44]!=0) entry[0xC]=0;
@@ -2279,7 +2355,7 @@ else entry[0xC]=(*(u32*)(entry+4)!=0);
 }
 }
 }
-
+#pragma optimization_level reset
 void fn_800ACCF8(void) {
     M2C_UNK fn_800ACD18();
     fn_800ACD18();
