@@ -657,6 +657,232 @@ void fn_800C47E8(void) {
     // to be completed in one attempt. Will try a partial approach.
 }
 
+s32 fn_800C4F30(void *arg0, s32 arg1)
+{
+    extern u32 lbl_8036786C;
+    extern u32 lbl_80367864;
+    extern u32 lbl_80367870;
+    extern u32 lbl_80320B88[];
+    extern char lbl_802700D8[];
+
+    void Str_CopyPad(void *, const void *, s32);
+    void fn_8005BA08(s8);
+    void DebugPrint(const char *, ...);
+
+    u8 *heap;
+    u8 *data;
+    u32 *table;
+    u32 size;
+    s32 index;
+    s32 groups;
+
+    size = (arg1 + 0x1F) & ~0x1F;
+
+    if (lbl_8036786C != 0) {
+        heap = (u8 *)(lbl_8036786C - size);
+    } else {
+        heap = (u8 *)(lbl_80367864 - size);
+    }
+
+    table = lbl_80320B88;
+    index = 0;
+
+    for (groups = 2; groups != 0; groups--) {
+        if (*table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        table++;
+        index++;
+    }
+
+    index = -1;
+
+found:
+    Str_CopyPad(heap + 4, arg0, 0xB);
+
+    heap[0xF] = 0;
+    *(u32 *)(heap + 0x10) = 0;
+    *(u32 *)(heap + 0x14) = 0;
+
+    data = heap + 0x20;
+
+    *(void **)(heap + 0x18) = data;
+    *(u32 *)(heap + 0x1C) = size;
+    *(u32 *)heap = 0x48454150;
+
+    *(u32 *)(data + 0xC) = 0;
+    *(u32 *)(data + 8) = 0;
+    *(u32 *)(data + 0x10) = size - 0x20;
+
+    lbl_80320B88[index] = (u32)heap;
+    lbl_80367870 = lbl_80320B88[index];
+
+    fn_8005BA08((s8)index);
+
+    DebugPrint(
+        lbl_802700D8 + 0x106,
+        heap,
+        arg0,
+        size >> 10
+    );
+
+    *(u32 *)(heap + 0x10) = lbl_8036786C;
+    lbl_8036786C = (u32)heap;
+
+    return index;
+}
+
+s32 Heap_Create(void *arg0, s32 arg1)
+{
+    extern u8 *lbl_80367868;
+    extern u8 *lbl_80367860;
+    extern void *lbl_80367870;
+    extern void *lbl_80320B88[];
+    extern char lbl_802700D8[];
+
+    void Str_CopyPad(void *, const void *, s32);
+    void fn_8005BA08(s8);
+    void DebugPrint(const char *, ...);
+
+    u8 *heap;
+    u8 *previous;
+    void **table;
+    u32 size;
+    s32 index;
+    s32 groups;
+
+    size = (arg1 + 0x1F) & ~0x1F;
+
+    previous = lbl_80367868;
+
+    if (previous != 0) {
+        heap = previous + *(u32 *)(previous + 0x1C);
+    } else {
+        heap = lbl_80367860;
+    }
+
+    table = lbl_80320B88;
+    index = 0;
+
+    for (groups = 2; groups != 0; groups--) {
+        if (*table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        index++;
+        if (*++table == 0) {
+            goto found;
+        }
+
+        table++;
+        index++;
+    }
+
+    index = -1;
+
+found:
+    Str_CopyPad(heap + 4, arg0, 0xB);
+
+    heap[0xF] = 0;
+    *(u32 *)(heap + 0x10) = 0;
+    *(u32 *)(heap + 0x14) = 0;
+    *(void **)(heap + 0x18) = heap + 0x20;
+    *(u32 *)(heap + 0x1C) = size;
+    *(u32 *)heap = 0x48454150;
+
+    *(u32 *)(heap + 0x2C) = 0;
+    *(u32 *)(heap + 0x28) = 0;
+    *(u32 *)(heap + 0x30) = size - 0x20;
+
+    lbl_80320B88[index] = heap;
+    lbl_80367870 = lbl_80320B88[index];
+
+    fn_8005BA08((s8)index);
+
+    DebugPrint(
+        lbl_802700D8 + 0x106,
+        heap,
+        arg0,
+        size >> 10
+    );
+
+    *(void **)(heap + 0x10) = lbl_80367868;
+    lbl_80367868 = heap;
+
+    return index;
+}
+
 extern u32* lbl_80367860;
 extern u32 lbl_80367864;
 extern u32* lbl_80367868;
@@ -8086,131 +8312,190 @@ void fn_800DAB24(void *arg0, void *arg1, s32 arg2) {
     String_Copy(arg0, *(u8 **)((u8 *)arg1 + 0x3C) + arg2 * 0xC);
 }
 
-void fn_800DAB50(void *proc) {
- extern s8 lbl_803678BE;
- extern char lbl_802711B0[];
- extern void *gWin3, *gGame, *gPadInput;
- extern u8 gBattleReplayActive;
- void *Heap_Alloc(u32); void Heap_Free(void *);
- void String_Assign(void *,void *,s32,s32);
- void String_AssignCStr(void *,char *,u32);
- void fn_800C99A0(void *,void *,s32,s32); void fn_800C992C(void *,char *,u32);
- void String_Init(void *,char *,void *);
- void *BattleTerrain_Create(void *,void *,void *,void *);
- u32 strlen(const char *);
- void Process_Goto(void *,s32); void Process_ClearFunc(void *);
- void fn_801C777C(void); void fn_801C77A4(void);
- void fn_800ED960(void *,s32); void fn_800D74FC(void *); void fn_800D7540(void *); void fn_800D7564(void *);
- u8 fn_800E7C80(void *); void fn_800D8030(void *);
- u8 fn_800E5248(void *,s32); s32 fn_8011654C(void *); s32 fn_80116580(void *);
- void fn_80113BA0(void *); void LightFade_Start(void);
- void fn_8005C7E8(void *); void fn_800D5894(void *); void fn_80040854(s32); void fn_800CA6C8(void *,s32);
- String sp24, sp18, spC;
- void *scratch;
- u8 *self;
- void *tmp;
- s8 made;
- s32 idx;
- void *entry;
- void *host;
- if ((u8)lbl_803678BC != 0) {
- host=*(void **)((u8 *)lbl_803678B8+4);
- (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
- fn_801C777C(); Process_Goto(proc,1);
- if ((u8)lbl_803678BD == 0) lbl_803678BC=0;
- } else if ((u8)lbl_803678BE != 0) {
- host=*(void **)((u8 *)lbl_803678B8+4);
- (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
- Process_Goto(proc,2); lbl_803678BE=0;
- } else {
- if ((u8)lbl_803678BF == 0) {
- fn_801C77A4(); self=(u8 *)lbl_803678B8;
- spC.cap=0;sp18.cap=0;spC.size=0;spC.data=0;spC.cap=0;sp18.size=0;sp18.data=0;sp18.cap=0;
- String_Assign(&spC,*(void **)(self+0x54),0,-1);
- host=*(void **)(self+4);
- (*(void (**)(void *,char *,char *))(*(u8 **)((u8 *)host+0x10)+0x20))(host,lbl_802711B0+0x1B7,lbl_802711B0+0x1C5);
- String_AssignCStr(&sp18,lbl_802711B0+0x1A4,strlen(lbl_802711B0+0x1A4));
- fn_800C99A0(&sp18,&spC,0,-1);
- fn_800C992C(&sp18,lbl_802711B0+0x18D,strlen(lbl_802711B0+0x18D));
- made=0;tmp=Heap_Alloc(0x54);
- if(tmp){String_Init(&sp24,lbl_802711B0+0x1C5,&scratch);made=1;tmp=BattleTerrain_Create(tmp,*(void **)(self+4),&sp24,&sp18);}
- if(made)String_Destroy(&sp24,-1);
- host=*(void **)(self+4);
- (*(void (**)(void *,void *))(*(u8 **)((u8 *)host+0x10)+0x1C))(host,tmp);
- String_Destroy(&sp18,-1);String_Destroy(&spC,-1);lbl_803678BF=1;
- }
- self=(u8 *)lbl_803678B8;
- fn_800ED960(gWin3,1);
- if ((M2C_FIELD(gPadInput,u32 *,4) ^ M2C_FIELD(gPadInput,u32 *,8)) & M2C_FIELD(gPadInput,u32 *,4) & 0x10) {
- if(*(void **)(self+0x30))fn_800D7540(*(void **)(self+0x30));
- *(void **)(self+0x30)=0;
- idx=*(s32 *)(self+0x2C)+1;
- while(!*(void **)(self+0x30)){
- if(idx>=*(s32 *)(self+0x28))idx=0;
- entry=(*(void ***)(self+0x24))[idx];
- if(M2C_FIELD(entry,u8 *,0x420)){
- *(void **)(self+0x30)=entry;
- fn_800D7564(*(void **)(self+0x30));
- *(s32 *)(self+0x2C)=idx;
- }
- idx++;
- }
- }
- if (*(void **)(self+0x30)) {
- fn_800D74FC(*(void **)(self+0x30));
- if (!M2C_FIELD(*(void **)(self+0x30),u8 *,0x420)) {
- if(*(void **)(self+0x30))fn_800D7540(*(void **)(self+0x30));
- *(void **)(self+0x30)=0;
- idx=*(s32 *)(self+0x2C)+1;
- while(!*(void **)(self+0x30)){
- if(idx>=*(s32 *)(self+0x28))idx=0;
- entry=(*(void ***)(self+0x24))[idx];
- if(M2C_FIELD(entry,u8 *,0x420)){
- *(void **)(self+0x30)=entry;
- fn_800D7564(*(void **)(self+0x30));
- *(s32 *)(self+0x2C)=idx;
- }
- idx++;
- }
- }
- }
- if(!fn_800E7C80(*(void **)(self+4)))fn_800D8030(self);
- if(*(void **)(self+0x10) && fn_800E5248(*(void **)(self+0x10),2) && fn_8011654C(*(void **)(self+0x10))==1 && fn_80116580(*(void **)(self+0x10))!=3)fn_80113BA0(*(void **)(self+0x10));
- if(!self[0x89] && *(void **)(self+4)) {
- host=*(void **)(self+4); (*(void (**)(void *,s32))(*(u8 **)((u8 *)host+0x10)+0x3C))(host,1);
- host=*(void **)(self+4); (*(void (**)(void *))(*(u8 **)((u8 *)host+0x10)+0x40))(host);
- host=*(void **)(self+4); (*(void (**)(void *,s32,s32))(*(u8 **)((u8 *)host+0x10)+0x48))(host,0,0);
- host=*(void **)(self+4); (*(void (**)(void *))(*(u8 **)((u8 *)host+0x10)+0x44))(host);
- LightFade_Start();
- }
- if(self[0x89]) {
- self=(u8 *)lbl_803678B8;
- if(self){
- gBattleReplayActive=0;
- if(*(void **)(self+4)){
- host=*(void **)(self+4);
- (*(void (**)(void *,s32))(*(u8 **)((u8 *)host+0x10)+0xC))(host,1);
- }
- *(void **)(self+4)=0;
- tmp=gGame;
- if(tmp){String_Destroy((u8 *)tmp+0x1A8,-1);String_Destroy((u8 *)tmp+0x19C,-1);String_Destroy(tmp,-1);Heap_Free(tmp);}
- fn_801C777C();
- if(*(void **)(self+0x8C))fn_8005C7E8(*(void **)(self+0x8C));
- fn_800D5894(self);fn_80040854(0);
- String_Destroy(self+0x7C,-1);String_Destroy(self+0x70,-1);
- if(self+100 && self+100)fn_800CA6C8(self+100,0);
-if(self+88 && self+88)fn_800CA6C8(self+88,0);
-if(self+76 && self+76)fn_800CA6C8(self+76,0);
-if(self+64 && self+64)fn_800CA6C8(self+64,0);
-if(self+52 && self+52)fn_800CA6C8(self+52,0);
- if(self+0x1C && self+0x1C && self+0x1C && *(void **)(self+0x24))Heap_Free(*(void **)(self+0x24));
- Heap_Free(self);
- }
- Process_ClearFunc(proc);
- }
- }
-}
+#pragma cplusplus on
+#pragma opt_common_subs off
+extern "C" void fn_800DAB50(void *proc) {
+    struct Host {
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1(s32);
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5(void *);
+        virtual void v6(const char *, const char *);
+        virtual void v7();
+        virtual void v8();
+        virtual void v9();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13(s32);
+        virtual void v14();
+        virtual void v15();
+        virtual void v16(s32, s32);
+    };
+    extern s8 lbl_803678BE;
+    extern char lbl_802711B0[];
+    extern void *gWin3, *gGame, *gPadInput;
+    extern u8 gBattleReplayActive;
+    void *Heap_Alloc(u32); void Heap_Free(void *);
+    void String_Assign(String *, void *, s32, s32);
+    void String_AssignCStr(String *, char *, u32);
+    void fn_800C99A0(String *, String *, s32, s32);
+    void fn_800C992C(String *, char *, u32);
+    void String_Init(String *, char *, void *);
+    void *BattleTerrain_Create(void *, void *, String *, String *);
+    u32 strlen(const char *);
+    void Process_Goto(void *, s32); void Process_ClearFunc(void *);
+    void fn_801C777C(void); void fn_801C77A4(void);
+    void fn_800ED960(void *, s32);
+    void fn_800D74FC(void *); void fn_800D7540(void *); void fn_800D7564(void *);
+    u8 fn_800E7C80(void *); void fn_800D8030(void *);
+    u8 fn_800E5248(void *, s32); s32 fn_8011654C(void *); s32 fn_80116580(void *);
+    void fn_80113BA0(void *); void LightFade_Start(void);
+    void fn_8005C7E8(void *); void fn_800D5894(void *); void fn_80040854(s32); void fn_800CA6C8(void *, s32);
 
+    if ((u8)lbl_803678BC != 0) {
+        ((Host *)*(void **)((u8 *)(void *)lbl_803678B8 + 4))->v6(lbl_802711B0 + 0x1B7, lbl_802711B0 + 0x1C5);
+        fn_801C777C();
+        Process_Goto(proc, 1);
+        if ((u8)lbl_803678BD == 0)
+            lbl_803678BC = 0;
+    } else if ((u8)lbl_803678BE != 0) {
+        ((Host *)*(void **)((u8 *)(void *)lbl_803678B8 + 4))->v6(lbl_802711B0 + 0x1B7, lbl_802711B0 + 0x1C5);
+        Process_Goto(proc, 2);
+        lbl_803678BE = 0;
+    } else {
+        String sp24, sp18, spC;
+        void *scratch;
+        void *entry;
+        s32 idx;
+        void *tmp;
+        s8 made;
+        u8 *self;
+
+        if ((u8)lbl_803678BF == 0) {
+            fn_801C77A4();
+            self = (u8 *)(void *)lbl_803678B8;
+            spC.cap = 0;
+            sp18.cap = 0;
+            spC.size = 0;
+            spC.data = 0;
+            spC.cap = 0;
+            sp18.size = 0;
+            sp18.data = 0;
+            sp18.cap = 0;
+            String_Assign(&spC, *(void **)(self + 0x54), 0, -1);
+            ((Host *)*(void **)(self + 4))->v6(lbl_802711B0 + 0x1B7, lbl_802711B0 + 0x1C5);
+            String_AssignCStr(&sp18, &lbl_802711B0[0x1A4], strlen((char *)lbl_802711B0 + 0x1A4));
+            fn_800C99A0(&sp18, &spC, 0, -1);
+            fn_800C992C(&sp18, &lbl_802711B0[0x18D], strlen((char *)lbl_802711B0 + 0x18D));
+            made = 0;
+            tmp = Heap_Alloc(0x54);
+            if (tmp) {
+                String_Init(&sp24, lbl_802711B0 + 0x1C5, &scratch);
+                made = 1;
+                tmp = BattleTerrain_Create(tmp, *(void **)(self + 4), &sp24, &sp18);
+            }
+            if (made)
+                String_Destroy(&sp24, -1);
+            ((Host *)*(void **)(self + 4))->v5(tmp);
+            String_Destroy(&sp18, -1);
+            String_Destroy(&spC, -1);
+            lbl_803678BF = 1;
+        }
+        self = (u8 *)(void *)lbl_803678B8;
+        fn_800ED960(gWin3, 1);
+        if (((*(u32 *)((u8 *)gPadInput + 8) ^ *(u32 *)((u8 *)gPadInput + 4)) & *(u32 *)((u8 *)gPadInput + 4)) & 0x10) {
+            if (*(void **)(self + 0x30))
+                fn_800D7540(*(void **)(self + 0x30));
+            *(void **)(self + 0x30) = 0;
+            idx = *(s32 *)(self + 0x2C) + 1;
+            while (!*(void **)(self + 0x30)) {
+                if (idx >= *(s32 *)(self + 0x28))
+                    idx = 0;
+                entry = (*(void ***)(self + 0x24))[idx];
+                if (*(u8 *)((u8 *)entry + 0x420)) {
+                    *(void **)(self + 0x30) = entry;
+                    fn_800D7564(*(void **)(self + 0x30));
+                    *(s32 *)(self + 0x2C) = idx;
+                }
+                idx++;
+            }
+        }
+        if (*(void **)(self + 0x30)) {
+            fn_800D74FC(*(void **)(self + 0x30));
+            if (!*(u8 *)((u8 *)*(void **)(self + 0x30) + 0x420)) {
+                if (*(void **)(self + 0x30))
+                    fn_800D7540(*(void **)(self + 0x30));
+                *(void **)(self + 0x30) = 0;
+                idx = *(s32 *)(self + 0x2C) + 1;
+                while (!*(void **)(self + 0x30)) {
+                    if (idx >= *(s32 *)(self + 0x28))
+                        idx = 0;
+                    entry = (*(void ***)(self + 0x24))[idx];
+                    if (*(u8 *)((u8 *)entry + 0x420)) {
+                        *(void **)(self + 0x30) = entry;
+                        fn_800D7564(*(void **)(self + 0x30));
+                        *(s32 *)(self + 0x2C) = idx;
+                    }
+                    idx++;
+                }
+            }
+        }
+        if (!fn_800E7C80(*(void **)(self + 4)))
+            fn_800D8030(self);
+        if (*(void **)(self + 0x10) && fn_800E5248(*(void **)(self + 0x10), 2) && fn_8011654C(*(void **)(self + 0x10)) == 1 && fn_80116580(*(void **)(self + 0x10)) != 3)
+            fn_80113BA0(*(void **)(self + 0x10));
+        if (!self[0x89] && *(void **)(self + 4)) {
+            ((Host *)*(void **)(self + 4))->v13(1);
+            ((Host *)*(void **)(self + 4))->v14();
+            ((Host *)*(void **)(self + 4))->v16(0, 0);
+            ((Host *)*(void **)(self + 4))->v15();
+            LightFade_Start();
+        }
+        if (self[0x89]) {
+            self = (u8 *)(void *)lbl_803678B8;
+            if (self) {
+                gBattleReplayActive = 0;
+                if (*(void **)(self + 4))
+                    ((Host *)*(void **)(self + 4))->v1(1);
+                *(void **)(self + 4) = 0;
+                tmp = gGame;
+                if (tmp) {
+                    String_Destroy((String *)((u8 *)tmp + 0x1A8), -1);
+                    String_Destroy((String *)((u8 *)tmp + 0x19C), -1);
+                    String_Destroy((String *)tmp, -1);
+                    Heap_Free(tmp);
+                }
+                fn_801C777C();
+                if (*(void **)(self + 0x8C))
+                    fn_8005C7E8(*(void **)(self + 0x8C));
+                fn_800D5894(self);
+                fn_80040854(0);
+                String_Destroy((String *)(self + 0x7C), -1);
+                String_Destroy((String *)(self + 0x70), -1);
+                if (self + 0x64 && self + 0x64)
+                    fn_800CA6C8(self + 0x64, 0);
+                if (self + 0x58 && self + 0x58)
+                    fn_800CA6C8(self + 0x58, 0);
+                if (self + 0x4C && self + 0x4C)
+                    fn_800CA6C8(self + 0x4C, 0);
+                if (self + 0x40 && self + 0x40)
+                    fn_800CA6C8(self + 0x40, 0);
+                if (self + 0x34 && self + 0x34)
+                    fn_800CA6C8(self + 0x34, 0);
+                if (self + 0x1C && self + 0x1C && self + 0x1C && *(void **)(self + 0x24))
+                    Heap_Free(*(void **)(self + 0x24));
+                Heap_Free(self);
+            }
+            Process_ClearFunc(proc);
+        }
+    }
+}
+#pragma opt_common_subs reset
+#pragma cplusplus reset
 void fn_800DB110(void *arg0) {
     void DebugPrint(char *, ...);
     u8 *Fog_GetColor(void);
@@ -10577,12 +10862,16 @@ extern "C" void fn_800DF584(void *arg0) {
         virtual void v2();
         virtual void v3();
     };
+    struct Other {
+        u8 pad[0x2C];
+        u8 flag_2c;
+    };
     Obj *self = (Obj *)arg0;
-    u32 other;
+    Other *other;
 
     if (self->flag_3c != 0) {
-        other = (u32)self->field_38;
-        if (other != 0 && *(u8 *)(other + 0x2C) != 0 && self->flag_2c != 0) {
+        other = (Other *)self->field_38;
+        if (other != NULL && other->flag_2c != 0 && self->flag_2c != 0) {
             self->v3();
         }
     }
@@ -20216,6 +20505,154 @@ s32 Unit_IsInMovAttackRange(void *unit, void *target, void **itemSlot) {
     return dist <= (mov + itemRange);
 }
 
+u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
+    extern u8 gAiState[], gUiContext[], gBattleMap[], gUnits[];
+    void Map_FillLayer(void *,s32,s32);
+    void Map_SelectRangeBuffer(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
+    u8 fn_8009339C(void *,void *);
+    void Allegiance_FillMask(s32,u8 *);
+    s32 Abs(s32);
+    u8 Item_GetRangeForUnit(void *,void *);
+    s8 Unit_GetMov(void *);
+    void fn_800FDDBC(s8,s8,u8,u8,s32);
+    u8 fn_800F7F00(void *,void *);
+    void fn_800951D0(void *,u16);
+    void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
+    u8 flags[8];
+    struct { u8 x,y; u16 item; u8 *unit; s32 score; } result;
+    s32 dy;
+    u8 sx, range, outside, maxRange, minRange;
+    u8 *unit;
+    u8 *self;
+    s32 dist;
+    u8 cx, cy;
+    u8 *ctx;
+    u8 *map;
+    void **slot;
+    s32 score;
+    u8 *best;
+    u8 bx,by;
+    u16 item;
+    s32 i,j;
+    ctx=gUiContext; map=gBattleMap; score=(s32)0x80000000; best=0;
+    ctx[8]=action; self=*(u8 **)ctx;
+    if ((gAiState[1]&2) || (*(u32 *)(self+0x254)&0x03000000)) {
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
+        (*(u16 **)(map+0x14190))[(s8)self[0x19e]+((s8)self[0x19f]<<6)]=0;
+    } else Map_BuildUnitMoveRange(self,5,-1);
+    map=gBattleMap;
+    for(i=0;i<4;i++) {
+        slot=Unit_GetHeldItemSlot(self,i);
+        if(!*slot)break;
+        if(!fn_8009339C(self,*slot))continue;
+        result.item=i;
+        Allegiance_FillMask(1,flags);
+        for(j=1;j<=159;j++) {
+            unit=(u8)j ? gUnits+((u8)j-1)*0x280 : 0;
+            if(!*(u32 *)(unit+0x188))continue;
+            if(!flags[(*(u8 **)(unit+0x190))[8]])continue;
+            if(!filter(unit))continue;
+            cx=unit[0x19e]; sx=self[0x19e];
+            dy=Abs((s8)self[0x19f]-(s8)unit[0x19f]);
+            dist=dy+Abs((s8)sx-(s8)cx);
+            range=*slot ? Item_GetRangeForUnit(*slot,self) : 0;
+            if(dist>(u8)range+(s8)Unit_GetMov(self))continue;
+            if(*(u32 *)(unit+0x1a0)&0x010000dc)continue;
+            cx=unit[0x19e]; cy=unit[0x19f]; outside=0;
+            if((s8)cx<(s8)map[8] || (s8)map[10]-1<(s8)cx ||
+               (s8)cy<(s8)map[9] || (s8)map[11]-1<(s8)cy)outside=1;
+            if(outside)continue;
+            maxRange=*slot ? Item_GetRangeForUnit(*slot,unit) : 0;
+            minRange=*slot ? ((u8 *)*slot)[0x1d] : 0;
+            fn_800FDDBC((s8)unit[0x19e],(s8)unit[0x19f],minRange,maxRange,6);
+            result.unit=unit;
+            if(fn_800F7F00(self,&result) && result.score>score) {
+                bx=result.x; score=result.score; by=result.y; item=result.item; best=result.unit;
+            }
+        }
+    }
+    if(best) {
+        if(item<4)fn_800951D0(self,item);
+        fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19e],best[0x19f],(s8)item,0,0);
+    }
+    return gAiState[0x21c];
+}
+
+u8 fn_800F51A0(u8 (*filter)(void *), u8 action) {
+    extern u8 gAiState[], gUiContext[], gBattleMap[], gUnits[];
+    void Map_FillLayer(void *,s32,s32);
+    void Map_SelectRangeBuffer(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
+    u8 fn_8009339C(void *,void *);
+    void Allegiance_FillMask(s32,u8 *);
+    s32 Abs(s32);
+    u8 Item_GetRangeForUnit(void *,void *);
+    s8 Unit_GetMov(void *);
+    void fn_800FDDBC(s8,s8,u8,u8,s32);
+    u8 fn_800F805C(void *,void *);
+    void fn_800951D0(void *,u16);
+    void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
+    u8 flags[8];
+    struct { u8 x,y; u16 item; u8 *unit; s32 score; } result;
+    s32 dy;
+    u8 sx, range, outside, maxRange, minRange;
+    u8 *unit;
+    u8 *self;
+    s32 dist;
+    u8 cx, cy;
+    u8 *ctx;
+    u8 *map;
+    void **slot;
+    s32 score;
+    u8 *best;
+    u8 bx,by;
+    u16 item;
+    s32 i,j;
+    ctx=gUiContext; map=gBattleMap; score=(s32)0x80000000; best=0;
+    ctx[8]=action; self=*(u8 **)ctx;
+    if ((gAiState[1]&2) || (*(u32 *)(self+0x254)&0x03000000)) {
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
+        (*(u16 **)(map+0x14190))[(s8)self[0x19e]+((s8)self[0x19f]<<6)]=0;
+    } else Map_BuildUnitMoveRange(self,5,-1);
+    map=gBattleMap;
+    for(i=0;i<4;i++) {
+        slot=Unit_GetHeldItemSlot(self,i);
+        if(!*slot)break;
+        if(!fn_8009339C(self,*slot))continue;
+        result.item=i;
+        Allegiance_FillMask(1,flags);
+        for(j=1;j<=159;j++) {
+            unit=(u8)j ? gUnits+((u8)j-1)*0x280 : 0;
+            if(!*(u32 *)(unit+0x188))continue;
+            if(!flags[(*(u8 **)(unit+0x190))[8]])continue;
+            if(!filter(unit))continue;
+            cx=unit[0x19e]; sx=self[0x19e];
+            dy=Abs((s8)self[0x19f]-(s8)unit[0x19f]);
+            dist=Abs((s8)sx-(s8)cx)+dy;
+            range=*slot ? Item_GetRangeForUnit(*slot,self) : 0;
+            if(dist>(s8)Unit_GetMov(self)+(u8)range)continue;
+            if(*(u32 *)(unit+0x1a0)&0x010000dc)continue;
+            cx=unit[0x19e]; cy=unit[0x19f]; outside=0;
+            if((s8)cx<(s8)map[8] || (s8)map[10]-1<(s8)cx ||
+               (s8)cy<(s8)map[9] || (s8)map[11]-1<(s8)cy)outside=1;
+            if(outside)continue;
+            maxRange=*slot ? Item_GetRangeForUnit(*slot,unit) : 0;
+            minRange=*slot ? ((u8 *)*slot)[0x1d] : 0;
+            fn_800FDDBC((s8)unit[0x19e],(s8)unit[0x19f],minRange,maxRange,6);
+            result.unit=unit;
+            if(fn_800F805C(self,&result) && result.score>score) {
+                bx=result.x; score=result.score; by=result.y; item=result.item; best=result.unit;
+            }
+        }
+    }
+    if(best) {
+        if(item<4)fn_800951D0(self,item);
+        fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19e],best[0x19f],(s8)item,0,0);
+    }
+    return gAiState[0x21c];
+}
+
 #pragma use_lmw_stmw reset
 #pragma opt_common_subs on
 #pragma opt_loop_invariants reset
@@ -20463,7 +20900,7 @@ void fn_800F5B14(s32 arg0, void *arg1) {
     battle = (u8 *)gBattle;
     map = gBattleMap;
     total = 0;
-    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    percent = (s32)(((f32)remaining * 10.0f) / maxhp);
     score += (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[6]));
     for (; (s32)p[0] != 0x7F; p += 3) {
         outside = 0;
@@ -20516,7 +20953,7 @@ void fn_800F5B14(s32 arg0, void *arg1) {
     saved_hp = ((u8 *)gBattle)[0x1A8];
     maxhp = (f32)Unit_GetMaxHp(gBattle);
     remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
-    percent = (s32)((10.0f * (f32)remaining) / maxhp);
+    percent = (s32)(((f32)remaining * 10.0f) / maxhp);
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
     *(s32 *)((u8 *)out + 8) = score;
 }
@@ -21351,8 +21788,8 @@ s32 fn_800F805C(u8 *self,u8 *target) {
 extern u8 gBattleMap[];
 u8 Map_IsAiTerrainBlocked(s8,s8);
 s32 Battle_EvalTarget(s32,void *);
+s32 sx;
 u8 *map=gBattleMap;
-s8 sx;
 s32 row;
 u8 *rowp;
 s32 best=0x80000000;
@@ -21367,7 +21804,7 @@ x=*(s8 *)(map+8);
 rowp=map+row;
 for(;x<=(s8)map[10]-1;x++) {
 sx=(s8)x;
-offset=(sx+row)*2;
+offset=((int)sx+row)*2;
 if(((s16 *)(map+0x610E))[sx+row]<0) continue;
 if(((s8 *)rowp)[sx+0xE18E]) continue;
 if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
@@ -24241,6 +24678,244 @@ u16 fn_800FCF48(s8 arg0, s8 arg1) {
     return *(u16*)((char*)temp_r3 - 0x5E72);
 }
 
+#pragma dont_inline on
+#pragma global_optimizer off
+s32 fn_800FCF74(void *arg0, s32 arg1) {
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void fn_80022748(void *, void *);
+    void fn_800227D0(void *, s32, s32);
+    void fn_800227F8(void *, void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
+    s32 Unit_GetMov(void *);
+    void fn_800C4588(void *);
+    void *fn_800C4638(s32, void *, s32);
+    void fn_80100D18(void *, void *, s32);
+    u8 Status_Test(void *, s32);
+    void fn_80205198(void *, s32);
+    extern u8 gBattleMap[];
+    extern u8 lbl_80273230[];
+    extern u8 gBattleState[];
+    extern void **lbl_80367908;
+
+    u8 sp9;
+    u8 sp8;
+    void *sp10;
+    void *spC;
+    s32 size;
+    u8 *buf;
+    void *unit0;
+    void *unit;
+    void **list;
+    s32 count;
+    u8 flag;
+    s8 ux, uy, mov;
+    s32 x0, y0, x1, y1;
+    s32 xx, yy;
+    s32 t14, t15;
+    u8 a, b;
+    s8 slot;
+    u16 val;
+    u8 *dst;
+    u8 *src;
+    s32 idx;
+    u8 *tile;
+    u8 terr;
+    u8 ok, ok2, ok3;
+    u16 *wcell;
+    u16 *hcell;
+    u8 *state;
+    u8 *mapBase;
+    u8 *map21;
+
+    unit0 = arg0;
+    count = arg1;
+    size = ((s16)(*(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4)) + 0x1F) & ~0x1F;
+    buf = fn_800C4638(size, lbl_80273230 + 0x1D, 0);
+    fn_80205198(buf, size);
+    ux = (s8)((u8 *)unit0)[0x19E];
+    uy = (s8)((u8 *)unit0)[0x19F];
+    mov = (s8)Unit_GetMov(unit0);
+    mapBase = gBattleMap;
+    flag = 0;
+    t14 = Status_Test((u8 *)unit0 + 0x1BC, 0x14) != 0;
+    t15 = Status_Test((u8 *)unit0 + 0x1BC, 0x15) != 0;
+    Map_SelectRangeBuffer(gBattleMap, 6);
+    fn_800227F8(gBattleMap, *(void **)((u8 *)unit0 + 0x18C));
+    fn_80022748(gBattleMap, *(void **)((u8 *)unit0 + 0x190));
+    if (*(u32 *)((u8 *)unit0 + 0x254) & 0x20000) {
+        fn_800227D0(mapBase, 0x37, 0x30);
+    }
+    b = ((u8 *)unit0)[0x19F];
+    a = ((u8 *)unit0)[0x19E];
+    Map_FloodMoveRange(mapBase, a, b, (u16)(s8)Unit_GetMov(unit0), t14, t15);
+    list = lbl_80367908;
+    map21 = gBattleMap;
+    spC = map21;
+    x0 = ux - mov;
+    y0 = uy - mov;
+    x1 = ux + mov;
+    y1 = uy + mov;
+    sp10 = map21;
+    state = gBattleState;
+    goto loop_head;
+    for (;;) {
+        unit = *list;
+        t14 = Status_Test((u8 *)unit + 0x1BC, 0x14) != 0;
+        t15 = Status_Test((u8 *)unit + 0x1BC, 0x15) != 0;
+        Map_SelectRangeBuffer(map21, 5);
+        fn_800227F8(spC, *(void **)((u8 *)unit + 0x18C));
+        fn_80022748(sp10, *(void **)((u8 *)unit + 0x190));
+        if (*(u32 *)((u8 *)unit + 0x254) & 0x20000) {
+            fn_800227D0(map21, 0x37, 0x30);
+        }
+        b = ((u8 *)unit)[0x19F];
+        a = ((u8 *)unit)[0x19E];
+        Map_FloodMoveRange(map21, a, b, (u16)(s8)Unit_GetMov(unit), t14, t15);
+        slot = ((s8 *)list)[4];
+        if (slot >= 0) {
+            val = ((u8 *)list)[6];
+            fn_80100D18(unit, Unit_GetHeldItemSlot(unit, slot), 0);
+            {
+                s32 xa = x0, ya = y0, xb = x1, yb = y1;
+                if (xa < (s8)map21[8]) xa = (s8)map21[8];
+                if (ya < (s8)map21[9]) ya = (s8)map21[9];
+                if (xb > (s8)map21[0xA] - 1) xb = (s8)map21[0xA] - 1;
+                if (yb > (s8)map21[0xB] - 1) yb = (s8)map21[0xB] - 1;
+                for (yy = ya; yy <= yb; yy++) {
+                    for (xx = xa; xx <= xb; xx++) {
+                        idx = (xx + (yy << 6)) << 1;
+                        if (*(s16 *)(gBattleMap + idx + 0x818E) < 0) continue;
+                        tile = gBattleMap + (yy << 6) + xx;
+                        if ((s8)tile[0xE18E]) continue;
+                        if (state[0x11] != 2) {
+                            ok = 0;
+                        } else {
+                            terr = tile[0x100D];
+                            ok = 1;
+                            ok2 = 1;
+                            ok3 = 1;
+                            {
+                                u8 d = terr - 0x26;
+                                if (((u32)((1 | ~d) - ((u32)(1 - d) >> 1)) >> 31) == 0) ok3 = 0;
+                            }
+                            if (ok3 == 0 && terr != 0x28) ok2 = 0;
+                            if (ok2 == 0 && terr != 0x2A) ok = 0;
+                        }
+                        if (ok != 0) continue;
+                        wcell = (u16 *)(map21 + idx + 0xC18E);
+                        hcell = (u16 *)(map21 + idx + 0xA18E);
+                        if (*wcell == 0 || *hcell >= 0xFF) continue;
+                        if ((u16)val > 0xFF) val = 0xFF;
+                        sp9 = (u8)val;
+                        dst = buf + xx + yy * *(s32 *)gBattleMap;
+                        if (*dst < (u8)val) src = &sp9; else src = dst;
+                        flag = 1;
+                        *dst = *src;
+                    }
+                }
+            }
+        }
+        slot = ((s8 *)list)[5];
+        if (slot >= 0) {
+            val = ((u8 *)list)[7];
+            fn_80100D18(unit, Unit_GetHeldItemSlot(unit, slot), 0);
+            {
+                s32 xa = x0, ya = y0, xb = x1, yb = y1;
+                if (xa < (s8)map21[8]) xa = (s8)map21[8];
+                if (ya < (s8)map21[9]) ya = (s8)map21[9];
+                if (xb > (s8)map21[0xA] - 1) xb = (s8)map21[0xA] - 1;
+                if (yb > (s8)map21[0xB] - 1) yb = (s8)map21[0xB] - 1;
+                for (yy = ya; yy <= yb; yy++) {
+                    for (xx = xa; xx <= xb; xx++) {
+                        idx = (xx + (yy << 6)) << 1;
+                        if (*(s16 *)(gBattleMap + idx + 0x818E) < 0) continue;
+                        tile = gBattleMap + (yy << 6) + xx;
+                        if ((s8)tile[0xE18E]) continue;
+                        if (state[0x11] != 2) {
+                            ok = 0;
+                        } else {
+                            terr = tile[0x100D];
+                            ok = 1;
+                            ok2 = 1;
+                            ok3 = 1;
+                            {
+                                u8 d = terr - 0x26;
+                                if (((u32)((1 | ~d) - ((u32)(1 - d) >> 1)) >> 31) == 0) ok3 = 0;
+                            }
+                            if (ok3 == 0 && terr != 0x28) ok2 = 0;
+                            if (ok2 == 0 && terr != 0x2A) ok = 0;
+                        }
+                        if (ok != 0) continue;
+                        wcell = (u16 *)(map21 + idx + 0xC18E);
+                        hcell = (u16 *)(map21 + idx + 0xA18E);
+                        if (*wcell == 0 || *hcell >= 0xFF) continue;
+                        if ((u16)val > 0xFF) val = 0xFF;
+                        sp8 = (u8)val;
+                        dst = buf + xx + yy * *(s32 *)gBattleMap;
+                        if (*dst < (u8)val) src = &sp8; else src = dst;
+                        flag = 1;
+                        *dst = *src;
+                    }
+                }
+            }
+        }
+        if (flag != 0) {
+            {
+                s32 xa = x0, ya = y0, xb = x1, yb = y1;
+                if (xa < (s8)map21[8]) xa = (s8)map21[8];
+                if (ya < (s8)map21[9]) ya = (s8)map21[9];
+                if (xb > (s8)map21[0xA] - 1) xb = (s8)map21[0xA] - 1;
+                if (yb > (s8)map21[0xB] - 1) yb = (s8)map21[0xB] - 1;
+                for (yy = ya; yy <= yb; yy++) {
+                    for (xx = xa; xx <= xb; xx++) {
+                        idx = (xx + (yy << 6)) << 1;
+                        if (*(s16 *)(gBattleMap + idx + 0x818E) < 0) continue;
+                        tile = gBattleMap + (yy << 6) + xx;
+                        if ((s8)tile[0xE18E]) continue;
+                        if (state[0x11] != 2) {
+                            ok = 0;
+                        } else {
+                            terr = tile[0x100D];
+                            ok = 1;
+                            ok2 = 1;
+                            ok3 = 1;
+                            {
+                                u8 d = terr - 0x26;
+                                if (((u32)((1 | ~d) - ((u32)(1 - d) >> 1)) >> 31) == 0) ok3 = 0;
+                            }
+                            if (ok3 == 0 && terr != 0x28) ok2 = 0;
+                            if (ok2 == 0 && terr != 0x2A) ok = 0;
+                        }
+                        if (ok != 0) continue;
+                        dst = buf + yy * *(s32 *)gBattleMap;
+                        if (dst[xx] != 0) {
+                            hcell = (u16 *)(map21 + idx + 0xA18E);
+                            {
+                                u32 sum = dst[xx] + *hcell;
+                                if (sum > 0xFF) sum = 0xFF;
+                                *hcell = (u16)sum;
+                            }
+                            dst[xx] = 0;
+                        }
+                    }
+                }
+            }
+            flag = 0;
+        }
+        list = (void **)((u8 *)list + 8);
+        count -= 1;
+    loop_head:
+        unit = *list;
+        if (unit == 0) break;
+        if ((u8)count == 0) break;
+    }
+    fn_800C4588(buf);
+    lbl_80367908 = list;
+    return *list == 0;
+}
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void fn_800FD774(void *arg0) {
     u8 Allegiance_Compare(void *, void *);
     u8 fn_8001D500(void *);
