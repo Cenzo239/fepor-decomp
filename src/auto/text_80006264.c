@@ -16,6 +16,7 @@ s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; do { if(*++a!=*++b) goto
 
 #pragma opt_unroll off
 void fn_80006298(u32 *dst, u32 val, u32 n) { n >>= 2; --dst; do { *++dst = val; } while (--n != 0); }
+#pragma optimize_for_size on
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
     u32 count;
     u32 *p;
@@ -26,6 +27,7 @@ void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
         *(++p) = arg1;
     } while (--count != 0);
 }
+#pragma optimize_for_size reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     register u32 tmp;
     dst--;
