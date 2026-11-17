@@ -10261,6 +10261,94 @@ void fn_800C19E8(u8 *src) {
     }
     DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
 }
+
+void fn_800C1BDC(void) {
+    void *fn_800C45B8(s32, void *, s32);
+    void fn_800C19E8(u8 *);
+    void fn_800C4588(void *);
+    void fn_800062B0(void *, s32, s32);
+    s32 Map_Get(void);
+    s32 fn_80047AF8(void);
+    extern s32 gMapBlendBufIndex;
+    extern u8 gMapBlendMode;
+    extern s32 lbl_80367854;
+    extern s32 lbl_80367858;
+    extern char lbl_8026FDC0[];
+    extern u8 gBattleMap[];
+    void *buf;
+    u8 margin;
+    s32 color;
+    u8 *row;
+    s32 x;
+    s32 y;
+    u8 *dst;
+    s32 y1;
+
+    gMapBlendBufIndex += 1;
+    gMapBlendBufIndex %= 3;
+    if (gMapBlendMode == 0) {
+        fn_800C19E8(NULL);
+        return;
+    }
+    buf = fn_800C45B8(-lbl_80367854 * lbl_80367858, lbl_8026FDC0 + 0x53, 0);
+    Map_Get();
+    margin = fn_80047AF8();
+    color = 0;
+    switch ((s32)gMapBlendMode) {
+    case 1:
+        color = 0x80808080;
+        break;
+    case 2:
+        color = 0x40404040;
+        break;
+    }
+    switch ((s32)gMapBlendMode) {
+    case 1:
+    case 2:
+        fn_800062B0(buf, color, lbl_80367854 * lbl_80367858);
+        dst = (u8 *)buf + lbl_80367858;
+        y = 1;
+        while (y < lbl_80367854 - 1) {
+            x = 1;
+            dst += 1;
+            row = gBattleMap + ((s8)(y - 1) << 6);
+            while (x < lbl_80367858 - 1) {
+                if (row[(s8)(x - 1) + 0x200D] != 0) {
+                    *dst = 0xFF;
+                }
+                x += 1;
+                dst += 1;
+            }
+            dst += 1;
+            y += 1;
+        }
+        break;
+    case 3:
+        fn_800062B0(buf, -1, lbl_80367854 * lbl_80367858);
+        dst = (u8 *)buf + lbl_80367858;
+        y = 1;
+        while (y < lbl_80367854 - 1) {
+            y1 = y - 1;
+            x = 1;
+            dst += 1;
+            while (x < lbl_80367858 - 1) {
+                if ((x - 1) >= (s32)margin && y1 >= (s32)margin
+                    && (x - 1) < *(s32 *)gBattleMap - (s32)margin
+                    && y1 < ((s32 *)gBattleMap)[1] - (s32)margin) {
+                    *dst = 0;
+                }
+                x += 1;
+                dst += 1;
+            }
+            dst += 1;
+            y += 1;
+        }
+        break;
+    }
+    fn_800C19E8(buf);
+    fn_800C4588(buf);
+}
+
 #pragma opt_strength_reduction reset
 void fn_800C1E24(void) {
     M2C_UNK DCFlushRange(s32, M2C_UNK);
