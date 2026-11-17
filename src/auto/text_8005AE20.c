@@ -5660,6 +5660,61 @@ void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
     *(void **)(entry + 0xC) = arg2;
 }
 
+void fn_80067C48(void *camIn, f32 farg0, f32 farg1) {
+    void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
+    void PSMTXIdentity(void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void GXSetScissor(u16, u16, u16, u16);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
+    void GXSetProjection(void *, s32);
+    void fn_802026E4(void *, void *, void *, void *);
+    void PSMTXCopy(void *, void *);
+    void fn_80202C18(void *, void *, void *);
+    extern u8 *gCamera;
+    extern u8 gCameraProjMode;
+    extern f32 lbl_80369230, lbl_80369228, lbl_80369224;
+    f32 posMtx[12];
+    f32 view[16];
+    u8 *cam2;
+    u8 *cam;
+    s32 negFlag;
+
+    cam = camIn;
+    if (cam == NULL) {
+        cam = gCamera;
+    }
+    if (cam != NULL) {
+        negFlag = -(*(u16 *)cam & 1);
+        gCameraProjMode = negFlag + 2;
+        C_MTXOrtho(cam + 0x24, negFlag, farg1 * lbl_80369230, -farg1 * lbl_80369230,
+                   -farg0 * lbl_80369230, farg0 * lbl_80369230, *(f32 *)(cam + 0x180),
+                   *(f32 *)(cam + 0x184));
+        *(u16 *)cam &= 0xFFFE;
+        PSMTXIdentity(posMtx);
+        GXLoadPosMtxImm(posMtx, 0);
+        GXSetCurrentMtx(0);
+        cam2 = cam;
+        if (cam == NULL) {
+            cam2 = gCamera;
+        }
+        if (cam2 != NULL) {
+            GXSetScissor(*(u16 *)(cam2 + 0x1C), *(u16 *)(cam2 + 0x1E), *(u16 *)(cam2 + 0x20),
+                         *(u16 *)(cam2 + 0x22));
+            GXSetViewport(*(f32 *)(cam2 + 4), *(f32 *)(cam2 + 8), *(f32 *)(cam2 + 0xC),
+                          *(f32 *)(cam2 + 0x10), *(f32 *)(cam2 + 0x14), *(f32 *)(cam2 + 0x18));
+            GXSetProjection(cam2 + 0x24, (*(u16 *)cam2 & 1) ^ 1);
+        }
+        fn_802026E4(gCamera + 0xA4, cam + 0xD4, cam + 0xEC, cam + 0xE0);
+        PSMTXCopy(gCamera + 0xA4, view);
+        view[12] = lbl_80369228;
+        view[13] = lbl_80369228;
+        view[14] = lbl_80369228;
+        view[15] = lbl_80369224;
+        fn_80202C18(gCamera + 0x24, view, gCamera + 0x64);
+    }
+}
+
 void fn_80067DA4(void *camIn) {
     void fn_80202A6C(void *,s32,f32,f32,f32,f32);
     void PSMTXIdentity(void *);
@@ -8436,6 +8491,61 @@ extern "C" void fn_8006F514(void *arg0) {
     ((Obj *)arg0)->v29();
     Ui_DrawMsgPanelBg(0, 0);
 }
+
+extern "C" void fn_8006F54C(void *arg0, void *arg1) {
+#pragma cplusplus off
+void *GfxEnt_Get(u8);
+s32 Text_MeasureWidth(void *,s32,f32);
+#pragma cplusplus reset
+struct Obj {u8 pad[4]; virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual s16 v18()=0;
+virtual s16 v19()=0;
+virtual s16 v20()=0; };
+struct TextObj {virtual void v0()=0; virtual void *v1()=0;};
+u8 *self=(u8*)arg0;
+u8 *group=(u8*)arg1;
+s32 i;
+s32 x;
+s32 y;
+s16 height;
+u8 count;
+*(s16*)(self+0xC)=0;
+count=group[0x60];
+height=((Obj*)arg0)->v20()*(s8)count;
+for(i=0;i<(s8)group[0x60];i++) {
+TextObj *obj=*(TextObj**)((u8*)GfxEnt_Get(group[i+0x40])+0x34);
+s16 width=Text_MeasureWidth(obj->v1(),-1,1.0f);
+if(width>=*(s16*)(self+0xC)) *(s16*)(self+0xC)=width;
+}
+*(s16*)(self+0xE)=(((Obj*)arg0)->v18()-*(s16*)(self+0xC))>>1;
+*(s16*)(self+0x10)=(((Obj*)arg0)->v19()-height)>>1;
+x=*(s16*)(self+0xE);
+y=*(s16*)(self+0x10);
+for(i=0;i<(s8)group[0x60];) {
+*(s16*)((u8*)GfxEnt_Get(group[i+0x40])+0x30)=x;
+*(u16*)((u8*)GfxEnt_Get(group[i+0x40])+0x32)=y;
+i++;
+y+=((Obj*)arg0)->v20();
+}
+}
+
 #pragma cplusplus reset
 void fn_8006F6A4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     extern u32 lbl_80311CE0[];
@@ -8572,6 +8682,72 @@ void MsgWin_OpenSingle(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         lbl_80367358[1] = arg3;
     }
     Ui_CreateMenu(lbl_80311CA8, arg0, 0);
+}
+
+void fn_80070084(void *arg0, void *arg1, void *arg2) {
+void Prim2D_AddPrim(s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_SetColor(s32,s32,s32,s32);
+void Prim2D_SetText(void *);
+void Prim2D_EndPrim(void);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_PrepareTex(void);
+s32 Text_MeasureHeight(s32,f32);
+s32 Text_MeasureWidth(void *,s32,f32);
+#pragma cplusplus on
+struct Model {u8 pad[4]; virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual s32 v20()=0; };
+struct Item {virtual void v0()=0;
+virtual void * v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void * v4(void *)=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17(void *)=0; };
+f32 x;
+s16 y;
+s32 height;
+x=(f32)(M2C_FIELD(arg2,s16 *,0x30)-(Text_MeasureWidth(((Item*)arg0)->v1(),-1,1.0f)>>1));
+height=(s16)M2C_FIELD(arg1,Model **,0x3C)->v20();
+y=M2C_FIELD(arg2,s16 *,0x32)+((height-Text_MeasureHeight(-1,1.0f))>>1);
+((Item*)arg0)->v17(arg1);
+Prim2D_AddPrim(6);
+Prim2D_SetPos(x,(f32)y);
+Prim2D_SetColor(0,0,0,255);
+Prim2D_SetText(((Item*)arg0)->v4(arg2));
+Prim2D_EndPrim();Prim2D_Begin();Prim2D_AddZ(1.0f);Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 extern u8 lbl_80366DE9;
