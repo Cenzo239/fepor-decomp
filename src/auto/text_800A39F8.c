@@ -588,6 +588,44 @@ void fn_800A46E0(void) {
     lbl_803123A0[0xA5] = 1;
 }
 
+void fn_800A4878(s32 result) {
+extern u8 lbl_803123A0[];
+s32 fn_8020CB38(void *,void *,s32,s32,void (*)(s32),s32);
+s32 next;
+s32 current;
+u8 *p;
+u8 *buffers;
+u8 *ready;
+if(result==-1){*(s32 *)(lbl_803123A0+0xAC)=1;return;}
+if(result==-3)return;
+p=lbl_803123A0;
+buffers=p+0xD4;
+ready=p+0xDC;
+*(s32 *)(p+0xB0)=0;
+*(u32 *)(p+*(s32 *)(p+0xB8)*12+0xD8)=*(u32 *)(p+0xC0);
+++*(u32 *)(p+0xC0);
+*(s32 *)(ready+*(s32 *)(p+0xB8)*12)=1;
+current=*(s32 *)(p+0xB8);
+next=current+1;
+*(s32 *)(p+0xA8)+=*(s32 *)(p+0xBC);
+next=next>=10?0:next;
+*(s32 *)(p+0xBC)=**(s32 **)(buffers+current*12);
+*(s32 *)(p+0xB8)=next;
+if(*(s32 *)(ready+next*12)==0 && *(s32 *)(p+0xAC)==0 && p[0xA4]==1) {
+if(*(u32 *)(p+0xC0)>(u32)(*(s32 *)(p+0x50)-1)) {
+if(p[0xA6]!=1)return;
+*(u32 *)(p+0xC0)=0;
+*(s32 *)(p+0xA8)=*(s32 *)(p+0x64);
+*(s32 *)(p+0xBC)=*(s32 *)(p+0x54);
+}
+*(s32 *)(p+0xB0)=1;
+if(fn_8020CB38(lbl_803123A0,*(void **)(buffers+*(s32 *)(p+0xB8)*12),*(s32 *)(p+0xBC),*(s32 *)(p+0xA8),fn_800A4878,2)!=1) {
+*(s32 *)(p+0xB0)=0;
+*(s32 *)(p+0xAC)=1;
+}
+}
+}
+
 s32 fn_800A4BC4(void) {
     extern u8 lbl_803123A0[];
     u8 *p = lbl_803123A0;
@@ -2586,7 +2624,7 @@ void Ui_DrawPromptSprites(void *proc) {
 void fn_800A8F94(s32 arg0) {
 void *Sound_Create(void *, s32); void fn_80148618(void *, s32);
 extern u8 gOptionsStr[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
-void *temp; f32 b; f32 a;
+f32 b; f32 a; void *temp;
 temp = Sound_Create(gOptionsStr+0x96,arg0);
 a=lbl_80369C08; b=lbl_80369BA8;
 *(f32 *)((u8 *)temp+0x40)=a;
@@ -2725,9 +2763,6 @@ void fn_800A931C(s32 arg0) {
     void FileCache_Load(void *);
     void *Sound_Create(void *, s32);
     extern u8 gOptionsStr[];
-    extern f32 lbl_80369BA8;
-    extern f32 lbl_80369C08;
-    extern f32 lbl_80369C10;
     void *temp_r3;
     f32 f0;
     f32 f1;
@@ -2735,10 +2770,10 @@ void fn_800A931C(s32 arg0) {
     FileCache_Load(gOptionsStr + 0x58);
     fn_8005BCD0();
     temp_r3 = Sound_Create(gOptionsStr + 0x96, arg0);
-    f0 = lbl_80369C08;
-    f1 = lbl_80369BA8;
+    f0 = 64.0f;
+    f1 = 0.0f;
     *(f32 *)((u8 *)temp_r3 + 0x40) = f0;
-    f0 = lbl_80369C10;
+    f0 = -10.0f;
     *(f32 *)((u8 *)temp_r3 + 0x44) = f1;
     *(f32 *)((u8 *)temp_r3 + 0x48) = f0;
 }
