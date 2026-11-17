@@ -10734,55 +10734,128 @@ M2C_FIELD(p,s16 *,30)=4;
 Ui_CreateMenu(p,parent,0);return 4;
 }
 
-void fn_80177028(void **arg0, void *arg1, void *arg2) {
-    M2C_UNK Prim2D_SetText(s32);
-    M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
-    M2C_UNK Prim2D_SetColorPacked(s32 *);
-    M2C_UNK Prim2D_SetPos(f32, f32);
-    s32 Text_MeasureHeight(M2C_UNK, f32);
-    s16 Text_MeasureWidth(s32, M2C_UNK, f32);
-    s32 *Ui_GetColor(M2C_UNK);
+#pragma cplusplus on
+extern "C" void fn_80177028(void *self, void *host, void *slot) {
+    void Prim2D_SetText(s32);
+    void Prim2D_SetTextScale(s32, f32);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetAlphaByte(u8);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    s32 Text_MeasureHeight(s32, f32);
+    s16 Text_MeasureWidth(s32, s32, f32);
+    s32 *Ui_GetColor(s32);
     extern f32 gF32_1;
     extern f32 lbl_8036AB8C;
-    s32 spC;
-    s32 sp8;
-    f32 temp_f31;
-    s16 temp_r28;
-    s16 temp_r29;
-    s16 temp_r29_2;
-    s32 temp_r31;
-    s32 temp_r5;
-    void **temp_r3_2;
-    void *temp_r3;
-    void *temp_r3_3;
 
-    M2C_FIELD(*arg0, M2C_UNK (**)(), 0x4C)();
-    temp_r3 = M2C_FIELD(arg1, void **, 0x3C);
-    temp_r29 = M2C_FIELD(M2C_FIELD(temp_r3, void **, 4), s16 (**)(void *), 0x58)(temp_r3);
-    temp_r3_2 = M2C_FIELD(arg2, void ***, 0x34);
-    temp_r28 = (s16) ((s32) (temp_r29 - Text_MeasureHeight(-1, gF32_1)) >> 1);
-    temp_r3_3 = M2C_FIELD(arg1, void **, 0x3C);
-    temp_r31 = M2C_FIELD(*temp_r3_2, s32 (**)(void **, void *), 0x18)(temp_r3_2, arg2);
-    temp_r29_2 = M2C_FIELD(M2C_FIELD(temp_r3_3, void **, 4), s16 (**)(void *), 0x94)(temp_r3_3);
-    temp_r5 = M2C_FIELD(arg2, s16 *, 0x32) + 6;
-    temp_f31 = (f32) (M2C_FIELD(arg2, s16 *, 0x30) + ((s32) (temp_r29_2 - Text_MeasureWidth(temp_r31, -1, gF32_1)) >> 1));
-    Prim2D_AddPrim(6, temp_r5);
-    Prim2D_SetPos(temp_f31, (f32) temp_r5 + (f32) temp_r28);
-    if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
-        spC = *Ui_GetColor(0);
-        Prim2D_SetColorPacked(&spC);
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual s32 getLabel(void *) = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void draw() = 0;
+    };
+    struct Host {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual s16 getInnerH() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31() = 0;
+        virtual void v32() = 0;
+        virtual void v33() = 0;
+        virtual void v34() = 0;
+        virtual s16 getInnerW() = 0;
+    };
+
+    s32 colorSel;
+    s32 colorDim;
+    s32 hostH;
+    s16 yOff;
+    s32 label;
+    s16 hostW;
+    f32 drawX;
+    f32 drawY;
+    s32 xPad;
+    s16 slotX;
+    s16 slotY;
+
+    ((Obj *)self)->draw();
+
+    hostH = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerH();
+    yOff = (s16)((hostH - Text_MeasureHeight(-1, gF32_1)) >> 1);
+
+    label = ((Obj *)*(void **)((u8 *)slot + 0x34))->getLabel(slot);
+
+    hostW = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerW();
+
+    xPad = hostW - Text_MeasureWidth(label, -1, gF32_1);
+    slotY = *(s16 *)((u8 *)slot + 0x32);
+    slotX = *(s16 *)((u8 *)slot + 0x30);
+    drawY = (f32)(slotY + 6);
+    drawX = (f32)(slotX + (xPad >> 1));
+
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(drawX, drawY + (f32)yOff);
+
+    if (*(u8 *)((u8 *)slot + 0x39) == 2) {
+        colorSel = *Ui_GetColor(0);
+        Prim2D_SetColorPacked(&colorSel);
     } else {
-        sp8 = *Ui_GetColor(6);
-        Prim2D_SetColorPacked(&sp8);
+        colorDim = *Ui_GetColor(6);
+        Prim2D_SetColorPacked(&colorDim);
         Prim2D_SetTextScale(1, lbl_8036AB8C);
     }
-    Prim2D_SetText(temp_r31);
+    Prim2D_SetText(label);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-
+#pragma cplusplus reset
 void fn_801771FC(void) {
     void fn_8013E300(void);
     void *Process_Find(u16 *);
