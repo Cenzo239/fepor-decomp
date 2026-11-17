@@ -3502,6 +3502,24 @@ void String_ConcatCStr(M2C_UNK *arg0, M2C_UNK *unused, s32 arg2) {
     String_Destroy(&sp8, -1);
 }
 
+void fn_800CB978(u8 *self) {
+char *Unit_GetMapModelName(void *);
+extern char lbl_802704F8[];
+char *name; u8 *third; u32 len;
+name=**(char ***)((u8*)gBattle+0x188); String_AssignCStr((String*)(self+0x20),name,strlen(name));
+name=**(char ***)((u8*)gBattle+0x468); String_AssignCStr((String*)(self+0x2c),name,strlen(name));
+name=Unit_GetMapModelName(gBattle); String_AssignCStr((String*)(self+0x44),name,strlen(name));
+name=Unit_GetMapModelName((u8*)gBattle+0x2e0); String_AssignCStr((String*)(self+0x50),name,strlen(name));
+third=(u8*)gBattle+0x5c0;
+if(*(u32*)(third+0x280)){
+name=**(char ***)((u8*)gBattle+0x748); String_AssignCStr((String*)(self+0x38),name,strlen(name));
+name=Unit_GetMapModelName(third); String_AssignCStr((String*)(self+0x5c),name,strlen(name));
+}else{
+len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x38),lbl_802704F8+0x1b0,len);
+len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x5c),lbl_802704F8+0x1b0,len);
+}
+}
+
 #pragma dont_inline on
 #pragma use_lmw_stmw on
 #pragma cplusplus on
@@ -3680,6 +3698,59 @@ void String_JoinCStr(s32 arg0, char *arg1, s32 arg2) {
     String_Copy(arg0, fn_800C99A0(&spC, arg2, 0, -1));
     String_Destroy(&spC, -1);
 }
+
+#pragma global_optimizer off
+#pragma cplusplus on
+extern "C" void fn_800CBF90(void *self, String *name, String *path) {
+    void String_AssignCStr(String *, char *, u32);
+    s32 String_Compare(String *, u32, u32, char *, u32);
+    void String_ConcatCStr(String *, String *, char *);
+    void fn_800C99A0(String *, String *, s32, s32);
+    void String_Destroy(String *, s32);
+    void fn_800C992C(String *, char *, u32);
+    void fn_800E8154(void *, String *);
+    char *String_CStr(String *);
+    void fn_801CA1DC(void *, void *);
+    u32 strlen(const char *);
+    extern char lbl_802704F8[];
+    extern void *gCameraWin;
+
+    struct Obj {
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1();
+        virtual void *v2(char *, char *);
+    };
+
+    String built;
+    String tmp;
+    void *vret;
+    u32 len;
+
+    built.cap = 0;
+    built.size = 0;
+    built.data = 0;
+    built.cap = 0;
+    String_AssignCStr(&built, lbl_802704F8 + 0x1C7, strlen(lbl_802704F8 + 0x1C7));
+
+    len = strlen(lbl_802704F8 + 0x1B0);
+    if (String_Compare(path, 0, path->size, lbl_802704F8 + 0x1B0, len) != 0) {
+        String_ConcatCStr(&tmp, path, lbl_802704F8 + 0x1CD);
+        fn_800C99A0(&built, &tmp, 0, -1);
+        String_Destroy(&tmp, -1);
+    }
+    fn_800C99A0(&built, name, 0, -1);
+    fn_800C992C(&built, lbl_802704F8 + 0x1D1, strlen(lbl_802704F8 + 0x1D1));
+    fn_800E8154(*(void **)((u8 *)self + 4), &built);
+
+    vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, String_CStr(name));
+    if (vret != 0) {
+        fn_801CA1DC(gCameraWin, vret);
+    }
+    String_Destroy(&built, -1);
+}
+#pragma cplusplus reset
+#pragma global_optimizer on
 
 #pragma optimization_level 3
 #pragma use_lmw_stmw on
@@ -12004,6 +12075,28 @@ extern "C" void fn_800E4178(void *arg0, void *arg1) {
     ((Obj *)arg0)->v17(*(s32 *)arg1, *(s32 *)((u8 *)arg1 + 4));
 }
 
+extern "C" void *fn_800E41B0(u8 *self,s32 x,s32 y) {
+struct Window {u8 pad[0x40]; virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual void v4();virtual void v5();virtual void v6();virtual void v7();virtual void v8();virtual void v9();virtual void v10();virtual void v11();virtual void v12();virtual void v13();virtual void v14(); virtual void enter(s32,s32); virtual void leave(s32,s32); virtual Window *hit(s32,s32);};
+struct List {u32 unk; s32 count; u8 pad[8]; virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual Window *get(s32); s32 size(){return this?count:0;} Window *at(s32 i){return i<size()?get(i):0;}};
+s32 i;
+List *list;
+Window *result;
+if(!fn_800DF6A8(self))return 0;
+if(x>*(s32*)(self+0x48)&&x<*(s32*)(self+0x48)+*(s32*)(self+0x60)&&y>*(s32*)(self+0x4c)&&y<*(s32*)(self+0x4c)+*(s32*)(self+0x64)){
+list=*(List**)(self+0xa0);
+if(list)for(i=list->size()-1;i>=0;--i){
+result=(*(List**)(self+0xa0))->at(i)->hit(x,y);
+if(result)return result;
+}
+self[0x73]=1;
+((Window*)self)->enter(x,y);
+return self;
+}
+self[0x71]=0;self[0x72]=0;self[0x73]=0;
+((Window*)self)->leave(x,y);
+return 0;
+}
+
 #pragma cplusplus on
 extern "C" void fn_800E4330(void *arg0, void *arg1) {
     struct Obj10 {
@@ -14234,6 +14327,36 @@ void *fn_800E86A4(void *arg0, s16 arg1) {
         }
     }
     return arg0;
+}
+
+void fn_800E8714(void *arg0,s32 arg1) {
+void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
+s32 fn_800E7FB4(s32,void *);
+void *String_Init(void *,char *,void *);
+extern char lbl_802723E8[];
+#pragma cplusplus on
+class Window {
+public:
+u8 pad[0x40];
+virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+virtual void v4(); virtual void v5();
+virtual void draw(s32,s32,void *,s32,s32,f32);
+};
+String name;
+s32 scratch, item, owner;
+s32 mode=0, dx=0, dy=0;
+if(M2C_FIELD(arg0,u8 *,0x71)){mode=1;dy=2;dx=2;}
+((Window*)arg0)->draw(M2C_FIELD(arg0,u32 *,0x48)+(u32)(M2C_FIELD(arg0,s32 *,0x68)+dx),M2C_FIELD(arg0,u32 *,0x4C)+(u32)(M2C_FIELD(arg0,s32 *,0x6C)+dy),(u8*)arg0+0xAC,1,255,16.0f);
+owner=*(s32*)arg0;
+String_Init(&name,lbl_802723E8,&scratch);
+item=fn_800E7FB4(owner,&name);
+String_Destroy(&name,-1);
+if(M2C_FIELD(arg0,u8 *,0x9C)){
+fn_800E3040(item,arg1,mode,M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x4C),M2C_FIELD(arg0,s32 *,0x44),M2C_FIELD(arg0,s32 *,0x60),M2C_FIELD(arg0,s32 *,0x64),0,255,255,255,0);
+}else{
+fn_800E3040(item,arg1,mode,M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x4C),M2C_FIELD(arg0,s32 *,0x44),M2C_FIELD(arg0,s32 *,0x60),M2C_FIELD(arg0,s32 *,0x64),255,255,255,255,0);
+}
+#pragma cplusplus reset
 }
 
 void fn_800E8888(void) {
@@ -23157,6 +23280,25 @@ void fn_800FD774(void *arg0) {
     Map_FillLayer(gBattleMap, 7, 0);
 }
 
+int fn_800FDDBC(s32 x,s32 y,s32 min,s32 max,s32 layer) {
+extern u8 gBattleMap[];
+void Map_FillAttackRange(void *,s8,s8,u8,u8);
+s32 left,top,right,bottom,ix,iy;
+u8 *map=gBattleMap;
+Map_FillLayer(map,8,0);
+Map_SelectRangeBuffer(gBattleMap,layer);
+Map_FillAttackRange(gBattleMap,(s8)x,(s8)y,(u8)min,(u8)max);
+left=x-max;if(left<(s8)gBattleMap[8])left=(s8)gBattleMap[8];
+top=y-max;if(top<(s8)gBattleMap[9])top=(s8)gBattleMap[9];
+right=x+max;if(right>(s8)gBattleMap[10]-1)right=(s8)gBattleMap[10]-1;
+bottom=y+max;if(bottom>(s8)gBattleMap[11]-1)bottom=(s8)gBattleMap[11]-1;
+for(iy=top;iy<=bottom;iy++)for(ix=left;ix<=right;ix++){
+s32 index=(s8)ix+((s8)iy<<6);
+if((*(s16**)(map+0x14190))[index]>=0 && *(u16*)(map+0xC18E+index*2)==0)
+(*(s16**)(map+0x14190))[index]=-1;
+}
+}
+
 void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
     extern u8 gBattleMap[];
     void Map_SelectRangeBuffer(void *,s32);
@@ -25115,6 +25257,74 @@ for (; var_r17 <= var_r19; var_r17++) {
 }
 
 #pragma use_lmw_stmw on
+s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
+    void fn_800FE770(s16, s16, s32, s32, s32);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    s16 best;
+    s16 bestX;
+    s16 bestY;
+    s32 y;
+    s32 x;
+    s32 row;
+    u8 *rowp;
+    u8 *costBase;
+    s16 *cost;
+    u8 id;
+    u8 *unit;
+    s8 sx;
+
+    best = 0x7FFF;
+    fn_800FE770((s8)((u8 *)arg1)[0x19e], (s8)((u8 *)arg1)[0x19f], 0, 5,
+                *(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4));
+
+    for (y = (s8)gBattleMap[9]; y <= (s8)gBattleMap[0xB] - 1; y++) {
+        row = (s8)y << 6;
+        x = (s8)gBattleMap[8];
+        rowp = gBattleMap + row;
+        for (; x <= (s8)gBattleMap[0xA] - 1; x++) {
+            sx = (s8)x;
+            costBase = gBattleMap + ((sx + row) * 2);
+            cost = (s16 *)(costBase + 0x610E);
+            if (*(s16 *)(costBase + 0x610E) < 0) {
+                continue;
+            }
+            if (*(s8 *)(rowp + sx + 0xE18E) != 0) {
+                continue;
+            }
+            if (Map_IsAiTerrainBlocked(sx, (s8)y) != 0) {
+                continue;
+            }
+            id = rowp[sx + 0xD];
+            if (id == 0) {
+                continue;
+            }
+            if (id != 0) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = NULL;
+            }
+            if (filter(unit) == 0) {
+                continue;
+            }
+            if (*cost >= best) {
+                continue;
+            }
+            best = *cost;
+            bestX = (s16)x;
+            bestY = (s16)y;
+        }
+    }
+
+    if ((s16)best != 0x7FFF) {
+        *outX = bestX;
+        *outY = bestY;
+        return 1;
+    }
+    return 0;
+}
 s32 Ai_FindLowestCostUnitTile(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
