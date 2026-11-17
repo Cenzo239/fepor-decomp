@@ -1555,6 +1555,7 @@ void fn_80123308(void *arg0, s32 arg1)
         String_Destroy(&str_size, -1);
     }
 }
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus on
 extern "C" void fn_80123634(void *arg0) {
