@@ -1259,6 +1259,65 @@ void fn_8005D330(char *name, u16 flags) {
     }
     fn_8005E12C(entry, name, f);
 }
+
+void *fn_8005D474(char *name,u16 flags) {
+ s64 OSGetTime(void);
+ void OS_YieldThread(void);
+ void *fn_8005CEC0(void);
+ void fn_8005DB40(void *,char *,void *,u16);
+ void fn_8005E12C(void *,char *,u16);
+ void *AramCache_Find(char *);
+ s32 Str_Cmp(void *,void *);
+ extern u8 gFileCache[];
+ u8 *entry;
+ {
+ s32 i;
+ u32 hash;
+ u8 *start;
+ u8 *p=(u8 *)name;
+ u8 *e;
+ u8 c;
+ if((s32)*(u8 *)name=='/')p++;
+ start=p;hash=0;
+ while((s8)(c=*p)!=0) {
+ if((s8)c>='A' && (s8)c<='Z') *p+=0x20;
+ hash=(s8)*p++ + hash*37;
+ }
+ i=0;
+ for(e=gFileCache;i<0x400;i++,e+=0x7c) {
+ if(hash==*(u32 *)(e+0x2c)&&Str_Cmp(start,e)==0){entry=gFileCache+i*0x7c;goto found;}
+ }
+ entry=0;
+ found:;
+ }
+ if(entry) {
+ *(u16 *)(entry+0x30)|=flags;
+ while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
+ *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
+ (*(u16 *)(entry+0x32))++;
+ *(u16 *)(entry+0x30)&=~0x200;
+ return *(void **)(entry+0x38);
+ }
+ { void *aram=AramCache_Find(name);
+ if(aram) {
+ entry=fn_8005CEC0();
+ fn_8005DB40(entry,name,aram,flags);
+ while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
+ *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
+ (*(u16 *)(entry+0x32))++;
+ *(u16 *)(entry+0x30)&=~0x200;
+ return *(void **)(entry+0x38);
+ }
+ }
+ entry=fn_8005CEC0();
+ fn_8005E12C(entry,name,flags);
+ while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
+ *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
+ (*(u16 *)(entry+0x32))++;
+ *(u16 *)(entry+0x30)&=~0x200;
+ return *(void **)(entry+0x38);
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma global_optimizer reset
@@ -5727,6 +5786,22 @@ s32 fn_80064F24(s16 *arr, s32 key, s32 n) {
     }
 done:
     return mid;
+}
+
+s32 fn_80064FC4(u16 *a,u16 *b,u16 *out) {
+ void Game_Assert(void *,s32,void *);
+ extern u8 lbl_8026B658[];
+ u16 tmp[4];
+ s32 n=0;
+ s32 i;
+ for(i=0;i<4;i++) {
+ if(a[i]!=0xFFFF) tmp[n++]=a[i];
+ if(b[i]!=0xFFFF) tmp[n++]=b[i];
+ }
+ if(n>4) Game_Assert(lbl_8026B658,0xAD,lbl_8026B658+0x67);
+ for(i=0;i<n;i++) out[i]=tmp[i];
+ for(i=n;i<4;i++) out[i]=0xFFFF;
+ return n;
 }
 
 s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
