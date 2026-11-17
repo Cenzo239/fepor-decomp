@@ -433,23 +433,22 @@ void *fn_800A0160(void) {
 }
 
 extern u8 lbl_80367708;
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
-    u8 c;
-    s32 v = 2;
+    s32 v;
 
     a = (u8)lbl_80367708;
+    v = 2;
     b = a ^ 1;
     lbl_80367708 = b;
-    c = (u8)b;
-    if (c != 0) {
+    if ((u8)b != 0) {
         v = 0;
     }
     *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 u32 fn_800A0198(void) {
     extern u8 lbl_80367708;
     u32 var_r3;
@@ -572,20 +571,17 @@ void *fn_800A0338(void) {
     return (u8 *)gMenuCmdStrings + 0x3EB;
 }
 
-s32 fn_800A0348(s32 unused0, s32 unused1, void *arg2) {
-    extern u8 lbl_80367705;
-    u8 t;
-    s32 v;
-
-    t = lbl_80367705;
-    v = 2;
-    t = t ^ 1;
-    lbl_80367705 = t;
-    if (t != 0) {
-        v = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = (u8)v;
-    return 0;
+s32 fn_800A0348(s32 a, s32 b, void *arg2) {
+ extern u8 lbl_80367705;
+ s32 v=2;
+ u8 flag;
+ a=lbl_80367705;
+ b=a^1;
+ lbl_80367705=b;
+ flag=b;
+ if(flag != 0) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A0370(void) {
@@ -698,17 +694,12 @@ void *fn_800A0488(void) {
 }
 
 s32 fn_800A0498(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367706;
-
-    a = (u8)lbl_80367706;
-    b = a ^ 1;
-    lbl_80367706 = b;
-    a = 2;
-    if ((u8)b != 0) {
-        a = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = a;
-    return 0;
+ extern u8 lbl_80367706;
+ s32 value=2;
+ u8 flag = (lbl_80367706 ^= 1);
+ if(flag) value=0;
+ *(u8 *)((char *)arg2 + 0x39) = value;
+ return 0;
 }
 
 u32 fn_800A04C0(void) {
@@ -1187,6 +1178,7 @@ char *fn_800A0E24(void) {
 
 #pragma optimization_level 2
 s32 fn_800A0E74(void) {
+#pragma optimization_level 3
     u8 SystemSave_CountPackedSlots(void *);
     extern void *gPadInput;
     extern u8 gSystemSave[];
@@ -1217,56 +1209,10 @@ s32 fn_800A0E74(void) {
 
     count = (u8)SystemSave_CountPackedSlots(gSystemSave);
     limit = count + dir;
-    p = gSystemSave;
-    i = 0;
-    ctr = 5;
-    zero = 0;
-    limit = limit - 1;
-    do {
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        i = i + 1;
-        p = p + 1;
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        i = i + 1;
-        p = p + 1;
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        i = i + 1;
-        p = p + 1;
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        i = i + 1;
-        p = p + 1;
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        i = i + 1;
-        p = p + 1;
-        if (i < limit) {
-            p[0x12] = i + 1;
-        } else {
-            p[0x12] = zero;
-        }
-        p = p + 1;
-        i = i + 1;
-        ctr = ctr - 1;
-    } while (ctr != 0);
+    for (i = 0; i < 30; i++) {
+        if (i < limit - 1) gSystemSave[i + 0x12] = i + 1;
+        else gSystemSave[i + 0x12] = 0;
+    }
     return 0;
 }
 #pragma optimization_level reset
@@ -1919,6 +1865,65 @@ void *fn_800A207C(s32 unused, void *arg1) {
 
     t = *(Tbl *)lbl_8026D878;
     return t.e[*(u8 *)((u8 *)arg1 + 0x3a)];
+}
+
+s32 fn_800A20C4(s32 unused, s32 unused2, u8 *row) {
+void *Map_GetCursorUnit(void);
+u8 fn_8003D13C(void);
+u8 fn_800386B0(void *);
+s8 fn_8003C114(void *);
+s8 fn_800386E0(void *);
+s8 fn_8003A1E0(void *);
+void fn_8003712C(void *);
+extern u8 *gPadInput;
+u8 *unit;
+s32 value;
+u32 flags;
+unit=Map_GetCursorUnit(); value=0;
+if(row[0x3a]==1 && !fn_8003D13C())return 0;
+switch(row[0x3a]) {
+case 0: value=*(s8 *)(unit+410); break;
+case 1: value=fn_800386B0(unit); break;
+case 2: value=*(s8 *)(unit+427); break;
+case 3: value=*(s8 *)(unit+424); break;
+case 4: value=*(s8 *)(unit+428); break;
+case 5: value=*(s8 *)(unit+429); break;
+case 6: value=*(s8 *)(unit+430); break;
+case 7: value=*(s8 *)(unit+431); break;
+case 8: value=*(s8 *)(unit+432); break;
+case 9: value=*(s8 *)(unit+433); break;
+case 10: value=*(s8 *)(unit+434); break;
+case 11: value=*(s8 *)(unit+425); break;
+case 12: value=*(s8 *)(unit+426); break;
+case 13:value=fn_8003C114(unit);break;
+case 14:value=fn_800386E0(unit);break;
+case 15:value=*(u16 *)(unit+0x228);break;
+case 17:value=fn_8003A1E0(unit);break;
+}
+flags=*(u32 *)(gPadInput+0x10);
+if(flags&0x01000001)value--;
+if(flags&0x02000002)value++;
+switch(row[0x3a]) {
+case 0: if(value>20)value=20; if(value<1)value=1; unit[410]=value;break;
+case 1: if(value>99)value=99; if(value<0)value=0; unit[411]=value;break;
+case 2:  if(value<1)value=1; unit[427]=value;break;
+case 3:  if(value<1)value=1; unit[424]=value;break;
+case 4:  if(value<0)value=0; unit[428]=value;break;
+case 5:  if(value<0)value=0; unit[429]=value;break;
+case 6:  if(value<0)value=0; unit[430]=value;break;
+case 7:  if(value<0)value=0; unit[431]=value;break;
+case 8:  if(value<0)value=0; unit[432]=value;break;
+case 9:  if(value<0)value=0; unit[433]=value;break;
+case 10:  if(value<0)value=0; unit[434]=value;break;
+case 11:  if(value<0)value=0; unit[425]=value;break;
+case 12:  if(value<0)value=0; unit[426]=value;break;
+case 13:if(value<0)value=0;if(value>20)value=20;unit[0x19c]=value;break;
+case 14:if(value<0)value=0;if(value>100)value=100;unit[0x19d]=value;break;
+case 15:*(u16 *)(unit+0x228)=value;break;
+case 17:if(value>99)value=99;if(value<0)value=0;
+(*(u8 **)(unit+0x188))[0x1c]=value-(*(u8 **)(unit+0x18c))[0x3d];break;
+}
+fn_8003712C(unit);return 0;
 }
 
 void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
