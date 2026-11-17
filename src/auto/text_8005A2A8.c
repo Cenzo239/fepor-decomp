@@ -76,6 +76,114 @@ s32 fn_8005A310(void *arg0, u8 arg1, u8 arg2) {
     return 0;
 }
 
+void fn_8005A388(void *arg0, s32 arg1, s32 arg2, s32 arg3, f32 x, f32 y, f32 z) {
+void Prim2D_Begin(void);
+void Prim2D_SetTex(void*,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
+void Prim2D_EndPrim(void);
+extern f32 lbl_80369184,lbl_80369188;
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetColor(s32,s32,s32,s32);
+#pragma cplusplus on
+struct Obj {
+u8 pad[0x44];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual s32 v12()=0;
+virtual void v13()=0;
+virtual s32 v14()=0;
+virtual s32 v15()=0;
+};
+s32 w, cols;
+f32 height,u,v;
+if(arg3) {
+Prim2D_Begin();
+Prim2D_SetTransform(x,y,z,lbl_80369184);
+Prim2D_SetTex((u8*)arg0+4,arg2);
+Prim2D_PrepareTex();
+w=((Obj*)arg0)->v14();
+cols=((Obj*)arg0)->v12();
+u=(f32)(((arg3-1)%cols)*w);
+w=((Obj*)arg0)->v15();
+cols=((Obj*)arg0)->v12();
+v=(f32)(((arg3-1)/cols)*w);
+Prim2D_AddPrim(1);
+height=(f32)((Obj*)arg0)->v15();
+w=((Obj*)arg0)->v14();
+Prim2D_SetRectUv(lbl_80369188,lbl_80369188,u,v,(f32)w,height);
+Prim2D_SetColor(255,255,255,arg1);
+Prim2D_EndPrim();
+}
+#pragma cplusplus reset
+}
+
+void fn_8005A584(void *arg0,s32 arg1,s32 arg2,f32 x,f32 y) {
+void Prim2D_SetAlpha(s32);
+void Prim2D_Begin(void);
+void Prim2D_SetTex(void *,s32);
+void fn_8000A03C(void *,void *,s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
+void Prim2D_EndPrim(void);
+#pragma cplusplus on
+struct Obj {
+u8 pad[0x44];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual s32 v12()=0;
+virtual void v13()=0;
+virtual s32 v14()=0;
+virtual s32 v15()=0;
+};
+s32 w,cols;
+s32 offset;
+f32 height,u,v;
+if(arg2) {
+Prim2D_Begin();
+if(((u8 *)arg0)[0x40]) fn_8000A03C((u8 *)arg0+4,(u8 *)arg0+0x24,0,0x11);
+else Prim2D_SetTex((u8 *)arg0+4,0x11);
+Prim2D_PrepareTex();
+w=((Obj *)arg0)->v14();
+cols=((Obj *)arg0)->v12();
+offset=(arg2-1)%cols;
+u=(f32)(offset*w);
+w=((Obj *)arg0)->v15();
+cols=((Obj *)arg0)->v12();
+offset=(arg2-1)/cols;
+v=(f32)(offset*w);
+Prim2D_AddPrim(1);
+height=(f32)((Obj *)arg0)->v15();
+w=((Obj *)arg0)->v14();
+Prim2D_SetRectUv(x,y,u,v,(f32)w,height);
+Prim2D_SetAlpha(arg1);
+Prim2D_EndPrim();
+}
+#pragma cplusplus reset
+}
+
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 #pragma cplusplus on
