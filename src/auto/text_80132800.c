@@ -1,6 +1,44 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct MenuDD { u8 pad[4];
+virtual s32 v0()=0;
+virtual s32 v1()=0;
+virtual s32 v2()=0;
+virtual s32 v3()=0;
+virtual s32 v4()=0;
+virtual s32 v5()=0;
+virtual s32 v6()=0;
+virtual s32 v7()=0;
+virtual s32 v8()=0;
+virtual s32 v9()=0;
+virtual s32 v10()=0;
+virtual s32 v11()=0;
+virtual s32 v12()=0;
+virtual s32 v13()=0;
+virtual s32 v14()=0;
+virtual s32 v15()=0;
+virtual s32 v16()=0;
+virtual s32 v17()=0;
+virtual s32 v18()=0;
+virtual s32 v19()=0;
+virtual s32 v20()=0;
+virtual s32 v21()=0;
+virtual s32 v22()=0;
+virtual s32 v23()=0;
+virtual s32 v24()=0;
+virtual s32 v25()=0;
+virtual s32 v26()=0;
+virtual s32 v27()=0;
+virtual s32 v28()=0;
+virtual s32 v29()=0;
+virtual s32 v30()=0;
+virtual s32 v31()=0;
+virtual s32 v32()=0;
+virtual s32 v33()=0;
+virtual s32 v34()=0;
+virtual s32 v35()=0;
+};
 struct Menu349 {
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void prepare()=0;
 virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0;
@@ -1361,32 +1399,52 @@ extern "C" void fn_80134730(void *arg0) {
     };
     ((Obj *)arg0)->v6();
 }
-#pragma cplusplus reset
-s32 fn_80134988(s32 arg0, s32 arg1) {
-    if (arg0 < 0) {
-        return -1;
-    }
-    
-    if (arg1 < 0) {
-        return -1;
-    }
-    
-    if ((arg0 == 0) && (arg1 == 0)) {
-        return 0;
-    }
-    
-    if (arg0 == arg1) {
-        return 1;
-    }
-    
-    if (arg0 > arg1) {
-        return 2;
-    }
-    
-    return 3;
-}
-
 #pragma cplusplus on
+#pragma use_lmw_stmw on
+#pragma optimization_level 2
+#pragma global_optimizer off
+extern "C" void fn_80134988(void *arg0, void *arg1) {
+void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(); void Prim2D_SetAlphaByte(u8);
+s32 Text_MeasureHeight(s32,f32); void Ui_DrawRouteIconEx(s16,s32,u8);
+
+s16 w,h; s32 x,y; u8 active;
+s32 n,d,q; s16 r, row;
+u8 *ctx=(u8*)arg1; u8 *self=(u8*)arg0;
+((Menu349*)self)->prepare();
+d=*(s16*)(self+0x44); n=*(s16*)(self+0x3e); q=n/d; row=q;
+w=(s16)(*(s16*)(self+0x16)-*(s16*)(self+0x12))/d;
+h=*(s16*)(self+0x46);
+r=n-q*d;
+x=(s16)((w*r)+*(s16*)(self+0x48));
+y=(s16)(h*row+*(s16*)(self+0x4a));
+s32 oldX=*(s16*)(self+0x40);
+if((s16)oldX<0 || *(s16*)(self+0x42)<0) {
+*(s16*)(self+0x40)=x; *(s16*)(self+0x42)=y;
+} else {
+u32 nx=x+1,ny=y+1;
+*(s16*)(self+0x40)=(s32)(oldX+nx)>>1;
+*(s16*)(self+0x42)=(s32)(*(s16*)(self+0x42)+ny)>>1;
+}
+if(self[0x3c]) {
+active=0;
+u8 idle=active;
+if(ctx[0x2d]==0 && ctx[0x2e]==0) idle=1;
+if(idle) {
+void *cur=*(u32*)(ctx+0x34)? (*(ListNode**)(ctx+0x38))->val:0;
+if(cur==self) active=1;
+}
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036A5A8); Prim2D_PrepareTex();
+s16 t=*(s16*)(self+0x46);
+Ui_DrawRouteIconEx(*(s16*)(self+0x40),*(s16*)(self+0x42)+(s16)((t-Text_MeasureHeight(-1,lbl_8036A5AC))>>1),active);
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036A5B8); Prim2D_PrepareTex();
+((Menu349*)self)->draw((s16)(x-*(s16*)(self+0x48)),y,w,h,active);
+Prim2D_Begin(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
+}
+}
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
+#pragma cplusplus reset
 extern "C" void fn_80134B58(void *arg0) {
     void fn_801569C4(s32, s32, s16, s16, s32, s32);
     struct Obj {
@@ -8232,7 +8290,6 @@ extern "C" void fn_8013EBD8(void *arg0) {
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
     void fn_8015385C(s8, s32, s32, s16, s16, s32, s32, s32);
-    extern f64 lbl_8036A700;
 
     struct Obj {
         virtual void v0() = 0;
@@ -8259,45 +8316,51 @@ extern "C" void fn_8013EBD8(void *arg0) {
         virtual void w9(s32) = 0;
     };
 
-    u8 *self;
+    Obj *self;
     s16 vret;
-    s32 d, dx, dy;
-    f32 f3;
-    f64 dv;
+    s16 a, b, c;
+    s16 dx, dy;
+    f32 ratio;
+    s32 mulA, mulB;
+    s16 lim;
 
-    self = (u8 *)arg0;
-
-    if (*(s16 *)(self + 0x3C) > *(s16 *)(self + 0x3E)) {
-        ((Obj *)arg0)->v3();
+    self = (Obj *)arg0;
+    lim = *(s16 *)((u8 *)arg0 + 0x3E);
+    if (*(s16 *)((u8 *)arg0 + 0x3C) > lim) {
+        self->v3();
         Prim2D_Begin();
-        Prim2D_SetTex(0, (u16)(*(u32 *)(self + 0x34) | 0x10));
+        Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 0x10));
         Prim2D_PrepareTex();
 
-        vret = ((Obj *)self)->v9();
-        *((u32 *)&dv + 1) = (u32)((u16)vret ^ 0x8000);
-        *(u32 *)&dv = 0x43300000;
-        f3 = (f32)(dv - lbl_8036A700) / (f32)*(s16 *)(self + 0x3C);
-
-        dx = (s16)(*(s16 *)(self + 0x16) - *(s16 *)(self + 0x12));
-        dy = (s16)(*(s16 *)(self + 0x18) - *(s16 *)(self + 0x14));
+        vret = self->v9();
+        a = *(s16 *)((u8 *)self + 0x3C);
+        c = *(s16 *)((u8 *)self + 0x40);
+        b = *(s16 *)((u8 *)self + 0x3E);
+        ratio = (f32)vret / (f32)a;
+        dx = (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12));
+        dy = (s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14));
+        mulA = (s32)(ratio * (f32)c);
+        mulB = (s32)(ratio * (f32)b);
 
         fn_8015385C(
-            (s8)*(s32 *)(self + 0x48),
+            (s8)*(s32 *)((u8 *)self + 0x48),
             0,
             0,
             dx,
             dy,
-            (s32)(f3 * (f32)*(s16 *)(self + 0x40)),
-            (s32)(f3 * (f32)*(s16 *)(self + 0x3E)),
-            *(u32 *)(self + 0x34) | 0x10
+            mulA,
+            mulB,
+            *(u32 *)((u8 *)self + 0x34) | 0x10
         );
 
-        *(u8 *)(self + 0x58) = (u8)(*(s16 *)(self + 0x40) > 0);
-        d = *(s16 *)(self + 0x3C) - *(s16 *)(self + 0x3E);
-        *(u8 *)(self + 0x80) = (u8)(*(s16 *)(self + 0x40) < d);
+        *(u8 *)((u8 *)self + 0x58) = (u8)(*(s16 *)((u8 *)self + 0x40) > 0);
+        {
+            s32 d = *(s16 *)((u8 *)self + 0x3C) - *(s16 *)((u8 *)self + 0x3E);
+            *(u8 *)((u8 *)self + 0x80) = (u8)(*(s16 *)((u8 *)self + 0x40) < d);
+        }
 
-        ((Obj2 *)(self + 0x4C))->w9(*(u32 *)(self + 0x34));
-        ((Obj2 *)(self + 0x74))->w9(*(u32 *)(self + 0x34));
+        ((Obj2 *)((u8 *)self + 0x4C))->w9(*(u32 *)((u8 *)self + 0x34));
+        ((Obj2 *)((u8 *)self + 0x74))->w9(*(u32 *)((u8 *)self + 0x34));
     }
 }
 #pragma cplusplus reset
