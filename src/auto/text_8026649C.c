@@ -382,34 +382,30 @@ void fn_802665F8(s32 arg0, s32 arg1)
     *(s32 *)(entry + 0x20) = result;
 }
 
+#pragma global_optimizer off
 void fn_802666F4(s32 arg0, void *arg1)
 {
     extern u8 lbl_803669A0[];
-
     u8 *entry;
     u8 *queue;
-    void (*callback)(void *);
+    void (*callback)(s32, void *);
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
 
     if (arg1 == 0) {
-        *(u8 **)(queue + 0x10);
         **(u8 **)(queue + 0x10) = 0;
-
         *(u32 *)(queue + 0x2C) = 0;
         *(u32 *)(queue + 0x28) = 0;
-
-        callback = *(void (**)(void *))(queue + 0x14);
+        callback = *(void (**)(s32, void *))(queue + 0x14);
         if (callback != 0) {
             *(u32 *)(queue + 0x14) = 0;
-            callback(arg1);
+            callback(arg0, arg1);
         }
     }
-
     *(void **)(entry + 0x20) = arg1;
 }
-
+#pragma global_optimizer on
 void fn_80266774(s32 arg0) {
     extern u8 lbl_803669A0[];
     void *memcpy(void *, const void *, u32);
@@ -437,24 +433,35 @@ s32 fn_802667D4(s32 arg0, void *input, void *callback, void *outputCallback) {
     *(void **)(entry + 0x1C) = outputCallback;
     return fn_80266CFC(arg0, 1, 5, fn_80266774);
 }
-#pragma global_optimizer on
-void fn_80266840(s32 chan, s32 arg1, s32 arg2) {
-extern u8 lbl_803669A0[];
-extern s32 fn_80266CFC(s32,s32,s32,void*);
-extern void fn_80266B6C(s32);
-void fn_80266774(void);
-void fn_80266B38(void);
-u8 *entry;
-s32 ret;
-s32 chan_s=chan;
-entry=lbl_803669A0+(chan_s<<8);
-if (*(u32*)(entry+0x1C)) ret=2;
-else { *entry=0x14; *(s32*)(entry+0x18)=arg1; *(s32*)(entry+0x14)=arg2;
-*(void**)(entry+0x1C)=fn_80266B38;
-ret=fn_80266CFC(chan_s,1,5,fn_80266774); }
-if (ret != 0) { } else { fn_80266B6C(chan_s); }
+#pragma global_optimizer off
+s32 fn_80266840(s32 chan, s32 arg1, s32 arg2) {
+    extern u8 lbl_803669A0[];
+    extern s32 fn_80266CFC(s32, s32, s32, void *);
+    extern void fn_80266B6C(s32);
+    void fn_80266774(void);
+    void fn_80266B38(void);
+    u8 *entry;
+    s32 ret;
+    s32 chan_s;
+
+    chan_s = chan;
+    entry = lbl_803669A0 + (chan_s << 8);
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        ret = 2;
+    } else {
+        *entry = 0x14;
+        *(s32 *)(entry + 0x18) = arg1;
+        *(s32 *)(entry + 0x14) = arg2;
+        *(void **)(entry + 0x1C) = fn_80266B38;
+        ret = fn_80266CFC(chan_s, 1, 5, fn_80266774);
+    }
+    if (ret == 0) {
+        fn_80266B6C(chan_s);
+    } else {
+        return ret;
+    }
 }
-#pragma peephole on
+#pragma global_optimizer on
 
 #pragma peephole on
 void fn_802668D4(s32 arg0) {
@@ -466,41 +473,27 @@ void fn_802668D4(s32 arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
-#pragma peephole on
+#pragma global_optimizer off
 s32 fn_80266904(s32 channel, void *input, void *callback, void *outputCallback)
 {
     extern u8 lbl_803669A0[];
     extern void *memcpy(void *, const void *, u32);
     extern s32 fn_80266CFC(s32, s32, s32, void *);
-
-    s32 chan;
-    void *in;
-    void *cb;
-    void *outCb;
     u8 *entry;
-    s32 ret;
 
-    chan = channel;
-    entry = lbl_803669A0 + (chan << 8);
-    in = input;
-    cb = callback;
-    outCb = outputCallback;
+    entry = lbl_803669A0 + (channel << 8);
 
     if (*(u32 *)(entry + 0x1C) != 0U) {
-        ret = 2;
-    } else {
-        *entry = 0x15;
-        memcpy(entry + 1, in, 4);
-        *(void **)(entry + 0x18) = in;
-        *(void **)(entry + 0x14) = cb;
-        *(void **)(entry + 0x1C) = outCb;
-        ret = fn_80266CFC(chan, 5, 1, (void *)fn_802668D4);
+        return 2;
     }
-    return ret;
+    *entry = 0x15;
+    memcpy(entry + 1, input, 4);
+    *(void **)(entry + 0x18) = input;
+    *(void **)(entry + 0x14) = callback;
+    *(void **)(entry + 0x1C) = outputCallback;
+    return fn_80266CFC(channel, 5, 1, (void *)fn_802668D4);
 }
-#pragma peephole off
-#pragma scheduling off
+#pragma global_optimizer on
 s32 GBAWrite(s32 chan, void *input, void *callback) {
     extern u8 lbl_803669A0[];
     extern void *memcpy(void *, const void *, u32);
