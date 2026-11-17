@@ -820,99 +820,134 @@ void Unit_DecSkillRanks(void *ranks, u8 mode) {
     }
 }
 
-s32 fn_80104628(void *arg0, u8 arg1) {
-    u8 *temp_r3;
-    u8 *r10;
-    s32 r9;
+s32 fn_80104628(void *ranks, u8 mode) {
+    typedef struct {
+        u8 hi : 5;
+        u8 cnt : 3;
+    } Lo3;
+    struct {
+        u8 hi : 3;
+        u8 lo : 5;
+    } *p0;
+    struct {
+        u16 hi : 6;
+        u16 mid : 3;
+        u16 lo : 7;
+    } *h;
+    struct {
+        u8 hi : 1;
+        u8 mid : 3;
+        u8 lo : 4;
+    } *q;
+    struct {
+        u8 a : 3;
+        u8 b : 3;
+        u8 c : 2;
+    } *r;
+    struct {
+        u8 hi : 5;
+        u8 lo : 3;
+    } *s;
+    u8 *p;
+    u8 b;
+    u16 hw;
+    s32 v;
+    s32 n;
+    u32 copy;
 
-    temp_r3 = (u8 *) arg0;
-    r9 = 0;
-
-    if ((temp_r3[0] >> 5) & 7) {
-        r9 = 1;
+    n = 0;
+    p0 = ranks;
+    if (p0->hi != 0) {
+        n = 1;
     }
-    if ((temp_r3[0] >> 7) & 7) {
-        r9 += 1;
+    h = ranks;
+    if (h->mid != 0) {
+        n += 1;
     }
-    if ((temp_r3[1] >> 4) & 7) {
-        r9 += 1;
+    q = (void *)((u8 *)ranks + 1);
+    if (q->mid != 0) {
+        n += 1;
     }
-    if ((temp_r3[0] >> 2) & 7) {
-        r9 += 1;
+    r = ranks;
+    if (r->b != 0) {
+        n += 1;
     }
-    if (temp_r3[1] & 7) {
-        r9 += 1;
+    s = (void *)((u8 *)ranks + 1);
+    if (s->lo != 0) {
+        n += 1;
     }
-
-    if (r9 == 0) {
+    if (n == 0) {
         return 0;
     }
 
-    r10 = (u8 *) arg0;
-    if (arg1 == 1) {
-        u8 temp_r4;
-
-        temp_r4 = (r10[0] >> 5) & 7;
-        if (temp_r4 != 0) {
-            r10[0] = ((r10[0] & ~0xE0) | (((temp_r4 - 1) << 5) & 0xE0));
+    copy = *(u32 *)ranks;
+    p = (u8 *)&copy;
+    switch ((s32)mode) {
+    case 1:
+        b = p[0];
+        v = (b >> 5U) & 7;
+        if (v != 0) {
+            p[0] = (u8)((b & ~0xE0) | (((v - 1) << 5) & 0xE0));
         }
-
-        temp_r4 = (r10[0] >> 7) & 7;
-        if (temp_r4 != 0) {
-            r10[0] = ((r10[0] & ~0x380) | (((temp_r4 - 1) << 7) & 0x380));
+        hw = *(u16 *)p;
+        v = (hw >> 7U) & 7;
+        if (v != 0) {
+            *(u16 *)p = (u16)((hw & ~0x380) | (((v - 1) << 7) & 0x380));
         }
-
-        temp_r4 = (r10[1] >> 4) & 7;
-        if (temp_r4 != 0) {
-            r10[1] = ((r10[1] & ~0x70) | (((temp_r4 - 1) << 4) & 0x70));
+        b = p[1];
+        v = (b >> 4U) & 7;
+        if (v != 0) {
+            p[1] = (u8)((b & ~0x70) | (((v - 1) << 4) & 0x70));
         }
-
-        temp_r4 = (r10[0] >> 2) & 7;
-        if (temp_r4 != 0) {
-            r10[0] = ((r10[0] & ~0x1C) | (((temp_r4 - 1) << 2) & 0x1C));
+        b = p[0];
+        v = (b >> 2U) & 7;
+        if (v != 0) {
+            p[0] = (u8)((b & ~0x1C) | (((v - 1) << 2) & 0x1C));
         }
-
-        temp_r4 = (r10[2] >> 5) & 7;
-        if (temp_r4 != 0) {
-            r10[2] = ((r10[2] & ~0xE0) | (((temp_r4 - 1) << 5) & 0xE0));
+        b = p[2];
+        v = (b >> 5U) & 7;
+        if (v != 0) {
+            p[2] = (u8)((b & ~0xE0) | (((v - 1) << 5) & 0xE0));
         }
-
-        temp_r4 = (r10[2] >> 2) & 7;
-        if (temp_r4 != 0) {
-            r10[2] = ((r10[2] & ~0x1C) | (((temp_r4 - 1) << 2) & 0x1C));
+        b = p[2];
+        v = (b >> 2U) & 7;
+        if (v != 0) {
+            p[2] = (u8)((b & ~0x1C) | (((v - 1) << 2) & 0x1C));
         }
-    } else if (arg1 == 0) {
-        u8 temp_r4;
-
-        temp_r4 = r10[1] & 7;
-        if (temp_r4 != 0) {
-            r10[1] = ((r10[1] & ~0x7) | ((temp_r4 - 1) & 0x7));
+        break;
+    case 0:
+        b = p[1];
+        v = b & 7;
+        if (v != 0) {
+            ((Lo3 *)&p[1])->cnt = v - 1;
         }
+        break;
     }
 
-    r9 = 0;
-    temp_r3 = (u8 *) arg0;
-
-    if ((temp_r3[0] >> 5) & 7) {
-        r9 = 1;
+    n = 0;
+    p0 = (void *)&copy;
+    if (p0->hi != 0) {
+        n = 1;
     }
-    if ((temp_r3[0] >> 7) & 7) {
-        r9 += 1;
+    h = (void *)&copy;
+    if (h->mid != 0) {
+        n += 1;
     }
-    if ((temp_r3[1] >> 4) & 7) {
-        r9 += 1;
+    q = (void *)((u8 *)&copy + 1);
+    if (q->mid != 0) {
+        n += 1;
     }
-    if ((temp_r3[0] >> 2) & 7) {
-        r9 += 1;
+    r = (void *)&copy;
+    if (r->b != 0) {
+        n += 1;
     }
-    if (temp_r3[1] & 7) {
-        r9 += 1;
+    s = (void *)((u8 *)&copy + 1);
+    if (s->lo != 0) {
+        n += 1;
     }
-
-    if (r9 == 0) {
+    if (n == 0) {
         return 1;
     }
-
     return 0;
 }
 
@@ -1122,20 +1157,52 @@ void *fn_801049E0(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *a
 }
 #pragma use_lmw_stmw reset
 
-void fn_80104BF4(void* arg0, void* arg1) {
-    if (arg0 != NULL && arg1 != NULL) {
-        char* ptr0 = (char*)arg0;
-        char* ptr1 = (char*)arg1;
-        
-        while (*ptr0 != 0 && *ptr0 == *ptr1) {
-            ptr0++;
-            ptr1++;
-        }
-        
-        if (*ptr0 == 0) {
-            *(u8*)arg1 = 0;
-        }
-    }
+void *fn_80104BF4(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
+#pragma use_lmw_stmw on
+u16 sp8;
+u8 is_double;
+u16 code;
+void **ctx;
+u8 *next;
+void *base;
+void *end;
+void *start;
+u8 *entry;
+s32 fn_801053E4(s32,s32,u16 *,void *);
+s32 fn_80105474(s32,s32,void *,void *);
+u32 fn_80104930(u16 *,u16);
+extern void *lbl_803679C0;
+ctx=lbl_803679C0;
+if (((arg0[0]>=0x81U && arg0[0]<=0x9FU)||(arg0[0]>=0xE0U && arg0[0]<=0xFCU)) &&
+((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
+else is_double=0;
+if(is_double) {
+u32 low=arg0[1];
+next=arg0+2;
+arg0=(u8*)(s32)*(s8*)arg0;
+code=__rlwimi(low,(u32)arg0,8,16,23);
+} else {code=*(s8*)arg0 & 0xFF;next=arg0+1;}
+sp8=code;
+if(*(u16 *)ctx[3]!=code) {
+base=ctx[1];
+start=(u8*)base+*(u16*)((u8*)base+0x22);
+end=(u8*)start+((s32)ctx[2]<<4);
+ctx[3]=(void*)fn_801053E4((s32)start,(s32)end,&sp8,fn_80104930);
+entry=ctx[3];
+if(end==entry || *(u16*)entry!=sp8) {
+ctx[3]=(void*)fn_80105474((s32)start,(s32)end,&lbl_80366E80,fn_80104930);
+entry=ctx[3];
+if(end==entry || *(u16*)entry!=0x8199U) ctx[3]=start;
+}
+}
+entry=ctx[3];
+*arg4=*(s8*)(entry+12);
+base=ctx[1];
+*arg1=(u8*)base+(*(u32*)((u8*)base+0x24)+*(u16*)(entry+2)**(u32*)((u8*)base+0x14));
+*arg2=*(u16*)(entry+4);
+*arg3=*(u16*)(entry+6);
+return next;
+#pragma use_lmw_stmw reset
 }
 
 s32 fn_80104D90(void)
