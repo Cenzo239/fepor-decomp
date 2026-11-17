@@ -8389,6 +8389,54 @@ s32 fn_800BF694(void) {
     return 1;
 }
 
+s32 fn_800BF87C(void *arg0) {
+    void *Event_GetString(void *, u16);
+    u8 EventFlag_IsSet(void *, void *);
+    extern u8 gUiContext[24];
+    extern u16 gBattleState[700];
+    extern u8 gBattleMap[];
+    void *unit;
+    s8 x0;
+    s8 y0;
+    s8 x1;
+    s8 y1;
+    u8 *ctx;
+
+    unit = *(void **)gUiContext;
+    if (*(s8 *)((u8 *)unit + 0x1A8) == 0) {
+        return 0;
+    }
+    if (*(s16 *)((u8 *)arg0 + 0x1C) >= 0
+        && *(s16 *)((u8 *)arg0 + 0x1C) != ((u8 *)*(void **)((u8 *)unit + 0x190))[8]) {
+        return 0;
+    }
+    if (EventFlag_IsSet((u8 *)gBattleState + 0xB4,
+                        Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x1E))) != 0) {
+        return 0;
+    }
+    x1 = (s8)*(s16 *)((u8 *)arg0 + 0x18);
+    x0 = (s8)*(s16 *)((u8 *)arg0 + 0x14);
+    y0 = (s8)*(s16 *)((u8 *)arg0 + 0x16);
+    y1 = (s8)*(s16 *)((u8 *)arg0 + 0x1A);
+    if (x1 <= 0) {
+        x1 = (((s32 *)gBattleMap)[0] - 1) - x1;
+    }
+    if (y1 <= 0) {
+        y1 = (((s32 *)gBattleMap)[1] - 1) - y1;
+    }
+    ctx = gUiContext;
+    if (x0 > (s8)ctx[0xD]) {
+        return 0;
+    }
+    if ((s8)ctx[0xD] > x1) {
+        return 0;
+    }
+    if (y0 > (s8)ctx[0xE]) {
+        return 0;
+    }
+    return (s8)ctx[0xE] <= y1;
+}
+
 s32 fn_800BF9D8(void *arg0) {
     extern u8 gBattle[];
     extern u8 gMapEventFlagNames[];
@@ -9109,23 +9157,29 @@ void fn_800C0EEC(u8 *obj) {
     GXInitTexObjLOD(obj + 0x30, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
 }
 
+#pragma optimization_level 3
 void fn_800C0F94(void) {
  void Process_UnlinkByKey(void *);
  void fn_800C4588(void *);
  extern u8 lbl_8028D588[], lbl_8028D560[];
  extern void *gMapBlendBufs[];
  void *zero;
- u32 *p;
+ void **p;
  s32 i;
  Process_UnlinkByKey(lbl_8028D588);
  Process_UnlinkByKey(lbl_8028D560);
- for(i=0,p=(u32*)gMapBlendBufs,zero=NULL;i<3;++i,++p) {
- fn_800C4588((void*)*p);
- *p=(u32)zero;
- *p=(u32)zero;
- }
+ i = 0;
+ zero = NULL;
+ p = gMapBlendBufs;
+ do {
+  fn_800C4588(*p);
+  *p = zero;
+  i += 1;
+  *p = zero;
+  p += 1;
+ } while (i < 3);
 }
-
+#pragma optimization_level reset
 s32 fn_800C1010(void)
 {
   unsigned int new_var;
@@ -9227,6 +9281,30 @@ void fn_800C10D4(void *arg0) {
 void fn_800C11F4(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x60) = -1;
     M2C_FIELD(arg0, s16 *, 0x28) = 0x10;
+}
+
+void fn_800C1208(void) {
+    extern u8 *gMapBlendBufs[4];
+    extern s32 gMapBlendBufIndex;
+    void DCFlushRange(void *, u32);
+    u8 v;
+    s32 i;
+    u8 *dst;
+    u8 *src;
+    s32 j;
+    s32 k;
+
+    src = gMapBlendBufs[(gMapBlendBufIndex + 2) % 3];
+    dst = gMapBlendBufs[gMapBlendBufIndex];
+    for (i = 0; i < 0x80; i++) {
+        for (j = 0; j < 8; j++) {
+            for (k = 0; k < 8; k++) {
+                v = *src++;
+                *dst++ = (u8)(((s32)((v * 0x10) & 0xF0) >> 4) + (v & 0xF0));
+            }
+        }
+    }
+    DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
 }
 
 s32 fn_800C1360(s32 arg0, s32 arg1, s32 arg2)
