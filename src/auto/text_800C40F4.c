@@ -3985,16 +3985,16 @@ extern "C" void fn_800CD5E4(void *arg0) {
         fn_801517C8();
     }
 }
-s32 fn_800CD630(void *arg0) {
-    extern char lbl_802704F8[];
-    void *obj;
-    void **vt;
-    s32 (*meth)(void *, char *, char *);
+extern "C" s32 fn_800CD630(void *arg0) {
+    struct Obj {
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1();
+        virtual s32 v2(const char *, const char *);
+        virtual void *v3(const char *, const char *);
+    };
 
-    obj = *(void **)((u8 *)arg0 + 4);
-    vt = *(void ***)((u8 *)obj + 0x10);
-    meth = (s32 (*)(void *, char *, char *))vt[4];
-    return meth(obj, lbl_802704F8 + 0x3D0, lbl_802704F8 + 0x3D7) == 0;
+    return ((Obj *)M2C_FIELD(arg0, void **, 4))->v2((char *)lbl_802704F8 + 0x3D0, (char *)lbl_802704F8 + 0x3D7) ? 0 : 1;
 }
 #pragma cplusplus reset
 
