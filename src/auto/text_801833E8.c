@@ -8233,6 +8233,12 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 
+static inline void *Ui_CopyPtr(void *p) {
+    void *q;
+    q = p;
+    return q;
+}
+
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -8252,60 +8258,55 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    void *self;
-    void *self2;
-    s32 e1;
-    s32 e2;
-    f32 one;
+    s32 z = 0;
+    f32 one = lbl_8036AE20;
+    void *self = arg0;
+    s32 e1 = (s16)arg1;
+    s32 e2 = (s16)arg2;
 
-    one = lbl_8036AE20;
-    self = arg0;
-    self2 = arg0;
     *(void **)self = lbl_8028FDB0;
-    e1 = (s16)arg1;
-    *(s32 *)((u8 *)self + 4) = 0;
+    *(s32 *)((u8 *)self + 4) = z;
     *(void **)self = lbl_80292230;
-    e2 = (s16)arg2;
     *(s16 *)((u8 *)self + 8) = -1;
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
     *(s16 *)((u8 *)self + 0xE) = (s16)(e1 + 0x108);
     *(s16 *)((u8 *)self + 0x10) = (s16)(e2 + 0x88);
-    *(s16 *)((u8 *)self + 0x12) = 0;
-    *(s16 *)((u8 *)self + 0x14) = 0;
+    *(s16 *)((u8 *)self + 0x12) = z;
+    *(s16 *)((u8 *)self + 0x14) = z;
     *(s16 *)((u8 *)self + 0x16) = 0x108;
     *(s16 *)((u8 *)self + 0x18) = 0x88;
-    *(s16 *)((u8 *)self + 0x1A) = 0;
-    *(s16 *)((u8 *)self + 0x1C) = 0;
+    *(s16 *)((u8 *)self + 0x1A) = z;
+    *(s16 *)((u8 *)self + 0x1C) = z;
     *(u8 *)((u8 *)self + 0x1E) = 0xFF;
     *(u8 *)((u8 *)self + 0x1F) = 0xFF;
     *(u8 *)((u8 *)self + 0x20) = 0xFF;
     *(u8 *)((u8 *)self + 0x21) = 0xFF;
     *(s16 *)((u8 *)self + 0x22) = arg3;
-    *(s16 *)((u8 *)self + 0x24) = 0;
+    *(s16 *)((u8 *)self + 0x24) = z;
     *(f32 *)((u8 *)self + 0x28) = one;
     *(f32 *)((u8 *)self + 0x2C) = one;
     *(f32 *)((u8 *)self + 0x30) = one;
-    *(s32 *)((u8 *)self + 0x34) = 0;
-    *(s32 *)((u8 *)self + 0x38) = 0;
+    *(s32 *)((u8 *)self + 0x34) = z;
+    *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)self = lbl_80292208;
     fn_80142060((u8 *)arg0 + 0x3C);
 
-    *(void **)self2 = lbl_80293BB8;
-    *(u8 *)((u8 *)self2 + 0x48) = 1;
-    *(u8 *)((u8 *)self2 + 0x49) = 0;
-    *(u8 *)((u8 *)self2 + 0x4A) = 1;
-    *(u8 *)((u8 *)self2 + 0x4B) = 0;
-    *(s16 *)((u8 *)self2 + 0x50) = -1;
-    *(s16 *)((u8 *)self2 + 0x52) = -1;
-    *(s16 *)((u8 *)self2 + 0x54) = 0x20;
-    *(s32 *)((u8 *)self2 + 0x58) = 0;
-    *(s32 *)((u8 *)self2 + 0x5C) = 0;
-    *(s32 *)((u8 *)self2 + 0x60) = 3;
-    *(s16 *)((u8 *)self2 + 0x64) = 0x14;
-    *(s16 *)((u8 *)self2 + 0x66) = 0;
-    *(s32 *)((u8 *)self2 + 0x70) = 0;
-    ((Obj *)self2)->m28();
+    *(void **)self = lbl_80293BB8;
+    *(u8 *)((u8 *)self + 0x48) = 1;
+    *(u8 *)((u8 *)self + 0x49) = 0;
+    *(u8 *)((u8 *)self + 0x4A) = 1;
+    *(u8 *)((u8 *)self + 0x4B) = 0;
+    *(s16 *)((u8 *)self + 0x50) = -1;
+    *(s16 *)((u8 *)self + 0x52) = -1;
+    *(s16 *)((u8 *)self + 0x54) = 0x20;
+    *(s32 *)((u8 *)self + 0x58) = 0;
+    *(s32 *)((u8 *)self + 0x5C) = 0;
+    *(s32 *)((u8 *)self + 0x60) = 3;
+    *(s16 *)((u8 *)self + 0x64) = 0x14;
+    *(s16 *)((u8 *)self + 0x66) = 0;
+    *(s32 *)((u8 *)self + 0x70) = 0;
+    ((Obj *)self)->m28();
 
     *(void **)self = lbl_80293B74;
     *(s16 *)((u8 *)self + 0x64) = 0x18;
