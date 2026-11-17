@@ -876,6 +876,48 @@ void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     M2C_FIELD(temp_r3, s32 *, 0x3C) = arg2;
 }
 
+void fn_80184F20(s32 arg0) {
+#pragma global_optimizer off
+void GfxEnt_ForEachKey(void*,void*,void*);
+void MuFade_UnlinkSame(void*,void*);
+extern u8 E_MuBlend_script[];
+u8 key0[0x38];
+u8 key1[0x38];
+u8 key2[0x38];
+u8 key3[0x38];
+u8 key4[0x38];
+u8 key5[0x38];
+u8 key6[0x38];
+u8 key7[0x38];
+u8 key8[0x38];
+u8 key9[0x38];
+u8 key10[0x38];
+u8 *base=E_MuBlend_script;
+*(s32*)(key0+0x30)=arg0;
+GfxEnt_ForEachKey(base+0,MuFade_UnlinkSame,key0);
+*(s32*)(key1+0x30)=arg0;
+GfxEnt_ForEachKey(base+32,MuFade_UnlinkSame,key1);
+*(s32*)(key2+0x30)=arg0;
+GfxEnt_ForEachKey(base+120,MuFade_UnlinkSame,key2);
+*(s32*)(key3+0x30)=arg0;
+GfxEnt_ForEachKey(base+152,MuFade_UnlinkSame,key3);
+*(s32*)(key4+0x30)=arg0;
+GfxEnt_ForEachKey(base+192,MuFade_UnlinkSame,key4);
+*(s32*)(key5+0x30)=arg0;
+GfxEnt_ForEachKey(base+272,MuFade_UnlinkSame,key5);
+*(s32*)(key6+0x30)=arg0;
+GfxEnt_ForEachKey(base+232,MuFade_UnlinkSame,key6);
+*(s32*)(key7+0x30)=arg0;
+GfxEnt_ForEachKey(base+64,MuFade_UnlinkSame,key7);
+*(s32*)(key8+0x30)=arg0;
+GfxEnt_ForEachKey(base+96,MuFade_UnlinkSame,key8);
+*(s32*)(key9+0x30)=arg0;
+GfxEnt_ForEachKey(base+356,MuFade_UnlinkSame,key9);
+*(s32*)(key10+0x30)=arg0;
+GfxEnt_ForEachKey(base+1008,MuFade_UnlinkSame,key10);
+#pragma global_optimizer reset
+}
+
 void MoveAnim_MatchUnit(void *arg0, void *arg1) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) == (u32) M2C_FIELD(arg1, u32 *, 0x30)) {
         M2C_FIELD(arg1, void **, 0x34) = arg0;
@@ -1542,6 +1584,26 @@ void fn_801863F8(void *arg0) {
         fn_8005FEE8(*(void **)((u8 *)temp_r3_2 + 0x34), (f32) var_r29);
         fn_8004FE90(*(s32 *)((u8 *)temp_r3_2 + 0x30), (u8) *(s32 *)((u8 *)temp_r3_2 + 0x38));
     }
+}
+
+void fn_80186648(void *arg0) {
+f32 Math_EaseOutPow(s32,f32,f32,f32,f32);
+void Unit_SetWorldXY(void*,f32,f32);
+void Model_SetAlpha(void*,u8);
+void Process_ClearFunc(void*);
+extern f32 lbl_8036ACF8,lbl_8036ACEC,lbl_8036AD00,lbl_8036ACF4,gHalf;
+void *model;
+s32 alpha;
+f32 x,y;
+f32 start=lbl_8036ACEC, end=lbl_8036AD00, duration=lbl_8036ACF4;
+*(f32*)((u8*)arg0+0x4C)+=lbl_8036ACF8;
+model=(u8*)*(void**)((u8*)arg0+0x34)+0x1C;
+alpha=(s32)Math_EaseOutPow(2,start,end,duration,*(f32*)((u8*)arg0+0x4C));
+x=Math_EaseOutPow(2,*(f32*)((u8*)arg0+0x38),gHalf+(f32)*(s32*)((u8*)arg0+0x44),lbl_8036ACF4,*(f32*)((u8*)arg0+0x4C));
+y=Math_EaseOutPow(2,*(f32*)((u8*)arg0+0x3C),gHalf+(f32)*(s32*)((u8*)arg0+0x48),lbl_8036ACF4,*(f32*)((u8*)arg0+0x4C));
+Unit_SetWorldXY(*(void**)((u8*)arg0+0x34),x,y);
+Model_SetAlpha(model,(u8)alpha);
+if(*(f32*)((u8*)arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
 }
 
 #pragma opt_strength_reduction off
@@ -2353,6 +2415,64 @@ void fn_80188B4C(void *anim) {
     M2C_FIELD(self, void **, 0x54) = NULL;
     fn_800C4588(M2C_FIELD(self, void **, 0x6C));
     M2C_FIELD(self, void **, 0x6C) = NULL;
+}
+
+void fn_80188DBC(void *arg0) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u16 E_MuFade_script[36];
+    u8 sp8[0x34];
+    void *unit;
+    void *proc;
+    u8 dir;
+    s16 angle;
+    f32 fangle;
+
+    if ((*(u16 *)((u8 *)arg0 + 0x52) & 0xF) == 0) {
+        return;
+    }
+    dir = ((u8 *)arg0)[0x5A];
+    unit = *(void **)((u8 *)arg0 + 0x30);
+    switch (dir) {
+    case 4:
+        angle = 0;
+        break;
+    case 6:
+        angle = 0x2D;
+        break;
+    case 2:
+        angle = 0x5A;
+        break;
+    case 10:
+        angle = 0x87;
+        break;
+    case 8:
+        angle = 0xB4;
+        break;
+    case 9:
+        angle = 0xE1;
+        break;
+    case 1:
+        angle = 0x10E;
+        break;
+    case 5:
+        angle = 0x13B;
+        break;
+    default:
+        angle = 0;
+        break;
+    }
+    fangle = (f32)angle;
+    *(void **)(sp8 + 0x30) = unit;
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    if (fangle == ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
+        return;
+    }
+    proc = Process_CreateEx(&E_MuFade_script, 0);
+    *(void **)((u8 *)proc + 0x30) = unit;
+    *(f32 *)((u8 *)proc + 0x34) = fangle;
+    *(s32 *)((u8 *)proc + 0x38) = 0x10;
 }
 
 void fn_80188EF4(void *arg0) {
@@ -4348,6 +4468,35 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     str = Msg_Expand(lbl_80279C40 + 0x66);
     Text_Draw((s16)(y + 0xB0), x, 0xF, str);
 }
+
+void fn_8018EEB0(void *arg0, s16 arg1) {
+    s32 Text_MeasureHeight(s32,f32);
+    void *Msg_Expand(void *);
+    void Text_Draw(s16,s16,s32,void *,...);
+    s32 fn_800C3E54(void *);
+    void Ui_DrawLine(s16,s16,s16,s16,s32,void *);
+    extern u8 lbl_80279C40[];
+    extern u8 gConvoy[];
+    s16 width;
+    s16 height;
+    s32 x;
+    s32 y;
+    u8 color[4];
+    width=M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12);
+    x=M2C_FIELD(arg0,s16 *,0x44);
+    height=Text_MeasureHeight(-1,1.0f);
+    y=(s16)((0x1C-height)>>1);
+    {
+        void *str=Msg_Expand(lbl_80279C40+0x78);
+        y=arg1+y;
+        Text_Draw(x,y,0xF,str);
+    }
+    Text_Draw((s16)((s16)x+0x58),y,1,lbl_80279C40+0x8F,fn_800C3E54(gConvoy),0xC8);
+    Text_Draw((s16)((s16)x+0xB0),y,0xF,Msg_Expand(lbl_80279C40+0x66));
+    color[0]=0x70; color[1]=0x5F; color[2]=0x1F; color[3]=0x7F;
+    Ui_DrawLine(0,(s16)(arg1+height),width,(s16)(arg1+height),0x10,color);
+}
+
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
@@ -4768,6 +4917,34 @@ void fn_80190258(void *arg0) {
     p[0x14/2] = 2;
     p[0x16/2] = right;
     p[0x18/2] = bottom;
+}
+
+void fn_801902A8(void *arg0) {
+    void fn_80202A6C(void *,f32,f32,f32,f32);
+    void GXSetProjection(void *,s32);
+    void fn_80225034(f32 *);
+    void GXSetViewport(f32,f32,f32,f32,f32,f32);
+    void fn_80069F04(void *);
+    f32 projection[3][4];
+    f32 viewport[6];
+    s16 width;
+    s16 height;
+    s16 x;
+    s16 y;
+    s32 aspect;
+    s16 left=M2C_FIELD(arg0,s16 *,0x12);
+    s16 top=M2C_FIELD(arg0,s16 *,0x14);
+    width=M2C_FIELD(arg0,s16 *,0x16)-left;
+    height=M2C_FIELD(arg0,s16 *,0x18)-top;
+    x=M2C_FIELD(arg0,s16 *,0xA)+left;
+    aspect=width/height;
+    y=M2C_FIELD(arg0,s16 *,0xC)+top;
+    fn_80202A6C(projection,30.0f,(f32)aspect,1.0f,1000.0f);
+    GXSetProjection(projection,0);
+    fn_80225034(viewport);
+    GXSetViewport((f32)x,(f32)y,(f32)width,(f32)height,viewport[4],viewport[5]);
+    fn_80069F04(M2C_FIELD(arg0,void **,0x40));
+    GXSetViewport(viewport[0],viewport[1],viewport[2],viewport[3],viewport[4],viewport[5]);
 }
 
 #pragma cplusplus on
@@ -7762,55 +7939,31 @@ void fn_8019588C(void *arg0, s32 arg1) {
 
 #pragma dont_inline on
 void fn_801958C8(void *arg0, s32 arg1, void *arg2) {
-    f32 temp_f0, temp_f1, temp_f2;
-    s32 temp_r3;
-    s32 var_r6;
-    s32 var_r7;
-    u8 temp_r0;
-    void *temp_r10;
-    void *temp_r5;
-    void *var_r8;
-    void *var_r9;
-
-    var_r7 = 0;
-    temp_r5 = (void*)((u8*)arg0 + ((*(u8*)((u8*)arg0 + 0x8) * 0xC) + 0xA0));
-    *(f32*)((u8*)temp_r5 + 0x0) = *(f32*)((u8*)arg2 + 0x0);
-    *(f32*)((u8*)temp_r5 + 0x4) = *(f32*)((u8*)arg2 + 0x4);
-    *(f32*)((u8*)temp_r5 + 0x8) = *(f32*)((u8*)arg2 + 0x8);
-    *(s32*)((u8*)arg0 + (*(u8*)((u8*)arg0 + 0x8) * 4) + 0x20) = arg1;
-    *(u8*)((u8*)arg0 + 0x8) = *(u8*)((u8*)arg0 + 0x8) + 1;
-loop_7:
-    temp_r0 = *(u8*)((u8*)arg0 + 0x8);
-    if (var_r7 < (s32)temp_r0) {
-        var_r8 = arg0;
-        var_r9 = arg0;
-        var_r6 = 0;
-loop_5:
-        if (var_r6 < (s32)((*(u8*)((u8*)arg0 + 0x8) - var_r7) - 1)) {
-            temp_r3 = *(s32*)((u8*)var_r8 + 0x20);
-            if (temp_r3 > *(s32*)((u8*)var_r8 + 0x24)) {
-                *(s32*)((u8*)var_r8 + 0x20) = *(s32*)((u8*)var_r8 + 0x24);
-                *(s32*)((u8*)var_r8 + 0x24) = temp_r3;
-                temp_r10 = (void*)((u8*)arg0 + (((var_r6 + 1) * 0xC) + 0xA0));
-                temp_f0 = *(f32*)((u8*)var_r9 + 0xA0);
-                *(f32*)((u8*)var_r9 + 0xA0) = *(f32*)((u8*)temp_r10 + 0x0);
-                temp_f1 = *(f32*)((u8*)var_r9 + 0xA4);
-                *(f32*)((u8*)var_r9 + 0xA4) = *(f32*)((u8*)temp_r10 + 0x4);
-                temp_f2 = *(f32*)((u8*)var_r9 + 0xA8);
-                *(f32*)((u8*)var_r9 + 0xA8) = *(f32*)((u8*)temp_r10 + 0x8);
-                *(f32*)((u8*)temp_r10 + 0x0) = temp_f0;
-                *(f32*)((u8*)temp_r10 + 0x4) = temp_f1;
-                *(f32*)((u8*)temp_r10 + 0x8) = temp_f2;
-            }
-            var_r8 = (void*)((u8*)var_r8 + 0x4);
-            var_r9 = (void*)((u8*)var_r9 + 0xC);
-            var_r6 += 1;
-            goto loop_5;
-        }
-        var_r7 += 1;
-        goto loop_7;
-    }
-    *(f32*)((u8*)arg0 + 0x18) = *(f32*)((u8*)arg0 + (*(u8*)((u8*)arg0 + 0x8) * 4) + 0x1C);
+typedef struct { f32 x,y,z; } Vec3;
+typedef struct { u8 pad[8]; u8 count; u8 pad9[15]; f32 max; u32 pad1c; s32 keys[32]; Vec3 pos[32]; } Data;
+Data *p=arg0;
+Vec3 *v=arg2;
+s32 j,i;
+u8 *keys,*pos;
+Vec3 *dst;
+Vec3 tmp;
+f32 z,y,x;
+x=v->x;y=v->y;z=v->z;
+dst=(Vec3*)((u8*)p+(p->count*12+0xA0));
+dst->x=x; dst->y=y; dst->z=z;
+p->keys[p->count]=arg1;
+p->count++;
+for(i=0;i<p->count;i++){
+for(j=0,keys=(u8*)p,pos=(u8*)p;j<p->count-i-1;keys+=4,pos+=12,j++){
+if(*(s32*)(keys+0x20)>*(s32*)(keys+0x24)){
+s32 key=*(s32*)(keys+0x20); *(s32*)(keys+0x20)=*(s32*)(keys+0x24); *(s32*)(keys+0x24)=key;
+{ Vec3 *next=&p->pos[j+1]; tmp=*(Vec3*)(pos+0xA0);
+((Vec3*)(pos+0xA0))->x=next->x; ((Vec3*)(pos+0xA0))->y=next->y; ((Vec3*)(pos+0xA0))->z=next->z;
+next->x=tmp.x;next->y=tmp.y;next->z=tmp.z; }
+}
+}
+}
+p->max=(f32)p->keys[p->count-1];
 }
 
 #pragma use_lmw_stmw on
@@ -12862,7 +13015,7 @@ s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
     void fn_8004FE98(void *, s32);
     void fn_8004BF24(void *);
     void *unit;
-    void *proc;
+    void *host;
     u32 tmp;
 
     if (unitId != 0) {
@@ -12879,18 +13032,22 @@ s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
         fn_8004BF24(unit);
         return 0;
     }
-    proc = Process_Find(Proc_MuEventInst);
-    if (proc == NULL) {
-        tmp = fn_80127C48();
-        if (tmp == 0) {
-            tmp = fn_800C0658();
-        }
-        proc = Process_Create(Proc_MuEventInst, tmp);
-        proc = Process_CreateChild(lbl_80296FE0, proc);
+    host = Process_Find(Proc_MuEventInst);
+    if (host != NULL) {
+        *(void **)((u8 *)host + 0x54) = unit;
+        *(s32 *)((u8 *)host + 0x60) = arg1;
+        *(s32 *)((u8 *)host + 0x64) = arg2;
+        return 1;
     }
-    *(void **)((u8 *)proc + 0x54) = unit;
-    *(s32 *)((u8 *)proc + 0x60) = arg1;
-    *(s32 *)((u8 *)proc + 0x64) = arg2;
+    tmp = fn_80127C48();
+    if (tmp == 0) {
+        tmp = fn_800C0658();
+    }
+    host = Process_Create(Proc_MuEventInst, tmp);
+    host = Process_CreateChild(lbl_80296FE0, host);
+    *(void **)((u8 *)host + 0x54) = unit;
+    *(s32 *)((u8 *)host + 0x60) = arg1;
+    *(s32 *)((u8 *)host + 0x64) = arg2;
     return 1;
 }
 
