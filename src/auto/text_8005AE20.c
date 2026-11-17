@@ -637,64 +637,28 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     return Str_Cmp(sp18, sp8) == 0;
 }
 
-u16 FileCache_Probe(u8 *arg0) {
-    s32 fn_8020C3E0(u8 *);
-    s32 Str_Cmp(u8 *, M2C_UNK *);
-    extern M2C_UNK gFileCache;
-    M2C_UNK *var_r27;
-    s32 temp_r3;
-    s32 var_r30;
-    u16 var_r3;
-    u32 var_r29;
-    u8 *temp_r28;
-    u8 *var_r4;
-    u8 temp_r3_2;
-    u8 temp_r3_3;
-    void *var_r3_2;
+#pragma use_lmw_stmw on
+u16 FileCache_Probe(char *name) {
+    s32 fn_8020C3E0(char *);
+    u32 not_found = 0x8000;
+    u8 *entry = FindEntryByName(name);
+    u16 flags;
+    s32 r;
+    s32 m;
 
-    var_r4 = arg0;
-    if ((s32) *arg0 == 0x2F) {
-        var_r4 += 1;
-    }
-    temp_r28 = var_r4;
-    var_r29 = 0;
-loop_7:
-    temp_r3_2 = *var_r4;
-    if ((s8) temp_r3_2 != 0) {
-        if (((s8) temp_r3_2 >= 0x41) && ((s8) temp_r3_2 <= 0x5A)) {
-            *var_r4 += 0x20;
-        }
-        temp_r3_3 = *var_r4;
-        var_r4 += 1;
-        var_r29 = (s8) temp_r3_3 + (var_r29 * 0x25);
-        goto loop_7;
-    }
-    var_r30 = 0;
-    var_r27 = &gFileCache;
-loop_9:
-    if ((var_r29 == (u32) M2C_FIELD(var_r27, u32 *, 0x2C)) && (Str_Cmp(temp_r28, var_r27) == 0)) {
-        var_r3_2 = &gFileCache + (var_r30 * 0x7C);
+    if (entry == NULL) {
+        flags = not_found;
     } else {
-        var_r30 += 1;
-        var_r27 += 0x7C;
-        if (var_r30 >= 0x400) {
-            var_r3_2 = NULL;
-        } else {
-            goto loop_9;
-        }
+        flags = *(u16 *)(entry + 0x30);
     }
-    if (var_r3_2 == NULL) {
-        var_r3 = 0x8000;
-    } else {
-        var_r3 = M2C_FIELD(var_r3_2, u16 *, 0x30);
+    if (!(flags & 0x8000)) {
+        return flags;
     }
-    if (!(var_r3 & 0x8000)) {
-        return var_r3;
-    }
-    temp_r3 = fn_8020C3E0(arg0);
-    return 0x8000 & ((s32) ~((temp_r3 + 1) | (-1 - temp_r3)) >> 0x1F);
+    r = fn_8020C3E0(name);
+    m = (s32)~((r + 1) | (-1 - r)) >> 31;
+    return (u16)(not_found & m);
 }
-
+#pragma use_lmw_stmw reset
 /* Return the byte size of the named file-cache entry, or 0 if absent. */
 s32 FileCache_GetSize(char *name) {
     u8 *entry = FindEntryByName(name);
@@ -2870,6 +2834,48 @@ u32 GActor_GetNodeTable(void *arg0) {
         current = *(void **)((char *)current + 4);
     }
     return 0U;
+}
+
+void fn_800608AC(void *arg0) {
+    void fn_80061A08(void *);
+    void fn_80065AF8(s32, void *, void *, void *);
+    void Game_Assert(void *, s32, void *);
+    void PSMTXCopy(void *, void *);
+#pragma cplusplus on
+    struct Lookup {
+        static void *model(void *p) {
+            for (;p;p=M2C_FIELD(p,void **,4)) {
+                void *v=M2C_FIELD(p,void **,0x40);
+                if(v) return v;
+            }
+            return 0;
+        }
+        static void *matrices(void *p) {
+            for (;p;p=M2C_FIELD(p,void **,4)) {
+                void *v=M2C_FIELD(p,void **,0x60);
+                if(v) return v;
+            }
+            return 0;
+        }
+    };
+    u8 *dst;
+    void *model;
+    void *matrices;
+    s32 i;
+    u8 *src;
+    void *p;
+    if (!arg0) Game_Assert(lbl_8026B590 + 0x28, 0x150, lbl_8026B590 + 0xAB);
+    if (!M2C_FIELD(arg0,void **,0x60)) return;
+    model=Lookup::model(arg0);
+    for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x44)) break;
+    for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x48)) break;
+    matrices=Lookup::matrices(arg0);
+    src=M2C_FIELD(model,u8 **,0xC);
+    dst=(u8 *)matrices;
+    for(i=0;i<M2C_FIELD(model,s32 *,8);dst+=0x30,i++,src+=0xF4) PSMTXCopy(src+0xBC,dst);
+    fn_80061A08(arg0);
+    fn_80065AF8((s32)arg0,M2C_FIELD(model,void **,0xC),matrices,0);
+#pragma cplusplus reset
 }
 
 s32 GActor_FindNode(void *arg0, void *name) {
@@ -5316,6 +5322,47 @@ void fn_80067480(void)
 {
     extern void* lbl_80366DD4;
     *(u8*)lbl_80366DD4 = 0;
+}
+
+void fn_80067490(s32 type) {
+    void fn_802240F0(s32,s32 *,f32,f32,f32,f32);
+    void fn_80224304(void *,s32,void *);
+    void fn_802244B4(s32,s32,void *);
+    extern u8 *lbl_80366DD4;
+    extern u8 lbl_80366DD8;
+    extern u8 *gCamera;
+    extern s32 lbl_80285E70[],lbl_80369220,lbl_8036C440;
+    extern f32 lbl_80369240,lbl_80369234,lbl_80369224,lbl_80369244;
+    u16 buf[10];
+    s32 color;
+    s32 clear;
+    s32 copy;
+    u8 *cam;
+    u8 *fog=lbl_80366DD4;
+    switch(type) {
+    case 7:
+        if(lbl_80366DD8==6) return;
+        type=fog[0]; lbl_80366DD8=8; break;
+    case 8:
+        type=fog[0]; lbl_80366DD8=8; break;
+    case 6:
+        type=0; lbl_80366DD8=6; break;
+    }
+    if(type==0) {
+        clear=lbl_8036C440;
+        fn_802240F0(0,&clear,lbl_80369240,lbl_80369234,lbl_80369224,lbl_80369244);
+        fn_802244B4(0,0,0);
+    } else {
+        color=lbl_80369220;
+        ((u8 *)&color)[0]=fog[1];
+        ((u8 *)&color)[1]=fog[2];
+        ((u8 *)&color)[2]=fog[3];
+        cam=gCamera;
+        copy=color;
+        fn_802240F0(lbl_80285E70[type],&copy,*(f32 *)(fog+4),*(f32 *)(fog+8),*(f32 *)(cam+0x180),*(f32 *)(cam+0x184));
+        fn_80224304(buf,0x280,cam+0x24);
+        fn_802244B4(1,0x140,buf);
+    }
 }
 
 #pragma peephole off
@@ -8653,6 +8700,59 @@ void fn_80071B88(void) {
     Prim2D_AddZ(lbl_80369300);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
+}
+
+void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    extern f32 lbl_803692E0;
+
+    u8 *self;
+    u8 *param;
+    u8 *win;
+    void *obj;
+    void **vtable;
+    void *text;
+    s32 textWidth;
+    s32 width;
+    s32 diff;
+    s32 half;
+
+    self = (u8 *)arg0;
+    param = (u8 *)arg1;
+    win = (u8 *)arg2;
+
+    obj = *(void **)(win + 0x34);
+    vtable = *(void ***)obj;
+    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
+
+    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
+
+    obj = *(void **)(param + 0x3C);
+    vtable = *(void ***)((u8 *)obj + 4);
+    width = (s16)((s32 (*)(void *))vtable[0x14])(obj);
+
+    diff = width - textWidth;
+    half = (diff + ((u32)diff >> 31)) >> 1;
+
+    vtable = *(void ***)self;
+    ((void (*)(void *, void *, s32))vtable[0x13])(self, param, diff);
+
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos((f32)half, (f32)*(s16 *)(win + 0x32));
+
+    vtable = *(void ***)self;
+    ((void (*)(void *, void *))vtable[0x14])(self, win);
+
+    obj = *(void **)(win + 0x34);
+    vtable = *(void ***)obj;
+    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
+
+    Prim2D_SetText(text);
+    Prim2D_EndPrim();
 }
 
 void fn_80071CE8(void *arg0, void *arg1) {
