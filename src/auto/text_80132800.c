@@ -4339,10 +4339,10 @@ extern "C" void fn_80139538(void *arg0, s32 arg1) {
  extern u32 gUiInputFlags;
  extern u32 *gPadInput;
  extern u8 lbl_802768A0[];
- s32 visible, row; s16 page, old, total; s32 pages;
- struct Menu { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0; virtual void v12()=0;  virtual s32 count()=0; };
- s32 size, held, edge, repeat;
+ s32 visible, pages; s16 row, page, old, total;
+ struct Menu { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0; virtual void v12()=0; virtual s32 count()=0; };
  u8 blocked;
+ s32 size, held, edge, repeat;
  visible=((Menu *)arg0)->count();
  size=M2C_FIELD(arg0,s16 *,0x58);
  total=M2C_FIELD(arg0,s32 *,0x70);
@@ -4354,7 +4354,7 @@ extern "C" void fn_80139538(void *arg0, s32 arg1) {
  if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
  if(!blocked) {
  held=gPadInput[1]; edge=(s32)gPadInput[2]^held; repeat=gPadInput[3]; edge=held&edge;
- old=M2C_FIELD(arg0,s16 *,0x4E);
+ struct State { u8 pad[0x4E]; s16 selection; }; old=((State *)arg0)->selection;
  if((s16)row==0x7FFF) {
  s32 last=(pages-1)*size;
  if(edge&0x08000008) M2C_FIELD(arg0,s16 *,0x4E)=last;
@@ -6264,71 +6264,58 @@ void *fn_8013BC10(void *arg0, void *arg1) {
 }
 
 void fn_8013BE3C(s32 arg0) {
-    void *Heap_Alloc(M2C_UNK);
-    extern M2C_UNK lbl_80276908;
-    extern M2C_UNK lbl_8028459C;
-    extern M2C_UNK gUiMenuDrawVtbl;
-    extern M2C_UNK lbl_80291BD4;
-    extern M2C_UNK lbl_80291BEC;
-    extern M2C_UNK lbl_80291C50;
-    extern M2C_UNK lbl_80291DA0;
-    extern M2C_UNK lbl_80291E48;
-    extern M2C_UNK lbl_80291EAC;
-    extern M2C_UNK lbl_80292090;
-    extern M2C_UNK lbl_802920E0;
-    extern M2C_UNK lbl_8032FED8;
-    extern M2C_UNK lbl_8032FEE4;
-    extern u8 lbl_80367AD2;
-    extern u8 lbl_80367AD3;
-    extern f32 lbl_8036A6B8;
-    void *temp_r3;
-
-    if ((s8) lbl_80367AD2 == 0) {
-        M2C_FIELD(&lbl_8032FED8, M2C_UNK **, 0) = &lbl_8028459C;
-        M2C_FIELD(&lbl_8032FED8, M2C_UNK **, 0) = &lbl_80292090;
-        M2C_FIELD(&lbl_8032FED8, M2C_UNK **, 0) = &lbl_80291BEC;
-        M2C_FIELD(&lbl_8032FED8, void **, 4) = (void *) (&lbl_80276908 + 0x46);
-        M2C_FIELD(&lbl_8032FED8, s8 *, 8) = 2;
-        M2C_FIELD(&lbl_8032FED8, s8 *, 9) = 0;
-        M2C_FIELD(&lbl_8032FED8, M2C_UNK **, 0) = &lbl_80291EAC;
-        lbl_80367AD2 = 1;
-    }
-    if ((s8) lbl_80367AD3 == 0) {
-        M2C_FIELD(&lbl_8032FEE4, M2C_UNK **, 0) = &lbl_8028459C;
-        M2C_FIELD(&lbl_8032FEE4, M2C_UNK **, 0) = &lbl_80292090;
-        M2C_FIELD(&lbl_8032FEE4, M2C_UNK **, 0) = &lbl_80291BEC;
-        M2C_FIELD(&lbl_8032FEE4, void **, 4) = (void *) (&lbl_80276908 + 0x4E);
-        M2C_FIELD(&lbl_8032FEE4, s8 *, 8) = 2;
-        M2C_FIELD(&lbl_8032FEE4, s8 *, 9) = 0;
-        M2C_FIELD(&lbl_8032FEE4, M2C_UNK **, 0) = &lbl_80291E48;
-        lbl_80367AD3 = 1;
-    }
-    temp_r3 = Heap_Alloc(0x28);
-    if (temp_r3 != NULL) {
-        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &gUiMenuDrawVtbl;
-        M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_80291BD4;
-        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &lbl_802920E0;
-        M2C_FIELD(temp_r3, s16 *, 8) = 0x80;
-        M2C_FIELD(temp_r3, s16 *, 0xA) = 0x9C;
-        M2C_FIELD(temp_r3, s16 *, 0xC) = 0x160;
-        M2C_FIELD(temp_r3, s16 *, 0xE) = 0x88;
-        M2C_FIELD(temp_r3, s16 *, 0x10) = 0;
-        M2C_FIELD(temp_r3, s16 *, 0x12) = 0;
-        M2C_FIELD(temp_r3, s16 *, 0x14) = 0;
-        M2C_FIELD(temp_r3, s16 *, 0x16) = 0;
-        M2C_FIELD(temp_r3, f32 *, 0x18) = (f32) lbl_8036A6B8;
-        M2C_FIELD(temp_r3, s16 *, 0x1C) = 0x20;
-        M2C_FIELD(temp_r3, s16 *, 0x1E) = 4;
-        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &lbl_80291DA0;
-        M2C_FIELD(temp_r3, s32 *, 0x20) = 0;
-        M2C_FIELD(temp_r3, s8 *, 0x24) = 0;
-        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &lbl_80291C50;
-        M2C_FIELD(temp_r3, s16 *, 0xC) = 0x110;
-        M2C_FIELD(temp_r3, s16 *, 0xE) = 0x80;
-        M2C_FIELD(temp_r3, s16 *, 8) = 0xA8;
-        M2C_FIELD(temp_r3, s16 *, 0xA) = 0xA0;
-    }
-    M2C_FIELD(temp_r3, s32 *, 0x20) = arg0;
+void *Heap_Alloc(s32);
+extern u8 lbl_80276908[],lbl_8028459C[],lbl_80291BD4[],lbl_80291BEC[],lbl_80291DA0[],lbl_80291E48[],lbl_80291EAC[],lbl_80292090[],lbl_802920E0[],gUiMenuDrawVtbl[],lbl_80291C50[];
+extern u8 lbl_8032FED8[],lbl_8032FEE4[];
+extern s8 lbl_80367AD2,lbl_80367AD3;
+extern f32 lbl_8036A6B8;
+void *p;
+if(!lbl_80367AD2) {
+M2C_FIELD(lbl_8032FED8,void **,0)=lbl_8028459C;
+M2C_FIELD(lbl_8032FED8,void **,0)=lbl_80292090;
+M2C_FIELD(lbl_8032FED8,void **,0)=lbl_80291BEC;
+M2C_FIELD(lbl_8032FED8,void **,4)=lbl_80276908+70;
+M2C_FIELD(lbl_8032FED8,u8 *,8)=2;
+M2C_FIELD(lbl_8032FED8,u8 *,9)=0;
+M2C_FIELD(lbl_8032FED8,void **,0)=lbl_80291EAC;
+lbl_80367AD2=1;
+}
+if(!lbl_80367AD3) {
+M2C_FIELD(lbl_8032FEE4,void **,0)=lbl_8028459C;
+M2C_FIELD(lbl_8032FEE4,void **,0)=lbl_80292090;
+M2C_FIELD(lbl_8032FEE4,void **,0)=lbl_80291BEC;
+M2C_FIELD(lbl_8032FEE4,void **,4)=lbl_80276908+78;
+M2C_FIELD(lbl_8032FEE4,u8 *,8)=2;
+M2C_FIELD(lbl_8032FEE4,u8 *,9)=0;
+M2C_FIELD(lbl_8032FEE4,void **,0)=lbl_80291E48;
+lbl_80367AD3=1;
+}
+p=Heap_Alloc(0x28);
+if(p){
+M2C_FIELD(p,void **,4)=gUiMenuDrawVtbl;
+M2C_FIELD(p,void **,0)=lbl_80291BD4;
+M2C_FIELD(p,void **,4)=lbl_802920E0;
+M2C_FIELD(p,s16 *,8)=128;
+M2C_FIELD(p,s16 *,10)=156;
+M2C_FIELD(p,s16 *,12)=352;
+M2C_FIELD(p,s16 *,14)=136;
+M2C_FIELD(p,s16 *,16)=0;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0;
+M2C_FIELD(p,f32 *,24)=10.0f;
+M2C_FIELD(p,s16 *,28)=32;
+M2C_FIELD(p,s16 *,30)=4;
+M2C_FIELD(p,void **,4)=lbl_80291DA0;
+M2C_FIELD(p,s32 *,32)=0;
+M2C_FIELD(p,u8 *,36)=0;
+M2C_FIELD(p,void **,4)=lbl_80291C50;
+M2C_FIELD(p,s16 *,12)=272;
+M2C_FIELD(p,s16 *,14)=128;
+M2C_FIELD(p,s16 *,8)=168;
+M2C_FIELD(p,s16 *,10)=160;
+}
+M2C_FIELD(p,s32 *,32)=arg0;
 }
 
 void fn_8013BFFC(s32 arg0) {
@@ -7404,6 +7391,53 @@ extern "C" void Ui_DrawListPanelBg(void *panel, s32 count) {
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
+}
+
+extern "C" void fn_8013E080(void *arg0, void *arg1) {
+struct Obj { u8 pad[4];
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual void v20()=0;
+virtual s16 getX()=0; virtual s16 getY()=0; virtual void v23()=0; virtual void v24()=0; virtual f32 getZ()=0;
+};
+f32 UiWin_GetFade(void *); f32 Math_Ease(s32,f32,f32,f32,f32);
+void fn_80009C20(f32,f32,f32,f32,f32,f32,f32,f32);
+void Prim2D_Begin(void); void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte(s32); void Prim2D_PrepareTex(void);
+extern f32 lbl_8036A6C0, lbl_8036A6E0, lbl_8036A6E4;
+f32 y, z, fade, scale; s16 x;
+u8 focused, alpha;
+fade=UiWin_GetFade(arg1);
+scale=Math_Ease(5,lbl_8036A6E0,lbl_8036A6C0,fade,lbl_8036A6C0);
+Prim2D_Begin();
+z=((Obj *)arg0)->getZ();
+y=((Obj *)arg0)->getY();
+x=((Obj *)arg0)->getX();
+fn_80009C20(x,y,z,lbl_8036A6E0,lbl_8036A6E0,scale,scale,lbl_8036A6E0);
+Prim2D_SetColorByte((s32)(lbl_8036A6E4*fade));
+focused=0;
+if(*((u8 *)arg1+0x2D)==0 && *((u8 *)arg1+0x2E)==0) focused=1;
+alpha=0x40;
+if(focused) alpha=0x80;
+Prim2D_SetAlphaByte(alpha);
+Prim2D_PrepareTex();
 }
 
 extern "C" void *GfxEnt_Get(u8);
