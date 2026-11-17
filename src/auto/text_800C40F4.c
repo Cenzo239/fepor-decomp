@@ -6583,6 +6583,68 @@ s32 fn_800D75FC(void *arg0) {
     fn_800C9A60(&sp8, -1);
     return temp_r31;
 }
+
+void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {
+void fn_800E8154(void *,void *);
+char *String_CStr(void *);
+u8 fn_800DF6A8(void *);
+extern u8 lbl_8028DDC8[];
+extern char lbl_80271010[];
+#pragma cplusplus on
+class Object { public: char data[64]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void setup(s32,s32); };
+class Owner { public: char data[16]; virtual void v0(); virtual void v1(); virtual Object *get(char *,char *); };
+u32 i;
+u8 *p;
+*(void **)(self+0xC)=lbl_8028DDC8;
+fn_800E8154(owner,arg4);
+*(Object **)(self+0x10)=((Owner *)owner)->get(lbl_80271010,String_CStr(name));
+(*(Object **)(self+0x10))->setup(x,y);
+*(u32 *)(self+4)=0;
+*(u32 *)self=0;
+self[0x420]=fn_800DF6A8(*(void **)(self+0x10));
+for(i=0;i<8;i++) {
+p=self+i*0x80;
+*(u32 *)(p+0x14)=0;
+*(u32 *)(p+0x18)=0;
+*(u32 *)(p+0x1c)=0;
+*(u32 *)(p+0x20)=0;
+*(u32 *)(p+0x24)=0;
+*(u32 *)(p+0x28)=0;
+*(u32 *)(p+0x2c)=0;
+*(u32 *)(p+0x30)=0;
+*(u32 *)(p+0x34)=0;
+*(u32 *)(p+0x38)=0;
+*(u32 *)(p+0x3c)=0;
+*(u32 *)(p+0x40)=0;
+*(u32 *)(p+0x44)=0;
+*(u32 *)(p+0x48)=0;
+*(u32 *)(p+0x4c)=0;
+*(u32 *)(p+0x50)=0;
+*(u32 *)(p+0x54)=0;
+*(u32 *)(p+0x58)=0;
+*(u32 *)(p+0x5c)=0;
+*(u32 *)(p+0x60)=0;
+*(u32 *)(p+0x64)=0;
+*(u32 *)(p+0x68)=0;
+*(u32 *)(p+0x6c)=0;
+*(u32 *)(p+0x70)=0;
+*(u32 *)(p+0x74)=0;
+*(u32 *)(p+0x78)=0;
+*(u32 *)(p+0x7c)=0;
+*(u32 *)(p+0x80)=0;
+*(u32 *)(p+0x84)=0;
+*(u32 *)(p+0x88)=0;
+*(u32 *)(p+0x8c)=0;
+*(u32 *)(p+0x90)=0;
+}
+*(u32 *)(self+0x414)=0;
+*(u32 *)(self+0x418)=0;
+*(u32 *)(self+0x41C)=0;
+self[8]=0;
+return self;
+#pragma cplusplus reset
+}
+
 #pragma optimization_level reset
 s32 fn_800D77B0(void) {
     M2C_UNK fn_800DA358();
@@ -19626,37 +19688,38 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
     return 1;
 }
 
-s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
+extern "C" s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     u8 Allegiance_Compare(s32, s32);
     extern u8 lbl_80272E98[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
+    struct U { u8 pad[0x190]; s32 alleg; };
     s32 baseY = arg2;
     s32 baseX = arg1;
     s32 score = 0;
-    u8 *p = lbl_80272E98;
-    u8 outside;
+    s8 *p = (s8 *)lbl_80272E98;
+    bool outside;
     u8 id;
-    s32 x, y;
-    void *unit;
+    s16 x, y;
+    struct U *unit;
 
-    while (p[0] != 0x7F) {
-        x = baseX + (s8)p[0];
-        outside = 0;
-        y = baseY + (s8)p[1];
+    while (*p != 0x7F) {
+        x = baseX + p[0];
+        outside = false;
+        y = baseY + p[1];
         if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
-            outside = 1;
+            outside = true;
         if (!outside) {
             id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
             if (id) {
                 if (id)
-                    unit = gUnits + (id - 1) * 0x280;
+                    unit = (struct U *)(gUnits + (id - 1) * 0x280);
                 else
                     unit = 0;
-                if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
-                    score -= (s8)p[2];
+                if ((u8)(Allegiance_Compare(((struct U *)arg0)->alleg, unit->alleg) == 1) == 1)
+                    score -= p[2];
                 else
-                    score += (s8)p[2];
+                    score += p[2];
             }
         }
         p += 3;
@@ -19796,6 +19859,82 @@ fail:
     dist = dist - ((fn_800FCF48((s8) arg1, (s8) arg2, p6) >> 4) & 0xFFF);
     return dist;
 }
+
+u8 fn_800F7D28(void *arg0, void *arg1)
+{
+    extern u8 gBattleMap[];
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    s32 fn_800F7A60(void *, s32, s32, void *);
+
+    u8 *map;
+    u8 *unit;
+    u8 *out;
+    u8 *row;
+    s32 x;
+    s32 y;
+    s32 rowOffset;
+    s32 index;
+    s32 best;
+    s32 score;
+    s32 id;
+    u8 result;
+
+    map = gBattleMap;
+    unit = (u8 *)arg0;
+    out = (u8 *)arg1;
+    best = (s32)0x80000000;
+
+    for (y = (s8)map[9]; y <= (s8)map[11] - 1; y++) {
+        rowOffset = (s8)y << 6;
+        row = map + rowOffset;
+
+        for (x = (s8)map[8]; x <= (s8)map[10] - 1; x++) {
+            index = ((s8)x + rowOffset) << 1;
+
+            if (*(s16 *)(map + index + 0x610E) < 0) {
+                continue;
+            }
+
+            if ((s8)row[(s8)x + 0xE18E] != 0) {
+                continue;
+            }
+
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y)) {
+                continue;
+            }
+
+            if (*(u16 *)(map + index + 0xC18E) == 0) {
+                continue;
+            }
+
+            id = row[(s8)x + 0xD];
+
+            if (id != 0 && id != unit[0x198]) {
+                continue;
+            }
+
+            score = fn_800F7A60(arg0, x, y, arg1);
+
+            if (score > best) {
+                out[0] = x;
+                best = score;
+                out[1] = y;
+            }
+        }
+    }
+
+    if (best == (s32)0x80000000) {
+        return 0;
+    }
+
+    result = ((u8 (*)(void *, void *))fn_800F74C0)(
+        arg0, arg1);
+
+    *(s32 *)(out + 8) += best;
+
+    return result;
+}
+
 #pragma use_lmw_stmw reset
 s32 Battle_EvalTargetScore(void) {
     M2C_UNK fn_800F75F8();
@@ -19811,6 +19950,155 @@ s32 fn_800F7E9C(s32 arg0, s8 arg1, s8 arg2, void *arg3) {
     *(u8*)arg3 = arg1;
     *((u8*)arg3 + 1) = arg2;
     return Battle_EvalTarget(arg0, arg3);
+}
+
+s32 fn_800F7F00(u8 *self,u8 *target) {
+extern u8 gBattleMap[];
+u8 Map_IsAiTerrainBlocked(s8,s8);
+s32 Battle_EvalTarget(s32,void *);
+s32 sx;
+u8 *map=gBattleMap;
+s32 row;
+u8 *rowp;
+s32 best=0x80000000;
+s32 y,x;
+s32 offset;
+s32 score;
+u8 occupant;
+s32 result;
+for(y=*(s8 *)(map+9);y<=(s8)map[11]-1;y++) {
+row=(s8)y<<6;
+x=*(s8 *)(map+8);
+rowp=map+row;
+for(;x<=(s8)map[10]-1;x++) {
+sx=(s8)x;
+offset=((int)sx+row)*2;
+if(((s16 *)(map+0x610E))[sx+row]<0) continue;
+if(((s8 *)rowp)[sx+0xE18E]) continue;
+if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
+if(!*(u16 *)(map+offset+0xC18E)) continue;
+if(*(s16 *)(map+offset+0x818E)<=1) continue;
+occupant=rowp[sx+13];
+if(occupant && occupant!=self[0x198]) continue;
+score=fn_800F7A60(self,x,y,target);
+if(score>best) { target[0]=x; best=score; target[1]=y; }
+}
+}
+result=0;
+if(best!=(s32)0x80000000) {result=Battle_EvalTarget((s32)self,target); *(s32 *)(target+8)+=best;}
+return result;
+}
+
+s32 fn_800F805C(u8 *self,u8 *target) {
+extern u8 gBattleMap[];
+u8 Map_IsAiTerrainBlocked(s8,s8);
+s32 Battle_EvalTarget(s32,void *);
+u8 *map=gBattleMap;
+s8 sx;
+s32 row;
+u8 *rowp;
+s32 best=0x80000000;
+s32 y,x;
+s32 offset;
+s32 score;
+u8 occupant;
+s32 result;
+for(y=*(s8 *)(map+9);y<=(s8)map[11]-1;y++) {
+row=(s8)y<<6;
+x=*(s8 *)(map+8);
+rowp=map+row;
+for(;x<=(s8)map[10]-1;x++) {
+sx=(s8)x;
+offset=(sx+row)*2;
+if(((s16 *)(map+0x610E))[sx+row]<0) continue;
+if(((s8 *)rowp)[sx+0xE18E]) continue;
+if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
+if(!*(u16 *)(map+offset+0xC18E)) continue;
+if(*(s16 *)(map+offset+0x818E)>1) continue;
+occupant=rowp[sx+13];
+if(occupant && occupant!=self[0x198]) continue;
+score=fn_800F7A60(self,x,y,target);
+if(score>best) { target[0]=x; best=score; target[1]=y; }
+}
+}
+result=0;
+if(best!=(s32)0x80000000) {result=Battle_EvalTarget((s32)self,target); *(s32 *)(target+8)+=best;}
+return result;
+}
+
+u8 fn_800F81B8(void *arg0, void *arg1)
+{
+    extern u8 gBattleMap[];
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    s32 fn_800F7A60(void *, s32, s32, void *);
+    u8 Battle_EvalTarget(void *, void *);
+
+    u8 *map;
+    u8 *unit;
+    u8 *out;
+    u8 *row;
+    s32 x;
+    s32 y;
+    s32 rowOffset;
+    s32 index;
+    s32 best;
+    s32 score;
+    s32 id;
+    u8 result;
+
+    map = gBattleMap;
+    unit = (u8 *)arg0;
+    out = (u8 *)arg1;
+    best = (s32)0x80000000;
+
+    for (y = (s8)map[9]; y <= (s8)map[11] - 1; y++) {
+        rowOffset = (s8)y << 6;
+        row = map + rowOffset;
+
+        for (x = (s8)map[8]; x <= (s8)map[10] - 1; x++) {
+            index = ((s8)x + rowOffset) << 1;
+
+            if (*(s16 *)(map + index + 0x610E) < 0) {
+                continue;
+            }
+
+            if ((s8)row[(s8)x + 0xE18E] != 0) {
+                continue;
+            }
+
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y)) {
+                continue;
+            }
+
+            if (*(u16 *)(map + index + 0xC18E) == 0) {
+                continue;
+            }
+
+            id = row[(s8)x + 0xD];
+
+            if (id != 0 && id != unit[0x198]) {
+                continue;
+            }
+
+            score = fn_800F7A60(arg0, x, y, arg1);
+
+            if (score > best) {
+                out[0] = x;
+                best = score;
+                out[1] = y;
+            }
+        }
+    }
+
+    if (best == (s32)0x80000000) {
+        return 0;
+    }
+
+    result = Battle_EvalTarget(arg0, arg1);
+
+    *(s32 *)(out + 8) += best;
+
+    return result;
 }
 
 u8 fn_800F8308(void *arg0) {
