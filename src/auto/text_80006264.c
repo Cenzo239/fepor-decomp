@@ -986,38 +986,24 @@ void Prim2D_SwapUvU(void) {
 void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
 {
     extern void *gPrim2D;
-    extern f32 lbl_80368B98;
-    extern f32 gFloat1;
     void *p;
-    f32 t0;
-    f32 t1;
-    f32 c98;
-    f32 t2;
-    f32 c94;
-    f32 t3;
-
-    p = gPrim2D;
+    f32 t0, t1, t2, t3;
+    p = *(void **)((u8 *)gPrim2D + 0xC);
+    p = *(void **)((u8 *)p + 4);
     t0 = a + e;
     t1 = b + f;
-    c98 = lbl_80368B98;
-    p = *(void **)((u8 *)p + 0xC);
     t2 = c + e;
-    c94 = gFloat1;
-    p = *(void **)((u8 *)p + 4);
     t3 = d + f;
-
     *(f32 *)((u8 *)p + 0x10) = a;
     *(f32 *)((u8 *)p + 0x20) = t0;
     *(f32 *)((u8 *)p + 0x14) = b;
     *(f32 *)((u8 *)p + 0x24) = t1;
-    *(f32 *)((u8 *)p + 0x1C) = c98;
-    *(f32 *)((u8 *)p + 0x18) = c98;
-    *(f32 *)((u8 *)p + 0x2C) = c94;
-    *(f32 *)((u8 *)p + 0x28) = c94;
-
+    *(f32 *)((u8 *)p + 0x1C) = 0.0f;
+    *(f32 *)((u8 *)p + 0x18) = 0.0f;
+    *(f32 *)((u8 *)p + 0x2C) = 1.0f;
+    *(f32 *)((u8 *)p + 0x28) = 1.0f;
     p = *(void **)((u8 *)gPrim2D + 0xC);
     p = *(void **)((u8 *)p + 4);
-
     *(f32 *)((u8 *)p + 0x18) = c;
     *(f32 *)((u8 *)p + 0x1C) = d;
     *(f32 *)((u8 *)p + 0x28) = t2;
