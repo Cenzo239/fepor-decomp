@@ -1619,7 +1619,7 @@ void fn_80219664(s32 chan, s32 result) {
 
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
 s32 fn_80205110(void *, s32);
-void fn_80219734(void);
+void fn_80219734(s32, s32);
 s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     u8 *temp_r31;
     u8 *temp_r30;
