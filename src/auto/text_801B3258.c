@@ -5628,6 +5628,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
+#pragma optimization_level 3
 void fn_801C0F54(s32 arg0) {
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, void *);
@@ -5635,20 +5636,19 @@ void fn_801C0F54(s32 arg0) {
     extern char gUiScrollListStrings[];
     s32 self;
     void *str;
-    void *p;
+    u32 p;
 
     self = arg0;
-    str = (void *)0;
-    p = (void *)Ui_FindChild(self, 0x80, 0);
+    p = Ui_FindChild(self, 0x80, 0);
     *(s32 *)((u8 *)p + 0x48) = 1;
-    Ui_SetWidgetText((u32)p, gUiScrollListStrings + 0x86);
+    Ui_SetWidgetText(p, gUiScrollListStrings + 0x86);
     str = Msg_Expand(gUiScrollListStrings + 0x99);
-    p = (void *)Ui_FindChild(self, -0x1000, 0);
+    p = Ui_FindChild(self, -0x1000, 0);
     if (p != 0) {
-        Ui_SetWidgetText((u32)p, str);
+        Ui_SetWidgetText(p, str);
     }
 }
-
+#pragma optimization_level reset
 void fn_801C0FDC(void *arg0) {
     void *Heap_Alloc(s32);
     void Ui_AddChild(void *);
@@ -11363,15 +11363,16 @@ s32 fn_801CD508(s32 arg0) {
     return count;
 }
 
+#pragma opt_propagation off
 s32 fn_801CD548(s32 arg0) {
     extern u8 *lbl_802984C0[];
     s32 count;
     u8 **table;
     s32 n;
     s16 stride;
+    s32 step;
     u8 **tmp;
     u8 **cur;
-    s32 step;
 
     count = 0;
     table = (u8 **)count;
@@ -11418,7 +11419,7 @@ check:
     }
     return n;
 }
-
+#pragma opt_propagation reset
 s32 fn_801CD5CC(s32 arg0, s32 arg1) {
     if (arg0 == 0) {
         return 0;
@@ -12299,20 +12300,33 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 }
 
 #pragma cplusplus on
-void fn_801CF324(void *arg0, s32 arg1) {
+extern "C" void fn_801CF324(void *arg0, s32 arg1) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3(s32) = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+    };
     void fn_80152DE0(s32, s32, u8, s32, s32);
-    void *self;
     s32 id;
     s32 i;
+    Obj *self;
 
-    self = arg0;
-    M2C_FIELD(M2C_FIELD(self, void **, 0), void (**)(void *), 0x30)(self);
-    M2C_FIELD(M2C_FIELD(self, void **, 0), void (**)(void *, s32), 0x14)(self, arg1);
+    self = (Obj *)arg0;
+    self->v10();
+    self->v3(arg1);
     id = 0xD;
     i = 0;
     do {
         fn_80152DE0(5, id, (u8)i,
-                    *(s16 *)((u8 *)self + 0x3C) == i,
+                    (i == *(s16 *)((u8 *)self + 0x3C)) ? 1 : 0,
                     *(s32 *)((u8 *)self + 0x34));
         i += 1;
         id += 0x22;
@@ -14083,24 +14097,39 @@ s32 fn_801D2B04(void *arg0) {
     return Msg_Expand();
 }
 
+#pragma optimization_level 3
 void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
-    s16 spA;
-    s16 sp8;
+    s16 pt[2];
     s16 temp_r6;
     s16 temp_r6_2;
     s32 temp_r7;
+#pragma cplusplus on
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+    };
+    ((Obj *)arg1)->v10();
+#pragma cplusplus reset
 
-    M2C_FIELD(M2C_FIELD(arg1, void **, 0), M2C_UNK (**)(void *), 0x30)(arg1);
     temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
-    sp8 = M2C_FIELD(arg1, s16 *, 0x60);
-    spA = temp_r7 + temp_r6_2;
-    *arg0 = *fn_8013F748(arg1, &spC, &sp8, temp_r6_2, temp_r7, temp_r6);
+    pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
+    pt[1] = (s16)(temp_r7 + temp_r6_2);
+    *arg0 = *fn_8013F748(arg1, &spC, pt, temp_r6_2, temp_r7, temp_r6);
 }
-
+#pragma optimization_level reset
 void *fn_801D2C20(void) {
     extern u16 lbl_8027E0F8[];
     return &lbl_8027E0F8[0x12];
@@ -16894,12 +16923,12 @@ void fn_801DE074(void) {
     } while (i < 0x28);
 }
 
-#pragma global_optimizer off
+#pragma opt_loop_invariants off
 void fn_801DE274(void) {
-    void sprintf(void *, void *, ...);
-    s32 FileCache_GetFlags(void *);
+    void fn_80231D94(void *, void *, ...);
+    s32 fn_8005C6A0(void *);
     void fn_8006EEFC(void *, void *);
-    extern u8 gUiSeCues[];
+    extern u8 lbl_8027E258[];
     extern u8 lbl_80299A78[];
     char buf[0x40];
     u8 *p;
@@ -16908,15 +16937,15 @@ void fn_801DE274(void) {
     p = lbl_80299A78;
     i = 0;
     do {
-        sprintf(buf, gUiSeCues + 0x661, *(s32 *)(p + 4));
-        if (FileCache_GetFlags(buf) & 0x2000) {
+        fn_80231D94(buf, lbl_8027E258 + 0x661, *(s32 *)(p + 4));
+        if (fn_8005C6A0(buf) & 0x2000) {
             fn_8006EEFC(p + 8, buf);
         }
         i += 1;
         p += 0xC;
     } while (i < 0x28);
 }
-#pragma global_optimizer on
+#pragma opt_loop_invariants reset
 
 #pragma use_lmw_stmw reset
 void fn_801DE2FC(s32 arg0) {
@@ -16974,6 +17003,7 @@ u8 fn_801DE3D0(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0x10);
 }
 
+#pragma optimization_level 3
 void fn_801DE3D8(void *arg0) {
     extern s32 gUiInputFlags;
     extern void *gPadInput;
@@ -16984,11 +17014,8 @@ void fn_801DE3D8(void *arg0) {
     f32 tmp;
 
     gate = 0;
-    flags = gUiInputFlags;
-    if ((flags & 0x10) != 0) {
-        if ((flags & 0x20) == 0) {
-            gate = 1;
-        }
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
+        gate = 1;
     }
     if (gate != 0) {
         return;
@@ -17007,9 +17034,7 @@ void fn_801DE3D8(void *arg0) {
         *(f32 *)((char *)arg0 + 0x44) = lbl_8036B6BC;
     }
 }
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
+#pragma optimization_level reset
 void fn_801DE474(void *arg0, void *arg1)
 {
     void fn_8013F748(void *, s16 *, s16 *);
