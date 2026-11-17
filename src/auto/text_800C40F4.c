@@ -463,6 +463,35 @@ done:
     return idx;
 }
 
+void fn_800C4384(void) {
+void DebugPrint(const char *,...);
+extern char lbl_802700D8[];
+extern HeapC55 *lbl_80320B88[];
+extern u32 *lbl_80367860, *lbl_80367868;
+extern u32 lbl_80367864, lbl_8036786C;
+s32 mb, i;
+u32 n, ext;
+HeapC55 **table, *h;
+u8 *lo, *hi;
+mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
+DebugPrint(lbl_802700D8+0x18);
+n=mb<<20; DebugPrint(lbl_802700D8+0x1a,0x80000000U,n+0x80000000U,n);
+hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-lo);
+if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
+hi=(u8*)lbl_8036786C;if(hi){}else hi=(u8*)lbl_80367864;
+DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
+table=lbl_80320B88;
+i=0;
+do {
+h=*table;
+if(h){ext=h->extent;
+DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
+DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
+}
+++i; ++table;
+} while(i<16);
+}
+
 s32 fn_800C44F4(s32 arg0) {
     extern void *lbl_80367870;
     extern void *lbl_80320B88[];
@@ -2435,6 +2464,27 @@ M2C_FIELD(vec,u32 *,0)=capacity;
 }
 }
 }
+
+void fn_800CA018(void *vec, u32 capacity) {
+void *Heap_Alloc(u32); void Heap_Free(void *);
+void fprintf(void *,const char *,...); void abort(void);
+extern char gStringErrorMsgs[];
+u32 *old, *allocation, *end, *src, *dst;
+if(capacity > *(u32*)vec) {
+if(capacity>0x3FFFFFFFU){fprintf(__files+0xA0,gStringErrorMsgs+0x153);abort();}
+old=*(u32**)((u8*)vec+8);
+allocation=Heap_Alloc(capacity*4);
+if(!allocation){fprintf(__files+0xA0,gStringErrorMsgs+0x7C);abort();}
+*(u32**)((u8*)vec+8)=allocation;
+if(old){
+src=old;dst=*(u32**)((u8*)vec+8);end=old+*(u32*)((u8*)vec+4);
+while(src<end){*dst++=*src++;}
+Heap_Free(old);
+}
+*(u32*)vec=capacity;
+}
+}
+
 #pragma use_lmw_stmw reset
 #pragma opt_loop_invariants reset
 
@@ -6342,6 +6392,34 @@ void fn_800D6A84(void *arg0, u32 arg1, s32 arg2) {
     }
 }
 
+void *fn_800D6AB4(String *dst, String *src) {
+void *Heap_Alloc(s32); void *memcpy(void *,const void *,u32); void fprintf(void *,const char *,...); void abort(void);
+extern char lbl_802704F8[]; extern u8 lbl_80366E50;
+u32 size, cap;
+char *allocation, *end, *begin;
+cap=src[0].cap;
+begin=src[0].data;
+dst[0].cap=cap; end=begin+src[0].size;
+dst[0].data=0; dst[0].size=0; dst[0].cap=0;
+if(begin!=end) {
+size=end-begin; dst[0].cap=size+3-(size&3);
+allocation=Heap_Alloc(dst[0].cap+1);
+if(!allocation){fprintf(__files+0xA0,lbl_802704F8+0x999);abort();}
+dst[0].data=allocation; memcpy(dst[0].data,begin,size); dst[0].size=size; dst[0].data[size]=lbl_80366E50;
+}
+cap=src[1].cap;
+begin=src[1].data;
+dst[1].cap=cap; end=begin+src[1].size;
+dst[1].data=0; dst[1].size=0; dst[1].cap=0;
+if(begin!=end) {
+size=end-begin; dst[1].cap=size+3-(size&3);
+allocation=Heap_Alloc(dst[1].cap+1);
+if(!allocation){fprintf(__files+0xA0,lbl_802704F8+0x999);abort();}
+dst[1].data=allocation; memcpy(dst[1].data,begin,size); dst[1].size=size; dst[1].data[size]=lbl_80366E50;
+}
+return dst;
+}
+
 void Tree_InsertFixup(void *arg0, void *arg1)
 {
     // If arg0 is NULL, return
@@ -9750,15 +9828,17 @@ void fn_800DEF00(void *arg0) {
 
 #pragma scheduling off
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-#pragma cplusplus on
-    struct Node {
-        unsigned count, root;
-        unsigned char value;
-        void *link;
-        void init(unsigned z, unsigned char v) { count = z; root = z; value = v; link = &root; }
-    };
-    ((Node *)arg0)->init(0, *arg1);
-#pragma cplusplus reset
+    u32 z;
+    u8 v;
+    u8 *mid;
+
+    z = 0;
+    v = *arg1;
+    *(u32 *)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(u32 *)mid = z;
+    *((u8 *)arg0 + 8) = v;
+    *(u8 **)((u8 *)arg0 + 12) = mid;
 }
 #pragma scheduling reset
 void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
@@ -16488,6 +16568,56 @@ s32 fn_800ED92C(void) {
     return 0;
 }
 
+void fn_800ED960(void *self) {
+    void *fn_800DA5FC(void);
+    u8 Actor_IsBusy(void *);
+    s32 fn_800E5674(void *);
+    s32 fn_800E5690(void *);
+    void fn_800E5600(void *, s32, u8);
+    void fn_800E51A8(void *, void *);
+    void fn_800DB1FC(void *, void *);
+    void String_Init(void *, char *, void *);
+    void *String_Destroy(void *, s32);
+    void sprintf(char *, char *, ...);
+    extern char Win3_str[];
+    char buf[0x18];
+    u8 str1[0xC];
+    u8 str2[0xC];
+    u8 str3[0xC];
+    u8 str4[0xC];
+    u32 scratch10;
+    u32 scratchC;
+    u32 scratch8;
+
+    *(void **)((u8 *)self + 0x440) = fn_800DA5FC();
+    if (*(void **)((u8 *)self + 0x440) != 0) {
+        if (Actor_IsBusy(*(void **)((u8 *)self + 0x440))) {
+            *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB0) =
+                fn_800E5674(*(void **)((u8 *)self + 0x440));
+            *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB4) =
+                fn_800E5690(*(void **)((u8 *)self + 0x440));
+            sprintf(buf, Win3_str, *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB4));
+            String_Init(str1, buf, &scratch10);
+            fn_800DB1FC(*(void **)((u8 *)self + 0x448), str1);
+            String_Destroy(str1, -1);
+            sprintf(buf, Win3_str, *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB0));
+            String_Init(str2, buf, &scratchC);
+            fn_800DB1FC(*(void **)((u8 *)self + 0x44C), str2);
+            String_Destroy(str2, -1);
+        } else {
+            fn_800E5600(*(void **)((u8 *)self + 0x440),
+                        *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB4), 1);
+            sprintf(buf, Win3_str, *(s32 *)((u8 *)*(void **)((u8 *)self + 0x424) + 0xB4));
+            String_Init(str3, buf, &scratch8);
+            fn_800DB1FC(*(void **)((u8 *)self + 0x448), str3);
+            String_Destroy(str3, -1);
+        }
+        fn_800E51A8(str4, *(void **)((u8 *)self + 0x440));
+        fn_800DB1FC(*(void **)((u8 *)self + 0x444), str4);
+        String_Destroy(str4, -1);
+    }
+}
+
 void *Win3_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     /* Construct the ztool win3 animation preview window and wire its controls. */
     void String_Init(void *, char *, void *);
@@ -19691,43 +19821,43 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
   #pragma auto_inline reset
   #pragma cplusplus reset
 
-  s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
-      u8 Allegiance_Compare(s32, s32);
-      extern u8 lbl_80272E98[];
-      extern u8 gBattleMap[];
-      extern u8 gUnits[];
-      s32 baseY = arg2;
-      s32 baseX = arg1;
-      s32 score = 0;
-      s8 *p = (s8 *)lbl_80272E98;
-      u8 outside;
-      u8 id;
-      s16 x, y;
-      void *unit;
+s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
+    u8 Allegiance_Compare(s32, s32);
+    extern u8 lbl_80272E98[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    s32 baseY = arg2;
+    s32 baseX = arg1;
+    s32 score = 0;
+    s8 *p = (s8 *)lbl_80272E98;
+    u8 outside;
+    u8 id;
+    s16 x, y;
+    void *unit;
 
-      while (*p != 0x7F) {
-          x = baseX + p[0];
-          outside = 0;
-          y = baseY + p[1];
-          if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
-              outside = 1;
-          if (!outside) {
-              id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
-              if (id) {
-                  if (id)
-                      unit = gUnits + (id - 1) * 0x280;
-                  else
-                      unit = 0;
-                  if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
-                      score -= p[2];
-                  else
-                      score += p[2];
-              }
-          }
-          p += 3;
-      }
-      return score;
-  }
+    while (*p != 0x7F) {
+        x = baseX + p[0];
+        outside = 0;
+        y = baseY + p[1];
+        if (x < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < x || y < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < y)
+            outside = 1;
+        if (!outside) {
+            id = gBattleMap[(s8)x + ((s8)y << 6) + 0xD];
+            if (id) {
+                if (id)
+                    unit = gUnits + (id - 1) * 0x280;
+                else
+                    unit = 0;
+                if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
+                    score -= p[2];
+                else
+                    score += p[2];
+            }
+        }
+        p += 3;
+    }
+    return score;
+}
 
 s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     void *Terrain_GetEntry(u8);
