@@ -1914,6 +1914,8 @@ void fn_800B26B0(s32 arg0, u32 arg1) {
  }
 }
 
+#pragma dont_inline on
+#pragma global_optimizer off
 void fn_800B27BC(void) {
     u8 Sound_IsReady(void);
     extern u16 gSoundSys[];
@@ -1925,7 +1927,6 @@ void fn_800B27BC(void) {
     if (Sound_IsReady() != 0) {
         base = (u8 *)gSoundSys;
         if (*(u16 *)(base + 0x12C) == 1) {
-            bits = 0;
             unit = *(u8 **)(base + 0xF8);
             flag = 0;
             bits = *(u16 *)unit;
@@ -1963,7 +1964,8 @@ void fn_800B27BC(void) {
         }
     }
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void fn_800B28DC(void) {
     extern u8 gSoundSys[];
 
@@ -6384,7 +6386,7 @@ s32 fn_800BB9E8(u8 arg0) {
     return temp_r3;
 }
 
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
 s32 fn_800BBA38(void *arg0, void *arg1, s32 mode) {
     void *Unit_FindByName(void *);
     s32 fn_80036DE0(void *, void *);
@@ -6427,6 +6429,7 @@ s32 fn_800BBA38(void *arg0, void *arg1, s32 mode) {
     ((u8 *)unitB + (s8)indexB)[0x214] = value;
     return (u8)value;
 }
+#pragma optimization_level reset
 s32 fn_800BBB58(s32 arg0, s32 arg1) {
     u32 Unit_FindByName(s32);
     s8 fn_80036DE0(u32, u32);
@@ -8951,7 +8954,8 @@ s32 fn_800BF87C(void *arg0) {
     return (s8)ctx[0xE] <= y1;
 }
 
-#pragma opt_common_subs off
+#pragma dont_inline on
+#pragma global_optimizer off
 s32 fn_800BF9D8(void *arg0) {
     extern u8 gBattle[];
     extern u8 gMapEventFlagNames[];
@@ -8964,9 +8968,7 @@ s32 fn_800BF9D8(void *arg0) {
     u8 *unit;
     void *flags;
     void *msg;
-    void *self;
 
-    self = arg0;
     if ((*(u32 *)(gBattle + 0xCAC) & 0x1000) == 0) {
         return 0;
     }
@@ -8989,10 +8991,11 @@ s32 fn_800BF9D8(void *arg0) {
     if (Res_GetByName(msg) == 0) {
         return 0;
     }
-    fn_8011D908(msg, self);
+    fn_8011D908(msg, arg0);
     return 1;
 }
-#pragma opt_common_subs reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 s32 fn_800BFB10(void) {
     void *Battle_GetActiveCombatant(void *);
     void *Event_NextEntry(void *);
@@ -11269,6 +11272,8 @@ void fn_800AFC54(s32 arg0)
   }
 }
 
+#pragma optimization_level 3
+#pragma global_optimizer off
 void fn_800AFCFC(s32 arg0) {
     s32 ticks;
     u8 *p;
@@ -11290,8 +11295,7 @@ void fn_800AFCFC(s32 arg0) {
         *(u16 *)p &= ~0x20;
     }
 }
-
-#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_800AFE0C(s32 arg0) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -11300,6 +11304,7 @@ void fn_800AFE0C(s32 arg0) {
     u8 *sys;
     u8 *entry;
     u8 *p;
+    u8 *sys2;
     u16 nest;
 
     sys = (u8 *)gSoundSys;
@@ -11314,21 +11319,21 @@ void fn_800AFE0C(s32 arg0) {
             *(u16 *)(p + 0x13E) = 0;
         }
         *(u16 *)entry = 0;
-        sys = (u8 *)gSoundSys;
-        if (*(u16 *)(sys + 0x124) == 0) {
+        sys2 = (u8 *)gSoundSys;
+        if (*(u16 *)(sys2 + 0x124) == 0) {
             *(s32 *)((u8 *)gSoundSys + 0x128) = OSDisableInterrupts();
         }
-        *(u16 *)(sys + 0x124) += 1;
+        *(u16 *)(sys2 + 0x124) += 1;
         fn_800B49D0(*(void **)(entry + 0x2C));
         fn_800B49D0(*(void **)(entry + 0xB4));
         fn_8024DA2C(*(void **)(entry + 0x50));
         if (*(u16 *)(entry + 0x1E) == 2) {
             fn_8024DA2C(*(void **)(entry + 0xD8));
         }
-        nest = *(u16 *)(sys + 0x124);
+        nest = *(u16 *)(sys2 + 0x124);
         if (nest != 0) {
             nest -= 1;
-            *(u16 *)(sys + 0x124) = nest;
+            *(u16 *)(sys2 + 0x124) = nest;
             if ((u16)nest == 0) {
                 OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys + 0x128));
             }
@@ -11336,7 +11341,7 @@ void fn_800AFE0C(s32 arg0) {
         *(s32 *)((u8 *)gSoundSys + 0xFC) = -1;
     }
 }
-#pragma optimization_level reset
+#pragma opt_common_subs reset
 void fn_800AFF28(s32 arg0, u32 arg1) {
     void fn_800062EC(void *, void *, s32);
     void fn_800B1720(void *);
@@ -11910,7 +11915,6 @@ void fn_800B125C(s32 arg0, u32 arg1) {
     u8 *entry;
     s32 i;
     s32 owner;
-    u32 sum;
     u8 *p;
 
     entry = *(u8 **)((u8 *)gSoundSys + 0xF8);
@@ -11918,11 +11922,9 @@ void fn_800B125C(s32 arg0, u32 arg1) {
         if (*(u16 *)entry != 0) {
             if (*(u32 *)(entry + 0x2C) + 0x40 == arg1) {
                 if (arg0 >= 0) {
-                    sum = *(u32 *)(entry + 0x60);
-                    p = (u8 *)gSoundSys;
-                    sum += *(u32 *)(entry + 0x74);
-                    *(u32 *)(entry + 0x60) = sum;
-                    p += *(u16 *)(entry + 2) << 2;
+                    *(u32 *)(entry + 0x60) =
+                        *(u32 *)(entry + 0x60) + *(u32 *)(entry + 0x74);
+                    p = (u8 *)gSoundSys + (*(u16 *)(entry + 2) << 2);
                     dest = *(u32 *)(entry + 0x64) + *(u32 *)(p + 0x134);
                     DCFlushRange(*(void **)(entry + 0x58), 0x8000);
                     owner = lbl_80367818;
@@ -11937,7 +11939,8 @@ void fn_800B125C(s32 arg0, u32 arg1) {
                         0x8000,
                         fn_800B1368
                     );
-                    *(u32 *)(entry + 0x64) += *(u32 *)(entry + 0x74);
+                    *(u32 *)(entry + 0x64) =
+                        *(u32 *)(entry + 0x64) + *(u32 *)(entry + 0x74);
                 }
                 break;
             }
