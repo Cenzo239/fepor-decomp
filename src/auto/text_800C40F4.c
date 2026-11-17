@@ -10006,16 +10006,17 @@ void fn_800DEF00(void *arg0) {
 
 #pragma scheduling off
 void fn_800DEF4C(void *arg0, u8 *arg1) {
-    u32 z;
+    void *z;
     u8 v;
-    u32 *mid;
+    u8 *mid;
+
     z = 0;
     v = *arg1;
-    *(u32 *)arg0 = z;
-    mid = (u32 *)((u8 *)arg0 + 4);
-    *(u32 *)mid = z;
+    *(void **)arg0 = z;
+    mid = (u8 *)arg0 + 4;
+    *(void **)mid = z;
     *((u8 *)arg0 + 8) = v;
-    *(u32 **)((u8 *)arg0 + 12) = mid;
+    *(u8 **)((u8 *)arg0 + 12) = mid;
 }
 
 void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
@@ -14696,6 +14697,7 @@ void fn_800E81A0(void *arg0, void *arg1) {
     }
 }
 
+#pragma scheduling off
 extern "C" s32 fn_800E82D8(void *arg0, void *arg1) {
 void String_Assign(void *,void *,s32,s32);
 void String_Init(void *,void *,void *);
@@ -14759,6 +14761,7 @@ count++;
 Xml_Destroy(xml,-1);
 return count;
 }
+#pragma scheduling reset
 
 #pragma cplusplus reset
 void *fn_800E8488(void *arg0, s16 arg1)
@@ -14795,7 +14798,7 @@ void *fn_800E8504(void *arg0, s32 arg1, String *arg2) {
     s8 made;
     void *layer;
     u8 *self=arg0;
-    ObjList_Init(self);
+    ((void (*)(void *))ObjList_Init)(self);
     *(void **)(self+0x10)=lbl_8028E200;
     *(u32 *)(self+0x14)=0; *(u32 *)(self+0x18)=0; *(u32 *)(self+0x1C)=0; *(u32 *)(self+0x18)=0;
     *(u32 *)(self+0x30)=0; *(u32 *)(self+0x34)=0; *(u32 *)(self+0x38)=0; *(u32 *)(self+0x34)=0;
@@ -14805,8 +14808,8 @@ void *fn_800E8504(void *arg0, s32 arg1, String *arg2) {
     layer=Heap_Alloc(0x78);
     if(layer) { String_Init(&temp,gUiClassNames+0xB4,&scratch); made=1; layer=Layer_Create(layer,self,&temp,0); }
     ((void (*)(void *,void *))(*(void ***)(self+0x10))[7])(self,layer);
-    if(made) String_Destroy(&temp,-1);
-    if(String_Compare(arg2,0,arg2->size,gUiClassNames+0xB3,strlen(gUiClassNames+0xB3))) {
+    if(made) ((void (*)(void *,s16))String_Destroy)(&temp,-1);
+    if(((s32 (*)(String *,u32,u32,char *,u32))String_Compare)(arg2,0,arg2->size,gUiClassNames+0xB3,strlen(gUiClassNames+0xB3))) {
       ((void (*)(void *,void *))(*(void ***)(self+0x10))[14])(self,arg2);
       ((void (*)(void *))(*(void ***)(self+0x10))[2])(self);
     }
