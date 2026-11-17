@@ -1273,8 +1273,81 @@ s32 fn_802279B4(void *buffer) {
 }
 
 #pragma use_lmw_stmw reset
-void fn_80227BF0(void) {
-    OSReport("Error: Unknown unit type for %s\n", "null");
+s32 fn_80227BF0(void *buffer) {
+#pragma inline_depth(0)
+ s32 fn_80228D24(s32,u32,s32 *,s32);
+ s32 fn_8022A0E4(u32 *,u32,u32 *,s32,s32);
+ void MWTRACE(u8,char *,...);
+ void *memset(void *,s32,s32);
+ s32 TRK_cc_write(void *,s32);
+ void TRKSetBufferPosition(void *,u32);
+ void TRKResetBuffer(void *,u32);
+ s32 TRKAppendBuffer_ui8x(void *,void *,s32);
+ s32 TRKMessageSend(void *);
+ extern char gTRK_str_SerialIO[];
+ u8 data[0x820] __attribute__((aligned(32)));
+ u8 ack[0x40],invalid[0x40],error[0x40];
+ u32 length;
+ s32 result;
+ s32 err;
+ s32 extended;
+ u8 replyError;
+ s32 options;
+ u16 size;
+ u32 address;
+ 
+ char *strings=gTRK_str_SerialIO;
+ address=*(u32 *)((u8 *)buffer+0x20);
+ size=*(u16 *)((u8 *)buffer+0x1C);
+ options=((u8 *)buffer)[0x18];
+ MWTRACE(1,strings+0x1B0,((u8 *)buffer)[0x14],address,size,options);
+ if(options&2) {
+ memset(invalid,0,0x40);
+ invalid[4]=0x80;
+ *(u32 *)invalid=0x40;
+ invalid[8]=0x12;
+ TRK_cc_write(invalid,0x40);
+ return 0;
+ }
+ extended=options&0x40;
+ length=size;
+ if(extended) {
+ options=fn_80228D24((s32)data,address,(s32 *)&length,1);
+ } else {
+ options=fn_8022A0E4((u32 *)data,address,&length,((options >> 3)&1)^1,1);
+ }
+ err=options;
+ TRKResetBuffer(buffer,0);
+ if(err==0) {
+ memset(ack,0,0x40);
+ ack[8]=err;
+ *(u32 *)ack=length+0x40;
+ ack[4]=0x80;
+ TRKAppendBuffer_ui8x(buffer,ack,0x40);
+ if(extended) err=TRKAppendBuffer_ui8x(buffer,data+(address&31),length);
+ else err=TRKAppendBuffer_ui8x(buffer,data,length);
+ }
+ if(err!=0) {
+ switch(err) {
+ case 0x702:replyError=0x15;break;
+ case 0x700:replyError=0x13;break;
+ case 0x704:replyError=0x21;break;
+ case 0x705:replyError=0x22;break;
+ case 0x706:replyError=0x20;break;
+ default:replyError=3;break;
+ }
+ memset(error,0,0x40);
+ error[4]=0x80;
+ *(u32 *)error=0x40;
+ error[8]=replyError;
+ TRK_cc_write(error,0x40);
+ return 0;
+ }
+ MWTRACE(1,strings+0x60);
+ {result=TRKMessageSend(buffer);
+ MWTRACE(1,strings+0x80,result);
+ return result;}
+#pragma inline_depth reset
 }
 
 s32 fn_80227E34(void) {
