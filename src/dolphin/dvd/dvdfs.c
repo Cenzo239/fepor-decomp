@@ -573,10 +573,11 @@ void DVDInit(void) {
     }
 }
 
+#pragma global_optimizer off
 void fn_8020CFAC(void) {
     extern void (*lbl_803685E0)(void *);
     extern u8 *bootInfo_803685A0;
-    extern u16 BB2_80339F40[];
+    extern u8 BB2_80339F40[];
     extern s32 lbl_80366F74;
     extern char lbl_8029D0DC[];
 
@@ -584,15 +585,23 @@ void fn_8020CFAC(void) {
     s32 fn_8020BAD0(void *, u32, u32, void (*)(u32));
     void fn_8020D040(u32);
 
-    u32 *length;
+    u32 *fstLength;
 
     lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
-    length = (u32 *)((u8 *)BB2_80339F40 + 8);
-    if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *length)
-        OSPanic(&lbl_80366F74, 0x295, lbl_8029D0DC);
-    fn_8020BAD0(*(void **)(bootInfo_803685A0 + 0x38), (*length + 31) & ~31, *(u32 *)((u8 *)BB2_80339F40 + 4), fn_8020D040);
-}
+    fstLength = (u32 *)(BB2_80339F40 + 8);
 
+    if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *fstLength) {
+        OSPanic(&lbl_80366F74, 0x295, lbl_8029D0DC);
+    }
+
+    fn_8020BAD0(
+        *(void **)(bootInfo_803685A0 + 0x38),
+        (*fstLength + 0x1F) & ~0x1F,
+        *(u32 *)(BB2_80339F40 + 4),
+        fn_8020D040
+    );
+}
+#pragma global_optimizer reset
 void fn_8020D040(u32 arg0) {
     void __DVDFSInit(void);
     void fn_8020D16C(void);
@@ -3159,16 +3168,15 @@ s32 fn_8021173C(void) {
 u32 fn_802117D8(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
-    u32 horizontal;
+    u32 pad[4];
+    volatile u16 *base;
     u32 vertical;
     u32 previous;
-    u32 irq;
-    u16 *timing;
-    u32 line;
     volatile u16 *bump;
-    volatile u16 *base;
-    u32 tmp;
-    double pad;
+    u32 horizontal;
+    u16 *timing;
+    u32 irq;
+    u32 line;
 
     timing = lbl_80368648;
     irq = OSDisableInterrupts();
@@ -3176,13 +3184,10 @@ u32 fn_802117D8(void) {
     vertical = (*(bump += 0x16)) & 0x7FF;
     base = (volatile u16 *)0xCC002000;
     do {
-        tmp = base[0x17];
         previous = vertical;
-        horizontal = tmp;
+        horizontal = base[0x17] & 0x7FF;
         vertical = (*bump) & 0x7FF;
-        horizontal &= 0x7FF;
     } while (previous != vertical);
-    pad = 0.0;
     line = ((vertical - 1) << 1) + (horizontal - 1) / lbl_80368648[13];
     OSRestoreInterrupts(irq);
     if (line >= timing[12]) {
