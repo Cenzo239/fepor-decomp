@@ -8256,10 +8256,8 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
+#pragma optimization_level 3
 void fn_800DBAB8(f32 *arg0, void *arg1) {
-    extern f32 lbl_80369E70;
-    extern f32 lbl_80369E80;
-    extern f32 lbl_80369E84;
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -8267,17 +8265,12 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     f32 y;
     f32 z;
     f32 x;
-    f32 c70;
-    f32 c80;
-    f32 c84;
+    f32 *out = arg0;
 
-    c70 = lbl_80369E70;
-    c80 = lbl_80369E80;
-    c84 = lbl_80369E84;
-    vec[0] = c70;
-    vec[1] = c70;
-    vec[2] = c80;
-    PSMTXRotRad(mtx, 0x59, c84 * *(f32 *)((u8 *)arg1 + 0x58));
+    vec[0] = 0.0f;
+    vec[1] = 0.0f;
+    vec[2] = 1.0f;
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
@@ -8285,11 +8278,11 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     z = *(f32 *)((u8 *)arg1 + 0x68);
     y = *(f32 *)((u8 *)arg1 + 0x64);
     x = *(f32 *)((u8 *)arg1 + 0x60);
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
 }
-
+#pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -20582,24 +20575,24 @@ advance:
 }
 
 void fn_800F86D4(void *arg0) {
-    extern void *lbl_803678F8;
-    extern s32 lbl_803678F4;
-    extern u8 lbl_8032B3C0[];
-    u8 fn_80105BC0(void *, s32);
+    extern void *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    extern s32 gAiState[];
+    u8 Status_Test(void *, s32);
     u8 *obj;
     u8 *state;
     s32 index;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
-    if (fn_80105BC0(obj + 0x1BC, 9) != 0) {
+    state = (u8 *)gAiCmd;
+    if (Status_Test(obj + 0x1BC, 9) != 0) {
         index = *(s32 *)(state + 4);
-        *(s32 *)&lbl_8032B3C0[(index << 2) + 8] = 0xB;
+        gAiState[index + 2] = 0xB;
     } else {
         index = *(s32 *)(state + 4);
-        *(s32 *)&lbl_8032B3C0[(index << 2) + 8] = 0;
+        gAiState[index + 2] = 0;
     }
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -23608,7 +23601,7 @@ t14 = obj ? Status_Test((u8*)obj+0x1C,0x14)!=0 : 1;
 t15 = obj ? Status_Test((u8*)obj+0x1C,0x15)!=0 : 0;
 Map_FloodMoveRange(map,x,y,flags,t14,t15);
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level 3
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
@@ -23629,7 +23622,9 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     var_r7 = var_r6;
     temp_r4 = p[0x100D];
 
-    if ((u8)(temp_r4 - 0x26) > var_r6) {
+    if ((u8)(temp_r4 - 0x26) <= var_r6) {
+        var_r7 = 1;
+    } else {
         var_r7 = 0;
     }
     if (var_r7 == 0) {
@@ -23644,7 +23639,7 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     }
     return var_r6;
 }
-
+#pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
     return (u32) M2C_FIELD(arg0, u32 *, 0x24C) < (u32) M2C_FIELD(arg1, u32 *, 0x24C);
 }
