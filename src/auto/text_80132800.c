@@ -5052,39 +5052,65 @@ extern "C" void fn_8013ACC4(s32 *arg0, void *arg1) {
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
 
-void fn_8013AD70(void *arg0, void *arg1)
-{
+extern "C" void fn_8013AD70(void *arg0, void *arg1) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual s16 v13() = 0;
+    };
     struct Node {
         struct Node *prev;
         struct Node *next;
         void *obj;
     };
+    typedef struct {
+        u8 pad0[0x4E];
+        s16 unk4E;
+        s16 unk50;
+        s16 unk52;
+        s16 unk54;
+        s16 unk56;
+        s16 unk58;
+        u8 pad5A[0x16];
+        s32 unk70;
+        struct Node sentinel;
+    } Unk;
 
+    s32 index;
+    s16 target;
+    s16 var_r3;
+    s32 temp_r4;
+    s32 temp_r7;
+    s32 temp_r6;
+    s32 temp_r8;
+    s32 t;
     struct Node *node;
     struct Node *head;
     struct Node *end;
-    u8 *self;
-    s32 index;
-    s16 target;
-    s16 current;
-    s16 rows;
-    s16 count;
-    s16 pages;
-    s16 visible;
-    s16 lastRow;
-    s16 lastIndex;
-    s16 lastPage;
-    s32 quotient;
+    Unk *self;
 
-    self = (u8 *)arg0;
-    end = (struct Node *)(self + 0x74);
-    head = *(struct Node **)(self + 0x78);
+    self = (Unk *)arg0;
+    end = &self->sentinel;
+    head = end->next;
     node = head;
 
+    goto lbl_check;
     do {
         node = node->next;
+    lbl_check:
         if (node == end) {
-            return;
+            break;
         }
     } while (node->obj != arg1);
 
@@ -5093,79 +5119,60 @@ void fn_8013AD70(void *arg0, void *arg1)
     }
 
     index = 0;
-    while (head != node) {
+    goto lbl_count;
+    do {
         head = head->next;
         index++;
-    }
+    lbl_count:
+        ;
+    } while (head != node);
 
     target = (s16)index;
-    current = *(s16 *)(self + 0x4E);
 
-    if (target == current) {
-        return;
-    }
-
-    visible = (s16)((s32 (*)(void *))
-        (*(void ***)((u8 *)self))[15])(self);
-
-    count = (s16)*(s32 *)(self + 0x70);
-    rows = *(s16 *)(self + 0x58);
-    lastRow = rows - 1;
-    pages = (s16)((count + lastRow) / rows);
-
-    if (target < 0 || count <= target) {
-        return;
-    }
-
-    if (visible > pages) {
-        visible = pages;
-    }
-
-    if (target < current) {
-        do {
-            current = *(s16 *)(self + 0x4E);
-            current--;
-            *(s16 *)(self + 0x4E) = current;
-
-            if (current > lastRow) {
-                quotient = current / rows;
-
-                if ((s16)quotient -
-                    *(s16 *)(self + 0x56) == 0) {
-                    *(s16 *)(self + 0x56) =
-                        *(s16 *)(self + 0x56) - 1;
+    if (target != self->unk4E) {
+        var_r3 = ((Obj *)self)->v13();
+        temp_r7 = (s16)self->unk70;
+        temp_r4 = self->unk58;
+        temp_r6 = temp_r4 - 1;
+        temp_r8 = (s16)((temp_r7 + temp_r6) / temp_r4);
+        if (target < 0) {
+            return;
+        }
+        if (temp_r7 <= target) {
+            return;
+        }
+        if (var_r3 > temp_r8) {
+            var_r3 = temp_r8;
+        }
+        if (target < self->unk4E) {
+            do {
+                self->unk4E = (s16)(self->unk4E - 1);
+                if (self->unk4E > temp_r6) {
+                    if ((s16)(self->unk4E / temp_r4) - self->unk56 == 0) {
+                        self->unk56 = (s16)(self->unk56 - 1);
+                    }
                 }
-            }
-        } while (target < *(s16 *)(self + 0x4E));
-    } else {
-        lastIndex = count - 1;
-        lastPage = pages - 1;
-        visible--;
-
-        do {
-            current = *(s16 *)(self + 0x4E);
-            current++;
-            *(s16 *)(self + 0x4E) = current;
-
-            if (*(s16 *)(self + 0x4E) > lastIndex) {
-                *(s16 *)(self + 0x4E) = lastIndex;
-            }
-
-            quotient = *(s16 *)(self + 0x4E) / rows;
-
-            if ((s16)quotient < lastPage) {
-                if (visible ==
-                    (s16)quotient -
-                    *(s16 *)(self + 0x56)) {
-                    *(s16 *)(self + 0x56) =
-                        *(s16 *)(self + 0x56) + 1;
+            } while (target < self->unk4E);
+        } else {
+            temp_r6 = temp_r7 - 1;
+            temp_r7 = temp_r8 - 1;
+            temp_r8 = var_r3 - 1;
+            do {
+                self->unk4E = (s16)(self->unk4E + 1);
+                if (self->unk4E > temp_r6) {
+                    self->unk4E = (s16)temp_r6;
                 }
-            }
-        } while (*(s16 *)(self + 0x4E) < target);
+                t = (s16)(self->unk4E / temp_r4);
+                if (t < temp_r7) {
+                    if (temp_r8 == t - (s16)self->unk56) {
+                        self->unk56 = (s16)(self->unk56 + 1);
+                    }
+                }
+            } while (self->unk4E < target);
+        }
+        self->unk52 = -1;
+        self->unk54 = -1;
     }
-
-    *(s16 *)(self + 0x52) = -1;
-    *(s16 *)(self + 0x54) = -1;
 }
 
 extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
@@ -7746,7 +7753,7 @@ extern "C" void fn_8013E960(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v10(arg1);
 }
 
-#pragma cplusplus on
+#pragma optimization_level 3
 extern "C" void fn_8013E9BC(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
@@ -7810,7 +7817,7 @@ extern "C" void fn_8013E9BC(void *arg0) {
     }
     if (text != NULL) {
         s16 tw;
-        s16 w;
+        s32 w;
         s16 h;
         s16 *rect;
         s32 color;
@@ -7822,7 +7829,7 @@ extern "C" void fn_8013E9BC(void *arg0) {
         self->unk4A = 0;
         self->unk4C = w;
         self->unk4E = h;
-        ax = (s16)(ax + ((w - tw) >> 1));
+        ax = (s16)(ax + (((s16)w - tw) >> 1));
         fn_8013F748(self, rect, rect);
         rect = &self->unk4C;
         fn_8013F748(self, rect, rect);
@@ -7842,7 +7849,7 @@ extern "C" void fn_8013E9BC(void *arg0) {
         Prim2D_PrepareTex();
     }
 }
-#pragma cplusplus reset
+#pragma optimization_level reset
 
 #pragma cplusplus reset
 
@@ -8902,7 +8909,6 @@ void *fn_801403F0(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8014042C(void *arg0) {
 extern f32 lbl_8036A730, lbl_8036A740;
-extern f64 lbl_8036A738;
 f32 Math_Ease(s32, s16, f32, f32, f32, f32);
 void Ui_ClearPanelChildrenMid(void *);
 #pragma cplusplus on
@@ -8916,11 +8922,11 @@ struct Target { u8 pad[0x24]; s16 duration; };
 struct Link { void *prev,*next; Target *value; };
 struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
 State *self=(State*)arg0;
-(void)lbl_8036A738;
-(self->get()->*(self->callback))(&self->end);
+Point *end=&self->end;
+(self->get()->*(self->callback))(end);
 {
-s32 durationInt=self->get()->duration+1;
 s32 timeInt=self->time+1;
+s32 durationInt=self->get()->duration+1;
 f32 duration=durationInt;
 f32 time=timeInt;
 f32 t=Math_Ease(5,self->time,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
