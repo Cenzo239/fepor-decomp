@@ -714,25 +714,15 @@ void usr_put_initialize(void) {
 
 #pragma global_optimizer off
 s32 fn_80226E24(u8 *arg0) {
-    void fn_80227FD0(s32);
-    s32 fn_80227FDC(void);
-    void OSReport(char *);
-    char buffer[2];
-    s32 ch;
-    s32 saved;
-    s32 result;
-
-    result = 0;
-    while (result == 0 && (ch = (s8)*arg0++) != 0) {
-        saved = fn_80227FDC();
-        buffer[0] = ch;
-        buffer[1] = 0;
-        fn_80227FD0(0);
-        OSReport(buffer);
-        fn_80227FD0(saved);
-        result = 0;
-    }
-    return result;
+ void fn_80227FD0(s32);
+ s32 fn_80227FDC(void);
+ void OSReport(char *);
+ char buffer[2]; s32 result=0; s32 saved; s32 ch;
+ while (result==0 && (ch=(s8)*arg0++)!=0) {
+ saved=fn_80227FDC(); buffer[0]=ch; buffer[1]=0;
+ fn_80227FD0(0); OSReport(buffer); fn_80227FD0(saved); result=0;
+ }
+ return result;
 }
 
 s32 TRKDispatchMessage(void *arg0) {
@@ -781,27 +771,39 @@ s32 TRKInitializeDispatcher(void) {
     return 0;
 }
 
+#pragma optimization_level 3
 s32 fn_80227024(void *arg0) {
- extern char gTRK_str_SerialIO[];
- void fn_8022B4A0(u8);
- s32 TRK_cc_write(void *, s32);
- void *memset(void *, int, u32);
- struct { u32 size; u8 command; u8 pad[3]; u8 error; u8 rest[55]; } reply;
- u8 enabled=*((u8 *)arg0+0x1C);
- char *strings=gTRK_str_SerialIO;
- s32 (*report)(u8 *)=fn_80226E24;
- if (*((u8 *)arg0+0x18)==1) {
- report((u8 *)strings);
- if (enabled) report((u8 *)strings+0x20);
- else report((u8 *)strings+0x28);
- fn_8022B4A0(enabled);
- }
- memset(&reply,0,0x40);
- reply.command=0x80; reply.size=0x40; reply.error=0;
- TRK_cc_write(&reply,0x40);
- return 0;
-}
+    extern char gTRK_str_SerialIO[];
+    s32 fn_80226E24(char *);
+    void fn_8022B4A0(u8);
+    s32 TRK_cc_write(void *, s32);
+    void *memset(void *, int, u32);
 
+    u8 reply[0x40];
+    u8 enabled;
+    char *strings;
+
+    enabled = *((u8 *)arg0 + 0x1C);
+    strings = gTRK_str_SerialIO;
+
+    if (*((u8 *)arg0 + 0x18) == 1) {
+        fn_80226E24(strings + 0);
+        if (enabled != 0) {
+            fn_80226E24(strings + 0x20);
+        } else {
+            fn_80226E24(strings + 0x28);
+        }
+        fn_8022B4A0(enabled);
+    }
+
+    memset(reply, 0, 0x40);
+    reply[4] = 0x80;
+    *(u32 *)reply = 0x40;
+    reply[8] = 0;
+    TRK_cc_write(reply, 0x40);
+    return 0;
+}
+#pragma optimization_level reset
 s32 fn_802270CC(void) {
     s32 fn_80228DF8(void);
     s32 TRK_cc_write(s32, s32);
@@ -1258,28 +1260,22 @@ s32 fn_80227FDC(void) {
     return lbl_8033CA40[0];
 }
 
+#pragma use_lmw_stmw on
 void fn_80227FEC(const u8 *bytes, s32 count) {
-    void MWTRACE(u8, char *, ...);
+    void MWTRACE(s32, char *, ...);
     extern char lbl_8028269C[];
     extern char lbl_802826A4[];
-
-    char *byteFormat;
-    char *lineEnd;
     s32 i;
 
-    byteFormat = lbl_8028269C;
-    lineEnd = lbl_802826A4;
-
-    for (i = 0; i < count; i++, bytes++) {
-        MWTRACE(8, byteFormat, *bytes);
+    for (i = 0; i < count; i++) {
+        MWTRACE(8, lbl_8028269C, bytes[i]);
         if (i % 16 == 15) {
-            MWTRACE(8, lineEnd);
+            MWTRACE(8, lbl_802826A4);
         }
     }
 
     MWTRACE(8, lbl_802826A4);
 }
-
 s32 fn_80228094(s32 arg0, s32 *arg1, s8 arg2, s32 *arg3, s32 arg4) {
 void *TRKGetBuffer(s32);
 s32 TRKAppendBuffer(void *, void *, s32);
