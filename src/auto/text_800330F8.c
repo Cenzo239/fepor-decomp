@@ -1,5 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+typedef struct { void *ptr; u8 pad[4]; } Elem8_8003A1E0;
 static inline s32 get_4F128_id(void *arg0) {
  void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
@@ -3582,6 +3583,52 @@ void *fn_8003A114(void *arg0) {
 
 s8 fn_8003A1C4(void *arg0) {
     return (s8) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x41) + (((u8) M2C_FIELD(arg0, u8 *, 0x1A6) >> 2U) & 7));
+}
+
+s8 fn_8003A1E0(void *arg0) {
+    s8 var_r4;
+    s8 var_r5;
+    s8 var_r6;
+    void *ptr;
+
+    var_r5 = *(s8 *)((u8 *)M2C_FIELD(arg0, void **, 0x188) + 0x1C) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3D);
+    var_r6 = 0;
+
+    if (((M2C_FIELD(arg0, u8 *, 0x1D1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1CC) != 0)
+        var_r4 = 0;
+    else if (((M2C_FIELD(arg0, u8 *, 0x1D9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1D4) != 0)
+        var_r4 = 1;
+    else if (((M2C_FIELD(arg0, u8 *, 0x1E1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1DC) != 0)
+        var_r4 = 2;
+    else if (((M2C_FIELD(arg0, u8 *, 0x1E9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1E4) != 0)
+        var_r4 = 3;
+    else
+        var_r4 = -1;
+
+    ptr = (var_r4 < 0) ? NULL : (u8 *)arg0 + (var_r4 * 8 + 0x1CC);
+    if (ptr != NULL)
+        var_r6 = *(s8 *)((u8 *)M2C_FIELD(ptr, void **, 0) + 0x28);
+
+    if (((M2C_FIELD(arg0, u8 *, 0x1F1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1EC) != 0)
+        var_r4 = 0;
+    else if (((M2C_FIELD(arg0, u8 *, 0x1F9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1F4) != 0)
+        var_r4 = 1;
+    else if (((M2C_FIELD(arg0, u8 *, 0x201) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1FC) != 0)
+        var_r4 = 2;
+    else if (((M2C_FIELD(arg0, u8 *, 0x209) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x204) != 0)
+        var_r4 = 3;
+    else
+        var_r4 = -1;
+
+    ptr = (var_r4 < 0) ? NULL : (u8 *)arg0 + (var_r4 * 8 + 0x1EC);
+    if (ptr != NULL)
+        var_r6 += *(s8 *)((u8 *)M2C_FIELD(ptr, void **, 0) + 0x28);
+
+    var_r5 = var_r6 + var_r5;
+    var_r5 = *(s8 *)M2C_FIELD(arg0, u8 *, 0x1A9) + var_r5;
+    if (var_r5 > 0x63)
+        var_r5 = 0x63;
+    return var_r5;
 }
 
 #pragma opt_strength_reduction off
