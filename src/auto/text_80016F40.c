@@ -194,88 +194,86 @@ void fn_8001753C(s16 *arg0) {
     *arg0 = Rand_Range(0xE4C);
 }
 
-void fn_80017570(s32 arg0)
-{
-    if (arg0 >= 0x17) {
-        return;
+void fn_80017570(u32 arg0) {
+    void *Msg_Expand(void *);
+    extern u8 lbl_80268128[];
+    void *msg = (void *)arg0;
+
+    switch (arg0) {
+    case 0:
+        msg = lbl_80268128 + 0xE8;
+        break;
+    case 1:
+        msg = lbl_80268128 + 0xEE;
+        break;
+    case 2:
+        msg = lbl_80268128 + 0xF5;
+        break;
+    case 3:
+        msg = lbl_80268128 + 0xFD;
+        break;
+    case 4:
+        msg = lbl_80268128 + 0x105;
+        break;
+    case 5:
+        msg = lbl_80268128 + 0x10E;
+        break;
+    case 6:
+        msg = lbl_80268128 + 0x116;
+        break;
+    case 7:
+        msg = lbl_80268128 + 0x11D;
+        break;
+    case 8:
+        msg = lbl_80268128 + 0x125;
+        break;
+    case 9:
+        msg = lbl_80268128 + 0x12E;
+        break;
+    case 10:
+        msg = lbl_80268128 + 0x135;
+        break;
+    case 11:
+        msg = lbl_80268128 + 0x13B;
+        break;
+    case 12:
+        msg = lbl_80268128 + 0x141;
+        break;
+    case 13:
+        msg = lbl_80268128 + 0x148;
+        break;
+    case 14:
+        msg = lbl_80268128 + 0x14F;
+        break;
+    case 15:
+        msg = lbl_80268128 + 0x158;
+        break;
+    case 16:
+        msg = lbl_80268128 + 0x15F;
+        break;
+    case 17:
+        msg = lbl_80268128 + 0x166;
+        break;
+    case 18:
+        msg = lbl_80268128 + 0x16D;
+        break;
+    case 19:
+        msg = lbl_80268128 + 0x175;
+        break;
+    case 20:
+        msg = lbl_80268128 + 0x17D;
+        break;
+    case 21:
+        msg = lbl_80268128 + 0x186;
+        break;
+    case 22:
+        msg = lbl_80268128 + 0x18D;
+        break;
+    case 23:
+        msg = lbl_80268128 + 0x195;
+        break;
     }
-    
-    switch(arg0) {
-        case 0:
-            // Load lbl_80268128 + 0xE8
-            break;
-        case 1:
-            // Load lbl_80268128 + 0xEE
-            break;
-        case 2:
-            // Load lbl_80268128 + 0xF5
-            break;
-        case 3:
-            // Load lbl_80268128 + 0xFD
-            break;
-        case 4:
-            // Load lbl_80268128 + 0x105
-            break;
-        case 5:
-            // Load lbl_80268128 + 0x10E
-            break;
-        case 6:
-            // Load lbl_80268128 + 0x116
-            break;
-        case 7:
-            // Load lbl_80268128 + 0x11D
-            break;
-        case 8:
-            // Load lbl_80268128 + 0x125
-            break;
-        case 9:
-            // Load lbl_80268128 + 0x12E
-            break;
-        case 10:
-            // Load lbl_80268128 + 0x135
-            break;
-        case 11:
-            // Load lbl_80268128 + 0x13B
-            break;
-        case 12:
-            // Load lbl_80268128 + 0x141
-            break;
-        case 13:
-            // Load lbl_80268128 + 0x148
-            break;
-        case 14:
-            // Load lbl_80268128 + 0x14F
-            break;
-        case 15:
-            // Load lbl_80268128 + 0x158
-            break;
-        case 16:
-            // Load lbl_80268128 + 0x15F
-            break;
-        case 17:
-            // Load lbl_80268128 + 0x166
-            break;
-        case 18:
-            // Load lbl_80268128 + 0x16D
-            break;
-        case 19:
-            // Load lbl_80268128 + 0x175
-            break;
-        case 20:
-            // Load lbl_80268128 + 0x17D
-            break;
-        case 21:
-            // Load lbl_80268128 + 0x186
-            break;
-        case 22:
-            // Load lbl_80268128 + 0x18D
-            break;
-        case 23:
-            // Load lbl_80268128 + 0x195
-            break;
-    }
-    
-    Msg_Expand();
+    Msg_Expand(msg);
 }
 
 s32 fn_8001772C(void) {
