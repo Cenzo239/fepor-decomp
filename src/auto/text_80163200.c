@@ -3545,25 +3545,51 @@ void *fn_8016AC5C(void) {
 
 u8 fn_8016AC6C(void) { u8 fn_801E3620(void*); extern u8 gSystemSave[]; s32 result; u8 ready=fn_801E3620(gSystemSave); result=2; if(ready!=0) result=0; return (u8)result; }
 
-s32 fn_8016ACA8(void *arg1, void *arg2) {
-    M2C_UNK Process_Goto(M2C_UNK);
-    void *Process_Find(M2C_UNK *);
-    M2C_UNK Ui_CreateMsgPopup(void *, void *, s16, f32, f32);
-    extern u16 lbl_80277BC0[];
-    extern u8 lbl_80293D8C[];
-
-    if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
-        void *temp_r3 = M2C_FIELD(arg1, void **, 0x3C);
-        s16 temp_r3_2 = M2C_FIELD(M2C_FIELD(temp_r3, void **, 4), s16 (**)(void *), 0x5C)(temp_r3);
-        void *temp_r3_3 = M2C_FIELD(arg1, void **, 0x3C);
-        s32 temp_r4 = temp_r3_2 + M2C_FIELD(arg2, s16 *, 0x30);
-        s16 temp_r3_4 = M2C_FIELD(M2C_FIELD(temp_r3_3, void **, 4), s16 (**)(void *, s32, s16), 0x60)(temp_r3_3, temp_r4, temp_r3_2);
-        Ui_CreateMsgPopup((void *) (lbl_80277BC0 + 0x1D1), arg1, temp_r3_4, (f32) temp_r4, (f32) (temp_r3_4 + M2C_FIELD(arg2, s16 *, 0x32)));
-        return 0;
-    }
-    M2C_FIELD(Process_Find((void *) lbl_80293D8C), void **, 0x50) = arg1;
-    Process_Goto(0xB);
-    return 4;
+s32 fn_8016ACA8(void *arg0, void *panel, void *entry) {
+void Process_Goto(void *,s32);
+void *Process_Find(void *);
+void Ui_CreateMsgPopup(void *,void *,f32,f32);
+extern u8 lbl_80277BC0[];
+extern u8 lbl_80293D8C[];
+#pragma cplusplus on
+struct Obj {u8 pad[4]; virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual void v20()=0;
+virtual s16 v21()=0;
+virtual s16 v22()=0; };
+f32 x,y;
+s16 base;
+void *proc;
+if(*(u8*)((u8*)entry+0x39)==2) {
+base=(*(Obj**)((u8*)panel+0x3C))->v21();
+x=(f32)(base+*(s16*)((u8*)entry+0x30));
+base=(*(Obj**)((u8*)panel+0x3C))->v22();
+Ui_CreateMsgPopup(lbl_80277BC0+0x1D1,panel,x,(f32)(*(s16*)((u8*)entry+0x32)+base));
+return 0;
+}
+proc=Process_Find(lbl_80293D8C);
+*(void**)((u8*)proc+0x50)=panel;
+Process_Goto(proc,0xB);
+return 4;
+#pragma cplusplus reset
 }
 
 void fn_8016ADAC(void) {
@@ -9020,27 +9046,27 @@ void fn_80175124(void *arg0, s32 arg1) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801752EC(void *arg0) {
-    void *Heap_Alloc(s32);
+    void *fn_800C42D8(s32);
     void *fn_80179DEC(void *, s16, s16, s32);
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
-    void *Ui_ListGetSelected(void *);
-    void Ui_ListSetCursor(void *, s16);
-    void Ui_AddChild(void *, void *);
+    void *fn_8013AC54(void *);
+    void fn_8013AF08(void *, s16);
+    void fn_801400F4(void *, void *);
     u8 fn_801EAA88(void);
-    void **Unit_GetHeldItemSlot(void *, s32);
+    void **fn_80037BBC(void *, s32);
     void fn_801439F0(void *, void *, void *);
-    u8 Status_Test(void *, u8);
-    u32 *Item_GetFlagsPtr(u32);
+    u8 fn_80105BC0(void *, u8);
+    u32 *fn_8001CB64(u32);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
-    void *ListWidget_GetSelected(void *);
+    void *fn_80143A84(void *);
     s32 fn_801758C4(u32, u32);
     u8 fn_80175924(s32 **, s32);
-    extern u32 gUiContext[];
-    extern u8 gUnitLists[];
-    extern u8 gBattleState[];
-    extern u32 gConvoy[];
+    extern u32 lbl_802EF4C8[];
+    extern u8 lbl_802CA264[];
+    extern u8 lbl_80330708[];
+    extern u32 lbl_803200AC[];
 
     struct Obj {
         virtual void v0() = 0;
@@ -9088,7 +9114,7 @@ extern "C" void fn_801752EC(void *arg0) {
     s16 idx;
     void *dst3;
     s32 add;
-    u32 *walk;
+    void *walk;
     u32 *bits;
     u32 player;
 
@@ -9096,7 +9122,7 @@ extern "C" void fn_801752EC(void *arg0) {
     inner = *(void **)((u8 *)self + 0x40);
     idx = *(s16 *)((u8 *)inner + 0x4E);
     *(s16 *)((u8 *)inner + 0x50) = idx;
-    { void *cb = (void *)fn_801758C4; u32 owner = gUiContext[0];
+    { void *cb = (void *)fn_801758C4; u32 owner = lbl_802EF4C8[0];
     *(void **)((u8 *)inner + 0x7C) = cb;
     *(u32 *)((u8 *)inner + 0x80) = owner; }
     count = *(u32 *)((u8 *)inner + 0x70);
@@ -9104,16 +9130,16 @@ extern "C" void fn_801752EC(void *arg0) {
     if ((u32)idx < count - 1) {
         next = (s16)(idx + 1);
         if ((u32)next < count) {
-            Ui_ListSetCursor(inner, next);
+            fn_8013AF08(inner, next);
         }
     } else {
         next = (s16)(idx - 1);
         if (next >= 0) {
-            Ui_ListSetCursor(inner, next);
+            fn_8013AF08(inner, next);
         }
     }
 
-    p = Heap_Alloc(0x7C);
+    p = fn_800C42D8(0x7C);
     if (p != NULL) {
         p = fn_80179DEC(p, 0x260, 0x84, 0x1F4);
     }
@@ -9124,11 +9150,11 @@ extern "C" void fn_801752EC(void *arg0) {
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x24) = 8;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 8) = 0x104;
-    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(Ui_ListGetSelected(inner));
+    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(fn_8013AC54(inner));
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
-    Ui_AddChild(self, *(void **)((u8 *)self + 0x50));
+    fn_801400F4(self, *(void **)((u8 *)self + 0x50));
 
-    p = Heap_Alloc(0x12C);
+    p = fn_800C42D8(0x12C);
     if (p != NULL) {
         p = fn_80179800(p, 0x260, 0x84, 0x108, 0x110, 0x1F4);
     }
@@ -9143,58 +9169,58 @@ extern "C" void fn_801752EC(void *arg0) {
 
     if (fn_801EAA88() == 0) {
         dst1 = *(void **)((u8 *)self + 0x54);
-        unit1 = *(void **)gUnitLists;
+        unit1 = *(void **)lbl_802CA264;
         goto loop1_cond;
     loop1_body:
         for (i = 0; i < 4; i++) {
-            entry = Unit_GetHeldItemSlot(unit1, i);
+            entry = fn_80037BBC(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
-            player = gUiContext[0];
+            player = lbl_802EF4C8[0];
             if (unit1 == NULL) {
                 add = 1;
             } else if (unit1 == (void *)player) {
                 add = 0;
-                          } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) == 0) {
-                  add = 0;
-              } else {
-                  bits = Item_GetFlagsPtr((u32)entry);
-                  add = 0;
-                  if ((*(u64 *)bits & 0x200ULL) != 0) {
-                      add = 1;
-                  }
-              }
-              if ((u8)add != 0) {
-                  fn_801439F0(dst1, entry, unit1);
-              }
-          }
-          i = 0;
-          walk = (u32 *)unit1;
-          while (i < 4) {
-              slot = (u8 *)walk + 0x1EC;
-              if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
-                  break;
-              }
-              player = gUiContext[0];
-              if (unit1 == NULL) {
-                  add = 1;
-              } else if (unit1 == (void *)player) {
-                  add = 0;
-              } else if (Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) == 0) {
-                  add = 0;
-              } else {
-                  bits = Item_GetFlagsPtr((u32)slot);
-                  add = 0;
-                  if ((*(u64 *)bits & 0x200ULL) != 0) {
-                      add = 1;
-                  }
-              }
-              if ((u8)add != 0) {
-                  fn_801439F0(dst1, slot, unit1);
-              }
+            } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
+                bits = fn_8001CB64((u32)entry);
+                add = 0;
+                if ((*(u64 *)bits & 0x200ULL) == (u64)add) {
+                    add = 1;
+                }
+            } else {
+                add = 1;
+            }
+            if ((u8)add != 0) {
+                fn_801439F0(dst1, entry, unit1);
+            }
+        }
+        i = 0;
+        walk = unit1;
+        while (i < 4) {
+            slot = (u8 *)walk + 0x1EC;
+            if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+                break;
+            }
+            player = lbl_802EF4C8[0];
+            if (unit1 == NULL) {
+                add = 1;
+            } else if (unit1 == (void *)player) {
+                add = 0;
+            } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
+                bits = fn_8001CB64((u32)slot);
+                add = 0;
+                if ((*(u64 *)bits & 0x200ULL) == (u64)add) {
+                    add = 1;
+                }
+            } else {
+                add = 1;
+            }
+            if ((u8)add != 0) {
+                fn_801439F0(dst1, slot, unit1);
+            }
             i += 1;
-            walk += 2;
+            walk = (u8 *)walk + 8;
         }
         unit1 = *(void **)((u8 *)unit1 + 0x184);
     loop1_cond:
@@ -9204,23 +9230,23 @@ extern "C" void fn_801752EC(void *arg0) {
     }
 
     dst2 = *(void **)((u8 *)self + 0x54);
-    unit2 = *(void **)(gUnitLists + 0x3C);
+    unit2 = *(void **)(lbl_802CA264 + 0x3C);
     goto loop2_cond;
 loop2_body:
     for (i = 0; i < 4; i++) {
-        entry = Unit_GetHeldItemSlot(unit2, i);
+        entry = fn_80037BBC(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }
-        player = gUiContext[0];
+        player = lbl_802EF4C8[0];
         if (unit2 == NULL) {
             add = 1;
         } else if (unit2 == (void *)player) {
             add = 0;
-        } else if (Status_Test((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
-            bits = Item_GetFlagsPtr((u32)entry);
+        } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
+            bits = fn_8001CB64((u32)entry);
             add = 0;
-            if ((*(u64 *)bits & 0x200ULL) == 0) {
+            if ((*(u64 *)bits & 0x200ULL) == (u64)add) {
                 add = 1;
             }
         } else {
@@ -9231,21 +9257,21 @@ loop2_body:
         }
     }
     i = 0;
-    walk = (u32 *)unit2;
+    walk = unit2;
     while (i < 4) {
         slot = (u8 *)walk + 0x1EC;
         if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
             break;
         }
-        player = gUiContext[0];
+        player = lbl_802EF4C8[0];
         if (unit2 == NULL) {
             add = 1;
         } else if (unit2 == (void *)player) {
             add = 0;
-        } else if (Status_Test((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
-            bits = Item_GetFlagsPtr((u32)slot);
+        } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
+            bits = fn_8001CB64((u32)slot);
             add = 0;
-            if ((*(u64 *)bits & 0x200ULL) == 0) {
+            if ((*(u64 *)bits & 0x200ULL) == (u64)add) {
                 add = 1;
             }
         } else {
@@ -9255,7 +9281,7 @@ loop2_body:
             fn_801439F0(dst2, slot, unit2);
         }
         i += 1;
-        walk += 2;
+        walk = (u8 *)walk + 8;
     }
     unit2 = *(void **)((u8 *)unit2 + 0x184);
 loop2_cond:
@@ -9263,16 +9289,16 @@ loop2_cond:
         goto loop2_body;
     }
 
-    if (fn_8014D8DC(gBattleState) != 0) {
+    if (fn_8014D8DC(lbl_80330708) != 0) {
         dst3 = *(void **)((u8 *)self + 0x54);
-        walk = gConvoy;
+        walk = lbl_803200AC;
         i = 0;
         while (i < 0xC8) {
             if (*(u32 *)walk != 0) {
                 fn_801439F0(dst3, walk, NULL);
             }
             i += 1;
-            walk += 2;
+            walk = (u8 *)walk + 8;
         }
     }
 
@@ -9281,13 +9307,13 @@ loop2_cond:
     *(s32 *)((u8 *)q + 0x11C) = 2;
     {
         void *cb = (void *)fn_80175924;
-        u32 ef0 = gUiContext[0];
+        u32 ef0 = lbl_802EF4C8[0];
         *(void **)((u8 *)*(void **)((u8 *)self + 0x54) + 0x120) = cb;
         *(u32 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x124) = ef0;
     }
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
 
-    p = Heap_Alloc(0x48);
+    p = fn_800C42D8(0x48);
     if (p != NULL) {
         p = fn_80174998(p, 0x260, 0x4C, 0x1F4);
     }
@@ -9298,7 +9324,7 @@ loop2_cond:
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 8) = 0x108;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0x24) = 8;
-    tmp = ListWidget_GetSelected(*(void **)((u8 *)self + 0x54));
+    tmp = fn_80143A84(*(void **)((u8 *)self + 0x54));
     q = *(void **)((u8 *)self + 0x58);
     *(void **)((u8 *)q + 0x40) = tmp;
     if (tmp != NULL) {
@@ -10084,6 +10110,35 @@ u8 fn_801772D8(void) {
         result = 2;
     }
     return (u8)result;
+}
+
+s32 fn_801772FC(s32 unused, void *parent, void *entry) {
+void *Process_CreateChild(void *,void *);
+void *Process_Find(void *);
+void Process_Goto(void *,s32);
+void Process_DetachChild(s32);
+extern u8 gUiMsgPopupProc[];
+extern u16 gUiMsgStrings[];
+extern u16 gUiListPanelProc[];
+extern u32 gUiContext[];
+void *popup;
+void *panel;
+f32 x,y;
+if(*(u8*)((u8*)entry+0x39)==2) {
+x=(f32)(*(s16*)((u8*)parent+0x30)+*(s16*)((u8*)entry+0x30));
+y=(f32)(*(s16*)((u8*)parent+0x32)+*(s16*)((u8*)entry+0x32));
+popup=Process_CreateChild(gUiMsgPopupProc,parent);
+*(f32*)((u8*)popup+0x30)=x;
+*(f32*)((u8*)popup+0x34)=y;
+*(void**)((u8*)popup+0x54)=(u8*)gUiMsgStrings+0x47E;
+return 0;
+}
+panel=Process_Find(gUiListPanelProc);
+*(void**)((u8*)panel+0x60)=parent;
+*((u8*)gUiContext+8)=0x8B;
+Process_Goto(panel,0x30);
+Process_DetachChild(*(s32*)((u8*)panel+0x5C));
+return 4;
 }
 
 void fn_80177404(void) {
