@@ -260,19 +260,20 @@ typedef struct String {
 } String;
 
 #pragma cplusplus on
-class SortOutputProxy {
-public:
- s32 *ptr;
- s32 state;
- SortOutputProxy(s32 *p,s32 s):ptr(p),state(s) {}
- void operator=(const s32 &value) {
-  if (((s32)ptr-M2C_FIELD(state,s32 *,8))/4 < M2C_FIELD(state,s32 *,4)) *ptr=value;
-  else {
-   if(ptr) *ptr=value;
-   M2C_FIELD(state,s32 *,4)++;
-  }
- }
-};
+  class SortOutputProxy {
+  public:
+   s32 *ptr;
+   s32 state;
+   SortOutputProxy(s32 *p,s32 s):ptr(p),state(s) {}
+   operator s32() const { return *ptr; }
+   void operator=(const s32 &value) {
+    if (((s32)ptr-M2C_FIELD(state,s32 *,8))/4 < M2C_FIELD(state,s32 *,4)) *ptr=value;
+    else {
+     if(ptr) *ptr=value;
+     M2C_FIELD(state,s32 *,4)++;
+    }
+   }
+  };
 class SortIterator {
 public:
     s32 *ptr;
@@ -9959,8 +9960,8 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
 void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
     void *Heap_Alloc(u32);
     void Tree_InsertFixup(void *, void *);
-    void abort(void);
-    void fprintf(void *, const char *, ...);
+    M2C_UNK abort(void);
+    M2C_UNK fprintf(void *, const char *, ...);
     void memcpy(void *, void *, u32);
     extern char __files[];
     extern char lbl_80271860[];
@@ -9968,12 +9969,14 @@ void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
 
     void *node;
     u8 *value;
+    u32 len;
     u8 *src;
     u8 *end;
-    u32 len;
     u8 *buf;
+    u32 sentinel;
 
-    if (*(u32 *)((char *)tree + 0) > (u32)-2) {
+    sentinel = -2;
+    if (*(u32 *)((char *)tree + 0) > sentinel) {
         fprintf(__files + 0xA0, lbl_80271860 + 0x1B0);
         abort();
     }
