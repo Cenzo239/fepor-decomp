@@ -2365,6 +2365,11 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 {
     return (StreamQueueNode *)(((u32)arg0 + 1) * (arg1 + 1));
 }
+
+void fn_80246D48(void) { u32 i; StreamQueueNode *node; StreamTempo *t;
+if(!lbl_80368968->voices){for(i=0;i<64;i++){node=fn_80246070((u8)i);if(node){ StreamState *state=lbl_80368968; StreamQueueNode *prev=0,*cur=*(StreamQueueNode **)((u8*)state+0x1524); while(cur){if(cur->time>node->time){node->next=cur;node->prev=prev;if(prev)prev->next=node;else *(StreamQueueNode **)((u8*)state+0x1524)=node;cur->prev=node;goto next1;}prev=cur;cur=cur->next;}node->prev=prev;if(prev)prev->next=node;else *(StreamQueueNode **)((u8*)state+0x1524)=node;node->next=0; } next1:;}}
+else {for(i=0;i<64;i++){node=fn_80246070((u8)i);if(node){{s32 offset=lbl_80368968->voices[i]*0x38+0x1508;t=(StreamTempo*)((u8*)lbl_80368968+offset);}{ StreamQueueNode *prev=0,*cur=t->head; while(cur){if(cur->time>node->time){node->next=cur;node->prev=prev;if(prev)prev->next=node;else t->head=node;cur->prev=node;goto next2;}prev=cur;cur=cur->next;}node->prev=prev;if(prev)prev->next=node;else t->head=node;node->next=0; }}next2:;}}}
+
 #pragma dont_inline reset
 
 #pragma opt_strength_reduction off
@@ -5846,6 +5851,84 @@ s32 AudioWave_Remove(u16 id) {
     }
     Audio_Unlock();
     return 0;
+}
+
+s32 fn_8024F964(void *entries, s32 data) {
+    struct AudioGroupEntry {
+        u16 id;
+        u16 ref;
+        u8 pad[0x1C];
+    };
+    struct AudioGroup {
+        struct AudioGroupEntry *entries;
+        s32 data;
+        u16 count;
+        u16 pad;
+    };
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern struct AudioGroup gAudioGroups[];
+    extern u16 gAudioGroupCount;
+    extern void *lbl_80368A14;
+    s32 i;
+    u16 j;
+    s32 n;
+    u16 groupCount;
+    struct AudioGroupEntry *e;
+
+    i = 0;
+    groupCount = gAudioGroupCount;
+    while (i < (s32)groupCount && gAudioGroups[i].entries != (struct AudioGroupEntry *)entries) {
+        i++;
+    }
+    lbl_80368A14 = entries;
+    if (i == (s32)groupCount) {
+        if (groupCount < 0x80U) {
+            Audio_Lock();
+            e = (struct AudioGroupEntry *)entries;
+            n = 0;
+            while (e->id != 0xFFFF) {
+                n++;
+                e++;
+            }
+            j = 0;
+            if ((u16)n > j) {
+                s32 limit = n - 8;
+                if ((u16)n > 8) {
+                    u16 z = 0;
+                    while (j < (u16)limit) {
+                        u16 *p = (u16 *)((u8 *)entries + (j << 5) + 2);
+                        j += 8;
+                        *p = z;
+                        *(u16 *)((u8 *)p + 0x20) = z;
+                        *(u16 *)((u8 *)p + 0x40) = z;
+                        *(u16 *)((u8 *)p + 0x60) = z;
+                        *(u16 *)((u8 *)p + 0x80) = z;
+                        *(u16 *)((u8 *)p + 0xA0) = z;
+                        *(u16 *)((u8 *)p + 0xC0) = z;
+                        *(u16 *)((u8 *)p + 0xE0) = z;
+                    }
+                }
+                {
+                    u16 z = 0;
+                    while (j < (u16)n) {
+                        *(u16 *)((u8 *)entries + (j << 5) + 2) = z;
+                        j++;
+                    }
+                }
+            }
+            {
+                u16 c = gAudioGroupCount++;
+                gAudioGroups[c].entries = (struct AudioGroupEntry *)entries;
+                gAudioGroups[c].count = n;
+                gAudioGroups[c].data = data;
+            }
+            Audio_Unlock();
+            return 1;
+        }
+        return 0;
+    }
+    return 1;
 }
 
 s32 AudioGroup_Register(u16 id, void *arg1)
