@@ -1174,7 +1174,91 @@ char *fn_800A0E24(void) {
     return gItemMenuTextBuf;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 2
+s32 fn_800A0E74(void) {
+    u8 SystemSave_CountPackedSlots(void *);
+    extern void *gPadInput;
+    extern u8 gSystemSave[];
+    s32 dir;
+    s32 limit;
+    s32 i;
+    u8 *p;
+    s32 zero;
+    s32 ctr;
+    u8 count;
+
+    dir = 0;
+    if (*(u32 *)((u8 *)gPadInput + 0xC) & 0x01000001U) {
+        dir = -1;
+        if ((u8)SystemSave_CountPackedSlots(gSystemSave) == 1) {
+            return 0;
+        }
+    }
+    if (*(u32 *)((u8 *)gPadInput + 0xC) & 0x02000002U) {
+        dir = 1;
+        if ((u8)SystemSave_CountPackedSlots(gSystemSave) == 0x1F) {
+            return 0;
+        }
+    }
+    if (dir == 0) {
+        return 0;
+    }
+
+    count = (u8)SystemSave_CountPackedSlots(gSystemSave);
+    limit = count + dir;
+    p = gSystemSave;
+    i = 0;
+    ctr = 5;
+    zero = 0;
+    limit = limit - 1;
+    do {
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        i = i + 1;
+        p = p + 1;
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        i = i + 1;
+        p = p + 1;
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        i = i + 1;
+        p = p + 1;
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        i = i + 1;
+        p = p + 1;
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        i = i + 1;
+        p = p + 1;
+        if (i < limit) {
+            p[0x12] = i + 1;
+        } else {
+            p[0x12] = zero;
+        }
+        p = p + 1;
+        i = i + 1;
+        ctr = ctr - 1;
+    } while (ctr != 0);
+    return 0;
+}
+#pragma optimization_level reset
 char *fn_800A101C(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
@@ -1384,6 +1468,32 @@ s32 fn_800A1448(void) {
         *(s16 *)(gBattleState + 0x12) += 1;
     }
     return 0;
+}
+
+void fn_800A14A4(void *unused, void *parent, void *item) {
+#pragma cplusplus on
+struct Model { u8 pad[4]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0; virtual void v12()=0; virtual void v13()=0; virtual void v14()=0; virtual void v15()=0; virtual void v16()=0; virtual void v17()=0; virtual void v18()=0; virtual void v19()=0; virtual void v20()=0; virtual void v21()=0; virtual void v22()=0; virtual void v23()=0; virtual void v24()=0; virtual f32 v25()=0; };
+void sprintf(u8 *,void *,...);
+void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32);
+void Prim2D_SetPos(f32,f32); void Prim2D_SetColor(s32,s32,s32,s32);
+void Prim2D_SetText(void *); void Prim2D_SetScale(f32); void Prim2D_EndPrim(void);
+extern u8 gBattleState[],gMenuCmdStrings[],gItemMenuTextBuf[],lbl_8026D7C8[];
+extern f32 lbl_803699F8,lbl_803699FC,gItemMenuTextScale;
+struct Words {u32 a,b,c;};
+struct Colors {u32 a,b;u8 c;};
+Words names=*(Words*)(lbl_8026D7C8+0xF8);
+Colors colors=*(Colors*)(lbl_8026D7C8+0x104);
+Words values=*(Words*)(lbl_8026D7C8+0x10);
+u8 index=*((u8*)item+0x3A);
+sprintf(gItemMenuTextBuf,gMenuCmdStrings+0x629,((u32*)&names)[index],((u32*)&values)[gBattleState[index+0x15]]);
+Prim2D_Begin();
+Prim2D_SetTransform((f32)*(s16*)((u8*)parent+0x30),(f32)*(s16*)((u8*)parent+0x32),(*(Model**)((u8*)parent+0x3C))->v25()-lbl_803699F8,lbl_803699FC);
+Prim2D_SetTex(0,0x13); Prim2D_PrepareTex(); Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16*)((u8*)item+0x30),(f32)*(s16*)((u8*)item+0x32));
+Prim2D_SetColor(((u8*)&colors)[index*3],((u8*)&colors)[index*3+1],((u8*)&colors)[index*3+2],255);
+Prim2D_SetText(gItemMenuTextBuf); Prim2D_SetScale(gItemMenuTextScale); Prim2D_EndPrim();
+#pragma cplusplus reset
 }
 
 s32 fn_800A1658(s32 arg0,s32 arg1,void *arg2) {
@@ -1713,6 +1823,81 @@ void ItemMenu_DrawItemText(s32 ctrl, s32 parent, void *item) {
     Prim2D_SetText(gItemMenuTextBuf);
     Prim2D_SetScale(gItemMenuTextScale);
     Prim2D_EndPrim();
+}
+
+s32 fn_800A1EB4(s32 unused, s32 unused2, void *row) {
+    void *Map_GetCursorUnit(void);
+    void *Unit_GetItemSlot(void *, s32);
+    void Item_SetUses(void *, u8);
+    void *Item_Get(s32);
+    void Item_Clear(void *);
+    void UnitRef_Set(void *, void *);
+    extern u8 *gPadInput;
+    extern s32 lbl_803671E0;
+    u32 held;
+    void *slot;
+    void *item;
+    s32 max;
+    s32 uses;
+    s16 iid;
+    s16 next;
+
+    held = *(u32 *)(gPadInput + 0x10);
+    if (!(held & 0x03000003)) {
+        return 0;
+    }
+    slot = Unit_GetItemSlot(Map_GetCursorUnit(), *(u8 *)((u8 *)row + 0x3A));
+    if (slot == NULL || (item = *(void **)slot, item == NULL)) {
+        return 0;
+    }
+    if (*(u32 *)(gPadInput + 4) & 0x400) {
+        max = (u8)((item != NULL) ? *(u8 *)((u8 *)item + 0x18) : 0);
+        uses = *(u8 *)((u8 *)slot + 4);
+        if (held & 0x01000001) {
+            uses -= 1;
+        }
+        if (held & 0x02000002) {
+            uses += 1;
+        }
+        if (uses > max) {
+            uses = max;
+        }
+        if (uses < 1) {
+            uses = 1;
+        }
+        Item_SetUses(slot, uses);
+        return 0;
+    }
+    iid = (s16)*(u16 *)((u8 *)item + 0xE);
+    if (held & 0x01000001) {
+        for (;;) {
+            if ((s16)iid == 1) {
+                break;
+            }
+            iid -= 1;
+            if (*(u8 *)((u8 *)Item_Get(iid) + 0x12) != 9) {
+                break;
+            }
+        }
+    }
+    if (held & 0x02000002) {
+        do {
+            next = 1;
+            if ((s16)iid < lbl_803671E0 - 1) {
+                next = (s16)(iid + 1);
+            }
+            iid = next;
+        } while (*(u8 *)((u8 *)Item_Get(next) + 0x12) == 9);
+    }
+    Item_Clear(slot);
+    if ((s16)iid > lbl_803671E0) {
+        iid = (s16)lbl_803671E0;
+    }
+    if ((s16)iid < 1) {
+        iid = 1;
+    }
+    UnitRef_Set(slot, Item_Get(iid));
+    return 0;
 }
 
 extern u16 lbl_8026D878[];
