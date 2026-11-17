@@ -656,14 +656,19 @@ switch(ret) { case 0: fn_80266B6C(chan); break; default: break; }
 }
 #pragma scheduling on
 s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
- extern u8 lbl_803669A0[];
- extern s32 fn_80266CFC(s32,s32,s32,void *);
- u8 *entry=lbl_803669A0+(arg0<<8);
- if (*(u32 *)(entry+0x1c)) return 2;
- entry[0]=0xff;
- *(s32 *)(entry+0x14)=arg1;
- *(u32 *)(entry+0x1c)=arg2;
- return fn_80266CFC(arg0,1,3,fn_80265430);
+    extern u8 lbl_803669A0[];
+    extern int fn_80266CFC(int, int, int, void *);
+    void fn_80265430(void);
+    u8 *entry;
+
+    entry = lbl_803669A0 + (arg0 << 8);
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        return 2;
+    }
+    *entry = 0xFF;
+    *(s32 *)(entry + 0x14) = arg1;
+    *(u32 *)(entry + 0x1C) = arg2;
+    return fn_80266CFC(arg0, 1, 3, fn_80265430);
 }
 
 #pragma global_optimizer off
