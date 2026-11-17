@@ -119,44 +119,26 @@ extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
 extern void (*lbl_803684F8)();
 void __OSResetSWInterruptHandler(void) {
-    u64 time1;
-    u64 time2;
-    u32 temp_r29;
-    s32 r5, r0, r3;
-    u32 addr;
-
-    time1 = __OSGetSystemTime();
-    lbl_80368514 = (u32)time1;
-    lbl_80368510 = (u32)time1;
-
-    temp_r29 = ((*(u32*)0x800000F8 / 500000) * 0x64) >> 3;
-
-loop_1:
-    time2 = __OSGetSystemTime();
-    r5 = (s32)(time2 - lbl_80368510);
-    r5 = r5 ^ 0x80000000;
-    
-    // The original assembly checks if the difference is less than temp_r29 using a two-word compare
-    if ((u32)r5 < temp_r29) {
-        if (!(*(u32*)0xCC003000 & 0x10000)) {
-            goto loop_1;
-        }
-    }
-
-    if (*(u32*)0xCC003000 & 0x10000) {
-        lbl_803684FC = 1;
-        lbl_80368500 = 1;
-        
-        __OSMaskInterrupts(0x200);
-        
-        if (lbl_803684F8 != NULL) {
-            void (*temp_lr)() = lbl_803684F8;
-            lbl_803684F8 = NULL;
-            temp_lr();
-        }
-    }
-
-    *(u32*)0xCC003000 = 2;
+s64 __OSGetSystemTime(void);
+void __OSMaskInterrupts(u32);
+s64 time;
+s64 delay;
+time=__OSGetSystemTime();
+lbl_80368514=(u32)time;
+lbl_80368510=(u32)((u64)time>>32);
+delay=(((*(u32 *)0x800000F8 >> 2)/125000)*100)>>3;
+while (__OSGetSystemTime()-(s64)(((u64)lbl_80368510<<32)|lbl_80368514)<delay && !(*(u32 *)0xCC003000 & 0x10000)) {}
+if (!(*(u32 *)0xCC003000 & 0x10000)) {
+lbl_803684FC=1;
+lbl_80368500=1;
+__OSMaskInterrupts(0x200);
+if (lbl_803684F8) {
+void (*callback)()=lbl_803684F8;
+lbl_803684F8=0;
+callback();
+}
+}
+*(u32 *)0xCC003000=2;
 }
 
 #pragma peephole off

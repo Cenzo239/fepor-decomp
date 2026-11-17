@@ -660,29 +660,26 @@ BOOL fn_8020C1A4(s32 arg0, u32 arg1, void *callback) {
 }
 
 #pragma use_lmw_stmw on
-#pragma optimization_level 3
 void DVDLowReset(void) {
-  extern s32 ResetOccurred_80368548;
-  extern s64 LastResetEnd_80368540;
-  s64 __OSGetSystemTime(void);
-  s64 start;
-  u32 delay;
-  u32 old;
-  u32 *reg;
+ extern s32 ResetOccurred_80368548;
+ extern s64 LastResetEnd_80368540;
+ s64 __OSGetSystemTime(void);
+ u32 old;
+ u32 *reg;
+ u32 delay;
+ s64 start;
 
-  reg = (u32 *)0xCC003000;
-  *(u32 *)0xCC006004 = 2;
-  old = *(u32 *)0xCC003024;
-  *(reg += 9) = (old & ~4) | 1;
-  start = __OSGetSystemTime();
-  delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
-  while (__OSGetSystemTime() - start < (s64)delay) {
-  }
-  *reg = old | 5;
-  ResetOccurred_80368548 = 1;
-  LastResetEnd_80368540 = __OSGetSystemTime();
+ reg = (u32 *)0xCC003000;
+ *(u32 *)0xCC006004 = 2;
+ old = reg[9];
+ *(reg += 9) = (old & ~4) | 1;
+ start = __OSGetSystemTime();
+ delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
+ while (__OSGetSystemTime() - start < (s64)delay) {}
+ *reg = old | 5;
+ ResetOccurred_80368548 = 1;
+ LastResetEnd_80368540 = __OSGetSystemTime();
 }
-#pragma optimization_level reset
 #pragma use_lmw_stmw reset
 BOOL fn_8020C2FC(void) {
     StopAtNextInt_80368530 = TRUE;

@@ -273,98 +273,90 @@ void fn_80267498(s32 arg0) {
  if (callback) callback(0);
 }
 
+#pragma global_optimizer off
 #pragma use_lmw_stmw on
-s32 fn_802674D4(s32 *arg0)
-{
-    s32 *saved;
-    u8 *cc;
+s32 fn_802674D4(s32 *arg0) {
     u32 *exi;
+    u32 err;
+    u8 *hw;
     u32 *cr;
-    s32 err;
+    s32 *saved;
     s32 cmd;
     u32 tmp;
-
+    u8 dummy[12];
     saved = arg0;
-    cc = (u8 *)0xCC000000;
-    exi = (u32 *)(cc + 0x6800);
-    tmp = (*(u32 *)(cc + 0x6828) & 0x405) | 0xC0;
-    exi = (u32 *)((u8 *)exi + 0x28);
-    *exi = tmp;
-
+    hw = (u8*)0xCC000000;
+    exi = (u32*)(hw+0x6800);
+    tmp = (*(u32*)(hw+0x6828)&0x405)|0xC0;
+    *(u32*)(exi=(u32*)((u8*)exi+0x28))=tmp;
     cmd = 0x40000000;
-    err = (fn_802677E4((u8 *)&cmd, 2, 1) == 0);
-
-    do {
-        cr = (u32 *)(cc + 0x6800);
-    } while (*(volatile u32 *)((u8 *)cr + 0x34) & 1);
-
-    err |= (fn_802677E4((u8 *)saved, 4, 0) == 0);
-
-    while (*(volatile u32 *)((u8 *)cr + 0x34) & 1)
-        ;
-
+    err = !(u32)fn_802677E4((u8*)&cmd,2,1);
+    do { cr = (u32*)(hw+0x6800); } while (*(u32*)(cr=(u32*)((u8*)cr+0x34))&1);
+    err |= !(u32)fn_802677E4((u8*)saved,4,0);
+    while (*cr & 1) ;
     *exi = *exi & 0x405;
-    return err == 0;
+    return !err;
 }
 #pragma use_lmw_stmw reset
+#pragma global_optimizer on
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 s32 fn_80267580(s32 arg0, s32 *arg1, s32 arg2)
 {
-    s32 cmd;
-    s32 word;
-    s32 pad[2];
-    s32 *buf;
-    s32 len;
-    u8 *cc;
-    volatile u32 *exi;
-    volatile u32 *cr;
-    s32 err;
-    u32 tmp;
-
-    cmd = ((arg0 << 8) & 0x01FFFC00) | 0xA0000000;
-    len = arg2;
-    buf = arg1;
-    cc = (u8 *)0xCC000000;
-    exi = (volatile u32 *)(cc + 0x6800);
-    tmp = (*(u32 *)(cc + 0x6828) & 0x405) | 0xC0;
-    *(exi = (volatile u32 *)((u8 *)exi + 0x28)) = tmp;
-
-    err = (fn_802677E4((u8 *)&cmd, 4, 1) == 0);
-
-    do {
-        cr = (volatile u32 *)(cc + 0x6800);
-    } while (*(cr = (volatile u32 *)((u8 *)cr + 0x34)) & 1);
-
-    while (len != 0) {
-        word = *buf;
-        buf += 1;
-        err |= (fn_802677E4((u8 *)&word, 4, 1) == 0);
-        while (*cr & 1)
-            ;
-        len -= 4;
-        if (len < 0) {
-            len = 0;
-        }
+  s32 new_var[2];
+  s32 cmd;
+  s32 pad[2];
+  volatile u32 *exi;
+  s32 len;
+  u8 *cc;
+  volatile u32 *cr;
+  u32 err;
+  s32 *buf;
+  cmd = ((arg0 << 8) & 0x01FFFC00) | 0xA0000000;
+  len = arg2;
+  buf = arg1;
+  cc = (u8 *) 0xCC000000;
+  exi = (volatile u32 *) (cc + 0x6800);
+  new_var[1] = (*(exi = (volatile u32 *) (((u8 *) exi) + 0x28)) = ((*((u32 *) (cc + 0x6828))) & 0x405) | 0xC0);
+  err = !fn_802677E4((u8 *) (&cmd), 4, 1);
+  do
+  {
+    cr = (volatile u32 *) (cc + 0x6800);
+  }
+  while ((*(cr = (volatile u32 *) (((u8 *) cr) + 0x34))) & 1);
+  while (len != 0)
+  {
+    new_var[0] = *buf;
+    buf += 1;
+    err |= !fn_802677E4((u8 *) (&new_var[0]), 4, 1);
+    while ((*cr) & 1)
+    {
+      ;
     }
-
-    *exi = *exi & 0x405;
-    return err == 0;
+    len -= 4;
+    if (len < 0)
+    {
+      len = 0;
+    }
+  }
+  *exi = *exi & 0x405;
+  return !err;
 }
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 s32 fn_8026765C(s32 arg0, s32 *arg1, s32 arg2)
 {
-    s32 *buf;
+    volatile u32 *exi;
     s32 len;
     u8 *cc;
-    u32 *exi;
-    u32 *cr;
+    volatile u32 *cr;
     s32 err;
+    s32 *buf;
     s32 cmd;
     s32 word;
     u32 tmp;
+    s32 pad[3];
 
     cmd = ((arg0 << 8) & 0x01FFFC00) | 0x20000000;
     len = arg2;
@@ -372,16 +364,17 @@ s32 fn_8026765C(s32 arg0, s32 *arg1, s32 arg2)
     cc = (u8 *)0xCC000000;
     exi = (u32 *)(cc + 0x6800);
     tmp = (*(u32 *)(cc + 0x6828) & 0x405) | 0xC0;
-    *(u32 *)(exi = (u32 *)((u8 *)exi + 0x28)) = tmp;
+    *(volatile u32 *)(exi = (u32 *)((u8 *)exi + 0x28)) = tmp;
+    cmd = ((arg0 << 8) & 0x01FFFC00) | 0x20000000;
 
-    err = (fn_802677E4((u8 *)&cmd, 4, 1) == 0);
+    err = (!fn_802677E4((u8 *)&cmd, 4, 1));
 
     do {
         cr = (u32 *)(cc + 0x6800);
-    } while (*(u32 *)(cr = (u32 *)((u8 *)cr + 0x34)) & 1);
+    } while (*(volatile u32 *)(cr = (u32 *)((u8 *)cr + 0x34)) & 1);
 
     while (len != 0) {
-        err |= (fn_802677E4((u8 *)&word, 4, 0) == 0);
+        err |= (!fn_802677E4((u8 *)&word, 4, 0));
         while (*cr & 1)
             ;
         len -= 4;
@@ -393,43 +386,34 @@ s32 fn_8026765C(s32 arg0, s32 *arg1, s32 arg2)
     }
 
     *exi = *exi & 0x405;
-    return err == 0;
+    return !err;
 }
-#pragma use_lmw_stmw reset
-#pragma global_optimizer reset
-s32 fn_80267738(s32 *arg0)
-{
-    s32 *saved;
-    u32 *cr;
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+s32 fn_80267738(s32 *arg0) {
     u32 *exi;
+    u32 err;
     u8 *hw;
-    s32 err;
+    u32 *cr;
+    s32 *saved;
     s32 cmd;
     u32 tmp;
-
+    u8 dummy[12];
     saved = arg0;
-    hw = (u8 *)0xCC000000;
-    exi = (u32 *)(hw + 0x6800);
-    tmp = (*(u32 *)(hw + 0x6828) & 0x405) | 0xC0;
-    *(u32 *)(exi = (u32 *)((u8 *)exi + 0x28)) = tmp;
-
+    hw = (u8*)0xCC000000;
+    exi = (u32*)(hw+0x6800);
+    tmp = (*(u32*)(hw+0x6828)&0x405)|0xC0;
+    *(u32*)(exi=(u32*)((u8*)exi+0x28))=tmp;
     cmd = 0x60000000;
-    err = fn_802677E4((u8 *)&cmd, 2, 1) == 0;
-
-    do {
-        cr = (u32 *)(hw + 0x6800);
-    } while (*(u32 *)(cr = (u32 *)((u8 *)cr + 0x34)) & 1);
-
-    err = err | (fn_802677E4((u8 *)saved, 4, 0) == 0);
-
-    while (*cr & 1)
-        ;
-
+    err = !(u32)fn_802677E4((u8*)&cmd,2,1);
+    do { cr = (u32*)(hw+0x6800); } while (*(u32*)(cr=(u32*)((u8*)cr+0x34))&1);
+    err |= !(u32)fn_802677E4((u8*)saved,4,0);
+    while (*cr & 1) ;
     *exi = *exi & 0x405;
-    return err == 0;
+    return !err;
 }
 #pragma use_lmw_stmw reset
-#pragma global_optimizer reset
+#pragma global_optimizer on
 int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
     volatile u32 *exi_data;

@@ -1180,31 +1180,33 @@ void GXSetVtxDescv(s32 arg0, s32 arg1) {
     }
 }
 
+#pragma optimization_level 3
 void fn_8021F9D8(void) {
-extern u16 *const __GXData;
-u8 cmd=8;
-u8 *gx;
-u32 n;
-u32 colors;
-u32 tex;
-*(volatile u8 *)0xCC008000=cmd;
-gx=(u8 *)__GXData;
-*(volatile u8 *)0xCC008000=0x50;
-*(volatile u32 *)0xCC008000=*(u32 *)(gx+0x14);
-*(volatile u8 *)0xCC008000=cmd;
-*(volatile u8 *)0xCC008000=0x60;
-*(volatile u32 *)0xCC008000=*(u32 *)(gx+0x18);
-if(gx[0x4d5]) n=2;
-else if(gx[0x4d4]) n=1;
-else n=0;
-colors=(33-(u32)__cntlzw((*(u32 *)(gx+0x14)>>13)&15))>>1;
-tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
-*(volatile u8 *)0xCC008000=0x10;
-*(volatile u32 *)0xCC008000=0x1008;
-*(volatile u32 *)0xCC008000=(tex<<4)|(colors|(n<<2));
-__GXData[1]=1;
-}
+  extern u16 *const __GXData;
+  volatile u8 *fifo = (volatile u8 *)0xCC008000;
+  u8 cmd = 8;
+  u8 *gx = (u8 *)__GXData;
+  u32 n;
+  u32 colors;
+  u32 tex;
 
+  *fifo = cmd;
+  *fifo = 0x50;
+  *(volatile u32 *)fifo = *(u32 *)(gx + 0x14);
+  *fifo = cmd;
+  *fifo = 0x60;
+  *(volatile u32 *)fifo = *(u32 *)(gx + 0x18);
+  if (gx[0x4d5]) n = 2;
+  else if (gx[0x4d4]) n = 1;
+  else n = 0;
+  colors = (33 - (u32)__cntlzw((*(u32 *)(gx + 0x14) >> 13) & 15)) >> 1;
+  tex = (33 - (u32)__cntlzw(*(u32 *)((u8 *)__GXData + 0x18) & 0xffff)) >> 1;
+  *fifo = 0x10;
+  *(volatile u32 *)fifo = 0x1008;
+  *(volatile u32 *)fifo = (tex << 4) | (colors | (n << 2));
+  __GXData[1] = 1;
+}
+#pragma optimization_level reset
 void fn_8021FA94(void)
 {
     extern u32 __GXData;

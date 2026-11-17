@@ -165,86 +165,77 @@ void GXAdjustForOverscan(const GXRenderModeObj *rmin, GXRenderModeObj *rmout, u1
     rmout->viYOrigin = (u16)(rmin->viYOrigin + ver);
 }
 
-void fn_802211D0(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
+void fn_802211D0(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
 {
-    u8 *gx;
-    u32 value;
-    u32 width;
-    u32 height;
-
-    gx = (u8 *)__GXData;
-
-    width = (u16)arg2 - 1;
-    height = (u16)arg3 - 1;
-
-    *(u32 *)(gx + 0x1E0) = 0;
-
-    value = *(u32 *)(gx + 0x1E0);
-    value = (value & ~0x3FF) | ((u16)arg0 & 0x3FF);
-    *(u32 *)(gx + 0x1E0) = value;
-
-    value = *(u32 *)(gx + 0x1E0);
-    value = (value & ~0xFFC00) | (((u16)arg1 << 10) & 0xFFC00);
-    *(u32 *)(gx + 0x1E0) = value;
-
-    value = *(u32 *)(gx + 0x1E0);
-    value = (value & 0x00FFFFFF) | 0x49000000;
-    *(u32 *)(gx + 0x1E0) = value;
-
-    *(u32 *)(gx + 0x1E4) = 0;
-
-    value = *(u32 *)(gx + 0x1E4);
-    value = (value & ~0x3FF) | (width & 0x3FF);
-    *(u32 *)(gx + 0x1E4) = value;
-
-    value = *(u32 *)(gx + 0x1E4);
-    value = (value & ~0xFFC00) | ((height << 10) & 0xFFC00);
-    *(u32 *)(gx + 0x1E4) = value;
-
-    value = *(u32 *)(gx + 0x1E4);
-    value = (value & 0x00FFFFFF) | 0x4A000000;
-    *(u32 *)(gx + 0x1E4) = value;
+  u8 *gx;
+  u32 w;
+  u32 zero;
+  u32 new_var[2];
+  u32 c49;
+  gx = (u8 *) __GXData;
+  zero = 0;
+  w = arg2;
+  *((u32 *) (gx + 0x1E0)) = zero;
+  new_var[1] = arg3;
+  new_var[0] = *((u32 *) (gx + 0x1E0));
+  new_var[0] = __rlwimi(new_var[0], arg0, 0, 22, 31);
+  *((u32 *) (gx + 0x1E0)) = new_var[0];
+  c49 = 0x49;
+  w -= 1;
+  new_var[0] = *((u32 *) (gx + 0x1E0));
+  new_var[0] = __rlwimi(new_var[0], arg1, 10, 12, 21);
+  new_var[1] -= 1;
+  *((u32 *) (gx + 0x1E0)) = new_var[0];
+  new_var[0] = *((u32 *) (gx + 0x1E0));
+  new_var[0] = __rlwimi(new_var[0], c49, 24, 0, 7);
+  *((u32 *) (gx + 0x1E0)) = new_var[0];
+  *((u32 *) (gx + 0x1E4)) = zero;
+  new_var[0] = *((u32 *) (gx + 0x1E4));
+  new_var[0] = __rlwimi(new_var[0], w, 0, 22, 31);
+  *((u32 *) (gx + 0x1E4)) = new_var[0];
+  new_var[0] = *((u32 *) (gx + 0x1E4));
+  new_var[0] = __rlwimi(new_var[0], new_var[1], 10, 12, 21);
+  *((u32 *) (gx + 0x1E4)) = new_var[0];
+  new_var[0] = *((u32 *) (gx + 0x1E4));
+  new_var[0] = __rlwimi(new_var[0], 0x4A, 24, 0, 7);
+  *((u32 *) (gx + 0x1E4)) = new_var[0];
 }
 
-void fn_8022124C(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
+void fn_8022124C(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
 {
-    u8 *gx;
-    u32 value;
-    u32 width;
-    u32 height;
-
-    gx = (u8 *)__GXData;
-
-    width = (u16)arg2 - 1;
-    height = (u16)arg3 - 1;
-
-    *(u32 *)(gx + 0x1F0) = 0;
-
-    value = *(u32 *)(gx + 0x1F0);
-    value = (value & ~0x3FF) | ((u16)arg0 & 0x3FF);
-    *(u32 *)(gx + 0x1F0) = value;
-
-    value = *(u32 *)(gx + 0x1F0);
-    value = (value & ~0xFFC00) | (((u16)arg1 << 10) & 0xFFC00);
-    *(u32 *)(gx + 0x1F0) = value;
-
-    value = *(u32 *)(gx + 0x1F0);
-    value = (value & 0x00FFFFFF) | 0x49000000;
-    *(u32 *)(gx + 0x1F0) = value;
-
-    *(u32 *)(gx + 0x1F4) = 0;
-
-    value = *(u32 *)(gx + 0x1F4);
-    value = (value & ~0x3FF) | (width & 0x3FF);
-    *(u32 *)(gx + 0x1F4) = value;
-
-    value = *(u32 *)(gx + 0x1F4);
-    value = (value & ~0xFFC00) | ((height << 10) & 0xFFC00);
-    *(u32 *)(gx + 0x1F4) = value;
-
-    value = *(u32 *)(gx + 0x1F4);
-    value = (value & 0x00FFFFFF) | 0x4A000000;
-    *(u32 *)(gx + 0x1F4) = value;
+  u8 *gx;
+  u32 w;
+  u32 zero;
+  u32 c49;
+  u32 h;
+  u32 reg;
+  gx = (u8 *) __GXData;
+  zero = 0;
+  w = arg2;
+  *((u32 *) (gx + 0x1F0)) = zero;
+  h = arg3;
+  reg = *((u32 *) (gx + 0x1F0));
+  reg = __rlwimi(reg, arg0, 0, 22, 31);
+  *((u32 *) (gx + 0x1F0)) = reg;
+  c49 = 0x49;
+  w -= 1;
+  reg = *((u32 *) (gx + 0x1F0));
+  reg = __rlwimi(reg, arg1, 10, 12, 21);
+  h -= 1;
+  *((u32 *) (gx + 0x1F0)) = reg;
+  reg = *((u32 *) (gx + 0x1F0));
+  reg = __rlwimi(reg, c49, 24, 0, 7);
+  *((u32 *) (gx + 0x1F0)) = reg;
+  *((u32 *) (gx + 0x1F4)) = zero;
+  reg = *((u32 *) (gx + 0x1F4));
+  reg = __rlwimi(reg, w, 0, 22, 31);
+  *((u32 *) (gx + 0x1F4)) = reg;
+  reg = *((u32 *) (gx + 0x1F4));
+  reg = __rlwimi(reg, h, 10, 12, 21);
+  *((u32 *) (gx + 0x1F4)) = reg;
+  reg = *((u32 *) (gx + 0x1F4));
+  reg = __rlwimi(reg, 0x4A, 24, 0, 7);
+  *((u32 *) (gx + 0x1F4)) = reg;
 }
 
 void fn_802212C8(s32 arg0) {

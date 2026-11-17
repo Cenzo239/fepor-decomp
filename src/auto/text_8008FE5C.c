@@ -45,46 +45,21 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void fn_8008FE5C(void* arg0, s32 arg1) {
-    void* temp_r31;
-    void* temp_r29;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 temp_r7;
-    s32 var_r28;
-    s32 var_r27;
-    s32 var_r26;
-
-    temp_r31 = (void*)((u8*)arg0 + 0x50);
-    temp_r29 = (void*)((u8*)arg0 + 0x4C);
-    temp_r3 = *(s32*)((u8*)arg0 + 0x48);
-    if (temp_r3 > 0) {
-        temp_r4 = 0;
-        do {
-            var_r26 = *(s32*)((u8*)temp_r31 + 0x20); // offset
-            temp_r5 = *(s32*)((u8*)temp_r31 + 0x24); // offset
-
-            if (var_r26 != -1) {
-                var_r27 = *(s32*)((u8*)temp_r31 + 0x28);
-                temp_r6 = *(s32*)((u8*)temp_r31 + 0x2C);
-
-                if (var_r27 < temp_r5) {
-                    temp_r7 = var_r27 - temp_r5;
-                    gBattleState[0xA8] = *(u8*)((u8*)temp_r31 + 0x9);
-                    gBattleState[0xAC] = temp_r6;
-                    gBattleState[0xB0] = var_r26;
-                    temp_r3 = *(s32*)((u8*)arg0 + 0x48);
-                }
-            }
-            temp_r4 += 1;
-            temp_r31 = (void*)((u8*)temp_r31 + 0x30);
-        } while (temp_r4 < temp_r3);
-    }
-
-    *(s32*)((u8*)arg0 + 0x1C) = arg1;
-    *(s32*)((u8*)arg0 + 0x30) = *(s32*)"0"; // This is just placeholder for the symbol
+void fn_8008FE5C(u8 *arg0) {
+ extern u8 gBattleHelpStrings[];
+ void *fn_800C4638(s32,void *,s32);
+ u8 *dst,*src;
+ u32 i;
+ *(void **)(arg0+0x30)=fn_800C4638(128,gBattleHelpStrings+0xF9,0);
+ for(i=0;i<16;i++) {
+ (*(u8 **)(arg0+0x30))[i*4]=255;
+ (*(u8 **)(arg0+0x30))[i*4+1]=i*14;
+ (*(u8 **)(arg0+0x30))[i*4+2]=i*8;
+ (*(u8 **)(arg0+0x30))[i*4+3]=255;
+ src=*(u8 **)(arg0+0x30)+i*4;
+ dst=*(u8 **)(arg0+0x30)+(31-i)*4;
+ dst[0]=src[0];dst[1]=src[1];dst[2]=src[2];dst[3]=src[3];
+ }
 }
 
 #pragma use_lmw_stmw on

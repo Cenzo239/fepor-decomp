@@ -1619,6 +1619,54 @@ void fn_8012EF04(void *arg0) {
         Process_ClearFunc(arg0);
     }
 }
+
+void fn_8012F154(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
+#pragma cplusplus on
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetCallback(void (*)(void), s32);
+    void Prim2D_PrepareTex(void);
+    void Ui_ScissorUnitListRightRows(void);
+    void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
+
+    extern f32 lbl_8036A500;
+    extern f32 lbl_8036A50C;
+    extern f32 lbl_8036A510;
+
+    struct Obj {
+        u8 pad[0x4C];
+        virtual void *v0(void *, s32);
+    };
+
+    f32 fx = x;
+    f32 fy = y;
+    s32 idx = arg3;
+    u8 flag = arg2;
+    Obj *self = (Obj *)arg0;
+    void *drawable;
+    s16 offset;
+    u8 *row;
+
+    drawable = self->v0(arg1, idx);
+
+    row = (u8 *)self + idx * 2;
+    offset = *(s16 *)(row + 0x24);
+    fx += (f32)offset;
+
+    if (drawable != 0) {
+        Prim2D_Begin();
+        Prim2D_SetTransform(fx, fy, lbl_8036A500, lbl_8036A50C);
+        Prim2D_SetTex(0, 0x13);
+        Prim2D_SetColorByte(0xFF);
+        Prim2D_SetCallback(Ui_ScissorUnitListRightRows, 0);
+        Prim2D_PrepareTex();
+        fn_8001003C(0, 0, flag, 1, 0, drawable, lbl_8036A50C, lbl_8036A510);
+    }
+#pragma cplusplus reset
+}
+
 #pragma global_optimizer on
 s32 fn_8012F26C(void) {
     return 0;
@@ -2664,6 +2712,65 @@ void fn_80130CDC(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
         *c = 0x30;
         *d = 0x2A8;
         break;
+    }
+}
+
+void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetCallback(void (*)(void), s32);
+    void Prim2D_PrepareTex(void);
+    void Ui_ScissorUnitListRightRows(void);
+    void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
+
+    extern f32 lbl_8036A500;
+    extern f32 lbl_8036A50C;
+    extern f32 lbl_8036A510;
+
+    u8 *self;
+    void *drawable;
+    void **vtable;
+    s16 offset;
+
+    self = (u8 *)arg0;
+    vtable = *(void ***)(self + 0x4C);
+
+    drawable = ((void *(*)(void *, void *, s32))vtable[2])(
+        self,
+        arg1,
+        arg3
+    );
+
+    offset = *(s16 *)(self + 0x24 + arg3 * 2);
+    x += (f32)offset;
+
+    if (drawable != 0) {
+        Prim2D_Begin();
+
+        Prim2D_SetTransform(
+            x,
+            y,
+            lbl_8036A500,
+            lbl_8036A50C
+        );
+
+        Prim2D_SetTex(0, 0x13);
+        Prim2D_SetColorByte(0xFF);
+        Prim2D_SetCallback(Ui_ScissorUnitListRightRows, 0);
+        Prim2D_PrepareTex();
+
+        fn_8001003C(
+            0,
+            0,
+            arg2,
+            1,
+            0,
+            drawable,
+            lbl_8036A50C,
+            lbl_8036A510
+        );
     }
 }
 

@@ -250,28 +250,43 @@ void GXSetCurrentMtx(u32 arg0) {
  fn_80225180(0);
 }
 
-f32 fn_80224E50(u32 arg1, s32 arg2) {
-    s32 var_r4;
-    s32 var_r7;
+#pragma optimization_level 3
+void fn_80224E50(f32 *mtx, u32 id, s32 type) {
+    u32 addr;
+    u32 size;
+    register u32 shift;
+    f64 a, b, c, d, e, f;
+    register volatile u32 *fifo;
+    volatile f64 *dst;
 
-    if (arg1 >= 0x40U) {
-        var_r7 = ((arg1 - 0x40) * 4) + 0x500;
+    if (id >= 0x40U) {
+        addr = ((id - 0x40) * 4) + 0x500;
     } else {
-        var_r7 = arg1 * 4;
+        addr = id * 4;
     }
-    if (arg2 == 1) {
-        var_r4 = 8;
+    if (type == 1) {
+        size = 8;
     } else {
-        var_r4 = 0xC;
+        size = 0xC;
     }
-    *(s8 *)0xCC008000 = 0x10;
-    *(s8 *)0xCC008000 = (s32) (var_r7 | ((var_r4 - 1) << 0x10));
-    if (arg2 == 0) {
-        return M2C_ERROR(/* psq_l unimplemented */);
+    shift = (size - 1) << 16;
+
+    fifo = (volatile u32 *)0xCC010000;
+    *(volatile u8 *)((u8 *)fifo - 0x8000) = 0x10;
+    *(volatile u32 *)((u8 *)fifo - 0x8000) = addr | shift;
+    fifo = (volatile u32 *)((u8 *)fifo - 0x8000);
+    dst = (volatile f64 *)fifo;
+
+    if (type == 0) {
+        a = ((f64 *)mtx)[0]; b = ((f64 *)mtx)[1]; c = ((f64 *)mtx)[2];
+        d = ((f64 *)mtx)[3]; e = ((f64 *)mtx)[4]; f = ((f64 *)mtx)[5];
+        *dst = a; *dst = b; *dst = c; *dst = d; *dst = e; *dst = f;
+    } else {
+        a = ((f64 *)mtx)[0]; b = ((f64 *)mtx)[1]; c = ((f64 *)mtx)[2]; d = ((f64 *)mtx)[3];
+        *dst = a; *dst = b; *dst = c; *dst = d;
     }
-    return M2C_ERROR(/* psq_l unimplemented */);
 }
-
+#pragma optimization_level reset
 void fn_80224F04(u16 *unused) {
     extern f32 lbl_8036BDC0;
     extern f32 lbl_8036BDC4;
@@ -338,24 +353,19 @@ void fn_80225034(u32 arg0, u32 *dst) {
     out[2] = c;
 }
 
+#pragma optimization_level 2
 void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
     u8 *gx;
-    u32 x0;
-    u32 y0;
-    u32 x1;
-    u32 y1;
-    s32 hm1;
-    s32 wm1;
-
+    s32 x0, y0, x1, y1;
     gx = (u8 *)__GXData;
     y0 = top + 0x156;
-    hm1 = ht - 1;
+    ht = ht - 1;
     *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), y0, 0, 21, 31);
     x0 = left + 0x156;
-    wm1 = wd - 1;
-    y1 = y0 + hm1;
+    wd = wd - 1;
+    y1 = y0 + ht;
     *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), x0, 12, 9, 19);
-    x1 = x0 + wm1;
+    x1 = x0 + wd;
     *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), y1, 0, 21, 31);
     *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), x1, 12, 9, 19);
     GXWGFifo.u8 = 0x61;
@@ -364,7 +374,7 @@ void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
     GXWGFifo.u32 = *(u32 *)(gx + 0xFC);
     *(u16 *)(gx + 2) = 0;
 }
-
+#pragma optimization_level reset
 void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     u32 temp_r7;
     u32 temp_r8;

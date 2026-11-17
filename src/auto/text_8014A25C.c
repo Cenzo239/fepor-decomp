@@ -40,24 +40,90 @@ extern void *lbl_80367B60[2];
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_8014A25C(void) {
-void *pF0C; void *pE4C; void *pDEC; void *pD8C; void *pD2C; void *pCCC; void *pC6C;
-void *pBD4; void *pB88; void *pB0C; void *pAC0; void *pA74; void *pA28; void *p9DC; void *p990; void *p914;
-void **a; void **b; void **c; void *vtbl; void *base; void *base0; void *base20; void *base88;
-pF0C=lbl_80292F0C; pE4C=lbl_80292E4C; pDEC=lbl_80292DEC; pD8C=lbl_80292D8C;
-pD2C=lbl_80292D2C; pCCC=lbl_80292CCC; pC6C=lbl_80292C6C;
-pBD4=lbl_80292BD4; pB88=lbl_80292B88; pB0C=lbl_80292B0C;
-pAC0=lbl_80292AC0; pA74=lbl_80292A74; pA28=lbl_80292A28; p9DC=lbl_802929DC; p990=lbl_80292990; p914=lbl_80292914;
-a=lbl_80367B34; b=lbl_80367B44; c=lbl_80367B60;
-vtbl=gUiMenuDrawVtbl; b[1]=vtbl; c[1]=vtbl; a[1]=vtbl;
-base=lbl_80292808; base0=base; base20=(u8*)base+0x20; base88=(u8*)base+0x88;
-lbl_80367B18=pF0C; lbl_80367B1C=pE4C; lbl_80367B20=pDEC; lbl_80367B24=pD8C;
-lbl_80367B28=pD2C; lbl_80367B2C=pCCC; lbl_80367B30=pC6C;
-a[0]=base0; lbl_80367B3C=pBD4; lbl_80367B40=pB88;
-b[0]=base20; b[1]=pB0C;
-lbl_80367B4C=pAC0; lbl_80367B50=pA74; lbl_80367B54=pA28; lbl_80367B58=p9DC; lbl_80367B5C=p990;
-c[0]=base88; c[1]=p914;
+void fn_8014A25C(void)
+{
+  typedef struct Pair {
+    u8 *lo;
+    u8 *hi;
+  } Pair;
+  Pair *r34;
+  Pair *r60;
+  Pair *r44;
+  u8 *p914;
+  u8 *p990;
+  u8 *p9DC;
+  u8 *pA28;
+  u8 *pA74;
+  u8 *pAC0;
+  u8 *pB0C;
+  u8 *pB88;
+  u8 *pBD4;
+  u8 *pC6C;
+  u8 *pCCC;
+  u8 *pD2C;
+  u8 *pD8C;
+  u8 *pDEC;
+  u8 *pE4C;
+  u8 *pF0C;
+  u8 *base88;
+  u8 *base20;
+  u8 *base0;
+  u8 *base;
+  u8 *new_var;
+
+  base = lbl_80292808;
+  r44 = (Pair *)lbl_80367B44;
+  r60 = (Pair *)lbl_80367B60;
+  pF0C = lbl_80292F0C;
+  pBD4 = lbl_80292BD4;
+  pB88 = lbl_80292B88;
+  pB0C = lbl_80292B0C;
+  pAC0 = lbl_80292AC0;
+  new_var = lbl_80292990;
+  pA74 = lbl_80292A74;
+  pA28 = lbl_80292A28;
+  p9DC = lbl_802929DC;
+  p990 = lbl_80292990;
+  pE4C = lbl_80292E4C;
+  pDEC = lbl_80292DEC;
+  pD8C = lbl_80292D8C;
+  pDEC = lbl_80292D2C;
+  pD2C = pDEC;
+  pCCC = lbl_80292CCC;
+  pC6C = lbl_80292C6C;
+  base0 = base + 0;
+  base20 = base + 0x20;
+  r44->hi = gUiMenuDrawVtbl;
+  base88 = base + 0x88;
+  pAC0 = lbl_80292AC0;
+  pA74 = lbl_80292A74;
+  pA28 = lbl_80292A28;
+  p9DC = lbl_802929DC;
+  p990 = new_var;
+  r34 = (Pair *)lbl_80367B34;
+  pB0C = lbl_80292B0C;
+  lbl_80367B28 = pD2C;
+  ((Pair *)lbl_80367B60)->hi = gUiMenuDrawVtbl;
+  p914 = lbl_80292914;
+  lbl_80367B18 = pF0C;
+  lbl_80367B1C = pE4C;
+  lbl_80367B20 = pDEC;
+  lbl_80367B24 = pD8C;
+  lbl_80367B2C = pCCC;
+  lbl_80367B30 = pC6C;
+  r34->hi = gUiMenuDrawVtbl;
+  ((Pair *)lbl_80367B34)->lo = base0;
+  lbl_80367B3C = pBD4;
+  lbl_80367B40 = pB88;
+  ((Pair *)lbl_80367B44)->lo = base20;
+  r44->hi = pB0C;
+  lbl_80367B4C = pAC0;
+  lbl_80367B50 = pA74;
+  lbl_80367B54 = pA28;
+  lbl_80367B58 = p9DC;
+  lbl_80367B5C = p990;
+  ((Pair *)lbl_80367B60)->lo = base88;
+  r60->hi = p914;
 }
-#pragma global_optimizer on
 __declspec(section ".ctors") static void (*const lbl_80267AF4)(void) = fn_8014A25C;
 

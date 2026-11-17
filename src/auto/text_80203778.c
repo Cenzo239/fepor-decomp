@@ -1273,8 +1273,9 @@ u32 fn_80205390(s32 arg0, s32 arg1, s32 arg2) {
     dest = arg0;
     src = arg1;
     arg0 = (u32)(arg2 + 31) >> 5;
+    remaining = arg0;
     count = ((u32)arg0 + 127) >> 7;
-    for (remaining = arg0; remaining != 0;) {
+    while (remaining != 0) {
         if (remaining < 128) {
             fn_8020536C(dest, src, remaining);
             remaining = 0;
@@ -1444,9 +1445,10 @@ void OSClearContext(OSContext *context) {
 #pragma peephole reset
 #pragma dont_inline reset
 void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
+    u16 srr1 = 0x9032;
     *(s32 *) ((u8 *) arg0 + 0x198) = arg1;
     *(s32 *) ((u8 *) arg0 + 4) = arg2;
-    *(s32 *) ((u8 *) arg0 + 0x19C) = 0x9032;
+    *(s32 *) ((u8 *) arg0 + 0x19C) = srr1;
     *(s32 *) ((u8 *) arg0 + 0x80) = 0;
     *(s32 *) ((u8 *) arg0 + 0x8C) = 0;
     *(s32 *) ((u8 *) arg0 + 8) = 0;
@@ -1487,7 +1489,6 @@ void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
     *(s32 *) ((u8 *) arg0 + 0x1B8) = 0;
     *(s32 *) ((u8 *) arg0 + 0x1BC) = 0;
     *(s32 *) ((u8 *) arg0 + 0x1C0) = 0;
-    return;
 }
 
 #pragma use_lmw_stmw on
@@ -2157,10 +2158,12 @@ void Yay0_Decode(u8 *src, u8 *dst) {
     } while (dstPos < outSize);
 }
 
+#pragma opt_common_subs off
 u16 fn_802072A0(void) {
     extern u16 lbl_80366F48;
     extern void (*lbl_803684C0)(void);
-          s32 temp;
+    void fn_80207768(void);
+    s32 temp;
     u16 val;
 
     if (lbl_80366F48 != 0xFFFF) {
@@ -2183,10 +2186,10 @@ hw:
 set0:
     lbl_80366F48 = 0;
 after:
-    lbl_803684C0 = (void (*)(void))fn_80207768;
+    lbl_803684C0 = fn_80207768;
     return lbl_80366F48;
 }
-
+#pragma opt_common_subs reset
 u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     s32 fn_802096B0(void *, s32, s32);
     void Yay0_Decode(u8 *, u8 *);
@@ -2688,12 +2691,15 @@ u32 SetInterruptMask(u32 mask, u32 current) {
 }
 #pragma global_optimizer off
 u32 __OSMaskInterrupts(u32 global) {
+    BOOL OSDisableInterrupts(void);
+    BOOL OSRestoreInterrupts(BOOL);
+    u32 SetInterruptMask(u32, u32);
+
     u32 prev;
     BOOL enabled;
     u32 ie;
     u32 mask;
 
-    global |= 0;
     enabled = OSDisableInterrupts();
     prev = *(u32 *)0x800000C4;
     ie = *(u32 *)0x800000C8;
@@ -2707,8 +2713,7 @@ u32 __OSMaskInterrupts(u32 global) {
     OSRestoreInterrupts(enabled);
     return prev;
 }
-
-#pragma global_optimizer off
+#pragma global_optimizer on
 u32 __OSUnmaskInterrupts(u32 global) {
     BOOL OSDisableInterrupts(void);
     BOOL OSRestoreInterrupts(BOOL);
@@ -2716,7 +2721,6 @@ u32 __OSUnmaskInterrupts(u32 global) {
     BOOL enabled;
     u32 ie;
     u32 mask;
-    global |= 0;
     enabled = OSDisableInterrupts();
     prev = *(u32 *)0x800000C4;
     ie = *(u32 *)0x800000C8;
@@ -2724,9 +2728,7 @@ u32 __OSUnmaskInterrupts(u32 global) {
     global = prev & ~global;
     *(u32 *)0x800000C4 = global;
     global |= ie;
-    while (mask != 0) {
-        mask = SetInterruptMask(mask, global);
-    }
+    while (mask != 0) mask = SetInterruptMask(mask, global);
     OSRestoreInterrupts(enabled);
     return prev;
 }

@@ -6048,3 +6048,77 @@ best=item ? item[0x16]:0;
 return gAiState[0x21C];
 #pragma cplusplus reset
 }
+
+#pragma use_lmw_stmw on
+u8 Ai_TryHeldItemAction(void *arg0, s32 arg1) {
+    void **Unit_GetHeldItemSlot(void *, s32);
+    u8 fn_8009326C(void *, void *);
+    extern u32 lbl_8028F5F8[48];
+    extern u8 gAiState[];
+#pragma cplusplus on
+    struct Handler {
+        static u32 *Find(void *unit, u8 *item) {
+            u32 *p;
+            if (fn_8009326C(unit, item)) {
+                for (p = lbl_8028F5F8; p[1] != 0; p += 3) {
+                    if (item == (u8 *)p[1]) {
+                        if (p[2] != 0) {
+                            return p;
+                        }
+                    }
+                }
+            }
+            return NULL;
+        }
+    };
+    void **slot;
+    u8 *item;
+    u8 hasHeal;
+    u8 bestHeal;
+    u8 bestOther;
+    s32 i;
+    u32 *entry;
+    u8 type;
+    u8 val;
+
+    if ((((u8 *)arg0)[0x1A5] >> 4 & 7) == 0) {
+        hasHeal = 0;
+        bestHeal = 0;
+        bestOther = 0;
+        for (i = 0; i < 4; i++) {
+            slot = Unit_GetHeldItemSlot(arg0, i);
+            item = (u8 *)*slot;
+            if (item == NULL) {
+                break;
+            }
+            type = item ? item[0x14] : 0xC;
+            if (type == 0x81) {
+                val = item ? item[0x16] : 0;
+                if (val < bestHeal) {
+                    continue;
+                }
+            } else {
+                if (hasHeal != 0) {
+                    continue;
+                }
+                val = item ? item[0x16] : 0;
+                if (val < bestOther) {
+                    continue;
+                }
+            }
+            entry = Handler::Find(arg0, item);
+            if (entry != NULL && ((u8 (*)(void *, s32, s32))entry[2])(arg0, i, arg1)) {
+                item = (u8 *)*slot;
+                type = item ? item[0x14] : 0xC;
+                if (type == 0x81) {
+                    bestHeal = item ? item[0x16] : 0;
+                    hasHeal = 1;
+                } else {
+                    bestOther = item ? item[0x16] : 0;
+                }
+            }
+        }
+    }
+    return gAiState[0x21C];
+#pragma cplusplus reset
+}

@@ -871,6 +871,21 @@ fail:
     String_Destroy(&sp54, -1);
 }
 
+extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
+ void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void);
+ void Prim2D_AddPrim(s32); void Prim2D_SetPos(f32,f32); void Prim2D_SetText(void *); void Prim2D_SetScale(f32); void Prim2D_SetTint(s32,s32,s32,s32); void Prim2D_EndPrim(void);
+ void *fn_800DDB94(void *,void *); int sprintf(char *,const char *,...);
+ extern f32 lbl_8036A18C,lbl_8036A190;
+ char buf[128];
+ u8 *self=(u8 *)arg0; s32 x=arg1; s32 y=arg2;
+ Prim2D_Begin(); Prim2D_SetTransform(0.0f,0.0f,0.0f,lbl_8036A18C);
+ Prim2D_SetTex(0,19); Prim2D_PrepareTex();
+ sprintf(buf,(char *)gActorXmlStrs+0x38b,String_CStr(self+0xbc));
+ Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)y); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
+ sprintf(buf,(char *)gActorXmlStrs+0x38b,fn_800DDB94(*(void **)(self+0xdc),self+0xbc));
+ Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)(y+16)); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw on
 #pragma global_optimizer off

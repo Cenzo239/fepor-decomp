@@ -73,55 +73,30 @@ u8 fn_800981D0(void **arg0) {
 }
 
 void fn_800983E0(void *arg0, void **arg1) {
-    f32 Map_SampleHeight(M2C_UNK *, f32, f32, f32);
-    extern M2C_UNK gBattleMap;
-    extern f32 lbl_803697D0;
-    f32 sp10;
-    f32 spC;
-    f32 sp8;
-    f32 temp_f1;
-    f32 temp_f2;
-    void *temp_r6;
-    void *var_r0;
-    void *var_r3;
-    void *var_r3_2;
-    void *var_r3_3;
-
-    temp_r6 = *arg1;
-    if (temp_r6 != NULL) {
-        var_r0 = M2C_FIELD(temp_r6, void **, 0x280);
-    } else {
-        var_r0 = NULL;
-    }
-    if (var_r0 != NULL) {
-        if (temp_r6 != NULL) {
-            var_r3 = M2C_FIELD(temp_r6, void **, 0x280);
-        } else {
-            var_r3 = NULL;
-        }
-        sp8 = M2C_FIELD(var_r3, f32 *, 4);
-        if (temp_r6 != NULL) {
-            var_r3_2 = M2C_FIELD(temp_r6, void **, 0x280);
-        } else {
-            var_r3_2 = NULL;
-        }
-        spC = M2C_FIELD(var_r3_2, f32 *, 8);
-        if (temp_r6 != NULL) {
-            var_r3_3 = M2C_FIELD(temp_r6, void **, 0x280);
-        } else {
-            var_r3_3 = NULL;
-        }
-        sp10 = M2C_FIELD(var_r3_3, f32 *, 0xC);
-    } else {
-        temp_f1 = lbl_803697D0 + (f32) (s8) M2C_FIELD(temp_r6, u8 *, 0x19E);
-        temp_f2 = lbl_803697D0 + (f32) (s8) M2C_FIELD(temp_r6, u8 *, 0x19F);
-        sp8 = temp_f1;
-        spC = temp_f2;
-        sp10 = Map_SampleHeight(&gBattleMap, temp_f1, temp_f2, lbl_803697D0);
-    }
-    M2C_FIELD(arg0, f32 *, 0) = sp8;
-    M2C_FIELD(arg0, f32 *, 4) = spC;
-    M2C_FIELD(arg0, f32 *, 8) = sp10;
+f32 Map_SampleHeight(void *, f32, f32, f32);
+extern u8 gBattleMap[];
+extern f32 lbl_803697D0;
+struct Position { f32 x,y,z; } pos;
+void *p=*arg1;
+void *v;
+if(p) v=*(void **)((u8 *)p+0x280); else v=0;
+if(v) {
+if(p) v=*(void **)((u8 *)p+0x280); else v=0;
+pos.x=*(f32 *)((u8 *)v+4);
+if(p) v=*(void **)((u8 *)p+0x280); else v=0;
+pos.y=*(f32 *)((u8 *)v+8);
+if(p) v=*(void **)((u8 *)p+0x280); else v=0;
+pos.z=*(f32 *)((u8 *)v+12);
+} else {
+f32 x,y;
+s32 ix=*(s8 *)((u8 *)p+0x19E);
+s32 iy=*(s8 *)((u8 *)p+0x19F);
+x=lbl_803697D0+ix;
+y=lbl_803697D0+iy;
+pos.x=x; pos.y=y;
+pos.z=Map_SampleHeight(gBattleMap,x,y,lbl_803697D0);
+}
+*(struct Position *)arg0=pos;
 }
 
 void *fn_800984FC(void **arg0) {

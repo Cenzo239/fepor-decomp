@@ -1558,60 +1558,65 @@ void fn_80228858(s32 arg0, s32 arg1) {
 }
 
 #pragma optimization_level 3
-void fn_80228890(void *arg0, u32 arg1, u32 arg2) {
-    u8 *dest;
-    u32 value;
-    u32 align;
-
-    dest = (u8 *)arg0 - 1;
-    value = (u8)arg1;
-
-    if (arg2 >= 0x20U) {
-        align = (~(u32)dest) & 3;
-
-        if (align != 0) {
-            arg2 -= align;
-
-            do {
-                *++dest = (u8)value;
-            } while (--align != 0);
-        }
-
-        if (value != 0) {
-            value |= (value << 24) | (value << 16) | (value << 8);
-        }
-
-        arg0 = dest - 3;
-        if ((arg1 = arg2 >> 5) != 0) {
-            do {
-                ((u32 *)arg0)[1] = value;
-                ((u32 *)arg0)[2] = value;
-                ((u32 *)arg0)[3] = value;
-                ((u32 *)arg0)[4] = value;
-                ((u32 *)arg0)[5] = value;
-                ((u32 *)arg0)[6] = value;
-                ((u32 *)arg0)[7] = value;
-                arg0 = (u8 *)arg0 + 0x20;
-                *(u32 *)arg0 = value;
-            } while (--arg1 != 0);
-        }
-
-        if ((arg1 = (arg2 >> 2) & 7) != 0) {
-            do {
-                arg0 = (u8 *)arg0 + 4;
-                *(u32 *)arg0 = value;
-            } while (--arg1 != 0);
-        }
-
-        dest = (u8 *)arg0 + 3;
-        arg2 &= 3;
+void fn_80228890(void *arg0, u32 arg1, u32 arg2)
+{
+  u8 *dest;
+  u32 value;
+  u32 align;
+  dest = ((u8 *) arg0) - 1;
+  value = (u8) arg1;
+  if (arg2 >= 0x20U)
+  {
+    align = (~((u32) dest)) & 3;
+    if (align != 0)
+    {
+      arg2 -= align;
+      do
+      {
+        *(++dest) = (u8) value;
+      }
+      while ((--align) != 0);
     }
-
-    if (arg2 != 0) {
-        do {
-            *++dest = (u8)value;
-        } while (--arg2 != 0);
+    if (value != 0)
+    {
+      value |= ((value << 24) | (value << 16)) | (value << 8);
     }
+    arg0 = dest - 3;
+    if ((arg1 = arg2 >> 5) != 0)
+    {
+      do
+      {
+        ((u32 *) arg0)[1] = value;
+        ((u32 *) arg0)[2] = value;
+        arg0 = ((u8 *) arg0) + 4;
+        ((u32 *) arg0)[3] = value;
+        ((u32 *) arg0)[4] = (((u32 *) arg0)[6] = value);
+        ((u32 *) arg0)[5] = value;
+        ((u32 *) arg0)[7] = value;
+        arg0 = ((u8 *) arg0) + 0x20;
+        *((u32 *) arg0) = value;
+      }
+      while ((--arg1) != 0);
+    }
+    if ((arg1 = (arg2 >> 2) & 7) != 0)
+    {
+      do
+      {
+        *((u32 *) arg0) = value;
+      }
+      while ((--arg1) != 0);
+    }
+    dest = ((u8 *) arg0) + 3;
+    arg2 &= 3;
+  }
+  if (arg2 != 0)
+  {
+    do
+    {
+      *(++dest) = (u8) value;
+    }
+    while ((--arg2) != 0);
+  }
 }
 #pragma optimization_level reset
 s32 fn_80228950(void) {
@@ -2654,10 +2659,34 @@ s32 ddh_cc_pre_continue(void) {
     return 0;
 }
 
-void ddh_cc_write(s32 arg0, s32 arg1, u32 arg2) {
-    *(u32 *)(arg1 + arg0) = arg2;
+#pragma optimization_level 2
+s32 ddh_cc_write(void *arg0, s32 arg1) {
+    void MWTRACE(u8, char *, ...);
+    s32 fn_8023C554(void *, s32);
+    extern s32 lbl_803687B8;
+    extern char lbl_80282900[];
+    s32 remaining;
+    u8 *buffer;
+    s32 written;
+    u8 *messages;
+    buffer = (u8 *)arg0;
+    remaining = arg1;
+    messages = (u8 *)lbl_80282900;
+    if (lbl_803687B8 == 0) {
+        MWTRACE(8, (char *)&messages[0]);
+        return -0x2711;
+    }
+    MWTRACE(8, (char *)messages + 0x14, arg0, arg1);
+    while (remaining > 0) {
+        MWTRACE(1, (char *)messages + 0x40, remaining);
+        written = fn_8023C554(buffer, remaining);
+        if (written == 0) break;
+        buffer += written;
+        remaining -= written;
+    }
+    return 0;
 }
-
+#pragma optimization_level reset
 u32 ddh_cc_read(void *arg0, u32 arg1) {
     extern s32 lbl_803687B8;
     extern u8 lbl_8028295C[], lbl_80282984[], lbl_8033D7E8[];

@@ -5449,6 +5449,89 @@ void fn_801C0A9C(void *arg0) {
     }
 }
 
+void fn_801C0ADC(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, void *);
+    void *fn_8013BC10(s32, s32);
+    void Ui_CreateMenu(void *, void *, s32);
+    void fn_8000D864(s32, s32);
+    s32 fn_801D2B04(void *);
+    void *Msg_Expand(void *);
+    extern u8 gUiScrollListStrings[];
+#pragma cplusplus on
+    struct Item {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void set2(s32) = 0;
+        virtual void v19() = 0;
+        virtual void set3(s32) = 0;
+    };
+    struct Base {
+        u32 unknown;
+    };
+    struct Menu : Base {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual Item *get(s32) = 0;
+    };
+    Menu *menu;
+    s32 i;
+    Item *item;
+    void *t2;
+
+    menu = (Menu *)Ui_FindChild(arg0, 0x81, 0);
+    t2 = Ui_FindChild(arg0, 0x80, 0);
+    fn_8000D864(0, fn_801D2B04(menu));
+    menu = (Menu *)t2;
+    Ui_SetWidgetText(menu, gUiScrollListStrings + 0x31);
+    *(u32 *)((u8 *)menu + 0x48) = 0;
+    menu = (Menu *)fn_8013BC10(0, 0);
+    M2C_FIELD(menu, s16 *, 8) = 0x198;
+    M2C_FIELD(menu, s16 *, 0xA) = 0x38;
+    M2C_FIELD(menu, u8 *, 0x24) = 1;
+    for (i = 0; menu->get(i) != 0; i++) {
+        item = menu->get(i);
+        item->set2(2);
+        item->set3(3);
+    }
+    Ui_CreateMenu(menu, arg0, 0);
+    menu = (Menu *)Msg_Expand(gUiScrollListStrings + 0x43);
+    t2 = Ui_FindChild(arg0, -0x1000, 0);
+    if (t2) {
+        Ui_SetWidgetText(t2, menu);
+    }
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void Ui_HandleScrollListInput(void *arg0) {
@@ -10024,6 +10107,71 @@ void fn_801CACE4(void *arg0, s32 arg1) {
 
 void fn_801CAD38(void *p,s32 n,s32 v){void fn_801CB934(void*,void*,s32,s32);s32 x=n+1; if(x<*(s32*)((u8*)p+0x70))fn_801CB934((u8*)p+0x48,(u8*)(*(u32*)((u8*)p+0x50)+(x<<5)),1,v);else fn_801CB934((u8*)p+0x48,(u8*)(*(u32*)((u8*)p+0x50)+(*(s32*)((u8*)p+0x4c)<<5)),1,v);(*(s32*)((u8*)p+0x70))++;}
 
+#pragma global_optimizer off
+void fn_801CADBC(void *arg0, s32 arg1) {
+    u8 Camera_IsEnabled(void *);
+    void fn_800DF6DC(void *, void *);
+    void fn_800E7B80(s32, void *);
+    void String_Destroy(void *, s32);
+    void *fn_800E8BB4(void *);
+    void fn_800E8BBC(void *, s32);
+    void fn_800E8FAC(void *, s32);
+    void fn_800E8BF8(void *, f32 *, f32 *, s32, f32);
+    struct Str { u32 size; u32 cap; char *data; };
+    struct Vec3 { f32 x, y, z; };
+    struct Fl { f32 sp2C; f32 sp30; f32 sp34; f32 sp38; f32 sp3C; f32 sp40; };
+    struct Fl fl;
+    struct Str sp20;
+    struct Vec3 sp14;
+    struct Vec3 sp8;
+    f32 *entry;
+    s32 unk0;
+    void *child;
+    f32 f1, f5, f4, f3, f2, f0;
+
+    fl.sp40 = 0.0f;
+    unk0 = *(s32 *)arg0;
+    fl.sp3C = 0.0f;
+    fl.sp38 = 0.0f;
+    fl.sp34 = 0.0f;
+    fl.sp30 = 0.0f;
+    fl.sp2C = 0.0f;
+    if (arg1 < *(s32 *)((u8 *)arg0 + 0x70)) {
+        entry = (f32 *)(*(u8 **)((u8 *)arg0 + 0x50) + (arg1 << 5));
+    } else {
+        entry = NULL;
+    }
+    if ((u32)entry != 0 && (u32)*(void **)((u8 *)arg0 + 0x6C) != 0) {
+        if (Camera_IsEnabled(*(void **)((u8 *)arg0 + 0x6C)) == 0) {
+            fn_800DF6DC(&sp20, *(void **)((u8 *)arg0 + 0x6C));
+            fn_800E7B80(unk0, &sp20);
+            String_Destroy(&sp20, -1);
+        }
+        child = fn_800E8BB4(*(void **)((u8 *)arg0 + 0x6C));
+        if ((u32)child != 0 && (u32)*(void **)((u8 *)child + 0x6C) != 0) {
+            *(s32 *)((u8 *)child + 0x74) = -1;
+            fn_800E8BBC(*(void **)((u8 *)child + 0x6C), 0);
+        }
+        fn_800E8FAC(*(void **)((u8 *)arg0 + 0x6C), 0);
+        f1 = entry[0];
+        f5 = entry[1];
+        fl.sp38 = f1;
+        f4 = entry[2];
+        f3 = entry[3];
+        f2 = entry[4];
+        f0 = entry[5];
+        fl.sp3C = f5;
+        f1 = entry[6];
+        fl.sp40 = f4;
+        fl.sp2C = f3;
+        fl.sp30 = f2;
+        fl.sp34 = f0;
+        sp8 = *(struct Vec3 *)&fl.sp2C;
+        sp14 = *(struct Vec3 *)&fl.sp38;
+        fn_800E8BF8(*(void **)((u8 *)arg0 + 0x6C), &sp14.x, &sp8.x, 0, f1);
+    }
+}
+#pragma global_optimizer on
 s32 CameraAnim_GetKeyframe(void *arg0, s32 arg1) {
     if (arg1 < (s32) M2C_FIELD(arg0, s32 *, 0x70)) {
         return M2C_FIELD(arg0, s32 *, 0x50) + (arg1 << 5);
@@ -10167,26 +10315,89 @@ void fn_801CB280(s32 arg0, s32 arg1) {
     String_Copy(arg0, arg1 + 0x54);
 }
 
-void fn_801CB2A4(struct Unit *arg0) {
-    if (arg0->unk2E == 0) {
+void fn_801CB2A4(void *arg0) {
+    u8 Camera_IsEnabled(void *);
+    u8 fn_800E8BC4(void *);
+    void fn_800E8BF8(void *, f32 *, f32 *, s32, f32);
+    extern f32 lbl_8036B4B4;
+    extern f32 lbl_8036B4B0;
+    extern f32 lbl_8036B4B8;
+
+    f32 eyeZ;
+    f32 eyeY;
+    f32 eyeX;
+    f32 lookZ;
+    f32 lookY;
+    f32 lookX;
+    f32 sp1C;
+    f32 sp18;
+    f32 sp14;
+    f32 sp10;
+    f32 spC;
+    f32 sp8;
+    void *self;
+    f32 *entry;
+    f32 t0, t1, t2, t3, t4, t5, t6;
+    u32 slot;
+
+    self = arg0;
+    eyeZ = 0.0f;
+    eyeY = 0.0f;
+    eyeX = 0.0f;
+    lookZ = 0.0f;
+    lookY = 0.0f;
+    lookX = 0.0f;
+
+    if (*(void **)((u8 *)self + 0x6C) == NULL) {
         return;
+    }
+    if (*(s32 *)((u8 *)self + 0x74) < 0) {
+        return;
+    }
+    if (Camera_IsEnabled(*(void **)((u8 *)self + 0x6C)) == 0) {
+        *(s32 *)((u8 *)self + 0x74) = -1;
+        return;
+    }
+    if (*(s32 *)((u8 *)self + 0x74) != 0) {
+        if (fn_800E8BC4(*(void **)((u8 *)self + 0x6C)) != 0) {
+            return;
+        }
     }
 
-    if (*(s32*)((char*)arg0 + 0x50) != 0) {
-        arg0->unk2E = -1;
-        *(s32*)((char*)arg0 + 0x6C) = 0;
-        *(s32*)((char*)arg0 + 0x70) = 0;
-        return;
+    entry = (f32 *)(*(u8 **)((u8 *)self + 0x50) + (*(s32 *)((u8 *)self + 0x74) << 5));
+    t0 = entry[0];
+    t1 = entry[1];
+    t2 = entry[2];
+    t3 = entry[3];
+    t4 = entry[4];
+    t5 = entry[5];
+    eyeX = t0;
+    eyeY = t1;
+    eyeZ = t2;
+    lookX = t3;
+    lookY = t4;
+    lookZ = t5;
+    t6 = entry[6];
+    slot = *(u32 *)((u8 *)entry + 0x1C);
+
+    if (*(u8 *)((u8 *)self + 0x78) != 0) {
+        lookY = lbl_8036B4B0 - (t4 - lbl_8036B4B4);
+    }
+    if (*(u8 *)((u8 *)self + 0x79) != 0) {
+        eyeX = eyeX * lbl_8036B4B8;
     }
 
-    if (*(s32*)((char*)arg0 + 0x6C) != 1) {
-        arg0->unk2E = -1;
-        return;
-    }
-    
-    *(s32*)((char*)arg0 + 0x74) += 1;
-    if (*(s32*)((char*)arg0 + 0x74) > *(s32*)((char*)arg0 + 0x70)) {
-        arg0->unk2E = -1;
+    *(u32 *)&sp8 = *(u32 *)&lookX;
+    *(u32 *)&spC = *(u32 *)&lookY;
+    *(u32 *)&sp10 = *(u32 *)&lookZ;
+    *(u32 *)&sp14 = *(u32 *)&eyeX;
+    *(u32 *)&sp18 = *(u32 *)&eyeY;
+    *(u32 *)&sp1C = *(u32 *)&eyeZ;
+    fn_800E8BF8(*(void **)((u8 *)self + 0x6C), &sp14, &sp8, (s32)slot, t6);
+
+    *(s32 *)((u8 *)self + 0x74) = *(s32 *)((u8 *)self + 0x74) + 1;
+    if (*(s32 *)((u8 *)self + 0x74) >= *(s32 *)((u8 *)self + 0x70)) {
+        *(s32 *)((u8 *)self + 0x74) = -1;
     }
 }
 
@@ -18157,11 +18368,8 @@ void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
         } else {
             valid = 1;
         }
-        if (valid == 0) {
-        } else if (arg1 != *(u8 *)(slot + 0x62)) {
-        } else {
+        if (valid && arg1 == *(u8 *)(slot + 0x62))
             goto create;
-        }
         off += 0x4000;
         slot = *arg0 + off;
         if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
@@ -18171,11 +18379,8 @@ void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
         } else {
             valid = 1;
         }
-        if (valid == 0) {
-        } else if (arg1 != *(u8 *)(slot + 0x62)) {
-        } else {
+        if (valid && arg1 == *(u8 *)(slot + 0x62))
             goto create;
-        }
         off += 0x4000;
         slot = *arg0 + off;
         if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
@@ -18185,18 +18390,14 @@ void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
         } else {
             valid = 1;
         }
-        if (valid == 0) {
-        } else if (arg1 != *(u8 *)(slot + 0x62)) {
-        } else {
+        if (valid && arg1 == *(u8 *)(slot + 0x62))
             goto create;
-        }
         off += 0x4000;
         i += 2;
     }
 create:
     proc = Process_CreateChild(lbl_80299E9C, arg2);
     *(s32 *)((u8 *)proc + 0x60) = arg1;
-    i = 0;
 }
 #pragma opt_strength_reduction reset
 #pragma global_optimizer on
@@ -19644,6 +19845,7 @@ s32 SystemSave_TestFlag0(void *arg0) {
     return M2C_FIELD(arg0, u16 *, 0x10) & 1;
 }
 
+#pragma opt_strength_reduction off
 void fn_801E3400(u8 *arg0, u8 arg1) {
     extern u8 gBattleState[];
     s32 i;
@@ -19652,10 +19854,8 @@ void fn_801E3400(u8 *arg0, u8 arg1) {
     switch (gBattleState[0xa6]) {
     case 1:
         *(u16 *)(arg0 + 0x10) |= 4;
-        /* fallthrough */
     case 0:
         *(u16 *)(arg0 + 0x10) |= 2;
-        /* fallthrough */
     case 3:
         *(u16 *)(arg0 + 0x10) |= 1;
         break;
@@ -19674,7 +19874,7 @@ void fn_801E3400(u8 *arg0, u8 arg1) {
         }
     }
 }
-
+#pragma opt_strength_reduction on
 void fn_801E3560(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     M2C_FIELD(arg0, s8 *, 0x40) = arg1;
     M2C_FIELD(arg0, s8 *, 0x41) = arg2;
@@ -19789,6 +19989,33 @@ void fn_801E379C(u8 *arg0) {
         w.start = 0;
         w.owned = 0;
     }
+}
+
+void fn_801E38E0(void *unused, void *data) {
+struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
+extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
+extern u16 gStreamBaseVtbl[];
+void fn_8017A38C(void *, void *);
+void BattleState_Write(void *, void *);
+void fn_80048C5C(void *);
+void Unit_WriteAll(void *);
+void fn_800C33C0(void *, void *);
+void Icon_WriteSlots(void *, void *);
+void fn_8010FBA8(void *, void *);
+void UnitPair_Write(void *, void *);
+void fn_800C4588(void *);
+w.vtbl = gStreamBaseVtbl;
+w.cur = 0; w.start = 0; w.size = 0; w.owned = 0;
+w.vtbl = gMemStreamVtbl; w.owned = 0; w.start = data; w.cur = data; w.size = 0x100000;
+fn_8017A38C(&w,gSaveStrings+0x14F); BattleState_Write(gBattleState,&w);
+fn_8017A38C(&w,gSaveStrings+0x154); fn_80048C5C(&w);
+fn_8017A38C(&w,gSaveStrings+0x159); Unit_WriteAll(&w);
+fn_8017A38C(&w,gSaveStrings+0x15E); fn_800C33C0(gConvoy,&w);
+fn_8017A38C(&w,gSaveStrings+0x163); Icon_WriteSlots(gIconSlots,&w);
+fn_8017A38C(&w,gSaveStrings+0x168); fn_8010FBA8(gMapObjEventList,&w);
+fn_8017A38C(&w,gSaveStrings+0x1C2); UnitPair_Write(gUiContext,&w);
+w.vtbl=gMemStreamVtbl; w.vtbl=gStreamBaseVtbl;
+if(w.owned) {fn_800C4588(w.start); w.start=0; w.owned=0;}
 }
 
 void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {

@@ -316,32 +316,26 @@ void fn_800177E0(s32 arg0) {
     M2C_FIELD(p, u8 *, 0x3C) = 0;
 }
 
-s32 CamPath_AddPoint(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
-{
-    s32 sp0;
-    s32 v5;
-    s32 v6;
-    
-    if (arg4 == 0) {
-        return 0;
-    }
-    
-    v5 = *(s32*)((char*)0x800000F8 + arg1);
-    sp0 = *(s32*)((char*)0x800000F8 + arg2);
-    v6 = *(s32*)((char*)0x800000F8 + arg3);
-    
-    if (v5 == 0) {
-        return 0;
-    }
-    
-    if (sp0 == 0) {
-        if (v6 == 1) {
-            return 1;
-        } else {
-            return 0;
-        }
-    } else {
-        return 1;
+void CamPath_AddPoint(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
+    void *Process_Find(void *);
+    extern f32 lbl_80368C90;
+    typedef struct { f32 x,y,z; } Point;
+    typedef struct { u8 kind; s32 duration; Point pos; } Entry;
+    extern Point lbl_80268324;
+    u8 *p=Process_Find(lbl_802841B0);
+    if(p) {
+        Point copy;
+        Point v;
+        s32 duration=(s32)((f32)arg1/lbl_80368C90);
+        Point *dest;
+        v=lbl_80268324;
+        *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=arg0;
+        (*(Entry **)(p+0x40))[p[0x44]].duration=duration;
+        v.x=x; v.y=y; v.z=z;
+        copy=v;
+        dest=(Point *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
+        dest->x=copy.x; dest->y=copy.y; dest->z=copy.z;
+        p[0x44]++;
     }
 }
 
@@ -1231,8 +1225,8 @@ extern "C" void fn_80018B24(void) {
     fn_8006785C(0, fn_800193D8, r31);
 }
 
-extern "C" void fn_80018E0C(void)
-{
+#pragma peephole off
+void fn_80018E0C(void) {
     void Ui_PlaySeCue(void *, s32);
     extern u8 gEventLockDepth;
     extern u8 gActiveCamIndex;
@@ -1263,10 +1257,10 @@ extern "C" void fn_80018E0C(void)
     }
     Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
 }
-
+#pragma peephole on
 extern "C" void fn_80018EC0(void)
 {
-  extern s32 gActiveCam;
+  extern s32 lbl_803671C4;
   extern f32 lbl_80368C88;
   extern f32 lbl_80368C8C;
   void *new_var;
@@ -1275,7 +1269,7 @@ extern "C" void fn_80018EC0(void)
   f32 f1;
   f32 f0;
   s32 z;
-  p = (void *) gActiveCam;
+  p = (void *) lbl_803671C4;
   if (p != NULL)
   {
     f2 = lbl_80368C8C;
@@ -1452,6 +1446,39 @@ extern "C" void Camera_InitSlots(void) {
     gActiveCamIndex = 0;
     gActiveCam = (s32)base;
 }
+
+extern "C" void fn_80019208(void *arg0) {
+    extern u8 gEventLockDepth, lbl_803671C1, lbl_8036728B;
+    extern f32 lbl_80368CCC,lbl_80368C8C,lbl_80368CD0,lbl_80368CD4,lbl_80368CD8,lbl_80368CDC,lbl_80368CE0;
+    typedef union { struct { f32 x,y,z; } v; u32 words[3]; } Point;
+    Point target, current;
+    struct Obj { u8 pad[0x74]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; };
+    f32 a,b,c,d,e;
+    f32 factor,one,dx,dz;
+    f32 *p=(f32 *)arg0;
+    if(gEventLockDepth==0 && !(lbl_8036728B&4))
+        ((Obj *)arg0)->v1();
+    factor=lbl_80368CCC; one=lbl_80368C8C; dx=lbl_80368CD4; dz=lbl_80368CD8;
+    p[28]=(factor*p[28]+one)*lbl_80368CD0;
+    a=factor*p[28];
+    b=one+a;
+    p[6]=(p[6]*a+p[3])/b;
+    p[4]=(p[4]*a+p[1])/b;
+    p[5]=(p[5]*a+p[2])/b;
+    p[19]=*(f32 *)((u8 *)gBattleState+0x52C);
+    p[20]=*(f32 *)((u8 *)gBattleState+0x530);
+    p[21]=*(f32 *)((u8 *)gBattleState+0x53C);
+    c=p[28];
+    d=dx*c; e=dz*c;
+    target=*(Point *)(p+19);
+    current=*(Point *)(p+16);
+    if(lbl_803671C1) {d=lbl_80368CDC*c; e=lbl_80368CE0*c;}
+    a=lbl_80368C8C+d; b=lbl_80368C8C+e;
+    p[16]=(current.v.x*d+target.v.x)/a;
+    p[17]=(current.v.y*d+target.v.y)/a;
+    p[18]=(current.v.z*e+target.v.z)/b;
+}
+
 #pragma peephole reset
 #pragma optimization_level reset
 #pragma cplusplus reset
@@ -1521,15 +1548,53 @@ void fn_800193CC(void *arg0, f32 farg0) {
     M2C_FIELD(arg0, f32 *, 0x18) = farg0;
 }
 
-void fn_800193D8(void *arg0)
-{
-    s32 temp = *(s32*)((u8*)arg0 + 0x274);
-    if (temp < 1) {
-        return;
-    }
-    *(f32*)((u8*)arg0 + 0x1A0) = 0.0f;
-    *(f32*)((u8*)arg0 + 0x1A4) = 0.0f;
-    *(f32*)((u8*)arg0 + 0x1A8) = 0.0f;
-    *(f32*)((u8*)arg0 + 0x1AC) = 0.0f;
-}
+#pragma use_lmw_stmw on
+void fn_800193D8(void *arg0) {
+    struct Vec3 { f32 x, y, z; };
+    void fn_8005A0E0(s32, struct Vec3 *, struct Vec3 *);
+    extern f32 lbl_80368CE4;
+    extern f32 lbl_80368CA0;
+    extern struct Vec3 lbl_802682C8[4];
+    struct Vec3 points[4];
+    struct Vec3 tmp;
+    struct Vec3 min;
+    struct Vec3 max;
+    struct Vec3 minOut;
+    struct Vec3 maxOut;
+    s32 i;
+    f32 fmin;
+    f32 fmax;
 
+    fmin = lbl_80368CE4;
+    fmax = lbl_80368CA0;
+    min.x = fmin;
+    min.y = fmin;
+    max.x = fmax;
+    points[0] = lbl_802682C8[0];
+    points[1] = lbl_802682C8[1];
+    points[2] = lbl_802682C8[2];
+    points[3] = lbl_802682C8[3];
+    max.y = fmax;
+
+    for (i = 0; i < 4; i++) {
+        fn_8005A0E0(0, &points[i], &tmp);
+        if (min.x > tmp.x) {
+            min.x = tmp.x;
+        }
+        if (min.y > tmp.y) {
+            min.y = tmp.y;
+        }
+        if (max.x < tmp.x) {
+            max.x = tmp.x;
+        }
+        if (max.y < tmp.y) {
+            max.y = tmp.y;
+        }
+    }
+
+    minOut = min;
+    maxOut = max;
+    *(struct Vec3 *)((u8 *)arg0 + 0x28) = minOut;
+    *(struct Vec3 *)((u8 *)arg0 + 0x34) = maxOut;
+}
+#pragma use_lmw_stmw reset

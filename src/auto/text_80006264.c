@@ -16,18 +16,18 @@ s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; do { if(*++a!=*++b) goto
 
 #pragma opt_unroll off
 void fn_80006298(u32 *dst, u32 val, u32 n) { n >>= 2; --dst; do { *++dst = val; } while (--n != 0); }
-#pragma optimize_for_size on
+#pragma opt_unroll off
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
     u32 count;
-    u32 *p;
+
     count = arg2 >> 3;
-    p = arg0 - 1;
+    arg0--;
+
     do {
-        *(++p) = arg1;
-        *(++p) = arg1;
+        *++arg0 = arg1;
+        *++arg0 = arg1;
     } while (--count != 0);
 }
-#pragma optimize_for_size reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
     register u32 tmp;
     dst--;
@@ -252,11 +252,12 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
 
 void fn_80006754(void)
 {
-    extern u32 gFrameCount;
+    extern u32 lbl_80367118;
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
     extern u32 lbl_8036712C;
+
     extern u64 OSGetTime(void);
 
     u32 count;
@@ -264,15 +265,16 @@ void fn_80006754(void)
     u32 low;
     u64 time;
 
-    count = gFrameCount;
+    count = lbl_80367118;
     high = lbl_80367128;
     low = lbl_8036712C;
 
-    gFrameCount = count + 1;
+    lbl_80367118 = count + 1;
     lbl_80367124 = low;
     lbl_80367120 = high;
 
     time = OSGetTime();
+
     lbl_8036712C = (u32)time;
     lbl_80367128 = (u32)(time >> 32);
 }
@@ -2066,9 +2068,10 @@ void Prim2D_PopZ(void *src, f32 farg0) {
     *(u16 *)(*(u8 **)&gPrim2D + 0x20) = (u16)(*(u16 *)(*(u8 **)&gPrim2D + 0x20) & ~0x800);
 }
 
+#pragma optimization_level 3
 void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_8006EBC4(void *, void *, void *, s32, s32);
-    extern u16 gPrim2D;
+    extern u16 lbl_80367140;
     register s32 mask;
     unsigned long a;
     u32 b;
@@ -2078,7 +2081,7 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     register u16 flags;
 
     fn_8006EBC4(arg0, sp14, sp8, arg2, arg1);
-    p = *(u8 **)&gPrim2D;
+    p = *(u8 **)&lbl_80367140;
     mask = 0xFFFF7B0C;
     a = *(u32 *)(sp14 + 0);
     flags = (u16)(arg3 | 0x8000);
@@ -2097,19 +2100,19 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     b = *(u32 *)(sp14 + 0x1C);
     *(u32 *)(p + 0x4C) = a;
     *(u32 *)(p + 0x50) = b;
-    p = *(u8 **)&gPrim2D;
+    p = *(u8 **)&lbl_80367140;
     a = *(u32 *)(sp8 + 0);
     b = *(u32 *)(sp8 + 4);
     *(u32 *)(p + 0x58) = b;
     *(u32 *)(p + 0x54) = a;
     *(u32 *)(p + 0x5C) = *(u32 *)(sp8 + 8);
-    (*(u8 **)&gPrim2D)[0x22] = arg2;
-    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
-        *(u16 *)(*(u8 **)&gPrim2D + 0x20) & mask;
-    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
-        *(u16 *)(*(u8 **)&gPrim2D + 0x20) | flags;
+    (*(u8 **)&lbl_80367140)[0x22] = arg2;
+    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
+        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) & mask;
+    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
+        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | flags;
 }
-
+#pragma optimization_level reset
 void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     extern u16 gPrim2D;
@@ -3060,6 +3063,7 @@ s32 fn_8000B37C(void *arg0) {
     return 1;
 }
 
+#pragma optimization_level 3
 s32 fn_8000B39C(void *arg0)
 {
     u32 *base;
@@ -3093,7 +3097,7 @@ s32 fn_8000B39C(void *arg0)
 done:
     return 1;
 }
-
+#pragma optimization_level reset
 s32 fn_8000B418(void *arg0)
 {
     u32 *ptr;
@@ -4371,12 +4375,12 @@ s32 Rand_Range(s32 arg0) {
 }
 
 void fn_8000CF4C(u32 arg0) {
+    struct RandSt { u16 a; u16 b; u16 c; };
+    extern struct RandSt lbl_80367150;
     extern u32 lbl_80267D30[];
-    extern u16 lbl_80367150;
     u32 stack[4];
-    u32 *p;
     u16 *tbl;
-    u16 *st;
+    struct RandSt *st;
     u32 rem7;
     s32 rem23;
     s32 s0;
@@ -4386,36 +4390,35 @@ void fn_8000CF4C(u32 arg0) {
     u16 t6;
 
     rem7 = arg0 % 7U;
-    rem23 = (s32)(arg0 % 23U);
 
-    p = lbl_80267D30;
-    stack[2] = p[2];
-    stack[0] = p[0];
-    stack[1] = p[1];
-    stack[3] = p[3];
+    {
+        u32 *p = lbl_80267D30;
+        stack[0] = *p;
+    }
+    stack[1] = lbl_80267D30[1];
+    stack[2] = lbl_80267D30[2];
+    stack[3] = lbl_80267D30[3];
 
     tbl = (u16 *)stack;
+    lbl_80367150.a = tbl[rem7 & 7];
     st = &lbl_80367150;
-    lbl_80367150 = tbl[rem7 & 7];
-    st[1] = tbl[(rem7 + 1) & 7];
-    st[2] = tbl[(rem7 + 2) & 7];
+    st->b = tbl[(rem7 + 1) & 7];
+    st->c = tbl[(rem7 + 2) & 7];
 
-    if (rem23 > 0) {
-        do {
-            s1 = st[1];
-            s2 = st[2];
-            s0 = lbl_80367150;
-            t4 = (s2 * 2) & 0xFFFE;
-            t6 = (u16)((s1 << 11) + (s0 >> 5));
-            st[2] = t4;
-            if (s1 & 0x8000) {
-                st[2] = t4 + 1;
-            }
-            t6 ^= st[2];
-            st[2] = st[1];
-            st[1] = lbl_80367150;
-            lbl_80367150 = t6;
-        } while (--rem23 != 0);
+    for (rem23 = (s32)(arg0 % 23U); rem23 > 0; rem23--) {
+        s1 = st->b;
+        s2 = st->c;
+        s0 = lbl_80367150.a;
+        t4 = (s2 * 2) & 0xFFFE;
+        t6 = (u16)((s1 << 11) + (s0 >> 5));
+        st->c = t4;
+        if (s1 & 0x8000) {
+            st->c = t4 + 1;
+        }
+        t6 ^= st->c;
+        st->c = st->b;
+        st->b = lbl_80367150.a;
+        lbl_80367150.a = t6;
     }
 }
 

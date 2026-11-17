@@ -124,92 +124,103 @@ void UnitInfo_DrawInventoryPanel(void *arg0) {
 }
 
 void UnitInfo_DrawItemStats(void *arg0, s32 arg1) {
-    s32 var_r29;
-    u8 *var_r28;
-    void *var_r27;
-    u8 *var_r30;
-    s32 var_r31;
-    
-    fn_8008BA80(0, 0, 1);
-    fn_8008BBF8(0, 0x20, 0x108, 0x110, *(u8*)((u8*)arg0 + 0x190 + 0x8), 0x9A);
-    
-    var_r28 = (u8*)arg0 + 0x194;
-    var_r29 = 0;
-    var_r30 = (u8*)arg0 + 0x1F0;
+    void fn_8008BA80(void *, s32, s32, u8);
+    void fn_8008BBF8(s32,s32,s32,s32,u8,s32);
+    void fn_8008CD64(f32);
+    s32 Unit_CanReceiveItem(s32, void *);
+    void *Unit_GetItemSlot(void *,s32);
+    s32 Unit_GetHeldItemSlot(void *,s32);
+    void UnitRef_Draw(s32,s32,s32,s32);
+    u8 flags[8];
+    s32 i;
+    s32 y;
+    u8 *write;
+    s32 receiver;
+    s32 j;
+    u8 *p;
+    u8 *base;
+    u8 *unit;
+    receiver=arg1;
+    fn_8008BA80(arg0,0,0,1);
+    fn_8008BBF8(0,0x20,0x108,0x110,*(u8 *)(*(u8 **)((u8 *)arg0+0x190)+8),0x9A);
+    base=flags;
+    j=0;
+    write=base;
     do {
-        if (*(u32*)Unit_GetItemSlot(arg0, var_r29) != 0) {
-            *(u8*)var_r30 = Unit_CanReceiveItem(arg1);
-        }
-        var_r29 += 1;
-        var_r30 += 1;
-    } while (var_r29 < 8);
-    
+        void *item=Unit_GetItemSlot(arg0,j);
+        if (*(u32 *)item) *write=Unit_CanReceiveItem(receiver,item);
+        j++; write++;
+    } while(j<8);
     fn_8008CD64(lbl_80369768);
-    
-    var_r27 = arg0;
-    var_r31 = 0;
+    p=base; y=0x2C; i=0;
     do {
-        Unit_GetHeldItemSlot(var_r27, var_r31);
-        UnitRef_Draw(*(u8*)var_r28, 0x1C, 0x2C, var_r31);
-        var_r31 += 1;
-        var_r28 += 1;
-    } while (var_r31 < 4);
-    
-    var_r27 = arg0;
-    var_r31 = 0;
+        UnitRef_Draw(Unit_GetHeldItemSlot(arg0,i),*p,0x1C,y);
+        i++; y+=0x1C; p++;
+    } while(i<4);
+    unit=arg0; i=0; y+=0x18;
     do {
-        UnitRef_Draw(*(u8*)((u8*)var_r27 + 0x1EC), *(u8*)((u8*)var_r27 + 0x4), 0x1C, var_r31);
-        var_r31 += 1;
-        var_r27 = (void*)((u8*)var_r27 + 0x8);
-    } while (var_r31 < 4);
+        UnitRef_Draw((s32)(unit+0x1EC),base[4],0x1C,y);
+        i++; y+=0x1C; unit+=8; base++;
+    } while(i<4);
 }
 
+#pragma use_lmw_stmw on
 void UnitInfo_DrawBagPanel(void *arg0) {
-    u8 sp8;
-    s32 var_r29;
-    u8 *var_r28;
-    void *var_r27;
-    u8 *var_r30;
-    s32 var_r31;
+    void fn_8008BA80(void *, s32, s32, u8);
+    void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
+    void fn_8008CD64(f32);
+    void UnitRef_Draw(s32, s32, s32, s32);
+    s32 Unit_GetHeldItemSlot(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
+    u8 fn_80093DA8(void *);
+    extern f32 lbl_80369768;
 
-    fn_8008BA80(0, 0, 1);
-    fn_8008BBF8(0, 0x20, 0x108, 0x110, ((u8*)arg0 + 0x190)[8], 0x9A);
-    
-    var_r28 = &sp8;
-    var_r29 = 0;
-    var_r30 = var_r28;
-    
+    u8 buf[8];
+    s32 j;
+    s32 offset;
+    u8 *p;
+    u8 *base;
+    void *unit;
+
+    unit = arg0;
+    fn_8008BA80(unit, 0, 0, 1);
+    fn_8008BBF8(0, 0x20, 0x108, 0x110, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8), 0x9A);
+
+    base = buf;
+    p = 0;
+    offset = (s32)base;
     do {
-        if (*(u32*)Unit_GetItemSlot(arg0, var_r29) != 0) {
-            *var_r30 = fn_80093DA8(arg0);
+        if (*Unit_GetItemSlot(unit, (s32)p) != 0) {
+            *(u8 *)offset = fn_80093DA8(unit);
         }
-        var_r29 += 1;
-        var_r30 += 1;
-    } while (var_r29 < 8);
-    
-    fn_8008CD64(lbl_80369768);
-    
-    var_r27 = arg0;
-    var_r31 = 0;
-    
-    do {
-        Unit_GetHeldItemSlot(var_r27, var_r31);
-        UnitRef_Draw(*var_r28, 0x1C, 0x2C + (var_r31 * 0x1C));
-        var_r31 += 1;
-        var_r28 += 1;
-    } while (var_r31 < 4);
-    
-    var_r27 = arg0;
-    var_r31 = 0;
-    
-    do {
-        UnitRef_Draw(((u8*)var_r27 + 0x1EC)[0], ((u8*)arg0 + 4)[0], 0x1C, 0x94 + (var_r31 * 0x1C));
-        var_r31 += 1;
-        var_r27 = (u8*)var_r27 + 8;
-        var_r28 += 1;
-    } while (var_r31 < 4);
-}
+        p = (u8 *)((s32)p + 1);
+        offset += 1;
+    } while ((s32)p < 8);
 
+    fn_8008CD64(lbl_80369768);
+
+    p = base;
+    offset = 0x2C;
+    j = 0;
+    do {
+        UnitRef_Draw(Unit_GetHeldItemSlot(unit, j), *p, 0x1C, offset);
+        j += 1;
+        p += 1;
+        offset += 0x1C;
+    } while (j < 4);
+
+    p = unit;
+    j = 0;
+    offset += 0x18;
+    do {
+        UnitRef_Draw((s32)(p + 0x1EC), base[4], 0x1C, offset);
+        j += 1;
+        p += 8;
+        base += 1;
+        offset += 0x1C;
+    } while (j < 4);
+}
+#pragma use_lmw_stmw off
 /* Draw a fixed-size unit-info panel fill tinted by allegiance, plus white translucent edge strips. */
 void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
 {

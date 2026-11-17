@@ -230,6 +230,74 @@ s32 fn_80073834(s32 arg0, s32 arg1)
     return 5;
 }
 
+void Unit_OfferItem(void *unit, s32 itemArg, void *parent) {
+    void *Unit_GetItemSlot(void *, s32);
+    u8 fn_80094ABC(void *, void *);
+    void fn_80091788(void *, void *, void *);
+    void fn_800916B8(void *, void *, void *);
+    void Item_Copy(void *, void *);
+    void Process_CreateChild(void *, void *);
+    extern void *lbl_80367468;
+    extern u64 lbl_8036746C;
+    extern u8 lbl_80287378[];
+
+    void *item;
+    s32 clear;
+    u8 flags;
+    s32 i;
+    void *slot;
+    void *info;
+    u8 kind;
+    s32 one;
+
+    item = (void *)itemArg;
+    clear = 0;
+    flags = *((u8 *)item + 5);
+    flags = __rlwimi(flags, clear, 7, 24, 24);
+    *((u8 *)item + 5) = flags;
+    flags = __rlwimi(flags, clear, 6, 25, 25);
+    *((u8 *)item + 5) = flags;
+
+    info = *(void **)((u8 *)unit + 0x190);
+    if (*((u8 *)info + 8) == 1) {
+        i = 0;
+        while (1) {
+            slot = Unit_GetItemSlot(unit, i);
+            if (*(u32 *)slot == 0) {
+                break;
+            }
+            if (((*((u8 *)slot + 5) >> 6) & 1) != 0) {
+                goto after_flag;
+            }
+            i += 1;
+            if (i >= 8) {
+                break;
+            }
+        }
+        one = 1;
+        flags = *((u8 *)item + 5);
+        flags = __rlwimi(flags, one, 6, 25, 25);
+        *((u8 *)item + 5) = flags;
+    }
+after_flag:
+    if (fn_80094ABC(unit, item) != 0) {
+        info = *(void **)((u8 *)unit + 0x190);
+        if (*((u8 *)info + 8) != 1) {
+            fn_80091788(item, parent, unit);
+        } else {
+            fn_800916B8(item, parent, unit);
+        }
+    } else {
+        info = *(void **)((u8 *)unit + 0x190);
+        kind = *((u8 *)info + 8);
+        if (kind == 0 || kind == 5) {
+            lbl_80367468 = unit;
+            Item_Copy(&lbl_8036746C, item);
+            Process_CreateChild(lbl_80287378, parent);
+        }
+    }
+}
+
 void fn_800739A8(void) {
     M2C_UNK Unit_ApplyTransform(void *);
     u8 fn_80091D74();
@@ -264,14 +332,25 @@ void fn_80073A3C(void) {
 }
 
 void fn_80073A60(void) {
-    M2C_UNK fn_80107190(s32);
-    M2C_UNK fn_80105650(void);
-    extern s32 lbl_80312000;
-    
-    if (lbl_80312000 & 0x400000) {
-        fn_80107190(2);
-        fn_80105650();
-    }
+ extern u8 gUiContext[],gBattleState[],gConvoy[],lbl_8036746C[8];
+ extern void *lbl_80367468;
+ u8 fn_8014D8DC(void *); void Convoy_AddItem(void *,void *);
+ void *Item_GetFlagsPtr(void *); void *Unit_GetItemSlot(void *,s32);
+ void Item_Clear(void *); void Unit_CompactItems(void *);
+ s8 Unit_GetActiveItemSlot(void *); void fn_800951D0(void *,s32); void fn_80094ABC(void *,void *);
+ s8 index; void *item; s32 offset;
+ index=(s8)gUiContext[10];
+ if(index==4) {
+ if(fn_8014D8DC(gBattleState)) Convoy_AddItem(gConvoy,lbl_8036746C);
+ } else {
+ if(index==4) item=lbl_8036746C;
+ else { void *flags=Item_GetFlagsPtr(lbl_8036746C);
+ item=Unit_GetItemSlot(lbl_80367468,index+((*(u64 *)flags&5)!=0?0:4)); }
+ if(fn_8014D8DC(gBattleState)) Convoy_AddItem(gConvoy,item);
+ Item_Clear(item);Unit_CompactItems(lbl_80367468);
+ if(Unit_GetActiveItemSlot(lbl_80367468)<0) fn_800951D0(lbl_80367468,-1);
+ fn_80094ABC(lbl_80367468,lbl_8036746C);
+ }
 }
 
 void fn_80073B74(s32 arg0)

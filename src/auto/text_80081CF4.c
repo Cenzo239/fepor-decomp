@@ -43,69 +43,32 @@ extern u8 lbl_80289EB8[16];
 extern f32 lbl_803697E0;
 extern f32 lbl_803697E4;
 
-s32 fn_80081CF4(void) {
-    extern f32 lbl_8036948C;
-    extern f32 lbl_80369494;
-    extern f32 lbl_8036955C;
-    extern f32 lbl_8036942C;
-    extern f32 lbl_80369528;
-    extern f32 lbl_803695AC;
-    extern f32 lbl_803695B0;
-    extern f32 lbl_80369470;
+void fn_80081CF4(void *arg0) {
+extern f32 lbl_8036948C, lbl_80369494, lbl_8036955C, lbl_8036942C, lbl_80369528, lbl_803695AC, lbl_803695B0, lbl_80369430;
+extern void *Unit_GetItemSlot(void *, s32);
+extern s32 fn_80093DA8(void *, void *);
+extern void fn_80086020(s32, s32, f32, f32, f32, f32);
+extern void UnitRef_Draw(void *, s32, s32, s32);
 
-    s32 r27 = 0;
-    s32 r31 = 0;
-    f32 f1, f2, f3, f0, f29, f30, f31;
-    
-    f1 = lbl_8036948C;
-    f3 = lbl_80369494;
-    f0 = lbl_8036955C;
-    
-    f30 = f1 + f0;
-    f29 = lbl_8036942C;
-
-    fn_80086020(0, 0xb3, f30, f3);
-    Prim2D_Begin();
-
-    f0 = lbl_80369528;
-    f2 = lbl_803695AC;
-    f1 = lbl_803695B0;
-
-    f31 = f2 + f29;
-    f30 = f1 + f29;
-    f0 = f0 + f30;
-
-    while (r27 < 8) {
-        if (r27 >= 4) {
-            // Process in a loop to handle different branches
-            f32 x = 192.0f;  // 0x43300000
-            f32 y = *(f32*)0x80369470;
-            
-            if (r27 >= 4) {
-                f0 = x - y;
-                f29 = f31 + f0;
-            } else {
-                f0 = x - y;
-                f29 = f30 + f0;
-            }
-        }
-        
-        // Call external function
-        fn_80093DA8(r27, 0x4);
-        
-        if (r27 >= 4) {
-            UnitRef_Draw(0, 0, f29);  // Parameters are guessed
-        }
-        
-        r27++;
-        r31 += 0x1C;
-    }
-    
-    Prim2D_Begin();
-    Prim2D_AddZ(0);
-    Prim2D_PrepareTex(); 
-
-    return 0;
+s32 x;
+void *unit;
+void *slot;
+s32 i;
+f32 y, a, b;
+a=lbl_8036948C+*(f32*)((u8*)arg0+0x14);
+y=*(f32*)((u8*)arg0+0x18);
+unit=*(void**)((u8*)arg0+0x58);
+fn_80086020(0xb3,0,a,y,lbl_80369494,lbl_8036955C);
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036942C); Prim2D_PrepareTex();
+x=(s32)(lbl_80369528+a);
+b=lbl_803695AC+y; a=lbl_803695B0+y;
+for(i=0;i<8;i++){
+slot=Unit_GetItemSlot(unit,i);
+if(*(void**)slot){
+if(i<4)y=b+(f32)(i*28);else y=a+(f32)((i-4)*28);
+UnitRef_Draw(slot,fn_80093DA8(unit,*(void**)slot),x,(s32)y);
+}}
+Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
 }
 
 #pragma global_optimizer off
@@ -324,11 +287,11 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer on
 void fn_80083278(void *arg0) {
- void fn_80082298(void *, s32, f32, f32);
- extern u8 gBattle[];
- extern f32 lbl_80369430, lbl_803695C8;
- f32 *pos = (f32 *)arg0;
- fn_80082298(gBattle,1,lbl_80369430 + pos[5],lbl_803695C8 + pos[6]);
+    extern u8 gBattle[];
+    extern f32 lbl_80369430;
+    extern f32 lbl_803695C8;
+
+    fn_80082298(gBattle, 1, lbl_80369430 + *(f32 *)((u8 *)arg0 + 0x14), lbl_803695C8 + *(f32 *)((u8 *)arg0 + 0x18));
 }
 
 void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {

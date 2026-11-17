@@ -2,44 +2,21 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-void *fn_8022C414(void *arg0, void (*arg1)(void *, s32), void (*arg2)(void *, s32), s32 arg3, u32 arg4) {
-    u32 i;
-    void *var_r31;
-    void *var_r31_2;
-    void *sp8;
-    s32 spC;
-    u32 sp10;
-    void (*sp14)(void *, s32);
-    u32 sp18;
-
-    if (arg0 != NULL) {
-        ((s32*)arg0)[0] = arg3;
-        ((u32*)arg0)[1] = arg4;
-        var_r31 = (char*)arg0 + 0x10;
-        if (arg1 != NULL) {
-            sp18 = 0;
-            sp8 = var_r31;
-            spC = arg3;
-            sp10 = arg4;
-            sp14 = arg2;
-            loop_4:
-            if (sp18 < arg4) {
-                arg1(var_r31, 1);
-                var_r31 = (char*)var_r31 + arg3;
-                sp18 += 1;
-                goto loop_4;
-            }
-            if ((sp18 < sp10) && (sp14 != NULL)) {
-                var_r31_2 = (char*)sp8 + (spC * sp18);
-                loop_9:
-                if (sp18 != 0) {
-                    var_r31_2 = (char*)var_r31_2 - spC;
-                    sp14(var_r31_2, -1);
-                    sp18 -= 1;
-                    goto loop_9;
-                }
-            }
-        }
-    }
-    return var_r31;
+void *fn_8022C414(void *arg0, void (*ctor)(void *, s32), void (*dtor)(void *, s32), s32 size, u32 count) {
+ struct { void *base; s32 size; u32 count; void (*dtor)(void *,s32); u32 index; } guard;
+ register u8 *p;
+ if(arg0 != NULL) {
+ ((s32 *)arg0)[0]=size; ((u32 *)arg0)[1]=count;
+ arg0=(u8 *)arg0+16;
+ if(ctor != NULL) {
+ guard.index=count; guard.base=arg0; guard.size=size; guard.count=count; guard.dtor=dtor; guard.index=0;
+ p=arg0;
+ while(guard.index<count) { ctor(p,1); p+=size; guard.index++; }
+ if(guard.index<guard.count && guard.dtor!=NULL) {
+ p=(u8 *)guard.base+guard.size*guard.index;
+ while(guard.index!=0) {p-=guard.size;guard.dtor(p,-1);guard.index--;}
+ }
+ }
+ }
+ return arg0;
 }

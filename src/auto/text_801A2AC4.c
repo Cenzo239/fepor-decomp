@@ -284,8 +284,8 @@ s32 fn_801A3190(void) {
 s32 fn_801A31C8(s32 arg0) {
     void fn_8003CCB0(void *, u8 *, u8 *);
     void fn_8003816C(void *, u8, u8);
-    void Battle_SetupPair(void *, void *, void *);
-    void Battle_SelectWeapon(void *, u8);
+    void fn_801A7794(void *, void *, void *);
+    void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void fn_8019BC50(s8, s8, s32);
     extern u8 lbl_802CA518[];
@@ -306,8 +306,8 @@ s32 fn_801A31C8(s32 arg0) {
     map[(s8)sp9 + ((s8)sp8 << 6) + 0xD] = 0xFF;
     fn_8003CCB0(other, &sp9, &sp8);
     fn_8003816C(other, sp9, sp8);
-    Battle_SetupPair(lbl_80330EAC, *(void **)lbl_802EF4C8, *(void **)(ctx + 4));
-    Battle_SelectWeapon(lbl_80330EAC, lbl_802EF4C8[0xA]);
+    fn_801A7794(lbl_80330EAC, *(void **)lbl_802EF4C8, *(void **)(ctx + 4));
+    fn_801A49AC(lbl_80330EAC, lbl_802EF4C8[0xA]);
     fn_80036150(lbl_80330EAC);
     fn_8019BC50((s8)sp9, (s8)sp8, arg0);
     return 1;

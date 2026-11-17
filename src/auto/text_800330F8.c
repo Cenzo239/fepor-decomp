@@ -2780,53 +2780,19 @@ s8 fn_80038748(void *arg0) {
     return (s8)result;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 2
 s8 fn_800388C8(void *arg0) {
-    s32 temp;
+    void **slot;
     s32 result;
 
     result = 0;
-    if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        temp = 0;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
-        temp = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
-        temp = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
-        temp = 3;
-    } else {
-        temp = -1;
+    slot = Unit_GetActiveItemPtr(arg0);
+    if (slot != NULL) {
+        result = *(s8 *)((u8 *)*slot + 0x28);
     }
-    if ((s8)temp < 0) {
-        temp = 0;
-    } else {
-        temp = (s8)temp * 8;
-        temp += 0x1CC;
-        temp += (s32)arg0;
-    }
-    if ((u32)temp != 0) {
-        result = *(s8 *)((u8 *)*(void **)temp + 0x28);
-    }
-    if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
-        temp = 0;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
-        temp = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
-        temp = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
-        temp = 3;
-    } else {
-        temp = -1;
-    }
-    if ((s8)temp < 0) {
-        temp = 0;
-    } else {
-        temp = (s8)temp * 8;
-        temp += 0x1EC;
-        temp += (s32)arg0;
-    }
-    if ((u32)temp != 0) {
-        result += *(u8 *)((u8 *)*(void **)temp + 0x28);
+    slot = fn_80037C20(arg0);
+    if (slot != NULL) {
+        result += *(u8 *)((u8 *)*slot + 0x28);
         result = (s8)result;
     }
     return (s8)result;

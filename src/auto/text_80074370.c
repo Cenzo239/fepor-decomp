@@ -29,11 +29,33 @@ s32 fn_8007437C(void) {
     return Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) ? 0x40 : 0x10;
 }
 
-u32 fn_800745E8(u8 arg2) {
-    if (arg2 == 4)
-        return 1;
-    else
-        return 0;
+u32 fn_800745E8(void *arg0, void *arg1, u8 arg2) {
+    u64 *Item_GetFlagsPtr(void *);
+    void *Unit_GetItemSlot(void *, s32);
+    u8 fn_8014D8DC(void *);
+    extern u64 lbl_8036746C;
+    extern void *lbl_80367468;
+    extern u8 gBattleState[];
+    s32 index=arg2;
+    void *item;
+    if(index==4) item=&lbl_8036746C;
+    else {
+        u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
+        void *base=lbl_80367468;
+        item=Unit_GetItemSlot(base,index+((flags)?0:4));
+    }
+    if(*Item_GetFlagsPtr(item)&0x200ULL) return 2;
+    if(!fn_8014D8DC(gBattleState)) {
+        if(index==4) item=&lbl_8036746C;
+        else {
+            u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
+            void *base=lbl_80367468;
+            item=Unit_GetItemSlot(base,index+((flags)?0:4));
+        }
+        if(*Item_GetFlagsPtr(item)&0x20000000000ULL) return 2;
+    }
+    if(arg2==4) return 1;
+    else return 0;
 }
 
 s32 fn_80074758(s32 arg0, s32 arg1, void *arg2) {
@@ -1988,6 +2010,112 @@ void fn_80077694(s8 *arg0) {
     *arg0 = 1;
 }
 
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+extern "C" s32 fn_800776A0(void *arg0, void *arg1, void *arg2) {
+    struct Flags {
+        u8 bits;
+        Flags() {}
+        Flags(const Flags &o) : bits(o.bits) {}
+    };
+    struct Menu {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual s32 getStr() = 0;
+        virtual u8 getCmd() = 0;
+        virtual Flags getFlags() = 0;
+    };
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual s16 v21() = 0;
+        virtual s16 v22() = 0;
+    };
+    void fn_8009233C(u8 *, void *);
+    void fn_80026770(void *, u8 *);
+    s32 fn_8009226C(void *, u8 *);
+    void fn_80166AE8(s32, s32, s32, void *);
+    extern u8 gUiContext[];
+    s32 a;
+    s32 str;
+    s32 b;
+    s16 y;
+    s16 x;
+    s32 idx;
+    s32 val;
+    void *unit;
+    u8 sp10[4];
+    u8 spC[4];
+    void *self;
+    void *proc;
+
+    self = arg0;
+    proc = arg1;
+    if (*(u8 *)((u8 *)arg2 + 0x39) != 0) {
+        self = *(void **)((u8 *)proc + 0x3C);
+        y = *(s16 *)((u8 *)arg2 + 0x32);
+        x = *(s16 *)((u8 *)arg2 + 0x30);
+        str = ((Menu *)arg0)->getStr();
+        a = ((Obj *)self)->v22();
+        b = ((Obj *)self)->v21();
+        fn_80166AE8(b + x, a + y, str, proc);
+        return 0;
+    }
+    gUiContext[8] = ((Menu *)self)->getCmd();
+    fn_8009233C(sp10, *(void **)gUiContext);
+    spC[0] = sp10[0];
+    fn_80026770(gUiContext, spC);
+    unit = *(void **)gUiContext;
+    idx = fn_8009226C(unit, (u8 *)&((Menu *)self)->getFlags());
+    val = -1;
+    if (idx >= 0) {
+        val = idx + 4;
+    }
+    gUiContext[0xA] = val;
+    return 5;
+}
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
+#pragma cplusplus reset
+
 s32 fn_800777D4(void) {
     return 0xC;
 }
@@ -3182,6 +3310,40 @@ void Face_DebugScaleProc(void *proc) {
         }
         Process_ClearFunc(proc);
     }
+}
+
+void fn_8007982C(s32 arg0) {
+    void *fn_8007BD30(s8,s32,s32,s32,s32,s32,s32);
+    void *Process_Create(void *,s32);
+    extern void *gFaceSlots[];
+    extern s32 lbl_80367480, lbl_80367484;
+    extern s32 *lbl_80367478;
+    extern void *gActiveFace;
+    extern u8 lbl_80288B40[];
+    extern void *lbl_803674B0[2];
+    void **p;
+    s8 n;
+    s32 i;
+    s32 text;
+    u8 face;
+    void *proc;
+    n=0;
+    lbl_80367480=0;
+    gActiveFace=0;
+    lbl_80367484=0;
+    text=*lbl_80367478;
+    p=gFaceSlots;
+    for(i=0;i<8;i++,p++) {
+        if(*p==0) { n=i; goto found; }
+    }
+    n=-1;
+found:
+    gActiveFace=fn_8007BD30((s8)n,text,0x1E0,0x17C,0,0,0);
+    face=*((u8*)gActiveFace+0x40);
+    proc=Process_Create(lbl_80288B40,3);
+    *(s32*)((u8*)proc+0x60)=face;
+    *(s32*)((u8*)proc+0x64)=8;
+    Ui_CreateMenu(lbl_803674B0,arg0,0);
 }
 
 void fn_80079B9C(void *unused, void *parent, void *node) {

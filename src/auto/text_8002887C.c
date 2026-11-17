@@ -1383,11 +1383,11 @@ extern "C" void fn_8002C3D8(void *arg0, void *arg1) {
 extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
-        virtual void v1() = 0;
+        virtual void v1(s32, s32) = 0;
         virtual void v2() = 0;
-        virtual void v3(s32, s32) = 0;
+        virtual void v3() = 0;
     };
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     void *self;
     s32 x;
     s32 y;
@@ -1396,10 +1396,9 @@ extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
     s32 row;
     s32 scratch;
     u8 *map;
-    s32 byteOff;
     s16 *arr;
 
-    map = lbl_802CA518;
+    map = gBattleMap;
     self = arg0;
     thresh = (s8)arg1;
     map2 = map + 0x10000;
@@ -1407,26 +1406,24 @@ extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
     row = 0;
     while ((s8)y < *(s32 *)(map + 4)) {
         scratch = row;
-        byteOff = row * 2;
         x = 0;
         while ((s8)x < *(s32 *)map) {
             arr = *(s16 **)(map2 + 0x4190);
-            if (*(s16 *)((u8 *)arr + byteOff) >= thresh) {
-                ((Obj *)self)->v3(x, y);
+            if (arr[scratch] >= thresh) {
+                ((Obj *)self)->v1(x, y);
             }
-            scratch += 1;
-            byteOff += 2;
-            x += 1;
+            scratch++;
+            x++;
         }
         row += 0x40;
-        y += 1;
+        y++;
     }
 }
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
 extern "C" void fn_8002C530(void *arg0, s32 arg1) {
     struct Obj {
-        virtual void v0() = 0;
         virtual void apply(void *) = 0;
+        virtual void v1() = 0;
     };
     extern u8 gBattleMap[];
     extern u8 gUnits[];
@@ -1477,18 +1474,18 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
         y += 1;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level reset
 extern "C" void fn_8002C618(void *arg0, s8 arg1, s8 arg2) {
     extern s32 gBattleMap[];
     struct Visitor {
         virtual void v0(s8, s8) = 0;
         virtual void visit(s8, s8) = 0;
     };
-    s8 y;
     s8 x;
+    s8 y;
 
-    y = arg2;
     x = arg1;
+    y = arg2;
 
     if (y - 1 >= 0) {
         ((Visitor *)arg0)->visit(x, (s8)(y - 1));
@@ -1663,6 +1660,7 @@ void fn_8002CB50(void *arg0, void *arg1) {
     }
 }
 
+#pragma opt_strength_reduction off
 void fn_8002CBDC(void *unused, s32 x, s32 y)
 {
     extern u8 gBattleMap[];
@@ -1671,23 +1669,19 @@ void fn_8002CBDC(void *unused, s32 x, s32 y)
     extern void fn_8002F6E8(void *, s32, s32, s32, s32);
 
     u8 *base;
-    s32 r31;
-    s32 r30;
-    s32 sx;
     s32 sy;
+    s32 sx;
 
     base = gBattleMap;
-    r31 = y;
-    sy = (s8)r31;
-    r30 = x;
-    sx = (s8)r30;
-    if (*(u8 *)(base + sx + (sy << 6) + 0xD) == 0) {
+    sy = (s8)y;
+    sx = (s8)x;
+    if (base[sx + (sy << 6) + 0xD] == 0) {
         if (fn_8002134C(base) <= 0x7530) {
-            fn_8002F6E8(gTargetList, r30, r31, 0, 0);
+            fn_8002F6E8(gTargetList, x, y, 0, 0);
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 void fn_8002CC64(void *arg0, void *arg1) {
     void fn_8002F6E8(void *, u8, u8, u8, u8);
     u8 fn_8003DD7C(void *, s32);
@@ -1932,19 +1926,15 @@ void fn_8002D39C(void) {
 
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 3
 void fn_8002D3A0(void *arg0) {
     void Event_StartByName(void *, void *);
-    typedef struct {
-        u8 pad[0x54];
-        u8 mode;
-    } BattleState;
-    extern BattleState gBattleState;
+    extern u8 gBattleState[];
     extern u8 Battle_str[];
     void *str;
 
     str = arg0;
-    switch (gBattleState.mode) {
+    switch (gBattleState[0x54]) {
     case 5:
         str = Battle_str + 0x148;
         break;
@@ -1957,7 +1947,7 @@ void fn_8002D3A0(void *arg0) {
     }
     Event_StartByName(str, arg0);
 }
-#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_8002D420(s32 arg0) {
     void fn_8014C718(void *, s32);
     extern u8 gBattleState[16];
@@ -3074,43 +3064,41 @@ void fn_8002F4EC(void *arg0, void *arg1) {
     BattleState_SetCamPos(gBattleState, (f32)*(s8 *)((u8 *)arg1 + 0x48), (f32)*(s8 *)((u8 *)arg1 + 0x49));
 }
 
+#pragma optimization_level 3
 void fn_8002F564(void) {
     void Map_FillLayer(void *, s32, s32);
     void Map_ShowMoveLimitView(void);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern s32 gTargetList[];
-    s32 *p;
-    s32 i;
+    u8 *p;
     s32 limit;
+    s32 i;
     s32 n;
     u8 *entry;
     s8 x;
     s8 y;
 
-    Map_FillLayer(lbl_802CA518, 5, -1);
-    Map_FillLayer(lbl_802CA518, 8, 0);
+    Map_FillLayer(gBattleMap, 5, -1);
+    Map_FillLayer(gBattleMap, 8, 0);
 
-    p = gTargetList;
+    p = (u8 *)gTargetList;
+    limit = *(s32 *)p;
     i = 0;
-    limit = gTargetList[0];
-    n = limit;
-    if (limit > 0) {
-        do {
-            if (i >= limit) {
-                entry = NULL;
-            } else {
-                entry = (u8 *)p + 8;
-            }
-            y = (s8)entry[1];
-            p = (s32 *)((u8 *)p + 0x14);
-            x = (s8)entry[0];
-            i += 1;
-            *(u16 *)(lbl_802CA518 + ((x + (y << 6)) * 2) + 0xC18E) = 1;
-        } while (--n != 0);
+    for (n = limit; n > 0; n--) {
+        if (i >= limit) {
+            entry = NULL;
+        } else {
+            entry = p + 8;
+        }
+        y = (s8)entry[1];
+        p += 0x14;
+        x = (s8)entry[0];
+        i += 1;
+        *(u16 *)(gBattleMap + ((x + (y << 6)) * 2) + 0xC18E) = 1;
     }
     Map_ShowMoveLimitView();
 }
-
+#pragma optimization_level reset
 void fn_8002F61C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + 1);
 }

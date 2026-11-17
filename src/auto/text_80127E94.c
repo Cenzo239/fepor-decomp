@@ -88,39 +88,34 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 
 void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
-    M2C_UNK Prim2D_SetText();
-    M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK Prim2D_SetPos(f32, f32);
-    M2C_UNK Prim2D_EndPrim();
-    M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK Prim2D_PrepareTex();
-    M2C_UNK Prim2D_Begin();
-    s32 Text_MeasureHeight(M2C_UNK, f32);
-    s32 Text_MeasureWidth(M2C_UNK, f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_SetColor(s32,s32,s32,s32);
+    void Prim2D_SetPos(f32,f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    s32 Text_MeasureHeight(s32,f32);
+    s32 Text_MeasureWidth(void *,s32,f32);
     extern f32 lbl_8036A404;
-    s16 temp_r28;
-    s16 temp_r29;
-    s16 temp_r29_2;
-    s32 temp_r4;
-    u32 temp_r5_2;
-    void *temp_r3;
-    void *temp_r5;
-
-    temp_r3 = M2C_FIELD(arg1, void **, 0x3C);
-    temp_r29 = M2C_FIELD(M2C_FIELD(temp_r3, void **, 4), s16 (**)(void *), 0x58)(temp_r3);
-    temp_r5 = M2C_FIELD(arg1, void **, 0x3C);
-    temp_r4 = (s32) (temp_r29 - Text_MeasureHeight(-1, lbl_8036A404)) >> 1;
-    temp_r28 = M2C_FIELD(arg2, s16 *, 0x32) + temp_r4;
-    temp_r29_2 = M2C_FIELD(M2C_FIELD(temp_r5, void **, 4), s16 (**)(void *, s32, void *), 0x50)(temp_r5, temp_r4, temp_r5);
-    M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    temp_r5_2 = temp_r29_2 - Text_MeasureWidth(-1, lbl_8036A404);
-    M2C_FIELD(*arg0, M2C_UNK (**)(void **, void *, u32), 0x4C)(arg0, arg1, temp_r5_2);
+    s32 height,width,y;
+    f32 x;
+    void *obj;
+    void *text;
+    obj=M2C_FIELD(arg1,void **,0x3c);
+    height=(s16)M2C_FIELD(M2C_FIELD(obj,void **,4),s32 (**)(void *),0x58)(obj);
+    height=(height-Text_MeasureHeight(-1,lbl_8036A404))>>1;
+    y=(s16)(M2C_FIELD(arg2,s16 *,0x32)+height);
+    obj=M2C_FIELD(arg1,void **,0x3c);
+    height=(s16)M2C_FIELD(M2C_FIELD(obj,void **,4),s32 (**)(void *),0x50)(obj);
+    text=M2C_FIELD(*arg0,void *(**)(void *),0xc)(arg0);
+    x=(f32)((height-Text_MeasureWidth(text,-1,lbl_8036A404))/2);
+    M2C_FIELD(*arg0,void (**)(void *,void *),0x4c)(arg0,arg1);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32) ((s32) ((temp_r5_2 >> 0x1FU) + temp_r5_2) >> 1), (f32) temp_r28);
-    Prim2D_SetColor(0, 0, 0, 0xFF);
-    M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    Prim2D_SetText();
+    Prim2D_SetPos(x,(f32)y);
+    Prim2D_SetColor(0,0,0,255);
+    Prim2D_SetText(M2C_FIELD(*arg0,void *(**)(void *),0xc)(arg0));
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A404);
@@ -1547,6 +1542,45 @@ void fn_8012AF4C(void *arg0) {
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
         Process_ClearFunc(self);
     }
+}
+
+void fn_8012B230(void *arg0) {
+    u8 fn_80049D84(void *);
+    void fn_800498A4(void *, s32, s32);
+    void PSMTXRotRad(void *, s32, f32);
+    void fn_802029C4(void *, void *, void *);
+    void *Effect_Create(void *, void *);
+    f32 Map_SampleHeight(void *, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
+    extern s32 lbl_802756F8[];
+    extern u8 lbl_80275740[];
+    extern u8 gBattleMap[];
+    extern f32 lbl_8036A434;
+    extern f32 gTileCenter;
+    u8 mtx[0x30];
+    s32 vec[3];
+    f32 x;
+    f32 y;
+    void *effect;
+    void *obj;
+    s32 *src;
+
+    *(s32 *)((u8 *)arg0 + 0x40) = 0;
+    obj = *(void **)((u8 *)arg0 + 0x3C);
+    *(u8 *)((u8 *)obj + 2) &= ~1;
+    if ((u8)fn_80049D84(*(void **)((u8 *)arg0 + 0x3C)) != 0) {
+        fn_800498A4(*(void **)((u8 *)arg0 + 0x3C), 0, 0);
+    }
+    src = lbl_802756F8;
+    vec[0] = src[0];
+    vec[1] = src[1];
+    vec[2] = src[2];
+    PSMTXRotRad(mtx, 0x5A, lbl_8036A434 * *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + 8));
+    fn_802029C4(mtx, vec, vec);
+    x = (gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x30)) + ((f32 *)vec)[0];
+    y = (gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x34)) + ((f32 *)vec)[1];
+    effect = Effect_Create(lbl_80275740 + 0x1A7, arg0);
+    Effect_SetPos(effect, x, y, Map_SampleHeight(gBattleMap, x, y));
 }
 
 void fn_8012B394(void) {

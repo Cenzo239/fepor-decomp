@@ -1795,6 +1795,7 @@ done_sw:
     }
 }
 
+#pragma optimization_level 3
 void fn_800157DC(void *arg0, void *arg1) {
     void fn_8003B6C4(void *, void *);
     void *list;
@@ -1839,7 +1840,7 @@ done_sw:
         *(void **)list = node;
     }
 }
-
+#pragma optimization_level reset
 void fn_800158A0(void *arg0) {
     extern u8 gUnits[];
     u8 *unit;

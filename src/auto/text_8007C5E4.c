@@ -839,12 +839,11 @@ void fn_8007E2C4(void *arg0) {
   f32 dimw,dimh;
  u16 *dim;
  u32 k0;
- s32 bottom;
- u32 k2;
  s32 left,right,top,width;
  s32 val;
  void *obj;
  f32 scale;
+ s32 tmp;
  x=lbl_8036948C+M2C_FIELD(arg0,f32 *,0x14);
  y=M2C_FIELD(arg0,f32 *,0x18);
  Unit_FillAffinityBonuses(gBattle,&labels.info);
@@ -875,14 +874,15 @@ val=labels.info.vals[1];
 right=(s32)(lbl_803694B8+x)+0x10;
 fn_8001003C((s16)(right-width/2),(s16)(top),k0,0,0,labels.labels[2],lbl_80369430,lbl_80369418);
 val=labels.info.vals[2];
- if(val>0) {sprintf(labels.labels[1],gUiStrings+0x210,val);k2=0xC;} else {sprintf(labels.labels[1],gUiStrings+0x215,val);k2=2;}
+ if(val>0) {sprintf(labels.labels[1],gUiStrings+0x210,val);top=0xC;} else {sprintf(labels.labels[1],gUiStrings+0x215,val);top=2;}
  width=(s16)Text_MeasureWidth(labels.labels[1],-1,lbl_80369430);
-bottom=(s32)(lbl_803694BC+y);
-fn_8001003C((s16)(left-width/2),(s16)(bottom),k2,0,0,labels.labels[1],lbl_80369430,lbl_80369418);
+tmp=left-width/2;
+left=(s32)(lbl_803694BC+y);
+fn_8001003C((s16)tmp,(s16)(left),top,0,0,labels.labels[1],lbl_80369430,lbl_80369418);
 val=labels.info.vals[3];
- if(val>0) {sprintf(labels.labels[0],gUiStrings+0x210,val);k2=0xC;} else {sprintf(labels.labels[0],gUiStrings+0x215,val);k2=2;}
+ if(val>0) {sprintf(labels.labels[0],gUiStrings+0x210,val);top=0xC;} else {sprintf(labels.labels[0],gUiStrings+0x215,val);top=2;}
  width=(s16)Text_MeasureWidth(labels.labels[0],-1,lbl_80369430);
-fn_8001003C((s16)(right-width/2),(s16)(bottom),k2,0,0,labels.labels[0],lbl_80369430,lbl_80369418);
+fn_8001003C((s16)(right-width/2),(s16)(left),top,0,0,labels.labels[0],lbl_80369430,lbl_80369418);
 
  Prim2D_Begin();Prim2D_AddZ(lbl_80369430);Prim2D_PrepareTex();
 }

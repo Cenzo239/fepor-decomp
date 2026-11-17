@@ -1068,6 +1068,40 @@ void fn_801FF0F8(void *arg0) {
     M2C_FIELD(arg0, u32 *, 0x30) = Archive_Load(lbl_80281F00 + 0x64);
     Process_ClearFunc(arg0);
 }
+
+void fn_801FF190(s32 arg0) {
+void Ui_CreateMenu(void *,s32,s32);
+void *Heap_Alloc(u32);
+void fn_8013CE10(void *);
+void fn_8013CE7C(void *);
+void fn_8013CED0(void *,void *);
+extern u8 lbl_80281F00[],lbl_8029B5D0[],lbl_8029B69C[],lbl_803392D0[],lbl_803392DC[];
+extern s8 lbl_8036843C,lbl_8036843D;
+u8 a,b;
+u8 *strings;
+void *obj;
+if(!lbl_8036843C) {fn_8013CE7C(lbl_803392D0);lbl_8036843C=1;}
+if(!lbl_8036843D) {fn_8013CE10(lbl_803392DC);lbl_8036843D=1;}
+strings=lbl_80281F00;
+*(void **)(lbl_803392D0+4)=strings+0x7a;
+lbl_803392D0[8]=1;
+lbl_803392D0[9]|=1;
+*(void **)(lbl_803392DC+4)=strings+0x88;
+lbl_803392DC[8]=1;
+lbl_803392DC[9]|=1;
+obj=Heap_Alloc(0x30);
+if(obj) {
+fn_8013CED0(obj,lbl_8029B5D0);
+*(void **)((u8 *)obj+4)=lbl_8029B69C;
+*(s16 *)((u8 *)obj+0xc)=0x180;
+*(s16 *)((u8 *)obj+8)=(0x260-(*(s16 (**)(void *))((u8 *)*(void **)((u8 *)obj+4)+0x50))(obj))>>1;
+*(s16 *)((u8 *)obj+0xa)=0x120;
+*((u8 *)obj+0x24)=1;
+}
+*(void **)((u8 *)obj+0x20)=lbl_80281F00+0x95;
+Ui_CreateMenu(obj,arg0,0);
+}
+
 #pragma global_optimizer reset
 void fn_801FF2D0(void) {
     extern u8 gUiContext[];
@@ -1121,6 +1155,7 @@ void fn_801FF3AC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
+#pragma optimization_level 2
     extern u8 gUnitInfoPopup[];
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
@@ -1154,6 +1189,7 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     } else {
         fn_80024B6C();
     }
+#pragma optimization_level reset
 }
 extern "C" void fn_801FF480(void *arg0) {
     void fn_801FE84C(s32, s32, s32, s32, s32 *);
@@ -1589,16 +1625,49 @@ void fn_802001F8(u32 arg0, s32 arg1) {
 
 void fn_80200270(void *arg0) {
     u32 *Hash_Lookup(void *);
-    u32 *p = Hash_Lookup(arg0);
+    u32 *p;
+    u32 *id;
     s32 i;
 
+    p = Hash_Lookup(arg0);
+    id = sFaceResIds;
     for (i = 0; i < 8; i++) {
-        if (*p == sFaceResIds[i]) {
+        if (*p == *id) {
             lbl_80339328[i] = 2;
-            lbl_80339338[i]--;
-            return;
+            lbl_80339338[i] -= 1;
+            break;
         }
+        id++;
     }
+}
+
+u32 fn_802002F0(void *arg0) {
+ u32 *Hash_Lookup(void *);
+ void fn_8006EEFC(u32 *,char *);
+ char *strcpy(char *,const char *);
+ char *strcat(char *,const char *);
+ extern char lbl_802820A0[];
+ char path[64];
+ u32 *entry;
+ s32 i;
+ entry=Hash_Lookup(arg0);
+ for(i=0;i<8;i++){
+ if(entry[0]==sFaceResIds[i]){
+ lbl_80339338[i]++;
+ return sFaceResAddrs[i];
+ }
+ }
+ for(i=0;i<8;i++){
+ if(sFaceResAddrs[i]==0){
+ strcpy(path,lbl_802820A0+11);
+ strcat(path,(char *)entry[2]);
+ fn_8006EEFC(&sFaceResAddrs[i],path);
+ lbl_80339338[i]=1;
+ sFaceResIds[i]=entry[0];
+ return sFaceResAddrs[i];
+ }
+ }
+ return 0;
 }
 
 #pragma use_lmw_stmw on
@@ -2024,6 +2093,44 @@ void fn_80201328(void *arg0) {
     Process_ClearFunc(arg0);
 }
 
+void fn_802013C0(s32 arg0) {
+extern s8 lbl_8036844C,lbl_8036844D;
+extern u8 lbl_80339348[],lbl_80339354[],lbl_8029B798[];
+s32 fn_80209A78(void);
+void *Heap_Alloc(u32);
+void fn_8013CE7C(void *);
+void fn_8013CE10(void *);
+void fn_8013CED0(void *,void *);
+u8 *Ui_CreateMenu(void *,s32,s32);
+extern void *lbl_8029B864[];
+u8 *menu;
+u8 *obj;
+s32 flags;
+u8 *label;
+u8 *label2;
+if(lbl_8036844C==0){fn_8013CE7C(lbl_80339348);lbl_8036844C=1;}
+if(lbl_8036844D==0){fn_8013CE10(lbl_80339354);lbl_8036844D=1;}
+label=lbl_80339348;
+label2=lbl_80339354;
+*(u8 **)(label+4)=lbl_802820B8+0x7E;
+label[8]=1;label[9]|=1;
+*(u8 **)(label2+4)=lbl_802820B8+0x91;
+label2[8]=1;label2[9]|=1;
+obj=Heap_Alloc(0x30);
+if(obj){
+fn_8013CED0(obj,lbl_8029B798);
+*(void **)(obj+4)=lbl_8029B864;
+*(s16 *)(obj+0xC)=0x1C0;*(s16 *)(obj+0xE)=0xAC;
+*(s16 *)(obj+8)=(0x260-(*(s16 (***)(void *))(obj+4))[20](obj))>>1;
+*(s16 *)(obj+10)=0x1A8-(*(s32 (***)(void *))(obj+4))[21](obj);
+obj[0x24]=1;
+}
+*(u8 **)(obj+0x20)=lbl_802820B8+0xA3;
+menu=Ui_CreateMenu(obj,arg0,0);
+flags=fn_80209A78()==0;
+((s8 *)menu)[0x62]=flags;((s8 *)menu)[0x63]=flags;
+}
+
 void fn_80201534(void) {
     extern u8 gUiContext[];
     extern s32 gGameFlags;
@@ -2268,6 +2375,13 @@ extern "C" void fn_80201778(void *arg0) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
+
+void PSMTXIdentity(f32 m[3][4]) {
+ m[0][2] = m[0][3] = m[1][2] = m[1][3] = m[2][0] = m[2][1] = 0.0f;
+ m[1][0] = m[0][1] = m[2][3] = 0.0f;
+ m[1][1] = m[0][0] = m[2][2] = 1.0f;
+}
+
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 

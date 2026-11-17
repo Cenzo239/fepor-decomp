@@ -641,92 +641,119 @@ block_37:
     return var_r3;
 }
 
-void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, s32 arg_sp0)
-{
-    s32 r30_var;
-    u32 temp_r3;
-
-    temp_r3 = fn_8010494C(lbl_802AEE20[3]);
-    if ((u32) lbl_802AEE20[0] == temp_r3)
-        r30_var = 0;
-    else {
-        if ((u32) lbl_802AEE20[1] == temp_r3)
-            r30_var = 1;
-        else {
-            u32 *temp_r4_2 = (u32 *)(&lbl_802AEE20[1] + 4);
-            if ((u32) *(temp_r4_2) == temp_r3)
-                r30_var = 2;
-            else if ((u32) *(temp_r4_2 + 1) == temp_r3)
-                r30_var = 3;
-            else if ((u32) *(temp_r4_2 + 2) == temp_r3)
-                r30_var = 4;
-            else
-                r30_var = -1;
-        }
-    }
-
-    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5, farg0, farg1, farg2, farg3, farg4);
-
-    if (r30_var == -1)
-        r30_var = 0;
-
-    temp_r3 = fn_8010494C(lbl_802AEE20[r30_var]);
-
-    // Check remaining comparisons
-    if ((u32) lbl_802AEE20[0] != temp_r3) {
-        // These should all be equivalent to the original's logic but simplified:
-        // Original checks: lbl_802AEE20[1], *(void**)(lbl_802AEE20 + 4), and *(void**) (lbl_802AEE20 + 8)
-        u32 *temp_r4_3 = (u32 *)(&lbl_802AEE20[1]);
-        if (((u32) lbl_802AEE20[1] != temp_r3) && ((u32) *(temp_r4_3 + 0) != temp_r3) && ((u32) *(temp_r4_3 + 1) != temp_r3)) {
-            /* No-op */
-        }
-    }
+void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
+ u32 *table;
+ u32 result;
+ s32 index;
+ u32 *p;
+ index = 3;
+ result = (u32)fn_8010494C(lbl_802AEE20[index]);
+ table = (u32 *)lbl_802AEE20;
+ if (table[0] == result) index = 0;
+ else {
+ p = table + 1;
+ if (table[1] == result) index = 1;
+ else if (*++p == result) index = 2;
+ else if (*++p == result) index = 3;
+ else if (p[1] == result) index = 4;
+ else index = -1;
+ }
+ fn_8000E7FC(arg0,arg1,arg2,arg3,arg4,arg5,farg0,farg1,farg2,farg3,farg4);
+ if (index == -1) index = 0;
+ result = (u32)fn_8010494C(lbl_802AEE20[index]);
+ for (index = 0, p = table; index < 5; ++index, ++p) {
+ if (*p == result) break;
+ }
 }
 
-void fn_8000E50C(void* arg0) {
-    s32 r31;
-    s32 r30;
-    s32 r29;
-    s32 r28;
-    struct UnkStruct_802AEE80* r3;
-    
-    r3 = &gUnk_802AEE80;
-    r31 = *(s32*)((s32) arg0 + 0x4);
-    if (r31 == 0) {
-        return;
-    }
-    r30 = *(s32*)r31;
-    r29 = *(s32*)(r31 + 4);
-    r28 = r29 - 1;
-    if (r28 < 0) {
-        return;
-    }
-    
-    if ((r30 & 0x80000000) != 0) {
-        r30 = r30 + 1;
+#pragma push
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
+    u32 *table;
+    u32 result;
+    s32 index;
+    u32 *p;
+
+    index = 2;
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    table = (u32 *)lbl_802AEE20;
+    if (table[0] == result) {
+        index = 0;
     } else {
-        r30 = r30 - 1;
-    }
-    *(s32*)(r31 + 4) = r28;
-    *(s32*)r31 = r30;
-}
-
-s32 fn_8000E684(void* arg0) {
-    s32* data = (s32*)0x802AEE20;
-    s32 i, result = 0;
-    
-    for (i = 0; i < 5; i++) {
-        if (data[i] == 0) {
-            result = 1;
-            break;
+        p = table + 1;
+        if (table[1] == result) {
+            index = 1;
+        } else if (*++p == result) {
+            index = 2;
+        } else if (*++p == result) {
+            index = 3;
+        } else if (p[1] == result) {
+            index = 4;
+        } else {
+            index = -1;
         }
     }
-    
-    if (result != 0) {
-        return 1;
+    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5, farg0, farg1, farg2, farg3, farg4);
+    if (index == -1) {
+        index = 0;
     }
-    
-    return fn_80004610(arg0);
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    if (table[0] != result) {
+        p = table + 1;
+        if (table[1] != result) {
+            if (*++p != result) {
+                if (*++p != result) {
+                    if (p[1] != result) {
+                    }
+                }
+            }
+        }
+    }
+}
+#pragma pop
+void fn_8000E684(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
+u32 *table;
+u32 result;
+s32 index;
+u32 *p;
+index=0;
+result=(u32)fn_8010494C(lbl_802AEE20[index]);
+table=(u32*)lbl_802AEE20;
+index=-1;
+{ s32 i; for(i=0,p=table;i<5;++i,++p) { if(*p==result) { index=i; break; } } }
+fn_8000E7FC(arg0,arg1,arg2,arg3,arg4,arg5,farg0,farg1,farg2,farg3,farg4);
+if(index==-1) index=0;
+result=(u32)fn_8010494C(lbl_802AEE20[index]);
+for(index=0,p=table;index<5;++index,++p) { if(*p==result) break; }
+}
+
+void fn_8001003C(s32 x, s32 y, s32 color, s32 mode, s32 flags, f32 scale, f32 angle, const char *fmt, ...) {
+#pragma push
+#pragma use_lmw_stmw on
+ void Prim2D_SetPos(f32, f32);
+ u32 *Ui_GetColor(s32);
+ void Prim2D_SetScale(f32);
+ void fn_80007268(f32);
+ void Prim2D_SetTextScale(s32,f32);
+ void fn_800071D8(s32,f32);
+ extern f32 lbl_80368C30, lbl_80368BDC;
+ char text[256];
+ struct { unsigned char gpr, fpr; unsigned char reserved[2]; void *input_arg_area; void *reg_save_area; } args[1];
+ u32 packed;
+ __builtin_va_info(args);
+ vsprintf(text, fmt, args);
+ Prim2D_AddPrim(6);
+ Prim2D_SetPos((f32)(s16)x, (f32)(s16)y);
+ packed = *Ui_GetColor(color);
+ Prim2D_SetColorPacked(&packed);
+ Prim2D_SetScale(scale);
+ fn_80007268(angle);
+ Prim2D_SetTextScale(mode,lbl_80368C30);
+ fn_800071D8(flags,lbl_80368BDC);
+ Prim2D_SetText(text);
+ Prim2D_EndPrim();
+#pragma pop
 }
 
 void Text_Draw(s32 x, s32 y, s32 color, const char *fmt, ...) {
@@ -1132,29 +1159,67 @@ void fn_80010FF0(void) {
     fn_801047D0();
 }
 
+#pragma global_optimizer off
 s32 fn_80011010(s32 arg0) {
-    s32 *table;
     u32 result;
+    u32 *p;
     s32 fn_8010494C(s32);
+    s32 i;
 
     if (arg0 == -1) {
-        table = lbl_802AEE20;
-        arg0 = 0;
-        result = (u32)fn_8010494C(table[arg0]);
-        table = lbl_802AEE20;
-        if ((u32)*table == result) {
+        i = 0;
+        result = (u32)fn_8010494C(lbl_802AEE20[i]);
+        p = (u32 *)lbl_802AEE20;
+        if (*p == result) {
             return 0;
-        } else if ((u32)*++table == result) {
+        }
+        p = p + 1;
+        if (*p == result) {
             return 1;
-        } else if ((u32)*++table == result) {
+        }
+        p = p + 1;
+        if (*p == result) {
             return 2;
-        } else if ((u32)*++table == result) {
+        }
+        p = p + 1;
+        if (*p == result) {
             return 3;
-        } else if ((u32)table[1] == result) {
+        }
+        if (p[1] == result) {
             return 4;
         }
     }
     return -1;
+}
+#pragma global_optimizer on
+void fn_800110B8(void) {
+ extern char lbl_80267DC8[];
+ extern u32 lbl_80367160[2];
+ extern void *lbl_80367168;
+ s32 Heap_Alloc(u32);
+ s32 fn_801053CC(s32);
+ void fn_80105284(s32, const char *, s32);
+ struct Object { struct VTable { s32 (*method[9])(); } *vtable; u32 value; } *self;
+ s32 object;
+ object = Heap_Alloc(0x10);
+ if (object) object = fn_801053CC(object);
+ lbl_802AEE20[1] = object;
+ fn_80105284(object,lbl_80267DC8,0);
+ object = Heap_Alloc(0x10);
+ if (object) object = fn_801053CC(object);
+ lbl_802AEE20[2] = object;
+ fn_80105284(object,lbl_80267DC8+0x12,0);
+ object = Heap_Alloc(0x10);
+ if (object) object = fn_801053CC(object);
+ lbl_802AEE20[3] = object;
+ fn_80105284(object,lbl_80267DC8+0x21,0);
+ object = Heap_Alloc(0x10);
+ if (object) object = fn_801053CC(object);
+ lbl_802AEE20[4] = object;
+ fn_80105284(object,lbl_80267DC8+0x33,0);
+ self = (struct Object *)lbl_80367160;
+ lbl_80367168 = self;
+ if (!self->value) fn_8006EEFC(&self->value,self->vtable->method[8](self));
 }
 
 void fn_800111FC(void) {

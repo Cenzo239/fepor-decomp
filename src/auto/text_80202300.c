@@ -135,30 +135,39 @@ f32 fn_80202370(s32 arg1, f64 farg0, f64 farg1) {
     }
 }
 
-f32 fn_80202420(void *arg1, f64 farg0, f64 farg1) {
+void fn_80202420(f32 *m, f32 *axis, f32 s, f32 c) {
     extern f32 lbl_8036BC40;
-    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f3, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f3, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f11, $f11, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f2, $f2, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f3, $f3, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f10, $f2, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f3, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_muls1 $f5, $f6, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f4, $f6, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f6, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_neg $f2, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f9, $f6, $f1, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f4, $f4, $f0, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f5, $f11, $f8, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f0, $f2, $f1, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f2, $f6, $f6, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f7, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f6, $f10, $f2, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f7, $f7, $f1, $f11 */);
-    return lbl_8036BC40 - lbl_8036BC40;
+    extern f32 lbl_8036BC44;
+    f32 x, y, z, xx, yy, zz, xy, xz, yz, len, inv;
+    f32 t, cs;
+
+    x = axis[0];
+    y = axis[1];
+    z = axis[2];
+    len = x * x + y * y + z * z;
+    inv = 1.0f / (f32)__frsqrte(len);
+    (void)lbl_8036BC40;
+    (void)lbl_8036BC44;
+    x *= inv;
+    y *= inv;
+    z *= inv;
+    t = 1.0f - c;
+    xx = t * x * x;
+    yy = t * y * y;
+    zz = t * z * z;
+    xy = t * x * y;
+    xz = t * x * z;
+    yz = t * y * z;
+    cs = c;
+    m[0] = xx + cs;
+    m[1] = xy - z * s;
+    m[2] = xz + y * s;
+    m[3] = xy + z * s;
+    m[4] = yy + cs;
+    m[5] = yz - x * s;
+    m[6] = xz - y * s;
+    m[7] = yz + x * s;
+    m[8] = zz + cs;
 }
 
 void fn_802024D0(s32 arg0, s32 arg1, f32 farg0) {

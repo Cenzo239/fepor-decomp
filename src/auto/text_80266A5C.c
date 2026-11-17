@@ -303,16 +303,17 @@ extern s32 lbl_8033E578[];
 
 #pragma peephole reset
 
+#pragma optimization_level 3
 void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
 {
     typedef struct OSContext {
         u32 gpr[32];
-        u32 cr;
-        u32 lr;
         u32 ctr;
+        u32 lr;
+        u32 cr;
         u32 xer;
-        f64 fpr[32];
         u32 fpscr_pad;
+        f64 fpr[32];
         u32 fpscr;
         u32 srr0;
         u32 srr1;
@@ -342,7 +343,7 @@ void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
         }
 
         cb = *(void (**)(s32))(entry + 0x38);
-        if (cb != 0) {
+        if (cb) {
             *(u32 *)(entry + 0x38) = 0;
             cb(arg0);
         }
@@ -358,7 +359,7 @@ void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
         }
     }
 }
-
+#pragma optimization_level reset
 void fn_80266B38(s32 arg0) {
     extern u8 lbl_803669A0[];
     void fn_8020AEC4(void *);

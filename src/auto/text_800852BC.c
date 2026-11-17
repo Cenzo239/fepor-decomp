@@ -1370,10 +1370,10 @@ void fn_800888A4(void *arg0) {
     extern void *gPadInput;
     extern f32 lbl_80369670, lbl_80369674, lbl_80369678;
     s32 sp8[3];
-    s32 *initial;
-    s32 *select;
-    u32 repeat;
     Menu888Entry (*base)[37];
+    s32 *select;
+    s32 *initial;
+    u32 repeat;
     u32 pressed, buttons;
     void *self;
     Menu888Entry *entry;
@@ -1386,78 +1386,94 @@ void fn_800888A4(void *arg0) {
     pressed = buttons & (M2C_FIELD(gPadInput, u32 *, 8) ^ buttons);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
-        Process_Goto(arg0,3);
-        Ui_PlaySeCue(gUiStrings+0x394,100);
+        Process_Goto(arg0, 3);
+        Ui_PlaySeCue(gUiStrings + 0x394, 100);
         return;
     }
     if (repeat & 0x02000002) {
-        Process_Goto(arg0,1);
+        Process_Goto(arg0, 1);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        Ui_PlaySeCue(gUiStrings+0x3A4,100);
+        Ui_PlaySeCue(gUiStrings + 0x3A4, 100);
         return;
     }
     if (repeat & 0x01000001) {
-        Process_Goto(arg0,1);
+        Process_Goto(arg0, 1);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        Ui_PlaySeCue(gUiStrings+0x3A4,100);
+        Ui_PlaySeCue(gUiStrings + 0x3A4, 100);
         return;
     }
     if (repeat & 0x08000008) {
-        Process_Goto(arg0,2);
+        Process_Goto(arg0, 2);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        Ui_PlaySeCue(gUiStrings+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings + 0x3C0, 100);
         return;
     }
     if (repeat & 0x04000004) {
-        Process_Goto(arg0,2);
+        Process_Goto(arg0, 2);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        Ui_PlaySeCue(gUiStrings+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings + 0x3C0, 100);
         return;
     }
     if ((repeat & 0x100) && M2C_FIELD(M2C_FIELD(self, void * *, 0x58), u32 *, 0x194) != 0) {
-        Process_Goto(arg0,2);
+        Process_Goto(arg0, 2);
         M2C_FIELD(self, s32 *, 0x20) = 0;
-        Ui_PlaySeCue(gUiStrings+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings + 0x3C0, 100);
         return;
     }
     if (pressed & 0x800) {
-        s32 init[3]={29,19,17};
-        select=init;
-        base=lbl_80288FE8;
-        M2C_FIELD(self, s16 *, 4)=1;
-        M2C_FIELD(self, s32 *, 0x1C)=select[M2C_FIELD(self, s8 *, 9)];
+        select = sp8;
+        initial = lbl_8026C7D0;
+        sp8[0] = initial[0];
+        sp8[1] = initial[1];
+        sp8[2] = initial[2];
+        base = lbl_80288FE8;
+        M2C_FIELD(self, s16 *, 4) = 1;
+        M2C_FIELD(self, s32 *, 0x1C) = select[M2C_FIELD(self, s8 *, 9)];
         goto check;
-        next:
-        row=(Menu888Entry *)((s32)base + M2C_FIELD(self, s8 *, 9)*0x2E4);
-        entry=&row[M2C_FIELD(self, s32 *, 0x1C)];
-        M2C_FIELD(self, s32 *, 0x1C)=entry->next;
-        check:
+    next:
+        row = (Menu888Entry *)((s32)base + M2C_FIELD(self, s8 *, 9) * 0x2E4);
+        entry = &row[M2C_FIELD(self, s32 *, 0x1C)];
+        M2C_FIELD(self, s32 *, 0x1C) = entry->next;
+    check:
         {
-            row=base[M2C_FIELD(self, s8 *, 9)];
-            entry=&row[M2C_FIELD(self, s32 *, 0x1C)];
-            type=entry->type;
-            if(type>=10 && type<=14) {
-                if (M2C_FIELD((u8 *)self+(type-10)*2, s16 *, 0x24) == -1) valid=0; else valid=1;
-            } else if(type>=2 && type<=9) {
-                if (M2C_FIELD(Unit_GetItemSlot(M2C_FIELD(self, void * *, 0x58),type-2), u32 *, 0) != 0) valid=1; else valid=0;
-            } else if(type>=15 && type<=22) {
-                if (M2C_FIELD((u8 *)self+(type-15)*4, u32 *, 0x38) == 0) valid=0; else valid=1;
-            } else valid=1;
-            if (!valid) goto next;
+            row = base[M2C_FIELD(self, s8 *, 9)];
+            entry = &row[M2C_FIELD(self, s32 *, 0x1C)];
+            type = entry->type;
+            if (type >= 10 && type <= 14) {
+                if (M2C_FIELD((u8 *)self + (type - 10) * 2, s16 *, 0x24) == -1)
+                    valid = 0;
+                else
+                    valid = 1;
+            } else if (type >= 2 && type <= 9) {
+                if (M2C_FIELD(Unit_GetItemSlot(M2C_FIELD(self, void * *, 0x58), type - 2), u32 *, 0) != 0)
+                    valid = 1;
+                else
+                    valid = 0;
+            } else if (type >= 15 && type <= 22) {
+                if (M2C_FIELD((u8 *)self + (type - 15) * 4, u32 *, 0x38) == 0)
+                    valid = 0;
+                else
+                    valid = 1;
+            } else
+                valid = 1;
+            if (!valid)
+                goto next;
         }
-        entry=&lbl_80288FE8[M2C_FIELD(self, s8 *, 9)][M2C_FIELD(self, s32 *, 0x1C)];
-        Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,gUiStrings+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
-        fn_8007DAC4(self,entry);
+        entry = &lbl_80288FE8[M2C_FIELD(self, s8 *, 9)][M2C_FIELD(self, s32 *, 0x1C)];
+        Ui_OpenUnitInfoText(gUnitInfoPopup, arg0, gUiStrings + 0x3E1, M2C_FIELD(entry, f32 *, 0), M2C_FIELD(entry, f32 *, 4));
+        fn_8007DAC4(self, entry);
         return;
     }
-    if(gBattleState[0x57]>=2) {
+    if (gBattleState[0x57] >= 2) {
         f32 lower = lbl_80369674;
-        M2C_FIELD(self, f32 *, 0x64) -= (f32)(s32)(M2C_FIELD(M2C_FIELD(gPadInput, void * *, 0), s8 *, 4)*lbl_80369670);
-        if(M2C_FIELD(self, f32 *, 0x64)<0.0f) M2C_FIELD(self, f32 *, 0x64)+=lbl_80369678;
+        M2C_FIELD(self, f32 *, 0x64) -= (f32)(s32)(M2C_FIELD(M2C_FIELD(gPadInput, void * *, 0), s8 *, 4) * lbl_80369670);
+        if (M2C_FIELD(self, f32 *, 0x64) < 0.0f)
+            M2C_FIELD(self, f32 *, 0x64) += lbl_80369678;
         {
-            f32 value=M2C_FIELD(self, f32 *, 0x64);
-            f32 upper=lbl_80369678;
-            if(value>upper) M2C_FIELD(self, f32 *, 0x64)=value-upper;
+            f32 value = M2C_FIELD(self, f32 *, 0x64);
+            f32 upper = lbl_80369678;
+            if (value > upper)
+                M2C_FIELD(self, f32 *, 0x64) = value - upper;
         }
     }
 }
@@ -1727,7 +1743,8 @@ void fn_80089554(void) {
 #pragma peephole on
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
-    extern u8 lbl_80289950[];
+    typedef struct { u8 data[0x58]; } S;
+    extern S lbl_80289950[1];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
@@ -1736,7 +1753,7 @@ void fn_800895B8(void) {
     void *tmp;
 
     base = lbl_80289950;
-    lbl_803674E0 = Process_Create(base, 7);
+    lbl_803674E0 = Process_Create(&lbl_80289950[0], 7);
     lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
     tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
@@ -1892,24 +1909,27 @@ void fn_80089970(void) {
 }
 
 void fn_80089980(s32 arg0) {
- extern f32 lbl_803696C8;
- extern void *lbl_803674EC;
- f32 value = (f32)arg0 / lbl_803696C8;
- u8 *ptr = (u8 *)lbl_803674EC;
- *(u16 *)(ptr+0x32) = 3;
- *(u16 *)(ptr+0x34) = 0;
- *(u16 *)(ptr+0x36) = (s32)value;
+    extern f32 lbl_803696C8;
+    extern void *lbl_803674EC;
+    s32 three = 3;
+    u8 *ptr = (u8 *)lbl_803674EC;
+    s32 zero = 0;
+    s32 result = (s32)((f32)arg0 / lbl_803696C8);
+    *(u16 *)(ptr + 0x32) = three;
+    *(u16 *)(ptr + 0x34) = zero;
+    *(u16 *)(ptr + 0x36) = result;
 }
 
-void fn_800899D4(s32 arg0) {
- extern f32 lbl_803696C8;
- extern void *lbl_803674EC;
- f32 value = (f32)arg0;
- f32 div = lbl_803696C8;
- u8 *ptr = (u8 *)lbl_803674EC;
- *(u16 *)(ptr+0x32)=1;
- *(u16 *)(ptr+0x34)=0;
- *(u16 *)(ptr+0x36)=(s32)(value/div);
+void fn_800899D4(s32 arg0)
+{
+    extern f32 lbl_803696C8;
+    extern void *lbl_803674EC;
+    u8 *ptr = (u8 *)lbl_803674EC;
+    f32 div = lbl_803696C8;
+
+    *(u16 *)(ptr + 0x32) = 1;
+    *(u16 *)(ptr + 0x34) = 0;
+    *(u16 *)(ptr + 0x36) = (u16)(s32)((f32)arg0 / div);
 }
 
 void fn_80089A28(void *arg0) {
@@ -2797,6 +2817,45 @@ void fn_8008B464(void *self, s32 x, s32 y) {
 void fn_8008BA50(s32 unused, s32 arg1) {
     void GXSetScissor(s32, s32, s32, s32);
     GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
+}
+
+void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    s32 Ui_LoadAtlasTex(s32, void *, s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
+    void *Msg_ResolveName(void *);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    void Text_Draw(s16, s16, s32, void *, ...);
+    extern s32 gUiAtlas;
+    extern f32 lbl_80369704;
+    extern f32 lbl_80369708;
+    struct { u8 buf[0x20]; u16 w; u16 h; } sp;
+    void *text;
+    u8 *texture = sp.buf;
+    register s32 atlas = gUiAtlas;
+    u16 tile = 0x18;
+    if (arg3) tile = 0x17;
+    Ui_LoadAtlasTex(atlas, texture, tile);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
+    Prim2D_Begin();
+    Prim2D_SetTex(sp.buf, 0x10);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect((f32)arg1, (f32)arg2, (f32)sp.w, (f32)sp.h);
+    Prim2D_EndPrim();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369708);
+    Prim2D_PrepareTex();
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+    text = Msg_ResolveName(*(void **)((u8 *)arg0 + 0x188));
+    Text_Draw((s16)((sp.w - Text_MeasureWidth(text, -1, lbl_80369704))/2), (s16)(arg2+2), 2, text);
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369704);
+    Prim2D_PrepareTex();
 }
 
 void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {

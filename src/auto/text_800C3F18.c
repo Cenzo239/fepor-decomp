@@ -2,6 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+#pragma global_optimizer off
 void fn_800C3F18(void) {
     void fn_8022C260(void *, void *, void *, s32, s32);
     void __register_global_object(void *, void (*)(void), void *);
@@ -10,16 +11,21 @@ void fn_800C3F18(void) {
     void fn_800C412C(void);
     void fn_800C40F4(u8 *);
     extern u8 lbl_803200A0[];
-    u32 base;
+    void *init;
+    void *dtor;
+    u8 *base;
     u8 *p;
     s32 i;
 
-    base = (u32)lbl_803200A0;
-    fn_8022C260((void *)(base + 0xC), Item_Init, Item_Destroy, 8, 0xC8);
-    __register_global_object((void *)(base + 0xC), fn_800C412C, (void *)(base + 0));
-    fn_8022C260((void *)(base + 0x64C), fn_800C40F4, 0, 0x18, 0x30);
+    init = Item_Init;
+    dtor = Item_Destroy;
+    base = lbl_803200A0;
+    fn_8022C260(base + 0xC, init, dtor, 8, 0xC8);
+    __register_global_object(base + 0xC, fn_800C412C, base + 0);
+    fn_8022C260(base + 0x64C, fn_800C40F4, NULL, 0x18, 0x30);
 
-    for (i = 6, p = (u8 *)(base + 0x64C); i != 0; i--, p += 0xC0) {
+    p = base + 0x64C;
+    for (i = 6; i != 0; i--) {
         p[0] = 0;
         p[1] = 0;
         p[0x13] = 0;
@@ -100,5 +106,7 @@ void fn_800C3F18(void) {
         p[0xBD] = 0x80;
         p[0xBC] = 0x80;
         p[0xBF] = 0xFF;
+        p += 0xC0;
     }
 }
+#pragma global_optimizer reset

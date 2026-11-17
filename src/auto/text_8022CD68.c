@@ -235,17 +235,17 @@ u32 fn_80204CE4(u32,u32,s32);
 s32 fn_80204D54(u32,u32);
 void fn_80204CD4(s32);
 void fn_80204C58(s32,void *);
-u32 lo, hi, start;
+u32 lo, hi;
 if (lbl_80366F28 == -1) {
 OSReport(lbl_80282AE8);
 OSReport(lbl_80282B20);
 lo=OSGetArenaLo();
 hi=OSGetArenaHi();
-start=fn_80204CE4(lo,hi,1);
-OSSetArenaLo(start);
-start=(start+31)&~31;
+lo=fn_80204CE4(lo,hi,1);
+OSSetArenaLo(lo);
+lo=(lo+31)&~31;
 hi &= ~31;
-fn_80204CD4(fn_80204D54(start,hi));
+fn_80204CD4(fn_80204D54(lo,hi));
 OSSetArenaLo(hi);
 }
 fn_80204C58(lbl_80366F28,arg0);
@@ -1743,41 +1743,77 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
   }
 }
 
-void fn_80231CC8(void *dst, const void *src, u32 size) {
-const u8 *sb;
-u8 *db;
-u32 *d;
-const u32 *s;
-u32 b,a;
-u32 n;
-sb=(const u8*)src-1;
-db=(u8*)dst-1;
-n=(-(u32)dst)&3;
-if(n) {
-size-=n;
-do { *++db=*++sb; } while(--n);
-}
-n=size>>5;
-s=(const u32*)(sb-3);
-d=(u32*)(db-3);
-if(n) {
-do {
-a=*++s; b=*++s; *++d=a;
-a=*++s; *++d=b;
-b=*++s; *++d=a;
-a=*++s; *++d=b;
-b=*++s; *++d=a;
-a=*++s; *++d=b;
-b=*++s; *++d=a;
-*++d=b;
-} while(--n);
-}
-n=(size>>2)&7;
-if(n) { do { *++d=*++s; } while(--n); }
-size &=3;
-sb=(const u8*)s+3;
-db=(u8*)d+3;
-if(size) { do { *++db=*++sb; } while(--size); }
+void fn_80231CC8(void *dst, const void *src, u32 size)
+{
+  const u8 *sb;
+  u8 *db;
+  u32 n;
+  const u32 *s;
+  u32 b;
+  u32 *d;
+  u32 a;
+  sb = ((const u8 *) src) - 1;
+  db = ((u8 *) dst) - 1;
+  n = (-((u32) dst)) & 3;
+  if (n)
+  {
+    size -= n;
+    do
+    {
+      *(++db) = *(++sb);
+    }
+    while (--n);
+  }
+  n = size >> 5;
+  if (b)
+  {
+  }
+  s = (const u32 *) (sb - 3);
+  d = (u32 *) (db - 3);
+  if (n)
+  {
+    do
+    {
+      a = *(++s);
+      b = *(++s);
+      *(++d) = a;
+      a = *(++s);
+      *(++d) = b;
+      b = *(++s);
+      *(++d) = a;
+      a = *(++s);
+      *(++d) = b;
+      b = *(++s);
+      *(++d) = a;
+      a = *(++s);
+      *(++d) = b;
+      b = *(++s);
+      *(++d) = a;
+      *(++d) = b;
+    }
+    while (--n);
+  }
+  n = size >> 2;
+  n = n & 7;
+  if (n)
+  {
+    do
+    {
+      *(++d) = *(++s);
+    }
+    while (--n);
+  }
+  size &= 3;
+  sb = ((const u8 *) s) + 3;
+  db = ((u8 *) d) + 3;
+  if (size)
+  {
+    do
+    {
+      *(++db) = *(++sb);
+    }
+    while ((--size) != 0);
+  }
 }
 
 void __stdio_atexit(void) {

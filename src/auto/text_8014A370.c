@@ -45,40 +45,24 @@ void *fn_8014A398(void) {
 }
 
 s32 fn_8014A3A8(void) {
-    extern M2C_UNK gFxChannels;
-    extern M2C_UNK gSeCueSlots;
-    u8 var_r28;
-    u8 var_r28_2;
-    u8 var_r30;
-    u8 var_r31;
-    void *temp_r29;
-    void *temp_r29_2;
-
-    var_r28 = 0;
-    do {
-        var_r30 = 0;
-        temp_r29 = &gFxChannels + (var_r28 * 0x30);
-        if ((M2C_FIELD(temp_r29, u8 *, 0xC) & 1) && (M2C_FIELD(M2C_FIELD(temp_r29, void **, 8), u8 (**)(void *), 8)(temp_r29) != 0)) {
-            var_r30 = 1;
-        }
-        if (var_r30 != 0) {
-            M2C_FIELD(M2C_FIELD(temp_r29, void **, 8), M2C_UNK (**)(void *), 0x10)(temp_r29);
-        }
-        var_r28 += 1;
-    } while ((s32) var_r28 < 4);
-    var_r28_2 = 0;
-    do {
-        var_r31 = 0;
-        temp_r29_2 = &gSeCueSlots + (var_r28_2 * 0x30);
-        if ((M2C_FIELD(temp_r29_2, u8 *, 0xC) & 1) && (M2C_FIELD(M2C_FIELD(temp_r29_2, void **, 8), u8 (**)(void *), 8)(temp_r29_2) != 0)) {
-            var_r31 = 1;
-        }
-        if (var_r31 != 0) {
-            M2C_FIELD(M2C_FIELD(temp_r29_2, void **, 8), M2C_UNK (**)(void *), 0x10)(temp_r29_2);
-        }
-        var_r28_2 += 1;
-    } while ((s32) var_r28_2 < 0x1C);
-    return 0;
+extern u8 gFxChannels[];
+extern u8 gSeCueSlots[];
+s32 i;
+u8 *p;
+u8 active;
+for(i=0;i<4;i++) {
+p=gFxChannels+(u8)i*0x30;
+active=0;
+if((p[12]&1) && (*(u8 (**)(void *))(*(u8 **)(p+8)+8))(p)) active=1;
+if(active) (*(void (**)(void *))(*(u8 **)(p+8)+16))(p);
+}
+for(i=0;i<28;i++) {
+p=gSeCueSlots+(u8)i*0x30;
+active=0;
+if((p[12]&1) && (*(u8 (**)(void *))(*(u8 **)(p+8)+8))(p)) active=1;
+if(active) (*(void (**)(void *))(*(u8 **)(p+8)+16))(p);
+}
+return 0;
 }
 
 void *fn_8014A4C8(void) {

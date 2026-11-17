@@ -102,19 +102,19 @@ void *fn_8009FAAC(void) {
 }
 
 s32 fn_8009FABC(s32 arg0, s32 arg1, void *arg2) {
-void *Map_GetCursorUnit(void);
+void *fn_800AA794(void);
 void *fn_80105C5C(s32, u8);
-void Status_Set(s32, u8);
+void fn_80105CEC(s32, u8);
 s32 src;
 s32 dst;
 s32 idx;
 s32 count;
 s32 target;
 void *entry;
-dst = (s32)Map_GetCursorUnit();
+dst = (s32)fn_800AA794();
 target = *(u8 *)((u8 *)arg2 + 0x3A);
 count = 0;
-src = (s32)Map_GetCursorUnit();
+src = (s32)fn_800AA794();
 for (idx = count; idx < 0x62; ++idx) {
 entry = fn_80105C5C(src + 0x1BC, (u8)idx);
 if (entry != NULL) {
@@ -127,7 +127,7 @@ goto found;
 }
 entry = NULL;
 found:
-if (entry != NULL) Status_Set(dst + 0x1BC, *(u8 *)((u8 *)entry + 0x18));
+if (entry != NULL) fn_80105CEC(dst + 0x1BC, *(u8 *)((u8 *)entry + 0x18));
 return 0;
 }
 
@@ -394,14 +394,12 @@ void *fn_800A010C(void) {
 #pragma optimization_level 3
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
-    s32 v;
+    s32 v = 2;
 
     a = (u8)lbl_80366E25;
-    v = 2;
     b = a ^ 1;
     lbl_80366E25 = b;
-    if ((u8)b == 0) {
-    } else {
+    if ((u8)b != 0) {
         v = 0;
     }
     *(u8 *)((char *)c + 0x39) = v;
@@ -1176,6 +1174,7 @@ char *fn_800A0E24(void) {
     return gItemMenuTextBuf;
 }
 
+#pragma optimization_level 3
 char *fn_800A101C(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
@@ -1198,7 +1197,7 @@ char *fn_800A101C(void) {
     sprintf(buf, arg2, var_r5);
     return gItemMenuTextBuf;
 }
-
+#pragma optimization_level reset
 s32 fn_800A1078(void) {
     extern void *gPadInput;
     extern u8 gBattleState[];
@@ -2354,17 +2353,27 @@ s32 fn_800A320C(void) {
 }
 
 s32 fn_800A3278(void *a, void *b, void *arg) {
- extern u8 gBattleState[]; extern u8 lbl_80367558;
- void fn_800BDB54(void *,s32); void fn_800BDB78(void *,s32); u8 fn_800BDB9C(void *,s32);
- s32 index; void *base; s32 row;
- base=gBattleState+0xb4;
- row=(s8)lbl_80367558 << 4;
- index=*((u8 *)arg+0x3a)-1;
- index=row+index;
- if(*(u32 *)((u8 *)base+(index<<2))==0) return 0;
- if(fn_800BDB9C(base,index)) fn_800BDB54(base,index);
- else fn_800BDB78(base,index);
- return 0;
+    extern u8 gBattleState[];
+    extern u8 lbl_80367558;
+    void fn_800BDB54(void *, s32);
+    void fn_800BDB78(void *, s32);
+    u8 fn_800BDB9C(void *, s32);
+    s32 index;
+    void *base;
+    s32 col;
+    s32 row;
+
+    col = *((u8 *)arg + 0x3a);
+    base = gBattleState + 0xb4;
+    row = (s8)lbl_80367558;
+    index = (row << 4) + col - 1;
+
+    if (*(u32 *)((u8 *)base + (index << 2)) == 0) {
+        return 0;
+    }
+    if (fn_800BDB9C(base, index)) fn_800BDB54(base, index);
+    else fn_800BDB78(base, index);
+    return 0;
 }
 
 void fn_800A3314(s32 arg0,s32 arg1,void *item) {
@@ -2546,9 +2555,9 @@ void fn_800A3770(void) {
     extern u8 gMenuCmdStrings[];
     extern s32 lbl_80312290[];
     extern s32 lbl_80367520;
+    s32 item;
     s32 *arr;
     u8 *base;
-    s32 item;
     s32 count;
     s32 i;
     s32 idx;
@@ -2556,8 +2565,8 @@ void fn_800A3770(void) {
     fn_8005B918(gMenuCmdStrings + 0x7E0);
     count = fn_8005B8CC();
     lbl_80367520 = 0;
-    base = gMenuCmdStrings;
     arr = lbl_80312290;
+    base = gMenuCmdStrings;
     for (i = 0; i < count; i++) {
         item = fn_8005B8AC(i);
         if ((u8)fn_8005C0AC(item, base + 0x7E6) != 0) {

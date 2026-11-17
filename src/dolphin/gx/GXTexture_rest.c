@@ -298,29 +298,28 @@ typedef union {
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 #pragma peephole off
-void fn_8022462C(s32 arg0) {
+void fn_8022462C(u8 arg0) {
+    u32 *ptr;
     u32 value;
-    u8 *gx;
-    gx = (u8 *)__GXData;
-    value = *(u32 *)(gx + 0x1D0);
-    value = __rlwimi(value, (u32)arg0, 3, 28, 28);
+    ptr = (u32 *)__GXData;
+    value = ptr[0x1D0 / 4];
+    value = __rlwimi(value, arg0, 3, 28, 28);
     *(u8 *)0xCC008000 = 0x61;
     *(u32 *)0xCC008000 = value;
-    *(u32 *)(gx + 0x1D0) = value;
-    *(u16 *)(gx + 2) = 0;
+    ptr[0x1D0 / 4] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 #pragma peephole off
-void fn_80224658(s32 arg0) {
-  u8 cmd;
-  u8 *gx;
-  u32 value;
-  gx = (u8 *)__GXData;
-  cmd = 0x61;
-  value = __rlwimi(*(u32 *)(gx + 0x1d0), arg0, 4, 27, 27);
-  *(u8 *)0xCC008000 = cmd;
-  *(u32 *)0xCC008000 = value;
-  *(u32 *)(gx + 0x1d0) = value;
-  *(u16 *)(gx + 2) = 0;
+void fn_80224658(u8 arg0) {
+    u32 *ptr;
+    u32 value;
+    ptr = (u32 *)__GXData;
+    value = ptr[0x1D0 / 4];
+    value = __rlwimi(value, arg0, 4, 27, 27);
+    *(u8 *)0xCC008000 = 0x61;
+    *(u32 *)0xCC008000 = value;
+    ptr[0x1D0 / 4] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 #pragma peephole on
 void GXSetZMode(u8 arg0, s32 arg1, u8 arg2)

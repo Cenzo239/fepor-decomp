@@ -1690,31 +1690,30 @@ void fn_801F5D08(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801F5D14(void *arg0) {
-    s32 GBAGetStatus(void *, u8 *);
+    s32 fn_802655A8(void *, u8 *);
     void fn_80266840(void *, void *, u8 *);
-    void DebugPrint(void *, ...);
-    void Process_Goto(void *, s32);
-    void Process_ClearFunc(void *);
-    extern u16 gCardLinkStr[18];
+    void fn_800056CC(void *, ...);
+    void fn_8000C070(void *, s32);
+    void fn_8000C188(void *);
+    extern u16 lbl_80280B58[18];
     s32 ret;
 
-    ret = GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
+    ret = fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
     if (ret == 0) {
-        ret = *(u8 *)((u8 *)arg0 + 0x4B);
-        if ((ret & 0x30) != 0x30) {
-            Process_Goto(arg0, 2);
+        if ((*(u8 *)((u8 *)arg0 + 0x4B) & 0x30) != 0x30) {
+            fn_8000C070(arg0, 2);
             return;
         }
     } else if ((u32)ret != 0x38U) {
         return;
     }
     fn_80266840(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x40, (u8 *)arg0 + 0x4B);
-    DebugPrint((u8 *)gCardLinkStr + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
+    fn_800056CC((u8 *)lbl_80280B58 + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
     if (*(u32 *)((u8 *)arg0 + 0x40) + 0x10000 != 0xFFFF) {
-        Process_Goto(arg0, 3);
+        fn_8000C070(arg0, 3);
         *(u8 *)((u8 *)arg0 + 0x4C) = 3;
     } else {
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
 }
 #pragma global_optimizer on
@@ -1807,7 +1806,8 @@ void fn_801F5FE0(void *arg0) {
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
     u8 *self;
-    u32 v;
+    void *v;
+    s32 d0, d1, d2, d3;
     char *fmt;
 
     self = (u8 *)arg0;
@@ -1828,9 +1828,13 @@ void fn_801F5FE0(void *arg0) {
     if (fn_80266840(*(void **)(self + 0x38), self + 0x40, self + 0x4B) != 0) {
         return;
     }
-    v = *(u32 *)(self + 0x40);
-    fmt = (char *)gCardLinkStr;
-    DebugPrint(fmt + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
+    v = *(void **)(self + 0x40);
+    d0 = (u32)v >> 24;
+    d1 = ((u32)v >> 16) & 0xFF;
+    fmt = (char *)gCardLinkStr + 0x164;
+    d2 = ((u32)v >> 8) & 0xFF;
+    d3 = (u32)v & 0xFF;
+    DebugPrint(fmt, d0, d1, d2, d3);
     *(s16 *)(self + 0x48) = 0;
     Process_ClearFunc(self);
 }
@@ -1880,13 +1884,12 @@ void fn_801F6170(void *arg0)
     void Process_ClearFunc(void *);
     u32 local[4];
     u32 tmp[4];
-    u32 *src;
+    u32 *const src = lbl_80280B48;
     s32 i;
     u32 *p;
 
     *(u8 *)((u8 *)arg0 + 0x4C) = 1;
 
-    src = lbl_80280B48;
     local[0] = src[0];
     local[1] = src[1];
     local[2] = src[2];
@@ -1894,7 +1897,7 @@ void fn_801F6170(void *arg0)
 
     p = local;
     i = 0;
-    do {
+    while (i < 4) {
         if (fn_8023C410(*p) == 0x40000) {
             tmp[0] = lbl_80280B48[0];
             tmp[1] = lbl_80280B48[1];
@@ -1906,10 +1909,10 @@ void fn_801F6170(void *arg0)
             Process_ClearFunc(arg0);
             return;
         }
-        i += 1;
-        p += 1;
-    } while (i < 4);
-    (void)src;
+        i++;
+        p++;
+        if (src == lbl_80280B48) { (void)0; }
+    }
 }
 #pragma global_optimizer reset
 void fn_801F6260(void *arg0) {
@@ -3638,27 +3641,24 @@ void fn_801F9BD8(void *arg0) {
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA90;
     extern f32 lbl_8036BA8C;
-    void *self;
-    void *a;
+    u8 *self;
     s32 idx;
+    void *a;
     void *b;
     s8 v;
-    u8 *row;
 
-    self = arg0;
-    v = *(s8 *)((u8 *)arg0 + 0x54);
+    self = (u8 *)arg0;
+    v = *(s8 *)(self + 0x54);
     if (v > 1) {
         idx = (v & 1) << 3;
-        row = (u8 *)self + idx;
-        a = *(void **)(row + 0x58);
+        a = *(void **)(self + idx + 0x58);
         Sound_FadeToVol(a, 0x18);
         Sound_TweenParam(a, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
-        row = (u8 *)self + idx;
-        b = *(void **)(row + 0x5C);
+        b = *(void **)(self + idx + 0x5C);
         Sound_FadeToVol(b, 0x18);
         Sound_TweenParam(b, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
     }
-    *(u16 *)((u8 *)self + 0x28) = 0x18;
+    *(u16 *)(self + 0x28) = 0x18;
 }
 
 void fn_801F9C8C(void *arg0) {
@@ -3913,12 +3913,12 @@ void fn_801FA478(void *arg0) {
 void fn_801FA4B8(s32 arg0, s32 arg1) {
     extern u8 lbl_8029B2F4[];
     extern f32 lbl_8036BA00;
-    void *Process_Create(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     void *temp;
-    f32 f;
     s32 zero;
+    f32 f;
 
-    temp = Process_Create(lbl_8029B2F4, arg1);
+    temp = fn_8000CAF0(lbl_8029B2F4, arg1);
     if (temp != NULL) {
         zero = 0;
         f = lbl_8036BA00;
@@ -4820,6 +4820,7 @@ u32 fn_801FB9CC(void *arg0, u16 arg1) {
 }
 
 #pragma opt_common_subs off
+#pragma global_optimizer off
 s32 fn_801FB9E0(u8 *arg0)
 {
     u16 fn_802072A0(s32);
@@ -4869,7 +4870,7 @@ s32 fn_801FB9E0(u8 *arg0)
         return var_r31;
     }
 }
-
+#pragma global_optimizer reset
 s32 fn_801FBAD4(u8 *arg0) {
     u16 fn_802072A0(s32);
     void *fn_801FBF98(void *,void *,u16 *,u32 (*)(void *,u16));

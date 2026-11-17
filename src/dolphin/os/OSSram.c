@@ -183,6 +183,40 @@ EXIUnlock(0);
 return !error;
 }
 
+void __OSInitSram(void) {
+s32 EXILock(s32,s32,void *);
+s32 EXISelect(s32,s32,s32);
+s32 EXIUnlock(s32);
+s32 EXIImm(s32,void *,s32,s32,s32);
+s32 EXISync(s32);
+s32 EXIDma(s32,void *,s32,s32,s32);
+s32 EXIDeselect(s32);
+u16 OSGetGbsMode(void);
+void OSSetGbsMode(u16);
+s32 command;
+register u8 *scb;
+s32 result=0;
+scb=(u8 *)Scb_80339420;
+*(s32 *)(scb+0x44)=0;
+*(s32 *)(scb+0x48)=0;
+DCInvalidateRange(scb,0x40);
+if(!EXILock(0,1,0)) { result=0; }
+else if(!EXISelect(0,1,3)) { EXIUnlock(0); }
+else {
+command=0x20000100;
+result=!EXIImm(0,&command,4,1,0);
+result|=!EXISync(0);
+result|=!EXIDma(0,scb,0x40,0,0);
+result|=!EXISync(0);
+result|=!EXIDeselect(0);
+EXIUnlock(0);
+result=!result;
+}
+*(s32 *)(scb+0x4C)=result;
+*(s32 *)(scb+0x40)=0x40;
+OSSetGbsMode(OSGetGbsMode());
+}
+
 void *__OSLockSram(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);

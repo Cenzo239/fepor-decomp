@@ -341,48 +341,43 @@ void fn_8026649C(s32 arg0, s32 arg1)
     *(s32 *)(entry + 0x20) = result;
 }
 
+#pragma global_optimizer off
 void fn_802665F8(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
     s32 fn_80266904(s32, void *, void *, void *);
     void fn_802666F4(void);
 
-    u8 *entry;
-    u8 *queue;
+    u8 *base;
+    u8 *q;
     s32 result;
-    u32 value;
-    u32 checksum;
-    void (*callback)(s32, s32);
+    u32 v;
+    void (*cb)(s32, s32);
+    u8 dummy[8];
 
-    entry = lbl_803669A0 + (arg0 << 8);
-    queue = entry + 0x40;
+    base = &lbl_803669A0[arg0 << 8];
+    q = base + 0x40;
     result = arg1;
 
     if (result == 0) {
-        value = *(u32 *)(queue + 0x60);
-        checksum = ((u32)queue[0x1B] ^ (value >> 24))
-                 | ((u32)queue[0x1A] ^ (value >> 16))
-                 | ((u32)queue[0x19] ^ (value >> 8))
-                 | ((u32)queue[0x18] ^ value);
-        if ((checksum << 24) != 0) {
+        v = *(u32 *)(q + 0x60);
+        if (((q[0x1B] ^ (v >> 24)) | (q[0x1A] ^ (v >> 16)) | (q[0x19] ^ (v >> 8)) | (q[0x18] ^ v)) << 24) {
             result = 3;
         } else {
-            result = fn_80266904(arg0, queue + 0x18, *(void **)(queue + 0x10), fn_802666F4);
+            result = fn_80266904(arg0, q + 0x18, *(void **)(q + 0x10), fn_802666F4);
         }
         if (result != 0) {
-            *(u32 *)(queue + 0x2C) = 0;
-            *(u32 *)(queue + 0x28) = 0;
-            callback = *(void (**)(s32, s32))(queue + 0x14);
-            if (callback != 0) {
-                *(u32 *)(queue + 0x14) = 0;
-                callback(arg0, result);
+            *(u32 *)(q + 0x2C) = 0;
+            *(u32 *)(q + 0x28) = 0;
+            if ((cb = *(void (**)(s32, s32))(q + 0x14)) != 0) {
+                *(u32 *)(q + 0x14) = 0;
+                (*cb)(arg0, result);
             }
         }
     }
-    *(s32 *)(entry + 0x20) = result;
+    *(s32 *)(base + 0x20) = result;
 }
-
-#pragma global_optimizer off
+#pragma global_optimizer on
 void fn_802666F4(s32 arg0, void *arg1)
 {
     extern u8 lbl_803669A0[];

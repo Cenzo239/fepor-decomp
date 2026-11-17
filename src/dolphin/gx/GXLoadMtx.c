@@ -208,6 +208,7 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 #pragma peephole on
 
+#pragma optimization_level 3
 void fn_80224CF0(f32 *arg0)
 {
     u8 *gx;
@@ -216,7 +217,7 @@ void fn_80224CF0(f32 *arg0)
     f64 c;
     f64 *dst;
     u32 flag;
-    u32 *fifo;
+    register volatile u32 *fifo;
 
     flag = (0.0f == arg0[0]) ? 0 : 1;
 
@@ -232,15 +233,15 @@ void fn_80224CF0(f32 *arg0)
     dst[1] = b;
     dst[2] = c;
 
-    fifo = (u32 *)0xCC008000;
-    *(u8 *)fifo = 0x10;
+    fifo = (volatile u32 *)0xCC008000;
+    *(volatile u8 *)fifo = 0x10;
     *fifo = 0x61020;
 
-    *(f64 *)fifo = dst[0];
-    *(f64 *)fifo = dst[1];
-    *(f64 *)fifo = dst[2];
+    *(volatile f64 *)fifo = dst[0];
+    *(volatile f64 *)fifo = dst[1];
+    *(volatile f64 *)fifo = dst[2];
 
     *fifo = *(u32 *)(gx + 0x4D8);
     *(u16 *)(gx + 2) = 1;
 }
-
+#pragma optimization_level reset

@@ -317,7 +317,7 @@ s64 fn_80266D70(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return ((s64)old30 << 32) | (u32)old34;
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 3
 void fn_80266D94(void *arg0)
 {
     extern u8 lbl_803669A0[];
@@ -332,21 +332,21 @@ void fn_80266D94(void *arg0)
     u8 *entry;
 
     p = lbl_803669A0;
-    if ((u8 *)arg0 == p + 0xA8) {
+    if (p + 0xA8 == (u8 *)arg0) {
         index = 0;
         goto found;
     }
     p = p + 0x100;
-    if ((u8 *)arg0 == p + 0xA8) {
+    if (p + 0xA8 == (u8 *)arg0) {
         index = 1;
         goto found;
     }
-    if ((u8 *)arg0 == p + 0x1A8) {
+    if (p + 0x1A8 == (u8 *)arg0) {
         index = 2;
         goto found;
     }
     p = p + 0x100;
-    if ((u8 *)arg0 == p + 0x1A8) {
+    if (p + 0x1A8 == (u8 *)arg0) {
         index = 3;
         goto found;
     }
@@ -362,7 +362,7 @@ found:
         }
     }
 }
-#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_80266E70(void *arg0)
 {
     extern u8 lbl_803669A0[];
@@ -372,7 +372,7 @@ void fn_80266E70(void *arg0)
     void fn_80265CB4(s32, s32);
 
     u8 *base;
-    s32 id;
+    register s32 id;
 
     base = lbl_803669A0;
     if (base + 0xA8 == arg0) {
@@ -396,4 +396,4 @@ void fn_80266E70(void *arg0)
     }
     fn_80265CB4(id, 0);
 }
-
+#pragma opt_strength_reduction reset

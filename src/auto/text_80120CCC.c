@@ -135,17 +135,17 @@ void fn_80120F94(void)
 void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *Process_Find(void *);
     void Process_Unlink(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void *fn_8007C378(void *);
     void strcpy(char *, char *);
-    u8 Text_MeasureWidth(void *, s32, f32);
-    extern u8 lbl_80290200[];
+    u8 Text_MeasureWidth(void *, f32, s32);
+    extern u8 gUiTooltipProc[];
     extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
     void *obj;
     f32 scale;
 
-    obj = Process_Find(lbl_80290200);
+    obj = Process_Find(gUiTooltipProc);
     if (obj) {
         if (*(void **)((u8 *)obj + 0x44) == arg0) {
             if (*(s16 *)((u8 *)obj + 0x48) == arg1) {
@@ -159,15 +159,15 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     if (gUiPanelFlags & 0x40) {
         return;
     }
-    obj = fn_8000CAF0(lbl_80290200, arg3);
+    obj = Process_Create(gUiTooltipProc, arg3);
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
     scale = lbl_8036A268;
     *(s16 *)((u8 *)obj + 0x4A) = arg2;
-    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, scale);
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, scale, -1);
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
 void Ui_DrawTooltip(void *tip) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
@@ -291,24 +291,26 @@ void fn_801213EC(void *arg0) {
 #pragma opt_unroll off
 #pragma opt_common_subs off
 void fn_80121414(void) {
-extern u8 lbl_8032BDE8[];
-u32 i;
-s32 ctr;
-i=0;
-*(u32 *)(lbl_8032BDE8+0x4000)=i;
-*(u32 *)(lbl_8032BDE8+0x4004)=i;
-lbl_8032BDE8[0x400c]=i;
-for(;i<256;) {
-lbl_8032BDE8[(u8)(i+0x100)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x101)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x102)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x103)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x104)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x105)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x106)<<6]=0;
-lbl_8032BDE8[(u8)(i+0x107)<<6]=0;
-i+=8;
-}}
+    extern u8 lbl_8032BDE8[];
+    s32 i;
+    s32 ctr;
+
+    i = 0;
+    *(u32 *)(lbl_8032BDE8 + 0x4000) = i;
+    *(u32 *)(lbl_8032BDE8 + 0x4004) = i;
+    *(u8 *)(lbl_8032BDE8 + 0x400C) = i;
+    for (ctr = 0x20; ctr != 0; ctr--) {
+        lbl_8032BDE8[(u8)(i + 0x100) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x101) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x102) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x103) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x104) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x105) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x106) << 6] = 0;
+        lbl_8032BDE8[(u8)(i + 0x107) << 6] = 0;
+        i += 8;
+    }
+}
 #pragma opt_common_subs reset
 #pragma opt_unroll reset
 void fn_80121630(void* arg0)
@@ -844,36 +846,50 @@ void TalkUi_KeyWait2Proc(void *arg0) {
 }
 
 void fn_801225D4(void *arg0) {
-extern s32 gUiInputFlags;
-extern u16 gUiPanelFlags;
-extern u8 lbl_80290298[];
-void *Process_CreateChild(void *);
-u8 *obj=arg0;
-s32 diff;
-gUiPanelFlags &= ~0x200;
-if(gUiInputFlags & 3) {
-s32 i;
-u8 *p;
-u8 zero;
-i=0; p=obj; zero=i;
-for(;i<(s8)obj[0x45];p+=4,i++) {
-void *ptr=*(void **)(p+0x30);
-if(ptr) { *(u8 *)ptr=zero; *(void **)((u8 *)ptr+0x40)=ptr; }
-}
-obj[0x46]=0; obj[0x47]=0; obj[0x48]=0;
-} else {
-diff=(s8)obj[0x47]+1-(s8)obj[0x46];
-if(diff) {
-u8 *entry;
-if(diff>4) diff=4;
-entry=Process_CreateChild(lbl_80290298);
-*(s32 *)(entry+0x38)=diff*obj[0x49];
-{ s32 t=(s8)obj[0x44]; t*=diff; *(s32 *)(entry+0x34)=t; }
-*(void **)(entry+0x30)=obj;
-*(s16 *)(entry+0x28)=*(s32 *)(entry+0x38);
-*(s32 *)(entry+0x3c)=1;
-}
-}
+    extern s32 gUiInputFlags;
+    extern u16 gUiPanelFlags;
+    extern u8 lbl_80290298[];
+    void *Process_CreateChild(void *);
+    u8 *obj = arg0;
+    s32 rem;
+
+    gUiPanelFlags &= ~0x200;
+    if (gUiInputFlags & 3) {
+        s32 i;
+        u8 *p;
+        s32 zero;
+        i = 0;
+        p = obj;
+        zero = i;
+        for (; i < (s8)obj[0x45]; p += 4, i++) {
+            void *ptr = *(void **)(p + 0x30);
+            if (ptr) {
+                *(u8 *)ptr = zero;
+                *(void **)((u8 *)ptr + 0x40) = ptr;
+            }
+        }
+        obj[0x46] = 0;
+        obj[0x47] = 0;
+        obj[0x48] = 0;
+    } else {
+        rem = (s8)obj[0x47] + 1 - (s8)obj[0x46];
+        if (rem) {
+            u8 *entry;
+            if (rem > 4) {
+                rem = 4;
+            }
+            entry = Process_CreateChild(lbl_80290298);
+            *(s32 *)(entry + 0x38) = rem * obj[0x49];
+            {
+                s32 t = (s8)obj[0x44];
+                t *= rem;
+                *(s32 *)(entry + 0x34) = t;
+            }
+            *(void **)(entry + 0x30) = obj;
+            *(s16 *)(entry + 0x28) = *(s32 *)(entry + 0x38);
+            *(s32 *)(entry + 0x3c) = 1;
+        }
+    }
 }
 
 void fn_801226D0(void *arg0)
@@ -954,49 +970,41 @@ void fn_80122780(void *arg0)
 }
 
 extern struct efUnit* gUiPanelFlags;
-void fn_8012282C(struct efUnit* arg0)
-{
-    struct efUnit* temp_r5;
-    if (arg0 != NULL)
-    {
-        if (arg0->field_0x24 != NULL)
-        {
-            arg0->field_0x24 = NULL;
+void fn_8012282C(struct efUnit* arg0) {
+#pragma peephole off
+    #pragma dont_inline on
+    void UiPanel_PollSkip(u16 *);
+    #pragma dont_inline reset
+    extern u32 gUiInputFlags;
+    extern f32 lbl_8036A2B0;
+    void Process_Unlink(void *);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    s32 i;
+    u8 *p;
+    u8 *walk;
+    u8 *entry;
+    UiPanel_PollSkip((u16 *)&gUiPanelFlags);
+    if ((gUiInputFlags & 3) || (*(u16 *)&gUiPanelFlags & 0x400)) {
+        if (*(s32 *)((u8 *)arg0 + 0x3c)) {
+            p = *(u8 **)((u8 *)arg0 + 0x30);
+            for (i = 0, walk = p; i < *(s8 *)(p + 0x45); walk += 4, i++) {
+                entry = *(u8 **)(walk + 0x30);
+                if (entry) { entry[0] = 0; *(u8 **)(entry + 0x40) = entry; }
+            }
+            p[0x46] = 0; p[0x47] = 0; p[0x48] = 0;
+        } else {
+            p = *(u8 **)((u8 *)arg0 + 0x30);
+            entry = ((u8 **)(p + 0x30))[*(s8 *)(p + 0x46) % *(s8 *)(p + 0x45)];
+            entry[0] = 0; *(u8 **)(entry + 0x40) = entry;
+            p[0x46]++; p[0x48] = 0;
         }
-        if (arg0->field_0x1C != NULL)
-        {
-            arg0->field_0x1C = NULL;
-        }
-        if (arg0->field_0x18 != NULL)
-        {
-            arg0->field_0x18 = NULL;
-        }
-        
-        temp_r5 = arg0->field_0x18;
-        if (temp_r5 == NULL)
-        {
-            return;
-        }
-        
-        if (arg0->field_0x24 != NULL)
-        {
-            // No-op
-        }
-        
-        arg0->field_0x1C = NULL;
-        arg0->field_0x18 = temp_r5;
-        
-        if (temp_r5 == NULL)
-        {
-            return;
-        }
-        
-        // Additional logic for handling the units, similar to UiPanel_PollSkip
-        // but with additional checks and assignments
-        
-        // Placeholder structure that matches the target assembly
-        // This is an approximation of what might be needed
+        Process_Unlink(arg0);
+    } else {
+        (*(u8 **)((u8 *)arg0 + 0x30))[0x48] = (s32)Math_Ease(0,
+        (f32)*(s32 *)((u8 *)arg0 + 0x34), lbl_8036A2B0,
+        (f32)*(s16 *)((u8 *)arg0 + 0x28), (f32)*(s32 *)((u8 *)arg0 + 0x38));
     }
+#pragma peephole reset
 }
 
 extern u8 lbl_80290288[16];
@@ -1180,40 +1188,44 @@ void *fn_80122E80(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma use_lmw_stmw on
 void fn_80122F04(void *arg0, void *arg1) {
-    M2C_UNK Effect_SetPos(s32, f32, f32, f32);
-    void *fn_8005397C(M2C_UNK);
-    M2C_UNK String_CStr(s32);
+    void Effect_SetPos(void *, f32, f32, f32);
+    void *fn_8005397C(void *, s32);
+    void *String_CStr(s32);
     extern f32 lbl_8036A2C0;
     extern f32 lbl_8036A2C4;
-    f32 temp_f30;
-    f32 temp_f31;
-    s32 temp_r5;
-    s32 var_r26;
-    s32 var_r29;
-    void *temp_r30;
+    extern f64 lbl_8036A2C8;
+    void *self;
+    void *list;
+    f32 f30;
+    f32 f31;
+    s32 i;
+    s32 off;
+    void *obj;
 
-    temp_f30 = lbl_8036A2C0;
-    temp_f31 = lbl_8036A2C4;
-    var_r29 = 0;
-    var_r26 = 0;
-loop_2:
-    if (var_r29 < (s32) M2C_FIELD(arg1, s32 *, 4)) {
-        String_CStr(M2C_FIELD(arg1, s32 *, 8) + var_r26);
-        temp_r30 = fn_8005397C(4);
-        temp_r5 = M2C_FIELD(arg0, s32 *, 0x4C) + 0xC;
-        Effect_SetPos(temp_r5, (f32) M2C_FIELD(arg0, s32 *, 0x48), (f32) temp_r5, (f32) (M2C_FIELD(arg0, s32 *, 0x44) + 1));
-        var_r29 += 1;
-        var_r26 += 0xC;
-        M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x30), f32 *, 0x1C) = (f32) (s16) (M2C_FIELD(arg0, s32 *, 0x44) + 1);
-        M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x30), f32 *, 0x18) = temp_f30;
-        M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x30), f32 *, 0x20) = temp_f31;
-        goto loop_2;
+    self = arg0;
+    list = arg1;
+    f30 = lbl_8036A2C0;
+    f31 = lbl_8036A2C4;
+    i = 0;
+    off = 0;
+    (void)lbl_8036A2C8;
+    while (i < *(s32 *)((u8 *)list + 4)) {
+        obj = fn_8005397C(String_CStr(*(s32 *)((u8 *)list + 8) + off), 4);
+        Effect_SetPos(obj,
+                      (f32)*(s32 *)((u8 *)self + 0x48),
+                      (f32)(*(s32 *)((u8 *)self + 0x4C) + 0xC),
+                      (f32)(*(s32 *)((u8 *)self + 0x44) + 1));
+        i += 1;
+        off += 0xC;
+        *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x1C) =
+            (f32)(s16)(*(s32 *)((u8 *)self + 0x44) + 1);
+        *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x18) = f30;
+        *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x20) = f31;
     }
 }
-
-#pragma use_lmw_stmw on
-#pragma dont_reuse_strings on
+#pragma use_lmw_stmw reset
 void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8005397C(void *, s32);
@@ -3153,6 +3165,78 @@ void fn_80126A98(s32 arg0) {
         break;
     }
     Process_ClearFunc(arg0);
+}
+
+void fn_80126B34(s32 arg0) {
+#pragma cplusplus on
+    void *fn_8013BC10(void *,void *);
+    void Ui_CreateMenu(void *,s32,s32);
+    extern u8 gScriptCmdNames[];
+    extern f32 lbl_8036A400;
+    struct Item {
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void v17()=0;
+        virtual void v18(s32)=0;
+        virtual void v19()=0;
+        virtual void v20(s32)=0;
+    };
+    struct Menu {
+        u8 pad[4];
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual Item * v15(s32)=0;
+    };
+    u8 *menu;
+    s32 index;
+    Item *item;
+    f32 z;
+    menu=(u8*)fn_8013BC10(gScriptCmdNames+0x43D,gScriptCmdNames+0x445);
+    *(s16*)(menu+0xC)=0x160;
+    *(s16*)(menu+0xE)=0x20;
+    index=0;
+    z=lbl_8036A400;
+    *(s16*)(menu+0x1C)=0x20;
+    *(s16*)(menu+8)=0x80;
+    *(s16*)(menu+0xA)=0xF0;
+    *(f32*)(menu+0x18)=z;
+    menu[0x24]=1;
+    while (((Menu*)menu)->v15(index)!=0) {
+        item=((Menu*)menu)->v15(index);
+        item->v18(2);
+        item->v20(3);
+        index++;
+    }
+    Ui_CreateMenu(menu,arg0,0);
+#pragma cplusplus reset
 }
 
 void fn_80126C44(void) {

@@ -1177,6 +1177,59 @@ void fn_80185564(void *arg0) {
     *(s32 *)(self + 0x38) = 0;
 }
 
+void fn_80185674(void *arg0) {
+void *Effect_Create(void*,void*);
+void Effect_SetPos(void*,f32,f32,f32);
+void fn_80185B94(void);
+void fn_80053658(void*,s32,void*);
+void GfxEnt_ForEachKey(void*,void*,void*);
+void MuFade_UnlinkSame(void*,void*);
+void *Process_CreateEx(void*,void*);
+u32 Mu_GetFlashColor(s32);
+void *fn_80185BD4(void*);
+void SeCue_PlayAt(void*,s32,f32,f32,f32);
+void DebugPrint(void*,...);
+extern u8 MoveAnim_str[],E_MuColorChange_script[];
+extern f32 lbl_8036ACFC;
+u8 *self=arg0;
+u8 *flash;
+u8 *unit;
+u8 *effect;
+u8 key[0x44];
+u32 color;
+s32 duration;
+void *cue;
+effect=Effect_Create(MoveAnim_str+0x1C1,self);
+{ u8 *position=*(u8**)(self+0x30);
+Effect_SetPos(effect,*(f32*)(position+4),*(f32*)(position+8),*(f32*)(position+12)-lbl_8036ACFC); }
+*(void(**)(void))(*(u8**)(effect+0x30)+0x40)=fn_80185B94;
+fn_80053658(effect,0,self);
+(*(u8**)(effect+0x30))[5]=4;
+duration=16/ *(s32*)(self+0x34);
+unit=*(u8**)(self+0x30);
+*(void**)(key+0x30)=unit;
+GfxEnt_ForEachKey(E_MuColorChange_script,MuFade_UnlinkSame,key);
+flash=Process_CreateEx(E_MuColorChange_script,self);
+*(void**)(flash+0x30)=unit;
+*(s32*)(flash+0x3C)=duration;
+color=Mu_GetFlashColor(3);
+flash[0x38]=((u8*)&color)[0];
+flash[0x39]=((u8*)&color)[1];
+flash[0x3A]=((u8*)&color)[2];
+flash[0x3B]=((u8*)&color)[3];
+flash[0x34]=unit[0x24];
+flash[0x35]=unit[0x25];
+flash[0x36]=unit[0x26];
+flash[0x37]=unit[0x27];
+*(s32*)(self+0x38)=0;
+cue=fn_80185BD4(*(void**)(self+0x30));
+if(cue){
+unit=*(u8**)(self+0x30);
+SeCue_PlayAt(cue,100,*(f32*)(unit+4),*(f32*)(unit+8),*(f32*)(unit+12));
+DebugPrint(MoveAnim_str+0x1CB,cue);
+}
+}
+
 void fn_801857F0(void *arg0) {
     u8 Mu_IsAnimDone(s32);
     if (Mu_IsAnimDone(M2C_FIELD(arg0, s32 *, 0x30)) != 0) {
@@ -3082,15 +3135,15 @@ void Process_ClearFunc(void*);
 void Model_SetColor(void*,u8,u8,u8);
 extern f32 lbl_8036ACEC,lbl_8036AD44;
 f32 t;
-s32 green,red;
 void *model;
-*(s32*)((u8*)arg0+0x44)+=1;
+s32 red,green;
 model=(u8*)*(void**)((u8*)arg0+0x30)+0x1C;
+*(s32*)((u8*)arg0+0x44)+=1;
 if(*(s32*)((u8*)arg0+0x44)>=*(s32*)((u8*)arg0+0x40)){
 *(s32*)((u8*)arg0+0x44)=*(s32*)((u8*)arg0+0x40);
 Process_ClearFunc(arg0);
 }
-t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),lbl_8036ACEC,lbl_8036AD44);
+t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),0.0f,lbl_8036AD44);
 red=(s32)Math_Lerp((f32)*((u8*)arg0+0x34),(f32)*((u8*)arg0+0x38),lbl_8036AD44,t);
 green=(s32)Math_Lerp((f32)*((u8*)arg0+0x35),(f32)*((u8*)arg0+0x39),lbl_8036AD44,t);
 Model_SetColor(model,(u8)red,(u8)green,(u8)(s32)Math_Lerp((f32)*((u8*)arg0+0x36),(f32)*((u8*)arg0+0x3A),lbl_8036AD44,t));
@@ -4921,7 +4974,16 @@ extern "C" void fn_801903D8(void *arg0, s32 arg1) {
 }
 
 #pragma cplusplus on
-void fn_80190440(void *arg0) {
+#pragma global_optimizer off
+extern "C" void fn_80190440(void *arg0) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+    };
     void fn_8013F748(void *, void *, void *);
     void PSMTXScale(f32 *, f32, f32, f32);
     void fn_80202574(f32 *, void *, f32, f32, f32);
@@ -4945,18 +5007,24 @@ void fn_80190440(void *arg0) {
     extern f32 lbl_8036AE14;
     f32 mtx[12];
     void *self;
-    s16 w;
-    s16 h;
+    s16 zero;
+    s16 t14;
+    s16 t18;
+    s16 t12;
+    s16 t16;
 
     self = arg0;
-    (*(void (**)(void *))(*(u32 *)self + 0x14))(self);
+    ((Obj *)self)->v3();
     if (*(u32 *)((u8 *)self + 0x3C) != 0) {
-        w = (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12));
-        h = (s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14));
-        *(s16 *)((u8 *)self + 0x4A) = 0;
-        *(s16 *)((u8 *)self + 0x4C) = 0;
-        *(s16 *)((u8 *)self + 0x4E) = w;
-        *(s16 *)((u8 *)self + 0x50) = h;
+        zero = 0;
+        t14 = *(s16 *)((u8 *)self + 0x14);
+        t18 = *(s16 *)((u8 *)self + 0x18);
+        t12 = *(s16 *)((u8 *)self + 0x12);
+        t16 = *(s16 *)((u8 *)self + 0x16);
+        *(s16 *)((u8 *)self + 0x4A) = zero;
+        *(s16 *)((u8 *)self + 0x4C) = zero;
+        *(s16 *)((u8 *)self + 0x4E) = (s16)(t16 - t12);
+        *(s16 *)((u8 *)self + 0x50) = (s16)(t18 - t14);
         fn_8013F748(self, (u8 *)self + 0x4A, (u8 *)self + 0x4A);
         fn_8013F748(self, (u8 *)self + 0x4E, (u8 *)self + 0x4E);
         PSMTXScale(mtx, lbl_8036ADFC, lbl_8036ADFC, lbl_8036ADFC);
@@ -4977,6 +5045,7 @@ void fn_80190440(void *arg0) {
         Prim2D_PrepareTex();
     }
 }
+#pragma global_optimizer on
 #pragma cplusplus reset
 extern "C" void fn_80190590(void *arg0) {
     void fn_80159898(s32, s32, s16, s16, s32, s32);
@@ -5259,31 +5328,215 @@ void fn_80190BBC(void *arg0) {
     p[0x18/2] = bottom;
 }
 
-s32 fn_80190D9C(s32 arg0, s32 arg1, s32 arg2) {
-    s32 temp_r3;
-    s32 temp_r4;
-    
-    if ((arg0 < 0) || (arg1 < 0)) {
-        return -1;
-    }
-    
-    // If either operand is zero, the result is zero
-    if ((arg0 == 0) || (arg1 == 0)) {
-        return 0;
-    }
+#pragma global_optimizer off
+void *fn_80190C24(void *parent, void **names) {
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, void *);
+    void fn_801403F0(void *);
+    void ItemList_Init(void *);
+    void ItemList_EraseRange(ListIter *, List *, ListIter *, ListIter *);
+    void ItemList_Insert(void *, void *, void *, void *);
+    void Item_Init(void *);
+    void Item_SetByName(void *, void *);
+    void Item_Destroy(void *, s32);
+    extern u8 lbl_80296298[];
+    u8 item[8];
+    ListIter end;
+    ListIter start;
+    ListIter ret;
+    ListIter pos;
+    ListIter out;
+    ListNode *sentinel;
+    void *obj;
+    u8 *base;
+    u8 mode;
 
-    // This function implements a bit more complex logic 
-    // that appears to be related to some kind of computation based on arg0, arg1 and arg2
-    temp_r4 = arg0 + arg1;
-    temp_r3 = (temp_r4 * arg1) - (arg0 * arg2);
-    
-    return ((temp_r3 > 0) ? temp_r3 : 0);
+    base = lbl_80296298;
+    if (parent) {
+        obj = Process_CreateChild(base, parent);
+    } else {
+        obj = Process_Create(base, parent);
+    }
+    if (obj) {
+        fn_801403F0(obj);
+        ItemList_Init((u8 *)obj + 0x40);
+        *(s32 *)((u8 *)obj + 0x4C) = 0;
+        *(s32 *)((u8 *)obj + 0x50) = 0;
+        *(s32 *)((u8 *)obj + 0x54) = 0;
+        *(s32 *)((u8 *)obj + 0x58) = 0;
+        ((u8 *)obj)[0x5C] = 0;
+        *(f32 *)((u8 *)obj + 0x64) = 1.0f;
+        *(s32 *)((u8 *)obj + 0x68) = 0;
+    }
+    mode = 1;
+    ((u8 *)obj)[0x5C] = mode;
+    switch (mode) {
+    case 0:
+        *(void **)((u8 *)obj + 0x68) = base + 0x1B0;
+        break;
+    case 1:
+        *(void **)((u8 *)obj + 0x68) = base + 0x210;
+        break;
+    }
+    sentinel = (ListNode *)((u8 *)obj + 0x44);
+    end.node = sentinel;
+    start.node = *(ListNode **)((u8 *)obj + 0x48);
+    ItemList_EraseRange(&ret, (List *)((u8 *)obj + 0x40), &start, &end);
+    Item_Init(item);
+    if (!names) {
+        names = (void **)(base + 0x1A4);
+        if (!((u8 *)obj)[0x5C]) {
+            names = (void **)(base + 0x180);
+        }
+    }
+    while (*names) {
+        Item_SetByName(item, *names);
+        pos.node = sentinel;
+        ItemList_Insert(&out, (u8 *)obj + 0x40, &pos, item);
+        names++;
+    }
+    Item_Destroy(item, -1);
+    return obj;
+}
+#pragma global_optimizer on
+void *fn_80190D9C(void *parent, void **names) {
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, void *);
+    void fn_801403F0(void *);
+    void ItemList_Init(void *);
+    void ItemList_EraseRange(ListIter *, List *, ListIter *, ListIter *);
+    void ItemList_Insert(void *, void *, void *, void *);
+    void Item_Init(void *);
+    void Item_SetByName(void *, void *);
+    void Item_Destroy(void *, s32);
+    extern u8 lbl_80296298[];
+    ListIter end;
+    ListIter start;
+    ListIter ret;
+    ListIter out;
+    ListIter pos;
+    u8 item[8];
+    u8 *base;
+    void *obj;
+    u8 mode;
+    ListNode *sentinel;
+    base=lbl_80296298;
+
+    if (parent != NULL) {
+        obj = Process_CreateChild(base+0, parent);
+    } else {
+        obj = Process_Create(base+0, parent);
+    }
+    if (obj != NULL) {
+        fn_801403F0(obj);
+        ItemList_Init((u8 *)obj + 0x40);
+        *(s32 *)((u8 *)obj + 0x4C) = 0;
+        *(s32 *)((u8 *)obj + 0x50) = 0;
+        *(s32 *)((u8 *)obj + 0x54) = 0;
+        *(s32 *)((u8 *)obj + 0x58) = 0;
+        ((u8 *)obj)[0x5C] = 0;
+        *(f32 *)((u8 *)obj + 0x64) = 1.0f;
+        *(s32 *)((u8 *)obj + 0x68) = 0;
+    }
+    mode = 0;
+    ((u8 *)obj)[0x5C] = mode;
+    switch (((u8 *)obj)[0x5C]) {
+    case 0:
+        *(void **)((u8 *)obj + 0x68) = base + 0x1B0;
+        break;
+    case 1:
+        *(void **)((u8 *)obj + 0x68) = base + 0x210;
+        break;
+    }
+    sentinel = (ListNode *)((u8 *)obj + 0x44);
+    end.node = sentinel;
+    start.node = *(ListNode **)((u8 *)obj + 0x48);
+    ItemList_EraseRange(&ret, (List *)((u8 *)obj + 0x40), &start, &end);
+    Item_Init(item);
+    if (names == NULL) {
+        names = (void **)(base + 0x1A4);
+        if (((u8 *)obj)[0x5C] == 0) {
+            names = (void **)(base + 0x180);
+        }
+    }
+    while (*names != NULL) {
+        Item_SetByName(item, *names);
+        pos.node = sentinel;
+        ItemList_Insert(&out, (u8 *)obj + 0x40, &pos, item);
+        names++;
+    }
+    Item_Destroy(item, -1);
+    return obj;
 }
 
 void fn_80190F14(void) {
     M2C_UNK fn_8013FE0C();
     fn_8013FE0C();
 }
+
+#pragma global_optimizer off
+#pragma cplusplus on
+extern "C" void fn_80190F34(void *panel) {
+    extern void Ui_DtorPanelBase(void *, s32);
+    extern u16 gUiPanelFlags;
+    void ItemList_EraseRange(ListIter *, List *, ListIter *, ListIter *);
+
+    struct RefObj {
+        virtual void destroy(s32);
+        s32 refCount;
+    };
+
+    ListIter end;
+    ListIter start;
+    ListIter ret;
+    RefObj *p;
+    void *self;
+
+    gUiPanelFlags &= 0xFFFFFFEF;
+    self = panel;
+    if (self) {
+        p = *(RefObj **)((u8 *)self + 0x4C);
+        if (p) {
+            if (--p->refCount == 0 && p) {
+                p->destroy(1);
+            }
+            *(RefObj **)((u8 *)self + 0x4C) = (RefObj *)0;
+        }
+        p = *(RefObj **)((u8 *)self + 0x50);
+        if (p) {
+            if (--p->refCount == 0 && p) {
+                p->destroy(1);
+            }
+            *(RefObj **)((u8 *)self + 0x50) = (RefObj *)0;
+        }
+        p = *(RefObj **)((u8 *)self + 0x54);
+        if (p) {
+            if (--p->refCount == 0 && p) {
+                p->destroy(1);
+            }
+            *(RefObj **)((u8 *)self + 0x54) = (RefObj *)0;
+        }
+        p = *(RefObj **)((u8 *)self + 0x58);
+        if (p) {
+            if (--p->refCount == 0 && p) {
+                p->destroy(1);
+            }
+            *(RefObj **)((u8 *)self + 0x58) = (RefObj *)0;
+        }
+        if ((s32)self + 0x40) {
+            if ((s32)self + 0x40) {
+                if ((s32)self + 0x40) {
+                    end.node = (ListNode *)(0x44 + (s32)self);
+                    start.node = *(ListNode **)((u8 *)self + 0x48);
+                    ItemList_EraseRange(&ret, (List *)((u8 *)self + 0x40), &start, &end);
+                }
+            }
+        }
+        Ui_DtorPanelBase(self, 0);
+    }
+}
+#pragma cplusplus reset
+#pragma global_optimizer on
 
 void fn_801910B4(void *arg0)
 {

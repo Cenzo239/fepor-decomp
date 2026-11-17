@@ -1336,6 +1336,142 @@ void fn_8001B9DC(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0xB) = 0;
 }
 
+u32 fn_8001B9F4(void *arg0) {
+    s32 *fn_800C29D0(void *, s32);
+
+    extern u16 gIconSlots;
+    extern u32 lbl_80368D34;
+    extern u32 lbl_80368D38;
+    extern u32 lbl_80368D3C;
+    extern u32 lbl_80368D40;
+    extern u32 lbl_80368D44;
+    extern u32 lbl_80368D48;
+    extern u32 lbl_80368D4C;
+    extern u32 lbl_80368D50;
+    extern u32 lbl_80368D54;
+    extern u32 lbl_80368D58;
+
+    u8 *item;
+    u8 *data;
+    u8 *color;
+    u32 result;
+    u32 sp28;
+    u32 sp24;
+    u32 sp20;
+    u32 sp1C;
+    u32 sp18;
+    u32 sp14;
+    u32 sp10;
+    u32 spC;
+    u32 sp8;
+    u32 kind;
+    u32 mask;
+
+    item = (u8 *)arg0;
+    result = lbl_80368D34;
+
+    mask = item[5] & 0x3F;
+
+    if (mask != 0) {
+        color = (u8 *)fn_800C29D0(&gIconSlots, mask);
+
+        ((u8 *)&result)[0] = color[0];
+        ((u8 *)&result)[1] = color[1];
+        ((u8 *)&result)[2] = color[2];
+        ((u8 *)&result)[3] = color[3];
+
+        return result;
+    }
+
+    data = *(u8 **)item;
+
+    if (data != NULL) {
+        kind = data[0x29];
+    } else {
+        kind = 0;
+    }
+
+    if (kind > 8) {
+        return result;
+    }
+
+    switch (kind) {
+    case 0:
+        sp28 = lbl_80368D38;
+        ((u8 *)&result)[0] = ((u8 *)&sp28)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp28)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp28)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp28)[3];
+        break;
+
+    case 1:
+        sp24 = lbl_80368D3C;
+        ((u8 *)&result)[0] = ((u8 *)&sp24)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp24)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp24)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp24)[3];
+        break;
+
+    case 2:
+        sp20 = lbl_80368D40;
+        ((u8 *)&result)[0] = ((u8 *)&sp20)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp20)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp20)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp20)[3];
+        break;
+
+    case 3:
+        sp1C = lbl_80368D44;
+        ((u8 *)&result)[0] = ((u8 *)&sp1C)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp1C)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp1C)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp1C)[3];
+        break;
+
+    case 4:
+        sp18 = lbl_80368D48;
+        ((u8 *)&result)[0] = ((u8 *)&sp18)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp18)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp18)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp18)[3];
+        break;
+
+    case 5:
+        sp14 = lbl_80368D4C;
+        ((u8 *)&result)[0] = ((u8 *)&sp14)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp14)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp14)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp14)[3];
+        break;
+
+    case 6:
+        sp10 = lbl_80368D50;
+        ((u8 *)&result)[0] = ((u8 *)&sp10)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp10)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp10)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp10)[3];
+        break;
+
+    case 7:
+        spC = lbl_80368D54;
+        ((u8 *)&result)[0] = ((u8 *)&spC)[0];
+        ((u8 *)&result)[1] = ((u8 *)&spC)[1];
+        ((u8 *)&result)[2] = ((u8 *)&spC)[2];
+        ((u8 *)&result)[3] = ((u8 *)&spC)[3];
+        break;
+
+    case 8:
+        sp8 = lbl_80368D58;
+        ((u8 *)&result)[0] = ((u8 *)&sp8)[0];
+        ((u8 *)&result)[1] = ((u8 *)&sp8)[1];
+        ((u8 *)&result)[2] = ((u8 *)&sp8)[2];
+        ((u8 *)&result)[3] = ((u8 *)&sp8)[3];
+        break;
+    }
+
+    return result;
+}
+
 s32 *fn_8001BC18(void *arg0) {
     s32 *fn_800C29D0(void *, s32);
     extern u8 gIconSlots[];
@@ -1711,10 +1847,10 @@ void *Item_Destroy(void *arg0, s16 arg1) {
 }
 
 void *Item_Clone(void *arg0, void *arg1) {
-    s32 Icon_GetSlot(void *, s32);
-    s32 Icon_CopySlot(void *, s32, s32);
-    s32 Icon_AllocSlot(void *);
-    extern u8 gIconSlots[];
+    s32 fn_800C30CC(void *, s32);
+    s32 fn_800C30DC(void *, s32, s32);
+    s32 fn_800C3260(void *);
+    extern u8 lbl_803206EC[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1742,11 +1878,11 @@ void *Item_Clone(void *arg0, void *arg1) {
     dst->pad = pad;
     dst->flag = flag;
     if (mask != 0) {
-        temp = Icon_GetSlot(gIconSlots, mask);
+        temp = fn_800C30CC(lbl_803206EC, mask);
         if (dst->rest == 0) {
-            dst->rest = Icon_AllocSlot(gIconSlots);
+            dst->rest = fn_800C3260(lbl_803206EC);
         }
-        dst->rest = Icon_CopySlot(gIconSlots, dst->rest, temp);
+        dst->rest = fn_800C30DC(lbl_803206EC, dst->rest, temp);
     }
     return arg0;
 }
@@ -1795,30 +1931,30 @@ if(obj==0) {
 }
 
 s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
-    void fn_80234450(void *, s32);
-    void fn_802343E0(void *, void *);
-    u32 fn_8000D354(void *);
+    void strcpy(void *, s32);
+    void strcat(void *, void *);
+    void *Res_GetByName(void *);
     extern void *gItemUfxCache;
     extern u8 gItemUfxPath[];
     extern u8 gDataStr[];
-    void (*cb)(void *);
-    u32 ret;
+    void *obj;
+    void **p;
 
+    (void)unused;
     if (gItemUfxCache != arg1) {
         gItemUfxCache = arg1;
-        fn_80234450(gItemUfxPath, *(s32 *)arg1);
-        fn_802343E0(gItemUfxPath, gDataStr + 0x3C);
+        strcpy(gItemUfxPath, *(s32 *)arg1);
+        strcat(gItemUfxPath, gDataStr + 0x3C);
     }
-    ret = fn_8000D354(gItemUfxPath);
-    if (ret == 0) {
-        cb = *(void (**)(void *))((u8 *)ret + 0x8);
-        if (cb != NULL) {
-            cb(arg2);
-            return 1;
-        }
-        return 0;
-    }
+    obj = Res_GetByName(gItemUfxPath);
+    if (obj != 0) goto ret1;
+    p = (void **)obj;
+    if (p[2] == 0) goto ret0;
+    ((void (*)(void *))p[2])(arg2);
+ret1:
     return 1;
+ret0:
+    return 0;
 }
 
 u32 Item_CallUfx(void *arg0, void *arg1) {

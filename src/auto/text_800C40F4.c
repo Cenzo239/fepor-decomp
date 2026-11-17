@@ -12529,6 +12529,95 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     return self;
 }
 
+void *fn_800E6418(void *arg0, void *owner, s32 a2, s32 a3, void *str, s32 a5) {
+    typedef struct {
+        u8 pad[0x40];
+        void *vtbl;
+        u8 pad44[0x58];
+        s32 unk9C;
+        u8 padA0[0xC];
+        void *unkAC;
+        s32 strB0_size;
+        void *strB0_data;
+        s32 strB0_cap;
+        s32 strBC_size;
+        void *strBC_data;
+        s32 strBC_cap;
+        s32 unkC8;
+        s32 unkCC;
+        u8 unkD0;
+        u8 unkD1;
+        u8 padD2;
+        u8 unkD3;
+        u8 padD4[8];
+        void *unkDC;
+        void *unkE0;
+        s32 unkE4;
+        s32 unkE8;
+        s32 unkEC;
+        s32 unkF0;
+        s32 unkF4;
+        s32 unkF8;
+        s32 unkFC;
+        s32 unk100;
+        f32 unk104;
+        f32 unk108;
+        f32 unk10C;
+        f32 unk110;
+        s32 unk114;
+    } Self;
+    void *fn_800DBE34(void *, void *, s32, s32, s32);
+    void String_Assign(void *, void *, s32, s32);
+    void String_AssignCStr(void *, char *, u32);
+    void *fn_800E8008(void *, void *);
+    void *fn_800DDC90(void *);
+    u32 strlen(char *);
+    extern void *gActorVtbl[];
+    extern char lbl_802720E0[];
+    Self *self = (Self *)arg0;
+    s32 zero = 0;
+    f32 f0;
+    f32 f1;
+
+    fn_800DBE34(self, owner, a2, a3, a5);
+    self->vtbl = gActorVtbl;
+    self->strB0_size = 0;
+    self->strB0_data = 0;
+    self->strB0_cap = 0;
+    self->strB0_cap = 0;
+    self->strBC_size = 0;
+    self->strBC_data = 0;
+    self->strBC_cap = 0;
+    self->strBC_cap = 0;
+    self->unkF4 = 0;
+    self->unkF8 = 0;
+    self->unkFC = 0;
+    self->unkAC = owner;
+    String_Assign(&self->strB0_size, str, 0, -1);
+    String_AssignCStr(&self->strBC_size, lbl_802720E0 + 5, strlen(lbl_802720E0 + 5));
+    self->unkDC = fn_800E8008(owner, str);
+    self->unkCC = 0;
+    self->unkD0 = 0;
+    self->unkD1 = 0;
+    self->unkD3 = 0;
+    self->unk9C = 0;
+    self->unk100 = 0;
+    self->unkE0 = fn_800DDC90(self->unkDC);
+    *(s32 *)((u8 *)self->unkE0 + 0x44) = 0;
+    self->unkE4 = 0;
+    self->unkE8 = 0;
+    self->unkEC = 0;
+    self->unkF0 = -1;
+    f0 = 0.0f;
+    f1 = 1.0f;
+    self->unk104 = f0;
+    self->unk108 = f1;
+    self->unk10C = f0;
+    self->unk110 = f0;
+    self->unk114 = 0;
+    return self;
+}
+
 void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
@@ -18990,46 +19079,53 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
     return (f32)fn_802387C8((f64)farg0, lbl_8036A088);
 }
 #pragma scheduling reset
-void fn_800F74C0(Unit* unit)
-{
-    u16* array = g_someArray;
+s32 fn_800F74C0(s32 attacker, void *target) {
+    void Item_Init(void *);
+    void Item_Destroy(void *, s32);
+    void *Item_Get(u16);
+    void UnitRef_Set(void *, void *);
+    u8 Unit_GetActiveItemSlot(void *);
+    void Battle_SetupFromParams(void *, void *, void *);
+    void fn_801A6F34(void *, u8);
+    void fn_800F5B14(s32, void *);
+    extern u8 gUiContext[];
+    extern u32 gBattle[];
+    typedef struct Param {
+        void *p;
+        u8 b4[4];
+        s32 x8;
+        u8 bC[4];
+    } Param;
+    extern Param lbl_80272F34;
+    extern Param lbl_80272F24;
+    u8 item[8];
+    Param def;
+    Param atk;
+    u8 mode;
+    void *unit;
 
-    if (array[0x3A] != 0) 
-    {
-        array[0x3A] += unit->field_0x250;
-        array[0x3B] = 0;
-        array[0x3C] = 0;
+    Item_Init(item);
+    UnitRef_Set(item, Item_Get(*(u16 *)((u8 *)target + 2)));
+    def = lbl_80272F34;
+    unit = *(void **)((u8 *)target + 4);
+    def.p = unit;
+    def.b4[0] = ((u8 *)unit)[0x19E];
+    def.b4[1] = ((u8 *)unit)[0x19F];
+    def.b4[2] = Unit_GetActiveItemSlot(unit);
+    atk = lbl_80272F24;
+    atk.p = (void *)attacker;
+    atk.b4[0] = ((u8 *)target)[0];
+    atk.b4[1] = ((u8 *)target)[1];
+    atk.x8 = (s32)item;
+    Battle_SetupFromParams(gBattle, &atk, &def);
+    mode = 0xF;
+    if (gUiContext[8] == 0x15) {
+        mode = 0x15;
     }
-    
-    if (unit->field_0x4 == 1) 
-    {
-        if ((unit->field_0x250 == 0) || (array[0x3A] == 0))
-            unit->field_0x4 = 0;  
-    }
-    
-    if (unit->field_0x250 > 0) 
-    {
-        if (unit->field_0x4 == 1) 
-        {
-            array[0x34] += 1;
-            
-            if (array[0x40] != 0)
-            {
-                unit->field_0x250 = 0;
-                array[0x3A] = 0;      
-            }
-        }
-    }
-
-    if (unit->field_0x7 & 1) 
-    {
-        array[0x3A] = 0;
-        
-        if (unit->field_0x4 == 1) 
-        {
-            unit->field_0x250 = 0; 
-        }
-    }
+    fn_801A6F34(gBattle, mode);
+    fn_800F5B14(attacker, target);
+    Item_Destroy(item, -1);
+    return 1;
 }
 
 #pragma cplusplus on
@@ -19944,24 +20040,22 @@ void fn_800F9E90(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80100BA4(s16, s16, s8, s8);
     void *Unit_FindByName(void *);
-    void *cmd = gAiCmd;
+    void *cmd;
     s16 x;
     s16 y;
 
+    cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        (u8)fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
+        fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        {
-            u8 *ctx = gUiContext;
-            if ((u8)fn_80100BA4(x, y, (s8)ctx[0xd], (s8)ctx[0xe]) &&
-                *(s32 *)(gAiState + 8) != 4) {
-                *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
-                *(s32 *)(gAiState + 8) = 2;
-                gAiState[0x21C] = 0;
-            }
+        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], (s8)gUiContext[0xe]) &&
+            *(s32 *)(gAiState + 8) != 4) {
+            *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
+            *(s32 *)(gAiState + 8) = 2;
+            gAiState[0x21C] = 0;
         }
     }
-    if (gAiCmdIsAlt == 0) {
+    if (!gAiCmdIsAlt) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }

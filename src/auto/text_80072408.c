@@ -10,14 +10,14 @@ void fn_80072408(void)
     void fn_8022C260(void *, void (*)(void), void *, s32, u32);
     void fn_800725C8(void);
 
-    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_8028680C[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_8028459C[];
     extern u8 lbl_80311CA8[];
     extern u8 lbl_8026BB84[];
     extern u8 lbl_802867B8[];
-    extern u8 lbl_80285FE8[];
     extern u8 lbl_802866E4[];
+    extern u8 lbl_80285FE8[];
     extern u8 lbl_80286764[];
     extern void *lbl_80367350[2];
     extern void *lbl_80367358[2];
@@ -57,7 +57,7 @@ void fn_80072408(void)
     Pair *p94;
     Pair *p80;
     void *pFC;
-    void *p7C;
+    register void *p7C;
 
     vtbl = gUiMenuDrawVtbl;
     p8680C = lbl_8028680C;
@@ -92,15 +92,15 @@ void fn_80072408(void)
     p24->f4 = vtbl;
     p0->f4 = vtbl;
 
-    p38->f4 = p67C;
     lbl_80367350[0] = p628;
+    p38->f4 = p67C;
     lbl_80367358[0] = p628;
     sbss58 = lbl_80367358;
     p10->f4 = p67C;
     p24->f4 = p67C;
 
-    p38->f4 = p3D4;
     lbl_80367350[0] = p2FC;
+    p38->f4 = p3D4;
     lbl_80367358[0] = p2FC;
     p0->f4 = p67C;
     p10->f4 = p3D4;
@@ -113,18 +113,18 @@ void fn_80072408(void)
     p10->f4 = p866E4;
     p24->f4 = p866E4;
 
-    p38->f4 = p1FC;
     sbss50[1] = s_ed;
+    p38->f4 = p1FC;
     lbl_80367350[0] = p867B8;
     sbss58[1] = s_f5;
     lbl_80367358[0] = p86764;
 
-    base->f0 = data0;
     p0->f4 = p866E4;
+    base->f0 = data0;
     p10->f0 = data0;
     p10->f4 = p27C;
-    p24->f0 = data0;
     p24->f4 = p1FC;
+    p24->f0 = data0;
     p38->f0 = data0;
     p38->f4 = p17C;
 
@@ -145,8 +145,8 @@ void fn_80072408(void)
     p80->f4 = p67C;
     p94->f4 = p3D4;
     p80->f4 = p3D4;
-    p94->f4 = pFC;
     *(void **)((u8 *)base + 0x80) = p6C;
+    p94->f4 = pFC;
     p80->f4 = pFC;
 
     *(s16 *)((u8 *)p80 + 0xE) = 0;

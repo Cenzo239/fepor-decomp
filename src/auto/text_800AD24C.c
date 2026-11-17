@@ -5426,7 +5426,7 @@ void fn_800B9C14(void) {
 
 void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
  void fn_800B9CD4(s32,s32,s32,s32,s32);
- extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
+ extern f64 lbl_80369CF8; extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
  f32 scale; f32 x; f32 y;
  scale=(f32)arg3/lbl_80369D08;
  x=lbl_80369D0C-scale*(f32)arg1;

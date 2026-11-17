@@ -187,10 +187,10 @@ static void PADDisable(s32 chan) {
 
 void fn_80211F78(s32 arg0, s32 arg1) {
     extern s32 lbl_80366FA4;
-    extern s32 PADSpec;
-    extern s32 EnabledBits;
+    extern s32 lbl_80366FAC;
+    extern s32 lbl_8036866C;
     extern s32 lbl_80368670;
-    extern char Origin[];
+    extern char lbl_8033A1C0[];
     extern void fn_802121E0(void);
     void fn_80211DD4(s32);
     void fn_8023BA70(s32, void *);
@@ -204,15 +204,15 @@ void fn_80211F78(s32 arg0, s32 arg1) {
     if (!(arg1 & 0xF)) {
         fn_80211DD4(lbl_80366FA4);
         r31 = lbl_80366FA4;
-        EnabledBits |= 0x80000000U >> r31;
+        lbl_8036866C |= 0x80000000U >> r31;
         fn_8023BA70(r31, buf);
-        fn_8023B804(r31, PADSpec | 0x400000);
-        fn_8023B894(EnabledBits);
+        fn_8023B804(r31, lbl_80366FAC | 0x400000);
+        fn_8023B894(lbl_8036866C);
     }
     lbl_80366FA4 = __cntlzw(lbl_80368670);
     if (lbl_80366FA4 != 0x20) {
         lbl_80368670 &= ~(0x80000000U >> lbl_80366FA4);
-        memset(Origin + (lbl_80366FA4 * 0xC), 0, 0xC);
+        memset(lbl_8033A1C0 + (lbl_80366FA4 * 0xC), 0, 0xC);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
 }
@@ -780,6 +780,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     ClampU8(&status->triggerRight, origin[7]);
 }
 
+#pragma optimization_level 3
 s32 fn_80213530(s32 arg0)
 {
   s32 fn_8021275C(M2C_UNK);
@@ -800,7 +801,7 @@ s32 fn_80213530(s32 arg0)
   if (arg0 == 0)
   {
     var_r31 = 0;
-    var_r3 = 0;
+    var_r3 = var_r31;
     new_var2 = ((u32) lbl_80368670) == 0U;
     if (new_var2 && (((s32) lbl_80366FA4) == 0x20))
     {
@@ -821,7 +822,7 @@ s32 fn_80213530(s32 arg0)
   lbl_8036868C = 0;
   return 1;
 }
-
+#pragma optimization_level reset
 void fn_802135EC(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368688)(void);
@@ -1155,32 +1156,32 @@ void fn_80213CB0(s32 arg0, OSContext *context)
 }
 
 void fn_80213D2C(s32 arg0, OSContext *context) {
+    void OSClearContext(void *);
+    void OSSetCurrentContext(void *);
+    void fn_80213DD8(void);
+    extern volatile u16 __PADRegs[];
+    extern s32 lbl_8036869C;
     extern s32 lbl_803686A0;
     extern s32 lbl_803686AC;
-
-    void fn_80213DD8(void);
-
-    volatile u16 *regs;
+    typedef struct { u8 pad[0xA]; u16 val; } PadReg;
+    volatile PadReg *p;
+    u16 v;
     OSContext tempContext;
-    void (*callback)(void);
 
-    regs = (volatile u16 *)0xCC005000;
-    regs[5] = (regs[5] & ~0xA0) | 8;
+    p = (volatile PadReg *)__PADRegs;
+    v = p->val;
+    p->val = (u16)((v & -0xA1) | 8);
 
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
 
-    callback = (void (*)(void))lbl_8036869C;
-
-    if (callback != NULL && lbl_803686AC == 0) {
+    if ((u32)lbl_8036869C != 0 && lbl_803686AC == 0) {
         lbl_803686AC = 1;
-
-        if (lbl_803686A0 != 0) {
+        if ((u32)lbl_803686A0 != 0) {
             fn_80213DD8();
         } else {
-            callback();
+            ((void (*)(void))lbl_8036869C)();
         }
-
         lbl_803686AC = 0;
     }
 

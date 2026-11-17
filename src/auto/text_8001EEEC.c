@@ -441,18 +441,17 @@ f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3) {
         return lbl_80368D7C;
     }
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
-    s32 dy;
-    s32 sx1;
-    s32 dx;
     s32 sy1;
     s32 sy2;
+    s32 sx1;
     s32 sx2;
+    register s32 dy;
+    register s32 dx;
     u16 flags;
     u8 dir;
-    s32 masked;
-    s32 b;
+    u8 r;
 
     sy2 = (s8)y2;
     sy1 = (s8)y1;
@@ -482,12 +481,10 @@ s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
     } else {
         dir = 0x10;
     }
-    masked = flags & dir;
-    b = masked != 0;
-    return b != 0;
+    r = (flags & dir) != 0;
+    return r != 0;
 }
-
-#pragma global_optimizer off
+#pragma global_optimizer reset
 void fn_8001F91C(void *map, s8 cx, s8 cy, s8 rad) {
     s32 cy_s = cy;
     u8 *row = (u8 *)map;
@@ -2865,6 +2862,110 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
 end:
     ;
 }
+
+extern "C" void fn_80025068(void *arg0, void *arg1) {
+    struct Model {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual s16 v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual f32 v25() = 0;
+    };
+    void *GfxEnt_Get(u8);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_EndPrim(void);
+    extern f32 gUiMenuIdentityScale;
+    extern f32 lbl_80368DAC;
+    extern s32 lbl_80368DA0;
+    extern s32 lbl_80368DA4;
+    extern u32 lbl_8036C410;
+    extern u32 lbl_8036C414;
+
+    u8 *self;
+    u8 *entity;
+    s16 value;
+    s32 selected;
+    s32 width;
+    s16 height;
+    f32 z;
+    f32 px;
+    f32 py;
+    f32 ph;
+    s32 color0;
+    s32 color1;
+    s32 color2;
+    s32 color3;
+
+    (void)arg0;
+    self = (u8 *)arg1;
+
+    selected = (s8)self[0x62];
+    entity = (u8 *)GfxEnt_Get(self[0x40 + selected]);
+
+    value = *(s16 *)(self + 0x3A);
+    width = *(s16 *)(entity + 0x32);
+
+    if (value < 0) {
+        *(s16 *)(self + 0x3A) = (s16)width;
+    } else {
+        *(s16 *)(self + 0x3A) = (s16)((value + width) / 2);
+    }
+
+    Prim2D_Begin();
+
+    z = M2C_FIELD(self, Model **, 0x3C)->v25();
+    Prim2D_SetTransform((f32)M2C_FIELD(self, s16 *, 0x30), (f32)M2C_FIELD(self, s16 *, 0x32), z - gUiMenuIdentityScale, gUiMenuIdentityScale);
+
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(3);
+
+    height = M2C_FIELD(self, Model **, 0x3C)->v20();
+    ph = (f32)height;
+    px = (f32)M2C_FIELD(self, s16 *, 0x3A);
+    py = (f32)M2C_FIELD(self, s16 *, 0x34);
+    Prim2D_SetRect(lbl_80368DAC, px, py, ph);
+
+    Prim2D_EmitQuad();
+
+    color3 = lbl_80368DA4;
+    color2 = lbl_80368DA0;
+    color1 = lbl_8036C414;
+    color0 = lbl_8036C410;
+
+    Prim2D_SetCornerColors(&color0, &color1, &color2, &color3);
+    Prim2D_EndPrim();
+}
+
 #pragma cplusplus reset
 
 #pragma cplusplus on

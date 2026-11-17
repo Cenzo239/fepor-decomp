@@ -1255,6 +1255,41 @@ void GActor_InitNodeLink(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(u16*)((char*)arg0 + 0x34) = (u16)arg1;
 }
 
+void fn_80058C6C(void *arg0) {
+    s32 GActor_FindNode(s32,s32);
+    void fn_80060F70(s32,s32,void *);
+    void fn_80058D84(void *);
+    s32 nodes[2];
+    s32 i;
+    u8 *entry;
+    s32 *node;
+    u8 *obj=*(u8 **)((u8 *)arg0+0x30);
+    if(obj[0x53]==0) {
+        nodes[0]=GActor_FindNode(*(s32 *)(obj+0x34),(s32)(obj+0x56));
+        nodes[1]=GActor_FindNode(*(s32 *)(obj+0x34),(s32)(obj+0x5E));
+        if(nodes[0]>=0 && nodes[1]>=0) {
+            u16 count;
+            u16 start;
+            u16 capacity;
+            start=*(u16 *)(obj+0x48);
+            count=*(u16 *)(obj+0x4C);
+            capacity=*(u16 *)(obj+0x4E);
+            entry=*(u8 **)(obj+0x40)+((count+start)%capacity)*0x28;
+            if(count==capacity) *(u16 *)(obj+0x48)=(start+1)%capacity;
+            else *(u16 *)(obj+0x4C)=count+1;
+            node=nodes;
+            i=0;
+            do {
+                fn_80060F70(*(s32 *)(obj+0x34),*node,entry);
+                i++; entry+=0xC; node++;
+            } while(i<2);
+            *(u16 *)(obj+0x4A)=*(u16 *)(obj+0x4C)*obj[0x51];
+        }
+    }
+    fn_800581A4(*(void **)((u8 *)arg0+0x30));
+    fn_80067708(2,3,fn_80058D84,*(void **)((u8 *)arg0+0x30));
+}
+
 void fn_8005902C(s32 arg0, s16 arg1) {
     void *Process_CreateChild(void *, s32);
     extern u8 lbl_80285B34[];

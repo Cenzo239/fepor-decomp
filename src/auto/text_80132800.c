@@ -7947,35 +7947,24 @@ void fn_8013F3D0(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036A718;
-    extern f64 lbl_8036A720;
 
-    s16 pt[2];
+    struct Point { s16 x, y; } pt;
     s16 z;
     s16 midX;
     s16 midY;
     f32 scale;
-    s16 left;
-    s16 right;
-    s16 top;
-    s16 bottom;
 
-    (void)lbl_8036A720;
+    pt.x = 0;
+    pt.y = 0;
+    fn_8013F748(arg0, &pt, &pt);
 
-    pt[0] = 0;
-    pt[1] = 0;
-    fn_8013F748(arg0, pt, pt);
-
-    left = M2C_FIELD(arg0, s16 *, 0xA);
-    right = M2C_FIELD(arg0, s16 *, 0xE);
-    top = M2C_FIELD(arg0, s16 *, 0xC);
-    bottom = M2C_FIELD(arg0, s16 *, 0x10);
-    midX = (s16)(((s16)(right - left) >> 1) - M2C_FIELD(arg0, s16 *, 0x12));
-    midY = (s16)(((s16)(bottom - top) >> 1) - M2C_FIELD(arg0, s16 *, 0x14));
+    midX = (s16)(((s16)(M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) >> 1) - M2C_FIELD(arg0, s16 *, 0x12));
+    midY = (s16)(((s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)) >> 1) - M2C_FIELD(arg0, s16 *, 0x14));
 
     Prim2D_Begin();
     z = M2C_FIELD(arg0, s16 *, 0x22);
     scale = fn_8013FA44(arg0);
-    fn_80009C20((f32)pt[0], (f32)pt[1], (f32)(s32)z, (f32)(s32)midX, (f32)(s32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
+    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
     Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
     Prim2D_SetColorByte(fn_80138908(arg0));
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
@@ -8617,26 +8606,30 @@ extern "C" void Ui_ClearPanelChildrenMid(void *self) {
 }
 #pragma cplusplus reset
 
-void fn_801406B0(s32 arg0, s32 arg1, s32 arg2)
-{
-    s32 temp_r3;
-    s32 var_r3;
-    
-    if (arg2 < 0) {
-        var_r3 = 0;
-    } else {
-        var_r3 = arg2;
-    }
-    
-    if (arg1 <= 0) {
-        arg1 = 1;
-    }
-    
-    temp_r3 = ((var_r3 * arg1) + 0x8000) >> 0xF;
-    if (temp_r3 < 0) {
-        temp_r3 = 0;
-    }
-    *(s32 *)M2C_FIELD(arg0, void **, 0x8) = temp_r3;
+void fn_801406B0(void *arg0) {
+extern f32 lbl_8036A730, lbl_8036A740;
+f32 Math_Ease(s32,f32,f32,f32,f32);
+#pragma cplusplus on
+struct Point {
+s16 x,y;
+Point operator-(const Point &p) const { struct Point q=*this; q.x-=p.x; q.y-=p.y; return q; }
+Point &operator*=(f32 t) { x=x*t; y=y*t; return *this; }
+Point &operator+=(const Point &p) { x+=p.x; y+=p.y; return *this; }
+};
+struct Target { u8 pad[0x24]; s16 duration; };
+struct Link { void *prev,*next; Target *value; };
+struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
+State *self=(State*)arg0;
+s32 durationInt=self->get()->duration+1;
+s32 timeInt=self->time+1;
+f32 duration=durationInt;
+f32 time=timeInt;
+f32 t=Math_Ease(5,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
+Point p=self->end-self->start;
+p*=t;
+p+=self->start;
+(self->get()->*(self->callback))(&p);
+#pragma cplusplus reset
 }
 
 s32 fn_80140B04(s32 arg0) {

@@ -274,12 +274,7 @@ s32 fn_8014CA54(s32 arg0, s32 arg1) {
     return (arg1 * 0xC) + arg0 + 0x20;
 }
 
-void fn_8014CA68(s32 arg0, s32 arg1) {
- void Msg_Expand(s32, s32);
- s32 t=arg1*12;
- u8 *p=(u8*)(t+0x20);
- Msg_Expand((s32)&p[arg0],t);
-}
+void fn_8014CA68(u8 *arg0, s32 arg1) { void Msg_Expand(u8 *, s32); s32 position = arg1 * 12 + 32; u8 *entry = arg0 + position; arg1 = position; Msg_Expand(entry, arg1 - 32); }
 
 void fn_8014CA98(s32 arg0, s32 arg1, u32 arg2) {
  M2C_UNK strcpy(s32, u32);
@@ -297,8 +292,8 @@ void fn_8014CAD4(void *arg0, f32 farg0, f32 farg1) {
 }
 
 void fn_8014CB14(void *arg0, void *arg1) {
-    f32 Map_SampleHeight(void *, f32, f32);
-    extern u8 gBattleMap[];
+    f32 fn_80023068(void *, f32, f32);
+    extern u8 lbl_802CA518[];
     extern f32 lbl_8036A7F0;
     f32 temp_f31;
     f32 temp_f30;
@@ -311,7 +306,7 @@ void fn_8014CB14(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f30;
-    *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap, temp_f31, temp_f30);
+    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(lbl_802CA518, temp_f31, temp_f30);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f30;
 }

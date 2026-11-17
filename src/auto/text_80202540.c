@@ -127,29 +127,57 @@ f32 fn_80202574(f64 farg0, f64 farg1, f64 farg2) {
     return (f32) farg0;
 }
 
-void PSMTXScale(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
+void PSMTXScale(f32 *m, f32 xS, f32 yS, f32 zS)
+{
     extern f32 lbl_8036BC3C;
     f64 zero;
 
     zero = lbl_8036BC3C;
-    *(f32 *)((u8 *)arg0 + 0x0) = farg0;
-    *(f64 *)((u8 *)arg0 + 0x4) = zero;
-    *(f64 *)((u8 *)arg0 + 0xC) = zero;
-    *(f32 *)((u8 *)arg0 + 0x14) = farg1;
-    *(f64 *)((u8 *)arg0 + 0x18) = zero;
-    *(f64 *)((u8 *)arg0 + 0x20) = zero;
-    *(f32 *)((u8 *)arg0 + 0x28) = farg2;
-    *(f32 *)((u8 *)arg0 + 0x2C) = (f32)zero;
+    m[0] = xS;
+    *(f64 *)(m + 1) = zero;
+    *(f64 *)(m + 3) = zero;
+    m[5] = yS;
+    *(f64 *)(m + 6) = zero;
+    *(f64 *)(m + 8) = zero;
+    m[10] = zS;
+    m[11] = (f32)zero;
 }
 
-f32 fn_802025E8(f64 farg0, f64 farg1, f64 farg2) {
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f4, $f4, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f5, $f5, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f6, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f7, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f8, $f8, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f2, $f2, $f3 */);
-    return (f32) farg0;
+void fn_802025E8(f32 *src, f32 *dst, f32 x, f32 y, f32 z) {
+    dst[0] = src[0] * x;
+    dst[1] = src[1] * x;
+    dst[2] = src[2] * y;
+    dst[3] = src[3] * y;
+    dst[4] = src[4] * z;
+    dst[5] = src[5] * z;
+}
+
+void fn_80202640(void) {
+    M2C_ERROR(/* unknown instruction: ps_mul $f6, $f4, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_merge10 $f9, $f4, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f8, $f5, $f5, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f5, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f3, $f8, $f8, $f8 */);
+    M2C_ERROR(/* unknown instruction: ps_muls1 $f10, $f9, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_sum1 $f8, $f7, $f8, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_nmsub $f3, $f3, $f11, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls1 $f7, $f5, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f3, $f11, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f6, $f6, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f11, $f4, $f9, $f7 */);
+    M2C_ERROR(/* unknown instruction: ps_msub $f7, $f4, $f9, $f7 */);
+    M2C_ERROR(/* unknown instruction: ps_nmsub $f6, $f6, $f3, $f1 */);
+    M2C_ERROR(/* unknown instruction: ps_nmsub $f8, $f8, $f3, $f1 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f11, $f11, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f7, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_madds0 $f9, $f4, $f5, $f10 */);
+    M2C_ERROR(/* unknown instruction: ps_merge00 $f5, $f11, $f8 */);
+    M2C_ERROR(/* unknown instruction: ps_nmsub $f10, $f10, $f2, $f9 */);
+    M2C_ERROR(/* unknown instruction: ps_merge10 $f4, $f8, $f7 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f9, $f9, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f10, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_merge10 $f7, $f10, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_merge01 $f11, $f10, $f9 */);
 }
 
 void fn_802026E4(f32 *out, f32 *arg1, f32 *arg2, f32 *arg3) {
@@ -168,65 +196,68 @@ void fn_802026E4(f32 *out, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void fn_80202870(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    f32 fn_80238A0C(f32, f32);
-    extern f32 lbl_8036BC38;
-    extern f32 lbl_8036BC3C;
-    extern f32 lbl_8036BC40;
-    extern f32 lbl_8036BC4C;
-    extern f32 lbl_8036BC50;
-    f32 temp_f4;
-
-    temp_f4 = lbl_8036BC38 / fn_80238A0C(lbl_8036BC50 * (lbl_8036BC40 * farg0), lbl_8036BC40);
-    M2C_FIELD(arg0, f32 *, 0) = (f32) (farg2 * (temp_f4 / farg1));
-    M2C_FIELD(arg0, f32 *, 4) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 8) = (f32) -farg4;
-    M2C_FIELD(arg0, f32 *, 0xC) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x10) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x14) = (f32) (temp_f4 * farg3);
-    M2C_FIELD(arg0, f32 *, 0x18) = (f32) -farg5;
-    M2C_FIELD(arg0, f32 *, 0x1C) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x20) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x24) = (f32) lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x28) = (f32) lbl_8036BC4C;
-    M2C_FIELD(arg0, f32 *, 0x2C) = (f32) lbl_8036BC3C;
+ f32 fn_80238A0C(f32);
+ extern f32 lbl_8036BC38, lbl_8036BC3C, lbl_8036BC40, lbl_8036BC4C, lbl_8036BC50;
+ f32 z, t; f32 *m = arg0;
+ t = lbl_8036BC38 / fn_80238A0C((farg0 * lbl_8036BC40) * lbl_8036BC50);
+ m[0] = farg2 * (t / farg1);
+ z = lbl_8036BC3C;
+ m[1]=z; m[2]=-farg4; m[3]=z; m[4]=z;
+ m[5]=t*farg3; m[6]=-farg5; m[7]=z; m[8]=z; m[9]=z;
+ m[10]=lbl_8036BC4C; m[11]=z;
 }
 
-void C_MTXLightOrtho(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5, f32 farg6, f32 farg7) {
-    extern f32 lbl_8036BC38;
-    extern f32 lbl_8036BC48;
-    extern f32 lbl_8036BC3C;
+void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx, f32 ty)
+{
+  extern f32 lbl_8036BC38;
+  extern f32 lbl_8036BC48;
+  extern f32 lbl_8036BC3C;
+  f32 one = lbl_8036BC38;
+  f32 new_var3;
+  f32 two = lbl_8036BC48;
+  f32 tmp0;
+  f32 tmp1;
+  f32 tmp2;
+  float new_var;
+  float new_var2;
+  f32 tmp3;
+  f32 zero;
+  new_var3 = two;
+  tmp0 = one / (r - l);
+  tmp1 = one / (t - b);
+  tmp3 = tmp0 * new_var3;
+  m[0] = tmp3 * sx;
+  zero = lbl_8036BC3C;
+  m[1] = zero;
+  m[2] = zero;
+  tmp2 = tmp0 * (-(r + l));
+  tmp2 = sx * tmp2;
+  m[3] = tx + tmp2;
+  m[4] = zero;
+  new_var2 = two * tmp1;
+  m[5] = new_var2 * sy;
+  new_var = tmp1 * (-(t + b));
+  m[6] = zero;
+  tmp3 = new_var;
+  tmp3 = sy * tmp3;
+  m[7] = ty + tmp3;
+  m[8] = zero;
+  m[9] = zero;
+  m[10] = zero;
+  m[11] = one;
+}
 
-    f32 temp_f10;
-    f32 temp_f12;
-    f32 temp_f0;
-    f32 temp_f1;
-    f32 temp_f2;
-    f32 temp_f3;
-    f32 temp_f4;
-    f32 temp_f5;
-
-    temp_f12 = lbl_8036BC38 / (farg3 - farg2);
-    temp_f10 = lbl_8036BC38 / (farg0 - farg1);
-
-    temp_f0 = farg4 * temp_f12;
-    temp_f1 = temp_f12 * -(farg3 + farg2);
-    temp_f2 = farg5 * temp_f10;
-    temp_f3 = temp_f10 * -(farg0 + farg1);
-    temp_f4 = lbl_8036BC48 * temp_f12;
-    temp_f5 = lbl_8036BC48 * temp_f10;
-
-    M2C_FIELD(arg0, f32 *, 0) = temp_f4 * farg4;
-    M2C_FIELD(arg0, f32 *, 4) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 8) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0xC) = farg6 + (temp_f0 * temp_f1);
-    M2C_FIELD(arg0, f32 *, 0x10) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x14) = temp_f5 * farg5;
-    M2C_FIELD(arg0, f32 *, 0x18) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x1C) = farg7 + (temp_f2 * temp_f3);
-    M2C_FIELD(arg0, f32 *, 0x20) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x24) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x28) = lbl_8036BC3C;
-    M2C_FIELD(arg0, f32 *, 0x2C) = lbl_8036BC38;
+f32 fn_802029C4(void) {
+    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f1, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f6, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f8, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f11, $f9, $f1, $f10 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f12, $f11, $f12, $f11 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f0 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f1, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f6, $f5 */);
+    return M2C_ERROR(/* psq_l unimplemented */);
 }
 
 f32 fn_80202A18(void) {
@@ -243,110 +274,61 @@ f32 fn_80202A18(void) {
 }
 
 void fn_80202A6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
-    f32 fn_80238A0C(f32, f32);
-    extern f32 lbl_8036BC58;
-    extern f32 lbl_8036BC60;
-    extern f32 lbl_8036BC64;
-    extern f32 lbl_8036BC68;
-    extern f32 lbl_8036BC6C;
-    f32 temp_f3;
-    f32 temp_f4;
-
-    temp_f4 = lbl_8036BC58 / fn_80238A0C(lbl_8036BC6C * (lbl_8036BC68 * farg0), lbl_8036BC68);
-    M2C_FIELD(arg0, f32 *, 0) = (f32) (temp_f4 / farg1);
-    temp_f3 = lbl_8036BC58 / (farg3 - farg2);
-    M2C_FIELD(arg0, f32 *, 4) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 8) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0xC) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x10) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x14) = temp_f4;
-    M2C_FIELD(arg0, f32 *, 0x18) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x1C) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x20) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x24) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x28) = (f32) (-farg2 * temp_f3);
-    M2C_FIELD(arg0, f32 *, 0x2C) = (f32) (temp_f3 * -(farg3 * farg2));
-    M2C_FIELD(arg0, f32 *, 0x30) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x34) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x38) = (f32) lbl_8036BC64;
-    M2C_FIELD(arg0, f32 *, 0x3C) = (f32) lbl_8036BC60;
+ f32 fn_80238A0C(f32);
+ extern f32 lbl_8036BC58, lbl_8036BC60, lbl_8036BC64, lbl_8036BC68, lbl_8036BC6C;
+ f32 t, r, one, z, nearTerm, product; f32 *m=arg0;
+ farg0=lbl_8036BC68*farg0; farg0=lbl_8036BC6C*farg0; t=fn_80238A0C(farg0);
+ one=lbl_8036BC58; t=one/t;
+ m[0]=t/farg1; r=one/(farg3-farg2); z=lbl_8036BC60;
+ m[1]=z; m[2]=z; m[3]=z; m[4]=z; nearTerm=-farg2; product=-(farg3*farg2); m[6]=z; m[5]=t; m[7]=z; m[8]=z; m[9]=z;
+ m[10]=nearTerm*r; m[11]=r*product; m[12]=z; m[13]=z; m[14]=lbl_8036BC64; m[15]=z;
 }
 
-void C_MTXOrtho(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    extern f32 lbl_8036BC58;
-    extern f32 lbl_8036BC5C;
-    extern f32 lbl_8036BC60;
-    extern f32 lbl_8036BC64;
-    f32 temp_f10;
-    f32 temp_f4;
-    f32 temp_f8;
-
-    temp_f10 = lbl_8036BC58 / (farg3 - farg2);
-    temp_f8 = lbl_8036BC58 / (farg0 - farg1);
-    M2C_FIELD(arg0, f32 *, 0) = (f32) (lbl_8036BC5C * temp_f10);
-    M2C_FIELD(arg0, f32 *, 4) = (f32) lbl_8036BC60;
-    temp_f4 = lbl_8036BC58 / (farg5 - farg4);
-    M2C_FIELD(arg0, f32 *, 8) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0xC) = (f32) (temp_f10 * -(farg3 + farg2));
-    M2C_FIELD(arg0, f32 *, 0x10) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x14) = (f32) (lbl_8036BC5C * temp_f8);
-    M2C_FIELD(arg0, f32 *, 0x18) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x1C) = (f32) (temp_f8 * -(farg0 + farg1));
-    M2C_FIELD(arg0, f32 *, 0x20) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x24) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x28) = (f32) (lbl_8036BC64 * temp_f4);
-    M2C_FIELD(arg0, f32 *, 0x2C) = (f32) (-farg5 * temp_f4);
-    M2C_FIELD(arg0, f32 *, 0x30) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x34) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x38) = (f32) lbl_8036BC60;
-    M2C_FIELD(arg0, f32 *, 0x3C) = (f32) lbl_8036BC58;
+void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
+{
+  extern f32 lbl_8036BC58;
+  extern f32 lbl_8036BC5C;
+  extern f32 lbl_8036BC60;
+  extern f32 lbl_8036BC64;
+  f32 one = lbl_8036BC58;
+  f32 two = lbl_8036BC5C;
+  f32 rw = one / (r - l);
+  f32 rh = one / (t - b);
+  f32 rd;
+  f32 zero;
+  m[0] = rw * two;
+  zero = lbl_8036BC60;
+  m[1] = zero;
+  m[2] = zero;
+  m[3] = rw * (-(r + l));
+  m[4] = zero;
+  m[5] = rh * two;
+  m[6] = zero;
+  m[7] = rh * (-(t + b));
+  rd = one / (f - n);
+  m[8] = zero;
+  m[9] = zero;
+  m[10] = lbl_8036BC64 * rd;
+  m[11] = (-f) * rd;
+  m[12] = zero;
+  m[13] = zero;
+  m[14] = zero;
+  m[15] = one;
 }
 
-void fn_80202BD4(f64* src, f64* dst) {
-    dst[0] = src[0];
-    dst[1] = src[1];
-    dst[2] = src[2];
-    dst[3] = src[3];
-    dst[4] = src[4];
-    dst[5] = src[5];
-    dst[6] = src[6];
-    dst[7] = src[7];
+void fn_80202BD4(f32* src, f32* dst) {
+    int i;
+    for (i = 0; i < 8; i++) {
+        dst[i] = src[i];
+    }
 }
 
-f32 fn_80202C18(void) {
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f6, $f3, $f0, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f6, $f4, $f1, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f6, $f5, $f1, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f8, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f8, $f3, $f0, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f8, $f4, $f1, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f8, $f5, $f1, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f10, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f10, $f3, $f0, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f10, $f4, $f1, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f10, $f5, $f1, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f12, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f12, $f3, $f0, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f12, $f4, $f1, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f12, $f5, $f1, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f7, $f3, $f0, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f7, $f4, $f1, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f7, $f5, $f1, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f9, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f9, $f3, $f0, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f9, $f4, $f1, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f9, $f5, $f1, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f11, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f11, $f3, $f0, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f11, $f4, $f1, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f11, $f5, $f1, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f13, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f13, $f3, $f0, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f13, $f4, $f1, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_madds1 $f13, $f5, $f1, $f13 */);
-    return M2C_ERROR(/* psq_l unimplemented */);
+void fn_80202C18(const f32 a[4][4], const f32 b[4][4], f32 out[4][4]) {
+    f32 result[4][4];
+    s32 i,j;
+    for(i=0;i<4;i++) for(j=0;j<4;j++)
+        result[i][j]=((a[i][0]*b[0][j]+a[i][1]*b[1][j])+a[i][2]*b[2][j])+a[i][3]*b[3][j];
+    for(i=0;i<4;i++) for(j=0;j<4;j++) out[i][j]=result[i][j];
 }
 
 #pragma ppc_intrinsics on
@@ -533,22 +515,12 @@ void fn_802031CC(void *arg0, void *arg1) {
 }
 
 void fn_802031E8(f32 *src, f32 *dst) {
-    extern f32 lbl_8036BC70;
-    extern f32 lbl_8036BC74;
-    f32 x = src[0];
-    f32 y = src[1];
-    f32 z = src[2];
-    f32 mag = x * x + y * y + z * z;
-    f32 r = lbl_8036BC70;
-    f32 half = lbl_8036BC74;
-    f32 est = 1.0f / (f32)__frsqrte(mag);
-    /* placeholder scalar path */
-    (void)r;
-    (void)half;
-    (void)est;
-    dst[0] = x;
-    dst[1] = y;
-    dst[2] = z;
+extern f32 lbl_8036BC70, lbl_8036BC74;
+f32 x=src[0], y=src[1], z=src[2];
+f32 mag=x*x+y*y+z*z;
+f32 est=__frsqrte(mag);
+f32 scale=(est*lbl_8036BC70)*(lbl_8036BC74-est*est*mag);
+dst[0]=x*scale; dst[1]=y*scale; dst[2]=z*scale;
 }
 
 f32 Vec_Length(void *arg0) {
@@ -568,6 +540,13 @@ f32 Vec_Length(void *arg0) {
 }
 
 f32 fn_80203270(const f32 *a, const f32 *b) { return a[0]*b[0] + (a[1]*b[1] + a[2]*b[2]); }
+
+void fn_80203290(const f32 *a, const f32 *b, f32 *out) {
+f32 x=a[1]*b[2]-a[2]*b[1];
+f32 y=a[2]*b[0]-a[0]*b[2];
+f32 z=a[0]*b[1]-a[1]*b[0];
+out[0]=x; out[1]=y; out[2]=z;
+}
 
 f32 PSVECDistance(void) {
     extern f32 lbl_8036BC70;

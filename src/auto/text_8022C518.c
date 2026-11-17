@@ -65,86 +65,18 @@ unsigned long long __div2u(unsigned long long a, unsigned long long b) {
  return q;
 }
 
-s32 __div2i(s32 arg0, u32 arg1, s32 arg2, s32 arg3) {
-    s32 dividend_high = arg0;
-    s32 dividend_low = arg1;
-    s32 divisor_high = arg2;
-    s32 divisor_low = arg3;
-    s32 temp_r9;
-    s32 temp_r10;
-    s32 temp_r0;
-    s32 temp_r9_2;
-    s32 temp_r9_3;
-    s32 var_ctr;
-    s32 var_r0;
-    s32 var_r3;
-    s32 var_r3_2;
-    s32 var_r4;
-    s32 var_r5;
-    s32 var_r6;
-    s32 var_r7;
-
-    var_r3_2 = dividend_high;
-    var_r4 = dividend_low;
-    var_r5 = divisor_high;
-    var_r6 = divisor_low;
-    temp_r9 = var_r3_2 & 0x80000000;
-    if (temp_r9 != 0) {
-        var_r4 = 0 - var_r4;
-        var_r3_2 = -var_r3_2;
-        if (M2C_CARRY) {
-            var_r4--;
-        }
+s64 __div2i(s64 a, s64 b) {
+    u64 n = a < 0 ? -(u64)a : (u64)a;
+    u64 d = b < 0 ? -(u64)b : (u64)b;
+    u64 q = 0, r = 0;
+    s32 i;
+    for (i = 64; i != 0; --i) {
+        r = (r << 1) | (n >> 63);
+        n <<= 1;
+        q <<= 1;
+        if (r >= d) { r -= d; q |= 1; }
     }
-    temp_r10 = var_r5 & 0x80000000;
-    if (temp_r10 != 0) {
-        var_r6 = 0 - var_r6;
-        var_r5 = -var_r5;
-        if (M2C_CARRY) {
-            var_r6--;
-        }
-    }
-    var_r0 = CLZ(var_r3_2);
-    if (var_r3_2 == 0) {
-        var_r0 = CLZ(var_r4) + 0x20;
-    }
-    temp_r9_2 = CLZ(var_r5);
-    if (var_r5 == 0) {
-        temp_r9_2 = CLZ(var_r6) + 0x20;
-    }
-    if (var_r0 <= temp_r9_2) {
-        var_ctr = 0x40 - temp_r9_2;
-        temp_r0 = var_r0 + var_ctr;
-        var_ctr = 0x40 - temp_r0;
-        if (temp_r0 >= 0x20) {
-            var_r7 = 0;
-        } else {
-            var_r7 = (u32)var_r3_2 >> (temp_r0 - 0x20);
-        }
-        if (var_r0 <= 0x20) {
-            var_r3 = (var_r3_2 << var_r0) | (var_r4 >> (0x20 - var_r0));
-        } else {
-            var_r3 = var_r4 << (var_r0 - 0x20);
-        }
-        temp_r9_3 = temp_r9_2;
-        do {
-            s32 r3_4 = var_r3 * 2 + M2C_CARRY;
-            s32 r7_3 = var_r7 * 2 + M2C_CARRY;
-            s32 diff = r7_3 - var_r5;
-            if (diff >= 0) {
-                var_r7 = diff;
-                var_r3 = r3_4;
-            } else {
-                var_r7 = r7_3;
-                var_r3 = r3_4 + 1;
-            }
-        } while (--temp_r9_3 != 0);
-        if ((temp_r9 ^ temp_r10) != 0) {
-            return -var_r3;
-        }
-        return var_r3;
-    }
-    return 0;
+    return (a < 0) != (b < 0) ? -q : q;
 }
 
 u64 __mod2u(u64 dividend, u64 divisor) { return dividend % divisor; }
@@ -163,47 +95,71 @@ u32 fn_8022CB2C(u32 hi, u32 lo, s32 s) {
 
 u64 fn_8022CB50(s32 hi,u32 lo,s32 s) { s32 right; u32 low=lo>>s; low|=(u32)hi<<(32-s); right=s-32; { s32 extra=hi>>right; if(s>32) low|=extra; } return ((u64)(u32)(hi>>s)<<32)|low; }
 
-f32 fn_8022CB78(s32 arg0, u32 arg1) {
-    s32 r5;
-    u32 r4_2;
-    s32 r7_2;
-    u32 r7_3;
-    u32 r3_2;
-    u32 r6_2;
-    s32 temp_r7;
-    s32 r7_4;
-    s32 temp_r8;
-    u32 r10;
-    u32 r5_2;
-    s32 r9;
-    s32 temp_r11;
-    s32 temp_r12;
-    u32 r3_3;
+f32 fn_8022CB78(s32 hi, u32 lo) {
+    u32 sign;
+    u32 lz;
+    u32 t;
+    s32 exp;
+    u32 bits_hi;
+    u32 bits_lo;
+    union { f64 d; u32 w[2]; } u;
 
-    r5 = arg0 & 0x80000000;
-    if (r5 != 0) {
-        arg1 = -arg1;
-        arg0 = ~arg0;
+    sign = (u32)hi & 0x80000000u;
+    if (sign != 0) {
+        u64 z = 0ULL - (((u64)(u32)hi << 32) | lo);
+        hi = (s32)(z >> 32);
+        lo = (u32)z;
     }
-    if ((arg0 | arg1) != 0) {
-        temp_r7 = CLZ(arg0);
-        r7_2 = temp_r7 + (((s32) ((temp_r7 << 0x1A) & 0xF8000000) >> 0x1F) & CLZ(arg1));
-        r3_2 = (arg0 << r7_2) | (arg1 >> (0x20 - r7_2)) | (arg1 << (r7_2 - 0x20));
-        r4_2 = arg1 << r7_2;
-        r7_3 = r4_2 & 0x7FF;
-        r6_2 = ((0 - r7_2) + 0x43E);
-        if ((r7_3 >= 0x400) && ((r7_3 > 0x400) || (r4_2 & 0x800))) {
-            r4_2 += 0x800;
-            r3_2 += 1;
-            r6_2 += 1;
+
+    exp = 0;
+    if ((hi | lo) == 0) {
+        bits_hi = sign;
+        bits_lo = 0;
+        goto done;
+    }
+
+    {
+        u32 lzHi = __cntlzw((u32)hi);
+        u32 lzLo = __cntlzw(lo);
+        t = (lzHi << 26) & 0xF8000000u;
+        lz = lzHi + (((s32)t >> 31) & lzLo);
+    }
+
+    {
+        u32 r8 = 32 - lz;
+        s32 r9 = (s32)lz - 32;
+        u32 r10;
+        hi = ((u32)hi << lz);
+        r10 = lo >> r8;
+        hi = hi | r10;
+        r10 = lo << r9;
+        hi = hi | r10;
+        lo = lo << lz;
+        exp = exp - (s32)lz;
+    }
+
+    exp += 0x43E;
+
+    t = lo & 0x7FF;
+    if (t >= 0x400) {
+        if (t > 0x400 || (lo & 0x800) != 0) {
+            lo += 0x800;
+            if (lo < 0x800) {
+                hi += 1;
+                if (hi == 0)
+                    exp += 1;
+            }
         }
-        r5_2 = (((r4_2 << 0x15) | (r4_2 >> 0xBU)) & ~0xFFE00000) | (r3_2 << 0x15);
-        r7_4 = r5 | ((r6_2 << 0x14) | ((r3_2 >> 0xBU) & 0xFFFFF));
-    } else {
-        r5_2 = arg1;
-        r7_4 = arg0;
     }
-    return (f32) M2C_BITWISE(f64, r7_4);
+
+    bits_lo = (lo >> 11) | ((u32)hi << 21);
+    bits_hi = ((u32)exp << 20) | (((u32)hi >> 11) & 0xFFFFF);
+    bits_hi |= sign;
+
+done:
+    u.w[0] = bits_hi;
+    u.w[1] = bits_lo;
+    return (f32)u.d;
 }
 
 s64 fn_8022CC2C(f64 value) { return (s64)value; }

@@ -613,6 +613,7 @@ int __CARDEraseSector(s32 chan, u32 addr, void *callback) {
     return result;
 }
 
+#pragma optimization_level 3
 void PADInit(void) {
     extern u16 __CARDBlock[];
     extern u16 lbl_80368740;
@@ -660,7 +661,7 @@ void PADInit(void) {
     fn_80217AE0((void *)0x80000000);
     OSRegisterResetFunction(lbl_8029D9E8);
 }
-
+#pragma optimization_level reset
 u16 fn_80217AD8(void) {
     extern u16 lbl_80368740;
     return lbl_80368740;
@@ -1570,18 +1571,16 @@ s32 fn_802195B0(s32 arg0, void *arg1, void *arg2) {
     s32 __CARDEraseSector(s32, u32, void *);
     void fn_80219334(void);
     extern u16 __CARDBlock[];
-    u8 *data;
-    void *cb;
     u8 *entry;
+    u16 *cnt;
 
-    cb = arg2;
-    data = (u8 *)arg1;
-    *(u16 *)(data + 4) = (u16)(*(u16 *)(data + 4) + 1);
+    cnt = (u16 *)((u8 *)arg1 + 4);
+    *cnt = *cnt + 1;
     entry = (u8 *)__CARDBlock + arg0 * 0x110;
-    fn_802198C0(data + 4, 0x1FFCU, data, data + 2);
-    fn_80205110(data, 0x2000U);
-    *(void **)(entry + 0xD8) = cb;
-    return __CARDEraseSector(arg0, *(u32 *)(entry + 0xC) * (((u32)data - *(u32 *)(entry + 0x80)) >> 13), fn_80219334);
+    fn_802198C0(cnt, 0x1FFCU, arg1, (u8 *)arg1 + 2);
+    fn_80205110(arg1, 0x2000U);
+    *(void **)(entry + 0xD8) = arg2;
+    return __CARDEraseSector(arg0, *(u32 *)(entry + 0xC) * (((u32)arg1 - *(u32 *)(entry + 0x80)) >> 13), fn_80219334);
 }
 
 s32 __CARDGetDirBlock(void *arg0) {
@@ -2305,17 +2304,16 @@ s32 fn_8021B20C(s32 chan) {
     void fn_802396C8(s32);
     void OSCancelAlarm(void *);
 
-    u32 enabled;
-    u8 *card;
     void *handle;
     s32 result;
+    u8 *card;
+    register u32 enabled;
 
     result = fn_80217B18(chan, &handle);
     if (result < 0) {
         return result;
     }
 
-    enabled = 0;
     card = (u8 *)__CARDBlock + (chan * 0x110);
     enabled = OSDisableInterrupts();
     if (*(s32 *)card != 0) {

@@ -83,12 +83,12 @@ void fn_8007F410(void *arg0) {
     extern f32 lbl_803694E8;
     extern f32 lbl_80369500;
     f32 by;
-    f32 y;
+    f32 h;
     f32 bx;
     f32 x;
     u8 pid;
     Color color;
-    f32 h;
+    f32 y;
     f32 w;
     f32 sw;
     f32 sh;

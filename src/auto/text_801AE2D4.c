@@ -2,69 +2,63 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+#pragma use_lmw_stmw on
 void fn_801AE2D4(void) {
-    extern u8 lbl_80331C38[40];
-    
-    // Based on the target assembly, this function sets up registers with specific values,
-    // then performs a series of store operations to initialize a 40-byte array
-    
-    // Set register values as per the target assembly
-    u8 r3 = 0xd2;
-    u8 r4 = 0x8c;
-    u8 r5 = 0xb4;
-    u8 r6 = 0x6e;
-    u8 r7 = 0xa0;
-    u8 r8 = 0x6e;
-    u8 r9 = 0x96;
-    u8 r10 = 0x5a;
-    u8 r11 = 0x60;
-    u8 r12 = 0x80;
-    u8 r27 = 0xff;
-    u8 r31 = 0xaa;
-    
-    // Direct memory initialization without using stack frame
-    lbl_80331C38[0x28] = r12;
-    lbl_80331C38[0x29] = r12;
-    lbl_80331C38[0x2A] = r12;
-    lbl_80331C38[0x2B] = r27;
-    
-    lbl_80331C38[0x24] = r11;
-    lbl_80331C38[0x25] = r11;
-    lbl_80331C38[0x26] = r11;
-    lbl_80331C38[0x27] = r27;
-    
-    lbl_80331C38[0x20] = r31;
-    lbl_80331C38[0x21] = r31;
-    lbl_80331C38[0x22] = r31;
-    lbl_80331C38[0x23] = r27;
-    
-    lbl_80331C38[0x1C] = r5;
-    lbl_80331C38[0x1D] = r9;
-    lbl_80331C38[0x1E] = r10;
-    lbl_80331C38[0x1F] = r27;
-    
-    lbl_80331C38[0x18] = r6;
-    lbl_80331C38[0x19] = r7;
-    lbl_80331C38[0x1A] = r10;
-    lbl_80331C38[0x1B] = r27;
-    
-    lbl_80331C38[0x14] = r6;
-    lbl_80331C38[0x15] = r4;
-    lbl_80331C38[0x16] = r5;
-    lbl_80331C38[0x17] = r27;
-    
-    lbl_80331C38[0x10] = r9;
-    lbl_80331C38[0x11] = r10;
-    lbl_80331C38[0x12] = r7;
-    lbl_80331C38[0x13] = r27;
-    
-    lbl_80331C38[0xC] = r31;
-    lbl_80331C38[0xD] = r10;
-    lbl_80331C38[0xE] = 0x50;
-    lbl_80331C38[0xF] = r27;
-    
-    lbl_80331C38[0x8] = r3;
-    lbl_80331C38[0x9] = r6;
-    lbl_80331C38[0xA] = r9;
-    lbl_80331C38[0xB] = r27;
+    extern u32 lbl_80331C38[10];
+    struct { u8 r, g, b, a; } c0, c1, c2, c3, c4, c5, c6, c7, c8;
+
+    c0.r = 0x80;
+    c0.g = 0x80;
+    c0.b = 0x80;
+    c0.a = 0xFF;
+    lbl_80331C38[0] = *(u32 *)&c0;
+
+    c1.r = 0x60;
+    c1.g = 0x60;
+    c1.b = 0x60;
+    c1.a = 0xFF;
+    lbl_80331C38[1] = *(u32 *)&c1;
+
+    c2.r = 0xAA;
+    c2.g = 0xAA;
+    c2.b = 0xAA;
+    c2.a = 0xFF;
+    lbl_80331C38[2] = *(u32 *)&c2;
+
+    c3.r = 0xB4;
+    c3.g = 0x96;
+    c3.b = 0x5A;
+    c3.a = 0xFF;
+    lbl_80331C38[3] = *(u32 *)&c3;
+
+    c4.r = 0x6E;
+    c4.g = 0xA0;
+    c4.b = 0x5A;
+    c4.a = 0xFF;
+    lbl_80331C38[4] = *(u32 *)&c4;
+
+    c5.r = 0x6E;
+    c5.g = 0x8C;
+    c5.b = 0xB4;
+    c5.a = 0xFF;
+    lbl_80331C38[5] = *(u32 *)&c5;
+
+    c6.r = 0x96;
+    c6.g = 0x5A;
+    c6.b = 0xA0;
+    c6.a = 0xFF;
+    lbl_80331C38[6] = *(u32 *)&c6;
+
+    c7.r = 0xAA;
+    c7.g = 0x5A;
+    c7.b = 0x50;
+    c7.a = 0xFF;
+    lbl_80331C38[7] = *(u32 *)&c7;
+
+    c8.r = 0xD2;
+    c8.g = 0x6E;
+    c8.b = 0x96;
+    c8.a = 0xFF;
+    lbl_80331C38[8] = *(u32 *)&c8;
 }
+#pragma use_lmw_stmw reset

@@ -630,19 +630,15 @@ s32 fn_800A4BC4(void) {
     extern u8 lbl_803123A0[];
     u8 *p = lbl_803123A0;
     u32 prod;
-    s32 v44;
-    s32 w;
     s32 aligned;
     s32 sum;
     s32 t0;
     u8 a7;
 
     if (*(s32 *)(p + 0xA0) != 0) {
-        w = *(s32 *)(p + 0x80);
-        prod = w * *(s32 *)(p + 0x84);
-        v44 = *(s32 *)(p + 0x44);
+        prod = *(s32 *)(p + 0x80) * *(s32 *)(p + 0x84);
         a7 = p[0xA7];
-        aligned = (v44 + 0x1F) & ~0x1F;
+        aligned = ((*(s32 *)(p + 0x44) + 0x1F) & ~0x1F);
         sum = aligned * 0xA;
         sum += (prod + 0x1F) & ~0x1F;
         t0 = ((prod >> 2) + 0x1F) & ~0x1F;
@@ -1499,9 +1495,9 @@ s32 fn_800A6630(s32 arg0) {
 s32 fn_800A66B4(void) {
  s32 fn_801044E0(s32);
  extern u8 gUiContext[],gMapBlendMode;
- u8 valid=1;
+ s32 valid=1;
  if (!((u32)(u8)(gMapBlendMode-1)<=(u32)valid)) valid=0;
- if(!valid) return 0;
+ if((u8)valid==0) return 0;
  return fn_801044E0(*(s32 *)gUiContext+0x1A4);
 }
 

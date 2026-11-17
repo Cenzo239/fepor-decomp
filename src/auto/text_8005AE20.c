@@ -420,45 +420,45 @@ s32 fn_8005BB2C(void) {
     u8 fn_800B2FF4(s32);
     s64 OSGetTime(void);
     extern u8 gFileCache[];
-    u8 *e;
+    typedef struct {
+        s8 name;
+        u8 pad[0x2F];
+        volatile u16 flags;
+        u16 ref;
+        u32 stamp;
+        u8 rest[0x7C - 0x38];
+    } Entry;
+    Entry *e;
     u32 time;
     s32 i;
-    u16 flags;
 
     if ((u8)fn_800B2FF4(0) == 0) {
         return 0;
     }
     time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
-    e = gFileCache;
+    e = (Entry *)gFileCache;
     for (i = 0; i < 0x100; i++) {
-        if ((s8)e[0] != 0) {
-            flags = *(u16 *)(e + 0x30);
-            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+        if (e->name != 0) {
+            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
                 return 0;
             }
         }
-        e += 0x7C;
-        if ((s8)e[0] != 0) {
-            flags = *(u16 *)(e + 0x30);
-            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+        if ((++e)->name != 0) {
+            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
                 return 0;
             }
         }
-        e += 0x7C;
-        if ((s8)e[0] != 0) {
-            flags = *(u16 *)(e + 0x30);
-            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+        if ((++e)->name != 0) {
+            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
                 return 0;
             }
         }
-        e += 0x7C;
-        if ((s8)e[0] != 0) {
-            flags = *(u16 *)(e + 0x30);
-            if (!(flags & 0x2000) && (flags & 0x200) && time <= *(u32 *)(e + 0x34) + 0xA) {
+        if ((++e)->name != 0) {
+            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
                 return 0;
             }
         }
-        e += 0x7C;
+        e++;
     }
     return 1;
 }
@@ -8533,8 +8533,72 @@ void fn_8006F378(void) {
     fn_80024DE4();
 }
 
-s32 fn_8006F398(void) {
-    return 0x14;
+void fn_8006F398(void *arg0, void *arg1) {
+void *GfxEnt_Get(s32);
+s32 Text_MeasureHeight(s32,f32);
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_PrepareTex(void);
+void Ui_DrawRouteIconEx(s32,s32,s32);
+void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
+extern f32 lbl_803692E0,lbl_803692F0,lbl_803692F4;
+#pragma cplusplus on
+struct Obj {u8 pad[4]; virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual s16 v20()=0; };
+u8 *self=(u8*)arg0;
+u8 *obj=(u8*)arg1;
+u8 *row;
+void *ent;
+register s32 sy;
+register s32 sx;
+s32 height,pulse;
+s32 iconX,iconY;
+row=obj;
+row+=*(s8*)(row+0x62);
+ent=GfxEnt_Get(row[0x40]);
+sx=(s16)(*(s16*)((u8*)ent+0x30)-0x10);
+row=obj;
+row+=*(s8*)(row+0x62);
+ent=GfxEnt_Get(row[0x40]);
+sy=*(s16*)((u8*)ent+0x32);
+height=(s16)((Obj*)arg0)->v20();
+sy=(s16)(sy+((height-Text_MeasureHeight(-1,lbl_803692E0))>>1));
+if(*(s16*)(obj+0x3A)<0) {
+*(s16*)(obj+0x38)=sx; *(s16*)(obj+0x3A)=sy;
+} else {
+*(s16*)(obj+0x38)=(*(s16*)(obj+0x38)+sx)/2;
+*(s16*)(obj+0x3A)=(*(s16*)(obj+0x3A)+sy)/2;
+}
+Prim2D_Begin();Prim2D_AddZ(lbl_803692F0);Prim2D_PrepareTex();
+iconX=*(s16*)(obj+0x38);
+iconY=*(s16*)(obj+0x3A);
+pulse=0;
+if(!obj[0x2D]&&!obj[0x2E]) pulse=1;
+Ui_DrawRouteIconEx(iconX,iconY,pulse);
+sy=(s16)(*(s16*)(self+0xC)+0x40);
+sx=(s16)Text_MeasureHeight(-1,lbl_803692E0);
+Prim2D_Begin();Prim2D_AddZ(lbl_803692F4);Prim2D_PrepareTex();
+fn_8008AB7C(*(s16*)(obj+0x38)+(sy>>1)-0x10,*(s16*)(obj+0x3A)+(sx>>1),sy,0x18,0x19,0x4B,1);
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on

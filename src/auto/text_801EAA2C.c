@@ -712,48 +712,47 @@ void fn_801EBE60(void) {
     fn_80162018();
 }
 
+#pragma optimization_level 3
 void fn_801EBE88(void)
 {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     void fn_8001594C(void *, s32);
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
-    void *sp8;
-    void **head;
+    void *sp8[5];
     void *node;
     void *next;
 
-    fn_8001594C(&sp8, 5);
-    head = (void **)(lbl_802CA264 + 0x3c);
-    node = *head;
+    fn_8001594C(sp8, 5);
+    node = *(void **)(gUnitLists + 0x3c);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (*(u32 *)((u8 *)node + 0x1A0) & 0x400000) {
             fn_800156A0(*(void **)((u8 *)node + 0x190), node);
-            fn_80015718(&sp8, node);
+            fn_80015718(sp8, node);
         }
         node = next;
     }
-    node = *head;
+    node = *(void **)(gUnitLists + 0x3c);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (!(*(u32 *)((u8 *)node + 0x1A0) & 0x400000)) {
             fn_800156A0(*(void **)((u8 *)node + 0x190), node);
-            fn_80015718(&sp8, node);
+            fn_80015718(sp8, node);
             node = next;
         } else {
             break;
         }
     }
-    node = sp8;
+    node = sp8[0];
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         fn_800156A0(*(void **)((u8 *)node + 0x190), node);
-        fn_80015718(head, node);
+        fn_80015718(gUnitLists + 0x3c, node);
         node = next;
     }
 }
-
+#pragma optimization_level reset
 void fn_801EBF7C(void) {
     M2C_UNK fn_800F20E0();
     M2C_UNK fn_800F214C();
