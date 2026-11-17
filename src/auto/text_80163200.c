@@ -15475,13 +15475,13 @@ u32 fn_8017F9D4(void) {
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     extern u8 gUnitLists[];
+    void *partner;
+    u8 found;
+    u32 result;
     void *next;
     u8 count;
     s32 i;
     void *unit;
-    void *partner;
-    u8 found;
-    u32 result;
 
     found = 0;
     unit = *(void **)gUnitLists;
