@@ -14782,28 +14782,23 @@ s32 fn_801A0100(u8 arg0, u8 arg1, u8 arg2) {
     return 1;
 }
 
-int fn_801A016C(u8 arg0, u8 arg1, u8 arg2)
-{
+int fn_801A016C(u8 arg0, u8 arg1, u8 arg2) {
     extern u32 lbl_8036AF68;
-    extern u8 lbl_8036729C[];
-
+    extern u8 lbl_8036729C[4];
     u32 value;
-
+    u32 copy;
     value = lbl_8036AF68;
-
     ((u8 *)&value)[0] = arg0;
     ((u8 *)&value)[1] = arg1;
     ((u8 *)&value)[2] = arg2;
-
-    lbl_8036729C[0] = ((u8 *)&value)[0];
-    lbl_8036729C[1] = ((u8 *)&value)[1];
-    lbl_8036729C[2] = ((u8 *)&value)[2];
-    lbl_8036729C[3] = ((u8 *)&value)[3];
-
+    copy = value;
+    lbl_8036729C[0] = ((u8 *)&copy)[0];
+    lbl_8036729C[1] = ((u8 *)&copy)[1];
+    lbl_8036729C[2] = ((u8 *)&copy)[2];
+    lbl_8036729C[3] = ((u8 *)&copy)[3];
     Map_Get();
     fn_80045C68();
     fn_80013864();
-
     return 1;
 }
 
