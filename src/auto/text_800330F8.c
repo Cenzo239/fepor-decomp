@@ -2780,56 +2780,58 @@ s8 fn_80038748(void *arg0) {
     return (s8)result;
 }
 
+#pragma optimization_level 3
 s8 fn_800388C8(void *arg0) {
-    s8 var_r4;
-    s8 var_r5;
-    void **ptr1;
-    void **ptr2;
-    
-    var_r5 = 0;
-    // First check block
-    if ((*(u8*)((u8*)arg0 + 0x1D1) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1CC) != 0)) {
-        var_r4 = 0;
-    } else if ((*(u8*)((u8*)arg0 + 0x1D9) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1D4) != 0)) {
-        var_r4 = 1;
-    } else if ((*(u8*)((u8*)arg0 + 0x1E1) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1DC) != 0)) {
-        var_r4 = 2;
-    } else if ((*(u8*)((u8*)arg0 + 0x1E9) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1E4) != 0)) {
-        var_r4 = 3;
-    } else {
-        var_r4 = -1;
-    }
-    
-    if (var_r4 >= 0) {
-        ptr1 = (void**)((u8*)arg0 + ((var_r4 * 8) + 0x1CC));
-        if (*ptr1 != NULL) {
-            var_r5 = *(s8*)((u8*)(*ptr1) + 0x28);
-        }
-    }
-    
-    // Second check block
-    if ((*(u8*)((u8*)arg0 + 0x1F1) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1EC) != 0)) {
-        var_r4 = 0;
-    } else if ((*(u8*)((u8*)arg0 + 0x1F9) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1F4) != 0)) {
-        var_r4 = 1;
-    } else if ((*(u8*)((u8*)arg0 + 0x201) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x1FC) != 0)) {
-        var_r4 = 2;
-    } else if ((*(u8*)((u8*)arg0 + 0x209) & 0x80) != 0 && (*(u32*)((u8*)arg0 + 0x204) != 0)) {
-        var_r4 = 3;
-    } else {
-        var_r4 = -1;
-    }
-    
-    if (var_r4 >= 0) {
-        ptr2 = (void**)((u8*)arg0 + ((var_r4 * 8) + 0x1EC));
-        if (*ptr2 != NULL) {
-            var_r5 += *(s8*)((u8*)(*ptr2) + 0x28);
-        }
-    }
-    
-    return var_r5;
-}
+    s32 temp;
+    s32 result;
 
+    result = 0;
+    if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
+        temp = 0;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
+        temp = 1;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
+        temp = 2;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
+        temp = 3;
+    } else {
+        temp = -1;
+    }
+    if ((s8)temp < 0) {
+        temp = 0;
+    } else {
+        temp = (s8)temp * 8;
+        temp += 0x1CC;
+        temp += (s32)arg0;
+    }
+    if ((u32)temp != 0) {
+        result = *(s8 *)((u8 *)*(void **)temp + 0x28);
+    }
+    if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
+        temp = 0;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
+        temp = 1;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
+        temp = 2;
+    } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
+        temp = 3;
+    } else {
+        temp = -1;
+    }
+    if ((s8)temp < 0) {
+        temp = 0;
+    } else {
+        temp = (s8)temp * 8;
+        temp += 0x1EC;
+        temp += (s32)arg0;
+    }
+    if ((u32)temp != 0) {
+        result += *(u8 *)((u8 *)*(void **)temp + 0x28);
+        result = (s8)result;
+    }
+    return (s8)result;
+}
+#pragma optimization_level reset
 s8 fn_80038A48(void *arg0) {
     u8 Status_Test(void *, s32);
     void *Item_GetFlagsPtr(void *);
@@ -4794,18 +4796,41 @@ void fn_8003CCB0(struct unit* arg0)
     }
 }
 
-void* fn_8003CE88(void* arg0, s32 arg1, void* arg2) {
-    // Simple version that might work better - the exact implementation needs to match structure of target
-    if (arg0 == 0) {
-        return arg2;
-    }
-    
-    // Let's look at this simpler approach based on what we know from other functions
-    *(s32*)((char*)arg2 + 0x0) = (s32)arg0;
-    *(u8*)((char*)arg2 + 0x4) = (u8)arg1;
-    *(u8*)((char*)arg2 + 0x5) = (u8)arg1;
-    
-    return arg2;
+void fn_8003CE88(void *unit, s32 range) {
+#pragma use_lmw_stmw on
+extern u8 gBattleMap[];
+void Map_SelectRangeBuffer(void *,s32);
+void Map_FillLayer(void *,s32,s32);
+void fn_800227F8(void *,void *);
+s16 fn_8002134C(u8 *,s8,s8);
+s32 negativeDy,dy;
+u8 *row;
+s32 sy,sx;
+s32 y,x;
+u8 ux,uy;
+ux=*((u8 *)unit+0x19E); uy=*((u8 *)unit+0x19F);
+Map_SelectRangeBuffer(gBattleMap,5);
+Map_FillLayer(gBattleMap,5,-1);
+fn_800227F8(gBattleMap,*(void **)((u8 *)unit+0x18C));
+sy=(s8)uy; sx=(s8)ux;
+y=gBattleMap[9];
+for(y=(s8)y; y <= (s8)gBattleMap[11]-1; y++) {
+x=gBattleMap[8];
+for(x=(s8)x; x <= (s8)gBattleMap[10]-1; x++) {
+s32 dx,absoluteY;
+dy=sy-y; negativeDy=-dy;
+row=gBattleMap+((s8)y<<6);
+if(dy<0) absoluteY=negativeDy; else absoluteY=dy;
+if(sx-x<0) dx=-(sx-x); else dx=sx-x;
+if (dx+absoluteY<=range) {
+
+if(row[(s8)x+0xD]==0 && (s8)row[(s8)x+0xE18E]==0 && row[(s8)x+0x200D]!=0 &&
+fn_8002134C(gBattleMap,(s8)x,(s8)y)<=30000) {
+(*(s16 **)(gBattleMap+0x14190))[(s8)x+((s8)y<<6)]=0;
+}
+}
+}
+}
 }
 
 u8 Unit_CalcHitRate(void *arg0, void *arg1) {
@@ -13150,6 +13175,137 @@ s32 fn_800537E8(void) {
     extern u16 lbl_80285990[];
     s32 v = Process_Find(lbl_80285990);
     return v != 0;
+}
+
+void *fn_8005381C(void *name, void *parent)
+{
+  extern u8 lbl_80285990[];
+  extern u32 lbl_80369080;
+  extern const f32 lbl_80369084;
+  extern const f32 lbl_80369088;
+  extern const f32 lbl_8036908C;
+  extern const f32 lbl_803690C0;
+  void *Process_CreateChild(void *, void *);
+  void *Heap_Alloc(s32);
+  void *Res_GetByName(void *);
+  void *nameSave;
+  void *new_var2[2];
+  u8 *new_var;
+  u32 color;
+  f32 zero;
+  nameSave = name;
+  new_var2[1] = Process_CreateChild(lbl_80285990, parent);
+  *((void **) (((u8 *) new_var2[1]) + 0x30)) = Heap_Alloc(0x60);
+  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
+  zero = lbl_80369084;
+  *((f32 *) (((u8 *) new_var2[0]) + 0xC)) = zero;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x10)) = zero;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x14)) = zero;
+  *((u16 *) (((u8 *) new_var2[0]) + 0)) = 0;
+  *((s8 *) (((u8 *) new_var2[0]) + 3)) = -1;
+  *((s8 *) (((u8 *) new_var2[0]) + 4)) = -1;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x30)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x34)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x3C)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x40)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x44)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 8)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x5C)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x48)) = 0;
+  color = lbl_80369080;
+  ((u8 *) new_var2[0])[0x38] = ((u8 *) (&color))[0];
+  ((u8 *) new_var2[0])[0x39] = ((u8 *) (&color))[1];
+  ((u8 *) new_var2[0])[0x3A] = ((u8 *) (&color))[2];
+  ((u8 *) new_var2[0])[0x3B] = ((u8 *) (&color))[3];
+  *((void **) (((u8 *) new_var2[0]) + 0x2C)) = Res_GetByName(nameSave);
+  *((f32 *) (((u8 *) new_var2[0]) + 0x20)) = lbl_80369084;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x24)) = lbl_80369084;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x28)) = lbl_80369084;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_80369088;
+  *((f32 *) (((u8 *) new_var2[0]) + 0x18)) = lbl_8036908C;
+  ((u8 *) new_var2[0])[5] = 3;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x4C)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x50)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x54)) = 0;
+  *((u32 *) (((u8 *) new_var2[0]) + 0x58)) = 0;
+  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
+  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x08000000;
+  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
+  new_var = (u8 *) new_var2[1];
+  if (((*(((u8 *) (*((void **) (((u8 *) new_var2[0]) + 0x2C)))) + 4)) & 0xC) == 4U)
+  {
+    *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x20000000;
+  }
+  new_var2[0] = *((void **) (new_var + 0x30));
+  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 8;
+  new_var2[0] = *((void **) (new_var + 0x30));
+  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_803690C0;
+  return new_var2[1];
+}
+
+void *fn_8005397C(void *name, u32 priority) {
+    extern u8 lbl_80285990[];
+    extern u32 lbl_80369080;
+    extern const f32 lbl_80369084;
+    extern const f32 lbl_80369088;
+    extern const f32 lbl_8036908C;
+extern const f32 lbl_803690C0;
+    void *Process_Create(void *, s32);
+    void *Heap_Alloc(s32);
+    void *Res_GetByName(void *);
+    void *nameSave;
+    void *init;
+    void *proc;
+    u32 color;
+    f32 zero;
+    nameSave = name;
+    if (priority == 0) priority = 4;
+    proc = Process_Create(lbl_80285990, priority);
+    init = Heap_Alloc(0x60);
+    *(void **)((u8 *)proc + 0x30) = init;
+    init = *(void **)((u8 *)proc + 0x30);
+    zero = lbl_80369084;
+    *(f32 *)((u8 *)init + 0xC) = zero;
+    *(f32 *)((u8 *)init + 0x10) = zero;
+    *(f32 *)((u8 *)init + 0x14) = zero;
+    *(u16 *)((u8 *)init + 0) = 0;
+    *(s8 *)((u8 *)init + 3) = -1;
+    *(s8 *)((u8 *)init + 4) = -1;
+    *(u32 *)((u8 *)init + 0x30) = 0;
+    *(u32 *)((u8 *)init + 0x34) = 0;
+    *(u32 *)((u8 *)init + 0x3C) = 0;
+    *(u32 *)((u8 *)init + 0x40) = 0;
+    *(u32 *)((u8 *)init + 0x44) = 0;
+    *(u32 *)((u8 *)init + 8) = 0;
+    *(u32 *)((u8 *)init + 0x5C) = 0;
+    *(u32 *)((u8 *)init + 0x48) = 0;
+    color = lbl_80369080;
+    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
+    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
+    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
+    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
+    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
+    ((u8 *)init)[5] = 3;
+    *(u32 *)((u8 *)init + 0x4C) = 0;
+    *(u32 *)((u8 *)init + 0x50) = 0;
+    *(u32 *)((u8 *)init + 0x54) = 0;
+    *(u32 *)((u8 *)init + 0x58) = 0;
+    init = *(void **)((u8 *)proc + 0x30);
+    *(u32 *)((u8 *)init + 8) |= 0x08000000;
+    init = *(void **)((u8 *)proc + 0x30);
+    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
+        *(u32 *)((u8 *)init + 8) |= 0x20000000;
+    }
+    init = *(void **)((u8 *)proc + 0x30);
+    *(u32 *)((u8 *)init + 8) |= 8;
+    init = *(void **)((u8 *)proc + 0x30);
+    *(f32 *)((u8 *)init + 0x1C) = lbl_803690C0;
+    return proc;
 }
 
 void *fn_80053AE8(void *name, void *parent) {
