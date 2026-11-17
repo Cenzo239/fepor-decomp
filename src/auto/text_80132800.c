@@ -4808,20 +4808,30 @@ void fn_8013AA60(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x18, 0x19, 0x4C, arg5);
 }
 
-void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, void *arg4, u8 arg5) {
+void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) {
     M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK Text_Draw(s32, s16, s32, void *, s32);
+    void Text_Draw(s32, s16, s32, void *, ...);
     s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Msg_ResolveName(s32);
     M2C_UNK fn_80152010(s16, s16, s16, M2C_UNK, M2C_UNK);
-    extern M2C_UNK lbl_802768A0;
+    extern u8 lbl_802768A0[];
     extern f32 lbl_8036A674;
     extern f32 lbl_8036A6B0;
     extern f32 lbl_8036A6B4;
+#pragma cplusplus on
+#pragma optimization_level 3
+    struct Panel {
+        virtual void v0()=0; virtual void v1()=0; virtual void v2()=0;
+        virtual void v3()=0; virtual void v4()=0; virtual void v5()=0;
+        virtual void v6()=0; virtual void v7()=0; virtual void v8()=0;
+        virtual void v9()=0; virtual void v10()=0; virtual s32 width()=0;
+        s16 height() { return *(s16 *)((u8 *)this+0x5A); }
+    };
+    s16 y;
     s16 temp_r28;
     s16 temp_r31;
-    s32 temp_r26;
     s32 var_r27;
+    s32 temp_r26;
 
     var_r27 = arg5 != 0;
     if ((u32) ((M2C_FIELD(arg4, s32 *, 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
@@ -4830,17 +4840,19 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, void *arg4, u8 arg5) {
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 0x13));
     Prim2D_PrepareTex();
-    temp_r28 = M2C_FIELD(arg0, s16 *, 0x5A);
     temp_r26 = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
-    Text_Draw(arg1, (s16) (arg2 + (s16) ((s32) (temp_r28 - Text_MeasureHeight(-1, lbl_8036A674)) >> 1)), var_r27, &lbl_802768A0 + 0x39, temp_r26);
+    y = arg2;
+    temp_r28 = ((Panel *)arg0)->height();
+    Text_Draw(arg1, (s16)(y + (s16)((temp_r28 - Text_MeasureHeight(-1, lbl_8036A674)) >> 1)), var_r27, lbl_802768A0 + 0x39, temp_r26);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);
     Prim2D_PrepareTex();
-    temp_r31 = M2C_FIELD(arg0, s16 *, 0x5A);
-    fn_80152010((s16) (arg1 - 6), (s16) (arg2 + (temp_r31 >> 1)), (s16) ((M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x34)(arg0) - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
+    fn_80152010((s16) (arg1 - 6), (s16) (y + (((Panel *)arg0)->height() >> 1)), (s16) ((((Panel *)arg0)->width() - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
+#pragma optimization_level reset
+#pragma cplusplus reset
 }
 
 s32 fn_8013AC00(void *arg0, s32 arg1) {
@@ -8607,11 +8619,7 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *end;
     void *node;
     void *obj;
-    s16 t28;
-    s16 t44;
-    s16 t46;
-    s16 t40;
-    s16 t42;
+    s16 t[5];
 
     if (arg3 != 0) {
         obj = Process_CreateChild(lbl_80292278, arg0);
@@ -8645,16 +8653,16 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
             }
         }
     }
-    t28 = *(s16 *)((u8 *)arg1 + 0x24);
-    t44 = arg2[0];
-    *(s16 *)((u8 *)obj + 0x28) = t28;
-    t46 = arg2[1];
-    t40 = *(s16 *)((u8 *)arg1 + 0xA);
-    *(s16 *)((u8 *)obj + 0x40) = t40;
-    t42 = *(s16 *)((u8 *)arg1 + 0xC);
-    *(s16 *)((u8 *)obj + 0x42) = t42;
-    *(s16 *)((u8 *)obj + 0x44) = t44;
-    *(s16 *)((u8 *)obj + 0x46) = t46;
+    t[0] = *(s16 *)((u8 *)arg1 + 0x24);
+    t[1] = arg2[0];
+    *(s16 *)((u8 *)obj + 0x28) = t[0];
+    t[2] = arg2[1];
+    t[3] = *(s16 *)((u8 *)arg1 + 0xA);
+    *(s16 *)((u8 *)obj + 0x40) = t[3];
+    t[4] = *(s16 *)((u8 *)arg1 + 0xC);
+    *(s16 *)((u8 *)obj + 0x42) = t[4];
+    *(s16 *)((u8 *)obj + 0x44) = t[1];
+    *(s16 *)((u8 *)obj + 0x46) = t[2];
     *(s32 *)((u8 *)obj + 0x48) = arg4;
     fn_8014127C(obj);
     return obj;
@@ -9812,59 +9820,39 @@ extern "C" s16 fn_80143C58(void *arg0) {
 }
 #pragma cplusplus reset
 void fn_80143E0C(void *unit, s16 arg1) {
-    s16 var_r31;
-    s16 temp_r4;
-    s32 temp_r3;
-    void **vtable_ptr;
-    void *data_ptr;
-
-    // Load the vtable pointer
-    vtable_ptr = (void **) unit;
-    
-    // Get max bound value from vtable[8] + 0x90
-    temp_r3 = *(s32 *) ((*(s32 **) unit)[8] + 0x90);
-    if ((u32) arg1 > (u32)(temp_r3 - 1)) {
-        var_r31 = temp_r3 - 1; 
-    } else {
-        var_r31 = arg1;
-    }
-    
-    if (var_r31 < 0) {
-        var_r31 = 0;
-    }
-    
-    // Load from unit field_0x80 (offset 0x20 in s32 terms)
-    temp_r4 = *(s16 *) ((s32 *) unit + 0x20); 
-    
-    // Get the data pointer: vtable[8] + 0x4C
-    data_ptr = (void *) ((*(s32 **) unit)[8] + 0x4C);
-    
-    if (temp_r3 <= (u32) temp_r4) {
-        *(s16 *) ((s32 *) data_ptr + 0x19) = var_r31; // offset 0x64
-        *(s16 *) ((s32 *) data_ptr + 0x17) = 0;       // offset 0x4E  
-        return;
-    }
-    
-    if ((u32)(temp_r3 - var_r31) < (u32) temp_r4) {
-        *(s16 *) ((s32 *) data_ptr + 0x19) = var_r31; // offset 0x64 
-        *(s16 *) ((s32 *) data_ptr + 0x17) = (s16)(temp_r3 - temp_r4); // offset 0x4E
-        return;
-    }
-    
-    if (*(s16 *) ((s32 *) data_ptr + 0x17) < var_r31 && 
-        (var_r31 - *(s16 *) ((s32 *) data_ptr + 0x17)) < (temp_r4 - 1)) {
-        *(s16 *) ((s32 *) data_ptr + 0x19) = var_r31; // offset 0x64
-        return;
-    }
-    
-    if (var_r31 == 0) {
-        *(s16 *) ((s32 *) data_ptr + 0x17) = var_r31; // offset 0x4E
-        *(s16 *) ((s32 *) data_ptr + 0x19) = var_r31; // offset 0x64
-        return;
-    }
-    
-    *(s16 *) ((s32 *) data_ptr + 0x19) = var_r31; // offset 0x64
-    *(s16 *) ((s32 *) data_ptr + 0x17) = (s16)(var_r31 - 1); // offset 0x4E
+#pragma cplusplus on
+struct Panel {
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
+virtual void v8()=0; virtual void v9()=0; virtual s32 page()=0;
+};
+u8 *p;
+u32 count;
+s16 visible;
+Panel *self=(Panel *)unit;
+if((u32)arg1 > *(u32 *)((u8 *)unit+self->page()*12+0x90)-1) {
+arg1=*(u32 *)((u8 *)unit+self->page()*12+0x90)-1;
+}
+if(arg1<0) arg1=0;
+p=(u8 *)unit+self->page()*2;
+count=*(u32 *)((u8 *)unit+self->page()*12+0x90);
+visible=*(s16 *)((u8 *)unit+0x80);
+if(count<=(u32)visible) {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=0;
+} else if(count-arg1<(u32)visible) {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=count-visible;
+} else if(*(s16 *)(p+0x4E)<arg1 && arg1-*(s16 *)(p+0x4E)<visible-1) {
+*(s16 *)(p+0x64)=arg1;
+} else if(arg1==0) {
+*(s16 *)(p+0x4E)=arg1;
+*(s16 *)(p+0x64)=arg1;
+} else {
+*(s16 *)(p+0x64)=arg1;
+*(s16 *)(p+0x4E)=arg1-1;
+}
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on
@@ -11339,6 +11327,96 @@ void fn_80146F0C(void)
     }
 }
 
+#pragma global_optimizer off
+void fn_8014702C(u8 arg0)
+{
+    void fn_800B503C(void);
+    void fn_800B412C(void);
+    void fn_80210008(void *);
+    void fn_800B4060(void);
+    s32 fn_800C44F4(s32);
+    void Heap_AdjustExtent(s32);
+    void fn_800B36D8(void *);
+    void fn_800B34B0(s32);
+    void fn_800B3490(void);
+    void Sound_LoadPack(void *);
+    void *Archive_Load(void *);
+    void fn_8000D3EC(u32, void *);
+    u32 fn_802097D4(void);
+    void fn_800B28FC(s32);
+
+    extern u8 lbl_80276BC8[];
+    extern u8 lbl_80367AE8;
+    extern u8 lbl_80367AEA;
+    extern u8 gBgmQuietVol;
+    extern u8 gBgmVol;
+    extern u8 lbl_80367AF0;
+    extern u8 lbl_80367AF1;
+    extern u8 lbl_80367AF2;
+    extern u8 lbl_80367AF3;
+    extern u8 lbl_80367AF4;
+    extern u8 lbl_80367AF5;
+    extern u8 lbl_80367AF6;
+
+    s32 value;
+    u8 *ptr;
+    u32 next;
+    u8 offset;
+
+    fn_800B503C();
+    fn_800B412C();
+    fn_80210008(fn_800B4060);
+
+    if (arg0) {
+        value = 0xF00000 - fn_800C44F4(-1);
+        fn_800B36D8(lbl_80276BC8 + 0x326);
+        Heap_AdjustExtent(value);
+        fn_800B34B0(0);
+        fn_800B3490();
+        Heap_AdjustExtent(-value);
+        Sound_LoadPack(lbl_80276BC8 + 0x326);
+        ptr = (u8 *)Archive_Load(lbl_80276BC8 + 0x314);
+
+        goto check;
+    body:
+        fn_8000D3EC(*(u32 *)ptr, ptr);
+        offset = ptr[4];
+        if (offset == 0) {
+            ptr = NULL;
+        } else {
+            ptr += offset;
+        }
+    check:
+        offset = ptr[4];
+        if (offset == 0) {
+            next = 0;
+        } else {
+            next = (u32)ptr + offset;
+        }
+        if (next != 0) {
+            goto body;
+        }
+
+        lbl_80367AE8 = 100;
+        lbl_80367AEA = 100;
+        gBgmQuietVol = 100;
+        gBgmVol = 100;
+        lbl_80367AF0 = 100;
+        lbl_80367AF1 = 100;
+        lbl_80367AF2 = 100;
+        lbl_80367AF3 = 100;
+        lbl_80367AF4 = 100;
+        lbl_80367AF5 = 100;
+        lbl_80367AF6 = 0;
+
+        if (fn_802097D4() == 1) {
+            fn_800B28FC(1);
+        } else {
+            fn_800B28FC(0);
+        }
+    }
+}
+#pragma global_optimizer on
 s32 fn_8014716C(u8 arg0) {
  extern s32 lbl_80367AF8;
  return lbl_80367AF8 = arg0 ? (lbl_80367AF8 | 2) : (lbl_80367AF8 & ~2);
