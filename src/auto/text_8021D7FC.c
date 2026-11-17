@@ -1972,6 +1972,7 @@ void fn_80220B44(u16 arg0, s32 arg1, s32 *arg2) {
     *arg2 = *(s32 *)addr;
 }
 
+#pragma optimization_level 3
 s32 fn_80220B68(s32 arg0) {
     extern s32 lbl_80368790;
     s32 temp_r31;
@@ -1982,7 +1983,7 @@ s32 fn_80220B68(s32 arg0) {
     OSRestoreInterrupts();
     return temp_r31;
 }
-
+#pragma optimization_level reset
 void fn_80220BAC(s32 arg0, void *context) {
  extern void (*lbl_80368790)(u16);
  void OSClearContext(void *);
