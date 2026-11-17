@@ -932,13 +932,17 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     void *obj;
     s8 flag;
     s32 n;
+    GetPosFn gp;
+    void **vt;
 
     *(f32 *)&pos.z = 0.0f;
     *(f32 *)&pos.y = 0.0f;
     *(f32 *)&pos.x = 0.0f;
     n = strlen((char *)gActorXmlStrs + 0x4E);
     if (String_Compare(name, 0, (void *)name->size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
-        ((GetPosFn)((void **)*(void **)((u8 *)self + 0x40))[0xE])(&got, self, 0);
+        vt = *(void ***)((u8 *)self + 0x40);
+        gp = (GetPosFn)vt[0xE];
+        gp(&got, self, 0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
         *(f32 *)&pos.x = got.x;
@@ -4632,6 +4636,109 @@ void fn_8011A694(void) {
     if ((u8)var_r4 != 0) {
         fn_800C1060(0);
     }
+}
+
+void fn_8011A7FC(void *arg0) {
+    extern u8 gUnitLists[], gTargetList[], lbl_8028F790[], lbl_80274508[], lbl_80293C84[], lbl_80293C58[];
+    extern u8 lbl_80367A48;
+    void Unit_MoveToListHead(void *, s32);
+    void fn_8002F728(void *);
+    void fn_8002F6E8(void *, s8, s8, s32, s32);
+    void *TargetList_GetAt(void *, s32);
+    void *TargetList_GetCurrent(void *);
+    void fn_8011C404(void *, void *);
+    void fn_8011C2B8(void *, void *);
+    void fn_8011C164(void *, void *);
+    void fn_8011C018(void *, void *);
+    void *Process_Create(void *, void *);
+    void GfxEnt_UnlinkByName(char *);
+    void *Heap_Alloc(s32);
+    s32 strlen(char *);
+    void Ui_AddChild(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    void Fx_StartSlot(s32,char *,s32,s32);
+    void fn_80018B18(void);
+    s32 d,c,b,a;
+    s32 count;
+    void *entry;
+    s32 j;
+    u8 *next, *unit, *coords;
+    s32 i;
+    s32 len;
+    u8 *p;
+    lbl_80367A48=0;
+    gUiInputFlags &= ~1;
+    for(unit=*(u8 **)(gUnitLists+4);unit;unit=next) {
+        next=*(u8 **)(unit+0x180);
+        if(*(u32 *)(unit+0x1A0)&0x010000DC) Unit_MoveToListHead(unit,5);
+    }
+    count=(s8)((u8 *)gBattleState)[0x544];
+    fn_8002F728(gTargetList);
+    coords=(u8 *)gBattleState+0x545;
+    for(i=0;i<count;coords+=2,i++) fn_8002F6E8(gTargetList,(s8)coords[0],(s8)coords[1],0,0);
+    for(j=0;j<*(s32 *)gTargetList;j++) {
+        entry=TargetList_GetAt(gTargetList,j);
+        fn_8011C404(entry,&a); fn_8011C2B8(entry,&b);
+        fn_8011C164(entry,&c); fn_8011C018(entry,&d);
+    }
+    p=Process_Create(lbl_8028F790,arg0);
+    if(p) *(void **)(p+0x30)=TargetList_GetCurrent(gTargetList);
+    *(u8 **)((u8 *)arg0+0x44)=p;
+    p=*(u8 **)((u8 *)arg0+0x44); p[0x2c]|=4;
+    GfxEnt_UnlinkByName((char *)lbl_80274508+0x115);
+    p=Heap_Alloc(0x5C);
+    if(p) {
+            M2C_FIELD(p, void * *, 0x0) = lbl_8028FDB0;
+            M2C_FIELD(p, s32 *, 0x4) = 0;
+            M2C_FIELD(p, void * *, 0x0) = lbl_80292230;
+            M2C_FIELD(p, s16 *, 0x8) = -1;
+            M2C_FIELD(p, s16 *, 0xA) = 0;
+            M2C_FIELD(p, s16 *, 0xC) = 0x190;
+            M2C_FIELD(p, s16 *, 0xE) = 0x260;
+            M2C_FIELD(p, s16 *, 0x10) = 0x1C0;
+            M2C_FIELD(p, s16 *, 0x12) = 0;
+            M2C_FIELD(p, s16 *, 0x14) = 0;
+            M2C_FIELD(p, s16 *, 0x16) = 0x260;
+            M2C_FIELD(p, s16 *, 0x18) = 0x30;
+            M2C_FIELD(p, s16 *, 0x1A) = 0;
+            M2C_FIELD(p, s16 *, 0x1C) = 0;
+            M2C_FIELD(p, u8 *, 0x1E) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x1F) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x20) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x21) = 0xFF;
+            M2C_FIELD(p, s16 *, 0x22) = 0x316;
+            M2C_FIELD(p, s16 *, 0x24) = 0;
+            M2C_FIELD(p, f32 *, 0x28) = 1.0f;
+            M2C_FIELD(p, f32 *, 0x2C) = 1.0f;
+            M2C_FIELD(p, f32 *, 0x30) = 1.0f;
+            M2C_FIELD(p, s32 *, 0x34) = 0;
+            M2C_FIELD(p, s32 *, 0x38) = 0;
+            M2C_FIELD(p, void * *, 0x0) = lbl_80293C84;
+            M2C_FIELD(p, s32 *, 0x3C) = 0;
+            M2C_FIELD(p, s32 *, 0x40) = 0;
+            M2C_FIELD(p, s32 *, 0x44) = 0;
+            M2C_FIELD(p, s32 *, 0x40) = 0;
+            M2C_FIELD(p, s32 *, 0x48) = 0;
+            M2C_FIELD(p, u8 *, 0x4C) = 1;
+            M2C_FIELD(p, s16 *, 0x4E) = 0;
+            M2C_FIELD(p, s16 *, 0x50) = 0;
+            M2C_FIELD(p, s16 *, 0x52) = 0;
+            M2C_FIELD(p, s16 *, 0x54) = 0;
+            M2C_FIELD(p, void * *, 0x0) = lbl_80293C58;
+            M2C_FIELD(p, s32 *, 0x58) = 1;
+            M2C_FIELD(p, s16 *, 0x4E) = 0x30;
+            M2C_FIELD(p, s16 *, 0x52) = 0x30;
+    }
+    *(s16 *)(p+8)=-0x1000; *(s32 *)(p+0x48)=1;
+    len=strlen(&((char *)lbl_80274508)[353]);
+    String_AssignCStr(&p[0x3C],(char *)&lbl_80274508[353],len);
+    *(u32 *)(p+0x34)|=0x10; *(s32 *)(p+0x58)=1;
+    Ui_AddChild(arg0,p);
+    p=Ui_FindChild(arg0,-0x1000,0);
+    if(p) *(s32 *)(p+0x58)=0;
+    ((u8 *)gBattleState)[0xA9]=0; ((u8 *)gBattleState)[0xAA]=0; *(s32 *)((u8 *)gBattleState+0xB0)=0;
+    if(!(gUiInputFlags&0x10)) Fx_StartSlot(0,(char *)lbl_80274508+0x2E9,100,1);
+    fn_80018B18();
 }
 
 void fn_8011AB38(void *arg0) {
