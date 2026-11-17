@@ -2840,6 +2840,25 @@ s32 fn_8005FA14(void *arg0, s32 arg1) {
     return 1;
 }
 
+#pragma inline_depth(8)
+#pragma scheduling off
+void fn_8005FA94(void *arg0, s32 arg1)
+{
+    void fn_800616A0(void *);
+
+    if (arg0 != NULL) {
+        if (*(void **)((u8 *)arg0 + 0x74) != NULL) {
+            fn_8005FA94(*(void **)((u8 *)arg0 + 0x74), arg1);
+            *(u32 *)((u8 *)arg0 + 0x74) = 0;
+        }
+        if ((u8)arg1 == 0) {
+            *(u32 *)((u8 *)arg0 + 0x44) = 0;
+        }
+        fn_800616A0(arg0);
+    }
+}
+#pragma scheduling reset
+#pragma inline_depth reset
 s32 fn_8005FC74(void *arg0, s32 arg1) {
     if (arg0 == NULL) {
         extern char lbl_8026B590[];
@@ -9666,64 +9685,81 @@ void fn_8006FE44(void *arg0, void *arg1) {
         virtual void v1() = 0;
         virtual void v2() = 0;
         virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void *v6(void *) = 0;
+        virtual void *v4(void *) = 0;
     };
-    u8 *self = (u8 *)arg0;
-    u8 *group = (u8 *)arg1;
-    s32 i;
-    s16 w;
-    s16 step;
+    u8 *group;
+    u8 *self;
     s16 y;
-    s16 x;
-    s8 count;
-    u8 *text;
+    s8 c;
+    s32 j;
+    s32 t26;
+    s32 i;
     s16 lineW;
+    s16 step;
     s16 maxLine;
-    void *ent1;
-    void *ent2;
-    TextObj *obj;
+    u8 *text;
+    s16 w;
 
     i = 0;
-    *(s16 *)(self + 8) = 0;
-    while (i < (s8)group[0x60]) {
-        ent1 = GfxEnt_Get(group[i + 0x40]);
-        ent2 = GfxEnt_Get(group[i + 0x40]);
-        obj = *(TextObj **)((u8 *)ent2 + 0x34);
-        w = (s16)Text_MeasureWidth(obj->v6(ent1), -1, 1.0f);
-        if (w >= *(s16 *)(self + 8)) {
-            *(s16 *)(self + 8) = w;
-        }
-        i += 1;
+    self = (u8 *)arg0;
+    group = (u8 *)arg1;
+    *(s16 *)((u8 *)arg0 + 8) = i;
+    goto check1;
+loop1:
+    t26 = (s32)GfxEnt_Get(group[i + 0x40]);
+    w = (s16)Text_MeasureWidth(
+        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4((void *)t26),
+        -1, 1.0f);
+    if (w >= *(s16 *)(self + 8)) {
+        *(s16 *)(self + 8) = w;
     }
-    count = (s8)group[0x60];
-    step = (s16)((s32)((Obj *)arg0)->v18() / ((s32)count + 1));
-    x = step;
+    i += 1;
+check1:
+    t26 = group[0x60];
+    if (i < (s8)t26) {
+        goto loop1;
+    }
+    w = ((Obj *)arg0)->v18();
+    c = (s8)t26;
+    step = (s16)((s32)w / ((s32)c + 1));
+    t26 = step;
     y = ((Obj *)arg0)->v17();
-    for (i = 0; i < (s32)count; i++) {
-        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x30) = x;
-        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x32) = y;
-        x = (s16)(x + step);
+    j = 0;
+    goto check2;
+loop2:
+    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = t26;
+    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
+    t26 = t26 + step;
+    j += 1;
+check2:
+    if (j < c) {
+        goto loop2;
     }
-    text = (u8 *)((Obj *)arg0)->v0();
     lineW = 0;
     maxLine = -1;
-    while (*text != 0) {
-        if ((s8)*text == 10) {
-            if (lineW > maxLine) {
-                maxLine = lineW;
-            }
-            lineW = 0;
-            text += 1;
-        } else {
-            lineW = (s16)(lineW + fn_80010428(&text, -1, 1.0f));
+    text = (u8 *)((Obj *)arg0)->v0();
+    goto check3;
+loop3:
+    switch ((s8)*text) {
+    case 10:
+        if (lineW > maxLine) {
+            maxLine = lineW;
         }
+        lineW = 0;
+        text += 1;
+        break;
+    default:
+        lineW += fn_80010428(&text, -1, 1.0f);
+        break;
+    }
+check3:
+    if ((s8)*text != 0) {
+        goto loop3;
     }
     if (lineW > maxLine) {
         maxLine = lineW;
     }
-    *(s16 *)(self + 0x10) = (s16)((s32)(((Obj *)arg0)->v18() - maxLine) >> 1);
+    *(s16 *)(self + 0x10) = (s16)((((Obj *)arg0)->v18() - maxLine) >> 1);
 #pragma cplusplus reset
 }
 
