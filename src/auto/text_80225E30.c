@@ -1408,24 +1408,46 @@ return err;
 #pragma pop
 }
 
-void fn_802283A8(void) {
-    u32 var_r30;
-    s32 var_r29;
-    s32 i = 0;
-
-    if (osIsDebugMonitor() == 1) {
-        while (i <= 3) {
-            var_r30 = 0;
-            var_r29 = *(s32*)(0x80461170 + (i * 0xC));
-            do {
-                if ((var_r29 & (1 << var_r30)) != 0) {
-                    *(u32*)(0x80461330 + (i * 0xC) + var_r30*4) = 1;
-                }
-                var_r30++;
-            } while (var_r30 != 0x10);
-            i++;
-        }
-    }
+s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
+ void fn_80226C34(u32); void fn_8022699C(u32);
+ s32 TRKMessageSend(s32); void *TRKGetBuffer(u32); void TRKSetBufferPosition(void*,s32); void fn_80227FEC(void*,u32);
+ void MWTRACE(u8,char*,...);
+ extern char lbl_802826A8[];
+ char *strings=lbl_802826A8;
+ s32 error; u8 *buffer; u32 ticks; s32 attempts; u32 command; s32 status; s32 invalid; s32 id;
+ attempts=retries+1; error=0; invalid=1; *reply=-1;
+ while(attempts!=0 && *reply==-1 && error==0) {
+ MWTRACE(1,strings+0);
+ error=TRKMessageSend(message);
+ if(error==0) {
+ if(timeout) ticks=0;
+ for(;;) {
+ do {
+ *reply=fn_80226CE4();
+ id=*reply; if(id!=-1) break;
+ } while(!timeout || ++ticks<80000000U-20U);
+ if(id!=-1) {
+ invalid=0; buffer=TRKGetBuffer(id); TRKSetBufferPosition(buffer,0);
+ fn_80227FEC(buffer+0x10,*(u32*)(buffer+8));
+ command=buffer[0x14];
+ MWTRACE(1,strings+0x18,command,command);
+ if(command<0x80) {fn_80226C34(*reply); *reply=-1; continue;}
+ }
+ break;
+ }
+ if(*reply!=-1) {
+ if(*(u32*)(buffer+8)<0x40) invalid=1;
+ if(error==0 && !invalid) {status=buffer[0x18]; MWTRACE(1,strings+0x40,status);}
+ if(error==0 && !invalid && ((s32)command!=0x80 || status!=0)) {
+ MWTRACE(8,strings+0x54,command,status); invalid=1;
+ }
+ if(error!=0 || invalid) {fn_8022699C(*reply); *reply=-1;}
+ }
+ }
+ attempts--;
+ }
+ if(*reply==-1) error=0x800;
+ return error;
 }
 
 #pragma use_lmw_stmw on
@@ -1662,7 +1684,7 @@ loop_1:
 
 void TRKInterruptHandler(void)
 {
-    // This is a stub for now - need to properly decompile this interrupt handler
+    /* Register-preserving exception entry requires handwritten assembly. */
     return;
 }
 
@@ -1820,6 +1842,7 @@ u32 fn_80229030(void) {
     return *(u32 *)(gTRKCPUState + 0x80);
 }
 
+#pragma inline_depth(10)
 s32 fn_80229040(u32 rangeStart, u32 rangeEnd, s32 stepOver) {
     s32 error = 0;
 
@@ -2357,6 +2380,87 @@ void InitMetroTRK_BBA(void) {
     TRK_main();
 }
 
+#pragma intrinsic __dcbi
+void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
+    u32 fn_80214058(void);
+    void fn_80214094(s32, void *, u32, u32);
+    void fn_80214338(void);
+    u16 fn_80214358(void);
+    void *fn_80003488(void *, void *, u32);
+
+    u8 buf[32] __attribute__((aligned(32)));
+    u32 aligned;
+    u32 length;
+    u32 offset;
+    u32 head;
+    u32 address;
+    u16 old;
+    u8 *bufp;
+    u32 endOff;
+    u32 endAlign;
+    s32 dst;
+    s32 *lenp;
+    s32 dest;
+    u32 memAddr;
+
+    lenp = arg2;
+    dest = arg0;
+    memAddr = arg1;
+    if (memAddr >= 0x4000U) {
+        length = *lenp;
+        if ((u32)(memAddr + length) <= 0x08000000U) {
+            head = memAddr & 31;
+            aligned = memAddr & ~31U;
+            length += head;
+            offset = 0;
+            length = (length + 31) & ~31U;
+            for (offset = 0; offset < length; offset += 32) {
+                __dcbf((void *)offset, (int)dest);
+            }
+            while (fn_80214058() != 0) {
+            }
+            old = fn_80214358();
+            address = 0x08000000;
+            if ((memAddr & 31) != 0) {
+                head = memAddr & 31;
+                address = aligned;
+                bufp = buf;
+                __dcbi(bufp);
+                fn_80214338();
+                fn_80214094(1, bufp, aligned, 0x20);
+                while (fn_80214358() == 0) {
+                }
+                fn_80003488((void *)dest, bufp, head);
+                __dcbf((void *)0, (int)dest);
+            }
+            memAddr += *lenp;
+            endOff = memAddr & 31;
+            if (endOff != 0) {
+                endAlign = memAddr & ~31U;
+                if (endAlign != address) {
+                    bufp = buf;
+                    __dcbi(bufp);
+                    fn_80214338();
+                    fn_80214094(1, bufp, endAlign, 0x20);
+                    while (fn_80214358() == 0) {
+                    }
+                }
+                dst = dest + memAddr;
+                bufp = buf;
+                fn_80003488((void *)dst, bufp + endOff, 0x20 - endOff);
+                __dcbf((void *)0, (int)dst);
+            }
+            __sync();
+            fn_80214338();
+            fn_80214094(0, (void *)dest, aligned, length);
+            if (old == 0) {
+                while (fn_80214358() == 0) {
+                }
+                fn_80214338();
+            }
+        }
+    }
+}
 void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
 u32 fn_80214058(void);
 void fn_80214094(s32,s32,u32,u32);
