@@ -6,6 +6,12 @@ typedef struct {
     char *msg;
 } BattlePreviewMsgSlot;
 
+typedef struct {
+    u32 a;
+    u32 b;
+    union { u8 c; void *p; } u;
+} TreeNode;
+
 extern void *lbl_803683F4;
 extern struct {
     u32 pad0;
@@ -4854,21 +4860,19 @@ void fn_801FB428(void *arg0, void *arg1, s32 (*compare)(void *, void *))
     }
 }
 
-#pragma global_optimizer off
+#pragma peephole off
 void StaffRoll_VecClear(u32 *arg0) {
-    typedef struct {
-        u8 pad[8];
-    } Elem;
-    Elem *start;
-    Elem *end;
+    u8 (*start)[8];
+    u8 (*end)[8];
 
-    start = (Elem *)arg0[2];
+    start = (u8 (*)[8])arg0[2];
     end = start + arg0[1];
-    for (; !(start >= end); start++) {
+    while (start < end) {
+        start++;
     }
     arg0[1] = 0;
 }
-#pragma global_optimizer on
+#pragma peephole reset
 void fn_801FB580(u32 *arg0, void **arg1, void *arg2)
 {
     struct ListNode {
@@ -5553,13 +5557,13 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
 }
 #pragma scheduling off
 void Tree_Init(void *arg0, u8 *arg1) {
-    u32 z = 0;
+    void *z = 0;
     u8 v;
     u8 *mid;
     v = *arg1;
-    *(u32 *)arg0 = z;
+    *(void **)arg0 = z;
     mid = (u8 *)arg0 + 4;
-    *(u32 *)mid = z;
+    *(void **)mid = z;
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 8) = mid;
 }
