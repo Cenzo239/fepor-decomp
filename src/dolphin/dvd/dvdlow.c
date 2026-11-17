@@ -293,18 +293,16 @@ after_cover:
 #pragma opt_common_subs off
 void fn_8020B84C(void) {
     extern volatile s32 NextCommandNumber_80368574;
-    DVDCommand *list = CommandList_80339E70;
-    s32 off = NextCommandNumber_80368574 * 0x14;
-    s32 command = *(s32 *)((u32)list + off);
+    s32 n = NextCommandNumber_80368574;
+    s32 command = CommandList_80339E70[n].command;
 
     if (command == 1) {
-        DVDCommand *cmd = (DVDCommand *)((u32)list + off);
         NextCommandNumber_80368574++;
-        fn_8020B940(cmd->addr, cmd->length, cmd->offset, cmd->callback);
+        fn_8020B940(CommandList_80339E70[n].addr, CommandList_80339E70[n].length,
+                    CommandList_80339E70[n].offset, CommandList_80339E70[n].callback);
     } else if (command == 2) {
-        DVDCommand *cmd = (DVDCommand *)((u32)list + off);
         NextCommandNumber_80368574++;
-        fn_8020BD68(cmd->offset, cmd->callback);
+        fn_8020BD68(CommandList_80339E70[n].offset, CommandList_80339E70[n].callback);
     }
 }
 #pragma opt_common_subs reset
@@ -638,39 +636,26 @@ s32 fn_8020C118(u32 command, void *callback)
     return 1;
 }
 
-void fn_8020C1A4(u8 arg0, u32 arg1, void *arg2) {
+BOOL fn_8020C1A4(s32 enable, u32 size, void *callback) {
     extern void *Callback_80368538;
-    extern s32 StopAtNextInt_80368530;
-    extern u16 AlarmForTimeout_80339ED8[20];
+    u32 timeout;
+    u32 cmd;
 
-    void OSCreateAlarm(void *);
-    void OSSetAlarm(void *, unsigned long long, void *);
-    void AlarmHandlerForTimeout(void);
-
-    volatile u32 *dvd;
-    u32 ticks;
-
-    Callback_80368538 = arg2;
+    Callback_80368538 = callback;
     StopAtNextInt_80368530 = 0;
 
-    if (arg0 != 0) {
-        dvd = (volatile u32 *)0xCC006000;
+    if (enable != 0) {
+        cmd = 0x10000;
+        cmd |= 0xE4000000;
+        __DIRegs[2] = size | cmd;
+        __DIRegs[7] = 1;
 
-        dvd[2] = arg1 | 0x0001E400;
-        dvd[7] = 1;
-
-        ticks = (*(volatile u32 *)0x800000F8 >> 2) * 10;
-
+        timeout = (*(u32 *)0x800000F8 >> 2) * 10;
         OSCreateAlarm(AlarmForTimeout_80339ED8);
-
-        OSSetAlarm(
-            AlarmForTimeout_80339ED8,
-            (unsigned long long)ticks,
-            (void *)AlarmHandlerForTimeout
-        );
+        OSSetAlarm(AlarmForTimeout_80339ED8, (s64)(u32)timeout, AlarmHandlerForTimeout);
     }
 
-    return;
+    return 1;
 }
 
 void DVDLowReset(void) {
