@@ -1787,6 +1787,74 @@ Model_SetAlpha(model,(u8)alpha);
 if(*(f32*)((u8*)arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
 }
 
+#pragma opt_strength_reduction off
+void fn_80186780(void *proc) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, void *);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32);
+    void *fn_800508C4(void *);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void fn_8005FC74(void *, void *, s32);
+    void fn_8005FEE8(void *, f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    extern u8 E_MuTransfer_script[];
+    extern f32 lbl_8036ACEC;
+    extern f32 lbl_8036ACF0;
+    extern f32 lbl_8036AD04;
+    extern f64 lbl_8036ACE0;
+    u8 blendKey[0x34];
+    u8 transferKey[0x38];
+    void *unit;
+    s32 hitCount;
+    void *animSrc;
+
+    unit = *(void **)((u8 *)proc + 0x34);
+    hitCount = 4;
+    if (fn_8004C0F0(unit) != 0) {
+        *(void **)(blendKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
+        *(void **)(transferKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
+        {
+            u8 level = *(u8 *)((u8 *)fn_800508C4(unit) + 9);
+            if ((s32)level > 0x14) {
+                if ((s32)level > 0x28) {
+                    hitCount <<= 1;
+                } else {
+                    hitCount = (s32)((f32)hitCount + Math_Lerp(lbl_8036ACEC, lbl_8036AD04, lbl_8036ACF0, (f32)((s32)level - 0x14)));
+                }
+            }
+        }
+        if ((hitCount == 0) || (fn_80060440((u8 *)unit + 0x1C) >= 4)) {
+            fn_8004FE98(unit, 1);
+            return;
+        }
+        proc = Process_CreateEx(E_MuBlend_script, 0);
+        *(void **)((u8 *)proc + 0x30) = unit;
+        *(s32 *)((u8 *)proc + 0x34) = (s32)unit + 0x1C;
+        *(s32 *)((u8 *)proc + 0x38) = 1;
+        *(s32 *)((u8 *)proc + 0x3C) = hitCount;
+        *(s32 *)((u8 *)proc + 0x40) = 0;
+        fn_800506E0(*(void **)((u8 *)proc + 0x30), 1);
+        animSrc = fn_800639B4();
+        hitCount = 0;
+        if (*(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44) != NULL) {
+            void *range = *(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44);
+            f32 rangeStart = (f32)*(s32 *)((u8 *)range + 0x14);
+            hitCount = (s32)Math_Lerp((f32)*(s32 *)((u8 *)animSrc + 0x14), (f32)*(s32 *)((u8 *)animSrc + 0x18), (f32)*(s32 *)((u8 *)range + 0x18) - rangeStart, *(f32 *)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x58) - rangeStart);
+        }
+        fn_8005FC74(*(void **)((u8 *)proc + 0x34), animSrc, 1);
+        fn_8005FEE8(*(void **)((u8 *)proc + 0x34), (f32)hitCount);
+        fn_8004FE90(*(void **)((u8 *)proc + 0x30), (u8)*(s32 *)((u8 *)proc + 0x38));
+    }
+}
+
 void fn_801869D0(void *arg0) {
  void GfxEnt_ForEachKey(void *,void *,void *); void *Process_CreateEx(void *,s32);
  f32 fn_8004BDA8(void *,f32,f32); void Unit_SetWorldXY(void *,f32,f32);
@@ -1919,6 +1987,73 @@ void fn_80186E10(void *arg0) {
     Model_SetAlpha(r31, (u8)r30);
     if (*(f32 *)((u8 *)arg0 + 0x44) == lbl_8036ACF4) {
         Process_ClearFunc(arg0);
+    }
+}
+
+void fn_80186F0C(void *proc) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32);
+    void *fn_800508C4(void *);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void fn_8005FC74(void *, void *, s32);
+    void fn_8005FEE8(void *, f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    extern u8 E_MuTransfer_script[];
+    extern f32 lbl_8036ACEC;
+    extern f32 lbl_8036ACF0;
+    extern f32 lbl_8036AD04;
+    u8 blendKey[0x34];
+    u8 transferKey[0x38];
+    void *unit;
+    void *animSrc;
+    s32 hitCount;
+
+    unit = *(void **)((u8 *)proc + 0x34);
+    hitCount = 3;
+    hitCount += 1;
+    if (fn_8004C0F0(unit) != 0) {
+        *(void **)(blendKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
+        *(void **)(transferKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
+        {
+            u8 level = *(u8 *)((u8 *)fn_800508C4(unit) + 9);
+            if ((s32)level > 0x14) {
+                if ((s32)level > 0x28) {
+                    hitCount <<= 1;
+                } else {
+                    hitCount = (s32)((f32)hitCount + Math_Lerp(lbl_8036ACEC, lbl_8036AD04, lbl_8036ACF0, (f32)((s32)level - 0x14)));
+                }
+            }
+        }
+        if ((hitCount == 0) || (fn_80060440((u8 *)unit + 0x1C) >= 4)) {
+            fn_8004FE98(unit, 1);
+            return;
+        }
+        proc = Process_CreateEx(E_MuBlend_script, 0);
+        *(void **)((u8 *)proc + 0x30) = unit;
+        *(s32 *)((u8 *)proc + 0x34) = (s32)unit + 0x1C;
+        *(s32 *)((u8 *)proc + 0x38) = 1;
+        *(s32 *)((u8 *)proc + 0x3C) = hitCount;
+        *(s32 *)((u8 *)proc + 0x40) = 0;
+        fn_800506E0(*(void **)((u8 *)proc + 0x30), 1);
+        animSrc = fn_800639B4();
+        hitCount = 0;
+        if (*(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44) != NULL) {
+            void *range = *(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44);
+            f32 rangeStart = (f32)*(s32 *)((u8 *)range + 0x14);
+            hitCount = (s32)Math_Lerp((f32)*(s32 *)((u8 *)animSrc + 0x14), (f32)*(s32 *)((u8 *)animSrc + 0x18), (f32)*(s32 *)((u8 *)range + 0x18) - rangeStart, *(f32 *)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x58) - rangeStart);
+        }
+        fn_8005FC74(*(void **)((u8 *)proc + 0x34), animSrc, 1);
+        fn_8005FEE8(*(void **)((u8 *)proc + 0x34), (f32)hitCount);
+        fn_8004FE90(*(void **)((u8 *)proc + 0x30), (u8)*(s32 *)((u8 *)proc + 0x38));
     }
 }
 
@@ -2832,6 +2967,67 @@ case 0x20:M2C_FIELD(p,u8 *,0x51)=0;break;
 }
 flag=1; temp=gMapBlendMode-1; if(!(temp<=flag))flag=0;
 if((u8)flag && M2C_FIELD(M2C_FIELD(M2C_FIELD(p,void **,0x30),void **,0x190),u8 *,8)==1 && gBattleMap[(s8)x+((s8)y<<6)+0x200d]==0) Process_Goto(p,0);
+}
+
+void fn_801890B4(u8 *self) {
+void fn_80050C90(void *);
+void fn_8004FE98(void *,s32);
+void GfxEnt_ForEachKey(void *,void *,void *);
+void MuFade_UnlinkSame(void *,void *);
+void Unit_SetModelAlpha(void *,s32);
+void DebugPrint(void *,...);
+void SeCue_FadeOut(s32,s32);
+void fn_800C4588(void *);
+extern u16 E_MuFade_script[36];
+extern u8 gBattleMap[],gSeCueSlots[],MoveAnim_str[],gMapBlendMode;
+u8 key[0x34];
+s32 x,y;
+u8 tx,ty;
+u8 *unit;
+f32 angle;
+s16 degrees;
+s32 alpha;
+u8 blend;
+if(*(u16 *)(self+0x52)&0x80) {
+unit=*(u8 **)(self+0x30);
+tx=unit[0x19e]; ty=unit[0x19f]; x=(s8)tx; y=(s8)ty;
+fn_80050C90(unit);
+unit=*(u8 **)(self+0x30);
+switch(self[0x5a]) {
+case 4: degrees=0;break;
+case 6: degrees=45;break;
+case 2: degrees=90;break;
+case 10: degrees=135;break;
+case 8: degrees=180;break;
+case 9: degrees=225;break;
+case 1: degrees=270;break;
+case 5: degrees=315;break;
+default: degrees=0;break;
+}
+angle=degrees;
+*(void **)(key+0x30)=unit;
+GfxEnt_ForEachKey(E_MuFade_script,MuFade_UnlinkSame,key);
+if(angle!=(f32)*(s16 *)(unit+0x15c)/50.0f) *(s16 *)(unit+0x15c)=50.0f*angle;
+unit=*(u8 **)(self+0x30);
+if(unit[2]) fn_8004FE98(unit,0);
+alpha=255;
+if(*(u16 *)(self+0x52)&0x10) {}
+if(*(u16 *)(self+0x52)&0x20) alpha=0;
+blend=1;
+if(!((u8)(gMapBlendMode-1)<=1)) blend=0;
+if(blend) {
+if((*(u8 **)(*(u8 **)(self+0x30)+0x190))[8]==1) {
+if(gBattleMap[0x200d+x+(y<<6)]==0) alpha=0;
+}
+}
+Unit_SetModelAlpha(*(void **)(self+0x30),alpha);
+}
+if((s8)self[0x6a]!=-1) {
+DebugPrint(MoveAnim_str+0x4c3,**(void ***)(gSeCueSlots+self[0x6a]*0x30));
+SeCue_FadeOut(self[0x6a],250);
+}
+fn_800C4588(*(void **)(self+0x54));*(void **)(self+0x54)=0;
+fn_800C4588(*(void **)(self+0x6c));*(void **)(self+0x6c)=0;
 }
 
 #pragma global_optimizer off
@@ -7691,6 +7887,97 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
         }
     }
 }
+
+extern "C" void fn_80193344(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void *Heap_Alloc(u32);
+    void *ListWidget_GetSelected(void *);
+    void Ui_BringChildToFront(void *, void *);
+    void Ui_SetWidgetText(void *, void *);
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_802961F4[];
+    struct { s16 x; s16 y; } spC;
+    struct { s16 x; s16 y; } sp8;
+    void *p;
+    void *obj;
+    void *msg;
+    s16 tmp;
+    struct Obj {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+    };
+
+    
+    obj = Ui_FindChild(arg0, 0, 0);
+    if (obj == NULL) {
+        obj = M2C_FIELD(arg0, void **, 0x4C);
+        Ui_AddChild(arg0, obj);
+    }
+    if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
+        register tmp = M2C_FIELD(obj, s16 *, 0xC);
+        spC.x = 0x108;
+        spC.y = tmp;
+        Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);
+    }
+    if (Ui_FindChild(arg0, 1, 0) == NULL) {
+        p = Heap_Alloc(0x44);
+        if (p != NULL) {
+            M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
+            M2C_FIELD(p, void **, 0) = lbl_80292230;
+            M2C_FIELD(p, u32 *, 4) = 0;
+            M2C_FIELD(p, s16 *, 8) = -1;
+            M2C_FIELD(p, s16 *, 0xA) = 0x260;
+            M2C_FIELD(p, s16 *, 0xC) = 0x148;
+            M2C_FIELD(p, s16 *, 0xE) = 0x349;
+            M2C_FIELD(p, s16 *, 0x10) = 0x18F;
+            M2C_FIELD(p, s16 *, 0x12) = 0;
+            M2C_FIELD(p, s16 *, 0x14) = 0;
+            M2C_FIELD(p, s16 *, 0x16) = 0xE9;
+            M2C_FIELD(p, s16 *, 0x18) = 0x47;
+            M2C_FIELD(p, s16 *, 0x1A) = 0;
+            M2C_FIELD(p, s16 *, 0x1C) = 0;
+            M2C_FIELD(p, u8 *, 0x1E) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x1F) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x20) = 0xFF;
+            M2C_FIELD(p, u8 *, 0x21) = 0xFF;
+            M2C_FIELD(p, s16 *, 0x22) = 0x1F4;
+            M2C_FIELD(p, s16 *, 0x24) = 0;
+            M2C_FIELD(p, f32 *, 0x28) = 1.0f;
+            M2C_FIELD(p, f32 *, 0x2C) = 1.0f;
+            M2C_FIELD(p, f32 *, 0x30) = 1.0f;
+            M2C_FIELD(p, u32 *, 0x34) = 0;
+            M2C_FIELD(p, u32 *, 0x38) = 0;
+            M2C_FIELD(p, void **, 0) = lbl_802961F4;
+            M2C_FIELD(p, u32 *, 0x3C) = 0;
+            ((Obj *)p)->v8();
+        }
+        M2C_FIELD(p, s16 *, 8) = 1;
+        M2C_FIELD(p, s16 *, 0x24) = 8;
+            M2C_FIELD(p, u32 *, 0x3C) = *(u32 *)(*(void **)ListWidget_GetSelected(obj));
+        Ui_AddChild(arg0, p);
+        tmp = M2C_FIELD(p, s16 *, 0xC);
+        sp8.x = 0x158;
+        sp8.y = tmp;
+        Ui_SlideWidgetChildMode1(arg0, p, &sp8.x, 0);
+    }
+    Ui_BringChildToFront(arg0, obj);
+    msg = M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), void **, 0x44);
+    p = Ui_FindChild(arg0, -0x1000, 0);
+    if (p != NULL) {
+        Ui_SetWidgetText(p, msg);
+    }
+}
+
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
