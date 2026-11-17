@@ -226,14 +226,15 @@ u32 PPCMffpscr(void)
     f64 pad;
     f64 value;
     u32 result;
+    f64 tmp;
 
+    tmp = __mffs();
     pad = value;
-    value = __mffs();
+    value = tmp;
     result = ((u32 *)&value)[1];
     value = pad;
     return result;
 }
-#pragma intrinsic __mtfsf
 void PPCMtfpscr(u32 arg0)
 {
     f64 pad;
@@ -1094,46 +1095,79 @@ u32 OSAllocFromArenaLo(u32 arg0, u32 arg1) {
     return temp_r6;
 }
 
-void __OSStopAudioSystem(void) {
+void __OSInitAudioSystem(void) {
+    u8 *OSGetArenaHi(void);
+    void DCFlushRange(void *, u32);
     u32 OSGetTick(void);
-
-    volatile u16 *ai;
-    u32 start;
-    u32 value;
-
-    ai = (volatile u16 *)0xCC005000;
-
-    ai[5] = 0x804;
-    ai[0x1B] &= ~0x8000;
-
-    while ((ai[5] & 0x400) != 0) {
-    }
-
-    while ((ai[5] & 0x200) != 0) {
-    }
-
-    ai[5] = 0x8AC;
-    ai[0] = 0;
-
-    while (1) {
-        value = ((u32)ai[2] << 16) | ai[3];
-        if ((value & 0x80000000U) != 0) {
-            break;
-        }
-    }
-
-    start = OSGetTick();
-
+    void *memcpy(void *, void *, u32);
+    extern u8 DSPInitCode_8029BB30[];
+    extern volatile u16 OS_DSPRegs[];
+    volatile u16 *dsp, *csr, *p30, *p29;
+    volatile u32 *p27, *p26, *p25;
+    u32 tick, v;
+    u16 tmp;
+    memcpy(OSGetArenaHi() - 0x80, (void *)0x81000000, 0x80);
+    memcpy((void *)0x81000000, DSPInitCode_8029BB30, 0x80);
+    DCFlushRange((void *)0x81000000, 0x80);
+    dsp = OS_DSPRegs;
+    dsp[9] = 0x43;
+    csr = dsp + 5;
+    *csr = 0x8AC;
+    *csr |= 1;
+    while (*csr & 1) {}
+    dsp[0] = 0;
     do {
-        value = OSGetTick() - start;
-    } while ((s32)value < 0x2C);
-
-    ai[5] |= 1;
-
-    while ((ai[5] & 1) != 0) {
-    }
+        p30 = dsp + 2;
+        p29 = dsp + 3;
+        v = ((u32)*p30 << 16) | *p29;
+    } while (v & 0x80000000);
+    p27 = (volatile u32 *)((u8 *)dsp + 0x20);
+    p26 = (volatile u32 *)((u8 *)dsp + 0x24);
+    p25 = (volatile u32 *)((u8 *)dsp + 0x28);
+    *p27 = 0x01000000; *p26 = 0; *p25 = 0x20;
+    for (tmp = *csr; !(tmp & 0x20); tmp = *csr) {}
+    *csr = tmp;
+    tick = OSGetTick();
+    while ((s32)(OSGetTick() - tick) < 0x892) {}
+    *p27 = 0x01000000; *p26 = 0; *p25 = 0x20;
+    for (tmp = *csr; !(tmp & 0x20); tmp = *csr) {}
+    *csr = tmp;
+    *csr &= ~0x800;
+    while (*csr & 0x400) {}
+    *csr &= ~4;
+    for (tmp = *p30; !(tmp & 0x8000); tmp = *p30) {}
+    v = ((u32)tmp << 16) | *p29;
+    *csr |= 4;
+    *csr = 0x8AC;
+    *csr |= 1;
+    while (*csr & 1) {}
+    memcpy((void *)0x81000000, OSGetArenaHi() - 0x80, 0x80);
 }
 
+#pragma optimization_level 3
+void __OSStopAudioSystem(void) {
+    u32 OSGetTick(void);
+    volatile u16 *ai = (volatile u16 *)0xCC005000;
+    volatile u16 *p = ai;
+    u32 start;
+    u16 value;
+
+    ai[5] = 0x804;
+    p[0x1b] &= ~0x8000;
+    value = *(ai += 5);
+    while (value & 0x400) value = *ai;
+    value = *ai;
+    while (value & 0x200) value = *ai;
+    *ai = 0x8ac;
+    p[0] = 0;
+    while ((((u32)p[2] << 16) | p[3]) & 0x80000000U) {}
+    start = OSGetTick();
+    while ((s32)(OSGetTick() - start) < 44) {}
+    *ai |= 1;
+    value = *ai;
+    while (value & 1) value = *ai;
+}
+#pragma optimization_level reset
 void DCEnable(void)
 {
     __sync();
@@ -1211,8 +1245,6 @@ void fn_8020521C(void) {
     s32 var_r3;
     s32 var_r3_2;
 
-    M2C_ERROR(/* unknown instruction: mfmsr $r5 */);
-    M2C_ERROR(/* unknown instruction: mtmsr $r5 */);
     var_r3 = 0x80000000;
     var_ctr = 0x400;
     do {
@@ -1221,10 +1253,6 @@ void fn_8020521C(void) {
         var_r3 += 0x20;
         var_ctr -= 1;
     } while (var_ctr != 0);
-    M2C_ERROR(/* unknown instruction: mfspr $r4, HID2 */);
-    M2C_ERROR(/* unknown instruction: mtspr HID2, $r4 */);
-    M2C_ERROR(/* unknown instruction: mtdbatl 0x3, $r3 */);
-    M2C_ERROR(/* unknown instruction: mtdbatu 0x3, $r3 */);
     M2C_SYNC();
     var_r3_2 = 0xE0000000;
     var_ctr_2 = 0x200;
@@ -1340,28 +1368,47 @@ void DMAErrorHandler(u8 error, void *context, ...) {
     }
     PPCMthid2(hid2);
 }
-#pragma peephole on
+#pragma peephole off
 void __OSCacheInit(void) {
- u32 PPCMfl2cr(void);
- void ICEnable(void);
- void DCEnable(void);
- void L2GlobalInvalidate(void);
- void DBPrintf(char *, ...);
- void PPCMtl2cr(u32);
- OSErrorHandler OSSetErrorHandler(u16, OSErrorHandler);
- char *strings;
- u32 msr;
- strings=(char*)lbl_8029BBB0;
- if (((u32)PPCMfhid0() & 0x8000U)==0) { ICEnable(); DBPrintf(strings+0x1AC); }
- if (((u32)PPCMfhid0() & 0x4000U)==0) { DCEnable(); DBPrintf(strings+0x1C8); }
- if ((PPCMfl2cr() & 0x80000000U)==0) {
- msr=PPCMfmsr(); __sync(); PPCMtmsr(0x30); __sync(); __sync();
- PPCMtl2cr(PPCMfl2cr() & 0x7FFFFFFF); __sync(); L2GlobalInvalidate();
- PPCMtmsr(msr); PPCMtl2cr((PPCMfl2cr()|0x80000000U)&~0x00200000U); DBPrintf(strings+0x1E4);
- }
- OSSetErrorHandler(1,(OSErrorHandler)DMAErrorHandler); DBPrintf(strings+0x1FC);
-}
+    u32 PPCMfl2cr(void);
+    void ICEnable(void);
+    void DCEnable(void);
+    void L2GlobalInvalidate(void);
+    void DBPrintf(char *, ...);
+    void PPCMtl2cr(u32);
+    OSErrorHandler OSSetErrorHandler(u16, OSErrorHandler);
+    char *strings;
+    u32 msr;
+    u32 bit;
 
+    strings = (char *)lbl_8029BBB0;
+    bit = PPCMfhid0() & 0x8000U;
+    if (bit == 0U) {
+        ICEnable();
+        DBPrintf(strings + 0x1AC);
+    }
+    bit = PPCMfhid0() & 0x4000U;
+    if (bit == 0U) {
+        DCEnable();
+        DBPrintf(strings + 0x1C8);
+    }
+    if ((PPCMfl2cr() & 0x80000000U) == 0U) {
+        msr = PPCMfmsr();
+        __sync();
+        PPCMtmsr(0x30);
+        __sync();
+        __sync();
+        PPCMtl2cr(PPCMfl2cr() & 0x7FFFFFFF);
+        __sync();
+        L2GlobalInvalidate();
+        PPCMtmsr(msr);
+        PPCMtl2cr((PPCMfl2cr() | 0x80000000U) & ~0x00200000U);
+        DBPrintf(strings + 0x1E4);
+    }
+    OSSetErrorHandler(1, (OSErrorHandler)DMAErrorHandler);
+    DBPrintf(strings + 0x1FC);
+}
+#pragma peephole on
 f64 __OSLoadFPUContext(void *arg1, f64 farg0) {
  if (*(u16*)((u8*)arg1+0x1A2)&1) return *(f64*)((u8*)arg1+0x98);
  return farg0;
@@ -1811,12 +1858,31 @@ dump:
 
     PPCHalt();
 }
-void fn_80206658(void) {
-    // This is a function that seems to process some string data
-    // Based on the assembly, it appears to be doing some kind of memory initialization/processing
-    
-    // The function signature in the target matches what we expect
-    return;
+s32 fn_80206658(u8 *buffer, s32 argc, char **argv) {
+    u32 count;
+    char *end;
+    u32 *table;
+    u32 i;
+    memset(buffer, 0, 0x2000);
+    if (argc == 0) {
+        *(u32 *)(buffer + 8) = 0;
+    } else {
+        count = argc;
+        end = (char *)buffer + 0x2000;
+        while (--argc >= 0) {
+            end -= strlen(argv[argc]) + 1;
+            strcpy(end, argv[argc]);
+            argv[argc] = (char *)(end - (char *)buffer);
+        }
+        end = (char *)buffer + ((end - (char *)buffer) & ~3);
+        table = (u32 *)end - (count + 1);
+        for (i = 0; i < (u32)(count + 1); i++)
+            table[i] = (u32)argv[i];
+        table--;
+        *table = count;
+        *(u32 *)(buffer + 8) = (u8 *)table - buffer;
+    }
+    return 1;
 }
 
 void fn_802067E0(s32 arg0) {
@@ -2065,6 +2131,44 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         ICFlashInvalidate();
         fn_802067E0(0x81300000);
     }
+}
+
+#pragma peephole off
+void fn_80206E1C(u32 bootDol, u32 resetCode, char **argv) {
+    void fn_8020878C(s32 *, s32 *);
+    int sprintf(char *, char *, ...);
+    u32 OSAllocFromArenaLo(u32, u32);
+    void fn_80206998(s32, s32, s32, s32, s32, s32, s32);
+    extern char lbl_80366F40;
+
+    char buffer[0x18];
+    s32 sp18;
+    s32 sp14;
+    char **newArgv;
+    char **src;
+    char **dst;
+    s32 count;
+    s32 i;
+
+    fn_8020878C(&sp18, &sp14);
+    sprintf(buffer, &lbl_80366F40, bootDol);
+
+    count = 0;
+    if (argv != NULL) {
+        while (argv[count] != NULL) {
+            count++;
+        }
+    }
+
+    newArgv = (char **)OSAllocFromArenaLo((count + 2) * 4, 1);
+    newArgv[0] = buffer;
+    src = argv + 1;
+    dst = newArgv + 1;
+    for (i = 0; i < count; i++) {
+        dst[i] = src[i - 1];
+    }
+
+    fn_80206998(-1, (s32)resetCode, sp18, sp14, 0, count + 1, (s32)newArgv);
 }
 #pragma peephole on
 /* Map a character code to an OS font sheet glyph index (SJIS if encode==1). */
