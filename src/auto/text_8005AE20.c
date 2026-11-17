@@ -273,14 +273,13 @@ s32 fn_8005B4D8(s32 arg0) {
     return 0;
 }
 
-static inline u32 HashString(void *p) {
+static inline u32 HashString(u8 *s) {
     u32 hash;
     u8 b;
     hash = 0;
-    p = *(void **)p;
-    while ((b = *(u8 *)p, (s8)b != 0)) {
+    while ((b = *s, (s8)b != 0)) {
         hash += b;
-        p = (u8 *)p + 1;
+        s++;
         hash <<= 4;
     }
     return hash;
@@ -4986,68 +4985,80 @@ done:
 
 s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
     void fn_800056A0(s32);
-    u16 *table;
-    s32 count;
-    s32 i;
-    s32 off;
-    u16 idx;
+    void **mid;
+    u8 *base;
     u8 *entry;
-    u8 *src;
+    u8 *walk;
+    u16 *table;
+    u16 offset;
+    u16 lim;
+    s32 tmp;
+    s32 result;
+    s32 i;
     s32 j;
+    s32 index;
+    s32 diff1;
+    s32 diff2;
+    s32 mask;
     s32 remain;
-    u16 *indices;
+    u16 val;
 
     if (arg0 == NULL) {
-        table = NULL;
+        base = NULL;
     } else {
-        if (*arg0 == NULL) {
-            table = NULL;
+        mid = *arg0;
+        if (mid != NULL) {
+            base = (u8 *)*mid;
         } else {
-            table = (u16 *)**arg0;
+            base = NULL;
         }
     }
 
-    count = 0;
-    if (table != NULL) {
-        off = 0;
-        for (i = 0; i < (s32)table[0]; i++) {
-            indices = *(u16 **)((u8 *)table + 4);
-            idx = *(u16 *)((u8 *)indices + off);
-            if (idx == 0xFFFF) {
-                entry = NULL;
-            } else {
-                entry = (u8 *)table + idx;
-            }
-            if (lo < (f32)*(u16 *)entry) {
-                if ((f32)*(u16 *)entry <= hi) {
-                    src = entry;
+    result = 0;
+    if (base != NULL) {
+        tmp = 0x10000 - 1;
+        i = 0;
+        lim = (u16)tmp;
+        index = 0;
+        while (i < (s32)*(u16 *)base) {
+            table = *(u16 **)(base + 4);
+            offset = *(u16 *)((u8 *)table + index);
+            diff1 = (s32)offset - (s32)lim;
+            diff2 = (s32)lim - (s32)offset;
+            mask = ~(diff1 | diff2) >> 31;
+            entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
+            val = *(u16 *)entry;
+            if (lo < (f32)val) {
+                if ((f32)val <= hi) {
+                    walk = entry;
                     j = 0;
                     while (j < (s32)*(u16 *)(entry + 2)) {
-                        if (count >= 4) {
+                        if (result >= 4) {
                             fn_800056A0(0);
                             break;
                         }
-                        *out = *(u16 *)(src + 4);
-                        count += 1;
-                        src += 2;
+                        *out = *(u16 *)(walk + 4);
+                        result += 1;
+                        walk += 2;
                         j += 1;
                         out += 1;
                     }
                 }
             }
-            off += 2;
+            index += 2;
+            i += 1;
         }
     }
 
-    if (count < 4) {
-        remain = 4 - count;
+    if (result < 4) {
+        remain = 4 - result;
         while (remain != 0) {
             *out = 0xFFFF;
             out += 1;
             remain -= 1;
         }
     }
-    return count;
+    return result;
 }
 
 #pragma global_optimizer off
