@@ -974,74 +974,70 @@ void Options_InitPanel(void *proc) {
     }
 }
 
-void fn_801F3890(void) {
-    u16 *r29 = (u16 *)0x8036C56C;
-    u16 r30, r4, r5, r6, r7, r0, r3, r0_0, r0_1, r0_2, r0_3, r0_4, r0_5, r0_6;
-    u16 *r28;
-    s16 r31;
-    
-    r30 = r29[0x0C/2];
-    r28 = (u16 *)0x8036C56C + 0x20/2 + r30;
-    r7 = *(u8 *)(0x8036C56C + 0x11);
-    r3 = r28[r30/2];
-    r5 = (u16)gPadInput; // This is a global pointer to 0x80367240
-    r6 = *(u16 *)(r5 + 0x4);
-    r0 = *(u8 *)(r3 + 0x2);
-    r4 = *(u16 *)(r5 + 0x8);
-    
-    // if (r7 != r0) 
-    if (r7 != r0) {
-        u16 temp = r4 ^ r6;
-        u16 mask = r6 & temp;
-        if ((mask << 9) == 0) { // Check bit 23
-            *(u8 *)(0x8036C56C + 0x10) = r7; 
-        } else {
-            *(u8 *)(0x8036C56C + 0x10) = r0;
-        }
-    }
-
-    // This looks like a bit field or something similar
-    if ((*(u16 *)(r5 + 0xC) & 0x4000) != 0) {
-         *(u16 *)(0x8036C56C + 0xE) = 0;
-         r0_0 = *(u16 *)(0x8027F868 + 0x121C);
-         *(float *)(0x8036C56C + 0x30) = *(float *)0x8036B858;
-         // r3 holds r27 which is arg0 from the start
-         // r4 = 0x64 = 100 
-         Ui_PlaySeCue(r29, 0x64);
-         Process_Goto(r29, 1);  
-         fn_8008A290(r29, 3, 0xB4); 
-    } else {
-        if ((*(u16 *)(r5 + 0xC) & 0x8000) != 0) { // Check bit 22
-            *(u16 *)(0x8036C56C + 0xE) = 0;
-            r0_1 = *(u16 *)(0x8027F868 + 0x11BD); 
-            Ui_PlaySeCue(r29, 0x64);
-            Process_Goto(r29, 4);
-        } else {
-            r0_2 = *(u16 *)(r5 + 0xC); // This is likely a mask
-            r31 = r0_2;
-
-            if ((r31 & 0x8) == 0) { // Check bit 3 
-                *(u16 *)(0x8036C56C + 0xC) = r30 - 1;
-                // More logic to handle counter...
-                if (*(u16 *)(0x8036C56C + 0xC) >= 0) {
-                    *(u16 *)(0x8036C56C + 0xC) = 0;
-                }
-            } else {
-                *(u16 *)(0x8036C56C + 0xC) = r30 + 1;
-                // Same logic again to handle counter...
-                if (*(u16 *)(0x8036C56C + 0xC) < ((*(u8 *)r28))) {
-                    *(u16 *)(0x8036C56C + 0xC) = ((*(u8 *)r28)) - 1;
-                }
-            }
-
-            // Final bit check and call
-            if (r30 != *(u16 *)(0x8036C56C + 0xC))
-            {
-                r0_3 = *(u16 *)(0x8027F868 + 0x122C);
-                Ui_PlaySeCue(r29, 0x64);
-            }
-        }
-    }
+void fn_801F3890(void *arg0) {
+void Ui_PlaySeCue(void *,s32);
+void Process_Goto(void *,s32);
+u8 fn_8008A59C(void);
+void fn_8008A290(s32,s32);
+extern char gOptionsStrs[];
+extern f32 lbl_8036B858;
+u32 pressed;
+u32 repeat;
+s32 old;
+u8 *p;
+u8 *list;
+u32 held;
+u8 category;
+p=*(u8 **)((u8 *)arg0+0x30);
+old=*(s16 *)(p+0xC);
+list=p+0x20;
+held=*(u32 *)((u8 *)gPadInput+4);
+pressed=held & (*(u32 *)((u8 *)gPadInput+8)^held);
+repeat=*(u32 *)((u8 *)gPadInput+12);
+category=p[0x11];
+if(category!=list[old+2]){
+s16 tmp;
+p[0x10]=category;
+p[0x11]=list[*(s16 *)(p+0xC)+2];
+tmp=*(s16 *)(p+0x38);
+*(s16 *)(p+0x38)=*(s16 *)(p+0x3A);
+*(s16 *)(p+0x3A)=tmp;
+}
+if((pressed&0x100)&&!fn_8008A59C()){
+*(s16 *)(p+0xE)=0;
+*(s16 *)(p+0x2C)=0;
+*(f32 *)(p+0x30)=0.0f;
+Ui_PlaySeCue(gOptionsStrs+0x121C,100);
+Process_Goto(arg0,1);
+fn_8008A290(3,180);
+} else if((pressed&0x200)&&!fn_8008A59C()){
+Ui_PlaySeCue(gOptionsStrs+0x11BD,100);
+Process_Goto(arg0,4);
+} else {
+if(repeat&0x08000008){
+s32 y;
+*(s16 *)(p+0xC)-=1;
+if(*(s16 *)(p+0xC)<0) *(s16 *)(p+0xC)=0;
+y=*(s16 *)(p+0xC)*0x30+0x78;
+*(s16 *)(p+0x16)=4;
+*(s16 *)(p+0x18)=*(s16 *)(p+0x12);
+*(s16 *)(p+0x1A)=*(s16 *)(p+0x14);
+*(s16 *)(p+0x1C)=0x40;
+*(s16 *)(p+0x1E)=y;
+}
+if(repeat&0x04000004){
+s32 y;
+*(s16 *)(p+0xC)+=1;
+if(*(s16 *)(p+0xC)>=list[1]) *(s16 *)(p+0xC)=list[1]-1;
+y=*(s16 *)(p+0xC)*0x30+0x78;
+*(s16 *)(p+0x16)=4;
+*(s16 *)(p+0x18)=*(s16 *)(p+0x12);
+*(s16 *)(p+0x1A)=*(s16 *)(p+0x14);
+*(s16 *)(p+0x1C)=0x40;
+*(s16 *)(p+0x1E)=y;
+}
+if(old!=*(s16 *)(p+0xC)) Ui_PlaySeCue(gOptionsStrs+0x122C,100);
+}
 }
 
 void fn_801F3A88(void *arg0) {
@@ -2465,53 +2461,68 @@ void fn_801F72A4(void *arg0) {
 }
 
 void fn_801F7434(void *arg0) {
-    void *temp_r31;
-    s32 var_r29;
-    u8 var_r28;
-    u8 *var_r30;
-    u8 temp_r3;
-    s32 temp_r0;
-    u8 *var_r27;
+    void Ui_PlaySeCue(void *, s32);
+    char *Msg_Expand(char *);
+    void *memcpy(void *, const void *, unsigned long);
+    char *strcpy(char *, const char *);
+    char *strcat(char *, const char *);
+    extern char gBattlePreviewStrings[];
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x30);
+    char *src;
+    char *seg;
+    s32 len;
+    s32 lines;
+    u8 *dst;
+    s8 c;
 
-    temp_r31 = *(void**)((u8*)arg0 + 0x30);
-    *(u8*)((u8*)temp_r31 + 0x88) = 1;
-    *(u8*)((u8*)temp_r31 + 0x5) = 0;
-    *(u8*)((u8*)temp_r31 + 0x16) = 1;
-    *(u8*)((u8*)temp_r31 + 0x17) = 1;
-    *(u16*)((u8*)temp_r31 + 0x18) = 0;
-    *(u16*)((u8*)temp_r31 + 0x1A) = 0x1C2;
-    *(u16*)((u8*)temp_r31 + 0x1C) = 0x3D;
-    *(u8*)((u8*)temp_r31 + 0xCE) = 0;
-    *(u8*)((u8*)temp_r31 + 0x10E) = 0;
-    *(u8*)((u8*)temp_r31 + 0x14E) = 0;
-    *(u8*)((u8*)temp_r31 + 0x18E) = 0;
-    *(u8*)((u8*)temp_r31 + 0x1CE) = 0;
-    
-    var_r29 = 0;
-    var_r30 = (u8*)Msg_Expand((u8*)temp_r31 + (u16)((u8*)temp_r31 + 0x6) * 4 + 0xB0, 0, 1);
-    
-loop_1:
-    temp_r3 = *var_r30;
-    if (temp_r3 == 0 || temp_r3 == 0xA) {
-        var_r27 = (u8*)temp_r31 + 0xCE;
-        if (var_r29 > 0) {
-            memcpy(var_r27, ((u8*)var_r30 - 1), var_r29);
+    p[0x88] = 1;
+    p[5] = 0;
+    p[0x16] = 1;
+    p[0x17] = 1;
+    *(s16 *)(p + 0x18) = 0;
+    *(s16 *)(p + 0x1A) = 0x1C2;
+    *(s16 *)(p + 0x1C) = 0x3D;
+    p[0xCE] = 0;
+    p[0x10E] = 0;
+    p[0x14E] = 0;
+    p[0x18E] = 0;
+    p[0x1CE] = 0;
+
+    src = Msg_Expand(*(char **)(p + (*(s16 *)(p + 6) << 2) + 0xB0));
+    len = 0;
+    lines = 0;
+    dst = p;
+    seg = src;
+
+    for (;;) {
+        c = *src;
+        if (c == 0 || c == '\n') {
+            if (len > 0) {
+                memcpy(dst + 0xCE, seg, len);
+            }
+            *(dst + len + 0xCE) = 0;
+            len = 0;
+            dst += 0x40;
+            lines++;
+            if ((s8)*src == 0) {
+                break;
+            }
+            src++;
+            seg = src;
+        } else {
+            src++;
+            len++;
         }
-        temp_r0 = var_r29 + 0xCE;
-        ((u8*)temp_r31)[temp_r0] = 0;
-        temp_r31 = (u8*)temp_r31 + 0x40;
-        var_r28 += 1;
-        if (*(u8*)var_r30 == 0) {
-            ((u8*)temp_r31)[-0x40] = var_r28;
-            return;
-        }
-        var_r30 += 1;
-        goto loop_1;
-    } else {
-        var_r30 += 1;
-        var_r29 += 1;
-        goto loop_1;
     }
+
+    p[0x95] = (u8)lines;
+    Ui_PlaySeCue(gBattlePreviewStrings + 0x1D2, 100);
+    strcpy((char *)(p + 0x28), gBattlePreviewStrings + 0x1EB);
+    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x1F1));
+    strcat((char *)(p + 0x28), gBattlePreviewStrings + 0x1FC);
+    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x204));
+    strcat((char *)(p + 0x28), gBattlePreviewStrings + 0x20F);
+    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x217));
 }
 
 void fn_801F75D4(void *arg0) {
