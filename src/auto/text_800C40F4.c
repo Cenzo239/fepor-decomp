@@ -1310,7 +1310,61 @@ void fn_800C73F0(s32 arg0) {
 
 void fn_800C7414(void)
 {
-    // Function has no body in original - placeholder
+    void fn_80211614(s32);
+    void *fn_801C9704(void);
+    void *fn_801C970C(void);
+    void *memcpy(void *, void *, s32);
+    void fn_8022097C(void);
+    void VIFlush(void);
+    void VIWaitForRetrace(void);
+    void DEMOInitGX(void *);
+    void fn_80225118(s32, s32);
+    void GXSetCopyClear(void *, s32);
+    void *DemoGetCurrentBuffer(void);
+    void GXCopyDisp(void *, s32);
+    extern u32 gGameFlags;
+    extern u8 lbl_80320BC8[];
+    extern u32 lbl_8036C4CC;
+    u32 flags;
+    s32 i;
+    u32 clear;
+
+    fn_80211614(1);
+    flags = gGameFlags;
+    if (!(flags & 0x60000)) {
+        if (!(flags & 0x20)) {
+            if (flags & 0x40) {
+                memcpy(lbl_80320BC8, fn_801C9704(), 0x3C);
+            } else {
+                memcpy(lbl_80320BC8, fn_801C970C(), 0x3C);
+            }
+        }
+    } else {
+        if (!(flags & 0x20)) {
+            if (flags & 0x100) {
+                memcpy(lbl_80320BC8, fn_801C9704(), 0x3C);
+            } else {
+                memcpy(lbl_80320BC8, fn_801C970C(), 0x3C);
+            }
+        }
+    }
+    fn_8022097C();
+    VIFlush();
+    VIWaitForRetrace();
+    DEMOInitGX(lbl_80320BC8);
+    if (gGameFlags & 0x40) {
+        for (i = 0; i < 0x64; i++) {
+            VIWaitForRetrace();
+        }
+    }
+    fn_80225118(0, 0);
+    clear = lbl_8036C4CC;
+    GXSetCopyClear(&clear, 0xFFFFFF);
+    GXCopyDisp(DemoGetCurrentBuffer(), 1);
+    fn_80211614(0);
+    VIFlush();
+    VIWaitForRetrace();
+    gGameFlags |= 0x10;
 }
 
 void fn_800C755C(void)
