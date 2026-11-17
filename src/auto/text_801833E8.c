@@ -2377,6 +2377,26 @@ void fn_80188EF4(void *arg0) {
         *(f32 *)((char *)self + 0x3C)));
 }
 
+void fn_80188FAC(void *p) {
+void Process_Goto(void *,s32);
+extern u8 gMapBlendMode;
+extern u8 gBattleMap[];
+s32 x,y;
+u32 flag;
+u8 temp;
+void *unit;
+M2C_FIELD(p,f32 *,0x38)=16.0f; M2C_FIELD(p,f32 *,0x3c)=0.0f;
+M2C_FIELD(p,u8 *,0x50)=255; M2C_FIELD(p,u8 *,0x51)=255;
+unit=M2C_FIELD(p,void **,0x30);
+x=M2C_FIELD(unit,f32 *,4); y=M2C_FIELD(unit,f32 *,8);
+switch(M2C_FIELD(p,u16 *,0x52)&0x30){
+case 0x10:M2C_FIELD(p,u8 *,0x50)=0;break;
+case 0x20:M2C_FIELD(p,u8 *,0x51)=0;break;
+}
+flag=1; temp=gMapBlendMode-1; if(!(temp<=flag))flag=0;
+if((u8)flag && M2C_FIELD(M2C_FIELD(M2C_FIELD(p,void **,0x30),void **,0x190),u8 *,8)==1 && gBattleMap[(s8)x+((s8)y<<6)+0x200d]==0) Process_Goto(p,0);
+}
+
 #pragma global_optimizer off
 /* Advance a unit move animation: lerp xyz, optional fast-forward, update camera. */
 void MoveAnim_Update(void *anim, f32 scaleArg) {
@@ -5034,33 +5054,21 @@ void *fn_80190B50(void *arg0, s16 arg1) {
 }
 
 void fn_80190BBC(void *arg0) {
-    s16 eight;
-    s16 two;
-    s16 tmp;
-    s16 c;
-    s16 t10;
-    s16 a;
-    s16 e;
-    s16 d1;
-    s16 d2;
-    s16 s18;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    s16 v;
 
-    two = 2;
-    eight = 8;
-    tmp = (s16)(*(s16 *)((u8 *)arg0 + 0x4C) * 2 + *(s16 *)((u8 *)arg0 + 0x46));
-    *(s16 *)((u8 *)arg0 + 0x10) = (s16)(*(s16 *)((u8 *)arg0 + 0xC) + (s16)(tmp + 0x10));
-
-    c = *(s16 *)((u8 *)arg0 + 0xC);
-    t10 = *(s16 *)((u8 *)arg0 + 0x10);
-    a = *(s16 *)((u8 *)arg0 + 0xA);
-    e = *(s16 *)((u8 *)arg0 + 0xE);
-    d1 = (s16)(t10 - c);
-    *(s16 *)((u8 *)arg0 + 0x12) = two;
-    d2 = (s16)(e - a);
-    s18 = (s16)(d1 - 8);
-    *(s16 *)((u8 *)arg0 + 0x14) = eight;
-    *(s16 *)((u8 *)arg0 + 0x16) = (s16)(d2 - 2);
-    *(s16 *)((u8 *)arg0 + 0x18) = s18;
+    v = (s16)(p[0x4C/2] * 2 + p[0x46/2] + 0x10);
+    p[0x10/2] = (s16)(p[0xC/2] + v);
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 8;
+    right = width - 2;
+    p[0x12/2] = 2;
+    p[0x14/2] = 8;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
 }
 
 s32 fn_80190D9C(s32 arg0, s32 arg1, s32 arg2) {
@@ -5473,47 +5481,37 @@ void fn_80191938(void *arg0) {
 }
 
 void fn_801919B8(void *arg0) {
-    M2C_UNK TalkUi_ShowMsg(s32);
-    void *Ui_FindChild(M2C_UNK, M2C_UNK);
-    M2C_UNK Ui_SlideWidgetChild(void *, void *, s16 *, M2C_UNK, s16);
-    M2C_UNK Ui_SlideWidgetChildMode1(void *, void *, s16 *, M2C_UNK);
-    M2C_UNK fn_801402A0(void *, void *, s16 *, M2C_UNK, s16);
-    s16 sp12;
-    s16 sp10;
-    s16 spE;
-    s16 spC;
-    s16 spA;
-    s16 sp8;
-    s16 temp_r5;
-    s16 temp_r7;
-    s16 temp_r7_2;
-    void *temp_r28;
-    void *temp_r29;
-    void *temp_r31;
-
-    temp_r29 = M2C_FIELD(arg0, void **, 0x50);
-    temp_r31 = M2C_FIELD(arg0, void **, 0x58);
-    temp_r28 = Ui_FindChild(2, 0);
-    temp_r7 = M2C_FIELD(temp_r29, s16 *, 0xC);
-    sp10 = 0x260;
-    sp12 = temp_r7;
-    Ui_SlideWidgetChild(arg0, temp_r29, &sp10, 0, temp_r7);
-    spC = 0x138;
-    spE = 0x74;
-    Ui_SlideWidgetChildMode1(arg0, temp_r28, &spC, 0);
-    temp_r5 = M2C_FIELD(temp_r28, s16 *, 0xA) + 0x108;
-    M2C_FIELD(temp_r28, s16 *, 0xE) = temp_r5;
-    M2C_FIELD(temp_r28, s16 *, 0x4A) = 0x14;
-    M2C_FIELD(temp_r28, s16 *, 0x4C) = 0;
-    M2C_FIELD(M2C_FIELD(temp_r28, void **, 0), M2C_UNK (**)(void *, M2C_UNK, s16), 0x28)(temp_r28, 0x14, temp_r5);
-    M2C_FIELD(temp_r28, s8 *, 0x48) = 1;
-    M2C_FIELD(temp_r28, s8 *, 0x44) = 2;
-    temp_r7_2 = M2C_FIELD(temp_r31, s16 *, 0xA);
-    sp8 = temp_r7_2;
-    spA = 0xA7;
-    fn_801402A0(arg0, temp_r31, &sp8, 0, temp_r7_2);
-    M2C_FIELD(temp_r31, s32 *, 0x3C) = 0;
-    TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), s32 *, 0x1C));
+    void TalkUi_ShowMsg(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void fn_801402A0(void *, void *, s16 *, s32);
+#pragma cplusplus on
+    struct Widget { virtual void f0(); virtual void f1(); virtual void f2(); virtual void f3(); virtual void f4(); virtual void f5(); virtual void f6(); virtual void f7(); virtual void update(); };
+    s16 p1[2], p2[2], p3[2];
+    s16 y;
+    void *a;
+    void *b;
+    void *c;
+    a = M2C_FIELD(arg0, void **, 0x50);
+    b = Ui_FindChild(arg0, 2, 0);
+    c = M2C_FIELD(arg0, void **, 0x58);
+    y=M2C_FIELD(a,s16 *,0xC);
+    p1[0]=0x260; p1[1]=y;
+    Ui_SlideWidgetChild(arg0,a,p1,0);
+    p2[0]=0x138; p2[1]=0x74;
+    Ui_SlideWidgetChildMode1(arg0,b,p2,0);
+    M2C_FIELD(b,s16 *,0xE)=M2C_FIELD(b,s16 *,0xA)+0x108;
+    M2C_FIELD(b,s16 *,0x4A)=0x14;
+    M2C_FIELD(b,s16 *,0x4C)=0;
+    ((Widget *)b)->update();
+    M2C_FIELD(b,s8 *,0x48)=1;
+    M2C_FIELD(b,s8 *,0x44)=2;
+    p3[0]=M2C_FIELD(c,s16 *,0xA); p3[1]=0xA7;
+    fn_801402A0(arg0,c,p3,0);
+    M2C_FIELD(c,s32 *,0x3C)=0;
+    TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x68),s32 *,0x1C));
+#pragma cplusplus reset
 }
 
 void fn_80191C7C(void *arg0) {
@@ -13793,18 +13791,15 @@ void fn_801A251C(void) {
 void fn_801A2570(void) {
     void fn_800C1060(void);
     extern u8 gMapBlendMode;
-    s32 var_r5;
-    s32 temp_r0;
-    s32 t;
+    u8 flag;
+    u8 temp;
 
-    var_r5 = 1;
-    temp_r0 = (u8)(gMapBlendMode - 1);
-    t = ~temp_r0;
-    t = var_r5 | t;
-    if (((u32)(t - ((u32)(var_r5 - temp_r0) >> 1)) >> 31) == 0) {
-        var_r5 = 0;
+    flag = 1;
+    temp = (u8)(gMapBlendMode - 1);
+    if (!(temp <= flag)) {
+        flag = 0;
     }
-    if ((u8)var_r5 != 0) {
+    if (flag) {
         fn_800C1060();
     }
 }
