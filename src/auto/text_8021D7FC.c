@@ -949,23 +949,38 @@ void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
   *arg4 = (((u32 *) __GXData)[3] >> 4) & 1;
 }
 
-void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write) {
-extern void *__GXCurrentCPUFifo;
-extern void *__GXCurrentGPFifo;
-extern u32 *__piReg;
-extern u16 *__cpReg;
-if (fifo == __GXCurrentCPUFifo) fifo->wrPtr = (void *)((__piReg[5] & ~0x04000000) + 0x80000000);
-if (fifo == __GXCurrentGPFifo) {
-u32 hi = __cpReg[29] << 16;
-fifo->rdPtr = (void *)((__cpReg[28] | hi) + 0x80000000);
-hi = __cpReg[25] << 16;
-fifo->count = __cpReg[24] | hi;
-} else {
-fifo->count = (u8 *)fifo->wrPtr - (u8 *)fifo->rdPtr;
-if (fifo->count < 0) fifo->count += fifo->size;
-}
-*read = fifo->rdPtr;
-*write = fifo->wrPtr;
+void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write)
+{
+  u32 tmp;
+  u16 new_var;
+  extern void *__GXCurrentCPUFifo;
+  extern void *__GXCurrentGPFifo;
+  extern u32 *__piReg;
+  extern u16 *__cpReg;
+  if (fifo == __GXCurrentCPUFifo)
+  {
+    tmp = __piReg[5] & (~0x04000000);
+    fifo->wrPtr = (void *) (tmp + 0x80000000);
+  }
+  if (fifo == __GXCurrentGPFifo)
+  {
+    u32 hi = __cpReg[29];
+    u32 lo = __cpReg[28];
+    fifo->rdPtr = (void *) (((hi << 16) | lo) + 0x80000000);
+    hi = __cpReg[25];
+    lo = (new_var = __cpReg[24]);
+    fifo->count = lo | (hi << 16);
+  }
+  else
+  {
+    fifo->count = ((u8 *) fifo->wrPtr) - ((u8 *) fifo->rdPtr);
+    if (fifo->count < 0)
+    {
+      fifo->count += fifo->size;
+    }
+  }
+  *read = fifo->rdPtr;
+  *write = fifo->wrPtr;
 }
 
 s32 fn_8021F250(s32 *arg0) {
@@ -1291,30 +1306,28 @@ void fn_802200CC(void)
     offset = 0;
     flags = gx[0x5AB];
 
-    if ((flags & 1) != 0) {
-        do {
-            *(u8 *)0xCC008000 = 8;
-            t = index | 0x70;
-            a = offset + 0x1C;
-            *(u8 *)0xCC008000 = t;
-            t = index | 0x80;
-            b = offset + 0x3C;
-            v = *(u32 *)((u32)gx + a);
-            c = index | 0x90;
-            a = offset + 0x5C;
-            *(u32 *)0xCC008000 = v;
-            *(u8 *)0xCC008000 = 8;
-            *(u8 *)0xCC008000 = t;
-            v = *(u32 *)((u32)gx + b);
-            *(u32 *)0xCC008000 = v;
-            *(u8 *)0xCC008000 = 8;
-            *(u8 *)0xCC008000 = c;
-            v = *(u32 *)((u32)gx + a);
-            *(u32 *)0xCC008000 = v;
-            flags >>= 1;
-            offset += 4;
-            index += 1;
-        } while (flags != 0);
+    while ((flags & 1) != 0) {
+        *(volatile u8 *)0xCC008000 = 8;
+        t = index | 0x70;
+        a = offset + 0x1C;
+        *(volatile u8 *)0xCC008000 = t;
+        t = index | 0x80;
+        b = offset + 0x3C;
+        v = *(u32 *)((u32)gx + a);
+        c = index | 0x90;
+        a = offset + 0x5C;
+        *(volatile u32 *)0xCC008000 = v;
+        *(volatile u8 *)0xCC008000 = 8;
+        *(volatile u8 *)0xCC008000 = t;
+        v = *(u32 *)((u32)gx + b);
+        *(volatile u32 *)0xCC008000 = v;
+        *(volatile u8 *)0xCC008000 = 8;
+        *(volatile u8 *)0xCC008000 = c;
+        v = *(u32 *)((u32)gx + a);
+        *(volatile u32 *)0xCC008000 = v;
+        flags >>= 1;
+        offset += 4;
+        index += 1;
     }
 
     __GXData[0x5AB] = 0;
@@ -1682,23 +1695,29 @@ s32 fn_80220C34(s32 arg0) {
     return old;
 }
 
-void fn_80220C78(M2C_UNK *arg1) {
-    M2C_UNK OSClearContext(M2C_UNK *);
-    M2C_UNK OSSetCurrentContext(M2C_UNK *);
-    M2C_UNK fn_8020AEC4(M2C_UNK *);
-    extern M2C_UNK (*lbl_80368794)();
+void fn_80220C78(s32 arg0, void *context) {
+    extern void (*lbl_80368794)(void);
     extern s8 lbl_80368798;
-    extern M2C_UNK lbl_8036879C;
-    M2C_UNK sp10;
+    extern u8 lbl_8036879C;
+    void OSClearContext(void *);
+    void OSSetCurrentContext(void *);
+    void fn_8020AEC4(void *);
 
-    M2C_FIELD(__peReg, u16 *, 0xA) = (u16) (M2C_FIELD(__peReg, u16 *, 0xA) | 8);
+    u64 tempContext[0x2C8 / 8];
+    u16 *pe;
+    u32 value;
+
+    pe = (u16 *)__peReg;
+    value = pe[5];
+    value = __rlwimi(value, 1, 3, 28, 28);
+    pe[5] = value;
     lbl_80368798 = 1;
-    if (((M2C_UNK (*)()) lbl_80368794) != NULL) {
-        OSClearContext(&sp10);
-        OSSetCurrentContext(&sp10);
+    if (lbl_80368794 != 0) {
+        OSClearContext(&tempContext);
+        OSSetCurrentContext(&tempContext);
         lbl_80368794();
-        OSClearContext(&sp10);
-        OSSetCurrentContext(arg1);
+        OSClearContext(&tempContext);
+        OSSetCurrentContext(context);
     }
     fn_8020AEC4(&lbl_8036879C);
 }
@@ -1834,7 +1853,7 @@ void fn_80220EBC(void)
     *(u16 *)0xCC008000 = a;
 
     count = size + 3;
-    if (size) {
+    if (count - 3 > 0) {
         count >>= 2;
         while (count) {
             *(u32 *)0xCC008000 = zero;
