@@ -381,28 +381,36 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
 }
 #pragma use_lmw_stmw reset
 
-u32 fn_802216E0(f32 scale) {
- u32 yscale;
- u32 enabled;
- u32 reg=0;
- u32 height;
- u32 result;
- yscale=(u32)__cvt_fp2unsigned(lbl_8036BCD0/scale)&511;
- enabled=(yscale!=256);
- reg=__rlwimi(reg,yscale,0,23,31);
- reg=__rlwimi(reg,0x4E,24,0,7);
- GXWGFifo.u8=0x61;
- GXWGFifo.u32=reg;
- __GXData[1]=0;
- *(u32 *)((u8 *)__GXData+0x1EC)=__rlwimi(*(u32 *)((u8 *)__GXData+0x1EC),enabled,10,21,21);
- height=((*(u32 *)((u8 *)__GXData+0x1E4)>>10)&1023)+1;
- result=((height-1)*256)/yscale+1;
- if(yscale>128 && yscale<256) {
- while(!(yscale&1)) yscale>>=1;
- if(height%yscale==0) result++;
- }
- if(result>1024) result=1024;
- return result;
+u32 fn_802216E0(f32 scale)
+{
+    u32 yscale;
+    u32 enabled;
+    u32 reg;
+    u32 height;
+    u32 result;
+    u32 y;
+
+    yscale = (u32)__cvt_fp2unsigned(lbl_8036BCD0 / scale) & 511;
+    enabled = 0x100 - yscale;
+    GXWGFifo.u8 = 0x61;
+    enabled = (enabled - 1) < enabled;
+    reg = __rlwimi(0, yscale, 0, 23, 31);
+    reg = __rlwimi(reg, 0x4E, 24, 0, 7);
+    GXWGFifo.u32 = reg;
+    __GXData[1] = 0;
+    y = yscale;
+    *(u32 *)((u8 *)__GXData + 0x1EC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1EC), enabled, 10, 21, 21);
+    height = ((*(u32 *)((u8 *)__GXData + 0x1E4) >> 10) & 1023) + 1;
+    result = ((height - 1) << 8) / yscale + 1;
+    if (yscale > 128 && yscale < 256) {
+        while (!(y & 1))
+            y >>= 1;
+        if (height % y == 0)
+            result++;
+    }
+    if (result > 1024)
+        result = 1024;
+    return result;
 }
 
 void GXSetCopyClear(u8 *clear, u32 z) {
@@ -722,80 +730,36 @@ void fn_80221D6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 far
     M2C_FIELD(arg0, f32 *, 0x24) = farg5;
 }
 
-void fn_80221D88(s32 arg0, f32* arg1) {
-    // Simple control flow to get closer to actual function structure
-    if (arg1[0] >= 0.0f && arg1[0] <= 1.0f) {
-        return;
-    }
-
-    switch (arg0) {
-        case 0:
-            // Simple logic - we'll expand
-            return;
-        case 1:
-            return;
-        case 2:
-            return;
-        case 3:
-            return;
-        case 4:
-            return;
-        case 5:
-            return;
-        case 6:
-            return;
-    }
+void fn_80221D88(f32 *obj, f32 angle, u32 mode) {
+f32 cosf(f32);
+f32 a,b,c,t,x;
+if(angle<=0.0f || angle>90.0f) mode=0;
+x=cosf(3.1415927f*angle/180.0f);
+switch(mode) {
+case 1:a=(-1000.0f)*x;b=1000.0f;c=0.0f;break;
+case 2:t=1.0f/(1.0f-x);b=t;a=-x*t;c=0.0f;break;
+case 3:t=1.0f/(1.0f-x);c=t;b=-x*t;a=0.0f;break;
+case 4:t=1.0f/((1.0f-x)*(1.0f-x));a=t*(x*(x-2.0f));b=2.0f*t;c=-t;break;
+case 5:t=1.0f/((1.0f-x)*(1.0f-x));c=(-4.0f)*t;a=c*x;b=(4.0f*(1.0f+x))*t;break;
+case 6:t=1.0f/((1.0f-x)*(1.0f-x));a=t*((2.0f*x)*x);b=(4.0f*x)*t;c=(-2.0f)*t;a=1.0f-a;break;
+case 0:default:a=1.0f;c=0.0f;b=c;break;
+}
+obj[4]=a;obj[5]=b;obj[6]=c;
 }
 
 void fn_80221F18(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
-    extern f32 lbl_8036BCE0;
-    extern f32 lbl_8036BCF8;
-    extern f32 lbl_8036BD0C;
-    f32 temp_f0;
-    f32 temp_f1;
-    f32 temp_f4;
-    f32 var_f3;
-    f32 var_f4;
-    f32 var_f5;
-    s32 var_r4;
-
-    var_r4 = arg1;
-    if (farg0 < lbl_8036BCE0) {
-        var_r4 = 0;
-    }
-    if (farg1 <= lbl_8036BCE0 || farg1 >= lbl_8036BCF8) {
-        var_r4 = 0;
-    }
-    switch (var_r4) {
-    case 1:
-        var_f5 = lbl_8036BCF8;
-        temp_f0 = farg1 * farg0;
-        var_f4 = lbl_8036BCE0;
-        var_f3 = (var_f5 - farg1) / temp_f0;
-        break;
-    case 2:
-        var_f5 = lbl_8036BCF8;
-        temp_f4 = farg1 * farg0;
-        temp_f1 = lbl_8036BD0C * (var_f5 - farg1);
-        var_f3 = temp_f1 / temp_f4;
-        var_f4 = temp_f1 / (farg0 * temp_f4);
-        break;
-    case 3:
-        temp_f0 = farg1 * farg0;
-        var_f5 = lbl_8036BCF8;
-        var_f3 = lbl_8036BCE0;
-        var_f4 = (var_f5 - farg1) / (farg0 * temp_f0);
-        break;
-    default:
-    case 0:
-        var_f3 = lbl_8036BCE0;
-        var_f5 = lbl_8036BCF8;
-        var_f4 = var_f3;
-        break;
-    }
-    *(f32 *)((u8 *)arg0 + 0x1C) = var_f5;
-    *(f32 *)((u8 *)arg0 + 0x20) = var_f3;
-    *(f32 *)((u8 *)arg0 + 0x24) = var_f4;
+ f32 a,b,c;
+ if(farg0<0.0f) arg1=0;
+ if(farg1<=0.0f || farg1>=1.0f) arg1=0;
+ switch(arg1) {
+ case 1: a=1.0f; b=(1.0f-farg1)/(farg1*farg0); c=0.0f; break;
+ case 2: a=1.0f; b=(0.5f*(1.0f-farg1))/(farg1*farg0); c=(0.5f*(1.0f-farg1))/(farg0*(farg1*farg0)); break;
+ case 3: a=1.0f; b=0.0f; c=(1.0f-farg1)/(farg0*(farg1*farg0)); break;
+ case 0: default: a=1.0f; b=0.0f; c=0.0f; break;
+ }
+ *(f32*)((u8*)arg0+0x1c)=a;
+ *(f32*)((u8*)arg0+0x20)=b;
+ *(f32*)((u8*)arg0+0x24)=c;
 }
 
 void fn_80221FE8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
