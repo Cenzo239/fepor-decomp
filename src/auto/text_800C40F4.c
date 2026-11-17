@@ -25581,6 +25581,37 @@ void fn_80102F18(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 
+void fn_80102F8C(u8 *self,s32 x,s32 y) {
+extern u8 gTargetList[];
+u8 fn_800BE968();
+void fn_8002F6E8(void *,s32,s32,s32,s32);
+char *fn_800C2048(s8,s8);
+u8 fn_80092F9C(void *);
+u8 fn_80092F38(void *);
+u8 valid;
+void *unit;
+char *iid;
+u8 *item;
+u64 flags;
+if((self[8]&2) && fn_800BE968(11)) fn_8002F6E8(gTargetList,x,y,0,11);
+if((self[8]&1) && fn_800BE968(12,x,y)) {
+unit=*(void **)(self+4);
+iid=fn_800C2048((s8)x,(s8)y);
+if(!iid) valid=0;
+else {
+valid=1;
+item=Item_GetByIid(iid);
+flags=*(u64 *)(item+0x38);
+if(flags&5ULL) {
+if(fn_80092F9C(unit)>=4) valid=0;
+} else if(flags&0x18ULL) {
+if(fn_80092F38(unit)>=4) valid=0;
+}
+}
+if(valid) fn_8002F6E8(gTargetList,x,y,0,12);
+}
+}
+
 void fn_801030F0(void *arg0,void *arg1){
 extern u8 gBattleMap[];extern u8 gTargetList[];
 u8 fn_8003DD20(void*,void*);
