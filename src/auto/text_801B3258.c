@@ -18507,6 +18507,35 @@ void fn_801E0B48(s32 unused, s32 arg1, s32 arg2, s32 arg3) {
     *(s32 *)((u8 *)obj + 0x64) = arg2;
 }
 
+void fn_801E0B94(void *arg0) {
+    s32 fn_80211690();
+    u16 fn_802072A0();
+    u64 time;
+    s8 lang;
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x54);
+    u32 add;
+    memset(p, 0, 0x2000);
+    *(u32 *)(p+0x70)=0x53595346;
+    *(u32 *)(p+0x74)=0x20050201;
+    time=0;
+    fn_8021D614(0,(s32 *)&time,0x20050201);
+    time += OSGetTime();
+    add=fn_80211690()*123;
+    time += add;
+    *(u64 *)(p+0x78)=time;
+    *(u16 *)(p+0x80)=0;
+    p[0xB0]=0; p[0xB1]=0; p[0xB2]=0x40; p[0xB3]=0;
+    if (fn_802072A0()==1) lang=0;
+    else switch((s32)fn_80209A0C()) {
+    case 0: lang=1; break; case 1: lang=2; break; case 2: lang=3; break;
+    case 3: lang=4; break; case 4: lang=5; break; case 5: lang=1; break;
+    }
+    p[0xB4]=lang; p[0xB7]=0;
+    memset(p+0x82,0,0x1E); memset(p+0xB5,0,2);
+    *(u32 *)(p+0xAC)=0; *(u32 *)(p+0xA8)=0; *(u32 *)(p+0xA4)=0; *(u32 *)(p+0xA0)=0;
+    *(u32 *)(p+0x40)=0; *(u32 *)(p+0x48)=1;
+}
+
 void fn_801E0D30(void *arg0) {
     u8 Card_CheckError(void);
     void fn_801E0D78(void *, void *, s32, s32);
