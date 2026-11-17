@@ -663,7 +663,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
     u32 i;
     u32 rlen;
     SIComCSR comcsr;
-    u32 sr;
+    unsigned long sr;
     SIControl *si;
     si = &lbl_8029EF68;
     enabled = OSDisableInterrupts();
@@ -672,7 +672,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         return FALSE;
     }
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr = (u32)((s32)0x0F000000 >> (chan * 8)) & sr;
+    sr &= (u32)((s32)0x0F000000 >> (chan * 8));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
     rlen = (outputBytes + 3) / 4;
     si->chan = chan;
@@ -939,8 +939,8 @@ void GetTypeCallback(s32 chan, u32 type) {
         fn_80209C10(chan, 0);
         typeVal = *typep;
         cbs = (void **)(packet + (chan << 4));
-        i = 0 & chan;
-        clear = i;
+        i = 0;
+        clear = SI_CopyS32(i);
         cbs = (void **)((u8 *)cbs + 0x160);
         do {
             cb = (void (*)(s32, u32))*cbs;
@@ -987,8 +987,8 @@ void GetTypeCallback(s32 chan, u32 type) {
     }
     typeVal = *typep;
     cbs = (void **)(packet + (chan << 4));
-    i = 0 & chan;
-    clear = i;
+    i = 0;
+    clear = SI_CopyS32(i);
     cbs = (void **)((u8 *)cbs + 0x160);
     do {
         cb = (void (*)(s32, u32))*cbs;
@@ -1001,6 +1001,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     } while (i < 4);
     (void)padp;
 }
+#pragma optimization_level reset
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
@@ -1102,19 +1103,18 @@ u32 fn_8023C410(s32 chan) {
     return fn_8023C2C4(SIGetType(chan));
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 4
 void SISetSamplingRate(u32 rate) {
     extern u8 XYNTSC_8029F080[];
     extern u32 SamplingRate_80368828;
     s32 VIGetTvFormat(void);
     void OSReport(const char *, ...);
     u32 SISetXY(s32, s32);
-    u8 *base;
+    register u8 *base = XYNTSC_8029F080;
     u8 *table;
     BOOL enabled;
     u32 scale;
 
-    base = XYNTSC_8029F080;
     if (rate > 11) {
         rate = 11;
     }
@@ -1143,7 +1143,6 @@ void SISetSamplingRate(u32 rate) {
     SISetXY((s32)(scale * *(u16 *)(table + rate * 4)), (s32)table[rate * 4 + 2]);
     OSRestoreInterrupts(enabled);
 }
-#pragma optimization_level reset
 void fn_8023C518(void) {
     void SISetSamplingRate(u32);
     extern u32 SamplingRate_80368828;
