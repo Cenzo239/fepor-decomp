@@ -584,28 +584,13 @@ void fn_8020CFAC(void) {
     s32 fn_8020BAD0(void *, u32, u32, void (*)(u32));
     void fn_8020D040(u32);
 
-    u8 *bootInfo;
-    u8 *bb2;
-
-    bootInfo = bootInfo_803685A0;
-    bb2 = (u8 *)BB2_80339F40;
+    u32 *length;
 
     lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
-
-    if (*(u32 *)(bootInfo + 0x3C) < *(u32 *)(bb2 + 8)) {
-        OSPanic(
-            &lbl_80366F74,
-            0x295,
-            lbl_8029D0DC
-        );
-    }
-
-    fn_8020BAD0(
-        *(void **)(bootInfo + 0x38),
-        (*(u32 *)(bb2 + 8) + 0x1F) & ~0x1F,
-        *(u32 *)(bb2 + 4),
-        fn_8020D040
-    );
+    length = (u32 *)((u8 *)BB2_80339F40 + 8);
+    if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *length)
+        OSPanic(&lbl_80366F74, 0x295, lbl_8029D0DC);
+    fn_8020BAD0(*(void **)(bootInfo_803685A0 + 0x38), (*length + 31) & ~31, *(u32 *)((u8 *)BB2_80339F40 + 4), fn_8020D040);
 }
 
 void fn_8020D040(u32 arg0) {
@@ -2758,8 +2743,7 @@ void VIWaitForRetrace(void) {
     enabled = OSDisableInterrupts();
     previous = lbl_80368604;
     OSSleepThread((void *)&lbl_8036860C);
-    if (previous == lbl_80368604) {
-    } else {
+    if (previous != lbl_80368604) {
         OSRestoreInterrupts(enabled);
     }
 }
@@ -3176,45 +3160,57 @@ s32 fn_802116D4(void) {
 }
 
 s32 fn_8021173C(void) {
-s32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(s32);
-extern u8 lbl_8033A158[];
-s32 field;
-s32 enabled;
-s32 horizontal;
-u32 vertical;
-void (*getPosition)(s32 *, u32 *) = fn_80211698;
-enabled = OSDisableInterrupts();
-getPosition(&horizontal, &vertical);
-{
-u32 halfLine = (vertical-1)*2 + (u32)(horizontal-1)/lbl_80368648[13];
-field = halfLine < lbl_80368648[12] ? 1 : 0;
-}
-OSRestoreInterrupts(enabled);
-return field ^ 1 ^ (*(u16 *)(lbl_8033A158+0xA)&1);
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    extern u8 lbl_8033A158[];
+    s32 field;
+    s32 enabled;
+    u32 vertical;
+    s32 horizontal;
+    void (*getPosition)(s32 *, u32 *) = fn_80211698;
+    enabled = OSDisableInterrupts();
+    getPosition(&horizontal, &vertical);
+    {
+        u32 halfLine = (vertical - 1) * 2 + (u32)(horizontal - 1) / lbl_80368648[13];
+        field = halfLine < lbl_80368648[12] ? 1 : 0;
+    }
+    OSRestoreInterrupts(enabled);
+    return field ^ 1 ^ (*(u16 *)(lbl_8033A158 + 0xA) & 1);
 }
 
 u32 fn_802117D8(void) {
-u32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(u32);
-u32 h, v, old, irq;
-u16 *timing;
-u32 line;
-volatile u16 *regs;
-timing = lbl_80368648;
-irq = OSDisableInterrupts();
-regs = (volatile u16 *)0xCC002000;
-v = regs[22] & 0x7FF;
-do {
-old = v;
-v = regs[22] & 0x7FF;
-h = regs[23] & 0x7FF;
-} while (old != v);
-h--; v--;
-line = v*2 + h/lbl_80368648[13];
-OSRestoreInterrupts(irq);
-if (line >= timing[12]) line -= timing[12];
-return line >> 1;
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    u32 horizontal;
+    u32 vertical;
+    u32 previous;
+    u32 irq;
+    u16 *timing;
+    u32 line;
+    volatile u16 *bump;
+    volatile u16 *base;
+    u32 tmp;
+    double pad;
+
+    timing = lbl_80368648;
+    irq = OSDisableInterrupts();
+    bump = (volatile u16 *)0xCC002000;
+    vertical = (*(bump += 0x16)) & 0x7FF;
+    base = (volatile u16 *)0xCC002000;
+    do {
+        tmp = base[0x17];
+        previous = vertical;
+        horizontal = tmp;
+        vertical = (*bump) & 0x7FF;
+        horizontal &= 0x7FF;
+    } while (previous != vertical);
+    pad = 0.0;
+    line = ((vertical - 1) << 1) + (horizontal - 1) / lbl_80368648[13];
+    OSRestoreInterrupts(irq);
+    if (line >= timing[12]) {
+        line -= timing[12];
+    }
+    return line >> 1;
 }
 
 u32 VIGetTvFormat(void) {
@@ -3413,6 +3409,64 @@ void fn_80211B90(s8 *arg0, s8 *arg1, s8 arg2, s8 arg3, s8 arg4) {
     }
     *arg0 = sa * a;
     *arg1 = sb * b;
+}
+
+void fn_80211CC0(void *arg0) {
+    void fn_80211B90(s8 *, s8 *, s8, s8, s8);
+    extern u8 lbl_80282268[];
+
+    u8 *config;
+    u8 *maximum;
+    s32 i;
+    u8 *input;
+    u8 hi;
+    u8 value;
+    u8 lo;
+
+    i = 0;
+    input = (u8 *)arg0;
+    config = lbl_80282268;
+    maximum = config + 1;
+
+    while (i < 4) {
+        if ((s8)input[0xA] == 0) {
+            fn_80211B90(
+                (s8 *)(input + 2),
+                (s8 *)(input + 3),
+                (s8)config[3],
+                (s8)config[4],
+                (s8)config[2]
+            );
+
+            fn_80211B90(
+                (s8 *)(input + 4),
+                (s8 *)(input + 5),
+                (s8)config[6],
+                (s8)config[7],
+                (s8)config[5]
+            );
+
+            if ((hi = maximum[0], value = input[6], lo = config[0], value <= lo)) {
+                input[6] = 0;
+            } else {
+                if (hi < value) {
+                    input[6] = hi;
+                }
+                input[6] = input[6] - config[0];
+            }
+
+            if ((hi = maximum[0], value = input[7], lo = config[0], value <= lo)) {
+                input[7] = 0;
+            } else {
+                if (hi < value) {
+                    input[7] = hi;
+                }
+                input[7] = input[7] - config[0];
+            }
+        }
+        i += 1;
+        input += 0xC;
+    }
 }
 
 extern u16 Scb_80339420[4];
