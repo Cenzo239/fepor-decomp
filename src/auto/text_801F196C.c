@@ -103,6 +103,46 @@ void fn_801F1E8C(void *arg0) {
     fn_800C4588(temp_r31);
 }
 
+void fn_801F1EC4(void *arg0) {
+void Ui_PlaySeCue(void *,s32);
+void Process_Goto(void *,s32);
+void Process_ClearFunc(void *);
+extern u8 gCardLinkStrings[];
+struct Slot {s16 x,y,w; u8 flag,pad;};
+u8 *p=*(u8 **)((u8 *)arg0+0x30);
+u32 held=*(u32 *)((u8 *)gPadInput+4);
+u32 pressed=held & (*(u32 *)((u8 *)gPadInput+8)^held);
+u32 repeat=*(u32 *)((u8 *)gPadInput+12);
+s32 old=*(s32 *)(p+4);
+
+if (pressed&0x100) {
+Ui_PlaySeCue(gCardLinkStrings+0xA5,100);
+Process_Goto(arg0,1);
+} else if (pressed&0x200) {
+Ui_PlaySeCue(gCardLinkStrings+0xB5,100);
+Process_ClearFunc(arg0);
+} else {
+if ((repeat&0x01000001)&&(*(s32 *)(p+4)%3>0)) {
+*(s32 *)(p+4)=old-1;
+if (*(s32 *)(p+4)<0) *(s32 *)(p+4)=0;
+}
+if ((repeat&0x02000002)&&(*(s32 *)(p+4)%3<2)) {
+*(s32 *)(p+4)+=1;
+if (*(s32 *)(p+4)>=6) *(s32 *)(p+4)=5;
+}
+if ((repeat&0x08000008)&&(*(s32 *)(p+4)>=3)) *(s32 *)(p+4)-=3;
+if ((repeat&0x04000004)&&(*(s32 *)(p+4)<3)) *(s32 *)(p+4)+=3;
+if(old!=*(s32 *)(p+4)){
+*(s16 *)(p+0xC)=4;
+*(s16 *)(p+0xE)=*(s16 *)(p+8);
+*(s16 *)(p+0x10)=*(s16 *)(p+0xA);
+*(s16 *)(p+0x12)=((struct Slot *)(p+0x1A))[*(s32 *)(p+4)].x;
+*(s16 *)(p+0x14)=((struct Slot *)(p+0x1A))[*(s32 *)(p+4)].y;
+Ui_PlaySeCue(gCardLinkStrings+0xC5,100);
+}
+}
+}
+
 void fn_801F20A8(s32 arg0) {
     extern u8 gCardLinkStrings[];
     s32 FileCache_GetFlags(void *);
