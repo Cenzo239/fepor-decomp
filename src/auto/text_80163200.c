@@ -14083,6 +14083,30 @@ s32 fn_8017DF4C(void) {
     return 0;
 }
 
+void fn_8017DF54(u32 arg0, void *arg1, void *arg2) {
+void *Process_Find(void *);
+void *fn_8005397C(void *, void *);
+void Effect_SetPos(void *, f32, f32, f32);
+extern u8 lbl_80295550[];
+extern f32 lbl_8036AC18,lbl_8036AC1C,lbl_8036AC20,lbl_8036AC24,lbl_8036AC28;
+struct Proc { u8 pad[0x38]; void *ptrs[2]; u32 ids[2]; }; struct Proc *proc; void *p; void *effect; s32 i; f32 x,y;
+proc=Process_Find(lbl_80295550);
+if(proc) {
+for(i=0;i<2;i++) {
+if(proc->ids[i]==arg0 && proc->ptrs[i]) {p=proc->ptrs[i]; goto found;}
+}
+p=0;
+found:
+if(p) {
+M2C_FIELD(p,u8 *,0x45)=30; M2C_FIELD(p,u8 *,0x44)=0;
+x=36.0f+M2C_FIELD(p,f32 *,0x30); y=32.0f+M2C_FIELD(p,f32 *,0x34);
+effect=fn_8005397C(arg1,arg2); Effect_SetPos(effect,x,y,lbl_8036AC20);
+M2C_FIELD(M2C_FIELD(effect,void **,0x30),f32 *,0x18)=0.05f;
+M2C_FIELD(M2C_FIELD(effect,void **,0x30),f32 *,0x20)=-90.0f;
+}
+}
+}
+
 s32 FloatAnim_IsActive(void) {
     return Process_Find(&E_FloatAnim_script) != 0;
 }
