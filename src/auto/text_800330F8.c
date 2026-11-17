@@ -138,6 +138,7 @@ typedef struct {
 
 extern void* lbl_803672A8;
 extern f64 lbl_80368EF8;
+extern f64 lbl_80368F08;
 extern f32 lbl_80368FC0;
 extern f32 lbl_80368FC4;
 extern f32 lbl_8036901C;
@@ -7633,21 +7634,21 @@ void *item;
 scale=(f32)lbl_80366E90;
 if(arg1==0) {
 fn_801478D0(250);
-((u8*)arg0)[0xAC]=-1; ((u8*)arg0)[0xAD]=-1; ((u8*)arg0)[0xAE]=-1; ((u8*)arg0)[0xAF]=-1;
-((u8*)arg0)[0xB0]=-1; ((u8*)arg0)[0xB1]=-1; ((u8*)arg0)[0xB2]=-1; ((u8*)arg0)[0xB3]=-1;
+((s8*)arg0)[0xAC]=-1; ((s8*)arg0)[0xAD]=-1; ((s8*)arg0)[0xAE]=-1; ((s8*)arg0)[0xAF]=-1;
+((s8*)arg0)[0xB0]=-1; ((s8*)arg0)[0xB1]=-1; ((s8*)arg0)[0xB2]=-1; ((s8*)arg0)[0xB3]=-1;
 } else {
 count=fn_80145F58(arg1,list);
 p=list;
-for(i=0;i<count;i++,p++) {
-x=lbl_80368EE4; y=x; z=x;
+for(i=0;i<count;p++,i++) {
+z=y=x=lbl_80368EE4;
 item=*p;
 switch((s32)((u8*)arg0)[0x68]){
-case 0: x=(lbl_80368F00+(f32)(s8)((u8*)item)[9])*scale; y=(lbl_80368F00+(f32)(s8)((u8*)item)[10])*scale; z=(f32)(s8)((u8*)item)[11]*scale; break;
+case 0: x=lbl_80368F00+(f32)(s8)((u8*)item)[9]; y=lbl_80368F00+(f32)(s8)((u8*)item)[10]; x*=scale; y*=scale; z=(f32)(s8)((u8*)item)[11]*scale; break;
 case 1: x=(f32)(s8)((u8*)item)[9]*scale; y=(f32)(s8)((u8*)item)[11]*scale; z=(f32)(s8)((u8*)item)[10]*scale; break;
 }
 switch((s32)((u8*)item)[8]){
-case 0: ((s8*)arg0)[(s32)(i+0xAC)]=Fx_AllocSlot(*(s32*)((u8*)item+4),((u8*)item)[12],1,x,y,z);break;
-case 1: ((s8*)arg0)[(s32)(i+0xAC)]=fn_80147B24(*(s32*)((u8*)item+4),((u8*)item)[12],1,x,y,z);break;
+case 0: ((s8*)arg0)[(u16)(i+0xAC)]=Fx_AllocSlot(*(s32*)((u8*)item+4),((u8*)item)[12],1,x,y,z);break;
+case 1: ((s8*)arg0)[(u16)(i+0xAC)]=fn_80147B24(*(s32*)((u8*)item+4),((u8*)item)[12],1,x,y,z);break;
 }
 }
 }
