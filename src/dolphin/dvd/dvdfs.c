@@ -398,25 +398,26 @@ BOOL DVDGetCurrentDir(char *path, u32 maxlen) {
     return DVDConvertEntrynumToPath((s32)currentDirectory, path, maxlen);
 }
 
+#pragma use_lmw_stmw on
 s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, void *), s32 arg5) {
-    void OSPanic(void *, s32, char *, ...);
-    s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(s32, void *), s32);
-    void fn_8020CBF8(s32, void *);
-    extern s32 lbl_80366F60;
-    s32 temp_r4;
+  void OSPanic(void *, s32, char *, ...);
+  s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(s32, void *), s32);
+  void fn_8020CBF8(s32, void *);
+  extern s32 lbl_80366F60;
+  s32 temp_r4;
 
-    if ((arg3 < 0) || ((u32)arg3 > *(u32 *)((u8 *)arg0 + 0x34))) {
-        OSPanic(&lbl_80366F60, 0x2EE, (char *)&lbl_8029CFE8);
-    }
-    temp_r4 = arg3 + arg2;
-    if ((temp_r4 < 0) || ((u32)temp_r4 >= *(u32 *)((u8 *)arg0 + 0x34) + 0x20)) {
-        OSPanic(&lbl_80366F60, 0x2F4, (char *)&lbl_8029CFE8);
-    }
-    *(void (**)(s32, void *))((u8 *)arg0 + 0x38) = arg4;
-    DVDReadAbsAsyncPrio(arg0, arg1, arg2, *(s32 *)((u8 *)arg0 + 0x30) + arg3, fn_8020CBF8, arg5);
-    return 1;
+  if ((arg3 < 0) || ((u32)arg3 > *(u32 *)((u8 *)arg0 + 0x34))) {
+    OSPanic(&lbl_80366F60, 0x2EE, lbl_8029CFE8);
+  }
+  temp_r4 = arg3 + arg2;
+  if ((temp_r4 < 0) || ((u32)temp_r4 >= *(u32 *)((u8 *)arg0 + 0x34) + 0x20)) {
+    OSPanic(&lbl_80366F60, 0x2F4, lbl_8029CFE8);
+  }
+  *(void (**)(s32, void *))((u8 *)arg0 + 0x38) = arg4;
+  DVDReadAbsAsyncPrio(arg0, arg1, arg2, *(s32 *)((u8 *)arg0 + 0x30) + arg3, fn_8020CBF8, arg5);
+  return 1;
 }
-
+#pragma use_lmw_stmw reset
 void fn_8020CBF8(s32 result, void *arg1) { if (*(void (**)(s32, void *))((char *)arg1+0x38) != NULL) (*(void (**)(s32, void *))((char *)arg1+0x38))(result,arg1); }
 
 s32 fn_8020CC28(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
