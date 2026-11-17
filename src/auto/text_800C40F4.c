@@ -1156,14 +1156,14 @@ DebugPrint(lbl_802700D8+0x152,lbl_80367860,lbl_80367864);
 }
 
 int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
-HeapC55 *next, *prev, *head, *owner;
+HeapC55 *next, *prev, *head, *owner, *link;
 s32 size;
 if((s32)block->size < 0) {
 block->size = -block->size;
-owner = heap->owner; next = block->next;
-if(next) next->prev = block->prev;
-next = block->prev;
-if(next) next->next = block->next; else owner = block->next;
+owner = heap->owner; link = block->next;
+if(link) link->prev = block->prev;
+link = block->prev;
+if(link) link->next = block->next; else owner = block->next;
 heap->owner = owner;
 prev = 0; head = heap->free; next = head;
 while(next) {prev = next; next = next->next;}
@@ -1186,10 +1186,10 @@ if(next) next->prev = prev;
 heap->free = head;
 return;
 }
-owner = heap->owner; next = block->next;
-if(next) next->prev = block->prev;
-next = block->prev;
-if(next) next->next = block->next; else owner = block->next;
+owner = heap->owner; link = block->next;
+if(link) link->prev = block->prev;
+link = block->prev;
+if(link) link->next = block->next; else owner = block->next;
 heap->owner = owner;
 prev = 0; head = heap->free; next = head;
 while(next) {if(block <= next) break; prev = next; next = next->next;}
@@ -2225,6 +2225,57 @@ while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Co
 String_Destroy(&str,-1);return count;
 }
 
+s32 fn_800C802C(void *arg0, s32 arg1) {
+ typedef struct { u32 a,b,c,d,e,f,g,h; } Block;
+ void String_Init(void *, char *, void *);
+ s32 String_Compare(String *,u32,u32,char *,u32);
+ u32 strlen(const char *);
+ Block value, temp, fallback;
+ String str;
+ u8 alloc;
+ s32 result;
+ u8 *self;
+ u8 *entry;
+ s32 offset;
+ s32 j,k;
+ s32 index;
+ u8 *list;
+ s32 listOffset;
+ u8 equal;
+ self=arg0; result=1;
+ if (*(s8 *)(self+0x28)==0) {
+ if(arg1<*(s32 *)(self+0x18)) {
+ *(void **)(self+0x1c)=arg1<*(s32 *)(self+0x18)?(*(void ***)(self+0x14))[arg1]:0;
+ *(s32 *)(self+0x20)=arg1;
+ } else {*(void **)(self+0x1c)=0;*(s32 *)(self+0x20)=-1;result=0;}
+ return result;
+ }
+ for(index=arg1,listOffset=arg1*4;index<*(s32 *)(self+0x18);index++,listOffset+=4) {
+ list=index<*(s32 *)(self+0x18)?*(u8 **)(*(u8 **)(self+0x14)+listOffset):0;
+ String_Init(&str,(char *)self+0x28,&alloc);
+ if(list) {
+ j=0; offset=j;
+ while(j<*(s32 *)list) {
+ if(list && j<*(s32 *)list) entry=*(u8 **)(list+4)+offset; else entry=0;
+ if(String_Compare(&str,0,str.size,(char *)entry,strlen((char *)entry))==0) {
+ *(s32 *)(self+0x24)=j;temp=*(Block *)(entry+0x18);goto found;
+ } 
+ offset+=0x38; j++;
+ }
+ }
+ fallback.a=0;fallback.b=0;fallback.c=0;fallback.d=0;
+ temp=fallback;
+ found:
+ value=temp;
+ String_Destroy(&str,-1);
+ equal=1;
+ { s8 *p=(s8 *)&value; for(k=0;k<32;k++,p++) {if(*p!=*(s8 *)(self+0x40+k)){equal=0;break;}} }
+ if(equal){*(u8 **)(self+0x1c)=list;*(s32 *)(self+0x20)=index;break;}
+ }
+ if(index>=*(s32 *)(self+0x18)){*(void **)(self+0x1c)=0;*(s32 *)(self+0x20)=-1;result=0;}
+ return result;
+}
+
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
     M2C_UNK *String_CStr(void *);
@@ -2796,6 +2847,124 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
         return len != n2;
     }
     return cmp;
+}
+
+String *fn_800C94F8(String *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+{
+    extern char __files[];
+    extern char gStringErrorMsgs[];
+    extern u8 lbl_80366E40;
+    extern u8 lbl_80366E41;
+
+    s32 fprintf(void *, const char *, ...);
+    void abort(void);
+    void *Heap_Alloc(s32);
+    void Heap_Free(void *);
+    void *memcpy(void *, const void *, u32);
+    void *memset(void *, s32, u32);
+    void *memmove(void *, const void *, u32);
+
+    String *str;
+    char *newData;
+    u32 remaining;
+    u32 count;
+    u32 newSize;
+    u32 newCapacity;
+
+    str = arg0;
+
+    if (arg1 > str->size) {
+        fprintf(
+            __files + 0xA0,
+            gStringErrorMsgs + 0x38
+        );
+        abort();
+    }
+
+    remaining = str->size - arg1;
+
+    if (remaining < arg2) {
+        count = remaining;
+    } else {
+        count = arg2;
+    }
+
+    if (arg3 <= (u32)-2) {
+        if (str->size - count > (u32)-2 - arg3) {
+            fprintf(
+                __files + 0xA0,
+                gStringErrorMsgs + 0x60
+            );
+            abort();
+        }
+    }
+
+    newSize = str->size - count + arg3;
+
+    if (newSize > str->cap) {
+        newCapacity = newSize + 3 - (newSize & 3);
+
+        newData = Heap_Alloc(newCapacity + 1);
+
+        if (newData == 0) {
+            fprintf(
+                __files + 0xA0,
+                gStringErrorMsgs + 0x7C
+            );
+            abort();
+        }
+
+        if (str->data != 0) {
+            memcpy(newData, str->data, arg1);
+        }
+
+        if (arg3 != 0) {
+            memset(
+                newData + arg1,
+                (u8)arg4,
+                arg3
+            );
+        }
+
+        if (str->data != 0) {
+            memcpy(
+                newData + arg1 + arg3,
+                str->data + arg1 + count,
+                str->size - (arg1 + count)
+            );
+        }
+
+        newData[newSize] = lbl_80366E40;
+
+        if (str->data != 0) {
+            Heap_Free(str->data);
+        }
+
+        str->data = newData;
+        str->cap = newCapacity;
+        str->size = newSize;
+    } else {
+        if (str->data != 0) {
+            memmove(
+                str->data + arg1 + arg3,
+                str->data + arg1 + count,
+                str->size - (arg1 + count)
+            );
+
+            if (arg3 != 0) {
+                memset(
+                    str->data + arg1,
+                    (u8)arg4,
+                    arg3
+                );
+            }
+
+            str->data[newSize] = lbl_80366E41;
+            str->size = newSize;
+        }
+    }
+
+    return str;
 }
 
 #pragma auto_inline off
@@ -9775,6 +9944,39 @@ void fn_800DBBC8(f32 *arg0, u8 *arg1) {
     arg0[0] = value0;
     arg0[1] = value1;
     arg0[2] = value2;
+}
+
+void *fn_800DBBE4(u8 *self,void *arg1,void *arg2) {
+ void *fn_800DF7A0(void *,void *,void *);
+ void *String_Init(void *,char *,void *);
+ void Xml_GetNamedValue(void *,void *,void *);
+ extern u8 lbl_8028DED0[];
+ extern char lbl_80271658[];
+ typedef struct { s32 v[8]; } Value;
+ Value value,temp1,temp2,temp3;
+ String str1,str2,str3;
+ u32 alloc1,alloc2,alloc3;
+ void *xml=arg2;
+ fn_800DF7A0(self,arg1,arg2);
+ *(void **)(self+0x40)=lbl_8028DED0;
+ *(f32 *)(self+0x80)=0.0f;*(f32 *)(self+0x7c)=0.0f;*(f32 *)(self+0x78)=0.0f;
+ *(f32 *)(self+0x8c)=0.0f;*(f32 *)(self+0x88)=0.0f;*(f32 *)(self+0x84)=0.0f;
+ *(f32 *)(self+0x98)=0.0f;*(f32 *)(self+0x94)=0.0f;*(f32 *)(self+0x90)=0.0f;
+ String_Init(&str1,lbl_80271658,&alloc1);
+ Xml_GetNamedValue(&temp1,xml,&str1);value=temp1;String_Destroy(&str1,-1);
+ *(f32 *)(self+0x48)=((f32 *)&value)[0];*(f32 *)(self+0x4c)=((f32 *)&value)[1];*(f32 *)(self+0x50)=((f32 *)&value)[2];
+ String_Init(&str2,lbl_80271658+4,&alloc2);
+ Xml_GetNamedValue(&temp2,xml,&str2);value=temp2;String_Destroy(&str2,-1);
+ *(f32 *)(self+0x54)=((f32 *)&value)[0];*(f32 *)(self+0x58)=((f32 *)&value)[1];*(f32 *)(self+0x5c)=((f32 *)&value)[2];
+ *(s32 *)(self+0x9c)=0;
+ String_Init(&str3,lbl_80271658+8,&alloc3);
+ Xml_GetNamedValue(&temp3,xml,&str3);value=temp3;String_Destroy(&str3,-1);
+ if(value.v[0]==0 && value.v[1]==0 && value.v[2]==0) {
+ *(f32 *)(self+0x74)=1.0f;*(f32 *)(self+0x70)=1.0f;*(f32 *)(self+0x6c)=1.0f;
+ } else {
+ *(f32 *)(self+0x6c)=((f32 *)&value)[0];*(f32 *)(self+0x70)=((f32 *)&value)[1];*(f32 *)(self+0x74)=((f32 *)&value)[2];
+ }
+ return self;
 }
 
 void *fn_800DBE34(void *arg0) {
@@ -20518,6 +20720,132 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     return 1;
 }
 
+void fn_800F047C(void) {
+    void *Map_Get(void);
+    s32 GActor_FindNode(void *, void *);
+    void fn_80060F70(void *, s32, void *);
+    f32 fn_80060BA4(void *, s32);
+    void *Camera_Get(void);
+    void fn_80068550(void *);
+    void fn_80068124(void *, void *);
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void fn_802029C4(void *, void *, void *);
+    void fn_800680AC(s32, s32, s32, s32);
+    void fn_80068070(f32, f32, f32, f32);
+    void fn_80067DA4(s32);
+    void fn_80066D00(s32);
+    void fn_80069F04(void *);
+    void fn_80048478(void *, s32, s32, s32);
+    void fn_80067984(s32);
+    void fn_8022124C(s32, s32, s32, s32);
+    void fn_802212FC(s32, s32, s32, s32);
+    void GXCopyTex(void *, s32);
+    void fn_802209FC(void);
+    void fn_80222EB4(void);
+    extern f32 lbl_80369FB8;
+    extern f32 lbl_80369FBC;
+    extern f32 lbl_80369FF4;
+    extern f32 lbl_8036A000;
+    extern f32 lbl_8036A004;
+    extern f32 lbl_8036A008;
+    extern char lbl_80272C64[];
+    extern void *lbl_803678D0;
+    struct CamBuf {
+        u8 pad[0xD4];
+        f32 f148, f14C, f150, f154, f158, f15C;
+        f32 f160, f164, f168, f16C, f170, f174;
+        u8 pad2[0x98];
+    } camState;
+    f32 mtxB[3][4];
+    f32 mtxA[3][4];
+    f32 sp8[3];
+    void *map;
+    void *actor;
+    void *node;
+    void *cam;
+    void *m2;
+    s32 idx;
+    f32 f31;
+    f32 f30;
+    f32 t5, t6;
+    f32 z;
+    s32 mode;
+
+    map = Map_Get();
+    if (map == 0) return;
+    node = *(void **)((u8 *)map + 0x2C);
+    if (node == 0) return;
+    actor = *(void **)((u8 *)node + 0x3C);
+    if (actor == 0) return;
+
+    f30 = (f31 = lbl_80369FB8);
+    idx = GActor_FindNode(actor, lbl_80272C64 + 0x7F);
+    if (idx >= 0) {
+        fn_80060F70(actor, idx, sp8);
+        f31 = sp8[1];
+        f30 = fn_80060BA4(actor, idx) / *(f32 *)((u8 *)map + 0x6C);
+    }
+    z = lbl_80369FB8;
+    *(f32 *)((u8 *)node + 0x38) = f30;
+    if (z == *(f32 *)((u8 *)node + 0x38)) return;
+
+    cam = Camera_Get();
+    fn_80068550(&camState);
+    fn_80068124(cam, &camState);
+
+    m2 = Map_Get();
+    if (m2 != 0) {
+        mode = *(u8 *)((u8 *)m2 + 0x68);
+        switch (mode) {
+        case 0:
+            t6 = lbl_8036A000 - camState.f174;
+            t5 = f31 + (f31 - camState.f15C);
+            camState.f160 = lbl_80369FB8;
+            camState.f174 = t6;
+            camState.f15C = t5;
+            camState.f164 = lbl_80369FBC;
+            camState.f168 = lbl_80369FB8;
+            camState.f148 = lbl_80369FB8;
+            camState.f14C = lbl_80369FB8;
+            camState.f150 = -camState.f16C;
+            PSMTXRotRad(mtxA, 0x58, lbl_8036A004 * t6);
+            PSMTXRotRad(mtxB, 0x5A, lbl_8036A004 * camState.f170);
+            PSMTXConcat(mtxB, mtxA, mtxB);
+            fn_802029C4(mtxB, &camState.f148, &camState.f148);
+            fn_802029C4(mtxB, &camState.f160, &camState.f160);
+            camState.f148 += camState.f154;
+            camState.f14C += camState.f158;
+            camState.f150 += camState.f15C;
+            break;
+        case 1:
+            camState.f14C = f31 + (f31 - camState.f14C);
+            camState.f158 = f31 + (f31 - camState.f158);
+            break;
+        }
+    }
+
+    fn_800680AC(0, 0, 0x130, 0xE0);
+    fn_80068070(lbl_80369FB8, lbl_80369FB8, lbl_8036A008, lbl_80369FF4);
+    fn_80067DA4(0);
+    fn_80066D00(2);
+    if (*(void **)((u8 *)map + 0x34) != 0) {
+        fn_80069F04(*(void **)((u8 *)map + 0x34));
+    }
+    fn_80066D00(0);
+    fn_80048478(map, 0, 0, 1);
+    fn_80066D00(1);
+    fn_80048478(map, 1, 0, 1);
+    fn_80067984(0);
+    fn_80068550(cam);
+    fn_80066D00(-1);
+    fn_8022124C(0, 0, 0x130, 0xE0);
+    fn_802212FC(0x130, 0xE0, 4, 0);
+    GXCopyTex(lbl_803678D0, 1);
+    fn_802209FC();
+    fn_80222EB4();
+}
+
 void fn_800F0774(void) {
     void Process_Unlink(void *);
     extern void *lbl_803678E8;
@@ -24080,6 +24408,133 @@ void fn_800F94D4(void *arg0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
+    }
+}
+
+void fn_800F9574(void *arg0)
+{
+    extern u8 gAiState[];
+    extern u8 gBattleMap[];
+    extern s32 gAiCmdIsAlt;
+
+    void Map_BuildUnitMoveRange(void *, s32, s32);
+    s8 Unit_GetMov(void *);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    s32 Rand_Range(s32);
+    void fn_800FB96C(s8, s8, s8, s32, s8, s8, s8, s8, u8);
+
+    u8 *unit;
+    u8 *map;
+    u8 *cell;
+    u8 *row;
+    s32 x;
+    s32 y;
+    s32 mov;
+    s32 minX;
+    s32 minY;
+    s32 maxX;
+    s32 maxY;
+    s32 best;
+    s32 random;
+    s32 bestX;
+    s32 bestY;
+
+    unit = (u8 *)arg0;
+
+    if ((gAiState[1] & 2) == 0 &&
+        (*(u32 *)(unit + 0x254) & 0x03000000) == 0) {
+
+        Map_BuildUnitMoveRange(unit, 5, -1);
+
+        x = (s8)unit[0x19E];
+        y = (s8)unit[0x19F];
+
+        best = -1;
+
+        mov = (s8)Unit_GetMov(unit);
+
+        map = gBattleMap;
+
+        minX = x - mov;
+
+        if (minX < (s8)map[8]) {
+            minX = (s8)map[8];
+        }
+
+        minY = y - mov;
+
+        if (minY < (s8)map[9]) {
+            minY = (s8)map[9];
+        }
+
+        maxX = x + mov;
+
+        if (maxX > (s8)map[0xA] - 1) {
+            maxX = (s8)map[0xA] - 1;
+        }
+
+        maxY = y + mov;
+
+        if (maxY > (s8)map[0xB] - 1) {
+            maxY = (s8)map[0xB] - 1;
+        }
+
+        y = minY;
+
+        while (y <= maxY) {
+            x = minX;
+
+            row = map + (s8)y * 0x40;
+
+            while (x <= maxX) {
+                if (*(s16 *)(map +
+                        ((s8)x + (s8)y * 0x40) * 2 +
+                        0x610E) >= 0) {
+
+                    cell = row + (s8)x;
+
+                    if ((s8)cell[0xE18E] == 0) {
+                        if (!Map_IsAiTerrainBlocked(
+                                (s8)x, (s8)y)) {
+
+                            if (cell[0xD] == 0) {
+                                random = (s16)Rand_Range(0x7FFF);
+
+                                if (random >= (s16)best) {
+                                    best = random;
+                                    bestX = (s16)x;
+                                    bestY = (s16)y;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                x++;
+            }
+
+            y++;
+        }
+
+        if ((s16)best != -1) {
+            fn_800FB96C(
+                1,
+                (s8)bestX,
+                (s8)bestY,
+                0,
+                (s8)bestX,
+                (s8)bestY,
+                -1,
+                0,
+                0
+            );
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
     }
 }
 
