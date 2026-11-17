@@ -2015,7 +2015,7 @@ void GXBegin(s32 primitive, s32 format, s32 count) {
         fn_80220EBC();
     }
 
-    *(volatile u8 *)0xCC008000 = (u8)(primitive | format);
+    *(volatile u8 *)0xCC008000 = (u8)(format | primitive);
     *(volatile u16 *)0xCC008000 = (u16)count;
 }
 
