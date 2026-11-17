@@ -1281,7 +1281,7 @@ void fn_801B7A34(void *arg0) {
 }
 
 void fn_801B7A74(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s8 fn_80146BE4(void *);
     void fn_80148980(void *, s32);
     void fn_801B7B5C(void *, s32, f32);
