@@ -598,10 +598,45 @@ void *TRKGetBuffer(s32 arg0) {
     return ret;
 }
 
-s32 fn_80226A2C(void) {
-    return 0;
-}
+#pragma use_lmw_stmw on
+s32 fn_80226A2C(s32 *arg0, void **arg1) {
+    extern u8 lbl_8033B078[];
+    extern void fn_802287B0(void *);
+    extern void fn_802287A8(void *);
+    extern s32 fn_80226E24(char *);
+    extern char lbl_802822D0[];
 
+    u8 *buf;
+    s32 result;
+    s32 i;
+
+    result = 0x300;
+    *arg1 = NULL;
+
+    for (i = 0; i < 3; i++) {
+        buf = NULL;
+        if (i >= 0 && i < 3) {
+            buf = lbl_8033B078 + i * 0x890;
+        }
+        fn_802287B0(buf);
+        if (*(s32 *)(buf + 4) == 0) {
+            *(s32 *)(buf + 8) = 0;
+            result = 0;
+            *(s32 *)(buf + 0xc) = 0;
+            *(s32 *)(buf + 4) = 1;
+            *arg1 = buf;
+            *arg0 = i;
+            i = 3;
+        }
+        fn_802287A8(buf);
+    }
+
+    if (result == 0x300) {
+        fn_80226E24(lbl_802822D0);
+    }
+    return result;
+}
+#pragma use_lmw_stmw reset
 int TRKInitializeMessageBuffers(void) {
     extern u8 lbl_8033B078[];
     void fn_802287B8(void *);
