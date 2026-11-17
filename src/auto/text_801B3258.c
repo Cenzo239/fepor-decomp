@@ -19389,6 +19389,42 @@ s32 fn_801E3620(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 4) == 0x20050201;
 }
 
+void fn_801E379C(u8 *arg0) {
+    struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
+    extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[];
+    extern u16 lbl_802842B8[], gStreamBaseVtbl[];
+    void fn_8017A7D4(void *, void *);
+    void fn_8017A6C4(void *, void *);
+    void fn_8014C1B8(void *, void *);
+    void fn_80048A90(void *);
+    void fn_80016628(void *);
+    void fn_800C3364(void *, void *);
+    void fn_800C2930(void *, void *);
+    void fn_8010FB7C(void *, void *);
+    void fn_800C4588(void *);
+    fn_8017A7D4(&w, arg0 + 0xB8);
+    gBattleState[0x51C] = arg0[0x61];
+    fn_8017A6C4(&w, gSaveStrings + 0x14F);
+    fn_8014C1B8(gBattleState, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x154);
+    fn_80048A90(&w);
+    fn_8017A6C4(&w, gSaveStrings + 0x159);
+    fn_80016628(&w);
+    fn_8017A6C4(&w, gSaveStrings + 0x15E);
+    fn_800C3364(gConvoy, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x163);
+    fn_800C2930(gIconSlots, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x168);
+    fn_8010FB7C(gMapObjEventList, &w);
+    w.vtbl = lbl_802842B8;
+    w.vtbl = gStreamBaseVtbl;
+    if (w.owned) {
+        fn_800C4588(w.start);
+        w.start = 0;
+        w.owned = 0;
+    }
+}
+
 void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {
     s64 __div2i(s32, s32, s32, s32);
     u32 *sp;
