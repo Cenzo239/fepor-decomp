@@ -252,6 +252,65 @@ void fn_80028F28(void) {
     BattleState_SetCamPos(gBattleState, (f32)(s8)(s32)base[0x524 / 4], (f32)(s8)(s32)base[0x528 / 4]);
 }
 
+void fn_80028FE4(void *proc) {
+    extern u32 gUiInputFlags;
+    extern u32 *gPadInput;
+    extern u8 gBattleState[], gUiContext[], gBattleMap[], lbl_80269070[];
+    void *Map_GetCursorUnit(void);
+    void Process_Goto(void *, s32);
+    void fn_8007D064(void *, void *, s32);
+    void fn_800A8400(void);
+    u8 fn_800AA304(s32,s32);
+    void Ui_PlaySeCue(void *,s32);
+    void Map_HideMoveLimitView(void);
+    void fn_800919D8(void);
+    void Map_RefreshUnitMap(void *);
+    s32 Unit_GetMov(void *);
+    void MapCursor_InitTrail(u8,u8,s32);
+    void BattleState_SetCamPos(void *,f32,f32);
+    u32 keys;
+    void *unit;
+    void *selected;
+    u8 y,x;
+    if (!(gUiInputFlags & 0x80)) {
+        keys = gPadInput[1] & (gPadInput[2] ^ gPadInput[1]);
+        unit = Map_GetCursorUnit();
+        if (unit && (keys & 0x800)) {
+            Process_Goto(proc,3);
+            fn_8007D064(unit,proc,0);
+            fn_800A8400();
+            return;
+        }
+        if (keys & 0x100) {
+            if (!fn_800AA304((s32)*(f32 *)(gBattleState+0x524),(s32)*(f32 *)(gBattleState+0x528))) {
+                Ui_PlaySeCue(lbl_80269070+0x105,100);
+                return;
+            }
+            Process_Goto(proc,5);
+            Map_HideMoveLimitView();
+            fn_800919D8();
+            Ui_PlaySeCue(lbl_80269070+0x113,100);
+            return;
+        }
+        if (keys & 0x200) {
+            if ((s8)gUiContext[0x12] == 0) {
+                Map_RefreshUnitMap(gBattleMap);
+                Process_Goto(proc,8);
+                Map_HideMoveLimitView();
+                fn_800919D8();
+                Ui_PlaySeCue(lbl_80269070+0x123,100);
+                return;
+            }
+        } else if (!(keys & 0x400)) return;
+        selected = *(void **)gUiContext;
+        y = ((u8 *)selected)[0x19f];
+        x = ((u8 *)selected)[0x19e];
+        MapCursor_InitTrail(x,y,Unit_GetMov(selected));
+        BattleState_SetCamPos(gBattleState,(f32)((s8 *)selected)[0x19e],(f32)((s8 *)selected)[0x19f]);
+        Ui_PlaySeCue(lbl_80269070+0x123,100);
+    }
+}
+
 void fn_800291D8(void) {
     // Empty implementation for testing compilation only
 }
@@ -1560,6 +1619,45 @@ extern "C" void fn_8002C618(void *arg0, s8 arg1, s8 arg2) {
         ((Visitor *)arg0)->visit((s8)(x - 1), y);
     }
 }
+
+extern "C" void fn_8002C6F4(void *obj,s32 arg1,s32 arg2) {
+extern u8 gBattleMap[],gUnits[];
+#pragma cplusplus on
+struct Visitor { virtual void apply(void *)=0; };
+s32 x=(s8)arg1;
+s32 y=(s8)arg2;
+u16 *flags=(u16 *)(gBattleMap+((x+(y<<6))<<1));
+u16 f=*(u16 *)((u8 *)flags+0x408e);
+void *unit;
+u8 id;
+flags += 0x2047;
+
+if ((f&8)!=0) {
+id=gBattleMap[x+((s8)(y-1)<<6)+0xd];
+if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+if(unit) ((Visitor *)obj)->apply(unit);
+}
+
+if ((*flags&2)!=0) {
+id=gBattleMap[(s8)(x+1)+(y<<6)+0xd];
+if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+if(unit) ((Visitor *)obj)->apply(unit);
+}
+
+if ((*flags&4)!=0) {
+id=gBattleMap[x+((s8)(y+1)<<6)+0xd];
+if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+if(unit) ((Visitor *)obj)->apply(unit);
+}
+
+if ((*flags&1)!=0) {
+id=gBattleMap[(s8)(x-1)+(y<<6)+0xd];
+if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+if(unit) ((Visitor *)obj)->apply(unit);
+}
+#pragma cplusplus reset
+}
+
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
