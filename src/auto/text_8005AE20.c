@@ -273,19 +273,23 @@ s32 fn_8005B4D8(s32 arg0) {
     return 0;
 }
 
-static inline u32 HashColFromString(u8 *s) {
-    extern u32 lbl_802F03A8[0x4D];
+static inline u32 HashString(u8 *s) {
     u32 hash;
     u8 b;
-    u32 *p;
-    s32 i;
-    s32 ctr;
     hash = 0;
     while ((b = *s, (s8)b != 0)) {
         hash += b;
         s++;
         hash <<= 4;
     }
+    return hash;
+}
+
+static inline u32 ColFromHash(u32 hash) {
+    extern u32 lbl_802F03A8[0x4D];
+    u32 *p;
+    s32 i;
+    s32 ctr;
     p = lbl_802F03A8;
     i = 0;
     for (ctr = 0x4D; ctr != 0; ctr--) {
@@ -310,17 +314,8 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     u16 fn_8001B91C(s32 *);
     u32 Bin_ReadU32(s32 *);
     s32 Str_Cmp(void *, void *);
-    extern u32 lbl_802F03A8[0x4D];
     extern u8 lbl_8026B308[];
-    s32 cursor;
-    s32 spC;
-    s32 sp8;
-    u8 *s;
-    u32 h;
-    u8 b;
-    u32 *p;
-    s32 i;
-    s32 ctr;
+    s32 sp[3];
     u32 var_r0;
     s32 off;
     u8 col;
@@ -330,46 +325,20 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 j;
     u32 result;
 
-    h = 0;
-    s = *(u8 **)arg0;
-    while ((b = *s, (s8)b != 0)) {
-        h += b;
-        s++;
-        h <<= 4;
-    }
-    p = lbl_802F03A8;
-    i = 0;
-    for (ctr = 0x4D; ctr != 0; ctr--) {
-        if (h == *p) {
-            switch (i) {
-            case 9:
-            case 0x21:
-                var_r0 = 0x1C;
-                break;
-            default:
-                var_r0 = (u8)i;
-                break;
-            }
-            goto found;
-        }
-        p++;
-        i++;
-    }
-    var_r0 = 0;
-found:
+    var_r0 = HashColFromString(*(u8 **)arg0);
     col = (u8)var_r0;
     idx = -1;
-    cursor = Hash_Lookup(lbl_8026B308 + 0x16);
-    stride = (u16)fn_8001B91C(&cursor);
-    count = (u16)fn_8001B91C(&cursor);
+    sp[2] = Hash_Lookup(lbl_8026B308 + 0x16);
+    stride = (u16)fn_8001B91C(&sp[2]);
+    count = (u16)fn_8001B91C(&sp[2]);
     if (name == 0 || (s8)*name == 0) {
         idx = 0;
     } else {
         j = 0;
         off = 0;
         while (j < (s32)count) {
-            spC = cursor + (off * 4);
-            if (Str_Cmp((void *)Bin_ReadU32(&spC), name) == 0) {
+            sp[1] = sp[2] + (off * 4);
+            if (Str_Cmp((void *)Bin_ReadU32(&sp[1]), name) == 0) {
                 idx = j;
                 break;
             }
@@ -385,14 +354,14 @@ found:
         idx = 0;
     }
     off = (stride + 1) * idx + 1;
-    sp8 = cursor + ((col + off) * 4);
-    result = Bin_ReadU32(&sp8);
+    sp[0] = sp[2] + ((col + off) * 4);
+    result = Bin_ReadU32(&sp[0]);
     if (result == 0) {
         if (flag != 0) {
             return 0;
         }
-        sp8 = cursor + (off * 4);
-        result = Bin_ReadU32(&sp8);
+        sp[0] = sp[2] + (off * 4);
+        result = Bin_ReadU32(&sp[0]);
     }
     return result;
 }
