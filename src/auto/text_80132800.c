@@ -4872,25 +4872,36 @@ extern "C" void fn_8013A20C(void *arg0) {
     void Prim2D_SetAlphaByte(s32); void Prim2D_ClearCallbacks(void);
     s32 Text_MeasureHeight(s32,f32); void Ui_DrawRouteIconEx(s16,s32,u8);
     extern f32 lbl_8036A674, lbl_8036A698, lbl_8036A69C;
+    struct Obj {
+virtual void v1()=0; virtual void v2()=0;
+virtual void v3()=0; virtual void setup()=0; virtual void v5()=0;
+virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0;
+virtual s32 width()=0; virtual void v13()=0; virtual void v14()=0; virtual void v15()=0; virtual void v16()=0;
+virtual void draw(s16,s16,s32,s16,s32)=0;
+};
+
+    s32 height, drawY, width, y;
+    s16 x, half; s16 rowHeight;
     u8 *self=(u8 *)arg0;
-    s32 width, y, drawY;
-    s16 x, height, half;
     if(self[0x4D]) {
-        (*(void (**)(void *))(*(u8 **)self+0x14))(self);
+        ((Obj *)self)->setup();
         Prim2D_Begin(); Prim2D_AddZ(lbl_8036A698); Prim2D_PrepareTex();
-        width=(*(s32 (**)(void *))(*(u8 **)self+0x34))(self);
-        height=*(s16 *)(self+0x5A);
-        x=(s16)(width*(s16)(*(s16 *)(self+0x50)%*(s16 *)(self+0x58))+*(s16 *)(self+0x62));
-        y=(s16)((s16)height*(s16)((s16)(*(s16 *)(self+0x50)/ *(s16 *)(self+0x58))-*(s16 *)(self+0x56))+*(s16 *)(self+0x64));
-        half=(s16)(((s16)height-Text_MeasureHeight(-1,lbl_8036A674))>>1);
-        drawY=y+(half+*(s16 *)(self+0x60));
+        width=((Obj *)self)->width();
+        height=*(s16 *)(self+0x5A); rowHeight=(s16)height;
+        s16 index=*(s16 *)(self+0x50), columns=*(s16 *)(self+0x58);
+        s16 row=(s16)(index/columns);
+        x=(s16)(width*(s16)(index%columns)+*(s16 *)(self+0x62));
+        y=(s16)(rowHeight*(s16)(row-*(s16 *)(self+0x56))+*(s16 *)(self+0x64));
+        half=(s16)((rowHeight-Text_MeasureHeight(-1,lbl_8036A674))>>1);
+        drawY=half+*(s16 *)(self+0x60);
+        drawY=y+drawY;
         if(drawY>=*(s16 *)(self+0x64)) {
             y+=*(s16 *)(self+0x60);
-            if((s16)(*(s16 *)(self+0x18)-*(s16 *)(self+0x14))-*(s16 *)(self+0x64)>=((s16)height+y)-half) {
+            if((s16)(*(s16 *)(self+0x18)-*(s16 *)(self+0x14))-*(s16 *)(self+0x64)>=(rowHeight+y)-half) {
                 Prim2D_Begin(); Prim2D_SetAlphaByte(0x40); Prim2D_PrepareTex();
                 Ui_DrawRouteIconEx(x,drawY,0);
                 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A69C); Prim2D_PrepareTex();
-                (*(void (**)(void *,s16,s16,s32,s16,s32))(*(u8 **)self+0x48))(self,(s16)(x-*(s16 *)(self+0x62)),(s16)y,width,height,0);
+                ((Obj *)self)->draw((s16)(x-*(s16 *)(self+0x62)),(s16)y,width,height,0);
             }
         }
     }
@@ -6318,6 +6329,56 @@ void fn_8013BE3C(s32 arg0) {
         M2C_FIELD(temp_r3, s16 *, 0xA) = 0xA0;
     }
     M2C_FIELD(temp_r3, s32 *, 0x20) = arg0;
+}
+
+void fn_8013BFFC(s32 arg0) {
+void *Heap_Alloc(s32);
+extern u8 lbl_80276908[],lbl_8028459C[],lbl_80291BC8[],lbl_80291BEC[],lbl_80291DA0[],lbl_80291E48[],lbl_80291EAC[],lbl_80292090[],lbl_802920E0[],gUiMenuDrawVtbl[];
+extern u8 lbl_8032FEC0[],lbl_8032FECC[];
+extern s8 lbl_80367AD0,lbl_80367AD1;
+extern f32 lbl_8036A6B8;
+void *p;
+if(!lbl_80367AD0) {
+M2C_FIELD(lbl_8032FEC0,void **,0)=lbl_8028459C;
+M2C_FIELD(lbl_8032FEC0,void **,0)=lbl_80292090;
+M2C_FIELD(lbl_8032FEC0,void **,0)=lbl_80291BEC;
+M2C_FIELD(lbl_8032FEC0,void **,4)=lbl_80276908+70;
+M2C_FIELD(lbl_8032FEC0,u8 *,8)=2;
+M2C_FIELD(lbl_8032FEC0,u8 *,9)=0;
+M2C_FIELD(lbl_8032FEC0,void **,0)=lbl_80291EAC;
+lbl_80367AD0=1;
+}
+if(!lbl_80367AD1) {
+M2C_FIELD(lbl_8032FECC,void **,0)=lbl_8028459C;
+M2C_FIELD(lbl_8032FECC,void **,0)=lbl_80292090;
+M2C_FIELD(lbl_8032FECC,void **,0)=lbl_80291BEC;
+M2C_FIELD(lbl_8032FECC,void **,4)=lbl_80276908+78;
+M2C_FIELD(lbl_8032FECC,u8 *,8)=2;
+M2C_FIELD(lbl_8032FECC,u8 *,9)=0;
+M2C_FIELD(lbl_8032FECC,void **,0)=lbl_80291E48;
+lbl_80367AD1=1;
+}
+p=Heap_Alloc(0x28);
+if(p){
+M2C_FIELD(p,void **,4)=gUiMenuDrawVtbl;
+M2C_FIELD(p,void **,0)=lbl_80291BC8;
+M2C_FIELD(p,void **,4)=lbl_802920E0;
+M2C_FIELD(p,s16 *,8)=128;
+M2C_FIELD(p,s16 *,10)=156;
+M2C_FIELD(p,s16 *,12)=352;
+M2C_FIELD(p,s16 *,14)=136;
+M2C_FIELD(p,s16 *,16)=0;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0;
+M2C_FIELD(p,f32 *,24)=10.0f;
+M2C_FIELD(p,s16 *,28)=32;
+M2C_FIELD(p,s16 *,30)=4;
+M2C_FIELD(p,void **,4)=lbl_80291DA0;
+M2C_FIELD(p,s32 *,32)=0;
+M2C_FIELD(p,u8 *,36)=0;
+}
+M2C_FIELD(p,s32 *,32)=arg0;
 }
 
 void fn_8013C388(void *arg0) {
@@ -9842,6 +9903,7 @@ self->get()->alpha=alpha;
 #pragma cplusplus reset
 }
 
+#pragma optimization_level 3
 void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
@@ -9861,9 +9923,9 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *node;
     void *key;
     Panel *obj;
-    s16 c[1];
-    s16 b[1];
     s16 a[1];
+    s16 b[1];
+    s16 c[1];
 
     if (arg3 != 0) {
         obj = (Panel *)Process_CreateChild(lbl_80292278, arg0);
@@ -9913,7 +9975,7 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     fn_8014127C(obj);
     return obj;
 }
-
+#pragma optimization_level reset
 void fn_80141630(void *self, s32 arg1) {
 void *fn_80140B04(void *);
 void List_Erase(void *,void *,void *);
@@ -14579,7 +14641,7 @@ extern "C" void fn_801490C8(void *arg0) {
     }
 }
 
-s32 fn_8014953C(u8 *self) {
+extern "C" s32 fn_8014953C(u8 *self) {
     void *Camera_Get(void);
     void fn_802029C4(void *, void *, void *);
     void fn_802031A8(void *, void *, void *);
@@ -14590,11 +14652,13 @@ s32 fn_8014953C(u8 *self) {
     extern f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
     f32 delta[3], a[3], b[3];
     f32 scale, den, x, y, len;
-    u8 *cam = (u8 *)Camera_Get();
+    f32 lo, hi, base;
+    u8 *cam;
+    cam = (u8 *)Camera_Get();
     scale = (f32)lbl_80366E90;
     if (scale <= gBgmVolTimerZero)
         scale = lbl_8036A790;
-    self[0x10] = lbl_80367AF6 + (*(s32(**)(void *))(*(u8 **)(self + 8) + 0x60))(self);
+    self[0x10] = (u8)(lbl_80367AF6 + (*(s32(**)(void *))(*(u8 **)(self + 8) + 0x60))(self));
     fn_802029C4(cam + 0xA4, self + 0x1C, a);
     fn_802029C4(cam + 0xA4, cam + 0xE0, b);
     fn_802031A8(a, b, delta);
@@ -14603,18 +14667,24 @@ s32 fn_8014953C(u8 *self) {
         self[0xF] = 0x40;
     } else {
         den = lbl_8036A7A4 * scale;
-        x = lbl_8036A7A8 * delta[0] / den;
-        y = lbl_8036A7AC * delta[1] / den;
-        if (x < lbl_8036A7AC)
-            x = lbl_8036A7AC;
-        if (x > lbl_8036A7B0)
-            x = lbl_8036A7B0;
-        if (y < lbl_8036A7AC)
-            y = lbl_8036A7AC;
-        if (y > lbl_8036A7B0)
-            y = lbl_8036A7B0;
-        self[0xE] = (s32)(lbl_8036A7A8 + x);
-        self[0xF] = (s32)(lbl_8036A7A8 + y);
+        base = lbl_8036A7A8;
+        lo = lbl_8036A7AC;
+        x = base * delta[0] / den;
+        y = lo * delta[1] / den;
+        if (x < lo)
+            x = lo;
+        hi = lbl_8036A7B0;
+        if (x > hi)
+            x = hi;
+        lo = lbl_8036A7AC;
+        if (y < lo)
+            y = lo;
+        hi = lbl_8036A7B0;
+        if (y > hi)
+            y = hi;
+        base = lbl_8036A7A8;
+        self[0xE] = (s32)(base + x);
+        self[0xF] = (s32)(base + y);
     }
     fn_802031A8(self + 0x1C, cam + 0xD4, delta);
     scale *= (u16)(*(u16(**)(void *))(*(u8 **)(self + 8) + 0x5C))(self);
