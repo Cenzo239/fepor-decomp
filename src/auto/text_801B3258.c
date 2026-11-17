@@ -19858,13 +19858,15 @@ off+=0x4000;
 }
 return 0;
 }
-static inline u8 *Save_FindLinkedHeader(u8 *base)
+static inline u8 *Save_FindLinkedHeader(u8 **save)
 {
-s32 i,off;
+s32 off,i;
+u8 *base;
 u8 *slot;
 u8 valid;
 i=0; off=0x1a000;
 for(;i<2;i++) {
+base=*save;
 slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
@@ -19877,7 +19879,7 @@ return 0;
 void fn_801E080C(void *arg0) {
 extern u8 gSystemSave[];
 u8 **save=(u8 **)arg0;
-save[1]=Save_FindLinkedHeader(*save);
+save[1]=Save_FindLinkedHeader(save);
 gSystemSave[0x47]=save[1][0x63];
 }
 
