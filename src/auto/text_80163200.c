@@ -8888,6 +8888,71 @@ void fn_80174204(void) {
     return;
 }
 
+void fn_80174208(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
+    void Ui_SetWidgetText(void *, void *);
+    extern u16 gUiMsgStrings[];
+    void *child;
+    void *obj;
+    void *w105;
+    void *w108;
+    s16 sp14[2];
+    s16 sp10[2];
+    s16 spC[2];
+    s16 sp8[2];
+    s16 t;
+    s16 savedY;
+
+    child = Ui_FindChild(arg0, 0x100, 0);
+    if (child != NULL) {
+        t = *(s16 *)((u8 *)child + 0x10) - *(s16 *)((u8 *)child + 0xC);
+        sp14[0] = *(s16 *)((u8 *)child + 0xA);
+        sp14[1] = -t;
+        Ui_SlideWidgetChild(arg0, child, sp14, 0);
+    }
+    obj = *(void **)((u8 *)arg0 + 0x4C);
+    *((u8 *)obj + 0x78) = 1;
+    *((u8 *)obj + 0x4A) = 0;
+    child = Ui_FindChild(arg0, 0x104, 0);
+    if (child != NULL) {
+        savedY = *(s16 *)((u8 *)child + 0xC);
+        sp10[0] = 0x260;
+        sp10[1] = savedY;
+        Ui_SlideWidgetChild(arg0, child, sp10, 0);
+    }
+    w105 = Ui_FindChild(arg0, 0x105, 0);
+    if (w105 == NULL) {
+        w105 = *(void **)((u8 *)arg0 + 0x54);
+        Ui_AddChild(arg0, w105);
+    }
+    if (*(s16 *)((u8 *)w105 + 0xA) != 0x138) {
+        savedY = *(s16 *)((u8 *)w105 + 0xC);
+        spC[0] = 0x138;
+        spC[1] = savedY;
+        Ui_SlideWidgetChildMode1(arg0, w105, spC, 1);
+    }
+    w108 = Ui_FindChild(arg0, 0x108, 0);
+    if (w108 == NULL) {
+        w108 = *(void **)((u8 *)arg0 + 0x58);
+        Ui_AddChild(arg0, w108);
+    }
+    if (*(s16 *)((u8 *)w108 + 0xA) != 0x138) {
+        savedY = *(s16 *)((u8 *)w108 + 0xC);
+        sp8[0] = 0x138;
+        sp8[1] = savedY;
+        Ui_SlideWidgetChildMode1(arg0, w108, sp8, 0);
+    }
+    Ui_BringChildToFront(arg0, w105);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child != NULL) {
+        Ui_SetWidgetText(child, (u8 *)gUiMsgStrings + 0x38A);
+    }
+}
+
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801743B4(void *arg0) {
