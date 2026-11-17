@@ -3122,28 +3122,14 @@ void fn_80211698(s32 *arg0, u32 *arg1)
 }
 
 s32 fn_802116D4(void) {
-    u16 *r7;
-    u16 *r4;
-    u32 first;
-    u32 second;
-    u32 third;
-    VITiming *info;
-    u16 tmp;
-
-    r7 = (u16 *)0xCC002000;
-    tmp = *(u16 *)((u8 *)r7 + 0x2C);
-    r7 = (u16 *)((u8 *)r7 + 0x2C);
-    r4 = (u16 *)0xCC002000;
-    first = tmp & 0x7FF;
-    second = *r7 & 0x7FF;
-    third = *(u16 *)((u8 *)r4 + 0x2E) & 0x7FF;
-    if (first == second) {
-        info = (VITiming *)lbl_80368648;
-        if ((((second - 1) << 1) + ((third - 1) / info->unk1A)) < info->unk18) {
-            return 1;
-        }
-    }
-    return 0;
+volatile u16 *regs=(volatile u16 *)0xCC002000;
+u32 first,second,third;
+VITiming *info;
+second=regs[0x16]&0x7ff;
+do { first=second; second=regs[0x16]&0x7ff; third=regs[0x17]&0x7ff; } while(first!=second);
+info=(VITiming *)lbl_80368648;
+if (((second-1)*2+(third-1)/info->unk1A)<info->unk18) return 1;
+return 0;
 }
 
 s32 fn_8021173C(void) {
@@ -3201,30 +3187,19 @@ u32 fn_802117D8(void) {
 }
 
 u32 VIGetTvFormat(void) {
-    extern u32 CurrTvMode_8036864C;
-    u32 mode;
-    u32 format;
-
-    OSDisableInterrupts();
-    mode = CurrTvMode_8036864C;
-    switch (mode) {
-    case 0:
-    case 3:
-    case 6:
-    case 7:
-        format = 0;
-        break;
-    case 1:
-    case 4:
-        format = 1;
-        break;
-    case 2:
-    case 5:
-        format = mode;
-        break;
-    }
-    OSRestoreInterrupts();
-    return format;
+extern u32 CurrTvMode_8036864C;
+extern s32 OSDisableInterrupts(void);
+extern void OSRestoreInterrupts(s32);
+u32 format;
+s32 enabled;
+enabled=OSDisableInterrupts();
+switch(CurrTvMode_8036864C) {
+case 0: case 3: case 6: case 7: format=0; break;
+case 1: case 4: format=1; break;
+case 2: case 5: format=CurrTvMode_8036864C; break;
+}
+OSRestoreInterrupts(enabled);
+return format;
 }
 
 s32 fn_802118D8(void) {
