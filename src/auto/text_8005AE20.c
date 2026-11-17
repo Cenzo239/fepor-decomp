@@ -482,14 +482,12 @@ void fn_8005B73C(void *arg0) {
 }
 
 s32 fn_8005B760(s32 arg0) {
-s32 result;
-switch (arg0) {
-case 10: case 26: result=26; break;
-case 24: result=24; break;
-case 25: result=25; break;
-default: result=0; break;
+switch(arg0) {
+case 10: case 26: return 0x1A;
+case 24: return 0x18;
+case 25: return 0x19;
+default: return 0;
 }
-return result;
 }
 
 u8 fn_8005B7A4(u8 *s) {
@@ -667,7 +665,7 @@ s32 fn_8005BB2C(void) {
 }
 
 void fn_8005BC8C() {
-    M2C_UNK fn_8005C8D8();
+    void fn_8005C8D8();
     fn_8005C8D8();
 }
 
@@ -1063,6 +1061,33 @@ void *fn_8005CEC0(void) {
     }
     return NULL;
 }
+
+int fn_8005CF6C(int arg0) {
+ void fn_8020F334(void *); void fn_800C4588(void *); void fn_8003FED8(void *); void OS_YieldThread(void); extern u8 gFileCache[];
+ u8 *entry; s32 index;
+ index=0;entry=gFileCache;
+ do {
+ if(*(s8 *)entry && *(s8 *)(entry+0x29)==(s8)arg0) {
+ if((*(volatile u16 *)(entry+0x30)&0x200) && !(*(volatile u16 *)(entry+0x30)&0x2000)) {
+ fn_8020F334(entry+0x40); fn_800C4588(*(void **)(entry+0x38)); *(entry)=0; *(u32 *)(entry+0x2c)=0; *(u16 *)(entry+0x30)=0; *(u16 *)(entry+0x32)=0; *(u32 *)(entry+0x38)=0; *(u32 *)(entry+0x3c)=0;
+ } else {
+ if(!(*(volatile u16 *)(entry+0x30)&0x1000)) {
+
+ while (*(volatile u16 *)(entry+0x30)&0x80) OS_YieldThread();
+ if(*(volatile u16 *)(entry+0x30)&0x800) { if(*(volatile u16 *)(entry+0x30)&0x2000)
+ { s32 i; u8 *item; u8 *list; list=*(u8 **)(entry+0x38); i=0; item=list+8; for(;i<*(u16 *)(list+4);item+=0x10,i++) { u8 *found; unsigned long j; u32 key; u8 *e; unsigned ctr; e=gFileCache; key=*(u32 *)(item+8); j=0; for(ctr=0x400;ctr>0;ctr--) {if(*(u32 *)(e+0x38)==key){found=gFileCache+j*0x7c;goto found1;}e+=0x7c;j++;}found=0;found1: if(found) {if(*(u16 *)(found+0x30)&1){fn_8003FED8(*(void **)(found+0x38)); *(u16 *)(found+0x30)&=0xfffe;}} } }
+ } else if(*(volatile u16 *)(entry+0x30)&1) {fn_8003FED8(*(void **)(entry+0x38));*(u16 *)(entry+0x30)&=0xfffe;}
+ if((*(volatile u16 *)(entry+0x30)&0x800) && (*(volatile u16 *)(entry+0x30)&0x2000))
+ { s32 i; u8 *item; u8 *list; list=*(u8 **)(entry+0x38); i=0; item=list+8; for(;i<*(u16 *)(list+4);item+=0x10,i++) { u8 *found; unsigned long j; u32 key; u8 *e; unsigned ctr; e=gFileCache; key=*(u32 *)(item+8); j=0; for(ctr=0x400;ctr>0;ctr--) {if(*(u32 *)(e+0x38)==key){found=gFileCache+j*0x7c;goto found2;}e+=0x7c;j++;}found=0;found2: if(found) {*(found)=0; *(u32 *)(found+0x2c)=0; *(u16 *)(found+0x30)=0; *(u16 *)(found+0x32)=0; *(u32 *)(found+0x38)=0; *(u32 *)(found+0x3c)=0;} } }
+ *(entry)=0; *(u32 *)(entry+0x2c)=0; *(u16 *)(entry+0x30)=0; *(u16 *)(entry+0x32)=0; *(u32 *)(entry+0x38)=0; *(u32 *)(entry+0x3c)=0;
+ }
+ }
+ }
+ next: index++;entry+=0x7c;
+ }while(index<0x400);
+return;
+}
+
 #pragma global_optimizer on
 void FileCache_Release(u8 *);
 /* Look up a file-cache entry by path/name and release it. */
@@ -7750,6 +7775,72 @@ s32 fn_80068CFC(void *arg0, s32 arg1) {
     return 0;
 }
 
+s32 fn_80068D84(void *arg0, s32 arg1, void *arg2, void *arg3) {
+    extern u8 gMaterialTevStageCount, lbl_80367301, lbl_80367302, lbl_80367303, lbl_80367304;
+    extern s32 gMaterialStageIds[];
+    void GXSetNumTevStages(u8);
+    void GXSetNumChans(u8);
+    void fn_802238A8(u8);
+    void GXSetTevOrder(s32,s32,s32,s32);
+    void GXSetNumTexGens(s32,s32);
+    void fn_8022100C(s32);
+    void fn_800690D4(void *,void *,void *);
+    void fn_80069354(void *,void **,void *,void *,void *);
+    s32 GMaterial_SetupColor(void *,s32,void *,void *);
+    s32 i, stage, offset;
+    u32 ctx = fn_8006060C(arg0);
+    void (*cb)(void *,u32);
+    gMaterialTevStageCount = 0;
+    lbl_80367301 = 0;
+    lbl_80367302 = 0;
+    lbl_80367303 = 0;
+    lbl_80367304 = 0;
+    if (!(*(u32 *)arg0 & 0x20000) && (M2C_FIELD(arg3,u16 *,4)&0x4000)) {
+        if (M2C_FIELD(arg3,void **,0x18)) {
+            for (i=0;i<8;i++) {
+                cb = ((void (**)(void *,u32))M2C_FIELD(arg3,void **,0x18))[i];
+                if (cb) cb(arg3,ctx);
+            }
+        }
+        GXSetNumTevStages(gMaterialTevStageCount);
+        GXSetNumChans(lbl_80367302);
+        fn_802238A8(lbl_80367304);
+        return 1;
+    }
+    if (!(*(u32 *)arg0 & 0x2000) && M2C_FIELD(arg3,u8 *,6)) {
+        fn_80069354(arg0,(void **)arg1,arg2,M2C_FIELD(arg3,void **,0x14),(void *)ctx);
+    } else {
+        stage=gMaterialStageIds[gMaterialTevStageCount++];
+        GXSetTevOrder(stage,255,255,4);
+        GXSetNumTexGens(stage,4);
+    }
+    if (!(u8)GMaterial_SetupColor(arg0,arg1,arg2,arg3)) return 0;
+    fn_800690D4(arg0,arg2,arg3);
+    if (*(u32 *)arg0 & 0x1000) {
+        switch(M2C_FIELD(arg2,u16 *,8)&0x1800) {
+        case 0x800: fn_8022100C(2); break;
+        case 0x1000: fn_8022100C(1); break;
+        case 0x1800: fn_8022100C(3); break;
+        }
+    } else {
+        switch(M2C_FIELD(arg2,u16 *,8)&0x1800) {
+        case 0x800: fn_8022100C(1); break;
+        case 0x1000: fn_8022100C(2); break;
+        case 0x1800: fn_8022100C(0); break;
+        }
+    }
+    if (!(*(u32 *)arg0 & 0x20000) && (M2C_FIELD(arg3,u16 *,4)&0x8000) && M2C_FIELD(arg3,void **,0x18)) {
+        for(offset=0,i=0;i<8;i++,offset+=4) {
+            cb=*(void (**)(void *,u32))((u8 *)M2C_FIELD(arg3,void **,0x18)+offset);
+            if(cb) cb(arg3,ctx);
+        }
+    }
+    GXSetNumTevStages(gMaterialTevStageCount);
+    GXSetNumChans(lbl_80367302);
+    fn_802238A8(lbl_80367304);
+    return 1;
+}
+
 /* Set GX cull mode from material mirror flag (0x1000) and node cull bits (0x1800). */
 void GMaterial_SetCullMode(s32 *mat, void *node) {
     M2C_UNK fn_8022100C(M2C_UNK);
@@ -7782,6 +7873,81 @@ void GMaterial_SetCullMode(s32 *mat, void *node) {
             fn_8022100C(0);
             return;
         }
+    }
+}
+
+void fn_800690D4(void *arg0, void *arg1, void *arg2) {
+    void fn_80222164(s32, void *);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void *Light_GetChannel(s32);
+    extern s32 lbl_80369260;
+    extern f32 lbl_80369264;
+    s32 var_r31;
+    s32 var_r30;
+    s32 temp;
+    s32 sp10;
+    s32 spC;
+    s32 sp8;
+    void *chan;
+    s32 r7;
+    s32 r8;
+    s32 r9;
+
+    if (!(M2C_FIELD(arg1, u16 *, 8) & 8)) {
+        temp = M2C_FIELD(arg1, s32 *, 0x10);
+        var_r31 = 0;
+        var_r30 = 0;
+        if (temp & 0x1000) {
+            var_r31 = 1;
+            if (temp & 0x400000) {
+                var_r30 = 1;
+            }
+        }
+        GXSetCullMode(1);
+        if (M2C_FIELD(arg0, s32 *, 0) & 0x400) {
+            GXSetBlendMode(0, 0, 0, var_r31, 0, 2, 2);
+            GXSetBlendMode(2, 0, 0, var_r30, 0, 0, 2);
+            spC = lbl_80369260;
+            fn_80222164(4, &spC);
+            return;
+        }
+        chan = Light_GetChannel(M2C_FIELD(arg0, u8 *, 0x86));
+        r9 = 1;
+        r8 = 2;
+        r7 = M2C_FIELD(arg0, u8 *, 0x85);
+        sp10 = M2C_FIELD(chan, s32 *, 0);
+        if (M2C_FIELD(arg2, u16 *, 4) & 1) {
+            r7 = ((r7 << 2) & 0xC) | (r7 & 0xF0);
+            r9 = 0;
+            r8 = 0;
+        } else if (M2C_FIELD(arg1, u16 *, 8) & 0x200) {
+            r7 = 0;
+            M2C_FIELD(&sp10, u8 *, 0) = (M2C_FIELD(&sp10, u8 *, 0) + M2C_FIELD(chan, u8 *, 4)) >> 1;
+            M2C_FIELD(&sp10, u8 *, 1) = (M2C_FIELD(&sp10, u8 *, 1) + M2C_FIELD(chan, u8 *, 5)) >> 1;
+            M2C_FIELD(&sp10, u8 *, 2) = (M2C_FIELD(&sp10, u8 *, 2) + M2C_FIELD(chan, u8 *, 6)) >> 1;
+        }
+        if (M2C_FIELD(arg0, s32 *, 0) & 0x1000000) {
+            if (M2C_FIELD(&sp10, u8 *, 0) > 0xAA) {
+                M2C_FIELD(&sp10, u8 *, 0) = 0xFF;
+            } else {
+                M2C_FIELD(&sp10, u8 *, 0) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 0) * lbl_80369264);
+            }
+            if (M2C_FIELD(&sp10, u8 *, 1) > 0xAA) {
+                M2C_FIELD(&sp10, u8 *, 1) = 0xFF;
+            } else {
+                M2C_FIELD(&sp10, u8 *, 1) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 1) * lbl_80369264);
+            }
+            if (M2C_FIELD(&sp10, u8 *, 2) > 0xAA) {
+                M2C_FIELD(&sp10, u8 *, 2) = 0xFF;
+            } else {
+                M2C_FIELD(&sp10, u8 *, 2) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 2) * lbl_80369264);
+            }
+        }
+        GXSetBlendMode(0, 1, 0, var_r31, r7, r8, r9);
+        GXSetBlendMode(2, 0, 0, var_r30, 0, 0, 2);
+        sp8 = sp10;
+        fn_80222164(4, &sp8);
     }
 }
 
