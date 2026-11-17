@@ -391,22 +391,21 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-#pragma optimization_level 3
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
     s32 v;
 
     a = (u8)lbl_80366E25;
+    v = 2;
     b = a ^ 1;
     lbl_80366E25 = b;
-    v = 2;
-    if ((u8)b != 0) {
+    if ((u8)b == 0) {
+    } else {
         v = 0;
     }
     *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
-#pragma optimization_level reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
