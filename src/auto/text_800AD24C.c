@@ -8843,6 +8843,85 @@ s32 fn_800BF694(void) {
     return 1;
 }
 
+#pragma optimization_level 3
+s32 fn_800BF69C(s32 parent) {
+    void *Event_NextEntry(void *);
+    void *Process_CreateChild(void *, s32);
+    void *Event_GetString(void *, u16);
+    u8 EventFlag_IsSet(void *, void *);
+    s32 fn_800BF87C(void *);
+    extern u8 gUiContext[24];
+    extern u16 gBattleState[700];
+    extern u8 gBattleMap[];
+    void *entry;
+    u8 *mapBase;
+    u8 *flagBase;
+    u8 *uiCtx;
+    void *proc;
+    u8 found;
+    u8 ok;
+    void *unit;
+    s8 x1;
+    s8 y1;
+    s8 y0;
+    s8 x0;
+
+    entry = Event_NextEntry(0);
+    flagBase = (u8 *)gBattleState + 0xB4;
+    mapBase = gBattleMap;
+    uiCtx = gUiContext;
+    while (entry != 0) {
+        if ((s8)*(u8 *)((u8 *)entry + 0xC) == 4) {
+            unit = *(void **)gUiContext;
+            if (*(s8 *)((u8 *)unit + 0x1A8) == 0) {
+                ok = 0;
+            } else if (*(s16 *)((u8 *)entry + 0x1C) >= 0
+                && *(s16 *)((u8 *)entry + 0x1C) != ((u8 *)*(void **)((u8 *)unit + 0x190))[8]) {
+                ok = 0;
+            } else if (EventFlag_IsSet(flagBase,
+                    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1E))) != 0) {
+                ok = 0;
+            } else {
+                x1 = (s8)*(s16 *)((u8 *)entry + 0x18);
+                x0 = (s8)*(s16 *)((u8 *)entry + 0x14);
+                y0 = (s8)*(s16 *)((u8 *)entry + 0x16);
+                y1 = (s8)*(s16 *)((u8 *)entry + 0x1A);
+                if (x1 <= 0) {
+                    x1 = (((s32 *)gBattleMap)[0] - 1) - x1;
+                }
+                if (y1 <= 0) {
+                    y1 = (((s32 *)mapBase)[1] - 1) - y1;
+                }
+                if (x0 > (s8)uiCtx[0xD]) {
+                    ok = 0;
+                } else if ((s8)uiCtx[0xD] > x1) {
+                    ok = 0;
+                } else if (y0 > (s8)uiCtx[0xE]) {
+                    ok = 0;
+                } else if ((s8)uiCtx[0xE] > y1) {
+                    ok = 0;
+                } else {
+                    ok = 1;
+                }
+            }
+            if (ok != 0) {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+check:
+    if (found == 0) {
+        return 0;
+    }
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 4;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)fn_800BF87C;
+    return 1;
+}
+#pragma optimization_level reset
 s32 fn_800BF87C(void *arg0) {
     void *Event_GetString(void *, u16);
     u8 EventFlag_IsSet(void *, void *);
@@ -10106,6 +10185,60 @@ void fn_800C1984(void) {
     fn_80046360(Map_Get(), 0, Map_SetupBlendTev, 0, 0, 0x8000);
 }
 
+#pragma opt_strength_reduction off
+void fn_800C19E8(u8 *src) {
+    extern u8 *gMapBlendBufs[];
+    extern s32 gMapBlendBufIndex;
+    extern s32 lbl_80367854;
+    extern s32 lbl_80367858;
+    void fn_800062B0(void *, s32, s32);
+    void DCFlushRange(void *, u32);
+    u32 *dst;
+    s32 y;
+    s32 x;
+    s32 i;
+    s32 ctr;
+    u32 word;
+    u8 *p;
+    u8 *col;
+
+    if (src == NULL) {
+        fn_800062B0(gMapBlendBufs[gMapBlendBufIndex], 0, 0x2000);
+    } else {
+        word = 0;
+        y = 0;
+        dst = (u32 *)gMapBlendBufs[gMapBlendBufIndex];
+        goto check_y;
+        do {
+            x = 0;
+            goto check_x;
+            do {
+                col = src + x;
+                i = 0;
+                ctr = 4;
+                do {
+                    p = col + lbl_80367858 * (y + i);
+                    word = (((((((((((((((word << 4) | ((p[0] >> 4) & 0xF)) << 4) | ((p[1] >> 4) & 0xF)) << 4) | ((p[2] >> 4) & 0xF)) << 4) | ((p[3] >> 4) & 0xF)) << 4) | ((p[4] >> 4) & 0xF)) << 4) | ((p[5] >> 4) & 0xF)) << 4) | ((p[6] >> 4) & 0xF)) << 4) | ((p[7] >> 4) & 0xF);
+                    dst[0] = word;
+                    i += 1;
+                    p = col + lbl_80367858 * (y + i);
+                    word = (((((((((((((((word << 4) | ((p[0] >> 4) & 0xF)) << 4) | ((p[1] >> 4) & 0xF)) << 4) | ((p[2] >> 4) & 0xF)) << 4) | ((p[3] >> 4) & 0xF)) << 4) | ((p[4] >> 4) & 0xF)) << 4) | ((p[5] >> 4) & 0xF)) << 4) | ((p[6] >> 4) & 0xF)) << 4) | ((p[7] >> 4) & 0xF);
+                    dst[1] = word;
+                    dst += 2;
+                    i += 1;
+                } while (--ctr);
+                x += 8;
+            check_x:
+                ;
+            } while (x < lbl_80367858);
+            y += 8;
+        check_y:
+            ;
+        } while (y < lbl_80367854);
+    }
+    DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
+}
+#pragma opt_strength_reduction reset
 void fn_800C1E24(void) {
     M2C_UNK DCFlushRange(s32, M2C_UNK);
     M2C_UNK fn_800C1BDC();
@@ -10534,6 +10667,71 @@ char *fn_800C2E3C(void *arg0, s32 index) {
                 (u8)(s32)(lbl_80369D5C * (lbl_80369D60 / (f32)width)),
                 text);
     return lbl_80320B6C;
+}
+
+s32 fn_800C2EF8(u8 *slots, s32 index, u8 *str) {
+    s32 fn_80010710(u8 *);
+    void *memset(void *, s32, u32);
+    u8 *dst;
+    u8 *src;
+    u32 count;
+    u8 is_sjis;
+    u8 flag;
+    s32 off;
+    u8 *end;
+
+    src = str;
+    dst = slots + ((index - 1) * 0x18) + 1;
+    memset(dst, 0, 0xF);
+    count = 0;
+    while ((s8)*src != 0 && count < 0xEU) {
+        src += fn_80010710(src);
+        if ((s8)*src == 0) {
+            break;
+        }
+        if ((((src[0] >= 0x81U) && (src[0] <= 0x9FU)) || ((src[0] >= 0xE0U) && (src[0] <= 0xFCU))) &&
+            (((src[1] >= 0x40U) && (src[1] <= 0x7EU)) || ((src[1] >= 0x80U) && (src[1] <= 0xFCU)))) {
+            is_sjis = 1;
+        } else {
+            is_sjis = 0;
+        }
+        if (is_sjis != 0) {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            src += 2;
+            dst += 2;
+        } else {
+            *dst = *src;
+            src += 1;
+            dst += 1;
+        }
+        count += 1;
+    }
+
+    off = index * 0x18;
+    flag = 0;
+    end = slots + off;
+    if (((s8)end[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
+        ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
+        (end[-0x4] == 0x80) && (end[-0x3] == 0x80) &&
+        (end[-0x2] == 0x80) && (end[-0x1] == 0xFF)) {
+        flag = 1;
+    }
+    if (flag != 0) {
+        u8 *p = slots + off;
+        p[-0x18] = 0;
+        end[-0x17] = 0;
+        p[-0x5] = 0;
+        p[-0x6] = 0;
+        p[-0x7] = 0;
+        p[-0x8] = 0;
+        p[-0x2] = 0x80;
+        p[-0x3] = 0x80;
+        p[-0x4] = 0x80;
+        p[-0x1] = 0xFF;
+        return 0;
+    }
+    return index;
 }
 
 s32 Icon_GetSlot(s32 arg0, s32 arg1) {
