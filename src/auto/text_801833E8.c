@@ -6000,13 +6000,62 @@ extern "C" void fn_80191590(void *arg0) {
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-void fn_80191794(void* arg0) {
-    // Minimal version to get basic control flow - let's just match the branch structure
-    switch ((u8) 0x81) {  // Just one case to test basic structure
-        case 0x81:
-            return;
-        case 0x80:
-            return;
+void fn_80191794(void *panel) {
+    extern u8 gUiContext[],gBattleState[],gConvoy[];
+    void *Ui_FindChild(void *,s32,s32);
+    u32 UnitRef_GetValue(void *);
+    void fn_8014D268(void *,s32);
+    s32 Ui_ListGetSelected(void *);
+    void fn_80094A54(s32,void *);
+    u8 fn_8014D8DC(void *);
+    void fn_800C3AB0(void *,void *);
+    void fn_801402A0(void *,void *,s16 *,s32);
+    void TalkUi_ShowMsg(s32);
+    void Ui_LayoutUnitList(void *);
+    void Ui_SetWidgetText(void *,s32);
+    void Process_Goto(void *,s32);
+    s16 pos[2];
+    void *list;
+    void *item;
+    void *widget;
+    void *unit;
+    void *child;
+    s32 text;
+    s32 price;
+    u8 *state;
+    void *entry;
+    widget=M2C_FIELD(panel,void **,0x58);
+    switch(gUiContext[8]) {
+    case 0x81:
+        list=M2C_FIELD(panel,void **,0x50);
+        item=M2C_FIELD(Ui_FindChild(panel,2,0),void **,0x3C);
+        price=(u16)UnitRef_GetValue(item);
+        price=(s32)(M2C_FIELD(panel,f32 *,0x64)*(f32)price);
+        state=gBattleState;
+        fn_8014D268(state,M2C_FIELD(state,s32 *,0x18)-price);
+        if(M2C_FIELD(list,s16 *,0x4E)!=0x7FFF) {
+            s32 selected=Ui_ListGetSelected(list);
+            entry=M2C_FIELD(item,void **,0);
+            if(entry) unit=M2C_FIELD(entry,void **,0); else unit=0;
+            fn_80094A54(selected,unit);
+        } else if(fn_8014D8DC(gBattleState)) {
+            entry=M2C_FIELD(item,void **,0);
+            if(entry) unit=M2C_FIELD(entry,void **,0); else unit=0;
+            fn_800C3AB0(gConvoy,unit);
+        }
+        break;
+    case 0x80:
+        pos[0]=M2C_FIELD(widget,s16 *,0xA);
+        pos[1]=0x108;
+        fn_801402A0(panel,widget,pos,0);
+        M2C_FIELD(widget,s32 *,0x3C)=1;
+        TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(panel,void **,0x68),s32 *,0x14));
+        Ui_LayoutUnitList(panel);
+        text=M2C_FIELD(M2C_FIELD(panel,void **,0x68),s32 *,0x48);
+        child=Ui_FindChild(panel,-0x1000,0);
+        if(child) Ui_SetWidgetText(child,text);
+        Process_Goto(panel,7);
+        break;
     }
 }
 
@@ -7957,6 +8006,81 @@ loop2_cond:
         Ui_SetWidgetText(res, (s32)saved);
     }
 }
+
+extern "C" void fn_80194BF8(void *arg0) {
+    void *Heap_Alloc(s32);
+    void String_AssignCStr(void *, void *, s32);
+    s32 strlen(const char *);
+    void Ui_AddChild(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, void *);
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_80293C84[];
+    extern u8 lbl_80293C58[];
+    extern u8 lbl_8027A360[];
+    u8 *w;
+    void *child;
+    void *text;
+    s32 len;
+
+    w = (u8 *)Heap_Alloc(0x5C);
+    if (w) {
+        *(void **)(w + 0x0) = lbl_8028FDB0;
+        *(s32 *)(w + 0x4) = 0;
+        *(void **)(w + 0x0) = lbl_80292230;
+        *(s16 *)(w + 0x8) = -1;
+        *(s16 *)(w + 0xA) = 0;
+        *(s16 *)(w + 0xC) = 0x190;
+        *(s16 *)(w + 0xE) = 0x260;
+        *(s16 *)(w + 0x10) = 0x1C0;
+        *(s16 *)(w + 0x12) = 0;
+        *(s16 *)(w + 0x14) = 0;
+        *(s16 *)(w + 0x16) = 0x260;
+        *(s16 *)(w + 0x18) = 0x30;
+        *(s16 *)(w + 0x1A) = 0;
+        *(s16 *)(w + 0x1C) = 0;
+        w[0x1E] = 0xFF;
+        w[0x1F] = 0xFF;
+        w[0x20] = 0xFF;
+        w[0x21] = 0xFF;
+        *(s16 *)(w + 0x22) = 0x5A;
+        *(s16 *)(w + 0x24) = 0;
+        *(f32 *)(w + 0x28) = 1.0f;
+        *(f32 *)(w + 0x2C) = 1.0f;
+        *(f32 *)(w + 0x30) = 1.0f;
+        *(s32 *)(w + 0x34) = 0;
+        *(s32 *)(w + 0x38) = 0;
+        *(void **)(w + 0x0) = lbl_80293C84;
+        *(s32 *)(w + 0x3C) = 0;
+        *(s32 *)(w + 0x40) = 0;
+        *(s32 *)(w + 0x44) = 0;
+        *(s32 *)(w + 0x40) = 0;
+        *(s32 *)(w + 0x48) = 0;
+        w[0x4C] = 1;
+        *(s16 *)(w + 0x4E) = 0;
+        *(s16 *)(w + 0x50) = 0;
+        *(s16 *)(w + 0x52) = 0;
+        *(s16 *)(w + 0x54) = 0;
+        *(void **)(w + 0x0) = lbl_80293C58;
+        *(s32 *)(w + 0x58) = 1;
+        *(s16 *)(w + 0x4E) = 0x30;
+        *(s16 *)(w + 0x52) = 0x30;
+    }
+    *(s16 *)(w + 0x8) = -0x1000;
+    *(s32 *)(w + 0x48) = 1;
+    len = strlen((const char *)lbl_8027A360 + 0x1C0);
+    String_AssignCStr(w + 0x3C, lbl_8027A360 + 0x1C0, len);
+    *(s32 *)(w + 0x34) |= 0x10;
+    *(s32 *)(w + 0x58) = 1;
+    Ui_AddChild(arg0, w);
+    text = *(void **)(*(u8 **)((u8 *)arg0 + 0x44) + 0x2C);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child) {
+        Ui_SetWidgetText(child, text);
+    }
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
@@ -10076,40 +10200,39 @@ void fn_8019A0C8(void *arg0) {
     fn_801848D8(M2C_FIELD(arg0,s32 *,0x30),M2C_FIELD(arg0,s8 *,0x3A),M2C_FIELD(arg0,s8 *,0x3B),0x18,0);
 }
 
-void fn_8019A1E0(u8 *self) {
-    void *Map_Get(void *);
-    void *Map_FindObjNear(void *, s8, s8, s32, s32);
-    void fn_800056A0(s32);
-    void Process_Goto(void *, s32);
-    f32 Map_SampleHeight(void *, f32, f32);
-    void GActor_RequestRes(void *);
-    extern u8 gUiContext[];
-    extern u8 gBattleMap[];
-    extern u8 MapSelect_str[];
-    void *map;
-    s8 x;
-    s8 y;
-
-    self[0x38] = gUiContext[0xD];
-    self[0x39] = gUiContext[0xE];
-    map = Map_Get(gUiContext);
-    x = self[0x38];
-    y = self[0x39];
-    *(void **)(self + 0x34) = Map_FindObjNear(map, x, y, 0x8000, 0);
-    if (*(void **)(self + 0x34) == NULL) {
-        fn_800056A0(0);
-        Process_Goto(self, 0x63);
-        return;
-    }
-    self[0x3A] = (*(u8 **)(self + 0x34))[0];
-    self[0x3B] = (*(u8 **)(self + 0x34))[1];
-    self[0x3C] = gUiContext[0xF];
-    self[0x3D] = gUiContext[0x10];
-    *(f32 *)(self + 0x40) = Map_SampleHeight(gBattleMap, (f32)(s8)self[0x3A], (f32)(s8)self[0x3B]);
-    *(f32 *)(self + 0x44) = Map_SampleHeight(gBattleMap, (f32)(s8)self[0x3C], (f32)(s8)self[0x3D]);
-    GActor_RequestRes(MapSelect_str + 0xD4);
-    GActor_RequestRes(MapSelect_str + 0xCA);
-    *(s32 *)(self + 0x30) = *(s32 *)gUiContext;
+void fn_8019A1E0(void *arg0)
+{
+  void *Map_Get(void *);
+  void *Map_FindObjNear(void *, s8, s8, s32, s32);
+  void fn_800056A0(s32);
+  void Process_Goto(void *, s32);
+  f32 Map_SampleHeight(void *, f32, f32);
+  void GActor_RequestRes(void *);
+  extern u8 gUiContext[];
+  extern u8 gBattleMap[];
+  extern u8 MapSelect_str[];
+  u8 *self;
+  void *map;
+  self = (u8 *) arg0;
+  self[0x38] = gUiContext[0xD];
+  self[0x39] = gUiContext[0xE];
+  map = Map_Get(gUiContext);
+  *((void **) (self + 0x34)) = Map_FindObjNear(map, (s8) self[0x38], (s8) self[0x39], 0x8000, 0);
+  if ((*((void **) (self + 0x34))) == NULL)
+  {
+    fn_800056A0(0);
+    Process_Goto(self, 0x63);
+    return;
+  }
+  self[0x3A] = (*((u8 **) (self + 0x34)))[0];
+  self[0x3B] = (*((u8 **) (((u8 *) arg0) + 0x34)))[1];
+  ((u8 *) arg0)[0x3C] = gUiContext[0xF];
+  ((u8 *) arg0)[0x3D] = gUiContext[0x10];
+  *((f32 *) (((u8 *) arg0) + 0x40)) = Map_SampleHeight(gBattleMap, (f32) ((s8) ((u8 *) arg0)[0x3A]), (f32) ((s8) ((u8 *) arg0)[0x3B]));
+  *((f32 *) (((u8 *) arg0) + 0x44)) = Map_SampleHeight(gBattleMap, (f32) ((s8) ((u8 *) arg0)[0x3C]), (f32) ((s8) ((u8 *) arg0)[0x3D]));
+  GActor_RequestRes(MapSelect_str + 0xD4);
+  GActor_RequestRes(MapSelect_str + 0xCA);
+  *((s32 *) (((u8 *) arg0) + 0x30)) = *((s32 *) gUiContext);
 }
 
 #pragma use_lmw_stmw on
