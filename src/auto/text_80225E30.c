@@ -919,33 +919,34 @@ s32 fn_80227394(void) {
     void MWTRACE(u8, char *, ...);
     s32 TRKTargetStopped(void);
     s32 TRKTargetContinue(void);
-    s32 TRK_cc_write(s32, s32);
+    s32 TRK_cc_write(void *, s32);
     void *memset(void *, s32, s32);
     extern char lbl_802824F4[];
 
-    u8 replies[2][0x40];
+    struct {
+        u32 size;
+        u8 b4;
+        u8 pad5[3];
+        u8 b8;
+        u8 pad9[0x37];
+    } reply_ack, reply_cont;
 
     MWTRACE(1, lbl_802824F4);
 
     if (TRKTargetStopped() == 0) {
-        memset(replies[1], 0, 0x40);
-
-        replies[1][4] = 0x80;
-        *(u32 *)replies[1] = 0x40;
-        replies[1][8] = 0x16;
-
-        TRK_cc_write((s32)replies[1], 0x40);
+        memset(&reply_ack, 0, 0x40);
+        reply_ack.b4 = 0x80;
+        reply_ack.size = 0x40;
+        reply_ack.b8 = 0x16;
+        TRK_cc_write(&reply_ack, 0x40);
         return 0;
     }
 
-    memset(replies[0], 0, 0x40);
-
-    replies[0][4] = 0x80;
-    *(u32 *)replies[0] = 0x40;
-    replies[0][8] = 0;
-
-    TRK_cc_write((s32)replies[0], 0x40);
-
+    memset(&reply_cont, 0, 0x40);
+    reply_cont.b4 = 0x80;
+    reply_cont.size = 0x40;
+    reply_cont.b8 = 0;
+    TRK_cc_write(&reply_cont, 0x40);
     return TRKTargetContinue();
 }
 
@@ -1864,8 +1865,44 @@ void fn_80229228(void *b) {
  TRKAppendBuffer(b,&msg,sizeof(msg));
 }
 
-#pragma use_lmw_stmw on
-#pragma optimization_level 1
+#pragma global_optimizer off
+void TRKPostInterruptEvent(void) {
+    void fn_80225F4C(void *, s32);
+    void fn_80225F64(void *);
+    s32 fn_8022A098(u32 *, u32);
+    extern u8 gTRKState[];
+    extern u8 gTRKCPUState[1072];
+
+    u8 event[0xC];
+    u32 instruction;
+    s32 type;
+    u16 exception;
+
+    if (*(s32 *)(gTRKState + 0x9C) != 0) {
+        *(s32 *)(gTRKState + 0x9C) = 0;
+        return;
+    }
+
+    exception = (u16)*(u32 *)(gTRKCPUState + 0x2F8);
+    switch (exception) {
+    case 0x700:
+    case 0xD00:
+        fn_8022A098(&instruction, *(u32 *)(gTRKCPUState + 0x80));
+        if (instruction == 0xFE000000U) {
+            type = 5;
+        } else {
+            type = 3;
+        }
+        break;
+    default:
+        type = 4;
+        break;
+    }
+
+    fn_80225F4C(event, type);
+    fn_80225F64(event);
+}
+#pragma global_optimizer reset
 s32 TRKTargetAccessExtended2(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
 void fn_802264B4(s32, s32 *);
 s32 fn_80226700(s32, s32, s32);
