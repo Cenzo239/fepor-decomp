@@ -69,7 +69,7 @@ extern u16 lbl_8029B7A4[10];
 
 extern void *IDShouldBe_8036859C;
 extern void *fn_8020DAE0;
-extern void fn_8020C1A4(u8, u32, void *);
+
 
 extern u8 lbl_80289EB8[16];
 
