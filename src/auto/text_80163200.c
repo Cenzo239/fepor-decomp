@@ -10126,6 +10126,87 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
     }
 }
 
+#pragma dont_inline on
+#pragma global_optimizer off
+#pragma cplusplus on
+extern "C" void fn_80176024(void *arg0) {
+    f32 Ui_GetWorldScale(void *);
+    void Ui_BringChildToFront(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_OpenChildAnim(void *, void *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_SetWidgetText(void *, void *);
+    extern u16 gUiMsgStrings[];
+
+    struct Obj {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+    };
+
+    s16 size0[2];
+    s16 size1[2];
+    void *panel;
+    void *child0;
+    void *child;
+    s16 savedH;
+
+    panel = arg0;
+    if ((child0 = Ui_FindChild(arg0, 0x100, 0)) == 0) {
+        child0 = *(void **)((u8 *)panel + 0x40);
+        Ui_AddChild(panel, child0);
+    }
+    if (*(s16 *)((u8 *)child0 + 0xC) != 0x10) {
+        size0[0] = *(s16 *)((u8 *)child0 + 0xA);
+        size0[1] = 0x10;
+        Ui_SlideWidgetChildMode1(panel, child0, size0, 0);
+    }
+    *(u8 *)((u8 *)child0 + 0x4D) = 0;
+    *(s32 *)((u8 *)child0 + 0x7C) = 0;
+    *(s32 *)((u8 *)child0 + 0x80) = 0;
+    *(f32 *)((u8 *)child0 + 0x30) = 1.0f;
+    if ((child = Ui_FindChild(panel, 0x101, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x44);
+        Ui_AddChild(panel, child);
+    }
+    *(s32 *)((u8 *)child + 0x40) = 0x1003C;
+    ((Obj *)child)->v8();
+    if (*(s16 *)((u8 *)child + 0xA) != 0x138) {
+        savedH = *(s16 *)((u8 *)child + 0xC);
+        size1[0] = 0x138;
+        size1[1] = savedH;
+        Ui_SlideWidgetChildMode1(panel, child, size1, 0);
+    }
+    if ((child = Ui_FindChild(panel, 0x102, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x48);
+        Ui_AddChild(panel, child);
+    }
+    if (Ui_GetWorldScale(child) < 1.0f) {
+        Ui_OpenChildAnim(panel, child, 0);
+    }
+    if ((child = Ui_FindChild(panel, 0x103, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x4C);
+        Ui_AddChild(panel, child);
+    }
+    *(u8 *)((u8 *)child + 0x78) = 0;
+    *(u8 *)((u8 *)child + 0x4A) = 1;
+    Ui_BringChildToFront(panel, child0);
+    child = Ui_FindChild(panel, -0x1000, 0);
+    if (child != 0) {
+        Ui_SetWidgetText(child, (u8 *)gUiMsgStrings + 0x411);
+    }
+}
+#pragma cplusplus reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
+
 #pragma cplusplus on
 extern "C" void fn_801761F8(void *arg0) {
 #pragma opt_common_subs off
@@ -14500,6 +14581,102 @@ void fn_8017C4BC(void *arg0) {
         *((u8 *)arg0 + 0x79) = 1;
     }
 }
+
+#pragma dont_inline on
+#pragma global_optimizer off
+#pragma optimization_level 3
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+extern "C" void fn_8017CC50(void *arg0, void *arg1) {
+    f32 Unit_CalcBaseGoldCost(s32, u8);
+    u8 fn_8003D13C(s32);
+    u8 Status_Test(s32, s32);
+    extern f32 lbl_8036ABD8;
+    extern u8 gBattleState[];
+
+    struct Obj {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+        virtual void v9(void *);
+    };
+
+    s32 unit;
+    s16 cost;
+    void *panel;
+    s32 funds;
+    s32 active;
+    s32 check;
+    s32 can;
+    s32 show;
+    void *p;
+    s16 qty;
+    s16 next;
+    s32 diff;
+
+    active = 0;
+    panel = arg0;
+    check = active;
+    if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
+        check = 1;
+    }
+    if ((u8)check != 0) {
+        if (*(u32 *)((u8 *)arg1 + 0x34) != 0) {
+            p = *(void **)((u8 *)(*(void **)((u8 *)arg1 + 0x38)) + 8);
+        } else {
+            p = 0;
+        }
+        if (p == panel) {
+            active = 1;
+        }
+    }
+    can = active;
+    if ((u8)active != 0) {
+        diff = (u8)fn_8003D13C(*(s32 *)((u8 *)panel + 0x40));
+        qty = *(s16 *)((u8 *)panel + 0x3E);
+        diff = diff - qty;
+        can = (u32)(-diff & ~diff) >> 31;
+        if ((u8)can != 0) {
+            next = qty + 1;
+            unit = *(s32 *)((u8 *)panel + 0x40);
+            funds = *(s32 *)(gBattleState + 0x1C);
+            if ((s16)next == 0) {
+                cost = 0;
+            } else {
+                cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
+                if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
+                    cost = (s16)((cost * 10) / 7);
+                }
+                if (Status_Test(unit + 0x1BC, 0xB) != 0) {
+                    cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                }
+                if (cost < 1) {
+                    cost = 1;
+                }
+            }
+            can = cost <= funds;
+        }
+    }
+    *(u8 *)((u8 *)panel + 0x50) = can;
+    show = 0;
+    if ((u8)active != 0 && *(s16 *)((u8 *)panel + 0x3E) > 0) {
+        show = 1;
+    }
+    *(u8 *)((u8 *)panel + 0x78) = show;
+    ((Obj *)((u8 *)panel + 0x44))->v9(*(void **)((u8 *)panel + 0x34));
+    ((Obj *)((u8 *)panel + 0x6C))->v9(*(void **)((u8 *)panel + 0x34));
+}
+#pragma use_lmw_stmw reset
+#pragma cplusplus reset
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 
 void fn_8017CE1C(void *self, void *arg1) {
     u32 OSGetTick(void);
