@@ -514,43 +514,25 @@ void fn_8020CED0(void) {
 }
 
 void DVDInit(void) {
-    extern s32 DVDInitialized_803685DC;
-    extern const char *__DVDVersion;
-    extern u32 MotorState_803685D8;
-    extern u8 *bootInfo_803685A0;
-    extern s32 FirstTimeInBootrom_803685D4;
-    extern void *__DVDThreadQueue;
-
-    extern void __DVDInitWA(void);
-    extern void __DVDInterruptHandler(s16, OSContext *);
-    extern void __fstLoad(void);
-
-    if (DVDInitialized_803685DC == 0) {
-        OSRegisterVersion(__DVDVersion);
-        DVDInitialized_803685DC = 1;
-
-        __DVDFSInit();
-        __DVDClearWaitingQueue();
-        __DVDInitWA();
-
-        MotorState_803685D8 = 0;
-        bootInfo_803685A0 = (u8 *)0x80000000;
-        IDShouldBe_8036859C = bootInfo_803685A0;
-
-        __OSSetInterruptHandler(0x15, __DVDInterruptHandler);
-        __OSUnmaskInterrupts(0x400);
-        OSInitThreadQueue((void *)&__DVDThreadQueue);
-
-        *(volatile u32 *)0xCC006000 = 0x2A;
-        *(volatile u32 *)0xCC006004 = 0;
-
-        if (*(u32 *)(bootInfo_803685A0 + 0x20) == 0xE5207C22) {
-            OSReport("load fst\n");
-            __fstLoad();
-        } else if (*(u32 *)(bootInfo_803685A0 + 0x20) != 0x0D15EA5E) {
-            FirstTimeInBootrom_803685D4 = 1;
-        }
-    }
+ extern s32 DVDInitialized_803685DC;
+ extern const char *__DVDVersion;
+ extern u32 MotorState_803685D8;
+ extern u8 *bootInfo_803685A0;
+ extern s32 FirstTimeInBootrom_803685D4;
+ extern void *__DVDThreadQueue;
+ extern void __DVDInitWA(void);
+ extern void __DVDInterruptHandler(s16, OSContext *);
+ extern void __fstLoad(void);
+ void OSReport(const char*,...);
+ if(DVDInitialized_803685DC==0) {
+ OSRegisterVersion(__DVDVersion); DVDInitialized_803685DC=1;
+ { register void (*init)(void)=__DVDFSInit; init(); } __DVDClearWaitingQueue(); __DVDInitWA();
+ MotorState_803685D8=0; bootInfo_803685A0=(u8*)0x80000000; IDShouldBe_8036859C=bootInfo_803685A0;
+ __OSSetInterruptHandler(0x15,__DVDInterruptHandler); __OSUnmaskInterrupts(0x400); OSInitThreadQueue((void*)&__DVDThreadQueue);
+ *(volatile u32*)0xCC006000=0x2a; *(volatile u32*)0xCC006004=0;
+ if(*(u32*)(bootInfo_803685A0+0x20)==0xE5207C22) { OSReport("load fst\n"); __fstLoad(); }
+ else if(*(u32*)(bootInfo_803685A0+0x20)!=0x0D15EA5E) FirstTimeInBootrom_803685D4=1;
+ }
 }
 
 #pragma global_optimizer off
@@ -1745,20 +1727,24 @@ s32 DVDReadAbsAsyncPrio(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, s32 
     extern s32 PauseFlag_803685A4;
 
     u8 *block;
-    u32 interrupts;
-    s32 result;
+    u32 addr;
+    u32 length;
     u32 command;
+    s32 result;
+    u32 interrupts;
 
     block = (u8 *)arg0;
+    addr=arg1;
+    length=arg2;
 
     *(u32 *)(block + 0x08) = 1;
-    *(u32 *)(block + 0x18) = arg1;
-    *(u32 *)(block + 0x14) = arg2;
+    *(u32 *)(block + 0x18) = addr;
+    *(u32 *)(block + 0x14) = length;
     *(u32 *)(block + 0x10) = arg3;
     *(u32 *)(block + 0x20) = 0;
     *(u32 *)(block + 0x28) = arg4;
 
-    if (autoInvalidation_80366F6C != 0) {
+    if (autoInvalidation_80366F6C) {
         command = *(u32 *)(block + 0x08);
 
         if (command == 1 ||
