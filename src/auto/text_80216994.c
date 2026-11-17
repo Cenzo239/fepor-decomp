@@ -3095,6 +3095,45 @@ s32 fn_8021C3D8(s32 chan, char *name, u32 size, void *fileInfo) {
  return fn_80217C64(chan);
 }
 
+s32 fn_8021C420(void *arg0,s32 length,s32 offset,void **out) {
+s32 fn_80217B18(s32,void **);
+s32 __CARDPutControlBlock(void *,s32);
+u8 *__CARDGetDirBlock(void *);
+u16 *__CARDGetFatBlock(void *);
+u8 *card;
+u8 *file=arg0;
+CardDirEntry *entry;
+u16 *fat;
+s32 result;
+s32 size;
+result=fn_80217B18(*(s32 *)file,(void **)&card);
+if(result<0) return result;
+if(*(u16 *)(file+0x10)<5 || *(u16 *)(file+0x10)>=*(u16 *)(card+0x10) ||
+(s32)(*(u16 *)(card+0x10)**(s32 *)(card+0xC))<=*(s32 *)(file+8))
+return __CARDPutControlBlock(card,-128);
+entry=(CardDirEntry *)(__CARDGetDirBlock(card)+(*(s32 *)(file+4)<<6));
+size=*(s32 *)(card+0xC)**(u16 *)((u8 *)entry+0x38);
+if(size<=offset||size<offset+length) return __CARDPutControlBlock(card,-11);
+*(void **)(card+0xC0)=file;
+*(s32 *)(file+0xC)=length;
+if(offset<*(s32 *)(file+8)){
+*(s32 *)(file+8)=0;
+*(u16 *)(file+0x10)=*(u16 *)((u8 *)entry+0x36);
+if(*(u16 *)(file+0x10)<5 || *(u16 *)(file+0x10)>=*(u16 *)(card+0x10))
+return __CARDPutControlBlock(card,-6);
+}
+fat=__CARDGetFatBlock(card);
+while((u32)*(s32 *)(file+8)<(u32)(offset&~(*(s32 *)(card+0xC)-1))){
+*(s32 *)(file+8)+=*(s32 *)(card+0xC);
+*(u16 *)(file+0x10)=fat[*(u16 *)(file+0x10)];
+if(*(u16 *)(file+0x10)<5 || *(u16 *)(file+0x10)>=*(u16 *)(card+0x10))
+return __CARDPutControlBlock(card,-6);
+}
+*(s32 *)(file+8)=offset;
+*out=card;
+return 0;
+}
+
 void fn_8021C5D8(s32 chan, s32 result)
 {
     extern u16 __CARDBlock[];
@@ -3460,121 +3499,54 @@ if(result<0) return result;
 return fn_80217C64(arg0);
 }
 
-void fn_8021CE0C(void *arg0, void *arg1) {
-    s32 var_r8;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 var_r9;
-    s32 var_ctr;
-    void *var_r7;
-
-    var_r8 = ((s32*)arg0)[0x2C/4];
-    if ((u32) (var_r8 + 0x10000) == -1U) {
-        ((s16*)arg1)[0x2E/2] = 0;
-        var_r8 = 0;
-        ((s16*)arg1)[0x34/2] = 0;
-        ((s16*)arg1)[0x36/2] = 0;
-    }
-    var_r9 = 0;
-    temp_r5 = ((u8*)arg0)[0x7] & 3;
-    switch (temp_r5) {                              /* switch 1; irregular */
-    case 1:                                         /* switch 1 */
-        ((s32*)arg1)[0x3C/4] = var_r8;
-        temp_r6 = var_r8 + 0xC00;
-        var_r8 += 0xE00;
-        ((s32*)arg1)[0x40/4] = temp_r6;
-        break;
-    case 2:                                         /* switch 1 */
-        ((s32*)arg1)[0x3C/4] = var_r8;
-        var_r8 += 0x1800;
-        ((s32*)arg1)[0x40/4] = -1;
-        break;
-    default:                                        /* switch 1 */
-        ((s32*)arg1)[0x3C/4] = -1;
-        ((s32*)arg1)[0x40/4] = -1;
-        break;
-    }
-    var_ctr = 2;
-    var_r7 = arg1;
-    temp_r6 = 0;
-    do {
-        temp_r5 = ((u32)((s32*)((char*)arg0 + 0x30)) >> temp_r6) & 3;
-        switch (temp_r5) {                          /* switch 2; irregular */
-        case 1:                                     /* switch 2 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r9 = 1;
-            var_r8 += 0x400;
-            break;
-        case 2:                                     /* switch 2 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r8 += 0x800;
-            break;
-        default:                                    /* switch 2 */
-            ((s32*)var_r7)[0x44/4] = -1;
-            break;
-        }
-        temp_r6 += 2;
-        var_r7 = (char*)var_r7 + 4;
-        temp_r5 = ((u32) ((s32*)((char*)arg0 + 0x30)) >> temp_r6) & 3;
-        switch (temp_r5) {                        /* switch 3; irregular */
-        case 1:                                     /* switch 3 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r9 = 1;
-            var_r8 += 0x400;
-            break;
-        case 2:                                     /* switch 3 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r8 += 0x800;
-            break;
-        default:                                    /* switch 3 */
-            ((s32*)var_r7)[0x44/4] = -1;
-            break;
-        }
-        temp_r6 += 2;
-        var_r7 = (char*)var_r7 + 4;
-        temp_r5 = ((u32) ((s32*)((char*)arg0 + 0x30)) >> temp_r6) & 3;
-        switch (temp_r5) {                        /* switch 4; irregular */
-        case 1:                                     /* switch 4 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r9 = 1;
-            var_r8 += 0x400;
-            break;
-        case 2:                                     /* switch 4 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r8 += 0x800;
-            break;
-        default:                                    /* switch 4 */
-            ((s32*)var_r7)[0x44/4] = -1;
-            break;
-        }
-        temp_r6 += 2;
-        var_r7 = (char*)var_r7 + 4;
-        temp_r5 = ((u32) ((s32*)((char*)arg0 + 0x30)) >> temp_r6) & 3;
-        switch (temp_r5) {                        /* switch 5; irregular */
-        case 1:                                     /* switch 5 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r9 = 1;
-            var_r8 += 0x400;
-            break;
-        case 2:                                     /* switch 5 */
-            ((s32*)var_r7)[0x44/4] = var_r8;
-            var_r8 += 0x800;
-            break;
-        default:                                    /* switch 5 */
-            ((s32*)var_r7)[0x44/4] = -1;
-            break;
-        }
-        temp_r6 += 2;
-        var_r7 = (char*)var_r7 + 4;
-        var_ctr -= 1;
-    } while (var_ctr != 0);
-    if (var_r9 != 0) {
-        ((s32*)arg1)[0x64/4] = var_r8;
-        var_r8 += 0x200;
-    } else {
-        ((s32*)arg1)[0x64/4] = -1;
-    }
-    ((s32*)arg1)[0x68/4] = var_r8;
+void fn_8021CE0C(void *arg0,void *arg1){
+u8 *entry=arg0;
+struct Stat { u8 pad[0x44]; s32 icons[8]; };
+u8 *stat=arg1;
+u32 offset;
+s32 palette;
+s32 i;
+offset=*(u32 *)(entry+0x2C);
+if(offset==0xFFFFFFFF){
+stat[0x2E]=0;
+offset=0;
+*(u16 *)(stat+0x34)=0;
+*(u16 *)(stat+0x36)=0;
+}
+palette=0;
+switch(entry[7]&3){
+case 1:
+*(s32 *)(stat+0x3C)=offset;
+*(s32 *)(stat+0x40)=offset+0xC00;
+offset+=0xE00;
+break;
+case 2:
+*(s32 *)(stat+0x3C)=offset;
+*(s32 *)(stat+0x40)=-1;
+offset+=0x1800;
+break;
+default:
+*(s32 *)(stat+0x3C)=-1;
+*(s32 *)(stat+0x40)=-1;
+}
+for(i=0;i<8;i++){
+switch((*(u16 *)(entry+0x30)>>(2*i))&3){
+case 1:
+((struct Stat *)stat)->icons[i]=offset;
+palette=1;
+offset+=0x400;
+break;
+case 2:
+((struct Stat *)stat)->icons[i]=offset;
+offset+=0x800;
+break;
+default:
+((struct Stat *)stat)->icons[i]=-1;
+}
+}
+if(palette){*(s32 *)(stat+0x64)=offset;offset+=0x200;}
+else *(s32 *)(stat+0x64)=-1;
+*(s32 *)(stat+0x68)=offset;
 }
 
 s32 fn_8021D004(s32 arg0, s32 arg1, s32 arg2) {
