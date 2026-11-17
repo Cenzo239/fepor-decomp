@@ -3893,6 +3893,40 @@ Prim2D_Begin(); Prim2D_SetColorByte(0xff); Prim2D_PrepareTex();
 #pragma cplusplus reset
 }
 
+void fn_80032220(void *win, void *slot) {
+void Prim2D_Begin(void); void Prim2D_PrepareTex(void);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetColorByte(u8); void Prim2D_AddZ(f32);
+void UnitInfo_DrawStatus(s32); void Ui_DrawRouteTex(s32,s32,s32);
+u32 UnitRef_GetUnit(u32);
+extern f32 gUnitInfoDrawScale,gUnitInfoDrawDepth,lbl_80368E34;
+extern u8 gUiContext[];
+#pragma cplusplus on
+struct Obj { u8 pad[4]; virtual void getPos(s32 *,s32 *,s32 *)=0; };
+s32 alpha,y,x;
+s32 alpha2,y2,x2;
+if(M2C_FIELD(slot,u32 *,0x40)!=0) {
+if(M2C_FIELD(slot,u32 *,0x40)!=0) {
+((Obj *)win)->getPos(&x,&y,&alpha);
+Prim2D_Begin();
+Prim2D_SetTransform((f32)(x+0x20),(f32)(y+0xb0),gUnitInfoDrawScale,gUnitInfoDrawDepth);
+Prim2D_SetColorByte((u8)alpha); Prim2D_PrepareTex();
+UnitInfo_DrawStatus(UnitRef_GetUnit(M2C_FIELD(slot,u32 *,0x40)));
+Prim2D_Begin();
+Prim2D_SetTransform((f32)(x+0x20),(f32)(y+0x30),gUnitInfoDrawScale,gUnitInfoDrawDepth);
+Prim2D_PrepareTex();
+UnitInfo_DrawStatus(M2C_FIELD(gUiContext,s32 *,0));
+Prim2D_Begin(); Prim2D_SetColorByte(0xff); Prim2D_PrepareTex();
+}
+((Obj *)win)->getPos(&x2,&y2,&alpha2);
+Prim2D_Begin(); Prim2D_AddZ(lbl_80368E34);
+Prim2D_SetColorByte((u8)alpha2); Prim2D_PrepareTex();
+Ui_DrawRouteTex(0x64,0x6a,1);
+Prim2D_Begin(); Prim2D_SetColorByte(0xff); Prim2D_PrepareTex();
+}
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 extern "C" void Prim2D_Begin(void);
 extern "C" void Prim2D_PrepareTex(void);
