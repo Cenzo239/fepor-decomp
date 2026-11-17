@@ -5600,7 +5600,7 @@ u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
                 else goto found;
             }
             if (hi < 0) mid = -1;
-            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } else goto found; }
         }
 found:
         if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
@@ -11946,7 +11946,7 @@ void fn_80070F3C(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_80070F54(void *self, void *unit, f32 x, f32 y) {
+extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;

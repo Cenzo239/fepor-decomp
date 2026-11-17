@@ -279,14 +279,13 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
     fn_8001003C(*(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32), (u8)flag, 1, 0, ((Obj *)arg0)->v1(), lbl_80369394, lbl_803693A8);
 }
 
-extern "C" s32 fn_80074B78(s32 arg0,s32 arg1,void *arg2) {
-extern u8 gUiContext[];
-u32 value;
-if(*((u8 *)arg2+0x39)) return 16;
-value=*((u8 *)arg2+0x3a);
-gUiContext[10]=value;
-arg0=5;
-return arg0;
+extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
+    extern u8 lbl_802EF4C8[];
+    if (*((u8 *)arg2 + 0x39) != 0) {
+        return 0x10;
+    }
+    lbl_802EF4C8[0xA] = *((u8 *)arg2 + 0x3A);
+    return 5;
 }
 
 extern "C" s32 fn_80074BA4(void *arg0) {
@@ -1212,7 +1211,7 @@ extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 Text_MeasureHeight(s32, f32);
 extern "C" f32 UiWin_GetFade(void *);
-extern "C" void fn_80070F54(void *, void *, f32, f32);
+extern "C" void Ui_DrawWeaponTriangle(void *, void *, f32, f32);
 extern "C" void fn_80071410(void *, void *, f32, f32);
 extern "C" void fn_8007149C(void *, void *, f32, f32, s32, s32);
 extern "C" void fn_80071740(void *, f32, f32, s32);
@@ -1263,7 +1262,7 @@ extern "C" void BattleInfoWin_Draw(void *win, void *state) {
         Prim2D_PrepareTex();
     }
     fn_80071410(win, gBattle, 312.0f, 282.0f);
-    fn_80070F54(win, gBattle, 500.0f, 212.0f);
+    Ui_DrawWeaponTriangle(win, gBattle, 500.0f, 212.0f);
 }
 #pragma cplusplus off
 s32 fn_8007633C(void) {
