@@ -10266,39 +10266,79 @@ if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); els
 *(f32 *)((u8 *)child+0x28)=t;
 return self;
 }
-#pragma opt_common_subs reset
-void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
-    extern void *lbl_80292258;
-    extern f32 lbl_8036A730;
-    extern f32 lbl_8036A740;
-    void *Process_CreateChild(void *, s32, void *);
-    void *Process_Create(void *, s32, void *);
-    void *List_Insert(void *, void *, void **, void **);
-    void *fn_80140B04(void *);
-    void fn_80142060(void *);
-    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    void Ui_ClearPanelChildrenEx(void *);
-    char buf[0x50];
-
-    (void)lbl_80292258;
-    (void)lbl_8036A730;
-    (void)lbl_8036A740;
-    (void)Process_CreateChild;
-    (void)Process_Create;
-    (void)List_Insert;
-    (void)fn_80140B04;
-    (void)fn_80142060;
-    (void)Math_Ease;
-    (void)Ui_ClearPanelChildrenEx;
-    (void)buf;
-
-    (void)arg0;
-    (void)arg1;
-    (void)arg2;
-    (void)arg3;
-    return NULL;
+#pragma opt_common_subs off
+void *fn_80141D94(void *arg0, void *arg1, u8 arg2, u8 arg3) {
+void *Process_CreateChild(void *, void *);
+void *Process_Create(void *, void *);
+void fn_80142060(void *);
+void *fn_80140B04(void *);
+void List_Insert(void *, void *, void *, void *);
+f32 Math_Ease(s32,f32,f32,f32,f32);
+extern u8 lbl_80292258[];
+extern f32 lbl_8036A740;
+void *result,*self,*child,*end,*node;
+u32 key;
+void *searchKey;
+void *pos;
+u32 ret;
+f32 alpha[1],t;
+s32 time,duration;
+if(arg2) result=Process_CreateChild(&lbl_80292258,arg0);
+else result=Process_Create(&lbl_80292258,arg0);
+self=result;
+if(result!=0) {
+*(u8 *)((u8 *)self+0x30)=0;
+fn_80142060((u8 *)self+0x34);
 }
-
+key=(u32)arg1;
+if(arg1!=0) {
+end=fn_80140B04((u8 *)self+0x34);
+node=fn_80140B04((u8 *)self+0x34);
+node=*(void **)((u8 *)node+4);
+searchKey=(void *)key;
+goto check;
+for(;;) {
+node=*(void **)((u8 *)node+4);
+check:
+if(node!=end) {
+if(*(void **)((u8 *)node+8)!=searchKey) continue;
+}
+break;
+}
+if(node==(u8 *)self+0x38) {
+pos=(u8 *)self+0x38;
+List_Insert(&ret,(u8 *)self+0x34,&pos,&key);
+if(key!=0) {
+*(s32 *)((u8 *)key+4)+=1;
+}
+}
+}
+alpha[0]=1.0f;
+*(s16 *)((u8 *)self+0x28)=*(s16 *)((u8 *)arg1+0x24);
+*(s32 *)((u8 *)self+0x40)=0;
+*(u8 *)((u8 *)self+0x44)=arg3;
+time=*(s16 *)((u8 *)self+0x28)+1;
+switch(*(s32 *)((u8 *)self+0x40)) {
+case 0:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+alpha[0]=(1.0f/(f32)duration)*(f32)(duration-time);
+break;
+case 1:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+{ f32 inverse=1.0f/(f32)duration; alpha[0]=inverse*(f32)time; }
+break;
+}
+t=Math_Ease(5,lbl_8036A740,1.0f,alpha[0],1.0f);
+alpha[0]=*((u8 *)self+0x44)?alpha[0]:1.0f;
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x2c)=alpha[0];
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x28)=t;
+return self;
+}
+#pragma opt_common_subs on
 #pragma scheduling off
 void fn_80142018(Vec2s *out, s16 *arg0)
 {
@@ -12685,16 +12725,16 @@ void Process_UnlinkByKey(void *);
 void *Process_Create(void *,s32);
 extern u8 gBgmVolFadeProcs[], lbl_8029256C[], gBgmQuietVol;
 extern f32 gBgmVolTimerZero, lbl_8036A77C;
-f32 *proc;
-f32 b,a;
+BgmFadeFields *proc;
+f32 a,b;
 Process_UnlinkByKey(gBgmVolFadeProcs);
 Process_UnlinkByKey(lbl_8029256C);
-proc=Process_Create(gBgmVolFadeProcs,3);
+proc=(BgmFadeFields *)Process_Create(gBgmVolFadeProcs,3);
 a=gBgmVolTimerZero;
 b=lbl_8036A77C;
-proc[12]=a;
-proc[13]=b;
-proc[14]=(f32)(u32)gBgmQuietVol;
+proc->timer=a;
+proc->duration=b;
+proc->volume=(f32)(u32)gBgmQuietVol;
 }
 
 void BgmVol_FadeInProcess3(void *proc) {
