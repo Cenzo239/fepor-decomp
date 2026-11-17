@@ -3,14 +3,6 @@
 #include "global.h"
 
 typedef struct BorderColor { u32 rgba; } BorderColor;
-static inline BorderColor Border_GetColor(void *self, s32 index) {
-    s32 Game_GetFrameCount(void);
-    return (*(BorderColor **)((u8 *)self + 0x30))[(index - Game_GetFrameCount()) & 31];
-}
-static inline BorderColor Border_GetOffsetColor(void *self, s32 index, s32 offset) {
-    s32 Game_GetFrameCount(void);
-    return (*(BorderColor **)((u8 *)self + 0x30))[(index + offset - Game_GetFrameCount()) & 31];
-}
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
