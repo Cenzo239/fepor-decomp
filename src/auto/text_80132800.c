@@ -10678,8 +10678,83 @@ extern "C" void fn_80142934(void *arg0, s32 arg1) {
     }
 }
 
-void fn_801429E0(void *arg0) {
-    (void)arg0;
+struct UiPageSelector {
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual s32 page()=0;
+};
+extern "C" void fn_801429E0(void *arg0) {
+extern u32 gUiInputFlags;
+extern u32 *gPadInput;
+extern u8 lbl_80276B3C[];
+extern f32 lbl_8036A764, lbl_8036A768;
+void Ui_PlaySeCue(void *,s32);
+void fn_8013ED84(void *,s16);
+u8 *self=(u8 *)arg0;
+s32 index;
+u8 *page;
+s16 count,visible,old;
+u8 blocked;
+s32 held,edge,repeat;
+index=((s32 (*)(void *))(*(void ***)arg0)[12])(arg0);
+page=self+index*2;
+count=*(s32 *)(self+0x90+index*12);
+if(count==0) {
+*(s16 *)(page+0x4e)=0;
+*(s16 *)(page+0x64)=0;
+return;
+}
+blocked=0;
+visible=*(s16 *)(self+0x80);
+if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
+if(!blocked) {
+old=*(s16 *)(page+0x64);
+held=gPadInput[1];
+edge=gPadInput[2]^held;
+repeat=gPadInput[3];
+edge=held&edge;
+if((s16)*(f32 *)(self+0x84)==0) {
+if(repeat&0x08000008) {
+if((s16)old==0) {
+if(repeat==edge) {
+*(s16 *)(page+0x64)=count-1;
+*(s16 *)(page+0x4e)=count>visible?count-visible:0;
+}
+} else {
+*(s16 *)(page+0x64)=old-1;
+if((s16)*(s16 *)(page+0x64)>0 && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==0) {
+*(s16 *)(page+0x4e)-=1;
+*(f32 *)(self+0x84)=lbl_8036A764;
+}
+}
+if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
+} else if(repeat&0x04000004) {
+s32 last=count-1;
+if(old==last) {
+if(repeat==edge) {
+*(s16 *)(page+0x64)=0;
+*(s16 *)(page+0x4e)=0;
+}
+} else {
+*(s16 *)(page+0x64)=old+1;
+if(*(s16 *)(page+0x64)<last && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==(s16)visible-1) {
+*(s16 *)(page+0x4e)+=1;
+*(f32 *)(self+0x84)=lbl_8036A768;
+}
+}
+if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
+}
+}
+}
+fn_8013ED84(*(void **)(self+0x48),(s16)((*(s16 *)(page+0x4e)<<5)-(s32)*(f32 *)(self+0x84)));
 }
 
 #pragma use_lmw_stmw on
