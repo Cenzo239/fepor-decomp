@@ -512,7 +512,9 @@ s32 fn_802267FC(void *arg0, void *arg1, u32 length)
     return result;
 }
 
+#pragma global_optimizer off
 s32 TRKAppendBuffer_ui8x(void *arg0, u8 *arg1, u32 arg2) {
+    void fn_80003488(void *, void *, s32);
     s32 temp_r3;
     s32 var_r31;
     u32 temp_r0;
@@ -530,15 +532,16 @@ s32 TRKAppendBuffer_ui8x(void *arg0, u8 *arg1, u32 arg2) {
         var_r30 = temp_r0;
     }
     if (var_r30 == 1U) {
-        ((u8 *)arg0 + temp_r3)[0x10] = *arg1;
+        temp_r3 = (s32)arg0 + temp_r3;
+        *(u8 *)(temp_r3 + 0x10) = *arg1;
     } else {
-        fn_80003488((u8 *)arg0 + temp_r3 + 0x10, arg1, var_r30);
+        fn_80003488((u8 *)((s32)arg0 + temp_r3 + 0x10), arg1, var_r30);
     }
     *(s32 *)((u8 *)arg0 + 0xC) = *(s32 *)((u8 *)arg0 + 0xC) + var_r30;
     *(s32 *)((u8 *)arg0 + 0x8) = *(s32 *)((u8 *)arg0 + 0xC);
     return var_r31;
 }
-
+#pragma global_optimizer on
 s32 TRKSetBufferPosition(void *arg0, u32 arg1) {
     s32 var_r5;
 
