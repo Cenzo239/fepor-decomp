@@ -732,6 +732,7 @@ void fn_8023B818(void) {
     __SIRegs[14] = 0x80000000;
 }
 
+#pragma dont_inline on
 u32 SISetXY(s32 chan, s32 xy) {
     BOOL OSDisableInterrupts(void);
     BOOL OSRestoreInterrupts(BOOL);
@@ -751,6 +752,7 @@ u32 SISetXY(s32 chan, s32 xy) {
     OSRestoreInterrupts(enabled);
     return cmd;
 }
+#pragma dont_inline reset
 
 u32 fn_8023B894(u32 type) {
  extern u32 Si_8029EFAC[];
