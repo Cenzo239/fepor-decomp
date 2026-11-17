@@ -243,12 +243,10 @@ s32 fn_8023ABF4(s32 arg0) {
     return var_r5;
 }
 
-#pragma use_lmw_stmw on
 #pragma global_optimizer off
 u32 fn_8023AC30(void) {
     s64 __OSGetSystemTime(void);
     extern u32 Type_8029EFC0[4];
-    extern s64 lbl_8033E388[4];
     u8 *siRegs;
     u32 *comcsr;
     SIControl *si;
@@ -262,7 +260,7 @@ u32 fn_8023AC30(void) {
     u32 chan;
     s64 time;
     u32 *pInputBytes;
-    u32 *src;
+    u8 *src;
     u32 ctr;
     s32 left;
     u32 pad;
@@ -278,7 +276,7 @@ u32 fn_8023AC30(void) {
         time = __OSGetSystemTime();
         pInputBytes = &si->inputBytes;
         i = 0;
-        lbl_8033E388[si->chan] = time;
+        XferTime[si->chan] = time;
         dst = (u32 *)si->input;
         nWords = *pInputBytes >> 2;
         if (nWords > 0) {
@@ -288,26 +286,27 @@ u32 fn_8023AC30(void) {
                 if (left > 0) {
                     do {
                         i += 8;
-                        dst[0] = *(u32 *)(siRegs + 0x80);
-                        dst[1] = *(u32 *)(siRegs + 0x84);
-                        dst[2] = *(u32 *)(siRegs + 0x88);
-                        dst[3] = *(u32 *)(siRegs + 0x8C);
-                        dst[4] = *(u32 *)(siRegs + 0x90);
-                        dst[5] = *(u32 *)(siRegs + 0x94);
-                        dst[6] = *(u32 *)(siRegs + 0x98);
+                        *dst = *(u32 *)(siRegs + 0x80);
+                        *(dst + 1) = *(u32 *)(siRegs + 0x84);
+                        *(dst + 2) = *(u32 *)(siRegs + 0x88);
+                        *(dst + 3) = *(u32 *)(siRegs + 0x8C);
+                        *(dst + 4) = *(u32 *)(siRegs + 0x90);
+                        *(dst + 5) = *(u32 *)(siRegs + 0x94);
+                        *(dst + 6) = *(u32 *)(siRegs + 0x98);
                         data = *(u32 *)(siRegs + 0x9C);
                         siRegs += 0x20;
-                        dst[7] = data;
+                        *(dst + 7) = data;
                         dst += 8;
                     } while (--ctr);
                 }
             }
-            src = (u32 *)((u8 *)0xCC006400 + (i << 2));
+        rem_words:
+            src = (u8 *)0xCC006400 + (i << 2);
             left = (s32)(nWords - i);
             if (i < nWords) {
                 do {
-                    data = *(u32 *)((u8 *)src + 0x80);
-                    src += 1;
+                    data = *(u32 *)(src + 0x80);
+                    src += 4;
                     i += 1;
                     *dst = data;
                     dst += 1;
@@ -368,9 +367,6 @@ u32 fn_8023AC30(void) {
     (void)pad;
     return err;
 }
-
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
 void SIInterruptHandler(s32 interrupt, s32 context) {
     s64 __OSGetSystemTime(void);
     void OSCancelAlarm(void *);
@@ -382,7 +378,6 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
     extern void GetTypeCallback(s32, u32);
     extern u32 lbl_80368818;
     extern SIPacket Packet_8033E248[4];
-    volatile u32 pad[2];
     SIPacket *pktBase;
     SIControl *si;
     s32 i;
@@ -398,6 +393,8 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
     u32 rdst;
     volatile u32 *vcp;
     u32 *pollp;
+    s32 channel;
+    volatile u32 *cursor;
     u32 poll;
     u32 bit;
     volatile u32 *vp;
@@ -408,7 +405,7 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
     u8 *alarm;
     u32 hi;
     u32 sh;
-    void (*gtc)(s32, u32);
+    void *gtc;
     u32 half;
     u32 *r3base;
     u32 *r4sic;
@@ -447,27 +444,25 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
         if (cb != 0) {
             (*cb)(chan, xfer, context);
         }
-        r3base = (u32 *)0xCC000000;
-        r4sic = r3base + (0x6400 / 4);
-        r5 = r3base[0x6438 / 4];
+        r3base = (u32 *)0xCC006400;
+        r4sic = r3base;
+        r5 = r3base[0x38 / 4];
         r5 &= (u32)((s32)0x0F000000 >> (chan * 8));
         r4sic[0x38 / 4] = r5;
         typep = (u32 *)((u8 *)si + (chan * 4));
         typep = (u32 *)((u8 *)typep + 0x58);
         if (*typep == 0x80) {
             ok = 1;
-            if (((s32 *)pktBase)[chan * 8] == -1 && si->chan != chan) {
+            if (pktBase[chan].chan == -1 && si->chan != chan) {
                 ok = 0;
             }
             if (ok == 0) {
                 bus = *(u32 *)0x800000F8;
-                gtc = GetTypeCallback;
-                bus >>= 2;
-                delay = __mulhwu(0x431BDE83, bus);
+                delay = __mulhwu(0x431BDE83, bus >> 2);
                 delay = delay >> 15;
                 delay = delay * 0x41;
-                delay = delay >> 3;
-                SITransfer(chan, &lbl_80368818, 1, typep, 3, gtc, delay);
+                
+                SITransfer(chan, &lbl_80368818, 1, typep, 3, GetTypeCallback, delay >> 3);
             }
         }
     }
@@ -476,85 +471,40 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
         poll = *(u32 *)((u8 *)si + 0x48);
         vcp = (volatile u32 *)((u8 *)pktBase + 0x1E0);
         pollp = &si->unk48;
-        vp = vcp;
+        cursor = vcp;
         vc = vc + 1;
         rdst = (poll >> 16) & 0x3FF;
-        i = 0;
+        channel = 0;
         do {
-            if (fn_8023B99C(i) != 0) {
-                *vp = vc;
+            if (fn_8023B99C(channel) != 0) {
+                *cursor = vc;
             }
-            i += 1;
-            vp += 1;
-        } while (i < 4);
+            channel += 1;
+            cursor += 1;
+        } while (channel < 4);
         poll = *pollp;
         half = rdst >> 1;
         hi = 0x80000000;
-        sh = 0x18;
-        bit = hi >> sh;
-        if (poll & bit) {
-            if (*vcp == 0) {
-                goto out;
+        vp = vcp;
+        for (j = 0; j < 4; j++, vp++) {
+            if (poll & (hi >> (24 + j))) {
+                if (*vp == 0 || half + *vp < vc) return;
             }
-            if (half + *vcp >= vc) {
-                goto bit1;
-            }
-            goto out;
         }
-    bit1:
-        vp = vcp + 1;
-        sh = 0x19;
-        bit = hi >> sh;
-        if (poll & bit) {
-            if (*vp == 0) {
-                goto out;
-            }
-            if (half + *vp >= vc) {
-                goto bit2;
-            }
-            goto out;
-        }
-    bit2:
-        vp = vp + 1;
-        sh = 0x1A;
-        bit = hi >> sh;
-        if (poll & bit) {
-            if (*vp == 0) {
-                goto out;
-            }
-            if (half + *vp >= vc) {
-                goto bit3;
-            }
-            goto out;
-        }
-    bit3:
-        vp = vp + 1;
-        sh = 0x1B;
-        bit = hi >> sh;
-        if (poll & bit) {
-            if (*vp == 0) {
-                goto out;
-            }
-            if (half + *vp >= vc) {
-                goto bit4;
-            }
-            goto out;
-        }
-    bit4:
-        i = 0;
-        *vcp = i;
+        channel = 0;
+        *vcp = channel;
         rdstCb = (void (**)(s32, s32))((u8 *)pktBase + 0x1A0);
-        *(u32 *)((u8 *)pktBase + 0x1E4) = i;
-        *(u32 *)((u8 *)pktBase + 0x1E8) = i;
-        *(u32 *)((u8 *)pktBase + 0x1EC) = i;
+        *(u32 *)((u8 *)pktBase + 0x1E4) = channel;
+        *(u32 *)((u8 *)pktBase + 0x1E8) = channel;
+        *(u32 *)((u8 *)pktBase + 0x1EC) = channel;
         do {
             handler = *rdstCb;
             if (handler != 0) {
                 (*handler)(interrupt, context);
             }
-            i += 1;
+            channel += 1;
             rdstCb += 1;
-        } while (i < 4);
+        } while (channel < 4);
     }
 out:
     ;
@@ -671,16 +621,15 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         OSRestoreInterrupts(enabled);
         return FALSE;
     }
-    i = 0;
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr &= (u32)((s32)0x0F000000 >> (chan << 3));
+    sr &= (u32)((s32)0x0F000000 >> (chan * 8));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
     rlen = (outputBytes + 3) / 4;
     si->chan = chan;
     si->callback = callback;
     si->inputBytes = inputBytes;
     si->input = input;
-    for (; i < rlen; i++) {
+    for (i = 0; i < rlen; i++) {
         __SIRegs[32 + i] = ((u32 *)output)[i];
     }
     comcsr.value = __SIRegs[13];
@@ -940,7 +889,7 @@ void GetTypeCallback(s32 chan, u32 type) {
         typeVal = *typep;
         cbs = (void **)(packet + (chan << 4));
         i = 0;
-        clear = SI_CopyS32(i);
+        clear = i;
         cbs = (void **)((u8 *)cbs + 0x160);
         do {
             cb = (void (*)(s32, u32))*cbs;
@@ -988,7 +937,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     typeVal = *typep;
     cbs = (void **)(packet + (chan << 4));
     i = 0;
-    clear = SI_CopyS32(i);
+    clear = i;
     cbs = (void **)((u8 *)cbs + 0x160);
     do {
         cb = (void (*)(s32, u32))*cbs;
@@ -1108,12 +1057,13 @@ void SISetSamplingRate(u32 rate) {
     s32 VIGetTvFormat(void);
     void OSReport(const char *, ...);
     u32 SISetXY(s32, s32);
-    u8 *base;
+    u8 *new_var;
     u8 *table;
+    u8 *base;
     BOOL enabled;
     u32 scale;
-
-    base = XYNTSC_8029F080;
+    new_var = XYNTSC_8029F080;
+    base = new_var;
     if (rate > 11) {
         rate = 11;
     }
