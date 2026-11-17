@@ -55,7 +55,7 @@ extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);
 extern s32 lbl_80366F60;
-extern s32 lbl_8029CFE8;
+  extern char lbl_8029CFE8[];
 
 
 extern s32 lbl_80368614;
