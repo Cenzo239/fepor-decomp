@@ -9385,20 +9385,13 @@ extern "C" void fn_800DF584(void *arg0) {
         virtual void v2();
         virtual void v3();
     };
-    struct Other {
-        u8 pad[0x2C];
-        u8 flag_2c;
-    };
-    Other *other;
+    Obj *self = (Obj *)arg0;
+    u32 other;
 
-    if (((Obj *)arg0)->flag_3c != 0) {
-        other = (Other *)((Obj *)arg0)->field_38;
-        if (other != NULL) {
-            if (other->flag_2c != 0) {
-                if (((Obj *)arg0)->flag_2c != 0) {
-                    ((Obj *)arg0)->v3();
-                }
-            }
+    if (self->flag_3c != 0) {
+        other = (u32)self->field_38;
+        if (other != 0 && *(u8 *)(other + 0x2C) != 0 && self->flag_2c != 0) {
+            self->v3();
         }
     }
 }
@@ -18505,7 +18498,6 @@ extern f64 lbl_8036A098;
     }
     return var_r30;
 }
-#pragma scheduling off
 f32 fn_800F738C(u8 arg0, f32 farg0) {
     f64 fn_802387C8(f64, f64);
     extern f32 lbl_8036A07C;
@@ -18513,8 +18505,8 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
     extern f64 lbl_8036A088;
     extern f64 lbl_8036A098;
 
-    if (farg0 > 1.0f) {
-        farg0 = 1.0f;
+    if (farg0 > lbl_8036A07C) {
+        farg0 = lbl_8036A07C;
     }
     if (farg0 < lbl_8036A080) {
         farg0 = lbl_8036A080;
@@ -18524,7 +18516,6 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
     }
     return (f32)fn_802387C8((f64)farg0, lbl_8036A088);
 }
-#pragma scheduling reset
 void fn_800F74C0(Unit* unit)
 {
     u16* array = g_someArray;
