@@ -350,61 +350,56 @@ ptr[0x1DC/4] = __rlwimi(ptr[0x1DC/4], (u32)arg0,6,25,25);
 
 void fn_802246EC(u32 arg0, u32 arg1)
 {
-    extern u32 lbl_8029E358[];
-
-    u8 *gx;
-    u32 *entry;
-    u32 oldValue;
-    u32 value;
-    u32 flag;
-    volatile u8 *fifo;
-
-    gx = (u8 *)__GXData;
-    entry = &lbl_8029E358[arg0];
-    fifo = (volatile u8 *)0xCC008000;
-
-    oldValue = *(u32 *)(gx + 0x1DC);
-
-    value = *(u32 *)(gx + 0x1DC);
-    value = (value & ~7U) | (*entry & 7U);
-    *(u32 *)(gx + 0x1DC) = value;
-
-    value = *(u32 *)(gx + 0x1DC);
-    value = (value & ~0x38U) | ((arg1 << 3) & 0x38U);
-    *(u32 *)(gx + 0x1DC) = value;
-
-    value = *(u32 *)(gx + 0x1DC);
-
-    if (oldValue != value) {
-        *fifo = 0x61;
-        *(volatile u32 *)fifo = value;
-
-        flag = (arg0 == 2) ? 1 : 0;
-
-        value = *(u32 *)(gx + 0x204);
-        value = (value & ~0x200U) | ((flag << 9) & 0x200U);
-        *(u32 *)(gx + 0x204) = value;
-
-        *(u32 *)(gx + 0x5AC) |= 4;
-
-        if (*entry == 4) {
-            gx = (u8 *)__GXData;
-
-            value = *(u32 *)(gx + 0x1D4);
-            value = (value & ~0x600U) |
-                    (((arg0 - 4) << 9) & 0x600U);
-            *(u32 *)(gx + 0x1D4) = value;
-
-            value = *(u32 *)(gx + 0x1D4);
-            value = (value & ~0xFF000000U) | 0x42000000U;
-            *(u32 *)(gx + 0x1D4) = value;
-
-            *fifo = 0x61;
-            *(volatile u32 *)fifo = *(u32 *)(gx + 0x1D4);
-
-            *(u16 *)(gx + 2) = 0;
-        }
+  extern u32 lbl_8029E358[];
+  u32 *ptr;
+  u32 *entry;
+  u32 *new_var2;
+  u32 *gx;
+  int new_var;
+  u32 old;
+  int new_var3[2];
+  ptr = (u32 *) __GXData;
+  entry = &lbl_8029E358[arg0];
+  new_var3[0] = ptr[0x1DC / 4];
+  old = new_var3[0];
+  new_var3[0] = __rlwimi(new_var3[0], entry[0], 0, 29, 31);
+  ptr[0x1DC / 4] = new_var3[0];
+  new_var = 4;
+  new_var3[0] = ptr[0x1DC / new_var];
+  new_var3[0] = __rlwimi(new_var3[0], arg1, 3, 26, 28);
+  ptr[0x1DC / new_var] = new_var3[0];
+  new_var3[0] = ptr[0x1DC / new_var];
+  if (old != new_var3[0])
+  {
+    *((volatile u8 *) 0xCC008000) = 0x61;
+    *((volatile u32 *) 0xCC008000) = new_var3[0];
+    if (((s32) arg0) == 2)
+    {
+      new_var3[1] = 1;
     }
+    else
+    {
+      new_var3[1] = 0;
+    }
+    gx = (u32 *) __GXData;
+    new_var3[0] = gx[0x204 / new_var];
+    new_var3[0] = __rlwimi(new_var3[0], new_var3[1], 9, 22, 22);
+    gx[0x204 / new_var] = new_var3[0];
+    gx[0x5AC / new_var] |= new_var;
+  }
+  if (entry[0] == new_var)
+  {
+    ptr = (new_var2 = (u32 *) __GXData);
+    new_var3[0] = ptr[0x1D4 / new_var];
+    new_var3[0] = __rlwimi(new_var3[0], arg0 - new_var, 9, 21, 22);
+    ptr[0x1D4 / new_var] = new_var3[0];
+    new_var3[0] = ptr[0x1D4 / 4];
+    new_var3[0] = __rlwimi(new_var3[0], 0x42, 24, 0, 7);
+    ptr[0x1D4 / new_var] = new_var3[0];
+    *((volatile u8 *) 0xCC008000) = 0x61;
+    *((volatile u32 *) 0xCC008000) = ptr[0x1D4 / 4];
+  }
+  *((u16 *) (((u8 *) __GXData) + 2)) = 0;
 }
 
 #pragma peephole off
@@ -462,33 +457,37 @@ void fn_80224860(u8 arg0, u8 arg1)
   __GXFlushTextureState();
 }
 
-void fn_802248D8(s32 base, s32 size) {
- extern u8 lbl_8033AA70[];
- extern void *lbl_803687A8;
- void *fn_8021F4CC(void);
- void fn_80220D6C(void);
- void fn_8021F06C(void *);
- void GXSetCPUFifo(void *);
- void fn_80220554(void);
- void *memcpy(void *, const void *, u32);
- u8 *save=lbl_8033AA70;
- void *fifo;
- fifo=fn_8021F4CC();
- if(*(u32 *)((u8 *)__GXData+0x5AC)!=0) fn_80220D6C();
- if(((u8 *)__GXData)[0x5A9]!=0) memcpy(save+0x24,__GXData,0x5B0);
- *(s32 *)(save+0)=base;
- *(s32 *)(save+4)=base+(size-4);
- *(s32 *)(save+8)=size;
- *(s32 *)(save+0x1C)=0;
- *(s32 *)(save+0x14)=base;
- *(s32 *)(save+0x18)=base;
- ((u8 *)__GXData)[0x5A8]=1;
- fn_8021F06C(fifo);
- lbl_803687A8=fifo;
- GXSetCPUFifo(save);
- fn_80220554();
+#pragma global_optimizer off
+void fn_802248D8(u32 base, u32 size) {
+    extern u8 lbl_8033AA70[];
+    extern void *lbl_803687A8;
+    void *fn_8021F4CC(void);
+    void fn_80220D6C(void);
+    void fn_8021F06C(void *);
+    void GXSetCPUFifo(void *);
+    void fn_80220554(void);
+    void *memcpy(void *, const void *, u32);
+    u8 *save;
+    void *fifo;
+    save = lbl_8033AA70;
+    fifo = fn_8021F4CC();
+    if (*(u32 *)((u8 *)__GXData + 0x5AC) != 0)
+        fn_80220D6C();
+    if (((u8 *)__GXData)[0x5A9] != 0)
+        memcpy(save + 0x24, __GXData, 0x5B0);
+    *(u32 *)(save + 0) = base;
+    *(u32 *)(save + 4) = ((u32)base + size) - 4;
+    *(u32 *)(save + 8) = size;
+    *(u32 *)(save + 0x1C) = 0;
+    *(u32 *)(save + 0x14) = base;
+    *(u32 *)(save + 0x18) = base;
+    ((u8 *)__GXData)[0x5A8] = 1;
+    fn_8021F06C(fifo);
+    lbl_803687A8 = fifo;
+    GXSetCPUFifo(save);
+    fn_80220554();
 }
-
+#pragma global_optimizer on
 s32 fn_802249A4(void) {
  s32 OSDisableInterrupts(void);
  void OSRestoreInterrupts(s32);
@@ -499,7 +498,7 @@ s32 fn_802249A4(void) {
  void fn_8021F0A0(void *);
  void GXSetCPUFifo(void *);
  void *memcpy(void *, const void *, u32);
- register u8 *save=lbl_8033AA70;
+ u8 *save=lbl_8033AA70;
  u32 flag;
  s32 interrupts;
  u32 old;
@@ -518,7 +517,7 @@ s32 fn_802249A4(void) {
  if(flag==0) return *(s32 *)(save+0x1C);
  return 0;
 }
-
+#pragma global_optimizer on
 void fn_80224A68(s32 arg0, s32 arg1) {
     void fn_80220D6C(void);
     void fn_80220EBC(void);
