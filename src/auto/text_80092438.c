@@ -1247,82 +1247,46 @@ s32 fn_80094768(void *arg0)
 }
 
 void Unit_CompactItems(s32 arg0) {
-    u32 sp40;
-    u32 sp38;
-    u32 sp30;
-    u32 sp28;
-    u32 sp20;
-    u32 sp18;
-    u32 sp10;
-    u32 sp8;
-    s32 temp_r3;
-    s32 temp_r3_2;
-    s32 var_r19;
-    s32 var_r19_2;
-    s32 var_r20_2;
-    s32 var_r21_2;
-    s32 var_r21_3;
-    s32 var_r22;
-    u32 *var_r20;
-    u32 *var_r21;
-    u32 *var_r23;
-    u32 *var_r31;
-
-    Item_Init(&sp28);
-    Item_Init(&sp30);
-    Item_Init(&sp38);
-    Item_Init(&sp40);
-    Item_Init(&sp8);
-    Item_Init(&sp10);
-    Item_Init(&sp18);
-    Item_Init(&sp20);
-    var_r20 = &sp28;
-    var_r31 = &sp8;
-    var_r23 = var_r20;
-    var_r22 = arg0;
-    var_r21 = var_r31;
-    var_r19 = 0;
-    do {
-        Item_Copy(var_r23, Unit_GetHeldItemSlot(arg0, var_r19));
-        Unit_GetHeldItemSlot(arg0, var_r19);
-        Item_Clear();
-        Item_Copy(var_r21, var_r22 + 0x1EC);
-        Item_Clear(var_r22 + 0x1EC);
-        var_r19 += 1;
-        var_r22 += 8;
-        var_r21 += 8;
-        var_r23 += 8;
-    } while (var_r19 < 4);
-    var_r21_2 = 0;
-    var_r19_2 = 0;
-    do {
-        if ((u32) *var_r20 != 0U) {
-            temp_r3 = ((var_r19_2 * 8) & 0x7F8) + 0x1CC;
-            var_r19_2 += 1;
-            Item_Copy(arg0 + temp_r3, var_r20);
+    void Item_Init(void *);
+    void Item_Copy(void *, void *);
+    void Item_Clear(void *);
+    void Item_Destroy(void *, s32);
+    void *Unit_GetHeldItemSlot(s32, s32);
+#pragma cplusplus on
+    struct TempItem {
+        Unk80037BD0 item;
+        TempItem() { Item_Init(this); }
+        ~TempItem() { Item_Destroy(this, -1); }
+    };
+    Unk80037BD0 held[4];
+    Unk80037BD0 spare[4];
+    s32 i;
+    s32 count;
+    Item_Init(&held[0]); Item_Init(&held[1]); Item_Init(&held[2]); Item_Init(&held[3]);
+    Item_Init(&spare[0]); Item_Init(&spare[1]); Item_Init(&spare[2]); Item_Init(&spare[3]);
+    for (i = 0; i < 4; i++) {
+        Item_Copy(&held[i], Unit_GetHeldItemSlot(arg0, i));
+        Item_Clear(Unit_GetHeldItemSlot(arg0, i));
+        Item_Copy(&spare[i], (u8 *)arg0 + 0x1EC + i * 8);
+        Item_Clear((u8 *)arg0 + 0x1EC + i * 8);
+    }
+    i = 0;
+    count = 0;
+    for (; i < 4; i++) {
+        if (held[i].unk0) {
+            Item_Copy((u8 *)arg0 + 0x1CC + (u8)count++ * 8, &held[i]);
         }
-        var_r21_2 += 1;
-        var_r20 += 8;
-    } while (var_r21_2 < 4);
-    var_r20_2 = 0;
-    var_r21_3 = 0;
-    do {
-        if ((u32) *var_r31 != 0U) {
-            temp_r3_2 = ((var_r21_3 * 8) & 0x7F8) + 0x1EC;
-            var_r21_3 += 1;
-            Item_Copy(arg0 + temp_r3_2, var_r31);
+    }
+    i = 0;
+    count = 0;
+    for (; i < 4; i++) {
+        if (spare[i].unk0) {
+            Item_Copy((u8 *)arg0 + 0x1EC + (u8)count++ * 8, &spare[i]);
         }
-        var_r20_2 += 1;
-        var_r31 += 8;
-    } while (var_r20_2 < 4);
-    Item_Destroy(&sp20, -1);
-    Item_Destroy(&sp18, -1);
-    Item_Destroy(&sp10, -1);
-    Item_Destroy(&sp8, -1);
-    Item_Destroy(&sp40, -1);
-    Item_Destroy(&sp38, -1);
-    Item_Destroy(&sp30, -1);
-    Item_Destroy(&sp28, -1);
+    }
+    Item_Destroy(&spare[3], -1); Item_Destroy(&spare[2], -1); Item_Destroy(&spare[1], -1); Item_Destroy(&spare[0], -1);
+    Item_Destroy(&held[3], -1); Item_Destroy(&held[2], -1); Item_Destroy(&held[1], -1); Item_Destroy(&held[0], -1);
+#pragma cplusplus reset
 }
 
 void Unit_RemoveItem(void *arg0, s8 arg1) {
@@ -1700,3 +1664,71 @@ void *fn_800951D0(void *arg0, s32 arg1) {
     }
     return fn_8009542C(arg0, -1);
 }
+
+#pragma use_lmw_stmw on
+void *fn_8009542C(void *unit, s8 slot) {
+    void Item_Init(void *);
+    void Item_Copy(void *, void *);
+    void Item_Clear(void *);
+    void Item_Destroy(void *, s32);
+    void *Unit_GetHeldItemSlot(void *, s32);
+    s8 Unit_GetActiveItemSlot(void *);
+    u8 items[32];
+    u8 *item1;
+    u8 *item2;
+    u8 *item3;
+    s32 off;
+    void *self;
+    void *result;
+    s32 i;
+
+    self = unit;
+    if (slot < 0) {
+        slot = Unit_GetActiveItemSlot(self);
+    }
+    if (slot < 0) {
+        return NULL;
+    }
+
+    Item_Init(items);
+    item1 = items + 8;
+    Item_Init(item1);
+    item2 = items + 16;
+    Item_Init(item2);
+    item3 = items + 24;
+    Item_Init(item3);
+
+    off = (s8)slot;
+    Item_Copy(items, Unit_GetHeldItemSlot(self, off));
+    Item_Clear(Unit_GetHeldItemSlot(self, off));
+
+    i = 0;
+    off = 8;
+    do {
+        if (*(u32 *)Unit_GetHeldItemSlot(self, i) != 0) {
+            Item_Copy(items + off, Unit_GetHeldItemSlot(self, i));
+            off += 8;
+        }
+        i += 1;
+    } while (i < 4);
+
+    i = 0;
+    off = (s32)items;
+    do {
+        Item_Copy((u8 *)((s32)self + ((u8)i << 3) + 0x1CC), (void *)off);
+        if (*(u32 *)Unit_GetHeldItemSlot(self, i) != 0) {
+            if (((((u8 *)Unit_GetHeldItemSlot(self, i))[5] >> 7) & 1) != 0) {
+                result = Unit_GetHeldItemSlot(self, i);
+            }
+        }
+        i += 1;
+        off += 8;
+    } while (i < 4);
+
+    Item_Destroy(item3, -1);
+    Item_Destroy(item2, -1);
+    Item_Destroy(item1, -1);
+    Item_Destroy(items, -1);
+    return result;
+}
+#pragma use_lmw_stmw reset
