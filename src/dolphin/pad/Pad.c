@@ -66,6 +66,8 @@ extern s32 lbl_803679F0;
 
 extern u16 lbl_8029B634[10];
 
+volatile u16 OS_DSPRegs[64] : 0xCC005000;
+
 #pragma opt_common_subs off
 
 #pragma opt_common_subs reset
@@ -1144,9 +1146,9 @@ void fn_80213CB0(s32 arg0, OSContext *context)
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
     if (lbl_80368698 != 0) {
- u32 *regs = (u32 *)0xCC006C00;
- lbl_80368698(regs[2]);
- }
+        u32 *regs = (u32 *)0xCC006C00;
+        lbl_80368698(regs[2]);
+    }
     OSClearContext(&tempContext);
     OSSetCurrentContext(context);
 }
