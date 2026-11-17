@@ -7038,6 +7038,111 @@ extern "C" void fn_80170160(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+extern "C" void fn_8017021C(void *arg0) {
+    s32 MapCursor_GetItem(void *);
+    s32 Convoy_FindEmpty(void *);
+    u8 fn_800C3C1C(void *, s32);
+    void *Process_CreateChild(void *, void *);
+    void Ui_PlaySeCue(void *, s32);
+    void fn_801439F0(void *, void *, s32);
+    void fn_80143570(void *);
+    s16 fn_801435E0(void *, void *);
+    void fn_80143E0C(void *, s16);
+    void Item_Clear(s32);
+    void UnitInv_Refresh(void *);
+    s16 UnitInv_FindFilledDown(void *, s16);
+    s16 UnitInv_FindFilledUp(void *, s16);
+    void Process_Goto(void *, s32);
+    extern u8 gConvoy[];
+    extern u8 gUiMsgPopupProc[];
+    extern u16 gUiMsgStrings[];
+    extern u32 gUiContext[];
+    extern u8 lbl_80294B10[];
+
+    class Vec2s {
+    public:
+        s16 x;
+        s16 y;
+        Vec2s() {}
+        Vec2s(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; }
+        Vec2s &operator=(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; return *this; }
+    };
+    struct CursorObj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual Vec2s v10() = 0;
+    };
+    struct ListObj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9(s32) = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual s32 v12(void *) = 0;
+    };
+
+    s32 item;
+    s32 emptyIdx;
+    void *self;
+    void *list;
+    void *cursor;
+    void *popup;
+    u32 pos;
+    s16 next;
+
+    self = arg0;
+    cursor = *(void **)((u8 *)arg0 + 0x4C);
+    list = *(void **)((u8 *)arg0 + 0x54);
+    item = MapCursor_GetItem(cursor);
+    emptyIdx = (s16)Convoy_FindEmpty(gConvoy);
+    if (fn_800C3C1C(gConvoy, item) == 0) {
+        *(Vec2s *)&pos = ((CursorObj *)cursor)->v10();
+        popup = Process_CreateChild(gUiMsgPopupProc, self);
+        *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&pos;
+        *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&pos + 1);
+        *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x224;
+        return;
+    }
+    Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
+    emptyIdx = (s32)(gConvoy + (emptyIdx << 3));
+    fn_801439F0(list, (void *)emptyIdx, 0);
+    fn_80143570(list);
+    ((ListObj *)list)->v9(((ListObj *)list)->v12((void *)emptyIdx));
+    fn_80143E0C(list, fn_801435E0(list, (void *)emptyIdx));
+    Item_Clear(item);
+    UnitInv_Refresh(cursor);
+    gUiContext[1] = 0;
+    Process_CreateChild(lbl_80294B10, self);
+    next = UnitInv_FindFilledDown(cursor, *(s16 *)((u8 *)cursor + 0x4C));
+    if (next < 0) {
+        next = UnitInv_FindFilledUp(cursor, *(s16 *)((u8 *)cursor + 0x4C));
+    }
+    if (next >= 0) {
+        *(s16 *)((u8 *)cursor + 0x4C) = next;
+    } else {
+        Process_Goto(self, 0x27);
+    }
+}
+#pragma use_lmw_stmw reset
+#pragma cplusplus reset
+
+#pragma cplusplus on
+#pragma use_lmw_stmw on
 /* Tick map-cursor unit-info: follow the hovered unit and handle A/B/X popup input. */
 extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     void Process_Goto(void *, s32);
