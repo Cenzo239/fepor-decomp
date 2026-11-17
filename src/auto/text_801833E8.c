@@ -4997,21 +4997,19 @@ void fn_80190A1C(void *arg0) {
 }
 
 void fn_80190B00(void *arg0) {
-    s16 t0, t1, t2, t3, w, h;
-    M2C_FIELD(arg0, s16 *, 0x46) = 0;
-    M2C_FIELD(arg0, s16 *, 0x48) = 0;
-    t0 = M2C_FIELD(arg0, s16 *, 0xC);
-    t1 = M2C_FIELD(arg0, s16 *, 0x10);
-    t2 = M2C_FIELD(arg0, s16 *, 0xA);
-    t3 = M2C_FIELD(arg0, s16 *, 0xE);
-    h = (s16)(t1 - t0);
-    M2C_FIELD(arg0, s16 *, 0x12) = 2;
-    w = (s16)(t3 - t2);
-    h -= 8;
-    M2C_FIELD(arg0, s16 *, 0x14) = 8;
-    w -= 2;
-    M2C_FIELD(arg0, s16 *, 0x16) = w;
-    M2C_FIELD(arg0, s16 *, 0x18) = h;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    p[0x46/2] = 0;
+    p[0x48/2] = 0;
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 8;
+    right = width - 2;
+    p[0x12/2] = 2;
+    p[0x14/2] = 8;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
 }
 
 void *fn_80190B50(void *arg0, s16 arg1) {
