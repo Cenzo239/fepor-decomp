@@ -118,9 +118,9 @@ extern u32 __GXCurrentCPUFifo;
 
 extern s32 jumptable_8029E0B8[];
 
-extern u16* __GXData;
+extern u16 * const __GXData;
 
-extern u16 *__GXData;
+extern u16 * const __GXData;
 
 extern f32 lbl_8036BDC0;
 
@@ -157,22 +157,22 @@ static inline u32 __GXReadCPCounterU32(u32 lo, u32 hi) {
     return (ctrH0 << 16) | ctrL;
 }
 
-extern u16 *__GXData;
-extern u16 *__GXData;
-extern u16 *__GXData;
-extern u16 *__GXData;
+extern u16 * const __GXData;
+extern u16 * const __GXData;
+extern u16 * const __GXData;
+extern u16 * const __GXData;
 #include "common.h"
 #include <dolphin/os.h>
 #include "global.h"
 #include "structs.h"
 
-extern u16 *__GXData;
+extern u16 * const __GXData;
 #include "common.h"
 #include <dolphin/os.h>
 #include "global.h"
 #include "structs.h"
 
-extern u16 *__GXData;
+extern u16 * const __GXData;
 #include "common.h"
 #include <dolphin/os.h>
 #include "global.h"
@@ -180,7 +180,7 @@ extern u16 *__GXData;
 
 extern u16* lbl_80368790;
 extern u16* __peReg;
-extern u16 *__GXData;
+extern u16 * const __GXData;
 
 #pragma optimization_level 2
 
@@ -283,7 +283,7 @@ slot=gx+map*4;
 
 void fn_80222C50(s32 arg0, s32 arg1) {
     s32 fn_80222AD4(s32, s32, s32);
-    extern u16 *__GXData;
+    extern u16 * const __GXData;
     s32 (*callback)(void);
 
     callback = *(s32 (**)(void))((u8 *)__GXData + 0x4C8);
@@ -813,12 +813,10 @@ void __GXSetIndirectMask(s32 arg0) {
 
 void __GXFlushTextureState(void)
 {
+  u16 * const gx = __GXData;
   GXWGFifo.u8 = 0x61;
-  {
-    u16 * const gxData = __GXData;
-    GXWGFifo.u32 = *((u32 *) (((u8 *) gxData) + 0x124));
-    gxData[1] = 0;
-  }
+  GXWGFifo.u32 = *((u32 *) (((u8 *) gx) + 0x124));
+  gx[1] = 0;
 }
 
 void GXSetNumTexGens(s32 arg0, u32 arg1)
