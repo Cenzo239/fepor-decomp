@@ -25,6 +25,7 @@ first=*(void **)((u8*)first+4);
 extern u16 gSystemSave[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
+extern f64 lbl_8036A720;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
@@ -6689,6 +6690,71 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         }
     }
 }
+
+extern "C" void fn_8013D6E0(void *arg0, void *arg1) {
+void *GfxEnt_Get(u8);
+#pragma cplusplus on
+struct Obj { u8 pad[4];
+virtual s32 v0()=0;
+virtual s32 v1()=0;
+virtual s32 v2()=0;
+virtual s32 v3()=0;
+virtual s32 v4()=0;
+virtual s32 v5()=0;
+virtual s32 v6()=0;
+virtual s32 v7()=0;
+virtual s32 v8()=0;
+virtual s32 v9()=0;
+virtual s32 v10()=0;
+virtual s32 v11()=0;
+virtual s32 v12()=0;
+virtual s32 v13()=0;
+virtual s32 v14()=0;
+virtual s32 v15()=0;
+virtual s32 v16()=0;
+virtual s32 v17()=0;
+virtual s32 v18()=0;
+virtual s32 v19()=0;
+virtual s16 v20()=0;
+virtual s32 v21()=0;
+virtual s32 v22()=0;
+virtual s32 v23()=0;
+virtual s32 v24()=0;
+virtual s32 v25()=0;
+virtual s32 v26()=0;
+virtual s32 v27()=0;
+virtual s32 v28()=0;
+virtual s32 v29()=0;
+virtual s32 v30()=0;
+virtual s32 v31()=0;
+virtual s32 v32()=0;
+virtual s16 v33(void *)=0;
+virtual s16 v34()=0;
+virtual s16 v35()=0;
+};
+Obj *self=(Obj*)arg0; u8 *p=(u8*)arg1;
+s16 dx=self->v35();
+s16 dy=self->v20();
+s32 xoff=self->v31();
+s16 x=xoff+self->v16();
+s32 yoff=self->v32();
+s16 y=yoff+self->v17();
+s16 rows=self->v33(arg1);
+s16 cols=self->v34();
+s32 row=0, index=0;
+for (;row<rows && index<(s8)p[0x60]; ++row) {
+s32 yy=y+row*dy;
+s32 col=0;
+for (;col<cols && index<(s8)p[0x60];++col,++index) {
+void *ent=GfxEnt_Get(p[0x40+index]);
+*(s16*)((u8*)ent+0x30)=x+col*dx;
+
+*(s16*)((u8*)ent+0x32)=yy;
+}
+}
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 
 void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
@@ -7869,8 +7935,51 @@ void fn_8013F3CC(void) {
 }
 
 void fn_80059C2C(s32, s32, s32, s32, s32);
-void fn_8013F3D0(void) {
-    fn_80059C2C(0, 0, 0x260, 0x1C0, 0);
+void fn_8013F3D0(void *arg0) {
+    void fn_8013F748(void *, void *, void *);
+    f32 fn_8013FA44(void *);
+    s32 fn_80138908(void *);
+    s32 fn_8013FA10(void *);
+    void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, u16);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetAlphaByte(s32);
+    void Prim2D_PrepareTex(void);
+    extern f32 lbl_8036A718;
+    extern f64 lbl_8036A720;
+
+    s16 pt[2];
+    s16 z;
+    s16 midX;
+    s16 midY;
+    f32 scale;
+    s16 left;
+    s16 right;
+    s16 top;
+    s16 bottom;
+
+    (void)lbl_8036A720;
+
+    pt[0] = 0;
+    pt[1] = 0;
+    fn_8013F748(arg0, pt, pt);
+
+    left = M2C_FIELD(arg0, s16 *, 0xA);
+    right = M2C_FIELD(arg0, s16 *, 0xE);
+    top = M2C_FIELD(arg0, s16 *, 0xC);
+    bottom = M2C_FIELD(arg0, s16 *, 0x10);
+    midX = (s16)(((s16)(right - left) >> 1) - M2C_FIELD(arg0, s16 *, 0x12));
+    midY = (s16)(((s16)(bottom - top) >> 1) - M2C_FIELD(arg0, s16 *, 0x14));
+
+    Prim2D_Begin();
+    z = M2C_FIELD(arg0, s16 *, 0x22);
+    scale = fn_8013FA44(arg0);
+    fn_80009C20((f32)pt[0], (f32)pt[1], (f32)(s32)z, (f32)(s32)midX, (f32)(s32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
+    Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
+    Prim2D_SetColorByte(fn_80138908(arg0));
+    Prim2D_SetAlphaByte(fn_8013FA10(arg0));
+    Prim2D_PrepareTex();
 }
 
 void fn_8013F54C(void *arg0) {
