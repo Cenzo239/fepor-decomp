@@ -725,8 +725,6 @@ void *fn_8020C310(void) {
     Callback_80368538 = NULL;
     return cb;
 }
-#pragma scheduling reset
-#pragma peephole on
 void __DVDLowSetWAType(u32 type, u32 location) {
     extern volatile u32 WorkAroundType_80368554;
     extern u32 WorkAroundSeekLocation_80368558;
