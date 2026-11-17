@@ -117,6 +117,84 @@ void fn_80098E1C(s32 arg0) {
     } while (var_r31 < 3);
 }
 
+void fn_80098E9C(void *arg0) {
+    void *fn_80098140(void);
+    u8 Pad_IsButton(void *, s32);
+    void *fn_80055204(void *, s32);
+    void *Effect_Create(void *, void *);
+    void fn_800536CC(void *, void *);
+    void fn_800536D8(void *, void *);
+    void fn_8005366C(void *, s32, s16);
+    void fn_800983E0(f32 *, void *);
+    void fn_80052FB0(void *, f32 *, f32 *);
+    void fn_8005306C(void *);
+    s16 fn_80097740(void);
+    void *fn_80098094(void);
+    void *fn_8009809C(void);
+    u8 fn_800537E8(void);
+    u8 Mu_IsAnimDone(void *);
+    void Mu_StartBlend(void *, s32, s32, s32);
+    void Process_ClearFunc(void *);
+    void Event_HandleItemCmd(void);
+    f32 posA[3];
+    f32 posB[3];
+    f32 tmpA[3];
+    f32 tmpB[3];
+    void *fx;
+    void *data;
+    void *self;
+    u32 *input;
+    void *unit;
+
+    self = arg0;
+    unit = fn_80098140();
+    input = (u32 *)((u8 *)unit + 0x1C);
+    if (Pad_IsButton(input, 2) != 0) {
+        fx = Effect_Create(fn_80055204(*(void **)(*(void **)((u8 *)self + 0x38)), 0), self);
+        data = *(void **)((u8 *)fx + 0x30);
+        *(f32 *)((u8 *)data + 0x1C) = 0.0f;
+        fn_800536CC(fx, *(void **)(*(void **)((u8 *)self + 0x38)));
+        fn_800536D8(fx, *(void **)(*(void **)((u8 *)self + 0x3C)));
+        data = *(void **)((u8 *)fx + 0x30);
+        *(void **)((u8 *)data + 0x40) = Event_HandleItemCmd;
+        data = *(void **)((u8 *)fx + 0x30);
+        *(u32 *)((u8 *)data + 0x8) |= 0x200;
+        fn_8005366C(fx, 0, *(s16 *)((u8 *)self + 0x46));
+        switch (*(u8 *)((u8 *)self + 0x34)) {
+        case 1:
+            fn_800983E0(tmpA, *(void **)((u8 *)self + 0x38));
+            posA[0] = tmpA[0];
+            posA[1] = tmpA[1];
+            posA[2] = tmpA[2];
+            fn_800983E0(tmpB, *(void **)((u8 *)self + 0x3C));
+            posB[0] = tmpB[0];
+            posB[1] = tmpB[1];
+            posB[2] = tmpB[2];
+            fn_80052FB0(fx, posA, posB);
+            break;
+        }
+        fn_8005306C(fx);
+        *input |= 0x80;
+        *(u8 *)((u8 *)self + 0x41) = *(u8 *)((u8 *)self + 0x41) - 1;
+        if ((s8)*(u8 *)((u8 *)self + 0x41) > 0) {
+            *(s16 *)((u8 *)self + 0x46) = fn_80097740();
+            *(void **)((u8 *)self + 0x38) = fn_80098094();
+            *(void **)((u8 *)self + 0x3C) = fn_8009809C();
+            *(u8 *)((u8 *)self + 0x43) = 0;
+        }
+    }
+    if (Pad_IsButton(input, 8) != 0) {
+        *input |= 0x40;
+    }
+    if ((*input & 0xC0) != 0 && fn_800537E8() == 0) {
+        *input &= 0xFFFFFF3F;
+    }
+    if (Mu_IsAnimDone(unit) != 0) {
+        Mu_StartBlend(unit, 8, 8, 0);
+        Process_ClearFunc(self);
+    }
+}
+
 void fn_80099094(void *arg0)
 {
   void Event_AdvanceCmd(s16);
