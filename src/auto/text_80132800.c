@@ -3699,30 +3699,13 @@ s32 fn_80138908(void) {
 
 extern s32 fn_80138AB8(void *);
 f32 Ui_GetWorldScale(void *arg0) {
-    f32 var_f23;
-    void *temp_r4;
-    
-    if (arg0 == NULL) {
-        return 0.0f;
-    }
-    
-    temp_r4 = *(void **)((u8 *)arg0 + 0x38);
-    var_f23 = *(f32 *)((u8 *)arg0 + 0x2C);
-    
-    if (temp_r4 != NULL) {
-        void *temp_r3 = *(void **)((u8 *)temp_r4 + 0x38);
-        f32 var_f24 = *(f32 *)((u8 *)temp_r4 + 0x2C);
-        
-        if (temp_r3 != NULL) {
-            if (fn_80138AB8(temp_r3) != 0) {
-                fn_80138AB8(temp_r3);
-                var_f24 *= Ui_GetWorldScale(temp_r3);
-            }
-            var_f23 *= var_f24;
-        }
-    }
-    
-    return var_f23;
+#pragma cplusplus on
+ struct Node { u8 pad[0x2C]; f32 scale; u8 pad30[8]; Node *parent; Node *getParent() { return parent; } };
+ Node *node = (Node *)arg0;
+ f32 scale = node->scale;
+ if (node->getParent() != NULL) scale *= Ui_GetWorldScale(node->getParent());
+ return scale;
+#pragma cplusplus reset
 }
 
 s32 fn_80138AB8(void *arg0) {
@@ -8807,8 +8790,8 @@ void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     a[0] = *(s16 *)((u8 *)arg1 + 0x24);
     b[0] = arg2[0];
     *(s16 *)((u8 *)obj + 0x28) = a[0];
-    c[0] = *(s16 *)((u8 *)arg1 + 0xA);
     a[0] = arg2[1];
+    c[0] = *(s16 *)((u8 *)arg1 + 0xA);
     *(s16 *)((u8 *)obj + 0x40) = c[0];
     c[0] = *(s16 *)((u8 *)arg1 + 0xC);
     *(s16 *)((u8 *)obj + 0x42) = c[0];
