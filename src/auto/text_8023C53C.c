@@ -502,12 +502,12 @@ void fn_8023D0D8(void)
 {
     extern u8 *lbl_803688E8;
     extern u16 *lbl_803688EC;
-    s32 one;
-    u8 current;
-    u16 *dst;
     u8 *src;
-    u16 count;
+    u16 *dst;
     u16 index;
+    u16 count;
+    u8 current;
+    u16 one;
     u32 cur_ext;
 
     src = lbl_803688E8;
@@ -516,22 +516,16 @@ void fn_8023D0D8(void)
     count = 0;
     current = src[0];
     one = 1;
-    goto loop_cond;
 
-store:
-    dst[index] = count;
-    index++;
-    count++;
-compare:
-    if (cur_ext == src[index]) {
-        goto store;
-    }
-    count <<= one;
-    current++;
-loop_cond:
-    if (src[index] != 0) {
+    while (src[index] != 0) {
         cur_ext = current;
-        goto compare;
+        while (cur_ext == src[index]) {
+            dst[index] = count;
+            index++;
+            count++;
+        }
+        count = (u16)(count << one);
+        current++;
     }
 }
 
@@ -2767,7 +2761,6 @@ else
 #pragma global_optimizer reset
 #pragma opt_strength_reduction reset
 s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status) {
-    /* Find active synth voices on group/channel and retune them to key; return new VID or -1. */
     void fn_80255B20(void *);
     s32 Sound_AddVid(void *, s32);
     void fn_80257614(void *);
@@ -2797,7 +2790,7 @@ s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status)
                 found = 1;
             }
             if ((flags & 0x10ULL) != 0 && (flags & 0x10000000008ULL) != 8ULL && Sound_IsHwVoiceActive(i) != 0) {
-                if (result == 0xFFFFFFFF && (*(u64 *)(voice + 0x114) & 0x20002ULL) == 0x20002ULL) {
+                if (result == 0xFFFFFFFF && 0x20002ULL == (0x20002ULL & *(u64 *)(voice + 0x114))) {
                     *status = 1;
                     return -1;
                 }
@@ -8356,24 +8349,24 @@ s32 fn_802555A0(
 }
 
 void fn_802559D8(void) {
+    s32 *zero;
     s32 offset;
     u32 i;
-    s32 zero;
     s32 two;
 
-    zero = 0;
-    gSynthIdleList = zero;
-    offset = zero;
+    zero = NULL;
+    offset = (s32)zero;
+    gSynthIdleList = (s32)zero;
     i = 0;
-    gSynthSchedList = zero;
+    gSynthSchedList = (s32)zero;
     two = 2;
-    gSynthTimeLo = zero;
-    gSynthTimeHi = zero;
+    gSynthTimeLo = (s32)zero;
+    gSynthTimeHi = (s32)zero;
 
     while (i < gSoundData[0x210]) {
-        *(s32 *)(gSynthVoices + offset + 0x34) = zero;
+        *(s32 *)(gSynthVoices + offset + 0x34) = (s32)zero;
         *(s32 *)(gSynthVoices + offset + 0x4C) = two;
-        *(u16 *)(gSynthVoices + offset + 0xAA) = (u16)zero;
+        *(u16 *)(gSynthVoices + offset + 0xAA) = 0;
         offset += 0x458;
         i++;
     }
@@ -9694,11 +9687,11 @@ s32 fn_80257820(u16 arg0) {
 }
 
 void fn_80257940(s32 arg0) {
-    f64 fmod(f64, f32, f32);
+    f64 fn_802387C8(f64, f32, f32);
     extern f64 lbl_8036C280;
     extern f32 lbl_8036C288;
     extern f32 lbl_8036C28C;
-    __cvt_fp2unsigned(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
+    fn_8022C568(lbl_8036C28C * (f32) fn_802387C8(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
 }
 
 /* Set volume and per-step delta for the voice's current ADSR phase; return 1 when finished. */
@@ -11140,19 +11133,15 @@ void fn_8025CA80(u8 *arg0) {
     extern u8 gSoundStudios[];
 
     if (arg0[0xF0] != 0) {
-        {
-            u8 *node = *(u8 **)(arg0 + 0x10);
-            if (node != NULL) {
-                *(u32 *)(node + 0xC) = *(u32 *)(arg0 + 0xC);
-            } else {
-                *(u32 *)(gSoundStudios + arg0[0xF3] * 0xBC + 0x48) = *(u32 *)(arg0 + 0xC);
-            }
+        u8 *node = *(u8 **)(arg0 + 0x10);
+        if (node != NULL) {
+            *(u32 *)(node + 0xC) = *(u32 *)(arg0 + 0xC);
+        } else {
+            *(u32 *)(gSoundStudios + 0xBC * (u32)arg0[0xF3] + 0x48) = *(u32 *)(arg0 + 0xC);
         }
-        {
-            u8 *node = *(u8 **)(arg0 + 0xC);
-            if (node != NULL) {
-                *(u32 *)(node + 0x10) = *(u32 *)(arg0 + 0x10);
-            }
+        node = *(u8 **)(arg0 + 0xC);
+        if (node != NULL) {
+            *(u32 *)(node + 0x10) = *(u32 *)(arg0 + 0x10);
         }
         arg0[0xF0] = 0;
     }
@@ -15234,21 +15223,20 @@ void fn_80263384(void) {
     lbl_80368B08 = 1;
 }
 
-#pragma global_optimizer off
+#pragma scheduling off
 void fn_80263394(void) {
 extern u32 lbl_80368B18, lbl_80368B14, lbl_80368B10;
 extern void (*lbl_80368B24)(void);
-u32 one; u32 zero;
-one=1;
+u32 one = 1; u32 zero = 0;
 lbl_80368B18=one;
 if(lbl_80368B14) {
-zero=0; lbl_80368B14=zero;
+lbl_80368B14=zero;
 if(!lbl_80368B10) {
-lbl_80368B10=one; OSEnableInterrupts(); lbl_80368B24(); OSDisableInterrupts(); lbl_80368B10=0;
+lbl_80368B10=one; OSEnableInterrupts(); lbl_80368B24(); OSDisableInterrupts(); lbl_80368B10=zero;
 }
 }
 }
-#pragma global_optimizer reset
+#pragma scheduling on
 void fn_802633F8(void) {
     M2C_UNK fn_8020AEC4(M2C_UNK *);
     extern M2C_UNK lbl_80368B00;
@@ -16507,18 +16495,20 @@ OSInitAlarm(); fn_80215F8C(); lbl_80368B2C=0; OSRegisterResetFunction(lbl_802A4D
 }}
 #pragma use_lmw_stmw reset
 
-int fn_80265544(int arg0, int arg1, u32 arg2) {
-extern u8 lbl_803669A0[];
-extern int fn_80266CFC(int,int,int,void*);
-void fn_80265430(void);
-u8 *entry = lbl_803669A0 + (arg0 << 8);
-if (*(u32 *)(entry+0x1C)) return 2;
-else {
-entry[0] = 0;
-*(int *)(entry+0x14) = arg1;
-*(u32 *)(entry+0x1C) = arg2;
-return fn_80266CFC(arg0,1,3,(void*)fn_80265430);
-}
+s32 fn_80265544(s32 arg0, s32 arg1, u32 arg2) {
+    extern u8 lbl_803669A0[];
+    extern int fn_80266CFC(int, int, int, void *);
+    void fn_80265430(void);
+    u8 *entry;
+
+    entry = lbl_803669A0 + (arg0 << 8);
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        return 2;
+    }
+    entry[0] = 0;
+    *(s32 *)(entry + 0x14) = arg1;
+    *(u32 *)(entry + 0x1C) = arg2;
+    return fn_80266CFC(arg0, 1, 3, fn_80265430);
 }
 
 #pragma scheduling off
@@ -16541,18 +16531,17 @@ switch(ret) { case 0: fn_80266B6C(chan); break; default: break; }
 }
 #pragma scheduling on
 s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
-extern u8 lbl_803669A0[];
-extern int fn_80266CFC(int, int, int, void *);
-void fn_80265430(void);
-u8 *entry = lbl_803669A0 + (arg0 << 8);
-s32 result;
-if (*(u32 *)(entry + 0x1C) != 0) { result = 2; } else {
-*entry = 0xFF;
-*(s32 *)(entry + 0x14) = arg1;
-*(u32 *)(entry + 0x1C) = arg2;
-result = fn_80266CFC(arg0, 1, 3, fn_80265430);
-}
-return result;
+    extern u8 lbl_803669A0[];
+    extern s32 fn_80266CFC(s32, s32, s32, void *);
+    u8 *entry = lbl_803669A0 + (arg0 << 8);
+    void (*cb)(s32);
+
+    if (*(u32 *)(entry + 0x1C) != 0) return 2;
+    *entry = 0xFF;
+    *(s32 *)(entry + 0x14) = arg1;
+    *(u32 *)(entry + 0x1C) = arg2;
+    cb = fn_80265430;
+    return fn_80266CFC(arg0, 1, 3, cb);
 }
 
 #pragma global_optimizer off
