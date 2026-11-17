@@ -8100,9 +8100,14 @@ s32 fn_8013FA10(void) {
     return (s32) (lbl_8036A728 * fn_80138AC0());
 }
 
-void fn_8013FA44(void *arg0, void *arg1, void *arg2) {
-    *(s16 *)((char *)arg1 + 0) = *(s16 *)((char *)arg2 + 0);
-    *(s16 *)((char *)arg1 + 2) = *(s16 *)((char *)arg2 + 2);
+f32 fn_8013FA44(void *arg0) {
+#pragma cplusplus on
+ struct Node { u8 pad[0x28]; f32 scale; u8 pad2c[12]; Node *parent; Node *getParent() { return parent; } };
+ Node *node = (Node *)arg0;
+ f32 scale = node->scale;
+ if (node->getParent() != NULL) scale *= fn_8013FA44(node->getParent());
+ return scale;
+#pragma cplusplus reset
 }
 
 s32 fn_8013FBC0(s32 arg0) {
