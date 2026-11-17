@@ -7528,44 +7528,49 @@ void fn_80253298(void *arg0, u32 *arg1)
     *(u32 *)(voice + 0x220) |= 0x4000;
 }
 
-void fn_80253694(void *arg0, u32 *arg1) {
+void fn_80253694(void *arg0, u32 *cmd) {
   void fn_8026146C(s32 *);
   void fn_8026147C(u32 *, s32);
   void Sound_WriteParamU8(s32, s32, u8, s32);
   u16 Sound_GetChanParam(u8, u8, u8);
   void fn_80247F94(void *);
-
-  u8 *voice = arg0;
+  u8 *voice;
   u32 time;
   u32 mode;
 
-  voice[0x133] = (arg1[0] >> 16) & 0xFF;
-  time = arg1[1] >> 16;
-  if ((arg1[1] >> 8) & 1)
+  voice = (u8 *)arg0;
+  voice[0x133] = (cmd[0] >> 16) & 0xFF;
+  time = cmd[1] >> 16;
+  if ((cmd[1] >> 8) & 1) {
     fn_8026146C((s32 *)&time);
-  else
+  } else {
     fn_8026147C(&time, (s32)voice);
+  }
   *(u32 *)(voice + 0x138) = time;
 
-  mode = (arg1[0] >> 8) & 0xFF;
+  mode = (cmd[0] >> 8) & 0xFF;
   switch (mode) {
   case 0:
-    if (voice[0x121] != 0xFF)
+    if (voice[0x121] != 0xFF) {
       Sound_WriteParamU8(0x41, voice[0x121], voice[0x122], 0);
+    }
     *(u64 *)(voice + 0x114) &= ~0x400ULL;
     break;
   case 1:
-    if (voice[0x121] != 0xFF)
+    if (voice[0x121] != 0xFF) {
       Sound_WriteParamU8(0x41, voice[0x121], voice[0x122], 0x7F);
+    }
   set_flag:
-    if ((*(u64 *)(voice + 0x114) & 0x400ULL) == 0)
+    if ((*(u64 *)(voice + 0x114) & 0x400ULL) == 0) {
       fn_80247F94(voice);
+    }
     *(u32 *)(voice + 0x118) |= 0x400;
     break;
   case 2:
     if (voice[0x121] != 0xFF) {
-      if (Sound_GetChanParam(0x41, voice[0x121], voice[0x122]) > 0x1F80U)
+      if (Sound_GetChanParam(0x41, voice[0x121], voice[0x122]) > 0x1F80U) {
         goto set_flag;
+      }
     }
     break;
   }
