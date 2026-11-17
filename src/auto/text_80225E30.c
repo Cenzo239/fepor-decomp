@@ -3,7 +3,7 @@
 #include <dolphin/os.h>
 #include "global.h"
 
-extern u8 *gTRKInputPendingPtr;
+extern __declspec(section ".data") u8 *gTRKInputPendingPtr;
 
 extern u16 lbl_802822F0[200]; // 400 bytes = 200 u16 values
 
@@ -231,6 +231,69 @@ s32 TRKTerminateNub(void) {
     return 0;
 }
 
+#pragma push
+#pragma options sdata=0
+s32 TRKInitializeNub(void) {
+    extern void MWTRACE(s32, const char *, ...);
+    extern u8 gTRKBigEndian[];
+    extern char lbl_80282294[];
+    extern u8 *gTRKInputPendingPtr;
+    extern void usr_put_initialize(void);
+    extern s32 TRKInitializeEventQueue(void);
+    extern s32 TRKInitializeMessageBuffers(void);
+    extern s32 TRKInitializeDispatcher(void);
+    extern void InitializeProgramEndTrap(void);
+    extern s32 TRKInitializeSerialHandler(void);
+    extern s32 TRKInitializeTarget(void);
+    extern s32 TRKInitializeIntDrivenUART(s32, s32, s32, void *);
+    extern void TRKTargetSetInputPendingPtr(s32);
+
+    s32 result, uartResult;
+    s8 b0, b1, b2, b3;
+
+    result = 0;
+    b0 = 0x12;
+    b1 = 0x34;
+    b2 = 0x56;
+    b3 = 0x78;
+    *(u32 *)gTRKBigEndian = 1;
+    if (*(u32 *)&b0 == 0x12345678U) {
+        *(u32 *)gTRKBigEndian = 1;
+    } else if (*(u32 *)&b0 == 0x78563412U) {
+        *(u32 *)gTRKBigEndian = 0;
+    } else {
+        result = 1;
+    }
+    MWTRACE(1, lbl_80282294);
+    if (result == 0) {
+        usr_put_initialize();
+    }
+    if (result == 0) {
+        result = TRKInitializeEventQueue();
+    }
+    if (result == 0) {
+        result = TRKInitializeMessageBuffers();
+    }
+    if (result == 0) {
+        result = TRKInitializeDispatcher();
+    }
+    InitializeProgramEndTrap();
+    if (result == 0) {
+        result = TRKInitializeSerialHandler();
+    }
+    if (result == 0) {
+        result = TRKInitializeTarget();
+    }
+    if (result == 0) {
+        uartResult = TRKInitializeIntDrivenUART(0xE100, 1, 0, &gTRKInputPendingPtr);
+        TRKTargetSetInputPendingPtr((s32)gTRKInputPendingPtr);
+        if (uartResult != 0) {
+            result = uartResult;
+        }
+    }
+    return result;
+}
+#pragma pop
 s32 TRKMessageSend(void *arg0)
 {
     extern u8 lbl_802822A8[];
