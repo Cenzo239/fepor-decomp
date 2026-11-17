@@ -3369,9 +3369,32 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
 
+#pragma cplusplus reset
+#pragma peephole off
+void fn_80137D74(void *self,s16 x,s16 y,s32 message,s8 current,s8 maximum,s8 threshold) {
+extern f32 lbl_8036A620,lbl_8036A628;
+extern u8 lbl_802767E0[192];
+void Prim2D_Begin(void);
+s32 Prim2D_SetTex(s32,u16);
+void Prim2D_PrepareTex(void);
+void *Msg_Expand(s32);
+s32 fn_8001003C(s16,s16,u8,u8,u8,void *,...);
+s32 fn_8007CCE8(f32,f32,s32);
+s32 color;
+s32 sx;
+s32 value;
+Prim2D_Begin();
+Prim2D_SetTex(0,*(u32*)((u8*)self+0x34)|3);
+Prim2D_PrepareTex();
+fn_8001003C(x,y,6,1,0,Msg_Expand(message),lbl_8036A620,lbl_8036A628);
+color=0x22;
+if(current<threshold)color=1;
+sx=(s16)x;
+fn_8001003C((s16)(sx+47),y,color,1,0,lbl_802767E0+0x44,lbl_8036A620,lbl_8036A628,(value=(s8)current));
+fn_8007CCE8((f32)(sx+70),(f32)((s16)y+4),(s8)maximum-value);
+}
+#pragma peephole on
 void fn_80137EA0(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x44) = arg1;
 }
@@ -8114,18 +8137,18 @@ s32 fn_8013FBD4(s32 arg0) {
 #pragma scheduling off
 void fn_8013FBDC(s16 *dst, s16 *src)
 {
-  s16 c;
-  s16 b;
-  s16 a;
+  s32 c;
+  s32 b;
+  s32 a;
 
   a = dst[0];
   b = src[0];
   c = src[1];
   a = a + b;
-  dst[0] = a;
+  dst[0] = (s16)a;
   a = dst[1];
   a = a + c;
-  dst[1] = a;
+  dst[1] = (s16)a;
 }
 #pragma scheduling reset
 void fn_8013FC00(s16 *dst, s16 *src)
