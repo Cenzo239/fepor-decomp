@@ -8964,6 +8964,64 @@ s32 *fn_800DD87C(void *arg0, s32 *pos) {
     return pos;
 }
 
+#pragma use_lmw_stmw on
+void *fn_800DD948(void *vec, String *pos)
+{
+    void String_Resize(String *, u32, s32);
+    void *fn_800C94F8(String *, u32, u32, u32, u32);
+    void *memcpy(void *, void *, u32);
+    void Heap_Free(void *);
+    void fprintf(void *, const char *, ...);
+    void abort(void);
+    extern char __files[];
+    extern char lbl_80271730[];
+    String *end;
+    String *dst;
+    String *src;
+    u32 limit;
+    u32 sz;
+    u32 len;
+    u32 newCount;
+    String *last;
+    char *errFile;
+
+    end = (String *)(*(u8 **)((u8 *)vec + 8) + *(u32 *)((u8 *)vec + 4) * 0xC);
+    if (((s32)end - (s32)pos) / 12 - 1 != 0) {
+        errFile = __files + 0xA0;
+        dst = pos;
+        src = pos + 1;
+        while (src < end) {
+            limit = (u32)-1;
+            if ((s32)src->size < 0) {
+                fprintf(errFile, lbl_80271730 + 0x19);
+                abort();
+            }
+            sz = src->size;
+            len = *StrMin(&limit, &sz);
+            if (dst == src) {
+                fn_800C94F8(dst, 0, 0, 0, 0);
+                String_Resize(dst, len, 1);
+            } else {
+                String_Resize(dst, len, 0);
+                memcpy(dst->data, src->data, len);
+            }
+            src += 1;
+            dst += 1;
+        }
+    }
+    newCount = *(u32 *)((u8 *)vec + 4);
+    newCount = newCount - 1;
+    *(u32 *)((u8 *)vec + 4) = newCount;
+    last = (String *)(*(u8 **)((u8 *)vec + 8) + newCount * 0xC);
+    if (last != 0) {
+        if (last->data != 0) {
+            Heap_Free(last->data);
+        }
+    }
+    return pos;
+}
+#pragma use_lmw_stmw reset
+
 s32 fn_800DDAA4(s32 arg0) {
     void *temp_r3;
 
@@ -11088,6 +11146,32 @@ void fn_800E2A00(Unit *unit, void *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
     Prim2D_EndPrim();
 }
 
+void *fn_800E2CF4(u8 *self, void *arg1, void *arg2) {
+void fn_800DF7A0(void *,void *);
+void Xml_GetNamedValue(void *,void *,void *);
+extern u16 lbl_8028E090[];
+extern char lbl_80271DB0[];
+struct Value { u32 v[8]; };
+union { struct Value value; u32 words[8]; } result;
+struct Value temp,temp2;
+String name,name2;
+s32 scratch,scratch2;
+fn_800DF7A0(self,arg1);
+*(void **)(self+0x40)=lbl_8028E090;
+String_Init(&name,lbl_80271DB0,&scratch);
+Xml_GetNamedValue(&temp,arg2,&name);
+result.value=temp;
+String_Destroy(&name,-1);
+*(u32 *)(self+0x48)=result.words[0];
+*(u32 *)(self+0x4C)=result.words[1];
+String_Init(&name2,lbl_80271DB0+4,&scratch2);
+Xml_GetNamedValue(&temp2,arg2,&name2);
+result.value=temp2;
+String_Destroy(&name2,-1);
+self[0x50]=result.words[0]; self[0x51]=result.words[1]; self[0x52]=result.words[2]; self[0x53]=result.words[3];
+return self;
+}
+
 s32 fn_800E2E50(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x68);
 }
@@ -11566,6 +11650,40 @@ void fn_800E3C04(void* arg0) {
             }
         }
     }
+}
+
+void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
+#pragma cplusplus on
+class Owner { public: char data[16]; virtual void a(); virtual void b(); virtual void *get(char *,char *); };
+void *fn_800E4688(void *,void *,void *);
+void Xml_GetNamedValue(void *,void *,void *);
+void String_AssignCStr(void *,void *,s32);
+void fn_800E4550(void *,void *);
+extern void *lbl_8028E0E8[];
+extern char lbl_80271F28[];
+u32 value[8];
+String name;
+s32 scratch;
+char *text;
+fn_800E4688(self,owner,xml);
+*(void **)(self+0x40)=lbl_8028E0E8;
+*(u32*)(self+0xac)=0; *(u32*)(self+0xb0)=0; *(u32*)(self+0xb4)=0; *(u32*)(self+0xb0)=0;
+if(*(s32*)(self+0x60)==0) *(s32*)(self+0x60)=128;
+if(*(s32*)(self+0x64)==0) *(s32*)(self+0x64)=128;
+*(void **)(self+0x54)=((Owner *)owner)->get(lbl_80271F28+0x12,lbl_80271F28+0x1A);
+fn_800E4550(*(void **)(self+0x54),self);
+String_AssignCStr(self+0x1C,lbl_80271F28+0x1A,strlen(lbl_80271F28+0x1A));
+String_Init(&name,lbl_80271F28+0x22,&scratch);
+Xml_GetNamedValue(value,xml,&name);
+text=(char *)value;
+String_AssignCStr(self+0xac,text,strlen(text));
+String_Destroy(&name,-1);
+*(u32 *)(self+0x7C)=*(u32 *)(self+0x58);
+*(u32 *)(self+0x80)=*(u32 *)(self+0x5C);
+*(u32 *)(self+0x68)=16;
+*(u32 *)(self+0x6C)=1;
+return self;
+#pragma cplusplus reset
 }
 
 void fn_800E3F48(void *arg0) {
