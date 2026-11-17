@@ -535,21 +535,25 @@ loop_cond:
     }
 }
 
-void fn_8023D2FC(void) {
-    extern u8 *lbl_80368950;
-    u8 *base;
-    u8 *p;
-
-    base = lbl_80368950;
-    base[0x6a9] = 1;
-    p = *(u8 **)(lbl_80368950 + 0x69c);
-    *(u8 **)(base + 0x69c) = p + 2;
-    p = *(u8 **)(lbl_80368950 + 0x69c);
-    *(u16 *)(lbl_80368950 + 0x6aa) = (p[0] << 8) | p[1];
-    p = *(u8 **)(lbl_80368950 + 0x69c);
-    *(u8 **)(lbl_80368950 + 0x69c) = p + 2;
-    *(u16 *)(lbl_80368950 + 0x6ac) = *(u16 *)(lbl_80368950 + 0x6aa);
-    (void)base;
+void fn_8023D2FC(void)
+{
+  u8 *new_var;
+  extern u8 *lbl_80368950;
+  u8 *base;
+  u8 *p;
+  u8 **new_var2;
+  base = lbl_80368950;
+  base[0x6a9] = 1;
+  p = *((u8 **) (lbl_80368950 + 0x69c));
+  new_var = p;
+  *new_var2 = new_var + 2;
+  new_var2 = (u8 **) (base + 0x69c);
+  ;
+  *((u16 *) (lbl_80368950 + 0x6aa)) = ((*((u8 **) (lbl_80368950 + 0x69c)))[0] << 8) | (*((u8 **) (lbl_80368950 + 0x69c)))[1];
+  p = *((u8 **) (lbl_80368950 + 0x69c));
+  *((u8 **) (lbl_80368950 + 0x69c)) = p + 2;
+  *((u16 *) (lbl_80368950 + 0x6ac)) = *((u16 *) (lbl_80368950 + 0x6aa));
+  (void) base;
 }
 
 #pragma use_lmw_stmw on
@@ -5511,6 +5515,102 @@ found4:
     Audio_Unlock();
 }
 
+#pragma global_optimizer off
+s32 AudioBank_Insert(u16 id, s32 data) {
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern AudioTableEntry lbl_8034EEB8[];
+    extern u16 lbl_80368A0E;
+
+    u16 count;
+    s32 i;
+    s32 j;
+
+    Audio_Lock();
+    count = lbl_80368A0E;
+    {
+        AudioTableEntry *p;
+        p = lbl_8034EEB8;
+        for (i = 0; i < (s32)count && p->id < id; p++, i++) {
+        }
+    }
+
+    if (i < (s32)count) {
+        if (id != lbl_8034EEB8[i].id) {
+            if (count < 0x100U) {
+                AudioTableEntry *moving;
+                for (j = (s32)count - 1, moving = &lbl_8034EEB8[j]; j >= i; j--, moving--) {
+                    moving[1] = moving[0];
+                }
+                lbl_80368A0E++;
+                goto insert;
+            }
+            Audio_Unlock();
+            return 0;
+        }
+        lbl_8034EEB8[i].ref++;
+        Audio_Unlock();
+        return 0;
+    }
+
+    if (count < 0x100U) {
+        lbl_80368A0E++;
+        goto insert;
+    }
+    Audio_Unlock();
+    return 0;
+
+insert:
+    lbl_8034EEB8[i].id = id;
+    lbl_8034EEB8[i].data = data;
+    lbl_8034EEB8[i].ref = 1;
+    Audio_Unlock();
+    return 1;
+}
+#pragma global_optimizer on
+s32 AudioBank_Remove(u16 id) {
+    struct AudioBankKey {
+        s32 data;
+        u16 id;
+        u16 ref;
+    };
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern struct AudioBankKey lbl_8034EEB8[];
+    extern u16 lbl_80368A0E;
+
+    s32 i;
+    u16 count;
+
+    Audio_Lock();
+    count = lbl_80368A0E;
+    {
+        struct AudioBankKey *p;
+        i = 0;
+        p = lbl_8034EEB8;
+        for (; i < (s32)count && id != p->id; p++, i++) {
+        }
+    }
+
+    if (i != (s32)count) {
+        struct AudioBankKey *base;
+        struct AudioBankKey *entry;
+        base = lbl_8034EEB8;
+        entry = base + i;
+        if (--entry->ref == 0) {
+            s32 j;
+            struct AudioBankKey *moving;
+            for (j = i + 1, moving = base + j; j < (s32)count; j++, moving++) {
+                moving[-1] = *moving;
+            }
+            lbl_80368A0E--;
+            Audio_Unlock();
+            return 1;
+        }
+    }
+    Audio_Unlock();
+    return 0;
+}
 #pragma global_optimizer on
 
 #pragma global_optimizer on
@@ -5560,6 +5660,46 @@ insert:
     gSampleKeys[i].ref = 1;
     Audio_Unlock();
     return 1;
+}
+
+s32 SampleKey_Remove(u16 id) {
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern SampleKey gSampleKeys[];
+    extern u16 gSampleKeyCount;
+
+    u16 uid;
+    s32 i;
+    u16 count;
+
+    uid = id;
+    Audio_Lock();
+    count = gSampleKeyCount;
+    {
+        SampleKey *p;
+        p = gSampleKeys;
+        for (i = 0; i < (s32)count && uid != p->id; p++, i++) {
+        }
+    }
+
+    if (i != (s32)count) {
+        SampleKey *base;
+        SampleKey *entry;
+        base = gSampleKeys;
+        entry = base + i;
+        if (--entry->ref == 0) {
+            s32 j;
+            SampleKey *moving;
+            for (j = i + 1, moving = base + j; j < (s32)count; j++, moving++) {
+                moving[-1] = *moving;
+            }
+            gSampleKeyCount--;
+            Audio_Unlock();
+            return 1;
+        }
+    }
+    Audio_Unlock();
+    return 0;
 }
 
 /* Insert or ref an audio-wave key by id into the sorted table; returns 1 if newly inserted. */
@@ -5613,6 +5753,47 @@ insert:
     gAudioWaveKeys[i].ref = 1;
     Audio_Unlock();
     return 1;
+}
+
+s32 AudioWave_Remove(u16 id) {
+    struct AudioWaveKey {
+        s32 data;
+        u16 id;
+        u16 ref;
+    };
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern struct AudioWaveKey gAudioWaveKeys[];
+    extern u16 gAudioWaveKeyCount;
+
+    struct AudioWaveKey *p;
+    u16 count;
+    s32 i;
+
+    Audio_Lock();
+    count = gAudioWaveKeyCount;
+    p = gAudioWaveKeys;
+    for (i = 0; i < (s32)count && id != p->id; p++, i++) {
+    }
+
+    if (i != (s32)count) {
+        struct AudioWaveKey *base;
+        struct AudioWaveKey *entry;
+        base = gAudioWaveKeys;
+        entry = base + i;
+        if (--entry->ref == 0) {
+            s32 j;
+            struct AudioWaveKey *moving;
+            for (j = i + 1, moving = base + j; j < (s32)count; j++, moving++) {
+                moving[-1] = *moving;
+            }
+            gAudioWaveKeyCount--;
+            Audio_Unlock();
+            return 1;
+        }
+    }
+    Audio_Unlock();
+    return 0;
 }
 
 s32 AudioGroup_Register(u16 id, void *arg1)
@@ -8442,55 +8623,66 @@ restart:
 }
 
 #pragma peephole off
-s32 Sound_LookupVid(u32 arg0) {
-    extern VidList *vidListRoot;
-    VidList *vl;
-
-    if ((u32)(arg0 + 0x10000) != 0xFFFFU) {
-        vl = vidListRoot;
-        goto check;
+s32 Sound_LookupVid(u32 arg0)
+{
+  u32 new_var;
+  extern VidList *vidListRoot;
+  VidList *vl;
+  if (((u32) (arg0 + 0x10000)) != 0xFFFFU)
+  {
+    vl = vidListRoot;
+    goto check;
     loop:
-        if (vl->vid != arg0)
-            goto not_eq;
-        goto done;
-    not_eq:
-        if (vl->vid > arg0)
-            goto set_null;
-        vl = vl->next;
-    check:
-        if (vl != NULL)
-            goto loop;
-    set_null:
-        vl = NULL;
-    done:
-        if (vl != NULL) {
-            return (s32)vl->root;
-        }
+    if (vl->vid != arg0)
+    {
+      goto not_eq;
     }
-    return -1;
+
+    new_var = vl->vid;
+    goto done;
+    not_eq:
+    if (new_var > arg0)
+    {
+      goto set_null;
+    }
+
+    vl = vl->next;
+    check:
+    if (vl != NULL)
+    {
+      goto loop;
+    }
+
+    set_null:
+    vl = NULL;
+
+    done:
+    if (vl != NULL)
+    {
+      return (s32) vl->root;
+    }
+
+  }
+  return -1;
 }
 #pragma peephole on
 int fn_80256000(u32 arg0)
 {
-    extern void *vidListRoot;
-    void *object;
-    u32 field;
-    u32 value;
+    extern VidList *vidListRoot;
+    extern s32 gSynthVoices;
+    VidList *vl;
+    u32 index;
 
-    object = vidListRoot;
-    while (object != 0) {
-        field = *(u32 *)((u8 *)object + 0xC);
-        goto compare;
-    compare:
-        if (field == arg0) {
-            return *(int *)((u8 *)object + 8);
+    vl = vidListRoot;
+    while (vl != NULL) {
+        index = vl->root;
+        while ((u32)(index + 0x10000) != 0xFFFFU) {
+            if (index == arg0) {
+                return vl->vid;
+            }
+            index = *(u32 *)((u8 *)gSynthVoices + ((u8)index * 0x458) + 0xEC);
         }
-        value = *(u32 *)((u8 *)gSynthVoices + ((u8)field * 0x458) + 0xEC);
-        if ((u32)(value + 0x10000) == 0xFFFFU) {
-            object = *(void **)object;
-        } else {
-            break;
-        }
+        vl = vl->next;
     }
     return -1;
 }
@@ -16081,7 +16273,7 @@ s32 fn_80264BA4(void *arg0) {
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
-    if (p) {
+    if (p != NULL) {
         fn_80263800(p);
     }
     fn_80263800(*(void **)((u8 *)arg0 + 0x34));
