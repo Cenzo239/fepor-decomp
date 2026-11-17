@@ -631,22 +631,12 @@ void fn_800071D8(u32 arg0, f32 arg1)
 
 void Prim2D_SetTextScale(u32 arg0, f32 arg1)
 {
-    extern f32 lbl_80368B90;
     extern void *gPrim2D;
-
-    u32 flag;
-    int value;
-    void *object;
-
-    flag = (arg0 & 0xFF) != 0;
-    value = (int)(lbl_80368B90 * arg1);
-    object = *(void **)((u8 *)*(void **)gPrim2D + 0xC);
-    object = *(void **)((u8 *)object + 4);
-
-    value = (s16)value;
-    value &= -(int)flag;
-
-    *(s16 *)((u8 *)object + 0x24) = value;
+    s16 value = (s16)(256.0f * arg1);
+    u8 disabled = (u8)arg0 == 0;
+    u8 *object = *(u8 **)((u8 *)gPrim2D + 12);
+    object = *(u8 **)(object + 4);
+    *(s16 *)(object + 0x24) = disabled ? 0 : value;
 }
 
 void fn_80007268(f32 arg0) {
