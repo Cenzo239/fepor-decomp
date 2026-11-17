@@ -1880,14 +1880,12 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     return;
 }
 
+#pragma optimization_level 3
 s32 fn_800A2624(void *arg0) {
-    void *Map_GetCursorUnit(void);
-    u16 **unit;
-    unit = (u16 **)((u8 *)Map_GetCursorUnit() + 0x18C);
-    *(u16 *)((u8 *)arg0 + 4) = (*unit)[0x1C];
+    M2C_FIELD(arg0, u16 *, 4) = (u16) M2C_FIELD(M2C_FIELD(fn_800AA794(), void **, 0x18C), u16 *, 0x38);
     return 0;
 }
-
+#pragma optimization_level reset
 char *fn_800A2660(void *arg0) {
     void *Job_Get(s16);
     s32 fn_800A8978(void);
