@@ -99,39 +99,53 @@ void fn_80163214(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     *(s16*)((u8*)arg0 + 6) = arg4;
 }
 
-void fn_801635CC(void *arg0, s32 arg1) {
-    u32 *Unit_GetItemSlot(s32, s16);
-    s16 var_r31;
-    s16 var_r3;
-    u32 *temp_r29;
-    u8 var_r0;
+s32 fn_801635CC(void *arg0, void *arg1)
+{
+  u8 *ctx = (u8 *) arg0;
+  s16 i = 0;
+  s32 index;
+  u8 found;
+  u32 *item;
+  s32 result;
+  *((void **) (ctx + 0x58)) = arg1;
+  while (i < 8)
+  {
+    if (((i >= 0) && (i <= 3)) && (!((*((u32 *) (ctx + 0x60))) & 1)))
+    {
+      found = 0;
+    }
+    else
+      if (((i >= 4) && (i <= 7)) && (!((*((u32 *) (ctx + 0x60))) & 2)))
+    {
+      found = 0;
+    }
+    else
+    {
+      index = i;
+      item = (u32 *) Unit_GetItemSlot(*((void **) (ctx + 0x58)), index);
+      if ((((*((s32 *) (ctx + 0x5C))) == 1) && ((*item) == 0)) && (((i == 0) || (i == 4)) || ((*((u32 *) Unit_GetItemSlot(*((void **) (ctx + 0x58)), index - 1))) != 0)))
+      {
+        found = 1;
+      }
+      else
+      {
+        found = (*item) != 0;
+      }
+    }
+    if (found)
+    {
+      break;
+    }
+    i++;
+  }
 
-    M2C_FIELD(arg0, s32 *, 0x58) = arg1;
-    var_r31 = 0;
-loop_18:
-    if (var_r31 < 8) {
-        if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-            var_r0 = 0;
-        } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-            var_r0 = 0;
-        } else {
-            temp_r29 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
-            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
-                var_r0 = 1;
-            } else {
-                var_r0 = *temp_r29 != 0U;
-            }
-        }
-        if (var_r0 == 0) {
-            var_r31 += 1;
-            goto loop_18;
-        }
-    }
-    var_r3 = -1;
-    if (var_r31 < 8) {
-        var_r3 = var_r31;
-    }
-    M2C_FIELD(arg0, s16 *, 0x4C) = var_r3;
+  result = -1;
+  if (i < 8)
+  {
+    result = i;
+  }
+  *((s16 *) (ctx + 0x4C)) = result;
+  return result;
 }
 
 void fn_80163708(void *arg0) {
