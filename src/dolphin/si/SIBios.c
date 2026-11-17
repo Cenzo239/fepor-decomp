@@ -218,11 +218,13 @@ static BOOL InputBufferValid[4];
 static u32 InputBuffer[4][2];
 static volatile u32 InputBufferVcount[4];
 
-static s32 SI_CopyS32(s32 x) {
-    s32 y;
-    y = x;
-    return y;
-}
+#pragma optimization_level 1
+  static s32 SI_CopyS32(s32 x) {
+      s32 y;
+      y = x;
+      return y;
+  }
+  #pragma optimization_level reset
 static u32 cmdTypeAndStatus[4];
 
 s32 fn_8023ABD4(void) {
@@ -396,8 +398,9 @@ void SIInterruptHandler(s32 interrupt, s32 context)
       if (ok == 0)
       {
         bus = *((u32 *) 0x800000F8);
-        delay = (bus >> 2) / 125000;
-        delay *= 65;
+        delay = __mulhwu(bus >> 2, 0x431BDE83);
+        delay = delay >> 15;
+        delay = delay * 0x41;
         SITransfer(chan, &lbl_80368818, 1, typep, 3, GetTypeCallback, delay >> 3);
       }
     }
@@ -411,7 +414,7 @@ void SIInterruptHandler(s32 interrupt, s32 context)
     pollp = &si->unk48;
     cursor = vcp;
     vc = vc + 1;
-    rdst = (poll & 0x03FF0000) >> 16;
+    rdst = (poll >> 16) & 0x3FF;
     channel = 0;
     do
     {
@@ -568,7 +571,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         return FALSE;
     }
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr &= (u32)((s32)0x0F000000 >> (chan * 8));
+    sr = sr & ((s32)0x0F000000 >> (chan << 3));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
     rlen = (outputBytes + 3) / 4;
     si->chan = chan;
@@ -835,7 +838,7 @@ void GetTypeCallback(s32 chan, u32 type) {
         typeVal = *typep;
         cbs = (void **)(packet + (chan << 4));
         i = 0;
-        clear = i;
+        clear = SI_CopyS32(i);
         cbs = (void **)((u8 *)cbs + 0x160);
         do {
             cb = (void (*)(s32, u32))*cbs;
@@ -883,7 +886,7 @@ void GetTypeCallback(s32 chan, u32 type) {
     typeVal = *typep;
     cbs = (void **)(packet + (chan << 4));
     i = 0;
-    clear = i;
+    clear = SI_CopyS32(i);
     cbs = (void **)((u8 *)cbs + 0x160);
     do {
         cb = (void (*)(s32, u32))*cbs;
