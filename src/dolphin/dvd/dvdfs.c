@@ -633,6 +633,7 @@ void fn_8020D040(u32 arg0) {
     fn_8020D1A0();
 }
 
+#pragma global_optimizer off
 void cbForStateError(u32 arg0) {
     void fn_8020D16C(void);
     void fn_8020FAE0(void);
@@ -640,6 +641,7 @@ void cbForStateError(u32 arg0) {
 
     DVDReadyCommand *block;
     void (*callback)(void *, void *);
+    s32 one;
 
     ((DVDReadyCommand *)executing_80368598)->state = -1;
 
@@ -650,26 +652,27 @@ void cbForStateError(u32 arg0) {
 
     fn_8020FAE0();
 
+    one = 1;
     block = (DVDReadyCommand *)executing_80368598;
     executing_80368598 = DummyCommandBlock_80339F80;
-    FatalErrorFlag_803685B0 = 1;
+    FatalErrorFlag_803685B0 = one;
 
-    if (block->callback != NULL) {
-        block->callback(-1, block);
+    if (block->callback != 0) {
+        (*block->callback)(-1, block);
     }
 
     if (lbl_803685B8 != 0) {
         callback = lbl_803685BC;
         lbl_803685B8 = 0;
 
-        if (callback != NULL) {
-            callback(0, block);
+        if (callback != 0) {
+            (*callback)(0, block);
         }
     }
 
     stateReady();
 }
-
+#pragma global_optimizer on
 void fn_8020D16C(void) {
     M2C_UNK DVDReset();
     M2C_UNK __DVDStoreErrorCode(M2C_UNK);
