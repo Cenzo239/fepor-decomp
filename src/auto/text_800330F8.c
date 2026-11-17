@@ -11471,82 +11471,35 @@ void fn_8004D644(void) {
     }
 }
 
-void fn_8004DAFC(void *arg0, f32 farg0) {
-    extern f32 lbl_80368FCC;
-    extern f32 lbl_8036902C;
-    extern f32 lbl_80369030;
-    extern f32 lbl_80368FC0;
-
-    f32 sp10;
-    f32 spC;
-    f32 sp8;
-    f32 temp_f2;
-    f32 temp_f3;
-    f32 temp_f4;
-    f32 temp_f5;
-    u8 temp_r31;
-    f32 var_f30;
-    f32 var_f29;
-    f32 var_f28;
-
-    sp8 = *(f32 *)((u8 *)arg0 + 0x170);
-    spC = *(f32 *)((u8 *)arg0 + 0x174);
-    sp10 = *(s32 *)((u8 *)arg0 + 0x178);
-
-    fn_80068070(spC, sp8, lbl_80368FCC, lbl_80368FCC, lbl_8036902C, lbl_80369030);
-    fn_800680AC(0, 0, 0xA0, 0x78);
-    Camera_ApplyOrtho(0);
-    temp_r31 = *(u8 *)((u8 *)arg0 + 0x27);
-    GXBegin(0x98, 0, 4);
-
-    var_f28 = *(f32 *)((u8 *)arg0 + 0x170);
-    var_f29 = *(f32 *)((u8 *)arg0 + 0x174);
-    temp_f5 = *(s32 *)((u8 *)arg0 + 0x178);
-
-    var_f30 = farg0;
-
-    temp_f4 = var_f28 - var_f30;
-    temp_f3 = var_f29 - var_f30;
-    temp_f2 = var_f28 + var_f30;
-
-    *(f32 *)0xCC008000 = temp_f4;
-    *(f32 *)0xCC008000 = temp_f3;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = 0xFF;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(f32 *)0xCC008000 = temp_f2;
-    *(f32 *)0xCC008000 = temp_f3;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = 0xFF;
-    *(f32 *)0xCC008000 = lbl_80368FC0;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(f32 *)0xCC008000 = temp_f4;
-    *(f32 *)0xCC008000 = temp_f5;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = 0xFF;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(f32 *)0xCC008000 = lbl_80368FC0;
-    *(f32 *)0xCC008000 = temp_f2;
-    *(f32 *)0xCC008000 = temp_f5;
-    *(f32 *)0xCC008000 = lbl_80368FCC;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = temp_r31;
-    *(u8 *)0xCC008000 = 0xFF;
-    *(f32 *)0xCC008000 = lbl_80368FC0;
-    *(f32 *)0xCC008000 = lbl_80368FC0;
-
-    fn_80067984(0, 0xCC010000, lbl_80368FCC, temp_f2, temp_f3, temp_f4, temp_f5);
+void fn_8004DAFC(void *arg0, f32 radius) {
+typedef struct { f32 x,y,z; } Position;
+extern f32 lbl_80368FCC, lbl_8036902C, lbl_80369030, lbl_80368FC0;
+void fn_80068070(f32,f32,f32,f32);
+void fn_80067984(s32);
+Position pos = *(Position *)((u8 *)arg0+0x170);
+f32 one,zero,right,top,left,bottom;
+u8 color;
+fn_80068070(0.0f,0.0f,lbl_8036902C,lbl_80369030);
+fn_800680AC(0,0,160,120);
+Camera_ApplyOrtho(0);
+color=*((u8 *)arg0+0x27);
+GXBegin(0x98,0,4);
+right=pos.x; bottom=pos.y;
+left=right-radius; top=bottom-radius; right+=radius; bottom+=radius;
+zero=0.0f; one=1.0f;
+*(volatile f32 *)0xCC008000=left; *(volatile f32 *)0xCC008000=top; *(volatile f32 *)0xCC008000=zero;
+*(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=255;
+*(volatile f32 *)0xCC008000=zero; *(volatile f32 *)0xCC008000=zero;
+*(volatile f32 *)0xCC008000=right; *(volatile f32 *)0xCC008000=top; *(volatile f32 *)0xCC008000=zero;
+*(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=255;
+*(volatile f32 *)0xCC008000=one; *(volatile f32 *)0xCC008000=zero;
+*(volatile f32 *)0xCC008000=left; *(volatile f32 *)0xCC008000=bottom; *(volatile f32 *)0xCC008000=zero;
+*(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=255;
+*(volatile f32 *)0xCC008000=zero; *(volatile f32 *)0xCC008000=one;
+*(volatile f32 *)0xCC008000=right; *(volatile f32 *)0xCC008000=bottom; *(volatile f32 *)0xCC008000=zero;
+*(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=color; *(volatile u8 *)0xCC008000=255;
+*(volatile f32 *)0xCC008000=one; *(volatile f32 *)0xCC008000=one;
+fn_80067984(0);
 }
 
 void fn_8004DC54(s8 arg0) {
