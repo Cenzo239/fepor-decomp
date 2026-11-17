@@ -43,6 +43,35 @@ virtual void v13();
 virtual void v14();
 virtual UnitHireItem *get(s32);
 };
+static inline void InitUnitHireWidget(u8 *w) {
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029186C[];
+        *(void **)(w+0) = lbl_8028FDB0;
+        *(s32 *)(w+4) = 0;
+        *(void **)(w+0) = lbl_80292230;
+        *(s16 *)(w+8) = -1;
+        *(s16 *)(w+0xA) = 0x260;
+        *(s16 *)(w+0xC) = 0x7C;
+        *(s16 *)(w+0xE) = 0x368;
+        *(s16 *)(w+0x10) = 0x16E;
+        *(s16 *)(w+0x12) = 0;
+        *(s16 *)(w+0x14) = 0;
+        *(s16 *)(w+0x16) = 0x108;
+        *(s16 *)(w+0x18) = 0xF2;
+        *(s16 *)(w+0x1A) = 0;
+        *(s16 *)(w+0x1C) = 0;
+        w[0x1E] = 255; w[0x1F] = 255; w[0x20] = 255; w[0x21] = 255;
+        *(s16 *)(w+0x22) = 0x1E0;
+        *(s16 *)(w+0x24) = 0;
+        *(f32 *)(w+0x28) = 1.0f;
+        *(f32 *)(w+0x2C) = 1.0f;
+        *(f32 *)(w+0x30) = 1.0f;
+        *(s32 *)(w+0x34) = 0;
+        *(s32 *)(w+0x38) = 0;
+        *(void **)(w+0) = lbl_8029186C;
+        *(s32 *)(w+0x3C) = 0;
+        *(s16 *)(w+0x40) = 20;
+        *(s16 *)(w+0x42) = 8;
+}
 struct UnitHireWidget {
 virtual void v0();
 virtual void v1();
@@ -3101,6 +3130,90 @@ extern "C" void fn_801BA3E8(void *arg0) {
         return;
     }
 }
+
+#pragma cplusplus on
+#pragma optimization_level 3
+#pragma opt_common_subs off
+extern "C" void fn_801BA47C(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *Res_GetEntry(u8);
+    void Ui_AddChild(void *, void *);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void *fn_8013BC10(void *, void *);
+    void Ui_CreateMenu(void *, void *, s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, void *);
+    s32 strlen(const char *);
+    void String_AssignCStr(void *, const void *, s32);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029186C[], gUiContext[], gUiUnitPanelStrings[];
+    extern f32 lbl_8036B2D8;
+    s16 pos[2];
+    UnitHireMenu *menu;
+    s32 i;
+    UnitHireItem *item;
+    u8 *w;
+    void *self = arg0;
+    void *child;
+    w = (u8 *)Heap_Alloc(0x4C);
+    if (w) {
+        *(void **)(w+0) = lbl_8028FDB0;
+        *(s32 *)(w+4) = 0;
+        *(void **)(w+0) = lbl_80292230;
+        *(s16 *)(w+8) = -1;
+        *(s16 *)(w+0xA) = 0x260;
+        *(s16 *)(w+0xC) = 0x7C;
+        *(s16 *)(w+0xE) = 0x368;
+        *(s16 *)(w+0x10) = 0x16E;
+        *(s16 *)(w+0x12) = 0;
+        *(s16 *)(w+0x14) = 0;
+        *(s16 *)(w+0x16) = 0x108;
+        *(s16 *)(w+0x18) = 0xF2;
+        *(s16 *)(w+0x1A) = 0;
+        *(s16 *)(w+0x1C) = 0;
+        w[0x1E] = 255; w[0x1F] = 255; w[0x20] = 255; w[0x21] = 255;
+        *(s16 *)(w+0x22) = 0x1E0;
+        *(s16 *)(w+0x24) = 0;
+        *(f32 *)(w+0x28) = 1.0f;
+        *(f32 *)(w+0x2C) = 1.0f;
+        *(f32 *)(w+0x30) = 1.0f;
+        *(s32 *)(w+0x34) = 0;
+        *(s32 *)(w+0x38) = 0;
+        *(void **)(w+0) = lbl_8029186C;
+        *(s32 *)(w+0x3C) = 0;
+        *(s16 *)(w+0x40) = 20;
+        *(s16 *)(w+0x42) = 8;
+        ((UnitHireWidget *)w)->init();
+    }
+    child = Res_GetEntry(gUiContext[0x14]);
+    *(s16 *)(w+8) = 0x108;
+    *(s16 *)(w+0x24) = 8;
+    *(u32 *)(w+0x34) |= 0x10;
+    *(void **)(w+0x3C) = child;
+    Ui_AddChild(self,w);
+    s16 y = *(s16 *)(w+0xC);
+    pos[0] = 0x148;
+    pos[1] = y;
+    Ui_SlideWidgetChildMode1(self,w,pos,0);
+    menu = (UnitHireMenu *)fn_8013BC10(gUiUnitPanelStrings+0x16E,gUiUnitPanelStrings+0xEC);
+    M2C_FIELD(menu,s16 *,0xC)=0xE8;
+    M2C_FIELD(menu,s16 *,8)=0x148;
+    M2C_FIELD(menu,s16 *,0xA)=0x38;
+    M2C_FIELD(menu,u8 *,0x24)=1;
+    for(i=0;menu->get(i)!=0;i++) {
+        item=menu->get(i);
+        item->set2(2);
+        item->set3(3);
+    }
+    Ui_CreateMenu(menu,self,0);
+    child=Ui_FindChild(self,0x82,0);
+    String_AssignCStr((u8 *)child+0x3C,gUiUnitPanelStrings+0xF7,strlen((char *)gUiUnitPanelStrings+0xF7));
+    child=Ui_FindChild(self,-0x1000,0);
+    if(child) Ui_SetWidgetText(child,gUiUnitPanelStrings+0xF8);
+}
+#pragma optimization_level reset
+#pragma opt_common_subs reset
+#pragma cplusplus reset
+
 #pragma cplusplus reset
 
 #pragma cplusplus on
