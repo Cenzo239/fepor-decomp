@@ -1398,6 +1398,30 @@ s32 fn_802190A4(s32 chan, u32 addr, u32 length, void *dst, void *callback) {
     return __CARDReadPage(chan, fn_80218FC8);
 }
 
+void fn_80219108(s32 chan, s32 result) {
+    extern u16 __CARDBlock[];
+    s32 __CARDPutControlBlock(void *,s32);
+    s32 fn_802177E0(s32, void (*)(s32, s32));
+    u8 *card;
+    void (*callback)(s32,s32);
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (result >= 0) {
+        *(u32 *)(card+0xB8) += *(u16 *)(card + 0xA);
+        *(u32 *)(card+0xB0) += *(u16 *)(card + 0xA);
+        *(u32 *)(card+0xB4) += *(u16 *)(card + 0xA);
+        if (--*(s32 *)(card+0xAC) > 0) {
+            result = fn_802177E0(chan, fn_80219108);
+            if (result >= 0) return;
+        }
+    }
+    if (*(u32 *)(card+0xD0) == 0) __CARDPutControlBlock(card,result);
+    callback = *(void (**)(s32,s32))(card+0xD4);
+    if (callback) {
+        *(void **)(card+0xD4) = 0;
+        callback(chan,result);
+    }
+}
+
 s32 fn_802191F0(s32 chan, u32 addr, s32 length, void *dst, void *callback) {
     extern u16 __CARDBlock[];
     void fn_80219108();
