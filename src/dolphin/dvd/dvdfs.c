@@ -499,14 +499,14 @@ s32 fn_8020CE24(void *arg0, void *arg1) {
     u8 *dir;
     u8 *entry;
     u32 loc;
+    u32 next;
 
     dir = (u8 *)arg0;
     entry = (u8 *)arg1;
 
     loc = *(u32 *)(dir + 4);
 
-    if (loc <= *(u32 *)dir ||
-        loc >= *(u32 *)(dir + 8)) {
+    if (loc <= *(u32 *)dir || *(u32 *)(dir + 8) <= loc) {
         return 0;
     }
 
@@ -516,11 +516,11 @@ s32 fn_8020CE24(void *arg0, void *arg1) {
         FstStringStart_80368580 + stringOff(loc);
 
     if (entryIsDir(loc)) {
-        *(u32 *)(dir + 4) =
-            FstStart_8036857C[loc].nextEntryOrLength;
+        next = FstStart_8036857C[loc].nextEntryOrLength;
     } else {
-        *(u32 *)(dir + 4) = loc + 1;
+        next = loc + 1;
     }
+    *(u32 *)(dir + 4) = next;
 
     return 1;
 }
