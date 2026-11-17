@@ -12336,6 +12336,44 @@ void fn_801D027C(s32 arg0, s32 arg1) {
     }
 }
 
+void fn_801D029C(u8 *self, s32 index, s32 x, s32 y, u8 *color, f32 scale) {
+    void *fn_8005397C(void *, void *);
+    void Effect_SetPos(void *, f32, f32, f32);
+    extern u8 lbl_8027DF20[];
+    typedef struct { u8 r,g,b,a; } Color;
+    extern Color lbl_8036C530;
+    Color copy, c;
+    typedef struct { u8 active, flag; u16 pad; void *effect; } Entry;
+    typedef struct { u8 pad[0x28]; Entry entries[1]; } Self;
+    Entry *entry;
+    u8 *effect;
+    u8 *data;
+    s32 r, g, b;
+    entry = &((Self *)self)->entries[index];
+    entry->active = 1;
+    entry->flag = 0;
+    effect = fn_8005397C(lbl_8027DF20 + 0x1C9, *(void **)(self + 0x150));
+    entry->effect = effect;
+    Effect_SetPos(effect, (f32)x, (f32)y, 935.0f);
+    r = color[0] >> 1;
+    data = *(u8 **)(effect + 0x30);
+    g = color[1] >> 1;
+    b = color[2] >> 1;
+    *(f32 *)(data + 0x18) = 0.2f * scale;
+    data = *(u8 **)(effect + 0x30);
+    {
+    c = lbl_8036C530;
+    c.r = r; c.g = g; c.b = b;
+    }
+    copy = c;
+    data[0x38] = copy.r;
+    data[0x39] = copy.g;
+    data[0x3A] = copy.b;
+    data[0x3B] = copy.a;
+    data = *(u8 **)(effect + 0x30);
+    *(u32 *)(data + 8) |= 0x1004;
+}
+
 void fn_801D03E4(void *arg0, s32 arg1, u8 arg2) {
     if (arg2 != 0) {
         *(s32*)((char*)arg0 + 8) |= (0x800 << arg1);
@@ -19390,6 +19428,45 @@ s32 fn_801E3620(void *arg0) {
         return 0;
     }
     return M2C_FIELD(arg0, s32 *, 4) == 0x20050201;
+}
+
+void fn_801E3654(void *unused, void *data) {
+    struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
+    extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[];
+    extern u16 lbl_802842B8[], gStreamBaseVtbl[];
+    void fn_8017A7D4(void *, void *);
+    void fn_8017A6C4(void *, void *);
+    void fn_8014C1B8(void *, void *);
+    void fn_80048A90(void *);
+    void fn_80016628(void *);
+    void fn_800C3364(void *, void *);
+    void fn_800C2930(void *, void *);
+    void fn_8010FB7C(void *, void *);
+    void fn_800C4588(void *);
+    void UnitPair_Read(void *, void *);
+    extern u8 gUiContext[];
+    fn_8017A7D4(&w, data);
+    fn_8017A6C4(&w, gSaveStrings + 0x14F);
+    fn_8014C1B8(gBattleState, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x154);
+    fn_80048A90(&w);
+    fn_8017A6C4(&w, gSaveStrings + 0x159);
+    fn_80016628(&w);
+    fn_8017A6C4(&w, gSaveStrings + 0x15E);
+    fn_800C3364(gConvoy, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x163);
+    fn_800C2930(gIconSlots, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x168);
+    fn_8010FB7C(gMapObjEventList, &w);
+    fn_8017A6C4(&w, gSaveStrings + 0x1C2);
+    UnitPair_Read(gUiContext, &w);
+    w.vtbl = lbl_802842B8;
+    w.vtbl = gStreamBaseVtbl;
+    if (w.owned) {
+        fn_800C4588(w.start);
+        w.start = 0;
+        w.owned = 0;
+    }
 }
 
 void fn_801E379C(u8 *arg0) {
