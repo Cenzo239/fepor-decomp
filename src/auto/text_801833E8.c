@@ -92,7 +92,7 @@ extern f64 lbl_8036AF78;
 
 #pragma cplusplus on
 extern "C" void fn_8017A000(void *);
-extern "C" void fn_80193950(void *);
+extern "C" void *fn_80193950(void *, s16, s16, s16);
 extern "C" u8 lbl_8029656C[];
 extern "C" u16 gUiPanelVtbl[];
 #pragma cplusplus reset
