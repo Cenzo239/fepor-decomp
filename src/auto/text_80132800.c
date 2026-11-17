@@ -5445,52 +5445,38 @@ extern "C" void *Ui_DtorPanelMid(void *self, s16 doFree) {
 }
 
 extern "C" void fn_8013B8D8(void *arg0) {
-    void *Heap_Alloc(s32);
-    void *fn_8013692C(void *, s32, s32, s32, s32, s32);
-    void fn_8013F0F0(void *, void *);
-    void fn_8013F1A0(void *, void *);
-    void *child;
-    s16 r5, r7, r8, r9, s, t;
-    s16 mid, height;
-
-    t = 2;
-    s = 8;
-    r9 = *(s16 *)((u8 *)arg0 + 0xC);
-    r8 = *(s16 *)((u8 *)arg0 + 0x10);
-    r7 = *(s16 *)((u8 *)arg0 + 0xA);
-    r5 = *(s16 *)((u8 *)arg0 + 0xE);
-    r8 = (s16)(r8 - r9);
-    *(s16 *)((u8 *)arg0 + 0x12) = t;
-    t = (s16)(r5 - r7);
-    r5 = r8 - 8;
-    *(s16 *)((u8 *)arg0 + 0x14) = s;
-    t = t - 2;
-    *(s16 *)((u8 *)arg0 + 0x16) = t;
-    *(s16 *)((u8 *)arg0 + 0x18) = r5;
-    *(s16 *)((u8 *)arg0 + 0x92) = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) >> 1;
-    *(s16 *)((u8 *)arg0 + 0x94) = 0;
-    *(s16 *)((u8 *)arg0 + 0x96) = 0;
-    mid = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) >> 1;
-    height = *(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14);
-    *(s16 *)((u8 *)arg0 + 0xBA) = mid;
-    *(s16 *)((u8 *)arg0 + 0xBC) = height;
-    *(s16 *)((u8 *)arg0 + 0xBE) = 0;
-    if (*(void **)((u8 *)arg0 + 0x48)) {
-        fn_8013F0F0(arg0, *(void **)((u8 *)arg0 + 0x48));
-    }
-    child = Heap_Alloc(0x9C);
-    if (child) {
-        child = fn_8013692C(
-            child,
-            (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) - 11,
-            0,
-            9,
-            (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14)),
-            *(s16 *)((u8 *)arg0 + 0x22) - 5);
-    }
-    *(void **)((u8 *)arg0 + 0x48) = child;
-    *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x48) = 1;
-    fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x48));
+#pragma cplusplus reset
+void *Heap_Alloc(s32);
+void *fn_8013692C(void *,s32,s32,s32,s32,s32);
+void fn_8013F0F0(void *,void *);
+void fn_8013F1A0(void *,void *);
+#pragma cplusplus on
+struct Rect {
+s16 left,top,right,bottom;
+s16 width() { return right-left; }
+s16 height() { return bottom-top; }
+void set(s16 l,s16 t,s16 r,s16 b) { left=l; top=t; right=r; bottom=b; }
+};
+void *child;
+s16 mid,height;
+Rect *outer=(Rect *)((u8 *)arg0+0xA);
+Rect *inner=(Rect *)((u8 *)arg0+0x12);
+inner->set(2,8,outer->width()-2,outer->height()-8);
+M2C_FIELD(arg0,s16 *,0x92)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+M2C_FIELD(arg0,s16 *,0x94)=0;
+M2C_FIELD(arg0,s16 *,0x96)=0;
+mid=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
+height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
+M2C_FIELD(arg0,s16 *,0xBA)=mid;
+M2C_FIELD(arg0,s16 *,0xBC)=height;
+M2C_FIELD(arg0,s16 *,0xBE)=0;
+if(M2C_FIELD(arg0,void **,0x48)) fn_8013F0F0(arg0,M2C_FIELD(arg0,void **,0x48));
+child=Heap_Alloc(0x9C);
+if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))-11,0,9,(s16)(M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14)),M2C_FIELD(arg0,s16 *,0x22)-5);
+M2C_FIELD(arg0,void **,0x48)=child;
+M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
+fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
+#pragma cplusplus reset
 }
 
 #pragma cplusplus reset
