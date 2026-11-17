@@ -224,6 +224,113 @@ void Game_PollSoftReset(void) {
     }
 }
 
+void fn_8005B010(void *file, s32 line, s32 kind, char *format, ...) {
+    typedef struct { char gpr, fpr, reserved[2]; char *input_arg_area; char *reg_save_area; } VaInfo;
+    s32 fn_8005B42C(u32 *, u32);
+    s32 fn_8005B448(s32, s32, s32 *, u8 (*)(s32,s32));
+    void DebugPrint(const char *, ...);
+    void *fn_80205B50(void);
+    s32 vsprintf(char *, const char *, void *);
+    void fn_800056AC(void);
+    void fn_80005720(u16, s32);
+    void fn_800059B0(void);
+    void fn_80025970(void);
+    void *fn_8002595C(s32);
+    u32 fn_80211690(void);
+    void fn_80211614(s32);
+    void GXCopyDisp(void *, s32);
+    void VISetNextFrameBuffer(void *);
+    void VIFlush(void);
+    void VIWaitForRetrace(void);
+    void fn_8022097C(void);
+    s32 fn_80208D18(void);
+    u8 fn_80014E70(void);
+    void fn_800B46D8(void);
+    void OSResetSystem(s32, s32, s32);
+    extern char lbl_8026AEA8[];
+    extern u32 lbl_802F0398[];
+    extern u32 lbl_803672D8;
+    extern void *DemoCurrentBuffer, *DemoFrameBuffer1, *DemoFrameBuffer2;
+    extern s8 gSoftResetHoldInited, gResetSwitchTrackInited, gSoftResetReqInited;
+    extern u8 gResetSwitchWasHeld, gSoftResetRequested;
+    extern s32 gSoftResetHoldCount, gUiInputFlags;
+    extern void *gPadInput;
+    extern u32 gGameFlags;
+    s32 address;
+    VaInfo args[1];
+    char buffer[512];
+    s32 resetCode;
+    void *frame;
+    u32 count;
+    u32 begin, end;
+    void *entry;
+    u32 tick;
+    u16 buttons;
+    s32 holdCount;
+    DebugPrint(lbl_8026AEA8 + 0x212);
+    DebugPrint(lbl_8026AEA8 + 0x231);
+    count = 0;
+    frame = fn_80205B50();
+    while (frame && frame != (void *)-1 && count++ < 16) {
+        address = M2C_FIELD(frame, s32 *, 4);
+        if (!lbl_803672D8) entry = NULL;
+        else {
+            begin = lbl_802F0398[1];
+            end = begin + lbl_802F0398[0] * 8;
+            entry = (void *)fn_8005B448(begin, end, &address, (u8 (*)(s32,s32))fn_8005B42C);
+            if ((u32)entry == begin || (u32)entry == end) entry = NULL;
+            else entry = (u8 *)entry - 8;
+        }
+        if (!entry) DebugPrint(lbl_8026AEA8 + 0x247, frame, M2C_FIELD(frame, u32 *, 4));
+        else DebugPrint(lbl_8026AEA8 + 0x257, frame, M2C_FIELD(frame, u32 *, 4), M2C_FIELD(entry, u32 *, 4), M2C_FIELD(frame, u32 *, 4) - M2C_FIELD(entry, u32 *, 0));
+        frame = M2C_FIELD(frame, void **, 0);
+    }
+    __builtin_va_info(&args);
+    vsprintf(buffer, format, args);
+    DebugPrint(lbl_8026AEA8 + 0x26e);
+    DebugPrint(lbl_8026AEA8 + 0x29b, buffer);
+    DebugPrint(lbl_8026AEA8 + 0x2a1, file, line, kind);
+    fn_800056AC();
+    do {
+        tick = fn_80211690();
+        fn_80025970();
+        buttons = M2C_FIELD(fn_8002595C(0), u32 *, 4);
+        buttons |= M2C_FIELD(fn_8002595C(1), u32 *, 4);
+        buttons |= M2C_FIELD(fn_8002595C(2), u32 *, 4);
+        buttons |= M2C_FIELD(fn_8002595C(3), u32 *, 4);
+        fn_80005720(buttons & ~0x10, 0);
+        fn_800059B0();
+        GXCopyDisp(DemoCurrentBuffer, 1);
+        VISetNextFrameBuffer(DemoCurrentBuffer);
+        fn_80211614(0);
+        VIFlush();
+        while (tick == fn_80211690()) {}
+        DemoCurrentBuffer = DemoCurrentBuffer == DemoFrameBuffer1 ? DemoFrameBuffer2 : DemoFrameBuffer1;
+        if (!gSoftResetHoldInited) { gSoftResetHoldCount=0; gSoftResetHoldInited=1; }
+        if (!gResetSwitchTrackInited) { gResetSwitchWasHeld=0; gResetSwitchTrackInited=1; }
+        if (!gSoftResetReqInited) { gSoftResetRequested=0; gSoftResetReqInited=1; }
+        buttons = **(u16 **)gPadInput;
+        holdCount = (buttons == 0x1600) ? gSoftResetHoldCount + 1 : 0;
+        gSoftResetHoldCount = holdCount;
+        if (holdCount >= 30) gSoftResetRequested=1;
+        if (gResetSwitchWasHeld && !fn_80208D18()) gSoftResetRequested=1;
+        gResetSwitchWasHeld = fn_80208D18() != 0;
+    } while ((gUiInputFlags & 0x100) || !gSoftResetRequested);
+    fn_80211614(1); VIFlush(); VIWaitForRetrace(); VIWaitForRetrace();
+    fn_8022097C(); VIWaitForRetrace(); VIWaitForRetrace(); VIWaitForRetrace();
+    resetCode=0;
+    if (gGameFlags & 0x90000) {
+        if (!(gGameFlags & 0x10)) resetCode |= 2;
+        if (gGameFlags & 0x40) resetCode |= 1;
+    } else if (gGameFlags & 0x60000) {
+        if (!(gGameFlags & 0x10)) resetCode |= 0x20;
+        if (gGameFlags & 0x100) resetCode |= 0x10;
+    }
+    if (fn_80014E70()) { resetCode |= 0x100; fn_800B46D8(); }
+    OSResetSystem(0, resetCode, 0);
+    for (;;) {}
+}
+
 s32 fn_8005B42C(u32 *arg0, u32 arg1) {
     return (u32) *arg0 <= arg1;
 }
@@ -3420,6 +3527,269 @@ void fn_800609DC(void *arg0) {
 #pragma cplusplus reset
 }
 
+f32 fn_80060BA4(void *actor, s32 index)
+{
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
+    void PSMTXCopy(void *, void *);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void QUATMtx(void *, void *);
+    void fn_802029C4(void *, void *, void *);
+    int Game_Assert(void *, int, void *);
+    extern char lbl_8026B590[];
+    extern f32 lbl_803691C8;
+    extern f32 lbl_803691C4;
+    f32 Vec_Length(void *);
+    extern f32 lbl_803691D8;
+    u8 result[0x30];
+    u8 rot3[0x30];
+    u8 rot2[0x30];
+    u8 rot1[0x30];
+    u8 trans[0x30];
+    u8 scale[0x30];
+    f32 vec[3];
+    void *matrices;
+    void *bone;
+    void *p;
+    void *model;
+    unsigned long order;
+    f32 zero;
+
+    if (actor == NULL) {
+        Game_Assert(lbl_8026B590 + 0x28, 0x102, lbl_8026B590 + 0xab);
+    }
+
+    p = actor;
+    while (p != NULL) {
+        matrices = *(void **)((u8 *)p + 0x60);
+        if (matrices == NULL) {
+            p = *(void **)((u8 *)p + 4);
+        } else {
+            goto got_matrices;
+        }
+    }
+    matrices = NULL;
+got_matrices:
+
+    p = actor;
+    while (p != NULL) {
+        model = *(void **)((u8 *)p + 0x40);
+        if (model == NULL) {
+            p = *(void **)((u8 *)p + 4);
+        } else {
+            goto got_model;
+        }
+    }
+    model = NULL;
+got_model:
+
+    order = *(u32 *)((u8 *)actor + 0xc);
+
+    switch (order) {
+    case 1:
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        break;
+    case 2:
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        break;
+    case 3:
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        break;
+    case 4:
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        break;
+    case 5:
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        break;
+    case 6:
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        break;
+    case 8:
+        PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
+                   *(f32 *)((u8 *)actor + 0x30));
+        PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
+                   *(f32 *)((u8 *)actor + 0x18));
+        QUATMtx((u8 *)actor + 0x10, rot1);
+        PSMTXConcat(rot1, scale, result);
+        PSMTXConcat(rot1, result, result);
+        PSMTXConcat(trans, result, result);
+        goto after_xform;
+    case 7:
+        PSMTXCopy((u8 *)actor + 0x10, result);
+        goto after_xform;
+    default:
+        Game_Assert(lbl_8026B590, 0xb8, lbl_8026B590 + 8);
+        break;
+    }
+
+    PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
+               *(f32 *)((u8 *)actor + 0x30));
+    PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
+               *(f32 *)((u8 *)actor + 0x18));
+    PSMTXConcat(rot1, scale, result);
+    PSMTXConcat(rot2, result, result);
+    PSMTXConcat(rot3, result, result);
+    PSMTXConcat(trans, result, result);
+
+after_xform:
+    PSMTXConcat(result, (u8 *)matrices + index * 0x30, result);
+    *(f32 *)(result+12) = lbl_803691C8;
+    *(f32 *)(result+28) = lbl_803691C8;
+    *(f32 *)(result+44) = lbl_803691C8;
+    vec[0]=lbl_803691D8; vec[1]=lbl_803691C8; vec[2]=lbl_803691C8;
+    fn_802029C4(result,vec,vec);
+    return Vec_Length(vec);
+}
+
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+void fn_80060F70(void *actor, s32 index, f32 *out)
+{
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXCopy(void *, void *);
+    void PSMTXConcat(void *, void *, void *);
+    void QUATMtx(void *, void *);
+    void fn_802029C4(void *, void *, void *);
+    int Game_Assert(void *, int, void *);
+    extern char lbl_8026B590[];
+    extern f32 lbl_803691C4;
+    extern f32 lbl_803691C8;
+    u8 result[0x30];
+    u8 rot3[0x30];
+    u8 rot2[0x30];
+    u8 rot1[0x30];
+    u8 trans[0x30];
+    u8 scale[0x30];
+    void *matrices;
+    void *bone;
+    void *p;
+    void *model;
+    u32 order;
+    f32 zero;
+
+    if (actor == NULL) {
+        Game_Assert(lbl_8026B590 + 0x28, 0xe3, lbl_8026B590 + 0xab);
+    }
+    if (index < 0) {
+        return;
+    }
+
+    p = actor;
+    while (p != NULL) {
+        matrices = *(void **)((u8 *)p + 0x60);
+        if (matrices == NULL) {
+            p = *(void **)((u8 *)p + 4);
+        } else {
+            goto got_matrices;
+        }
+    }
+    matrices = NULL;
+got_matrices:
+
+    p = actor;
+    while (p != NULL) {
+        model = *(void **)((u8 *)p + 0x40);
+        if (model == NULL) {
+            p = *(void **)((u8 *)p + 4);
+        } else {
+            goto got_model;
+        }
+    }
+    model = NULL;
+got_model:
+
+    order = *(u32 *)((u8 *)actor + 0xc);
+    bone = (u8 *)*(void **)((u8 *)model + 0xc) + index * 0xf4;
+
+    switch (order) {
+    case 1:
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        break;
+    case 2:
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        break;
+    case 3:
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        break;
+    case 4:
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        break;
+    case 5:
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        break;
+    case 6:
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        break;
+    case 8:
+        PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
+                   *(f32 *)((u8 *)actor + 0x30));
+        PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
+                   *(f32 *)((u8 *)actor + 0x18));
+        QUATMtx((u8 *)actor + 0x10, rot1);
+        PSMTXConcat(rot1, scale, result);
+        PSMTXConcat(rot1, result, result);
+        PSMTXConcat(trans, result, result);
+        goto after_xform;
+    case 7:
+        PSMTXCopy((u8 *)actor + 0x10, result);
+        goto after_xform;
+    default:
+        Game_Assert(lbl_8026B590, 0xb8, lbl_8026B590 + 8);
+        break;
+    }
+
+    PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
+               *(f32 *)((u8 *)actor + 0x30));
+    PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
+               *(f32 *)((u8 *)actor + 0x18));
+    PSMTXConcat(rot1, scale, result);
+    PSMTXConcat(rot2, result, result);
+    PSMTXConcat(rot3, result, result);
+    PSMTXConcat(trans, result, result);
+
+after_xform:
+    PSMTXConcat(result, (u8 *)matrices + index * 0x30, result);
+
+    if (*(u32 *)((u8 *)bone + 0xc) & 0x80) {
+        out[0] = *(f32 *)((u8 *)bone + 0x70);
+        out[1] = *(f32 *)((u8 *)bone + 0x74);
+        out[2] = *(f32 *)((u8 *)bone + 0x78);
+    } else {
+        zero = lbl_803691C8;
+        out[0] = zero;
+        out[1] = zero;
+        out[2] = zero;
+    }
+    fn_802029C4(result, out, out);
+}
+#pragma opt_common_subs reset
 s32 GActor_FindNode(void *arg0, void *name) {
     u8 Str_MatchUnderscoreTag(void *, void *);
     void *node;
@@ -4632,293 +5002,382 @@ void *fn_800639B4(void *arg0) {
  }
  return result;
 }
-extern f32 lbl_803691E4;
-extern f32 lbl_8036920C;
-f32 fn_80064164(void **arg0, s32 arg1, f32 farg0) {
-    s32 temp_r3;
-    s32 temp_r12;
-    s32 var_r11;
-    s32 var_r5_2;
-    s32 var_r6;
-    u16 temp_r0;
-    u16 temp_r0_2;
-    u16 temp_r3_2;
-    u16 temp_r7;
-    void *temp_r10;
-    void *temp_r3_3;
-    void *var_r4_2;
-    void *var_r5;
-    s16 var_r4;
-    s16 var_r6_2;
-    s16 var_r8;
-    s16 var_r9;
-    u8 var_r5_3;
-    
-    if (arg0 == NULL) {
-        var_r5 = NULL;
-    } else {
-        temp_r3_3 = *arg0;
-        if (temp_r3_3 != NULL) {
-            var_r5 = *(void**)((char*)temp_r3_3 + 0x14);
-        } else {
-            var_r5 = NULL;
-        }
-    }
-    
-    if (var_r5 == NULL) {
-        return lbl_803691E4;
-    }
-    
-    temp_r0 = *(u16*)((char*)var_r5 + 0x4 + (arg1 * 2));
-    if (temp_r0 == 0xFFFF) {
-        var_r4_2 = NULL;
-    } else {
-        var_r4_2 = (char*)var_r5 + temp_r0;
-    }
-    
-    if (var_r4_2 == NULL) {
-        return lbl_803691E4;
-    }
-    
-    temp_r3_2 = *(u16*)((char*)var_r4_2 + 0x0);
-    var_r9 = -1;
-    temp_r7 = *(u16*)((char*)var_r4_2 + 0x2);
-    var_r8 = -1;
-    temp_r10 = (char*)var_r4_2 + 0x4;
-    var_r4 = 0;
-    
-    if (temp_r3_2 == 0) {
-        var_r5_2 = -1;
-        goto do_switch;
-    }
-    
-    if (temp_r3_2 == 1) {
-        var_r5_2 = 0;
-        goto do_switch;
-    }
-    
-    var_r11 = 0;
-    var_r6 = temp_r3_2 - 1;
-    temp_r12 = (s32)farg0;
-    
-loop:
-    if (var_r11 > var_r6) {
-        if (var_r6 < 0) {
-            var_r5_2 = -1;
-        } else {
-            var_r5_2 = temp_r3_2 - 1;
-            if (var_r11 <= var_r5_2) {
-                if (*(u16*)((char*)temp_r10 + (var_r11 * 4)) <= temp_r12) {
-                    var_r5_2 = var_r11;
-                } else {
-                    var_r5_2 = var_r11 - 1;
-                }
-            } else {
-                var_r5_2 = var_r11 - 1;
-            }
-        }
-    } else {
-        s32 temp_r5_2 = var_r11 + ((var_r6 - var_r11) >> 1);
-        temp_r0_2 = *(u16*)((char*)temp_r10 + (temp_r5_2 * 4));
-        if ((s32)temp_r0_2 < temp_r12) {
-            var_r11 = temp_r5_2 + 1;
-            goto loop;
-        } 
-        if ((s32)temp_r0_2 > temp_r12) {
-            var_r6 = temp_r5_2 - 1;
-            goto loop;
-        }
-        var_r5_2 = temp_r5_2;
-    }
-    
-do_switch:
-    if (var_r5_2 < 0) {
-        var_r5_3 = 0;
-        var_r6_2 = *(s16*)((char*)temp_r10 + 0x2);
-    } else if (var_r5_2 < (s32)(temp_r3_2 - 1)) {
-        s32 temp_r3_3 = var_r5_2 * 4;
-        s32 temp_r0_3 = (var_r5_2 + 1) * 4;
-        var_r9 = *(s16*)((char*)temp_r10 + temp_r3_3);
-        var_r8 = *(s16*)((char*)temp_r10 + temp_r0_3);
-        var_r6_2 = *(s16*)((char*)temp_r10 + temp_r3_3 + 0x2);
-        var_r4 = *(s16*)((char*)temp_r10 + temp_r0_3 + 0x2);
-        var_r5_3 = 1;
-    } else {
-        var_r5_3 = 0;
-        var_r6_2 = *(s16*)((char*)temp_r10 + (var_r5_2 * 4) + 0x2);
-    }
-    
-    if (var_r5_3 == 0) {
-        var_r4 = var_r6_2;
-    } else {
-        switch ((s32) temp_r7) {
-            case 0:
-                // Linear interpolation
-                {
-                    s32 temp_r11 = (s32)var_r9;
-                    s32 temp_r12_val = (s32)farg0;
-                    s32 temp_r5 = (s32)var_r8;
-                    
-                    f64 val1 = (f64)(temp_r11 - temp_r12_val) * (f64)(var_r4 - var_r6_2);
-                    f64 val2 = val1 / (f64)(temp_r5 - temp_r11);
-                    f64 val3 = ((f64)val2 + (f64)var_r6_2);
-                    s32 result = (s32)val3;
-                    var_r4 = (s16)result;  
-                }
-                break;
-            case 1:
-                var_r4 = var_r6_2;
-                break;
-            default:
-                var_r4 = 0;
-                break;
-        }
-    }
-    
-    return lbl_8036920C * (f32)var_r4;
-}
 
-u8 GMaterial_EvalAlphaAnim(s32 arg0, s16 arg1, void *arg2, f32 farg0) {
-    u8 *base;
-    u8 *node;
-    u8 *entry;
-    u8 *keys;
+f32 fn_80063C2C(void **arg0, s32 arg1, f32 frame) {
+    extern f32 lbl_803691E0, lbl_80369208;
+    extern f64 lbl_80369200;
+    s16 value, v0, t1, t0;
+    s32 count, mode;
+    s32 lo, hi, mid, time;
     u16 offset;
-    u16 count;
-    u16 type;
-    s32 index;
-    s32 low;
-    s32 high;
-    s32 mid;
-    s32 frame;
-    s32 i0;
-    s32 i1;
-    s16 time0;
-    s16 time1;
-    s16 value0;
-    s16 value1;
-    s32 value;
+    u8 *base, *track, *keys;
     u8 interpolate;
-
-    if (arg0 == 0) {
-        base = NULL;
-    } else {
-        node = *(u8 **)arg0;
-
-        if (node != NULL) {
-            base = *(u8 **)(node + 4);
-        } else {
-            base = NULL;
-        }
-    }
-
-    if (base == NULL) {
-        return 0;
-    }
-
-    offset = *(u16 *)(*(u8 **)(base + 4) + arg1 * 2);
-
-    if (offset == 0xFFFF) {
-        entry = NULL;
-    } else {
-        entry = base + offset;
-    }
-
-    if (entry == NULL) {
-        return 0;
-    }
-
-    count = *(u16 *)entry;
-    type = *(u16 *)(entry + 2);
-    keys = entry + 4;
-
-    time0 = -1;
-    time1 = -1;
-    value1 = 0;
-    index = 0;
-
-    if (count != 0) {
-        if (count == 0) {
-            index = -1;
-        } else {
-            low = 0;
-            high = count - 1;
-            frame = (s32)farg0;
-
-            while (low <= high) {
-                mid = low + ((high - low) >> 1);
-
-                if (*(u16 *)(keys + mid * 4) < frame) {
-                    low = mid + 1;
-                } else if (*(u16 *)(keys + mid * 4) > frame) {
-                    high = mid - 1;
-                } else {
-                    index = mid;
-                    goto search_done;
-                }
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x1C); else base = 0; }
+    if (!base) return lbl_803691E0;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return lbl_803691E0;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track + 2);
+    t1 = t0;
+    keys = track + 4;
+    value = 0;
+    if ((u16)count != 0) {
+        if ((s32)count == 0) mid = -1;
+        else {
+            lo = value;
+            hi = count - 1;
+            time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi - lo) >> 1);
+                if (*(u16 *)(keys + mid * 4) < time) lo = mid + 1;
+                else if (*(u16 *)(keys + mid * 4) > time) hi = mid - 1;
+                else break;
             }
-
-            if (high < 0) {
-                index = -1;
-            } else {
-                index = count - 1;
-
-                if (low <= index) {
-                    if (*(u16 *)(keys + low * 4) <= frame) {
-                        index = low;
-                    } else {
-                        index = low - 1;
+            if (lo > hi) {
+                if (hi < 0) mid = -1;
+                else {
+                    mid = count - 1;
+                    if (lo <= mid) {
+                        if (*(u16 *)(keys + lo * 4) <= time) mid = lo;
+                        else mid = lo - 1;
                     }
                 }
             }
         }
-
-search_done:
-        interpolate = 0;
-
-        if (index < 0) {
-            value0 = *(s16 *)(keys + 2);
-        } else if (index < count - 1) {
-            i0 = index * 4;
-            i1 = (index + 1) * 4;
-
-            time0 = *(s16 *)(keys + i0);
-            time1 = *(s16 *)(keys + i1);
-
-            value0 = *(s16 *)(keys + i0 + 2);
-            value1 = *(s16 *)(keys + i1 + 2);
-
+        if (mid < 0) { v0 = (s16)*(u16 *)(keys + 2); interpolate = 0; }
+        else if (mid < count - 1) {
+            t0 = *(u16 *)(keys + mid * 4);
+            t1 = *(u16 *)(keys + (mid + 1) * 4);
+            v0 = *(u16 *)(keys + mid * 4 + 2);
+            value = *(u16 *)(keys + (mid + 1) * 4 + 2);
             interpolate = 1;
-        } else {
-            value0 = *(s16 *)(keys + index * 4 + 2);
-        }
-
-        if (interpolate == 0) {
-            value1 = value0;
-        } else {
-            switch (type) {
-            case 0:
-                value1 = (s32)(
-                    (f32)value0 +
-                    ((f32)((s16)value1 - (s16)value0) *
-                     (farg0 - (f32)(s16)time0)) /
-                    (f32)((s16)time1 - (s16)time0)
-                );
-                break;
-
-            case 1:
-                value1 = value0;
-                break;
-
-            default:
-                value1 = 0;
-                break;
-            }
+        } else { v0 = *(u16 *)(keys + mid * 4 + 2); interpolate = 0; }
+        if (!interpolate) value = v0;
+        else switch (mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value - v0) * (frame - (f32)t0)) / (f32)(t1 - t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
         }
     }
+    return lbl_80369208 * (f32)value;
+}
 
-    *((u8 *)arg2 + 3) = (u8)value1;
+f32 fn_80063EC8(void **arg0, s32 arg1, f32 frame) {
+    extern f32 lbl_803691E0, lbl_80369208;
+    extern f64 lbl_80369200;
+    s32 count;
+    s16 value;
+    s32 mid;
+    s16 v0;
+    s32 hi, mode;
+    s16 t1, t0;
+    u16 (*keys)[2];
+    s32 lo, time;
+    u16 offset;
+    u8 *base, *track;
+    u8 interpolate;
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x18); else base = 0; }
+    if (!base) return lbl_803691E0;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return lbl_803691E0;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track + 2);
+    t1 = t0;
+    keys = (u16 (*)[2])(track + 4);
+    value = 0;
+    if ((u16)count != 0) {
+        if ((s32)count == 0) mid = t0;
+        else {
+            lo = value;
+            hi = count - 1;
+            time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi - lo) >> 1);
+                if (keys[mid][0] < time) lo = mid + 1;
+                else if (keys[mid][0] > time) hi = mid - 1;
+                else goto found;
+            }
+            if (hi < 0) mid = -1;
+            else { mid = count - 1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo - 1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count - 1) {
+            s32 next = mid + 1;
+            u16 a = keys[mid][0];
+            u16 b = keys[next][0];
+            u16 c = keys[mid][1];
+            u16 d = keys[next][1];
+            t0 = a; t1 = b; v0 = c; value = d;
+            goto interpolate_pair;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        goto interpolate_ready;
+interpolate_pair:
+        interpolate = 1;
+interpolate_ready:
+        if (!interpolate) value = v0;
+        else switch (mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value - v0) * (frame - (f32)t0)) / (f32)(t1 - t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
+        }
+    }
+    return lbl_80369208 * (f32)value;
+}
 
+extern f32 lbl_803691E4;
+extern f32 lbl_8036920C;
+f32 fn_80064164(void **arg0, s32 arg1, f32 frame) {
+    extern f32 lbl_803691E4, lbl_8036920C;
+    s32 count;
+    s16 value;
+    s32 mid;
+    s16 v0;
+    s32 hi, mode;
+    s16 t1, t0;
+    u16 (*keys)[2];
+    s32 lo, time;
+    u16 offset;
+    u8 *base, *track;
+    u8 interpolate;
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x14); else base = 0; }
+    if (!base) return lbl_803691E4;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return lbl_803691E4;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track+2);
+    t1 = t0;
+    keys = (u16 (*)[2])(track+4);
+    value = 0;
+    if ((u32)count == 0) goto done;
+    {
+        if ((s32)count == 0) mid = -1;
+        else {
+            lo = value; hi = count-1; time = (s32)frame;
+            goto search_test;
+search_body: {
+                mid = lo + ((hi-lo)>>1);
+                if (keys[mid][0] < time) lo = mid+1;
+                else if (keys[mid][0] > time) hi = mid-1;
+                else goto found;
+            }
+search_test:
+            if (lo <= hi) goto search_body;
+            if (hi < 0) mid = -1;
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count-1) {
+            s32 next = mid + 1;
+            u16 a = keys[mid][0];
+            u16 b = keys[next][0];
+            u16 c = keys[mid][1];
+            u16 d = keys[next][1];
+            t0 = a; t1 = b; v0 = c; value = d;
+            interpolate = 1;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        if (!interpolate) value = v0;
+        else switch(mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
+        }
+    }
+done:
+    return lbl_8036920C * (f32)value;
+}
+
+f32 fn_80064400(void **arg0, s32 arg1, f32 frame) {
+    extern f32 lbl_803691E4, lbl_80369208;
+    s32 count;
+    s16 value;
+    s32 mid;
+    s16 v0;
+    s32 hi, mode;
+    s16 t1, t0;
+    u16 (*keys)[2];
+    s32 lo, time;
+    u16 offset;
+    u8 *base, *track;
+    s32 interpolate;
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x10); else base = 0; }
+    if (!base) return lbl_803691E4;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return lbl_803691E4;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track+2);
+    t1 = t0;
+    keys = (u16 (*)[2])(track+4);
+    value = 0;
+    if ((u32)count == 0) goto done;
+    {
+        if ((s32)count == 0) mid = -1;
+        else {
+            lo = value; hi = count-1; time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi-lo)>>1);
+                if (keys[mid][0] < time) lo = mid+1;
+                else if (keys[mid][0] > time) hi = mid-1;
+                else goto found;
+            }
+            if (hi < 0) mid = -1;
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count-1) {
+            t0 = keys[mid][0];
+            t1 = keys[mid+1][0];
+            v0 = keys[mid][1];
+            value = keys[mid+1][1];
+            interpolate = 1;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        if (!(u8)interpolate) value = v0;
+        else switch(mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
+        }
+    }
+done:
+    return lbl_80369208 * (f32)value;
+}
+
+f32 fn_8006469C(void **arg0, s32 arg1, f32 frame) {
+    extern f32 lbl_803691E4, lbl_80369208;
+    s32 count;
+    s16 value;
+    s32 mid;
+    s16 v0;
+    s32 hi, mode;
+    s16 t1, t0;
+    u16 (*keys)[2];
+    s32 lo, time;
+    u16 offset;
+    u8 *base, *track;
+    u8 interpolate;
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0xC); else base = 0; }
+    if (!base) return lbl_803691E4;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return lbl_803691E4;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track+2);
+    t1 = t0;
+    keys = (u16 (*)[2])(track+4);
+    value = 0;
+    if ((u32)count == 0) goto done;
+    {
+        if ((s32)count == 0) mid = -1;
+        else {
+            lo = value; hi = count-1; time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi-lo)>>1);
+                if (keys[mid][0] < time) lo = mid+1;
+                else if (keys[mid][0] > time) hi = mid-1;
+                else goto found;
+            }
+            if (hi < 0) mid = -1;
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count-1) {
+            s32 next = mid + 1;
+            u16 a, c, b, d;
+            a = keys[mid][0];
+            b = keys[next][0];
+            c = keys[mid][1];
+            d = keys[next][1];
+            t0 = a; t1 = b; v0 = c; value = d;
+            interpolate = 1;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        if (!interpolate) value = v0;
+        else switch(mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
+        }
+    }
+done:
+    return lbl_80369208 * (f32)value;
+}
+
+u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
+    extern f64 lbl_80369200;
+    s32 count;
+    s16 value;
+    s32 mid;
+    s16 v0;
+    s32 hi, mode;
+    s16 t1, t0;
+    u16 (*keys)[2];
+    s32 lo, time;
+    u16 offset;
+    u8 *base, *track;
+    u8 interpolate;
+    if (arg0 == 0) base = 0;
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,4); else base = 0; }
+    if (!base) return 0;
+    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    if (offset == 0xFFFF) track = 0; else track = base + offset;
+    if (!track) return 0;
+    count = *(u16 *)track;
+    t0 = -1;
+    mode = *(u16 *)(track+2);
+    t1 = t0;
+    keys = (u16 (*)[2])(track+4);
+    value = 0;
+    if ((u32)count != 0) {
+        if ((s32)count == 0) mid = t0;
+        else {
+            lo = value; hi = count-1; time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi-lo)>>1);
+                if (keys[mid][0] < time) lo = mid+1;
+                else if (keys[mid][0] > time) hi = mid-1;
+                else goto found;
+            }
+            if (hi < 0) mid = -1;
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count-1) {
+            s32 next = mid + 1;
+            t0 = keys[mid][0];
+            v0 = keys[mid][1];
+            t1 = keys[next][0];
+            value = keys[next][1];
+            goto interpolate_pair;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        goto interpolate_ready;
+interpolate_pair:
+        interpolate = 1;
+interpolate_ready:
+        if (!interpolate) value = v0;
+        else switch(mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
+        }
+    }
+    *((u8 *)arg2 + 3) = (u8)value;
     return 1;
 }
 
@@ -4964,76 +5423,77 @@ u8 GMaterial_EvalColorAnim(void *arg0, s32 arg1, void *arg2, f32 farg0)
     return 1;
 }
 
-void fn_80064C4C(void *arg0, void *arg1, f32 farg0) {
-    s32 temp_r10;
-    s32 temp_r11;
-    s32 temp_r6;
-    s32 var_r7;
-    s32 var_r8;
-    s32 var_r9;
-    s32 temp_r0;
-    u16 temp_r30;
-    u16 temp_r3;
-    u16 *temp_r5;
-
-    if (arg0 == 0) {
-        return;
-    }
-    
-    temp_r5 = (u16 *) ((char *) arg0 + 4);
-    temp_r30 = *(u16 *) arg0;
-    temp_r3 = *(u16 *) ((char *) arg0 + 2);
-    
-    if (temp_r30 == 0) {
-        return;
-    }
-    
-    if (temp_r3 == 0) {  
-        var_r7 = -1;
-    } else {
-        temp_r10 = temp_r30 - 1;
-        var_r8 = temp_r10;
-        var_r9 = 0;
-        temp_r11 = (s32) farg0;
-loop_1:
-        if (var_r9 > var_r8) {
-            if (var_r8 < 0) {
-                var_r7 = -1;
-            } else if (var_r9 > temp_r10) {
-                var_r7 = temp_r10;
-            } else {
-                s32 val = (s32) *(temp_r5 + var_r9);
-                if (val <= temp_r11) {
-                    var_r7 = var_r9;
-                } else {
-                    var_r7 = var_r9 - 1;
-                }
-            }
-        } else {
-            var_r7 = var_r9 + ((s32) (var_r8 - var_r9) >> 1);
-            temp_r6 = (s32) *(temp_r5 + var_r7);
-            if (temp_r6 < temp_r11) {
-                var_r9 = var_r7 + 1;
-                goto loop_1;
-            }
-            if (temp_r6 > temp_r11) {
-                var_r8 = var_r7 - 1;
-                goto loop_1;
-            }
+void fn_80064C4C(void *arg0, void *arg1, f32 frame) {
+    extern f32 lbl_803691E4;
+    u16 (*keys)[2];
+    s32 mode;
+    s32 index, high, low, last, time;
+    s16 time0, time1, value0, value1;
+    u16 count;
+    u8 interpolate;
+    u32 r0, g0, b0, r1, g1, b1;
+    f32 factor;
+    keys = (u16 (*)[2])((u8 *)arg0+4);
+    time0 = -1; time1 = -1; value1 = 0;
+    count = *(u16 *)arg0;
+    mode = *(u16 *)((u8 *)arg0+2);
+    if (count == 0) return;
+    if ((s32)count == 0) index = -1;
+    else {
+        last = count-1; high = last; low = 0; time = (s32)frame;
+        while (low <= high) {
+            index = low + ((high-low)>>1);
+            if (keys[index][0] < time) low = index+1;
+            else if (keys[index][0] > time) high = index-1;
+            else goto found;
         }
+        if (high < 0) index = -1;
+        else if (low > last) index = last;
+        else if (keys[low][0] <= time) index = low;
+        else index = low-1;
     }
-
-    if (var_r7 < 0) {
-        var_r7 = 0;
-    } else if (var_r7 >= (s32) (temp_r30 - 1)) {
-        var_r7 = temp_r30 - 1;
+found:
+    if (index < 0) { value0 = keys[0][1]; interpolate = 0; }
+    else if (index < count-1) {
+        s32 next = index+1;
+        u16 a = keys[index][0];
+        u16 b = keys[next][0];
+        u16 c = keys[index][1];
+        u16 d = keys[next][1];
+        time0=a; value0=c; time1=b; value1=d;
+        goto pair;
+    } else { value0=keys[index][1]; interpolate=0; }
+    goto ready;
+pair:
+    interpolate=1;
+ready:
+    if (!interpolate) {
+        ((u8 *)arg1)[0] = ((s32)value0>>8)&0xF8;
+        ((u8 *)arg1)[1] = ((s32)value0>>3)&0xFC;
+        ((u8 *)arg1)[2] = ((u32)value0&31)<<3;
+        return;
     }
-
-    temp_r0 = var_r7 * 4;
-
-    // Just handle case '0' for now to avoid struct issues
-    if (temp_r3 == 0) {
-        // Placeholder - this would require proper struct access  
+    factor = lbl_803691E4;
+    if (time1 != time0) factor = (frame-(f32)time0)/(f32)(time1-time0);
+    r0 = ((s32)value0>>8)&0xF8;
+    g0 = ((s32)value0>>3)&0xFC;
+    b0 = ((u32)value0&31)<<3;
+    r1 = ((s32)value1>>8)&0xF8;
+    g1 = ((s32)value1>>3)&0xFC;
+    b1 = ((u32)value1&31)<<3;
+    switch(mode) {
+    case 0: {
+        s32 red = (s32)(factor*(f32)(s32)(r1-r0)+(f32)r0);
+        s32 green = (s32)(factor*(f32)(s32)(g1-g0)+(f32)g0);
+        s32 blue = (s32)(factor*(f32)(s32)(b1-b0)+(f32)b0);
+        ((u8 *)arg1)[0] = red;
+        ((u8 *)arg1)[1] = green;
+        ((u8 *)arg1)[2] = blue;
+        break;
+    }
+    case 1:
+        ((u8 *)arg1)[0] = r0; ((u8 *)arg1)[1] = g0; ((u8 *)arg1)[2] = b0;
+        break;
     }
 }
 
@@ -10981,6 +11441,91 @@ void fn_80071410(s32 unused, void *arg1, f32 f1, f32 f2) {
 }
 
 #pragma cplusplus on
+extern "C" void fn_8007149C(void *self, u8 *list, u8 *data, u8 mode, f32 x, f32 y) {
+    void *GfxEnt_Get(u8);
+    void Prim2D_Begin(void);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void fn_8008BBF8(s32, s32, s32, u16, u8, s32);
+    extern f32 lbl_80369348, lbl_80369350, lbl_80369354;
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual f32 v25() = 0;
+    };
+    f32 baseX = lbl_80369348 + x;
+    f32 baseY = lbl_80369350 + y;
+    f32 lowerY = lbl_80369354 + y;
+    f32 px, py;
+    s32 i;
+    u32 height;
+    for (i = 0; i < (s8)list[0x60]; i++) {
+        u8 *ent = (u8 *)GfxEnt_Get(list[i + 0x40]);
+        s32 row = ent[0x3a];
+        if (mode == 2)
+            row += 4;
+        if (mode == 0) {
+            px = baseX;
+            if (row < 4)
+                py = baseY + (f32)(row * 28);
+            else
+                py = lowerY + (f32)((row - 4) * 28);
+        }
+        if (mode == 1) {
+            px = baseX;
+            py = baseY + (f32)(row * 28);
+        }
+        if (mode == 2) {
+            px = baseX;
+            py = baseY + (f32)((row - 4) * 28);
+        }
+        if (mode == 3) {
+            px = baseX;
+            py = baseY + (f32)(row * 28);
+        }
+        *(s16 *)(ent + 0x30) = (s16)px;
+        *(s16 *)(ent + 0x32) = (s16)py;
+    }
+    switch (mode) {
+    case 0:
+        height = 0x110;
+        break;
+    case 1:
+    case 2:
+        height = 0x88;
+        break;
+    default:
+        return;
+    }
+    Prim2D_Begin();
+    Prim2D_SetTransform(0.0f, 0.0f, ((Obj *)self)->v25(), 1.0f);
+    Prim2D_PrepareTex();
+    fn_8008BBF8((s32)x, (s32)y, 0x108, (u16)height, (*(u8 **)(data + 0x190))[8], 0x9a);
+}
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
