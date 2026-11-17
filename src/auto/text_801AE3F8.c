@@ -468,14 +468,89 @@ void fn_801AEDA0(void *arg0) {
     }
 }
 
-void fn_801AEE58(void) {
-    // Very basic implementation to get some match at least
-    // This function seems to set up actions or initialize unit state
-    
-    // Simple empty function that might match the prologue/epilogue 
-    return;
-}
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+#pragma optimization_level 3
+extern "C" void fn_801AEE58(void *self) {
+    struct Ref {
+        virtual void v0(s32) = 0;
+        s32 ref;
+    };
+    struct Child {
+        u8 pad[0xC];
+        s16 unkC;
+    };
+    Child *Ui_FindChild(void *, s32, s32);
+    void Ui_RemoveChild(void *, void *);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Process_Goto(void *, s32);
+    s16 sp14[2];
+    s16 sp10[2];
+    s16 spC[2];
+    s16 sp8[2];
+    Child *cb;
+    void *saved;
+    Child *c4;
+    Child *c9;
+    Child *ca;
+    s16 t;
 
+    saved = *(void **)((u8 *)self + 0x54);
+    cb = (Child *)saved;
+    c4 = Ui_FindChild(self, 4, 0);
+    c9 = Ui_FindChild(self, 9, 0);
+    ca = Ui_FindChild(self, 0xA, 0);
+    cb = Ui_FindChild(self, 0xB, 0);
+    Ui_RemoveChild(self, saved);
+    t = c4->unkC;
+    sp14[0] = 0x260;
+    sp14[1] = t;
+    Ui_SlideWidgetChild(self, c4, sp14, 0);
+    if (c9 != 0) {
+        t = c9->unkC;
+        sp10[0] = 0x260;
+        sp10[1] = t;
+        Ui_SlideWidgetChild(self, c9, sp10, 0);
+    }
+    if (ca != 0) {
+        t = ca->unkC;
+        spC[0] = 0x260;
+        spC[1] = t;
+        Ui_SlideWidgetChild(self, ca, spC, 0);
+    }
+    {
+        Ref *p = *(Ref **)((u8 *)self + 0x60);
+        if (p != 0) {
+            if (--p->ref == 0) {
+                if (p != 0) {
+                    p->v0(1);
+                }
+            }
+            *(Ref **)((u8 *)self + 0x60) = 0;
+        }
+    }
+    if (cb != 0) {
+        t = cb->unkC;
+        sp8[0] = 0x260;
+        sp8[1] = t;
+        Ui_SlideWidgetChild(self, cb, sp8, 0);
+    }
+    {
+        Ref *p = *(Ref **)((u8 *)self + 0x64);
+        if (p != 0) {
+            if (--p->ref == 0) {
+                if (p != 0) {
+                    p->v0(1);
+                }
+            }
+            *(Ref **)((u8 *)self + 0x64) = 0;
+        }
+    }
+    Process_Goto(self, 0x26);
+}
+#pragma optimization_level reset
+#pragma cplusplus reset
+#pragma use_lmw_stmw reset
 void Ui_HandleUnitPanelListMode(void *panel) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -1373,6 +1448,65 @@ extern "C" void fn_801B0978(void *arg0) {
  if(p) Ui_SetWidgetText(p,text);
 }
 
+extern "C" void fn_801B0AEC(void *arg0) {
+#pragma cplusplus on
+    void *Heap_Alloc(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, s32);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029759C[];
+    extern f32 lbl_8036B0A8;
+    u8 *obj;
+    u8 *derivedTable;
+    s32 caption;
+    void *child;
+    obj = (u8 *)Heap_Alloc(0x48);
+    if (obj) {
+        derivedTable = lbl_8029759C;
+        *(void **)obj = lbl_8028FDB0;
+        *(s32 *)(obj + 4) = 0;
+        *(void **)obj = lbl_80292230;
+        *(s16 *)(obj + 8) = -1;
+        *(s16 *)(obj + 0xA) = 0x260;
+        *(s16 *)(obj + 0xC) = 0x108;
+        *(s16 *)(obj + 0xE) = 0x368;
+        *(s16 *)(obj + 0x10) = 0x180;
+        *(s16 *)(obj + 0x12) = 0;
+        *(s16 *)(obj + 0x14) = 0;
+        *(s16 *)(obj + 0x16) = 0x108;
+        *(s16 *)(obj + 0x18) = 0x78;
+        *(s16 *)(obj + 0x1A) = 0;
+        *(s16 *)(obj + 0x1C) = 0;
+        obj[0x1E] = 0xFF;
+        obj[0x1F] = 0xFF;
+        obj[0x20] = 0xFF;
+        obj[0x21] = 0xFF;
+        *(s16 *)(obj + 0x22) = 0x1F4;
+        *(s16 *)(obj + 0x24) = 0;
+        *(f32 *)(obj + 0x28) = 0.0f;
+        *(f32 *)(obj + 0x2C) = 0.0f;
+        *(f32 *)(obj + 0x30) = 0.0f;
+        *(s32 *)(obj + 0x34) = 0;
+        *(s32 *)(obj + 0x38) = 0;
+        *(void **)obj = derivedTable;
+        obj[0x3C] = 1;
+        *(s16 *)(obj + 0x3E) = 2;
+        *(s16 *)(obj + 0x40) = -1;
+        *(s16 *)(obj + 0x42) = -1;
+        *(s16 *)(obj + 0x44) = -1;
+        ((SetupMenuObj *)obj)->v8();
+    }
+    *(u8 **)((u8 *)arg0 + 0x58) = obj;
+    obj = *(u8 **)((u8 *)arg0 + 0x58);
+    if (obj) (*(s32 *)(obj + 4))++;
+    *(s16 *)(*(u8 **)((u8 *)arg0 + 0x58) + 8) = 7;
+    (*(u8 **)((u8 *)arg0 + 0x58))[0x3C] = 0;
+    *(s16 *)(*(u8 **)((u8 *)arg0 + 0x58) + 0x24) = 8;
+    caption = *(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x7C);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child) Ui_SetWidgetText(child, caption);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus reset
 #pragma opt_common_subs off
 void fn_801B0C70(void *arg0) {
@@ -1563,15 +1697,74 @@ void fn_801B1194(s32 arg0) {
 
 extern s32 gActorXmlStrs[];
 extern u16* lbl_80296128;
-void fn_801B1218(void* arg0, void* arg1) {
-    if (arg0 != NULL && arg1 != NULL) {
-        s32 r3 = M2C_FIELD(arg0, s32*, 0x48);
-        s32 r4 = M2C_FIELD(arg1, s32*, 0x10);
-        if (r4 > 0) {
-            fn_80036B20((char*)arg0 + 0x9C, (char*)arg1 + 0x34, r4, r3, 1);
+void fn_801B1218(void *self) {
+    void TalkUi_ShowMsg(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, s32);
+    void fn_8014D268(void *, s32);
+    void fn_8001BF3C(void *, s32);
+    void fn_8001BEC0(void *, s32);
+    void fn_8001BE44(void *, s32);
+    void fn_8001BDC8(void *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void fn_801402A0(void *, void *, s16 *, s32);
+    void fn_8014017C(void *, void *, s16 *, s32);
+    void Forge_BindWeaponActor(void *, void *);
+    void Process_Goto(void *, s32);
+    extern u8 gUiContext[];
+    extern u8 gBattleState[];
+    void *obj;
+    void *child;
+    void *child2;
+    void *weapon;
+    void *slide;
+    s16 pos[2];
+    s16 pos2[2];
+    s16 pos3[2];
+    s32 text;
+
+    obj = *(void **)((u8 *)self + 0x48);
+    switch (gUiContext[8]) {
+    case 0x81:
+        TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x1C));
+        text = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x84);
+        child = Ui_FindChild(self, -0x1000, 0);
+        if (child != NULL) {
+            Ui_SetWidgetText(child, text);
         }
-        
-        fn_8003F5F8(arg0, arg1);
+        child2 = Ui_FindChild(self, 2, 0);
+        fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) - *(s32 *)((u8 *)child2 + 0x3C));
+        weapon = (u8 *)obj + 0x60;
+        fn_8001BF3C(weapon, (s8)((u8 *)obj)[0x51]);
+        fn_8001BEC0(weapon, (s8)((u8 *)obj)[0x52]);
+        fn_8001BE44(weapon, (s8)((u8 *)obj)[0x53]);
+        fn_8001BDC8(weapon, (s8)((u8 *)obj)[0x54]);
+        ((u8 *)obj)[0x54] = 0;
+        ((u8 *)obj)[0x53] = 0;
+        ((u8 *)obj)[0x52] = 0;
+        ((u8 *)obj)[0x51] = 0;
+        ((u8 *)obj)[0x3C] = 0;
+        ((u8 *)obj)[0x50] = 0;
+        pos[0] = 0x260;
+        pos[1] = *(s16 *)((u8 *)child2 + 0xC);
+        Ui_SlideWidgetChild(self, child2, pos, 0);
+        if (*(s16 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x3E) != 4) {
+            ((u8 *)obj)[0x3D] = 0;
+            pos2[0] = *(s16 *)((u8 *)obj + 0xA);
+            pos2[1] = 0x108;
+            fn_801402A0(self, obj, pos2, 0);
+        }
+        slide = *(void **)((u8 *)self + 0x50);
+        ((u8 *)slide)[0x44] = 1;
+        pos3[0] = (s16)(*(s16 *)((u8 *)slide + 0xE) - *(s16 *)((u8 *)slide + 0xA));
+        pos3[1] = 0xE0;
+        fn_8014017C(self, slide, pos3, 0);
+        Forge_BindWeaponActor(slide, weapon);
+        *(void **)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x3C) = weapon;
+        break;
+    case 0x80:
+        Process_Goto(self, 0xB);
+        break;
     }
 }
 
@@ -1898,6 +2091,66 @@ void Ui_CreateConfirmChild(void *self) {
 
 void fn_801B1C60(void) {
 
+}
+
+void fn_801B1C64(void *arg0) {
+    extern u8 gUiContext[24];
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Forge_BindWeaponActor(void *, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
+    void TalkUi_ShowMsg(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, s32);
+    void Process_Goto(void *, s32);
+#pragma cplusplus on
+    struct RefObj { virtual void destroy(s32); s32 refCount; };
+    u8 *self = (u8 *)arg0;
+    u8 *widget;
+    RefObj *child;
+    s32 text;
+    s16 y;
+    s16 pos1[2], pos2[2], pos3[2], pos4[2];
+    switch (gUiContext[8]) {
+    case 0x80:
+        widget = *(u8 **)(self + 0x4C);
+        y = *(s16 *)(widget + 0xC); pos1[0] = 0x260; pos1[1] = y;
+        Ui_SlideWidgetChild(self, widget, pos1, 0);
+        child = *(RefObj **)(self + 0x4C);
+        if (child) {
+            if (--child->refCount == 0 && child) child->destroy(1);
+            *(RefObj **)(self + 0x4C) = 0;
+        }
+        if (*(s16 *)(*(u8 **)(self + 0x40) + 0x3E) != 4) {
+            Forge_BindWeaponActor(*(void **)(self + 0x50), 0);
+            widget = *(u8 **)(self + 0x50);
+            y = *(s16 *)(widget + 0xC); pos2[0] = 0x260; pos2[1] = y;
+            Ui_SlideWidgetChild(self, widget, pos2, 0);
+            child = *(RefObj **)(self + 0x50);
+            if (child) {
+                if (--child->refCount == 0 && child) child->destroy(1);
+                *(RefObj **)(self + 0x50) = 0;
+            }
+        }
+        widget = *(u8 **)(self + 0x40);
+        Ui_AddChild(self, widget);
+        y = *(s16 *)(widget + 0xC); pos3[0] = 0x138; pos3[1] = y;
+        Ui_SlideWidgetChildMode1(self, widget, pos3, 0);
+        widget = *(u8 **)(self + 0x44);
+        *(s16 *)(widget + 0x24) = 8;
+        Ui_AddChild(self, widget);
+        y = *(s16 *)(widget + 0xC); pos4[0] = 0x118; pos4[1] = y;
+        Ui_SlideWidgetChildMode1(self, widget, pos4, 0);
+        Ui_BringChildToFront(self, widget);
+        TalkUi_ShowMsg(*(s32 *)(*(u8 **)(self + 0x6C) + 0xC));
+        text = *(s32 *)(*(u8 **)(self + 0x6C) + 0x6C);
+        widget = (u8 *)Ui_FindChild(self, -0x1000, 0);
+        if (widget) Ui_SetWidgetText(widget, text);
+        Process_Goto(self, 7);
+    case 0x81: return;
+    }
+#pragma cplusplus reset
 }
 
 void fn_801B1E54(void *arg0) {
@@ -2376,35 +2629,77 @@ extern "C" void fn_801B27B0(void *arg0) {
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void *fn_801B2A80(u32 arg0) {
-    void *Process_CreateChild(void *, u32, void *);
-    void *Process_Create(void *, u32, void *);
-    void fn_801403F0(void *);
-    extern u8 lbl_802975D0[];
-    extern u8 gFShopMsgTable[];
-    
-    void *var_r31;
-    
-    if (arg0 != 0U) {
-        var_r31 = Process_CreateChild(lbl_802975D0, arg0, lbl_802975D0);
-    } else {
-        var_r31 = Process_Create(lbl_802975D0, arg0, lbl_802975D0);
+void fn_801B2A80(void *arg0) {
+    void *Heap_Alloc(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
+    void Ui_SetWidgetText(void *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_802961C4[];
+#pragma cplusplus on
+    s16 firstPos[2];
+    s16 secondPos[2];
+    u8 *obj;
+    u8 *panel;
+    s32 caption;
+    void *child;
+    panel = (u8 *)Ui_FindChild(arg0, 0, 0);
+    if (!panel) {
+        panel = *(u8 **)((u8 *)arg0 + 0x40);
+        Ui_AddChild(arg0, panel);
     }
-    
-    if (var_r31 != NULL) {
-        fn_801403F0(var_r31);
-        *(s32 *)((u8 *)var_r31 + 0x40) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x44) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x48) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x4C) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x50) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x54) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x58) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x60) = 0;
-        *(s32 *)((u8 *)var_r31 + 0x64) = 0;
-        *(u8 **)((u8 *)var_r31 + 0x6C) = gFShopMsgTable;
+    if (*(s16 *)(panel + 0xA) != 0x138) {
+        s16 y = *(s16 *)(panel + 0xC);
+        firstPos[0] = 0x138;
+        firstPos[1] = y;
+        Ui_SlideWidgetChildMode1(arg0, panel, firstPos, 0);
     }
-    return var_r31;
+    obj = (u8 *)Heap_Alloc(0x44);
+    if (obj) {
+        *(u32 *)obj = (u32)lbl_8028FDB0;
+        *(s32 *)(obj + 4) = 0;
+        *(u32 *)obj = (u32)lbl_80292230;
+        *(s16 *)(obj + 8) = -1;
+        *(s16 *)(obj + 0xA) = 0x260;
+        *(s16 *)(obj + 0xC) = 0x148;
+        *(s16 *)(obj + 0xE) = 0x349;
+        *(s16 *)(obj + 0x10) = 0x18F;
+        *(s16 *)(obj + 0x12) = 0;
+        *(s16 *)(obj + 0x14) = 0;
+        *(s16 *)(obj + 0x16) = 0xE9;
+        *(s16 *)(obj + 0x18) = 0x47;
+        *(s16 *)(obj + 0x1A) = 0;
+        *(s16 *)(obj + 0x1C) = 0;
+        obj[0x1E] = 0xFF;
+        obj[0x1F] = 0xFF;
+        obj[0x20] = 0xFF;
+        obj[0x21] = 0xFF;
+        *(s16 *)(obj + 0x22) = 0x226;
+        *(s16 *)(obj + 0x24) = 0;
+        *(f32 *)(obj + 0x28) = 0.0f;
+        *(f32 *)(obj + 0x2C) = 0.0f;
+        *(f32 *)(obj + 0x30) = 0.0f;
+        *(s32 *)(obj + 0x34) = 0;
+        *(s32 *)(obj + 0x38) = 0;
+        *(u32 *)obj = (u32)lbl_802961C4;
+        *(s32 *)(obj + 0x3C) = -1;
+        ((SetupMenuObj *)obj)->v8();
+    }
+    *(s16 *)(obj + 8) = 2;
+    *(s16 *)(obj + 0x24) = 8;
+    Ui_AddChild(arg0, obj);
+    {
+        s16 y = *(s16 *)(obj + 0xC);
+        secondPos[0] = 0x158;
+        secondPos[1] = y;
+        Ui_SlideWidgetChildMode1(arg0, obj, secondPos, 0);
+    }
+    Ui_BringChildToFront(arg0, panel);
+    caption = *(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x6C);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child) Ui_SetWidgetText(child, caption);
+#pragma cplusplus reset
 }
 
 void fn_801B2C58(void *arg0) {
@@ -2547,6 +2842,74 @@ void Ui_CreateMainListPanel(void *self) {
     if (child != 0) {
         Ui_SetWidgetText(child, caption);
     }
+}
+
+void fn_801B2FA8(void *arg0) {
+    void *Heap_Alloc(s32);
+    s32 strlen(void *);
+    void String_AssignCStr(void *, void *, s32);
+    void Ui_AddChild(void *, void *);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, s32);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80293C84[], lbl_80293C58[];
+    extern u8 gFShopStrings[];
+#pragma cplusplus on
+    u8 *obj;
+    s32 caption;
+    void *child;
+    obj = (u8 *)Heap_Alloc(0x5C);
+    if (obj) {
+        *(void * *)(obj + 0x0) = lbl_8028FDB0;
+        *(s32 *)(obj + 0x4) = 0;
+        *(void * *)(obj + 0x0) = lbl_80292230;
+        *(s16 *)(obj + 0x8) = -1;
+        *(s16 *)(obj + 0xa) = 0;
+        *(s16 *)(obj + 0xc) = 0x190;
+        *(s16 *)(obj + 0xe) = 0x260;
+        *(s16 *)(obj + 0x10) = 0x1C0;
+        *(s16 *)(obj + 0x12) = 0;
+        *(s16 *)(obj + 0x14) = 0;
+        *(s16 *)(obj + 0x16) = 0x260;
+        *(s16 *)(obj + 0x18) = 0x30;
+        *(s16 *)(obj + 0x1a) = 0;
+        *(s16 *)(obj + 0x1c) = 0;
+        *(u8 *)(obj + 0x1e) = 255;
+        *(u8 *)(obj + 0x1f) = 255;
+        *(u8 *)(obj + 0x20) = 255;
+        *(u8 *)(obj + 0x21) = 255;
+        *(s16 *)(obj + 0x22) = 0x5A;
+        *(s16 *)(obj + 0x24) = 0;
+        *(f32 *)(obj + 0x28) = 0.0f;
+        *(f32 *)(obj + 0x2c) = 0.0f;
+        *(f32 *)(obj + 0x30) = 0.0f;
+        *(s32 *)(obj + 0x34) = 0;
+        *(s32 *)(obj + 0x38) = 0;
+        *(void * *)(obj + 0x0) = lbl_80293C84;
+        *(s32 *)(obj + 0x3c) = 0;
+        *(s32 *)(obj + 0x40) = 0;
+        *(s32 *)(obj + 0x44) = 0;
+        *(s32 *)(obj + 0x40) = 0;
+        *(s32 *)(obj + 0x48) = 0;
+        *(u8 *)(obj + 0x4c) = 1;
+        *(s16 *)(obj + 0x4e) = 0;
+        *(s16 *)(obj + 0x50) = 0;
+        *(s16 *)(obj + 0x52) = 0;
+        *(s16 *)(obj + 0x54) = 0;
+        *(void * *)(obj + 0x0) = lbl_80293C58;
+        *(s32 *)(obj + 0x58) = 1;
+        *(s16 *)(obj + 0x4e) = 0x30;
+        *(s16 *)(obj + 0x52) = 0x30;
+    }
+    *(s16 *)(obj + 8) = -0x1000;
+    *(s32 *)(obj + 0x48) = 1;
+    String_AssignCStr(obj + 0x3C, gFShopStrings + 0x3BE, strlen(gFShopStrings + 0x3BE));
+    *(u32 *)(obj + 0x34) |= 0x10;
+    *(s32 *)(obj + 0x58) = 1;
+    Ui_AddChild(arg0, obj);
+    caption = *(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x80);
+    child = Ui_FindChild(arg0, -0x1000, 0);
+    if (child) Ui_SetWidgetText(child, caption);
+#pragma cplusplus reset
 }
 
 void *Ui_ConfirmChild_Ctor(void *arg0) {
