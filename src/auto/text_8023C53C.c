@@ -7925,32 +7925,18 @@ void fn_80255100(void *arg0) {
 }
 
 void fn_802551F0(void *arg0, u32 arg1) {
-    if (arg1 != 0) {
-        ((u32*)arg0)[0x45] = ((u32*)arg0)[0x45] | 0x100;
-        return;
-    }
-    
-    if (((u32*)arg0)[0xD] != 0) {
-        u32 temp_r4 = ((u32*)arg0)[0x45];
-        u32 temp_r6 = ((u32*)arg0)[0x46];
-        
-        if ((temp_r4 & 0x400) || (temp_r6 & 0)) {
-            if (((u8*)arg0)[0x68] != 0 && ((u32*)arg0)[0x14] != 0) {
-                ((u32*)arg0)[0xE] = ((u32*)arg0)[0x17];
-                ((u32*)arg0)[0xD] = ((u32*)arg0)[0x14];
-                ((u32*)arg0)[0x14] = 0;
-                Sound_DeactivateSynthVoice(arg0);
-                return;
-            }
-        } else {
-            if (((u32*)arg0)[0x46] & 4) {
-                Sound_DeactivateSynthVoice(arg0);
-            }
-        }
-    }
-    
-    ((u32*)arg0)[0x46] = ((u32*)arg0)[0x46] & ~0;
-    ((u32*)arg0)[0x45] = ((u32*)arg0)[0x45] & ~0x500;
+u32 done;
+if(arg1) { *(u32 *)((u8 *)arg0+0x114) |= 0x100; return; }
+if(*(u32 *)((u8 *)arg0+0x34) && (*(u64 *)((u8 *)arg0+0x114)&0x40000000000ULL)) {
+if(*(u8 *)((u8 *)arg0+0x68) && *(void **)((u8 *)arg0+0x50)) {
+*(u32 *)((u8 *)arg0+0x38)=*(u32 *)((u8 *)arg0+0x5C);
+*(void **)((u8 *)arg0+0x34)=*(void **)((u8 *)arg0+0x50);
+*(void **)((u8 *)arg0+0x50)=0;
+Sound_DeactivateSynthVoice(arg0); done=1;
+} else {done=0;}
+if(done==0 && (*(u64 *)((u8 *)arg0+0x114)&4ULL)) Sound_DeactivateSynthVoice(arg0);
+}
+*(u64 *)((u8 *)arg0+0x114) &= ~0x50000000000ULL;
 }
 
 void fn_802552F8(void *arg0)
