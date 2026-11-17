@@ -1958,6 +1958,69 @@ void fn_8005E644(void *arg0) {
         ((u8 *)child)[0xA] = ((u8 *)&color)[2];
     }
 }
+
+s32 fn_8005EA14(arg0)
+u32 arg0;
+{
+    void fn_800616A0(void *);
+    u32 r30, r29, r28, r27, r26, r25, r24, r23;
+
+    if (arg0 != 0) {
+        r30 = *(u32 *)(arg0 + 0x8C);
+        if (r30 != 0) {
+            r29 = *(u32 *)(r30 + 0x8C);
+            if (r29 != 0) {
+                r28 = *(u32 *)(r29 + 0x8C);
+                if (r28 != 0) {
+                    r27 = *(u32 *)(r28 + 0x8C);
+                    if (r27 != 0) {
+                        r26 = *(u32 *)(r27 + 0x8C);
+                        if (r26 != 0) {
+                            r25 = *(u32 *)(r26 + 0x8C);
+                            if (r25 != 0) {
+                                r24 = *(u32 *)(r25 + 0x8C);
+                                if (r24 != 0) {
+                                    r23 = *(u32 *)(r24 + 0x8C);
+                                    if (r23 != 0) {
+                                        fn_8005EA14(*(u32 *)(r23 + 0x8C));
+                                        if (*(u32 *)r23 & 0xC00000) {
+                                            fn_800616A0((void *)r23);
+                                        }
+                                    }
+                                    if (*(u32 *)r24 & 0xC00000) {
+                                        fn_800616A0((void *)r24);
+                                    }
+                                }
+                                if (*(u32 *)r25 & 0xC00000) {
+                                    fn_800616A0((void *)r25);
+                                }
+                            }
+                            if (*(u32 *)r26 & 0xC00000) {
+                                fn_800616A0((void *)r26);
+                            }
+                        }
+                        if (*(u32 *)r27 & 0xC00000) {
+                            fn_800616A0((void *)r27);
+                        }
+                    }
+                    if (*(u32 *)r28 & 0xC00000) {
+                        fn_800616A0((void *)r28);
+                    }
+                }
+                if (*(u32 *)r29 & 0xC00000) {
+                    fn_800616A0((void *)r29);
+                }
+            }
+            if (*(u32 *)r30 & 0xC00000) {
+                fn_800616A0((void *)r30);
+            }
+        }
+        if (*(u32 *)arg0 & 0xC00000) {
+            fn_800616A0((void *)arg0);
+        }
+    }
+}
+
 #pragma use_lmw_stmw reset
 
 #pragma dont_inline reset
@@ -4304,6 +4367,150 @@ do_switch:
     }
     
     return lbl_8036920C * (f32)var_r4;
+}
+
+u8 GMaterial_EvalAlphaAnim(s32 arg0, s16 arg1, void *arg2, f32 farg0) {
+    u8 *base;
+    u8 *node;
+    u8 *entry;
+    u8 *keys;
+    u16 offset;
+    u16 count;
+    u16 type;
+    s32 index;
+    s32 low;
+    s32 high;
+    s32 mid;
+    s32 frame;
+    s32 i0;
+    s32 i1;
+    s16 time0;
+    s16 time1;
+    s16 value0;
+    s16 value1;
+    s32 value;
+    u8 interpolate;
+
+    if (arg0 == 0) {
+        base = NULL;
+    } else {
+        node = *(u8 **)arg0;
+
+        if (node != NULL) {
+            base = *(u8 **)(node + 4);
+        } else {
+            base = NULL;
+        }
+    }
+
+    if (base == NULL) {
+        return 0;
+    }
+
+    offset = *(u16 *)(*(u8 **)(base + 4) + arg1 * 2);
+
+    if (offset == 0xFFFF) {
+        entry = NULL;
+    } else {
+        entry = base + offset;
+    }
+
+    if (entry == NULL) {
+        return 0;
+    }
+
+    count = *(u16 *)entry;
+    type = *(u16 *)(entry + 2);
+    keys = entry + 4;
+
+    time0 = -1;
+    time1 = -1;
+    value1 = 0;
+    index = 0;
+
+    if (count != 0) {
+        if (count == 0) {
+            index = -1;
+        } else {
+            low = 0;
+            high = count - 1;
+            frame = (s32)farg0;
+
+            while (low <= high) {
+                mid = low + ((high - low) >> 1);
+
+                if (*(u16 *)(keys + mid * 4) < frame) {
+                    low = mid + 1;
+                } else if (*(u16 *)(keys + mid * 4) > frame) {
+                    high = mid - 1;
+                } else {
+                    index = mid;
+                    goto search_done;
+                }
+            }
+
+            if (high < 0) {
+                index = -1;
+            } else {
+                index = count - 1;
+
+                if (low <= index) {
+                    if (*(u16 *)(keys + low * 4) <= frame) {
+                        index = low;
+                    } else {
+                        index = low - 1;
+                    }
+                }
+            }
+        }
+
+search_done:
+        interpolate = 0;
+
+        if (index < 0) {
+            value0 = *(s16 *)(keys + 2);
+        } else if (index < count - 1) {
+            i0 = index * 4;
+            i1 = (index + 1) * 4;
+
+            time0 = *(s16 *)(keys + i0);
+            time1 = *(s16 *)(keys + i1);
+
+            value0 = *(s16 *)(keys + i0 + 2);
+            value1 = *(s16 *)(keys + i1 + 2);
+
+            interpolate = 1;
+        } else {
+            value0 = *(s16 *)(keys + index * 4 + 2);
+        }
+
+        if (interpolate == 0) {
+            value1 = value0;
+        } else {
+            switch (type) {
+            case 0:
+                value1 = (s32)(
+                    (f32)value0 +
+                    ((f32)((s16)value1 - (s16)value0) *
+                     (farg0 - (f32)(s16)time0)) /
+                    (f32)((s16)time1 - (s16)time0)
+                );
+                break;
+
+            case 1:
+                value1 = value0;
+                break;
+
+            default:
+                value1 = 0;
+                break;
+            }
+        }
+    }
+
+    *((u8 *)arg2 + 3) = (u8)value1;
+
+    return 1;
 }
 
 u8 GMaterial_EvalColorAnim(void *arg0, s32 arg1, void *arg2, f32 farg0)
