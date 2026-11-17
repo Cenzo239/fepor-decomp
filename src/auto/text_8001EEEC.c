@@ -3877,6 +3877,38 @@ s32 Battle_TryShowWeaponHelp(s32 parent) {
     return 1;
 }
 
+s32 fn_80026BD0(s32 arg0) {
+ extern u8 gBattle[],lbl_80268E40[];
+ s32 UnitRef_GetName(void *);
+ s32 fn_8001D070(void *,s32);
+ void fn_80231E74(char *,s32,void *,...);
+ void fn_8000D864(s32,void *);
+ void *fn_8000D910(void *,u8);
+ void Ui_OpenHelpPopup(void *,void *,s32,s32);
+ u8 Status_Test(void *,s32);
+ char buffer[128];
+ u8 *unit;
+ s32 parent=arg0;
+ s32 name;
+ u8 *ref;
+ u8 kind;
+ u8 *item;
+ u8 *left=gBattle;
+ u8 *right=left+0x2e0;
+ unit=0;
+ if((*(u8**)(left+0x190))[8]==0) unit=left;
+ if((*(u32*)(gBattle+0xcac)&5)==0 && (*(u8**)(right+0x190))[8]==0) unit=right;
+ if(unit==0 || *(s8*)(unit+0x1a8)==0 || unit[0x2c7]==0) return 0;
+ ref=unit+0x28c;
+ if(ref==0 || (item=*(u8**)ref)==0) return 0;
+ if(item!=0) kind=item[0x15]; else kind=0;
+ name=UnitRef_GetName(ref);
+ fn_80231E74(buffer,0x80,lbl_80268E40+0x1ea,fn_8001D070(ref,1),name,kind+0x60);
+ fn_8000D864(0,buffer);
+ Ui_OpenHelpPopup(fn_8000D910(lbl_80268E40+0x1f5,Status_Test(unit+0x1bc,1)),lbl_80268E40+0x200,parent,0);
+ return 1;
+}
+
 /* If the opponent is a player unit, offer the active combatant's droppable item. */
 s32 Battle_TryOfferDroppableItem(s32 parent) {
     void Item_Destroy(void *, s32);
@@ -3918,20 +3950,20 @@ s32 Battle_TryOfferDroppableItem(s32 parent) {
 }
 
 void fn_80026E2C(s32 arg0) {
-    void fn_8012AA90(s8, s8, s32);
+    void fn_8012AA90(s16, s16, s32);
     extern u8 gUiContext[];
     typedef struct {
         u8 pad : 5;
         u8 flags : 3;
     } Bits;
     u8 *base;
-    u8 *ptr;
+    s8 *ptr;
     Bits *bits;
 
     base = gUiContext;
-    ptr = *(u8 **)(base + 4);
-    fn_8012AA90((s8)ptr[0x19E], (s8)ptr[0x19F], arg0);
-    ptr = *(u8 **)(base + 4);
+    ptr = *(s8 **)(base + 4);
+    fn_8012AA90(ptr[0x19E], ptr[0x19F], arg0);
+    ptr = *(s8 **)(base + 4);
     bits = (Bits *)(ptr + 0x1A5);
     bits->flags = 1;
 }
@@ -4200,25 +4232,26 @@ void UiCtx_GetItemSlot(void *arg0) {
     void Unit_GetItemSlot(void *, s32);
     Unit_GetItemSlot(*(void **)arg0, *(s8 *)((u8 *)arg0 + 0xA));
 }
-#pragma global_optimizer reset
+#pragma optimization_level 3
 void fn_800285EC(void) {
     extern u8 lbl_80367707;
-    extern u8 gBattle[];
+    struct BS { u8 pad[0xCAC]; u32 flags; };
+    extern struct BS gBattle;
     u32 flags;
-    u8 *base;
+    void fn_80098A9C(void);
+    void fn_800D5818(void);
 
     if (lbl_80367707 == 0) {
-        base = gBattle;
-        flags = *(u32 *)(base + 0xCAC);
+        flags = gBattle.flags;
         if ((flags & 0x80000000) != 0) {
             fn_80098A9C();
         } else {
-            *(u32 *)(base + 0xCAC) = flags | 0x10000000;
+            gBattle.flags = flags | 0x10000000;
             fn_800D5818();
         }
     }
 }
-
+#pragma optimization_level reset
 void fn_8002863C(void) {
 
 }
