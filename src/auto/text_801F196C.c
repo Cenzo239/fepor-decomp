@@ -3251,9 +3251,9 @@ void fn_801F897C(void) {
 void fn_801F89AC(void *arg0, s32 arg1) {
 extern u8 lbl_8029B394[];
 extern f32 lbl_8036BA00;
-void *fn_8000CAA0(void *,s32);
+void *Process_CreateChild(void *,s32);
 void fn_801FB410(void *);
-u8 *entry=(u8*)fn_8000CAA0(lbl_8029B394,arg1);
+u8 *entry=(u8*)Process_CreateChild(lbl_8029B394,arg1);
 if(entry) {
 fn_801FB410(entry+0x30);
 *(f32*)(entry+0x3c)=lbl_8036BA00;
