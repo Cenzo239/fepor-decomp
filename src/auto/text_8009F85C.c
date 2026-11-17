@@ -2266,31 +2266,33 @@ void fn_800A2A58(void *arg0, void *arg1) {
     fn_801043FC(*(u8 *)((char *)arg1 + 0x3A));
 }
 
-s32 fn_800A2A7C(s32 arg0,s32 arg1,void *arg2) {
-void *Map_GetCursorUnit(void);
-s32 Unit_GetSkillRank(void *,u8);
-void Unit_SetSkillRank(void *,u8,s32);
-extern void *gPadInput;
-struct RankLimits { s32 rank[16]; };
-extern const struct RankLimits lbl_8026D838;
-u8 *unit;
-u32 skill;
-s32 rank;
-u32 flags;
-unit=Map_GetCursorUnit();
-skill=*(u8 *)((u8 *)arg2+0x3a);
-rank=Unit_GetSkillRank(unit+0x1a4,skill);
-flags=*(u32 *)((u8 *)gPadInput+0xc);
-if((flags & 0x01000001) && rank!=0) rank--;
-if(flags & 0x02000002) {
-struct RankLimits limits=lbl_8026D838;
-rank++;
-if(rank>limits.rank[skill]) rank=limits.rank[skill];
+#pragma use_lmw_stmw on
+s32 fn_800A2A7C(s32 arg0, s32 arg1, void *arg2) {
+    void *Map_GetCursorUnit(void);
+    s32 Unit_GetSkillRank(void *, u8);
+    void Unit_SetSkillRank(void *, u8, s32);
+    extern void *gPadInput;
+    struct RankLimits { s32 rank[16]; };
+    extern const struct RankLimits lbl_8026D838;
+    u8 *unit;
+    u32 skill;
+    s32 rank;
+    u32 flags;
+    unit = Map_GetCursorUnit();
+    skill = *(u8 *)((u8 *)arg2 + 0x3a);
+    rank = Unit_GetSkillRank(unit + 0x1a4, skill);
+    flags = *(u32 *)((u8 *)gPadInput + 0xc);
+    if ((flags & 0x01000001) && rank != 0)
+        rank--;
+    if (flags & 0x02000002) {
+        struct RankLimits limits = lbl_8026D838;
+        rank++;
+        if (rank > limits.rank[skill])
+            rank = limits.rank[skill];
+    }
+    Unit_SetSkillRank(unit + 0x1a4, skill, rank);
+    return 0;
 }
-Unit_SetSkillRank(unit+0x1a4,skill,rank);
-return 0;
-}
-
 /* Draw a menu text item, then overlay the cursor unit's skill rank. */
 void Ui_DrawSkillRankMenuItem(s32 unused, s32 parent, void *item) {
     void *Map_GetCursorUnit(void);
@@ -2418,43 +2420,56 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     }
 }
 
+#pragma use_lmw_stmw on
 s32 fn_800A2FC4(s32 arg0, s32 arg1, void *arg2) {
-void *Map_GetCursorUnit(void);
-void *Unit_GetSupportPartner(void *, u8);
-s32 Unit_FindSupportPartnerIndex(void *, void *);
-u8 fn_80036FC4(void *,u8);
-extern void *gPadInput;
-s32 index;
-u8 *unit;
-u8 *partner;
-u8 other;
-u32 slot;
-s32 value;
-u32 flags;
-u8 *table;
-s32 offset;
-s32 row;
-if (*(u8 *)((u8 *)arg2+0x39)) return 0;
-unit=Map_GetCursorUnit();
-slot=*(u8 *)((u8 *)arg2+0x3a);
-partner=Unit_GetSupportPartner(unit,slot);
-index=(u8)Unit_FindSupportPartnerIndex(unit,*(void **)(partner+0x188));
-other=Unit_FindSupportPartnerIndex(partner,*(void **)(unit+0x188));
-value=fn_80036FC4(unit,index);
-flags=*(u32 *)((u8 *)gPadInput+0x10);
-if(flags & 0x01000001) value--;
-if(flags & 0x02000002) value++;
-if(value<0) value=0;
-offset=slot*8;
-row=offset+8;
-table=*(u8 **)(*(u8 **)(unit+0x188)+0x50);
-row=(s32)table+row;
-if(value>(u8)(*(u8 *)(row+6)+1)) { row=offset+14; value=(u8)(table[row]+1); }
-*(unit+index+0x214)=value;
-*(partner+other+0x214)=value;
-return 0;
-}
+    void *Map_GetCursorUnit(void);
+    void *Unit_GetSupportPartner(void *, u8);
+    s32 Unit_FindSupportPartnerIndex(void *, void *);
+    u8 fn_80036FC4(void *, u8);
+    extern void *gPadInput;
+    s32 index;
+    u8 *unit;
+    u8 *partner;
+    u8 other;
+    u32 slot;
+    s32 value;
+    u32 flags;
+    u8 *table;
+    s32 offset;
+    s32 row;
+    u32 idx;
 
+    if (*(u8 *)((u8 *)arg2 + 0x39)) {
+        return 0;
+    }
+    unit = Map_GetCursorUnit();
+    slot = *(u8 *)((u8 *)arg2 + 0x3A);
+    partner = Unit_GetSupportPartner(unit, slot);
+    index = (u8)Unit_FindSupportPartnerIndex(unit, *(void **)(partner + 0x188));
+    other = Unit_FindSupportPartnerIndex(partner, *(void **)(unit + 0x188));
+    value = fn_80036FC4(unit, index);
+    flags = *(u32 *)((u8 *)gPadInput + 0x10);
+    if (flags & 0x01000001) {
+        value--;
+    }
+    if (flags & 0x02000002) {
+        value++;
+    }
+    if (value < 0) {
+        value = 0;
+    }
+    table = *(u8 **)(*(u8 **)(unit + 0x188) + 0x50);
+    offset = slot * 8;
+    row = offset + 8;
+    row = (s32)table + row;
+    if (value > (u8)(*(u8 *)(row + 6) + 1)) {
+        idx = (u32)offset + 0xE;
+        value = (u8)(*(u8 *)((u32)table + idx) + 1);
+    }
+    *(unit + index + 0x214) = value;
+    *(partner + other + 0x214) = value;
+    return 0;
+}
 s32 fn_800A30D8(void) {
     return 0;
 }
