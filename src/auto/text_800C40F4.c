@@ -21899,6 +21899,43 @@ void fn_800FC310(void) {
     fn_800FD774(*(void **)gUiContext);
 }
 
+void fn_800FC33C(u8 *self) {
+extern u8 gUiContext[],gAiState[],gBattleState[];
+void UiCtx_BeginMoveSelect(void *,void *);
+void fn_800FC4C8(void *,void *);
+void Process_Goto(void *,s32);
+u8 *ctx=gUiContext;
+u8 *ai=gAiState;
+u8 *unit;
+u8 **cursor;
+u8 *battle=gBattleState;
+u32 faction;
+goto start;
+loop: {
+if((*(u8 **)(unit+0x190))[8]!=faction) goto next;
+if(*(u32 *)(unit+0x1A0)&0x9D) goto next;
+if(self[0x31] && !(*(u32 *)(unit+0x254)&0x10000)) goto next;
+UiCtx_BeginMoveSelect(ctx,unit);
+fn_800FC4C8(gAiState,unit);
+*(u32 *)(unit+0x254)&=~0x10000;
+unit[0x260]=0x10;
+gAiState[0]=0;
+memset(gAiState+8,0,0x10);
+gAiState[0x21C]=0;
+goto done;
+}
+start: faction=battle[0x11];
+next: cursor=*(u8 ***)(ai+0x218); *(u8 ***)(ai+0x218)=cursor+1; unit=*cursor;
+if(unit) goto loop;
+done:
+if(!unit) {
+switch((s32)self[0x31]++) { case 0: *(u8 ***)(ai+0x218)=(u8 **)(gAiState+0x18); Process_Goto(self,0); break;
+default: Process_Goto(self,4); break;
+}
+}
+return;
+}
+
 void fn_800FC490(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x31) = 0;
 }
