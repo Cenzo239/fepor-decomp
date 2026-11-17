@@ -23541,39 +23541,41 @@ Map_FloodMoveRange(map,(s8)arg0,(s8)arg1,(u16)slot,t14,arg3);
 }
 #pragma use_lmw_stmw reset
 
-#pragma use_lmw_stmw on
+#pragma dont_inline on
+#pragma global_optimizer off
 void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
 {
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
-    void fn_80022748(void *, s32);
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
+    void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
     void Map_SelectRangeBuffer(void *, s32);
-    s8 fn_8003A398(void *);
-    u8 fn_80105BC0(void *, s32);
-    extern u8 lbl_802CA518[];
+    s8 Unit_GetMov(void *);
+    u8 Status_Test(void *, s32);
+    extern u8 gBattleMap[];
     u8 *map;
     s32 t14;
     s32 t15;
     s32 slot;
 
-    map = lbl_802CA518;
-    t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
-    t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
-    Map_SelectRangeBuffer(lbl_802CA518, arg3);
-    fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
-    fn_80022748(lbl_802CA518, 0);
+    map = gBattleMap;
+    t14 = Status_Test(unit + 0x1BC, 0x14) != 0;
+    t15 = Status_Test(unit + 0x1BC, 0x15) != 0;
+    Map_SelectRangeBuffer(gBattleMap, arg3);
+    fn_800227F8(gBattleMap, *(void **)(unit + 0x18C));
+    fn_80022748(gBattleMap, 0);
     if (*(u32 *)(unit + 0x254) & 0x20000) {
         fn_800227D0(map, 0x37, 0x30);
     }
     if (arg4 != -1) {
         slot = arg4;
     } else {
-        slot = (s8)fn_8003A398(unit);
+        slot = Unit_GetMov(unit);
     }
-    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)slot, t14, t15);
+    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)slot, t14, t15);
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 
 #pragma use_lmw_stmw reset
 
