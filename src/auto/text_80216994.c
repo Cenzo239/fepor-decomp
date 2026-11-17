@@ -1455,6 +1455,7 @@ void __CARDUpdateFatCallback(s32 chan, s32 result) {
     }
 }
 
+#pragma optimization_level 3
 void fn_80219334(s32 arg0, s32 arg1) {
     extern u16 __CARDBlock[];
     s32 fn_802191F0(s32,u32,s32,void *,void (*)(s32,s32));
@@ -1474,7 +1475,7 @@ void fn_80219334(s32 arg0, s32 arg1) {
         }
     }
 }
-
+#pragma optimization_level reset
 s32 fn_802193FC(s32 arg0, u32 arg1)
 {
     s32 fn_802195B0(s32, void *);
@@ -2151,10 +2152,8 @@ s32 fn_8021A7FC(u32 id) {
     s32 memSize;
 
     if (id & 0xFFFF0000) {
-        if ((id + 0x80000000) == 4) {
-            if (lbl_80366FF0 == 0xFFFF) {
-                return 0;
-            }
+        if ((u32)(id + 0x80000000) != 4 || lbl_80366FF0 == 0xFFFF) {
+            return 0;
         }
     }
     if (id & 3) {
@@ -2176,7 +2175,7 @@ s32 fn_8021A7FC(u32 id) {
     if (sectorSize == 0) {
         return 0;
     }
-    if ((u32)((memSize << 17) / (u32)sectorSize) < 8) {
+    if (((memSize << 17) & 0x1FFE0000) / (u32)sectorSize < 8) {
         return 0;
     }
     return 1;
