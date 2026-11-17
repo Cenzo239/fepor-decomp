@@ -7410,38 +7410,7 @@ void Sound_SelectSource2(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x26C, step, 0x4000000, 4);
 }
 
-void fn_80252F8C(void *arg0, void *arg1) {
-    u32 temp_r0;
-    s32 temp_r3;
-    s32 temp_r5;
-    s32 temp_r7;
-    s32 temp_r8;
-    s32 var_r5;
-    u8 temp_r6;
-    u8 temp_r8_2;
-    
-    if (((*(u32*)((u8*)arg0 + 0x114) & 0x08000000) != 0) || 
-        ((*(u32*)((u8*)arg0 + 0x118) & 0x08000000) == 0)) {
-        
-        *(u32*)((u8*)arg0 + 0x118) = (*(u32*)((u8*)arg0 + 0x118) | 0x08000000);
-        *(u32*)((u8*)arg0 + 0x114) = *(u32*)((u8*)arg0 + 0x114);
-    } else {
-        temp_r6 = *(u8*)((u8*)arg1 + 0x4);
-    }
-    
-    temp_r0 = *(u32*)((u8*)arg1 + 0x0);
-    temp_r5 = (temp_r0 & 0xFFFF0000) >> 16;
-    if (temp_r5 < 0) {
-        var_r5 = temp_r5 - ((((s8)(temp_r0 >> 16)) << 8) / 100);
-    } else {
-        var_r5 = temp_r5 + ((((s8)(temp_r0 >> 16)) << 8) / 100);
-    }
-    
-    temp_r8_2 = (u8)(temp_r0 >> 8);
-    fn_8025FFC8((u8*)arg0 + 0x2B4, (u8)(temp_r0 >> 8), var_r5, temp_r6, temp_r8_2 != 0, temp_r8_2);
-    
-    *(u32*)((u8*)arg0 + 0x220) |= 0x10;
-}
+void fn_80252F8C(void *voice, u32 *step) { SelectSource(voice, (u8 *)voice + 0x2B4, step, 0x08000000, 0x10); }
 
 void Sound_SelectSource12(void *voice, u32 *step) {
     /* MusyX select-source macro for modulator slot 12 (voice+0x3D4). */
@@ -14131,30 +14100,33 @@ void fn_80261BA0(s32 arg0) {
 
 void fn_80261BC8(s32 arg0, u16 arg1)
 {
-    extern u8 *gSoundVoices;
-    extern u8 lbl_80368AD0;
-    u8 *entry;
-    u8 *p;
-    u8 index;
-    u32 cur;
-
-    entry = gSoundVoices + arg0 * 0xF8;
-    if (arg1 >= 0x4000) {
-        arg1 = 0x3FFF;
+  extern u8 *gSoundVoices;
+  extern u8 lbl_80368AD0;
+  u8 *entry;
+  u8 *p;
+  int new_var;
+  u8 index;
+  entry = gSoundVoices + (arg0 * 0xF8);
+  if (arg1 >= 0x4000)
+  {
+    arg1 = 0x3FFF;
+  }
+  index = *((u8 *) (entry + 0xE8));
+  if (index != 0xFF)
+  {
+    p = entry + (index << 2);
+    new_var = 0x38;
+    index = ((u32) arg1) << 4;
+    if ((*((u32 *) (p + new_var))) == index)
+    {
+      return;
     }
-    index = *(u8 *)(entry + 0xE8);
-    if (index != 0xFF) {
-        p = entry + (index << 2);
-        cur = *(u32 *)(p + 0x38);
-        if (cur == ((u32)arg1 << 4)) {
-            return;
-        }
-    }
-    p = entry + (lbl_80368AD0 << 2);
-    *(u32 *)(p + 0x38) = (u32)arg1 << 4;
-    p = entry + (lbl_80368AD0 << 2);
-    *(u32 *)(p + 0x24) = *(u32 *)(p + 0x24) | 8;
-    *(u8 *)(entry + 0xE8) = lbl_80368AD0;
+  }
+  p = entry + (lbl_80368AD0 << 2);
+  *((u32 *) (p + 0x38)) = index;
+  p = entry + (lbl_80368AD0 << 2);
+  *((u32 *) (p + 0x24)) = (*((u32 *) (p + 0x24))) | 8;
+  *((u8 *) (entry + 0xE8)) = lbl_80368AD0;
 }
 
 void fn_80261C40(s32 arg0, s32 arg1) {
@@ -15379,8 +15351,7 @@ void fn_80263608(s32 arg0)
     fn_80215F78((u32)lbl_80368A84 | 0xBABE0000);
     if (fn_80215F40() == 0) {
         fn_80215F78(aux);
-        if (fn_80215F40() == 0) {
-        } else {
+        if (fn_80215F40() != 0) {
             return;
         }
     }
@@ -16764,21 +16735,21 @@ void fn_80265C34(s32 arg0, s32 arg1)
     u8 *entry;
     u8 *queue;
     void (*callback)(s32, s32);
+    s32 flag;
 
+    flag = arg1;
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
 
-    if (arg1 == 0) {
+    if (flag == 0) {
         fn_80266F18(arg0, queue + 0x18);
     } else {
         *(u32 *)(queue + 0x2C) = 0;
         *(u32 *)(queue + 0x28) = 0;
-
         callback = *(void (**)(s32, s32))(queue + 0x14);
-
         if (callback != 0) {
             *(u32 *)(queue + 0x14) = 0;
-            callback(arg0, arg1);
+            callback(arg0, flag);
         }
     }
 
