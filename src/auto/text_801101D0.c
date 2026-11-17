@@ -2322,6 +2322,111 @@ s32 fn_80114AF0(void *arg0) {
     return 0;
 }
 
+void fn_80115264(void *self,s32 mode,s32 flag) {
+s32 strlen(char *);
+s32 fn_80199310(void *);
+s32 kind;
+s32 fn_800DDC04(void *,void *);
+void String_Concat(void *,void *,void *);
+void fn_800C992C(void *,char *,s32);
+String spC8,spBC,spB0,spA4,sp98,sp8C,sp80,sp74,sp68,sp5C,sp50,sp44,sp38,sp2C,sp20;
+s32 sc1C,sc18,sc14,sc10,scC,sc8;
+u32 ok;
+u8 saved;
+spC8.cap=0;spBC.cap=0;
+spC8.size=0;spC8.data=0;spC8.cap=0;
+spBC.size=0;spBC.data=0;spBC.cap=0;
+M2C_FIELD(self,u8 *,0x1a8)=1;
+M2C_FIELD(self,s32 *,0x144)=mode;
+switch(mode) {
+case 0: {s32 len=strlen((char *)gActorXmlStrs+0x505); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x505,len);}
+break;
+case 1: {s32 len=strlen((char *)gActorXmlStrs+0x50a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50a,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+break;
+case 2: {s32 len=strlen((char *)gActorXmlStrs+0x50a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50a,len);}
+M2C_FIELD(self,s32 *,0x140)=1;
+break;
+case 3: {s32 len=strlen((char *)gActorXmlStrs+0x50f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50f,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+if(M2C_FIELD(self,s32 *,0x19c)) M2C_FIELD(self,u8 *,0x1a8)=0;
+break;
+case 4: {s32 len=strlen((char *)gActorXmlStrs+0x46a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46a,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+break;
+case 5: {s32 len=strlen((char *)gActorXmlStrs+0x46f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46f,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+break;
+case 6: {s32 len=strlen((char *)gActorXmlStrs+0x46f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46f,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+break;
+case 7: {s32 len=strlen((char *)gActorXmlStrs+0x478); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x478,len);}
+M2C_FIELD(self,s32 *,0x140)=0;
+break;
+}
+if(mode<3) { if(!M2C_FIELD(self,s32 *,0x140)) {s32 len=strlen((char *)gActorXmlStrs+0x514); fn_800C992C(&spC8,(char *)gActorXmlStrs+0x514,len);} else {s32 len=strlen((char *)gActorXmlStrs+0x516); fn_800C992C(&spC8,(char *)gActorXmlStrs+0x516,len);} }
+if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x518,strlen((char *)gActorXmlStrs+0x518))==0) {
+String_Init(&sp80,String_CStr(&spC8),&sc18);
+String_Concat(&sp8C,(u8 *)self+0x154,&sp80);
+ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp8C)!=0;
+String_Destroy(&sp8C,-1); String_Destroy(&sp80,-1);
+if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x51e); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x51e,len);}
+}
+if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x524,strlen((char *)gActorXmlStrs+0x524))==0) {
+String_Init(&sp68,String_CStr(&spC8),&sc14);
+String_Concat(&sp74,(u8 *)self+0x154,&sp68);
+ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp74)!=0;
+String_Destroy(&sp74,-1); String_Destroy(&sp68,-1);
+if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x52a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x52a,len);}
+}
+if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x50f,strlen((char *)gActorXmlStrs+0x50f))==0) {
+String_Init(&sp50,String_CStr(&spC8),&sc10);
+String_Concat(&sp5C,(u8 *)self+0x154,&sp50);
+ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp5C)!=0;
+String_Destroy(&sp5C,-1); String_Destroy(&sp50,-1);
+if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x51e); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x51e,len);}
+}
+if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x478,strlen((char *)gActorXmlStrs+0x478))==0) {
+String_Init(&sp38,String_CStr(&spC8),&scC);
+String_Concat(&sp44,(u8 *)self+0x154,&sp38);
+ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp44)!=0;
+String_Destroy(&sp44,-1); String_Destroy(&sp38,-1);
+if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x46a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46a,len);}
+}
+saved=M2C_FIELD(self,u8 *,0x1a2);
+if(M2C_FIELD(M2C_FIELD(self,void **,0x118),u8 *,0x1b6) && !M2C_FIELD(self,u8 *,0x1b6) && M2C_FIELD(self,s32 *,0x1b8)==1) {
+if(saved) M2C_FIELD(self,u8 *,0x1a2)=0; else M2C_FIELD(self,u8 *,0x1a2)=1;
+}
+String_Assign(&spBC,&spC8,0,-1);
+fn_801134EC(&spB0,self,&spC8);
+String_Assign(&spC8,&spB0,0,-1);
+String_Destroy(&spB0,-1);
+Actor_LoadAnim(self,String_CStr(&spC8),M2C_FIELD(self,s32 *,0x188),0,1);
+String_Assign((u8 *)self+0x160,&spBC,0,-1);
+M2C_FIELD(self,u8 *,0x1a2)=saved;
+if(mode) M2C_FIELD(self,s32 *,0x140)=0;
+else { M2C_FIELD(self,s32 *,0x140)++; if(M2C_FIELD(self,s32 *,0x140)>1) M2C_FIELD(self,s32 *,0x140)=0; }
+M2C_FIELD(self,u8 *,0x1a4)=1;
+String_Init(&sp20,(char *)gActorXmlStrs+0x518,&sc8);
+String_Concat(&sp2C,(u8 *)self+0x154,&sp20);
+ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp2C)!=0;
+String_Destroy(&sp2C,-1);String_Destroy(&sp20,-1);
+if(!ok) {M2C_FIELD(self,s32 *,0x140)=0;flag=0;}
+if(flag) {{s32 len=strlen((char *)gActorXmlStrs+0x1c); String_AssignCStr((u8 *)self+0x16c,(char *)gActorXmlStrs+0x1c,len);}} else {
+String_Init(&spA4,(char *)gActorXmlStrs+0x43f,&sc1C);
+fn_801134EC(&sp98,self,&spA4);
+String_Assign((u8 *)self+0x16c,&sp98,0,-1);
+String_Destroy(&sp98,-1);String_Destroy(&spA4,-1);
+}
+if(M2C_FIELD(self,u8 *,0x1a1) && mode==2 && String_Compare((u8 *)self+0xb0,0,M2C_FIELD(self,void **,0xb0),(char *)gActorXmlStrs+0x530,strlen((char *)gActorXmlStrs+0x530))!=0) M2C_FIELD(self,u8 *,0x1b5)=1;
+if(M2C_FIELD(self,u8 *,0x1a1) && mode==2 && String_Compare((u8 *)self+0xb0,0,M2C_FIELD(self,void **,0xb0),(char *)gActorXmlStrs+0x530,strlen((char *)gActorXmlStrs+0x530))==0) {
+if(M2C_FIELD(self,void **,0x11c)) kind=fn_80199310(M2C_FIELD(self,void **,0x11c)); else kind=-1;
+if(kind==2) M2C_FIELD(self,u8 *,0x1b5)=1;
+}
+if(M2C_FIELD(self,s32 *,0x19c)) M2C_FIELD(self,u8 *,0x1a0)=1;
+String_Destroy(&spBC,-1);String_Destroy(&spC8,-1);
+}
+
 s32 fn_80115AF0(void *actor) {
 #pragma global_optimizer off
     s32 n;
