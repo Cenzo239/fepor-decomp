@@ -13624,6 +13624,8 @@ void Camera_GetEyePos(void *arg0, void *arg1) {
     M2C_FIELD(arg0, f32 *, 8) = (f32) M2C_FIELD(arg1, f32 *, 0xF8);
 }
 
+#pragma dont_inline on
+#pragma scheduling off
 void fn_800E8FE8(void *arg0, f32 arg1) {
     void fn_800DF478(void *, f32, f32, f32);
     extern f32 lbl_80369F78;
@@ -13632,6 +13634,8 @@ void fn_800E8FE8(void *arg0, f32 arg1) {
     *(f32 *)((u8 *)arg0 + 0x104) = arg1;
     fn_800DF478((u8 *)arg0 + 0x254, arg1, z, z);
 }
+#pragma scheduling reset
+#pragma dont_inline reset
 f32 Camera_GetFov(void *arg0) {
     return M2C_FIELD(arg0, f32 *, 0x104);
 }
