@@ -8317,6 +8317,7 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     ((Obj *)self)->m28();
     return self;
 }
+#pragma optimization_level reset
 
 #pragma cplusplus reset
 
