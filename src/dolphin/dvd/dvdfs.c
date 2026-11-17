@@ -1987,6 +1987,121 @@ void fn_8020F068(void) {
     OSRestoreInterrupts(enabled);
 }
 
+#pragma opt_common_subs off
+s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    BOOL fn_8020C2FC(void);
+    void *fn_8020C310(void);
+    s32 fn_8020F7F0(void *);
+    void cbForStateMotorStopped(void);
+    extern s32 ResumeFromHere_803685C0;
+    void (*cb)(s32, void *);
+    s32 enabled;
+    u8 pad[8];
+
+    enabled = OSDisableInterrupts();
+    cb = callback;
+
+    switch (block->state) {
+    case -1:
+    case 0:
+    case 10:
+        if (cb) {
+            cb(0, block);
+        }
+        break;
+    case 1:
+        if (lbl_803685B8) {
+            OSRestoreInterrupts(enabled);
+            return 0;
+        }
+        lbl_803685BC = (void (*)(void *, void *))cb;
+        lbl_803685B8 = 1;
+        if ((u32)block->command == 4U) {
+            goto state2;
+        }
+        if ((u32)block->command == 1U) {
+            fn_8020C2FC();
+        }
+        break;
+    case 2:
+    state2:
+        fn_8020F7F0(block);
+        block->state = 10;
+        cb = block->callback;
+        if (cb) {
+            cb(-3, block);
+        }
+        cb = callback;
+    case 3:
+        if (cb) {
+            cb(0, block);
+        }
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 11:
+        switch (block->command) {
+        case 4:
+        case 5:
+        case 13:
+        case 15:
+            if (cb) {
+                cb(0, block);
+            }
+            break;
+        default:
+            if (lbl_803685B8) {
+                OSRestoreInterrupts(enabled);
+                return 0;
+            }
+            lbl_803685BC = (void (*)(void *, void *))cb;
+            lbl_803685B8 = 1;
+            break;
+        }
+        break;
+    case 8:
+    case 9:
+        if (fn_8020C310() != (void *)cbForStateMotorStopped) {
+            OSRestoreInterrupts(enabled);
+            return 0;
+        }
+        if (block->state == 4) {
+            ResumeFromHere_803685C0 = 3;
+        }
+        if (block->state == 5) {
+            ResumeFromHere_803685C0 = 4;
+        }
+        if (block->state == 6) {
+            ResumeFromHere_803685C0 = 1;
+        }
+        if (block->state == 11) {
+            ResumeFromHere_803685C0 = 2;
+        }
+        if (block->state == 7) {
+            ResumeFromHere_803685C0 = 7;
+        }
+        executing_80368598 = DummyCommandBlock_80339F80;
+        block->state = 10;
+        cb = block->callback;
+        if (cb) {
+            cb(-3, block);
+        }
+        cb = callback;
+        if (cb) {
+            cb(0, block);
+        }
+        stateReady();
+        break;
+    }
+
+    OSRestoreInterrupts(enabled);
+    return 1;
+}
+#pragma opt_common_subs reset
 s32 fn_8020F334(void *arg0) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);

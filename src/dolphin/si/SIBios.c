@@ -1113,29 +1113,47 @@ u32 fn_8023C410(s32 chan) {
     return fn_8023C2C4(SIGetType(chan));
 }
 
+#pragma optimization_level 3
 void SISetSamplingRate(u32 rate) {
- extern u8 XYNTSC_8029F080[];
- extern u32 SamplingRate_80368828;
- s32 VIGetTvFormat(void);
- void OSReport(const char *, ...);
- BOOL enabled;
- u8 *table;
- u8 *base;
- u32 scale;
- base=XYNTSC_8029F080;
- if(rate>11) rate=11;
- enabled=OSDisableInterrupts();
- SamplingRate_80368828=rate;
- switch(VIGetTvFormat()) {
- case 0: case 2: case 5: table=base; break;
- case 1: table=base+0x30; break;
- default: OSReport((char *)base+0x60); rate=0; table=base; break;
- }
- if(*(volatile u16 *)0xCC00206C & 1) scale=2; else scale=1;
- SISetXY(scale * *(u16 *)(table+rate*4), table[rate*4+2]);
- OSRestoreInterrupts(enabled);
-}
+    extern u32 XYNTSC_8029F080[];
+    extern u32 SamplingRate_80368828;
+    s32 VIGetTvFormat(void);
+    void OSReport(const char *, ...);
+    u32 SISetXY(s32, s32);
+    u32 *base = XYNTSC_8029F080;
+    u8 *table;
+    BOOL enabled;
+    u32 scale;
 
+    if (rate > 11) {
+        rate = 11;
+    }
+    enabled = OSDisableInterrupts();
+    SamplingRate_80368828 = rate;
+    switch (VIGetTvFormat()) {
+    case 0:
+    case 2:
+    case 5:
+        table = (u8 *)base;
+        break;
+    case 1:
+        table = (u8 *)base + 0x30;
+        break;
+    default:
+        OSReport((char *)(base + 0x18));
+        rate = 0;
+        table = (u8 *)base;
+        break;
+    }
+    if (*(volatile u16 *)0xCC00206C & 1) {
+        scale = 2;
+    } else {
+        scale = 1;
+    }
+    SISetXY((s32)(scale * *(u16 *)(table + rate * 4)), (s32)table[rate * 4 + 2]);
+    OSRestoreInterrupts(enabled);
+}
+#pragma optimization_level reset
 void fn_8023C518(void) {
     void SISetSamplingRate(u32);
     extern u32 SamplingRate_80368828;

@@ -17,90 +17,76 @@ s32 DebugPrint(const char *fmt, ...) {
     return 0;
 }
 
+#pragma optimization_level 3
 void fn_80005720(u32 arg0, s8 arg1)
 {
-    extern u8 lbl_80367100[];
-
-    u8 *state;
-    u32 flags;
-    s32 delta;
-    s32 position;
-    s32 limit;
+    extern void *lbl_80367100;
+    u16 flags;
+    s32 pos;
+    s32 lim;
     s32 i;
+    s32 t;
+    s32 z;
+    u32 tmp;
 
-    state = lbl_80367100;
     flags = arg0;
-    delta = arg1;
-
-    if ((flags & 0x10) != 0) {
-        state[0x18] = (state[0x18] == 0);
+    if (arg0 & 0x10) {
+        tmp = __cntlzw(((u8 *)lbl_80367100)[0x18]);
+        ((u8 *)lbl_80367100)[0x18] = tmp >> 5;
     }
-
-    if (state[0x16] != 0) {
-        delta /= 8;
-
-        *(s16 *)(state + 0x10) -= delta;
-
-        if (*(s16 *)(state + 0x10) < 0x10) {
-            *(s16 *)(state + 0x10) = 0x10;
+    if (((u8 *)lbl_80367100)[0x16] != 0) {
+        *(s16 *)((u8 *)lbl_80367100 + 0x10) -= (s8)arg1 / 8;
+        if (*(s16 *)((u8 *)lbl_80367100 + 0x10) < 0x10) {
+            *(s16 *)((u8 *)lbl_80367100 + 0x10) = 0x10;
         }
-
-        limit = *(s16 *)(state + 0x0E) - 0x10;
-
-        if (*(s16 *)(state + 0x10) > limit) {
-            *(s16 *)(state + 0x10) = limit;
+        t = *(s16 *)((u8 *)lbl_80367100 + 0xE);
+        t = t - 0x10;
+        if (*(s16 *)((u8 *)lbl_80367100 + 0x10) > t) {
+            *(s16 *)((u8 *)lbl_80367100 + 0x10) = t;
         }
     }
-
-    if ((flags & 0x0F) == 0) {
+    if ((flags & 0xF) == 0) {
         return;
     }
-
-    if (state[0x16] != 0) {
-        position = *(s16 *)(state + 0x3A) - *(s16 *)(state + 0x14);
-        limit = *(s16 *)(state + 0x38) - *(s16 *)(state + 0x06);
-
-        if (position < 0) {
-            position = 0;
+    if (((u8 *)lbl_80367100)[0x16] != 0) {
+        pos = *(s16 *)((u8 *)lbl_80367100 + 0x3A) - *(s16 *)((u8 *)lbl_80367100 + 0x14);
+        lim = *(s16 *)((u8 *)lbl_80367100 + 0x38) - *(s16 *)((u8 *)lbl_80367100 + 0x6);
+        if (pos < 0) {
+            pos = 0;
         }
-
-        if ((flags & 0x08) != 0) {
-            if (position > 0 && position > limit) {
-                (*(s16 *)(state + 0x3A))--;
+        if (flags & 0x8) {
+            if (pos > 0 && pos > lim) {
+                (*(s16 *)((u8 *)lbl_80367100 + 0x3A))--;
             }
         }
-
-        if ((flags & 0x04) != 0) {
-            (*(s16 *)(state + 0x3A))++;
-
-            if (*(s16 *)(state + 0x3A) == *(s16 *)(state + 0x38)) {
-                state[0x16] = 0;
+        if (flags & 0x4) {
+            (*(s16 *)((u8 *)lbl_80367100 + 0x3A))++;
+            if (*(s16 *)((u8 *)lbl_80367100 + 0x3A) == *(s16 *)((u8 *)lbl_80367100 + 0x38)) {
+                ((u8 *)lbl_80367100)[0x16] = 0;
             }
         }
-
-        if ((flags & 0x01) != 0) {
+        if (flags & 1) {
             for (i = 0; i < 8; i++) {
-                if (position > 0 && position > limit) {
-                    (*(s16 *)(state + 0x3A))--;
+                if (pos > 0 && pos > lim) {
+                    (*(s16 *)((u8 *)lbl_80367100 + 0x3A))--;
                 }
             }
         }
-
-        if ((flags & 0x02) != 0) {
+        if (flags & 2) {
+            z = 0;
             for (i = 0; i < 8; i++) {
-                (*(s16 *)(state + 0x3A))++;
-
-                if (*(s16 *)(state + 0x3A) == *(s16 *)(state + 0x38)) {
-                    state[0x16] = 0;
+                (*(s16 *)((u8 *)lbl_80367100 + 0x3A))++;
+                if (*(s16 *)((u8 *)lbl_80367100 + 0x3A) == *(s16 *)((u8 *)lbl_80367100 + 0x38)) {
+                    ((u8 *)lbl_80367100)[0x16] = z;
                 }
             }
         }
-    } else if ((flags & 0x08) != 0) {
-        state[0x16] = 1;
-        *(s16 *)(state + 0x3A) = *(s16 *)(state + 0x38) - 1;
+    } else if (flags & 0x8) {
+        ((u8 *)lbl_80367100)[0x16] = 1;
+        *(s16 *)((u8 *)lbl_80367100 + 0x3A) = *(s16 *)((u8 *)lbl_80367100 + 0x38) - 1;
     }
 }
-
+#pragma optimization_level reset
 void fn_800059B0(void) {
 
 }
@@ -109,14 +95,14 @@ void fn_800059B0(void) {
 void fn_800059B4(void)
 {
   extern void *lbl_80367100;
+  s32 z;
   s32 off;
   s32 i;
-  s32 z;
   void *table;
   u8 *p;
   off = 0;
   i = 0;
-  z = 0;
+  z = off;
   while (i < (*((s16 *) (((u8 *) lbl_80367100) + 6))))
   {
     table = *((void **) lbl_80367100);
@@ -375,6 +361,7 @@ void fn_80005ED4(void) {
     Heap_Create((u8 *)Game_str + 0xDF, 0xB00000);
 }
 
+#pragma optimization_level 3
 void fn_80005F04(void)
 {
     void fn_801ED3D4(void);
@@ -400,9 +387,7 @@ void fn_80005F04(void)
     u8 *data;
     u8 *state;
     u8 type;
-    s8 x;
-    s8 y;
-    u32 bit;
+    s32 bit;
 
     object = *(u8 **)((u8 *)&gSaveDataBase + 4);
 
@@ -454,10 +439,7 @@ void fn_80005F04(void)
         } else {
             data = gBattleState;
 
-            x = (s8)data[0x52];
-            y = (s8)data[0x53];
-
-            BattleState_SetCamPos((float)x, (float)y);
+            BattleState_SetCamPos((float)(s8)data[0x52], (float)(s8)data[0x53]);
             Camera_SyncFromBattleState();
 
             state = (u8 *)Process_Find(gGameProc);
@@ -495,7 +477,7 @@ void fn_80005F04(void)
         break;
     }
 }
-
+#pragma optimization_level reset
 void fn_800060F8(void) {
     M2C_UNK Unit_ResetAll();
     Unit_ResetAll();

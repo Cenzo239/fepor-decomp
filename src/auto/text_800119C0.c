@@ -2402,67 +2402,64 @@ void fn_80016538(void)
 }
 #pragma use_lmw_stmw reset
 void fn_80016628(s32 arg0) {
-    M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
-    M2C_UNK fn_800158A0(M2C_UNK *);
-    M2C_UNK Unit_Clear(M2C_UNK *, s32);
-    u8 Unit_Read(M2C_UNK *, s32);
-    extern M2C_UNK gUnits;
-    extern M2C_UNK gUnitLists;
-    M2C_UNK *temp_r27;
-    M2C_UNK *var_r28;
-    M2C_UNK *var_r28_2;
-    M2C_UNK *var_r28_3;
-    M2C_UNK *var_r31;
-    s32 var_r27;
-    s32 var_r27_2;
+    M2C_UNK fn_80015718(void *, void *);
+    M2C_UNK fn_800158A0(void *);
+    M2C_UNK Unit_Clear(void *, s32);
+    u8 Unit_Read(void *, s32);
+    extern u8 gUnits[];
+    extern u8 gUnitLists[];
     s32 var_r29;
-    s32 var_r29_2;
+    register u8 *var_r28;
+    s32 context = arg0;
+    register u8 *var_r31;
+    u8 *temp_r27;
+    s32 var_r27;
 
-    fn_8001594C(&gUnitLists, 0);
-    fn_8001594C(&gUnitLists + 0xC, 1);
-    fn_8001594C(&gUnitLists + 0x18, 2);
-    fn_8001594C(&gUnitLists + 0x24, 3);
-    temp_r27 = &gUnitLists + 0x30;
+    fn_8001594C(gUnitLists, 0);
+    fn_8001594C(gUnitLists + 0xC, 1);
+    fn_8001594C(gUnitLists + 0x18, 2);
+    fn_8001594C(gUnitLists + 0x24, 3);
+    temp_r27 = gUnitLists + 0x30;
     fn_8001594C(temp_r27, 4);
-    fn_8001594C(&gUnitLists + 0x3C, 5);
-    fn_8001594C(&gUnitLists + 0x48, 6);
-    fn_8001594C(&gUnitLists + 0x54, 7);
+    fn_8001594C(gUnitLists + 0x3C, 5);
+    fn_8001594C(gUnitLists + 0x48, 6);
+    fn_8001594C(gUnitLists + 0x54, 7);
     var_r29 = 0;
-    var_r31 = &gUnits;
-    var_r28 = &gUnits;
+    var_r31 = gUnits;
+    var_r28 = var_r31;
     do {
         Unit_Clear(var_r28, var_r29 + 1);
         fn_80015718(temp_r27, var_r28);
         var_r29 += 1;
         var_r28 += 0x280;
     } while (var_r29 < 0x9F);
-    var_r28_2 = &gUnits;
-    var_r29_2 = 0;
+    var_r28 = var_r31;
+    var_r29 = 0;
     do {
-        fn_800156A0(temp_r27, var_r28_2);
-        if (Unit_Read(var_r28_2, arg0) == 0) {
-            fn_80015718(temp_r27, var_r28_2);
+        fn_800156A0(temp_r27, var_r28);
+        if (Unit_Read(var_r28, context) == 0) {
+            fn_80015718(temp_r27, var_r28);
         }
-        var_r29_2 += 1;
-        var_r28_2 += 0x280;
-    } while (var_r29_2 < 0x9F);
+        var_r29 += 1;
+        var_r28 += 0x280;
+    } while (var_r29 < 0x9F);
     var_r27 = 0;
-    var_r28_3 = &gUnitLists;
+    var_r28 = gUnitLists;
     do {
         if (var_r27 != 4) {
-            fn_800158A0(var_r28_3);
+            fn_800158A0(var_r28);
         }
         var_r27 += 1;
-        var_r28_3 += 0xC;
+        var_r28 += 0xC;
     } while (var_r27 < 8);
-    var_r27_2 = 0;
+    var_r27 = 0;
     do {
         if (((u32) M2C_FIELD(var_r31, u32 *, 0x180) == 0U) && ((u32) M2C_FIELD(var_r31, u32 *, 0x184) == 0U)) {
-            fn_80015718(&gUnitLists + (M2C_FIELD(M2C_FIELD(var_r31, void **, 0x190), u8 *, 8) * 0xC), var_r31);
+            fn_80015718(gUnitLists + (M2C_FIELD(M2C_FIELD(var_r31, void **, 0x190), u8 *, 8) * 0xC), var_r31);
         }
-        var_r27_2 += 1;
+        var_r27 += 1;
         var_r31 += 0x280;
-    } while (var_r27_2 < 0x9F);
+    } while (var_r27 < 0x9F);
 }
 
 void fn_800167E4(void *arg0)
@@ -2690,76 +2687,68 @@ void *Unit_FindByName(void) {
     return NULL;
 }
 
-s32 fn_80016C58(s32 arg0)
-{
-    s32 r3;
-    s32 r4;
-    s32 r5;
-    s32 r6;
-    s32 r7;
-    s32 r8;
-    s32 r9;
-    s32 r10;
-    s32 r11;
-    s32 r12;
-    
-    if (arg0 < 0) {
-        arg0 = 0;
-    }
-    
-    if (arg0 > 0x7F) {
-        return 0x7F;
-    }
-    
-    if (arg0 == 0) {
-        return 0;
+#pragma optimization_level 3
+void fn_80016C58(void) {
+    void Unit_MoveToListHead(void *, s32);
+    void fn_800156A0(void *, void *);
+    void Unit_Clear(void *, s32);
+    void fn_80015718(void *, void *);
+    void Unit_SetMapPos(void *, s8, s8);
+    void fn_8001594C(void *, s8);
+    extern u8 gUnitLists[];
+    extern u8 gUnits[];
+    void *unit;
+    void *list4;
+    s32 i;
+    s32 alleg;
+
+    {
+        void *cur;
+        cur = *(void **)(gUnitLists + 4);
+        while (cur != NULL) {
+            unit = *(void **)((u8 *)cur + 0x180);
+            Unit_MoveToListHead(cur, 5);
+            cur = unit;
+        }
     }
 
-    // Handle the upper bits (shifted by 4)
-    r12 = 0;
-    r4 = 1;
-    r5 = arg0 >> 4;
-    while (r5 != 0) {
-        if ((r5 & 1) != 0) {
-            r12 = r12 + r4;
+    i = 0;
+    unit = gUnits;
+    list4 = gUnitLists + 0x30;
+    do {
+        if (*(u32 *)((u8 *)unit + 0x188) != 0) {
+            alleg = (*(u8 **)((u8 *)unit + 0x190))[8];
+            if (alleg != 0) {
+                if (alleg < 0) {
+                } else if (alleg < 4) {
+                    fn_800156A0(gUnitLists + alleg * 0xC, unit);
+                    Unit_Clear(unit, -1);
+                    fn_80015718(list4, unit);
+                }
+            }
         }
-        r5 >>= 1;
-        r4 <<= 1;
+        i += 1;
+        unit = (u8 *)unit + 0x280;
+    } while (i < 0x9F);
+
+    i = 0;
+    {
+        void *cur;
+        cur = *(void **)(gUnitLists + 0x3C);
+        while (cur != NULL) {
+            unit = *(void **)((u8 *)cur + 0x184);
+            Unit_SetMapPos(cur, (s8)((i % 16) * 4 + 1), (s8)((i / 16) * 4 + 0x41));
+            cur = unit;
+            i += 1;
+        }
     }
-    
-    // Handle the lower bits
-    r6 = 0;
-    r8 = 0x10;
-    r5 = arg0 & 0xF;
-    while (r5 != 0) {
-        if ((r5 & 1) != 0) {
-            r6 += r8;
-        }
-        r5 >>= 1;
-        r8 <<= 1;
-    }
-    
-    // Combine results
-    r9 = (r12 << 5) | r6;
-    
-    // Final calculation based on range
-    if (arg0 < 0x40) {
-        s32 temp = 0;
-        s32 loop_count = 1;
-        while (temp != arg0) {
-            temp += loop_count++;
-        }
-        return r9 + (temp * 2);
-    } else {
-        s32 temp = 0;
-        s32 loop_count = 1;
-        while (temp != 0x3F) {
-            temp += loop_count++;
-        }
-        return (r9 + (temp * 2)) + (arg0 - 0x3F);
-    }
+
+    fn_8001594C(gUnitLists, 0);
+    fn_8001594C(gUnitLists + 0xC, 1);
+    fn_8001594C(gUnitLists + 0x18, 2);
+    fn_8001594C(gUnitLists + 0x24, 3);
 }
-
+#pragma optimization_level reset
 void Unit_ResetAll(void) {
 #pragma dont_inline on
 #pragma global_optimizer off

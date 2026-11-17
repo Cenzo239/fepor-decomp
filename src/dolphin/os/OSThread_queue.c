@@ -192,3 +192,51 @@ s32 fn_8020A0C8(void *arg0)
 
   return priority;
 }
+
+void *fn_8020A104(void *arg0,s32 arg1) {
+void *thread=arg0;
+s32 priority=arg1;
+void fn_8020A060();
+void *next,*prev,*tail,*node,*queue;
+switch((s32)M2C_FIELD(thread,u16*,0x2c8)){
+case 1:
+fn_8020A060(thread);
+M2C_FIELD(thread,s32*,0x2d0)=priority;
+M2C_FIELD(thread,void**,0x2dc)=(u8*)RunQueue_80339478+M2C_FIELD(thread,s32*,0x2d0)*8;
+queue=M2C_FIELD(thread,void**,0x2dc);
+tail=M2C_FIELD(queue,void**,4);
+if(!tail)M2C_FIELD(queue,void**,0)=thread;else M2C_FIELD(tail,void**,0x2e0)=thread;
+M2C_FIELD(thread,void**,0x2e4)=tail;
+M2C_FIELD(thread,void**,0x2e0)=0;
+M2C_FIELD(M2C_FIELD(thread,void**,0x2dc),void**,4)=thread;
+RunQueueBits_80368518|=1<<(31-M2C_FIELD(thread,s32*,0x2d0));
+RunQueueHint_8036851C=1;
+break;
+case 4:
+next=M2C_FIELD(thread,void**,0x2e0);prev=M2C_FIELD(thread,void**,0x2e4);
+if(!next)M2C_FIELD(M2C_FIELD(thread,void**,0x2dc),void**,4)=prev;else M2C_FIELD(next,void**,0x2e4)=prev;
+if(!prev)M2C_FIELD(M2C_FIELD(thread,void**,0x2dc),void**,0)=next;else M2C_FIELD(prev,void**,0x2e0)=next;
+M2C_FIELD(thread,s32*,0x2d0)=priority;
+queue=M2C_FIELD(thread,void**,0x2dc);
+for(node=M2C_FIELD(queue,void**,0);node && M2C_FIELD(node,s32*,0x2d0)<=M2C_FIELD(thread,s32*,0x2d0);node=M2C_FIELD(node,void**,0x2e0)){}
+if(!node){
+tail=M2C_FIELD(queue,void**,4);
+if(!tail)M2C_FIELD(queue,void**,0)=thread;else M2C_FIELD(tail,void**,0x2e0)=thread;
+M2C_FIELD(thread,void**,0x2e4)=tail;M2C_FIELD(thread,void**,0x2e0)=0;
+M2C_FIELD(M2C_FIELD(thread,void**,0x2dc),void**,4)=thread;
+}else{
+M2C_FIELD(thread,void**,0x2e0)=node;
+prev=M2C_FIELD(node,void**,0x2e4);
+M2C_FIELD(node,void**,0x2e4)=thread;
+M2C_FIELD(thread,void**,0x2e4)=prev;
+if(!prev)M2C_FIELD(M2C_FIELD(thread,void**,0x2dc),void**,0)=thread;else M2C_FIELD(prev,void**,0x2e0)=thread;
+}
+node=M2C_FIELD(thread,void**,0x2f0);
+if(node)return M2C_FIELD(node,void**,8);
+break;
+case 2:RunQueueHint_8036851C=1;M2C_FIELD(thread,s32*,0x2d0)=priority;break;
+case 3:default:break;
+}
+return 0;
+}
+

@@ -108,17 +108,54 @@ void Ui_DrawTerrainInfoDecor(s32 tex, s32 mode, f32 x, f32 y) {
     }
 }
 
-void fn_8009B738(void* arg0, void* arg1) {
-    if (arg1 != NULL && arg0 != NULL) {
-        u32* src = (u32*)arg1;
-        u32* dst = (u32*)arg0;
-        dst[1] = src[1];
-        dst[2] = src[2];
-        dst[3] = src[3];
-        dst[4] = src[4];
-        dst[5] = src[5];
-        dst[6] = src[6];
-    }
+void fn_8009B738(s32 arg0, s32 arg1) {
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void fn_8014BB58(s32, s32, void *, char *);
+    void sprintf(char *, char *, ...);
+    extern f32 lbl_803698FC;
+    extern f32 lbl_80369900;
+    extern f32 lbl_80369904;
+    extern u32 lbl_803698E8;
+    extern u32 lbl_803698EC;
+    extern u32 lbl_803698F0;
+    extern u32 lbl_803698F4;
+    extern u8 lbl_80312100[];
+    extern u8 gDebugHudStrs[];
+    char buf[0x10];
+    u32 c0;
+    u32 c1;
+    u32 c2;
+    u32 c3;
+    u32 bus;
+    u32 rate;
+    u32 ticks;
+
+    Prim2D_Begin();
+    Prim2D_SetTransform((f32)arg0, (f32)arg1, lbl_803698FC, lbl_80369900);
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+
+    bus = *(u32 *)0x800000F8 >> 2;
+    rate = bus / 1000u;
+    ticks = *(u32 *)(lbl_80312100 + 0xB8) << 3;
+    sprintf(buf, (char *)gDebugHudStrs + 8, (f32)(ticks / rate) / lbl_80369904);
+    c0 = lbl_803698E8;
+    fn_8014BB58(0, 0, &c0, buf);
+
+    sprintf(buf, (char *)gDebugHudStrs + 0x13, (s32)*(s16 *)(lbl_80312100 + 0xBC));
+    c1 = lbl_803698EC;
+    fn_8014BB58(0, 8, &c1, buf);
+
+    sprintf(buf, (char *)gDebugHudStrs + 0x1D, (s32)*(s16 *)(lbl_80312100 + 0xBE));
+    c2 = lbl_803698F0;
+    fn_8014BB58(0, 0x10, &c2, buf);
+
+    sprintf(buf, (char *)gDebugHudStrs + 0x28, *(s32 *)(lbl_80312100 + 0xC0));
+    c3 = lbl_803698F4;
+    fn_8014BB58(0, 0x18, &c3, buf);
 }
 
 void fn_8009B900(s32 arg0, s32 arg1) {

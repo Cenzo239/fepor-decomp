@@ -995,17 +995,17 @@ void fn_80223C78(s32 id, u32 *color) {
     v1 = (idx + 0xe0) << 24;
     v1 = __rlwimi(v1, c, 8, 24, 31);
     v2 = v1;
-    *(volatile u8 *)0xCC008000 = cmd;
+    GXWGFifo.u8 = cmd;
     v2 = __rlwimi(v2, c, 12, 12, 19);
     v2 = __rlwimi(v2, eight, 20, 8, 11);
-    *(volatile u32 *)0xCC008000 = v2;
+    GXWGFifo.u32 = v2;
     v1 = (idx + 0xe1) << 24;
     v1 = __rlwimi(v1, c, 24, 24, 31);
     v2 = v1;
-    *(volatile u8 *)0xCC008000 = cmd;
+    GXWGFifo.u8 = cmd;
     v2 = __rlwimi(v2, c, 28, 12, 19);
     v2 = __rlwimi(v2, eight, 20, 8, 11);
-    *(volatile u32 *)0xCC008000 = v2;
+    GXWGFifo.u32 = v2;
     gx[1] = 0;
 }
 

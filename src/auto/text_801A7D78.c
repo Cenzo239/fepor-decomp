@@ -1326,6 +1326,107 @@ void fn_801AA1B0(void *arg0) {
     }
 }
 
+void fn_801AA228(void *arg0) {
+    extern void *gPadInput;
+    extern u8 lbl_8027B838[];
+    extern u8 gOptionsTable[];
+    extern f32 lbl_8036AF98;
+    extern f32 lbl_8036AF9C;
+    void Ui_PlaySeCue(void *, s32);
+    void Process_Goto(void *, s32);
+    void fn_80057E6C(void *);
+    u8 *self;
+    u8 prevSel;
+    s32 buttons;
+    s32 trig;
+    s32 held;
+    s32 pressed;
+    s32 sel;
+    u8 *row;
+
+    self = (u8 *)arg0;
+    prevSel = self[0x3C];
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    trig = *(s32 *)((u8 *)gPadInput + 8);
+    held = *(s32 *)((u8 *)gPadInput + 0xC);
+    pressed = buttons & (trig ^ buttons);
+
+    if (pressed & 0x200) {
+        Ui_PlaySeCue(lbl_8027B838 + 0x2C8, 0x64);
+        Process_Goto(self, 3);
+        return;
+    }
+
+    if (held & 0x80000008) {
+        sel = prevSel;
+        row = gOptionsTable + sel * 0xC;
+        if (sel > 0) {
+            do {
+                row -= 0xC;
+                sel -= 1;
+                if (row[0] != 0) {
+                    break;
+                }
+            } while (sel > 0);
+        }
+        if (sel >= 0) {
+            self[0x3C] = (u8)sel;
+            if ((s32)self[0x3C] - (s32)self[0x36] <= 0 && self[0x36] != 0) {
+                self[0x36] = self[0x36] - 1;
+                *(f32 *)(self + 0x38) = lbl_8036AF98;
+                fn_80057E6C(*(void **)(self + 0x54));
+            }
+            self[0x3D] = 4;
+            *(s16 *)(self + 0x48) = *(s16 *)(self + 0x44);
+            *(s16 *)(self + 0x4A) = *(s16 *)(self + 0x46);
+            *(s16 *)(self + 0x4C) = 0x14;
+            *(s16 *)(self + 0x4E) = (s16)(((s32)self[0x3C] - (s32)self[0x36]) * 0x20 + 0x7F);
+        }
+    }
+
+    if (held & 0x40000004) {
+        sel = self[0x3C];
+        row = gOptionsTable + sel * 0xC;
+        if (sel < 0x16) {
+            do {
+                row += 0xC;
+                sel += 1;
+                if (row[0] != 0) {
+                    break;
+                }
+            } while (sel < 0x16);
+        }
+        if (sel < 0x16) {
+            self[0x3C] = (u8)sel;
+            if ((s32)self[0x3C] - (s32)self[0x36] >= 7 && (s32)self[0x36] < (s32)self[0x31] - 8) {
+                self[0x36] = self[0x36] + 1;
+                *(f32 *)(self + 0x38) = lbl_8036AF9C;
+                fn_80057E6C(*(void **)(self + 0x58));
+            }
+            self[0x3D] = 4;
+            *(s16 *)(self + 0x48) = *(s16 *)(self + 0x44);
+            *(s16 *)(self + 0x4A) = *(s16 *)(self + 0x46);
+            *(s16 *)(self + 0x4C) = 0x14;
+            *(s16 *)(self + 0x4E) = (s16)(((s32)self[0x3C] - (s32)self[0x36]) * 0x20 + 0x7F);
+        }
+    }
+
+    if (prevSel != self[0x3C]) {
+        Ui_PlaySeCue(lbl_8027B838 + 0x2D8, 0x64);
+    }
+
+    switch (self[0x3C]) {
+    case 0:
+        if ((pressed & 0x100) && self[0x5E] == 2) {
+            Process_Goto(self, 1);
+            Ui_PlaySeCue(lbl_8027B838 + 0x2F4, 0x64);
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 void fn_801AAD74(void *arg0)
 {
     void fn_801AA228(void *);
@@ -1569,6 +1670,264 @@ void Options_DrawScrollbar(void *arg0) {
     Prim2D_SetColor(((u8 *)&col2)[0], ((u8 *)&col2)[1], ((u8 *)&col2)[2], 0xFF);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
+}
+
+void fn_801AB8A8(void *self, s32 option, f32 x, f32 y, f32 unused) {
+void Prim2D_Begin(void); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void);
+void *Msg_Expand(void *); void fn_8001003C(s32,s32,s32,s32,s32,...);
+extern u8 gOptionsTable[],lbl_8027B838[];
+extern f32 lbl_8036AFE8,lbl_8036AFEC,lbl_8036AF9C,lbl_8036AFA0,lbl_8036AFF0,lbl_8036AFF4,lbl_8036AFF8,lbl_8036AFFC,lbl_8036B000;
+void Prim2D_AddZ(f32); u16 **fn_8006EDD8(void *,s32); void *Ui_GetColor(s32);
+void Prim2D_BindTexture(void *,s32,s32); void Prim2D_AddPrim(s32);
+void Prim2D_SetQuadMin(f32,f32,f32,f32); void Prim2D_SetQuadMax(f32,f32,f32,f32);
+void Prim2D_SetColor(u8,u8,u8,s32); void Prim2D_EmitQuad(void); void Prim2D_EndPrim(void);
+extern f32 lbl_8036AF98,lbl_8036AFD8,lbl_8036B004,lbl_8036B008,lbl_8036B00C,lbl_8036B010,lbl_8036B014,lbl_8036B018,lbl_8036B01C,lbl_8036B020,lbl_8036B024;
+u32 col1,col3,col5,col0,col2,col4;
+u16 *tex;
+f32 w,h,xx,yy;
+f32 left=lbl_8036AFE8+x;
+u8 color;
+void *text;
+Prim2D_Begin(); Prim2D_SetTex(0,0x13); Prim2D_PrepareTex();
+text=Msg_Expand(*(void **)(gOptionsTable+option*12+4));
+fn_8001003C((s32)(lbl_8036AFEC+x),(s32)y,1,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+switch(option) {
+case 0:
+color=1; if(M2C_FIELD(self,u8 *,0x5e)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x5e)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036AFF0),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x5e)==0x2) color=20;
+text=Msg_Expand(lbl_8027B838+0x379);
+fn_8001003C((s32)(left+lbl_8036AFF4),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 1:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&16384)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x384);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&16384)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x392);
+fn_8001003C((s32)(left+lbl_8036AFF4),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 2:
+color=1; if(M2C_FIELD(self,u8 *,0x5f)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x39f);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x5f)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x3ab);
+fn_8001003C((s32)(left+lbl_8036AFF4),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 3:
+color=1; if(M2C_FIELD(self,u8 *,0x60)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x3b5);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x60)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x39f);
+fn_8001003C((s32)(left+lbl_8036AFF8),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x60)==0x2) color=20;
+text=Msg_Expand(lbl_8027B838+0x3ab);
+fn_8001003C((s32)(left+lbl_8036AFFC),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x60)==0x3) color=20;
+text=Msg_Expand(lbl_8027B838+0x3bf);
+fn_8001003C((s32)(left+lbl_8036B000),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 4:
+tex=*fn_8006EDD8(M2C_FIELD(self,void **,0x50),2);
+h=(f32)tex[0]*lbl_8036AF9C; w=(f32)tex[1]*lbl_8036AF9C;
+col0=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),2,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+yy=lbl_8036B004+y;
+Prim2D_SetQuadMin(left,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(left+w,yy+h,lbl_8036AFA0+w,lbl_8036AFA0+h);
+Prim2D_SetColor(((u8 *)&col0)[0],((u8 *)&col0)[1],((u8 *)&col0)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF98); Prim2D_PrepareTex();
+w=(f32)((M2C_FIELD(self,u8 *,97)*208)/100);
+col1=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),3,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+xx=lbl_8036B008+left; yy=lbl_8036B00C+y;
+Prim2D_SetQuadMin(xx,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(xx+w,yy+lbl_8036AFD8,lbl_8036AFA0+w,lbl_8036AFD8);
+Prim2D_SetColor(((u8 *)&col1)[0],((u8 *)&col1)[1],((u8 *)&col1)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF9C); Prim2D_PrepareTex();
+break;
+case 5:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&1)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&1)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 6:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&2)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&2)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 7:
+color=1; if(M2C_FIELD(self,u8 *,0x62)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x3cd);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x62)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x3d9);
+fn_8001003C((s32)(left+lbl_8036B014),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x62)==0x2) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B018),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 8:
+color=1; if(M2C_FIELD(self,u8 *,0x63)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x3e5);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x63)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x3f1);
+fn_8001003C((s32)(left+lbl_8036B014),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x63)==0x2) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B018),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 9:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&32)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&32)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 10:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&64)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x3fe);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&64)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x40c);
+fn_8001003C((s32)(left+lbl_8036B01C),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 11:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&128)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x3fe);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&128)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x40c);
+fn_8001003C((s32)(left+lbl_8036B01C),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 12:
+text=Msg_Expand(lbl_8027B838+0x419);
+fn_8001003C((s32)(left),(s32)y,1,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 13:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&256)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&256)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 14:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&512)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&512)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 15:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&1024)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&1024)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 16:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&8192)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&8192)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 17:
+color=1; if(M2C_FIELD(self,u8 *,0x66)==0x0) color=20;
+text=Msg_Expand(lbl_8027B838+0x427);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x66)==0x1) color=20;
+text=Msg_Expand(lbl_8027B838+0x431);
+fn_8001003C((s32)(left+lbl_8036B020),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if(M2C_FIELD(self,u8 *,0x66)==0x2) color=20;
+text=Msg_Expand(lbl_8027B838+0x43d);
+fn_8001003C((s32)(left+lbl_8036B024),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 18:
+tex=*fn_8006EDD8(M2C_FIELD(self,void **,0x50),2);
+h=(f32)tex[0]*lbl_8036AF9C; w=(f32)tex[1]*lbl_8036AF9C;
+col2=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),2,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+yy=lbl_8036B004+y;
+Prim2D_SetQuadMin(left,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(left+w,yy+h,lbl_8036AFA0+w,lbl_8036AFA0+h);
+Prim2D_SetColor(((u8 *)&col2)[0],((u8 *)&col2)[1],((u8 *)&col2)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF98); Prim2D_PrepareTex();
+w=(f32)((M2C_FIELD(self,u8 *,103)*208)/100);
+col3=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),3,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+xx=lbl_8036B008+left; yy=lbl_8036B00C+y;
+Prim2D_SetQuadMin(xx,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(xx+w,yy+lbl_8036AFD8,lbl_8036AFA0+w,lbl_8036AFD8);
+Prim2D_SetColor(((u8 *)&col3)[0],((u8 *)&col3)[1],((u8 *)&col3)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF9C); Prim2D_PrepareTex();
+break;
+case 19:
+tex=*fn_8006EDD8(M2C_FIELD(self,void **,0x50),2);
+h=(f32)tex[0]*lbl_8036AF9C; w=(f32)tex[1]*lbl_8036AF9C;
+col4=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),2,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+yy=lbl_8036B004+y;
+Prim2D_SetQuadMin(left,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(left+w,yy+h,lbl_8036AFA0+w,lbl_8036AFA0+h);
+Prim2D_SetColor(((u8 *)&col4)[0],((u8 *)&col4)[1],((u8 *)&col4)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF98); Prim2D_PrepareTex();
+w=(f32)((M2C_FIELD(self,u8 *,104)*208)/100);
+col5=*(u32 *)Ui_GetColor(1);
+Prim2D_Begin(); Prim2D_BindTexture(M2C_FIELD(self,void **,0x50),3,0x11);
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+xx=lbl_8036B008+left; yy=lbl_8036B00C+y;
+Prim2D_SetQuadMin(xx,yy,lbl_8036AFA0,lbl_8036AFA0);
+Prim2D_SetQuadMax(xx+w,yy+lbl_8036AFD8,lbl_8036AFA0+w,lbl_8036AFD8);
+Prim2D_SetColor(((u8 *)&col5)[0],((u8 *)&col5)[1],((u8 *)&col5)[2],255);
+Prim2D_EmitQuad(); Prim2D_EndPrim();
+Prim2D_Begin(); Prim2D_AddZ(lbl_8036AF9C); Prim2D_PrepareTex();
+break;
+case 20:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&2048)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&2048)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+case 21:
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&4096)!=0) color=20;
+text=Msg_Expand(lbl_8027B838+0x368);
+fn_8001003C((s32)(left),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+color=1; if((M2C_FIELD(self,u16 *,0x5c)&4096)==0) color=20;
+text=Msg_Expand(lbl_8027B838+0x370);
+fn_8001003C((s32)(left+lbl_8036B010),(s32)y,color,0,0,text,lbl_8036AF9C,lbl_8036AFA0);
+break;
+}
 }
 
 void fn_801ACF4C(void *arg0) {

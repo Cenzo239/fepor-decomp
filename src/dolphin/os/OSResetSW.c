@@ -118,27 +118,32 @@ extern s32 lbl_80368508;
 extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
 extern void (*lbl_803684F8)();
-void __OSResetSWInterruptHandler(void) {
-s64 __OSGetSystemTime(void);
-void __OSMaskInterrupts(u32);
-s64 time;
-s64 delay;
-time=__OSGetSystemTime();
-lbl_80368514=(u32)time;
-lbl_80368510=(u32)((u64)time>>32);
-delay=(((*(u32 *)0x800000F8 >> 2)/125000)*100)>>3;
-while (__OSGetSystemTime()-(s64)(((u64)lbl_80368510<<32)|lbl_80368514)<delay && !(*(u32 *)0xCC003000 & 0x10000)) {}
-if (!(*(u32 *)0xCC003000 & 0x10000)) {
-lbl_803684FC=1;
-lbl_80368500=1;
-__OSMaskInterrupts(0x200);
-if (lbl_803684F8) {
-void (*callback)()=lbl_803684F8;
-lbl_803684F8=0;
-callback();
-}
-}
-*(u32 *)0xCC003000=2;
+void __OSResetSWInterruptHandler(void)
+{
+    s64 __OSGetSystemTime(void);
+    void __OSMaskInterrupts(u32);
+    s64 time;
+    u32 delay;
+    void (*callback)(void);
+
+    time = __OSGetSystemTime();
+    lbl_80368514 = (u32)time;
+    lbl_80368510 = (u32)(u64)(time >> 32);
+    delay = ((*(u32 *)0x800000F8 >> 2) / 125000 * 100) >> 3;
+    while (__OSGetSystemTime() - ((s64)(((u64)lbl_80368510 << 32) | lbl_80368514)) < (s64)delay
+           && (*(u32 *)0xCC003000 & 0x10000) == 0) {
+    }
+    if ((*(u32 *)0xCC003000 & 0x10000) == 0) {
+        lbl_803684FC = 1;
+        lbl_80368500 = 1;
+        __OSMaskInterrupts(0x200);
+        callback = lbl_803684F8;
+        if (callback != 0) {
+            lbl_803684F8 = 0;
+            (*callback)();
+        }
+    }
+    *(u32 *)0xCC003000 = 2;
 }
 
 #pragma peephole off

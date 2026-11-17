@@ -1870,94 +1870,74 @@ if((*(s16**)(map+0x14190))[index]>=range)
 #pragma cplusplus reset
 }
 
-void fn_8002C034(void *arg0, void *arg1)
-{
-    extern u8 lbl_80284CE0[];
-    extern u8 gTargetList[];
-    extern u8 gBattleMap[];
-    extern u8 gUnits[];
-
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma peephole off
+extern "C" void fn_8002C034(void *arg0, void *arg1) {
+    extern u8 lbl_80284E20[], lbl_80284CE0[], gTargetList[], gBattleMap[], gUnits[];
     void fn_8002F728(void *);
     void Map_SelectRangeBuffer(void *, s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
-
-    u8 *base;
-    u8 *row;
-    u8 *cell;
-    u8 *table;
-    u8 *entry;
-    void *object[1];
-    s32 value;
+    struct Visitor { virtual void apply(void *)=0; };
+    struct { void *vtable; void *unit; s32 range; } visitor;
+    s32 colIndex;
     s32 rowIndex;
-    s32 columnIndex;
-    s32 columnOffset;
-    s32 count;
-    s32 result;
+    s32 bufferOffset;
+    u8 *cell;
+    long rowOffset;
+    u8 *row;
+    u8 *rangeBase;
+    u8 *map;
     s32 threshold;
+    u8 *item;
+    u8 range;
+    u8 y;
+    u8 x;
+    u8 id;
+    void *target;
 
-    object[0] = lbl_80284CE0;
-
+    visitor.vtable=lbl_80284E20;
+    visitor.unit=arg0;
+    visitor.vtable=lbl_80284CE0;
     fn_8002F728(gTargetList);
-    Map_SelectRangeBuffer(gBattleMap, 6);
-
-    value = *(u8 *)((u8 *)arg1 + 0x1D);
-
-    result = Item_GetMaxRange(arg1);
-
-    Map_FillAttackRange(
-        gBattleMap,
-        *(u8 *)((u8 *)arg0 + 0x19E),
-        *(u8 *)((u8 *)arg0 + 0x19F),
-        value,
-        result
-    );
-
-    base = gBattleMap;
-    threshold = (s8)*(u8 *)((u8 *)arg1 + 0x1D);
-    table = *(u8 **)(base + 0x14190);
-
-    rowIndex = 0;
-    row = base;
-
-    while ((s8)rowIndex < *(s32 *)(base + 4)) {
-        cell = row;
-        columnIndex = 0;
-        columnOffset = 0;
-
-        while ((s8)columnIndex < *(s32 *)base) {
-            if (*(s16 *)(table + columnOffset) >= threshold) {
-                count = cell[0xD];
-
-                if (count != 0) {
-                    if (count == 1) {
-                        entry = 0;
-                    } else {
-                        entry = gUnits + (count - 1) * 0x280;
-                    }
-
-                    ((void (*)(void *, void *))
-                        (*(void **)((u8 *)object[0] + 8)))(
-                            object,
-                            entry
-                        );
+    Map_SelectRangeBuffer(gBattleMap,6);
+    item=(u8 *)arg1;
+    range=item[0x1D];
+    y=((u8 *)visitor.unit)[0x19F];
+    x=((u8 *)visitor.unit)[0x19E];
+    Map_FillAttackRange(gBattleMap,x,y,range,Item_GetMaxRange(arg1));
+    map=gBattleMap;
+    visitor.range=item[0x1D];
+    rowIndex=0;
+    rowOffset=rowIndex;
+    row=map;
+    rangeBase=map+0x10000;
+    threshold=(s8)visitor.range;
+    while((s8)rowIndex<*(s32 *)(map+4)) {
+        bufferOffset=rowOffset;
+        cell=row;
+        colIndex=0;
+        while((s8)colIndex<*(s32 *)map) {
+            if(*(s16 *)((u8 *)*(void **)(rangeBase+0x4190)+bufferOffset*2)>=threshold) {
+                id=cell[0xD];
+                if(id!=0) {
+                    if(id!=0) target=gUnits+(id-1)*0x280;
+                    else target=0;
+                    ((Visitor *)&visitor)->apply(target);
                 }
             }
-
-            columnOffset += 2;
+            bufferOffset++;
             cell++;
-            columnIndex++;
+            colIndex++;
         }
-
-        row += 0x40;
+        rowOffset+=0x40;
+        row+=0x40;
         rowIndex++;
     }
-}
-
+#pragma global_optimizer reset
 #pragma cplusplus reset
-
-#pragma cplusplus on
-#pragma use_lmw_stmw on
+}
 extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     extern u8 lbl_80284E20[];
     extern u8 lbl_80284CB0[];

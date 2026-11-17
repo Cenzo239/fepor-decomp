@@ -991,6 +991,7 @@ s32 fn_80213904(void) {
     return *(s32 *)0xCC006C00 & 1;
 }
 
+#pragma optimization_level 3
 void fn_80213914(u32 arg0) {
     u32 fn_802139F4(void);
     u32 fn_80213B08(void);
@@ -998,8 +999,8 @@ void fn_80213914(u32 arg0) {
     u32 fn_80213ADC(void);
     void fn_80213AEC(u32);
     void fn_80213B18(u32);
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
     void fn_80213E30(void);
 
     volatile u32 *reg;
@@ -1007,14 +1008,12 @@ void fn_80213914(u32 arg0) {
     u32 old1;
     u32 old2;
     s32 old3;
-    u32 interrupts;
-    u32 value;
+    s32 interrupts;
 
     if (arg0 != fn_802139F4()) {
         reg = (volatile u32 *)0xCC006C00;
 
-        value = *reg;
-        *reg = value & ~0x40;
+        *reg = *reg & ~0x40;
 
         if (arg0 == 0) {
             old0 = fn_80213B08();
@@ -1029,21 +1028,10 @@ void fn_80213914(u32 arg0) {
 
             fn_80213E30();
 
-            value = *reg;
-            value &= ~0x20;
-            value |= 0x20;
-            *reg = value;
-
+            *reg = (*reg & ~0x20) | 0x20;
             *reg = (*reg & ~2) | ((u32)old3 << 1);
-
-            value = *reg;
-            value &= ~1;
-            value |= old2;
-            *reg = value;
-
-            value = *reg;
-            value |= 0x40;
-            *reg = value;
+            *reg = (*reg & ~1) | old2;
+            *reg = *reg | 0x40;
 
             OSRestoreInterrupts(interrupts);
 
@@ -1052,7 +1040,7 @@ void fn_80213914(u32 arg0) {
         }
     }
 }
-
+#pragma optimization_level reset
 s32 fn_802139F4(void) {
     return (((u32) *(u32 *)0xCC006C00 >> 6U) & 1) ^ 1;
 }
@@ -1223,6 +1211,40 @@ void fn_80213DD8(void) {
     }
 }
 
+void fn_80213E30(void) {
+s64 OSGetTime(void);
+extern s64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
+extern volatile u32 OS_AIRegs[8];
+s64 start, elapsed;
+s64 now = 0;
+u32 done = 0;
+s64 delay = 0;
+u32 sample;
+while (!done) {
+(*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~0x20) | 0x20;
+(*(volatile u32 *)0xCC006C00) &= ~2;
+(*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
+sample = OS_AIRegs[2];
+while (sample == OS_AIRegs[2]) {}
+start = OSGetTime();
+(*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~2) | 2;
+(*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
+sample = OS_AIRegs[2];
+while (sample == OS_AIRegs[2]) {}
+now = OSGetTime();
+elapsed = now - start;
+(*(volatile u32 *)0xCC006C00) &= ~2;
+(*(volatile u32 *)0xCC006C00) &= ~1;
+if (elapsed < lbl_803686B0 - lbl_803686D0) {
+delay = lbl_803686C0; done = 1;
+} else if (elapsed >= lbl_803686B0 + lbl_803686D0 && elapsed < lbl_803686B8 - lbl_803686D0) {
+delay = lbl_803686C8; done = 1;
+} else done = 0;
+}
+start = now + delay;
+while (OSGetTime() < start) {}
+}
+
 extern s32 lbl_803686D8;
 s32 fn_80214014(s32 arg0) {
     extern s32 lbl_803686D8;
@@ -1250,28 +1272,36 @@ s32 fn_80214058(void) {
 void fn_80214094(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
+    extern volatile u16 __PADRegs[];
     s32 enabled;
-    u32 ha;
-    u32 t;
+    u8 *base;
+    u16 t;
+    u32 a3 = arg3;
+    u32 a2 = arg2;
+    s32 a0 = arg0;
+    u32 a1 = arg1;
 
     enabled = OSDisableInterrupts();
-    ha = 0xCC000000U;
-    t = *(u16 *)(ha + 0x5020);
-    *(u16 *)(ha + 0x5020) = (t & ~0x3FFu) | (arg1 >> 16);
-    t = *(u16 *)(ha + 0x5022);
-    *(u16 *)(ha + 0x5022) = __rlwinm(t, 0, 27, 15) | (arg1 & 0xFFFF);
-    t = *(u16 *)(ha + 0x5024);
-    *(u16 *)(ha + 0x5024) = (t & ~0x3FFu) | (arg2 >> 16);
-    t = *(u16 *)(ha + 0x5026);
-    *(u16 *)(ha + 0x5026) = __rlwinm(t, 0, 27, 15) | (arg2 & 0xFFFF);
-    t = *(u16 *)(ha + 0x5028);
-    t = __rlwinm(t, 0, 17, 15);
-    t = __rlwimi(t, arg0, 15, 0, 16);
-    *(u16 *)(ha + 0x5028) = t;
-    t = *(u16 *)(ha + 0x5028);
-    *(u16 *)(ha + 0x5028) = (t & ~0x3FFu) | (arg3 >> 16);
-    t = *(u16 *)(ha + 0x502A);
-    *(u16 *)(ha + 0x502A) = __rlwinm(t, 0, 27, 15) | (arg3 & 0xFFFF);
+    base = (u8 *)0xCC000000;
+    t = *(u16 *)(base + 0x5020);
+    *(u16 *)(base + 0x5020) = (t & ~0x3FFu) | (a1 >> 16);
+    t = a1 & 0xFFFF;
+    OS_DSPRegs[0x11] = (u16)(__rlwinm(OS_DSPRegs[0x11], 0, 27, 15) | t);
+    t = a2 >> 16;
+    OS_DSPRegs[0x12] = (u16)((OS_DSPRegs[0x12] & ~0x3FFu) | t);
+    t = a2 & 0xFFFF;
+    __PADRegs[0x13] = (u16)(__rlwinm(__PADRegs[0x13], 0, 27, 15) | t);
+    t = a3 >> 16;
+    {
+        u16 x = OS_DSPRegs[0x14];
+        x = (u16)__rlwinm(x, 0, 17, 15);
+        x = (u16)__rlwimi(x, a0, 15, 0, 16);
+        OS_DSPRegs[0x14] = x;
+        x = OS_DSPRegs[0x14];
+        OS_DSPRegs[0x14] = (x & ~0x3FFu) | t;
+    }
+    t = a3 & 0xFFFF;
+    __PADRegs[0x15] = (u16)(__rlwinm(__PADRegs[0x15], 0, 27, 15) | t);
     OSRestoreInterrupts(enabled);
 }
 
@@ -1926,110 +1956,56 @@ void fn_80216534(void *arg0, void *arg1) {
 }
 
 void fn_802166D4(void *arg0) {
-    s32 fn_80215F50();
-    void fn_80215F60();
-    void fn_80215F78(void *);
-    s32 fn_80215F40();
-    void fn_802160C0(void *, void *);
-    extern u16 lbl_8029D860[160];
+#pragma inline_depth(0)
+    u32 fn_80215F50(void);
+    u32 fn_80215F60(void);
+    void fn_80215F78(s32);
+    u32 fn_80215F40(void);
+    void fn_802160C0(char *, ...);
+    extern char lbl_8029D860[];
+    volatile u32 tmp;
+    void *self = arg0;
 
-    // First loop with fn_80215F50
-    do {
-        if (fn_80215F50() == 0) {
-            break;
+    if (fn_80215F50() != 0U) {
+        tmp = fn_80215F60();
+        fn_80215F78(0x80F3A001);
+        if (fn_80215F40() == 0U) {
+            fn_80215F78(*(s32 *)((u8 *)self + 0xC));
+            if (fn_80215F40() == 0U) {
+                fn_80215F78(0x80F3C002);
+                if (fn_80215F40() == 0U) {
+                    fn_80215F78((s32)(u16)*(u32 *)((u8 *)self + 0x14));
+                    if (fn_80215F40() == 0U) {
+                        fn_80215F78(0x80F3A002);
+                        if (fn_80215F40() == 0U) {
+                            fn_80215F78(*(s32 *)((u8 *)self + 0x10));
+                            if (fn_80215F40() == 0U) {
+                                fn_80215F78(0x80F3B002);
+                                if (fn_80215F40() == 0U) {
+                                    fn_80215F78(0);
+                                    if (fn_80215F40() == 0U) {
+                                        fn_80215F78(0x80F3D001);
+                                        if (fn_80215F40() == 0U) {
+                                            fn_80215F78(*(u16 *)((u8 *)self + 0x24));
+                                            if (fn_80215F40() == 0U) {
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-    } while (1);
-    
-    fn_80215F60();
-    
-    // Process various fields through calls to fn_80215F78 with hard-coded values 
-    fn_80215F78((void *)0x80F3A001);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78(M2C_FIELD(arg0, void **, 0xC));
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)0x80F3C002);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)((u16)M2C_FIELD(arg0, s32 *, 0x14)));
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)0x80F3A002);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78(M2C_FIELD(arg0, void **, 0x10));
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)0x80F3B002);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78(NULL);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)0x80F3D001);
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    fn_80215F78((void *)M2C_FIELD(arg0, u16 *, 0x24));
-    
-    do {
-        if (fn_80215F40() == 0) {
-            break;
-        }
-    } while (1);
-    
-    // Final calls to fn_802160C0
-    fn_802160C0(&lbl_8029D860, arg0);
-    fn_802160C0(&lbl_8029D860 + 0x20, M2C_FIELD(arg0, void **, 0xC));
-    fn_802160C0(&lbl_8029D860 + 0x50, (void *)M2C_FIELD(arg0, s32 *, 0x14));
-    fn_802160C0(&lbl_8029D860 + 0x80, M2C_FIELD(arg0, void **, 0x10));
-    fn_802160C0(&lbl_8029D860 + 0xB0, M2C_FIELD(arg0, void **, 0x1C));
-    fn_802160C0(&lbl_8029D860 + 0xE0, (void *)M2C_FIELD(arg0, u16 *, 0x24));
+    }
+    fn_802160C0(lbl_8029D860, self);
+    fn_802160C0(lbl_8029D860 + 0x20, *(s32 *)((u8 *)self + 0xC));
+    fn_802160C0(lbl_8029D860 + 0x50, *(s32 *)((u8 *)self + 0x14));
+    fn_802160C0(lbl_8029D860 + 0x80, *(s32 *)((u8 *)self + 0x10));
+    fn_802160C0(lbl_8029D860 + 0xB0, *(s32 *)((u8 *)self + 0x1C));
+    fn_802160C0(lbl_8029D860 + 0xE0, (s32)*(u16 *)((u8 *)self + 0x24));
+#pragma inline_depth reset
 }
 
 void fn_80216860(void *arg0) {

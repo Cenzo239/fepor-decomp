@@ -153,19 +153,31 @@ s32 fn_8020931C(s32 commit, s32 offset);
 
 #pragma scheduling reset
 
+#pragma optimization_level 3
 s32 fn_802098F8(void) {
-    u16 *scb;
-    
-    scb = Scb_80339420;
-    OSDisableInterrupts();
-    if (scb[0x48 / 2] != 0) {
-        OSRestoreInterrupts();
-        return 0;
-    } else {
-        scb[0x44 / 2] = 0; // OSDisableInterrupts() returns void, so we can't cast it
-        scb[0x48 / 2] = 1;
-    }
-    
-    return (scb[0x13 / 2] >> 7) & 1;
-}
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+    extern u16 Scb_80339420[];
 
+    u8 *scb;
+    s32 *locked;
+    u32 irq;
+    s32 result;
+    u8 pad[8];
+
+    scb = (u8 *)Scb_80339420;
+    irq = OSDisableInterrupts();
+    locked = (s32 *)(scb + 0x48);
+    if (*locked) {
+        OSRestoreInterrupts(irq);
+        result = 0;
+    } else {
+        *(u32 *)(scb + 0x44) = irq;
+        *locked = 1;
+        result = (scb[0x13] >> 7) & 1;
+        fn_8020931C(0, 0);
+    }
+    return result;
+}
+#pragma optimization_level reset

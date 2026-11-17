@@ -371,19 +371,18 @@ done2:
         return (u8)a != (u8)fn_8001CFA8((u8)other);
     }
 }
+#pragma optimization_level 3
 u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
-    u8 result;
-    u32 idx;
-    s32 a1;
     void *self;
-    u8 *row;
+    s32 a1;
+    u32 idx;
+    u8 result;
 
-    result = 0;
-    idx = (u8)arg1;
-    a1 = arg1;
     self = arg0;
-    result = *((u8 *)self + idx + 0x20C);
+    a1 = arg1;
+    idx = (u8)arg1;
+    result = ((u8 *)self)[idx + 0x20C];
 
     if (idx == 7) {
         if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
@@ -391,40 +390,29 @@ u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
         }
     }
 
-    row = *(u8 **)((u8 *)self + 0x18C);
-    if (*(row + idx + 0x2C) != 0) {
+    if ((*(u8 **)((u8 *)self + 0x18C))[idx + 0x2C] != 0) {
         goto block_default;
     }
 
     switch ((u8)a1) {
     case 0:
-        if (Status_Test((u8 *)self + 0x1BC, 0x24) != 0) {
-            goto block_default;
-        }
+        if (Status_Test((u8 *)self + 0x1BC, 0x24) != 0) goto block_default;
         result = 0;
         goto done;
     case 1:
-        if (Status_Test((u8 *)self + 0x1BC, 0x25) != 0) {
-            goto block_default;
-        }
+        if (Status_Test((u8 *)self + 0x1BC, 0x25) != 0) goto block_default;
         result = 0;
         goto done;
     case 2:
-        if (Status_Test((u8 *)self + 0x1BC, 0x26) != 0) {
-            goto block_default;
-        }
+        if (Status_Test((u8 *)self + 0x1BC, 0x26) != 0) goto block_default;
         result = 0;
         goto done;
     case 3:
-        if (Status_Test((u8 *)self + 0x1BC, 0x27) != 0) {
-            goto block_default;
-        }
+        if (Status_Test((u8 *)self + 0x1BC, 0x27) != 0) goto block_default;
         result = 0;
         goto done;
     case 7:
-        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
-            goto block_default;
-        }
+        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) goto block_default;
         result = 0;
         goto done;
     }
@@ -445,7 +433,7 @@ clamp79:
 done:
     return result;
 }
-
+#pragma optimization_level reset
 u8 fn_80092C50(void *arg0, u8 arg1, u8 arg2) {
     u8 Status_Test(void *, s32);
     if (arg1==7 && Status_Test((u8 *)arg0+0x1BC,0x28)) goto clamp;
@@ -538,18 +526,30 @@ s32 fn_80093010(void *arg0, void *arg1)
 }
 
 s32 fn_80093088(void *arg0) {
-void *Unit_GetHeldItemSlot(void *, s32);
-s32 i=0; s32 r; u8 ok;
-for(i=0;i<4;i++) { if(*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) goto found; } i=-1; found:;
-r=i==0; ok=r;
-if(ok) {
- if(*(u32 *)((u8*)arg0+0x1ec)==0) i=0;
- else if(*(u32 *)((u8*)arg0+0x1f4)==0) i=1;
- else if(*(u32 *)((u8*)arg0+0x1fc)==0) i=2;
- else if(*(u32 *)((u8*)arg0+0x204)==0) i=3;
- else i=-1;
- r=i==0;
-} return r;
+    void *Unit_GetHeldItemSlot(void *, s32);
+    s32 i = 0;
+    s32 r;
+    u8 ok;
+
+    do {
+        if (*(u32 *)Unit_GetHeldItemSlot(arg0, i) != 0) goto inc;
+        goto found;
+inc:
+        i++;
+    } while (i < 4);
+    i = -1;
+found:
+    r = i == 0;
+    ok = r;
+    if (ok) {
+        if (*(u32 *)((u8 *)arg0 + 0x1ec) == 0) i = 0;
+        else if (*(u32 *)((u8 *)arg0 + 0x1f4) == 0) i = 1;
+        else if (*(u32 *)((u8 *)arg0 + 0x1fc) == 0) i = 2;
+        else if (*(u32 *)((u8 *)arg0 + 0x204) == 0) i = 3;
+        else i = -1;
+        r = i == 0;
+    }
+    return r;
 }
 
 void Unit_SetHeldItem(s32 arg0, s32 arg1, s32 arg2) {
@@ -1338,9 +1338,13 @@ s32 fn_80094ABC(void *arg0, void **arg1) {
     M2C_UNK Item_Copy(s32, s32);
     s32 i;
     Unk80037BD0 *slot;
-    i=0;
+    i = 0;
     if (*(u64 *)((u8 *)*arg1 + 0x38) & 5ULL) {
-        for (;i<4;i++) { if (*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) goto found; }
+        while (1) {
+            if (*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) goto found;
+            i++;
+            if (i >= 4) break;
+        }
         i=-1;
 found:
         if(i<0) return 0;
@@ -1683,19 +1687,19 @@ void *fn_800951D0(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void *fn_8009542C(void *unit, s8 slot) {
     void Item_Init(void *);
-    void Item_Copy(void *, void *);
     void Item_Clear(void *);
-    void Item_Destroy(void *, s32);
+    void Item_Copy(void *, void *);
     void *Unit_GetHeldItemSlot(void *, s32);
+    void Item_Destroy(void *, s32);
     s8 Unit_GetActiveItemSlot(void *);
     u8 items[32];
-    u8 *item1;
-    u8 *item2;
-    u8 *item3;
-    s32 off;
     void *self;
+    unsigned long off;
+    u8 *item3;
+    u8 *item2;
+    u8 *item1;
     void *result;
-    s32 i;
+    int i;
 
     self = unit;
     if (slot < 0) {
@@ -1738,7 +1742,7 @@ void *fn_8009542C(void *unit, s8 slot) {
         }
         i += 1;
         off += 8;
-    } while (i < 4);
+    } while (4 > i);
 
     Item_Destroy(item3, -1);
     Item_Destroy(item2, -1);

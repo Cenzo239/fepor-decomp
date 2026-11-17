@@ -2207,6 +2207,150 @@ void fn_801EDB70(void *arg0) {
     }
 }
 
+void fn_801EDBC0(void *arg0)
+{
+    extern u32 gUiInputFlags;
+    extern u8 gBattle[];
+    extern u8 gUiContext[];
+
+    void BattleUnit_Copy(void *, void *);
+    void BattleUnit_Reset(void *);
+    void Item_Destroy(void *, s32);
+    void Array_Destroy(void *, void (*)(void *, s32), s32, s32);
+    void Heap_Free(void *);
+    void Status_Clear(void *, u8);
+    void Unit_ApplyStatusWpnExp(void *);
+
+    u8 *self;
+    u8 *unit;
+    u8 *saved;
+    u8 status;
+
+    self = (u8 *)arg0;
+
+    if (*(u32 *)(self + 0x34) == 0) {
+        gUiInputFlags &= ~4U;
+    }
+
+    saved = *(u8 **)(self + 0x4C);
+
+    if (saved != 0) {
+        BattleUnit_Copy(gBattle, saved);
+
+        unit = *(u8 **)(self + 0x4C);
+
+        if (unit != 0) {
+            BattleUnit_Reset(unit);
+
+            Item_Destroy(unit + 0x28C, -1);
+            Item_Destroy(unit + 0x284, -1);
+
+            if (unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0) {
+                Array_Destroy(
+                    unit + 0x1EC,
+                    Item_Destroy,
+                    8,
+                    4
+                );
+
+                Array_Destroy(
+                    unit + 0x1CC,
+                    Item_Destroy,
+                    8,
+                    4
+                );
+            }
+
+            Heap_Free(unit);
+        }
+
+        *(void **)(self + 0x4C) = 0;
+    }
+
+    saved = *(u8 **)(self + 0x50);
+
+    if (saved != 0) {
+        BattleUnit_Copy(gBattle + 0x2E0, saved);
+
+        unit = *(u8 **)(self + 0x50);
+
+        if (unit != 0) {
+            BattleUnit_Reset(unit);
+
+            Item_Destroy(unit + 0x28C, -1);
+            Item_Destroy(unit + 0x284, -1);
+
+            if (unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0 &&
+                unit != 0) {
+                Array_Destroy(
+                    unit + 0x1EC,
+                    Item_Destroy,
+                    8,
+                    4
+                );
+
+                Array_Destroy(
+                    unit + 0x1CC,
+                    Item_Destroy,
+                    8,
+                    4
+                );
+            }
+
+            Heap_Free(unit);
+        }
+
+        *(void **)(self + 0x50) = 0;
+    }
+
+    status = gUiContext[0x14];
+
+    if (status != 0xFF) {
+        unit = *(u8 **)(self + 0x30);
+
+        if (status <= 8) {
+            switch (status) {
+            case 0:
+                Status_Clear(unit + 0x1BC, 0x24);
+                break;
+
+            case 1:
+                Status_Clear(unit + 0x1BC, 0x25);
+                break;
+
+            case 2:
+                Status_Clear(unit + 0x1BC, 0x26);
+                break;
+
+            case 3:
+                Status_Clear(unit + 0x1BC, 0x27);
+                break;
+
+            case 4:
+                Status_Clear(unit + 0x1BC, 0x28);
+                break;
+
+            case 5:
+                Status_Clear(unit + 0x1BC, 0x22);
+                break;
+            }
+        }
+
+        Unit_ApplyStatusWpnExp(unit);
+    }
+}
+
 void fn_801EDDF0(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801A7FA4(void *);
@@ -2336,6 +2480,260 @@ void fn_801EE098(void) {
     fn_80147FA8(0x3E8);
     fn_801478D0(0x3E8);
     fn_80146B00();
+}
+
+void fn_801EE0C8(u8 *selfArg) {
+    void *Effect_Create(char *, u8 *);
+    void Effect_SetPos(void *, f32, f32, f32);
+    void fn_801C6CBC(void *, s32, u8 *, s32);
+    void fn_801C6E60(void *);
+    void *Process_Create(void *, void *);
+    void Process_UnlinkByKey(void *);
+    void Process_CreateChild(void *, void *);
+    void Process_ClearFunc(void);
+    void Model_SetColor(void *, u8, u8, u8);
+    void Model_SetAlpha(void *, u8);
+    void fn_800C4384(void);
+    void fn_800616A0(void *);
+    void fn_8005C7E8(void *);
+    void fn_8005C8B4(void *);
+    u8 fn_800537E8(void);
+    void fn_80056580(void);
+    void fn_801B3258(void *, u8 *);
+    void fn_80162018(void);
+    u8 fn_800A8504(void *, u8);
+    s32 GActor_LoadResources(void *, s32);
+    void fn_801C6DB8(void *);
+    void fn_801C4440(void);
+    void fn_801EF39C(void *, u8 *, s32);
+    void String_Copy(void *, void *);
+    void String_Destroy(void *, s32);
+    void String_JoinCStr(void *, char *, void *);
+    void String_ConcatCStr(void *, void *, char *);
+    void String_Concat(void *, void *, void *);
+    void String_Assign(void *, void *, s32, s32);
+    void *String_CStr(void *);
+    extern char gGActorPathExt[];
+    extern u8 gBattle[];
+    extern f32 lbl_8036B7B8;
+    extern f32 lbl_8036B7BC;
+    extern u32 lbl_8036B7A0;
+    extern u32 lbl_8036B7A4;
+    extern u32 lbl_8036B7A8;
+    extern u32 lbl_8036B7AC;
+    extern u32 lbl_8036B7B0;
+    extern u32 lbl_8036B7B4;
+    extern u32 lbl_803683D8;
+    extern u8 lbl_8029A5A0[];
+    extern u8 lbl_8029A780[];
+    u8 *self;
+    void *eff;
+    void *model;
+    u8 b8[8];
+    u8 b10[8];
+    u8 b18[8];
+    u8 b20[8];
+    u32 w28;
+    u32 w2C;
+    u32 w30;
+    u32 w34;
+    u32 w38;
+    u32 w3C;
+    String sAC, sA0, s94, s88, s7C, s70, s64, s58, s4C, s40;
+    u8 alpha;
+    s32 i;
+    s32 sum;
+
+    self = selfArg;
+    if (*(u16 *)(self + 0x3E) != 0) {
+        *(u16 *)(self + 0x3E) = *(u16 *)(self + 0x3E) - 1;
+        return;
+    }
+    switch (*(u16 *)(self + 0x3C)) {
+    case 0:
+        *(u16 *)(self + 0x3E) = 0x3C;
+        *(u16 *)(self + 0x3C) = 1;
+        break;
+    case 1:
+        eff = Effect_Create(gGActorPathExt + 0x1AB, self);
+        Effect_SetPos(eff, lbl_8036B7B8, lbl_8036B7B8, lbl_8036B7B8);
+        *(f32 *)((u8 *)*(void **)((u8 *)eff + 0x30) + 0x1C) = lbl_8036B7BC;
+        *(u16 *)(self + 0x3E) = 0x1F4;
+        *(u16 *)(self + 0x3C) = 2;
+        w3C = lbl_8036B7A0;
+        fn_801C6CBC(&w3C, 0x78, self, 0);
+        fn_801C6E60(*(void **)((u8 *)*(void **)(self + 0x48) + 0xB8));
+        fn_801C6E60(*(void **)((u8 *)*(void **)(self + 0x48) + 0xC4));
+        w38 = lbl_8036B7A4;
+        w34 = lbl_8036B7A8;
+        model = *(void **)((u8 *)*(void **)(self + 0x48) + 0xB8);
+        if (model != NULL) {
+            void *p = Process_Create(lbl_8029A5A0, self);
+            *(void **)((u8 *)p + 0x30) = model;
+            *(s32 *)((u8 *)p + 0x38) = 0x12C;
+            *(u32 *)&b20[0] = w38;
+            *(u32 *)&b20[4] = w34;
+            alpha = b20[3];
+            ((u8 *)p)[0x44] = b20[0];
+            ((u8 *)p)[0x45] = b20[1];
+            ((u8 *)p)[0x46] = b20[2];
+            ((u8 *)p)[0x47] = alpha;
+            ((u8 *)p)[0x48] = b20[4];
+            ((u8 *)p)[0x49] = b20[5];
+            ((u8 *)p)[0x4A] = b20[6];
+            ((u8 *)p)[0x4B] = b20[7];
+            *(s32 *)((u8 *)p + 0x3C) = 0xF0;
+            *(s32 *)((u8 *)p + 0x40) = 0;
+            Model_SetColor(model, b20[0], b20[1], b20[2]);
+            Model_SetAlpha(model, alpha);
+        }
+        model = *(void **)((u8 *)*(void **)(self + 0x48) + 0xC4);
+        if (model != NULL) {
+            void *p = Process_Create(lbl_8029A5A0, self);
+            *(void **)((u8 *)p + 0x30) = model;
+            *(s32 *)((u8 *)p + 0x38) = 0x12C;
+            *(u32 *)&b18[0] = w38;
+            *(u32 *)&b18[4] = w34;
+            alpha = b18[3];
+            ((u8 *)p)[0x44] = b18[0];
+            ((u8 *)p)[0x45] = b18[1];
+            ((u8 *)p)[0x46] = b18[2];
+            ((u8 *)p)[0x47] = alpha;
+            ((u8 *)p)[0x48] = b18[4];
+            ((u8 *)p)[0x49] = b18[5];
+            ((u8 *)p)[0x4A] = b18[6];
+            ((u8 *)p)[0x4B] = b18[7];
+            *(s32 *)((u8 *)p + 0x3C) = 0xF0;
+            *(s32 *)((u8 *)p + 0x40) = 0;
+            Model_SetColor(model, b18[0], b18[1], b18[2]);
+            Model_SetAlpha(model, alpha);
+        }
+        break;
+    case 8:
+        fn_800C4384();
+        *(u16 *)(self + 0x3E) = 0x869F;
+        break;
+    case 2:
+        if (*(u32 *)((u8 *)*(void **)(self + 0x48) + 0xB4) != 0) {
+            void *actor = *(void **)(self + 0x48);
+            fn_801C6DB8(*(void **)((u8 *)actor + 0xB8));
+            fn_801C4440();
+            Process_UnlinkByKey(lbl_8029A5A0);
+            fn_800616A0(*(void **)((u8 *)actor + 0xBC));
+            *(u32 *)((u8 *)actor + 0xBC) = 0;
+            fn_800616A0(*(void **)((u8 *)actor + 0xB8));
+            *(u32 *)((u8 *)actor + 0xB8) = 0;
+            fn_8005C7E8(*(void **)((u8 *)actor + 0xB4));
+            *(u32 *)((u8 *)actor + 0xB4) = 0;
+            actor = *(void **)(self + 0x48);
+            s40.cap = 0;
+            s40.size = 0;
+            s40.data = 0;
+            s40.cap = 0;
+            fn_801EF39C(&s64, actor, 1);
+            String_Copy(&s4C, &s64);
+            String_Destroy(&s64, -1);
+            String_JoinCStr(&s70, gGActorPathExt + 0x1BB, &s4C);
+            String_ConcatCStr(&s7C, &s70, gGActorPathExt + 0x1BF);
+            String_Copy(&s58, &s7C);
+            String_Destroy(&s7C, -1);
+            String_Destroy(&s70, -1);
+            String_Concat(&s88, &s58, &s4C);
+            String_ConcatCStr(&s94, &s88, gGActorPathExt + 0x1C1);
+            String_Assign(&s40, &s94, 0, -1);
+            String_Destroy(&s94, -1);
+            String_Destroy(&s88, -1);
+            fn_8005C8B4(String_CStr(&s40));
+            String_Concat(&sA0, &s58, (String *)((u8 *)actor + 0x20));
+            String_ConcatCStr(&sAC, &sA0, gGActorPathExt + 0x1C9);
+            String_Assign(&s40, &sAC, 0, -1);
+            String_Destroy(&sAC, -1);
+            String_Destroy(&sA0, -1);
+            fn_8005C8B4(String_CStr(&s40));
+            String_Destroy(&s58, -1);
+            String_Destroy(&s4C, -1);
+            String_Destroy(&s40, -1);
+        }
+        *(u16 *)(self + 0x3C) = 3;
+        *(u16 *)(self + 0x3E) = 0xB4;
+        break;
+    case 3:
+        GActor_LoadResources(*(void **)(self + 0x48), 1);
+        w30 = lbl_8036B7AC;
+        fn_801C6CBC(&w30, 0xB4, self, 0);
+        w2C = lbl_8036B7B0;
+        w28 = lbl_8036B7B4;
+        model = *(void **)((u8 *)*(void **)(self + 0x48) + 0xB8);
+        if (model != NULL) {
+            void *p = Process_Create(lbl_8029A5A0, self);
+            *(void **)((u8 *)p + 0x30) = model;
+            *(s32 *)((u8 *)p + 0x38) = 0x12C;
+            *(u32 *)&b10[0] = w2C;
+            *(u32 *)&b10[4] = w28;
+            alpha = b10[3];
+            ((u8 *)p)[0x44] = b10[0];
+            ((u8 *)p)[0x45] = b10[1];
+            ((u8 *)p)[0x46] = b10[2];
+            ((u8 *)p)[0x47] = alpha;
+            ((u8 *)p)[0x48] = b10[4];
+            ((u8 *)p)[0x49] = b10[5];
+            ((u8 *)p)[0x4A] = b10[6];
+            ((u8 *)p)[0x4B] = b10[7];
+            *(s32 *)((u8 *)p + 0x3C) = 0x3C;
+            *(s32 *)((u8 *)p + 0x40) = 0;
+            Model_SetColor(model, b10[0], b10[1], b10[2]);
+            Model_SetAlpha(model, alpha);
+        }
+        model = *(void **)((u8 *)*(void **)(self + 0x48) + 0xC4);
+        if (model != NULL) {
+            void *p = Process_Create(lbl_8029A5A0, self);
+            *(void **)((u8 *)p + 0x30) = model;
+            *(s32 *)((u8 *)p + 0x38) = 0x12C;
+            *(u32 *)&b8[0] = w2C;
+            *(u32 *)&b8[4] = w28;
+            alpha = b8[3];
+            ((u8 *)p)[0x44] = b8[0];
+            ((u8 *)p)[0x45] = b8[1];
+            ((u8 *)p)[0x46] = b8[2];
+            ((u8 *)p)[0x47] = alpha;
+            ((u8 *)p)[0x48] = b8[4];
+            ((u8 *)p)[0x49] = b8[5];
+            ((u8 *)p)[0x4A] = b8[6];
+            ((u8 *)p)[0x4B] = b8[7];
+            *(s32 *)((u8 *)p + 0x3C) = 0x3C;
+            *(s32 *)((u8 *)p + 0x40) = 0;
+            Model_SetColor(model, b8[0], b8[1], b8[2]);
+            Model_SetAlpha(model, alpha);
+        }
+        *(u16 *)(self + 0x3C) = 4;
+        break;
+    case 4:
+        if (fn_800537E8() != 0) break;
+        fn_80056580();
+        *(u16 *)(self + 0x3C) = 5;
+        *(u16 *)(self + 0x3E) = 0x1E;
+        break;
+    case 5:
+        fn_801B3258(gBattle, self);
+        fn_80162018();
+        *(u16 *)(self + 0x3C) = 6;
+        *(u16 *)(self + 0x3E) = 1;
+        break;
+    case 6:
+        sum = 0;
+        for (i = 0; i <= 8; i++) {
+            sum += (u8)fn_800A8504(*(void **)(gBattle + 0x46C), (u8)i);
+        }
+        if (sum == 0) break;
+        lbl_803683D8 = *(u32 *)(gBattle + 0x560);
+        Process_CreateChild(lbl_8029A780, self);
+        *(u16 *)(self + 0x3C) = 7;
+        *(u16 *)(self + 0x3E) = 0x1E;
+        break;
+    case 7:
+        Process_ClearFunc();
+        break;
+    }
 }
 
 #pragma use_lmw_stmw on

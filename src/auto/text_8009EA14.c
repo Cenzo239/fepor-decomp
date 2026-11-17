@@ -69,6 +69,7 @@
       SaveData_Release(&gSaveDataBase);
   }
 
+#pragma optimization_level 3
 void fn_8009EAB4(s32 arg0) {
     extern s32 gSaveDataBase;
     s32 DebugPrint(const char *, ...);
@@ -76,6 +77,8 @@ void fn_8009EAB4(s32 arg0) {
     void fn_801E0B48(void *, s8, s8, s32);
     s32 a;
     s32 b;
+    s32 bm;
+    s32 am;
 
     if (Card_GetResult() != 0) {
         DebugPrint((const char *)(gMenuCmdStrings + 0x178));
@@ -83,9 +86,11 @@ void fn_8009EAB4(s32 arg0) {
     }
     a = (s8)(s32)*(f32 *)(gBattleState + 0x524);
     b = (s8)(s32)*(f32 *)(gBattleState + 0x528);
-    fn_801E0B48(&gSaveDataBase, (s8)(a % 5), (s8)(b % 5), arg0);
+    bm = b % 5;
+    am = a % 5;
+    fn_801E0B48(&gSaveDataBase, (s8)am, (s8)bm, arg0);
 }
-
+#pragma optimization_level reset
   
   void fn_8009EB7C(void) {
       void SaveData_Release(void *);

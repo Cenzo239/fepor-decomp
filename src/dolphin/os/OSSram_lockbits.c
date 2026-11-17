@@ -145,7 +145,7 @@ extern s32 RunQueueHint_8036851C;
 
 s32 fn_8020931C(s32 commit, s32 offset);
 
-#pragma scheduling off
+#pragma scheduling on
 s32 fn_80209A78(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
@@ -154,6 +154,8 @@ s32 fn_80209A78(void) {
     u8 *scb;
     s32 *locked;
     u32 interrupts;
+    u8 pad[8];
+    s32 zero;
 
     scb = (u8 *)Scb_80339420;
     interrupts = OSDisableInterrupts();
@@ -166,8 +168,8 @@ s32 fn_80209A78(void) {
         *locked = 1;
         interrupts = scb[0x11];
         scb = (u8 *)((interrupts >> 6) & 1);
-        fn_8020931C(0, 0);
+        zero = (s32)(interrupts & 0);
+        fn_8020931C(zero, zero);
     }
     return (s32)scb;
 }
-#pragma scheduling reset

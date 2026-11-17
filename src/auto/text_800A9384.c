@@ -38,17 +38,16 @@ extern u8 lbl_80366E30;
 #pragma use_lmw_stmw on
 void fn_800A9384(void) {
     void **a = (void**)&lbl_80312AB0;
-    void **b = (void**)&lbl_803677C8;
-    void **c = (void**)&lbl_803677EC;
+    void **c;
 
-    // Direct memory assignments as in the target assembly
     a[1] = gUiMenuDrawVtbl;
-    b[0] = lbl_8028459C;
+    lbl_803677C8 = lbl_8028459C;
     a[1] = lbl_80286664;
-    b[0] = lbl_8028CDA4;
+    lbl_803677C8 = lbl_8028CDA4;
+    c = (void**)&lbl_803677EC;
     c[1] = gUiMenuDrawVtbl;
     a[1] = lbl_802863BC;
-    b[0] = lbl_8028CD58;
+    lbl_803677C8 = lbl_8028CD58;
     lbl_803677D0 = lbl_8028CD0C;
     lbl_803677D4 = lbl_8028CCC0;
     lbl_803677D8 = lbl_8028CC74;
@@ -60,7 +59,7 @@ void fn_800A9384(void) {
     c[1] = lbl_8028CAC8;
     lbl_803677F4 = lbl_8028CA74;
     lbl_803677F8 = lbl_8028CA20;
-    a[1] = lbl_8028C9A0;
     a[0] = &lbl_80366E30;
+    a[1] = lbl_8028C9A0;
 }
 #pragma use_lmw_stmw reset

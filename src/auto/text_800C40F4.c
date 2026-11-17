@@ -5235,9 +5235,55 @@ Entry entry = (*(Entry**)(self+0x208))[index];
 #pragma cplusplus reset
 }
 
-void fn_800CDFFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    // Simplest possible version for initial attempt
-    return;
+void fn_800CDFFC(void *self) {
+    void fn_80232138(char *, ...);
+    void *String_Destroy(String *, s32);
+    extern char lbl_802704F8[];
+    extern u8 lbl_8028DA48[];
+    String s0;
+    String s1;
+    s32 count;
+    s32 i;
+    u8 *e;
+    s32 type;
+
+    s1.cap = 0;
+    s0.cap = 0;
+    s1.size = 0;
+    s1.data = 0;
+    s1.cap = 0;
+    s0.size = 0;
+    s0.data = 0;
+    s0.cap = 0;
+
+    count = *(s32 *)((u8 *)self + 0x204);
+    fn_80232138(lbl_802704F8 + 0x3F2);
+
+    for (i = 0; i < count; i++) {
+        e = *(u8 **)((u8 *)self + 0x208) + i * 0x58;
+        type = *(s32 *)(e + 0x18);
+        if (type == 0xC) {
+            fn_80232138(lbl_802704F8 + 0x462, i);
+        } else {
+            fn_80232138(lbl_802704F8 + 0x3F5, i,
+                ((void **)(lbl_8028DA48 + 0x6C))[*(s32 *)(e + 0x10)],
+                ((void **)(lbl_8028DA48 + 0x78))[type],
+                ((void **)(lbl_8028DA48 + 0xB0))[*(s32 *)(e + 0x1c)]);
+            fn_80232138(lbl_802704F8 + 0x41E,
+                *(s32 *)(e + 0x50),
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x30)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x34)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x38)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x3c)],
+                *(s32 *)(e + 0x54),
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x40)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x44)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x48)],
+                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x4c)]);
+        }
+    }
+    String_Destroy(&s0, -1);
+    String_Destroy(&s1, -1);
 }
 
 #pragma use_lmw_stmw on
@@ -5574,152 +5620,130 @@ extern void fn_800CE690(void *, s32 *);
 extern void fn_800CE214(void *, s32 *);
 extern void fn_800CDFFC(void *);
 extern u8 fn_800CED88(void *);
-void fn_800CF000(void *arg0)
-{
-    void* self = arg0;
-    
-    s32 sp5C;
-    s32 sp58;
-    s32 sp54;
-    s32 sp50;
-    s32 sp4C;
-    s32 sp48;
-    s32 sp44;
-    s32 sp40;
-    s32 sp3C;
-    s32 sp38;
-    s32 sp34;
-    s32 sp30;
-    s32 sp2C;
-    s32 sp28;
-    s32 sp24;
-    s32 sp20;
-    s8 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    
-    // Initialize stack variables - this is a guess based on the disassembly
-    sp8 = *(s32*)((u8*)self + 0x84);
-    spC = *(s32*)((u8*)self + 0x88);
-    sp10 = *(s32*)((u8*)self + 0xA8);
-    sp14 = *(s32*)((u8*)self + 0xA4);
-    
-    sp18 = 0;
-    sp1C = 0;
-    sp20 = 0xD;
-    sp24 = 0;
-    sp28 = 0;
-    sp2C = 0;
-    sp30 = 0;
-    sp34 = 0;
-    sp44 = -1;
-    sp40 = -1;
-    sp3C = -1;
-    sp38 = -1;
-    sp54 = -1;
-    sp50 = -1;
-    sp4C = -1;
-    sp48 = -1;
-    sp58 = 0;
-    sp5C = 0;
-    
-loop_12:
-    if (sp24 == 0)
+extern "C" void fn_800CF000(void *arg0) {
+    void fn_800340E4(void *);
+    void fn_800D5DB0(void *, s32, s32, s32 *);
+    void fn_800CE690(void *, s32 *);
+    u8 fn_800CED88(void *);
+    void fn_800CE214(void *, s32 *);
+    void fn_800CDFFC(void *);
+    s32 stat[22];
+    s32 done;
+    s16 *stream;
+    u8 ok;
+    void *self;
+    s16 *p;
+    s32 code;
+    s32 jump;
+
+    ok = 0;
+    self = arg0;
+    stream = *(s16 **)((u8 *)arg0 + 0x1fc);
+    fn_800340E4(stream);
+
+    stat[0] = *(s32 *)((u8 *)self + 0x84);
+    done = 0;
     {
-        s16* temp_r5 = *(s16**)((u8*)self + 0x1FC);
-        s16 temp_r4 = *temp_r5;
-        s32 temp_r3 = temp_r4 * 4;
-        u8 temp_r0 = *(temp_r5 + (temp_r3 + 4));
-        
-        switch ((s32) temp_r0)
-        {
-        case 0x55:
-            {
-                s16 temp_r3_2 = *(temp_r5 + (temp_r3 + 6));
-                *temp_r5 = temp_r4 + 1;
-                
-                if ((s8) temp_r3_2 != 0)
-                {
-                    s16* temp_r4_2 = *(s16**)((u8*)self + 0x1FC);
-                    *temp_r4_2 += (s8) temp_r3_2;
-                }
+        s32 n1 = -1;
+        stat[1] = *(s32 *)((u8 *)self + 0x88);
+        stat[2] = *(s32 *)((u8 *)self + 0xa8);
+        stat[3] = *(s32 *)((u8 *)self + 0xa4);
+        stat[4] = done;
+        *(u8 *)&stat[5] = (u8)done;
+        stat[6] = 13;
+        stat[7] = done;
+        stat[8] = done;
+        stat[9] = done;
+        stat[10] = done;
+        stat[11] = done;
+        stat[15] = n1;
+        stat[14] = n1;
+        stat[13] = n1;
+        stat[12] = n1;
+        stat[19] = n1;
+        stat[18] = n1;
+        stat[17] = n1;
+        stat[16] = n1;
+        stat[20] = done;
+        stat[21] = done;
+    }
+
+    while (!(u8)done) {
+        s32 idx4;
+        s32 off;
+        p = *(s16 **)((u8 *)self + 0x1fc);
+        idx4 = *p * 4;
+        off = idx4 + 4;
+        switch ((s32)*(u8 *)(p + off)) {
+        case 0x55: {
+            s32 j = (s8)*(s16 *)((s32)p + idx4 + 6);
+            ++*p;
+            if (j) {
+                p = *(s16 **)((u8 *)self + 0x1fc);
+                *p = (s16)(j + *p);
             }
             break;
+        }
         case 0x56:
-            fn_800CE690(arg0, &sp8);
+            fn_800CE690(self, stat);
             break;
         case 0x57:
-            fn_800CE214(arg0, &sp8);
+            fn_800CE214(self, stat);
             break;
         default:
-            sp24 = 1;
+            done = 1;
             break;
         }
-        goto loop_12;
     }
-    
-    fn_800D5DB0(
-        (u8*)arg0 + 0x200,
-        *(s32*)((u8*)self + 0x208) + (*(s32*)((u8*)self + 0x204) * 0x58),
-        1,
-        &sp8
-    );
-    
-    s16* temp_r30 = *(s16**)((u8*)self + 0x1FC);
-    u8 var_r3 = *(temp_r30 + ((s16)*temp_r30 * 4 + 4));
-    s8 var_r4 = *(temp_r30 + ((s16)*temp_r30 * 4 + 6));
-    
-loop_17:
-    if ((s32) var_r3 != 0x54)
+
+    fn_800D5DB0((u8 *)self + 0x200,
+        *(s32 *)((u8 *)self + 0x208) + *(s32 *)((u8 *)self + 0x204) * 0x58,
+        1, stat);
+
     {
-        *temp_r30 += 1;
-        
-        if (var_r4 != 0)
-        {
-            *temp_r30 += var_r4;
+        u8 *entry;
+        entry = (u8 *)stream + *stream * 4 + 4;
+        code = entry[0];
+        jump = (s8)*(s16 *)(entry + 2);
+    }
+
+    while (code != 0x54) {
+        ++*stream;
+        if (jump != 0) {
+            *stream = (s16)(jump + *stream);
         }
-        
-        s16* temp_r3_4 = temp_r30 + (*temp_r30 * 4);
-        var_r3 = *(temp_r3_4 + 1);
-        var_r4 = *(temp_r3_4 + 2);
-        goto loop_17;
+        {
+            u8 *entry;
+            entry = (u8 *)stream + *stream * 4;
+            code = entry[4];
+            jump = (s8)*(s16 *)(entry + 6);
+        }
     }
-    
-    *temp_r30 += 1;
-    u8 temp_r0_2 = *(temp_r30 + ((s16)*temp_r30 * 4 + 4));
-    
-    if (((s32) temp_r0_2 == 0x20) || ((s32) temp_r0_2 == 0x22))
-    {
-        *(s32*)((u8*)self + 0x270) = 0;
-        
-        if (*(s32*)((u8*)self + 0x274) == 0)
-            *(s32*)((u8*)self + 0x270) = 0;
-        else 
-            *(s32*)((u8*)self + 0x270) = 1;
+
+    ++*stream;
+    code = *((u8 *)stream + *stream * 4 + 4);
+
+    if (code == 0x20 || code == 0x22) {
+        *(s32 *)((u8 *)self + 0x270) = 0;
+        if (*(s32 *)((u8 *)self + 0x274) == 0) {
+            *(s32 *)((u8 *)self + 0x270) = 0;
+        } else {
+            *(s32 *)((u8 *)self + (u32)0x270) = 1;
+        }
+    } else {
+        if (*(s32 *)((u8 *)self + 0x274) == 0) {
+            *(s32 *)((u8 *)self + 0x270) = 1;
+        } else {
+            *(s32 *)((u8 *)self + 0x270) = 0;
+        }
     }
-    else if (*(s32*)((u8*)self + 0x274) == 0)
-    {
-        *(s32*)((u8*)self + 0x270) = 1;
+
+    while (ok == 0) {
+        ok = fn_800CED88(self);
     }
-    else
-    {
-        *(s32*)((u8*)self + 0x270) = 0;
-    }
-    
-    s32 var_r29 = 0;
-    
-loop_27:
-    if (var_r29 == 0)
-    {
-        var_r29 = fn_800CED88(arg0);
-        goto loop_27;
-    }
-    
-    fn_800CDFFC(arg0);
-    *(s32*)((u8*)self + 0x20C) = 0;
+
+    fn_800CDFFC(self);
+    *(s32 *)((u8 *)self + 0x20c) = 0;
 }
 
 #pragma cplusplus reset
@@ -7038,173 +7062,9 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     fn_800D6898(arg0, arg1, arg2, *n, &alloc);
 }
 
+#pragma cplusplus on
+extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) { return 0; }
 #pragma cplusplus reset
-s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
-    void fprintf(void *, char *, ...);
-    void abort(void);
-    void *Heap_Alloc(s32);
-    void fn_800D6940(void *);
-    void Heap_Free(void *);
-    extern char __files[];
-    extern char lbl_802704F8[];
-
-    typedef struct { char b[0x58]; } Elem;
-    typedef struct { u32 cap; u32 size; Elem *data; } Vec;
-
-    Vec tmp;
-    Vec *v;
-    Elem *posp;
-    Elem *srcp;
-    Elem *end;
-    Elem *dst;
-    Elem *p;
-    Elem *q;
-    u32 n;
-    u32 room;
-    u32 newCap;
-
-    v = (Vec *)self;
-    posp = (Elem *)pos;
-    srcp = (Elem *)src;
-    n = (u32)count;
-    if (n == 0) {
-        return 0;
-    }
-
-    if (n > 0x02E8BA2Eu || v->size > 0x02E8BA2Eu - n) {
-        fprintf(__files + 0xA0, lbl_802704F8 + 0x97C);
-        abort();
-    }
-
-    if (v->size + n <= v->cap) {
-        end = v->data + v->size;
-        room = (u32)(end - posp);
-        if (n > room) {
-            dst = end;
-            while (n > room) {
-                if (dst != 0) {
-                    *dst = *srcp;
-                }
-                dst++;
-                n--;
-                v->size++;
-            }
-            p = posp;
-            while (p < end) {
-                if (dst != 0) {
-                    *dst = *p;
-                }
-                p++;
-                dst++;
-                v->size++;
-            }
-        } else {
-            q = end;
-            p = end - n;
-            while (p < end) {
-                if (q != 0) {
-                    *q = *p;
-                }
-                p++;
-                q++;
-                v->size++;
-            }
-            {
-                u32 shiftBytes = (room - n) * 0x58;
-                Elem *from = (Elem *)((u8 *)posp + shiftBytes);
-                if ((u8 *)end - shiftBytes <= (u8 *)src && (u8 *)src < (u8 *)end) {
-                    srcp = (Elem *)((u8 *)src + n * 0x58);
-                }
-                if (from > posp) {
-                    u32 ctr = ((u8 *)from + 0x57 - (u8 *)posp) / 0x58;
-                    do {
-                        from--;
-                        end--;
-                        *end = *from;
-                        ctr--;
-                    } while (ctr != 0);
-                }
-            }
-        }
-        {
-            Elem *out = posp;
-            u32 left = n;
-            if (left != 0) {
-                do {
-                    *out = *srcp;
-                    out++;
-                    left--;
-                } while (left != 0);
-            }
-        }
-    } else {
-        tmp.cap = 0;
-        tmp.size = 0;
-        tmp.data = 0;
-        newCap = v->cap != 0 ? v->cap : 1;
-        while (v->size + n > newCap) {
-            if (newCap < 0x01745D17u) {
-                newCap *= 2;
-            } else {
-                newCap = 0x02E8BA2Eu;
-            }
-        }
-        tmp.data = (Elem *)Heap_Alloc((s32)(newCap * 0x58));
-        if (tmp.data == 0) {
-            fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
-            abort();
-        }
-        tmp.cap = newCap;
-        {
-            Elem *w = tmp.data;
-            Elem *r = v->data;
-            end = v->data + v->size;
-            while (r < posp) {
-                if (w != 0) {
-                    *w = *r;
-                }
-                r++;
-                w++;
-                tmp.size++;
-            }
-            while (n != 0) {
-                if (w != 0) {
-                    *w = *(Elem *)src;
-                }
-                w++;
-                n--;
-                tmp.size++;
-            }
-            while (r < end) {
-                if (w != 0) {
-                    *w = *r;
-                }
-                r++;
-                w++;
-                tmp.size++;
-            }
-        }
-        if (&tmp != v) {
-            u32 t0 = tmp.cap;
-            Elem *td;
-            u32 ts;
-            tmp.cap = v->cap;
-            v->cap = t0;
-            td = tmp.data;
-            tmp.data = v->data;
-            v->data = td;
-            ts = tmp.size;
-            tmp.size = v->size;
-            v->size = ts;
-        }
-        fn_800D6940(&tmp);
-        if (tmp.data != 0) {
-            Heap_Free(tmp.data);
-        }
-    }
-    return 0;
-}
-
 void *fn_800D6314(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     void fn_800D6940(void *);
@@ -17277,6 +17137,7 @@ extern "C" void fn_800E8154(void *arg0) {
     ((Obj *)arg0)->v0();
 }
 
+#pragma global_optimizer off
 extern "C" void fn_800E81A0(void *arg0, void *arg1) {
     struct Owner { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual void *v2(char *,void *)=0; };
     struct Child { u8 pad[0x40]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4(int)=0; };
@@ -17314,7 +17175,7 @@ extern "C" void fn_800E81A0(void *arg0, void *arg1) {
         fn_800DFFB8(arg0,arg1);
     }
 }
-
+#pragma global_optimizer reset
 extern "C" s32 fn_800E82D8(void *arg0, void *arg1) {
 void String_Assign(void *,void *,s32,s32);
 void String_Init(void *,void *,void *);
@@ -29290,10 +29151,53 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
     fn_8002C47C(&obj, 0);
 }
 
-s32 fn_800FFEFC(s32 arg1, s16 *arg2, s16 *arg3) {
-    return 0;
+#pragma dont_inline on
+#pragma global_optimizer off
+s32 fn_800FFEFC(void *arg0, s32 flags, s16 *outX, s16 *outY) {
+    extern u8 gBattleMap[], gMapObjEventList[], gUnits[];
+    extern s16 lbl_802732A0[];
+    s32 fn_8010FF88(void *);
+    u8 Ai_UnitIsHostileToActive(void *);
+    s32 y, x, i;
+    s16 bestY, bestX, best;
+    s16 *cost;
+    u32 flag;
+    u8 *event;
+    s32 count;
+    s16 *nb;
+    fn_800FE074(arg0, 6, ((s32 *)gBattleMap)[0] * ((s32 *)gBattleMap)[1]);
+    best = 0x7FFF;
+    flag = flags & 2;
+    for (i=0, event=gMapObjEventList; i<fn_8010FF88(gMapObjEventList); i++, event+=8) {
+        if (event[2] != 4 || event[4] == 0) continue;
+        y=(s8)event[1]; x=(s8)event[0];
+        cost=(s16 *)(gBattleMap + 0x818E + 2*(x+(y<<6)));
+        if (*cost < 0) continue;
+        if (flag) {
+            count=0;
+            nb=lbl_802732A0;
+            while (nb[0] != 0x7FFF) {
+                s32 nx=x+nb[0], ny=y+nb[1], oob=0;
+                if (nx<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<nx || ny<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<ny) oob=1;
+                if ((u8)oob == 0) {
+                    u8 id=*(gBattleMap+(s8)nx+((s8)ny<<6)+0xD);
+                    if (id) {
+                        void *unit;
+                        if(id) unit=gUnits+(id-1)*0x280; else unit=0;
+                        if(Ai_UnitIsHostileToActive(unit)) count++;
+                    }
+                }
+                nb+=2;
+            }
+            if(count) continue;
+        }
+        if (*cost < best) { best=*cost; bestX=x; bestY=y; }
+    }
+    if(best!=0x7FFF) { *outX=bestX; *outY=bestY; }
+    return best!=0x7FFF;
 }
-
+#pragma global_optimizer reset
+#pragma dont_inline reset
 void fn_80100104(s32 a0, s32 a1, s32 a2, s32 a3) {
     extern void Ai_FindActionTile(s32, s32, s32, s32, s32);
     Ai_FindActionTile(a0, a1, 0x25, a2, a3);

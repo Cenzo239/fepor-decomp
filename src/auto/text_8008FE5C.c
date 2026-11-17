@@ -49,7 +49,7 @@ void fn_8008FE5C(u8 *arg0) {
  extern u8 gBattleHelpStrings[];
  void *fn_800C4638(s32,void *,s32);
  u8 *dst,*src;
- u32 i;
+ s32 i;
  *(void **)(arg0+0x30)=fn_800C4638(128,gBattleHelpStrings+0xF9,0);
  for(i=0;i<16;i++) {
  (*(u8 **)(arg0+0x30))[i*4]=255;

@@ -191,7 +191,7 @@ void fn_80209968(u32 arg0) {
         fn_8020931C(1, 0);
     }
 }
-#pragma global_optimizer reset
+#pragma optimization_level 3
 s32 fn_80209A0C(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
@@ -200,6 +200,7 @@ s32 fn_80209A0C(void) {
     u8 *scb;
     s32 *locked;
     u32 interrupts;
+    u8 pad[8];
 
     scb = (u8 *)Scb_80339420;
     interrupts = OSDisableInterrupts();
@@ -216,3 +217,4 @@ s32 fn_80209A0C(void) {
     }
     return (s32)scb;
 }
+#pragma optimization_level reset

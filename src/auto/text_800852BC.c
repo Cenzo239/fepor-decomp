@@ -2365,6 +2365,138 @@ void fn_8008A290(s32 arg0, s32 arg1) {
     fn_8008A32C(lbl_803674E0, var_r6, var_r5);
 }
 
+void fn_8008A32C(void *arg0, s32 arg1, s32 arg2)
+{
+    s32 GXGetTexBufferSize(s32, s32, s32, s32, s32);
+    void *fn_800C45B8(s32, void *, s32);
+    void DCInvalidateRange(void *, s32);
+    void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void *Process_Create(void *, s32);
+
+    extern f32 lbl_803696B0;
+
+    u8 *obj;
+    void *proc;
+    s32 size;
+
+    obj = (u8 *)arg0;
+
+    if ((*(u16 *)(obj + 0x32) & 1) == 0) {
+        obj[0x30] = arg1;
+
+        *(u16 *)(obj + 0x32) = 1;
+        *(u16 *)(obj + 0x34) = 0;
+
+        *(s16 *)(obj + 0x36) =
+            (s32)((f32)arg2 / lbl_803696C8);
+
+        *(u32 *)(obj + 0x48) = 0;
+
+        switch (obj[0x30]) {
+        case 0:
+            *(u16 *)(obj + 0x32) = 2;
+            *(f32 *)(obj + 0x3C) = gScreenOrigin;
+            *(u32 *)(obj + 0x40) = 0;
+            break;
+
+        case 1:
+            *(u16 *)(obj + 0x32) = 6;
+            *(f32 *)(obj + 0x3C) = lbl_803696B0;
+            *(u32 *)(obj + 0x40) = 0xFF;
+            break;
+
+        case 2:
+            *(f32 *)(obj + 0x38) = lbl_803696B0;
+            *(f32 *)(obj + 0x3C) = gScreenOrigin;
+            *(u32 *)(obj + 0x40) = 0xFF;
+            break;
+
+        case 3:
+            *(u16 *)(obj + 0x32) |= 4;
+            *(f32 *)(obj + 0x38) = gScreenOrigin;
+            *(f32 *)(obj + 0x3C) = lbl_803696B0;
+            *(u32 *)(obj + 0x40) = 0xFF;
+            break;
+
+        case 4:
+            *(u16 *)(obj + 0x32) = 0xA;
+            *(f32 *)(obj + 0x3C) = lbl_803696B0;
+            *(u32 *)(obj + 0x40) = -1;
+            break;
+
+        case 5:
+            *(f32 *)(obj + 0x38) = lbl_803696B0;
+            *(f32 *)(obj + 0x3C) = gScreenOrigin;
+            *(u32 *)(obj + 0x40) = -1;
+            break;
+
+        case 6:
+            *(u16 *)(obj + 0x32) |= 8;
+            *(f32 *)(obj + 0x38) = gScreenOrigin;
+            *(f32 *)(obj + 0x3C) = lbl_803696B0;
+            *(u32 *)(obj + 0x40) = -1;
+            break;
+
+        case 7:
+            *(f32 *)(obj + 0x38) = lbl_803696B0;
+            *(f32 *)(obj + 0x3C) = gScreenOrigin;
+            *(u32 *)(obj + 0x40) = -1;
+
+            size = GXGetTexBufferSize(
+                0x260,
+                0x1C0,
+                4,
+                0,
+                0
+            );
+
+            *(void **)(obj + 0x48) =
+                fn_800C45B8(
+                    -size,
+                    lbl_8026CC58 + 0x2A,
+                    0
+                );
+
+            DCInvalidateRange(
+                *(void **)(obj + 0x48),
+                size
+            );
+
+            fn_80222644(
+                obj + 0x4C,
+                *(void **)(obj + 0x48),
+                0x260,
+                0x1C0,
+                4,
+                0,
+                0,
+                0
+            );
+
+            GXInitTexObjLOD(
+                obj + 0x4C,
+                0,
+                0,
+                0,
+                0,
+                0,
+                gScreenOrigin,
+                gScreenOrigin,
+                gScreenOrigin
+            );
+
+            proc = Process_Create(
+                lbl_80289998,
+                6
+            );
+
+            *(void **)((u8 *)proc + 0x54) = obj;
+            break;
+        }
+    }
+}
+
 u16 fn_8008A56C(void) {
     return lbl_803674E0[0x19];
 }

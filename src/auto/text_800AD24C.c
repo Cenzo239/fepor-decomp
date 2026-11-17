@@ -6720,41 +6720,42 @@ s32 fn_800BC204(u8 arg0) {
     return slot + 4;
 }
 
+#pragma optimization_level 3
 s32 fn_800BC29C(u8 arg0) {
-    void *Unit_GetHeldItemSlot(void *, s32);
-    s32 Unit_GetActiveItemSlot(void *);
-    u8 Status_Test(void *, s32);
-    void Mu_StartBlend(void *, s32, s32, s32);
-    extern u8 gUnits[];
-    void *var_r31;
-    s8 var_r30;
+    void *fn_80037BBC(void *, s32);
+    s32 fn_80037E00(void *);
+    u8 fn_80105BC0(void *, s32);
+    void fn_80184C7C(void *, s32, s32, s32);
+    extern u8 lbl_802B14E4[];
+    void *unit;
+    s8 slot;
     void *item;
     u8 t;
 
     if (arg0 != 0) {
-        var_r31 = gUnits + ((arg0 - 1) * 0x280);
+        unit = lbl_802B14E4 + ((arg0 - 1) * 0x280);
     } else {
-        var_r31 = NULL;
+        unit = NULL;
     }
-    if ((var_r31 == NULL) || (*(u32 *)((u8 *)var_r31 + 0x188) == 0U)) {
+    if ((unit == NULL) || (*(u32 *)((u8 *)unit + 0x188) == 0U)) {
         return 0;
     }
-    if (Status_Test((u8 *)var_r31 + 0x1BC, 8) != 0) {
+    if (fn_80105BC0((u8 *)unit + 0x1BC, 8) != 0) {
         return -1;
     }
-    var_r30 = (s8)Unit_GetActiveItemSlot(var_r31);
-    if (var_r30 < 0) {
+    slot = (s8)fn_80037E00(unit);
+    if (slot < 0) {
         return -1;
     }
-    item = Unit_GetHeldItemSlot(var_r31, var_r30);
+    item = fn_80037BBC(unit, slot);
     t = *((u8 *)item + 5);
     *((u8 *)item + 5) = (u8)__rlwimi(t, 0, 7, 24, 24);
-    if ((var_r30 >= 0) && (var_r30 <= 3)) {
-        Mu_StartBlend(var_r31, 0, 4, 0);
+    if ((slot >= 0) && (slot <= 3)) {
+        fn_80184C7C(unit, 0, 4, 0);
     }
-    return var_r30;
+    return slot;
 }
-
+#pragma optimization_level reset
 s8 fn_800BC380(u8 arg0) {
     s32 fn_80037CCC(void *);
     extern u8 gUnits[];

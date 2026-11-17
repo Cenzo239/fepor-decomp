@@ -224,23 +224,25 @@ void fn_80202870(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, 
     m[10] = lbl_8036BC4C;
     m[11] = z;
 }
+#pragma scheduling on
 void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx, f32 ty)
 {
+#pragma global_optimizer off
   extern f32 lbl_8036BC38;
   extern f32 lbl_8036BC48;
   extern f32 lbl_8036BC3C;
-  f32 one = lbl_8036BC38;
-  f32 new_var3;
-  f32 two = lbl_8036BC48;
-  f32 tmp0;
   f32 tmp1;
+  f32 tmp0;
   f32 tmp2;
   float new_var;
   float new_var2;
   f32 tmp3;
+  f32 one = lbl_8036BC38;
+  f32 new_var3;
+  f32 two = lbl_8036BC48;
   f32 zero;
-  new_var3 = two;
   tmp0 = one / (r - l);
+  new_var3 = two;
   tmp1 = one / (t - b);
   tmp3 = tmp0 * new_var3;
   m[0] = tmp3 * sx;
@@ -262,8 +264,9 @@ void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx,
   m[9] = zero;
   m[10] = zero;
   m[11] = one;
+#pragma global_optimizer reset
 }
-
+#pragma scheduling off
 f32 fn_802029C4(void) {
     M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f0 */);
     M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f1, $f4 */);

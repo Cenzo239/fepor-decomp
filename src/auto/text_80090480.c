@@ -321,6 +321,7 @@ void UnitInfo_DrawBagPanel(void *arg0) {
     } while (j < 4);
 }
 
+#pragma use_lmw_stmw on
 void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
     void fn_8008BA80(void *, s32, s32, s32);
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
@@ -342,29 +343,28 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
     extern char gBattleHelpStrings[];
     extern u8 gUiIconDrawer[];
 
-    u8 *self;
-    u8 *por;
     s32 healAmount;
-    s32 currentHp;
     s32 healedHp;
     s32 maxHp;
-    s32 maxHp2;
-    s32 i;
-    s32 x;
     void *text;
+    s32 maxHp2;
+    u8 *self;
+    s32 hp;
     void *text2;
     void *drawer;
+    s32 i;
+    s32 x;
+    u8 *p;
 
-    self = (u8 *)arg0;
     healAmount = arg1;
+    self = (u8 *)arg0;
 
     fn_8008BA80(self, 0, 0, 0);
 
-    por = *(u8 **)(self + 0x190);
-
+    p = *(u8 **)(self + 0x190);
     fn_8007D044(
         0xB3,
-        por[8],
+        p[8],
         gZeroF,
         lbl_80369780,
         lbl_80369784,
@@ -380,7 +380,7 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
         healedHp = (s8)Unit_GetMaxHp(self);
     }
 
-    currentHp = self[0x1A8];
+    hp = self[0x1A8];
     maxHp = (s8)Unit_GetMaxHp(self);
 
     text = Msg_Expand(gBattleHelpStrings + 0x111);
@@ -396,7 +396,7 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
         0,
         gBattleHelpStrings + 0x168,
         text2,
-        (s8)currentHp,
+        (s8)hp,
         lbl_80369754,
         gZeroF,
         maxHp2,
@@ -405,7 +405,7 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
         maxHp
     );
 
-    text = Msg_Expand(gBattleHelpStrings + 0x135);
+    text2 = Msg_Expand(gBattleHelpStrings + 0x135);
 
     fn_8001003C(
         0x10,
@@ -414,7 +414,7 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
         1,
         0,
         gBattleHelpStrings + 0x12D,
-        text,
+        text2,
         lbl_80369754,
         gZeroF
     );
@@ -430,12 +430,11 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
             0x4A,
             fn_8010418C(self + 0x1A4, i)
         );
-
         x += 0x1A;
         i++;
     }
 }
-
+#pragma use_lmw_stmw reset
 void UnitInfo_DrawStatus(void *arg0) {
     void fn_8008BA80(void *, s32, s32, s32);
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
@@ -765,31 +764,24 @@ void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
     s32 fn_80231E74(char *, s32, char *, ...);
     extern u8 gBattleHelpStrings[];
 
-    char sp8[0x80];
     s32 temp;
     u8 kind;
-    void *p;
-    void **self;
-    s32 dst;
-    s32 src;
+    char sp8[0x80];
 
-    self = arg0;
-    src = arg1;
-    dst = arg2;
-    temp = 0;
-    p = *self;
-    if (p != 0) {
-        kind = *(u8 *)((char *)p + 0x15);
+    if (*arg0 != 0) {
+        kind = *(u8 *)((char *)*arg0 + 0x15);
     } else {
         kind = 0;
     }
-    temp = UnitRef_GetName(self);
-    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(self, 0), temp, kind + 0x60);
+    temp = UnitRef_GetName(arg0);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), temp, kind + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x25A, Status_Test(dst + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, src, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x25A, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, arg1, 0);
 }
 
+#pragma use_lmw_stmw on
 void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
+#pragma scheduling off
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(char *, s32, void *);
     s32 fn_8001D070(void **, s32);
@@ -798,12 +790,11 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
     void Ui_OpenHelpPopup(s32, void *, s32, s32);
     s32 fn_80231E74(char *, s32, char *, ...);
     extern u8 gBattleHelpStrings[];
-
     char sp8[0x80];
     s32 temp;
     u8 kind;
     void *p;
-
+#pragma scheduling reset
     p = *arg0;
     if (p != 0) {
         kind = *(u8 *)((char *)p + 0x15);
@@ -815,17 +806,17 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x265, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
-
-#pragma optimization_level 2
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
-    s32 fn_8000D910(u8 *, s32);
+    s32 fn_8000D910(char *, s32, void *);
     s32 fn_8001D070(void **, s32);
-    s32 fn_8001D2C8(void **);
-    s32 fn_80105BC0(s32, s32);
-    void fn_801B79A0(s32, void *, s32, s32);
+    s32 UnitRef_GetName(void **);
+    s32 Status_Test(s32, s32);
+    void Ui_OpenHelpPopup(s32, void *, s32, s32);
     char sp8[0x80];
     void *entry;
     s32 result;
@@ -837,37 +828,36 @@ void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
     } else {
         type = 0;
     }
-    result = fn_8001D2C8(arg0);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    result = UnitRef_GetName(arg0);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    fn_801B79A0(fn_8000D910(lbl_8026CD60 + 0x270, fn_80105BC0(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x23E, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x270, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, arg1, 0);
 }
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma optimization_level 2
 void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 lbl_8026CD60[];
-    s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
-    s32 fn_8000D910(u8 *, s32);
+    s32 fn_8000D910(char *, s32, void *);
     s32 fn_8001D070(void **, s32);
-    s32 fn_8001D2C8(void **);
-    s32 fn_80105BC0(s32, s32);
-    void fn_801B79A0(s32, void *, s32, s32);
+    s32 UnitRef_GetName(void **);
+    s32 Status_Test(s32, s32);
+    void Ui_OpenHelpPopup(s32, void *, s32, s32);
+    s32 fn_80231E74(char *, s32, char *, ...);
+    extern u8 gBattleHelpStrings[];
+
     char sp8[0x80];
-    void *entry;
     s32 result;
     u8 type;
+    void *entry;
 
     entry = *arg0;
     if (entry != 0) {
-        type = *((u8 *)entry + 0x15);
+        type = *(u8 *)((char *)entry + 0x15);
     } else {
         type = 0;
     }
-    result = fn_8001D2C8(arg0);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    result = UnitRef_GetName(arg0);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    fn_801B79A0(fn_8000D910(lbl_8026CD60 + 0x27B, fn_80105BC0(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x1AC, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x27B, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
-#pragma global_optimizer on
-#pragma use_lmw_stmw off

@@ -2043,6 +2043,68 @@ void fn_801F6260(void *arg0) {
     fn_8005C7C8((u8 *)&gCardLinkStr + 0x18C);
 }
 
+#pragma opt_common_subs off
+void fn_801F6294(void *arg0) {
+    void *FileCache_Load(void *);
+    s32 FileCache_GetSize(void *);
+    void FileCache_OrFlags(void *, s32);
+    void *fn_8020F404(void);
+    void fn_80265484(void);
+    extern u16 gCardLinkStr[18];
+    extern u8 lbl_803683F8;
+    extern u8 lbl_803683F9;
+    extern s8 *gCardLinkKey;
+    s32 size;
+    u8 *key;
+    u8 *buf;
+    s32 i;
+    s32 sum;
+    u8 *p;
+    s32 n;
+
+    if ((s8)lbl_803683F9 == 0) {
+        lbl_803683F8 = 0;
+        lbl_803683F9 = 1;
+    }
+    if (lbl_803683F8 == 0) {
+        fn_80265484();
+        lbl_803683F8 = 1;
+    }
+    *(void **)((u8 *)arg0 + 0x30) = FileCache_Load((u8 *)&gCardLinkStr + 0x18c);
+    size = FileCache_GetSize((u8 *)&gCardLinkStr + 0x18c);
+    if (size < 0xE400) {
+        size = 0xE400;
+    }
+    *(s32 *)((u8 *)arg0 + 0x34) = size;
+    *(s16 *)((u8 *)arg0 + 0x48) = 0;
+    *(u8 *)((u8 *)arg0 + 0x4a) = 0;
+    *(u8 *)((u8 *)arg0 + 0x4c) = 0;
+    FileCache_OrFlags((u8 *)&gCardLinkStr + 0x18c, 4);
+    key = fn_8020F404();
+    gCardLinkKey = (s8 *)key;
+    i = 0xa0;
+    sum = 0xe7;
+    buf = *(u8 **)((u8 *)arg0 + 0x30);
+    buf[0xac] = key[0];
+    buf[0xad] = key[1];
+    buf[0xae] = key[2];
+    buf[0xaf] = key[3];
+    if (i < 0xbd) {
+        i = 0xbc;
+        p = buf + 0xbc;
+        sum = (((((((((((((((((((((((((((0xe7 - buf[0xa0]) - buf[0xa1]) - buf[0xa2]) - buf[0xa3]) - buf[0xa4]) - buf[0xa5]) - buf[0xa6]) - buf[0xa7]) - buf[0xa8]) - buf[0xa9]) - buf[0xaa]) - buf[0xab]) - buf[0xac]) - buf[0xad]) - buf[0xae]) - buf[0xaf]) - buf[0xb0]) - buf[0xb1]) - buf[0xb2]) - buf[0xb3]) - buf[0xb4]) - buf[0xb5]) - buf[0xb6]) - buf[0xb7]) - buf[0xb8]) - buf[0xb9]) - buf[0xba]) - buf[0xbb];
+        n = 0xbd - i;
+        if (i < 0xbd) {
+            do {
+                sum -= *p;
+                i += 1;
+                p += 1;
+            } while (--n);
+        }
+    }
+    buf[i] = (u8)sum;
+}
+#pragma opt_common_subs reset
 extern u8 lbl_8029B198[16];
 void fn_801F649C(s32 arg0) {
     void Process_CreateChild(void *, s32);
@@ -5593,15 +5655,15 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
 }
 #pragma scheduling off
 void Tree_Init(void *arg0, u8 *arg1) {
-    u32 z = 0;
+    u32 z=0;
     u8 v;
-    u8 *mid;
-    v = *arg1;
-    *(u32 *)arg0 = z;
-    mid = (u8 *)arg0 + 4;
-    *(u32 *)mid = z;
-    *((u8 *)arg0 + 8) = v;
-    *(void **)((u8 *)arg0 + 8) = mid;
+    u32 *mid;
+    v=*arg1;
+    *(u32 *)arg0=z;
+    mid=(u32 *)arg0+1;
+    *mid=z;
+    *((u8 *)arg0+8)=v;
+    ((u32 **)arg0)[2]=mid;
 }
 #pragma scheduling reset
 /* Allocate and link a new RB-tree node with u16 key under parent; rebalance and return it. */

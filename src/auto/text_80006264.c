@@ -260,18 +260,20 @@ void fn_80006754(void)
     extern u32 lbl_8036712C;
     extern u64 OSGetTime(void);
 
-    s32 count;
-    s32 high;
-    s32 low;
+    u32 count;
+    u32 high;
+    u32 low;
+    u32 first;
     u64 time;
 
     count = gFrameCount;
     high = lbl_80367128;
     low = lbl_8036712C;
+    first = high;
 
     gFrameCount = count + 1;
     lbl_80367124 = low;
-    lbl_80367120 = high;
+    lbl_80367120 = first;
 
     time = OSGetTime();
     lbl_8036712C = (u32)time;

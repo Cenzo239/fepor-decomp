@@ -644,6 +644,296 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
         }
     }
 }
+
+void fn_80106290(u8 *arg0)
+{
+    void *fn_80107468(void *);
+    void Dispos_ParseEntry(void *, u32 *, u8);
+    u8 *Unit_ResolveWarpPos(void *, u8 *, u8 *, s32, s32, void *);
+    void *Unit_FindByName(void *);
+    void Unit_SetMapPos(void *, u8, u8);
+    void fn_80184750(void *, s32, s32, s32);
+    void fn_8004FE98(void *, s32);
+    void Map_RefreshUnitMap(void *);
+    void fn_800163F8(void);
+    void fn_800C4588(void *);
+
+    extern u16 gUnits[];
+    extern u8 gBattleMap[];
+
+    u8 sp8[0x68];
+    u8 *self;
+    u8 *base;
+    u8 *entry;
+    u8 *obj;
+    u8 *unit;
+    u8 *src;
+    u8 *dst;
+    u8 *p;
+    u8 id;
+    u8 t;
+    s32 mode;
+    s32 count;
+    s32 i;
+    s32 offset;
+    s32 ch;
+
+    self = arg0;
+
+    if (self[0x61] == 0) {
+        i = self[0x62];
+        offset = i * 0x110;
+
+        goto check_first;
+
+    first_loop:
+        mode = self[0x60];
+        base = *(u8 **)(self + 0x68);
+        entry = base + offset;
+
+        if (mode == 2) {
+            goto case2;
+        }
+
+        if (mode >= 2) {
+            goto check4;
+        }
+
+        if (mode == 0) {
+            goto case0;
+        }
+
+        if (mode >= 0) {
+            goto case1;
+        }
+
+        goto after_switch;
+
+    check4:
+        if (mode >= 4) {
+            goto after_switch;
+        }
+
+    case0:
+        if ((u8)(s32)fn_80107468(entry) != 0) {
+            src = Unit_ResolveWarpPos(
+                *(void **)(entry + 4),
+                entry + 0xA,
+                entry + 0xB,
+                1,
+                count,
+                base
+            );
+
+            dst = entry + 0xC;
+
+            if (src != 0) {
+            copy0:
+                t = *src;
+
+                if (t == 0x10) {
+                    goto copy0_done;
+                }
+
+                *dst = t;
+                dst++;
+                src++;
+
+                goto copy0;
+
+            copy0_done:
+                ;
+            }
+
+            *dst = 0x10;
+        }
+
+        goto after_switch;
+
+    case1:
+        if ((u8)(s32)fn_80107468(entry) != 0) {
+            entry[0xA] = entry[0x8];
+            entry[0xB] = entry[0x9];
+            entry[0xC] = 0x10;
+        }
+
+        goto after_switch;
+
+    case2:
+        obj = *(u8 **)entry;
+
+        *(s32 *)(sp8 + 0x10) = 0;
+        sp8[0x30] = 0;
+        *(s32 *)(sp8 + 0x48) = 0;
+
+        *(s32 *)(sp8 + 0x14) = 0;
+        sp8[0x31] = 0;
+        *(s32 *)(sp8 + 0x4C) = 0;
+
+        *(s32 *)(sp8 + 0x18) = 0;
+        sp8[0x32] = 0;
+        *(s32 *)(sp8 + 0x50) = 0;
+
+        *(s32 *)(sp8 + 0x1C) = 0;
+        sp8[0x33] = 0;
+        *(s32 *)(sp8 + 0x54) = 0;
+
+        *(s32 *)(sp8 + 0x20) = 0;
+        sp8[0x34] = 0;
+        *(s32 *)(sp8 + 0x58) = 0;
+
+        *(s32 *)(sp8 + 0x24) = 0;
+        sp8[0x35] = 0;
+        *(s32 *)(sp8 + 0x5C) = 0;
+
+        *(s32 *)(sp8 + 0x28) = 0;
+        sp8[0x36] = 0;
+        *(s32 *)(sp8 + 0x60) = 0;
+
+        *(s32 *)(sp8 + 0x2C) = 0;
+        sp8[0x37] = 0;
+        *(s32 *)(sp8 + 0x64) = 0;
+
+        Dispos_ParseEntry(
+            entry,
+            (u32 *)sp8,
+            entry[0x10D]
+        );
+
+        unit = 0;
+        id = obj[0x3C];
+
+        if (id != 0) {
+            if (id != 0) {
+                unit = (u8 *)gUnits +
+                       (id - 1) * 0x280;
+            }
+        } else if (!(entry[0x10C] & 1) &&
+                   *(u32 *)sp8 != 0) {
+            unit = Unit_FindByName(
+                *(void **)sp8
+            );
+
+            if (unit != 0) {
+                obj[0x3C] = unit[0x198];
+            }
+        }
+
+        if (unit != 0) {
+            if (*(u32 *)(unit + 0x1A0) & 0x9D) {
+                unit = 0;
+            }
+        }
+
+        *(u8 **)(entry + 4) = unit;
+
+        if (unit != 0) {
+            src = Unit_ResolveWarpPos(
+                *(void **)(entry + 4),
+                entry + 0xA,
+                entry + 0xB,
+                1,
+                count,
+                base
+            );
+
+            dst = entry + 0xC;
+
+            if (src != 0) {
+            copy2:
+                t = *src;
+
+                if (t == 0x10) {
+                    goto copy2_done;
+                }
+
+                *dst = t;
+                dst++;
+                src++;
+
+                goto copy2;
+
+            copy2_done:
+                ;
+            }
+
+            *dst = 0x10;
+        }
+
+    after_switch:
+        if (*(void **)(entry + 4) != 0) {
+            Unit_SetMapPos(
+                *(void **)(entry + 4),
+                entry[0xA],
+                entry[0xB]
+            );
+        }
+
+        offset += 0x110;
+        i++;
+
+    check_first:
+        count = self[0x63];
+
+        if (i < count) {
+            goto first_loop;
+        }
+    }
+
+    i = 0;
+    offset = 0;
+
+    goto check_second;
+
+second_loop:
+    base = *(u8 **)(self + 0x68);
+    entry = base + offset;
+    unit = *(u8 **)(entry + 4);
+
+    if (unit != 0) {
+        ch = self[0x64];
+
+        if (ch != 0) {
+            fn_80184750(unit, ch, 0, 0);
+        } else {
+            p = entry + 0xC;
+            ch = 0x10;
+
+            goto scan_check;
+
+        scan_loop:
+            ch = t;
+            p++;
+
+        scan_check:
+            t = *p;
+
+            if (t != 0x10) {
+                goto scan_loop;
+            }
+
+            fn_80184750(unit, ch, 0, 0);
+        }
+
+        fn_8004FE98(unit, 0);
+    }
+
+    offset += 0x110;
+    i++;
+
+check_second:
+    if (i < self[0x63]) {
+        goto second_loop;
+    }
+
+    Map_RefreshUnitMap(gBattleMap);
+    fn_800163F8();
+
+    fn_800C4588(*(void **)(self + 0x68));
+
+    *(void **)(self + 0x68) = 0;
+}
+
 #pragma use_lmw_stmw reset
 
 extern void Map_RefreshUnitMap(void* arg0);
@@ -999,8 +1289,112 @@ after_parse:
     BattleState_SetCamPos(gBattleState, (f32)(s8)var_r27, (f32)(s8)var_r26);
 }
 
-#pragma use_lmw_stmw off
 #pragma optimization_level 3
+u8 fn_80106BCC(void *name) {
+    void *Hash_Lookup(void *);
+    u8 Bin_ReadU8(u32 *);
+    u32 Bin_ReadU32(u32 *);
+    void Dispos_ParseEntry(u32 *, u32 *, u8);
+    void Unit_SetMapPos(void *, u8, u8);
+    void Unit_SetModelAlpha(void *, s32);
+    void fn_80050C90(void *);
+    extern struct { u8 pad[0x3C]; void *unk3C; } gUnitLists;
+    u8 parsed[0x68];
+    u32 cursor;
+    u32 header;
+    u32 data;
+    u8 count;
+    u8 id;
+    u8 applied;
+    void *unit;
+    void *next;
+    u8 *entry;
+
+    applied = 0;
+    *(s32 *)(parsed + 0x10) = 0;
+    parsed[0x30] = 0;
+    *(s32 *)(parsed + 0x48) = 0;
+    *(s32 *)(parsed + 0x14) = 0;
+    parsed[0x31] = 0;
+    *(s32 *)(parsed + 0x4C) = 0;
+    *(s32 *)(parsed + 0x18) = 0;
+    parsed[0x32] = 0;
+    *(s32 *)(parsed + 0x50) = 0;
+    *(s32 *)(parsed + 0x1C) = 0;
+    parsed[0x33] = 0;
+    *(s32 *)(parsed + 0x54) = 0;
+    *(s32 *)(parsed + 0x20) = 0;
+    parsed[0x34] = 0;
+    *(s32 *)(parsed + 0x58) = 0;
+    *(s32 *)(parsed + 0x24) = 0;
+    parsed[0x35] = 0;
+    *(s32 *)(parsed + 0x5C) = 0;
+    *(s32 *)(parsed + 0x28) = 0;
+    parsed[0x36] = 0;
+    *(s32 *)(parsed + 0x60) = 0;
+    *(s32 *)(parsed + 0x2C) = 0;
+    parsed[0x37] = 0;
+    *(s32 *)(parsed + 0x64) = 0;
+
+    header = (u32)Hash_Lookup(name);
+    if (!header) {
+        data = 0;
+    } else {
+        count = Bin_ReadU8(&header);
+        switch (Bin_ReadU8(&header)) {
+        case 2:
+            id = 0;
+            break;
+        case 3:
+            Bin_ReadU8(&header);
+            id = Bin_ReadU8(&header);
+            Bin_ReadU32(&header);
+            break;
+        case 4:
+            Bin_ReadU8(&header);
+            id = Bin_ReadU8(&header);
+            break;
+        }
+        header = (header + 3) & ~3;
+        data = header;
+    }
+    cursor = data;
+    if (data == 0) {
+        return 0;
+    }
+
+    unit = gUnitLists.unk3C;
+    while (unit != NULL) {
+        next = *(void **)((u8 *)unit + 0x184);
+        if (*(u32 *)((u8 *)unit + 0x1A0) & 0x400000) {
+            entry = (u8 *)cursor;
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, id);
+            Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
+            fn_80050C90(unit);
+            Unit_SetModelAlpha(unit, 0);
+            applied += 1;
+            entry[0x3C] = *(u8 *)((u8 *)unit + 0x198);
+            if (applied == count) {
+                break;
+            }
+        }
+        unit = next;
+    }
+
+    {
+        u8 j = applied;
+        u8 lim = count;
+        u8 zero = 0;
+        while (j < lim) {
+            entry = (u8 *)cursor;
+            entry[0x3C] = zero;
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, id);
+            j += 1;
+        }
+    }
+    return applied;
+}
+#pragma optimization_level reset
 u8 fn_80106DC8(void *name, u8 *out)
 {
     u32 Hash_Lookup(void *);

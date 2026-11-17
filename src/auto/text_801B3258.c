@@ -1066,10 +1066,115 @@ void Ui_DrawExpBar(void *bar) {
     Prim2D_ResetState();
 }
 
-s32 fn_801B6BE4(struct efUnit* arg0) {
-    return 0;
-}
+#pragma global_optimizer off
+void fn_801B6BE4(u8 *out)
+{
+  extern u8 gBattle[];
+  void fn_800340E4(void *);
+  void fn_801B6DAC(u8 *);
+  u8 *unit;
+  u8 *p;
+  u8 *arg0 = out;
+  s32 count;
+  s16 saved;
+  u32 off;
+  u8 type;
+  unit = *((u8 **) (gBattle + 0x280));
+  if (unit && (((type = (*((u8 **) (unit + 0x190)))[8]) == 0) || (type == 5)))
+  {
+  }
+  else
+  {
+    unit = *((u8 **) (gBattle + 0x560));
+    if (unit && (((type = (*((u8 **) (unit + 0x190)))[8]) == 0) || (type == 5)))
+    {
+    }
+    else
+    {
+      unit = 0;
+    }
+  }
+  found:
+  *((u8 **) arg0) = unit;
 
+  count = 0;
+  p = gBattle + 0x8A0;
+  saved = *((s16 *) p);
+  fn_800340E4(p);
+  for (;;)
+  {
+    off = (*((s16 *) p)) * 4;
+    switch (*((u8 *) ((p + off) + 4)))
+    {
+      case 0:
+        goto done1;
+
+      case 0x29:
+        count++;
+        break;
+
+    }
+
+    *((s16 *) p) += 1;
+  }
+
+  done1:
+  *((s16 *) p) = saved;
+
+  arg0[8] = count;
+  {
+    s32 value = 0;
+    s16 saved2 = *((s16 *) p);
+    fn_800340E4(p);
+    for (;;)
+    {
+      off = 4 * (*((s16 *) p));
+      switch (*((u8 *) ((p + off) + 4)))
+      {
+        case 0:
+          goto done2;
+
+        case 0x27:
+          value = (s8) (*((s16 *) ((p + off) + 6)));
+          break;
+
+      }
+
+      *((s16 *) p) += 1;
+    }
+
+    done2:
+    *((s16 *) p) = saved2;
+
+    *((s16 *) (arg0 + 4)) = value;
+  }
+  count = 0;
+  saved = *((s16 *) p);
+  fn_800340E4(p);
+  for (;;)
+  {
+    off = (*((s16 *) p)) * 4;
+    switch (*((u8 *) ((p + off) + 4)))
+    {
+      case 0:
+        goto done3;
+
+      case 0x28:
+        count = (s8) (*((s16 *) ((p + off) + 6)));
+        break;
+
+    }
+
+    *((s16 *) p) += 1;
+  }
+
+  done3:
+  *((s16 *) p) = saved;
+
+  *((s16 *) (arg0 + 6)) = count;
+  fn_801B6DAC(arg0 + 10);
+}
+#pragma global_optimizer reset
 #pragma global_optimizer off
 void fn_801B6DAC(u8 *arg0) {
     extern u8 gBattle[];
@@ -11720,11 +11825,10 @@ extern "C" void fn_801CCE7C(void *arg0) {
 #pragma cplusplus reset
 
 s32 NameGrid_GetCharAtCursor(void *self) {
- s32 fn_801CD480(void *,s32,s32);
- s32 x=*(s16*)((u8*)self+0x48);
- s32 y=*(s16*)((u8*)self+0x4a);
- void *grid=*(void**)((u8*)self+0x3c);
- return fn_801CD480(grid,x,y);
+struct GridCursor { u8 pad[0x3C]; void *grid; u8 pad40[8]; s16 x,y; };
+s32 fn_801CD480(void *,s16,s16);
+struct GridCursor *cursor=(struct GridCursor *)self;
+return fn_801CD480(cursor->grid,cursor->x,cursor->y);
 }
 
 #pragma cplusplus on

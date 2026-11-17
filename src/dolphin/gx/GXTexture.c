@@ -247,6 +247,40 @@ void fn_8022257C(s32 fmt, u16 width, u16 height, u32 *outW, u32 *outH, u32 *outT
     }
     *outTile = tile;
 }
+
+void fn_80222644(void *obj, void *image, u16 width, u16 height, s32 format, s32 wrapS, s32 wrapT, u8 mipmap)
+{
+u32 *p = obj;
+u16 shiftW, shiftH;
+u32 lod;
+memset(obj,0,32);
+p[0]=(p[0]&~3)|(wrapS&3);
+p[0]=(p[0]&~12)|((wrapT&3)<<2);
+p[0]=(p[0]&~16)|16;
+if(mipmap) {
+((u8*)obj)[31]|=1;
+if((u32)(format-8)<=2) p[0]=(p[0]&~224)|(5<<5);
+else p[0]=(p[0]&~224)|(6<<5);
+if(width>height) lod=31-__cntlzw(width); else lod=31-__cntlzw(height);
+p[1]=(p[1]&~0xff00)|(((u32)(16.0f*lod)&255)<<8);
+} else p[0]=(p[0]&~224)|(4<<5);
+p[5]=format;
+p[2]=(p[2]&~1023)|((width-1)&1023);
+p[2]=(p[2]&~0xffc00)|(((height-1)&1023)<<10);
+p[2]=(p[2]&~0xf00000)|((format&15)<<20);
+p[3]=(p[3]&~0x1fffff)|(((u32)image>>5)&0x1fffff);
+switch(format&15) {
+case 0: case 8: ((u8*)obj)[30]=1; shiftW=3;shiftH=3;break;
+case 1:case 2:case 9: ((u8*)obj)[30]=2; shiftW=3;shiftH=2;break;
+case 3:case 4:case 5:case 10: ((u8*)obj)[30]=2; shiftW=2;shiftH=2;break;
+case 6: ((u8*)obj)[30]=3; shiftW=2;shiftH=2;break;
+case 14: ((u8*)obj)[30]=0; shiftW=3;shiftH=3;break;
+default: ((u8*)obj)[30]=2; shiftW=2;shiftH=2;break;
+}
+*(u16*)((u8*)obj+28)=((((width+(1<<shiftW)-1)>>shiftW)*((height+(1<<shiftH)-1)>>shiftH))&0x7fff);
+((u8*)obj)[31]|=2;
+}
+
 #pragma optimization_level reset
 void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 void GXInitTexObjCI(void *obj, void *image_ptr, u16 width, u16 height,

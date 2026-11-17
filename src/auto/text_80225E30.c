@@ -231,13 +231,11 @@ s32 TRKTerminateNub(void) {
     return 0;
 }
 
-#pragma push
-#pragma options sdata=0
+#pragma global_optimizer off
 s32 TRKInitializeNub(void) {
     extern void MWTRACE(s32, const char *, ...);
     extern u8 gTRKBigEndian[];
     extern char lbl_80282294[];
-    extern u8 *gTRKInputPendingPtr;
     extern void usr_put_initialize(void);
     extern s32 TRKInitializeEventQueue(void);
     extern s32 TRKInitializeMessageBuffers(void);
@@ -249,7 +247,7 @@ s32 TRKInitializeNub(void) {
     extern void TRKTargetSetInputPendingPtr(s32);
 
     s32 result, uartResult;
-    s8 b0, b1, b2, b3;
+    u8 b0, b1, b2, b3;
 
     result = 0;
     b0 = 0x12;
@@ -293,7 +291,7 @@ s32 TRKInitializeNub(void) {
     }
     return result;
 }
-#pragma pop
+#pragma global_optimizer reset
 s32 TRKMessageSend(void *arg0)
 {
     extern u8 lbl_802822A8[];

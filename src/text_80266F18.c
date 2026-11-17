@@ -407,7 +407,7 @@ __OSSetInterruptHandler(0x19, fn_80267458);
 __OSUnmaskInterrupts(0x40);
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 void fn_802673E0(s32 *arg0, s32 arg1)
 {
     extern u32 OSDisableInterrupts(void);
@@ -423,4 +423,3 @@ void fn_802673E0(s32 *arg0, s32 arg1)
     *(volatile u32 *)0xCC006828 = 0;
     OSRestoreInterrupts(enabled);
 }
-#pragma global_optimizer reset

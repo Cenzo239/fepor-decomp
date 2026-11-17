@@ -214,20 +214,17 @@ void fn_801FCA78(void *arg0) {
     extern s32 gFallingParticleTex;
     extern f32 gFloatZero;
     extern f32 gFloatOne;
-    extern f64 lbl_8036BAF8;
     extern f32 lbl_8036BB08;
     extern f32 lbl_8036BAE4;
     extern f32 lbl_8036BB04;
-    f64 conv;
     f32 scale;
+    f32 z;
     u8 *self;
     u8 *entry;
     s32 i;
     s32 tex;
-    f32 z;
 
     self = (u8 *)arg0;
-    conv = lbl_8036BAF8;
     scale = lbl_8036BB08;
     entry = self;
     for (i = 0; i < 2; i++) {
@@ -2639,6 +2636,192 @@ extern "C" void fn_80201778(void *arg0) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
+
+#pragma dont_inline on
+#pragma global_optimizer off
+extern "C" void fn_8020197C(void *arg0, void *arg1) {
+    u32 OSGetTick(void);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_SetAlpha(s32);
+    void Prim2D_SwapUvU(void);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTex(void *, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    void *GfxEnt_Get(u8);
+    s32 Text_MeasureHeight(s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
+    s32 *Ui_GetColor(s32);
+    u16 GXGetTexObjWidth(void *);
+    u16 GXGetTexObjHeight(void *);
+    f64 fn_802380D0(f32);
+    extern u32 lbl_80368448;
+    extern f32 lbl_8036BBD8, lbl_8036BBF8, lbl_8036BC14, lbl_8036BC18, lbl_8036BC1C;
+    extern f32 lbl_8036BC20, lbl_8036BC24, lbl_8036BC28, lbl_8036BC2C, lbl_8036BC30, lbl_8036BC34;
+
+    struct TextObj {
+        virtual void v0() = 0;
+        virtual void *v1() = 0;
+    };
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0;
+        virtual void v4() = 0; virtual void v5() = 0; virtual void v6() = 0; virtual void v7() = 0;
+        virtual void v8() = 0; virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0; virtual void v15() = 0;
+        virtual void v16() = 0; virtual void v17() = 0; virtual void v18() = 0; virtual void v19() = 0;
+        virtual s16 v20() = 0;
+        virtual void v21() = 0; virtual void v22() = 0; virtual void v23() = 0; virtual void v24() = 0;
+        virtual void v25() = 0; virtual void v26() = 0; virtual void v27() = 0; virtual void v28() = 0;
+        virtual void v29() = 0; virtual void v30() = 0; virtual void v31() = 0; virtual void v32() = 0;
+        virtual void v33() = 0; virtual void v34() = 0;
+        virtual s16 v35() = 0;
+        virtual void v36() = 0; virtual void v37() = 0;
+        virtual s16 v38() = 0;
+    };
+    struct {
+        u8 buf[0x20];
+        u16 w;
+        u16 h;
+    } tex0;
+    struct {
+        u8 buf[0x20];
+        u16 w;
+        u16 h;
+    } tex1;
+    s32 col2, col1, col0;
+    s16 gx;
+    s16 gy;
+    s16 wpad;
+    void *glyph;
+    s16 tw;
+    s16 ax;
+    s16 y;
+    s16 wide, half, mid, left, top, lx, ty, bw, gap;
+    s16 posx;
+    TextObj *textObj;
+    s32 alpha;
+    f32 pulse;
+    f32 t;
+    u8 flag;
+    s16 x;
+    u8 *grp;
+    Obj *self;
+
+    self = (Obj *)arg0;
+    grp = (u8 *)arg1;
+    glyph = GfxEnt_Get(grp[0x40 + (s8)grp[0x62]]);
+    gx = *(s16 *)((u8 *)glyph + 0x30);
+    gy = *(s16 *)((u8 *)glyph + 0x32);
+    wpad = Text_MeasureHeight(-1, lbl_8036BBD8);
+    textObj = *(TextObj **)((u8 *)glyph + 0x34);
+    tw = Text_MeasureWidth(textObj->v1(), -1, lbl_8036BBD8);
+    posx = *(s16 *)(grp + 0x38);
+    ax = (s16)(gx - ((s32)(((u32)tw >> 31) + tw) >> 1));
+    if (posx < 0 || *(s16 *)(grp + 0x3A) < 0) {
+        *(s16 *)(grp + 0x38) = ax;
+        *(s16 *)(grp + 0x3A) = gy;
+    } else {
+        s32 s = posx + ax;
+        *(s16 *)(grp + 0x38) = (s16)((s32)(((u32)s >> 31) + s) >> 1);
+        s = *(s16 *)(grp + 0x3A) + gy;
+        *(s16 *)(grp + 0x3A) = (s16)((s32)(((u32)s >> 31) + s) >> 1);
+    }
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036BBF8);
+    Prim2D_PrepareTex();
+    {
+        s16 diff = self->v38() - wpad;
+        t = lbl_8036BC14 * (f32)diff;
+        y = (s16)((f32)*(s16 *)(grp + 0x3A) + t);
+    }
+    x = *(s16 *)(grp + 0x38);
+    Ui_LoadAtlasTex((void *)lbl_80368448, tex0.buf, 0);
+    tex0.w = GXGetTexObjWidth(tex0.buf);
+    tex0.h = GXGetTexObjHeight(tex0.buf);
+    Prim2D_Begin();
+    Prim2D_SetTex(tex0.buf, 0x10);
+    Prim2D_PrepareTex();
+    {
+        u32 tick = OSGetTick();
+        u32 ms = tick / ((*(u32 *)0x800000F8 >> 2) / 1000);
+        pulse = lbl_8036BC20 * (lbl_8036BBD8 + (f32)fn_802380D0(lbl_8036BC1C * ((f32)(ms % 500) / lbl_8036BC18)));
+    }
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect((f32)(x - 0x20) - pulse, lbl_8036BC14 * pulse + (f32)(y + 0xC), (f32)tex0.w, (f32)tex0.h);
+    Prim2D_EndPrim();
+    if (*(u8 *)((u8 *)self + 0x24) != 0) {
+        wide = self->v35();
+        half = self->v20();
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036BC24);
+        Prim2D_PrepareTex();
+        flag = 0;
+        if (grp[0x2D] == 0 && grp[0x2E] == 0) {
+            flag = 1;
+        }
+        mid = wide;
+        alpha = 0x19;
+        top = *(s16 *)(grp + 0x3A) + (half >> 1);
+        left = *(s16 *)(grp + 0x38) + (tw >> 1);
+        if (flag) {
+            u32 tick = OSGetTick();
+            u32 ms = tick / ((*(u32 *)0x800000F8 >> 2) / 1000);
+            alpha = (s32)(lbl_8036BC30 * (lbl_8036BC14 * (f32)fn_802380D0(lbl_8036BC1C * ((f32)(ms % 1500) / lbl_8036BC28)) + lbl_8036BC14) + lbl_8036BC2C);
+        }
+        if (wide < 0x50) {
+            mid = 0x50;
+            half = mid;
+        }
+        half >>= 1;
+        Ui_LoadAtlasTex((void *)lbl_80368448, tex1.buf, 1);
+        tex1.w = GXGetTexObjWidth(tex1.buf);
+        tex1.h = GXGetTexObjHeight(tex1.buf);
+        Prim2D_Begin();
+        Prim2D_SetTex(tex1.buf, 0x10);
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        lx = left - half;
+        ty = top - 0xA;
+        Prim2D_SetRect((f32)lx, (f32)ty, (f32)tex1.w, (f32)tex1.h);
+        col0 = *Ui_GetColor(0x18);
+        Prim2D_SetColorPacked(&col0);
+        Prim2D_SetAlpha(alpha);
+        Prim2D_EndPrim();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRect((f32)((left + half) - (s16)tex1.w), (f32)ty, (f32)tex1.w, (f32)tex1.h);
+        Prim2D_SwapUvU();
+        col1 = *Ui_GetColor(0x18);
+        Prim2D_SetColorPacked(&col1);
+        Prim2D_SetAlpha(alpha);
+        Prim2D_EndPrim();
+        bw = (s16)tex1.w;
+        gap = mid - (bw * 2);
+        if (gap > 0) {
+            Ui_LoadAtlasTex((void *)lbl_80368448, tex1.buf, 2);
+            tex1.w = GXGetTexObjWidth(tex1.buf);
+            tex1.h = GXGetTexObjHeight(tex1.buf);
+            Prim2D_Begin();
+            Prim2D_SetTex(tex1.buf, 0x10);
+            Prim2D_PrepareTex();
+            Prim2D_AddPrim(1);
+            Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)tex1.h);
+            col2 = *Ui_GetColor(0x18);
+            Prim2D_SetColorPacked(&col2);
+            Prim2D_SetAlpha(alpha);
+            Prim2D_EndPrim();
+        }
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036BC34);
+        Prim2D_PrepareTex();
+    }
+}
+#pragma global_optimizer reset
+#pragma dont_inline reset
 
 void PSMTXIdentity(f32 m[3][4]) {
  m[0][2] = m[0][3] = m[1][2] = m[1][3] = m[2][0] = m[2][1] = 0.0f;

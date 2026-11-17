@@ -200,22 +200,23 @@ Prim2D_EndPrim();
 }
 
 #pragma cplusplus reset
-s32 fn_8014AC68(void) {
-    extern void *gPadInput;
-    extern u8 lbl_80367B0D;
-    extern u8 lbl_80367B0E;
-    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x1000001) {
-        s32 previous;
-        s32 count = (s8)lbl_80367B0E;
-        previous = count;
-        --previous;
-        previous += (s8)lbl_80367B0D;
-        lbl_80367B0D = previous % count;
-    }
-    if (*(u32 *)((u8 *)gPadInput + 0x10) & 0x2000002) {
-        lbl_80367B0D = ((s8)lbl_80367B0D + 1) % (s8)lbl_80367B0E;
-    }
-    return 0;
+s32 fn_8014AC68(void)
+{
+  extern void *gPadInput;
+  extern u8 lbl_80367B0D;
+  extern u8 lbl_80367B0E;
+  if ((*((u32 *) (((u8 *) gPadInput) + 0x10))) & 0x1000001)
+  {
+    s32 previous = (s8) lbl_80367B0E;
+    --previous;
+    previous += (s8) lbl_80367B0D;
+    lbl_80367B0D = previous % lbl_80367B0E;
+  }
+  if ((*((u32 *) (((u8 *) gPadInput) + 0x10))) & 0x2000002)
+  {
+    lbl_80367B0D = (((s8) lbl_80367B0D) + 1) % ((s8) lbl_80367B0E);
+  }
+  return 0;
 }
 
 s32 fn_8014ACE8(s32 unused0, s32 unused1, s32 arg2) {

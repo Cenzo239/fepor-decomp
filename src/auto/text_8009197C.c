@@ -83,7 +83,6 @@ void fn_80091A1C(void *arg0) {
     char *strcpy(char *, const char *);
     u8 *p;
     s32 index;
-    s32 val;
     f32 a, b, c;
     if (gProcessQueueCount > 0 && Str_Cmp(gProcessQueue[gProcessQueueCount - 1] + 0x58, arg0) == 0) return;
     p = Process_Create(E_CmdPlate_script, 4);
@@ -94,11 +93,10 @@ void fn_80091A1C(void *arg0) {
     a = gZeroF;
     b = lbl_803697A8;
     c = lbl_803697AC;
-    val = index * 31 + 24;
-    *(f32 *)(p + 0x40) = val;
+    *(f32 *)(p + 0x40) = index * 31 + 24;
     *(f32 *)(p + 0x44) = a;
     *(f32 *)(p + 0x48) = b;
-    *(f32 *)(p + 0x4C) = val;
+    *(f32 *)(p + 0x4C) = index * 31 + 24;
     *(f32 *)(p + 0x50) = c;
     p[0x54] = 0;
     p[0x55] = 8;
@@ -292,31 +290,45 @@ s32 Item_TryCallUfx(s32 unit, s32 item) {
     return Item_CallUfx(unit, item);
 }
 
+#pragma opt_common_subs off
 s32 fn_8009204C(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     u8 fn_800940B0(void *, void *);
     s32 Item_CallUfx(void *, void *);
-    u8 ok = 0;
-    s32 result;
+    u8 ok;
     u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
     if (!(flags & 4)) {
         ok = 0;
     } else {
-        if (flags & 0x200) { if (Status_Test((u8 *)arg0 + 0x1BC, 9)) ok = 1; else ok = 0; }
-        else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) ok = 1;
-        else if (flags & 2) ok = 0;
-        else if (flags & 4) ok = 0;
-        else if (flags & 0x40) ok = 1;
-        else ok = 1;
-        if (!ok) ok = 0;
-        else if (!fn_800940B0(arg0, arg1)) ok = 0;
-        else ok = 1;
+        if (flags & 0x200) {
+            if (Status_Test((u8 *)arg0 + 0x1BC, 9))
+                ok = 1;
+            else
+                ok = 0;
+        } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0)
+            ok = 1;
+        else if (flags & 2)
+            ok = 0;
+        else if (flags & 4)
+            ok = 0;
+        else if (flags & 0x40)
+            ok = 1;
+        else
+            ok = 1;
+        if (!ok)
+            ok = 0;
+        else if (!fn_800940B0(arg0, arg1))
+            ok = 0;
+        else
+            ok = 1;
     }
-    if (!ok) result = 0;
-    else result = Item_CallUfx(arg0, arg1);
-    return result;
+    if (ok)
+        goto do_call;
+    return 0;
+do_call:
+    return Item_CallUfx(arg0, arg1);
 }
-
+#pragma opt_common_subs reset
 /* Find first 0x1EC item slot matching key mask; -2 if status-blocked, -1 if none. */
 s32 Unit_FindKeyItemSlot(u8 *unit, s32 keyMask) {
     u8 Status_Test(u8 *, s32);
@@ -380,6 +392,7 @@ s32 fn_8009226C(u8 *arg0, u8 *arg1) {
     return -1;
 }
 
+#pragma global_optimizer off
 void fn_8009233C(u8 *arg0, u8 *arg1) {
     u8 Status_Test(u8 *, s32);
     void Item_GetKeyFlags(u8 *, s32);
@@ -413,4 +426,3 @@ void fn_8009233C(u8 *arg0, u8 *arg1) {
     }
     *arg0 = flags;
 }
-

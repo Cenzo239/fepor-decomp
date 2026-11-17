@@ -14675,7 +14675,7 @@ extern "C" void fn_801490C8(void *arg0) {
     }
 }
 
-extern "C" s32 fn_8014953C(u8 *self) {
+s32 fn_8014953C(u8 *self) {
     void *Camera_Get(void);
     void fn_802029C4(void *, void *, void *);
     void fn_802031A8(void *, void *, void *);
@@ -14685,8 +14685,7 @@ extern "C" s32 fn_8014953C(u8 *self) {
     extern f64 lbl_8036A780;
     extern f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
     f32 delta[3], a[3], b[3];
-    f32 scale, den, x, y, len;
-    f32 lo, hi, base;
+    f32 scale, den, x, y, len, lim, sx, sy;
     u8 *cam;
     cam = (u8 *)Camera_Get();
     scale = (f32)lbl_80366E90;
@@ -14701,24 +14700,24 @@ extern "C" s32 fn_8014953C(u8 *self) {
         self[0xF] = 0x40;
     } else {
         den = lbl_8036A7A4 * scale;
-        base = lbl_8036A7A8;
-        lo = lbl_8036A7AC;
-        x = base * delta[0] / den;
-        y = lo * delta[1] / den;
-        if (x < lo)
-            x = lo;
-        hi = lbl_8036A7B0;
-        if (x > hi)
-            x = hi;
-        lo = lbl_8036A7AC;
-        if (y < lo)
-            y = lo;
-        hi = lbl_8036A7B0;
-        if (y > hi)
-            y = hi;
-        base = lbl_8036A7A8;
-        self[0xE] = (s32)(base + x);
-        self[0xF] = (s32)(base + y);
+        x = lbl_8036A7A8 * delta[0] / den;
+        y = lbl_8036A7AC * delta[1] / den;
+        lim = lbl_8036A7AC;
+        if (x < lim)
+            x = lim;
+        lim = lbl_8036A7B0;
+        if (x > lim)
+            x = lim;
+        lim = lbl_8036A7AC;
+        if (y < lim)
+            y = lim;
+        lim = lbl_8036A7B0;
+        if (y > lim)
+            y = lim;
+        sx = lbl_8036A7A8 + x;
+        sy = lbl_8036A7A8 + y;
+        self[0xE] = (s32)sx;
+        self[0xF] = (s32)sy;
     }
     fn_802031A8(self + 0x1C, cam + 0xD4, delta);
     scale *= (u16)(*(u16(**)(void *))(*(u8 **)(self + 8) + 0x5C))(self);
@@ -14727,7 +14726,6 @@ extern "C" s32 fn_8014953C(u8 *self) {
         len = scale;
     return (s32)Math_Ease(0, lbl_8036A794, gBgmVolTimerZero, len, scale);
 }
-
 #pragma cplusplus reset
 
 #pragma cplusplus reset

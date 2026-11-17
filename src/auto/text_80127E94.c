@@ -362,6 +362,63 @@ u8 fn_80128C3C(void *arg0, s32 arg1) {
     return gAiState[0x21c];
 }
 
+#pragma use_lmw_stmw on
+u8 fn_80128D98(void *arg0, s32 arg1) {
+    u8 *fn_8001FC40(void *,s8,s8);
+    u8 Status_Test(void *,s32);
+    u8 fn_80100130(void *,s32,s16 *,s16 *);
+    u8 fn_800BE968(s32,s8,s8);
+    u8 fn_80100BA4(s16,s16,s8,s8);
+    void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
+    void *TargetList_GetAt(void *,s32);
+    void fn_800FB96C(s32,u8,u8,s32,s32,s32,s8,s32,s32);
+    extern u8 gBattleMap[],gAiState[],gUiContext[],gTargetList[];
+    s16 x,y;
+    s32 py,px;
+    u8 *path;
+    u8 found,out;
+    u8 *target;
+    s16 i;
+    if (!(M2C_FIELD(arg0,u32 *,0x254)&0x20000000)) return 0;
+    if (Status_Test((u8 *)arg0+0x1bc,0x5b)) {
+        if (!fn_80100130(arg0,0x100,&x,&y)) return 0;
+        path=fn_8001FC40(gBattleMap,(s8)x,(s8)y);
+        px=M2C_FIELD(arg0,s8 *,0x19e);
+        py=M2C_FIELD(arg0,s8 *,0x19f);
+        for (;*path!=0x10;path++) {
+            switch ((s32)*path) {
+            case 1: px--; break;
+            case 2: px++; break;
+            case 8: py--; break;
+            case 4: py++; break;
+            }
+            out=0;
+            if ((s16)px<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<(s16)px || (s16)py<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<(s16)py) out=1;
+            if (!out && fn_800BE968(11,(s8)px,(s8)py)) {
+                x=px; found=1; y=py; goto checked;
+            }
+        }
+        found=0;
+checked:
+        if (found) {
+            Ai_SetUnitMoveTo(arg0,x,y,1,*(u16 *)(gAiState+4),0,0,-1);
+            if (gAiState[0x21c] && fn_80100BA4(x,y,(s8)gUiContext[13],(s8)gUiContext[14]))
+                fn_800FB96C(11,gUiContext[13],gUiContext[14],*(s32 *)(gUiContext+4),(s8)x,(s8)y,(s8)(arg1<0?arg1:arg1+4),0,0);
+            return gAiState[0x21c];
+        }
+    } else if (!fn_80100130(arg0,0,&x,&y)) return 0;
+    target=0;
+    for(i=0;i<*(s32 *)gTargetList;i++) {
+        target=TargetList_GetAt(gTargetList,0);
+        break;
+    }
+    if (!target) return 0;
+    Ai_SetUnitMoveTo(arg0,x,y,1,*(u16 *)(gAiState+4),0,0,-1);
+    if(gAiState[0x21c] && x==(s8)gUiContext[13] && y==(s8)gUiContext[14])
+        fn_800FB96C(12,gUiContext[13],gUiContext[14],*(s32 *)(gUiContext+4),target[0],target[1],(s8)(arg1<0?arg1:arg1+4),0,0);
+    return gAiState[0x21c];
+}
+#pragma use_lmw_stmw reset
 u8 fn_80129104(void *arg0) {
     typedef struct {
         char *name;

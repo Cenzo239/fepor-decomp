@@ -76,6 +76,125 @@ void fn_80055DB0(void *arg0, u8 *arg1) {
     arg1[*(u8 *)((u8 *)arg0 + 0x30)] = 1;
 }
 
+#pragma optimization_level 3
+void *fn_80055DC0(void *arg0, u32 *color, u32 priority, f32 intensity)
+{
+    void GfxEnt_ForEachKey(void *, void (*)(void *, u8 *), u8 *);
+    void *Process_Create(void *, s32);
+    void *Light_GetChannel(s32);
+    void fn_80067304(void *);
+    extern u8 lbl_80285BB0[];
+    struct Position { f32 x, y, z; };
+    struct Position pos;
+    u8 flags[8];
+    u32 col;
+    u8 *proc;
+    u8 *light;
+    s32 channel = 0;
+
+    flags[0] = 0;
+    flags[1] = 0;
+    flags[2] = 0;
+    flags[3] = 0;
+    flags[4] = 0;
+    flags[5] = 0;
+    flags[6] = 0;
+    flags[7] = 0;
+    GfxEnt_ForEachKey(lbl_80285BB0, fn_80055DB0, flags);
+    if (!flags[4]) {
+        channel = 4;
+    } else if (!flags[5]) {
+        channel = 5;
+    } else if (!flags[6]) {
+        channel = 6;
+    } else if (!flags[7]) {
+        channel = 7;
+    } else {
+        channel = -1;
+    }
+    if (channel < 0) {
+        return NULL;
+    }
+    if (!priority) {
+        priority = 3;
+    }
+    proc = Process_Create(lbl_80285BB0, priority);
+    pos = *(struct Position *)arg0;
+    col = *color;
+    proc[0x30] = channel;
+    proc[0x31] = 1;
+    *(f32 *)(proc + 0x3C) = pos.x;
+    *(f32 *)(proc + 0x40) = pos.y;
+    *(f32 *)(proc + 0x44) = pos.z;
+    *(f32 *)(proc + 0x48) = intensity;
+    proc[0x38] = ((u8 *)&col)[0];
+    proc[0x39] = ((u8 *)&col)[1];
+    proc[0x3A] = ((u8 *)&col)[2];
+    proc[0x3B] = ((u8 *)&col)[3];
+    *(u16 *)(proc + 0x36) = 0;
+    proc[0x32] = 1;
+    *(void **)(proc + 0x4C) = Light_GetChannel(channel);
+    fn_80067304(*(void **)(proc + 0x4C));
+    light = *(u8 **)(proc + 0x4C);
+    *(f32 *)(light + 8) = pos.x;
+    *(f32 *)(light + 12) = pos.y;
+    *(f32 *)(light + 16) = pos.z;
+    light = *(u8 **)(proc + 0x4C);
+    *(f32 *)(light + 0x20) = intensity;
+    *(u16 *)(proc + 0x34) = 0xA;
+    return proc;
+}
+#pragma optimization_level reset
+void *fn_80055FB4(void *arg0, u32 *color, u32 priority, f32 intensity) {
+    void GfxEnt_ForEachKey(void *, void (*)(void *, u8 *), u8 *);
+    void *Process_Create(void *, s32);
+    void *Light_GetChannel(s32);
+    void fn_80067304(void *);
+    extern u8 lbl_80285BB0[];
+    struct Position { f32 x,y,z; };
+    struct Position pos;
+    u8 flags[8];
+    u32 col;
+    s32 channel;
+    u8 *proc;
+    u8 *light;
+    flags[0]=0; flags[1]=0; flags[2]=0; flags[3]=0;
+    flags[4]=0; flags[5]=0; flags[6]=0; flags[7]=0;
+    GfxEnt_ForEachKey(lbl_80285BB0, fn_80055DB0, flags);
+    if (!flags[4]) channel=4;
+    else if (!flags[5]) channel=5;
+    else if (!flags[6]) channel=6;
+    else if (!flags[7]) channel=7;
+    else channel=-1;
+    if (channel<0) return NULL;
+    if (!priority) priority=3;
+    proc=Process_Create(lbl_80285BB0, priority);
+    pos=*(struct Position *)arg0;
+    col=*color;
+    proc[0x30]=channel;
+    proc[0x31]=0;
+    *(f32 *)(proc+0x3C)=pos.x;
+    *(f32 *)(proc+0x40)=pos.y;
+    *(f32 *)(proc+0x44)=pos.z;
+    *(f32 *)(proc+0x48)=intensity;
+    proc[0x38]=((u8 *)&col)[0];
+    proc[0x39]=((u8 *)&col)[1];
+    proc[0x3A]=((u8 *)&col)[2];
+    proc[0x3B]=((u8 *)&col)[3];
+    *(u16 *)(proc+0x36)=0;
+    proc[0x32]=1;
+    *(void **)(proc+0x4C)=Light_GetChannel(channel);
+    fn_80067304(*(void **)(proc+0x4C));
+    light=*(u8 **)(proc+0x4C);
+    *(f32 *)(light+8)=pos.x;
+    *(f32 *)(light+12)=pos.y;
+    *(f32 *)(light+16)=pos.z;
+    light=*(u8 **)(proc+0x4C);
+    *(f32 *)(light+0x20)=intensity;
+    *(u16 *)(proc+0x34)=20;
+    return proc;
+}
+
 void fn_800561A8(void) {
     M2C_UNK fn_800561EC();
     fn_800561EC();
@@ -1290,6 +1409,103 @@ void fn_80058C6C(void *arg0) {
     fn_80067708(2,3,fn_80058D84,*(void **)((u8 *)arg0+0x30));
 }
 
+#pragma optimization_level 3
+void fn_80058D84(void *arg0) {
+    void fn_80066D00(s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetNumTexGens(s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void fn_8022100C(s32);
+    void *Camera_GetViewMtx(void);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void GXBegin(s32, s32, s32);
+
+    struct Vert { f32 f0, f4, f8; f32 fC, f10, f14; f32 f18, f1C, f20; u8 b24; };
+    u8 r, g, bl, al;
+    f32 a, b, c;
+    u8 *obj;
+    s32 i;
+    struct Vert *v;
+    s32 off;
+
+    obj = (u8 *)arg0;
+    if (*(u16 *)(obj + 0x4C) >= 2) {
+        GXClearVtxDesc();
+        GXSetVtxDesc(9, 1);
+        GXSetVtxDesc(0xB, 1);
+        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+        if (*(u16 *)(obj + 0x54) & 1) {
+            fn_802245D8(1, 4, 1, 0);
+        } else {
+            fn_802245D8(1, 4, 5, 0);
+        }
+        GXSetNumTevStages(1);
+        GXSetCullMode(1);
+        GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
+        GXSetNumTexGens(0, 4);
+        GXSetTevOrder(0, 0xFF, 0xFF, 4);
+        GXSetNumChans(0);
+        fn_8022100C(0);
+        GXLoadPosMtxImm(Camera_GetViewMtx(), 0);
+        GXSetCurrentMtx(0);
+        off = *(u16 *)(obj + 0x4C) * *(u8 *)(obj + 0x51) - *(u16 *)(obj + 0x4A);
+        GXBegin(0x98, 0, (*(u16 *)(obj + 0x4A) * 2) & 0xFFFE);
+        for (i = 0; i < *(u16 *)(obj + 0x4A); i++) {
+            v = *(struct Vert **)(obj + 0x44) + (i + off);
+            c = v->f20; b = v->f1C; a = v->f18;
+            *(f32 *)0xCC008000 = a;
+            *(f32 *)0xCC008000 = b;
+            *(f32 *)0xCC008000 = c;
+            al = v->b24; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
+            *(u8 *)0xCC008000 = r;
+            *(u8 *)0xCC008000 = g;
+            *(u8 *)0xCC008000 = bl;
+            *(u8 *)0xCC008000 = al;
+            c = v->f14; b = v->f10; a = v->fC;
+            *(f32 *)0xCC008000 = a;
+            *(f32 *)0xCC008000 = b;
+            *(f32 *)0xCC008000 = c;
+            al = 0; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
+            *(u8 *)0xCC008000 = r;
+            *(u8 *)0xCC008000 = g;
+            *(u8 *)0xCC008000 = bl;
+            *(u8 *)0xCC008000 = al;
+        }
+        GXBegin(0x98, 0, (*(u16 *)(obj + 0x4A) * 2) & 0xFFFE);
+        for (i = 0; i < *(u16 *)(obj + 0x4A); i++) {
+            v = *(struct Vert **)(obj + 0x44) + (i + off);
+            c = v->f8; b = v->f4; a = v->f0;
+            *(f32 *)0xCC008000 = a;
+            *(f32 *)0xCC008000 = b;
+            *(f32 *)0xCC008000 = c;
+            al = 0; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
+            *(u8 *)0xCC008000 = r;
+            *(u8 *)0xCC008000 = g;
+            *(u8 *)0xCC008000 = bl;
+            *(u8 *)0xCC008000 = al;
+            c = v->f20; b = v->f1C; a = v->f18;
+            *(f32 *)0xCC008000 = a;
+            *(f32 *)0xCC008000 = b;
+            *(f32 *)0xCC008000 = c;
+            al = v->b24; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
+            *(u8 *)0xCC008000 = r;
+            *(u8 *)0xCC008000 = g;
+            *(u8 *)0xCC008000 = bl;
+            *(u8 *)0xCC008000 = al;
+        }
+        fn_80066D00(-1);
+    }
+}
+#pragma optimization_level reset
 void fn_8005902C(s32 arg0, s16 arg1) {
     void *Process_CreateChild(void *, s32);
     extern u8 lbl_80285B34[];
@@ -1372,22 +1588,30 @@ void fn_80059240(void *arg0) {
 }
 
 void fn_8005926C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    s32 var_r27;
-    s32 var_r28;
-    
-    var_r27 = arg7;
-    if (var_r27 == 0) {
+#pragma optimize_for_size off
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_EndPrim(void);
+    s32 offset;
+    s32 value;
+    value = arg7;
+    if (value == 0) {
         Prim2D_AddPrim(1);
-        return;
+        Prim2D_SetRectUv((f32)arg0, (f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4, (f32)arg5);
+        Prim2D_EmitQuad();
+        Prim2D_EndPrim();
+    } else {
+        offset = 0;
+        while (value != 0) {
+            Prim2D_AddPrim(1);
+            Prim2D_SetRectUv((f32)(arg0 + offset), (f32)arg1, (f32)(arg2 + arg4 * (value % 10)), (f32)arg3, (f32)arg4, (f32)arg5);
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
+            offset -= arg6;
+            value /= 10;
+        }
     }
-    var_r28 = 0;
-loop_4:
-    if (var_r27 != 0) {
-        Prim2D_AddPrim(1);
-        var_r28 -= arg6;
-        var_r27 = (s32) (var_r27 / 10);
-        goto loop_4;
-    }
+#pragma optimize_for_size reset
 }
 
 f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
@@ -1625,6 +1849,71 @@ void Gfx_FillRect(s32 x, s32 y, s32 w, s32 h) {
 
     *(f32 *)0xCC008000 = 0.0f;
 
+    fn_80066D00(-1);
+}
+
+void fn_80059C2C(s32 x, s32 y, s32 w, s32 h, u8 *alpha) {
+    extern u32 lbl_8036C418;
+    void fn_80223E5C(s32,s32,s32,s32,s32);
+    void fn_8022462C(s32);
+    void fn_80224658(s32);
+    u32 defaults = lbl_8036C418;
+    s32 right, bottom;
+    u8 a;
+    if (!alpha) alpha = (u8 *)&defaults;
+    GXClearVtxDesc();
+    GXSetVtxDesc(9,1);
+    GXSetVtxDesc(11,1);
+    GXSetVtxAttrFmt(0,9,1,4,0);
+    GXSetVtxAttrFmt(0,11,1,5,0);
+    GXSetCullMode(1);
+    GXSetBlendMode(4,0,1,1,0,0,2);
+    GXSetNumChans(0);
+    GXSetNumTevStages(1);
+    GXSetNumTexGens(0,4);
+    GXSetTevOrder(0,255,255,4);
+    fn_802245D8(0,0,0,0);
+    GXSetZMode(0,3,0);
+    fn_80223E5C(0,0,1,7,0);
+    fn_8022462C(0);
+    fn_80224658(1);
+    GXBegin(0x98,0,4);
+    bottom = y+h;
+    right = x+w;
+    *(f32 *)0xCC008000 = (f32)x;
+    *(f32 *)0xCC008000 = (f32)y;
+    *(f32 *)0xCC008000 = 0.0f;
+    a = alpha[0];
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = a;
+    *(f32 *)0xCC008000 = (f32)right;
+    *(f32 *)0xCC008000 = (f32)y;
+    *(f32 *)0xCC008000 = 0.0f;
+    a = alpha[1];
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = a;
+    *(f32 *)0xCC008000 = (f32)x;
+    *(f32 *)0xCC008000 = (f32)bottom;
+    *(f32 *)0xCC008000 = 0.0f;
+    a = alpha[2];
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = a;
+    *(f32 *)0xCC008000 = (f32)right;
+    *(f32 *)0xCC008000 = (f32)bottom;
+    *(f32 *)0xCC008000 = 0.0f;
+    a = alpha[3];
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = 0;
+    *(u8 *)0xCC008000 = a;
+    fn_80224658(0);
+    fn_8022462C(1);
     fn_80066D00(-1);
 }
 

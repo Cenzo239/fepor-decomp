@@ -59,24 +59,48 @@ s32 __cvt_fp2unsigned(f32 farg0) {
 }
 
 unsigned long long __div2u(unsigned long long a, unsigned long long b) {
- unsigned long long q = 0, r = 0;
- int i;
- for (i = 64; i != 0; --i) { r = (r << 1) | (a >> 63); a <<= 1; q <<= 1; if (r >= b) { r -= b; q |= 1; } }
- return q;
+    unsigned long long q = 0, r = 0;
+    int i;
+    for (i = 64; i != 0; --i) {
+        r = (r << 1) | (a >> 63);
+        a <<= 1;
+        q <<= 1;
+        if (r >= b) {
+            r -= b;
+            q |= 1;
+        }
+    }
+    return q;
 }
 
 s64 __div2i(s64 a, s64 b) {
-    u64 n = a < 0 ? -(u64)a : (u64)a;
-    u64 d = b < 0 ? -(u64)b : (u64)b;
-    u64 q = 0, r = 0;
-    s32 i;
-    for (i = 64; i != 0; --i) {
-        r = (r << 1) | (n >> 63);
-        n <<= 1;
-        q <<= 1;
-        if (r >= d) { r -= d; q |= 1; }
-    }
-    return (a < 0) != (b < 0) ? -q : q;
+    u32 sa=(u32)((u64)a>>32)&0x80000000;
+    u32 sb=(u32)((u64)b>>32)&0x80000000;
+    u64 n=(u64)a,d=(u64)b,r;
+    s32 nl,dl,count,shift;
+    u32 bit=0;
+    if(sa) n=-n;
+    if(sb) d=-d;
+    nl=__cntlzw((u32)(n>>32)); if(!(u32)(n>>32)) nl=__cntlzw((u32)n)+32;
+    dl=__cntlzw((u32)(d>>32)); if(!(u32)(d>>32)) dl=__cntlzw((u32)d)+32;
+    if(nl>dl) return 0;
+    shift=63-dl;
+    count=(64-nl)-shift;
+    if(count>=32) r=(u32)(n>>32)>>(count-32);
+    else r=((u64)((u32)(n>>32)>>count)<<32)|((u32)n>>count)|((u32)(n>>32)<<(32-count));
+    shift+=nl;
+    if(shift>=32) n=(u64)((u32)n<<(shift-32))<<32;
+    else n=((u64)(((u32)(n>>32)<<shift)|((u32)n>>(32-shift)))<<32)|((u32)n<<shift);
+    do {
+        u32 next=(u32)(n>>63);
+        n=n+n+bit;
+        r=r+r+next;
+        bit=0;
+        if((s64)(r-d)>=0) {r-=d;bit=1;}
+    } while(--count);
+    n=n+n+bit;
+    if(sa^sb) n=-n;
+    return n;
 }
 
 u64 __mod2u(u64 dividend, u64 divisor) { return dividend % divisor; }
@@ -162,7 +186,62 @@ done:
     return (f32)u.d;
 }
 
-s64 fn_8022CC2C(f64 value) { return (s64)value; }
+s64 fn_8022CC2C(f64 value) {
+    register s32 hi;
+    register s32 lo;
+    s32 exp;
+    s32 sign;
+    s32 sh;
+    u32 r8;
+    s32 r9;
+    u32 r10;
+    union { f64 d; s32 w[2]; } u;
+
+    u.d = value;
+    hi = u.w[0];
+    lo = u.w[1];
+
+    exp = (s32)(((u32)hi << 1) >> 21);
+    if ((u32)exp < 0x3FFu) {
+        return 0LL;
+    }
+
+    sign = hi;
+    hi = (s32)((u32)hi & 0x000FFFFFu);
+    hi = (s32)((u32)hi | 0x00100000u);
+    sh = exp + (-0x433);
+
+    if (sh < 0) {
+        sh = -sh;
+        r8 = 0x20 - sh;
+        r9 = sh - 0x20;
+        r10 = (u32)hi << r8;
+        lo = (s32)(((u32)lo >> sh) | r10);
+        r10 = (u32)hi >> r9;
+        lo = (s32)((u32)lo | r10);
+        hi = (s32)((u32)hi >> sh);
+    } else if (sh > 10) {
+        if ((u32)sign & 0x80000000u) {
+            return (s64)0x8000000000000000ULL;
+        }
+        return (s64)0x7FFFFFFFFFFFFFFFLL;
+    } else {
+        r8 = 0x20 - sh;
+        r9 = sh - 0x20;
+        r10 = (u32)lo >> r8;
+        hi = (s32)(((u32)hi << sh) | r10);
+        r10 = (u32)lo << r9;
+        hi = (s32)((u32)hi | r10);
+        lo = (s32)((u32)lo << sh);
+    }
+
+    if ((u32)sign & 0x80000000u) {
+        u64 v = ((u64)(u32)hi << 32) | (u32)lo;
+        v = 0u - v;
+        return (s64)v;
+    }
+    return ((s64)(u32)hi << 32) | (u32)lo;
+}
 
 typedef struct {
     u32* vtable;

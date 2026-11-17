@@ -769,35 +769,61 @@ void fn_80221FE8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
 }
 
 void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
-    extern f32 lbl_8036BCE0, lbl_8036BCF8, lbl_8036BD20;
-    extern f64 lbl_8036BD10, lbl_8036BD18;
-    f32 x = -farg0, y = -farg1, z = lbl_8036BCF8 - farg2;
-    f32 xx = x*x;
-    f32 yy = y*y;
-    f32 zz = z*z;
-    f32 mag = zz + (xx + yy);
-    f32 scale = mag;
-    f32 root;
+    extern f32 lbl_8036BCE0;
+    extern f32 lbl_8036BCF8;
+    extern f32 lbl_8036BD20;
+    extern f64 lbl_8036BD10;
+    extern f64 lbl_8036BD18;
+    typedef struct { u8 pad[0x28]; f32 a[3]; f32 b[3]; } Vec;
+    Vec *v = (Vec *)arg0;
+    f32 x, y, z, xx, yy, zz, mag, scale, root;
+    volatile f32 sp18;
+    f64 r, t;
     f32 px, py, pz;
+
+    x = -farg0;
+    y = -farg1;
+    z = lbl_8036BCF8 - farg2;
+    xx = x * x;
+    yy = y * y;
+    zz = z * z;
+    mag = xx + yy;
+    mag = mag + zz;
+    scale = mag;
     if (lbl_8036BCE0 != mag) {
         if (scale > lbl_8036BCE0) {
-            f64 r = __frsqrte(scale);
-            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
-            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
-            { f64 square = r*r; f64 product = (f64)scale*square; f64 correction = lbl_8036BD18-product; r *= lbl_8036BD10; r *= correction; }
-            root = (f32)((f64)scale*r);
-        } else root = scale;
-        scale = lbl_8036BCF8/root;
+            r = __frsqrte(scale);
+            t = r * r;
+            r = lbl_8036BD10 * r;
+            t = (f64)scale * t;
+            t = lbl_8036BD18 - t;
+            r = r * t;
+            t = r * r;
+            r = lbl_8036BD10 * r;
+            t = (f64)scale * t;
+            t = lbl_8036BD18 - t;
+            r = r * t;
+            t = r * r;
+            r = lbl_8036BD10 * r;
+            t = (f64)scale * t;
+            t = lbl_8036BD18 - t;
+            r = r * t;
+            sp18 = (f32)((f64)scale * r);
+            root = sp18;
+        } else {
+            root = scale;
+        }
+        scale = lbl_8036BCF8 / root;
     }
-    M2C_FIELD(arg0, f32 *, 0x34) = x*scale;
-    M2C_FIELD(arg0, f32 *, 0x38) = y*scale;
-    M2C_FIELD(arg0, f32 *, 0x3C) = z*scale;
-    px = lbl_8036BD20*farg0;
-    py = lbl_8036BD20*farg1;
-    pz = lbl_8036BD20*farg2;
-    M2C_FIELD(arg0, f32 *, 0x28) = px;
-    M2C_FIELD(arg0, f32 *, 0x2C) = py;
-    M2C_FIELD(arg0, f32 *, 0x30) = pz;
+    v->b[0] = x * scale;
+    v->b[1] = y * scale;
+    v->b[2] = z * scale;
+    px = lbl_8036BD20 * farg0;
+    py = lbl_8036BD20 * farg1;
+    pz = lbl_8036BD20 * farg2;
+    v->a[0] = px;
+    v->a[1] = py;
+    v->a[2] = pz;
 }
 
 void fn_802220DC(void *arg0, s32 *arg1) {
@@ -845,51 +871,88 @@ void fn_802220E8(void *arg0, u32 arg1)
     *(u16 *)((u8 *)__GXData + 2) = 1;
 }
 
+#pragma optimization_level 3
 void fn_80222164(s32 arg0, void *arg1) {
+    u32 value;
     s32 index;
-    u32 value;
-    u16 *gx;
-    struct { u8 pad[0xA8]; u32 color; } *reg;
-    switch(arg0) {
-    case 0: index=0; value=*(u32 *)((u8 *)__GXData+0xA8); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
-    case 1: index=1; value=*(u32 *)((u8 *)__GXData+0xAC); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
-    case 2: index=0; value=*(u32 *)((u8 *)__GXData+0xA8); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
-    case 3: index=1; value=*(u32 *)((u8 *)__GXData+0xAC); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
-    case 4: value=*(u32 *)arg1; index=0; break;
-    case 5: value=*(u32 *)arg1; index=1; break;
+    struct GXChanData { u16 unused; u16 dirty; u8 pad[0xA4]; u32 color[2]; } *gx;
+    switch (arg0) {
+    case 0: index = 0; value = *(u32 *)((u8 *)__GXData + 0xA8); value = __rlwimi(value, *(u32 *)arg1, 0, 0, 23); break;
+    case 1: index = 1; value = *(u32 *)((u8 *)__GXData + 0xAC); value = __rlwimi(value, *(u32 *)arg1, 0, 0, 23); break;
+    case 2: index = 0; value = *(u32 *)((u8 *)__GXData + 0xA8); value = __rlwimi(value, ((u8 *)arg1)[3], 0, 24, 31); break;
+    case 3: index = 1; value = *(u32 *)((u8 *)__GXData + 0xAC); value = __rlwimi(value, ((u8 *)arg1)[3], 0, 24, 31); break;
+    case 4: value = *(u32 *)arg1; index = 0; break;
+    case 5: value = *(u32 *)arg1; index = 1; break;
     default: return;
     }
-    GXWGFifo.u8=0x10;
-    gx=__GXData;
-    GXWGFifo.u32=index+0x100A;
-    GXWGFifo.u32=value;
-    gx[1]=1;
-    reg = (void *)((u8 *)gx+index*4);
-    reg->color=value;
+    GXWGFifo.u8 = 0x10;
+    gx = (void *)__GXData;
+    GXWGFifo.u32 = (index + 0x100A) & 0xFFFFFFFFFFFFFFFF;
+    GXWGFifo.u32 = value;
+    gx->dirty = 1;
+    gx->color[index] = value;
 }
+#pragma optimization_level 3
+void GXSetChanMatColor(s32 arg0, void *arg1)
+{
+  s32 index;
+  u32 value;
+  struct GXChanData
+  {
+    u16 unused;
+    u16 dirty;
+    u8 pad[0xAC];
+    u32 color[2];
+  } *gx;
+  switch (arg0)
+  {
+    case 0:
+      index = 0;
+      value = *((u32 *) (((u8 *) __GXData) + 0xB0));
+      value = __rlwimi(value, *((u32 *) arg1), 0, 0, 23);
+      break;
 
-void GXSetChanMatColor(s32 arg0, void *arg1) {
-    u32 value;
-    u32 index;
-    struct GXChanData { u16 unused, dirty; u8 pad[0xAC]; u32 color[2]; } *gx;
-    switch(arg0) {
-    case 0: index=0; value=*(u32 *)((u8 *)__GXData+0xB0); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
-    case 1: index=1; value=*(u32 *)((u8 *)__GXData+0xB4); value=__rlwimi(value,*(u32 *)arg1,0,0,23); break;
-    case 2: index=0; value=*(u32 *)((u8 *)__GXData+0xB0); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
-    case 3: index=1; value=*(u32 *)((u8 *)__GXData+0xB4); value=__rlwimi(value,((u8 *)arg1)[3],0,24,31); break;
-    case 4: value=*(u32 *)arg1; index=0; break;
-    case 5: value=*(u32 *)arg1; index=1; break;
-    default: return;
-    }
-    gx=(void *)__GXData;
-    GXWGFifo.u8=0x10;
-    GXWGFifo.u32=index+0x100C;
-    GXWGFifo.u32=value;
-    gx->dirty=1;
-    gx->color[index]=value;
+    case 1:
+      index = 1;
+      value = *((u32 *) (((u8 *) __GXData) + 0xB4));
+      value = __rlwimi(value, *((u32 *) arg1), 0, 0, 23);
+      break;
+
+    case 2:
+      index = 0;
+      value = *((u32 *) (((u8 *) __GXData) + 0xB0));
+      value = __rlwimi(value, ((u8 *) arg1)[3], 0, 24, 31);
+      break;
+
+    case 3:
+      index = 1;
+      value = *((u32 *) (((u8 *) __GXData) + 0xB4));
+      value = __rlwimi(value, ((u8 *) arg1)[3], 0, 24, 31);
+      break;
+
+    case 4:
+      value = *((u32 *) arg1);
+      index = 0;
+      break;
+
+    case 5:
+      value = *((u32 *) arg1);
+      index = 1;
+      break;
+
+    default:
+      return;
+
+  }
+
+  GXWGFifo.u8 = 0x10;
+  gx = (void *) __GXData;
+  GXWGFifo.u32 = (index + 0x100C) & 0xFFFFFFFFFFFFFFFF;
+  GXWGFifo.u32 = value;
+  gx->dirty = 1;
+  gx->color[index] = value;
 }
-
-#pragma scheduling off
+#pragma optimization_level reset
 void GXSetCullMode(u32 arg0) {
 u32 *gxData = (u32*)__GXData;
 u32 count = (u8)arg0;

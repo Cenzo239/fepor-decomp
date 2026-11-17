@@ -428,23 +428,23 @@ void fn_8009991C(void *arg0) {
     Mu_StartBlend(unit, *(s16 *)((u8 *)arg0 + 0x44), 8, 0);
 }
 
+#pragma optimization_level 3
 void fn_80099994(void *arg0) {
     void fn_8004FC70(s32);
     u8 fn_800504FC(s32, s32);
     u8 fn_80096C78(s16);
-    s32 Event_GetCmdFlags(s16);
+    s32 fn_800971F8(s16);
     s32 fn_80098140(void);
     s32 fn_80096D64(void);
     void fn_800056A0(s32);
-    void Process_Goto(void *, s32);
+    void fn_8000C070(void *, s32);
     s32 temp_r29;
     s32 temp_r30;
     s32 temp_r3_2;
     u8 temp_r3;
-    s32 temp_r4;
 
     temp_r29 = fn_80098140();
-    temp_r30 = Event_GetCmdFlags(M2C_FIELD(arg0, s16 *, 0x46));
+    temp_r30 = fn_800971F8(M2C_FIELD(arg0, s16 *, 0x46));
     temp_r3 = fn_80096C78(M2C_FIELD(arg0, s16 *, 0x46));
     M2C_FIELD(arg0, s16 *, 0x44) = -1;
     if ((temp_r30 & 0xFFC00000) && (fn_800504FC(temp_r29, 4) != 0)) {
@@ -470,15 +470,14 @@ void fn_80099994(void *arg0) {
             break;
         }
     }
-    temp_r4 = M2C_FIELD(arg0, s16 *, 0x44);
-    if ((s16)temp_r4 < 0) {
+    if ((s16)M2C_FIELD(arg0, s16 *, 0x44) < 0) {
         fn_800056A0(0);
-        Process_Goto(arg0, 7);
+        fn_8000C070(arg0, 7);
         return;
     }
     fn_8004FC70(temp_r29);
 }
-
+#pragma optimization_level reset
 void fn_80099AD0(void *arg0) {
     s32 Event_GetCmdFlags(s16);
     void *Event_GetSlotUnit(s32);
@@ -500,16 +499,16 @@ void fn_80099AD0(void *arg0) {
     if (Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x46)) & 0x40000) {
         ptrs[0] = Event_GetSlotUnit(0);
         ptrs[1] = fn_800958A4(0);
-        ptrs[2] = fn_800958A4(1);
+        temp_r3 = fn_800958A4(1);
         var_r31 = ptrs;
-        if (ptrs[0] != NULL && ptrs[1] != NULL && ptrs[2] != NULL) {
+        ptrs[2] = temp_r3;
+        if (ptrs[0] != NULL && ptrs[1] != NULL && *(void *volatile *)&var_r31[2] != NULL) {
             temp_r3 = Event_GetSlotUnit(1);
-            src[0] = *(f32 *)((u8 *)temp_r3 + 4);
             temp_r29 = temp_r3;
-            var_r30 = 0;
+            src[0] = *(f32 *)((u8 *)temp_r3 + 4);
             src[1] = *(f32 *)((u8 *)temp_r3 + 8);
             src[2] = *(f32 *)((u8 *)temp_r3 + 0xC);
-            do {
+            for (var_r30 = 0; var_r30 < 3; var_r30++, var_r31++) {
                 Unit_FaceToward(*var_r31, temp_r29, 0x18, arg0);
                 temp_r4 = *var_r31;
                 dst[0] = *(f32 *)((u8 *)temp_r4 + 4);
@@ -519,9 +518,7 @@ void fn_80099AD0(void *arg0) {
                 if (temp_r3 != NULL) {
                     fn_80052FB0(fn_80053AE8(temp_r3, arg0), dst, src);
                 }
-                var_r30 += 1;
-                var_r31 += 1;
-            } while (var_r30 < 3);
+            }
         }
     }
 }

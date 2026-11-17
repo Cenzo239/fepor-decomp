@@ -49,11 +49,8 @@ extern void *Unit_GetItemSlot(void *, s32);
 extern s32 fn_80093DA8(void *, void *);
 extern void fn_80086020(s32, s32, f32, f32, f32, f32);
 extern void UnitRef_Draw(void *, s32, s32, s32);
-
-s32 x;
-void *unit;
-void *slot;
-s32 i;
+s32 i, x, off;
+void *unit, *slot;
 f32 y, a, b;
 a=lbl_8036948C+*(f32*)((u8*)arg0+0x14);
 y=*(f32*)((u8*)arg0+0x18);
@@ -62,10 +59,10 @@ fn_80086020(0xb3,0,a,y,lbl_80369494,lbl_8036955C);
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036942C); Prim2D_PrepareTex();
 x=(s32)(lbl_80369528+a);
 b=lbl_803695AC+y; a=lbl_803695B0+y;
-for(i=0;i<8;i++){
+for(i=0,off=0;i<8;i++,off+=28){
 slot=Unit_GetItemSlot(unit,i);
-if(*(void**)slot){
-if(i<4)y=b+(f32)(i*28);else y=a+(f32)((i-4)*28);
+if(*(u32*)slot!=0){
+if(i<4)y=b+(f32)off;else y=a+(f32)((i-4)*28);
 UnitRef_Draw(slot,fn_80093DA8(unit,*(void**)slot),x,(s32)y);
 }}
 Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
@@ -290,8 +287,12 @@ void fn_80083278(void *arg0) {
     extern u8 gBattle[];
     extern f32 lbl_80369430;
     extern f32 lbl_803695C8;
-
-    fn_80082298(gBattle, 1, lbl_80369430 + *(f32 *)((u8 *)arg0 + 0x14), lbl_803695C8 + *(f32 *)((u8 *)arg0 + 0x18));
+    struct { f32 x, y; } pos;
+    pos.x = lbl_80369430;
+    pos.y = lbl_803695C8;
+    pos.x += *(f32 *)((u8 *)arg0 + 0x14);
+    pos.y += *(f32 *)((u8 *)arg0 + 0x18);
+    fn_80082298(gBattle, 1, pos.x, pos.y);
 }
 
 void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {

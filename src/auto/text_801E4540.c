@@ -2274,10 +2274,92 @@ s8 fn_801E8920(void *arg0, u8 arg1) {
           return *(s8 *)data;
 }
 
+#pragma global_optimizer off
+#pragma optimization_level 3
 s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
-    return 0;
-}
+    s8 thresh;
+    s32 var_r6;
+    u8 var_r7;
+    void *var_r5;
+    s32 var_r0;
+    s32 var_r8;
+    u8 temp_r8;
+    s16 temp_r7;
+    u8 temp_r9;
+    s32 temp_r6;
+    s8 var_r6_2;
 
+    var_r7 = *arg1;
+    thresh = arg2;
+    var_r6 = 0;
+    if ((s8)var_r7 < thresh) {
+        var_r5 = *(void **)((u8 *)arg0 + 0x58);
+        var_r0 = 0;
+        if ((s8)var_r7 >= 0) {
+            while ((s8)var_r7 > 0) {
+                var_r5 = *(void **)((u8 *)var_r5 + 4);
+                var_r7 -= 1;
+            }
+        } else {
+            while ((s8)var_r7 < 0) {
+                var_r5 = *(void **)var_r5;
+                var_r7 += 1;
+            }
+        }
+        do {
+            temp_r8 = *arg1;
+            if ((((s8)temp_r8 >= 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) < 0))
+                || (((s8)temp_r8 > 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 0))) {
+                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r0 = 1;
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)(temp_r7 - ((s8)(((s8)(temp_r7 / 32) - temp_r8) + 1) << 5));
+            }
+            if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
+                break;
+            }
+            var_r5 = *(void **)var_r5;
+            *arg1 -= 1;
+        } while (1);
+        var_r6 = var_r0;
+    } else if (thresh < (s8)var_r7) {
+        var_r5 = *(void **)((u8 *)arg0 + 0x58);
+        var_r8 = 0;
+        if ((s8)var_r7 >= 0) {
+            while ((s8)var_r7 > 0) {
+                var_r5 = *(void **)((u8 *)var_r5 + 4);
+                var_r7 -= 1;
+            }
+        } else {
+            while ((s8)var_r7 < 0) {
+                var_r5 = *(void **)var_r5;
+                var_r7 += 1;
+            }
+        }
+        do {
+            temp_r9 = *arg1;
+            temp_r6 = *(s32 *)((u8 *)arg0 + 0x50) - 1;
+            if ((((u32)(s8)temp_r9 <= (u32)temp_r6) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
+                || (((u32)(s8)temp_r9 < (u32)temp_r6) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
+                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r6_2 = (s8)((s8)temp_r9 - ((s8)(temp_r7 / 32) + 8));
+                if ((u32)(s8)temp_r9 < (u32)temp_r6) {
+                    var_r6_2 += 1;
+                }
+                var_r8 = 1;
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6_2 << 5) + temp_r7);
+            }
+            if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
+                break;
+            }
+            var_r5 = *(void **)((u8 *)var_r5 + 4);
+            *arg1 += 1;
+        } while (1);
+        var_r6 = var_r8;
+    }
+    return var_r6;
+}
+#pragma optimization_level reset
+#pragma global_optimizer on
 void fn_801E8D34(void *arg0) {
     s32 fn_801E9410(void);
     u8 fn_801E85A4(void *, s32);
@@ -2544,6 +2626,68 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
         } while (1);
     }
     return var_r8;
+}
+
+s32 fn_801E9410(void *arg0) {
+typedef struct {void *node;} It;
+It endA, endACopy, beginA, beginACopy, endB,endBCopy,beginB,beginBCopy,endC,endCCopy,beginC,beginCCopy;
+It a,aCopy,ae,aeCopy,b,bCopy,be,beCopy,c,cCopy,ce,ceCopy;
+struct {u8 value;} keyA,initA,keyB,initB,keyC,initC;
+void *end;
+s32 count;
+u8 found;
+u8 value;
+switch((s8)*((u8*)arg0+0x30)) {
+case 0:
+end=(u8*)arg0+0x54;
+endACopy.node=end;
+beginACopy.node=*(void**)((u8*)arg0+0x58);
+beginA=beginACopy;
+aCopy=beginA; a=aCopy;
+endA=endACopy; aeCopy=endA; ae=aeCopy;
+initA.value=-1;keyA=initA;
+count=0;
+while(a.node!=end) {
+value=(*(u8**)((u8*)a.node+8))[2];
+if((s8)keyA.value!=(s8)value) {keyA.value=value;found=1;} else found=0;
+if(found) count++;
+a.node=*(void**)((u8*)a.node+4);
+}
+return count;
+case 1:
+end=(u8*)arg0+0x54;
+endBCopy.node=end;
+beginBCopy.node=*(void**)((u8*)arg0+0x58);
+beginB=beginBCopy;
+bCopy=beginB; b=bCopy;
+endB=endBCopy; beCopy=endB; be=beCopy;
+initB.value=-1;keyB=initB;
+count=0;
+while(b.node!=end) {
+value=(*(u8**)((u8*)b.node+8))[1];
+if((s8)keyB.value!=(s8)value) {keyB.value=value;found=1;} else found=0;
+if(found) count++;
+b.node=*(void**)((u8*)b.node+4);
+}
+return count;
+case 2:
+end=(u8*)arg0+0x54;
+endCCopy.node=end;
+beginCCopy.node=*(void**)((u8*)arg0+0x58);
+beginC=beginCCopy;
+cCopy=beginC; c=cCopy;
+endC=endCCopy; ceCopy=endC; ce=ceCopy;
+initC.value=-1;keyC=initC;
+count=0;
+while(c.node!=end) {
+value=(*(u8**)((u8*)c.node+8))[4];
+if((s8)keyC.value!=(s8)value) {keyC.value=value;found=1;} else found=0;
+if(found) count++;
+c.node=*(void**)((u8*)c.node+4);
+}
+return count;
+}
+return (s32)arg0;
 }
 
 /* Clear the status under the tab-menu cursor and run its clear event. */
@@ -2936,11 +3080,85 @@ void Battle_ReloadMapLayers(void) {
 #pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
-void fn_801E9E30(s32 arg0, s32 arg1)
-{
-    // Simple implementation since the full logic is not clear from disassembly
-    // and this is a very minimal function that might be part of a larger issue
-    return;
+void fn_801E9E30(s32 *arg0, u8 *arg1) {
+    void Heap_Free(void *);
+    void fn_801EA7BC(s32 *, s32 *, u8 *);
+    struct {s32 count; void *prev,*next;} list;
+    struct Key { u8 value; } sp10,spC,sp8;
+    void *temp_r3;
+    void *var_r29;
+    void *var_r7;
+    void *temp_r6;
+    void *temp_r8;
+    void *temp_r9;
+    void *temp_r5;
+    void *node8;
+    void *tmp;
+    s32 temp_r0;
+    u32 half;
+    u32 var_r3;
+    u32 n;
+    u8 var_r0;
+
+    temp_r0 = arg0[0];
+    switch (temp_r0) {
+case 0: case 1: break;
+case 2: {
+        temp_r6 = (void *)arg0[2];
+        temp_r8 = *(void **)((u8 *)temp_r6 + 4);
+        temp_r5 = *(void **)((u8 *)temp_r6 + 8);
+        node8 = *(void **)((u8 *)temp_r8 + 8);
+        if ((s8)*(u8 *)((u8 *)node8 + 3) < (s8)*(u8 *)((u8 *)temp_r5 + 3)) {
+            tmp = *(void **)temp_r6;
+            *(void **)temp_r6 = *(void **)((u8 *)temp_r6 + 4);
+            *(void **)((u8 *)temp_r6 + 4) = tmp;
+            tmp = *(void **)temp_r8;
+            *(void **)temp_r8 = *(void **)((u8 *)temp_r8 + 4);
+            *(void **)((u8 *)temp_r8 + 4) = tmp;
+            tmp = (void *)arg0[1];
+            arg0[1] = arg0[2];
+            arg0[2] = (s32)tmp;
+        }
+    break; }
+default: {
+        half = (u32)temp_r0 >> 1;
+        var_r7 = (void *)arg0[2];
+        for (n=half;n!=0;--n) var_r7=*(void **)((u8 *)var_r7+4);
+        list.count = 0;
+        list.next = &list.prev;
+        list.prev = &list.prev;
+        temp_r9 = (void *)arg0[1];
+        tmp = *(void **)var_r7;
+        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)temp_r9 + 4);
+        tmp = *(void **)var_r7;
+        **(void ***)((u8 *)temp_r9 + 4) = tmp;
+        *(void **)((u8 *)list.prev + 4) = var_r7;
+        *(void **)var_r7 = list.prev;
+        list.prev = temp_r9;
+        *(void **)((u8 *)temp_r9 + 4) = &list.prev;
+        list.count = arg0[0] - (s32)half;
+        arg0[0] = (s32)half;
+        sp10.value = *arg1;
+        fn_801E9E30(arg0, &sp10.value);
+        spC.value = *arg1;
+        fn_801E9E30(&list.count, &spC.value);
+        sp8.value = *arg1;
+        fn_801EA7BC(arg0, &list.count, &sp8.value);
+        var_r29 = list.next;
+        if (var_r29 != &list.prev) {
+            tmp = *(void **)var_r29;
+            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
+            tmp = *(void **)var_r29;
+            **(void ***)((u8 *)list.prev + 4) = tmp;
+            while (var_r29 != &list.prev) {
+                temp_r3 = var_r29;
+                var_r29 = *(void **)((u8 *)var_r29 + 4);
+                Heap_Free(temp_r3);
+                list.count -= 1;
+            }
+        }
+    }
+}
 }
 
 void fn_801EA018(s32 *arg0, u8 *arg1) {
@@ -3053,6 +3271,86 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
 }
 
 #pragma optimization_level 3
+void fn_801EA248(s32 *arg0, u8 *arg1) {
+    typedef struct Node { void *unk0; void *unk4; u8 *unk8; } Node;
+    void Heap_Free(void *);
+    void fn_801EA514(s32 *, s32 *, u8 *);
+    struct { s32 count; void *prev; void *next; } list;
+    struct Key { u8 value; } sp10, spC, sp8;
+    Node *temp_r5;
+    Node *temp_r6;
+    Node *var_r7;
+    void *temp_r3;
+    void *var_r29;
+    void *temp_r9;
+    void *tmp;
+    s32 temp_r0;
+    u32 half;
+    u32 n;
+
+    temp_r0 = arg0[0];
+    switch (temp_r0) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        temp_r5 = (Node *)arg0[2];
+        temp_r6 = (Node *)temp_r5->unk4;
+        if ((s8)temp_r6->unk8[0] < (s8)temp_r5->unk8[0]) {
+            tmp = temp_r5->unk0;
+            temp_r5->unk0 = temp_r5->unk4;
+            temp_r5->unk4 = tmp;
+            tmp = temp_r6->unk0;
+            temp_r6->unk0 = temp_r6->unk4;
+            temp_r6->unk4 = tmp;
+            tmp = (void *)arg0[1];
+            arg0[1] = arg0[2];
+            arg0[2] = (s32)tmp;
+        }
+        break;
+    default:
+        half = (u32)temp_r0 >> 1;
+        var_r7 = (Node *)arg0[2];
+        for (n = half; n != 0; --n) {
+            var_r7 = (Node *)var_r7->unk4;
+        }
+        list.count = 0;
+        list.next = &list.prev;
+        list.prev = &list.prev;
+        temp_r9 = (void *)arg0[1];
+        tmp = *(void **)var_r7;
+        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)temp_r9 + 4);
+        tmp = *(void **)var_r7;
+        **(void ***)((u8 *)temp_r9 + 4) = tmp;
+        *(void **)((u8 *)list.prev + 4) = var_r7;
+        *(void **)var_r7 = list.prev;
+        list.prev = temp_r9;
+        *(void **)((u8 *)temp_r9 + 4) = &list.prev;
+        list.count = arg0[0] - (s32)half;
+        arg0[0] = (s32)half;
+        sp10.value = *arg1;
+        fn_801EA248(arg0, &sp10.value);
+        spC.value = *arg1;
+        fn_801EA248(&list.count, &spC.value);
+        sp8.value = *arg1;
+        fn_801EA514(arg0, &list.count, &sp8.value);
+        var_r29 = list.next;
+        if (var_r29 != &list.prev) {
+            tmp = *(void **)var_r29;
+            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
+            tmp = *(void **)var_r29;
+            **(void ***)((u8 *)list.prev + 4) = tmp;
+            while (var_r29 != &list.prev) {
+                temp_r3 = var_r29;
+                var_r29 = *(void **)((u8 *)var_r29 + 4);
+                Heap_Free(temp_r3);
+                list.count -= 1;
+            }
+        }
+        break;
+    }
+}
+#pragma optimization_level reset
 void fn_801EA430(void *arg0) {
     void Heap_Free(void *);
     void *head;
@@ -3151,6 +3449,45 @@ void fn_801EA514(s32 *arg0, s32 *arg1) {
         remaining = node;
         fn_80182514(arg0, &remaining, arg1);
     }
+}
+
+void fn_801EA618(s32 *arg0,s32 *arg1,u8 *unused) {
+typedef struct Node {struct Node *prev,*next; s8 *data;} Node;
+void fn_80182514(s32 *,Node **,s32 *);
+Node *first,*second,*end1,*end2,*scan,*last;
+s32 count;
+u8 less;
+s8 *data;
+if(arg0!=arg1) {
+first=(Node*)arg0[2]; 
+second=(Node*)arg1[2]; end2=(Node*)(arg1+1);
+while(first!=(Node*)(arg0+1) && second!=end2) {
+data=first->data;
+if(second->data[1]==data[1]) less=second->data[3]<data[3];
+else less=second->data[1]<data[1];
+if(less) {
+scan=second->next; count=1;
+while(scan!=end2) {
+data=first->data;
+if(scan->data[1]==data[1]) less=scan->data[3]<data[3];
+else less=scan->data[1]<data[1];
+if(!less) break;
+scan=scan->next; count++;
+}
+last=scan->prev;
+second->prev->next=last->next;
+last->next->prev=second->prev;
+first->prev->next=second;
+second->prev=first->prev;
+second=scan;
+first->prev=last;
+last->next=first;
+*arg1-=count; *arg0+=count;
+}
+first=first->next;
+}
+if(second!=end2) {Node *remaining=first; fn_80182514(arg0,&remaining,arg1);}
+}
 }
 
 void fn_801EA7BC(void *arg0, void *arg1) {

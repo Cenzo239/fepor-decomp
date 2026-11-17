@@ -223,25 +223,22 @@ void fn_80224DCC(f32 mtx[3][4], s32 id)
     f32 c1;
     f32 c2;
     u32 reg;
-    register volatile u32 *fifo;
 
     reg = (u32)(id * 3) + 0x400;
-    fifo = (volatile u32 *)0xCC010000;
-    *(volatile u8 *)((u8 *)fifo - 0x8000) = 0x10;
-    fifo = (volatile u32 *)((u8 *)fifo - 0x8000);
-    *fifo = reg | 0x80000;
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = reg | 0x80000;
     row0 = *(f64 *)&mtx[0][0];
     c0 = mtx[0][2];
     row1 = *(f64 *)&mtx[1][0];
     c1 = mtx[1][2];
     row2 = *(f64 *)&mtx[2][0];
     c2 = mtx[2][2];
-    *(volatile f64 *)fifo = row0;
-    *(volatile f32 *)fifo = c0;
-    *(volatile f64 *)fifo = row1;
-    *(volatile f32 *)fifo = c1;
-    *(volatile f64 *)fifo = row2;
-    *(volatile f32 *)fifo = c2;
+    *(volatile f64 *)&GXWGFifo = row0;
+    GXWGFifo.f32 = c0;
+    *(volatile f64 *)&GXWGFifo = row1;
+    GXWGFifo.f32 = c1;
+    *(volatile f64 *)&GXWGFifo = row2;
+    GXWGFifo.f32 = c2;
 }
 
 void GXSetCurrentMtx(u32 arg0) {
@@ -452,6 +449,251 @@ void fn_80225180(s32 arg0)
   __GXData[1] = 1;
 }
 
+#pragma opt_common_subs off
+#pragma peephole off
+void fn_80225204(u32 perf0, u32 perf1)
+{
+    u16 *gx;
+    u32 val;
+    s32 old;
+
+    old = M2C_FIELD(__GXData, s32 *, 0x59C);
+    if (old == 34) {
+        goto clear_perf0_cp;
+    } else if (old >= 34) {
+        goto perf0_done;
+    } else if (old < 11) {
+        if (old >= 0) {
+            goto clear_perf0_cp;
+        }
+        goto perf0_done;
+    } else if (old >= 27) {
+        goto clear_perf0_2400;
+    } else {
+        goto clear_perf0_2300;
+    }
+
+clear_perf0_cp:
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x1006;
+    GXWGFifo.u32 = 0;
+    goto perf0_done;
+
+clear_perf0_2300:
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = 0x23000000;
+    goto perf0_done;
+
+clear_perf0_2400:
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = 0x24000000;
+
+perf0_done:
+    gx = __GXData;
+    old = M2C_FIELD(gx, s32 *, 0x5A0);
+    if (old == 21) {
+        goto clear_perf1_bp;
+    } else if (old >= 21) {
+        goto perf1_done;
+    } else if (old < 9) {
+        if (old >= 0) {
+            goto clear_perf1_bp;
+        }
+        goto perf1_done;
+    } else if (old >= 17) {
+        goto perf1_done;
+    } else {
+        goto clear_perf1_pe;
+    }
+
+clear_perf1_bp:
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = 0x67000000;
+    goto perf1_done;
+
+clear_perf1_pe:
+    val = M2C_FIELD(gx, u32 *, 0x5A4);
+    val = __rlwimi(val, 0, 4, 24, 27);
+    M2C_FIELD(gx, u32 *, 0x5A4) = val;
+    GXWGFifo.u8 = 8;
+    GXWGFifo.u8 = 0x20;
+    GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+
+perf1_done:
+    __cpReg[3] = 0;
+
+    gx = __GXData;
+    M2C_FIELD(gx, u32 *, 0x59C) = perf0;
+    switch (M2C_FIELD(gx, u32 *, 0x59C)) {
+    case 0:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x273; break;
+    case 1:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x14A; break;
+    case 2:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x16B; break;
+    case 3:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x84; break;
+    case 4:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0xC6; break;
+    case 5:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x210; break;
+    case 6:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x252; break;
+    case 7:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x231; break;
+    case 8:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x1AD; break;
+    case 9:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x1CE; break;
+    case 10:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x21; break;
+    case 11:
+        GXWGFifo.u8 = 0x10; GXWGFifo.u32 = 0x1006; GXWGFifo.u32 = 0x153; break;
+    case 12:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5181; break;
+    case 13:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x7181; break;
+    case 14:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x6181; break;
+    case 15:
+        val = 0x2300 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x1E7F; break;
+    case 16:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x53C1; break;
+    case 17:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5381; break;
+    case 18:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5341; break;
+    case 19:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5301; break;
+    case 20:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x52C1; break;
+    case 21:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5281; break;
+    case 22:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5241; break;
+    case 23:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5201; break;
+    case 24:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x51C1; break;
+    case 25:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5D81; break;
+    case 26:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5981; break;
+    case 27:
+        val = 0x2301 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x5581; break;
+    case 28:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3F3A; break;
+    case 29:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3E95; break;
+    case 30:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3F19; break;
+    case 31:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3EF8; break;
+    case 32:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3ED7; break;
+    case 33:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3EB6; break;
+    case 34:
+        val = 0x2403 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val - 0x3E53; break;
+    case 35:
+        break;
+    }
+
+    gx = __GXData;
+    M2C_FIELD(gx, u32 *, 0x5A0) = perf1;
+    switch (M2C_FIELD(gx, u32 *, 0x5A0)) {
+    case 0:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x42; break;
+    case 1:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x84; break;
+    case 2:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x63; break;
+    case 3:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x129; break;
+    case 8:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x252; break;
+    case 21:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x21; break;
+    case 4:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x14B; break;
+    case 5:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x18D; break;
+    case 6:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x1CF; break;
+    case 7:
+        val = 0x6700 << 16; GXWGFifo.u8 = 0x61; GXWGFifo.u32 = val + 0x211; break;
+    case 9:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 2, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 10:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 3, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 11:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 4, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 12:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 5, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 13:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 6, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 14:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 7, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 15:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 9, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 16:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 8, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8; GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 17:
+        __cpReg[3] = 2; break;
+    case 18:
+        __cpReg[3] = 3; break;
+    case 19:
+        __cpReg[3] = 4; break;
+    case 20:
+        __cpReg[3] = 5; break;
+    case 22:
+        break;
+    }
+
+    __GXData[1] = 0;
+}
+#pragma peephole reset
+#pragma opt_common_subs reset
 void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
     u32 ctr0;
     u32 ctr1;
@@ -541,29 +783,9 @@ void fn_80225D3C(void)
   __GXData[1] = 0;
 }
 
-void fn_80225D6C(u16 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
-    u16 temp_r5;
-    u16 temp_r6;
-    u16 temp_r7;
-    u16 temp_r8;
-
-    do {
-        temp_r8 = __cpReg[0x21];
-    } while (temp_r8 != __cpReg[0x21]);
-    *arg2 = (temp_r8 << 0x10) | __cpReg[0x20];
-
-    do {
-        temp_r7 = __cpReg[0x23];
-    } while (temp_r7 != __cpReg[0x23]);
-    *arg3 = (temp_r7 << 0x10) | __cpReg[0x22];
-
-    do {
-        temp_r6 = __cpReg[0x25];
-    } while (temp_r6 != __cpReg[0x25]);
-    *arg0 = (temp_r6 << 0x10) | __cpReg[0x24];
-
-    do {
-        temp_r5 = __cpReg[0x27];
-    } while (temp_r5 != __cpReg[0x27]);
-    *arg1 = (temp_r5 << 0x10) | __cpReg[0x26];
+void fn_80225D6C(u32 *arg0, u32 *arg1, u32 *arg2, u32 *arg3) {
+    *arg2 = __GXReadCPCounterU32(32, 33);
+    *arg3 = __GXReadCPCounterU32(34, 35);
+    *arg0 = __GXReadCPCounterU32(36, 37);
+    *arg1 = __GXReadCPCounterU32(38, 39);
 }

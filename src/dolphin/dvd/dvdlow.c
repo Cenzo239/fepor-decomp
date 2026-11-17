@@ -518,8 +518,8 @@ BOOL DVDLowWaitCoverClose(void *callback) {
 
     Callback_80368538 = callback;
     WaitingCoverClose_8036854C = 1;
-    StopAtNextInt_80368530 = 0;
     __DIRegs[1] = 2;
+    StopAtNextInt_80368530 = 0;
     return TRUE;
 }
 #pragma opt_common_subs reset

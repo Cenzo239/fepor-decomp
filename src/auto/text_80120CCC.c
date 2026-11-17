@@ -490,6 +490,55 @@ void fn_80121A70(void) {
     fn_80121A98(&lbl_8032BDE8);
 }
 
+int fn_80121A98(void *arg0) {
+extern u8 lbl_80274D20[];
+extern f32 lbl_8036A278,lbl_8036A27C,lbl_8036A280,lbl_8036A284,lbl_8036A288,lbl_8036A28C,lbl_8036A290,lbl_8036A294,lbl_8036A298;
+void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32); void Prim2D_SetTex(s32,s32); void Prim2D_SetColorByte(u8); void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32); void Prim2D_SetPosCorners(f32,f32,f32,f32); void Prim2D_SetColor(s32,s32,s32,s32); void Prim2D_EndPrim(void); void Prim2D_SetCallback(void *,s32); void fn_80121D30(void); void Prim2D_SetPos(f32,f32); s32 *Ui_GetColor(s32); void Prim2D_SetColorPacked(s32 *); void Prim2D_SetText(void *); void Prim2D_ClearCallbacks(void);
+int sprintf(void *,void *,...); s32 fn_80234200(void *,s32); void fn_80057860(u32,s32); void fn_80057020(u32);
+
+s32 color; char text[32];
+s32 i, row; u8 *line; s32 adjust, y;
+M2C_FIELD(arg0,s16 *,0x4014)+=M2C_FIELD(arg0,s16 *,0x4016);
+if(M2C_FIELD(arg0,s16 *,0x4014)>255) M2C_FIELD(arg0,s16 *,0x4014)=255;
+if(M2C_FIELD(arg0,s16 *,0x4014)<0) M2C_FIELD(arg0,s16 *,0x4014)=0;
+Prim2D_Begin();
+Prim2D_SetTransform(lbl_8036A27C,lbl_8036A27C,lbl_8036A280,lbl_8036A284);
+Prim2D_SetTex(0,16);
+Prim2D_SetColorByte((u8)M2C_FIELD(arg0,s16 *,0x4014));
+Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+Prim2D_SetPosCorners(lbl_8036A278,lbl_8036A288,lbl_8036A28C,lbl_8036A290);
+Prim2D_SetColor(0,0,0,200); Prim2D_EndPrim();
+Prim2D_Begin();
+Prim2D_SetTransform(lbl_8036A27C,lbl_8036A27C,lbl_8036A278,lbl_8036A284);
+Prim2D_SetTex(0,19); Prim2D_SetCallback(fn_80121D30,0); Prim2D_PrepareTex();
+for(i=0,row=0;i<16;i++,row+=25) {
+s32 scroll=M2C_FIELD(arg0,s16 *,0x4010);
+s32 index=M2C_FIELD(arg0,s32 *,0x4000)-i-scroll/25;
+if(index<0) break;
+line=(u8 *)arg0+((index+256)&255)*64;
+y=(scroll-(scroll/25)*25)+(401-row);
+if((s32)line[0]=='-') {
+if((s32)line[1]=='F') {
+Prim2D_AddPrim(6); Prim2D_SetPos(lbl_8036A294,(f32)y);
+color=*Ui_GetColor(13); Prim2D_SetColorPacked(&color);
+sprintf(text,lbl_80274D20+46,(u8 *)fn_80234200(line,42)+1);
+Prim2D_SetText(text); Prim2D_EndPrim();
+}
+} else {
+adjust=0;
+if(*(u32 *)line==0x23463031) adjust=-4;
+Prim2D_AddPrim(7); Prim2D_SetPos(lbl_8036A298,(f32)(y+adjust));
+Prim2D_SetText(line); Prim2D_EndPrim();
+}
+}
+Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
+if(M2C_FIELD(arg0,u32 *,0x4018)) {
+fn_80057860(M2C_FIELD(arg0,u32 *,0x4018),M2C_FIELD(arg0,s16 *,0x400E)-M2C_FIELD(arg0,s16 *,0x4010));
+fn_80057020(M2C_FIELD(arg0,u32 *,0x4018));
+}
+Prim2D_Begin(); Prim2D_SetColorByte(255); Prim2D_PrepareTex();
+}
+
 void fn_80121D30(void) {
     M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     GXSetScissor(0, 0x33, 0x260, 0x177);
@@ -1481,40 +1530,43 @@ void fn_80123308(void *arg0, s32 arg1)
     s32 fn_800E2E60(void *);
     void fn_800E3040(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
     void SpriteSheet_DrawFrame(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    extern f64 lbl_8036A2C8;
+    extern f64 lbl_8036A2F0;
 
-    char buf[0x28];
-    u32 str_size;
-    u32 str_cap;
-    char *str_data;
-    void *alloc;
-    void *ctx;
-    s32 x;
-    s32 y;
-    s32 w;
-    s32 h;
+    char buf0[36];
+    char buf1[36];
+    u32 str0[3];
+    u32 str1[3];
+    void *alloc0;
+    void *alloc1;
     s32 spacing;
+    s32 h;
+    s32 w;
+    s32 y;
+    s32 x;
     s32 i;
-    s32 len;
-    u8 *ch;
+    s32 digit;
+
+    (void)lbl_8036A2C8;
+    (void)lbl_8036A2F0;
 
     if (M2C_FIELD(arg0, s32 *, 0x64) == 0) {
-        String_Init(&str_size, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf, 10), &alloc);
-        ctx = M2C_FIELD(arg0, void **, 0x38);
-        x = (s32)(M2C_FIELD(ctx, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(ctx, s32 *, 0x60)));
-        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(ctx, s32 *, 0x64);
+        String_Init(str0, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf0, 10), &alloc0);
+        x = (s32)(M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), s32 *, 0x60)));
+        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), s32 *, 0x64);
         w = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E68(M2C_FIELD(arg0, void **, 0x60)));
         h = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
-        x = x + (s32)M2C_FIELD(arg0, f32 *, 0x88);
-        y = y + (s32)M2C_FIELD(arg0, f32 *, 0x8C);
+        x += (s32)M2C_FIELD(arg0, f32 *, 0x88);
+        y += (s32)M2C_FIELD(arg0, f32 *, 0x8C);
         y = y - (h - fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
-        i = (s32)str_size - 1;
-        spacing = (s32)(M2C_FIELD(ctx, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
+        i = (s32)str0[0] - 1;
+        spacing = (s32)(M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
         while (i >= 0) {
-            ch = fn_80117CC0(&str_size, i);
+            digit = (s8)(*fn_80117CC0(str0, i)) - 0x30;
             fn_800E3040(
                 M2C_FIELD(arg0, void **, 0x60),
                 arg1,
-                (s8)ch[0] - 0x30,
+                digit,
                 x,
                 y,
                 M2C_FIELD(arg0, s32 *, 0x44),
@@ -1525,23 +1577,25 @@ void fn_80123308(void *arg0, s32 arg1)
                 M2C_FIELD(arg0, u8 *, 0x52),
                 spacing,
                 0);
-            i -= 1;
-            x -= w + M2C_FIELD(arg0, s32 *, 0x94);
+            i = i - 1;
+            x = x - (w + M2C_FIELD(arg0, s32 *, 0x94));
         }
-        String_Destroy(&str_size, -1);
+        String_Destroy(str0, -1);
     } else {
-        String_Init(&str_size, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf, 10), &alloc);
-        ctx = M2C_FIELD(arg0, void **, 0x38);
-        x = (s32)(M2C_FIELD(ctx, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(ctx, s32 *, 0x60)));
-        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(ctx, s32 *, 0x64);
-        spacing = (s32)(M2C_FIELD(ctx, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
-        len = (s32)str_size;
-        for (i = 0; i < len; i++) {
-            ch = fn_80117CC0(&str_size, i);
+        void *panel;
+        String_Init(str1, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf1, 10), &alloc1);
+        panel = M2C_FIELD(arg0, void **, 0x38);
+        i = 0;
+        x = (s32)(M2C_FIELD(panel, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(panel, s32 *, 0x60)));
+        spacing = (s32)(M2C_FIELD(panel, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
+        w = (s32)str1[0];
+        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(panel, s32 *, 0x64);
+        for (; i < w; i++) {
+            digit = (s8)(*fn_80117CC0(str1, i)) - 0x30;
             SpriteSheet_DrawFrame(
                 M2C_FIELD(arg0, void **, 0x60),
                 arg1,
-                (s8)ch[0] - 0x30,
+                digit,
                 x,
                 y,
                 M2C_FIELD(arg0, s32 *, 0x44),
@@ -1550,9 +1604,10 @@ void fn_80123308(void *arg0, s32 arg1)
                 M2C_FIELD(arg0, u8 *, 0x52),
                 spacing,
                 0);
-            x = M2C_FIELD(arg0, s32 *, 0x94) + fn_800E2E68(M2C_FIELD(arg0, void **, 0x60)) + x;
+            x = x + fn_800E2E68(M2C_FIELD(arg0, void **, 0x60));
+            x = x + M2C_FIELD(arg0, s32 *, 0x94);
         }
-        String_Destroy(&str_size, -1);
+        String_Destroy(str1, -1);
     }
 }
 #pragma use_lmw_stmw reset
@@ -1743,6 +1798,172 @@ void fn_8012391C(void *arg0) {
         }
         *(void **)((u8 *)arg0 + 0x30) = NULL;
         fn_80123988(arg0);
+    }
+}
+
+void fn_80123988(void *arg0)
+{
+    void *Process_Create(void *, void *);
+    void *Map_Get(void);
+
+    extern s32 lbl_80274F68[2];
+    extern u8 lbl_80290328[];
+    extern u8 gBattleSkyIndex;
+    extern f32 lbl_8036A308;
+    extern f32 lbl_8036A30C;
+
+    u8 *self;
+    u8 *proc;
+    u8 *parent;
+    u8 *defs;
+    u8 *map;
+    u32 skyIndex;
+    u32 sp8[3];
+
+    self = (u8 *)arg0;
+    defs = lbl_80290328;
+
+    *(s32 *)(self + 0x34) = -1;
+
+    sp8[0] = lbl_80274F68[0];
+    sp8[1] = lbl_80274F68[1];
+    sp8[2] = *(u32 *)((u8 *)lbl_80274F68 + 8);
+
+    *(f32 *)(self + 0x38) = *(f32 *)&sp8[0];
+    *(f32 *)(self + 0x3C) = *(f32 *)&sp8[1];
+    *(f32 *)(self + 0x40) = *(f32 *)&sp8[2];
+
+    *(f32 *)(self + 0x44) = lbl_8036A308;
+    *(f32 *)(self + 0x48) = lbl_8036A30C;
+
+    parent = (u8 *)Process_Create(defs + 0xFC, self);
+
+    *(void **)(self + 0x30) = parent;
+
+    skyIndex = gBattleSkyIndex;
+    *(u32 *)(self + 0x34) = skyIndex;
+
+    map = (u8 *)Map_Get();
+
+    if (map[0x68] == 1) {
+        switch ((s32)skyIndex) {
+        case 2:
+            proc = (u8 *)Process_Create(
+                defs + 0xB4,
+                parent
+            );
+            proc[0x4F] = 0x3C;
+            break;
+
+        case 3:
+            proc = (u8 *)Process_Create(
+                defs + 0xB4,
+                parent
+            );
+            proc[0x4F] = 0x1E;
+            break;
+
+        case 4:
+            proc = (u8 *)Process_Create(
+                defs + 0xB4,
+                parent
+            );
+            proc[0x4F] = 0x64;
+            break;
+
+        case 5:
+        case 6:
+        case 7:
+            proc = (u8 *)Process_Create(
+                defs + 0x8C,
+                parent
+            );
+            proc[0x4C] = skyIndex;
+            break;
+
+        case 8:
+            proc = (u8 *)Process_Create(
+                defs + 0x60,
+                parent
+            );
+            proc[0x4C] = 0;
+            break;
+        }
+    } else {
+        if (skyIndex <= 0x11) {
+            switch (skyIndex) {
+            case 0:
+                Process_Create(
+                    defs,
+                    parent
+                );
+                break;
+
+            case 1:
+                Process_Create(
+                    defs,
+                    parent
+                );
+                break;
+
+            case 2:
+                proc = (u8 *)Process_Create(
+                    defs + 0xB4,
+                    parent
+                );
+                proc[0x4F] = 0x3C;
+                break;
+
+            case 3:
+                proc = (u8 *)Process_Create(
+                    defs + 0xB4,
+                    parent
+                );
+                proc[0x4F] = 0x1E;
+                break;
+
+            case 4:
+                proc = (u8 *)Process_Create(
+                    defs + 0xB4,
+                    parent
+                );
+                proc[0x4F] = 0x64;
+                break;
+
+            case 5:
+            case 6:
+            case 7:
+                proc = (u8 *)Process_Create(
+                    defs + 0x8C,
+                    parent
+                );
+                proc[0x4C] = skyIndex;
+                break;
+
+            case 8:
+                proc = (u8 *)Process_Create(
+                    defs + 0x60,
+                    parent
+                );
+                proc[0x4C] = 0;
+                break;
+
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+                Process_Create(
+                    defs + 0x3C,
+                    parent
+                );
+                break;
+            }
+        }
     }
 }
 

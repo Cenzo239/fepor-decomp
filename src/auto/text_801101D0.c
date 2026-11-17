@@ -969,6 +969,66 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
         (*(Manager **)((u8 *)self + 0xAC))->Add(obj);
     }
 }
+
+#pragma use_lmw_stmw on
+extern "C" void fn_80111C8C(void *arg0, void *arg1) {
+    s32 strlen(char *);
+    s32 String_Compare(void *, s32, void *, char *, s32);
+    void SeCue_PlayAt(char *, u8, f32, f32, f32);
+    void UiObj_SetCamerasTransition(void *, s32, s32, f32);
+    u8 *fn_80117CC0(void *, s32);
+    extern void *gGame;
+    u8 flagA, flagB, vol;
+    s32 i;
+    #define CMPAT(off) (String_Compare((void *)((u8 *)arg0 + 0xB0), 0, (void *)*(u32 *)((u8 *)arg0 + 0xB0), (char *)((u32)gActorXmlStrs + (off)), strlen((char *)((u8 *)gActorXmlStrs + (off)))) == 0)
+    #define PLAY(off) SeCue_PlayAt((char *)((u32)gActorXmlStrs + (off)), vol, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2])
+    flagA = 0;
+    flagB = 0;
+    vol = 0x50;
+    if (*(s32 *)((u8 *)arg0 + 0x1D0) == 0) vol = 0x64;
+    if (CMPAT(0x155) || CMPAT(0x15A) || CMPAT(0x15F)) {
+        PLAY(0x164);
+        flagA = 1;
+    } else if (CMPAT(0x178) || CMPAT(0x17D) || CMPAT(0x182) || CMPAT(0x187)) {
+        PLAY(0x18C);
+        flagA = 1;
+    } else if (CMPAT(0x1A0) || CMPAT(0x1A5) || CMPAT(0x1AA)) {
+        PLAY(0x1AF);
+        flagB = 1;
+    } else if (CMPAT(0x1C3) || CMPAT(0x1C8)) {
+        PLAY(0x1CD);
+        flagB = 1;
+    } else if (CMPAT(0x1E1) || CMPAT(0x1E6) || CMPAT(0x1EB)) {
+        PLAY(0x1F0);
+    } else if (CMPAT(0x205)) {
+        PLAY(0x20A);
+    } else if (CMPAT(0x109) || CMPAT(0x10E) || CMPAT(0x113) || CMPAT(0x118) || CMPAT(0x11D)) {
+        PLAY(0x21E);
+        UiObj_SetCamerasTransition(*(void **)((u8 *)arg0 + 0xAC), 1, 0x3C, *(f32 *)((u8 *)gGame + 0x94));
+    } else if (CMPAT(0x232) || CMPAT(0x237) || CMPAT(0x23C) || CMPAT(0x241) || CMPAT(0x246) || (*fn_80117CC0((u8 *)arg0 + 0xB0, 2) == 0x66)) {
+        PLAY(0x24B);
+    } else if (CMPAT(0x25F) || CMPAT(0x264) || CMPAT(0x269) || CMPAT(0x26E) || CMPAT(0x273) || CMPAT(0x278)) {
+        PLAY(0x27D);
+    } else {
+        PLAY(0x20A);
+    }
+    i = *(s32 *)((u8 *)arg0 + 0x1D0);
+    switch (i) {
+    case 1:
+        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x291), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2A4), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        break;
+    case 2:
+        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2B7), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2CB), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        break;
+    case 3:
+        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2DF), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2F2), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        break;
+    }
+}
+
 #pragma cplusplus reset
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
@@ -7199,7 +7259,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 
 c=(s8)**text;
 if(c>='0' && c<='9') {
@@ -7227,7 +7287,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 
 if(child) *text-=2;
 else {
@@ -7253,9 +7313,9 @@ else {
 }
 
 if(!(gUiInputFlags&3)) {
-fn_800790D4(M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48),self);fn_80120F94();
-} else fn_8007AD6C(M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48));
-M2C_FIELD((u8 *)self+((s8)slot<<2),void **,0x48)=0;
+fn_800790D4(((void **)((u8 *)self + (s8)slot * 4))[18],self);fn_80120F94();
+} else fn_8007AD6C(((void **)((u8 *)self + (s8)slot * 4))[18]);
+((void **)((u8 *)self + (s8)slot * 4))[18]=0;
 M2C_FIELD(self,s8 *,0x5e)=-1;return 2;
 case 'S':
 if(child) M2C_FIELD(child,u16 *,0x46)&=~0x202;
@@ -7279,7 +7339,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,2,-1);
 return 1;
 case 's':
@@ -7296,7 +7356,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,1,-1);
 return 1;
 case 'd':
@@ -7313,7 +7373,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,1,1);
 return 1;
 case 'c':
@@ -7331,7 +7391,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,-1,3);
 } else M2C_FIELD(self,u16 *,0x5c)|=4;
 return 1;
@@ -7350,7 +7410,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,-1,4);
 } else M2C_FIELD(self,u16 *,0x5c)|=8;
 return 1;
@@ -7369,7 +7429,7 @@ else {
  if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
  }}}
 }
-if((s8)slot<0) child=0; else child=*(void **)((u8 *)self+((s8)slot<<2)+0x48);
+if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
 fn_8007AD08(child,5,5);
 } else M2C_FIELD(self,u16 *,0x5c)|=12;
 return 1;

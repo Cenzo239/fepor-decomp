@@ -48,7 +48,6 @@ extern f32 lbl_803697E4;
 
 #pragma use_lmw_stmw on
 void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
-    typedef struct { u8 r, g, b, a; } Color;
     typedef struct { f32 v[9]; } Arr9;
     typedef union { u32 w; u8 b[4]; } ColorWord;
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
@@ -68,7 +67,7 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     void Prim2D_Begin(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     u16 **fn_8006EDD8(s32, s32);
-    Color *Ui_GetColor(s32);
+    void *Ui_GetColor(s32);
     f64 fn_802380D0(f32);
     f64 sin(f32);
     extern Arr9 lbl_8026C824;
@@ -105,11 +104,11 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     extern f32 lbl_80369550;
     Arr9 arrA;
     Arr9 arrB;
-    Color col;
     u32 sp24;
     u32 sp20;
     ColorWord cw;
     s32 sp1C, sp18, sp14, sp10, sp8;
+    u32 col;
     s32 iz;
     f32 frac;
     f32 f21, f20;
@@ -129,7 +128,6 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     f32 cr, cg, cb;
     f64 magic_u;
     f64 magic_s;
-    f32 tv0, tv1;
 
     magic_u = lbl_80369440;
     magic_s = lbl_80369470;
@@ -139,11 +137,9 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     iz = (s32)fz;
     frac = fz - (f32)iz;
     tex = *fn_8006EDD8(gUiAtlas, 0x1B);
-    tv0 = tex[0];
-    tv1 = tex[1];
-    sh = tv0 * lbl_80369430;
-    sw = tv1 * lbl_80369430;
-    col = *Ui_GetColor(1);
+    sh = (f32)tex[0] * lbl_80369430;
+    sw = (f32)tex[1] * lbl_80369430;
+    col = *(u32 *)Ui_GetColor(1);
     id = gUiAtlas;
     tex = *fn_8006EDD8(id, 0x1B);
     w = (f32)tex[1];
@@ -155,7 +151,7 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     Prim2D_SetPrimParam(lbl_80369418);
     Prim2D_SetQuadMin(fx, fy, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(fx + sw, fy + sh, w, h);
-    Prim2D_SetColor(col.r, col.g, col.b, 0xFF);
+    Prim2D_SetColor(((u8 *)&col)[0], ((u8 *)&col)[1], ((u8 *)&col)[2], 0xFF);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();

@@ -756,57 +756,54 @@ done2:
  return flags;
 }
 
-void fn_800973F0(void *arg0, s32 arg1)
-{
-    u16* ptr = (u16*)arg0;
-    
-    if (arg1 < 0 || arg1 > 0x45) {
-        return;
-    }
-    
-    switch (arg1) {
-        case 0:  ptr[0] |= 0x800; break;
-        case 1:  ptr[0] |= 0x1000; break;
-        case 2:  ptr[0] |= 0x2000; break;
-        case 3:  ptr[0] |= 0x200; break;
-        case 4:  ptr[0] |= 0x400; break;
-        case 5:  ptr[0] |= 0x100; break;
-        case 6:  ptr[0] |= 0x8000; break;
-        case 7:  ptr[0] |= 0x4000; break;
-        case 8:  ptr[0] |= 0x40; break;
-        case 9:  ptr[0] |= 0x80; break;
-        case 10: ptr[0] |= 0x80; break;
-        case 11: ptr[0] |= 0x8; break;
-        case 12: ptr[0] |= 0x10; break;
-        case 13: ptr[0] |= 0x20; break;
-        case 14: ptr[0] |= 0x2; break;
-        case 15: ptr[0] |= 0x4; break;
-        case 16: ptr[0] |= 0x40; break;
-        case 17: ptr[0] |= 0x100; break;
-        case 18: ptr[0] |= 0x200; break;
-        case 19: ptr[0] |= 0x400; break;
-        case 20: ptr[0] |= 0x4000; break;
-        case 21: ptr[0] |= 0x2000; break;
-        case 22: ptr[0] |= 0x8000; break;
-        case 23: ptr[0] |= 0x1; break;
-        case 24: ptr[0] |= 0x800; break;
-        case 25: ptr[0] |= 0x1000; break;
-        case 26: ptr[0] |= 0x4; break;
-    }
+void fn_800973F0(void *arg0, s32 arg1) {
+u32 *ptr = arg0;
+if(arg1 < 0 || arg1 > 0x45) return;
+switch(arg1) {
+case 0: *ptr |= 0x8000000U; break;
+case 1: *ptr |= 0x10000000U; break;
+case 2: *ptr |= 0x20000000U; break;
+case 3: *ptr |= 0x2000000U; break;
+case 4: *ptr |= 0x4000000U; break;
+case 5: *ptr |= 0x1000000U; break;
+case 6: *ptr |= 0x80000000U; break;
+case 7: *ptr |= 0x40000000U; break;
+case 8: *ptr |= 0x400000U; break;
+case 9: *ptr |= 0x800000U; break;
+case 10: *ptr |= 0x80U; break;
+case 11: *ptr |= 0x8U; break;
+case 12: *ptr |= 0x10U; break;
+case 13: *ptr |= 0x20U; break;
+case 14: *ptr |= 0x2U; break;
+case 15: *ptr |= 0x4U; break;
+case 16: *ptr |= 0x40U; break;
+case 17: *ptr |= 0x100U; break;
+case 18: *ptr |= 0x200U; break;
+case 19: *ptr |= 0x400U; break;
+case 20: *ptr |= 0x4000U; break;
+case 21: *ptr |= 0x2000U; break;
+case 22: *ptr |= 0x8000U; break;
+case 23: *ptr |= 0x10000U; break;
+case 24: *ptr |= 0x800U; break;
+case 25: *ptr |= 0x1000U; break;
+case 26: *ptr |= 0x40000U; break;
+}
 }
 
+#pragma opt_common_subs off
 void Event_AdvanceCmd(s32 arg0) {
     extern u8 gBattle[];
     extern u8 gEventSlots[];
     extern f32 lbl_803697BC;
-    s16 *idx;
+    extern f64 lbl_803697C8;
     s16 saved;
+    s16 *idx;
+    u8 *slots;
+    s16 t;
     s32 c;
-    s32 t;
     s8 param;
     f32 sum;
     f32 lim;
-    u8 *slots;
 
     idx = (s16 *)(gBattle + 0x8A0);
     saved = *idx;
@@ -814,23 +811,25 @@ void Event_AdvanceCmd(s32 arg0) {
         *idx = arg0;
         for (;;) {
             t = *idx;
-            slots = gEventSlots + (t - t);
+            slots = gEventSlots;
             *idx = t + 1;
             c = ((u8 *)idx)[*idx * 4 + 4];
             switch (c) {
-            case 9:
+            case 9: {
+                u8 *es = gEventSlots;
                 param = (s8)((s16 *)idx)[*idx * 2 + 3];
-                sum = *(f32 *)(gEventSlots + 0x10) + (f32)param;
-                lim = *(f32 *)(gEventSlots + 0x8);
-                *(f32 *)(gEventSlots + 0x10) = sum;
-                *(f32 *)(gEventSlots + 0xC) = (f32)param;
+                sum = *(f32 *)(es + 0x10) + (f32)param;
+                lim = *(f32 *)(es + 0x8);
+                *(f32 *)(es + 0x10) = sum;
+                *(f32 *)(es + 0xC) = (f32)param;
                 if (sum > lim) {
-                    *(f32 *)(gEventSlots + 0x10) = lim;
+                    *(f32 *)(es + 0x10) = lim;
                 }
-                if (*(f32 *)(gEventSlots + 0x10) < lbl_803697BC) {
-                    *(f32 *)(gEventSlots + 0x10) = lbl_803697BC;
+                if (*(f32 *)(es + 0x10) < lbl_803697BC) {
+                    *(f32 *)(es + 0x10) = lbl_803697BC;
                 }
                 break;
+            }
             case 0x15:
                 param = (s8)((s16 *)idx)[*idx * 2 + 3];
                 sum = *(f32 *)(slots + 0x24) + (f32)param;
@@ -853,10 +852,10 @@ void Event_AdvanceCmd(s32 arg0) {
             *idx = *idx + 1;
         }
     }
- done:
+done:
     *idx = saved;
 }
-
+#pragma opt_common_subs reset
 typedef struct {
     u8 pad[0x8A0];
     s16 value;
@@ -997,9 +996,8 @@ void fn_8009799C(void) {
 void fn_800979FC(void) {
  s8 fn_8004ABD4(void *,s32);
  extern u8 gBattle[]; extern u8 gEventSlots[];
- u8 *tbl; u8 *it; s32 i; void *p; void *q; s32 ca8;
- it=gEventSlots; tbl=gBattle;
- for(i=0;i<3;i++) {
+ u8 *it; u8 *tbl; s32 i; void *p; void *q; s32 ca8;
+ for(i=0, it=gEventSlots, tbl=gBattle; i<3; i++) {
  p=*(void **)it;
  if(p!=NULL && *(u32 *)((u8 *)p+0x280)!=0) {
  if(p==NULL) q=NULL;

@@ -153,6 +153,65 @@ void OS_YieldThread(void) {
     OSRestoreInterrupts(enabled);
 }
 
+s32 fn_8020A558(void *arg0, void *entry, void *arg, void *stack, u32 size, s32 priority, u16 attr) {
+s32 OSDisableInterrupts(void);
+void OSRestoreInterrupts(s32);
+void fn_8020A740(void*);
+void fn_80205B7C(void*,void*,void*);
+extern u32 __OSErrorTable[];
+extern u32 lbl_80366F38;
+u8 *thread=arg0;
+u32 *sp;
+s32 enabled;
+u32 i;
+u8 *tail;
+struct Queue {u8 *head,*tail;};
+struct Queue *queue;
+if(priority<0 || priority>31) return 0;
+*(u16*)(thread+0x2C8)=1;
+*(u16*)(thread+0x2CA)=attr&1;
+sp=(u32*)((u32)stack&~7);
+*(s32*)(thread+0x2D4)=priority;
+*(s32*)(thread+0x2D0)=priority;
+*(s32*)(thread+0x2CC)=1;
+*(s32*)(thread+0x2D8)=-1;
+*(u32*)(thread+0x2F0)=0;
+*(u32*)(thread+0x2EC)=0;
+*(u32*)(thread+0x2E8)=0;
+*(u32*)(thread+0x2F8)=0;
+*(u32*)(thread+0x2F4)=0;
+sp[-2]=0;sp[-1]=0;
+fn_80205B7C(thread,entry,sp-2);
+*(void**)(thread+0x84)=fn_8020A740;
+*(void**)(thread+0xC)=arg;
+*(void**)(thread+0x304)=stack;
+*(u8**)(thread+0x308)=(u8*)stack-size;
+**(u32**)(thread+0x308)=0xDEADBABE;
+*(u32*)(thread+0x30C)=0;
+*(u32*)(thread+0x310)=0;
+*(u32*)(thread+0x314)=0;
+enabled=OSDisableInterrupts();
+if(__OSErrorTable[16]) {
+*(u32*)(thread+0x19C)|=0x900;
+*(u16*)(thread+0x1A2)|=1;
+*(u32*)(thread+0x194)=(lbl_80366F38&0xF8)|4;
+for(i=0;i<32;i++) {
+*(u64*)(thread+0x90+i*8)=~(u64)0;
+*(u64*)(thread+0x1C8+i*8)=~(u64)0;
+}
+}
+queue=(struct Queue*)0x800000DC;
+tail=queue->tail;
+if(!tail) queue->head=thread;
+else *(u8**)(tail+0x2FC)=thread;
+*(u8**)(thread+0x300)=tail;
+*(u32*)(thread+0x2FC)=0;
+queue->tail=thread;
+OSRestoreInterrupts(enabled);
+return 1;
+}
+
+#pragma optimization_level 2
 void fn_8020A740(void *arg0) {
 s32 OSDisableInterrupts(void); void OSRestoreInterrupts(s32);
 void fn_802086A0(void*); void fn_8020AEC4(void*); void SelectThread_8020A2C4(s32);
@@ -160,7 +219,7 @@ u8 *thread; s32 enabled; u8 *next; u8 *prev;
 enabled=OSDisableInterrupts(); thread=*(u8**)0x800000e4;
 OSClearContext((OSContext*)thread);
 if (*(u16*)(thread+0x2ca)&1) {
-prev=*(u8**)(thread+0x300); next=*(u8**)(thread+0x2fc);
+next=*(u8**)(thread+0x2fc); prev=*(u8**)(thread+0x300);
 if(next==0) *(u8**)0x800000e0=prev; else *(u8**)(next+0x300)=prev;
 if(prev==0) *(u8**)0x800000dc=next; else *(u8**)(prev+0x2fc)=next;
 *(u16*)(thread+0x2c8)=0;
@@ -170,7 +229,7 @@ RunQueueHint_8036851C=1;
 __OSReschedule();
 OSRestoreInterrupts(enabled);
 }
-
+#pragma optimization_level reset
 void fn_8020A824(void *arg0) {
 typedef struct Thread Thread;
 typedef struct Queue {Thread *head,*tail;} Queue;

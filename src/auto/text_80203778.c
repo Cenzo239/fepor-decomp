@@ -226,11 +226,9 @@ u32 PPCMffpscr(void)
     f64 pad;
     f64 value;
     u32 result;
-    f64 tmp;
 
-    tmp = __mffs();
     pad = value;
-    value = tmp;
+    value = __mffs();
     result = ((u32 *)&value)[1];
     value = pad;
     return result;
@@ -2991,6 +2989,20 @@ void fn_8020801C(u8 unused, OSContext *context) {
     }
     OSLoadContext(context);
 }
+
+void ExternalInterruptHandler(u8 exception, OSContext *context) {
+void fn_8020801C(u8, OSContext *);
+u32 *words=(u32 *)context;
+words[106]=__mfspr(913);
+words[107]=__mfspr(914);
+words[108]=__mfspr(915);
+words[109]=__mfspr(916);
+words[110]=__mfspr(917);
+words[111]=__mfspr(918);
+words[112]=__mfspr(919);
+fn_8020801C(exception,context);
+}
+
 int __OSModuleInit(void)
 {
   u8 *base;
