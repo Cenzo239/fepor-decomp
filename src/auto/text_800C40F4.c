@@ -7673,6 +7673,7 @@ extern "C" void fn_800DA608(s32 arg0) {
   }
   #pragma cplusplus reset
   
+#pragma global_optimizer off
 void fn_800DA748(s32 arg0)
 {
     extern void *lbl_803678B8;
@@ -7689,33 +7690,26 @@ void fn_800DA748(s32 arg0)
     String str;
     void *self;
     char *name;
-    u32 len;
 
     str.cap = 0;
     self = lbl_803678B8;
     str.size = 0;
     str.data = 0;
     str.cap = 0;
-    if (*(u32 *)((u8 *)self + 0x10) != 0) {
-        len = strlen((char *)lbl_802711B0 + 0x184);
-        if (String_Compare((String *)((u8 *)self + 0x70), 0, ((String *)((u8 *)self + 0x70))->size,
-                           (char *)lbl_802711B0 + 0x184, len) == 0) {
-            len = strlen((char *)lbl_802711B0 + 0x189);
-            String_AssignCStr(&str, (char *)lbl_802711B0 + 0x189, len);
-            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-            len = strlen((char *)lbl_802711B0 + 0x18D);
-            fn_800C992C(&str, (char *)lbl_802711B0 + 0x18D, len);
-            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-            name = lbl_8028DE60[arg0];
-            len = strlen(name);
-            fn_800C992C(&str, name, len);
-            fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
-        }
+    if (*(void **)((u8 *)self + 0x10) != 0 &&
+        String_Compare((String *)((u8 *)self + 0x70), 0, *(u32 *)((u8 *)self + 0x70),
+                       lbl_802711B0 + 0x184, strlen(lbl_802711B0 + 0x184)) == 0) {
+        String_AssignCStr(&str, lbl_802711B0 + 0x189, strlen(lbl_802711B0 + 0x189));
+        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+        fn_800C992C(&str, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
+        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+        name = lbl_8028DE60[arg0];
+        fn_800C992C(&str, name, strlen(name));
+        fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
     }
     String_Destroy(&str, -1);
 }
-
-#pragma cplusplus reset
+#pragma global_optimizer on
 
 void fn_800DAA38(void *arg0) {
     extern void *lbl_803678B8;
@@ -10488,6 +10482,37 @@ void ObjList_Init(void *arg0) {
     p[1] = 0;
     p[2] = 0;
     p[3] = 0;
+}
+
+int fn_800E01EC(s32 *begin,s32 *end,u8 *compare) {
+s32 Sort_GetKey(void *);
+void fn_800E0F2C(s32 *,s32 *,u8 *);
+void fn_800E0FBC(void *,s32);
+void StableSort(s32 *,s32 *,void *,void *,void *);
+void Heap_FreeRaw(void *);
+#pragma cplusplus on
+struct Buffer { s32 capacity,count; s32 *data;
+Buffer(s32 n) { struct Allocation {s32 *data; s32 count;} allocated; fn_800E0FBC(&allocated,n); capacity=allocated.count; count=0; data=allocated.data; }
+SortIterator begin() { s32 raw[2]; raw[0]=(s32)data; raw[1]=(s32)this; return *(struct SortIterator*)raw; }
+SortIterator end() { s32 raw[2]; raw[0]=(s32)(data+capacity); raw[1]=(s32)this; return *(struct SortIterator*)raw; }
+};
+s32 n=((s32)end-(s32)begin)/4;
+s32 value,key;
+if(n>1) {
+if(n==2) {
+value=*begin; key=Sort_GetKey((void*)end[-1]);
+if(Sort_GetKey((void*)value)>key) { s32 temp=*begin; *begin=end[-1]; end[-1]=temp; }
+} else if(n<=20) {
+u8 comp=*compare;
+fn_800E0F2C(begin,end,&comp);
+} else {
+Buffer buffer(n);
+StableSort(begin,end,&buffer.begin(),&buffer.end(),&SortCompare(*(SortCompare*)compare));
+for(s32 *p=buffer.data;p<buffer.data+buffer.count;++p) { }
+Heap_FreeRaw(buffer.data);
+}
+}
+#pragma cplusplus reset
 }
 
 s32 fn_800E0340(void *arg0, void *arg1, void *arg2)
@@ -15666,55 +15691,44 @@ END:
     return result;
 }
 
-s32 Crc32_Calc(s32 arg0, s32 arg1, s32 arg2) {
-    s32 var_r6;
-    s32 var_r9;
-    u8 *var_r4;
-    u8 *temp_r30;
-    s32 var_ctr;
-    u32 temp_r0;
-    u32 temp_r7_2;
-    u32 temp_r10;
-    u32 temp_r11;
-    u32 temp_r12;
-    u32 temp_r12_2;
-    u32 temp_r7_3;
-    u32 temp_r8;
-    u32 temp_r9;
-    s32 temp_r7;
+u32 Crc32_Calc(u32 *table, u8 *data, s32 len)
+{
+    u32 crc;
+    s32 i;
+    s32 rem;
+    s32 ctr;
+    u8 *p;
 
-    var_r9 = -1;
-    var_r6 = 0;
-    if (arg2 > 0) {
-        temp_r7 = arg2 - 8;
-        if (arg2 > 8) {
-            var_ctr = (temp_r7 + 7) >> 3;
-            if (temp_r7 > 0) {
+    crc = -1;
+    i = 0;
+    if (len > 0) {
+        rem = len - 8;
+        if (len > 8) {
+            ctr = (u32)(rem + 7) >> 3;
+            if (rem > 0) {
                 do {
-                    temp_r30 = (u8 *)arg1 + var_r6;
-                    temp_r7_2 = *temp_r30;
-                    var_r6 += 8;
-                    temp_r12 = (var_r9 >> 8) ^ ((u32 *)arg0)[((var_r9 ^ temp_r7_2) * 4) & 0x3FC];
-                    temp_r12_2 = (temp_r12 >> 8) ^ ((u32 *)arg0)[((temp_r12 ^ temp_r30[1]) * 4) & 0x3FC];
-                    temp_r11 = (temp_r12_2 >> 8) ^ ((u32 *)arg0)[((temp_r12_2 ^ temp_r30[2]) * 4) & 0x3FC];
-                    temp_r10 = (temp_r11 >> 8) ^ ((u32 *)arg0)[((temp_r11 ^ temp_r30[3]) * 4) & 0x3FC];
-                    temp_r9 = (temp_r10 >> 8) ^ ((u32 *)arg0)[((temp_r10 ^ temp_r30[4]) * 4) & 0x3FC];
-                    temp_r8 = (temp_r9 >> 8) ^ ((u32 *)arg0)[((temp_r9 ^ temp_r30[5]) * 4) & 0x3FC];
-                    temp_r7_3 = (temp_r8 >> 8) ^ ((u32 *)arg0)[((temp_r8 ^ temp_r30[6]) * 4) & 0x3FC];
-                    var_r9 = (temp_r7_3 >> 8) ^ ((u32 *)arg0)[((temp_r7_3 ^ temp_r30[7]) * 4) & 0x3FC];
-                    var_ctr--;
-                } while (var_ctr != 0);
+                    p = data + i;
+                    i += 8;
+                    crc = (crc >> 8) ^ table[(crc ^ p[0]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[1]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[2]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[3]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[4]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[5]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[6]) & 0xFF];
+                    crc = (crc >> 8) ^ table[(crc ^ p[7]) & 0xFF];
+                } while (--ctr);
             }
         }
-        var_r4 = (u8 *)arg1 + var_r6;
-        if (var_r6 < arg2) {
+        rem = len - i;
+        data = data + i;
+        if (i < len) {
             do {
-                temp_r0 = *var_r4++;
-                var_r9 = (var_r9 >> 8) ^ ((u32 *)arg0)[((var_r9 ^ temp_r0) * 4) & 0x3FC];
-            } while (var_r6++ < arg2);
+                crc = (crc >> 8) ^ table[(crc ^ *data++) & 0xFF];
+            } while (--rem);
         }
     }
-    return var_r9 ^ -1;
+    return crc ^ -1;
 }
 
 /* Build a 256-entry reflected CRC-32 table (poly 0xEDB88320). */
@@ -19932,8 +19946,57 @@ void fn_800F8780(void *arg0) {
     }
 }
 
+u8 fn_801021F0(void *name, s16 *outX, s16 *outY)
+{
+    void *Unit_FindByName(void *);
+    extern u8 gAiState[];
+    void *unit;
+    u8 flag;
+    u32 bits;
+
+    flag = 1;
+    unit = Unit_FindByName(name);
+    if (unit == 0) {
+        *(s32 *)(gAiState + 8) = 9;
+        *(s32 *)(gAiState + 0xC) = 9;
+        return 0;
+    }
+    if (*(u32 *)((u8 *)unit + 0x188) == 0) {
+        *(s32 *)(gAiState + 8) = 9;
+        *(s32 *)(gAiState + 0xC) = 9;
+        return 0;
+    }
+    bits = *(u32 *)((u8 *)unit + 0x1A0);
+    if (bits & 0x18) {
+        *(s32 *)(gAiState + 8) = 1;
+        *(s32 *)(gAiState + 0xC) = 1;
+        flag = 0;
+    } else if (bits & 4) {
+        *(s32 *)(gAiState + 8) = 4;
+        *(s32 *)(gAiState + 0xC) = 4;
+        flag = 1;
+    } else if (bits & 0x20) {
+        *(s32 *)(gAiState + 8) = 5;
+        *(s32 *)(gAiState + 0xC) = 5;
+        flag = 1;
+    } else if (bits & 0x40) {
+        *(s32 *)(gAiState + 8) = 6;
+        *(s32 *)(gAiState + 0xC) = 6;
+        flag = 1;
+    } else if (bits & 0x80) {
+        *(s32 *)(gAiState + 8) = 7;
+        *(s32 *)(gAiState + 0xC) = 7;
+        flag = 0;
+    }
+    if (flag) {
+        *outX = (s8)*(u8 *)((u8 *)unit + 0x19E);
+        *outY = (s8)*(u8 *)((u8 *)unit + 0x19F);
+    }
+    return flag;
+}
+
 void fn_800F8868(u8 *self) {
-extern u8 *gAiCmd;
+  extern u8 *gAiCmd;
 extern u8 gUiContext[],gAiState[],gTargetList[];
 extern s32 gAiCmdIsAlt;
 u8 fn_801021F0(void *,s16 *,s16 *);
