@@ -15352,6 +15352,7 @@ s32 fn_80263534(void)
     return 1;
 }
 
+#pragma peephole off
 void fn_80263608(s32 arg0)
 {
     extern u32 gSoundAuxBuf;
