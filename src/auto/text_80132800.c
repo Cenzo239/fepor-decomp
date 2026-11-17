@@ -10196,15 +10196,66 @@ void fn_80141970(void *arg0, s32 arg1) {
     *(f32 *)((char *)var_r3_4 + 0x28) = temp_f1;
 }
 
-s32 fn_80141B00(s32 arg0, s32 arg1)
-{
-    if (arg0 < 0)
-        return -1;
-    
-    if (arg1 < arg0)
-        return -1;
-        
-    return 0;
+void *fn_80141B00(void *arg0, void *arg1, u8 arg2, u8 arg3) {
+void *Process_CreateChild(void *, void *);
+void *Process_Create(void *, void *);
+void fn_80142060(void *);
+void *fn_80140B04(void *);
+void List_Insert(void *, void *, void *, void *);
+f32 Math_Ease(s32,f32,f32,f32,f32);
+extern u8 lbl_80292258[];
+extern f32 lbl_8036A740;
+void *self,*child,*end,*node,*pos;
+u32 ret,key;
+f32 alpha[1],t;
+s32 time,duration;
+alpha[0]=1.0f;
+if(arg2) self=Process_CreateChild(&lbl_80292258,arg0);
+else self=Process_Create(&lbl_80292258,arg0);
+if(self==0) return self;
+*(u8 *)((u8 *)self+0x30)=0;
+fn_80142060((u8 *)self+0x34);
+if(arg1!=0) {
+end=fn_80140B04((u8 *)self+0x34);
+node=fn_80140B04((u8 *)self+0x34);
+lwz_node:
+node=*(void **)((u8 *)node+4);
+if(node!=end) {
+if(*(void **)((u8 *)node+8)!=arg1) goto lwz_node;
+}
+pos=(u8 *)self+0x38;
+if(node!=pos) goto skip_insert;
+key=(u32)arg1;
+ret=0;
+List_Insert(&ret,(u8 *)self+0x34,&pos,&key);
+if(arg1!=0) {
+*(s32 *)((u8 *)arg1+4)+=1;
+}
+}
+skip_insert:
+*(s16 *)((u8 *)self+0x28)=*(s16 *)((u8 *)arg1+0x24);
+*(s32 *)((u8 *)self+0x40)=1;
+*(u8 *)((u8 *)self+0x44)=arg3;
+time=*(s16 *)((u8 *)self+0x28)+1;
+switch(*(s32 *)((u8 *)self+0x40)) {
+case 0:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+alpha[0]=(1.0f/(f32)duration)*(f32)(duration-time);
+break;
+case 1:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+{ f32 inverse=1.0f/(f32)duration; alpha[0]=inverse*(f32)time; }
+break;
+}
+t=Math_Ease(5,lbl_8036A740,1.0f,alpha[0],1.0f);
+alpha[0]=*((u8 *)self+0x44)?alpha[0]:1.0f;
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x2c)=alpha[0];
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x28)=t;
+return self;
 }
 
 void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
@@ -10692,6 +10743,63 @@ virtual void v8()=0;
 virtual void v9()=0;
 virtual s32 page()=0;
 };
+static inline void UiPage_ProcessInput(u8 *self,u8 *page,s16 count,s16 visible) {
+extern u32 gUiInputFlags;
+extern u32 *gPadInput;
+extern u8 lbl_80276B3C[];
+void Ui_PlaySeCue(void *,s32);
+void fn_8013ED84(void *,s16);
+s32 repeat,edge,held;
+s16 old;
+u8 blocked;
+blocked=0;
+if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
+if(!blocked) {
+old=*(s16 *)(page+0x64);
+held=gPadInput[1];
+edge=gPadInput[2]^held;
+repeat=gPadInput[3];
+edge=held&edge;
+if((s16)*(f32 *)(self+0x84)==0) {
+if(repeat&0x08000008) {
+if((s16)old==0) {
+if(repeat==edge) {
+*(s16 *)(page+0x64)=count-1;
+*(s16 *)(page+0x4e)=count>(s16)visible?count-(s16)visible:0;
+}
+} else {
+*(s16 *)(page+0x64)=old-1;
+if((s16)*(s16 *)(page+0x64)>0 && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==0) {
+s16 scroll=*(s16 *)(page+0x4e)-1;
+f32 offset=-32.0f;
+*(s16 *)(page+0x4e)=scroll;
+*(f32 *)(self+0x84)=offset;
+}
+}
+if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
+} else if(repeat&0x04000004) {
+s32 last=count-1;
+if(old==last) {
+if(repeat==edge) {
+*(s16 *)(page+0x64)=0;
+*(s16 *)(page+0x4e)=0;
+}
+} else {
+*(s16 *)(page+0x64)=old+1;
+if(*(s16 *)(page+0x64)<last && *(s16 *)(page+0x64)-*(s16 *)(page+0x4e)==(s16)visible-1) {
+s16 scroll=*(s16 *)(page+0x4e)+1;
+f32 offset=32.0f;
+*(s16 *)(page+0x4e)=scroll;
+*(f32 *)(self+0x84)=offset;
+}
+}
+if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
+}
+}
+}
+fn_8013ED84(*(void **)(self+0x48),(s16)((*(s16 *)(page+0x4e)<<5)-(s32)*(f32 *)(self+0x84)));
+
+}
 extern "C" void fn_801429E0(void *arg0) {
 extern u32 gUiInputFlags;
 extern u32 *gPadInput;
@@ -10702,11 +10810,11 @@ void fn_8013ED84(void *,s16);
 u8 *self=(u8 *)arg0;
 s32 index;
 u8 *page;
-s32 held,edge,repeat;
-register s16 visible;
-s16 count;
-u8 blocked;
+s32 repeat,edge,held;
 s16 old;
+s16 count;
+s32 visible;
+u8 blocked;
 index=((UiPageSelector *)arg0)->page();
 page=self+index*2;
 count=*(s32 *)(self+0x90+index*12);
