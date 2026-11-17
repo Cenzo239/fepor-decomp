@@ -231,14 +231,16 @@ void PADOriginCallback(s32 chan, u32 error) {
     u32 e;
     u32 chanBit;
     s32 c;
+    u32 bitConst;
 
     e = error;
     c = chan;
-    chanBit = 0x80000000U >> c;
+    bitConst = 0x80000000;
+    chanBit = bitConst >> chan;
     if (!(EnabledBits & chanBit)) {
         return;
     }
-    if ((e & 0xF) == 0) {
+    if (!(e & 0xF)) {
         fn_80211DD4(c);
     }
     if (e & 8) {
@@ -261,15 +263,15 @@ void fn_80212108(s32 chan, u32 type) {
     void fn_8023C188(s32, void (*)(s32, u32));
     void memset(void *, int, u32);
     extern void fn_802121E0(s32, u32);
-    extern u8 Origin[];
+    extern u8 lbl_8033A1C0[];
     extern s32 lbl_80366FA4;
-    extern u32 PADSpec;
-    extern u32 EnabledBits;
+    extern u32 lbl_80366FAC;
+    extern u32 lbl_8036866C;
     extern u32 lbl_80368670;
-    extern u32 WaitingBits;
-    u32 sr;
-    u32 pad[4];
-    s32 chanBit;
+    extern u32 lbl_80368678;
+    u32 sr[2];
+    u32 pad[2];
+    u32 chanBit;
     u32 bit;
     u32 bitConst;
 
@@ -277,17 +279,17 @@ void fn_80212108(s32 chan, u32 type) {
     if (!(type & 0xF)) {
         bitConst = 0x80000000U;
         chanBit = lbl_80366FA4;
-        EnabledBits |= bitConst >> chanBit;
-        fn_8023BA70(chanBit, &sr);
-        fn_8023B804(chanBit, PADSpec | 0x400000);
-        fn_8023B894(EnabledBits);
-        WaitingBits |= bitConst >> lbl_80366FA4;
+        lbl_8036866C |= bitConst >> chanBit;
+        fn_8023BA70(chanBit, sr);
+        fn_8023B804(chanBit, lbl_80366FAC | 0x400000);
+        fn_8023B894(lbl_8036866C);
+        lbl_80368678 |= bitConst >> lbl_80366FA4;
     }
     bit = lbl_80368670;
     lbl_80366FA4 = __cntlzw(bit);
     if (lbl_80366FA4 != 0x20) {
         lbl_80368670 = bit & ~(0x80000000U >> lbl_80366FA4);
-        memset(&Origin[lbl_80366FA4 * 12], 0, 12);
+        memset(&lbl_8033A1C0[lbl_80366FA4 * 12], 0, 12);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
 }
@@ -976,7 +978,7 @@ void fn_80213914(u32 arg0) {
     u32 old0;
     u32 old1;
     u32 old2;
-    u32 old3;
+    s32 old3;
     u32 interrupts;
     u32 value;
 
@@ -1004,10 +1006,7 @@ void fn_80213914(u32 arg0) {
             value |= 0x20;
             *reg = value;
 
-            value = *reg;
-            value &= ~2;
-            value |= old3 << 1;
-            *reg = value;
+            *reg = (*reg & ~2) | ((u32)old3 << 1);
 
             value = *reg;
             value &= ~1;
@@ -1049,15 +1048,15 @@ u32 rate;
 u32 value;
 if (arg0 != fn_80213ADC()) {
 reg=(volatile u32 *)0xCC006C00;
-play=__rlwinm(*reg,0,31,31);
+play=*reg & 1;
 left=fn_80213B08();
 right=fn_80213B34();
 fn_80213B18(0);
 fn_80213AEC(0);
 value=*reg;
-rate=__rlwinm(value,0,25,25);
+rate=(u32)value & 0x40;
 value=*reg;
-*reg=value & ~0x40;
+*reg=(unsigned short)value & ~0x40;
 interrupts=OSDisableInterrupts();
 fn_80213E30();
 *reg |= rate;
@@ -1268,7 +1267,8 @@ s32 fn_80214184(s32 arg0) {
     return old;
 }
 
-s32 fn_802141EC(s32 arg0, s32 arg1) {
+#pragma peephole off
+s32 fn_802141EC(void *arg0, s32 arg1) {
 s32 OSDisableInterrupts(void);
 void OSRestoreInterrupts(s32);
 void OSRegisterVersion(const char *);
@@ -1291,7 +1291,7 @@ __OSSetInterruptHandler(6,fn_802142C0);
 __OSUnmaskInterrupts(0x02000000);
 lbl_803686EC=arg1;
 lbl_803686E8=0x4000;
-lbl_803686F0=arg0;
+lbl_803686F0=(s32)arg0;
 regs=(volatile PadInitReg *)__PADRegs;
 value=regs->val;
 value &= ~0xff;
@@ -1302,7 +1302,6 @@ lbl_803686F4=1;
 OSRestoreInterrupts(enabled);
 return lbl_803686E8;
 }
-
 #pragma peephole on
 s32 fn_802142B0(void) {
     return 0x4000;
@@ -1599,6 +1598,7 @@ void fn_80215F78(u32 arg0)
     __PADRegs[1] = (u16)arg0;
 }
 
+#pragma global_optimizer off
 void fn_80215F8C(void) {
 void fn_802160C0(char *, ...);
 void fn_80216110(s32, OSContext *);
@@ -1634,7 +1634,6 @@ lbl_80368720=1;
 OSRestoreInterrupts(enabled);
 }
 }
-
 #pragma global_optimizer on
 void *fn_80216050(void *arg0) {
 extern void *lbl_80368738;
