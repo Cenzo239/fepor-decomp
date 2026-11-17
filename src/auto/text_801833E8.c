@@ -9498,6 +9498,15 @@ void fn_8019A088(void *arg0) {
     fn_800498A4(M2C_FIELD(arg0, s32 *, 0x34), 0, 0);
 }
 
+void fn_8019A0C8(void *arg0) {
+    void fn_80049520(s32, void *, s32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
+    void fn_801848D8(s32, s32, s32, s32, s32);
+    M2C_FIELD(arg0,s16 *,0x3E)=(s32)Math_Angle2D(0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3A),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3B),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3C),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3D));
+    fn_80049520(M2C_FIELD(arg0,s32 *,0x34),arg0,0x14,(f32)M2C_FIELD(arg0,s16 *,0x3E));
+    fn_801848D8(M2C_FIELD(arg0,s32 *,0x30),M2C_FIELD(arg0,s8 *,0x3A),M2C_FIELD(arg0,s8 *,0x3B),0x18,0);
+}
+
 #pragma use_lmw_stmw on
 s32 MapSelect_UpdateMove(void *arg0)
 {
