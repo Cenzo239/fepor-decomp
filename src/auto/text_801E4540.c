@@ -7,46 +7,49 @@ struct UnkStruct {
     u32 field_8;
 };
 
+#pragma global_optimizer off
 void fn_801E4540(void)
 {
     void fn_800C0818(s32);
     void fn_8008A290(s32, s32);
     s32 fn_801270A4(void);
-    void *Process_CreateChild(void *, s32);
+    void *fn_8000CAA0(void *, s32);
     void fn_80142060(void *);
-    void Process_Goto(void *, s32);
+    void fn_8000C070(void *, s32);
     extern u8 lbl_80299FE0[];
     u8 *ptr;
 
     fn_800C0818(1);
     fn_8008A290(1, 0);
-    ptr = (u8 *)Process_CreateChild(lbl_80299FE0, fn_801270A4());
+    ptr = (u8 *)fn_8000CAA0(lbl_80299FE0, fn_801270A4());
     if (ptr != 0) {
         *(u8 *)(ptr + 0x30) = 0;
         *(u8 *)(ptr + 0x31) = 0;
         *(u8 *)(ptr + 0x32) = 0;
         *(u8 *)(ptr + 0x33) = 0;
         *(u8 *)(ptr + 0x34) = 0;
+
         *(u16 *)(ptr + 0x36) = 0;
         *(u16 *)(ptr + 0x38) = 0;
         *(u16 *)(ptr + 0x3A) = 8;
         *(s16 *)(ptr + 0x3C) = -1;
         *(s16 *)(ptr + 0x3E) = -1;
+
         *(u32 *)(ptr + 0x40) = 0;
         *(u32 *)(ptr + 0x44) = 0;
         *(u32 *)(ptr + 0x48) = 0;
         *(u32 *)(ptr + 0x4C) = 0;
+
         fn_80142060(ptr + 0x50);
-        {
-            u32 z = 0;
-            *(u32 *)(ptr + 0x5C) = z;
-            *(u32 *)(ptr + 0x60) = z;
-            *(u32 *)(ptr + 0x64) = z;
-        }
-        Process_Goto(ptr, 3);
+
+        *(u32 *)(ptr + 0x5C) = 0;
+        *(u32 *)(ptr + 0x60) = 0;
+        *(u32 *)(ptr + 0x64) = 0;
+
+        fn_8000C070(ptr, 3);
     }
 }
-
+#pragma global_optimizer on
 s32 fn_801E45FC(void) {
     extern char lbl_80299FA8[];
     return *(s32*)((u8*)lbl_80299FA8 + 4);
@@ -153,59 +156,56 @@ void TabMenu_HandleInput(void *arg0) {
     }
 }
 
-void fn_801E4900(void *arg0, void *arg1, s16 arg5, s16 arg6) {
-    s32 Text_MeasureHeight(M2C_UNK, s8, f32);
-    s8 fn_801E4A60(void *, s8);
-    extern u16 lbl_80332260[4];
-    extern u8 lbl_803682F8;
+void fn_801E4900(s16 *arg0, void *arg1) {
+    s32 Text_MeasureHeight(s32, s32, f32);
+    s32 fn_801E4A60(void *, s8);
+    extern s16 lbl_80332260[];
+    extern s8 lbl_803682F8;
     extern f32 gTabMenuOne;
-    
-    s16 sp12;
-    s16 sp10;
-    s16 spE;
-    s16 spC;
-    s16 spA;
-    s16 sp8;
-    s16 var_r8;
-    s16 var_r9;
-    s32 temp_r4;
-    s8 temp_r31;
-    s8 temp_r31_2;
-    s8 temp_r3;
-    u8 temp_r0;
 
-    
-        var_r8 = arg5;
-        var_r9 = arg6;
-        if ((s8) lbl_803682F8 == 0) {
-            sp10 = 0x100;
-            sp12 = 0x1B;
-            spC = 0x16A;
-            spE = 0x1B;
-            sp8 = 0x1D4;
-            spA = 0x1B;
-            M2C_FIELD(&lbl_80332260, s32 *, 0) = (s32) sp10;
-            M2C_FIELD(&lbl_80332260, s32 *, 4) = (s32) spC;
-            M2C_FIELD(&lbl_80332260, s32 *, 8) = (s32) sp8;
-            lbl_803682F8 = 1;
+    struct { s16 a; s16 b; } sp10;
+    struct { s16 a; s16 b; } spC;
+    struct { s16 a; s16 b; } sp8;
+    s16 y;
+    s16 x;
+    s8 row;
+
+    if (lbl_803682F8 == 0) {
+        sp10.a = 0x100;
+        sp10.b = 0x1B;
+        spC.a = 0x16A;
+        spC.b = 0x1B;
+        sp8.a = 0x1D4;
+        sp8.b = 0x1B;
+        ((s32 *)lbl_80332260)[0] = *(s32 *)&sp10;
+        ((s32 *)lbl_80332260)[1] = *(s32 *)&spC;
+        ((s32 *)lbl_80332260)[2] = *(s32 *)&sp8;
+        lbl_803682F8 = 1;
+    }
+    switch (*(s8 *)((u8 *)arg1 + 0x31)) {
+    case 0: {
+        s32 temp = fn_801E4A60(arg1, (s8)*(u8 *)((u8 *)arg1 + 0x32));
+        row = (s8)((s8)temp - (*(s16 *)((u8 *)arg1 + 0x38) / 32));
+        {
+            s16 half = (s16)((0x20 - Text_MeasureHeight(-1, (s8)temp, gTabMenuOne)) >> 1);
+            y = (s16)((s16)(half + 0x62) + (row << 5));
         }
-        temp_r0 = M2C_FIELD(arg1, u8 *, 0x31);
-        switch ((s8) temp_r0) {                         /* irregular */
-        case 0:
-            temp_r3 = fn_801E4A60(arg1, (s8) M2C_FIELD(arg1, u8 *, 0x32));
-            temp_r31 = temp_r3 - ((s16) M2C_FIELD(arg1, s16 *, 0x38) / 32);
-            var_r8 = 0x28;
-            var_r9 = (s16) ((s16) ((s32) (0x20 - Text_MeasureHeight(-1, temp_r3, gTabMenuOne)) >> 1) + 0x62) + (temp_r31 << 5);
-            break;
-        case 1:
-            temp_r4 = (s16) M2C_FIELD(arg1, s16 *, 0x38) / 32;
-            temp_r31_2 = (s8) M2C_FIELD(arg1, u8 *, 0x33) - temp_r4;
-            var_r8 = 0xA0;
-            var_r9 = (s16) ((s16) ((s32) (0x20 - Text_MeasureHeight(-1, (s8) temp_r4, gTabMenuOne)) >> 1) + 0x62) + (temp_r31_2 << 5);
-            break;
+        x = 0x28;
+        break;
+    }
+    case 1: {
+        s32 div = *(s16 *)((u8 *)arg1 + 0x38) / 32;
+        row = (s8)((s8)*(u8 *)((u8 *)arg1 + 0x33) - div);
+        {
+            s16 half = (s16)((0x20 - Text_MeasureHeight(-1, div, gTabMenuOne)) >> 1);
+            y = (s16)((s16)(half + 0x62) + (row << 5));
         }
-        M2C_FIELD(arg0, s16 *, 0) = var_r8;
-        M2C_FIELD(arg0, s16 *, 2) = var_r9;
+        x = 0xA0;
+        break;
+    }
+    }
+    arg0[0] = x;
+    arg0[1] = y;
 }
 
 s8 fn_801E4A60(void *arg0, u8 arg1) {
@@ -369,6 +369,129 @@ void fn_801E4CF8(void *arg0) {
         fn_801E4D54();
         return;
     }
+}
+
+void fn_801E4D54(void *arg0) {
+    void fn_801EA430(void *, void *);
+    void fn_801E9E30(void *, void *);
+    void List_Insert(void *, void *, void *, void *);
+    void fn_80057898(void *, s32);
+    extern u8 lbl_80332020[];
+    struct { void *node; } iter, copy;
+    void *data, *pos, *result;
+    struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
+    u8 *entry;
+    void *end;
+    s32 index;
+    void *node;
+    u8 found;
+    bCopy = initB; b = bCopy;
+    fn_801EA430((u8*)arg0+0x50, &b);
+    aCopy = initA; a = aCopy;
+    fn_801E9E30((u8*)arg0+0x50, &a);
+    end = (u8*)arg0+0x54; index = 0;
+    iter.node = *(void **)((u8*)arg0+0x58);
+    entry = lbl_80332020;
+    for (;;) {
+        keyCopy.value = index + 1; key = keyCopy;
+        node = iter.node;
+        goto search;
+        next: node = *(void **)((u8*)node+4);
+        search:
+        if (node != end) {
+            s8 *p = *(s8 **)((u8*)node+8);
+            found = 0;
+            if (p[0] >= 0 && (s8)key.value == p[4]) found = 1;
+            if (!found) goto next;
+        }
+        copy.node = node; iter = copy;
+        if (node == end) break;
+        data = entry; entry[4] = index; entry[3] = (*(u8 **)((u8*)node+8))[3]; pos = node;
+        List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
+        entry += 0x18; index++;
+    }
+    fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
+}
+
+void fn_801E4E8C(void *arg0) {
+    void fn_801EA430(void *, void *);
+    void fn_801EA018(void *, void *);
+    void List_Insert(void *, void *, void *, void *);
+    void fn_80057898(void *, s32);
+    extern u8 lbl_80332020[];
+    void *iter, *data, *copy, *pos, *result;
+    struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
+    u8 *entry;
+    void *end;
+    s32 index;
+    void *node;
+    u8 found;
+    bCopy = initB; b = initB;
+    fn_801EA430((u8*)arg0+0x50, &b);
+    aCopy = initA; a = initA;
+    fn_801EA018((u8*)arg0+0x50, &a);
+    end = (u8*)arg0+0x54; index = 0;
+    iter = *(void **)((u8*)arg0+0x58);
+    entry = lbl_80332020;
+    for (;;) {
+        key.value = index + 1; keyCopy = key;
+        node = iter;
+        search:
+        if (node != end) {
+            s8 *p = *(s8 **)((u8*)node+8);
+            found = 0;
+            if (p[0] >= 0 && (s8)key.value == p[1]) found = 1;
+            if (!found) { node = *(void **)((u8*)node+4); goto search; }
+        }
+        copy = node; iter = node;
+        if (node == end) break;
+        data = entry; entry[1] = index; pos = node;
+        List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
+        entry += 0x18; index++;
+    }
+    fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
+}
+
+void fn_801E4FB8(void *arg0) {
+    void fn_801EA430(void *, void *);
+    void fn_801EA248(void *, void *);
+    void List_Insert(void *, void *, void *, void *);
+    void fn_80057898(void *, s32);
+    extern u8 lbl_80332020[];
+    struct { void *node; } iter, copy;
+    void *data, *pos, *result;
+    struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
+    u8 *entry;
+    void *end;
+    s32 index;
+    void *node;
+    u8 found;
+    bCopy = initB; b = initB;
+    fn_801EA430((u8*)arg0+0x50, &b);
+    aCopy = initA; a = initA;
+    fn_801EA248((u8*)arg0+0x50, &a);
+    end = (u8*)arg0+0x54; index = 0;
+    iter.node = *(void **)((u8*)arg0+0x58);
+    entry = lbl_80332020;
+    for (;;) {
+        key.value = index + 1; keyCopy = key;
+        node = iter.node;
+        goto search;
+        next: node = *(void **)((u8*)node+4);
+        search:
+        if (node != end) {
+            s8 *p = *(s8 **)((u8*)node+8);
+            found = 0;
+            if (p[0] >= 0 && (s8)key.value == p[2]) found = 1;
+            if (!found) goto next;
+        }
+        copy.node = node; iter.node = node;
+        if (node == end) break;
+        data = entry; entry[2] = index; pos = node;
+        List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
+        entry += 0x18; index++;
+    }
+    fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
 }
 
 #pragma use_lmw_stmw on
@@ -1671,7 +1794,7 @@ void fn_801E7FC0(void *arg0) {
         *(s16 *)((u8 *)self + 0x3C) = 0x28;
         *(s16 *)((u8 *)self + 0x3E) = y;
     } else {
-        y1 = (u16)(y + 1);
+        y1 = (s16)(y + 1);
         *(s16 *)((u8 *)self + 0x3C) = (s16)((x + 0x29) >> 1);
         *(s16 *)((u8 *)self + 0x3E) = (s16)((*(s16 *)((u8 *)self + 0x3E) + y1) >> 1);
     }
@@ -1946,32 +2069,30 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
-    s16 temp_r5;
-    s32 temp_r7;
-    s8 var_r3;
-    s8 var_r8;
-    u32 temp_r0;
-    u32 temp_r3;
-    u8 var_r3_2;
+    s16 v;
+    s32 q;
+    s32 r;
+    s8 lo;
+    u8 ok;
+    s32 count;
 
-    var_r8 = fn_801E4A60();
-    if (var_r8 > 0) {
-        var_r8 -= 1;
+    count = fn_801E4A60();
+    if ((s8)count > 0) {
+        count--;
     }
-    temp_r5 = M2C_FIELD(arg0, s16 *, 0x36);
-    temp_r3 = (u32) temp_r5 >> 0x1FU;
-    temp_r0 = (temp_r5 << 0x1B) - temp_r3;
-    temp_r7 = temp_r5 / 32;
-    var_r3 = (s8) temp_r7 + 8;
-    if ((((temp_r0 << 5) | (temp_r0 >> 0x1BU)) + temp_r3) != 0) {
-        var_r3 = (s8) temp_r7 + 9;
+    v = M2C_FIELD(arg0, s16 *, 0x36);
+    q = v / 32;
+    r = v % 32;
+    lo = (s8)q + 8;
+    if (r != 0) {
+        lo = (s8)q + 9;
     }
-    var_r3_2 = 0;
-    if (((s8) temp_r7 <= var_r8) && (var_r8 <= var_r3)) {
-        var_r3_2 = 1;
+    ok = 0;
+    if (((s8)q <= (s8)count) && ((s8)count <= lo)) {
+        ok = 1;
     }
-    if (var_r3_2 == 0) {
-        M2C_FIELD(arg0, s16 *, 0x38) = (s16) (temp_r5 - ((s8) ((s8) temp_r7 - var_r8) << 5));
+    if (ok == 0) {
+        M2C_FIELD(arg0, s16 *, 0x38) = (s16)(v - ((s8)((s8)q - (s8)count) << 5));
         return 1;
     }
     return 0;
@@ -2515,11 +2636,26 @@ void fn_801E97D4(void *arg0) {
 
 void fn_801E9864(void *arg0)
 {
+#pragma cplusplus on
+    typedef struct ListNode {
+        struct ListNode *prev;
+        struct ListNode *next;
+        void *val;
+    } ListNode;
+    struct Widget {
+        u8 pad[0x2C];
+        virtual void v0(s32) = 0;
+        virtual void v1(s32) = 0;
+        virtual void v2(s32) = 0;
+        virtual void v3(s32) = 0;
+        virtual void v4(s32) = 0;
+        virtual void v5(s32) = 0;
+        virtual void v6(s32) = 0;
+    };
     typedef struct Owner {
         u8 pad[0x50];
         u32 list;
-        void *node;
-        void *next;
+        ListNode node;
     } Owner;
     extern u8 gTabMenuDefaultTab;
     extern u8 gTabMenuDefaultMode;
@@ -2536,9 +2672,11 @@ void fn_801E9864(void *arg0)
     Owner *self;
     s16 *p68;
     void *obj;
-    void *sp10;
-    void *spC;
+    Widget *w;
+    ListNode *sp10;
+    ListNode *spC;
     u8 sp8[4];
+    ListNode *end;
 
     self = (Owner *)arg0;
     p68 = &gTabMenuDefaultCursor;
@@ -2555,20 +2693,23 @@ void fn_801E9864(void *arg0)
     fn_8006D8E8(*(void **)((u8 *)arg0 + 0x64));
     obj = *(void **)((u8 *)arg0 + 0x5C);
     if (obj != NULL) {
-        (*(void (**)(void *, s32))(*(u8 **)((u8 *)obj + 0x2C) + 0x20))(obj, 1);
+        w = (Widget *)obj;
+        w->v6(1);
     }
     fn_80056A04(*(void **)((u8 *)arg0 + 0x60), 1);
     if (arg0 != NULL) {
         if (&self->list != NULL) {
             if (&self->list != NULL) {
                 if (&self->list != NULL) {
-                    sp10 = &self->node;
-                    spC = self->next;
+                    end = &self->node;
+                    sp10 = end;
+                    spC = end->next;
                     List_EraseRange(sp8, &self->list, &spC, &sp10);
                 }
             }
         }
     }
+#pragma cplusplus reset
 }
 
 #pragma optimization_level reset
@@ -2913,6 +3054,7 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
     }
 }
 
+#pragma optimization_level 3
 void fn_801EA430(void *arg0) {
     void Heap_Free(void *);
     void *head;
@@ -2949,7 +3091,7 @@ done:
         cur = *(void **)((u8 *)cur + 4);
     }
 }
-
+#pragma optimization_level reset
 void fn_801EA514(s32 *arg0, s32 *arg1) {
     void fn_80182514(s32 *, void **, s32 *);
 
