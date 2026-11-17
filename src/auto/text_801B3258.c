@@ -7923,8 +7923,8 @@ void fn_801C6E60(u32 arg0)
     void fn_8005F788(u32, s32, s32);
     s32 i;
     u8 *list;
+    s32 clear;
     void *p;
-    u8 *walk;
 
     p = Process_Find(LightFade_script);
     if (p == NULL) {
@@ -7933,22 +7933,21 @@ void fn_801C6E60(u32 arg0)
         list = *(u8 **)((u8 *)p + 0x30);
     }
     if (list != NULL && arg0 != 0) {
-        walk = list;
+        clear = (s32)list;
         for (i = 0; i < 0x40; i++) {
-            if (*(u32 *)(walk + 0x290) == arg0) {
+            if (*(u32 *)(list + 0x290) == arg0) {
                 return;
             }
-            walk += 4;
+            list += 4;
         }
-        walk = list;
+        list = (u8 *)clear;
         for (i = 0; i < 0x40; i++) {
-            if (*(u32 *)(walk + 0x290) == 0) {
-                walk = list + i * 4;
-                *(u32 *)(walk + 0x290) = arg0;
+            if (*(u32 *)(list + 0x290) == 0) {
+                *(u32 *)((u8 *)clear + i * 4 + 0x290) = arg0;
                 fn_8005F788(arg0, 1, 1);
                 break;
             }
-            walk += 4;
+            list += 4;
         }
     }
 }
@@ -11177,70 +11176,75 @@ void fn_801CDDC8(void *arg0, char *arg1) {
     }
 }
 
+#pragma global_optimizer off
 void fn_801CDE2C(void *self, u8 *str) {
     s32 fn_80010710(u8 *);
     void *memset(void *, int, unsigned long);
+    u8 *p;
     u8 *dest;
     s32 count;
     u8 b0;
     u8 b1;
     u8 isSjis;
 
+    p = str;
     dest = (u8 *)self + 0x3c;
     memset(dest, 0, 0x34);
     count = 0;
     goto check;
 body:
-    str += fn_80010710(str);
-    if ((s8)*str == 0) {
+    p += fn_80010710(p);
+    if ((s8)*p == 0) {
         goto done;
     }
-    b0 = str[0];
-    if (b0 >= 0x81U) {
-        if (b0 <= 0x9FU) {
-            goto lead_ok;
-        }
-        if (b0 >= 0xE0U) {
-            if (b0 <= 0xFCU) {
-                goto lead_ok;
-            }
-        }
+    b0 = *(volatile u8 *)p;
+    if (b0 < 0x81U) {
         goto not_sjis;
-    lead_ok:
-        b1 = str[1];
-        if (b1 >= 0x40U) {
-            if (b1 <= 0x7EU) {
-                goto sjis_yes;
-            }
-            if (b1 >= 0x80U) {
-                if (b1 <= 0xFCU) {
-                    goto sjis_yes;
-                }
-            }
+    }
+    if (b0 > 0x9FU) {
+        if (b0 < 0xE0U) {
+            goto not_sjis;
+        }
+        if (b0 > 0xFCU) {
+            goto not_sjis;
         }
     }
+    b1 = p[1];
+    if (b1 < 0x40U) {
+        goto not_sjis;
+    }
+    if (b1 > 0x7EU) {
+        if (b1 < 0x80U) {
+            goto not_sjis;
+        }
+        if (b1 > 0xFCU) {
+            goto not_sjis;
+        }
+    }
+    isSjis = 1;
+    goto after_sjis;
 not_sjis:
     isSjis = 0;
-    goto after_sjis;
-sjis_yes:
-    isSjis = 1;
 after_sjis:
     if (isSjis != 0) {
-        dest[0] = str[0];
-        dest[1] = str[1];
-        str += 2;
+        b0 = p[0];
+        b1 = p[1];
+        p += 2;
+        dest[0] = b0;
+        dest[1] = b1;
         dest += 4;
     } else {
-        dest[0] = *str;
-        str += 1;
+        b0 = p[0];
+        p += 1;
+        dest[0] = b0;
         dest += 4;
     }
     count += 1;
 check:
-    if ((s8)*str == 0) {
+    if ((s8)*p == 0) {
         goto done;
     }
-    if (count < 0xC) {
+    if ((u32)count < 0xCU) {
         goto body;
     }
 done:
@@ -11248,7 +11252,7 @@ done:
     *(s16 *)((u8 *)self + 0x72) = -1;
     *(s16 *)((u8 *)self + 0x74) = -1;
 }
-
+#pragma global_optimizer on
 void *fn_801CDF5C(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *lbl_80298678[];
@@ -15721,6 +15725,29 @@ done:
     ;
 }
 
+void fn_801DC454(void *arg0) {
+void MsgBox_Init(void *,void *,u8,u8,s16);
+u8 *state=M2C_FIELD(arg0,u8 **,0x30);
+u8 *box=state+0x330;
+s32 bit, pad;
+s16 *entry;
+s16 x,y;
+MsgBox_Init(box,M2C_FIELD(arg0,void **,0x34),M2C_FIELD(arg0,u8 *,0x3C),M2C_FIELD(arg0,u8 *,0x44),0);
+if(M2C_FIELD(arg0,u8 *,0x3C)==1) {
+bit=((u32)M2C_FIELD(box,s16 *,0)>>2)&1;
+pad=40&(~((bit-1)|(1-bit))>>31);
+if(M2C_FIELD(state,s8 *,0x14)==0) {
+x=M2C_FIELD(box,s16 *,0xE); y=M2C_FIELD(box,s16 *,0x10)+pad;
+entry=(s16 *)(state+M2C_FIELD(arg0,s32 *,0x40)*20+0x51A);
+entry[0]|=1; entry[0]&=~2; entry[0]&=~4; entry[1]=100; entry[4]=x; entry[5]=y;
+} else {
+x=M2C_FIELD(box,s16 *,0x12); y=M2C_FIELD(box,s16 *,0x14)+pad;
+entry=(s16 *)(state+M2C_FIELD(arg0,s32 *,0x40)*20+0x51A);
+entry[0]|=1; entry[0]&=~2; entry[0]&=~4; entry[1]=100; entry[4]=x; entry[5]=y;
+}
+}
+}
+
 void MsgBox_Layout(MsgBox *arg0) {
     u8 *Msg_Expand(u8 *);
     s32 Text_MeasureWidth(void *, s32, f32);
@@ -18404,16 +18431,21 @@ skip3:
     gSystemSave[0x47] = arg1;
 }
 
-void* fn_801E2324(u16 arg0) {
-    s32 i;
-    
-    for (i = 0; i < 0x20; i++) {
-        if (gScriptObjSlots[i] == arg0) {
-            return &gScriptObjSlots[i];
-        }
-    }
-    
-    return NULL;
+void *fn_801E2324(void **arg0,s32 arg1) {
+u8 *slot;
+s32 off,i;
+u8 valid;
+i=0;
+off=0x2000;
+for(;i<6;i++) {
+slot=(u8 *)*arg0+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && arg1==*(u8 *)(slot+0x62)) return slot;
+off+=0x4000;
+}
+return NULL;
 }
 
 #pragma opt_strength_reduction off
