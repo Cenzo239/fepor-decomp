@@ -317,31 +317,29 @@ BOOL EXIImm(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
 s32 EXIImmEx(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 EXIImm(s32, s32, s32, s32, s32);
     s32 EXISync(s32);
-    
-    s32 var_r31 = arg0;
-    s32 var_r28 = arg1;
-    s32 var_r29 = arg2;
-    s32 var_r30 = arg3;
-    s32 var_r27;
+    s32 n;
+    s32 type;
+    s32 len;
+    s32 buf;
+    s32 chan;
 
-loop_9:
-    if (var_r29 == 0) {
-        return 1;
+    chan = arg0;
+    buf = arg1;
+    len = arg2;
+    type = arg3;
+
+    while (len) {
+        n = (len < 4) ? len : 4;
+        if (!EXIImm(chan, buf, n, type, 0)) {
+            return 0;
+        }
+        if (!EXISync(chan)) {
+            return 0;
+        }
+        buf += n;
+        len -= n;
     }
-    if (var_r29 < 4) {
-        var_r27 = var_r29;
-    } else {
-        var_r27 = 4;
-    }
-    if (EXIImm(var_r31, var_r28, var_r27, var_r30, 0) == 0) {
-        return 0;
-    }
-    if (EXISync(var_r31) == 0) {
-        return 0;
-    }
-    var_r28 += var_r27;
-    var_r29 -= var_r27;
-    goto loop_9;
+    return 1;
 }
 
 s32 EXIDma(s32 chan, void *buffer, s32 length, s32 type, void *callback)
@@ -817,6 +815,36 @@ void EXTIntrruptHandler(s16 interrupt, OSContext *context)
     }
 }
 
+void EXIInit(void) {
+extern u32 IDSerialPort1_80368800;
+extern s32 __OSInIPL;
+extern const char *__EXIVersion;
+void OSRegisterVersion(const char *);
+void __OSSetInterruptHandler(s32, void (*)(s16,OSContext*));
+void __OSEnableBarnacle(s32,s32);
+u32 id;
+volatile u32 *regs=(volatile u32*)0xCC006800;
+while ((regs[3]&1)==1 || (regs[8]&1)==1 || (regs[13]&1)==1) {}
+__OSMaskInterrupts(0x7F8000);
+*(u32*)0xCC006800=0; *(u32*)0xCC006814=0; *(u32*)0xCC006828=0; *(u32*)0xCC006800=0x2000;
+__OSSetInterruptHandler(9,EXIIntrruptHandler);
+__OSSetInterruptHandler(10,TCIntrruptHandler);
+__OSSetInterruptHandler(11,EXTIntrruptHandler);
+__OSSetInterruptHandler(12,EXIIntrruptHandler);
+__OSSetInterruptHandler(13,TCIntrruptHandler);
+__OSSetInterruptHandler(14,EXTIntrruptHandler);
+__OSSetInterruptHandler(15,EXIIntrruptHandler);
+__OSSetInterruptHandler(16,TCIntrruptHandler);
+EXIGetID(0,2,&IDSerialPort1_80368800);
+if(__OSInIPL) {
+*(u32*)0x800030C4=0; *(u32*)0x800030C0=0;
+Ecb_8033E188[1].idTime=0; Ecb_8033E188[0].idTime=0;
+__EXIProbe(0); __EXIProbe(1);
+} else if(EXIGetID(0,0,&id) && id==0x07010000) __OSEnableBarnacle(1,0);
+else if(EXIGetID(1,0,&id) && id==0x07010000) __OSEnableBarnacle(0,2);
+OSRegisterVersion(__EXIVersion);
+}
+
 #pragma scheduling reset
 s32 EXILock(s32 chan, u32 dev, void (*callback)(s32, void *)) {
     EXIControl *exi;
@@ -1205,7 +1233,6 @@ s32 InitializeUART(void) {
     extern u32 lbl_80368814;
     u32 magic;
     s32 result;
-    s32 ret;
 
     if ((u32)(lbl_80368814 + 0x5A010000) == 0x5AU) {
         return 0;
@@ -1220,9 +1247,8 @@ s32 InitializeUART(void) {
     {
         u32 one = 1;
         lbl_80368808 = result;
-        ret = 0;
         lbl_8036880C = one;
-        return ret;
     }
+    return result;
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
