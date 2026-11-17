@@ -474,38 +474,25 @@ s32 fn_80226700(void *arg0, u64 value) {
  return result;
 }
 
-s32 fn_802267FC(void *arg0, void *arg1, u32 arg2)
+s32 fn_802267FC(void *arg0, void *arg1, u32 length)
 {
     void fn_80003488(void *, void *, s32);
-
+    s32 result;
     u32 offset;
     u32 remaining;
-    u32 length;
-    s32 result;
 
     result = 0;
-    length = arg2;
-
-    if (length == 0) {
+    if (!length) {
         return 0;
     }
-
     offset = *(u32 *)((u8 *)arg0 + 0xC);
     remaining = *(u32 *)((u8 *)arg0 + 8) - offset;
-
     if (length > remaining) {
         result = 0x302;
         length = remaining;
     }
-
-    fn_80003488(
-        arg1,
-        (u8 *)arg0 + offset + 0x10,
-        length
-    );
-
+    fn_80003488(arg1, (u8 *)arg0 + offset + 0x10, length);
     *(u32 *)((u8 *)arg0 + 0xC) += length;
-
     return result;
 }
 
@@ -603,16 +590,12 @@ int TRKInitializeMessageBuffers(void) {
     void fn_802287A8(void *);
     u8 *queue;
     s32 i;
-    s32 zero;
 
-    queue = lbl_8033B078;
-    zero = 0;
-    for (i = 0; i < 3; i++) {
+    for (queue = lbl_8033B078, i = 0; i < 3; queue += 0x890, i++) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-        *(u32 *)(queue + 4) = zero;
+        *(u32 *)(queue + 4) = 0;
         fn_802287A8(queue);
-        queue += 0x890;
     }
     return 0;
 }
@@ -2037,6 +2020,36 @@ extern u8 lbl_8033CFB4[];
     *(s32 *)(status + 0xC) = st.saved[3];
     return err + (s32)(st.gap[0] & 0);
 }
+
+s32 TRKTargetAccessExtended1(u32 arg0,u32 arg1,void *arg2,s32 *arg3,s32 arg4) {
+extern u8 gTRKExceptionStatus_8029E574[];
+extern u8 gTRKRestoreFlags[];
+typedef struct {u32 words[4];} ExceptionStatus;
+ExceptionStatus saved;
+u8 *status;
+u32 *registers;
+s32 count;
+if(arg1>0x60) return 0x701;
+status=gTRKExceptionStatus_8029E574;
+saved=*(ExceptionStatus *)status;
+status[0xd]=0;
+*arg3=0;
+if(arg0<=arg1) {
+count=arg1-arg0+1;
+*arg3+=count*4;
+registers=(u32 *)(gTRKCPUState+arg0*4+0x1a8);
+if(arg4) arg0=fn_8022659C(arg2,registers,count);
+else {
+if(registers <= (u32 *)(gTRKCPUState+0x1ec) && registers+count-1 >= (u32 *)(gTRKCPUState+0x1e8)) gTRKRestoreFlags[0]=1;
+if(registers <= (u32 *)(gTRKCPUState+0x278) && registers+count-1 >= (u32 *)(gTRKCPUState+0x278)) gTRKRestoreFlags[1]=1;
+arg0=fn_8022632C(arg2,registers,count);
+}
+}
+if(status[0xd]) {arg0=0x702;*arg3=0;}
+*(ExceptionStatus *)gTRKExceptionStatus_8029E574=saved;
+return arg0;
+}
+
 #pragma optimization_level reset
 s32 TRKTargetAccessDefault(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
 {
