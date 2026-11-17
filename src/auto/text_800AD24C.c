@@ -5428,8 +5428,8 @@ void fn_800B9C14(void) {
 
 void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
  void fn_800B9CD4(s32,s32,s32,s32,s32);
- extern f64 lbl_80369CF8; extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
- f32 scale; f32 x; f32 y;
+ extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
+ f32 x; f32 y; f32 scale;
  scale=(f32)arg3/lbl_80369D08;
  x=lbl_80369D0C-scale*(f32)arg1;
  y=lbl_80369D10-scale*(f32)arg2;
@@ -7580,13 +7580,14 @@ found:
 
 #pragma dont_inline on
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 void fn_800BDC68(void *arg0, void *arg1) {
     s32 var_r30;
     u32 temp_r31;
     s32 temp_r5;
     s32 var_r29;
-    s32 a0 = (s32)arg0;
     s32 a1 = (s32)arg1;
+    s32 a0 = (s32)arg0;
 
     temp_r31 = fn_8000D598(a1);
     var_r29 = a0;
@@ -7608,10 +7609,7 @@ loop_1:
         *(u8 *)(temp_r5 + 0x300) = *(u8 *)(temp_r5 + 0x300) | (1 << (var_r30 & 7));
     }
 }
-#pragma use_lmw_stmw reset
-#pragma dont_inline reset
-
-#pragma use_lmw_stmw on
+#pragma optimization_level reset
 s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
  s32 i; u32 hash; s32 row; u8 *p;
  if (*(s8 *)arg1 == 0) return 0;
@@ -8138,61 +8136,55 @@ void fn_800BEAC0(void* arg0, void* arg1, int arg2) {
     }
 }
 
+#pragma optimization_level 3
 s32 fn_800BEC5C(void *arg0) {
     extern s16 gTalkState[];
     s32 Event_GetString(void *, u16);
-    s32 EventFlag_IsSet(s32, s32);
-
+    u8 EventFlag_IsSet(void *, s32);
     u8 *entry;
-    s16 *state1;
-    s16 *state2;
     s16 value;
 
     entry = (u8 *)arg0;
-
     value = gTalkState[0];
     if (value >= 0) {
         if (value != *(s16 *)(entry + 0x14)) {
             return 0;
         }
     }
+    {
+        s16 *state1;
+        s16 *state2;
 
-    state1 = gTalkState;
-    value = state1[1];
+        state1 = gTalkState;
+        value = state1[1];
+        if (value >= 0) {
+            if (value != *(s16 *)(entry + 0x16)) {
+                return 0;
+            }
+        }
 
-    if (value >= 0) {
-        if (value != *(s16 *)(entry + 0x16)) {
+        state2 = gTalkState;
+        value = state2[2];
+        if (value != 0) {
+            if (value != *(s16 *)(entry + 0x18)) {
+                return 0;
+            }
+        }
+
+        if (EventFlag_IsSet(
+                (u8 *)gBattleState + 0xB4,
+                Event_GetString(entry, (u16)*(s16 *)(entry + 0x1A))
+            ) != 0) {
             return 0;
         }
+
+        gTalkState[0] = *(s16 *)(entry + 0x14);
+        state1[1] = *(s16 *)(entry + 0x16);
+        state2[2] = *(s16 *)(entry + 0x18);
+        return 1;
     }
-
-    state2 = gTalkState;
-    value = state2[2];
-
-    if (value != 0) {
-        if (value != *(s16 *)(entry + 0x18)) {
-            return 0;
-        }
-    }
-
-    if (EventFlag_IsSet(
-            (s32)((u8 *)gBattleState + 0xB4),
-            Event_GetString(
-                entry,
-                (u16)*(s16 *)(entry + 0x1A)
-            )
-        ) != 0) {
-        return 0;
-    }
-
-    gTalkState[0] = *(s16 *)(entry + 0x14);
-    state1[1] = *(s16 *)(entry + 0x16);
-    state2[2] = *(s16 *)(entry + 0x18);
-
-    return 1;
 }
-
-#pragma optimization_level 3
+#pragma optimization_level reset
 s32 fn_800BF0A8(void *entry) {
     void *Event_GetString(void *, u32);
     u8 EventFlag_IsSet(void *, void *);
@@ -8559,6 +8551,62 @@ check:
     }
     proc = Process_CreateChild(E_EventCaller_script, parent);
     *(s32 *)((u8 *)proc + 0x34) = 2;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)EventEntry_FlagIsSet;
+    return 1;
+}
+
+s32 fn_800C000C(s32 parent) {
+    void *Event_NextEntry(void *);
+    void *Process_CreateChild(void *, s32);
+    void *Event_GetString(void *, u32);
+    u8 EventFlag_IsSet(void *, void *);
+    void Allegiance_FillMask(s32, u8 *);
+    void fn_8001520C(void *, s32);
+    s32 EventEntry_FlagIsSet(s32);
+    extern u16 gBattleState[700];
+    extern u16 gUnits[];
+    u8 mask[8];
+    u8 *entry;
+    u8 *flagBase;
+    u8 found;
+    void *proc;
+    u8 *unit;
+    s32 i;
+    s32 kind;
+
+    kind = 1;
+    entry = Event_NextEntry(0);
+    flagBase = (u8 *)gBattleState + 0xB4;
+    while (entry != 0) {
+        if (entry[0xC] == kind) {
+            if (EventFlag_IsSet(flagBase, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14))) != 0) {
+                found = 1;
+                goto check;
+            }
+        }
+        entry = Event_NextEntry(entry);
+    }
+    found = 0;
+check:
+    if (found == 0) {
+        return 0;
+    }
+    Allegiance_FillMask(3, mask);
+    for (i = 1; i <= 0x9F; i++) {
+        if ((u8)i != 0) {
+            unit = (u8 *)gUnits + ((u8)i - 1) * 0x280;
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)(unit + 0x188) != 0 && mask[(*(u8 **)(unit + 0x190))[8]] != 0) {
+            *(u32 *)(unit + 0x1A0) &= ~1;
+            *(u32 *)(unit + 0x1A0) &= ~0x800;
+        }
+    }
+    fn_8001520C((u8 *)gBattleState + 0x94, 0);
+    fn_8001520C((u8 *)gBattleState + 0x98, 3);
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 1;
     *(s32 *)((u8 *)proc + 0x38) = (s32)EventEntry_FlagIsSet;
     return 1;
 }
@@ -9557,30 +9605,30 @@ void fn_800C1E24(void) {
     M2C_UNK fn_800C1BDC();
     s32 fn_800C4638(M2C_UNK, void *, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXInitTexObjLOD(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
+    M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     extern M2C_UNK lbl_8026FDC0;
     extern M2C_UNK lbl_8031FFD0;
-    extern s32 gMapBlendBufs;
+    extern s32 lbl_80320030;
     extern s32 lbl_80367850;
     extern s32 lbl_80367854;
     extern s32 lbl_80367858;
-    extern s32 gMapBlendBufIndex;
+    extern s32 lbl_8036785C;
     extern f32 lbl_80369D28;
     M2C_UNK *var_r29;
     s32 *var_r30;
     s32 var_r28;
 
-    var_r30 = &gMapBlendBufs;
+    var_r30 = &lbl_80320030;
     var_r29 = &lbl_8031FFD0;
     var_r28 = 0;
     lbl_80367850 = 0x4000;
     lbl_80367854 = 0x80;
     lbl_80367858 = 0x80;
-    gMapBlendBufIndex = 0;
+    lbl_8036785C = 0;
     do {
         *var_r30 = fn_800C4638(0x2000, &lbl_8026FDC0 + 0x53, 0);
         fn_80222644(var_r29, *var_r30, 0x80, 0x80, 0, 0, 0, 0);
-        GXInitTexObjLOD(var_r29, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
+        fn_802228D8(var_r29, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
         DCFlushRange(*var_r30, 0x2000);
         var_r28 += 1;
         var_r29 += 0x20;
@@ -9800,6 +9848,7 @@ s8 fn_800C2ACC(Unk800C2ACC *arg0, s32 arg1) {
     return (s8)arg0[arg1 - 1].unk13;
 }
 
+#pragma scheduling on
 s32 fn_800C2AE0(Unk800C2ACC *arr, s32 idx, u8 val) {
     s32 off = idx * 0x18;
     u8 flag = 0;
@@ -9827,20 +9876,22 @@ s32 fn_800C2AE0(Unk800C2ACC *arr, s32 idx, u8 val) {
     }
     return idx;
 }
-
+#pragma scheduling reset
 s8 fn_800C2BA8(s32 arg0, s32 arg1) {
     u8 *ptr = (u8 *)arg0;
     return ptr[(arg1 * 0x18) - 6];
 }
 
 s32 fn_800C2BBC(Unk800C2ACC *arr, s32 idx, u8 val) {
-    u8 flag;
     s32 off;
+    u8 flag;
+    s32 ret;
     Unk800C2ACC *p;
     u8 *q;
 
     off = idx * 0x18;
     flag = 0;
+    ret = idx;
     p = &arr[idx];
     ((u8 *)p)[-6] = val;
     if ((s8)((u8 *)p)[-0x17] != 0)
@@ -9865,19 +9916,19 @@ s32 fn_800C2BBC(Unk800C2ACC *arr, s32 idx, u8 val) {
 done:
     if (flag) {
         q = (u8 *)arr + off;
-        idx = 0;
-        q[-0x18] = (u8)idx;
-        ((u8 *)p)[-0x17] = (u8)idx;
-        q[-5] = (u8)idx;
-        ((u8 *)p)[-6] = (u8)idx;
-        q[-7] = (u8)idx;
-        q[-8] = (u8)idx;
+        ret = 0;
+        q[-0x18] = (u8)ret;
+        ((u8 *)p)[-0x17] = (u8)ret;
+        q[-5] = (u8)ret;
+        ((u8 *)p)[-6] = (u8)ret;
+        q[-7] = (u8)ret;
+        q[-8] = (u8)ret;
         q[-2] = 0x80;
         q[-3] = 0x80;
         q[-4] = 0x80;
         q[-1] = 0xFF;
     }
-    return idx;
+    return ret;
 }
 
 s8 fn_800C2C84(s32 arg0, s32 arg1) {
@@ -9887,38 +9938,33 @@ s8 fn_800C2C84(s32 arg0, s32 arg1) {
 
 #pragma optimization_level 2
 s32 fn_800C2C98(Unk800C2ACC *arr, s32 idx, u8 val) {
-    u8 flag;
-    s32 off;
-    Unk800C2ACC *p;
-    {
-        u8 *pin;
-        pin = (u8 *)arr;
-        (void)pin;
-    }
-    off = idx * 0x18;
-    flag = 0;
-    p = &arr[idx];
+    struct { u8 flag; s32 off; } s;
+    Unk800C2ACC *p = &arr[idx];
+    s32 ret = idx;
+
+    s.off = idx * 0x18;
+    s.flag = 0;
     ((u8 *)p)[-7] = val;
     if ((s8)((u8 *)p)[-0x17] == 0 && (s8)((u8 *)p)[-8] == 0 && (s8)((u8 *)p)[-7] == 0 &&
         (s8)((u8 *)p)[-6] == 0 && (s8)((u8 *)p)[-5] == 0 && ((u8 *)p)[-4] == 0x80 &&
         ((u8 *)p)[-3] == 0x80 && ((u8 *)p)[-2] == 0x80 && ((u8 *)p)[-1] == 0xFF) {
-        flag = 1;
+        s.flag = 1;
     }
-    if (flag) {
-        u8 *q = (u8 *)arr + off;
-        idx = 0;
-        q[-0x18] = (u8)idx;
-        ((u8 *)p)[-0x17] = (u8)idx;
-        q[-5] = (u8)idx;
-        q[-6] = (u8)idx;
-        ((u8 *)p)[-7] = (u8)idx;
-        q[-8] = (u8)idx;
+    if (s.flag) {
+        u8 *q = (u8 *)arr + s.off;
+        ret = 0;
+        q[-0x18] = (u8)ret;
+        ((u8 *)p)[-0x17] = (u8)ret;
+        q[-5] = (u8)ret;
+        q[-6] = (u8)ret;
+        ((u8 *)p)[-7] = (u8)ret;
+        q[-8] = (u8)ret;
         q[-2] = 0x80;
         q[-3] = 0x80;
         q[-4] = 0x80;
         q[-1] = 0xFF;
     }
-    return idx;
+    return ret;
 }
 #pragma optimization_level reset
 s8 fn_800C2D60(s32 arg0, s32 arg1) {
@@ -10490,15 +10536,14 @@ void fn_800AFC54(s32 arg0)
 void fn_800AFCFC(s32 arg0) {
     s32 ticks;
     u8 *p;
-    f32 max;
-    s32 volume;
     f32 time;
+    s32 volume;
+    f32 max;
     ticks = *(u16 *)((u8 *)gSoundSys + 0x122);
     p = *(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C;
     if (*(u16 *)p != 0) {
-        time = (f32)ticks;
-        time /= lbl_80369CC8;
-        if (lbl_80369CCC > time) time = lbl_80369CCC;
+        time = (f32)ticks / lbl_80369CC8;
+        if (time < lbl_80369CCC) time = lbl_80369CCC;
         max = *(f32 *)(p+0x10);
         volume = (s32)((*(f32 *)(p+0xC) * lbl_80369CB0) / lbl_80369CD0);
         if ((f32)volume > max) volume = (s32)max;
@@ -11101,6 +11146,7 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u8 ch) {
     return *(s32 *)(entry + 0x28);
 }
 
+#pragma optimization_level 3
 void fn_800B125C(s32 arg0, u32 arg1) {
     void DCFlushRange(void *, u32);
     void ARQPostRequest(void *, u32, s32, s32, u32, u32, u32, void *);
@@ -11111,8 +11157,8 @@ void fn_800B125C(s32 arg0, u32 arg1) {
     u8 *entry;
     s32 i;
     s32 owner;
-    u8 *p;
     u32 sum;
+    u8 *p;
 
     entry = *(u8 **)((u8 *)gSoundSys + 0xF8);
     for (i = 0; i < 3; entry += 0x13C, i++) {
@@ -11145,8 +11191,7 @@ void fn_800B125C(s32 arg0, u32 arg1) {
         }
     }
 }
-
-#pragma opt_strength_reduction on
+#pragma optimization_level reset
 void fn_800B1368(void *arg0) {
     void fn_800B1720(void *);
     s32 fn_800B49C8(void *);
