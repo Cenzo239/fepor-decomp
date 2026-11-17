@@ -10340,16 +10340,17 @@ extern "C" void fn_80174CF4(void *arg0) {
     void Process_ClearFunc(void *);
     void *Process_CreateChild(void *, void *);
     extern u8 lbl_80294B10[];
+    UnitPanelView *right;
     void *list;
     s8 i;
-    void **left;
-    void **right;
+    UnitPanelView *left;
     u32 *item;
-    left = *(void ***)((u8 *)arg0 + 0x4C);
-    right = *(void ***)((u8 *)arg0 + 0x50);
-    (*(void (**)(void *, u32))((u8 *)*left + 0x34))(left, gUiContext[0]);
-    (*(void (**)(void *, u32))((u8 *)*right + 0x34))(right, gUiContext[1]);
-    list = *(void **)((u8 *)arg0 + 0x54);
+    void *self = arg0;
+    left = *(UnitPanelView **)((u8 *)self + 0x4C);
+    right = *(UnitPanelView **)((u8 *)self + 0x50);
+    left->setUnit(gUiContext[0]);
+    right->setUnit(gUiContext[1]);
+    list = *(void **)((u8 *)self + 0x54);
     fn_80143784(list, gUiContext[0]);
     fn_80143784(list, gUiContext[1]);
     fn_80143570(list);
@@ -10358,9 +10359,9 @@ extern "C" void fn_80174CF4(void *arg0) {
         if (*item != 0) fn_801436AC(list, item);
     }
     fn_80143C9C(list);
-    Ui_DecBusy(arg0);
-    Process_CreateChild(lbl_80294B10, arg0);
-    Process_ClearFunc(arg0);
+    Ui_DecBusy(self);
+    Process_CreateChild(lbl_80294B10, self);
+    Process_ClearFunc(self);
 }
 
 #pragma cplusplus reset
