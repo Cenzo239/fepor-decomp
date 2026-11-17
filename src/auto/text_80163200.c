@@ -3039,6 +3039,7 @@ void fn_801698EC(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x4C) = temp_r31;
 }
 
+#pragma global_optimizer off
 void *fn_80169948(void) {
     void *Heap_Alloc(u32);
     extern u8 gUiMenuDrawVtbl[], lbl_802920E0[], lbl_80293D70[], lbl_80291F60[], lbl_802941E4[];
@@ -3102,7 +3103,7 @@ void *fn_80169948(void) {
     }
     return p;
 }
-
+#pragma global_optimizer reset
 void fn_80169AF0(void) {
     return;
 }
