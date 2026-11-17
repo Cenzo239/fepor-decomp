@@ -24,6 +24,7 @@ extern u8 g_byteVar;      // gBattleState
 extern char __files[];
 extern char lbl_80271860[];
 extern u8 lbl_80366E58;
+extern f32 lbl_8036A07C;
 
 void *String_Destroy(void *arg0, s16 arg1);
 void Map_BuildUnitMoveRange(void *arg0, s32 arg1, s32 arg2);
@@ -18498,6 +18499,7 @@ extern f64 lbl_8036A098;
     }
     return var_r30;
 }
+#pragma scheduling on
 f32 fn_800F738C(u8 arg0, f32 farg0) {
     f64 fn_802387C8(f64, f64);
     extern f32 lbl_8036A07C;
@@ -18516,6 +18518,7 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
     }
     return (f32)fn_802387C8((f64)farg0, lbl_8036A088);
 }
+#pragma scheduling reset
 void fn_800F74C0(Unit* unit)
 {
     u16* array = g_someArray;
