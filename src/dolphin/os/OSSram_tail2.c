@@ -271,6 +271,43 @@ u16 OSGetGbsMode(void) {
     return result;
 }
 
+void OSSetGbsMode(u16 mode) {
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
+
+    u8 *scb;
+    volatile s32 *locked;
+    u32 interrupts;
+    u16 low;
+    u8 pad[8];
+
+    low = mode;
+    scb = (u8 *)Scb_80339420;
+    if ((u32)(mode & 0x7C00) == 0x5000 || (u32)(low & 0xC0) == 0xC0) {
+        mode = 0;
+    }
+
+    interrupts = OSDisableInterrupts();
+    locked = (volatile s32 *)(scb + 0x48);
+    if (*locked != 0) {
+        OSRestoreInterrupts(interrupts);
+        scb = NULL;
+    } else {
+        *(u32 *)(scb + 0x44) = interrupts;
+        *locked = 1;
+        scb += 0x14;
+    }
+
+    if ((u16)mode == *(u16 *)(scb + 0x28)) {
+        fn_8020931C(0, 0x14);
+    } else {
+        *(u16 *)(scb + 0x28) = mode;
+        fn_8020931C(1, 0x14);
+    }
+    (void)pad;
+}
+
 void fn_80209DE4(void) { }
 
 #pragma scheduling off
