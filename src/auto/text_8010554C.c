@@ -1179,24 +1179,225 @@ void fn_801070FC(void *name) {
 #pragma global_optimizer reset
 }
 
-extern void *Unit_FindByName(char *);
-void *fn_80107468(void *arg0) {
-    void *temp_r31;
-    void *temp_r29;
-    
-    temp_r31 = Unit_FindByName("unit");
-    if (temp_r31 == NULL) {
-        return NULL;
-    }
-    
-    temp_r29 = *(void **)((char *)arg0 + 0x14);
-    if (temp_r29 == NULL) {
-        return NULL;
-    }
-    
-    return *(void **)((char *)temp_r29 + 0x18);
-}
+#pragma use_lmw_stmw on
+#pragma optimization_level 3
+void fn_80107294(void *name, s32 arg1) {
+    u32 Hash_Lookup(void *);
+    s32 Bin_ReadU8(u32 *);
+    void Bin_ReadU32(u32 *);
+    void Dispos_ParseEntry(u32 *, void *, s32);
+    void *Unit_FindByName(void *);
+    void Unit_MoveToList(void *, s32);
+    void Unit_InitFromDispos(void *, void *);
+    extern struct { u8 pad[0x30]; void *unk30; } gUnitLists;
+    u32 spC;
+    u32 sp8;
+    u8 sp10[0x68];
+    s32 id;
+    s32 faction;
+    s32 count;
+    s32 idx;
+    s32 count_u8;
+    s32 faction_u8;
+    s32 lists;
+    s32 var_r0;
+    u8 *entry;
+    void *unit;
 
+    faction = arg1;
+    *(s32 *)(sp10 + 0x10) = 0;
+    sp10[0x30] = 0;
+    *(s32 *)(sp10 + 0x48) = 0;
+    *(s32 *)(sp10 + 0x14) = 0;
+    sp10[0x31] = 0;
+    *(s32 *)(sp10 + 0x4C) = 0;
+    *(s32 *)(sp10 + 0x18) = 0;
+    sp10[0x32] = 0;
+    *(s32 *)(sp10 + 0x50) = 0;
+    *(s32 *)(sp10 + 0x1C) = 0;
+    sp10[0x33] = 0;
+    *(s32 *)(sp10 + 0x54) = 0;
+    *(s32 *)(sp10 + 0x20) = 0;
+    sp10[0x34] = 0;
+    *(s32 *)(sp10 + 0x58) = 0;
+    *(s32 *)(sp10 + 0x24) = 0;
+    sp10[0x35] = 0;
+    *(s32 *)(sp10 + 0x5C) = 0;
+    *(s32 *)(sp10 + 0x28) = 0;
+    sp10[0x36] = 0;
+    *(s32 *)(sp10 + 0x60) = 0;
+    *(s32 *)(sp10 + 0x2C) = 0;
+    sp10[0x37] = 0;
+    *(s32 *)(sp10 + 0x64) = 0;
+    sp8 = Hash_Lookup(name);
+    if (sp8 == 0) {
+        var_r0 = 0;
+        goto after_parse;
+    }
+    count = Bin_ReadU8(&sp8);
+    var_r0 = (u8)Bin_ReadU8(&sp8);
+    if (var_r0 == 3) {
+        goto case3;
+    } else if (var_r0 >= 3) {
+        goto check5;
+    }
+    if (var_r0 >= 2) {
+        goto case2;
+    }
+    goto sw_end;
+case2:
+    id = 0;
+    goto sw_end;
+check5:
+    if (var_r0 >= 5) {
+        goto sw_end;
+    }
+    goto case4;
+case3:
+    Bin_ReadU8(&sp8);
+    id = Bin_ReadU8(&sp8);
+    Bin_ReadU32(&sp8);
+    goto sw_end;
+case4:
+    Bin_ReadU8(&sp8);
+    id = Bin_ReadU8(&sp8);
+sw_end:
+    var_r0 = (sp8 + 3) & ~3;
+    sp8 = (u32)var_r0;
+after_parse:
+    spC = (u32)var_r0;
+    if ((u32)var_r0 != 0) {
+        lists = (s32)&gUnitLists;
+        faction_u8 = (u8)faction;
+        count_u8 = (u8)count;
+        idx = 0;
+        goto loop_cmp;
+    loop_body:
+        entry = (u8 *)spC;
+        Dispos_ParseEntry(&spC, sp10, id);
+        if ((s8)faction >= 0) {
+            sp10[9] = (u8)faction_u8;
+        }
+        unit = Unit_FindByName(*(void **)sp10);
+        if (unit == NULL) {
+            count = *(s32 *)(lists + 0x30);
+            var_r0 = sp10[9];
+            if (var_r0 == 4) {
+                goto after_sw;
+            } else if (var_r0 >= 4) {
+                goto check6;
+            }
+            if (var_r0 >= 0) {
+                goto do_move;
+            }
+            goto after_sw;
+        check6:
+            if (var_r0 >= 6) {
+                goto after_sw;
+            }
+        do_move:
+            Unit_MoveToList((void *)count, var_r0);
+        after_sw:
+            Unit_InitFromDispos((void *)count, sp10);
+            unit = (void *)count;
+        }
+        idx += 1;
+        entry[0x3C] = *(u8 *)((u8 *)unit + 0x198);
+    loop_cmp:
+        if (idx < count_u8) {
+            goto loop_body;
+        }
+    }
+}
+#pragma optimization_level reset
+#pragma use_lmw_stmw reset
+
+extern void *Unit_FindByName(char *);
+#pragma optimization_level 3
+s32 fn_80107468(u8 *entry) {
+    void Dispos_ParseEntry(u32 *, u32 *, u8);
+    s32 Dispos_ResolveUnit(u8 *);
+    void *Unit_FindByName(void *);
+    void Unit_SetMapPos(void *, u8, u8);
+    void Unit_SetDisposId(void *, u8);
+    void Unit_MoveToList(void *, s32);
+    void Unit_InitFromDispos(void *, void *);
+    void Unit_SetModelAlpha(void *, s32);
+    void fn_80050C90(void *);
+    void fn_800056A0(s32);
+    extern struct { u8 pad[0x30]; void *unk30; } gUnitLists;
+    u8 parsed[0x68];
+    void *unit;
+    void *obj;
+    s32 kind;
+    s32 i;
+
+    if (entry[0x10C] & 1) {
+        return Dispos_ResolveUnit(entry);
+    }
+
+    for (i = 0; i < 8; i++) {
+        *(s32 *)(parsed + 0x10 + i * 4) = 0;
+        parsed[0x30 + i] = 0;
+        *(s32 *)(parsed + 0x48 + i * 4) = 0;
+    }
+    obj = *(void **)entry;
+    *((u8 *)obj + 0x3C) = 0;
+    Dispos_ParseEntry((u32 *)entry, (u32 *)parsed, entry[0x10D]);
+    unit = Unit_FindByName(*(void **)parsed);
+    if (unit != NULL) {
+        u8 type = *(u8 *)(*(s32 *)((u8 *)unit + 0x190) + 8);
+        if (type == 6) {
+            return 0;
+        }
+        if (type == 7) {
+            Unit_MoveToList(unit, parsed[9]);
+            Unit_SetDisposId(unit, parsed[0x67]);
+            Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
+            goto finish;
+        }
+        if (parsed[9] != 0) {
+            goto create;
+        }
+        if (type != 5) {
+            fn_800056A0(0);
+        }
+        Unit_MoveToList(unit, parsed[9]);
+        Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
+    finish:
+        fn_80050C90(unit);
+        Unit_SetModelAlpha(unit, 0);
+        *(void **)(entry + 4) = unit;
+        *((u8 *)obj + 0x3C) = *((u8 *)unit + 0x198);
+        return 1;
+    }
+create:
+    kind = parsed[9];
+    unit = gUnitLists.unk30;
+    if (kind == 4) {
+        goto after_sw;
+    } else if (kind >= 4) {
+        goto check6;
+    }
+    if (kind >= 0) {
+        goto do_call;
+    }
+    goto after_sw;
+check6:
+    if (kind >= 6) {
+        goto after_sw;
+    }
+do_call:
+    Unit_MoveToList(unit, kind);
+after_sw:
+    Unit_InitFromDispos(unit, parsed);
+    fn_80050C90(unit);
+    Unit_SetModelAlpha(unit, 0);
+    *(void **)(entry + 4) = unit;
+    *((u8 *)obj + 0x3C) = *((u8 *)unit + 0x198);
+    return 1;
+}
+#pragma optimization_level reset
 /* Parse a dispos entry and bind it to a map unit (create or pick from list 5). */
 s32 Dispos_ResolveUnit(u8 *entry) {
     void Dispos_ParseEntry(u32 *, u32 *, u8);
