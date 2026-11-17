@@ -231,7 +231,7 @@ s32 TRKTerminateNub(void) {
     return 0;
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 3
 s32 TRKInitializeNub(void) {
     extern void MWTRACE(s32, const char *, ...);
     extern u8 gTRKBigEndian[];
@@ -247,17 +247,17 @@ s32 TRKInitializeNub(void) {
     extern void TRKTargetSetInputPendingPtr(s32);
 
     s32 result, uartResult;
-    u8 b0, b1, b2, b3;
+    u32 test;
 
     result = 0;
-    b0 = 0x12;
-    b1 = 0x34;
-    b2 = 0x56;
-    b3 = 0x78;
+    *(u8 *)&test = 0x12;
+    *((u8 *)&test + 1) = 0x34;
+    *((u8 *)&test + 2) = 0x56;
+    *((u8 *)&test + 3) = 0x78;
     *(u32 *)gTRKBigEndian = 1;
-    if (*(u32 *)&b0 == 0x12345678U) {
+    if (test == 0x12345678U) {
         *(u32 *)gTRKBigEndian = 1;
-    } else if (*(u32 *)&b0 == 0x78563412U) {
+    } else if (test == 0x78563412U) {
         *(u32 *)gTRKBigEndian = 0;
     } else {
         result = 1;
@@ -291,7 +291,7 @@ s32 TRKInitializeNub(void) {
     }
     return result;
 }
-#pragma global_optimizer reset
+#pragma optimization_level reset
 s32 TRKMessageSend(void *arg0)
 {
     extern u8 lbl_802822A8[];
@@ -3566,3 +3566,7 @@ extern u32 lbl_8033CFC8;
 extern u8 gTRKCPUState[1072];
 #include "common.h"
 extern u8 gTRKCPUState[1072];
+
+void TRKSaveExtended1Block(void) {
+}
+
