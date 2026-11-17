@@ -522,7 +522,10 @@ auto/text_8022108C.c:
 	.text       start:0x8022108C end:0x80222420
 
 dolphin/gx/GXTexture.c:
-	.text       start:0x80222420 end:0x802240F0
+	.text       start:0x80222420 end:0x802228D8
+
+dolphin/gx/GXInitTexObjLOD.c:
+	.text       start:0x802228D8 end:0x802240F0
 
 dolphin/gx/GXTexture_SU.c:
 	.text       start:0x802240F0 end:0x80224304
