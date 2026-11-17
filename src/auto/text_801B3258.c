@@ -5901,7 +5901,7 @@ one=lbl_8036B2D8;scale=lbl_8036B2E0;
 *(void **)base=lbl_80292230;
 *(s16 *)(base+8)=-1;
 *(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
-*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x130;*(s16 *)(base+0x18)=0x90;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=right-x;*(s16 *)(base+0x18)=0x90;
 *(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
 base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
 *(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
@@ -19881,9 +19881,7 @@ return 0;
 void fn_801E080C(void *arg0) {
 extern u8 gSystemSave[];
 u8 **save=(u8 **)arg0;
-u8 *slot;
-slot=Save_FindLinkedHeader(save);
-save[1]=slot;
+save[1]=Save_FindLinkedHeader(save);
 gSystemSave[0x47]=save[1][0x63];
 }
 #pragma global_optimizer reset
