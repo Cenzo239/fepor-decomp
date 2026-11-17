@@ -10736,45 +10736,48 @@ void *fn_801CCF78(void) {
 }
 
 void fn_801CCF88(void *arg0) {
+#pragma cplusplus on
+    class Window {
+    public:
+        virtual void v0(); virtual void v1(); virtual void v2();
+        virtual void v3(); virtual void v4(); virtual void v5();
+        virtual void v6(); virtual void v7(); virtual void v8();
+        virtual s32 width(); virtual s32 height();
+    };
     s16 fn_801CD508(s32);
     s16 fn_801CD548(s32);
     extern s16 lbl_80366EA0;
     extern f32 lbl_8036B4E0;
     s16 sp8;
-    s16 *var_r5;
-    s16 temp_r0;
-    s16 temp_r3;
-    s16 temp_r3_3;
-    s32 temp_r3_2;
-    s32 temp_r4;
-
+    s16 *limit;
+    s16 rows, width, height;
+    s16 x, y;
     sp8 = fn_801CD548(M2C_FIELD(arg0, s32 *, 0x3C));
-    temp_r3 = fn_801CD508(M2C_FIELD(arg0, s32 *, 0x3C));
-    var_r5 = &lbl_80366EA0;
+    rows = fn_801CD508(M2C_FIELD(arg0, s32 *, 0x3C));
+    limit = &lbl_80366EA0;
     M2C_FIELD(arg0, s16 *, 0x40) = sp8;
-    if (sp8 < (s16) lbl_80366EA0) {
-        var_r5 = &sp8;
-    }
-    M2C_FIELD(arg0, s16 *, 0x42) = (s16) *var_r5;
-    M2C_FIELD(arg0, s16 *, 0x44) = temp_r3;
-    temp_r4 = M2C_FIELD(arg0, s16 *, 0x44) * M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x2C)(arg0);
-    temp_r0 = temp_r4 + 0x20;
-    temp_r3_2 = M2C_FIELD(arg0, s16 *, 0x42) * M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *, s32), 0x30)(arg0, temp_r4);
-    M2C_FIELD(arg0, s16 *, 0xE) = (s16) (M2C_FIELD(arg0, s16 *, 0xA) + temp_r0);
-    temp_r3_3 = temp_r3_2 + 0x20;
-    M2C_FIELD(arg0, s16 *, 0x10) = (s16) (M2C_FIELD(arg0, s16 *, 0xC) + temp_r3_3);
+    if (sp8 < lbl_80366EA0) limit = &sp8;
+    M2C_FIELD(arg0, s16 *, 0x42) = *limit;
+    M2C_FIELD(arg0, s16 *, 0x44) = rows;
+    width = M2C_FIELD(arg0, s16 *, 0x44) * ((Window*)arg0)->width() + 0x20;
+    height = M2C_FIELD(arg0, s16 *, 0x42) * ((Window*)arg0)->height() + 0x20;
+    M2C_FIELD(arg0, s16 *, 0xE) = M2C_FIELD(arg0, s16 *, 0xA) + width;
+    M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 0xC) + height;
     M2C_FIELD(arg0, s16 *, 0x12) = 0x10;
     M2C_FIELD(arg0, s16 *, 0x14) = 0x10;
-    M2C_FIELD(arg0, s16 *, 0x16) = (s16) (temp_r0 - 0x10);
-    M2C_FIELD(arg0, s16 *, 0x18) = (s16) (temp_r3_3 - 0x10);
-    M2C_FIELD(arg0, s16 *, 0x6A) = (s16) ((s16) (M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)) >> 1);
+    M2C_FIELD(arg0, s16 *, 0x16) = width - 0x10;
+    M2C_FIELD(arg0, s16 *, 0x18) = height - 0x10;
+    M2C_FIELD(arg0, s16 *, 0x6A) = (s16)(M2C_FIELD(arg0,s16*,0x16)-M2C_FIELD(arg0,s16*,0x12)) >> 1;
     M2C_FIELD(arg0, s16 *, 0x6C) = 0;
     M2C_FIELD(arg0, s16 *, 0x6E) = 0;
-    M2C_FIELD(arg0, s16 *, 0x92) = (s16) ((s16) (M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)) >> 1);
-    M2C_FIELD(arg0, s16 *, 0x94) = (s16) (M2C_FIELD(arg0, s16 *, 0x18) - M2C_FIELD(arg0, s16 *, 0x14));
+    x = (s16)(M2C_FIELD(arg0,s16*,0x16)-M2C_FIELD(arg0,s16*,0x12)) >> 1;
+    y = M2C_FIELD(arg0,s16*,0x18)-M2C_FIELD(arg0,s16*,0x14);
+    M2C_FIELD(arg0, s16 *, 0x92) = x;
+    M2C_FIELD(arg0, s16 *, 0x94) = y;
     M2C_FIELD(arg0, s16 *, 0x96) = 0;
-    M2C_FIELD(arg0, f32 *, 0x80) = (f32) lbl_8036B4E0;
-    M2C_FIELD(arg0, f32 *, 0xA8) = (f32) lbl_8036B4E0;
+    M2C_FIELD(arg0, f32 *, 0x80) = -1.0f;
+    M2C_FIELD(arg0, f32 *, 0xA8) = -1.0f;
+#pragma cplusplus reset
 }
 
 #pragma cplusplus on
