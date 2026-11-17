@@ -5884,7 +5884,8 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 #pragma dont_inline on
-#pragma global_optimizer on
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
 extern "C" void *fn_801BEDC4(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiGoldCostPanelVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B2D8,lbl_8036B2E0;
@@ -19876,13 +19877,14 @@ off+=0x6000;
 }
 return 0;
 }
+#pragma global_optimizer off
 void fn_801E080C(void *arg0) {
 extern u8 gSystemSave[];
 u8 **save=(u8 **)arg0;
 save[1]=Save_FindLinkedHeader(save);
 gSystemSave[0x47]=save[1][0x63];
 }
-
+#pragma global_optimizer reset
 void *fn_801E09B4(M2C_UNK *arg0) {
     u32 r3 = (u32) arg0;
     u32 r4 = *(u32 *) (r3 + 0x70);
