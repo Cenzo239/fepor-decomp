@@ -5151,6 +5151,37 @@ s32 fn_800CE690(s32 param1, s32 param2) {
     return 0;
 }
 
+extern "C" u8 fn_800CED88(void *arg0) {
+void fn_800D5DB0(void *, s32, s32, s32 *);
+u8 fn_800CEB6C(void *, s32 *);
+void fn_800CE690(void *, s32 *);
+void fn_800CE214(void *, s32 *);
+s32 stat[22]; s16 *p; s32 code; u8 done, empty;
+stat[0]=*(s32*)((u8*)arg0+0x84); stat[1]=*(s32*)((u8*)arg0+0x88);
+stat[2]=*(s32*)((u8*)arg0+0xa8); stat[3]=*(s32*)((u8*)arg0+0xa4);
+stat[4]=0; *(u8*)&stat[5]=0; stat[6]=13;
+stat[7]=0;stat[8]=0;stat[9]=0;stat[10]=0;stat[11]=0;
+stat[15]=-1;stat[14]=-1;stat[13]=-1;stat[12]=-1;
+stat[19]=-1;stat[18]=-1;stat[17]=-1;stat[16]=-1;
+stat[20]=0;stat[21]=0;
+p=*(s16**)((u8*)arg0+0x1fc); code=*((u8*)p+*p*4+4);
+if(code==0x25){++*p;p=*(s16**)((u8*)arg0+0x1fc);code=*((u8*)p+*p*4+4);}
+if(code==0x26){p=*(s16**)((u8*)arg0+0x1fc);++*p;p=*(s16**)((u8*)arg0+0x1fc);code=*((u8*)p+*p*4+4);}
+if(code==0){stat[6]=12;fn_800D5DB0((u8*)arg0+0x200,*(s32*)((u8*)arg0+0x208)+*(s32*)((u8*)arg0+0x204)*0x58,1,stat);empty=1;}else empty=0;
+if(empty)return 1;
+if(fn_800CEB6C(arg0,stat))return 0;
+done=0;
+while(!done){s32 offset; p=*(s16**)((u8*)arg0+0x1fc);offset=*p*4+4;switch((s32)*((u8*)p+offset)){
+case 0x55:{s32 jump=(s8)*(s16*)((u8*)p+(offset+2));++*p;if(jump){p=*(s16**)((u8*)arg0+0x1fc);*p=jump+*p;}}break;
+case 0x56:fn_800CE690(arg0,stat);break;
+case 0x57:fn_800CE214(arg0,stat);break;
+default:done=1;break;}}
+p=*(s16**)((u8*)arg0+0x1fc);code=*((u8*)p+*p*4+4);
+if(code==0x27){++*p;p=*(s16**)((u8*)arg0+0x1fc);code=*((u8*)p+*p*4+4);}
+if(code==0x28){p=*(s16**)((u8*)arg0+0x1fc);*(s32*)((u8*)arg0+0x230)=(s8)*(s16*)((u8*)p+*p*4+6);p=*(s16**)((u8*)arg0+0x1fc);++*p;}
+return 0;
+}
+
 extern s32 fn_800D5DB0(void *, s32, s32, s32 *);
 extern u8 fn_800CEB6C(void *, s32 *);
 extern void fn_800CE690(void *, s32 *);
@@ -6971,18 +7002,24 @@ void fn_800D6874(void) {
 
 }
 
+#pragma dont_inline on
+#pragma global_optimizer off
 #pragma scheduling off
-void fn_800D6878(void *arg0, u8 *arg1, s32 arg2) {
+void fn_800D6878(void *arg0, u8 *arg1) {
+    u8 *mid;
     u8 v;
-    void *mid;
+    s32 z;
+    z = 0;
     v = *arg1;
-    *(u32 *)arg0 = (u32)arg2;
+    *(u32 *)arg0 = z;
     mid = (u8 *)arg0 + 4;
-    *(u32 *)((u8 *)arg0 + 4) = (u32)arg2;
+    *(u32 *)((u8 *)arg0 + 4) = z;
     *((u8 *)arg0 + 8) = v;
     *(void **)((u8 *)arg0 + 0xC) = mid;
 }
 #pragma scheduling reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
     struct Tag { u8 b; } tag;
     M2C_UNK String_InitFromRange(u32 *, char *, char *, void *, struct Tag);
@@ -10486,6 +10523,126 @@ void *fn_800DD3E8(u8 *self, void *owner, void *xml) {
     *(s32 *)(self+0x104)=((*(s32 *)(self+0x64)-32)* *(s32 *)(self+0x108))/ *(s32 *)(self+0xb0);
     return self;
 }
+
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+void fn_800DD598(void *vec, String *begin, String *end)
+{
+    void String_Resize(String *, u32, s32);
+    void *fn_800C94F8(String *, u32, u32, u32, u32);
+    void *memcpy(void *, void *, u32);
+    void Heap_Free(void *);
+    void *Heap_Alloc(u32);
+    void String_Copy(void *, void *);
+    void fprintf(void *, const char *, ...);
+    void abort(void);
+    extern char __files[];
+    extern char lbl_80271730[];
+    u32 newCount;
+    u32 *pMin;
+    u32 sz;
+    u32 limit;
+    u32 *pLen;
+    u32 len;
+    String *data;
+    String *dst;
+    char *errFile;
+    String *dstEnd;
+    void *buf;
+
+    newCount = (u32)(((s32)end - (s32)begin) / 12);
+    if (newCount <= *(u32 *)vec) {
+        if (*(u32 *)((u8 *)vec + 4) < newCount) {
+            pMin = (u32 *)((u8 *)vec + 4);
+        } else {
+            pMin = &newCount;
+        }
+        data = *(String **)((u8 *)vec + 8);
+        errFile = __files + 0xA0;
+        dst = data;
+        dstEnd = (String *)((u8 *)data + *pMin * 0xC);
+        while (dst < dstEnd) {
+            limit = (u32)-1;
+            if (begin->size > -1) {
+                fprintf(errFile, lbl_80271730 + 0x19);
+                abort();
+            }
+            sz = begin->size;
+            pLen = &limit;
+            if (sz < limit) {
+                pLen = &sz;
+            }
+            len = *pLen;
+            if (dst == begin) {
+                fn_800C94F8(dst, 0, 0, 0, 0);
+                String_Resize(dst, len, 1);
+            } else {
+                String_Resize(dst, len, 0);
+                memcpy(dst->data, begin->data, len);
+            }
+            dst++;
+            begin++;
+        }
+        if (newCount < *(u32 *)((u8 *)vec + 4)) {
+            len = *(u32 *)((u8 *)vec + 4);
+            dstEnd = (String *)((u8 *)*(void **)((u8 *)vec + 8) + len * 0xC);
+            while (dst < dstEnd) {
+                if (dst != 0 && dst->data != 0) {
+                    Heap_Free(dst->data);
+                }
+                dst++;
+            }
+            *(u32 *)((u8 *)vec + 4) = newCount;
+        } else if (*(u32 *)((u8 *)vec + 4) < newCount) {
+            while (begin != end) {
+                if (dst != 0) {
+                    String_Copy(dst, begin);
+                }
+                begin++;
+                dst++;
+                *(u32 *)((u8 *)vec + 4) = *(u32 *)((u8 *)vec + 4) + 1;
+            }
+        }
+    } else {
+        if (newCount > 0x15555555U) {
+            fprintf(__files + 0xA0, lbl_80271730 + 0x3F);
+            abort();
+        }
+        dst = (String *)((u8 *)*(void **)((u8 *)vec + 8) + *(u32 *)((u8 *)vec + 4) * 0xC);
+        buf = *(void **)((u8 *)vec + 8);
+        while (dst > (String *)buf) {
+            dst--;
+            if (dst != 0 && dst->data != 0) {
+                Heap_Free(dst->data);
+            }
+        }
+        *(u32 *)((u8 *)vec + 4) = 0;
+        if (*(void **)((u8 *)vec + 8) != 0) {
+            Heap_Free(*(void **)((u8 *)vec + 8));
+            *(void **)((u8 *)vec + 8) = 0;
+            *(u32 *)vec = 0;
+        }
+        buf = Heap_Alloc(newCount * 0xC);
+        if (buf == 0) {
+            fprintf(__files + 0xA0, lbl_80271730 + 0x5C);
+            abort();
+        }
+        *(void **)((u8 *)vec + 8) = buf;
+        *(u32 *)vec = newCount;
+        dstEnd = *(String **)((u8 *)vec + 8);
+        while (begin != end) {
+            if (dstEnd != 0) {
+                String_Copy(dstEnd, begin);
+            }
+            begin++;
+            dstEnd++;
+            *(u32 *)((u8 *)vec + 4) = *(u32 *)((u8 *)vec + 4) + 1;
+        }
+    }
+}
+#pragma global_optimizer on
+#pragma use_lmw_stmw reset
+
 #pragma inline_depth(8)
 s32 *fn_800DD87C(void *arg0, s32 *pos) {
     s32 *src;
@@ -12193,6 +12350,50 @@ s32 fn_800E0340(void *arg0, void *arg1, void *arg2)
     b = Sort_GetKey(arg2);
     return a < b;
 }
+
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *first2, s32 *last2, SortIterator *out) {
+    s32 Sort_GetKey(void *);
+    s32 takeB_mem[2];
+    s32 takeA_mem[2];
+    while (first1 != last1 && first2 != last2) {
+        s32 value = *first1;
+        s32 key = Sort_GetKey((void *)*first2);
+        if (Sort_GetKey((void *)value) > key) {
+            *(SortOutputProxy *)takeB_mem = SortOutputProxy(out->ptr, out->state);
+            *(SortOutputProxy *)takeB_mem = *first2;
+            first2++;
+        } else {
+            *(SortOutputProxy *)takeA_mem = SortOutputProxy(out->ptr, out->state);
+            *(SortOutputProxy *)takeA_mem = *first1;
+            first1++;
+        }
+        ++(*out);
+    }
+    if (first1 == last1) {
+        SortIterator it = *out;
+        SortIterator *pit = &it;
+        s32 *cur = first2;
+        while (cur != last2) {
+            *(*pit) = *cur;
+            cur++;
+            ++(*pit);
+        }
+        *result = *pit;
+    } else {
+        SortIterator it = *out;
+        SortIterator *pit = &it;
+        s32 *cur = first1;
+        while (cur != last1) {
+            *(*pit) = *cur;
+            cur++;
+            ++(*pit);
+        }
+        *result = *pit;
+    }
+}
+#pragma cplusplus off
 
 #pragma use_lmw_stmw on
 s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
@@ -18015,7 +18216,7 @@ void Card_AsyncDone(void) {
     gCardWork[0xA01A] = 0;
 }
 
-#pragma peephole off
+#pragma global_optimizer off
 s32 fn_800EB854(void) {
     extern u8 lbl_80320C20[];
     s32 result = 0;
@@ -18026,7 +18227,7 @@ s32 fn_800EB854(void) {
     }
     return result;
 }
-#pragma peephole reset
+#pragma global_optimizer reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
 }
