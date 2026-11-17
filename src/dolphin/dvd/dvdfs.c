@@ -1846,57 +1846,35 @@ s32 fn_8020EBEC(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
     return result;
 }
 
-s32 DVDReadDiskID(void *arg0, void *arg1, void *callback) {
+s32 DVDReadDiskID(u8 *block, void *arg1, void *callback) {
     void DCInvalidateRange(void *, u32);
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
     s32 __DVDPushWaitingQueue(s32, void *);
-    void stateReady(void);
-
     extern s32 autoInvalidation_80366F6C;
-    extern void *executing_80368598;
-    extern s32 PauseFlag_803685A4;
-
-    u8 *block;
-    u32 interrupts;
     s32 result;
-    u32 command;
-
-    block = (u8 *)arg0;
-
-    *(u32 *)(block + 0x08) = 5;
+    u8 pad[8];
+    *(u32 *)(block + 8) = 5;
     *(void **)(block + 0x18) = arg1;
     *(u32 *)(block + 0x14) = 0x20;
     *(u32 *)(block + 0x10) = 0;
     *(u32 *)(block + 0x20) = 0;
     *(void **)(block + 0x28) = callback;
-
-    if (autoInvalidation_80366F6C != 0) {
-        command = *(u32 *)(block + 0x08);
-
-        if (command == 1 ||
-            (u32)(command - 4) <= 1 ||
-            command == 14) {
-            DCInvalidateRange(
-                *(void **)(block + 0x18),
-                *(u32 *)(block + 0x14)
-            );
+    {
+        u32 enabled;
+        u32 command;
+        if (autoInvalidation_80366F6C != 0) {
+            command = *(u32 *)(block + 8);
+            if (command == 1 || command - 4 <= 1 || command == 14)
+                DCInvalidateRange(*(void **)(block + 0x18), *(u32 *)(block + 0x14));
         }
+        enabled = OSDisableInterrupts();
+        *(u32 *)(block + 0xC) = 2;
+        result = __DVDPushWaitingQueue(2, block);
+        if (executing_80368598 == 0 && PauseFlag_803685A4 == 0)
+            stateReady();
+        OSRestoreInterrupts(enabled);
     }
-
-    interrupts = OSDisableInterrupts();
-
-    *(u32 *)(block + 0x0C) = 2;
-
-    result = __DVDPushWaitingQueue(2, arg0);
-
-    if (executing_80368598 == 0 &&
-        PauseFlag_803685A4 == 0) {
-        stateReady();
-    }
-
-    OSRestoreInterrupts(interrupts);
-
     return result;
 }
 
