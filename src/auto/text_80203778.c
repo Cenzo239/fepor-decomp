@@ -201,7 +201,8 @@ loop_1:
 
 void PPCMtmmcr0(u32 arg0) {
     extern volatile u32 __SPR_952;
-    __SPR_952 = arg0;
+    volatile u32 *spr = &__SPR_952;
+    *spr = arg0;
 }
 
 void PPCMtmmcr1(u32 arg0) {
@@ -606,7 +607,8 @@ void __OSPSInit(void) {
 volatile u32 __PIRegs[64] : 0xCC006000;
 #pragma peephole off
 u8 fn_80204410(void) {
-    return (u8)__PIRegs[9];
+    volatile u32 *di = (volatile u32 *)0xCC006000;
+    return (u8)di[9];
 }
 #pragma peephole off
 void OSRegisterVersion(s32 arg0) {
@@ -1558,7 +1560,7 @@ void OSDumpContext(OSContext *context) {
 void __OSContextInit(void)
 {
     void __OSSetExceptionHandler(s32, void *);
-    void OSSwitchFPUContext(void);
+    extern void OSSwitchFPUContext[];
     void DBPrintf(char *, ...);
     extern char lbl_8029BF94[];
 
@@ -1568,16 +1570,12 @@ void __OSContextInit(void)
 }
 
 int OSReport(void *msg, ...) {
-    struct {
-        char gpr;
-        char fpr;
-        char reserved[2];
-        char *input_arg_area;
-        char *reg_save_area;
-    } args[1];
-    int vprintf(void *, void *);
-    __builtin_va_info(&args);
-    return vprintf(msg, args);
+#pragma peephole on
+struct { unsigned char gpr, fpr; unsigned char reserved[2]; void *input_arg_area; void *reg_save_area; } args[1];
+int vprintf(const char *, void *);
+__builtin_va_info(&args);
+return vprintf(msg,args);
+#pragma peephole reset
 }
 
 #pragma peephole on
