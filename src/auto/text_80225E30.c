@@ -337,40 +337,49 @@ s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2)
     }
     return result;
 }
-#pragma use_lmw_stmw reset
-s32 fn_802264B4(void *arg0, u8 *arg1) {
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+s32 fn_802264B4(void *buffer, u8 *arg1) {
     extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, s32);
     u8 temp[8];
-    u8 *dest;
-    register u8 *source;
-    s32 result;
-    u32 length;
     u32 position;
     u32 remaining;
+    u32 length;
+    register u8 *source;
+    u8 *dest;
+    s32 result;
+
     dest = arg1;
-    if (*(s32 *)gTRKBigEndian) source = dest;
-    else source = temp;
-    position = *(u32 *)((u8 *)arg0+12);
+    if (*(s32 *)gTRKBigEndian != 0) {
+        source = dest;
+    } else {
+        source = temp;
+    }
+    position = *(u32 *)((u8 *)buffer + 0xC);
     length = 8;
     result = 0;
-    remaining = *(u32 *)((u8 *)arg0+8) - position;
-    if ((s32)remaining < (s32)length) {
+    remaining = *(u32 *)((u8 *)buffer + 8) - position;
+    if (length > remaining) {
         result = 0x302;
         length = remaining;
     }
-    fn_80003488(source, (void *)((u32)arg0 + ((s32)position+16)), length);
-    *(u32 *)((u8 *)arg0+12) += length;
-    if (!*(s32 *)gTRKBigEndian && !result) {
-        dest[0]=source[7]; dest[1]=source[6];
-        dest[2]=source[5]; dest[3]=source[4];
-        dest[4]=source[3]; dest[5]=source[2];
-        dest[6]=source[1]; dest[7]=source[0];
+    fn_80003488(source, (u8 *)buffer + position + 0x10, length);
+    *(u32 *)((u8 *)buffer + 0xC) = *(u32 *)((u8 *)buffer + 0xC) + length;
+    if (*(s32 *)gTRKBigEndian == 0 && result == 0) {
+        dest[0] = source[7];
+        dest[1] = source[6];
+        dest[2] = source[5];
+        dest[3] = source[4];
+        dest[4] = source[3];
+        dest[5] = source[2];
+        dest[6] = source[1];
+        dest[7] = source[0];
     }
     return result;
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer on
+#pragma use_lmw_stmw reset
 s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
     extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, u32);
@@ -2856,10 +2865,12 @@ u32 ddh_cc_read(void *arg0, u32 arg1) {
     u32 fn_8023C54C(void *, s32);
     u8 buffer[0x800];
     s32 size;
+    u32 length;
     u32 error = 0;
     if (!lbl_803687B8) return -0x2711;
     MWTRACE(1, (const char *)lbl_8028295C, arg1, arg1);
-    while (fn_8022BC94(lbl_8033D7E8) < arg1) {
+    length = arg1;
+    while (fn_8022BC94(lbl_8033D7E8) < length) {
         error = 0;
         size = fn_8023C544();
         if (size != 0) {
@@ -2867,7 +2878,7 @@ u32 ddh_cc_read(void *arg0, u32 arg1) {
             if (!error) fn_8022BB3C(lbl_8033D7E8, buffer, size);
         }
     }
-    if (!error) fn_8022BA34(lbl_8033D7E8, arg0, arg1);
+    if (!error) fn_8022BA34(lbl_8033D7E8, arg0, length);
     else MWTRACE(8, (const char *)lbl_80282984, error);
     return error;
 }
