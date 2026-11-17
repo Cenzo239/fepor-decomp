@@ -290,18 +290,24 @@ after_cover:
 }
 #pragma use_lmw_stmw reset
 
+#pragma opt_common_subs off
 void fn_8020B84C(void) {
- extern s32 NextCommandNumber_80368574;
- DVDCommand *cmd = &CommandList_80339E70[NextCommandNumber_80368574];
- if (cmd->command == 1) {
- ++NextCommandNumber_80368574;
- fn_8020B940(cmd->addr, cmd->length, cmd->offset, cmd->callback);
- } else if (cmd->command == 2) {
- ++NextCommandNumber_80368574;
- fn_8020BD68(cmd->offset, cmd->callback);
- }
-}
+    extern volatile s32 NextCommandNumber_80368574;
+    DVDCommand *list = CommandList_80339E70;
+    s32 off = NextCommandNumber_80368574 * 0x14;
+    s32 command = *(s32 *)((u32)list + off);
 
+    if (command == 1) {
+        DVDCommand *cmd = (DVDCommand *)((u32)list + off);
+        NextCommandNumber_80368574++;
+        fn_8020B940(cmd->addr, cmd->length, cmd->offset, cmd->callback);
+    } else if (command == 2) {
+        DVDCommand *cmd = (DVDCommand *)((u32)list + off);
+        NextCommandNumber_80368574++;
+        fn_8020BD68(cmd->offset, cmd->callback);
+    }
+}
+#pragma opt_common_subs reset
 void AlarmHandlerForTimeout(void *arg0, void *arg1)
 {
     extern void (*Callback_80368538)(u32);
@@ -323,6 +329,42 @@ void AlarmHandlerForTimeout(void *arg0, void *arg1)
 
     OSClearContext(&tempContext);
     OSSetCurrentContext((OSContext *)arg1);
+}
+
+BOOL fn_8020B940(void *addr, u32 length, u32 offset, void *callback) {
+    extern void *Callback_80368538;
+    extern s32 StopAtNextInt_80368530;
+    extern s32 lbl_80368570;
+    extern u32 lbl_8036856C;
+    extern s32 lbl_80368568;
+    extern u32 lbl_80368534;
+    s64 __OSGetSystemTime(void);
+    u8 *base;
+    u32 timeout;
+
+    StopAtNextInt_80368530 = 0;
+    Callback_80368538 = callback;
+    base = (u8 *)CommandList_80339E70;
+    lbl_80368570 = 1;
+    *(s64 *)&lbl_80368568 = __OSGetSystemTime();
+
+    __DIRegs[2] = 0xA8000000;
+    __DIRegs[3] = offset >> 2;
+    __DIRegs[4] = length;
+    __DIRegs[5] = (u32)addr;
+    __DIRegs[6] = length;
+    lbl_80368534 = length;
+    __DIRegs[7] = 3;
+
+    if (length > 0xA00000U) {
+        timeout = (*(u32 *)0x800000F8 >> 2) * 0x14;
+        OSCreateAlarm(base + 0x68);
+        OSSetAlarm(base + 0x68, (s64)(u32)timeout, AlarmHandlerForTimeout);
+    } else {
+        timeout = (*(u32 *)0x800000F8 >> 2) * 0xA;
+        OSCreateAlarm(base + 0x68);
+        OSSetAlarm(base + 0x68, (s64)(u32)timeout, AlarmHandlerForTimeout);
+    }
 }
 
 void fn_8020BA50(void *addr, u32 length, u32 offset, void *callback) {
@@ -471,18 +513,14 @@ BOOL fn_8020BD68(u32 offset, void *callback) {
 }
 
 #pragma opt_common_subs off
-BOOL DVDLowWaitCoverClose(void *callback)
-{
+BOOL DVDLowWaitCoverClose(void *callback) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
-    extern s32 StopAtNextInt_80368530;
-    volatile u32 *di;
 
     Callback_80368538 = callback;
-    WaitingCoverClose_8036854C = TRUE;
-    di = __DIRegs;
-    StopAtNextInt_80368530 = FALSE;
-    di[1] = 2;
+    WaitingCoverClose_8036854C = 1;
+    StopAtNextInt_80368530 = 0;
+    __DIRegs[1] = 2;
     return TRUE;
 }
 #pragma opt_common_subs reset
@@ -676,8 +714,6 @@ BOOL fn_8020C2FC(void) {
     return TRUE;
 }
 
-#pragma peephole off
-#pragma scheduling off
 void *fn_8020C310(void) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
