@@ -10761,7 +10761,7 @@ void fn_8013ED84(void *,s16);
 u8 *self=(u8 *)arg0;
 s32 index;
 u8 *page;
-s32 repeat,held;
+s32 repeat,edge,held;
 s16 old;
 s16 count;
 u32 visible;
@@ -10779,13 +10779,13 @@ blocked=(gUiInputFlags&0x10)!=0 && (gUiInputFlags&0x20)==0;
 if(!blocked) {
 old=*(s16 *)(page+0x64);
 held=gPadInput[1];
-s32 previous=gPadInput[2];
+edge=gPadInput[2]^held;
 repeat=gPadInput[3];
-held=held&(previous^held);
+edge=held&edge;
 if((s16)*(f32 *)(self+0x84)==0) {
 if(repeat&0x08000008) {
 if((s16)old==0) {
-if(repeat==held) {
+if(repeat==edge) {
 *(s16 *)(page+0x64)=count-1;
 *(s16 *)(page+0x4e)=count>(s16)visible?count-(s16)visible:0;
 }
@@ -10800,7 +10800,7 @@ if(old!=*(s16 *)(page+0x64)) Ui_PlaySeCue(lbl_80276B3C+0x1d,100);
 } else if(repeat&0x04000004) {
 s32 last=count-1;
 if(old==last) {
-if(repeat==held) {
+if(repeat==edge) {
 *(s16 *)(page+0x64)=0;
 *(s16 *)(page+0x4e)=0;
 }
@@ -12677,6 +12677,24 @@ void fn_801457B4(void) {
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
     *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEC;
+}
+
+typedef struct BgmFadeFields { u8 pad[0x30]; f32 timer, duration, volume; } BgmFadeFields;
+void fn_80145828(void) {
+void Process_UnlinkByKey(void *);
+void *Process_Create(void *,s32);
+extern u8 gBgmVolFadeProcs[], lbl_8029256C[], gBgmQuietVol;
+extern f32 gBgmVolTimerZero, lbl_8036A77C;
+f32 *proc;
+f32 b,a;
+Process_UnlinkByKey(gBgmVolFadeProcs);
+Process_UnlinkByKey(lbl_8029256C);
+proc=Process_Create(gBgmVolFadeProcs,3);
+a=gBgmVolTimerZero;
+b=lbl_8036A77C;
+proc[12]=a;
+proc[13]=b;
+proc[14]=(f32)(u32)gBgmQuietVol;
 }
 
 void BgmVol_FadeInProcess3(void *proc) {
