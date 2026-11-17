@@ -3975,9 +3975,9 @@ void fn_80026E2C(s32 arg0) {
 }
 
 void fn_80026E88(s32 arg0) {
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183D7C(void *, s32, s16, s16, s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     u8 *ctx;
     s8 *sctx;
     void *unit;
@@ -3985,15 +3985,15 @@ void fn_80026E88(s32 arg0) {
     u8 b0;
     u8 b1;
 
-    ctx = lbl_802EF4C8;
-    sctx = (s8 *)lbl_802EF4C8;
+    ctx = gUiContext;
+    sctx = (s8 *)gUiContext;
     unit = *(void **)ctx;
     b0 = ctx[0xF];
     saved = *(s32 *)((u8 *)unit + 0x194);
     b1 = ctx[0x10];
     *(s32 *)(ctx + 4) = saved;
-    fn_8003EA24(unit, b0, b1);
-    fn_80183D7C(*(void **)lbl_802EF4C8, saved, sctx[0xF], sctx[0x10], arg0);
+    Unit_SeparateRescue(unit, b0, b1);
+    fn_80183D7C(*(void **)gUiContext, saved, sctx[0xF], sctx[0x10], arg0);
 }
 
 void fn_80026F08(void)
