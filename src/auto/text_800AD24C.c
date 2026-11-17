@@ -2131,38 +2131,19 @@ extern u16 lbl_80319A18[];
 s32 fn_800B2FF4(u8 arg0) {
     extern u16 lbl_80319A18[];
     s32 *ptr;
-    s32 outer;
     s32 i;
     u8 val;
-
     if (arg0 == 0) {
         ptr = (s32 *)lbl_80319A18;
-        for (outer = 0; outer < 2; outer++) {
-            if (*ptr != 0) {
-                return 0;
-            }
-            for (i = 0; i < 7; i++) {
-                if (*++ptr != 0) {
-                    return 0;
-                }
-            }
-            ptr++;
+        for (i = 0; i < 16; ptr++, i++) {
+            if (*ptr != 0) return 0;
         }
         return 1;
     }
-
     val = arg0 + 1;
     ptr = (s32 *)lbl_80319A18;
-    for (outer = 0; outer < 2; outer++) {
-        if ((s32)val == *ptr) {
-            return 0;
-        }
-        for (i = 0; i < 7; i++) {
-            if ((s32)val == *++ptr) {
-                return 0;
-            }
-        }
-        ptr++;
+    for (i = 0; i < 16; ptr++, i++) {
+        if ((s32)val == *ptr) return 0;
     }
     return 1;
 }
