@@ -7023,6 +7023,125 @@ void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
     *(void **)(entry + 0xC) = arg2;
 }
 
+#pragma global_optimizer off
+void fn_80067984(void *camIn) {
+    void fn_80202A6C(void *, s32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
+    void PSMTXIdentity(void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void fn_802026E4(void *, void *, void *, void *);
+    void PSMTXCopy(void *, void *);
+    void fn_80202C18(void *, void *, void *);
+    void GXSetScissor(u16, u16, u16, u16);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
+    void GXSetProjection(void *, s32);
+    extern void *gCamera;
+    extern u8 gCameraProjMode;
+    extern f32 lbl_80369228;
+    extern f32 lbl_80369224;
+    extern f32 gScreenWidthF;
+    extern f32 gScreenHeightF;
+    extern f32 gOrthoFarZ;
+    f32 posPersp[12];
+    f32 posOrtho[12];
+    f32 view[16];
+    f32 f_near;
+    f32 f_h;
+    f32 f_w;
+    f32 f_zero;
+    u8 *cam;
+    s32 negFlag;
+    u8 mode;
+
+    f_zero = lbl_80369228;
+    f_w = gScreenWidthF;
+    f_h = gScreenHeightF;
+    f_near = lbl_80369224;
+    *(f32 *)((u8 *)gCamera + 4) = f_zero;
+    *(f32 *)((u8 *)gCamera + 8) = f_zero;
+    *(f32 *)((u8 *)gCamera + 0xC) = f_w;
+    *(f32 *)((u8 *)gCamera + 0x10) = f_h;
+    *(f32 *)((u8 *)gCamera + 0x14) = f_zero;
+    *(f32 *)((u8 *)gCamera + 0x18) = f_near;
+    *(u16 *)((u8 *)gCamera + 0x1C) = 0;
+    *(u16 *)((u8 *)gCamera + 0x1E) = 0;
+    *(u16 *)((u8 *)gCamera + 0x20) = 0x260;
+    *(u16 *)((u8 *)gCamera + 0x22) = 0x1C0;
+
+    mode = gCameraProjMode;
+    if ((s8)mode != 0) {
+        if (!camIn) {
+            camIn = gCamera;
+        }
+        if (camIn) {
+            switch ((s8)mode) {
+            case 1:
+                cam = camIn;
+                if (!camIn) {
+                    cam = gCamera;
+                }
+                if (cam) {
+                    negFlag = -(*(u16 *)cam & 1);
+                    gCameraProjMode = negFlag + 2;
+                    fn_80202A6C(cam + 0x24, negFlag, *(f32 *)(cam + 0x18C), *(f32 *)(cam + 0x188),
+                                *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
+                    *(u16 *)cam |= 1;
+                    PSMTXIdentity(posPersp);
+                    GXLoadPosMtxImm(posPersp, 0);
+                    GXSetCurrentMtx(0);
+                    fn_802026E4((u8 *)gCamera + 0xA4, cam + 0xD4, cam + 0xEC, cam + 0xE0);
+                    PSMTXCopy((u8 *)gCamera + 0xA4, view);
+                    view[12] = lbl_80369228;
+                    view[13] = lbl_80369228;
+                    view[14] = lbl_80369228;
+                    view[15] = lbl_80369224;
+                    fn_80202C18((u8 *)gCamera + 0x24, view, (u8 *)gCamera + 0x64);
+                    if (!cam) {
+                        cam = gCamera;
+                    }
+                    if (cam) {
+                        GXSetScissor(*(u16 *)(cam + 0x1C), *(u16 *)(cam + 0x1E), *(u16 *)(cam + 0x20),
+                                     *(u16 *)(cam + 0x22));
+                        GXSetViewport(*(f32 *)(cam + 4), *(f32 *)(cam + 8), *(f32 *)(cam + 0xC),
+                                      *(f32 *)(cam + 0x10), *(f32 *)(cam + 0x14), *(f32 *)(cam + 0x18));
+                        GXSetProjection(cam + 0x24, (*(u16 *)cam & 1) ^ 1);
+                    }
+                }
+                break;
+            case 2:
+                cam = camIn;
+                if (!camIn) {
+                    cam = gCamera;
+                }
+                if (cam) {
+                    negFlag = -(*(u16 *)cam & 1);
+                    gCameraProjMode = negFlag + 2;
+                    C_MTXOrtho(cam + 0x24, negFlag, lbl_80369228, gScreenHeightF, lbl_80369228,
+                               gScreenWidthF, lbl_80369228, gOrthoFarZ);
+                    *(u16 *)cam &= 0xFFFE;
+                    PSMTXIdentity(posOrtho);
+                    GXLoadPosMtxImm(posOrtho, 0);
+                    GXSetCurrentMtx(0);
+                    PSMTXIdentity(cam + 0xA4);
+                    if (!cam) {
+                        cam = gCamera;
+                    }
+                    if (cam) {
+                        GXSetScissor(*(u16 *)(cam + 0x1C), *(u16 *)(cam + 0x1E), *(u16 *)(cam + 0x20),
+                                     *(u16 *)(cam + 0x22));
+                        GXSetViewport(*(f32 *)(cam + 4), *(f32 *)(cam + 8), *(f32 *)(cam + 0xC),
+                                      *(f32 *)(cam + 0x10), *(f32 *)(cam + 0x14), *(f32 *)(cam + 0x18));
+                        GXSetProjection(cam + 0x24, (*(u16 *)cam & 1) ^ 1);
+                    }
+                }
+                break;
+            }
+        }
+        gCameraProjMode = 0;
+    }
+}
+#pragma global_optimizer reset
 void fn_80067C48(void *camIn, f32 farg0, f32 farg1) {
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void PSMTXIdentity(void *);
@@ -7299,6 +7418,100 @@ void fn_80068124(void *source, void *dest) {
     M2C_FIELD(dest,f32 *,0x184)=M2C_FIELD(source,f32 *,0x184);
     M2C_FIELD(dest,f32 *,0x18c)=M2C_FIELD(source,f32 *,0x18c);
     M2C_FIELD(dest,f32 *,0x188)=M2C_FIELD(source,f32 *,0x188);
+}
+
+void *fn_8006826C(s32 arg0) {
+    typedef struct { f32 x,y,z; } CameraVec;
+    void *fn_800C4638(s32, void *, s32);
+    void fn_802026E4(void *,void *,void *,void *);
+    void PSMTXCopy(void *,void *);
+    void fn_80202C18(void *,void *,void *);
+    void fn_80202A6C(void *,f32,f32,f32,f32);
+    void fn_80202BD4(void *,void *);
+    extern u8 lbl_8026B768[];
+    extern CameraVec lbl_8026B720[];
+    extern void *gCamera;
+    f32 proj[16];
+    f32 view[16];
+    CameraVec a,b,c;
+    u8 *resetCam;
+    u8 *cam;
+    CameraVec *defaults;
+    defaults=lbl_8026B720;
+    cam=fn_800C4638(0x190,lbl_8026B768+0x88,0);
+    gCamera=cam;
+    *(u16 *)cam=2;
+    cam[3]=0;
+    M2C_FIELD(gCamera, u16 *, 28)=0;
+    M2C_FIELD(gCamera, u16 *, 30)=0;
+    M2C_FIELD(gCamera, u16 *, 32)=0x260;
+    M2C_FIELD(gCamera, u16 *, 34)=0x1C0;
+    M2C_FIELD(gCamera, f32 *, 4)=0.0f;
+    M2C_FIELD(gCamera, f32 *, 8)=0.0f;
+    M2C_FIELD(gCamera, f32 *, 12)=640.0f;
+    M2C_FIELD(gCamera, f32 *, 16)=480.0f;
+    M2C_FIELD(gCamera, f32 *, 20)=0.0f;
+    M2C_FIELD(gCamera, f32 *, 24)=1.0f;
+    M2C_FIELD(gCamera, f32 *, 384)=1.0f;
+    M2C_FIELD(gCamera, f32 *, 388)=1000.0f;
+    a=*defaults++;
+    *(f32 *)(cam+212)=a.x;
+    *(f32 *)(cam+216)=a.y;
+    *(f32 *)(cam+220)=a.z;
+    b=*defaults++;
+    *(f32 *)(cam+224)=b.x;
+    *(f32 *)(cam+228)=b.y;
+    *(f32 *)(cam+232)=b.z;
+    c=*defaults;
+    *(f32 *)(cam+236)=c.x;
+    *(f32 *)(cam+240)=c.y;
+    *(f32 *)(cam+244)=c.z;
+    *(f32 *)(cam+0xF8)=80.0f;
+    *(f32 *)(cam+0xFC)=0.0f;
+    *(f32 *)(cam+0x100)=0.0f;
+    *(f32 *)(cam+0x104)=0.0f;
+    *(f32 *)(cam+0x18C)=30.0f;
+    *(f32 *)(cam+0x188)=*(f32 *)(cam+0xC) / *(f32 *)(cam+0x10);
+    fn_802026E4((u8 *)gCamera+0xA4,cam+0xD4,cam+0xEC,cam+0xE0);
+    PSMTXCopy((u8 *)gCamera+0xA4,view);
+    view[12]=0.0f; view[13]=0.0f; view[14]=0.0f; view[15]=1.0f;
+    fn_80202C18((u8 *)gCamera+0x24,view,(u8 *)gCamera+0x64);
+    fn_80202A6C(proj,*(f32 *)(cam+0x18C),*(f32 *)(cam+0x188),*(f32 *)(cam+0x180),*(f32 *)(cam+0x184));
+    *(u16 *)gCamera |=1;
+    fn_80202BD4(proj,(u8 *)gCamera+0x24);
+    *(void **)(cam+0x114)=fn_800C4638(arg0*16,lbl_8026B768+(unsigned)0x88,0);
+    resetCam=cam;
+    *(s16 *)(cam+0x11A)=arg0;
+    if(resetCam==NULL) resetCam=gCamera;
+    if(resetCam!=NULL) {
+    *(u16 *)(resetCam+0x118)=0;
+    *(u32 *)(resetCam+284)=0;
+    *(u32 *)(resetCam+304)=0;
+    *(u32 *)(resetCam+324)=0;
+    *(u32 *)(resetCam+344)=0;
+    *(u32 *)(resetCam+364)=0;
+    *(u32 *)(resetCam+288)=0;
+    *(u32 *)(resetCam+308)=0;
+    *(u32 *)(resetCam+328)=0;
+    *(u32 *)(resetCam+348)=0;
+    *(u32 *)(resetCam+368)=0;
+    *(u32 *)(resetCam+292)=0;
+    *(u32 *)(resetCam+312)=0;
+    *(u32 *)(resetCam+332)=0;
+    *(u32 *)(resetCam+352)=0;
+    *(u32 *)(resetCam+372)=0;
+    *(u32 *)(resetCam+296)=0;
+    *(u32 *)(resetCam+316)=0;
+    *(u32 *)(resetCam+336)=0;
+    *(u32 *)(resetCam+356)=0;
+    *(u32 *)(resetCam+376)=0;
+    *(u32 *)(resetCam+300)=0;
+    *(u32 *)(resetCam+320)=0;
+    *(u32 *)(resetCam+340)=0;
+    *(u32 *)(resetCam+360)=0;
+    *(u32 *)(resetCam+380)=0;
+    }
+    return cam;
 }
 
 s32 Camera_Get(void) {
