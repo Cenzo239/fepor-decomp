@@ -767,15 +767,64 @@ void *Mu_StartFlash(s32 unit, s32 colorIdx, s32 duration, u32 priority) {
 }
 
 extern u16 *gUnitArray;
-s32 fn_80184750(s32 arg0, s32 arg1, struct Unit* unit, s32 arg3, s32 arg4, s32 arg5) {
-    // Simple case first - just return early if the condition fails
-    u32 val = (arg0 & 0xFF000000) >> 24;
-    if (val > 0x0A) {
-        return 0;
+void *fn_80184750(void *unit, u32 dir, s32 frames, s32 priority) {
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u16 E_MuFade_script[36];
+    u8 sp8[0x34];
+    s32 tmp;
+    s16 angle;
+    void *proc;
+
+    switch ((u8)dir) {
+    case 4:
+        tmp = 0;
+        break;
+    case 6:
+        tmp = 0x2D;
+        break;
+    case 2:
+        tmp = 0x5A;
+        break;
+    case 10:
+        tmp = 0x87;
+        break;
+    case 8:
+        tmp = 0xB4;
+        break;
+    case 9:
+        tmp = 0xE1;
+        break;
+    case 1:
+        tmp = 0x10E;
+        break;
+    case 5:
+        tmp = 0x13B;
+        break;
+    case 0:
+    case 3:
+    case 7:
+    default:
+        tmp = 0;
+        break;
     }
-    
-    // For debug, assume a default for the function's behavior.
-    return 0;
+    angle = (s16)tmp;
+
+    M2C_FIELD(sp8, void **, 0x30) = unit;
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    if ((f32)angle == ((f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f)) {
+        return NULL;
+    }
+    if (frames <= 0) {
+        M2C_FIELD(unit, s16 *, 0x15C) = (s16)(50.0f * (f32)angle);
+        return NULL;
+    }
+    proc = Process_CreateEx(&E_MuFade_script, priority);
+    M2C_FIELD(proc, void **, 0x30) = unit;
+    M2C_FIELD(proc, f32 *, 0x34) = (f32)angle;
+    M2C_FIELD(proc, s32 *, 0x38) = frames;
+    return proc;
 }
 
 void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
@@ -5252,23 +5301,36 @@ void fn_80190A1C(void *arg0) {
     M2C_UNK Ui_DrawRouteTex(s16, s16, s32);
     M2C_UNK fn_801583D0(M2C_UNK, M2C_UNK, s16, s16, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036AE1C;
+#pragma cplusplus on
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+    };
     s16 var_r4;
-    u8 temp_r5;
+    u16 temp;
 
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0), M2C_UNK (**)(), 0x10)();
+    ((Obj *)arg0)->v2();
     fn_801583D0(0, 0, (s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)), (s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)), 0xFF, 0x10);
     if ((u8) M2C_FIELD(arg0, u8 *, 0x44) != 0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AE1C);
         Prim2D_PrepareTex();
-        temp_r5 = M2C_FIELD(arg0, u8 *, 0x44);
-        if (temp_r5 == 1) {
+        temp = M2C_FIELD(arg0, u8 *, 0x44);
+        if (temp == 1) {
             var_r4 = -0x12;
         } else {
             var_r4 = (s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)) - 6;
         }
-        Ui_DrawRouteTex((s16) (((s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) >> 1) - 0x10), var_r4, temp_r5 == 1);
+#pragma cplusplus reset
+        {
+            s32 eq = ((u8)temp == 1);
+#pragma cplusplus on
+            Ui_DrawRouteTex((s16) (((s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) >> 1) - 0x10), var_r4, eq);
+        }
+#pragma cplusplus reset
     }
+#pragma cplusplus reset
 }
 
 void fn_80190B00(void *arg0) {
@@ -5344,16 +5406,16 @@ void *fn_80190C24(void *parent, void **names) {
     ListIter ret;
     ListIter pos;
     ListIter out;
-    ListNode *sentinel;
     void *obj;
+    ListNode *sentinel;
     u8 *base;
     u8 mode;
 
     base = lbl_80296298;
     if (parent) {
-        obj = Process_CreateChild(base, parent);
+        obj = Process_CreateChild(&base[0], parent);
     } else {
-        obj = Process_Create(base, parent);
+        obj = Process_Create(&base[0], parent);
     }
     if (obj) {
         fn_801403F0(obj);
@@ -9374,37 +9436,45 @@ s32 fn_80199114(void *arg0) {
 }
 
 void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
-    void *fn_800C42D8(s32);
-    void fn_800C9ABC(void *, char *, void *);
-    void fn_800C9A60(void *, s32);
+    void *Heap_Alloc(s32);
+    void String_Init(void *, char *, void *);
+    void String_Destroy(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_801518B4(void *, void *);
-    extern u8 lbl_8027A858[];
+    extern u8 gWeaponAttachStr[];
     struct Vec3 { s32 x, y, z; };
+    void *a0;
+    void *a1;
+    void *a2;
+    void *a3;
+    s8 flag;
+    void *obj;
     struct Vec3 sp24;
     struct Vec3 sp18;
     u8 spC[0xC];
     u8 sp8[4];
-    void *obj;
-    s8 flag;
 
+    a0 = arg0;
+    a1 = arg1;
+    a2 = arg2;
+    a3 = arg3;
     flag = 0;
-    obj = fn_800C42D8(0xC8);
+    obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
-        sp24 = *(struct Vec3 *)arg2;
-        sp18 = *(struct Vec3 *)arg1;
-        fn_800C9ABC(spC, (char *)(lbl_8027A858 + 0x76), sp8);
+        sp24 = *(struct Vec3 *)a2;
+        sp18 = *(struct Vec3 *)a1;
+        String_Init(spC, (char *)(gWeaponAttachStr + 0x76), sp8);
         flag = 1;
-        obj = fn_80151D50(obj, *(void **)((u8 *)arg0 + 0xAC), spC, (u8 *)arg0 + 0x12C, &sp18, &sp24, 1);
+        obj = fn_80151D50(obj, *(void **)((u8 *)a0 + 0xAC), spC, (u8 *)a0 + 0x12C, &sp18, &sp24, 1);
     }
-    *(void **)((u8 *)arg0 + 0x144) = obj;
+    *(void **)((u8 *)a0 + 0x144) = obj;
     if (flag) {
-        fn_800C9A60(spC, -1);
+        String_Destroy(spC, -1);
     }
-    (*(void (***)(void *, void *))((u8 *)*(void **)((u8 *)arg0 + 0xAC) + 0x10))[7](
-        *(void **)((u8 *)arg0 + 0xAC),
-        *(void **)((u8 *)arg0 + 0x144));
-    fn_801518B4(*(void **)((u8 *)arg0 + 0x144), arg3);
+    (*(void (***)(void *, void *))((u8 *)*(void **)((u8 *)a0 + 0xAC) + 0x10))[7](
+        *(void **)((u8 *)a0 + 0xAC),
+        *(void **)((u8 *)a0 + 0x144));
+    fn_801518B4(*(void **)((u8 *)a0 + 0x144), a3);
 }
 
 #pragma global_optimizer off
@@ -9952,6 +10022,43 @@ void fn_8019A0C8(void *arg0) {
     M2C_FIELD(arg0,s16 *,0x3E)=(s32)Math_Angle2D(0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3A),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3B),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3C),0.5f+(f32)M2C_FIELD(arg0,s8 *,0x3D));
     fn_80049520(M2C_FIELD(arg0,s32 *,0x34),arg0,0x14,(f32)M2C_FIELD(arg0,s16 *,0x3E));
     fn_801848D8(M2C_FIELD(arg0,s32 *,0x30),M2C_FIELD(arg0,s8 *,0x3A),M2C_FIELD(arg0,s8 *,0x3B),0x18,0);
+}
+
+void fn_8019A1E0(void *arg0) {
+    void *Map_Get(void *);
+    void *Map_FindObjNear(void *, s8, s8, s32, s32);
+    void fn_800056A0(s32);
+    void Process_Goto(void *, s32);
+    f32 Map_SampleHeight(void *, f32, f32);
+    void GActor_RequestRes(void *);
+    extern u8 gUiContext[];
+    extern u8 gBattleMap[];
+    extern u8 MapSelect_str[];
+
+    u8 *self;
+    s8 x;
+    s8 y;
+
+    self = (u8 *)arg0;
+    self[0x38] = gUiContext[0xD];
+    self[0x39] = gUiContext[0xE];
+    x = self[0x38];
+    y = self[0x39];
+    *(void **)(self + 0x34) = Map_FindObjNear(Map_Get(gUiContext), x, y, 0x8000, 0);
+    if (*(void **)(self + 0x34) == NULL) {
+        fn_800056A0(0);
+        Process_Goto(self, 0x63);
+        return;
+    }
+    self[0x3A] = (*(u8 **)(self + 0x34))[0];
+    self[0x3B] = (*(u8 **)(self + 0x34))[1];
+    self[0x3C] = gUiContext[0xF];
+    self[0x3D] = gUiContext[0x10];
+    *(f32 *)(self + 0x40) = Map_SampleHeight(gBattleMap, (f32)(s8)self[0x3A], (f32)(s8)self[0x3B]);
+    *(f32 *)(self + 0x44) = Map_SampleHeight(gBattleMap, (f32)(s8)self[0x3C], (f32)(s8)self[0x3D]);
+    GActor_RequestRes(MapSelect_str + 0xD4);
+    GActor_RequestRes(MapSelect_str + 0xCA);
+    *(s32 *)(self + 0x30) = *(s32 *)gUiContext;
 }
 
 #pragma use_lmw_stmw on
