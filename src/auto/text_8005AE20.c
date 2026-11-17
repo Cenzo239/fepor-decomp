@@ -11979,7 +11979,7 @@ extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
     void Ui_DrawWindowTexture(void *, s32, s32, s32, s32, f32, f32, f32);
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 gUiIconDrawer[];
-    extern u8 lbl_8026BB08[];
+    extern u8 gUiWeaponTriangleData[];
     extern s32 lbl_80367348;
     extern s8 lbl_8036734C;
     extern f32 lbl_8036933C;
@@ -12000,7 +12000,7 @@ extern "C" void Ui_DrawWeaponTriangle(void *self, void *unit, f32 x, f32 y) {
     s32 idx;
     s32 iy;
 
-    tbl = lbl_8026BB08;
+    tbl = gUiWeaponTriangleData;
     row = -1;
     col = 0;
     p = (s32 *)(tbl + 0x1C);
