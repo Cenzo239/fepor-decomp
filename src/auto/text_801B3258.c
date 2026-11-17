@@ -4065,7 +4065,7 @@ void fn_801BCC60(s32 arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
 void fn_801BCCC4(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
@@ -4076,21 +4076,19 @@ void fn_801BCCC4(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
-    void *obj;
-    s32 saved;
     s32 v;
+    s32 saved;
+    void *obj;
     void *base;
     void *self;
     void *p;
-    void *ctx;
 
     self = arg0;
     p = Ui_FindChild(self, 0x80, 0);
     Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x1CE);
-    ctx = gUiContext;
-    base = gBattleState;
     obj = *(void **)((u8 *)self + 0x5C);
-    v = *(s32 *)ctx;
+    base = gBattleState;
+    v = *(s32 *)gUiContext;
     saved = *(s32 *)((u8 *)base + 0x1C);
     *(s32 *)((u8 *)base + 0x1C) = saved - (s16)fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
     fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), self, 0);
@@ -4100,6 +4098,7 @@ void fn_801BCCC4(void *arg0) {
         Ui_RemoveChild(self, p);
     }
 }
+#pragma optimization_level reset
 void fn_801BCD8C(void *arg0) {
     extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
@@ -6060,9 +6059,9 @@ void fn_801C19E4(u8 *arg0, u8 *arg1) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    void *Process_Create(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f64 lbl_8036B330;
     extern f32 lbl_8036B328;
@@ -6070,7 +6069,7 @@ void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 
     union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     s16 v;
 
-    obj = Process_Create(lbl_80297FF8, arg6);
+    obj = fn_8000CAF0(lbl_80297FF8, arg6);
     conv.w.hi = 0x43300000;
     conv.w.lo = (u32)arg5 ^ 0x80000000;
     v = (s16)((f32)(conv.d - lbl_8036B330) / lbl_8036B328);
@@ -6084,8 +6083,7 @@ void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 
     *(s16 *)((u8 *)obj + 0x3A) = 0;
     *(u8 *)((u8 *)obj + 0x48) = 1;
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer on
 void fn_801C1AC8(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
 void *Process_Create(void *, s32);
 extern u8 lbl_80297FF8[];
@@ -6155,8 +6153,8 @@ void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
     void *obj;
-    union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     union { f64 d; struct { u32 hi; u32 lo; } w; } conv2;
+    union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     s16 v;
 
     obj = Process_Create(lbl_8029801C, 3);
@@ -7179,16 +7177,18 @@ void fn_801C4468(s32 arg0) {
     M2C_FIELD(Process_Create(&lbl_8029824C, 4), s32 *, 0x3C) = arg0;
 }
 
+#pragma optimization_level 3
 void fn_801C44A4(void *arg0) {
     void fn_800616A0();
-    void Heap_FreeRaw(void *);
-    void Heap_Free(void *);
+    void fn_800C426C(void *);
+    void fn_800C428C(void *);
     s32 i;
     s32 offset;
     void *work;
     void *ptr;
 
-    offset = (i = 0);
+    i = 0;
+    offset = i;
     do {
         work = *(void **)((u8 *)arg0 + 0x44);
         fn_800616A0((u8 *)*(void **)work + offset + 8, work);
@@ -7201,20 +7201,20 @@ void fn_801C44A4(void *arg0) {
         ptr = *(void **)work;
         if (ptr != NULL) {
             if (ptr != NULL) {
-                Heap_FreeRaw((u8 *)ptr - 0x10);
+                fn_800C426C((u8 *)ptr - 0x10);
             }
             *(void **)work = NULL;
         }
         ptr = *(void **)((u8 *)work + 4);
         if (ptr != NULL) {
-            Heap_FreeRaw(ptr);
+            fn_800C426C(ptr);
             *(void **)((u8 *)work + 4) = NULL;
         }
-        Heap_Free(work);
+        fn_800C428C(work);
         *(void **)((u8 *)arg0 + 0x44) = NULL;
     }
 }
-
+#pragma optimization_level reset
 void fn_801C4564(void) { M2C_UNK fn_801C45A4(); fn_801C45A4(); }
 
 void fn_801C4584(void){ void fn_801C5B80(void); fn_801C5B80(); /*try*/ }
@@ -12375,7 +12375,7 @@ s32 fn_801CF614(void *arg0) {
 #pragma opt_common_subs off
 void *fn_801CF62C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
 extern void *lbl_8028FDB0[], *lbl_80292230[], *lbl_80298730[];
-extern f32 lbl_8036B518;
+extern const f32 lbl_8036B518;
 *(void**)arg0=lbl_8028FDB0;
 *(s32*)((u8*)arg0+4)=0;
 *(void**)arg0=lbl_80292230;
@@ -14831,8 +14831,8 @@ void fn_801D3BD0(void *arg0) {
     void fn_80161F7C(void);
     extern u8 lbl_80299C58[];
     extern u8 lbl_80299A78[];
-    void *obj;
     s32 i;
+    void *obj;
     obj = *(void**)((u8*)arg0 + 0x30);
     Process_UnlinkByKey(lbl_80299C58);
     i = 0;
@@ -20048,24 +20048,18 @@ w.vtbl=gMemStreamVtbl; w.vtbl=gStreamBaseVtbl;
 if(w.owned) {fn_800C4588(w.start); w.start=0; w.owned=0;}
 }
 
+#pragma optimization_level 3
 void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {
     s64 __div2i(s32, s32, s32, s32);
-    u32 *sp;
-    u32 *hp;
-    u32 *mp;
     u32 q;
-    s32 lo;
-
-    sp = secs;
-    hp = hours;
-    mp = mins;
-    lo = *(s32 *)((u8 *)arg0 + 0x5C);
-    q = (u32)__div2i(*(s32 *)((u8 *)arg0 + 0x58), lo, 0, (s32)(*(u32 *)0x800000F8 >> 2));
-    *sp = q % 60U;
-    *mp = (q / 60U) % 60U;
-    *hp = q / 3600U;
+    u32 bus;
+    bus = *(u32 *)0x800000F8 >> 2;
+    q = (u32)__div2i(*(s32 *)((u8 *)arg0 + 0x58), *(s32 *)((u8 *)arg0 + 0x5C), 0, (s32)bus);
+    *secs = q % 60U;
+    *mins = (q / 60U) % 60U;
+    *hours = q / 3600U;
 }
-
+#pragma optimization_level reset
 void fn_801E3B08(u8* arg0) {
     u32 i;
     
