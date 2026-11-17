@@ -8656,24 +8656,27 @@ void *fn_800DDC90(void *arg0) {
 
 void fn_800E5A4C(void *arg0);
 
-void fn_800DDD08(void* arg0) {
-    u32* ptr = (u32*)arg0;
-    u32 val = *ptr;
-    *ptr = 0;
-
-    if (val != 0) {
-        if ((val & 1) != 0) {
-            fn_800067F0(arg0);
-        }
-        if ((val & 2) != 0) {
-            fn_80006B38();
-        }
-
-        val = ptr[4];
-        if (val != 0) {
-            fn_800E5A4C((void *)ptr[8]);
-        }
-    }
+void *fn_800DDD08(u8 *self, s16 arg1) {
+extern u8 lbl_8028DFA8[];
+void fn_80065E68(void *); void fn_8006CC6C(void *); void fn_80063934(void *);
+void fn_800DE9FC(void **); void fn_800DEF00(void *); void fn_8005C7E8(void *);
+void BinTree_Destroy(s32,void *); void fn_800DEA50(s32,void *); void fn_800DF724(void *,s32); void Heap_Free(void *);
+void *node;
+u8 *end;
+if(self) {
+*(void **)(self+0x40)=lbl_8028DFA8;
+if(*(void **)(self+0x4C)) fn_80065E68(*(void **)(self+0x4C));
+if(*(void **)(self+0x50)) fn_8006CC6C(*(void **)(self+0x50));
+node=*(void **)(self+0x64); end=self+0x5C;
+while(node!=end) { if(*(void **)((u8 *)node+0x18)) fn_80063934(*(void **)((u8 *)node+0x18)); fn_800DE9FC(&node); }
+fn_800DEF00(self+0x58);
+if(*(void **)(self+0x48)) fn_8005C7E8(*(void **)(self+0x48));
+if((u32)self+0x68) if((s32)self+0x68) if(*(void **)(self+0x6C)) BinTree_Destroy((s32)(self+0x68),*(void **)(self+0x6C));
+if((u32)self+0x58) if((s32)self+0x58) if(*(void **)end) fn_800DEA50((s32)(self+0x58),*(void **)end);
+fn_800DF724(self,0);
+if(arg1>0) Heap_Free(self);
+}
+return self;
 }
 
 void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
