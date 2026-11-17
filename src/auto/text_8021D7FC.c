@@ -1584,15 +1584,124 @@ void GXSetVtxAttrFmt(s32 vtxfmt, s32 attr, s32 cnt, s32 type, unsigned char frac
   gx[0x5AB] |= (u8) (1 << ((u8) vtxfmt));
 }
 #pragma optimization_level reset
-s32 GXSetVtxAttrFmtv(s32 arg0)
+void GXSetVtxAttrFmtv(s32 vtxfmt, void *list)
 {
-    if (arg0 < 0) {
-        arg0 = 0;
+  extern u8 *__GXData;
+  u8 *gx;
+  u8 *entry=(u8 *)list;
+  s32 cnt,type,attr;
+  u8 frac;
+  u32 *vatA;
+  u32 *vatB;
+  u32 *vatC;
+  gx = __GXData;
+  gx += vtxfmt << 2;
+  vatA = (u32 *) (gx + 0x1C);
+  vatB = (u32 *) (gx + 0x3C);
+  vatC = (u32 *) (gx + 0x5C);
+  while (*(s32 *)entry != 255) {
+  attr=*(s32 *)entry;
+  frac=entry[12];
+  type=*(s32 *)(entry+8);
+  cnt=*(s32 *)(entry+4);
+  switch (attr)
+  {
+    case 9:
+      *vatA = __rlwimi(*vatA, cnt, 0, 31, 31);
+      *vatA = __rlwimi(*vatA, type, 1, 28, 30);
+      *vatA = __rlwimi(*vatA, frac, 4, 23, 27);
+      break;
+
+    case 10:
+      *vatA = __rlwimi(*vatA, type, 10, 19, 21);
+      if (cnt == 2)
+    {
+      *vatA = __rlwimi(*vatA, 1, 9, 22, 22);
+      *vatA = __rlwimi(*vatA, 1, 31, 0, 0);
     }
-    if (arg0 > 0x1F) {
-        arg0 = 0x1F;
+    else
+    {
+      *vatA = __rlwimi(*vatA, cnt, 9, 22, 22);
+      *vatA = __rlwimi(*vatA, 0, 31, 0, 0);
     }
-    return arg0;
+      break;
+
+    case 11:
+      *vatA = __rlwimi(*vatA, cnt, 13, 18, 18);
+      *vatA = __rlwimi(*vatA, type, 14, 15, 17);
+      break;
+
+    case 12:
+      *vatA = __rlwimi(*vatA, cnt, 17, 14, 14);
+      *vatA = __rlwimi(*vatA, type, 18, 11, 13);
+      break;
+
+    case 13:
+      *vatA = __rlwimi(*vatA, cnt, 21, 10, 10);
+      *vatA = __rlwimi(*vatA, type, 22, 7, 9);
+      *vatA = __rlwimi(*vatA, frac, 25, 2, 6);
+      break;
+
+    case 14:
+      *vatB = __rlwimi(*vatB, cnt, 0, 31, 31);
+      *vatB = __rlwimi(*vatB, type, 1, 28, 30);
+      *vatB = __rlwimi(*vatB, frac, 4, 23, 27);
+      break;
+
+    case 15:
+      *vatB = __rlwimi(*vatB, cnt, 9, 22, 22);
+      *vatB = __rlwimi(*vatB, type, 10, 19, 21);
+      *vatB = __rlwimi(*vatB, frac, 13, 14, 18);
+      break;
+
+    case 16:
+      *vatB = __rlwimi(*vatB, cnt, 18, 13, 13);
+      *vatB = __rlwimi(*vatB, type, 19, 10, 12);
+      *vatB = __rlwimi(*vatB, frac, 22, 5, 9);
+      break;
+
+    case 17:
+      *vatB = __rlwimi(*vatB, cnt, 27, 4, 4);
+      *vatB = __rlwimi(*vatB, type, 28, 1, 3);
+      *vatC = __rlwimi(*vatC, frac, 0, 27, 31);
+      break;
+
+    case 18:
+      *vatC = __rlwimi(*vatC, cnt, 5, 26, 26);
+      *vatC = __rlwimi(*vatC, type, 6, 23, 25);
+      *vatC = __rlwimi(*vatC, frac, 9, 18, 22);
+      break;
+
+    case 19:
+      *vatC = __rlwimi(*vatC, cnt, 14, 17, 17);
+      *vatC = __rlwimi(*vatC, type, 15, 14, 16);
+      *vatC = __rlwimi(*vatC, frac, 18, 9, 13);
+      break;
+
+    case 20:
+      *vatC = __rlwimi(*vatC, cnt, 23, 8, 8);
+      *vatC = __rlwimi(*vatC, type, 24, 5, 7);
+      *vatC = __rlwimi(*vatC, frac, 27, 0, 4);
+      break;
+
+    case 21:
+
+    case 22:
+
+    case 23:
+
+    case 24:
+
+    case 25:
+      break;
+
+  }
+
+  entry+=16;
+  }
+  gx = __GXData;
+  *((u32 *) (gx + 0x5AC)) |= 0x10;
+  gx[0x5AB] |= (u8) (1 << ((u8) vtxfmt));
 }
 
 #pragma global_optimizer off
