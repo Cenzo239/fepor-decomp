@@ -1645,6 +1645,40 @@ extern "C" void fn_801352F0(void *arg0) {
         0xB3, 0x10);
 }
 
+void fn_8013535C(void *self, s16 x, s16 y, void *item) {
+#pragma use_lmw_stmw on
+void Prim2D_Begin(void); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex(void);
+s32 Text_MeasureHeight(s32,f32);
+s32 fn_8010586C(void *);
+void Text_Draw(s16,s16,s32,void *,...);
+void Prim2D_AddPrim(s32);
+u32 *Ui_GetColor(s32);
+void Prim2D_SetColorPacked(void *);
+void Prim2D_SetTextScale(s32,f32);
+void fn_80006B18(s32,s32,s32,s32,u8);
+void Prim2D_EndPrim(void);
+void Ui_DrawIcon(void *,s16,s16,u8);
+extern u8 lbl_80276720[],gItemIconDrawer[];
+extern f32 lbl_8036A5DC,lbl_8036A5E0;
+s32 textY;
+u32 color;
+s32 name;
+Prim2D_Begin();
+Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|3));
+Prim2D_PrepareTex();
+textY=(s16)((26-Text_MeasureHeight(-1,lbl_8036A5DC))>>1);
+name=fn_8010586C(item);
+textY=y+textY;
+Text_Draw((s16)(x+32),(s16)textY,1,lbl_80276720+0x1D,name);
+Prim2D_AddPrim(6);
+color=*Ui_GetColor(1);
+Prim2D_SetColorPacked(&color);
+Prim2D_SetTextScale(1,lbl_8036A5E0);
+fn_80006B18(x+(s16)(*(s16 *)((u8 *)self+0x16)-*(s16 *)((u8 *)self+0x12))-2* *(s16 *)((u8 *)self+0x40),textY,0,0,*((u8 *)item+0x1A));
+Prim2D_EndPrim();
+Ui_DrawIcon(gItemIconDrawer,x,y,*((u8 *)item+0x19));
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
@@ -7426,17 +7460,55 @@ extern "C" void fn_8013F0F0(void *arg0, void *arg1) {
     }
 }
 
-void fn_8013F1A0(void *arg0, void *arg1) {
-    if (arg1 != NULL) {
-        void **temp_r6 = (void**)((char*)arg0 + 0x44);
-        void *var_r3 = *temp_r6;
-loop_3:
-        if ((var_r3 != *temp_r6) && ((u32)*(void**)((char*)var_r3 + 0x8) != (u32)arg1)) {
-            var_r3 = *(void**)((char*)var_r3 + 0x4);
-            goto loop_3;
-        }
-        if (var_r3 == *temp_r6) {
-            *(void**)((char*)arg1 + 0x38) = arg0;
+extern "C" void fn_8013F1A0(void *arg0, void *arg1) {
+    void List_Insert(void *, void *, void *, void *);
+    Vec2s sp1c;
+    void *sp18;
+    void *sp14;
+    Vec2s sp10;
+    Vec2s spC;
+    void *sp8;
+    void *node;
+    void *sentinel;
+    void *parent;
+    void *child;
+
+    sp8 = arg1;
+    if (arg1 != 0) {
+        sentinel = (u8 *)arg0 + 0x40;
+        node = *(void **)((u8 *)sentinel + 4);
+        goto check;
+        for (;;) {
+            node = *(void **)((u8 *)node + 4);
+        check:
+            if (node != sentinel) {
+                if (*(void **)((u8 *)node + 8) != arg1) {
+                    continue;
+                }
+            }
+            if (node != sentinel) {
+                return;
+            }
+            *(void **)((u8 *)arg1 + 0x38) = arg0;
+            sp18 = sentinel;
+            List_Insert(&sp14, (u8 *)arg0 + 0x3c, &sp18, &sp8);
+            if (sp8 != 0) {
+                *(u32 *)((u8 *)sp8 + 4) = *(u32 *)((u8 *)sp8 + 4) + 1;
+            }
+            child = sp8;
+            parent = *(void **)((u8 *)child + 0x38);
+            if (parent != 0) {
+                sp10 = *(Vec2s *)((u8 *)parent + 0xa);
+                sp10.x = (s16)(sp10.x + *(s16 *)((u8 *)parent + 0x1a));
+                sp10.y = (s16)(sp10.y + *(s16 *)((u8 *)parent + 0x1c));
+                spC = sp10;
+                spC.x = (s16)(spC.x - *(s16 *)((u8 *)child + 0xa));
+                spC.y = (s16)(spC.y - *(s16 *)((u8 *)child + 0xc));
+                sp1c = spC;
+                *(s16 *)((u8 *)child + 0x1a) = sp1c.x;
+                *(s16 *)((u8 *)child + 0x1c) = sp1c.y;
+            }
+            break;
         }
     }
 }
