@@ -323,16 +323,22 @@ void fn_80224658(s32 arg0) {
   *(u16 *)(gx + 2) = 0;
 }
 #pragma peephole on
-void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
-    u16 *temp_r6;
-    u16 temp_r7;
-
-    temp_r6 = (u16*)__GXData;
-    *(u8*)0xCC008000 = 0x61;
-    temp_r7 = ((((*temp_r6 & ~1) | (arg0 & 1)) & ~0xE) | ((arg1 << 1) & 0xE)) | ((arg2 << 4) & 0x10);
-    *(u8*)0xCC008000 = temp_r7;
-    *temp_r6 = temp_r7;
-    *(u16*)(temp_r6 + 1) = 0;
+void GXSetZMode(u8 arg0, s32 arg1, u8 arg2)
+{
+  u32 *ptr;
+  u32 value;
+  ptr = (u32 *) __GXData;
+  value = ptr[0x1D8 / 4];
+  value = __rlwimi(value, (u32) arg0, 0, 31, 31);
+  *((u8 *) 0xCC008000) = 0x61;
+  value = __rlwimi(value, arg1, 1, 28, 30);
+  if (((!value) && (!value)) && (!value))
+  {
+  }
+  value = __rlwimi(value, (u32) arg2, 4, 27, 27);
+  *((u32 *) 0xCC008000) = value;
+  ptr[0x1D8 / 4] = value;
+  *((u16 *) (((u8 *) ptr) + 2)) = 0;
 }
 
 void fn_802246B8(u8 arg0) {
@@ -430,12 +436,12 @@ void fn_802247EC(u8 arg0, u8 arg1) {
 }
 
 void fn_80224828(s32 arg0, u8 arg1) {
-u32 value=__rlwimi(0,(u32)arg1,0,31,31);
-u16 *gx=__GXData;
-value=__rlwimi(value,arg0,1,30,30);
-*(u8*)0xCC008000=0x61;
-*(u32*)0xCC008000=__rlwimi(value,0x44,24,0,7);
-gx[1]=0;
+    u32 value = __rlwimi(0, (u32)arg1, 0, 31, 31);
+    u16 *gx = __GXData;
+    value = __rlwimi(value, arg0, 1, 30, 30);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = __rlwimi(value, 0x44, 24, 0, 7);
+    gx[1] = 0;
 }
 
 void fn_80224860(u8 arg0, u8 arg1)
@@ -558,37 +564,40 @@ void GXProject(f32 x, f32 y, f32 z, f32 mtx[3][4], f32 *pm, f32 *vp, f32 *sx, f3
     *sz = vp[5] + (wc * (zc * (vp[5] - vp[4])));
 }
 
+#pragma ppc_intrinsics on
+#pragma optimization_level 3
 void GXSetProjection(f32 *mtx, s32 type)
 {
- u8 *gx = (u8 *)__GXData;
- f32 *p;
- *(s32 *)(gx+0x4D8)=type;
- *(f32 *)(gx+0x4DC)=mtx[0];
- *(f32 *)(gx+0x4E4)=mtx[5];
- *(f32 *)(gx+0x4EC)=mtx[10];
- *(f32 *)(gx+0x4F0)=mtx[11];
- if(type==1) {
- *(f32 *)(gx+0x4E0)=mtx[3];
- *(f32 *)(gx+0x4E8)=mtx[7];
- } else {
- *(f32 *)(gx+0x4E0)=mtx[2];
- *(f32 *)(gx+0x4E8)=mtx[6];
- }
- gx=(u8 *)__GXData;
- *(volatile u8 *)0xCC008000=0x10;
- *(volatile u32 *)0xCC008000=0x61020;
- p=(f32 *)(gx+0x4DC);
- *(volatile f32 *)0xCC008000=p[0];
- *(volatile f32 *)0xCC008000=p[1];
- *(volatile f32 *)0xCC008000=p[2];
- *(volatile f32 *)0xCC008000=p[3];
- *(volatile f32 *)0xCC008000=p[4];
- *(volatile f32 *)0xCC008000=p[5];
- *(volatile u32 *)0xCC008000=*(u32 *)(gx+0x4D8);
- *(u16 *)(gx+2)=1;
-}
+    u8 *gx;
+    f64 *dst;
+    register volatile f64 *fifo;
 
-#pragma ppc_intrinsics on
+    gx = (u8 *)__GXData;
+    *(s32 *)(gx + 0x4D8) = type;
+    *(f32 *)(gx + 0x4DC) = mtx[0];
+    *(f32 *)(gx + 0x4E4) = mtx[5];
+    *(f32 *)(gx + 0x4EC) = mtx[10];
+    *(f32 *)(gx + 0x4F0) = mtx[11];
+    if (type == 1) {
+        *(f32 *)(gx + 0x4E0) = mtx[3];
+        *(f32 *)(gx + 0x4E8) = mtx[7];
+    } else {
+        *(f32 *)(gx + 0x4E0) = mtx[2];
+        *(f32 *)(gx + 0x4E8) = mtx[6];
+    }
+
+    gx = (u8 *)__GXData;
+    fifo = (volatile f64 *)0xCC008000;
+    *(volatile u8 *)fifo = 0x10;
+    *(volatile u32 *)fifo = 0x61020;
+    dst = (f64 *)(gx + 0x4DC);
+    fifo[0] = dst[0];
+    fifo[0] = dst[1];
+    fifo[0] = dst[2];
+    *(volatile u32 *)fifo = *(u32 *)(gx + 0x4D8);
+    *(u16 *)(gx + 2) = 1;
+}
+#pragma optimization_level reset
 
 #pragma peephole off
 
