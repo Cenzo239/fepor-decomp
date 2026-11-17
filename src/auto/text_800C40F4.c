@@ -3747,47 +3747,80 @@ void fn_800CA91C(void *arg0)
     *(s32 *)((u8 *)arg0 + 0x4) = 0;
 }
 
-void fn_800CA990(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
-    s32 x;
-    s32 y;
-    s32 w;
-    s32 h;
-    s32 x2;
-    s32 y2;
-    s32 cols;
-    s32 u0;
-    s32 v0;
-    s32 u1;
-    s32 v1;
-    
-    w = M2C_FIELD(arg0, s32 *, 0x54);
-    h = M2C_FIELD(arg0, s32 *, 0x58);
-    x = arg3;
-    y = arg4;
-    x2 = arg3 + w;
-    y2 = arg4 + h;
-    
-    if (arg2 >= M2C_FIELD(arg0, s32 *, 0x60)) {
-        arg2 = M2C_FIELD(arg0, s32 *, 0x60) - 1;
-    }
-    
-    cols = M2C_FIELD(arg0, s32 *, 0x5C);
-    u0 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
-    v0 = M2C_FIELD(arg0, s32 *, 0x68) + h * (arg2 / cols);
-    u1 = u0 + w;
-    v1 = v0 + h;
-    
-    if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
-        Prim2D_Begin();
-        Prim2D_SetTransform(0.0f, 0.0f, (f32) arg5, 1.0f);
-        Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg10, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRect((f32) arg3, (f32) arg4, (f32) (x2 - arg3), (f32) (y2 - arg4));
-        Prim2D_SetUvCorners((f32) u0, (f32) v0, (f32) u1, (f32) v1);
-        Prim2D_SetColor((u8) arg6, (u8) arg7, (u8) arg8, (u8) arg9);
-        Prim2D_EndPrim();
-    }
+typedef struct ActionQueueFields { u8 pad[0x234]; s32 first[4]; s32 second[4]; } ActionQueueFields;
+void fn_800CA990(void *arg0) {
+void fn_80111AE8(void *,void *,s32);
+void fn_8011386C(void *);
+void fn_80232138(char *,...);
+void fn_801C6CBC(u32 *,s32,s32,s32);
+s32 Unit_GetActor(void *);
+s32 fn_801C6E60(s32);
+void *fn_80116604(void *);
+extern u8 *gGame;
+extern s32 lbl_80367884;
+extern char lbl_802704F8[];
+u8 *self=(u8 *)arg0;
+u8 update=0;
+u8 first,second;
+s32 index;
+s32 offset;
+void *other;
+u8 tmp[4];
+u32 color;
+switch(*(s32 *)(self+0x268)) {
+case 0: first=1;second=1;break;
+case 1: first=1;second=0;break;
+case 2: first=0;second=1;break;
+case 3: first=1;second=0;break;
+default:first=1;second=1;break;
+}
+index=*(s32 *)(self+0x260);
+if(first) {
+index=*(s32 *)(self+0x234+index*4);
+if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
+fn_80111AE8(*(void **)(self+0x9c),*(u8 **)(self+0x1c4)+index*12,0);
+++*(s32 *)(self+0x260);
+if(--*(s32 *)(self+0x254)<=0) *(s32 *)(self+0x25c)=1;
+if(*(s32 *)(self+0x268)!=2) { self[0x1a5]=1; update=1; }
+}
+}
+index=*(s32 *)(self+0x264);
+if(second && index>=0) {
+index=*(s32 *)(self+0x244+index*4);
+if(index>=0 && (u32)index<*(u32 *)(self+0x1c0)) {
+offset=index*12;
+fn_80232138(lbl_802704F8+0x18f,String_CStr(*(u8 **)(self+0x1c4)+offset));
+if(index<14 || index>17) {
+fn_80111AE8(*(void **)(self+0xa0),*(u8 **)(self+0x1c4)+offset,0);
+fn_8011386C(*(void **)(self+0xa0));
+}
+++*(s32 *)(self+0x264);
+if(--*(s32 *)(self+0x258)<=0) *(s32 *)(self+0x25c)=1;
+if(*(s32 *)(self+0x268)!=2) { self[0x1a5]=1; update=1; }
+if(index==27) update=1;
+}
+}
+if(update) {
+u8 value=*(u32 *)(gGame+0x18c);
+tmp[0]=value;tmp[1]=value;tmp[2]=value;tmp[3]=255;
+color=*(u32 *)tmp;
+fn_801C6CBC(&color,1,lbl_80367884,1);
+if(*(void **)(self+0x84)) {
+fn_801C6E60(Unit_GetActor(*(void **)(self+0x84)));
+other=fn_80116604(*(void **)(self+0x84));
+if(other && Unit_GetActor(other)) fn_801C6E60(Unit_GetActor(other));
+}
+if(*(void **)(self+0x88)) {
+fn_801C6E60(Unit_GetActor(*(void **)(self+0x88)));
+other=fn_80116604(*(void **)(self+0x88));
+if(other && Unit_GetActor(other)) fn_801C6E60(Unit_GetActor(other));
+}
+if(*(void **)(self+0x8c)) {
+fn_801C6E60(Unit_GetActor(*(void **)(self+0x8c)));
+other=fn_80116604(*(void **)(self+0x8c));
+if(other && Unit_GetActor(other)) fn_801C6E60(Unit_GetActor(other));
+}
+}
 }
 
 #pragma global_optimizer off
@@ -29631,6 +29664,7 @@ s32 fn_80100CC8(void) {
     return (temp_r3 & 0x98) == 0;
 }
 
+#pragma optimization_level 3
 #pragma dont_inline on
 #pragma global_optimizer off
 void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
@@ -29645,16 +29679,17 @@ void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
     u8 Map_IsAiTerrainBlocked(s8,s8);
     u8 *map;
     s32 row;
-    u8 *rowp, *tile;
+    u8 *rowp;
+ MapCostCell *cost;
+ u8 *tile;
     s32 uy;
- u32 rmin,rmax;
-    s8 minRange, maxRange;
+    s32 minRange, maxRange;
     u8 *base;
     s32 minX,maxX,maxY,y,x,ux,mov,minY,sx;
     void *item=*arg1;
     base=gBattleMap;
-    minRange=(u8)(item ? *((u8 *)item+0x1D) : 0);
-    maxRange=(u8)(item ? (u8)Item_GetRangeForUnit(item,arg0) : 0);
+    minRange=(s8)(u8)(item ? *((u8 *)item+0x1D) : 0);
+    maxRange=(s8)(u8)(item ? (u8)Item_GetRangeForUnit(item,arg0) : 0);
     fn_80022FCC(base,fn_800FC5F8());
     Map_FillLayer(base,8,(s16)arg2);
     ux=*(s8 *)((u8 *)arg0+0x19E);
@@ -29668,25 +29703,27 @@ void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
     if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
     maxY=uy+mov;
     if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
-    rmax=(u8)maxRange; rmin=(u8)minRange;
+    maxRange=(u8)maxRange; minRange=(u8)minRange;
  map=gBattleMap;
     for(y=minY;y<=maxY;y++) {
         row=(s8)y<<6;
         rowp=map+row;
         for(x=minX;x<=maxX;x++) {
             sx=(s8)x;
-            if(*(s16 *)((u8 *)((s32)map+2*(sx+row))+0x610E)<0) continue;
+            cost=(MapCostCell *)(map+2*(sx+row));
+ if(cost->cost<0) continue;
             tile=rowp+sx;
             if(*(s8 *)(tile+0xE18E)) continue;
             if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
             if(tile[13]) continue;
-            Map_FillAttackRange(base,(s8)x,(s8)y,rmin,rmax);
+            Map_FillAttackRange(base,(s8)x,(s8)y,minRange,maxRange);
         }
     }
     Map_SelectRangeBuffer(base,5);
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
+#pragma optimization_level reset
 s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     u8 Item_GetRangeForUnit(void *, void *);
     s32 Abs(s32);
@@ -30359,48 +30396,67 @@ void Ai_FindEscapeTile(s32 a0, s32 a1, s32 a2, s32 a3) {
     Ai_FindActionTile(a0, a1, 0x2C, a2, a3);
 }
 
+#pragma opt_strength_reduction off
+#pragma dont_inline on
+#pragma global_optimizer off
 s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
-    s16 temp_r14, temp_r15;
-    s32 temp_r21, temp_r23, temp_r24, temp_r25, temp_r26, temp_r4, temp_r5;
-    
-    if (arg0 == NULL || arg1 == NULL || arg2 == NULL) {
-        return 0;
-    }
+ extern u8 gBattleMap[],gAiState[];
+ void Map_FillLayer(void *,s32,s16);
+ void Map_SelectRangeBuffer(void *,s32);
+ void Map_BuildUnitMoveRange(void *,s32,s32);
+ s8 Unit_GetMov(void *);
+ u8 Map_IsAiTerrainBlocked(s8,s8);
+ u32 fn_800FCF48(s8,s8);
+ u8 *map;
+ s32 row;
+ u8 *rowp,*unitrow;
+ s32 offset;
+ s32 ux,uy;
+ u8 *base;
+ u16 best;
+ s16 bestX,bestY;
+ s32 minX,maxX,maxY,y,x,mov,minY;
+ MapCostCell *cost;
+ u32 value;
+ u8 id;
+ base=gBattleMap;
+ best=0xFFFF;
+ if((gAiState[1]&2)||(*(u32 *)((u8 *)arg0+0x254)&0x03000000)) {
+ Map_FillLayer(base,5,-1);Map_SelectRangeBuffer(base,5);
+ } else Map_BuildUnitMoveRange(arg0,5,arg3);
+ (*(s16 **)(base+0x14190))[*(s8 *)((u8 *)arg0+0x19e)+(*(s8 *)((u8 *)arg0+0x19f)<<6)]=arg3+1;
+    ux=*(s8 *)((u8 *)arg0+0x19E);
+    uy=*(s8 *)((u8 *)arg0+0x19F);
+    mov=Unit_GetMov(arg0);
+    minX=ux-mov;
+    if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+    minY=uy-mov;
+    if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    maxX=ux+mov;
+    if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+    maxY=uy+mov;
+    if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
 
-    /* Condition check and calls */
-    if ((*(u8 *)0x8032B3C0 & 2) || (*(u32 *)((char *)arg0 + 0x254) & 0x03000000)) {
-        Map_FillLayer(0x802CA518, 5, -1);
-        Map_SelectRangeBuffer(0x802CA518, 5);
-    } else {
-        Map_BuildUnitMoveRange(arg0, 5, arg3);
-    }
-
-    temp_r23 = *(u8 *)((char *)arg0 + 0x19e);
-    temp_r24 = *(u8 *)((char *)arg0 + 0x19f);
-    temp_r25 = (temp_r23 + (temp_r24 << 6)) * 2;
-    temp_r26 = *(s16 *)((char *)0x802CA518 + 0x610e + temp_r25);
-
-    if (temp_r26 < 0) {
-        return 0;
-    }
-
-    *(s16 *)((char *)0x802CA518 + temp_r25 + 0x610e) = arg3 + 1;
-
-    /* Some calculation */
-    temp_r4 = 0x1; // This is just an initial value. May be more complex.
-
-    temp_r5 = temp_r23 - (temp_r23 + temp_r24);
-    temp_r21 = temp_r23;
-    
-    if (temp_r5 < *(s8 *)((char *)0x802CA518 + 0x8)) {
-        temp_r5 = *(s8 *)((char *)0x802CA518 + 0x8);
-    }
-
-    // Loop and calculations continue
-    return 0; /* Placeholder, complex loop logic to reassemble */
+ map=gBattleMap;
+ for(y=minY;y<=maxY;y++) {
+ row=(s8)y<<6;rowp=map+row;unitrow=base+row;
+ for(x=minX;x<=maxX;x++) {
+ s32 sx=(s8)x;offset=2*(sx+row);cost=(MapCostCell *)(map+offset);
+ if(cost->cost<0)continue;
+ if(*(s8 *)(rowp+sx+0xE18E))continue;
+ if(Map_IsAiTerrainBlocked(sx,(s8)y))continue;
+ { s32 unitOffset=sx+13; id=unitrow[unitOffset]; }
+ if(id && id!=*((u8 *)arg0+0x198))continue;
+ value=(fn_800FCF48((s8)x,(s8)y)>>4)&0xfff;
+ value=(u16)(value+*(s16 *)(base+offset+0x610e));
+ if(best>value){best=value;bestX=x;bestY=y;}
+ }}
+ if(best!=0xffff){*arg1=bestX;*arg2=bestY;return 1;}
+ return 0;
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer reset
+#pragma dont_inline reset
+#pragma opt_strength_reduction reset
 s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
