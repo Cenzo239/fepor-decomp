@@ -10539,6 +10539,61 @@ s32 fn_80198640(void *arg0) {
     return 0;
 }
 
+void fn_801986E0(u8 *p) {
+ void fn_800DB964(void *,f32,f32,f32);
+ void fn_800DF664(void *);
+ void fn_800E4C14(void *,f32);
+ double sin(double);
+ void SeCue_PlayAt(void *,s32,f32,f32,f32);
+ f32 PSVECDistance(void *,void *);
+ extern u8 *gGame;
+ extern u8 gWeaponAttachStr[];
+ f32 b[3],a[3];
+ fn_800DB964(p,*(f32 *)(p+0x84),*(f32 *)(p+0x88),*(f32 *)(p+0x8C));
+ *(f32 *)(p+0x84)+=*(f32 *)(p+0x90);
+ *(f32 *)(p+0x88)+=*(f32 *)(p+0x94);
+ *(f32 *)(p+0x8C)+=*(f32 *)(p+0x98);
+ switch(*(u32 *)(p+0x124)) {
+ case 1: case 6:
+ *(f32 *)(p+0x54)+=*(f32 *)(gGame+0x118);
+ if(*(f32 *)(p+0x4C)<0.0f) {*(f32 *)(p+80)=0.0f;
+*(f32 *)(p+76)=0.0f;
+*(f32 *)(p+72)=0.0f;
+*(f32 *)(p+92)=0.0f;
+*(f32 *)(p+88)=0.0f;
+*(f32 *)(p+84)=0.0f;p[0x14C]=0;
+ fn_800DF664(p);fn_800E4C14(p,-1.0f);}
+ break;
+ case 2: case 7:
+ *(f32 *)(p+0x4C)=*(f32 *)(p+0x180)*(f32)sin(*(f32 *)(p+0x16C))+*(f32 *)(p+0x154);
+ *(f32 *)(p+0x16C)+=*(f32 *)(p+0x178);
+ if(*(f32 *)(p+0x16C)<0.0f) *(f32 *)(p+0x16C)=0.0f;
+ *(f32 *)(p+0x58)-=*(f32 *)(gGame+0x130);
+ if(*(f32 *)(p+0x58)<-360.0f) {
+ *(f32 *)(p+0x58)+=720.0f;
+ SeCue_PlayAt(gWeaponAttachStr+0x54,100,*(f32 *)(p+0x48),*(f32 *)(p+0x4C),*(f32 *)(p+0x50));
+ }
+ if(*(f32 *)(p+0x58)>360.0f) *(f32 *)(p+0x58)-=360.0f;
+ a[0]=*(f32 *)(p+0x150); a[1]=0.0f; a[2]=0.0f;
+ b[0]=*(f32 *)(p+0x48); b[1]=0.0f; b[2]=0.0f;
+ if(PSVECDistance(a,b)<*(f32 *)(gGame+0x134)) {*(f32 *)(p+80)=0.0f;
+*(f32 *)(p+76)=0.0f;
+*(f32 *)(p+72)=0.0f;
+*(f32 *)(p+92)=0.0f;
+*(f32 *)(p+88)=0.0f;
+*(f32 *)(p+84)=0.0f;p[0x14C]=0;}
+ break;
+ case 9:
+ if(*(f32 *)(p+0x4C)<0.0f) {*(f32 *)(p+80)=0.0f;
+*(f32 *)(p+76)=0.0f;
+*(f32 *)(p+72)=0.0f;
+*(f32 *)(p+92)=0.0f;
+*(f32 *)(p+88)=0.0f;
+*(f32 *)(p+84)=0.0f;p[0x14C]=0; fn_800DF664(p);}
+ break;
+ }
+}
+
 s32 fn_8019906C(void *arg0) {
     s32 fn_801518D0(void *, s32);
     void *v;
