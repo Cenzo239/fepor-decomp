@@ -2025,6 +2025,58 @@ void fn_80124424(void *self) {
     }
 }
 
+void fn_801246FC(void *arg0) {
+    void *Map_Get(void);
+    void *fn_8006D948(void *);
+    void *Heap_AllocRaw(s32);
+    u32 Rand_Next(void);
+    void DCFlushRange(void *,u32);
+    void Fx_AllocSlot(void *,s32,s32);
+    extern s32 gBattleMap[];
+    extern u8 lbl_80274F74[];
+    extern f32 lbl_8036A338;
+    u8 *self=arg0;
+    s16 *p;
+    u32 rangeX;
+    u32 rangeY;
+    s32 i;
+    s32 offset;
+    s32 j;
+    f32 initial;
+    self[0x4C]=1;
+    *(u16 *)(self+0x54)=*(u16 *)(self+0x56)=256;
+    self[0x52]=16;
+    if (((u8 *)Map_Get())[0x68]==1) {
+        self[0x4D]=1;
+        self[0x50]=32;
+        self[0x51]=24;
+        self[0x4E]=5;
+    } else {
+        self[0x4D]=0;
+        self[0x50]=gBattleMap[0];
+        self[0x51]=gBattleMap[1];
+        self[0x4E]=1;
+    }
+    *(void **)(self+0x58)=fn_8006D948(lbl_80274F74+0x84);
+    *(void **)(self+0x5C)=Heap_AllocRaw((*(u16 *)(self+0x54)<<3)*6);
+    *(void **)(self+0x60)=Heap_AllocRaw((*(u16 *)(self+0x56)<<1)*6);
+    p=*(s16 **)(self+0x60);
+    rangeX=((s8)self[0x50]+16)<<8;
+    rangeY=((s8)self[0x51]+16)<<8;
+    for(i=0;i<*(u16 *)(self+0x56)*2;i+=2) {
+        p[0]=p[3]=(Rand_Next()%rangeX)-0x800;
+        p[2]=p[5]=(Rand_Next()%rangeY)-0x800;
+        p[1]=Rand_Next()%768;
+        p[4]=p[1]+256;
+        p+=6;
+    }
+    DCFlushRange(*(void **)(self+0x60),*(u16 *)(self+0x56)*12);
+    *(void **)(self+0x64)=Heap_AllocRaw(self[0x52]*8);
+    initial=-1.0f;
+    for(j=0;j<self[0x52];j++) (*(f32 **)(self+0x64))[j*2+1]=initial;
+    Fx_AllocSlot(lbl_80274F74+0x72,50,1);
+}
+
 void fn_801248E4(void *arg0) {
     extern u8 lbl_80274F74[];
 
