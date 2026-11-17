@@ -843,11 +843,10 @@ void fn_8005D330(char *name, u16 flags) {
     void fn_8005E12C(u8 *, char *, u16);
     void *AramCache_Find(char *);
     void fn_801ED7D0(void *);
-    u8 *entry;
+    u8 *entry = FindEntryByName(name);
     u32 f;
     void *aram;
 
-    entry = FindEntryByName(name);
     if (entry) {
         *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
         return;
@@ -858,8 +857,8 @@ void fn_8005D330(char *name, u16 flags) {
         return;
     }
     entry = fn_8005CEC0();
-    f = (u16)flags | 0x200;
-    *(u16 *)(entry + 0x30) = *(u16 *)(entry + 0x30) | f;
+    f = (u16)flags | 0x200U;
+    *(u16 *)(entry + 0x30) |= f;
     fn_8005E12C(entry, name, f);
 }
 #pragma use_lmw_stmw reset
@@ -8142,6 +8141,83 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
  *entries=0;
  Ui_CreateMenu(base+0x80,fn_800C0658(),0);
 }
+
+void fn_8006F170(void *arg0, void *arg1, void *arg2) {
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32,f32);
+    void Prim2D_SetColor(s32,s32,s32,s32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32,f32);
+    extern f32 lbl_803692E0;
+#pragma cplusplus on
+    struct Model {
+        u8 pad[4];
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void v17()=0;
+        virtual void v18()=0;
+        virtual void v19()=0;
+        virtual s32 height()=0;
+    };
+    struct Item {
+        virtual void v0()=0;
+        virtual void *text()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void setup(void *)=0;
+    };
+    f32 x;
+    f32 y;
+    s32 height;
+    Model *model;
+    model=M2C_FIELD(arg1,Model **,0x3C);
+    x=(f32)M2C_FIELD(arg2,s16 *,0x30);
+    height=(s16)model->height();
+    y=(f32)(M2C_FIELD(arg2,s16 *,0x32)+((height-Text_MeasureHeight(-1,lbl_803692E0))>>1));
+    ((Item *)arg0)->setup(arg1);
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(x,y);
+    Prim2D_SetColor(0,0,0,255);
+    Prim2D_SetText(((Item *)arg0)->text());
+    Prim2D_EndPrim();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_803692E0);
+    Prim2D_PrepareTex();
+#pragma cplusplus reset
+}
+
 #pragma global_optimizer reset
 s32 fn_8006F2B8(s32 arg0, s32 arg1) {
     M2C_UNK fn_80121630(s32);
@@ -8792,7 +8868,7 @@ void fn_80071B88(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
+void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetText(void *);
@@ -8800,95 +8876,44 @@ extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
 
-    struct TextObj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void *v6(void *) = 0;
-    };
-    struct WidthObj {
-        u8 pad[4];
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual void v12() = 0;
-        virtual void v13() = 0;
-        virtual void v14() = 0;
-        virtual void v15() = 0;
-        virtual void v16() = 0;
-        virtual void v17() = 0;
-        virtual void v18() = 0;
-        virtual void v19() = 0;
-        virtual s32 v20() = 0;
-    };
-    struct Self {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual void v12() = 0;
-        virtual void v13() = 0;
-        virtual void v14() = 0;
-        virtual void v15() = 0;
-        virtual void v16() = 0;
-        virtual void v17() = 0;
-        virtual void v18() = 0;
-        virtual void v19(void *, s32) = 0;
-        virtual void v20(void *) = 0;
-    };
-
-    Self *self;
+    void *self;
     void *param;
     void *win;
-    TextObj *obj;
-    void *text;
     s32 textWidth;
+    void *obj;
+    void **vtable;
+    void *text;
     s32 width;
     s32 diff;
 
     win = arg2;
     param = arg1;
-    self = (Self *)arg0;
+    self = arg0;
 
-    obj = *(TextObj **)((u8 *)win + 0x34);
-    text = obj->v6(win);
+    obj = *(void **)((u8 *)arg2 + 0x34);
+    vtable = *(void ***)obj;
+    text = ((void *(*)(void *, void *))vtable[6])(obj, arg2);
 
     textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
 
-    width = (s16)(*(WidthObj **)((u8 *)param + 0x3C))->v20();
+    obj = *(void **)((u8 *)param + 0x3C);
+    vtable = *(void ***)((u8 *)obj + 4);
+    width = (s16)((s32 (*)(void *))vtable[0x14])(obj);
 
     diff = width - textWidth;
     textWidth = (s32)(diff + ((u32)diff >> 31)) >> 1;
-
-    self->v19(param, diff);
+    vtable = *(void ***)self;
+    ((void (*)(void *, void *, s32))vtable[0x13])(self, param, diff);
 
     Prim2D_AddPrim(6);
     Prim2D_SetPos((f32)textWidth, (f32)*(s16 *)((u8 *)win + 0x32));
 
-    self->v20(win);
+    vtable = *(void ***)self;
+    ((void (*)(void *, void *))vtable[0x14])(self, win);
 
-    obj = *(TextObj **)((u8 *)win + 0x34);
-    text = obj->v6(win);
+    obj = *(void **)((u8 *)win + 0x34);
+    vtable = *(void ***)obj;
+    text = ((void *(*)(void *, void *))vtable[6])(obj, win);
 
     Prim2D_SetText(text);
     Prim2D_EndPrim();
