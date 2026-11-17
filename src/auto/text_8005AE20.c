@@ -326,7 +326,7 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 j;
     u32 result;
 
-    h = HashString(arg0);
+    h = HashString(*(u8 **)arg0);
     var_r0 = ColFromHash(h);
     col = (u8)var_r0;
     idx = -1;
@@ -5467,6 +5467,74 @@ s32 fn_80065EE8(void *arg0)
     return result;
 }
 
+#pragma optimization_level 2
+void fn_80065F48(void *arg0) {
+    u8 Str_MatchUnderscoreTag(void *, void *);
+    s32 Str_Cmp(void *, void *);
+    extern u8 gGUtilAssertMsg[];
+    s32 off;
+    s32 idx;
+    void *entry;
+    void *base;
+
+    if (*(u32 *)((u8 *)arg0 + 0xC) != 0) {
+        *(u32 *)((u8 *)arg0 + 0xC) += (u32)arg0;
+    }
+    if (*(u32 *)((u8 *)arg0 + 4) != 0) {
+        *(u32 *)((u8 *)arg0 + 4) += (u32)arg0;
+    }
+    idx = 0;
+    off = 0;
+    while (idx < *(s32 *)((u8 *)arg0 + 8)) {
+        base = *(void **)((u8 *)arg0 + 0xC);
+        entry = (u8 *)base + off;
+        if (*(s32 *)entry == -1) {
+            *(s32 *)entry = 0;
+        } else {
+            *(s32 *)entry = (s32)((u8 *)base + *(s32 *)entry * 0xF4);
+        }
+        if (*(s32 *)((u8 *)entry + 4) == -1) {
+            *(s32 *)((u8 *)entry + 4) = 0;
+        } else {
+            *(s32 *)((u8 *)entry + 4) =
+                (s32)((u8 *)*(void **)((u8 *)arg0 + 0xC) +
+                      *(s32 *)((u8 *)entry + 4) * 0xF4);
+        }
+        if (*(s32 *)((u8 *)entry + 8) == -1) {
+            *(s32 *)((u8 *)entry + 8) = 0;
+        } else {
+            *(s32 *)((u8 *)entry + 8) =
+                (s32)((u8 *)*(void **)((u8 *)arg0 + 0xC) +
+                      *(s32 *)((u8 *)entry + 8) * 0xF4);
+        }
+        if (*(void **)((u8 *)entry + 0xF0) != NULL) {
+            *(u32 *)((u8 *)entry + 0xF0) += *(u32 *)((u8 *)arg0 + 4);
+        }
+        *(s16 *)((u8 *)entry + 0xEC) = idx;
+        if (*(void **)((u8 *)entry + 0xF0) != NULL &&
+            Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0), NULL) != 0) {
+            *(u32 *)((u8 *)entry + 0xC) |= 0x80000000;
+            if (Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0),
+                                       gGUtilAssertMsg + 0x2A) != 0) {
+                *(u32 *)((u8 *)entry + 0xC) |= 0x10000000;
+            }
+            if (Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0),
+                                       gGUtilAssertMsg + 0x2D) != 0) {
+                *(u32 *)((u8 *)entry + 0xC) |= 0x20000000;
+            }
+        }
+        if (*(void **)((u8 *)entry + 0xF0) != NULL &&
+            Str_Cmp(*(void **)((u8 *)entry + 0xF0), gGUtilAssertMsg + 0x30) == 0) {
+            *(u32 *)((u8 *)entry + 0xC) |= 0x08000000;
+        }
+        if (*(s32 *)((u8 *)entry + 0xC) & 0x40) {
+            *(s32 *)((u8 *)entry + 0xC) |= 0x10;
+        }
+        off += 0xF4;
+        idx += 1;
+    }
+}
+#pragma optimization_level reset
 void fn_80066124(u32 arg0) {
 extern void *gCamera;
 u8 *p=(u8 *)arg0;
@@ -9564,6 +9632,99 @@ void MsgWin_OpenMulti(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         lbl_80367358[1] = arg3;
     }
     Ui_CreateMenu(lbl_80311CB8, arg0, 0);
+}
+
+void fn_8006FE44(void *arg0, void *arg1) {
+    void *GfxEnt_Get(u8);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 fn_80010428(u8 **, s32, f32);
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[4];
+        virtual void *v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual s16 v17() = 0;
+        virtual s16 v18() = 0;
+    };
+    struct TextObj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void *v6(void *) = 0;
+    };
+    u8 *self = (u8 *)arg0;
+    u8 *group = (u8 *)arg1;
+    s32 i;
+    s16 w;
+    s16 step;
+    s16 y;
+    s16 x;
+    s8 count;
+    u8 *text;
+    s16 lineW;
+    s16 maxLine;
+    void *ent1;
+    void *ent2;
+    TextObj *obj;
+
+    i = 0;
+    *(s16 *)(self + 8) = 0;
+    while (i < (s8)group[0x60]) {
+        ent1 = GfxEnt_Get(group[i + 0x40]);
+        ent2 = GfxEnt_Get(group[i + 0x40]);
+        obj = *(TextObj **)((u8 *)ent2 + 0x34);
+        w = (s16)Text_MeasureWidth(obj->v6(ent1), -1, 1.0f);
+        if (w >= *(s16 *)(self + 8)) {
+            *(s16 *)(self + 8) = w;
+        }
+        i += 1;
+    }
+    count = (s8)group[0x60];
+    step = (s16)((s32)((Obj *)arg0)->v18() / ((s32)count + 1));
+    x = step;
+    y = ((Obj *)arg0)->v17();
+    for (i = 0; i < (s32)count; i++) {
+        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x30) = x;
+        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x32) = y;
+        x = (s16)(x + step);
+    }
+    text = (u8 *)((Obj *)arg0)->v0();
+    lineW = 0;
+    maxLine = -1;
+    while (*text != 0) {
+        if ((s8)*text == 10) {
+            if (lineW > maxLine) {
+                maxLine = lineW;
+            }
+            lineW = 0;
+            text += 1;
+        } else {
+            lineW = (s16)(lineW + fn_80010428(&text, -1, 1.0f));
+        }
+    }
+    if (lineW > maxLine) {
+        maxLine = lineW;
+    }
+    *(s16 *)(self + 0x10) = (s16)((s32)(((Obj *)arg0)->v18() - maxLine) >> 1);
+#pragma cplusplus reset
 }
 
 void MsgWin_OpenSingle(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
