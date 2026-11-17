@@ -18244,6 +18244,7 @@ void Battle_ScoreTarget(s32 arg0, void *arg1) {
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
     *(s32 *)((u8 *)out + 8) = score;
 }
+#pragma optimization_level reset
 s32 fn_800F6B10(void *arg0, u8 arg1) {
 void **BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
