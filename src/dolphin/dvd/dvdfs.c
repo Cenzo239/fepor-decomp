@@ -513,6 +513,8 @@ void fn_8020CED0(void) {
 
 }
 
+#pragma dont_inline on
+#pragma optimization_level 3
 void DVDInit(void) {
  extern s32 DVDInitialized_803685DC;
  extern const char *__DVDVersion;
@@ -526,7 +528,7 @@ void DVDInit(void) {
  void OSReport(const char*,...);
  if(DVDInitialized_803685DC==0) {
  OSRegisterVersion(__DVDVersion); DVDInitialized_803685DC=1;
- { register void (*init)(void)=__DVDFSInit; init(); } __DVDClearWaitingQueue(); __DVDInitWA();
+ __DVDFSInit(); __DVDClearWaitingQueue(); __DVDInitWA();
  MotorState_803685D8=0; bootInfo_803685A0=(u8*)0x80000000; IDShouldBe_8036859C=bootInfo_803685A0;
  __OSSetInterruptHandler(0x15,__DVDInterruptHandler); __OSUnmaskInterrupts(0x400); OSInitThreadQueue((void*)&__DVDThreadQueue);
  *(volatile u32*)0xCC006000=0x2a; *(volatile u32*)0xCC006004=0;
@@ -534,8 +536,8 @@ void DVDInit(void) {
  else if(*(u32*)(bootInfo_803685A0+0x20)!=0x0D15EA5E) FirstTimeInBootrom_803685D4=1;
  }
 }
-
-#pragma global_optimizer off
+#pragma optimization_level reset
+#pragma dont_inline reset
 void fn_8020CFAC(void) {
     extern void (*lbl_803685E0)(void *);
     extern u8 *bootInfo_803685A0;
@@ -939,6 +941,7 @@ void fn_8020D5E4(u32 arg0) {
     fn_8020DD7C();
 }
 
+#pragma global_optimizer off
 void fn_8020D724(void) {
     /* stateCheckID */
     extern u16 BB2_80339F40[];
@@ -955,28 +958,29 @@ void fn_8020D724(void) {
     void DVDLowStopMotor(void (*)(u32));
     void DCInvalidateRange(void *, u32);
 
-    u8 *diskID;
+    
 
-    diskID = (u8 *)BB2_80339F40 + 0x20;
-
-    if (CurrCommand_803685B4 == 3) {
+    u8 *base=(u8*)BB2_80339F40;
+    switch (CurrCommand_803685B4) {
+    case 3:
         if (fn_8020F9E8(
-                diskID,
+                (base + 0x20),
                 *(u8 **)((u8 *)executing_80368598 + 0x24))) {
 
-            memcpy(IDShouldBe_8036859C, diskID, 0x20);
+            memcpy(IDShouldBe_8036859C, (base + 0x20), 0x20);
 
             ((DVDReadyCommand *)executing_80368598)->state = 1;
 
-            DCInvalidateRange(BB2_80339F40, 0x20);
+            DCInvalidateRange(base, 0x20);
 
             lbl_803685E0 = (void (*)(void *))fn_8020D838;
             fn_8020D838(executing_80368598);
         } else {
             DVDLowStopMotor(fn_8020D90C);
         }
-    } else {
-        if (fn_80231944(diskID, IDShouldBe_8036859C, 0x20) != 0) {
+    break;
+    default:
+        if (fn_80231944((base + 0x20), IDShouldBe_8036859C, 0x20) != 0) {
             DVDLowStopMotor(fn_8020D90C);
         } else {
             lbl_803685E0 = (void (*)(void *))fn_8020D804;
@@ -984,7 +988,7 @@ void fn_8020D724(void) {
         }
     }
 }
-
+#pragma global_optimizer on
 void fn_8020D804(void) {
       /* DVD Disc ID Check */
       void fn_8020C1A4(u8, s32, void *);
@@ -1096,6 +1100,7 @@ void fn_8020D90C(u32 arg0) {
     fn_8020DD7C();
 }
 
+#pragma optimization_level 3
 void fn_8020DA08(u32 arg0) {
     void __DVDStoreErrorCode(u32);
     void DVDReset(void);
@@ -1125,7 +1130,7 @@ void fn_8020DA08(u32 arg0) {
         fn_8020BF58((void *)fn_8020D27C);
     }
 }
-
+#pragma optimization_level reset
 void fn_8020DAE0(u32 arg0) {
     void __DVDStoreErrorCode(u32);
     void DVDReset(void);
@@ -1278,6 +1283,7 @@ void cbForStateMotorStopped(void) {
     void __DVDClearWaitingQueue(void);
     u8 *bb2;
     DVDReadyCommand *block;
+    u32 pad[2];
     bb2 = (u8 *)BB2_80339F40;
     *(u32 *)0xCC006004=0;
     ((DVDReadyCommand *)executing_80368598)->state=3;
@@ -2729,6 +2735,63 @@ void VIWaitForRetrace(void) {
         OSRestoreInterrupts(enabled);
     }
 }
+
+void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 nonInterlace) {
+    extern u8 lbl_8033A068[];
+    s32 ni;
+    u8 *v;
+    u16 equOfs;
+    u16 fldOfs;
+    s32 h0000;
+    s32 v0000;
+    s32 h0100;
+    s32 v0100;
+    s32 tmp;
+    u16 half;
+
+    ni = nonInterlace;
+    v = lbl_8033A068;
+    if (*(u16 *)(v + 0x6C) & 1) {
+        equOfs = 1;
+        fldOfs = 2;
+    } else {
+        equOfs = 2;
+        fldOfs = 1;
+    }
+    if ((arg0 % 2) == 0) {
+        tmp = fldOfs * arg0;
+        h0000 = arg4 + tmp;
+        v0000 = arg6 + (fldOfs * ((equOfs * arg3 - arg1) - arg0));
+        h0100 = arg5 + tmp;
+        v0100 = arg7 + (fldOfs * ((equOfs * arg3 - arg1) - arg0));
+    } else {
+        tmp = fldOfs * arg0;
+        h0000 = arg5 + tmp;
+        v0000 = arg7 + (fldOfs * ((equOfs * arg3 - arg1) - arg0));
+        h0100 = arg4 + tmp;
+        v0100 = arg6 + (fldOfs * ((equOfs * arg3 - arg1) - arg0));
+    }
+    half = (u16)(arg1 / equOfs);
+    if (ni != 0) {
+        tmp = (half * 2) - 2;
+        h0000 += tmp;
+        h0100 += tmp;
+        half = 0;
+        v0000 += 2;
+        v0100 += 2;
+    }
+    *(u16 *)(v + 0) = (u16)(arg2 | ((half * 0x10) & 0xFFFF0));
+    *(u64 *)&lbl_80368630 |= 0x8000000000000000ULL;
+    *(u16 *)(v + 0xE) = (u16)h0000;
+    *(u64 *)&lbl_80368630 |= 0x0100000000000000ULL;
+    *(u16 *)(v + 0xC) = (u16)v0000;
+    *(u64 *)&lbl_80368630 |= 0x0200000000000000ULL;
+    *(u16 *)(v + 0x12) = (u16)h0100;
+    *(u64 *)&lbl_80368630 |= 0x0040000000000000ULL;
+    *(u16 *)(v + 0x10) = (u16)v0100;
+    *(u64 *)&lbl_80368630 |= 0x0080000000000000ULL;
+}
+
 #pragma peephole on
 void VIConfigure(void *arg0) {
     BOOL OSDisableInterrupts(void);
