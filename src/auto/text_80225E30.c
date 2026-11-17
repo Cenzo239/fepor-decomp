@@ -319,21 +319,37 @@ s32 fn_8022632C(void *arg0, u32 *arg1, s32 arg2) {
 #pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
-s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2) {
- s32 error; u32 count; s32 i=0; s32 result=0;
- while (result==0 && i<arg2) {
- u32 pos=*(u32 *)((u8 *)arg0+0xC);
- u32 remaining;
- count=1; error=0;
- remaining=*(u32 *)((u8 *)arg0+8)-pos;
- if (remaining>=count) { } else { error=0x302; count=remaining; }
- fn_80003488(arg1+i, &((u8 *)arg0)[pos+0x10], count);
- *(u32 *)((u8 *)arg0+0xC)+=count;
- result=error; i++;
- }
- return result;
-}
+#pragma use_lmw_stmw on
+s32 fn_8022641C(void *arg0, s32 arg1, s32 arg2)
+{
+    void fn_80003488(void *, void *, s32);
+    s32 error;
+    u32 count;
+    s32 i;
+    s32 result;
 
+    i = 0;
+    result = 0;
+    while (result == 0 && i < arg2) {
+        u32 pos = *(u32 *)((u8 *)arg0 + 0xC);
+        count = 0;
+        count += 1;
+        error = 0;
+        if (count > (*(u32 *)((u8 *)arg0 + 8) - pos)) {
+            error = 0x302;
+            count = *(u32 *)((u8 *)arg0 + 8) - pos;
+        }
+        fn_80003488((void *)(arg1 + i), (void *)((u8 *)arg0 + 0x10 + pos), count);
+        {
+            u32 tmp = *(u32 *)((u8 *)arg0 + 0xC);
+            result = error;
+            i += 1;
+            *(u32 *)((u8 *)arg0 + 0xC) = tmp + count;
+        }
+    }
+    return result;
+}
+#pragma use_lmw_stmw reset
 s32 fn_802264B4(void *arg0, u8 *arg1) {
     extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, s32);
@@ -1643,7 +1659,7 @@ void TRKExceptionHandler(u16 exception) {
 void TRKInterruptHandlerEnableInterrupts(void) {
     extern u8 gTRKState[];
     void TRKPostInterruptEvent(void);
-    (void)gTRKState;
+    (void)gTRKState[0];
     TRKPostInterruptEvent();
 }
 
@@ -2245,8 +2261,15 @@ void fn_8022A4E8(void) {
 }
 
 void InitMetroTRK_BBA(void) {
-    // Function appears to be part of the Target Resident Kernel debugging subsystem initialization
-    return;
+    void TRKSaveExtended1Block(void);
+    s32 InitMetroTRKCommTable(s32);
+    void TRK_main(void);
+
+    TRKSaveExtended1Block();
+    if (InitMetroTRKCommTable(2) == 1) {
+        return;
+    }
+    TRK_main();
 }
 
 void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
