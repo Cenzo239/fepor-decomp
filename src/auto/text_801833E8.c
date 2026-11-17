@@ -8233,6 +8233,100 @@ extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 
+static void *operator new(u32, void *p) { return p; }
+
+struct UiPanelObj {
+    virtual void m08() = 0;
+    virtual void m0C() = 0;
+    virtual void m10() = 0;
+    virtual void m14() = 0;
+    virtual void m18() = 0;
+    virtual void m1C() = 0;
+    virtual void m20() = 0;
+    virtual void m24() = 0;
+    virtual void m28() = 0;
+};
+
+struct UiPanelBase {
+    UiPanelBase(s16 a, s16 b, s16 c);
+};
+
+struct UiPanelMid : UiPanelBase {
+    UiPanelMid(s16 a, s16 b, s16 c);
+};
+
+struct UiPanelFinal : UiPanelMid {
+    UiPanelFinal(s16 a, s16 b, s16 c);
+};
+
+UiPanelBase::UiPanelBase(s16 a, s16 b, s16 c) {
+    void fn_80142060(void *);
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern u8 lbl_80292208[];
+    extern f32 lbl_8036AE20;
+    s32 z = 0;
+    f32 one = lbl_8036AE20;
+    s32 e1 = (s16)a;
+    s32 e2 = (s16)b;
+    *(void **)this = lbl_8028FDB0;
+    *(s32 *)((u8 *)this + 4) = z;
+    *(void **)this = lbl_80292230;
+    *(s16 *)((u8 *)this + 8) = -1;
+    *(s16 *)((u8 *)this + 0xA) = a;
+    *(s16 *)((u8 *)this + 0xC) = b;
+    *(s16 *)((u8 *)this + 0xE) = (s16)(e1 + 0x108);
+    *(s16 *)((u8 *)this + 0x10) = (s16)(e2 + 0x88);
+    *(s16 *)((u8 *)this + 0x12) = z;
+    *(s16 *)((u8 *)this + 0x14) = z;
+    *(s16 *)((u8 *)this + 0x16) = 0x108;
+    *(s16 *)((u8 *)this + 0x18) = 0x88;
+    *(s16 *)((u8 *)this + 0x1A) = z;
+    *(s16 *)((u8 *)this + 0x1C) = z;
+    *(u8 *)((u8 *)this + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)this + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)this + 0x20) = 0xFF;
+    *(u8 *)((u8 *)this + 0x21) = 0xFF;
+    *(s16 *)((u8 *)this + 0x22) = c;
+    *(s16 *)((u8 *)this + 0x24) = z;
+    *(f32 *)((u8 *)this + 0x28) = one;
+    *(f32 *)((u8 *)this + 0x2C) = one;
+    *(f32 *)((u8 *)this + 0x30) = one;
+    *(s32 *)((u8 *)this + 0x34) = z;
+    *(s32 *)((u8 *)this + 0x38) = z;
+    *(void **)this = lbl_80292208;
+    fn_80142060((u8 *)this + 0x3C);
+}
+
+UiPanelMid::UiPanelMid(s16 a, s16 b, s16 c) : UiPanelBase(a, b, c) {
+    extern u8 lbl_80293BB8[];
+    *(void **)this = lbl_80293BB8;
+    *(u8 *)((u8 *)this + 0x48) = 1;
+    *(u8 *)((u8 *)this + 0x49) = 0;
+    *(u8 *)((u8 *)this + 0x4A) = 1;
+    *(u8 *)((u8 *)this + 0x4B) = 0;
+    *(s16 *)((u8 *)this + 0x50) = -1;
+    *(s16 *)((u8 *)this + 0x52) = -1;
+    *(s16 *)((u8 *)this + 0x54) = 0x20;
+    *(s32 *)((u8 *)this + 0x58) = 0;
+    *(s32 *)((u8 *)this + 0x5C) = 0;
+    *(s32 *)((u8 *)this + 0x60) = 3;
+    *(s16 *)((u8 *)this + 0x64) = 0x14;
+    *(s16 *)((u8 *)this + 0x66) = 0;
+    *(s32 *)((u8 *)this + 0x70) = 0;
+    ((UiPanelObj *)this)->m28();
+}
+
+UiPanelFinal::UiPanelFinal(s16 a, s16 b, s16 c) : UiPanelMid(a, b, c) {
+    extern u8 lbl_80293B74[];
+    *(void **)this = lbl_80293B74;
+    *(s16 *)((u8 *)this + 0x64) = 0x18;
+    *(s16 *)((u8 *)this + 0x66) = 0xA;
+    *(s16 *)((u8 *)this + 0x54) = 0x1C;
+    *(s32 *)((u8 *)this + 0x60) = 1;
+    ((UiPanelObj *)this)->m28();
+}
+
 extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -8255,10 +8349,8 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 z = 0;
     f32 one = lbl_8036AE20;
     void *self = arg0;
-    void *tmp = (void *)((u32)self + 0);
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
-    void *mid;
 
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = z;
@@ -8286,24 +8378,23 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x34) = z;
     *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)self = lbl_80292208;
-    fn_80142060((u8 *)tmp + 0x3C);
-    mid = (void *)((u32)arg0 | 0);
+    fn_80142060((u8 *)arg0 + 0x3C);
 
-    *(void **)mid = lbl_80293BB8;
-    *(u8 *)((u8 *)mid + 0x48) = 1;
-    *(u8 *)((u8 *)mid + 0x49) = 0;
-    *(u8 *)((u8 *)mid + 0x4A) = 1;
-    *(u8 *)((u8 *)mid + 0x4B) = 0;
-    *(s16 *)((u8 *)mid + 0x50) = -1;
-    *(s16 *)((u8 *)mid + 0x52) = -1;
-    *(s16 *)((u8 *)mid + 0x54) = 0x20;
-    *(s32 *)((u8 *)mid + 0x58) = 0;
-    *(s32 *)((u8 *)mid + 0x5C) = 0;
-    *(s32 *)((u8 *)mid + 0x60) = 3;
-    *(s16 *)((u8 *)mid + 0x64) = 0x14;
-    *(s16 *)((u8 *)mid + 0x66) = 0;
-    *(s32 *)((u8 *)mid + 0x70) = 0;
-    ((Obj *)mid)->m28();
+    *(void **)self = lbl_80293BB8;
+    *(u8 *)((u8 *)self + 0x48) = 1;
+    *(u8 *)((u8 *)self + 0x49) = 0;
+    *(u8 *)((u8 *)self + 0x4A) = 1;
+    *(u8 *)((u8 *)self + 0x4B) = 0;
+    *(s16 *)((u8 *)self + 0x50) = -1;
+    *(s16 *)((u8 *)self + 0x52) = -1;
+    *(s16 *)((u8 *)self + 0x54) = 0x20;
+    *(s32 *)((u8 *)self + 0x58) = 0;
+    *(s32 *)((u8 *)self + 0x5C) = 0;
+    *(s32 *)((u8 *)self + 0x60) = 3;
+    *(s16 *)((u8 *)self + 0x64) = 0x14;
+    *(s16 *)((u8 *)self + 0x66) = 0;
+    *(s32 *)((u8 *)self + 0x70) = 0;
+    ((Obj *)self)->m28();
 
     *(void **)self = lbl_80293B74;
     *(s16 *)((u8 *)self + 0x64) = 0x18;
