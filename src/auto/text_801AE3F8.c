@@ -1422,8 +1422,8 @@ void fn_801B0D6C(void *arg0) {
     void Str_CopyPad(void *, s32, s32);
     void fn_801CE11C(void *, s32, s32, void *);
     void TalkUi_ShowMsg(s32);
-    u32 fn_8013FF94(void *, s32, s32, void *);
-    void fn_801658DC(u32, s32);
+    u32 Ui_FindChild(void *, s32, s32, void *);
+    void Ui_SetWidgetText(u32, s32);
     struct Obj48 { u8 pad[0x60]; void *p60; };
     s32 saved;
     u8 b;
@@ -1441,9 +1441,9 @@ void fn_801B0D6C(void *arg0) {
     TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x24));
     obj6c = *(void **)((u8 *)arg0 + 0x6C);
     saved = *(s32 *)((u8 *)obj6c + 0x6C);
-    res = fn_8013FF94(arg0, -0x1000, 0, obj6c);
+    res = Ui_FindChild(arg0, -0x1000, 0, obj6c);
     if (res != 0U) {
-        fn_801658DC(res, saved);
+        Ui_SetWidgetText(res, saved);
     }
 }
 
