@@ -72,6 +72,41 @@ u8 fn_800981D0(void **arg0) {
     return M2C_FIELD(temp_r3, u8 *, 8);
 }
 
+void fn_8009822C(void *out,void **ref){
+void fn_8004E670(void *,void *,s32);
+void fn_8005A1E8(s32,void *,void *);
+f32 Map_SampleHeight(void *,f32,f32);
+extern u8 gBattleMap[];
+extern f32 lbl_803697D0;
+struct Position {f32 x,y,z;} result,model,copy,pos;
+void *unit=*ref,*p;
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+if(p){
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+fn_8004E670(&model,p,1);
+result.x=model.x;result.y=model.y;result.z=model.z;
+}else{
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+if(p){
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+pos.x=M2C_FIELD(p,f32*,4);
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+pos.y=M2C_FIELD(p,f32*,8);
+if(unit)p=M2C_FIELD(unit,void**,0x280);else p=0;
+pos.z=M2C_FIELD(p,f32*,12);
+}else{
+f32 x,y;
+s32 ix=M2C_FIELD(unit,s8*,0x19e),iy=M2C_FIELD(unit,s8*,0x19f);
+x=lbl_803697D0+ix;y=lbl_803697D0+iy;
+pos.x=x;pos.y=y;pos.z=Map_SampleHeight(gBattleMap,x,y);
+}
+copy=pos;
+result.x=copy.x;result.y=copy.y;result.z=copy.z;
+fn_8005A1E8(0,&result,&result);
+}
+*(struct Position*)out=result;
+}
+
 void fn_800983E0(void *arg0, void **arg1) {
 f32 Map_SampleHeight(void *, f32, f32, f32);
 extern u8 gBattleMap[];
