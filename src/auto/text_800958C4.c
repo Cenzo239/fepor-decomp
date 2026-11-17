@@ -62,3 +62,73 @@ s32 fn_800958C4(s32 arg0) {
     return 0;
 }
 
+void *fn_80095934(s32 *arg0, s32 arg1, s32 arg2) {
+extern void **lbl_80367500;
+extern u8 gBattle[];
+extern char gEventCmdStrings[];
+void *Item_GetFlagsPtr(void *);
+void *fn_80055204(s32, s32);
+void *item;
+u8 *unit;
+s32 kind;
+void *result;
+
+unit = *lbl_80367500;
+if (!unit)
+    item = 0;
+else {
+    item = unit + 0x28C;
+    if (!*(u32 *)item)
+        item = 0;
+}
+if (item) {
+    if (*(u64 *)Item_GetFlagsPtr(item) & 2ULL) {
+        kind = 1;
+        goto done;
+    }
+    if (*(u64 *)Item_GetFlagsPtr(item) & 0x800000000ULL) {
+        kind = 2;
+        goto done;
+    }
+    if (*(u64 *)Item_GetFlagsPtr(item) & 0x8000000000ULL) {
+        kind = 1;
+        goto done;
+    }
+    if (*(s32 *)(gBattle + 0xCA8) > 1) {
+        if (*(u64 *)Item_GetFlagsPtr(item) & 0x40ULL) {
+            kind = 1;
+            goto done;
+        }
+        if (*(u64 *)Item_GetFlagsPtr(item) & 0x4000000000ULL) {
+            kind = 3;
+            goto done;
+        }
+    }
+}
+kind = 0;
+done:
+if (kind == 1)
+    return 0;
+if (arg1 == 0x52)
+    return 0;
+if (arg2 & 0x01000000)
+    return gEventCmdStrings + 0xDB;
+if (arg2 & 0x20000)
+    return gEventCmdStrings + 0xED;
+if (arg2 & 2)
+    return gEventCmdStrings + 0xFA;
+if (arg0 != 0) {
+    result = fn_80055204(*arg0, 1);
+    if (result != 0)
+        return result;
+}
+if (arg2 & 0x40)
+    return gEventCmdStrings + 0x105;
+if (arg1 == 0x51)
+    return gEventCmdStrings + 0x114;
+result = 0;
+if (arg1 == 0x50)
+    result = gEventCmdStrings + 0xFA;
+return result;
+}
+
