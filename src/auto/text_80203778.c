@@ -1291,22 +1291,23 @@ u32 fn_80205390(s32 arg0, s32 arg1, s32 arg2) {
 extern u32 __SPR_392;
 void fn_8020543C(s32 arg0) { s32 value; do { value = ((u32)__SPR_392 >> 24) & 15; } while(value > arg0); }
 
+#pragma peephole off
 void L2GlobalInvalidate(void) {
     u32 PPCMfl2cr(void);
     void PPCMtl2cr(u32);
     void DBPrintf(char *, ...);
-    u32 status;
+
     __sync();
-    PPCMtl2cr(PPCMfl2cr() & 0x7FFFFFFF);
+    PPCMtl2cr(PPCMfl2cr() & ~0x80000000);
     __sync();
     PPCMtl2cr(PPCMfl2cr() | 0x00200000);
-    for (status = PPCMfl2cr() & 1U; status != 0; status = PPCMfl2cr() & 1U) {}
+    while (PPCMfl2cr() & 1) {
+    }
     PPCMtl2cr(PPCMfl2cr() & ~0x00200000);
-    for (status = PPCMfl2cr() & 1U; status != 0; status = PPCMfl2cr() & 1U)
-        DBPrintf(">>> L2 INVALIDATE : SHOULD NEVER HAPPEN\n");
+    while (PPCMfl2cr() & 1) {
+        DBPrintf((char *)lbl_8029BBB0);
+    }
 }
-
-#pragma peephole off
 void DMAErrorHandler(u8 error, void *context, ...) {
     u32 hid2;
     void *ctx;
