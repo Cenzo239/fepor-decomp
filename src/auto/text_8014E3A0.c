@@ -2521,16 +2521,35 @@ void Ui_DrawPanelDecor(s16 x, s16 y, s16 boxW, s16 boxH, s32 unused, s32 flags) 
 }
 #pragma use_lmw_stmw on
 
-s32 fn_8015512C(s32 arg0, s32 arg1) {
-    s32 temp;
-    
-    if (arg0 == 0 || arg1 == 0) {
-        return 0;
-    }
-    
-    temp = arg0 * arg1;
-    
-    return temp;
+void fn_8015512C(s16 arg0,s16 arg1,u8 arg2,s32 arg3) {
+void Ui_LoadAtlasTex(s32,void *,s32);
+void Prim2D_Begin(void); void Prim2D_SetTex(void *,u16);
+void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32);
+void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
+void Prim2D_SwapUvU(void); void Prim2D_SwapUvV(void);
+void Prim2D_RotateUvCcw(void); void Prim2D_RotateUvCw(void); void Prim2D_EndPrim(void);
+extern s32 gUiTexAtlas;
+extern u8 gUiTexScratch[64];
+extern struct {s16 x,y,right,bottom;} lbl_80367FA0;
+s16 x=arg0,y=arg1;
+u8 flip=arg2;
+s32 flags=arg3;
+s16 h,w;
+s16 *rect;
+s32 uv;
+Ui_LoadAtlasTex(gUiTexAtlas,gUiTexScratch,0x22);
+rect=(s16 *)&lbl_80367FA0;
+h=(s16)(rect[3]-rect[1]);
+w=(s16)(rect[2]-lbl_80367FA0.x);
+if(w!=0 && h!=0) {
+Prim2D_Begin(); Prim2D_SetTex(gUiTexScratch,(u16)(flags|1)); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
+Prim2D_SetRectUv((f32)x,(f32)y,(f32)lbl_80367FA0.x,(f32)rect[1],(f32)w,(f32)h);
+uv=2;if(flip)uv=0;if(uv&1)Prim2D_SwapUvU();
+uv=2;if(flip)uv=0;if(uv&2)Prim2D_SwapUvV();
+uv=2;if(flip)uv=0;if(uv&0x100)Prim2D_RotateUvCcw();
+uv=2;if(flip)uv=0;if(uv&0x200)Prim2D_RotateUvCw();
+Prim2D_EndPrim();
+}
 }
 
 void fn_801552D4(s16 arg0,s16 arg1,u8 arg2,s32 arg3) {
