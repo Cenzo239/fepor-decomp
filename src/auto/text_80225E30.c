@@ -463,25 +463,45 @@ s32 TRKAppendBuffer(void *arg0, u8 *arg1, s32 arg2) {
 }
 
 s32 fn_80226700(void *arg0, u64 value) {
- extern u8 gTRKBigEndian[];
- void fn_80003488(void *, void *, u32);
- u8 rev[8]; u8 *src; s32 result; u32 size; s32 pos; u32 remaining;
- if (*(s32 *)gTRKBigEndian) src=(u8 *)&value;
- else {
- src=rev;
- rev[0]=((u8 *)&value)[7]; rev[1]=((u8 *)&value)[6];
- rev[2]=((u8 *)&value)[5]; rev[3]=((u8 *)&value)[4];
- rev[4]=((u8 *)&value)[3]; rev[5]=((u8 *)&value)[2];
- rev[6]=((u8 *)&value)[1]; rev[7]=((u8 *)&value)[0];
- }
- pos=*(u32 *)((u8 *)arg0+12); size=8; result=0;
- remaining=0x880-pos;
- if(remaining<8) {result=0x301;size=remaining;}
- if(size==1) *((u8 *)arg0+pos+16)=*src;
- else fn_80003488((void *)((u32)arg0+(pos+16)),src,size);
- *(u32 *)((u8 *)arg0+12)+=size;
- *(u32 *)((u8 *)arg0+8)=*(u32 *)((u8 *)arg0+12);
- return result;
+    extern u8 gTRKBigEndian[];
+    void fn_80003488(void *, void *, s32);
+    u8 rev[8];
+    u8 *src;
+    s32 result;
+    u32 size;
+    s32 pos;
+    u32 remaining;
+
+    if (*(s32 *)gTRKBigEndian) {
+        src = (u8 *)&value;
+    } else {
+        src = rev;
+        rev[0] = ((u8 *)&value)[7];
+        rev[1] = ((u8 *)&value)[6];
+        rev[2] = ((u8 *)&value)[5];
+        rev[3] = ((u8 *)&value)[4];
+        rev[4] = ((u8 *)&value)[3];
+        rev[5] = ((u8 *)&value)[2];
+        rev[6] = ((u8 *)&value)[1];
+        rev[7] = ((u8 *)&value)[0];
+    }
+    pos = *(s32 *)((u8 *)arg0 + 0xC);
+    size = 8;
+    result = 0;
+    remaining = 0x880 - pos;
+    if (remaining < 8) {
+        result = 0x301;
+        size = remaining;
+    }
+    if (size == 1) {
+        pos = (s32)arg0 + pos;
+        *(u8 *)(pos + 0x10) = *src;
+    } else {
+        fn_80003488((u8 *)((s32)arg0 + pos + 0x10), src, size);
+    }
+    *(s32 *)((u8 *)arg0 + 0xC) = *(s32 *)((u8 *)arg0 + 0xC) + size;
+    *(s32 *)((u8 *)arg0 + 0x8) = *(s32 *)((u8 *)arg0 + 0xC);
+    return result;
 }
 
 s32 fn_802267FC(void *arg0, void *arg1, u32 length)
