@@ -6133,7 +6133,7 @@ s32 fn_800D6F0C(void) {
     return 0;
 }
 
-#pragma dont_inline on
+#pragma scheduling off
 s32 fn_800D6F34(void)
 {
     extern u8 *lbl_803678A8;
@@ -6153,22 +6153,16 @@ s32 fn_800D6F34(void)
     fn_800D758C(lbl_80367898);
 
     obj = lbl_80367898;
-
     result = fn_8011C9E4(*(void **)(obj + 0x428));
     result = (result != 0);
 
     obj = lbl_80367898;
-
-    fn_800DAAC0(
-        fn_800DC3B0(*(void **)(obj + 0x424)),
-        result
-    );
-
+    fn_800DAAC0(fn_800DC3B0(*(void **)(obj + 0x424)), result);
     fn_800DA2CC(lbl_803678A8);
 
     return 0;
 }
-#pragma dont_inline reset
+#pragma scheduling reset
 void fn_800D6FA4(void *arg0) {
     M2C_UNK String_Copy(M2C_UNK *);
     M2C_UNK fn_800DC518(s32, M2C_UNK *, M2C_UNK);
@@ -9343,11 +9337,11 @@ void fn_800DF50C(f32 *arg0) {
     f32 vals[4];
 
     vals[0] = gVec3InterpZero;
-    vals[3] = lbl_80369EBC;
+    vals[1] = lbl_80369EC4;
     arg0[5] = vals[0];
     vals[2] = lbl_80369EC0;
     arg0[4] = vals[0];
-    vals[1] = lbl_80369EC4;
+    vals[3] = lbl_80369EBC;
     arg0[3] = vals[0];
     arg0[2] = vals[0];
     arg0[1] = vals[0];
@@ -11551,14 +11545,14 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
 u8 fn_800E49D0(void) {
     u8 *Light_GetChannel(s32);
     u8 *p;
-    s32 t2;
-    s32 t6;
+    s32 s012;
+    s32 s456;
     s32 result;
 
     p = Light_GetChannel(0);
-    t2 = p[2];
-    t6 = p[6];
-    result = (((p[4] + (t6 + p[5])) / 3) * (0xFF - ((p[0] + (t2 + p[1])) / 3))) / 255;
+    s012 = p[0] + p[1] + p[2];
+    s456 = p[4] + p[5] + p[6];
+    result = ((s456 / 3) * (0xFF - (s012 / 3))) / 255;
     if (result < 0) {
         result = 0;
     }
@@ -15668,6 +15662,24 @@ s32 fn_800EE490(void) {
     return result;
 }
 
+void fn_800EE6BC(void) {
+    extern u32 lbl_803678D0;
+    extern u8 lbl_803678D4[8];
+    void fn_800C4588();
+    if ((u32) lbl_803678D0 != 0U) {
+        fn_800C4588();
+        lbl_803678D0 = 0U;
+    }
+    if ((u32) M2C_FIELD(&lbl_803678D4, u32 *, 0) != 0U) {
+        fn_800C4588();
+        M2C_FIELD(&lbl_803678D4, u32 *, 0) = 0U;
+    }
+    if ((u32) M2C_FIELD(&lbl_803678D4, u32 *, 4) != 0U) {
+        fn_800C4588();
+        M2C_FIELD(&lbl_803678D4, u32 *, 4) = 0U;
+    }
+}
+
 s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -18502,7 +18514,6 @@ extern f64 lbl_8036A098;
 #pragma scheduling on
 f32 fn_800F738C(u8 arg0, f32 farg0) {
     f64 fn_802387C8(f64, f64);
-    extern f32 lbl_8036A07C;
     extern f32 lbl_8036A080;
     extern f64 lbl_8036A088;
     extern f64 lbl_8036A098;
@@ -22262,18 +22273,18 @@ void fn_800FF918(s32 arg0) {
 }
 
 void fn_800FF948(void *arg0) {
-    void Process_ClearFunc(void *);
+    void fn_8000C188(void *);
     void fn_800F20E0(void);
-    extern void *gPadInput;
-    void *self = arg0;
+    extern void *lbl_80367240;
+    s32 *counter;
 
-    if ((*(u32 *)((u8 *)gPadInput + 4) & 0x1100) == 0
-        && *(s32 *)((u8 *)self + 0x64) > 0x2D) {
-        arg0 = self;
-        Process_ClearFunc(arg0);
+    if ((*(u32 *)((u8 *)lbl_80367240 + 4) & 0x1100) == 0
+        && *(s32 *)((u8 *)arg0 + 0x64) > 0x2D) {
+        fn_8000C188(arg0);
     } else {
         fn_800F20E0();
-        *(s32 *)((u8 *)self + 0x64) = *(s32 *)((u8 *)self + 0x64) + 1;
+        counter = (s32 *)((u8 *)arg0 + 0x64);
+        *counter = *counter + 1;
     }
 }
 
