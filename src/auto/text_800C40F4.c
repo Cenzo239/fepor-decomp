@@ -13912,6 +13912,7 @@ extern "C" void fn_800E7A38(void *arg0, s32 arg1) {
         virtual void v3() = 0;
         virtual void *v4(s32) = 0;
     };
+    void fn_800DF638(void *, s32);
     s32 i;
 
     *(u8 *)((char *)arg0 + 0x2C) = 0;
