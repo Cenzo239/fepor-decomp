@@ -562,6 +562,26 @@ u8 fn_80096C78(s32 arg0)
   return (u8) (count >= 2);
 }
 
+s32 fn_80096D64(void) {
+extern void **lbl_80367500;
+extern u8 gBattle[];
+void *Item_GetFlagsPtr(void*);
+u8 *unit=*lbl_80367500;
+void *item;
+if(!unit) item=0;
+else {item=unit+0x28C;if(!*(u32*)item) item=0;}
+if(item) {
+if(*(u64*)Item_GetFlagsPtr(item)&2ULL) return 1;
+if(*(u64*)Item_GetFlagsPtr(item)&0x800000000ULL) return 2;
+if(*(u64*)Item_GetFlagsPtr(item)&0x8000000000ULL) return 1;
+if(*(s32*)(gBattle+0xCA8)>1) {
+if(*(u64*)Item_GetFlagsPtr(item)&0x40ULL) return 1;
+if(*(u64*)Item_GetFlagsPtr(item)&0x4000000000ULL) return 3;
+}
+}
+return 0;
+}
+
 s32 fn_80096EEC(s32 *arg0, u32 arg1) {
     s32 var_r5;
 
@@ -668,13 +688,10 @@ s32 Event_GetCmdKind(s32 arg0) {
         case 0x50:
         case 0x51:
         case 0x52:
-            result = *((u8 *)s + (*s << 2) + 4);
+            result = *((u8 *)(base + 0x8A0) + (idx << 2) + 4);
             goto done;
         case 0:
-            {
-                s16 t = *s;
-                *s = t + 1;
-            }
+            *(volatile s16 *)s = *(volatile s16 *)s + 1;
             continue;
         default:
             goto restore;
