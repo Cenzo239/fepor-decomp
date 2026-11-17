@@ -7673,7 +7673,7 @@ extern "C" void fn_800DA608(s32 arg0) {
   }
   #pragma cplusplus reset
   
-  void fn_800DA748(s32 arg0)
+void fn_800DA748(s32 arg0)
 {
     extern void *lbl_803678B8;
     extern char lbl_802711B0[];
@@ -7689,22 +7689,28 @@ extern "C" void fn_800DA608(s32 arg0) {
     String str;
     void *self;
     char *name;
+    u32 len;
 
     str.cap = 0;
     self = lbl_803678B8;
     str.size = 0;
     str.data = 0;
     str.cap = 0;
-    if (*(void **)((u8 *)self + 0x10) != 0 &&
-        String_Compare((String *)((u8 *)self + 0x70), 0, *(u32 *)((u8 *)self + 0x70),
-                       lbl_802711B0 + 0x184, strlen(lbl_802711B0 + 0x184)) == 0) {
-        String_AssignCStr(&str, lbl_802711B0 + 0x189, strlen(lbl_802711B0 + 0x189));
-        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-        fn_800C992C(&str, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
-        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-        name = lbl_8028DE60[arg0];
-        fn_800C992C(&str, name, strlen(name));
-        fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
+    if (*(u32 *)((u8 *)self + 0x10) != 0) {
+        len = strlen((char *)lbl_802711B0 + 0x184);
+        if (String_Compare((String *)((u8 *)self + 0x70), 0, ((String *)((u8 *)self + 0x70))->size,
+                           (char *)lbl_802711B0 + 0x184, len) == 0) {
+            len = strlen((char *)lbl_802711B0 + 0x189);
+            String_AssignCStr(&str, (char *)lbl_802711B0 + 0x189, len);
+            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+            len = strlen((char *)lbl_802711B0 + 0x18D);
+            fn_800C992C(&str, (char *)lbl_802711B0 + 0x18D, len);
+            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+            name = lbl_8028DE60[arg0];
+            len = strlen(name);
+            fn_800C992C(&str, name, len);
+            fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
+        }
     }
     String_Destroy(&str, -1);
 }
@@ -10887,37 +10893,23 @@ void fn_800E2218(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x64) = arg1;
 }
 
-void fn_800E2220(void *arg0) {
-    M2C_UNK fn_800E2E70(s32, s32, u8, u8);
-    M2C_UNK fn_800E320C(s32, s32, u8, u8);
-    M2C_UNK SpriteSheet_DrawFrame(s32, s32, u8, u8);
-    extern f32 lbl_80369EC8;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s32 temp_r5;
-
-    if ((u32) M2C_FIELD(arg0, u32 *, 0x60) != 0U) {
-        temp_r5 = (s32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x6C) * (f32) M2C_FIELD(arg0, u8 *, 0x53));
-        if (lbl_80369EC8 == M2C_FIELD(arg0, f32 *, 0x6C)) {
-            if ((s32) M2C_FIELD(arg0, s32 *, 0x68) != 0) {
-                sp8 = (s32) M2C_FIELD(arg0, u8 *, 0x52);
-                spC = temp_r5;
-                sp10 = M2C_FIELD(arg0, s32 *, 0x78);
-                fn_800E2E70(M2C_FIELD(arg0, s32 *, 0x64), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51));
-                return;
-            }
-            sp8 = (s32) M2C_FIELD(arg0, u8 *, 0x52);
-            spC = temp_r5;
-            sp10 = M2C_FIELD(arg0, s32 *, 0x78);
-            SpriteSheet_DrawFrame(M2C_FIELD(arg0, s32 *, 0x64), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51));
-            return;
-        }
-        sp8 = (s32) M2C_FIELD(arg0, u8 *, 0x52);
-        spC = temp_r5;
-        sp10 = M2C_FIELD(arg0, s32 *, 0x78);
-        fn_800E320C(M2C_FIELD(arg0, s32 *, 0x64), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51));
-    }
+void fn_800E2220(u8 *self,s32 layer) {
+void fn_800E2E70(void *,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
+void SpriteSheet_DrawFrame(void *,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
+void fn_800E320C(void *,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,f32);
+extern f32 lbl_80369EC8;
+void *sheet=*(void **)(self+0x60);
+if(sheet) {
+u8 *parent=*(u8**)(self+0x38);
+s32 x=(s32)(*(f32*)(parent+0x68)+(f32)(*(s32*)(parent+0x60)+(*(s32*)(self+0x48)-*(s32*)(self+0x70))));
+s32 y=*(s32*)(parent+0x64)+(*(s32*)(self+0x4c)-*(s32*)(self+0x74));
+s32 alpha=(s32)(*(f32*)(parent+0x6c)*(f32)(u32)self[0x53]);
+f32 scale;
+if(lbl_80369EC8==(scale=*(f32*)(self+0x6c))) {
+if(*(s32*)(self+0x68)) fn_800E2E70(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44),self[0x50],self[0x51],self[0x52],alpha,*(s32*)(self+0x78));
+else SpriteSheet_DrawFrame(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44),self[0x50],self[0x51],self[0x52],alpha,*(s32*)(self+0x78));
+} else fn_800E320C(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44),self[0x50],self[0x51],self[0x52],alpha,*(s32*)(self+0x78),scale);
+}
 }
 
 void *fn_800E266C(void *arg0, s16 arg1) {
