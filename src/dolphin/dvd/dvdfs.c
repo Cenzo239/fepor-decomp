@@ -3334,21 +3334,28 @@ void fn_80211914(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void fn_80211B30(s32 arg0, s32 arg1) {
     void fn_80211914(s32, s32, s32, s32);
-    u32 horizontal;
-    u32 previous;
+    u32 new_var3;
+    volatile u16 *base;
     u32 vertical;
     volatile u16 *bump = (volatile u16 *)0xCC002000;
-    volatile u16 *base;
+    u32 previous;
+    u32 horizontal;
+    u32 new_var;
+    u32 new_var2;
 
-    vertical = *(bump += 0x16) & 0x7FF;
+    if (vertical) {}
+    vertical = (*(bump += 0x16)) & 0x7FF;
     base = (volatile u16 *)0xCC002000;
     do {
+        new_var3 = base[0x17];
         previous = vertical;
-        horizontal = base[0x17];
-        vertical = *bump & 0x7FF;
+        horizontal = new_var3;
+        vertical = (*bump) & 0x7FF;
         horizontal &= 0x7FF;
     } while (previous != vertical);
-    fn_80211914(horizontal, vertical, arg0, arg1);
+    new_var = horizontal;
+    new_var2 = vertical;
+    fn_80211914(new_var, new_var2, arg0, arg1);
 }
 
 void fn_80211B90(s8 *arg0, s8 *arg1, s8 arg2, s8 arg3, s8 arg4) {
