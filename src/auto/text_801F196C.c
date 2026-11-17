@@ -2559,69 +2559,55 @@ void fn_801F7838(s32 arg0) {
     }
 }
 
-void fn_801F7880(void* arg0) {
-    s32 var_r4;
-    void* temp_r31;
-    void* temp_r5;
-    
-    temp_r31 = *(void**)((u8*)arg0 + 0x30);
-    memset(temp_r31, 0, 0x210);
-    *(u16*)((u8*)temp_r31 + 0x8c) = 0xff;
-    var_r4 = 0;
-    
-    if (*(u16*)((u8*)temp_r31 + 0x10) & 1) {
-        var_r4 = 1;
-        *(u32*)((u8*)temp_r31 + 0x98) = 0x80280F2D;
-        *(u32*)((u8*)temp_r31 + 0xb0) = 0x8028106C;
-        *(u8*)((u8*)temp_r31 + 0xc8) = 0;
-    }
-    
-    if (*(u16*)((u8*)temp_r31 + 0x10) & 2) {
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0x98) = 0x80280F3A;
-        temp_r5 = (u8*)temp_r31 + var_r4;
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0xb0) = 0x8028107C;
-        var_r4 += 1;
-        *(u8*)temp_r5 = 1;
-    }
-    
-    if (*(u16*)((u8*)temp_r31 + 0x10) & 4) {
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0x98) = 0x80280F47;
-        temp_r5 = (u8*)temp_r31 + var_r4;
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0xb0) = 0x8028108C;
-        var_r4 += 1;
-        *(u8*)temp_r5 = 2;
-    }
-    
-    if ((*(u16*)((u8*)temp_r31 + 0x10) & 0x10) || (*(u16*)((u8*)temp_r31 + 0x10) & 0x20)) {
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0x98) = 0x80280F54;
-        temp_r5 = (u8*)temp_r31 + var_r4;
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0xb0) = 0x8028109C;
-        var_r4 += 1;
-        *(u8*)temp_r5 = 3;
-    }
-    
-    if (*(u16*)((u8*)temp_r31 + 0x10) & 0x10) {
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0x98) = 0x80280F61;
-        temp_r5 = (u8*)temp_r31 + var_r4;
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0xb0) = 0x802810AC;
-        var_r4 += 1;
-        *(u8*)temp_r5 = 4;
-    }
-    
-    if (*(u16*)((u8*)temp_r31 + 0x10) & 0x20) {
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0x98) = 0x80280F6E;
-        temp_r5 = (u8*)temp_r31 + var_r4;
-        *(u32*)((u8*)temp_r31 + (var_r4 * 4) + 0xb0) = 0x802810BC;
-        var_r4 += 1;
-        *(u8*)temp_r5 = 5;
-    }
-    
-    *(u8*)((u8*)temp_r31 + 0x94) = var_r4;
-    *(u8*)((u8*)temp_r31 + 0x8a) = -1;
-    temp_r5 = (u8*)temp_r31 + *(u16*)((u8*)temp_r31 + 0x6);
-    *(u8*)((u8*)temp_r31 + 0x89) = *(u8*)((u8*)temp_r5 + 0xc8);
-    
-    fn_8006EEFC(temp_r31, 0x80280F05, temp_r5);
+void fn_801F7880(void *arg0) {
+extern u8 gSystemSave[];
+extern char gBattlePreviewStrings[];
+void fn_8006EEFC(void *,void *);
+s32 n;
+struct Panel { u8 pad0[6]; s16 cursor; u8 pad8[0x81]; s8 current,previous; u8 pad8B; u16 value; u8 pad8E[6]; u8 count; u8 pad95[3]; char *names[6]; char *descs[6]; u8 ids[6]; };
+struct Panel *p;
+p=*(struct Panel **)((u8 *)arg0+0x30);
+memset(p,0,0x210);
+p->value=0xFF;
+n=0;
+if (*(u16 *)(gSystemSave+0x10)&1) {
+p->names[0]=gBattlePreviewStrings+0x125;
+p->descs[0]=gBattlePreviewStrings+0x264;
+p->ids[0]=0;n=1;
+}
+if (*(u16 *)(gSystemSave+0x10)&2) {
+p->names[n]=gBattlePreviewStrings+306;
+p->descs[n]=gBattlePreviewStrings+628;
+p->ids[n]=1;
+n++;
+}
+if (*(u16 *)(gSystemSave+0x10)&4) {
+p->names[n]=gBattlePreviewStrings+319;
+p->descs[n]=gBattlePreviewStrings+644;
+p->ids[n]=2;
+n++;
+}
+if ((*(u16 *)(gSystemSave+0x10)&0x10)||(*(u16 *)(gSystemSave+0x10)&0x20)) {
+p->names[n]=gBattlePreviewStrings+332;
+p->descs[n]=gBattlePreviewStrings+660;
+p->ids[n]=3;
+n++;
+}
+if (*(u16 *)(gSystemSave+0x10)&16) {
+p->names[n]=gBattlePreviewStrings+345;
+p->descs[n]=gBattlePreviewStrings+676;
+p->ids[n]=4;
+n++;
+}
+if (*(u16 *)(gSystemSave+0x10)&32) {
+p->names[n]=gBattlePreviewStrings+358;
+p->descs[n]=gBattlePreviewStrings+692;
+p->ids[n]=5;
+n++;
+}
+p->count=n;p->previous=-1;
+p->current=p->ids[p->cursor];
+fn_8006EEFC(p,gBattlePreviewStrings+0x24F);
 }
 
 void fn_801F7A60(void *arg0) {
