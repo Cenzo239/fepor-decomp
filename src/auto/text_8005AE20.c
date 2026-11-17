@@ -273,15 +273,14 @@ s32 fn_8005B4D8(s32 arg0) {
     return 0;
 }
 
-static inline u32 HashString(void *arg0) {
-    u8 *s;
+static inline u32 HashString(void *p) {
     u32 hash;
     u8 b;
     hash = 0;
-    s = *(u8 **)arg0;
-    while ((b = *s, (s8)b != 0)) {
+    p = *(void **)p;
+    while ((b = *(u8 *)p, (s8)b != 0)) {
         hash += b;
-        s++;
+        p = (u8 *)p + 1;
         hash <<= 4;
     }
     return hash;
@@ -4983,6 +4982,72 @@ s32 fn_80064F24(s16 *arr, s32 key, s32 n) {
     }
 done:
     return mid;
+}
+
+s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
+    void fn_800056A0(s32);
+    u16 *table;
+    s32 count;
+    s32 i;
+    s32 off;
+    u16 idx;
+    u8 *entry;
+    u8 *src;
+    s32 j;
+    s32 remain;
+    u16 *indices;
+
+    if (arg0 == NULL) {
+        table = NULL;
+    } else {
+        if (*arg0 == NULL) {
+            table = NULL;
+        } else {
+            table = (u16 *)**arg0;
+        }
+    }
+
+    count = 0;
+    if (table != NULL) {
+        off = 0;
+        for (i = 0; i < (s32)table[0]; i++) {
+            indices = *(u16 **)((u8 *)table + 4);
+            idx = *(u16 *)((u8 *)indices + off);
+            if (idx == 0xFFFF) {
+                entry = NULL;
+            } else {
+                entry = (u8 *)table + idx;
+            }
+            if (lo < (f32)*(u16 *)entry) {
+                if ((f32)*(u16 *)entry <= hi) {
+                    src = entry;
+                    j = 0;
+                    while (j < (s32)*(u16 *)(entry + 2)) {
+                        if (count >= 4) {
+                            fn_800056A0(0);
+                            break;
+                        }
+                        *out = *(u16 *)(src + 4);
+                        count += 1;
+                        src += 2;
+                        j += 1;
+                        out += 1;
+                    }
+                }
+            }
+            off += 2;
+        }
+    }
+
+    if (count < 4) {
+        remain = 4 - count;
+        while (remain != 0) {
+            *out = 0xFFFF;
+            out += 1;
+            remain -= 1;
+        }
+    }
+    return count;
 }
 
 #pragma global_optimizer off
