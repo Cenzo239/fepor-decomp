@@ -8137,6 +8137,40 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
 }
 
 #pragma opt_common_subs off
+extern "C" void fn_800D9188(void *arg0, s32 arg1) {
+void fn_800E5698(void *,void *); void String_Assign(void *,void *,s32,s32); void String_Destroy(void *,s32);
+void *String_CStr(void *); void String_Init(void *,void *,void *); void fn_80116760(void *,void *);
+void String_AssignCStr(void *,void *,u32); u32 strlen(void *); void fn_800C99A0(void *,void *,s32,s32);
+void fn_800C992C(void *,void *,u32); void fn_800E8154(void *,void *); void fn_801167BC(void *,void *);
+void fn_800E4E5C(void *);void fn_800E4D24(void *);void fn_800E4BA4(void *,s32);void fn_800E4B84(void *);void fn_800E4B44(void *);
+void *Unit_GetActor(void *);void fn_8008CDE0(void *,s32);extern u8 lbl_802711B0[];
+u32 s30[3],s24[3],s18[3],sc[3],tag;
+struct Parent {u8 pad[16];virtual void v0();virtual void v1();virtual void *v2(void *,void *);virtual void v3();virtual void v4();virtual void v5();virtual void v6(void *,void *);};
+void *obj; void *self=arg0;
+s30[1]=0;s24[1]=0;s30[0]=0;s30[2]=0;s30[1]=0;s24[0]=0;s24[2]=0;s24[1]=0;
+if(!M2C_FIELD(self,void **,0x10)){String_Destroy(s24,-1);String_Destroy(s30,-1);return;}
+if(M2C_FIELD(self,void **,0x18)){
+fn_800E5698(s18,M2C_FIELD(self,void **,0x18));String_Assign(s30,s18,0,-1);String_Destroy(s18,-1);
+((Parent *)M2C_FIELD(self,void **,4))->v6(lbl_802711B0+0x1c8,String_CStr(s30));
+}
+obj=M2C_FIELD(self,void **,4);
+((Parent *)obj)->v6(lbl_802711B0+0x18f,lbl_802711B0+0x1cf);
+if(M2C_FIELD(self,void **,0x18)){
+((Parent *)M2C_FIELD(self,void **,4))->v6(lbl_802711B0+0x19a,String_CStr(s30));
+}
+if(!arg1){String_Init(sc,lbl_802711B0+0x1d7,&tag);fn_80116760(M2C_FIELD(self,void **,16),sc);String_Destroy(sc,-1);M2C_FIELD(self,void **,24)=0;String_Destroy(s24,-1);String_Destroy(s30,-1);return;}
+String_Assign(s30,M2C_FIELD(self,u8 **,0x48)+arg1*12,0,-1);
+String_AssignCStr(s24,lbl_802711B0+0x1da,strlen(lbl_802711B0+0x1da));
+fn_800C99A0(s24,s30,0,-1);fn_800C992C(s24,lbl_802711B0+0x1df,strlen(lbl_802711B0+0x1df));
+fn_800E8154(M2C_FIELD(self,void **,4),s24);
+M2C_FIELD(self,void **,24)=((Parent *)M2C_FIELD(self,void **,4))->v2(lbl_802711B0+0x1c8,String_CStr(s30));
+fn_801167BC(M2C_FIELD(self,void **,16),M2C_FIELD(self,void **,24));
+if(M2C_FIELD(self,u8 *,0x88))fn_800E4E5C(M2C_FIELD(self,void **,24));
+fn_800E4D24(M2C_FIELD(self,void **,24));fn_800E4BA4(M2C_FIELD(self,void **,24),255);fn_800E4B84(M2C_FIELD(self,void **,24));fn_800E4B44(M2C_FIELD(self,void **,24));
+if(Unit_GetActor(M2C_FIELD(self,void **,24)))fn_8008CDE0(Unit_GetActor(M2C_FIELD(self,void **,24)),0);
+String_Destroy(s24,-1);String_Destroy(s30,-1);
+}
+#pragma opt_common_subs reset
 extern "C" void fn_800D9458(s32 arg0,u32 arg1,s32 arg2) {
 void fn_8005BCAC();void fn_8005C7E8(u32);void *Heap_Alloc(s32);
 char *String_CStr(void *);void String_AssignCStr(void *,void *,u32);void String_Assign(void *,void *,s32,s32);
