@@ -19950,22 +19950,27 @@ u8 fn_801021F0(void *name, s16 *outX, s16 *outY)
 {
     void *Unit_FindByName(void *);
     extern u8 gAiState[];
+    s16 *y;
+    s16 *x;
     void *unit;
     u8 flag;
     u32 bits;
 
-    flag = 1;
+    y = outY;
+    x = outX;
     unit = Unit_FindByName(name);
+    flag = 1;
     if (unit == 0) {
-        *(s32 *)(gAiState + 8) = 9;
-        *(s32 *)(gAiState + 0xC) = 9;
-        return 0;
+        goto set9;
     }
-    if (*(u32 *)((u8 *)unit + 0x188) == 0) {
-        *(s32 *)(gAiState + 8) = 9;
-        *(s32 *)(gAiState + 0xC) = 9;
-        return 0;
+    if (*(u32 *)((u8 *)unit + 0x188) != 0) {
+        goto bits;
     }
+set9:
+    *(s32 *)(gAiState + 8) = 9;
+    *(s32 *)(gAiState + 0xC) = 9;
+    return 0;
+bits:
     bits = *(u32 *)((u8 *)unit + 0x1A0);
     if (bits & 0x18) {
         *(s32 *)(gAiState + 8) = 1;
@@ -19988,9 +19993,9 @@ u8 fn_801021F0(void *name, s16 *outX, s16 *outY)
         *(s32 *)(gAiState + 0xC) = 7;
         flag = 0;
     }
-    if (flag) {
-        *outX = (s8)*(u8 *)((u8 *)unit + 0x19E);
-        *outY = (s8)*(u8 *)((u8 *)unit + 0x19F);
+    if (flag != 0) {
+        *x = *(s8 *)((u8 *)unit + 0x19E);
+        *y = *(s8 *)((u8 *)unit + 0x19F);
     }
     return flag;
 }
@@ -21846,6 +21851,36 @@ u8 fn_800FC040(void *arg0) {
 void fn_800FC150(void) {
     M2C_UNK fn_800FF918();
     fn_800FF918();
+}
+
+void fn_800FC170(u8 *arg0) {
+extern u8 gUiContext[], gAiState[];
+extern void (*lbl_8028E6F8[][6])(void *);
+u8 fn_80102EA8(void *);
+void fn_8002807C(void *);
+void Process_Goto(void *,s32);
+void Process_ClearFunc(void *);
+u8 *ai;
+u8 *self;
+u8 *ctx;
+u8 *unit;
+ctx=gUiContext; unit=*(u8 **)ctx; self=arg0;
+self[0x30]=0;
+if(fn_80102EA8(unit)) self[0x30]=3;
+goto setup;
+run:
+while(lbl_8028E6F8[self[0x30]][(u8)(s8)ai[0]]) {
+*(u16 *)(ai+4)=0xFFFF;
+lbl_8028E6F8[self[0x30]][(u8)(s8)ai[0]](unit);
+if(ai[0x21C]) break;
+ai[0]++;
+}
+if(!ai[0x21C] || (ctx[8]==1 && (s8)ctx[13]==(s8)unit[0x19E] && (s8)ctx[14]==(s8)unit[0x19F])) {
+*(u32 *)(unit+0x254)|=0x10000;
+fn_8002807C(ctx); Process_Goto(self,0);
+} else Process_ClearFunc(self);
+return;
+setup: ai=gAiState; goto run;
 }
 
 void fn_800FC2C4(s32 arg0) {
