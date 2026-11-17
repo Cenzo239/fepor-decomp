@@ -7723,13 +7723,12 @@ void fn_80195880(void *arg0) {
 }
 
 void fn_8019588C(void *arg0, s32 arg1) {
-    extern f32 lbl_8036AE50;
     f32 v;
     f32 z;
 
+    z = 0.0f;
     *(f32 *)((u8 *)arg0 + 0x14) = *(f32 *)((u8 *)arg0 + 0x10);
     v = (f32)arg1;
-    z = lbl_8036AE50;
     *(f32 *)((u8 *)arg0 + 0x18) = v;
     *(f32 *)((u8 *)arg0 + 0x1C) = z;
 }
