@@ -139,6 +139,42 @@ s32 fn_8007C74C(void) {
     return 0;
 }
 
+void fn_8007C76C(void *unused, void *parent, void *node) {
+extern void *gActiveFace;
+extern f32 lbl_803693D4, lbl_803693D8, gFaceDbgTextScale;
+typedef struct {s32 text[4];} Labels;
+extern Labels lbl_8026C630;
+void Prim2D_SetText(void *);
+void Prim2D_SetScale(f32);
+void Prim2D_SetTint(s32,s32,s32,s32);
+void Prim2D_SetPos(f32,f32);
+void Prim2D_EndPrim(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_SetTex(s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_Begin(void);
+Labels labels;
+s32 labelIdx=0;
+u16 flags;
+labels=lbl_8026C630;
+flags=*(u16*)((u8*)gActiveFace+0x46);
+if(flags&0x20) labelIdx=1;
+if(flags&0x40) labelIdx=2;
+if(flags&0x80) labelIdx=3;
+Prim2D_Begin();
+Prim2D_SetTransform((f32)*(s16*)((u8*)parent+0x30),(f32)*(s16*)((u8*)parent+0x32),lbl_803693D4,lbl_803693D8);
+Prim2D_SetTex(0,3);
+Prim2D_PrepareTex();
+Prim2D_AddPrim(5);
+Prim2D_SetPos((f32)*(s16*)((u8*)node+0x30),(f32)*(s16*)((u8*)node+0x32));
+Prim2D_SetText((void*)labels.text[labelIdx]);
+Prim2D_SetScale(gFaceDbgTextScale);
+if(*(u8*)((u8*)node+0x38)) Prim2D_SetTint(255,255,0,255);
+if(*(u8*)((u8*)node+0x39)==2) Prim2D_SetTint(0,0,0,255);
+Prim2D_EndPrim();
+}
+
 #pragma global_optimizer off
 s32 fn_8007C8F4(void)
 {
@@ -652,6 +688,72 @@ void fn_8007D7E8(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 6) = 7;
 }
 
+void fn_8007D7F8(void *arg0) {
+    f32 Math_Ease(s32, s16, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
+
+    extern f32 lbl_80369418;
+    extern f32 lbl_80369450;
+    extern f32 lbl_80369458;
+    extern f32 lbl_80369468;
+    extern f32 lbl_8036946C;
+    extern f32 lbl_80369478;
+    extern f32 lbl_8036947C;
+
+    u8 *self;
+    u8 *data;
+    s16 timer;
+    s8 alpha;
+
+    self = (u8 *)arg0;
+    data = *(u8 **)(self + 0x30);
+
+    *(s16 *)(data + 6) = *(s16 *)(data + 6) - 1;
+
+    if (*(s32 *)(data + 0x20) == 1) {
+        timer = *(s16 *)(data + 6);
+
+        *(f32 *)(data + 0x14) = Math_Ease(
+            4,
+            timer,
+            lbl_80369478,
+            lbl_80369468,
+            (f32)(7 - timer),
+            lbl_80369450
+        );
+    } else {
+        timer = *(s16 *)(data + 6);
+
+        *(f32 *)(data + 0x14) = Math_Ease(
+            4,
+            timer,
+            lbl_8036947C,
+            lbl_80369468,
+            (f32)(7 - timer),
+            lbl_80369450
+        );
+    }
+
+    *(f32 *)(data + 0x18) = lbl_80369458;
+
+    timer = *(s16 *)(data + 6);
+
+    alpha = (s8)Math_Ease(
+        4,
+        timer,
+        lbl_80369418,
+        lbl_8036946C,
+        (f32)(7 - timer),
+        lbl_80369450
+    );
+
+    *(u8 *)(data + 0xA) = alpha;
+
+    if (*(s16 *)(data + 6) <= 0) {
+        Process_ClearFunc(self);
+    }
+}
+
 void fn_8007D924(void *arg0) {
     void *temp_r4;
 
@@ -668,6 +770,69 @@ void fn_8007D924(void *arg0) {
         }
     }
     M2C_FIELD(temp_r4, s16 *, 6) = 7;
+}
+
+void fn_8007D988(void *arg0) {
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
+
+    extern f32 lbl_80369418;
+    extern f32 lbl_80369450;
+    extern f32 lbl_80369458;
+    extern f32 lbl_80369468;
+    extern f32 lbl_8036946C;
+    extern f32 lbl_80369478;
+    extern f32 lbl_8036947C;
+
+    u8 *self;
+    u8 *data;
+    s16 timer;
+    s32 alpha;
+
+    self = (u8 *)arg0;
+    data = *(u8 **)(self + 0x30);
+
+    *(s16 *)(data + 6) = *(s16 *)(data + 6) - 1;
+
+    if (*(s32 *)(data + 0x20) == 1) {
+        timer = *(s16 *)(data + 6);
+
+        *(f32 *)(data + 0x14) = Math_Ease(
+            4,
+            lbl_80369468,
+            lbl_8036947C,
+            (f32)(7 - timer),
+            lbl_80369450
+        );
+    } else {
+        timer = *(s16 *)(data + 6);
+
+        *(f32 *)(data + 0x14) = Math_Ease(
+            4,
+            lbl_80369468,
+            lbl_80369478,
+            (f32)(7 - timer),
+            lbl_80369450
+        );
+    }
+
+    *(f32 *)(data + 0x18) = lbl_80369458;
+
+    timer = *(s16 *)(data + 6);
+
+    alpha = (s32)Math_Ease(
+        4,
+        lbl_8036946C,
+        lbl_80369418,
+        (f32)(7 - timer),
+        lbl_80369450
+    );
+
+    data[0xA] = (u8)alpha;
+
+    if (*(s16 *)(data + 6) <= 0) {
+        Process_ClearFunc(self);
+    }
 }
 
 void fn_8007DAB4(void *arg0) {
