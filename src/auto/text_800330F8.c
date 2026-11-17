@@ -5472,6 +5472,7 @@ finish:
 }
 #pragma use_lmw_stmw reset
 
+#pragma global_optimizer off
 void Unit_OnZeroHp(void *unit) {
     u8 Status_Test(void *, s32);
     void Unit_SetHp(void *, s8);
@@ -5480,7 +5481,7 @@ void Unit_OnZeroHp(void *unit) {
     void fn_800157DC(void *, void *);
     void fn_80015718(void *, void *);
     void fn_8003670C(void *);
-    s8 Unit_GetMaxHp(void *);
+    s32 Unit_GetMaxHp(void *);
     void Unit_Clear(void *, s32);
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
@@ -5490,7 +5491,7 @@ void Unit_OnZeroHp(void *unit) {
     }
     if ((u8)Status_Test((u8 *)unit + 0x1BC, 0x5C) != 0) {
         Unit_SetHp(unit, 1);
-        *(u32 *)((u8 *)unit + 0x1A0) &= ~0x800;
+        *(u32 *)((u8 *)unit + 0x1A0) &= ~0x800U;
         return;
     }
     *(u32 *)((u8 *)unit + 0x1A0) |= 8;
@@ -5506,14 +5507,14 @@ void Unit_OnZeroHp(void *unit) {
     if ((u8)Status_Test((u8 *)unit + 0x1BC, 0x59) != 0) {
         fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
         fn_800157DC(gUnitLists + 0x54, unit);
-        Unit_SetHp(unit, Unit_GetMaxHp(unit));
+        Unit_SetHp(unit, (s8)Unit_GetMaxHp(unit));
         return;
     }
     fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
     Unit_Clear(unit, -1);
     fn_80015718(gUnitLists + 0x30, unit);
 }
-
+#pragma global_optimizer on
 void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
     void Unit_SetMapPos(void *, s32, s32);
     s32 flags;
