@@ -4207,8 +4207,8 @@ void fn_8018BC28(void *arg0) {
  void *pad;
  void *cls;
  s32 volume;
- void *message;
  u8 heavy;
+ void *message;
  f32 x,y,z;
  pad=(u8 *)M2C_FIELD(arg0,void **,0x30)+0x1C;
  if(Pad_IsActive(pad)){
@@ -4234,8 +4234,8 @@ void fn_8018BC28(void *arg0) {
  case 3:case 4:message=MoveAnim_str+0x5f6;SeCue_PlayAt(MoveAnim_str+0x616,volume,x,y,z);break;
  case 9:
  if(Str_Cmp(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x188),void **,0),MoveAnim_str+0x4a7)==0){message=MoveAnim_str+0x62a;SeCue_PlayAt(MoveAnim_str+0x64e,volume,x,y,z);}
- else if((c0=fn_800A883C(cls,0)).value==3||(c1=fn_800A883C(cls,1)).value==3){message=MoveAnim_str+0x666;SeCue_PlayAt(MoveAnim_str+0x68a,volume,x,y,z);}
- else if((c2=fn_800A883C(cls,0)).value==4||(c3=fn_800A883C(cls,1)).value==4){message=MoveAnim_str+0x6a2;SeCue_PlayAt(MoveAnim_str+0x6c6,volume,x,y,z);}
+ else if((s32)(c0=fn_800A883C(cls,0)).value==3||(s32)(c1=fn_800A883C(cls,1)).value==3){message=MoveAnim_str+0x666;SeCue_PlayAt(MoveAnim_str+0x68a,volume,x,y,z);}
+ else if((s32)(c2=fn_800A883C(cls,0)).value==4||(s32)(c3=fn_800A883C(cls,1)).value==4){message=MoveAnim_str+0x6a2;SeCue_PlayAt(MoveAnim_str+0x6c6,volume,x,y,z);}
  else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6de)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6ea)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x6f8)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x312)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x332)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x33e)==0){message=MoveAnim_str+0x708;SeCue_PlayAt(MoveAnim_str+0x72c,volume,x,y,z);}
  else if(Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x744)==0||Str_Cmp(M2C_FIELD(cls,void **,0),MoveAnim_str+0x2bc)==0){message=MoveAnim_str+0x750;SeCue_PlayAt(MoveAnim_str+0x774,volume,x,y,z);}
  else{message=MoveAnim_str+0x78c;SeCue_PlayAt(MoveAnim_str+0x7b0,volume,x,y,z);}break;
@@ -8264,6 +8264,7 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     one = lbl_8036AE20;
     self = arg0;
     tmp = self;
+    self2 = self;
     *(void **)self = lbl_8028FDB0;
     e1 = (s16)arg1;
     *(s32 *)((u8 *)self + 4) = z;
@@ -8294,7 +8295,6 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(void **)self = lbl_80292208;
     fn_80142060((u8 *)tmp + 0x3C);
 
-    self2 = self;
     *(void **)self2 = lbl_80293BB8;
     *(u8 *)((u8 *)self2 + 0x48) = 1;
     *(u8 *)((u8 *)self2 + 0x49) = 0;
