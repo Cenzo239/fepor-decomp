@@ -156,7 +156,7 @@ void fn_80209AE8(u32 arg0) {
     u32 interrupts;
     u32 mode;
     u8 flags;
-    u8 pad[0x10];
+    u8 pad[8];
 
     scb = (u8 *)Scb_80339420;
     mode = (arg0 & 1) << 6;
@@ -183,33 +183,32 @@ void fn_80209AE8(u32 arg0) {
     }
 }
 
-s32 fn_80209B8C(s32 arg0)
-{
+s32 fn_80209B8C(s32 arg0) {
     extern u16 Scb_80339420[];
-
-    extern s32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(s32);
-    extern void fn_8020931C(s32, s32);
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    s32 fn_8020931C(s32, s32);
 
     u8 *scb;
-    s32 interrupts;
-    s32 result;
+    s32 *locked;
+    u32 irq;
+    u16 result;
+    u8 *row;
+    u8 pad[8];
 
     scb = (u8 *)Scb_80339420;
-    interrupts = OSDisableInterrupts();
-
-    if (*(s32 *)(scb + 0x48) != 0) {
-        OSRestoreInterrupts(interrupts);
+    irq = OSDisableInterrupts();
+    locked = (s32 *)(scb + 0x48);
+    if (*locked) {
+        OSRestoreInterrupts(irq);
         return 0;
     }
-
-    *(s32 *)(scb + 0x44) = interrupts;
-    *(s32 *)(scb + 0x48) = 1;
-
-    result = *(u16 *)(scb + 0x30 + (arg0 << 1));
-
+    *(u32 *)(scb + 0x44) = irq;
+    row = scb + 0x14;
+    *locked = 1;
+    row += arg0 << 1;
+    result = *(u16 *)(row + 0x1c);
     fn_8020931C(0, 0x14);
-
     return result;
 }
 
@@ -253,19 +252,68 @@ u16 OSGetGbsMode(void) {
 
 void fn_80209DE4(void) { }
 
+#pragma scheduling off
 void __OSInitSystemCall(void) {
+    void memcpy(void *, const void *, u32);
+    void DCFlushRangeNoSync(void *, u32);
+    void ICInvalidateRange(void *, u32);
+    extern u8 __OSSystemCallVectorStart[];
+    extern u8 __OSSystemCallVectorEnd[];
     void *addr;
+    u8 *start;
+    u8 *end;
 
     addr = (void *)0x80000C00;
-    memcpy(addr, __OSSystemCallVectorStart,
-           __OSSystemCallVectorEnd - __OSSystemCallVectorStart);
+    start = __OSSystemCallVectorStart;
+    end = __OSSystemCallVectorEnd;
+    memcpy(addr, start, end - start);
     DCFlushRangeNoSync(addr, 0x100);
-    M2C_SYNC();
+    __sync();
     ICInvalidateRange(addr, 0x100);
 }
-
+#pragma scheduling reset
 void fn_80209E68(void) {
 
+}
+
+void __OSThreadInit(void) {
+extern u8 _stack_addr[], _stack_end[];
+extern void (*SwitchThreadCallback_80366F50)(void *,void *);
+extern s32 Reschedule_80368520;
+void OSClearStack(s32);
+void OSInitThreadQueue(void *);
+u8 *base;
+u8 *tail;
+u8 **active;
+register s32 i;
+u8 *thread;
+base=(u8*)RunQueue_80339478; thread=base+0x418;
+*(u16*)(base+0x6e0)=2; *(u16*)(base+0x6e2)=1;
+*(s32*)(base+0x6ec)=16; *(s32*)(base+0x6e8)=16;
+*(s32*)(base+0x6e4)=0; *(s32*)(base+0x6f0)=-1;
+*(s32*)(base+0x708)=0;
+OSInitThreadQueue(thread+0x2e8);
+*(s32*)(base+0x710)=0; *(s32*)(base+0x70c)=0;
+*(void**)0x800000d8=thread;
+OSClearContext((OSContext*)thread); OSSetCurrentContext((OSContext*)thread);
+*(void**)(base+0x71c)=_stack_addr; *(void**)(base+0x720)=_stack_end;
+**(u32**)(base+0x720)=0xdeadbabe;
+SwitchThreadCallback_80366F50(*(void**)0x800000e4,thread);
+*(void**)0x800000e4=thread;
+OSClearStack(0);
+RunQueueBits_80368518=0; RunQueueHint_8036851C=0;
+i=0;
+do {OSInitThreadQueue((u8*)RunQueue_80339478+i*8); i++;}while(i<=31);
+OSInitThreadQueue((void*)0x800000dc);
+active=(u8**)0x800000dc;
+tail=*++active;
+if(!tail) *(void**)0x800000dc=thread;
+else *(void**)(tail+0x2fc)=thread;
+*(void**)(thread+0x300)=tail;
+*(void**)(thread+0x2fc)=0;
+*active=thread;
+OSClearContext((OSContext*)(base+0x730));
+Reschedule_80368520=0;
 }
 
 void OSInitThreadQueue(void *arg0) {
