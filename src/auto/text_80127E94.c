@@ -206,79 +206,53 @@ void fn_8012835C(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_801283D4(void *arg0) {
-    u32 OSGetTick(f32);
-    f64 sin(u32, u32, s32, f32, f32);
-    extern f32 lbl_80367068;
-    extern f32 lbl_8036A3D4;
-    extern f64 lbl_8036A3D8;
-    extern f64 lbl_8036A3E0;
-    extern f64 lbl_8036A3E8;
-    extern f32 lbl_8036A3F0;
-    extern f32 lbl_8036A3F4;
-    f32 sp8;
-    f32 temp_f1;
-    f32 temp_f1_5;
-    f32 temp_f2;
-    f32 temp_f2_2;
-    f32 temp_f30;
-    f32 temp_f4;
-    f32 var_f4;
-    f64 temp_f1_2;
-    f64 temp_f1_3;
-    f64 temp_f1_4;
-    s32 temp_r3;
-    s32 temp_r6;
-    s32 var_r0;
-    u32 temp_r0;
-    u32 temp_r3_2;
-    void *temp_r31;
-
-    temp_f2 = M2C_FIELD(arg0, f32 *, 0x40);
-    temp_f1 = M2C_FIELD(arg0, f32 *, 0x44);
-    temp_r31 = M2C_FIELD(arg0, void **, 0x18);
-    var_f4 = (temp_f2 * temp_f2) + (temp_f1 * temp_f1);
-    if (var_f4 > lbl_8036A3D4) {
-        temp_f1_2 = __frsqrte(var_f4);
-        temp_f1_3 = lbl_8036A3D8 * temp_f1_2 * -(((f64) var_f4 * (temp_f1_2 * temp_f1_2)) - lbl_8036A3E0);
-        temp_f1_4 = lbl_8036A3D8 * temp_f1_3 * -(((f64) var_f4 * (temp_f1_3 * temp_f1_3)) - lbl_8036A3E0);
-        var_f4 = (f32) ((f64) var_f4 * (lbl_8036A3D8 * temp_f1_4 * -(((f64) var_f4 * (temp_f1_4 * temp_f1_4)) - lbl_8036A3E0)));
-    } else if (var_f4 < (f32) lbl_8036A3E8) {
-        var_f4 = lbl_80367068;
+    u32 OSGetTick(void);
+    f64 sin(f64);
+    extern f32 lbl_80367068[];
+    extern f32 lbl_8036A3D4, lbl_8036A3F0, lbl_8036A3F4;
+    extern f64 lbl_8036A3D8, lbl_8036A3E0, lbl_8036A3E8;
+    u8 *self = arg0;
+    u8 *dest;
+    f32 dy, dx, length, x, y, wave, amplitude;
+    f32 scale;
+    f32 outx, outy;
+    f64 estimate;
+    union { f32 f; u32 u; } bits;
+    s32 kind;
+    u32 ticks, period;
+    dx = *(f32 *)(self + 0x40);
+    dy = *(f32 *)(self + 0x44);
+    dest = *(u8 **)(self + 0x18);
+    length = (f32)(dx * dx) + (f32)(dy * dy);
+    if (length > lbl_8036A3D4) {
+        estimate = __frsqrte(length);
+        estimate = lbl_8036A3D8 * estimate * (lbl_8036A3E0 - length * (estimate * estimate));
+        estimate = lbl_8036A3D8 * estimate * (lbl_8036A3E0 - length * (estimate * estimate));
+        estimate = lbl_8036A3D8 * estimate * (lbl_8036A3E0 - length * (estimate * estimate));
+        length = (f32)(length * estimate);
+    } else if (length < lbl_8036A3E8) {
+        length = lbl_80367068[0];
     } else {
-        sp8 = var_f4;
-        temp_r3 = M2C_BITWISE(s32, sp8) & 0x7F800000;
-        switch (temp_r3) {                          /* irregular */
-        case 0x7F800000:
-            if (M2C_BITWISE(s32, sp8) & 0x7FFFFF) {
-                var_r0 = 1;
-            } else {
-                var_r0 = 2;
-            }
-            break;
-        case 0x0:
-            if (M2C_BITWISE(s32, sp8) & 0x7FFFFF) {
-                var_r0 = 5;
-            } else {
-                var_r0 = 3;
-            }
-            break;
-        default:
-            var_r0 = 4;
-            break;
+        bits.f = length;
+        switch (bits.u & 0x7F800000) {
+        case 0x7F800000: if (bits.u & 0x7FFFFF) kind = 1; else kind = 2; break;
+        case 0: if (bits.u & 0x7FFFFF) kind = 5; else kind = 3; break;
+        default: kind = 4; break;
         }
-        if (var_r0 == 1) {
-            var_f4 = lbl_80367068;
-        }
+        if (kind == 1) length = lbl_80367068[0];
     }
-    temp_f1_5 = M2C_FIELD(arg0, f32 *, 0x40);
-    temp_f30 = M2C_FIELD(arg0, f32 *, 0x44) / var_f4;
-    temp_r3_2 = OSGetTick(temp_f1_5);
-    temp_r6 = M2C_FIELD(arg0, s32 *, 0x38);
-    temp_r0 = *(u32 *)0x800000F8 / 4000;
-    temp_f4 = M2C_FIELD(arg0, f32 *, 0x3C);
-    temp_f2_2 = (temp_f4 * (f32) sin(temp_r3_2 / temp_r0, MULTU_HI(0x10624DD3, ((u32) *(u32 *)0x800000F8 >> 2U)), temp_r6, lbl_8036A3F0 * ((f32) ((temp_r3_2 / temp_r0) % temp_r6) / (f32) temp_r6), lbl_8036A3F0)) - (lbl_8036A3F4 * temp_f4);
-    M2C_FIELD(temp_r31, f32 *, 0x40) = (f32) ((temp_f2_2 * (temp_f1_5 / var_f4)) + M2C_FIELD(arg0, f32 *, 0x30));
-    M2C_FIELD(temp_r31, f32 *, 0x44) = (f32) ((temp_f2_2 * temp_f30) + M2C_FIELD(arg0, f32 *, 0x34));
+    x = *(f32 *)(self + 0x40) / length;
+    y = *(f32 *)(self + 0x44) / length;
+    ticks = OSGetTick();
+    period = *(s32 *)(self + 0x38);
+    scale = lbl_8036A3F0;
+    wave = (f32)sin(scale * ((f32)((ticks / ((*(u32 *)0x800000F8 >> 2) / 1000)) % period) / (f32)(s32)period));
+    amplitude = *(f32 *)(self + 0x3C);
+    wave = amplitude * wave - lbl_8036A3F4 * amplitude;
+    outx = wave * x + *(f32 *)(self + 0x30);
+    outy = wave * y + *(f32 *)(self + 0x34);
+    *(f32 *)(dest + 0x40) = outx;
+    *(f32 *)(dest + 0x44) = outy;
 }
 
 void fn_801285C4(void *arg0) {
@@ -1069,6 +1043,60 @@ void fn_80129FA4(void *arg0) {
 void fn_8012A240(void) {
     M2C_UNK fn_8012A530();
     fn_8012A530();
+}
+
+void fn_8012A260(void *arg0) {
+    void Process_Goto(void *, s32);
+    extern u8 lbl_80275688[];
+    extern f32 gTileCenter;
+    struct Vec { f32 x,y,z; };
+    struct Vec d,c,b,a;
+    u8 *self=arg0;
+    u8 *state;
+    u8 *table=lbl_80275688;
+    f32 center;
+    s32 coord;
+    u32 index;
+    *(u16 *)(*(u8 **)(self+0x30)+8)=0;
+    state=*(u8 **)(self+0x30);
+    if ((s32)state[0x6C+state[0xB]] == 16) {
+        Process_Goto(self,2);
+        return;
+    }
+    center=gTileCenter;
+    coord=(s32)(center+*(f32 *)(state+0x10));
+    state[0xC]=coord;
+    (*(u8 **)(self+0x30))[0xE]=coord;
+    state=*(u8 **)(self+0x30);
+    coord=(s32)(center+*(f32 *)(state+0x14));
+    state[0xD]=coord;
+    (*(u8 **)(self+0x30))[0xF]=coord;
+    state=*(u8 **)(self+0x30);
+    index=state[0xB]++;
+    state[0xA]=state[0x6C+index];
+    state=*(u8 **)(self+0x30);
+    switch(state[0xA]) {
+    case 8:
+        a=*(struct Vec *)(table+0x7C);
+        *(f32 *)(state+0x20)=a.x; *(f32 *)(state+0x24)=a.y; *(f32 *)(state+0x28)=a.z;
+        state=*(u8 **)(self+0x30); state[0xD]=state[0xF]-1;
+        break;
+    case 4:
+        b=*(struct Vec *)(table+0x88);
+        *(f32 *)(state+0x20)=b.x; *(f32 *)(state+0x24)=b.y; *(f32 *)(state+0x28)=b.z;
+        state=*(u8 **)(self+0x30); state[0xD]=state[0xF]+1;
+        break;
+    case 1:
+        c=*(struct Vec *)(table+0x94);
+        *(f32 *)(state+0x20)=c.x; *(f32 *)(state+0x24)=c.y; *(f32 *)(state+0x28)=c.z;
+        state=*(u8 **)(self+0x30); state[0xC]=state[0xE]-1;
+        break;
+    case 2:
+        d=*(struct Vec *)(table+0xA0);
+        *(f32 *)(state+0x20)=d.x; *(f32 *)(state+0x24)=d.y; *(f32 *)(state+0x28)=d.z;
+        state=*(u8 **)(self+0x30); state[0xC]=state[0xE]+1;
+        break;
+    }
 }
 
 void fn_8012A45C(void *arg0) {
