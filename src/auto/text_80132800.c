@@ -10738,8 +10738,6 @@ extern "C" void fn_80142934(void *arg0, s32 arg1) {
     }
 }
 
-static inline s16 UiPage_GetVisible(void *self) { return *(s16 *)((u8 *)self+0x80); }
-static inline s32 UiPage_GetLastTop(s32 total,s16 visible) { return total>visible?total-visible:0; }
 struct UiPageSelector {
 virtual void v0()=0;
 virtual void v1()=0;
