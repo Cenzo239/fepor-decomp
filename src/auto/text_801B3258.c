@@ -7880,6 +7880,40 @@ void fn_801C6978(u32 arg0) {
     }
 }
 
+s32 fn_801C6B7C(u32 arg0,s32 arg1,s32 arg2,f32 *arg3,s32 arg4) {
+void *Process_Find(void *);
+void fn_801C797C(void *,void *,u32,s32,s32,u8);
+extern u8 LightFade_script[];
+#pragma cplusplus on
+struct Pool {
+u32 unknown;
+struct Entry {u32 key;u8 rest[16];} entries[32];
+Entry *find(u32 key) {
+s32 i;
+for(i=0;i<32;i++) if(entries[i].key==key) return &entries[i];
+return NULL;
+}
+};
+f32 result[3];
+void *proc;
+Pool *pool;
+Pool::Entry *entry;
+if(arg2==0) return 0;
+proc=Process_Find(LightFade_script);
+if(proc==NULL) pool=0;
+else pool=M2C_FIELD(proc,Pool **,0x30);
+if(pool==NULL) return 0;
+entry=pool->find(arg0);
+if(entry==NULL) {
+entry=pool->find(0);
+if(entry==NULL) return 0;
+}
+fn_801C797C(result,entry,arg0,arg1,arg2,(u8)arg4);
+arg3[0]=result[0];arg3[1]=result[1];arg3[2]=result[2];
+return 1;
+#pragma cplusplus reset
+}
+
 void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     void *Process_Find(void *);
