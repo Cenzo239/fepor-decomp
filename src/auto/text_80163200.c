@@ -7493,6 +7493,70 @@ void Ui_ConfirmItemUse(void *proc) {
     }
 }
 
+void fn_80171DD0(void *arg0) {
+#pragma cplusplus on
+void *Ui_FindChild(void *,s32,s32);
+void Ui_SetWidgetText(void *,void *);
+void *fn_8013BC10(s32,s32);
+void Ui_CreateMenu(void *,void *,s32);
+struct Item { virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void set2(s32)=0;
+virtual void v19()=0;
+virtual void set3(s32)=0; };
+struct Base { u32 unknown; };
+struct Menu: Base { virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual Item *get(s32)=0; };
+Menu *menu;
+s32 i;
+Item *item;
+void *child;
+Ui_SetWidgetText(Ui_FindChild(arg0,0x106,0),(u8 *)gUiMsgStrings+0x2D2);
+menu=(Menu *)fn_8013BC10(0,0);
+M2C_FIELD(menu,s16 *,8)=0x198;
+M2C_FIELD(menu,s16 *,0xA)=0x38;
+M2C_FIELD(menu,u8 *,0x24)=1;
+for(i=0;menu->get(i)!=0;i++) {
+item=menu->get(i);
+item->set2(2);
+item->set3(3);
+}
+Ui_CreateMenu(menu,arg0,0);
+child=Ui_FindChild(arg0,-0x1000,0);
+if(child) Ui_SetWidgetText(child,(u8 *)gUiMsgStrings+0x1CA);
+#pragma cplusplus reset
+}
+
 #pragma cplusplus on
 extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     /* Handle map-cursor unit-select pad input: A tip/reject, Y unit info, B cancel. */
@@ -10640,6 +10704,38 @@ void *fn_801780A8(void) {
     return (char *)&gUiMsgStrings + 0x55B;
 }
 
+s32 fn_801780B8(void *arg0) {
+#pragma opt_common_subs off
+u8 fn_8014D8DC(void *);
+void *Item_GetFlagsPtr(void *);
+u32 *Unit_GetItemSlot(void *,s32);
+u8 fn_80093088(void *);
+s32 fn_800C3E54(void *);
+u8 Status_Test(void *,s32);
+extern u8 gConvoy[];
+s8 i;
+u8 flag;
+void *base;
+u32 z;
+if(fn_8014D8DC(gBattleState)==0) { M2C_FIELD(arg0,u8 *,4)=0; return 2; }
+flag=1;
+base=(void *)gUiContext[0];
+if(Status_Test((u8 *)base+0x1BC,8)) {
+i=0;
+z=i;
+for(;i<8;i++) {
+u32 *slot=Unit_GetItemSlot(base,i);
+if(*slot) {
+if((*(u64 *)Item_GetFlagsPtr(slot)&0x200ULL)==0) { flag=z; break; }
+}
+}
+} else { flag=fn_80093088(base); }
+if(flag) { M2C_FIELD(arg0,u8 *,4)=1; return 2; }
+if(200-fn_800C3E54(gConvoy)<=0) { M2C_FIELD(arg0,u8 *,4)=2; return 2; }
+return 0;
+#pragma opt_common_subs reset
+}
+
 /* If the list option is disabled (state 2), show a help popup for the selected submenu index; otherwise set UI command 0x83 and advance the list panel. */
 s32 Ui_ConfirmListCmd83(void *menu, void *parent, void *item) {
     void Process_Goto(void *, u8);
@@ -11504,6 +11600,48 @@ s32 fn_801795D0(void *arg0) {
         return 2;
     }
     return 0;
+}
+
+void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) {
+    void *Heap_Alloc(s32);
+    void *fn_8017992C(void *, s16, s16, s16);
+    void fn_8013F1A0(void *, void *);
+    void *fn_80179BC8(void *, s16, s16, s16, s16, s16);
+    extern void *lbl_80292434[];
+    void *child;
+    s32 half;
+    s32 x;
+    s32 y;
+    void *panel;
+
+    fn_80179BC8(arg0, arg1, arg2, arg3, arg4, arg5);
+    *(void **)arg0 = lbl_80292434;
+    child = Heap_Alloc(0xd8);
+    if (child != NULL) {
+        child = fn_8017992C(
+            child,
+            (arg3 - 0x108) >> 1,
+            0,
+            *(s16 *)((u8 *)arg0 + 0x22) - 5);
+    }
+    *(void **)((u8 *)arg0 + 0x128) = child;
+    half = (arg3 - 0x108) >> 1;
+    panel = *(void **)((u8 *)arg0 + 0x128);
+    x = half + -*(s16 *)((u8 *)arg0 + 0x12);
+    *(s16 *)((u8 *)panel + 0xe) =
+        (s16)(x + (s16)(*(s16 *)((u8 *)panel + 0xe) - *(s16 *)((u8 *)panel + 0xa)));
+    *(s16 *)((u8 *)panel + 0xa) = x;
+    y = -(*(s16 *)((u8 *)arg0 + 0x14) +
+         (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
+    *(s16 *)((u8 *)panel + 0x10) =
+        (s16)(y + (s16)(*(s16 *)((u8 *)panel + 0x10) - *(s16 *)((u8 *)panel + 0xc)));
+    *(s16 *)((u8 *)panel + 0xc) = y;
+    fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x128));
+    *(s16 *)((u8 *)arg0 + 0x88) = 0x14;
+    *(s16 *)((u8 *)arg0 + 0x8a) = 0;
+    *(s16 *)((u8 *)arg0 + 0x80) =
+        (arg4 - (*(s16 *)((u8 *)arg0 + 0x8a) + 0xc)) / 32;
+    return arg0;
 }
 
 #pragma cplusplus on
