@@ -283,10 +283,7 @@ extern s32 lbl_8033E578[];
 
 volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
 
-#pragma push
-#pragma global_optimizer on
 #pragma use_lmw_stmw on
-#pragma scheduling off
 int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
   volatile u32 *cr;
