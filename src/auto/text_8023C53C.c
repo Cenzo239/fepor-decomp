@@ -7750,7 +7750,7 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
     arg0->flags |= 0x2000;
 }
 
-#pragma cplusplus off
+#pragma use_lmw_stmw on
 void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
@@ -7758,6 +7758,7 @@ void fn_80251F24(void *arg0, u32 *arg1)
     u8 *data;
     u32 word0;
     u32 word1;
+    u32 value;
     u32 factor;
     u32 mode;
     u16 tableId;
@@ -7804,8 +7805,8 @@ void fn_80251F24(void *arg0, u32 *arg1)
                 next = table[index + 1];
 
                 next -= current;
-                next = fraction * next;
-                result = next + ((u8)current << 16);
+next = fraction * next;
+result = next + ((u8)current << 16);
             } else {
                 result = table[index] << 16;
             }
@@ -7816,7 +7817,7 @@ void fn_80251F24(void *arg0, u32 *arg1)
 
     *(u32 *)(data + 0x114) |= 0x1000;
 }
-#pragma cplusplus reset
+#pragma use_lmw_stmw reset
 void fn_80252058(void *arg0, u32 *arg1) {
 void fn_8026146C(s32 *);
 void fn_8026147C(u32 *, s32);
@@ -8201,54 +8202,7 @@ void fn_80252A78(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x368,
 #pragma use_lmw_stmw reset
 #pragma global_optimizer reset
 #pragma optimization_level reset
-void fn_80252B7C(void *arg0, u32 *arg1) {
-    void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
-    u8 *voice;
-    u32 flags114;
-    u32 flags118;
-    u32 word0;
-    u32 combine;
-    u8 inverse;
-    s32 scale;
-    u32 mask;
-
-    mask = 0x20000000;
-    combine = 0;
-    voice = (u8 *)arg0;
-
-    flags114 = *(u32 *)(voice + 0x114);
-    flags118 = *(u32 *)(voice + 0x118);
-
-    if ((((flags118 & mask) ^ combine) | ((flags114 & combine) ^ combine)) == 0) {
-        *(u32 *)(voice + 0x118) = flags118 | mask;
-        *(u32 *)(voice + 0x114) = flags114;
-    } else {
-        combine = arg1[1] & 0xFF;
-    }
-
-    word0 = arg1[0];
-
-    scale = (s32)(word0 & 0xFFFF0000) / 100;
-
-    if (scale < 0) {
-        scale -= ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
-    } else {
-        scale += ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
-    }
-
-    inverse = (u8)(arg1[1] >> 8);
-
-    fn_8025FFC8(
-        voice + 0x344,
-        (u8)(word0 >> 8),
-        scale,
-        (u8)combine,
-        inverse != 0,
-        inverse
-    );
-
-    *(u32 *)(voice + 0x220) |= 0x100;
-}
+void fn_80252B7C(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x344, step, 0x20000000, 0x100); }
 #pragma global_optimizer on
 void Sound_SelectSource10(void *voice, u32 *step) {
     /* MusyX select-source macro for modulator slot 10 (voice+0x38C). */
@@ -12765,8 +12719,8 @@ s32 fn_8025DAA0(
     extern u8 lbl_80368AAD;
 
     u8 count;
-    Entry *walk;
     s32 index;
+    Entry *walk;
     Entry *base;
     Node *pool;
     Node *node;
@@ -12777,8 +12731,8 @@ s32 fn_8025DAA0(
     u8 nodeIndex;
 
     count = lbl_80368AAE;
-    walk = (Entry *)lbl_8035BF18;
     index = 0;
+    walk = (Entry *)lbl_8035BF18;
 
     for (; index < (s32)count; walk++, index++) {
         if (*(u32 *)((u8 *)arg0 + 0x3C) == *(u32 *)walk) {
