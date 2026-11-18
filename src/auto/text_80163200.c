@@ -17377,10 +17377,14 @@ void *fn_8017FB80(u32 arg0) {
 }
 
 void fn_8017FC00(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void fn_8013AD70(void *, s32);
     fn_8013AD70(Ui_FindChild(arg0, 0x81, 0), *(s32 *)((u8 *)&gBattleState + 0xB0));
 }
 
 void fn_8017FC38(void *arg0) {
+    void *Ui_FindChild(void *, s32, s32);
+    void fn_8013AD70(void *, s32);
     fn_8013AD70(Ui_FindChild(arg0, 0x81, 0), *(s32 *)((u8 *)&gBattleState + 0xAC));
 }
 
