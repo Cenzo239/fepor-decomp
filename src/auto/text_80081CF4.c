@@ -292,7 +292,6 @@ x += *(f32*)((u8*)arg0+0x14);
 y = *(f32*)((u8*)arg0+0x18) + y;
 fn_80082298(gBattle,1,x,y);
   }
-  #pragma global_optimizer on
   
   void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
