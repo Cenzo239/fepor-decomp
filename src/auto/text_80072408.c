@@ -2,6 +2,15 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+typedef struct {
+    void *f0;
+    void *f4;
+} Pair_80072408;
+
+Pair_80072408 gMenuItem0_80072408 : 0x80311CA8;
+Pair_80072408 gMenuItem10_80072408 : 0x80311CB8;
+Pair_80072408 gMenuItem24_80072408 : 0x80311CCC;
+Pair_80072408 gMenuItem38_80072408 : 0x80311CE0;
 
 #pragma no_register_save_helpers on
 #pragma use_lmw_stmw on
