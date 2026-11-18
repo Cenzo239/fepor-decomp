@@ -270,6 +270,10 @@ static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
 }
+static inline void Camera_SelectAndSet(u8 *proc, CameraVec *a, CameraVec *b) {
+    CameraVec *point=Camera_ChoosePoint(proc,a,b);
+    if(point) Camera_SetPosition(proc,point->x,point->y,lbl_8036909C+point->z);
+}
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
 #pragma peephole on
