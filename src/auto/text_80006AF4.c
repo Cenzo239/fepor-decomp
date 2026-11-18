@@ -12,6 +12,17 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
     return 0;
 }
 
+static inline void *Process_FindName(const s8 *source)
+{
+    extern u8 gProcesses[];
+    u8 *entry = gProcesses;
+    s32 i;
+    for (i = 0; i < 256; i++, entry += 0x70) {
+        if (*(u32 *)entry != 0 && Process_CompareName(*(s8 **)(entry + 0x14), source) == 0) return entry;
+    }
+    return 0;
+}
+
 typedef struct {
     void *unk0;
     void *unk4;
@@ -2275,14 +2286,7 @@ s32 fn_8000AA60(void *arg0)
  s32 i;
  for(i=0;i<256;i++,entry+=0x70) {
   if(*(u32 *)entry != 0) {
-   s8 *a=*(s8 **)(entry+0x14);
-   s8 *b=source;
-   u32 result=0;
-   while (*a | *b) {
-    if(*a != *b) {result=*a-*b;break;}
-    a++; b++;
-   }
-   if(result==0) goto found;
+   if(Process_CompareName(*(s8 **)(entry+0x14), source)==0) goto found;
   }
  }
  entry=0;
