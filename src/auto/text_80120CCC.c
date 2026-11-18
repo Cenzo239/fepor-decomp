@@ -106,19 +106,22 @@ void Obj_EaseTintProc(void *proc) {
 }
 
 #pragma global_optimizer off
+#pragma peephole off
 void fn_80120F0C(void) {
 extern u16 gUiPanelFlags; extern u32 gUiInputFlags; extern u8 gUiTooltipProc[];
 void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(void);
-u16 saved[2];
+u16 b;
+u16 a;
 u16 *p=&gUiPanelFlags;
-saved[1]=p[1]; saved[0]=gUiPanelFlags;
+a=gUiPanelFlags; b=p[1];
 gUiInputFlags |= 2;
-if(!(saved[0]&0x40)) {
-if(Process_Find(gUiTooltipProc)!=0) {
+if(!(a&0x40)) {
+if((u32)Process_Find(gUiTooltipProc)!=0U) {
 if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
 }}
-gUiPanelFlags=saved[0]; p[1]=saved[1];
+gUiPanelFlags=a; p[1]=b;
 }
+#pragma peephole on
 #pragma global_optimizer on
 
 void fn_80120F94(void)
