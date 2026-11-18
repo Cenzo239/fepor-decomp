@@ -1897,16 +1897,110 @@ void fn_800C7414(void)
     gGameFlags |= 0x10;
 }
 
-void fn_800C755C(void)
-{
-    s32 temp_r31;
+#pragma scheduling on
+void fn_800C755C(void *arg0) {
+    s32 OSDisableInterrupts(void);
+    void OSDisableScheduler(void);
+    void OSEnableScheduler(void);
+    void OSRestoreInterrupts(s32);
+    void fn_8005BA08(s8);
+    void fn_8006EDE8(void *, void *, s32);
+    void fn_80211614(s32);
+    void *fn_8006E658(void);
+    void *memcpy(void *, void *, s32);
+    void fn_8022097C(void);
+    void VIFlush(void);
+    void VIWaitForRetrace(void);
+    s32 VIGetTvFormat(void);
+    u32 OSGetResetCode(void);
+    void DEMOInitGX(void *);
+    void OSPanic(void *, s32, void *, ...);
+    void fn_802246EC(s32, s32);
+    void fn_80225118(s32, s32);
+    void GXSetCopyClear(void *, u32);
+    void *DemoGetCurrentBuffer(void);
+    void GXCopyDisp(void *, s32);
+    extern s32 lbl_8028D788[];
+    extern u8 lbl_80320BC8[];
+    extern u8 lbl_8028D91C[];
+    extern u8 lbl_8028D958[];
+    extern u8 lbl_8028D994[];
+    extern u8 lbl_8028D9D0[];
+    extern u8 lbl_8028DA0C[];
+    extern u8 lbl_802702A8[];
+    extern u32 lbl_8036C4C8;
+    s32 irq;
+    unsigned long clear;
+    s32 format;
 
-    OSDisableInterrupts();
-    temp_r31 = OSDisableInterrupts();
-    lbl_8036A0C8 = 0;
-    OSRestoreInterrupts(temp_r31);
+    irq = OSDisableInterrupts();
+    OSDisableScheduler();
+    OSRestoreInterrupts(irq);
+
+    fn_8005BA08((s8)*(s32 *)((u8 *)arg0 + 0x44));
+    *(u32 *)((u8 *)arg0 + (s32)0x30) = 0;
+    fn_8006EDE8((u8 *)arg0 + 0x30, (void *)lbl_8028D788[1], 4);
+    fn_8005BA08((s8)*(s32 *)((u8 *)arg0 + 0x40));
+
+    irq = OSDisableInterrupts();
+    OSEnableScheduler();
+    OSRestoreInterrupts(irq);
+
+    *(u32 *)((u8 *)arg0 + 0x34) = 0;
+    *((u8 *)arg0 + 0x38) = 0;
+    *(u32 *)((u8 *)arg0 + 0x3c) = 0;
+
+    fn_80211614(1);
+    memcpy(lbl_80320BC8, fn_8006E658(), 0x3c);
+    fn_8022097C();
+    VIFlush();
+    VIWaitForRetrace();
+
+    format = VIGetTvFormat();
+    switch (format) {
+    case 0:
+        if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
+            DEMOInitGX(lbl_8028D91C);
+        } else if (!(OSGetResetCode() & 1)) {
+            DEMOInitGX(lbl_8028D91C);
+        } else {
+            DEMOInitGX(lbl_8028D958);
+        }
+        break;
+    case 2:
+        if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
+            DEMOInitGX(lbl_8028D994);
+        } else if (!(OSGetResetCode() & 1)) {
+            DEMOInitGX(lbl_8028D994);
+        } else {
+            DEMOInitGX(lbl_8028D958);
+        }
+        break;
+    case 1:
+    case 5:
+        if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 0x20)) {
+            DEMOInitGX(lbl_8028D9D0);
+        } else if (!(OSGetResetCode() & 0x10)) {
+            DEMOInitGX(lbl_8028D9D0);
+        } else {
+            DEMOInitGX(lbl_8028DA0C);
+        }
+        break;
+    default:
+        OSPanic(lbl_802702A8 + 0x76, 0x567, lbl_802702A8 + 0x87);
+        break;
+    }
+
+    fn_802246EC(0, 0);
+    fn_80225118(0, 0);
+    clear = lbl_8036C4C8;
+    GXSetCopyClear(&clear, 0xFFFFFF);
+    GXCopyDisp(DemoGetCurrentBuffer(), 1);
+    fn_80211614(0);
+    VIFlush();
+    VIWaitForRetrace();
 }
-
+#pragma scheduling reset
 void fn_800C77B8(s32 arg0) {
     u8 FileCache_IsReady(s32);
     void Process_ClearFunc(s32);
