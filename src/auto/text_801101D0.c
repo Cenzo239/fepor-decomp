@@ -3193,6 +3193,11 @@ static inline void ActorUpdate_CopyVector(Vec3f *dst, const Vec3f *src) {
  u32 *out=(u32 *)dst;
  out[0]=in[0];out[1]=in[1];out[2]=in[2];
 }
+struct ActorUpdateSceneInterface {
+ u8 pad[0x10];
+ virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;
+ virtual void Add(void *)=0;
+};
 struct ActorUpdateInterface {
  u8 pad[0x40];
  virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
@@ -3232,6 +3237,7 @@ extern "C" void fn_80116FE8(void *self) {
  Vec3f b2,a2,cb2,ca2,pb2,pa2;
  void *node;
  s32 compare;
+ s32 length;
  f32 radius, distance, separation;
  pos.z=lbl_8036A184; pos.y=lbl_8036A184; pos.x=lbl_8036A184;
  fn_800E5DEC(self);
@@ -3244,8 +3250,8 @@ extern "C" void fn_80116FE8(void *self) {
    M2C_FIELD(self,u8 *,0x1B5)=0;
    ((ActorUpdateInterface *)self)->SetScale(zero,scale,zero);
  }
- if(!Actor_IsBusy(self) && String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,strlen((char *)gActorXmlStrs+0x1C))) {
-   if(!String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,strlen((char *)gActorXmlStrs+0x43F))) {
+ if(!Actor_IsBusy(self) && (length=strlen((char *)gActorXmlStrs+0x1C), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,length))) {
+   if(!(length=strlen((char *)gActorXmlStrs+0x43F), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,length))) {
      M2C_FIELD(self,u8 *,0x184)=1;
      Actor_LoadAnim(self,String_CStr((u8 *)self+0x16C),M2C_FIELD(self,s32 *,0x190),1,1);
      String_Assign((u8 *)self+0x160,(u8 *)self+0x16C,0,-1);
@@ -3287,7 +3293,8 @@ extern "C" void fn_80116FE8(void *self) {
      node=M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x11C);
      if(node) {
        fn_80198F8C(&a,node);
-       compare=String_Compare(&a,0,(void *)a.size,(char *)gActorXmlStrs+0x1C,strlen((char *)gActorXmlStrs+0x1C));
+       length=strlen((char *)gActorXmlStrs+0x1C);
+       compare=String_Compare(&a,0,(void *)a.size,(char *)gActorXmlStrs+0x1C,length);
        String_Destroy(&a,-1);
        if(compare && (fn_801992F0(node)==1 || M2C_FIELD(self,s32 *,0x1B8)==1)) {
          fn_80198F8C(&b,node); String_Assign(&name,&b,0,-1); String_Destroy(&b,-1);
@@ -3295,18 +3302,19 @@ extern "C" void fn_80116FE8(void *self) {
      }
    }
    {
+     void *effectNode;
      s8 initialized;
      ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&p,self,0);
      pos.y=p.y;pos.x=p.x;pos.z=p.z;pos.y=lbl_8036A184;initialized=0;
-     node=Heap_Alloc(0xC8);
-     if(node) {
+     effectNode=Heap_Alloc(0xC8);
+     if(effectNode) {
        u8 allocator;
-       Camera_GetLookAt(&look,self);copyLook.x=look.x;copyLook.y=look.y;copyLook.z=look.z;copyPos.x=pos.x;copyPos.y=pos.y;copyPos.z=pos.z;
+       Camera_GetLookAt(&look,self);ActorUpdate_CopyVector(&copyLook,&look);ActorUpdate_CopyVector(&copyPos,&pos);
        String_Init(&effect,(char *)gActorXmlStrs+0x51,&allocator);
        initialized=1;
-       node=fn_80151D50(node,M2C_FIELD(self,void **,0xAC),&effect,&name,&copyPos,&copyLook,0);
+       effectNode=fn_80151D50(effectNode,M2C_FIELD(self,void **,0xAC),&effect,&name,&copyPos,&copyLook,0);
      }
-     ((AddFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0xAC),void **,0x10),void **,0x1C))(M2C_FIELD(self,void **,0xAC),node);
+     ((AddFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0xAC),void **,0x10),void **,0x1C))(M2C_FIELD(self,void **,0xAC),effectNode);
      if(initialized) String_Destroy(&effect,-1);
    }
    M2C_FIELD(self,s32 *,0x14C)=-1;
@@ -3370,7 +3378,7 @@ extern "C" void fn_80116FE8(void *self) {
  foot=footp;fn_80111C8C(self,&foot);
  }
  }
- if(!String_Compare((u8 *)self+0xB0,0,M2C_FIELD(self,void **,0xB0),(char *)gActorXmlStrs+0x56E,strlen((char *)gActorXmlStrs+0x56E))) {
+ if(!(length=strlen((char *)gActorXmlStrs+0x56E), String_Compare((u8 *)self+0xB0,0,M2C_FIELD(self,void **,0xB0),(char *)gActorXmlStrs+0x56E,length))) {
  ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&discarded,self,0);
  }
  String_Destroy(&name,-1);
