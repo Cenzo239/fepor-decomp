@@ -1,5 +1,17 @@
 /* Functions from 0x80127E94 to 0x8012C368, found by decomp-toolkit. */
 #include "common.h"
+typedef struct AiItemEntry { char *name; u32 key; u8 (*fn)(void *, s32); } AiItemEntry;
+static inline AiItemEntry *Ai_FindItemEntry(void *unit, u32 key) {
+extern AiItemEntry lbl_802909F8[];
+u8 fn_80093218(void *, u32);
+AiItemEntry *walk;
+if(fn_80093218(unit,key)) {
+for(walk=lbl_802909F8;walk->key;walk++) {
+if(key==walk->key && walk->fn) return walk;
+}
+}
+return 0;
+}
 
 extern u8 lbl_80290AA0[0x40];
 extern u8 gMapObjEventList[0x200];
