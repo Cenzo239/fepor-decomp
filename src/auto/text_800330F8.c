@@ -1,5 +1,14 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, u8 r, u8 g, u8 b, u8 a) {
+*(volatile f32 *)0xCC008000=x;
+*(volatile f32 *)0xCC008000=y;
+*(volatile f32 *)0xCC008000=z;
+*(volatile u8 *)0xCC008000=r;
+*(volatile u8 *)0xCC008000=g;
+*(volatile u8 *)0xCC008000=b;
+*(volatile u8 *)0xCC008000=a;
+}
 typedef struct { void *ptr; u8 pad[4]; } Elem8_8003A1E0;
 static inline s32 get_4F128_id(void *arg0) {
  void *Unit_GetActiveItemPtr(void *);
@@ -12136,18 +12145,63 @@ extern u8 lbl_80285828[];
 }
 #pragma global_optimizer on
 
-void fn_8004A864(void* arg0, s32 arg1) {
-    u8* ptr = (u8*)arg0 + 0x60;
-    s32 temp_r3 = *ptr;
-    s32 count = temp_r3 + arg1;
-
-    if (count < 0) {
-        return;
-    }
-
-    *ptr = (u8)count;
+#pragma global_optimizer off
+void fn_8004A864(s32 x,s32 y,u8 *color) {
+void GXBegin(s32,s32,s32);
+f32 fn_800233D0(void *,s8,s8,s32);
+extern u8 gBattleMap[];
+f32 z;
+GXBegin(0x98,0,4);
+{
+u8 r,g,b,a;
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
 }
-
+{
+u8 r,g,b,a;
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+{
+u8 r,g,b,a;
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+{
+u8 r,g,b,a;
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+}
+#pragma global_optimizer on
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
 void Map_SetupColorGx(void) {
     void *Camera_GetViewMtx(void);
@@ -14296,7 +14350,7 @@ void fn_800504FC(void *arg0, s32 arg1)
 
     extern u8 lbl_8026AB18[];
 
-    u8 *unit;
+    Unit *unit;
     s32 index;
     u8 *classData;
     u8 *res;
@@ -14304,19 +14358,20 @@ void fn_800504FC(void *arg0, s32 arg1)
     s32 item;
     char buffer[0x20];
 
-    unit = (u8 *)arg0;
+    unit = (Unit *)arg0;
 
-    item = (s8)unit[0x16C];
+    item = unit->unk16C;
 
-    if (item < 0) {
+    if (item >= 0) {
+    } else {
         item = fn_8004ABD4(
             Unit_GetActiveItemPtr(unit), 0
         );
     }
 
-    classData = *(u8 **)(unit + 0x18C);
+    classData = (u8 *)unit->unk18C;
 
-    if (unit[3] & 4) {
+    if (unit->unk3 & 4) {
         res = *(u8 **)(classData + 0xC);
 
         if (res != 0) {
@@ -14328,7 +14383,7 @@ void fn_800504FC(void *arg0, s32 arg1)
 
     index = 0;
 
-    if (Status_Test(unit + 0x1BC, 8) != 0) {
+    if (Status_Test((u8 *)unit + 0x1BC, 8) != 0) {
         if (Status_Test(classData + 0x1C, 9) != 0) {
             index = 1;
         }
@@ -14339,7 +14394,7 @@ void fn_800504FC(void *arg0, s32 arg1)
     }
 
     res = *(u8 **)(
-        *(u8 **)(unit + 0x188) + 0x5C + index * 4
+        (u8 *)unit->unk188 + 0x5C + index * 4
     );
 
     name = res;
