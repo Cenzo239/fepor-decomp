@@ -153,8 +153,8 @@ static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
     OSThread *next = thread->next;
     if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
-    queue->head = next;
     *out = thread;
+    queue->head = next;
 }
 #pragma opt_common_subs reset
 extern void* RunQueue_80339478[];
