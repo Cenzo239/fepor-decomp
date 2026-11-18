@@ -7271,11 +7271,11 @@ void fn_80250F18(void *arg0, u32 *arg1)
     u32 count;
     s32 divisor;
     u64 vf;
+    u16 tmp;
 
     voice = (u8 *)arg0;
-    count = *(u16 *)(voice + 0xAA);
 
-    if (count == 0) {
+    if (*(u16 *)((u8 *)arg0 + 0xAA) == 0) {
         flags = arg1[0];
         if ((flags >> 16) & 1) {
             value = fn_802611F8();
@@ -7290,12 +7290,11 @@ void fn_80250F18(void *arg0, u32 *arg1)
         if (count != 0xFFFF) {
             *(u16 *)(voice + 0xAA) = count + 1;
         }
-    } else {
-        if (count != 0xFFFF) {
-            count = *(u16 *)(voice + 0xAA) - 1;
-            *(u16 *)(voice + 0xAA) = count;
-            if ((count & 0xFFFF) == 0) goto update;
-        }
+    } else if (*(u16 *)((u8 *)arg0 + 0xAA) != 0xFFFF) {
+        tmp = *(u16 *)(voice + 0xAA);
+        tmp -= 1;
+        *(u16 *)(voice + 0xAA) = tmp;
+        if (tmp == 0) goto update;
     }
 
     flags = arg1[0];
@@ -12810,8 +12809,8 @@ s32 fn_8025DAA0(
     Entry *entry;
     Node *pool;
     Node *node;
-    u8 *current;
     u8 *previous;
+    u8 *current;
     s32 index;
     u8 count;
     u8 nodeIndex;
@@ -12888,6 +12887,7 @@ s32 fn_8025DAA0(
 
     return 1;
 }
+#pragma global_optimizer on
 
 void fn_8025DBF4(void) {
     s32 Sound_Start(u16, u8, s32, s32, u8, s32);
