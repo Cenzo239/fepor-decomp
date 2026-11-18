@@ -1204,29 +1204,27 @@ void fn_8001B134(void) {
 #pragma scheduling off
 #pragma global_optimizer off
 f32 fn_8001B84C(u8 **arg0) {
-    u8 **stream;
-    u8 *data;
     u8 *next;
-    u32 b1;
-    u32 b2;
+    u32 result;
     u32 b0;
+    u32 b2;
+    u8 *data;
     u32 b3;
     u32 value;
 
-    stream = arg0;
-    data = *stream;
+    data = *arg0;
     b2 = data[2];
     next = data + 4;
-    b1 = data[1];
+    result = data[1];
     b0 = data[0];
-    b2 = b2 << 8;
-    b1 = b1 << 16;
+    b2 <<= 8;
+    result <<= 16;
     b3 = data[3];
-    b1 = b1 + b2;
-    b0 = b0 << 24;
-    b1 = b1 + b3;
-    *stream = next;
-    value = b0 + b1;
+    result = result + b2;
+    b0 <<= 24;
+    result = result + b3;
+    *arg0 = next;
+    value = b0 + result;
     return *(f32 *)&value;
 }
 #pragma global_optimizer reset
