@@ -689,23 +689,12 @@ entry++;index++;
 return -1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
-u32 *entry=table;
-s32 index=0,groups;
-for(groups=2;groups!=0;groups--){
-if(*entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-entry++;index++;
-}
-return -1;
+s32 i; for(i=0;i<16;i++,table++) { if(*table==key)return i; } return -1;
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma opt_common_subs on
 void fn_800C47E8(void) {
 extern u32 lbl_80320B88[],lbl_80367870;
 extern u32 *lbl_8036786C;
@@ -714,21 +703,23 @@ void DebugPrint(const char *,...);
 void fn_802001F8(void *,u32,s32);
 void fn_8005C7A4(s32);
 void fn_8005BA08(s8);
+u32 *table;
 s32 index,selected,diff;
 u32 *heap;
 u8 same;
-index=Heap_FindTableIndex((u32)lbl_8036786C);
+table=lbl_80320B88;
+index=Heap_FindInTable(table,(u32)lbl_8036786C);
 DebugPrint(lbl_802700D8+0xEE,(char *)lbl_8036786C+4);
-selected=Heap_FindTableIndex(lbl_80367870);
+selected=Heap_FindInTable(table,lbl_80367870);
 diff=selected-index;
 lbl_8036786C=*(u32 **)((u8 *)lbl_8036786C+0x10);
 heap=(u32 *)lbl_80320B88[index];
 same=(diff==0);
 fn_802001F8(heap,heap[7],diff);
-fn_8005C7A4(Heap_FindTableIndex((u32)heap));
+fn_8005C7A4(Heap_FindInTable(table,(u32)heap));
 lbl_80320B88[index]=0;
 if(lbl_8036786C){
-selected=Heap_FindTableIndex((u32)lbl_8036786C);
+selected=Heap_FindInTable(table,(u32)lbl_8036786C);
 if(same){
 lbl_80367870=lbl_80320B88[selected];
 fn_8005BA08((s8)selected);
