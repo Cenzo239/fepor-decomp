@@ -23,6 +23,19 @@ extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
 extern void fn_8000B70C(void *);
 
+typedef struct ResHashNode {
+    struct ResHashNode *next;
+    u32 hash;
+    char *name;
+    void *value;
+} ResHashNode;
+typedef struct ResHashTable {
+    s32 cursor;
+    ResHashNode *pool;
+    ResHashNode *buckets[509];
+    u32 counts[509];
+} ResHashTable;
+
 typedef struct HashKey {
     u32 h1;
     u32 h2;
