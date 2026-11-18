@@ -577,6 +577,7 @@ s32 fn_800C4638(s32 arg0) {
     return fn_800C5A48(lbl_80367870, arg0) + 0x20;
 }
 
+#pragma scheduling off
 void Heap_AdjustExtent(s32 arg0) {
     extern HeapC55 *lbl_80367868;
     HeapC55 *node;
@@ -591,8 +592,7 @@ void Heap_AdjustExtent(s32 arg0) {
     node->size += arg0;
     g->extent += arg0;
 }
-
-#pragma global_optimizer off
+#pragma scheduling reset
 void Heap_Select(char *arg0) {
     s32 Str_Cmp(char *, char *);
     extern u32 lbl_80320B88[];
@@ -670,14 +670,255 @@ s32 fn_800C4740(void) {
 
     return -1;
 }
-#pragma global_optimizer reset
-void fn_800C47E8(void) {
-    // This is a placeholder for the actual function.
-    // The full decompilation involves too many complex dependencies
-    // to be completed in one attempt. Will try a partial approach.
+#pragma use_lmw_stmw on
+static inline s32 Heap_FindTableIndex(u32 key) {
+extern u32 lbl_80320B88[];
+u32 *entry=lbl_80320B88;
+s32 index=0,groups;
+for(groups=2;groups!=0;groups--){
+if(*entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+index++; if(*++entry==key)return index;
+entry++;index++;
+}
+return -1;
 }
 
-#pragma use_lmw_stmw on
+void fn_800C47E8(void) {
+    extern u32 lbl_80320B88[];
+    extern u32 *lbl_8036786C;
+    extern u32 lbl_80367870;
+    extern char lbl_802700D8[];
+    void DebugPrint(const char *, ...);
+    void fn_802001F8(void *, u32, s32);
+    void fn_8005C7A4(s32);
+    void fn_8005BA08(s8);
+
+    u32 *table;
+    u32 *entry;
+    u32 *heap;
+    u32 key;
+    s32 idx;
+    s32 idx70;
+    s32 groups;
+    s32 diff;
+    u8 same;
+
+    table = lbl_80320B88;
+    key = (u32)lbl_8036786C;
+    entry = table;
+    idx = 0;
+    for (groups = 2; groups != 0; groups--) {
+        if (*entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        idx += 1;
+        if (*++entry != key) {
+        } else {
+            goto found1;
+        }
+        entry += 1;
+        idx += 1;
+    }
+    idx = -1;
+found1:
+    DebugPrint(lbl_802700D8 + 0xEE, (char *)lbl_8036786C + 4);
+
+    key = lbl_80367870;
+    entry = table;
+    idx70 = 0;
+    for (groups = 2; groups != 0; groups--) {
+        if (*entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        idx70 += 1;
+        if (*++entry != key) {
+        } else {
+            goto found2;
+        }
+        entry += 1;
+        idx70 += 1;
+    }
+    idx70 = -1;
+found2:
+    diff = idx70 - idx;
+    heap = (u32 *)lbl_80320B88[idx];
+    lbl_8036786C = *(u32 **)((u8 *)lbl_8036786C + 0x10);
+    same = (diff == 0);
+    fn_802001F8(heap, heap[7], diff);
+
+    entry = table;
+    idx70 = 0;
+    for (groups = 2; groups != 0; groups--) {
+        if (*entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        idx70 += 1;
+        if (*++entry != (u32)heap) {
+        } else {
+            goto found3;
+        }
+        entry += 1;
+        idx70 += 1;
+    }
+    idx70 = -1;
+found3:
+    fn_8005C7A4(idx70);
+    lbl_80320B88[idx] = 0;
+
+    if (lbl_8036786C != NULL) {
+        entry = table;
+        idx70 = 0;
+        for (groups = 2; groups != 0; groups--) {
+            if (*entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            idx70 += 1;
+            if (*++entry != (u32)lbl_8036786C) {
+            } else {
+                goto found4;
+            }
+            entry += 1;
+            idx70 += 1;
+        }
+        idx70 = -1;
+found4:
+        if (same) {
+            lbl_80367870 = lbl_80320B88[idx70];
+            fn_8005BA08((s8)idx70);
+        }
+    }
+}
+#pragma use_lmw_stmw reset
 void fn_800C4B8C(void) {
     extern u32 lbl_80320B88[];
     extern u32 *lbl_80367868;
