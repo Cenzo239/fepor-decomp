@@ -2629,15 +2629,6 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
 }
 
 #pragma global_optimizer off
-static inline u8 TabMenu_CountNewKey(s8 *key, u8 value)
-{
-    if (*key != (s8)value) {
-        *key = (s8)value;
-        return 1;
-    }
-    return 0;
-}
-
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
@@ -2645,6 +2636,7 @@ It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, begin
 struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
 void *end;
 s32 count;
+s32 result;
 u8 found;
 u8 value;
 s8 tab;
@@ -2665,7 +2657,7 @@ if(keyA.value!=(s8)value) {keyA.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 a.node=*(void**)((u8*)a.node+4);
 }
-return count;
+result=count; break;
 case 1:
 end=(u8*)arg0+0x54;
 endBCopy.node=end;
@@ -2681,7 +2673,7 @@ if(keyB.value!=(s8)value) {keyB.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 b.node=*(void**)((u8*)b.node+4);
 }
-return count;
+result=count; break;
 case 2:
 end=(u8*)arg0+0x54;
 endCCopy.node=end;
@@ -2697,9 +2689,9 @@ if(keyC.value!=(s8)value) {keyC.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 c.node=*(void**)((u8*)c.node+4);
 }
-return count;
+result=count; break;
 }
-
+return result;
 }
 #pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
