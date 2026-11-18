@@ -568,13 +568,7 @@ void fn_8003BBD4(void *arg0, s32 arg1)
     unit->status[3] &= ~*(u32 *)((u8 *)res + 0x28);
 
     res = *(void **)((u8 *)unit->res + 0xC);
-
-    if (res != 0) {
-        unit->res = Res_GetByName(res);
-    } else {
-        unit->res = 0;
-    }
-
+    unit->res = res ? Res_GetByName(res) : 0;
     res = unit->res;
 
     unit->status[0] |= *(u32 *)((u8 *)res + 0x1C);
@@ -1128,7 +1122,7 @@ s32 Unit_Read(void *unit, void *stream) {
     fn_8003B69C((s32)dst);
     return 1;
 }
-#pragma global_optimizer reset
+#pragma use_lmw_stmw on
 void Unit_Write(void *arg0, s32 arg1) {
     void Stream_WriteU16(s32, u16);
     void Stream_WriteU8(s32, u8);
@@ -1141,65 +1135,71 @@ void Unit_Write(void *arg0, s32 arg1) {
     void fn_800174A8(void *, s32);
     void Unit_WriteExtra(void *, s32);
     void fn_8004BCCC(void *, s32);
-    s32 i;
+    s32 out;
+    void *self;
     u32 tmp;
     void *p;
+    u8 b;
 
-    p = *(void **)((u8 *)arg0 + 0x188);
+    out = arg1;
+    self = arg0;
+    p = *(void **)((u8 *)self + 0x188);
     if (p == NULL) {
-        Stream_WriteU16(arg1, 0);
+        Stream_WriteU16(out, 0);
         return;
     }
-    Stream_WriteU16(arg1, *(u16 *)((u8 *)p + 0x18));
-    Stream_WriteU16(arg1, *(u16 *)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x38));
-    Stream_WriteU8(arg1, *((u8 *)*(void **)((u8 *)arg0 + 0x190) + 8));
-    p = *(void **)((u8 *)arg0 + 0x180);
+    Stream_WriteU16(out, *(u16 *)((u8 *)p + 0x18));
+    Stream_WriteU16(out, *(u16 *)((u8 *)*(void **)((u8 *)self + 0x18C) + 0x38));
+    Stream_WriteU8(out, *((u8 *)*(void **)((u8 *)self + 0x190) + 8));
+    p = *(void **)((u8 *)self + 0x180);
     if (p != NULL) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
-    Stream_WriteU8(arg1, (u8)tmp);
-    p = *(void **)((u8 *)arg0 + 0x184);
+    Stream_WriteU8(out, (u8)tmp);
+    p = *(void **)((u8 *)self + 0x184);
     if (p != NULL) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
-    Stream_WriteU8(arg1, (u8)tmp);
-    p = *(void **)((u8 *)arg0 + 0x194);
+    Stream_WriteU8(out, (u8)tmp);
+    p = *(void **)((u8 *)self + 0x194);
     if (p != NULL) {
-        tmp = *((u8 *)p + 0x198);
+        b = *((u8 *)p + 0x198);
     } else {
-        tmp = 0;
+        b = 0;
     }
-    Stream_WriteU8(arg1, (u8)tmp);
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x199));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19A));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19B));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19C));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19D));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19E));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19F));
-    Stream_Write(arg1, 4, (u8 *)arg0 + 0x1A0);
-    fn_80104160((u8 *)arg0 + 0x1A4, arg1);
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A8));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A9));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1AA));
-    Stream_Write(arg1, 8, (u8 *)arg0 + 0x1AB);
-    Stream_Write(arg1, 8, (u8 *)arg0 + 0x1B4);
-    fn_80105A30((u8 *)arg0 + 0x1BC, arg1);
-    for (i = 0; i < 8; i++) {
-        fn_8001C21C((void *)Unit_GetItemSlot((s32)arg0, i), arg1);
+    Stream_WriteU8(out, b);
+    Stream_WriteU8(out, *((u8 *)self + 0x199));
+    Stream_WriteU8(out, *((u8 *)self + 0x19A));
+    Stream_WriteU8(out, *((u8 *)self + 0x19B));
+    Stream_WriteU8(out, *((u8 *)self + 0x19C));
+    Stream_WriteU8(out, *((u8 *)self + 0x19D));
+    Stream_WriteU8(out, *((u8 *)self + 0x19E));
+    Stream_WriteU8(out, *((u8 *)self + 0x19F));
+    Stream_Write(out, 4, (u8 *)self + 0x1A0);
+    fn_80104160((u8 *)self + 0x1A4, out);
+    Stream_WriteU8(out, *((u8 *)self + 0x1A8));
+    Stream_WriteU8(out, *((u8 *)self + 0x1A9));
+    Stream_WriteU8(out, *((u8 *)self + 0x1AA));
+    Stream_Write(out, 8, (u8 *)self + 0x1AB);
+    Stream_Write(out, 8, (u8 *)self + 0x1B4);
+    fn_80105A30((u8 *)self + 0x1BC, out);
+    {
+        s32 i;
+        for (i = 0; i < 8; i++) {
+            fn_8001C21C((void *)Unit_GetItemSlot((s32)self, i), out);
+        }
     }
-    fn_8001D044((u8 *)arg0 + 0x20C, arg1);
-    fn_800174A8((u8 *)arg0 + 0x228, arg1);
-    Stream_Write(arg1, 0xA, (u8 *)arg0 + 0x214);
-    Unit_WriteExtra(arg0, arg1);
-    fn_8004BCCC(arg0, arg1);
-    Stream_WriteU16(arg1, 0);
+    fn_8001D044((u8 *)self + 0x20C, out);
+    fn_800174A8((u8 *)self + 0x228, out);
+    Stream_Write(out, 0xA, (u8 *)self + 0x214);
+    Unit_WriteExtra(self, out);
+    fn_8004BCCC(self, out);
+    Stream_WriteU16(out, 0);
 }
-
 void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
  extern u8 gBattleMap[],lbl_8026A520[];
  void Map_SelectRangeBuffer(void *,s32); void fn_80022748(void *,s32); void fn_800227F8(void *,void *);
@@ -1408,6 +1408,7 @@ u8 fn_8003D13C(void *arg0)
 }
 
 #pragma opt_strength_reduction off
+#pragma optimization_level 3
 void Unit_Promote(void *arg0) {
     void *Res_GetByName(void *);
     void Unit_SetHp(void *, s8);
@@ -1539,7 +1540,8 @@ void Unit_Promote(void *arg0) {
     self->unk1A0 &= 0xFFFBFFFF;
     Unit_SetHp(self, (s8)Unit_GetMaxHp(self));
 }
-
+#pragma optimization_level reset
+#pragma opt_strength_reduction reset
 s32 Unit_CanPromote(s32 unit) {
     /* True if unit can promote: no blocking statuses, promo class exists, level >= 10. */
     u8 Status_Test(s32, s32);
@@ -6980,8 +6982,8 @@ void fn_80048A3C(u8 arg0, u8 arg1, u8 arg2, u8 *arg3) {
     extern volatile u8 lbl_8036728D;
     extern volatile u8 lbl_8036728E;
     extern volatile u8 lbl_80367290;
-    u8 d, c, b, a;
     volatile u8 *p;
+    u8 d, c, b, a;
 
     a = arg3[0];
     b = arg3[1];
@@ -7317,95 +7319,78 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
 }
 
 #pragma global_optimizer off
+#pragma fp_contract off
 void fn_80049594(void *self)
 {
-    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    void PSMTXTrans(void *, f32, f32, f32);
-    void PSMTXRotRad(void *, s32, f32);
-    void PSMTXConcat(void *, void *, void *);
-    void PSMTXScale(void *, f32, f32, f32);
-    void Process_ClearFunc(void *);
-
-    extern void *gMap;
-    extern f64 lbl_80368EF8;
-    extern f32 lbl_80368EE4;
-    extern f32 lbl_80368EE8;
-    extern f32 lbl_80368EEC;
-    extern f32 lbl_80368EF0;
-    extern f32 lbl_80368EF4;
-
-    u8 sp98[0x30];
-    u8 sp68[0x30];
-    u8 sp38[0x30];
-    u8 sp8[0x30];
-
-    f32 half;
-    u8 *ent;
-    u8 *map;
-    u8 *p0;
-    s32 a;
-    f32 f31v;
-    f32 f30v;
-    f32 f29v;
-    f32 f28v;
-    f32 t30;
-    f32 scale;
-    f32 temp_f0;
-    s32 ival;
-
-    half = lbl_80368EE4;
-    *(s32 *)((u8 *)self + 0x40) = *(s32 *)((u8 *)self + 0x40) + 1;
-
-    ival = (s32)Math_EaseOutPow(
-        2,
-        *(f32 *)((u8 *)self + 0x44),
-        *(f32 *)((u8 *)self + 0x48),
-        (f32)*(s32 *)((u8 *)self + 0x3C),
-        (f32)*(s32 *)((u8 *)self + 0x40)
-    );
-    *(f32 *)(*(u8 **)((u8 *)self + 0x30) + 8) = (f32)ival;
-
-    ent = *(u8 **)((u8 *)self + 0x30);
-    map = (u8 *)gMap;
-
-    f28v = (f32)(s8)ent[0] + half;
-    f29v = -(*(f32 *)(ent + 0xC) + half);
-    t30 = (f32)(s8)ent[1];
-    f31v = *(f32 *)(ent + 8) + half;
-    f30v = t30 + half;
-
-    if (*(u8 *)(map + 0x68) == 1) {
-        a = *(s16 *)map;
-        p0 = (u8 *)(s32)*(s16 *)(map + 2);
-        a = (s32)(((u32)a >> 31) + a) >> 1;
-        f28v -= (f32)a;
-        f30v -= (f32)((s32)(((u32)(s32)p0 >> 31) + (s32)p0) >> 1);
-    }
-
-    PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
-    PSMTXRotRad(sp68, 0x59, lbl_80368EEC * f31v);
-    PSMTXConcat(sp68, sp98, sp68);
-    PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
-    PSMTXConcat(sp98, sp68, sp8);
-
-    scale = *(f32 *)(map + 0x6C);
-    PSMTXScale(sp38, scale, scale, scale);
-    PSMTXConcat(sp38, sp8, sp8);
-
-    temp_f0 = *(f32 *)(map + 0x6C);
-    PSMTXTrans(
-        sp98,
-        lbl_80368EF4 * (f28v * temp_f0),
-        lbl_80368EF4 * (f29v * temp_f0),
-        lbl_80368EF4 * (f30v * temp_f0)
-    );
-    PSMTXConcat(sp98, sp8, sp8);
-    PSMTXConcat(map + 0x70, sp8, ent + 0x24);
-
-    if (*(s32 *)((u8 *)self + 0x3C) == *(s32 *)((u8 *)self + 0x40)) {
-        Process_ClearFunc(self);
-    }
+  f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+  void PSMTXTrans(void *, f32, f32, f32);
+  void PSMTXRotRad(void *, s32, f32);
+  void PSMTXConcat(void *, void *, void *);
+  void PSMTXScale(void *, f32, f32, f32);
+  void Process_ClearFunc(void *);
+  extern void *gMap;
+  extern f64 lbl_80368EF8;
+  extern f32 lbl_80368EE4;
+  extern f32 lbl_80368EE8;
+  extern f32 lbl_80368EEC;
+  extern f32 lbl_80368EF0;
+  extern f32 lbl_80368EF4;
+  u8 sp98[0x30];
+  u8 sp68[0x30];
+  u8 sp38[0x30];
+  u8 sp8[0x30];
+  f32 half;
+  u8 *ent;
+  u8 *map;
+  u8 *p0;
+  s32 a;
+  f32 f31v;
+  f32 f30v;
+  f32 f29v;
+  f32 f28v;
+  f32 t30;
+  f32 scale;
+  f32 temp_f0;
+  s32 ival;
+  float new_var;
+  half = lbl_80368EE4;
+  *((s32 *) (((u8 *) self) + 0x40)) = (*((s32 *) (((u8 *) self) + 0x40))) + 1;
+  ival = (s32) Math_EaseOutPow(2, *((f32 *) (((u8 *) self) + 0x44)), *((f32 *) (((u8 *) self) + 0x48)), (f32) (*((s32 *) (((u8 *) self) + 0x3C))), (f32) (*((s32 *) (((u8 *) self) + 0x40))));
+  *((f32 *) ((*((u8 **) (((u8 *) self) + 0x30))) + 8)) = (f32) ival;
+  ent = *((u8 **) (((u8 *) self) + 0x30));
+  map = (u8 *) gMap;
+  f28v = ((f32) ((s8) ent[0])) + half;
+  new_var = -((*((f32 *) (ent + 0xC))) + half);
+  f29v = new_var;
+  t30 = (f32) ((s8) ent[1]);
+  f31v = (*((f32 *) (ent + 8))) + half;
+  f30v = t30 + half;
+  if ((*((u8 *) (map + 0x68))) == 1)
+  {
+    a = *((s16 *) map);
+    p0 = (u8 *) ((s32) (*((s16 *) (map + 2))));
+    a = ((s32) ((((u32) a) >> 31) + a)) >> 1;
+    f28v -= (f32) a;
+    f30v -= (f32) (((s32) ((((u32) ((s32) p0)) >> 31) + ((s32) p0))) >> 1);
+  }
+  PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+  PSMTXRotRad(sp68, 0x59, lbl_80368EEC * f31v);
+  PSMTXConcat(sp68, sp98, sp68);
+  PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+  PSMTXConcat(sp98, sp68, sp8);
+  scale = *((f32 *) (map + 0x6C));
+  PSMTXScale(sp38, scale, scale, scale);
+  PSMTXConcat(sp38, sp8, sp8);
+  temp_f0 = *((f32 *) (map + 0x6C));
+  PSMTXTrans(sp98, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
+  PSMTXConcat(sp98, sp8, sp8);
+  PSMTXConcat(map + 0x70, sp8, ent + 0x24);
+  if ((*((s32 *) (((u8 *) self) + 0x3C))) == (*((s32 *) (((u8 *) self) + 0x40))))
+  {
+    Process_ClearFunc(self);
+  }
 }
+#pragma fp_contract reset
 #pragma global_optimizer reset
 void fn_8004982C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x48);
