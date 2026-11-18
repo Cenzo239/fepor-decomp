@@ -264,12 +264,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     }
     RunQueueHint_8036851C = 0;
     prio = __cntlzw((u32)RunQueueBits_80368518);
-    q = (OSThreadQueue *)queue;
-    q += prio;
-    PopThreadHead(q, q->head, &next);
-    if (q->head == NULL) {
-        RunQueueBits_80368518 &= ~(1 << (0x1F - prio));
-    }
+    PopThreadAt(queue,prio,&next);
     next->queue = NULL;
     next->state = 2;
     SwitchThreadCallback_80366F50(*(void **)0x800000E4, next);
