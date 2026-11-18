@@ -570,40 +570,33 @@ static inline s32 EXIAttachInternal(s32 chan, void *callback)
 {
     EXIControl *exi = &Ecb_8033E188[chan];
     s32 enabled = OSDisableInterrupts();
+    s32 result;
     if ((exi->state & 8) || !__EXIProbe(chan)) {
         OSRestoreInterrupts(enabled);
-        return 0;
+        result = 0;
+    } else {
+        EXIClearInterrupts(chan, 1, 0, 0);
+        exi->extCallback = callback;
+        __OSUnmaskInterrupts(0x100000U >> (chan * 3));
+        exi->state |= 8;
+        OSRestoreInterrupts(enabled);
+        result = 1;
     }
-    EXIClearInterrupts(chan, 1, 0, 0);
-    exi->extCallback = callback;
-    __OSUnmaskInterrupts(0x100000U >> (chan * 3));
-    exi->state |= 8;
-    OSRestoreInterrupts(enabled);
-    return 1;
+    return result;
 }
 
-#pragma inline_depth(0)
+#pragma inline_depth(1)
 s32 fn_802395BC(s32 chan, void *callback)
 {
- s32 result;
- s32 enabled2;
  EXIControl *exi;
  s32 enabled;
  u32 id;
+ s32 result;
  exi=&Ecb_8033E188[chan];
  if(__EXIProbe(chan) && exi->idTime==0) EXIGetID(chan,0,&id);
  enabled=OSDisableInterrupts();
  if(exi->idTime==0) {OSRestoreInterrupts(enabled);return 0;}
- enabled2=OSDisableInterrupts();
- if((exi->state&8) || !__EXIProbe(chan)) {
-  OSRestoreInterrupts(enabled2);result=0;
- } else {
-  EXIClearInterrupts(chan,1,0,0);
-  exi->extCallback=callback;
-  __OSUnmaskInterrupts(0x100000U>>(chan*3));
-  exi->state|=8;
-  OSRestoreInterrupts(enabled2);result=1;
- }
+ result=EXIAttachInternal(chan,callback);
  OSRestoreInterrupts(enabled);
  return result;
 }
