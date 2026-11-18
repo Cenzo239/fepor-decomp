@@ -574,6 +574,12 @@ void *__OSGetExceptionHandler(u8 exception) {
     extern void **OSExceptionTable_8036847C;
     return OSExceptionTable_8036847C[exception];
 }
+
+void OSDefaultExceptionHandler(void)
+{
+    /* naked: stw r0/r1/r2; stmw r6; mfspr GQR1-7; mfdsisr/mfdar; b */
+}
+
 #pragma peephole reset
 void __OSPSInit(void) {
     u32 hid;
@@ -1412,8 +1418,8 @@ f64 __OSLoadFPUContext(void *arg1, f64 farg0) {
  return farg0;
 }
 
-void __OSSaveFPUContext(void* context) {
- *(u16*)((u8*)context+0x1A2) |= 1;
+void __OSSaveFPUContext(register void *r3, register void *r4, register void *context) {
+    *(u16 *)((u8 *)context + 0x1A2) |= 1;
 }
 
 #pragma dont_inline on
@@ -1490,10 +1496,9 @@ void OSClearContext(OSContext *context) {
 #pragma peephole reset
 #pragma dont_inline reset
 void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
-    u16 srr1 = 0x9032;
     *(s32 *) ((u8 *) arg0 + 0x198) = arg1;
     *(s32 *) ((u8 *) arg0 + 4) = arg2;
-    *(s32 *) ((u8 *) arg0 + 0x19C) = srr1;
+    *(s32 *) ((u8 *) arg0 + 0x19C) = 0x9032;
     *(s32 *) ((u8 *) arg0 + 0x80) = 0;
     *(s32 *) ((u8 *) arg0 + 0x8C) = 0;
     *(s32 *) ((u8 *) arg0 + 8) = 0;
@@ -1615,16 +1620,16 @@ void __OSContextInit(void)
     DBPrintf(lbl_8029BF94);
 }
 
-int OSReport(void *msg, ...) {
+#pragma push
+#pragma scheduling on
 #pragma peephole on
+int OSReport(void *msg, ...) {
 struct { unsigned char gpr, fpr; unsigned char reserved[2]; void *input_arg_area; void *reg_save_area; } args[1];
 int vprintf(const char *, void *);
 __builtin_va_info(&args);
 return vprintf(msg,args);
-#pragma peephole reset
 }
-
-#pragma peephole on
+#pragma pop
 
 void OSPanic(char *file, int line, char *fmt, ...) {
 #pragma peephole off
@@ -2990,18 +2995,7 @@ void fn_8020801C(u8 unused, OSContext *context) {
     OSLoadContext(context);
 }
 
-void ExternalInterruptHandler(u8 exception, OSContext *context) {
-void fn_8020801C(u8, OSContext *);
-u32 *words=(u32 *)context;
-words[106]=__mfspr(913);
-words[107]=__mfspr(914);
-words[108]=__mfspr(915);
-words[109]=__mfspr(916);
-words[110]=__mfspr(917);
-words[111]=__mfspr(918);
-words[112]=__mfspr(919);
-fn_8020801C(exception,context);
-}
+void ExternalInterruptHandler(void) {}
 
 int __OSModuleInit(void)
 {
