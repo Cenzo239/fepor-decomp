@@ -27,6 +27,12 @@ struct LensFlareOwner {
     virtual void v0(); virtual void v1();
     virtual LensFlareView *find(char *, char *);
 };
+struct ItemCursorView {
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void v6(); virtual void v7(); virtual void v8();
+    virtual s32 getRowOffset();
+};
 struct UnitPanelView {
     virtual void v0(); virtual void v1(); virtual void v2();
     virtual void v3(); virtual void v4(); virtual void v5();
@@ -1169,18 +1175,18 @@ struct Point *fn_8013F748(void *,struct Point *,struct Point *);
 struct Point out,in;
 s32 *dst;
 void *self;
-s16 x;
 s32 y;
-s16 temp;
+s16 x;
+s32 temp;
 s32 cls;
 temp=*(s16 *)((u8 *)arg1+0x4C);
 dst=arg0;
 self=arg1;
-cls=temp;
-if(temp<0) { y=0; x=0; }
+cls=(s16)temp;
+if(cls<0) { y=0; x=0; }
 else {
 x=*(s16 *)((u8 *)self+0x64);
-y=*(s16 *)((u8 *)self+0x54) * cls;
+y=cls * *(s16 *)((u8 *)self+0x54);
 y+=*(s16 *)((u8 *)self+0x66);
 y=(s16)y;
 if(cls>=4 && cls<=7) y+=(*(s32 (**)(void *))(*(u8 **)self+0x2C))(self);
@@ -14183,13 +14189,13 @@ static inline void Stream_InitBase(void *self) {
 extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
-    void *vt;
-    void *vt2;
     s32 zero;
+    void *vt2;
+    void *vt;
 
-    vt = gStreamBaseVtbl;
-    vt2 = lbl_802842B8;
     zero = 0;
+    vt2 = lbl_802842B8;
+    vt = gStreamBaseVtbl;
     *(void **)((char *)arg0 + 0x10) = vt;
     *(s32 *)((char *)arg0 + 4) = zero;
     *(s32 *)arg0 = zero;
@@ -18831,7 +18837,7 @@ s32 y=*(s16*)((u8*)arg1+0x58);
 s32 x=*(s16*)((u8*)arg1+0x56);
 s32 index=*(s16*)((u8*)arg1+0x4e);
 s32 step=*(s16*)((u8*)arg1+0x54);
-u32 row=step*index;
+s32 row=step*index;
 in.y=row+y;
 in.x=x;
 *arg0=*(s32*)fn_8013F748(arg1,outp,inp);
