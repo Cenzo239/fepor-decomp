@@ -430,8 +430,8 @@ notInit:return 0x1d;
 void fn_8023C7B0(void) {
   extern u32 lbl_8033E578[6];
   extern s32 lbl_8036894C;
-  volatile u32 *p = lbl_8033E578;
   u32 base = (lbl_8036894C + 31) & ~31;
+  volatile u32 *p = lbl_8033E578;
   p[0] = base;
   p[1] = base + 0x80;
   p[2] = base + 0x100;
@@ -989,119 +989,345 @@ void fn_80242668(void *arg0, s16 *arg1) {
     extern u8 *lbl_80368840;
     extern u8 *lbl_803688A0;
     extern u8 lbl_80282FD8[];
-
+    u8 *ctx=arg0;
     u8 *tbl;
     u8 *lens;
     s32 bitpos;
     u32 bitbuf;
     s32 code;
-    s32 n;
     s32 val;
     s32 i;
-    s32 run;
-    s32 bits;
-    u32 x;
-    s32 t;
-    u8 *p;
-    s32 lim;
+    s32 run, bits, remaining, extra, shift;
+    u32 x, oldbits;
     u32 *wp;
-
-    __dcbz(arg1, 0);
-    tbl = lbl_80368840;
-    lens = tbl + 0x20;
-    bitpos = *(s32 *)((u8 *)arg0 + 0x6A4);
-    bitbuf = *(u32 *)((u8 *)arg0 + 0x6A0);
-    t = bitpos + 4;
-    code = (s32)((bitbuf << (t & 31)) | (bitbuf >> ((32 - (t & 31)) & 31))) & 0x1F;
-    if (bitpos <= 0x1C) {
-        n = tbl[code];
-        if (n != 0xFF) {
-            *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos + lens[code];
-            val = n;
-        } else {
-            p = tbl + 0x44 + 0x14;
-            bitpos += 5;
-            n = 5;
-            code <<= 1;
-            for (;;) {
-                if (bitpos == 0x21) {
-                    wp = *(u32 **)((u8 *)arg0 + 0x69C);
-                    bitpos = 1;
-                    wp++;
-                    bitbuf = *wp;
-                    p += 4;
-                    lim = *(s32 *)p;
-                    *(u32 **)((u8 *)arg0 + 0x69C) = wp;
-                    code = (code & ~1) | (bitbuf >> 31);
-                    *(u32 *)((u8 *)arg0 + 0x6A0) = bitbuf;
-                    for (;;) {
-                        bitpos++;
-                        n++;
-                        if (code <= lim)
-                            break;
-                        p += 4;
-                        lim = *(s32 *)p;
-                        code = (code * 2) | ((s32)(bitbuf << (bitpos & 31)) >> 31);
-                    }
-                    break;
-                }
-                p += 4;
-                lim = *(s32 *)p;
-                code |= (s32)(bitbuf << (bitpos & 31)) >> 31;
-                bitpos++;
-                n++;
-                if (code <= lim)
-                    break;
-                code <<= 1;
-            }
-            *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos;
-            val = *(u8 *)(code + (*(s32 *)(tbl + n * 4 + 0x8C) + *(s32 *)(tbl + 0x40)));
-        }
-    } else {
-        val = -1;
-    }
-
-    __dcbz(arg1, 0x20);
-    __dcbz(arg1, 0x40);
-    x = 0;
-    if (val != 0) {
-        bitpos = *(s32 *)((u8 *)arg0 + 0x6A4);
-        bits = 0x21 - bitpos;
-        bitbuf = *(u32 *)((u8 *)arg0 + 0x6A0);
-        run = val - bits;
-        t = bitpos - 1;
-        if (run <= 0) {
-            *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos + val;
-            x = (bitbuf << t) >> (0x20 - val);
-        } else {
-            wp = *(u32 **)((u8 *)arg0 + 0x69C);
-            wp++;
-            bitbuf = *wp;
-            *(u32 *)((u8 *)arg0 + 0x6A0) = bitbuf;
-            *(u32 **)((u8 *)arg0 + 0x69C) = wp;
-            *(s32 *)((u8 *)arg0 + 0x6A4) = run + 1;
-            x = ((bitbuf >> bits) + (*(u32 *)((u8 *)arg0 + 0x6A0) << t)) >> (0x20 - val);
-        }
-        if ((s32)__cntlzw((s16)x) > (0x20 - val)) {
-            x = ((u32)-1 << val) + x + 1;
-        }
-    }
-    __dcbz(arg1, 0x60);
+    __dcbz(arg1,0);
+    tbl=lbl_80368840;
+    bitpos=*(s32 *)(ctx+0x6a4);
+    lens=tbl+0x20;
+    bitbuf=*(u32 *)(ctx+0x6a0);
     {
-        s16 s = *(s16 *)((u8 *)arg0 + 0x684) + (s16)x;
-        *(s16 *)((u8 *)arg0 + 0x684) = s;
-        *arg1 = s;
+        s32 *maxcode;
+        s32 limit, length, step;
+        u32 prefix;
+        u32 *stream;
+        code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
+        if (bitpos <= 28) {
+            val=tbl[code];
+            step=lens[code];
+            if(val!=255) {
+                bitpos+=step;
+                *(s32 *)(ctx+0x6a4)=bitpos;
+            } else {
+                maxcode=(s32 *)(tbl+0x44);
+                bitpos+=5;
+                length=5;
+                maxcode+=5;
+                for(;;) {
+                    code <<= 1;
+                    if(bitpos!=33) {
+                        step=__rlwnm(bitbuf,bitpos,31,31);
+                        limit=*++maxcode;
+                        code|=step;
+                        bitpos++;
+                    } else {
+                        stream=*(u32 **)(ctx+0x69c);
+                        bitpos=1;
+                        bitbuf=*++stream;
+                        limit=*++maxcode;
+                        *(u32 **)(ctx+0x69c)=stream;
+                        code|=bitbuf>>31;
+                        *(u32 *)(ctx+0x6a0)=bitbuf;
+                        for(;;) {
+                            bitpos++;
+                            length++;
+                            if(code<=limit) break;
+                            code <<= 1;
+                            step=__rlwnm(bitbuf,bitpos,31,31);
+                            limit=*++maxcode;
+                            code|=step;
+                        }
+                        break;
+                    }
+                    length++;
+                    if(code<=limit) break;
+                }
+                *(s32 *)(ctx+0x6a4)=bitpos;
+                val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+            }
+        } else {
+            stream=*(u32 **)(ctx+0x69c);
+            if(bitpos==33) {
+                bitbuf=*++stream;
+                code=bitbuf>>27;
+                *(u32 **)(ctx+0x69c)=stream;
+                val=tbl[code];
+                step=lens[code];
+                *(u32 *)(ctx+0x6a0)=bitbuf;
+                if(val!=255) {
+                    bitpos=step+1;
+                    *(s32 *)(ctx+0x6a4)=bitpos;
+                } else {
+                    length=5;
+                    do {
+                        step=31-length;
+                        length++;
+                        code=bitbuf>>step;
+                        limit=*(s32 *)(tbl+0x44+length*4);
+                    } while(code>limit);
+                    bitpos=length+1;
+                    *(s32 *)(ctx+0x6a4)=bitpos;
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            } else if(bitpos==32) {
+                bitbuf=*++stream;
+                *(u32 **)(ctx+0x69c)=stream;
+                code=(code&16)|(bitbuf>>28);
+                val=tbl[code];
+                step=lens[code];
+                *(u32 *)(ctx+0x6a0)=bitbuf;
+                bitpos=step;
+                *(s32 *)(ctx+0x6a4)=bitpos;
+                if(val==255) {
+                    maxcode=(s32 *)(tbl+0x44)+5;
+                    prefix=((u32)code<<27)|(bitbuf>>1);
+                    length=5;
+                    do {
+                        step=31-length;
+                        limit=*++maxcode;
+                        code=prefix>>step;
+                        length++;
+                    } while(code>limit);
+                    bitpos=length;
+                    *(s32 *)(ctx+0x6a4)=bitpos;
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            } else {
+                val=tbl[code];
+                step=lens[code];
+                length=bitpos+step;
+                if(val!=255 && length<=33) {
+                    bitpos=length;
+                    *(s32 *)(ctx+0x6a4)=bitpos;
+                } else {
+                    step=33-bitpos;
+                    code=bitbuf&~(~0U<<step);
+                    maxcode=(s32 *)(tbl+0x44)+step;
+                    length=step+1;
+                    stream=*(u32 **)(ctx+0x69c);
+                    bitbuf=*++stream;
+                    *(u32 **)(ctx+0x69c)=stream;
+                    code<<=1;
+                    *(u32 *)(ctx+0x6a0)=bitbuf;
+                    code|=bitbuf>>31;
+                    limit=*++maxcode;
+                    bitpos=2;
+                    for(;;) {
+                        step=__rlwnm(bitbuf,bitpos,31,31);
+                        if(code<=limit) break;
+                        code<<=1;
+                        length++;
+                        limit=*++maxcode;
+                        code+=step;
+                        bitpos++;
+                    }
+                    *(s32 *)(ctx+0x6a4)=bitpos;
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            }
+        }
     }
-    bitpos = *(s32 *)((u8 *)arg0 + 0x6A4);
-    bitbuf = *(u32 *)((u8 *)arg0 + 0x6A0);
-    i = 1;
-    while (i < 0x40) {
-        i++;
+    __dcbz(arg1,0x20);
+    x=0;
+    __dcbz(arg1,0x40);
+    if(val!=0) {
+        bitpos=*(s32 *)(ctx+0x6a4);
+        remaining=33-bitpos;
+        bitbuf=*(u32 *)(ctx+0x6a0);
+        extra=val-remaining;
+        shift=bitpos-1;
+        if(extra<=0) {
+            *(s32 *)(ctx+0x6a4)=bitpos+val;
+            x=(bitbuf<<shift)>>(32-val);
+        } else {
+            wp=*(u32 **)(ctx+0x69c);
+            oldbits=bitbuf<<shift;
+            bitbuf=*++wp;
+            *(u32 *)(ctx+0x6a0)=bitbuf;
+            *(u32 **)(ctx+0x69c)=wp;
+            *(s32 *)(ctx+0x6a4)=extra+1;
+            x=((bitbuf>>remaining)+oldbits)>>(32-val);
+        }
+        if((s32)__cntlzw((s16)x)>32-val) x=(~0U<<val)+x+1;
     }
-    *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos;
-    *(u32 *)((u8 *)arg0 + 0x6A0) = bitbuf;
-    (void)lbl_803688A0;
-    (void)lbl_80282FD8;
+    __dcbz(arg1,0x60);
+    {
+        s32 dc=*(s16 *)(ctx+0x684)+x;
+        *(s16 *)(ctx+0x684)=dc;
+        arg1[0]=dc;
+    }
+    tbl=lbl_803688A0;
+    bitpos=*(s32 *)(ctx+0x6a4);
+    lens=tbl+0x20;
+    bitbuf=*(u32 *)(ctx+0x6a0);
+    for(i=1;i<64;i++) {
+        {
+        s32 *maxcode;
+        s32 limit, length, step;
+        u32 prefix;
+        u32 *stream;
+        code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
+        if (bitpos <= 28) {
+            val=tbl[code];
+            step=lens[code];
+            if(val!=255) {
+                bitpos+=step;
+                
+            } else {
+                maxcode=(s32 *)(tbl+0x44);
+                bitpos+=5;
+                length=5;
+                maxcode+=5;
+                for(;;) {
+                    code <<= 1;
+                    if(bitpos!=33) {
+                        step=__rlwnm(bitbuf,bitpos,31,31);
+                        limit=*++maxcode;
+                        code|=step;
+                        bitpos++;
+                    } else {
+                        stream=*(u32 **)(ctx+0x69c);
+                        bitpos=1;
+                        bitbuf=*++stream;
+                        limit=*++maxcode;
+                        *(u32 **)(ctx+0x69c)=stream;
+                        code|=bitbuf>>31;
+                        
+                        for(;;) {
+                            bitpos++;
+                            length++;
+                            if(code<=limit) break;
+                            code <<= 1;
+                            step=__rlwnm(bitbuf,bitpos,31,31);
+                            limit=*++maxcode;
+                            code|=step;
+                        }
+                        break;
+                    }
+                    length++;
+                    if(code<=limit) break;
+                }
+                
+                val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+            }
+        } else {
+            stream=*(u32 **)(ctx+0x69c);
+            if(bitpos==33) {
+                bitbuf=*++stream;
+                code=bitbuf>>27;
+                *(u32 **)(ctx+0x69c)=stream;
+                val=tbl[code];
+                step=lens[code];
+                
+                if(val!=255) {
+                    bitpos=step+1;
+                    
+                } else {
+                    length=5;
+                    do {
+                        step=31-length;
+                        length++;
+                        code=bitbuf>>step;
+                        limit=*(s32 *)(tbl+0x44+length*4);
+                    } while(code>limit);
+                    bitpos=length+1;
+                    
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            } else if(bitpos==32) {
+                bitbuf=*++stream;
+                *(u32 **)(ctx+0x69c)=stream;
+                code=(code&16)|(bitbuf>>28);
+                val=tbl[code];
+                step=lens[code];
+                
+                bitpos=step;
+                
+                if(val==255) {
+                    maxcode=(s32 *)(tbl+0x44)+5;
+                    prefix=((u32)code<<27)|(bitbuf>>1);
+                    length=5;
+                    do {
+                        step=31-length;
+                        limit=*++maxcode;
+                        code=prefix>>step;
+                        length++;
+                    } while(code>limit);
+                    bitpos=length;
+                    
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            } else {
+                val=tbl[code];
+                step=lens[code];
+                length=bitpos+step;
+                if(val!=255 && length<=33) {
+                    bitpos=length;
+                    
+                } else {
+                    step=33-bitpos;
+                    code=bitbuf&~(~0U<<step);
+                    maxcode=(s32 *)(tbl+0x44)+step;
+                    length=step+1;
+                    stream=*(u32 **)(ctx+0x69c);
+                    bitbuf=*++stream;
+                    *(u32 **)(ctx+0x69c)=stream;
+                    code<<=1;
+                    
+                    code|=bitbuf>>31;
+                    limit=*++maxcode;
+                    bitpos=2;
+                    for(;;) {
+                        step=__rlwnm(bitbuf,bitpos,31,31);
+                        if(code<=limit) break;
+                        code<<=1;
+                        length++;
+                        limit=*++maxcode;
+                        code+=step;
+                        bitpos++;
+                    }
+                    
+                    val=(*(u8 **)(tbl+0x40))[code+*(s32 *)(tbl+0x8c+length*4)];
+                }
+            }
+        }
+    }
+        bits=val&15;
+        run=val>>4;
+        if(bits!=0) {
+            i+=run;
+            remaining=33-bitpos;
+            extra=bits-remaining;
+            shift=bitpos-1;
+            if(extra<=0) {
+                bitpos+=bits;
+                x=(bitbuf<<shift)>>(32-bits);
+            } else {
+                wp=*(u32 **)(ctx+0x69c);
+                oldbits=bitbuf<<shift;
+                bitbuf=*++wp;
+                bitpos=extra+1;
+                *(u32 **)(ctx+0x69c)=wp;
+                x=((bitbuf>>remaining)+oldbits)>>(32-bits);
+            }
+            if((s32)__cntlzw(x)>32-bits) x=(~0U<<bits)+x+1;
+            arg1[lbl_80282FD8[i]]=(s16)x;
+        } else {
+            if(run!=15) break;
+            i+=15;
+        }
+    }
+    *(s32 *)(ctx+0x6a4)=bitpos;
+    *(u32 *)(ctx+0x6a0)=bitbuf;
 }
 
 void fn_80242CE4(void *arg0, s16 *arg1) {
@@ -3000,18 +3226,92 @@ outer_test:
 #pragma opt_strength_reduction reset
 void fn_80247D74(void)
 {
-    extern u32 gKeyedVoices;
+    extern SynthVoice gSynthVoicePool[];
+    extern SynthVoice *gKeyedVoices;
+    extern SynthVoice *gActiveVoices;
+    extern SynthVoice *lbl_8036896C;
+    extern VidList *lbl_80368964;
+    extern u16 lbl_8034BDD0[];
+    extern u8 lbl_8033E590[];
+    extern u32 lbl_80368958;
 
-    u8 *pool1;
-    u8 *pool2;
-    u8 *entry;
+    u8 *voice;
+    u8 *node;
     u8 *previous;
+    u16 *table;
     u32 i;
     u32 j;
 
-    gKeyedVoices = 0;
+    voice = (u8 *)gSynthVoicePool;
+    table = lbl_8034BDD0;
 
-    /* Rest of your existing function */
+    gKeyedVoices = NULL;
+    gActiveVoices = NULL;
+
+    i = 0;
+
+    do {
+        if (i == 0) {
+            lbl_8036896C = (SynthVoice *)voice;
+            *(void **)(voice + 4) = NULL;
+        } else {
+            *(void **)(voice - 0x1888) = voice;
+            *(void **)(voice + 4) =
+                (u8 *)gSynthVoicePool +
+                (i - 1) * 0x1888;
+        }
+
+        table[0] = 0xFFFF;
+        table[1] = 0xFFFF;
+        table[2] = 0xFFFF;
+        table[3] = 0xFFFF;
+        table[4] = 0xFFFF;
+        table[5] = 0xFFFF;
+        table[6] = 0xFFFF;
+        table[7] = 0xFFFF;
+        table[8] = 0xFFFF;
+        table[9] = 0xFFFF;
+        table[10] = 0xFFFF;
+        table[11] = 0xFFFF;
+        table[12] = 0xFFFF;
+        table[13] = 0xFFFF;
+
+        voice[9] = i;
+        i++;
+
+        table[14] = 0xFFFF;
+        voice[8] = 0;
+
+        voice += 0x1888;
+
+        table[15] = 0xFFFF;
+        table += 16;
+
+    } while (i < 8);
+
+    *(void **)((u8 *)gSynthVoicePool +
+               i * 0x1888 - 0x1888) = NULL;
+
+    node = lbl_8033E590;
+    previous = NULL;
+
+    lbl_80368964 = (VidList *)node;
+    *(void **)(node + 4) = NULL;
+
+    for (j = 0; j < 0x100; j++) {
+        if (previous != NULL) {
+            *(void **)previous = node;
+        }
+
+        previous = node;
+        *(void **)(node + 0x18) = previous;
+
+        node += 0x14;
+    }
+
+    *(void **)previous = NULL;
+
+    lbl_80368958 = 0;
 }
 
 void fn_80247F1C(u32 arg0, u8 arg1, u8 arg2) {
@@ -3675,7 +3975,6 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
     u8 *node;
     u8 *table;
     u8 *bucket;
-    u8 *oldBucket;
     u8 *prev;
     u8 *next;
     u8 *head;
@@ -3707,9 +4006,8 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
 
             if (next != 0) {
                 *(void **)next = *(void **)node;
-            } else if (prev == 0) {
-                oldBucket = table + oldIndex * 0xC;
-                *(void **)oldBucket = *(void **)node;
+            } else {
+                *(void **)(table + node[9] * 0xC) = *(void **)node;
             }
         }
 
@@ -3736,9 +4034,8 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
 
             if (next != 0) {
                 *(void **)next = *(void **)node;
-            } else if (prev == 0) {
-                oldBucket = table + oldIndex * 0xC;
-                *(void **)(oldBucket + 8) = *(void **)node;
+            } else {
+                *(void **)(table + node[9] * 0xC + 8) = *(void **)node;
             }
         }
 
@@ -3756,7 +4053,7 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
         break;
 
     default:
-        return;
+        break;
     }
 
     node[9] = (u8)index;
@@ -14462,32 +14759,37 @@ s32 fn_80260A7C(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
     );
 }
 
-s32 fn_80260B30(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
+static inline u32 Sound_TakeChannelFlag(u32 index, u32 channel, u32 set)
 {
+    extern u16 lbl_8035D118[256];
+    extern u32 lbl_802A1E10[];
+    u32 *row = (u32 *)((u8 *)lbl_8035D118 + ((set & 0xFF) << 6));
+    u32 mask = lbl_802A1E10[index & 0xFF];
+    u32 result = (mask & row[channel & 0xFF]) != 0;
+    if (result) row[channel & 0xFF] &= ~mask;
+    return result;
+}
+
+s32 fn_80260B30(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
+{
+    extern u16 lbl_8035D118[256];
     extern u32 lbl_802A1E10[];
     extern u8 lbl_8034CBB4[];
-
+    s32 fn_802601EC(void *, void *, u32, u32);
+    u8 *row;
     u32 *entry;
     u32 mask;
     u32 value;
     u32 index;
-
+    u32 result;
     index = arg1 & 0xFF;
-    entry = (u32 *)((u8 *)lbl_8035D118 + ((arg3 & 0xFF) << 6) + ((arg4 & 0xFF) << 2));
-    mask = lbl_802A1E10[index];
+    row = (u8 *)lbl_8035D118 + ((arg3 & 0xFF) << 6);
+    mask = lbl_802A1E10[arg1 & 0xFF];
+    entry = (u32 *)(row + ((arg2 & 0xFF) << 2));
     value = *entry;
-
-    if ((mask & value) != 0) {
-        *entry = value & ~mask;
-
-        return fn_802601EC(
-            0,
-            lbl_8034CBB4 + (arg0 & 0xFF) * 0x90 + index * 0x24,
-            (u8)arg2,
-            (u8)arg3
-        );
-    }
-
+    result = (mask & value) != 0;
+    if (result != 0) *entry = ~mask & value;
+    if (result != 0) return fn_802601EC(0, lbl_8034CBB4 + (arg0 & 0xFF) * 0x90 + index * 0x24, arg2, arg3);
     return *(u16 *)(lbl_8034CBB4 + (arg0 & 0xFF) * 0x90 + index * 0x24 + 0x20);
 }
 
@@ -16505,11 +16807,11 @@ int Audio_Lock(void) {
     int OSDisableInterrupts(void);
     extern u16 lbl_80368AFC;
     extern int lbl_80368AF8;
-    int count;
+    u16 count;
 
     count = lbl_80368AFC;
     lbl_80368AFC = count + 1;
-    if ((count & 0xFFFF) == 0) {
+    if (count == 0) {
         lbl_80368AF8 = OSDisableInterrupts();
     }
 }
