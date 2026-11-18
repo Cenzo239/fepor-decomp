@@ -2,8 +2,6 @@
 #include "common.h"
 #include "actor.h"
 extern u8 lbl_8032FE24[];
-typedef struct FE24Buf { u8 buf[36]; } FE24Buf;
-extern FE24Buf fe24buf;
 extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
 
