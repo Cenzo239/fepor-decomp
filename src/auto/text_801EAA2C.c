@@ -4006,41 +4006,20 @@ p->elapsed=0;
 #pragma cplusplus reset
 #pragma use_lmw_stmw off
 void fn_801F0E4C(void *arg0) {
-    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
-    M2C_UNK Model_SetAlpha(s32, u8);
-    M2C_UNK Model_SetColor(s32, u8, u8, u8);
-
-    s32 temp_r28;
-    s32 temp_r29;
-    s32 temp_r31;
-    s32 temp_r31_2;
-    u8 temp_r4;
-    u8 temp_r4_2;
-    u8 temp_r4_3;
-    u8 temp_r4_4;
-    u8 temp_r6;
-    u8 temp_r6_2;
-    u8 temp_r6_3;
-    u8 temp_r6_4;
-
-    M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) + 1);
-    if ((s32) M2C_FIELD(arg0, s32 *, 0x40) >= (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
-        Process_ClearFunc();
-    }
-    temp_r6 = M2C_FIELD(arg0, u8 *, 0x44);
-    temp_r4 = M2C_FIELD(arg0, u8 *, 0x48);
-    temp_r6_2 = M2C_FIELD(arg0, u8 *, 0x45);
-    temp_r4_2 = M2C_FIELD(arg0, u8 *, 0x49);
-    temp_r31 = (s32) Math_Lerp(temp_r4, temp_r6, (f32) temp_r6, (f32) temp_r4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    temp_r6_3 = M2C_FIELD(arg0, u8 *, 0x46);
-    temp_r4_3 = M2C_FIELD(arg0, u8 *, 0x4A);
-    temp_r28 = (s32) Math_Lerp(temp_r4_2, temp_r6_2, (f32) temp_r6_2, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    temp_r6_4 = M2C_FIELD(arg0, u8 *, 0x47);
-    temp_r4_4 = M2C_FIELD(arg0, u8 *, 0x4B);
-    temp_r29 = (s32) Math_Lerp(temp_r4_3, temp_r6_3, (f32) temp_r6_3, (f32) temp_r4_3, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    temp_r31_2 = (s32) Math_Lerp(temp_r4_4, temp_r6_4, (f32) temp_r6_4, (f32) temp_r4_4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    Model_SetColor(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31, (u8) temp_r28, (u8) temp_r29);
-    Model_SetAlpha(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31_2);
+f32 Math_Lerp(f32,f32,f32,f32);
+void Model_SetColor(s32,u8,u8,u8);
+void Model_SetAlpha(s32,u8);
+void Process_ClearFunc(void *);
+s32 a,b,g,r;
+u8 *p=arg0;
+*(s32 *)(p+0x40)+=1;
+if(*(s32 *)(p+0x40)>=*(s32 *)(p+0x38)) Process_ClearFunc(arg0);
+r=(s32)Math_Lerp((f32)p[68],(f32)p[72],(f32)*(s32 *)(p+0x38),(f32)*(s32 *)(p+0x40));
+g=(s32)Math_Lerp((f32)p[69],(f32)p[73],(f32)*(s32 *)(p+0x38),(f32)*(s32 *)(p+0x40));
+b=(s32)Math_Lerp((f32)p[70],(f32)p[74],(f32)*(s32 *)(p+0x38),(f32)*(s32 *)(p+0x40));
+a=(s32)Math_Lerp((f32)p[71],(f32)p[75],(f32)*(s32 *)(p+0x38),(f32)*(s32 *)(p+0x40));
+Model_SetColor(*(s32 *)(p+0x30),r,g,b);
+Model_SetAlpha(*(s32 *)(p+0x30),a);
 }
 
 #pragma use_lmw_stmw on
