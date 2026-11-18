@@ -106,7 +106,8 @@ void Obj_EaseTintProc(void *proc) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
+#pragma peephole on
+#pragma scheduling off
 void fn_80120F0C(void) {
 extern u16 gUiPanelFlags; extern u32 gUiInputFlags; extern u8 gUiTooltipProc[];
 void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(void);
