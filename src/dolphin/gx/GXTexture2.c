@@ -4,6 +4,8 @@
 #include "global.h"
 #include "structs.h"
 
+typedef struct GXColor { u8 r, g, b, a; } GXColor;
+
 typedef union {
     u8 u8;
     u16 u16;
@@ -933,11 +935,11 @@ void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 #pragma scheduling off
 void GXSetTevColor(s32 id, u32 *color) {
     u16 *gx;
-    u8 cmd;
+    u32 cmd;
     u32 idx;
     u32 c;
     u32 reg;
-    u16 zero;
+    u32 zero;
 
     idx = id << 1;
     c = *color;
@@ -1099,15 +1101,15 @@ void GXSetTevSwapModeTable(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void fn_80223E5C(s32 arg0,u8 arg1,s32 arg2,s32 arg3,u8 arg4) {
- u16 *gx=__GXData;
- u32 v=__rlwimi(0xF3000000,(u32)arg1,0,24,31);
- v=__rlwimi(v,(u32)arg4,8,16,23);
- v=__rlwimi(v,arg0,16,13,15);
- v=__rlwimi(v,arg3,19,10,12);
- v=__rlwimi(v,arg2,22,8,9);
- *(volatile u8 *)0xCC008000=0x61;
- *(volatile u32 *)0xCC008000=v;
- gx[1]=0;
+u16 *gx=__GXData;
+u32 v=__rlwimi(0xF3000000,(u32)arg1,0,24,31);
+v=__rlwimi(v,(u32)arg4,8,16,23);
+v=__rlwimi(v,arg0,16,13,15);
+v=__rlwimi(v,arg3,19,10,12);
+v=__rlwimi(v,arg2,22,8,9);
+GXWGFifo.u8=0x61;
+GXWGFifo.u32=v;
+gx[1]=0;
 }
 
 void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2) {
