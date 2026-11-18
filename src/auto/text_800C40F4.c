@@ -12547,6 +12547,7 @@ void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
     arg0[14] = z;
 }
 
+#pragma scheduling off
 void fn_800DF50C(f32 *arg0) {
     extern f32 gVec3InterpZero;
     extern f32 lbl_80369EBC;
@@ -12583,6 +12584,7 @@ void fn_800DF50C(f32 *arg0) {
     arg0[17] = vals[0];
     arg0[14] = vals[0];
 }
+#pragma scheduling reset
 
 #pragma cplusplus on
 extern "C" void fn_800DF584(void *arg0) {
@@ -18047,10 +18049,11 @@ void Camera_GetEyePos(void *arg0, void *arg1) {
 void fn_800E8FE8(void *arg0, f32 arg1) {
     void fn_800DF478(void *, f32, f32, f32);
     extern f32 lbl_80369F78;
-    f32 z = lbl_80369F78;
-
-    *(f32 *)((u8 *)arg0 + 0x104) = arg1;
-    fn_800DF478((u8 *)arg0 + 0x254, arg1, z, z);
+    f32 z;
+f32 value=arg1;
+z = lbl_80369F78;
+    *(f32 *)((u8 *)arg0 + 0x104) = value;
+    fn_800DF478((u8 *)arg0 + 0x254, value, z, z);
 }
 #pragma scheduling reset
 #pragma dont_inline reset
