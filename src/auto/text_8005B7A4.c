@@ -11576,7 +11576,6 @@ s32 fn_800703D4(void) {
 }
 
 #pragma cplusplus on
-#pragma opt_common_subs off
 extern "C" void fn_800703DC(void *arg0, void *arg1) {
     extern u8 *gPadInput;
     extern char lbl_8026BB84[];
@@ -11587,10 +11586,10 @@ extern "C" void fn_800703DC(void *arg0, void *arg1) {
     u8 *self;
     u8 *entity;
     UiSelectionHandler *obj;
-    void **vtable;
     u32 buttons;
     u8 index;
     s32 limit;
+    s8 *p;
 
     self = (u8 *)arg1;
     buttons = *(u32 *)(gPadInput + 0xC);
@@ -11610,17 +11609,14 @@ extern "C" void fn_800703DC(void *arg0, void *arg1) {
         self[0x62]++;
     }
 
-    if ((s8)self[0x62] != (s8)self[0x63]) {
-        entity = (u8 *)GfxEnt_Get(
-            self[0x40 + (s8)self[0x63]]
-        );
+    p = (s8 *)(self + 0x62);
+    if (p[0] != p[1]) {
+        entity = (u8 *)GfxEnt_Get(self[0x40 + p[1]]);
 
         obj = *(UiSelectionHandler **)(entity + 0x34);
         obj->deselect(self, entity);
 
-        entity = (u8 *)GfxEnt_Get(
-            self[0x40 + (s8)self[0x62]]
-        );
+        entity = (u8 *)GfxEnt_Get(self[0x40 + (s8)self[0x62]]);
 
         obj = *(UiSelectionHandler **)(entity + 0x34);
         obj->select(self, entity);
@@ -11628,7 +11624,6 @@ extern "C" void fn_800703DC(void *arg0, void *arg1) {
         Ui_PlaySeCue(lbl_8026BB84 + 0x53, 0x64);
     }
 }
-#pragma opt_common_subs reset
 #pragma cplusplus reset
 void fn_800704F0(void *arg0, void *arg1) {
 void *GfxEnt_Get(s32);
