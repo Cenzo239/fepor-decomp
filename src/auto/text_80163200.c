@@ -14199,10 +14199,10 @@ static inline void Stream_InitBase(void *self) {
     *(u8 *)((u8 *)self + 0xC) = 0;
 }
 #pragma cplusplus on
-void fn_8017A7D4(void *arg0, s32 arg1) {
-    extern u8 lbl_802842A4[];
+extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
+    extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
-    *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+    *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
     *(s32 *)((char *)arg0 + 4) = 0;
     *(s32 *)arg0 = 0;
     *(s32 *)((char *)arg0 + 8) = 0;
@@ -15963,12 +15963,6 @@ void fn_8017CE1C(void *self, void *arg1) {
     } else {
         fn_8001003C(halfW, t29, 1, 1, 0, (u8 *)lbl_80278838 + 0x5F, lbl_8036ABE0, lbl_8036ABE8);
     }
-}
-
-static inline void Ui_SetPoint_8017D4B8(s16 *point, s16 x, s16 y)
-{
-    point[0] = x;
-    point[1] = y;
 }
 
 void fn_8017D4B8(s32 *arg0, void *arg1) {
