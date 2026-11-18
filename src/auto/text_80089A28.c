@@ -447,7 +447,9 @@ void fn_8008A32C(void *arg0, s32 arg1, s32 arg2)
     void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     void *Process_Create(void *, s32);
 
-    extern f32 lbl_803696B0;
+    extern const f32 lbl_803696B0;
+    extern const f32 lbl_803696C8;
+    extern const f32 gScreenOrigin;
 
     u8 *obj;
     void *proc;
