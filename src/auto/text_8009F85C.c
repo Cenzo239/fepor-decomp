@@ -1965,159 +1965,152 @@ case 17:if(value>99)value=99;if(value<0)value=0;
 fn_8003712C(unit);return 0;
 }
 
-void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
+#pragma optimization_level 4
+void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
 {
-    u8 temp_r0;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    f32 temp_f0;
-    
-    // Save registers
-    // stwu r1, -0x30(r1)
-    // mflr r0  
-    // stw r0, 0x34(r1)
-    // stw r31, 0x2c(r1)
-    // mr r31, r5
-    // stw r30, 0x28(r1)
-    // mr r30, r4
-    // stw r29, 0x24(r1)
-    // mr r29, r3
+    void *Map_GetCursorUnit(void);
+    u8 fn_800386B0(void *);
+    s8 Unit_GetHp(void *);
+    s8 Unit_GetStr(void *);
+    s8 Unit_GetMag(void *);
+    s8 Unit_GetSkl(void *);
+    s8 Unit_GetSpd(void *);
+    s8 Unit_GetLck(void *);
+    s8 Unit_GetDef(void *);
+    s8 Unit_GetRes(void *);
+    s8 Unit_GetCon(void *);
+    s8 Unit_GetMov(void *);
+    s8 fn_8003C114(void *);
+    s32 fn_800386E0(void *);
+    f32 fn_80037904(void *, s32);
+    s8 fn_8003A1E0(void *);
 
-    temp_r0 = *(u8*)((char*)arg4 + 0x3a);
-    
-    // li r5, 0x0
-    temp_r5 = 0;
-    
-    switch (temp_r0) {
-        case 0x12:
-            temp_r5 = *(u8*)((char*)arg4 + 0x19a);
-            temp_r5 = (s8) temp_r5;
-            break;
-        case 0x13:
-            temp_r5 = arg3;
-            temp_r5 = temp_r5 >> 24; 
-            break;
-        case 0x14:  
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x15:
-            temp_r5 = *(u8*)((char*)arg4 + 0x1a8);
-            temp_r5 = (s8)temp_r5;
-            break;
-        case 0x16:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x17:
-            temp_r5 = (s8)arg3; 
-            break;
-        case 0x18:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x19:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1A:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1B:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1C:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1D:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1E:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x1F:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x20:
-            temp_r5 = (s8)arg3;
-            break;
-        case 0x21:
-            temp_r5 = *(u16*)((char*)arg0 + 0x228);
-            break;
-            
-        default:  
-            break;  
+    void sprintf(u8 *, void *, ...);
+    void Ui_DrawMenuTextItem(s32, s32, void *);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_SetScale(f32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
+    void Prim2D_EndPrim(void);
+
+    extern u8 gMenuCmdStrings[];
+    extern f32 lbl_80369A00;
+    extern f32 gItemMenuTextScale;
+
+    u8 buffer[8];
+    u8 *item;
+    u8 *unit;
+    u32 value;
+    f32 result;
+
+    item = (u8 *)arg2;
+    unit = (u8 *)Map_GetCursorUnit();
+
+    value = 0;
+
+    switch (item[0x3A]) {
+    case 0:
+        value = (s8)unit[0x19A];
+        break;
+
+    case 1:
+        value = (u8)fn_800386B0(unit);
+        break;
+
+    case 2:
+        value = (s8)Unit_GetHp(unit);
+        break;
+
+    case 3:
+        value = (s8)unit[0x1A8];
+        break;
+
+    case 4:
+        value = (s8)Unit_GetStr(unit);
+        break;
+
+    case 5:
+        value = (s8)Unit_GetMag(unit);
+        break;
+
+    case 6:
+        value = (s8)Unit_GetSkl(unit);
+        break;
+
+    case 7:
+        value = (s8)Unit_GetSpd(unit);
+        break;
+
+    case 8:
+        value = (s8)Unit_GetLck(unit);
+        break;
+
+    case 9:
+        value = (s8)Unit_GetDef(unit);
+        break;
+
+    case 10:
+        value = (s8)Unit_GetRes(unit);
+        break;
+
+    case 11:
+        value = (s8)Unit_GetCon(unit);
+        break;
+
+    case 12:
+        value = (s8)Unit_GetMov(unit);
+        break;
+
+    case 13:
+        value = (s8)fn_8003C114(unit);
+        break;
+
+    case 14:
+        value = (s8)fn_800386E0(unit);
+        break;
+
+    case 15:
+        value = *(u16 *)(unit + 0x228);
+        break;
+
+    case 16:
+        result = fn_80037904(unit, -1);
+        value = (s32)(lbl_80369A00 * result);
+        break;
+
+    case 17:
+        value = (s8)fn_8003A1E0(unit);
+        break;
     }
-    
-    // Handle the following calls
-    if (temp_r0 == 0x22) {
-        temp_r4 = -1;
-        // bl fn_80037904 
+
+    sprintf(
+        buffer,
+        gMenuCmdStrings + 0x6D2,
+        value
+    );
+
+    Ui_DrawMenuTextItem(arg0, arg1, item);
+
+    Prim2D_AddPrim(5);
+
+    Prim2D_SetPos(
+        (f32)(*(s16 *)(item + 0x30) + 0x50),
+        (f32)*(s16 *)(item + 0x32)
+    );
+
+    Prim2D_SetText(buffer);
+    Prim2D_SetScale(gItemMenuTextScale);
+
+    if (item[0x38] != 0) {
+        Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    else if (temp_r0 == 0x23) { 
-        temp_f0 = *(f32*)(0x80369A00);
-        temp_f0 = temp_f0 * *(f32*)arg1;
-        temp_r5 = (s32)temp_f0; 
-    }    
-    else if (temp_r0 == 0x24) {
-        temp_r5 = (s8)arg3;
+
+    if (item[0x39] == 2) {
+        Prim2D_SetTint(0, 0, 0, 0xFF);
     }
-    else if (temp_r0 == 0x25) {
-        temp_r3 = arg2;
-        temp_r4 = arg3;  
-        temp_r5 = arg4;
-        // Function call to Ui_DrawMenuTextItem
-    }
-    else if (temp_r0 == 0x26) {
-        temp_r3 = 5;
-        // function call to Prim2D_AddPrim
-    }
-    else if (temp_r0 == 0x27) { 
-        temp_r4 = *(s16*)((char*)arg4 + 0x30); 
-        temp_r3 = 0x4330;
-        temp_r0 = *(s16*)((char*)arg4 + 0x32); 
-        temp_r4 = temp_r4 + 0x50;
-        
-        // stw r3, 0x10(r1)  
-        *(u32*)((char*)arg1 + 0x10) = temp_r3;
-        // xoris r4, r4, 0x8000 
-        temp_r4 = temp_r4 ^ 0x8000;
-        // xoris r0, r0, 0x8000  
-        temp_r0 = temp_r0 ^ 0x8000;
-        // stw r4, 0x14(r1) 
-        *(u32*)((char*)arg1 + 0x14) = temp_r4;  
-    }   
-    else if (temp_r0 == 0x28) { 
-        temp_r0 = *(u8*)((char*)arg4 + 0x38);
-        
-        if (temp_r0 == 0) {
-            temp_r3 = 0xFF;
-            temp_r4 = 0xFF;
-            temp_r5 = 0x0; 
-            temp_r6 = 0xFF;
-        }    
-    }
-    else if (temp_r0 == 0x29) {  
-        temp_r0 = *(u8*)((char*)arg4 + 0x39);
-        if (temp_r0 != 2) {
-            temp_r3 = 0x0;
-            temp_r4 = 0x0;
-            temp_r5 = 0x0;
-            temp_r6 = 0xFF;
-        }
-    }
-    else if (temp_r0 == 0x2A) { 
-        // bl Prim2D_EndPrim  
-    }
-    
-    // Restore registers and return  
-    // lwz r0, 0x34(r1)
-    // lwz r31, 0x2c(r1) 
-    // lwz r30, 0x28(r1)
-    // lwz r29, 0x24(r1)
-    // mtlr r0
-    // addi r1, r1, 0x30
-    // blr
-    
-    return;
+
+    Prim2D_EndPrim();
 }
 
 #pragma optimization_level 3
