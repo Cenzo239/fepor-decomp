@@ -6,13 +6,15 @@ typedef struct { void *node; } TabCountIt;
 typedef struct { s8 value; } TabCountKey;
 #pragma global_optimizer off
 static inline s32 TabCountChanges(TabCountIt begin, TabCountIt end, TabCountKey key, s32 offset) {
+TabCountIt bcopy=begin, ecopy=end;
+TabCountIt b=bcopy, e=ecopy;
 s32 count=0;
-while(begin.node!=end.node) {
-s8 value=(*(u8 **)((u8 *)begin.node+8))[offset];
+while(b.node!=e.node) {
+s8 value=(*(u8 **)((u8 *)b.node+8))[offset];
 u8 found;
 if(key.value!=value) {key.value=value; found=1;} else found=0;
 if(found) count++;
-begin.node=*(void **)((u8 *)begin.node+4);
+b.node=*(void **)((u8 *)b.node+4);
 }
 return count;
 }
@@ -2644,7 +2646,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
-#pragma cplusplus off
+#pragma opt_strength_reduction off
 #pragma global_optimizer off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
@@ -2669,10 +2671,10 @@ aCopy=beginA; a=aCopy;
 endA=endACopy; aeCopy=endA; ae=aeCopy;
 count=0;
 initA.value=-1;keyA=initA;
-for (; a.node != end; ) {
+while(a.node!=ae.node) {
 value=(*(u8**)((u8*)a.node+8))[2];
 if(keyA.value!=value) {keyA.value=value;found=1;} else found=0;
-if(found) ++count;
+if(found) count++;
 a.node=*(void**)((u8*)a.node+4);
 }
 return count;
@@ -2685,10 +2687,10 @@ bCopy=beginB; b=bCopy;
 endB=endBCopy; beCopy=endB; be=beCopy;
 count=0;
 initB.value=-1;keyB=initB;
-for (; b.node != end; ) {
+while(b.node!=be.node) {
 value=(*(u8**)((u8*)b.node+8))[1];
 if(keyB.value!=value) {keyB.value=value;found=1;} else found=0;
-if(found) ++count;
+if(found) count++;
 b.node=*(void**)((u8*)b.node+4);
 }
 return count;
@@ -2701,16 +2703,17 @@ cCopy=beginC; c=cCopy;
 endC=endCCopy; ceCopy=endC; ce=ceCopy;
 count=0;
 initC.value=-1;keyC=initC;
-for (; c.node != end; ) {
+while(c.node!=ce.node) {
 value=(*(u8**)((u8*)c.node+8))[4];
 if(keyC.value!=value) {keyC.value=value;found=1;} else found=0;
-if(found) ++count;
+if(found) count++;
 c.node=*(void**)((u8*)c.node+4);
 }
 return count;
 }
 return (s32)arg0;
 }
+#pragma opt_strength_reduction reset
 #pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
 void TabMenu_ClearSelectedStatus(void *menu) {
