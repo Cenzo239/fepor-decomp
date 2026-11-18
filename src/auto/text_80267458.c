@@ -11,7 +11,7 @@ extern s32 gSynthTimeLo;
 extern s32 gSynthSchedList;
 extern s32 gSynthIdleList;
 extern u32* lbl_80368A38;
-extern void (*lbl_80368B34)(s16);
+extern void (*volatile lbl_80368B34)(s16);
 extern f32 lbl_8034C324[];
 extern s32 D_80368AD0;
 extern s32 lbl_80368B0C;
@@ -262,14 +262,14 @@ extern s32 lbl_8036894C;
 extern s32 lbl_8033E578[];
 
 #pragma opt_propagation off
-void fn_80267458(unsigned long arg0)
+void fn_80267458(unsigned long arg0, void *context)
 {
-  void (*callback)(s16) = lbl_80368B34;
-  *((u32 *) 0xCC003000) = 0x1000;
-  *((u32 *) 0xCC003000) = 0x1000;
+  void (*callback)(s16, void *) = (void (*)(s16, void *))lbl_80368B34;
+  *(volatile u32 *)0xCC003000 = 0x1000;
+  *(volatile u32 *)0xCC003000 = 0x1000;
   if (callback != NULL)
   {
-    callback((s16) arg0);
+    callback((s16)arg0, context);
   }
 }
 #pragma opt_propagation reset
