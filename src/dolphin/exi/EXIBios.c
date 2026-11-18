@@ -566,55 +566,48 @@ s32 fn_80239508(s32 chan) {
     return -1;
 }
 
-s32 fn_802395BC(s32 chan, void *callback)
+static inline s32 EXIAttachInternal(s32 chan, void *callback)
 {
-    u8 *ecb;
-    u32 id;
-    u32 enabled;
-    u32 enabled2;
-    s32 result;
-
-    ecb = (u8 *)Ecb_8033E188 + (chan << 6);
-
-    if (__EXIProbe(chan) != 0) {
-        if (*(u32 *)(ecb + 0x20) == 0) {
-            EXIGetID(chan, 0, &id);
-        }
-    }
-
-    enabled = OSDisableInterrupts();
-
-    if (*(u32 *)(ecb + 0x20) == 0) {
+    EXIControl *exi = &Ecb_8033E188[chan];
+    s32 enabled = OSDisableInterrupts();
+    if ((exi->state & 8) || !__EXIProbe(chan)) {
         OSRestoreInterrupts(enabled);
         return 0;
     }
-
-    enabled2 = OSDisableInterrupts();
-
-    if ((*(u32 *)(ecb + 0xC) & 8) == 0) {
-        if (__EXIProbe(chan) == 0) {
-            OSRestoreInterrupts(enabled2);
-            result = 0;
-            goto done;
-        }
-    } else {
-        EXIClearInterrupts(chan, 1, 0, 0);
-    }
-
-    *(void **)(ecb + 8) = callback;
-
+    EXIClearInterrupts(chan, 1, 0, 0);
+    exi->extCallback = callback;
     __OSUnmaskInterrupts(0x100000U >> (chan * 3));
-
-    *(u32 *)(ecb + 0xC) |= 8;
-
-    OSRestoreInterrupts(enabled2);
-    result = 1;
-
-done:
+    exi->state |= 8;
     OSRestoreInterrupts(enabled);
-    return result;
+    return 1;
 }
 
+#pragma inline_depth(0)
+s32 fn_802395BC(s32 chan, void *callback)
+{
+ s32 result;
+ s32 enabled2;
+ EXIControl *exi;
+ s32 enabled;
+ u32 id;
+ exi=&Ecb_8033E188[chan];
+ if(__EXIProbe(chan) && exi->idTime==0) EXIGetID(chan,0,&id);
+ enabled=OSDisableInterrupts();
+ if(exi->idTime==0) {OSRestoreInterrupts(enabled);return 0;}
+ enabled2=OSDisableInterrupts();
+ if((exi->state&8) || !__EXIProbe(chan)) {
+  OSRestoreInterrupts(enabled2);result=0;
+ } else {
+  EXIClearInterrupts(chan,1,0,0);
+  exi->extCallback=callback;
+  __OSUnmaskInterrupts(0x100000U>>(chan*3));
+  exi->state|=8;
+  OSRestoreInterrupts(enabled2);result=1;
+ }
+ OSRestoreInterrupts(enabled);
+ return result;
+}
+#pragma inline_depth(8)
 s32 fn_802396C8(s32 chan) {
     EXIControl *exi;
     s32 enabled;
