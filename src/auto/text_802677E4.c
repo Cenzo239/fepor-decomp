@@ -1,6 +1,14 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u32 PackExiBytes(const u8 *data, int length) {
+    int i;
+    u32 value = 0;
+    for (i = 0; i < length; ++i)
+        value |= (u32)data[i] << ((3 - i) * 8);
+    return value;
+}
+
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 *D_80256B30;
@@ -283,16 +291,19 @@ extern s32 lbl_8033E578[];
 #pragma push
 #pragma global_optimizer on
 
+#pragma opt_lifetimes off
 int fn_802677E4(u8 *arg0, int arg1, int arg2) {
 volatile u32 *cr;
+u32 control;
 if ((u32)arg2 != 0) {
 u8 *p = arg0; u32 value; int i;
 i=0; value=0;
 for (;i<arg1;i++) { value |= ((u32)*p) << ((3-i)*8); p++; }
 *(volatile u32*)0xCC006838=value;
 }
+control = ((u32)arg2<<2);
 cr=(volatile u32*)0xCC006800;
-*(cr += 13)=(((u32)arg2<<2)|1)|((arg1-1)<<4);
+*(cr += 13)=((arg1-1)<<4)|1|control;
 while(*cr&1) {}
 if((u32)arg2==0) {
 int i=0;
@@ -301,4 +312,4 @@ for(;i<arg1;i++) *arg0++=(u8)(value>>((3-i)*8));
 }
 return 1;
 }
-#pragma pop
+#pragma opt_lifetimes reset
