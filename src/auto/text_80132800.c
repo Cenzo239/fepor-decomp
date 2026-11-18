@@ -4279,29 +4279,17 @@ void fn_80138D44(void *arg0) {
 }
 
 void fn_80138D88(void *arg0) {
-    s16 three;
-    s16 five;
-    s16 var_r6;
-    s16 var_r7;
-    s16 var_r5;
-    s16 var_r8;
-    s16 var_r4;
-    three = 3;
-    five = 5;
-    var_r8 = *(s16 *)((u8 *)arg0 + 0xC);
-    var_r7 = *(s16 *)((u8 *)arg0 + 0x10);
-    var_r6 = *(s16 *)((u8 *)arg0 + 0xA);
-    var_r5 = *(s16 *)((u8 *)arg0 + 0xE);
-    var_r7 = var_r7 - var_r8;
-    var_r7 = (s16)var_r7;
-    *(s16 *)((u8 *)arg0 + 0x12) = three;
-    var_r4 = var_r5 - var_r6;
-    var_r4 = (s16)var_r4;
-    var_r5 = var_r7 - 5;
-    *(s16 *)((u8 *)arg0 + 0x14) = five;
-    var_r4 = var_r4 - 3;
-    *(s16 *)((u8 *)arg0 + 0x16) = var_r4;
-    *(s16 *)((u8 *)arg0 + 0x18) = var_r5;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    bottom = height - 5;
+    right = width - 3;
+    p[0x12 / 2] = 3;
+    p[0x14 / 2] = 5;
+    p[0x16 / 2] = right;
+    p[0x18 / 2] = bottom;
 }
 
 void *fn_80138DCC(void *arg0, s16 arg1) {
