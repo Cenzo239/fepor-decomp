@@ -151,10 +151,10 @@ struct OSThread {
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
     OSThread *thread = queue->head;
     OSThread *next = thread->next;
-    *out = thread;
     if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
     queue->head = next;
+    *out = thread;
 }
 #pragma opt_common_subs reset
 extern void* RunQueue_80339478[];
