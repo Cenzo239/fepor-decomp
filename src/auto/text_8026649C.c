@@ -437,10 +437,9 @@ s32 fn_80266840(s32 chan, s32 arg1, s32 arg2) {
     void fn_80266B38(void);
     u8 *entry;
     s32 ret;
-    s32 chan_s;
+    u8 dummy[8];
 
-    chan_s = chan;
-    entry = lbl_803669A0 + (chan_s << 8);
+    entry = lbl_803669A0 + (chan << 8);
     if (*(u32 *)(entry + 0x1C) != 0) {
         ret = 2;
     } else {
@@ -448,12 +447,12 @@ s32 fn_80266840(s32 chan, s32 arg1, s32 arg2) {
         *(s32 *)(entry + 0x18) = arg1;
         *(s32 *)(entry + 0x14) = arg2;
         *(void **)(entry + 0x1C) = fn_80266B38;
-        ret = fn_80266CFC(chan_s, 1, 5, fn_80266774);
+        ret = fn_80266CFC(chan, 1, 5, fn_80266774);
     }
-    if (ret == 0) {
-        fn_80266B6C(chan_s);
-    } else {
+    if (ret != 0) {
         return ret;
+    } else {
+        fn_80266B6C(chan);
     }
 }
 #pragma global_optimizer on
