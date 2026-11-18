@@ -269,6 +269,8 @@ void *__OSLockSramEx(void) {
     return scb + 0x14;
 }
 
+#pragma opt_common_subs off
+#pragma opt_propagation off
 s32 fn_8020931C(s32 commit, s32 offset) {
     void OSRestoreInterrupts(s32);
     u8 *scb = (u8 *)Scb_80339420;
@@ -276,19 +278,21 @@ s32 fn_8020931C(s32 commit, s32 offset) {
     u16 *p;
     if (commit) {
         if ((u32)offset == 0) {
-            if ((scb[0x13] & 3) > 2) scb[0x13] &= ~3;
-            ((u16 *)scb)[1] = ((u16 *)scb)[0] = 0;
+            if ((scb[0x13] & 3U) > 2U) scb[0x13] &= ~3;
+            ((OSSram *)scb)->checkSum = ((OSSram *)scb)->checkSumInv = 0;
             for (p=(u16 *)(scb+0xc); p<(u16 *)(scb+0x14); p++) {
-                ((u16 *)scb)[0] += *p;
-                ((u16 *)scb)[1] += ~*p;
+                ((OSSram *)scb)->checkSum += *p;
+                ((OSSram *)scb)->checkSumInv = ((OSSram *)scb)->checkSumInv + ~*p;
             }
         }
         dirty=(u32 *)(scb+0x40);
         if((u32)offset < *dirty) *dirty=offset;
         if(*dirty <= 0x14) {
-            u8 *ex=scb+0x14;
-            u16 mode=*(u16 *)(ex+0x28);
-            if ((mode&0x7c00)==0x5000 || (mode&0xc0)==0xc0)
+            u16 mode;
+            u8 *ex;
+            ex=scb+0x14;
+            mode=*(u16 *)(ex+0x28);
+            if ((mode&0x7c00U)==0x5000 || (mode&0xc0U)==0xc0)
                 *(u16 *)(ex+0x28)=0;
         }
         *(s32 *)(scb+0x4c)=fn_80209010((s32)(scb+*dirty),*dirty,0x40-*dirty);
@@ -298,6 +302,7 @@ s32 fn_8020931C(s32 commit, s32 offset) {
     OSRestoreInterrupts(*(s32 *)(scb+0x44));
     return *(s32 *)(scb+0x4c);
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 s32 fn_8020931C(s32 commit, s32 offset);
 
