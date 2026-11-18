@@ -903,11 +903,13 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
 
 static inline u8 *Save_FindUnusedSlot(u8 *base) {
     u8 *best = NULL;
-    s32 off = 0x2000;
+    s32 off;
     u8 *slot;
-    u32 minSize = -1;
+    u32 minSize;
     s32 i;
     u8 valid;
+    minSize = -1;
+    off = 0x2000;
     for (i=0;i<6;i++) {
         slot=base+off;
         if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
