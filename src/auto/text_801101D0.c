@@ -3175,9 +3175,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
  s32 copy[3]; s32 c,b,a;
- c=arg1[2]; b=arg1[1]; a=arg1[0];
- arg1 = copy;
- arg1[0]=a; arg1[1]=b; arg1[2]=c;
+ c=arg1[2]; b=arg1[1]; a=arg1[0]; copy[0]=a; copy[1]=b; copy[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
 }
@@ -3185,6 +3183,10 @@ extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
 #pragma cplusplus off
 #pragma cplusplus on
 #pragma cplusplus on
+static inline s32 ActorUpdate_Compare(void *str, char *text) {
+ s32 strlen(char *);
+ return String_Compare(str,0,*(void **)str,text,strlen(text));
+}
 struct ActorUpdateInterface {
  u8 pad[0x40];
  virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
@@ -3213,19 +3215,27 @@ extern "C" void fn_80116FE8(void *self) {
  typedef u8 (*BusyFn)(void *);
  typedef void (*SetFn)(void *,f32,f32,f32);
  typedef void (*AddFn)(void *,void *);
- Vec3f pos, oldPos;
+ Vec3f pos;
  String name;
+ Vec3f oldPos;
+ String a,b;
+ Vec3f p,copyLook,look,copyPos;
+ String effect;
+ Vec3f discarded,origin,other1,other2,footp,foot,current;
+ Vec3f b1,a1,cb1,ca1,pb1,pa1;
+ Vec3f b2,a2,cb2,ca2,pb2,pa2;
  void *node;
  s32 compare;
- f32 radius, distance;
+ f32 radius, distance, separation;
  pos.z=lbl_8036A184; pos.y=lbl_8036A184; pos.x=lbl_8036A184;
  fn_800E5DEC(self);
  fn_800DBAB8(&oldPos,self);
  if(!Actor_IsBusy(self) && M2C_FIELD(self,u8 *,0x1B5)) {
    fn_800DF664(self);
    if(M2C_FIELD(self,void **,0x11C)) fn_800DF664(M2C_FIELD(self,void **,0x11C));
+   f32 zero=lbl_8036A184;
    M2C_FIELD(self,u8 *,0x1B5)=0;
-   ((SetFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x24))(self,lbl_8036A184,fActorDefaultRadius,lbl_8036A184);
+   ((ActorUpdateInterface *)self)->SetScale(zero,fActorDefaultRadius,zero);
  }
  if(!Actor_IsBusy(self) && String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,strlen((char *)gActorXmlStrs+0x1C))) {
    if(!String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,strlen((char *)gActorXmlStrs+0x43F))) {
@@ -3269,21 +3279,21 @@ extern "C" void fn_80116FE8(void *self) {
      else String_AssignCStr(&name,(char *)gActorXmlStrs+0x551,strlen((char *)gActorXmlStrs+0x551));
      node=M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x11C);
      if(node) {
-       String a;fn_80198F8C(&a,node);
+       fn_80198F8C(&a,node);
        compare=String_Compare(&a,0,(void *)a.size,(char *)gActorXmlStrs+0x1C,strlen((char *)gActorXmlStrs+0x1C));
        String_Destroy(&a,-1);
        if(compare && (fn_801992F0(node)==1 || M2C_FIELD(self,s32 *,0x1B8)==1)) {
-         String b;fn_80198F8C(&b,node); String_Assign(&name,&b,0,-1); String_Destroy(&b,-1);
+         fn_80198F8C(&b,node); String_Assign(&name,&b,0,-1); String_Destroy(&b,-1);
        }
      }
    }
    {
-     Vec3f p; s8 initialized=0;String effect;
+     s8 initialized;
      ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&p,self,0);
-     pos.y=p.y;pos.x=p.x;pos.z=p.z;pos.y=lbl_8036A184;
+     pos.y=p.y;pos.x=p.x;pos.z=p.z;pos.y=lbl_8036A184;initialized=0;
      node=Heap_Alloc(0xC8);
      if(node) {
-       Vec3f look,copyLook,copyPos;u8 allocator;
+       u8 allocator;
        Camera_GetLookAt(&look,self);copyLook=look;copyPos=pos;
        String_Init(&effect,(char *)gActorXmlStrs+0x51,&allocator);
        initialized=1;
@@ -3294,11 +3304,11 @@ extern "C" void fn_80116FE8(void *self) {
    }
    M2C_FIELD(self,s32 *,0x14C)=-1;
  }
- if(M2C_FIELD(self,u8 *,0x195) && !((BusyFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x48))(self)) {
+ if(M2C_FIELD(self,u8 *,0x195) && !((ActorUpdateInterface *)self)->IsBusy()) {
    M2C_FIELD(self,u8 *,0xD1)=0;M2C_FIELD(self,u8 *,0x195)=0;
  }
  {
-   Vec3f origin,current;
+   
    origin.z=lbl_8036A184;origin.y=lbl_8036A184;origin.x=lbl_8036A184;
    radius=M2C_FIELD(gGame,f32 *,0xD8);
    current.x=M2C_FIELD(self,f32 *,0x48);current.y=lbl_8036A184;current.z=M2C_FIELD(self,f32 *,0x50);
@@ -3307,21 +3317,22 @@ extern "C" void fn_80116FE8(void *self) {
      M2C_FIELD(self,f32 *,0x48)=current.x;M2C_FIELD(self,f32 *,0x50)=current.z;
    }
  }
- if(!((BusyFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x48))(self) && M2C_FIELD(self,u8 *,0x1A8)) {
+ if(!((ActorUpdateInterface *)self)->IsBusy() && M2C_FIELD(self,u8 *,0x1A8)) {
    node=M2C_FIELD(self,void **,0x118);
    if(!node) distance=lbl_8036A184;
    else {
-     Vec3f a,b,ca,cb;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&a,self,0);
-     ca=a;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(node,void **,0x40),void **,0x38))(&b,node,0);
-     cb=b;distance=PSVECDistance(ca,cb);
+     
+     pa1.z=lbl_8036A184;pa1.y=lbl_8036A184;pa1.x=lbl_8036A184;pb1.z=lbl_8036A184;pb1.y=lbl_8036A184;pb1.x=lbl_8036A184;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&a1,self,0);
+     ca1=a1;pa1=a1;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(node,void **,0x40),void **,0x38))(&b1,node,0);
+     pb1=b1;cb1=b1;distance=PSVECDistance(ca1,cb1);
    }
-   radius=lbl_8036A1AC*M2C_FIELD(self,f32 *,0x128);
-   if(distance<radius) {
-     Vec3f other;radius-=distance;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x40),void **,0x38))(&other,M2C_FIELD(self,void **,0x118),0);
-     if(M2C_FIELD(self,f32 *,0x48)<other.x) M2C_FIELD(self,f32 *,0x48)-=radius;
+   separation=lbl_8036A1AC*M2C_FIELD(self,f32 *,0x128);
+   if(distance<separation) {
+     radius=separation-distance;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x40),void **,0x38))(&other1,M2C_FIELD(self,void **,0x118),0);
+     if(M2C_FIELD(self,f32 *,0x48)<other1.x) M2C_FIELD(self,f32 *,0x48)-=radius;
      else M2C_FIELD(self,f32 *,0x48)+=radius;
    }
  }
@@ -3329,30 +3340,31 @@ extern "C" void fn_80116FE8(void *self) {
    node=M2C_FIELD(self,void **,0x118);
    if(!node) distance=lbl_8036A184;
    else {
-     Vec3f a,b,ca,cb;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&a,self,0);
-     ca=a;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(node,void **,0x40),void **,0x38))(&b,node,0);
-     cb=b;distance=PSVECDistance(ca,cb);
+     
+     pa2.z=lbl_8036A184;pa2.y=lbl_8036A184;pa2.x=lbl_8036A184;pb2.z=lbl_8036A184;pb2.y=lbl_8036A184;pb2.x=lbl_8036A184;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&a2,self,0);
+     ca2=a2;pa2=a2;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(node,void **,0x40),void **,0x38))(&b2,node,0);
+     pb2=b2;cb2=b2;distance=PSVECDistance(ca2,cb2);
    }
-   radius=lbl_8036A1AC*M2C_FIELD(self,f32 *,0x128);
-   if(distance<radius) {
-     Vec3f other;radius-=distance;
-     ((GetPosFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x40),void **,0x38))(&other,M2C_FIELD(self,void **,0x118),0);
-     if(M2C_FIELD(self,f32 *,0x48)<other.x) M2C_FIELD(self,f32 *,0x48)-=radius;
+   separation=lbl_8036A1AC*M2C_FIELD(self,f32 *,0x128);
+   if(distance<separation) {
+     radius=separation-distance;
+     ((GetPosFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0x118),void **,0x40),void **,0x38))(&other2,M2C_FIELD(self,void **,0x118),0);
+     if(M2C_FIELD(self,f32 *,0x48)<other2.x) M2C_FIELD(self,f32 *,0x48)-=radius;
      else M2C_FIELD(self,f32 *,0x48)+=radius;
    }
  }
  {
- Vec3f foot, p;
+ 
  foot.z=lbl_8036A184;foot.y=lbl_8036A184;foot.x=lbl_8036A184;
  if(fn_800E5248(self,50)) {
- ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&p,self,0);
- foot=p;fn_80111C8C(self,&foot);
+ ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&footp,self,0);
+ foot=footp;fn_80111C8C(self,&foot);
  }
  }
  if(!String_Compare((u8 *)self+0xB0,0,M2C_FIELD(self,void **,0xB0),(char *)gActorXmlStrs+0x56E,strlen((char *)gActorXmlStrs+0x56E))) {
- Vec3f p;((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&p,self,0);
+ ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&discarded,self,0);
  }
  String_Destroy(&name,-1);
 }
