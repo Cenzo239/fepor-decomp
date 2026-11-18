@@ -10522,25 +10522,20 @@ void fn_80142018(Vec2s *out, s16 *arg0)
   out->x = bottom;
   out->y = right - left;
 }
-void fn_8014203C(void *arg0, Vec2s *size)
-{
-  s16 xa;
-  s16 *new_var;
-  s16 w;
-  s16 *new_var2;
-  s16 h;
-  xa = *((s16 *) (((u8 *) arg0) + 0xA));
-  if ((!size->y) && (!size->y))
-  {
-    if (!arg0)
-    {
-    }
-  }
+#pragma global_optimizer off
+void fn_8014203C(void *arg0, Vec2s *size) {
+  s16 h, w, xa, d;
+  xa = *(s16 *)((u8 *)arg0 + 0xA);
   w = size->x;
   h = size->y;
-  *((s16 *) (((u8 *) arg0) + 0xE)) = xa + w;
-  *((s16 *) (((u8 *) arg0) + 0x10)) = (*(new_var = &(*(new_var2 = (s16 *) (((u8 *) arg0) + 0xC))))) + h;
+  d = xa;
+  d += w;
+  *(s16 *)((u8 *)arg0 + 0xE) = d;
+  d = *(s16 *)((u8 *)arg0 + 0xC);
+  h = d + h;
+  *(s16 *)((u8 *)arg0 + 0x10) = h;
 }
+#pragma global_optimizer reset
 #pragma scheduling on
 int fn_80142060(void *arg0) {
     u32 *ptr;
@@ -11435,26 +11430,44 @@ extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_801436AC(void *arg0, void *arg1) {
-void fn_80144E34(ListIter *, List *, ListIter *);
-struct Pair { u8 f; u32 v; Pair(u8 flag,u32 value):f(flag),v(value){} Pair(const Pair &p) { *(u32*)this=*(const u32*)&p; v=p.v; } };
-u8 flag;
-ListIter ret,it;
-u8 *cursor=(u8*)arg0;
-for(s32 i=0;i<11;cursor+=12,i++) {
-Pair a(flag,(u32)arg1);
-List *list=(List*)(cursor+0x90);
-ListNode *sentinel=(ListNode*)((u8*)list+4);
-ListNode *node=*(ListNode**)(cursor+0x98);
-Pair b=a;
-while(node!=sentinel && node->val!=(void*)b.v) node=node->next;
-if(node!=(ListNode*)((u8*)list+4)) {
-it.node=node;
-fn_80144E34(&ret,list,&it);
-s16 *slot=(s16*)((u8*)arg0+0x64+(i<<1));
-if((u32)*slot >= (u32)list->size) *slot=list->size-1;
-break;
-}
-}
+    void fn_80144E34(ListIter *, List *, ListIter *);
+    struct Pair {
+        u8 f;
+        u32 v;
+    };
+    Unk1 unk;
+    ListIter ret;
+    ListIter it;
+    ListIter dummy;
+    u8 *cursor = (u8 *)arg0;
+    for (s32 i = 0; i < 11; cursor += 12, i++) {
+        Pair a;
+        Pair b;
+        a.f = unk.unk0;
+        a.v = (u32)arg1;
+        *(u32 *)&b = *(u32 *)&a;
+        b.v = a.v;
+        List *list = (List *)(cursor + 0x90);
+        ListNode *sentinel = (ListNode *)((u8 *)list + 4);
+        ListNode *node = *(ListNode **)(cursor + 0x98);
+        goto check;
+        for (;;) {
+            node = node->next;
+        check:
+            if (node == sentinel)
+                break;
+            if (node->val != (void *)arg1)
+                continue;
+            if (node != (ListNode *)(cursor + 0x94)) {
+                it.node = node;
+                fn_80144E34(&ret, list, &it);
+                if ((u32)*(s16 *)((u8 *)arg0 + (i << 1) + 0x64) >= (u32)list->size)
+                    *(s16 *)((u8 *)arg0 + (i << 1) + 0x64) = list->size - 1;
+            }
+            return;
+        }
+        dummy.node = 0;
+    }
 }
 #pragma cplusplus on
 extern "C" void fn_80143784(void *arg0, void *arg1) {
