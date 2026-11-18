@@ -117,36 +117,18 @@ void *fn_8009FAAC(void) {
     return (char *)gMenuCmdStrings + 0x2C4;
 }
 
+#pragma use_lmw_stmw on
 s32 fn_8009FABC(s32 arg0, s32 arg1, void *arg2) {
-void *fn_800AA794(void);
-void *fn_80105C5C(s32, u8);
-void fn_80105CEC(s32, u8);
-s32 src;
-s32 dst;
-s32 idx;
-s32 count;
-s32 target;
-void *entry;
-dst = (s32)fn_800AA794();
-target = *(u8 *)((u8 *)arg2 + 0x3A);
-count = 0;
-src = (s32)fn_800AA794();
-for (idx = count; idx < 0x62; ++idx) {
-entry = fn_80105C5C(src + 0x1BC, (u8)idx);
-if (entry != NULL) {
-if (count != target) {
-++count;
-} else {
-goto found;
+    void *Map_GetCursorUnit(void);
+    void Status_Set(void *, u8);
+    u8 *dst;
+    u8 *entry;
+    dst=Map_GetCursorUnit();
+    entry=MenuCmd_FindStatus(*((u8 *)arg2+0x3A));
+    if(entry) Status_Set(dst+0x1BC,entry[0x18]);
+    return 0;
 }
-}
-}
-entry = NULL;
-found:
-if (entry != NULL) fn_80105CEC(dst + 0x1BC, *(u8 *)((u8 *)entry + 0x18));
-return 0;
-}
-
+#pragma use_lmw_stmw reset
 s32 fn_8009FB4C(s32 arg0, s32 arg1, void *arg2) {
 void *Map_GetCursorUnit(void); void *fn_80105C5C(s32,u8); void Ui_CreateMenu(void*,s32,s32); extern u8 lbl_803675E4;
 s32 src; s32 idx; s32 count; s32 target; void *entry;
