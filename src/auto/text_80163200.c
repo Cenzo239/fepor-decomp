@@ -16819,7 +16819,7 @@ void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
                     var_r30_2 = arg3;
                 }
                 Prim2D_AddPrim(1);
-                Prim2D_SetRectUv(var_r30_2 * 5, lbl_8036AC30, (f32) var_r29, lbl_8036AC30, lbl_8036AC30, (f32) (var_r30_2 * 5 + 1), lbl_8036AC4C);
+                Prim2D_SetRectUv((f32)(var_r30_2 * 5), lbl_8036AC30, (f32) var_r29, lbl_8036AC30, lbl_8036AC30, (f32) (var_r30_2 * 5 + 1));
                 Prim2D_SetColor((u8) arg2, (u8) arg2, (u8) arg2, 0xFF);
                 Prim2D_EmitQuad();
                 Prim2D_EndPrim();
