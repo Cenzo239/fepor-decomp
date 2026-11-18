@@ -29,6 +29,82 @@ s32 fn_8007437C(void) {
     return Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) ? 0x40 : 0x10;
 }
 
+#pragma use_lmw_stmw on
+void fn_800743B4(void *arg0, void *arg1) {
+    s32 Prim2D_SetColorByte(s32);
+    s32 Prim2D_AddZ(f32);
+    s32 Prim2D_PrepareTex();
+    s32 Prim2D_Begin();
+    s32 Text_MeasureHeight(s32, f32);
+    f32 UiWin_GetFade(void *);
+    s32 fn_8007149C(void *, void *, void *, s32, f32, f32);
+    s32 fn_80071740(void *, void *, f32, f32);
+    s32 fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    s32 fn_8008BBF8(s32, s32, s32, s32, u8, s32);
+    s32 fn_8008CD64(f32);
+    s32 Ui_DrawCenteredMsgLines(s32, s32, void *, void *, void *);
+    u8 fn_8014D8DC(void *);
+    extern u8 lbl_8026C0B8[];
+    extern u8 gBattleState[];
+    extern f32 lbl_80369378;
+    extern f32 lbl_8036937C;
+    extern f32 lbl_80369380;
+    extern f32 lbl_80369384;
+    extern f32 lbl_80369388;
+    extern f32 lbl_8036938C;
+    extern f32 lbl_80369390;
+    extern f32 lbl_80369394;
+    extern f32 lbl_80369398;
+    extern f32 lbl_8036939C;
+    s32 var_r28;
+    f32 temp_f2;
+    f32 temp_f31;
+    f32 temp_f31_2;
+    s16 temp_r31;
+    s16 temp_r3_2;
+    s32 temp_r29;
+    s32 temp_r30;
+    u32 temp_r3;
+
+    temp_f31 = UiWin_GetFade(arg1);
+    M2C_FIELD(arg1, s16 *, 0x30) = 0;
+    M2C_FIELD(arg1, s16 *, 0x32) = 0;
+    Prim2D_Begin();
+    Prim2D_SetColorByte((s32) (lbl_80369378 * temp_f31));
+    Prim2D_PrepareTex();
+    temp_f31_2 = (lbl_8036937C * temp_f31) + lbl_8036937C;
+    fn_80071740(arg0, M2C_FIELD(arg0, void **, 0xC), temp_f31_2, lbl_80369380);
+    fn_8007149C(arg0, arg1, M2C_FIELD(arg0, void **, 0xC), 3, temp_f31_2, lbl_80369384);
+    fn_8008CD64(lbl_80369388);
+    fn_8008BBF8((s32) temp_f31_2, 0x88, 0, 0xA6, M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0xC), void **, 0x190), u8 *, 8), 0x9A);
+    fn_8008CD64(lbl_8036938C);
+    if ((s16) M2C_FIELD(arg1, s16 *, 0x3A) >= 5) {
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_80369390);
+        Prim2D_PrepareTex();
+        var_r28 = 0;
+        if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
+            var_r28 = 1;
+        }
+        temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
+        temp_r29 = (s32) (lbl_80369398 * temp_f2);
+        temp_r3 = Text_MeasureHeight(-1, lbl_80369394);
+        temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
+        temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
+        temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
+        fn_8008AB7C(((s32) (((u32) temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1) + 0x28, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036939C);
+        Prim2D_PrepareTex();
+    }
+    if (fn_8014D8DC(gBattleState) != 0) {
+        Ui_DrawCenteredMsgLines(0x138, 0xA0, lbl_8026C0B8 + 0xCE, lbl_8026C0B8 + 0xD4, lbl_8026C0B8 + 0xDA);
+        return;
+    }
+    Ui_DrawCenteredMsgLines(0x138, 0xA0, lbl_8026C0B8 + 0xE0, lbl_8026C0B8 + 0xE6, lbl_8026C0B8 + 0xEC);
+}
+
+#pragma use_lmw_stmw reset
 u32 fn_800745E8(void *arg0, void *arg1, u8 arg2) {
     u64 *Item_GetFlagsPtr(void *);
     void *Unit_GetItemSlot(void *, s32);
