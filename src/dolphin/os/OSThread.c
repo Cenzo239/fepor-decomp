@@ -132,6 +132,21 @@ u32 __OSGetResetSWState(void);
 
 extern void OSDisableInterrupts(void);
 extern void OSRestoreInterrupts(void);
+typedef struct OSThread OSThread;
+typedef struct OSThreadQueue { OSThread *head, *tail; } OSThreadQueue;
+struct OSThread {
+    u8 context[0x1A2];
+    u16 contextState;
+    u8 pad1A4[0x124];
+    u16 state;
+    u16 attr;
+    s32 suspend;
+    s32 priority;
+    s32 base;
+    void *value;
+    OSThreadQueue *queue;
+    OSThread *next, *prev;
+};
 extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
