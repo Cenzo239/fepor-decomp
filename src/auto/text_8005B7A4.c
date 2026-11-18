@@ -5234,6 +5234,7 @@ done:
     return lbl_80369208 * (f32)value;
 }
 
+void FileCache_Load(s32);
 u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
     extern f64 lbl_80369200;
     s32 count;
@@ -5259,40 +5260,50 @@ u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
     t1 = t0;
     keys = (u16 (*)[2])(track+4);
     value = 0;
-    if ((u32)count != 0) {
-        if ((s32)count == 0) mid = t0;
-        else {
-            lo = value; hi = count-1; time = (s32)frame;
-            while (lo <= hi) {
-                mid = lo + ((hi-lo)>>1);
-                if (keys[mid][0] < time) lo = mid+1;
-                else if (keys[mid][0] > time) hi = mid-1;
-                else goto found;
-            }
-            if (hi < 0) mid = -1;
-            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } else goto found; }
-        }
-found:
-        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
-        else if (mid < count-1) {
-            s32 next = mid + 1;
-            t0 = keys[mid][0];
-            v0 = keys[mid][1];
-            t1 = keys[next][0];
-            value = keys[next][1];
-            goto interpolate_pair;
-        } else { v0 = keys[mid][1]; interpolate = 0; }
-        goto interpolate_ready;
-interpolate_pair:
-        interpolate = 1;
-interpolate_ready:
-        if (!interpolate) value = v0;
-        else switch(mode) {
-        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
-        case 1: value = v0; break;
-        default: value = 0; break;
+    if ((u32)count == 0)
+        goto after_keys;
+    if ((s32)count == 0) {
+        mid = t0;
+        goto found;
+    }
+    lo = value;
+    hi = count-1;
+    time = (s32)frame;
+    while (lo <= hi) {
+        mid = lo + ((hi-lo)>>1);
+        if (keys[mid][0] < time) lo = mid+1;
+        else if (keys[mid][0] > time) hi = mid-1;
+        else goto found;
+    }
+    if (hi < 0) mid = -1;
+    else {
+        mid = count-1;
+        if (lo <= mid) {
+            if (keys[lo][0] <= time) mid = lo;
+            else mid = lo-1;
         }
     }
+found:
+    if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+    else if (mid < count-1) {
+        s32 next = mid + 1;
+        t0 = keys[mid][0];
+        v0 = keys[mid][1];
+        t1 = keys[next][0];
+        value = keys[next][1];
+        goto interpolate_pair;
+    } else { v0 = keys[mid][1]; interpolate = 0; }
+    goto interpolate_ready;
+interpolate_pair:
+    interpolate = 1;
+interpolate_ready:
+    if (!interpolate) value = v0;
+    else switch(mode) {
+    case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+    case 1: value = v0; break;
+    default: value = 0; break;
+    }
+after_keys:
     *((u8 *)arg2 + 3) = (u8)value;
     return 1;
 }
