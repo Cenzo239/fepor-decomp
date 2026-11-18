@@ -2055,7 +2055,7 @@ s32 count;
 u8 c;
 p=(char *)str->data;
 size=str->size;
-count=0;
+count=pos;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
 { char *dest=out;
