@@ -3323,56 +3323,98 @@ void Ui_GetSelectMenuCombatIconRect(s32 unused, s32 index, s32 *left, s32 *top, 
   }
 }
 
-s32 fn_80131C78(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5) {
-    s32 r30;
-    s32 r31;
-    s32 r4;
-    
-    if (param_5 > 7) {
-        return 0;
+char *fn_80131C78(char *buf, void **pUnit, u32 kind) {
+    s32 Unit_GetCarryWtLimit(void *);
+    s32 Unit_GetMagAtk(void *);
+    s32 fn_8003AF28(void *);
+    s32 fn_8003AEB0(void *);
+    s32 fn_8003ACF8(void *);
+    s32 fn_8003AA40(void *);
+    s32 fn_8003A778(void *);
+    int sprintf(char *, const char *, ...);
+    extern u8 gUiSelectMenuStrings[];
+    void *unit;
+    u8 *cls;
+    s8 val;
+
+    unit = *pUnit;
+    cls = *(u8 **)((u8 *)unit + 0x18c);
+
+    switch (kind) {
+    case 0:
+        return NULL;
+    case 1:
+        val = Unit_GetCarryWtLimit(unit);
+        if (val >= (s8)cls[0x4d]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 2:
+        val = Unit_GetMagAtk(unit);
+        if (val >= (s8)cls[0x4e]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 3:
+        val = fn_8003AF28(unit);
+        if (val >= (s8)cls[0x4f]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 4:
+        val = fn_8003AEB0(unit);
+        if (val >= (s8)cls[0x50]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 5:
+        val = fn_8003ACF8(unit);
+        if (val >= 0x28) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 6:
+        val = fn_8003AA40(unit);
+        if (val >= (s8)cls[0x52]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
+    case 7:
+        val = fn_8003A778(unit);
+        if (val >= (s8)cls[0x53]) {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x41b,
+                    (char *)gUiSelectMenuStrings + 0x423, val,
+                    (char *)gUiSelectMenuStrings + 0x428);
+        } else {
+            sprintf(buf, (char *)gUiSelectMenuStrings + 0x33c, val);
+        }
+        break;
     }
-    
-    r31 = param_1;
-    r30 = *(s32*)((u32)param_4 + 0x18C);
-    r4 = *(s32*)((u32)param_4);
-    
-    // Jump table handling
-    switch (param_5) {
-        case 0:
-            return Unit_GetCarryWtLimit(param_4);
-        case 1:
-            // fall through
-            break;
-        case 2:
-            return Unit_GetMagAtk(param_4);
-        case 3:
-            // fall through  
-            break;
-        case 4:
-            return fn_8003AF28(param_4);
-        case 5:
-            // fall through
-            break;
-        case 6:
-            return fn_8003AEB0(param_4);
-        case 7:
-            // fall through
-            break;
-        case 8:
-            return fn_8003ACF8(param_4);
-        case 9:
-            // fall through
-            break;
-        case 10:
-            return fn_8003AA40(param_4);
-        case 11:
-            // fall through
-            break;
-        case 12:
-            return fn_8003A778(param_4);
-    }
-    
-    return 0;
+    return buf;
 }
 
 s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
