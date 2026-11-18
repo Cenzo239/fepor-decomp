@@ -266,9 +266,9 @@ static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
 }
-static inline void *Camera_SelectTarget(u8 *state, void *first, void *second) {
-    if ((*(u32 *)(state+8)&0x20000000) && first) return first;
-    return second;
+static inline void Camera_SelectTarget(u8 *state, CameraVec **first, CameraVec *second) {
+    if ((*(u32 *)(state+8)&0x20000000) && *first) return;
+    *first = second;
 }
 #pragma use_lmw_stmw on
 void fn_80054C14(void *arg0) {
@@ -330,10 +330,7 @@ void fn_80054C14(void *arg0) {
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
         if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
         if(a) {
-            f32 z=a->z, y=a->y, x=a->x;
-            *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
-            *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
-            *(f32 *)(*(u8 **)(proc+0x30)+0x14)=lbl_8036909C+z;
+            Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
     }
     if (Pad_IsButton(pad,18)) {
