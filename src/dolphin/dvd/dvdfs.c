@@ -16,9 +16,8 @@ extern volatile u32 __DIRegs[16];
 
 static inline void dvdClearDiStatus(void) {
     u32 *base = (u32 *)0xCC000000;
-    u32 *di;
     u32 tmp = base[0x1801];
-    di = base + 0x1800;
+    u32 *di = base + 0x1800;
     di[1] = tmp;
 }
 
