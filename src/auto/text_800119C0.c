@@ -2074,25 +2074,15 @@ void fn_8001598C(void)
     void fn_8004EB14(u8 *, s32);
     extern u8 gUnits[];
     u8 sp8[8];
-    u8 *mask;
-    u8 *units;
     s32 i;
     u8 *unit;
-
     Allegiance_FillMask(5, sp8);
-    mask = sp8;
-    units = gUnits;
     i = 1;
     do {
-        if ((u8)i != 0) {
-            unit = units + ((u8)i - 1) * 0x280;
-        } else {
-            unit = NULL;
-        }
+        if ((u8)i != 0) unit = gUnits + ((u8)i - 1) * 0x280;
+        else unit = NULL;
         if (*(u32 *)(unit + 0x188) != 0) {
-            if (mask[(*(u8 **)(unit + 0x190))[8]] != 0) {
-                fn_8004EB14(unit, 0);
-            }
+            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) fn_8004EB14(unit, 0);
         }
         i += 1;
     } while (i <= 0x9F);
