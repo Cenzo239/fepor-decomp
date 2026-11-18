@@ -7354,7 +7354,7 @@ void fn_80049594(void *self)
     s32 ival;
 
     half = lbl_80368EE4;
-    *(s32 *)((u8 *)self + 0x40) += 1;
+    *(s32 *)((u8 *)self + 0x40) = *(s32 *)((u8 *)self + 0x40) + 1;
 
     ival = (s32)Math_EaseOutPow(
         2,
@@ -8267,9 +8267,9 @@ s32 fn_8004AFB4(void *arg0, s32 arg1) {
 
 char *fn_8004AFD4(void *arg0, s32 arg1) {
 void fn_800056A0(s32); void sprintf(void *, void *, ...);
-extern u8 lbl_8026A9B0[]; extern s32 lbl_80285880[]; extern s32 lbl_802858C4[]; extern u8 lbl_802EFFC8[];
+extern u16 lbl_8026A9B0[40]; extern s32 lbl_80285880[]; extern s32 lbl_802858C4[]; extern u8 lbl_802EFFC8[];
 if ((*(s32 *)((u8 *)arg0+0x10) & (1 << arg1)) == 0) {arg1=6; fn_800056A0(0);}
-sprintf(lbl_802EFFC8,lbl_8026A9B0+0x9C,lbl_8026A9B0+0xA8,*(s32 *)((u8 *)arg0+4),lbl_80285880[arg1],lbl_802858C4[*(u8 *)((u8 *)arg0+8)]);
+sprintf(lbl_802EFFC8,(u8 *)lbl_8026A9B0+0x9C,(u8 *)lbl_8026A9B0+0xA8,*(s32 *)((u8 *)arg0+4),lbl_80285880[arg1],lbl_802858C4[*(u8 *)((u8 *)arg0+8)]);
 return (char *)lbl_802EFFC8;
 }
 
