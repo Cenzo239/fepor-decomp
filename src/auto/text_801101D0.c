@@ -2380,7 +2380,7 @@ struct ActorMotionInterface {
     virtual void v9() = 0;
     virtual void v10() = 0;
     virtual void v11() = 0;
-    virtual Vec3f GetPos(s32) = 0;
+    virtual PVector3 GetPos(s32) = 0;
     virtual void v13() = 0;
     virtual void Adjust(void *, f32, f32) = 0;
 };
@@ -9241,8 +9241,8 @@ case '2':selected=2;break;
 case '3':selected=3;break;
 }
 {
-u8 *out;
-out=lbl_8032FE24;
+s8 *out;
+out=(s8*)lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
@@ -9260,8 +9260,8 @@ case '=':text+=4;continue;
 case 'F':
 switch((s32)(u8)*text++) { case 'C':
 {
-u8 *out;
-out=lbl_8032FE24;
+s8 *out;
+out=(s8*)lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
@@ -9270,8 +9270,8 @@ break;
 continue;
 case 'B':case 'R': {
 {
-u8 *out;
-out=lbl_8032FE24;
+s8 *out;
+out=(s8*)lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
