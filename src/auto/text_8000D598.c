@@ -66,6 +66,8 @@ s32 fn_8000D598(s8 *arg0) {
     return h;
 }
 
+#pragma push
+#pragma use_lmw_stmw on
 void fn_8000D5C8(void) {
     void *fn_800C4638(s32, void *, s32);
     extern u8 lbl_80267D40[];
@@ -180,7 +182,7 @@ void fn_8000D5C8(void) {
         off += 0x80;
     }
 }
-
+#pragma pop
 void fn_8000D864(s32 arg0, char *arg1) {
     void strcpy(char *, char *);
     s32 strlen(char *);
@@ -1413,162 +1415,228 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     return result;
 }
 
-#pragma opt_peephole off
-s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
-    extern f32 lbl_80368BE8;
-    extern f32 lbl_80368BDC;
-    extern f32 lbl_80368BE0;
-    extern void *lbl_80367168;
-    extern u8 *fn_80105124(u8 *, s32 *);
-
-    u32 *tbl;
-    u32 found;
-    s32 index;
-    f32 result;
-    f32 fmax;
-    u8 *p;
-    s32 c;
-    s32 code;
-    s16 digi;
-    s16 shift;
-    s32 val;
-    u8 *digits;
-    s32 width;
-    f32 advance;
-    u8 flag;
-    void *obj;
-    u32 raw;
-
-    p = str;
-    if (idx == -1) {
-        idx = 0;
+#pragma push
+#pragma cplusplus on
+extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
+{
+  extern f32 lbl_80368BE8;
+  extern f32 lbl_80368BDC;
+  extern f32 lbl_80368BE0;
+  extern void *lbl_80367168;
+  extern u8 *fn_80105124(u8 *, s32 *);
+  u32 *tbl;
+  u32 found;
+  s32 index;
+  f32 result;
+  f32 fmax;
+  u8 *p;
+  s32 c;
+  s32 code;
+  s16 digi;
+  s16 shift;
+  s32 val;
+  u8 *digits;
+  s32 width;
+  f32 advance;
+  u8 flag;
+  void *obj;
+  u32 raw;
+  p = str;
+  if (idx == (-1))
+  {
+    idx = 0;
+  }
+  found = (u32) fn_8010494C(lbl_802AEE20[idx]);
+  tbl = (u32 *) lbl_802AEE20;
+  {
+    u32 *q = tbl;
+    s32 j;
+    for (j = 0; j < 5; j++, q++)
+    {
+      if ((*q) == found)
+      {
+        index = j;
+        goto font_found;
+      }
     }
-    found = (u32)fn_8010494C(lbl_802AEE20[idx]);
-    tbl = (u32 *)lbl_802AEE20;
-    { u32 *q=tbl; s32 j;
-    for(j=0;j<5;j++,q++) { if(*q==found) { index=j; goto font_found; } }
-    index=-1;
-    font_found:;
-    }
 
-    result = lbl_80368BE8;
-    fmax = lbl_80368BDC;
+    index = -1;
+    font_found:
+    ;
 
-    while ((s8)(raw = *p) != 0) {
-        flag = 0;
-        if ((s8)raw == '#') {
-            c = (s8)p[1];
+    ;
+    ;
+  }
+  result = lbl_80368BE8;
+  fmax = lbl_80368BDC;
+  while (((s8) (raw = *p)) != 0)
+  {
+    flag = 0;
+    if (((s8) raw) == '#')
+    {
+      c = (s8) p[1];
+      p += 2;
+      code = c - 0x23;
+      if ((((u32) code) + 1) <= (0x56U + 1))
+      {
+        switch (code)
+        {
+          case 30:
+
+          case 31:
+
+          case 32:
+
+          case 36:
+
+          case 38:
+
+          case 47:
+
+          case 53:
+
+          case 85:
             p += 2;
-            code = c - 0x23;
-            if ((u32)code <= 0x56U) {
-                switch (code) {
-                case 30:
-                case 31:
-                case 32:
-                case 36:
-                case 38:
-                case 47:
-                case 53:
-                case 85:
-                    p += 2;
-                    goto next;
-                case 48:
-                case 54: {
-                    s16 shift;
-                    s16 digi;
-                    u8 n;
-                    s32 val;
-                    u8 *digits;
-                    digits = (u8 *)__alloca(8);
-                    n = 0;
-                    while (n < 2) {
-                        c = (s8)*p++;
-                        if (c >= '0' && c <= '9') {
-                            digits[n] = (u8)(c - '0');
-                        } else if (c >= 'a' && c <= 'f') {
-                            digits[n] = (u8)(c - 0x57);
-                        } else if (c >= 'A' && c <= 'F') {
-                            digits[n] = (u8)(c - 0x37);
-                        }
-                        n += 1;
-                    }
-                    val = 0;
-                    digi = 1;
-                    shift = 0;
-                    while (digi >= 0) {
-                        val += digits[digi] << shift;
-                        digi -= 1;
-                        shift += 4;
-                    }
-                    fmax = (f32)(u32)val * lbl_80368BE0;
-                    goto next;
-                }
-                case 86:
-                    fmax = lbl_80368BDC;
-                    goto next;
-                case 45:
-                    flag = 1;
-                    p += 3;
-                    break;
-                case 35: {
-                    s16 shift;
-                    s16 digi;
-                    u8 n;
-                    s32 val;
-                    u8 *digits;
-                    digits = (u8 *)__alloca(8);
-                    n = 0;
-                    while (n < 2) {
-                        c = (s8)*p++;
-                        if (c >= '0' && c <= '9') {
-                            digits[n] = (u8)(c - '0');
-                        } else if (c >= 'a' && c <= 'f') {
-                            digits[n] = (u8)(c - 0x57);
-                        } else if (c >= 'A' && c <= 'F') {
-                            digits[n] = (u8)(c - 0x37);
-                        }
-                        n += 1;
-                    }
-                    val = 0;
-                    digi = 1;
-                    shift = 0;
-                    while (digi >= 0) {
-                        val += digits[digi] << shift;
-                        digi -= 1;
-                        shift += 4;
-                    }
-                    if (val == -1) {
-                        val = 0;
-                    }
-                    found = (u32)fn_8010494C(lbl_802AEE20[val]);
-                    Text_FindFontIndex(tbl, found);
-                    goto next;
-                }
-                default:
-                    p -= 1;
-                    break;
-                }
-            }
-        }
-        if ((u8)flag == 0) {
-            p = fn_80105124(p, &width);
-            advance = scale * ((f32)width * fmax);
-        } else {
-            obj = lbl_80367168;
-            advance = (f32)(*(s32 (**)(void *))(*(u32 *)obj + 0x3c))(obj);
-        }
-        result += advance;
-    next:;
-    }
+            goto next;
 
-    if (index == -1) {
-        index = 0;
+          case 48:
+
+          case 54:
+          {
+            s16 shift;
+            s16 digi;
+            u8 n;
+            s32 val;
+            u8 *digits;
+            digits = (u8 *) __alloca(8);
+            n = 0;
+            while (n < 2)
+            {
+              c = (s8) (*(p++));
+              if ((c >= '0') && (c <= '9'))
+              {
+                digits[n] = (u8) (c - '0');
+              }
+              else
+                if ((c >= 'a') && (c <= 'f'))
+              {
+                digits[n] = (u8) (c - 0x57);
+              }
+              else
+                if ((c >= 'A') && (c <= 'F'))
+              {
+                digits[n] = (u8) (c - 0x37);
+              }
+              n += 1;
+            }
+
+            val = 0;
+            digi = 1;
+            shift = 0;
+            while (digi >= 0)
+            {
+              val += digits[digi] << shift;
+              digi -= 1;
+              shift += 4;
+            }
+
+            fmax = ((f32) ((u32) val)) * lbl_80368BE0;
+            goto next;
+          }
+
+          case 86:
+            fmax = lbl_80368BDC;
+            goto next;
+
+          case 45:
+            flag = 1;
+            index = -1;
+            p += 3;
+            break;
+
+          case 35:
+          {
+            s16 shift;
+            s16 digi;
+            u8 n;
+            s32 val;
+            u8 *digits;
+            digits = (u8 *) __alloca(8);
+            n = 0;
+            while (n < 2)
+            {
+              c = (s8) (*(p++));
+              if ((c >= '0') && (c <= '9'))
+              {
+                digits[n] = (u8) (c - '0');
+              }
+              else
+                if ((c >= 'a') && (c <= 'f'))
+              {
+                digits[n] = (u8) (c - 0x57);
+              }
+              else
+                if ((c >= 'A') && (c <= 'F'))
+              {
+                digits[n] = (u8) (c - 0x37);
+              }
+              n += 1;
+            }
+
+            val = 0;
+            digi = 1;
+            shift = val;
+            while (digi >= 0)
+            {
+              val += digits[digi] << shift;
+              digi -= 1;
+              shift += 4;
+            }
+
+            if (val == (-1))
+            {
+              val = 0;
+            }
+            found = (u32) fn_8010494C(lbl_802AEE20[val]);
+            Text_FindFontIndex(tbl, found);
+            goto next;
+          }
+
+          default:
+            p -= 1;
+            break;
+
+        }
+
+      }
     }
-    found = (u32)fn_8010494C(lbl_802AEE20[index]);
-    Text_FindFontIndex(tbl, found);
-    return (s32)result;
+    if (((u8) flag) == 0)
+    {
+      p = fn_80105124(p, &width);
+      advance = scale * (((f32) width) * fmax);
+    }
+    else
+    {
+      obj = lbl_80367168;
+      advance = (f32) ((TextWidthFontInterface *) obj)->v13();
+    }
+    result += advance;
+    next:
+    ;
+
+    ;
+    ;
+  }
+
+  if (index == (-1))
+  {
+    index = 0;
+  }
+  found = (u32) fn_8010494C(lbl_802AEE20[index]);
+  Text_FindFontIndex(tbl, found);
+  return (s32) result;
 }
-#pragma opt_peephole reset
+#pragma pop
 void fn_80010FF0(void) {
     M2C_UNK fn_801047D0();
     fn_801047D0();
