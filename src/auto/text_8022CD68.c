@@ -1,6 +1,7 @@
 /* string pool for double2hex / printf float specials */
-static const char double2hex_strpool[] =
+const char stringBase0_80282C60[] =
     "\0-INF\0-inf\0INF\0inf\0-NAN\0-nan\0NAN\0nan";
+#define double2hex_strpool stringBase0_80282C60
 
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
@@ -1942,19 +1943,21 @@ void fn_80231CC8(void *dst, const void *src, u32 size)
   u32 *d;
   u32 n;
   const u32 *s;
-  const u8 *sb;
   u32 b;
   u32 a;
-  u8 *db;
-  sb = ((const u8 *) src) - 1;
-  db = ((u8 *) dst) - 1;
-  n = (-((u32) dst)) & 3;
+  u32 t;
+  t = -(u32)dst;
+  src = (const u8 *)src - 1;
+  n = t & 3;
+  dst = (u8 *)dst - 1;
   if (n)
   {
     size -= n;
     do
     {
-      *(++db) = *(++sb);
+      dst = (u8 *)dst + 1;
+      src = (const u8 *)src + 1;
+      *(u8 *)dst = *(const u8 *)src;
     }
     while (--n);
   }
@@ -1962,8 +1965,8 @@ void fn_80231CC8(void *dst, const void *src, u32 size)
   if (b)
   {
   }
-  s = (const u32 *) (sb - 3);
-  d = (u32 *) (db - 3);
+  s = (const u32 *)((const u8 *)src - 3);
+  d = (u32 *)((u8 *)dst - 3);
   if (n)
   {
     do
@@ -1998,13 +2001,15 @@ void fn_80231CC8(void *dst, const void *src, u32 size)
     while (--n);
   }
   size &= 3;
-  sb = ((const u8 *) s) + 3;
-  db = ((u8 *) d) + 3;
+  src = (const u8 *)s + 3;
+  dst = (u8 *)d + 3;
   if (size)
   {
     do
     {
-      *(++db) = *(++sb);
+      dst = (u8 *)dst + 1;
+      src = (const u8 *)src + 1;
+      *(u8 *)dst = *(const u8 *)src;
     }
     while ((--size) != 0);
   }
