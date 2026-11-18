@@ -238,6 +238,7 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
 }
 
 #pragma cplusplus on
+#pragma opt_peephole on
 extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 {
   extern f32 lbl_80368BE8;
@@ -258,7 +259,10 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
   void *obj;
   u32 raw;
   p = str;
-  if (idx == (-1)) { idx = 0; }
+  if (idx == (-1))
+  {
+    idx = 0;
+  }
   found = (u32) fn_8010494C(lbl_802AEE20[idx]);
   tbl = (u32 *) lbl_802AEE20;
   {
@@ -266,10 +270,16 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
     s32 j;
     for (j = 0; j < 5; j++, q++)
     {
-      if ((*q) == found) { index = j; goto font_found; }
+      if ((*q) == found)
+      {
+        index = j;
+        goto font_found;
+      }
     }
+
     index = -1;
-    font_found: ;
+    font_found:
+    ;
   }
   result = lbl_80368BE8;
   fmax = lbl_80368BDC;
@@ -282,64 +292,117 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
       p += 2;
       switch (c)
       {
-        case 'A': case 'B': case 'C': case 'G':
-        case 'I': case 'R': case 'X': case 'x':
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'G':
+        case 'I':
+        case 'R':
+        case 'X':
+        case 'x':
           p += 2;
           goto next;
-        case 'S': case 'Y':
+
+        case 'S':
+        case 'Y':
         {
-          s16 shift; s16 digi; u8 n; s32 val; u8 *digits; s32 z;
+          s16 shift;
+          s16 digi;
+          u8 n;
+          s32 val;
+          s32 z;
+          u8 *digits;
           digits = (u8 *) __alloca(8);
           n = 0;
           while (n < 2)
           {
             c = (s8) (*(p++));
-            if ((c >= '0') && (c <= '9')) { digits[n] = (u8) (c - '0'); }
-            else if ((c >= 'a') && (c <= 'f')) { digits[n] = (u8) (c - 0x57); }
-            else if ((c >= 'A') && (c <= 'F')) { digits[n] = (u8) (c - 0x37); }
+            if ((c >= '0') && (c <= '9'))
+            {
+              digits[n] = (u8) (c - '0');
+            }
+            else if ((c >= 'a') && (c <= 'f'))
+            {
+              digits[n] = (u8) (c - 0x57);
+            }
+            else if ((c >= 'A') && (c <= 'F'))
+            {
+              digits[n] = (u8) (c - 0x37);
+            }
             n += 1;
           }
-          z = 0; val = z; digi = 1; shift = z;
+
+          z = 0;
+          val = z;
+          digi = 1;
+          shift = z;
           while (digi >= 0)
           {
             val += digits[digi] << shift;
             digi -= 1;
             shift += 4;
           }
+
           fmax = ((f32) ((u32) val)) * lbl_80368BE0;
           goto next;
         }
+
         case 'y':
           fmax = lbl_80368BDC;
           goto next;
+
         default:
           p -= 1;
           break;
+
         case 'P':
           flag = 1;
           p += 3;
           break;
+
         case 'F':
         {
-          s16 shift; s16 digi; u8 n; s32 val; u8 *digits; s32 z;
+          s16 shift;
+          s16 digi;
+          u8 n;
+          s32 val;
+          s32 z;
+          u8 *digits;
           digits = (u8 *) __alloca(8);
           n = 0;
           while (n < 2)
           {
             c = (s8) (*(p++));
-            if ((c >= '0') && (c <= '9')) { digits[n] = (u8) (c - '0'); }
-            else if ((c >= 'a') && (c <= 'f')) { digits[n] = (u8) (c - 0x57); }
-            else if ((c >= 'A') && (c <= 'F')) { digits[n] = (u8) (c - 0x37); }
+            if ((c >= '0') && (c <= '9'))
+            {
+              digits[n] = (u8) (c - '0');
+            }
+            else if ((c >= 'a') && (c <= 'f'))
+            {
+              digits[n] = (u8) (c - 0x57);
+            }
+            else if ((c >= 'A') && (c <= 'F'))
+            {
+              digits[n] = (u8) (c - 0x37);
+            }
             n += 1;
           }
-          z = 0; val = z; digi = 1; shift = z;
+
+          z = 0;
+          val = z;
+          digi = 1;
+          shift = z;
           while (digi >= 0)
           {
             val += digits[digi] << shift;
             digi -= 1;
             shift += 4;
           }
-          if (val == (-1)) { val = 0; }
+
+          if (val == (-1))
+          {
+            val = 0;
+          }
           found = (u32) fn_8010494C(lbl_802AEE20[val]);
           Text_FindFontIndex(tbl, found);
           goto next;
@@ -357,11 +420,17 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
       advance = (f32) ((TextWidthFontInterface *) obj)->v13();
     }
     result += advance;
-    next: ;
+    next:
+    ;
   }
-  if (index == (-1)) { index = 0; }
+
+  if (index == (-1))
+  {
+    index = 0;
+  }
   found = (u32) fn_8010494C(lbl_802AEE20[index]);
   Text_FindFontIndex(tbl, found);
-      return (s32) result;
-  }
-  #pragma cplusplus reset
+  return (s32) result;
+}
+#pragma opt_peephole reset
+#pragma cplusplus reset
