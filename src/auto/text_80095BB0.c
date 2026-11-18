@@ -743,23 +743,10 @@ extern "C" u32 Event_GetCmdFlags(s32 arg0) {
 done:
  *(s16 *)s=saved;
  if(flags & 0x10000004) {
- s32 found;
- *(s16 *)s=arg0;
- *(s16 *)s=(s16)arg0+1;
- found=0;
- for (;;) {
- switch(s[(*(s16 *)s*4)+4]) {
- case 0: case 0x20: case 0x21: case 0x22: case 0x24:
- case 0x50: case 0x51: case 0x52: goto done2;
- case 9: case 0x15:
- if ((s8)*(s16 *)(s+(*(s16 *)s*4)+6)>0) found=1;
- break;
- }
- ++*(s16 *)s;
- }
-done2:
+ u8 found=Event_ScanPositiveArg(s,arg0);
+
  *(s16 *)s=saved;
- if((u8)found) flags|=1;
+ if(found) flags|=1;
  }
  return flags;
 }
