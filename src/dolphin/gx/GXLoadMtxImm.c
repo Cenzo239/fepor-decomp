@@ -354,25 +354,31 @@ void fn_80225034(u32 arg0, u32 *dst) {
 }
 
 #pragma optimization_level 2
-void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
-    u8 *gx;
-    s32 x0, y0, x1, y1;
-    gx = (u8 *)__GXData;
-    y0 = top + 0x156;
-    ht = ht - 1;
-    *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), y0, 0, 21, 31);
-    x0 = left + 0x156;
-    wd = wd - 1;
-    y1 = y0 + ht;
-    *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), x0, 12, 9, 19);
-    x1 = x0 + wd;
-    *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), y1, 0, 21, 31);
-    *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), x1, 12, 9, 19);
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(gx + 0xF8);
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(gx + 0xFC);
-    *(u16 *)(gx + 2) = 0;
+void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht)
+{
+  u8 *gx;
+  s32 x0;
+  s32 y0;
+  u32 x1;
+  u32 y1;
+  u32 adjustedHeight;
+  gx = (u8 *) __GXData;
+  y0 = top + 0x156;
+  adjustedHeight = ((u32) ht) - 1;
+  *((u32 *) (gx + 0xF8)) = __rlwimi(*((u32 *) (gx + 0xF8)), y0, 0, 21, 31);
+  x0 = left + 0x156;
+  x1 = ((u32) wd) - 1;
+  y1 = ((u32) y0) + adjustedHeight;
+  *((u32 *) (gx + 0xF8)) = __rlwimi(*((u32 *) (gx + 0xF8)), x0, 12, 9, 19);
+  x1 = ((u32) x0) + x1;
+  adjustedHeight = y1;
+  *((u32 *) (gx + 0xFC)) = __rlwimi(*((u32 *) (gx + 0xFC)), adjustedHeight, 0, 21, 31);
+  *((u32 *) (gx + 0xFC)) = __rlwimi(*((u32 *) (gx + 0xFC)), x1, 12, 9, 19);
+  GXWGFifo.u8 = 0x61;
+  GXWGFifo.u32 = *((u32 *) (gx + 0xF8));
+  GXWGFifo.u8 = 0x61;
+  GXWGFifo.u32 = *((u32 *) (gx + 0xFC));
+  *((u16 *) (gx + 2)) = 0;
 }
 #pragma scheduling off
 void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3)
@@ -398,7 +404,7 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3)
 #pragma peephole off
 void fn_80225118(s32 x, s32 y)
 {
-  register u32 value;
+  u32 value;
   u32 yoff;
   u32 xoff;
 
@@ -410,7 +416,6 @@ void fn_80225118(s32 x, s32 y)
   GXWGFifo.u32 = value;
   __GXData[1] = 0;
 }
-#pragma peephole reset
 void fn_80225158(u32 arg0)
 {
   u8 cmd = 0x10;
