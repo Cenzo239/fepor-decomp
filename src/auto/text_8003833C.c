@@ -1797,19 +1797,14 @@ s8 Unit_GetSkl(void *arg0) {
 }
 #pragma opt_peephole reset
 s8 Unit_GetMag(void *arg0) {
-    void *p18c;
-    u8 t;
-    u8 a;
-    s8 lim;
+    s32 p;
     s8 var;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    t = *(u8 *)((u8 *)arg0 + 0x1AD);
-    a = *(u8 *)((u8 *)p18c + 0x46);
-    lim = *(u8 *)((u8 *)p18c + 0x4E);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + a) + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + *(u8 *)(p + 0x46)) + *(u8 *)((u8 *)arg0 + 0x1AD);
+    p = *(s8 *)(p + 0x4E);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
