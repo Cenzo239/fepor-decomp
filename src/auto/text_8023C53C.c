@@ -16393,6 +16393,8 @@ void fn_80262FB0(void) {
     }
 }
 
+typedef struct { void *prev; u32 smallest; } HeapWalk80263074;
+
 u8 fn_80263074(u32 arg0)
 {
     extern u8 lbl_80364430[];
