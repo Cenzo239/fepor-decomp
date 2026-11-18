@@ -202,17 +202,12 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 #pragma opt_propagation on
 
-void fn_80224828(u8 arg0, u8 arg1) {
-  u32 *ptr;
+void fn_80224828(s32 arg0, u8 arg1) {
   u32 value;
-  ptr = (u32 *)__GXData;
-  value = 0;
-  value = __rlwimi(value, (u32)arg1, 0, 31, 31);
-  *(u8 *)0xCC008000 = 0x61;
-  value = __rlwimi(value, (u32)arg0, 1, 30, 30);
-  if ((!value) && (!value) && (!value)) {
-  }
+  value = __rlwimi(0, (u32)arg1, 0, 31, 31);
+  value = __rlwimi(value, arg0, 1, 30, 30);
+  GXWGFifo.u8 = 0x61;
   value = __rlwimi(value, 0x44, 24, 0, 7);
-  *(u32 *)0xCC008000 = value;
-  *(u16 *)((u8 *)ptr + 2) = 0;
+  GXWGFifo.u32 = value;
+  __GXData[1] = 0;
 }
