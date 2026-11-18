@@ -1203,26 +1203,26 @@ s32 fn_800A0E74(void) {
 }
 #pragma optimization_level reset
 char *fn_800A101C(void) {
-    void fn_80231D94(void *, void *, ...);
-    extern u8 lbl_80330708[];
-    extern char lbl_80312270[];
-    extern u8 lbl_8026D8D8[];
+    void sprintf(void *, void *, ...);
+    extern u8 gBattleState[];
+    extern char gItemMenuTextBuf[];
+    extern u8 gMenuCmdStrings[];
     char *buf;
     u8 *base;
     u8 flag;
     void *arg2;
     void *var_r5;
 
-    buf = lbl_80312270;
-    base = lbl_8026D8D8;
-    flag = lbl_80330708[0x9F];
+    buf = gItemMenuTextBuf;
+    base = gMenuCmdStrings;
+    flag = gBattleState[0x9F];
     arg2 = base + 0x5AE;
     var_r5 = base + 0x5C3;
     if ((flag >> 7) & 1) {
         var_r5 = base + 0x5BA;
     }
-    fn_80231D94(buf, arg2, var_r5);
-    return lbl_80312270;
+    sprintf(buf, arg2, var_r5);
+    return gItemMenuTextBuf;
 }
 #pragma optimization_level reset
 s32 fn_800A1078(void) {
