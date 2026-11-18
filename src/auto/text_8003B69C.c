@@ -1,5 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+typedef struct FogColorBytes { u8 r, g, b, a; } FogColorBytes;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -1584,38 +1585,23 @@ void Unit_MoveToList(void *unit, s32 listId) {
     }
 }
 
-void Unit_MoveToListHead(void *arg0, s32 arg1)
+void Unit_MoveToListHead(void *unit, s32 listId)
 {
+    void fn_800946F0(void *);
+    void fn_800156A0(void *, void *);
+    void fn_800157DC(void *, void *);
+
     extern u8 gUnitLists[];
 
-    extern void fn_800946F0(void *);
-    extern void fn_800156A0(void *, void *);
-    extern void fn_800157DC(void *, void *);
-
-    u8 *obj;
-    s32 index;
-
-    obj = (u8 *)arg0;
-    index = arg1;
-
-    if (index != 1) {
-        if (index < 1) {
-            if (index >= 0) {
-                fn_800946F0(obj);
-            }
-        } else {
-            if (index < 4) {
-                fn_800946F0(obj);
-            }
-        }
+    switch (listId) {
+    case 0:
+    case 2:
+    case 3:
+        fn_800946F0(unit);
+        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+        fn_800157DC(gUnitLists + listId * 0xC, unit);
+        return;
     }
-
-    fn_800156A0(*(void **)(obj + 0x190), obj);
-
-    fn_800157DC(
-        gUnitLists + index * 0xC,
-        obj
-    );
 }
 
 #pragma use_lmw_stmw on
@@ -3076,7 +3062,7 @@ void fn_80040028(void *arg0, void *arg1)
    obj=*(u8 **)((u8 *)arg0+0x14)+i*0xB4;
    flags=*(u32 *)(*(u8 **)(obj+0x10)+0xBC);
    if(MapObj_HasActionFlag(flags) && !MapObj_HasBlockedAction(flags) &&
-      ((u8)(u32)arg1 || !(flags&0x1000)) && (u8)(MapObj_GetState(obj) == 0)) {
+      ((u8)(u32)arg1 || !(flags&0x1000)) && MapObj_IsIdle(obj)) {
        list[count++]=obj;
        obj[2]|=2;
    }
@@ -4935,48 +4921,35 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     }
 }
 
-u8 fn_8004434C(void *arg0, s32 x, s32 y) {
-    u8 *map;
-    u8 *entry;
-    u32 flags;
-    u32 type;
-    s32 count;
-
-    map = (u8 *)arg0;
-
-    if ((*(u32 *)(map + 0x64) & 0x10000000U) == 0) {
-        return 0;
-    }
-
-    count = *(s16 *)(map + 6);
-    entry = *(u8 **)(map + 0x14);
-
-    while (count > 0) {
-        flags = *(u32 *)(*(u8 **)(entry + 0x10) + 0xBC);
-
-        if ((flags & 0x10) == 0 &&
-            (flags & 0x1800) != 0) {
-
-            if ((flags & 0x100000) == 0 &&
-                (entry[2] & 3) == 0) {
-
-                if (x >= (s8)entry[4] &&
-                    x <= (s8)entry[6] &&
-                    y >= (s8)entry[5] &&
-                    y <= (s8)entry[7]) {
-                    return 1;
-                }
-            }
-        }
-
-        entry += 0xB4;
-        count--;
-    }
-
-    return 0;
-}
-
 #pragma global_optimizer off
+u8 fn_8004434C(void *arg0, s32 x, s32 y) {
+u8 *map=arg0; u8 *entry; s32 count; u32 flags, disabled; u8 valid; s32 x0,y0,x1,y1;
+if (!(*(u32 *)(map+0x64)&0x10000000)) return 0;
+count=*(s16 *)(map+6); entry=*(u8 **)(map+0x14);
+while(count>0) {
+flags=*(u32 *)(*(u8 **)(entry+0x10)+0xBC); disabled=flags&0x10;
+if(disabled) valid=0;
+else if(flags&0x800) valid=1;
+else if(flags&0x1000) valid=1;
+else valid=0;
+if(valid) {
+if(disabled) valid=0;
+else if(flags&0x100000) valid=1;
+else valid=0;
+if(!valid) {
+valid=(entry[2]&3)==0;
+if(valid) {
+x0=entry[4]; y0=entry[5]; x1=entry[6]; y1=entry[7];
+y1=(s8)y1; y0=(s8)y0; x1=(s8)x1; x0=(s8)x0;
+if(x>=x0 && x<=x1 && y>=y0 && y<=y1) return 1;
+}
+}
+}
+entry+=0xB4; count--;
+}
+return 0;
+}
+#pragma global_optimizer reset
 void fn_80044450(void *arg0, s32 arg1) {
 void *Hash_Lookup(void *);
 u32 Res_GetByName(void *);
@@ -6901,24 +6874,21 @@ draw:
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
-    extern s8 lbl_8036728C;
-    extern s8 lbl_8036728D;
-    extern s8 lbl_8036728E;
-    extern u8 lbl_80367290[];
-    u8 a;
-    u8 b;
-    u8 c;
-    u8 d;
-    u8 *p;
+    extern volatile s8 lbl_8036728C;
+    extern volatile s8 lbl_8036728D;
+    extern volatile s8 lbl_8036728E;
+    extern volatile u8 lbl_80367290;
+    u8 d, c, b, a;
+    volatile u8 *p;
 
     a = arg3[0];
     b = arg3[1];
     c = arg3[2];
     d = arg3[3];
-    p = lbl_80367290;
     lbl_8036728C = arg0;
     lbl_8036728D = arg1;
     lbl_8036728E = arg2;
+    p = &lbl_80367290;
     p[0] = a;
     p[1] = b;
     p[2] = c;
@@ -12216,8 +12186,200 @@ typedef struct {
     s32 unkBC;
 } Struct_800330F8_B;
 
-void fn_8004781C(void *arg0) {
-    // body of function will go here
+void fn_8004781C(void *arg0)
+{
+    struct EntryTail {
+        u32 data[40];
+    };
+
+    struct MapEntry {
+        u8 bytes[8];
+        f32 x;
+        f32 y;
+        void *object;
+        struct EntryTail tail;
+    };
+
+    u8 *map;
+    u8 *base;
+    u8 *node;
+    struct MapEntry temp;
+    struct MapEntry *first;
+    struct MapEntry *second;
+    u32 flags;
+    u32 firstPriority;
+    u32 secondPriority;
+    s32 i;
+    s32 j;
+    s32 offset;
+    s32 count;
+
+    map = (u8 *)arg0;
+
+    i = 0;
+    goto outer_test;
+
+outer_loop:
+    j = 0;
+    offset = 0;
+    goto inner_test;
+
+inner_loop:
+    base = *(u8 *volatile *)(map + 0x14);
+    first = (struct MapEntry *)(base + offset);
+
+    flags = *(u32 *)(*(u8 **)((u8 *)first + 0x10) + 0xBC);
+
+    firstPriority = 0;
+
+    if (flags & 0x10) {
+        firstPriority = 1;
+    }
+
+    if (flags & 0x80) {
+        firstPriority += 2;
+    }
+
+    if (flags & 0x20000) {
+        firstPriority += 0x10000;
+    }
+
+    if (flags & 0x800) {
+        firstPriority += 0x20000;
+    }
+
+    if (flags & 0x2000) {
+        firstPriority += 0x40000;
+    }
+
+    if (flags & 0x20) {
+        firstPriority += 0x80000;
+    }
+
+    flags = *(u32 *)(*(u8 **)((u8 *)first + 0xC4) + 0xBC);
+
+    secondPriority = 0;
+
+    if (flags & 0x10) {
+        secondPriority = 1;
+    }
+
+    if (flags & 0x80) {
+        secondPriority += 2;
+    }
+
+    if (flags & 0x20000) {
+        secondPriority += 0x10000;
+    }
+
+    if (flags & 0x800) {
+        secondPriority += 0x20000;
+    }
+
+    if (flags & 0x2000) {
+        secondPriority += 0x40000;
+    }
+
+    if (flags & 0x20) {
+        secondPriority += 0x80000;
+    }
+
+    if (firstPriority > secondPriority) {
+        temp = *first;
+
+        base = *(u8 *volatile *)(map + 0x14);
+        first = (struct MapEntry *)(base + offset);
+        second = (struct MapEntry *)(base + (j + 1) * 0xB4);
+
+        first->bytes[0] = second->bytes[0];
+        first->bytes[1] = second->bytes[1];
+        first->bytes[2] = second->bytes[2];
+        first->bytes[3] = second->bytes[3];
+        first->bytes[4] = second->bytes[4];
+        first->bytes[5] = second->bytes[5];
+        first->bytes[6] = second->bytes[6];
+        first->bytes[7] = second->bytes[7];
+
+        first->x = second->x;
+        first->y = second->y;
+        first->object = second->object;
+        first->tail = second->tail;
+
+        base = *(u8 *volatile *)(map + 0x14);
+        second = (struct MapEntry *)(base + (j + 1) * 0xB4);
+
+        second->bytes[0] = temp.bytes[0];
+        second->bytes[1] = temp.bytes[1];
+        second->bytes[2] = temp.bytes[2];
+        second->bytes[3] = temp.bytes[3];
+        second->bytes[4] = temp.bytes[4];
+        second->bytes[5] = temp.bytes[5];
+        second->bytes[6] = temp.bytes[6];
+        second->bytes[7] = temp.bytes[7];
+
+        second->x = temp.x;
+        second->y = temp.y;
+        second->object = temp.object;
+        second->tail = temp.tail;
+    }
+
+    offset += 0xB4;
+    j++;
+
+inner_test:
+    count = *(s16 *)(map + 6);
+
+    if (j < count - 1 - i) {
+        goto inner_loop;
+    }
+
+    i++;
+
+outer_test:
+    if (i < *(s16 *)(map + 6)) {
+        goto outer_loop;
+    }
+
+    node = *(u8 **)(map + 0x10);
+    j = 0;
+
+    while (j < *(s16 *)(map + 4)) {
+        flags = *(u32 *)(node + 0xBC);
+        firstPriority = 0;
+
+        if (flags & 0x10) {
+            firstPriority = 1;
+        }
+
+        if (flags & 0x80) {
+            firstPriority += 2;
+        }
+
+        if (flags & 0x20000) {
+            firstPriority += 0x10000;
+        }
+
+        if (flags & 0x800) {
+            firstPriority += 0x20000;
+        }
+
+        if (flags & 0x2000) {
+            firstPriority += 0x40000;
+        }
+
+        if (flags & 0x20) {
+            firstPriority += 0x80000;
+        }
+
+        if (firstPriority >= 0x10000) {
+            *(u32 *)(node + 0xBC) |= 1;
+        } else {
+            *(u32 *)(node + 0xBC) &= ~1U;
+        }
+
+        j++;
+        node += 0xC0;
+    }
 }
 #include "common.h"
 extern f32 lbl_80368FD8;
