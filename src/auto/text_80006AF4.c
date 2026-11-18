@@ -2253,7 +2253,6 @@ found:
     }
     return 0;
 }
-#pragma peephole on
 #pragma global_optimizer on
 s32 fn_8000AA60(void *arg0)
 {
