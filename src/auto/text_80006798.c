@@ -49,27 +49,198 @@ s32 Game_GetFrameCount(void) {
     return gFrameCount;
 }
 
-void Math_Ease(s32 arg0, void *arg1) {
-    s32 temp_r3;
-    s32 i;
-    s32 r4;
+f32 Math_Ease(s32 mode, f32 start, f32 end, f32 time, f32 duration)
+{
+    extern f32 lbl_80368B68;
+    extern f32 lbl_80368B6C;
+    extern f32 lbl_80368B70;
+    extern f32 lbl_80368B74;
+    extern f32 lbl_80368B78;
+    extern f32 lbl_80368B7C;
+    extern f32 lbl_80368B80;
+    extern f32 lbl_80368B84;
 
-    if (arg0 < 2) {
-        for (i = 0; i < 0x40; i++) {
-            *(u8 *)((char *)arg1 + i) = 0;
-        }
-        
-        temp_r3 = *(s32 *)arg1;
-        if (temp_r3 == 0) {
-            *(u32 *)((char *)arg1 + 0x8) = 0;
-        }
-        else {
-            r4 = *(s32 *)((char *)arg1 + 0x4);
-            *(u32 *)arg1 = temp_r3 + 1;
-            *(u32 *)((char *)arg1 + 0x8) = r4;
-            *(u32*)((char*)arg1 + 0xC) = *(u32*)((char*)arg1 + 0x10);
-        }
+    f64 fn_802380D0(f64);
+    f64 sin(f64);
+
+    f32 f0;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    f32 f4;
+
+    if (duration == lbl_80368B68) {
+        return end;
     }
+
+    switch (mode) {
+    case 0:
+        f0 = end - start;
+        f0 = time * f0;
+        f0 = f0 / duration;
+        return start + f0;
+
+    case 1:
+        f2 = time * time;
+        f1 = end - start;
+        f0 = duration * duration;
+        f1 = f2 * f1;
+        f0 = f1 / f0;
+        return start + f0;
+
+    case 2:
+        f2 = time * time;
+        f0 = duration * duration;
+        f1 = end - start;
+        f2 = time * f2;
+        f0 = duration * f0;
+        f1 = f2 * f1;
+        f0 = f1 / f0;
+        return start + f0;
+
+    case 3:
+        f2 = time * time;
+        f0 = duration * duration;
+        f1 = end - start;
+        f2 = time * f2;
+        f0 = duration * f0;
+        f2 = time * f2;
+        f0 = duration * f0;
+        f1 = f2 * f1;
+        f0 = f1 / f0;
+        return start + f0;
+
+    case 4:
+        f0 = time / duration;
+        f0 = lbl_80368B70 * f0;
+        f1 = lbl_80368B6C * f0;
+
+        f2 = (f32)fn_802380D0(f1);
+
+        f1 = end - start;
+        f3 = duration - time;
+        f0 = duration * duration;
+        f1 = f1 * f2;
+        f1 = f3 * f1;
+        f1 = f3 * f1;
+        f0 = f1 / f0;
+
+        return end - f0;
+
+    case 5:
+        f1 = time * time;
+        f1 = f1 / duration;
+        f1 = lbl_80368B70 * f1;
+        f1 = lbl_80368B6C * f1;
+        f1 = f1 / lbl_80368B74;
+
+        f2 = (f32)fn_802380D0(f1);
+
+        f1 = end - start;
+        f3 = duration - time;
+        f0 = duration * duration;
+        f1 = f1 * f2;
+        f1 = f3 * f1;
+        f1 = f3 * f1;
+        f0 = f1 / f0;
+
+        return end - f0;
+
+    case 6:
+        f1 = duration - time;
+        f3 = end - start;
+        f0 = duration * duration;
+        f1 = f1 * f1;
+        f2 = start + f3;
+        f1 = f1 * f3;
+        f0 = f1 / f0;
+
+        return f2 - f0;
+
+    case 7:
+        f4 = duration - time;
+        f3 = end - start;
+        f0 = duration * duration;
+        f1 = f4 * f4;
+        f2 = start + f3;
+        f0 = duration * f0;
+        f1 = f4 * f1;
+        f1 = f1 * f3;
+        f0 = f1 / f0;
+
+        return f2 - f0;
+
+    case 8:
+        f4 = duration - time;
+        f0 = duration * duration;
+        f3 = end - start;
+        f1 = f4 * f4;
+        f0 = duration * f0;
+        f2 = start + f3;
+        f1 = f4 * f1;
+        f0 = duration * f0;
+        f1 = f4 * f1;
+        f1 = f1 * f3;
+        f0 = f1 / f0;
+
+        return f2 - f0;
+
+    case 9:
+        f1 = time * time;
+        f1 = f1 / duration;
+        f1 = lbl_80368B70 * f1;
+        f1 = lbl_80368B6C * f1;
+        f1 = f1 / lbl_80368B78;
+
+        f2 = (f32)fn_802380D0(f1);
+
+        f3 = duration - time;
+        f1 = duration * duration;
+        f2 = f3 * f2;
+        f2 = f3 * f2;
+        f1 = f2 / f1;
+
+        if (f1 < lbl_80368B68) {
+            f1 = -f1;
+            f0 = end - start;
+            return end - f1 * f0;
+        }
+
+    case 10:
+        f0 = lbl_80368B70 * time;
+        f1 = f0 / duration;
+
+        f3 = (f32)fn_802380D0(f1);
+
+        f1 = lbl_80368B7C - f3;
+        f2 = end - start;
+        f0 = lbl_80368B80;
+        f1 = f2 * f1;
+
+        return start + f1 * f0;
+
+    case 11:
+        f0 = lbl_80368B84 * time;
+        f1 = f0 / duration;
+
+        f1 = (f32)sin(f1);
+        f0 = end - start;
+
+        return start + f0 * f1;
+
+    case 12:
+        f0 = lbl_80368B84 * time;
+        f1 = f0 / duration;
+
+        f2 = (f32)fn_802380D0(f1);
+
+        f0 = lbl_80368B7C - f2;
+        f1 = end - start;
+
+        return start + f1 * f0;
+    }
+
+    return lbl_80368B68;
 }
 
 #pragma optimization_level 3

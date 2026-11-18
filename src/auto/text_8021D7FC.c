@@ -1814,6 +1814,10 @@ void GXSetVtxAttrFmtv(s32 vtxfmt, void *list)
 void fn_802200CC(void)
 {
     extern u8 *__GXData;
+    u8 *gx;
+    u32 index;
+    u32 offset;
+    u32 flags;
     u32 a;
     u32 b;
     u32 c;
@@ -1821,10 +1825,6 @@ void fn_802200CC(void)
     u32 v;
     u32 w;
     u32 z;
-    u8 *gx;
-    u32 offset;
-    u32 index;
-    u32 flags;
 
     gx = __GXData;
     index = 0;
@@ -1834,9 +1834,9 @@ void fn_802200CC(void)
     do {
       if ((flags & 1) != 0) {
         *(volatile u8 *)0xCC008000 = 8;
-        c = index | 0x70;
+        t = index | 0x70;
         a = offset + 0x1C;
-        *(volatile u8 *)0xCC008000 = c;
+        *(volatile u8 *)0xCC008000 = t;
         t = index | 0x80;
         b = offset + 0x3C;
         v = *(u32 *)((u32)gx + a);

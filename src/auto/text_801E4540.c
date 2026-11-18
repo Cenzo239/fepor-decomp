@@ -2639,58 +2639,59 @@ s32 count0, count1, count2;
 void *end0, *end1, *end2;
 s32 ret;
 u8 found;
-s32 value;
-s8 tab;
-tab = (s8)*((u8*)arg0+0x30);
-switch(tab) {
+s8 value;
+switch ((s8)*((u8 *)arg0 + 0x30)) {
 case 0:
-end0=(u8*)arg0+0x54;
-endACopy.node=end0;
-beginACopy.node=*(void**)((u8*)arg0+0x58);
-beginA=beginACopy;
-aCopy=beginA; a=aCopy;
-endA=endACopy; aeCopy=endA; ae=aeCopy;
-initA.value=-1;keyA=initA;
-count0=0;
-while(a.node!=ae.node) {
-value=(s8)(*(u8**)((u8*)a.node+8))[2];
-if(value!=keyA.value) {keyA.value=(s8)value;found=1;} else found=0;
-if(found) count0++;
-a.node=*(void**)((u8*)a.node+4);
+end0 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endACopy.node = end0;
+beginACopy.node = arg0;
+beginA = beginACopy;
+aCopy = beginA; a = aCopy;
+endA = endACopy; aeCopy = endA; ae = aeCopy;
+initA.value = -1; keyA = initA;
+count0 = 0;
+while (a.node != ae.node) {
+value = (*(u8 **)((u8 *)a.node + 8))[2];
+if (value != keyA.value) { keyA.value = value; found = 1; } else found = 0;
+if (found) count0++;
+a.node = *(void **)((u8 *)a.node + 4);
 }
 ret = count0;
 break;
 case 1:
-end1=(u8*)arg0+0x54;
-endBCopy.node=end1;
-beginBCopy.node=*(void**)((u8*)arg0+0x58);
-beginB=beginBCopy;
-bCopy=beginB; b=bCopy;
-endB=endBCopy; beCopy=endB; be=beCopy;
-initB.value=-1;keyB=initB;
-count1=0;
-while(b.node!=be.node) {
-value=(s8)(*(u8**)((u8*)b.node+8))[1];
-if(value!=keyB.value) {keyB.value=(s8)value;found=1;} else found=0;
-if(found) count1++;
-b.node=*(void**)((u8*)b.node+4);
+end1 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endBCopy.node = end1;
+beginBCopy.node = arg0;
+beginB = beginBCopy;
+bCopy = beginB; b = bCopy;
+endB = endBCopy; beCopy = endB; be = beCopy;
+initB.value = -1; keyB = initB;
+count1 = 0;
+while (b.node != be.node) {
+value = (*(u8 **)((u8 *)b.node + 8))[1];
+if (value != keyB.value) { keyB.value = value; found = 1; } else found = 0;
+if (found) count1++;
+b.node = *(void **)((u8 *)b.node + 4);
 }
 ret = count1;
 break;
 case 2:
-end2=(u8*)arg0+0x54;
-endCCopy.node=end2;
-beginCCopy.node=*(void**)((u8*)arg0+0x58);
-beginC=beginCCopy;
-cCopy=beginC; c=cCopy;
-endC=endCCopy; ceCopy=endC; ce=ceCopy;
-initC.value=-1;keyC=initC;
-count2=0;
-while(c.node!=ce.node) {
-value=(s8)(*(u8**)((u8*)c.node+8))[4];
-if(value!=keyC.value) {keyC.value=(s8)value;found=1;} else found=0;
-if(found) count2++;
-c.node=*(void**)((u8*)c.node+4);
+end2 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endCCopy.node = end2;
+beginCCopy.node = arg0;
+beginC = beginCCopy;
+cCopy = beginC; c = cCopy;
+endC = endCCopy; ceCopy = endC; ce = ceCopy;
+initC.value = -1; keyC = initC;
+count2 = 0;
+while (c.node != ce.node) {
+value = (*(u8 **)((u8 *)c.node + 8))[4];
+if (value != keyC.value) { keyC.value = value; found = 1; } else found = 0;
+if (found) count2++;
+c.node = *(void **)((u8 *)c.node + 4);
 }
 ret = count2;
 break;

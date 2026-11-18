@@ -5930,16 +5930,16 @@ void *fn_8018FFB4(void *arg0, s16 arg1) {
 
 #pragma global_optimizer off
 void fn_80190020(void *arg0) {
-    s16 t0, t1, t2, t3, w, h;
+    s32 t2, t1, t3, t0, w, h;
     *(s16 *)((u8 *)arg0 + 0x44) = 8;
     *(s16 *)((u8 *)arg0 + 0x46) = 0;
     t0 = *(s16 *)((u8 *)arg0 + 0xC);
     t1 = *(s16 *)((u8 *)arg0 + 0x10);
     t2 = *(s16 *)((u8 *)arg0 + 0xA);
     t3 = *(s16 *)((u8 *)arg0 + 0xE);
-    h = (s16)(t1 - t0);
+    h = (s16)((s16)t1 - (s16)t0);
     *(s16 *)((u8 *)arg0 + 0x12) = 0x1C;
-    w = (s16)(t3 - t2);
+    w = (s16)((s16)t3 - (s16)t2);
     h -= 0x14;
     *(s16 *)((u8 *)arg0 + 0x14) = 0x14;
     w -= 0x1C;
@@ -9366,6 +9366,7 @@ s32 fn_80194E38(void) {
     void *proc;
     u8 *base;
     s32 off;
+    s32 i;
     s32 k;
     s32 j;
     u8 ok;
@@ -9375,8 +9376,9 @@ s32 fn_80194E38(void) {
     if (proc == NULL) {
         return 0;
     }
-    off = 0;
-    for (j = 0; j < 6; j += 3) {
+    j = 0;
+    off = j;
+    for (i = 0; i < 2; i++) {
         base = *(u8 **)((u8 *)proc + 0x30);
         for (k = 0; k < 4; k++) {
             entry = base + off;
@@ -9386,6 +9388,7 @@ s32 fn_80194E38(void) {
             }
             off += 0x3250;
         }
+        j += 3;
     }
     ok = 1;
 done:

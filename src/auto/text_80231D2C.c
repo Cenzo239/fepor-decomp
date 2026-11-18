@@ -366,7 +366,7 @@ s32 __FileWrite(void *file, const char *buf, u32 n) {
     return 0;
 }
 
-s32 __pformatter(s32 (*write)(void *, const char *, u32), void *context, const char *format, register va_list args) {
+s32 __pformatter(s32 (*write)(void *, const char *, u32), void *context, const char *format, va_list args) {
     typedef struct {
         u8 just, sign, prec_set, alt, size, conv;
         u16 pad;
@@ -382,7 +382,6 @@ s32 __pformatter(s32 (*write)(void *, const char *, u32), void *context, const c
     s32 strlen(const char *);
     char *strchr(const char *,s32);
     void *memchr(const void *,s32,u32);
-    extern const char double2hex_strpool[37];
     char buffer[512];
     Format f;
     char pad=' ';
@@ -1965,23 +1964,22 @@ s32 atoi(char *str) {
 #pragma use_lmw_stmw on
 extern u8 lbl_8029E8A8[];
 extern u8 lbl_8029EAA8[];
-#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 u32 __strtoul(s32 base, s32 max_width, s32 (*ReadProc)(void *, s32, s32), void *ReadProcArg,
                 s32 *chars_scanned, s32 *negative, s32 *overflow) {
-    u32 limit;
-    u32 value;
-    s32 spaces;
     s32 state;
-    s32 *csp;
-    s32 *negp;
-    s32 *ovfp;
-    void *rpa;
-    s32 (*rp)(void *, s32, s32);
-    s32 mw;
-    s32 b;
     s32 count;
+    s32 (*rp)(void *, s32, s32);
+    s32 b;
+    void *rpa;
+    u32 value;
+    u32 limit;
+    s32 *ovfp;
+    s32 spaces;
+    s32 mw;
+    s32 *negp;
+    s32 *csp;
     s32 c;
-    s32 dig;
     u8 cls;
 
     b = base;
@@ -1999,22 +1997,14 @@ u32 __strtoul(s32 base, s32 max_width, s32 (*ReadProc)(void *, s32, s32), void *
     spaces = 0;
     value = 0;
     limit = 0;
-    c = 0;
 
-    if (b >= 0 && b != 1 && b <= 36) {
-        if (mw >= 1) {
-            c = (*rp)(rpa, 0, 0);
-            count = 1;
-            if (b != 0) {
-                limit = 0xFFFFFFFFu / (u32)b;
-            }
-            goto check;
-        }
+    if (b < 0 || b == 1 || b > 36 || mw < 1) {
+        state = 0x40;
+    } else {
+        c = (count++, (*rp)(rpa, 0, 0));
     }
-    state = 0x40;
-    goto check;
-
-loop:
+    if (b != 0) limit = 0xFFFFFFFFu / (u32)b;
+    while (count <= mw && c != -1 && !(state & 0x60)) {
     switch (state) {
     case 1:
         if ((lbl_8029E8A8[c & 0xFF] & 6) != 0) {
@@ -2063,36 +2053,32 @@ loop:
         if (limit == 0) {
             limit = 0xFFFFFFFFu / (u32)b;
         }
-        state = 0x10;
-        break;
+        /* fall through */
     case 0x10:
         cls = lbl_8029E8A8[c & 0xFF];
         if (cls & 0x10) {
-            dig = c - '0';
-            if (dig >= b) {
+            c -= '0';
+            if (c >= b) {
                 state = (state == 0x10) ? 0x20 : 0x40;
-                break;
-            }
-        } else if (cls & 0xC0) {
-            dig = (c == -1) ? -1 : (s32)lbl_8029EAA8[c & 0xFF];
-            dig -= 0x37;
-            if (dig >= b) {
-                state = (state == 0x10) ? 0x20 : 0x40;
+                c += '0';
                 break;
             }
         } else {
-            dig = (c == -1) ? -1 : (s32)lbl_8029EAA8[c & 0xFF];
-            dig -= 0x37;
-            /* fall through to accumulate — matches target */
+            if (!(cls & 0xC0) || ((c == -1 ? -1 : (s32)lbl_8029EAA8[c & 0xFF]) - 0x37) >= b) {
+                if (state == 0x10) state = 0x20;
+                else state = 0x40;
+                break;
+            }
+            c = (c == -1 ? -1 : (s32)lbl_8029EAA8[c & 0xFF]) - 0x37;
         }
         if (value > limit) {
             *ovfp = 1;
         }
         value *= b;
-        if ((u32)dig > 0xFFFFFFFFu - value) {
+        if ((u32)c > 0xFFFFFFFFu - value) {
             *ovfp = 1;
         }
-        value += dig;
+        value += c;
         state = 0x10;
         count++;
         c = (*rp)(rpa, 0, 0);
@@ -2101,23 +2087,19 @@ loop:
         break;
     }
 
-check:
-    if (count <= mw && c != -1 && (state & 0x60) == 0) {
-        if (state <= 0x10) {
-            goto loop;
-        }
     }
 
     if ((state & 0x34) == 0) {
         value = 0;
         *csp = 0;
     } else {
-        *csp = count + spaces - 1;
+        count += spaces;
+        *csp = count - 1;
     }
     (*rp)(rpa, c, 1);
     return value;
 }
-
+#pragma opt_strength_reduction reset
 s32 fwide(void *arg0, s32 arg1) {
 u8 *stream=arg0;
 s32 orientation;

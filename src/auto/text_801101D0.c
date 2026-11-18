@@ -2915,17 +2915,27 @@ s32 fn_80116580(void *arg0) {
     return -1;
 }
 
-void fn_801165B4(void *arg0, void *arg1) {
+#pragma peephole off
+void fn_801165B4(void *arg0, void *arg1)
+{
     void fn_80199318(void *, void *);
-    u8 sp8[0x14];
-    void *self = arg0;
-    void *v = *(void **)((u8 *)arg1 + 0x11C);
-    if (v != 0) {
+    void String_Init(void *, char *, void *);
+    u8 sp8[8];
+    void *self;
+    void *v;
+
+    self = arg0;
+    v = *(void **)((u8 *)arg1 + 0x11C);
+    if (v != NULL) {
         fn_80199318(self, v);
     } else {
         String_Init(self, (char *)((u8 *)gActorXmlStrs + 0x1C), sp8);
     }
+    if (self == NULL) {
+        return;
+    }
 }
+#pragma peephole reset
 s32 fn_80116604(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x11C);
 }
@@ -3329,8 +3339,10 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
  s32 copy[3];
- s32 *src=arg1;
- s32 c=src[2], b=src[1], a=src[0];
+ s32 *src = arg1;
+ s32 c = src[2];
+ s32 b = src[1];
+ s32 a = src[0];
  copy[0]=a; copy[1]=b; copy[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);

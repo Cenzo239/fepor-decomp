@@ -2628,6 +2628,8 @@ Battle_Apply(gBattle); break;
 }
 }
 
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 s32 fn_800271C8(void *arg0, void *proc) {
     void *Process_CreateChild(void *, void *);
     u8 Status_Test(void *, s32);
@@ -2671,6 +2673,15 @@ s32 fn_800271C8(void *arg0, void *proc) {
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 lbl_80268E40[];
+    void fn_80029C08(void *);
+    void Battle_SetupUnit(void *,void *,s32);
+    void Battle_QueueDeathAnim(void *);
+    void fn_8002F728(void *);
+    void fn_8002F6E8(void *,u8,u8,u8,s32);
+    void fn_8019C160(void *,void (*)(void *));
+    void fn_80026194(void *);
+    extern u8 gTargetList[];
+    u8 *base = lbl_80284668;
     u8 *p = arg0;
     s32 distance;
     u8 *child;
@@ -2680,15 +2691,24 @@ s32 fn_800271C8(void *arg0, void *proc) {
     void *mapEv;
     u8 item[8];
     s32 dx, dy;
+    void *Res_GetByName(void *);
+    void fn_8011D908(void *,void *);
+    u8 *BattleState_GetFactionInfo(void *,s32);
 
     switch (p[8]) {
+    case 0x24:
+        unit = *(u8 **)gUiContext;
+        effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
+        Ui_PlaySeCue(lbl_80268E40 + 0x1c4, 100);
+        Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
+        break;
     case 0x13: {
         u8 y, x;
         distance = 1;
         if (Status_Test(*(u8 **)(p + 4) + 0x1bc, 0x11) &&
             Rand_Chance((s8)Unit_GetCarryWtLimit(*(void **)(p + 4)))) {
             distance = 0;
-            p[0x14] = 0;
+            p[0x14] = distance;
         }
         if (!Status_Test(*(u8 **)(p + 4) + 0x1bc, 4)) {
             if (distance >= 1) {
@@ -2706,7 +2726,7 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x, (s8)y, proc);
         break;
     blocked:
-        child = Process_CreateChild(lbl_80284668 + 0x8c, proc);
+        child = Process_CreateChild(base + 0x8c, proc);
         *(f32 *)(child + 0x30) = (s8)x;
         *(f32 *)(child + 0x34) = (s8)y;
         break;
@@ -2717,7 +2737,7 @@ s32 fn_800271C8(void *arg0, void *proc) {
         if (Status_Test(*(u8 **)(p + 4) + 0x1bc, 0x11) &&
             Rand_Chance((s8)Unit_GetCarryWtLimit(*(void **)(p + 4)))) {
             distance = 0;
-            p[0x14] = 0;
+            p[0x14] = distance;
         }
         if (!Status_Test(*(u8 **)(p + 4) + 0x1bc, 4)) {
             if (distance >= 1) {
@@ -2735,7 +2755,7 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x, (s8)y, proc);
         break;
     blocked2:
-        child = Process_CreateChild(lbl_80284668 + 0x8c, proc);
+        child = Process_CreateChild(base + 0x8c, proc);
         *(f32 *)(child + 0x30) = (s8)x;
         *(f32 *)(child + 0x34) = (s8)y;
         break;
@@ -2753,12 +2773,12 @@ s32 fn_800271C8(void *arg0, void *proc) {
             Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
             break;
         case 2:
-            Process_CreateChild(lbl_80284668 + 0xbc, proc);
+            Process_CreateChild(base + 0xbc, proc);
             break;
         default:
             event = *(void **)(*(u8 **)p + 0x194);
             Unit_SeparateRescue(*(void **)p, p[0xf], p[0x10]);
-            fn_80183D7C(*(void **)p, event, (s8)p[0xf], (s8)p[0x10], proc);
+            fn_80183D7C(*(void **)p, event, *(s8 *)(p+0xf), *(s8 *)(p+0x10), proc);
             break;
         }
         break;
@@ -2768,13 +2788,12 @@ s32 fn_800271C8(void *arg0, void *proc) {
         Battle_Execute(gBattle, p[8]);
         Battle_CalcHits(gBattle);
         fn_80033418(gBattle + 0x8a0);
-        Process_CreateChild(lbl_80284668 + 0x1a8, proc);
+        Process_CreateChild(base + 0x1a8, proc);
         break;
     case 0x20:
     case 0x21:
     case 0x22:
     case 0x23:
-    case 0x24:
     case 0x25:
     case 0x26:
     case 0x27:
@@ -2791,11 +2810,9 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_801A73E4(gBattle, *(void **)p, mapEv);
         fn_801A5008(gBattle);
         fn_80033418(gBattle + 0x8a0);
-        Process_CreateChild(lbl_80284668 + 0x230, proc);
+        Process_CreateChild(base + 0x230, proc);
         break;
     case 0x31:
-    case 0x32:
-    case 0x33:
     case 0x34:
         mapEv = MapObjEvent_Find(gMapObjEventList, gUiContext[0xd], gUiContext[0xe], 7);
         ((u8 *)mapEv)[5] = ((u8 *)mapEv)[5] - 1;
@@ -2803,8 +2820,9 @@ s32 fn_800271C8(void *arg0, void *proc) {
         UnitRef_Set(item, Item_Get(((u8 *)mapEv)[4]));
         if (p[8] == 0x31) {
             fn_801A6FB4(gBattle, *(void **)p, item);
-            dy = Abs((s8)p[0xe] - (s8)p[0x10]);
-            dx = Abs((s8)p[0xd] - (s8)p[0xf]);
+            { u8 x0=p[0xd], x1=p[0xf];
+            dy = Abs(*(s8 *)(p+0x10) - (s8)p[0xe]);
+            dx = Abs((s8)x1 - (s8)x0); }
             *(s32 *)(gBattle + 0xca8) = dx + dy;
             fn_800AD64C(proc);
             Item_Destroy(item, -1);
@@ -2814,40 +2832,32 @@ s32 fn_800271C8(void *arg0, void *proc) {
             Battle_Execute(gBattle, p[8]);
             Battle_CalcHits(gBattle);
             fn_80033418(gBattle + 0x8a0);
-            Process_CreateChild(lbl_80284668 + 0x1a8, proc);
+            Process_CreateChild(base + 0x1a8, proc);
             Item_Destroy(item, -1);
         }
         break;
     case 0x10:
-        fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, (s8)p[0xa]), proc);
+        Process_CreateChild(base + 0xf8, proc);
         break;
     case 4:
-        unit = *(u8 **)gUiContext;
-        effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
-        Ui_PlaySeCue(lbl_80268E40 + 0x1c4, 100);
-        Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
+        fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, *(s8 *)(p+0xa)), proc);
         break;
-    case 5:
-        Process_CreateChild(lbl_80284668 + 0xf8, proc);
-        break;
-    case 7:
-        Process_CreateChild(lbl_80284668 + 0xe0, proc);
-        gUiContext[8] = 4;
-        break;
-    case 0x11: {
+    case 7: {
         u8 *a = *(u8 **)p;
         u8 *b = *(u8 **)(p + 4);
-        u8 dir, opposite;
-        if ((s8)a[0x19e] < (s8)b[0x19e])
+        s32 dir, opposite;
+        u8 ax=a[0x19e],bx=b[0x19e],ay=a[0x19f],by=b[0x19f];
+        if ((s8)ax < (s8)bx)
             dir = 2;
-        else if ((s8)a[0x19e] > (s8)b[0x19e])
+        else if ((s8)ax > (s8)bx)
             dir = 1;
-        else if ((s8)a[0x19f] < (s8)b[0x19f])
+        else if ((s8)ay < (s8)by)
             dir = 4;
-        else if ((s8)a[0x19f] > (s8)b[0x19f])
+        else if ((s8)ay > (s8)by)
             dir = 8;
         else
             dir = 16;
+        dir=(u8)dir;
         fn_80184750(a, dir, 8, proc);
         switch (dir) {
         case 1: opposite = 2; break;
@@ -2860,11 +2870,23 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_800BF32C(proc);
         break;
     }
+    case 0x11:
+        event=Unit_GetItemSlot(*(void **)(gUiContext+4),(s8)gUiContext[0xa]);
+        child=Process_CreateChild(base+0x130,proc);
+        *(void **)(child+0x54)=event;
+        break;
     case 0x12:
-        MapObjEvent_Find(gMapObjEventList, p[0xd], p[0xe], 9);
-        fn_8012AA90((s8)p[0xd], (s8)p[0xe], proc);
-        unit = *(u8 **)gUiContext;
-        unit[0x1a5] = (u8)((unit[0x1a5] & ~7) | 1);
+        if (gUiContext[8] == 0x2b) {
+            fn_80029C08(*(void **)gUiContext);
+            Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
+        } else {
+            fn_8002F728(gTargetList);
+            unit = *(u8 **)(gUiContext+4);
+            fn_8002F6E8(gTargetList,unit[0x19e],unit[0x19f],unit[0x198],0);
+            Battle_SetupPair(gBattle,*(void **)gUiContext,*(void **)(gUiContext+4));
+        }
+        Battle_QueueDeathAnim(gBattle);
+        fn_8019C160(proc,fn_80026194);
         break;
     case 9:
     case 0xd:
@@ -2881,13 +2903,46 @@ s32 fn_800271C8(void *arg0, void *proc) {
         else if (fn_800BE968(0xc, p[0xf], p[0x10]))
             gUiContext[8] = 0xc;
         if ((s8)gUiContext[0xa] < 0) {
-            fn_8001C7F0(*(void **)p, Item_GetByIid(lbl_80268E40 + 0x1da), proc);
+            unit=*(u8 **)p;
+            fn_8001C7F0(unit, Item_GetByIid(lbl_80268E40 + 0x1da), proc);
         } else
-            fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, (s8)p[0xa]), proc);
+            fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, *(s8 *)(p+0xa)), proc);
         break;
-    case 0x16:
-    case 0x17:
-    case 0x18:
+    case 0x32:
+    case 0x33: {
+        u8 *name=0;
+        u8 faction, x, y;
+        u8 *info;
+        if(p[8]==0x32) {
+            faction=p[0x14];
+            switch(faction) {
+            case 2:name=lbl_80268E40+0x13d;break;
+            case 0:name=lbl_80268E40+0x148;break;
+            case 3:name=lbl_80268E40+0x154;break;
+            case 4:name=lbl_80268E40+0x160;break;
+            }
+            y=p[0x10];x=p[0xf];
+            info=BattleState_GetFactionInfo(gBattleState,0);
+            info[0]=faction;
+            if((s8)x>=0)info[2]=x;
+            if((s8)y>=0)info[3]=y;
+        } else {
+            faction=p[0x14];
+            switch(faction) {
+            case 1:name=lbl_80268E40+0x16b;break;
+            case 0:name=lbl_80268E40+0x177;break;
+            case 3:name=lbl_80268E40+0x183;break;
+            case 4:name=lbl_80268E40+0x18f;break;
+            }
+            y=p[0x10];x=p[0xf];
+            info=BattleState_GetFactionInfo(gBattleState,3);
+            info[0]=faction;
+            if((s8)x>=0)info[2]=x;
+            if((s8)y>=0)info[3]=y;
+        }
+        if(name && Res_GetByName(name))fn_8011D908(name,proc);
+        break;
+    }
     case 0x1b:
         break;
     default:
@@ -2895,7 +2950,8 @@ s32 fn_800271C8(void *arg0, void *proc) {
     }
     return 0;
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     s8 Unit_GetMov(void);
     void fn_800C1060(s32);
@@ -3098,26 +3154,29 @@ void UiCtx_GetItemSlot(void *arg0) {
     void Unit_GetItemSlot(void *, s32);
     Unit_GetItemSlot(*(void **)arg0, *(s8 *)((u8 *)arg0 + 0xA));
 }
-#pragma optimization_level 3
+#pragma scheduling off
 void fn_800285EC(void) {
-    extern u8 lbl_80367707;
-    struct BS { u8 pad[0xCAC]; u32 flags; };
-    extern struct BS gBattle;
-    u32 flags;
     void fn_80098A9C(void);
     void fn_800D5818(void);
+    extern u8 lbl_80367707;
+    extern u8 gBattle[];
+    u8 *r4;
+    u8 *r5;
+    u32 flags;
 
     if (lbl_80367707 == 0) {
-        flags = gBattle.flags;
+        r4 = (u8 *)((u32)&gBattle[0] & 0xFFFF0000);
+        r5 = gBattle;
+        flags = *(u32 *)(r5 + 0xCAC);
         if ((flags & 0x80000000) != 0) {
             fn_80098A9C();
         } else {
-            gBattle.flags = flags | 0x10000000;
+            *(u32 *)(r5 + 0xCAC) = flags | 0x10000000;
             fn_800D5818();
         }
     }
 }
-#pragma optimization_level reset
+#pragma scheduling reset
 void fn_8002863C(void) {
 
 }

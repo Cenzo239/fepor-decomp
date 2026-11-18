@@ -830,45 +830,19 @@ void fn_802220DC(void *arg0, s32 *arg1) {
     M2C_FIELD(arg0, s32 *, 0xC) = (s32) *arg1;
 }
 
-void fn_802220E8(void *arg0, u32 arg1)
-{
-    volatile u8 *fifo;
-    u8 *src;
-    u32 command;
-    u32 value;
-    f64 f0, f1, f2, f3, f4, f5;
-
-    src = (u8 *)arg0;
-    fifo = (volatile u8 *)0xCC008000;
-
-    command = ((31 - __cntlzw(arg1)) & 7) << 4;
-    command += 0x600;
-
-    *fifo = 0x10;
-    *(volatile u32 *)fifo = command | 0x000F0000;
-
-    value = *(u32 *)(src + 0xC);
-
-    f5 = *(f64 *)(src + 0x10);
-    f4 = *(f64 *)(src + 0x18);
-    f3 = *(f64 *)(src + 0x20);
-    f2 = *(f64 *)(src + 0x28);
-    f1 = *(f64 *)(src + 0x30);
-    f0 = *(f64 *)(src + 0x38);
-
-    *(volatile u32 *)fifo = 0;
-    *(volatile u32 *)fifo = 0;
-    *(volatile u32 *)fifo = 0;
-    *(volatile u32 *)fifo = value;
-
-    *(volatile f64 *)fifo = f5;
-    *(volatile f64 *)fifo = f4;
-    *(volatile f64 *)fifo = f3;
-    *(volatile f64 *)fifo = f2;
-    *(volatile f64 *)fifo = f1;
-    *(volatile f64 *)fifo = f0;
-
-    *(u16 *)((u8 *)__GXData + 2) = 1;
+void fn_802220E8(void *arg0, u32 arg1) {
+ volatile u8 *fifo=(volatile u8 *)0xCC008000;
+ u8 *src=arg0;
+ u32 command=(((31-__cntlzw(arg1))&7)<<4)+0x600;
+ u32 value;
+ f64 f0,f1,f2,f3,f4,f5;
+ *fifo=0x10;
+ *(volatile u32*)fifo=command|0xF0000;
+ value=*(u32*)(src+12);
+ f5=*(f64*)(src+16); f4=*(f64*)(src+24); f3=*(f64*)(src+32); f2=*(f64*)(src+40); f1=*(f64*)(src+48); f0=*(f64*)(src+56);
+ *(volatile u32*)fifo=0; *(volatile u32*)fifo=0; *(volatile u32*)fifo=0; *(volatile u32*)fifo=value;
+ *(volatile f64*)fifo=f5; *(volatile f64*)fifo=f4; *(volatile f64*)fifo=f3; *(volatile f64*)fifo=f2; *(volatile f64*)fifo=f1; *(volatile f64*)fifo=f0;
+ *(u16*)((u8*)__GXData+2)=1;
 }
 
 #pragma optimization_level 3

@@ -931,7 +931,8 @@ void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 }
 
 #pragma scheduling off
-void GXSetTevColor(s32 id, u32 *color) {
+void GXSetTevColor(s32 id, u32 *color)
+{
     u16 *gx;
     u8 cmd;
     u32 idx;
@@ -939,6 +940,7 @@ void GXSetTevColor(s32 id, u32 *color) {
     u32 reg;
     u16 zero;
 
+    zero = 0;
     idx = id << 1;
     c = *color;
     reg = idx + 0xE0;
@@ -957,7 +959,6 @@ void GXSetTevColor(s32 id, u32 *color) {
     reg = __rlwimi(reg, c, 28, 12, 19);
     GXWGFifo.u32 = reg;
 
-    zero = 0;
     GXWGFifo.u8 = cmd;
     GXWGFifo.u32 = reg;
     GXWGFifo.u8 = cmd;

@@ -659,13 +659,20 @@ s32 fn_80096EEC(s32 *arg0, u32 arg1) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-s32 Event_GetCmdKind(s32 arg0) {
+s32 Event_GetCmdKind(s32 arg0)
+{
     extern u8 gBattle[];
-    u8 *base = gBattle;
-    s16 *s = (s16 *)(base + 0x8A0);
-    s32 result = -1;
-    s16 next = (s16)arg0 + 1;
-    s16 saved = *(s16 *)(base + 0x8A0);
+    u8 *base;
+    s32 result;
+    s16 *s;
+    s16 next;
+    s16 saved;
+
+    base = gBattle;
+    result = -1;
+    s = (s16 *)(base + 0x8A0);
+    next = (s16)arg0 + 1;
+    saved = *s;
     *(s16 *)(base + 0x8A0) = arg0;
     *(s16 *)(base + 0x8A0) = next;
     for (;;) {
@@ -680,7 +687,7 @@ s32 Event_GetCmdKind(s32 arg0) {
         case 0x50:
         case 0x51:
         case 0x52:
-            result = *((u8 *)(base + 0x8A0) + (idx << 2) + 4);
+            result = *(volatile u8 *)((u8 *)s + (idx << 2) + 4);
             goto done;
         case 0:
             *(volatile s16 *)s = *(volatile s16 *)s + 1;

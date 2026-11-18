@@ -5978,15 +5978,17 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    typedef struct { s16 x; s16 y; } Pair;
-    void fn_801BEB9C(void *, Pair *, Pair *, s16);
-    extern u8 gUiUnitPanelVtbl[];
-    Pair pC;
-    Pair p8;
+    void fn_801BEB9C(void *, s16 *, s16 *, s16);
+    extern u8 lbl_802918A0[];
+    s16 spC[2];
+    s16 sp8[2];
 
-    p8.y = arg3;
-    fn_801BEB9C(arg0, (pC.x = arg1, pC.y = arg2, &pC), (p8.x = 0x108, &p8), arg4);
-    *(void **)arg0 = gUiUnitPanelVtbl;
+    sp8[1] = arg3;
+    spC[0] = arg1;
+    spC[1] = arg2;
+    sp8[0] = 0x108;
+    fn_801BEB9C(arg0, spC, sp8, arg4);
+    *(void **)arg0 = lbl_802918A0;
     *(s32 *)((u8 *)arg0 + 0xCC) = 0;
     ((Obj *)arg0)->m28();
     return arg0;

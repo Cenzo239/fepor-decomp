@@ -1304,46 +1304,48 @@ void Map_RefreshUnitMap(void *arg0)
 }
 
 extern u16 jumptable_80284514[12];
+#pragma global_optimizer off
 void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
 {
     void fn_800062B0(u32 *, u32, u32);
     u32 fn_80022FB0(u32);
 
     u8 *map = (u8 *)arg0;
-    u32 t;
     u32 value;
+    u32 t;
+    u32 mid;
     u32 *buffer;
 
     switch (arg1) {
     case 0:
         t = (arg2 & 0xFF) << 8;
-        value = (arg2 & 0xFF) << 16;
-        value = value + t;
-        value = value + (arg2 & 0xFF);
+        mid = (arg2 & 0xFF) << 16;
+        mid = mid + t;
+        value = mid + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0xD), value, 0x1000);
         break;
     case 1:
         t = (arg2 & 0xFF) << 8;
-        value = (arg2 & 0xFF) << 16;
-        value = value + t;
-        value = value + (arg2 & 0xFF);
+        mid = (arg2 & 0xFF) << 16;
+        mid = mid + t;
+        value = mid + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x100D), value, 0x1000);
         break;
     case 2:
         t = (arg2 & 0xFF) << 8;
-        value = (arg2 & 0xFF) << 16;
-        value = value + t;
-        value = value + (arg2 & 0xFF);
+        mid = (arg2 & 0xFF) << 16;
+        mid = mid + t;
+        value = mid + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x200D), value, 0x1000);
         break;
     case 3:
         t = (arg2 & 0xFF) << 8;
-        value = (arg2 & 0xFF) << 16;
-        value = value + t;
-        value = value + (arg2 & 0xFF);
+        mid = (arg2 & 0xFF) << 16;
+        mid = mid + t;
+        value = mid + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x300D), value, 0x1000);
         break;
@@ -1390,7 +1392,7 @@ void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
         break;
     }
 }
-
+#pragma global_optimizer reset
 s32 fn_80022FB0(u32 arg0) {
     u32 lo;
     u32 hi;

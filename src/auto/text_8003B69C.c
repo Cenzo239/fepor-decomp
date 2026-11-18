@@ -1272,22 +1272,26 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003A778(void *);
     s32 fn_8003AF28(void *);
     u8 Unit_GetDistance(void *, void *);
-    s32 u;
     s32 t;
-    u8 d;
+    s32 scaled;
+    s32 u;
+    s32 sum;
+    s32 adj;
+    s32 v;
 
     t = (s8)Unit_GetMagAtk(arg0);
-    t = (t - (s8)fn_8003A778(arg1)) * 5;
+    scaled = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
-    d = Unit_GetDistance(arg0, arg1);
-    t = (t + u + 0x1E) - ((u8)d << 1);
-    if (t > 0x64) {
-        t = 0x64;
+    sum = scaled + u;
+    adj = sum + 0x1E;
+    v = adj - ((u8)Unit_GetDistance(arg0, arg1) << 1);
+    if (v > 0x64) {
+        v = 0x64;
     }
-    if (t < 0) {
-        t = 0;
+    if (v < 0) {
+        v = 0;
     }
-    return (u8)t;
+    return (u8)v;
 }
 
 u8 fn_8003D094(s32 arg0, u8 arg1) {

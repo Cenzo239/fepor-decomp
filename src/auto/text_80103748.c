@@ -383,7 +383,7 @@ void fn_800C3AB0(void *, void *);
 s32 Convoy_FindEmpty(void *);
 extern char lbl_802734D0[];
 extern u8 gConvoy[0x640];
-char *str = lbl_802734D0;
+register char *str = lbl_802734D0;
 while (Convoy_FindEmpty(gConvoy) >= 0) {
 fn_800C3AB0(gConvoy, str + 0x1B1);
 }

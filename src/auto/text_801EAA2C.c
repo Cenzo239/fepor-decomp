@@ -1291,7 +1291,6 @@ void fn_801EC7B8(void) {
     void *buf0;
     s32 used;
     s32 i;
-    void (*callback)(void);
     void *entry;
     void *node;
     void *best;
@@ -1317,9 +1316,8 @@ void fn_801EC7B8(void) {
        p[0x53]=0;
     }
     gAramUsedList = 0;
-    p = (u8 *)AramFindFreeSlot();
-    gAramFreeList = p;
-    *(s32 *)((u8 *)p + 0x60) = 0;
+    gAramFreeList = AramFindFreeSlot();
+    *(s32 *)((u8 *)gAramFreeList + 0x60) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize;
     *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
@@ -1331,9 +1329,8 @@ void fn_801EC7B8(void) {
             *(u8 *)((u8 *)node + 0x53) = (u8)(*(u8 *)((u8 *)node + 0x53) & 0xFE);
         }
         arr = lbl_80338E70;
-        i = 0;
         slot = arr;
-        callback = fn_801ED838;
+        i = 0;
         for (;;) {
             node = gAramUsedList;
             bestPri = (u32)-1;
@@ -1362,7 +1359,7 @@ void fn_801EC7B8(void) {
             DCInvalidateRange(buf, *(u32 *)((u8 *)entry + 0x64));
             gAramRequestCount += 1;
             ARQPostRequest(entry, 0, 1, 1, *(s32 *)((u8 *)entry + 0x68), (s32)buf,
-                        *(s32 *)((u8 *)entry + 0x64), callback);
+                        *(s32 *)((u8 *)entry + 0x64), fn_801ED838);
             i += 1;
             *(s32 *)((u8 *)*slot + 0x68) = gAramBase + used;
             {
@@ -1376,9 +1373,13 @@ void fn_801EC7B8(void) {
             }
         }
         {
-        void **sp = arr;
-        void *nullNode = 0;
-        for(j=0;j<256;j++,sp++) {
+        void *nullNode;
+        void **sp;
+        s32 j;
+        sp = arr;
+        j=0;
+        nullNode = 0;
+        for(;j<256;sp++,j++) {
             node=*sp;
             if(node==0) break;
             if(j==0) *(void **)((u8 *)node+0x5C)=nullNode;
@@ -1388,23 +1389,30 @@ void fn_801EC7B8(void) {
         }
         }
         gAramUsedList = lbl_80338E70[0];
-        p=gAramSlotPool;
-        zero=0;
-        for(j=0;j<256;j++,p+=0x6C) {
-            flg=p[0x53];
-            if(flg&1) p[0x53]=flg&0xFE;
-            else { *(s32 *)(p+0x64)=zero; p[0x53]=(u8)zero; }
+        {
+            s32 empty;
+            u32 flags;
+            AramSlot *scan;
+            s32 j;
+            empty=0;
+            for(j=0,scan=(AramSlot *)gAramSlotPool;j<256;scan++,j++) {
+                flags=scan->flags;
+                if(flags&1) scan->flags = flags & ~1;
+                else { scan->size=empty; scan->flags=empty; }
+            }
         }
-        p = (u8 *)AramFindFreeSlot();
-        gAramFreeList = p;
-        *(s32 *)((u8 *)p + 0x5C) = 0;
+        gAramFreeList = AramFindFreeSlot();
+    *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
         *(s32 *)((u8 *)gAramFreeList + 0x60) = 0;
         *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
         *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize - used;
-        for(j=0;j<256;j++,arr++) {
+        {
+        s32 j;
+        for(j=0;j<256;arr++,j++) {
             node=*arr;
             if(node==0) break;
             *(s32 *)((u8 *)node+0x68)+=*(s32 *)((u8 *)gAramFreeList+0x64);
+        }
         }
         gAramRequestCount += 1;
         ARQPostRequest(gAramFreeList, 0, 0, 1, (s32)buf0,

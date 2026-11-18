@@ -198,6 +198,7 @@ extern "C" void UnitInfo_DrawStatus(s32);
 
 #pragma global_optimizer reset
 
+#pragma global_optimizer off
 void fn_8003670C(void *arg0) {
     void *Unit_FindByPerson(void *);
 
@@ -206,38 +207,34 @@ void fn_8003670C(void *arg0) {
     u8 *unit;
     u8 *partner;
     void *person;
-    void *partnerPerson;
-    void *selfPerson;
-    u8 *table;
-    s32 j;
-    s32 partnerOffset;
     s8 partnerIndex;
+    void *selfPerson;
+    register s32 j;
+    register s32 partnerOffset;
+    void *partnerPerson;
 
     unit = (u8 *)arg0;
-    person = *(void **)(unit + 0x188);
-    if (*(u8 **)((u8 *)person + 0x50) == 0) {
+    if (*(u8 **)((u8 *)(*(void **)(unit + 0x188)) + 0x50) == 0) {
         return;
     }
 
     i = 0;
     offset = 0;
+    goto outer_check;
 
-    while (i < (u8)(*(u8 **)((u8 *)person + 0x50) == 0 ? 0 : (u8)*(u32 *)(*(u8 **)((u8 *)person + 0x50) + 4))) {
-        table = *(u8 **)((u8 *)person + 0x50);
-        partner = (u8 *)Unit_FindByPerson(*(void **)(table + offset + 8));
+    do {
+        partner = (u8 *)Unit_FindByPerson(*(void **)(*(u8 **)((u8 *)person + 0x50) + offset + 8));
 
         if (partner != 0) {
+            j = 0;
             selfPerson = *(void **)(unit + 0x188);
             partnerPerson = *(void **)(partner + 0x188);
-
-            j = 0;
             partnerOffset = j;
             goto inner_check;
 
             do {
-                table = *(u8 **)(*(void **)(partner + 0x188));
-                table = *(u8 **)(table + 0x50);
-                if (*(void **)(table + partnerOffset + 8) == selfPerson) {
+                person = *(void **)(partner + 0x188);
+                if (*(void **)(*(u8 **)((u8 *)person + 0x50) + partnerOffset + 8) == selfPerson) {
                     partnerIndex = (s8)j;
                     goto inner_done;
                 }
@@ -250,15 +247,14 @@ void fn_8003670C(void *arg0) {
             partnerIndex = -1;
         inner_done:
             if (partnerIndex >= 0) {
-                unit[0x214 + i] = 0;
-                partner[0x214 + partnerIndex] = 0;
+                *(unit + 0x214 + i) = 0;
+                *(partner + 0x214 + partnerIndex) = 0;
             }
         }
 
         offset += 8;
         i++;
+    outer_check:
         person = *(void **)(unit + 0x188);
-    }
+    } while (i < (u8)(*(u8 **)((u8 *)person + 0x50) == 0 ? 0 : (u8)*(u32 *)(*(u8 **)((u8 *)person + 0x50) + 4)));
 }
-
-#pragma global_optimizer off

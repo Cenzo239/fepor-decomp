@@ -2853,13 +2853,13 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
     self = (u8 *)arg0;
     vtable = *(void ***)(self + 0x4C);
 
-    drawable = ((void *(*)(void *, void *, s32))(*(void ***)((u8 *)arg0 + 0x4C))[2])(
+    drawable = ((void *(*)(void *, void *, s32))vtable[2])(
         self,
         arg1,
         arg3
     );
 
-    offset = *(s16 *)((u8 *)((s16 *)arg0 + arg3) + 0x24);
+    offset = *(s16 *)((u8 *)((s16 *)self + arg3) + 0x24);
     drawX += (f32)offset;
 
     if (drawable != 0) {

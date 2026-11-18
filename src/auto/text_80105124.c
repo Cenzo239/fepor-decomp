@@ -47,6 +47,7 @@ extern u16 lbl_80366E80;
 
 #pragma scheduling on
 
+#pragma scheduling on
 void *fn_80105124(u8 *arg0, s32 *arg1) {
     u16 sp8;
     u8 is_double;
@@ -86,4 +87,3 @@ void *fn_80105124(u8 *arg0, s32 *arg1) {
     *arg1=*(s8 *)((u8 *)ctx[3]+12);
     return next;
 }
-#pragma scheduling reset

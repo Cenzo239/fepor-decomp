@@ -212,18 +212,13 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 void fn_80224CF0(f32 *arg0)
 {
     u8 *gx;
-    f64 a;
-    f64 b;
-    f64 c;
+    f64 a, b, c;
     f64 *dst;
     u32 flag;
     register volatile u32 *fifo;
-
     flag = (0.0f == arg0[0]) ? 0 : 1;
-
     gx = (u8 *)__GXData;
     *(u32 *)(gx + 0x4D8) = flag;
-
     arg0 += 1;
     dst = (f64 *)(gx + 0x4DC);
     a = *(f64 *)(arg0 + 0);
@@ -232,15 +227,15 @@ void fn_80224CF0(f32 *arg0)
     dst[0] = a;
     dst[1] = b;
     dst[2] = c;
-
     fifo = (volatile u32 *)0xCC008000;
     *(volatile u8 *)fifo = 0x10;
     *fifo = 0x61020;
-
-    *(volatile f64 *)fifo = dst[0];
-    *(volatile f64 *)fifo = dst[1];
-    *(volatile f64 *)fifo = dst[2];
-
+    a = dst[0];
+    b = dst[1];
+    c = dst[2];
+    *(volatile f64 *)fifo = a;
+    *(volatile f64 *)fifo = b;
+    *(volatile f64 *)fifo = c;
     *fifo = *(u32 *)(gx + 0x4D8);
     *(u16 *)(gx + 2) = 1;
 }

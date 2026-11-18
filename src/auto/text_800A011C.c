@@ -47,19 +47,20 @@ extern s32 lbl_803676F8;
 
 #pragma opt_lifetimes off
 
+#pragma opt_lifetimes on
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
+    s32 v;
 
-    b = 2;
     a = (u8)lbl_80366E25;
-    a = a ^ 1;
-    lbl_80366E25 = a;
-    if ((u8)a != 0) {
-        b = 0;
+    v = 2;
+    b = a ^ 1;
+    lbl_80366E25 = b;
+    if ((u8)b != 0) {
+        v = 0;
     }
-    *(u8 *)((char *)c + 0x39) = b;
+    *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
-#pragma opt_lifetimes on
-#pragma global_optimizer reset
+#pragma opt_lifetimes reset
 extern u8 lbl_80366E25;

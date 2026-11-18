@@ -96,14 +96,15 @@ s32 fn_8014AC68(void)
   extern void *gPadInput;
   extern u8 lbl_80367B0D;
   extern u8 lbl_80367B0E;
-  if ((*((u32 *) (((u8 *) gPadInput) + 0x10))) & 0x1000001)
+  u32 *buttons = (u32 *)(((u8 *) gPadInput) + 0x10);
+  if ((*buttons) & 0x1000001)
   {
     s32 previous = (s8) lbl_80367B0E;
     --previous;
     previous += (s8) lbl_80367B0D;
     lbl_80367B0D = previous % lbl_80367B0E;
   }
-  if ((*((u32 *) (((u8 *) gPadInput) + 0x10))) & 0x2000002)
+  if ((*buttons) & 0x2000002)
   {
     lbl_80367B0D = (((s8) lbl_80367B0D) + 1) % ((s8) lbl_80367B0E);
   }

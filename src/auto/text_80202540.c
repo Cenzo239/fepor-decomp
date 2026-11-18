@@ -491,25 +491,19 @@ s32 fn_80202D1C(f32 *src, f32 *inv) {
     return 1;
 }
 
-f32 fn_8020310C(void) {
-    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f0, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f1, $f3, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f12, $f1, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f13, $f5, $f5, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f13, $f13, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_div $f13, $f12, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f0, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f2, $f1, $f5, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f6, $f0, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f3, $f1, $f7, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f8, $f0, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f2, $f2, $f2, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f9, $f1, $f9, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f2, $f3, $f2, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f3, $f9, $f9, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f2, $f2, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f3, $f3, $f13 */);
-    return M2C_ERROR(/* psq_l unimplemented */);
+void fn_8020310C(f32 *m, f32 *v, f32 *out) {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+    x = v[0];
+    y = v[1];
+    z = v[2];
+    w = x * m[12] + y * m[13] + z * m[14];
+    w = z / w;
+    out[0] = (x * m[0] + y * m[1]) * w;
+    out[1] = (x * m[4] + y * m[5]) * w;
+    out[2] = (x * m[8] + y * m[9]) * w;
 }
 
 void fn_80203184(void) {

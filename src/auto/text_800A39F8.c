@@ -2770,23 +2770,14 @@ void Ui_DrawPromptSprites(void *proc) {
     }
 }
 void fn_800A8F94(s32 arg0) {
-    void *Sound_Create(void *, s32);
-    void fn_80148618(void *, s32);
-    extern u8 gOptionsStr[];
-    extern f32 lbl_80369C08;
-    extern f32 lbl_80369BA8;
-    void *obj;
-    f32 b;
-    f32 a;
-    u8 *base;
-
-    obj = Sound_Create(gOptionsStr + 0x96, arg0);
-    a = lbl_80369C08;
-    b = lbl_80369BA8;
-    base = gOptionsStr;
-    *(f32 *)((u8 *)obj + 0x40) = a;
-    *(f32 *)((u8 *)obj + 0x44) = b;
-    fn_80148618(base + 0x73, 0x1f4);
+void *fn_80109180(void *, s32); void fn_80148618(void *, s32);
+extern u8 lbl_8026E470[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
+void *temp; f32 b; f32 a;
+temp = fn_80109180(lbl_8026E470+0x96,arg0);
+a=lbl_80369C08; b=lbl_80369BA8;
+*(f32 *)((u8 *)temp+0x40)=a;
+*(f32 *)((u8 *)temp+0x44)=b;
+fn_80148618(lbl_8026E470+0x73,500);
 }
 
 #pragma optimization_level reset

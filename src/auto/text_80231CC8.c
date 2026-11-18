@@ -219,6 +219,7 @@ extern s32 fn_802314D8(s32, s32, s32);
 
 #pragma optimization_level 3
 
+#pragma optimization_level 3
 void fn_80231CC8(void *dst, const void *src, u32 size)
 {
   u32 *d;

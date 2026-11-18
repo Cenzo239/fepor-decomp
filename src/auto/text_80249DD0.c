@@ -1630,15 +1630,11 @@ void fn_8024BB90(void) {
     *(s32 *)(p + 4) = 0;
 }
 #pragma optimization_level reset
-void fn_8024BC58(u8 *arg0)
+void fn_8024BC58(void *arg0)
 {
-    void fn_80261E6C(s32, s32, s32, s32, f32, f32, f32, f32);
+    M2C_UNK fn_80261E6C(s32, M2C_UNK, s32, s32, f32, f32, f32, f32);
     extern f32 lbl_8036C228;
-    f32 scale;
-
-    scale = lbl_8036C228;
-    fn_80261E6C(*(s32 *)(arg0 + 0x4C), 0, (s32)arg0[0x5A] << 16, (s32)arg0[0x5B] << 16,
-                scale * (f32)arg0[0x59], scale * (f32)arg0[0x5C], scale * (f32)arg0[0x5D], scale);
+    fn_80261E6C(M2C_FIELD(arg0, s32 *, 0x4C), 0, M2C_FIELD(arg0, u8 *, 0x5A) << 0x10, M2C_FIELD(arg0, u8 *, 0x5B) << 0x10, lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x59), lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x5C), lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x5D), lbl_8036C228);
 }
 
 void fn_8024BCE4(void) {

@@ -434,10 +434,11 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
         i++;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma opt_common_subs on
+#pragma opt_strength_reduction on
 void UnitInfo_DrawStatus(void *arg0) {
     void fn_8008BA80(void *, s32, s32, s32);
-    void fn_8007D044(s32, u8, f32, f32, f32, f32);
+    void fn_8007D044(f32, f32, f32, f32, s32, u8);
     void fn_8008CD64(f32);
     void fn_8008CD34(void);
     s8 Unit_GetMaxHp(void *);
@@ -459,12 +460,12 @@ void UnitInfo_DrawStatus(void *arg0) {
 
     u8 *self;
     u8 *por;
-    s32 hp;
     s32 maxHp;
+    s32 hp;
     s32 i;
-    s32 x;
-    void *text;
     void *drawer;
+    void *text;
+    s32 x;
 
     self = (u8 *)arg0;
 
@@ -473,12 +474,11 @@ void UnitInfo_DrawStatus(void *arg0) {
     por = *(u8 **)(self + 0x190);
 
     fn_8007D044(
-        0xB3,
-        por[8],
         gZeroF,
         lbl_80369780,
         lbl_80369784,
-        lbl_80369790
+        lbl_80369790,
+        0xB3, por[8]
     );
 
     fn_8008CD64(lbl_80369768);
@@ -498,9 +498,9 @@ void UnitInfo_DrawStatus(void *arg0) {
         gBattleHelpStrings + 0xFA,
         text,
         (s8)hp,
+        (s8)maxHp,
         lbl_80369754,
-        gZeroF,
-        (s8)maxHp
+        gZeroF
     );
 
     maxHp = fn_8003A1E0(self);
@@ -535,12 +535,12 @@ void UnitInfo_DrawStatus(void *arg0) {
     );
 
     i = 0;
-    drawer = gUiIconDrawer;
+    
     x = 0x48;
 
     while (i < fn_8010424C(self + 0x1A4)) {
         Ui_DrawIcon(
-            drawer,
+            gUiIconDrawer,
             x,
             0x4A,
             fn_8010418C(self + 0x1A4, i)
@@ -550,8 +550,8 @@ void UnitInfo_DrawStatus(void *arg0) {
         i++;
     }
 }
-
-#pragma use_lmw_stmw off
+#pragma opt_common_subs reset
+#pragma opt_strength_reduction off
 /* Draw a fixed-size unit-info panel fill tinted by allegiance, plus white translucent edge strips. */
 void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
 {

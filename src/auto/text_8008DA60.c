@@ -52,6 +52,7 @@ void fn_8008DA60(void) {
     fn_8008DA80();
 }
 
+#pragma optimization_level 3
 #pragma use_lmw_stmw on
 void fn_8008DA80(void *self) {
     void Prim2D_Begin(void);
@@ -480,7 +481,7 @@ void fn_8008DA80(void *self) {
     }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level reset
 s32 fn_8008F400(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);

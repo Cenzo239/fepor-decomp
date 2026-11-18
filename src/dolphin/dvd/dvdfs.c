@@ -1425,13 +1425,14 @@ void stateBusy_8020E178(void *arg0) {
     void fn_8020BFE4(void *, void *);
     void stateReady(void);
     void fn_8020E4B8(void);
-    u8 *b = (u8 *)arg0;
+    u8 *b;
     void *old;
     void (*cb)(void *, void *);
     u32 remaining;
     u32 len;
 
     lbl_803685E0 = stateBusy_8020E178;
+    b = (u8 *)arg0;
 
     switch (*(u32 *)(b + 0x8)) {
     case 5:

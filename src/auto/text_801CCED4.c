@@ -2111,19 +2111,20 @@ Ui_DrawRect(1,1,*(s32*)((u8*)self+0x34),rect,fill,0);
 
 #pragma cplusplus reset
 
+#pragma scheduling on
 void fn_801CF5A4(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
-    s16 sp8;
-    s16 spA;
-    s32 spC;
+    s16 a;
+    s16 b;
+    s32 out;
     s16 t;
 
     t = *(s16 *)((u8 *)arg1 + 0x3C);
-    sp8 = 5;
-    spA = (s16)(t * 0x22 + 0xD);
-    *arg0 = *fn_8013F748(arg1, &spC, &sp8);
+    a = 5;
+    b = (s16)(t * 0x22 + 0xD);
+    *arg0 = *fn_8013F748(arg1, &out, &a);
 }
-
+#pragma scheduling reset
 s32 fn_801CF5FC(void *arg0) {
 #pragma global_optimizer on
 extern s32 lbl_80298720[];
@@ -2894,6 +2895,8 @@ void fn_801D0460(void *arg0, s32 arg1) {
     }
 }
 
+#pragma push
+#pragma fp_contract on
 void fn_801D0480(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     f32 Math_Hermite(f32, f32, f32, f32, f32);
@@ -2906,7 +2909,7 @@ void fn_801D0480(void *arg0) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     f64 fn_80237E90(f32);
-    extern f32 lbl_80367068;
+    extern f32 lbl_80367068[];
     extern s32 lbl_8036B520;
     extern s32 lbl_8036B524;
     extern s32 lbl_8036B528;
@@ -2915,23 +2918,23 @@ void fn_801D0480(void *arg0) {
     extern s32 lbl_8036B534;
     extern s32 lbl_8036B538;
     extern s32 lbl_8036B53C;
-    extern f32 lbl_8036B56C;
-    extern f64 lbl_8036B578;
-    extern f32 lbl_8036B580;
-    extern f32 lbl_8036B584;
-    extern f32 lbl_8036B588;
-    extern f32 lbl_8036B58C;
-    extern f32 lbl_8036B590;
-    extern f64 lbl_8036B598;
-    extern f64 lbl_8036B5A0;
-    extern f64 lbl_8036B5A8;
-    extern f32 lbl_8036B5B0;
-    extern f32 lbl_8036B5B4;
-    extern f32 lbl_8036B5B8;
-    extern f32 lbl_8036B5BC;
-    extern f32 lbl_8036B5C0;
-    extern f32 lbl_8036B5C4;
-    extern f64 lbl_8036B5C8;
+    extern const f32 lbl_8036B56C;
+    extern const f64 lbl_8036B578;
+    extern const f32 lbl_8036B580;
+    extern const f32 lbl_8036B584;
+    extern const f32 lbl_8036B588;
+    extern const f32 lbl_8036B58C;
+    extern const f32 lbl_8036B590;
+    extern const f64 lbl_8036B598;
+    extern const f64 lbl_8036B5A0;
+    extern const f64 lbl_8036B5A8;
+    extern const f32 lbl_8036B5B0;
+    extern const f32 lbl_8036B5B4;
+    extern const f32 lbl_8036B5B8;
+    extern const f32 lbl_8036B5BC;
+    extern const f32 lbl_8036B5C0;
+    extern const f32 lbl_8036B5C4;
+    extern const f64 lbl_8036B5C8;
 
     f32 mtxA[3][4];
     f32 mtxB[3][4];
@@ -2939,37 +2942,34 @@ void fn_801D0480(void *arg0) {
     f32 mtxD[3][4];
     u8 tex[0x20];
     s32 c0, c1;
-    f32 zero;
-    u8 *self;
+    u8 *seg;
     s32 lane;
+    s32 acc;
+    s32 width;
+    u8 *self;
     s32 off4;
     s32 off2;
     s32 entry;
-    s32 acc;
-    u8 *seg;
-    s32 width;
-    s32 i;
-    u8 r0, g0, b0, r1, g1, b1;
-    s32 cr, cg, cb;
-    f32 fade;
-    f32 t;
-    f32 px, py, lx, ly;
-    f32 dist;
-    f32 half;
+    u8 g0,b0,g1,b1;
+    u8 r0,r1;
+    s32 cr,cg,cb;
     u8 alpha;
+    s32 i;
+    f32 px,py,lx,ly;
+    f32 fade,half,dist,t;
     u32 timer;
     void **lists;
 
-    zero = lbl_8036B580;
     self = (u8 *)arg0;
     lane = 0;
     off4 = 0;
     off2 = 0;
-    px = zero;
-    py = zero;
-    lx = zero;
-    ly = zero;
-    while (lane < 3) {
+    px = lbl_8036B580;
+    py = px;
+    lx = px;
+    ly = px;
+    for (;;) {
+        if(lane>=3) break;
         if (*(s16 *)(self + off2 + 0xE) <= 0) {
             lane++;
             off4 += 4;
@@ -2984,7 +2984,7 @@ void fn_801D0480(void *arg0) {
         entry = 0;
         acc = 0;
         for (;;) {
-            seg = (u8 *)lists[lane] + entry;
+            seg = (u8 *)(*(void ***)(*(u8 **)(self + 0x24) + 8))[lane] + entry;
             if (*(u16 *)seg & 0x8000) {
                 break;
             }
@@ -3003,46 +3003,75 @@ void fn_801D0480(void *arg0) {
                 break;
             }
             switch (seg[0x14]) {
-            case 0:
+            case 0: {
+                s32 c0,c1;
                 c0 = lbl_8036B520;
                 c1 = lbl_8036B524;
-                break;
-            case 1:
-                c0 = lbl_8036B528;
-                c1 = lbl_8036B52C;
-                break;
-            case 2:
-                c0 = lbl_8036B530;
-                c1 = lbl_8036B534;
-                break;
-            default:
-                c0 = lbl_8036B538;
-                c1 = lbl_8036B53C;
-                break;
-            }
             r0 = ((u8 *)&c0)[0];
             g0 = ((u8 *)&c0)[1];
             b0 = ((u8 *)&c0)[2];
             r1 = ((u8 *)&c1)[0];
             g1 = ((u8 *)&c1)[1];
             b1 = ((u8 *)&c1)[2];
+                break;
+            }
+            case 1: {
+                s32 c0,c1;
+                c0 = lbl_8036B528;
+                c1 = lbl_8036B52C;
+            r0 = ((u8 *)&c0)[0];
+            g0 = ((u8 *)&c0)[1];
+            b0 = ((u8 *)&c0)[2];
+            r1 = ((u8 *)&c1)[0];
+            g1 = ((u8 *)&c1)[1];
+            b1 = ((u8 *)&c1)[2];
+                break;
+            }
+            case 2: {
+                s32 c0,c1;
+                c0 = lbl_8036B530;
+                c1 = lbl_8036B534;
+            r0 = ((u8 *)&c0)[0];
+            g0 = ((u8 *)&c0)[1];
+            b0 = ((u8 *)&c0)[2];
+            r1 = ((u8 *)&c1)[0];
+            g1 = ((u8 *)&c1)[1];
+            b1 = ((u8 *)&c1)[2];
+                break;
+            }
+            default: {
+                s32 c0,c1;
+                c0 = lbl_8036B538;
+                c1 = lbl_8036B53C;
+            r0 = ((u8 *)&c0)[0];
+            g0 = ((u8 *)&c0)[1];
+            b0 = ((u8 *)&c0)[2];
+            r1 = ((u8 *)&c1)[0];
+            g1 = ((u8 *)&c1)[1];
+            b1 = ((u8 *)&c1)[2];
+                break;
+            }
+            }
             fade = (f32)self[0x14 + lane] / lbl_8036B584;
             timer = *(u32 *)(self + 0x14C);
             if (timer < 0x5DCU) {
-                cr = (s32)(fade * Math_Ease(0, (f32)r0, (f32)r1, (f32)timer, lbl_8036B588));
-                cg = (s32)(fade * Math_Ease(0, (f32)g0, (f32)g1, (f32)timer, lbl_8036B588));
-                cb = (s32)(fade * Math_Ease(0, (f32)b0, (f32)b1, (f32)timer, lbl_8036B588));
+                cr = (s32)(fade * Math_Ease(0, (f32)r0, (f32)r1, (f32)*(u32 *)(self + 0x14C), lbl_8036B588));
+                cg = (s32)(fade * Math_Ease(0, (f32)g0, (f32)g1, (f32)*(u32 *)(self + 0x14C), lbl_8036B588));
+                cb = (s32)(fade * Math_Ease(0, (f32)b0, (f32)b1, (f32)*(u32 *)(self + 0x14C), lbl_8036B588));
+                alpha=255;
             } else {
-                cr = (s32)(fade * Math_Ease(0, (f32)r1, (f32)r0, (f32)(timer - 0x5DC), lbl_8036B588));
-                cg = (s32)(fade * Math_Ease(0, (f32)g1, (f32)g0, (f32)(timer - 0x5DC), lbl_8036B588));
-                cb = (s32)(fade * Math_Ease(0, (f32)b1, (f32)b0, (f32)(timer - 0x5DC), lbl_8036B588));
+                cr = (s32)(fade * Math_Ease(0, (f32)r1, (f32)r0, (f32)(*(u32 *)(self + 0x14C) - 0x5DC), lbl_8036B588));
+                cg = (s32)(fade * Math_Ease(0, (f32)g1, (f32)g0, (f32)(*(u32 *)(self + 0x14C) - 0x5DC), lbl_8036B588));
+                cb = (s32)(fade * Math_Ease(0, (f32)b1, (f32)b0, (f32)(*(u32 *)(self + 0x14C) - 0x5DC), lbl_8036B588));
+                alpha=255;
             }
-            alpha = (u8)((self[0x21] * (0xFF * self[0x20])) / 65025);
+            alpha = (u8)((self[0x21] * (alpha * self[0x20])) / 65025);
             Ui_LoadAtlasTex(*(void **)self, tex, 0);
             fn_80222C50(tex, 0);
             PSMTXTrans(mtxA, (f32)*(s16 *)(self + 0x18), (f32)*(s16 *)(self + 0x1A), lbl_8036B580);
             GXSetCurrentMtx(0);
             GXLoadPosMtxImm(mtxA, 0);
+            cr=(u8)cr; cg=(u8)cg; cb=(u8)cb;
             for (i = 0; i < width; i++) {
                 half = lbl_8036B58C * ((lbl_8036B590 * *(f32 *)(self + 0x1C) * (f32)seg[0x15]) / lbl_8036B584);
                 if (*(u16 *)seg & 2) {
@@ -3051,9 +3080,9 @@ void fn_801D0480(void *arg0) {
                     t = (f32)i / (f32)seg[0x12];
                 }
                 lx = px;
-                ly = py;
                 px = *(f32 *)(self + 0x1C) * Math_Hermite((f32)*(s16 *)(seg + 2), (f32)*(s16 *)(seg + 6),
                                                            (f32)*(s16 *)(seg + 0xA), (f32)*(s16 *)(seg + 0xE), t);
+                ly = py;
                 py = *(f32 *)(self + 0x1C) * Math_Hermite((f32)*(s16 *)(seg + 4), (f32)*(s16 *)(seg + 8),
                                                            (f32)*(s16 *)(seg + 0xC), (f32)*(s16 *)(seg + 0x10), t);
                 if (i == 0) {
@@ -3061,45 +3090,129 @@ void fn_801D0480(void *arg0) {
                     ly = py;
                 }
                 if (*(u16 *)seg & 0x10) {
-                    dist += (px - lx) * (px - lx) + (py - ly) * (py - ly);
+                    f32 dy=py-ly;
+                    f32 dx=px-lx;
+                    f32 length = dx*dx+dy*dy;
+                    if (length > lbl_8036B580) {
+                        f64 estimate = __frsqrte(length);
+                        estimate = (lbl_8036B598*estimate)*(lbl_8036B5A0-length*(estimate*estimate));
+                        estimate = (lbl_8036B598*estimate)*(lbl_8036B5A0-length*(estimate*estimate));
+                        estimate = (lbl_8036B598*estimate)*(lbl_8036B5A0-length*(estimate*estimate));
+                        length = (f32)(length*estimate);
+                    } else if (length < lbl_8036B5A8) {
+                        length = lbl_80367068[0];
+                    } else {
+                        union {f32 f;u32 u;} v;
+                        s32 kind;
+                        v.f=length;
+                        switch(v.u & 0x7f800000) {
+                        case 0x7f800000: if(v.u & 0x7fffff) kind=1;else kind=2;break;
+                        case 0: if(v.u & 0x7fffff) kind=5;else kind=3;break;
+                        default:kind=4;break;
+                        }
+                        if(kind==1) length=lbl_80367068[0];
+                    }
+                    dist += length;
+                    if(dist-lbl_8036B5B0*(s32)(dist/lbl_8036B5B0)>=lbl_8036B5B4) continue;
                 }
                 GXBegin(0x98, 0, 4);
-                *(f32 *)0xCC008000 = px - half;
-                *(f32 *)0xCC008000 = py - half;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(u8 *)0xCC008000 = (u8)cr;
-                *(u8 *)0xCC008000 = (u8)cg;
-                *(u8 *)0xCC008000 = (u8)cb;
-                *(u8 *)0xCC008000 = alpha;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(f32 *)0xCC008000 = px + half;
-                *(f32 *)0xCC008000 = py - half;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(u8 *)0xCC008000 = (u8)cr;
-                *(u8 *)0xCC008000 = (u8)cg;
-                *(u8 *)0xCC008000 = (u8)cb;
-                *(u8 *)0xCC008000 = alpha;
-                *(f32 *)0xCC008000 = lbl_8036B56C;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(f32 *)0xCC008000 = px - half;
-                *(f32 *)0xCC008000 = py + half;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(u8 *)0xCC008000 = (u8)cr;
-                *(u8 *)0xCC008000 = (u8)cg;
-                *(u8 *)0xCC008000 = (u8)cb;
-                *(u8 *)0xCC008000 = alpha;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(f32 *)0xCC008000 = lbl_8036B56C;
-                *(f32 *)0xCC008000 = px + half;
-                *(f32 *)0xCC008000 = py + half;
-                *(f32 *)0xCC008000 = lbl_8036B580;
-                *(u8 *)0xCC008000 = (u8)cr;
-                *(u8 *)0xCC008000 = (u8)cg;
-                *(u8 *)0xCC008000 = (u8)cb;
-                *(u8 *)0xCC008000 = alpha;
-                *(f32 *)0xCC008000 = lbl_8036B56C;
-                *(f32 *)0xCC008000 = lbl_8036B56C;
+                { f32 z=lbl_8036B580, one=lbl_8036B56C;
+                *(volatile f32 *)0xCC008000 = px - half;
+                *(volatile f32 *)0xCC008000 = py - half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = px + half;
+                *(volatile f32 *)0xCC008000 = py - half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = px - half;
+                *(volatile f32 *)0xCC008000 = py + half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = px + half;
+                *(volatile f32 *)0xCC008000 = py + half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = one;
+                }
+            }
+            if ((*(u16 *)seg & 8) || *(s16 *)(self+off2+0xE)<=acc) {
+                f32 dx = px-lx;
+                f32 dy = py-ly;
+                f32 angle;
+                alpha=(u8)((self[0x21]*(0xff*self[0x20]))/65025);
+                Ui_LoadAtlasTex(*(void **)self,tex,1);
+                fn_80222C50(tex,0);
+                if(dx==lbl_8036B580) dx=lbl_8036B5B8;
+                angle=(f32)fn_80237E90(dy/dx);
+                if(dx<lbl_8036B580) angle+=lbl_8036B5BC;
+                angle+=lbl_8036B5C0;
+                PSMTXTrans(mtxB,-px,-py,lbl_8036B580);
+                PSMTXRotRad(mtxC,'z',angle);
+                PSMTXTrans(mtxD,px+(f32)*(s16 *)(self+0x18),py+(f32)*(s16 *)(self+0x1A),lbl_8036B580);
+                PSMTXConcat(mtxC,mtxB,mtxA);
+                PSMTXConcat(mtxD,mtxA,mtxA);
+                GXSetCurrentMtx(0);
+                GXLoadPosMtxImm(mtxA,0);
+                GXBegin(0x98, 0, 4);
+                { f32 z=lbl_8036B580, one=lbl_8036B56C;
+                half=lbl_8036B58C*(lbl_8036B5C4* *(f32 *)(self+0x1C));
+                *(volatile f32 *)0xCC008000 = px - half;
+                *(volatile f32 *)0xCC008000 = py - half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = px + half;
+                *(volatile f32 *)0xCC008000 = py - half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = px - half;
+                *(volatile f32 *)0xCC008000 = py + half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = px + half;
+                *(volatile f32 *)0xCC008000 = py + half;
+                *(volatile f32 *)0xCC008000 = z;
+                *(volatile u8 *)0xCC008000 = (u8)cr;
+                *(volatile u8 *)0xCC008000 = (u8)cg;
+                *(volatile u8 *)0xCC008000 = (u8)cb;
+                *(volatile u8 *)0xCC008000 = alpha;
+                *(volatile f32 *)0xCC008000 = one;
+                *(volatile f32 *)0xCC008000 = one;
+                }
             }
             entry += 0x16;
         }
@@ -3108,7 +3221,7 @@ void fn_801D0480(void *arg0) {
         off2 += 2;
     }
 }
-
+#pragma pop
 void fn_801D107C(void *arg0) {
     void fn_80007340(void (*)(void *), void *);
     void Prim2D_SetAlpha(u8);
@@ -4308,7 +4421,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
+    temp_r6 = -M2C_FIELD(arg1, s16 *, 0x54) + M2C_FIELD(arg1, s16 *, 0x4E);
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
@@ -7174,11 +7287,10 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
 
 #pragma scheduling on
 void fn_801DDE44(void *arg0) {
-    void Process_ClearFunc(void *);
     extern f32 lbl_8036B630;
     *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
     if (*(f32 *)((u8 *)arg0 + 0x30) >= *(f32 *)((u8 *)arg0 + 0x34)) {
-        Process_ClearFunc(arg0);
+        fn_8000C188();
     }
 }
 #pragma global_optimizer off

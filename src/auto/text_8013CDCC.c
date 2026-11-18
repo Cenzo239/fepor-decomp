@@ -1581,14 +1581,54 @@ s16 fn_8013E67C(void *arg0) {
 }
 
 #pragma cplusplus on
-s16 fn_8013E684(void *arg0, void *arg1) {
-    s16 (*vm)(void *);
+extern "C" s16 fn_8013E684(void *arg0, void *arg1) {
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31() = 0;
+        virtual void v32() = 0;
+        virtual void v33() = 0;
+        virtual s16 v34() = 0;
+    };
+    struct Arg1 {
+        u8 pad[0x60];
+        s8 field_60;
+    };
     s16 temp;
     s32 sum;
 
-    vm = *(s16 (**)(void *))(*(u8 **)((u8 *)arg0 + 4) + 0x90);
-    temp = vm(arg0);
-    sum = (s32)temp + *(s8 *)((u8 *)arg1 + 0x60);
+    temp = ((Obj *)arg0)->v34();
+    sum = (s32)temp + ((Arg1 *)arg1)->field_60;
     sum -= 1;
     return (s16)(sum / (s32)temp);
 }
@@ -5293,7 +5333,7 @@ extern "C" s16 fn_80143C58(void *arg0) {
     } Unk80143C58;
     Unk80143C58 *obj = (Unk80143C58 *)arg0;
 
-    return obj->unk64[((Obj *)arg0)->v10()];
+    return obj->unk64[(u32)((Obj *)arg0)->v10()];
 }
 
 extern "C" void fn_80143C9C(void *unit) {

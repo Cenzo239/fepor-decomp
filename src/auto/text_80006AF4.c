@@ -2206,12 +2206,10 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp1_done:
-            if (diff) {
-                goto after1;
+            if (diff == 0) {
+                goto found;
             }
-            goto found;
         }
-    after1:
         if (*(u32 *)(entry += 0x70) != 0) {
             b = search;
             a = *(u8 **)(entry + 0x14);
@@ -2233,12 +2231,10 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp2_done:
-            if (diff) {
-                goto after2;
+            if (diff == 0) {
+                goto found;
             }
-            goto found;
         }
-    after2:
         i += 1;
         entry += 0x70;
     }

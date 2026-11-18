@@ -2855,16 +2855,14 @@ void *Sound_Create(s32 arg0, u32 arg1) {
     extern u8 lbl_8028F390[];
     void *tbl;
     void *result;
-    u32 n;
 
     tbl = lbl_8028F390;
-    n = arg1;
-    switch (n) {
-    case 0U:
-        n = 3U;
+    switch (arg1) {
+    case 0:
+        arg1 = 3U;
         break;
     }
-    result = Process_Create(tbl, n);
+    result = Process_Create(tbl, arg1);
     fn_80109F88(result, arg0);
     return result;
 }
@@ -6411,38 +6409,40 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     return best!=NULL;
 }
 
-s32 fn_8010F3F4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5)
+s32 fn_8010F3F4(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4)
 {
     extern u8 gBattleMap[];
-    extern s16 lbl_80273B78[];
+    extern u8 lbl_80273B78[];
 
     extern s32 fn_800F7994(void *, s32, s32);
     extern s32 fn_800F7838(void *, s32, s32);
-    extern u32 fn_800FCF48(s32, s32);
+    extern u32 fn_800FCF48(s8, s8);
 
     u8 *base;
-    s16 *direction;
-    s16 *heightTable;
-    s32 x;
-    s32 y;
-    s32 dx;
-    s32 dy;
-    s32 index;
-    s32 score;
+    const s16 *direction;
+    s32 ax;
+    s32 ay;
+    s16 x;
+    s16 y;
     s32 bestScore;
+    s32 score;
     s32 i;
-    u32 value;
 
     base = gBattleMap;
-    direction = lbl_80273B78;
-    heightTable = *(s16 **)(base + 0x14190);
-
+    direction = (const s16 *)lbl_80273B78;
+    ax = arg1;
+    ay = arg2;
     bestScore = (s32)0x80000000;
     score = 0;
 
-    for (i = 0; i < 4; i++, direction += 2) {
-        x = (s16)((s16)arg1 + direction[0]);
-        y = (s16)((s16)arg2 + direction[1]);
+    for (i = 0; i < 4; i++, score = 0, direction += 2) {
+        const s16 *heightTable;
+        s32 index;
+        u32 value;
+
+        x = ax + direction[0];
+        heightTable = *(s16 **)(base + 0x14190);
+        y = ay + direction[1];
 
         index = (s8)x + ((s8)y << 6);
 
@@ -6462,15 +6462,15 @@ s32 fn_8010F3F4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5)
             }
         }
 
-        score += fn_800F7994(arg0, (s8)x, (s8)y);
-        score += fn_800F7838(arg0, (s8)x, (s8)y);
+        score += fn_800F7994(arg0, x, y);
+        score += fn_800F7838(arg0, x, y);
 
         value = fn_800FCF48((s8)x, (s8)y);
         score -= (value >> 4) & 0xFFF;
 
-        if (score > bestScore) {
-            *(s16 *)arg4 = (s16)x;
-            *(s16 *)arg5 = (s16)y;
+        if (bestScore < score) {
+            *arg3 = x;
+            *arg4 = y;
             bestScore = score;
         }
     }
@@ -6681,25 +6681,27 @@ void fn_8010FD70(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
 
 #pragma global_optimizer off
 void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
-    char *temp_r8;
-    u16 temp_r9;
-    u8 temp_r10;
+    void *src;
+    u16 half;
+    u8 byte;
+    char *entry;
     s8 zero;
 
-    temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
-    temp_r9 = *(u16 *)((char *)arg4 + 0xE);
-    temp_r10 = *(u8 *)((char *)arg4 + 0x18);
+    src = arg4;
+    half = *(u16 *)((char *)src + 0xE);
+    byte = *(u8 *)((char *)src + 0x18);
+    entry = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
     zero = 0;
-    *(u8 *)(temp_r8 + 0x0) = arg1;
-    *(u8 *)(temp_r8 + 0x1) = arg2;
-    *(u8 *)(temp_r8 + 0x2) = 7;
-    *(u8 *)(temp_r8 + 0x3) = arg3;
-    *(u8 *)(temp_r8 + 0xA) = zero;
+    entry[0] = arg1;
+    entry[1] = arg2;
+    entry[2] = 7;
+    entry[3] = arg3;
+    entry[0xA] = zero;
     *(s32 *)((char *)arg0 + 0x200) = *(s32 *)((char *)arg0 + 0x200) + 1;
-    *(u8 *)(temp_r8 + 0x4) = temp_r9;
-    *(u8 *)(temp_r8 + 0x5) = temp_r10;
-    *(u8 *)(temp_r8 + 0x6) = zero;
-    *(u8 *)(temp_r8 + 0x7) = zero;
+    entry[4] = half;
+    entry[5] = byte;
+    entry[6] = zero;
+    entry[7] = zero;
 }
 #pragma global_optimizer reset
 void MapObjEvent_Remove(void *arg0, s8 arg1, s8 arg2, u8 arg3) {

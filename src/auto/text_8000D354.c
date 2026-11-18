@@ -77,85 +77,92 @@ s32 Res_GetByName(s8 *str) {
 #pragma opt_propagation off
 void fn_8000D3EC(char *arg0, void *arg1)
 {
-    extern u8 lbl_802ADB20[];
+  extern u8 lbl_802ADB20[];
+  u8 *new_var2;
+  u8 *bucket;
+  u8 *entry;
+  u8 *next;
+  u8 *prev;
+  u32 hash37;
+  char *str;
+  int new_var;
+  char ch;
+  u8 *new_var3;
+  u32 index;
+  s32 slot;
+  u8 **new_var4;
+  hash37 = 0;
+  index = hash37;
+  str = arg0;
+  while (((s8) (ch = *str)) != 0)
+  {
+    hash37 = ((s8) ch) + (hash37 * 37);
+    index = ((s8) ch) + (index * 31);
+    str++;
+  }
 
-    u8 *bucket;
-    u8 *entry;
-    u8 *next;
-    u8 *prev;
-    register s32 hash31;
-    register char *str;
-    register u32 hash37;
-    register u8 ch;
-    u32 index;
-    s32 slot;
-
-    hash37 = 0;
-    hash31 = hash37;
+  new_var2 = (u8 *) lbl_802ADB20;
+  index = hash37 % 0x1FD;
+  bucket = new_var2 + (index * 4);
+  entry = *((u8 **) (bucket + 8));
+  new_var3 = bucket + 0x7FC;
+  *((u32 *) new_var3) += 1;
+  bucket += 8;
+  if (entry == 0)
+  {
+    do
+    {
+      slot = *((u32 *) lbl_802ADB20);
+      entry = *((u8 **) (((u8 *) lbl_802ADB20) + 4));
+      entry += slot * 0x10;
+      *((u32 *) lbl_802ADB20) = slot + 1;
+      *((u32 *) lbl_802ADB20) = (slot + 1) % 0x2800;
+    }
+    while ((((*((u32 *) (entry + 8))) & 0xFFFF) & 0xFFFF) != 0);
+    *((u32 *) entry) = 0;
+    index = 0;
     str = arg0;
-
-    while ((s8)(ch = *str) != 0) {
-        hash37 = (s8)ch + hash37 * 37;
-        hash31 = (s8)ch + hash31 * 31;
-        str++;
+    while ((*str) != 0)
+    {
+      index = ((s8) (*(str++))) + (index * 31);
     }
 
-    index = hash37 % 0x1FD;
-    bucket = (u8 *)lbl_802ADB20 + index * 4;
-
-    entry = *(u8 **)(bucket + 8);
-    *(u32 *)(bucket + 0x7FC) += 1;
-    bucket += 8;
-
-    if (entry == 0) {
-        do {
-            slot = *(u32 *)lbl_802ADB20;
-            entry = *(u8 **)((u8 *)lbl_802ADB20 + 4);
-            entry += slot * 0x10;
-            *(u32 *)lbl_802ADB20 = slot + 1;
-            *(u32 *)lbl_802ADB20 = (slot + 1) % 0x2800;
-        } while (*(u32 *)(entry + 8) != 0);
-
-        *(u32 *)entry = 0;
-
-        hash31 = 0;
-        str = arg0;
-
-        while (*str != 0) {
-            hash31 = (s8)*str++ + hash31 * 31;
-        }
-
-        *(s32 *)(entry + 4) = hash31;
-        *(char **)(entry + 8) = arg0;
-        *(void **)(entry + 0xC) = arg1;
-        *(u8 **)bucket = entry;
-    } else {
-        while(entry != 0) {
-            prev = entry;
-            entry = *(u8 **)entry;
-        }
-
-        do {
-            slot = *(u32 *)lbl_802ADB20;
-            next = *(u8 **)((u8 *)lbl_802ADB20 + 4);
-            next += slot * 0x10;
-            *(u32 *)lbl_802ADB20 = slot + 1;
-            *(u32 *)lbl_802ADB20 = (slot + 1) % 0x2800;
-        } while (*(u32 *)(next + 8) != 0);
-
-        *(u32 *)next = 0;
-
-        hash31 = 0;
-        str = arg0;
-
-        while (*str != 0) {
-            hash31 = (s8)*str++ + hash31 * 31;
-        }
-
-        *(s32 *)(next + 4) = hash31;
-        *(char **)(next + 8) = arg0;
-        *(void **)(next + 0xC) = arg1;
-        *(u8 **)prev = next;
+    *((s32 *) (entry + 4)) = index;
+    *((char **) (entry + 8)) = arg0;
+    *((void **) (entry + 0xC)) = arg1;
+    *((u8 **) bucket) = entry;
+  }
+  else
+  {
+    while (entry != 0)
+    {
+      prev = entry;
+      entry = *((u8 **) entry);
     }
+
+    do
+    {
+      new_var4 = (u8 **) (((u8 *) lbl_802ADB20) + 4);
+      slot = *((u32 *) lbl_802ADB20);
+      next = *new_var4;
+      new_var = slot + 1;
+      next += slot * 0x10;
+      *((u32 *) lbl_802ADB20) = slot + 1;
+      *((u32 *) lbl_802ADB20) = new_var % 0x2800;
+    }
+    while ((*((u32 *) (next + 8))) != 0);
+    *((u32 *) next) = 0;
+    index = 0;
+    str = arg0;
+    while ((*str) != 0)
+    {
+      index = ((s8) (*(str++))) + (index * 31);
+    }
+
+    *((s32 *) (next + 4)) = index;
+    *((char **) (next + 8)) = arg0;
+    *((void **) (next + 0xC)) = arg1;
+    *((u8 **) prev) = next;
+  }
 }
 #pragma opt_propagation reset

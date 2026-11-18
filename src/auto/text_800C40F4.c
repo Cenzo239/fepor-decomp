@@ -7992,14 +7992,16 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
+    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
+    M2C_UNK String_Copy(M2C_UNK *);
     s32 fn_800E4454(s32, M2C_UNK *);
     M2C_UNK sp8;
-    s32 temp_r31;
+    s32 ret;
 
-    fn_800C9B6C(&sp8);
-    temp_r31 = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
-    fn_800C9A60(&sp8, -1);
-    return temp_r31;
+    String_Copy(&sp8);
+    ret = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+    String_Destroy(&sp8, -1);
+    return ret;
 }
 
 void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {

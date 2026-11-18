@@ -113,12 +113,12 @@ void *fn_800A02E4(void) {
 
 s32 fn_800A02F4(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367707;
-    u8 t;
     s32 v;
-    t = lbl_80367707;
-    v = 2;
-    b = t ^ 1;
+
+    a = (u8)lbl_80367707;
+    b = a ^ 1;
     lbl_80367707 = b;
+    v = 2;
     if ((u8)b != 0) {
         v = 0;
     }

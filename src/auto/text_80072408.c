@@ -6,6 +6,7 @@
 #pragma push
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
+#pragma fp_contract off
 void fn_80072408(void)
 {
     void fn_8022C260(void *, void (*)(void), void *, s32, u32);
@@ -32,6 +33,7 @@ void fn_80072408(void)
 
     void *pad17;
     void *pad18;
+    void *pad19;
     void *p7C;
     void *pFC;
     Pair *p80;
@@ -62,12 +64,11 @@ void fn_80072408(void)
     void *p8459C;
     void *p8680C;
     void *vtbl;
-    void *vtbl2;
 
     pad17 = 0;
     pad18 = 0;
+    pad19 = 0;
     vtbl = gUiMenuDrawVtbl;
-    vtbl2 = vtbl;
     p8680C = lbl_8028680C;
     p8459C = lbl_8028459C;
     base = (Pair *)lbl_80311CA8;
@@ -90,14 +91,14 @@ void fn_80072408(void)
     p27C = data + 0x27C;
     p17C = data + 0x17C;
 
-    p38->f4 = vtbl2;
-    p10->f4 = vtbl2;
+    p38->f4 = vtbl;
+    p10->f4 = vtbl;
     lbl_80367350[0] = p8459C;
     lbl_80367358[0] = p8459C;
     s_ed = (u8 *)rodata + 0xED;
     s_f5 = (u8 *)rodata + 0xF5;
-    p24->f4 = vtbl2;
-    p0->f4 = vtbl2;
+    p24->f4 = vtbl;
+    p0->f4 = vtbl;
 
     p38->f4 = p67C;
     lbl_80367350[0] = p628;
@@ -168,5 +169,6 @@ void fn_80072408(void)
     }
     (void)pad17;
     (void)pad18;
+    (void)pad19;
 }
 #pragma pop

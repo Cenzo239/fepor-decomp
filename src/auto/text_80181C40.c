@@ -705,6 +705,7 @@ extern "C" void fn_80157930(s32, s32, s16, s16, s32, s32);
 #pragma scheduling on
 #pragma peephole on
 
+#pragma scheduling on
 void fn_80181C40(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
@@ -723,11 +724,9 @@ void fn_80181C40(s32 *arg0, void *arg1) {
     y = *(s16 *)((u8 *)self + 0x58);
     sp8 = x;
     spA = (s16)(step * index + y);
-    (void)spA;
     *arg0 = *fn_8013F748(self, &spC, &sp8);
 }
 #pragma scheduling reset
-#pragma peephole reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;

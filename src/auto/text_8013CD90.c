@@ -528,11 +528,12 @@ extern "C" void fn_8013692C(s32, s32, s32, s32, s32, s32);
 #pragma optimization_level 2
 #pragma scheduling on
 
-void *fn_8013CD90(void **arg0) {
+#pragma scheduling on
+void *fn_8013CD90(void *self)
+{
     void *Msg_Expand(void *);
     extern u8 lbl_80276908[];
-    void *p = arg0[8];
-    return p != NULL ? Msg_Expand(p) : lbl_80276908 + 0x72;
+    void *msg = *(void **)((u8 *)self + 0x20);
+    return msg ? Msg_Expand(msg) : (void *)(lbl_80276908 + 0x72);
 }
 #pragma scheduling reset
-#pragma optimization_level reset

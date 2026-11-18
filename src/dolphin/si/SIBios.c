@@ -309,7 +309,6 @@ void SIInterruptHandler(s32 interrupt, s32 context)
   SIPacket *pktBase;
   SIControl *si;
   SIPacket *packet;
-  s64 now;
   s32 j;
   s32 i;
   u32 new_var3;
@@ -358,8 +357,7 @@ void SIInterruptHandler(s32 interrupt, s32 context)
       packet = (SIPacket *) (((u8 *) pktBase) + new_var);
       if (packet->chan != (-1))
       {
-        now = __OSGetSystemTime();
-        if (!(now < packet->fire))
+        if (!(__OSGetSystemTime() < packet->fire))
         {
           if (fn_8023B57C(packet->chan, packet->output, packet->outputBytes, packet->input, packet->inputBytes, packet->callback))
           {
@@ -569,16 +567,15 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         OSRestoreInterrupts(enabled);
         return FALSE;
     }
-    i = 0;
     sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr &= (u32)((s32)0x0F000000 >> (chan << 3));
+    sr = sr & (u32)(0x0F000000 >> (8 * chan));
     ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
-    rlen = (outputBytes + 3) / 4;
+    rlen = (outputBytes + 3) >> 2;
     si->chan = chan;
     si->callback = callback;
     si->inputBytes = inputBytes;
     si->input = input;
-    for (; i < rlen; i++) {
+    for (i = 0; i < rlen; i++) {
         __SIRegs[32 + i] = ((u32 *)output)[i];
     }
     comcsr.value = __SIRegs[13];

@@ -91,18 +91,18 @@ void fn_800059B0(void) {
 
 }
 
-#pragma optimization_level 3
+#pragma peephole off
 void fn_800059B4(void)
 {
   extern void *lbl_80367100;
-  s32 z;
   s32 off;
   s32 i;
+  s32 z;
   void *table;
   u8 *p;
   off = 0;
   i = 0;
-  z = off;
+  z = 0;
   while (i < (*((s16 *) (((u8 *) lbl_80367100) + 6))))
   {
     table = *((void **) lbl_80367100);
@@ -115,7 +115,7 @@ void fn_800059B4(void)
   *((u32 *) (((u8 *) lbl_80367100) + 0x2C)) = 0;
   *((u32 *) (((u8 *) lbl_80367100) + 0x30)) = 0;
 }
-#pragma optimization_level reset
+#pragma peephole reset
 void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
     extern void *lbl_80367100;
     s16 x;
