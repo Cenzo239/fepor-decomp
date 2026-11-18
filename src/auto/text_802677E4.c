@@ -301,6 +301,6 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
     }
 
   }
-  return 1;
-}
-#pragma scheduling reset
+      return 1;
+  }
+
