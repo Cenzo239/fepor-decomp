@@ -1809,34 +1809,22 @@ void GXSetVtxAttrFmtv(s32 vtxfmt, void *list)
   gx[0x5AB] |= (u8) (1 << ((u8) vtxfmt));
 }
 
-#ifndef GXWGFifo_DEFINED
-#define GXWGFifo_DEFINED
-typedef union {
-    u8 u8;
-    u16 u16;
-    u32 u32;
-    s8 s8;
-    s16 s16;
-    s32 s32;
-    f32 f32;
-} PPCWGPipe;
-volatile PPCWGPipe GXWGFifo : 0xCC008000;
-#endif
-
 #pragma global_optimizer off
 #pragma opt_lifetimes off
 void fn_802200CC(void)
 {
     extern u8 *__GXData;
-    u8 *gx;
-    u32 index;
-    u32 offset;
-    u32 flags;
     u32 a;
     u32 b;
     u32 c;
     u32 t;
     u32 v;
+    u32 w;
+    u32 z;
+    u8 *gx;
+    u32 offset;
+    u32 index;
+    u32 flags;
 
     gx = __GXData;
     index = 0;
@@ -1846,9 +1834,9 @@ void fn_802200CC(void)
     do {
       if ((flags & 1) != 0) {
         *(volatile u8 *)0xCC008000 = 8;
-        t = index | 0x70;
+        c = index | 0x70;
         a = offset + 0x1C;
-        *(volatile u8 *)0xCC008000 = t;
+        *(volatile u8 *)0xCC008000 = c;
         t = index | 0x80;
         b = offset + 0x3C;
         v = *(u32 *)((u32)gx + a);
@@ -1857,12 +1845,12 @@ void fn_802200CC(void)
         *(volatile u32 *)0xCC008000 = v;
         *(volatile u8 *)0xCC008000 = 8;
         *(volatile u8 *)0xCC008000 = t;
-        v = *(u32 *)((u32)gx + b);
-        *(volatile u32 *)0xCC008000 = v;
+        w = *(u32 *)((u32)gx + b);
+        *(volatile u32 *)0xCC008000 = w;
         *(volatile u8 *)0xCC008000 = 8;
         *(volatile u8 *)0xCC008000 = c;
-        v = *(u32 *)((u32)gx + a);
-        *(volatile u32 *)0xCC008000 = v;
+        z = *(u32 *)((u32)gx + a);
+        *(volatile u32 *)0xCC008000 = z;
       }
         flags >>= 1;
         offset += 4;
