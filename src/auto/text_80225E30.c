@@ -245,49 +245,34 @@ s32 TRKInitializeNub(void) {
     extern s32 TRKInitializeTarget(void);
     extern s32 TRKInitializeIntDrivenUART(s32, s32, s32, void *);
     extern void TRKTargetSetInputPendingPtr(s32);
-
-    s32 result, uartResult;
+    extern u8 *gTRKInputPendingPtr;
+    enum { FALSE_ = 0, TRUE_ = 1 };
+    s32 result = FALSE_;
+    s32 uartResult;
     u32 test;
-
-    result = 0;
     *(u8 *)&test = 0x12;
     *((u8 *)&test + 1) = 0x34;
     *((u8 *)&test + 2) = 0x56;
     *((u8 *)&test + 3) = 0x78;
-    *(u32 *)gTRKBigEndian = 1;
-    if (test == 0x12345678U) {
-        *(u32 *)gTRKBigEndian = 1;
-    } else if (test == 0x78563412U) {
-        *(u32 *)gTRKBigEndian = 0;
-    } else {
-        result = 1;
-    }
+    *(u32 *)gTRKBigEndian = TRUE_;
+    if (test == 0x12345678U)
+        *(u32 *)gTRKBigEndian = TRUE_;
+    else if (test == 0x78563412U)
+        *(u32 *)gTRKBigEndian = FALSE_;
+    else
+        result = TRUE_;
     MWTRACE(1, lbl_80282294);
-    if (result == 0) {
-        usr_put_initialize();
-    }
-    if (result == 0) {
-        result = TRKInitializeEventQueue();
-    }
-    if (result == 0) {
-        result = TRKInitializeMessageBuffers();
-    }
-    if (result == 0) {
-        result = TRKInitializeDispatcher();
-    }
+    if (result == FALSE_) usr_put_initialize();
+    if (result == FALSE_) result = TRKInitializeEventQueue();
+    if (result == FALSE_) result = TRKInitializeMessageBuffers();
+    if (result == FALSE_) result = TRKInitializeDispatcher();
     InitializeProgramEndTrap();
-    if (result == 0) {
-        result = TRKInitializeSerialHandler();
-    }
-    if (result == 0) {
-        result = TRKInitializeTarget();
-    }
-    if (result == 0) {
+    if (result == FALSE_) result = TRKInitializeSerialHandler();
+    if (result == FALSE_) result = TRKInitializeTarget();
+    if (result == FALSE_) {
         uartResult = TRKInitializeIntDrivenUART(0xE100, 1, 0, &gTRKInputPendingPtr);
         TRKTargetSetInputPendingPtr((s32)gTRKInputPendingPtr);
-        if (uartResult != 0) {
-            result = uartResult;
-        }
+        if (uartResult != FALSE_) result = uartResult;
     }
     return result;
 }
@@ -897,7 +882,7 @@ s32 fn_80227024(void *arg0) {
     strings = gTRK_str_SerialIO;
 
     if (*((u8 *)arg0 + 0x18) == 1) {
-        fn_80226E24(strings + 0);
+        fn_80226E24(strings + (enabled ^ enabled));
         if (enabled != 0) {
             fn_80226E24(strings + 0x20);
         } else {
@@ -2794,23 +2779,18 @@ void EnableMetroTRKInterrupts(void) {
 }
 
 void TRK_main(void) {
-    extern void MWTRACE(s32, const char *, ...);
-    extern s32 TRKInitializeNub(void);
-    extern void TRKNubWelcome(void);
-    extern void TRKNubMainLoop(void);
-    extern s32 TRKTerminateNub(void);
-    extern s32 TRK_mainError_8033CFD0[];
-    extern char lbl_802827E8[];
-    s32 err;
-
-    MWTRACE(1, lbl_802827E8);
-    err = TRKInitializeNub();
-    TRK_mainError_8033CFD0[0] = err;
-    if (!err) {
-        TRKNubWelcome();
-        TRKNubMainLoop();
-        TRK_mainError_8033CFD0[0] = TRKTerminateNub();
-    }
+extern void MWTRACE(s32,const char*,...);
+extern s32 TRKInitializeNub(void);
+extern void TRKNubWelcome(void);
+extern void TRKNubMainLoop(void);
+extern s32 TRKTerminateNub(void);
+extern s32 TRK_mainError_8033CFD0[];
+extern char lbl_802827E8[];
+s32 err;
+MWTRACE(1,lbl_802827E8);
+err=TRKInitializeNub(); TRK_mainError_8033CFD0[0]=err;
+if(err==0) { TRKNubWelcome(); TRKNubMainLoop(); }
+err=TRKTerminateNub(); TRK_mainError_8033CFD0[0]=err;
 }
 
 s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3);
@@ -3568,5 +3548,88 @@ extern u8 gTRKCPUState[1072];
 extern u8 gTRKCPUState[1072];
 
 void TRKSaveExtended1Block(void) {
+    *(u32 *)gTRKCPUState = 0;
+}
+
+void TRKRestoreExtended1Block(void) {
+    extern M2C_UNK gTRKRestoreFlags;
+    u8 temp_r3;
+
+    temp_r3 = M2C_FIELD(&gTRKRestoreFlags, u8 *, 0);
+    M2C_FIELD(&gTRKRestoreFlags, u8 *, 0) = 0U;
+    M2C_FIELD(&gTRKRestoreFlags, u8 *, 1) = 0U;
+    if ((s32) temp_r3 != 0) {
+        M2C_ERROR(/* unknown instruction: mttbl $r24 */);
+        M2C_ERROR(/* unknown instruction: mttbu $r25 */);
+    }
+    M2C_ERROR(/* unknown instruction: mtspr GQR0, $r20 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR1, $r21 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR2, $r22 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR3, $r23 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR4, $r24 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR5, $r25 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR6, $r26 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR7, $r27 */);
+    M2C_ERROR(/* unknown instruction: mtspr HID2, $r28 */);
+    M2C_ERROR(/* unknown instruction: mtspr DMA_U, $r30 */);
+    M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r31 */);
+    M2C_ERROR(/* unknown instruction: mtspr DABR, $r19 */);
+    M2C_ERROR(/* unknown instruction: mtspr PMC1, $r20 */);
+    M2C_ERROR(/* unknown instruction: mtspr PMC2, $r21 */);
+    M2C_ERROR(/* unknown instruction: mtspr PMC3, $r22 */);
+    M2C_ERROR(/* unknown instruction: mtspr PMC4, $r23 */);
+    M2C_ERROR(/* unknown instruction: mtspr SIA, $r24 */);
+    M2C_ERROR(/* unknown instruction: mtspr MMCR0, $r25 */);
+    M2C_ERROR(/* unknown instruction: mtspr MMCR1, $r26 */);
+    M2C_ERROR(/* unknown instruction: mtspr THRM1, $r27 */);
+    M2C_ERROR(/* unknown instruction: mtspr THRM2, $r28 */);
+    M2C_ERROR(/* unknown instruction: mtspr THRM3, $r29 */);
+    M2C_ERROR(/* unknown instruction: mtspr ICTC, $r30 */);
+    M2C_ERROR(/* unknown instruction: mtspr L2CR, $r31 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x0, $r16 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x1, $r17 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x2, $r18 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x3, $r19 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x4, $r20 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x5, $r21 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x6, $r22 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x7, $r23 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x8, $r24 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0x9, $r25 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xa, $r26 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xb, $r27 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xc, $r28 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xd, $r29 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xe, $r30 */);
+    M2C_ERROR(/* unknown instruction: mtsr 0xf, $r31 */);
+    M2C_ERROR(/* unknown instruction: mtspr HID0, $r12 */);
+    M2C_ERROR(/* unknown instruction: mtspr HID1, $r13 */);
+    M2C_ERROR(/* unknown instruction: mtsrr1 $r14 */);
+    M2C_ERROR(/* unknown instruction: mtspr PVR, $r15 */);
+    M2C_ERROR(/* unknown instruction: mtibatu 0x0, $r16 */);
+    M2C_ERROR(/* unknown instruction: mtibatl 0x0, $r17 */);
+    M2C_ERROR(/* unknown instruction: mtibatu 0x1, $r18 */);
+    M2C_ERROR(/* unknown instruction: mtibatl 0x1, $r19 */);
+    M2C_ERROR(/* unknown instruction: mtibatu 0x2, $r20 */);
+    M2C_ERROR(/* unknown instruction: mtibatl 0x2, $r21 */);
+    M2C_ERROR(/* unknown instruction: mtibatu 0x3, $r22 */);
+    M2C_ERROR(/* unknown instruction: mtibatl 0x3, $r23 */);
+    M2C_ERROR(/* unknown instruction: mtdbatu 0x0, $r24 */);
+    M2C_ERROR(/* unknown instruction: mtdbatl 0x0, $r25 */);
+    M2C_ERROR(/* unknown instruction: mtdbatu 0x1, $r26 */);
+    M2C_ERROR(/* unknown instruction: mtdbatl 0x1, $r27 */);
+    M2C_ERROR(/* unknown instruction: mtdbatu 0x2, $r28 */);
+    M2C_ERROR(/* unknown instruction: mtdbatl 0x2, $r29 */);
+    M2C_ERROR(/* unknown instruction: mtdbatu 0x3, $r30 */);
+    M2C_ERROR(/* unknown instruction: mtdbatl 0x3, $r31 */);
+    M2C_ERROR(/* unknown instruction: mtsdr1 $r22 */);
+    M2C_ERROR(/* unknown instruction: mtdar $r23 */);
+    M2C_ERROR(/* unknown instruction: mtdsisr $r24 */);
+    M2C_ERROR(/* unknown instruction: mtsprg 0x0, $r25 */);
+    M2C_ERROR(/* unknown instruction: mtsprg 0x1, $r26 */);
+    M2C_ERROR(/* unknown instruction: mtsprg 0x2, $r27 */);
+    M2C_ERROR(/* unknown instruction: mtsprg 0x3, $r28 */);
+    M2C_ERROR(/* unknown instruction: mtspr IABR, $r30 */);
+    M2C_ERROR(/* unknown instruction: mtear $r31 */);
 }
 
