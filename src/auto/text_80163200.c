@@ -8170,8 +8170,143 @@ if(p) Ui_SetWidgetText(p,(u8 *)gUiMsgStrings+0x2a3);
 #pragma cplusplus reset
 }
 
-void fn_80171004(void *arg0) {
-    (void)arg0;
+void fn_80171004(void *arg0)
+{
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_AddChild(void *, void *);
+    void *Heap_Alloc(s32);
+    void *fn_80179800(void *, s16, s16, s32, s32, s16);
+    void fn_80171218(void *, s32, s32, s32, s32);
+    void fn_801439F0(void *, void *, void *);
+    void fn_80143570(void *);
+    u8 fn_80175924(s32 **, s32);
+    void Sound_Create(void *, void *);
+
+    extern u32 gConvoy[];
+    extern u32 gUiContext[];
+    extern u16 gUiMsgStrings[];
+
+    u8 *self;
+    u8 *child;
+    u8 *list;
+    u8 *obj;
+    u8 *slot;
+    void *p;
+    s32 i;
+    s16 pos[2];
+    s16 slide[2];
+    s16 height;
+
+    self = (u8 *)arg0;
+
+    list = *(u8 **)(self + 0x4C);
+    list[0x78] = 0;
+    list[0x4A] = 1;
+
+    child = Ui_FindChild(self, 0x100, 0);
+
+    if (child != NULL) {
+        height = (s16)(
+            *(s16 *)(child + 0x10) -
+            *(s16 *)(child + 0xC)
+        );
+
+        pos[0] = *(s16 *)(child + 0xA);
+        pos[1] = -height;
+
+        Ui_SlideWidgetChild(self, child, pos, 0);
+    }
+
+    p = Heap_Alloc(0x12C);
+
+    if (p != NULL) {
+        p = fn_80179800(
+            p,
+            0x260,
+            0x84,
+            0x108,
+            0x110,
+            0x1F4
+        );
+    }
+
+    *(void **)(self + 0x54) = p;
+
+    list = *(u8 **)(self + 0x54);
+
+    if (list != NULL) {
+        *(s32 *)(list + 4) =
+            *(s32 *)(list + 4) + 1;
+    }
+
+    list = *(u8 **)(self + 0x54);
+
+    *(s16 *)(list + 8) = 0x105;
+    *(s16 *)(list + 0x24) = 8;
+    *(s16 *)(list + 0x8A) = 2;
+    list[0x4C] = 0;
+
+    i = 0;
+    slot = (u8 *)gConvoy;
+
+    do {
+        list = *(u8 **)(self + 0x54);
+
+        if (*(u32 *)slot != 0) {
+            fn_801439F0(list, slot, NULL);
+        }
+
+        i++;
+        slot += 8;
+    } while (i < 0xC8);
+
+    fn_80143570(*(void **)(self + 0x54));
+
+    list = *(u8 **)(self + 0x54);
+
+    *(u32 *)(list + 0x11C) = 0;
+    *(void **)(list + 0x120) = (void *)fn_80175924;
+    *(u32 *)(list + 0x124) = gUiContext[0];
+
+    ((void (*)(void *))(*(void ***)list)[13])(list);
+
+    Ui_AddChild(self, *(void **)(self + 0x54));
+
+    list = *(u8 **)(self + 0x54);
+
+    slide[0] = 0x138;
+    slide[1] = *(s16 *)(list + 0xC);
+
+    Ui_SlideWidgetChildMode1(
+        self,
+        list,
+        slide,
+        0
+    );
+
+    obj = Heap_Alloc(0x40);
+
+    if (obj != NULL) {
+        fn_80171218(
+            obj,
+            0x198,
+            0x38,
+            0xB8,
+            0xBE
+        );
+    }
+
+    *(s16 *)(obj + 8) = 0x109;
+    *(s16 *)(obj + 0x24) = 8;
+
+    Ui_AddChild(self, obj);
+
+    Sound_Create(
+        (u8 *)gUiMsgStrings + 0x210,
+        self
+    );
 }
 
 void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style) {
@@ -18503,6 +18638,8 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
+typedef struct UiListPoint { s16 x, y; } UiListPoint;
+typedef struct UiListMetrics { u8 pad[0x4E]; s16 index; u8 pad50[4]; s16 step; s16 x; s16 y; } UiListMetrics;
 #pragma optimization_level 2
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point {s16 x,y;};
