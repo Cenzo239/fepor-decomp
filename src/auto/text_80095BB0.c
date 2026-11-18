@@ -1,6 +1,22 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void *Event_SelectCommandResource(void **slot,u32 flags,s32 code,s32 kind) {
+extern u8 gEventCmdStrings[];
+void *fn_80055204(void *,s32);
+void *str;
+if(kind==1)return 0;
+if(code==0x52)return 0;
+if(flags&0x1000000)return gEventCmdStrings+0xDB;
+if(flags&0x20000)return gEventCmdStrings+0xED;
+if(flags&2)return gEventCmdStrings+0xFA;
+if(slot){str=fn_80055204(*slot,1);if(str)return str;}
+if(flags&0x40)return gEventCmdStrings+0x105;
+if(code==0x51)return gEventCmdStrings+0x114;
+if(code==0x50)return gEventCmdStrings+0xFA;
+return 0;
+}
+
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -253,13 +269,20 @@ void fn_800973F0(u32 *,s32);
 extern u8 gBattle[],gEventCmdStrings[];
 extern void **lbl_80367500,**lbl_80367504;
 s32 ents[40],buf[20];u32 flaga,flagb;
-s16 *idx; s16 saved; s32 cur,cursor,offset;
-s32 n,i,count,kind,arg_save;
-s32 *p; u8 *ep;
-s32 c; u8 ok;
+void **g0;
+s32 arg_save;
+u8 *ep;
+s32 i;
+s32 count;
+s32 *p;
+s32 n;
+s32 cur;
+s16 saved;
+s16 *idx;
+s32 cursor,offset,c,kind;
+u8 ok;
 u32 flags;
 void *item,*str,*unit;
-void **g0;
 g0=lbl_80367500;
 if(!lbl_80367504)arg_save=0;
 else if(*lbl_80367504)arg_save=M2C_FIELD(*lbl_80367504,s32 *,0x280);
@@ -270,7 +293,7 @@ for(;;){
 cursor=*idx;offset=cursor*4+4;
 switch((s32)((u8*)idx)[offset]){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x54:goto scan1done;
-default:fn_800973F0(&flaga,((u8*)idx)[cursor*4+4]);break;
+default:offset=cursor*4+4;fn_800973F0(&flaga,((u8*)idx)[offset]);break;
 }
 (*idx)++;
 }
@@ -279,7 +302,7 @@ scan1done:
 p=buf;for(i=0;i<n;p++,i++)GActor_RequestRes((void*)Event_GetCmdFlagRes(*p));
 saved=*idx;ep=(u8*)ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
 for(;;){
-cur=*idx;c=((u8*)idx)[cur*4+4];
+cur=*idx;offset=cur*4+4;c=((u8*)idx)[offset];
 switch(c){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:goto scan2done;
 case 0x56:
@@ -290,7 +313,7 @@ switch((s32)((u8*)idx)[offset]){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:case 0x54:goto scan3done;
 case 9:case 0x15:
 if((s8)*(s16*)((u8*)idx+cursor*4+6)==0)flagb|=0x20000;break;
-default:fn_800973F0(&flagb,((u8*)idx)[cursor*4+4]);break;
+default:offset=cursor*4+4;fn_800973F0(&flagb,((u8*)idx)[offset]);break;
 }
 (*idx)++;
 }
