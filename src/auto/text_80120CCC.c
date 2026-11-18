@@ -1,6 +1,8 @@
 /* Functions from 0x80120CCC to 0x80127D80, found by decomp-toolkit. */
 #include "common.h"
 
+typedef struct SkyVector { f32 x, y, z; } SkyVector;
+
 extern f64 lbl_8036A2C8;
 
 typedef struct {
@@ -1864,7 +1866,7 @@ void fn_8012391C(void *arg0) {
 #pragma global_optimizer on
 void fn_80123988(void *arg0)
 {
-    void *Process_Create(void *, void *);
+    void *Process_Create(const void *, void *);
     void *Map_Get(void);
 
     extern s32 lbl_80274F68[3];
@@ -1878,7 +1880,7 @@ void fn_80123988(void *arg0)
     u8 *parent;
     u8 *map;
     u32 skyIndex;
-    u8 *defs;
+    const u8 *defs;
     u32 sp8[3];
 
     self = (u8 *)arg0;
