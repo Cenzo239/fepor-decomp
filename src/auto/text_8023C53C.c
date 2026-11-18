@@ -7260,15 +7260,45 @@ fn_80249E14(voice);
 }
 #pragma dont_inline reset
 
-void fn_802514D0(void *arg0, s32 arg1) {
-    if (M2C_FIELD(arg0, s32 *, 0x9C) > 0) {
-        M2C_FIELD(arg0, s32 *, 0x9C) = M2C_FIELD(arg0, s32 *, 0x9C) - 1;
-        if (M2C_FIELD(arg0, s32 *, 0x9C) <= 0) {
-            M2C_FIELD(arg0, s32 *, 0x9C) = 0;
-        }
-    }
+#pragma global_optimizer off
+void fn_802514D0(u8 *voice, u32 *command) {
+void fn_8026146C(s32 *);
+void fn_8026147C(u32 *,s32);
+u32 time;
+s8 a,b;
+if((command[0]>>24)&3) *(u64 *)(voice+0x114)|=0x4000;
+else *(u64 *)(voice+0x114)&=~0x4000ULL;
+time=command[1]>>16;
+if((command[1]>>8)&1) fn_8026146C((s32 *)&time);
+else fn_8026147C(&time,(s32)voice);
+if(time) {
+*(u64 *)(voice+0x114)|=0x2000;
+*(u32 *)(voice+0x148)=time;
+a=command[0]>>8;
+b=command[0]>>16;
+if(a<0) {
+if(b<0) *(u8 *)(voice+0x145)=-b;else *(u8 *)(voice+0x145)=b;
+*(u8 *)(voice+0x144)=-a;
+*(u32 *)(voice+0x14c)=*(u32 *)(voice+0x148)>>1;
+} else {
+if(b<0) {
+if(a==0) {
+*(u8 *)(voice+0x145)=-b;
+*(u32 *)(voice+0x14c)=*(u32 *)(voice+0x148)>>1;
+} else {
+*(u8 *)(voice+0x145)=100-b;
+*(u32 *)(voice+0x14c)=0;
+a--;
 }
-
+} else {
+*(u8 *)(voice+0x145)=b;
+*(u32 *)(voice+0x14c)=0;
+}
+*(u8 *)(voice+0x144)=a;
+}
+} else *(u64 *)(voice+0x114)&=~0x2000ULL;
+}
+#pragma global_optimizer reset
 void fn_8025164C(void *arg0)
 {
     extern u16 lbl_8029F1B0[];
