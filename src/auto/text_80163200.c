@@ -12602,7 +12602,7 @@ void *fn_801784C8(void) {
     return (char *)&gUiMsgStrings + 0x5A7;
 }
 
-#pragma scheduling off
+#pragma opt_peephole off
 s32 fn_801784D8(void) {
  u8 fn_801EAA88(void); s32 fn_80015680(void *); u8 fn_8014D8DC(void *);
  extern u8 gUnitLists[]; extern u8 gBattleState[];
@@ -12612,8 +12612,7 @@ s32 fn_801784D8(void) {
  if(count<=1 && fn_8014D8DC(gBattleState)==0) return 2;
  return 0;
 }
-
-#pragma scheduling reset
+#pragma opt_peephole reset
 /* If entry type is 2, show a lock-message popup at parent+entry pos; else set UI command 0x81. */
 s32 Ui_SetCmd81OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
@@ -16208,60 +16207,34 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 flags, s32 frame, f32 x, f32 y,
     Prim2D_PrepareTex();
 }
 
-void fn_8017DC60(void *arg0, s32 arg1) {
-    s32 spC;
-    s32 sp8;
-    f32 temp_f29;
-    f32 temp_f30;
-    f32 var_f30;
-    f32 var_f31;
-    s16 temp_r5;
-    s16 temp_r6;
-    s16 temp_r6_2;
-    s32 temp_r0;
-    s32 temp_r3;
+extern "C" void fn_8017DC60(UiAnimatedSprite *arg0, s32 arg1) {
 
-    M2C_FIELD(arg0, s16 *, 0x14) = (s16) (M2C_FIELD(arg0, s16 *, 0x14) + 1);
-    if ((s16) M2C_FIELD(arg0, s16 *, 0x16) != 0) {
-        M2C_FIELD(arg0, s16 *, 0x14) = (s16) (M2C_FIELD(arg0, s16 *, 0x14) + 2);
-        M2C_FIELD(arg0, s16 *, 0x16) = (s16) (M2C_FIELD(arg0, s16 *, 0x16) + 1);
-    }
-    if ((s32) ((s16) M2C_FIELD(arg0, s16 *, 0x14) >> 2) >= 0xC) {
-        M2C_FIELD(arg0, s16 *, 0x14) = 0;
-    }
-    if ((s32) ((s16) M2C_FIELD(arg0, s16 *, 0x16) >> 2) > 6) {
-        M2C_FIELD(arg0, s16 *, 0x16) = 0;
-    }
-    temp_r6 = M2C_FIELD(arg0, s16 *, 0xE);
-    spC = temp_r6 ^ 0x80000000;
-    sp8 = 0x43300000;
-    temp_r6_2 = M2C_FIELD(arg0, s16 *, 0x14);
-    temp_f30 = (f32) M2C_FIELD(arg0, s16 *, 0x10);
-    temp_f29 = (f32) M2C_FIELD(arg0, s16 *, 0x12);
-    var_f31 = (f32) temp_r6 - (f32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0), s16 (**)(void *, s16), 0x20)(arg0, temp_r6_2) >> 1);
-    temp_r5 = M2C_FIELD(arg0, s16 *, 0x16);
-    var_f30 = temp_f30 - (f32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0), s16 (**)(void *), 0x24)(arg0) >> 1);
-    if ((temp_r5 > 0) && ((u8) M2C_FIELD(arg0, u8 *, 0xD) != 0)) {
-        temp_r0 = M2C_FIELD(arg0, s32 *, 8);
-        temp_r3 = 6 - (temp_r5 >> 2);
-        switch (temp_r0) {                          /* irregular */
-        case 0:
-            var_f31 -= (f32) temp_r3;
-            break;
-        case 1:
-            var_f31 += (f32) temp_r3;
-            break;
-        case 2:
-            var_f30 -= (f32) temp_r3;
-            break;
-        case 3:
-            var_f30 += (f32) temp_r3;
-            break;
-        }
-    }
-    if ((u8) M2C_FIELD(arg0, u8 *, 0xC) != 0) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0), M2C_UNK (**)(void *, s32, s32, f32, f32, f32), 0x30)(arg0, arg1, temp_r6_2 >> 2, var_f31, var_f30, temp_f29);
-    }
+f32 x,y,z;
+s32 frame;
+s16 movement;
+s32 offset;
+s16 px,py,pz,anim;
+arg0->frame++;
+if(arg0->movement!=0) {arg0->frame+=2;arg0->movement++;}
+if((arg0->frame>>2)>=12) arg0->frame=0;
+if((arg0->movement>>2)>6) arg0->movement=0;
+px=arg0->x;py=arg0->y;pz=arg0->z;
+anim=arg0->frame;
+x=px;y=py;z=pz;
+frame=anim>>2;
+x-=(f32)(arg0->getW()>>1);
+y-=(f32)(arg0->getH()>>1);
+movement=arg0->movement;
+if(movement>0 && arg0->moving) {
+offset=6-(movement>>2);
+switch(arg0->direction) {
+case 0:x-=offset;break;
+case 1:x+=offset;break;
+case 2:y-=offset;break;
+case 3:y+=offset;break;
+}
+}
+if(arg0->visible) arg0->draw(arg1,frame,x,y,z);
 }
 
 #pragma cplusplus reset
