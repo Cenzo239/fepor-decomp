@@ -379,12 +379,6 @@ void fn_801214A4(void) {
 
 #pragma opt_common_subs reset
 #pragma opt_unroll reset
-static inline s32 Ui_MinCount(s32 a, s32 b)
-{
- if (b < a) a = b;
- return a;
-}
-
 #pragma global_optimizer on
 void fn_80121630(void *arg0)
 {
@@ -409,9 +403,9 @@ void fn_80121630(void *arg0)
 
         *(s16 *)&lbl_8032BDE8[0x4014] = 0;
         *(s16 *)&lbl_8032BDE8[0x4016] = 0x20;
-        *(u8 *)&lbl_8032BDE8[0x4013] = 0;
-        *(u8 *)&lbl_8032BDE8[0x4012] = 0;
-        *(s16 *)&lbl_8032BDE8[0x4010] = 0;
+        *(s16 *)&lbl_8032BDE8[0x4010] =
+            *(u8 *)&lbl_8032BDE8[0x4012] =
+            *(u8 *)&lbl_8032BDE8[0x4013] = 0;
 
         n = 0x100;
 
