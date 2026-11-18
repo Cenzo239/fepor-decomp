@@ -2449,7 +2449,8 @@ Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
+ActorMotionInterface *actor=(ActorMotionInterface*)arg0;
+((void (*)(void *,void *,s32))(*(void ***)((u8*)actor+0x40))[14])(&current,arg0,0);
 px=current[0];
 other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
@@ -7657,7 +7658,7 @@ def:
 }
 #pragma use_lmw_stmw reset
 
-s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
+u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 {
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
@@ -7731,8 +7732,8 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         s16 unk68;
     };
 
-    u8 **textRef;
     struct Obj *self;
+    u8 **textRef;
     u8 *text;
     struct Item *item;
     u8 *buffer;
@@ -7754,9 +7755,7 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     s32 bit;
 
     self = (struct Obj *)arg0;
-    textRef = (u8 **)arg1;
-
-    text = *textRef;
+    text = *(u8 **)arg1;
     ch = *text;
 
     if ((s8)ch == 0) {
@@ -7767,10 +7766,12 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     if ((s8)ch == 0xA) {
         fn_801220B8(lbl_8032BDE8);
         fn_801229F8(self->unk44);
-        text = *textRef;
-        *textRef = text + 1;
+        text = *(u8 **)arg1;
+        *(u8 **)arg1 = text + 1;
         return 1;
     }
+
+    textRef = (u8 **)arg1;
 
     if ((s8)ch == '#') {
         selected = self->unk5E;
@@ -7886,12 +7887,13 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             fn_80120F94();
         }
         buffer = lbl_8032FE24;
+        goto pipe_c_test;
+    pipe_c_body:
+        *textRef = text + 1;
+        *buffer++ = *text;
+    pipe_c_test:
         text = *textRef;
-        while ((s8)*text != '|') {
-            *textRef = text + 1;
-            *buffer++ = *text;
-            text = *textRef;
-        }
+        if ((s8)*text != '|') goto pipe_c_body;
         *buffer = 0;
         text = *textRef;
         *textRef = text + 1;
@@ -8050,12 +8052,13 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'R':
         buffer = lbl_8032FE24;
+        goto pipe_r_test;
+    pipe_r_body:
+        *textRef = text + 1;
+        *buffer++ = *text;
+    pipe_r_test:
         text = *textRef;
-        while ((s8)*text != '|') {
-            *textRef = text + 1;
-            *buffer++ = *text;
-            text = *textRef;
-        }
+        if ((s8)*text != '|') goto pipe_r_body;
         *buffer = 0;
         text = *textRef;
         *textRef = text + 1;
@@ -8077,12 +8080,13 @@ s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'B':
         buffer = lbl_8032FE24;
+        goto pipe_b_test;
+    pipe_b_body:
+        *textRef = text + 1;
+        *buffer++ = *text;
+    pipe_b_test:
         text = *textRef;
-        while ((s8)*text != '|') {
-            *textRef = text + 1;
-            *buffer++ = *text;
-            text = *textRef;
-        }
+        if ((s8)*text != '|') goto pipe_b_body;
         *buffer = 0;
         text = *textRef;
         *textRef = text + 1;
@@ -8981,6 +8985,15 @@ extern s32 gActiveCam;
 /* TODO: verify command mappings after table index 23. read_data truncates
  * jumptable_80290110 relocations there; cases s/n/w remain provisional.
  * Instruction match alone does not validate those jump-table entries. */
+static inline void Text_CopyDelimited(s8 **text, u8 *out)
+{
+    while ((u8)**text != '|') {
+        *out++ = *(*text)++;
+    }
+    *out = 0;
+    ++*text;
+}
+
 s32 fn_801208BC(s8 *text, s32 wanted)
 {
   s32 fn_80010428(s8 **, s32, f32);
