@@ -12513,34 +12513,35 @@ check:
 void fn_801CD5CC(void *self) {
 extern u32 gUiInputFlags; extern u8 *gPadInput; extern s16 lbl_80366EA8,lbl_80366EAA; extern u8 lbl_8027DE18[];
 void Ui_PlaySeCue(void*,s32);
-u8 gate=0;
-u32 flags=gUiInputFlags;
-u32 input,pressed;
+u32 pressed;
+s32 v;
+s16 *cap;
+s16 old;
+s32 i;
+u32 *p;
+s16 lim;
+u32 flags;
+u8 gate;
+u32 input;
+gate=0;flags=gUiInputFlags;
 if((flags&0x10) && !(flags&0x20)) gate=1;
 if(gate) return;
 input=*(u32*)(gPadInput+0xc);
 pressed=*(u32*)(gPadInput+4) & (*(u32*)(gPadInput+8)^*(u32*)(gPadInput+4));
 if(input&0x11000041) {
 s16 count;
-s16 *cap;
-s32 i;
-u32 *p;
-s16 old,lim,v;
+
 for(i=0,p=(u32*)((u8*)self+0x3c);*p;i++,p++) {}
 count=(s16)i; cap=&count;
 if(lbl_80366EA8<(s16)i) cap=&lbl_80366EA8;
 old=*(s16*)((u8*)self+0x70);lim=*cap;
 v=old-1;
 *(s16*)((u8*)self+0x70)=v;
-if(v<0) *(s16*)((u8*)self+0x70)=input==pressed?lim:0;
+if((s16)v<0) *(s16*)((u8*)self+0x70)=input==pressed?lim:0;
 if(old!=*(s16*)((u8*)self+0x70)) Ui_PlaySeCue(lbl_8027DE18+8,0x64);
 } else if(input&0x22000022) {
 s16 count;
-s16 *cap;
-s32 i;
-u32 *p;
-s16 old,lim;
-s32 v;
+
 for(i=0,p=(u32*)((u8*)self+0x3c);*p;i++,p++) {}
 count=(s16)i; cap=&count;
 if(lbl_80366EAA<(s16)i) cap=&lbl_80366EAA;
@@ -18806,20 +18807,22 @@ Process_CreateChild(lbl_80299C58,owner);
 #pragma global_optimizer reset
 #pragma cplusplus reset
 void fn_801DE274(void) {
-    void fn_80231D94(void *, void *, ...);
-    s32 fn_8005C6A0(void *);
+    s32 sprintf(char *, char *, ...);
+    s32 FileCache_GetFlags(char *);
     void fn_8006EEFC(void *, void *);
-    extern u8 lbl_8027E258[];
+    extern char gUiSeCues[];
     extern u8 lbl_80299A78[];
     char buf[0x40];
+    char *cues;
     u8 *p;
     s32 i;
 
     p = lbl_80299A78;
+    cues = gUiSeCues;
     i = 0;
     do {
-        fn_80231D94(buf, lbl_8027E258 + 0x661, *(s32 *)(p + 4));
-        if (fn_8005C6A0(buf) & 0x2000) {
+        sprintf(buf, cues + 0x661, *(s32 *)(p + 4));
+        if (FileCache_GetFlags(buf) & 0x2000) {
             fn_8006EEFC(p + 8, buf);
         }
         i += 1;
@@ -22139,17 +22142,37 @@ void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {
     *mins = (q / 60U) % 60U;
     *hours = q / 3600U;
 }
-#pragma optimization_level reset
-void fn_801E3B08(u8* arg0) {
-    u32 i;
-    
-    // Initialize first 32 bytes with 0x20
-    for (i = 0; i < 32; i++) {
-        arg0[i] = 0x20;
-    }
-}
-
 #pragma opt_strength_reduction off
+#pragma global_optimizer off
+void fn_801E3B08(u8 *dst) {
+void *Msg_Expand(void*); void fn_8020B294(s64,void*); void fn_80231E74(void*,s32,void*,...);
+s32 strlen(void*); void *memcpy(void*,void*,s32);
+extern u8 gSaveStrings[];
+u8 formatted[0x28];
+s32 cal[10];
+u8 suffix[0x20];
+u8 space; u8 *p; s32 ctr; s32 i; void *name;
+i=0; space=0x20;
+for(ctr=2;ctr!=0;ctr--) {
+p=dst+i; i+=8;
+p[0]=space;p[1]=space;p[2]=space;p[3]=space;p[4]=space;p[5]=space;p[6]=space;p[7]=space;
+p=dst+i; i+=8;
+p[0]=space;p[1]=space;p[2]=space;p[3]=space;p[4]=space;p[5]=space;p[6]=space;p[7]=space;
+p=dst+i; i+=8;
+p[0]=space;p[1]=space;p[2]=space;p[3]=space;p[4]=space;p[5]=space;p[6]=space;p[7]=space;
+p=dst+i; i+=8;
+p[0]=space;p[1]=space;p[2]=space;p[3]=space;p[4]=space;p[5]=space;p[6]=space;p[7]=space;
+}
+name=Msg_Expand(gSaveStrings+0x1c7);
+fn_8020B294(OSGetTime(),cal);
+cal[4]++;
+suffix[0]=0;
+fn_80231E74(formatted,0x20,gSaveStrings+0x1d0,cal[4],cal[3],cal[5]%100,cal[2],cal[1],suffix);
+memcpy(dst,name,strlen(name));
+memcpy(dst+0x20,formatted,strlen(formatted));
+}
+#pragma global_optimizer reset
+#pragma opt_strength_reduction reset
 void fn_801E3CA8(void *arg0) {
     void *Msg_Expand(void *);
     void DebugPrint(void *, s32, ...);
