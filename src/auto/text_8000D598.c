@@ -1151,54 +1151,20 @@ s32 Text_MeasureHeight(s32 arg0, f32 arg1)
     return value;
 }
 
-s32 fn_80010428(s32 arg0, s32 arg1, f32 arg2)
-{
+s32 fn_80010428(s32 arg0,s32 arg1,f32 arg2) {
+    s32 fn_8010494C(s32);
+    s32 fn_80104FC4(s32);
+    s32 index, value;
     u32 *table;
     u32 result;
-    s32 index;
-    s32 value;
-    u32 *p;
-
-    if (arg1 == -1) {
-        index = 0;
-        result = (u32)fn_8010494C(lbl_802AEE20[index]);
-        table = (u32 *)lbl_802AEE20;
-        if (table[0] == result) {
-            index = 0;
-        } else {
-            p = table + 1;
-            if (table[1] == result) {
-                index = 1;
-            } else if (*++p == result) {
-                index = 2;
-            } else if (*++p == result) {
-                index = 3;
-            } else if (p[1] == result) {
-                index = 4;
-            } else {
-                index = -1;
-            }
-        }
-    }
-
-    value = (s32)(arg2 * (f32)fn_80104FC4(arg0));
-
-    if (index == -1) {
-        index = 0;
-        result = (u32)fn_8010494C(lbl_802AEE20[index]);
-        if (table[0] != result) {
-            p = table + 1;
-            if (table[1] != result) {
-                if (*++p != result) {
-                    if (*++p != result) {
-                        if (p[1] != result) {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    if(arg1==-1) arg1=0;
+    result=(u32)fn_8010494C(lbl_802AEE20[arg1]);
+    table=(u32 *)lbl_802AEE20;
+    index=Text_FindFontIndex(table,result);
+    value=(s32)(arg2*(f32)fn_80104FC4(arg0));
+    if(index==-1) index=0;
+    result=(u32)fn_8010494C(lbl_802AEE20[index]);
+    Text_FindFontIndex(table,result);
     return value;
 }
 
