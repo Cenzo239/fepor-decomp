@@ -267,12 +267,9 @@ volatile u32 __PIRegs_80267458[16] : 0xCC003000;
 void fn_80267458(unsigned long arg0, void *context)
 {
   void (*callback)(s16, void *) = (void (*)(s16, void *))lbl_80368B34;
-  *(volatile u32 *)0xCC003000 = 0x1000;
-  *(volatile u32 *)0xCC003000 = 0x1000;
-  if (callback != NULL)
-  {
+  __PIRegs_80267458[0] = 0x1000;
+  if (callback)
     callback((s16)arg0, context);
-  }
 }
 #pragma opt_propagation reset
 void fn_80267498(s32 arg0) {
