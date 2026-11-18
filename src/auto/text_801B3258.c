@@ -1,12 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-struct NameGridCursor {
-    u8 pad[0x3C];
-    void *p;
-    u8 pad2[8];
-    s16 x;
-    s16 y;
-};
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
