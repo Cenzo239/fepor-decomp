@@ -387,6 +387,11 @@ void *fn_800A010C(void) {
 }
 
 #pragma global_optimizer off
+static inline s32 MenuCmd_ToggledState(u8 flag) {
+    s32 state = 2;
+    if (flag != 0) state = 0;
+    return state;
+}
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
     s32 v = 2;
