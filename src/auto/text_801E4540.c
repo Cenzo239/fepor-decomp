@@ -2628,16 +2628,28 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
+#pragma global_optimizer off
+static inline u8 TabMenu_CountNewKey(s8 *key, u8 value)
+{
+    if (*key != (s8)value) {
+        *key = (s8)value;
+        return 1;
+    }
+    return 0;
+}
+
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
-It endA, endACopy, beginA, beginACopy, endB,endBCopy,beginB,beginBCopy,endC,endCCopy,beginC,beginCCopy;
-It a,aCopy,ae,aeCopy,b,bCopy,be,beCopy,c,cCopy,ce,ceCopy;
-struct {u8 value;} keyA,initA,keyB,initB,keyC,initC;
+It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
+It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, beginCCopy, beginC, endCCopy, endC;
+struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
 void *end;
 s32 count;
 u8 found;
 u8 value;
-switch((s8)*((u8*)arg0+0x30)) {
+s8 tab;
+tab = (s8)*((u8*)arg0+0x30);
+switch(tab) {
 case 0:
 end=(u8*)arg0+0x54;
 endACopy.node=end;
@@ -2649,7 +2661,7 @@ initA.value=-1;keyA=initA;
 count=0;
 while(a.node!=end) {
 value=(*(u8**)((u8*)a.node+8))[2];
-if((s8)keyA.value!=(s8)value) {keyA.value=value;found=1;} else found=0;
+if(keyA.value!=(s8)value) {keyA.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 a.node=*(void**)((u8*)a.node+4);
 }
@@ -2665,7 +2677,7 @@ initB.value=-1;keyB=initB;
 count=0;
 while(b.node!=end) {
 value=(*(u8**)((u8*)b.node+8))[1];
-if((s8)keyB.value!=(s8)value) {keyB.value=value;found=1;} else found=0;
+if(keyB.value!=(s8)value) {keyB.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 b.node=*(void**)((u8*)b.node+4);
 }
@@ -2681,15 +2693,15 @@ initC.value=-1;keyC=initC;
 count=0;
 while(c.node!=end) {
 value=(*(u8**)((u8*)c.node+8))[4];
-if((s8)keyC.value!=(s8)value) {keyC.value=value;found=1;} else found=0;
+if(keyC.value!=(s8)value) {keyC.value=(s8)value;found=1;} else found=0;
 if(found) count++;
 c.node=*(void**)((u8*)c.node+4);
 }
 return count;
 }
-return (s32)arg0;
-}
 
+}
+#pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
 void TabMenu_ClearSelectedStatus(void *menu) {
     void Status_Clear(void *, u8);
