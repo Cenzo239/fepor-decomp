@@ -3217,7 +3217,7 @@ struct ActorUpdateInterface {
 #pragma cplusplus off
 #pragma cplusplus on
 #pragma global_optimizer off
-#pragma optimization_level 1
+#pragma optimization_level reset
 #pragma global_optimizer off
 extern "C" void fn_80116FE8(void *self) {
  s32 Str_Cmp(void *,char *); void fn_80111C8C(void *,void *);
