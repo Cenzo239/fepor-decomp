@@ -261,12 +261,18 @@ extern u16 lbl_803688EC[10];
 extern s32 lbl_8036894C;
 extern s32 lbl_8033E578[];
 
-void fn_80267458(s16 arg0) {
-    void (*callback)(s16) = lbl_80368B34;
-    *(u32 *)0xCC003000 = 0x1000;
-    if (callback != NULL) callback((s16)arg0);
+#pragma opt_propagation off
+void fn_80267458(unsigned long arg0)
+{
+  void (*callback)(s16) = lbl_80368B34;
+  *((u32 *) 0xCC003000) = 0x1000;
+  *((u32 *) 0xCC003000) = 0x1000;
+  if (callback != NULL)
+  {
+    callback((s16) arg0);
+  }
 }
-
+#pragma opt_propagation reset
 void fn_80267498(s32 arg0) {
  void (*callback)(s32) = (void (*)(s32))lbl_80368B30;
  *(u8 *)&lbl_80368B44 = 1;
@@ -412,41 +418,5 @@ s32 fn_80267738(s32 *arg0) {
     *exi = *exi & 0x405;
     return !err;
 }
-#pragma use_lmw_stmw reset
+#pragma push
 #pragma global_optimizer on
-int fn_802677E4(u8 *arg0, int arg1, int arg2)
-{
-    volatile u32 *exi_data;
-    volatile u32 *exi_control;
-    u32 value;
-    int i;
-
-    if (arg2 == 0) {
-        return 0;
-    }
-
-    value = 0;
-    i = 0;
-
-    for (; i < arg1; i++) {
-        value |= (u32)arg0[i] << ((3 - i) * 8);
-    }
-
-    exi_data = (volatile u32 *)0xCC006838;
-    *exi_data = value;
-
-    exi_control = (volatile u32 *)0xCC006834;
-    *exi_control =
-        ((arg2 << 2) | 1) | ((arg1 - 1) << 4);
-
-    if ((*exi_control & 1) != 0) {
-        value = *exi_data;
-        i = 0;
-
-        for (; i < arg1; i++) {
-            arg0[i] = (u8)(value >> ((3 - i) * 8));
-        }
-    }
-
-    return 1;
-}

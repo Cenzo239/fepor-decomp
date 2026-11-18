@@ -671,4 +671,7 @@ text_80266F18.c:
 	.text       start:0x80266F18 end:0x80267458
 
 auto/text_80267458.c:
-	.text       start:0x80267458 end:0x80267A7C
+	.text       start:0x80267458 end:0x802677E4
+
+auto/text_802677E4.c:
+	.text       start:0x802677E4 end:0x80267A7C
