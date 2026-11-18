@@ -12,8 +12,8 @@ extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-#pragma optimization_level 2
-#pragma global_optimizer off
+#pragma optimization_level 4
+#pragma global_optimizer on
 s32 fn_80006264(u32 *a,u32 *b,u32 n) {
 a--; n>>=2; b--;
 do {u32 x=*++a; u32 y=*++b; if(x!=y) goto different;} while(--n!=0);
