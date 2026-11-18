@@ -180,9 +180,9 @@ void *SelectThread_8020A2C4(s32 arg0) {
     extern void (*SwitchThreadCallback_80366F50)(void *, void *);
     void **queue;
     OSThread *thread;
-    OSThread *next;
+    
     OSThread *tail;
-    OSThread *pred;
+    
     s32 prio;
     OSThreadQueue *q;
         OSContext *cur; OSContext *context;
@@ -241,6 +241,8 @@ void *SelectThread_8020A2C4(s32 arg0) {
         } while ((u32)RunQueueBits_80368518 == 0);
         OSClearContext((u8 *)queue + 0x730);
     }
+    {
+    OSThread *next;
     RunQueueHint_8036851C = 0;
     prio = __cntlzw((u32)RunQueueBits_80368518);
     q = (OSThreadQueue *)((u8 *)queue + (prio * 8));
@@ -256,6 +258,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     OSSetCurrentContext(next);
     OSLoadContext(next);
     return next;
+    }
 }
 #pragma opt_common_subs reset
 #pragma peephole reset
