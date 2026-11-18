@@ -2102,40 +2102,30 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
     return 1;
 }
 #pragma opt_common_subs reset
-s32 fn_8020F334(DVDReadyCommand *block) {
+s32 fn_8020F334(void *arg0) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void OSSleepThread(void *);
-    s32 fn_8020F0B8(DVDReadyCommand *, void (*)(s32, void *));
-    void fn_8020F3E0(s32, void *);
-    extern void *__DVDThreadQueue;
+    s32 fn_8020F0B8(void *, void *);
+    extern M2C_UNK __DVDThreadQueue;
+    extern M2C_UNK fn_8020F3E0;
     s32 interrupts;
     s32 state;
     u32 command;
 
-    if (fn_8020F0B8(block, fn_8020F3E0) == 0) {
+    if (fn_8020F0B8(arg0, &fn_8020F3E0) == 0) {
         return -1;
     }
     interrupts = OSDisableInterrupts();
     while (1) {
-        state = block->state;
-        if ((u32)(state + 1) <= 1U) {
-            break;
-        }
-        if (state == 10) {
-            break;
-        }
+        state = ((DVDReadyCommand *)arg0)->state;
+        if ((u32)(state + 1) <= 1U) break;
+        if (state == 10) break;
         if (state == 3) {
-            command = (u32)block->command;
-            if ((u32)(command - 4) <= 1U) {
-                break;
-            }
-            if (command == 13) {
-                break;
-            }
-            if (command == 15) {
-                break;
-            }
+            command = (u32)((DVDReadyCommand *)arg0)->command;
+            if ((u32)(command - 4) <= 1U) break;
+            if (command == 13) break;
+            if (command == 15) break;
         }
         OSSleepThread(&__DVDThreadQueue);
     }
@@ -2822,24 +2812,21 @@ OSInitThreadQueue(lbl_8036860C);regs[0x30/2]=regs[0x30/2]&0x7fff;regs[0x34/2]=re
 lbl_80368614=0;lbl_80368618=0;__OSSetInterruptHandler(24,fn_8020FD50);__OSUnmaskInterrupts(0x80);
 }
 }
-#pragma peephole off
+#pragma peephole on
 void VIWaitForRetrace(void) {
-    extern u32 lbl_80368604;
-    extern u8 lbl_8036860C;
-    BOOL OSDisableInterrupts(void);
-    void OSRestoreInterrupts(BOOL);
-    void OSSleepThread(void *);
-    BOOL enabled;
-    u32 previous;
-
-    enabled = OSDisableInterrupts();
-    previous = lbl_80368604;
-    OSSleepThread((void *)&lbl_8036860C);
-    if (previous != lbl_80368604) {
-        OSRestoreInterrupts(enabled);
-    }
+extern u32 lbl_80368604;
+extern u8 lbl_8036860C;
+BOOL OSDisableInterrupts(void);
+void OSRestoreInterrupts(BOOL);
+void OSSleepThread(void *);
+BOOL enabled;
+u32 previous;
+enabled=OSDisableInterrupts();
+previous=lbl_80368604;
+do { OSSleepThread(&lbl_8036860C); } while(previous==lbl_80368604);
+OSRestoreInterrupts(enabled);
 }
-
+#pragma peephole reset
 void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 nonInterlace) {
     extern u8 lbl_8033A068[];
     s32 ni;
