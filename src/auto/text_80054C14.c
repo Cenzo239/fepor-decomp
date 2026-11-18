@@ -380,6 +380,8 @@ void fn_80054C14(void *arg0) {
     if(Pad_IsButton(pad,48)) fn_80025624(gPadInput,16);
 }
 
+#pragma peephole on
+#pragma global_optimizer on
 void *fn_80055204(void *arg0, s32 arg1) {
     if (arg0 == 0) {
         return 0;
