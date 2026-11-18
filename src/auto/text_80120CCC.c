@@ -307,27 +307,28 @@ void fn_801213EC(void *arg0) {
 
 #pragma opt_unroll off
 #pragma opt_common_subs off
+#pragma global_optimizer off
 void fn_80121414(void) {
-    extern u8 lbl_8032BDE8[];
-    s32 i;
-    s32 ctr;
-
-    i = 0;
-    *(u32 *)(lbl_8032BDE8 + 0x4000) = i;
-    *(u32 *)(lbl_8032BDE8 + 0x4004) = i;
-    *(u8 *)(lbl_8032BDE8 + 0x400C) = i;
-    for (ctr = 0x20; ctr != 0; ctr--) {
-        lbl_8032BDE8[(u8)(i + 0x100) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x101) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x102) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x103) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x104) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x105) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x106) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x107) << 6] = 0;
-        i += 8;
-    }
+extern u8 lbl_8032BDE8[];
+s32 i;
+s32 ctr;
+i=0;
+*(u32 *)(lbl_8032BDE8+0x4000)=i;
+*(u32 *)(lbl_8032BDE8+0x4004)=i;
+lbl_8032BDE8[0x400C]=i;
+for(ctr=32;ctr!=0;ctr--) {
+lbl_8032BDE8[(u8)(i+0x100)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x101)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x102)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x103)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x104)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x105)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x106)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x107)<<6]=0;
+i+=8;
 }
+}
+#pragma global_optimizer on
 
 void fn_801214A4(void) {
     extern u8 gBattleState[], lbl_80274D20[], lbl_8032BDE8[];
