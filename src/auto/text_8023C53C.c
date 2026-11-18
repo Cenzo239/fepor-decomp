@@ -40,6 +40,12 @@ typedef struct SoundEntry {
 typedef struct AudioTableRange { u16 count; u16 start; } AudioTableRange;
 typedef struct AudioTableEntry { s32 data; u16 id; u16 ref; } AudioTableEntry;
 typedef struct SynthVmState { u8 pad[0xAC]; s32 regs[16]; } SynthVmState;
+static inline s32 Synth_ReadVmRegister(SynthVmState *voice, u8 index) {
+extern s32 lbl_8034CB74[];
+index &= 31;
+if(index < 16) return voice->regs[index];
+return lbl_8034CB74[index - 16];
+}
 typedef struct SynthInsn {
     u32 flagA : 8;
     u32 storeReg : 8;
@@ -7265,39 +7271,41 @@ void fn_80250F18(void *arg0, u32 *arg1)
     u16 fn_802611F8(void);
     u32 Sound_IsHwVoiceActive(s32);
 
-    u64 vf;
-    s32 divisor;
-    s32 value;
-    u32 flags;
-    u32 count;
     u8 *voice;
+    u32 flags;
+    s32 value;
+    u32 count;
+    s32 divisor;
+    u64 vf;
 
     voice = (u8 *)arg0;
     count = *(u16 *)(voice + 0xAA);
 
-    if (count == 0U) {
+    if (count == 0) {
         flags = arg1[0];
         if ((flags >> 16) & 1) {
             value = fn_802611F8();
-            divisor = (s32)(arg1[1] >> 16);
-            count = (u32)(value % divisor);
-            *(u16 *)(voice + 0xAA) = (u16)count;
+            divisor = arg1[1] >> 16;
+            count = value % divisor;
+            *(u16 *)(voice + 0xAA) = count;
         } else {
             count = arg1[1] >> 16;
-            *(u16 *)(voice + 0xAA) = (u16)count;
+            *(u16 *)(voice + 0xAA) = count;
         }
         count = *(u16 *)(voice + 0xAA);
-        if (count != 0xFFFFU) {
-            *(u16 *)(voice + 0xAA) = (u16)(count + 1);
-        }
-    } else {
-        if (count != 0xFFFFU) {
-            count = *(u16 *)(voice + 0xAA) - 1;
-            *(u16 *)(voice + 0xAA) = (u16)count;
-            if ((count & 0xFFFF) == 0) goto update;
-        }
+        if (count == 0xFFFF)
+            goto flags;
+        *(u16 *)(voice + 0xAA) = count + 1;
+    } else if (count == 0xFFFF) {
+        goto flags;
     }
 
+    count = *(u16 *)(voice + 0xAA) - 1;
+    *(u16 *)(voice + 0xAA) = count;
+    if ((count & 0xFFFF) == 0)
+        goto update;
+
+flags:
     flags = arg1[0];
 
     if ((flags >> 8) & 1) {
@@ -7310,8 +7318,8 @@ void fn_80250F18(void *arg0, u32 *arg1)
 
     if ((flags >> 24) & 1) {
         vf = *(u64 *)(voice + 0x114);
-        if ((vf & 0x20ULL) == 0ULL) {
-            if (Sound_IsHwVoiceActive((s32)(*(u32 *)(voice + 0xF4) & 0xFF)) == 0) {
+        if ((vf & 0x20ULL) == 0) {
+            if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
                 goto update;
             }
@@ -7319,7 +7327,7 @@ void fn_80250F18(void *arg0, u32 *arg1)
     }
 
 update:
-    value = (s32)((arg1[1] & 0xFFFF) << 3);
+    value = (arg1[1] & 0xFFFF) << 3;
     *(u32 *)(voice + 0x38) = *(u32 *)(voice + 0x34) + value;
 }
 #pragma scheduling reset
@@ -8625,6 +8633,7 @@ void fn_80253860(SynthVmState *arg0, u32 *arg1, u8 op) {
     }
 }
 
+#pragma opt_strength_reduction off
 void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
 {
     extern u32 lbl_8034CB74[];
@@ -8693,7 +8702,7 @@ u32 selector;
             + ((word1 >> 16) << 3);
     }
 }
-
+#pragma opt_strength_reduction reset
 extern void (*lbl_803689AC)(u32,u32);
 #pragma opt_strength_reduction off
 void fn_80253BCC(SynthVmState *arg0, void *arg1) {
@@ -12808,17 +12817,19 @@ s32 fn_8025DAA0(
     extern u8 lbl_80368AAD;
     extern u8 lbl_80368AAE;
 
+    Entry *base;
     Entry *entry;
     Node *pool;
     Node *node;
-    u8 *previous;
     u8 *current;
+    u8 *previous;
     s32 index;
     u8 count;
     u8 nodeIndex;
     
     count = lbl_80368AAE;
-    entry = (Entry *)lbl_8035BF18;
+    base = (Entry *)lbl_8035BF18;
+    entry = base;
     index = 0;
 
     while (index < (s32)count) {
@@ -12834,12 +12845,12 @@ s32 fn_8025DAA0(
             return 0;
         }
 
-        entry = (Entry *)lbl_8035BF18 + index;
+        entry = base + index;
 
         entry->next = 0;
         entry->f8 = 0;
         entry->count = 0;
-        entry->key = *(u32 *)((u8 *)arg0 + 0x3C);
+        base[index].key = *(u32 *)((u8 *)arg0 + 0x3C);
 
         lbl_80368AAE = lbl_80368AAE + 1;
     }
@@ -12850,7 +12861,7 @@ s32 fn_8025DAA0(
         return 0;
     }
 
-    entry = (Entry *)lbl_8035BF18 + index;
+    entry = base + index;
     pool = (Node *)lbl_8035C918;
 
     current = (u8 *)entry->next;
