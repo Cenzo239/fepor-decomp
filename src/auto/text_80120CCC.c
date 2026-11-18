@@ -1894,11 +1894,11 @@ void fn_80123988(SkyProc *self)
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
 
-    u8 *base;
     u32 skyIndex;
     u8 *proc;
     u8 *map;
     SkyVector sp8;
+    u8 *base;
 
     self->skyIndex = -1;
 
@@ -3330,13 +3330,13 @@ extern u8 lbl_80274F74[]; extern f32 lbl_8036A30C,lbl_8036A35C,lbl_8036A3B8;
 f32 f0;
 f32 f1;
 f32 f2;
-f2=lbl_8036A30C;
+f2=0.0f;
 *(f32 *)((u8 *)arg0+0x4c)=f2;
 *(f32 *)((u8 *)arg0+0x50)=f2;
-f1=lbl_8036A35C;
+f1=0.1f;
 *(f32 *)((u8 *)arg0+0x34)=f1;
 *(f32 *)((u8 *)arg0+0x38)=f1;
-f0=lbl_8036A3B8;
+f0=0.05f;
 *(f32 *)((u8 *)arg0+0x3c)=f0;
 *(f32 *)((u8 *)arg0+0x40)=f2;
 *((u8 *)arg0+0x49)=0;
