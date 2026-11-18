@@ -1,5 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+extern f32 lbl_802A4590[512];
 
 typedef struct AudioGroupSlot { void *node; s32 id; void *data; } AudioGroupSlot;
 typedef struct AudioGroupState { u8 pad[8]; s16 count; u16 padA; AudioGroupSlot slots[128]; } AudioGroupState;
@@ -3132,8 +3133,8 @@ s32 fn_802555A0(u16,u8,s32,s32,u8,u8,u8,u8,u8,u8,u16,u16,u32,u8,u8,s32);
 s32 fn_8024866C(u16,s16,s32,s32,u8,u8,u8,u8,u8,u8,u16,u16,u32,u8,u8,s32);
 s32 fn_80255E88(void *);
 extern s32 gSynthVoices;
-u32 low; s32 note; u32 high; s32 result; s32 last; u8 *entry; s32 first; s32 value; s32 balance; s32 flags; u8 vel; u8 savedVelocity; u32 valid; s32 status; u16 count; u32 savedPan;
-savedVelocity=velocity; first=-1;
+u32 low; s32 note; u32 high; s32 result; s32 last; u8 *entry; s32 first; s32 value; s32 balance; s32 flags; u8 vel; u32 savedPan; u32 valid; s32 status; u16 count;
+first=-1;
 entry=(u8 *)fn_8025094C(id,&count);
 if(entry) {
 low=key&127; high=key&128; savedPan=pan;
@@ -3156,7 +3157,7 @@ balance=balance-64; balance+=savedPan;
 if(balance<0) balance=0; else if(balance>127) balance=127;
 } else balance=128;
 volume+=*(s16 *)(entry+6);
-vel=savedVelocity*entry[5]/127;
+vel=velocity*entry[5]/127;
 if(volume>255) volume=255; else volume=volume & ~(volume>>31);
 flags=*(u16 *)entry&0xC000;
 switch(flags) {
@@ -14618,17 +14619,18 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma fp_contract on
 f64 fn_80261344(f32 x) {
     extern f32 lbl_802831B8[];
-    extern f32 lbl_802831B0[];
-    extern f32 lbl_802831B4[];
     f64 guess;
     f64 half;
     f64 three;
     f64 zero;
-    f64 square;
-    zero = lbl_802831B8[0];
-    three = lbl_802831B8[-2];
-    half = lbl_802831B8[-1];
-    if (x == (f32)zero) return x;
+    f32 *r;
+    r = lbl_802831B8 - 2;
+    three = r[0];
+    half = r[1];
+    zero = r[2];
+    if (x == (f32)zero) {
+        return x;
+    }
     guess = __frsqrte(x);
     guess = (half * guess) * (three - x * (guess * guess));
     guess = (half * guess) * (three - x * (guess * guess));
