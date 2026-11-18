@@ -871,17 +871,15 @@ void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
-void GXSetTevAlphaIn(s32 stage,s32 a,s32 b,s32 c,s32 d) {
- u32 *gx=(u32 *)__GXData;
- u32 *p=gx+stage;
- u32 v=__rlwimi(p[0x170/4],a,13,16,18);
- v=__rlwimi(v,b,10,19,21);
- v=__rlwimi(v,c,7,22,24);
- v=__rlwimi(v,d,4,25,27);
- *(volatile u8 *)0xCC008000=0x61;
- *(volatile u32 *)0xCC008000=v;
- p[0x170/4]=v;
- ((u16 *)gx)[1]=0;
+void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
+    u32 *ptr = (u32 *)__GXData;
+    u32 value = ptr[(0x170 / 4) + stage];
+    value = __rlwimi(value, a, 13, 16, 18);
+    *(u8 *)0xCC008000 = 0x61;
+    value = __rlwimi(__rlwimi(__rlwimi(value, b, 10, 19, 21), c, 7, 22, 24), d, 4, 25, 27);
+    *(u32 *)0xCC008000 = value;
+    ptr[(0x170 / 4) + stage] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
