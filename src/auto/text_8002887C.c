@@ -1695,6 +1695,8 @@ extern "C" void fn_8002B520(void *arg0) {
         }
     }
 }
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
 #pragma cplusplus on
