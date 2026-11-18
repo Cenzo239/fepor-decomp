@@ -1864,7 +1864,7 @@ void fn_8012391C(void *arg0) {
 }
 
 #pragma global_optimizer on
-#pragma scheduling off
+#pragma scheduling on
 void fn_80123988(void *arg0)
 {
     void *Process_Create(void *, void *);
