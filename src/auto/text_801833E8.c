@@ -1203,6 +1203,12 @@ void fn_801854B4(void *arg0) {
     fn_8004B1B4(M2C_FIELD(arg0, s32 *, 0x30));
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma scheduling on
+extern "C" void Unit_SetModelAlpha(void *, s32);
+#pragma cplusplus off
+#pragma scheduling on
 void fn_801854D8(void *arg0) {
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
@@ -1210,7 +1216,7 @@ void fn_801854D8(void *arg0) {
     void *unit;
 
     unit = *(void **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)unit + 0x78) = lbl_8036ACF8;
+    *(f32 *)((u8 *)unit + 0x78) = 1.0f;
     if (*(u8 *)((u8 *)arg0 + 0x3D) == 0) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         *(u8 *)((u8 *)unit + 3) |= 4;
@@ -1223,7 +1229,7 @@ void fn_801854D8(void *arg0) {
         Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0xFF);
     }
 }
-
+#pragma cplusplus off
 void fn_80185564(void *arg0) {
     void fn_8004E9D8(void *, s32);
     void GfxEnt_ForEachKey(void *, void *, void *);
