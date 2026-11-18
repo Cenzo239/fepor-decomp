@@ -3175,10 +3175,8 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
  s32 copy[3];
- s32 *src = arg1;
- s32 c = src[2];
- s32 b = src[1];
- s32 a = src[0];
+ s32 *src=arg1;
+ s32 c=src[2], b=src[1], a=src[0];
  copy[0]=a; copy[1]=b; copy[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
@@ -5740,6 +5738,83 @@ s32 fn_8011B9C8(s32 unused, u8 *arg1) {
     p[8] = 0x88;
     return 5;
 }
+
+#pragma cplusplus on
+extern "C" void fn_8011B9EC(void *self, void *panel, void *entry) {
+    s32 Text_MeasureWidth(void *, s32, f32);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    extern f32 lbl_8036A1E8;
+
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 v18() = 0;
+    };
+    struct TextSrc {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void *v4(void *) = 0;
+    };
+    struct Host {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17(void *) = 0;
+        virtual void v18(void *) = 0;
+    };
+
+    s16 w;
+    s32 tw;
+    void *text;
+
+    w = ((Obj *)*(void **)((u8 *)panel + 0x3C))->v18();
+    text = ((TextSrc *)*(void **)((u8 *)entry + 0x34))->v4(entry);
+    tw = Text_MeasureWidth(text, -1, lbl_8036A1E8);
+    ((Host *)self)->v17(panel);
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos((f32)((w - tw) >> 1), (f32)*(s16 *)((u8 *)entry + 0x32));
+    ((Host *)self)->v18(entry);
+    text = ((TextSrc *)*(void **)((u8 *)entry + 0x34))->v4(entry);
+    Prim2D_SetText(text);
+    Prim2D_EndPrim();
+}
+#pragma cplusplus reset
 
 void fn_8011BAF8(void) {
     extern u16 lbl_80274508[];
