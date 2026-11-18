@@ -3217,6 +3217,7 @@ struct ActorUpdateInterface {
 #pragma cplusplus off
 #pragma cplusplus on
 #pragma global_optimizer off
+#pragma optimization_level 1
 extern "C" void fn_80116FE8(void *self) {
  s32 Str_Cmp(void *,char *); void fn_80111C8C(void *,void *);
  void fn_800E5DEC(void *); void fn_800DBAB8(void *,void *); void fn_800DF664(void *);
@@ -3251,11 +3252,10 @@ extern "C" void fn_80116FE8(void *self) {
  if(!Actor_IsBusy(self) && M2C_FIELD(self,u8 *,0x1B5)) {
    fn_800DF664(self);
    if(M2C_FIELD(self,void **,0x11C)) fn_800DF664(M2C_FIELD(self,void **,0x11C));
-   ActorUpdateInterface *actor=(ActorUpdateInterface *)self;
    f32 zero=lbl_8036A184;
    f32 scale=fActorDefaultRadius;
    M2C_FIELD(self,u8 *,0x1B5)=0;
-   actor->SetScale(zero,scale,zero);
+   ((ActorUpdateInterface *)self)->SetScale(zero,scale,zero);
  }
  if(!Actor_IsBusy(self) && (length=strlen((char *)gActorXmlStrs+0x1C), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,length))) {
    if(!(length=strlen((char *)gActorXmlStrs+0x43F), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,length))) {
@@ -3390,6 +3390,7 @@ extern "C" void fn_80116FE8(void *self) {
  }
  String_Destroy(&name,-1);
 }
+#pragma optimization_level reset
 #pragma global_optimizer reset
 #pragma cplusplus off
 
