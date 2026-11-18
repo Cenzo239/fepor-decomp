@@ -12588,15 +12588,11 @@ arg0[14]=d;
 }
 #pragma global_optimizer reset
 extern "C" void fn_800DF584(void *arg0) {
-    struct Other {
-        u8 pad[0x2C];
-        u8 flag_2c;
-    };
     struct Obj {
         u8 pad[0x2C];
         u8 flag_2c;
         u8 pad2D[0xB];
-        Other *field_38;
+        void *field_38;
         u8 flag_3c;
         u8 pad3D[3];
         virtual void v0();
@@ -12604,13 +12600,18 @@ extern "C" void fn_800DF584(void *arg0) {
         virtual void v2();
         virtual void v3();
     };
+    struct Other {
+        u8 pad[0x2C];
+        u8 flag_2c;
+    };
     Obj *self = (Obj *)arg0;
+    Obj *callObj = self;
     Other *other;
 
     if (self->flag_3c != 0) {
-        other = self->field_38;
+        other = (Other *)self->field_38;
         if (other != NULL && other->flag_2c != 0 && self->flag_2c != 0) {
-            self->v3();
+            callObj->v3();
         }
     }
 }
@@ -13804,7 +13805,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 }
 #pragma cplusplus off
 
-#pragma scheduling on
+#pragma scheduling off
 void fn_800E2138(s32 *arg0, s32 *arg1, s32 arg2) {
     volatile s32 spC;
     volatile s32 sp8;
