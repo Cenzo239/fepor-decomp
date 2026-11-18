@@ -12,6 +12,7 @@ extern void* lbl_803674E8;
 extern f64 lbl_80369688;
 extern f32 lbl_803696C8;
 typedef struct { u16 a, b, c; } Fn89980Struct;
+typedef struct { f32 a, b; } FloatPair892E8;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
@@ -1820,11 +1821,10 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-#pragma peephole on
+#pragma global_optimizer off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
-    typedef struct { u8 data[0x58]; } S;
-    extern S lbl_80289950[1];
+    extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
@@ -1833,7 +1833,7 @@ void fn_800895B8(void) {
     void *tmp;
 
     base = lbl_80289950;
-    lbl_803674E0 = Process_Create(&lbl_80289950[0], 7);
+    lbl_803674E0 = Process_Create(base, 7);
     lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
     tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
@@ -1842,6 +1842,7 @@ void fn_800895B8(void) {
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
+#pragma global_optimizer reset
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
@@ -1992,11 +1993,10 @@ void fn_80089970(void) {
 #pragma peephole off
 void fn_80089980(s32 arg0) {
 extern f32 lbl_803696C8; extern void *lbl_803674EC;
-u8 *ptr=(u8*)lbl_803674EC;
 f32 quotient=(f32)arg0/lbl_803696C8;
-*(s16*)(ptr+0x32)=3;
-*(s16*)(ptr+0x34)=0;
-*(s16*)(ptr+0x36)=(s16)quotient;
+u16 value=(u16)quotient;
+u8 *ptr=(u8*)lbl_803674EC;
+*(u16*)(ptr+0x32)=3; *(u16*)(ptr+0x34)=0; *(u16*)(ptr+0x36)=value;
 }
 #pragma peephole reset
 #pragma global_optimizer reset
