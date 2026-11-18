@@ -2171,31 +2171,29 @@ s32 fn_8000A930(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
-    u8 *source;
     u8 *a;
     u8 *b;
-    u32 n;
+    s32 i;
+    s32 ctr;
     u32 diff;
     u32 raw1;
     u32 raw2;
     s32 c1;
     s32 c2;
     u8 *p;
-    u32 ctr;
+    u8 *search;
 
     p = *(u8 **)((u8 *)arg0 + 4);
-    ctr = 0x80;
-    source = *(u8 **)(p + 4);
+    search = *(u8 **)(p + 4);
     entry = gProcesses;
-    n = 0;
-    for (; ctr != 0; ctr--) {
+    i = 0;
+    for (ctr = 0x80; ctr != 0; ctr--) {
         if (*(u32 *)entry != 0) {
             a = *(u8 **)(entry + 0x14);
-            b = source;
+            b = search;
             goto cmp1_ld;
         cmp1:
             if ((s8)raw1 != (s8)raw2) {
@@ -2214,15 +2212,12 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp1_done:
-            if (diff != 0) {
-                goto next1;
+            if (diff == 0) {
+                goto found;
             }
-            goto found;
         }
-    next1:
-        entry += 0x70;
-        if (*(u32 *)entry != 0) {
-            b = source;
+        if (*(u32 *)(entry += 0x70) != 0) {
+            b = search;
             a = *(u8 **)(entry + 0x14);
             goto cmp2_ld;
         cmp2:
@@ -2242,23 +2237,21 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp2_done:
-            if (diff != 0) {
-                goto next2;
+            if (diff == 0) {
+                goto found;
             }
-            goto found;
         }
-    next2:
-        n += 1;
+        i += 1;
         entry += 0x70;
     }
     entry = 0;
 found:
-    if (entry == 0) {
-        return 0;
+    if (entry != 0) {
+        *(u32 *)(entry + 0x10) = 0;
+        *(u32 *)((u8 *)arg0 + 4) += 8;
+        return 1;
     }
-    *(u32 *)(entry + 0x10) = 0;
-    *(u32 *)((u8 *)arg0 + 4) += 8;
-    return 1;
+    return 0;
 }
 #pragma peephole on
 #pragma global_optimizer on
