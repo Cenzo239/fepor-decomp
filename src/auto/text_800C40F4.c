@@ -1,6 +1,9 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+#pragma cplusplus on
+struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
+#pragma cplusplus reset
 typedef struct MapCostCell { u8 pad[0x610E]; s16 cost; } MapCostCell;
 typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
 typedef struct F43Eval { void **vtable; void *entry, *unit; F43Pos *pos; } F43Eval;
@@ -3178,7 +3181,7 @@ void *arg1;
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
     u8 sp[16];
-    char *data;
+    register char *data;
 
     data = *(char **)((char *)arg1 + 8);
     *(u32 *)((char *)arg0 + 4) = *(u32 *)((char *)arg1 + 4);
@@ -13164,24 +13167,24 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     return arg0;
 }
 #pragma dont_inline reset
-s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, PairAB *from, PairAB *to) {
+#pragma global_optimizer off
+s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFields *from, SortIteratorFields *to) {
     void fn_800E0EE0(s32 *, s32 *, s32 *);
-    PairAB outA, stopA, curA, outB, curB, stopB;
-    PairAB tmpA, tmpB, proxyA, proxyB;
-    s32 available = (to->a - from->a) / 4;
+    SortIteratorFields outA, stopA, curA, outB, curB, stopB;
+    SortIteratorFields tmpA, tmpB, proxyA, proxyB;
+    s32 available = to->a - from->a;
     if (n1 <= n2 && n1 <= available) {
-        s32 *src;
+        s32 *src=first;
         outA=*from;
-        src=first;
         while(src!=mid) {
             proxyA=outA;
-            if ((proxyA.a-*(s32 *)(proxyA.b+8))/4 < *(s32 *)(proxyA.b+4)) *(s32 *)proxyA.a=*src;
+            if ((proxyA.a-*(s32 **)(proxyA.b+8)) < *(s32 *)(proxyA.b+4)) *(s32 *)proxyA.a=*src;
             else {
                 if((s32 *)proxyA.a != 0) *(s32 *)proxyA.a=*src;
                 ++*(s32 *)(proxyA.b+4);
             }
             ++src;
-            outA.a+=4;
+            outA.a++;
         }
         *to=outA;
         {
@@ -13190,24 +13193,23 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, PairAB *from, 
         }
         curA=*to; stopA=*from;
         while((u32)curA.a!=(u32)stopA.a) {
-            curA.a-=4;
+            curA.a--;
             tmpA=curA;
             *--last=*(s32 *)tmpA.a;
         }
         return last;
     } else if (n2<=available) {
-        s32 *src;
+        s32 *src=mid;
         outB=*from;
-        src=mid;
         while(src!=last) {
             proxyB=outB;
-            if ((proxyB.a-*(s32 *)(proxyB.b+8))/4 < *(s32 *)(proxyB.b+4)) *(s32 *)proxyB.a=*src;
+            if ((proxyB.a-*(s32 **)(proxyB.b+8)) < *(s32 *)(proxyB.b+4)) *(s32 *)proxyB.a=*src;
             else {
                 if((s32 *)proxyB.a != 0) *(s32 *)proxyB.a=*src;
                 ++*(s32 *)(proxyB.b+4);
             }
             ++src;
-            outB.a+=4;
+            outB.a++;
         }
         *to=outB;
         while(mid>first) *--last=*--mid;
@@ -13216,7 +13218,7 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, PairAB *from, 
             s32 *dst=first;
             while((u32)curB.a!=(u32)stopB.a) {
                 tmpB=curB;
-                curB.a+=4;
+                curB.a++;
                 *dst++=*(s32 *)tmpB.a;
             }
             return dst;
@@ -13226,7 +13228,7 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, PairAB *from, 
         return first+n2;
     }
 }
-
+#pragma global_optimizer on
 void fn_800E0A94(void *arg0, void *arg1, s32 *arg2, u32 arg3, s32 *arg4) {
     // This function was not fully implemented due to complexity
     // It's a placeholder until more structural understanding is gained
@@ -19213,10 +19215,14 @@ void Card_AsyncDone(void) {
 
 #pragma global_optimizer off
 s32 fn_800EB854(void) {
-    extern u8 gCardWork[];
-    u8 *base;
-    base = gCardWork + 0x10000;
-    return (*(s32 *)(base - 0x5FFC) != -1) && (*(base - 0x5FE6) != 0);
+    extern u8 lbl_80320C20[];
+    s32 result = 0;
+    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
+        if (lbl_80320C20[0xA01A] != 0) {
+            result = 1;
+        }
+    }
+    return result;
 }
 #pragma global_optimizer reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
@@ -25057,36 +25063,44 @@ void fn_800F8C3C(void *unit) {
 #pragma global_optimizer reset
 #pragma dont_inline reset
 
-void fn_800F8E5C(void* arg0, void* arg1, s32 arg2) {
-    s32 temp_r4;
-    s32* temp_r30;
-    s32* temp_r31;
-
-    if (arg0 == NULL) {
-        return;
-    }
-    
-    temp_r30 = (s32*)arg0;
-    temp_r31 = (s32*)arg1;
-    
-    temp_r4 = *(temp_r30 + 0x6D);
-    
-    if (temp_r4 == 0) {
-        return;
-    }
-    
-    if (arg2 >= (temp_r4 - 1)) {
-        arg2 = temp_r4 - 1;
-    } else if (arg2 < 0) {
-        arg2 = 0;
-    }
-    
-    *(temp_r31 + 0x17) = *(temp_r30 + 0x6E);
-    *(temp_r31 + 0x2D) = *(temp_r30 + 0x15C);
-    *(temp_r31 + 0x1A) = ((s32)(*(temp_r30 + 0x168)) & (s32)(*(temp_r30 + 0x169))) - arg2;
-    *(temp_r31 + 0x1B) = *(temp_r30 + 0x16A);
+#pragma dont_inline on
+void fn_800F8E5C(void *arg0) {
+extern u8 gAiState[],gUiContext[],gTargetList[];
+extern u8 *gAiCmd;
+extern s32 gAiCmdIsAlt;
+u8 fn_801021F0(void *,s16 *,s16 *);
+void *Unit_FindByName(void *);
+u8 fn_800BF1E8(void *);
+void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
+void fn_800FFB4C(void *,s32,s32);
+void *fn_8002F680(void *,u8,u8);
+void Ai_SetDecision(s8,s32,s8,s8,s8,s8,s8);
+s16 x,y;
+u8 *ctx;
+u8 *unit=arg0;
+u8 *other=gAiCmd;
+if(!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x3000000)) {
+if((unit[0x1a5]>>4)&7) {
+*(s32*)(gAiState+8)=0;*(s32*)(gAiState+12)=0;
+} else if(fn_801021F0(*(void**)(other+0x14),&x,&y)) {
+other=Unit_FindByName(*(void**)(other+0x14));
+ctx=gUiContext;
+*(void**)(ctx+4)=other;
+if(!fn_800BF1E8(ctx)) {
+*(s32*)(gAiState+8)=9;*(s32*)(gAiState+12)=9;
+} else {
+Ai_SetUnitMoveTo(unit,x,y,1,*(u16*)(gAiState+4),1,0,-1);
+fn_800FFB4C(unit,(s8)gUiContext[13],(s8)gUiContext[14]);
+if(fn_8002F680(gTargetList,other[0x19e],other[0x19f]) && *(s32*)(gAiState+8)!=4) {
+*(s32*)(gAiState+8)=3;
+Ai_SetDecision(7,(s32)other,(s8)x,(s8)y,-1,0,0);
 }
-
+}
+}
+}
+if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
+}
+#pragma dont_inline reset
 void fn_800F8FF4(void *arg0) {
     extern void *gAiCmd;
     if ((s32) gAiCmd == 0) {
