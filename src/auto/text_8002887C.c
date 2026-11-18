@@ -750,55 +750,63 @@ void fn_80029C08(void *arg0) {
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void fn_80029E4C(void *arg0) {
-    void fn_8002F728(void *);
-    extern u8 lbl_80284E20[];
     extern u8 lbl_80284E00[];
+    extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
+    void fn_8002F728(void *);
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
-    struct Cell {
-        u8 pad[0xD];
-        u8 id;
-    };
     struct {
         void *vtbl;
-        void *arg;
+        void *unit;
     } obj;
-    register void *unit;
-    u8 id;
-    s8 y;
-    s8 x;
+    s32 x;
+    s32 y;
     u16 *flags;
-    unsigned yOff;
+    s32 yOff;
+    void *unit;
+    u8 id;
     u16 f;
+    u8 *entry;
 
     obj.vtbl = lbl_80284E20;
-    obj.arg = arg0;
+    obj.unit = arg0;
     obj.vtbl = lbl_80284E00;
     fn_8002F728(gTargetList);
-    x = (s8)*((u8 *)obj.arg + 0x19E);
-    y = (s8)*((u8 *)obj.arg + 0x19F);
-    yOff = y << 6;
-    flags = (u16 *)(gBattleMap + ((x + (s32)yOff) << 1));
-    f = *(u16 *)((u8 *)flags + (unsigned)0x408E);
-    flags = (u16 *)((u8 *)flags + 0x408E);
-    if ((f & 8) != 0) {
-        id = ((struct Cell *)(gBattleMap + x + ((s8)(y - 1) << 6)))->id;
-        if (id != 0) {
-            unit = gUnits + (id - 1) * 0x280;
-        } else {
-            unit = 0;
-        }
-        if (unit) {
-            ((Visitor *)&obj)->apply(unit);
+    {
+        u8 *map;
+        y = (s8)*(u8 *)((u8 *)obj.unit + 0x19F);
+        x = *(s8 *)((u8 *)obj.unit + 0x19E);
+        map = gBattleMap;
+        yOff = y << 6;
+        flags = (u16 *)(map + ((x + yOff) << 1));
+        f = *(u16 *)((u8 *)flags + 0x408E);
+        flags = (u16 *)((u8 *)flags + 0x408E);
+        if ((f & 8) != 0) {
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
+            if (id) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            if (unit) {
+                ((Visitor *)&obj)->apply(unit);
+            }
         }
     }
     if ((*flags & 2) != 0) {
-        id = ((struct Cell *)(gBattleMap + (s8)(x + 1) + (s32)yOff))->id;
-        if (id != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x + 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
@@ -808,18 +816,26 @@ extern "C" void fn_80029E4C(void *arg0) {
         }
     }
     if ((*flags & 4) != 0) {
-        id = ((struct Cell *)(gBattleMap + x + ((s8)(y + 1) << 6)))->id;
+        u8 *map = gBattleMap;
+        entry = map + x;
+        entry = entry + ((s8)(y + 1) << 6);
+        id = entry[0xD];
         if (id != 0) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
-        if (unit) {
+        if (unit != 0) {
             ((Visitor *)&obj)->apply(unit);
         }
     }
     if ((*flags & 1) != 0) {
-        id = ((struct Cell *)(gBattleMap + (s8)(x - 1) + (s32)yOff))->id;
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x - 1);
+        entry = t + yOff;
+        id = entry[0xD];
         if (id != 0) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
