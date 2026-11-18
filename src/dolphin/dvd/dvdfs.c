@@ -1908,20 +1908,20 @@ s32 DVDInquiryAsync(u8 *block, s32 arg1, s32 arg2) {
 #pragma global_optimizer off
 #pragma peephole off
 void DVDReset(void) {
-      extern s32 ResetRequired_803685D0;
-      extern s32 ResumeFromHere_803685C0;
-      u32 *base;
-      u32 *di;
-      u32 tmp;
-      DVDLowReset();
-      base = (u32 *)0xCC000000;
-      base[0x1800] = 0x2A;
-      di = base + 0x1800;
-      tmp = base[0x1801];
-      di[1] = tmp;
-      ResetRequired_803685D0 = 0;
-      ResumeFromHere_803685C0 = 0;
-  }
+    extern s32 ResetRequired_803685D0;
+    extern s32 ResumeFromHere_803685C0;
+    u32 *base;
+    u32 *di;
+    u32 tmp;
+    DVDLowReset();
+    base = (u32 *)0xCC000000;
+    base[0x1800] = 0x2A;
+    di = base + 0x1800;
+    tmp = base[0x1801];
+    di[1] = tmp;
+    ResetRequired_803685D0 = 0;
+    ResumeFromHere_803685C0 = 0;
+}
 #pragma peephole reset
 #pragma global_optimizer reset
 
