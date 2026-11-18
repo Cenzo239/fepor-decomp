@@ -2,12 +2,13 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+u8 lbl_80311CA8[0x10];
+u8 lbl_80311CB8[0x28];
+u8 lbl_80311CE0[0xA8];
 
-#pragma no_register_save_helpers on
+#pragma push
 #pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
 #pragma optimization_level 2
-#pragma opt_lifetimes off
 void fn_80072408(void)
 {
     void fn_8022C260(void *, void (*)(void), void *, s32, u32);
@@ -16,7 +17,6 @@ void fn_80072408(void)
     extern u8 lbl_8028680C[];
     extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_8028459C[];
-    extern u8 lbl_80311CA8[];
     extern u8 lbl_8026BB84[];
     extern u8 lbl_802867B8[];
     extern u8 lbl_802866E4[];
@@ -48,7 +48,6 @@ void fn_80072408(void)
     void *p628;
     void *p3D4;
     void *p2FC;
-    void *cb;
     void *p1FC;
     void **sbss50;
     void *p27C;
@@ -60,7 +59,7 @@ void fn_80072408(void)
     Pair *p94;
     Pair *p80;
     void *pFC;
-    register void *p7C;
+    void *p7C;
 
     vtbl = gUiMenuDrawVtbl;
     p8680C = lbl_8028680C;
@@ -69,10 +68,10 @@ void fn_80072408(void)
     rodata = lbl_8026BB84;
     p867B8 = lbl_802867B8;
     data = lbl_80285FE8;
-    p38 = (Pair *)((u8 *)base + 0x38);
+    p38 = (Pair *)lbl_80311CE0;
     data0 = data;
-    p10 = (Pair *)((u8 *)base + 0x10);
-    p24 = (Pair *)((u8 *)base + 0x24);
+    p10 = (Pair *)lbl_80311CB8;
+    p24 = (Pair *)((u8 *)lbl_80311CA8 + 0x24);
     p0 = base;
     p866E4 = lbl_802866E4;
     p86764 = lbl_80286764;
@@ -80,7 +79,6 @@ void fn_80072408(void)
     p628 = data + 0x628;
     p3D4 = data + 0x3D4;
     p2FC = data + 0x2FC;
-    cb = (void *)fn_800725C8;
     p1FC = data + 0x1FC;
     sbss50 = lbl_80367350;
     p27C = data + 0x27C;
@@ -122,13 +120,13 @@ void fn_80072408(void)
     sbss58[1] = s_f5;
     lbl_80367358[0] = p86764;
 
-    base->f0 = data0;
+    *(void **)((u8 *)base + 0x00) = data0;
     p0->f4 = p866E4;
-    p10->f0 = data0;
+    *(void **)((u8 *)base + 0x10) = data0;
     p10->f4 = p27C;
-    p24->f0 = data0;
+    *(void **)((u8 *)base + 0x24) = data0;
     p24->f4 = p1FC;
-    p38->f0 = data0;
+    *(void **)((u8 *)base + 0x38) = data0;
     p38->f4 = p17C;
 
     fn_8022C260((u8 *)base + 0x4C, fn_800725C8, 0, 8, 4);
@@ -159,5 +157,4 @@ void fn_80072408(void)
     *(s16 *)((u8 *)p94 + 0x10) = 0x46;
     p94->f4 = p7C;
 }
-#pragma opt_lifetimes reset
-#pragma optimization_level reset
+#pragma pop
