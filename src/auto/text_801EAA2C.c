@@ -67,12 +67,12 @@ typedef struct AramSlot {
     u32 addr;                 /* 0x68 */
 } AramSlot;
 
-static inline AramSlot *AramFindFreeSlot(void) {
+static inline void *AramFindFreeSlot(void) {
     extern u8 gAramSlotPool[];
-    AramSlot *slot = (AramSlot *)gAramSlotPool;
+    u8 *slot = gAramSlotPool;
     s32 i;
-    for (i=255; i>=0; i--, slot++) {
-        if (slot->size == 0) return slot;
+    for (i=255; i>=0; i--, slot+=0x6C) {
+        if (*(s32 *)(slot+0x64) == 0) return slot;
     }
     return 0;
 }
@@ -1261,7 +1261,9 @@ void fn_801EC7B4(void) {
 
 }
 
+#pragma push
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
 void fn_801EC7B8(void) {
     void DebugPrint(void *, ...);
     s32 OSGetTick(void);
@@ -1304,7 +1306,7 @@ void fn_801EC7B8(void) {
 
     DebugPrint(lbl_8027F1D0);
     tick = OSGetTick();
-    while (gAramRequestCount != 0) {}
+    while (*(volatile s32 *)&gAramRequestCount != 0) {}
     half = gAramHeapSize >> 1;
     if (fn_800C44F4(fn_8005BA00()) >= (u32)half) {
         buf = fn_800C45B8(-half, lbl_8027F1D0 + 0x18, 0);
@@ -1315,15 +1317,10 @@ void fn_801EC7B8(void) {
        p[0x53]=0;
     }
     gAramUsedList = 0;
-    p = gAramSlotPool;
-        for(j=255;j>=0;j--,p+=0x6C) {
-            if (*(s32 *)(p+0x64)==0) goto found1;
-        }
-        p=0;
-found1:;
+    p = (u8 *)AramFindFreeSlot();
     gAramFreeList = p;
-    *(void **)((u8 *)p + 0x60) = 0;
-    *(void **)((u8 *)gAramFreeList + 0x5C) = 0;
+    *(s32 *)((u8 *)p + 0x60) = 0;
+    *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize;
     *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
         return;
@@ -1365,7 +1362,7 @@ found1:;
             DCInvalidateRange(buf, *(u32 *)((u8 *)entry + 0x64));
             gAramRequestCount += 1;
             ARQPostRequest(entry, 0, 1, 1, *(s32 *)((u8 *)entry + 0x68), (s32)buf,
-                        *(s32 *)((u8 *)*slot + 0x64), callback);
+                        *(s32 *)((u8 *)entry + 0x64), callback);
             i += 1;
             *(s32 *)((u8 *)*slot + 0x68) = gAramBase + used;
             {
@@ -1378,45 +1375,47 @@ found1:;
                 break;
             }
         }
-        for(j=0;j<256;j++) {
-            node=arr[j];
+        {
+        void **sp = arr;
+        void *nullNode = 0;
+        for(j=0;j<256;j++,sp++) {
+            node=*sp;
             if(node==0) break;
-            *(void **)((u8 *)node+0x5C)= j==0 ? 0 : arr[j-1];
-            *(void **)((u8 *)arr[j]+0x60)= j<255 ? arr[j+1] : 0;
+            if(j==0) *(void **)((u8 *)node+0x5C)=nullNode;
+            else *(void **)((u8 *)node+0x5C)=sp[-1];
+            if(j<255) *(void **)((u8 *)*sp+0x60)=sp[1];
+            else *(void **)((u8 *)*sp+0x60)=nullNode;
+        }
         }
         gAramUsedList = lbl_80338E70[0];
         p=gAramSlotPool;
+        zero=0;
         for(j=0;j<256;j++,p+=0x6C) {
             flg=p[0x53];
             if(flg&1) p[0x53]=flg&0xFE;
-            else { *(s32 *)(p+0x64)=0; p[0x53]=0; }
+            else { *(s32 *)(p+0x64)=zero; p[0x53]=(u8)zero; }
         }
-        p = gAramSlotPool;
-        for(j=255;j>=0;j--,p+=0x6C) {
-            if (*(s32 *)(p+0x64)==0) goto found2;
-        }
-        p=0;
-found2:;
+        p = (u8 *)AramFindFreeSlot();
         gAramFreeList = p;
-        *(void **)((u8 *)p + 0x5C) = 0;
-        *(void **)((u8 *)gAramFreeList + 0x60) = 0;
+        *(s32 *)((u8 *)p + 0x5C) = 0;
+        *(s32 *)((u8 *)gAramFreeList + 0x60) = 0;
         *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
         *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize - used;
-        for(j=0;j<256;j++) {
-            node=arr[j];
+        for(j=0;j<256;j++,arr++) {
+            node=*arr;
             if(node==0) break;
             *(s32 *)((u8 *)node+0x68)+=*(s32 *)((u8 *)gAramFreeList+0x64);
         }
         gAramRequestCount += 1;
         ARQPostRequest(gAramFreeList, 0, 0, 1, (s32)buf0,
                     gAramBase + *(s32 *)((u8 *)gAramFreeList + 0x64), used, fn_801ED838);
-        while (gAramRequestCount != 0) {}
+        while (*(volatile s32 *)&gAramRequestCount != 0) {}
         fn_800C4588(buf0);
         dt = (u32)(OSGetTick() - tick);
         bus = *(u32 *)0x800000F8;
         DebugPrint(lbl_8027F1D0 + 0x19, dt / ((bus >> 2) / 1000));
 }
-
+#pragma pop
 extern void *gAramUsedList;
 void *AramCache_Find(s32 arg0) {
     extern void *gAramUsedList;
