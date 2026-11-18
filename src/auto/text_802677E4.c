@@ -1,5 +1,8 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline u32 ExiMakeImmediateCommand(u32 length, u32 type) {
+    return ((type << 2) | 1) | (length << 4);
+}
 
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
@@ -263,7 +266,7 @@ extern s32 lbl_8033E578[];
 
 volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
 
-#pragma use_lmw_stmw on
+#pragma opt_lifetimes off
 int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
   volatile u32 *cr;
@@ -300,4 +303,4 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
   }
   return 1;
 }
-
+#pragma opt_lifetimes reset
