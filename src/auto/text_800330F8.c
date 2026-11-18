@@ -2135,7 +2135,7 @@ s32 fn_80036DE0(void *arg0, void *arg1)
     index = 0;
     value = *(u32 *)((u8 *)arg1 + 0x188);
     obj = *(u8 **)((u8 *)arg0 + 0x188);
-    offset = index;
+    offset = (s32)(u32)index;
 
     goto check;
 
@@ -2143,7 +2143,7 @@ loop:
     {
         u8 *table;
         u32 entry;
-        table = *(u8 **)(obj + 0x50);
+        table = *(u8 **)((u8 *)obj + 0x50);
         entry = *(u32 *)(table + offset + 8);
 
         if (entry == value) {
@@ -2158,9 +2158,9 @@ check:
     {
         u8 *table;
         u8 lim;
-        table = *(u8 **)(obj + 0x50);
+        table = *(u8 **)((u8 *)obj + 0x50);
 
-        if (table == NULL) {
+        if (table == 0) {
             lim = 0;
         } else {
             lim = (u8)*(u32 *)(table + 4);
@@ -2889,17 +2889,17 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
-    s8 xa;
-    s8 xb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
-    xa = *(s8 *)((u8 *)a + 0x19E);
-    xb = *(s8 *)((u8 *)b + 0x19E);
-    dx = (s32)xa - (s32)xb;
+    {
+        s8 xa;
+        xa = *(s8 *)((u8 *)a + 0x19E);
+        dx = xa - *(s8 *)((u8 *)b + 0x19E);
+    }
     if (dx < 0) {
         dx = -dx;
     }
@@ -4367,22 +4367,26 @@ s8 Unit_GetMaxHp(void *arg0)
 
 #pragma opt_peephole off
 s8 Unit_GetRes(void *arg0) {
-    void *temp_r4;
-    s8 temp_r6_2;
-    u8 temp_r5;
-    s8 var_r3;
+    void *p;
+    void *q;
+    u8 t;
+    u8 a;
+    s8 lim;
+    s8 var;
 
-    temp_r4 = *(void **)((u8 *)arg0 + 0x18C);
-    temp_r5 = *(u8 *)((u8 *)arg0 + 0x1B2);
-    temp_r6_2 = *(u8 *)((u8 *)temp_r4 + 0x53);
-    var_r3 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x24) + *(u8 *)((u8 *)temp_r4 + 0x4B)) + temp_r5;
-    if (var_r3 > temp_r6_2) {
-        var_r3 = temp_r6_2;
+    p = *(void **)((u8 *)arg0 + 0x18C);
+    q = *(void **)((u8 *)arg0 + 0x188);
+    t = *(u8 *)((u8 *)arg0 + 0x1B2);
+    a = *(u8 *)((u8 *)p + 0x4B);
+    lim = *(u8 *)((u8 *)p + 0x53);
+    var = *(u8 *)((u8 *)q + 0x24) + a + t;
+    if (var > lim) {
+        var = lim;
     }
-    if (var_r3 < 0) {
+    if (var < 0) {
         return 0;
     }
-    return var_r3;
+    return var;
 }
 #pragma opt_peephole off
 s8 Unit_GetDef(void *arg0) {
@@ -4503,19 +4507,17 @@ s8 Unit_GetStr(void *arg0) {
 }
 
 s8 Unit_GetHp(void *arg0) {
-    u8 *cls;
-    u8 *unit;
-    s8 lim;
+    void *p18c;
     u8 t;
-    s8 var;
     u8 base;
+    s8 lim;
+    s8 var;
 
-    cls = *(u8 **)((u8 *)arg0 + 0x18C);
-    unit = *(u8 **)((u8 *)arg0 + 0x188);
+    p18c = *(void **)((u8 *)arg0 + 0x18C);
     t = *(u8 *)((u8 *)arg0 + 0x1AB);
-    base = cls[0x44];
-    lim = (s8)cls[0x4C];
-    var = (s8)(unit[0x1D] + base + t);
+    base = *(u8 *)((u8 *)p18c + 0x44);
+    lim = (s8)*(u8 *)((u8 *)p18c + 0x4C);
+    var = (s8)(*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + base + t);
     if (var > lim) {
         var = lim;
     }
