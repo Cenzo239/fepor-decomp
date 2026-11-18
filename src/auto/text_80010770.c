@@ -363,6 +363,7 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
   if (index == (-1)) { index = 0; }
   found = (u32) fn_8010494C(lbl_802AEE20[index]);
   Text_FindFontIndex(tbl, found);
-  return (s32) result;
-}
-#pragma cplusplus reset
+      return (s32) result;
+  }
+  #pragma peephole reset
+  #pragma cplusplus reset
