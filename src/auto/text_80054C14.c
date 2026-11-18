@@ -271,6 +271,7 @@ static inline void Camera_SelectTarget(u8 *state, CameraVec **first, CameraVec *
     *first = second;
 }
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
 void fn_80054C14(void *arg0) {
     u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
