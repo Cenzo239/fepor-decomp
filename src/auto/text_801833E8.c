@@ -2794,6 +2794,12 @@ void MoveAnim_AttachClassCue(void *anim) {
     }
 }
 
+static inline u8 MoveAnim_IsBlendMode(u8 mode) {
+    u8 enabled = 1;
+    if (!(1 >= (u8)(mode - 1))) enabled = 0;
+    return enabled;
+}
+
 #pragma push
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
@@ -2811,7 +2817,7 @@ void fn_80188B4C(void *anim) {
     extern u8 gSeCueSlots[];
     extern u8 MoveAnim_str[];
 
-    void *fadeKey[13];
+    u8 fadeKey[0x34];
     u8 *self;
     s8 x;
     s8 y;
@@ -2844,7 +2850,7 @@ void fn_80188B4C(void *anim) {
         }
 
         angle = (f32)degrees;
-        fadeKey[12] = unit;
+        *(void **)(fadeKey + 0x30) = unit;
         GfxEnt_ForEachKey(E_MuFade_script, MuFade_UnlinkSame, fadeKey);
 
         if (angle != (f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f) {
@@ -2865,7 +2871,7 @@ void fn_80188B4C(void *anim) {
             alpha = 0;
         }
         blend = 1;
-        if ((u8)((u8)(gMapBlendMode - 1) <= 1) == 0) blend = 0;
+        if (!(1U >= (u8)(gMapBlendMode - blend))) blend = 0;
         if (blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
