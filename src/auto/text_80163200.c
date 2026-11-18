@@ -14200,20 +14200,28 @@ void *fn_8017A764(void *arg0, void *arg1) {
     return self;
 }
 
+static inline void Stream_InitBase(void *self) {
+    extern u8 gStreamBaseVtbl[];
+    *(void **)((u8 *)self + 0x10) = gStreamBaseVtbl;
+    *(s32 *)((u8 *)self + 4) = 0;
+    *(s32 *)self = 0;
+    *(s32 *)((u8 *)self + 8) = 0;
+    *(u8 *)((u8 *)self + 0xC) = 0;
+}
 #pragma cplusplus on
 extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     extern u8 gStreamBaseVtbl[], lbl_802842B8[];
+    s32 zero;
     void *base;
     void *derived;
-    s32 zero;
-    base = gStreamBaseVtbl;
-    derived = lbl_802842B8;
-    *(void **)((char *)arg0 + 0x10) = base;
     zero = 0;
+    base = gStreamBaseVtbl;
+    *(void **)((char *)arg0 + 0x10) = base;
     *(s32 *)((char *)arg0 + 4) = zero;
     *(s32 *)arg0 = zero;
     *(s32 *)((char *)arg0 + 8) = zero;
     *(u8 *)((char *)arg0 + 0xC) = zero;
+    derived = lbl_802842B8;
     *(void **)((char *)arg0 + 0x10) = derived;
     *(s32 *)((char *)arg0 + 4) = arg1;
     *(s32 *)arg0 = arg1;
@@ -18643,7 +18651,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
 
 #pragma peephole off
 void fn_80181C40(s32 *arg0, void *arg1) {
-struct Point { u16 x; s16 y; };
+struct Point { u16 x,y; };
 struct Point *fn_8013F748(void *, struct Point *, struct Point *);
 struct Point out, in;
 struct Point *outp=&out;
