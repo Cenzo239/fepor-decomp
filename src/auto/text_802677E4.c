@@ -262,25 +262,6 @@ extern u16 lbl_803688EC[10];
 extern s32 lbl_8036894C;
 extern s32 lbl_8033E578[];
 
-#pragma opt_propagation off
-
-#pragma opt_propagation reset
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
-
-#pragma use_lmw_stmw reset
-#pragma global_optimizer on
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
-
 volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
 
 #pragma use_lmw_stmw on
