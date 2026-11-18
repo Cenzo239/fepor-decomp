@@ -1,6 +1,45 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline u32 Event_ScanCommandFlagsInline(s32 cur) {
+extern u8 gBattle[];
+void fn_800973F0(void *,s32);
+s16 *idx=(s16 *)(gBattle+0x8A0);
+s16 saved=*idx;
+s32 flagb,cursor,offset;
+u8 ok;
+*idx=cur;flagb=0;*idx=(s16)cur+1;
+for(;;){
+cursor=*idx;offset=cursor*4+4;
+switch((s32)((u8*)idx)[offset]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:case 0x54:goto scan3done;
+case 9:case 0x15:
+if((s8)*(s16*)((u8*)idx+cursor*4+6)==0)flagb|=0x20000;break;
+default:offset=cursor*4+4;fn_800973F0(&flagb,((u8*)idx)[offset]);break;
+}
+(*idx)++;
+}
+scan3done:
+*idx=saved;
+if(flagb&0x10000004){
+*idx=cur;*idx=(s16)cur+1;ok=0;
+for(;;){
+cursor=*idx;offset=cursor*4+4;
+switch((s32)((u8*)idx)[offset]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:goto scan4done;
+case 9:case 0x15:
+if((s8)*(s16*)((u8*)idx+cursor*4+6)>0)ok=1;break;
+default:break;
+}
+(*idx)++;
+}
+scan4done:
+*idx=cur;if(ok)flagb|=1;
+}
+
+return flagb;
+}
+
 static inline void *Event_SelectCommandResource(void **slot,u32 flags,s32 code,s32 kind) {
 extern u8 gEventCmdStrings[];
 void *fn_80055204(void *,s32);
@@ -265,10 +304,10 @@ void *fn_80055204(void *,s32);
 void GActor_RequestRes(void *);
 u32 Event_GetCmdFlagRes(s32);
 s32 fn_80096EEC(s32 *,u32);
-void fn_800973F0(u32 *,s32);
+void fn_800973F0(void *,s32);
 extern u8 gBattle[],gEventCmdStrings[];
 extern void **lbl_80367500,**lbl_80367504;
-s32 ents[40],buf[20];u32 flaga,flagb;
+s32 ents[40],buf[20];s32 flaga,flagb;
 void **g0;
 s32 arg_save;
 u8 *ep;
@@ -358,19 +397,7 @@ if(*(u64*)Item_GetFlagsPtr(item)&0x4000000000ULL){kind=3;goto kindDone;}
 }
 kind=0;
 kindDone:
-if(kind==1)str=0;
-else if(cur==0x52)str=0;
-else if(flags&0x1000000)str=gEventCmdStrings+0xDB;
-else if(flags&0x20000)str=gEventCmdStrings+0xED;
-else if(flags&2)str=gEventCmdStrings+0xFA;
-else {
-if(g0){str=fn_80055204(*g0,1);if(str)goto request;}
-if(flags&0x40)str=gEventCmdStrings+0x105;
-else if(cur==0x51)str=gEventCmdStrings+0x114;
-else if(cur==0x50)str=gEventCmdStrings+0xFA;
-else str=0;
-}
-request:
+str=Event_SelectCommandResource(g0,flags,cur,kind);
 if(str)GActor_RequestRes(str);
 flags=*(u32*)(ep+4);
 if(flags&0x80)str=(void*)Event_GetCmdFlagRes(0x80);
