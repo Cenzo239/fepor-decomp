@@ -6356,21 +6356,22 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
 #pragma cplusplus reset
 
 #pragma optimization_level 3
-void fn_801C0F54(void *arg0) {
-    u32 Ui_FindChild(s32, s32, s32);
-    void Ui_SetWidgetText(u32, void *);
-    void *Msg_Expand(void *);
-    extern char gUiScrollListStrings[];
-    u32 child;
-    void *msg;
+void fn_801C0F54(s32 arg0) {
+    u32 fn_8013FF94(s32, s32, s32);
+    void fn_801658DC(u32, void *);
+    void *fn_8000E0E4(void *);
+    extern char lbl_8027CF10[];
+    void *tmp;
+    void *str;
+    u32 result;
 
-    child = Ui_FindChild((s32)arg0, 0x80, 0);
-    *(s32 *)((u8 *)child + 0x48) = 1;
-    Ui_SetWidgetText(child, gUiScrollListStrings + 0x86);
-    msg = Msg_Expand(gUiScrollListStrings + 0x99);
-    child = Ui_FindChild((s32)arg0, -0x1000, 0);
-    if (child != 0) {
-        Ui_SetWidgetText(child, msg);
+    tmp = (void *)fn_8013FF94(arg0, 0x80, 0);
+    *(s32 *)((u8 *)tmp + 0x48) = 1;
+    fn_801658DC((u32)tmp, lbl_8027CF10 + 0x86);
+    str = fn_8000E0E4(lbl_8027CF10 + 0x99);
+    result = fn_8013FF94(arg0, -0x1000, 0);
+    if (result != 0) {
+        fn_801658DC(result, str);
     }
 }
 #pragma optimization_level reset
@@ -9120,13 +9121,15 @@ void fn_801C7080(void) {
         data[3] = ((u8 *)&tmp2)[3];
 
         fog = Fog_GetColor();
-        i = 2;
-        zero = i - 2;
-        data[8] = fog[1];
-        data[9] = fog[2];
-        data[10] = fog[3];
+        {
+            u8 b1 = fog[1];
+            zero = 0;
+            data[8] = b1;
+            data[9] = fog[2];
+            data[10] = fog[3];
+        }
 
-        for (; i > 0; i--) {
+        for (i = 0; i < 2; i++) {
             *(u32 *)(data + 0x0c) = zero;
             *(u32 *)(data + 0x10) = zero;
             *(u32 *)(data + 0x14) = zero;
@@ -12507,48 +12510,46 @@ check:
     return n;
 }
 #pragma opt_propagation reset
-s32 fn_801CD5CC(s32 arg0, s32 arg1) {
-    if (arg0 == 0) {
-        return 0;
-    }
-    
-    if (arg1 < 0 || arg1 >= 0x90) {
-        return 0;
-    }
-    
-    if ((arg0 & 0xF0) == 0x30) {
-        return 4;
-    }
-    
-    if ((arg0 & 0xF0) == 0x40) {
-        return 5;
-    }
-    
-    if ((arg0 & 0xF0) == 0x10) {
-        return 2;
-    }
-    
-    if ((arg0 & 0xF0) == 0x50) {
-        return 6;
-    }
-    
-    if ((arg0 & 0xF0) == 0x20) {
-        return 3;
-    }
-    
-    if (arg0 == 0x98) {
-        return 7;
-    }
-    
-    if (arg0 == 0xA0) {
-        return 8;
-    }
-    
-    if ((arg0 & 0xF0) == 0x60 || (arg0 & 0xF0) == 0x70) {
-        return 9;
-    }
-    
-    return 1;
+void fn_801CD5CC(void *self) {
+extern u32 gUiInputFlags; extern u8 *gPadInput; extern s16 lbl_80366EA8,lbl_80366EAA; extern u8 lbl_8027DE18[];
+void Ui_PlaySeCue(void*,s32);
+u8 gate=0;
+u32 flags=gUiInputFlags;
+u32 input,pressed;
+if((flags&0x10) && !(flags&0x20)) gate=1;
+if(gate) return;
+input=*(u32*)(gPadInput+0xc);
+pressed=*(u32*)(gPadInput+4) & (*(u32*)(gPadInput+8)^*(u32*)(gPadInput+4));
+if(input&0x11000041) {
+s16 count;
+s16 *cap;
+s32 i;
+u32 *p;
+s16 old,lim,v;
+for(i=0,p=(u32*)((u8*)self+0x3c);*p;i++,p++) {}
+count=(s16)i; cap=&count;
+if(lbl_80366EA8<(s16)i) cap=&lbl_80366EA8;
+old=*(s16*)((u8*)self+0x70);lim=*cap;
+v=old-1;
+*(s16*)((u8*)self+0x70)=v;
+if(v<0) *(s16*)((u8*)self+0x70)=input==pressed?lim:0;
+if(old!=*(s16*)((u8*)self+0x70)) Ui_PlaySeCue(lbl_8027DE18+8,0x64);
+} else if(input&0x22000022) {
+s16 count;
+s16 *cap;
+s32 i;
+u32 *p;
+s16 old,lim;
+s32 v;
+for(i=0,p=(u32*)((u8*)self+0x3c);*p;i++,p++) {}
+count=(s16)i; cap=&count;
+if(lbl_80366EAA<(s16)i) cap=&lbl_80366EAA;
+old=*(s16*)((u8*)self+0x70);lim=*cap;
+v=old+1;
+*(s16*)((u8*)self+0x70)=v;
+if((u32)(s16)v>(u32)lim) *(s16*)((u8*)self+0x70)=input==pressed?0:lim;
+if(old!=*(s16*)((u8*)self+0x70)) Ui_PlaySeCue(lbl_8027DE18+8,0x64);
+}
 }
 
 void fn_801CD764(void *arg0) {
@@ -15593,8 +15594,8 @@ void *Msg_ResolveName(void*); void *fn_800BE728(s32); void *Msg_Expand(void*);
 void Text_Draw(s32,s16,u8,void*,...); void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
 s32 fn_800BE798(s32); void fn_80152B4C(s16,s16,s32,s32);
 extern f32 lbl_8036B5E0;
-s32 disabled; s32 pad; u8 color[4]; void *text;
-s16 h; s16 h1; s16 left,width; s32 half; s32 lineY;
+u8 color[4]; s32 pad; s32 disabled; void *text;
+s16 h1; s16 h; s16 left,width; s32 half; s32 lineY;
 Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32*)(self+0x34)|0x13)); Prim2D_PrepareTex();
 h1=*(s16*)(self+0x56);
 pad=(s16)(((s16)h1-Text_MeasureHeight(-1,lbl_8036B5E0))>>1);
@@ -19483,79 +19484,32 @@ extern u8 fn_80209A0C();
 extern s32 fn_80211690(s32, s32);
 extern void fn_8021D614(u32, s32*, u32);
 void fn_801DF7C8(void *arg0) {
-    s32 spC;
-    s32 sp8;
-    s32 temp_r4;
-    s32 temp_r4_2;
-    s32 temp_r5;
-    s32 temp_r5_2;
-    s32 temp_r6;
-    s8 var_r31;
-    u64 temp_ret;
-    u8 temp_r3;
-
-    fn_8021D614(0, &sp8, 0x20050201);
-    memset(arg0, 0, 0x2000);
-    
-    *(u32*)((char*)arg0 + 0x70) = 0x53595346;
-    *(u32*)((char*)arg0 + 0x74) = 0x20050201;
-    
-    spC = 0;
-    sp8 = 0;
-    temp_ret = OSGetTime();
-    temp_r5 = spC;
-    temp_r4 = temp_r5 + (u32) temp_ret;
-    spC = temp_r4;
-    sp8 = sp8 + temp_ret;
-    temp_r6 = fn_80211690(temp_r4, temp_r5) * 0x7B;
-    temp_r5_2 = spC + temp_r6;
-    temp_r4_2 = sp8;
-    spC = temp_r5_2;
-    sp8 = temp_r4_2;
-    
-    *(u32*)((char*)arg0 + 0x7C) = temp_r5_2;
-    *(u32*)((char*)arg0 + 0x78) = temp_r4_2;
-    *(u16*)((char*)arg0 + 0x80) = 0;
-    *(u8*)((char*)arg0 + 0xB0) = 0;
-    *(u8*)((char*)arg0 + 0xB1) = 0;
-    *(u8*)((char*)arg0 + 0xB2) = 0x40;
-    *(u8*)((char*)arg0 + 0xB3) = 0;
-    
-    if (fn_802072A0(0, temp_r4_2, temp_r5_2, temp_r6) == 1) {
-        var_r31 = 0;
-    } else {
-        temp_r3 = fn_80209A0C();
-        switch ((s32) temp_r3) {
-            case 0:
-                var_r31 = 1;
-                break;
-            case 1:
-                var_r31 = 2;
-                break;
-            case 2:
-                var_r31 = 3;
-                break;
-            case 3:
-                var_r31 = 4;
-                break;
-            case 4:
-                var_r31 = 5;
-                break;
-            case 5:
-                var_r31 = 1;
-                break;
-        }
+    s32 fn_80211690();
+    u16 fn_802072A0();
+    u64 time;
+    s8 lang;
+    u8 *p = arg0;
+    u32 add;
+    memset(p, 0, 0x2000);
+    *(u32 *)(p+0x70)=0x53595346;
+    *(u32 *)(p+0x74)=0x20050201;
+    time=0;
+    fn_8021D614(0,(s32 *)&time,0x20050201);
+    time += OSGetTime();
+    add=fn_80211690()*123;
+    time += add;
+    *(u64 *)(p+0x78)=time;
+    *(u16 *)(p+0x80)=0;
+    p[0xB0]=0; p[0xB1]=0; p[0xB2]=0x40; p[0xB3]=0;
+    if (fn_802072A0()==1) lang=0;
+    else switch((s32)fn_80209A0C()) {
+    case 0: lang=1; break; case 1: lang=2; break; case 2: lang=3; break;
+    case 3: lang=4; break; case 4: lang=5; break; case 5: lang=1; break;
     }
-    *(u8*)((char*)arg0 + 0xB4) = var_r31;
-    *(u8*)((char*)arg0 + 0xB7) = 0;
-    memset((char*)arg0 + 0x82, 0, 0x1E);
-    memset((char*)arg0 + 0xB5, 0, 2);
-    *(u32*)((char*)arg0 + 0xAC) = 0;
-    *(u32*)((char*)arg0 + 0xA8) = 0;
-    *(u32*)((char*)arg0 + 0xA4) = 0;
-    *(u32*)((char*)arg0 + 0xA0) = 0;
-    *(u32*)((char*)arg0 + 0x40) = 0;
-    *(u32*)((char*)arg0 + 0x48) = 1;
+    p[0xB4]=lang; p[0xB7]=0;
+    memset(p+0x82,0,0x1E); memset(p+0xB5,0,2);
+    *(u32 *)(p+0xAC)=0; *(u32 *)(p+0xA8)=0; *(u32 *)(p+0xA4)=0; *(u32 *)(p+0xA0)=0;
+    *(u32 *)(p+0x40)=0; *(u32 *)(p+0x48)=1;
 }
 
 void fn_801DF960(void *arg0)
