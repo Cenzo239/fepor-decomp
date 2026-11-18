@@ -4,6 +4,7 @@
 #pragma cplusplus on
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
+typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
 typedef struct MapCostCell { u8 pad[0x610E]; s16 cost; } MapCostCell;
 typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
 typedef struct F43Eval { void **vtable; void *entry, *unit; F43Pos *pos; } F43Eval;
@@ -15983,25 +15984,38 @@ void GActor_ApplyPoseMtx(void *obj) {
     }
 }
 
-void fn_800E5DEC(void) {
-    s32 var_r3;
-    s32 var_r4;
-    s32 var_r5;
-    
-    var_r3 = 0;
-    var_r4 = 0;
-    var_r5 = 0;
-    
-    while (var_r3 < 0x180) {
-        if (var_r4 == 0) {
-            var_r5 = 0;
-        }
-        var_r4++;
-        var_r5++;
-        var_r3 += 0x4;
-    }
+#pragma cplusplus on
+extern "C" void fn_800E5DEC(void *arg0) {
+ void Model_SetAlpha(void*,u8);
+ void Model_SetColor(void*,u8,u8,u8);
+ void fn_8004AE28(void*,f32,f32,f32);
+ u8 *self=(u8*)arg0;
+ f32 pos[3];
+ s32 r,g,b;
+ if(*(void**)(self+0xDC)) {
+ if(*(f32*)(self+0x104)!=0.0f) {
+ *(f32*)(self+0x108)+=*(f32*)(self+0x104);
+ if(*(f32*)(self+0x108)>=1.0f) {*(f32*)(self+0x108)=1.0f;*(f32*)(self+0x104)=0.0f;}
+ if(*(f32*)(self+0x108)<=0.0f) {*(f32*)(self+0x108)=0.0f;*(f32*)(self+0x104)=0.0f;}
+ Model_SetAlpha(*(void**)(self+0xE0),(u8)(s32)(255.0f* *(f32*)(self+0x108)));
+ }
+ if(*(s32*)(self+0x114)) {
+ b=(s32)*(f32*)(self+0x10C);g=b;r=b;
+ *(f32*)(self+0x10C)+=*(f32*)(self+0x110);
+ if(*(f32*)(self+0x10C)<128.0f) *(f32*)(self+0x10C)=128.0f;
+ if(*(f32*)(self+0x10C)>255.0f) *(f32*)(self+0x10C)=255.0f;
+ if(--*(s32*)(self+0x114)<=0) {g=128;b=128;r=g;}
+ Model_SetColor(*(void**)(self+0xE0),(u8)r,(u8)g,(u8)b);
+ }
+ if(*(void**)(self+0xE0)) {
+ (*(void(***)(f32*,void*,s32))(self+0x40))[0x38/4](pos,self,0);
+ fn_8004AE28(*(void**)(self+0xE0),pos[0],pos[1],pos[2]);
+ }
+ (*(void(***)(void*))(self+0x40))[0x50/4](self);
+ (*(void(***)(void*))(self+0x40))[0x20/4](self);
+ }
 }
-
+#pragma cplusplus reset
 /* Destroy an actor: unlink GActor nodes, nested member, strings, then base; free if asked. */
 void *Actor_Dtor(void *self, s16 freeHeap) {
     void fn_800DDC2C(void *, void *);
@@ -18400,15 +18414,53 @@ void fn_800E9CE4(s32 arg0) {
     }
 }
 
-void fn_800EA27C(void) {
-    extern u16 gCardWork[];
-    s32 CARDGetResultCode(s32 arg);
-    
-    u32 tmp = CARDGetResultCode(*(u32*)(gCardWork + 0xA000));
-    *(u32*)(gCardWork + 0xA004) = tmp;
-    *(u8*)(gCardWork + 0xA01A) = 0;
+#pragma global_optimizer off
+void fn_800EA27C(s32 arg0) {
+extern u8 gCardWork[];
+extern void Card_AsyncDone;
+s32 fn_8021D004(s32,s32,void *);
+s32 fn_8021D118(s32,s32,void *,void *);
+u8 status[0x6c];
+u32 skip;
+s32 proc;
+u8 *resultBase;
+u8 *base;
+s32 file;
+u8 *busyBase;
+proc=arg0;
+resultBase=gCardWork+0x10000;
+if(*(s32*)(resultBase-0x5ffc)<0) {
+Process_Goto(proc,0x63);
+gCardWork[0xa01a]=0;skip=1;
+} else skip=0;
+if((u8)skip==0) {
+base=gCardWork+0x10000;
+if(*(s32*)(base-0x5fec)>=0) {
+file=*(s32*)(base-0x5fe0);
+fn_8021D004(*(s32*)(base-0x6000),file,status);
+*(u32*)(status+0x38)=0x2000;
+*(u32*)(status+0x30)=0;
+status[0x2e]=(status[0x2e]&~3)|1;
+status[0x2e]=(status[0x2e]&~4)|4;
+*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~3)|1;
+*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~3)|3;
+*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~12)|4;
+*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~12)|8;
+*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~48)|16;
+*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~48)|48;
+*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~192);
+*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~192);
+*(u32*)(status+0x38)=*(s32*)(base-0x5fec);
+busyBase=gCardWork+0x10000;
+busyBase[-0x5fe6]=1;
+*(s32*)(resultBase-0x5ffc)=fn_8021D118(*(s32*)(base-0x6000),file,status,&Card_AsyncDone);
+if(*(s32*)(resultBase-0x5ffc)<0) {
+Process_Goto(proc,0x63);busyBase[-0x5fe6]=0;
 }
-
+}
+}
+}
+#pragma global_optimizer reset
 void fn_800EA418(s32 proc) {
     struct CardWork {
         u8 workArea[0xA000];
@@ -25063,8 +25115,9 @@ void fn_800F8C3C(void *unit) {
 #pragma global_optimizer reset
 #pragma dont_inline reset
 
-#pragma dont_inline on
-void fn_800F8E5C(void *arg0) {
+#pragma dont_inline off
+#pragma cplusplus on
+extern "C" void fn_800F8E5C(void *arg0) {
 extern u8 gAiState[],gUiContext[],gTargetList[];
 extern u8 *gAiCmd;
 extern s32 gAiCmdIsAlt;
@@ -25076,21 +25129,21 @@ void fn_800FFB4C(void *,s32,s32);
 void *fn_8002F680(void *,u8,u8);
 void Ai_SetDecision(s8,s32,s8,s8,s8,s8,s8);
 s16 x,y;
-u8 *ctx;
-u8 *unit=arg0;
+s8 tx,ty;
+AiCommandContext *ctx;
+u8 *unit=(u8*)arg0;
 u8 *other=gAiCmd;
 if(!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x3000000)) {
 if((unit[0x1a5]>>4)&7) {
 *(s32*)(gAiState+8)=0;*(s32*)(gAiState+12)=0;
 } else if(fn_801021F0(*(void**)(other+0x14),&x,&y)) {
-other=Unit_FindByName(*(void**)(other+0x14));
-ctx=gUiContext;
-*(void**)(ctx+4)=other;
-if(!fn_800BF1E8(ctx)) {
+other=(u8*)Unit_FindByName(*(void**)(other+0x14));
+if(!fn_800BF1E8(((AiCommandContext*)gUiContext)->set(other))) {
 *(s32*)(gAiState+8)=9;*(s32*)(gAiState+12)=9;
 } else {
 Ai_SetUnitMoveTo(unit,x,y,1,*(u16*)(gAiState+4),1,0,-1);
-fn_800FFB4C(unit,(s8)gUiContext[13],(s8)gUiContext[14]);
+tx=((AiCommandContext*)gUiContext)->x;ty=((AiCommandContext*)gUiContext)->y;
+fn_800FFB4C(unit,tx,ty);
 if(fn_8002F680(gTargetList,other[0x19e],other[0x19f]) && *(s32*)(gAiState+8)!=4) {
 *(s32*)(gAiState+8)=3;
 Ai_SetDecision(7,(s32)other,(s8)x,(s8)y,-1,0,0);
@@ -25100,7 +25153,7 @@ Ai_SetDecision(7,(s32)other,(s8)x,(s8)y,-1,0,0);
 }
 if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
 }
-#pragma dont_inline reset
+#pragma cplusplus reset
 void fn_800F8FF4(void *arg0) {
     extern void *gAiCmd;
     if ((s32) gAiCmd == 0) {
