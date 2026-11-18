@@ -1,13 +1,6 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline u8 MenuCmd_ToggleByte(void) {
-    extern u8 lbl_80366E25;
-    u8 value = lbl_80366E25 ^ 1;
-    lbl_80366E25 = value;
-    return value;
-}
-
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
     void *fn_80105C5C(void *, u8);
