@@ -1255,6 +1255,7 @@ void fn_80018E0C(void) {
     }
     Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
 }
+#pragma global_optimizer off
 #pragma peephole on
 extern "C" void fn_80018EC0(void)
 {
