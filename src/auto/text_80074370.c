@@ -574,7 +574,6 @@ extern "C" void fn_80074F20(void *arg0, void *arg1) {
     extern f32 lbl_80369394;
     extern f32 lbl_80369398;
     extern f32 lbl_8036939C;
-    extern f32 lbl_803693A0;
     extern u8 lbl_8026C0B8[];
     extern f32 UiWin_GetFade(void *);
     extern void Prim2D_Begin(void);
@@ -587,40 +586,23 @@ extern "C" void fn_80074F20(void *arg0, void *arg1) {
     extern void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     extern void Ui_DrawCenteredMsgLines(u32, u32, void *, void *, void *);
 
-    typedef s16 (*v18_fn)(void *);
     f32 t;
-    v18_fn fn1;
-    v18_fn fn2;
-    s16 v18_1;
-    s16 v18_2;
-    s32 r29;
-    s32 temp;
-    s32 r30;
-    s32 part2;
-    u32 *vtable;
-
-    vtable = (u32 *)*(u32 *)((u8 *)arg0 + 4);
     t = UiWin_GetFade(arg1);
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
     Prim2D_SetColorByte((s32)(lbl_80369378 * t));
     Prim2D_PrepareTex();
-    fn_80071740(arg0, lbl_8036937C * t + lbl_8036937C, lbl_80369380, *(s32 *)((u8 *)arg0 + 0xC));
-    fn_8007149C(arg0, arg1, lbl_8036937C * t + lbl_8036937C, lbl_80369384, *(s32 *)((u8 *)arg0 + 0xC), 0);
-    if ((s16) *(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
+    t = lbl_8036937C * t + lbl_8036937C;
+    fn_80071740(arg0, t, lbl_80369380, *(s32 *)((u8 *)arg0 + 0xC));
+    fn_8007149C(arg0, arg1, t, lbl_80369384, *(s32 *)((u8 *)arg0 + 0xC), 0);
+    if (*(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80369390);
         Prim2D_PrepareTex();
-        fn1 = (v18_fn)*(u32 *)((u8 *)arg0 + 0x54);
-        v18_1 = fn1(arg0);
-        r29 = (s32)(lbl_80369398 * (((f32)(s16)v18_1) - lbl_803693A0));
-        temp = Text_MeasureHeight(-1, lbl_80369394);
-        r30 = (temp + (temp < 0 ? 1 : 0)) >> 1;
-        fn2 = (v18_fn)*(u32 *)((u8 *)arg0 + 0x54);
-        v18_2 = fn2(arg0);
-        part2 = (v18_2 + (v18_2 < 0 ? 1 : 0)) >> 1;
-        fn_8008AB7C(0x28 + part2, (s16) *(s16 *)((u8 *)arg1 + 0x3A) + r30, r29, 0x17, 0x19, 0x4b, 1);
+        fn_8008AB7C(((PopupDrawObj *)arg0)->v18() / 2 + 0x28,
+            *(s16 *)((u8 *)arg1 + 0x3A) + Text_MeasureHeight(-1, lbl_80369394) / 2,
+            (s32)(lbl_80369398 * ((PopupDrawObj *)arg0)->v18()), 0x17, 0x19, 0x4B, 1);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036939C);
         Prim2D_PrepareTex();
