@@ -5190,6 +5190,7 @@ void fn_8018DDA8(void *arg0) {
     fn_8005C8B4(lbl_80279B1C + 0x105);
 }
 
+#pragma scheduling off
 static inline void Ui_ApplyStatusPanelRow(void *panel, const u16 *icons)
 {
     u16 *fields = (u16 *)((u8 *)panel + 0x48);
@@ -5201,6 +5202,7 @@ static inline void Ui_ApplyStatusPanelRow(void *panel, const u16 *icons)
     fields[5] = icons[5];
 }
 
+#pragma scheduling reset
 static inline void Ui_DrawStatusPanelTexture(s32 texture, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
 {
     void **fn_8006EDD8(s32, s32);
@@ -5323,15 +5325,15 @@ extern "C" void fn_8018DE24(void *arg0) {
     extern const f32 lbl_8036ADCC;
     extern f64 lbl_8036ADE8;
 
-    u8 *self = (u8 *)arg0;
-    u8 *base = gBattleState;
     u8 *ro = lbl_80279900;
+    u8 *base = gBattleState;
     u32 mode;
     s32 t;
     u32 selected = base[0x51D];
     s32 i;
-    struct PanelTable {u32 v[57];} buf;
-    u8 *row;
+    struct PanelTable {u16 icons[19][6];} buf;
+    s32 labelIndex;
+    u16 *row;
     u8 col[4];
     void **p;
     void *tex;
@@ -5339,40 +5341,40 @@ extern "C" void fn_8018DE24(void *arg0) {
     f32 fx, fy;
 
     if (((((u32)base[0x9D] >> 2) & 3) != 2)) {
-        t = *(s16 *)(self + 0x46);
+        t = *(s16 *)(((u8 *)arg0) + 0x46);
         if (t <= 0) {
-            switch (*(s16 *)(self + 0x32)) {
+            switch (*(s16 *)(((u8 *)arg0) + 0x32)) {
             case 0:
-                *(s16 *)(self + 0x44) = (s16)(*(s16 *)(self + 0x44) + 1);
-                if (*(s16 *)(self + 0x44) > 8) {
-                    *(s16 *)(self + 0x44) = 8;
+                *(s16 *)(((u8 *)arg0) + 0x44) = (s16)(*(s16 *)(((u8 *)arg0) + 0x44) + 1);
+                if (*(s16 *)(((u8 *)arg0) + 0x44) > 8) {
+                    *(s16 *)(((u8 *)arg0) + 0x44) = 8;
                 }
                 break;
             case 1:
-                *(s16 *)(self + 0x44) = (s16)(*(s16 *)(self + 0x44) - 1);
-                if (*(s16 *)(self + 0x44) < 0) {
-                    *(s16 *)(self + 0x44) = 0;
+                *(s16 *)(((u8 *)arg0) + 0x44) = (s16)(*(s16 *)(((u8 *)arg0) + 0x44) - 1);
+                if (*(s16 *)(((u8 *)arg0) + 0x44) < 0) {
+                    *(s16 *)(((u8 *)arg0) + 0x44) = 0;
                 }
                 break;
             }
         } else {
-            *(s16 *)(self + 0x46) = (s16)(t - 1);
+            *(s16 *)(((u8 *)arg0) + 0x46) = (s16)(t - 1);
         }
-        *(f32 *)(self + 0x38) = Math_Ease(4, lbl_8036AD98, lbl_8036ADB8, (f32)*(s16 *)(self + 0x44), lbl_8036ADBC);
-        *(f32 *)(self + 0x3C) = lbl_8036AD9C;
-        if (*(u16 *)(self + 0x30) & 1) {
-            *(u16 *)(self + 0x30) = (u16)(*(u16 *)(self + 0x30) & 0xFFFE);
-            *(f32 *)(self + 0x38) = (f32)*(s16 *)(self + 0x40);
-            *(f32 *)(self + 0x3C) = (f32)*(s16 *)(self + 0x42);
+        *(f32 *)(((u8 *)arg0) + 0x38) = Math_Ease(4, lbl_8036AD98, lbl_8036ADB8, (f32)*(s16 *)(((u8 *)arg0) + 0x44), lbl_8036ADBC);
+        *(f32 *)(((u8 *)arg0) + 0x3C) = lbl_8036AD9C;
+        if (*(u16 *)(((u8 *)arg0) + 0x30) & 1) {
+            *(u16 *)(((u8 *)arg0) + 0x30) = (u16)(*(u16 *)(((u8 *)arg0) + 0x30) & 0xFFFE);
+            *(f32 *)(((u8 *)arg0) + 0x38) = (f32)*(s16 *)(((u8 *)arg0) + 0x40);
+            *(f32 *)(((u8 *)arg0) + 0x3C) = (f32)*(s16 *)(((u8 *)arg0) + 0x42);
         }
         buf = *(struct PanelTable *)(ro + 0xC);
-        row = (u8 *)&buf + selected * 0xC;
-        *(u16 *)(self + 0x48) = *(u16 *)(row + 0);
-        *(u16 *)(self + 0x4A) = *(u16 *)(row + 2);
-        *(u16 *)(self + 0x4C) = *(u16 *)(row + 4);
-        *(u16 *)(self + 0x4E) = *(u16 *)(row + 6);
-        *(u16 *)(self + 0x50) = *(u16 *)(row + 8);
-        *(u16 *)(self + 0x52) = *(u16 *)(row + 0xA);
+        row = buf.icons[selected];
+        *(u16 *)(((u8 *)arg0) + 0x48) = row[0];
+        *(u16 *)(((u8 *)arg0) + 0x4A) = row[1];
+        *(u16 *)(((u8 *)arg0) + 0x4C) = row[2];
+        *(u16 *)(((u8 *)arg0) + 0x4E) = row[3];
+        *(u16 *)(((u8 *)arg0) + 0x50) = row[4];
+        *(u16 *)(((u8 *)arg0) + 0x52) = row[5];
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -5380,15 +5382,15 @@ extern "C" void fn_8018DE24(void *arg0) {
         if (mode == 0) {
             u32 color;
             {
-                f32 firstY = *(f32 *)(self + 0x3C);
-                f32 firstX = *(f32 *)(self + 0x38);
+                f32 firstY = *(f32 *)(((u8 *)arg0) + 0x3C);
+                f32 firstX = *(f32 *)(((u8 *)arg0) + 0x38);
                 color = *Ui_GetColor(2);
-                Ui_DrawStatusPanelTextureAt(self, 0, firstX, firstY, lbl_8036ADC0, color, 0xFF);
+                Ui_DrawStatusPanelTextureAt(((u8 *)arg0), 0, firstX, firstY, lbl_8036ADC0, color, 0xFF);
             }
-            fy = lbl_8036ADC4 + *(f32 *)(self + 0x3C);
-            fx = lbl_8036ADC8 + *(f32 *)(self + 0x38);
+            fy = lbl_8036ADC4 + *(f32 *)(((u8 *)arg0) + 0x3C);
+            fx = lbl_8036ADC8 + *(f32 *)(((u8 *)arg0) + 0x38);
             color = *Ui_GetColor(1);
-            Ui_DrawStatusPanelTextureAt(self, 1, fx, fy, lbl_8036ADCC, color, 0x1A);
+            Ui_DrawStatusPanelTextureAt(((u8 *)arg0), 1, fx, fy, lbl_8036ADCC, color, 0x1A);
             {
                 struct Depths { f32 v[6]; } depths = *(struct Depths *)(ro+0xF0);
                 struct Positions { f32 v[12]; } positions = *(struct Positions *)(ro+0x108);
@@ -5398,41 +5400,41 @@ extern "C" void fn_8018DE24(void *arg0) {
                     f32 depth;
                     u16 icon;
                     depth = depths.v[i];
-                    fy = *(f32 *)(self+0x3C)+positions.v[i*2+1];
-                    fx = *(f32 *)(self+0x38)+positions.v[i*2];
+                    fy = *(f32 *)(((u8 *)arg0)+0x3C)+positions.v[i*2+1];
+                    fx = *(f32 *)(((u8 *)arg0)+0x38)+positions.v[i*2];
                     color = *Ui_GetColor(1);
-                    Ui_DrawStatusPanelTextureAt(self, (u16)(i+2), fx, fy, depth, color, 0xFF);
+                    Ui_DrawStatusPanelTextureAt(((u8 *)arg0), (u16)(i+2), fx, fy, depth, color, 0xFF);
                     {
                     f32 iconX, iconY;
-                    icon = *(u16 *)(self+0x48+i*2);
-                    iconY = *(f32 *)(self+0x3C)+offsets.v[i*2+1];
-                    iconX = *(f32 *)(self+0x38)+offsets.v[i*2];
+                    icon = *(u16 *)(((u8 *)arg0)+0x48+i*2);
+                    iconY = *(f32 *)(((u8 *)arg0)+0x3C)+offsets.v[i*2+1];
+                    iconX = *(f32 *)(((u8 *)arg0)+0x38)+offsets.v[i*2];
                     if (icon != 0xFFFF) {
-                        p = fn_8006EDD8(*(s32 *)(self+0x34),icon);
+                        p = fn_8006EDD8(*(s32 *)(((u8 *)arg0)+0x34),icon);
                         iconX -= lbl_8036ADA8 * *(u16 *)((u8 *)*p+2);
                         color = *Ui_GetColor(1);
-                        Ui_DrawStatusPanelTextureAt(self,icon,iconX,iconY,lbl_8036ADD0,color,0xFF);
+                        Ui_DrawStatusPanelTextureAt(((u8 *)arg0),icon,iconX,iconY,lbl_8036ADD0,color,0xFF);
                     }
                     }
                 }
             }
         } else {
-            if (*(s16 *)(self+0x46)<=0) {
-                if (*(s16 *)(self+0x44)!=0 || Process_Find(lbl_80286860)!=0 || (*(u16 *)(self+0x30)&2)) {
-                    *(s16 *)(self+0x54)+=25;
-                    if (*(s16 *)(self+0x54)>255) *(s16 *)(self+0x54)=255;
+            if (*(s16 *)(((u8 *)arg0)+0x46)<=0) {
+                if (*(s16 *)(((u8 *)arg0)+0x44)!=0 || Process_Find(lbl_80286860)!=0 || (*(u16 *)(((u8 *)arg0)+0x30)&2)) {
+                    *(s16 *)(((u8 *)arg0)+0x54)+=25;
+                    if (*(s16 *)(((u8 *)arg0)+0x54)>255) *(s16 *)(((u8 *)arg0)+0x54)=255;
                 } else {
-                    *(s16 *)(self+0x54)-=25;
-                    if (*(s16 *)(self+0x54)<0) *(s16 *)(self+0x54)=0;
+                    *(s16 *)(((u8 *)arg0)+0x54)-=25;
+                    if (*(s16 *)(((u8 *)arg0)+0x54)<0) *(s16 *)(((u8 *)arg0)+0x54)=0;
                 }
             }
-            if (*(s16 *)(self+0x54)>0) {
+            if (*(s16 *)(((u8 *)arg0)+0x54)>0) {
                 u32 c0,c1,c2,c3;
                 char textBuffer[100];
                 Prim2D_Begin();
                 Prim2D_SetTransform(lbl_8036ADA0,lbl_8036ADA0,lbl_8036ADC0,lbl_8036ADA4);
                 Prim2D_SetTex(0,0x12);
-                Prim2D_SetColorByte((u8)*(s16 *)(self+0x54));
+                Prim2D_SetColorByte((u8)*(s16 *)(((u8 *)arg0)+0x54));
                 Prim2D_PrepareTex();
                 Prim2D_AddPrim(3);
                 Prim2D_SetQuadMin(lbl_8036ADA0,lbl_8036ADD4,lbl_8036ADA0,lbl_8036ADA0);
@@ -5452,12 +5454,12 @@ extern "C" void fn_8018DE24(void *arg0) {
                 {
                     struct Prefixes {char *v[6];} prefix = *(struct Prefixes *)(ro+0x1C8);
                     struct Names {void *v[15];} names = *(struct Names *)(ro+0x1E0);
-                    textBuffer[0]=0;
-                    for(i=0;i<6;i++) {
-                        if (*(u16 *)(self+0x48+i*2)!=0xFFFF) {
-                            strcat(textBuffer,prefix.v[i]);
-                            if (i==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
-                            strcat(textBuffer,(char *)Msg_Expand(names.v[((u16 *)row)[i]-8]));
+                    textBuffer[0]=labelIndex=0;
+                    for(;labelIndex<6;labelIndex++,row++) {
+                        if (*(u16 *)(((u8 *)arg0)+0x48+labelIndex*2)!=0xFFFF) {
+                            strcat(textBuffer,prefix.v[labelIndex]);
+                            if (labelIndex==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
+                            strcat(textBuffer,(char *)Msg_Expand(names.v[*row-8]));
                         }
                     }
                 }
