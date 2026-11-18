@@ -3184,6 +3184,19 @@ extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
 #pragma optimization_level reset
 #pragma cplusplus off
 #pragma cplusplus on
+#pragma cplusplus on
+struct ActorUpdateInterface {
+ u8 pad[0x40];
+ virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+ virtual void v4()=0; virtual void v5()=0; virtual void v6()=0;
+ virtual void SetScale(f32,f32,f32)=0;
+ virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0;
+ virtual Vec3f GetPos(s32)=0;
+ virtual void v13()=0; virtual void v14()=0; virtual void v15()=0;
+ virtual u8 IsBusy()=0;
+};
+#pragma cplusplus off
+#pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void fn_80116FE8(void *self) {
  s32 Str_Cmp(void *,char *); void fn_80111C8C(void *,void *);
