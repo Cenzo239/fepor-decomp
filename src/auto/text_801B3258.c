@@ -1,5 +1,12 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+struct NameGridCursor {
+    u8 pad[0x3C];
+    void *p;
+    u8 pad2[8];
+    s16 x;
+    s16 y;
+};
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -1129,6 +1136,7 @@ void fn_801B6784(void *arg0) {
 }
 
 #pragma global_optimizer off
+#pragma opt_common_subs off
 void fn_801B67D0(u8 *out) {
 extern u8 gBattle[];
 extern u8 lbl_8027C248[];
@@ -1144,13 +1152,7 @@ s32 count;
 s16 saved;
 u32 off;
 u8 type;
-unit=*(u8 **)(gBattle+0x280);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else {
-unit=*(u8 **)(gBattle+0x560);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else unit=0;
-}
+unit=Battle_FindActiveSideUnit();
 found:
 *(u8 **)(arg0+0x44)=unit;
 count=0;
@@ -1198,6 +1200,7 @@ if (fn_80028640()) arg0[0x3a]=1; else arg0[0x3a]=0;
 fn_8005C8B4(lbl_8027C248+0x114);
 }
 }
+#pragma opt_common_subs reset
 #pragma global_optimizer reset
 void Ui_DrawExpBar(void *bar) {
     void Prim2D_EmitQuad(void);
@@ -12200,10 +12203,10 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-#pragma opt_common_subs on
+#pragma optimization_level 1
 u32 NameGrid_GetCharAtCursor(void *arg0) {
-u32 fn_801CD480(void *, s16, s16);
-return fn_801CD480(*(void **)((u8 *)arg0+0x3C),*(s16 *)((u8 *)arg0+0x48),*(s16 *)((u8 *)arg0+0x4A));
+    u32 fn_801CD480(void *, s16, s16);
+    return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), *(s16 *)((u8 *)arg0 + 0x48), *(s16 *)((u8 *)arg0 + 0x4A));
 }
 #pragma optimization_level reset
 #pragma cplusplus on
