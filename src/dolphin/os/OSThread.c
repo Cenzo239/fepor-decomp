@@ -148,9 +148,12 @@ struct OSThread {
     OSThread *next, *prev;
 };
 #pragma opt_common_subs on
-static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
-    OSThread *thread = queue->head;
-    OSThread *next = thread->next;
+static inline void PopThread(OSThreadQueue *arg, OSThread **out) {
+    OSThread *next;
+    OSThread *thread;
+    OSThreadQueue *queue = arg;
+    thread = queue->head;
+    next = thread->next;
     *out = thread;
     if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
@@ -178,14 +181,14 @@ void *SelectThread_8020A2C4(s32 arg0) {
     extern volatile s32 RunQueueHint_8036851C;
     extern void *RunQueue_80339478[];
     extern void (*SwitchThreadCallback_80366F50)(void *, void *);
-    register void **queue;
-    register OSThread *thread;
+    void **queue;
+    OSThread *thread;
     OSThread *next;
-    register OSThread *tail;
-    register OSThread *pred;
-    register s32 prio;
-    register OSThreadQueue *q;
-        register OSContext *cur; register OSContext *context;
+    OSThread *tail;
+    OSThread *pred;
+    s32 prio;
+    OSThreadQueue *q;
+        OSContext *cur; OSContext *context;
 
     queue = RunQueue_80339478;
     if (Reschedule_80368520 > 0) {
