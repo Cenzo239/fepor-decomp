@@ -1436,7 +1436,6 @@ count+=lbl_80367004[(word18>>12)&3];
 count+=lbl_80367004[(word18>>14)&3];
 *(u16*)(gx+6)=count;
 }
-#pragma scheduling reset
 #pragma optimization_level reset
 void GXClearVtxDesc(void)
 {
