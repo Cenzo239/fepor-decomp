@@ -931,109 +931,100 @@ extern "C" void fn_8002A084(void *arg0) {
 }
 #pragma global_optimizer reset
 #pragma cplusplus reset
-void fn_8002A2BC(void *arg0)
-{
-    void fn_8002F728(void *);
-
+extern "C" void fn_8002A2BC(void *arg0) {
     extern u8 lbl_80284DC0[];
     extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-
+    void fn_8002F728(void *);
+    struct Visitor {
+        virtual void apply(void *unit) = 0;
+    };
     struct {
-        void *vtable;
+        void *vtbl;
         void *unit;
     } obj;
-
+    s32 x;
+    s32 y;
+    u16 *flags;
+    s32 yOff;
+    void *unit;
     u8 id;
-    register s32 y;
-    register s32 x;
-    register u16 *flags;
-    register s32 yOffset;
-    void *target;
+    u16 f;
+    u8 *entry;
 
-    obj.vtable = lbl_80284E20;
+    obj.vtbl = lbl_80284E20;
     obj.unit = arg0;
-    obj.vtable = lbl_80284DC0;
-
+    obj.vtbl = lbl_80284DC0;
     fn_8002F728(gTargetList);
-
-
-    y = ((u8 *)obj.unit)[0x19F];
-    x = ((u8 *)obj.unit)[0x19E];
-    y = (s8)y;
-    x = (s8)x;
-
-    yOffset = y << 6;
-
-    flags = (u16 *)(gBattleMap + ((x + yOffset) << 1) + 0x408E);
-
-    if (*flags & 8) {
-        id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
-
-        if (id != 0) {
-            target = gUnits + (id - 1) * 0x280;
-        } else {
-            target = 0;
-        }
-
-        if (target != 0) {
-            ((void (*)(void *, void *))
-                (*(void **)((u8 *)obj.vtable + 8)))(
-                    &obj, target
-                );
+    {
+        u8 *map;
+        y = (s8)*(u8 *)((u8 *)obj.unit + 0x19F);
+        x = *(s8 *)((u8 *)obj.unit + 0x19E);
+        map = gBattleMap;
+        yOff = y << 6;
+        flags = (u16 *)(map + ((x + yOff) << 1));
+        f = *(u16 *)((u8 *)flags + 0x408E);
+        flags = (u16 *)((u8 *)flags + 0x408E);
+        if ((f & 8) != 0) {
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
+            if (id) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            if (unit) {
+                ((Visitor *)&obj)->apply(unit);
+            }
         }
     }
-
-    if (*flags & 2) {
-        id = gBattleMap[(s8)(x + 1) + yOffset + 0xD];
-
-        if (id != 0) {
-            target = gUnits + (id - 1) * 0x280;
+    if ((*flags & 2) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x + 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id) {
+            unit = gUnits + (id - 1) * 0x280;
         } else {
-            target = 0;
+            unit = 0;
         }
-
-        if (target != 0) {
-            ((void (*)(void *, void *))
-                (*(void **)((u8 *)obj.vtable + 8)))(
-                    &obj, target
-                );
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
         }
     }
-
-    if (*flags & 4) {
-        id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
-
+    if ((*flags & 4) != 0) {
+        u8 *map = gBattleMap;
+        entry = map + x;
+        entry = entry + ((s8)(y + 1) << 6);
+        id = entry[0xD];
         if (id != 0) {
-            target = gUnits + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
-            target = 0;
+            unit = 0;
         }
-
-        if (target != 0) {
-            ((void (*)(void *, void *))
-                (*(void **)((u8 *)obj.vtable + 8)))(
-                    &obj, target
-                );
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
         }
     }
-
-    if (*flags & 1) {
-        id = gBattleMap[(s8)(x - 1) + yOffset + 0xD];
-
+    if ((*flags & 1) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x - 1);
+        entry = t + yOff;
+        id = entry[0xD];
         if (id != 0) {
-            target = gUnits + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
-            target = 0;
+            unit = 0;
         }
-
-        if (target != 0) {
-            ((void (*)(void *, void *))
-                (*(void **)((u8 *)obj.vtable + 8)))(
-                    &obj, target
-                );
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
         }
     }
 }
