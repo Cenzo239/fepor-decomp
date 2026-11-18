@@ -372,6 +372,8 @@ void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
     *(u16 *)(gx + 2) = 0;
 }
 #pragma optimization_level reset
+#pragma global_optimizer off
+#pragma scheduling off
 void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     u32 temp_r7;
     u32 temp_r8;
@@ -385,18 +387,20 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     *arg2 = (((temp_r8 >> 0xC) & 0x7FF) - temp_r9) + 1;
     *arg3 = (temp_r8 & 0x7FF) - (temp_r7 & 0x7FF) + 1;
 }
+#pragma scheduling reset
+#pragma global_optimizer reset
 
 void fn_80225118(s32 x, s32 y)
 {
-  u32 xoff;
+  s32 xoff;
   u16 *gx;
-  u32 yoff;
+  s32 yoff;
   u32 value;
 
-  xoff = x;
-  xoff = xoff + 0x156;
-  gx = __GXData;
-  yoff = y + 0x156;
+  x += 0x156;
+ xoff = x;
+  y += 0x156;
+ yoff = y;
   value = 0;
   value = __rlwimi(value, xoff, 31, 22, 31);
   value = value + 0;
@@ -404,7 +408,7 @@ void fn_80225118(s32 x, s32 y)
   GXWGFifo.u8 = 0x61;
   value = __rlwimi(value, 0x59, 24, 0, 7);
   GXWGFifo.u32 = value;
-  gx[1] = 0;
+  __GXData[1] = 0;
 }
 
 void fn_80225158(u32 arg0)
