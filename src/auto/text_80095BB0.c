@@ -2,6 +2,23 @@
 #include "common.h"
 typedef struct EventResourceRequest { s16 code; s16 active; u32 flags; } EventResourceRequest;
 #include "global.h"
+static inline u8 Event_ScanPositiveArg(u8 *s,s32 start) {
+u8 found;
+*(s16 *)s=start;
+*(s16 *)s=(s16)start+1;
+found=0;
+for(;;){
+switch(s[(*(s16 *)s*4)+4]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:
+case 0x50:case 0x51:case 0x52:return found;
+case 9:case 0x15:
+if((s8)*(s16 *)(s+(*(s16 *)s*4)+6)>0)found=1;
+break;
+}
+++*(s16*)s;
+}
+}
+
 static inline u32 Event_ScanCommandFlagsInline(s16 *idx,s32 cur) {
 extern u8 gBattle[];
 void fn_800973F0(void *,s32);
@@ -295,9 +312,10 @@ done:
 switch(kind) {case 1: case 2: case 3: GActor_RequestRes(fn_80055204(unit,0));break;}
 }
 
-#pragma use_lmw_stmw on
+#pragma cplusplus on
 #pragma global_optimizer off
-void fn_80096418(s16 arg0) {
+#pragma use_lmw_stmw on
+extern "C" void fn_80096418(s32 arg0) {
 void *Item_GetFlagsPtr(void *);
 void fn_8004FC70(s32,s32);
 void *fn_80055204(void *,s32);
@@ -307,18 +325,18 @@ s32 fn_80096EEC(s32 *,u32);
 void fn_800973F0(void *,s32);
 extern u8 gBattle[],gEventCmdStrings[];
 extern void **lbl_80367500,**lbl_80367504;
-s32 ents[40],buf[20];s32 flaga,flagb;
+EventResourceRequest ents[20];s32 buf[20];s32 flaga,flagb;
 u8 *battle;
 void **g0;
 s32 arg_save;
-u8 *ep;
+EventResourceRequest *ep;
 s32 i;
 s32 count;
 s32 *p;
 s32 n;
 s32 cur;
 s16 saved;
-s16 *idx;
+register s16 *idx;
 s32 cursor,offset,c,kind;
 u8 ok;
 u32 flags;
@@ -340,23 +358,23 @@ default:offset=cursor*4+4;fn_800973F0(&flaga,((u8*)idx)[offset]);break;
 scan1done:
 *idx=saved;n=fn_80096EEC(buf,flaga);
 p=buf;for(i=0;i<n;p++,i++)GActor_RequestRes((void*)Event_GetCmdFlagRes(*p));
-saved=*idx;ep=(u8*)ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
+saved=*idx;ep=ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
 for(;;){
 cur=*idx;offset=cur*4+4;c=((u8*)idx)[offset];
 switch(c){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:goto scan2done;
 case 0x56:
-*(u32*)(ep+4)=Event_ScanCommandFlagsInline(idx,cur);break;
+ep->flags=Event_ScanCommandFlagsInline(idx,cur);break;
 case 0x50:case 0x51:case 0x52:
-*(s16*)ep=c;*(s16*)(ep+2)=1;count++;ep+=8;break;
+ep->code=c;ep->active=1;count++;ep++;break;
 default:break;
 }
 (*idx)++;
 }
 scan2done:
-*idx=saved;ep=(u8*)ents;battle=gBattle;
-for(i=0;i<count;ep+=8,i++){
-unit=*lbl_80367500;flags=*(u32*)(ep+4);cur=*(s16*)ep;
+*idx=saved;ep=ents;battle=gBattle;
+for(i=0;i<count;ep++,i++){
+unit=*lbl_80367500;flags=ep->flags;cur=ep->code;
 if(!unit)item=0;
 else {item=(u8*)unit+0x28C;if(!*(u32*)item)item=0;}
 if(item){
@@ -372,7 +390,7 @@ kind=0;
 kindDone:
 str=Event_SelectCommandResource(g0,flags,cur,kind);
 if(str)GActor_RequestRes(str);
-flags=*(u32*)(ep+4);
+flags=ep->flags;
 if(flags&0x80)str=(void*)Event_GetCmdFlagRes(0x80);
 else if(flags&0x20)str=(void*)Event_GetCmdFlagRes(0x20);
 else if(flags&8)str=(void*)Event_GetCmdFlagRes(8);
@@ -380,13 +398,14 @@ else if(flags&0x10)str=(void*)Event_GetCmdFlagRes(0x10);
 else str=0;
 if(str)GActor_RequestRes(str);
 if(!(*(u32*)(battle+0xCAC)&0x100)){
-switch(*(s16*)ep){
-case 0x50:case 0x51:if(!(*(u32*)(ep+4)&0x20000))fn_8004FC70(arg_save,9);break;
+switch(ep->code){
+case 0x50:case 0x51:if(!(ep->flags&0x20000))fn_8004FC70(arg_save,9);break;
 case 0x52:fn_8004FC70(arg_save,7);break;
 }
 }
 }
 }
+#pragma cplusplus reset
 #pragma global_optimizer reset
 /* Load model/gfx (mode 8) for the units stored in event slots 0-2. */
 void Event_LoadSlotUnitGfx(void) {
@@ -469,14 +488,14 @@ s32 fn_80096C18(void) {
 
 u8 fn_80096C78(s32 arg0)
 {
-  extern u8 gBattle[];
+  extern u8 lbl_80330EAC[];
   s16 saved;
   unsigned char new_var;
   s16 *idx;
   s32 count;
   new_var = ((s16) arg0) + 1;
   count = 0;
-  idx = (s16 *) (gBattle + 0x8A0);
+  idx = (s16 *) (lbl_80330EAC + 0x8A0);
   saved = *idx;
   *idx = (s16) arg0;
   *idx = (s16) new_var;
@@ -698,7 +717,8 @@ done:
  return count;
 }
 
-u32 Event_GetCmdFlags(s32 arg0) {
+#pragma cplusplus on
+extern "C" u32 Event_GetCmdFlags(s32 arg0) {
  extern u8 gBattle[];
  void fn_800973F0(void *, s32);
  s16 saved;
@@ -723,7 +743,7 @@ u32 Event_GetCmdFlags(s32 arg0) {
 done:
  *(s16 *)s=saved;
  if(flags & 0x10000004) {
- u8 found;
+ s32 found;
  *(s16 *)s=arg0;
  *(s16 *)s=(s16)arg0+1;
  found=0;
@@ -739,11 +759,11 @@ done:
  }
 done2:
  *(s16 *)s=saved;
- if(found) flags|=1;
+ if((u8)found) flags|=1;
  }
  return flags;
 }
-
+#pragma cplusplus reset
 void fn_800973F0(void *arg0, s32 arg1) {
 u32 *ptr = arg0;
 if(arg1 < 0 || arg1 > 0x45) return;
