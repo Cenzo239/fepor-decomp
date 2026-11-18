@@ -1343,11 +1343,14 @@ done:
     Prim2D_PrepareTex();
 }
 
+#pragma scheduling on
+#pragma optimization_level 3
 extern "C" void fn_80134280(void *arg0) {
 s32 Item_GetByIid(u32);
-s32 off = *(s32 *)((u8*)arg0+0x4C)*0x48;
+s32 off = *(s32 *)((u8*)arg0+0x4C);
+off *= 0x48;
 s16 count=0;
-u16 lim=*(u16*)((u8*)arg0+0x3E);
+s16 lim=*(s16*)((u8*)arg0+0x3E);
 u32 *p=(u32*)(*(u8**)((u8*)arg0+0x50)+off);
 for(s32 i=0;i<9;i++,p+=2) {
 if(*p && count++==(s16)lim) break;
@@ -1355,6 +1358,8 @@ if(*p && count++==(s16)lim) break;
 Item_GetByIid(*p);
 }
 
+#pragma optimization_level reset
+#pragma scheduling reset
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
@@ -1567,7 +1572,6 @@ extern "C" void fn_8013475C(void *arg0) {
     s16 temp_r5;
     s16 temp_r6;
     s32 var_r11;
-    s16 var_r7;
     s32 temp_r0_2;
     s32 temp_r10;
     s32 temp_r11;
@@ -1576,6 +1580,7 @@ extern "C" void fn_8013475C(void *arg0) {
     s32 var_r9;
     u8 var_r3;
     s16 previous;
+    s16 var_r7;
 
     temp_r31 = M2C_FIELD(arg0, s16 *, 0x44);
     temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x30)(arg0);
@@ -1737,9 +1742,9 @@ quot=kind/colW;
 t=*(s16*)((u8*)arg1+0x12);
 rem=*(s16*)((u8*)arg1+0x16);
 rem-=t;
+rowH=*(s16*)((u8*)arg1+0x46);
 off48=*(s16*)((u8*)arg1+0x48);
 off4a=*(s16*)((u8*)arg1+0x4a);
-rowH=*(s16*)((u8*)arg1+0x46);
 t=(s16)rem;
 hdiv=t/colW;
 t=(s16)hdiv;
