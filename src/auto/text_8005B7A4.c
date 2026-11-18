@@ -8656,6 +8656,7 @@ next: node=M2C_FIELD(node,void **,4);
 }
 
 #pragma global_optimizer off
+#pragma fp_contract off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
@@ -8681,18 +8682,21 @@ f32 align1[12],inv1[12],align3[12],inv3[12];
 typedef struct { f32 v[9]; } Basis;
 
 u8 *table,*cursor,*joint; void *info;
-f32 direction[3],direction4[3];
+typedef struct { f32 v[3]; } Vector;
+Vector direction,direction4;
 Basis basis1;
-f32 axis1[3];
+Vector axis1;
 Basis basis3;
-f32 axis3[3];
+Vector axis3;
 s32 count,i,index;
 void *parent;
-f32 dot,angle;
+s16 *slots; u8 *transformData; Basis *basis=(Basis *)lbl_8026B888;
+f32 dot,angle,angle2,angle4;
 info=GActor_GetNodeTable(actor);
 table=M2C_FIELD(node,u8 **,0x1C);
 if(table==0) {
-for(count=0;count<10;count++) {
+slots=lbl_80285F40; transformData=(u8 *)actor+0x10;
+for(count=0;count<10;count++,slots++) {
 switch(M2C_FIELD(actor,u32 *,0xC)) {
 case 1:
 PSMTXRotRad(rootX,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
@@ -8727,9 +8731,9 @@ break;
 case 8:
 PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
 PSMTXTrans(rootT,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
-QUATMtx((u8 *)actor+0x10,rootX);
+QUATMtx(transformData,rootX);
 PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootX,root,root); PSMTXConcat(rootT,root,root); goto rootDone;
-case 7: PSMTXCopy((u8 *)actor+0x10,root); goto rootDone;
+case 7: PSMTXCopy(transformData,root); goto rootDone;
 default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
 }
 PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
@@ -8738,16 +8742,17 @@ PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootY,root,root); PSMTXConcat(rootZ,r
 
 rootDone:
 PSMTXConcat(Camera_GetViewMtx(),root,root);
-GXLoadPosMtxImm(root,lbl_80285F40[count]);
-fn_80202238(root,root); fn_80224DCC(root,lbl_80285F40[count]);
+GXLoadPosMtxImm(root,*slots);
+fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 return;
 }
 cursor=table+2; i=table[1];
-if(table[0]!=0x10) Game_Assert(lbl_8026B8AC+0x27,0x3D4,lbl_8026B8AC+0x30);
+if((s32)table[0]!=0x10) Game_Assert(lbl_8026B8AC+0x27,0x3D4,lbl_8026B8AC+0x30);
 if(i>10) Game_Assert(lbl_8026B8AC+0x27,0x3D5,lbl_8026B8AC+0x50);
 if(M2C_FIELD(info,s32 *,8)>=256) Game_Assert(lbl_8026B8AC+0x27,0x3D6,lbl_8026B8AC+0x76);
-for(count=0;count<i;count++) {
+slots=lbl_80285F40; transformData=(u8 *)actor+0x10;
+for(count=0;count<i;count++,slots++) {
 index=*cursor++;
 joint=M2C_FIELD(info,u8 **,0xC)+index*0xF4;
 switch(M2C_FIELD(actor,u32 *,0xC)) {
@@ -8784,9 +8789,9 @@ break;
 case 8:
 PSMTXScale(scale,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
 PSMTXTrans(trans,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
-QUATMtx((u8 *)actor+0x10,rx);
+QUATMtx(transformData,rx);
 PSMTXConcat(rx,scale,result); PSMTXConcat(rx,result,result); PSMTXConcat(trans,result,result); goto transformed;
-case 7: PSMTXCopy((u8 *)actor+0x10,result); goto transformed;
+case 7: PSMTXCopy(transformData,result); goto transformed;
 default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
 }
 PSMTXScale(scale,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
@@ -8798,7 +8803,7 @@ PSMTXConcat((void *)(work+index*0x30),joint+0x10,parentMtx);
 switch((s32)(M2C_FIELD(node,u32 *,0x10)&0xE0000000)) {
 case 0x20000000:
 
-basis1=*(Basis *)lbl_8026B888;
+basis1=*basis;
 PSMTXCopy(result,inv1);
 inv1[3]=lbl_8036929C; inv1[7]=lbl_8036929C; inv1[11]=lbl_8036929C;
 fn_802029C4(inv1,basis1.v,basis1.v);
@@ -8808,7 +8813,7 @@ PSMTXScale(scaling,lbl_8036929C,lbl_8036929C,lbl_8036929C);
 fn_802031E8(basis1.v,basis1.v); dot=fn_80203270(basis1.v,basis1.v+3);
 if(lbl_803692A0==dot) PSMTXIdentity(align1);
 else if(lbl_803692A4==dot) PSMTXScale(align1,lbl_803692A4,lbl_803692A4,lbl_803692A4);
-else { angle=fn_80238788(dot); fn_80203290(basis1.v,basis1.v+3,axis1); fn_802024D0(align1,axis1,angle); }
+else { angle=fn_80238788(dot); fn_80203290(basis1.v,basis1.v+3,axis1.v); fn_802024D0(align1,axis1.v,angle); }
 fn_802029C4(inv1,basis1.v+6,basis1.v+6); fn_802029C4(align1,basis1.v+6,basis1.v+6);
 PSMTXScale(scaling,basis1.v[6],basis1.v[7],basis1.v[8]);
 }
@@ -8823,18 +8828,18 @@ case 0x40000000:
 PSMTXConcat(result,parentMtx,combined); PSMTXTrans(position,combined[3],combined[7],combined[11]);
 PSMTXCopy(parentMtx,bone); PSMTXCopy(result,local);
 bone[3]=lbl_8036929C; bone[7]=lbl_8036929C; bone[11]=lbl_8036929C; local[3]=lbl_8036929C; local[7]=lbl_8036929C; local[11]=lbl_8036929C;
-{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction); }
-fn_802020F0(result,combined); fn_802029C4(combined,direction,direction);
-if(lbl_8036929C==direction[0]) PSMTXIdentity(turn);
-else { angle=fn_80237E90(direction[2]/direction[0]);
-if(direction[0]<lbl_8036929C) angle=lbl_803692A8-angle;
-else angle=-angle-lbl_803692A8;
-PSMTXRotRad(turn,'Y',angle); }
+{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction.v); }
+fn_802020F0(result,combined); fn_802029C4(combined,direction.v,direction.v);
+if(lbl_8036929C==direction.v[0]) PSMTXIdentity(turn);
+else { angle2=fn_80237E90(direction.v[2]/direction.v[0]);
+if(direction.v[0]<lbl_8036929C) angle2=lbl_803692A8-angle2;
+else angle2=-angle2-lbl_803692A8;
+PSMTXRotRad(turn,'Y',angle2); }
 PSMTXConcat(turn,bone,combined); PSMTXConcat(local,combined,combined); PSMTXConcat(position,combined,root);
 break;
 case 0x60000000:
 
-basis3=*(Basis *)lbl_8026B888;
+basis3=*basis;
 PSMTXCopy(result,inv3);
 inv3[3]=lbl_8036929C; inv3[7]=lbl_8036929C; inv3[11]=lbl_8036929C;
 fn_802029C4(inv3,basis3.v,basis3.v);
@@ -8844,7 +8849,7 @@ PSMTXScale(scale3,lbl_8036929C,lbl_8036929C,lbl_8036929C);
 fn_802031E8(basis3.v,basis3.v); dot=fn_80203270(basis3.v,basis3.v+3);
 if(lbl_803692A0==dot) PSMTXIdentity(align3);
 else if(lbl_803692A4==dot) PSMTXScale(align3,lbl_803692A4,lbl_803692A4,lbl_803692A4);
-else { angle=fn_80238788(dot); fn_80203290(basis3.v,basis3.v+3,axis3); fn_802024D0(align3,axis3,angle); }
+else { angle=fn_80238788(dot); fn_80203290(basis3.v,basis3.v+3,axis3.v); fn_802024D0(align3,axis3.v,angle); }
 fn_802029C4(inv3,basis3.v+6,basis3.v+6); fn_802029C4(align3,basis3.v+6,basis3.v+6);
 PSMTXScale(scale3,basis3.v[6],basis3.v[7],basis3.v[8]);
 }
@@ -8857,21 +8862,21 @@ case (s32)0x80000000:
 PSMTXTrans(trans4,result[3],result[7],result[11]);
 PSMTXCopy(result,local4);
 local4[3]=lbl_8036929C; local4[7]=lbl_8036929C; local4[11]=lbl_8036929C;
-{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction4); }
-fn_802020F0(result,temp4); fn_802029C4(temp4,direction4,direction4);
-angle=lbl_8036929C;
-if(angle!=direction4[0]) {
-angle=fn_80237E90(direction4[2]/direction4[0]);
-if(direction4[0]<lbl_8036929C) angle=lbl_803692A8-angle;
-else angle=-angle-lbl_803692A8;
+{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction4.v); }
+fn_802020F0(result,temp4); fn_802029C4(temp4,direction4.v,direction4.v);
+angle4=lbl_8036929C;
+if(angle4!=direction4.v[0]) {
+angle4=fn_80237E90(direction4.v[2]/direction4.v[0]);
+if(direction4.v[0]<lbl_8036929C) angle4=lbl_803692A8-angle4;
+else angle4=-angle4-lbl_803692A8;
 }
-PSMTXRotRad(turn4,'Y',angle);
+PSMTXRotRad(turn4,'Y',angle4);
 PSMTXConcat(turn4,parentMtx,root); PSMTXConcat(local4,root,root); PSMTXConcat(trans4,root,root); break;
 default: PSMTXConcat(result,parentMtx,root); break;
 }
 PSMTXConcat(Camera_GetViewMtx(),root,root);
-GXLoadPosMtxImm(root,lbl_80285F40[count]);
-fn_80202238(root,root); fn_80224DCC(root,lbl_80285F40[count]);
+GXLoadPosMtxImm(root,*slots);
+fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 }
 #pragma global_optimizer reset
