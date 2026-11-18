@@ -1171,8 +1171,12 @@ extern u32 lbl_80367864;
 extern u32* lbl_80367868;
 extern u32 lbl_8036786C;
 extern s32 lbl_80366DDC;
-#pragma scheduling off
+#pragma optimization_level 1
 s32 Heap_GetFree(void) {
+    extern u32 *lbl_80367860;
+    extern u32 *lbl_80367868;
+    extern u32 lbl_80367864;
+    extern u32 lbl_8036786C;
     u8 *lo;
     u8 *hi;
     HeapC55 *heap;
@@ -1184,12 +1188,13 @@ s32 Heap_GetFree(void) {
         lo = (u8 *)lbl_80367860;
     }
     hi = (u8 *)lbl_8036786C;
-    if (hi == NULL) {
+    if (hi) {
+    } else {
         hi = (u8 *)lbl_80367864;
     }
     return hi - lo;
 }
-#pragma scheduling reset
+#pragma optimization_level reset
 void fn_800C5300(void) {
 s32 OSGetArenaLo(void); s32 OSGetArenaHi(void); void DebugPrint(void *, ...);
 extern u8 lbl_802700D8[]; extern u32 lbl_80320B88[];
@@ -18047,11 +18052,10 @@ void Camera_GetEyePos(void *arg0, void *arg1) {
 void fn_800E8FE8(void *arg0, f32 arg1) {
     void fn_800DF478(void *, f32, f32, f32);
     extern f32 lbl_80369F78;
-    f32 z;
-f32 value=arg1;
-z = lbl_80369F78;
-    *(f32 *)((u8 *)arg0 + 0x104) = value;
-    fn_800DF478((u8 *)arg0 + 0x254, value, z, z);
+    f32 z = lbl_80369F78;
+
+    *(f32 *)((u8 *)arg0 + 0x104) = arg1;
+    fn_800DF478((u8 *)arg0 + 0x254, arg1, z, z);
 }
 #pragma scheduling reset
 #pragma dont_inline reset
@@ -19507,16 +19511,17 @@ void Card_AsyncDone(void) {
 }
 
 #pragma global_optimizer off
+#pragma peephole off
 s32 fn_800EB854(void) {
-    extern u8 lbl_80320C20[];
+    extern u8 gCardWork[];
     s32 result = 0;
-    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
-        if (lbl_80320C20[0xA01A] != 0) {
-            result = 1;
-        }
-    }
+    if (*(s32 *)(gCardWork + 0xA004) == -1) goto done;
+    if (gCardWork[0xA01A] == 0) goto done;
+    result = 1;
+done:
     return result;
 }
+#pragma peephole reset
 #pragma global_optimizer reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
