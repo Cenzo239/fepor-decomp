@@ -14534,15 +14534,14 @@ return result;
 
 #pragma dont_inline on
 void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
- void Sound_WriteParamU8(s32,s32,s32,u8);
- s16 value;
+ void Sound_WriteParamU8(u8,u8,u8,u8);
  u32 bank,channel;
  u16 v;
  u32 a,b,c;
- u8 param;
+ u32 param;
  s32 mapped;
  if((s16)arg2<0) arg2=0; else arg2=(s16)arg2>0x3FFF?0x3FFF:(s16)arg2;
- value=(s16)arg2;
+ arg2=(s16)arg2;
  param=(u8)arg1;
  mapped=arg1;
  switch(param) {
@@ -14557,10 +14556,10 @@ void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
  if(channel!=255) {
  bank=((u8*)arg0)[0x122];
  if(channel!=255) {
- if((u8)arg1<0x40U) {v=value;a=param&31;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+32),channel,bank,v&127);}
- else if((u8)arg1==128||(u8)arg1==129) {v=value;b=param&254;Sound_WriteParamU8(b,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(b+1),channel,bank,v&127);}
- else if((u8)arg1==132||(u8)arg1==133) {v=value;c=param&254;Sound_WriteParamU8(c,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(c+1),channel,bank,v&127);}
- else Sound_WriteParamU8(arg1,channel,bank,(u8)((u16)value>>7));
+ if((u8)arg1<0x40U) {v=arg2;a=param&31;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+32),channel,bank,v&127);}
+ else if((u8)arg1==128||(u8)arg1==129) {v=arg2;b=param&254;Sound_WriteParamU8(b,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(b+1),channel,bank,v&127);}
+ else if((u8)arg1==132||(u8)arg1==133) {v=arg2;c=param&254;Sound_WriteParamU8(c,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(c+1),channel,bank,v&127);}
+ else Sound_WriteParamU8(arg1,channel,bank,(u8)((u16)arg2>>7));
  }
  }
  }
@@ -17215,7 +17214,6 @@ s32 fn_80264BA4(void *arg0) {
 }
 
 #pragma fp_contract on
-#pragma use_lmw_stmw on
 void fn_80264BF0(void *arg0) {
 u8 *state=(u8*)arg0;
 s32 *out=*(s32**)(state+0);
@@ -17230,7 +17228,7 @@ f32 a=(f32)history[0], b=(f32)history[1], c=(f32)history[2], d=(f32)samples[inde
 s32 count=160;
 do {
 u32 oldPhase=phase;
-u32 offset=((phase<<7)|(phase>>25))&0x7f0;
+u32 offset=(phase<<7)&0x7f0;
 f32 *coef=(f32*)((u8*)lbl_802A4590+offset);
 f32 value;
 phase+=step;
@@ -17243,18 +17241,15 @@ if(phase<oldPhase) {
 index++;
 a=b; b=c; c=d;
 if(index==end) index=restart;
-if(--count==0) break;
 d=(f32)samples[index];
-} else {
-if(--count==0) break;
 }
-} while(1);
+} while(--count!=0);
 history=*(s32**)(state+8);
 history[0]=(s32)a; history[1]=(s32)b; history[2]=(s32)c;
 *(u32*)(state+0xc)=phase;
 *(s32*)(state+0x10)=index;
 }
-#pragma fp_contract on
+#pragma fp_contract off
 void fn_80264D88(void *arg0) {
 u8 *state=(u8*)arg0;
 u32 phase=*(u32*)(state+12);
@@ -17281,99 +17276,54 @@ d=samples[index];
 history=*(s32**)(state+8); history[0]=(s32)a;history[1]=(s32)b;history[2]=(s32)c;
 *(u32*)(state+12)=phase;*(s32*)(state+16)=index;
 }
-void fn_80264F74(s32 arg0, void *arg1, u8 *arg2)
-{
-    u8 *state;
-    u8 *source0;
-    u8 *source1;
-    u8 *source2;
-    u8 *destination0;
-    u8 *destination1;
-    u8 *destination2;
-    u32 index;
-    u32 count;
-    u32 i;
-    s32 frame;
-    s32 bufferIndex;
-    u32 value;
-
-    state = arg2;
-
-    if ((arg0 & 0xFF) != 1) {
-        return;
-    }
-
-    source0 = *(u8 **)arg1;
-    source1 = *(u8 **)((u8 *)arg1 + 4);
-    source2 = *(u8 **)((u8 *)arg1 + 8);
-
-    index = state[0x24] + 1;
-    count = (u32)((s32)index / 3);
-    index -= count * 3;
-    bufferIndex = (s32)index;
-
-    destination0 = *(u8 **)(state + (index * 4));
-    destination1 = *(u8 **)(state + (index * 4) + 0x0C);
-    destination2 = *(u8 **)(state + (index * 4) + 0x18);
-
-    for (i = 0; i < 0x14; i++) {
-        u32 word;
-
-        word = *(u32 *)(source0 + i * 4);
-        *(u32 *)(destination0 + i * 4) = word;
-
-        word = *(u32 *)(source1 + i * 4);
-        *(u32 *)(destination1 + i * 4) = word;
-
-        word = *(u32 *)(source2 + i * 4);
-        *(u32 *)(destination2 + i * 4) = word;
-    }
-
-    value = *(u32 *)(state + 0x60);
-    *(u32 *)(state + 0x84) = ((s32)value >> 16) + 1;
-    *(u32 *)(state + 0x80) = value << 16;
-
-    value = *(u32 *)(state + 0x64) - 1;
-    *(u32 *)(state + 0x64) = value;
-
-    if (value == 0) {
-        *(u32 *)(state + 0x64) = *(u32 *)(state + 0x68);
-        *(u32 *)(state + 0x60) = -(s32)*(u32 *)(state + 0x60);
-    }
-
-    frame = 0;
-
-    *(u32 *)(state + 0x7C) = *(u32 *)(state + 0x5C);
-    *(u32 *)(state + 0x78) = *(u32 *)(state + 0x58);
-
-    for (frame = 0; frame < 3; frame++) {
-        if (frame == 0) {
-            *(u32 *)(state + 0x70) = *(u32 *)state;
-            *(u32 *)(state + 0x6C) = *(u32 *)arg1;
-            *(u32 *)(state + 0x74) = (u32)(state + 0x28);
-        } else if (frame == 1) {
-            *(u32 *)(state + 0x70) = *(u32 *)(state + 0x0C);
-            *(u32 *)(state + 0x6C) = *(u32 *)((u8 *)arg1 + 4);
-            *(u32 *)(state + 0x74) = (u32)(state + 0x38);
-        } else {
-            *(u32 *)(state + 0x70) = *(u32 *)(state + 0x18);
-            *(u32 *)(state + 0x6C) = *(u32 *)((u8 *)arg1 + 8);
-            *(u32 *)(state + 0x74) = (u32)(state + 0x48);
-        }
-
-        if (*(s32 *)(state + 0x84) == 0) {
-            fn_80264BF0(state + 0x6C);
-        } else {
-            fn_80264D88(state + 0x6C);
-        }
-    }
-
-    value = *(u32 *)(state + 0x7C);
-    value -= ((value * 0x8889U) >> 24) * 0x1E0;
-    *(u32 *)(state + 0x5C) = value;
-
-    *(u32 *)(state + 0x58) = *(u32 *)(state + 0x78);
-    state[0x24] = (u8)bufferIndex;
+void fn_80264F74(u8 arg0, void *arg1, u8 *state) {
+u32 channel;
+u8 bufferIndex;
+u32 *d0,*d1,*d2;
+u32 *s0,*s1,*s2;
+u32 i;
+switch(arg0) {
+case 0:
+bufferIndex=(state[0x24]+1)%3;
+s0=*(u32**)arg1; s1=*(u32**)((u8*)arg1+4); s2=*(u32**)((u8*)arg1+8);
+d0=((u32**)state)[bufferIndex];
+d1=((u32**)(state+12))[bufferIndex];
+d2=((u32**)(state+24))[bufferIndex];
+for(i=0;i<160;i++) { *d0++=*s0++; *d1++=*s1++; *d2++=*s2++; }
+*(s32*)(state+0x84)=(*(s32*)(state+0x60)>>16)+1;
+*(u32*)(state+0x80)=*(u32*)(state+0x60)<<16;
+if(--*(u32*)(state+0x64)==0) {
+*(u32*)(state+0x64)=*(u32*)(state+0x68);
+*(s32*)(state+0x60)=-*(s32*)(state+0x60);
+}
+for(channel=0;channel<3;channel++) {
+*(u32*)(state+0x7c)=*(u32*)(state+0x5c);
+*(u32*)(state+0x78)=*(u32*)(state+0x58);
+switch(channel) {
+case 0:
+*(u32*)(state+0x70)=*(u32*)state;
+*(u32*)(state+0x6c)=*(u32*)arg1;
+*(void**)(state+0x74)=state+0x28; break;
+case 1:
+*(u32*)(state+0x70)=*(u32*)(state+12);
+*(u32*)(state+0x6c)=*(u32*)((u8*)arg1+4);
+*(void**)(state+0x74)=state+0x38; break;
+case 2:
+*(u32*)(state+0x70)=*(u32*)(state+24);
+*(u32*)(state+0x6c)=*(u32*)((u8*)arg1+8);
+*(void**)(state+0x74)=state+0x48; break;
+}
+switch(*(s32*)(state+0x84)) {
+case 0: fn_80264BF0(state+0x6c); break;
+case 1: fn_80264D88(state+0x6c); break;
+}
+}
+*(u32*)(state+0x5c)=*(u32*)(state+0x7c)%480;
+*(u32*)(state+0x58)=*(u32*)(state+0x78);
+state[0x24]=bufferIndex;
+break;
+case 1: break;
+}
 }
 
 extern s32 lbl_803631FC;
