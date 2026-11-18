@@ -2234,22 +2234,20 @@ void fn_800266E4(s32 arg0) {
 
 #pragma opt_common_subs off
 void fn_80026724(void *arg0) {
-    void fn_80091518(void *, void *);
-    void fn_800915E8(void *, void *);
+    void fn_80091518(void *, void *, void *);
+    void fn_800915E8(void *, void *, void *);
     extern u8 gUiContext[];
     void *ctx;
-    void *ctx2;
     void *param;
     void *node;
 
     ctx = *(void **)gUiContext;
-    ctx2 = ctx;
     param = *(void **)((u8 *)arg0 + 0x54);
-    node = *(void **)((u8 *)ctx2 + 0x190);
+    node = *(void **)((u8 *)ctx + 0x190);
     if (*(u8 *)((u8 *)node + 8) != 1) {
-        fn_800915E8(param, arg0);
+        fn_800915E8(param, arg0, ctx);
     } else {
-        fn_80091518(param, arg0);
+        fn_80091518(param, arg0, ctx);
     }
 }
 #pragma opt_common_subs reset
