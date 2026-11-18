@@ -1948,11 +1948,4 @@ void fn_80011910(void) {
     GXSetNumTexGens(0, 0);
     GXSetTevOrder(0, 0, 1, 4);
 }
-static inline s32 Text_FindFontIndex(u32 result) {
-    u32 *p = (u32 *)lbl_802AEE20;
-    s32 i;
-    for(i=0;i<5;i++,p++) {
-        if(*p==result) return i;
-    }
-    return -1;
-}
+
