@@ -1304,23 +1304,6 @@ void Map_RefreshUnitMap(void *arg0)
 }
 
 extern u16 jumptable_80284514[12];
-
-static u32 Map_SplatByte(u32 arg0)
-{
-    u32 t;
-    u32 value;
-    u32 lo;
-    u32 hi;
-
-    t = (arg0 & 0xFF) << 8;
-    value = (arg0 & 0xFF) << 16;
-    value = value + t;
-    lo = arg0 & 0xFF;
-    hi = arg0 << 24;
-    lo = value + lo;
-    return hi + lo;
-}
-
 void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
 {
     void fn_800062B0(u32 *, u32, u32);
