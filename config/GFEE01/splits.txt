@@ -442,7 +442,10 @@ auto/text_8014A370.c:
 	.text       start:0x8014A370 end:0x8014A928
 
 text_8014A928.c:
-	.text       start:0x8014A928 end:0x8014BC10
+	.text       start:0x8014A928 end:0x8014AC68
+
+text_8014AC68.c:
+	.text       start:0x8014AC68 end:0x8014BC10
 
 text_8014BC10.c:
 	.text       start:0x8014BC10 end:0x8014C39C
