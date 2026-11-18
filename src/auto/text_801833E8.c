@@ -2794,8 +2794,6 @@ void MoveAnim_AttachClassCue(void *anim) {
     }
 }
 
-static inline s8 MoveAnim_GetUnitX(u8 *unit) { return unit[0x19E]; }
-
 static inline u8 MoveAnim_IsBlendMode(u8 mode) {
     u8 enabled = 1;
     if (!(1 >= (u8)(mode - 1))) enabled = 0;
