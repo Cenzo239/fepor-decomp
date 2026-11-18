@@ -373,7 +373,7 @@ void GXSetScissor(s32 left, s32 top, s32 wd, s32 ht) {
 }
 #pragma optimization_level reset
 #pragma global_optimizer off
-#pragma scheduling on
+#pragma scheduling off
 void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
 u32 temp_r9;
 u32 temp_r8;
