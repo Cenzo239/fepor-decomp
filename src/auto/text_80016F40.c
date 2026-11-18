@@ -1259,37 +1259,28 @@ void fn_80018E0C(void) {
 #pragma peephole on
 extern "C" void fn_80018EC0(void)
 {
-  extern s32 lbl_803671C4;
-  extern f32 lbl_80368C88;
-  extern f32 lbl_80368C8C;
-  void *new_var;
-  void *p;
-  f32 f2;
-  f32 f1;
-  f32 f0;
-  s32 z;
-  p = (void *) lbl_803671C4;
-  if (p != NULL)
-  {
-    f2 = lbl_80368C8C;
-    z = 0;
-    f1 = lbl_80368C88;
-    if ((f1 && f1) && f1)
-    {
+    u8 *p;
+    f32 f0;
+    f32 f1;
+    f32 f2;
+    s32 z;
+    p = (u8 *)gActiveCam;
+    if (p != 0) {
+        f2 = lbl_80368CA0;
+        z = 0;
+        f1 = lbl_80368C88;
+        *(f32 *)(p + 0x28) = f2;
+        f0 = lbl_80368C8C;
+        *(f32 *)(p + 0x34) = f2;
+        *(f32 *)(p + 0x58) = f1;
+        *(f32 *)(p + 0x5C) = f1;
+        *(f32 *)(p + 0x60) = f1;
+        *(f32 *)(p + 0x64) = f1;
+        *(f32 *)(p + 0x68) = f1;
+        *(f32 *)(p + 0x6C) = f1;
+        *(s32 *)(p + 0x1C) = z;
+        *(f32 *)(p + 0x70) = f0;
     }
-    *((f32 *) (((s8 *) p) + 0x28)) = f2;
-    f0 = lbl_80368C8C;
-    *((f32 *) (((s8 *) p) + 0x34)) = lbl_80368C8C;
-    *((f32 *) (((s8 *) p) + 0x58)) = f1;
-    new_var = p;
-    *((f32 *) (((s8 *) new_var) + 0x5C)) = f1;
-    *((f32 *) (((s8 *) new_var) + 0x60)) = f1;
-    *((f32 *) (((s8 *) new_var) + 0x64)) = f1;
-    *((f32 *) (((s8 *) new_var) + 0x68)) = f1;
-    *((f32 *) (((s8 *) p) + 0x6C)) = f1;
-    *((s32 *) (((s8 *) new_var) + 0x1C)) = z;
-    *((f32 *) (((s8 *) new_var) + ((0, 0x70)))) = f0;
-  }
 }
 
 #pragma global_optimizer reset
