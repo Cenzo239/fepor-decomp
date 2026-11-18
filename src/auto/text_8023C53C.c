@@ -427,8 +427,6 @@ notInit:return 0x1d;
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
-#pragma optimization_level 3
-#pragma global_optimizer off
 void fn_8023C7B0(void) {
   extern u32 lbl_8033E578[6];
   extern s32 lbl_8036894C;
