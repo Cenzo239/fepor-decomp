@@ -383,23 +383,27 @@ void Unit_Clear(u8 *unit, s32 slotId) {
     }
 }
 
-void fn_8003B844(void *arg0,s32 arg1) {
- void *outer=arg0;
- s32 i=0;
- void *entry;
- s32 j;
- while(i<arg1) {
-  entry=outer; j=0;
-  while(j<M2C_FIELD(outer,s32*,4)) {
-   if (M2C_FIELD(entry,void**,8)!=0) M2C_FIELD(entry,void**,8)=(void*)Person_GetByPid(M2C_FIELD(entry,void**,8));
-   entry=(u8*)entry+8; j++;
-  }
-  M2C_FIELD(Person_GetByPid(M2C_FIELD(outer,void**,0)),void**,0x50)=outer;
-  i++;
-  outer=(u8*)outer+(M2C_FIELD(outer,s32*,4)*8)+8;
- }
-}
+#pragma use_lmw_stmw on
+void fn_8003B844(void *arg0, s32 arg1)
+{
+    void *Person_GetByPid(void *);
+    s32 j;
+    void *outer;
+    s32 i;
+    void *pid;
 
+    for (outer = arg0, i = 0; i < arg1; i++) {
+        for (j = 0; j < *(s32 *)((u8 *)outer + 4); j++) {
+            pid = *(void **)((u8 *)outer + 8 + (j << 3));
+            if (pid != NULL) {
+                *(void **)((u8 *)outer + 8 + (j << 3)) = Person_GetByPid(pid);
+            }
+        }
+        *(void **)((u8 *)Person_GetByPid(*(void **)outer) + 0x50) = outer;
+        outer = (u8 *)outer + (*(s32 *)((u8 *)outer + 4) << 3) + 8;
+    }
+}
+#pragma use_lmw_stmw reset
 void AffinityBonuses_Halve(void *arg0) {
     M2C_FIELD(arg0, u8 *, 4) = (u8) ((s8) M2C_FIELD(arg0, u8 *, 4) >> 1);
     M2C_FIELD(arg0, u8 *, 5) = (u8) ((s8) M2C_FIELD(arg0, u8 *, 5) >> 1);
@@ -6971,10 +6975,10 @@ draw:
 #pragma opt_peephole reset
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
-void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
-    extern volatile s8 lbl_8036728C;
-    extern volatile s8 lbl_8036728D;
-    extern volatile s8 lbl_8036728E;
+void fn_80048A3C(u8 arg0, u8 arg1, u8 arg2, u8 *arg3) {
+    extern volatile u8 lbl_8036728C;
+    extern volatile u8 lbl_8036728D;
+    extern volatile u8 lbl_8036728E;
     extern volatile u8 lbl_80367290;
     u8 d, c, b, a;
     volatile u8 *p;
@@ -7312,7 +7316,6 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
 
-#pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_80049594(void *self)
 {
@@ -7323,7 +7326,7 @@ void fn_80049594(void *self)
     void PSMTXScale(void *, f32, f32, f32);
     void Process_ClearFunc(void *);
 
-    extern void *gMap;
+    extern u16 *gMap;
     extern f64 lbl_80368EF8;
     extern f32 lbl_80368EE4;
     extern f32 lbl_80368EE8;
@@ -7405,7 +7408,6 @@ void fn_80049594(void *self)
     }
 }
 #pragma global_optimizer reset
-#pragma use_lmw_stmw reset
 void fn_8004982C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x48);
 }
