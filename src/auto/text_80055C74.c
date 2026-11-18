@@ -477,12 +477,12 @@ void *fn_80056A60(void *arg0) {
     p = arg0;
     *(void **)(p + 0x14) = fn_800C4638(0x80, lbl_8026AD80 + 0xA9, 0);
     b3 = 0xFF;
-    f0 = gF32_0;
+    f0 = 0.0f;
     b0 = 0;
-    f1 = lbl_80369140;
+    f1 = 400.0f;
     h4 = 0x30;
     *(f32 *)(p + 8) = f0;
-    f0 = lbl_80369144;
+    f0 = 100.0f;
     *(f32 *)(p + 0xC) = f1;
     *(f32 *)(p + 0x10) = f0;
     *(u8 *)(p + 3) = b3;
@@ -1369,9 +1369,161 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
 #pragma scheduling reset
-void GActor_InitNodeLink(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    // Just setting the first field to make sure we have a valid compile
-    *(u16*)((char*)arg0 + 0x34) = (u16)arg1;
+void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+    char *strcpy(char *, const char *);
+    void *fn_800C4638(s32, void *, s32);
+    void *Process_Create(void *, s32);
+    s32 GActor_FindNode(s32, s32);
+    void fn_80060F70(s32, s32, void *);
+    void fn_800581A4(void *);
+    void fn_80058D84(void *);
+    void fn_80067708(s32, s32, void *, void *);
+
+    extern u8 lbl_8026AD80[];
+    extern u8 lbl_80285B54[];
+    extern u32 lbl_803690D0;
+
+    u8 *self;
+    u8 *proc;
+    u8 *obj;
+    u8 *entry;
+    u8 *colorBytes;
+    s32 nodes[2];
+    s32 *node;
+    s32 i;
+    s32 index;
+    u32 color;
+    u16 start;
+    u16 count;
+    u16 capacity;
+
+    self = (u8 *)arg0;
+
+    *(s32 *)(self + 0x34) = arg1;
+
+    strcpy((char *)(self + 0x56), (char *)arg2);
+    strcpy((char *)(self + 0x5E), (char *)arg3);
+
+    *(u16 *)(self + 0x4E) = 10;
+    self[0x51] = 8;
+
+    *(u16 *)(self + 0x4A) = 0;
+    *(u16 *)(self + 0x4C) = 0;
+    *(u16 *)(self + 0x48) = 0;
+    self[0x53] = 0;
+    *(u16 *)(self + 0x54) = 1;
+
+    *(void **)(self + 0x40) = fn_800C4638(
+        *(u16 *)(self + 0x4E) * 0x28,
+        lbl_8026AD80 + 0xA9,
+        0
+    );
+
+    *(void **)(self + 0x44) = fn_800C4638(
+        *(u16 *)(self + 0x4E) * self[0x51] * 0x28,
+        lbl_8026AD80 + 0xA9,
+        0
+    );
+
+    color = lbl_803690D0;
+    colorBytes = (u8 *)&color;
+
+    self[0x38] = colorBytes[0];
+    self[0x39] = colorBytes[1];
+    self[0x3A] = colorBytes[2];
+    self[0x3B] = colorBytes[3];
+
+    self[0x3C] = self[0x38];
+    self[0x3D] = self[0x39];
+    self[0x3E] = self[0x3A];
+    self[0x3F] = self[0x3B];
+
+    if (colorBytes[0] < 0x80 &&
+        colorBytes[1] < 0x80 &&
+        colorBytes[2] < 0x80) {
+
+        *(u16 *)(self + 0x54) =
+            *(u16 *)(self + 0x54) & ~1;
+
+        *(u16 *)(self + 0x54) =
+            *(u16 *)(self + 0x54) | 2;
+    } else {
+        *(u16 *)(self + 0x54) =
+            *(u16 *)(self + 0x54) & ~2;
+
+        *(u16 *)(self + 0x54) =
+            *(u16 *)(self + 0x54) | 1;
+    }
+
+    proc = (u8 *)Process_Create(
+        lbl_80285B54,
+        4
+    );
+
+    *(void **)(self + 0x30) = proc;
+
+    proc = *(u8 **)(self + 0x30);
+    *(void **)(proc + 0x30) = self;
+
+    obj = *(u8 **)(proc + 0x30);
+
+    if (obj[0x53] == 0) {
+        nodes[0] = GActor_FindNode(
+            *(s32 *)(obj + 0x34),
+            (s32)(obj + 0x56)
+        );
+
+        nodes[1] = GActor_FindNode(
+            *(s32 *)(obj + 0x34),
+            (s32)(obj + 0x5E)
+        );
+
+        if (nodes[0] >= 0 && nodes[1] >= 0) {
+            start = *(u16 *)(obj + 0x48);
+            count = *(u16 *)(obj + 0x4C);
+            capacity = *(u16 *)(obj + 0x4E);
+
+            index = (start + count) % capacity;
+
+            entry = *(u8 **)(obj + 0x40) +
+                    index * 0x28;
+
+            if (count == capacity) {
+                *(u16 *)(obj + 0x48) =
+                    (start + 1) % capacity;
+            } else {
+                *(u16 *)(obj + 0x4C) = count + 1;
+            }
+
+            node = nodes;
+            i = 0;
+
+            do {
+                fn_80060F70(
+                    *(s32 *)(obj + 0x34),
+                    *node,
+                    entry
+                );
+
+                i++;
+                node++;
+                entry += 0xC;
+            } while (i < 2);
+
+            *(u16 *)(obj + 0x4A) =
+                *(u16 *)(obj + 0x4C) * obj[0x51];
+        }
+    }
+
+    fn_800581A4(*(void **)(proc + 0x30));
+
+    fn_80067708(
+        2,
+        3,
+        fn_80058D84,
+        *(void **)(proc + 0x30)
+    );
 }
 
 void fn_80058C6C(void *arg0) {
