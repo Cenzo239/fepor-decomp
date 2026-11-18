@@ -1989,7 +1989,7 @@ void fn_80089970(void) {
 }
 
 #pragma global_optimizer off
-#pragma peephole on
+#pragma peephole off
 void fn_80089980(s32 arg0) {
 extern f32 lbl_803696C8; extern void *lbl_803674EC;
 u8 *ptr=(u8*)lbl_803674EC;
