@@ -1261,6 +1261,8 @@ u32 Bin_ReadU32(u8 **arg0) {
 }
 #pragma global_optimizer reset
 #pragma scheduling reset
+#pragma global_optimizer off
+#pragma scheduling off
 u32 fn_8001B8E0(u8 **arg0)
 {
     u8 *data;
@@ -1285,6 +1287,8 @@ u32 fn_8001B8E0(u8 **arg0)
     result = b0 + result;
     return result;
 }
+#pragma global_optimizer reset
+#pragma scheduling reset
 #pragma peephole off
 u16 fn_8001B91C(u8 **arg0) {
  u8 *p; u8 *next; u16 hi; u32 lo;
@@ -1721,62 +1725,19 @@ extern f32 lbl_80368D5C;
 extern f32 lbl_80368D60;
 extern f64 lbl_80368D68;
 extern f64 lbl_80368D70;
+double fabs(double);
+#pragma scheduling on
 s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
-    extern f32 lbl_80368D5C;
-    extern f32 lbl_80368D60;
-    f32 var_f0;
-    s32 temp_r9;
-    
-    var_f0 = lbl_80368D5C;
-    
-    // Check if any of the offsets are 0
-    if ((arg2 | arg3 | arg4 | arg5) == 0) {
-        return 0;
-    }
-    
-    // Process arg2 (offset 0x19)
-    if (arg2 != 0) {
-        u8 temp_u1 = *(u8*)((u8*)arg0 + 0x19);
-        f32 temp_f7 = (f32)temp_u1;
-        f32 temp_f6 = temp_f7 * temp_f7;
-        f32 temp_f2 = temp_f7 + (f32)arg2;
-        var_f0 += (f32)arg1 * ((f32)ABS((temp_f2 * temp_f2) - temp_f6) * 
-                              ((f32)*(u16*)((u8*)arg0 + 0x10) / temp_f6));
-    }
-    
-    // Process arg3 (offset 0x1A)
-    if (arg3 != 0) {
-        u8 temp_u1 = *(u8*)((u8*)arg0 + 0x1A);
-        f32 temp_f7 = (f32)temp_u1;
-        f32 temp_f6 = temp_f7 * temp_f7;
-        f32 temp_f2 = temp_f7 + (f32)(arg3 * 5);
-        var_f0 += (f32)arg1 * ((f32)ABS((temp_f2 * temp_f2) - temp_f6) * 
-                              ((f32)*(u16*)((u8*)arg0 + 0x10) / temp_f6));
-    }
-    
-    // Process arg4 (offset 0x1C)
-    if (arg4 != 0) {
-        u8 temp_u1 = *(u8*)((u8*)arg0 + 0x1C);
-        f32 temp_f7 = (f32)(temp_u1 + 0xA);
-        f32 temp_f6 = temp_f7 * temp_f7;
-        f32 temp_f2 = temp_f7 + (f32)(arg4 * 3);
-        var_f0 += (f32)arg1 * ((f32)ABS((temp_f2 * temp_f2) - temp_f6) * 
-                              ((f32)*(u16*)((u8*)arg0 + 0x10) / temp_f6));
-    }
-    
-    // Process arg5 (offset 0x1B)
-    if (arg5 != 0) {
-        u8 temp_u1 = *(u8*)((u8*)arg0 + 0x1B);
-        f32 temp_f7 = (f32)(0x17 - temp_u1);
-        f32 temp_f6 = temp_f7 * temp_f7;
-        f32 temp_f2 = temp_f7 + (f32)arg5;
-        var_f0 += (f32)arg1 * ((f32)ABS((temp_f2 * temp_f2) - temp_f6) * 
-                              ((f32)*(u16*)((u8*)arg0 + 0x10) / temp_f6));
-    }
-    
-    return (s32)(var_f0 * lbl_80368D60);
+extern f32 lbl_80368D5C; extern f32 lbl_80368D60;
+f32 total = lbl_80368D5C;
+if ((arg5 | (arg4 | (arg2 | arg3))) == 0) return 0;
+if (arg2) { f32 next, square, base; base=(f32)*(u8*)((u8*)arg0+0x19); square=base*base; next=base+(f32)(arg2); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
+if (arg3) { f32 next, square, base; base=(f32)*(u8*)((u8*)arg0+0x1A); square=base*base; next=base+(f32)(arg3*5); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
+if (arg4) { f32 next, square, base; base=(f32)(*(u8*)((u8*)arg0+0x1C)+10); square=base*base; next=base+(f32)(arg4*3); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
+if (arg5) { f32 next, square, base; base=(f32)(23-*(u8*)((u8*)arg0+0x1B)); square=base*base; next=base+(f32)(arg5); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
+return (s32)(total*lbl_80368D60);
 }
-
+#pragma scheduling reset
 void *Item_Copy(void *dstItem, void *srcItem) {
     /* Copy item fields and share/clone the icon slot referenced by the 6-bit index. */
     s32 Icon_GetSlot(void *, s32);
