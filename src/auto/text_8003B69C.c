@@ -10701,9 +10701,9 @@ void fn_80050E80(void)
         }
         Heap_Free(p);
     }
-    b = gUnitShadowMat;
-    lbl_803672CC = 0;
-    fn_8006D8E8(b);
+    b = (void *)gUnitShadowMat;
+      lbl_803672CC = 0;
+      fn_8006D8E8(b);
 }
 
 #pragma global_optimizer off
