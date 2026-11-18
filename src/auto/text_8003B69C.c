@@ -12189,7 +12189,7 @@ extern u32* lbl_803672CC;
 extern u32 jumptable_8028561C[];
 extern u32 jumptable_802855E4[];
 #include "global.h"
-extern s32* gUnitShadowMat;
+extern s32 gUnitShadowMat;
 extern f32 lbl_80368FCC;
 extern f32 gUnitShadowZ;
 extern u8 gUnits[];
