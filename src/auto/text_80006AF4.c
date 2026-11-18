@@ -2170,80 +2170,98 @@ s32 fn_8000A930(void *arg0) {
     return 1;
 }
 
-s32 fn_8000A950(void *arg0)
-{
+#pragma global_optimizer off
+#pragma peephole off
+s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
-
-    u8 *table;
     u8 *entry;
-    char *search;
-    char *candidate;
-    s32 i;
-    s32 j;
-    s32 equal;
+    u8 *source;
+    u8 *a;
+    u8 *b;
+    u32 n;
+    u32 diff;
+    u32 raw1;
+    u32 raw2;
+    s32 c1;
+    s32 c2;
+    u8 *p;
+    u32 ctr;
 
-    table = gProcesses;
-    search = *(char **)(*(u8 **)((u8 *)arg0 + 4) + 4);
-
-    for (i = 0; i < 0x80; i++) {
-        entry = table + i * 0x70;
-
+    p = *(u8 **)((u8 *)arg0 + 4);
+    ctr = 0x80;
+    source = *(u8 **)(p + 4);
+    entry = gProcesses;
+    n = 0;
+    for (; ctr != 0; ctr--) {
         if (*(u32 *)entry != 0) {
-            candidate = *(char **)(entry + 0x14);
-            equal = 1;
-
-            if (candidate != 0) {
-                for (j = 0; ; j++) {
-                    if ((signed char)candidate[j] !=
-                        (signed char)search[j]) {
-                        equal = 0;
-                        break;
-                    }
-
-                    if (candidate[j] == 0) {
-                        break;
-                    }
-                }
-
-                if (equal != 0) {
-                    *(u32 *)(entry + 0x10) = 0;
-                    *(u32 *)((u8 *)arg0 + 4) += 8;
-                    return 1;
-                }
+            a = *(u8 **)(entry + 0x14);
+            b = source;
+            goto cmp1_ld;
+        cmp1:
+            if ((s8)raw1 != (s8)raw2) {
+                diff = (u32)(c1 - c2);
+                goto cmp1_done;
             }
+            a += 1;
+            b += 1;
+        cmp1_ld:
+            raw1 = *a;
+            raw2 = *b;
+            c1 = (s8)raw1;
+            c2 = (s8)raw2;
+            if ((c1 | c2) != 0) {
+                goto cmp1;
+            }
+            diff = 0;
+        cmp1_done:
+            if (diff != 0) {
+                goto next1;
+            }
+            goto found;
         }
-
+    next1:
         entry += 0x70;
-
         if (*(u32 *)entry != 0) {
-            candidate = *(char **)(entry + 0x14);
-            equal = 1;
-
-            if (candidate != 0) {
-                for (j = 0; ; j++) {
-                    if ((signed char)candidate[j] !=
-                        (signed char)search[j]) {
-                        equal = 0;
-                        break;
-                    }
-
-                    if (candidate[j] == 0) {
-                        break;
-                    }
-                }
-
-                if (equal != 0) {
-                    *(u32 *)(entry + 0x10) = 0;
-                    *(u32 *)((u8 *)arg0 + 4) += 8;
-                    return 1;
-                }
+            b = source;
+            a = *(u8 **)(entry + 0x14);
+            goto cmp2_ld;
+        cmp2:
+            if ((s8)raw1 != (s8)raw2) {
+                diff = (u32)(c1 - c2);
+                goto cmp2_done;
             }
+            a += 1;
+            b += 1;
+        cmp2_ld:
+            raw1 = *a;
+            raw2 = *b;
+            c1 = (s8)raw1;
+            c2 = (s8)raw2;
+            if ((c1 | c2) != 0) {
+                goto cmp2;
+            }
+            diff = 0;
+        cmp2_done:
+            if (diff != 0) {
+                goto next2;
+            }
+            goto found;
         }
+    next2:
+        n += 1;
+        entry += 0x70;
     }
-
-    return 0;
+    entry = 0;
+found:
+    if (entry == 0) {
+        return 0;
+    }
+    *(u32 *)(entry + 0x10) = 0;
+    *(u32 *)((u8 *)arg0 + 4) += 8;
+    return 1;
 }
-
+#pragma peephole on
+#pragma global_optimizer on
 s32 fn_8000AA60(void *arg0)
 {
     extern u8 gProcesses[];
@@ -3971,10 +3989,35 @@ s32 Rand_TrueHit(s32 arg0) {
     return (sum / 2) < arg0;
 }
 
+#pragma global_optimizer off
 s32 Rand_Chance(s32 arg0) {
     struct RandSt { u16 a; u16 b; u16 c; };
     extern struct RandSt lbl_80367150;
-    s32 scaled;
+    u16 t6;
+    s32 t4;
+    s32 s1;
+    s32 s2;
+    struct RandSt *st;
+
+    st = &lbl_80367150;
+    s2 = st->c;
+    s1 = st->b;
+    t4 = (s2 * 2) & 0xFFFE;
+    t6 = (u16)((s1 << 11) + (lbl_80367150.a >> 5));
+    st->c = t4;
+    if (s1 & 0x8000) {
+        st->c = t4 + 1;
+    }
+    t6 ^= st->c;
+    st->c = st->b;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
+    return (((u16)t6 * 100) / 65536) < arg0;
+}
+#pragma global_optimizer off
+s32 Rand_Range(s32 arg0) {
+    struct RandSt { u16 a; u16 b; u16 c; };
+    extern struct RandSt lbl_80367150;
     u16 t6;
     s32 t4;
     s32 s1;
@@ -3994,43 +4037,11 @@ s32 Rand_Chance(s32 arg0) {
     }
     t6 ^= st->c;
     st->c = st->b;
-    scaled = (u16)t6 * 100;
     st->b = lbl_80367150.a;
     lbl_80367150.a = t6;
-    return (scaled / 65536) < arg0;
+    return (arg0 * (u16)t6) / 65536;
 }
-
-s32 Rand_Range(s32 arg0) {
-    struct RandSt { u16 a; u16 b; u16 c; };
-    extern struct RandSt lbl_80367150;
-    s32 prod;
-    u16 t6;
-    s32 combined;
-    s32 t4;
-    s32 s1;
-    s32 s2;
-    s32 s0;
-    struct RandSt *st;
-
-    st = &lbl_80367150;
-    s0 = lbl_80367150.a;
-    s2 = st->c;
-    s1 = st->b;
-    t4 = (s2 * 2) & 0xFFFE;
-    combined = (s1 << 11) + (s0 >> 5);
-    st->c = t4;
-    t6 = (u16)combined;
-    if (s1 & 0x8000) {
-        st->c = t4 + 1;
-    }
-    t6 ^= st->c;
-    st->c = st->b;
-    prod = (u16)t6 * arg0;
-    st->b = lbl_80367150.a;
-    lbl_80367150.a = t6;
-    return prod / 65536;
-}
-
+#pragma global_optimizer reset
 void fn_8000CF4C(u32 arg0) {
     struct RandSt { u16 a; u16 b; u16 c; };
     extern struct RandSt lbl_80367150;
