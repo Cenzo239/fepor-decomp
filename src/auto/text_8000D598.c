@@ -1195,60 +1195,38 @@ s32 fn_80010428(s32 arg0, s32 arg1, f32 arg2)
     return value;
 }
 
-s32 fn_8001059C(s32 arg0, s32 arg1, f32 arg2)
-{
-    extern s32 lbl_802AEE20[5];
-
+#pragma global_optimizer off
+#pragma opt_propagation off
+s32 fn_8001059C(s32 arg0, s32 arg1, f32 arg2) {
     s32 fn_8010494C(s32);
     s32 fn_80104E68(s32);
-
-    s32 *table;
-    s32 result;
+    u32 *table;
+    u32 result;
     s32 index;
     s32 value;
-
-    table = lbl_802AEE20;
-    index = arg1;
-
-    if (index == -1) {
-        result = fn_8010494C(table[0]);
-
-        if (table[0] == result) {
-            index = 0;
-        } else if (table[1] == result) {
-            index = 1;
-        } else if (table[2] == result) {
-            index = 2;
-        } else if (table[3] == result) {
-            index = 3;
-        } else if (table[4] == result) {
-            index = 4;
-        } else {
-            index = -1;
-        }
+    u32 *p;
+    if(arg1 == -1) arg1=0;
+    result=(u32)fn_8010494C(lbl_802AEE20[arg1]);
+    table=(u32 *)lbl_802AEE20;
+    if(table[0]==result) index=0;
+    else {
+        p=table+1;
+        if(table[1]==result) index=1;
+        else if(*++p==result) index=2;
+        else if(*++p==result) index=3;
+        else if(p[1]==result) index=4;
+        else index=-1;
     }
-
-    value = (s32)(arg2 * (f32)fn_80104E68(arg0));
-
-    if (index == -1) {
-        index = 0;
-        result = fn_8010494C(table[index]);
-
-        if (table[0] != result) {
-            if (table[1] != result) {
-                if (table[2] != result) {
-                    if (table[3] != result) {
-                        if (table[4] != result) {
-                        }
-                    }
-                }
-            }
-        }
+    value=(s32)(arg2*(f32)fn_80104E68(arg0));
+    if(index==-1) index=0;
+    result=(u32)fn_8010494C(lbl_802AEE20[index]);
+    for(index=0,p=table;index<5;index++,p++) {
+        if(*p==result) break;
     }
-
     return value;
 }
-
+#pragma opt_propagation reset
+#pragma global_optimizer reset
 s32 fn_80010710(const char *arg0)
 {
   s32 value;
@@ -1458,23 +1436,152 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     return result;
 }
 
-s32 Text_MeasureWidth(void) {
-    s32 r31, r30, r29, r28, r27;
-    
-    r31 = 0;
-    r30 = 0;
-    r29 = 0;
-    r28 = gUnknown_0x80369C84 < 0;
-    r27 = 0;
-    
-    if (r28 != 0)
-        r31 = 0;
-    else
-        r31 = 1;
-        
-    return r31;
-}
+#pragma fp_contract off
+s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
+    extern f32 lbl_80368BE8;
+    extern u32 jumptable_80283DA0[];
+    extern u8 *fn_80105124(u8 *, s32 *);
+    register u8 *digits;
+    u32 *tbl;
+    u32 found;
+    s32 i;
+    f32 result;
+    f32 fmax;
+    u8 *p;
+    s32 c;
+    s32 code;
+    s16 digi;
+    s16 shift;
+    s32 val;
+    f32 ftmp;
+    s32 width;
 
+    p = str;
+    if (idx == -1) {
+        idx = 0;
+    }
+    found = (u32)fn_8010494C((void *)lbl_802AEE20[idx]);
+    tbl = (u32 *)lbl_802AEE20;
+    if (tbl[0] == found) {
+        i = 0;
+    } else if (tbl[1] == found) {
+        i = 1;
+    } else if (tbl[2] == found) {
+        i = 2;
+    } else if (tbl[3] == found) {
+        i = 3;
+    } else if (tbl[4] == found) {
+        i = 4;
+    } else {
+        i = -1;
+    }
+
+    result = lbl_80368BE8;
+    fmax = lbl_80368BDC;
+
+    while ((s8)*p != 0) {
+        if ((s8)*p == '#') {
+            c = (s8)p[1];
+            p += 2;
+            code = c - '#';
+            if ((u32)code <= 0x56U) {
+                switch (code) {
+                case 30:
+                case 31:
+                case 32:
+                case 36:
+                case 38:
+                case 47:
+                case 53:
+                case 85:
+                    p += 2;
+                    break;
+                case 45:
+                    p += 3;
+                    break;
+                case 35:
+                    digits = (u8 *)__alloca(8);
+                    digi = 0;
+                    while ((u8)digi < 2) {
+                        c = (s8)*p++;
+                        if (c >= '0' && c <= '9') {
+                            digits[(u8)digi] = (u8)(c - '0');
+                        } else if (c >= 'a' && c <= 'f') {
+                            digits[(u8)digi] = (u8)(c - 0x57);
+                        } else if (c >= 'A' && c <= 'F') {
+                            digits[(u8)digi] = (u8)(c - 0x37);
+                        }
+                        digi += 1;
+                    }
+                    val = 0;
+                    digi = 1;
+                    shift = 0;
+                    while (digi >= 0) {
+                        val += digits[digi] << shift;
+                        digi -= 1;
+                        shift += 4;
+                    }
+                    if (val == -1) {
+                        val = 0;
+                    }
+                    found = (u32)fn_8010494C((void *)lbl_802AEE20[val]);
+                    if (tbl[0] == found) {
+                    } else if (tbl[1] == found) {
+                    } else if (tbl[2] == found) {
+                    } else if (tbl[3] == found) {
+                    } else if (tbl[4] == found) {
+                    }
+                    break;
+                case 48:
+                case 54:
+                    digits = (u8 *)__alloca(8);
+                    digi = 0;
+                    while ((u8)digi < 2) {
+                        c = (s8)*p++;
+                        if (c >= '0' && c <= '9') {
+                            digits[(u8)digi] = (u8)(c - '0');
+                        } else if (c >= 'a' && c <= 'f') {
+                            digits[(u8)digi] = (u8)(c - 0x57);
+                        } else if (c >= 'A' && c <= 'F') {
+                            digits[(u8)digi] = (u8)(c - 0x37);
+                        }
+                        digi += 1;
+                    }
+                    val = 0;
+                    digi = 1;
+                    shift = 0;
+                    while (digi >= 0) {
+                        val += digits[digi] << shift;
+                        digi -= 1;
+                        shift += 4;
+                    }
+                    fmax = (f32)(u32)val * lbl_80368BE0;
+                    break;
+                default:
+                    p -= 1;
+                    break;
+                }
+            }
+        } else {
+            p = fn_80105124(p, &width);
+            ftmp = (f32)(u32)width * fmax;
+            result += scale * ftmp;
+        }
+    }
+
+    if (i == -1) {
+        i = 0;
+    }
+    found = (u32)fn_8010494C((void *)lbl_802AEE20[i]);
+    if (tbl[0] == found) {
+    } else if (tbl[1] == found) {
+    } else if (tbl[2] == found) {
+    } else if (tbl[3] == found) {
+    } else if (tbl[4] == found) {
+    }
+    return (s32)result;
+}
+#pragma fp_contract on
 void fn_80010FF0(void) {
     M2C_UNK fn_801047D0();
     fn_801047D0();
@@ -1840,4 +1947,12 @@ void fn_80011910(void) {
     fn_802201A8(0, 1, 4, 0x21, 0, 0x7D);
     GXSetNumTexGens(0, 0);
     GXSetTevOrder(0, 0, 1, 4);
+}
+static inline s32 Text_FindFontIndex(u32 result) {
+    u32 *p = (u32 *)lbl_802AEE20;
+    s32 i;
+    for(i=0;i<5;i++,p++) {
+        if(*p==result) return i;
+    }
+    return -1;
 }
