@@ -1600,47 +1600,32 @@ void fn_8018614C(void *arg0) {
     void Process_ClearFunc(void *);
     extern u8 E_MuColorChange_script[];
 
-    u8 *proc;
-    u8 *unit;
-    u8 *flash;
-    u8 *pad;
-    u8 key[0x34];
+    u8 key[0x44];
     u32 color;
+    void *unit;
+    void *pad;
+    void *proc;
+    void *flash;
 
-    proc = (u8 *)arg0;
-    pad = *(u8 **)(*(u8 **)(proc + 0x34) + 0x30);
-    pad = *(u8 **)(pad + 0x5C);
+    proc = arg0;
+    pad = *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x30) + 0x5C);
 
     if ((u8)Pad_IsButton(pad, 0) != 0) {
-        unit = *(u8 **)(proc + 0x30);
-
+        unit = *(void **)((u8 *)proc + 0x30);
         *(void **)(key + 0x30) = unit;
-
-        GfxEnt_ForEachKey(
-            E_MuColorChange_script,
-            MuFade_UnlinkSame,
-            key
-        );
-
-        flash = (u8 *)Process_CreateEx(
-            E_MuColorChange_script,
-            0
-        );
-
-        *(void **)(flash + 0x30) = unit;
-        *(s32 *)(flash + 0x3C) = 0x10;
-
+        GfxEnt_ForEachKey(E_MuColorChange_script, MuFade_UnlinkSame, key);
+        flash = Process_CreateEx(E_MuColorChange_script, 0);
+        *(void **)((u8 *)flash + 0x30) = unit;
+        *(s32 *)((u8 *)flash + 0x3C) = 0x10;
         color = Mu_GetFlashColor(3);
-
-        flash[0x38] = ((u8 *)&color)[0];
-        flash[0x39] = ((u8 *)&color)[1];
-        flash[0x3A] = ((u8 *)&color)[2];
-        flash[0x3B] = ((u8 *)&color)[3];
-
-        flash[0x34] = unit[0x24];
-        flash[0x35] = unit[0x25];
-        flash[0x36] = unit[0x26];
-        flash[0x37] = unit[0x27];
+        ((u8 *)flash)[0x38] = ((u8 *)&color)[0];
+        ((u8 *)flash)[0x39] = ((u8 *)&color)[1];
+        ((u8 *)flash)[0x3A] = ((u8 *)&color)[2];
+        ((u8 *)flash)[0x3B] = ((u8 *)&color)[3];
+        ((u8 *)flash)[0x34] = ((u8 *)unit)[0x24];
+        ((u8 *)flash)[0x35] = ((u8 *)unit)[0x25];
+        ((u8 *)flash)[0x36] = ((u8 *)unit)[0x26];
+        ((u8 *)flash)[0x37] = ((u8 *)unit)[0x27];
     }
 
     if ((u8)Pad_IsButton(pad, 8) != 0) {
