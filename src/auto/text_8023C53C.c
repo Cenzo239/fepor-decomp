@@ -440,8 +440,6 @@ void fn_8023C7B0(void) {
   p[5] = base + 0x280;
 }
 
-#pragma global_optimizer reset
-#pragma optimization_level reset
 s32 fn_8023C7F4(void) {
   extern u8 *lbl_80368950;
   s32 off;
