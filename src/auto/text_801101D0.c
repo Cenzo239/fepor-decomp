@@ -2387,7 +2387,6 @@ struct ActorMotionInterface {
 #pragma optimization_level 3
 #pragma global_optimizer off
 extern "C" void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
-typedef void (*GetPosFn)(f32 *, void *, s32);
 s32 strlen(char *);
 s32 fn_80199310(void *);
 void fn_800DF670(void *);
@@ -2420,7 +2419,6 @@ void *scratch7,*scratch6,*scratch5,*scratch4,*scratch3,*scratch2,*scratch1,*scra
 f32 scale,x,y,z,px;
 s32 kind;
 s32 missing;
-GetPosFn gp;
 anim.cap=0; anim.size=0; anim.data=0; anim.cap=0;
 pos = ((ActorMotionInterface*)arg0)->GetPos(0);
 x=pos.x;y=pos.y;z=pos.z;
@@ -2449,10 +2447,9 @@ String_Destroy(&se7,-1);String_Destroy(&se8,-1);
 String_AssignCStr((u8*)arg0+0x16C,(char*)gActorXmlStrs+0x43F,strlen((char*)gActorXmlStrs+0x43F));
 Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
-gp = (GetPosFn)((void **)*(void **)((u8 *)arg0 + 0x40))[0xE];
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-gp(current, arg0, 0);
+((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
 px=current[0];
 other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
@@ -2534,8 +2531,8 @@ fn_80025624(gPadInput,16);
 }
 else fn_80025624(gPadInput,8);
 *(u8*)((u8*)arg0+0x1A4)=1;*(u8*)((u8*)arg0+0x1A0)=0;
-    String_Destroy(&anim,-1);
-  }
+String_Destroy(&anim,-1);
+}
   #pragma pop
   #pragma cplusplus off
   void fn_80115264(void *self,s32 mode,s32 flag) {
@@ -2918,11 +2915,8 @@ s32 fn_80116580(void *arg0) {
     return -1;
 }
 
-#pragma cplusplus on
-extern "C" void fn_801165B4(void *arg0, void *arg1) {
-#pragma optimization_level 2
+void fn_801165B4(void *arg0, void *arg1) {
     void fn_80199318(void *, void *);
-    extern u16 gActorXmlStrs[];
     u8 sp8[0x14];
     void *self = arg0;
     void *v = *(void **)((u8 *)arg1 + 0x11C);
@@ -2932,7 +2926,6 @@ extern "C" void fn_801165B4(void *arg0, void *arg1) {
         String_Init(self, (char *)((u8 *)gActorXmlStrs + 0x1C), sp8);
     }
 }
-#pragma cplusplus reset
 s32 fn_80116604(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x11C);
 }
