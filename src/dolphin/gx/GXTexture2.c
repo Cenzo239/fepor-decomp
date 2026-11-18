@@ -861,15 +861,14 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
 }
 
 void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-u16 *gx = __GXData;
-u32 *stage = (u32 *)((u8 *)gx + (arg0 << 2));
-u32 value = stage[0x130/4];
-value = __rlwimi(value, arg1, 12, 16, 19);
-*(u8 *)0xCC008000 = 0x61;
-value = __rlwimi(__rlwimi(__rlwimi(value, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
-*(u32 *)0xCC008000 = value;
-stage[0x130/4] = value;
-gx[1] = 0;
+    u32 *ptr = (u32 *)__GXData;
+    u32 value = ptr[(0x130 / 4) + arg0];
+    value = __rlwimi(value, arg1, 12, 16, 19);
+    *(u8 *)0xCC008000 = 0x61;
+    value = __rlwimi(__rlwimi(__rlwimi(value, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
+    *(u32 *)0xCC008000 = value;
+    ptr[(0x130 / 4) + arg0] = value;
+    *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
 void GXSetTevAlphaIn(s32 stage,s32 a,s32 b,s32 c,s32 d) {
@@ -934,20 +933,20 @@ void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 }
 
 #pragma scheduling off
-void GXSetTevColor(s32 id, u32 *color) {
-    u16 zero;
+void GXSetTevColor(s32 id, GXColor color) {
+    u16 *gx;
+    u8 cmd;
+    u32 idx;
     u32 c;
     u32 reg;
-    u32 idx;
-    u8 cmd;
-    u16 *gx;
+    u32 reg2;
+    u16 zero;
 
     idx = id << 1;
-    c = *color;
+    c = *(u32 *)&color;
     reg = idx + 0xE0;
     gx = __GXData;
     cmd = 0x61;
-    zero = 0;
     reg <<= 24;
     reg = __rlwimi(reg, c, 8, 24, 31);
     GXWGFifo.u8 = cmd;
@@ -955,16 +954,17 @@ void GXSetTevColor(s32 id, u32 *color) {
     GXWGFifo.u32 = reg;
 
     idx += 0xE1;
-    reg = idx << 24;
-    reg = __rlwimi(reg, c, 24, 24, 31);
+    reg2 = idx << 24;
+    reg2 = __rlwimi(reg2, c, 24, 24, 31);
     GXWGFifo.u8 = cmd;
-    reg = __rlwimi(reg, c, 28, 12, 19);
-    GXWGFifo.u32 = reg;
+    reg2 = __rlwimi(reg2, c, 28, 12, 19);
+    GXWGFifo.u32 = reg2;
 
+    zero = 0;
     GXWGFifo.u8 = cmd;
-    GXWGFifo.u32 = reg;
+    GXWGFifo.u32 = reg2;
     GXWGFifo.u8 = cmd;
-    GXWGFifo.u32 = reg;
+    GXWGFifo.u32 = reg2;
 
     gx[1] = zero;
 }
