@@ -1294,7 +1294,6 @@ void fn_80112DFC(void *arg0, u8 arg1) {
 }
 
 #pragma cplusplus on
-#pragma global_optimizer off
 typedef struct Vec3f {
     f32 x, y, z;
     Vec3f() {}
