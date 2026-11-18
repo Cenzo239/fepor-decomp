@@ -1,6 +1,14 @@
 /* Functions from 0x801EAA2C to 0x801F18D4, found by decomp-toolkit. */
 #include "common.h"
 
+typedef struct CameraAnimVec { f32 x, y, z; } CameraAnimVec;
+typedef struct CameraAnimState { CameraAnimVec eye, target; f32 zoom; } CameraAnimState;
+typedef struct CameraAnimProc {
+    u8 pad[0x34]; void *anim;
+    CameraAnimState *prev, *current, *next, *future;
+    u16 index, count, duration, elapsed;
+} CameraAnimProc;
+
 typedef struct String {
     u32 size;
     u32 cap;
