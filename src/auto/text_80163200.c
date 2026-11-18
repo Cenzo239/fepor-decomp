@@ -14201,6 +14201,7 @@ void *fn_8017A764(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
+#pragma global_optimizer off
 extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
@@ -14214,6 +14215,7 @@ extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     *(s32 *)arg0 = arg1;
     *(u8 *)((char *)arg0 + 0xC) = 0;
 }
+#pragma global_optimizer reset
 #pragma cplusplus reset
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
@@ -18636,7 +18638,8 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-#pragma peephole off
+#pragma global_optimizer off
+#pragma peephole on
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point { u16 x,y; };
 struct Point *fn_8013F748(void *, struct Point *, struct Point *);
@@ -18653,6 +18656,7 @@ in.x=x;
 *arg0=*(s32*)fn_8013F748(arg1,outp,inp);
 }
 #pragma peephole reset
+#pragma global_optimizer reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;
