@@ -1583,12 +1583,10 @@ void Unit_MoveToList(void *unit, s32 listId) {
     fn_80015718(gUnitLists + listId * 0xC, unit);
 }
 
-void Unit_MoveToListHead(void *unit, s32 listId)
-{
-    void fn_800946F0(void *);
+void Unit_MoveToListHead(void *unit, s32 listId) {
     void fn_800156A0(void *, void *);
     void fn_800157DC(void *, void *);
-
+    void fn_800946F0(void *);
     extern u8 gUnitLists[];
 
     switch (listId) {
@@ -1596,10 +1594,9 @@ void Unit_MoveToListHead(void *unit, s32 listId)
     case 2:
     case 3:
         fn_800946F0(unit);
-        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
-        fn_800157DC(gUnitLists + listId * 0xC, unit);
-        return;
     }
+    fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+    fn_800157DC(gUnitLists + listId * 0xC, unit);
 }
 
 #pragma use_lmw_stmw on
