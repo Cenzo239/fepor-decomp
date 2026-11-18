@@ -2,23 +2,6 @@
 #include "common.h"
 #include "global.h"
 
-typedef struct { void *node; } TabCountIt;
-typedef struct { s8 value; } TabCountKey;
-#pragma global_optimizer off
-static inline s32 TabCountChanges(TabCountIt begin, TabCountIt end, TabCountKey key, s32 offset) {
-TabCountIt bcopy=begin, ecopy=end;
-TabCountIt b=bcopy, e=ecopy;
-s32 count=0;
-while(b.node!=e.node) {
-s8 value=(*(u8 **)((u8 *)b.node+8))[offset];
-u8 found;
-if(key.value!=value) {key.value=value; found=1;} else found=0;
-if(found) count++;
-b.node=*(void **)((u8 *)b.node+4);
-}
-return count;
-}
-#pragma global_optimizer reset
 
 struct UnkStruct {
     u32 field_0[0x10];
@@ -2646,7 +2629,6 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
-#pragma opt_strength_reduction off
 #pragma global_optimizer off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
@@ -2655,7 +2637,7 @@ It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, begin
 struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
 u8 *arg;
 void *end;
-s32 count;
+s32 count; s32 result;
 u8 found;
 s8 value;
 s8 tab;
@@ -2677,7 +2659,7 @@ if(keyA.value!=value) {keyA.value=value;found=1;} else found=0;
 if(found) count++;
 a.node=*(void**)((u8*)a.node+4);
 }
-return count;
+result=count; goto done;
 case 1:
 end=arg+0x54;
 endBCopy.node=end;
@@ -2693,7 +2675,7 @@ if(keyB.value!=value) {keyB.value=value;found=1;} else found=0;
 if(found) count++;
 b.node=*(void**)((u8*)b.node+4);
 }
-return count;
+result=count; goto done;
 case 2:
 end=arg+0x54;
 endCCopy.node=end;
@@ -2709,11 +2691,11 @@ if(keyC.value!=value) {keyC.value=value;found=1;} else found=0;
 if(found) count++;
 c.node=*(void**)((u8*)c.node+4);
 }
-return count;
+result=count; goto done;
 }
-return (s32)arg0;
+result=(s32)arg0;
+done: return result;
 }
-#pragma opt_strength_reduction reset
 #pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
 void TabMenu_ClearSelectedStatus(void *menu) {
