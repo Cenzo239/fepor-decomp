@@ -2369,19 +2369,168 @@ extern "C" void fn_80114840(void *arg0) {
 }
 #pragma cplusplus reset
 
-s32 fn_80114AF0(void *arg0) {
-    s32 *temp_r3;
-    
-    temp_r3 = M2C_FIELD(arg0, s32 **, 0x1B0);
-    if (temp_r3 != NULL) {
-        if ((u32)*temp_r3 >= 0x28U) {
-            return 0;
-        }
-        return 1;
-    }
-    return 0;
+#pragma cplusplus on
+struct ActorMotionInterface {
+    u8 pad[0x40];
+    virtual void v0() = 0;
+    virtual void v1() = 0;
+    virtual void v2() = 0;
+    virtual void v3() = 0;
+    virtual void v4() = 0;
+    virtual void v5() = 0;
+    virtual void v6() = 0;
+    virtual void v7() = 0;
+    virtual void v8() = 0;
+    virtual void v9() = 0;
+    virtual void v10() = 0;
+    virtual void v11() = 0;
+    virtual Vec3f GetPos(s32) = 0;
+    virtual void v13() = 0;
+    virtual void Adjust(void *, f32, f32) = 0;
+};
+#pragma cplusplus reset
+#pragma push
+#pragma dont_inline on
+#pragma global_optimizer off
+void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
+s32 strlen(char *);
+s32 fn_80199310(void *);
+void fn_800DF670(void *);
+void fn_800E4FE8(void *,void *,char *);
+void *fn_801992F8(void *);
+void String_JoinCStr(void *,void *,void *);
+void String_ConcatCStr(void *,void *,char *);
+s32 fn_800DDAA4(void *,void *);
+void fn_802031E8(void *,void *);
+void fn_802031CC(void *,void *,f32);
+void fn_80203184(void *,void *,void *);
+void fn_800E4BE0(void *,s32,s32,f32);
+void SeCue_PlayAt(char *,s32,f32,f32,f32);
+void *fn_800E7E4C(void *,void *);
+void fn_800DBF38(void *,s32,f32,f32);
+void fn_80025624(void *,s32);
+extern void *gGame;
+extern void *gPadInput;
+extern f32 lbl_8036A18C, lbl_8036A1C4, lbl_8036A1CC;
+String anim;
+f32 move[3], pos[3];
+String se8, se7;
+u32 copy[3];
+String se6,se5,se4,se3,se2,se1,test,joined,suffix;
+f32 other[3], current[3], dir[3], result[3], origin[3];
+void *scratch7,*scratch6,*scratch5,*scratch4,*scratch3,*scratch2,*scratch1,*scratch0;
+f32 scale,x,y,z,px;
+s32 kind;
+s32 missing;
+anim.cap=0; anim.size=0; anim.data=0; anim.cap=0;
+((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&pos,arg0,0);
+x=pos[0];y=pos[1];z=pos[2];
+if (*(void **)((u8*)arg0+0x11C)) {
+kind=fn_80199310(*(void **)((u8*)arg0+0x11C));
+fn_800DF670(*(void **)((u8*)arg0+0x11C));
+if(kind==3) fn_800E4FE8(*(void **)((u8*)arg0+0x11C),arg0,(char*)gActorXmlStrs+0xEE);
+else fn_800E4FE8(*(void **)((u8*)arg0+0x11C),arg0,(char*)gActorXmlStrs+0xF5);
+String_Init(&suffix,(char*)gActorXmlStrs+0xFC,&scratch0);
+String_JoinCStr(&joined,fn_801992F8(*(void **)((u8*)arg0+0x11C)),&suffix);
+String_Assign((u8*)arg0+0x154,&joined,0,-1);
+String_Destroy(&joined,-1);String_Destroy(&suffix,-1);
 }
-
+String_ConcatCStr(&test,(u8*)arg0+0x154,(char*)gActorXmlStrs+0xFE);
+missing=fn_800DDAA4(*(void **)((u8*)arg0+0xDC),&test)==0;
+String_Destroy(&test,-1);
+if((u8)missing) *(u8*)((u8*)arg0+0x1A4)=1;
+if(!flag) *(u32*)((u8*)arg0+0x14C)=*(u32*)((u8*)gGame+0xE8);
+*(s32*)((u8*)arg0+0x148)=mode;
+String_Init(&se8,(char*)gActorXmlStrs+0x4ED,&scratch7);
+fn_801134EC(&se7,arg0,&se8);
+String_Assign(&anim,&se7,0,-1);
+String_Destroy(&se7,-1);String_Destroy(&se8,-1);
+String_AssignCStr((u8*)arg0+0x16C,(char*)gActorXmlStrs+0x43F,strlen((char*)gActorXmlStrs+0x43F));
+Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
+String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
+move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
+scale=*(f32*)((u8*)arg0+0x150);
+((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
+px=current[0];
+((void (*)(void *,void *,s32))(*(void ***)((u8*)*(void **)((u8*)arg0+0x118)+0x40))[14])(&other,*(void **)((u8*)arg0+0x118),0);
+origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
+dir[0]=-*(f32*)((u8*)arg0+0x60);dir[1]=lbl_8036A184;dir[2]=lbl_8036A184;
+fn_802031E8(&dir,&dir);fn_802031CC(&dir,&dir,scale);fn_80203184(&origin,&dir,&result);
+move[1]=lbl_8036A184;move[0]=result[0];move[2]=lbl_8036A184;
+*(u32*)&copy[0]=*(u32*)&move[0];*(u32*)&copy[1]=*(u32*)&move[1];*(u32*)&copy[2]=*(u32*)&move[2];
+((void (*)(void *,void *,f32,f32))(*(void ***)((u8*)arg0+0x40))[16])(arg0,&copy,*(f32*)((u8*)gGame+0xF0),lbl_8036A184);
+*(s32*)((u8*)arg0+0x140)=0;
+fn_800E4BE0(arg0,(s32)*(f32*)((u8*)gGame+0xF4),*(s32*)((u8*)gGame+0xFC),*(f32*)((u8*)gGame+0xF8));
+switch(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x144)){
+case 3: SeCue_PlayAt((char*)gActorXmlStrs+0x305,100,x,y,z);
+case 2: SeCue_PlayAt((char*)gActorXmlStrs+0x31D,100,x,y,z);
+SeCue_PlayAt((char*)gActorXmlStrs+0x334,100,x,y,z);break;
+case 1: SeCue_PlayAt((char*)gActorXmlStrs+0x334,100,x,y,z);
+default:
+if(force) SeCue_PlayAt((char*)gActorXmlStrs+0x31D,100,x,y,z);
+else {
+void *p=*(void **)((u8*)*(void **)((u8*)arg0+0x118)+0x11C);
+kind=p?fn_80199310(p):0;
+switch(kind){
+case 0:case 2:case 5:case 7:case 10:
+if(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x140)==0) SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);
+else SeCue_PlayAt((char*)gActorXmlStrs+0x361,100,x,y,z);break;
+case 1:case 3:case 6:SeCue_PlayAt((char*)gActorXmlStrs+0x374,100,x,y,z);break;
+case 4:case 8:case 11:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
+default:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
+}
+}
+}
+if(mode==1) {
+String_Init(&se6,(char*)gActorXmlStrs+0x4F6,&scratch6);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se6);
+fn_800DBF38(obj,60,lbl_8036A18C,lbl_8036A18C);
+}
+String_Destroy(&se6,-1);
+String_Init(&se5,(char*)gActorXmlStrs+0x4FD,&scratch5);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se5);
+fn_800DBF38(obj,60,lbl_8036A18C,lbl_8036A18C);
+}
+String_Destroy(&se5,-1);
+fn_80025624(gPadInput,16);
+}
+else if(mode==2) {
+String_Init(&se4,(char*)gActorXmlStrs+0x4F6,&scratch4);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se4);
+fn_800DBF38(obj,60,lbl_8036A1C4,lbl_8036A18C);
+}
+String_Destroy(&se4,-1);
+String_Init(&se3,(char*)gActorXmlStrs+0x4FD,&scratch3);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se3);
+fn_800DBF38(obj,60,lbl_8036A1C4,lbl_8036A18C);
+}
+String_Destroy(&se3,-1);
+fn_80025624(gPadInput,16);
+}
+else if(mode==3) {
+String_Init(&se2,(char*)gActorXmlStrs+0x4F6,&scratch2);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se2);
+fn_800DBF38(obj,60,lbl_8036A1CC,lbl_8036A18C);
+}
+String_Destroy(&se2,-1);
+String_Init(&se1,(char*)gActorXmlStrs+0x4FD,&scratch1);
+{
+void *obj=fn_800E7E4C(*(void **)((u8*)arg0+0xAC),&se1);
+fn_800DBF38(obj,60,lbl_8036A1CC,lbl_8036A18C);
+}
+String_Destroy(&se1,-1);
+fn_80025624(gPadInput,16);
+}
+else fn_80025624(gPadInput,8);
+*(u8*)((u8*)arg0+0x1A4)=1;*(u8*)((u8*)arg0+0x1A0)=0;
+String_Destroy(&anim,-1);
+}
+#pragma pop
 void fn_80115264(void *self,s32 mode,s32 flag) {
 s32 strlen(char *);
 s32 fn_80199310(void *);
@@ -7504,9 +7653,773 @@ def:
 }
 #pragma use_lmw_stmw reset
 
-void fn_8011E4B8(void) {
-    // Placeholder for now. This is a complex function with many branches and data accesses.
-    // Will need to decompile it properly step by step.
+u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
+{
+    extern u16 gUiPanelFlags;
+    extern s32 gUiInputFlags;
+    extern u32 lbl_80367A5C;
+    extern s32 gBattleState[];
+    extern u8 lbl_8032BDE8[];
+    extern u8 lbl_8032FE24[];
+    extern u16 TalkUi_str[];
+
+    void fn_801220B8(void *);
+    void fn_801229F8(void *);
+    void fn_80121D60(void *, void *);
+    void Ui_SetTooltip(void *, s32, s32, void *);
+    u8 fn_80109B24(void *);
+    void Obj_StartTintEase(void *, u8);
+    s32 fn_80010710(u8 *);
+    void fn_80122114(void *, u8);
+    void fn_80122A2C(void *, u8);
+    void TalkUi_SpawnKeyWait2(void *, void *, u8);
+    void fn_801225D4(void *, void *);
+    s32 TalkUi_LayoutSlot(void *, u32);
+    void fn_80120F94(void);
+    void *fn_80049DA4(s32, s32, u32);
+    void fn_8011FB58(void *, s32);
+    void fn_80122238(void *, void *);
+    void fn_8007AD6C(void *);
+    void fn_800790D4(void *, void *);
+    void fn_80079198(void *, void *);
+    void fn_800791F0(void *, void *);
+    void fn_801222A4(void *, void *);
+    void fn_80122170(void *, void *, u16);
+    u8 fn_8011F184(void);
+    void *Sound_FindByName(void *);
+    void Sound_FadeToVol(void *, s32);
+    void Sound_FadeFromZero(void *, s32);
+    void *Sound_Create(void *, void *);
+    void Process_Goto(void *, s32);
+    void Process_DetachChild(void *);
+    s32 Str_Cmp(void *, void *);
+    void *fn_8014D8FC(void *);
+    void fn_8008A290(s32, s32);
+
+    u8 *self;
+    u8 **textRef;
+    u8 *text;
+    u8 *item;
+    u8 *cur;
+    u8 *buffer;
+    u8 *soundName;
+    void *object;
+    void *sound;
+    s32 ch;
+    s32 command;
+    s32 index;
+    s32 selected;
+    s32 count;
+    s32 i;
+    s32 j;
+    s32 value;
+    s32 result;
+    s32 color;
+    s32 speed;
+    u8 oldSlot;
+
+    self = (u8 *)arg0;
+    textRef = (u8 **)arg1;
+
+    text = *textRef;
+    ch = (s8)*text;
+
+    if (ch == 0) {
+        gUiPanelFlags |= 0x20;
+        return 0;
+    }
+
+    if (ch == 0xA) {
+        fn_801220B8(lbl_8032BDE8);
+        fn_801229F8(*(void **)(self + 0x44));
+
+        text = *textRef;
+        *textRef = text + 1;
+
+        return 1;
+    }
+
+    if (ch == '#') {
+        selected = (s8)self[0x5E];
+
+        if (selected < 0) {
+            index = -1;
+        } else if (
+            *(void **)(self + 0x48) != 0 &&
+            (s8)(*(u8 **)(self + 0x48))[0x43] ==
+                selected
+        ) {
+            index = 0;
+        } else if (
+            *(void **)(self + 0x4C) != 0 &&
+            (s8)(*(u8 **)(self + 0x4C))[0x43] ==
+                selected
+        ) {
+            index = 1;
+        } else if (
+            *(void **)(self + 0x50) != 0 &&
+            (s8)(*(u8 **)(self + 0x50))[0x43] ==
+                selected
+        ) {
+            index = 2;
+        } else if (
+            *(void **)(self + 0x54) != 0 &&
+            (s8)(*(u8 **)(self + 0x54))[0x43] ==
+                selected
+        ) {
+            index = 3;
+        } else {
+            index = -1;
+        }
+
+        if ((s8)index < 0) {
+            item = 0;
+        } else {
+            item = *(u8 **)(self + 0x48 + index * 4);
+        }
+
+        if (item != 0) {
+            fn_80121D60(
+                lbl_8032BDE8,
+                **(void ***)(item + 0x34)
+            );
+
+            if (self[0x67] == 0) {
+                self[0x67] = 1;
+
+                Ui_SetTooltip(
+                    **(void ***)(item + 0x34),
+                    (s32)*(f32 *)(item + 0x38),
+                    (s32)*(f32 *)(item + 0x3C),
+                    self
+                );
+
+                if ((s8)self[0x65] !=
+                    (s8)self[0x5E]) {
+
+                    self[0x65] = self[0x5E];
+
+                    cur = self;
+                    i = 0;
+
+                    do {
+                        item = *(u8 **)(cur + 0x48);
+
+                        if (item != 0) {
+                            if ((s8)item[0x43] ==
+                                (s8)self[0x5E]) {
+
+                                if (
+                                    *(void **)(self + 0x58) != 0 &&
+                                    fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    ) != 0 &&
+                                    fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    ) != 0xFF
+                                ) {
+                                    color = fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    );
+                                } else {
+                                    color = 0xFF;
+                                }
+
+                                Obj_StartTintEase(
+                                    *(void **)(cur + 0x48),
+                                    (u8)color
+                                );
+                            } else {
+                                if (
+                                    *(void **)(self + 0x58) != 0 &&
+                                    fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    ) != 0 &&
+                                    fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    ) != 0xFF
+                                ) {
+                                    color = fn_80109B24(
+                                        *(void **)(self + 0x58)
+                                    );
+                                } else {
+                                    color = 0xFF;
+                                }
+
+                                Obj_StartTintEase(
+                                    *(void **)(cur + 0x48),
+                                    (u8)(color - 0x4D)
+                                );
+                            }
+                        }
+
+                        i++;
+                        cur += 4;
+                    } while (i < 4);
+                }
+            }
+        }
+
+        count = fn_80010710(*textRef);
+
+        i = 0;
+
+        while (i < count) {
+            text = *textRef;
+
+            fn_80122114(
+                lbl_8032BDE8,
+                *text
+            );
+
+            text = *textRef;
+            *textRef = text + 1;
+
+            fn_80122A2C(
+                *(void **)(self + 0x44),
+                *text
+            );
+
+            i++;
+        }
+
+        return 1;
+    }
+
+    if (ch != '$') {
+        return 3;
+    }
+
+    text = *textRef;
+    *textRef = text + 1;
+
+    text = *textRef;
+    *textRef = text + 1;
+
+    command = (s8)*text;
+
+    switch (command) {
+    case '<':
+        self[0x60] = 0;
+
+        text = *textRef;
+
+        TalkUi_SpawnKeyWait2(
+            *(void **)(self + 0x44),
+            self,
+            (s8)text[1] == 'P'
+        );
+
+        return 2;
+
+    case '=':
+        fn_801220B8(lbl_8032BDE8);
+
+        object = *(void **)(self + 0x44);
+
+        if (object != 0) {
+            fn_801225D4(object, self);
+        }
+
+        return 2;
+
+    case '>':
+        text = *textRef;
+        *textRef = text + 1;
+
+        index = (u8)(*text - '0');
+
+        *textRef -= 3;
+
+        TalkUi_LayoutSlot(self, index);
+
+        text = *textRef;
+        *textRef = text + 3;
+
+        oldSlot = self[0x5E];
+
+        if ((s8)oldSlot != index) {
+            self[0x65] = oldSlot;
+            self[0x5E] = index;
+            fn_80120F94();
+        }
+
+        buffer = lbl_8032FE24;
+
+        while (**textRef != '|') {
+            text = *textRef;
+            *textRef = text + 1;
+
+            *buffer++ = *text;
+        }
+
+        *buffer = 0;
+
+        text = *textRef;
+        *textRef = text + 1;
+
+        object = fn_80049DA4(
+            (s32)((u8 *)TalkUi_str + 0x6F),
+            (s32)lbl_8032FE24,
+            0
+        );
+
+        fn_8011FB58(self, (s32)object);
+
+        return 2;
+
+    case '?':
+        text = *textRef;
+        *textRef = text + 1;
+
+        index = (u8)(*text - '0');
+
+        *textRef -= 3;
+
+        TalkUi_LayoutSlot(self, index);
+
+        text = *textRef;
+        *textRef = text + 3;
+
+        oldSlot = self[0x5E];
+
+        if ((s8)oldSlot != index) {
+            self[0x65] = oldSlot;
+            self[0x5E] = index;
+            fn_80120F94();
+        }
+
+        if (!(gUiInputFlags & 3)) {
+            fn_80122238(
+                *(void **)(self + 0x44),
+                self
+            );
+        }
+
+        selected = (s8)self[0x5E];
+        index = -1;
+
+        if (selected >= 0) {
+            for (i = 0; i < 4; i++) {
+                item = *(u8 **)(self + 0x48 + i * 4);
+
+                if (item != 0 &&
+                    (s8)item[0x43] == selected) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        if (gUiInputFlags & 3) {
+            item = *(u8 **)(self + 0x48 + index * 4);
+            fn_8007AD6C(item);
+        } else {
+            item = *(u8 **)(self + 0x48 + index * 4);
+            fn_800790D4(item, self);
+        }
+
+        *(void **)(self + 0x48 + index * 4) = 0;
+        self[0x5E] = 0xFF;
+
+        return 2;
+
+    case 'A':
+        text = *textRef;
+        *textRef = text + 1;
+
+        index = (u8)(*text - '0');
+
+        if ((s8)self[0x5E] != index) {
+            self[0x65] = self[0x5E];
+            self[0x5E] = index;
+            fn_80120F94();
+        }
+
+        item = *(u8 **)(self + 0x34 + index * 4);
+
+        if (item != 0 && item[0x68] != 0) {
+            *textRef -= 3;
+
+            TalkUi_LayoutSlot(self, index);
+
+            *textRef += 3;
+        }
+
+        return 1;
+
+    case 'B':
+        text = *textRef;
+
+        if ((s8)*text == 'D') {
+            *textRef = text + 1;
+
+            if (!(gUiInputFlags & 3)) {
+                fn_80122238(
+                    *(void **)(self + 0x44),
+                    self
+                );
+            }
+
+            fn_80120F94();
+
+            return 2;
+        }
+
+        if ((s8)*text == '-') {
+            *textRef = text + 1;
+
+            if (!(gUiInputFlags & 3)) {
+                if (lbl_80367A5C != 0) {
+                    sound = Sound_FindByName(
+                        (void *)lbl_80367A5C
+                    );
+
+                    Sound_FadeToVol(sound, 8);
+                }
+
+                cur = self;
+                i = 0;
+
+                do {
+                    object = *(void **)(cur + 0x34);
+
+                    if (object != 0) {
+                        fn_80122238(object, self);
+                    }
+
+                    i++;
+                    cur += 4;
+                } while (i < 4);
+
+                cur = self;
+                i = 0;
+
+                do {
+                    object = *(void **)(cur + 0x48);
+
+                    if (object != 0) {
+                        fn_80079198(object, self);
+                    }
+
+                    i++;
+                    cur += 4;
+                } while (i < 4);
+            }
+
+            return 2;
+        }
+
+        if ((s8)*text == '+') {
+            *textRef = text + 1;
+
+            if (!(gUiInputFlags & 3)) {
+                if (lbl_80367A5C != 0) {
+                    sound = Sound_FindByName(
+                        (void *)lbl_80367A5C
+                    );
+
+                    Sound_FadeFromZero(sound, 8);
+                }
+
+                cur = self;
+                i = 0;
+
+                do {
+                    object = *(void **)(cur + 0x34);
+
+                    if (object != 0) {
+                        fn_801222A4(object, self);
+                    }
+
+                    i++;
+                    cur += 4;
+                } while (i < 4);
+
+                cur = self;
+                i = 0;
+
+                do {
+                    object = *(void **)(cur + 0x48);
+
+                    if (object != 0) {
+                        fn_800791F0(object, self);
+                    }
+
+                    i++;
+                    cur += 4;
+                } while (i < 4);
+            }
+
+            return 2;
+        }
+
+        return 3;
+
+    case 'C':
+        text = *textRef;
+        *textRef = text + 1;
+
+        index = (u8)(*text - '0');
+
+        result = TalkUi_LayoutSlot(self, index);
+
+        return result != 0 ? 2 : 1;
+
+    case 'D':
+        self[0x60] = 0;
+
+        text = *textRef;
+        *textRef = text + 1;
+
+        index = (s8)*text - '0';
+
+        fn_80122170(
+            *(void **)(self + 0x44),
+            self,
+            1 << index
+        );
+
+        return 2 + ((gUiPanelFlags & 0x200) != 0);
+
+    case 'E':
+        return 2;
+
+    case 'F':
+        return fn_8011F184();
+
+    case 'G':
+        buffer = lbl_8032FE24;
+
+        while (**textRef != '|') {
+            text = *textRef;
+            *textRef = text + 1;
+
+            *buffer++ = *text;
+        }
+
+        *buffer = 0;
+
+        text = *textRef;
+        *textRef = text + 1;
+
+        sound = fn_80049DA4(
+            (s32)((u8 *)TalkUi_str + 0x74),
+            (s32)lbl_8032FE24,
+            0
+        );
+
+        Sound_Create(sound, self);
+
+        if (self[0x63] != 0) {
+            if (!(gUiInputFlags & 3)) {
+                Process_Goto(self, 0);
+            }
+
+            return 2;
+        }
+
+        return 1;
+
+    case 'H':
+        fn_8008A290(
+            self[0x64],
+            *(s16 *)(self + 0x68)
+        );
+
+        return 1;
+
+    case 'I':
+        fn_8008A290(
+            3,
+            *(s16 *)(self + 0x68)
+        );
+
+        return 1;
+
+    case 'J':
+        buffer = lbl_8032FE24;
+
+        while (**textRef != '|') {
+            text = *textRef;
+            *textRef = text + 1;
+
+            *buffer++ = *text;
+        }
+
+        *buffer = 0;
+
+        text = *textRef;
+        *textRef = text + 1;
+
+        soundName = lbl_8032FE24;
+
+        if (Str_Cmp(
+                soundName,
+                (u8 *)TalkUi_str + 0x79
+            ) == 0) {
+
+            object = fn_8014D8FC(gBattleState);
+
+            if (object != 0) {
+                soundName =
+                    *(u8 **)((u8 *)object + 0x50) + 4;
+            } else {
+                soundName = (u8 *)TalkUi_str + 0x82;
+            }
+        }
+
+        if (!(gUiInputFlags & 3)) {
+            sound = fn_80049DA4(
+                (s32)((u8 *)TalkUi_str + 0x74),
+                (s32)soundName,
+                0
+            );
+
+            *(void **)(self + 0x58) =
+                Sound_Create(sound, self);
+        }
+
+        return 1;
+
+    case 'K':
+        if (*(void **)(self + 0x18) == 0) {
+            text = *textRef;
+            *textRef = text + 1;
+            return 1;
+        }
+
+        text = *textRef;
+
+        if ((s8)*text == 'b') {
+            gUiPanelFlags |= 0x100;
+
+            *textRef = text + 1;
+
+            Process_DetachChild(self);
+
+            return 1;
+        }
+
+        if ((s8)*text == 'B') {
+            self[0x60] = 0;
+
+            *textRef = text - 2;
+
+            gUiPanelFlags |= 0x30;
+
+            return 2;
+        }
+
+        return 3;
+
+    case 'L':
+        text = *textRef;
+
+        if (*text == 'C') {
+            *textRef = text + 1;
+            gUiPanelFlags |= 8;
+            return 1;
+        }
+
+        return 3;
+
+    case 'M':
+        text = *textRef;
+
+        if ((s8)*text == 'D') {
+            *textRef = text + 1;
+            gUiPanelFlags |= 8;
+            return 1;
+        }
+
+        if ((s8)*text == 'E') {
+            *textRef = text + 1;
+            gUiPanelFlags &= ~8;
+            return 1;
+        }
+
+        return 3;
+
+    case 'N':
+        text = *textRef;
+
+        if (*text == 'D') {
+            *textRef = text + 1;
+            gUiPanelFlags ^= 0x40;
+            return 1;
+        }
+
+        return 3;
+
+    case 'O':
+        fn_801220B8(lbl_8032BDE8);
+        fn_801229F8(*(void **)(self + 0x44));
+
+        return 1;
+
+    case 'P':
+        text = *textRef;
+
+        if ((s8)*text == 'C') {
+            self[0x62] = 0;
+            *textRef = text + 1;
+        } else if ((s8)*text == 'D') {
+            self[0x62] = 1;
+            *textRef = text + 1;
+        }
+
+        return 1;
+
+    case 'Q':
+        text = *textRef;
+        *textRef = text + 1;
+
+        self[0x66] = (u8)(*text - '0');
+
+        return 1;
+
+    case 'R':
+        text = *textRef;
+        *textRef = text + 1;
+        speed = ((s8)*text - '0') * 1000;
+        *(s16 *)(self + 0x68) = speed;
+
+        text = *textRef;
+        *textRef = text + 1;
+        speed = *(s16 *)(self + 0x68);
+        speed += ((s8)*text - '0') * 100;
+        *(s16 *)(self + 0x68) = speed;
+
+        text = *textRef;
+        *textRef = text + 1;
+        speed = *(s16 *)(self + 0x68);
+        speed += ((s8)*text - '0') * 10;
+        *(s16 *)(self + 0x68) = speed;
+
+        text = *textRef;
+        *textRef = text + 1;
+        speed = *(s16 *)(self + 0x68);
+        speed += (s8)*text - '0';
+        *(s16 *)(self + 0x68) = speed;
+
+        if (*(s16 *)(self + 0x68) == 9999) {
+            *(s16 *)(self + 0x68) = 0x10B;
+        }
+
+        return 1;
+
+    case 'S':
+        fn_80121D60(
+            lbl_8032BDE8,
+            (u8 *)TalkUi_str + 0x8E
+        );
+
+        return 1;
+
+    default:
+        return 3;
+    }
 }
 
 s32 fn_8011F184(void *self,u8 **text) {
@@ -8286,36 +9199,21 @@ s32 fn_801208BC(struct Unit* unit) {
     u8* temp_r5;
     u8* r6_ptr = (u8*)unit;
     
-    // Check if we have a valid unit pointer  
     if (r6_ptr == NULL)
         return 0;
-        
-    // Check if this is an invalid unit
     if (M2C_FIELD(unit, u16*, 0x0) == 0)
         return 0;
-
     temp_r5 = r6_ptr + 0x64;
-    
-    // This part is complex - looks like a jump table or conditional logic
-    result = *(s32*)(r6_ptr + 0x1A4);  // Direct access to what seems like an enum/flag field
-    if (result < 0 || result > 9) {
-        // Invalid state, return default value 
+    result = *(s32*)(r6_ptr + 0x1A4);
+    if (result < 0 || result > 9)
         return 0;
-    }
-    
-    // Call function that likely depends on unit state
-    result = fn_80010710(&temp_r5[0]);  
-    
-    // More processing based on the state and unit properties
+    result = fn_80010710(&temp_r5[0]);
     if (result != 0) {
-        // Continue with some processing logic  
         s32 temp = *(s32*)(r6_ptr + 0xB0);
         if (temp > 0) {
             return temp;
         }
     }
-    
-    // Return the result from this processing
     return result;
 }
 
