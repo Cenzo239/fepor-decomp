@@ -121,6 +121,7 @@ if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
 }}
 gUiPanelFlags=a; p[1]=b;
 }
+#pragma scheduling on
 #pragma peephole on
 #pragma global_optimizer on
 
