@@ -3193,6 +3193,12 @@ static inline void ActorUpdate_CopyVector(Vec3f *dst, const Vec3f *src) {
  u32 *out=(u32 *)dst;
  out[0]=in[0];out[1]=in[1];out[2]=in[2];
 }
+static inline void ActorUpdate_ReadPosition(Vec3f *out, void *actor) {
+ typedef void (*Callback)(Vec3f *,void *,s32);
+ Callback *vtable=*(Callback **)((u8 *)actor+0x40);
+ Callback callback=vtable[14];
+ callback(out,actor,0);
+}
 struct ActorUpdateSceneInterface {
  u8 pad[0x10];
  virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;
@@ -3245,10 +3251,11 @@ extern "C" void fn_80116FE8(void *self) {
  if(!Actor_IsBusy(self) && M2C_FIELD(self,u8 *,0x1B5)) {
    fn_800DF664(self);
    if(M2C_FIELD(self,void **,0x11C)) fn_800DF664(M2C_FIELD(self,void **,0x11C));
+   ActorUpdateInterface *actor=(ActorUpdateInterface *)self;
    f32 zero=lbl_8036A184;
    f32 scale=fActorDefaultRadius;
    M2C_FIELD(self,u8 *,0x1B5)=0;
-   ((ActorUpdateInterface *)self)->SetScale(zero,scale,zero);
+   actor->SetScale(zero,scale,zero);
  }
  if(!Actor_IsBusy(self) && (length=strlen((char *)gActorXmlStrs+0x1C), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,length))) {
    if(!(length=strlen((char *)gActorXmlStrs+0x43F), String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,length))) {
@@ -3314,7 +3321,7 @@ extern "C" void fn_80116FE8(void *self) {
        initialized=1;
        effectNode=fn_80151D50(effectNode,M2C_FIELD(self,void **,0xAC),&effect,&name,&copyPos,&copyLook,0);
      }
-     ((AddFn)M2C_FIELD(M2C_FIELD(M2C_FIELD(self,void **,0xAC),void **,0x10),void **,0x1C))(M2C_FIELD(self,void **,0xAC),effectNode);
+     ((ActorUpdateSceneInterface *)M2C_FIELD(self,void **,0xAC))->Add(effectNode);
      if(initialized) String_Destroy(&effect,-1);
    }
    M2C_FIELD(self,s32 *,0x14C)=-1;
