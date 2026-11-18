@@ -2112,22 +2112,33 @@ s32 size=str->size;
 u8 c;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
-while(pos<=size && count<256 && (s8)(c=*p)!=' ' && (s8)c!='\t' && (s8)c!=',') { out[count]=c;pos++;p++;count++; }
+{ char *dest=out;
+while(pos<=size && count<256 && (s8)(c=*p)!=' ' && (s8)c!='\t' && (s8)c!=',') { *dest=c;pos++;p++;count++;dest++; }
+}
 out[count]=0;
 if(count==0)pos=0;
 return pos;
 }
 static inline u8 TokenIsComment(char c) { return c=='#'; }
 static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
-#pragma global_optimizer on
+#pragma cplusplus on
+#pragma global_optimizer off
 #pragma peephole on
-s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
+extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
 void strcpy(void *,void *);
 char token[257];
+s32 pos;
 s32 count=0;
-s32 pos=ParseToken(str,token,0);
+pos=ParseToken(str,token,0);
 if(pos==0)return 0;
-if(TokenIsComment(token[0]) || TokenIsBrace(token[0]))return 0;
+u8 comment=token[0]=='#';
+if(comment==0) {
+u8 brace;
+if(token[0]=='{' || token[0]=='}')brace=1;else brace=0;
+if(!brace) goto valid;
+}
+return 0;
+valid:
 strcpy(name,token);
 while((pos=ParseToken(str,token,pos))!=0 && (u8)token[0]!='#'){
 strcpy(values,token);values+=32;count++;
@@ -2137,6 +2148,7 @@ return 1;
 }
 #pragma global_optimizer reset
 #pragma peephole reset
+#pragma cplusplus reset
 s32 fn_800C7D3C(void *self,void *list,s32 index,void *out) {
 extern char gStringErrorMsgs[];
 void fn_800C7EF8(void*); s32 fn_800C7F10(void*,void*,s32); void fn_800C8328(void*,void*,s32,String*);
@@ -26138,15 +26150,13 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            dx = x;
-            dy = y;
             cy = (s8)gUiContext[0xE];
             cx = (s8)gUiContext[0xD];
-            dx -= cy;
+            dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
             }
-            dy -= cx;
+            dy = y - cx;
             if (dy < 0) {
                 dy = -dy;
             }
