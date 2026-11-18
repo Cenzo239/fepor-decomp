@@ -10,7 +10,6 @@ typedef struct {
 } Menu888Entry;
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
-extern f64 lbl_80369688;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
@@ -1988,12 +1987,11 @@ void fn_80089970(void) {
 }
 
 void fn_80089980(s32 arg0) {
-    extern f64 lbl_80369688;
-    extern f32 lbl_803696C8;
     extern void *lbl_803674EC;
-    f32 value=(f32)arg0;
-    f32 divisor=lbl_803696C8;
-    u8 *ptr=(u8*)lbl_803674EC;
+    extern f32 lbl_803696C8;
+    u8 *ptr = (u8*)lbl_803674EC;
+    f32 divisor = lbl_803696C8;
+    f32 value = (f32)arg0;
     *(u16*)(ptr+0x32)=3;
     *(u16*)(ptr+0x34)=0;
     *(u16*)(ptr+0x36)=(s32)(value/divisor);
