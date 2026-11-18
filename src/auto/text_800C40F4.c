@@ -680,6 +680,9 @@ if(end) heap=(u8 *)(end-size); else heap=(u8 *)(lbl_80367864-size);
 return heap;
 }
 static inline u32 Heap_AlignSize(u32 n) { u32 aligned=(n+31)&~31U; return aligned; }
+static inline s32 Heap_FindFrom(u32 *table, s32 i) {
+for(;i<16;table++,i++) { if(*table==0)return i; }return -1;
+}
 static inline void Heap_FindEmpty(u32 *table, s32 *result) {
  for(*result=0;*result<16;(*result)++,table++) { if(*table==0) return; } *result=-1;
 }
@@ -2105,26 +2108,45 @@ static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 #pragma global_optimizer off
 #pragma peephole on
 extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
-void strcpy(void *,void *);
-char token[257];
-s32 count=0;
-char *cursor=values;
-s32 pos=ParseToken(str,token,0);
-if(pos==0)return 0;
-u8 comment=token[0]=='#';
-if(comment==0) {
-u8 brace;
-if(token[0]=='{' || token[0]=='}')brace=1;else brace=0;
-if(!brace) goto valid;
-}
-return 0;
+    void strcpy(void *, void *);
+    char token[257];
+    s32 count = 0;
+    char *cursor = values;
+    s32 pos = ParseToken(str, token, 0);
+    char *data;
+    s32 size;
+
+    if (pos == 0) {
+        return 0;
+    }
+    {
+        u8 comment = token[0] == '#';
+        if (comment == 0) {
+            u8 brace;
+            if (token[0] == '{' || token[0] == '}') {
+                brace = 1;
+            } else {
+                brace = 0;
+            }
+            if (!brace) {
+                goto valid;
+            }
+        }
+        return 0;
+    }
 valid:
-strcpy(name,token);
-while((pos=ParseToken(str,token,pos))!=0 && (u8)token[0]!='#'){
-strcpy(cursor,token);cursor+=32;count++;
-}
-if(total)*total=count;
-return 1;
+    strcpy(name, token);
+    data = str->data;
+    size = str->size;
+    while ((pos = ParseTokenBuf(data, size, token, pos)) != 0 && (u8)token[0] != '#') {
+        strcpy(cursor, token);
+        cursor += 32;
+        count++;
+    }
+    if (total) {
+        *total = count;
+    }
+    return 1;
 }
 #pragma global_optimizer reset
 #pragma peephole reset
