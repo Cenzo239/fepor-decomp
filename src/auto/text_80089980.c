@@ -100,11 +100,9 @@ f32 quotient=(f32)arg0/lbl_803696C8;
 void fn_800899D4(s32 arg0) {
 extern const f32 lbl_803696C8;
 extern void *lbl_803674EC;
-f32 value=(f32)arg0;
-f32 divisor=lbl_803696C8;
-u8 *ptr=(u8*)lbl_803674EC;
-*(u16*)(ptr+0x32)=1;
-*(u16*)(ptr+0x34)=0;
-*(u16*)(ptr+0x36)=(s32)(value/divisor);
+u8 *ptr=lbl_803674EC;
+*(u16 *)(ptr+0x32)=1;
+*(u16 *)(ptr+0x34)=0;
+*(u16 *)(ptr+0x36)=(s32)((f32)arg0/lbl_803696C8);
 }
 #pragma peephole on
