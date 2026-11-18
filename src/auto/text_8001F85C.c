@@ -1304,46 +1304,74 @@ void Map_RefreshUnitMap(void *arg0)
 }
 
 extern u16 jumptable_80284514[12];
+
+static u32 Map_SplatByte(u32 arg0)
+{
+    u32 t;
+    u32 value;
+    u32 lo;
+    u32 hi;
+
+    t = (arg0 & 0xFF) << 8;
+    value = (arg0 & 0xFF) << 16;
+    value = value + t;
+    lo = arg0 & 0xFF;
+    hi = arg0 << 24;
+    lo = value + lo;
+    return hi + lo;
+}
+
 void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
 {
     void fn_800062B0(u32 *, u32, u32);
     u32 fn_80022FB0(u32);
 
     u8 *map = (u8 *)arg0;
+    u32 t;
     u32 value;
     u32 *buffer;
 
     switch (arg1) {
     case 0:
-        value = ((arg2 & 0xFF) << 16) + ((arg2 & 0xFF) << 8);
+        t = (arg2 & 0xFF) << 8;
+        value = (arg2 & 0xFF) << 16;
+        value = value + t;
         value = value + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0xD), value, 0x1000);
         break;
     case 1:
-        value = ((arg2 & 0xFF) << 16) + ((arg2 & 0xFF) << 8);
+        t = (arg2 & 0xFF) << 8;
+        value = (arg2 & 0xFF) << 16;
+        value = value + t;
         value = value + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x100D), value, 0x1000);
         break;
     case 2:
-        value = ((arg2 & 0xFF) << 16) + ((arg2 & 0xFF) << 8);
+        t = (arg2 & 0xFF) << 8;
+        value = (arg2 & 0xFF) << 16;
+        value = value + t;
         value = value + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x200D), value, 0x1000);
         break;
     case 3:
-        value = ((arg2 & 0xFF) << 16) + ((arg2 & 0xFF) << 8);
+        t = (arg2 & 0xFF) << 8;
+        value = (arg2 & 0xFF) << 16;
+        value = value + t;
         value = value + (arg2 & 0xFF);
         value = (arg2 << 24) + value;
         fn_800062B0((u32 *)(map + 0x300D), value, 0x1000);
         break;
     case 4:
-        value = (arg2 & 0xFFFF) + (arg2 << 16);
+        value = arg2 & 0xFFFF;
+        value += arg2 << 16;
         fn_800062B0((u32 *)(map + 0x608E), value, 0x2080);
         break;
     case 5:
-        value = (arg2 & 0xFFFF) + (arg2 << 16);
+        value = arg2 & 0xFFFF;
+        value += arg2 << 16;
         fn_800062B0((u32 *)(map + 0x810E), value, 0x2080);
         break;
     case 10:
@@ -1356,21 +1384,25 @@ void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
             value = fn_80022FB0(arg2);
             fn_800062B0((u32 *)(map + 0x810E), value, 0x2080);
         } else {
-            value = (arg2 & 0xFFFF) + (arg2 << 16);
+            value = arg2 & 0xFFFF;
+            value += arg2 << 16;
             fn_800062B0(buffer, value, 0x2000);
         }
         break;
     case 6:
     case 7:
-        value = (arg2 & 0xFFFF) + (arg2 << 16);
+        value = arg2 & 0xFFFF;
+        value += arg2 << 16;
         fn_800062B0((u32 *)(map + 0xA18E), value, 0x2000);
         break;
     case 8:
-        value = (arg2 & 0xFFFF) + (arg2 << 16);
+        value = arg2 & 0xFFFF;
+        value += arg2 << 16;
         fn_800062B0((u32 *)(map + 0xC18E), value, 0x2000);
         break;
     case 9:
-        value = (arg2 & 0xFFFF) + (arg2 << 16);
+        value = arg2 & 0xFFFF;
+        value += arg2 << 16;
         fn_800062B0((u32 *)(map + 0x1218E), value, 0x2000);
         break;
     }
