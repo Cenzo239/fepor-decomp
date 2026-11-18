@@ -19783,7 +19783,7 @@ extern s32 gItemFlagsDummy;
 extern s32 gItemFlagsDummyHi;
 #include <common.h>
 #include "global.h"
-#include "unit.h"
+
 
 extern u16* gSomeBssVar; // gUiContext
 #include "common.h"
