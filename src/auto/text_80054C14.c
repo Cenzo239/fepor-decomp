@@ -261,45 +261,121 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
+static inline void *Camera_SelectTarget(u8 *state, void *first, void *second) {
+    if ((*(u32 *)(state+8)&0x20000000) && first) return first;
+    return second;
+}
 #pragma use_lmw_stmw on
-void fn_80054C14(void* arg0)
-{
-    void* r27;
-    int r3, r28;
-    int r0;
-    
-    r27 = (void*)arg0;
-    r3 = *(u32*)((char*)arg0 + 0x30);
-    r28 = *(u32*)((char*)r3 + 0x5c);
-    r3 = r28;
-    Pad_IsActive(r3);
-    r0 = (r3 & 0xFFFFFF00) >> 24;
-    if (r0 == 0)
-        return;
-
-    /* Loading data from lbl_8026ABF0 */
-    r3 = *(u32*)((char*)r28 + 0x5c);
-    
-    // Direct copy of the memory
-    *(u32*)((char*)r27 + 0x50) = *(u32*)((char*)r3 + 0x0);
-    *(u32*)((char*)r27 + 0x54) = *(u32*)((char*)r3 + 0x4);
-    *(u32*)((char*)r27 + 0x58) = *(u32*)((char*)r3 + 0x8);
-    *(u32*)((char*)r27 + 0x5C) = *(u32*)((char*)r3 + 0xC);
-    *(u32*)((char*)r27 + 0x60) = *(u32*)((char*)r3 + 0x10);
-    *(u32*)((char*)r27 + 0x64) = *(u32*)((char*)r3 + 0x14);
-    *(u32*)((char*)r27 + 0x68) = *(u32*)((char*)r3 + 0x18);
-
-    fn_8005F92C(r3);
-
-    r0 = (r3 & 0xFFFF0000) >> 16;
-    r0 -= 0x9;
-    if ((r0 > 0x1E))
-        return;
-
-    // Jump table handling
-    r3 = *(u32*)((char*)jumptable_80285A50 + (r0 << 2));
-    
-    __builtin_unreachable();
+void fn_80054C14(void *arg0) {
+    u8 Pad_IsActive(void *);
+    u8 Pad_IsButton(void *, s32);
+    u16 fn_8005F92C(void *, void *);
+    s32 fn_8005F84C(void *, s32, s32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
+    void *Process_Create(void *, void *);
+    void *Camera_GetActive(void);
+    void fn_80019384(void *, s32);
+    void fn_80025624(void *, s32);
+    void fn_8018CFA4(s32, s32, s32, s32, void *);
+    void fn_8018CF08(void);
+    void fn_8018CF48(s32);
+    extern void *gPadInput;
+    u8 *unit2, *unit1;
+    CameraVec *b, *a;
+    void *pad;
+    u8 *proc = arg0;
+    CameraButtons buttons;
+    CameraVec target, pos2, pos1;
+    pad = *(void **)(*(u8 **)(proc + 0x30) + 0x5c);
+    if (!Pad_IsActive(pad)) return;
+    buttons = lbl_8026ABF0;
+    switch (fn_8005F92C(pad, &buttons)) {
+    case 10: fn_8018CFA4(15,6,2,1,proc); break;
+    case 9: fn_8018CFA4(30,6,2,1,proc); break;
+    case 11: fn_8018CFA4(60,6,2,1,proc); break;
+    case 31: fn_8018CFA4(15,6,0,1,proc); break;
+    case 30: fn_8018CFA4(30,6,0,1,proc); break;
+    case 32: fn_8018CFA4(60,6,0,1,proc); break;
+    case 33: fn_8018CF08(); break;
+    case 34: fn_8018CF48(-15); break;
+    case 35: fn_8018CF48(-7); break;
+    case 36: fn_8018CF48(-30); break;
+    case 37: fn_8018CF48(15); break;
+    case 38: fn_8018CF48(7); break;
+    case 39: fn_8018CF48(30); break;
+    }
+    if (Pad_IsButton(pad,17)) {
+        *(u32 *)(*(u8 **)(proc+0x30)+8) ^= 0x20000000;
+        a = NULL; b = a;
+        unit1 = *(u8 **)(*(u8 **)(proc+0x30)+0x34);
+        unit2 = *(u8 **)(*(u8 **)(proc+0x30)+0x30);
+        if (unit1) {
+            pos1.x=lbl_80369098+(s8)unit1[0x19e];
+            pos1.y=lbl_80369098+(s8)unit1[0x19f];
+            pos1.z=Map_SampleHeightRaw(gBattleMap,(s8)unit1[0x19e],(s8)unit1[0x19f]);
+            a=&pos1;
+        }
+        if (unit2) {
+            pos2.x=lbl_80369098+(s8)unit2[0x19e];
+            pos2.y=lbl_80369098+(s8)unit2[0x19f];
+            pos2.z=Map_SampleHeightRaw(gBattleMap,(s8)unit2[0x19e],(s8)unit2[0x19f]);
+            b=&pos2;
+        }
+        if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
+        if(a) {
+            f32 z=a->z, y=a->y, x=a->x;
+            z=lbl_8036909C+z;
+            *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
+            *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
+            *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
+        }
+    }
+    if (Pad_IsButton(pad,18)) {
+        u8 *state=*(u8 **)(proc+0x30);
+        if (*(void **)(state+0x34) && *(void **)(state+0x30)) {
+            u8 *unit;
+            void *control;
+            *(u32 *)(state+8)^=0x20000000;
+            state=*(u8 **)(proc+0x30);
+            if ((*(u32 *)(state+8)&0x20000000) && (unit=*(u8 **)(state+0x34))) { }
+            else unit=*(u8 **)(state+0x30);
+            target.x=lbl_80369098+(s8)unit[0x19e];
+            target.y=lbl_80369098+(s8)unit[0x19f];
+            target.z=lbl_8036909C+Map_SampleHeightRaw(gBattleMap,(s8)unit[0x19e],(s8)unit[0x19f]);
+            control=*(void **)(*(u8 **)(proc+0x30)+0x5c);
+            if(control) {
+                f32 duration=fn_8005F84C(control,(s32)*(f32 *)((u8 *)control+0x58),19);
+                if(!(duration<lbl_80369084)) {
+                    CameraVec to, from, start;
+                    u8 *child;
+                    state=*(u8 **)(proc+0x30);
+                    duration-=*(f32 *)((u8 *)control+0x58);
+                    start.x=*(f32 *)(state+0xc);
+                    start.y=*(f32 *)(state+0x10);
+                    start.z=*(f32 *)(state+0x14);
+                    to=target;
+                    from=start;
+                    if(!(duration<lbl_80369084)) {
+                        child=Process_Create(lbl_802859E0,proc);
+                        *(f32 *)(child+0x34)=from.x;
+                        *(f32 *)(child+0x38)=from.y;
+                        *(f32 *)(child+0x3c)=from.z;
+                        *(f32 *)(child+0x40)=to.x;
+                        *(f32 *)(child+0x44)=to.y;
+                        *(f32 *)(child+0x48)=to.z;
+                        *(void **)(child+0x30)=proc;
+                        *(f32 *)(child+0x4c)=duration;
+                    }
+                }
+            }
+        }
+    }
+    if(Pad_IsButton(pad,15)) fn_80019384(Camera_GetActive(),0);
+    if(Pad_IsButton(pad,16)) fn_80019384(Camera_GetActive(),1);
+    if(Pad_IsButton(pad,47)) fn_80025624(gPadInput,8);
+    if(Pad_IsButton(pad,48)) fn_80025624(gPadInput,16);
 }
 
 void *fn_80055204(void *arg0, s32 arg1) {
