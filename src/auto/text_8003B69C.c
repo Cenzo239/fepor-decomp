@@ -2165,7 +2165,9 @@ void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
 }
 
 void Unit_Rescue(void *arg0, void *arg1) {
-    Unit_SetMapPos(arg1, *(u8*)((u8*)arg0 + 0x19F), *(u8*)((u8*)arg0 + 0x19E));
+    u8 y = *(volatile u8 *)((u8 *)arg0 + 0x19F);
+    u8 x = *(u8 *)((u8 *)arg0 + 0x19E);
+    Unit_SetMapPos(arg1, x, y);
     *(s32*)((u8*)arg0 + 0x1A0) |= 2;
     *(s32*)((u8*)arg1 + 0x1A0) |= 4;
     *(void**)((u8*)arg0 + 0x194) = arg1;
