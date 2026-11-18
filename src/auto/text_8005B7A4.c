@@ -2759,6 +2759,7 @@ void Model_SetColor(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
+#pragma optimization_level 1
 s32 Pad_IsActive(u8 *arg0) {
     if (*(u16 *)(arg0 + 0x7C) != 0xFFFF) {
         return 1;
@@ -2775,6 +2776,7 @@ s32 Pad_IsActive(u8 *arg0) {
     }
     return 0;
 }
+#pragma optimization_level reset
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 static inline u32 GetListField44(void *p) {
