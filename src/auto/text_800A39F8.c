@@ -1297,7 +1297,7 @@ void fn_800A5CF4(void) {
     fn_800A3A68(0, 0x64);
 }
 
-void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
+void fn_800A5D1C(void *arg0, s32 arg1, s32 arg2) {
     void *Process_Create(void *, M2C_UNK);
     u16 FileCache_Probe();
     s32 Heap_AllocRaw(M2C_UNK);
@@ -2766,18 +2766,16 @@ void fn_800A8F94(s32 arg0) {
     extern u8 gOptionsStr[];
     extern f32 lbl_80369C08;
     extern f32 lbl_80369BA8;
-    void *obj;
-    void *base;
-    f32 b;
-    f32 a;
+    typedef struct { u8 pad[0x40]; f32 f40; f32 f44; } SO;
+    SO *obj;
+    f32 b, a;
 
     obj = Sound_Create(gOptionsStr + 0x96, arg0);
     a = lbl_80369C08;
     b = lbl_80369BA8;
-    base = gOptionsStr;
-    *(f32 *)((u8 *)obj + 0x40) = a;
-    *(f32 *)((u8 *)obj + 0x44) = b;
-    fn_80148618((u8 *)base + 0x73, 0x1f4);
+    obj->f40 = a;
+    obj->f44 = b;
+    fn_80148618(gOptionsStr + 0x73, 0x1f4);
 }
 
 #pragma optimization_level reset
@@ -2799,10 +2797,14 @@ void fn_800A8FE8(void *arg0) {
     }
 }
 
-void fn_800A904C(s32 arg0) {
-    M2C_UNK fn_800A5D1C(void *, s32, M2C_UNK);
-    extern M2C_UNK lbl_8026E470;
-    fn_800A5D1C(&lbl_8026E470 + 0xA3, arg0 != 0, 0);
+void fn_800A904C(s32 arg0)
+{
+    void fn_800A5D1C(void *, s32, s32);
+    extern u8 gOptionsStr[];
+    s8 cond;
+
+    cond = arg0 != 0;
+    fn_800A5D1C((void *)((u32)gOptionsStr + 0xA3), cond, 0);
 }
 
 extern u8 lbl_8028C870[16];
