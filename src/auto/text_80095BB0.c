@@ -1,7 +1,7 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline u32 Event_ScanCommandFlagsInline(s16 *idx,u16 cur) {
+static inline u32 Event_ScanCommandFlagsInline(s16 *idx,s32 cur) {
 extern u8 gBattle[];
 void fn_800973F0(void *,s32);
 s16 saved=(s16)cur;
