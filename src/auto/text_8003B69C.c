@@ -3049,84 +3049,35 @@ static inline u8 MapObj_HasBlockedAction(u32 flags)
     return 0;
 }
 
-static inline u8 MapObj_IsIdle(u8 *obj)
+static inline s32 MapObj_IsIdle(u8 *obj)
 {
     return (obj[2] & 3) == 0;
 }
 
 void fn_80040028(void *arg0, void *arg1)
 {
-    extern u8 *gMap;
-    void fn_80044450(void *, s32);
-
-    u8 *map;
-    u8 *entry;
-    u8 *obj;
-    u8 *list[64];
-    u32 flags;
-    u32 i;
-    s32 count;
-    s32 j;
-    s32 num;
-    u8 valid;
-
-    map = gMap;
-
-    if (map != 0) {
-        count = 0;
-        j = 0;
-
-        for (i = 0; i < *(s16 *)(map + 6); i++) {
-            entry = *(u8 **)(map + 0x14);
-            obj = entry + i * 0xB4;
-
-            flags = *(u32 *)(*(u8 **)(obj + 0x10) + 0xBC);
-
-            valid = 0;
-
-            if ((flags & 0x10) == 0) {
-                if ((flags & 0x800) != 0) {
-                    valid = 1;
-                } else if ((flags & 0x1000) != 0) {
-                    valid = 1;
-                }
-            }
-
-            if (valid != 0) {
-                valid = 0;
-
-                if ((flags & 0x10) == 0) {
-                    if ((flags & 0x100000) == 0) {
-                        valid = 1;
-                    }
-                }
-
-                if (valid != 0) {
-                    if ((u8)(u32)arg1 == 0) {
-                        if ((flags & 0x1000) != 0) {
-                            valid = 0;
-                        }
-                    }
-
-                    if (valid != 0) {
-                        if ((obj[2] & 3) == 0) {
-                            list[count] = obj;
-                            count++;
-                            obj[2] |= 2;
-                        }
-                    }
-                }
-            }
-        }
-
-        fn_80044450(map, 0);
-
-        if (count > 0) {
-            for (j = 0; j < count; j++) {
-                list[j][2] &= ~2;
-            }
-        }
-    }
+ extern u8 *gMap;
+ void fn_80044450(void *, s32);
+ u8 *obj;
+ u8 *list[64];
+ u32 flags;
+ s32 count;
+ s32 i;
+ arg0=gMap;
+ if(arg0) {
+  count=0;
+  for(i=0;i<*(s16 *)((u8 *)arg0+6);i++) {
+   obj=*(u8 **)((u8 *)arg0+0x14)+i*0xB4;
+   flags=*(u32 *)(*(u8 **)(obj+0x10)+0xBC);
+   if(MapObj_HasActionFlag(flags) && !MapObj_HasBlockedAction(flags) &&
+      ((u8)(u32)arg1 || !(flags&0x1000)) && MapObj_IsIdle(obj)) {
+       list[count++]=obj;
+       obj[2]|=2;
+   }
+  }
+  fn_80044450(arg0,0);
+  for(i=0;i<count;i++) list[i][2]&=~2;
+ }
 }
 
 void fn_8004022C(void) {
