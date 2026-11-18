@@ -281,28 +281,48 @@ extern s32 lbl_8033E578[];
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 
+volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
+
 #pragma push
 #pragma global_optimizer on
 
-#pragma opt_lifetimes off
-int fn_802677E4(u8 *arg0, int arg1, int arg2) {
-volatile u32 *cr;
-u32 control;
-if ((u32)arg2 != 0) {
-u8 *p = arg0; u32 value; int i;
-i=0; value=0;
-for (;i<arg1;i++) { value |= ((u32)*p) << ((3-i)*8); p++; }
-*(volatile u32*)0xCC006838=value;
+#pragma scheduling on
+int fn_802677E4(u8 *arg0, int arg1, int arg2)
+{
+  volatile u32 *cr;
+  int new_var;
+  u8 *p = arg0;
+  if (((u32) arg2) != 0)
+  {
+    u32 value;
+    s32 i;
+    i = 0;
+    value = 0;
+    for (; i < arg1; i++)
+    {
+      value |= ((u32) (*p)) << ((3 - i) * 8);
+      p++;
+    }
+
+    *((volatile u32 *) 0xCC006838) = value;
+  }
+  cr = (volatile u32 *) 0xCC006800;
+  *(cr += 13) = (((arg1 - 1) << 4) | 1) | (((u32) arg2) << 2);
+  new_var = arg2;
+  while ((*cr) & 1)
+  {
+  }
+
+  if (((u32) new_var) == 0)
+  {
+    s32 i = 0;
+    u32 value = *((volatile u32 *) 0xCC006838);
+    for (; i < arg1; i++)
+    {
+      *(arg0++) = (u8) (value >> ((3 - i) * 8));
+    }
+
+  }
+  return 1;
 }
-control = ((u32)arg2<<2);
-cr=(volatile u32*)0xCC006800;
-*(cr += 13)=((arg1-1)<<4)|1|control;
-while(*cr&1) {}
-if((u32)arg2==0) {
-int i=0;
-u32 value=*(volatile u32*)0xCC006838;
-for(;i<arg1;i++) *arg0++=(u8)(value>>((3-i)*8));
-}
-return 1;
-}
-#pragma opt_lifetimes reset
+#pragma scheduling reset
