@@ -14,18 +14,23 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    u8 ra;
-    u8 rb;
-    ra = *a;
-    rb = *b;
-    while ((s8)ra | (s8)rb) {
-        if ((s8)ra != (s8)rb)
-            return (u32)((s8)ra - (s8)rb);
-        a++;
-        b++;
-        ra = *a;
-        rb = *b;
-    }
+    u32 raw1;
+    u32 raw2;
+    s32 c1;
+    s32 c2;
+    goto ld;
+cmp:
+    if ((s8)raw1 != (s8)raw2)
+        return (u32)(c1 - c2);
+    a++;
+    b++;
+ld:
+    raw1 = *a;
+    raw2 = *b;
+    c1 = (s8)raw1;
+    c2 = (s8)raw2;
+    if ((c1 | c2) != 0)
+        goto cmp;
     return 0;
 }
 
