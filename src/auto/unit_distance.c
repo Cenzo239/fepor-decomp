@@ -249,16 +249,16 @@ u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
     s8 xa;
-    u8 xb_u;
+    s8 xb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
+    xb = *(s8 *)((u8 *)b + 0x19E);
     xa = *(s8 *)((u8 *)a + 0x19E);
-    xb_u = *((u8 *)b + 0x19E);
-    dx = xa - (s8)xb_u;
+    dx = xa - xb;
     if (dx < 0) {
         dx = -dx;
     }
