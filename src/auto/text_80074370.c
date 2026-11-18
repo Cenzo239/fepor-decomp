@@ -112,13 +112,9 @@ extern "C" void fn_800743B4(void *arg0, void *arg1) {
         if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
             var_r28 = 1;
         }
-        temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        temp_r29 = (s32) (lbl_80369398 * temp_f2);
-        temp_r3 = Text_MeasureHeight(-1, lbl_80369394);
-        temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
-        temp_r30 = temp_r3 / 2;
-        temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
-        fn_8008AB7C((temp_r3_2 / 2) + 0x28, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
+        fn_8008AB7C(((PopupDrawObj *)arg0)->v18() / 2 + 0x28,
+            M2C_FIELD(arg1, s16 *, 0x3A) + Text_MeasureHeight(-1, lbl_80369394) / 2,
+            (s32)(lbl_80369398 * ((PopupDrawObj *)arg0)->v18()), 0x18, 0x19, 0x4B, var_r28);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036939C);
         Prim2D_PrepareTex();
