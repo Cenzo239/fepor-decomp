@@ -241,165 +241,130 @@ switch(kind) {case 1: case 2: case 3: GActor_RequestRes(fn_80055204(unit,0));bre
 }
 
 #pragma use_lmw_stmw on
-void fn_80096418(s16 arg0) {
-    void *Item_GetFlagsPtr(void *);
-    void fn_8004FC70(s32, s32);
-    void *fn_80055204(void *, s32);
-    void GActor_RequestRes(void *);
-    u32 Event_GetCmdFlagRes(s32);
-    s32 fn_80096EEC(s32 *, u32);
-    void fn_800973F0(u32 *, s32);
-    extern u8 gEventCmdStrings[];
-    extern u8 gBattle[];
-    extern void **lbl_80367500;
-    extern void **lbl_80367504;
-    typedef struct { s16 code; s16 pad; u32 flags; } Ent;
-    Ent ents[20];
-    s32 buf[20];
-    u32 flaga;
-    u32 flagb;
-    s16 *idx;
-    s16 saved;
-    s16 saved2;
-    s16 cur;
-    s16 code;
-    s32 n;
-    s32 i;
-    s32 count;
-    s32 *p;
-    Ent *ep;
-    u8 c;
-    u8 ok;
-    s32 kind;
-    void *str;
-    void *unit;
-    void *ctx;
-    void **g0;
-    u32 *bits;
-    s32 arg_save;
-
-    g0 = lbl_80367500;
-    if (lbl_80367504 == NULL) {
-        arg_save = 0;
-    } else if (*lbl_80367504 != NULL) {
-        arg_save = *(s32 *)((u8 *)*lbl_80367504 + 0x280);
-    } else {
-        arg_save = 0;
-    }
-    idx = (s16 *)(gBattle + 0x8A0);
-    saved = *idx;
-    flaga = 0;
-    *idx = arg0;
-    *idx = (s16)(arg0 + 1);
-    for (;;) {
-        cur = *idx;
-        c = gBattle[0x8A4 + cur * 4];
-        if (c == 0x23) {
-            fn_800973F0(&flaga, c);
-            *idx = (s16)(*idx + 1);
-            continue;
-        }
-        if (c < 0x23) {
-            if (c != 0 && c >= 0 && c < 0x20) {
-                fn_800973F0(&flaga, c);
-                *idx = (s16)(*idx + 1);
-                continue;
-            }
-            if (c < 0) {
-                fn_800973F0(&flaga, c);
-                *idx = (s16)(*idx + 1);
-                continue;
-            }
-        } else if (c != 0x54) {
-            if (!(c < 0x54 && c < 0x25)) {
-                fn_800973F0(&flaga, c);
-                *idx = (s16)(*idx + 1);
-                continue;
-            }
-        }
-        break;
-    }
-    *idx = saved;
-    n = fn_80096EEC(buf, flaga);
-    p = buf;
-    for (i = 0; i < n; i++) {
-        GActor_RequestRes((void *)Event_GetCmdFlagRes(*p));
-        p++;
-    }
-    saved2 = *idx;
-    ep = ents;
-    *idx = arg0;
-    count = 0;
-    *idx = (s16)(arg0 + 1);
-    for (;;) {
-        cur = *idx;
-        c = gBattle[0x8A4 + cur * 4];
-        if (c == 0x24 || c == 0) {
-            break;
-        }
-        if (c < 0x24) {
-            if (c >= 0x20 && c < 0x23) {
-                break;
-            }
-        } else if (c == 0x56) {
-            *idx = cur;
-            flagb = 0;
-            *idx = (s16)(cur + 1);
-            for (;;) {
-                cur = *idx;
-                c = gBattle[0x8A4 + cur * 4];
-                if (c == 0x23) {
-                    fn_800973F0(&flagb, c);
-                    *idx = (s16)(*idx + 1);
-                    continue;
-                }
-                if (c < 0x23) {
-                    if (c == 9 || c == 0x15) {
-                        if ((s8)*(s16 *)(gBattle + 0x8A6 + cur * 4) == 0) {
-                            flagb |= 0x20000;
-                        }
-                        *idx = (s16)(*idx + 1);
-                        continue;
-                    }
-                    if (c == 0) {
-                        break;
-                    }
-                    if (c >= 0x20) {
-                        break;
-                    }
-                    fn_800973F0(&flagb, c);
-                    *idx = (s16)(*idx + 1);
-                    continue;
-                }
-                if (c >= 0x50 && c < 0x53) {
-                    break;
-                }
-                if (c >= 0x55) {
-                    fn_800973F0(&flagb, c);
-                    *idx = (s16)(*idx + 1);
-                    continue;
-                }
-                if (c < 0x25) {
-                    break;
-                }
-                if (c == 0x53) {
-                    fn_800973F0(&flagb, c);
-                    *idx = (s16)(*idx + 1);
-                    continue;
-                }
-                fn_800973F0(&flagb, c);
-                *idx = (s16)(*idx + 1);
-            }
-            *idx = cur;
-            /* fix: restore start of V parse */
-            *idx = (s16)(*(s16 *)&ep); /* noop placeholder */
-        }
-        /* simplified fallthrough */
-        *idx = (s16)(*idx + 1);
-    }
-    *idx = saved2;
+#pragma global_optimizer off
+void fn_80096418(s32 arg0) {
+void *Item_GetFlagsPtr(void *);
+void fn_8004FC70(s32,s32);
+void *fn_80055204(void *,s32);
+void GActor_RequestRes(void *);
+u32 Event_GetCmdFlagRes(s32);
+s32 fn_80096EEC(s32 *,u32);
+void fn_800973F0(u32 *,s32);
+extern u8 gBattle[],gEventCmdStrings[];
+extern void **lbl_80367500,**lbl_80367504;
+s32 ents[40],buf[20];u32 flaga,flagb;
+s16 *idx; s16 saved; s32 cur,cursor,offset;
+s32 n,i,count,kind,arg_save;
+s32 *p; u8 *ep;
+s32 c; u8 ok;
+u32 flags;
+void *item,*str,*unit;
+void **g0;
+g0=lbl_80367500;
+if(!lbl_80367504)arg_save=0;
+else if(*lbl_80367504)arg_save=M2C_FIELD(*lbl_80367504,s32 *,0x280);
+else arg_save=0;
+idx=(s16 *)(gBattle+0x8A0);
+saved=*idx;flaga=0;*idx=arg0;*idx=(s16)arg0+1;
+for(;;){
+cursor=*idx;offset=cursor*4+4;
+switch((s32)((u8*)idx)[offset]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x54:goto scan1done;
+default:fn_800973F0(&flaga,((u8*)idx)[cursor*4+4]);break;
 }
-
+(*idx)++;
+}
+scan1done:
+*idx=saved;n=fn_80096EEC(buf,flaga);
+p=buf;for(i=0;i<n;p++,i++)GActor_RequestRes((void*)Event_GetCmdFlagRes(*p));
+saved=*idx;ep=(u8*)ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
+for(;;){
+cur=*idx;c=((u8*)idx)[cur*4+4];
+switch(c){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:goto scan2done;
+case 0x56:
+*idx=cur;flagb=0;*idx=(s16)cur+1;
+for(;;){
+cursor=*idx;offset=cursor*4+4;
+switch((s32)((u8*)idx)[offset]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:case 0x54:goto scan3done;
+case 9:case 0x15:
+if((s8)*(s16*)((u8*)idx+cursor*4+6)==0)flagb|=0x20000;break;
+default:fn_800973F0(&flagb,((u8*)idx)[cursor*4+4]);break;
+}
+(*idx)++;
+}
+scan3done:
+*idx=cur;
+if(flagb&0x10000004){
+*idx=cur;*idx=(s16)cur+1;ok=0;
+for(;;){
+cursor=*idx;offset=cursor*4+4;
+switch((s32)((u8*)idx)[offset]){
+case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:goto scan4done;
+case 9:case 0x15:
+if((s8)*(s16*)((u8*)idx+cursor*4+6)>0)ok=1;break;
+default:break;
+}
+(*idx)++;
+}
+scan4done:
+*idx=cur;if(ok)flagb|=1;
+}
+*(u32*)(ep+4)=flagb;break;
+case 0x50:case 0x51:case 0x52:
+*(s16*)ep=c;*(s16*)(ep+2)=1;count++;ep+=8;break;
+default:break;
+}
+(*idx)++;
+}
+scan2done:
+*idx=saved;ep=(u8*)ents;
+for(i=0;i<count;ep+=8,i++){
+unit=*lbl_80367500;flags=*(u32*)(ep+4);cur=*(s16*)ep;
+if(!unit)item=0;
+else {item=(u8*)unit+0x28C;if(!*(u32*)item)item=0;}
+if(item){
+if(*(u64*)Item_GetFlagsPtr(item)&2ULL){kind=1;goto kindDone;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x800000000ULL){kind=2;goto kindDone;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x8000000000ULL){kind=1;goto kindDone;}
+if(*(s32*)(gBattle+0xCA8)>1){
+if(*(u64*)Item_GetFlagsPtr(item)&0x40ULL){kind=1;goto kindDone;}
+if(*(u64*)Item_GetFlagsPtr(item)&0x4000000000ULL){kind=3;goto kindDone;}
+}
+}
+kind=0;
+kindDone:
+if(kind==1)str=0;
+else if(cur==0x52)str=0;
+else if(flags&0x1000000)str=gEventCmdStrings+0xDB;
+else if(flags&0x20000)str=gEventCmdStrings+0xED;
+else if(flags&2)str=gEventCmdStrings+0xFA;
+else {
+if(g0){str=fn_80055204(*g0,1);if(str)goto request;}
+if(flags&0x40)str=gEventCmdStrings+0x105;
+else if(cur==0x51)str=gEventCmdStrings+0x114;
+else if(cur==0x50)str=gEventCmdStrings+0xFA;
+else str=0;
+}
+request:
+if(str)GActor_RequestRes(str);
+flags=*(u32*)(ep+4);
+if(flags&0x80)str=(void*)Event_GetCmdFlagRes(0x80);
+else if(flags&0x20)str=(void*)Event_GetCmdFlagRes(0x20);
+else if(flags&8)str=(void*)Event_GetCmdFlagRes(8);
+else if(flags&0x10)str=(void*)Event_GetCmdFlagRes(0x10);
+else str=0;
+if(str)GActor_RequestRes(str);
+if(!(*(u32*)(gBattle+0xCAC)&0x100)){
+switch(*(s16*)ep){
+case 0x50:case 0x51:if(!(*(u32*)(ep+4)&0x20000))fn_8004FC70(arg_save,9);break;
+case 0x52:fn_8004FC70(arg_save,7);break;
+}
+}
+}
+}
+#pragma global_optimizer reset
 /* Load model/gfx (mode 8) for the units stored in event slots 0-2. */
 void Event_LoadSlotUnitGfx(void) {
     void fn_8017F9A8(void);
