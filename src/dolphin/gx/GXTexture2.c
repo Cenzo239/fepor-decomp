@@ -16,10 +16,6 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
-typedef struct {
-    s16 r, g, b, a;
-} GXColorS10;
-
 // GXTexObj structure (from headers or similar functions)
 typedef struct {
     u32 dummy[4];
@@ -981,10 +977,10 @@ void fn_80223C14(s32 id, u32 *color)
   u32 a;
   a = color[0];
   idx = id << 1;
+  b = color[1];
   cmd = 0x61;
   gx = (u16 *) (idx + 0xE0);
   reg = ((u32) gx) << 24;
-  b = color[1];
   gx = __GXData;
   reg = __rlwimi(reg, a, 16, 21, 31);
   GXWGFifo.u8 = cmd;
@@ -1007,27 +1003,29 @@ void fn_80223C14(s32 id, u32 *color)
 void fn_80223C78(s32 id, u32 *color) {
     u32 idx = id << 1;
     u32 c = *color;
-    u32 a = idx + 0xe0;
-    u32 lo;
-    u32 hi;
+    u16 *p;
+    u32 *lo;
+    u32 *hi;
     u32 eight;
+    u32 a;
 
+    p = (u16 *)(idx + 0xe0);
     id = (s32)__GXData;
-    a <<= 24;
+    a = ((u32)p) << 24;
     a = __rlwimi(a, c, 8, 24, 31);
-    lo = a;
+    lo = (u32 *)a;
     GXWGFifo.u8 = 0x61;
-    hi = idx + 0xe1;
-    hi <<= 24;
-    hi = __rlwimi(hi, c, 24, 24, 31);
+    p = (u16 *)(idx + 0xe1);
+    hi = (u32 *)(((u32)p) << 24);
+    hi = (u32 *)__rlwimi((u32)hi, c, 24, 24, 31);
     eight = 8;
-    lo = __rlwimi(lo, c, 12, 12, 19);
-    lo = __rlwimi(lo, eight, 20, 8, 11);
-    GXWGFifo.u32 = lo;
-    hi = __rlwimi(hi, c, 28, 12, 19);
-    hi = __rlwimi(hi, eight, 20, 8, 11);
+    lo = (u32 *)__rlwimi((u32)lo, c, 12, 12, 19);
+    lo = (u32 *)__rlwimi((u32)lo, eight, 20, 8, 11);
+    GXWGFifo.u32 = (u32)lo;
+    hi = (u32 *)__rlwimi((u32)hi, c, 28, 12, 19);
+    hi = (u32 *)__rlwimi((u32)hi, eight, 20, 8, 11);
     GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = hi;
+    GXWGFifo.u32 = (u32)hi;
     ((u16 *)id)[1] = 0;
 }
 #pragma global_optimizer reset
