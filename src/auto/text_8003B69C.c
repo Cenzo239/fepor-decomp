@@ -1578,10 +1578,9 @@ void Unit_MoveToList(void *unit, s32 listId) {
     case 2:
     case 3:
         fn_800946F0(unit);
-        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
-        fn_80015718(gUnitLists + listId * 0xC, unit);
-        return;
     }
+    fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+    fn_80015718(gUnitLists + listId * 0xC, unit);
 }
 
 void Unit_MoveToListHead(void *unit, s32 listId)
@@ -6880,7 +6879,7 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     extern volatile s8 lbl_8036728E;
     extern volatile u8 lbl_80367290;
     u8 d, c, b, a;
-    volatile u8 *p;
+    volatile u8 *p = &lbl_80367290;
 
     a = arg3[0];
     b = arg3[1];
@@ -6889,7 +6888,6 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     lbl_8036728C = arg0;
     lbl_8036728D = arg1;
     lbl_8036728E = arg2;
-    p = &lbl_80367290;
     p[0] = a;
     p[1] = b;
     p[2] = c;
