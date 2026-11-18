@@ -2938,11 +2938,13 @@ void fn_80109244(struct Arg0 *arg0) {
 }
 
 void Sound_TweenParam(void *arg0, s32 arg1, s32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-extern f32 lbl_8036A138,lbl_8036A130;
+extern const f32 lbl_8036A138;
+extern f32 lbl_8036A130;
 extern u32 gUiInputFlags;
 void *Process_Create(void *,void *);
 extern u8 lbl_8028F374[];
-void *proc,*target;
+SoundTweenProc *proc;
+void *target;
 f32 cur;
 if(gUiInputFlags&1) { if(lbl_8036A138 != arg4) {switch((u8)arg1) {
 case 0: *(f32 *)((u8 *)arg0+64)=arg4; break;
@@ -2973,10 +2975,10 @@ case 10: *((u8 *)arg0+97)=(s32)arg3; break;
 }
 } return;}
 proc=Process_Create(lbl_8028F374,arg0);
-*(void **)((u8 *)proc+0x30)=*(void **)((u8 *)proc+0x18);
-*((u8 *)proc+0x34)=arg1; *((u8 *)proc+0x35)=arg2;
+proc->target=proc->parent;
+proc->param=arg1; proc->mode=arg2;
 if(lbl_8036A138==arg3) {
-target=*(void **)((u8 *)proc+0x30);
+target=proc->target;
 switch((u8)arg1) {
 case 0: cur=*(f32 *)((u8 *)target+64); break;
 case 1: cur=*(f32 *)((u8 *)target+68); break;
@@ -2989,11 +2991,11 @@ case 8: cur=*(f32 *)((u8 *)target+92); break;
 case 9: cur=*((u8 *)target+96); break;
 case 10: cur=*((u8 *)target+97); break;
 default:cur=lbl_8036A130;break;}
-*(f32 *)((u8 *)proc+0x40)=cur;
-} else { *(f32 *)((u8 *)proc+0x40)=arg3; }
-*(f32 *)((u8 *)proc+0x44)=arg4;
-*(f32 *)((u8 *)proc+0x3c)=(f32)(s32)arg5;
-*(f32 *)((u8 *)proc+0x38)=lbl_8036A130;
+proc->start=cur;
+} else { proc->start=arg3; }
+proc->end=arg4;
+proc->duration=(f32)(s32)arg5;
+proc->time=0.0f;
 if(lbl_8036A138!=arg3) {switch((u8)arg1) {
 case 0: *(f32 *)((u8 *)arg0+64)=arg3; break;
 case 1: *(f32 *)((u8 *)arg0+68)=arg3; break;
