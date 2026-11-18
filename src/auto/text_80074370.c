@@ -6,6 +6,10 @@ static inline s32 get_B4D8_mode(u16 flags) {
  if(flags&2)mode=6;
  return mode;
 }
+static inline s32 Ui_SetItemSlotRet5(u8 *p, u8 v) {
+ *p = v;
+ return 5;
+}
 
 typedef struct {
     s16 unk0;
@@ -279,18 +283,15 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
     fn_8001003C(*(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32), (u8)flag, 1, 0, ((Obj *)arg0)->v1(), lbl_80369394, lbl_803693A8);
 }
 
-#pragma global_optimizer off
+#pragma peephole off
 extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
-    u8 *p;
     if (*((u8 *)arg2 + 0x39) != 0) {
         return 0x10;
     }
-    p = gUiContext;
-    p[0xA] = *((u8 *)arg2 + 0x3A);
-    return 5;
+    return (gUiContext[0xA] = *((u8 *)arg2 + 0x3A), 5);
 }
-#pragma global_optimizer reset
+#pragma peephole reset
 extern "C" s32 fn_80074BA4(void *arg0) {
     struct Obj {
         virtual s32 v0() = 0;
