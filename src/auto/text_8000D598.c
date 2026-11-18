@@ -687,8 +687,8 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
     u8 *font;
     void *obj;
     f32 matrix[3][4];
-    s16 w, h;
-    u32 flg_w, flg_h;
+    s16 dimensions[2];
+    u8 flg_w, flg_h;
     u8 *str;
     u8 *c0;
     u8 *c1;
@@ -698,18 +698,20 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
     f32 scale, scale2;
     f32 fpad0, fpad1, fpad2, fpad3, fpad4, fpad5, fpad6, fpad7;
     u8 color[4];
-    u8 save_r, save_g, save_b, save_a;
+    u8 saved[3],saveAlpha;
     s16 digi, shift;
     s32 val;
     s32 sp18, sp14, sp10, spC, sp8;
     u32 sp1C[8];
     void *glyph;
-    u8 gw, gh;
+    f32 gw, gh;
+    s32 glyphHeight;
     f32 fx, fy, fxa, fw, fh, fadv;
     f32 t0, t1, t2, t3;
     u8 cr, cg, cb, ca;
     u8 cr2, cg2, cb2, ca2;
     s32 alpha;
+    u8 opacity;
     s32 alpha_scaled;
     f32 f18;
     s32 ctr;
@@ -717,29 +719,40 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
     void *mtxbase;
     void *unkptr;
 
-    w = (s16)a0;
-    h = (s16)a1;
+    u8 *fn_80104BF4(u8 *,s32 *,s32 *,s32 *,s32 *);
+    s32 fn_80222AC0(void *);
+    void fn_80222A3C(void *,s32,s32);
+    extern f32 lbl_80368BEC,lbl_80368BF0,lbl_80368BF8;
+    u8 upper[4],lower[4],modulated[4];
+    u32 lastTexture;
+    u8 textureDirty;
+    f32 vh,uw,bottom,right,top,left,shearBottom,shearTop,sy,sx;
+    f32 shear,originX,originY;
+
+    dimensions[0] = (s16)a0;
+    dimensions[1] = (s16)a1;
     xpos = f0;
-    zpos = f1;
-    ypos = f2;
+    ypos = f1;
+    zpos = f2;
     fpad0 = f3;
     fpad1 = f4;
     alpha = a2;
     c0 = (u8 *)a3;
     c1 = (u8 *)a4;
     str = (u8 *)a5;
-    *(u32 *)color = lbl_80368BD8;
     font = fn_801047D0();
     scale = lbl_80368BDC;
     scale2 = scale;
-    flg_w = ((u32)(-(s32)w) | (u32)(s32)w) >> 31;
-    flg_h = ((u32)(-(s32)h) | (u32)(s32)h) >> 31;
+    flg_w = ((u32)(-(s32)dimensions[0]) | (u32)(s32)dimensions[0]) >> 31;
+    flg_h = ((u32)(-(s32)dimensions[1]) | (u32)(s32)dimensions[1]) >> 31;
+    *(u32 *)color = lbl_80368BD8;
+    lastTexture=0;
     unk = 0;
     if (flg_w == 0) {
-        w = 0x200;
+        dimensions[0] = 0x200;
     }
     if (flg_h == 0) {
-        h = 0x100;
+        dimensions[1] = 0x100;
     }
     obj = lbl_80367168;
     if (obj != 0) {
@@ -749,7 +762,8 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
     PSMTXScale(matrix, lbl_80368BDC / (f32)*(u16 *)(font + 0x1e),
         lbl_80368BDC / (f32)*(u16 *)(font + 0x20), lbl_80368BDC);
     fn_80224E50(matrix, 0x1e, 1);
-    alpha_scaled = ((u8)alpha * 0xff) >> 7;
+    opacity=(u8)alpha;
+    alpha_scaled = (opacity * 0xff) >> 7;
     mtxbase = lbl_802838E8;
     unkptr = &lbl_80367174;
     f18 = lbl_80368BB8;
@@ -760,31 +774,32 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
     fpad6 = zpos;
     fpad7 = scale;
     ctr = -1;
-    while ((ch = *(s8 *)str) != 0) {
+    while ((ch = *str) != 0) {
         ctr = -1;
-        if (ch == '#') {
+        if ((s8)ch == '#') {
             ch = (s8)str[1];
             str += 2;
             code = ch - '#';
             if ((u32)code <= 0x56U) {
                 switch (code) {
-                case 0:
-                    save_r = color[0];
-                    save_g = color[1];
-                    save_b = color[2];
-                    save_a = color[3];
+                case 32: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
+                    saved[0] = color[0];
+                    saved[1] = color[1];
+                    saved[2] = color[2];
+                    saveAlpha = color[3];
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
                         if (ch >= '0' && ch <= '9') {
-                            digits[(u8)digi] = (u8)(ch - '0');
+                            digits[n] = (u8)(ch - '0');
                         } else if (ch >= 'a' && ch <= 'f') {
-                            digits[(u8)digi] = (u8)(ch - 0x57);
+                            digits[n] = (u8)(ch - 0x57);
                         } else if (ch >= 'A' && ch <= 'F') {
-                            digits[(u8)digi] = (u8)(ch - 0x37);
+                            digits[n] = (u8)(ch - 0x37);
                         }
-                        digi += 1;
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) {
@@ -796,186 +811,450 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
                         color[0] = cp[0]; color[1] = cp[1];
                         color[2] = cp[2]; color[3] = cp[3];
                     }
-                    break;
-                case 30:
+                    continue;
+}
+case 47: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    color[0] = (u8)val;
-                    break;
-                case 31:
+color[0]=(u8)val;continue;
+}
+case 36: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    color[1] = (u8)val;
-                    break;
-                case 32:
+color[1]=(u8)val;continue;
+}
+case 31: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    color[2] = (u8)val;
-                    break;
-                case 36:
+color[2]=(u8)val;continue;
+}
+case 30: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    color[3] = (u8)val;
-                    break;
-                case 48:
-                case 54:
+color[3]=(u8)val;continue;
+}
+case 64:color[0]=saved[0];color[1]=saved[1];color[2]=saved[2];color[3]=saveAlpha;continue;
+case 48: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    scale = (f32)(u32)val * lbl_80368BE0;
-                    scale2 = scale;
-                    break;
-                case 33:
-                case 64:
-                case 66:
-                case 70:
-                case 76:
-                case 80:
-                case 85:
-                case 86:
-                    scale = lbl_80368BDC;
-                    scale2 = scale;
-                    break;
-                case 35:
+scale=(f32)(u32)val*lbl_80368BE0;scale2=scale;continue;
+}
+case 53: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         ch = (s8)*str++;
-                        if (ch >= '0' && ch <= '9') digits[(u8)digi] = (u8)(ch - '0');
-                        else if (ch >= 'a' && ch <= 'f') digits[(u8)digi] = (u8)(ch - 0x57);
-                        else if (ch >= 'A' && ch <= 'F') digits[(u8)digi] = (u8)(ch - 0x37);
-                        digi += 1;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
                     }
                     val = 0; digi = 1; shift = 0;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
-                    (void)val;
-                    break;
-                case 45:
-                    str += 3;
-                    break;
-                case 38:
-                case 47:
-                case 53:
-                    str += 2;
-                    break;
-                default:
-                    break;
-                }
+scale2=(f32)(u32)val*lbl_80368BE0;continue;
+}
+case 54: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
+                    digits = (u8 *)__alloca(8);
+                    n = 0;
+                    while (n < 2) {
+                        ch = (s8)*str++;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
+                    }
+                    val = 0; digi = 1; shift = 0;
+                    while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
+scale=(f32)(u32)val*lbl_80368BE0;continue;
+}
+case 38: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
+                    digits = (u8 *)__alloca(8);
+                    n = 0;
+                    while (n < 2) {
+                        ch = (s8)*str++;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
+                    }
+                    val = 0; digi = 1; shift = 0;
+                    while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
+fpad1=(f32)(u32)val*lbl_80368BE4;continue;
+}
+case 80:scale=lbl_80368BDC;scale2=scale;continue;
+case 85:scale2=lbl_80368BDC;continue;
+case 86:scale=lbl_80368BDC;continue;
+case 70:fpad1=lbl_80368BE8;continue;
+case 45: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
+                    digits = (u8 *)__alloca(8);
+                    n = 0;
+                    while (n < 3) {
+                        ch = (s8)*str++;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
+                    }
+                    val = 0; digi = 2; shift = 0;
+                    while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
+ctr=val;break;
+}
+case 35: { u8 *digits; s16 shift,digi; s32 val; u8 n;
+
+                    digits = (u8 *)__alloca(8);
+                    n = 0;
+                    while (n < 2) {
+                        ch = (s8)*str++;
+                        if (ch >= '0' && ch <= '9') digits[n] = (u8)(ch - '0');
+                        else if (ch >= 'a' && ch <= 'f') digits[n] = (u8)(ch - 0x57);
+                        else if (ch >= 'A' && ch <= 'F') digits[n] = (u8)(ch - 0x37);
+                        n += 1;
+                    }
+                    val = 0; digi = 1; shift = 0;
+                    while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
+if(val==-1)val=0;{
+u32 found=(u32)fn_8010494C(lbl_802AEE20[val]);
+u32 *q=(u32 *)lbl_802AEE20;
+s32 j;
+for(j=0;j<5;j++,q++) {if(*q==found)break;}
+}
+font=fn_801047D0();
+PSMTXScale(matrix,lbl_80368BDC/(f32)*(u16 *)(font+0x1e),lbl_80368BDC/(f32)*(u16 *)(font+0x20),lbl_80368BDC);
+fn_80224E50(matrix,0x1e,1);
+continue;
+}
+case 0: str--; break;
+default:break;
+}
+}
+}
+        modulated[0]=(u8)((color[0]*opacity)>>7);
+        modulated[1]=(u8)((color[1]*opacity)>>7);
+        modulated[2]=(u8)((color[2]*opacity)>>7);
+        modulated[3]=color[3];
+        ((u8 *)unkptr)[0]=(u8)(s32)((f32)(modulated[0]*c0[0])*lbl_80368BEC);
+        ((u8 *)unkptr)[1]=(u8)(s32)((f32)(modulated[1]*c0[1])*lbl_80368BEC);
+        ((u8 *)unkptr)[2]=(u8)(s32)((f32)(modulated[2]*c0[2])*lbl_80368BEC);
+        ((u8 *)unkptr)[3]=(u8)(s32)((f32)(modulated[3]*c0[3])*lbl_80368BEC);
+        *(u32 *)upper=*(u32 *)unkptr;
+        ((u8 *)unkptr)[0]=(u8)(s32)((f32)(modulated[0]*c1[0])*lbl_80368BEC);
+        ((u8 *)unkptr)[1]=(u8)(s32)((f32)(modulated[1]*c1[1])*lbl_80368BEC);
+        ((u8 *)unkptr)[2]=(u8)(s32)((f32)(modulated[2]*c1[2])*lbl_80368BEC);
+        ((u8 *)unkptr)[3]=(u8)(s32)((f32)(modulated[3]*c1[3])*lbl_80368BEC);
+        *(u32 *)lower=*(u32 *)unkptr;
+        sx=scale*f3;
+        sy=scale2*f3;
+        if(ctr>=0) {
+            s32 fn_80104E40(void);
+            extern f32 lbl_80368BF4;
+            f32 iconY;
+            (*(void (**)(void *))(*(u32 *)obj+0xc))(obj);
+            iconY=((f32)fn_80104E40()*sy-lbl_80368BF4)*lbl_80368BF0+ypos;
+            modulated[0]=modulated[1]=modulated[2]=(u8)alpha_scaled;
+            modulated[3]=(u8)((upper[3]+lower[3]+1)>>1);
+            (*(void (**)(void *,s32,void *,f32,f32,f32))(*(u32 *)obj+0x1c))(obj,ctr,modulated,xpos,iconY,zpos);
+            (*(void (**)(void *))(*(u32 *)obj+0x10))(obj);
+            fadv=(f32)(*(s32 (**)(void *))(*(u32 *)obj+0x3c))(obj);
+        } else {
+        glyph=fn_801047DC(str);
+        textureDirty=0;
+        gw=(f32)*((u8 *)glyph+8); glyphHeight=*((u8 *)glyph+9); gh=(f32)glyphHeight;
+        shear=fpad1*sx;
+        shearTop=shear*((f32)*(s8 *)((u8 *)glyph+11)/(f32)*(u16 *)(font+8));
+        shearBottom=shear*((f32)(*(s8 *)((u8 *)glyph+11)-glyphHeight)/(f32)*(u16 *)(font+8));
+        originX=(f32)*(s8 *)((u8 *)glyph+10);
+        originY=(f32)*(s8 *)((u8 *)glyph+11);
+        left=xpos+originX*sx;
+        top=ypos+(f32)*(u16 *)(font+8)*sy-originY*sy;
+        fw=(f32)gw*sx; fh=(f32)gh*sy;
+        str=fn_80104BF4(str,&sp18,&sp14,&sp10,&spC);
+        t0=(f32)sp14; t1=(f32)sp10;
+        uw=t0+(f32)gw; vh=t1+(f32)gh;
+        fadv=(f32)spC*sx;
+        if(lastTexture!=(u32)sp18) {
+            fn_80222644(sp1C,sp18,*(u16 *)(font+0x1e),*(u16 *)(font+0x20),*(u16 *)(font+0x18),0,0,0);
+            lastTexture=(u32)sp18;
+            textureDirty=1;
+        }
+        if(lbl_80368BDC==sx && lbl_80368BDC==sy) {
+            if(fn_80222AC0(sp1C)!=0) {
+                fn_80222A3C(sp1C,0,0);
+                textureDirty=1;
             }
-            continue;
+        } else if(fn_80222AC0(sp1C)!=1) {
+            fn_80222A3C(sp1C,1,1);
+            textureDirty=1;
         }
-        glyph = fn_801047DC(str);
-        gw = *(u8 *)((char *)glyph + 8);
-        gh = *(u8 *)((char *)glyph + 9);
-        fx = ((f32)(s8)*(u8 *)((char *)glyph + 0xA) * scale2) + xpos;
-        fy = -(((f32)(s8)*(u8 *)((char *)glyph + 0xB) * scale2) - (((f32)*(u16 *)((char *)font + 8) * scale2) + ypos));
-        fw = (f32)gw;
-        fh = (f32)gh;
-        {
-            f32 tmpb = (f32)(s8)*(u8 *)((char *)glyph + 0xB);
-            str = fn_801049E0(str, &sp18, &sp14, &sp10, &spC, &sp8, gh, gw, tmpb);
+        if(textureDirty)fn_80222C50(sp1C,0);
+        if(flg_w) {
+            f32 shadowX=sx*((f32)dimensions[0]*lbl_80368BF8);
+            f32 shadowY=sy*((f32)dimensions[0]*lbl_80368BF8);
+            GXBegin(0x80,0,4);
+        *(volatile f32 *)0xCC008000=shadowX+left+shearTop;
+        *(volatile f32 *)0xCC008000=top+shadowY;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=(u8)(s32)(lbl_80368BF0*(f32)upper[3]);
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=shadowX+left+shearTop+fw;
+        *(volatile f32 *)0xCC008000=top+shadowY;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=(u8)(s32)(lbl_80368BF0*(f32)upper[3]);
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=shadowX+left+shearBottom+fw;
+        *(volatile f32 *)0xCC008000=top+shadowY+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=(u8)(s32)(lbl_80368BF0*(f32)lower[3]);
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=vh;
+        *(volatile f32 *)0xCC008000=shadowX+left+shearBottom;
+        *(volatile f32 *)0xCC008000=top+shadowY+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=(u8)(s32)(lbl_80368BF0*(f32)lower[3]);
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=vh;
+        GXBegin(0x80,0,4);
+        *(volatile f32 *)0xCC008000=left+shearTop;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearTop+fw;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearBottom+fw;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=vh;
+        *(volatile f32 *)0xCC008000=left+shearBottom;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=vh;
+        } else if(flg_h) {
+          s32 n;
+          f32 *offsets;
+          f32 radius,ox,oy;
+          extern s8 lbl_80367178;
+          extern f64 lbl_80368C00,lbl_80368C08,lbl_80368C10,lbl_80368C18;
+          f64 fn_802380D0(f64);
+          f64 sin(f64);
+          if(!lbl_80367178) {
+((f32 *)((u8 *)mtxbase+0x30))[0]=(f32)fn_802380D0(lbl_80368C00);
+((f32 *)((u8 *)mtxbase+0x30))[1]=(f32)sin(lbl_80368C00);
+((f32 *)((u8 *)mtxbase+0x30))[3]=(f32)fn_802380D0(lbl_80368C08);
+((f32 *)((u8 *)mtxbase+0x30))[4]=(f32)sin(lbl_80368C08);
+((f32 *)((u8 *)mtxbase+0x30))[6]=(f32)fn_802380D0(lbl_80368C10);
+((f32 *)((u8 *)mtxbase+0x30))[7]=(f32)sin(lbl_80368C10);
+((f32 *)((u8 *)mtxbase+0x30))[9]=(f32)fn_802380D0(lbl_80368C18);
+((f32 *)((u8 *)mtxbase+0x30))[10]=(f32)sin(lbl_80368C18);
+lbl_80367178=1;
+}
+radius=(f32)dimensions[1]*lbl_80368BF8;
+GXBegin(0x80,0,0x20);
+for(n=0,offsets=(f32 *)mtxbase;n<8;n++,offsets+=3) {
+ox=radius*offsets[0];oy=radius*offsets[1];
+        *(volatile f32 *)0xCC008000=left+shearTop+ox;
+        *(volatile f32 *)0xCC008000=top+oy;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearTop+fw+ox;
+        *(volatile f32 *)0xCC008000=top+oy;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearBottom+fw+ox;
+        *(volatile f32 *)0xCC008000=top+fh+oy;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=vh;
+        *(volatile f32 *)0xCC008000=left+shearBottom+ox;
+        *(volatile f32 *)0xCC008000=top+fh+oy;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=0;
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=vh;
+}
+        GXBegin(0x80,0,4);
+        *(volatile f32 *)0xCC008000=left+shearTop;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearTop+fw;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearBottom+fw;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=vh;
+        *(volatile f32 *)0xCC008000=left+shearBottom;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=vh;
+} else {
+        GXBegin(0x80,0,4);
+        *(volatile f32 *)0xCC008000=left+shearTop;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearTop+fw;
+        *(volatile f32 *)0xCC008000=top;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=upper[0];
+        *(volatile u8 *)0xCC008000=upper[1];
+        *(volatile u8 *)0xCC008000=upper[2];
+        *(volatile u8 *)0xCC008000=upper[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=t1;
+        *(volatile f32 *)0xCC008000=left+shearBottom+fw;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=uw;
+        *(volatile f32 *)0xCC008000=vh;
+        *(volatile f32 *)0xCC008000=left+shearBottom;
+        *(volatile f32 *)0xCC008000=top+fh;
+        *(volatile f32 *)0xCC008000=zpos;
+        *(volatile u8 *)0xCC008000=lower[0];
+        *(volatile u8 *)0xCC008000=lower[1];
+        *(volatile u8 *)0xCC008000=lower[2];
+        *(volatile u8 *)0xCC008000=lower[3];
+        *(volatile f32 *)0xCC008000=t0;
+        *(volatile f32 *)0xCC008000=vh;
+}
         }
-        t0 = (f32)sp14;
-        t1 = (f32)sp10;
-        fadv = (f32)sp8;
-        fn_80222644(sp1C, sp18, *(u16 *)((char *)font + 0x1E), *(u16 *)((char *)font + 0x20), *(u16 *)((char *)font + 0x18), 0, 0, 0);
-        fn_80222C50(sp1C, 0);
-        fxa = (scale2 * (f18 * (fadv - (f32)spC))) + fx;
-        GXBegin(0x80, 0, 4);
-        cr = (u8)((color[0] * alpha_scaled) >> 7);
-        cg = (u8)((color[1] * alpha_scaled) >> 7);
-        cb = (u8)((color[2] * alpha_scaled) >> 7);
-        ca = color[3];
-        cr2 = c0[0]; cg2 = c0[1]; cb2 = c0[2]; ca2 = c0[3];
-        *(volatile f32 *)0xCC008000 = fxa;
-        *(volatile f32 *)0xCC008000 = fy;
-        *(volatile f32 *)0xCC008000 = zpos;
-        *(volatile u8 *)0xCC008000 = cr;
-        *(volatile u8 *)0xCC008000 = cg;
-        *(volatile u8 *)0xCC008000 = cb;
-        *(volatile u8 *)0xCC008000 = ca;
-        *(volatile f32 *)0xCC008000 = t0;
-        *(volatile f32 *)0xCC008000 = t1;
-        t2 = fxa + (fw * scale2);
-        t3 = fy + (fh * scale2);
-        *(volatile f32 *)0xCC008000 = t2;
-        *(volatile f32 *)0xCC008000 = fy;
-        *(volatile f32 *)0xCC008000 = zpos;
-        *(volatile u8 *)0xCC008000 = cr;
-        *(volatile u8 *)0xCC008000 = cg;
-        *(volatile u8 *)0xCC008000 = cb;
-        *(volatile u8 *)0xCC008000 = ca;
-        *(volatile f32 *)0xCC008000 = t0 + fw;
-        *(volatile f32 *)0xCC008000 = t1;
-        *(volatile f32 *)0xCC008000 = t2;
-        *(volatile f32 *)0xCC008000 = t3;
-        *(volatile f32 *)0xCC008000 = zpos;
-        *(volatile u8 *)0xCC008000 = c1[0];
-        *(volatile u8 *)0xCC008000 = c1[1];
-        *(volatile u8 *)0xCC008000 = c1[2];
-        *(volatile u8 *)0xCC008000 = c1[3];
-        *(volatile f32 *)0xCC008000 = t0 + fw;
-        *(volatile f32 *)0xCC008000 = t1 + fh;
-        *(volatile f32 *)0xCC008000 = fxa;
-        *(volatile f32 *)0xCC008000 = t3;
-        *(volatile f32 *)0xCC008000 = zpos;
-        *(volatile u8 *)0xCC008000 = c1[0];
-        *(volatile u8 *)0xCC008000 = c1[1];
-        *(volatile u8 *)0xCC008000 = c1[2];
-        *(volatile u8 *)0xCC008000 = c1[3];
-        *(volatile f32 *)0xCC008000 = t0;
-        *(volatile f32 *)0xCC008000 = t1 + fh;
-        xpos += fadv * scale2;
-        (void)unk; (void)mtxbase; (void)unkptr;
-        (void)cr2; (void)cg2; (void)cb2; (void)ca2;
-        (void)lbl_80368BE4; (void)lbl_80368BE8;
-        (void)w; (void)h; (void)save_r; (void)save_g; (void)save_b; (void)save_a;
-        (void)fpad2; (void)fpad3; (void)fpad4; (void)fpad5; (void)fpad6; (void)fpad7;
-        (void)ctr;
+        xpos+=fadv;
     }
     return 0;
 }
