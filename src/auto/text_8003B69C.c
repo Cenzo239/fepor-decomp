@@ -8275,16 +8275,16 @@ return (char *)lbl_802EFFC8;
 
 typedef struct StringValueByte { u8 pad0[0xC]; u8 value; } StringValueByte;
 char *fn_8004B078(void *arg0, s32 arg1) {
-    void sprintf(void *, void *, ...);
-    extern u8 lbl_8026A9B0[];
-    extern u8 lbl_802EFFC8[];
-    u8 *p = (u8 *)arg0;
+      void sprintf(void *, void *, ...);
+      extern u16 lbl_8026A9B0[40];
+      extern u8 lbl_802EFFC8[];
+      u8 *p = (u8 *)arg0;
 
-    sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8,
-            *(void **)(p + 4),
-            (p + arg1)[0xC]);
-    return (char *)lbl_802EFFC8;
-}
+      sprintf(lbl_802EFFC8, (u8 *)lbl_8026A9B0 + 0xAD, (u8 *)lbl_8026A9B0 + 0xA8,
+              *(void **)(p + 4),
+              (p + arg1)[0xC]);
+      return (char *)lbl_802EFFC8;
+  }
 void *fn_8004B0C8(void *arg0) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026A9B0[];
