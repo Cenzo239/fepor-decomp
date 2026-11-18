@@ -644,15 +644,14 @@ extern u8 LightFade_script[];
 
 #pragma optimization_level 1
 
+#pragma push
 #pragma optimization_level 4
-#pragma global_optimizer on
 #pragma scheduling on
-s32 NameGrid_GetCharAtCursor(const s16 *arg0) {
-s32 fn_801CD480(void *, s32, s32);
-const s32 y = arg0[37];
-const s32 x = arg0[36];
-return fn_801CD480(*(void * const *)(arg0 + 30), x, y);
+#pragma peephole on
+s32 NameGrid_GetCharAtCursor(const NameGridCursor *self) {
+u8 *fn_801CD480(void *, s16, s16);
+s32 y=self->y;
+s32 x=self->x;
+return (s32)fn_801CD480(self->grid,x,y);
 }
-#pragma scheduling reset
-#pragma global_optimizer reset
-#pragma optimization_level 1
+#pragma pop
