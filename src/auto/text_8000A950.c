@@ -122,29 +122,11 @@ void *fn_800C4638(s32, void *, s32);
 #pragma peephole on
 
 #pragma peephole on
-#pragma global_optimizer off
 s32 fn_8000A950(void *arg0) {
-    extern u8 gProcesses[];
-    u8 *entry;
-    u8 *search;
-    s32 i;
-    u8 *p;
-
-    p = *(u8 **)((u8 *)arg0 + 4);
-    search = *(u8 **)(p + 4);
-    entry = gProcesses;
-    for (i = 0; i < 256; i++, entry += 0x70) {
-        if (*(u32 *)entry != 0 && Process_CompareNameExt(*(u8 **)(entry + 0x14), search) == 0)
-            goto found;
-    }
-    entry = 0;
-found:
-    if (entry != 0) {
-        *(u32 *)(entry + 0x10) = 0;
-        *(u32 *)((u8 *)arg0 + 4) += 8;
-        return 1;
-    }
-    return 0;
+    void *entry = Process_FindName(*(s8 **)(*(u8 **)((u8 *)arg0 + 4) + 4));
+    if (entry)
+        *(u32 *)((u8 *)entry + 0x10) = 0;
+    *(u32 *)((u8 *)arg0 + 4) += 8;
+    return 1;
 }
-#pragma global_optimizer reset
 #pragma peephole reset
