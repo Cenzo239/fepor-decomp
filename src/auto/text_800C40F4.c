@@ -29287,7 +29287,6 @@ child=Process_CreateChild(lbl_8028E858,parent);
 }
 
 void fn_800FF564(void *arg0) {
-    struct PathHolder { u8 pad[0x260]; u8 path[4]; };
     extern u8 gUiContext[], gBattleState[], gBattleMap[];
     s32 Status_Test(void *, s32);
     u8 fn_8001FB04(void *, s8 *, s8 *, s32, u8 *);
@@ -29299,38 +29298,44 @@ void fn_800FF564(void *arg0) {
     u8 *ui;
     s8 x;
     s8 y;
-    void *unit;
+    u8 *unit;
     s32 status;
 
     ui = gUiContext;
-    unit = *(void **)ui;
-    status = Status_Test((u8 *)unit + 0x1bc, 4);
-    x = *((s8 *)unit + 0x19e);
-    y = *((s8 *)unit + 0x19f);
-    if (((u8 *)unit)[0x260] == 0x10) {
+    unit = *(u8 **)ui;
+    status = Status_Test(unit + 0x1bc, 4);
+    x = *(s8 *)(unit + 0x19e);
+    y = *(s8 *)(unit + 0x19f);
+    if (unit[0x260] == 0x10) {
         Map_BuildUnitMoveRange(unit, 5, -1);
         fn_8001FC40(gBattleMap, ui[0xd], ui[0xe]);
         switch (fn_8001FB04(gBattleMap, &x, &y, status, 0)) {
         case 2:
             BattleState_SetCamPos(gBattleState, x, y);
-            ui[8] = 0x2d;
-            ui[0xd] = x;
-            ui[0xe] = y;
+            {
+                s8 ty = y;
+                ui[8] = 0x2d;
+                ui[0xd] = x;
+                ui[0xe] = ty;
+            }
             break;
         }
         if (((u8 *)arg0)[0x34] != 0)
             MoveAnim_BindMapPath(unit, arg0);
     } else {
-        switch (fn_8001FB04(gBattleMap, &x, &y, status, ((struct PathHolder *)unit)->path)) {
+        switch (fn_8001FB04(gBattleMap, &x, &y, status, unit + 0x260)) {
         case 2:
             BattleState_SetCamPos(gBattleState, x, y);
-            ui[8] = 0x2d;
-            ui[0xd] = x;
-            ui[0xe] = y;
+            {
+                s8 ty = y;
+                ui[8] = 0x2d;
+                ui[0xd] = x;
+                ui[0xe] = ty;
+            }
             break;
         }
         if (((u8 *)arg0)[0x34] != 0)
-            MoveAnim_BindPath(unit, (u8 *)unit + 0x260, 0x40, arg0);
+            MoveAnim_BindPath(unit, unit + 0x260, 0x40, arg0);
     }
 }
 
