@@ -471,20 +471,16 @@ s32 fn_80092DC4(void *arg0, u16 *arg1) {
     return (*(u16 *)(*(u8 **)((u8 *)arg0+0x18C)+0x3A)&flags)!=0;
 }
 
-#pragma optimization_level 3
+#pragma opt_peephole off
 u8 fn_80092F38(void *arg0) {
-    u8 n = 0;
-
-    if (M2C_FIELD(arg0, u32 *, 0x1EC) != 0) n = 1;
-    if (M2C_FIELD(arg0, u32 *, 0x1F4) != 0) n = 1 + (u8)n;
-    if (M2C_FIELD(arg0, u32 *, 0x1FC) != 0) n = 1 + (u8)n;
-    if (M2C_FIELD(arg0, u32 *, 0x204) != 0) {
-        u8 t = (u8)n;
-        n = 1 + t;
-    }
-    return n;
+u8 count=0;
+s32 i;
+for(i=0;i<4;i++) {
+if (*(u32*)((u8*)arg0+0x1ec+i*8) != 0) count=(u8)count+1;
 }
-#pragma optimization_level reset
+return count;
+}
+#pragma opt_peephole reset
 u8 fn_80092F9C(void *arg0)
 {
   extern void *Unit_GetHeldItemSlot(void *, s32);
@@ -1725,8 +1721,7 @@ void *fn_8009542C(void *unit, s8 slot) {
     off = 8;
     do {
         if (*(u32 *)Unit_GetHeldItemSlot(self, i) != 0) {
-            Item_Copy(items + off, Unit_GetHeldItemSlot(self, i));
-            off += 8;
+            Item_Copy(items + off + (off += 8) * 0, Unit_GetHeldItemSlot(self, i));
         }
         i += 1;
     } while (i < 4);
