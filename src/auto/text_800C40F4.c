@@ -31,6 +31,19 @@ static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
     return Allegiance_Compare(a, b) == 1;
 }
+static inline s32 ai_manh_le(s32 x, s32 y, s32 cy, s32 cx, s32 lim) {
+    s32 dx;
+    s32 dy;
+    dx = x - cy;
+    if (dx < 0) {
+        dx = -dx;
+    }
+    dy = y - cx;
+    if (dy < 0) {
+        dy = -dy;
+    }
+    return dy + dx <= lim;
+}
 extern s32 lbl_8036A0C8;
 extern s32 lbl_8036A0D0;
 extern s32 lbl_8036A0DC;
@@ -2128,6 +2141,7 @@ extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s3
 void strcpy(void *,void *);
 char token[257];
 s32 count=0;
+char *cursor=values;
 s32 pos=ParseToken(str,token,0);
 if(pos==0)return 0;
 u8 comment=token[0]=='#';
@@ -2140,7 +2154,7 @@ return 0;
 valid:
 strcpy(name,token);
 while((pos=ParseToken(str,token,pos))!=0 && (u8)token[0]!='#'){
-strcpy(values,token);values+=32;count++;
+strcpy(cursor,token);cursor+=32;count++;
 }
 if(total)*total=count;
 return 1;
