@@ -403,33 +403,29 @@ void *fn_800C412C(void *arg0, s16 arg1)
     return obj;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer on
+#pragma peephole on
 void fn_800C418C(void) {
-    void fn_800056CC(const char *, ...);
-    extern void *lbl_80367870;
-    extern char lbl_802700D8[];
-
-    char *msg;
-    u8 *b;
-    u8 *a;
-    u8 *base;
-
-    base = *(u8 **)((u8 *)lbl_80367870 + 0x18);
-    msg = lbl_802700D8;
-    for (a = base; a != NULL; a = *(u8 **)(a + 0xC)) {
-        for (b = base; b != NULL; b = *(u8 **)(b + 0xC)) {
-            if (a != b) {
-                if (b == a + *(s32 *)(a + 0x10)) {
-                    fn_800056CC(msg);
-                }
-                if (a == b + *(s32 *)(b + 0x10)) {
-                    fn_800056CC(msg + 0xC);
-                }
-            }
-        }
-    }
+void DebugPrint(const char *, ...);
+extern void *lbl_80367870;
+extern char lbl_802700D8[];
+char *msg;
+u8 *b;
+u8 *a;
+u8 *base;
+base = *(u8 **)((u8 *)lbl_80367870 + 0x18);
+msg = lbl_802700D8;
+for (a=base; a != NULL; a=*(u8 **)(a+0xC)) {
+for (b=base; b != NULL; b=*(u8 **)(b+0xC)) {
+if (a != b) {
+if (b == a+*(s32 *)(a+0x10)) DebugPrint(msg);
+if (a == b+*(s32 *)(b+0x10)) DebugPrint(msg+0xC);
 }
-#pragma optimization_level reset
+}
+}
+}
+#pragma global_optimizer reset
+#pragma peephole reset
 s32 fn_800C4240(s32 arg0) {
     s32 fn_800C5A48(s32, s32);
     extern s32 lbl_80367870;
@@ -470,7 +466,7 @@ return -1;
 }
 #pragma global_optimizer off
 s32 fn_800C4304(void *arg0) { return Heap_FindByName(arg0); }
-#pragma global_optimizer reset
+#pragma global_optimizer off
 void fn_800C4384(void) {
 void DebugPrint(const char *,...);
 extern char lbl_802700D8[];
@@ -488,8 +484,8 @@ hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-
 if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
 hi=(u8*)lbl_8036786C;if(hi){}else hi=(u8*)lbl_80367864;
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
-table=lbl_80320B88;
 i=0;
+table=lbl_80320B88;
 do {
 h=*table;
 if(h){ext=h->extent;
@@ -499,7 +495,7 @@ DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
 ++i; ++table;
 } while(i<16);
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 s32 fn_800C44F4(s32 arg0) {
     extern void *lbl_80367870;
     extern void *lbl_80320B88[];
@@ -1114,7 +1110,7 @@ extern u32 lbl_80367864;
 extern u32* lbl_80367868;
 extern u32 lbl_8036786C;
 extern s32 lbl_80366DDC;
-#pragma optimization_level 1
+#pragma optimization_level 3
 s32 Heap_GetFree(void) {
     u8 *lo;
     u8 *hi;
@@ -1129,6 +1125,7 @@ s32 Heap_GetFree(void) {
     hi = (u8 *)lbl_8036786C;
     if (hi == NULL) {
         hi = (u8 *)lbl_80367864;
+    } else {
     }
     return hi - lo;
 }
@@ -2091,7 +2088,7 @@ extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s3
     char *data;
     s32 size;
 
-    cursor = values;
+    
     pos = ParseToken(str, token, 0);
 
     if (pos == 0) {
@@ -2118,8 +2115,8 @@ valid:
     data = str->data;
     size = str->size;
     while ((pos = ParseTokenBuf(data, size, token, pos)) != 0 && (u8)token[0] != '#') {
-        strcpy(cursor, token);
-        cursor += 32;
+        strcpy(values, token);
+        values += 32;
         count++;
     }
     if (total) {
@@ -13947,24 +13944,14 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 }
 #pragma cplusplus off
 
-#pragma scheduling off
-void fn_800E2138(s32 *arg0, s32 *arg1, s32 arg2) {
-    volatile s32 spC;
-    volatile s32 sp8;
-    s32 t6;
-    s32 t0;
-    s32 t4;
-
-    t6 = arg1[0];
-    t0 = t6 + (arg2 * 4);
-    t4 = arg1[1];
-    sp8 = t6;
-    arg0[0] = t0;
-    spC = t4;
-    sp8 = t0;
-    arg0[1] = t4;
-}
+#pragma push
 #pragma scheduling on
+void fn_800E2138(PairAB *out, const PairAB *src, s32 offset) {
+    PairAB result = *src;
+    result.a += offset * 4;
+    *out = result;
+}
+#pragma pop
 s32 fn_800E2168(s32 *arg0, s32 *arg1) {
     return (s32) (*arg0 - *arg1) / 4;
 }
@@ -19588,8 +19575,142 @@ s32 fn_800EB854(void) {
     return result;
 }
 #pragma peephole reset
-s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
-    return arg0 + arg1 + arg2;
+void fn_800EB884(void)
+{
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 padA01B;
+        u8 fileInfo[0x14];
+        u32 tick;
+        void *buffer;
+    };
+
+    extern struct CardWork gCardWork;
+    extern u8 gCardStrings[];
+
+    u8 fn_800EBF58(void);
+    s32 fn_8021BF10(s32, void *, void *);
+    void *fn_800C4638(s32, void *, s32);
+    s32 fn_8021C84C(void *, void *, s32, s32);
+    s32 fn_8021C02C(void *);
+    s32 fn_8021CDC4(s32, void *);
+    s32 fn_8021C3D8(s32, void *, s32, void *);
+    s32 fn_8021CBC8(void *, void *, s32, s32);
+    void fn_800C4588(void *);
+
+    u8 *cardWork;
+    u8 *fileInfo;
+    u8 *diskID;
+    u8 success;
+
+    cardWork = (u8 *)&gCardWork;
+    diskID = (u8 *)0x80000000;
+
+    diskID[0] = gCardStrings[0x26F];
+    diskID[1] = gCardStrings[0x270];
+    diskID[2] = gCardStrings[0x271];
+    diskID[3] = gCardStrings[0x272];
+    diskID[4] = gCardStrings[0x273];
+    diskID[5] = gCardStrings[0x274];
+
+    fn_800EBF58();
+
+    fileInfo = cardWork + 0xA01C;
+
+    gCardWork.result = fn_8021BF10(
+        0,
+        gCardStrings + 0x70,
+        fileInfo
+    );
+
+    success = 0;
+
+    if (gCardWork.result == 0) {
+        if (gCardWork.busy == 0) {
+            success = 1;
+        }
+    }
+
+    if (success != 0) {
+        gCardWork.buffer = fn_800C4638(
+            0x26000,
+            gCardStrings + 0x97,
+            0
+        );
+
+        fn_8021C84C(
+            fileInfo,
+            gCardWork.buffer,
+            0x26000,
+            0
+        );
+
+        fn_8021C02C(fileInfo);
+
+        fn_8021CDC4(
+            gCardWork.chan,
+            gCardStrings + 0x70
+        );
+
+        diskID = (u8 *)0x80000000;
+
+        diskID[0] = gCardStrings[0x276];
+        diskID[1] = gCardStrings[0x277];
+        diskID[2] = gCardStrings[0x278];
+        diskID[3] = gCardStrings[0x279];
+        diskID[4] = gCardStrings[0x27A];
+        diskID[5] = gCardStrings[0x27B];
+
+        fn_800EBF58();
+
+        gCardWork.result = fn_8021C3D8(
+            gCardWork.chan,
+            gCardStrings + 0x70,
+            0x26000,
+            fileInfo
+        );
+
+        success = 0;
+
+        if (gCardWork.result == 0) {
+            if (gCardWork.busy == 0) {
+                success = 1;
+            }
+        }
+
+        if (success != 0) {
+            gCardWork.result = fn_8021CBC8(
+                fileInfo,
+                gCardWork.buffer,
+                0x26000,
+                0
+            );
+
+            success = 0;
+
+            if (gCardWork.result == 0) {
+                if (gCardWork.busy == 0) {
+                    success = 1;
+                }
+            }
+
+            if (success != 0) {
+                fn_8021C02C(fileInfo);
+            }
+        }
+
+        fn_800C4588(gCardWork.buffer);
+        gCardWork.buffer = 0;
+    }
 }
 
 void fn_800EBACC(void *arg0, void *arg1) {
@@ -25895,8 +26016,8 @@ void fn_800F9950(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_800F9A54(void *arg0) {
-    extern u8 gAiState[];
-    extern u8 *gAiCmd;
+    extern u8 gAiState[544];
+    extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
     void Ai_UnitIsHostileToActive(void *);
@@ -25905,49 +26026,26 @@ void fn_800F9A54(void *arg0) {
     u8 Ai_FindLowestCostUnitTile(void (*)(void *), void *, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
 
-    u8 *unit;
-    u8 *cmd;
-    void (*filter)(void *);
+    void *work = gAiCmd;
     s16 x;
     s16 y;
-    s32 flag;
 
-    unit = (u8 *)arg0;
-    cmd = gAiCmd;
-
-    if (!(gAiState[1] & 2) &&
-        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
-
-        if (*(u32 *)(cmd + 0x14) == 0) {
-            filter = Ai_UnitIsHostileToActive;
-        } else {
-            filter = Ai_UnitNameInCmdList;
-            if (*(s32 *)(cmd + 0x10) != 0) {
-                filter = Ai_UnitHostileNotInCmdList;
-            }
-        }
-
-        if (Ai_FindLowestCostUnitTile(filter, unit, &x, &y) == 1) {
-            flag = *(s32 *)(cmd + 0xC) != 0;
-
-            Ai_SetUnitMoveTo(
-                unit,
-                x,
-                y,
-                1,
-                *(u16 *)(gAiState + 4),
-                1,
-                flag,
-                -1
-            );
-        }
+    if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
+        Ai_FindLowestCostUnitTile(
+            *(u32 *)((u8 *)work + 0x14) == 0
+                ? Ai_UnitIsHostileToActive
+                : (*(s32 *)((u8 *)work + 0x10) != 0
+                       ? Ai_UnitHostileNotInCmdList
+                       : Ai_UnitNameInCmdList),
+            arg0, &x, &y) == 1) {
+        Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1,
+                         *(s32 *)((u8 *)work + 0xC) != 0, -1);
     }
-
     if (gAiCmdIsAlt == 0) {
-        unit[0x250]++;
-    } else {
-        unit[0x251]++;
+        M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
+        return;
     }
+    M2C_FIELD(arg0, u8 *, 0x251) = (u8)(M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
 void fn_800F9B58(void *arg0) {
@@ -26116,25 +26214,59 @@ void fn_800F9E90(void *arg0) {
 
 #pragma global_optimizer off
 void fn_800F9FC4(void *arg0) {
-void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-extern u8 gAiState[], gUiContext[];
-extern void *gAiCmd;
-extern s32 gAiCmdIsAlt;
-s16 y; s16 x; u8 *unit; u8 *cmd; s32 dx; s32 dy; s32 t0; s32 t1; u8 *ctx;
-unit=arg0; cmd=gAiCmd;
-if (!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x03000000)) {
-y=(s16)*(s32*)(cmd+0xC); x=(s16)*(s32*)(cmd+0x10);
-Ai_SetUnitMoveTo(unit,y,x,1,*(u16*)(gAiState+4),1,0,-1);
-if(gAiState[0x21C]) {
-ctx=gUiContext; t0=ctx[0xE]; t1=ctx[0xD];
-dy=(s8)t1;
-dx=x-(s8)t0; if(dx<0) dx=-dx;
-dy=y-dy; if(dy<0) dy=-dy;
-if(dy+dx<=*(s32*)(cmd+4)) *(s32*)(gAiState+8)=8;
-}}
-if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+
+    extern u8 gAiState[];
+    extern u8 gUiContext[];
+    extern void *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+
+    s16 y;
+    s16 x;
+    u8 *unit;
+    u8 *cmd;
+    s32 dx;
+    s32 dy;
+    s32 t0;
+    register s32 t1;
+    u8 *ctx;
+
+    unit = (u8 *)arg0;
+    cmd = (u8 *)gAiCmd;
+
+    if (!(gAiState[1] & 2) && !(*(u32 *)(unit + 0x254) & 0x03000000)) {
+        y = (s16)*(s32 *)(cmd + 0xC);
+        x = (s16)*(s32 *)(cmd + 0x10);
+
+        Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
+
+        if (gAiState[0x21C] != 0) {
+            ctx = gUiContext;
+            t0 = ctx[0xE];
+            t1 = ctx[0xD];
+            t0 = (s8)t0;
+            t1 = (s8)t1;
+            dx = x - t0;
+            if (dx < 0) {
+                dx = -dx;
+            }
+            dy = y - t1;
+            if (dy < 0) {
+                dy = -dy;
+            }
+            if (dy + dx <= *(s32 *)(cmd + 4)) {
+                *(s32 *)(gAiState + 8) = 8;
+            }
+        }
+    }
+
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 /* On chance: try attack AI with cmd unit filter (primary then alternate scorer); advance AI PC. */
 void AiCmd_ChanceTryAttackFallback(void *unit) {
     extern void *gAiCmd;
