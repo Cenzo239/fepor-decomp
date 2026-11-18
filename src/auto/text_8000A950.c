@@ -14,16 +14,16 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    u32 raw1;
-    u32 raw2;
     s32 c1;
     s32 c2;
+    u32 raw2;
+    u32 raw1;
     goto ld;
 cmp:
     if ((s8)raw1 != (s8)raw2)
         return (u32)(c1 - c2);
-    a++;
-    b++;
+    a += 1;
+    b += 1;
 ld:
     raw1 = *a;
     raw2 = *b;
@@ -121,26 +121,21 @@ void *fn_800C4638(s32, void *, s32);
 
 #pragma peephole on
 
+#pragma peephole on
+#pragma global_optimizer off
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
     u8 *search;
     s32 i;
     u8 *p;
-    u32 diff;
 
     p = *(u8 **)((u8 *)arg0 + 4);
     search = *(u8 **)(p + 4);
     entry = gProcesses;
     for (i = 0; i < 256; i++, entry += 0x70) {
-        if (*(u32 *)entry != 0) {
-            diff = Process_CompareNameExt(*(u8 **)(entry + 0x14), search);
-            if (diff != 0)
-                goto next;
+        if (*(u32 *)entry != 0 && Process_CompareNameExt(*(u8 **)(entry + 0x14), search) == 0)
             goto found;
-        }
-    next:
-        ;
     }
     entry = 0;
 found:
@@ -151,4 +146,5 @@ found:
     }
     return 0;
 }
+#pragma global_optimizer reset
 #pragma peephole reset
