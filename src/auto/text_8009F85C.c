@@ -387,11 +387,6 @@ void *fn_800A010C(void) {
 }
 
 #pragma global_optimizer off
-static inline s32 MenuCmd_ToggleByte(u8 *state) {
-    s32 value = *state ^ 1;
-    *state = value;
-    return value;
-}
 
 s32 fn_800A011C(s32 a,s32 b,void *c) {
 extern u8 lbl_80366E25;
