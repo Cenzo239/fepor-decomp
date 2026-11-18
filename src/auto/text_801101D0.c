@@ -9086,17 +9086,17 @@ s32 fn_801208BC(s8 *text, s32 wanted)
 
             }
 
-            {
-              out = lbl_8032FE24;
-              while (((s32) ((u8) (*text))) != '|')
-              {
-                *(out++) = *(text++);
-              }
+                          {
+                out = lbl_8032FE24;
+                while (((s32) ((u8) (*text))) != '|')
+                {
+                  *(out++) = *(text++);
+                }
 
-              *out = 0;
-              ++text;
-              continue;
-            }
+                *out = 0;
+                ++text;
+                continue;
+              }
           }
 
           case 'w':
@@ -9145,7 +9145,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
           {
             case 'C':
             {
-              out = lbl_8032FE24;
+              out = fe24buf.buf;
               while (((s32) ((u8) (*text))) != '|')
               {
                 *(out++) = *(text++);
@@ -9166,7 +9166,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
           case 'R':
           {
             {
-              out = lbl_8032FE24;
+              out = fe24buf.buf;
               while (((s32) ((u8) (*text))) != '|')
               {
                 *(out++) = *(text++);
