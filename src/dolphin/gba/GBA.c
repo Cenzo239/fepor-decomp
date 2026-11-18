@@ -861,36 +861,42 @@ error:
 done:
     *(u32 *)(entry + 0x20) = result;
 }
-#pragma peephole off
-#pragma optimization_level reset
-void fn_80265C34(s32 arg0, s32 arg1)
-{
-    extern u8 lbl_803669A0[];
-    void fn_80266F18(s32, void *);
-    u8 *entry;
-    u8 *queue;
-    void (*callback)(s32, s32);
-    s32 flag;
-
-    flag = arg1;
-    entry = lbl_803669A0 + (arg0 << 8);
-    queue = entry + 0x40;
-
-    if (flag == 0) {
-        fn_80266F18(arg0, queue + 0x18);
-    } else {
-        *(u32 *)(queue + 0x2C) = 0;
-        *(u32 *)(queue + 0x28) = 0;
-        callback = *(void (**)(s32, s32))(queue + 0x14);
-        if (callback != 0) {
-            *(u32 *)(queue + 0x14) = 0;
-            callback(arg0, flag);
-        }
-    }
-
-    *(u32 *)(entry + 0x20) = arg1;
+#pragma push
+#pragma global_optimizer off
+#pragma scheduling on
+#pragma peephole on
+static inline void GBA_CompleteTransfer(s32 channel, u8 *queue, s32 result) {
+void (*callback)(s32,s32);
+*(u32*)(queue+0x2C)=0;
+*(u32*)(queue+0x28)=0;
+callback=*(void (**)(s32,s32))(queue+0x14);
+if(callback) {
+*(u32*)(queue+0x14)=0;
+callback(channel,result);
 }
-
+}
+void fn_80265C34(s32 arg0, s32 arg1) {
+extern u8 lbl_803669A0[];
+void fn_80266F18(s32, void *);
+u8 *entry;
+u8 *queue;
+void (*callback)(s32,s32);
+s32 result=arg1;
+entry=lbl_803669A0+(arg0<<8);
+queue=entry+0x40;
+if(result==0) fn_80266F18(arg0,queue+0x18);
+else {
+*(u32*)(queue+0x2C)=0;
+*(u32*)(queue+0x28)=0;
+callback=*(void (**)(s32,s32))(queue+0x14);
+if(callback) {
+*(u32*)(queue+0x14)=0;
+callback(arg0,result);
+}
+}
+*(u32*)(entry+0x20)=result;
+}
+#pragma pop
 void fn_80265CB4(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
