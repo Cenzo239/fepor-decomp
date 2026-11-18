@@ -3,6 +3,14 @@
 #include "global.h"
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
+static inline u8 *GActor_FindAnimation(u8 *p) {
+    while (p) {
+        u8 *anim = *(u8 **)(p + 0x44);
+        if (anim) return anim;
+        p = *(u8 **)(p + 4);
+    }
+    return 0;
+}
 
 typedef struct {
     s32 at0[16];
@@ -2838,22 +2846,69 @@ void fn_8005FA94(void *arg0, s32 arg1)
         fn_800616A0(arg0);
     }
 }
-#pragma scheduling reset
-#pragma inline_depth reset
-s32 fn_8005FC74(void *arg0, s32 arg1) {
-    if (arg0 == NULL) {
-        extern char lbl_8026B590[];
-        Game_Assert(&lbl_8026B590[0x28], 0x2D8, &lbl_8026B590[0x5D]);
-    }
-    if (*(void **)((u8 *)arg0 + 0x74) == NULL) {
-        return 0;
-    }
-    fn_8005FA94(*(void **)((u8 *)arg0 + 0x74), arg1);
-    *(void **)((u8 *)arg0 + 0x74) = NULL;
-    *(f32 *)((u8 *)arg0 + 0x78) = 1.0f;
-    return 1;
+#pragma scheduling on
+#pragma dont_inline on
+void fn_8005FC74(u8 *self, void *arg1, s32 arg2) {
+ void *fn_800C4638(s32,void*,s32);
+ void fn_800618E4(void*);
+ void PSMTXCopy(void*,void*);
+ void *fn_80065634(void***,s32);
+ extern char lbl_8026B590[];
+ s32 count,i,last;
+ u8 *node,*walk,*anim,*entry,*src,*dst;
+ void *next;
+ f32 frame;
+ if(!self) Game_Assert(lbl_8026B590+0x28,0x2B2,lbl_8026B590+0x84);
+ count=1;walk=self;
+ while((walk=*(u8**)(walk+0x74))!=0) count++;
+ if(count==4) fn_8005FA14(self,arg2);
+ node=(u8*)fn_800C4638(0xA0,lbl_8026B590+0x27,0);
+ if(!node) Game_Assert(lbl_8026B590+0x28,0x46,lbl_8026B590+0x31);
+ fn_800618E4(node);
+ *(u32*)node|=4;
+ next=*(void**)(self+0x74);
+ *(void**)(self+0x74)=node;
+ *(void**)(node+0x74)=next;
+ *(f32*)(node+0x58)=*(f32*)(self+0x58);
+ *(f32*)(node+0x5C)=*(f32*)(self+0x5C);
+ *(f32*)(node+0x78)=*(f32*)(self+0x78);
+ *(u32*)node|=*(u32*)self&0x340;
+ *(u32*)node&=~0x10;
+ *(void**)(node+4)=self;
+ *(void**)(node+0x44)=*(void**)(self+0x44);
+ PSMTXCopy(self+0x10,node+0x10);
+ frame=0.0f;
+ *(f32*)(self+0x78)=frame;
+ *(void**)(self+0x44)=arg1;
+ walk=self;
+ while(walk) {
+ anim=*(u8**)(walk+0x44);
+ if(!anim) {walk=*(u8**)(walk+4);continue;}
+ goto found;
+ }
+ anim=0;
+ found:
+ if(anim) {
+ *(u32*)self&=~0x10;
+ last=*(s32*)(anim+0x18);
+ if(0.0f>(f32)last) {
+ *(u32*)self|=0x10;
+ frame=(f32)last;
+ }
+ if(frame<=(f32)*(s32*)(anim+0x14)) frame=(f32)*(s32*)(anim+0x14);
+ *(u16*)(self+0x7C)=65535;*(u16*)(self+0x7E)=65535;
+ *(u16*)(self+0x80)=65535;*(u16*)(self+0x82)=65535;
+ entry=(u8*)fn_80065634((void***)anim,(s32)frame);
+ if(entry) {
+ src=entry;dst=self;
+ for(i=0;i<*(u16*)(entry+2);i++) {
+ *(u16*)(dst+0x7C)=*(u16*)(src+4);src+=2;dst+=2;
+ }
+ }
+ *(f32*)(self+0x58)=frame;
+ }
 }
-
+#pragma dont_inline reset
 void fn_8005FEE8(void *arg0, f32 frame) {
 void *fn_80065634(void ***,s32);
 extern f32 lbl_803691C8;
@@ -5260,50 +5315,40 @@ u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
     t1 = t0;
     keys = (u16 (*)[2])(track+4);
     value = 0;
-    if ((u32)count == 0)
-        goto after_keys;
-    if ((s32)count == 0) {
-        mid = t0;
-        goto found;
-    }
-    lo = value;
-    hi = count-1;
-    time = (s32)frame;
-    while (lo <= hi) {
-        mid = lo + ((hi-lo)>>1);
-        if (keys[mid][0] < time) lo = mid+1;
-        else if (keys[mid][0] > time) hi = mid-1;
-        else goto found;
-    }
-    if (hi < 0) mid = -1;
-    else {
-        mid = count-1;
-        if (lo <= mid) {
-            if (keys[lo][0] <= time) mid = lo;
-            else mid = lo-1;
+    if ((u32)count != 0) {
+        if ((s32)count == 0) mid = t0;
+        else {
+            lo = value; hi = count-1; time = (s32)frame;
+            while (lo <= hi) {
+                mid = lo + ((hi-lo)>>1);
+                if (keys[mid][0] < time) lo = mid+1;
+                else if (keys[mid][0] > time) hi = mid-1;
+                else goto found;
+            }
+            if (hi < 0) mid = -1;
+            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+        }
+found:
+        if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
+        else if (mid < count-1) {
+            s32 next = mid + 1;
+            t0 = keys[mid][0];
+            v0 = keys[mid][1];
+            t1 = keys[next][0];
+            value = keys[next][1];
+            goto interpolate_pair;
+        } else { v0 = keys[mid][1]; interpolate = 0; }
+        goto interpolate_ready;
+interpolate_pair:
+        interpolate = 1;
+interpolate_ready:
+        if (!interpolate) value = v0;
+        else switch(mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        case 1: value = v0; break;
+        default: value = 0; break;
         }
     }
-found:
-    if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
-    else if (mid < count-1) {
-        s32 next = mid + 1;
-        t0 = keys[mid][0];
-        v0 = keys[mid][1];
-        t1 = keys[next][0];
-        value = keys[next][1];
-        goto interpolate_pair;
-    } else { v0 = keys[mid][1]; interpolate = 0; }
-    goto interpolate_ready;
-interpolate_pair:
-    interpolate = 1;
-interpolate_ready:
-    if (!interpolate) value = v0;
-    else switch(mode) {
-    case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
-    case 1: value = v0; break;
-    default: value = 0; break;
-    }
-after_keys:
     *((u8 *)arg2 + 3) = (u8)value;
     return 1;
 }
