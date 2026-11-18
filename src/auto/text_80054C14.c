@@ -335,9 +335,8 @@ void fn_80054C14(void *arg0) {
 
             void *control;
             *(u32 *)(state+8)^=0x20000000;
-            state=*(u8 **)(proc+0x30);
-            if ((*(u32 *)(state+8)&0x20000000) && *(void **)(state+0x34)) unit1=*(u8 **)(state+0x34);
-            else unit1=*(u8 **)(state+0x30);
+            if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && *(void **)(*(u8 **)(proc+0x30)+0x34)) unit1=*(u8 **)(*(u8 **)(proc+0x30)+0x34);
+            else unit1=*(u8 **)(*(u8 **)(proc+0x30)+0x30);
             { s8 x=*(s8 *)(unit1+0x19e); s8 y=*(s8 *)(unit1+0x19f);
             target.x=lbl_80369098+x;
             target.y=lbl_80369098+y;
@@ -376,6 +375,7 @@ void fn_80054C14(void *arg0) {
     if(Pad_IsButton(pad,48)) fn_80025624(gPadInput,16);
 }
 
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 #pragma peephole on
 #pragma global_optimizer on
