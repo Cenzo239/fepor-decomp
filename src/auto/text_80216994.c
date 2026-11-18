@@ -1597,12 +1597,10 @@ s32 fn_802195B0(s32 arg0, void *arg1, void *arg2) {
     void fn_80219334(void);
     extern u16 __CARDBlock[];
     u8 *entry;
-    u16 *cnt;
 
-    cnt = (u16 *)((u8 *)arg1 + 4);
-    *cnt = *cnt + 1;
+    *(u16 *)((u8 *)arg1 + 4) = (u16)(*(u16 *)((u8 *)arg1 + 4) + 1);
     entry = (u8 *)__CARDBlock + arg0 * 0x110;
-    fn_802198C0(cnt, 0x1FFCU, arg1, (u8 *)arg1 + 2);
+    fn_802198C0((u8 *)arg1 + 4, 0x1FFCU, arg1, (u8 *)arg1 + 2);
     fn_80205110(arg1, 0x2000U);
     *(void **)(entry + 0xD8) = arg2;
     return __CARDEraseSector(arg0, *(u32 *)(entry + 0xC) * (((u32)arg1 - *(u32 *)(entry + 0x80)) >> 13), fn_80219334);
@@ -3583,6 +3581,9 @@ s32 fn_8021D118(s32 chan, s32 fileNo, void *stat, s32 callback) {
     u32 ticksPerSecond;
     u8 *status = (u8 *)stat;
     CardDirEntry *entry;
+    u8 *__CARDGetDirBlock(void *);
+    s32 __CARDPutControlBlock(void *, s32);
+    s32 __CARDUpdateDir(s32, s32);
 
     if (fileNo < 0 || fileNo >= 0x7F) {
         goto invalid;
