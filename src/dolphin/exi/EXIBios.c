@@ -578,7 +578,7 @@ static inline s32 EXIAttachInternal(s32 chan, void *callback)
     } else {
         EXIClearInterrupts(chan, 1, 0, 0);
         exi->extCallback = callback;
-        __OSUnmaskInterrupts(0x100000U >> (chan * 3));
+        __OSUnmaskInterrupts(mask);
         exi->state |= 8;
         OSRestoreInterrupts(enabled);
         result = 1;
