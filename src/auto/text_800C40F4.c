@@ -31,19 +31,6 @@ static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
     return Allegiance_Compare(a, b) == 1;
 }
-static inline s32 ai_manh_le(s32 x, s32 y, s32 cy, s32 cx, s32 lim) {
-    s32 dx;
-    s32 dy;
-    dx = x - cy;
-    if (dx < 0) {
-        dx = -dx;
-    }
-    dy = y - cx;
-    if (dy < 0) {
-        dy = -dy;
-    }
-    return dy + dx <= lim;
-}
 extern s32 lbl_8036A0C8;
 extern s32 lbl_8036A0D0;
 extern s32 lbl_8036A0DC;
@@ -26159,11 +26146,10 @@ void fn_800F9FC4(void *arg0) {
     s16 x;
     u8 *unit;
     u8 *cmd;
+    s32 cy;
+    s32 cx;
     s32 dx;
     s32 dy;
-    s8 cy;
-    s8 cx;
-    u8 *ctx;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
@@ -26175,9 +26161,8 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            ctx = gUiContext;
-            cy = ctx[0xE];
-            cx = ctx[0xD];
+            cy = (s8)gUiContext[0xE];
+            cx = (s8)gUiContext[0xD];
             dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
