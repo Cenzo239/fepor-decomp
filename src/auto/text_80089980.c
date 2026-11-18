@@ -96,7 +96,7 @@ f32 quotient=(f32)arg0/lbl_803696C8;
 }
 #pragma peephole reset
 #pragma global_optimizer reset
-#pragma global_optimizer on
+#pragma peephole on
 void fn_800899D4(s32 arg0) {
 extern f32 lbl_803696C8;
 extern void *lbl_803674EC;
