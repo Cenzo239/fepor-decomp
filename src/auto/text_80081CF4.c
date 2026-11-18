@@ -291,9 +291,10 @@ f32 y = lbl_803695C8;
 x += *(f32*)((u8*)arg0+0x14);
 y = *(f32*)((u8*)arg0+0x18) + y;
 fn_80082298(gBattle,1,x,y);
-}
-
-void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
+  }
+  #pragma global_optimizer on
+  
+  void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
     void Prim2D_Begin(void);
