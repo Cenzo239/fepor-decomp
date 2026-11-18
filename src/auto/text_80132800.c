@@ -565,6 +565,105 @@ extern "C" void fn_80132CFC(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
+extern "C" void fn_80132FD0(void *arg0) {
+    void Ui_PlaySeCue(void *, s32);
+    extern u8 lbl_802764BC[];
+    extern s32 gUiInputFlags;
+    extern void *gPadInput;
+    s16 temp_r0;
+    s16 temp_r31;
+    s32 temp_r3_2;
+    s32 temp_r4;
+    s16 temp_r5;
+    s16 temp_r6;
+    s16 temp_r8;
+    s16 temp_r8_2;
+    s32 var_r12;
+    s16 var_r7;
+    s32 temp_r0_2;
+    s32 temp_r10;
+    s32 temp_r10_2;
+    s32 temp_r3;
+    u8 var_r3;
+    void *var_r9;
+
+    temp_r31 = M2C_FIELD(arg0, s16 *, 0x44);
+    temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x30)(arg0);
+    temp_r8 = M2C_FIELD(arg0, s16 *, 0x3E);
+    var_r3 = 0;
+    var_r7 = (s16) (temp_r8 / temp_r31);
+    temp_r6 = (s16) ((s32) ((temp_r31 + temp_r5) - 1) / temp_r31);
+    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % temp_r31;
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
+        var_r3 = 1;
+    }
+    if (var_r3 == 0) {
+        var_r9 = gPadInput;
+        temp_r8_2 = M2C_FIELD(arg0, s16 *, 0x3E);
+        temp_r10 = M2C_FIELD(var_r9, s32 *, 4);
+        temp_r0_2 = M2C_FIELD(var_r9, s32 *, 0xC);
+        temp_r3 = temp_r10 & (M2C_FIELD(var_r9, s32 *, 8) ^ temp_r10);
+        if (temp_r8 == 4) {
+            if (temp_r3 & 0x08000008) {
+                M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (temp_r8_2 - 1);
+            } else if (temp_r3 & 0x01000001) {
+                M2C_FIELD(arg0, s16 *, 0x3E) = 2;
+            }
+        } else {
+            if (temp_r31 > 1) {
+                var_r12 = temp_r5 - (var_r7 * temp_r31);
+                if (var_r12 > temp_r31) {
+                    var_r12 = temp_r31;
+                }
+                if (temp_r0_2 & 0x01000001) {
+                    if (temp_r0 > 0) {
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - 1);
+                    } else if (temp_r0_2 == temp_r3) {
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) ((var_r12 + M2C_FIELD(arg0, s16 *, 0x3E)) - 1);
+                    }
+                } else if (temp_r0_2 & 0x02000002) {
+                    temp_r10_2 = var_r12 - 1;
+                    if (temp_r0 < temp_r10_2) {
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + 1);
+                    } else if (temp_r0_2 == temp_r3) {
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - temp_r10_2);
+                    }
+                }
+            }
+            var_r9 = (void *) (temp_r0_2 & 0x08000008);
+            if (var_r9 != NULL) {
+                
+                if (var_r7 == 0) {
+                    if (temp_r0_2 == temp_r3) {
+                        temp_r4 = temp_r5 - 1;
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + ((temp_r6 - 1) * temp_r31));
+                        if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r4) {
+                            M2C_FIELD(arg0, s16 *, 0x3E) = temp_r4;
+                        }
+                    }
+                } else {
+                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - temp_r31);
+                }
+            } else if (temp_r0_2 & 0x04000004) {
+                if (var_r7 == (s32) (temp_r6 - 1)) {
+                    M2C_FIELD(arg0, s16 *, 0x3E) = 4;
+                } else {
+                    temp_r3_2 = temp_r5 - 1;
+                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + temp_r31);
+                    if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r3_2) {
+                        M2C_FIELD(arg0, s16 *, 0x3E) = temp_r3_2;
+                    }
+                }
+            }
+        }
+        if (temp_r8_2 != (s16) M2C_FIELD(arg0, s16 *, 0x3E)) {
+            Ui_PlaySeCue(lbl_802764BC + 0x1DF, 0x64);
+        }
+    }
+}
+
+#pragma global_optimizer reset
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_80133230(void *self, void *other) {
@@ -1043,54 +1142,41 @@ void fn_80133E50(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_80133EA4(s32 *arg0, void *arg1) {
-    struct Point {
-        s16 x;
-        s16 y;
-    };
-    struct Point *fn_8013F748(void *, struct Point *, struct Point *);
-    s32 Text_MeasureHeight(s32, f32);
-    extern f32 lbl_8036A5AC;
-    struct Point out;
-    struct Point in;
-    s32 kind;
-    s32 colW;
-    u32 quot;
-    s16 rowH;
-    s32 t;
-    s32 rem;
-    s32 hdiv;
-    s16 x;
-    s16 y;
-    s16 half;
-    s16 off48;
-    s16 off4a;
-
-    colW = *(s16 *)((u8 *)arg1 + 0x44);
-    kind = *(s16 *)((u8 *)arg1 + 0x3E);
-    quot = kind / colW;
-    t = *(s16 *)((u8 *)arg1 + 0x12);
-    rem = *(s16 *)((u8 *)arg1 + 0x16) - t;
-    rowH = *(s16 *)((u8 *)arg1 + 0x46);
-    off48 = *(s16 *)((u8 *)arg1 + 0x48);
-    off4a = *(s16 *)((u8 *)arg1 + 0x4A);
-    t = (s16)rem;
-    hdiv = t / colW;
-    rem = quot * colW;
-    t = (s16)hdiv;
-    rem = kind - rem;
-    rem = (s16)rem;
-    rem = t * rem;
-    x = (s16)(rem + off48);
-    y = (s16)(rowH * (s16)quot + off4a);
-    t = Text_MeasureHeight(-1, lbl_8036A5AC);
-    half = (s16)((rowH - t) >> 1);
-    if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
-        x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
-        y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
-    }
-    in.x = x;
-    in.y = (s16)(y + half);
-    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
+Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
+s32 Text_MeasureHeight(s32, f32);
+extern f32 lbl_8036A5AC;
+Vec2s out,in;
+u16 rowH;
+s16 kind,colW;
+u32 quot;
+s32 rem,hdiv,t;
+s16 x,y,half;
+s32 off48,off4a;
+colW=*(s16*)((u8*)arg1+0x44);
+kind=*(s16*)((u8*)arg1+0x3e);
+quot=kind/colW;
+t=*(s16*)((u8*)arg1+0x12);
+rem=*(s16*)((u8*)arg1+0x16);
+rem-=t;
+rowH=*(s16*)((u8*)arg1+0x46);
+off48=*(s16*)((u8*)arg1+0x48);
+off4a=*(s16*)((u8*)arg1+0x4a);
+t=(s16)rem;
+hdiv=t/colW;
+t=(s16)hdiv;
+rem=kind%colW;
+rem=(s16)rem;
+rem=t*rem;
+x=(s16)(rem+off48);
+y=(s16)(rowH*(s16)quot+off4a);
+t=Text_MeasureHeight(-1,lbl_8036A5AC);
+half=(s16)(((s32)(s16)rowH-t)>>1);
+if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
+ x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
+ y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
+}
+in.x=x; in.y=y+half;
+*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
 #pragma use_lmw_stmw reset
 s32 fn_80133FA4(void *arg0) {
@@ -1535,48 +1621,47 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 }
 
 #pragma use_lmw_stmw on
+#pragma scheduling on
+#pragma global_optimizer off
+#pragma optimization_level 3
+#pragma peephole off
 void fn_80134C24(s32 *arg0, void *arg1) {
-    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-    s32 Text_MeasureHeight(s32, f32);
-    extern f32 lbl_8036A5AC;
-    Vec2s out;
-    Vec2s in;
-    s32 kind;
-    s32 colW;
-    u32 quot;
-    s16 rowH;
-    s32 t;
-    s32 rem;
-    s32 hdiv;
-    s16 x;
-    s16 y;
-    s16 half;
-    s16 off48;
-    s16 off4a;
-
-    colW = *(s16 *)((u8 *)arg1 + 0x44);
-    kind = *(s16 *)((u8 *)arg1 + 0x3E);
-    quot = kind / colW;
-    t = *(s16 *)((u8 *)arg1 + 0x12);
-    rem = *(s16 *)((u8 *)arg1 + 0x16) - t;
-    rowH = *(s16 *)((u8 *)arg1 + 0x46);
-    off48 = *(s16 *)((u8 *)arg1 + 0x48);
-    off4a = *(s16 *)((u8 *)arg1 + 0x4A);
-    t = (s16)rem;
-    hdiv = t / colW;
-    rem = quot * colW;
-    t = (s16)hdiv;
-    rem = kind - rem;
-    rem = (s16)rem;
-    rem = t * rem;
-    x = (s16)(rem + off48);
-    y = (s16)(rowH * (s16)quot + off4a);
-    t = Text_MeasureHeight(-1, lbl_8036A5AC);
-    half = (s16)((rowH - t) >> 1);
-    in.x = x;
-    in.y = (s16)(y + half);
-    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
+Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
+s32 Text_MeasureHeight(s32, f32);
+extern f32 lbl_8036A5AC;
+Vec2s out,in;
+u16 rowH;
+f32 scale=lbl_8036A5AC;
+s16 kind,colW;
+u32 quot;
+s32 rem,hdiv,t;
+s16 x,y,half,off48,off4a;
+colW=*(s16*)((u8*)arg1+0x44);
+kind=*(s16*)((u8*)arg1+0x3e);
+quot=kind/colW;
+t=*(s16*)((u8*)arg1+0x12);
+rem=*(s16*)((u8*)arg1+0x16);
+rem-=t;
+rowH=*(s16*)((u8*)arg1+0x46);
+off48=*(s16*)((u8*)arg1+0x48);
+off4a=*(s16*)((u8*)arg1+0x4a);
+t=(s16)rem;
+hdiv=t/colW;
+t=(s16)hdiv;
+rem=kind%colW;
+rem=(s16)rem;
+rem=t*rem;
+x=(s16)(rem+off48);
+y=(s16)(rowH*(s16)quot+off4a);
+t=Text_MeasureHeight(-1,scale);
+half=(s16)(((s32)(s16)rowH-t)>>1);
+in.x=x; in.y=y+half;
+*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
+#pragma peephole reset
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma scheduling reset
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
