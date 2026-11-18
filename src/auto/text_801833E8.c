@@ -5190,19 +5190,6 @@ void fn_8018DDA8(void *arg0) {
     fn_8005C8B4(lbl_80279B1C + 0x105);
 }
 
-#pragma scheduling off
-static inline void Ui_ApplyStatusPanelRow(void *panel, const u16 *icons)
-{
-    u16 *fields = (u16 *)((u8 *)panel + 0x48);
-    fields[0] = icons[0];
-    fields[1] = icons[1];
-    fields[2] = icons[2];
-    fields[3] = icons[3];
-    fields[4] = icons[4];
-    fields[5] = icons[5];
-}
-
-#pragma scheduling reset
 static inline void Ui_DrawStatusPanelTextureAt(u8 *self, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
 {
     void **fn_8006EDD8(s32, s32);
