@@ -702,8 +702,9 @@ perf1_done:
 
     __GXData[1] = 0;
 }
-#pragma peephole reset
-#pragma opt_common_subs reset
+#pragma global_optimizer off
+#pragma scheduling off
+#pragma peephole on
 void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
     u32 ctr0;
     u32 ctr1;
@@ -713,50 +714,64 @@ void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
     u32 ctrH1;
     u32 ctrL;
     volatile u16 *base;
-    volatile u16 *regH;
-    volatile u16 *regL;
 
     base = __cpReg;
 
+{
+ volatile u16 *regL;
+ volatile u16 *regH;
     regH = base + 0x21;
-    ctrH0 = base[0x21];
+    ctr0 = base[0x21];
     regL = base + 0x20;
     do {
-        ctrH1 = ctrH0;
+        ctrH1 = ctr0;
         ctrL = *regL;
-        ctrH0 = *regH;
-    } while (ctrH0 != ctrH1);
-    ctr0 = (ctrH0 << 16) | ctrL;
+        ctr0 = *regH;
+    } while (ctr0 != ctrH1);
+    ctr0 = (ctr0 << 16) | ctrL;
+}
 
+{
+ volatile u16 *regL;
+ volatile u16 *regH;
     regH = base + 0x23;
-    ctrH0 = base[0x23];
+    ctr1 = base[0x23];
     regL = base + 0x22;
     do {
-        ctrH1 = ctrH0;
+        ctrH1 = ctr1;
         ctrL = *regL;
-        ctrH0 = *regH;
-    } while (ctrH0 != ctrH1);
-    ctr1 = (ctrH0 << 16) | ctrL;
+        ctr1 = *regH;
+    } while (ctr1 != ctrH1);
+    ctr1 = (ctr1 << 16) | ctrL;
+}
 
+{
+ volatile u16 *regL;
+ volatile u16 *regH;
     regH = base + 0x25;
-    ctrH0 = base[0x25];
+    ctr2 = base[0x25];
     regL = base + 0x24;
     do {
-        ctrH1 = ctrH0;
+        ctrH1 = ctr2;
         ctrL = *regL;
-        ctrH0 = *regH;
-    } while (ctrH0 != ctrH1);
-    ctr2 = (ctrH0 << 16) | ctrL;
+        ctr2 = *regH;
+    } while (ctr2 != ctrH1);
+    ctr2 = (ctr2 << 16) | ctrL;
+}
 
+{
+ volatile u16 *regL;
+ volatile u16 *regH;
     regH = base + 0x27;
-    ctrH0 = base[0x27];
+    ctr3 = base[0x27];
     regL = base + 0x26;
     do {
-        ctrH1 = ctrH0;
+        ctrH1 = ctr3;
         ctrL = *regL;
-        ctrH0 = *regH;
-    } while (ctrH0 != ctrH1);
-    ctr3 = (ctrH0 << 16) | ctrL;
+        ctr3 = *regH;
+    } while (ctr3 != ctrH1);
+    ctr3 = (ctr3 << 16) | ctrL;
+}
 
     switch (M2C_FIELD(__GXData, s32 *, 0x59C)) {
     case 10:
@@ -808,7 +823,8 @@ void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
         break;
     }
 }
-
+#pragma scheduling reset
+#pragma global_optimizer reset
 void fn_80225BF4(void) {
     extern u16 *__cpReg;
     M2C_FIELD(__cpReg, s16 *, 4) = 4;
