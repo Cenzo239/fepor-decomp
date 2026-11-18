@@ -9143,9 +9143,9 @@ s32 fn_801208BC(s8 *text, s32 wanted)
           case 'F':
             switch ((s32) ((u8) (*(text++))))
           {
-            case 'C':
-            {
-              out = fe24buf.buf;
+                          case 'C':
+              {
+                out = lbl_8032FE24;
               while (((s32) ((u8) (*text))) != '|')
               {
                 *(out++) = *(text++);
