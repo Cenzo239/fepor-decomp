@@ -875,26 +875,37 @@ if(callback) {
 callback(channel,result);
 }
 }
-void fn_80265C34(s32 arg0, s32 arg1) {
-extern u8 lbl_803669A0[];
-void fn_80266F18(s32, void *);
-u8 *entry;
-u8 *queue;
-void (*callback)(s32,s32);
-s32 result=arg1;
-entry=lbl_803669A0+(arg0<<8);
-queue=entry+0x40;
-if(result==0) fn_80266F18(arg0,queue+0x18);
-else {
-*(u32*)(queue+0x2C)=0;
-*(u32*)(queue+0x28)=0;
-callback=*(void (**)(s32,s32))(queue+0x14);
-if(callback) {
-*(u32*)(queue+0x14)=0;
-callback(arg0,result);
-}
-}
-*(u32*)(entry+0x20)=result;
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma scheduling on
+#pragma peephole on
+void fn_80265C34(s32 arg0, s32 arg1)
+{
+  extern u8 lbl_803669A0[];
+  void fn_80266F18(s32, void *);
+  u8 *entry;
+  u8 *queue;
+  void (*callback)(s32, s32);
+  unsigned int pad;
+  entry = lbl_803669A0 + (arg0 << 8);
+  queue = entry + 0x40;
+  if (arg1 == 0)
+  {
+    fn_80266F18(arg0, queue + 0x18);
+  }
+  else
+  {
+    *((u32 *) (queue + 0x2C)) = 0;
+    *((u32 *) (queue + 0x28)) = 0;
+    callback = *((void (**)(s32, s32)) (queue + 0x14));
+    if (callback)
+    {
+      *((u32 *) (queue + 0x14)) = 0;
+      callback(arg0, arg1);
+    }
+  }
+  *((u32 *) (entry + 0x20)) = arg1;
 }
 #pragma pop
 void fn_80265CB4(s32 arg0, s32 arg1)
