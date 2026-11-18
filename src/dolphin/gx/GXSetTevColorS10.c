@@ -219,8 +219,6 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 #pragma scheduling off
 
-#pragma scheduling reset
-
 void fn_80223C14(s32 id, u32 *color)
 {
   u16 *gx;
@@ -252,6 +250,7 @@ void fn_80223C14(s32 id, u32 *color)
   GXWGFifo.u32 = idx;
   gx[1] = 0;
 }
+#pragma scheduling on
 #pragma optimization_level 2
 #pragma opt_propagation off
 void fn_80223C78(s32 id, u32 *color) {
