@@ -9684,86 +9684,51 @@ table += idx * 0x458;
 return 1;
 }
 
+#pragma global_optimizer off
+#pragma dont_inline on
 void fn_802567B0(void *arg0) {
-    extern u8 lbl_80359710[3584];
-    extern u16 lbl_80368A4C;
-    extern u8 lbl_80368A4E;
-    extern u8 lbl_80368A4F;
-    extern u8 lbl_80368A50;
-    extern u8 lbl_80368A51;
-
-    void *temp_r3;
-    s32 temp_r3_2;
-    u16 temp_r0_3;
-    u16 temp_r0_4;
-    u8 temp_r0;
-    u8 temp_r0_2;
-    void *temp_r6;
-    void *temp_r6_2;
-
-    Sound_SetSynthVoiceState(arg0, 2);
-    
-    // Load base address and offset
-    temp_r3 = &lbl_80359710 + 0x800 + ((*(s32*)((char*)arg0 + 0xF4) << 2) & 0x3FC);
-    
-    if (*(u16*)((char*)temp_r3 + 2) == 1) {
-        temp_r0 = *(u8*)((char*)temp_r3);
-        if (temp_r0 != 0xFF) {
-            *(u8*)((char*)&lbl_80359710 + 0x800 + ((temp_r0 << 2) & 0x3FC)) = *(u8*)((char*)temp_r3 + 1);
-        } else {
-            *(u8*)((char*)&lbl_80359710 + 0x900 + *(u8*)((char*)arg0 + 0x10C)) = *(u8*)((char*)temp_r3 + 1);
-        }
-        temp_r0_2 = *(u8*)((char*)temp_r3 + 1);
-        if (temp_r0_2 != 0xFF) {
-            *(u8*)((char*)&lbl_80359710 + 0x800 + ((temp_r0_2 << 2) & 0x3FC)) = *(u8*)((char*)temp_r3);
-        } else if (*(u8*)((char*)temp_r3) == 0xFF) {
-            temp_r6 = &lbl_80359710 + 0xA00 + (*(u8*)((char*)arg0 + 0x10C) << 2);
-            
-            temp_r0_3 = *(u16*)((char*)temp_r6 + 2);
-            if (temp_r0_3 != 0xFFFF) {
-                *(u16*)((char*)&lbl_80359710 + 0xA00 + ((temp_r0_3 << 2) & 0x3FFFC)) = *(u16*)((char*)temp_r6);
-            } else {
-                lbl_80368A4C = *(u16*)((char*)temp_r6);
-            }
-            
-            temp_r0_4 = *(u16*)((char*)temp_r6);
-            if (temp_r0_4 != 0xFFFF) {
-                *(u16*)((char*)&lbl_80359710 + 0xA00 + ((temp_r0_4 << 2) & 0x3FFFC)) = *(u16*)((char*)temp_r6 + 2);
-            }
-        }
-        *(u16*)((char*)temp_r3 + 2) = 0;
-    }
-    
-    *(s32*)((char*)arg0 + 0x34) = 0;
-    *(u8*)((char*)arg0 + 0x10C) = 0;
-    
-    temp_r3_2 = *(s32*)((char*)arg0 + 0xF4);
-    temp_r6_2 = &lbl_80359710 + 0xE00 + ((temp_r3_2 << 2) & 0x3FC);
-    
-    if (*(u16*)((char*)temp_r6_2 + 2) == 0) {
-        *(u16*)((char*)temp_r6_2 + 2) = 1;
-        
-        if (lbl_80368A51 != 0xFF) {
-            *(u8*)((char*)temp_r6_2 + 1) = 0xFF;
-            *(u8*)((char*)temp_r6_2) = lbl_80368A50;
-            *(u8*)((char*)&lbl_80359710 + 0xE00 + (lbl_80368A50 << 2) + 1) = (u8) temp_r3_2;
-        } else {
-            lbl_80368A51 = (u8) temp_r3_2;
-            *(u8*)((char*)temp_r6_2 + 1) = 0xFF;
-            *(u8*)((char*)temp_r6_2) = 0xFF;
-        }
-        lbl_80368A50 = (u8) temp_r3_2;
-        
-        if (*(u8*)((char*)arg0 + 0x11D) != 0) {
-            lbl_80368A4F--;
-        } else {
-            lbl_80368A4E--;
-        }
-    }
-    
-    *(s32*)((char*)arg0 + 0xF4) = -1;
+ extern u8 lbl_80359710[3584];
+ extern u16 lbl_80368A4C;
+ extern u8 lbl_80368A4E, lbl_80368A4F, lbl_80368A50, lbl_80368A51;
+ u8 *base=lbl_80359710;
+ u8 *node,*tbl,*n2;
+ u8 prev,next,id;
+ u16 p,n;
+ Sound_SetSynthVoiceState(arg0,2);
+ node=base+0x800; node+=(u8)*(u32*)((u8*)arg0+0xF4)*4;
+ if(*(u16*)(node+2)==1) {
+ prev=node[0];
+ if(prev!=255) { tbl=base+0x800; tbl+=(u8)prev*4; tbl[1]=node[1]; }
+ else {tbl=base+0x900;tbl[((u8*)arg0)[0x10C]]=node[1];}
+ next=node[1];
+ if(next!=255) {tbl=base+0x800;tbl[(u8)next*4]=node[0];}
+ else if(node[0]==255) {
+ n2=base+0xA00;n2+=((u8*)arg0)[0x10C]*4;
+ p=*(u16*)(n2+2);
+ if(p!=65535){tbl=base+0xA00;*(u16*)(tbl+(u16)p*4)=*(u16*)n2;}
+ else lbl_80368A4C=*(u16*)n2;
+ n=*(u16*)n2;
+ if(n!=65535){tbl=base+0xA00;tbl+=(u16)n*4;*(u16*)(tbl+2)=*(u16*)(n2+2);}
+ }
+ *(u16*)(node+2)=0;
+ }
+ *(u32*)((u8*)arg0+0x34)=0;
+ ((u8*)arg0)[0x10C]=0;
+ id=*(u32*)((u8*)arg0+0xF4);
+ n2=base+0xE00;n2+=id*4;
+ if(*(u16*)(n2+2)==0) {
+ *(u16*)(n2+2)=1;
+ if(lbl_80368A51!=255) {
+ n2[1]=255;n2[0]=lbl_80368A50;
+ tbl=base+0xE00;tbl+=lbl_80368A50*4;tbl[1]=id;
+ }else{lbl_80368A51=id;n2[1]=255;n2[0]=255;}
+ lbl_80368A50=id;
+ if(((u8*)arg0)[0x11D]) lbl_80368A4F--;else lbl_80368A4E--;
+ }
+ *(u32*)((u8*)arg0+0xF4)=-1;
 }
-
+#pragma dont_inline reset
+#pragma global_optimizer reset
 void fn_80256974(void) {
 extern u8 lbl_80359710[3584];
 extern u16 lbl_80368A4C;
@@ -14536,28 +14501,40 @@ return result;
 }
 }
 
-s32 fn_80261014(u32 *arg0, u8 arg1, u8 arg2, u32 arg3) {
-    if (arg1 > 64) {
-        arg1 = 64;
-    }
-    gSoundData[0x210] = arg1;
-    
-    if (arg2 > 8) {
-        arg2 = 8;
-    }
-    gSoundData[0x213] = arg2;
-
-    gSoundData[0x211] = arg3;
-    gSoundData[0x212] = arg3;
-    
-    *arg0 = 0x7D00; // 32000
-    
-    gSoundReady = 0;
-    lbl_803689B0 = 0; 
-    
-    return 1;
+#pragma dont_inline on
+void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
+ void Sound_WriteParamU8(s32,s32,s32,u8);
+ s32 mapped;
+ u8 channel,bank;
+ u16 v;
+ u8 a,b,c;
+ u8 param;
+ s32 value;
+ if((s16)arg2<0) arg2=0; else arg2=(s16)arg2>0x3FFF?0x3FFF:(s16)arg2;
+ value=(s16)arg2;
+ param=(u8)arg1;
+ mapped=arg1;
+ switch(param) {
+ case 128:mapped=128;break;case 129:mapped=130;break;
+ case 130:mapped=160;break;case 131:mapped=161;break;
+ case 132:mapped=131;break;case 133:mapped=132;break;
+ case 134:mapped=162;break;case 135:mapped=163;break;
+ case 136:mapped=164;break;
+ }
+ switch((u8)mapped) {case 160:case 161:break;default:
+ channel=((u8*)arg0)[0x121];
+ if(channel!=255) {
+ bank=((u8*)arg0)[0x122];
+ if(channel!=255) {
+ if((u8)arg1<0x40U) {v=value;a=param&31;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+32),channel,bank,v&127);}
+ else if((u8)arg1==128||(u8)arg1==129) {v=value;b=param&254;Sound_WriteParamU8(b,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(b+1),channel,bank,v&127);}
+ else if((u8)arg1==132||(u8)arg1==133) {v=value;c=param&254;Sound_WriteParamU8(c,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(c+1),channel,bank,v&127);}
+ else Sound_WriteParamU8(arg1,channel,bank,(u8)((u16)value>>7));
+ }
+ }
+ }
 }
-
+#pragma dont_inline reset
 u16 fn_802611F8(void) {
     extern u32 lbl_803670B8;
     u32 temp_r0;
@@ -17206,97 +17183,73 @@ s32 fn_80264BA4(void *arg0) {
     return 1;
 }
 
-f32 fn_80264BF0(void *arg0) {
-    s32 temp_r10;
-    s32 var_ctr;
-    s32 var_r5;
-    u32 var_r4;
-
-    var_r4 = M2C_FIELD(arg0, u32 *, 0xC);
-    var_r5 = M2C_FIELD(arg0, s32 *, 0x10);
-    var_ctr = 0xA0;
-loop_1:
-    temp_r10 = ((var_r4 << 7) & 0x780) | ((var_r4 >> 0x19U) & 0x70);
-    var_r4 += M2C_FIELD(arg0, s32 *, 0x14);
-    M2C_ERROR(/* unknown instruction: mcrxr $cr0 */);
-    if (M2C_ERROR(/* Read from unset register $cr0_eq */)) {
-        M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-        var_ctr -= 1;
-        if (var_ctr == 0) {
-
-        } else {
-            goto loop_1;
-        }
-    } else {
-        var_r5 += 1;
-        if (var_r5 == (s32) M2C_FIELD(arg0, s32 *, 0x1C)) {
-            var_r5 = M2C_FIELD(arg0, s32 *, 0x20);
-        }
-        var_ctr -= 1;
-        if (var_ctr != 0) {
-            M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-            goto loop_1;
-        }
-        M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-    }
-    M2C_ERROR(/* unknown instruction: stfiwx $f2, $zero, $r10 */);
-    M2C_ERROR(/* unknown instruction: stfiwx $f3, $zero, $r10 */);
-    M2C_FIELD(arg0, u32 *, 0xC) = var_r4;
-    M2C_FIELD(arg0, s32 *, 0x10) = var_r5;
-    return M2C_ERROR(/* unknown instruction: stfiwx $f1, $zero, $r9 */);
+#pragma fp_contract on
+#pragma use_lmw_stmw on
+void fn_80264BF0(void *arg0) {
+u8 *state=(u8*)arg0;
+s32 *out=*(s32**)(state+0);
+s32 *samples=*(s32**)(state+4);
+s32 *history=*(s32**)(state+8);
+u32 phase=*(u32*)(state+0xc);
+s32 index=*(s32*)(state+0x10);
+u32 step=*(u32*)(state+0x14);
+s32 end=*(s32*)(state+0x1c);
+s32 restart=*(s32*)(state+0x20);
+f32 a=(f32)history[0], b=(f32)history[1], c=(f32)history[2], d=(f32)samples[index];
+s32 count=160;
+do {
+u32 oldPhase=phase;
+u32 offset=((phase<<7)|(phase>>25))&0x7f0;
+f32 *coef=(f32*)((u8*)lbl_802A4590+offset);
+f32 value;
+phase+=step;
+value=a*coef[0];
+value=b*coef[1]+value;
+value=c*coef[2]+value;
+value=d*coef[3]+value;
+*out++=(s32)value;
+if(phase<oldPhase) {
+index++;
+a=b; b=c; c=d;
+if(index==end) index=restart;
+if(--count==0) break;
+d=(f32)samples[index];
+} else {
+if(--count==0) break;
 }
-
-f32 fn_80264D88(void *arg0) {
-    s32 temp_r10;
-    s32 temp_r11;
-    s32 temp_r7;
-    s32 temp_r8;
-    s32 var_ctr;
-    s32 var_r5;
-    u32 var_r4;
-
-    var_r4 = M2C_FIELD(arg0, u32 *, 0xC);
-    var_r5 = M2C_FIELD(arg0, s32 *, 0x10);
-    temp_r8 = M2C_FIELD(arg0, s32 *, 0x1C);
-    temp_r7 = M2C_FIELD(arg0, s32 *, 0x20);
-    var_ctr = 0xA0;
-loop_1:
-    temp_r10 = ((var_r4 << 7) & 0x780) | ((var_r4 >> 0x19U) & 0x70);
-    var_r4 += M2C_FIELD(arg0, s32 *, 0x14);
-    M2C_ERROR(/* unknown instruction: mcrxr $cr0 */);
-    var_r5 += 1;
-    if (M2C_ERROR(/* Read from unset register $cr0_eq */)) {
-        if (var_r5 == temp_r8) {
-            var_r5 = temp_r7;
-        }
-        var_ctr -= 1;
-        if (var_ctr != 0) {
-            M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-            goto loop_1;
-        }
-    } else {
-        if (var_r5 == temp_r8) {
-            var_r5 = temp_r7;
-        }
-        temp_r11 = var_r5 * 4;
-        var_r5 += 1;
-        if (var_r5 == temp_r8) {
-            var_r5 = temp_r7;
-        }
-        var_ctr -= 1;
-        if (var_ctr != 0) {
-            M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-            goto loop_1;
-        }
-    }
-    M2C_ERROR(/* unknown instruction: stfiwx $f10, $r26, $r30 */);
-    M2C_ERROR(/* unknown instruction: stfiwx $f2, $zero, $r10 */);
-    M2C_ERROR(/* unknown instruction: stfiwx $f3, $zero, $r10 */);
-    M2C_FIELD(arg0, u32 *, 0xC) = var_r4;
-    M2C_FIELD(arg0, s32 *, 0x10) = var_r5;
-    return M2C_ERROR(/* unknown instruction: stfiwx $f1, $zero, $r9 */);
+} while(1);
+history=*(s32**)(state+8);
+history[0]=(s32)a; history[1]=(s32)b; history[2]=(s32)c;
+*(u32*)(state+0xc)=phase;
+*(s32*)(state+0x10)=index;
 }
-
+#pragma fp_contract on
+void fn_80264D88(void *arg0) {
+u8 *state=(u8*)arg0;
+u32 phase=*(u32*)(state+12);
+s32 index=*(s32*)(state+16);
+u32 step=*(u32*)(state+20);
+s32 end=*(s32*)(state+28), restart=*(s32*)(state+32);
+s32 *samples=*(s32**)(state+4), *out=*(s32**)state, *history=*(s32**)(state+8);
+f32 a=history[0],b=history[1],c=history[2],d=samples[index];
+s32 count=160;
+do {
+u32 old=phase;
+f32 *coef=(f32*)((u8*)lbl_802A4590+(((phase<<7)|(phase>>25))&0x7f0));
+f32 value;
+phase+=step;
+index++;
+value=a*coef[0]; value=b*coef[1]+value; value=c*coef[2]+value; value=d*coef[3]+value;
+if(phase<old) { a=b;b=c;c=d; }
+else { if(index==end) index=restart; a=c;b=d;c=samples[index];index++; }
+if(index==end) index=restart;
+*out++=(s32)value;
+if(--count==0) break;
+d=samples[index];
+} while(1);
+history=*(s32**)(state+8); history[0]=(s32)a;history[1]=(s32)b;history[2]=(s32)c;
+*(u32*)(state+12)=phase;*(s32*)(state+16)=index;
+}
 void fn_80264F74(s32 arg0, void *arg1, u8 *arg2)
 {
     u8 *state;
@@ -17394,20 +17347,36 @@ void fn_80264F74(s32 arg0, void *arg1, u8 *arg2)
 
 extern s32 lbl_803631FC;
 extern s32 lbl_80363200;
-s32 fn_80265230(s32 arg0)
-{
-    if (arg0 == 0) {
-        return 0;
-    }
-
-    if (arg0 < 0) {
-        return lbl_803631FC;
-    }
-    
-    if (arg0 >= lbl_80363200) {
-        return lbl_80363200 - 1;
-    }
-    
-    return arg0;
+s32 fn_80265230(void *arg0) {
+extern void *fn_802637A4(s32);
+u8 *state=arg0;
+s32 *a,*b,*c;
+u32 i;
+*(void **)state=fn_802637A4(0x1680);
+if(*(void **)state!=0) {
+*(u8 **)(state+12)=*(u8 **)state+0x780;
+*(u8 **)(state+24)=*(u8 **)(state+12)+0x780;
+*(u8 **)(state+4)=*(u8 **)state+0x280;
+*(u8 **)(state+16)=*(u8 **)(state+12)+0x280;
+*(u8 **)(state+28)=*(u8 **)(state+24)+0x280;
+*(u8 **)(state+8)=*(u8 **)state+0x500;
+*(u8 **)(state+20)=*(u8 **)(state+12)+0x500;
+*(u8 **)(state+32)=*(u8 **)(state+24)+0x500;
+a=*(s32**)state;b=*(s32**)(state+12);c=*(s32**)(state+24);
+for(i=0;i<320;i++) { a[i]=0;b[i]=0;c[i]=0; }
+state[0x24]=1;
+*(u32*)(state+0x28)=*(u32*)(state+0x2c)=*(u32*)(state+0x30)=*(u32*)(state+0x34)=0;
+*(u32*)(state+0x38)=*(u32*)(state+0x3c)=*(u32*)(state+0x40)=*(u32*)(state+0x44)=0;
+*(u32*)(state+0x48)=*(u32*)(state+0x4c)=*(u32*)(state+0x50)=*(u32*)(state+0x54)=0;
+*(u32*)(state+0x88)=480;*(u32*)(state+0x8c)=0;
+*(u32*)(state+0x5c)=320-(*(u32*)(state+0x90)-5)*32;
+*(u32*)(state+0x58)=0;
+*(u32*)(state+0x5c)=(*(u32*)(state+0x5c)+(state[0x24]-1)*160)%480;
+*(u32*)(state+0x68)=(*(u32*)(state+0x98)/5+1)&~1;
+*(u32*)(state+0x64)=*(u32*)(state+0x68)/2;
+*(u32*)(state+0x60)=(*(u32*)(state+0x94)<<16)/(*(u32*)(state+0x68)*5);
+return 1;
+}
+return 0;
 }
 
