@@ -573,6 +573,7 @@ block_37:
     return var_r3;
 }
 
+int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float f1, float f2, float f3, float f4);
 void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
  u32 *table;
  u32 result;
@@ -662,9 +663,7 @@ for(index=0,p=table;index<5;++index,++p) { if(*p==result) break; }
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-int fn_8000E7FC(a0, a1, a2, a3, a4, a5, f0, f1, f2, f3, f4)
-int a0, a1, a2, a3, a4, a5;
-float f0, f1, f2, f3, f4;
+int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float f1, float f2, float f3, float f4)
 {
     void *fn_801047D0(void);
     void *fn_801047DC(u8 *);
