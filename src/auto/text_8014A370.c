@@ -3,14 +3,6 @@
 
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
-static inline void SoundMenu_AddEntry(s32 value) {
-    s32 *table;
-    s32 index;
-    index=lbl_80367B04;
-    table=(s32 *)lbl_80367B00;
-    lbl_80367B04=index+1;
-    table[index]=value;
-}
 extern u8 lbl_80367B0E;
 extern u8 lbl_80367B44;
 
@@ -193,7 +185,6 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
     u8 *next;
     u8 flag;
     s32 idx;
-    s32 *table;
 
     (void)arg0;
     lbl_80367B08 = 0;
@@ -219,9 +210,8 @@ loop:
 store_node:
     idx = lbl_80367B04;
     { s32 value=*(s32 *)node;
-    table=(s32 *)lbl_80367B00;
     lbl_80367B04 = idx + 1;
-    table[idx] = value; }
+    *(idx + (s32 *)lbl_80367B00) = value; }
 skip_store:
     if (node[4] == 0) {
         node = NULL;
