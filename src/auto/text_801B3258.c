@@ -6356,23 +6356,21 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
 #pragma cplusplus reset
 
 #pragma optimization_level 3
-void fn_801C0F54(s32 arg0) {
+void fn_801C0F54(void *arg0) {
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, void *);
     void *Msg_Expand(void *);
     extern char gUiScrollListStrings[];
-    s32 self;
-    void *str;
-    u32 p;
+    u32 child;
+    void *msg;
 
-    self = arg0;
-    p = Ui_FindChild(self, 0x80, 0);
-    *(s32 *)((u8 *)p + 0x48) = 1;
-    Ui_SetWidgetText(p, gUiScrollListStrings + 0x86);
-    str = Msg_Expand(gUiScrollListStrings + 0x99);
-    p = Ui_FindChild(self, -0x1000, 0);
-    if (p != 0) {
-        Ui_SetWidgetText(p, str);
+    child = Ui_FindChild((s32)arg0, 0x80, 0);
+    *(s32 *)((u8 *)child + 0x48) = 1;
+    Ui_SetWidgetText(child, gUiScrollListStrings + 0x86);
+    msg = Msg_Expand(gUiScrollListStrings + 0x99);
+    child = Ui_FindChild((s32)arg0, -0x1000, 0);
+    if (child != 0) {
+        Ui_SetWidgetText(child, msg);
     }
 }
 #pragma optimization_level reset
@@ -9082,18 +9080,88 @@ void LightFade_RestoreLights(void) {
     }
 }
 
-u32* fn_801C7080(u32 arg0) {
-    u32 *r4 = (u32*)0x802A66D8;
-    s32 r5 = 0;
+void fn_801C7080(void) {
+    extern u8 LightFade_script[];
+    extern u32 lbl_8036B3E0;
+    extern u32 lbl_8036B3E4;
+    void *Process_Find(void *);
+    u8 *Light_GetChannel(s32);
+    void Light_CopyChannel(u8 *, u8 *);
+    u8 *Fog_GetColor(void);
+    void *proc;
+    u8 *work;
+    u8 *data;
+    u8 *fog;
+    u32 tmp2;
+    u32 tmp;
+    s32 i;
+    u32 zero;
 
-    while (r5 < 256) {
-        if (*r4 == arg0) {
-            return r4;
+    proc = Process_Find(LightFade_script);
+    if (proc == NULL)
+        work = NULL;
+    else
+        work = *(u8 **)((u8 *)proc + 0x30);
+    if (work != NULL) {
+        data = work + 0x284;
+        Light_CopyChannel(Light_GetChannel(0), Light_GetChannel(1));
+        Light_CopyChannel(Light_GetChannel(2), Light_GetChannel(3));
+
+        tmp = lbl_8036B3E0;
+        data[4] = ((u8 *)&tmp)[0];
+        data[5] = ((u8 *)&tmp)[1];
+        data[6] = ((u8 *)&tmp)[2];
+        data[7] = ((u8 *)&tmp)[3];
+
+        tmp2 = lbl_8036B3E4;
+        data[0] = ((u8 *)&tmp2)[0];
+        data[1] = ((u8 *)&tmp2)[1];
+        data[2] = ((u8 *)&tmp2)[2];
+        data[3] = ((u8 *)&tmp2)[3];
+
+        fog = Fog_GetColor();
+        i = 2;
+        zero = i - 2;
+        data[8] = fog[1];
+        data[9] = fog[2];
+        data[10] = fog[3];
+
+        for (; i > 0; i--) {
+            *(u32 *)(data + 0x0c) = zero;
+            *(u32 *)(data + 0x10) = zero;
+            *(u32 *)(data + 0x14) = zero;
+            *(u32 *)(data + 0x18) = zero;
+            *(u32 *)(data + 0x1c) = zero;
+            *(u32 *)(data + 0x20) = zero;
+            *(u32 *)(data + 0x24) = zero;
+            *(u32 *)(data + 0x28) = zero;
+            *(u32 *)(data + 0x2c) = zero;
+            *(u32 *)(data + 0x30) = zero;
+            *(u32 *)(data + 0x34) = zero;
+            *(u32 *)(data + 0x38) = zero;
+            *(u32 *)(data + 0x3c) = zero;
+            *(u32 *)(data + 0x40) = zero;
+            *(u32 *)(data + 0x44) = zero;
+            *(u32 *)(data + 0x48) = zero;
+            *(u32 *)(data + 0x4c) = zero;
+            *(u32 *)(data + 0x50) = zero;
+            *(u32 *)(data + 0x54) = zero;
+            *(u32 *)(data + 0x58) = zero;
+            *(u32 *)(data + 0x5c) = zero;
+            *(u32 *)(data + 0x60) = zero;
+            *(u32 *)(data + 0x64) = zero;
+            *(u32 *)(data + 0x68) = zero;
+            *(u32 *)(data + 0x6c) = zero;
+            *(u32 *)(data + 0x70) = zero;
+            *(u32 *)(data + 0x74) = zero;
+            *(u32 *)(data + 0x78) = zero;
+            *(u32 *)(data + 0x7c) = zero;
+            *(u32 *)(data + 0x80) = zero;
+            *(u32 *)(data + 0x84) = zero;
+            *(u32 *)(data + 0x88) = zero;
+            data += 0x80;
         }
-        r4 += 0x1C;  // step by 0x1C (28 bytes = struct size)
-        r5++;
     }
-    return NULL;
 }
 
 #pragma use_lmw_stmw on
@@ -15514,28 +15582,45 @@ extern "C" void fn_801D283C(void *arg0) {
 }
 #pragma cplusplus reset
 
-#pragma cplusplus reset
-s32 fn_801D28A8(s32 arg0, s32 arg1)
-{
-    if (arg0 < 0) {
-        return -1;
-    }
-    
-    if (arg1 < 0) {
-        return -1;
-    }
-    
-    if (arg0 >= 0x40) {
-        return -1;
-    }
-    
-    if (arg1 >= 0x40) {
-        return -1;
-    }
-    
-    return ((arg0 * 0x40) + arg1);
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+#pragma optimization_level 2
+#pragma global_optimizer off
+extern "C" void fn_801D28A8(u8 *self,s32 x,s32 y,u8 *item) {
+void Prim2D_Begin(); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex();
+s32 Text_MeasureHeight(s32,f32); u8 fn_800BE890(s32);
+void *Msg_ResolveName(void*); void *fn_800BE728(s32); void *Msg_Expand(void*);
+void Text_Draw(s32,s16,u8,void*,...); void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
+s32 fn_800BE798(s32); void fn_80152B4C(s16,s16,s32,s32);
+extern f32 lbl_8036B5E0;
+s32 disabled; s32 pad; u8 color[4]; void *text;
+s16 h; s16 h1; s16 left,width; s32 half; s32 lineY;
+Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32*)(self+0x34)|0x13)); Prim2D_PrepareTex();
+h1=*(s16*)(self+0x56);
+pad=(s16)(((s16)h1-Text_MeasureHeight(-1,lbl_8036B5E0))>>1);
+disabled=fn_800BE890(*(s32*)item)?0:1;
+if(*(void**)(item+8)) text=Msg_ResolveName(*(void**)((u8*)*(void**)(item+8)+0x188));
+else text=Msg_Expand(fn_800BE728(*(s32*)item));
+s32 yy=(s16)y;
+Text_Draw(x,(s16)(yy+pad),(u8)disabled,text);
+width=(s16)(((MenuD28*)self)->v10()-*(s16*)(self+0x60)-0x10);
+s32 xx=(s16)x;
+left=(s16)(xx-0x10);
+h=*(s16*)(self+0x56);
+half=((s16)h-Text_MeasureHeight(-1,lbl_8036B5E0))>>1;
+s32 textH=Text_MeasureHeight(-1,lbl_8036B5E0);
+lineY=(s16)(yy+(s16)(textH+half));
+s16 right=(s16)(left+width);
+color[0]=255; color[1]=255; color[2]=255; color[3]=0x33;
+Ui_DrawLine(left,lineY,right,lineY,0x10,color);
+s32 value=fn_800BE798(*(s32*)item);
+s32 baseline=yy+pad; s32 numberX=xx+0xc0;
+fn_80152B4C((s16)numberX,(s16)(baseline+6),value,0x10);
 }
-
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
+#pragma cplusplus off
 s32 fn_801D2A38(void *arg0) {
     s32 fn_800BE890(s32);
     struct Node {
@@ -16076,10 +16161,36 @@ void *fn_801D322C(s32 arg0) {
     return temp_r3;
 }
 
-void fn_801D3288(void* unit) {
-    // Simplest version that might just compile.
-    if (unit == NULL)
-        return;
+void fn_801D3288(void *self) {
+void fn_8003F670(void*); void fn_80161F7C(void); void *fn_8014D8FC(void*); void fn_80109020(void*); void String_Destroy(void*,s32); void Ui_DtorPanelBase(void*,s32);
+void Allegiance_SetMask(s32,s32,s32,s32,s32,s32,s32,s32,void *);
+void EventFlag_Clear(void*,void*); void fn_80089650(s32,s32); void fn_8008A290(s32,s32); s8 Fx_FindSlotByName(void*); void fn_801480D8(s32);
+extern u16 gUiPanelFlags; extern u32 gUiInputFlags;
+extern u8 gBattleState[],gUnits[],gBattleUiStrings[];
+u8 mask[8];
+s32 i;
+u8 *unit;
+gUiPanelFlags &= ~0x10;
+fn_8003F670(*(void**)((u8*)self+0x44));
+fn_80161F7C();
+fn_80109020(*(void**)((u8*)fn_8014D8FC(gBattleState)+0x44));
+if(self) { String_Destroy((u8*)self+0x48,-1); Ui_DtorPanelBase(self,0); }
+*(u32*)(gBattleState+0x6C)=0;
+*(u32*)(gBattleState+0x68)=0;
+*(s16*)(gBattleState+0x70)=0;
+*(s16*)(gBattleState+0x72)=0;
+Allegiance_SetMask(1,0,0,0,0,1,1,1,mask);
+for(i=1;i<=0x9F;i++) {
+if ((u8)i) unit=gUnits+((u8)i-1)*0x280; else unit=NULL;
+if (*(u32*)(unit+0x188) && mask[*(u8*)(*(u8**)(unit+0x190)+8)]) {
+*(u32*)(unit+0x1A0)&=0xFFF77FFF;
+*(s16*)(unit+0x22C)=0;
+}
+}
+EventFlag_Clear(gBattleState+0xb4,gBattleUiStrings+0x2d);
+gUiInputFlags &= ~3;
+fn_80089650(0,0); fn_8008A290(1,0);
+if(Fx_FindSlotByName(gBattleUiStrings+0x39)) fn_801480D8(0x2ee);
 }
 
 void fn_801D341C(void) {
@@ -18659,9 +18770,10 @@ void fn_801DE074(void) {
     } while (i < 0x28);
 }
 
+#pragma cplusplus on
 #pragma global_optimizer off
 #pragma opt_loop_invariants off
-void fn_801DE0EC(s32 *list, s32 parent) {
+extern "C" void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
 char path[64];
@@ -18673,13 +18785,16 @@ u8 *p;
 u8 *base;
 s32 id;
 Process_UnlinkByKey(lbl_80299C58);
-i=0;
 base=lbl_80299A78;
+i=0;
 clear=i;
-for(p=base;i<40;i++,p+=12) {
+p=base;
+do {
 if(*(u32*)(p+8)) FileCache_ReleaseSlot(p+8);
+i++;
 *(u32*)(p+8)=clear;
-}
+p+=12;
+} while(i<40);
 for(;(id=*cursor)!=-1;cursor++) {
 p=MenuResource_FindIn(base,id);
 if(p) {sprintf(path,(char*)gUiSeCues+0x661,*(s32*)(p+4));fn_8005C8B4(path);}
@@ -18688,6 +18803,7 @@ Process_CreateChild(lbl_80299C58,owner);
 }
 #pragma opt_loop_invariants reset
 #pragma global_optimizer reset
+#pragma cplusplus reset
 void fn_801DE274(void) {
     void fn_80231D94(void *, void *, ...);
     s32 fn_8005C6A0(void *);
@@ -20189,17 +20305,28 @@ u8 **save=(u8 **)arg0;
 save[1]=Save_FindLinkedHeader(save);
 gSystemSave[0x47]=save[1][0x63];
 }
-#pragma global_optimizer reset
-void *fn_801E09B4(M2C_UNK *arg0) {
-    u32 r3 = (u32) arg0;
-    u32 r4 = *(u32 *) (r3 + 0x70);
-    
-    if (r4 != 0) {
-        return *(void **) r4;
-    }
-    return NULL;
+#pragma cplusplus on
+#pragma global_optimizer off
+void *fn_801E09B4(u8 **save) {
+u8 *slot;
+s32 off;
+u8 *base;
+s32 i;
+u8 valid;
+i=0; off=0x1a000;
+for(;i<2;i++) {
+base=*save;
+slot=base+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
+off+=0x6000;
 }
-
+return 0;
+}
+#pragma global_optimizer reset
+#pragma cplusplus reset
 void fn_801E0B48(s32 unused, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_CreateChild(void *, s32);
     extern u8 lbl_80299ED8[];
