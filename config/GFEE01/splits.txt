@@ -70,7 +70,10 @@ auto/text_8001EE58.c:
 	.ctors      start:0x80267A94 end:0x80267A98
 
 auto/text_8001EEEC.c:
-	.text       start:0x8001EEEC end:0x80028864
+	.text       start:0x8001EEEC end:0x8001F53C
+
+auto/map_height.c:
+	.text       start:0x8001F53C end:0x80028864
 
 auto/text_80028864.c:
 	.text       start:0x80028864 end:0x8002887C
