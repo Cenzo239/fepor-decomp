@@ -2384,7 +2384,7 @@ struct ActorMotionInterface {
 #pragma cplusplus on
 #pragma push
 #pragma dont_inline on
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma global_optimizer off
 extern "C" void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
 typedef void (*GetPosFn)(f32 *, void *, s32);
