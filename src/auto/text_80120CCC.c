@@ -105,6 +105,7 @@ void Obj_EaseTintProc(void *proc) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80120F0C(void) {
 extern u16 gUiPanelFlags; extern u32 gUiInputFlags; extern u8 gUiTooltipProc[];
 void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(void);
@@ -118,6 +119,7 @@ if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
 }}
 gUiPanelFlags=saved[0]; p[1]=saved[1];
 }
+#pragma global_optimizer on
 
 void fn_80120F94(void)
 {
