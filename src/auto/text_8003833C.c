@@ -1732,19 +1732,14 @@ s8 Unit_GetRes(void *arg0) {
     return var;
 }
 s8 Unit_GetDef(void *arg0) {
-    void *p18c;
-    void *p188;
-    u8 t;
-    s8 lim;
+    s32 p;
     s8 var;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    p188 = *(void **)((u8 *)arg0 + 0x188);
-    t = *(u8 *)((u8 *)arg0 + 0x1B1);
-    lim = *(u8 *)((u8 *)p18c + 0x52);
-    var = (*(u8 *)((u8 *)p188 + 0x23) + *(u8 *)((u8 *)p18c + 0x4A)) + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x23) + *(u8 *)(p + 0x4A)) + *(u8 *)((u8 *)arg0 + 0x1B1);
+    p = *(s8 *)(p + 0x52);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
