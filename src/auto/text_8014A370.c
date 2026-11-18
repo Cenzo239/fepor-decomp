@@ -174,6 +174,8 @@ void *fn_8014A6FC(void) {
 }
 
 #pragma opt_strength_reduction on
+#pragma peephole on
+#pragma global_optimizer on
 s32 fn_8014A70C(s32 arg0, s32 arg1)
 {
     extern u16 gSoundMenuStrings[];
@@ -190,27 +192,9 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
     lbl_80367B00 = 0;
     lbl_80367B00 = Heap_AllocRaw(0x1800);
 
-    off = 0;
-    ctr = 0x60;
-    do {
-        *(s32 *)(lbl_80367B00 + off) = 0;
-        *(s32 *)(lbl_80367B00 + off + 4) = 0;
-        *(s32 *)(lbl_80367B00 + off + 8) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0xC) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x10) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x14) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x18) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x1C) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x20) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x24) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x28) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x2C) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x30) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x34) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x38) = 0;
-        *(s32 *)(lbl_80367B00 + off + 0x3C) = 0;
-        off += 0x40;
-    } while (--ctr != 0);
+    for (off=0; off<0x600; off++) {
+        ((s32 *)lbl_80367B00)[off]=0;
+    }
 
     lbl_80367B04 = 0;
     node = Archive_Load((u8 *)gSoundMenuStrings + 0x6b);
