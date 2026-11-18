@@ -1,18 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline u32 PackExiBytes(const u8 *data, int length) {
-    const u8 *p = data;
-    u32 value;
-    int i;
-    i = 0;
-    value = 0;
-    for (; i < length; ++i) {
-        value |= (u32)*p << ((3 - i) * 8);
-        ++p;
-    }
-    return value;
-}
 
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
