@@ -18,19 +18,21 @@ static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
     u32 raw2;
     s32 c1;
     s32 c2;
-    goto ld;
-cmp:
-    if ((s8)raw1 != (s8)raw2)
-        return (u32)(c1 - c2);
-    a++;
-    b++;
-ld:
+
     raw1 = *a;
     raw2 = *b;
     c1 = (s8)raw1;
     c2 = (s8)raw2;
-    if ((c1 | c2) != 0)
-        goto cmp;
+    while (c1 | c2) {
+        if ((s8)raw1 != (s8)raw2)
+            return (u32)(c1 - c2);
+        a++;
+        b++;
+        raw1 = *a;
+        raw2 = *b;
+        c1 = (s8)raw1;
+        c2 = (s8)raw2;
+    }
     return 0;
 }
 
@@ -2185,80 +2187,20 @@ s32 fn_8000A930(void *arg0) {
     return 1;
 }
 
-#pragma peephole off
-#pragma global_optimizer off
+#pragma peephole on
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
-    u8 *a;
-    u8 *b;
-    s32 i;
-    s32 ctr;
-    u32 diff;
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
-    s32 c2;
-    u8 *p;
     u8 *search;
+    s32 i;
+    u8 *p;
 
     p = *(u8 **)((u8 *)arg0 + 4);
     search = *(u8 **)(p + 4);
     entry = gProcesses;
-    i = 0;
-    for (ctr = 0x80; ctr != 0; ctr--) {
-        if (*(u32 *)entry != 0) {
-            a = *(u8 **)(entry + 0x14);
-            b = search;
-            goto cmp1_ld;
-        cmp1:
-            if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c2 - c1);
-                goto cmp1_done;
-            }
-            a += 1;
-            b += 1;
-        cmp1_ld:
-            raw1 = *a;
-            raw2 = *b;
-            c1 = (s8)raw1;
-            c2 = (s8)raw2;
-            if ((c1 | c2) != 0) {
-                goto cmp1;
-            }
-            diff = 0;
-        cmp1_done:
-            if (diff == 0) {
-                goto found;
-            }
-        }
-        if (*(u32 *)(entry += 0x70) != 0) {
-            b = search;
-            a = *(u8 **)(entry + 0x14);
-            goto cmp2_ld;
-        cmp2:
-            if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c2 - c1);
-                goto cmp2_done;
-            }
-            a += 1;
-            b += 1;
-        cmp2_ld:
-            raw1 = *a;
-            raw2 = *b;
-            c1 = (s8)raw1;
-            c2 = (s8)raw2;
-            if ((c1 | c2) != 0) {
-                goto cmp2;
-            }
-            diff = 0;
-        cmp2_done:
-            if (diff == 0) {
-                goto found;
-            }
-        }
-        i += 1;
-        entry += 0x70;
+    for (i = 0; i < 256; i++, entry += 0x70) {
+        if (*(u32 *)entry != 0 && Process_CompareNameExt(*(u8 **)(entry + 0x14), search) == 0)
+            goto found;
     }
     entry = 0;
 found:
@@ -2270,7 +2212,6 @@ found:
     return 0;
 }
 #pragma peephole reset
-#pragma global_optimizer reset
 s32 fn_8000AA60(void *arg0)
 {
  void Process_Unlink(void *);
