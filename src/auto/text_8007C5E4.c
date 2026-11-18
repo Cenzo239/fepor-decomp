@@ -178,12 +178,12 @@ Prim2D_EndPrim();
 #pragma global_optimizer off
 s32 fn_8007C8F4(void)
 {
-  extern void *lbl_80367488;
+  extern void *gActiveFace;
   u8 *base;
   u16 flags;
   s32 value;
   u8 *obj;
-  base = (u8 *) lbl_80367488;
+  base = (u8 *) gActiveFace;
   value = 0x20;
   obj = *((u8 **) (base + 0x50));
   if (!obj)
@@ -205,7 +205,7 @@ s32 fn_8007C8F4(void)
   }
   *((u16 *) (base + 0x46)) = ((*((u16 *) (base + 0x46))) & (~0xE0)) & 0xFFFFFFFF;
   *((u16 *) (obj + 0x36)) = 1;
-  *((u16 *) (((u8 *) lbl_80367488) + 0x46)) = (*((u16 *) (((u8 *) lbl_80367488) + 0x46))) | ((u16) value);
+  *((u16 *) (((u8 *) gActiveFace) + 0x46)) = (*((u16 *) (((u8 *) gActiveFace) + 0x46))) | ((u16) value);
   return 0;
 }
 #pragma global_optimizer on
