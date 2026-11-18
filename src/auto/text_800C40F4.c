@@ -31581,13 +31581,4 @@ extern void *D_8036A150; // The struct 0E60 is likely a pointer to data, or a la
 
 extern char lbl_802704F8[];
 extern f32 lbl_80369E30, lbl_80369E34, lbl_80369E38, lbl_80369E3C, lbl_80369E40, lbl_80369E44, lbl_80369E48, lbl_80369E4C;
-static inline s32 ReadDelimitedToken(String *str, char *out, s32 pos) {
-s32 count=0;
-s32 size=str->size;
-char *p=(char *)str->data+pos;
-while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
-p=(char *)str->data+pos;
-while(pos<=size && count<256 && *p!=' ' && *p!='\t' && *p!=',') { out[count++]=*p++;pos++; }
-out[count]=0;
-return count ? pos : 0;
-}
+
