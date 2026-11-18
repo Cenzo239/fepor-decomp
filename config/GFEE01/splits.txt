@@ -362,7 +362,10 @@ auto/text_80103748.c:
 	.text       start:0x80103748 end:0x80105124
 
 auto/text_80105124.c:
-	.text       start:0x80105124 end:0x80105504
+	.text       start:0x80105124 end:0x80105284
+
+auto/text_80105284.c:
+	.text       start:0x80105284 end:0x80105504
 
 auto/text_80105504.c:
 	.text       start:0x80105504 end:0x8010554C

@@ -381,6 +381,7 @@ config.libs = [
             Object(NonMatching, "auto/text_800C40F4.c", mw_version="GC/2.0"),
             Object(NonMatching, "auto/text_80103748.c"),
             Object(NonMatching, "auto/text_80105124.c"),
+            Object(NonMatching, "auto/text_80105284.c"),
             Object(NonMatching, "auto/text_8010554C.c"),
             Object(NonMatching, "auto/text_801101D0.c"),
             Object(NonMatching, "auto/text_80120CCC.c"),
