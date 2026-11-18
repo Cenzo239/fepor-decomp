@@ -214,17 +214,18 @@ void __unregister_fragment(s32 arg0) {
 }
 
 s32 __register_fragment(s32 arg0, s32 arg1) {
-    extern s32 fragmentinfo_8033DD28[3];
-    s32 *p = fragmentinfo_8033DD28;
-    if (p[2] == 0) {
-        s32 ret;
-        p[0] = arg0;
-        ret = 0;
-        p[1] = arg1;
-        p[2] = 1;
-        return ret;
-    }
-    return -1;
+extern s32 fragmentinfo_8033DD28[3];
+s32 i;
+for (i=0;i<1;i++) {
+s32 *info=&fragmentinfo_8033DD28[i*3];
+if (info[2]==0) {
+info[0]=arg0;
+info[1]=arg1;
+info[2]=1;
+return i;
+}
+}
+return -1;
 }
 
 void fn_8022CDD0(void *arg0) {
