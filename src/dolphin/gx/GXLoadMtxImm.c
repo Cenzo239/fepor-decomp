@@ -386,7 +386,6 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     *arg3 = (temp_r8 & 0x7FF) - (temp_r7 & 0x7FF) + 1;
 }
 
-#pragma scheduling off
 void fn_80225118(s32 x, s32 y)
 {
   u32 xoff;
@@ -407,7 +406,6 @@ void fn_80225118(s32 x, s32 y)
   GXWGFifo.u32 = value;
   gx[1] = 0;
 }
-#pragma scheduling reset
 
 void fn_80225158(u32 arg0)
 {
