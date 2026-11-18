@@ -485,6 +485,7 @@ done:
     return idx;
 }
 
+#pragma global_optimizer off
 void fn_800C4384(void) {
 void DebugPrint(const char *,...);
 extern char lbl_802700D8[];
@@ -513,7 +514,7 @@ DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
 ++i; ++table;
 } while(i<16);
 }
-
+#pragma global_optimizer reset
 s32 fn_800C44F4(s32 arg0) {
     extern void *lbl_80367870;
     extern void *lbl_80320B88[];
@@ -671,6 +672,9 @@ s32 fn_800C4740(void) {
     return -1;
 }
 #pragma use_lmw_stmw on
+static inline void Heap_FindEmpty(u32 *table, s32 *result) {
+ s32 i; for(i=0;i<16;i++,table++) { if(*table==0) { *result=i; return; } } *result=-1;
+}
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
 u32 *entry=table;
 s32 i; for(i=0;i<16;entry++,i++) { if(*entry==key)return i; } return -1;
@@ -940,6 +944,7 @@ found4:
 }
 #pragma use_lmw_stmw reset
 
+#pragma global_optimizer off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
     extern u32 lbl_8036786C;
@@ -952,11 +957,11 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
+    s32 index;
     u8 *heap;
+    u32 size;
     u8 *data;
     u32 *table;
-    u32 size;
-    s32 index;
     s32 groups;
 
     size = (arg1 + 0x1F) & ~0x1F;
@@ -967,71 +972,23 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
         heap = (u8 *)(lbl_80367864 - size);
     }
 
-    table = lbl_80320B88;
-    index = 0;
+    index=Heap_FindInTable(lbl_80320B88,0);
 
-    for (groups = 2; groups != 0; groups--) {
-        if (*table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        table++;
-        index++;
-    }
-
-    index = -1;
-
-found:
     Str_CopyPad(heap + 4, arg0, 0xB);
 
     heap[0xF] = 0;
     *(u32 *)(heap + 0x10) = 0;
-    *(u32 *)(heap + 0x14) = 0;
 
     data = heap + 0x20;
 
-    *(void **)(heap + 0x18) = data;
     *(u32 *)(heap + 0x1C) = size;
+    *(u32 *)(heap + 0x14) = 0;
+    *(void **)(heap + 0x18) = data;
     *(u32 *)heap = 0x48454150;
 
-    *(u32 *)(data + 0xC) = 0;
-    *(u32 *)(data + 8) = 0;
-    *(u32 *)(data + 0x10) = size - 0x20;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 8) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0x10) = *(u32 *)(heap + 0x1C) - 0x20;
 
     lbl_80320B88[index] = (u32)heap;
     lbl_80367870 = lbl_80320B88[index];
@@ -1050,7 +1007,7 @@ found:
 
     return index;
 }
-
+#pragma global_optimizer reset
 s32 Heap_Create(void *arg0, s32 arg1)
 {
     extern u8 *lbl_80367868;
@@ -26146,10 +26103,11 @@ void fn_800F9FC4(void *arg0) {
     s16 x;
     u8 *unit;
     u8 *cmd;
-    s32 cy;
-    s32 cx;
     s32 dx;
     s32 dy;
+    s32 t0;
+    s32 t1;
+    u8 *ctx;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
@@ -26161,13 +26119,16 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            cy = (s8)gUiContext[0xE];
-            cx = (s8)gUiContext[0xD];
-            dx = x - cy;
+            ctx = gUiContext;
+            t0 = ctx[0xE];
+            t1 = ctx[0xD];
+            t0 = (s8)t0;
+            t1 = (s8)t1;
+            dx = x - t0;
             if (dx < 0) {
                 dx = -dx;
             }
-            dy = y - cx;
+            dy = y - t1;
             if (dy < 0) {
                 dy = -dy;
             }
