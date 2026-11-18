@@ -8648,10 +8648,9 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            left = *(u32 *)(voice + index * 4 + 0xAC);
+            left = ((u32 *)voice + index)[0x2B];
         } else {
-            left = *(u32 *)((u8 *)lbl_8034CB74
-                + index * 4 - 0x40);
+            left = lbl_8034CB74[index - 16];
         }
     }
 
@@ -8664,10 +8663,9 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            right = *(u32 *)(voice + index * 4 + 0xAC);
+            right = ((u32 *)voice + index)[0x2B];
         } else {
-            right = *(u32 *)((u8 *)lbl_8034CB74
-                + index * 4 - 0x40);
+            right = lbl_8034CB74[index - 16];
         }
     }
 
@@ -12793,7 +12791,6 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
     }
 }
 #pragma optimization_level reset
-#pragma global_optimizer off
 s32 fn_8025DAA0(
     void *arg0,
     f32 arg1,
