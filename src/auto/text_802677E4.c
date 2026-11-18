@@ -1,8 +1,5 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline u32 ExiMakeImmediateCommand(u32 length, u32 type) {
-    return ((type << 2) | 1) | (length << 4);
-}
 
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
@@ -285,7 +282,7 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
     *((volatile u32 *) 0xCC006838) = value;
   }
   cr = (volatile u32 *) 0xCC006800;
-  *(cr += 13) = (((arg1 - 1) << 4) | 1) | (((u32) arg2) << 2);
+  *(cr += 13) = (((u32)(arg1 - 1) << 4) | 1U) | ((u32)arg2 << 2);
   new_var = arg2;
   while ((*cr) & 1)
   {
