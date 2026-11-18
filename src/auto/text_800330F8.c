@@ -12379,8 +12379,6 @@ return (char *)lbl_802EFFC8;
 }
 
 typedef struct StringValueByte { u8 pad0[0xC]; u8 value; } StringValueByte;
-#pragma push
-#pragma global_optimizer off
 char *fn_8004B078(void *arg0, s32 arg1) {
 void sprintf(void *, void *, ...);
 extern u8 lbl_8026A9B0[];
@@ -12391,7 +12389,6 @@ u8 byte = address[0xC];
 sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8, value, byte);
 return (char *)lbl_802EFFC8;
 }
-#pragma pop
 void *fn_8004B0C8(void *arg0) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026A9B0[];
