@@ -1713,8 +1713,7 @@ void fn_800892E8(void *arg0) {
     u8 *obj;
     s32 size;
     void *tmp;
-    f32 f38;
-    f32 f3c;
+    f32 v[2];
 
     obj = (u8 *)arg0;
     *(s32 *)(obj + 0x48) = 0;
@@ -1725,10 +1724,10 @@ void fn_800892E8(void *arg0) {
     GXInitTexObjLOD(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
     tmp = Process_Create(lbl_80289998, 6);
     *(void **)((u8 *)tmp + 0x54) = arg0;
-    f38 = lbl_803696A8;
-    f3c = lbl_803696AC;
-    *(f32 *)(obj + 0x38) = f38;
-    *(f32 *)(obj + 0x3C) = f3c;
+    v[0] = lbl_803696A8;
+    v[1] = lbl_803696AC;
+    *(f32 *)(obj + 0x38) = v[0];
+    *(f32 *)(obj + 0x3C) = v[1];
     *(u16 *)(obj + 0x34) = 0;
     obj[0x30] = 0;
 }
@@ -1992,14 +1991,22 @@ void fn_80089970(void) {
 #pragma global_optimizer off
 #pragma peephole off
 void fn_80089980(s32 arg0) {
-extern f32 lbl_803696C8; extern void *lbl_803674EC;
-f32 quotient=(f32)arg0/lbl_803696C8;
-u16 value=(u16)quotient;
-u8 *ptr=(u8*)lbl_803674EC;
-*(u16*)(ptr+0x32)=3; *(u16*)(ptr+0x34)=0; *(u16*)(ptr+0x36)=value;
+    extern f32 lbl_803696C8;
+    extern f64 lbl_80369688;
+    extern void *lbl_803674EC;
+    s32 zero = 0;
+    s32 three = 3;
+    u8 *ptr = lbl_803674EC;
+    f64 magic = lbl_80369688;
+    f64 quotient = (f32)arg0 / lbl_803696C8;
+    *(u16 *)(ptr + 0x32) = three;
+    *(u16 *)(ptr + 0x34) = zero;
+    *(u16 *)(ptr + 0x36) = (u16)quotient;
+    (void)magic;
 }
 #pragma peephole reset
 #pragma global_optimizer reset
+#pragma peephole off
 void fn_800899D4(s32 arg0) {
 extern f32 lbl_803696C8;
 extern void *lbl_803674EC;
