@@ -12,6 +12,28 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
     return 0;
 }
 
+static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
+{
+    u32 raw1;
+    u32 raw2;
+    s32 c1;
+    s32 c2;
+    goto ld;
+cmp:
+    if ((s8)raw1 != (s8)raw2)
+        return (u32)(c1 - c2);
+    a++;
+    b++;
+ld:
+    raw1 = *a;
+    raw2 = *b;
+    c1 = (s8)raw1;
+    c2 = (s8)raw2;
+    if ((c1 | c2) != 0)
+        goto cmp;
+    return 0;
+}
+
 static inline void *Process_FindName(const s8 *source)
 {
     extern u8 gProcesses[];
@@ -2163,8 +2185,8 @@ s32 fn_8000A930(void *arg0) {
     return 1;
 }
 
-#pragma global_optimizer off
 #pragma peephole off
+#pragma global_optimizer off
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
@@ -2191,7 +2213,7 @@ s32 fn_8000A950(void *arg0) {
             goto cmp1_ld;
         cmp1:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
+                diff = (u32)(c2 - c1);
                 goto cmp1_done;
             }
             a += 1;
@@ -2216,7 +2238,7 @@ s32 fn_8000A950(void *arg0) {
             goto cmp2_ld;
         cmp2:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
+                diff = (u32)(c2 - c1);
                 goto cmp2_done;
             }
             a += 1;
