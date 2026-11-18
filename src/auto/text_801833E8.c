@@ -5228,7 +5228,58 @@ static inline void Ui_DrawStatusPanelTexture(s32 texture, u16 index, f32 x, f32 
     }
 }
 
-void fn_8018DE24(void *arg0) {
+static inline void Ui_DrawStatusPanelTextureAt(u8 *self, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
+{
+    void **fn_8006EDD8(s32, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void fn_80009EB0(s32, s32, s32, s32);
+    void Prim2D_BindTexture(s32, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPrimParam(f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
+    void Prim2D_SetColor(u8, u8, u8, s32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_EndPrim(void);
+    extern f32 lbl_8036ADA0, lbl_8036ADA4;
+    void **p;
+    u16 h, w;
+    u8 *rgb = (u8 *)&color;
+    if (index != 0xFFFF) {
+        p = fn_8006EDD8(*(s32 *)(self + 0x34), index);
+        h = *(u16 *)((u8 *)*p + 2);
+        w = *(u16 *)*p;
+        Prim2D_Begin();
+        Prim2D_SetTransform(lbl_8036ADA0, lbl_8036ADA0, depth, lbl_8036ADA4);
+        if (p[1]) fn_80009EB0(*(s32 *)(self + 0x34), index, 0, 0x11);
+        else Prim2D_BindTexture(*(s32 *)(self + 0x34), index, 0x11);
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        Prim2D_SetPrimParam(lbl_8036ADA0);
+        Prim2D_SetQuadMin(x, y, lbl_8036ADA0, lbl_8036ADA0);
+        Prim2D_SetQuadMax(x + (f32)h, y + (f32)w, (f32)h, (f32)w);
+        Prim2D_SetColor(rgb[0], rgb[1], rgb[2], alpha);
+        Prim2D_EmitQuad();
+        Prim2D_EndPrim();
+    }
+}
+
+#pragma cplusplus on
+extern "C" void fn_8018DE24(void *arg0) {
+    void *memcpy(void *, const void *, u32);
+    char *strcat(char *, const char *);
+    void *Process_Find(void *);
+    void *Msg_Expand(void *);
+    s16 Text_MeasureWidth(void *, s32, f32);
+    void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_SetCornerColors(void *, void *, void *, void *);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    extern u8 lbl_80286860[], lbl_80279B1C[];
+    extern u32 lbl_8036AD94, lbl_8036AD90, lbl_8036C4FC, lbl_8036C4F8;
+    extern f32 lbl_8036ADA8, lbl_8036ADD0, lbl_8036ADD4, lbl_8036ADD8, lbl_8036ADDC, lbl_8036ADE0, lbl_8036ADE4;
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
@@ -5316,33 +5367,95 @@ void fn_8018DE24(void *arg0) {
         Prim2D_PrepareTex();
         mode = (base[0x9D] >> 2) & 3;
         if (mode == 0) {
+            u32 color;
             fy = *(f32 *)(self + 0x3C);
             fx = *(f32 *)(self + 0x38);
-            *(s32 *)col = *Ui_GetColor(2);
-            p = fn_8006EDD8(*(s32 *)(self + 0x34), 0);
-            tex = *p;
-            h = *(u16 *)((u8 *)tex + 2);
-            w = *(u16 *)tex;
-            Prim2D_Begin();
-            Prim2D_SetTransform(lbl_8036ADA0, lbl_8036ADA0, lbl_8036ADC0, lbl_8036ADA4);
-            if (*(u32 *)((u8 *)p + 4) != 0) {
-                fn_80009EB0(*(s32 *)(self + 0x34), 0, 0, 0x11);
-            } else {
-                Prim2D_BindTexture(*(s32 *)(self + 0x34), 0, 0x11);
+            color = *Ui_GetColor(2);
+            Ui_DrawStatusPanelTexture(*(s32 *)(self + 0x34), 0, fx, fy, lbl_8036ADC0, color, 0xFF);
+            fy = lbl_8036ADC4 + *(f32 *)(self + 0x3C);
+            fx = lbl_8036ADC8 + *(f32 *)(self + 0x38);
+            color = *Ui_GetColor(1);
+            Ui_DrawStatusPanelTexture(*(s32 *)(self + 0x34), 1, fx, fy, lbl_8036ADCC, color, 0x1A);
+            {
+                f32 depths[6] = { *((f32 *)(ro + 0xf0)), *((f32 *)(ro + 0xf4)), *((f32 *)(ro + 0xf8)), *((f32 *)(ro + 0xfc)), *((f32 *)(ro + 0x100)), *((f32 *)(ro + 0x104)) };
+                f32 positions[12] = { *((f32 *)(ro + 0x108)), *((f32 *)(ro + 0x10c)), *((f32 *)(ro + 0x110)), *((f32 *)(ro + 0x114)), *((f32 *)(ro + 0x118)), *((f32 *)(ro + 0x11c)), *((f32 *)(ro + 0x120)), *((f32 *)(ro + 0x124)), *((f32 *)(ro + 0x128)), *((f32 *)(ro + 0x12c)), *((f32 *)(ro + 0x130)), *((f32 *)(ro + 0x134)) };
+                struct { f32 v[12]; } initial = { *((f32 *)(ro + 0x168)), *((f32 *)(ro + 0x16c)), *((f32 *)(ro + 0x170)), *((f32 *)(ro + 0x174)), *((f32 *)(ro + 0x178)), *((f32 *)(ro + 0x17c)), *((f32 *)(ro + 0x180)), *((f32 *)(ro + 0x184)), *((f32 *)(ro + 0x188)), *((f32 *)(ro + 0x18c)), *((f32 *)(ro + 0x190)), *((f32 *)(ro + 0x194)) }, offsets;
+                memcpy(&offsets, &initial, sizeof(offsets));
+                for (i=0; i<6; i++) {
+                    f32 depth;
+                    u16 icon;
+                    fy = *(f32 *)(self+0x3C)+positions[i*2+1];
+                    fx = *(f32 *)(self+0x38)+positions[i*2];
+                    depth = depths[i];
+                    color = *Ui_GetColor(1);
+                    Ui_DrawStatusPanelTexture(*(s32 *)(self+0x34), (u16)(i+2), fx, fy, depth, color, 0xFF);
+                    icon = *(u16 *)(self+0x48+i*2);
+                    fy = *(f32 *)(self+0x3C)+offsets.v[i*2+1];
+                    fx = *(f32 *)(self+0x38)+offsets.v[i*2];
+                    if (icon != 0xFFFF) {
+                        p = fn_8006EDD8(*(s32 *)(self+0x34),icon);
+                        fx -= lbl_8036ADA8 * *(u16 *)((u8 *)*p+2);
+                        color = *Ui_GetColor(1);
+                        Ui_DrawStatusPanelTexture(*(s32 *)(self+0x34),icon,fx,fy,lbl_8036ADD0,color,0xFF);
+                    }
+                }
             }
-            Prim2D_PrepareTex();
-            Prim2D_AddPrim(1);
-            Prim2D_SetPrimParam(lbl_8036ADA0);
-            Prim2D_SetQuadMin(fx, fy, lbl_8036ADA0, lbl_8036ADA0);
-            Prim2D_SetQuadMax(fx + (f32)h, fy + (f32)w, (f32)h, (f32)w);
-            Prim2D_SetColor(col[0], col[1], col[2], 0xFF);
-            Prim2D_EmitQuad();
-            Prim2D_EndPrim();
+        } else {
+            if (*(s16 *)(self+0x46)<=0) {
+                if (*(s16 *)(self+0x44)!=0 || Process_Find(lbl_80286860)!=0 || (*(u16 *)(self+0x30)&2)) {
+                    *(s16 *)(self+0x54)+=25;
+                    if (*(s16 *)(self+0x54)>255) *(s16 *)(self+0x54)=255;
+                } else {
+                    *(s16 *)(self+0x54)-=25;
+                    if (*(s16 *)(self+0x54)<0) *(s16 *)(self+0x54)=0;
+                }
+            }
+            if (*(s16 *)(self+0x54)>0) {
+                u32 c0,c1,c2,c3;
+                char textBuffer[100];
+                Prim2D_Begin();
+                Prim2D_SetTransform(lbl_8036ADA0,lbl_8036ADA0,lbl_8036ADC0,lbl_8036ADA4);
+                Prim2D_SetTex(0,0x12);
+                Prim2D_SetColorByte((u8)*(s16 *)(self+0x54));
+                Prim2D_PrepareTex();
+                Prim2D_AddPrim(3);
+                Prim2D_SetQuadMin(lbl_8036ADA0,lbl_8036ADD4,lbl_8036ADA0,lbl_8036ADA0);
+                Prim2D_SetQuadMax(lbl_8036ADD8,lbl_8036ADDC,lbl_8036ADA0,lbl_8036ADA0);
+                c3=lbl_8036AD94; c2=lbl_8036AD90; c1=lbl_8036C4FC; c0=lbl_8036C4F8;
+                Prim2D_SetCornerColors(&c0,&c1,&c2,&c3);
+                Prim2D_EmitQuad();
+                Prim2D_EndPrim();
+                Prim2D_AddPrim(1);
+                Prim2D_SetRect(lbl_8036ADA0,lbl_8036ADDC,lbl_8036ADD8,lbl_8036ADE0);
+                Prim2D_SetColor(0,0,0,0xFF);
+                Prim2D_EndPrim();
+                Prim2D_Begin();
+                Prim2D_SetTransform(lbl_8036ADA0,lbl_8036ADA0,lbl_8036ADE4,lbl_8036ADA4);
+                Prim2D_SetTex(0,0x13);
+                Prim2D_PrepareTex();
+                {
+                    char *prefix[6]={ *((char * *)(ro + 0x1c8)), *((char * *)(ro + 0x1cc)), *((char * *)(ro + 0x1d0)), *((char * *)(ro + 0x1d4)), *((char * *)(ro + 0x1d8)), *((char * *)(ro + 0x1dc)) };
+                    void *names[15]={ *((void * *)(ro + 0x1e0)), *((void * *)(ro + 0x1e4)), *((void * *)(ro + 0x1e8)), *((void * *)(ro + 0x1ec)), *((void * *)(ro + 0x1f0)), *((void * *)(ro + 0x1f4)), *((void * *)(ro + 0x1f8)), *((void * *)(ro + 0x1fc)), *((void * *)(ro + 0x200)), *((void * *)(ro + 0x204)), *((void * *)(ro + 0x208)), *((void * *)(ro + 0x20c)), *((void * *)(ro + 0x210)), *((void * *)(ro + 0x214)), *((void * *)(ro + 0x218)) };
+                    textBuffer[0]=0;
+                    for(i=0;i<6;i++) {
+                        if (*(u16 *)(self+0x48+i*2)!=0xFFFF) {
+                            strcat(textBuffer,prefix[i]);
+                            if (i==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
+                            strcat(textBuffer,(char *)Msg_Expand(names[((u16 *)row)[i]-8]));
+                        }
+                    }
+                }
+                {
+                    s16 width=Text_MeasureWidth(textBuffer,-1,lbl_8036ADA4);
+                    fn_8001003C((s16)(0x130-width/2),0x197,1,1,0,textBuffer,lbl_8036ADA4,lbl_8036ADA0);
+                }
+                Prim2D_Begin();
+                Prim2D_SetColorByte(0xFF);
+                Prim2D_PrepareTex();
+            }
         }
     }
 }
-
-#pragma cplusplus on
 extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
