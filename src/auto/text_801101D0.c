@@ -3171,6 +3171,9 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 #pragma cplusplus reset
 #pragma global_optimizer reset
 
+static inline void ActorUpdate_CopyWords(u32 *out, const u32 *in) {
+    out[0]=in[0]; out[1]=in[1]; out[2]=in[2];
+}
 #pragma optimization_level 1
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
