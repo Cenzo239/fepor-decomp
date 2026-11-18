@@ -387,23 +387,18 @@ void *fn_800A010C(void) {
 }
 
 #pragma global_optimizer off
-static inline s32 MenuCmd_ToggledState(u8 flag) {
-    s32 state = 2;
+static inline u8 MenuCmd_ToggledState(u8 flag) {
+    u8 state = 2;
     if (flag != 0) state = 0;
     return state;
 }
 s32 fn_800A011C(s32 a, s32 b, void *c) {
-    extern u8 lbl_80366E25;
-    s32 v = 2;
-
-    a = (u8)lbl_80366E25;
-    b = a ^ 1;
-    lbl_80366E25 = b;
-    if ((u8)b != 0) {
-        v = 0;
-    }
-    *(u8 *)((char *)c + 0x39) = v;
-    return 0;
+extern u8 lbl_80366E25;
+a=lbl_80366E25;
+b=a^1;
+lbl_80366E25=b;
+*((u8 *)c+0x39)=MenuCmd_ToggledState((u8)b);
+return 0;
 }
 #pragma global_optimizer reset
 extern u8 lbl_80366E25;
