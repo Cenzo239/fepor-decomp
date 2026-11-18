@@ -1171,7 +1171,7 @@ extern u32 lbl_80367864;
 extern u32* lbl_80367868;
 extern u32 lbl_8036786C;
 extern s32 lbl_80366DDC;
-#pragma optimization_level 1
+#pragma scheduling off
 s32 Heap_GetFree(void) {
     u8 *lo;
     u8 *hi;
@@ -1184,15 +1184,12 @@ s32 Heap_GetFree(void) {
         lo = (u8 *)lbl_80367860;
     }
     hi = (u8 *)lbl_8036786C;
-    if (hi == NULL)
-        goto zero;
-    goto nonzero;
-zero:
-    hi = (u8 *)lbl_80367864;
-nonzero:
+    if (hi == NULL) {
+        hi = (u8 *)lbl_80367864;
+    }
     return hi - lo;
 }
-#pragma optimization_level reset
+#pragma scheduling reset
 void fn_800C5300(void) {
 s32 OSGetArenaLo(void); s32 OSGetArenaHi(void); void DebugPrint(void *, ...);
 extern u8 lbl_802700D8[]; extern u32 lbl_80320B88[];
@@ -3269,19 +3266,17 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     return arg0;
 }
 
-String_Copy(arg0, arg1)
-void *arg0;
-void *arg1;
+String_Copy(arg0,arg1)
+void *arg0; const void *arg1;
 {
-    void String_InitFromRange(void *, char *, char *, void *, void *);
-    u8 sp[16];
-    register char *data;
-
-    data = *(char **)((char *)arg1 + 8);
-    *(u32 *)((char *)arg0 + 4) = *(u32 *)((char *)arg1 + 4);
-    sp[0] = sp[4];
-    String_InitFromRange(arg0, data, data + *(u32 *)arg1, sp + 8, sp);
-    return (s32)arg0;
+void String_InitFromRange(void *,char *,char *,void *,void *);
+u8 sp[16];
+char *data=*(char *const *)((const char *)arg1+8);
+char *end=data+*(const u32 *)arg1;
+*(u32 *)((char *)arg0+4)=*(u32 *)((char *)arg1+4);
+sp[0]=sp[4];
+String_InitFromRange(arg0,data,end,sp+8,sp);
+return (s32)arg0;
 }
 
 #pragma opt_loop_invariants off
