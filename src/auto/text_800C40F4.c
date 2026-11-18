@@ -14663,6 +14663,7 @@ void fn_800E3C04(void *arg0,s32 arg1) {
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
+#pragma cplusplus off
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
 void *fn_800E4688(void *,void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
