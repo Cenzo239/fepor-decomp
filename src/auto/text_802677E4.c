@@ -5,7 +5,7 @@ static inline u32 PackExiBytes(const u8 *data, int length) {
     int i;
     u32 value = 0;
     for (i = 0; i < length; ++i)
-        value |= (u32)data[i] << ((3 - i) * 8);
+        value |= (u32)*data++ << ((3 - i) * 8);
     return value;
 }
 
