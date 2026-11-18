@@ -354,7 +354,10 @@ auto/text_800AD24C.c:
 	.text       start:0x800AD24C end:0x800AD700
 
 auto/text_800AD700.c:
-	.text       start:0x800AD700 end:0x800C3F18
+	.text       start:0x800AD700 end:0x800AD76C
+
+auto/text_800AD724.c:
+	.text       start:0x800AD76C end:0x800C3F18
 
 auto/text_800C3F18.c:
 	.text       start:0x800C3F18 end:0x800C40F4
