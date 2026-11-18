@@ -2795,7 +2795,7 @@ void MoveAnim_AttachClassCue(void *anim) {
 }
 
 #pragma push
-#pragma peephole on
+#pragma scheduling off
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
     void fn_8004FE98(void *, s32);
@@ -2866,7 +2866,7 @@ void fn_80188B4C(void *anim) {
             alpha = 0;
         }
         blend = 1;
-        if (!((u8)(gMapBlendMode - 1) <= 1)) blend = 0;
+        if ((u8)((u8)(gMapBlendMode - 1) <= 1) == 0) blend = 0;
         if (blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
