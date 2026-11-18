@@ -653,7 +653,10 @@ dolphin/si/SIBios.c:
 	.text       start:0x8023ABD4 end:0x8023C53C
 
 auto/text_8023C53C.c:
-	.text       start:0x8023C53C end:0x80265430
+	.text       start:0x8023C53C end:0x80249DD0
+
+auto/text_80249DD0.c:
+	.text       start:0x80249DD0 end:0x80265430
 
 dolphin/gba/GBA.c:
 	.text       start:0x80265430 end:0x8026649C
