@@ -2801,34 +2801,18 @@ void *fn_801363C4(void *arg0, s16 arg1) {
 }
 
 #pragma global_optimizer off
-void fn_80136430(void *arg0)
-{
+void fn_80136430(void *arg0) {
+    s16 height, width;
+    s32 bottom, right;
     s16 *p = (s16 *)arg0;
-    s16 t;
-    s16 dx;
-    s16 dy;
-    s16 vE;
-    char new_var;
-    s16 vA;
-    s16 twelve;
-    s16 v10;
-    s16 five;
-    s16 vC;
-
-    vC = p[6];
-    five = 5;
-    v10 = p[8];
-    twelve = 0xC;
-    vA = p[5];
-    vE = p[7];
-    dy = (s16)(v10 - vC);
-    p[9] = five & 0xFF;
-    dx = (s16)(vE - vA);
-    t = (s16)(dy - 0xC);
-    p[10] = twelve;
-    dx = (s16)(dx - 5);
-    new_var = (p[12] = t);
-    p[11] = dx;
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    bottom = height - 0xC;
+    right = width - 5;
+    p[0x12 / 2] = 5;
+    p[0x14 / 2] = 0xC;
+    p[0x16 / 2] = right;
+    p[0x18 / 2] = bottom;
 }
 #pragma global_optimizer reset
 s16 fn_80136474(void *arg0) {
