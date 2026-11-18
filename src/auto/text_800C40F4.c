@@ -24421,7 +24421,7 @@ extern f64 lbl_8036A098;
 }
 #pragma scheduling on
 f32 fn_800F738C(u8 arg0, f32 farg0) {
-    f64 fn_802387C8(f64, f64);
+    f64 fmod(f64, f64);
     extern f32 lbl_8036A080;
     extern f64 lbl_8036A088;
     extern f64 lbl_8036A098;
@@ -24433,9 +24433,9 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
         farg0 = lbl_8036A080;
     }
     if (arg0 != 0) {
-        return (f32)fn_802387C8((f64)farg0, lbl_8036A098);
+        return (f32)fmod((f64)farg0, lbl_8036A098);
     }
-    return (f32)fn_802387C8((f64)farg0, lbl_8036A088);
+    return (f32)fmod((f64)farg0, lbl_8036A088);
 }
 
 s32 fn_800F73EC(void *arg0, void *arg1, void **arg2) {
