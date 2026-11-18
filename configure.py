@@ -439,6 +439,7 @@ config.libs = [
             Object(NonMatching, "dolphin/gx/GXTexture.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXInitTexObjLOD.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXTexture2.c", mw_version="GC/1.2.5n"),
+            Object(NonMatching, "dolphin/gx/GXSetTevColorS10.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXTexture_SU.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXTexture_rest.c", mw_version="GC/1.2.5n"),
             Object(Matching, "dolphin/gx/GXSetZCompLoc.c", mw_version="GC/1.2.5n"),

@@ -612,7 +612,10 @@ dolphin/gx/GXInitTexObjLOD.c:
 	.text       start:0x802228D8 end:0x80222A3C
 
 dolphin/gx/GXTexture2.c:
-	.text       start:0x80222A3C end:0x802240F0
+	.text       start:0x80222A3C end:0x80223C14
+
+dolphin/gx/GXSetTevColorS10.c:
+	.text       start:0x80223C14 end:0x802240F0
 
 dolphin/gx/GXTexture_SU.c:
 	.text       start:0x802240F0 end:0x80224304
