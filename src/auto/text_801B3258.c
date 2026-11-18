@@ -8426,8 +8426,8 @@ void fn_801C6008(s32 arg0) {
 }
 
 void fn_801C6044(void *arg0) {
-    void fn_800C426C(void *);
-    void fn_800C428C(void *);
+    void Heap_FreeRaw(void *);
+    void Heap_Free(void *);
 
     u8 *obj;
     u8 *data;
@@ -8441,7 +8441,7 @@ void fn_801C6044(void *arg0) {
 
         if (ptr != NULL) {
             if (ptr != NULL) {
-                fn_800C426C((u8 *)ptr - 0x10);
+                Heap_FreeRaw((u8 *)ptr - 0x10);
             }
             *(void **)data = NULL;
         }
@@ -8449,11 +8449,11 @@ void fn_801C6044(void *arg0) {
         ptr = *(void **)(data + 4);
 
         if (ptr != NULL) {
-            fn_800C426C(ptr);
+            Heap_FreeRaw(ptr);
             *(void **)(data + 4) = NULL;
         }
 
-        fn_800C428C(data);
+        Heap_Free(data);
     }
     *(void **)(obj + 0x44) = NULL;
 }
