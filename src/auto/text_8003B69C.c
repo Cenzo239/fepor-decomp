@@ -11165,7 +11165,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 void fn_8005306C(void *arg0) {
     f32 Map_SampleHeightRaw(M2C_UNK *, f32, f32, f32);
     f32 Math_Angle2D(f32, f32, f32, f32);
-    extern M2C_UNK gBattleMap;
+    extern u8 gBattleMap[];
     extern f32 lbl_80369098;
     extern f32 lbl_8036909C;
     f32 sp1C;
@@ -11199,7 +11199,7 @@ void fn_8005306C(void *arg0) {
         temp_r0_2 = M2C_FIELD(temp_r5, u8 *, 0x19F);
         temp_f3 = lbl_80369098 + (f32) (s8) temp_r0_2;
         sp18 = temp_f3;
-        sp1C = Map_SampleHeightRaw(&gBattleMap, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
+        sp1C = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
         var_r31 = &sp14;
     }
     if (temp_r29 != NULL) {
@@ -11208,7 +11208,7 @@ void fn_8005306C(void *arg0) {
         temp_r0_4 = M2C_FIELD(temp_r29, u8 *, 0x19F);
         temp_f3_2 = lbl_80369098 + (f32) (s8) temp_r0_4;
         spC = temp_f3_2;
-        sp10 = Map_SampleHeightRaw(&gBattleMap, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
+        sp10 = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
         var_r30 = &sp8;
     }
     if ((var_r31 != NULL) && (var_r30 != NULL)) {
