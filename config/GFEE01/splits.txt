@@ -561,7 +561,10 @@ dolphin/os/OSSram_lockbits.c:
 	.text       start:0x80209A78 end:0x80209AE8
 
 dolphin/os/OSSram_tail2.c:
-	.text       start:0x80209AE8 end:0x80209FE0
+	.text       start:0x80209AE8 end:0x80209E04
+
+OSSystemCall.c:
+	.text       start:0x80209E04 end:0x80209FE0
 
 dolphin/os/OSThread_sched.c:
 	.text       start:0x80209FE0 end:0x8020A060
