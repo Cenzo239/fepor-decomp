@@ -328,27 +328,13 @@ void fn_80054C14(void *arg0) {
     }
     if (Pad_IsButton(pad,17)) {
         *(u32 *)(*(u8 **)(proc+0x30)+8) ^= 0x20000000;
-        a = NULL;
-        b = a;
+        a = NULL; b = NULL;
         unit1 = *(u8 **)(*(u8 **)(proc+0x30)+0x34);
         unit2 = *(u8 **)(*(u8 **)(proc+0x30)+0x30);
-        if (unit1) {
-            pos1.x=lbl_80369098+(s8)unit1[0x19e];
-            pos1.y=lbl_80369098+(s8)unit1[0x19f];
-            pos1.z=Map_SampleHeightRaw(gBattleMap,(s8)unit1[0x19e],(s8)unit1[0x19f]);
-            a=&pos1;
-        }
-        if (unit2) {
-            pos2.x=lbl_80369098+(s8)unit2[0x19e];
-            pos2.y=lbl_80369098+(s8)unit2[0x19f];
-            pos2.z=Map_SampleHeightRaw(gBattleMap,(s8)unit2[0x19e],(s8)unit2[0x19f]);
-            b=&pos2;
-        }
+        Camera_GetUnitPoint(unit1,&pos1,&a);
+        Camera_GetUnitPoint(unit2,&pos2,&b);
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) {
-        } else {
-            a=b;
-        }
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
@@ -403,6 +389,7 @@ void fn_80054C14(void *arg0) {
 #pragma opt_propagation reset
 #pragma peephole on
 #pragma global_optimizer on
+#pragma optimization_level reset
 void *fn_80055204(void *arg0, s32 arg1) {
     if (arg0 == 0) {
         return 0;
