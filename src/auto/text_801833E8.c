@@ -2795,7 +2795,7 @@ void MoveAnim_AttachClassCue(void *anim) {
 }
 
 #pragma push
-#pragma opt_common_subs on
+#pragma global_optimizer off
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
     void fn_8004FE98(void *, s32);
@@ -2822,7 +2822,7 @@ void fn_80188B4C(void *anim) {
     f32 angle;
     u16 flags;
     s32 alpha;
-    u8 blend;
+    s32 blend;
     u8 slot;
 
     self = (u8 *)anim;
@@ -2870,7 +2870,7 @@ void fn_80188B4C(void *anim) {
         }
         blend = 1;
         if (!((u8)(gMapBlendMode - 1) <= 1)) blend = 0;
-        if (blend) {
+        if ((u8)blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
                 (gBattleMap + x + y * 0x40)[0x200D] == 0) {
