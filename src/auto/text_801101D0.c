@@ -8987,7 +8987,7 @@ extern s32 gActiveCam;
  * Instruction match alone does not validate those jump-table entries. */
 static inline void Text_CopyDelimited(s8 **text, u8 *out)
 {
-    while ((u8)**text != '|') {
+    while ((s32)(u8)**text != '|') {
         *out++ = *(*text)++;
     }
     *out = 0;
