@@ -15804,7 +15804,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
-    extern f32 lbl_80369F3C, lbl_80369F5C, lbl_80369F60;
+    extern f32 lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
     f32 z;
@@ -16180,7 +16180,8 @@ void fn_800E56D8(void *arg0, s8 arg1) {
     }
 }
 
-void fn_800E574C(u8 *self, char *name, u8 loop, u8 adjust, u8 blend, s32 duration, f32 speed) {
+#pragma cplusplus on
+extern "C" void fn_800E574C(u8 *self, char *name, u8 loop, u8 adjust, u8 blend, s32 duration, f32 speed) {
 extern char lbl_802720E0[];
 void *fn_800DDC04(void *, void *);
 u8 fn_801C6B7C(void *, void *, s32, void *, s32);
@@ -16208,11 +16209,10 @@ String_Destroy(&str,-1);
 if(*(void **)(*(u8 **)(self+0xE0)+0x44)!=0 && blend && fn_801C6B7C(*(void **)(self+0xE0),anim,duration,delta,0)){
 *(f32 *)(self+0x48)+=delta[0];
 *(f32 *)(self+0x50)+=delta[2];
-((void (*)(void *))(*(void ***)(self+0x40))[3])(self);
+((WindowDrawInterface *)self)->unk0C();
 } else {
 fn_801C68D0(*(void **)(self+0xE0));
-node=GActor_FindNode(*(void **)(self+0xE0),lbl_802720E0);
-fn_80060F70(*(void **)(self+0xE0),node,before);
+fn_80060F70(*(void **)(self+0xE0),GActor_FindNode(*(void **)(self+0xE0),lbl_802720E0),before);
 *(void **)(*(u8 **)(self+0xE0)+0x44)=anim;
 *(f32 *)(*(u8 **)(self+0xE0)+0x5C)=speed;
 fn_8005FEE8(*(void **)(self+0xE0),lbl_80369F3C);
@@ -16223,7 +16223,7 @@ if(node!=-1){
 fn_80060F70(*(void **)(self+0xE0),node,after);
 *(f32 *)(self+0x48)=before[0]+*(f32 *)(self+0x48)-after[0];
 *(f32 *)(self+0x50)=before[2]+*(f32 *)(self+0x50)-after[2];
-((void (*)(void *))(*(void ***)(self+0x40))[3])(self);
+((WindowDrawInterface *)self)->unk0C();
 }}}
 if(anim){
 fn_8005FEE8(*(void **)(self+0xE0),lbl_80369F3C);
@@ -16237,7 +16237,7 @@ if(loop) **(u32 **)(self+0xE0)|=0x100;
 else **(u32 **)(self+0xE0)|=0x200;
 }
 }
-
+#pragma cplusplus reset
 void fn_800E59BC(void *arg0) {
     M2C_UNK fn_80060060(void *);
     if ((u8) M2C_FIELD(arg0, u8 *, 0xD0) != 0) {
@@ -26246,6 +26246,8 @@ void fn_800F9FC4(void *arg0) {
     u8 *cmd;
     s32 dx;
     s32 dy;
+    s8 cx;
+    s8 cy;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
@@ -26257,11 +26259,13 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            dx = x - (s8)gUiContext[0xE];
+            cy = gUiContext[0xE];
+            cx = gUiContext[0xD];
+            dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
             }
-            dy = y - (s8)gUiContext[0xD];
+            dy = y - cx;
             if (dy < 0) {
                 dy = -dy;
             }
