@@ -2127,9 +2127,8 @@ static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
 void strcpy(void *,void *);
 char token[257];
-s32 pos;
 s32 count=0;
-pos=ParseToken(str,token,0);
+s32 pos=ParseToken(str,token,0);
 if(pos==0)return 0;
 u8 comment=token[0]=='#';
 if(comment==0) {
@@ -4328,24 +4327,35 @@ void String_Concat(void *, void *, void *);
 u32 strlen(const char *);
 void fn_800056A0(s32);
 extern char lbl_802704F8[];
+char *entry;
+u32 len;
 u32 path[3], value[3], tmp[3], joined[3];
 path[1]=0; value[1]=0;
 path[0]=0; path[2]=0; path[1]=0;
 value[0]=0; value[2]=0; value[1]=0;
-String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,first)+12,0,-1);
-if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))!=0){
+entry = (char *)StringMap_FindOrInsert(obj+0x1e0,first);
+entry += 12;
+String_Assign(value,entry,0,-1);
+len = strlen(lbl_802704F8+0x1b0);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,len)!=0){
 String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1); return;
 }
 String_ConcatCStr(tmp,key,lbl_802704F8+0x1ba);
 String_Concat(joined,tmp,suffix);
 String_Assign(path,joined,0,-1);
 String_Destroy(joined,-1); String_Destroy(tmp,-1);
-String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,path)+12,0,-1);
-if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))!=0){
+entry = (char *)StringMap_FindOrInsert(obj+0x1e0,path);
+entry += 12;
+String_Assign(value,entry,0,-1);
+len = strlen(lbl_802704F8+0x1b0);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,len)!=0){
 String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1); return;
 }
-String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,key)+12,0,-1);
-if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))==0) fn_800056A0(0);
+entry = (char *)StringMap_FindOrInsert(obj+0x1e0,key);
+entry += 12;
+String_Assign(value,entry,0,-1);
+len = strlen(lbl_802704F8+0x1b0);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,len)==0) fn_800056A0(0);
 String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1);
 }
 #pragma global_optimizer reset
@@ -26137,8 +26147,9 @@ void fn_800F9FC4(void *arg0) {
     u8 *cmd;
     s32 dx;
     s32 dy;
-    s32 cy;
-    s32 cx;
+    s8 cy;
+    s8 cx;
+    u8 *ctx;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
@@ -26150,8 +26161,9 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            cy = (s8)gUiContext[0xE];
-            cx = (s8)gUiContext[0xD];
+            ctx = gUiContext;
+            cy = ctx[0xE];
+            cx = ctx[0xD];
             dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
