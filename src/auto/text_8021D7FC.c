@@ -1378,90 +1378,67 @@ void GXSetVtxDescv(s32 arg0, s32 arg1) {
 
 #pragma optimization_level 3
 void fn_8021F9D8(void) {
-  extern u16 *const __GXData;
-  volatile u8 *fifo = (volatile u8 *)0xCC008000;
-  u8 cmd = 8;
-  u8 *gx = (u8 *)__GXData;
-  u32 n;
-  u32 colors;
-  u32 tex;
-
-  *fifo = cmd;
-  *fifo = 0x50;
-  *(volatile u32 *)fifo = *(u32 *)(gx + 0x14);
-  *fifo = cmd;
-  *fifo = 0x60;
-  *(volatile u32 *)fifo = *(u32 *)(gx + 0x18);
-  if (gx[0x4d5]) n = 2;
-  else if (gx[0x4d4]) n = 1;
-  else n = 0;
-  colors = (33 - (u32)__cntlzw((*(u32 *)(gx + 0x14) >> 13) & 15)) >> 1;
-  tex = (33 - (u32)__cntlzw(*(u32 *)((u8 *)__GXData + 0x18) & 0xffff)) >> 1;
-  *fifo = 0x10;
-  *(volatile u32 *)fifo = 0x1008;
-  *(volatile u32 *)fifo = (tex << 4) | (colors | (n << 2));
-  __GXData[1] = 1;
+extern u16 *const __GXData;
+u32 n;
+u32 colors;
+u32 tex;
+*(volatile u8 *)0xCC008000=8;
+*(volatile u8 *)0xCC008000=0x50;
+*(volatile u32 *)0xCC008000=*(u32 *)((u8 *)__GXData+0x14);
+*(volatile u8 *)0xCC008000=8;
+*(volatile u8 *)0xCC008000=0x60;
+*(volatile u32 *)0xCC008000=*(u32 *)((u8 *)__GXData+0x18);
+if(((u8 *)__GXData)[0x4d5]) n=2;
+else if(((u8 *)__GXData)[0x4d4]) n=1;
+else n=0;
+colors=(33-(u32)__cntlzw((*(u32 *)((u8 *)__GXData+0x14)>>13)&15))>>1;
+tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
+*(volatile u8 *)0xCC008000=0x10;
+*(volatile u32 *)0xCC008000=0x1008;
+*(volatile u32 *)0xCC008000=(tex<<4)|(colors|(n<<2));
+__GXData[1]=1;
 }
+#pragma optimization_level 2
+#pragma scheduling off
+void fn_8021FA94(void) {
+extern u32 __GXData;
+extern u8 lbl_80367000[4], lbl_80367004[4], lbl_80367008[8];
+u8 *gx;
+u32 count;
+u32 word14, word18;
+s32 multiplier;
+
+gx=(u8*)__GXData;
+if (*(u16*)(gx+4)==0) return;
+word14=*(u32*)(gx+0x14);
+word18=*(u32*)(gx+0x18);
+multiplier=(*(u32*)(gx+0x1c)>>9)&1;
+count=word14&1;
+count+=(word14>>1)&1;
+count+=(word14>>2)&1;
+count+=(word14>>3)&1;
+count+=(word14>>4)&1;
+count+=(word14>>5)&1;
+count+=(word14>>6)&1;
+count+=(word14>>7)&1;
+count+=(word14>>8)&1;
+count+=lbl_80367008[(word14>>9)&3];
+if (multiplier>0) multiplier=3; else multiplier=1;
+count+=lbl_80367008[(word14>>11)&3]*multiplier;
+count+=lbl_80367000[(word14>>13)&3];
+count+=lbl_80367000[(word14>>15)&3];
+count+=lbl_80367004[(word18>>0)&3];
+count+=lbl_80367004[(word18>>2)&3];
+count+=lbl_80367004[(word18>>4)&3];
+count+=lbl_80367004[(word18>>6)&3];
+count+=lbl_80367004[(word18>>8)&3];
+count+=lbl_80367004[(word18>>10)&3];
+count+=lbl_80367004[(word18>>12)&3];
+count+=lbl_80367004[(word18>>14)&3];
+*(u16*)(gx+6)=count;
+}
+#pragma scheduling reset
 #pragma optimization_level reset
-void fn_8021FA94(void)
-{
-    extern u32 __GXData;
-    extern u8 lbl_80367000[];
-    extern u8 lbl_80367004[];
-    extern u8 lbl_80367008[];
-
-    u8 *gx;
-    u32 word14;
-    u32 word18;
-    u32 word1C;
-    u32 count;
-    u32 multiplier;
-
-    gx = (u8 *)__GXData;
-
-    if (*(u16 *)(gx + 4) == 0) {
-        return;
-    }
-
-    word14 = *(u32 *)(gx + 0x14);
-    word18 = *(u32 *)(gx + 0x18);
-    word1C = *(u32 *)(gx + 0x1C);
-
-    count = word14 & 1;
-    count += (word14 >> 1) & 1;
-    count += (word14 >> 2) & 1;
-    count += (word14 >> 3) & 1;
-    count += (word14 >> 4) & 1;
-    count += (word14 >> 5) & 1;
-    count += (word14 >> 6) & 1;
-    count += (word14 >> 7) & 1;
-    count += (word14 >> 8) & 1;
-
-    count += lbl_80367008[(word14 >> 9) & 3];
-
-    if (((word1C >> 9) & 1) == 1) {
-        multiplier = 3;
-    } else {
-        multiplier = 1;
-    }
-
-    count += lbl_80367008[(word14 >> 11) & 3] * multiplier;
-
-    count += lbl_80367000[(word14 >> 13) & 3];
-    count += lbl_80367000[(word14 >> 15) & 3];
-
-    count += lbl_80367004[word18 & 3];
-    count += lbl_80367004[(word18 >> 2) & 3];
-    count += lbl_80367004[(word18 >> 4) & 3];
-    count += lbl_80367004[(word18 >> 6) & 3];
-    count += lbl_80367004[(word18 >> 8) & 3];
-    count += lbl_80367004[(word18 >> 10) & 3];
-    count += lbl_80367004[(word18 >> 12) & 3];
-    count += lbl_80367004[(word18 >> 14) & 3];
-
-    *(u16 *)(gx + 6) = (u16)count;
-}
-
 void GXClearVtxDesc(void)
 {
   extern u16 * const __GXData;
