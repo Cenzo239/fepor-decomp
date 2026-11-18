@@ -263,10 +263,9 @@ extern s32 lbl_8033E578[];
 
 volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
 
-#pragma opt_lifetimes off
+#pragma use_lmw_stmw on
 int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
-  volatile u32 *cr;
   int new_var;
   if (((u32) arg2) != 0)
   {
@@ -278,26 +277,22 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
     {
       value |= ((u32) ((u8 *)arg0)[i]) << (8 * (3 - i));
     }
-
-    *((volatile u32 *) 0xCC006838) = value;
+    __EXIRegs_802677E4[14] = value;
   }
-  cr = (volatile u32 *) 0xCC006800;
-  *(cr += 13) = (((u32)(arg1 - 1) << 4) | 1U) | ((u32)arg2 << 2);
+  __EXIRegs_802677E4[13] = ((((u32)arg2) << 2) | 1) | ((arg1 - 1) << 4);
   new_var = arg2;
-  while ((*cr) & 1)
+  while (__EXIRegs_802677E4[13] & 1)
   {
   }
 
   if (((u32) new_var) == 0)
   {
     s32 i = 0;
-    u32 value = *((volatile u32 *) 0xCC006838);
+    u32 value = __EXIRegs_802677E4[14];
     for (; i < arg1; i++)
     {
       *(arg0++) = (u8) (value >> (8 * (3 - i)));
     }
-
   }
   return 1;
 }
-#pragma opt_lifetimes reset
