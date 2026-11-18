@@ -250,26 +250,23 @@ void *Unit_GetActiveItemPtr(void *);
 void *fn_80037C20(void *);
 
 void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
-    void Unit_SetWorldXY(void *, f32, f32);
-    extern f32 lbl_80368EC0;
-    void *child;
-    f32 base;
-    f32 fx;
-    f32 fy;
-
-    *(s8 *)((u8 *)arg0 + 0x19E) = arg1;
-    *(s8 *)((u8 *)arg0 + 0x19F) = arg2;
-    child = *(void **)((u8 *)arg0 + 0x194);
-    if (child != NULL) {
-        base = lbl_80368EC0;
-        *(s8 *)((u8 *)child + 0x19E) = arg1;
-        fx = (f32)arg1;
-        fx = base + fx;
-        *(s8 *)((u8 *)child + 0x19F) = arg2;
-        fy = (f32)arg2;
-        fy = base + fy;
-        Unit_SetWorldXY(child, fx, fy);
-    }
+void Unit_SetWorldXY(void *, f32, f32);
+extern f32 lbl_80368EC0;
+void *child;
+f32 base, fx, fy;
+*(s8*)((u8*)arg0+0x19e)=arg1;
+*(s8*)((u8*)arg0+0x19f)=arg2;
+child=*(void**)((u8*)arg0+0x194);
+if(child!=NULL) {
+*(s8*)((u8*)child+0x19e)=arg1;
+base=lbl_80368EC0;
+fx=(f32)arg1;
+fy=(f32)arg2;
+fx=base+fx;
+*(s8*)((u8*)child+0x19f)=arg2;
+fy=base+fy;
+Unit_SetWorldXY(child,fx,fy);
+}
 }
 
 void Unit_SetHp(void *arg0, s8 arg1) {
