@@ -1767,21 +1767,14 @@ s8 Unit_GetLck(void *arg0) {
 
 #pragma opt_peephole off
 s8 Unit_GetSpd(void *arg0) {
-    void *p18c;
-    void *p188;
-    u8 t;
-    u8 a;
-    s8 lim;
+    s32 p;
     s8 var;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    p188 = *(void **)((u8 *)arg0 + 0x188);
-    t = *(u8 *)((u8 *)arg0 + 0x1AF);
-    a = *(u8 *)((u8 *)p18c + 0x48);
-    lim = *(u8 *)((u8 *)p18c + 0x50);
-    var = (*(u8 *)((u8 *)p188 + 0x21) + a) + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x21) + *(u8 *)(p + 0x48)) + *(u8 *)((u8 *)arg0 + 0x1AF);
+    p = *(s8 *)(p + 0x50);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
