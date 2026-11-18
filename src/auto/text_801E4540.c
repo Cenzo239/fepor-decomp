@@ -8,22 +8,6 @@ struct UnkStruct {
     u32 field_8;
 };
 
-typedef struct { s8 value; } TabKey;
-
-static inline s32 TabCountChanges(void *begin, void *end, TabKey *key, u32 offset) {
-    void *node = begin;
-    s32 count = 0;
-    u8 found;
-    s8 value;
-    while (node != end) {
-        value = ((u8 *)*(void **)((u8 *)node + 8))[offset];
-        if (value != key->value) { key->value = value; found = 1; } else found = 0;
-        if (found) count++;
-        node = *(void **)((u8 *)node + 4);
-    }
-    return count;
-}
-
 #pragma global_optimizer off
 void fn_801E4540(void)
 {
