@@ -458,6 +458,16 @@ s32 Heap_Alloc(s32 arg0) {
     return fn_800C5A48(lbl_80367870, arg0) + 0x20;
 }
 
+static inline s32 Heap_FindByName(void *name) {
+s32 Str_Cmp(void *,void *);
+extern u32 lbl_80320B88[];
+s32 i;
+u32 *p=lbl_80320B88;
+for(i=0;i<16;i++,p++) {
+if(*p && Str_Cmp(name,(void *)(*p+4))==0) return i;
+}
+return -1;
+}
 s32 fn_800C4304(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u32 lbl_80320B88[];
@@ -955,6 +965,7 @@ found4:
 }
 #pragma use_lmw_stmw reset
 
+#pragma optimization_level 3
 #pragma global_optimizer off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
@@ -968,9 +979,9 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
-    u32 size;
     s32 index;
     u8 *heap;
+    u32 size;
     u8 *data;
     u32 *table;
     s32 groups;
@@ -1020,6 +1031,7 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     return index;
 }
 #pragma global_optimizer reset
+#pragma optimization_level reset
 s32 Heap_Create(void *arg0, s32 arg1)
 {
     extern u8 *lbl_80367868;
@@ -2113,18 +2125,14 @@ static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
     void strcpy(void *, void *);
     char token[257];
-    char *data;
     char *cursor;
     s32 pos;
     s32 count;
-    s32 *outTotal;
-    String *s;
+    char *data;
     s32 size;
 
-    outTotal = total;
-    s = str;
     cursor = values;
-    pos = ParseToken(s, token, 0);
+    pos = ParseToken(str, token, 0);
 
     if (pos == 0) {
         return 0;
@@ -2147,15 +2155,15 @@ extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s3
 valid:
     strcpy(name, token);
     count = 0;
-    data = s->data;
-    size = s->size;
+    data = str->data;
+    size = str->size;
     while ((pos = ParseTokenBuf(data, size, token, pos)) != 0 && (u8)token[0] != '#') {
         strcpy(cursor, token);
         cursor += 32;
         count++;
     }
-    if (outTotal) {
-        *outTotal = count;
+    if (total) {
+        *total = count;
     }
     return 1;
 }
