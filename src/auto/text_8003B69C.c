@@ -3333,71 +3333,168 @@ void fn_80040854(void *arg0)
     }
 }
 
-void fn_800408A8(void* arg0, void* arg1, s32 arg2) {
-    if (arg2 == 0) {
-        return;
-    }
-    
-    // Initialize to zero first
-    M2C_FIELD(arg0, u8*, 0x196) = 0;
-    M2C_FIELD(arg0, u8*, 0x197) = 0;
-    M2C_FIELD(arg0, u8*, 0x1A0) = 0;
-    M2C_FIELD(arg0, u8*, 0x1A4) = 0;
-    M2C_FIELD(arg0, u8*, 0x1A8) = 0;
-    M2C_FIELD(arg0, u8*, 0x1A9) = 0;
-    M2C_FIELD(arg0, u8*, 0x1B0) = 0;
-    M2C_FIELD(arg0, u8*, 0x1B7) = 0;
-    M2C_FIELD(arg0, u8*, 0x1B8) = 0;
-    M2C_FIELD(arg0, u8*, 0x1B9) = 0;
-    M2C_FIELD(arg0, u8*, 0x1BA) = 0;
+void *fn_800408A8(s32 which) {
+    void fn_80040B78(void *, s32);
+    extern u8 lbl_802EFE60[];
+    extern u8 lbl_802EFF14[];
+    extern u8 lbl_80367AF6;
+    extern u8 lbl_80367288;
+    extern u8 gBattleSkyIndex;
+    extern u8 gMapBlendMode;
+    extern u8 lbl_8036728B;
+    extern u8 lbl_8036728C;
+    extern u8 lbl_8036728D;
+    extern u8 lbl_8036728E;
+    extern u8 lbl_80367294;
+    extern u8 lbl_80367295;
+    extern u8 lbl_80367298[4];
+    extern u8 lbl_8036729C[4];
+    extern u8 lbl_80367290[4];
+    extern u32 lbl_80368ED0;
+    extern u32 lbl_80368ED4;
+    extern u32 lbl_80368ED8;
+    union { u8 bytes[12]; u32 words[3]; } colors0;
+    union { u8 bytes[12]; u32 words[3]; } colors1;
 
-    if (arg2 & 1) {
-        M2C_FIELD(arg0, u8*, 0x196) = 1;
+    switch (which) {
+    case 0: {
+        u8 c11, c10, c9, c8, c7, c6, c5, c4, c3, c2, c1, c0;
+        u8 *p90, *p9c, *p98, *self;
+        s32 three, one, zero;
+        colors0.words[0] = lbl_80368ED0;
+        zero = 0;
+        colors0.words[1] = lbl_80368ED4;
+        self = lbl_802EFE60;
+        colors0.words[2] = lbl_80368ED8;
+        one = 1;
+        three = 3;
+        c0 = colors0.bytes[0];
+        p98 = lbl_80367298;
+        p9c = lbl_8036729C;
+        c1 = colors0.bytes[1];
+        p90 = lbl_80367290;
+        *(u32 *)(self + 0xA4) = zero;
+        c2 = colors0.bytes[2];
+        c3 = colors0.bytes[3];
+        c4 = colors0.bytes[4];
+        c5 = colors0.bytes[5];
+        c6 = colors0.bytes[6];
+        c7 = colors0.bytes[7];
+        c8 = colors0.bytes[8];
+        c9 = colors0.bytes[9];
+        c10 = colors0.bytes[10];
+        c11 = colors0.bytes[11];
+        *(u32 *)(self + 0x64) = zero;
+        *(u32 *)(self + 0x8) = zero;
+        *(u32 *)(self + 0xC) = zero;
+        *(u32 *)(self + 0x10) = zero;
+        *(u32 *)(self + 0x14) = zero;
+        *(u32 *)(self + 0x18) = zero;
+        *(u32 *)(self + 0x1C) = zero;
+        *(u32 *)(self + 0x20) = zero;
+        *(u32 *)(self + 0x24) = zero;
+        *(u32 *)(self + 0x28) = zero;
+        *(u32 *)(self + 0x2C) = zero;
+        *(u32 *)(self + 0x30) = zero;
+        *(u32 *)(self + 0xA4) = zero;
+        *(u32 *)(self + 0x34) = zero;
+        lbl_80367288 = one;
+        gBattleSkyIndex = zero;
+        gMapBlendMode = three;
+        lbl_8036728C = zero;
+        lbl_8036728D = zero;
+        lbl_8036728E = zero;
+        lbl_80367294 = zero;
+        lbl_80367295 = zero;
+        p98[0] = c0;
+        p98[1] = c1;
+        p98[2] = c2;
+        p98[3] = c3;
+        p9c[0] = c4;
+        p9c[1] = c5;
+        p9c[2] = c6;
+        p9c[3] = c7;
+        p90[0] = c8;
+        p90[1] = c9;
+        p90[2] = c10;
+        p90[3] = c11;
+        lbl_8036728B = zero;
+        fn_80040B78(self, 0);
+        self = lbl_802EFE60;
+        lbl_80367AF6 = 0;
+        self[0x68] = 0;
+        return self;
     }
-    
-    if (arg2 & 2) {
-        M2C_FIELD(arg0, u8*, 0x197) = 2;
+    case 1: {
+        u8 c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11;
+        u8 *self, *p98, *p9c, *p90;
+        s32 zero, one, three;
+        colors1.words[0] = lbl_80368ED0;
+        zero = 0;
+        colors1.words[1] = lbl_80368ED4;
+        self = lbl_802EFF14;
+        colors1.words[2] = lbl_80368ED8;
+        one = 1;
+        three = 3;
+        c0 = colors1.bytes[0];
+        p98 = lbl_80367298;
+        p9c = lbl_8036729C;
+        c1 = colors1.bytes[1];
+        p90 = lbl_80367290;
+        *(u32 *)(self + 0xA4) = zero;
+        c2 = colors1.bytes[2];
+        c3 = colors1.bytes[3];
+        c4 = colors1.bytes[4];
+        c5 = colors1.bytes[5];
+        c6 = colors1.bytes[6];
+        c7 = colors1.bytes[7];
+        c8 = colors1.bytes[8];
+        c9 = colors1.bytes[9];
+        c10 = colors1.bytes[10];
+        c11 = colors1.bytes[11];
+        *(u32 *)(self + 0x64) = zero;
+        *(u32 *)(self + 0x8) = zero;
+        *(u32 *)(self + 0xC) = zero;
+        *(u32 *)(self + 0x10) = zero;
+        *(u32 *)(self + 0x14) = zero;
+        *(u32 *)(self + 0x18) = zero;
+        *(u32 *)(self + 0x1C) = zero;
+        *(u32 *)(self + 0x20) = zero;
+        *(u32 *)(self + 0x24) = zero;
+        *(u32 *)(self + 0x28) = zero;
+        *(u32 *)(self + 0x2C) = zero;
+        *(u32 *)(self + 0x30) = zero;
+        *(u32 *)(self + 0xA4) = zero;
+        *(u32 *)(self + 0x34) = zero;
+        lbl_80367288 = one;
+        gBattleSkyIndex = zero;
+        gMapBlendMode = three;
+        lbl_8036728C = zero;
+        lbl_8036728D = zero;
+        lbl_8036728E = zero;
+        lbl_80367294 = zero;
+        lbl_80367295 = zero;
+        p98[0] = c0;
+        p98[1] = c1;
+        p98[2] = c2;
+        p98[3] = c3;
+        p9c[0] = c4;
+        p9c[1] = c5;
+        p9c[2] = c6;
+        p9c[3] = c7;
+        p90[0] = c8;
+        p90[1] = c9;
+        p90[2] = c10;
+        p90[3] = c11;
+        lbl_8036728B = zero;
+        fn_80040B78(self, 0);
+        self = lbl_802EFF14;
+        lbl_80367AF6 = 0;
+        self[0x68] = 1;
+        return self;
     }
-
-    if (arg2 & 4) {
-        M2C_FIELD(arg0, u8*, 0x1A0) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
     }
-    
-    if (arg2 & 8) {
-        M2C_FIELD(arg0, u8*, 0x1A4) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-    }
-
-    if (arg2 & 0x10) {
-        *(u8*)arg1; // Read into temp value, then advance
-        arg1 = (u8*)arg1 + 1; 
-        M2C_FIELD(arg0, u8*, 0x1A8) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-        M2C_FIELD(arg0, u8*, 0x1A9) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-    }
-
-    if (arg2 & 0x20) {
-        M2C_FIELD(arg0, u8*, 0x1B0) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-    }
-
-    if (arg2 & 0x40) {
-        M2C_FIELD(arg0, u8*, 0x1B7) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-        M2C_FIELD(arg0, u8*, 0x1B8) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-    }
-   
-    if (arg2 & 0x80) {
-        *(u8*)arg1; // Read first byte
-        arg1 = (u8*)arg1 + 1; 
-        M2C_FIELD(arg0, u8*, 0x1B9) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-        M2C_FIELD(arg0, u8*, 0x1BA) = *(u8*)arg1;
-        arg1 = (u8*)arg1 + 1;
-    }
+    return 0;
 }
 
 u8 fn_80040B1C(void *arg0, s32 arg1, s32 arg2) {
@@ -6879,9 +6976,8 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     extern volatile s8 lbl_8036728D;
     extern volatile s8 lbl_8036728E;
     extern volatile u8 lbl_80367290;
-    u8 d, c;
+    u8 d, c, b, a;
     volatile u8 *p;
-    u8 b, a;
 
     a = arg3[0];
     b = arg3[1];
@@ -7216,7 +7312,9 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
 
-void fn_80049594(void *arg0)
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+void fn_80049594(void *self)
 {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -7238,122 +7336,76 @@ void fn_80049594(void *arg0)
     u8 sp38[0x30];
     u8 sp8[0x30];
 
-    u8 *self;
     u8 *ent;
     u8 *map;
-    s32 frame;
-    s32 duration;
-    s32 value;
+    u8 *p0;
     s32 a;
-    s32 b;
-    f32 result;
     f32 f31v;
     f32 f30v;
     f32 f29v;
     f32 f28v;
+    f32 t30;
+    f32 half;
     f32 scale;
     f32 temp_f0;
+    f32 result;
 
-    self = (u8 *)arg0;
-
-    frame = *(s32 *)(self + 0x40) + 1;
-    *(s32 *)(self + 0x40) = frame;
-
-    duration = *(s32 *)(self + 0x3C);
+    *(s32 *)((u8 *)self + 0x40) = *(s32 *)((u8 *)self + 0x40) + 1;
 
     result = Math_EaseOutPow(
         2,
-        *(f32 *)(self + 0x44),
-        *(f32 *)(self + 0x48),
-        (f32)duration,
-        (f32)frame
+        *(f32 *)((u8 *)self + 0x44),
+        *(f32 *)((u8 *)self + 0x48),
+        (f32)*(s32 *)((u8 *)self + 0x3C),
+        (f32)*(s32 *)((u8 *)self + 0x40)
     );
+    p0 = *(u8 **)((u8 *)self + 0x30);
+    half = lbl_80368EE4;
+    *(f32 *)(p0 + 8) = (f32)(s32)result;
 
-    value = (s32)result;
-
-    ent = *(u8 **)(self + 0x30);
-    *(f32 *)(ent + 8) = (f32)value;
-
-    ent = *(u8 **)(self + 0x30);
+    ent = *(u8 **)((u8 *)self + 0x30);
     map = (u8 *)gMap;
 
-    a = (s8)ent[0];
-    b = (s8)ent[1];
+    f28v = (f32)(s8)ent[0] + half;
+    f29v = -(*(f32 *)(ent + 0xC) + half);
+    t30 = (f32)(s8)ent[1];
+    f31v = *(f32 *)(ent + 8) + half;
+    f30v = t30 + half;
 
-    f31v = *(f32 *)(ent + 8) + lbl_80368EE4;
-    f29v = -(*(f32 *)(ent + 0xC) + lbl_80368EE4);
-    f28v = (f32)a + lbl_80368EE4;
-    f30v = (f32)b + lbl_80368EE4;
-
-    if (map[0x68] == 1) {
-        a = *(s16 *)(map + 0);
-        b = *(s16 *)(map + 2);
-
+    if (*(u8 *)(map + 0x68) == 1) {
+        a = *(s16 *)map;
+        p0 = (u8 *)(s32)*(s16 *)(map + 2);
         a = (s32)(((u32)a >> 31) + a) >> 1;
-        b = (s32)(((u32)b >> 31) + b) >> 1;
-
         f28v -= (f32)a;
-        f30v -= (f32)b;
+        f30v -= (f32)((s32)(((u32)(s32)p0 >> 31) + (s32)p0) >> 1);
     }
 
-    PSMTXTrans(
-        sp98,
-        lbl_80368EE8,
-        lbl_80368EE4,
-        lbl_80368EE8
-    );
-
-    PSMTXRotRad(
-        sp68,
-        0x59,
-        lbl_80368EEC * f31v
-    );
-
+    PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+    PSMTXRotRad(sp68, 0x59, lbl_80368EEC * f31v);
     PSMTXConcat(sp68, sp98, sp68);
-
-    PSMTXTrans(
-        sp98,
-        lbl_80368EF0,
-        lbl_80368EE4,
-        lbl_80368EF0
-    );
-
+    PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
     PSMTXConcat(sp98, sp68, sp8);
 
     scale = *(f32 *)(map + 0x6C);
-
-    PSMTXScale(
-        sp38,
-        scale,
-        scale,
-        scale
-    );
-
+    PSMTXScale(sp38, scale, scale, scale);
     PSMTXConcat(sp38, sp8, sp8);
 
     temp_f0 = *(f32 *)(map + 0x6C);
-
     PSMTXTrans(
         sp98,
         lbl_80368EF4 * (f28v * temp_f0),
         lbl_80368EF4 * (f29v * temp_f0),
         lbl_80368EF4 * (f30v * temp_f0)
     );
-
     PSMTXConcat(sp98, sp8, sp8);
+    PSMTXConcat(map + 0x70, sp8, ent + 0x24);
 
-    PSMTXConcat(
-        map + 0x70,
-        sp8,
-        ent + 0x24
-    );
-
-    if (*(s32 *)(self + 0x3C) ==
-        *(s32 *)(self + 0x40)) {
+    if (*(s32 *)((u8 *)self + 0x3C) == *(s32 *)((u8 *)self + 0x40)) {
         Process_ClearFunc(self);
     }
 }
-
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
 void fn_8004982C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x48);
 }
