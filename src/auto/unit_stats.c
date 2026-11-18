@@ -295,17 +295,14 @@ void *fn_80037C20(void *);
 #pragma optimization_level 3
 
 s8 Unit_GetHp(void *arg0) {
-    s8 lim;
-    void *p18c;
-    u8 t;
+    s32 p;
     s8 var;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    t = *(u8 *)((u8 *)arg0 + 0x1AB);
-    lim = *(u8 *)((u8 *)p18c + 0x4C);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + *(u8 *)((u8 *)p18c + 0x44)) + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + *(u8 *)(p + 0x44)) + *(u8 *)((u8 *)arg0 + 0x1AB);
+    p = *(s8 *)(p + 0x4C);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
