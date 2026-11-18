@@ -2,9 +2,10 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-static inline void InitMenuVtbl(void *object, void *table)
+static inline void *InitMenuVtbl(void *object, void *table)
 {
     ((void **)object)[1] = table;
+    return object;
 }
 
 #pragma no_register_save_helpers on
