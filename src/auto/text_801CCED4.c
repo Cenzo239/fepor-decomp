@@ -2682,16 +2682,17 @@ void fn_801CFEF4(void *arg0, s32 arg1)
     entry[2] = arg1;
     entry[3] = 0;
 
-    if (*(u16 *)(*(u8 **)(self + 0x24) + 4) == 0) {
+    switch (*(u16 *)(*(u8 **)(self + 0x24) + 4)) { case 0:
         switch ((s8)entry[2]) {
         case 0:
         {
-            u32 color = lbl_8036B540;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 1;
             *(u16 *)(entry + 4) = 0x33;
             *(u16 *)(entry + 6) = 0x2C;
+            color = lbl_8036B540;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2702,12 +2703,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 1:
         {
-            u32 color = lbl_8036B544;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 2;
             *(u16 *)(entry + 4) = 0x17;
             *(u16 *)(entry + 6) = 0x9C;
+            color = lbl_8036B544;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2718,12 +2720,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 2:
         {
-            u32 color = lbl_8036B548;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 3;
             *(u16 *)(entry + 4) = 0x124;
             *(u16 *)(entry + 6) = 7;
+            color = lbl_8036B548;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2734,12 +2737,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 3:
         {
-            u32 color = lbl_8036B54C;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 4;
             *(u16 *)(entry + 4) = 0xB0;
             *(u16 *)(entry + 6) = 0x66;
+            color = lbl_8036B54C;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2750,12 +2754,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 4:
         {
-            u32 color = lbl_8036B550;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 5;
             *(u16 *)(entry + 4) = 0xDD;
             *(u16 *)(entry + 6) = 0xA6;
+            color = lbl_8036B550;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2766,12 +2771,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 5:
         {
-            u32 color = lbl_8036B554;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 6;
             *(u16 *)(entry + 4) = 0xFA;
             *(u16 *)(entry + 6) = 0x157;
+            color = lbl_8036B554;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2782,12 +2788,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 6:
         {
-            u32 color = lbl_8036B558;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 7;
             *(u16 *)(entry + 4) = 0x6C;
             *(u16 *)(entry + 6) = 0x13B;
+            color = lbl_8036B558;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2798,12 +2805,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 7:
         {
-            u32 color = lbl_8036B55C;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 8;
             *(u16 *)(entry + 4) = 0x32;
             *(u16 *)(entry + 6) = 0xDC;
+            color = lbl_8036B55C;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2814,12 +2822,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 8:
         {
-            u32 color = lbl_8036B560;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 9;
             *(u16 *)(entry + 4) = 0xB0;
             *(u16 *)(entry + 6) = 0x66;
+            color = lbl_8036B560;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -2830,12 +2839,13 @@ void fn_801CFEF4(void *arg0, s32 arg1)
 
         case 9:
         {
-            u32 color = lbl_8036B564;
+            u32 color;
             u8 *p = (u8 *)&color;
 
             *(u16 *)(entry + 8) = 5;
             *(u16 *)(entry + 4) = 0xDD;
             *(u16 *)(entry + 6) = 0xA6;
+            color = lbl_8036B564;
 
             entry[0xA] = p[0];
             entry[0xB] = p[1];
@@ -7797,7 +7807,8 @@ extern "C" void fn_801DF468(void *arg0) {
     ((Obj *)arg0)->v2();
     fn_80151EDC(0, 0, 0x10);
 }
-#pragma cplusplus reset
+#pragma cplusplus on
+#pragma global_optimizer off
 void fn_801DF4A4(void *arg0, s32 arg1) {
     struct Color {
         u8 r, g, b, a;
@@ -7814,8 +7825,8 @@ void fn_801DF4A4(void *arg0, s32 arg1) {
     col.a = 0xE6;
     Ui_DrawLine(0x10, arg1, h - 0x10, arg1, 0x10, &col);
 }
-
-#pragma cplusplus on
+#pragma global_optimizer reset
+#pragma cplusplus reset
 extern "C" void *Ui_DtorPanelD(void *self, s16 doFree) {
     /* C++ destructor for UI panel D (gUiPanelDVtbl): destroy embeds, chain base vtors, optional free. */
     struct Obj {
