@@ -7212,56 +7212,38 @@ void fn_8013CE7C(void *arg0) {
     *(u16 **)arg0 = lbl_80291EAC;
 }
 
-static inline void *Ui_InitMenuDrawBase(void *arg0, void *arg1) {
-extern u8 gUiMenuDrawVtbl[], lbl_802920E0[], lbl_80291DA0[];
-extern f32 lbl_8036A6B8;
-u8 *p=arg0;
-f32 f;
-*(void **)(p+4)=gUiMenuDrawVtbl;
-*(void **)p=arg1;
-f=lbl_8036A6B8;
-*(void **)(p+4)=lbl_802920E0;
-*(s16 *)(p+8)=0x80;
-*(s16 *)(p+10)=0x9c;
-*(s16 *)(p+12)=0x160;
-*(s16 *)(p+14)=0x88;
-*(s16 *)(p+16)=0;
-*(s16 *)(p+18)=0;
-*(s16 *)(p+20)=0;
-*(s16 *)(p+22)=0;
-*(f32 *)(p+24)=f;
-*(s16 *)(p+28)=0x20;
-*(s16 *)(p+30)=4;
-return arg0;
-}
+#pragma push
+#pragma scheduling on
+#pragma peephole on
+void fn_8013CED0(void *arg0, void *arg1) {
+    extern u8 lbl_802845E8[];
+    extern u8 lbl_802920E0[];
+    extern u8 lbl_80291DA0[];
+    extern f32 lbl_8036A6B8;
+    f32 f;
+    s32 z;
 
-#pragma global_optimizer off
-void *fn_8013CED0(void *arg0, void *arg1) {
-extern u8 gUiMenuDrawVtbl[], lbl_802920E0[], lbl_80291DA0[];
-extern f32 lbl_8036A6B8;
-u8 *p=arg0;
-f32 f;
-*(void **)(p+4)=gUiMenuDrawVtbl;
-*(void **)p=arg1;
-f=lbl_8036A6B8;
-*(void **)(p+4)=lbl_802920E0;
-*(s16 *)(p+8)=0x80;
-*(s16 *)(p+10)=0x9c;
-*(s16 *)(p+12)=0x160;
-*(s16 *)(p+14)=0x88;
-*(s16 *)(p+16)=0;
-*(s16 *)(p+18)=0;
-*(s16 *)(p+20)=0;
-*(s16 *)(p+22)=0;
-*(f32 *)(p+24)=f;
-*(s16 *)(p+28)=0x20;
-*(s16 *)(p+30)=4;
-*(void **)(p+4)=lbl_80291DA0;
-*(s32 *)(p+32)=0;
-*(s8 *)(p+36)=0;
-return arg0;
+    z = 0;
+    *(void **)((u8 *)arg0 + 4) = lbl_802845E8;
+    *(void **)arg0 = arg1;
+    f = lbl_8036A6B8;
+    *(void **)((u8 *)arg0 + 4) = lbl_802920E0;
+    *(s16 *)((u8 *)arg0 + 8) = 0x80;
+    *(s16 *)((u8 *)arg0 + 0xA) = 0x9C;
+    *(s16 *)((u8 *)arg0 + 0xC) = 0x160;
+    *(s16 *)((u8 *)arg0 + 0xE) = 0x88;
+    *(s16 *)((u8 *)arg0 + 0x10) = z;
+    *(s16 *)((u8 *)arg0 + 0x12) = z;
+    *(s16 *)((u8 *)arg0 + 0x14) = z;
+    *(s16 *)((u8 *)arg0 + 0x16) = z;
+    *(f32 *)((u8 *)arg0 + 0x18) = f;
+    *(s16 *)((u8 *)arg0 + 0x1C) = 0x20;
+    *(s16 *)((u8 *)arg0 + 0x1E) = 4;
+    *(void **)((u8 *)arg0 + 4) = lbl_80291DA0;
+    *(s32 *)((u8 *)arg0 + 0x20) = z;
+    *(s8 *)((u8 *)arg0 + 0x24) = z;
 }
-#pragma global_optimizer on
+#pragma pop
 #pragma cplusplus on
 extern "C" void Ui_DrawMenuSlotPlain(void *self, void *unused, void *slot) {
     void Prim2D_SetText(s32);
