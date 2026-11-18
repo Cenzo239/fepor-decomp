@@ -1,6 +1,7 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 extern f32 lbl_802A4590[512];
+extern u32 lbl_803596F0[8];
 
 typedef struct AudioGroupSlot { void *node; s32 id; void *data; } AudioGroupSlot;
 typedef struct AudioGroupState { u8 pad[8]; s16 count; u16 padA; AudioGroupSlot slots[128]; } AudioGroupState;
@@ -14507,7 +14508,7 @@ void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
  s32 mapped;
  u8 channel,bank;
  u16 v;
- u8 a,b,c;
+ u8 a;
  u8 param;
  s32 value;
  if((s16)arg2<0) arg2=0; else arg2=(s16)arg2>0x3FFF?0x3FFF:(s16)arg2;
@@ -14527,8 +14528,8 @@ void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
  bank=((u8*)arg0)[0x122];
  if(channel!=255) {
  if((u8)arg1<0x40U) {v=value;a=param&31;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+32),channel,bank,v&127);}
- else if((u8)arg1==128||(u8)arg1==129) {v=value;b=param&254;Sound_WriteParamU8(b,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(b+1),channel,bank,v&127);}
- else if((u8)arg1==132||(u8)arg1==133) {v=value;c=param&254;Sound_WriteParamU8(c,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(c+1),channel,bank,v&127);}
+ else if((u8)arg1==128||(u8)arg1==129) {v=value;a=param&254;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+1),channel,bank,v&127);}
+ else if((u8)arg1==132||(u8)arg1==133) {v=value;a=param&254;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+1),channel,bank,v&127);}
  else Sound_WriteParamU8(arg1,channel,bank,(u8)((u16)value>>7));
  }
  }
