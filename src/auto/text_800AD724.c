@@ -6,6 +6,13 @@ typedef struct {
     u8 unk : 7;
 } ItemFlagBits;
 
+typedef struct {
+    u8 unk0[8];
+    u8 param;
+    u8 pad9[3];
+    u32 handle;
+} SoundChan_800B1BFC;
+
 extern f64 lbl_80369CF8;
 
 static inline u32 LoadSoundBankB(void *path) {
@@ -1347,7 +1354,8 @@ void fn_800B1B80(s32 arg0, s16 arg1)
     }
 }
 
-void fn_800B1BFC(s32 arg0, s32 arg1) {
+void fn_800B1BFC(s32 arg0, s32 arg1)
+{
     extern u8 gSoundSys[];
     void Snd_SetParamU8(s32, s32, s32);
     u8 *sys;
@@ -1358,11 +1366,11 @@ void fn_800B1BFC(s32 arg0, s32 arg1) {
     sys = gSoundSys;
     off = arg0 * 20 + 8;
     p = *(u8 **)(sys + 0xF4);
-    p[off] = arg1;
-    value = *(u32 *)&(*(u8 **)(sys + 0xF4))[off + 4];
+    p[off] = (u8)arg1;
+    value = *(u32 *)(*(u8 **)(sys + 0xF4) + (off + 4));
 
     if (value != 0xFFFFFFFFu) {
-        Snd_SetParamU8(value, 0x83, arg1);
+        Snd_SetParamU8((s32)value, 0x83, arg1);
     }
 }
 
