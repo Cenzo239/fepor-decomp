@@ -1356,23 +1356,23 @@ extern "C" void BattleInfoWin_Draw(void *win, void *state) {
     Ui_DrawWeaponTriangle(win, gBattle, 500.0f, 212.0f);
 }
 #pragma cplusplus off
+#pragma global_optimizer off
 s32 fn_8007633C(void) {
     void MapObjEvent_Find(void *, u8, u8, s32);
-    extern u8 gUiContext[];
+    extern void *gUiContext[];
     extern u8 gMapObjEventList[];
-    u8 *base;
     void *ptr;
     u8 a;
     u8 b;
 
-    base = gUiContext;
-    ptr = *(void **)base;
+    ptr = gUiContext[0];
     a = *((u8 *)ptr + 0x19F);
     b = *((u8 *)ptr + 0x19E);
     MapObjEvent_Find(gMapObjEventList, b, a, 7);
     return 0;
 }
-
+#pragma global_optimizer reset
+#pragma cplusplus off
 s32 fn_80076380(s32 arg0, s32 arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         return 0x10;
@@ -4638,21 +4638,21 @@ void fn_8007C34C(void) {
     p[7] = 0;
 }
 
-#pragma peephole off
+#pragma global_optimizer off
 void fn_8007C378(void) {
-    extern u8 lbl_8026C640[];
-    void *fn_8000D354();
+    u32 fn_8000D354();
     void fn_8000E0E4(u32);
-    void *p;
+    extern u8 lbl_8026C640[];
+    u32 x;
 
-    p = fn_8000D354();
-    switch ((u32)p) {
+    x = fn_8000D354();
+    switch (x) {
     case 0:
         fn_8000E0E4(*(u32 *)((u8 *)fn_8000D354(lbl_8026C640 + 0xEF) + 4));
         break;
     }
 }
-#pragma peephole reset
+#pragma global_optimizer reset
 void *fn_8007C3BC(void *arg0) {
  extern u8 lbl_8026C640[];
  void *Res_GetByName(void *);
