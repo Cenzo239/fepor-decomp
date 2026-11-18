@@ -2822,7 +2822,7 @@ void fn_80188B4C(void *anim) {
     u8 fadeKey[0x34];
     u8 *self;
     s8 x;
-    s8 y;
+    s32 y;
     u8 *unit;
     s16 degrees;
     f32 angle;
@@ -2835,7 +2835,7 @@ void fn_80188B4C(void *anim) {
     if (M2C_FIELD(self, u16 *, 0x52) & 0x80) {
         unit = M2C_FIELD(self, u8 **, 0x30);
         x = (s8)unit[0x19E];
-        y = (s8)unit[0x19F];
+        y = *(s8 *)(unit + 0x19F);
         fn_80050C90(unit);
 
         unit = M2C_FIELD(self, u8 **, 0x30);
