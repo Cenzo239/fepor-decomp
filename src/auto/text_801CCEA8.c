@@ -643,13 +643,15 @@ extern u8 LightFade_script[];
 
 #pragma optimization_level 1
 
-#pragma optimization_level 3
-#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma global_optimizer off
 #pragma scheduling on
 u32 NameGrid_GetCharAtCursor(void *arg0) {
-    u32 fn_801CD480(void *, s16, s16);
-    s16 x = *(s16 *)((u8 *)arg0 + 0x48);
-    return fn_801CD480(*(void **)((u8 *)arg0 + 0x3C), x, *(s16 *)((u8 *)arg0 + 0x4A));
+u32 fn_801CD480(void *, s32, s32);
+s32 y=*(s16*)((u8*)arg0+0x4a);
+s32 x=*(s16*)((u8*)arg0+0x48);
+void *grid=*(void**)((u8*)arg0+0x3c);
+return fn_801CD480(grid,x,y);
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
