@@ -5170,8 +5170,8 @@ void fn_8018DDA8(void *arg0) {
     u16 lim;
 
     z = 0;
-    fa = lbl_8036AD98;
-    fb = lbl_8036AD9C;
+    fa = 630.0f;
+    fb = 324.0f;
     *(u16 *)((u8 *)arg0 + 0x30) = z;
     *(u16 *)((u8 *)arg0 + 0x32) = 1;
     lim = (u16)(0x10000 - 1);
@@ -5281,7 +5281,7 @@ extern "C" void fn_8018DE24(void *arg0) {
     u32 selected = base[0x51D];
     s32 i;
     struct PanelTable {u16 icons[19][6];} buf;
-    const u16 *row;
+    u16 *row;
     u8 col[4];
     void **p;
     void *tex;
