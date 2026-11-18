@@ -8632,35 +8632,39 @@ void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
     u8 *voice;
     u32 word0;
     u32 word1;
-    u32 index;
+    u8 index;
+u32 selector;
     u32 left;
     u32 right;
-    u32 condition;
+    u8 condition;
 
     voice = (u8 *)arg0;
     word0 = arg1[0];
-    word1 = arg1[1];
+    selector = (word0 >> 16) & 0xFF;
 
     if (((word0 >> 8) & 0xFF) != 0) {
-        left = fn_80260F18((s32)arg0, (word0 >> 16) & 0xFF);
+        left = fn_80260F18((s32)arg0, selector);
     } else {
-        index = (word0 >> 16) & 0x1F;
+        index = selector & 0x1F;
 
         if (index < 0x10) {
-            left = *(u32 *)(voice + 0xAC + index * 4);
+            left = *(u32 *)(voice + index * 4 + 0xAC);
         } else {
             left = *(u32 *)((u8 *)lbl_8034CB74
                 + index * 4 - 0x40);
         }
     }
 
+    word0=arg1[0];
+    word1=arg1[1];
+    selector=word1&0xFF;
     if ((word0 >> 24) != 0) {
-        right = fn_80260F18((s32)arg0, word1 & 0xFF);
+        right = fn_80260F18((s32)arg0, selector);
     } else {
-        index = word1 & 0x1F;
+        index = selector & 0x1F;
 
         if (index < 0x10) {
-            right = *(u32 *)(voice + 0xAC + index * 4);
+            right = *(u32 *)(voice + index * 4 + 0xAC);
         } else {
             right = *(u32 *)((u8 *)lbl_8034CB74
                 + index * 4 - 0x40);
@@ -8676,11 +8680,10 @@ void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
         condition = (s32)right > (s32)left;
         break;
 
-    default:
-        condition = 0;
-        break;
+
     }
 
+    word1=arg1[1];
     if (((word1 >> 8) & 0xFF) != 0) {
         condition = !condition;
     }
@@ -8688,7 +8691,7 @@ void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
     if (condition != 0) {
         *(u32 *)(voice + 0x38) =
             *(u32 *)(voice + 0x34)
-            + ((word1 & 0xFFFF) << 3);
+            + ((word1 >> 16) << 3);
     }
 }
 
@@ -12790,6 +12793,7 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
     }
 }
 #pragma optimization_level reset
+#pragma global_optimizer off
 s32 fn_8025DAA0(
     void *arg0,
     f32 arg1,
