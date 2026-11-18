@@ -2112,46 +2112,31 @@ s32 size=str->size;
 u8 c;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
-while(pos<=size && count<256 && ((c=*p),(s8)c!=' ' && (s8)c!='\t' && (s8)c!=',')) { out[count]=c;pos++;p++;count++; }
+while(pos<=size && count<256 && (s8)(c=*p)!=' ' && (s8)c!='\t' && (s8)c!=',') { out[count]=c;pos++;p++;count++; }
 out[count]=0;
 if(count==0)pos=0;
 return pos;
 }
 static inline u8 TokenIsComment(char c) { return c=='#'; }
 static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
+#pragma global_optimizer on
+#pragma peephole on
 s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
 void strcpy(void *,void *);
 char token[257];
-s32 count=0,pos=0,n=0,size=str->size;
-char *p=(char *)str->data;
-char *out=token;
-while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
-p=(char *)str->data+pos;
-while(pos<=size && n<256 && *p!=' ' && *p!='\t' && *p!=',') { *out++=*p++;pos++;n++; }
-token[n]=0;
-if(n==0)pos=0;
+s32 count=0;
+s32 pos=ParseToken(str,token,0);
 if(pos==0)return 0;
-if((u8)(token[0]=='#') || (u8)(token[0]=='{' || token[0]=='}'))return 0;
+if(TokenIsComment(token[0]) || TokenIsBrace(token[0]))return 0;
 strcpy(name,token);
-p=(char *)str->data;
-size=str->size;
-for(;;){
-char *q=p+pos;
-s32 next=pos;
-n=0;
-while(next<=size && (*q==' ' || *q=='\t' || *q==',')){next++;q++;}
-q=p+next;out=token;
-while(next<=size && n<256 && *q!=' ' && *q!='\t' && *q!=','){*out++=*q++;next++;n++;}
-token[n]=0;
-if(n==0)next=0;
-pos=next;
-if(pos==0 || (u8)token[0]=='#')break;
+while((pos=ParseToken(str,token,pos))!=0 && (u8)token[0]!='#'){
 strcpy(values,token);values+=32;count++;
 }
 if(total)*total=count;
 return 1;
 }
-
+#pragma global_optimizer reset
+#pragma peephole reset
 s32 fn_800C7D3C(void *self,void *list,s32 index,void *out) {
 extern char gStringErrorMsgs[];
 void fn_800C7EF8(void*); s32 fn_800C7F10(void*,void*,s32); void fn_800C8328(void*,void*,s32,String*);
@@ -26138,7 +26123,6 @@ void fn_800F9FC4(void *arg0) {
     s16 x;
     u8 *unit;
     u8 *cmd;
-    u8 *ctx;
     s32 dx;
     s32 dy;
     s32 cy;
@@ -26154,14 +26138,15 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            ctx = gUiContext;
-            cy = (s8)ctx[0xE];
-            cx = (s8)ctx[0xD];
-            dx = x - cy;
+            dx = x;
+            dy = y;
+            cy = (s8)gUiContext[0xE];
+            cx = (s8)gUiContext[0xD];
+            dx -= cy;
             if (dx < 0) {
                 dx = -dx;
             }
-            dy = y - cx;
+            dy -= cx;
             if (dy < 0) {
                 dy = -dy;
             }
