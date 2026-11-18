@@ -566,7 +566,6 @@ extern "C" void fn_80132CFC(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
 extern "C" void fn_80132FD0(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_802764BC[];
@@ -663,7 +662,6 @@ extern "C" void fn_80132FD0(void *arg0) {
     }
 }
 
-#pragma peephole reset
 #pragma global_optimizer reset
 #pragma cplusplus on
 #pragma use_lmw_stmw on
