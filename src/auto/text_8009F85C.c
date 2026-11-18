@@ -386,19 +386,23 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
+#pragma scheduling off
 s32 fn_800A011C(s32 a, s32 b, void *c) {
-extern u8 lbl_80366E25;
-u8 state = 2;
-a=lbl_80366E25;
-b=a^1;
-a=(u8)b;
-lbl_80366E25=b;
-if(a) state=0;
-*(u8 *)((u8 *)c+0x39)=state;
-return 0;
+    extern u8 lbl_80366E25;
+    s32 value;
+    u32 toggled;
+    u32 original;
+    original = lbl_80366E25;
+    toggled = original ^ 1;
+    value = 2;
+    lbl_80366E25 = toggled;
+    if ((u8)toggled != 0) value = 0;
+    *(u8 *)((u8 *)c + 0x39) = value;
+    return 0;
 }
-#pragma optimization_level reset
+#pragma scheduling reset
+#pragma global_optimizer reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
