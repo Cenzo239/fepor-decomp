@@ -1,5 +1,8 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+extern u64 lbl_8029F3D0[4];
+extern u32 lbl_8029F3F0[4];
+extern u8 lbl_8034D034[];
 extern f32 lbl_802A4590[512];
 extern u32 lbl_803596F0[8];
 extern u32 lbl_8029F400[8];
