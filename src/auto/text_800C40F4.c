@@ -5,6 +5,7 @@
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
+typedef struct MapVisibilityCell { u8 pad[0x200D]; u8 value; } MapVisibilityCell;
 typedef struct MapCostCell { u8 pad[0x610E]; s16 cost; } MapCostCell;
 typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
 typedef struct F43Eval { void **vtable; void *entry, *unit; F43Pos *pos; } F43Eval;
@@ -13230,13 +13231,34 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFi
     }
 }
 #pragma global_optimizer on
-void fn_800E0A94(void *arg0, void *arg1, s32 *arg2, u32 arg3, s32 *arg4) {
-    // This function was not fully implemented due to complexity
-    // It's a placeholder until more structural understanding is gained
+#pragma dont_inline off
+#pragma cplusplus on
+extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first2, s32 *last2, s32 *result, SortCompare comp) {
+ s32 Sort_GetKey(void*);
+ s32 key;
+ while(first1.ptr!=last1.ptr && first2!=last2) {
+ s32 value=*first1;
+ key=Sort_GetKey((void*)*first2);
+ if(Sort_GetKey((void*)value)>key) *result=*first2++;
+ else {
+ *result=*first1++;
+ }
+ result++;
+ }
+ if(first1.ptr==last1.ptr) {
+ s32 *out=result;
+ s32 *cur=first2;
+ while(cur<last2) *out++=*cur++;
+ } else {
+ s32 *out=result;
+ SortIterator end=last1;
+ SortIterator cur=first1;
+ while(cur.ptr!=end.ptr) {
+ *out++=*cur++;
+ }
+ }
 }
-
-#pragma cplusplus off
-#pragma global_optimizer on
+#pragma cplusplus reset
 void fn_800E0C44(s32 *begin, s32 *end, PairAB *first, PairAB *last, s32 *out) {
  s32 Sort_GetKey(void *);
  if (begin == end) {
@@ -18418,6 +18440,7 @@ void fn_800E9CE4(s32 arg0) {
     }
 }
 
+#pragma optimization_level 3
 #pragma global_optimizer off
 void fn_800EA27C(s32 arg0) {
 extern u8 gCardWork[];
@@ -18425,7 +18448,6 @@ extern void Card_AsyncDone;
 s32 fn_8021D004(s32,s32,void *);
 s32 fn_8021D118(s32,s32,void *,void *);
 CardFileStatus status;
-CardFileStatus *stat=&status;
 u32 skip;
 u8 *base;
 u8 *resultBase;
@@ -18443,19 +18465,19 @@ base=gCardWork+0x10000;
 if(*(s32*)(base-0x5fec)>=0) {
 file=*(s32*)(base-0x5fe0);
 fn_8021D004(*(s32*)(base-0x6000),file,&status);
-stat->commentAddress=0x2000;
-stat->iconAddress=0;
-stat->iconFormat=(stat->iconFormat&~3)|1;
-stat->iconSpeed=(stat->iconSpeed&~3)|3;
-stat->iconFormat=(stat->iconFormat&~12)|4;
-stat->iconSpeed=(stat->iconSpeed&~12)|8;
-stat->iconFormat=(stat->iconFormat&~48)|16;
-stat->iconSpeed=(stat->iconSpeed&~48)|48;
-stat->iconFormat=(stat->iconFormat&~192);
-stat->iconSpeed=(stat->iconSpeed&~192);
-stat->bannerFormat=(stat->bannerFormat&~3)|1;
-stat->bannerFormat=(stat->bannerFormat&~4)|4;
-stat->commentAddress=*(s32*)(base-0x5fec);
+status.commentAddress=0x2000;
+status.iconAddress=0;
+status.iconFormat=(status.iconFormat&~3)|1;
+status.iconSpeed=(status.iconSpeed&~3)|3;
+status.iconFormat=(status.iconFormat&~12)|4;
+status.iconSpeed=(status.iconSpeed&~12)|8;
+status.iconFormat=(status.iconFormat&~48)|16;
+status.iconSpeed=(status.iconSpeed&~48)|48;
+status.iconFormat=(status.iconFormat&~192);
+status.iconSpeed=(status.iconSpeed&~192);
+status.bannerFormat=(status.bannerFormat&~3)|1;
+status.bannerFormat=(status.bannerFormat&~4)|4;
+status.commentAddress=*(s32*)(base-0x5fec);
 busyBase=gCardWork+0x10000;
 busyBase[-0x5fe6]=1;
 *(volatile s32*)(resultBase-0x5ffc)=fn_8021D118(*(s32*)(base-0x6000),file,&status,&Card_AsyncDone);
@@ -18466,6 +18488,7 @@ Process_Goto(proc,0x63);busyBase[-0x5fe6]=0;
 }
 }
 #pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_800EA418(s32 proc) {
     struct CardWork {
         u8 workArea[0xA000];
