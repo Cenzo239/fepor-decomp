@@ -9233,11 +9233,38 @@ void *fn_80194DA0(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 extern u8 Proc_EventArrowManager[16];
-void fn_80194E10(void) {
-    Process_UnlinkByKey(&Proc_EventArrowManager);
-}
+  void fn_80194E10(void) {
+      Process_UnlinkByKey(&Proc_EventArrowManager);
+  }
 
-void *EventArrow_Get(s32 arg0) {
+  s32 fn_80194E38(void) {
+      void *Process_Find(void *);
+      void *proc;
+      u8 *base;
+      u8 *entry;
+      s32 i;
+      u8 ok;
+
+      proc = Process_Find(Proc_EventArrowManager);
+      if (proc == NULL) {
+          return 0;
+      }
+      base = *(u8 **)((u8 *)proc + 0x30);
+      ok = 1;
+      for (i = 0; i < 8; i++) {
+          entry = base + i * 0x3250;
+          if (*(f32 *)(entry + 0x10) < *(f32 *)(entry + 0x18)) {
+              ok = 0;
+              break;
+          }
+      }
+      if (ok) {
+          return 0;
+      }
+      return 1;
+  }
+
+  void *EventArrow_Get(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     extern u8 Proc_EventArrowManager[16];
