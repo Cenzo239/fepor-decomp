@@ -7259,42 +7259,43 @@ s32 fn_80250E48(void *arg0, u32 *arg1)
 
     return 1;
 }
-#pragma opt_strength_reduction reset
+#pragma scheduling on
 void fn_80250F18(void *arg0, u32 *arg1)
 {
     u16 fn_802611F8(void);
     u32 Sound_IsHwVoiceActive(s32);
 
-    u8 *voice;
-    u32 flags;
-    s32 value;
-    u32 count;
-    s32 divisor;
     u64 vf;
-    u16 tmp;
+    s32 divisor;
+    s32 value;
+    u32 flags;
+    u32 count;
+    u8 *voice;
 
     voice = (u8 *)arg0;
+    count = *(u16 *)(voice + 0xAA);
 
-    if (*(u16 *)((u8 *)arg0 + 0xAA) == 0) {
+    if (count == 0U) {
         flags = arg1[0];
         if ((flags >> 16) & 1) {
             value = fn_802611F8();
-            divisor = arg1[1] >> 16;
-            count = value % divisor;
-            *(u16 *)(voice + 0xAA) = count;
+            divisor = (s32)(arg1[1] >> 16);
+            count = (u32)(value % divisor);
+            *(u16 *)(voice + 0xAA) = (u16)count;
         } else {
             count = arg1[1] >> 16;
-            *(u16 *)(voice + 0xAA) = count;
+            *(u16 *)(voice + 0xAA) = (u16)count;
         }
         count = *(u16 *)(voice + 0xAA);
-        if (count != 0xFFFF) {
-            *(u16 *)(voice + 0xAA) = count + 1;
+        if (count != 0xFFFFU) {
+            *(u16 *)(voice + 0xAA) = (u16)(count + 1);
         }
-    } else if (*(u16 *)((u8 *)arg0 + 0xAA) != 0xFFFF) {
-        tmp = *(u16 *)(voice + 0xAA);
-        tmp -= 1;
-        *(u16 *)(voice + 0xAA) = tmp;
-        if (tmp == 0) goto update;
+    } else {
+        if (count != 0xFFFFU) {
+            count = *(u16 *)(voice + 0xAA) - 1;
+            *(u16 *)(voice + 0xAA) = (u16)count;
+            if ((count & 0xFFFF) == 0) goto update;
+        }
     }
 
     flags = arg1[0];
@@ -7309,8 +7310,8 @@ void fn_80250F18(void *arg0, u32 *arg1)
 
     if ((flags >> 24) & 1) {
         vf = *(u64 *)(voice + 0x114);
-        if ((vf & 0x20ULL) == 0) {
-            if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
+        if ((vf & 0x20ULL) == 0ULL) {
+            if (Sound_IsHwVoiceActive((s32)(*(u32 *)(voice + 0xF4) & 0xFF)) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
                 goto update;
             }
@@ -7318,10 +7319,10 @@ void fn_80250F18(void *arg0, u32 *arg1)
     }
 
 update:
-    value = (arg1[1] & 0xFFFF) << 3;
+    value = (s32)((arg1[1] & 0xFFFF) << 3);
     *(u32 *)(voice + 0x38) = *(u32 *)(voice + 0x34) + value;
 }
-
+#pragma scheduling reset
 void fn_8025106C(void *arg0, u32 *arg1)
 {
     extern s32 gSynthVoices;
@@ -8648,7 +8649,7 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            left = ((u32 *)voice + index)[0x2B];
+            left = ((SynthVmState *)voice)->regs[index];
         } else {
             left = lbl_8034CB74[index - 16];
         }
@@ -8663,7 +8664,7 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            right = ((u32 *)voice + index)[0x2B];
+            right = ((SynthVmState *)voice)->regs[index];
         } else {
             right = lbl_8034CB74[index - 16];
         }
@@ -12888,7 +12889,6 @@ s32 fn_8025DAA0(
 
     return 1;
 }
-#pragma global_optimizer on
 
 void fn_8025DBF4(void) {
     s32 Sound_Start(u16, u8, s32, s32, u8, s32);
