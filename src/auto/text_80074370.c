@@ -4649,17 +4649,9 @@ static void *fn_8007C378_Pick(void) {
         return Res_GetByName(lbl_8026C640 + 0xEF);
 }
 void fn_8007C378(void) {
-    void *Res_GetByName();
     void Msg_Expand(u32);
-    extern u8 lbl_8026C640[];
-    u32 x;
-
-    x = (u32)Res_GetByName();
-    switch (x) {
-    case 0:
-        Msg_Expand(*(u32 *)((u8 *)Res_GetByName(lbl_8026C640 + 0xEF) + 4));
-        break;
-    }
+    void *x = fn_8007C378_Pick();
+    Msg_Expand(*(u32 *)((u8 *)x + 4));
 }
 #pragma global_optimizer reset
 void *fn_8007C3BC(void *arg0) {
