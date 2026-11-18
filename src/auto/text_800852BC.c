@@ -1989,17 +1989,14 @@ void fn_80089970(void) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
+#pragma peephole on
 void fn_80089980(s32 arg0) {
-    extern f32 lbl_803696C8;
-    extern void *lbl_803674EC;
-    f32 quotient = (f32)arg0 / lbl_803696C8;
-    u32 zero = 0;
-    u32 three = 3;
-    u8 *ptr = (u8 *)lbl_803674EC;
-    *(u16*)(ptr+0x32) = three;
-    *(u16*)(ptr+0x34) = zero;
-    *(u16*)(ptr+0x36) = (u16)quotient;
+extern f32 lbl_803696C8; extern void *lbl_803674EC;
+u8 *ptr=(u8*)lbl_803674EC;
+f32 quotient=(f32)arg0/lbl_803696C8;
+*(s16*)(ptr+0x32)=3;
+*(s16*)(ptr+0x34)=0;
+*(s16*)(ptr+0x36)=(s16)quotient;
 }
 #pragma peephole reset
 #pragma global_optimizer reset
