@@ -86,13 +86,10 @@ void fn_80089490(void *);
 void fn_80089980(s32 arg0) {
 extern const f32 lbl_803696C8;
 extern void *lbl_803674EC;
-u16 zero=0;
-u16 three=3;
 u8 *ptr=lbl_803674EC;
-f32 quotient=(f32)arg0/lbl_803696C8;
-*(u16*)(ptr+0x32)=three;
-*(u16*)(ptr+0x34)=zero;
-*(u16*)(ptr+0x36)=(u16)quotient;
+*(u16 *)(ptr+0x32)=3;
+*(u16 *)(ptr+0x34)=0;
+*(u16 *)(ptr+0x36)=(s32)((f32)arg0/lbl_803696C8);
 }
 #pragma peephole reset
 #pragma global_optimizer reset
