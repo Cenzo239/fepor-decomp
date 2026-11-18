@@ -8036,55 +8036,7 @@ void Sound_SelectSource3(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x290, step, 0x200000, 8);
 }
 
-void fn_8025276C(void *arg0, u32 *arg1)
-{
-    void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
-
-    u8 *voice;
-    u32 flags114;
-    u32 flags118;
-    u32 word0;
-    u32 word1;
-    u8 value;
-    s32 scale;
-    s32 adjustment;
-
-    voice = (u8 *)arg0;
-
-    flags114 = *(u32 *)(voice + 0x114);
-    flags118 = *(u32 *)(voice + 0x118);
-
-    if ((flags118 & 0x00400000) == 0) {
-        *(u32 *)(voice + 0x118) = flags118 | 0x00400000;
-        *(u32 *)(voice + 0x114) = flags114;
-    } else {
-        word0 = arg1[0];
-        word1 = arg1[1];
-
-        scale = (s32)(word0 & 0xFFFF0000) / 100;
-
-        adjustment = ((s32)(s8)(word1 >> 16) << 8) / 100;
-
-        if (scale < 0) {
-            scale -= adjustment;
-        } else {
-            scale += adjustment;
-        }
-
-        value = (u8)(word1 >> 8);
-
-        fn_8025FFC8(
-            voice + 0x2D8,
-            (u8)(word0 >> 8),
-            scale,
-            (u8)word1,
-            value != 0,
-            value
-        );
-    }
-
-    *(u32 *)(voice + 0x220) |= 0x20;
-}
+void fn_8025276C(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x2D8, step, 0x400000, 0x20); }
 
 void fn_80252870(void *arg0, u32 *arg1)
 {
@@ -12665,10 +12617,10 @@ s32 fn_8025DAA0(
     typedef struct { u32 next; f32 v1; f32 v2; f32 v3; f32 v4; f32 v5; f32 v6; void *arg0; } Node;
     extern u8 lbl_80368AAD;
 
-    u8 count;
-    s32 index;
     Entry *walk;
     Entry *base;
+    u8 count;
+    s32 index;
     Node *pool;
     Node *node;
     u8 **next;
@@ -12677,9 +12629,9 @@ s32 fn_8025DAA0(
     s32 index2;
     u8 nodeIndex;
 
+    walk = (Entry *)lbl_8035BF18;
     count = lbl_80368AAE;
     index = 0;
-    walk = (Entry *)lbl_8035BF18;
 
     for (; index < (s32)count; walk++, index++) {
         if (*(u32 *)((u8 *)arg0 + 0x3C) == *(u32 *)walk) {
