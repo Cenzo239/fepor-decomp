@@ -256,6 +256,12 @@ extern u16 lbl_8026AB18;
 extern f32 lbl_80368FC4;
 extern u16 lbl_802EFE20;
 
+typedef struct { f32 x, y, z; } CameraVec;
+typedef struct { u16 buttons[14]; } CameraButtons;
+extern CameraButtons lbl_8026ABF0;
+extern f32 lbl_80369098, lbl_8036909C, lbl_80369084;
+extern u8 lbl_802859E0[];
+#pragma use_lmw_stmw on
 void fn_80054C14(void* arg0)
 {
     void* r27;
