@@ -413,7 +413,10 @@ auto/text_8013275C.c:
 	.ctors      start:0x80267AEC end:0x80267AF0
 
 auto/text_80132800.c:
-	.text       start:0x80132800 end:0x80149F38
+	.text       start:0x80132800 end:0x8013CD90
+
+auto/text_8013CD90.c:
+	.text       start:0x8013CD90 end:0x80149F38
 
 auto/text_80149F38.c:
 	.text       start:0x80149F38 end:0x80149FB8
