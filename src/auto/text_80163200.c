@@ -19739,6 +19739,9 @@ void fn_80183184(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_801832F8(s32 arg0) {
+    void Msg_Expand(void *);
+    void fn_80091A1C(void);
+    void Ui_CreateMenu(void *, s32, s32);
     extern u8 lbl_803681F0;
     extern u8 lbl_80278BB8[440];
     extern u8 lbl_80368208[8];
