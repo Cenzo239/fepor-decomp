@@ -7687,9 +7687,6 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     void fn_800790D4(void *, void *);
     void fn_80079198(void *, void *);
     void fn_800791F0(void *, void *);
-    void fn_80079198(void *, void *);
-    void fn_800791F0(void *, void *);
-    void fn_80079198(void *, void *);
     void fn_801222A4(void *, void *);
     void fn_80122170(void *, void *, s32);
     u8 fn_8011F184(void *, u8 **);
@@ -7734,8 +7731,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         s16 unk68;
     };
 
-    u8 **textRef;
     struct Obj *self;
+    u8 **textRef;
     u8 *text;
     struct Item *item;
     u8 *buffer;
@@ -7757,7 +7754,9 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     s32 bit;
 
     self = (struct Obj *)arg0;
-    text = *(u8 **)arg1;
+    textRef = (u8 **)arg1;
+
+    text = *textRef;
     ch = *text;
 
     if ((s8)ch == 0) {
@@ -7768,12 +7767,10 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     if ((s8)ch == 0xA) {
         fn_801220B8(lbl_8032BDE8);
         fn_801229F8(self->unk44);
-        text = *(u8 **)arg1;
-        *(u8 **)arg1 = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         return 1;
     }
-
-    textRef = (u8 **)arg1;
 
     if ((s8)ch == '#') {
         selected = self->unk5E;
@@ -9214,8 +9211,6 @@ s32 fn_801208BC(s8 *text, s32 wanted)
 }
 #pragma pop
 #include "common.h"
-#include "unit.h"
-#include "global.h"
 
 extern u16 lbl_8028F6C8[];
 extern u16 lbl_80296128[];
