@@ -570,6 +570,7 @@ static inline s32 EXIAttachInternal(s32 chan, void *callback)
 {
     EXIControl *exi = &Ecb_8033E188[chan];
     s32 enabled = OSDisableInterrupts();
+    u32 mask = 0x100000U >> (chan * 3);
     s32 result;
     if ((exi->state & 8) || !__EXIProbe(chan)) {
         OSRestoreInterrupts(enabled);
