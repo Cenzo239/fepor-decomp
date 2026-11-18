@@ -6,11 +6,6 @@ extern void strcat(void *, s32);
 extern void strcpy(void *, void *, void *);
 extern u8 lbl_80312A80[0x30];
 
-static inline void *fn_800A904C_Str(void) {
-    extern u8 gOptionsStr[];
-    return gOptionsStr + 0xA3;
-}
-
 
 extern s32 lbl_803677A4;
 void *fn_800A39F8(void) {
