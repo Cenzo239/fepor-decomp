@@ -239,6 +239,7 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
 
 #pragma cplusplus on
 #pragma opt_peephole off
+#pragma optimization_level 2
 extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 {
   extern f32 lbl_80368BE8;
@@ -306,11 +307,10 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
         case 'S':
         case 'Y':
         {
-          s16 shift;
-          s16 digi;
+          register s16 shift;
+          register s16 digi;
           u8 n;
-          s32 val;
-          s32 z;
+          register s32 val;
           u8 *digits;
           digits = (u8 *) __alloca(8);
           n = 0;
@@ -332,10 +332,9 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
             n += 1;
           }
 
-          z = 0;
-          val = z;
+          val = 0;
           digi = 1;
-          shift = z;
+          shift = val;
           while (digi >= 0)
           {
             val += digits[digi] << shift;
@@ -362,11 +361,10 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 
         case 'F':
         {
-          s16 shift;
-          s16 digi;
+          register s16 shift;
+          register s16 digi;
           u8 n;
-          s32 val;
-          s32 z;
+          register s32 val;
           u8 *digits;
           digits = (u8 *) __alloca(8);
           n = 0;
@@ -388,10 +386,9 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
             n += 1;
           }
 
-          z = 0;
-          val = z;
+          val = 0;
           digi = 1;
-          shift = z;
+          shift = val;
           while (digi >= 0)
           {
             val += digits[digi] << shift;
