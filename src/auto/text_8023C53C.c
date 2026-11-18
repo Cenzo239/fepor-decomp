@@ -8633,86 +8633,48 @@ do {
 } while(!done);
 }
 
-void fn_80254F00(u32 arg0)
-{
-    void Sound_DeactivateSynthVoice(void *);
-    void fn_80253F6C(void *);
-    s32 Sound_IsHwVoiceActive(s32);
-
-    u8 *current;
-    u8 *next;
-    u8 *voice;
-    u8 *nextVoice;
-    u32 timeHigh;
-    u32 timeLow;
-    u32 scheduledHigh;
-    u32 scheduledLow;
-
-    current = (u8 *)gSynthSchedList;
-
-    while (current != 0) {
-        scheduledHigh = *(u32 *)(current + 0x98);
-        scheduledLow = *(u32 *)(current + 0x9C);
-
-        timeHigh = (u32)gSynthTimeHi;
-        timeLow = (u32)gSynthTimeLo;
-
-        if (scheduledHigh > timeHigh ||
-            (scheduledHigh == timeHigh &&
-             scheduledLow > timeLow)) {
-            break;
-        }
-
-        next = *(u8 **)(current + 0x44);
-
-        Sound_DeactivateSynthVoice(current);
-
-        *(u32 *)(current + 0xA4) = (u32)gSynthTimeLo;
-        *(u32 *)(current + 0xA0) = (u32)gSynthTimeHi;
-
-        current = next;
-    }
-
-    voice = (u8 *)gSynthIdleList;
-
-    while (voice != 0) {
-        nextVoice = *(u8 **)(voice + 0x3C);
-
-        if (*(u8 *)(voice + 0x68) != 0 &&
-            *(u32 *)(voice + 0x54) != 0) {
-
-            if ((*(u32 *)(voice + 0x118) & 0x20) == 0) {
-
-                if (Sound_IsHwVoiceActive(
-                        *(u8 *)(voice + 0xF4)) == 0) {
-
-                    if (*(u8 *)(voice + 0x68) != 0 &&
-                        *(u32 *)(voice + 0x54) != 0) {
-
-                        *(u32 *)(voice + 0x38) =
-                            *(u32 *)(voice + 0x60);
-
-                        *(u32 *)(voice + 0x34) =
-                            *(u32 *)(voice + 0x54);
-
-                        *(u32 *)(voice + 0x54) = 0;
-
-                        Sound_DeactivateSynthVoice(voice);
-                        fn_80253F6C(voice);
-                    }
-                }
-            }
-        }
-
-        voice = nextVoice;
-    }
-
-    timeLow = (u32)gSynthTimeLo;
-    timeHigh = (u32)gSynthTimeHi;
-
-    gSynthTimeLo = (s32)(timeLow + arg0);
-    gSynthTimeHi =
-        (s32)(timeHigh + ((timeLow + arg0) < timeLow));
+void fn_80254F00(u32 arg0) {
+ void Sound_DeactivateSynthVoice(void *);
+ void fn_80253F6C(void *);
+ s32 Sound_IsHwVoiceActive(s32);
+ u64 scheduled;
+ u8 *current;
+ u8 *next;
+ u8 *voice;
+ u8 *nextVoice;
+ u64 now;
+ u32 active;
+ current=(u8*)gSynthSchedList;
+ goto check;
+ while(1) {
+  next=*(u8**)(current+0x44);
+  Sound_DeactivateSynthVoice(current);
+  *(u64*)(current+0xa0)=scheduled;
+  current=next;
+ check:
+  if(current==0) break;
+  scheduled=*(u64*)(current+0x98);
+  now=((u64)(u32)gSynthTimeHi<<32)|(u32)gSynthTimeLo;
+  if(scheduled>now) break;
+ }
+ voice=(u8*)gSynthIdleList;
+ while(voice!=0) {
+  nextVoice=*(u8**)(voice+0x3c);
+  active=*(u8*)(voice+0x68)? (*(u32*)(voice+0x54)!=0):0;
+  if(active && (*(u64*)(voice+0x114)&0x20ULL)==0 && (u32)Sound_IsHwVoiceActive((u8)*(u32*)(voice+0xf4))==0) {
+   if(*(u8*)(voice+0x68)!=0 && *(u32*)(voice+0x54)!=0) {
+    *(u32*)(voice+0x38)=*(u32*)(voice+0x60);
+    *(u32*)(voice+0x34)=*(u32*)(voice+0x54);
+    *(u32*)(voice+0x54)=0;
+    Sound_DeactivateSynthVoice(voice);
+   }
+  }
+  fn_80253F6C(voice);
+  voice=nextVoice;
+ }
+ now=*(u64*)&gSynthTimeHi+arg0;
+ gSynthTimeLo=(u32)now;
+ gSynthTimeHi=(u32)(now>>32);
 }
 
 void Sound_DeactivateSynthVoice(void *arg0);
@@ -14637,26 +14599,21 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 }
 
 #pragma fp_contract on
+#pragma global_optimizer off
+#pragma scheduling on
 f64 fn_80261344(f32 x) {
-    extern f32 lbl_802831B8[];
-    f64 guess;
-    f64 half;
-    f64 three;
-    f64 zero;
-    f32 *r;
-    r = lbl_802831B8 - 2;
-    three = r[0];
-    half = r[1];
-    zero = r[2];
-    if (x == (f32)zero) {
-        return x;
-    }
-    guess = __frsqrte(x);
-    guess = (half * guess) * (three - x * (guess * guess));
-    guess = (half * guess) * (three - x * (guess * guess));
-    guess = (half * guess) * (three - x * (guess * guess));
-    return x * guess;
+extern f32 lbl_802831B8[];
+f64 three; f64 half; f64 guess; f64 square; f64 zero;
+zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
+if(x==(f32)zero) return x;
+guess=__frsqrte(x);
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+return x*guess;
 }
+#pragma scheduling reset
+#pragma global_optimizer reset
 #pragma fp_contract off
 f32 fn_80261398(f32 x) {
     extern f32 lbl_802831BC[];
@@ -16401,16 +16358,20 @@ int Audio_Unlock(void) {
     return count;
 }
 
+#pragma optimization_level 2
 int Audio_Lock(void) {
     int OSDisableInterrupts(void);
     extern u16 lbl_80368AFC;
     extern int lbl_80368AF8;
+    int count;
 
-    if ((u16)lbl_80368AFC++ == 0) {
+    count = lbl_80368AFC;
+    lbl_80368AFC = count + 1;
+    if ((count & 0xFFFF) == 0) {
         lbl_80368AF8 = OSDisableInterrupts();
     }
 }
-
+#pragma optimization_level reset
 int fn_80263764(void) {
     M2C_UNK OSDisableInterrupts();
     OSDisableInterrupts();
