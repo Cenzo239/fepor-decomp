@@ -14199,11 +14199,11 @@ static inline void Stream_InitBase(void *self) {
     *(u8 *)((u8 *)self + 0xC) = 0;
 }
 #pragma cplusplus on
-extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
-#pragma scheduling off
-    extern u8 gStreamBaseVtbl[];
+extern "C" void fn_8017A7D4(void *arg0, s32 arg1)
+{
+    extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
-    *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
+    *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
     *(s32 *)((char *)arg0 + 4) = 0;
     *(s32 *)arg0 = 0;
     *(s32 *)((char *)arg0 + 8) = 0;
@@ -14212,9 +14212,8 @@ extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     *(s32 *)((char *)arg0 + 4) = arg1;
     *(s32 *)arg0 = arg1;
     *(u8 *)((char *)arg0 + 0xC) = 0;
-#pragma scheduling on
 }
-#pragma cplusplus off
+#pragma cplusplus reset
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
     memcpy(arg2, M2C_FIELD(arg0, s32 *, 4), arg1);
@@ -15478,27 +15477,17 @@ void *fn_8017C40C(void *arg0, s16 arg1) {
 }
 
 void fn_8017C478(void *arg0) {
-    s16 var_r5;
-    s16 var_r4;
-    s16 var_r6;
-    s16 var_r7;
-    s16 var_r8;
-
-    var_r8 = *(s16 *)((char *)arg0 + 0xC);
-    var_r7 = *(s16 *)((char *)arg0 + 0x10);
-    var_r6 = *(s16 *)((char *)arg0 + 0xA);
-    var_r5 = *(s16 *)((char *)arg0 + 0xE);
-
-    var_r7 = var_r8 - var_r7;
-    var_r7 = (s16)var_r7;
-    *(s16 *)((char *)arg0 + 0x12) = 3;
-    var_r4 = var_r6 - var_r5;
-    var_r4 = (s16)var_r4;
-    var_r5 = var_r7 - 5;
-    *(s16 *)((char *)arg0 + 0x14) = 5;
-    var_r4 = var_r4 - 3;
-    *(s16 *)((char *)arg0 + 0x16) = var_r4;
-    *(s16 *)((char *)arg0 + 0x18) = var_r5;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    bottom = height - 5;
+    right = width - 3;
+    p[0x12 / 2] = 3;
+    p[0x14 / 2] = 5;
+    p[0x16 / 2] = right;
+    p[0x18 / 2] = bottom;
 }
 
 void fn_8017C4BC(void *arg0) {
