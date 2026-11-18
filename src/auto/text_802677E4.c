@@ -1,6 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-
+volatile u32 __EXIRegsImm[16] : 0xCC006800;
 
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
@@ -269,7 +269,6 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
   volatile u32 *cr;
   int new_var;
-  u8 *p = arg0;
   if (((u32) arg2) != 0)
   {
     u32 value;
@@ -278,11 +277,10 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
     value = 0;
     for (; i < arg1; i++)
     {
-      value |= ((u32) (*p)) << ((3 - i) * 8);
-      p++;
+      value |= ((u32) ((u8 *)arg0)[i]) << (8 * (3 - i));
     }
 
-    __EXIRegs_802677E4[14] = value;
+    *((volatile u32 *) 0xCC006838) = value;
   }
   cr = (volatile u32 *) 0xCC006800;
   *(cr += 13) = (((arg1 - 1) << 4) | 1) | (((u32) arg2) << 2);
@@ -294,13 +292,13 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
   if (((u32) new_var) == 0)
   {
     s32 i = 0;
-    u32 value = __EXIRegs_802677E4[14];
+    u32 value = *((volatile u32 *) 0xCC006838);
     for (; i < arg1; i++)
     {
-      *(arg0++) = (u8) (value >> ((3 - i) * 8));
+      *(arg0++) = (u8) (value >> (8 * (3 - i)));
     }
 
   }
-      return 1;
-  }
+  return 1;
+}
 
