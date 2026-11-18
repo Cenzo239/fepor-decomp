@@ -1576,6 +1576,7 @@ void fn_80152A18(s16 arg0, s16 arg1, s32 arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
+    extern s32 gUiTexAtlas;
     s16 h;
     s16 w;
 
