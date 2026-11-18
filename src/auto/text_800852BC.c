@@ -1986,17 +1986,20 @@ void fn_80089970(void) {
     M2C_FIELD(lbl_803674EC, s16 *, 0x32) = 0;
 }
 
+#pragma peephole off
 void fn_80089980(s32 arg0) {
 extern f32 lbl_803696C8;
 extern void *lbl_803674EC;
 f32 value=(f32)arg0;
 f32 divisor=lbl_803696C8;
+s32 duration=(s32)(value/divisor);
 u8 *ptr=(u8*)lbl_803674EC;
-*(s16*)(ptr+0x32)=3;
-*(s16*)(ptr+0x34)=0;
-*(s16*)(ptr+0x36)=value/divisor;
+*(u16*)(ptr+0x32)=3;
+*(u16*)(ptr+0x34)=0;
+*(u16*)(ptr+0x36)=duration;
 }
-
+#pragma peephole reset
+#pragma peephole off
 void fn_800899D4(s32 arg0)
 {
     extern f32 lbl_803696C8;
@@ -2008,6 +2011,7 @@ void fn_800899D4(s32 arg0)
     *(u16 *)(ptr + 0x34) = 0;
     *(u16 *)(ptr + 0x36) = (u16)(s32)((f32)arg0 / div);
 }
+#pragma peephole on
 
 void fn_80089A28(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
