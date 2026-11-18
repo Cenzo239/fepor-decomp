@@ -1965,7 +1965,7 @@ case 17:if(value>99)value=99;if(value<0)value=0;
 fn_8003712C(unit);return 0;
 }
 
-#pragma global_optimizer off
+#pragma peephole on
 void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
 {
     void *Map_GetCursorUnit(void);
