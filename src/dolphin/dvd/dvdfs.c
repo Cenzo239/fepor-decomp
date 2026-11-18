@@ -2102,34 +2102,43 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
     return 1;
 }
 #pragma opt_common_subs reset
-s32 fn_8020F334(void *arg0) {
+s32 fn_8020F334(DVDReadyCommand *block) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void OSSleepThread(void *);
-    s32 fn_8020F0B8(void *, void *);
-    extern M2C_UNK __DVDThreadQueue;
-    extern M2C_UNK fn_8020F3E0;
+    s32 fn_8020F0B8(DVDReadyCommand *, void (*)(s32, void *));
+    void fn_8020F3E0(s32, void *);
+    extern void *__DVDThreadQueue;
     s32 interrupts;
     s32 state;
     u32 command;
 
-    if (fn_8020F0B8(arg0, &fn_8020F3E0) == 0) {
+    if (fn_8020F0B8(block, fn_8020F3E0) == 0) {
         return -1;
     }
     interrupts = OSDisableInterrupts();
-loop_3:
-    state = ((DVDReadyCommand *)arg0)->state;
-    if ((u32)(state + 1) <= 1U) goto done;
-    if (state == 10) goto done;
-    if (state == 3) {
-        command = (u32)((DVDReadyCommand *)arg0)->command;
-        if ((u32)(command - 4) <= 1U) goto done;
-        if (command == 13) goto done;
-        if (command == 15) goto done;
+    while (1) {
+        state = block->state;
+        if ((u32)(state + 1) <= 1U) {
+            break;
+        }
+        if (state == 10) {
+            break;
+        }
+        if (state == 3) {
+            command = (u32)block->command;
+            if ((u32)(command - 4) <= 1U) {
+                break;
+            }
+            if (command == 13) {
+                break;
+            }
+            if (command == 15) {
+                break;
+            }
+        }
+        OSSleepThread(&__DVDThreadQueue);
     }
-    OSSleepThread(&__DVDThreadQueue);
-    goto loop_3;
-done:
     OSRestoreInterrupts(interrupts);
     return 0;
 }
