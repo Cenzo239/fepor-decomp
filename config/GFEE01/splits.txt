@@ -477,7 +477,10 @@ auto/text_80163200.c:
 	.text       start:0x80163200 end:0x80181C40
 
 auto/text_80181C40.c:
-	.text       start:0x80181C40 end:0x80183374
+	.text       start:0x80181C40 end:0x80181CA4
+
+auto/text_80181CA4.c:
+	.text       start:0x80181CA4 end:0x80183374
 
 auto/text_80183374.c:
 	.text       start:0x80183374 end:0x801833E8
