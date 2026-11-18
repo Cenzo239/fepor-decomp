@@ -165,10 +165,13 @@ format_done:
     }
 }
 
+#pragma global_optimizer off
 #pragma use_lmw_stmw on
-void fn_80006E8C(void *arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void fn_80006E8C(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
 f32 y, yend, v, uend, vend, x, xend, u;
-f32 a,b,c,z;
+f32 a,c,b,z;
+f32 d,f,e,delta,limit;
+u8 red=arg1, green=arg2, blue=arg3, alpha=arg4;
 a=*(f32*)((u8*)arg0+0x2C);
 b=*(f32*)((u8*)arg0+0x1C);
 c=*(f32*)((u8*)arg0+0x34);
@@ -177,22 +180,24 @@ y=*(f32*)((u8*)arg0+0x14);
 v=b+c;
 yend=(y+(a-b))-c;
 for (;;) {
-if(yend>*(f32*)((u8*)arg0+0x24)) {
-a=yend-*(f32*)((u8*)arg0+0x24);
-yend=*(f32*)((u8*)arg0+0x24);
-vend-=a;
+limit=*(f32*)((u8*)arg0+0x24);
+if(yend>limit) {
+delta=yend-limit;
+yend=limit;
+vend-=delta;
 }
-a=*(f32*)((u8*)arg0+0x28);
-b=*(f32*)((u8*)arg0+0x18);
-c=*(f32*)((u8*)arg0+0x30);
-uend=a;
+d=*(f32*)((u8*)arg0+0x28);
+e=*(f32*)((u8*)arg0+0x18);
+f=*(f32*)((u8*)arg0+0x30);
+uend=d;
 x=*(f32*)((u8*)arg0+0x10);
-u=b+c;
-xend=(x+(a-b))-c;
+u=e+f;
+xend=(x+(d-e))-f;
 for (;;) {
-if(xend>*(f32*)((u8*)arg0+0x20)) {
-a=xend-*(f32*)((u8*)arg0+0x20);
-xend=*(f32*)((u8*)arg0+0x20);
+c=*(f32*)((u8*)arg0+0x20);
+if(xend>c) {
+a=xend-c;
+xend=c;
 uend-=a;
 }
 GXBegin(0x98,0,4);
@@ -200,52 +205,53 @@ z=*(f32*)((u8*)arg0+8);
 *(volatile f32*)0xCC008000=x;
 *(volatile f32*)0xCC008000=y;
 *(volatile f32*)0xCC008000=z;
-*(volatile u8*)0xCC008000=arg1;
-*(volatile u8*)0xCC008000=arg2;
-*(volatile u8*)0xCC008000=arg3;
-*(volatile u8*)0xCC008000=arg4;
+*(volatile u8*)0xCC008000=red;
+*(volatile u8*)0xCC008000=green;
+*(volatile u8*)0xCC008000=blue;
+*(volatile u8*)0xCC008000=alpha;
 *(volatile f32*)0xCC008000=u;
 *(volatile f32*)0xCC008000=v;
 z=*(f32*)((u8*)arg0+8);
 *(volatile f32*)0xCC008000=xend;
 *(volatile f32*)0xCC008000=y;
 *(volatile f32*)0xCC008000=z;
-*(volatile u8*)0xCC008000=arg1;
-*(volatile u8*)0xCC008000=arg2;
-*(volatile u8*)0xCC008000=arg3;
-*(volatile u8*)0xCC008000=arg4;
+*(volatile u8*)0xCC008000=red;
+*(volatile u8*)0xCC008000=green;
+*(volatile u8*)0xCC008000=blue;
+*(volatile u8*)0xCC008000=alpha;
 *(volatile f32*)0xCC008000=uend;
 *(volatile f32*)0xCC008000=v;
 z=*(f32*)((u8*)arg0+8);
 *(volatile f32*)0xCC008000=x;
 *(volatile f32*)0xCC008000=yend;
 *(volatile f32*)0xCC008000=z;
-*(volatile u8*)0xCC008000=arg1;
-*(volatile u8*)0xCC008000=arg2;
-*(volatile u8*)0xCC008000=arg3;
-*(volatile u8*)0xCC008000=arg4;
+*(volatile u8*)0xCC008000=red;
+*(volatile u8*)0xCC008000=green;
+*(volatile u8*)0xCC008000=blue;
+*(volatile u8*)0xCC008000=alpha;
 *(volatile f32*)0xCC008000=u;
 *(volatile f32*)0xCC008000=vend;
 z=*(f32*)((u8*)arg0+8);
 *(volatile f32*)0xCC008000=xend;
 *(volatile f32*)0xCC008000=yend;
 *(volatile f32*)0xCC008000=z;
-*(volatile u8*)0xCC008000=arg1;
-*(volatile u8*)0xCC008000=arg2;
-*(volatile u8*)0xCC008000=arg3;
-*(volatile u8*)0xCC008000=arg4;
+*(volatile u8*)0xCC008000=red;
+*(volatile u8*)0xCC008000=green;
+*(volatile u8*)0xCC008000=blue;
+*(volatile u8*)0xCC008000=alpha;
 *(volatile f32*)0xCC008000=uend;
 *(volatile f32*)0xCC008000=vend;
 if(xend>=*(f32*)((u8*)arg0+0x20)) break;
-b=*(f32*)((u8*)arg0+0x18);
-x=xend;u=b;xend+=*(f32*)((u8*)arg0+0x28)-b;
+c=*(f32*)((u8*)arg0+0x18);
+x=xend;u=c;xend+=*(f32*)((u8*)arg0+0x28)-c;
 }
 if(yend>=*(f32*)((u8*)arg0+0x24)) break;
-b=*(f32*)((u8*)arg0+0x1C);
-y=yend;v=b;yend+=*(f32*)((u8*)arg0+0x2C)-b;
+c=*(f32*)((u8*)arg0+0x1C);
+y=yend;v=c;yend+=*(f32*)((u8*)arg0+0x2C)-c;
 }
 }
 #pragma use_lmw_stmw reset
+#pragma global_optimizer reset
 extern f64 lbl_80368C28;
 void fn_800070C8(s32 *arg0, s16 *arg1, s16 *arg2, s32 *arg3) {
     extern void *gPrim2D;
