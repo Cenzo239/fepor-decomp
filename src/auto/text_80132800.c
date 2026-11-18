@@ -2059,7 +2059,6 @@ it=sent->next;
 p[1].arg=arg1;
 while(it!=sent) { (it->obj->*p[0].ptmf)(p[0].arg); it=it->next; }
 }
-
 #pragma cplusplus reset
 
 #pragma cplusplus reset
