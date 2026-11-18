@@ -1322,6 +1322,7 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
 
 #pragma push
 #pragma cplusplus on
+#pragma switch_tables on
 extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 {
   extern f32 lbl_80368BE8;
