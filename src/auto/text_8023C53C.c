@@ -1,19 +1,5 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline u32 Sound_InterpolateCurve(u16 id, u32 value) {
-s32 fn_80250884(u16);
-u8 *table;
-u32 index, fraction;
-if(id != 0xFFFF) {
-table=(u8 *)fn_80250884(id);
-if(table) {
-index=value>>16; fraction=value&0xFFFF;
-if(index<127) { s32 current=table[index]; s32 next=table[index+1]; value=fraction*(next-current)+((u8)current<<16); }
-else value=table[index]<<16;
-}
-}
-return value;
-}
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -7305,11 +7291,10 @@ void fn_80250F18(void *arg0, u32 *arg1)
             *(u16 *)(voice + 0xAA) = count + 1;
         }
     } else {
-        u32 c2 = *(u16 *)(voice + 0xAA);
-        if (c2 != 0xFFFF) {
-            c2 -= 1;
-            *(u16 *)(voice + 0xAA) = c2;
-            if ((c2 & 0xFFFF) == 0) goto update;
+        if (count != 0xFFFF) {
+            count = *(u16 *)(voice + 0xAA) - 1;
+            *(u16 *)(voice + 0xAA) = count;
+            if ((count & 0xFFFF) == 0) goto update;
         }
     }
 
@@ -7325,7 +7310,7 @@ void fn_80250F18(void *arg0, u32 *arg1)
 
     if ((flags >> 24) & 1) {
         vf = *(u64 *)(voice + 0x114);
-        if ((vf & 0x2000000000ULL) == 0) {
+        if ((vf & 0x20ULL) == 0) {
             if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
                 goto update;
@@ -7764,8 +7749,8 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
     arg0->flags |= 0x2000;
 }
 
-#pragma scheduling on
-void fn_80251F24(void *arg0, u32 *arg1)
+#pragma cplusplus on
+extern "C" void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
 
@@ -7778,7 +7763,7 @@ void fn_80251F24(void *arg0, u32 *arg1)
     u16 tableId;
     u32 index;
     u32 fraction;
-    s32 result;
+    u32 result;
     u8 *table;
 
     data = (u8 *)arg0;
@@ -7808,17 +7793,19 @@ void fn_80251F24(void *arg0, u32 *arg1)
         table = (u8 *)fn_80250884((u16)tableId);
 
         if (table != 0) {
-            index = (u32)result >> 16;
+            index = result >> 16;
             fraction = result & 0xFFFF;
 
             if (index < 0x7F) {
-                s32 current;
                 s32 next;
+                s32 current;
 
                 current = table[index];
                 next = table[index + 1];
 
-                result = fraction * (next - current) + ((u8)current << 16);
+                next -= current;
+next = fraction * next;
+result = next + ((u8)current << 16);
             } else {
                 result = table[index] << 16;
             }
@@ -7829,7 +7816,7 @@ void fn_80251F24(void *arg0, u32 *arg1)
 
     *(u32 *)(data + 0x114) |= 0x1000;
 }
-#pragma scheduling reset
+#pragma cplusplus reset
 void fn_80252058(void *arg0, u32 *arg1) {
 void fn_8026146C(s32 *);
 void fn_8026147C(u32 *, s32);
@@ -12813,32 +12800,31 @@ s32 fn_8025DAA0(
     f32 arg5,
     f32 arg6)
 {
+    typedef struct { u32 key; u32 next; u32 f8; u16 count; u16 pad; } Entry;
+    typedef struct { u32 next; f32 v1; f32 v2; f32 v3; f32 v4; f32 v5; f32 v6; void *arg0; } Node;
     extern u16 lbl_8035BF18[];
     extern u32 lbl_8035C918[];
     extern u8 lbl_80368AAD;
     extern u8 lbl_80368AAE;
 
+    Entry *entry;
+    Node *pool;
+    Node *node;
+    u8 *current;
+    u8 *previous;
     s32 index;
     u8 count;
     u8 nodeIndex;
-    u8 *base;
-    u8 *entry;
-    u8 *pool;
-    u8 *node;
-    u8 *current;
-    u8 *previous;
     
     count = lbl_80368AAE;
-    base = (u8 *)lbl_8035BF18;
+    entry = (Entry *)lbl_8035BF18;
     index = 0;
 
     while (index < (s32)count) {
-        entry = base + (index << 4);
-
-        if (*(u32 *)entry == *(u32 *)((u8 *)arg0 + 0x3C)) {
+        if (entry->key == *(u32 *)((u8 *)arg0 + 0x3C)) {
             break;
         }
-
+        entry++;
         index++;
     }
 
@@ -12847,12 +12833,12 @@ s32 fn_8025DAA0(
             return 0;
         }
 
-        entry = base + (index << 4);
+        entry = (Entry *)lbl_8035BF18 + index;
 
-        *(u32 *)(entry + 4) = 0;
-        *(u32 *)(entry + 8) = 0;
-        *(u16 *)(entry + 0xC) = 0;
-        *(u32 *)entry = *(u32 *)((u8 *)arg0 + 0x3C);
+        entry->next = 0;
+        entry->f8 = 0;
+        entry->count = 0;
+        entry->key = *(u32 *)((u8 *)arg0 + 0x3C);
 
         lbl_80368AAE = lbl_80368AAE + 1;
     }
@@ -12863,43 +12849,42 @@ s32 fn_8025DAA0(
         return 0;
     }
 
-    entry = base + (index << 4);
-    pool = (u8 *)lbl_8035C918;
+    entry = (Entry *)lbl_8035BF18 + index;
+    pool = (Node *)lbl_8035C918;
 
-    current = *(u8 **)(entry + 4);
+    current = (u8 *)entry->next;
     previous = current;
 
     if (current != 0) {
         while (current != 0) {
-            if (*(f32 *)(previous + 4) < arg1) {
+            if (*(f32 *)((u8 *)previous + 4) < arg1) {
                 break;
             }
-
             previous = current;
             current = *(u8 **)previous;
         }
     }
 
     if (previous != 0) {
-        node = pool + ((u8)nodeIndex << 5);
-        *(u8 **)node = current;
-        *(u8 **)previous = node;
+        node = pool + (u8)nodeIndex;
+        node->next = (u32)current;
+        *(u8 **)previous = (u8 *)node;
     } else {
-        node = pool + ((u8)nodeIndex << 5);
-        *(u8 **)node = current;
-        *(u8 **)(entry + 4) = node;
+        node = pool + (u8)nodeIndex;
+        node->next = (u32)current;
+        entry->next = (u32)node;
     }
 
     nodeIndex = lbl_80368AAD;
-    node = pool + (nodeIndex << 5);
-    *(void **)(node + 0x1C) = arg0;
-    *(f32 *)(node + 0x14) = arg5;
-    *(f32 *)(node + 0x18) = arg6;
-    *(f32 *)(node + 0x8) = arg2;
-    *(f32 *)(node + 0xC) = arg3;
-    *(f32 *)(node + 0x10) = arg4;
+    node = pool + nodeIndex;
+    node->arg0 = arg0;
+    node->v5 = arg5;
+    node->v6 = arg6;
+    node->v2 = arg2;
+    node->v3 = arg3;
+    node->v4 = arg4;
     lbl_80368AAD = nodeIndex + 1;
-    *(f32 *)(pool + ((u8)nodeIndex << 5) + 4) = arg1;
+    pool[(u8)nodeIndex].v1 = arg1;
 
     return 1;
 }
