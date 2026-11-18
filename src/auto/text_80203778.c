@@ -421,7 +421,8 @@ OSEnableInterrupts();if(!__OSInIPL){DVDInit();if(__OSIsGcam)*(u16*)0x800030e6=0x
 #pragma peephole reset
 #pragma global_optimizer on
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_common_subs off
 void OSExceptionInit(void) {
     extern u32 __OSEVSetNumber[];
     extern u8 __OSEVStart[];
@@ -440,38 +441,29 @@ void OSExceptionInit(void) {
     extern void ICInvalidateRange(void *, u32);
     extern s32 __DBIsExceptionMarked(u8);
     extern void *__OSSetExceptionHandler(u8, void *);
-    u32 *base;
-    u32 flag;
     u32 *osevSetNumber;
+    u8 *strings;
+    u32 *entry;
+    u32 dbJumpSize;
+    u8 i;
     u32 setNumber;
     u8 *osevStart;
-    u8 *osevEnd;
-    u8 *strings;
     u32 size;
     u32 *codeAddr;
-    u32 *entry;
-    u8 *dbIntEnd;
-    u32 dbJumpSize;
-    u8 *dbVec;
-    u32 nop;
-    u8 i;
     u32 *p;
     u32 nops;
     u32 *dest;
     u8 j;
     u32 dbSize;
 
-    base = (u32 *)0x80000000;
-    flag = base[0x60 / 4];
-    osevSetNumber = __OSEVSetNumber;
-    osevStart = __OSEVStart;
-    setNumber = osevSetNumber[0];
-    osevEnd = __OSEVEnd;
     strings = lbl_8029B928;
-    size = osevEnd - osevStart;
-    codeAddr = base + (0x60 / 4);
+    osevSetNumber = __OSEVSetNumber;
+    setNumber = osevSetNumber[0];
+    osevStart = __OSEVStart;
+    size = __OSEVEnd - osevStart;
+    codeAddr = (u32 *)0x80000060;
 
-    if (flag == 0) {
+    if (*codeAddr == 0) {
         DBPrintf((char *)(strings + 0x160));
         dbSize = __OSDBINTEND - __OSDBINTSTART;
         memcpy(codeAddr, __OSDBINTSTART, dbSize);
@@ -480,12 +472,10 @@ void OSExceptionInit(void) {
         ICInvalidateRange(codeAddr, dbSize);
     }
 
-    dbIntEnd = __OSDBINTEND;
     entry = (u32 *)(strings + 0x124);
-    dbJumpSize = __OSDBJUMPEND - dbIntEnd;
+    dbJumpSize = __OSDBJUMPEND - __OSDBINTEND;
     i = 0;
-    dbVec = __DBVECTOR;
-    nop = 0x60000000;
+
 
     while (i < 15) {
         if (BI2DebugFlag_8036845C != NULL && *BI2DebugFlag_8036845C >= 2 && __DBIsExceptionMarked(i)) {
@@ -494,27 +484,14 @@ void OSExceptionInit(void) {
             osevSetNumber[0] = setNumber | i;
             if (__DBIsExceptionMarked(i)) {
                 DBPrintf((char *)(strings + 0x1AC), i);
-                memcpy(dbVec, dbIntEnd, dbJumpSize);
+                memcpy(__DBVECTOR, __OSDBINTEND, dbJumpSize);
             } else {
-                p = (u32 *)dbVec;
-                if (dbJumpSize > 0) {
-                    nops = (dbJumpSize + 3) >> 2;
-                    for (; nops >= 8; nops -= 8) {
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                        *p++ = nop;
-                    }
-                    for (; nops != 0; nops--) {
-                        *p++ = nop;
-                    }
+                p = (u32 *)__DBVECTOR;
+                for (nops = 0; nops < dbJumpSize; nops += 4) {
+                    *p++ = 0x60000000;
                 }
             }
-            dest = (u32 *)((u8 *)base + *entry);
+            dest = (u32 *)(*entry + 0x80000000);
             memcpy(dest, osevStart, size);
             DCFlushRangeNoSync(dest, size);
             __sync();
@@ -533,7 +510,7 @@ void OSExceptionInit(void) {
     osevSetNumber[0] = setNumber;
     DBPrintf((char *)(strings + 0x1DC));
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void __OSDBIntegrator(void)
 {
