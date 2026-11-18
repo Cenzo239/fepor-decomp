@@ -274,6 +274,15 @@ static inline void Camera_SelectAndSet(u8 *proc, CameraVec *a, CameraVec *b) {
     CameraVec *point=Camera_ChoosePoint(proc,a,b);
     if(point) Camera_SetPosition(proc,point->x,point->y,lbl_8036909C+point->z);
 }
+static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec **out) {
+    f32 Map_SampleHeightRaw(void *,f32,f32);
+    if(unit) {
+        position->x=lbl_80369098+(s8)unit[0x19e];
+        position->y=lbl_80369098+(s8)unit[0x19f];
+        position->z=Map_SampleHeightRaw(gBattleMap,(s8)unit[0x19e],(s8)unit[0x19f]);
+        *out=position;
+    }
+}
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
 #pragma peephole on
