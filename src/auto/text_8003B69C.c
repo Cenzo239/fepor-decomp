@@ -6875,8 +6875,9 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     extern volatile s8 lbl_8036728D;
     extern volatile s8 lbl_8036728E;
     extern volatile u8 lbl_80367290;
-    u8 d, c, b, a;
-    volatile u8 *p = &lbl_80367290;
+    u8 d, c;
+    volatile u8 *p;
+    u8 b, a;
 
     a = arg3[0];
     b = arg3[1];
@@ -6885,6 +6886,7 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     lbl_8036728C = arg0;
     lbl_8036728D = arg1;
     lbl_8036728E = arg2;
+    p = &lbl_80367290;
     p[0] = a;
     p[1] = b;
     p[2] = c;
@@ -8660,11 +8662,11 @@ void fn_8004BCCC(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 void fn_8004BD1C(void *arg0, f32 *out, f32 scale) {
 extern f32 lbl_80368FCC; extern f32 lbl_80368FF4;
-f32 a,b,k,t,x,y; u8 *p;
+f32 a,b,t,y,x,k,z; u8 *p;
 a=lbl_80368FCC; p=*(u8 **)((u8 *)arg0+0x17c); b=a;
 if(p){ a=(f32)(s8)p[0xa]; b=(f32)(s8)p[0xb]; }
 x=a*scale; k=lbl_80368FF4; y=b*scale; t=lbl_80368FCC;
-x=x*k; t=t*scale; y=y*k; out[0]=x; t=t*k; out[1]=y; out[2]=t;
+x=x*k; t=t*scale; z=y*k; out[0]=x; t=t*k; out[1]=z; out[2]=t;
 }
 #pragma global_optimizer on
 f32 fn_8004BDA8(void *arg0, f32 farg0, f32 farg1) {
