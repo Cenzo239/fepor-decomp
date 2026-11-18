@@ -1,5 +1,19 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline u32 Sound_InterpolateCurve(u16 id, u32 value) {
+s32 fn_80250884(u16);
+u8 *table;
+u32 index, fraction;
+if(id != 0xFFFF) {
+table=(u8 *)fn_80250884(id);
+if(table) {
+index=value>>16; fraction=value&0xFFFF;
+if(index<127) { s32 current=table[index]; s32 next=table[index+1]; value=fraction*(next-current)+((u8)current<<16); }
+else value=table[index]<<16;
+}
+}
+return value;
+}
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -3980,12 +3994,13 @@ fin:
 void fn_80249C1C(SoundBucketNode *arg0, s32 kind, u32 time) {
 extern u8 lbl_80368979;
 extern u8 lbl_8034C964[];
+SoundBucketNode *prev;
 SoundBucketNode *next;
 SoundBucketNode **head;
 SoundBucketNode *node;
 u32 index;
-u32 oldIndex;
 SoundBucketNode **bucket;
+u32 oldIndex;
 index=((time>>8)+lbl_80368979)&31;
 bucket=(SoundBucketNode **)(lbl_8034C964+index*12);
 switch(kind) {
@@ -7259,82 +7274,68 @@ s32 fn_80250E48(void *arg0, u32 *arg1)
     return 1;
 }
 #pragma opt_strength_reduction reset
-int fn_80250F18(void *arg0, u32 *arg1)
+void fn_80250F18(void *arg0, u32 *arg1)
 {
     u16 fn_802611F8(void);
-    s32 Sound_IsHwVoiceActive(s32);
+    u32 Sound_IsHwVoiceActive(s32);
 
     u8 *voice;
     u32 flags;
-    u32 value;
+    s32 value;
     u32 count;
-    u32 status;
-    u32 status2;
+    s32 divisor;
+    u64 vf;
 
     voice = (u8 *)arg0;
-
     count = *(u16 *)(voice + 0xAA);
 
     if (count == 0) {
         flags = arg1[0];
-
-        if (flags & 0x10000) {
+        if ((flags >> 16) & 1) {
             value = fn_802611F8();
-            count = arg1[1] >> 16;
-
-            count = value % count;
+            divisor = arg1[1] >> 16;
+            count = value % divisor;
             *(u16 *)(voice + 0xAA) = count;
         } else {
             count = arg1[1] >> 16;
             *(u16 *)(voice + 0xAA) = count;
         }
-
         count = *(u16 *)(voice + 0xAA);
-
         if (count != 0xFFFF) {
             *(u16 *)(voice + 0xAA) = count + 1;
         }
     } else {
-        if (count != 0xFFFF) {
-            count = *(u16 *)(voice + 0xAA) - 1;
-            *(u16 *)(voice + 0xAA) = count;
-
-            if ((count & 0xFFFF) == 0) {
-                return 0;
-            }
+        u32 c2 = *(u16 *)(voice + 0xAA);
+        if (c2 != 0xFFFF) {
+            c2 -= 1;
+            *(u16 *)(voice + 0xAA) = c2;
+            if ((c2 & 0xFFFF) == 0) goto update;
         }
     }
 
     flags = arg1[0];
 
-    if (flags & 0x100) {
-        status = *(u32 *)(voice + 0x114);
-        status2 = *(u32 *)(voice + 0x118);
-
-        if (((status & 0x100) |
-             ((status2 & 8) ^ 8)) == 0) {
+    if ((flags >> 8) & 1) {
+        vf = *(u64 *)(voice + 0x114);
+        if ((vf & 0x10000000008ULL) == 8ULL) {
             *(u16 *)(voice + 0xAA) = 0;
-            return 0;
+            goto update;
         }
     }
 
-    if (flags & 0x1000000) {
-        status = *(u32 *)(voice + 0x118);
-
-        if ((status & 0x20) == 0) {
-            if (Sound_IsHwVoiceActive(*(u8 *)(voice + 0xF4)) == 0) {
+    if ((flags >> 24) & 1) {
+        vf = *(u64 *)(voice + 0x114);
+        if ((vf & 0x2000000000ULL) == 0) {
+            if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
-                return 0;
+                goto update;
             }
         }
     }
 
+update:
     value = (arg1[1] & 0xFFFF) << 3;
-
-    *(u32 *)(voice + 0x38) =
-        *(u32 *)(voice + 0x34) + value;
-
-    return 0;
+    *(u32 *)(voice + 0x38) = *(u32 *)(voice + 0x34) + value;
 }
 
 void fn_8025106C(void *arg0, u32 *arg1)
@@ -7763,6 +7764,7 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
     arg0->flags |= 0x2000;
 }
 
+#pragma scheduling on
 void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
@@ -7773,10 +7775,10 @@ void fn_80251F24(void *arg0, u32 *arg1)
     u32 value;
     u32 factor;
     u32 mode;
-    u32 tableId;
+    u16 tableId;
     u32 index;
     u32 fraction;
-    u32 result;
+    s32 result;
     u8 *table;
 
     data = (u8 *)arg0;
@@ -7788,26 +7790,17 @@ void fn_80251F24(void *arg0, u32 *arg1)
     mode = (word1 >> 8) & 0xFF;
 
     if (mode == 0) {
-        value = *(u32 *)(data + 0x158);
+        *(u32 *)(data + 0x158) = (*(u32 *)(data + 0x158) * factor) / 127;
     } else {
-        value = *(u32 *)(data + 0x15C);
+        *(u32 *)(data + 0x158) = (*(u32 *)(data + 0x15C) * factor) / 127;
     }
-
-    value = (value * factor) / 127;
-
-    *(u32 *)(data + 0x158) = value;
-
-    if (mode != 0) {
-        value = *(u32 *)(data + 0x158);
-        value += word0 & 0x00FF0000;
-        *(u32 *)(data + 0x158) = value;
-    }
+    *(u32 *)(data + 0x158) += arg1[0] & 0x00FF0000;
 
     if (*(u32 *)(data + 0x158) > 0x7F0000) {
         *(u32 *)(data + 0x158) = 0x7F0000;
     }
 
-    tableId = (word0 >> 24) | ((word1 & 0xFF) << 8);
+    tableId = __rlwimi(arg1[0] >> 24, arg1[1], 8, 16, 23);
 
     result = *(u32 *)(data + 0x158);
 
@@ -7815,18 +7808,17 @@ void fn_80251F24(void *arg0, u32 *arg1)
         table = (u8 *)fn_80250884((u16)tableId);
 
         if (table != 0) {
-            index = result >> 16;
+            index = (u32)result >> 16;
             fraction = result & 0xFFFF;
 
             if (index < 0x7F) {
-                u32 current;
-                u32 next;
+                s32 current;
+                s32 next;
 
                 current = table[index];
                 next = table[index + 1];
 
-                result = (current << 16) +
-                         fraction * (next - current);
+                result = fraction * (next - current) + ((u8)current << 16);
             } else {
                 result = table[index] << 16;
             }
@@ -7837,7 +7829,7 @@ void fn_80251F24(void *arg0, u32 *arg1)
 
     *(u32 *)(data + 0x114) |= 0x1000;
 }
-
+#pragma scheduling reset
 void fn_80252058(void *arg0, u32 *arg1) {
 void fn_8026146C(s32 *);
 void fn_8026147C(u32 *, s32);
@@ -10467,17 +10459,20 @@ s32 fn_80257224(u32 arg0) {
     return result;
 }
 #pragma optimization_level reset
-void fn_802572E8(void)
+void fn_802572E8(u16 *arg0)
 {
     extern u8 gSoundData[];
     extern s32 gSynthVoices;
 
     void fn_80256FF0(u8);
 
+    u16 *list;
     u32 index;
     u32 offset;
+    u32 id;
     u8 *voice;
 
+    list = arg0;
     index = 0;
     offset = 0;
 
@@ -10485,13 +10480,60 @@ void fn_802572E8(void)
         voice = (u8 *)gSynthVoices + offset;
 
         if (*(u32 *)(voice + 0x34) == 0) {
-            if (*(u8 *)(voice + 0x11C) == 0) {
+            if (voice[0x11C] == 0) {
                 fn_80256FF0(index);
             }
         }
 
         offset += 0x458;
         index++;
+    }
+
+    while (*list != 0xFFFF) {
+        if (*list & 0x8000) {
+            id = *list & 0x3FFF;
+
+            while ((u16)id <= list[1]) {
+                index = 0;
+                offset = 0;
+
+                while (index < gSoundData[0x210]) {
+                    voice = (u8 *)gSynthVoices + offset;
+
+                    if (*(u32 *)(voice + 0x34) != 0) {
+                        if (*(u16 *)(voice + 0x104) ==
+                            (u16)id) {
+                            fn_80256FF0(index);
+                        }
+                    }
+
+                    offset += 0x458;
+                    index++;
+                }
+
+                id++;
+            }
+
+            list += 2;
+        } else {
+            index = 0;
+            offset = 0;
+
+            while (index < gSoundData[0x210]) {
+                voice = (u8 *)gSynthVoices + offset;
+
+                if (*(u32 *)(voice + 0x34) != 0) {
+                    if (*(u16 *)(voice + 0x104) == *list) {
+                        fn_80256FF0(index);
+                    }
+                }
+
+                offset += 0x458;
+                index++;
+            }
+
+            list++;
+        }
     }
 }
 
@@ -12776,33 +12818,31 @@ s32 fn_8025DAA0(
     extern u8 lbl_80368AAD;
     extern u8 lbl_80368AAE;
 
+    s32 index;
+    u8 count;
+    u8 nodeIndex;
     u8 *base;
     u8 *entry;
     u8 *pool;
     u8 *node;
     u8 *current;
     u8 *previous;
-    u32 key;
-    s32 index;
-    s32 count;
-    s32 nodeIndex;
     
-    base = (u8 *)lbl_8035BF18;
     count = lbl_80368AAE;
+    base = (u8 *)lbl_8035BF18;
     index = 0;
-    key = *(u32 *)((u8 *)arg0 + 0x3C);
 
-    while (index < count) {
+    while (index < (s32)count) {
         entry = base + (index << 4);
 
-        if (*(u32 *)entry == key) {
+        if (*(u32 *)entry == *(u32 *)((u8 *)arg0 + 0x3C)) {
             break;
         }
 
         index++;
     }
 
-    if (index == count) {
+    if (index == (s32)count) {
         if (count == 0x40) {
             return 0;
         }
@@ -12812,9 +12852,9 @@ s32 fn_8025DAA0(
         *(u32 *)(entry + 4) = 0;
         *(u32 *)(entry + 8) = 0;
         *(u16 *)(entry + 0xC) = 0;
-        *(u32 *)entry = key;
+        *(u32 *)entry = *(u32 *)((u8 *)arg0 + 0x3C);
 
-        lbl_80368AAE = count + 1;
+        lbl_80368AAE = lbl_80368AAE + 1;
     }
 
     nodeIndex = lbl_80368AAD;
@@ -12840,26 +12880,26 @@ s32 fn_8025DAA0(
         }
     }
 
-    node = pool + (nodeIndex << 5);
-
-    *(u8 **)node = current;
-
     if (previous != 0) {
+        node = pool + ((u8)nodeIndex << 5);
+        *(u8 **)node = current;
         *(u8 **)previous = node;
     } else {
+        node = pool + ((u8)nodeIndex << 5);
+        *(u8 **)node = current;
         *(u8 **)(entry + 4) = node;
     }
 
-    lbl_80368AAD = nodeIndex + 1;
-
-    *(f32 *)(node + 4) = arg1;
-    *(f32 *)(node + 8) = arg2;
-    *(f32 *)(node + 0xC) = arg3;
-    *(f32 *)(node + 0x10) = arg4;
+    nodeIndex = lbl_80368AAD;
+    node = pool + (nodeIndex << 5);
+    *(void **)(node + 0x1C) = arg0;
     *(f32 *)(node + 0x14) = arg5;
     *(f32 *)(node + 0x18) = arg6;
-
-    *(void **)(node + 0x1C) = arg0;
+    *(f32 *)(node + 0x8) = arg2;
+    *(f32 *)(node + 0xC) = arg3;
+    *(f32 *)(node + 0x10) = arg4;
+    lbl_80368AAD = nodeIndex + 1;
+    *(f32 *)(pool + ((u8)nodeIndex << 5) + 4) = arg1;
 
     return 1;
 }
@@ -14979,14 +15019,14 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma global_optimizer off
 #pragma scheduling on
 f64 fn_80261344(f32 x) {
-extern f32 lbl_802831B8[];
-f64 three, half, guess, square; f32 zero;
-zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
-if(x != zero) {
+extern const f32 lbl_802831B8[];
+f64 three,half,guess,square; f32 zero; const f32 *constants=lbl_802831B8-2;
+three=constants[0]; half=constants[1]; zero=constants[2];
+if(x!=zero) {
 guess=__frsqrte(x);
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
+square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
+square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
 return x*guess;
 }
 return x;
@@ -16346,7 +16386,7 @@ void fn_80262FB0(void) {
 
 typedef struct { void *prev; u32 smallest; } HeapWalk80263074;
 
-u8 fn_80263074(u32 arg0)
+u8 fn_80263074(u32 arg0, u32 smallest, void *previous)
 {
     extern u8 lbl_80364430[];
     extern void *lbl_80368ADC;
@@ -16355,8 +16395,6 @@ u8 fn_80263074(u32 arg0)
     extern u32 lbl_80368AEC;
     extern void *fn_80258AD8(void);
 
-    void *previous;
-    u32 smallest;
     void *selected;
     u32 size;
     void *current;
@@ -16387,7 +16425,7 @@ u8 fn_80263074(u32 arg0)
     if (selected == 0) {
         if (lbl_80368AD8 != 0) {
             current = fn_80258AD8();
-            if (lbl_80368AEC - size >= *(u32 *)((u8 *)current + 8)) {
+            if (*(u32 *)((u8 *)current + 8) <= lbl_80368AEC - size) {
                 current = lbl_80368AD8;
                 selected = current;
                 lbl_80368AD8 = *(void **)current;
