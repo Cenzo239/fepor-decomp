@@ -1,6 +1,5 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
-static inline f32 Battle_OffsetCoordinate(f32 value, f32 offset) { return offset + value; }
 #include "global.h"
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
