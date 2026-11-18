@@ -31,16 +31,11 @@ extern u16 jumptable_80283AE8[];
 
 #pragma optimization_level 3
 
+#pragma global_optimizer off
 s32 fn_80006AC0(u8 *arg0) {
-    u32 t;
-    u32 b1;
-
-    if (arg0[0] != 0x10) {
-        return 0;
-    }
-    t = arg0[2];
-    b1 = arg0[3];
-    t = ((t << 8) & 0xFF00) + arg0[1];
-    return t + ((b1 << 16) & 0xFF0000);
+ u32 result; u32 high; u32 mid; u32 low;
+ if(arg0[0]!=0x10) return 0;
+ mid=arg0[2]; high=arg0[3]; low=arg0[1];
+ result=low+((mid<<8)&0xff00);
+ return result+((high<<16)&0xff0000);
 }
-#pragma optimization_level reset
