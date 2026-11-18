@@ -1,4 +1,5 @@
 #include "common.h"
+typedef struct UiPointResult { s16 x, y; } UiPointResult;
 #pragma cplusplus on
 struct LensFlareView {
     u8 pad[0x40];
@@ -14201,21 +14202,24 @@ void *fn_8017A764(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-#pragma global_optimizer off
 extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
-    extern u8 gStreamBaseVtbl[];
-    extern u8 lbl_802842B8[];
-    *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
-    *(s32 *)((char *)arg0 + 4) = 0;
-    *(s32 *)arg0 = 0;
-    *(s32 *)((char *)arg0 + 8) = 0;
-    *(u8 *)((char *)arg0 + 0xC) = 0;
-    *(void **)((char *)arg0 + 0x10) = lbl_802842B8;
+    extern u8 gStreamBaseVtbl[], lbl_802842B8[];
+    void *base;
+    void *derived;
+    s32 zero;
+    base = gStreamBaseVtbl;
+    derived = lbl_802842B8;
+    *(void **)((char *)arg0 + 0x10) = base;
+    zero = 0;
+    *(s32 *)((char *)arg0 + 4) = zero;
+    *(s32 *)arg0 = zero;
+    *(s32 *)((char *)arg0 + 8) = zero;
+    *(u8 *)((char *)arg0 + 0xC) = zero;
+    *(void **)((char *)arg0 + 0x10) = derived;
     *(s32 *)((char *)arg0 + 4) = arg1;
     *(s32 *)arg0 = arg1;
-    *(u8 *)((char *)arg0 + 0xC) = 0;
+    *(u8 *)((char *)arg0 + 0xC) = zero;
 }
-#pragma global_optimizer reset
 #pragma cplusplus reset
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
@@ -18640,7 +18644,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
 
 #pragma peephole off
 void fn_80181C40(s32 *arg0, void *arg1) {
-struct Point { u16 x,y; };
+struct Point { u16 x; s16 y; };
 struct Point *fn_8013F748(void *, struct Point *, struct Point *);
 struct Point out, in;
 struct Point *outp=&out;
