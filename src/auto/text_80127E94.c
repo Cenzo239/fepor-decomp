@@ -433,13 +433,12 @@ checked:
 #pragma cplusplus off
 u8 fn_80129104(void *arg0) {
 extern u8 gAiState[];
-typedef struct { char *name; u32 key; u8 (*fn)(void *,s32); } Tbl;
+typedef AiItemEntry Tbl;
 extern Tbl lbl_802909F8[];
 u8 fn_801001F0(u32);
 s32 Unit_FindKeyItemSlot(void *,u8);
 u8 fn_80093218(void *,u32);
 u8 fn_801287C0(void *);
-Tbl *walk;
 Tbl *entry;
 u32 key;
 u8 kind;
@@ -452,13 +451,7 @@ if(M2C_FIELD(p,u32 *,0x1EC)==0) break;
 kind=fn_801001F0(M2C_FIELD(p,u32 *,0x1EC));
 if(kind!=0 && i==Unit_FindKeyItemSlot(arg0,kind)) {
 key=M2C_FIELD(p,u32 *,0x1EC);
-if(fn_80093218(arg0,key)) {
-for(walk=lbl_802909F8;walk->key;walk++) {
-if(key==walk->key && walk->fn) { entry=walk; goto found; }
-}
-}
-entry=0;
-found:
+entry=Ai_FindItemEntry(arg0,key);
 if(entry && entry->fn(arg0,i)) break;
 }
 }
