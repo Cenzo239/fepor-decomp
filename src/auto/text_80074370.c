@@ -279,15 +279,22 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
     fn_8001003C(*(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32), (u8)flag, 1, 0, ((Obj *)arg0)->v1(), lbl_80369394, lbl_803693A8);
 }
 
+#pragma global_optimizer off
+#pragma scheduling off
 extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
+    u8 *p;
+    u8 v;
     if (*((u8 *)arg2 + 0x39) != 0) {
         return 0x10;
     }
-    lbl_802EF4C8[0xA] = *((u8 *)arg2 + 0x3A);
+    p = gUiContext;
+    v = *((u8 *)arg2 + 0x3A);
+    p[0xA] = v;
     return 5;
 }
-
+#pragma scheduling reset
+#pragma global_optimizer reset
 extern "C" s32 fn_80074BA4(void *arg0) {
     struct Obj {
         virtual s32 v0() = 0;
@@ -4549,13 +4556,13 @@ void fn_8007C34C(void) {
 
 #pragma peephole off
 void fn_8007C378(void) {
-    u32 fn_8000D354();
-    void fn_8000E0E4(u32);
     extern u8 lbl_8026C640[];
-    u32 x;
+    void *fn_8000D354();
+    void fn_8000E0E4(u32);
+    void *p;
 
-    x = fn_8000D354();
-    switch (x) {
+    p = fn_8000D354();
+    switch ((u32)p) {
     case 0:
         fn_8000E0E4(*(u32 *)((u8 *)fn_8000D354(lbl_8026C640 + 0xEF) + 4));
         break;
