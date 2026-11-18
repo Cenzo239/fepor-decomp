@@ -12192,7 +12192,7 @@ extern u32 jumptable_802855E4[];
 extern s32* gUnitShadowMat;
 extern f32 lbl_80368FCC;
 extern f32 gUnitShadowZ;
-extern u16* gUnits;
+extern u8 gUnits[];
 #include "common.h"
 
 typedef struct {
