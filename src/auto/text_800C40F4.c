@@ -577,22 +577,22 @@ s32 fn_800C4638(s32 arg0) {
     return fn_800C5A48(lbl_80367870, arg0) + 0x20;
 }
 
-#pragma scheduling off
+#pragma global_optimizer off
 void Heap_AdjustExtent(s32 arg0) {
     extern HeapC55 *lbl_80367868;
     HeapC55 *node;
     HeapC55 *g;
-    HeapC55 *next;
+    u32 next;
 
     g = lbl_80367868;
     node = g->free;
-    while ((next = node->next) != NULL) {
-        node = next;
+    while ((next = (u32)node->next) != 0) {
+        node = (HeapC55 *)next;
     }
-    node->size += arg0;
     g->extent += arg0;
+    node->size += arg0;
 }
-#pragma scheduling reset
+#pragma global_optimizer reset
 void Heap_Select(char *arg0) {
     s32 Str_Cmp(char *, char *);
     extern u32 lbl_80320B88[];
@@ -687,10 +687,11 @@ void DebugPrint(const char *,...);
 void fn_802001F8(void *,u32);
 void fn_8005C7A4(s32);
 void fn_8005BA08(s8);
-u32 *const table=lbl_80320B88;
+u32 *table;
 s32 index,selected,diff;
 bool same;
 u32 *heap;
+table=lbl_80320B88;
 index=Heap_FindInTable(table,(u32)lbl_8036786C);
 DebugPrint(lbl_802700D8+0xEE,(char *)lbl_8036786C+4);
 same=(index==Heap_FindInTable(table,lbl_80367870));
