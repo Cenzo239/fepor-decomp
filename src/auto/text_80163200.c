@@ -50,6 +50,7 @@ extern u32 gUiContext[];
 extern u16 gUiMsgStrings[];
 void fn_8006D8E8(void *);
 void Prim2D_BindTexture(s32, s32, u16);
+void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
 extern u16 gUiListPanelProc[];
 
 typedef struct Unk8016F694_Inner {
