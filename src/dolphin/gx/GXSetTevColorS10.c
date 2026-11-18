@@ -217,8 +217,6 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 #pragma use_lmw_stmw reset
 
-#pragma scheduling off
-
 void fn_80223C14(s32 id, u32 *color)
 {
   u16 *gx;
