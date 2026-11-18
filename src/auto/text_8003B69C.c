@@ -10951,7 +10951,7 @@ void fn_80051538(s32 *arg0) {
 void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
     void GXBegin(s32, s32, s32);
     f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
-    extern s32 gBattleMap[];
+    extern u8 gBattleMap[];
     extern f32 lbl_8036904C;
     extern f32 lbl_80369050;
     volatile f32 *wgpipe = (volatile f32 *)0xCC008000;
