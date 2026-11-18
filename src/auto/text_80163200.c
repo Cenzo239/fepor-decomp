@@ -271,6 +271,7 @@ void fn_80163708(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+#pragma opt_peephole off
 void fn_80163728(void *arg0, void *arg1) {
     extern f32 lbl_8036A89C;
     extern f32 lbl_8036A8A0;
@@ -281,15 +282,13 @@ void fn_80163728(void *arg0, void *arg1) {
     s32 Text_MeasureHeight(s32, f32);
     void Ui_DrawRouteIconEx(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
-    s16 temp_r31;
     s32 var_r29;
-    void *self;
-    void *ctx;
+    s16 temp_r31;
     s32 var_r3;
     s32 temp_r5;
-    s16 var_r28;
-    s16 temp_r0;
     u8 var_r30;
+    s16 temp_r0;
+    s16 var_r28;
     u8 var_r3_2;
     u32 var_r0;
     s16 temp_r24;
@@ -301,42 +300,41 @@ void fn_80163728(void *arg0, void *arg1) {
     s32 temp_r25_2_val;
     s16 temp_r25_2_final;
 
-    self=arg0; ctx=arg1;
-    ((void (*)(void *))((void **)M2C_FIELD(self, u32 *, 0x00))[5])(arg0);
+    ((void (*)(void *))((void **)M2C_FIELD(arg0, u32 *, 0x00))[5])(arg0);
 
-    var_r3 = M2C_FIELD(self, s16 *, 0x4C);
+    var_r3 = M2C_FIELD(arg0, s16 *, 0x4C);
     if ((s16)var_r3 >= 0) {
-        temp_r31 = M2C_FIELD(self, s16 *, 0x54);
+        temp_r31 = M2C_FIELD(arg0, s16 *, 0x54);
         var_r29 = temp_r31;
         var_r3 = (s16)var_r3;
 
-        if (M2C_FIELD(self, s32 *, 0x60) == 2) {
+        if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
             var_r3 -= 4;
         }
 
-        temp_r5 = M2C_FIELD(self, s16 *, 0x64);
+        temp_r5 = M2C_FIELD(arg0, s16 *, 0x64);
         var_r28 = temp_r5;
-        temp_r0 = (s16)((s32)var_r3 * temp_r31 + M2C_FIELD(self, s16 *, 0x66));
+        temp_r0 = (s16)((s32)var_r3 * temp_r31 + M2C_FIELD(arg0, s16 *, 0x66));
 
-        if (M2C_FIELD(self, s16 *, 0x52) < 0) {
-            M2C_FIELD(self, s16 *, 0x50) = temp_r5;
-            M2C_FIELD(self, s16 *, 0x52) = temp_r0;
+        if (M2C_FIELD(arg0, s16 *, 0x52) < 0) {
+            M2C_FIELD(arg0, s16 *, 0x50) = temp_r5;
+            M2C_FIELD(arg0, s16 *, 0x52) = temp_r0;
         } else {
-            M2C_FIELD(self, s16 *, 0x50) = (s16)((s32)(M2C_FIELD(self, s16 *, 0x50) + ((s16)temp_r5 + 1)) >> 1);
-            M2C_FIELD(self, s16 *, 0x52) = (s16)((s32)(M2C_FIELD(self, s16 *, 0x52) + (temp_r0 + 1)) >> 1);
+            M2C_FIELD(arg0, s16 *, 0x50) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x50) + ((s16)temp_r5 + 1)) >> 1);
+            M2C_FIELD(arg0, s16 *, 0x52) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + (temp_r0 + 1)) >> 1);
         }
 
-        if (M2C_FIELD(self, u8 *, 0x48) != 0) {
+        if (M2C_FIELD(arg0, u8 *, 0x48) != 0) {
             var_r30 = 0;
             var_r3_2 = 0;
 
-            if (M2C_FIELD(ctx, u8 *, 0x2D) == 0 && M2C_FIELD(ctx, u8 *, 0x2E) == 0) {
+            if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
                 var_r3_2 = 1;
             }
 
             if (var_r3_2 != 0) {
-                if (M2C_FIELD(ctx, u32 *, 0x34) != 0) {
-                    var_r0 = (u32)M2C_FIELD((void *)M2C_FIELD(ctx, u32 *, 0x38), u32 *, 0x08);
+                if (M2C_FIELD(arg1, u32 *, 0x34) != 0) {
+                    var_r0 = (u32)M2C_FIELD((void *)M2C_FIELD(arg1, u32 *, 0x38), u32 *, 0x08);
                 } else {
                     var_r0 = 0;
                 }
@@ -349,37 +347,37 @@ void fn_80163728(void *arg0, void *arg1) {
             Prim2D_AddZ(lbl_8036A89C);
             Prim2D_PrepareTex();
 
-            temp_r24 = M2C_FIELD(self, s16 *, 0x54);
+            temp_r24 = M2C_FIELD(arg0, s16 *, 0x54);
             temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
-            Ui_DrawRouteIconEx(M2C_FIELD(self, s16 *, 0x50),
-                       M2C_FIELD(self, s16 *, 0x52) + (s16)((temp_r24 - temp_r25_2) >> 1),
+            Ui_DrawRouteIconEx(M2C_FIELD(arg0, s16 *, 0x50),
+                       M2C_FIELD(arg0, s16 *, 0x52) + (s16)((temp_r24 - temp_r25_2) >> 1),
                        var_r30);
 
             Prim2D_Begin();
             Prim2D_AddZ(lbl_8036A8A0);
             Prim2D_PrepareTex();
 
-            ((void (*)(void *, s32, s16, s16, s16, u8))((void **)M2C_FIELD(self, u32 *, 0x00))[0x40/4])(arg0, 0, temp_r0,
-                      (s16)(M2C_FIELD(self, s16 *, 0x16) - M2C_FIELD(self, s16 *, 0x12)),
+            ((void (*)(void *, s32, s16, s16, s16, u8))((void **)M2C_FIELD(arg0, u32 *, 0x00))[0x40/4])(arg0, 0, temp_r0,
+                      (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)),
                       temp_r31, var_r30);
         }
     }
 
-    if (M2C_FIELD(self, u8 *, 0x49) != 0) {
-        ((void (*)(void *, void *))((void **)M2C_FIELD(self, u32 *, 0x00))[5])(arg0, arg1);
+    if (M2C_FIELD(arg0, u8 *, 0x49) != 0) {
+        ((void (*)(void *, void *))((void **)M2C_FIELD(arg0, u32 *, 0x00))[5])(arg0, arg1);
 
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A890);
         Prim2D_PrepareTex();
 
-        var_r3_3 = M2C_FIELD(self, s16 *, 0x4E);
-        if (M2C_FIELD(self, s32 *, 0x60) == 2) {
+        var_r3_3 = M2C_FIELD(arg0, s16 *, 0x4E);
+        if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
             var_r3_3 -= 4;
         }
 
         temp_r4 = var_r3_3 * var_r29;
-        temp_r25 = M2C_FIELD(self, s16 *, 0x54);
-        temp_r24_2 = (s16)(temp_r4 + M2C_FIELD(self, s16 *, 0x66));
+        temp_r25 = M2C_FIELD(arg0, s16 *, 0x54);
+        temp_r24_2 = (s16)(temp_r4 + M2C_FIELD(arg0, s16 *, 0x66));
         temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
         temp_r25_2_final = (s16)((s32)(temp_r25 - temp_r25_2) >> 1);
 
@@ -392,6 +390,7 @@ void fn_80163728(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
     }
 }
+#pragma opt_peephole reset
 #pragma global_optimizer reset
 #pragma use_lmw_stmw on
 #pragma cplusplus on
@@ -14200,25 +14199,18 @@ static inline void Stream_InitBase(void *self) {
     *(u8 *)((u8 *)self + 0xC) = 0;
 }
 #pragma cplusplus on
-extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
-    extern u8 gStreamBaseVtbl[];
+void fn_8017A7D4(void *arg0, s32 arg1) {
+    extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
-    s32 zero;
-    void *vt2;
-    void *vt;
-
-    zero = 0;
-    vt2 = lbl_802842B8;
-    vt = gStreamBaseVtbl;
-    *(void **)((char *)arg0 + 0x10) = vt;
-    *(s32 *)((char *)arg0 + 4) = zero;
-    *(s32 *)arg0 = zero;
-    *(s32 *)((char *)arg0 + 8) = zero;
-    *(u8 *)((char *)arg0 + 0xC) = zero;
-    *(void **)((char *)arg0 + 0x10) = vt2;
+    *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+    *(s32 *)((char *)arg0 + 4) = 0;
+    *(s32 *)arg0 = 0;
+    *(s32 *)((char *)arg0 + 8) = 0;
+    *(u8 *)((char *)arg0 + 0xC) = 0;
+    *(void **)((char *)arg0 + 0x10) = lbl_802842B8;
     *(s32 *)((char *)arg0 + 4) = arg1;
     *(s32 *)arg0 = arg1;
-    *(u8 *)((char *)arg0 + 0xC) = zero;
+    *(u8 *)((char *)arg0 + 0xC) = 0;
 }
 #pragma cplusplus off
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
@@ -15971,6 +15963,12 @@ void fn_8017CE1C(void *self, void *arg1) {
     } else {
         fn_8001003C(halfW, t29, 1, 1, 0, (u8 *)lbl_80278838 + 0x5F, lbl_8036ABE0, lbl_8036ABE8);
     }
+}
+
+static inline void Ui_SetPoint_8017D4B8(s16 *point, s16 x, s16 y)
+{
+    point[0] = x;
+    point[1] = y;
 }
 
 void fn_8017D4B8(s32 *arg0, void *arg1) {
