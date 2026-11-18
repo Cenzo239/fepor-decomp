@@ -2794,6 +2794,8 @@ void MoveAnim_AttachClassCue(void *anim) {
     }
 }
 
+#pragma push
+#pragma opt_common_subs on
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
     void fn_8004FE98(void *, s32);
@@ -2801,11 +2803,10 @@ void fn_80188B4C(void *anim) {
     void MuFade_UnlinkSame(void *, void *);
     void Unit_SetModelAlpha(void *, s32);
     s32 DebugPrint(const char *, ...);
-    void SeCue_FadeOut(s8, s16);
+    void SeCue_FadeOut(s32, s32);
     void fn_800C4588(void *);
 
     extern u16 E_MuFade_script[36];
-    extern f32 lbl_8036ACE8;
     extern u8 gMapBlendMode;
     extern u8 gBattleMap[];
     extern u8 gSeCueSlots[];
@@ -2813,21 +2814,24 @@ void fn_80188B4C(void *anim) {
 
     void *fadeKey[13];
     u8 *self;
-    u8 *unit;
-    s32 x;
+    u8 tx, ty;
     s32 y;
+    s32 x;
+    u8 *unit;
     s16 degrees;
     f32 angle;
-    f32 scale;
     u16 flags;
-    u8 alpha;
+    s32 alpha;
+    u8 blend;
     u8 slot;
 
     self = (u8 *)anim;
     if (M2C_FIELD(self, u16 *, 0x52) & 0x80) {
         unit = M2C_FIELD(self, u8 **, 0x30);
-        x = (s8)unit[0x19E];
-        y = (s8)unit[0x19F];
+        tx = unit[0x19E];
+        ty = unit[0x19F];
+        x = (s8)tx;
+        y = (s8)ty;
         fn_80050C90(unit);
 
         unit = M2C_FIELD(self, u8 **, 0x30);
@@ -2847,9 +2851,8 @@ void fn_80188B4C(void *anim) {
         fadeKey[12] = unit;
         GfxEnt_ForEachKey(E_MuFade_script, MuFade_UnlinkSame, fadeKey);
 
-        scale = lbl_8036ACE8;
-        if (angle != (f32)M2C_FIELD(unit, s16 *, 0x15C) / scale) {
-            M2C_FIELD(unit, s16 *, 0x15C) = (s16)(s32)(scale * angle);
+        if (angle != (f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f) {
+            M2C_FIELD(unit, s16 *, 0x15C) = (s16)(50.0f * angle);
         }
 
         unit = M2C_FIELD(self, u8 **, 0x30);
@@ -2858,14 +2861,16 @@ void fn_80188B4C(void *anim) {
         }
 
         flags = M2C_FIELD(self, u16 *, 0x52);
-        alpha = 0xFF;
+        alpha = 255;
         if (flags & 0x10) {
-            alpha = 0xFF;
+            alpha = 255;
         }
         if (flags & 0x20) {
             alpha = 0;
         }
-        if ((u8)(gMapBlendMode - 1) <= 1) {
+        blend = 1;
+        if (!((u8)(gMapBlendMode - 1) <= 1)) blend = 0;
+        if (blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
                 (gBattleMap + x + y * 0x40)[0x200D] == 0) {
@@ -2880,7 +2885,7 @@ void fn_80188B4C(void *anim) {
     if ((s8)slot != -1) {
         DebugPrint((const char *)(MoveAnim_str + 0x4C3),
                    **(const char ***)(gSeCueSlots + slot * 0x30));
-        SeCue_FadeOut((s8)self[0x6A], 0xFA);
+        SeCue_FadeOut(self[0x6A], 250);
     }
 
     fn_800C4588(M2C_FIELD(self, void **, 0x54));
@@ -2889,6 +2894,7 @@ void fn_80188B4C(void *anim) {
     M2C_FIELD(self, void **, 0x6C) = NULL;
 }
 
+#pragma pop
 void fn_80188DBC(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -16327,7 +16333,7 @@ void fn_801A2570(void) {
 
     flag = 1;
     temp = (u8)(gMapBlendMode - 1);
-    if (!(temp <= flag)) {
+    if (!(temp <= 1U)) {
         flag = 0;
     }
     if (flag) {
