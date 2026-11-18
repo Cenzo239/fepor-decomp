@@ -461,41 +461,16 @@ s32 Heap_Alloc(s32 arg0) {
 static inline s32 Heap_FindByName(void *name) {
 s32 Str_Cmp(void *,void *);
 extern u32 lbl_80320B88[];
-s32 i;
 u32 *p=lbl_80320B88;
+s32 i;
 for(i=0;i<16;i++,p++) {
 if(*p && Str_Cmp(name,(void *)(*p+4))==0) return i;
 }
 return -1;
 }
-s32 fn_800C4304(void *arg0) {
-    s32 Str_Cmp(void *, void *);
-    extern u32 lbl_80320B88[];
-    s32 idx;
-    u32 *p;
-    u32 v;
-
-    idx = 0;
-    p = lbl_80320B88;
-    for (;;) {
-        v = *p;
-        if (v != 0) {
-            if (Str_Cmp(arg0, (void *)(v + 4)) == 0) {
-                goto done;
-            }
-        }
-        idx += 1;
-        p += 1;
-        if (idx >= 0x10) {
-            idx = -1;
-            goto done;
-        }
-    }
-done:
-    return idx;
-}
-
 #pragma global_optimizer off
+s32 fn_800C4304(void *arg0) { return Heap_FindByName(arg0); }
+#pragma global_optimizer reset
 void fn_800C4384(void) {
 void DebugPrint(const char *,...);
 extern char lbl_802700D8[];
