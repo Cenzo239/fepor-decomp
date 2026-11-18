@@ -8655,7 +8655,7 @@ next: node=M2C_FIELD(node,void **,4);
 }
 }
 
-#pragma opt_common_subs off
+#pragma global_optimizer off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
@@ -8874,7 +8874,7 @@ GXLoadPosMtxImm(root,lbl_80285F40[count]);
 fn_80202238(root,root); fn_80224DCC(root,lbl_80285F40[count]);
 }
 }
-#pragma opt_common_subs reset
+#pragma global_optimizer reset
 
 #pragma use_lmw_stmw on
 void fn_8006C2A4(void *arg0,s32 arg1){
