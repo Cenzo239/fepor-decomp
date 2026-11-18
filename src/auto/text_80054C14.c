@@ -272,7 +272,8 @@ static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
 }
 #pragma use_lmw_stmw on
-#pragma opt_propagation off
+#pragma opt_propagation reset
+#pragma peephole off
 void fn_80054C14(void *arg0) {
     u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
