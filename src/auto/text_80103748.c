@@ -393,17 +393,18 @@ return 6;
 #pragma global_optimizer on
 #pragma opt_propagation on
 char *fn_80103DDC(void *arg0, void *arg1) {
-    void sprintf(void *, void *, ...);
+    void sprintf(char *, char *, ...);
     extern char lbl_8032BB18[];
-    extern u8 lbl_802734D0[];
-    u32 a;
-    u8 *fmt;
+    extern char lbl_802734D0[];
+    s32 a;
+    char *fmt;
+    u8 *base;
 
-    a = *(u32 *)((u8 *)arg0 + 4);
-    arg0 = *(void **)((u8 *)arg1 + 0x18);
+    a = *(s32 *)((char *)arg0 + 4);
+    arg0 = *(void **)((char *)arg1 + 0x18);
     fmt = lbl_802734D0;
-    arg0 = (void *)(*(u32 *)((u8 *)arg0 + 0x3c) + a);
-    sprintf(lbl_8032BB18, fmt + 0x1bf, a, *((u8 *)arg0 + 0x14));
+    base = (u8 *)*(s32 *)((char *)arg0 + 0x3c);
+    sprintf(lbl_8032BB18, fmt + 0x1bf, a, (base + a)[0x14]);
     return lbl_8032BB18;
 }
 #pragma opt_propagation reset
