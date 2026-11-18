@@ -2410,18 +2410,21 @@ extern void *gGame;
 extern void *gPadInput;
 extern f32 lbl_8036A18C, lbl_8036A1C4, lbl_8036A1CC;
 String anim;
-f32 move[3], pos[3];
+f32 move[3];
+PVector3 pos;
 String se8, se7;
 u32 copy[3];
 String se6,se5,se4,se3,se2,se1,test,joined,suffix;
-f32 other[3], current[3], dir[3], result[3], origin[3];
+PVector3 other;
+f32 current[3];
+f32 dir[3], result[3], origin[3];
 void *scratch7,*scratch6,*scratch5,*scratch4,*scratch3,*scratch2,*scratch1,*scratch0;
 f32 scale,x,y,z,px;
 s32 kind;
 s32 missing;
 anim.cap=0; anim.size=0; anim.data=0; anim.cap=0;
-((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&pos,arg0,0);
-x=pos[0];y=pos[1];z=pos[2];
+pos = ((ActorMotionInterface*)arg0)->GetPos(0);
+x=pos.x;y=pos.y;z=pos.z;
 if (*(void **)((u8*)arg0+0x11C)) {
 kind=fn_80199310(*(void **)((u8*)arg0+0x11C));
 fn_800DF670(*(void **)((u8*)arg0+0x11C));
@@ -2449,9 +2452,13 @@ Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
+{
+register void **vt;
+vt = *(void ***)((u8*)arg0+0x40);
+((void (*)(void *,void *,s32))vt[14])(&current,arg0,0);
+}
 px=current[0];
-((void (*)(void *,void *,s32))(*(void ***)((u8*)*(void **)((u8*)arg0+0x118)+0x40))[14])(&other,*(void **)((u8*)arg0+0x118),0);
+other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
 dir[0]=-*(f32*)((u8*)arg0+0x60);dir[1]=lbl_8036A184;dir[2]=lbl_8036A184;
 fn_802031E8(&dir,&dir);fn_802031CC(&dir,&dir,scale);fn_80203184(&origin,&dir,&result);
@@ -9199,11 +9206,15 @@ void fn_801207D8(void *arg0) {
 extern s32 fn_80010710(u8* arg0);
 extern s32 gActiveCam;
 #pragma push
-#pragma global_optimizer on
+#pragma optimization_level 3
+/* TODO: verify command mappings after table index 23. read_data truncates
+ * jumptable_80290110 relocations there; cases s/n/w remain provisional.
+ * Instruction match alone does not validate those jump-table entries. */
 s32 fn_801208BC(s8 *text, s32 wanted) {
 s32 fn_80010428(s8 **,s32,f32);
 s8 *fn_80104970(s8 *);
 extern f32 lbl_8036A248;
+u8 *out;
 s32 longest=-1;
 s32 width;
 s32 selected=wanted;
@@ -9241,8 +9252,7 @@ case '2':selected=2;break;
 case '3':selected=3;break;
 }
 {
-s8 *out;
-out=(s8*)lbl_8032FE24;
+out=lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
@@ -9260,8 +9270,7 @@ case '=':text+=4;continue;
 case 'F':
 switch((s32)(u8)*text++) { case 'C':
 {
-s8 *out;
-out=(s8*)lbl_8032FE24;
+out=lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
@@ -9270,8 +9279,7 @@ break;
 continue;
 case 'B':case 'R': {
 {
-s8 *out;
-out=(s8*)lbl_8032FE24;
+out=lbl_8032FE24;
 while((s32)(u8)*text!='|') *out++=*text++;
 *out=0;++text;continue;
 }
