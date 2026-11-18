@@ -2494,8 +2494,8 @@ void fn_801F7194(void *arg0) {
 }
 
 void fn_801F7200(void *arg0) {
-    extern u8 lbl_80330708[];
-    extern u8 lbl_80280D38[];
+    extern u8 gBattleState[];
+    extern u8 gBattlePreviewStrings[];
     void fn_80147188(s32);
     void fn_8006EEFC(void *, void *);
     void fn_80162018(void);
@@ -2506,10 +2506,10 @@ void fn_801F7200(void *arg0) {
     fn_80147188(0x3E8);
     obj[0] = 0;
     obj[1] = 0;
-    v = *(u64 *)(lbl_80330708 + 0x60);
+    v = *(u64 *)(gBattleState + 0x60);
     obj[3] = (u32)v;
     obj[2] = (u32)(v >> 32);
-    fn_8006EEFC(obj + 4, lbl_80280D38 + 0x173);
+    fn_8006EEFC(obj + 4, gBattlePreviewStrings + 0x173);
     fn_80162018();
 }
 
