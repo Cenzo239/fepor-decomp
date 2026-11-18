@@ -1110,6 +1110,11 @@ extern u32 lbl_80367864;
 extern u32* lbl_80367868;
 extern u32 lbl_8036786C;
 extern s32 lbl_80366DDC;
+static inline u8 *Heap_GetFreeStart(void) {
+    HeapC55 *heap = (HeapC55 *)lbl_80367868;
+    if (heap != NULL) return (u8 *)heap + heap->extent;
+    return (u8 *)lbl_80367860;
+}
 static inline u8 *Heap_GetFreeEnd(void) {
     u8 *end = (u8 *)lbl_8036786C;
     if (end != NULL) return end;
@@ -1127,15 +1132,7 @@ s32 Heap_GetFree(void) {
     } else {
         lo = (u8 *)lbl_80367860;
     }
-    hi = (u8 *)lbl_8036786C;
-    switch ((u32)hi) {
-    case 0:
-        hi = (u8 *)lbl_80367864;
-        break;
-    default:
-        break;
-    }
-    return hi - lo;
+    return Heap_GetFreeEnd() - lo;
 }
 #pragma optimization_level reset
 void fn_800C5300(void) {
