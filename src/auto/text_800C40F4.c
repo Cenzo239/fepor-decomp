@@ -2874,23 +2874,71 @@ void *Xml_Destroy(void *arg0, s16 doFree) {
 #pragma auto_inline reset
 #pragma use_lmw_stmw reset
 
-void Xml_ParseFile(void* arg0, void* arg1) {
-    // This function is performing complex data initialization and copying
-    if (arg0 != NULL && arg1 != NULL) {
-        *(u32*)arg0 = 0;
-        *(u32*)((char*)arg0 + 4) = 0;
-        *(u32*)((char*)arg0 + 8) = 0;
-        *(u32*)((char*)arg0 + 12) = 0;
-        *(u32*)((char*)arg0 + 16) = 0;
-        *(u32*)((char*)arg0 + 20) = 0;
-        *(u32*)((char*)arg0 + 24) = 0;
-        *(u32*)((char*)arg0 + 76) = 0;
-        *(u32*)((char*)arg0 + 72) = 0;
-        *(u32*)((char*)arg0 + 68) = 0;
-        *(u32*)((char*)arg0 + 64) = 0;
-    }
+#pragma dont_inline on
+#pragma global_optimizer off
+#pragma use_lmw_stmw off
+void *Xml_ParseFile(void *arg0, void *arg1) {
+void String_Assign(void *,void *,u32,u32);
+void *strcpy(char *,const char *);
+void Str_CopyPad(void *,void *,u32);
+char *String_CStr(void *);
+void *fn_8005C808(void *);
+void fn_8005C7E8(void *);
+void String_Init(void *,void *,void *);
+void fn_800C99A0(void *,void *,u32,u32);
+void fn_800C992C(void *,void *,u32);
+u32 strlen(const char *);
+extern char gStringErrorMsgs[];
+typedef struct {u32 words[8];} Val32;
+Val32 copy;
+Val32 temp;
+String error;
+u8 allocator;
+void *path=arg1;
+u8 *self=arg0;
+s32 ok;
+void *file;
+*(u32 *)(self+0)=0;
+*(u32 *)(self+4)=0;
+*(u32 *)(self+8)=0;
+*(u32 *)(self+4)=0;
+*(u32 *)(self+12)=0;
+*(u32 *)(self+16)=0;
+*(u32 *)(self+20)=0;
+*(u32 *)(self+0x4c)=0;
+*(u32 *)(self+0x48)=0;
+*(u32 *)(self+0x44)=0;
+*(u32 *)(self+0x40)=0;
+String_Assign(self,path,0,-1);
+*(u32 *)(self+0x18)=0;
+*(u32 *)(self+0x1c)=0;
+*(s32 *)(self+0x20)=-1;
+strcpy((char *)self+0x28,gStringErrorMsgs+4);
+temp.words[0]=temp.words[1]=temp.words[2]=temp.words[3]=0;
+Str_CopyPad(&temp,gStringErrorMsgs+4,0x20);
+copy=temp;
+*(Val32 *)(self+0x40)=copy;
+ok=0;
+*(u32 *)(self+0x24)=ok;
+file=fn_8005C808(String_CStr(path));
+if(file){fn_800C8A9C(self,file);ok=1;}
+fn_8005C7E8(file);
+if((u8)ok){
+u32 first;
+if(*(s32 *)(self+0x18)>0) first=**(u32 **)(self+0x14);else first=0;
+*(u32 *)(self+0x1c)=first;
+*(u32 *)(self+0x20)=0;
+} else {
+String_Init(&error,gStringErrorMsgs+5,&allocator);
+fn_800C99A0(&error,path,0,-1);
+fn_800C992C(&error,gStringErrorMsgs+15,strlen(gStringErrorMsgs+15));
+String_Destroy(&error,-1);
 }
-
+return self;
+}
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma dont_inline reset
 M2C_UNK *String_CStr(void *arg0) {
     extern M2C_UNK lbl_80369DC0;
     M2C_UNK *temp_r3;
