@@ -2846,8 +2846,9 @@ void fn_8005FA94(void *arg0, s32 arg1)
         fn_800616A0(arg0);
     }
 }
+#pragma inline_max_size(48)
 #pragma scheduling on
-#pragma dont_inline on
+#pragma auto_inline off
 void fn_8005FC74(u8 *self, void *arg1, s32 arg2) {
  void *fn_800C4638(s32,void*,s32);
  void fn_800618E4(void*);
@@ -2880,14 +2881,7 @@ void fn_8005FC74(u8 *self, void *arg1, s32 arg2) {
  frame=0.0f;
  *(f32*)(self+0x78)=frame;
  *(void**)(self+0x44)=arg1;
- walk=self;
- while(walk) {
- anim=*(u8**)(walk+0x44);
- if(!anim) {walk=*(u8**)(walk+4);continue;}
- goto found;
- }
- anim=0;
- found:
+ anim=GActor_FindAnimation(self);
  if(anim) {
  *(u32*)self&=~0x10;
  last=*(s32*)(anim+0x18);
@@ -2908,7 +2902,8 @@ void fn_8005FC74(u8 *self, void *arg1, s32 arg2) {
  *(f32*)(self+0x58)=frame;
  }
 }
-#pragma dont_inline reset
+#pragma auto_inline reset
+#pragma inline_max_size reset
 void fn_8005FEE8(void *arg0, f32 frame) {
 void *fn_80065634(void ***,s32);
 extern f32 lbl_803691C8;
