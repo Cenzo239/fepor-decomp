@@ -5190,6 +5190,17 @@ void fn_8018DDA8(void *arg0) {
     fn_8005C8B4(lbl_80279B1C + 0x105);
 }
 
+static inline void Ui_ApplyStatusPanelRow(void *panel, const u16 *icons)
+{
+    u16 *fields = (u16 *)((u8 *)panel + 0x48);
+    fields[0] = icons[0];
+    fields[1] = icons[1];
+    fields[2] = icons[2];
+    fields[3] = icons[3];
+    fields[4] = icons[4];
+    fields[5] = icons[5];
+}
+
 static inline void Ui_DrawStatusPanelTexture(s32 texture, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
 {
     void **fn_8006EDD8(s32, s32);
@@ -5267,6 +5278,8 @@ static inline void Ui_DrawStatusPanelTextureAt(u8 *self, u16 index, f32 x, f32 y
 }
 
 #pragma cplusplus on
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 extern "C" void fn_8018DE24(void *arg0) {
     void *memcpy(void *, const void *, u32);
     char *strcat(char *, const char *);
@@ -5279,7 +5292,7 @@ extern "C" void fn_8018DE24(void *arg0) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     extern u8 lbl_80286860[], lbl_80279B1C[];
     extern u32 lbl_8036AD94, lbl_8036AD90, lbl_8036C4FC, lbl_8036C4F8;
-    extern f32 lbl_8036ADA8, lbl_8036ADD0, lbl_8036ADD4, lbl_8036ADD8, lbl_8036ADDC, lbl_8036ADE0, lbl_8036ADE4;
+    extern const f32 lbl_8036ADA8, lbl_8036ADD0, lbl_8036ADD4, lbl_8036ADD8, lbl_8036ADDC, lbl_8036ADE0, lbl_8036ADE4;
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
@@ -5298,16 +5311,16 @@ extern "C" void fn_8018DE24(void *arg0) {
     s32 *Ui_GetColor(s32);
     extern u8 lbl_80279900[];
     extern u8 gBattleState[];
-    extern f32 lbl_8036AD98;
-    extern f32 lbl_8036AD9C;
-    extern f32 lbl_8036ADA0;
-    extern f32 lbl_8036ADA4;
-    extern f32 lbl_8036ADB8;
-    extern f32 lbl_8036ADBC;
-    extern f32 lbl_8036ADC0;
-    extern f32 lbl_8036ADC4;
-    extern f32 lbl_8036ADC8;
-    extern f32 lbl_8036ADCC;
+    extern const f32 lbl_8036AD98;
+    extern const f32 lbl_8036AD9C;
+    extern const f32 lbl_8036ADA0;
+    extern const f32 lbl_8036ADA4;
+    extern const f32 lbl_8036ADB8;
+    extern const f32 lbl_8036ADBC;
+    extern const f32 lbl_8036ADC0;
+    extern const f32 lbl_8036ADC4;
+    extern const f32 lbl_8036ADC8;
+    extern const f32 lbl_8036ADCC;
     extern f64 lbl_8036ADE8;
 
     u8 *self = (u8 *)arg0;
@@ -5317,7 +5330,7 @@ extern "C" void fn_8018DE24(void *arg0) {
     s32 t;
     u32 selected = base[0x51D];
     s32 i;
-    u32 buf[57];
+    struct PanelTable {u32 v[57];} buf;
     u8 *row;
     u8 col[4];
     void **p;
@@ -5325,7 +5338,7 @@ extern "C" void fn_8018DE24(void *arg0) {
     u16 h, w;
     f32 fx, fy;
 
-    if ((((base[0x9D] >> 2) & 3) != 2)) {
+    if (((((u32)base[0x9D] >> 2) & 3) != 2)) {
         t = *(s16 *)(self + 0x46);
         if (t <= 0) {
             switch (*(s16 *)(self + 0x32)) {
@@ -5352,10 +5365,8 @@ extern "C" void fn_8018DE24(void *arg0) {
             *(f32 *)(self + 0x38) = (f32)*(s16 *)(self + 0x40);
             *(f32 *)(self + 0x3C) = (f32)*(s16 *)(self + 0x42);
         }
-        for (i = 0; i < 57; i++) {
-            buf[i] = ((u32 *)(ro + 0xC))[i];
-        }
-        row = (u8 *)buf + selected * 0xC;
+        buf = *(struct PanelTable *)(ro + 0xC);
+        row = (u8 *)&buf + selected * 0xC;
         *(u16 *)(self + 0x48) = *(u16 *)(row + 0);
         *(u16 *)(self + 0x4A) = *(u16 *)(row + 2);
         *(u16 *)(self + 0x4C) = *(u16 *)(row + 4);
@@ -5368,35 +5379,40 @@ extern "C" void fn_8018DE24(void *arg0) {
         mode = (base[0x9D] >> 2) & 3;
         if (mode == 0) {
             u32 color;
-            fy = *(f32 *)(self + 0x3C);
-            fx = *(f32 *)(self + 0x38);
-            color = *Ui_GetColor(2);
-            Ui_DrawStatusPanelTexture(*(s32 *)(self + 0x34), 0, fx, fy, lbl_8036ADC0, color, 0xFF);
+            {
+                f32 firstY = *(f32 *)(self + 0x3C);
+                f32 firstX = *(f32 *)(self + 0x38);
+                color = *Ui_GetColor(2);
+                Ui_DrawStatusPanelTextureAt(self, 0, firstX, firstY, lbl_8036ADC0, color, 0xFF);
+            }
             fy = lbl_8036ADC4 + *(f32 *)(self + 0x3C);
             fx = lbl_8036ADC8 + *(f32 *)(self + 0x38);
             color = *Ui_GetColor(1);
-            Ui_DrawStatusPanelTexture(*(s32 *)(self + 0x34), 1, fx, fy, lbl_8036ADCC, color, 0x1A);
+            Ui_DrawStatusPanelTextureAt(self, 1, fx, fy, lbl_8036ADCC, color, 0x1A);
             {
-                f32 depths[6] = { *((f32 *)(ro + 0xf0)), *((f32 *)(ro + 0xf4)), *((f32 *)(ro + 0xf8)), *((f32 *)(ro + 0xfc)), *((f32 *)(ro + 0x100)), *((f32 *)(ro + 0x104)) };
-                f32 positions[12] = { *((f32 *)(ro + 0x108)), *((f32 *)(ro + 0x10c)), *((f32 *)(ro + 0x110)), *((f32 *)(ro + 0x114)), *((f32 *)(ro + 0x118)), *((f32 *)(ro + 0x11c)), *((f32 *)(ro + 0x120)), *((f32 *)(ro + 0x124)), *((f32 *)(ro + 0x128)), *((f32 *)(ro + 0x12c)), *((f32 *)(ro + 0x130)), *((f32 *)(ro + 0x134)) };
-                struct { f32 v[12]; } initial = { *((f32 *)(ro + 0x168)), *((f32 *)(ro + 0x16c)), *((f32 *)(ro + 0x170)), *((f32 *)(ro + 0x174)), *((f32 *)(ro + 0x178)), *((f32 *)(ro + 0x17c)), *((f32 *)(ro + 0x180)), *((f32 *)(ro + 0x184)), *((f32 *)(ro + 0x188)), *((f32 *)(ro + 0x18c)), *((f32 *)(ro + 0x190)), *((f32 *)(ro + 0x194)) }, offsets;
+                struct Depths { f32 v[6]; } depths = *(struct Depths *)(ro+0xF0);
+                struct Positions { f32 v[12]; } positions = *(struct Positions *)(ro+0x108);
+                struct Positions offsets, initial = *(struct Positions *)(ro+0x168);
                 memcpy(&offsets, &initial, sizeof(offsets));
                 for (i=0; i<6; i++) {
                     f32 depth;
                     u16 icon;
-                    fy = *(f32 *)(self+0x3C)+positions[i*2+1];
-                    fx = *(f32 *)(self+0x38)+positions[i*2];
-                    depth = depths[i];
+                    depth = depths.v[i];
+                    fy = *(f32 *)(self+0x3C)+positions.v[i*2+1];
+                    fx = *(f32 *)(self+0x38)+positions.v[i*2];
                     color = *Ui_GetColor(1);
-                    Ui_DrawStatusPanelTexture(*(s32 *)(self+0x34), (u16)(i+2), fx, fy, depth, color, 0xFF);
+                    Ui_DrawStatusPanelTextureAt(self, (u16)(i+2), fx, fy, depth, color, 0xFF);
+                    {
+                    f32 iconX, iconY;
                     icon = *(u16 *)(self+0x48+i*2);
-                    fy = *(f32 *)(self+0x3C)+offsets.v[i*2+1];
-                    fx = *(f32 *)(self+0x38)+offsets.v[i*2];
+                    iconY = *(f32 *)(self+0x3C)+offsets.v[i*2+1];
+                    iconX = *(f32 *)(self+0x38)+offsets.v[i*2];
                     if (icon != 0xFFFF) {
                         p = fn_8006EDD8(*(s32 *)(self+0x34),icon);
-                        fx -= lbl_8036ADA8 * *(u16 *)((u8 *)*p+2);
+                        iconX -= lbl_8036ADA8 * *(u16 *)((u8 *)*p+2);
                         color = *Ui_GetColor(1);
-                        Ui_DrawStatusPanelTexture(*(s32 *)(self+0x34),icon,fx,fy,lbl_8036ADD0,color,0xFF);
+                        Ui_DrawStatusPanelTextureAt(self,icon,iconX,iconY,lbl_8036ADD0,color,0xFF);
+                    }
                     }
                 }
             }
@@ -5434,14 +5450,14 @@ extern "C" void fn_8018DE24(void *arg0) {
                 Prim2D_SetTex(0,0x13);
                 Prim2D_PrepareTex();
                 {
-                    char *prefix[6]={ *((char * *)(ro + 0x1c8)), *((char * *)(ro + 0x1cc)), *((char * *)(ro + 0x1d0)), *((char * *)(ro + 0x1d4)), *((char * *)(ro + 0x1d8)), *((char * *)(ro + 0x1dc)) };
-                    void *names[15]={ *((void * *)(ro + 0x1e0)), *((void * *)(ro + 0x1e4)), *((void * *)(ro + 0x1e8)), *((void * *)(ro + 0x1ec)), *((void * *)(ro + 0x1f0)), *((void * *)(ro + 0x1f4)), *((void * *)(ro + 0x1f8)), *((void * *)(ro + 0x1fc)), *((void * *)(ro + 0x200)), *((void * *)(ro + 0x204)), *((void * *)(ro + 0x208)), *((void * *)(ro + 0x20c)), *((void * *)(ro + 0x210)), *((void * *)(ro + 0x214)), *((void * *)(ro + 0x218)) };
+                    struct Prefixes {char *v[6];} prefix = *(struct Prefixes *)(ro+0x1C8);
+                    struct Names {void *v[15];} names = *(struct Names *)(ro+0x1E0);
                     textBuffer[0]=0;
                     for(i=0;i<6;i++) {
                         if (*(u16 *)(self+0x48+i*2)!=0xFFFF) {
-                            strcat(textBuffer,prefix[i]);
+                            strcat(textBuffer,prefix.v[i]);
                             if (i==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
-                            strcat(textBuffer,(char *)Msg_Expand(names[((u16 *)row)[i]-8]));
+                            strcat(textBuffer,(char *)Msg_Expand(names.v[((u16 *)row)[i]-8]));
                         }
                     }
                 }
@@ -5456,6 +5472,8 @@ extern "C" void fn_8018DE24(void *arg0) {
         }
     }
 }
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
