@@ -2207,6 +2207,7 @@ void fn_801EDB70(void *arg0) {
     }
 }
 
+extern u32 jumptable_8029A7AC[9];
 void fn_801EDBC0(void *arg0)
 {
     extern u32 gUiInputFlags;
@@ -2222,7 +2223,6 @@ void fn_801EDBC0(void *arg0)
     void Unit_ApplyStatusWpnExp(void *);
 
     u8 *self;
-    u8 *unit;
     u8 *saved;
     u8 status;
 
@@ -2235,6 +2235,7 @@ void fn_801EDBC0(void *arg0)
     saved = *(u8 **)(self + 0x4C);
 
     if (saved != 0) {
+        u8 *unit;
         BattleUnit_Copy(gBattle, saved);
 
         unit = *(u8 **)(self + 0x4C);
@@ -2252,19 +2253,8 @@ void fn_801EDBC0(void *arg0)
                 unit != 0 &&
                 unit != 0 &&
                 unit != 0) {
-                Array_Destroy(
-                    unit + 0x1EC,
-                    Item_Destroy,
-                    8,
-                    4
-                );
-
-                Array_Destroy(
-                    unit + 0x1CC,
-                    Item_Destroy,
-                    8,
-                    4
-                );
+                Array_Destroy(unit + 0x1EC, Item_Destroy, 8, 4);
+                Array_Destroy(unit + 0x1CC, Item_Destroy, 8, 4);
             }
 
             Heap_Free(unit);
@@ -2276,6 +2266,7 @@ void fn_801EDBC0(void *arg0)
     saved = *(u8 **)(self + 0x50);
 
     if (saved != 0) {
+        u8 *unit;
         BattleUnit_Copy(gBattle + 0x2E0, saved);
 
         unit = *(u8 **)(self + 0x50);
@@ -2293,19 +2284,8 @@ void fn_801EDBC0(void *arg0)
                 unit != 0 &&
                 unit != 0 &&
                 unit != 0) {
-                Array_Destroy(
-                    unit + 0x1EC,
-                    Item_Destroy,
-                    8,
-                    4
-                );
-
-                Array_Destroy(
-                    unit + 0x1CC,
-                    Item_Destroy,
-                    8,
-                    4
-                );
+                Array_Destroy(unit + 0x1EC, Item_Destroy, 8, 4);
+                Array_Destroy(unit + 0x1CC, Item_Destroy, 8, 4);
             }
 
             Heap_Free(unit);
@@ -2317,34 +2297,34 @@ void fn_801EDBC0(void *arg0)
     status = gUiContext[0x14];
 
     if (status != 0xFF) {
+        u8 *unit;
         unit = *(u8 **)(self + 0x30);
 
-        if (status <= 8) {
-            switch (status) {
-            case 0:
-                Status_Clear(unit + 0x1BC, 0x24);
-                break;
-
-            case 1:
-                Status_Clear(unit + 0x1BC, 0x25);
-                break;
-
-            case 2:
-                Status_Clear(unit + 0x1BC, 0x26);
-                break;
-
-            case 3:
-                Status_Clear(unit + 0x1BC, 0x27);
-                break;
-
-            case 4:
-                Status_Clear(unit + 0x1BC, 0x28);
-                break;
-
-            case 5:
-                Status_Clear(unit + 0x1BC, 0x22);
-                break;
-            }
+        switch (status) {
+        case 0:
+            Status_Clear(unit + 0x1BC, 0x24);
+            break;
+        case 1:
+            Status_Clear(unit + 0x1BC, 0x25);
+            break;
+        case 2:
+            Status_Clear(unit + 0x1BC, 0x26);
+            break;
+        case 3:
+            Status_Clear(unit + 0x1BC, 0x27);
+            break;
+        case 4:
+        case 5:
+        case 6:
+            break;
+        case 7:
+            Status_Clear(unit + 0x1BC, 0x28);
+            break;
+        case 8:
+            Status_Clear(unit + 0x1BC, 0x22);
+            break;
+        default:
+            break;
         }
 
         Unit_ApplyStatusWpnExp(unit);
