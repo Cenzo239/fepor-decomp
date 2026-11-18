@@ -2049,14 +2049,13 @@ void fn_800C79FC(void) {
 }
 
 static inline s32 ParseToken(String *str, char *out, s32 pos) {
-s32 count;
 char *p;
 s32 size;
+s32 count;
 u8 c;
-count=0;
 p=(char *)str->data;
 size=str->size;
-p=p+pos;
+count=0;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
 { char *dest=out;
@@ -26117,16 +26116,19 @@ void fn_800F9E90(void *arg0) {
 #pragma global_optimizer off
 void fn_800F9FC4(void *arg0) {
 void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-extern u8 gAiState[]; extern u8 gUiContext[]; extern void *gAiCmd; extern s32 gAiCmdIsAlt;
+extern u8 gAiState[], gUiContext[];
+extern void *gAiCmd;
+extern s32 gAiCmdIsAlt;
 s16 y; s16 x; u8 *unit; u8 *cmd; s32 dx; s32 dy; s32 t0; s32 t1; u8 *ctx;
-unit=(u8*)arg0; cmd=(u8*)gAiCmd;
+unit=arg0; cmd=gAiCmd;
 if (!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x03000000)) {
 y=(s16)*(s32*)(cmd+0xC); x=(s16)*(s32*)(cmd+0x10);
 Ai_SetUnitMoveTo(unit,y,x,1,*(u16*)(gAiState+4),1,0,-1);
-if(gAiState[0x21C]!=0) {
-ctx=gUiContext; t0=ctx[0xE]; t1=ctx[0xD]; t1=(s8)t1; t0=(s8)t0;
+if(gAiState[0x21C]) {
+ctx=gUiContext; t0=ctx[0xE]; t1=ctx[0xD];
+t0=(s8)t0; dy=(s8)t1;
 dx=x-t0; if(dx<0) dx=-dx;
-dy=y-t1; if(dy<0) dy=-dy;
+dy=y-dy; if(dy<0) dy=-dy;
 if(dy+dx<=*(s32*)(cmd+4)) *(s32*)(gAiState+8)=8;
 }}
 if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
