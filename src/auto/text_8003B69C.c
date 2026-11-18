@@ -10727,22 +10727,22 @@ void Map_InitGfx(void) {
     void fn_80052B44(void *);
     void fn_8004DE78(void);
     extern u8 lbl_8026AB18[];
-    extern void *gUnitShadowMat;
-    extern void *lbl_803672CC;
-    extern void *lbl_803672B4;
-    extern void *lbl_803672B8;
-    extern u8 lbl_802EFFE8[];
-    extern u8 gUnits[];
-    extern f32 lbl_80368FCC;
-    extern u8 lbl_803672BC;
+    extern s32 gUnitShadowMat;
+      extern void *lbl_803672CC;
+      extern void *lbl_803672B4;
+      extern void *lbl_803672B8;
+      extern u8 lbl_802EFFE8[];
+      extern u8 gUnits[];
+      extern f32 lbl_80368FCC;
+      extern u8 lbl_803672BC;
 
-    char sp10[0x20];
-    u8 sp8[8];
-    s32 a;
-    s32 b;
-    s32 c;
+      char sp10[0x20];
+      u8 sp8[8];
+      s32 a;
+      s32 b;
+      s32 c;
 
-    gUnitShadowMat = fn_8006D948(lbl_8026AB18 + 0x95);
+      gUnitShadowMat = (s32)fn_8006D948(lbl_8026AB18 + 0x95);
     a = (s32)Heap_Alloc(0x1C);
     if (a) {
         *(s32 *)(a + 0) = 0;
