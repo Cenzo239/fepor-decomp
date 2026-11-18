@@ -49,6 +49,7 @@ M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)
 extern u32 gUiContext[];
 extern u16 gUiMsgStrings[];
 void fn_8006D8E8(void *);
+void Prim2D_BindTexture(s32, s32, u16);
 extern u16 gUiListPanelProc[];
 
 typedef struct Unk8016F694_Inner {
