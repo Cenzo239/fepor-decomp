@@ -1596,6 +1596,7 @@ void fn_8002B2E8(void *arg0) {
     }
 }
 
+#pragma use_lmw_stmw off
 void fn_8002B520(void *arg0)
 {
     extern u8 lbl_80284D20[];
@@ -1603,93 +1604,78 @@ void fn_8002B520(void *arg0)
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-
     void fn_8002F728(void *);
 
-    u8 *base;
-    u8 *cell;
-    u8 *entry;
-    u8 *data;
+    void *object[2];
+    void *unit;
+    u8 *map;
+    u8 *p;
+    u16 *cell;
     u16 flags;
     s32 x;
     s32 y;
-    s32 offset;
-    s32 index;
-    void *object[2];
-    void *vtable;
+    s32 y64;
+    u32 idx;
 
     object[0] = lbl_80284E20;
     object[1] = arg0;
     object[0] = lbl_80284D20;
-
     fn_8002F728(gTargetList);
 
-    base = gBattleMap;
-
-    x = (s8)*((u8 *)arg0 + 0x19E);
-    y = (s8)*((u8 *)arg0 + 0x19F);
-
-    offset = x + (y << 6);
-    cell = base + offset;
-    flags = *(u16 *)(base + (offset << 1) + 0x408E);
+    arg0 = object[1];
+    map = gBattleMap;
+    y = *(s8 *)((u8 *)arg0 + 0x19F);
+    x = *(s8 *)((u8 *)arg0 + 0x19E);
+    y64 = y << 6;
+    p = map + ((x + y64) << 1);
+    flags = *(u16 *)(p + 0x408E);
+    cell = (u16 *)(p + 0x408E);
 
     if (flags & 8) {
-        index = (s8)(y - 1);
-        entry = base + x + (index << 6);
-        index = entry[0xD];
-
-        if (index != 0) {
-            data = gUnits + (index - 1) * 0x280;
-
-            vtable = object[0];
-            ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
-                object, data
-            );
+        idx = map[x + (((s8)(y - 1)) << 6) + 0xD];
+        if (idx != 0) {
+            unit = gUnits + (idx - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
         }
     }
 
-    if (flags & 2) {
-        index = (s8)(x + 1);
-        entry = base + index + (y << 6);
-        index = entry[0xD];
-
-        if (index != 0) {
-            data = gUnits + (index - 1) * 0x280;
-
-            vtable = object[0];
-            ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
-                object, data
-            );
+    if (*cell & 2) {
+        idx = map[((s8)(x + 1)) + y64 + 0xD];
+        if (idx != 0) {
+            unit = gUnits + (idx - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
         }
     }
 
-    if (flags & 4) {
-        index = (s8)(y + 1);
-        entry = base + x + (index << 6);
-        index = entry[0xD];
-
-        if (index != 0) {
-            data = gUnits + (index - 1) * 0x280;
-
-            vtable = object[0];
-            ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
-                object, data
-            );
+    if (*cell & 4) {
+        idx = map[x + (((s8)(y + 1)) << 6) + 0xD];
+        if (idx != 0) {
+            unit = gUnits + (idx - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
         }
     }
 
-    if (flags & 1) {
-        index = (s8)(x - 1);
-        entry = base + index + (y << 6);
-        index = entry[0xD];
-
-        if (index != 0) {
-            data = gUnits + (index - 1) * 0x280;
-
-            vtable = object[0];
-            ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
-                object, data
-            );
+    if (*cell & 1) {
+        idx = map[((s8)(x - 1)) + y64 + 0xD];
+        if (idx != 0) {
+            unit = gUnits + (idx - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
         }
     }
 }
