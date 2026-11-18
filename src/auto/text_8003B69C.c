@@ -7566,7 +7566,7 @@ void fn_80049A98(void *arg0) {
 }
 
 #pragma global_optimizer off
-void MapObj_FadeIn(void *arg0,u8 arg1) { void fn_8005FEE8(void *,f32); void fn_80044450(void *,s32); void fn_80016180(void); extern u32 gMap; u8 *ptr=arg0; ptr[2]&=~2; fn_8005FEE8(ptr+0x14,0.0f); if(arg1) {fn_80044450((void*)gMap,1); fn_80016180();} }
+void MapObj_FadeIn(void *arg0,u8 arg1) { void fn_8005FEE8(void *,f32); void fn_80044450(void *,s32); void fn_80016180(void); extern u16 *gMap; u8 *ptr=arg0; ptr[2]&=~2; fn_8005FEE8(ptr+0x14,0.0f); if(arg1) {fn_80044450((void*)gMap,1); fn_80016180();} }
 #pragma global_optimizer reset
 void MapObj_FadeOut(void *arg0, u8 arg1) {
     void fn_8005FEE8(void *, f32);
