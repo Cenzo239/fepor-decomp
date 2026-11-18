@@ -1341,139 +1341,98 @@ void fn_8001B9DC(void *arg0) {
 }
 
 u32 fn_8001B9F4(void *arg0) {
-    s32 *fn_800C29D0(void *, s32);
-
-    extern u16 gIconSlots;
-    extern u32 lbl_80368D34;
-    extern u32 lbl_80368D38;
-    extern u32 lbl_80368D3C;
-    extern u32 lbl_80368D40;
-    extern u32 lbl_80368D44;
-    extern u32 lbl_80368D48;
-    extern u32 lbl_80368D4C;
-    extern u32 lbl_80368D50;
-    extern u32 lbl_80368D54;
-    extern u32 lbl_80368D58;
-
-    u8 *item;
-    u8 *data;
-    u8 *color;
-    u32 result;
-    u32 sp28;
-    u32 sp24;
-    u32 sp20;
-    u32 sp1C;
-    u32 sp18;
-    u32 sp14;
-    u32 sp10;
-    u32 spC;
-    u32 sp8;
-    u32 kind;
-    u32 mask;
-
-    item = (u8 *)arg0;
-    result = lbl_80368D34;
-
-    mask = item[5] & 0x3F;
-
-    if (mask != 0) {
-        color = (u8 *)fn_800C29D0(&gIconSlots, mask);
-
-        ((u8 *)&result)[0] = color[0];
-        ((u8 *)&result)[1] = color[1];
-        ((u8 *)&result)[2] = color[2];
-        ((u8 *)&result)[3] = color[3];
-
-        return result;
-    }
-
-    data = *(u8 **)item;
-
-    if (data != NULL) {
-        kind = data[0x29];
-    } else {
-        kind = 0;
-    }
-
-    if (kind > 8) {
-        return result;
-    }
-
-    switch (kind) {
-    case 0:
-        sp28 = lbl_80368D38;
-        ((u8 *)&result)[0] = ((u8 *)&sp28)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp28)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp28)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp28)[3];
-        break;
-
-    case 1:
-        sp24 = lbl_80368D3C;
-        ((u8 *)&result)[0] = ((u8 *)&sp24)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp24)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp24)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp24)[3];
-        break;
-
-    case 2:
-        sp20 = lbl_80368D40;
-        ((u8 *)&result)[0] = ((u8 *)&sp20)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp20)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp20)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp20)[3];
-        break;
-
-    case 3:
-        sp1C = lbl_80368D44;
-        ((u8 *)&result)[0] = ((u8 *)&sp1C)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp1C)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp1C)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp1C)[3];
-        break;
-
-    case 4:
-        sp18 = lbl_80368D48;
-        ((u8 *)&result)[0] = ((u8 *)&sp18)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp18)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp18)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp18)[3];
-        break;
-
-    case 5:
-        sp14 = lbl_80368D4C;
-        ((u8 *)&result)[0] = ((u8 *)&sp14)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp14)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp14)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp14)[3];
-        break;
-
-    case 6:
-        sp10 = lbl_80368D50;
-        ((u8 *)&result)[0] = ((u8 *)&sp10)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp10)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp10)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp10)[3];
-        break;
-
-    case 7:
-        spC = lbl_80368D54;
-        ((u8 *)&result)[0] = ((u8 *)&spC)[0];
-        ((u8 *)&result)[1] = ((u8 *)&spC)[1];
-        ((u8 *)&result)[2] = ((u8 *)&spC)[2];
-        ((u8 *)&result)[3] = ((u8 *)&spC)[3];
-        break;
-
-    case 8:
-        sp8 = lbl_80368D58;
-        ((u8 *)&result)[0] = ((u8 *)&sp8)[0];
-        ((u8 *)&result)[1] = ((u8 *)&sp8)[1];
-        ((u8 *)&result)[2] = ((u8 *)&sp8)[2];
-        ((u8 *)&result)[3] = ((u8 *)&sp8)[3];
-        break;
-    }
-
-    return result;
+s32 *fn_800C29D0(void *, s32);
+extern u8 gIconSlots[1152];
+extern u32 lbl_80368D34;
+extern u32 lbl_80368D38;
+extern u32 lbl_80368D3C;
+extern u32 lbl_80368D40;
+extern u32 lbl_80368D44;
+extern u32 lbl_80368D48;
+extern u32 lbl_80368D4C;
+extern u32 lbl_80368D50;
+extern u32 lbl_80368D54;
+extern u32 lbl_80368D58;
+u32 result;
+u32 t0;
+u32 t1;
+u32 t2;
+u32 t3;
+u32 t4;
+u32 t5;
+u32 t6;
+u32 t7;
+u32 t8;
+u8 *item=arg0; u8 *data; u8 *color; u32 kind; u32 mask;
+result=lbl_80368D34;
+mask=item[5]&63;
+if(mask) {
+color=(u8*)fn_800C29D0(gIconSlots,mask);
+((u8*)&result)[0]=color[0];
+((u8*)&result)[1]=color[1];
+((u8*)&result)[2]=color[2];
+((u8*)&result)[3]=color[3];
+} else {
+data=*(u8**)item;
+kind=data ? data[0x29] : 0;
+switch(kind) {
+case 0: t0=lbl_80368D38;
+((u8*)&result)[0]=((u8*)&t0)[0];
+((u8*)&result)[1]=((u8*)&t0)[1];
+((u8*)&result)[2]=((u8*)&t0)[2];
+((u8*)&result)[3]=((u8*)&t0)[3];
+break;
+case 1: t1=lbl_80368D3C;
+((u8*)&result)[0]=((u8*)&t1)[0];
+((u8*)&result)[1]=((u8*)&t1)[1];
+((u8*)&result)[2]=((u8*)&t1)[2];
+((u8*)&result)[3]=((u8*)&t1)[3];
+break;
+case 2: t2=lbl_80368D40;
+((u8*)&result)[0]=((u8*)&t2)[0];
+((u8*)&result)[1]=((u8*)&t2)[1];
+((u8*)&result)[2]=((u8*)&t2)[2];
+((u8*)&result)[3]=((u8*)&t2)[3];
+break;
+case 3: t3=lbl_80368D44;
+((u8*)&result)[0]=((u8*)&t3)[0];
+((u8*)&result)[1]=((u8*)&t3)[1];
+((u8*)&result)[2]=((u8*)&t3)[2];
+((u8*)&result)[3]=((u8*)&t3)[3];
+break;
+case 4: t4=lbl_80368D48;
+((u8*)&result)[0]=((u8*)&t4)[0];
+((u8*)&result)[1]=((u8*)&t4)[1];
+((u8*)&result)[2]=((u8*)&t4)[2];
+((u8*)&result)[3]=((u8*)&t4)[3];
+break;
+case 5: t5=lbl_80368D4C;
+((u8*)&result)[0]=((u8*)&t5)[0];
+((u8*)&result)[1]=((u8*)&t5)[1];
+((u8*)&result)[2]=((u8*)&t5)[2];
+((u8*)&result)[3]=((u8*)&t5)[3];
+break;
+case 6: t6=lbl_80368D50;
+((u8*)&result)[0]=((u8*)&t6)[0];
+((u8*)&result)[1]=((u8*)&t6)[1];
+((u8*)&result)[2]=((u8*)&t6)[2];
+((u8*)&result)[3]=((u8*)&t6)[3];
+break;
+case 7: t7=lbl_80368D54;
+((u8*)&result)[0]=((u8*)&t7)[0];
+((u8*)&result)[1]=((u8*)&t7)[1];
+((u8*)&result)[2]=((u8*)&t7)[2];
+((u8*)&result)[3]=((u8*)&t7)[3];
+break;
+case 8: t8=lbl_80368D58;
+((u8*)&result)[0]=((u8*)&t8)[0];
+((u8*)&result)[1]=((u8*)&t8)[1];
+((u8*)&result)[2]=((u8*)&t8)[2];
+((u8*)&result)[3]=((u8*)&t8)[3];
+break;
+}
+}
+return result;
 }
 
 s32 *fn_8001BC18(void *arg0) {
