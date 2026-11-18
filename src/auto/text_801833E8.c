@@ -16637,51 +16637,55 @@ extern s32* D_800D8C74;
 
 // This is a stub for the function, but let's see what we can extract.
 extern s32 D_801B56AC;
-void fn_80198910(void) {
-    u32* sp18;
-    s32 i;
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32* temp_r6;
-    s32 temp_r7;
-    
-    D_801B5548 = (u32*)0x801B5548;
-    sp18 = (u32*)D_801B5580;
-    D_801BF920 = 7;
-    for (i = 0; i < 8; i++) {
-        temp_r6 = (s32*)sp18;
-        D_801B56A4 = D_801B56A4 + 1;
-        if ((temp_r6[0] & 0x8000) == 0) {
-            temp_r7 = temp_r6[1];
-            if (temp_r7 != -1) {
-                if ((s32)(u32)*D_800D8C74 == temp_r7) {
-                    D_801B56A4 = D_801B56A4 - 1;
-                }
-            }
-        }
-        sp18 += 1;
-    }
-
-    if (D_801B56A4 != 0) {
-        temp_r3 = (s32)*(u32*)D_801B574C;
-        temp_r5 = ((temp_r3 * 0x10000) >> 0x10);
-        D_801B56AC = 0;
-        if (temp_r5 == 0) {
-            D_801B56AC = 1;
-        } else {
-            temp_r4 = (s32)*(u32*)D_801B5750;
-            if ((temp_r4 * temp_r3) > 0) { 
-                if ((temp_r4 * temp_r3) != 0) {
-                    D_801B56AC = 1;
-                }
-            }
-        }
-    } else {
-        D_801B56AC = 0;
-    }
-
-    return;
+void fn_80198910(void *self, f32 *pos, s32 mode) {
+void fn_800E4F30(void *);
+s32 fn_800E5200(void *,s32,s32);
+void PSMTXRotRad(void *,s32,f32);
+void fn_802029C4(void *,void *,void *);
+extern const f32 lbl_8036AEA8,lbl_8036AEAC,lbl_8036AEBC,lbl_8036AEC0,lbl_8036AEC4,lbl_8036AEC8,lbl_8036AECC,lbl_8036AED0,lbl_8036AED4,lbl_8036AED8,lbl_8036AEDC,lbl_8036AEE0;
+extern void *gGame;
+f32 mx[12],my[12],v[3]; s32 frames; f32 d, zero;
+M2C_FIELD(self,void **,0x184)=M2C_FIELD(self,void **,0xEC);
+M2C_FIELD(self,void **,0x188)=M2C_FIELD(self,void **,0xF0);
+fn_800E4F30(self); M2C_FIELD(self,u8 *,0x14D)=0;
+M2C_FIELD(self,f32 *,0x78)=pos[0];M2C_FIELD(self,f32 *,0x7c)=pos[1];M2C_FIELD(self,f32 *,0x80)=pos[2];
+if(M2C_FIELD(self,s32 *,0x124)==9 && mode==3) M2C_FIELD(self,f32 *,0x54)=lbl_8036AEBC;
+v[0]=lbl_8036AEA8;v[1]=lbl_8036AEA8;v[2]=lbl_8036AEC0;
+PSMTXRotRad(mx,0x58,lbl_8036AEC4*M2C_FIELD(self,f32 *,0x54));
+fn_802029C4(mx,v,v);
+PSMTXRotRad(my,0x59,lbl_8036AEC4*M2C_FIELD(self,f32 *,0x58));
+fn_802029C4(my,v,v);
+M2C_FIELD(self,f32 *,0x84)=v[0];M2C_FIELD(self,f32 *,0x88)=v[1];M2C_FIELD(self,f32 *,0x8c)=v[2];
+M2C_FIELD(self,f32 *,0x90)=lbl_8036AEA8;M2C_FIELD(self,f32 *,0x94)=lbl_8036AEA8;M2C_FIELD(self,f32 *,0x98)=lbl_8036AEA8;
+switch(M2C_FIELD(self,s32 *,0x124)){
+case 0:case 5:
+M2C_FIELD(self,f32 *,0x84)*=M2C_FIELD(gGame,f32 *,0x110);M2C_FIELD(self,f32 *,0x8c)*=M2C_FIELD(gGame,f32 *,0x110);break;
+case 1:case 6:
+d=lbl_8036AEC8;zero=0.0f;
+M2C_FIELD(self,f32 *,0x54)=M2C_FIELD(gGame,f32 *,0x114);M2C_FIELD(self,f32 *,0x88)=M2C_FIELD(gGame,f32 *,0x11c);
+M2C_FIELD(self,f32 *,0x84)*=M2C_FIELD(gGame,f32 *,0x120);M2C_FIELD(self,f32 *,0x8c)*=M2C_FIELD(gGame,f32 *,0x120);
+d+=(M2C_FIELD(self,f32 *,0x7c)-M2C_FIELD(self,f32 *,0x4c));
+if(d>zero)d=zero;
+if(d<lbl_8036AECC)d=lbl_8036AECC;
+M2C_FIELD(self,f32 *,0x90)=lbl_8036AEA8;
+M2C_FIELD(self,f32 *,0x94)=d*lbl_8036AED0+M2C_FIELD(gGame,f32 *,0x124);
+M2C_FIELD(self,f32 *,0x98)=lbl_8036AEA8;break;
+case 2:case 7:
+frames=fn_800E5200(M2C_FIELD(self,void **,0x184),2,0);
+frames=fn_800E5200(M2C_FIELD(self,void **,0x184),14,0)-frames-1;
+M2C_FIELD(self,f32 *,0x150)=M2C_FIELD(self,f32 *,0x48);M2C_FIELD(self,f32 *,0x154)=M2C_FIELD(self,f32 *,0x4c);M2C_FIELD(self,f32 *,0x158)=M2C_FIELD(self,f32 *,0x50);
+M2C_FIELD(self,f32 *,0x58)=lbl_8036AEA8;M2C_FIELD(self,f32 *,0x5c)=lbl_8036AED4;
+M2C_FIELD(self,f32 *,0x84)*=M2C_FIELD(gGame,f32 *,0x128);M2C_FIELD(self,f32 *,0x8c)*=M2C_FIELD(gGame,f32 *,0x128);
+v[0]=lbl_8036AEA8;v[1]=lbl_8036AEA8;v[2]=-(lbl_8036AED8*M2C_FIELD(gGame,f32 *,0x128)/frames);
+fn_802029C4(my,v,v);
+M2C_FIELD(self,f32 *,0x90)=v[0];M2C_FIELD(self,f32 *,0x94)=v[1];M2C_FIELD(self,f32 *,0x98)=lbl_8036AEA8;
+M2C_FIELD(self,f32 *,0x168)=lbl_8036AEA8;M2C_FIELD(self,f32 *,0x16c)=lbl_8036AEDC;M2C_FIELD(self,f32 *,0x170)=lbl_8036AEA8;
+M2C_FIELD(self,f32 *,0x174)=lbl_8036AEA8;M2C_FIELD(self,f32 *,0x178)=M2C_FIELD(gGame,f32 *,0x13c)*(lbl_8036AEE0/frames);M2C_FIELD(self,f32 *,0x17c)=lbl_8036AEA8;
+M2C_FIELD(self,f32 *,0x180)=lbl_8036AEAC*(M2C_FIELD(self,f32 *,0x7c)-M2C_FIELD(self,f32 *,0x154));break;
+case 9:M2C_FIELD(self,f32 *,0x84)*=M2C_FIELD(gGame,f32 *,0x140);M2C_FIELD(self,f32 *,0x88)*=M2C_FIELD(gGame,f32 *,0x140);M2C_FIELD(self,f32 *,0x8c)*=M2C_FIELD(gGame,f32 *,0x140);break;
+case 3:case 4:case 8:default:break;
+}
+M2C_FIELD(self,u8 *,0x14C)=1;
 }
 
 #pragma use_lmw_stmw on
