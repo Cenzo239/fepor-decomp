@@ -150,10 +150,8 @@ struct OSThread {
 #pragma opt_common_subs on
 #pragma global_optimizer off
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
-    OSThread *next;
-    OSThread *thread;
-    thread = queue->head;
-    next = thread->next;
+    register OSThread *thread = queue->head;
+    register OSThread *next = thread->next;
     *out = thread;
     if ((u32)next == 0) queue->tail = NULL;
     else next->prev = NULL;
