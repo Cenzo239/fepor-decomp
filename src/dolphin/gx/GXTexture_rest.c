@@ -402,7 +402,7 @@ void fn_802246EC(u32 arg0, u32 arg1)
   *((u16 *) (((u8 *) __GXData) + 2)) = 0;
 }
 
-#pragma peephole off
+#pragma peephole on
 void fn_802247C0(u8 arg0) {
 u32 *ptr; u32 value;
 ptr=(u32 *)__GXData;
@@ -413,7 +413,7 @@ value=__rlwimi(value,arg0,2,29,29);
 ptr[0x1d0/4]=value;
 *(u16 *)((u8 *)ptr+2)=0;
 }
-#pragma peephole on
+#pragma peephole reset
 void fn_802247EC(u8 arg0, u8 arg1) {
     u32 *ptr;
     u32 value;
@@ -429,16 +429,12 @@ void fn_802247EC(u8 arg0, u8 arg1) {
 
 #pragma peephole off
 void fn_80224828(s32 arg0, u8 arg1) {
-  u32 *ptr;
-  u32 value;
-  ptr = (u32 *)__GXData;
-  value = 0;
-  value = __rlwimi(value, (u32)arg1, 0, 31, 31);
-  *((u8 *)0xCC008000) = 0x61;
-  value = __rlwimi(value, arg0, 1, 30, 30);
-  value = __rlwimi(value, 0x44, 24, 0, 7);
-  *((u32 *)0xCC008000) = value;
-  *((u16 *)(((u8 *)ptr) + 2)) = 0;
+u32 value=__rlwimi(0,(u32)arg1,0,31,31);
+u16 *gx=__GXData;
+value=__rlwimi(value,arg0,1,30,30);
+*(u8*)0xCC008000=0x61;
+*(u32*)0xCC008000=__rlwimi(value,0x44,24,0,7);
+gx[1]=0;
 }
 #pragma peephole reset
 void fn_80224860(u8 arg0, u8 arg1)
