@@ -261,6 +261,11 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
+static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
+    *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
+    *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
+    *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
+}
 static inline void *Camera_SelectTarget(u8 *state, void *first, void *second) {
     if ((*(u32 *)(state+8)&0x20000000) && first) return first;
     return second;
@@ -307,7 +312,7 @@ void fn_80054C14(void *arg0) {
     }
     if (Pad_IsButton(pad,17)) {
         *(u32 *)(*(u8 **)(proc+0x30)+8) ^= 0x20000000;
-        a = NULL; b = a;
+        a = NULL; b = NULL;
         unit1 = *(u8 **)(*(u8 **)(proc+0x30)+0x34);
         unit2 = *(u8 **)(*(u8 **)(proc+0x30)+0x30);
         if (unit1) {
@@ -326,10 +331,9 @@ void fn_80054C14(void *arg0) {
         if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
         if(a) {
             f32 z=a->z, y=a->y, x=a->x;
-            z=lbl_8036909C+z;
             *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
             *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
-            *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
+            *(f32 *)(*(u8 **)(proc+0x30)+0x14)=lbl_8036909C+z;
         }
     }
     if (Pad_IsButton(pad,18)) {
@@ -339,7 +343,7 @@ void fn_80054C14(void *arg0) {
             void *control;
             *(u32 *)(state+8)^=0x20000000;
             state=*(u8 **)(proc+0x30);
-            if ((*(u32 *)(state+8)&0x20000000) && (unit=*(u8 **)(state+0x34))) { }
+            if ((*(u32 *)(state+8)&0x20000000) && *(void **)(state+0x34)) unit=*(u8 **)(state+0x34);
             else unit=*(u8 **)(state+0x30);
             target.x=lbl_80369098+(s8)unit[0x19e];
             target.y=lbl_80369098+(s8)unit[0x19f];
