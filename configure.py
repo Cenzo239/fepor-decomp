@@ -461,6 +461,7 @@ config.libs = [
             Object(Matching, "auto/text_8023C7B0.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8023C7F4.c"),
             Object(NonMatching, "auto/text_80249DD0.c"),
+            Object(NonMatching, "auto/text_80255FB0.c"),
             Object(NonMatching, "dolphin/gba/GBA.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8026649C.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_80266A5C.c", mw_version="GC/1.2.5n"),
