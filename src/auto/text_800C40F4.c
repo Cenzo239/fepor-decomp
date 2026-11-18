@@ -4387,6 +4387,37 @@ void fn_800CB5CC(void *arg0, void *arg1)
     }
 }
 
+void fn_800CB65C(void *out, char *obj, void *key, void *suffix, void *first) {
+void *StringMap_FindOrInsert(void *, void *);
+void String_Assign(void *, void *, u32, u32);
+s32 String_Compare(void *, u32, u32, char *, u32);
+void String_Copy(void *, void *);
+void String_ConcatCStr(void *, void *, char *);
+void String_Concat(void *, void *, void *);
+u32 strlen(const char *);
+void fn_800056A0(s32);
+extern char lbl_802704F8[];
+u32 path[3], value[3], tmp[3], joined[3];
+path[1]=0; value[1]=0;
+path[0]=0; path[2]=0; path[1]=0;
+value[0]=0; value[2]=0; value[1]=0;
+String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,first)+12,0,-1);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))!=0){
+String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1); return;
+}
+String_ConcatCStr(tmp,key,lbl_802704F8+0x1ba);
+String_Concat(joined,tmp,suffix);
+String_Assign(path,joined,0,-1);
+String_Destroy(joined,-1); String_Destroy(tmp,-1);
+String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,path)+12,0,-1);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))!=0){
+String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1); return;
+}
+String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,key)+12,0,-1);
+if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))==0) fn_800056A0(0);
+String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1);
+}
+
 void String_Concat(void *arg0, void *arg1, s32 arg2) {
     void String_Copy(void *, void *);
     void *fn_800C99A0(void *, s32, s32, s32);
@@ -26175,8 +26206,8 @@ void fn_800F9FC4(void *arg0) {
     u8 *cmd;
     s32 dx;
     s32 dy;
-    s8 cy;
-    s8 cx;
+    s32 cy;
+    s32 cx;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
@@ -26188,8 +26219,8 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            cy = gUiContext[0xE];
-            cx = gUiContext[0xD];
+            cy = (s8)gUiContext[0xE];
+            cx = (s8)gUiContext[0xD];
             dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
@@ -26198,7 +26229,7 @@ void fn_800F9FC4(void *arg0) {
             if (dy < 0) {
                 dy = -dy;
             }
-            if (dx + dy <= *(s32 *)(cmd + 4)) {
+            if (dy + dx <= *(s32 *)(cmd + 4)) {
                 *(s32 *)(gAiState + 8) = 8;
             }
         }
@@ -31663,3 +31694,13 @@ extern void *D_8036A150; // The struct 0E60 is likely a pointer to data, or a la
 
 extern char lbl_802704F8[];
 extern f32 lbl_80369E30, lbl_80369E34, lbl_80369E38, lbl_80369E3C, lbl_80369E40, lbl_80369E44, lbl_80369E48, lbl_80369E4C;
+static inline s32 ReadDelimitedToken(String *str, char *out, s32 pos) {
+s32 count=0;
+s32 size=str->size;
+char *p=(char *)str->data+pos;
+while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
+p=(char *)str->data+pos;
+while(pos<=size && count<256 && *p!=' ' && *p!='\t' && *p!=',') { out[count++]=*p++;pos++; }
+out[count]=0;
+return count ? pos : 0;
+}
