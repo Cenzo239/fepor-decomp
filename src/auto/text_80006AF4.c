@@ -2164,7 +2164,7 @@ s32 fn_8000A930(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma peephole on
+#pragma peephole off
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
