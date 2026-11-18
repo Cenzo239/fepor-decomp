@@ -8985,6 +8985,11 @@ extern s32 gActiveCam;
 /* TODO: verify command mappings after table index 23. read_data truncates
  * jumptable_80290110 relocations there; cases s/n/w remain provisional.
  * Instruction match alone does not validate those jump-table entries. */
+static inline s8 Text_NextChar(s8 **text)
+{
+    return *(*text)++;
+}
+
 static inline void Text_CopyDelimited(s8 **text, u8 *out)
 {
     while ((s32)(u8)**text != '|') {
@@ -9038,6 +9043,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
             continue;
           }
 
+          break;
           case 's':
             switch ((s8) (*(text++)))
           {
@@ -9098,14 +9104,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
             }
 
                           {
-                out = lbl_8032FE24;
-                while (((s32) ((u8) (*text))) != '|')
-                {
-                  *(out++) = *(text++);
-                }
-
-                *out = 0;
-                ++text;
+                Text_CopyDelimited(&text, lbl_8032FE24);
                 continue;
               }
           }
@@ -9156,14 +9155,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
           {
                           case 'C':
               {
-                out = lbl_8032FE24;
-              while (((s32) ((u8) (*text))) != '|')
-              {
-                *(out++) = *(text++);
-              }
-
-              *out = 0;
-              ++text;
+                Text_CopyDelimited(&text, lbl_8032FE24);
               continue;
             }
               break;
@@ -9177,14 +9169,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
                       case 'R':
             {
               {
-                out = lbl_8032FE24;
-              while (((s32) ((u8) (*text))) != '|')
-              {
-                *(out++) = *(text++);
-              }
-
-              *out = 0;
-              ++text;
+                Text_CopyDelimited(&text, lbl_8032FE24);
               continue;
             }
           }
