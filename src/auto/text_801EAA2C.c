@@ -3968,6 +3968,41 @@ extern "C" void fn_801F0A74(void *arg0) {
     String_Destroy(&path,-1);
 }
 
+extern "C" void fn_801F0BC4(CameraAnimProc *p) {
+void *CameraAnim_GetKeyframe(void *, s32);
+void Process_Goto(void *, s32);
+f32 *key;
+if(p->index >= p->count) { Process_Goto(p,0); return; }
+key = (f32 *)CameraAnim_GetKeyframe(p->anim,p->index);
+if(p->index == 0) { p->current->eye.x = key[0];
+p->current->eye.y = key[1];
+p->current->eye.z = key[2];
+p->current->target.x = key[3];
+p->current->target.y = key[4];
+p->current->target.z = key[5];
+p->current->zoom = key[6]; { CameraAnimState *dst; CameraAnimState *src; src=p->current; dst=p->prev; dst->eye=src->eye; dst->target=src->target; dst->zoom=src->zoom; } }
+else { { CameraAnimState *dst; CameraAnimState *src; src=p->current; dst=p->prev; dst->eye=src->eye; dst->target=src->target; dst->zoom=src->zoom; } { CameraAnimState *dst; CameraAnimState *src; src=p->next; dst=p->current; dst->eye=src->eye; dst->target=src->target; dst->zoom=src->zoom; } }
+p->next->eye.x = key[0];
+p->next->eye.y = key[1];
+p->next->eye.z = key[2];
+p->next->target.x = key[3];
+p->next->target.y = key[4];
+p->next->target.z = key[5];
+p->next->zoom = key[6];
+p->duration = *(s32 *)(key+7);
+if(p->index + 1 < p->count) {
+key = (f32 *)CameraAnim_GetKeyframe(p->anim,p->index+1);
+p->future->eye.x = key[0];
+p->future->eye.y = key[1];
+p->future->eye.z = key[2];
+p->future->target.x = key[3];
+p->future->target.y = key[4];
+p->future->target.z = key[5];
+p->future->zoom = key[6];
+} else { { CameraAnimState *dst; CameraAnimState *src; src=p->next; dst=p->future; dst->eye=src->eye; dst->target=src->target; dst->zoom=src->zoom; } }
+p->elapsed=0;
+}
+
 #pragma cplusplus reset
 void fn_801F0E4C(void *arg0) {
     f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
