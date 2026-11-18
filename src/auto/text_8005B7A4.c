@@ -7000,62 +7000,48 @@ void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
 }
 #pragma use_lmw_stmw reset
 void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
+    void Game_Assert(void *, s32, void *);
     extern void *gCamera;
     extern u8 lbl_8026B768[];
-
-    u8 *cam;
+    void *cb1 = arg1;
+    void *cb2 = arg2;
+    s32 kind = arg0;
+    u8 *cam = (u8 *)gCamera;
+    u16 index = *(u16 *)(cam + 0x118);
+    u8 *buf = *(u8 **)(cam + 0x114);
     u8 *entry;
     u8 **head;
     u8 *node;
-    u16 index;
 
-    cam = (u8 *)gCamera;
-
-    index = *(u16 *)(cam + 0x118);
     *(u16 *)(cam + 0x118) = index + 1;
-
-    entry = *(u8 **)(cam + 0x114) + ((u16)index << 4);
+    entry = buf + ((u16)index << 4);
 
     if (*(u16 *)(cam + 0x118) > *(u16 *)(cam + 0x11A)) {
-        Game_Assert(
-            lbl_8026B768,
-            0x158,
-            lbl_8026B768 + 0xA
-        );
+        Game_Assert(lbl_8026B768, 0x158, lbl_8026B768 + 0xA);
     }
 
-    switch (arg0) {
-    case 0:
-        head = (u8 **)((u8 *)gCamera + 0x124);
-        break;
-
-    case 1:
-        head = (u8 **)((u8 *)gCamera + 0x138);
-        break;
-
-    case 2:
-        head = (u8 **)((u8 *)gCamera + 0x14C);
-        break;
-
+    switch (kind) {
     case 3:
         head = (u8 **)((u8 *)gCamera + 0x160);
         break;
-
+    case 0:
+        head = (u8 **)((u8 *)gCamera + 0x124);
+        break;
+    case 1:
+        head = (u8 **)((u8 *)gCamera + 0x138);
+        break;
+    case 2:
+        head = (u8 **)((u8 *)gCamera + 0x14C);
+        break;
     case 4:
         head = (u8 **)((u8 *)gCamera + 0x174);
         break;
-
     default:
-        Game_Assert(
-            lbl_8026B768,
-            0x161,
-            lbl_8026B768 + 0x50
-        );
+        Game_Assert(lbl_8026B768, 0x161, lbl_8026B768 + 0x50);
         break;
     }
 
     node = *head;
-
     if (node == NULL) {
         *(u8 **)entry = node;
         *head = entry;
@@ -7063,13 +7049,11 @@ void fn_8006785C(s32 arg0, void *arg1, void *arg2) {
         while (*(u8 **)node != NULL) {
             node = *(u8 **)node;
         }
-
         *(u8 **)node = entry;
     }
-
     *(u32 *)entry = 0;
-    *(void **)(entry + 8) = arg1;
-    *(void **)(entry + 0xC) = arg2;
+    *(void **)(entry + 8) = cb1;
+    *(void **)(entry + 0xC) = cb2;
 }
 
 #pragma global_optimizer off
@@ -11591,7 +11575,9 @@ s32 fn_800703D4(void) {
     return 0;
 }
 
-void fn_800703DC(void *arg0, void *arg1) {
+#pragma cplusplus on
+#pragma opt_common_subs off
+extern "C" void fn_800703DC(void *arg0, void *arg1) {
     extern u8 *gPadInput;
     extern char lbl_8026BB84[];
 
@@ -11600,7 +11586,7 @@ void fn_800703DC(void *arg0, void *arg1) {
 
     u8 *self;
     u8 *entity;
-    void *obj;
+    UiSelectionHandler *obj;
     void **vtable;
     u32 buttons;
     u8 index;
@@ -11629,27 +11615,21 @@ void fn_800703DC(void *arg0, void *arg1) {
             self[0x40 + (s8)self[0x63]]
         );
 
-        obj = *(void **)(entity + 0x34);
-        vtable = *(void ***)obj;
-        ((void (*)(void *, void *, void *))vtable[0x11])(
-            obj, self, entity
-        );
+        obj = *(UiSelectionHandler **)(entity + 0x34);
+        obj->deselect(self, entity);
 
         entity = (u8 *)GfxEnt_Get(
             self[0x40 + (s8)self[0x62]]
         );
 
-        obj = *(void **)(entity + 0x34);
-        vtable = *(void ***)obj;
-        ((void (*)(void *, void *, void *))vtable[0x10])(
-            obj, self, entity
-        );
+        obj = *(UiSelectionHandler **)(entity + 0x34);
+        obj->select(self, entity);
 
         Ui_PlaySeCue(lbl_8026BB84 + 0x53, 0x64);
     }
 }
-
-#pragma optimization_level 3
+#pragma opt_common_subs reset
+#pragma cplusplus reset
 void fn_800704F0(void *arg0, void *arg1) {
 void *GfxEnt_Get(s32);
 s32 Text_MeasureHeight(s32,f32);
