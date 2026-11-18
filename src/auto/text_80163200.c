@@ -4021,95 +4021,54 @@ void fn_8016A1BC(void *arg0) {
 }
 
 void fn_8016A400(void *arg0) {
-    typedef struct {
-        void *field00;
-        void *table;
-        s16 field08;
-        s16 field0A;
-        s16 field0C;
-        s16 field0E;
-        s16 field10;
-        s16 field12;
-        s16 field14;
-        s16 field16;
-        f32 field18;
-        s16 field1C;
-        s16 field1E;
-    } Config;
-
-    void *fn_80169948();
-    s32 Ui_CreateMenu(void *, void *, s32);
-    M2C_UNK Process_DetachChild();
-    void *Heap_Alloc(s32);
-
-    extern u8 gUiMenuDrawVtbl[];
-    extern u16 lbl_802920E0[76];
-    extern u8 gUiMenuVtblSlotPtrs[];
-    extern u16 gUiMenuConfigVtbl[76];
-    extern u8 gUiMenuVtbl1Template[];
-    extern u8 gUiMenuVtbl0Template[];
-    extern s8 sUiMenuVtbl0Ready;
-    extern void *gUiMenuVtbl0;
-    extern s8 sUiMenuVtbl1Ready;
-    extern void *gUiMenuVtbl1;
-    extern f32 lbl_8036A9C0;
-    extern f32 lbl_8036A9D0;
-    extern f32 lbl_8036A9D4;
-
-    void *config;
-    void *parent;
-    void *child;
-    volatile Config *init;
-
-    config = fn_80169948();
-    M2C_FIELD(config, f32 *, 0x18) = lbl_8036A9C0;
-    M2C_FIELD(config, s16 *, 0x1E) = 0;
-    parent = (void *)Ui_CreateMenu(config, arg0, 0);
-    Process_DetachChild(parent);
-
-    M2C_FIELD(parent, u8 *, 0x62) = 1;
-    M2C_FIELD(parent, u8 *, 0x61) = 0;
-    M2C_FIELD(arg0, void **, 0x4C) = parent;
-
-    if (sUiMenuVtbl0Ready == 0) {
-        sUiMenuVtbl0Ready = 1;
-        gUiMenuVtbl0 = gUiMenuVtbl0Template;
-    }
-    if (sUiMenuVtbl1Ready == 0) {
-        sUiMenuVtbl1Ready = 1;
-        gUiMenuVtbl1 = gUiMenuVtbl1Template;
-    }
-
-    config = Heap_Alloc(0x20);
-    init = (volatile Config *)config;
-    if (config != NULL) {
-        init->table = gUiMenuDrawVtbl;
-        init->field00 = gUiMenuVtblSlotPtrs;
-        init->table = lbl_802920E0;
-        init->field08 = 0;
-        init->field0A = 0;
-        init->field0C = 0x80;
-        init->field0E = 0;
-        init->field10 = 2;
-        init->field12 = 0xC;
-        init->field14 = 0x10;
-        init->field16 = 0;
-        init->field18 = lbl_8036A9D0;
-        init->field1C = 0x20;
-        init->field1E = 4;
-        init->table = gUiMenuConfigVtbl;
-    }
-
-    init->field08 = 0x9E;
-    init->field0A = 0x8C;
-    init->field0C = 0x8A;
-    init->field14 = 0;
-    init->field18 = lbl_8036A9D4;
-    init->field1E = 4;
-
-    child = (void *)Ui_CreateMenu(config, parent, 0);
-    M2C_FIELD(child, u8 *, 0x61) = 0;
-    M2C_FIELD(arg0, void **, 0x50) = child;
+void *fn_80169948();
+s32 Ui_CreateMenu(void *, void *, s32);
+M2C_UNK Process_DetachChild();
+void *Heap_Alloc(s32);
+extern u8 gUiMenuDrawVtbl[],gUiMenuVtblSlotPtrs[],gUiMenuVtbl1Template[],gUiMenuVtbl0Template[];
+extern u16 lbl_802920E0[76],gUiMenuConfigVtbl[76];
+extern s8 sUiMenuVtbl0Ready,sUiMenuVtbl1Ready;
+extern void *gUiMenuVtbl0,*gUiMenuVtbl1;
+extern f32 lbl_8036A9C0;
+extern const f32 lbl_8036A9D0,lbl_8036A9D4;
+void *config,*parent,*child;
+config=fn_80169948();
+M2C_FIELD(config,f32 *,0x18)=lbl_8036A9C0;
+M2C_FIELD(config,s16 *,0x1E)=0;
+parent=(void *)Ui_CreateMenu(config,arg0,0);
+Process_DetachChild(parent);
+M2C_FIELD(parent,u8 *,0x62)=1;
+M2C_FIELD(parent,u8 *,0x61)=0;
+M2C_FIELD(arg0,void **,0x4C)=parent;
+if(sUiMenuVtbl0Ready==0){gUiMenuVtbl0=gUiMenuVtbl0Template;sUiMenuVtbl0Ready=1;}
+if(sUiMenuVtbl1Ready==0){gUiMenuVtbl1=gUiMenuVtbl1Template;sUiMenuVtbl1Ready=1;}
+config=Heap_Alloc(0x20);
+if(config!=NULL){
+M2C_FIELD(config,void **,4)=gUiMenuDrawVtbl;
+M2C_FIELD(config,void **,0)=gUiMenuVtblSlotPtrs;
+M2C_FIELD(config,void **,4)=lbl_802920E0;
+M2C_FIELD(config,s16 *,8)=0;
+M2C_FIELD(config,s16 *,10)=0;
+M2C_FIELD(config,s16 *,12)=128;
+M2C_FIELD(config,s16 *,14)=0;
+M2C_FIELD(config,s16 *,16)=2;
+M2C_FIELD(config,s16 *,18)=12;
+M2C_FIELD(config,s16 *,20)=16;
+M2C_FIELD(config,s16 *,22)=0;
+M2C_FIELD(config,f32 *,0x18)=lbl_8036A9D0;
+M2C_FIELD(config,s16 *,0x1C)=0x20;
+M2C_FIELD(config,s16 *,0x1E)=4;
+M2C_FIELD(config,void **,4)=gUiMenuConfigVtbl;
+}
+M2C_FIELD(config,s16 *,8)=0x9E;
+M2C_FIELD(config,s16 *,10)=0x8C;
+M2C_FIELD(config,s16 *,12)=0x8A;
+M2C_FIELD(config,s16 *,20)=0;
+M2C_FIELD(config,f32 *,24)=lbl_8036A9D4;
+M2C_FIELD(config,s16 *,30)=4;
+child=(void *)Ui_CreateMenu(config,parent,0);
+M2C_FIELD(child,u8 *,0x61)=0;
+M2C_FIELD(arg0,void **,0x50)=child;
 }
 
 void fn_8016A57C(void *arg0) {
