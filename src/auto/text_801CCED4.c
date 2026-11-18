@@ -675,15 +675,15 @@ extern "C" void fn_801CCED4(s32 *arg0, void *arg1) {
     s32 t;
     s32 h;
 
+    x = *(s16 *)((u8 *)arg1 + 0x48);
     out = arg0;
     self = (Obj *)arg1;
-    x = *(s16 *)((u8 *)arg1 + 0x48);
     t = self->v11();
     y = (s16)(*(s16 *)((u8 *)self + 0x4A) - t);
     w = self->v9();
     h = self->v10();
-    dims[1] = (s16)(y * h);
     dims[0] = (s16)(x * w);
+    dims[1] = (s16)(y * h);
     *out = *fn_8013F748(self, &spC, dims);
 #pragma cplusplus reset
 }
@@ -951,56 +951,23 @@ void *fn_801CD414(void *arg0, s16 arg1) {
 }
 
 #pragma global_optimizer off
-s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2)
-{
-    extern u8 *lbl_802984C0[];
-    extern char lbl_8027DD60[];
-    s32 count;
-    u8 **table;
-    u8 **lookup;
-    u8 *result;
+s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2) {
+extern u8 *lbl_802984C0[];
+extern char lbl_8027DD60[];
+s32 count=0;
+u8 **table=(u8**)count;
 
-    count = 0;
-    table = (u8 **)count;
-
-    if (arg0 == 0) {
-        goto init_table;
-    }
-    goto search;
-
-init_table:
-    table = lbl_802984C0;
-    goto search;
-
-loop:
-    table += 1;
-    count += 1;
-search:
-    if ((s32)**table != 0xA) {
-        goto loop;
-    }
-
-    count = (s16)(count + 1);
-    lookup = (u8 **)0;
-
-    if (arg0 == 0) {
-        goto init_lookup;
-    }
-    goto lookup_idx;
-
-init_lookup:
-    lookup = lbl_802984C0;
-
-lookup_idx:
-    result = lookup[(s16)arg1 + count * (s16)arg2];
-
-    if (result != 0) {
-        return (s32)result;
-    }
-
-    return (s32)(lbl_8027DD60 + 0x16);
+u8 *result;
+switch(arg0) {case 0: table=lbl_802984C0; break;}
+while((s32)**table!=10) {table++;count++;}
+count=(s16)(count+1);
+table=0;
+switch(arg0) {case 0: table=lbl_802984C0;break;}
+result=table[(s16)arg1+count*(s16)arg2];
+if(result) return (s32)result;
+return (s32)(lbl_8027DD60+0x16);
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 s32 fn_801CD508(s32 arg0) {
     extern u8 *lbl_802984C0[];
     s32 count = 0;
@@ -1014,7 +981,8 @@ s32 fn_801CD508(s32 arg0) {
     return count;
 }
 
-#pragma opt_propagation off
+#pragma opt_propagation on
+#pragma global_optimizer on
 s32 fn_801CD548(s32 arg0) {
     extern u8 *lbl_802984C0[];
     s32 count;
@@ -1029,13 +997,7 @@ s32 fn_801CD548(s32 arg0) {
     table = (u8 **)count;
     n = 0;
 
-    if (arg0 == 0) {
-        goto init_table;
-    }
-    goto search;
-
-init_table:
-    table = lbl_802984C0;
+    switch(arg0) { case 0: table=lbl_802984C0; break; }
     goto search;
 
 loop1:
@@ -1049,15 +1011,8 @@ search:
     stride = (s16)(count + 1);
     tmp = (u8 **)0;
 
-    if (arg0 == 0) {
-        goto init_lookup;
-    }
-    goto join_lookup;
+    switch(arg0) {case 0: tmp=lbl_802984C0;break;}
 
-init_lookup:
-    tmp = lbl_802984C0;
-
-join_lookup:
     cur = tmp;
     step = stride << 2;
     goto check;
@@ -1070,6 +1025,7 @@ check:
     }
     return n;
 }
+#pragma global_optimizer reset
 #pragma opt_propagation reset
 void fn_801CD5CC(void *self) {
 extern u32 gUiInputFlags; extern u8 *gPadInput; extern s16 lbl_80366EA8,lbl_80366EAA; extern u8 lbl_8027DE18[];
@@ -8011,87 +7967,67 @@ void fn_801DF960(void *arg0)
     extern void *gSaveDataBase;
     void Process_Goto(void *, s32);
 
-    u8 *base;
     u8 *data;
+    s32 i;
     u32 offset;
     u32 size;
     u32 limit;
     u32 mask;
-    s32 i;
     u8 valid;
+    u8 found;
+    u8 *base;
+    u32 offset2;
+    u8 *slot;
 
     base = (u8 *)gSaveDataBase;
+    i = 0;
     offset = 0x2000;
-
-    for (i = 0; i < 3; i++) {
+    for (; i < 6; i++) {
         data = base + offset;
-
-        valid = 0;
-
-        if (*(u32 *)(data + 0x70) == 0x53595346) {
-            if (*(u32 *)(data + 0x74) == 0x20050201) {
-                valid = 1;
-            }
+        if (*(u32 *)(data + 0x70) != 0x53595346U) {
+            valid = 0;
+        } else if (*(u32 *)(data + 0x74) != 0x20050201U) {
+            valid = 0;
+        } else {
+            valid = 1;
         }
-
         if (valid != 0) {
             size = *(u32 *)(data + 0x48);
             limit = 0x100000;
-
-            mask = size <= limit ? size : 0;
-
+            mask = size > limit ? 0 : size;
             if (mask <= limit) {
-                return;
+                found = 1;
+                goto check;
             }
         }
-
         offset += 0x4000;
     }
 
-    offset = 0x1A000;
-    data = base + offset;
-
-    valid = 0;
-
-    if (*(u32 *)(data + 0x70) == 0x53595346) {
-        if (*(u32 *)(data + 0x74) == 0x20050201) {
+    offset2 = 0x1A000;
+    for (i = 0; i < 2; i++) {
+        slot = base + offset2;
+        if (*(u32 *)(slot + 0x70) != 0x53595346U) {
+            valid = 0;
+        } else if (*(u32 *)(slot + 0x74) != 0x20050201U) {
+            valid = 0;
+        } else {
             valid = 1;
         }
-    }
-
-    if (valid != 0) {
-        size = *(u32 *)(data + 0x48);
-        limit = 0x100000;
-
-        mask = size <= limit ? size : 0;
-
-        if (mask <= limit) {
-            return;
+        if (valid != 0) {
+            size = *(u32 *)(slot + 0x48);
+            limit = 0x100000;
+            mask = size > limit ? 0 : size;
+            if (mask <= limit) {
+                found = 1;
+                goto check;
+            }
         }
+        offset2 += 0x6000;
     }
 
-    offset += 0x6000;
-    data = base + offset;
-
-    valid = 0;
-
-    if (*(u32 *)(data + 0x70) == 0x53595346) {
-        if (*(u32 *)(data + 0x74) == 0x20050201) {
-            valid = 1;
-        }
-    }
-
-    if (valid != 0) {
-        size = *(u32 *)(data + 0x48);
-        limit = 0x100000;
-
-        mask = size <= limit ? size : 0;
-
-        if (mask <= limit) {
-            return;
-        }
-    }
-
+    found = 0;
+check:
+    if (found != 0) return;
     Process_Goto(arg0, 2);
 }
 
