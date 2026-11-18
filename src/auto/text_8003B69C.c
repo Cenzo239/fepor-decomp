@@ -12182,7 +12182,7 @@ extern void *gMap;
 extern u16 lbl_8026A660;
 extern void* lbl_803672A8;
 extern u8 gBattleMap[];
-extern u32* lbl_803672CC;
+extern void *lbl_803672CC;
 #include "global.h"
 #include "common.h"
 
