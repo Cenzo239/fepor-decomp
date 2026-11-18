@@ -8,8 +8,7 @@ typedef struct {
 } Struct_8000B090;
 
 extern s32 lbl_802AEE20[5]; // array of 5 pointers
-static inline s32 Text_FindFontIndex(u32 result) {
-    u32 *p = (u32 *)lbl_802AEE20;
+static inline s32 Text_FindFontIndex(u32 *p, u32 result) {
     s32 i;
     for(i=0;i<5;i++,p++) {
         if(*p==result) return i;
