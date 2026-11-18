@@ -8,13 +8,19 @@ typedef struct {
     s32 unk8;
 } Struct_8000B090;
 
+typedef struct { u8 f0; u8 f1; u8 f2; u8 f3; } Bytes80006AC0;
+
 extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; do { if(*++a!=*++b) goto different; } while(--n); return 0; different: return 1; }
-
-#pragma opt_unroll off
+#pragma optimization_level 2
+s32 fn_80006264(u32 *a,u32 *b,u32 n) {
+a--; n>>=2; b--;
+do {u32 x=*++a; u32 y=*++b; if(x!=y) goto different;} while((s32)--n>0);
+return 0; different: return 1;
+}
+#pragma optimization_level reset
 void fn_80006298(u32 *dst, u32 val, u32 n) { n >>= 2; --dst; do { *++dst = val; } while (--n != 0); }
 #pragma opt_unroll off
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
@@ -261,19 +267,17 @@ void fn_80006754(void)
     extern u64 OSGetTime(void);
 
     u32 count;
-    u32 high;
     u32 low;
-    u32 first;
+    u32 high;
     u64 time;
 
     count = gFrameCount;
     high = lbl_80367128;
     low = lbl_8036712C;
-    first = high;
 
     gFrameCount = count + 1;
+    lbl_80367120 = high;
     lbl_80367124 = low;
-    lbl_80367120 = first;
 
     time = OSGetTime();
     lbl_8036712C = (u32)time;
@@ -327,7 +331,6 @@ void Math_Ease(s32 arg0, void *arg1) {
 s32 fn_80006AC0(u8 *arg0) {
     u32 t;
     u32 b1;
-
     if (arg0[0] != 0x10) {
         return 0;
     }
