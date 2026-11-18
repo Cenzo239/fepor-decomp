@@ -12547,7 +12547,6 @@ void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
     arg0[14] = z;
 }
 
-#pragma scheduling off
 void fn_800DF50C(f32 *arg0) {
     extern f32 gVec3InterpZero;
     extern f32 lbl_80369EBC;
