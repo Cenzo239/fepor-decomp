@@ -1399,7 +1399,6 @@ tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
 __GXData[1]=1;
 }
 #pragma optimization_level 2
-#pragma scheduling off
 void fn_8021FA94(void) {
 extern u32 __GXData;
 extern u8 lbl_80367000[4], lbl_80367004[4], lbl_80367008[8];
