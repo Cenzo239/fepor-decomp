@@ -1294,6 +1294,7 @@ void fn_80112DFC(void *arg0, u8 arg1) {
 }
 
 #pragma cplusplus on
+#pragma global_optimizer off
 typedef struct Vec3f {
     f32 x, y, z;
     Vec3f() {}
@@ -3174,9 +3175,12 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 #pragma optimization_level 1
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
- s32 copy[3]; s32 c,b,a;
- c=arg1[2]; b=arg1[1]; a=arg1[0];
- arg1=copy; arg1[0]=a; arg1[1]=b; arg1[2]=c;
+ s32 copy[3];
+ s32 *src = arg1;
+ s32 c = src[2];
+ s32 b = src[1];
+ s32 a = src[0];
+ copy[0]=a; copy[1]=b; copy[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
 }
