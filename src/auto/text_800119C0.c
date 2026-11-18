@@ -1140,15 +1140,15 @@ void fn_80014790(void) {
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetCullMode(s32);
-    void GXSetBlendMode(s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetChanMatColor(s32, void *);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void GXSetNumTexGens(s32);
+    void GXSetNumTexGens(s32, s32);
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXBegin(s32, s32, s32);
-    void *Ui_GetColor(void);
+    u32 *Ui_GetColor(s32);
     void fn_801FB5D8(void *, s32, f32, f32, f32, f32);
     void fn_8006E660(void);
     void VIWaitForRetrace(void);
@@ -1169,16 +1169,19 @@ void fn_80014790(void) {
     extern f32 lbl_80368C60;
     extern f32 lbl_80368C64;
 
+    f32 ortho[4][4];
+    f32 mtx[3][4];
+    u32 clearColor;
+    u32 uiColor;
+    u32 matColor;
     s32 code;
     s32 status;
     s32 tmp28;
     s32 tmp29;
     s32 tmp30;
-    u32 proj[0x1C / 4];
-    f32 mtx[3][4];
-    u32 color;
-    u32 matColor;
-    f32 f1, f2;
+    f32 fw;
+    f32 fh;
+    f32 scale;
 
     for (;;) {
         code = -1;
@@ -1205,12 +1208,15 @@ void fn_80014790(void) {
             if (DVDKeepAlive() == 0) {
                 lbl_803671B0 = 1;
                 fn_80212CC0(gPadInput[0x1C], 2);
+                goto after_ka;
             }
-        } else {
+        }
+        if (code < 0) {
             if (DVDKeepAlive() != 0) {
                 lbl_803671B0 = 0;
             }
         }
+    after_ka:
 
         if (code >= 0) {
             fn_800B28DC();
@@ -1232,16 +1238,16 @@ void fn_80014790(void) {
             DEMOBeforeRender();
             {
                 f32 z = lbl_80368C4C;
-                matColor = lbl_8036C400;
-                fn_802240F0(0, &matColor, z, z, z, z);
+                clearColor = lbl_8036C400;
+                fn_802240F0(0, &clearColor, z, z, z, z);
             }
             fn_8022462C(1);
             fn_80224658(1);
             GXSetZMode(1, 3, 1);
             fn_802246B8(1);
             fn_80223E5C(7, 0, 1, 7, 0);
-            C_MTXOrtho(proj, lbl_80368C4C, lbl_80368C50, lbl_80368C4C, lbl_80368C54, lbl_80368C4C, lbl_80368C58);
-            GXSetProjection(proj, 1);
+            C_MTXOrtho(ortho, lbl_80368C4C, lbl_80368C50, lbl_80368C4C, lbl_80368C54, lbl_80368C4C, lbl_80368C58);
+            GXSetProjection(ortho, 1);
             fn_8022100C(0);
             PSMTXIdentity(mtx);
             GXLoadPosMtxImm(mtx, 0);
@@ -1252,42 +1258,44 @@ void fn_80014790(void) {
             GXSetVtxDesc(9, 1);
             GXSetVtxAttrFmt(0, 9, 1, 3, 0);
             GXSetCullMode(1);
-            GXSetBlendMode(4, 0, 0, 0, 0);
+            GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
             matColor = lbl_80368C48;
             GXSetChanMatColor(4, &matColor);
             GXSetNumTevStages(1);
             GXSetTevOrder(0, 0, 0, 4);
-            GXSetNumTexGens(0);
+            GXSetNumTexGens(0, 4);
             GXSetNumChans(1);
             fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
             GXBegin(0x80, 0, 4);
             {
-                volatile s16 *fifo = (volatile s16 *)0xCC008000;
-                fifo[0] = 0;
-                fifo[0] = 0;
-                fifo[0] = 0x5A;
-                fifo[0] = 0x260;
-                fifo[0] = 0;
-                fifo[0] = 0x5A;
-                fifo[0] = 0x260;
-                fifo[0] = 0x1C0;
-                fifo[0] = 0x5A;
-                fifo[0] = 0;
-                fifo[0] = 0x1C0;
-                fifo[0] = 0x5A;
+                s16 *fifo = (s16 *)0xCC008000;
+                s16 z = 0;
+                s16 a = 0x5A;
+                s16 b = 0x260;
+                s16 c = 0x1C0;
+                *fifo = z;
+                *fifo = z;
+                *fifo = a;
+                *fifo = b;
+                *fifo = z;
+                *fifo = a;
+                *fifo = b;
+                *fifo = c;
+                *fifo = a;
+                *fifo = z;
+                *fifo = c;
+                *fifo = a;
             }
-            {
-                void *uc = Ui_GetColor();
-                color = *(u32 *)uc;
-                f1 = (f32)(0x260 - tmp29) * lbl_80368C5C;
-                f2 = (f32)(0x1C0 - tmp30) * lbl_80368C5C;
-                fn_801FB5D8(&color, tmp28, f1, lbl_80368C60, f2, lbl_80368C64);
-            }
+            uiColor = *Ui_GetColor(1);
+            scale = lbl_80368C5C;
+            fw = (f32)(s32)(0x260 - tmp29);
+            fh = (f32)(s32)(0x1C0 - tmp30);
+            fn_801FB5D8(&uiColor, tmp28, fw * scale, lbl_80368C60, fh * scale, lbl_80368C64);
             fn_8006E660();
             if (status == -1) {
                 VIWaitForRetrace();
+                fn_80025970();
             }
-            fn_80025970();
             Game_PollSoftReset();
         } else {
             if (lbl_803671B0 != 0) {
@@ -3005,3 +3013,4 @@ extern s32 lbl_8036718C;
 extern void *lbl_80367180;
 extern s32 lbl_803671A4;
 extern s32 lbl_80367198;
+f64 lbl_80368C68 = 4503601775575040.0;
