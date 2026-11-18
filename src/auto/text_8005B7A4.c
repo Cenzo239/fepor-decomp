@@ -8658,6 +8658,7 @@ next: node=M2C_FIELD(node,void **,4);
 #pragma global_optimizer off
 #pragma fp_contract off
 #pragma optimization_level 3
+#pragma global_optimizer off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
