@@ -8655,7 +8655,7 @@ next: node=M2C_FIELD(node,void **,4);
 }
 }
 
-#pragma global_optimizer on
+#pragma global_optimizer off
 #pragma fp_contract off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
