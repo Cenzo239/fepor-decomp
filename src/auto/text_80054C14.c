@@ -287,7 +287,7 @@ static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec 
 #pragma opt_propagation reset
 #pragma peephole on
 #pragma global_optimizer on
-#pragma optimization_level 2
+#pragma optimization_level reset
 void fn_80054C14(void *arg0) {
     u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
