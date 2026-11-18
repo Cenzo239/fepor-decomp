@@ -147,13 +147,13 @@ struct OSThread {
     OSThreadQueue *queue;
     OSThread *next, *prev;
 };
-static inline OSThread *PopThread(OSThreadQueue *queue) {
+static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
     OSThread *thread = queue->head;
     OSThread *next = thread->next;
+    *out = thread;
     if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
     queue->head = next;
-    return thread;
 }
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
@@ -162,6 +162,7 @@ extern volatile s32 RunQueueHint_8036851C;
 
 
 #pragma opt_common_subs off
+#pragma peephole on
 void *SelectThread_8020A2C4(s32 arg0) {
     OSContext *fn_802059EC(void);
     u32 fn_802059F8(void *);
@@ -177,7 +178,6 @@ void *SelectThread_8020A2C4(s32 arg0) {
     extern void (*SwitchThreadCallback_80366F50)(void *, void *);
     void **queue;
     OSThread *thread;
-    OSThread *next;
     OSThread *tail;
     OSThread *pred;
     s32 prio;
@@ -241,16 +241,14 @@ void *SelectThread_8020A2C4(s32 arg0) {
     RunQueueHint_8036851C = 0;
     prio = __cntlzw((u32)RunQueueBits_80368518);
     q = (OSThreadQueue *)((u8 *)queue + (prio * 8));
-    { OSThread *head = q->head;
-    pred = head->next;
-    next = head;
+    { OSThread *next = q->head;
+    pred = next->next;
     if (pred == NULL) {
         q->tail = NULL;
     } else {
         pred->prev = NULL;
     }
     q->head = pred;
-    }
     if (q->head == NULL) {
         s32 one = 1;
         RunQueueBits_80368518 &= ~(one << (0x1F - prio));
@@ -262,5 +260,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     OSSetCurrentContext(next);
     OSLoadContext(next);
     return next;
+    }
 }
 #pragma opt_common_subs reset
+#pragma peephole reset
