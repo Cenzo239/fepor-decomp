@@ -283,17 +283,17 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
 }
 #pragma use_lmw_stmw on
 #pragma global_optimizer on
+#pragma scheduling on
 void fn_80083278(void *arg0) {
-    extern u8 gBattle[];
-    extern f32 lbl_80369430;
-    extern f32 lbl_803695C8;
-    struct { f32 x, y; } pos;
-    pos.x = lbl_80369430;
-    pos.y = lbl_803695C8;
-    pos.x += *(f32 *)((u8 *)arg0 + 0x14);
-    pos.y += *(f32 *)((u8 *)arg0 + 0x18);
-    fn_80082298(gBattle, 1, pos.x, pos.y);
+extern u8 gBattle[];
+extern f32 lbl_80369430, lbl_803695C8;
+f32 x = lbl_80369430;
+f32 y = lbl_803695C8;
+x += *(f32*)((u8*)arg0+0x14);
+y = *(f32*)((u8*)arg0+0x18) + y;
+fn_80082298(gBattle,1,x,y);
 }
+#pragma scheduling reset
 
 void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
