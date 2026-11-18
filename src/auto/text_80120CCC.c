@@ -2,6 +2,14 @@
 #include "common.h"
 
 typedef struct SkyVector { f32 x, y, z; } SkyVector;
+typedef struct SkyProc {
+ u8 pad[0x30];
+ void *parent;
+ s32 skyIndex;
+ SkyVector position;
+ f32 scale;
+ f32 speed;
+} SkyProc;
 
 extern f64 lbl_8036A2C8;
 
@@ -1880,12 +1888,12 @@ void fn_80123988(void *arg0)
     u8 *proc;
     u8 *parent;
     u8 *map;
-    s32 skyIndex;
+    u32 skyIndex;
     u8 *defs;
     SkyVector sp8;
 
     self = (u8 *)arg0;
-    defs = lbl_80290328;
+    defs = lbl_80290328 + 0xFC;
 
     *(s32 *)(self + 0x34) = -1;
 
@@ -1897,7 +1905,7 @@ void fn_80123988(void *arg0)
     *(f32 *)(self + 0x44) = lbl_8036A308;
     *(f32 *)(self + 0x48) = lbl_8036A30C;
 
-    parent = (u8 *)Process_Create(defs + 0xFC, self);
+    parent = (u8 *)Process_Create(defs, self);
 
     *(void **)(self + 0x30) = parent;
 
@@ -1906,10 +1914,10 @@ void fn_80123988(void *arg0)
     map = (u8 *)Map_Get();
 
     if (map[0x68] == 1) {
-        switch (skyIndex = *(s32 *)(self + 0x34)) {
+        switch ((s32)(skyIndex = *(u32 *)(self + 0x34))) {
         case 2:
             proc = (u8 *)Process_Create(
-                defs + 0xB4,
+                defs - 0x48,
                     *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x3C;
@@ -1917,7 +1925,7 @@ void fn_80123988(void *arg0)
 
         case 3:
             proc = (u8 *)Process_Create(
-                defs + 0xB4,
+                defs - 0x48,
                     *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x1E;
@@ -1925,7 +1933,7 @@ void fn_80123988(void *arg0)
 
         case 4:
             proc = (u8 *)Process_Create(
-                defs + 0xB4,
+                defs - 0x48,
                     *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x64;
@@ -1935,7 +1943,7 @@ void fn_80123988(void *arg0)
         case 6:
         case 7:
             proc = (u8 *)Process_Create(
-                defs + 0x8C,
+                defs - 0x70,
                     *(void **)(self + 0x30)
             );
             proc[0x4C] = skyIndex;
@@ -1943,7 +1951,7 @@ void fn_80123988(void *arg0)
 
         case 8:
             proc = (u8 *)Process_Create(
-                defs + 0x60,
+                defs - 0x9C,
                     *(void **)(self + 0x30)
             );
             proc[0x4C] = 0;
@@ -1951,24 +1959,24 @@ void fn_80123988(void *arg0)
         }
     } else {
         {
-            switch (skyIndex = *(s32 *)(self + 0x34)) {
+            switch (skyIndex = *(u32 *)(self + 0x34)) {
             case 0:
                 Process_Create(
-                    defs,
+                    defs - 0xFC,
                     *(void **)(self + 0x30)
                 );
                 break;
 
             case 1:
                 Process_Create(
-                    defs,
+                    defs - 0xFC,
                     *(void **)(self + 0x30)
                 );
                 break;
 
             case 2:
                 proc = (u8 *)Process_Create(
-                    defs + 0xB4,
+                    defs - 0x48,
                     *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x3C;
@@ -1976,7 +1984,7 @@ void fn_80123988(void *arg0)
 
             case 3:
                 proc = (u8 *)Process_Create(
-                    defs + 0xB4,
+                    defs - 0x48,
                     *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x1E;
@@ -1984,7 +1992,7 @@ void fn_80123988(void *arg0)
 
             case 4:
                 proc = (u8 *)Process_Create(
-                    defs + 0xB4,
+                    defs - 0x48,
                     *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x64;
@@ -1994,7 +2002,7 @@ void fn_80123988(void *arg0)
             case 6:
             case 7:
                 proc = (u8 *)Process_Create(
-                    defs + 0x8C,
+                    defs - 0x70,
                     *(void **)(self + 0x30)
                 );
                 proc[0x4C] = skyIndex;
@@ -2002,7 +2010,7 @@ void fn_80123988(void *arg0)
 
             case 8:
                 proc = (u8 *)Process_Create(
-                    defs + 0x60,
+                    defs - 0x9C,
                     *(void **)(self + 0x30)
                 );
                 proc[0x4C] = 0;
@@ -2018,7 +2026,7 @@ void fn_80123988(void *arg0)
             case 16:
             case 17:
                 Process_Create(
-                    defs + 0x3C,
+                    defs - 0xC0,
                     *(void **)(self + 0x30)
                 );
                 break;
