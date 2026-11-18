@@ -1872,7 +1872,7 @@ void fn_8012391C(void *arg0) {
 }
 
 #pragma global_optimizer on
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma scheduling on
 void fn_80123988(void *arg0)
 {
