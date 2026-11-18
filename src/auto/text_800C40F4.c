@@ -677,7 +677,8 @@ u32 *entry=lbl_80320B88;
 s32 i; for(i=0;i<16;entry++,i++) { if(*entry==key)return i; } return -1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
-s32 i; for(i=0;i<16;table++,i++) { if(*table==key)return i; } return -1;
+u32 *entry=table;
+s32 i; for(i=0;i<16;entry++,i++) { if(*entry==key)return i; } return -1;
 }
 
 #pragma cplusplus on
@@ -688,24 +689,25 @@ extern u32 lbl_80320B88[],lbl_80367870;
 extern u32 *lbl_8036786C;
 extern char lbl_802700D8[];
 void DebugPrint(const char *,...);
-void fn_802001F8(void *,u32,s32);
+void fn_802001F8(void *,u32);
 void fn_8005C7A4(s32);
 void fn_8005BA08(s8);
 u32 *table;
+s32 offset;
 s32 index,selected,diff;
-u32 *heap;
 bool same;
+u32 *heap;
 table=lbl_80320B88;
 index=Heap_FindInTable(table,(u32)lbl_8036786C);
 DebugPrint(lbl_802700D8+0xEE,(char *)lbl_8036786C+4);
 selected=Heap_FindInTable(table,lbl_80367870);
-diff=selected-index;
+offset=index*4;
+same=(index==selected);
 lbl_8036786C=*(u32 **)((u8 *)lbl_8036786C+0x10);
-heap=(u32 *)lbl_80320B88[index];
-same=(diff==0);
-fn_802001F8(heap,heap[7],diff);
+heap=(u32 *)(*(u32 *)((u8 *)lbl_80320B88+offset));
+fn_802001F8(heap,heap[7]);
 fn_8005C7A4(Heap_FindInTable(table,(u32)heap));
-lbl_80320B88[index]=0;
+(*(u32 *)((u8 *)lbl_80320B88+offset))=0;
 if(lbl_8036786C){
 selected=Heap_FindInTable(table,(u32)lbl_8036786C);
 if(same){
