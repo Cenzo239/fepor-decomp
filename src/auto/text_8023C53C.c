@@ -69,9 +69,6 @@ u8 *p=lbl_80368950->cursor;
 lbl_80368950->cursor=p+1;
 return *p;
 }
-static inline f32 ThpReadQuantValue(void) {
-    return (f32)ThpReadByte();
-}
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *lbl_80368950;
 u8 **cursor=&lbl_80368950->cursor;
@@ -529,8 +526,8 @@ return 0;
 s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
 extern ThpDecodeState *lbl_80368950;
+u32 size; u32 id; u16 row; u16 i; f64 *scale; u8 *p; ThpDecodeState *state;
 f32 table[64];
-u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; u8 *p; f64 *scale;
 size=ThpReadWord()-2;
 do {
 id=ThpReadByte();
