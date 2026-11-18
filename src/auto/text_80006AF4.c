@@ -2164,7 +2164,7 @@ s32 fn_8000A930(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
+#pragma peephole on
 s32 fn_8000A950(void *arg0) {
     extern u8 gProcesses[];
     u8 *entry;
@@ -2206,10 +2206,12 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp1_done:
-            if (diff == 0) {
-                goto found;
+            if (diff) {
+                goto after1;
             }
+            goto found;
         }
+    after1:
         if (*(u32 *)(entry += 0x70) != 0) {
             b = search;
             a = *(u8 **)(entry + 0x14);
@@ -2231,10 +2233,12 @@ s32 fn_8000A950(void *arg0) {
             }
             diff = 0;
         cmp2_done:
-            if (diff == 0) {
-                goto found;
+            if (diff) {
+                goto after2;
             }
+            goto found;
         }
+    after2:
         i += 1;
         entry += 0x70;
     }
@@ -2247,8 +2251,8 @@ found:
     }
     return 0;
 }
-#pragma peephole on
-#pragma global_optimizer on
+#pragma peephole reset
+#pragma global_optimizer reset
 s32 fn_8000AA60(void *arg0)
 {
  void Process_Unlink(void *);
