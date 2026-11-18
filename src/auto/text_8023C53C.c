@@ -1,5 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 extern u64 lbl_8029F3D0[4];
 extern u32 lbl_8029F3F0[4];
 extern u8 lbl_8034D034[];
@@ -3975,19 +3976,18 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
     u8 *prev;
     u8 *next;
     u8 *head;
-    u8 *bucket;
     u8 *node;
-    u32 oldIndex;
     u32 index;
+    u8 *bucket;
+    u32 oldIndex;
 
     index = ((arg2 >> 8) + lbl_80368979) & 0x1F;
     bucket = lbl_8034C964 + index * 0xC;
 
     switch (arg1) {
     case 0:
+        oldIndex = ((u8 *)arg0)[9];
         node = (u8 *)arg0;
-
-        oldIndex = node[9];
 
         if (oldIndex != 0xFF) {
             if (oldIndex == index) {
@@ -4014,7 +4014,6 @@ void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
 
     case 1:
         node = (u8 *)arg0 + 0xC;
-
         oldIndex = node[9];
 
         if (oldIndex != 0xFF) {
@@ -15030,14 +15029,16 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma scheduling on
 f64 fn_80261344(f32 x) {
 extern f32 lbl_802831B8[];
-f64 three; f64 half; f64 guess; f64 square; f64 zero;
+f64 three, half, guess, square; f32 zero;
 zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
-if(x==(f32)zero) return x;
+if(x != zero) {
 guess=__frsqrte(x);
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 return x*guess;
+}
+return x;
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
@@ -16401,55 +16402,50 @@ u8 fn_80263074(u32 arg0)
     extern u32 lbl_80368AEC;
     extern void *fn_80258AD8(void);
 
-    u8 *selected;
-    u32 size;
-    u32 remaining;
+    void *previous;
     u32 smallest;
-    u8 *current;
-    u8 *previous;
+    void *selected;
+    u32 size;
+    void *current;
 
-    previous = 0;
-    smallest = -1;
+    smallest = (previous = 0, (u32)-1);
     size = (arg0 + 0x1F) & ~0x1F;
     selected = 0;
     current = lbl_80368ADC;
 
     while (current != 0) {
-        remaining = *(u32 *)(current + 0x0C);
-
-        if (remaining == size) {
+        if (*(u32 *)((u8 *)current + 0x0C) == size) {
             selected = current;
             break;
         }
 
-        if (remaining > size) {
-            if (smallest > remaining) {
+        if (*(u32 *)((u8 *)current + 0x0C) > size) {
+            if (smallest > *(u32 *)((u8 *)current + 0x0C)) {
                 selected = current;
-                smallest = remaining;
+                smallest = *(u32 *)((u8 *)current + 0x0C);
                 previous = current;
             }
         }
 
-        current = *(u8 **)current;
+        current = *(void **)current;
     }
 
     if (selected == 0) {
         if (lbl_80368AD8 != 0) {
             current = fn_80258AD8();
-            remaining = lbl_80368AEC - size;
+            if (lbl_80368AEC - size >= *(u32 *)((u8 *)current + 8)) {
+                current = lbl_80368AD8;
+                selected = current;
+                lbl_80368AD8 = *(void **)current;
 
-            if (remaining >= *(u32 *)(current + 8)) {
-                selected = lbl_80368AD8;
-                lbl_80368AD8 = *(void **)selected;
+                *(u32 *)((u8 *)current + 0x0C) = size;
+                *(u32 *)((u8 *)current + 8) = size;
 
-                *(u32 *)(selected + 0x0C) = size;
-                *(u32 *)(selected + 8) = size;
+                lbl_80368AEC -= size;
+                *(u32 *)((u8 *)current + 4) = lbl_80368AEC;
 
-                lbl_80368AEC = remaining;
-                *(u32 *)(selected + 4) = remaining;
-
-                *(void **)selected = lbl_80368AE0;
-                lbl_80368AE0 = selected;
+                *(void **)current = lbl_80368AE0;
+                lbl_80368AE0 = current;
             }
         }
     } else {
@@ -16459,7 +16455,7 @@ u8 fn_80263074(u32 arg0)
             lbl_80368ADC = *(void **)selected;
         }
 
-        *(u32 *)(selected + 8) = size;
+        *(u32 *)((u8 *)selected + 8) = size;
         *(void **)selected = lbl_80368AE0;
         lbl_80368AE0 = selected;
     }
@@ -16468,7 +16464,7 @@ u8 fn_80263074(u32 arg0)
         return 0xFF;
     }
 
-    return (u8)((s32)(selected - lbl_80364430) / 16);
+    return (u8)((s32)((u8 *)selected - lbl_80364430) / 16);
 }
 
 s32 fn_802631AC(u8 arg0, s32 *arg1) {
