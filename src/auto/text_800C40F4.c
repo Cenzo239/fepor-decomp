@@ -12725,7 +12725,7 @@ arg0[17]=d;
 arg0[14]=d;
 }
 #pragma global_optimizer reset
-extern "C" void fn_800DF584(void *arg0) {
+extern "C" void fn_800DF584(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[0x2C];
         u8 flag_2c;
@@ -12736,20 +12736,19 @@ extern "C" void fn_800DF584(void *arg0) {
         virtual void v0();
         virtual void v1();
         virtual void v2();
-        virtual void v3();
+        virtual void v3(void *);
     };
     struct Other {
         u8 pad[0x2C];
         u8 flag_2c;
     };
     Obj *self = (Obj *)arg0;
-    u8 *selfFlag = (u8 *)self + 0x2c;
     Other *other;
 
     if (self->flag_3c != 0) {
         other = (Other *)self->field_38;
-        if (other != NULL && other->flag_2c != 0 && *selfFlag != 0) {
-            self->v3();
+        if (other != NULL && other->flag_2c != 0 && self->flag_2c != 0) {
+            self->v3(arg1);
         }
     }
 }
