@@ -15880,7 +15880,6 @@ void fn_800E4F30(void *arg0)
 }
 
 void fn_800E4FE8(void *arg0, void *arg1, s32 arg2) {
-    extern f32 lbl_80369F3C;
     f32 f;
     s32 temp_r3;
 
