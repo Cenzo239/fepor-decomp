@@ -8,8 +8,6 @@ typedef struct {
     s32 unk8;
 } Struct_8000B090;
 
-typedef struct { u8 f0; u8 f1; u8 f2; u8 f3; } Bytes80006AC0;
-
 extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
