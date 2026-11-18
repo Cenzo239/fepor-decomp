@@ -1519,11 +1519,9 @@ s32 fn_80014EDC(u32 arg0) {
     s32 fn_8000E0E4(s32);
     extern void *lbl_80367210;
     s32 var_r31;
-    u8 *p;
 
-    p = (u8 *)lbl_80367210;
-    p += (arg0 & 0xFF) << 2;
-    var_r31 = *(s32 *)(p + 4);
+    arg0 = (u32)((u8 *)lbl_80367210 + ((arg0 & 0xFF) << 2));
+    var_r31 = *(s32 *)((u8 *)arg0 + 4);
     if (fn_8000D354(var_r31) != 0U) {
         var_r31 = fn_8000E0E4(var_r31);
     }
