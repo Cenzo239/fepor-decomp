@@ -2889,17 +2889,19 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
-    s32 xa;
-    s32 xb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
-    xa = *(s8 *)((u8 *)a + 0x19E);
-    xb = *(s8 *)((u8 *)b + 0x19E);
-    dx = xa - xb;
+    {
+        s8 xa;
+        s8 xb;
+        xa = *(s8 *)((u8 *)a + 0x19E);
+        xb = *(s8 *)((u8 *)b + 0x19E);
+        dx = xa - xb;
+    }
     if (dx < 0) {
         dx = -dx;
     }
@@ -12357,7 +12359,7 @@ s32 fn_8004AF30(u16 arg0) {
  return fn_80146B10(arg0);
 }
 
-#pragma peephole off
+#pragma peephole on
 s32 fn_8004AF74(u8 *arg0, s32 arg1) {
     s32 v = (arg0 + arg1)[0xc];
     if (v / 64 == 0 && (v % 64) < 0x20) {
@@ -12365,7 +12367,6 @@ s32 fn_8004AF74(u8 *arg0, s32 arg1) {
     }
     return 0;
 }
-#pragma peephole on
 s32 fn_8004AFB4(void *arg0, s32 arg1) {
     return (M2C_FIELD(arg0, s32 *, 0x10) & (1 << arg1)) != 0;
 }
