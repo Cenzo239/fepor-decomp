@@ -11,6 +11,7 @@ typedef struct {
 extern void* lbl_803674E8;
 extern f64 lbl_80369688;
 extern f32 lbl_803696C8;
+typedef struct { u16 a, b, c; } Fn89980Struct;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
@@ -1987,16 +1988,21 @@ void fn_80089970(void) {
     M2C_FIELD(lbl_803674EC, s16 *, 0x32) = 0;
 }
 
+#pragma global_optimizer off
 #pragma peephole off
 void fn_80089980(s32 arg0) {
     extern f32 lbl_803696C8;
-    extern u8 *lbl_803674EC;
+    extern void *lbl_803674EC;
     f32 quotient = (f32)arg0 / lbl_803696C8;
-    s16 *p = (s16 *)(lbl_803674EC + 0x32);
-    p[0] = 3;
-    p[1] = 0;
-    p[2] = (s16)quotient;
+    u32 zero = 0;
+    u32 three = 3;
+    u8 *ptr = (u8 *)lbl_803674EC;
+    *(u16*)(ptr+0x32) = three;
+    *(u16*)(ptr+0x34) = zero;
+    *(u16*)(ptr+0x36) = (u16)quotient;
 }
+#pragma peephole reset
+#pragma global_optimizer reset
 void fn_800899D4(s32 arg0) {
 extern f32 lbl_803696C8;
 extern void *lbl_803674EC;
