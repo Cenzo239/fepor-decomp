@@ -386,7 +386,7 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-#pragma global_optimizer reset
+#pragma global_optimizer off
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
     s32 v = 2;
@@ -400,6 +400,7 @@ s32 fn_800A011C(s32 a, s32 b, void *c) {
     *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
+#pragma global_optimizer reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
@@ -1202,26 +1203,26 @@ s32 fn_800A0E74(void) {
 }
 #pragma optimization_level reset
 char *fn_800A101C(void) {
-    void sprintf(void *, void *, ...);
-    extern u8 gBattleState[];
-    extern char gItemMenuTextBuf[];
-    extern u8 gMenuCmdStrings[];
+    void fn_80231D94(void *, void *, ...);
+    extern u8 lbl_80330708[];
+    extern char lbl_80312270[];
+    extern u8 lbl_8026D8D8[];
+    char *buf;
     u8 *base;
     u8 flag;
-    char *buf;
     void *arg2;
     void *var_r5;
 
-    base = gMenuCmdStrings;
-    flag = gBattleState[0x9F];
-    buf = gItemMenuTextBuf;
+    buf = lbl_80312270;
+    base = lbl_8026D8D8;
+    flag = lbl_80330708[0x9F];
     arg2 = base + 0x5AE;
     var_r5 = base + 0x5C3;
     if ((flag >> 7) & 1) {
         var_r5 = base + 0x5BA;
     }
-    sprintf(buf, arg2, var_r5);
-    return gItemMenuTextBuf;
+    fn_80231D94(buf, arg2, var_r5);
+    return lbl_80312270;
 }
 #pragma optimization_level reset
 s32 fn_800A1078(void) {
