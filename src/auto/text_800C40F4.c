@@ -2049,13 +2049,14 @@ void fn_800C79FC(void) {
 }
 
 static inline s32 ParseToken(String *str, char *out, s32 pos) {
+s32 count;
 char *p;
 s32 size;
-s32 count;
 u8 c;
+count=0;
 p=(char *)str->data;
 size=str->size;
-count=pos;
+p=p+pos;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
 { char *dest=out;
@@ -26126,8 +26127,8 @@ y=(s16)*(s32*)(cmd+0xC); x=(s16)*(s32*)(cmd+0x10);
 Ai_SetUnitMoveTo(unit,y,x,1,*(u16*)(gAiState+4),1,0,-1);
 if(gAiState[0x21C]) {
 ctx=gUiContext; t0=ctx[0xE]; t1=ctx[0xD];
-t0=(s8)t0; dy=(s8)t1;
-dx=x-t0; if(dx<0) dx=-dx;
+dy=(s8)t1;
+dx=x-(s8)t0; if(dx<0) dx=-dx;
 dy=y-dy; if(dy<0) dy=-dy;
 if(dy+dx<=*(s32*)(cmd+4)) *(s32*)(gAiState+8)=8;
 }}
