@@ -16293,114 +16293,40 @@ void fn_800E5A4C(void *arg0) {
     }
 }
 
-void fn_800E5B68(void *arg0)
-{
-    void *fn_8006049C(void *);
-    void *GActor_GetNodeTable(void *);
-    void MTXRotDegOrder(void *, void *);
-    void PSMTXConcat(void *, void *, void *);
-    void PSMTXIdentity(void *);
-    void PSMTXCopy(void *, void *);
-    void *fn_80067478(void);
-
-    extern f32 lbl_80369F40;
-
-    u8 sp8[0x30];
-    u8 sp38[0x30];
-    u8 sp68[0x30];
-    u8 sp98[0x30];
-
-    u8 *self;
-    u8 *anim;
-    u8 *actor;
-    u8 *table;
-    u8 *matrices;
-    u8 *source;
-    u8 *dest;
-    void *camera;
-    s32 index;
-    f32 f31;
-    f32 f30;
-    f32 f29;
-
-    self = (u8 *)arg0;
-
-    if (*(void **)(self + 0xDC) != 0) {
-        anim = *(u8 **)(self + 0xEC);
-
-        if (anim != 0) {
-            index = *(s32 *)(self + 0xF0);
-            actor = *(u8 **)(anim + 0xE0);
-
-            matrices = (u8 *)fn_8006049C(actor);
-            table = (u8 *)GActor_GetNodeTable(actor);
-
-            MTXRotDegOrder(
-                *(u8 **)(table + 0xC) + index * 0xF4,
-                sp68
-            );
-
-            PSMTXConcat(
-                matrices + index * 0x30,
-                sp68,
-                sp68
-            );
-
-            PSMTXConcat(
-                *(u8 **)(anim + 0xE0) + 0x10,
-                sp68,
-                sp98
-            );
-
-            source = *(u8 **)(self + 0xE0) + 0x10;
-
-            PSMTXConcat(
-                sp98,
-                source,
-                source
-            );
-
-            dest = *(u8 **)(self + 0xE4) + 0x10;
-
-            PSMTXConcat(
-                dest,
-                sp98,
-                dest
-            );
-        }
-    }
-
-    if (*(void **)(self + 0xDC) != 0 &&
-        self[0xD3] != 0) {
-
-        source = *(u8 **)(self + 0xE0);
-        dest = *(u8 **)(self + 0xE4);
-
-        camera = fn_80067478();
-
-        f31 = -*(f32 *)((u8 *)camera + 0x14);
-        f30 = -*(f32 *)((u8 *)camera + 0x18);
-        f29 = -*(f32 *)((u8 *)camera + 0x1C);
-
-        PSMTXIdentity(sp38);
-
-        *(f32 *)(sp38 + 0x14) = lbl_80369F3C;
-        *(f32 *)(sp38 + 0x1C) = lbl_80369F40;
-
-        *(f32 *)(sp38 + 0x04) = -f31 / f30;
-        *(f32 *)(sp38 + 0x24) = -f29 / f30;
-
-        PSMTXConcat(
-            sp38,
-            source + 0x10,
-            sp8
-        );
-
-        PSMTXCopy(
-            sp8,
-            dest + 0x10
-        );
-    }
+void fn_800E5B68(u8 *self) {
+void *fn_8006049C(void *); void *GActor_GetNodeTable(void *);
+void MTXRotDegOrder(void *,void *); void PSMTXConcat(void *,void *,void *);
+void PSMTXIdentity(void *); void PSMTXCopy(void *,void *); void *fn_80067478(void);
+extern f32 lbl_80369F40;
+u8 sp98[0x30], sp68[0x30], sp38[0x30], sp8[0x30];
+s32 index; u8 *anim; u8 *matrices; u8 *table; u8 *source; u8 *dest; u8 *camera;
+f32 x,y,z;
+if(*(void **)(self+0xDC)){
+anim=*(u8 **)(self+0xEC);
+if(anim){
+index=*(s32 *)(self+0xF0);
+matrices=fn_8006049C(*(void **)(anim+0xE0));
+table=GActor_GetNodeTable(*(void **)(anim+0xE0));
+MTXRotDegOrder(*(u8 **)(table+0xC)+index*0xF4,sp68);
+PSMTXConcat(matrices+index*0x30,sp68,sp68);
+PSMTXConcat(*(u8 **)(*(u8 **)(self+0xEC)+0xE0)+0x10,sp68,sp98);
+source=*(u8 **)(self+0xE0)+0x10;
+PSMTXConcat(sp98,source,source);
+dest=*(u8 **)(self+0xE4)+0x10;
+PSMTXConcat(dest,sp98,dest);
+}}
+if(*(void **)(self+0xDC) && self[0xD3]){
+source=*(u8 **)(self+0xE0); dest=*(u8 **)(self+0xE4);
+camera=fn_80067478();
+x=-*(f32 *)(camera+0x14);y=-*(f32 *)(camera+0x18);z=-*(f32 *)(camera+0x1C);
+PSMTXIdentity(sp38);
+*(f32 *)(sp38+4)=-x/y;
+*(f32 *)(sp38+0x14)=lbl_80369F3C;
+*(f32 *)(sp38+0x24)=-z/y;
+*(f32 *)(sp38+0x1C)=lbl_80369F40;
+PSMTXConcat(sp38,source+0x10,sp8);
+PSMTXCopy(sp8,dest+0x10);
+}
 }
 
 /* If the object has a linked GActor, build its world matrix from local pos/rot/scale. */
@@ -26243,14 +26169,14 @@ void fn_800F9FC4(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
-    s16 x;
     s16 y;
+    s16 x;
     u8 *unit;
     u8 *cmd;
     s32 dx;
     s32 dy;
-    s8 cx;
     s8 cy;
+    s8 cx;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
