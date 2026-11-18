@@ -1173,10 +1173,6 @@ extern u32 lbl_8036786C;
 extern s32 lbl_80366DDC;
 #pragma optimization_level 1
 s32 Heap_GetFree(void) {
-    extern u32 *lbl_80367860;
-    extern u32 *lbl_80367868;
-    extern u32 lbl_80367864;
-    extern u32 lbl_8036786C;
     u8 *lo;
     u8 *hi;
     HeapC55 *heap;
@@ -1188,8 +1184,7 @@ s32 Heap_GetFree(void) {
         lo = (u8 *)lbl_80367860;
     }
     hi = (u8 *)lbl_8036786C;
-    if (hi) {
-    } else {
+    if (hi == NULL) {
         hi = (u8 *)lbl_80367864;
     }
     return hi - lo;
@@ -5615,14 +5610,207 @@ extern "C" void fn_800CE214(void *self, void *stat) {
         (u8 *)*(void **)((u8 *)self + 0x208) + *(s32 *)((u8 *)self + 0x204) * 0x58,
         1, stat);
 }
-#pragma global_optimizer reset
-s32 fn_800CE690(s32 param1, s32 param2) {
-    // Simplest version first - just the basic structure to get it compiling
-    return 0;
-}
+#pragma opt_strength_reduction off
+extern "C" void fn_800CE690(void *arg0, s32 *arg1)
+{
+    extern char lbl_802704F8[];
 
-#pragma dont_inline on
-#pragma global_optimizer off
+    u32 strlen(const char *);
+    s32 String_Compare(String *, u32, u32, char *, u32);
+    char *String_CStr(void *);
+    void *Res_GetByName(void *);
+    void GActor_RequestRes(char *);
+    void DebugPrint(const char *, ...);
+    void fn_80232138(char *, ...);
+    void fn_800056A0(s32);
+
+
+    s16 *stream;
+    s16 *header;
+    u32 code;
+
+    s32 j;
+    s32 *list;
+    s32 count;
+    s32 secondIndex;
+    s32 mode;
+    s32 i;
+    u8 *self;
+    u8 *stat;
+    s32 index;
+
+    self = (u8 *)arg0;
+    stat = (u8 *)arg1;
+
+    header = *(s16 **)(self + 0x1FC);
+    j = *header;
+
+    count = (s8)*(s16 *)((u8 *)header + j * 4 + 6);
+    *header = j + 1;
+
+    *(s32 *)(stat + 0x50) = 0;
+    *(s32 *)(stat + 0x54) = 0;
+
+    i = 0;
+
+    while (i < count) {
+        u8 opcode;
+        stream = *(s16 **)(self + 0x1FC);
+        opcode = *(u8 *)((u8 *)stream + (*stream * 4) + 4);
+        code = opcode - 0x0A;
+
+        {
+            switch (opcode) {
+            case 0xb: index = 0x1A; mode = 1; break;
+            case 0xa: index = 0; mode = 0; break;
+            case 0xc: index = 0x1A; mode = 0; break;
+            case 0x16: index = 0; mode = 1; break;
+            case 0x18: index = 1; mode = 1; break;
+            case 0xf: mode = -1; break;
+            case 0x35: case 0x36: case 0x37: case 0x38: case 0x39:
+            case 0x3a: case 0x3b: case 0x3c: case 0x3d: case 0x3e:
+            case 0x3f: case 0x40: case 0x41: case 0x42: case 0x43:
+                index = opcode - 0x35; mode = 0; break;
+            case 0x44: case 0x45: case 0x46: case 0x47: case 0x48:
+            case 0x49: case 0x4a: case 0x4b: case 0x4c: case 0x4d:
+                index = opcode - 0x35; mode = 1; break;
+            case 0x4e:
+                index = 0xC; secondIndex = 0x1B; mode = 2; break;
+            default:
+                break;
+            }
+
+            if (index == 3) {
+                list = (s32 *)stat;
+                for (j = *(s32 *)(stat + 0x50); j > 0; j--,list++) {
+                    if (list[12] == 4) goto next_command;
+                }
+            }
+
+            if (mode == 0) {
+                s32 used = *(s32 *)(stat + 0x50);
+                j = used;
+                if (used < 4) {
+                    *(s32 *)(stat + 0x30 + j * 4) = index;
+                    (*(s32 *)(stat + 0x50))++;
+                } else {
+                    DebugPrint(lbl_802704F8 + 0x4AE);
+                }
+                if (index < 0) goto next_command;
+                if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+                s32 offset = index * 0xC;
+                String *entry;
+                char *name;
+                u32 length;
+                entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+                length = strlen(lbl_802704F8 + 0x16F);
+                if (String_Compare(entry, 0, entry->size,
+                        lbl_802704F8 + 0x16F, length) != 0) {
+                    name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                    if ((u32)Res_GetByName(name) == 0U) {
+                        fn_800056A0(0);
+                        goto next_command;
+                    }
+                    GActor_RequestRes(name);
+                    fn_80232138(lbl_802704F8 + 0x172, name);
+                }
+                goto next_command;
+            }
+
+            if (mode == 1) {
+                s32 used54 = *(s32 *)(stat + 0x54);
+                j = used54;
+                if (used54 < 4) {
+                    *(s32 *)(stat + 0x40 + j * 4) = index;
+                    (*(s32 *)(stat + 0x54))++;
+                } else {
+                    DebugPrint(lbl_802704F8 + 0x4AE);
+                }
+                if (index < 0) goto next_command;
+                if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+                s32 offset = index * 0xC;
+                String *entry;
+                char *name;
+                u32 length;
+                entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+                length = strlen(lbl_802704F8 + 0x16F);
+                if (String_Compare(entry, 0, entry->size,
+                        lbl_802704F8 + 0x16F, length) != 0) {
+                    name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                    if ((u32)Res_GetByName(name) == 0U) {
+                        fn_800056A0(0);
+                        goto next_command;
+                    }
+                    GActor_RequestRes(name);
+                    fn_80232138(lbl_802704F8 + 0x172, name);
+                }
+                goto next_command;
+            }
+
+            if (mode == 2) {
+                s32 used = *(s32 *)(stat + 0x50);
+                j = used;
+                if (used < 4) {
+                    *(s32 *)(stat + 0x30 + j * 4) = index;
+                    (*(s32 *)(stat + 0x50))++;
+                } else {
+                    DebugPrint(lbl_802704F8 + 0x4AE);
+                }
+                s32 used54 = *(s32 *)(stat + 0x54);
+                j = used54;
+                if (used54 < 4) {
+                    *(s32 *)(stat + 0x40 + j * 4) = secondIndex;
+                    (*(s32 *)(stat + 0x54))++;
+                } else {
+                    DebugPrint(lbl_802704F8 + 0x4AE);
+                }
+                if (index >= 0 && (u32)index < *(u32 *)(self + 0x1C0)) {
+                    s32 offset = index * 0xC;
+                String *entry;
+                char *name;
+                u32 length;
+                    entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+                    length = strlen(lbl_802704F8 + 0x16F);
+                    if (String_Compare(entry, 0, entry->size,
+                            lbl_802704F8 + 0x16F, length) != 0) {
+                        name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                        if ((u32)Res_GetByName(name) == 0U) {
+                            fn_800056A0(0);
+                        } else {
+                            GActor_RequestRes(name);
+                            fn_80232138(lbl_802704F8 + 0x172, name);
+                        }
+                    }
+                }
+                if (secondIndex >= 0 &&
+                    (u32)secondIndex < *(u32 *)(self + 0x1C0)) {
+                    s32 offset = secondIndex * 0xC;
+                    String *entry;
+                    char *name;
+                    u32 length;
+                    entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+                    length = strlen(lbl_802704F8 + 0x16F);
+                    if (String_Compare(entry, 0, entry->size,
+                            lbl_802704F8 + 0x16F, length) != 0) {
+                        name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                        if ((u32)Res_GetByName(name) == 0U) {
+                            fn_800056A0(0);
+                        } else {
+                            GActor_RequestRes(name);
+                            fn_80232138(lbl_802704F8 + 0x172, name);
+                        }
+                    }
+                }
+            }
+        }
+
+    next_command:
+        stream = *(s16 **)(self + 0x1FC);
+        *stream = *stream + 1;
+        i++;
+    }
+}
+#pragma opt_strength_reduction reset
 extern "C" u8 fn_800CEB6C(void *arg0, s32 *arg1) {
     s16 *stream;
     s32 idx;
@@ -18031,18 +18219,14 @@ void Camera_GetEyePos(void *arg0, void *arg1) {
     M2C_FIELD(arg0, f32 *, 8) = (f32) M2C_FIELD(arg1, f32 *, 0xF8);
 }
 
-#pragma dont_inline on
-#pragma scheduling off
+#pragma scheduling on
 void fn_800E8FE8(void *arg0, f32 arg1) {
     void fn_800DF478(void *, f32, f32, f32);
-    extern f32 lbl_80369F78;
-    f32 z = lbl_80369F78;
-
+    extern const f32 lbl_80369F78;
     *(f32 *)((u8 *)arg0 + 0x104) = arg1;
-    fn_800DF478((u8 *)arg0 + 0x254, arg1, z, z);
+    fn_800DF478((u8 *)arg0 + 0x254, arg1, lbl_80369F78, lbl_80369F78);
 }
 #pragma scheduling reset
-#pragma dont_inline reset
 f32 Camera_GetFov(void *arg0) {
     return M2C_FIELD(arg0, f32 *, 0x104);
 }
