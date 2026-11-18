@@ -2,6 +2,8 @@
 #include "common.h"
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
+struct Node26724 { u8 pad[8]; u8 flag; };
+struct Ctx26724 { u8 pad[0x190]; struct Node26724 *node; };
 struct MenuController24768 { u32 pad;
 virtual void v0() = 0;
 virtual void v1() = 0;
@@ -3968,10 +3970,14 @@ void fn_80026724(void *arg0) {
     void fn_80091518(void *, void *);
     void fn_800915E8(void *, void *);
     extern u8 gUiContext[];
+    void *ctx;
     void *param;
+    void *node;
 
+    ctx = *(void **)gUiContext;
     param = *(void **)((u8 *)arg0 + 0x54);
-    if (*(u8 *)((u8 *)*(void **)((u8 *)*(void **)gUiContext + 0x190) + 8) != 1) {
+    node = *(void **)((u8 *)ctx + 0x190);
+    if (*(u8 *)((u8 *)node + 8) != 1) {
         fn_800915E8(param, arg0);
     } else {
         fn_80091518(param, arg0);
