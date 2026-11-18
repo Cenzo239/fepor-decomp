@@ -18636,8 +18636,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-#pragma optimization_level 4
-#pragma peephole on
+#pragma peephole off
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point { u16 x,y; };
 struct Point *fn_8013F748(void *, struct Point *, struct Point *);
