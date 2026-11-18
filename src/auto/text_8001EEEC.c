@@ -1519,7 +1519,7 @@ void fn_80022748(u8 *map, u8 *arg1) {
     }
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
     s32 base = arg0 + 0x10000;
     arg0 = arg1 << 1;
