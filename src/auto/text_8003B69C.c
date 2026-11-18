@@ -7565,11 +7565,11 @@ void fn_80049A98(void *arg0) {
 }
 
 #pragma global_optimizer off
-void MapObj_FadeIn(void *arg0,u8 arg1) { void fn_8005FEE8(void *,f32); void fn_80044450(void *,s32); void fn_80016180(void); extern u16 *gMap; u8 *ptr=arg0; ptr[2]&=~2; fn_8005FEE8(ptr+0x14,0.0f); if(arg1) {fn_80044450((void*)gMap,1); fn_80016180();} }
+void MapObj_FadeIn(void *arg0,u8 arg1) { void fn_8005FEE8(void *,f32); void fn_80044450(void *,s32); void fn_80016180(void); extern void *gMap; u8 *ptr=arg0; ptr[2]&=~2; fn_8005FEE8(ptr+0x14,0.0f); if(arg1) {fn_80044450(gMap,1); fn_80016180();} }
 #pragma global_optimizer reset
 void MapObj_FadeOut(void *arg0, u8 arg1) {
     void fn_8005FEE8(void *, f32);
-    void fn_80044450(s32, s32);
+    void fn_80044450(void *, s32);
     void fn_80016180(void);
     extern f32 lbl_80368F2C;
     extern void *gMap;
@@ -7582,17 +7582,16 @@ void MapObj_FadeOut(void *arg0, u8 arg1) {
     fn_8005FEE8((u8 *)arg0 + 0x14, -1.0f);
 
     if (arg1 != 0) {
-        fn_80044450((s32)gMap, 1);
+        fn_80044450(gMap, 1);
         fn_80016180();
     }
 }
 
-extern u16* gMap;
 void MapObj_Show(void *arg0, u8 arg1) {
     void Model_SetAlpha(void *, s32, void *);
-    void fn_80044450(s32, s32);
+    void fn_80044450(void *, s32);
     void fn_80016180(void);
-    extern u16 *gMap;
+    extern void *gMap;
     u8 temp;
 
     temp = *(u8 *)((u8 *)arg0 + 2);
@@ -7602,7 +7601,7 @@ void MapObj_Show(void *arg0, u8 arg1) {
     Model_SetAlpha((u8 *)arg0 + 0x14, 0xFF, arg0);
 
     if (arg1 != 0) {
-        fn_80044450((s32)gMap, 1);
+        fn_80044450(gMap, 1);
         fn_80016180();
     }
 }
@@ -7610,9 +7609,9 @@ void MapObj_Show(void *arg0, u8 arg1) {
 void MapObj_Hide(void *arg0, u8 arg1)
 {
     void Model_SetAlpha(void *, s32, void *);
-    void fn_80044450(s32, s32);
+    void fn_80044450(void *, s32);
     void fn_80016180(void);
-    extern u16 *gMap;
+    extern void *gMap;
     u8 temp;
 
     temp = *(u8 *)((u8 *)arg0 + 2);
@@ -7622,7 +7621,7 @@ void MapObj_Hide(void *arg0, u8 arg1)
     Model_SetAlpha((u8 *)arg0 + 0x14, 0, arg0);
 
     if (arg1 != 0) {
-        fn_80044450((s32)gMap, 1);
+        fn_80044450(gMap, 1);
         fn_80016180();
     }
 }
