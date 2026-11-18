@@ -385,6 +385,7 @@ static inline s32 Ui_MinCount(s32 a, s32 b)
  return a;
 }
 
+#pragma global_optimizer off
 void fn_80121630(void *arg0)
 {
     void *Process_CreateChild(void *, void *);
@@ -460,6 +461,7 @@ void fn_80121630(void *arg0)
         }
     }
 }
+#pragma global_optimizer on
 
 #pragma cplusplus on
 extern "C" void fn_80121754(void) {
