@@ -148,24 +148,22 @@ s32 fn_8020931C(s32 commit, s32 offset);
 #pragma scheduling off
 #pragma opt_strength_reduction off
 
+#pragma peephole off
+#pragma scheduling on
 void __OSInitSystemCall(void) {
     void memcpy(void *, const void *, u32);
     void DCFlushRangeNoSync(void *, u32);
     void ICInvalidateRange(void *, u32);
     extern u8 __OSSystemCallVectorStart[];
     extern u8 __OSSystemCallVectorEnd[];
-    u8 *addr;
-    u8 *start;
-    u8 *end;
+    void *addr;
 
-    addr = (u8 *)0x80000C00;
-    start = __OSSystemCallVectorStart;
-    end = __OSSystemCallVectorEnd;
-    memcpy(addr, start, end - start);
+    addr = (void *)0x80000C00;
+    memcpy(addr, __OSSystemCallVectorStart,
+           (u32)__OSSystemCallVectorEnd - (u32)__OSSystemCallVectorStart);
     DCFlushRangeNoSync(addr, 0x100);
     __sync();
     ICInvalidateRange(addr, 0x100);
 }
-#pragma opt_strength_reduction reset
-#pragma peephole reset
 #pragma scheduling reset
+#pragma peephole reset
