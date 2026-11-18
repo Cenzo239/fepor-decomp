@@ -2035,6 +2035,7 @@ void fn_80123988(void *arg0)
     }
 }
 #pragma scheduling on
+#pragma optimization_level reset
 #pragma global_optimizer on
 
 s32 fn_80123BA8(void) {
