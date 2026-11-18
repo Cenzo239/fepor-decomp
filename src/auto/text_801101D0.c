@@ -1532,37 +1532,31 @@ void fn_801134EC(void *out, void *actor, void *name) {
     s32 fn_800DDC04(void *, void *);
     String path;
     String joined;
-    void *self;
-    void *anim;
-    void *dst;
     u32 n;
     s32 ok;
 
-    self = actor;
-    anim = name;
-    dst = out;
     path.cap = 0;
     path.size = 0;
     path.data = 0;
     path.cap = 0;
-    String_Assign(&path, anim, 0, -1);
+    String_Assign(&path, name, 0, -1);
     n = strlen((char *)gActorXmlStrs + 0x1C);
-    if (String_Compare((u8 *)self + 0x160, 0, (void *)*(u32 *)((u8 *)self + 0x160),
+    if (String_Compare((u8 *)actor + 0x160, 0, (void *)*(u32 *)((u8 *)actor + 0x160),
                        (char *)gActorXmlStrs + 0x1C, n) != 0) {
         fn_800C992C(&path, (char *)gActorXmlStrs + 0xFC,
                     strlen((char *)gActorXmlStrs + 0xFC));
-        fn_800C99A0(&path, (u8 *)self + 0x160, 0, -1);
+        fn_800C99A0(&path, (u8 *)actor + 0x160, 0, -1);
     }
-    String_Concat(&joined, (u8 *)self + 0x154, &path);
-    ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &joined) == 0;
+    String_Concat(&joined, (u8 *)actor + 0x154, &path);
+    ok = fn_800DDC04(*(void **)((u8 *)actor + 0xDC), &joined) == 0;
     String_Destroy(&joined, -1);
     if ((u8)ok != 0) {
-        String_Assign(&path, anim, 0, -1);
-        *(u8 *)((u8 *)self + 0x184) = 1;
+        String_Assign(&path, name, 0, -1);
+        *(u8 *)((u8 *)actor + 0x184) = 1;
     } else {
-        *(u8 *)((u8 *)self + 0x184) = 1;
+        *(u8 *)((u8 *)actor + 0x184) = 1;
     }
-    String_Copy(dst, &path);
+    String_Copy(out, &path);
     String_Destroy(&path, -1);
 }
 #pragma global_optimizer on
@@ -2388,11 +2382,12 @@ struct ActorMotionInterface {
     virtual void v13() = 0;
     virtual void Adjust(void *, f32, f32) = 0;
 };
-#pragma cplusplus reset
+#pragma cplusplus on
 #pragma push
 #pragma dont_inline on
+#pragma optimization_level 3
 #pragma global_optimizer off
-void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
+extern "C" void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
 s32 strlen(char *);
 s32 fn_80199310(void *);
 void fn_800DF670(void *);
@@ -2436,11 +2431,13 @@ String_Assign((u8*)arg0+0x154,&joined,0,-1);
 String_Destroy(&joined,-1);String_Destroy(&suffix,-1);
 }
 String_ConcatCStr(&test,(u8*)arg0+0x154,(char*)gActorXmlStrs+0xFE);
-missing=fn_800DDAA4(*(void **)((u8*)arg0+0xDC),&test)==0;
+missing=fn_800DDAA4(*(void **)((u8*)arg0+0xDC),&test)==0 ? 1 : 0;
 String_Destroy(&test,-1);
 if((u8)missing) *(u8*)((u8*)arg0+0x1A4)=1;
-if(!flag) *(u32*)((u8*)arg0+0x14C)=*(u32*)((u8*)gGame+0xE8);
+if(!flag) {
+*(u32*)((u8*)arg0+0x14C)=*(u32*)((u8*)gGame+0xE8);
 *(s32*)((u8*)arg0+0x148)=mode;
+}
 String_Init(&se8,(char*)gActorXmlStrs+0x4ED,&scratch7);
 fn_801134EC(&se7,arg0,&se8);
 String_Assign(&anim,&se7,0,-1);
@@ -2458,9 +2455,13 @@ dir[0]=-*(f32*)((u8*)arg0+0x60);dir[1]=lbl_8036A184;dir[2]=lbl_8036A184;
 fn_802031E8(&dir,&dir);fn_802031CC(&dir,&dir,scale);fn_80203184(&origin,&dir,&result);
 move[1]=lbl_8036A184;move[0]=result[0];move[2]=lbl_8036A184;
 *(u32*)&copy[0]=*(u32*)&move[0];*(u32*)&copy[1]=*(u32*)&move[1];*(u32*)&copy[2]=*(u32*)&move[2];
-((void (*)(void *,void *,f32,f32))(*(void ***)((u8*)arg0+0x40))[16])(arg0,&copy,*(f32*)((u8*)gGame+0xF0),lbl_8036A184);
+((ActorMotionInterface*)arg0)->Adjust(&copy,*(f32*)((u8*)gGame+0xF0),lbl_8036A184);
 *(s32*)((u8*)arg0+0x140)=0;
-fn_800E4BE0(arg0,(s32)*(f32*)((u8*)gGame+0xF4),*(s32*)((u8*)gGame+0xFC),*(f32*)((u8*)gGame+0xF8));
+{
+f32 rate=*(f32*)((u8*)gGame+0xF8);
+s32 frames=(s32)*(f32*)((u8*)gGame+0xF4);
+fn_800E4BE0(arg0,frames,*(s32*)((u8*)gGame+0xFC),rate);
+}
 switch(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x144)){
 case 3: SeCue_PlayAt((char*)gActorXmlStrs+0x305,100,x,y,z);
 case 2: SeCue_PlayAt((char*)gActorXmlStrs+0x31D,100,x,y,z);
@@ -2531,6 +2532,7 @@ else fn_80025624(gPadInput,8);
 String_Destroy(&anim,-1);
 }
 #pragma pop
+#pragma cplusplus off
 void fn_80115264(void *self,s32 mode,s32 flag) {
 s32 strlen(char *);
 s32 fn_80199310(void *);
@@ -9198,7 +9200,6 @@ s32 fn_801208BC(struct Unit* unit) {
     s32 result;
     u8* temp_r5;
     u8* r6_ptr = (u8*)unit;
-    
     if (r6_ptr == NULL)
         return 0;
     if (M2C_FIELD(unit, u16*, 0x0) == 0)
@@ -9210,9 +9211,8 @@ s32 fn_801208BC(struct Unit* unit) {
     result = fn_80010710(&temp_r5[0]);
     if (result != 0) {
         s32 temp = *(s32*)(r6_ptr + 0xB0);
-        if (temp > 0) {
+        if (temp > 0)
             return temp;
-        }
     }
     return result;
 }
