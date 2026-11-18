@@ -1720,26 +1720,30 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma scheduling on
 #pragma global_optimizer off
 #pragma optimization_level 3
-#pragma peephole off
+#pragma peephole on
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
 extern f32 lbl_8036A5AC;
 Vec2s out,in;
+void *self;
+s32 *dst;
 u32 rowH;
-s32 kind,colW;
+s16 kind,colW;
 u32 quot;
 s32 rem,hdiv,t;
 s16 x,y,half,off48,off4a;
-colW=*(s16*)((u8*)arg1+0x44);
-kind=*(s16*)((u8*)arg1+0x3e);
+self=arg1;
+dst=arg0;
+colW=*(s16*)((u8*)self+0x44);
+kind=*(s16*)((u8*)self+0x3e);
 quot=kind/colW;
-t=*(s16*)((u8*)arg1+0x12);
-rem=*(s16*)((u8*)arg1+0x16);
+t=*(s16*)((u8*)self+0x12);
+rem=*(s16*)((u8*)self+0x16);
 rem-=t;
-rowH=*(u16*)((u8*)arg1+0x46);
-off48=*(s16*)((u8*)arg1+0x48);
-off4a=*(s16*)((u8*)arg1+0x4a);
+rowH=*(u16*)((u8*)self+0x46);
+off48=*(s16*)((u8*)self+0x48);
+off4a=*(s16*)((u8*)self+0x4a);
 t=(s16)rem;
 hdiv=t/colW;
 t=(s16)hdiv;
@@ -1751,7 +1755,7 @@ y=(s16)(rowH*(s16)quot+off4a);
 t=Text_MeasureHeight(-1,lbl_8036A5AC);
 half=(s16)(((s32)(s16)rowH-t)>>1);
 in.x=x; in.y=y+half;
-*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
+*dst=*(s32*)fn_8013F748(self,&out,&in);
 }
 #pragma peephole reset
 #pragma optimization_level reset
@@ -14128,10 +14132,7 @@ s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 #pragma scheduling off
 s32 SeCue_PlayAtPos(void *arg0, f32 *pos, s32 flag) {
     s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
-    f32 x = pos[0];
-    f32 y = pos[1];
-    f32 z = pos[2];
-    return SeCue_PlayAt(arg0, x, y, z, flag);
+    return SeCue_PlayAt(arg0, pos[0], pos[1], pos[2], flag);
 }
 #pragma scheduling reset
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
