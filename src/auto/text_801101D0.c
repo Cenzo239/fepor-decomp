@@ -2364,6 +2364,7 @@ extern "C" void fn_80114840(void *arg0) {
 }
 #pragma cplusplus reset
 
+typedef struct { f32 x, y, z; } PVector3;
 #pragma cplusplus on
 struct ActorMotionInterface {
     u8 pad[0x40];
@@ -9197,27 +9198,99 @@ void fn_801207D8(void *arg0) {
 
 extern s32 fn_80010710(u8* arg0);
 extern s32 gActiveCam;
-s32 fn_801208BC(struct Unit* unit) {
-    s32 result;
-    u8* temp_r5;
-    u8* r6_ptr = (u8*)unit;
-    if (r6_ptr == NULL)
-        return 0;
-    if (M2C_FIELD(unit, u16*, 0x0) == 0)
-        return 0;
-    temp_r5 = r6_ptr + 0x64;
-    result = *(s32*)(r6_ptr + 0x1A4);
-    if (result < 0 || result > 9)
-        return 0;
-    result = fn_80010710(&temp_r5[0]);
-    if (result != 0) {
-        s32 temp = *(s32*)(r6_ptr + 0xB0);
-        if (temp > 0)
-            return temp;
-    }
-    return result;
+#pragma push
+#pragma global_optimizer on
+s32 fn_801208BC(s8 *text, s32 wanted) {
+s32 fn_80010428(s8 **,s32,f32);
+s8 *fn_80104970(s8 *);
+extern f32 lbl_8036A248;
+s32 longest=-1;
+s32 width;
+s32 selected=wanted;
+s32 font=2;
+for (;;) {
+width=0;
+for (;;) {
+if (!(s8)*text) goto done;
+if((s8)*text=='\n') { ++text;break; }
+if((s8)*text=='#') {
+if((s32)(u8)text[1]=='F') font=(s8)text[3]-'0';
+text+=fn_80010710((u8*)text);
 }
-
+if((s32)(u8)*text=='$') {
+++text;
+switch((s8)*text++) {
+case 'N':
+if((s32)(u8)*text=='D') { ++text;continue; }
+break;
+case 's':
+switch((s8)*text++) {
+case '0':selected=0;continue;
+case '1':selected=1;continue;
+case '2':selected=2;continue;
+case '3':selected=3;continue;
+case '4':selected=4;continue;
+case 'D':if(selected==wanted) goto done;continue;
+default:continue;
+}
+case 'n': {
+switch((s8)*text++) {
+case '0':selected=0;break;
+case '1':selected=1;break;
+case '2':selected=2;break;
+case '3':selected=3;break;
+}
+{
+u8 *out;
+out=lbl_8032FE24;
+while((s32)(u8)*text!='|') *out++=*text++;
+*out=0;++text;continue;
+}
+}
+case 'w':
+switch((s8)*text++) {
+case '0':selected=0;break;
+case '1':selected=1;break;
+case '2':selected=2;break;
+case '3':selected=3;break;
+}
+if(selected==wanted) goto done;continue;
+case 'D':case 'M':case 'O':case 'S': ++text;continue;
+case '=':text+=4;continue;
+case 'F':
+switch((s32)(u8)*text++) { case 'C':
+{
+u8 *out;
+out=lbl_8032FE24;
+while((s32)(u8)*text!='|') *out++=*text++;
+*out=0;++text;continue;
+}
+break;
+}
+continue;
+case 'B':case 'R': {
+{
+u8 *out;
+out=lbl_8032FE24;
+while((s32)(u8)*text!='|') *out++=*text++;
+*out=0;++text;continue;
+}
+}
+case 'P':goto done;
+default:continue;
+}
+break;
+}
+if(selected==wanted) width+=fn_80010428(&text,font,lbl_8036A248);
+else text=fn_80104970(text);
+}
+if(longest<width)longest=width;
+}
+done:
+if(longest<width)longest=width;
+return longest;
+}
+#pragma pop
 #include "common.h"
 extern struct SomeStruct* gCardWork; // example struct
 #include "common.h"
