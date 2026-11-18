@@ -2384,8 +2384,9 @@ struct ActorMotionInterface {
 #pragma cplusplus on
 #pragma push
 #pragma dont_inline on
-#pragma optimization_level 3
-#pragma global_optimizer off
+#pragma scheduling on
+#pragma optimization_level 4
+#pragma global_optimizer on
 extern "C" void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
 s32 strlen(char *);
 s32 fn_80199310(void *);
@@ -2476,7 +2477,8 @@ void *p=*(void **)((u8*)*(void **)((u8*)arg0+0x118)+0x11C);
 kind=p?fn_80199310(p):0;
 switch(kind){
 case 0:case 2:case 5:case 7:case 10:
-if(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x140)==0) SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);else SeCue_PlayAt((char*)gActorXmlStrs+0x361,100,x,y,z);break;
+if(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x140)==0) SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);
+else SeCue_PlayAt((char*)gActorXmlStrs+0x361,100,x,y,z);break;
 case 1:case 3:case 6:SeCue_PlayAt((char*)gActorXmlStrs+0x374,100,x,y,z);break;
 case 4:case 8:case 11:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
 default:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
@@ -2916,14 +2918,12 @@ s32 fn_80116580(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801165B4(void *arg0, void *arg1) {
+#pragma optimization_level 2
     void fn_80199318(void *, void *);
     extern u16 gActorXmlStrs[];
     u8 sp8[0x14];
-    void *self;
-    void *v;
-
-    self = arg0;
-    v = *(void **)((u8 *)arg1 + 0x11C);
+    void *self = arg0;
+    void *v = *(void **)((u8 *)arg1 + 0x11C);
     if (v != 0) {
         fn_80199318(self, v);
     } else {
