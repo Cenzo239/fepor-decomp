@@ -189,7 +189,7 @@ void fn_800065B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void fn_80006608(s16 *arg0) {
     s16 x;
-    s16 dy;
+    s32 dy;
     s16 dx;
 
     x = arg0[0];
@@ -197,9 +197,9 @@ void fn_80006608(s16 *arg0) {
     dx = -x;
     dy = -dy;
     arg0[0] = x + dx;
-    arg0[1] = arg0[1] + dy;
+    arg0[1] = arg0[1] + (s16)dy;
     arg0[2] = arg0[2] + dx;
-    arg0[3] = arg0[3] + dy;
+    arg0[3] = arg0[3] + (s16)dy;
 }
 
 s32 fn_80006650(s16 *arg0, s16 *arg1) {
