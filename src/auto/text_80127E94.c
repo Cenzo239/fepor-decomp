@@ -418,55 +418,41 @@ checked:
         fn_800FB96C(12,gUiContext[13],gUiContext[14],*(s32 *)(gUiContext+4),target[0],target[1],(s8)(arg1<0?arg1:arg1+4),0,0);
     return gAiState[0x21c];
 }
-#pragma use_lmw_stmw reset
+#pragma cplusplus off
 u8 fn_80129104(void *arg0) {
-    typedef struct {
-        char *name;
-        u32 key;
-        u8 (*fn)(void *, s32);
-    } Tbl;
-    extern Tbl lbl_802909F8[];
-    extern u8 gAiState[];
-    s32 fn_801001F0();
-    s32 Unit_FindKeyItemSlot();
-    u8 fn_80093218(void *, u32);
-    Tbl *e;
-    u32 k;
-    s32 t;
-    s32 i;
-    u8 *p;
-
-    if ((gAiState[1] & 2) || (M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000)) {
-        return 0;
-    }
-    if (fn_801287C0() == 0) {
-        for (i = 0, p = (u8 *) arg0; i < 4; i++, p += 8) {
-            if (M2C_FIELD(p, u32 *, 0x1ec) == 0) {
-                break;
-            }
-            t = fn_801001F0(M2C_FIELD(p, u32 *, 0x1ec));
-            if ((u8) t != 0 && i == Unit_FindKeyItemSlot(arg0, t)) {
-                k = M2C_FIELD(p, u32 *, 0x1ec);
-                if (fn_80093218(arg0, k) != 0) {
-                    e = lbl_802909F8;
-                    while (e->key != 0 && (e->key != k || e->fn == NULL)) {
-                        e++;
-                    }
-                    if (e->key == 0) {
-                        e = NULL;
-                    }
-                } else {
-                    e = NULL;
-                }
-                if (e != NULL && e->fn(arg0, i) != 0) {
-                    break;
-                }
-            }
-        }
-    }
-    return gAiState[0x21c];
+extern u8 gAiState[];
+typedef struct { char *name; u32 key; u8 (*fn)(void *,s32); } Tbl;
+extern Tbl lbl_802909F8[];
+u8 fn_801001F0(u32);
+s32 Unit_FindKeyItemSlot(void *,u8);
+u8 fn_80093218(void *,u32);
+u8 fn_801287C0(void *);
+Tbl *walk;
+Tbl *entry;
+u32 key;
+u8 kind;
+u8 *p;
+s32 i;
+if ((gAiState[1]&2) || (M2C_FIELD(arg0,u32 *,0x254)&0x03000000)) return 0;
+if(fn_801287C0(arg0)==0) {
+for(i=0,p=arg0;i<4;i++,p+=8) {
+if(M2C_FIELD(p,u32 *,0x1EC)==0) break;
+kind=fn_801001F0(M2C_FIELD(p,u32 *,0x1EC));
+if(kind!=0 && i==Unit_FindKeyItemSlot(arg0,kind)) {
+key=M2C_FIELD(p,u32 *,0x1EC);
+if(fn_80093218(arg0,key)) {
+for(walk=lbl_802909F8;walk->key;walk++) {
+if(key==walk->key && walk->fn) { entry=walk; goto found; }
 }
-
+}
+entry=0;
+found:
+if(entry && entry->fn(arg0,i)) break;
+}
+}
+}
+return gAiState[0x21C];
+}
 u8 fn_8012923C(void *arg0) {
 extern u8 gAiState[];
 typedef struct { char *name; u32 key; u8 (*fn)(void *,s32); } Tbl;
@@ -2241,3 +2227,4 @@ void fn_8012C330(void *arg0) {
 #include "structs.h"
 
 extern s32 lbl_80367A88;
+
