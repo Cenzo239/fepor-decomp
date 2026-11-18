@@ -74,6 +74,7 @@ typedef struct {
 
 #pragma fp_contract on
 #pragma scheduling on
+#pragma opt_strength_reduction off
 
 f32 Map_SampleHeight(void *arg0, f32 x, f32 y) {
     void fn_80203290(f32 *, f32 *, f32 *);
