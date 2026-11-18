@@ -10660,8 +10660,8 @@ void fn_80050E80(void)
     extern void *lbl_803672B8;
     extern void *lbl_803672B4;
     extern void *lbl_803672CC;
-    extern void *gUnitShadowMat;
-    void *p;
+      extern s32 gUnitShadowMat;
+      void *p;
     s32 i;
     void *a;
     void *b;
