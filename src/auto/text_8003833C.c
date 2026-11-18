@@ -1710,21 +1710,14 @@ s8 Unit_GetMaxHp(void *arg0)
 
 #pragma opt_peephole on
 s8 Unit_GetRes(void *arg0) {
-    void *p;
-    void *q;
-    u8 t;
-    u8 a;
-    s8 lim;
+    s32 p;
     s8 var;
 
-    p = *(void **)((u8 *)arg0 + 0x18C);
-    q = *(void **)((u8 *)arg0 + 0x188);
-    t = *(u8 *)((u8 *)arg0 + 0x1B2);
-    a = *(u8 *)((u8 *)p + 0x4B);
-    lim = *(u8 *)((u8 *)p + 0x53);
-    var = *(u8 *)((u8 *)q + 0x24) + a + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x24) + *(u8 *)(p + 0x4B)) + *(u8 *)((u8 *)arg0 + 0x1B2);
+    p = *(s8 *)(p + 0x53);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
