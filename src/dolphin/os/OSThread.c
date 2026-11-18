@@ -156,6 +156,14 @@ static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
     else next->prev = NULL;
     queue->head = next;
 }
+static inline OSThread *PopRunThread(OSThreadQueue *queue) {
+    OSThread *thread = queue->head;
+    OSThread *next = thread->next;
+    if (next == NULL) queue->tail = NULL;
+    else next->prev = NULL;
+    queue->head = next;
+    return thread;
+}
 #pragma opt_common_subs reset
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
