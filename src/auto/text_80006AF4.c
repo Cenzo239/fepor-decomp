@@ -14,23 +14,18 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
-    s32 c2;
-    goto ld;
-cmp:
-    if ((s8)raw1 != (s8)raw2)
-        return (u32)(c1 - c2);
-    a++;
-    b++;
-ld:
-    raw1 = *a;
-    raw2 = *b;
-    c1 = (s8)raw1;
-    c2 = (s8)raw2;
-    if ((c1 | c2) != 0)
-        goto cmp;
+    u8 ra;
+    u8 rb;
+    ra = *a;
+    rb = *b;
+    while ((s8)ra | (s8)rb) {
+        if ((s8)ra != (s8)rb)
+            return (u32)((s8)ra - (s8)rb);
+        a++;
+        b++;
+        ra = *a;
+        rb = *b;
+    }
     return 0;
 }
 
@@ -2192,17 +2187,20 @@ s32 fn_8000A950(void *arg0) {
     u8 *search;
     s32 i;
     u8 *p;
+    u32 diff;
 
     p = *(u8 **)((u8 *)arg0 + 4);
     search = *(u8 **)(p + 4);
     entry = gProcesses;
     for (i = 0; i < 256; i++, entry += 0x70) {
         if (*(u32 *)entry != 0) {
-            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), search) != 0)
-                ;
-            else
-                goto found;
+            diff = Process_CompareNameExt(*(u8 **)(entry + 0x14), search);
+            if (diff != 0)
+                goto next;
+            goto found;
         }
+    next:
+        ;
     }
     entry = 0;
 found:
