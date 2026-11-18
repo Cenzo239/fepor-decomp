@@ -163,6 +163,21 @@ static inline void PopThreadHead(OSThreadQueue *queue, OSThread *thread, OSThrea
     else next->prev = NULL;
     queue->head = next;
 }
+static inline void PopThreadAt(void **base, u32 priority, OSThread **out) {
+    OSThread *next;
+    OSThread *thread;
+    OSThreadQueue *queue;
+    extern volatile u32 RunQueueBits_80368518;
+    queue=(OSThreadQueue *)base;
+    queue+=priority;
+    thread=queue->head;
+    next=thread->next;
+    *out=thread;
+    if(next==NULL) queue->tail=NULL;
+    else next->prev=NULL;
+    queue->head=next;
+    if(queue->head==NULL) RunQueueBits_80368518 &= ~(1 << (31-priority));
+}
 #pragma opt_common_subs reset
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
@@ -251,7 +266,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     prio = __cntlzw((u32)RunQueueBits_80368518);
     q = (OSThreadQueue *)queue;
     q += prio;
-    PopThread(q, &next);
+    PopThreadHead(q, q->head, &next);
     if (q->head == NULL) {
         RunQueueBits_80368518 &= ~(1 << (0x1F - prio));
     }
