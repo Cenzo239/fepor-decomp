@@ -15,9 +15,9 @@ extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
 
 static inline void dvdClearDiStatus(void) {
-    u32 *base = (u32 *)0xCC000000;
+    volatile u32 *base = (volatile u32 *)0xCC000000;
     u32 tmp = base[0x1801];
-    u32 *di = base + 0x1800;
+    volatile u32 *di = base + 0x1800;
     di[1] = tmp;
 }
 
@@ -1453,8 +1453,9 @@ void stateBusy_8020E178(void *arg0) {
         } else {
             dvdClearDiStatus();
             remaining = *(u32 *)(b + 0x14) - *(u32 *)(b + 0x20);
-            len = 0x80000;
-            if (remaining <= 0x80000) {
+            if (remaining > 0x80000) {
+                len = 0x80000;
+            } else {
                 len = remaining;
             }
             *(u32 *)(b + 0x1c) = len;
