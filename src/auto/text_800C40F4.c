@@ -683,8 +683,8 @@ static inline u32 Heap_AlignSize(u32 n) { u32 aligned=(n+31)&~31U; return aligne
 static inline s32 Heap_FindFrom(u32 *table, s32 i) {
 for(;i<16;table++,i++) { if(*table==0)return i; }return -1;
 }
-static inline void Heap_FindEmpty(u32 *table, s32 *result) {
- for(*result=0;*result<16;(*result)++,table++) { if(*table==0) return; } *result=-1;
+static inline s32 Heap_FindEmpty(u32 *table, s32 *result) {
+ for(*result=0;*result<16;table++,(*result)++) { if(*table==0) return *result; } return *result=-1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
 u32 *entry=table;
@@ -992,11 +992,10 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     heap[0xF] = 0;
     *(u32 *)(heap + 0x10) = 0;
 
-    data = heap + 0x20;
 
     *(u32 *)(heap + 0x1C) = size;
     *(u32 *)(heap + 0x14) = 0;
-    *(void **)(heap + 0x18) = data;
+    *(void **)(heap + 0x18) = heap + 0x20;
     *(u32 *)heap = 0x48454150;
 
     *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
@@ -2106,15 +2105,19 @@ static inline u8 TokenIsComment(char c) { return c=='#'; }
 static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 #pragma cplusplus on
 #pragma global_optimizer off
+#pragma scheduling on
 #pragma peephole on
 extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
     void strcpy(void *, void *);
     char token[257];
-    s32 count = 0;
-    char *cursor = values;
-    s32 pos = ParseToken(str, token, 0);
+    char *cursor;
+    s32 pos;
+    s32 count;
     char *data;
     s32 size;
+
+    cursor = values;
+    pos = ParseToken(str, token, 0);
 
     if (pos == 0) {
         return 0;
@@ -2136,6 +2139,7 @@ extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s3
     }
 valid:
     strcpy(name, token);
+    count = 0;
     data = str->data;
     size = str->size;
     while ((pos = ParseTokenBuf(data, size, token, pos)) != 0 && (u8)token[0] != '#') {
@@ -2148,6 +2152,7 @@ valid:
     }
     return 1;
 }
+#pragma scheduling reset
 #pragma global_optimizer reset
 #pragma peephole reset
 #pragma cplusplus reset
