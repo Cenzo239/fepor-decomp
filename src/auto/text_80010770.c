@@ -238,7 +238,6 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
 }
 
 #pragma cplusplus on
-#pragma peephole off
 extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 {
   extern f32 lbl_80368BE8;
