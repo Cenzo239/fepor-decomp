@@ -4,6 +4,13 @@
 
 #include "global.h"
 #include "unit.h"
+#pragma cplusplus on
+struct UnitListDrawablePanel {
+    u8 pad[0x24];
+    s16 offsets[20];
+    virtual void *getDrawable(void *, s32);
+};
+#pragma cplusplus reset
 
 f32 lbl_8036A500 = 300.0f;
 f32 lbl_8036A50C = 1.0f;
@@ -2836,6 +2843,8 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
     extern f32 lbl_8036A50C;
     extern f32 lbl_8036A510;
 
+    f32 drawY = y;
+    f32 drawX = x;
     u8 *self;
     void *drawable;
     void **vtable;
@@ -2844,21 +2853,21 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
     self = (u8 *)arg0;
     vtable = *(void ***)(self + 0x4C);
 
-    drawable = ((void *(*)(void *, void *, s32))vtable[2])(
+    drawable = ((void *(*)(void *, void *, s32))(*(void ***)((u8 *)arg0 + 0x4C))[2])(
         self,
         arg1,
         arg3
     );
 
-    offset = *(s16 *)(self + 0x24 + arg3 * 2);
-    x += (f32)offset;
+    offset = *(s16 *)((u8 *)((s16 *)arg0 + arg3) + 0x24);
+    drawX += (f32)offset;
 
     if (drawable != 0) {
         Prim2D_Begin();
 
         Prim2D_SetTransform(
-            x,
-            y,
+            drawX,
+            drawY,
             lbl_8036A500,
             lbl_8036A50C
         );
