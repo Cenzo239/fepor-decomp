@@ -72,37 +72,8 @@ typedef struct {
     s32 field_0x38;
 } Actor;
 
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
-
-#pragma opt_strength_reduction reset
-
-#pragma fp_contract off
-#pragma global_optimizer off
-
-#pragma global_optimizer off
-
-#pragma global_optimizer reset
-
-#pragma global_optimizer reset
-
-u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3);
-
-extern u8 lbl_80366DB8[8];
-s32 Rand_Range(s32);
-
-#pragma optimization_level 2
-#pragma scheduling on
-
-#pragma scheduling reset
-#pragma optimization_level reset
-
-extern u16 jumptable_80284514[12];
-
-#pragma opt_strength_reduction off
-
-#pragma opt_strength_reduction reset
 #pragma fp_contract on
+#pragma scheduling on
 
 f32 Map_SampleHeight(void *arg0, f32 x, f32 y) {
     void fn_80203290(f32 *, f32 *, f32 *);
