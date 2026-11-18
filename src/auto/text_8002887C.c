@@ -1679,6 +1679,7 @@ void fn_8002B520(void *arg0)
         }
     }
 }
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
