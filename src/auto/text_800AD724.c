@@ -11,6 +11,7 @@ typedef struct {
     u8 param;
     u8 pad9[3];
     u32 handle;
+    u8 pad10[4];
 } SoundChan_800B1BFC;
 
 extern f64 lbl_80369CF8;
