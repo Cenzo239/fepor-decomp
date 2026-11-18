@@ -1379,20 +1379,23 @@ void fn_800B1BFC(s32 arg0, s32 arg1)
 
 void fn_800B1C54(s32 arg0, s32 arg1)
 {
-    extern u8 lbl_80317338[];
-    void fn_8024B654(s32, s32, s32);
-    u8 *sys;
-    u8 *p;
+    extern u8 gSoundSys[];
+    void Snd_SetParamU8(s32, s32, s32);
     s32 off;
     u32 value;
+    u8 *sys;
+    u8 *base;
+    u8 *base2;
 
-    sys = lbl_80317338;
-    off = arg0 * 0x14 + 6;
-    p = *(u8 **)(sys + 0xF4);
-    *(u16 *)(p + off) = (u8)arg1;
-    value = *(u32 *)(*(u8 **)(sys + 0xF4) + off + 6);
+    off = arg0 * 0x14;
+    sys = gSoundSys;
+    base = *(u8 **)(sys + 0xF4);
+    *(u16 *)((u32)base + off + 6) = (u8)arg1;
+    base2 = *(u8 **)(sys + 0xF4);
+    value = *(u32 *)((u32)base2 + off + 0xC);
+
     if (value != 0xFFFFFFFFu) {
-        fn_8024B654((s32)value, 0xA, arg1);
+        Snd_SetParamU8((s32)value, 0xA, arg1);
     }
 }
 
