@@ -15622,7 +15622,6 @@ void fn_800E4A78(void *arg0, void *arg1) {
     void *fn_80067478(void);
     void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
-    extern f32 lbl_80369F3C;
     void PSMTXCopy(void *, void *);
     extern f32 lbl_80369F40;
     u8 sp38[0x30];
@@ -16182,41 +16181,62 @@ void fn_800E56D8(void *arg0, s8 arg1) {
     }
 }
 
-u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
-    extern s32 gNodeLinkDefaultParam;
-    u32 temp_r3;
-    u32 r5;
-    u32 r6;
-
-    // Check if E8 field is non-zero
-    if (*(u32 *)((char *)arg0 + 0xE8) != 0) {
-        GActor_UnlinkNodeLink();
-        *(u32 *)((char *)arg0 + 0xE8) = 0;
-    }
-    
-    // Short circuit if either input is zero
-    if ((arg1 == 0) || (arg2 == 0)) {
-        *(u32 *)((char *)arg0 + 0xE8) = 0;
-        return 0;
-    }
-    
-    // Call function with E0 offset
-    temp_r3 = *(s32 *)((char *)arg0 + 0xE0);
-    r5 = GActor_CreateNodeLink(temp_r3, arg1, arg2, 4);
-    *(u32 *)((char *)arg0 + 0xE8) = r5;
-    
-    // Update global
-    gNodeLinkDefaultParam = r5;
-    
-    // Call with r5 and address of global
-    GActor_SetNodeLinkParam(r5, &gNodeLinkDefaultParam);
-    
-    // Conditional call
-    if (arg3 != 0) {
-        GActor_SetNodeLinkActive(r5, 1);
-    }
-    
-    return *(u32 *)((char *)arg0 + 0xE8);
+void fn_800E574C(u8 *self, char *name, u8 loop, u8 adjust, u8 blend, s32 duration, f32 speed) {
+extern char lbl_802720E0[];
+void *fn_800DDC04(void *, void *);
+u8 fn_801C6B7C(void *, void *, s32, void *, s32);
+void fn_801C68D0(void *);
+s32 GActor_FindNode(void *, char *);
+void fn_80060F70(void *, s32, f32 *);
+void fn_8005FEE8(void *, f32);
+void fn_800608AC(void *);
+void String_Init(void *, char *, void *);
+void String_Destroy(void *, s32);
+void String_AssignCStr(void *, char *, u32);
+u32 strlen(const char *);
+s32 String_Compare(void *, u32, u32, char *, u32);
+void *anim;
+f32 delta[3];
+f32 before[3];
+String str;
+f32 after[3];
+u8 alloc;
+s32 node;
+if(String_Compare(self+0xBC,0,*(u32 *)(self+0xBC),lbl_802720E0+5,strlen(lbl_802720E0+5))!=0 && name==0) return;
+String_Init(&str,name,&alloc);
+anim=fn_800DDC04(*(void **)(self+0xDC),&str);
+String_Destroy(&str,-1);
+if(*(void **)(*(u8 **)(self+0xE0)+0x44)!=0 && blend && fn_801C6B7C(*(void **)(self+0xE0),anim,duration,delta,0)){
+*(f32 *)(self+0x48)+=delta[0];
+*(f32 *)(self+0x50)+=delta[2];
+((void (*)(void *))(*(void ***)(self+0x40))[3])(self);
+} else {
+fn_801C68D0(*(void **)(self+0xE0));
+node=GActor_FindNode(*(void **)(self+0xE0),lbl_802720E0);
+fn_80060F70(*(void **)(self+0xE0),node,before);
+*(void **)(*(u8 **)(self+0xE0)+0x44)=anim;
+*(f32 *)(*(u8 **)(self+0xE0)+0x5C)=speed;
+fn_8005FEE8(*(void **)(self+0xE0),lbl_80369F3C);
+if(adjust){
+fn_800608AC(*(void **)(self+0xE0));
+node=GActor_FindNode(*(void **)(self+0xE0),lbl_802720E0);
+if(node!=-1){
+fn_80060F70(*(void **)(self+0xE0),node,after);
+*(f32 *)(self+0x48)=before[0]+*(f32 *)(self+0x48)-after[0];
+*(f32 *)(self+0x50)=before[2]+*(f32 *)(self+0x50)-after[2];
+((void (*)(void *))(*(void ***)(self+0x40))[3])(self);
+}}}
+if(anim){
+fn_8005FEE8(*(void **)(self+0xE0),lbl_80369F3C);
+String_AssignCStr(self+0xBC,name,strlen(name));
+*(u32 *)(self+0xC8)=*(u32 *)((u8 *)anim+0x18);
+*(u32 *)(self+0xCC)=0;
+self[0xD0]=1;
+self[0xD1]=loop;
+**(u32 **)(self+0xE0)&=~0x300;
+if(loop) **(u32 **)(self+0xE0)|=0x100;
+else **(u32 **)(self+0xE0)|=0x200;
+}
 }
 
 void fn_800E59BC(void *arg0) {
@@ -26214,6 +26234,7 @@ void fn_800F9E90(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8)(M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
+#pragma global_optimizer off
 void fn_800F9FC4(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
 
@@ -26222,46 +26243,31 @@ void fn_800F9FC4(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
-    u8 *unit;
-    u8 *cmd;
     s16 x;
     s16 y;
+    u8 *unit;
+    u8 *cmd;
     s32 dx;
     s32 dy;
 
     unit = (u8 *)arg0;
     cmd = (u8 *)gAiCmd;
 
-    if (!(gAiState[1] & 2) &&
-        !(*(u32 *)(unit + 0x254) & 0x03000000)) {
-
+    if (!(gAiState[1] & 2) && !(*(u32 *)(unit + 0x254) & 0x03000000)) {
         y = (s16)*(s32 *)(cmd + 0xC);
         x = (s16)*(s32 *)(cmd + 0x10);
 
-        Ai_SetUnitMoveTo(
-            unit,
-            y,
-            x,
-            1,
-            *(u16 *)(gAiState + 4),
-            1,
-            0,
-            -1
-        );
+        Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
             dx = x - (s8)gUiContext[0xE];
-
             if (dx < 0) {
                 dx = -dx;
             }
-
             dy = y - (s8)gUiContext[0xD];
-
             if (dy < 0) {
                 dy = -dy;
             }
-
             if (dx + dy <= *(s32 *)(cmd + 4)) {
                 *(s32 *)(gAiState + 8) = 8;
             }
@@ -26274,7 +26280,7 @@ void fn_800F9FC4(void *arg0) {
         unit[0x251]++;
     }
 }
-
+#pragma global_optimizer reset
 /* On chance: try attack AI with cmd unit filter (primary then alternate scorer); advance AI PC. */
 void AiCmd_ChanceTryAttackFallback(void *unit) {
     extern void *gAiCmd;
