@@ -1864,9 +1864,10 @@ void fn_8012391C(void *arg0) {
 }
 
 #pragma global_optimizer on
+#pragma scheduling off
 void fn_80123988(void *arg0)
 {
-    void *Process_Create(const void *, void *);
+    void *Process_Create(void *, void *);
     void *Map_Get(void);
 
     extern s32 lbl_80274F68[3];
@@ -1879,22 +1880,19 @@ void fn_80123988(void *arg0)
     u8 *proc;
     u8 *parent;
     u8 *map;
-    u32 skyIndex;
-    const u8 *defs;
-    u32 sp8[3];
+    s32 skyIndex;
+    u8 *defs;
+    SkyVector sp8;
 
     self = (u8 *)arg0;
     defs = lbl_80290328;
 
     *(s32 *)(self + 0x34) = -1;
 
-    sp8[0] = lbl_80274F68[0];
-    sp8[1] = lbl_80274F68[1];
-    sp8[2] = *(u32 *)((u8 *)lbl_80274F68 + 8);
-
-    *(f32 *)(self + 0x38) = *(f32 *)&sp8[0];
-    *(f32 *)(self + 0x3C) = *(f32 *)&sp8[1];
-    *(f32 *)(self + 0x40) = *(f32 *)&sp8[2];
+    sp8 = *(SkyVector *)lbl_80274F68;
+    *(f32 *)(self + 0x38) = sp8.x;
+    *(f32 *)(self + 0x3C) = sp8.y;
+    *(f32 *)(self + 0x40) = sp8.z;
 
     *(f32 *)(self + 0x44) = lbl_8036A308;
     *(f32 *)(self + 0x48) = lbl_8036A30C;
@@ -1908,7 +1906,7 @@ void fn_80123988(void *arg0)
     map = (u8 *)Map_Get();
 
     if (map[0x68] == 1) {
-        switch ((s32)(skyIndex = *(u32 *)(self + 0x34))) {
+        switch (skyIndex = *(s32 *)(self + 0x34)) {
         case 2:
             proc = (u8 *)Process_Create(
                 defs + 0xB4,
@@ -1953,7 +1951,7 @@ void fn_80123988(void *arg0)
         }
     } else {
         {
-            switch (skyIndex = *(u32 *)(self + 0x34)) {
+            switch (skyIndex = *(s32 *)(self + 0x34)) {
             case 0:
                 Process_Create(
                     defs,
@@ -2028,6 +2026,7 @@ void fn_80123988(void *arg0)
         }
     }
 }
+#pragma scheduling on
 #pragma global_optimizer on
 
 s32 fn_80123BA8(void) {
