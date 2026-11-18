@@ -512,6 +512,7 @@ BOOL fn_8020BD68(u32 offset, void *callback) {
 }
 
 #pragma opt_common_subs off
+#pragma global_optimizer off
 BOOL DVDLowWaitCoverClose(void *callback) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
@@ -522,6 +523,7 @@ BOOL DVDLowWaitCoverClose(void *callback) {
     StopAtNextInt_80368530 = 0;
     return TRUE;
 }
+#pragma global_optimizer reset
 #pragma opt_common_subs reset
 BOOL fn_8020BE28(void *addr, void *callback) {
     extern void *Callback_80368538;
@@ -665,17 +667,15 @@ void DVDLowReset(void) {
  extern s64 LastResetEnd_80368540;
  s64 __OSGetSystemTime(void);
  u32 old;
- u32 *reg;
- u32 delay;
+ u32 *reg = (u32 *)0xCC003000;
+ s64 delay;
  s64 start;
-
- reg = (u32 *)0xCC003000;
  *(u32 *)0xCC006004 = 2;
  old = reg[9];
  *(reg += 9) = (old & ~4) | 1;
  start = __OSGetSystemTime();
  delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
- while (__OSGetSystemTime() - start < (s64)delay) {}
+ while (__OSGetSystemTime() - start < delay) {}
  *reg = old | 5;
  ResetOccurred_80368548 = 1;
  LastResetEnd_80368540 = __OSGetSystemTime();
