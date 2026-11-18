@@ -206,16 +206,15 @@ void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
     }
 }
 
-#pragma opt_strength_reduction off
 #pragma global_optimizer off
+#pragma opt_strength_reduction off
 void fn_8003333C(u8 *arg0, s32 arg1) {
     s32 t3;
     s32 t2;
     s32 t1;
-    s32 t4;
     s32 idx;
-    u8 *p;
-    s32 n;
+    s32 t4;
+    u8 n;
 
     n = arg0[0x60];
     t1 = arg1 + 1;
@@ -223,31 +222,31 @@ void fn_8003333C(u8 *arg0, s32 arg1) {
     t3 = arg1 + 3;
     idx = n + arg1;
     t4 = arg1 + 4;
-    p = arg0 + (idx * 2);
-    *(u16 *)(p + 0x20) |= 1;
+    idx = (s32)(arg0 + (idx << 1));
+    *(u16 *)(idx + 0x20) |= 1;
 
     n = arg0[0x60];
     idx = n + t1;
-    p = arg0 + (idx * 2);
-    *(u16 *)(p + 0x20) |= 1;
+    t1 = (s32)(arg0 + (idx << 1));
+    *(u16 *)(t1 + 0x20) |= 1;
 
     n = arg0[0x60];
     idx = n + t2;
-    p = arg0 + (idx * 2);
-    *(u16 *)(p + 0x20) |= 1;
+    t2 = (s32)(arg0 + (idx << 1));
+    *(u16 *)(t2 + 0x20) |= 1;
 
     n = arg0[0x60];
     idx = n + t3;
-    p = arg0 + (idx * 2);
-    *(u16 *)(p + 0x20) |= 1;
+    t3 = (s32)(arg0 + (idx << 1));
+    *(u16 *)(t3 + 0x20) |= 1;
 
     n = arg0[0x60];
     idx = n + t4;
-    arg0 = arg0 + (idx * 2);
+    arg0 = arg0 + (idx << 1);
     *(u16 *)(arg0 + 0x20) |= 1;
 }
-#pragma global_optimizer on
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction reset
+#pragma global_optimizer reset
 void fn_800333DC(u8 *arg0, s32 arg1) {
     u8 *p;
     u16 v;
@@ -12380,18 +12379,19 @@ return (char *)lbl_802EFFC8;
 }
 
 typedef struct StringValueByte { u8 pad0[0xC]; u8 value; } StringValueByte;
-void *fn_8004B078(void *arg0, s32 arg1) {
-    void sprintf(void *, void *, ...);
-    extern u8 lbl_8026A9B0[];
-    extern u8 lbl_802EFFC8[];
-    StringValueByte *node;
-    void *value;
-
-    node = (StringValueByte *)((u8 *)arg0 + arg1);
-    value = *(void **)((u8 *)arg0 + 4);
-    sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8, value, node->value);
-    return lbl_802EFFC8;
+#pragma push
+#pragma global_optimizer off
+char *fn_8004B078(void *arg0, s32 arg1) {
+void sprintf(void *, void *, ...);
+extern u8 lbl_8026A9B0[];
+extern u8 lbl_802EFFC8[];
+u8 *address = (u8 *)arg0 + arg1;
+void *value = *(void **)((u8 *)arg0 + 4);
+u8 byte = address[0xC];
+sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8, value, byte);
+return (char *)lbl_802EFFC8;
 }
+#pragma pop
 void *fn_8004B0C8(void *arg0) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026A9B0[];
