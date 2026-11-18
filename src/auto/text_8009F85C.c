@@ -1,6 +1,22 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u8 *MenuCmd_FindStatus(s32 slot) {
+    void *Map_GetCursorUnit(void);
+    void *fn_80105C5C(void *, u8);
+    u8 *unit = Map_GetCursorUnit();
+    s32 count = 0;
+    s32 i = count;
+    for (; i < 0x62; i++) {
+        u8 *status = fn_80105C5C(unit + 0x1BC, (u8)i);
+        if (status != 0) {
+            if (count == slot) return status;
+            count++;
+        }
+    }
+    return 0;
+}
+
 extern s32 lbl_80367788;
 extern u8 lbl_80367704;
 void *fn_8009F85C(void) {
@@ -146,21 +162,7 @@ if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
 return 0;
 }
 
-static inline u8 *MenuCmd_FindStatus(s32 slot) {
-    void *Map_GetCursorUnit(void);
-    void *fn_80105C5C(void *, u8);
-    u8 *unit = Map_GetCursorUnit();
-    s32 count = 0;
-    s32 i = count;
-    for (; i < 0x62; i++) {
-        u8 *status = fn_80105C5C(unit + 0x1BC, (u8)i);
-        if (status != 0) {
-            if (count == slot) return status;
-            count++;
-        }
-    }
-    return 0;
-}
+
 
 #pragma use_lmw_stmw on
 void fn_8009FBE0(s32 unused, s32 parent, void *item) {
