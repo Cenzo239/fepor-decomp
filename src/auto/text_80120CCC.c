@@ -1882,8 +1882,8 @@ void fn_8012391C(void *arg0) {
 }
 
 #pragma global_optimizer on
-#pragma scheduling on
-void fn_80123988(void *arg0)
+#pragma scheduling off
+void fn_80123988(SkyProc *self)
 {
     void *Process_Create(void *, void *);
     void *Map_Get(void);
@@ -1894,153 +1894,94 @@ void fn_80123988(void *arg0)
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
 
-    u8 *self;
-    u8 *proc;
-    u8 *parent;
-    u8 *map;
+    u8 *base;
     u32 skyIndex;
-    u8 *defs;
+    u8 *proc;
+    u8 *map;
     SkyVector sp8;
 
-    self = (u8 *)arg0;
-    defs = lbl_80290328 + 0xFC;
-
-    *(s32 *)(self + 0x34) = -1;
+    self->skyIndex = -1;
 
     sp8 = *(SkyVector *)lbl_80274F68;
-    *(f32 *)(self + 0x38) = sp8.x;
-    *(f32 *)(self + 0x3C) = sp8.y;
-    *(f32 *)(self + 0x40) = sp8.z;
+    self->position.x = sp8.x;
+    self->position.y = sp8.y;
+    self->position.z = sp8.z;
+    self->scale = lbl_8036A308;
+    self->speed = lbl_8036A30C;
 
-    *(f32 *)(self + 0x44) = lbl_8036A308;
-    *(f32 *)(self + 0x48) = lbl_8036A30C;
-
-    parent = (u8 *)Process_Create(defs, self);
-
-    *(void **)(self + 0x30) = parent;
-
-    *(u32 *)(self + 0x34) = gBattleSkyIndex;
+    base = lbl_80290328;
+    self->parent = Process_Create(base + 0xFC, self);
+    self->skyIndex = gBattleSkyIndex;
 
     map = (u8 *)Map_Get();
-
     if (map[0x68] == 1) {
-        switch ((s32)(skyIndex = *(u32 *)(self + 0x34))) {
+        skyIndex = self->skyIndex;
+        switch ((s32)skyIndex) {
         case 2:
-            proc = (u8 *)Process_Create(
-                defs - 0x48,
-                    *(void **)(self + 0x30)
-            );
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
             proc[0x4F] = 0x3C;
             break;
-
         case 3:
-            proc = (u8 *)Process_Create(
-                defs - 0x48,
-                    *(void **)(self + 0x30)
-            );
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
             proc[0x4F] = 0x1E;
             break;
-
         case 4:
-            proc = (u8 *)Process_Create(
-                defs - 0x48,
-                    *(void **)(self + 0x30)
-            );
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
             proc[0x4F] = 0x64;
             break;
-
         case 5:
         case 6:
         case 7:
-            proc = (u8 *)Process_Create(
-                defs - 0x70,
-                    *(void **)(self + 0x30)
-            );
-            proc[0x4C] = skyIndex;
+            proc = (u8 *)Process_Create(base + 0x8C, self->parent);
+            proc[0x4C] = (u8)skyIndex;
             break;
-
         case 8:
-            proc = (u8 *)Process_Create(
-                defs - 0x9C,
-                    *(void **)(self + 0x30)
-            );
+            proc = (u8 *)Process_Create(base + 0x60, self->parent);
             proc[0x4C] = 0;
             break;
         }
     } else {
-        {
-            switch (skyIndex = *(u32 *)(self + 0x34)) {
-            case 0:
-                Process_Create(
-                    defs - 0xFC,
-                    *(void **)(self + 0x30)
-                );
-                break;
-
-            case 1:
-                Process_Create(
-                    defs - 0xFC,
-                    *(void **)(self + 0x30)
-                );
-                break;
-
-            case 2:
-                proc = (u8 *)Process_Create(
-                    defs - 0x48,
-                    *(void **)(self + 0x30)
-                );
-                proc[0x4F] = 0x3C;
-                break;
-
-            case 3:
-                proc = (u8 *)Process_Create(
-                    defs - 0x48,
-                    *(void **)(self + 0x30)
-                );
-                proc[0x4F] = 0x1E;
-                break;
-
-            case 4:
-                proc = (u8 *)Process_Create(
-                    defs - 0x48,
-                    *(void **)(self + 0x30)
-                );
-                proc[0x4F] = 0x64;
-                break;
-
-            case 5:
-            case 6:
-            case 7:
-                proc = (u8 *)Process_Create(
-                    defs - 0x70,
-                    *(void **)(self + 0x30)
-                );
-                proc[0x4C] = skyIndex;
-                break;
-
-            case 8:
-                proc = (u8 *)Process_Create(
-                    defs - 0x9C,
-                    *(void **)(self + 0x30)
-                );
-                proc[0x4C] = 0;
-                break;
-
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-                Process_Create(
-                    defs - 0xC0,
-                    *(void **)(self + 0x30)
-                );
-                break;
-            }
+        skyIndex = self->skyIndex;
+        switch (skyIndex) {
+        case 0:
+            Process_Create(base + 0, self->parent);
+            break;
+        case 1:
+            Process_Create(base + 0, self->parent);
+            break;
+        case 2:
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
+            proc[0x4F] = 0x3C;
+            break;
+        case 3:
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
+            proc[0x4F] = 0x1E;
+            break;
+        case 4:
+            proc = (u8 *)Process_Create(base + 0xB4, self->parent);
+            proc[0x4F] = 0x64;
+            break;
+        case 5:
+        case 6:
+        case 7:
+            proc = (u8 *)Process_Create(base + 0x8C, self->parent);
+            proc[0x4C] = (u8)skyIndex;
+            break;
+        case 8:
+            proc = (u8 *)Process_Create(base + 0x60, self->parent);
+            proc[0x4C] = 0;
+            break;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+            Process_Create(base + 0x3C, self->parent);
+            break;
         }
     }
 }
