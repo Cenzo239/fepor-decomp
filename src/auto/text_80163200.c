@@ -27,6 +27,15 @@ struct LensFlareOwner {
     virtual void v0(); virtual void v1();
     virtual LensFlareView *find(char *, char *);
 };
+struct CursorRenderView {
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void update(void *);
+    virtual void v4(); virtual void v5(); virtual void v6();
+    virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12();
+    virtual void v13();
+    virtual void drawRow(s32, s16, s16, s16, u8);
+};
 struct ItemCursorView {
     virtual void v0(); virtual void v1(); virtual void v2();
     virtual void v3(); virtual void v4(); virtual void v5();
@@ -260,6 +269,8 @@ void fn_80163708(void *arg0) {
     *(s16 *)((char *)arg0 + 0x18) = 0x10E;
 }
 
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_80163728(void *arg0, void *arg1) {
     extern f32 lbl_8036A89C;
     extern f32 lbl_8036A8A0;
@@ -270,11 +281,12 @@ void fn_80163728(void *arg0, void *arg1) {
     s32 Text_MeasureHeight(s32, f32);
     void Ui_DrawRouteIconEx(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
-    void **vt0 = (void **)M2C_FIELD(arg0, u32 *, 0x00);
     s16 temp_r31;
-    s16 var_r29;
-    s16 var_r3;
-    s16 temp_r5;
+    s32 var_r29;
+    void *self;
+    void *ctx;
+    s32 var_r3;
+    s32 temp_r5;
     s16 var_r28;
     s16 temp_r0;
     u8 var_r30;
@@ -285,44 +297,46 @@ void fn_80163728(void *arg0, void *arg1) {
     s32 var_r3_3;
     s32 temp_r4;
     s16 temp_r25;
-    s32 temp_r24_2;
+    s16 temp_r24_2;
     s32 temp_r25_2_val;
     s16 temp_r25_2_final;
 
-    ((void (*)(void *))vt0[5])(arg0);
+    self=arg0; ctx=arg1;
+    ((void (*)(void *))((void **)M2C_FIELD(self, u32 *, 0x00))[5])(arg0);
 
-    if (M2C_FIELD(arg0, s16 *, 0x4C) >= 0) {
-        temp_r31 = M2C_FIELD(arg0, s16 *, 0x54);
+    var_r3 = M2C_FIELD(self, s16 *, 0x4C);
+    if ((s16)var_r3 >= 0) {
+        temp_r31 = M2C_FIELD(self, s16 *, 0x54);
         var_r29 = temp_r31;
-        var_r3 = M2C_FIELD(arg0, s16 *, 0x4C);
+        var_r3 = (s16)var_r3;
 
-        if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
+        if (M2C_FIELD(self, s32 *, 0x60) == 2) {
             var_r3 -= 4;
         }
 
-        temp_r5 = M2C_FIELD(arg0, s16 *, 0x64);
+        temp_r5 = M2C_FIELD(self, s16 *, 0x64);
         var_r28 = temp_r5;
-        temp_r0 = (s16)((s32)var_r3 * temp_r31 + M2C_FIELD(arg0, s16 *, 0x66));
+        temp_r0 = (s16)((s32)var_r3 * temp_r31 + M2C_FIELD(self, s16 *, 0x66));
 
-        if (M2C_FIELD(arg0, s16 *, 0x52) < 0) {
-            M2C_FIELD(arg0, s16 *, 0x50) = temp_r5;
-            M2C_FIELD(arg0, s16 *, 0x52) = temp_r0;
+        if (M2C_FIELD(self, s16 *, 0x52) < 0) {
+            M2C_FIELD(self, s16 *, 0x50) = temp_r5;
+            M2C_FIELD(self, s16 *, 0x52) = temp_r0;
         } else {
-            M2C_FIELD(arg0, s16 *, 0x50) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x50) + (temp_r5 + 1)) >> 1);
-            M2C_FIELD(arg0, s16 *, 0x52) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + (temp_r0 + 1)) >> 1);
+            M2C_FIELD(self, s16 *, 0x50) = (s16)((s32)(M2C_FIELD(self, s16 *, 0x50) + ((s16)temp_r5 + 1)) >> 1);
+            M2C_FIELD(self, s16 *, 0x52) = (s16)((s32)(M2C_FIELD(self, s16 *, 0x52) + (temp_r0 + 1)) >> 1);
         }
 
-        if (M2C_FIELD(arg0, u8 *, 0x48) != 0) {
+        if (M2C_FIELD(self, u8 *, 0x48) != 0) {
             var_r30 = 0;
             var_r3_2 = 0;
 
-            if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
+            if (M2C_FIELD(ctx, u8 *, 0x2D) == 0 && M2C_FIELD(ctx, u8 *, 0x2E) == 0) {
                 var_r3_2 = 1;
             }
 
             if (var_r3_2 != 0) {
-                if (M2C_FIELD(arg1, u32 *, 0x34) != 0) {
-                    var_r0 = (u32)M2C_FIELD((void *)M2C_FIELD(arg1, u32 *, 0x38), u32 *, 0x08);
+                if (M2C_FIELD(ctx, u32 *, 0x34) != 0) {
+                    var_r0 = (u32)M2C_FIELD((void *)M2C_FIELD(ctx, u32 *, 0x38), u32 *, 0x08);
                 } else {
                     var_r0 = 0;
                 }
@@ -335,37 +349,37 @@ void fn_80163728(void *arg0, void *arg1) {
             Prim2D_AddZ(lbl_8036A89C);
             Prim2D_PrepareTex();
 
-            temp_r24 = M2C_FIELD(arg0, s16 *, 0x54);
+            temp_r24 = M2C_FIELD(self, s16 *, 0x54);
             temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
-            Ui_DrawRouteIconEx(M2C_FIELD(arg0, s16 *, 0x50),
-                       (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + ((temp_r24 - temp_r25_2) >> 1))),
+            Ui_DrawRouteIconEx(M2C_FIELD(self, s16 *, 0x50),
+                       M2C_FIELD(self, s16 *, 0x52) + (s16)((temp_r24 - temp_r25_2) >> 1),
                        var_r30);
 
             Prim2D_Begin();
             Prim2D_AddZ(lbl_8036A8A0);
             Prim2D_PrepareTex();
 
-            ((void (*)(void *, s32, s16, s16, s16, u8))vt0[0x40/4])(arg0, 0, temp_r0,
-                      (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)),
+            ((void (*)(void *, s32, s16, s16, s16, u8))((void **)M2C_FIELD(self, u32 *, 0x00))[0x40/4])(arg0, 0, temp_r0,
+                      (s16)(M2C_FIELD(self, s16 *, 0x16) - M2C_FIELD(self, s16 *, 0x12)),
                       temp_r31, var_r30);
         }
     }
 
-    if (M2C_FIELD(arg0, u8 *, 0x49) != 0) {
-        ((void (*)(void *, void *))vt0[5])(arg0, arg1);
+    if (M2C_FIELD(self, u8 *, 0x49) != 0) {
+        ((void (*)(void *, void *))((void **)M2C_FIELD(self, u32 *, 0x00))[5])(arg0, arg1);
 
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A890);
         Prim2D_PrepareTex();
 
-        var_r3_3 = M2C_FIELD(arg0, s32 *, 0x4E);
-        if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
+        var_r3_3 = M2C_FIELD(self, s16 *, 0x4E);
+        if (M2C_FIELD(self, s32 *, 0x60) == 2) {
             var_r3_3 -= 4;
         }
 
         temp_r4 = var_r3_3 * var_r29;
-        temp_r25 = M2C_FIELD(arg0, s16 *, 0x54);
-        temp_r24_2 = temp_r4 + M2C_FIELD(arg0, s16 *, 0x66);
+        temp_r25 = M2C_FIELD(self, s16 *, 0x54);
+        temp_r24_2 = (s16)(temp_r4 + M2C_FIELD(self, s16 *, 0x66));
         temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
         temp_r25_2_final = (s16)((s32)(temp_r25 - temp_r25_2) >> 1);
 
@@ -378,7 +392,7 @@ void fn_80163728(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
     }
 }
-
+#pragma global_optimizer reset
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
@@ -1175,15 +1189,15 @@ struct Point *fn_8013F748(void *,struct Point *,struct Point *);
 struct Point out,in;
 s32 *dst;
 void *self;
+s32 x;
 s32 y;
-s16 x;
-s32 temp;
+s16 temp;
 s32 cls;
 temp=*(s16 *)((u8 *)arg1+0x4C);
 dst=arg0;
 self=arg1;
-cls=(s16)temp;
-if(cls<0) { y=0; x=0; }
+cls=temp;
+if(temp<0) { y=0; x=0; }
 else {
 x=*(s16 *)((u8 *)self+0x64);
 y=cls * *(s16 *)((u8 *)self+0x54);
