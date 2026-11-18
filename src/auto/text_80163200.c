@@ -16278,7 +16278,7 @@ void Effect_SetPos(void *, f32, f32, f32);
 extern u8 lbl_80295550[];
 extern f32 lbl_8036AC18,lbl_8036AC1C,lbl_8036AC20,lbl_8036AC24,lbl_8036AC28;
 struct Proc { u8 pad[0x38]; void *ptrs[2]; u32 ids[2]; }; struct Proc *proc; void *p; void *effect; s32 i; f32 x,y;
-proc=Process_Find(lbl_80295550);
+proc=(struct Proc *)Process_Find(lbl_80295550);
 if(proc) {
 for(i=0;i<2;i++) {
 if(proc->ids[i]==arg0 && proc->ptrs[i]) {p=proc->ptrs[i]; goto found;}
