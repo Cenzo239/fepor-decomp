@@ -2534,10 +2534,11 @@ fn_80025624(gPadInput,16);
 }
 else fn_80025624(gPadInput,8);
 *(u8*)((u8*)arg0+0x1A4)=1;*(u8*)((u8*)arg0+0x1A0)=0;
-  String_Destroy(&anim,-1);
+    String_Destroy(&anim,-1);
   }
+  #pragma pop
   #pragma cplusplus off
-void fn_80115264(void *self,s32 mode,s32 flag) {
+  void fn_80115264(void *self,s32 mode,s32 flag) {
 s32 strlen(char *);
 s32 fn_80199310(void *);
 s32 kind;
