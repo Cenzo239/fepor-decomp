@@ -7751,7 +7751,7 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80251F24(void *arg0, u32 *arg1)
+void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
 
@@ -7805,8 +7805,8 @@ extern "C" void fn_80251F24(void *arg0, u32 *arg1)
                 next = table[index + 1];
 
                 next -= current;
-next = fraction * next;
-result = next + ((u8)current << 16);
+                next = fraction * next;
+                result = next + ((u8)current << 16);
             } else {
                 result = table[index] << 16;
             }
@@ -8195,56 +8195,53 @@ void Sound_SelectSource7(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x320, step, 0x01000000, 0x80);
 }
 
+#pragma optimization_level 3
+#pragma global_optimizer off
+#pragma use_lmw_stmw off
 void fn_80252A78(void *arg0, u32 *arg1)
 {
+    void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
     u8 *voice;
-    u32 flags114;
-    u32 flags118;
-    u32 word0;
-    u32 word1;
+    u64 flags;
+    u32 temp;
+    u8 low;
     u8 value;
     s32 scale;
-    s32 adjustment;
+    s32 adj;
 
     voice = (u8 *)arg0;
+    flags = *(u64 *)(voice + 0x114);
 
-    flags114 = *(u32 *)(voice + 0x114);
-    flags118 = *(u32 *)(voice + 0x118);
-
-    if ((flags118 & 0x00800000) == 0) {
-        *(u32 *)(voice + 0x118) = flags118 | 0x00800000;
-        *(u32 *)(voice + 0x114) = flags114;
+    if ((flags & 0x800000ULL) == 0) {
+        *(u64 *)(voice + 0x114) = flags | 0x800000ULL;
     } else {
-        word0 = arg1[0];
-        word1 = arg1[1];
-
-        scale = (s32)(word0 & 0xFFFF0000) / 100;
-
-        adjustment =
-            ((s32)(s8)(word1 >> 16) << 8) / 100;
-
+        temp = arg1[1];
+        low = (u8)temp;
+        temp = arg1[0];
+        scale = (s32)(temp & 0xFFFF0000) / 100;
         if (scale < 0) {
-            scale -= adjustment;
+            adj = ((s32)((s8)(arg1[1] >> 16) << 8)) / 100;
+            scale = scale - adj;
         } else {
-            scale += adjustment;
+            adj = ((s32)((s8)(arg1[1] >> 16) << 8)) / 100;
+            scale = scale + adj;
         }
-
-        value = (u8)(word1 >> 8);
-
+        value = (u8)(arg1[1] >> 8);
         fn_8025FFC8(
-            voice + 0x368,
-            (u8)(word0 >> 8),
+            (u8 *)voice + 0x368,
+            (u8)(temp >> 8),
             scale,
-            (u8)word1,
-            value != 0,
+            low,
+            (u8)(value != 0),
             value
         );
     }
 
     *(u32 *)(voice + 0x220) |= 0x200;
 }
-
-#pragma global_optimizer off
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_80252B7C(void *arg0, u32 *arg1) {
     void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
     u8 *voice;
@@ -8626,76 +8623,77 @@ void fn_80253860(SynthVmState *arg0, u32 *arg1, u8 op) {
     }
 }
 
-#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
 {
-    extern u32 lbl_8034CB74[];
-    u16 fn_80260F18(s32, s32);
-
-    u8 *voice;
-    u32 word0;
-    u32 word1;
-    u8 index;
-u32 selector;
-    u32 left;
-    u32 right;
-    u8 condition;
-
-    voice = (u8 *)arg0;
-    word0 = arg1[0];
-    selector = (word0 >> 16) & 0xFF;
-
-    if (((word0 >> 8) & 0xFF) != 0) {
-        left = fn_80260F18((s32)arg0, selector);
-    } else {
-        index = selector & 0x1F;
-
-        if (index < 0x10) {
-            left = ((SynthVmState *)((u32)voice + index * 4))->regs[0];
-        } else {
-            left = lbl_8034CB74[index - 16];
-        }
+  extern u32 lbl_8034CB74[];
+  u16 fn_80260F18(s32, s32);
+  u8 *voice;
+  u32 word0;
+  u32 word1;
+  u8 index;
+  u32 selector;
+  u32 left;
+  u32 right;
+  u8 condition;
+  voice = (u8 *) arg0;
+  word0 = arg1[0];
+  selector = (word0 >> 16) & 0xFF;
+  if (((word0 >> 8) & 0xFF) != 0)
+  {
+    left = fn_80260F18((s32) arg0, selector);
+  }
+  else
+  {
+    index = selector & 0x1F;
+    if (index < 0x10)
+    {
+      left = (((0, (u32 *) voice)) + index)[0x2B];
     }
-
-    word0=arg1[0];
-    word1=arg1[1];
-    selector=word1&0xFF;
-    if ((word0 >> 24) != 0) {
-        right = fn_80260F18((s32)arg0, selector);
-    } else {
-        index = selector & 0x1F;
-
-        if (index < 0x10) {
-            right = ((SynthVmState *)((u32)voice + index * 4))->regs[0];
-        } else {
-            right = lbl_8034CB74[index - 16];
-        }
+    else
+    {
+      left = lbl_8034CB74[index - 16];
     }
-
-    switch (arg2) {
+  }
+  word0 = arg1[0];
+  word1 = arg1[1];
+  selector = word1 & 0xFF;
+  if ((word0 >> 24) != 0)
+  {
+    right = fn_80260F18((s32) arg0, selector);
+  }
+  else
+  {
+    index = selector & 0x1F;
+    if (index < 0x10)
+    {
+      right = (((0, (u32 *) voice)) + index)[0x2B];
+    }
+    else
+    {
+      right = lbl_8034CB74[index - 16];
+    }
+  }
+  switch (arg2)
+  {
     case 0:
-        condition = left == right;
-        break;
-
+      condition = left == right;
+      break;
     case 1:
-        condition = (s32)right > (s32)left;
-        break;
-
-
-    }
-
-    word1=arg1[1];
-    if (((word1 >> 8) & 0xFF) != 0) {
-        condition = !condition;
-    }
-
-    if (condition != 0) {
-        *(u32 *)(voice + 0x38) =
-            *(u32 *)(voice + 0x34)
-            + ((word1 >> 16) << 3);
-    }
+      condition = ((s32) right) > ((s32) left);
+      break;
+  }
+  word1 = arg1[1];
+  if (((word1 >> 8) & 0xFF) != 0)
+  {
+    condition = !condition;
+  }
+  if (condition != 0)
+  {
+    *((u32 *) (voice + 0x38)) = (*((u32 *) (voice + 0x34))) + ((word1 >> 16) << 3);
+  }
 }
-#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 extern void (*lbl_803689AC)(u32,u32);
 #pragma opt_strength_reduction off
 void fn_80253BCC(SynthVmState *arg0, void *arg1) {
@@ -12811,7 +12809,6 @@ s32 fn_8025DAA0(
     extern u8 lbl_80368AAE;
 
     Entry *base;
-    Entry *entry;
     Node *pool;
     Node *node;
     u8 **next;
@@ -12822,16 +12819,14 @@ s32 fn_8025DAA0(
     u8 count;
     u8 nodeIndex;
     
-    count = lbl_80368AAE;
     base = (Entry *)lbl_8035BF18;
-    entry = base;
+    count = lbl_80368AAE;
     index = 0;
 
     while (index < (s32)count) {
-        if (entry->key == *(u32 *)((u8 *)arg0 + 0x3C)) {
+        if (base[index].key == *(u32 *)((u8 *)arg0 + 0x3C)) {
             break;
         }
-        entry++;
         index++;
     }
 
@@ -12840,12 +12835,10 @@ s32 fn_8025DAA0(
             return 0;
         }
 
-        entry = base + index;
-
-        entry->next = 0;
-        entry->f8 = 0;
-        entry->count = 0;
-        entry->key = *(u32 *)((u8 *)arg0 + 0x3C);
+        base[index].next = 0;
+        base[index].f8 = 0;
+        base[index].count = 0;
+        *(u32 *)((u8 *)base + (index << 4)) = *(u32 *)((u8 *)arg0 + 0x3C);
 
         lbl_80368AAE = lbl_80368AAE + 1;
     }
@@ -12856,10 +12849,9 @@ s32 fn_8025DAA0(
         return 0;
     }
 
-    entry = base + index;
     pool = (Node *)lbl_8035C918;
 
-    next = (u8 **)entry;
+    next = (u8 **)(base + index);
     current = *++next;
     previous = current;
 
@@ -12884,7 +12876,7 @@ s32 fn_8025DAA0(
     }
 
     index2 = lbl_80368AAD;
-    node = pool + (index2 << 5);
+    node = (Node *)((u8 *)pool + (index2 << 5));
     node->arg0 = arg0;
     node->v5 = arg5;
     node->v6 = arg6;
