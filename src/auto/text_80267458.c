@@ -261,6 +261,8 @@ extern u16 lbl_803688EC[10];
 extern s32 lbl_8036894C;
 extern s32 lbl_8033E578[];
 
+volatile u32 __PIRegs_80267458[16] : 0xCC003000;
+
 #pragma opt_propagation off
 void fn_80267458(unsigned long arg0, void *context)
 {
