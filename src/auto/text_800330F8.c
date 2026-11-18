@@ -2123,15 +2123,14 @@ s32 fn_80036B20(void *arg0, s32 arg1) {
     if (value == *(u8 *)(e + 4) || value == *(u8 *)(e + 5) || value == *(u8 *)(e + 6)) return 1;
     return 0;
 }
-#pragma opt_strength_reduction reset
+#pragma global_optimizer off
+#pragma scheduling off
 s32 fn_80036DE0(void *arg0, void *arg1)
 {
     s32 index;
     u32 value;
     u8 *obj;
     s32 offset;
-    u8 *table;
-    s32 count;
 
     index = 0;
     value = *(u32 *)((u8 *)arg1 + 0x188);
@@ -2141,32 +2140,41 @@ s32 fn_80036DE0(void *arg0, void *arg1)
     goto check;
 
 loop:
-    table = *(u8 **)(obj + 0x50);
+    {
+        u8 *table;
+        u32 entry;
+        table = *(u8 **)(obj + 0x50);
+        entry = *(u32 *)(table + offset + 8);
 
-    if (*(u32 *)(table + offset + 8) == value) {
-        return (s8)index;
+        if (entry == value) {
+            return (s8)index;
+        }
     }
 
     offset += 8;
     index++;
 
 check:
-    table = *(u8 **)(obj + 0x50);
+    {
+        u8 *table;
+        u8 lim;
+        table = *(u8 **)(obj + 0x50);
 
-    if (table == NULL) {
-        count = 0;
-    } else {
-        count = (u8)*(u32 *)(table + 4);
-        count = (u8)count;
-    }
+        if (table == NULL) {
+            lim = 0;
+        } else {
+            lim = (u8)*(u32 *)(table + 4);
+            lim = (u8)(lim & 0xFF);
+        }
 
-    if (index < count) {
-        goto loop;
+        if (index < (s32)lim) {
+            goto loop;
+        }
     }
 
     return -1;
 }
-#pragma global_optimizer off
+#pragma scheduling reset
 s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
 {
     s32 offset;
@@ -2882,6 +2890,7 @@ u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
     s8 xa;
+    s8 xb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
@@ -2889,7 +2898,8 @@ u8 Unit_GetDistance(void *a, void *b) {
         dy = -dy;
     }
     xa = *(s8 *)((u8 *)a + 0x19E);
-    dx = xa - *(s8 *)((u8 *)b + 0x19E);
+    xb = *(s8 *)((u8 *)b + 0x19E);
+    dx = (s32)xa - (s32)xb;
     if (dx < 0) {
         dx = -dx;
     }
@@ -12151,56 +12161,11 @@ void fn_8004A864(s32 x,s32 y,u8 *color) {
 void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
-f32 z;
 GXBegin(0x98,0,4);
-{
-u8 a,b,g,r;
-z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
-r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x);
-*(f32 *)0xCC008000=(f32)(y);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
-}
-{
-u8 a,b,g,r;
-z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
-r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x+1);
-*(f32 *)0xCC008000=(f32)(y);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
-}
-{
-u8 a,b,g,r;
-z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
-r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x);
-*(f32 *)0xCC008000=(f32)(y+1);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
-}
-{
-u8 a,b,g,r;
-z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
-r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x+1);
-*(f32 *)0xCC008000=(f32)(y+1);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
-}
+Map_WriteColorVertex((f32)(x),(f32)(y),fn_800233D0(gBattleMap,(s8)x,(s8)y,0),color);
+Map_WriteColorVertex((f32)(x+1),(f32)(y),fn_800233D0(gBattleMap,(s8)x,(s8)y,1),color);
+Map_WriteColorVertex((f32)(x),(f32)(y+1),fn_800233D0(gBattleMap,(s8)x,(s8)y,2),color);
+Map_WriteColorVertex((f32)(x+1),(f32)(y+1),fn_800233D0(gBattleMap,(s8)x,(s8)y,3),color);
 }
 #pragma global_optimizer on
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
