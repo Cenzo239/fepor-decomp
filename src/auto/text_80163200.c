@@ -1,5 +1,4 @@
 #include "common.h"
-typedef struct UiPointResult { s16 x, y; } UiPointResult;
 #pragma cplusplus on
 struct LensFlareView {
     u8 pad[0x40];
