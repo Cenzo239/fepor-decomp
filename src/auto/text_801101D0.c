@@ -933,17 +933,13 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
     void *obj;
     s8 flag;
     s32 n;
-    GetPosFn gp;
-    void **vt;
 
     *(f32 *)&pos.z = 0.0f;
     *(f32 *)&pos.y = 0.0f;
     *(f32 *)&pos.x = 0.0f;
     n = strlen((char *)gActorXmlStrs + 0x4E);
     if (String_Compare(name, 0, (void *)name->size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
-        vt = *(void ***)((u8 *)self + 0x40);
-        gp = (GetPosFn)vt[0xE];
-        gp(&got, self, 0);
+        ((GetPosFn)((void **)*(void **)((u8 *)self + 0x40))[0xE])(&got, self, 0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
         *(f32 *)&pos.x = got.x;
@@ -1721,9 +1717,9 @@ Vec3(f32 v) { z=v; y=v; x=v; }
     void fn_801985C4(void *);
     extern f32 lbl_8036A184;
     extern u16 gActorXmlStrs[];
-    Vec3 a(lbl_8036A184);
-    Vec3 b(lbl_8036A184);
-    Vec3 c(lbl_8036A184);
+    Vec3 a(0.0f);
+    Vec3 b(0.0f);
+    Vec3 c(0.0f);
     Vec3 tmpA;
     Vec3 tmpB;
     Actor *other;
@@ -2452,11 +2448,7 @@ Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-{
-register void **vt;
-vt = *(void ***)((u8*)arg0+0x40);
-((void (*)(void *,void *,s32))vt[14])(&current,arg0,0);
-}
+((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
 px=current[0];
 other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
@@ -9214,11 +9206,11 @@ s32 fn_801208BC(s8 *text, s32 wanted) {
 s32 fn_80010428(s8 **,s32,f32);
 s8 *fn_80104970(s8 *);
 extern f32 lbl_8036A248;
-u8 *out;
 s32 longest=-1;
 s32 width;
 s32 selected=wanted;
 s32 font=2;
+u8 *out;
 for (;;) {
 width=0;
 for (;;) {
