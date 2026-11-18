@@ -8558,7 +8558,7 @@ void fn_8004B588(u8 *arg0)
 
 void fn_8004B8F8(int arg0, int arg1, float arg2, float arg3)
 {
-  extern u8 *lbl_803672CC;
+  extern void *lbl_803672CC;
   u8 *new_var[2];
   u8 *pool;
   pool = lbl_803672CC;
