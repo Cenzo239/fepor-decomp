@@ -8142,6 +8142,51 @@ void fn_80253298(void *arg0, u32 *arg1)
     *(u32 *)(voice + 0x220) |= 0x4000;
 }
 
+#pragma global_optimizer off
+void fn_80253518(void *voice, u32 *step) {
+    void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
+    void fn_8025EEE8(u8, u8, s32);
+    u32 word;
+    u32 word0;
+    u64 flags;
+    u64 mask;
+    u8 slot;
+    u32 key;
+    s32 pitch;
+    s32 adj;
+    u8 param;
+    void *dest;
+    word = step[1];
+    mask = *(u64 *)((u8 *)lbl_8029F400 + __rlwinm(word,11,21,28));
+    flags = *(u64 *)((u8 *)voice + 0x114);
+    slot = 0;
+    key=word>>24;
+    dest = lbl_8034CBB4 + *(u8 *)((u8 *)voice + 0x11F) * 0x90 + key * 0x24;
+    key = *(u32 *)((u8 *)lbl_8029F420 + __rlwinm(word,10,22,29));
+    if ((flags & mask) == 0) {
+        *(u64 *)((u8 *)voice + 0x114) = flags | mask;
+    } else {
+        slot = (u8)word;
+    }
+    word0 = step[0];
+    pitch = (s32)(word0 & 0xFFFF0000) / 100;
+    if (pitch < 0) {
+        adj = ((s32)((s8)(step[1] >> 16) << 8)) / 100;
+        pitch = pitch - adj;
+    } else {
+        adj = ((s32)((s8)(step[1] >> 16) << 8)) / 100;
+        pitch = pitch + adj;
+    }
+    param = (u8)(step[1] >> 8);
+    fn_8025FFC8(dest, (u8)(word0 >> 8), pitch, slot, param != 0, param);
+    if (key & 0x80000000) {
+        fn_8025EEE8(*(u8 *)((u8 *)voice + 0x121), *(u8 *)((u8 *)voice + 0x122), key);
+    } else {
+        *(u32 *)((u8 *)voice + 0x220) |= key;
+    }
+}
+#pragma global_optimizer on
+
 void fn_80253694(void *arg0, u32 *cmd) {
   void fn_8026146C(s32 *);
   void fn_8026147C(u32 *, s32);
@@ -14612,7 +14657,8 @@ f64 fn_80261344(f32 x)
     zero = lbl_802831B8[0];
     three = lbl_802831B8[-2];
     half = lbl_802831B8[-1];
-    if (x != zero) {
+    if (x == zero) return result;
+    {
         guess = __frsqrte(x);
         square = guess * guess; guess *= half; square = three - x * square; guess *= square;
         square = guess * guess; guess *= half; square = three - x * square; guess *= square;
