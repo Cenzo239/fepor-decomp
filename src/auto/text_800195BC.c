@@ -1230,16 +1230,14 @@ f32 fn_8001B84C(u8 **arg0) {
 #pragma global_optimizer reset
 #pragma scheduling reset
 u32 Bin_ReadU32(u8 **arg0) {
-    u8 **stream;
-    u8 *data;
     u8 *next;
     u32 result;
-    u32 b2;
     u32 b0;
+    u32 b2;
+    u8 *data;
     u32 b3;
 
-    stream = arg0;
-    data = *stream;
+    data = *arg0;
     if (data == 0) {
         return 0;
     }
@@ -1250,10 +1248,10 @@ u32 Bin_ReadU32(u8 **arg0) {
     b2 <<= 8;
     result <<= 16;
     b3 = data[3];
-    result += b2;
+    result = result + b2;
     b0 <<= 24;
-    result += b3;
-    *stream = next;
+    result = result + b3;
+    *arg0 = next;
     result = b0 + result;
     return result;
 }
