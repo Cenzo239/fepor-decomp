@@ -361,19 +361,79 @@ void fn_801214A4(void) {
 
 #pragma opt_common_subs reset
 #pragma opt_unroll reset
-void fn_80121630(void* arg0)
+void fn_80121630(void *arg0)
 {
-    s32 spC;
-    s32 i;
-    
-    if (arg0 != 0) {
-        spC = 0;
-        for (i = 0; i < 4; i++) {
-            if (((u32*)arg0)[i] != 0) {
-                spC |= 1 << i;
-            }
+    void *Process_CreateChild(void *, void *);
+    void fn_80057880(void *, s32);
+    void fn_80057898(void *, s32);
+    void fn_800578A0(void *, f32);
+    void fn_800578A8(void *, s32, s32, s32);
+    void *fn_80057998(void *);
+    void *Heap_Alloc(u32);
+
+    extern u32 gUiInputFlags;
+    extern u8 lbl_80290250[];
+    extern u8 lbl_8032BDE8[];
+    extern f32 lbl_8036A278;
+
+    void *obj;
+    s32 n;
+
+    if ((gUiInputFlags & 0x800) == 0) {
+        Process_CreateChild(lbl_80290250, arg0);
+
+        *(s16 *)&lbl_8032BDE8[0x4014] = 0;
+        *(s16 *)&lbl_8032BDE8[0x4016] = 0x20;
+        *(u8 *)&lbl_8032BDE8[0x4013] = 0;
+        *(u8 *)&lbl_8032BDE8[0x4012] = 0;
+        *(s16 *)&lbl_8032BDE8[0x4010] = 0;
+
+        n = 0x100;
+
+        if (*(s32 *)&lbl_8032BDE8[0x4000] < 0x100) {
+            n = *(s32 *)&lbl_8032BDE8[0x4000];
         }
-        ((u32*)arg0)[4] = spC;
+
+        *(s16 *)&lbl_8032BDE8[0x400E] =
+            (n - 0xF) * 0x19;
+
+        if (*(s16 *)&lbl_8032BDE8[0x400E] < 0) {
+            *(s16 *)&lbl_8032BDE8[0x400E] = 0;
+        }
+
+        if (*(s16 *)&lbl_8032BDE8[0x400E] != 0) {
+            obj = Heap_Alloc(0x30);
+
+            if (obj != NULL) {
+                obj = fn_80057998(obj);
+            }
+
+            *(void **)&lbl_8032BDE8[0x4018] = obj;
+
+            fn_800578A8(
+                obj,
+                0x240,
+                0x36,
+                0x174
+            );
+
+            fn_800578A0(
+                *(void **)&lbl_8032BDE8[0x4018],
+                lbl_8036A278
+            );
+
+            fn_80057898(
+                *(void **)&lbl_8032BDE8[0x4018],
+                *(s16 *)&lbl_8032BDE8[0x400E] + 0x177
+            );
+
+            fn_80057880(
+                *(void **)&lbl_8032BDE8[0x4018],
+                0x177
+            );
+        } else {
+            *(void **)&lbl_8032BDE8[0x4018] = NULL;
+        }
     }
 }
 
@@ -1801,12 +1861,13 @@ void fn_8012391C(void *arg0) {
     }
 }
 
+#pragma opt_common_subs on
 void fn_80123988(void *arg0)
 {
     void *Process_Create(void *, void *);
     void *Map_Get(void);
 
-    extern s32 lbl_80274F68[2];
+    extern s32 lbl_80274F68[3];
     extern u8 lbl_80290328[];
     extern u8 gBattleSkyIndex;
     extern f32 lbl_8036A308;
@@ -1815,9 +1876,9 @@ void fn_80123988(void *arg0)
     u8 *self;
     u8 *proc;
     u8 *parent;
-    u8 *defs;
     u8 *map;
     u32 skyIndex;
+    u8 *defs;
     u32 sp8[3];
 
     self = (u8 *)arg0;
@@ -1840,17 +1901,16 @@ void fn_80123988(void *arg0)
 
     *(void **)(self + 0x30) = parent;
 
-    skyIndex = gBattleSkyIndex;
-    *(u32 *)(self + 0x34) = skyIndex;
+    *(u32 *)(self + 0x34) = gBattleSkyIndex;
 
     map = (u8 *)Map_Get();
 
     if (map[0x68] == 1) {
-        switch ((s32)skyIndex) {
+        switch ((s32)(skyIndex = *(u32 *)(self + 0x34))) {
         case 2:
             proc = (u8 *)Process_Create(
                 defs + 0xB4,
-                parent
+                    *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x3C;
             break;
@@ -1858,7 +1918,7 @@ void fn_80123988(void *arg0)
         case 3:
             proc = (u8 *)Process_Create(
                 defs + 0xB4,
-                parent
+                    *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x1E;
             break;
@@ -1866,7 +1926,7 @@ void fn_80123988(void *arg0)
         case 4:
             proc = (u8 *)Process_Create(
                 defs + 0xB4,
-                parent
+                    *(void **)(self + 0x30)
             );
             proc[0x4F] = 0x64;
             break;
@@ -1876,7 +1936,7 @@ void fn_80123988(void *arg0)
         case 7:
             proc = (u8 *)Process_Create(
                 defs + 0x8C,
-                parent
+                    *(void **)(self + 0x30)
             );
             proc[0x4C] = skyIndex;
             break;
@@ -1884,32 +1944,32 @@ void fn_80123988(void *arg0)
         case 8:
             proc = (u8 *)Process_Create(
                 defs + 0x60,
-                parent
+                    *(void **)(self + 0x30)
             );
             proc[0x4C] = 0;
             break;
         }
     } else {
-        if (skyIndex <= 0x11) {
-            switch (skyIndex) {
+        {
+            switch (skyIndex = *(u32 *)(self + 0x34)) {
             case 0:
                 Process_Create(
                     defs,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 break;
 
             case 1:
                 Process_Create(
                     defs,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 break;
 
             case 2:
                 proc = (u8 *)Process_Create(
                     defs + 0xB4,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x3C;
                 break;
@@ -1917,7 +1977,7 @@ void fn_80123988(void *arg0)
             case 3:
                 proc = (u8 *)Process_Create(
                     defs + 0xB4,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x1E;
                 break;
@@ -1925,7 +1985,7 @@ void fn_80123988(void *arg0)
             case 4:
                 proc = (u8 *)Process_Create(
                     defs + 0xB4,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 proc[0x4F] = 0x64;
                 break;
@@ -1935,7 +1995,7 @@ void fn_80123988(void *arg0)
             case 7:
                 proc = (u8 *)Process_Create(
                     defs + 0x8C,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 proc[0x4C] = skyIndex;
                 break;
@@ -1943,7 +2003,7 @@ void fn_80123988(void *arg0)
             case 8:
                 proc = (u8 *)Process_Create(
                     defs + 0x60,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 proc[0x4C] = 0;
                 break;
@@ -1959,7 +2019,7 @@ void fn_80123988(void *arg0)
             case 17:
                 Process_Create(
                     defs + 0x3C,
-                    parent
+                    *(void **)(self + 0x30)
                 );
                 break;
             }
