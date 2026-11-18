@@ -261,6 +261,12 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
+static inline void Camera_GetPoint(CameraVec *out, s32 x, s32 y) {
+    f32 Map_SampleHeightRaw(void *, f32, f32);
+    out->x=lbl_80369098+x;
+    out->y=lbl_80369098+y;
+    out->z=Map_SampleHeightRaw(gBattleMap,x,y);
+}
 static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
@@ -344,7 +350,7 @@ void fn_80054C14(void *arg0) {
             state=*(u8 **)(proc+0x30);
             if ((*(u32 *)(state+8)&0x20000000) && *(void **)(state+0x34)) unit1=*(u8 **)(state+0x34);
             else unit1=*(u8 **)(state+0x30);
-            { s32 x=(s8)unit1[0x19e]; s32 y=(s8)unit1[0x19f];
+            { s32 x=*(s8 *)(unit1+0x19e); s32 y=*(s8 *)(unit1+0x19f);
             target.x=lbl_80369098+x;
             target.y=lbl_80369098+y;
             target.z=lbl_8036909C+Map_SampleHeightRaw(gBattleMap,x,y); }
