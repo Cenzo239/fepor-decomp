@@ -2456,6 +2456,26 @@ void fn_8001621C(void) {
     }
 }
 
+void fn_800162B8(void)
+{
+    void Allegiance_FillMask(s32, u8 *);
+    void fn_8004EA60(u8 *, s32);
+    extern u8 gUnits[];
+    u8 sp8[8];
+    s32 i;
+    u8 *unit;
+    Allegiance_FillMask(5, sp8);
+    i = 1;
+    do {
+        if ((u8)i != 0) unit = gUnits + ((u8)i - 1) * 0x280;
+        else unit = NULL;
+        if (*(u32 *)(unit + 0x188) != 0) {
+            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) fn_8004EA60(unit, 0);
+        }
+        i += 1;
+    } while (i <= 0x9F);
+}
+
 void fn_80016358(void)
 {
     void Allegiance_FillMask(s32, u8 *);
