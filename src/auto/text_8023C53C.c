@@ -4022,7 +4022,6 @@ node->prev=0;
 }
 
 #pragma global_optimizer reset
-#pragma scheduling on
 void fn_80249D6C(void *arg0) {
     void fn_80249C1C(void *, s32, s32);
     extern s32 lbl_803689BC;
@@ -4036,12 +4035,11 @@ void fn_80249D6C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x24) = v0;
     v0 = lbl_803689B8;
     v1 = lbl_803689BC;
-    M2C_FIELD((u32)arg0, s32 *, 0x30) = v1;
     M2C_FIELD((u32)arg0, s32 *, 0x2C) = v0;
+    M2C_FIELD((u32)arg0, s32 *, 0x30) = v1;
     fn_80249C1C(arg0, 0, 0);
     fn_80249C1C(arg0, 1, 0);
 }
-#pragma scheduling reset
 
 void fn_80249DD0(s32 arg0) {
     void fn_80249C1C(s32, s32, s32);
@@ -14770,7 +14768,7 @@ extern f32 lbl_802831B8[];
 f64 three; f64 half; f64 guess; f64 square; f64 zero;
 zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
 guess=__frsqrte(x);
-if (!(x < (f32)zero || x > (f32)zero)) return x;
+if (!(x > (f32)zero || x < (f32)zero)) return x;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
