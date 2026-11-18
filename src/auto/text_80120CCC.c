@@ -1882,7 +1882,7 @@ void fn_8012391C(void *arg0) {
 }
 
 #pragma global_optimizer on
-#pragma scheduling off
+#pragma scheduling on
 void fn_80123988(SkyProc *self)
 {
     void *Process_Create(void *, void *);
