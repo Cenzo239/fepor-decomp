@@ -1199,7 +1199,6 @@ s32 fn_800760E4(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma cplusplus on
-#pragma scheduling off
 extern "C" s32 fn_80076148(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
     volatile u8 *p;
@@ -1210,7 +1209,6 @@ extern "C" s32 fn_80076148(s32 arg0, s32 arg1, void *arg2) {
     p[0xA] = *((u8 *)arg2 + 0x3A);
     return 5;
 }
-#pragma scheduling reset
 #pragma cplusplus reset
 #pragma cplusplus on
 extern "C" void Prim2D_SetColorByte(s32);
