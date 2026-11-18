@@ -1728,10 +1728,10 @@ s32 Text_MeasureHeight(s32, f32);
 extern f32 lbl_8036A5AC;
 Vec2s out,in;
 u32 rowH;
-s32 kind,colW;
+s16 kind,colW;
 u32 quot;
 s32 rem,hdiv,t;
-s16 x,y,half; s32 off48,off4a;
+s16 x,y,half,off48,off4a;
 colW=*(s16*)((u8*)arg1+0x44);
 kind=*(s16*)((u8*)arg1+0x3e);
 quot=kind/colW;
@@ -7207,7 +7207,8 @@ void fn_8013CE7C(void *arg0) {
     *(u16 **)arg0 = lbl_80291EAC;
 }
 
-void fn_8013CED0(void *arg0, void *arg1) {
+#pragma global_optimizer off
+void *fn_8013CED0(void *arg0, void *arg1) {
 extern u8 gUiMenuDrawVtbl[], lbl_802920E0[], lbl_80291DA0[];
 extern f32 lbl_8036A6B8;
 u8 *p=arg0;
@@ -7230,8 +7231,9 @@ f=lbl_8036A6B8;
 *(void **)(p+4)=lbl_80291DA0;
 *(s32 *)(p+32)=0;
 *(s8 *)(p+36)=0;
+return arg0;
 }
-
+#pragma global_optimizer on
 #pragma cplusplus on
 extern "C" void Ui_DrawMenuSlotPlain(void *self, void *unused, void *slot) {
     void Prim2D_SetText(s32);
@@ -14126,12 +14128,11 @@ extern "C" void SeCue_FadeOut(s8 slot, s16 durationMs) {
 
 s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
-#pragma scheduling off
-s32 SeCue_PlayAtPos(void *arg0, f32 *pos, s32 flag) {
-    s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
-    return SeCue_PlayAt(arg0, pos[0], pos[1], pos[2], flag);
+#pragma opt_peephole on
+void SeCue_PlayAtPos(void *arg0, const f32 *arg1, s32 arg2) {
+    void SeCue_PlayAt(void *, f32, f32, f32, s32);
+    SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
 }
-#pragma scheduling reset
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
     extern u8 gSeCueSlots[1344];
