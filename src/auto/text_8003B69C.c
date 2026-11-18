@@ -12439,6 +12439,6 @@ outer_test:
 }
 #include "common.h"
 extern f32 lbl_80368FD8;
-extern u16 lbl_8026AB18;
+extern u8 lbl_8026AB18[];
 extern f32 lbl_80368FC4;
-extern u16 lbl_802EFE20;
+extern u8 lbl_802EFE20[64];
