@@ -968,9 +968,9 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
-    s32 index;
-    register u8 *heap;
     u32 size;
+    s32 index;
+    u8 *heap;
     u8 *data;
     u32 *table;
     s32 groups;
@@ -2075,10 +2075,14 @@ void fn_800C79FC(void) {
 }
 
 static inline s32 ParseToken(String *str, char *out, s32 pos) {
-s32 count=0;
-char *p=(char *)str->data+pos;
-s32 size=str->size;
+s32 count;
+char *p;
+s32 size;
 u8 c;
+count=0;
+p=(char *)str->data;
+size=str->size;
+p=p+pos;
 while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
 p=(char *)str->data+pos;
 { char *dest=out;
@@ -2105,19 +2109,22 @@ static inline u8 TokenIsComment(char c) { return c=='#'; }
 static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 #pragma cplusplus on
 #pragma global_optimizer off
-#pragma scheduling on
 #pragma peephole on
 extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
     void strcpy(void *, void *);
     char token[257];
+    char *data;
     char *cursor;
     s32 pos;
     s32 count;
-    char *data;
+    s32 *outTotal;
+    String *s;
     s32 size;
 
+    outTotal = total;
+    s = str;
     cursor = values;
-    pos = ParseToken(str, token, 0);
+    pos = ParseToken(s, token, 0);
 
     if (pos == 0) {
         return 0;
@@ -2140,19 +2147,18 @@ extern "C" s32 fn_800C7B04(void *self, String *str, char *name, char *values, s3
 valid:
     strcpy(name, token);
     count = 0;
-    data = str->data;
-    size = str->size;
+    data = s->data;
+    size = s->size;
     while ((pos = ParseTokenBuf(data, size, token, pos)) != 0 && (u8)token[0] != '#') {
         strcpy(cursor, token);
         cursor += 32;
         count++;
     }
-    if (total) {
-        *total = count;
+    if (outTotal) {
+        *outTotal = count;
     }
     return 1;
 }
-#pragma scheduling reset
 #pragma global_optimizer reset
 #pragma peephole reset
 #pragma cplusplus reset
