@@ -8127,57 +8127,7 @@ void Sound_SelectSource12(void *voice, u32 *step) {
 
 void fn_80253194(void *voice, u32 *step) { SelectSource(voice, (u8 *)voice + 0x3F8, step, 0x40, 0x2000); }
 
-void fn_80253298(void *arg0, u32 *arg1)
-{
-    u8 *voice;
-    u32 flags114;
-    u32 flags118;
-    u32 word0;
-    u32 word1;
-    u8 combine;
-    u8 inverse;
-    s32 scale;
-    s32 adjustment;
-
-    voice = (u8 *)arg0;
-
-    flags114 = *(u32 *)(voice + 0x114);
-    flags118 = *(u32 *)(voice + 0x118);
-
-    combine = 0;
-
-    if ((flags118 & 0x800) == 0) {
-        *(u32 *)(voice + 0x118) = flags118 | 0x800;
-        *(u32 *)(voice + 0x114) = flags114;
-    } else {
-        combine = (u8)arg1[1];
-    }
-
-    word0 = arg1[0];
-    word1 = arg1[1];
-
-    scale = (s32)(word0 & 0xFFFF0000) / 100;
-    adjustment = ((s32)(s8)(word1 >> 16) << 8) / 100;
-
-    if (scale < 0) {
-        scale -= adjustment;
-    } else {
-        scale += adjustment;
-    }
-
-    inverse = (u8)(word1 >> 8);
-
-    fn_8025FFC8(
-        voice + 0x41C,
-        (u8)(word0 >> 8),
-        scale,
-        combine,
-        inverse != 0,
-        inverse
-    );
-
-    *(u32 *)(voice + 0x220) |= 0x4000;
-}
+void fn_80253298(void *voice, u32 *step) { SelectSource(voice, (u8 *)voice + 0x41C, step, 0x800, 0x4000); }
 
 #pragma optimization_level 3
 #pragma global_optimizer off
@@ -15503,8 +15453,8 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
         *(u8 *)(entry + 0xEB) = 0;
     }
 
-    if (flags & 0x80000000) {
-        index = (((u32)arg2 >> 15) | ((u32)arg2 << 17)) & 0x1FE;
+    if (*(u32 *)(entry + 0xF4) & 0x80000000) {
+        index = __rlwinm((u32)arg2, 17, 23, 30);
 
         value = *(u16 *)((u8 *)lbl_802831E0 + index);
 
