@@ -26,27 +26,17 @@ extern u16 jumptable_80283AE8[];
 #pragma optimization_level 4
 #pragma scheduling on
 
-void fn_80006754(void)
-{
-    extern u32 lbl_80367120;
-    extern u32 lbl_80367124;
-    extern u32 lbl_80367128;
-    extern u32 lbl_8036712C;
+#pragma opt_common_subs off
+void fn_80006754(void) {
     extern u32 gFrameCount;
+    extern u64 lbl_80367120;
+    extern u64 lbl_80367128;
     extern u64 OSGetTime(void);
-
-    u32 high = lbl_80367128;
-    u32 low = lbl_8036712C;
-    u32 count = gFrameCount;
     u64 time;
 
-    gFrameCount = count + 1;
-    lbl_80367124 = low;
-    lbl_80367120 = high;
-
+    gFrameCount = gFrameCount + 1;
+    lbl_80367120 = lbl_80367128;
     time = OSGetTime();
-    lbl_8036712C = (u32)time;
-    lbl_80367128 = (u32)(time >> 32);
+    lbl_80367128 = time;
 }
-#pragma scheduling reset
-#pragma optimization_level reset
+#pragma opt_common_subs reset
