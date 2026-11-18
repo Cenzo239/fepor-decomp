@@ -9,6 +9,7 @@ typedef struct {
     u8 unkE[6];
 } Menu888Entry;
 extern void* lbl_803674E8;
+extern f64 lbl_80369688;
 extern f32 lbl_803696C8;
 
 extern s32 gSaveDataBase;
@@ -1988,28 +1989,23 @@ void fn_80089970(void) {
 
 #pragma peephole off
 void fn_80089980(s32 arg0) {
+    extern f32 lbl_803696C8;
+    extern u8 *lbl_803674EC;
+    f32 quotient = (f32)arg0 / lbl_803696C8;
+    s16 *p = (s16 *)(lbl_803674EC + 0x32);
+    p[0] = 3;
+    p[1] = 0;
+    p[2] = (s16)quotient;
+}
+void fn_800899D4(s32 arg0) {
 extern f32 lbl_803696C8;
 extern void *lbl_803674EC;
 f32 value=(f32)arg0;
 f32 divisor=lbl_803696C8;
-s32 duration=(s32)(value/divisor);
 u8 *ptr=(u8*)lbl_803674EC;
-*(u16*)(ptr+0x32)=3;
+*(u16*)(ptr+0x32)=1;
 *(u16*)(ptr+0x34)=0;
-*(u16*)(ptr+0x36)=duration;
-}
-#pragma peephole reset
-#pragma peephole off
-void fn_800899D4(s32 arg0)
-{
-    extern f32 lbl_803696C8;
-    extern void *lbl_803674EC;
-    u8 *ptr = (u8 *)lbl_803674EC;
-    f32 div = lbl_803696C8;
-
-    *(u16 *)(ptr + 0x32) = 1;
-    *(u16 *)(ptr + 0x34) = 0;
-    *(u16 *)(ptr + 0x36) = (u16)(s32)((f32)arg0 / div);
+*(u16*)(ptr+0x36)=(s32)(value/divisor);
 }
 #pragma peephole on
 
