@@ -16790,6 +16790,15 @@ void fn_8017E8C0(void *arg0) {
 void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1) {
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_SetColorByte(u8);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_BindTexture(s32, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_EndPrim(void);
+    void Prim2D_ResetState(void);
     extern f32 lbl_8036AC44;
     extern f32 lbl_8036AC48;
     extern f32 lbl_8036AC30;
