@@ -2794,6 +2794,8 @@ void MoveAnim_AttachClassCue(void *anim) {
     }
 }
 
+static inline s8 MoveAnim_GetUnitY(u8 *unit) { return unit[0x19F]; }
+
 static inline u8 MoveAnim_IsBlendMode(u8 mode) {
     u8 enabled = 1;
     if (!(1 >= (u8)(mode - 1))) enabled = 0;
@@ -2870,8 +2872,7 @@ void fn_80188B4C(void *anim) {
         if (flags & 0x20) {
             alpha = 0;
         }
-        blend = 1;
-        if (!(1U >= (u8)(gMapBlendMode - blend))) blend = 0;
+        blend = MoveAnim_IsBlendMode(gMapBlendMode);
         if (blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
@@ -15570,8 +15571,202 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     return 1;
 }
 
-s32 fn_801A1198(s32 arg0, u8* arg1) {
-    return 0;
+s32 fn_801A1198(s32 arg0, u8 *arg1)
+{
+    extern u8 gUnits[];
+    extern u8 E_EventState_script[];
+    extern u8 Proc_MuEventInst[];
+    extern u8 lbl_8027AD98[];
+    extern u8 gBattleMap[];
+    extern u32 gUiInputFlags;
+
+    void *Process_Find(void *);
+    void *Process_Create(void *, void *);
+    void *fn_800C45B8(s32, void *, s32);
+    void fn_800C4588(void *);
+    void Unit_SetMapPos(void *, s8, s8);
+    void fn_8004FE98(void *, s32);
+    void *fn_80184750(void *, s32, s32, s32);
+    void fn_80050C90(void *);
+    void *fn_80127C48(void);
+    void *fn_800C0658(void);
+    void *MoveAnim_BindPath(void *, u8 *, u16, void *);
+    void Map_RefreshUnitMap(void *);
+
+    u8 *unit;
+    u8 *path;
+    u8 *buffer;
+    u8 *dst;
+    u8 *state;
+    void *parent;
+    u16 flags;
+    s32 x;
+    s32 y;
+    s32 mode;
+    s32 ch;
+
+    if ((u8)arg0 != 0) {
+        unit = gUnits + ((u8)arg0 - 1) * 0x280;
+    } else {
+        unit = 0;
+    }
+
+    if (unit == 0 || *(u32 *)(unit + 0x188) == 0) {
+        return 0;
+    }
+
+    flags = 0x80;
+
+    state = Process_Find(E_EventState_script);
+
+    if (state != 0) {
+        mode = state[0x30];
+    } else {
+        mode = 1;
+    }
+
+    if (mode != 0) {
+        flags |= 0x40;
+    }
+
+    state = Process_Find(E_EventState_script);
+
+    if (state != 0) {
+        mode = state[0x31];
+    } else {
+        mode = 0;
+    }
+
+    if (mode != 0) {
+        flags |= 0x200;
+    }
+
+    state = Process_Find(E_EventState_script);
+
+    if (state != 0) {
+        mode = state[0x32];
+    } else {
+        mode = 0;
+    }
+
+    switch (mode) {
+    case 2:
+        flags |= 0x20;
+        break;
+
+    case 1:
+        flags |= 0x10;
+        break;
+    }
+
+    state = Process_Find(E_EventState_script);
+
+    if (state != 0) {
+        mode = *(u16 *)(state + 0x34);
+    } else {
+        mode = 0;
+    }
+
+    flags |= mode;
+
+    x = (s8)unit[0x19E];
+    y = (s8)unit[0x19F];
+
+    buffer = fn_800C45B8(
+        -0x80,
+        lbl_8027AD98 + 0x5C5,
+        0
+    );
+
+    dst = buffer;
+    path = arg1;
+
+    while (*path != 0) {
+        ch = (s8)*path++;
+
+        switch (ch) {
+        case '8':
+            y--;
+            *dst++ = 8;
+            break;
+
+        case '2':
+            y++;
+            *dst++ = 4;
+            break;
+
+        case '4':
+            x--;
+            *dst++ = 1;
+            break;
+
+        case '6':
+            x++;
+            *dst++ = 2;
+            break;
+
+        case 'U':
+            flags |= 8;
+            break;
+
+        case 'D':
+            flags |= 4;
+            break;
+
+        case 'L':
+            flags |= 1;
+            break;
+
+        case 'R':
+            flags |= 2;
+            break;
+        }
+    }
+
+    *dst = 0x10;
+
+    Unit_SetMapPos(unit, (s8)x, (s8)y);
+
+    if (gUiInputFlags & 1) {
+        fn_8004FE98(unit, 0);
+
+        fn_80184750(
+            unit,
+            flags & 0xF,
+            0,
+            0
+        );
+
+        fn_80050C90(unit);
+    } else {
+        parent = Process_Find(Proc_MuEventInst);
+
+        if (parent == 0) {
+            parent = fn_80127C48();
+
+            if (parent == 0) {
+                parent = fn_800C0658();
+            }
+
+            parent = Process_Create(
+                Proc_MuEventInst,
+                parent
+            );
+        }
+
+        MoveAnim_BindPath(
+            unit,
+            buffer,
+            flags,
+            parent
+        );
+    }
+
+    fn_800C4588(buffer);
+
+    Map_RefreshUnitMap(gBattleMap);
+
+    return 1;
 }
 
 s32 fn_801A147C(void *arg0, s32 *arg1, s32 *arg2) {
