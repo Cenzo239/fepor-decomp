@@ -15208,17 +15208,13 @@ void fn_80261B50(s32 arg0, s8 arg1) {
 
 void fn_80261B64(s32 arg0, s32 arg1)
 {
-    extern u8 *lbl_80368AA0;
-    extern u8 lbl_80368AD0;
     extern void fn_8025C9E0(void *, s32);
+    typedef struct { u8 pad[0xF8]; } Voice;
+    extern Voice *gSoundVoices;
+    extern u8 lbl_80368AD0;
 
-    u8 *entry;
-
-    entry = lbl_80368AA0 + (arg0 * 0xF8);
-    *(u8 *)(entry + 0xDA) = lbl_80368AD0;
-
-    entry = lbl_80368AA0 + (arg0 * 0xF8);
-    fn_8025C9E0(entry, arg1);
+    gSoundVoices[arg0].pad[0xDA] = lbl_80368AD0;
+    fn_8025C9E0(&gSoundVoices[arg0], arg1);
 }
 
 void fn_80261BA0(s32 arg0) {
