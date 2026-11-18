@@ -364,5 +364,4 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
   Text_FindFontIndex(tbl, found);
       return (s32) result;
   }
-  #pragma peephole reset
   #pragma cplusplus reset
