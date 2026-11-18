@@ -280,20 +280,16 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
 }
 
 #pragma global_optimizer off
-#pragma scheduling off
 extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
     u8 *p;
-    u8 v;
     if (*((u8 *)arg2 + 0x39) != 0) {
         return 0x10;
     }
     p = gUiContext;
-    v = *((u8 *)arg2 + 0x3A);
-    p[0xA] = v;
+    p[0xA] = *((u8 *)arg2 + 0x3A);
     return 5;
 }
-#pragma scheduling reset
 #pragma global_optimizer reset
 extern "C" s32 fn_80074BA4(void *arg0) {
     struct Obj {
