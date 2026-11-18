@@ -3172,8 +3172,6 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 #pragma global_optimizer reset
 
 #pragma optimization_level 1
-#pragma scheduling on
-#pragma global_optimizer on
 extern "C" void fn_80116F84(void *arg0, void *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
  s32 copy[3]; s32 c,b,a;
