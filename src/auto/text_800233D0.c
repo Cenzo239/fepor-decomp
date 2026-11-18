@@ -2290,16 +2290,17 @@ void fn_800267F8(s32 arg0) {
 
 void fn_80026850(s32 arg0) {
     void fn_800913D4(s32, s32, s32);
-    s32 Unit_GetItemSlot(s32, s8);
-    extern u8 lbl_802EF4C8[];
-    s32 temp_r31;
-    s8 temp_r4;
-    u8 *p;
+    s32 *Unit_GetItemSlot(s32, s32);
+    extern struct {
+        s32 unk0;
+        s32 unk4;
+        u8 unk8;
+        u8 unk9;
+        s8 unkA;
+        u8 pad[0x18 - 0xB];
+    } gUiContext;
 
-    p = lbl_802EF4C8;
-    temp_r4 = p[0xA];
-    temp_r31 = *(s32 *)p;
-    fn_800913D4(Unit_GetItemSlot(temp_r31, temp_r4), arg0, temp_r31);
+    fn_800913D4((s32)Unit_GetItemSlot(gUiContext.unk0, gUiContext.unkA), arg0, gUiContext.unk0);
 }
 
 s32 fn_800268A8(s32 arg0) {
