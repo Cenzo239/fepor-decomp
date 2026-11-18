@@ -8,6 +8,22 @@ struct UnkStruct {
     u32 field_8;
 };
 
+typedef struct { s8 value; } TabKey;
+
+static inline s32 TabCountChanges(void *begin, void *end, TabKey *key, u32 offset) {
+    void *node = begin;
+    s32 count = 0;
+    u8 found;
+    s8 value;
+    while (node != end) {
+        value = ((u8 *)*(void **)((u8 *)node + 8))[offset];
+        if (value != key->value) { key->value = value; found = 1; } else found = 0;
+        if (found) count++;
+        node = *(void **)((u8 *)node + 4);
+    }
+    return count;
+}
+
 #pragma global_optimizer off
 void fn_801E4540(void)
 {
@@ -2629,74 +2645,77 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
-#pragma global_optimizer off
+#pragma opt_propagation off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
 It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, beginCCopy, beginC, endCCopy, endC;
 struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
-u8 *arg;
-void *end;
-s32 count; s32 result;
+s32 count0, count1, count2;
+void *end0, *end1, *end2;
+s32 ret;
 u8 found;
-s8 value;
+s32 value;
 s8 tab;
-arg = (u8 *)arg0;
-tab = (s8)arg[0x30];
+tab = (s8)*((u8*)arg0+0x30);
 switch(tab) {
 case 0:
-end=arg+0x54;
-endACopy.node=end;
-beginACopy.node=*(void**)(arg+0x58);
+end0=(u8*)arg0+0x54;
+endACopy.node=end0;
+beginACopy.node=*(void**)((u8*)arg0+0x58);
 beginA=beginACopy;
 aCopy=beginA; a=aCopy;
 endA=endACopy; aeCopy=endA; ae=aeCopy;
-count=0;
 initA.value=-1;keyA=initA;
+count0=0;
 while(a.node!=ae.node) {
-value=(*(u8**)((u8*)a.node+8))[2];
-if(keyA.value!=value) {keyA.value=value;found=1;} else found=0;
-if(found) count++;
+value=(s8)(*(u8**)((u8*)a.node+8))[2];
+if(value!=keyA.value) {keyA.value=(s8)value;found=1;} else found=0;
+if(found) count0++;
 a.node=*(void**)((u8*)a.node+4);
 }
-result=count; goto done;
+ret = count0;
+break;
 case 1:
-end=arg+0x54;
-endBCopy.node=end;
-beginBCopy.node=*(void**)(arg+0x58);
+end1=(u8*)arg0+0x54;
+endBCopy.node=end1;
+beginBCopy.node=*(void**)((u8*)arg0+0x58);
 beginB=beginBCopy;
 bCopy=beginB; b=bCopy;
 endB=endBCopy; beCopy=endB; be=beCopy;
-count=0;
 initB.value=-1;keyB=initB;
+count1=0;
 while(b.node!=be.node) {
-value=(*(u8**)((u8*)b.node+8))[1];
-if(keyB.value!=value) {keyB.value=value;found=1;} else found=0;
-if(found) count++;
+value=(s8)(*(u8**)((u8*)b.node+8))[1];
+if(value!=keyB.value) {keyB.value=(s8)value;found=1;} else found=0;
+if(found) count1++;
 b.node=*(void**)((u8*)b.node+4);
 }
-result=count; goto done;
+ret = count1;
+break;
 case 2:
-end=arg+0x54;
-endCCopy.node=end;
-beginCCopy.node=*(void**)(arg+0x58);
+end2=(u8*)arg0+0x54;
+endCCopy.node=end2;
+beginCCopy.node=*(void**)((u8*)arg0+0x58);
 beginC=beginCCopy;
 cCopy=beginC; c=cCopy;
 endC=endCCopy; ceCopy=endC; ce=ceCopy;
-count=0;
 initC.value=-1;keyC=initC;
+count2=0;
 while(c.node!=ce.node) {
-value=(*(u8**)((u8*)c.node+8))[4];
-if(keyC.value!=value) {keyC.value=value;found=1;} else found=0;
-if(found) count++;
+value=(s8)(*(u8**)((u8*)c.node+8))[4];
+if(value!=keyC.value) {keyC.value=(s8)value;found=1;} else found=0;
+if(found) count2++;
 c.node=*(void**)((u8*)c.node+4);
 }
-result=count; goto done;
+ret = count2;
+break;
+default:
+ret = (s32)arg0;
+break;
 }
-result=(s32)arg0;
-done: return result;
+return ret;
 }
-#pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
 void TabMenu_ClearSelectedStatus(void *menu) {
     void Status_Clear(void *, u8);
