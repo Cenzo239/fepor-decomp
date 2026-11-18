@@ -173,6 +173,7 @@ void *fn_8014A6FC(void) {
     return (u8 *)gSoundMenuStrings + 0xEC;
 }
 
+#pragma opt_strength_reduction on
 s32 fn_8014A70C(s32 arg0, s32 arg1)
 {
     extern u16 gSoundMenuStrings[];
