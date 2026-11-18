@@ -21033,19 +21033,24 @@ void fn_800EE4D0(void *arg0)
 
 void fn_800EE6BC(void) {
     extern u32 lbl_803678D0;
-    extern u8 lbl_803678D4[8];
-    void fn_800C4588();
-    if ((u32) lbl_803678D0 != 0U) {
-        fn_800C4588();
+    extern void *lbl_803678D4[2];
+    void fn_800C4588(void *);
+
+    if (lbl_803678D0 != 0U) {
+        fn_800C4588((void *)lbl_803678D0);
         lbl_803678D0 = 0U;
     }
-    if ((u32) M2C_FIELD(&lbl_803678D4, u32 *, 0) != 0U) {
-        fn_800C4588();
-        M2C_FIELD(&lbl_803678D4, u32 *, 0) = 0U;
+    if (lbl_803678D4[0] != NULL) {
+        fn_800C4588(lbl_803678D4[0]);
+        lbl_803678D4[0] = NULL;
     }
-    if ((u32) M2C_FIELD(&lbl_803678D4, u32 *, 4) != 0U) {
-        fn_800C4588();
-        M2C_FIELD(&lbl_803678D4, u32 *, 4) = 0U;
+    {
+        void **q = lbl_803678D4 + 1;
+        void *p = *q;
+        if (p != NULL) {
+            fn_800C4588(p);
+            *q = NULL;
+        }
     }
 }
 
