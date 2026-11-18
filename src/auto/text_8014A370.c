@@ -3,12 +3,10 @@
 
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
-static inline void SoundMenu_AddEntry(u8 *entry) {
-    s32 value;
+static inline void SoundMenu_AddEntry(s32 value) {
     s32 *table;
     s32 index;
     index=lbl_80367B04;
-    value=*(s32 *)entry;
     table=(s32 *)lbl_80367B00;
     lbl_80367B04=index+1;
     table[index]=value;
