@@ -371,13 +371,12 @@ void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even,
     *((s8 *)region + 0xD) = 1;
 }
 
-void GXInitTlutRegion(u32 *arg0, u32 arg1, u32 arg2) {
-    u32 t;
-    *arg0 = 0;
-    t = arg1 - 0x80000;
-    *arg0 = __rlwimi(*arg0, t, 23, 22, 31);
-    *arg0 = __rlwimi(*arg0, arg2, 10, 11, 21);
-    *arg0 = __rlwimi(*arg0, 0x65, 24, 0, 7);
+void GXInitTlutRegion(u32 *arg0,u32 arg1,u32 arg2) {
+u32 t;
+*arg0=0;t=arg1-0x80000;
+*arg0=__rlwimi(*arg0,t>>9,0,22,31);
+*arg0=__rlwimi(*arg0,arg2,10,11,21);
+*arg0=__rlwimi(*arg0,0x65,24,0,7);
 }
 
 void fn_80222EB4(void) {
@@ -859,17 +858,15 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
     *(u16 *)(gx + 2) = 0;
 }
 
-void GXSetTevColorIn(s32 stage_arg, s32 a, s32 b, s32 c, s32 d) {
-    u8 *stage = (u8 *)__GXData + (stage_arg << 2);
-    u32 v = *(u32 *)(stage + 0x130);
-    v = __rlwimi(v, a, 12, 16, 19);
-    *(volatile u8 *)0xCC008000 = 0x61;
-    v = __rlwimi(v, b, 8, 20, 23);
-    v = __rlwimi(v, c, 4, 24, 27);
-    v = __rlwimi(v, d, 0, 28, 31);
-    *(volatile u32 *)0xCC008000 = v;
-    *(u32 *)(stage + 0x130) = v;
-    *(u16 *)((u8 *)__GXData + 2) = 0;
+void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    u16 *gx = __GXData;
+    u32 *stage = (u32 *)((u8 *)gx + (arg0 << 2));
+    u32 value = __rlwimi(stage[0x130 / 4], arg1, 12, 16, 19);
+    *(u8 *)0xCC008000 = 0x61;
+    value = __rlwimi(__rlwimi(__rlwimi(value, arg2, 8, 20, 23), arg3, 4, 24, 27), arg4, 0, 28, 31);
+    *(u32 *)0xCC008000 = value;
+    stage[0x130 / 4] = value;
+    gx[1] = 0;
 }
 
 void GXSetTevAlphaIn(s32 stage,s32 a,s32 b,s32 c,s32 d) {
@@ -933,6 +930,7 @@ void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
     gx[1] = 0;
 }
 
+#pragma scheduling off
 void GXSetTevColor(s32 id, u32 *color) {
     u16 *gx;
     u8 cmd;
@@ -941,7 +939,6 @@ void GXSetTevColor(s32 id, u32 *color) {
     u32 reg;
     u16 zero;
 
-    zero = 0;
     idx = id << 1;
     c = *color;
     reg = idx + 0xE0;
@@ -960,6 +957,7 @@ void GXSetTevColor(s32 id, u32 *color) {
     reg = __rlwimi(reg, c, 28, 12, 19);
     GXWGFifo.u32 = reg;
 
+    zero = 0;
     GXWGFifo.u8 = cmd;
     GXWGFifo.u32 = reg;
     GXWGFifo.u8 = cmd;
@@ -967,8 +965,7 @@ void GXSetTevColor(s32 id, u32 *color) {
 
     gx[1] = zero;
 }
-
-#pragma global_optimizer off
+#pragma scheduling reset
 void fn_80223C14(s32 id, u32 *color)
 {
   u16 *gx;
