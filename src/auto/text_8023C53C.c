@@ -40,12 +40,6 @@ typedef struct SoundEntry {
 typedef struct AudioTableRange { u16 count; u16 start; } AudioTableRange;
 typedef struct AudioTableEntry { s32 data; u16 id; u16 ref; } AudioTableEntry;
 typedef struct SynthVmState { u8 pad[0xAC]; s32 regs[16]; } SynthVmState;
-static inline s32 Synth_ReadVmRegister(SynthVmState *voice, u8 index) {
-extern s32 lbl_8034CB74[];
-index &= 31;
-if(index < 16) return voice->regs[index];
-return lbl_8034CB74[index - 16];
-}
 typedef struct SynthInsn {
     u32 flagA : 8;
     u32 storeReg : 8;
@@ -7321,8 +7315,8 @@ flags:
         if ((vf & 0x20ULL) == 0) {
             if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
-                goto update;
             }
+            goto update;
         }
     }
 
@@ -8658,7 +8652,7 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            left = ((SynthVmState *)voice)->regs[index];
+            left = ((SynthVmState *)((u32)voice + index * 4))->regs[0];
         } else {
             left = lbl_8034CB74[index - 16];
         }
@@ -8673,7 +8667,7 @@ u32 selector;
         index = selector & 0x1F;
 
         if (index < 0x10) {
-            right = ((SynthVmState *)voice)->regs[index];
+            right = ((SynthVmState *)((u32)voice + index * 4))->regs[0];
         } else {
             right = lbl_8034CB74[index - 16];
         }
@@ -12821,6 +12815,7 @@ s32 fn_8025DAA0(
     Entry *entry;
     Node *pool;
     Node *node;
+    u8 **next;
     u8 *current;
     u8 *previous;
     s32 index;
@@ -12850,7 +12845,7 @@ s32 fn_8025DAA0(
         entry->next = 0;
         entry->f8 = 0;
         entry->count = 0;
-        base[index].key = *(u32 *)((u8 *)arg0 + 0x3C);
+        entry->key = *(u32 *)((u8 *)arg0 + 0x3C);
 
         lbl_80368AAE = lbl_80368AAE + 1;
     }
@@ -12864,7 +12859,8 @@ s32 fn_8025DAA0(
     entry = base + index;
     pool = (Node *)lbl_8035C918;
 
-    current = (u8 *)entry->next;
+    next = (u8 **)entry;
+    current = *++next;
     previous = current;
 
     if (current != 0) {
@@ -12884,7 +12880,7 @@ s32 fn_8025DAA0(
     } else {
         node = pool + (u8)nodeIndex;
         node->next = (u32)current;
-        entry->next = (u32)node;
+        *next = (u8 *)node;
     }
 
     nodeIndex = lbl_80368AAD;
