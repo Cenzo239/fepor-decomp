@@ -362,24 +362,78 @@ void fn_8007CCE8(void) {
     fn_80087F50();
 }
 
-void fn_8007CD08(void *text, u8 align, f32 x, f32 y, f32 width) {
-void Prim2D_Begin(void); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void); void Prim2D_AddPrim(s32);
-void Prim2D_SetRect(f32,f32,f32,f32); void Prim2D_EmitQuad(void); void Prim2D_SetColor(s32,s32,s32,s32); void Prim2D_EndPrim(void);
-void **fn_8006EDD8(void *,s32); u32 *Ui_GetColor(s32); void Prim2D_BindTexture(void *,s32,s32);
-void Prim2D_SetPrimParam(f32); void Prim2D_SetQuadMin(f32,f32,f32,f32); void Prim2D_SetQuadMax(f32,f32,f32,f32); void Prim2D_AddZ(f32);
-void fn_8001003C(s32,s32,s32,s32,s32,void *,...);
-extern void *gUiAtlas; extern f32 lbl_80369434,lbl_80369430,lbl_80369418,lbl_8036942C,lbl_80369438,lbl_8036943C;
-u32 color; f32 tw,th,w,h; u16 *size; void *atlas;
-Prim2D_Begin(); Prim2D_SetTex(0,18); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
-Prim2D_SetRect(x,y,width,lbl_80369434); Prim2D_EmitQuad(); Prim2D_SetColor(0,0,0,255); Prim2D_EndPrim();
-size=*fn_8006EDD8(gUiAtlas,29); h=(f32)size[0]*lbl_80369430; w=(f32)size[1]*lbl_80369430;
-{ u32 *c=Ui_GetColor(1); atlas=gUiAtlas; color=*c; } size=*fn_8006EDD8(atlas,29); th=size[1]; tw=size[0];
-Prim2D_Begin(); Prim2D_BindTexture(atlas,29,17); Prim2D_PrepareTex(); Prim2D_AddPrim(1); Prim2D_SetPrimParam(lbl_80369418);
-width=x+width; Prim2D_SetQuadMin(width,y,lbl_80369418,lbl_80369418); Prim2D_SetQuadMax(width+w,y+h,th,tw);
-Prim2D_SetColor(((u8*)&color)[0],((u8*)&color)[1],((u8*)&color)[2],255); Prim2D_EmitQuad(); Prim2D_EndPrim();
-Prim2D_Begin(); Prim2D_AddZ(lbl_8036942C); Prim2D_PrepareTex(); Prim2D_Begin(); Prim2D_SetTex(0,19); Prim2D_PrepareTex();
-fn_8001003C((s32)(lbl_80369438+x),(s32)(y-lbl_8036943C),align,0,0,text,lbl_80369430,lbl_80369418);
-Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
+void fn_8007CD08(void *text, u8 align, f32 x, f32 y, f32 width)
+{
+  void Prim2D_Begin(void);
+  void Prim2D_SetTex(s32, s32);
+  void Prim2D_PrepareTex(void);
+  void Prim2D_AddPrim(s32);
+  void Prim2D_SetRect(f32, f32, f32, f32);
+  void Prim2D_EmitQuad(void);
+  void Prim2D_SetColor(s32, s32, s32, s32);
+  void Prim2D_EndPrim(void);
+  void **fn_8006EDD8(void *, s32);
+  u32 *Ui_GetColor(s32);
+  void Prim2D_BindTexture(void *, s32, s32);
+  void Prim2D_SetPrimParam(f32);
+  void Prim2D_SetQuadMin(f32, f32, f32, f32);
+  void Prim2D_SetQuadMax(f32, f32, f32, f32);
+  void Prim2D_AddZ(f32);
+  void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
+  extern void *gUiAtlas;
+  extern f32 lbl_80369434;
+  extern f32 lbl_80369430;
+  extern f32 lbl_80369418;
+  extern f32 lbl_8036942C;
+  extern f32 lbl_80369438;
+  extern f32 lbl_8036943C;
+  u32 color;
+  f32 tw;
+  f32 th;
+  f32 w;
+  f32 h;
+  u16 *size;
+  void *atlas;
+  Prim2D_Begin();
+  Prim2D_SetTex(0, 18);
+  Prim2D_PrepareTex();
+  Prim2D_AddPrim(1);
+  Prim2D_SetRect(x, y, width, lbl_80369434);
+  Prim2D_EmitQuad();
+  Prim2D_SetColor(0, 0, 0, 255);
+  Prim2D_EndPrim();
+  size = *fn_8006EDD8(gUiAtlas, 29);
+  h = lbl_80369430 * ((f32) size[0]);
+  w = ((f32) size[1]) * lbl_80369430;
+  {
+    u32 *c = Ui_GetColor(1);
+    atlas = gUiAtlas;
+    color = *c;
+  }
+  size = *fn_8006EDD8(atlas, 29);
+  th = size[1];
+  tw = size[0];
+  Prim2D_Begin();
+  Prim2D_BindTexture(atlas, 29, 17);
+  Prim2D_PrepareTex();
+  Prim2D_AddPrim(1);
+  Prim2D_SetPrimParam(lbl_80369418);
+  width = x + width;
+  Prim2D_SetQuadMin(width, y, lbl_80369418, lbl_80369418);
+  Prim2D_SetQuadMax(width + w, y + h, th, tw);
+  Prim2D_SetColor(((u8 *) (&color))[0], ((u8 *) (&color))[1], ((u8 *) (&color))[2], 255);
+  Prim2D_EmitQuad();
+  Prim2D_EndPrim();
+  Prim2D_Begin();
+  Prim2D_AddZ(lbl_8036942C);
+  Prim2D_PrepareTex();
+  Prim2D_Begin();
+  Prim2D_SetTex(0, 19);
+  Prim2D_PrepareTex();
+  fn_8001003C((s32) (lbl_80369438 + x), (s32) (y - lbl_8036943C), align, 0, 0, text, lbl_80369430, lbl_80369418);
+  Prim2D_Begin();
+  Prim2D_AddZ(lbl_80369430);
+  Prim2D_PrepareTex();
 }
 
 void Ui_DrawExpGauge(void) {
@@ -796,62 +850,54 @@ void fn_8007D988(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
 
-    extern f32 lbl_80369418;
-    extern f32 lbl_80369450;
-    extern f32 lbl_80369458;
-    extern f32 lbl_80369468;
-    extern f32 lbl_8036946C;
-    extern f32 lbl_80369478;
-    extern f32 lbl_8036947C;
+    extern const f32 lbl_80369418;
+    extern const f32 lbl_80369450;
+    extern const f32 lbl_80369458;
+    extern const f32 lbl_80369468;
+    extern const f32 lbl_8036946C;
+    extern const f32 lbl_80369478;
+    extern const f32 lbl_8036947C;
 
-    u8 *self;
     u8 *data;
-    s16 timer;
-    s32 alpha;
 
-    self = (u8 *)arg0;
-    data = *(u8 **)(self + 0x30);
+    data = *(u8 **)((u8 *)arg0 + 0x30);
 
     *(s16 *)(data + 6) = *(s16 *)(data + 6) - 1;
 
     if (*(s32 *)(data + 0x20) == 1) {
-        timer = *(s16 *)(data + 6);
 
         *(f32 *)(data + 0x14) = Math_Ease(
             4,
             lbl_80369468,
             lbl_8036947C,
-            (f32)(7 - timer),
+            (f32)(7 - *(s16 *)(data + 6)),
             lbl_80369450
         );
     } else {
-        timer = *(s16 *)(data + 6);
 
         *(f32 *)(data + 0x14) = Math_Ease(
             4,
             lbl_80369468,
             lbl_80369478,
-            (f32)(7 - timer),
+            (f32)(7 - *(s16 *)(data + 6)),
             lbl_80369450
         );
     }
 
     *(f32 *)(data + 0x18) = lbl_80369458;
 
-    timer = *(s16 *)(data + 6);
 
-    alpha = (s32)Math_Ease(
+    data[0xA] = (s32)Math_Ease(
         4,
         lbl_8036946C,
         lbl_80369418,
-        (f32)(7 - timer),
+        (f32)(7 - *(s16 *)(data + 6)),
         lbl_80369450
     );
 
-    data[0xA] = (u8)alpha;
 
     if (*(s16 *)(data + 6) <= 0) {
-        Process_ClearFunc(self);
+        Process_ClearFunc(arg0);
     }
 }
 
