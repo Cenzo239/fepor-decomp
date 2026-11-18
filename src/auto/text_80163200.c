@@ -520,27 +520,24 @@ loop_test:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
+#pragma global_optimizer off
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
     struct { s16 x; s16 y; } sp8;
-    s16 temp;
+    s32 var5;
     s16 var0;
-    s16 var5;
-
+    s16 temp;
     temp = *(s16 *)((u8 *)arg1 + 0x4C);
-    if (temp < 0) {
-        var0 = 0;
-        var5 = 0;
-    } else {
+    if (temp < 0) { var0 = 0; var5 = 0; }
+    else {
         var5 = *(s16 *)((u8 *)arg1 + 0x64);
-        var0 = (s16)(*(s16 *)((u8 *)arg1 + 0x54) * (temp & 3) + *(s16 *)((u8 *)arg1 + 0x66));
+        var0 = (s16)((temp & 3) * *(s16 *)((u8 *)arg1 + 0x54) + *(s16 *)((u8 *)arg1 + 0x66));
     }
-    sp8.x = var5;
-    sp8.y = var0;
+    sp8.x = var5; sp8.y = var0;
     *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
-
+#pragma global_optimizer reset
 s32 fn_80163D14(void *arg0, void *arg1)
 {
   u8 *ctx = (u8 *) arg0;
@@ -1161,16 +1158,16 @@ s32 *dst;
 void *self;
 s16 x;
 s32 y;
-s32 temp;
+s16 temp;
 s32 cls;
 temp=*(s16 *)((u8 *)arg1+0x4C);
 dst=arg0;
 self=arg1;
-cls=(s16)temp;
-if(cls<0) { y=0; x=0; }
+cls=temp;
+if(temp<0) { y=0; x=0; }
 else {
 x=*(s16 *)((u8 *)self+0x64);
-y=cls * *(s16 *)((u8 *)self+0x54);
+y=*(s16 *)((u8 *)self+0x54) * cls;
 y+=*(s16 *)((u8 *)self+0x66);
 y=(s16)y;
 if(cls>=4 && cls<=7) y+=(*(s32 (**)(void *))(*(u8 **)self+0x2C))(self);
@@ -14203,10 +14200,11 @@ void *fn_8017A764(void *arg0, void *arg1) {
     return self;
 }
 
-void fn_8017A7D4(void *arg0, s32 arg1) {
-    extern u8 lbl_802842A4[];
+#pragma cplusplus on
+extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
+    extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
-    *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+    *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
     *(s32 *)((char *)arg0 + 4) = 0;
     *(s32 *)arg0 = 0;
     *(s32 *)((char *)arg0 + 8) = 0;
@@ -14216,7 +14214,7 @@ void fn_8017A7D4(void *arg0, s32 arg1) {
     *(s32 *)arg0 = arg1;
     *(u8 *)((char *)arg0 + 0xC) = 0;
 }
-
+#pragma cplusplus reset
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
     memcpy(arg2, M2C_FIELD(arg0, s32 *, 4), arg1);
@@ -18638,22 +18636,24 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 4
+#pragma peephole on
 void fn_80181C40(s32 *arg0, void *arg1) {
-struct Point {s16 x,y;};
-struct Point *fn_8013F748(void *,struct Point *,struct Point *);
-struct Point out;
-struct Point in;
-s32 index=*(s16 *)((u8 *)arg1+0x4E);
-s32 step=*(s16 *)((u8 *)arg1+0x54);
+struct Point { u16 x,y; };
+struct Point *fn_8013F748(void *, struct Point *, struct Point *);
+struct Point out, in;
+struct Point *outp=&out;
+struct Point *inp=&in;
+s32 y=*(s16*)((u8*)arg1+0x58);
+s32 x=*(s16*)((u8*)arg1+0x56);
+s32 index=*(s16*)((u8*)arg1+0x4e);
+s32 step=*(s16*)((u8*)arg1+0x54);
 s32 row=step*index;
-s16 x=*(s16 *)((u8 *)arg1+0x56);
-s16 y=*(s16 *)((u8 *)arg1+0x58);
-in.x=x;
 in.y=row+y;
-*(struct Point *)arg0=*fn_8013F748(arg1,&out,&in);
+in.x=x;
+*arg0=*(s32*)fn_8013F748(arg1,outp,inp);
 }
-#pragma optimization_level reset
+#pragma peephole reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;
