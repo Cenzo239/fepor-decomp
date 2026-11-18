@@ -271,6 +271,7 @@ static inline void Camera_SelectTarget(u8 *state, CameraVec **first, CameraVec *
     *first = second;
 }
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_80054C14(void *arg0) {
     u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
@@ -328,7 +329,7 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
+        Camera_SelectTarget(*(u8 **)(proc+0x30),&a,b);
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
