@@ -9163,10 +9163,10 @@ s32 fn_801208BC(s8 *text, s32 wanted)
 
           case 'B':
 
-          case 'R':
-          {
+                      case 'R':
             {
-              out = fe24buf.buf;
+              {
+                out = lbl_8032FE24;
               while (((s32) ((u8) (*text))) != '|')
               {
                 *(out++) = *(text++);
