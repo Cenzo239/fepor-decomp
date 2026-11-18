@@ -3,10 +3,11 @@
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
-SoundBucketNode *link = node->next;
-if(link) link->prev=node->prev;
-link=node->prev;
-if(link) link->next=node->next;
+SoundBucketNode *next = node->next;
+SoundBucketNode *prev;
+if(next) next->prev=node->prev;
+prev=node->prev;
+if(prev) prev->next=node->next;
 else *(SoundBucketNode **)(lbl_8034C964+node->index*12+offset)=node->next;
 }
 extern u64 lbl_8029F3D0[4];
@@ -3976,102 +3977,44 @@ fin:
     }
 }
 
-void fn_80249C1C(void *arg0, s32 arg1, u32 arg2)
-{
-    extern u8 lbl_80368979;
-    extern u8 lbl_8034C964[];
-
-    u8 *prev;
-    u8 *next;
-    u8 *head;
-    u8 *node;
-    u32 index;
-    u8 *bucket;
-    u32 oldIndex;
-
-    index = ((arg2 >> 8) + lbl_80368979) & 0x1F;
-    bucket = lbl_8034C964 + index * 0xC;
-
-    switch (arg1) {
-    case 0:
-        oldIndex = ((u8 *)arg0)[9];
-        node = (u8 *)arg0;
-
-        if (oldIndex != 0xFF) {
-            if (oldIndex == index) {
-                return;
-            }
-
-            prev = *(u8 **)node;
-
-            if (prev != 0) {
-                *(void **)(prev + 4) = *(void **)(node + 4);
-            }
-
-            next = *(u8 **)(node + 4);
-
-            if (next != 0) {
-                *(void **)next = *(void **)node;
-            } else {
-                *(void **)(lbl_8034C964 + node[9] * 0xC) = *(void **)node;
-            }
-        }
-
-        head = bucket;
-        break;
-
-    case 1:
-        node = (u8 *)arg0 + 0xC;
-        oldIndex = node[9];
-
-        if (oldIndex != 0xFF) {
-            if (oldIndex == index) {
-                return;
-            }
-
-            prev = *(u8 **)node;
-
-            if (prev != 0) {
-                *(void **)(prev + 4) = *(void **)(node + 4);
-            }
-
-            next = *(u8 **)(node + 4);
-
-            if (next != 0) {
-                *(void **)next = *(void **)node;
-            } else {
-                *(void **)(lbl_8034C964 + node[9] * 0xC + 8) = *(void **)node;
-            }
-        }
-
-        head = bucket + 8;
-        break;
-
-    case 2:
-        node = (u8 *)arg0 + 0x18;
-
-        if (node[9] != 0xFF) {
-            return;
-        }
-
-        head = bucket + 4;
-        break;
-
-    default:
-        break;
-    }
-
-    node[9] = (u8)index;
-
-    next = *(u8 **)head;
-    *(void **)node = next;
-
-    if (next != 0) {
-        *(void **)(next + 4) = node;
-    }
-
-    *(void **)(node + 4) = 0;
-    *(void **)head = node;
+void fn_80249C1C(SoundBucketNode *arg0, s32 kind, u32 time) {
+extern u8 lbl_80368979;
+extern u8 lbl_8034C964[];
+SoundBucketNode *next;
+SoundBucketNode **head;
+SoundBucketNode *node;
+u32 index;
+u32 oldIndex;
+SoundBucketNode **bucket;
+index=((time>>8)+lbl_80368979)&31;
+bucket=(SoundBucketNode **)(lbl_8034C964+index*12);
+switch(kind) {
+case 0:
+oldIndex=arg0->index; node=arg0;
+if(oldIndex!=255) {
+if(oldIndex==index)return;
+SoundBucket_Unlink(arg0,0);
+}
+head=bucket; break;
+case 1:
+node=arg0+1; oldIndex=node->index;
+if(oldIndex!=255) {
+if(oldIndex==index)return;
+SoundBucket_Unlink(node,8);
+}
+head=bucket+2;break;
+case 2:
+node=arg0+2;
+if(node->index!=255)return;
+head=bucket+1;break;
+default:break;
+}
+node->index=index;
+next=*head;
+node->next=next;
+if(next)(*head)->prev=node;
+node->prev=0;
+*head=node;
 }
 
 #pragma global_optimizer reset
@@ -16418,7 +16361,8 @@ u8 fn_80263074(u32 arg0)
     u32 size;
     void *current;
 
-    smallest = (previous = 0, (u32)-1);
+    previous = 0;
+    smallest = -1;
     size = (arg0 + 0x1F) & ~0x1F;
     selected = 0;
     current = lbl_80368ADC;
