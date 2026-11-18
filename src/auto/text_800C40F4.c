@@ -44,7 +44,7 @@ extern u8 g_byteVar;      // gBattleState
 extern char __files[];
 extern char lbl_80271860[];
 extern u8 lbl_80366E58;
-extern f32 lbl_8036A07C;
+extern const f32 lbl_8036A07C;
 
 void *String_Destroy(void *arg0, s16 arg1);
 void Map_BuildUnitMoveRange(void *arg0, s32 arg1, s32 arg2);
