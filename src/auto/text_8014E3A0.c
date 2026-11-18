@@ -1444,54 +1444,30 @@ Prim2D_EndPrim();
 }
 }
 
-void fn_80152548(s32 arg0, s32 arg1, s32 arg2)
-{
-    void Ui_LoadAtlasTex(void *, void *, s32);
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(void *, u32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetRectUv(double, double, double, double, double, double);
-    void Prim2D_EndPrim(void);
-
-    extern u8 gUiTexScratch[];
-    extern void *gUiTexAtlas;
-    extern s16 lbl_80368070;
-
-    s16 *bounds;
-    s16 width;
-    s16 height;
-    s16 x;
-    s16 y;
-
-    Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xA5);
-
-    bounds = &lbl_80368070;
-
-    width = bounds[2] - bounds[0];
-    height = bounds[3] - bounds[1];
-
-    if (width != 0 && height != 0) {
-        Prim2D_Begin();
-
-        Prim2D_SetTex(gUiTexScratch, (arg2 | 1) & 0xFFFF);
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-
-        x = (s16)arg0;
-        y = (s16)arg1;
-
-        Prim2D_SetRectUv(
-            (double)x,
-            (double)y,
-            (double)bounds[0],
-            (double)bounds[1],
-            (double)width,
-            (double)height
-        );
-
-        Prim2D_EndPrim();
-    }
+void fn_80152548(s16 arg0, s16 arg1, s32 arg2) {
+void Ui_LoadAtlasTex(s32,void *,s32);
+void Prim2D_SetTex(void *,u16);
+void Prim2D_Begin(void);
+void Prim2D_PrepareTex(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
+void Prim2D_EndPrim(void);
+extern s32 gUiTexAtlas;
+extern u8 gUiTexScratch[];
+extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368070;
+s16 h;
+s16 w;
+Ui_LoadAtlasTex(gUiTexAtlas,(void *)&gUiTexScratch,0xa5);
+h=(s16)(lbl_80368070.f6-lbl_80368070.f2);
+w=(s16)(lbl_80368070.f4-lbl_80368070.f0);
+if(w!=0 && h!=0) {
+Prim2D_Begin();
+Prim2D_SetTex((void *)&gUiTexScratch,(u16)(arg2|1));
+Prim2D_PrepareTex();
+Prim2D_AddPrim(1);
+Prim2D_SetRectUv((f32)arg0,(f32)arg1,(f32)lbl_80368070.f0,(f32)lbl_80368070.f2,(f32)w,(f32)h);
+Prim2D_EndPrim();
+}
 }
 
 void fn_8015267C(s16 arg0, s16 arg1, s32 arg2) {
