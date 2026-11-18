@@ -2279,18 +2279,8 @@ found:
 #pragma global_optimizer on
 s32 fn_8000AA60(void *arg0)
 {
- extern u8 gProcesses[];
  void Process_Unlink(void *);
- u8 *entry = gProcesses;
- s8 *source = *(s8 **)(*(u8 **)((u8 *)arg0 + 4) + 4);
- s32 i;
- for(i=0;i<256;i++,entry+=0x70) {
-  if(*(u32 *)entry != 0) {
-   if(Process_CompareName(*(s8 **)(entry+0x14), source)==0) goto found;
-  }
- }
- entry=0;
-found:
+ void *entry = Process_FindName(*(s8 **)(*(u8 **)((u8 *)arg0 + 4) + 4));
  if(entry) Process_Unlink(entry);
  *(u32 *)((u8 *)arg0+4)+=8;
  return 1;
