@@ -2,6 +2,9 @@
 #include "common.h"
 extern f32 lbl_802A4590[512];
 extern u32 lbl_803596F0[8];
+extern u32 lbl_8029F400[8];
+extern u32 lbl_8029F420[4];
+extern u8 lbl_8034CBB4[];
 
 typedef struct AudioGroupSlot { void *node; s32 id; void *data; } AudioGroupSlot;
 typedef struct AudioGroupState { u8 pad[8]; s16 count; u16 padA; AudioGroupSlot slots[128]; } AudioGroupState;
@@ -14601,16 +14604,22 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma fp_contract on
 #pragma global_optimizer off
 #pragma scheduling on
-f64 fn_80261344(f32 x) {
-extern f32 lbl_802831B8[];
-f64 three; f64 half; f64 guess; f64 square; f64 zero;
-zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
-if(x==(f32)zero) return x;
-guess=__frsqrte(x);
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-return x*guess;
+f64 fn_80261344(f32 x)
+{
+    extern f32 lbl_802831B8[];
+    f64 three, half, guess, square, zero, result;
+    result = x;
+    zero = lbl_802831B8[0];
+    three = lbl_802831B8[-2];
+    half = lbl_802831B8[-1];
+    if (x != zero) {
+        guess = __frsqrte(x);
+        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
+        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
+        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
+        result = x * guess;
+    }
+    return result;
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
