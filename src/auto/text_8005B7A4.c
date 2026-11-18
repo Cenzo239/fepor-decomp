@@ -1,6 +1,26 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+#pragma cplusplus on
+struct UiSelectionHandler {
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+virtual void v12() = 0;
+virtual void v13() = 0;
+virtual void select(void *, void *) = 0;
+virtual void deselect(void *, void *) = 0;
+};
+#pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
 static inline u8 *GActor_FindAnimation(u8 *p) {
@@ -4915,16 +4935,17 @@ M2C_UNK fn_80063954(char *arg0) {
 
 #pragma inline_depth(0)
 void *fn_800639B4(void *arg0) {
- void fn_80063A14(void *);
- void *result;
- s32 flags;
- result = (void *)fn_8005C82C(arg0, 0);
- flags = FileCache_GetFlags(arg0);
- if ((flags & 0x4000) == 0) {
- fn_80063A14(result);
- FileCache_MarkRelocated(arg0);
- }
- return result;
+    extern M2C_UNK fn_8005C82C(char *, s32);
+    void fn_80063A14(void *);
+    void *result;
+    s32 flags;
+    result = (void *)fn_8005C82C((char *)arg0, 0);
+    flags = FileCache_GetFlags(arg0);
+    if ((flags & 0x4000) == 0) {
+        fn_80063A14(result);
+        FileCache_MarkRelocated(arg0);
+    }
+    return result;
 }
 
 void fn_80063A14(SomeStruct *arg0) {
@@ -5989,24 +6010,18 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
     }
     return temp_r31;
 }
-s32 fn_80065EE8(void *arg0)
-{
-    extern s32 fn_8005C82C(void *, s32);
-    extern u32 FileCache_GetFlags(void *);
-    extern void fn_80065F48(s32);
-    extern void FileCache_MarkRelocated(void *);
+s32 fn_80065EE8(void *arg0) {
+#pragma scheduling off
+    void fn_80065F48(s32);
+    s32 temp_r31;
 
-    s32 result;
-
-    result = fn_8005C82C(arg0, 0);
-
-    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
-        fn_80065F48(result);
+    temp_r31 = fn_8005C82C(arg0, 0);
+    if (!(FileCache_GetFlags((char *)arg0) & 0x4000)) {
+        fn_80065F48(temp_r31);
+        FileCache_MarkRelocated((char *)arg0);
     }
-
-    FileCache_MarkRelocated(arg0);
-
-    return result;
+    return temp_r31;
+#pragma scheduling reset
 }
 
 #pragma optimization_level 2
@@ -11588,7 +11603,7 @@ void fn_800703DC(void *arg0, void *arg1) {
     void *obj;
     void **vtable;
     u32 buttons;
-    s32 index;
+    u8 index;
     s32 limit;
 
     self = (u8 *)arg1;
@@ -11596,16 +11611,16 @@ void fn_800703DC(void *arg0, void *arg1) {
 
     self[0x63] = self[0x62];
 
-    index = (s8)self[0x62];
+    index = self[0x62];
 
-    if (index != 0 && (buttons & 0x01000001) != 0) {
+    if ((s8)index != 0 && (buttons & 0x01000001) != 0) {
         self[0x62] = index - 1;
     }
 
-    index = (s8)self[0x62];
+    index = self[0x62];
     limit = (s8)self[0x60];
 
-    if (index != limit - 1 && (buttons & 0x02000002) != 0) {
+    if ((s8)index != limit - 1 && (buttons & 0x02000002) != 0) {
         self[0x62]++;
     }
 
