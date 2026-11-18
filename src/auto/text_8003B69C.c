@@ -6874,6 +6874,8 @@ draw:
 #pragma opt_peephole reset
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
+typedef struct MapBlendColor { u8 r, g, b, a; } MapBlendColor;
+
 void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
     extern volatile s8 lbl_8036728C;
     extern volatile s8 lbl_8036728D;
