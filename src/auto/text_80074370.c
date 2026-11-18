@@ -279,10 +279,10 @@ extern "C" void fn_80074AE4(void *arg0, s32 arg1, void *arg2) {
     fn_8001003C(*(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32), (u8)flag, 1, 0, ((Obj *)arg0)->v1(), lbl_80369394, lbl_803693A8);
 }
 
-#pragma peephole off
+#pragma optimization_level 3
 extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
-    u8 *p;
+    volatile u8 *p;
     if (*((u8 *)arg2 + 0x39) != 0) {
         return 0x10;
     }
@@ -290,7 +290,7 @@ extern "C" s32 fn_80074B78(s32 arg0, s32 arg1, void *arg2) {
     p[0xA] = *((u8 *)arg2 + 0x3A);
     return 5;
 }
-#pragma peephole reset
+#pragma optimization_level reset
 extern "C" s32 fn_80074BA4(void *arg0) {
     struct Obj {
         virtual s32 v0() = 0;
