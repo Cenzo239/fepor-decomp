@@ -8655,10 +8655,226 @@ next: node=M2C_FIELD(node,void **,4);
 }
 }
 
-void fn_8006B39C(void) {
-    // This is a minimal stub. The actual decompilation will take more work.
-    return;
+#pragma opt_common_subs off
+void fn_8006B39C(void *node, void *actor, s32 work) {
+void *GActor_GetNodeTable(void *);
+void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
+void PSMTXCopy(void *,void *); void PSMTXConcat(void *,void *,void *); void PSMTXIdentity(void *);
+void QUATMtx(void *,void *); int Game_Assert(void *,int,void *);
+void fn_802029C4(void *,void *,void *); void fn_802031E8(void *,void *);
+f32 fn_80203270(void *,void *); void fn_80203290(void *,void *,void *);
+double fn_80238788(double); double fn_80237E90(double);
+void fn_802024D0(void *,void *,f32); void fn_802020F0(void *,void *);
+void fn_802031A8(void *,void *,void *); void *Camera_Get(void); void *Camera_GetViewMtx(void);
+void fn_80202238(void *,void *); void fn_80224DCC(void *,u32);
+void GXLoadPosMtxImm(void *,u32);
+extern f32 lbl_80369298,lbl_8036929C,lbl_803692A0,lbl_803692A4,lbl_803692A8;
+extern u8 lbl_8026B8AC[]; extern s16 lbl_80285F40[]; extern f32 lbl_8026B888[];
+f32 root[12],result[12],parentMtx[12];
+f32 rootZ[12],rootY[12],rootX[12],rootT[12],rootS[12];
+f32 rz[12], ry[12], rx[12], trans[12], scale[12];
+f32 rotation[12],translation[12],scaling[12],view[12];
+f32 local[12],bone[12],turn[12],position[12],combined[12];
+f32 trans3[12],scale3[12],view3[12];
+f32 local4[12],turn4[12],trans4[12],temp4[12];
+f32 align1[12],inv1[12],align3[12],inv3[12];
+typedef struct { f32 v[9]; } Basis;
+
+u8 *table,*cursor,*joint; void *info;
+f32 direction[3],direction4[3];
+Basis basis1;
+f32 axis1[3];
+Basis basis3;
+f32 axis3[3];
+s32 count,i,index;
+void *parent;
+f32 dot,angle;
+info=GActor_GetNodeTable(actor);
+table=M2C_FIELD(node,u8 **,0x1C);
+if(table==0) {
+for(count=0;count<10;count++) {
+switch(M2C_FIELD(actor,u32 *,0xC)) {
+case 1:
+PSMTXRotRad(rootX,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rootY,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rootZ,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+break;
+case 2:
+PSMTXRotRad(rootX,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rootY,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rootZ,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+break;
+case 3:
+PSMTXRotRad(rootX,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rootY,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rootZ,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+break;
+case 4:
+PSMTXRotRad(rootX,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rootY,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rootZ,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+break;
+case 5:
+PSMTXRotRad(rootX,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rootY,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rootZ,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+break;
+case 6:
+PSMTXRotRad(rootX,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rootY,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rootZ,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+break;
+case 8:
+PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
+PSMTXTrans(rootT,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
+QUATMtx((u8 *)actor+0x10,rootX);
+PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootX,root,root); PSMTXConcat(rootT,root,root); goto rootDone;
+case 7: PSMTXCopy((u8 *)actor+0x10,root); goto rootDone;
+default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
 }
+PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
+PSMTXTrans(rootT,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
+PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootY,root,root); PSMTXConcat(rootZ,root,root); PSMTXConcat(rootT,root,root);
+
+rootDone:
+PSMTXConcat(Camera_GetViewMtx(),root,root);
+GXLoadPosMtxImm(root,lbl_80285F40[count]);
+fn_80202238(root,root); fn_80224DCC(root,lbl_80285F40[count]);
+}
+return;
+}
+cursor=table+2; i=table[1];
+if(table[0]!=0x10) Game_Assert(lbl_8026B8AC+0x27,0x3D4,lbl_8026B8AC+0x30);
+if(i>10) Game_Assert(lbl_8026B8AC+0x27,0x3D5,lbl_8026B8AC+0x50);
+if(M2C_FIELD(info,s32 *,8)>=256) Game_Assert(lbl_8026B8AC+0x27,0x3D6,lbl_8026B8AC+0x76);
+for(count=0;count<i;count++) {
+index=*cursor++;
+joint=M2C_FIELD(info,u8 **,0xC)+index*0xF4;
+switch(M2C_FIELD(actor,u32 *,0xC)) {
+case 1:
+PSMTXRotRad(rx,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(ry,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rz,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+break;
+case 2:
+PSMTXRotRad(rx,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(ry,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rz,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+break;
+case 3:
+PSMTXRotRad(rx,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(ry,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rz,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+break;
+case 4:
+PSMTXRotRad(rx,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(ry,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(rz,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+break;
+case 5:
+PSMTXRotRad(rx,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(ry,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+PSMTXRotRad(rz,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+break;
+case 6:
+PSMTXRotRad(rx,'Z',lbl_80369298*M2C_FIELD(actor,f32 *,0x24));
+PSMTXRotRad(ry,'Y',lbl_80369298*M2C_FIELD(actor,f32 *,0x20));
+PSMTXRotRad(rz,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
+break;
+case 8:
+PSMTXScale(scale,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
+PSMTXTrans(trans,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
+QUATMtx((u8 *)actor+0x10,rx);
+PSMTXConcat(rx,scale,result); PSMTXConcat(rx,result,result); PSMTXConcat(trans,result,result); goto transformed;
+case 7: PSMTXCopy((u8 *)actor+0x10,result); goto transformed;
+default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
+}
+PSMTXScale(scale,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
+PSMTXTrans(trans,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
+PSMTXConcat(rx,scale,result); PSMTXConcat(ry,result,result); PSMTXConcat(rz,result,result); PSMTXConcat(trans,result,result);
+
+transformed:
+PSMTXConcat((void *)(work+index*0x30),joint+0x10,parentMtx);
+switch((s32)(M2C_FIELD(node,u32 *,0x10)&0xE0000000)) {
+case 0x20000000:
+
+basis1=*(Basis *)lbl_8026B888;
+PSMTXCopy(result,inv1);
+inv1[3]=lbl_8036929C; inv1[7]=lbl_8036929C; inv1[11]=lbl_8036929C;
+fn_802029C4(inv1,basis1.v,basis1.v);
+if(lbl_8036929C==basis1.v[2]*basis1.v[2]+(basis1.v[0]*basis1.v[0]+basis1.v[1]*basis1.v[1])) {
+PSMTXScale(scaling,lbl_8036929C,lbl_8036929C,lbl_8036929C);
+} else {
+fn_802031E8(basis1.v,basis1.v); dot=fn_80203270(basis1.v,basis1.v+3);
+if(lbl_803692A0==dot) PSMTXIdentity(align1);
+else if(lbl_803692A4==dot) PSMTXScale(align1,lbl_803692A4,lbl_803692A4,lbl_803692A4);
+else { angle=fn_80238788(dot); fn_80203290(basis1.v,basis1.v+3,axis1); fn_802024D0(align1,axis1,angle); }
+fn_802029C4(inv1,basis1.v+6,basis1.v+6); fn_802029C4(align1,basis1.v+6,basis1.v+6);
+PSMTXScale(scaling,basis1.v[6],basis1.v[7],basis1.v[8]);
+}
+PSMTXConcat(result,parentMtx,root);
+PSMTXTrans(translation,root[3],root[7],root[11]);
+PSMTXCopy(parentMtx,rotation); rotation[3]=lbl_8036929C; rotation[7]=lbl_8036929C; rotation[11]=lbl_8036929C;
+fn_802020F0(Camera_GetViewMtx(),view);
+PSMTXConcat(scaling,rotation,root); PSMTXConcat(view,root,root); PSMTXConcat(translation,root,root);
+break;
+case 0x40000000:
+
+PSMTXConcat(result,parentMtx,combined); PSMTXTrans(position,combined[3],combined[7],combined[11]);
+PSMTXCopy(parentMtx,bone); PSMTXCopy(result,local);
+bone[3]=lbl_8036929C; bone[7]=lbl_8036929C; bone[11]=lbl_8036929C; local[3]=lbl_8036929C; local[7]=lbl_8036929C; local[11]=lbl_8036929C;
+{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction); }
+fn_802020F0(result,combined); fn_802029C4(combined,direction,direction);
+if(lbl_8036929C==direction[0]) PSMTXIdentity(turn);
+else { angle=fn_80237E90(direction[2]/direction[0]);
+if(direction[0]<lbl_8036929C) angle=lbl_803692A8-angle;
+else angle=-angle-lbl_803692A8;
+PSMTXRotRad(turn,'Y',angle); }
+PSMTXConcat(turn,bone,combined); PSMTXConcat(local,combined,combined); PSMTXConcat(position,combined,root);
+break;
+case 0x60000000:
+
+basis3=*(Basis *)lbl_8026B888;
+PSMTXCopy(result,inv3);
+inv3[3]=lbl_8036929C; inv3[7]=lbl_8036929C; inv3[11]=lbl_8036929C;
+fn_802029C4(inv3,basis3.v,basis3.v);
+if(lbl_8036929C==basis3.v[2]*basis3.v[2]+(basis3.v[0]*basis3.v[0]+basis3.v[1]*basis3.v[1])) {
+PSMTXScale(scale3,lbl_8036929C,lbl_8036929C,lbl_8036929C);
+} else {
+fn_802031E8(basis3.v,basis3.v); dot=fn_80203270(basis3.v,basis3.v+3);
+if(lbl_803692A0==dot) PSMTXIdentity(align3);
+else if(lbl_803692A4==dot) PSMTXScale(align3,lbl_803692A4,lbl_803692A4,lbl_803692A4);
+else { angle=fn_80238788(dot); fn_80203290(basis3.v,basis3.v+3,axis3); fn_802024D0(align3,axis3,angle); }
+fn_802029C4(inv3,basis3.v+6,basis3.v+6); fn_802029C4(align3,basis3.v+6,basis3.v+6);
+PSMTXScale(scale3,basis3.v[6],basis3.v[7],basis3.v[8]);
+}
+PSMTXTrans(trans3,result[3],result[7],result[11]);
+fn_802020F0(Camera_GetViewMtx(),view3);
+PSMTXConcat(scale3,parentMtx,root); PSMTXConcat(view3,root,root); PSMTXConcat(trans3,root,root);
+break;
+case (s32)0x80000000:
+
+PSMTXTrans(trans4,result[3],result[7],result[11]);
+PSMTXCopy(result,local4);
+local4[3]=lbl_8036929C; local4[7]=lbl_8036929C; local4[11]=lbl_8036929C;
+{ u8 *camera=Camera_Get(); fn_802031A8(camera+0xE0,camera+0xD4,direction4); }
+fn_802020F0(result,temp4); fn_802029C4(temp4,direction4,direction4);
+angle=lbl_8036929C;
+if(angle!=direction4[0]) {
+angle=fn_80237E90(direction4[2]/direction4[0]);
+if(direction4[0]<lbl_8036929C) angle=lbl_803692A8-angle;
+else angle=-angle-lbl_803692A8;
+}
+PSMTXRotRad(turn4,'Y',angle);
+PSMTXConcat(turn4,parentMtx,root); PSMTXConcat(local4,root,root); PSMTXConcat(trans4,root,root); break;
+default: PSMTXConcat(result,parentMtx,root); break;
+}
+PSMTXConcat(Camera_GetViewMtx(),root,root);
+GXLoadPosMtxImm(root,lbl_80285F40[count]);
+fn_80202238(root,root); fn_80224DCC(root,lbl_80285F40[count]);
+}
+}
+#pragma opt_common_subs reset
 
 #pragma use_lmw_stmw on
 void fn_8006C2A4(void *arg0,s32 arg1){
@@ -9095,7 +9311,7 @@ void fn_8006D53C(register s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D54C(s32 arg1, s32 arg2, s32 arg3) {
+void fn_8006D54C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_r6;
     s32 temp_r7;
     s32 var_ctr;
@@ -9167,28 +9383,23 @@ void fn_8006D66C(s32 arg1, s32 arg2, s32 arg3) {
         s32 count = (arg3 >> 1) - 1;
         if (count != 0) {
             do {
-                // Process 4 elements
                 f32 a = *(f32*)(arg1);
                 f32 b = *(f32*)(arg1 + 4);
                 f32 c = *(f32*)(arg1 + 8);
                 f32 d = *(f32*)(arg1 + 12);
-                
                 *(f32*)(arg2) = a;
                 *(f32*)(arg2 + 4) = b;
                 *(f32*)(arg2 + 8) = c;
                 *(f32*)(arg2 + 12) = d;
-                
                 arg1 += 16;
                 arg2 += 16;
                 count--;
             } while (count != 0);
         } else {
-            // Process one element
             f32 a = *(f32*)(arg1);
             f32 b = *(f32*)(arg1 + 4);
             f32 c = *(f32*)(arg1 + 8);
             f32 d = *(f32*)(arg1 + 12);
-            
             *(f32*)(arg2) = a;
             *(f32*)(arg2 + 4) = b;
             *(f32*)(arg2 + 8) = c;
