@@ -2795,6 +2795,7 @@ void MoveAnim_AttachClassCue(void *anim) {
 }
 
 #pragma push
+#pragma peephole on
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
     void fn_8004FE98(void *, s32);
@@ -2813,24 +2814,21 @@ void fn_80188B4C(void *anim) {
 
     void *fadeKey[13];
     u8 *self;
-    u8 tx, ty;
-    s32 y;
-    s32 x;
+    s8 x;
+    s8 y;
     u8 *unit;
     s16 degrees;
     f32 angle;
     u16 flags;
     s32 alpha;
-    s32 blend;
+    u8 blend;
     u8 slot;
 
     self = (u8 *)anim;
     if (M2C_FIELD(self, u16 *, 0x52) & 0x80) {
         unit = M2C_FIELD(self, u8 **, 0x30);
-        tx = unit[0x19E];
-        ty = unit[0x19F];
-        x = (s8)tx;
-        y = (s8)ty;
+        x = (s8)unit[0x19E];
+        y = (s8)unit[0x19F];
         fn_80050C90(unit);
 
         unit = M2C_FIELD(self, u8 **, 0x30);
@@ -2869,7 +2867,7 @@ void fn_80188B4C(void *anim) {
         }
         blend = 1;
         if (!((u8)(gMapBlendMode - 1) <= 1)) blend = 0;
-        if ((u8)blend) {
+        if (blend) {
             unit = M2C_FIELD(self, u8 **, 0x30);
             if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
                 (gBattleMap + x + y * 0x40)[0x200D] == 0) {
