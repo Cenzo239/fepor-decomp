@@ -2803,30 +2803,32 @@ void *fn_801363C4(void *arg0, s16 arg1) {
 #pragma global_optimizer off
 void fn_80136430(void *arg0)
 {
-  s16 t;
-  s16 dx;
-  s16 dy;
-  s16 vE;
-  char new_var;
-  s16 vA;
-  s16 twelve;
-  s16 v10;
-  s16 five;
-  s16 vC;
-  vC = *((s16 *) (((u8 *) arg0) + 0xC));
-  five = 5;
-  v10 = *((s16 *) (((u8 *) arg0) + 0x10));
-  twelve = 0xC;
-  vA = *((s16 *) (((u8 *) arg0) + 0xA));
-  vE = *((s16 *) (((u8 *) arg0) + 0xE));
-  dy = (s16) (v10 - vC);
-  *((s16 *) (((u8 *) arg0) + 0x12)) = five & 0xFF;
-  dx = (s16) (vE - vA);
-  t = dy - 0xC;
-  *((s16 *) (((u8 *) arg0) + 0x14)) = twelve;
-  dx = dx - 5;
-  new_var = (*((s16 *) (((u8 *) arg0) + 0x18)) = t);
-  *((s16 *) (((u8 *) arg0) + 0x16)) = dx;
+    s16 *p = (s16 *)arg0;
+    s16 t;
+    s16 dx;
+    s16 dy;
+    s16 vE;
+    char new_var;
+    s16 vA;
+    s16 twelve;
+    s16 v10;
+    s16 five;
+    s16 vC;
+
+    vC = p[6];
+    five = 5;
+    v10 = p[8];
+    twelve = 0xC;
+    vA = p[5];
+    vE = p[7];
+    dy = (s16)(v10 - vC);
+    p[9] = five & 0xFF;
+    dx = (s16)(vE - vA);
+    t = (s16)(dy - 0xC);
+    p[10] = twelve;
+    dx = (s16)(dx - 5);
+    new_var = (p[12] = t);
+    p[11] = dx;
 }
 #pragma global_optimizer reset
 s16 fn_80136474(void *arg0) {
@@ -4263,51 +4265,40 @@ void fn_80138D14(void *arg0) {
 }
 
 void fn_80138D44(void *arg0) {
-    s16 t;
-    s16 dx;
-    s16 dy;
-    s16 vE;
-    s16 vA;
-    s16 v10;
-    s16 twelve;
-    s16 vC;
-    s16 five;
-
-    vC = *(s16 *)((u8 *)arg0 + 0xC);
-    five = 3;
-    v10 = *(s16 *)((u8 *)arg0 + 0x10);
-    twelve = 5;
-    vA = *(s16 *)((u8 *)arg0 + 0xA);
-    vE = *(s16 *)((u8 *)arg0 + 0xE);
-    dy = (s16)(v10 - vC);
-    *(s16 *)((u8 *)arg0 + 0x12) = five;
-    dx = (s16)(vE - vA);
-    t = dy - 5;
-    *(s16 *)((u8 *)arg0 + 0x14) = twelve;
-    dx = dx - 3;
-    *(s16 *)((u8 *)arg0 + 0x18) = t;
-    *(s16 *)((u8 *)arg0 + 0x16) = dx;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    bottom = height - 5;
+    right = width - 3;
+    p[0x12 / 2] = 3;
+    p[0x14 / 2] = 5;
+    p[0x16 / 2] = right;
+    p[0x18 / 2] = bottom;
 }
 
 void fn_80138D88(void *arg0) {
-    s16 var_r5;
-    s16 var_r4;
+    s16 three;
+    s16 five;
     s16 var_r6;
     s16 var_r7;
+    s16 var_r5;
     s16 var_r8;
-
+    s16 var_r4;
+    three = 3;
+    five = 5;
     var_r8 = *(s16 *)((u8 *)arg0 + 0xC);
     var_r7 = *(s16 *)((u8 *)arg0 + 0x10);
     var_r6 = *(s16 *)((u8 *)arg0 + 0xA);
     var_r5 = *(s16 *)((u8 *)arg0 + 0xE);
-
     var_r7 = var_r7 - var_r8;
     var_r7 = (s16)var_r7;
-    *(s16 *)((u8 *)arg0 + 0x12) = 3;
+    *(s16 *)((u8 *)arg0 + 0x12) = three;
     var_r4 = var_r5 - var_r6;
     var_r4 = (s16)var_r4;
     var_r5 = var_r7 - 5;
-    *(s16 *)((u8 *)arg0 + 0x14) = 5;
+    *(s16 *)((u8 *)arg0 + 0x14) = five;
     var_r4 = var_r4 - 3;
     *(s16 *)((u8 *)arg0 + 0x16) = var_r4;
     *(s16 *)((u8 *)arg0 + 0x18) = var_r5;
