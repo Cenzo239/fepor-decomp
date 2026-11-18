@@ -329,6 +329,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8005AE20.c"),
             Object(NonMatching, "auto/text_8005B760.c"),
             Object(NonMatching, "auto/text_8005B7A4.c"),
+            Object(NonMatching, "auto/text_8005F7F0.c"),
             Object(Matching, "auto/text_800725C8.c"),
             Object(NonMatching, "auto/text_80073394.c"),
             Object(NonMatching, "auto/text_80074370.c"),
