@@ -693,37 +693,20 @@ outer_test:
     lbl_803688E8[out] = 0;
 }
 
-void fn_8023D0D8(void)
-{
-    extern u8 *lbl_803688E8;
-    extern u16 *lbl_803688EC;
-    u8 *src;
-    u16 *dst;
-    u16 index;
-    u16 count;
-    u8 current;
-    u16 one;
-    u32 cur_ext;
-
-    src = lbl_803688E8;
-    index = 0;
-    dst = lbl_803688EC;
-    count = 0;
-    current = src[0];
-    one = 1;
-
-    while (src[index] != 0) {
-        cur_ext = current;
-        while (cur_ext == src[index]) {
-            dst[index] = count;
-            index++;
-            count++;
-        }
-        count = (u16)(count << one);
-        current++;
-    }
+#pragma global_optimizer off
+#pragma scheduling off
+void fn_8023D0D8(void) {
+extern u8 *lbl_803688E8; extern u16 *lbl_803688EC;
+s32 one; u32 cur_ext; u16 *dst; u8 *src; u8 current; u16 index; u16 count;
+src=lbl_803688E8; index=0; dst=lbl_803688EC; count=0; current=src[0]; one=1;
+while(src[index]!=0) {
+cur_ext=current;
+while(cur_ext==src[index]) { dst[index]=count; index++; count++; }
+count=(u16)(count<<one); current++;
 }
-
+}
+#pragma scheduling reset
+#pragma global_optimizer reset
 void fn_8023D140(u8 arg0) {
 extern u8 *lbl_80368950;
 extern u8 *lbl_803688E4;
@@ -15110,16 +15093,16 @@ void fn_80261B50(s32 arg0, s8 arg1) {
 
 void fn_80261B64(s32 arg0, s32 arg1)
 {
-    extern u8 *gSoundVoices;
+    extern u8 *lbl_80368AA0;
     extern u8 lbl_80368AD0;
     extern void fn_8025C9E0(void *, s32);
 
     u8 *entry;
 
-    entry = gSoundVoices + (arg0 * 0xF8);
+    entry = lbl_80368AA0 + (arg0 * 0xF8);
     *(u8 *)(entry + 0xDA) = lbl_80368AD0;
 
-    entry = gSoundVoices + (arg0 * 0xF8);
+    entry = lbl_80368AA0 + (arg0 * 0xF8);
     fn_8025C9E0(entry, arg1);
 }
 
