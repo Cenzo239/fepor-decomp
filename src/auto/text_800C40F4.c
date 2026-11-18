@@ -14635,7 +14635,7 @@ void fn_800E3BD8(void *arg0, s32 arg1, s32 arg2) {
 #pragma cplusplus on
 #pragma dont_inline on
 #pragma use_lmw_stmw on
-extern "C" void fn_800E3C04(void *arg0,s32 arg1) {
+extern "C" void fn_800E3C04(u8 *self,s32 context) {
  void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
  s32 fn_800E7FB4(s32,void*);
  void *String_Init(void*,char*,void*);
@@ -14643,10 +14643,8 @@ extern "C" void fn_800E3C04(void *arg0,s32 arg1) {
  extern f32 lbl_80369F30;
  String a,b,c;
  s32 scratchA,scratchB,scratchC;
- s32 owner,item,color;
- u8 *self;
- s32 context;
- self=(u8*)arg0;context=arg1;
+ s32 color,owner,item;
+
  color=128;
  owner=*(s32*)self;
  if(self[0x9C]) color=255;
@@ -14654,7 +14652,7 @@ extern "C" void fn_800E3C04(void *arg0,s32 arg1) {
  String_Init(&a,lbl_80271F28,&scratchA);
  item=fn_800E7FB4(owner,&a);
  String_Destroy(&a,-1);
- fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)+(M2C_FIELD(self,s32*,0x60)-20),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ fn_800E3040(item,context,3,(M2C_FIELD(self,s32*,0x60)-20)+M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
  String_Init(&b,lbl_80271F28+6,&scratchB);
  item=fn_800E7FB4(owner,&b);
  String_Destroy(&b,-1);
@@ -15739,6 +15737,67 @@ s32 fn_800E5270(void *self, String *arg1, String *arg2, s32 arg3) {
     String_Destroy(&entry.str0, -1);
     return result;
 }
+
+#pragma dont_inline on
+void fn_800E5418(void *arg0,void *arg1) {
+void *Heap_Alloc(u32);
+void String_Init(void *,void *,void *);
+void *Xml_ParseFile(void *,void *,void *);
+void String_Destroy(void *,s32);
+void Xml_GetNamedValue(void *,void *,String *);
+void String_AssignCStr(void *,void *,s32);
+s32 strlen(char *);
+void String_Copy(void *,void *);
+void fn_800E5270(void *,void *,void *,s32);
+u8 fn_800C8F48(void *);
+void Xml_Destroy(void *,s16);
+extern char lbl_802720E0[];
+char value1[32],value2[32];
+s32 value3[8];
+String first,second,root,key1,key2,key3,copy1,copy2;
+u32 allocRoot,alloc1,alloc2,alloc3;
+char *strings;
+char *buffer1,*buffer2;
+void *xml;
+s8 made;
+s32 number;
+made=0;
+xml=Heap_Alloc(0x60);
+if(xml) {
+String_Init(&root,lbl_802720E0+6,&allocRoot);
+made=1;
+xml=Xml_ParseFile(xml,arg1,&root);
+}
+if(made) String_Destroy(&root,-1);
+first.cap=0;second.cap=0;
+first.size=0;first.data=0;first.cap=0;
+second.size=0;second.data=0;second.cap=0;
+buffer1=value1;strings=lbl_802720E0;buffer2=value2;
+do {
+String_Init(&key1,strings+11,&alloc1);
+Xml_GetNamedValue(value1,xml,&key1);
+String_AssignCStr(&first,buffer1,strlen(buffer1));
+String_Destroy(&key1,-1);
+String_Init(&key2,strings+16,&alloc2);
+Xml_GetNamedValue(value2,xml,&key2);
+String_AssignCStr(&second,buffer2,strlen(buffer2));
+String_Destroy(&key2,-1);
+String_Init(&key3,strings+23,&alloc3);
+Xml_GetNamedValue(value3,xml,&key3);
+number=value3[0];
+String_Destroy(&key3,-1);
+String_Copy(&copy1,&first);
+String_Copy(&copy2,&second);
+fn_800E5270(arg0,&copy1,&copy2,number);
+String_Destroy(&copy2,-1);
+String_Destroy(&copy1,-1);
+} while(fn_800C8F48(xml));
+Xml_Destroy(xml,1);
+String_Destroy(&second,-1);
+String_Destroy(&first,-1);
+}
+#pragma dont_inline reset
+
 #pragma global_optimizer reset
 #pragma dont_inline reset
 void fn_800E5600(void *arg0, s32 arg1, u8 arg2) {
