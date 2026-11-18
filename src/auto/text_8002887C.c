@@ -1674,8 +1674,8 @@ extern "C" void fn_8002B520(void *arg0) {
         void *vtbl;
         void *unit;
     } obj;
+    s32 x;
     s32 y;
-    s8 x;
     u16 *flags;
     s32 yOff;
     void *unit;
@@ -1688,9 +1688,10 @@ extern "C" void fn_8002B520(void *arg0) {
     obj.vtbl = lbl_80284D20;
     fn_8002F728(gTargetList);
     {
-        u8 *map = gBattleMap;
+        u8 *map;
         y = (s8)*(u8 *)((u8 *)obj.unit + 0x19F);
-        x = (s8)*(u8 *)((u8 *)obj.unit + 0x19E);
+        x = *(s8 *)((u8 *)obj.unit + 0x19E);
+        map = gBattleMap;
         yOff = y << 6;
         flags = (u16 *)(map + ((x + yOff) << 1));
         f = *(u16 *)((u8 *)flags + 0x408E);
