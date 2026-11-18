@@ -12552,44 +12552,41 @@ void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
     arg0[14] = z;
 }
 
-void fn_800DF50C(f32 *arg0) {
-    extern f32 gVec3InterpZero;
-    extern f32 lbl_80369EBC;
-    extern f32 lbl_80369EC0;
-    extern f32 lbl_80369EC4;
-    f32 vals[4];
-
-    vals[0] = gVec3InterpZero;
-    vals[1] = lbl_80369EC4;
-    arg0[5] = vals[0];
-    vals[2] = lbl_80369EC0;
-    arg0[4] = vals[0];
-    vals[3] = lbl_80369EBC;
-    arg0[3] = vals[0];
-    arg0[2] = vals[0];
-    arg0[1] = vals[0];
-    arg0[0] = vals[0];
-    arg0[6] = vals[0];
-    arg0[7] = vals[0];
-    arg0[8] = vals[3];
-    arg0[9] = vals[2];
-    arg0[10] = vals[1];
-    *(s32 *)&arg0[11] = 0;
-    arg0[21] = vals[0];
-    arg0[18] = vals[0];
-    arg0[15] = vals[0];
-    arg0[12] = vals[0];
-    arg0[22] = vals[0];
-    arg0[19] = vals[0];
-    arg0[16] = vals[0];
-    arg0[13] = vals[0];
-    arg0[23] = vals[0];
-    arg0[20] = vals[0];
-    arg0[17] = vals[0];
-    arg0[14] = vals[0];
-}
-
 #pragma cplusplus on
+#pragma global_optimizer off
+extern "C" void fn_800DF50C(f32 *arg0) {
+extern f32 gVec3InterpZero, lbl_80369EBC, lbl_80369EC0, lbl_80369EC4;
+f32 a,b,c,d;
+d=gVec3InterpZero;
+c=lbl_80369EBC;
+arg0[5]=d;
+b=lbl_80369EC0;
+arg0[4]=d;
+a=lbl_80369EC4;
+arg0[3]=d;
+arg0[2]=d;
+arg0[1]=d;
+arg0[0]=d;
+arg0[6]=d;
+arg0[7]=d;
+arg0[8]=c;
+arg0[9]=b;
+arg0[10]=a;
+*(s32*)&arg0[11]=0;
+arg0[21]=d;
+arg0[18]=d;
+arg0[15]=d;
+arg0[12]=d;
+arg0[22]=d;
+arg0[19]=d;
+arg0[16]=d;
+arg0[13]=d;
+arg0[23]=d;
+arg0[20]=d;
+arg0[17]=d;
+arg0[14]=d;
+}
+#pragma global_optimizer reset
 extern "C" void fn_800DF584(void *arg0) {
     struct Obj {
         u8 pad[0x2C];
@@ -19512,12 +19509,13 @@ void Card_AsyncDone(void) {
 
 #pragma global_optimizer off
 s32 fn_800EB854(void) {
-    extern u8 gCardWork[];
+    extern u8 lbl_80320C20[];
     s32 result = 0;
-    if (*(s32 *)(gCardWork + 0xA004) == -1) goto done;
-    if (gCardWork[0xA01A] == 0) goto done;
-    result = 1;
-done:
+    if (*(s32 *)(lbl_80320C20 + 0xA004) != -1) {
+        if (lbl_80320C20[0xA01A] != 0) {
+            result = 1;
+        }
+    }
     return result;
 }
 #pragma global_optimizer reset
