@@ -3054,6 +3054,12 @@ static inline u8 MapObj_GetState(u8 *obj)
     return obj[2] & 3;
 }
 
+static inline u8 MapObj_IsIdle(u8 *obj)
+{
+    u8 idle = MapObj_GetState(obj) == 0;
+    return idle;
+}
+
 void fn_80040028(void *arg0, void *arg1)
 {
  extern u8 *gMap;
@@ -3070,7 +3076,7 @@ void fn_80040028(void *arg0, void *arg1)
    obj=*(u8 **)((u8 *)arg0+0x14)+i*0xB4;
    flags=*(u32 *)(*(u8 **)(obj+0x10)+0xBC);
    if(MapObj_HasActionFlag(flags) && !MapObj_HasBlockedAction(flags) &&
-      ((u8)(u32)arg1 || !(flags&0x1000)) && (u8)MapObj_IsIdle(obj)) {
+      ((u8)(u32)arg1 || !(flags&0x1000)) && (u8)(MapObj_GetState(obj) == 0)) {
        list[count++]=obj;
        obj[2]|=2;
    }
