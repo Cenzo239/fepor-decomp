@@ -284,10 +284,8 @@ static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec 
     }
 }
 static inline void Camera_ChoosePointOut(u8 *state, CameraVec *first, CameraVec *second, CameraVec **out) {
-    CameraVec *result;
-    if ((*(u32 *)(state+8)&0x20000000) && first) result=first;
-    else result=second;
-    *out=result;
+    if ((*(u32 *)(state+8)&0x20000000) && first) *out=first;
+    else *out=second;
 }
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
