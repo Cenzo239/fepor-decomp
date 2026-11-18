@@ -482,6 +482,14 @@ extern "C" void fn_80121754(void) {
 }
 #pragma cplusplus reset
 
+static inline s32 Ui_GetBoundedEntryCount(void) {
+ extern u8 lbl_8032BDE8[];
+ s32 n = 0x100;
+ if (*(s32 *)(lbl_8032BDE8+0x4000) < 0x100)
+  n = *(s32 *)(lbl_8032BDE8+0x4000);
+ return n;
+}
+
 void fn_801217AC(void) {
     void fn_80057880(void *, s32);
     void fn_80057898(void *, s32);
@@ -492,7 +500,7 @@ void fn_801217AC(void) {
     extern u8 lbl_8032BDE8[];
     extern f32 lbl_8036A278;
     void *obj;
-    s32 n;
+    int n;
 
     *(s16 *)&lbl_8032BDE8[0x4014] = 0;
     *(s16 *)&lbl_8032BDE8[0x4016] = 0x20;
@@ -500,7 +508,7 @@ void fn_801217AC(void) {
     *(u8 *)&lbl_8032BDE8[0x4012] = 0;
     *(s16 *)&lbl_8032BDE8[0x4010] = 0;
     n = 0x100;
-    if (*(s32 *)&lbl_8032BDE8[0x4000] < 0x100) {
+    if (*(int *)&lbl_8032BDE8[0x4000] < 0x100) {
         n = *(s32 *)&lbl_8032BDE8[0x4000];
     }
     *(s16 *)&lbl_8032BDE8[0x400E] = (n - 0xF) * 0x19;
