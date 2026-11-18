@@ -266,9 +266,11 @@ static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
 }
-static inline void Camera_SelectTarget(u8 *state, CameraVec **first, CameraVec *second) {
-    if ((*(u32 *)(state+8)&0x20000000) && *first) return;
-    *first = second;
+static inline CameraVec *Camera_SelectTarget(u8 *state, CameraVec *first, CameraVec *second) {
+    CameraVec *result;
+    if ((*(u32 *)(state+8)&0x20000000) && first) result=first;
+    else result=second;
+    return result;
 }
 #pragma use_lmw_stmw on
 void fn_80054C14(void *arg0) {
@@ -328,7 +330,7 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        Camera_SelectTarget(*(u8 **)(proc+0x30),&a,b);
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
@@ -336,15 +338,16 @@ void fn_80054C14(void *arg0) {
     if (Pad_IsButton(pad,18)) {
         u8 *state=*(u8 **)(proc+0x30);
         if (*(void **)(state+0x34) && *(void **)(state+0x30)) {
-            u8 *unit;
+
             void *control;
             *(u32 *)(state+8)^=0x20000000;
             state=*(u8 **)(proc+0x30);
-            if ((*(u32 *)(state+8)&0x20000000) && *(void **)(state+0x34)) unit=*(u8 **)(state+0x34);
-            else unit=*(u8 **)(state+0x30);
-            target.x=lbl_80369098+(s8)unit[0x19e];
-            target.y=lbl_80369098+(s8)unit[0x19f];
-            target.z=lbl_8036909C+Map_SampleHeightRaw(gBattleMap,(s8)unit[0x19e],(s8)unit[0x19f]);
+            if ((*(u32 *)(state+8)&0x20000000) && *(void **)(state+0x34)) unit1=*(u8 **)(state+0x34);
+            else unit1=*(u8 **)(state+0x30);
+            { s32 x=(s8)unit1[0x19e]; s32 y=(s8)unit1[0x19f];
+            target.x=lbl_80369098+x;
+            target.y=lbl_80369098+y;
+            target.z=lbl_8036909C+Map_SampleHeightRaw(gBattleMap,x,y); }
             control=*(void **)(*(u8 **)(proc+0x30)+0x5c);
             if(control) {
                 f32 duration=fn_8005F84C(control,(s32)*(f32 *)((u8 *)control+0x58),19);
