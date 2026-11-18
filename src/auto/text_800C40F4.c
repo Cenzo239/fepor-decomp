@@ -14632,38 +14632,41 @@ void fn_800E3BD8(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 0x5C) = (s32) (arg2 + (M2C_FIELD(arg0, s32 *, 0x80) - M2C_FIELD(arg0, s32 *, 0x78)));
 }
 
+#pragma cplusplus on
 #pragma dont_inline on
 #pragma use_lmw_stmw on
-void fn_800E3C04(void *arg0,s32 arg1) {
+extern "C" void fn_800E3C04(void *arg0,s32 arg1) {
  void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
  s32 fn_800E7FB4(s32,void*);
  void *String_Init(void*,char*,void*);
  extern char lbl_80271F28[];
- extern f32 lbl_80369F30[];
+ extern f32 lbl_80369F30;
  String a,b,c;
  s32 scratchA,scratchB,scratchC;
- u8 *self=(u8*)arg0;
  s32 owner,item,color;
+ u8 *self;
+ s32 context;
+ self=(u8*)arg0;context=arg1;
  color=128;
  owner=*(s32*)self;
  if(self[0x9C]) color=255;
- ((void(*)(void*,s32,s32,void*,s32,s32,f32))(*(void***)(self+0x40))[8])(self,M2C_FIELD(self,s32*,0x48)+M2C_FIELD(self,s32*,0x68),M2C_FIELD(self,s32*,0x4C)+M2C_FIELD(self,s32*,0x6C),self+0xAC,1,255,lbl_80369F30[0]);
+ ((WindowDrawInterface*)self)->draw(M2C_FIELD(self,s32*,0x48)+M2C_FIELD(self,s32*,0x68),M2C_FIELD(self,s32*,0x4C)+M2C_FIELD(self,s32*,0x6C),self+0xAC,1,255,lbl_80369F30);
  String_Init(&a,lbl_80271F28,&scratchA);
  item=fn_800E7FB4(owner,&a);
  String_Destroy(&a,-1);
- fn_800E3040(item,arg1,3,M2C_FIELD(self,s32*,0x48)+(M2C_FIELD(self,s32*,0x60)-20),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)+(M2C_FIELD(self,s32*,0x60)-20),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
  String_Init(&b,lbl_80271F28+6,&scratchB);
  item=fn_800E7FB4(owner,&b);
  String_Destroy(&b,-1);
- fn_800E3040(item,arg1,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),16,color,color,color,255,0);
+ fn_800E3040(item,context,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),16,color,color,color,255,0);
  String_Init(&c,lbl_80271F28+11,&scratchC);
  item=fn_800E7FB4(owner,&c);
  String_Destroy(&c,-1);
- fn_800E3040(item,arg1,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),M2C_FIELD(self,s32*,0x64),255,255,255,255,0);
+ fn_800E3040(item,context,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),M2C_FIELD(self,s32*,0x64),255,255,255,255,0);
+#pragma cplusplus off
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
-#pragma cplusplus off
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
 void *fn_800E4688(void *,void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
@@ -29208,20 +29211,15 @@ void fn_800FF75C(void *arg0) {
 void BattleState_SetCamPos(void *,f32,f32);
 extern u8 gUiContext[],gBattleMap[],gBattleState[],gMapBlendMode;
 u8 *ctx;
-u32 diff;
+u32 t;
 u8 *map;
 s32 flag;
 u8 y,x;
 MapVisibilityCell *cell;
 ctx=gUiContext;map=gBattleMap;flag=1;
 *(u8*)((u8*)arg0+0x34)=flag;
-{
-u32 t=(u8)(gMapBlendMode-1);
-u32 mask=flag|~t;
-diff=flag-t;
-t=mask-(diff>>1);
-if((t>>31)==0) flag=0;
-}
+t=((u8)(gMapBlendMode-1)<=(u32)flag);
+if(!t) flag=0;
 if((u8)flag && gBattleState[0x11]==1) {
 y=ctx[12];x=ctx[11];
 cell=(MapVisibilityCell*)(map+(s8)x);
