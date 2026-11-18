@@ -2105,119 +2105,51 @@ void fn_800C79FC(void) {
     }
 }
 
-s32 fn_800C7B04(void *arg1, s32 arg2, s32 arg3, s32 *arg4) {
-    M2C_UNK strcpy(s32, u8 *);
-    u8 sp8;
-    s32 temp_r25;
-    s32 temp_r8;
-    s32 var_r28;
-    s32 var_r29;
-    s32 var_r30;
-    s32 var_r6;
-    s32 var_r7;
-    s32 var_r7_2;
-    s32 var_r9;
-    u8 *temp_r31;
-    u8 *var_r3;
-    u8 *var_r3_2;
-    u8 *var_r3_3;
-    u8 *var_r3_4;
-    u8 *var_r4;
-    u8 *var_r4_2;
-    u8 temp_r0;
-    u8 temp_r0_2;
-    u8 temp_r5;
-    u8 temp_r6;
-    u8 var_r0;
-
-    var_r9 = 0;
-    var_r3 = M2C_FIELD(arg1, u8 **, 8);
-    temp_r8 = M2C_FIELD(arg1, s32 *, 0);
-    var_r30 = arg3;
-    var_r7 = 0;
-    var_r28 = 0;
-loop_2:
-    if ((var_r7 <= temp_r8) && ((temp_r0 = *var_r3, (((s8) temp_r0 == 0x20) != 0)) || ((s8) temp_r0 == 9) || ((s8) temp_r0 == 0x2C))) {
-        var_r7 += 1;
-        var_r3 += 1;
-        goto loop_2;
-    }
-    var_r4 = &sp8;
-    var_r3_2 = M2C_FIELD(arg1, u8 **, 8) + var_r7;
-loop_8:
-    if ((var_r7 <= temp_r8) && (var_r9 < 0x100)) {
-        temp_r6 = *var_r3_2;
-        if (((s8) temp_r6 != 0x20) && ((s8) temp_r6 != 9) && ((s8) temp_r6 != 0x2C)) {
-            *var_r4 = temp_r6;
-            var_r7 += 1;
-            var_r3_2 += 1;
-            var_r9 += 1;
-            var_r4 += 1;
-            goto loop_8;
-        }
-    }
-    (&sp8)[var_r9] = 0;
-    if (var_r9 == 0) {
-        var_r7 = 0;
-    }
-    var_r29 = var_r7;
-    if (var_r7 == 0) {
-        return 0;
-    }
-    if ((u8) ((s8) sp8 == 0x23) == 0) {
-        if (((s8) sp8 == 0x7B) || ((s8) sp8 == 0x7D)) {
-            var_r0 = 1;
-        } else {
-            var_r0 = 0;
-        }
-        if (var_r0 != 0) {
-            goto block_23;
-        }
-        strcpy(arg2, &sp8);
-        temp_r31 = M2C_FIELD(arg1, u8 **, 8);
-        temp_r25 = M2C_FIELD(arg1, s32 *, 0);
-loop_26:
-        var_r6 = var_r29;
-        var_r3_3 = temp_r31 + var_r29;
-        var_r7_2 = 0;
-loop_28:
-        if ((var_r6 <= temp_r25) && ((temp_r0_2 = *var_r3_3, (((s8) temp_r0_2 == 0x20) != 0)) || ((s8) temp_r0_2 == 9) || ((s8) temp_r0_2 == 0x2C))) {
-            var_r6 += 1;
-            var_r3_3 += 1;
-            goto loop_28;
-        }
-        var_r4_2 = &sp8;
-        var_r3_4 = temp_r31 + var_r6;
-loop_34:
-        if ((var_r6 <= temp_r25) && (var_r7_2 < 0x100)) {
-            temp_r5 = *var_r3_4;
-            if (((s8) temp_r5 != 0x20) && ((s8) temp_r5 != 9) && ((s8) temp_r5 != 0x2C)) {
-                *var_r4_2 = temp_r5;
-                var_r6 += 1;
-                var_r3_4 += 1;
-                var_r7_2 += 1;
-                var_r4_2 += 1;
-                goto loop_34;
-            }
-        }
-        (&sp8)[var_r7_2] = 0;
-        if (var_r7_2 == 0) {
-            var_r6 = 0;
-        }
-        var_r29 = var_r6;
-        if ((var_r6 != 0) && ((s32) sp8 != 0x23)) {
-            strcpy(var_r30, &sp8);
-            var_r30 += 0x20;
-            var_r28 += 1;
-            goto loop_26;
-        }
-        if (arg4 != NULL) {
-            *arg4 = var_r28;
-        }
-        return 1;
-    }
-block_23:
-    return 0;
+static inline s32 ParseToken(String *str, char *out, s32 pos) {
+s32 count=0;
+char *p=(char *)str->data+pos;
+s32 size=str->size;
+u8 c;
+while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
+p=(char *)str->data+pos;
+while(pos<=size && count<256 && ((c=*p),(s8)c!=' ' && (s8)c!='\t' && (s8)c!=',')) { out[count]=c;pos++;p++;count++; }
+out[count]=0;
+if(count==0)pos=0;
+return pos;
+}
+static inline u8 TokenIsComment(char c) { return c=='#'; }
+static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
+s32 fn_800C7B04(void *self, String *str, char *name, char *values, s32 *total) {
+void strcpy(void *,void *);
+char token[257];
+s32 count=0,pos=0,n=0,size=str->size;
+char *p=(char *)str->data;
+char *out=token;
+while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
+p=(char *)str->data+pos;
+while(pos<=size && n<256 && *p!=' ' && *p!='\t' && *p!=',') { *out++=*p++;pos++;n++; }
+token[n]=0;
+if(n==0)pos=0;
+if(pos==0)return 0;
+if((u8)(token[0]=='#') || (u8)(token[0]=='{' || token[0]=='}'))return 0;
+strcpy(name,token);
+p=(char *)str->data;
+size=str->size;
+for(;;){
+char *q=p+pos;
+s32 next=pos;
+n=0;
+while(next<=size && (*q==' ' || *q=='\t' || *q==',')){next++;q++;}
+q=p+next;out=token;
+while(next<=size && n<256 && *q!=' ' && *q!='\t' && *q!=','){*out++=*q++;next++;n++;}
+token[n]=0;
+if(n==0)next=0;
+pos=next;
+if(pos==0 || (u8)token[0]=='#')break;
+strcpy(values,token);values+=32;count++;
+}
+if(total)*total=count;
+return 1;
 }
 
 s32 fn_800C7D3C(void *self,void *list,s32 index,void *out) {
@@ -4387,6 +4319,8 @@ void fn_800CB5CC(void *arg0, void *arg1)
     }
 }
 
+#pragma optimization_level 4
+#pragma global_optimizer off
 void fn_800CB65C(void *out, char *obj, void *key, void *suffix, void *first) {
 void *StringMap_FindOrInsert(void *, void *);
 void String_Assign(void *, void *, u32, u32);
@@ -4417,7 +4351,7 @@ String_Assign(value,(char *)StringMap_FindOrInsert(obj+0x1e0,key)+12,0,-1);
 if(String_Compare(value,0,value[0],lbl_802704F8+0x1b0,strlen(lbl_802704F8+0x1b0))==0) fn_800056A0(0);
 String_Copy(out,value); String_Destroy(value,-1); String_Destroy(path,-1);
 }
-
+#pragma global_optimizer reset
 void String_Concat(void *arg0, void *arg1, s32 arg2) {
     void String_Copy(void *, void *);
     void *fn_800C99A0(void *, s32, s32, s32);
@@ -26204,6 +26138,7 @@ void fn_800F9FC4(void *arg0) {
     s16 x;
     u8 *unit;
     u8 *cmd;
+    u8 *ctx;
     s32 dx;
     s32 dy;
     s32 cy;
@@ -26219,8 +26154,9 @@ void fn_800F9FC4(void *arg0) {
         Ai_SetUnitMoveTo(unit, y, x, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
 
         if (gAiState[0x21C] != 0) {
-            cy = (s8)gUiContext[0xE];
-            cx = (s8)gUiContext[0xD];
+            ctx = gUiContext;
+            cy = (s8)ctx[0xE];
+            cx = (s8)ctx[0xD];
             dx = x - cy;
             if (dx < 0) {
                 dx = -dx;
