@@ -2,9 +2,16 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+static inline void InitMenuVtbl(void *object, void *table)
+{
+    ((void **)object)[1] = table;
+}
+
 #pragma no_register_save_helpers on
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma optimization_level 2
+#pragma opt_lifetimes off
 void fn_80072408(void)
 {
     void fn_8022C260(void *, void (*)(void), void *, s32, u32);
@@ -92,15 +99,15 @@ void fn_80072408(void)
     p24->f4 = vtbl;
     p0->f4 = vtbl;
 
-    lbl_80367350[0] = p628;
     p38->f4 = p67C;
+    lbl_80367350[0] = p628;
     lbl_80367358[0] = p628;
     sbss58 = lbl_80367358;
     p10->f4 = p67C;
     p24->f4 = p67C;
 
-    lbl_80367350[0] = p2FC;
     p38->f4 = p3D4;
+    lbl_80367350[0] = p2FC;
     lbl_80367358[0] = p2FC;
     p0->f4 = p67C;
     p10->f4 = p3D4;
@@ -113,18 +120,18 @@ void fn_80072408(void)
     p10->f4 = p866E4;
     p24->f4 = p866E4;
 
-    sbss50[1] = s_ed;
     p38->f4 = p1FC;
+    sbss50[1] = s_ed;
     lbl_80367350[0] = p867B8;
     sbss58[1] = s_f5;
     lbl_80367358[0] = p86764;
 
-    p0->f4 = p866E4;
     base->f0 = data0;
+    p0->f4 = p866E4;
     p10->f0 = data0;
     p10->f4 = p27C;
-    p24->f4 = p1FC;
     p24->f0 = data0;
+    p24->f4 = p1FC;
     p38->f0 = data0;
     p38->f4 = p17C;
 
@@ -145,8 +152,8 @@ void fn_80072408(void)
     p80->f4 = p67C;
     p94->f4 = p3D4;
     p80->f4 = p3D4;
-    *(void **)((u8 *)base + 0x80) = p6C;
     p94->f4 = pFC;
+    *(void **)((u8 *)base + 0x80) = p6C;
     p80->f4 = pFC;
 
     *(s16 *)((u8 *)p80 + 0xE) = 0;
@@ -156,6 +163,5 @@ void fn_80072408(void)
     *(s16 *)((u8 *)p94 + 0x10) = 0x46;
     p94->f4 = p7C;
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
-#pragma no_register_save_helpers reset
+#pragma opt_lifetimes reset
+#pragma optimization_level reset
