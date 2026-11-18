@@ -16213,15 +16213,12 @@ f32 x,y,z;
 s32 frame;
 s16 movement;
 s32 offset;
-s16 px,py,pz,anim;
 arg0->frame++;
 if(arg0->movement!=0) {arg0->frame+=2;arg0->movement++;}
 if((arg0->frame>>2)>=12) arg0->frame=0;
 if((arg0->movement>>2)>6) arg0->movement=0;
-px=arg0->x;py=arg0->y;pz=arg0->z;
-anim=arg0->frame;
-x=px;y=py;z=pz;
-frame=anim>>2;
+frame=arg0->frame>>2;
+x=arg0->x;y=arg0->y;z=arg0->z;
 x-=(f32)(arg0->getW()>>1);
 y-=(f32)(arg0->getH()>>1);
 movement=arg0->movement;
