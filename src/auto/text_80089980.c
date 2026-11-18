@@ -10,7 +10,7 @@ typedef struct {
 } Menu888Entry;
 extern void* lbl_803674E8;
 extern f64 lbl_80369688;
-extern f32 lbl_803696C8;
+extern const f32 lbl_803696C8;
 typedef struct { u16 a, b, c; } Fn89980Struct;
 typedef struct { f32 a, b; } FloatPair892E8;
 
@@ -84,7 +84,7 @@ void fn_80089490(void *);
 #pragma peephole off
 #pragma global_optimizer off
 void fn_80089980(s32 arg0) {
-extern f32 lbl_803696C8;
+extern const f32 lbl_803696C8;
 extern void *lbl_803674EC;
 u16 zero=0;
 u16 three=3;
@@ -96,15 +96,15 @@ f32 quotient=(f32)arg0/lbl_803696C8;
 }
 #pragma peephole reset
 #pragma global_optimizer reset
-#pragma peephole off
+#pragma peephole on
 void fn_800899D4(s32 arg0) {
-extern f32 lbl_803696C8;
+extern const f32 lbl_803696C8;
 extern void *lbl_803674EC;
 f32 value=(f32)arg0;
 f32 divisor=lbl_803696C8;
-u16 *ptr=(u16*)lbl_803674EC;
-ptr[25]=1;
-ptr[26]=0;
-ptr[27]=(s32)(value/divisor);
+u8 *ptr=(u8*)lbl_803674EC;
+*(u16*)(ptr+0x32)=1;
+*(u16*)(ptr+0x34)=0;
+*(u16*)(ptr+0x36)=(s32)(value/divisor);
 }
 #pragma peephole on
