@@ -903,10 +903,10 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
 
 static inline u8 *Save_FindUnusedSlot(u8 *base) {
     u8 *best = NULL;
-    s32 i;
-    u32 minSize = -1;
-    u8 *slot;
     s32 off = 0x2000;
+    u8 *slot;
+    u32 minSize = -1;
+    s32 i;
     u8 valid;
     for (i=0;i<6;i++) {
         slot=base+off;
@@ -983,6 +983,7 @@ void fn_801E11AC(void *arg0, s32 arg1, s32 arg2) {
     void Card_RequestWrite(void *, s32, s32, s32, s32);
     extern void *gSaveDataBase;
 
+    s32 off;
     s32 i;
     s32 val;
     s32 self;
@@ -992,7 +993,6 @@ void fn_801E11AC(void *arg0, s32 arg1, s32 arg2) {
     u8 *best;
     u32 minSize;
     u8 *slot;
-    s32 off;
     u32 clamped;
     u8 *base = gSaveDataBase;
 
@@ -1003,29 +1003,7 @@ void fn_801E11AC(void *arg0, s32 arg1, s32 arg2) {
 
     found = Save_FindLinkedSlot(base, val);
 
-found_slot:
-    best = NULL;
-    i = 0;
-    minSize = (u32)-1;
-    off = 0x2000;
-    for (i = 0; i < 6; i++) {
-        slot = base + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-    }
+    best = Save_FindUnusedSlot(base);
 
     fn_800062CC(best, found, *(s32 *)(found + 0x4C));
     *(u8 *)(best + 0x62) = (u8)val;
