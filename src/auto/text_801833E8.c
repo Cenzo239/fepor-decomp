@@ -5136,18 +5136,13 @@ void fn_8018DCC0(s32 arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_8018DD0C(void *arg0) {
-    void FileCache_ReleaseSlot(void *);
-    void *base;
-    void *field;
-
-    base = arg0;
-    field = (u8 *)base + 0x34;
-    if (*(void **)field != NULL) {
-        FileCache_ReleaseSlot(field);
-    }
+void FileCache_ReleaseSlot(void *);
+if (*(u32 *)((u8 *)arg0 + 0x34) != 0U) {
+FileCache_ReleaseSlot((u8 *)arg0 + 0x34);
 }
-
+}
 #pragma global_optimizer off
 void fn_8018DD3C(void *arg0) {
     u16 FileCache_GetFlags(char *);
