@@ -261,6 +261,10 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
+static inline CameraVec *Camera_ChoosePoint(u8 *proc, CameraVec *a, CameraVec *b) {
+    if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) return a;
+    return b;
+}
 static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
@@ -311,7 +315,8 @@ void fn_80054C14(void *arg0) {
     }
     if (Pad_IsButton(pad,17)) {
         *(u32 *)(*(u8 **)(proc+0x30)+8) ^= 0x20000000;
-        a = NULL; b = NULL;
+        a = NULL;
+        b = a;
         unit1 = *(u8 **)(*(u8 **)(proc+0x30)+0x34);
         unit2 = *(u8 **)(*(u8 **)(proc+0x30)+0x30);
         if (unit1) {
@@ -327,7 +332,10 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        Camera_SelectPoint(*(u32 *)(*(u8 **)(proc+0x30)+8),&a,b);
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) {
+        } else {
+            a=b;
+        }
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
