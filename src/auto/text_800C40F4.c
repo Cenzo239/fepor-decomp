@@ -2086,6 +2086,19 @@ out[count]=0;
 if(count==0)pos=0;
 return pos;
 }
+static inline s32 ParseTokenBuf(char *data, s32 size, char *out, s32 pos) {
+s32 count=0;
+char *p=data+pos;
+u8 c;
+while(pos<=size && (*p==' ' || *p=='\t' || *p==',')) { pos++;p++; }
+p=data+pos;
+{ char *dest=out;
+while(pos<=size && count<256 && (s8)(c=*p)!=' ' && (s8)c!='\t' && (s8)c!=',') { *dest=c;pos++;p++;count++;dest++; }
+}
+out[count]=0;
+if(count==0)pos=0;
+return pos;
+}
 static inline u8 TokenIsComment(char c) { return c=='#'; }
 static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 #pragma cplusplus on
