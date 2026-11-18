@@ -45,7 +45,10 @@ auto/text_8000D598.c:
 	.text       start:0x8000D598 end:0x80010770
 
 auto/text_80010770.c:
-	.text       start:0x80010770 end:0x80011968
+	.text       start:0x80010770 end:0x80010FF0
+
+auto/text_80010FF0.c:
+	.text       start:0x80010FF0 end:0x80011968
 
 auto/text_80011968.c:
 	.text       start:0x80011968 end:0x800119C0
