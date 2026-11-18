@@ -440,7 +440,10 @@ auto/text_8013CDCC.c:
 	.text       start:0x8013CDCC end:0x801436AC
 
 auto/text_801436AC.c:
-	.text       start:0x801436AC end:0x80149F38
+	.text       start:0x801436AC end:0x80143784
+
+auto/text_80143784.c:
+	.text       start:0x80143784 end:0x80149F38
 
 auto/text_80149F38.c:
 	.text       start:0x80149F38 end:0x80149FB8
