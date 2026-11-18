@@ -440,6 +440,8 @@ void fn_8023C7B0(void) {
   p[5] = base + 0x280;
 }
 
+#pragma global_optimizer reset
+#pragma optimization_level reset
 s32 fn_8023C7F4(void) {
   extern u8 *lbl_80368950;
   s32 off;
@@ -8151,11 +8153,11 @@ void fn_80253298(void *arg0, u32 *arg1)
 void fn_8025339C(void *voice, u32 *step) {
     void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
     void fn_8025EEE8(u8, u8, s32);
-    u32 word;
-u32 tableIndex;
+    u32 tableIndex;
+u32 word;
     u32 word0;
-    u64 flags;
-    u64 mask;
+    s64 flags;
+    s64 mask;
     u8 slot;
 u8 controller;
     u32 key;
@@ -8164,15 +8166,15 @@ u8 controller;
     u32 param;
     void *dest;
     word = step[1];
-    mask = *(u64 *)((u8 *)lbl_8029F3D0 + __rlwinm(word,11,21,28));
-    flags = *(u64 *)((u8 *)voice + 0x114);
+    mask = *(s64 *)((u8 *)lbl_8029F3D0 + __rlwinm(word,11,21,28));
+    flags = *(s64 *)((u8 *)voice + 0x114);
     slot = 0;
     key=word>>24;
     dest = lbl_8034D034 + *(u8 *)((u8 *)voice + 0x11F) * 0x90 + key * 0x24;
     tableIndex = __rlwinm(word,10,22,29);
     key = *(u32 *)((u8 *)lbl_8029F3F0 + tableIndex);
     if ((flags & mask) == 0) {
-        *(u64 *)((u8 *)voice + 0x114) = flags | mask;
+        *(s64 *)((u8 *)voice + 0x114) = flags | mask;
     } else {
         slot = (u8)word;
     }
@@ -9435,7 +9437,7 @@ restart:
     return isMaster ? vid : sv->unkF4;
 }
 
-#pragma peephole off
+#pragma opt_peephole off
 s32 Sound_LookupVid(u32 arg0)
 {
   u32 new_var;
@@ -9478,7 +9480,7 @@ s32 Sound_LookupVid(u32 arg0)
   }
   return -1;
 }
-#pragma peephole on
+#pragma opt_peephole reset
 int fn_80256000(u32 arg0)
 {
     extern VidList *vidListRoot;
@@ -10250,31 +10252,62 @@ void fn_802572E8(void)
     }
 }
 
-void fn_80257444(void *arg0)
+void fn_80257444(u16 *arg0)
 {
-    extern s32 gSynthVoices;
-    extern u8 gSoundData[];
+  extern s32 gSynthVoices;
+  extern u8 gSoundData[];
+  void fn_80256FF0(s32);
+  u16 key;
+  u8 *voice;
+  u32 index;
+  u32 j;
+  for (index = 0; index < gSoundData[0x210]; index++)
+  {
+    voice = ((u8 *) gSynthVoices) + (index * 0x458);
+    if (((*((u32 *) (voice + 0x34))) == 0) && ((*((u8 *) (voice + 0x11c))) == 0))
+    {
+      fn_80256FF0(index);
+    }
+  }
 
-    void fn_80256FF0(s32);
-
-    u8 *voice;
-    u32 index;
-    u32 offset;
-
-    index = 0;
-    offset = 0;
-
-    while (index < gSoundData[0x210]) {
-        voice = (u8 *)gSynthVoices + offset;
-
-        if (*(u32 *)(voice + 0x34) == 0 &&
-            *(u8 *)(voice + 0x11C) == 0) {
+  while ((*arg0) != 0xFFFF)
+  {
+    if (((*arg0) & 0x8000) != 0)
+    {
+      j = (*arg0) & 0x3FFF;
+      while (((u16) j) <= arg0[1])
+      {
+        key = (u16) j;
+        for (index = 0; index < gSoundData[0x210]; index++)
+        {
+          ;
+          j = key;
+          if (((*((u32 *) ((((u8 *) gSynthVoices) + (index * 0x458)) + 0x34))) != 0) && ((*((u16 *) ((((u8 *) gSynthVoices) + (index * 0x458)) + 0x12c))) == j))
+          {
             fn_80256FF0(index);
+          }
         }
 
-        offset += 0x458;
-        index++;
+        j++;
+      }
+
+      arg0 = (u16 *) (((u8 *) arg0) + 4);
     }
+    else
+    {
+      for (index = 0; index < gSoundData[0x210]; index++)
+      {
+        voice = ((u8 *) gSynthVoices) + (index * 0x458);
+        if (((*((u32 *) (voice + 0x34))) != 0) && ((*arg0) == (*((u16 *) (voice + 0x12c)))))
+        {
+          fn_80256FF0(index);
+        }
+      }
+
+      arg0 = (u16 *) (((u8 *) arg0) + 2);
+    }
+  }
+
 }
 
 s32 fn_802575A0(void *arg0)
