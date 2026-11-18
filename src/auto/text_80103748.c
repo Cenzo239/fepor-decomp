@@ -418,7 +418,7 @@ s32 fn_80103E48(void) {
 }
 
 #pragma global_optimizer off
-#pragma optimization_level 3
+#pragma scheduling off
 char *fn_80103E50(s32 arg0, void *arg1) {
 void sprintf(void *, void *, ...);
 extern char lbl_8032BAF8[]; extern u8 lbl_802734D0[]; extern f32 lbl_8036A0D8;
@@ -428,7 +428,7 @@ value=*(f32*)((u8*)*(void**)((u8*)*(void**)((u8*)arg1+0x18)+0x3c)+0xc);
 sprintf(lbl_8032BAF8,strings+0x1dc,scale*value);
 return lbl_8032BAF8;
 }
-#pragma optimization_level reset
+#pragma scheduling reset
 #pragma global_optimizer reset
 s32 Options_AdjustRatioPad(s32 unused, void *menu) {
     extern void *gPadInput;
