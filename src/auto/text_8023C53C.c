@@ -7230,6 +7230,36 @@ void Sound_CmdVolume(void *voice, u32 *cmd) {
     fn_80250B58(voice, cmd);
 }
 
+#pragma dont_inline on
+void fn_802512D0(void *arg0, void *arg1) {
+void fn_80261730(u8,u16,void*,u32,u32,u32,u32,u8);
+void fn_8025164C(void *);
+void fn_80249E14(void *);
+u16 id;
+u8 *voice=arg0;
+u32 *cmd=arg1;
+id=(u16)(cmd[0]>>8);
+if(AudioGroup_Lookup(id,lbl_803596F0)==0) {
+switch((s32)(cmd[0]>>24)) {
+case 0: lbl_803596F0[3]=cmd[1];break;
+case 1: lbl_803596F0[3]=((u8)(127-(*(u32*)(voice+0x158)>>16))*cmd[1])/127;break;
+case 2: lbl_803596F0[3]=((u8)(*(u32*)(voice+0x158)>>16)*cmd[1])/127;break;
+default: lbl_803596F0[3]=0;break;
+}
+if(lbl_803596F0[3]>=lbl_803596F0[4]) lbl_803596F0[3]=lbl_803596F0[4]-1;
+fn_80261730((u8)*(u32*)(voice+0xf4),id,lbl_803596F0,
+(*(u64*)(voice+0x114)&0x100)==0,
+(voice[0x10c]<<24)|((*(u32*)(voice+0x110)>>15)&0xffffff),
+*(u32*)(voice+0xf4),(*(u64*)(voice+0x114)&0x80000000000ULL)==0,voice[0x197]);
+*(u32*)(voice+0x124)=lbl_803596F0[0];
+*(u16*)(voice+0x12c)=id;
+if(*(u32*)(voice+0x128)!=0xffffffff) fn_8025164C(voice);
+*(u32*)(voice+0x118)|=0x20;
+fn_80249E14(voice);
+}
+}
+#pragma dont_inline reset
+
 void fn_802514D0(void *arg0, s32 arg1) {
     if (M2C_FIELD(arg0, s32 *, 0x9C) > 0) {
         M2C_FIELD(arg0, s32 *, 0x9C) = M2C_FIELD(arg0, s32 *, 0x9C) - 1;
@@ -14505,12 +14535,12 @@ return result;
 #pragma dont_inline on
 void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
  void Sound_WriteParamU8(s32,s32,s32,u8);
- s32 mapped;
- u8 channel,bank;
+ s16 value;
+ u32 bank,channel;
  u16 v;
- u8 a;
+ u32 a,b,c;
  u8 param;
- s32 value;
+ s32 mapped;
  if((s16)arg2<0) arg2=0; else arg2=(s16)arg2>0x3FFF?0x3FFF:(s16)arg2;
  value=(s16)arg2;
  param=(u8)arg1;
@@ -14528,8 +14558,8 @@ void fn_80261014(SynthVmState *arg0, s32 arg1, s32 arg2) {
  bank=((u8*)arg0)[0x122];
  if(channel!=255) {
  if((u8)arg1<0x40U) {v=value;a=param&31;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+32),channel,bank,v&127);}
- else if((u8)arg1==128||(u8)arg1==129) {v=value;a=param&254;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+1),channel,bank,v&127);}
- else if((u8)arg1==132||(u8)arg1==133) {v=value;a=param&254;Sound_WriteParamU8(a,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(a+1),channel,bank,v&127);}
+ else if((u8)arg1==128||(u8)arg1==129) {v=value;b=param&254;Sound_WriteParamU8(b,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(b+1),channel,bank,v&127);}
+ else if((u8)arg1==132||(u8)arg1==133) {v=value;c=param&254;Sound_WriteParamU8(c,channel,bank,(u8)(v>>7));Sound_WriteParamU8((u8)(c+1),channel,bank,v&127);}
  else Sound_WriteParamU8(arg1,channel,bank,(u8)((u16)value>>7));
  }
  }
