@@ -1,5 +1,6 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+typedef struct NameGridCursor { u8 pad[0x3C]; void *grid; u8 pad40[8]; s16 x; s16 y; } NameGridCursor;
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -644,14 +645,14 @@ extern u8 LightFade_script[];
 #pragma optimization_level 1
 
 #pragma optimization_level 4
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma scheduling on
-u32 NameGrid_GetCharAtCursor(void *arg0) {
-u32 fn_801CD480(void *, s32, s32);
-s32 y=*(s16*)((u8*)arg0+0x4a);
-s32 x=*(s16*)((u8*)arg0+0x48);
-void *grid=*(void**)((u8*)arg0+0x3c);
-return fn_801CD480(grid,x,y);
+s32 NameGrid_GetCharAtCursor(const s16 *arg0) {
+s32 fn_801CD480(void *, s32, s32);
+const s32 y = arg0[37];
+const s32 x = arg0[36];
+return fn_801CD480(*(void * const *)(arg0 + 30), x, y);
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
+#pragma optimization_level 1
