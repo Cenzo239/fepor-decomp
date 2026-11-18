@@ -1809,7 +1809,22 @@ void GXSetVtxAttrFmtv(s32 vtxfmt, void *list)
   gx[0x5AB] |= (u8) (1 << ((u8) vtxfmt));
 }
 
+#ifndef GXWGFifo_DEFINED
+#define GXWGFifo_DEFINED
+typedef union {
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    s8 s8;
+    s16 s16;
+    s32 s32;
+    f32 f32;
+} PPCWGPipe;
+volatile PPCWGPipe GXWGFifo : 0xCC008000;
+#endif
+
 #pragma global_optimizer off
+#pragma opt_lifetimes off
 void fn_802200CC(void)
 {
     extern u8 *__GXData;
@@ -1828,7 +1843,8 @@ void fn_802200CC(void)
     offset = 0;
     flags = gx[0x5AB];
 
-    while ((flags & 1) != 0) {
+    do {
+      if ((flags & 1) != 0) {
         *(volatile u8 *)0xCC008000 = 8;
         t = index | 0x70;
         a = offset + 0x1C;
@@ -1847,13 +1863,15 @@ void fn_802200CC(void)
         *(volatile u8 *)0xCC008000 = c;
         v = *(u32 *)((u32)gx + a);
         *(volatile u32 *)0xCC008000 = v;
+      }
         flags >>= 1;
         offset += 4;
         index += 1;
-    }
+    } while (flags != 0);
 
     __GXData[0x5AB] = 0;
 }
+#pragma opt_lifetimes reset
 #pragma global_optimizer reset
 void fn_80220154(s32 arg0, s32 arg1, u8 arg2) {
     s32 temp_r3;
@@ -1877,18 +1895,134 @@ void fn_80220198(void) {
     *(s8 *)0xCC008000 = 0x48;
 }
 
-void fn_802201A8(void) {
-    // Looking at pattern, this might be doing some initialization based on a parameter  
-    // Let's try a simpler approach that matches the structure better
-    
-    // Set up some registers for conditional logic
-    s32 temp = 0;
-    if (temp > 0x14) {   // Check r5 against 0x14 (20)
-        // Not sure what the body of this needs to be yet
+void fn_802201A8(s32 stage, s32 color, s32 map, s32 arg3, s32 arg4, s32 arg5) {
+    void fn_80225180(s32);
+    extern u8 *__GXData;
+    u32 reg = 0;
+    u32 a;
+    u32 b;
+    u32 c;
+    u32 t;
+
+    b = 0;
+    a = 5;
+
+    switch (map) {
+    case 0: a = 0; b = 1; break;
+    case 1: a = 1; b = 1; break;
+    case 2: a = 3; b = 1; break;
+    case 3: a = 4; b = 1; break;
+    case 4: a = 2; break;
+    case 5: a = 2; break;
+    case 6: a = 5; break;
+    case 7: a = 6; break;
+    case 8: a = 7; break;
+    case 9: a = 8; break;
+    case 10: a = 9; break;
+    case 11: a = 10; break;
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18: a = 11; break;
+    case 19: a = 12; break;
+    case 20: break;
     }
-    
-    // Call the function that the target does at the end  
-    osSync();
+
+    if (color == 1) {
+        goto L_color1;
+    } else if (color >= 1) {
+        goto L_colorgt1;
+    } else if (color >= 0) {
+        goto L_color0;
+    } else {
+        goto L_color_done;
+    }
+
+L_colorgt1:
+    if (color == 10) {
+        goto L_color10;
+    } else if (color >= 10) {
+        goto L_color_done;
+    } else {
+        goto L_color2_9;
+    }
+
+L_color1:
+    reg = __rlwimi(reg, 0, 1, 30, 30);
+    t = reg;
+    t = __rlwimi(t, b, 2, 29, 29);
+    reg = t;
+    reg = __rlwimi(reg, 0, 4, 25, 27);
+    reg = __rlwimi(reg, a, 7, 20, 24);
+    goto L_color_done;
+
+L_color0:
+    reg = __rlwimi(reg, 1, 1, 30, 30);
+    reg = __rlwimi(reg, b, 2, 29, 29);
+    reg = __rlwimi(reg, 0, 4, 25, 27);
+    reg = __rlwimi(reg, a, 7, 20, 24);
+    goto L_color_done;
+
+L_color2_9:
+    reg = __rlwimi(reg, 0, 1, 30, 30);
+    reg = __rlwimi(reg, b, 2, 29, 29);
+    reg = __rlwimi(reg, 1, 4, 25, 27);
+    reg = __rlwimi(reg, a, 7, 20, 24);
+    reg = __rlwimi(reg, map - 0xC, 12, 17, 19);
+    reg = __rlwimi(reg, color - 2, 15, 14, 16);
+    goto L_color_done;
+
+L_color10:
+    reg = __rlwimi(reg, 0, 1, 30, 30);
+    reg = __rlwimi(reg, b, 2, 29, 29);
+    if (map == 0x13) {
+        reg = __rlwimi(reg, 2, 4, 25, 27);
+    } else {
+        reg = __rlwimi(reg, 3, 4, 25, 27);
+    }
+    reg = __rlwimi(reg, 2, 7, 20, 24);
+
+L_color_done:
+    *(volatile u8 *)0xCC008000 = 0x10;
+    *(volatile u32 *)0xCC008000 = (u32)(stage + 0x1040);
+    c = 0;
+    c = __rlwimi(c, arg5 - 0x40, 0, 26, 31);
+    *(volatile u32 *)0xCC008000 = reg;
+    *(volatile u8 *)0xCC008000 = 0x10;
+    c = __rlwimi(c, arg4, 8, 23, 23);
+    *(volatile u32 *)0xCC008000 = (u32)(stage + 0x1050);
+    *(volatile u32 *)0xCC008000 = c;
+
+    switch (stage) {
+    case 0:
+        ((u32 *)__GXData)[0x20] = __rlwimi(((u32 *)__GXData)[0x20], arg3, 6, 20, 25);
+        break;
+    case 1:
+        ((u32 *)__GXData)[0x20] = __rlwimi(((u32 *)__GXData)[0x20], arg3, 12, 14, 19);
+        break;
+    case 2:
+        ((u32 *)__GXData)[0x20] = __rlwimi(((u32 *)__GXData)[0x20], arg3, 18, 8, 13);
+        break;
+    case 3:
+        ((u32 *)__GXData)[0x20] = __rlwimi(((u32 *)__GXData)[0x20], arg3, 24, 2, 7);
+        break;
+    case 4:
+        ((u32 *)__GXData)[0x21] = __rlwimi(((u32 *)__GXData)[0x21], arg3, 0, 26, 31);
+        break;
+    case 5:
+        ((u32 *)__GXData)[0x21] = __rlwimi(((u32 *)__GXData)[0x21], arg3, 6, 20, 25);
+        break;
+    case 6:
+        ((u32 *)__GXData)[0x21] = __rlwimi(((u32 *)__GXData)[0x21], arg3, 12, 14, 19);
+        break;
+    default:
+        ((u32 *)__GXData)[0x21] = __rlwimi(((u32 *)__GXData)[0x21], arg3, 18, 8, 13);
+        break;
+    }
+    fn_80225180(stage + 1);
 }
 
 void GXSetNumChans(u32 arg0) {
