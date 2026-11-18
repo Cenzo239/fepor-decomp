@@ -566,18 +566,19 @@ extern "C" void fn_80132CFC(void *arg0) {
 }
 
 #pragma global_optimizer off
+#pragma optimization_level 3
 extern "C" void fn_80132FD0(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_802764BC[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
     s16 temp_r0;
-    s16 temp_r31;
+    s32 temp_r31;
     s32 temp_r3_2;
     s32 temp_r4;
     s16 temp_r5;
     s16 temp_r6;
-    s16 temp_r8;
+    s32 temp_r8;
     s16 temp_r8_2;
     s32 var_r12;
     s16 var_r7;
@@ -592,9 +593,9 @@ extern "C" void fn_80132FD0(void *arg0) {
     temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x30)(arg0);
     temp_r8 = M2C_FIELD(arg0, s16 *, 0x3E);
     var_r3 = 0;
-    var_r7 = (s16) (temp_r8 / temp_r31);
-    temp_r6 = (s16) ((s32) ((temp_r31 + temp_r5) - 1) / temp_r31);
-    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % temp_r31;
+    var_r7 = (s16) (temp_r8 / (s16)temp_r31);
+    temp_r6 = (s16) ((s32) (((s16)temp_r31 + temp_r5) - 1) / (s16)temp_r31);
+    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % (s16)temp_r31;
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         var_r3 = 1;
     }
@@ -604,14 +605,14 @@ extern "C" void fn_80132FD0(void *arg0) {
         temp_r10 = M2C_FIELD(var_r9, s32 *, 4);
         temp_r0_2 = M2C_FIELD(var_r9, s32 *, 0xC);
         temp_r3 = temp_r10 & (M2C_FIELD(var_r9, s32 *, 8) ^ temp_r10);
-        if (temp_r8 == 4) {
+        if ((s16)temp_r8 == 4) {
             if (temp_r3 & 0x08000008) {
                 M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (temp_r8_2 - 1);
             } else if (temp_r3 & 0x01000001) {
                 M2C_FIELD(arg0, s16 *, 0x3E) = 2;
             }
         } else {
-            if (temp_r31 > 1) {
+            if ((s16)temp_r31 > 1) {
                 var_r12 = temp_r5 - (var_r7 * temp_r31);
                 if (var_r12 > temp_r31) {
                     var_r12 = temp_r31;
@@ -662,6 +663,7 @@ extern "C" void fn_80132FD0(void *arg0) {
     }
 }
 
+#pragma optimization_level reset
 #pragma global_optimizer reset
 #pragma cplusplus on
 #pragma use_lmw_stmw on
