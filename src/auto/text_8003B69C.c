@@ -10624,7 +10624,7 @@ void fn_80050C90(void *arg0)
 
 #pragma peephole off
 void fn_80050E14(void) {
- extern u8 *lbl_803672CC;
+ extern void *lbl_803672CC;
  s32 i, offset, tableOffset, n;
  u8 *obj, *table, *base;
  obj=lbl_803672CC;
