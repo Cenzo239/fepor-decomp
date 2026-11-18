@@ -17,7 +17,7 @@ typedef struct { f32 a, b; } FloatPair892E8;
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-extern f32 gScreenOrigin;
+extern const f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
 extern f64 lbl_803696C0;
