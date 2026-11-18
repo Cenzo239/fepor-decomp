@@ -3034,6 +3034,26 @@ void fn_8003FFF8(void) {
     }
 }
 
+static inline u8 MapObj_HasActionFlag(u32 flags)
+{
+    if (flags & 0x10) return 0;
+    if (flags & 0x800) return 1;
+    if (flags & 0x1000) return 1;
+    return 0;
+}
+
+static inline u8 MapObj_HasBlockedAction(u32 flags)
+{
+    if (flags & 0x10) return 0;
+    if (flags & 0x100000) return 1;
+    return 0;
+}
+
+static inline u8 MapObj_IsIdle(u8 *obj)
+{
+    return (obj[2] & 3) == 0;
+}
+
 void fn_80040028(void *arg0, void *arg1)
 {
     extern u8 *gMap;
@@ -7267,17 +7287,142 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
 
-s32 fn_80049594(s32 arg0, s32 arg1, s32 arg2)
+void fn_80049594(void *arg0)
 {
-    if (arg0 < 0 || arg1 < 0 || arg2 < 0) {
-        return -1;
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXRotRad(void *, s32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void PSMTXScale(void *, f32, f32, f32);
+    void Process_ClearFunc(void *);
+
+    extern void *gMap;
+    extern f64 lbl_80368EF8;
+    extern f32 lbl_80368EE4;
+    extern f32 lbl_80368EE8;
+    extern f32 lbl_80368EEC;
+    extern f32 lbl_80368EF0;
+    extern f32 lbl_80368EF4;
+
+    u8 sp98[0x30];
+    u8 sp68[0x30];
+    u8 sp38[0x30];
+    u8 sp8[0x30];
+
+    u8 *self;
+    u8 *ent;
+    u8 *map;
+    s32 frame;
+    s32 duration;
+    s32 value;
+    s32 a;
+    s32 b;
+    f32 result;
+    f32 f31v;
+    f32 f30v;
+    f32 f29v;
+    f32 f28v;
+    f32 scale;
+    f32 temp_f0;
+
+    self = (u8 *)arg0;
+
+    frame = *(s32 *)(self + 0x40) + 1;
+    *(s32 *)(self + 0x40) = frame;
+
+    duration = *(s32 *)(self + 0x3C);
+
+    result = Math_EaseOutPow(
+        2,
+        *(f32 *)(self + 0x44),
+        *(f32 *)(self + 0x48),
+        (f32)duration,
+        (f32)frame
+    );
+
+    value = (s32)result;
+
+    ent = *(u8 **)(self + 0x30);
+    *(f32 *)(ent + 8) = (f32)value;
+
+    ent = *(u8 **)(self + 0x30);
+    map = (u8 *)gMap;
+
+    a = (s8)ent[0];
+    b = (s8)ent[1];
+
+    f31v = *(f32 *)(ent + 8) + lbl_80368EE4;
+    f29v = -(*(f32 *)(ent + 0xC) + lbl_80368EE4);
+    f28v = (f32)a + lbl_80368EE4;
+    f30v = (f32)b + lbl_80368EE4;
+
+    if (map[0x68] == 1) {
+        a = *(s16 *)(map + 0);
+        b = *(s16 *)(map + 2);
+
+        a = (s32)(((u32)a >> 31) + a) >> 1;
+        b = (s32)(((u32)b >> 31) + b) >> 1;
+
+        f28v -= (f32)a;
+        f30v -= (f32)b;
     }
 
-    if ((u32)(arg0 + 0x40) > 0xFFFF || (u32)(arg1 + 0x40) > 0xFFFF || (u32)(arg2 + 0x40) > 0xFFFF) {
-        return -1;
-    }
+    PSMTXTrans(
+        sp98,
+        lbl_80368EE8,
+        lbl_80368EE4,
+        lbl_80368EE8
+    );
 
-    return 0;
+    PSMTXRotRad(
+        sp68,
+        0x59,
+        lbl_80368EEC * f31v
+    );
+
+    PSMTXConcat(sp68, sp98, sp68);
+
+    PSMTXTrans(
+        sp98,
+        lbl_80368EF0,
+        lbl_80368EE4,
+        lbl_80368EF0
+    );
+
+    PSMTXConcat(sp98, sp68, sp8);
+
+    scale = *(f32 *)(map + 0x6C);
+
+    PSMTXScale(
+        sp38,
+        scale,
+        scale,
+        scale
+    );
+
+    PSMTXConcat(sp38, sp8, sp8);
+
+    temp_f0 = *(f32 *)(map + 0x6C);
+
+    PSMTXTrans(
+        sp98,
+        lbl_80368EF4 * (f28v * temp_f0),
+        lbl_80368EF4 * (f29v * temp_f0),
+        lbl_80368EF4 * (f30v * temp_f0)
+    );
+
+    PSMTXConcat(sp98, sp8, sp8);
+
+    PSMTXConcat(
+        map + 0x70,
+        sp8,
+        ent + 0x24
+    );
+
+    if (*(s32 *)(self + 0x3C) ==
+        *(s32 *)(self + 0x40)) {
+        Process_ClearFunc(self);
+    }
 }
 
 void fn_8004982C(void *arg0) {
