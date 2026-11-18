@@ -3006,8 +3006,8 @@ int __OSModuleInit(void)
   *((s32 *) (base + 0x30D0)) = 0;
 }
 
-#pragma peephole off
-#pragma scheduling off
+#pragma scheduling on
+#pragma peephole on
 s32 fn_802083C8(s32 arg0) {
 s32 __OSMaskInterrupts(u32);
 if (arg0 != 0) {
@@ -3017,7 +3017,6 @@ __OSMaskInterrupts(0xF0000000);
 }
 return 1;
 }
-
 #pragma scheduling on
 #pragma peephole on
 void MEMIntrruptHandler(s32 interrupt, OSContext *context)
