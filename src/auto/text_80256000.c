@@ -5851,10 +5851,12 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma opt_lifetimes off
 #pragma scheduling off
 #pragma opt_common_subs off
+extern f32 lbl_802831B0;
+extern f32 lbl_802831B4;
+extern f32 lbl_802831B8;
 f64 fn_80261344(f32 x) {
-extern f32 lbl_802831B8[];
 f64 three; f64 half; f64 guess; f64 square; f64 zero;
-zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
+zero=lbl_802831B8; three=lbl_802831B0; half=lbl_802831B4;
 guess=__frsqrte(x);
 if (!(x > (f32)zero || x < (f32)zero)) return x;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
