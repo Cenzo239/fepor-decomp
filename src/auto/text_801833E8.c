@@ -2795,7 +2795,6 @@ void MoveAnim_AttachClassCue(void *anim) {
 }
 
 #pragma push
-#pragma scheduling off
 void fn_80188B4C(void *anim) {
     void fn_80050C90(void *);
     void fn_8004FE98(void *, s32);
