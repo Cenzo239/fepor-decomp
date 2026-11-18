@@ -2382,6 +2382,25 @@ struct ActorMotionInterface {
     virtual void Adjust(void *, f32, f32) = 0;
 };
 #pragma cplusplus on
+struct MotionGetPos14 {
+    u8 pad[0x40];
+    virtual void v0() = 0;
+    virtual void v1() = 0;
+    virtual void v2() = 0;
+    virtual void v3() = 0;
+    virtual void v4() = 0;
+    virtual void v5() = 0;
+    virtual void v6() = 0;
+    virtual void v7() = 0;
+    virtual void v8() = 0;
+    virtual void v9() = 0;
+    virtual void v10() = 0;
+    virtual void v11() = 0;
+    virtual void v12() = 0;
+    virtual void v13() = 0;
+    virtual void GetCurrent(void *, void *, s32) = 0;
+};
+#pragma cplusplus on
 #pragma push
 #pragma dont_inline on
 #pragma optimization_level 3
@@ -2476,8 +2495,7 @@ void *p=*(void **)((u8*)*(void **)((u8*)arg0+0x118)+0x11C);
 kind=p?fn_80199310(p):0;
 switch(kind){
 case 0:case 2:case 5:case 7:case 10:
-if(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x140)==0) SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);
-else SeCue_PlayAt((char*)gActorXmlStrs+0x361,100,x,y,z);break;
+if(*(s32*)((u8*)*(void **)((u8*)arg0+0x118)+0x140)==0) SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);else SeCue_PlayAt((char*)gActorXmlStrs+0x361,100,x,y,z);break;
 case 1:case 3:case 6:SeCue_PlayAt((char*)gActorXmlStrs+0x374,100,x,y,z);break;
 case 4:case 8:case 11:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
 default:SeCue_PlayAt((char*)gActorXmlStrs+0x34C,100,x,y,z);break;
@@ -2915,19 +2933,23 @@ s32 fn_80116580(void *arg0) {
     return -1;
 }
 
-#pragma optimization_level 2
-void fn_801165B4(void *arg0, void *arg1) {
+#pragma cplusplus on
+extern "C" void fn_801165B4(void *arg0, void *arg1) {
     void fn_80199318(void *, void *);
-    void String_Init(void *, char *, void *);
+    extern u16 gActorXmlStrs[];
     u8 sp8[0x14];
-    void *self = arg0;
-    void *v = *(void **)((u8 *)arg1 + 0x11C);
-    if (v) {
+    void *self;
+    void *v;
+
+    self = arg0;
+    v = *(void **)((u8 *)arg1 + 0x11C);
+    if (v != 0) {
         fn_80199318(self, v);
     } else {
-        String_Init(self, (char *)gActorXmlStrs + 0x1C, sp8);
+        String_Init(self, (char *)((u8 *)gActorXmlStrs + 0x1C), sp8);
     }
 }
+#pragma cplusplus reset
 s32 fn_80116604(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x11C);
 }
@@ -7735,7 +7757,6 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     };
 
     struct Obj *self;
-    u8 **textRef;
     u8 *text;
     struct Item *item;
     u8 *buffer;
@@ -7757,9 +7778,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     s32 bit;
 
     self = (struct Obj *)arg0;
-    textRef = (u8 **)arg1;
 
-    text = *textRef;
+    text = *((u8 **)arg1);
     ch = *text;
 
     if ((s8)ch == 0) {
@@ -7770,8 +7790,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     if ((s8)ch == 0xA) {
         fn_801220B8(lbl_8032BDE8);
         fn_801229F8(self->unk44);
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         return 1;
     }
 
@@ -7834,14 +7854,14 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
         }
 
-        count = fn_80010710(*textRef);
+        count = fn_80010710(*((u8 **)arg1));
         i = 0;
         while (i < count) {
-            text = *textRef;
+            text = *((u8 **)arg1);
             fn_80122114(lbl_8032BDE8, *text);
             object = self->unk44;
-            text = *textRef;
-            *textRef = text + 1;
+            text = *((u8 **)arg1);
+            *((u8 **)arg1) = text + 1;
             fn_80122A2C(object, *text);
             i++;
         }
@@ -7852,16 +7872,16 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 3;
     }
 
-    text = *textRef;
-    *textRef = text + 1;
-    text = *textRef;
-    *textRef = text + 1;
+    text = *((u8 **)arg1);
+    *((u8 **)arg1) = text + 1;
+    text = *((u8 **)arg1);
+    *((u8 **)arg1) = text + 1;
     command = (s8)*text;
 
     switch (command) {
     case 'K':
         self->unk60 = 0;
-        text = *textRef;
+        text = *((u8 **)arg1);
         TalkUi_SpawnKeyWait2(self->unk44, self, (s8)text[1] == 'P');
         return 2;
 
@@ -7875,13 +7895,13 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 'c':
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         index = (u8)(*text - '0');
-        *textRef -= 3;
+        *((u8 **)arg1) -= 3;
         TalkUi_LayoutSlot(self, index);
-        text = *textRef;
-        *textRef = text + 3;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 3;
         oldSlot = self->unk5E;
         if ((s8)oldSlot != index) {
             self->unk65 = oldSlot;
@@ -7889,22 +7909,22 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             fn_80120F94();
         }
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**textRef != '|'; ++buffer) { *buffer = *(*textRef)++; }
+        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
         *buffer = 0;
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         object = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x6F), (s32)lbl_8032FE24, 0);
         fn_8011FB58(self, (s32)object);
         return 2;
 
     case 'd':
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         index = (u8)(*text - '0');
-        *textRef -= 3;
+        *((u8 **)arg1) -= 3;
         TalkUi_LayoutSlot(self, index);
-        text = *textRef;
-        *textRef = text + 3;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 3;
         oldSlot = self->unk5E;
         if ((s8)oldSlot == index) {
             result = 0;
@@ -7944,8 +7964,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 's':
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         index = (u8)(*text - '0');
         if ((s8)self->unk5E != index) {
             self->unk65 = self->unk5E;
@@ -7954,26 +7974,26 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         }
         object = self->pad34[index];
         if (object != 0 && *(u8 *)((u8 *)object + 0x68) != 0) {
-            *textRef -= 3;
+            *((u8 **)arg1) -= 3;
             TalkUi_LayoutSlot(self, index);
-            *textRef += 3;
+            *((u8 **)arg1) += 3;
             goto clear_box;
         }
         return 1;
 
     case 'W':
-        text = *textRef;
+        text = *((u8 **)arg1);
         ch = *text;
         switch ((s8)ch) {
         case 'D':
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             if (!(gUiInputFlags & 3)) {
                 fn_80122238(self->unk44, self);
             }
             fn_80120F94();
             return 2;
         case '-':
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
                     sound = Sound_FindByName((void *)lbl_80367A5C);
@@ -7998,7 +8018,7 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
             return 2;
         case '+':
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
                     sound = Sound_FindByName((void *)lbl_80367A5C);
@@ -8023,8 +8043,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
             return 2;
         default:
-            text = *textRef;
-            *textRef = text + 1;
+            text = *((u8 **)arg1);
+            *((u8 **)arg1) = text + 1;
             index = (u8)(*text - '0');
             result = TalkUi_LayoutSlot(self, index);
             return (u8)result ? 2 : 1;
@@ -8032,9 +8052,9 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'w':
         self->unk60 = 0;
-        text = *textRef;
+        text = *((u8 **)arg1);
         object = self->unk44;
-        *textRef = text + 1;
+        *((u8 **)arg1) = text + 1;
         index = (s8)*text - '0';
         fn_80122170(object, self, 1 << index);
         bit = gUiPanelFlags & 0x200;
@@ -8044,14 +8064,14 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 'F':
-        return fn_8011F184(self, textRef);
+        return fn_8011F184(self, ((u8 **)arg1));
 
     case 'R':
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**textRef != '|'; ++buffer) { *buffer = *(*textRef)++; }
+        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
         *buffer = 0;
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         sound = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x74), (s32)lbl_8032FE24, 0);
         Sound_Create(sound, self);
         if (self->unk63 != 0 && !(gUiInputFlags & 3)) {
@@ -8070,10 +8090,10 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'B':
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**textRef != '|'; ++buffer) { *buffer = *(*textRef)++; }
+        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
         *buffer = 0;
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         soundName = lbl_8032FE24;
         if (Str_Cmp(soundName, (u8 *)TalkUi_str + 0x79) == 0) {
             soundName = (u8 *)TalkUi_str + 0x82;
@@ -8090,16 +8110,16 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'U':
         if (self->unk18 == 0) {
-            text = *textRef;
-            *textRef = text + 1;
+            text = *((u8 **)arg1);
+            *((u8 **)arg1) = text + 1;
             return 1;
         }
-        text = *textRef;
+        text = *((u8 **)arg1);
         switch ((s8)*text) {
         case 'b':
             gUiPanelFlags |= 0x100;
         case 'B':
-            ++*textRef;
+            ++*((u8 **)arg1);
             Process_DetachChild(self);
             return 1;
         default:
@@ -8108,37 +8128,37 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'H':
         self->unk60 = 0;
-        text = *textRef;
-        *textRef = text - 2;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text - 2;
         gUiPanelFlags |= 0x30;
         return 2;
 
     case 'D':
-        text = *textRef;
+        text = *((u8 **)arg1);
         if ((s8)*text == 'C') {
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
         goto invalid_command;
 
     case 'S':
-        text = *textRef;
+        text = *((u8 **)arg1);
         ch = *text;
         if ((s8)ch == 'D') {
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
         if ((s8)ch == 'E') {
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             gUiPanelFlags &= ~8;
             return 1;
         }
     case 'N':
-        text = *textRef;
+        text = *((u8 **)arg1);
         if ((s8)*text == 'D') {
-            *textRef = text + 1;
+            *((u8 **)arg1) = text + 1;
             gUiPanelFlags ^= 0x40;
             return 1;
         }
@@ -8147,40 +8167,40 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 1;
 
     case 'M':
-        text = *textRef;
+        text = *((u8 **)arg1);
         switch ((s8)*text) {
         case 'C':
             self->unk62 = 0;
-            ++*textRef;
+            ++*((u8 **)arg1);
             break;
         case 'D':
             self->unk62 = 1;
-            ++*textRef;
+            ++*((u8 **)arg1);
             break;
         }
         return 1;
 
     case 'O':
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         self->unk66 = (u8)(*text - '0');
         return 1;
 
     case '=':
-        text = *textRef;
-        *textRef = text + 1;
+        text = *((u8 **)arg1);
+        *((u8 **)arg1) = text + 1;
         self->unk68 = ((s8)*text - '0') * 1000;
-        text = *textRef;
+        text = *((u8 **)arg1);
         speed = self->unk68;
-        *textRef = text + 1;
+        *((u8 **)arg1) = text + 1;
         self->unk68 = speed + ((s8)*text - '0') * 100;
-        text = *textRef;
+        text = *((u8 **)arg1);
         speed = self->unk68;
-        *textRef = text + 1;
+        *((u8 **)arg1) = text + 1;
         self->unk68 = speed + ((s8)*text - '0') * 10;
-        text = *textRef;
+        text = *((u8 **)arg1);
         speed = self->unk68;
-        *textRef = text + 1;
+        *((u8 **)arg1) = text + 1;
         self->unk68 = speed + ((s8)*text - '0');
         if (self->unk68 == 9999) {
             self->unk68 = 0x10B;
@@ -8988,7 +9008,8 @@ static inline void Text_CopyDelimited(s8 **text, u8 *out)
     ++*text;
 }
 
-#pragma opt_lifetimes off
+#pragma scheduling on
+#pragma peephole on
 s32 fn_801208BC(s8 *text, s32 wanted)
 {
   s32 fn_80010428(s8 **, s32, f32);
@@ -8998,144 +9019,198 @@ s32 fn_801208BC(s8 *text, s32 wanted)
   s32 width;
   s32 selected = wanted;
   s32 font = 2;
-
   for (;;)
   {
     width = 0;
     for (;;)
     {
-      if (!((s8)(*text)))
+      if (!((s8) (*text)))
+      {
         goto done;
-      if (((s8)(*text)) == '\n')
+      }
+      if (((s8) (*text)) == '\n')
       {
         ++text;
         break;
       }
-      if (((s8)(*text)) == '#')
+      if (((s8) (*text)) == '#')
       {
-        if (((s32)((u8)text[1])) == 'F')
-          font = ((s8)text[3]) - '0';
-        text += fn_80010710((u8 *)text);
+        if (((s32) ((u8) text[1])) == 'F')
+        {
+          font = ((s8) text[3]) - '0';
+        }
+        text += fn_80010710((u8 *) text);
       }
-      if (((s32)((u8)(*text))) == '$')
+      if (((s32) ((u8) (*text))) == '$')
       {
         ++text;
-        switch ((s8)(*(text++)))
+        switch ((s8) (*(text++)))
         {
-        case 'N':
-          if (((s32)((u8)(*text))) == 'D')
+          case 'N':
+            if (((s32) ((u8) (*text))) == 'D')
           {
             ++text;
             continue;
           }
-          break;
-        case 's':
-        {
-          s8 *p = text;
-          text = p + 1;
-          switch ((s8)(*p))
+
+          case 's':
+            switch ((s8) (*(text++)))
           {
-          case '0':
-            selected = 0;
-            continue;
-          case '1':
-            selected = 1;
-            continue;
-          case '2':
-            selected = 2;
-            continue;
-          case '3':
-            selected = 3;
-            continue;
-          case '4':
-            selected = 4;
-            continue;
-          case 'D':
-            if (selected == wanted)
+            case '0':
+              selected = 0;
+              continue;
+
+            case '1':
+              selected = 1;
+              continue;
+
+            break;
+            case '2':
+              selected = 2;
+              continue;
+
+            case '3':
+              selected = 3;
+              continue;
+
+            case '4':
+              selected = 4;
+              continue;
+
+            case 'D':
+              if (selected == wanted)
+            {
               goto done;
-            continue;
-          default:
-            continue;
+            }
+              continue;
+
+            default:
+              continue;
+
           }
-        }
-        case 'n':
-        {
-          switch ((s8)(*(text++)))
+
+
+          case 'n':
           {
-          case '0':
-            selected = 0;
-            break;
-          case '1':
-            selected = 1;
-            break;
-          case '2':
-            selected = 2;
-            break;
-          case '3':
-            selected = 3;
-            break;
-          }
-          Text_CopyDelimited(&text, lbl_8032FE24);
-          continue;
-        }
-        case 'w':
-          switch ((s8)(*(text++)))
-          {
-          case '0':
-            selected = 0;
-            break;
-          case '1':
-            selected = 1;
-            break;
-          case '2':
-            selected = 2;
-            break;
-          case '3':
-            selected = 3;
-            break;
-          }
-          if (selected == wanted)
-            goto done;
-          continue;
-        case 'D':
-        case 'M':
-        case 'O':
-        case 'S':
-          ++text;
-          continue;
-        case '=':
-          text += 4;
-          continue;
-        case 'F':
-          switch ((s32)((u8)(*(text++))))
-          {
-          case 'C':
+            switch ((s8) (*(text++)))
+            {
+              case '0':
+                selected = 0;
+                break;
+
+              case '1':
+                selected = 1;
+                break;
+
+              case '2':
+                selected = 2;
+                break;
+
+              case '3':
+                selected = 3;
+                break;
+
+            }
+
             Text_CopyDelimited(&text, lbl_8032FE24);
             continue;
           }
-          continue;
-        case 'B':
-        case 'R':
-          Text_CopyDelimited(&text, lbl_8032FE24);
-          continue;
-        case 'P':
-          goto done;
-        default:
-          continue;
+
+          case 'w':
+            switch ((s8) (*(text++)))
+          {
+            case '0':
+              selected = 0;
+              break;
+
+            case '1':
+              selected = 1;
+              break;
+
+            case '2':
+              selected = 2;
+              break;
+
+            case '3':
+              selected = 3;
+              break;
+
+          }
+
+            if (selected == wanted)
+          {
+            goto done;
+          }
+            continue;
+
+          case 'D':
+
+          case 'M':
+
+          case 'O':
+
+          case 'S':
+            ++text;
+            continue;
+
+          case '=':
+            text += 4;
+            continue;
+
+          case 'F':
+            switch ((s32) ((u8) (*(text++))))
+          {
+            case 'C':
+            {
+              Text_CopyDelimited(&text, lbl_8032FE24);
+              continue;
+            }
+              break;
+
+          }
+
+            continue;
+
+          case 'B':
+
+          case 'R':
+          {
+            Text_CopyDelimited(&text, lbl_8032FE24);
+            continue;
+          }
+
+          case 'P':
+            goto done;
+
+          default:
+            continue;
+
         }
+
         break;
       }
       if (selected == wanted)
+      {
         width += fn_80010428(&text, font, lbl_8036A248);
+      }
       else
+      {
         text = fn_80104970(text);
+      }
     }
+
     if (longest < width)
+    {
       longest = width;
+    }
   }
-done:
+
+  done:
   if (longest < width)
+  {
     longest = width;
+  }
+
   return longest;
 }
 #include "common.h"
