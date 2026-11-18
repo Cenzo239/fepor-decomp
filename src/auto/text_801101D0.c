@@ -2449,8 +2449,7 @@ Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-ActorMotionInterface *actor=(ActorMotionInterface*)arg0;
-((void (*)(void *,void *,s32))(*(void ***)((u8*)actor+0x40))[14])(&current,arg0,0);
+((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
 px=current[0];
 other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
@@ -7688,6 +7687,9 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     void fn_800790D4(void *, void *);
     void fn_80079198(void *, void *);
     void fn_800791F0(void *, void *);
+    void fn_80079198(void *, void *);
+    void fn_800791F0(void *, void *);
+    void fn_80079198(void *, void *);
     void fn_801222A4(void *, void *);
     void fn_80122170(void *, void *, s32);
     u8 fn_8011F184(void *, u8 **);
@@ -7732,8 +7734,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         s16 unk68;
     };
 
-    struct Obj *self;
     u8 **textRef;
+    struct Obj *self;
     u8 *text;
     struct Item *item;
     u8 *buffer;
@@ -8999,6 +9001,8 @@ static inline void Text_CopyDelimited(s8 **text, u8 *out)
     ++*text;
 }
 
+#pragma push
+#pragma opt_lifetimes off
 s32 fn_801208BC(s8 *text, s32 wanted)
 {
   s32 fn_80010428(s8 **, s32, f32);
@@ -9008,7 +9012,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
   s32 width;
   s32 selected = wanted;
   s32 font = 2;
-  u8 *out;
+
   for (;;)
   {
     width = 0;
@@ -9034,7 +9038,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
       if (((s32) ((u8) (*text))) == '$')
       {
         ++text;
-        switch ((s8) (*(text++)))
+        switch ((s8) (*(++text - 1)))
         {
           case 'N':
             if (((s32) ((u8) (*text))) == 'D')
@@ -9208,8 +9212,7 @@ s32 fn_801208BC(s8 *text, s32 wanted)
 
   return longest;
 }
-#include "common.h"
-extern struct SomeStruct* gCardWork; // example struct
+#pragma pop
 #include "common.h"
 #include "unit.h"
 #include "global.h"
