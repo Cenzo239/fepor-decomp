@@ -5203,44 +5203,6 @@ static inline void Ui_ApplyStatusPanelRow(void *panel, const u16 *icons)
 }
 
 #pragma scheduling reset
-static inline void Ui_DrawStatusPanelTexture(s32 texture, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
-{
-    void **fn_8006EDD8(s32, s32);
-    void Prim2D_Begin(void);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009EB0(s32, s32, s32, s32);
-    void Prim2D_BindTexture(s32, s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetPrimParam(f32);
-    void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void Prim2D_SetQuadMax(f32, f32, f32, f32);
-    void Prim2D_SetColor(u8, u8, u8, s32);
-    void Prim2D_EmitQuad(void);
-    void Prim2D_EndPrim(void);
-    extern f32 lbl_8036ADA0, lbl_8036ADA4;
-    void **p;
-    u16 h, w;
-    u8 *rgb = (u8 *)&color;
-    if (index != 0xFFFF) {
-        p = fn_8006EDD8(texture, index);
-        h = *(u16 *)((u8 *)*p + 2);
-        w = *(u16 *)*p;
-        Prim2D_Begin();
-        Prim2D_SetTransform(lbl_8036ADA0, lbl_8036ADA0, depth, lbl_8036ADA4);
-        if (p[1]) fn_80009EB0(texture, index, 0, 0x11);
-        else Prim2D_BindTexture(texture, index, 0x11);
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetPrimParam(lbl_8036ADA0);
-        Prim2D_SetQuadMin(x, y, lbl_8036ADA0, lbl_8036ADA0);
-        Prim2D_SetQuadMax(x + (f32)h, y + (f32)w, (f32)h, (f32)w);
-        Prim2D_SetColor(rgb[0], rgb[1], rgb[2], alpha);
-        Prim2D_EmitQuad();
-        Prim2D_EndPrim();
-    }
-}
-
 static inline void Ui_DrawStatusPanelTextureAt(u8 *self, u16 index, f32 x, f32 y, f32 depth, u32 color, s32 alpha)
 {
     void **fn_8006EDD8(s32, s32);
@@ -5332,8 +5294,7 @@ extern "C" void fn_8018DE24(void *arg0) {
     u32 selected = base[0x51D];
     s32 i;
     struct PanelTable {u16 icons[19][6];} buf;
-    s32 labelIndex;
-    u16 *row;
+    const u16 *row;
     u8 col[4];
     void **p;
     void *tex;
@@ -5454,11 +5415,11 @@ extern "C" void fn_8018DE24(void *arg0) {
                 {
                     struct Prefixes {char *v[6];} prefix = *(struct Prefixes *)(ro+0x1C8);
                     struct Names {void *v[15];} names = *(struct Names *)(ro+0x1E0);
-                    textBuffer[0]=labelIndex=0;
-                    for(;labelIndex<6;labelIndex++,row++) {
-                        if (*(u16 *)(((u8 *)arg0)+0x48+labelIndex*2)!=0xFFFF) {
-                            strcat(textBuffer,prefix.v[labelIndex]);
-                            if (labelIndex==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
+                    textBuffer[0]=0;
+                    for(i=0;i<6;i++,row++) {
+                        if (*(u16 *)(((u8 *)arg0)+0x48+i*2)!=0xFFFF) {
+                            strcat(textBuffer,prefix.v[i]);
+                            if (i==4) strcat(textBuffer,(char *)lbl_80279B1C+0x119);
                             strcat(textBuffer,(char *)Msg_Expand(names.v[*row-8]));
                         }
                     }
