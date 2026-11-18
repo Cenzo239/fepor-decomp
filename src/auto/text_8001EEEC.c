@@ -1519,16 +1519,11 @@ void fn_80022748(u8 *map, u8 *arg1) {
     }
 }
 
-#pragma scheduling off
-void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
-    s32 base = arg0 + 0x10000;
-    arg0 = arg1 << 1;
-    arg1 = (s16)arg2;
-    base += arg0;
-    *(s16 *)(base + 0x4214) = arg1;
-    if ((s8)arg1 < 0) *(s16 *)(base + 0x4214) = 0x7FFE;
-}
+#pragma optimization_level 2
+#pragma scheduling on
+void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) { s32 base; s16 value; s32 offset; base=arg0+0x10000; offset=arg1<<1; value=arg2; arg0=base+offset; *(s16 *)(arg0+0x4214)=value; if(arg2<0) *(s16 *)(arg0+0x4214)=0x7FFE; }
 #pragma scheduling reset
+#pragma optimization_level reset
 void fn_800227F8(void *arg0,void *arg1) {
 struct Map { u8 pad[0x14214]; s16 costs[77]; };
 struct Terrain { u32 unk0,unk4; s8 *data; };
