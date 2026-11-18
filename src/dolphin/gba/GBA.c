@@ -865,16 +865,6 @@ done:
 #pragma global_optimizer off
 #pragma scheduling on
 #pragma peephole on
-static inline void GBA_CompleteTransfer(s32 channel, u8 *queue, s32 result) {
-void (*callback)(s32,s32);
-*(u32*)(queue+0x2C)=0;
-*(u32*)(queue+0x28)=0;
-callback=*(void (**)(s32,s32))(queue+0x14);
-if(callback) {
-*(u32*)(queue+0x14)=0;
-callback(channel,result);
-}
-}
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
