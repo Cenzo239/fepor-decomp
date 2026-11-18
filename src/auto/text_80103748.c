@@ -390,19 +390,23 @@ fn_800C3AB0(gConvoy, str + 0x1B1);
 return 6;
 }
 
-#pragma global_optimizer off
-char *fn_80103DDC(const void *arg0, const void *arg1) {
-void sprintf(void *,void *,...);
-extern char lbl_8032BB18[];
-extern u8 lbl_802734D0[];
-s32 a=*(const s32 *)((const char *)arg0+4);
-const void *obj=*(void *const *)((const char *)arg1+0x18);
-u8 *base=*(u8 *const *)((const char *)obj+0x3c);
-u8 *row=base+a;
-s32 value=row[0x14];
-sprintf(lbl_8032BB18,lbl_802734D0+0x1bf,a,value);
-return lbl_8032BB18;
+#pragma global_optimizer on
+#pragma opt_propagation on
+char *fn_80103DDC(void *arg0, void *arg1) {
+    void sprintf(void *, void *, ...);
+    extern char lbl_8032BB18[];
+    extern u8 lbl_802734D0[];
+    u32 a;
+    u8 *fmt;
+
+    a = *(u32 *)((u8 *)arg0 + 4);
+    arg0 = *(void **)((u8 *)arg1 + 0x18);
+    fmt = lbl_802734D0;
+    arg0 = (void *)(*(u32 *)((u8 *)arg0 + 0x3c) + a);
+    sprintf(lbl_8032BB18, fmt + 0x1bf, a, *((u8 *)arg0 + 0x14));
+    return lbl_8032BB18;
 }
+#pragma opt_propagation reset
 #pragma global_optimizer reset
 s32 fn_80103E30(void) {
     return 0;
@@ -419,13 +423,18 @@ s32 fn_80103E48(void) {
 
 #pragma global_optimizer off
 char *fn_80103E50(s32 arg0, void *arg1) {
-void sprintf(void *, void *, ...);
-extern char lbl_8032BAF8[]; extern u8 lbl_802734D0[]; extern f32 lbl_8036A0D8;
-f32 value; u8 *strings; f32 scale;
-scale=lbl_8036A0D8; strings=lbl_802734D0;
-value=*(f32*)((u8*)*(void**)((u8*)*(void**)((u8*)arg1+0x18)+0x3c)+0xc);
-sprintf(lbl_8032BAF8,strings+0x1dc,scale*value);
-return lbl_8032BAF8;
+    void sprintf(void *, void *, ...);
+    extern char lbl_8032BAF8[];
+    extern u8 lbl_802734D0[];
+    extern f32 lbl_8036A0D8;
+    f32 value;
+    u8 *strings;
+    f32 scale;
+    scale = lbl_8036A0D8;
+    strings = lbl_802734D0;
+    value = *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x18) + 0x3C) + 0xc);
+    sprintf(lbl_8032BAF8, strings + 0x1dc, scale * value);
+    return lbl_8032BAF8;
 }
 #pragma global_optimizer reset
 s32 Options_AdjustRatioPad(s32 unused, void *menu) {
@@ -1368,136 +1377,4 @@ done:
     *arg0 = next;
     return *(s8 *)(*(u8 **)((u8 *)ctx + 0xC) + 0xC);
 }
-#pragma use_lmw_stmw reset
-void *fn_80105124(u8 *arg0, s32 *arg1) {
-    u16 sp8;
-    u8 is_double;
-    u16 code;
-    void **ctx;
-    u8 *next;
-    void *base;
-    void *end;
-    void *start;
-    void *entry;
-    s32 fn_801053E4(s32,s32,u16 *,void *);
-    s32 fn_80105474(s32,s32,void *,void *);
-    u32 fn_80104930(u16 *,u16);
-    extern void *lbl_803679C0;
-    ctx=lbl_803679C0;
-    if (((arg0[0]>=0x81U && arg0[0]<=0x9FU)||(arg0[0]>=0xE0U && arg0[0]<=0xFCU)) &&
-       ((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
-    else is_double=0;
-    if(is_double) {
-        next=arg0+2;
-        code=__rlwimi(arg0[1], (s32)*(s8 *)arg0, 8,16,23);
-    } else { code=*(s8 *)arg0 & 0xFF; next=arg0+1; }
-    sp8=code;
-    if(*(u16 *)ctx[3]!=code) {
-        base=ctx[1];
-        start=(u8 *)base+*(u16 *)((u8 *)base+0x22);
-        end=(u8 *)start+((s32)ctx[2]<<4);
-        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,fn_80104930);
-        entry=ctx[3];
-        if(end==entry || *(u16 *)entry!=sp8) {
-            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,fn_80104930);
-            entry=ctx[3];
-            if(end==entry || *(u16 *)entry!=0x8199U) ctx[3]=start;
-        }
-    }
-    *arg1=*(s8 *)((u8 *)ctx[3]+12);
-    return next;
-}
-
-void *fn_80105284(void *arg0, void *arg1) {
-    void *FileCache_Load(void *);
-    u8 *file;
-    u16 sum;
-    u16 off;
-    u32 n;
-    u16 *p;
-
-    *(u8 **)((u8 *)arg0 + 4) = FileCache_Load(arg1);
-    file = *(u8 **)((u8 *)arg0 + 4);
-    sum = *(u16 *)(file + 0x8) + *(u16 *)(file + 0xA);
-    *(u16 *)(file + 0x12) = sum;
-    *(u16 *)(file + 0x10) = sum;
-    off = *(u16 *)(file + 0x22);
-    n = (*(u32 *)(file + 0x24) - off) >> 4;
-    *(u32 *)((u8 *)arg0 + 8) = n;
-    p = (u16 *)(*(u8 **)((u8 *)arg0 + 4) + *(u16 *)(file + 0x22) + ((*(u32 *)((u8 *)arg0 + 8) - 1) * 0x10));
-    while (*p == 0) {
-        p = (u16 *)((u8 *)p - 0x10);
-        *(u32 *)((u8 *)arg0 + 8) -= 1;
-    }
-    *(u8 **)((u8 *)arg0 + 0xC) = *(u8 **)((u8 *)arg0 + 4) + *(u16 *)(file + 0x22);
-    return *(void **)((u8 *)arg0 + 4);
-}
-
-void *fn_80105334(void *arg0, s16 arg1) {
-    void fn_8005C7E8(void *);
-    void Heap_Free(void *);
-    void fn_800C4588(void *);
-    void *p;
-
-    if (arg0 != NULL) {
-        if (M2C_FIELD(arg0, s32 *, 0) != 0) {
-            p = M2C_FIELD(arg0, void **, 4);
-            if (p != NULL) {
-                fn_800C4588(p);
-                M2C_FIELD(arg0, void **, 4) = NULL;
-                goto clear;
-            }
-        }
-        p = M2C_FIELD(arg0, void **, 4);
-        if (p != NULL) {
-            fn_8005C7E8(p);
-        }
-    clear:
-        M2C_FIELD(arg0, void **, 4) = NULL;
-        M2C_FIELD(arg0, s32 *, 0) = 0;
-        M2C_FIELD(arg0, s32 *, 8) = 0;
-        M2C_FIELD(arg0, s32 *, 0xC) = 0;
-        if (arg1 > 0) {
-            Heap_Free(arg0);
-        }
-    }
-    return arg0;
-}
-
-void fn_801053CC(void *arg0) {
-    M2C_FIELD(arg0, s32 *, 0) = 0;
-    M2C_FIELD(arg0, s32 *, 4) = 0;
-    M2C_FIELD(arg0, s32 *, 8) = 0;
-    M2C_FIELD(arg0, s32 *, 0xC) = 0;
-}
-
-#pragma use_lmw_stmw on
-s32 fn_801053E4(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
- s32 count; s32 mid_ptr; s32 mid;
- count = (arg1-arg0)/16;
- while(count>0) { mid=count/2; mid_ptr=arg0+mid*16; if(arg3(mid_ptr,*arg2)!=0) {arg0=mid_ptr+16; count-=mid+1;} else {count=mid;} }
- return arg0;
-}
-#pragma use_lmw_stmw on
-s32 fn_80105474(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, u16)) {
-s32 key;
-s32 count;
-s32 mid_ptr;
-s32 mid;
-
-key=*arg2;
-count=(arg1-arg0)/16;
-
-while(count>0) {
-mid=count/2;
-mid_ptr=arg0+(mid<<4);
-if(arg3(mid_ptr,(u16)key)!=0) {
-arg0=mid_ptr+0x10;
-count-=mid+1;
-} else count=mid;
-}
-return arg0;
-}
-#pragma use_lmw_stmw off
-extern u16 lbl_802734D0;
-extern u32 jumptable_8028F290[];
+#pragma scheduling on
