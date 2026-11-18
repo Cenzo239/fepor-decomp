@@ -1,14 +1,6 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline void MenuCmd_SetPackedSlots(u8 *save, s32 count)
-{
-    s32 i;
-    for (i = 0; i < 30; ++i) {
-        if (i < count - 1) save[i + 0x12] = i + 1;
-        else save[i + 0x12] = 0;
-    }
-}
 
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
