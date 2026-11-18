@@ -149,9 +149,8 @@ struct OSThread {
 };
 #pragma opt_common_subs on
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
-    OSThread *next;
     OSThread *thread = queue->head;
-    next = thread->next;
+    OSThread *next = thread->next;
     *out = thread;
     if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
