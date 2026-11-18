@@ -592,10 +592,9 @@ s32 fn_802395BC(s32 chan, void *callback)
 {
  EXIControl *exi;
  s32 enabled;
- u32 id;
  s32 result;
  exi=&Ecb_8033E188[chan];
- if(__EXIProbe(chan) && exi->idTime==0) EXIGetID(chan,0,&id);
+ fn_80239488(chan);
  enabled=OSDisableInterrupts();
  if(exi->idTime==0) {OSRestoreInterrupts(enabled);return 0;}
  result=EXIAttachInternal(chan,callback);
