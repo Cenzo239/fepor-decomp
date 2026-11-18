@@ -379,36 +379,21 @@ s32 fn_8018394C(void) {
 
 s32 fn_80183954(void) { extern u8 lbl_803681F0; return lbl_803681F0 == 0x32 ? 0 : 3; }
 
+#pragma opt_common_subs off
 s32 fn_80183974(void) {
-    u32 Process_Find(void *);
-    extern u8 E_MuBlend_script[];
-    u8 *base;
-
-    base = E_MuBlend_script;
-    if (Process_Find(&base[0]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0x78]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0x98]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0xC0]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0x110]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0xE8]) != 0) {
-        return 1;
-    }
-    if (Process_Find(&base[0x20]) != 0) {
-        return 1;
-    }
-    return Process_Find(&base[0x3F0]) != 0;
+u32 Process_Find(void *);
+extern u8 E_MuBlend_script[];
+u8 *base=E_MuBlend_script;
+if (Process_Find(base+0) != 0) return 1;
+if (Process_Find(base+120) != 0) return 1;
+if (Process_Find(base+152) != 0) return 1;
+if (Process_Find(base+192) != 0) return 1;
+if (Process_Find(base+272) != 0) return 1;
+if (Process_Find(base+232) != 0) return 1;
+if (Process_Find(base+32) != 0) return 1;
+return Process_Find(base+0x3f0)!=0;
 }
-
+#pragma opt_common_subs reset
 extern u16 E_MuFade_script[36];
 s32 fn_80183A5C(void) {
     return Process_Find(&E_MuFade_script) != 0;
@@ -1497,6 +1482,39 @@ s32 fn_80185B94(void *arg0) {
     temp_r5 = M2C_FIELD(arg0, void **, 0x30);
     M2C_FIELD(M2C_FIELD(temp_r5, void **, 0x5C), f32 *, 0x5C) = (f32) M2C_FIELD(M2C_FIELD(temp_r5, void **, 0x4C), s32 *, 0x34);
     return 0;
+}
+
+void *fn_80185BD4(void *arg0) {
+void *Res_GetByName(void *);
+s32 Str_Cmp(void *, void *);
+u8 Status_Test(void *, s32);
+void fn_800056A0(s32);
+extern u8 MoveAnim_str[];
+void *res;
+void *name;
+void *key=*(void **)((u8 *)*(void **)((u8 *)arg0+0x18c)+0xc);
+if(key) res=Res_GetByName(key); else res=0;
+if(!res) return 0;
+name=*(void **)res;
+if(Str_Cmp(MoveAnim_str+0x1df,name)==0) return MoveAnim_str+0x1e8;
+if(Str_Cmp(MoveAnim_str+0x1fd,name)==0) return MoveAnim_str+0x207;
+if(Str_Cmp(MoveAnim_str+0x21d,name)==0) return MoveAnim_str+0x225;
+if(Str_Cmp(MoveAnim_str+0x239,name)==0) return MoveAnim_str+0x225;
+if(Str_Cmp(MoveAnim_str+0x243,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x26a,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x27c,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x28c,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x29e,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x2ac,name)==0) return MoveAnim_str+0x253;
+if(Str_Cmp(MoveAnim_str+0x2bc,name)==0) return MoveAnim_str+0x2c5;
+if(Str_Cmp(MoveAnim_str+0x2da,name)==0) return MoveAnim_str+0x2c5;
+if(Str_Cmp(MoveAnim_str+0x2e7,name)==0) return MoveAnim_str+0x2f0;
+if(Str_Cmp(MoveAnim_str+0x305,name)==0) return MoveAnim_str+0x2f0;
+if(Str_Cmp(MoveAnim_str+0x312,name)==0) return MoveAnim_str+0x31c;
+if(Str_Cmp(MoveAnim_str+0x332,name)==0) return MoveAnim_str+0x31c;
+if(Str_Cmp(MoveAnim_str+0x33e,name)==0) return MoveAnim_str+0x31c;
+if(Status_Test((u8 *)res+0x1c,9)) fn_800056A0(0);
+return 0;
 }
 
 /* On pad button 0, start an E_MuFlash tint for the bound unit and clear this process func. */
@@ -8253,10 +8271,10 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         virtual void m28() = 0;
     };
     s32 z = 0;
-    f32 one = lbl_8036AE20;
+    
     void *self = arg0;
-    s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
+    s32 e1 = (s16)arg1;
 
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = z;
@@ -8264,8 +8282,8 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 8) = -1;
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
-    *(s16 *)((u8 *)self + 0x10) = (s16)(e2 + 0x88);
     *(s16 *)((u8 *)self + 0xE) = (s16)(e1 + 0x108);
+    *(s16 *)((u8 *)self + 0x10) = (s16)(e2 + 0x88);
     *(s16 *)((u8 *)self + 0x12) = z;
     *(s16 *)((u8 *)self + 0x14) = z;
     *(s16 *)((u8 *)self + 0x16) = 0x108;
@@ -8278,9 +8296,9 @@ extern "C" void *fn_80193950(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(u8 *)((u8 *)self + 0x21) = 0xFF;
     *(s16 *)((u8 *)self + 0x22) = arg3;
     *(s16 *)((u8 *)self + 0x24) = z;
-    *(f32 *)((u8 *)self + 0x28) = one;
-    *(f32 *)((u8 *)self + 0x2C) = one;
-    *(f32 *)((u8 *)self + 0x30) = one;
+    *(f32 *)((u8 *)self + 0x28) = lbl_8036AE20;
+    *(f32 *)((u8 *)self + 0x2C) = lbl_8036AE20;
+    *(f32 *)((u8 *)self + 0x30) = lbl_8036AE20;
     *(s32 *)((u8 *)self + 0x34) = z;
     *(s32 *)((u8 *)self + 0x38) = z;
     *(void **)self = lbl_80292208;
@@ -9237,32 +9255,39 @@ extern u8 Proc_EventArrowManager[16];
       Process_UnlinkByKey(&Proc_EventArrowManager);
   }
 
-  s32 fn_80194E38(void) {
-      void *Process_Find(void *);
-      void *proc;
-      u8 *base;
-      u8 *entry;
-      s32 i;
-      u8 ok;
+s32 fn_80194E38(void) {
+    void *Process_Find(void *);
+    void *proc;
+    u8 *base;
+    s32 off;
+    s32 k;
+    s32 j;
+    u8 ok;
+    u8 *entry;
 
-      proc = Process_Find(Proc_EventArrowManager);
-      if (proc == NULL) {
-          return 0;
-      }
-      base = *(u8 **)((u8 *)proc + 0x30);
-      ok = 1;
-      for (i = 0; i < 8; i++) {
-          entry = base + i * 0x3250;
-          if (*(f32 *)(entry + 0x10) < *(f32 *)(entry + 0x18)) {
-              ok = 0;
-              break;
-          }
-      }
-      if (ok) {
-          return 0;
-      }
-      return 1;
-  }
+    proc = Process_Find(Proc_EventArrowManager);
+    if (proc == NULL) {
+        return 0;
+    }
+    off = 0;
+    for (j = 0; j < 6; j += 3) {
+        base = *(u8 **)((u8 *)proc + 0x30);
+        for (k = 0; k < 4; k++) {
+            entry = base + off;
+            if ((*(f32 *)(entry + 0x10) >= *(f32 *)(entry + 0x18)) == 0) {
+                ok = 0;
+                goto done;
+            }
+            off += 0x3250;
+        }
+    }
+    ok = 1;
+done:
+    if (ok) {
+        return 0;
+    }
+    return 1;
+}
 
   void *EventArrow_Get(s32 arg0) {
     void *Process_Find(void *);
