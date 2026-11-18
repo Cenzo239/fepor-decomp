@@ -7490,9 +7490,9 @@ x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
 y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { s32 ny=y+1; s32 nx=x+1;
-nx+=*(s16*)(ctx+0x38); *(s16*)(ctx+0x38)=nx/2;
-ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=ny/2;
+else { u32 ny=y+1; u32 nx=x+1;
+nx+=*(s16*)(ctx+0x38); *(s16*)(ctx+0x38)=(s32)nx/2;
+ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=(s32)ny/2;
 }
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A6D0);
 idle=0; if(!ctx[0x2d] && !ctx[0x2e]) idle=1;
@@ -9061,23 +9061,16 @@ s32 fn_8013FBD4(s32 arg0) {
     return arg0 + 0xA;
 }
 
-#pragma scheduling off
-void fn_8013FBDC(s16 *dst, s16 *src)
-{
-  s16 c;
-  s16 b;
-  s16 a;
-
-  a = dst[0];
-  b = src[0];
-  c = src[1];
-  a = a + b;
-  dst[0] = a;
-  a = dst[1];
-  a = a + c;
-  dst[1] = a;
+#pragma global_optimizer off
+void fn_8013FBDC(s16 *dst, s16 *src) {
+s16 c,b,a,d;
+a=dst[0]; b=src[0]; c=src[1];
+d=a;
+d+=b;
+dst[0]=d;
+d=dst[1]; c=d+c; dst[1]=c;
 }
-#pragma scheduling reset
+#pragma global_optimizer reset
 void fn_8013FC00(s16 *dst, s16 *src)
 {
   s16 a;
@@ -11463,28 +11456,168 @@ break;
 }
 }
 }
-#pragma cplusplus reset
-void fn_80143784(void **arg0, void *arg1) {
-    extern void *lbl_8036C4E8;
-    extern void *lbl_8036C4EC;
-    void Unit_GetHeldItemSlot(void *, s32);
-    void fn_80144E34(void *, void *, void **);
-    void fn_80144EAC(void *, void *, void **, u32 **);
-    void memcpy(void *, void *, s32);
-    char sp44[0x16];
-
-    (void)lbl_8036C4E8;
-    (void)lbl_8036C4EC;
-    (void)Unit_GetHeldItemSlot;
-    (void)fn_80144E34;
-    (void)fn_80144EAC;
-
-    memcpy(sp44, (char *)arg0 + 0x64, 0x16);
-    memcpy((char *)arg0 + 0x64, sp44, 0x16);
-    (void)arg1;
-}
-
 #pragma cplusplus on
+extern "C" void fn_80143784(void *arg0, void *arg1) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual s32 v12(void *) = 0;
+    };
+    struct PNode {
+        PNode *prev;
+        PNode *next;
+        void *key;
+        void *owner;
+    };
+    struct Pair {
+        u8 f;
+        u32 v;
+    };
+    extern u32 lbl_8036C4E8;
+    extern u32 lbl_8036C4EC;
+    void *Unit_GetHeldItemSlot(void *, s32);
+    void fn_80144E34(ListIter *, List *, ListIter *);
+    void fn_80144EAC(void *, void *, void *, void *);
+    void memcpy(void *, void *, u32);
+
+    u8 saved[0x16];
+    ListIter ret;
+    ListIter it;
+    u32 pair1[2];
+    u32 pair2[2];
+    void *entry1;
+    void *entry2;
+    u32 result1;
+    u32 result2;
+    u8 flag;
+    Pair pa;
+    Pair pb;
+    s32 j;
+    List *lst;
+    s32 oi;
+    void *self;
+    void *unit;
+    u8 *p;
+    PNode *sent;
+    PNode *node;
+
+    memcpy(saved, (u8 *)arg0 + 0x64, 0x16);
+    self = arg0;
+    unit = arg1;
+
+    for (oi = 0, p = (u8 *)self; oi < 11; p += 0xc, oi++) {
+        node = *(PNode **)(p + 0x98);
+        sent = (PNode *)(p + 0x94);
+        goto ocheck;
+        for (;;) {
+            if (node->owner == unit) {
+                u8 *c2;
+                PNode *n;
+                PNode *s;
+                void *key;
+                key = node->key;
+                pa.f = flag;
+                pa.v = (u32)key;
+                pb.f = pa.f;
+                pb.v = pa.v;
+                j = 0;
+                c2 = (u8 *)self;
+                for (; j < 11; c2 += 0xc, j++) {
+                    lst = (List *)(c2 + 0x90);
+                    n = *(PNode **)(c2 + 0x98);
+                    s = (PNode *)((u8 *)lst + 4);
+                    goto scheck;
+                    for (;;) {
+                        n = n->next;
+                    scheck:
+                        if (n == s)
+                            break;
+                        if (n->key != (void *)pb.v)
+                            continue;
+                        if (n != (PNode *)((u8 *)lst + 4)) {
+                            it.node = (ListNode *)n;
+                            fn_80144E34(&ret, lst, &it);
+                            if ((u32)*(s16 *)((u8 *)self + (j << 1) + 0x64) >= (u32)lst->size)
+                                *(s16 *)((u8 *)self + (j << 1) + 0x64) = lst->size - 1;
+                        }
+                        goto onext;
+                    }
+                }
+            }
+        onext:
+            node = node->next;
+        ocheck:
+            if (node == sent)
+                break;
+        }
+    }
+
+    {
+        s32 hi;
+        void *slot;
+        s32 index;
+        for (hi = 0; hi < 4; hi++) {
+            slot = Unit_GetHeldItemSlot(unit, hi);
+            if (*(u32 *)slot == 0)
+                continue;
+            index = ((Obj *)self)->v12(slot);
+            if (index == 0xc)
+                continue;
+            pair1[0] = lbl_8036C4E8;
+            pair1[1] = lbl_8036C4EC;
+            lst = (List *)((u8 *)self + index * 0xc + 0x90);
+            pair1[0] = (u32)slot;
+            pair1[1] = (u32)unit;
+            entry1 = (u8 *)lst + 4;
+            fn_80144EAC(&result1, lst, &entry1, pair1);
+        }
+    }
+
+    {
+        s32 ei;
+        void *itemp;
+        s32 index;
+        for (ei = 0, p = (u8 *)unit; ei < 4; p += 8, ei++) {
+            itemp = p + 0x1ec;
+            if (*(u32 *)(p + 0x1ec) == 0)
+                continue;
+            index = ((Obj *)self)->v12(itemp);
+            if (index == 0xc)
+                continue;
+            pair2[0] = lbl_8036C4E8;
+            pair2[1] = lbl_8036C4EC;
+            lst = (List *)((u8 *)self + index * 0xc + 0x90);
+            pair2[0] = (u32)itemp;
+            pair2[1] = (u32)unit;
+            entry2 = (u8 *)lst + 4;
+            fn_80144EAC(&result2, lst, &entry2, pair2);
+        }
+    }
+
+    memcpy((u8 *)arg0 + 0x64, saved, 0x16);
+
+    {
+        u8 *a = (u8 *)self;
+        u8 *b = (u8 *)self;
+        for (oi = 0; oi < 11; oi++) {
+            if ((u32)*(s16 *)(b + 0x64) >= (u32)*(s32 *)(a + 0x90))
+                *(s16 *)(b + 0x64) = *(s32 *)(a + 0x90) - 1;
+            a += 0xc;
+            b += 2;
+        }
+    }
+}
+#pragma cplusplus reset
 extern "C" void fn_801439F0(void *arg0, s32 arg1, s32 arg2) {
  struct Obj { virtual void v0() = 0;
 virtual void v1() = 0;
@@ -12346,22 +12479,125 @@ void fn_80144B5C(void) {
 
 }
 
-s32 fn_80144B60(void *arg0, u8 *arg1) {
-    void *var_r28 = *(void **)((u8 *)arg0 + 8);
-    u32 temp_r27 = (u32) *(s32 *)arg0 >> 1U;
+void fn_80144B60(s32 *arg0, u8 *arg1) {
+    typedef struct {
+        u8 pad[0xe];
+        u16 key;
+    } KeyObj;
+    typedef struct {
+        KeyObj *obj;
+        u8 unk4;
+    } Entry;
+    typedef struct Node {
+        struct Node *prev;
+        struct Node *next;
+        Entry *val;
+    } Node;
+    typedef struct {
+        s32 count;
+        Node *prev;
+        Node *next;
+    } SortList;
 
-    if (temp_r27 != 0) {
-        u32 var_ctr = temp_r27 >> 3U;
-        if (var_ctr != 0) {
-            do {
-                var_r28 = *(void **)((u8 *)var_r28 + 4);
-                var_ctr -= 1;
-            } while (var_ctr != 0);
+    void fn_8014510C(void *);
+    void fn_80144F78(s32 *, s32 *, u8 *);
+    void Heap_Free(void *);
+
+    SortList other;
+    struct { u8 value; } sp10, spC, sp8;
+    void **p;
+    void *tmp;
+    void *tmp2;
+    Entry *a;
+    Entry *b;
+    Node *first;
+    Node *second;
+    Node *node;
+    Node *last;
+    Node *sentinel;
+    s32 temp_r0;
+    u32 half;
+    u32 n;
+    u8 less;
+    u8 key;
+
+    temp_r0 = arg0[0];
+    switch (temp_r0) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        first = (Node *)arg0[2];
+        second = first->next;
+        a = first->val;
+        b = second->val;
+        if (a->obj->key == b->obj->key) {
+            if (a->unk4 != b->unk4) {
+                less = b->unk4 < a->unk4;
+            } else {
+                less = (u32)b < (u32)a;
+            }
+        } else {
+            less = b->obj->key < a->obj->key;
         }
+        if (less) {
+            p = (void **)arg0[2];
+            tmp = p[0];
+            tmp2 = p[1];
+            p[0] = tmp2;
+            p[1] = tmp;
+            p = (void **)second;
+            tmp = p[0];
+            tmp2 = p[1];
+            p[0] = tmp2;
+            p[1] = tmp;
+            tmp = (void *)arg0[1];
+            arg0[1] = arg0[2];
+            arg0[2] = (s32)tmp;
+        }
+        break;
+    default:
+        half = (u32)temp_r0 >> 1;
+        node = (Node *)arg0[2];
+        for (n = half; n != 0; --n) {
+            node = node->next;
+        }
+        fn_8014510C(&other);
+        sentinel = (Node *)&other.prev;
+        last = (Node *)arg0[1];
+        tmp = node->prev;
+        tmp2 = *(void **)((u8 *)last + 4);
+        key = *arg1;
+        *(void **)((u8 *)tmp + 4) = tmp2;
+        tmp = node->prev;
+        tmp2 = *(void **)((u8 *)last + 4);
+        *(void **)tmp2 = tmp;
+        other.prev->next = node;
+        node->prev = other.prev;
+        other.prev = last;
+        last->next = sentinel;
+        other.count = arg0[0] - (s32)half;
+        arg0[0] = (s32)half;
+        sp10.value = key;
+        fn_80144B60(arg0, &sp10.value);
+        spC.value = *arg1;
+        fn_80144B60(&other.count, &spC.value);
+        sp8.value = *arg1;
+        fn_80144F78(arg0, &other.count, &sp8.value);
+        node = other.next;
+        if (node != sentinel) {
+            last = other.prev;
+            node->prev->next = last->next;
+            last->next->prev = node->prev;
+            while (node != sentinel) {
+                tmp = node;
+                node = node->next;
+                Heap_Free(tmp);
+                other.count = other.count - 1;
+            }
+        }
+        break;
     }
-
-    *(s32 *)arg0 = (s32) temp_r27;
-    return 0;
 }
 
 s32 fn_80144D74(s32 arg0) {
