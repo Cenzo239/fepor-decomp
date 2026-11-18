@@ -153,17 +153,6 @@ static inline u32 ColFromHash(u32 hash) {
 
 #pragma optimization_level 4
 
-s32 fn_8005B760(s32 arg0) {
-    switch (arg0) {
-    case 10:
-    case 26:
-        return 0x1A;
-    case 24:
-        return 0x18;
-    case 25:
-        return 0x19;
-    default:
-        return 0;
-    }
-}
+#pragma optimization_level 3
+s32 fn_8005B760(s32 arg0) { switch(arg0) { case 10: case 26: return 26; case 24: return 24; case 25: return 25; case 11 ... 23: case 27 ... 28: case 29 ... 30: case 31 ... 32: case 33 ... 34: case 35 ... 36: case 37 ... 38: case 39 ... 40: case 41 ... 42: case 43 ... 44: case 45 ... 46: case 47 ... 48: case 49 ... 50: case 51 ... 52: case 53 ... 54: case 55 ... 56: case 57 ... 58: case 59 ... 60: case 61 ... 62: case 63 ... 64: case 65 ... 66: case 67 ... 68: case 69 ... 70: case 71 ... 72: case 73 ... 74: case 75 ... 75: case 76: default: return 0; } }
 #pragma optimization_level reset
