@@ -4042,6 +4042,7 @@ void fn_801F0E4C(void *arg0) {
     Model_SetAlpha(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31_2);
 }
 
+#pragma use_lmw_stmw on
 void fn_801F109C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x3C) = (s32) (M2C_FIELD(arg0, s32 *, 0x3C) - 1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x3C) < 0) {
