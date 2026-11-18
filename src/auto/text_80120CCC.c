@@ -1861,7 +1861,7 @@ void fn_8012391C(void *arg0) {
     }
 }
 
-#pragma opt_common_subs on
+#pragma global_optimizer off
 void fn_80123988(void *arg0)
 {
     void *Process_Create(void *, void *);
@@ -2026,6 +2026,7 @@ void fn_80123988(void *arg0)
         }
     }
 }
+#pragma global_optimizer on
 
 s32 fn_80123BA8(void) {
     s32 Process_Create(void *, s32);
