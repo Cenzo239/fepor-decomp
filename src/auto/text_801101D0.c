@@ -3175,7 +3175,8 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  void fn_800DB7A4(void *, s32 (*)[3]);
  s32 copy[3]; s32 c,b,a;
- c=arg1[2]; b=arg1[1]; a=arg1[0]; copy[0]=a; copy[1]=b; copy[2]=c;
+ c=arg1[2]; b=arg1[1]; a=arg1[0];
+ arg1=copy; arg1[0]=a; arg1[1]=b; arg1[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
 }
@@ -3186,6 +3187,11 @@ extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
 static inline s32 ActorUpdate_Compare(void *str, char *text) {
  s32 strlen(char *);
  return String_Compare(str,0,*(void **)str,text,strlen(text));
+}
+static inline void ActorUpdate_CopyVector(Vec3f *dst, const Vec3f *src) {
+ const u32 *in=(const u32 *)src;
+ u32 *out=(u32 *)dst;
+ out[0]=in[0];out[1]=in[1];out[2]=in[2];
 }
 struct ActorUpdateInterface {
  u8 pad[0x40];
@@ -3234,8 +3240,9 @@ extern "C" void fn_80116FE8(void *self) {
    fn_800DF664(self);
    if(M2C_FIELD(self,void **,0x11C)) fn_800DF664(M2C_FIELD(self,void **,0x11C));
    f32 zero=lbl_8036A184;
+   f32 scale=fActorDefaultRadius;
    M2C_FIELD(self,u8 *,0x1B5)=0;
-   ((ActorUpdateInterface *)self)->SetScale(zero,fActorDefaultRadius,zero);
+   ((ActorUpdateInterface *)self)->SetScale(zero,scale,zero);
  }
  if(!Actor_IsBusy(self) && String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x1C,strlen((char *)gActorXmlStrs+0x1C))) {
    if(!String_Compare((u8 *)self+0x16C,0,M2C_FIELD(self,void **,0x16C),(char *)gActorXmlStrs+0x43F,strlen((char *)gActorXmlStrs+0x43F))) {
@@ -3294,7 +3301,7 @@ extern "C" void fn_80116FE8(void *self) {
      node=Heap_Alloc(0xC8);
      if(node) {
        u8 allocator;
-       Camera_GetLookAt(&look,self);copyLook=look;copyPos=pos;
+       Camera_GetLookAt(&look,self);copyLook.x=look.x;copyLook.y=look.y;copyLook.z=look.z;copyPos.x=pos.x;copyPos.y=pos.y;copyPos.z=pos.z;
        String_Init(&effect,(char *)gActorXmlStrs+0x51,&allocator);
        initialized=1;
        node=fn_80151D50(node,M2C_FIELD(self,void **,0xAC),&effect,&name,&copyPos,&copyLook,0);
