@@ -2071,6 +2071,7 @@ loop_2:
     }
 }
 
+#pragma cplusplus reset
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void fn_8013577C(void *arg0) {
