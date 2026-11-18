@@ -1292,6 +1292,7 @@ extern "C" void fn_80018EC0(void)
   }
 }
 
+#pragma global_optimizer reset
 #pragma cplusplus on
 #pragma optimization_level 2
 #pragma peephole off
