@@ -9098,19 +9098,18 @@ void fn_8013FC14(s16 *dst, s16 *src)
   dst[new_var] = b;
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void fn_8013FC28(s32 *dst, s32 *src, s16 *off) {
-    s16 local[2];
-    s16 a, b, x, y;
-
-    *(s32 *)local = *src;
-    a = off[0];
-    b = off[1];
-    x = local[0] + a;
-    y = local[1] + b;
-    local[0] = x;
-    local[1] = y;
-    *dst = *(s32 *)local;
+ s16 local[2];
+ s32 a,b,x,y;
+ s32 packed=*src;
+ *(s32*)local=packed;
+ a=off[0];
+ b=off[1];
+ x=local[0]; y=local[1];
+ x=a+x; y=b+y;
+ local[0]=x; local[1]=y;
+ *dst=*(s32*)local;
 }
 #pragma scheduling on
 Vec2s *fn_8013FC64(Vec2s *p) {
