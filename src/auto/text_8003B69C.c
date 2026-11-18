@@ -9118,7 +9118,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     void fn_80224E50(void *, s32, s32);
     f64 fn_80238788(f32);
     extern u8 lbl_8026AA98[];
-    extern void *gBattleMap;
+    extern u8 gBattleMap[];
     extern u32 lbl_80368FA8;
     extern u32 lbl_80368FAC;
     extern f32 lbl_80368FBC;
