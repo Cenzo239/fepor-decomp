@@ -7591,19 +7591,46 @@ extern "C" void fn_800D6FF0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     (*(Obj **)((u8 *)arg0 + 0x424))->v20(arg1, arg2, arg3);
 }
 #pragma cplusplus reset
-void *fn_800D7060(void *arg0, s16 arg1) {
-    void Heap_Free(void *);
-    
-    if (arg0 != NULL) {
-        void **vtable = (void **)M2C_FIELD(arg0, void **, 0x8);
-        if (vtable != NULL && *vtable != NULL) {
-            Heap_Free(*vtable);
-        }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
-        }
-    }
-    return arg0;
+void *fn_800D7060(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void String_ConcatCStr(void *,void *,char *);
+void *fn_800D75FC(void *,void *);
+void fn_800D764C(void *,s32,s32,s32,void *,void *);
+void fn_800E3F54(void *);
+extern char lbl_80270F68[];
+extern u8 lbl_8028DDB8[];
+String a,b,c,d,e,f,g;
+void *p1,*p2,*p3,*p4,*p5,*p6;
+void *temp;
+void *self;
+self=arg0;
+String_Init(&a,lbl_80270F68,&p1);
+String_ConcatCStr(&b,&a,lbl_80270F68+7);
+String_Init(&c,lbl_80270F68+0x10,&p2);
+fn_800D764C(self,arg1,arg2,arg3,&b,&c);
+String_Destroy(&c,-1); String_Destroy(&b,-1); String_Destroy(&a,-1);
+*(void **)((u8 *)self+0xc)=lbl_8028DDB8;
+String_Init(&d,lbl_80270F68+0x15,&p3);
+*(void **)((u8 *)self+0x424)=fn_800D75FC(self,&d);
+String_Destroy(&d,-1);
+String_Init(&e,lbl_80270F68+0x1f,&p4);
+*(void **)((u8 *)self+0x428)=fn_800D75FC(self,&e);
+String_Destroy(&e,-1);
+String_Init(&f,lbl_80270F68+0x28,&p5);
+temp=fn_800D75FC(self,&f);
+*(void **)((u8 *)self+0x42c)=temp;
+*(void **)((u8 *)self+0x418)=temp;
+String_Destroy(&f,-1);
+String_Init(&g,lbl_80270F68+0x2e,&p6);
+temp=fn_800D75FC(self,&g);
+*(void **)((u8 *)self+0x430)=temp;
+*(void **)((u8 *)self+0x41c)=temp;
+String_Destroy(&g,-1);
+*(void **)((u8 *)*(void **)((u8 *)self+0x42c)+0xa4)=(void *)fn_800D6F34;
+*(void **)((u8 *)*(void **)((u8 *)self+0x430)+0xa4)=(void *)fn_800D6F0C;
+*(void **)((u8 *)self+0x14)=*(void **)((u8 *)self+0x42c);
+*(void **)((u8 *)self+0x414)=*(void **)((u8 *)self+0x42c);
+fn_800E3F54(*(void **)((u8 *)self+0x414));
+return self;
 }
 
 #pragma opt_common_subs off
@@ -8359,30 +8386,64 @@ Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
 }
 #pragma use_lmw_stmw reset
 
-void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
-    extern char __files[];
-    extern char gStringErrorMsgs[];
-    void String_Resize(String *, u32, s32);
-    M2C_UNK abort(void);
-    M2C_UNK fprintf(void *, const char *, ...);
-    void *memcpy(void *, const void *, u32);
-    u32 rest;
-    u32 len;
-
-    if (pos > arg1->size) {
-        fprintf(__files + 0xA0, gStringErrorMsgs + 0x96);
-        abort();
-    }
-    rest = arg1->size - pos;
-    len = (n < rest) ? n : rest; 
-    if (arg0 == arg1) {
-        String_Erase(arg0, 0, pos);
-        String_Resize(arg0, len, 1);
-    } else {
-        String_Resize(arg0, len, 0);
-        memcpy(arg0->data, arg1->data + pos, len);
-    }
-    return;
+void fn_800D8928(void *arg0,void *arg1) {
+void *Heap_Alloc(u32);
+void String_Init(void *,void *,void *);
+void *Xml_ParseFile(void *,void *,void *);
+void String_Destroy(void *,s32);
+void fn_800C8F70(void *,s32);
+void Xml_GetChildName(void *,void *);
+void Xml_GetChildValue(void *,void *);
+void String_Assign(void *,void *,s32,s32);
+void String_AssignCStr(void *,void *,s32);
+s32 strlen(char *);
+void String_Copy(void *,void *);
+void fn_801086CC(void *,void *);
+void fn_800CA18C(void *,void *,s32,void *);
+u8 Xml_AdvanceChild(void *);
+void *fn_800DC3B8(void *);
+void fn_8011CA3C(void *,void *,void *);
+void Xml_Destroy(void *,s16);
+extern char lbl_802711B0[];
+extern u8 *lbl_803679C8,*lbl_803678C0;
+char value[32];
+String name,text,root,temp,copy;
+u32 alloc;
+u32 path;
+s8 made;
+void *xml;
+u32 self;
+void *t;
+self=(u32)arg0;path=(u32)arg1;made=0;
+xml=Heap_Alloc(0x60);
+if(xml) {
+String_Init(&root,lbl_802711B0+0xfa,&alloc);
+made=1;
+xml=Xml_ParseFile(xml,(void*)path,&root);
+}
+if(made) String_Destroy(&root,-1);
+name.cap=0;text.cap=0;name.size=0;name.data=0;name.cap=0;text.size=0;text.data=0;text.cap=0;
+fn_800C8F70(xml,0);
+path=(u32)value;
+do {
+Xml_GetChildName(&temp,xml);
+String_Assign(&name,&temp,0,-1);
+String_Destroy(&temp,-1);
+Xml_GetChildValue(value,xml);
+String_AssignCStr(&text,(char*)path,strlen((char*)path));
+String_Copy(&copy,&name);
+fn_801086CC(lbl_803679C8,&copy);
+String_Destroy(&copy,-1);
+fn_800CA18C((void*)(self+0x40),*(u8**)(self+0x48)+*(s32*)(self+0x44)*12,1,&text);
+} while(Xml_AdvanceChild(xml));
+t=fn_800DC3B8(*(void**)(lbl_803679C8+0x424));
+fn_8011CA3C(*(void**)(lbl_803678C0+0x43c),t,lbl_803678C0);
+t=fn_800DC3B8(*(void**)(lbl_803679C8+0x424));
+fn_8011CA3C(*(void**)(lbl_803678C0+0x440),t,lbl_803678C0);
+t=fn_800DC3B8(*(void**)(lbl_803679C8+0x424));
+fn_8011CA3C(*(void**)(lbl_803678C0+0x444),t,lbl_803678C0);
+Xml_Destroy(xml,1);
+String_Destroy(&text,-1);String_Destroy(&name,-1);
 }
 
 #pragma optimization_level 3
@@ -14652,7 +14713,7 @@ extern "C" void fn_800E3C04(u8 *self,s32 context) {
  String_Init(&a,lbl_80271F28,&scratchA);
  item=fn_800E7FB4(owner,&a);
  String_Destroy(&a,-1);
- fn_800E3040(item,context,3,(M2C_FIELD(self,s32*,0x60)-20)+M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)-(20-M2C_FIELD(self,s32*,0x60)),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
  String_Init(&b,lbl_80271F28+6,&scratchB);
  item=fn_800E7FB4(owner,&b);
  String_Destroy(&b,-1);
@@ -23743,7 +23804,7 @@ void fn_800F5B14(s32 arg0, void *arg1) {
     battle = (u8 *)gBattle;
     map = gBattleMap;
     total = 0;
-    percent = (s32)(((f32)remaining * 10.0f) / maxhp);
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
     score += (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[6]));
     for (; (s32)p[0] != 0x7F; p += 3) {
         outside = 0;
@@ -23796,7 +23857,7 @@ void fn_800F5B14(s32 arg0, void *arg1) {
     saved_hp = ((u8 *)gBattle)[0x1A8];
     maxhp = (f32)Unit_GetMaxHp(gBattle);
     remaining = Unit_GetMaxHp(gBattle) - (s8)saved_hp;
-    percent = (s32)(((f32)remaining * 10.0f) / maxhp);
+    percent = (s32)((10.0f * (f32)remaining) / maxhp);
     score -= (s32)(0.03125f * ((f32)percent * (f32)(s8)cfg[0xD]));
     *(s32 *)((u8 *)out + 8) = score;
 }
@@ -29225,43 +29286,51 @@ child=Process_CreateChild(lbl_8028E858,parent);
 *(u32*)(child+0x60)=0; *(u32*)(child+0x64)=0;
 }
 
-void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
-    extern f32 gPrim2DZero;
-    extern f32 gPrim2DOne;
-    extern f64 lbl_80369F28;
-    
-    s32 w;
-    s32 h;
-    s32 x2;
-    s32 y2;
-    s32 cols;
-    s32 v1;
-    s32 u1;
-    s32 v0;
-    s32 u0;
+void fn_800FF564(void *arg0) {
+    struct PathHolder { u8 pad[0x260]; u8 path[4]; };
+    extern u8 gUiContext[], gBattleState[], gBattleMap[];
+    s32 Status_Test(void *, s32);
+    u8 fn_8001FB04(void *, s8 *, s8 *, s32, u8 *);
+    void BattleState_SetCamPos(void *, f32, f32);
+    void MoveAnim_BindMapPath(void *, void *);
+    void Map_BuildUnitMoveRange(void *, s32, s32);
+    u8 *fn_8001FC40(void *, u8, u8);
+    void MoveAnim_BindPath(void *, u8 *, u16, void *);
+    u8 *ui;
+    s8 x;
+    s8 y;
+    void *unit;
+    s32 status;
 
-    w = *(s32*)((char*)arg0 + 0x54);
-    h = *(s32*)((char*)arg0 + 0x58);
-    x2 = arg3 + w;
-    y2 = arg4 + h;
-    if (arg2 >= *(s32*)((char*)arg0 + 0x60)) {
-        arg2 = *(s32*)((char*)arg0 + 0x60) - 1;
-    }
-    cols = *(s32*)((char*)arg0 + 0x5C);
-    u0 = *(s32*)((char*)arg0 + 0x64) + w * (arg2 % cols);
-    v0 = *(s32*)((char*)arg0 + 0x68) + h * (arg2 / cols);
-    u1 = u0 + w;
-    v1 = v0 + h;
-    if (*(u32*)((char*)arg0 + 0x48) != 0) {
-        Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32)arg5, gPrim2DOne);
-        Prim2D_BindTexture(*(u32*)((char*)arg0 + 0x48), arg10, (u16)*(s32*)((char*)arg0 + 0x6C));
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRect((f32)arg3, (f32)arg4, (f32)(x2 - arg3), (f32)(y2 - arg4));
-        Prim2D_SetUvCorners((f32)u0, (f32)v0, (f32)u1, (f32)v1);
-        Prim2D_SetColor((u8)arg6, (u8)arg7, (u8)arg8, (u8)arg9);
-        Prim2D_EndPrim();
+    ui = gUiContext;
+    unit = *(void **)ui;
+    status = Status_Test((u8 *)unit + 0x1bc, 4);
+    x = *((s8 *)unit + 0x19e);
+    y = *((s8 *)unit + 0x19f);
+    if (((u8 *)unit)[0x260] == 0x10) {
+        Map_BuildUnitMoveRange(unit, 5, -1);
+        fn_8001FC40(gBattleMap, ui[0xd], ui[0xe]);
+        switch (fn_8001FB04(gBattleMap, &x, &y, status, 0)) {
+        case 2:
+            BattleState_SetCamPos(gBattleState, x, y);
+            ui[8] = 0x2d;
+            ui[0xd] = x;
+            ui[0xe] = y;
+            break;
+        }
+        if (((u8 *)arg0)[0x34] != 0)
+            MoveAnim_BindMapPath(unit, arg0);
+    } else {
+        switch (fn_8001FB04(gBattleMap, &x, &y, status, ((struct PathHolder *)unit)->path)) {
+        case 2:
+            BattleState_SetCamPos(gBattleState, x, y);
+            ui[8] = 0x2d;
+            ui[0xd] = x;
+            ui[0xe] = y;
+            break;
+        }
+        if (((u8 *)arg0)[0x34] != 0)
+            MoveAnim_BindPath(unit, (u8 *)unit + 0x260, 0x40, arg0);
     }
 }
 
