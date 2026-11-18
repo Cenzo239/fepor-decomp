@@ -612,17 +612,17 @@ s32 FileCache_GetSize(char *name) {
 
 s32 fn_8005C368(u32 arg0)
 {
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
     u8 *found;
     unsigned long j;
     u8 *e;
     unsigned ctr;
 
-    e = lbl_802F04E0;
+    e = gFileCache;
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if (*(u32 *)(e + 0x38) == arg0) {
-            found = lbl_802F04E0 + j * 0x7C;
+            found = gFileCache + j * 0x7C;
             goto done;
         }
         e += 0x7C;
@@ -3766,16 +3766,223 @@ search:
     return -1;
 }
 
-void GActor_Finalize(void *arg0) {
-    if (arg0 != NULL) {
-        s32 *ptr = (s32*)arg0;
-        s32 val = ptr[-3];
-        
-        if (val < 0) {
-            void *arg1 = (void*)((char*)arg0 - 0x20);
-            fn_800C53B0(val, arg1);
+void GActor_Finalize(void *arg0)
+{
+    void Game_Assert(void *, s32, void *);
+    void fn_800C4588(void *);
+    void *fn_800C4638(s32, void *, s32);
+    void PSMTXCopy(void *, void *);
+    void DCFlushRange(void *, u32);
+    void fn_80150FEC(void *);
+
+    extern char lbl_8026B590[];
+
+    u8 *self;
+    u8 *cur;
+    u8 *model;
+    u8 *mesh;
+    u8 *geometry;
+    u8 *scaleNode;
+    u8 *source;
+    u8 *buffer;
+    s32 i;
+    s32 offset;
+    s32 size;
+    s32 count;
+
+    self = (u8 *)arg0;
+
+    if (self == 0) {
+        Game_Assert(
+            lbl_8026B590 + 0x28,
+            0x93,
+            lbl_8026B590 + 0xAB
+        );
+    }
+
+    fn_800C4588(*(void **)(self + 0x60));
+    *(void *volatile *)(self + 0x60) = 0;
+    *(void *volatile *)(self + 0x60) = 0;
+
+    fn_800C4588(*(void **)(self + 0x64));
+    *(void *volatile *)(self + 0x64) = 0;
+    *(void *volatile *)(self + 0x64) = 0;
+
+    fn_800C4588(*(void **)(self + 0x68));
+    *(void *volatile *)(self + 0x68) = 0;
+    *(void *volatile *)(self + 0x68) = 0;
+
+    fn_800C4588(*(void **)(self + 0x6C));
+    *(void *volatile *)(self + 0x6C) = 0;
+    *(void *volatile *)(self + 0x6C) = 0;
+
+    cur = self;
+    goto model_test;
+
+model_loop:
+    model = *(u8 **)(cur + 0x40);
+
+    if (model != 0) {
+        goto mesh_start;
+    }
+
+    cur = *(u8 **)(cur + 4);
+
+model_test:
+    if (cur != 0) {
+        goto model_loop;
+    }
+
+    model = 0;
+
+mesh_start:
+    cur = self;
+    goto mesh_test;
+
+mesh_loop:
+    mesh = *(u8 **)(cur + 0x48);
+
+    if (mesh != 0) {
+        goto geometry_start;
+    }
+
+    cur = *(u8 **)(cur + 4);
+
+mesh_test:
+    if (cur != 0) {
+        goto mesh_loop;
+    }
+
+    mesh = 0;
+
+geometry_start:
+    cur = self;
+    goto geometry_test;
+
+geometry_loop:
+    geometry = *(u8 **)(cur + 0x50);
+
+    if (geometry != 0) {
+        goto scale_start;
+    }
+
+    cur = *(u8 **)(cur + 4);
+
+geometry_test:
+    if (cur != 0) {
+        goto geometry_loop;
+    }
+
+    geometry = 0;
+
+scale_start:
+    cur = self;
+    goto scale_test;
+
+scale_loop:
+    scaleNode = *(u8 **)(cur + 0x44);
+
+    if (scaleNode != 0) {
+        goto allocate_start;
+    }
+
+    cur = *(u8 **)(cur + 4);
+
+scale_test:
+    if (cur != 0) {
+        goto scale_loop;
+    }
+
+    scaleNode = 0;
+
+allocate_start:
+    if (model != 0) {
+        count = *(s32 *)(model + 8);
+
+        *(void **)(self + 0x60) = fn_800C4638(
+            count * 0x30,
+            lbl_8026B590 + 0x27,
+            0
+        );
+
+        i = 0;
+        offset = 0;
+        source = *(u8 **)(model + 0xC);
+
+        goto copy_test;
+
+copy_loop:
+        buffer = *(u8 **)(self + 0x60);
+
+        PSMTXCopy(
+            source + 0xBC,
+            buffer + offset
+        );
+
+        offset += 0x30;
+        i++;
+        source += 0xF4;
+
+copy_test:
+        if (i < *(s32 *)(model + 8)) {
+            goto copy_loop;
         }
     }
+
+    if (mesh != 0) {
+        cur = *(u8 **)(mesh + 0x48);
+
+        if (cur != 0) {
+            size = *(s16 *)(cur + 0xA) * 12;
+            size = (size + 0x1F) & ~0x1F;
+
+            *(void **)(self + 0x64) = fn_800C4638(
+                *(s32 *)(model + 8) * 0x30,
+                lbl_8026B590 + 0x27,
+                0
+            );
+
+            size *= 2;
+
+            *(void **)(self + 0x68) = fn_800C4638(
+                size,
+                lbl_8026B590 + 0x27,
+                0
+            );
+
+            DCFlushRange(
+                *(void **)(self + 0x64),
+                *(s32 *)(model + 8) * 0x30
+            );
+
+            DCFlushRange(
+                *(void **)(self + 0x68),
+                size
+            );
+        }
+    }
+
+    if (geometry != 0) {
+        if (*(u32 *)(geometry + 0xC) & 1) {
+            offset = *(u16 *)(mesh + 0x4C) * 6;
+
+            *(void **)(self + 0x6C) = fn_800C4638(
+                offset + *(u16 *)(mesh + 0x4E) * 3,
+                lbl_8026B590 + 0x27,
+                0
+            );
+
+            *(void **)(self + 0x70) =
+                *(u8 **)(self + 0x6C) + offset;
+        }
+    }
+
+    if (scaleNode != 0) {
+        *(f32 *)(self + 0x58) =
+            (f32)*(s32 *)(scaleNode + 0x14);
+    }
+
+    fn_80150FEC(self);
 }
 
 void fn_800616A0(void *arg0) {
@@ -4775,6 +4982,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     fn_80201FF0(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
 }
 
+#pragma opt_strength_reduction off
 void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
 {
     extern f32 lbl_803691E4;
@@ -4805,10 +5013,12 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
     f32 u;
     f32 u2;
     f32 u3;
+    f32 delta, tangent0, tangent1, h0, h1, h2;
     f32 scale;
     u32 gqr;
 
     if (*(u32 *)((u8 *)arg0 + 0xC) & 0x10) {
+        s32 time = arg2;
         track = *(u8 **)((u8 *)arg0 + 0x24) + *(s32 *)((u8 *)arg1 + 8) * 0xC;
         i = 0;
         while (i < *(s32 *)((u8 *)arg1 + 0xC)) {
@@ -4818,9 +5028,9 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
             keys = (s16 *)(*(u8 **)((u8 *)arg0 + 0x2C) + *(s32 *)(track + 8) * 4);
             count = *(u16 *)(track + 6);
             scale = 1.0f; /* placeholder: target uses GQR5+psq */
-            if (arg2 >= keys[count * 2 - 2]) {
+            if (time >= keys[count * 2 - 2]) {
                 v = (f32)keys[count * 2 - 1] * scale;
-            } else if (arg2 < keys[0]) {
+            } else if (time < keys[0]) {
                 v = (f32)keys[1] * scale;
             } else {
                 if (count == 0) {
@@ -4830,9 +5040,9 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
                     lo = 0;
                     while (lo <= hi) {
                         mid = lo + ((hi - lo) >> 1);
-                        if ((u16)keys[mid * 2] < (s32)arg2) {
+                        if ((u16)keys[mid * 2] < (s32)time) {
                             lo = mid + 1;
-                        } else if ((u16)keys[mid * 2] > (s32)arg2) {
+                        } else if ((u16)keys[mid * 2] > (s32)time) {
                             hi = mid - 1;
                         } else {
                             idx = mid;
@@ -4843,7 +5053,7 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
                         idx = -1;
                     } else if (lo > (s32)(count - 1)) {
                         idx = count - 1;
-                    } else if (keys[lo * 2] <= arg2) {
+                    } else if (keys[lo * 2] <= time) {
                         idx = lo;
                     } else {
                         idx = lo - 1;
@@ -4887,24 +5097,30 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
                 if (idx != count - 1) {
                     t1 = (f32)*(s32 *)kf;
                     v1 = *(f32 *)(kf + 4);
-                    if (*(s32 *)track < 0x1F) {
-                        if (*(s32 *)track >= 0x1B) {
-                            s1 = *(f32 *)(kf + 0xC);
-                            if (s1 < lbl_803691EC) {
-                                du = t1 - t0;
-                                u = (farg0 - t0) / du;
-                                u2 = u * u;
-                                s0 = *(f32 *)(kf + 8);
-                                u3 = u * u2;
-                                v += (u + (u3 - lbl_803691F8 * u2)) * (du * s0)
-                                   + (lbl_803691F0 * u3 + lbl_803691F4 * u2) * (v1 - v)
-                                   + (u3 - u2) * (du * s1);
-                            }
-                        } else {
-                            v += (v1 - v) * ((farg0 - t0) / (t1 - t0));
+                    switch (*(s32 *)track) {
+                    case 0x1B:
+                    case 0x1C:
+                    case 0x1D:
+                    case 0x1E:
+                        s1 = *(f32 *)(kf + 0xC);
+                        if (s1 < lbl_803691EC) {
+                            du = t1 - t0;
+                            u = (farg0 - t0) / du;
+                            u2 = u * u;
+                            s0 = *(f32 *)(kf + 8);
+                            u3 = u * u2;
+                            delta = v1-v;
+                            tangent0 = du*s0;
+                            tangent1 = du*s1;
+                            h0 = lbl_803691F0*u3 + lbl_803691F4*u2;
+                            h1 = u + (u3-lbl_803691F8*u2);
+                            h2 = u3-u2;
+                            v += h0*delta + h1*tangent0 + h2*tangent1;
                         }
-                    } else {
+                        break;
+                    default:
                         v += (v1 - v) * ((farg0 - t0) / (t1 - t0));
+                        break;
                     }
                 }
             }
@@ -4914,7 +5130,7 @@ void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
         }
     }
 }
-
+#pragma opt_strength_reduction reset
 void fn_80063934(void) {
     M2C_UNK fn_8005C7E8();
     fn_8005C7E8();
@@ -11914,15 +12130,37 @@ void fn_80070EDC(void) {
 
 }
 
-s32 fn_80070EE0(void *arg0, s32 unused, s32 arg2) {
-    extern u8 gUiContext[];
+#pragma cplusplus on
+extern "C" s32 fn_80070EE0(void *arg0, s32 unused, s32 arg2) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual s32 v16(s32) = 0;
+    };
+    extern s32 gUiContext[];
     extern u8 gBattle[];
     void fn_801A6FB4(void *, s32, s32);
-    s32 saved = *(s32 *)gUiContext;
-    fn_801A6FB4(gBattle, saved, (*(s32 (**)(void *, s32))((u8 *)*(void **)arg0 + 0x48))(arg0, arg2));
+    s32 saved;
+
+    saved = gUiContext[0];
+    fn_801A6FB4(gBattle, saved, ((Obj *)arg0)->v16(arg2));
     return 0;
 }
-
+#pragma cplusplus reset
 void fn_80070F3C(void *arg0) {
     extern s32 gUiContext[];
     extern s32 gUiAtlas;
