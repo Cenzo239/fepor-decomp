@@ -169,6 +169,23 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
+void fn_801281E4(s32 arg0, s32 arg1, s32 arg2) {
+    void *Process_Create(void *, u32);
+    u32 Sound_FindByName(s32);
+    extern u8 lbl_802905C0[];
+    extern const f32 lbl_8036A3D0, lbl_8036A3D4;
+    u32 temp_r3;
+    void *temp_r3_2;
+    temp_r3 = Sound_FindByName(arg0);
+    if (temp_r3 != 0U) {
+        temp_r3_2 = Process_Create(lbl_802905C0, temp_r3);
+        M2C_FIELD(temp_r3_2, s32 *, 0x38) = arg1;
+        M2C_FIELD(temp_r3_2, f32 *, 0x3C) = (f32)arg2;
+        M2C_FIELD(temp_r3_2, f32 *, 0x40) = lbl_8036A3D0;
+        M2C_FIELD(temp_r3_2, f32 *, 0x44) = lbl_8036A3D4;
+    }
+}
+
 void fn_80128268(s32 arg0, s32 arg1, s32 arg2) {
     void *fn_8000CAF0(void *, u32);
     u32 fn_801090C0(s32);
