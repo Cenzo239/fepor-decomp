@@ -18638,8 +18638,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-#pragma global_optimizer off
-#pragma peephole on
+#pragma peephole off
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point { u16 x,y; };
 struct Point *fn_8013F748(void *, struct Point *, struct Point *);
@@ -18656,7 +18655,6 @@ in.x=x;
 *arg0=*(s32*)fn_8013F748(arg1,outp,inp);
 }
 #pragma peephole reset
-#pragma global_optimizer reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;
