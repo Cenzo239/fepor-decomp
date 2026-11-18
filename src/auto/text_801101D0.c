@@ -3171,26 +3171,16 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 #pragma cplusplus reset
 #pragma global_optimizer reset
 
-#pragma cplusplus reset
-void fn_80116F84(void *arg0, void *arg1) {
-    void fn_800DB7A4(void *, void *);
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s32 temp_r5;
-    s32 temp_r6;
-
-    temp_r6 = M2C_FIELD(arg1, s32 *, 0);
-    temp_r5 = M2C_FIELD(arg1, s32 *, 4);
-    sp8 = temp_r6;
-    spC = temp_r5;
-    sp10 = M2C_FIELD(arg1, s32 *, 8);
-    fn_800DB7A4(arg0, &sp8);
-    if (M2C_FIELD(arg0, u8 *, 0x195) != 0) {
-        M2C_FIELD(arg0, s32 *, 0x9C) = M2C_FIELD(arg0, s32 *, 0xC8) * M2C_FIELD(arg0, s32 *, 0x198);
-    }
+#pragma optimization_level 4
+extern "C" void fn_80116F84(void *arg0, void *arg1) {
+ void fn_800DB7A4(void *, s32 (*)[3]);
+ s32 copy[3]; s32 c,b,a;
+ a=((s32*)arg1)[0]; b=((s32*)arg1)[1]; c=((s32*)arg1)[2]; copy[0]=a; copy[1]=b; copy[2]=c;
+ fn_800DB7A4(arg0,&copy);
+ if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
 }
-
+#pragma optimization_level reset
+#pragma cplusplus off
 void fn_80116FE8(void)
 {
     // Start with a minimal stub that matches the prologue and epilogue structure.
