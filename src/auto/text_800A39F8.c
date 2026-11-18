@@ -2799,9 +2799,9 @@ void fn_800A8FE8(void *arg0) {
 
 void fn_800A904C(s32 arg0)
 {
-    void fn_800A5D1C(void *, s32, s32);
+    void fn_800A5D1C(void *, u8, s32);
     extern u8 gOptionsStr[];
-    s8 cond;
+    s32 cond;
 
     cond = arg0 != 0;
     fn_800A5D1C((void *)((u32)gOptionsStr + 0xA3), cond, 0);
