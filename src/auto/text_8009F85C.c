@@ -2113,6 +2113,7 @@ void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
     Prim2D_EndPrim();
 }
 
+#pragma global_optimizer reset
 #pragma optimization_level 3
 s32 fn_800A2624(void *arg0) {
     M2C_FIELD(arg0, u16 *, 4) = (u16) M2C_FIELD(M2C_FIELD(Map_GetCursorUnit(), void **, 0x18C), u16 *, 0x38);
