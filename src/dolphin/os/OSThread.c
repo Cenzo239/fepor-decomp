@@ -147,6 +147,14 @@ struct OSThread {
     OSThreadQueue *queue;
     OSThread *next, *prev;
 };
+static inline OSThread *PopThread(OSThreadQueue *queue) {
+    OSThread *thread = queue->head;
+    OSThread *next = thread->next;
+    if (next == NULL) queue->tail = NULL;
+    else next->prev = NULL;
+    queue->head = next;
+    return thread;
+}
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
 extern volatile s32 RunQueueHint_8036851C;
@@ -182,10 +190,10 @@ void *SelectThread_8020A2C4(s32 arg0) {
     }
     cur = fn_802059EC();
     thread = *(OSThread **)0x800000E4;
+    context = (OSContext *)thread;
     if (cur != (OSContext *)thread) {
         return NULL;
     }
-    context = (OSContext *)thread;
     if (thread != NULL) {
         if (thread->state == 2) {
             if (arg0 == 0) {
@@ -233,14 +241,16 @@ void *SelectThread_8020A2C4(s32 arg0) {
     RunQueueHint_8036851C = 0;
     prio = __cntlzw((u32)RunQueueBits_80368518);
     q = (OSThreadQueue *)((u8 *)queue + (prio * 8));
-    next = q->head;
-    pred = next->next;
+    { OSThread *head = q->head;
+    pred = head->next;
+    next = head;
     if (pred == NULL) {
         q->tail = NULL;
     } else {
         pred->prev = NULL;
     }
     q->head = pred;
+    }
     if (q->head == NULL) {
         s32 one = 1;
         RunQueueBits_80368518 &= ~(one << (0x1F - prio));
