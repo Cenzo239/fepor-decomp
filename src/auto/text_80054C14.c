@@ -283,10 +283,12 @@ static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec 
         *out=position;
     }
 }
+#pragma global_optimizer off
 static inline void Camera_ChoosePointOut(u8 *state, CameraVec *first, CameraVec *second, CameraVec **out) {
     if ((*(u32 *)(state+8)&0x20000000) && first) { *out=first; return; }
     *out=second;
 }
+#pragma global_optimizer on
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
 #pragma peephole on
