@@ -1227,25 +1227,3 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 #pragma use_lmw_stmw reset
 
 #pragma global_optimizer off
-u8 Unit_GetDistance(void *a, void *b) {
-    s32 dy;
-    s32 dx;
-    s8 xa;
-    u8 xb_u;
-
-    dy = *(s8 *)((u8 *)b + 0x19F);
-    dy = *(s8 *)((u8 *)a + 0x19F) - dy;
-    if (dy < 0) {
-        dy = -dy;
-    }
-    xa = *(s8 *)((u8 *)a + 0x19E);
-    xb_u = *((u8 *)b + 0x19E);
-    dx = xa - (s8)xb_u;
-    if (dx < 0) {
-        dx = -dx;
-    }
-    return (u8)(dx + dy);
-}
-#pragma global_optimizer reset
-void *Unit_GetActiveItemPtr(void *);
-void *fn_80037C20(void *);
