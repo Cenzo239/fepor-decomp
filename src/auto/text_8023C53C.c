@@ -8145,7 +8145,61 @@ void fn_80253298(void *arg0, u32 *arg1)
     *(u32 *)(voice + 0x220) |= 0x4000;
 }
 
+#pragma optimization_level 3
 #pragma global_optimizer off
+#pragma use_lmw_stmw off
+void fn_8025339C(void *voice, u32 *step) {
+    void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
+    void fn_8025EEE8(u8, u8, s32);
+    u32 word;
+u32 tableIndex;
+    u32 word0;
+    u64 flags;
+    u64 mask;
+    u8 slot;
+u8 controller;
+    u32 key;
+    s32 pitch;
+    s32 adj;
+    u32 param;
+    void *dest;
+    word = step[1];
+    mask = *(u64 *)((u8 *)lbl_8029F3D0 + __rlwinm(word,11,21,28));
+    flags = *(u64 *)((u8 *)voice + 0x114);
+    slot = 0;
+    key=word>>24;
+    dest = lbl_8034D034 + *(u8 *)((u8 *)voice + 0x11F) * 0x90 + key * 0x24;
+    tableIndex = __rlwinm(word,10,22,29);
+    key = *(u32 *)((u8 *)lbl_8029F3F0 + tableIndex);
+    if ((flags & mask) == 0) {
+        *(u64 *)((u8 *)voice + 0x114) = flags | mask;
+    } else {
+        slot = (u8)word;
+    }
+    word0 = step[0];
+    pitch = (s32)(word0 & 0xFFFF0000) / 100;
+    if (pitch < 0) {
+        adj = ((s32)((s8)(step[1] >> 16) << 8)) / 100;
+        pitch = pitch - adj;
+    } else {
+        adj = ((s32)((s8)(step[1] >> 16) << 8)) / 100;
+        pitch = pitch + adj;
+    }
+    controller = (u8)(word0 >> 8);
+    param = (step[1] >> 8)&255;
+    fn_8025FFC8(dest, controller, pitch, slot, (u8)(param != 0), param);
+    if (key & 0x80000000) {
+        fn_8025EEE8(*(u8 *)((u8 *)voice + 0x121), *(u8 *)((u8 *)voice + 0x122), key);
+    } else {
+        *(u32 *)((u8 *)voice + 0x220) |= key;
+    }
+}
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
+#pragma optimization_level reset
+#pragma optimization_level 3
+#pragma global_optimizer off
+#pragma use_lmw_stmw off
 void fn_80253518(void *voice, u32 *step) {
     void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
     void fn_8025EEE8(u8, u8, s32);
@@ -8159,7 +8213,7 @@ u8 controller;
     u32 key;
     s32 pitch;
     s32 adj;
-    u32 param;
+    u8 param;
     void *dest;
     word = step[1];
     mask = *(u64 *)((u8 *)lbl_8029F400 + __rlwinm(word,11,21,28));
@@ -8184,7 +8238,7 @@ u8 controller;
         pitch = pitch + adj;
     }
     controller = (u8)(word0 >> 8);
-    param = (step[1] >> 8)&255;
+    param = (u8)(step[1] >> 8);
     fn_8025FFC8(dest, controller, pitch, slot, (u8)(param != 0), param);
     if (key & 0x80000000) {
         fn_8025EEE8(*(u8 *)((u8 *)voice + 0x121), *(u8 *)((u8 *)voice + 0x122), key);
@@ -8192,7 +8246,9 @@ u8 controller;
         *(u32 *)((u8 *)voice + 0x220) |= key;
     }
 }
-#pragma global_optimizer on
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma optimization_level reset
 
 void fn_80253694(void *arg0, u32 *cmd) {
   void fn_8026146C(s32 *);
