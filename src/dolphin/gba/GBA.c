@@ -696,70 +696,48 @@ BOOL fn_8026572C(void) {
     return 1;
 }
 #pragma scheduling on
+#pragma peephole on
+#pragma global_optimizer on
+#pragma use_lmw_stmw on
 s32 fn_8026573C(s32 arg0, u8 *arg1)
 {
     extern u8 lbl_803669A0[];
     extern u32 OSDisableInterrupts(void);
     extern void OSRestoreInterrupts(u32);
-    extern u64 OSGetTime(void);
-
+    extern s64 OSGetTime(void);
     u8 *entry;
     u8 *queue;
     u32 interruptState;
-    u32 value;
-    u32 elapsedLow;
-    u32 elapsedHigh;
-    u32 rate;
-    u32 result;
     s32 status;
-
+    s32 percent;
+    s64 elapsed;
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
-
     interruptState = OSDisableInterrupts();
-
-    status = 2;
-
     if (*(u32 *)(queue + 0x14) != 0) {
-        value = *(u32 *)(queue + 0x34) * 0x64;
-        rate = *(u32 *)(queue + 0x64);
-        result = value / rate;
-
-        if ((*(u32 *)(queue + 0x2C) |
-             *(u32 *)(queue + 0x28)) != 0) {
-            OSGetTime();
-
-            elapsedLow = 0;
-            elapsedHigh = 0;
-
-            result = (u32)(OSGetTime() -
-                           *(u64 *)(queue + 0x28));
-
-            if (result != 0) {
-                result = 0x64;
-            }
+        status = 2;
+        arg0 = (*(s32 *)(queue + 0x34) * 100) / *(s32 *)(queue + 0x64);
+        percent = arg0 & 255;
+        if (*(s64 *)(queue + 0x28) != 0) {
+            elapsed = OSGetTime() - *(s64 *)(queue + 0x28);
+            if (elapsed / ((*(volatile u32 *)0x800000F8 >> 2) / 1000) < 5500) {
+                percent = (s64)percent * elapsed / ((s64)((*(volatile u32 *)0x800000F8 >> 2) / 1000) * 5500);
+                }
+            if ((u8)percent >= 100) percent = 100;
         }
-
-        result &= 0xFF;
-
-        if (result >= 0x64) {
-            result = 0x64;
-        }
-
-        if (arg1 != 0) {
-            *arg1 = (u8)result;
-        }
-
-        status = 0;
-    } else if (*(u32 *)(entry + 0x1C) == 0) {
-        status = 0;
+        complete:
+        if (arg1 != 0) *arg1 = percent;
+    } else {
+        if (*(u32 *)(entry + 0x1C) != 0) status = 2;
+        else status = 0;
     }
-
     OSRestoreInterrupts(interruptState);
-
     return status;
 }
-
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma peephole reset
+#pragma scheduling reset
 s32 fn_802658B0(s32 chan,s32 mode,s32 offset,u8 *data,s32 length,void *input,void *callback) {
 extern u8 lbl_803669A0[],lbl_802A4DE8[];
 s32 fn_8026573C(s32,u8*);
