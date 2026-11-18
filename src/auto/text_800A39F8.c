@@ -6,6 +6,11 @@ extern void strcat(void *, s32);
 extern void strcpy(void *, void *, void *);
 extern u8 lbl_80312A80[0x30];
 
+static inline void *fn_800A904C_Str(void) {
+    extern u8 gOptionsStr[];
+    return gOptionsStr + 0xA3;
+}
+
 
 extern s32 lbl_803677A4;
 void *fn_800A39F8(void) {
@@ -759,16 +764,16 @@ s32 fn_800A4BC4(void) {
     extern u8 lbl_803123A0[];
     u8 *p = lbl_803123A0;
     u32 prod;
-    s32 aligned;
+    s32 w;
     s32 sum;
     s32 t0;
     u8 a7;
 
     if (*(s32 *)(p + 0xA0) != 0) {
-        prod = *(s32 *)(p + 0x80) * *(s32 *)(p + 0x84);
+        w = *(s32 *)(p + 0x80);
+        prod = w * *(s32 *)(p + 0x84);
         a7 = p[0xA7];
-        aligned = ((*(s32 *)(p + 0x44) + 0x1F) & ~0x1F);
-        sum = aligned * 0xA;
+        sum = ((*(s32 *)(p + 0x44) + 0x1F) & ~0x1F) * 0xA;
         sum += (prod + 0x1F) & ~0x1F;
         t0 = ((prod >> 2) + 0x1F) & ~0x1F;
         sum = sum + t0;
@@ -2761,14 +2766,23 @@ void Ui_DrawPromptSprites(void *proc) {
     }
 }
 void fn_800A8F94(s32 arg0) {
-void *Sound_Create(void *, s32); void fn_80148618(void *, s32);
-extern u8 gOptionsStr[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
-f32 b; f32 a; void *temp;
-temp = Sound_Create(gOptionsStr+0x96,arg0);
-a=lbl_80369C08; b=lbl_80369BA8;
-*(f32 *)((u8 *)temp+0x40)=a;
-*(f32 *)((u8 *)temp+0x44)=b;
-fn_80148618(gOptionsStr+0x73,500);
+    void *Sound_Create(void *, s32);
+    void fn_80148618(void *, s32);
+    extern u8 gOptionsStr[];
+    extern f32 lbl_80369C08;
+    extern f32 lbl_80369BA8;
+    void *obj;
+    void *base;
+    f32 b;
+    f32 a;
+
+    obj = Sound_Create(gOptionsStr + 0x96, arg0);
+    a = lbl_80369C08;
+    b = lbl_80369BA8;
+    base = gOptionsStr;
+    *(f32 *)((u8 *)obj + 0x40) = a;
+    *(f32 *)((u8 *)obj + 0x44) = b;
+    fn_80148618((u8 *)base + 0x73, 0x1f4);
 }
 
 #pragma optimization_level reset
