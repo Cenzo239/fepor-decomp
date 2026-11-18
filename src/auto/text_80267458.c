@@ -11,7 +11,7 @@ extern s32 gSynthTimeLo;
 extern s32 gSynthSchedList;
 extern s32 gSynthIdleList;
 extern u32* lbl_80368A38;
-extern void (*volatile lbl_80368B34)(s16);
+extern void (*lbl_80368B34)(s16);
 extern f32 lbl_8034C324[];
 extern s32 D_80368AD0;
 extern s32 lbl_80368B0C;
