@@ -283,6 +283,12 @@ static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec 
         *out=position;
     }
 }
+static inline void Camera_ChoosePointOut(u8 *state, CameraVec *first, CameraVec *second, CameraVec **out) {
+    CameraVec *result;
+    if ((*(u32 *)(state+8)&0x20000000) && first) result=first;
+    else result=second;
+    *out=result;
+}
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
 #pragma peephole on
@@ -304,7 +310,7 @@ void fn_80054C14(void *arg0) {
     void fn_8018CF48(s32);
     extern void *gPadInput;
     u8 *unit2, *unit1;
-    CameraVec *b, *a;
+    const CameraVec *b, *a;
     void *pad;
     u8 *proc = arg0;
     CameraButtons buttons;
