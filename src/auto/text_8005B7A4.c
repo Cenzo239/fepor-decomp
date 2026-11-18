@@ -8657,6 +8657,7 @@ next: node=M2C_FIELD(node,void **,4);
 
 #pragma global_optimizer off
 #pragma fp_contract off
+#pragma optimization_level 3
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
@@ -8688,15 +8689,14 @@ Basis basis1;
 Vector axis1;
 Basis basis3;
 Vector axis3;
-u8 *joint; u8 *cursor; s32 count; u8 *transformData; s16 *slots; Basis *basis=(Basis *)lbl_8026B888; void *info; s32 i; s32 index;
+s32 i; void *info; Basis *basis=(Basis *)lbl_8026B888; s16 *slots; u8 *transformData; s32 count; u8 *cursor; u8 *joint; s32 index;
 f32 dot,angle,angle2,angle4;
 info=GActor_GetNodeTable(actor);
 table=M2C_FIELD(node,u8 **,0x1C);
 if(table==0) {
 s16 *rootSlots; u8 *rootTransform; s32 rootCount;
-rootTransform=(u8 *)actor+0x10;
-rootCount=0; rootSlots=lbl_80285F40;
-do {
+rootSlots=lbl_80285F40; rootTransform=(u8 *)actor+0x10;
+for(rootCount=0;rootCount<10;rootCount++,rootSlots++) {
 switch(M2C_FIELD(actor,u32 *,0xC)) {
 case 1:
 PSMTXRotRad(rootX,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
@@ -8744,8 +8744,7 @@ rootDone:
 PSMTXConcat(Camera_GetViewMtx(),root,root);
 GXLoadPosMtxImm(root,*rootSlots);
 fn_80202238(root,root); fn_80224DCC(root,*rootSlots);
-rootCount++; rootSlots++;
-} while(rootCount<10);
+}
 return;
 }
 cursor=table+2; i=table[1];
@@ -8880,6 +8879,7 @@ GXLoadPosMtxImm(root,*slots);
 fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 }
+#pragma optimization_level 4
 #pragma fp_contract on
 #pragma global_optimizer reset
 
