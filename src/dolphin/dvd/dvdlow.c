@@ -517,10 +517,14 @@ BOOL DVDLowWaitCoverClose(void *callback) {
     extern void *Callback_80368538;
     extern s32 WaitingCoverClose_8036854C;
 
+    volatile u32 *di=__DIRegs;
+    u32 status=1;
     Callback_80368538 = callback;
-    WaitingCoverClose_8036854C = 1;
-    __DIRegs[1] = 2;
-    StopAtNextInt_80368530 = 0;
+    WaitingCoverClose_8036854C = status;
+    status=0;
+    StopAtNextInt_80368530 = status;
+    status=2;
+    di[1] = status;
     return TRUE;
 }
 #pragma global_optimizer reset
