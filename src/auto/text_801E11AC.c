@@ -985,21 +985,12 @@ void fn_801E11AC(void *arg0, s32 arg1, s32 arg2) {
     void Card_RequestWrite(void *, s32, s32, s32, s32);
     extern void *gSaveDataBase;
 
-    s32 off;
-    s32 i;
     s32 val;
     s32 self;
-    s32 ctr;
     u8 *found;
-    u8 hdrOk;
     u8 *best;
-    u32 minSize;
-    u8 *slot;
-    u32 clamped;
     u8 *base = gSaveDataBase;
 
-    i = 0;
-    off = 0x2000;
     val = arg2;
     self = arg1;
 
