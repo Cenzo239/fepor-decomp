@@ -437,11 +437,13 @@ notInit:return 0x1d;
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
+#pragma push
+#pragma global_optimizer on
 void fn_8023C7B0(void) {
   extern u32 lbl_8033E578[6];
   extern s32 lbl_8036894C;
-  u32 base = (lbl_8036894C + 31) & ~31;
   volatile u32 *p = lbl_8033E578;
+  u32 base = (lbl_8036894C + 31) & ~31;
   p[0] = base;
   p[1] = base + 0x80;
   p[2] = base + 0x100;
@@ -449,7 +451,7 @@ void fn_8023C7B0(void) {
   p[4] = base + 0x200;
   p[5] = base + 0x280;
 }
-
+#pragma pop
 s32 fn_8023C7F4(void) {
   extern u8 *lbl_80368950;
   s32 off;
@@ -14756,23 +14758,22 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
     return NULL;
 }
 
+#pragma push
 #pragma fp_contract on
-#pragma global_optimizer off
-#pragma scheduling on
+#pragma opt_lifetimes off
+#pragma scheduling off
 f64 fn_80261344(f32 x) {
 extern f32 lbl_802831B8[];
 f64 three; f64 half; f64 guess; f64 square; f64 zero;
-zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
-if(x==(f32)zero) return x;
+half=lbl_802831B8[-1]; three=lbl_802831B8[-2]; zero=lbl_802831B8[0];
 guess=__frsqrte(x);
+if(x==(f32)zero) return x;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 return x*guess;
 }
-#pragma scheduling reset
-#pragma global_optimizer reset
-#pragma fp_contract off
+#pragma pop
 f32 fn_80261398(f32 x) {
     extern f32 lbl_802831BC[];
     return x * lbl_802831BC[3];
@@ -16507,20 +16508,25 @@ int Audio_Unlock(void) {
     return count;
 }
 
+#pragma push
 #pragma optimization_level 2
 int Audio_Lock(void) {
     int OSDisableInterrupts(void);
     extern u16 lbl_80368AFC;
     extern int lbl_80368AF8;
-    u16 count;
+    int count;
+    int flag;
 
     count = lbl_80368AFC;
-    lbl_80368AFC = count + 1;
-    if (count == 0) {
-        lbl_80368AF8 = OSDisableInterrupts();
+    flag = count & 0xFFFF;
+    count = count + 1;
+    lbl_80368AFC = count;
+    if (flag == 0) {
+        return lbl_80368AF8 = OSDisableInterrupts();
     }
+    return count;
 }
-#pragma optimization_level reset
+#pragma pop
 int fn_80263764(void) {
     M2C_UNK OSDisableInterrupts();
     OSDisableInterrupts();
