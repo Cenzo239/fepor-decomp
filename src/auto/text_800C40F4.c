@@ -677,12 +677,13 @@ u32 *entry=lbl_80320B88;
 s32 i; for(i=0;i<16;entry++,i++) { if(*entry==key)return i; } return -1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
-s32 i; for(i=0;i<16;i++,table++) { if(*table==key)return i; } return -1;
+s32 i; for(i=0;i<16;table++,i++) { if(*table==key)return i; } return -1;
 }
 
+#pragma cplusplus on
 #pragma use_lmw_stmw on
 #pragma global_optimizer on
-void fn_800C47E8(void) {
+extern "C" void fn_800C47E8(void) {
 extern u32 lbl_80320B88[],lbl_80367870;
 extern u32 *lbl_8036786C;
 extern char lbl_802700D8[];
@@ -693,7 +694,7 @@ void fn_8005BA08(s8);
 u32 *table;
 s32 index,selected,diff;
 u32 *heap;
-u8 same;
+bool same;
 table=lbl_80320B88;
 index=Heap_FindInTable(table,(u32)lbl_8036786C);
 DebugPrint(lbl_802700D8+0xEE,(char *)lbl_8036786C+4);
@@ -713,6 +714,7 @@ fn_8005BA08((s8)selected);
 }
 }
 }
+#pragma cplusplus reset
 void fn_800C4B8C(void) {
     extern u32 lbl_80320B88[];
     extern u32 *lbl_80367868;
