@@ -830,42 +830,17 @@ void fn_801B6064(s32 unused, s16 *p) {
 
 #pragma opt_common_subs reset
 
-s32 fn_801B6098(s32 arg0) {
-    void fn_801B32C8(void *, s32);
-    extern u8 lbl_80330EAC[];
-    u32 flags;
-    u8 ok;
-    void *obj;
-    u8 byte;
-
-    flags = *(u32 *)(lbl_80330EAC + 0xCAC);
-    if ((flags >> 4) & 1) {
-        ok = 0;
-    } else if (flags & 0x800) {
-        ok = 1;
-    } else {
-        ok = 0;
-    }
-    if (ok == 0) {
-        return 0;
-    }
-    obj = *(void **)(lbl_80330EAC + 0x280);
-    if (obj != NULL) {
-        byte = *((u8 *)*(void **)((u8 *)obj + 0x190) + 8);
-        if (byte == 0 || byte == 5) {
-            goto do_call;
-        }
-    }
-    obj = *(void **)(lbl_80330EAC + 0x560);
-    if (obj != NULL) {
-        byte = *((u8 *)*(void **)((u8 *)obj + 0x190) + 8);
-        if (byte == 0 || byte == 5) {
-            goto do_call;
-        }
-    }
-    obj = NULL;
-do_call:
-    fn_801B32C8(obj, arg0);
+s32 fn_801B6098(void *arg0)
+{
+    void fn_801B32C8(void *, void *);
+    extern u8 gBattle[];
+    u32 flags = *(u32 *)(gBattle + 0xCAC);
+    u8 enabled;
+    if ((flags >> 4) & 1) enabled = 0;
+    else if (flags & 0x800) enabled = 1;
+    else enabled = 0;
+    if (!enabled) return 0;
+    fn_801B32C8(Battle_FindActiveSideUnit(), arg0);
     return 1;
 }
 
