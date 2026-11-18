@@ -564,7 +564,8 @@ void fn_80074F0C(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0xC) = gUiContext[1];
 }
 
-void fn_80074F20(void *arg0, void *arg1) {
+#pragma cplusplus on
+extern "C" void fn_80074F20(void *arg0, void *arg1) {
     extern f32 lbl_80369378;
     extern f32 lbl_8036937C;
     extern f32 lbl_80369380;
@@ -627,6 +628,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     Ui_DrawCenteredMsgLines(0x138, 0xa0, (void *)(lbl_8026C0B8 + 0x1a1), (void *)(lbl_8026C0B8 + 0x1a7), (void *)(lbl_8026C0B8 + 0x1ad));
 }
 
+#pragma cplusplus reset
 void fn_800750D8(s32 arg0, void *arg1) {
     extern s32 gUiContext[];
     
