@@ -387,21 +387,19 @@ void *fn_800A010C(void) {
 }
 
 #pragma global_optimizer off
-#pragma scheduling off
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
-    s32 value;
-    u32 toggled;
     u32 original;
+    s8 value;
+    u32 toggled;
     original = lbl_80366E25;
-    toggled = original ^ 1;
     value = 2;
+    toggled = original ^ 1;
     lbl_80366E25 = toggled;
     if ((u8)toggled != 0) value = 0;
     *(u8 *)((u8 *)c + 0x39) = value;
     return 0;
 }
-#pragma scheduling reset
 #pragma global_optimizer reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
