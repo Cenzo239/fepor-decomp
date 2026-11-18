@@ -1398,7 +1398,7 @@ tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
 *(volatile u32 *)0xCC008000=(tex<<4)|(colors|(n<<2));
 __GXData[1]=1;
 }
-#pragma optimization_level 2
+#pragma peephole on
 void fn_8021FA94(void) {
 extern u32 __GXData;
 extern u8 lbl_80367000[4], lbl_80367004[4], lbl_80367008[8];
@@ -1406,12 +1406,11 @@ u8 *gx;
 u32 count;
 u32 word14, word18;
 s32 multiplier;
-
 gx=(u8*)__GXData;
 if (*(u16*)(gx+4)==0) return;
 word14=*(u32*)(gx+0x14);
 word18=*(u32*)(gx+0x18);
-multiplier=(*(u32*)(gx+0x1c)>>9)&1;
+multiplier=(*(u32*)(gx+0x1c)&0x200)/0x200;
 count=word14&1;
 count+=(word14>>1)&1;
 count+=(word14>>2)&1;
@@ -1422,7 +1421,7 @@ count+=(word14>>6)&1;
 count+=(word14>>7)&1;
 count+=(word14>>8)&1;
 count+=lbl_80367008[(word14>>9)&3];
-if (multiplier>0) multiplier=3; else multiplier=1;
+if (multiplier==1) multiplier=3; else multiplier=1;
 count+=lbl_80367008[(word14>>11)&3]*multiplier;
 count+=lbl_80367000[(word14>>13)&3];
 count+=lbl_80367000[(word14>>15)&3];
@@ -1436,7 +1435,7 @@ count+=lbl_80367004[(word18>>12)&3];
 count+=lbl_80367004[(word18>>14)&3];
 *(u16*)(gx+6)=count;
 }
-#pragma optimization_level reset
+#pragma peephole reset
 void GXClearVtxDesc(void)
 {
   extern u16 * const __GXData;
