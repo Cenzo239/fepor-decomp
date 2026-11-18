@@ -1596,90 +1596,106 @@ void fn_8002B2E8(void *arg0) {
     }
 }
 
+#pragma cplusplus on
 #pragma use_lmw_stmw off
-void fn_8002B520(void *arg0)
-{
+#pragma global_optimizer off
+extern "C" void fn_8002B520(void *arg0) {
     extern u8 lbl_80284D20[];
     extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     void fn_8002F728(void *);
-
-    void *object[2];
-    void *unit;
-    u8 *map;
-    u8 *p;
-    u16 *cell;
-    u16 flags;
-    s32 x;
+    struct Visitor {
+        virtual void apply(void *unit) = 0;
+    };
+    struct {
+        void *vtbl;
+        void *unit;
+    } obj;
     s32 y;
-    s32 y64;
-    u32 idx;
+    s8 x;
+    u16 *flags;
+    s32 yOff;
+    void *unit;
+    u8 id;
+    u16 f;
+    u8 *entry;
 
-    object[0] = lbl_80284E20;
-    object[1] = arg0;
-    object[0] = lbl_80284D20;
+    obj.vtbl = lbl_80284E20;
+    obj.unit = arg0;
+    obj.vtbl = lbl_80284D20;
     fn_8002F728(gTargetList);
-
-    arg0 = object[1];
-    map = gBattleMap;
-    y = *(s8 *)((u8 *)arg0 + 0x19F);
-    x = *(s8 *)((u8 *)arg0 + 0x19E);
-    y64 = y << 6;
-    p = map + ((x + y64) << 1);
-    flags = *(u16 *)(p + 0x408E);
-    cell = (u16 *)(p + 0x408E);
-
-    if (flags & 8) {
-        idx = map[x + (((s8)(y - 1)) << 6) + 0xD];
-        if (idx != 0) {
-            unit = gUnits + (idx - 1) * 0x280;
-        } else {
-            unit = 0;
-        }
-        if (unit != 0) {
-            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
-        }
-    }
-
-    if (*cell & 2) {
-        idx = map[((s8)(x + 1)) + y64 + 0xD];
-        if (idx != 0) {
-            unit = gUnits + (idx - 1) * 0x280;
-        } else {
-            unit = 0;
-        }
-        if (unit != 0) {
-            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
+    {
+        u8 *map = gBattleMap;
+        y = (s8)*(u8 *)((u8 *)obj.unit + 0x19F);
+        x = (s8)*(u8 *)((u8 *)obj.unit + 0x19E);
+        yOff = y << 6;
+        flags = (u16 *)(map + ((x + yOff) << 1));
+        f = *(u16 *)((u8 *)flags + 0x408E);
+        flags = (u16 *)((u8 *)flags + 0x408E);
+        if ((f & 8) != 0) {
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
+            if (id) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            if (unit) {
+                ((Visitor *)&obj)->apply(unit);
+            }
         }
     }
-
-    if (*cell & 4) {
-        idx = map[x + (((s8)(y + 1)) << 6) + 0xD];
-        if (idx != 0) {
-            unit = gUnits + (idx - 1) * 0x280;
+    if ((*flags & 2) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x + 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id) {
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
         if (unit != 0) {
-            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
+            ((Visitor *)&obj)->apply(unit);
         }
     }
-
-    if (*cell & 1) {
-        idx = map[((s8)(x - 1)) + y64 + 0xD];
-        if (idx != 0) {
-            unit = gUnits + (idx - 1) * 0x280;
+    if ((*flags & 4) != 0) {
+        u8 *map = gBattleMap;
+        entry = map + x;
+        entry = entry + ((s8)(y + 1) << 6);
+        id = entry[0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
         if (unit != 0) {
-            ((void (*)(void *, void *))(*(void **)((u8 *)object[0] + 8)))(object, unit);
+            ((Visitor *)&obj)->apply(unit);
+        }
+    }
+    if ((*flags & 1) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x - 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma cplusplus reset
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
