@@ -81,8 +81,8 @@ void fn_80089490(void *);
 #pragma global_optimizer reset
 #pragma peephole off
 
-#pragma peephole off
-#pragma global_optimizer off
+#pragma peephole on
+#pragma global_optimizer on
 void fn_80089980(s32 arg0) {
 extern const f32 lbl_803696C8;
 extern void *lbl_803674EC;
