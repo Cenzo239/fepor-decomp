@@ -753,29 +753,30 @@ void Prim2D_SetUvRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 #pragma global_optimizer off
 #pragma scheduling off
 void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    extern void *lbl_80367140;
+    extern void *gPrim2D;
     extern f32 lbl_80368B98;
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     u8 *ptr;
-    f32 constant2;
+    f32 o;
+    f32 z;
     f32 sum_x;
 
-    ptr = (u8 *)lbl_80367140;
+    ptr = (u8 *)gPrim2D;
     sum_x = arg0 + arg2;
     arg3 = arg1 + arg3;
-    arg2 = lbl_80368B98;
+    z = lbl_80368B98;
     ptr = *(u8 **)(ptr + 0xC);
-    constant2 = lbl_80368B94;
+    o = gFloat1;
     ptr = *(u8 **)(ptr + 0x4);
 
     *(f32 *)(ptr + 0x10) = arg0;
     *(f32 *)(ptr + 0x20) = sum_x;
     *(f32 *)(ptr + 0x14) = arg1;
     *(f32 *)(ptr + 0x24) = arg3;
-    *(f32 *)(ptr + 0x1C) = arg2;
-    *(f32 *)(ptr + 0x18) = arg2;
-    *(f32 *)(ptr + 0x2C) = constant2;
-    *(f32 *)(ptr + 0x28) = constant2;
+    *(f32 *)(ptr + 0x1C) = z;
+    *(f32 *)(ptr + 0x18) = z;
+    *(f32 *)(ptr + 0x2C) = o;
+    *(f32 *)(ptr + 0x28) = o;
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
