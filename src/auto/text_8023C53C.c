@@ -7750,7 +7750,7 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
     arg0->flags |= 0x2000;
 }
 
-#pragma cplusplus on
+#pragma cplusplus off
 void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
@@ -7758,7 +7758,6 @@ void fn_80251F24(void *arg0, u32 *arg1)
     u8 *data;
     u32 word0;
     u32 word1;
-    u32 value;
     u32 factor;
     u32 mode;
     u16 tableId;
@@ -8195,50 +8194,10 @@ void Sound_SelectSource7(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x320, step, 0x01000000, 0x80);
 }
 
-#pragma optimization_level 3
-#pragma global_optimizer off
-#pragma use_lmw_stmw off
-void fn_80252A78(void *arg0, u32 *arg1)
-{
-    void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
-    u8 *voice;
-    u64 flags;
-    u32 temp;
-    u8 low;
-    u8 value;
-    s32 scale;
-    s32 adj;
-
-    voice = (u8 *)arg0;
-    flags = *(u64 *)(voice + 0x114);
-
-    if ((flags & 0x800000ULL) == 0) {
-        *(u64 *)(voice + 0x114) = flags | 0x800000ULL;
-    } else {
-        temp = arg1[1];
-        low = (u8)temp;
-        temp = arg1[0];
-        scale = (s32)(temp & 0xFFFF0000) / 100;
-        if (scale < 0) {
-            adj = ((s32)((s8)(arg1[1] >> 16) << 8)) / 100;
-            scale = scale - adj;
-        } else {
-            adj = ((s32)((s8)(arg1[1] >> 16) << 8)) / 100;
-            scale = scale + adj;
-        }
-        value = (u8)(arg1[1] >> 8);
-        fn_8025FFC8(
-            (u8 *)voice + 0x368,
-            (u8)(temp >> 8),
-            scale,
-            low,
-            (u8)(value != 0),
-            value
-        );
-    }
-
-    *(u32 *)(voice + 0x220) |= 0x200;
-}
+#pragma optimization_level 4
+#pragma global_optimizer on
+#pragma use_lmw_stmw on
+void fn_80252A78(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x368, step, 0x800000, 0x200); }
 #pragma use_lmw_stmw reset
 #pragma global_optimizer reset
 #pragma optimization_level reset
@@ -12803,31 +12762,28 @@ s32 fn_8025DAA0(
 {
     typedef struct { u32 key; u32 next; u32 f8; u16 count; u16 pad; } Entry;
     typedef struct { u32 next; f32 v1; f32 v2; f32 v3; f32 v4; f32 v5; f32 v6; void *arg0; } Node;
-    extern u16 lbl_8035BF18[];
-    extern u32 lbl_8035C918[];
     extern u8 lbl_80368AAD;
-    extern u8 lbl_80368AAE;
 
+    u8 count;
+    Entry *walk;
+    s32 index;
     Entry *base;
     Node *pool;
     Node *node;
     u8 **next;
     u8 *current;
     u8 *previous;
-    s32 index;
     s32 index2;
-    u8 count;
     u8 nodeIndex;
-    
-    base = (Entry *)lbl_8035BF18;
+
     count = lbl_80368AAE;
+    walk = (Entry *)lbl_8035BF18;
     index = 0;
 
-    while (index < (s32)count) {
-        if (base[index].key == *(u32 *)((u8 *)arg0 + 0x3C)) {
+    for (; index < (s32)count; walk++, index++) {
+        if (*(u32 *)((u8 *)arg0 + 0x3C) == *(u32 *)walk) {
             break;
         }
-        index++;
     }
 
     if (index == (s32)count) {
@@ -12835,6 +12791,7 @@ s32 fn_8025DAA0(
             return 0;
         }
 
+        base = (Entry *)lbl_8035BF18;
         base[index].next = 0;
         base[index].f8 = 0;
         base[index].count = 0;
@@ -12849,33 +12806,35 @@ s32 fn_8025DAA0(
         return 0;
     }
 
-    pool = (Node *)lbl_8035C918;
-
+    base = (Entry *)lbl_8035BF18;
     next = (u8 **)(base + index);
     current = *++next;
     previous = current;
 
     if (current != 0) {
-        while (current != 0) {
+        goto check;
+        do {
             if (*(f32 *)((u8 *)previous + 4) < arg1) {
                 break;
             }
             previous = current;
+        check:
             current = *(u8 **)previous;
-        }
-    }
+        } while (current != 0);
 
-    if (previous != 0) {
-        node = pool + (u8)nodeIndex;
+        pool = (Node *)lbl_8035C918;
+        node = (Node *)((u8 *)pool + ((u8)nodeIndex << 5));
         node->next = (u32)current;
         *(u8 **)previous = (u8 *)node;
     } else {
-        node = pool + (u8)nodeIndex;
+        pool = (Node *)lbl_8035C918;
+        node = (Node *)((u8 *)pool + ((u8)nodeIndex << 5));
         node->next = (u32)current;
         *next = (u8 *)node;
     }
 
     index2 = lbl_80368AAD;
+    pool = (Node *)lbl_8035C918;
     node = (Node *)((u8 *)pool + (index2 << 5));
     node->arg0 = arg0;
     node->v5 = arg5;
