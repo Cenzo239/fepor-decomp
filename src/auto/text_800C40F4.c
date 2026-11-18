@@ -2079,8 +2079,6 @@ out[count]=0;
 if(count==0)pos=0;
 return pos;
 }
-static inline u8 TokenIsComment(char c) { return c=='#'; }
-static inline u8 TokenIsBrace(char c) { return c=='{' || c=='}'; }
 #pragma cplusplus on
 #pragma global_optimizer off
 #pragma peephole on
