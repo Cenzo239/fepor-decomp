@@ -2,9 +2,6 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-u8 lbl_80311CA8[0x10];
-u8 lbl_80311CB8[0x28];
-u8 lbl_80311CE0[0xA8];
 
 #pragma push
 #pragma use_lmw_stmw on
@@ -17,6 +14,9 @@ void fn_80072408(void)
     extern u8 lbl_8028680C[];
     extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_8028459C[];
+    extern u8 lbl_80311CA8[];
+    extern u8 lbl_80311CB8[];
+    extern u8 lbl_80311CE0[];
     extern u8 lbl_8026BB84[];
     extern u8 lbl_802867B8[];
     extern u8 lbl_802866E4[];
