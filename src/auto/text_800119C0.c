@@ -1515,15 +1515,15 @@ void fn_80014EA8(void) {
 
 #pragma optimization_level 3
 s32 fn_80014EDC(u32 arg0) {
-    s32 fn_8000D354(s32);
-    s32 fn_8000E0E4(s32);
+    u32 Res_GetByName(void *);
+    void *Msg_Expand(void *);
     extern void *lbl_80367210;
     s32 var_r31;
 
     arg0 = (u32)((u8 *)lbl_80367210 + ((arg0 & 0xFF) << 2));
     var_r31 = *(s32 *)((u8 *)arg0 + 4);
-    if (fn_8000D354(var_r31) != 0U) {
-        var_r31 = fn_8000E0E4(var_r31);
+    if (Res_GetByName((void *)var_r31) != 0U) {
+        var_r31 = (s32)Msg_Expand((void *)var_r31);
     }
     return var_r31;
 }
