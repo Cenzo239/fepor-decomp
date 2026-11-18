@@ -147,12 +147,16 @@ struct OSThread {
     OSThreadQueue *queue;
     OSThread *next, *prev;
 };
+#pragma opt_common_subs on
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
     OSThread *thread = queue->head;
+    OSThread *next = thread->next;
     *out = thread;
-    if ((queue->head = thread->next) == NULL) queue->tail = NULL;
-    else queue->head->prev = NULL;
+    if (next == NULL) queue->tail = NULL;
+    else next->prev = NULL;
+    queue->head = next;
 }
+#pragma opt_common_subs reset
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
 extern volatile s32 RunQueueHint_8036851C;
