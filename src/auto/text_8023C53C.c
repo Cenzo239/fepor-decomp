@@ -8029,60 +8029,7 @@ void Sound_SelectSource0(void *voice, u32 *step) {
     SelectSource(voice, (u8 *)voice + 0x224, step, 0x80000, 1);
 }
 
-void fn_80252564(void *arg0, u32 *arg1)
-{
-    void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
-
-    u8 *voice;
-    u32 flags114;
-    u32 flags118;
-    u32 word0;
-    u32 word1;
-    u8 combine;
-    u8 inverse;
-    s32 scale;
-    s32 adjustment;
-
-    voice = (u8 *)arg0;
-
-    flags114 = *(u32 *)(voice + 0x114);
-    flags118 = *(u32 *)(voice + 0x118);
-
-    combine = 0;
-
-    if ((flags118 & 0x00100000) == 0) {
-        *(u32 *)(voice + 0x118) = flags118 | 0x00100000;
-        *(u32 *)(voice + 0x114) = flags114;
-    } else {
-        combine = (u8)arg1[1];
-    }
-
-    word0 = arg1[0];
-    word1 = arg1[1];
-
-    scale = (s32)(word0 & 0xFFFF0000) / 100;
-
-    adjustment = ((s32)(s8)(word1 >> 16) << 8) / 100;
-
-    if (scale < 0) {
-        scale -= adjustment;
-    } else {
-        scale += adjustment;
-    }
-
-    inverse = (u8)(word1 >> 8);
-
-    fn_8025FFC8(
-        voice + 0x248,
-        (u8)(word0 >> 8),
-        scale,
-        combine,
-        inverse != 0,
-        inverse
-    );
-
-    *(u32 *)(voice + 0x220) |= 0x2;
-}
+void fn_80252564(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x248, step, 0x100000, 2); }
 
 void Sound_SelectSource3(void *voice, u32 *step) {
     /* MusyX select-source macro for modulator slot 3 (voice+0x290). */
