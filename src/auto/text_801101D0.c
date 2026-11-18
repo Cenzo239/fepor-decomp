@@ -2384,9 +2384,10 @@ struct ActorMotionInterface {
 #pragma cplusplus on
 #pragma push
 #pragma dont_inline on
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma global_optimizer off
 extern "C" void fn_80114AF0(void *arg0, s32 mode, u8 flag, u8 force) {
+typedef void (*GetPosFn)(f32 *, void *, s32);
 s32 strlen(char *);
 s32 fn_80199310(void *);
 void fn_800DF670(void *);
@@ -2449,7 +2450,7 @@ Actor_LoadAnim(arg0,String_CStr(&anim),*(s32*)((u8*)arg0+0x188),0,1);
 String_AssignCStr((u8*)arg0+0x160,(char*)gActorXmlStrs+0x4ED,strlen((char*)gActorXmlStrs+0x4ED));
 move[2]=lbl_8036A184;move[1]=lbl_8036A184;move[0]=lbl_8036A184;
 scale=*(f32*)((u8*)arg0+0x150);
-((void (*)(void *,void *,s32))(*(void ***)((u8*)arg0+0x40))[14])(&current,arg0,0);
+((GetPosFn)((void **)*(void **)((u8 *)arg0 + 0x40))[0xE])(current, arg0, 0);
 px=current[0];
 other = ((ActorMotionInterface*)*(void **)((u8*)arg0+0x118))->GetPos(0);
 origin[0]=px;origin[1]=lbl_8036A184;origin[2]=lbl_8036A184;
