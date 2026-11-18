@@ -386,6 +386,13 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
+static inline u8 MenuCmd_ToggleDisplayState(u8 enabled)
+{
+    u32 state = 2;
+    if (enabled) state = 0;
+    return (u8)state;
+}
+
 #pragma optimization_level 3
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
