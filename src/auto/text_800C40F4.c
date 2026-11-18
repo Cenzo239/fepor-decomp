@@ -673,7 +673,7 @@ s32 fn_800C4740(void) {
 }
 #pragma use_lmw_stmw on
 static inline void Heap_FindEmpty(u32 *table, s32 *result) {
- s32 i; for(i=0;i<16;i++,table++) { if(*table==0) { *result=i; return; } } *result=-1;
+ for(*result=0;*result<16;(*result)++,table++) { if(*table==0) return; } *result=-1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
 u32 *entry=table;
