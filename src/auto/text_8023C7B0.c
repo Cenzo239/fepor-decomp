@@ -359,13 +359,15 @@ extern f64 lbl_8036C148;
 void fn_8023C7B0(void) {
   extern u32 lbl_8033E578[6];
   extern s32 lbl_8036894C;
-  u32 *p = lbl_8033E578;
-  u32 base = (lbl_8036894C + 31) & ~31;
+  u32 *p;
+  u32 base;
+  p = lbl_8033E578;
+  base = (u32)(lbl_8036894C + 0x1f) & ~0x1f;
   p[0] = base;
-  p[1] = p[0] + 0x80;
-  p[2] = p[1] + 0x80;
-  p[3] = p[2] + 0x80;
-  p[4] = p[3] + 0x80;
-  p[5] = p[4] + 0x80;
+  p[1] = base + 0x80;
+  p[2] = base + 0x100;
+  p[3] = base + 0x180;
+  p[4] = base + 0x200;
+  p[5] = base + 0x280;
 }
 #pragma pop
