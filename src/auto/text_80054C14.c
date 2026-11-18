@@ -266,12 +266,6 @@ static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
 }
-static inline CameraVec *Camera_SelectTarget(u8 *state, CameraVec *first, CameraVec *second) {
-    CameraVec *result;
-    if ((*(u32 *)(state+8)&0x20000000) && first) result=first;
-    else result=second;
-    return result;
-}
 #pragma use_lmw_stmw on
 void fn_80054C14(void *arg0) {
     u8 Pad_IsActive(void *);
