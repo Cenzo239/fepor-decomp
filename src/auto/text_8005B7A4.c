@@ -8879,6 +8879,7 @@ GXLoadPosMtxImm(root,*slots);
 fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 }
+#pragma fp_contract on
 #pragma global_optimizer reset
 
 #pragma use_lmw_stmw on
