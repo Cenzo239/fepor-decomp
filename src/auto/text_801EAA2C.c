@@ -4004,6 +4004,7 @@ p->elapsed=0;
 }
 
 #pragma cplusplus reset
+#pragma use_lmw_stmw off
 void fn_801F0E4C(void *arg0) {
     f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
     M2C_UNK Model_SetAlpha(s32, u8);
