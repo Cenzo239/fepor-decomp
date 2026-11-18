@@ -674,27 +674,14 @@ s32 fn_800C4740(void) {
 static inline s32 Heap_FindTableIndex(u32 key) {
 extern u32 lbl_80320B88[];
 u32 *entry=lbl_80320B88;
-s32 index=0,groups;
-for(groups=2;groups!=0;groups--){
-if(*entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-index++; if(*++entry==key)return index;
-entry++;index++;
-}
-return -1;
+s32 i; for(i=0;i<16;entry++,i++) { if(*entry==key)return i; } return -1;
 }
 static inline s32 Heap_FindInTable(u32 *table,u32 key) {
 s32 i; for(i=0;i<16;i++,table++) { if(*table==key)return i; } return -1;
 }
 
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
-#pragma opt_common_subs on
+#pragma global_optimizer on
 void fn_800C47E8(void) {
 extern u32 lbl_80320B88[],lbl_80367870;
 extern u32 *lbl_8036786C;
