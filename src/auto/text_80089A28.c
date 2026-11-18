@@ -10,7 +10,7 @@ typedef struct {
 } Menu888Entry;
 extern void* lbl_803674E8;
 extern f64 lbl_80369688;
-extern f32 lbl_803696C8;
+extern const f32 lbl_803696C8;
 typedef struct { u16 a, b, c; } Fn89980Struct;
 typedef struct { f32 a, b; } FloatPair892E8;
 
@@ -290,7 +290,7 @@ s32 fn_80089ED8(void) {
 }
 
 void fn_80089F00(u8 arg0,u8 arg1,u8 arg2,s32 arg3,s32 arg4) {
-extern f32 lbl_803696C8; extern void *lbl_803674E8; extern u32 lbl_8036C470;
+extern const f32 lbl_803696C8; extern void *lbl_803674E8; extern u32 lbl_8036C470;
 u8 *ptr; f32 div; union { u32 w; u8 b[4]; } color;
 div=lbl_803696C8; ptr=(u8*)lbl_803674E8;
 *(u16*)(ptr+0x32)=1;
