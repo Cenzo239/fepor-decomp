@@ -2897,8 +2897,10 @@ u8 Unit_GetDistance(void *a, void *b) {
     }
     {
         s8 xa;
+        s8 xb;
         xa = *(s8 *)((u8 *)a + 0x19E);
-        dx = xa - *(s8 *)((u8 *)b + 0x19E);
+        xb = *(s8 *)((u8 *)b + 0x19E);
+        dx = xa - xb;
     }
     if (dx < 0) {
         dx = -dx;
@@ -4506,18 +4508,17 @@ s8 Unit_GetStr(void *arg0) {
     return var;
 }
 
+#pragma optimization_level 3
 s8 Unit_GetHp(void *arg0) {
+    s8 lim;
     void *p18c;
     u8 t;
-    u8 base;
-    s8 lim;
     s8 var;
 
     p18c = *(void **)((u8 *)arg0 + 0x18C);
     t = *(u8 *)((u8 *)arg0 + 0x1AB);
-    base = *(u8 *)((u8 *)p18c + 0x44);
-    lim = (s8)*(u8 *)((u8 *)p18c + 0x4C);
-    var = (s8)(*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + base + t);
+    lim = *(u8 *)((u8 *)p18c + 0x4C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + *(u8 *)((u8 *)p18c + 0x44)) + t;
     if (var > lim) {
         var = lim;
     }
@@ -4526,7 +4527,7 @@ s8 Unit_GetHp(void *arg0) {
     }
     return var;
 }
-
+#pragma optimization_level reset
 void fn_8003B69C(s32 arg0) {
     M2C_UNK fn_800173B4(s32, s32);
     fn_800173B4(arg0 + 0x236, arg0);
@@ -12380,8 +12381,17 @@ sprintf(lbl_802EFFC8,lbl_8026A9B0+0x9C,lbl_8026A9B0+0xA8,*(s32 *)((u8 *)arg0+4),
 return (char *)lbl_802EFFC8;
 }
 
+typedef struct StringValueByte { u8 pad0[0xC]; u8 value; } StringValueByte;
 #pragma opt_strength_reduction off
-char *fn_8004B078(void *arg0,s32 arg1) { void sprintf(void *,void *,...); extern u8 lbl_8026A9B0[]; extern u8 lbl_802EFFC8[]; u32 address=(u32)arg0+arg1; sprintf(lbl_802EFFC8,lbl_8026A9B0+0xAD,lbl_8026A9B0+0xA8,*(void**)((u8*)arg0+4),((u8*)address)[12]); return (char*)lbl_802EFFC8; }
+char *fn_8004B078(void *arg0, s32 arg1) {
+    void sprintf(void *, void *, ...);
+    extern u8 lbl_8026A9B0[];
+    extern u8 lbl_802EFFC8[];
+    Unk18CObj *address = (Unk18CObj *)((u8 *)arg0 + arg1);
+    sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8,
+            *(void **)((u8 *)arg0 + 4), *(u8 *)&address->unkC);
+    return (char *)lbl_802EFFC8;
+}
 #pragma opt_strength_reduction on
 void *fn_8004B0C8(void *arg0) {
     void sprintf(void *, void *, ...);
