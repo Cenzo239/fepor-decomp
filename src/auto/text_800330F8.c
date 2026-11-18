@@ -1,6 +1,7 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
-static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, u8 r, u8 g, u8 b, u8 a) {
+static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
+u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
 *(volatile f32 *)0xCC008000=y;
 *(volatile f32 *)0xCC008000=z;
@@ -12153,7 +12154,7 @@ extern u8 gBattleMap[];
 f32 z;
 GXBegin(0x98,0,4);
 {
-u8 r,g,b,a;
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
 r=color[0];g=color[1];b=color[2];a=color[3];
 *(f32 *)0xCC008000=(f32)(x);
@@ -12165,7 +12166,7 @@ r=color[0];g=color[1];b=color[2];a=color[3];
 *(u8 *)0xCC008000=a;
 }
 {
-u8 r,g,b,a;
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
 r=color[0];g=color[1];b=color[2];a=color[3];
 *(f32 *)0xCC008000=(f32)(x+1);
@@ -12177,7 +12178,7 @@ r=color[0];g=color[1];b=color[2];a=color[3];
 *(u8 *)0xCC008000=a;
 }
 {
-u8 r,g,b,a;
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
 r=color[0];g=color[1];b=color[2];a=color[3];
 *(f32 *)0xCC008000=(f32)(x);
@@ -12189,7 +12190,7 @@ r=color[0];g=color[1];b=color[2];a=color[3];
 *(u8 *)0xCC008000=a;
 }
 {
-u8 r,g,b,a;
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
 r=color[0];g=color[1];b=color[2];a=color[3];
 *(f32 *)0xCC008000=(f32)(x+1);
