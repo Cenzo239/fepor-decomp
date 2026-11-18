@@ -4639,16 +4639,25 @@ void fn_8007C34C(void) {
 }
 
 #pragma global_optimizer off
+static void *fn_8007C378_Pick(void) {
+    void *Res_GetByName();
+    extern u8 lbl_8026C640[];
+    void *result = Res_GetByName();
+    if (result)
+        return result;
+    else
+        return Res_GetByName(lbl_8026C640 + 0xEF);
+}
 void fn_8007C378(void) {
-    u32 fn_8000D354();
-    void fn_8000E0E4(u32);
+    void *Res_GetByName();
+    void Msg_Expand(u32);
     extern u8 lbl_8026C640[];
     u32 x;
 
-    x = fn_8000D354();
+    x = (u32)Res_GetByName();
     switch (x) {
     case 0:
-        fn_8000E0E4(*(u32 *)((u8 *)fn_8000D354(lbl_8026C640 + 0xEF) + 4));
+        Msg_Expand(*(u32 *)((u8 *)Res_GetByName(lbl_8026C640 + 0xEF) + 4));
         break;
     }
 }
