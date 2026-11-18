@@ -1,7 +1,7 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline u32 Event_ScanCommandFlagsInline(s16 *idx,s32 cur) {
+static inline u32 Event_ScanCommandFlagsInline(s16 *idx,u16 cur) {
 extern u8 gBattle[];
 void fn_800973F0(void *,s32);
 s16 saved=(s16)cur;
@@ -307,6 +307,7 @@ void fn_800973F0(void *,s32);
 extern u8 gBattle[],gEventCmdStrings[];
 extern void **lbl_80367500,**lbl_80367504;
 s32 ents[40],buf[20];s32 flaga,flagb;
+u8 *battle;
 void **g0;
 s32 arg_save;
 u8 *ep;
@@ -344,35 +345,7 @@ cur=*idx;offset=cur*4+4;c=((u8*)idx)[offset];
 switch(c){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:goto scan2done;
 case 0x56:
-*idx=cur;flagb=0;*idx=(s16)cur+1;
-for(;;){
-cursor=*idx;offset=cursor*4+4;
-switch((s32)((u8*)idx)[offset]){
-case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:case 0x54:goto scan3done;
-case 9:case 0x15:
-if((s8)*(s16*)((u8*)idx+cursor*4+6)==0)flagb|=0x20000;break;
-default:offset=cursor*4+4;fn_800973F0(&flagb,((u8*)idx)[offset]);break;
-}
-(*idx)++;
-}
-scan3done:
-*idx=cur;
-if(flagb&0x10000004){
-*idx=cur;*idx=(s16)cur+1;ok=0;
-for(;;){
-cursor=*idx;offset=cursor*4+4;
-switch((s32)((u8*)idx)[offset]){
-case 0:case 0x20:case 0x21:case 0x22:case 0x24:case 0x50:case 0x51:case 0x52:goto scan4done;
-case 9:case 0x15:
-if((s8)*(s16*)((u8*)idx+cursor*4+6)>0)ok=1;break;
-default:break;
-}
-(*idx)++;
-}
-scan4done:
-*idx=cur;if(ok)flagb|=1;
-}
-*(u32*)(ep+4)=flagb;break;
+*(u32*)(ep+4)=Event_ScanCommandFlagsInline(idx,cur);break;
 case 0x50:case 0x51:case 0x52:
 *(s16*)ep=c;*(s16*)(ep+2)=1;count++;ep+=8;break;
 default:break;
@@ -380,7 +353,7 @@ default:break;
 (*idx)++;
 }
 scan2done:
-*idx=saved;ep=(u8*)ents;
+*idx=saved;ep=(u8*)ents;battle=gBattle;
 for(i=0;i<count;ep+=8,i++){
 unit=*lbl_80367500;flags=*(u32*)(ep+4);cur=*(s16*)ep;
 if(!unit)item=0;
@@ -389,7 +362,7 @@ if(item){
 if(*(u64*)Item_GetFlagsPtr(item)&2ULL){kind=1;goto kindDone;}
 if(*(u64*)Item_GetFlagsPtr(item)&0x800000000ULL){kind=2;goto kindDone;}
 if(*(u64*)Item_GetFlagsPtr(item)&0x8000000000ULL){kind=1;goto kindDone;}
-if(*(s32*)(gBattle+0xCA8)>1){
+if(*(s32*)(battle+0xCA8)>1){
 if(*(u64*)Item_GetFlagsPtr(item)&0x40ULL){kind=1;goto kindDone;}
 if(*(u64*)Item_GetFlagsPtr(item)&0x4000000000ULL){kind=3;goto kindDone;}
 }
@@ -405,7 +378,7 @@ else if(flags&8)str=(void*)Event_GetCmdFlagRes(8);
 else if(flags&0x10)str=(void*)Event_GetCmdFlagRes(0x10);
 else str=0;
 if(str)GActor_RequestRes(str);
-if(!(*(u32*)(gBattle+0xCAC)&0x100)){
+if(!(*(u32*)(battle+0xCAC)&0x100)){
 switch(*(s16*)ep){
 case 0x50:case 0x51:if(!(*(u32*)(ep+4)&0x20000))fn_8004FC70(arg_save,9);break;
 case 0x52:fn_8004FC70(arg_save,7);break;
