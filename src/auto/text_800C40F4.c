@@ -16300,7 +16300,6 @@ void fn_800E5B68(void *arg0)
     void PSMTXCopy(void *, void *);
     void *fn_80067478(void);
 
-    extern f32 lbl_80369F3C;
     extern f32 lbl_80369F40;
 
     u8 sp8[0x30];
