@@ -1545,51 +1545,101 @@ if (*flags & 1) { id=*(gBattleMap+(s8)(x-1)+row+0xd); if(id) unit=gUnits+(id-1)*
 
 #pragma cplusplus reset
 
-void fn_8002B2E8(void *arg0) {
-    extern u8 gBattleMap[];
-    extern u8 gUnits[];
-    extern u8 gTargetList[];
+extern "C" void fn_8002B2E8(void *arg0) {
     extern u8 lbl_80284D30[];
     extern u8 lbl_80284E20[];
-    void fn_8002F728(void *, void *, void *);
-    struct CB { u8 pad[8]; void (*fn)(void *); };
-    struct Locals { struct CB *sp8; void *spC; } l;
-    s32 y, x, row;
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    void fn_8002F728(void *);
+    struct Visitor {
+        virtual void apply(void *unit) = 0;
+    };
+    struct {
+        void *vtbl;
+        void *unit;
+    } obj;
+    s32 x;
+    s32 y;
     u16 *flags;
-    u16 *p;
-    u8 id;
+    s32 yOff;
     void *unit;
+    u8 id;
+    u16 f;
+    u8 *entry;
 
-    l.sp8 = (struct CB *)lbl_80284E20;
-    l.spC = arg0;
-    l.sp8 = (struct CB *)lbl_80284D30;
-    fn_8002F728(gTargetList, gTargetList, l.sp8);
-
-    y = (s8)*(u8 *)((u8 *)l.spC + 0x19f);
-    x = (s8)*(u8 *)((u8 *)l.spC + 0x19e);
-    row = y << 6;
-    flags = (u16 *)(gBattleMap + (x + row) * 2);
-    p = (u16 *)((u8 *)flags + 0x408e);
-
-    if (*p & 8) {
-        id = *(gBattleMap + x + (((s8)(y - 1)) << 6) + 0xd);
-        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
-        if (unit) l.sp8->fn(&l.sp8);
+    obj.vtbl = lbl_80284E20;
+    obj.unit = arg0;
+    obj.vtbl = lbl_80284D30;
+    fn_8002F728(gTargetList);
+    {
+        u8 *map;
+        y = (s8)*(u8 *)((u8 *)obj.unit + 0x19F);
+        x = *(s8 *)((u8 *)obj.unit + 0x19E);
+        map = gBattleMap;
+        yOff = y << 6;
+        flags = (u16 *)(map + ((x + yOff) << 1));
+        f = *(u16 *)((u8 *)flags + 0x408E);
+        flags = (u16 *)((u8 *)flags + 0x408E);
+        if ((f & 8) != 0) {
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
+            if (id) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            if (unit) {
+                ((Visitor *)&obj)->apply(unit);
+            }
+        }
     }
-    if (*p & 2) {
-        id = *(gBattleMap + (s8)(x + 1) + row + 0xd);
-        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
-        if (unit) l.sp8->fn(&l.sp8);
+    if ((*flags & 2) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x + 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
+        }
     }
-    if (*p & 4) {
-        id = *(gBattleMap + x + (((s8)(y + 1)) << 6) + 0xd);
-        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
-        if (unit) l.sp8->fn(&l.sp8);
+    if ((*flags & 4) != 0) {
+        u8 *map = gBattleMap;
+        entry = map + x;
+        entry = entry + ((s8)(y + 1) << 6);
+        id = entry[0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
+        }
     }
-    if (*p & 1) {
-        id = *(gBattleMap + (s8)(x - 1) + row + 0xd);
-        unit = id ? &gUnits[(id - 1) * 0x280] : 0;
-        if (unit) l.sp8->fn(&l.sp8);
+    if ((*flags & 1) != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x - 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id != 0) {
+            unit = gUnits + (id - 1) * 0x280;
+        } else {
+            unit = 0;
+        }
+        if (unit != 0) {
+            ((Visitor *)&obj)->apply(unit);
+        }
     }
 }
 
