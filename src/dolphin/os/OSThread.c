@@ -165,7 +165,6 @@ extern volatile s32 RunQueueHint_8036851C;
 
 #pragma opt_common_subs off
 #pragma peephole on
-#pragma global_optimizer off
 void *SelectThread_8020A2C4(s32 arg0) {
     OSContext *fn_802059EC(void);
     u32 fn_802059F8(void *);
