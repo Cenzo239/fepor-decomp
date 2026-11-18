@@ -12175,7 +12175,7 @@ extern u32 lbl_80369078;
 extern u32 lbl_8036907C;
 extern u32 jumptable_80285ACC[];
 
-extern u16 *gMap;
+extern void *gMap;
 #include "common.h"
 #include "global.h"
 
