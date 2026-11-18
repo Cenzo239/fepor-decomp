@@ -1343,12 +1343,9 @@ done:
     Prim2D_PrepareTex();
 }
 
-#pragma scheduling on
-#pragma optimization_level 3
 extern "C" void fn_80134280(void *arg0) {
 s32 Item_GetByIid(u32);
-s32 off = *(s32 *)((u8*)arg0+0x4C);
-off *= 0x48;
+s32 off = *(s32 *)((u8*)arg0+0x4C)*0x48;
 s16 count=0;
 s16 lim=*(s16*)((u8*)arg0+0x3E);
 u32 *p=(u32*)(*(u8**)((u8*)arg0+0x50)+off);
@@ -1358,8 +1355,6 @@ if(*p && count++==(s16)lim) break;
 Item_GetByIid(*p);
 }
 
-#pragma optimization_level reset
-#pragma scheduling reset
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
