@@ -148,14 +148,10 @@ struct OSThread {
     OSThread *next, *prev;
 };
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
-    OSThread *next;
-    OSThread *thread;
-    thread = queue->head;
-    next = thread->next;
+    OSThread *thread = queue->head;
     *out = thread;
-    if (next == NULL) queue->tail = NULL;
-    else next->prev = NULL;
-    queue->head = next;
+    if ((queue->head = thread->next) == NULL) queue->tail = NULL;
+    else queue->head->prev = NULL;
 }
 extern void* RunQueue_80339478[];
 extern volatile u32 RunQueueBits_80368518;
