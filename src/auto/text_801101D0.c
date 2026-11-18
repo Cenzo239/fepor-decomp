@@ -1779,8 +1779,8 @@ extern "C" void fn_80113BA0(void *arg0) {
         virtual void v3() = 0;
         virtual void v4() = 0;
         virtual void v5() = 0;
-        virtual void v6() = 0;
         virtual void v7() = 0;
+        virtual void v6() = 0;
         virtual void v8() = 0;
         virtual void v9() = 0;
         virtual void v10() = 0;
@@ -1794,16 +1794,17 @@ extern "C" void fn_80113BA0(void *arg0) {
     extern f32 lbl_8036A1BC;
 
     V3 pos;
-    V3 got;
     void *actor;
+    V3 got;
     f32 twenty;
     f32 zero;
     s32 ch;
 
-    zero = lbl_8036A184;
-    twenty = lbl_8036A1BC;
-    pos.y = pos.z = zero;
+    zero = 0.0f;
+    twenty = 20.0f;
     pos.x = twenty;
+    pos.y = zero;
+    pos.z = zero;
 
     actor = *(void **)((u8 *)arg0 + 0x118);
     if (actor != NULL) {
@@ -1813,7 +1814,7 @@ extern "C" void fn_80113BA0(void *arg0) {
         pos.z = got.z;
     }
     if (fn_80199310(*(void **)((u8 *)arg0 + 0x11C)) == 3 && *(void **)((u8 *)arg0 + 0x120) != NULL) {
-        ch = *(u8 *)fn_80117CC0((u8 *)arg0 + 0xB0, 0);
+        register ch = *(u8 *)fn_80117CC0((u8 *)arg0 + 0xB0, 0);
         if (ch == 0x73) {
             fn_80198910(*(void **)((u8 *)arg0 + 0x120), &pos, *(s32 *)((u8 *)arg0 + 0x144));
         } else {
@@ -7688,7 +7689,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     void fn_800791F0(void *, void *);
     void fn_801222A4(void *, void *);
     void fn_80122170(void *, void *, u16);
-    u8 fn_8011F184(void);
+    u8 fn_8011F184(void *,
+                   u8 **);
     void *Sound_FindByName(void *);
     void Sound_FadeToVol(void *, s32);
     void Sound_FadeFromZero(void *, s32);
@@ -7714,8 +7716,6 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     s32 selected;
     s32 count;
     s32 i;
-    s32 j;
-    s32 value;
     s32 result;
     s32 color;
     s32 speed;
@@ -8189,7 +8189,7 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 'F':
-        return fn_8011F184();
+        return fn_8011F184(self, textRef);
 
     case 'G':
         buffer = lbl_8032FE24;
