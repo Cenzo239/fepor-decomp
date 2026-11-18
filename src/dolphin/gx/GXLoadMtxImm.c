@@ -134,11 +134,14 @@ static inline u32 __GXReadCPCounterU32(u32 lo, u32 hi) {
     u32 ctrH0;
     u32 ctrH1;
     u32 ctrL;
+    volatile u16 *base;
+    volatile u16 *regH;
+    volatile u16 *regL;
 
-    volatile u16 *regH = (volatile u16 *)__cpReg + hi;
-    volatile u16 *regL = (volatile u16 *)__cpReg + lo;
-
-    ctrH0 = *regH;
+    base = __cpReg;
+    regH = base + hi;
+    ctrH0 = base[hi];
+    regL = base + lo;
     do {
         ctrH1 = ctrH0;
         ctrL = *regL;
@@ -396,15 +399,14 @@ bottom=temp_r8&0x7ff;
 
 void fn_80225118(s32 x, s32 y)
 {
-  s32 xoff;
+  u32 xoff;
   u16 *gx;
-  s32 yoff;
+  u32 yoff;
   u32 value;
 
-  x += 0x156;
- xoff = x;
-  y += 0x156;
- yoff = y;
+  xoff = x;
+  xoff = xoff + 0x156;
+  yoff = y + 0x156;
   value = 0;
   value = __rlwimi(value, xoff, 31, 22, 31);
   value = value + 0;
@@ -707,11 +709,54 @@ void fn_80225A4C(u32 *cnt0, u32 *cnt1) {
     u32 ctr1;
     u32 ctr2;
     u32 ctr3;
+    u32 ctrH0;
+    u32 ctrH1;
+    u32 ctrL;
+    volatile u16 *base;
+    volatile u16 *regH;
+    volatile u16 *regL;
 
-    ctr0 = __GXReadCPCounterU32(0x20, 0x21);
-    ctr1 = __GXReadCPCounterU32(0x22, 0x23);
-    ctr2 = __GXReadCPCounterU32(0x24, 0x25);
-    ctr3 = __GXReadCPCounterU32(0x26, 0x27);
+    base = __cpReg;
+
+    regH = base + 0x21;
+    ctrH0 = base[0x21];
+    regL = base + 0x20;
+    do {
+        ctrH1 = ctrH0;
+        ctrL = *regL;
+        ctrH0 = *regH;
+    } while (ctrH0 != ctrH1);
+    ctr0 = (ctrH0 << 16) | ctrL;
+
+    regH = base + 0x23;
+    ctrH0 = base[0x23];
+    regL = base + 0x22;
+    do {
+        ctrH1 = ctrH0;
+        ctrL = *regL;
+        ctrH0 = *regH;
+    } while (ctrH0 != ctrH1);
+    ctr1 = (ctrH0 << 16) | ctrL;
+
+    regH = base + 0x25;
+    ctrH0 = base[0x25];
+    regL = base + 0x24;
+    do {
+        ctrH1 = ctrH0;
+        ctrL = *regL;
+        ctrH0 = *regH;
+    } while (ctrH0 != ctrH1);
+    ctr2 = (ctrH0 << 16) | ctrL;
+
+    regH = base + 0x27;
+    ctrH0 = base[0x27];
+    regL = base + 0x26;
+    do {
+        ctrH1 = ctrH0;
+        ctrL = *regL;
+        ctrH0 = *regH;
+    } while (ctrH0 != ctrH1);
+    ctr3 = (ctrH0 << 16) | ctrL;
 
     switch (M2C_FIELD(__GXData, s32 *, 0x59C)) {
     case 10:
