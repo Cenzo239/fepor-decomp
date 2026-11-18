@@ -3251,33 +3251,30 @@ s32 fn_80211690(void) {
     return lbl_80368604;
 }
 
-void fn_80211698(s32 *arg0, u32 *arg1)
-{
-  u32 new_var2;
-  u32 new_var;
-  unsigned int new_var3;
-  u32 horizontal;
-  u32 vertical;
-  volatile u16 *bump = (volatile u16 *) 0xCC002000;
-  volatile u16 *base;
-  u32 previous;
-  if (vertical)
-  {
-  }
-  vertical = (*(bump += 0x16)) & 0x7FF;
-  base = (volatile u16 *) 0xCC002000;
-  do
-  {
-    new_var3 = base[0x17];
-    previous = vertical;
-    horizontal = new_var3;
-    vertical = (*bump) & 0x7FF;
-    horizontal &= 0x7FF;
-  }
-  while ((new_var2 = previous) != vertical);
-  *arg0 = horizontal;
-  new_var = vertical;
-  *arg1 = new_var;
+void fn_80211698(s32 *arg0, u32 *arg1) {
+    u32 new_var3;
+    volatile u16 *base;
+    volatile u16 *bump = (volatile u16 *)0xCC002000;
+    u32 previous;
+    u32 vertical;
+    u32 horizontal;
+    u32 new_var;
+    u32 new_var2;
+
+    if (vertical) {}
+    vertical = (*(bump += 0x16)) & 0x7FF;
+    base = (volatile u16 *)0xCC002000;
+    do {
+        new_var3 = base[0x17];
+        previous = vertical;
+        horizontal = new_var3;
+        vertical = (*bump) & 0x7FF;
+        horizontal &= 0x7FF;
+    } while (previous != vertical);
+    new_var = horizontal;
+    new_var2 = vertical;
+    *arg0 = new_var;
+    *arg1 = new_var2;
 }
 
 s32 fn_802116D4(void) {
