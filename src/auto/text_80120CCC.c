@@ -1861,7 +1861,6 @@ void fn_8012391C(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
 void fn_80123988(void *arg0)
 {
     void *Process_Create(void *, void *);
