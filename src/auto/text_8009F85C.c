@@ -1,6 +1,12 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u8 MenuCmd_ToggleByte(void) {
+    extern u8 lbl_80366E25;
+    u8 value = lbl_80366E25 ^ 1;
+    lbl_80366E25 = value;
+    return value;
+}
 
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
@@ -388,17 +394,20 @@ void *fn_800A010C(void) {
 
 #pragma global_optimizer off
 
-s32 fn_800A011C(s32 a,s32 b,void *c) {
-extern u8 lbl_80366E25;
-s32 v=2;
-b=lbl_80366E25 ^ 1;
-lbl_80366E25=b;
-a=(u8)b;
-if(a) v=0;
-*(u8 *)((u8 *)c+0x39)=v;
-return 0;
-}
 #pragma global_optimizer reset
+s32 fn_800A011C(s32 a, s32 b, void *c) {
+    extern u8 lbl_80366E25;
+    u32 result;
+
+    result = 2;
+    a = (u8)lbl_80366E25 ^ 1;
+    lbl_80366E25 = a;
+    if ((u8)a != 0) {
+        result = 0;
+    }
+    *(u8 *)((char *)c + 0x39) = result;
+    return 0;
+}
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
@@ -420,11 +429,11 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
-    u8 t;
-    s32 v = 2;
+    s32 v;
 
-    t = lbl_80367708;
-    b = t ^ 1;
+    a = (u8)lbl_80367708;
+    v = 2;
+    b = a ^ 1;
     lbl_80367708 = b;
     if ((u8)b != 0) {
         v = 0;
