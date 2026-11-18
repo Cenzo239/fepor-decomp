@@ -37,90 +37,72 @@ void *fn_800119E0(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_80011A5C(void *arg0)
-{
-    extern s32 lbl_80367180;
+void fn_80011A5C(void *arg0) {
+extern s32 lbl_80367180;
+u32 result; u32 *stack;
+*(u32 **)((u8 *)lbl_80367180+0x18) -= *(s8 *)((u8 *)arg0+0xD);
+switch (*(s8 *)((u8 *)arg0+0xD)) {
+case 0:
 
-    u8 *context;
-    u8 *command;
-    u32 *stack;
-    u32 result;
-    s32 count;
-    void *callback;
-
-    command = (u8 *)arg0;
-    context = (u8 *)lbl_80367180;
-
-    count = (s8)command[0xD];
-    stack = *(u32 **)(context + 0x18);
-    stack -= count;
-    *(u32 **)(context + 0x18) = stack;
-
-    callback = *(void **)(command + 4);
-
-    switch (count) {
-    case 0:
-        result = ((u32 (*)(void))callback)();
-        break;
-
-    case 1:
-        result = ((u32 (*)(u32))callback)(
-            stack[0]);
-        break;
-
-    case 2:
-        result = ((u32 (*)(u32, u32))callback)(
-            stack[0], stack[1]);
-        break;
-
-    case 3:
-        result = ((u32 (*)(u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2]);
-        break;
-
-    case 4:
-        result = ((u32 (*)(u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3]);
-        break;
-
-    case 5:
-        result = ((u32 (*)(u32, u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3], stack[4]);
-        break;
-
-    case 6:
-        result = ((u32 (*)(u32, u32, u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3], stack[4],
-            stack[5]);
-        break;
-
-    case 7:
-        result = ((u32 (*)(u32, u32, u32, u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3], stack[4],
-            stack[5], stack[6]);
-        break;
-
-    case 8:
-        result = ((u32 (*)(u32, u32, u32, u32, u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3], stack[4],
-            stack[5], stack[6], stack[7]);
-        break;
-
-    case 9:
-        result = ((u32 (*)(u32, u32, u32, u32, u32, u32, u32, u32, u32))callback)(
-            stack[0], stack[1], stack[2], stack[3], stack[4],
-            stack[5], stack[6], stack[7], stack[8]);
-        break;
-
-    default:
-        return;
-    }
-
-    context = (u8 *)lbl_80367180;
-    stack = *(u32 **)(context + 0x18);
-
-    *stack = result;
-    *(u32 **)(context + 0x18) = stack + 1;
+result= ((u32 (*)(void))*(void **)((u8 *)arg0+4))();
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 1:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32))*(void **)((u8 *)arg0+4))(stack[0]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 2:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 3:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 4:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 5:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3],stack[4]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 6:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3],stack[4],stack[5]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 7:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3],stack[4],stack[5],stack[6]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 8:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32,u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3],stack[4],stack[5],stack[6],stack[7]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+case 9:
+stack=*(u32 **)((u8 *)lbl_80367180+0x18);
+result= ((u32 (*)(u32,u32,u32,u32,u32,u32,u32,u32,u32))*(void **)((u8 *)arg0+4))(stack[0],stack[1],stack[2],stack[3],stack[4],stack[5],stack[6],stack[7],stack[8]);
+stack=(*(u32 **)((u8 *)lbl_80367180+0x18))++;
+*stack=result;
+break;
+}
 }
 
 void fn_80011D20(void) {
