@@ -1,6 +1,5 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-volatile u32 __EXIRegsImm[16] : 0xCC006800;
 
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
