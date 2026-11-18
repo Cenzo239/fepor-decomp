@@ -391,19 +391,17 @@ return 6;
 }
 
 #pragma global_optimizer off
-char *fn_80103DDC(void *arg0, void *arg1) {
-    void fn_80231D94(void *, void *, ...);
-    extern char lbl_8032BB18[];
-    extern u8 lbl_802734D0[];
-    s32 a;
-    s32 c;
-    u8 *row;
-
-    a = *(s32 *)((char *)arg0 + 4);
-    c = *(s32 *)((char *)*(void **)((char *)arg1 + 0x18) + 0x3c);
-    row = (u8 *)(c + a);
-    fn_80231D94(lbl_8032BB18, lbl_802734D0 + 0x1bf, a, row[0x14]);
-    return lbl_8032BB18;
+char *fn_80103DDC(const void *arg0, const void *arg1) {
+void sprintf(void *,void *,...);
+extern char lbl_8032BB18[];
+extern u8 lbl_802734D0[];
+s32 a=*(const s32 *)((const char *)arg0+4);
+const void *obj=*(void *const *)((const char *)arg1+0x18);
+u8 *base=*(u8 *const *)((const char *)obj+0x3c);
+u8 *row=base+a;
+s32 value=row[0x14];
+sprintf(lbl_8032BB18,lbl_802734D0+0x1bf,a,value);
+return lbl_8032BB18;
 }
 #pragma global_optimizer reset
 s32 fn_80103E30(void) {
@@ -420,20 +418,17 @@ s32 fn_80103E48(void) {
 }
 
 #pragma global_optimizer off
+#pragma optimization_level 3
 char *fn_80103E50(s32 arg0, void *arg1) {
-    void sprintf(void *, void *, ...);
-    extern char lbl_8032BAF8[];
-    extern u8 lbl_802734D0[];
-    extern f32 lbl_8036A0D8;
-    f32 value;
-    u8 *strings;
-    f32 scale;
-    strings = lbl_802734D0;
-    scale = lbl_8036A0D8;
-    value = *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x18) + 0x3C) + 0xc);
-    sprintf(lbl_8032BAF8, strings + 0x1dc, scale * value);
-    return lbl_8032BAF8;
+void sprintf(void *, void *, ...);
+extern char lbl_8032BAF8[]; extern u8 lbl_802734D0[]; extern f32 lbl_8036A0D8;
+f32 value; u8 *strings; f32 scale;
+scale=lbl_8036A0D8; strings=lbl_802734D0;
+value=*(f32*)((u8*)*(void**)((u8*)*(void**)((u8*)arg1+0x18)+0x3c)+0xc);
+sprintf(lbl_8032BAF8,strings+0x1dc,scale*value);
+return lbl_8032BAF8;
 }
+#pragma optimization_level reset
 #pragma global_optimizer reset
 s32 Options_AdjustRatioPad(s32 unused, void *menu) {
     extern void *gPadInput;
