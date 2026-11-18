@@ -259,7 +259,7 @@ extern u16 lbl_802EFE20;
 typedef struct { f32 x, y, z; } CameraVec;
 typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
-extern f32 lbl_80369098, lbl_8036909C, lbl_80369084;
+extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
 static inline void *Camera_SelectTarget(u8 *state, void *first, void *second) {
     if ((*(u32 *)(state+8)&0x20000000) && first) return first;
