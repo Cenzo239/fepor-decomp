@@ -2038,38 +2038,29 @@ s32 fn_80135664(void *arg0, void *arg1) {
     return Status_Test(M2C_FIELD(arg0, s32 *, 0xCC) + 0x1BC, M2C_FIELD(arg1, u8 *, 0x18)) == 0;
 }
 
-void fn_801356D0(void **arg0, s32 arg1) {
-    M2C_UNK __ptmf_scall(s32, s32);
-    extern M2C_UNK lbl_80291860;
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    void *temp_r30;
-    void *var_r31;
-
-    M2C_FIELD(*arg0, M2C_UNK (**)(), 0x20)();
-    sp14 = arg1;
-    temp_r30 = arg0 + 0x40;
-    sp8 = M2C_FIELD(&lbl_80291860, s32 *, 0);
-    spC = M2C_FIELD(&lbl_80291860, s32 *, 4);
-    sp10 = M2C_FIELD(&lbl_80291860, s32 *, 8);
-    sp18 = M2C_FIELD(&lbl_80291860, s32 *, 0);
-    var_r31 = M2C_FIELD(temp_r30, void **, 4);
-    sp1C = M2C_FIELD(&lbl_80291860, s32 *, 4);
-    sp20 = M2C_FIELD(&lbl_80291860, s32 *, 8);
-    sp24 = arg1;
-loop_2:
-    if (var_r31 != temp_r30) {
-        __ptmf_scall(M2C_FIELD(var_r31, s32 *, 8), sp14);
-        var_r31 = M2C_FIELD(var_r31, void **, 4);
-        goto loop_2;
-    }
+#pragma cplusplus on
+extern "C" void fn_801356D0(void *arg0, s32 arg1) {
+extern u8 lbl_80291860[];
+struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; };
+struct Node { Node *prev; Node *next; Obj *obj; };
+typedef void (Obj::*PTMF)(s32);
+struct Pair { PTMF ptmf; s32 arg; };
+Pair p[2];
+Node *it;
+Node *sent;
+((Obj*)arg0)->v6();
+sent=(Node*)((u8*)arg0+0x40);
+p[0].ptmf=*(PTMF*)lbl_80291860;
+p[0].arg=arg1;
+((u32*)&p[1].ptmf)[0]=((u32*)&p[0].ptmf)[0];
+it=sent->next;
+((u32*)&p[1].ptmf)[1]=((u32*)&p[0].ptmf)[1];
+((u32*)&p[1].ptmf)[2]=((u32*)&p[0].ptmf)[2];
+p[1].arg=arg1;
+while(it!=sent) { (it->obj->*p[0].ptmf)(p[0].arg); it=it->next; }
 }
+
+#pragma cplusplus reset
 
 #pragma cplusplus reset
 #pragma global_optimizer off
