@@ -371,14 +371,14 @@ void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even,
     *((s8 *)region + 0xD) = 1;
 }
 
-#pragma scheduling off
 void GXInitTlutRegion(u32 *arg0, u32 arg1, u32 arg2) {
-      *arg0 = 0;
-      *arg0 = __rlwimi(*arg0, arg1 - 0x80000, 23, 22, 31);
-      *arg0 = __rlwimi(*arg0, arg2, 10, 11, 21);
-      *arg0 = __rlwimi(*arg0, 0x65, 24, 0, 7);
-  }
-#pragma scheduling reset
+    u32 t;
+    *arg0 = 0;
+    t = arg1 - 0x80000;
+    *arg0 = __rlwimi(*arg0, t, 23, 22, 31);
+    *arg0 = __rlwimi(*arg0, arg2, 10, 11, 21);
+    *arg0 = __rlwimi(*arg0, 0x65, 24, 0, 7);
+}
 
 void fn_80222EB4(void) {
 void __GXFlushTextureState(void);
