@@ -3126,8 +3126,41 @@ M2C_FIELD(b,f32 *,0x30)=1.0f;
 
 #pragma cplusplus reset
 
-void fn_801BA200(void *arg0) {
-    return;
+void fn_801BA200(void *self) {
+void *Ui_FindChild(void*,s32,s32); void *Res_GetEntry(s32); void fn_8017AA48(void*,void*,void*); void *fn_80105710(void*);
+s8 Unit_FindItemSlot(void*,void*);s8 fn_80093010(void*,void*);void Unit_RemoveItem(void*,s32);u8 fn_8014D8DC(void*);
+s32 fn_800C39A4(void*,void*);void fn_800C3864(void*,s32);void Allegiance_SetMask(s32,s32,s32,s32,s32,s32,s32,s32,void*);
+extern u8 gUiContext[],gBattleState[],gConvoy[],gUnits[];extern f32 lbl_8036B2DC;
+u8 mask[8];
+void *child;
+void *entry;
+u8 *unit;
+void *item;
+s32 i;
+child=Ui_FindChild(self,0x82,0);
+*(f32*)((u8*)child+0x30)=lbl_8036B2DC;
+child=Ui_FindChild(self,0x108,0);
+*(f32*)((u8*)child+0x30)=lbl_8036B2DC;
+Ui_FindChild(self,0x109,0);
+entry=Res_GetEntry(gUiContext[0x14]);
+fn_8017AA48(*(void**)((u8*)self+0x60),entry,self);
+unit=*(u8**)gUiContext;
+item=fn_80105710(entry);
+if(item) {
+if(Unit_FindItemSlot(unit,item)>=0) {
+Unit_RemoveItem(unit,fn_80093010(unit,item));
+} else if(fn_8014D8DC(gBattleState) && fn_800C39A4(gConvoy,item)>=0) {
+fn_800C3864(gConvoy,fn_800C39A4(gConvoy,item));
+} else {
+Allegiance_SetMask(1,0,0,0,0,1,0,0,mask);
+for(i=1;i<=0x9f;i++) {
+if((u8)i) unit=gUnits+((u8)i-1)*0x280;else unit=0;
+if(*(u32*)(unit+0x188) && mask[*(u8*)(*(u8**)(unit+0x190)+8)] && Unit_FindItemSlot(unit,item)>=0) {
+Unit_RemoveItem(unit,fn_80093010(unit,item)); break;
+}
+}
+}
+}
 }
 
 #pragma cplusplus on
@@ -9097,41 +9130,71 @@ void fn_801C7080(void) {
     u32 tmp;
     s32 i;
     u32 zero;
-    u8 b1;
+
     proc = Process_Find(LightFade_script);
-    if (proc == NULL) work = NULL;
-    else work = *(u8 **)((u8 *)proc + 0x30);
+    if (proc == NULL)
+        work = NULL;
+    else
+        work = *(u8 **)((u8 *)proc + 0x30);
     if (work != NULL) {
         data = work + 0x284;
         Light_CopyChannel(Light_GetChannel(0), Light_GetChannel(1));
         Light_CopyChannel(Light_GetChannel(2), Light_GetChannel(3));
+
         tmp = lbl_8036B3E0;
-        data[4] = ((u8 *)&tmp)[0]; data[5] = ((u8 *)&tmp)[1]; data[6] = ((u8 *)&tmp)[2]; data[7] = ((u8 *)&tmp)[3];
+        data[4] = ((u8 *)&tmp)[0];
+        data[5] = ((u8 *)&tmp)[1];
+        data[6] = ((u8 *)&tmp)[2];
+        data[7] = ((u8 *)&tmp)[3];
+
         tmp2 = lbl_8036B3E4;
-        data[0] = ((u8 *)&tmp2)[0]; data[1] = ((u8 *)&tmp2)[1]; data[2] = ((u8 *)&tmp2)[2]; data[3] = ((u8 *)&tmp2)[3];
+        data[0] = ((u8 *)&tmp2)[0];
+        data[1] = ((u8 *)&tmp2)[1];
+        data[2] = ((u8 *)&tmp2)[2];
+        data[3] = ((u8 *)&tmp2)[3];
+
         fog = Fog_GetColor();
-        b1 = fog[1];
-        zero = b1 - b1;
-        data[8] = b1;
-        data[9] = fog[2];
-        data[10] = fog[3];
+        {
+            u8 b1 = fog[1];
+            zero = 0;
+            data[8] = b1;
+            data[9] = fog[2];
+            data[10] = fog[3];
+        }
+
         for (i = 0; i < 2; i++) {
-            *(u32 *)(data + 0x0c) = zero; *(u32 *)(data + 0x10) = zero;
-            *(u32 *)(data + 0x14) = zero; *(u32 *)(data + 0x18) = zero;
-            *(u32 *)(data + 0x1c) = zero; *(u32 *)(data + 0x20) = zero;
-            *(u32 *)(data + 0x24) = zero; *(u32 *)(data + 0x28) = zero;
-            *(u32 *)(data + 0x2c) = zero; *(u32 *)(data + 0x30) = zero;
-            *(u32 *)(data + 0x34) = zero; *(u32 *)(data + 0x38) = zero;
-            *(u32 *)(data + 0x3c) = zero; *(u32 *)(data + 0x40) = zero;
-            *(u32 *)(data + 0x44) = zero; *(u32 *)(data + 0x48) = zero;
-            *(u32 *)(data + 0x4c) = zero; *(u32 *)(data + 0x50) = zero;
-            *(u32 *)(data + 0x54) = zero; *(u32 *)(data + 0x58) = zero;
-            *(u32 *)(data + 0x5c) = zero; *(u32 *)(data + 0x60) = zero;
-            *(u32 *)(data + 0x64) = zero; *(u32 *)(data + 0x68) = zero;
-            *(u32 *)(data + 0x6c) = zero; *(u32 *)(data + 0x70) = zero;
-            *(u32 *)(data + 0x74) = zero; *(u32 *)(data + 0x78) = zero;
-            *(u32 *)(data + 0x7c) = zero; *(u32 *)(data + 0x80) = zero;
-            *(u32 *)(data + 0x84) = zero; *(u32 *)(data + 0x88) = zero;
+            *(u32 *)(data + 0x0c) = zero;
+            *(u32 *)(data + 0x10) = zero;
+            *(u32 *)(data + 0x14) = zero;
+            *(u32 *)(data + 0x18) = zero;
+            *(u32 *)(data + 0x1c) = zero;
+            *(u32 *)(data + 0x20) = zero;
+            *(u32 *)(data + 0x24) = zero;
+            *(u32 *)(data + 0x28) = zero;
+            *(u32 *)(data + 0x2c) = zero;
+            *(u32 *)(data + 0x30) = zero;
+            *(u32 *)(data + 0x34) = zero;
+            *(u32 *)(data + 0x38) = zero;
+            *(u32 *)(data + 0x3c) = zero;
+            *(u32 *)(data + 0x40) = zero;
+            *(u32 *)(data + 0x44) = zero;
+            *(u32 *)(data + 0x48) = zero;
+            *(u32 *)(data + 0x4c) = zero;
+            *(u32 *)(data + 0x50) = zero;
+            *(u32 *)(data + 0x54) = zero;
+            *(u32 *)(data + 0x58) = zero;
+            *(u32 *)(data + 0x5c) = zero;
+            *(u32 *)(data + 0x60) = zero;
+            *(u32 *)(data + 0x64) = zero;
+            *(u32 *)(data + 0x68) = zero;
+            *(u32 *)(data + 0x6c) = zero;
+            *(u32 *)(data + 0x70) = zero;
+            *(u32 *)(data + 0x74) = zero;
+            *(u32 *)(data + 0x78) = zero;
+            *(u32 *)(data + 0x7c) = zero;
+            *(u32 *)(data + 0x80) = zero;
+            *(u32 *)(data + 0x84) = zero;
+            *(u32 *)(data + 0x88) = zero;
             data += 0x80;
         }
     }
@@ -12531,15 +12594,15 @@ void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex();
 void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
 extern f32 lbl_8036B4E8;
 u8 color[4];
-s16 target; s32 old;
+s32 target; s32 old;
 s32 x,y; s16 x2,y2;
 ((MenuD28*)self)->v3();
-target=*(s16*)(self+0x70)*0x16;
-if(*(s32*)(self+0x78)!=0) target+=0x18;
+target=(s16)(*(s16*)(self+0x70)*0x16);
+if(*(s32*)(self+0x78)!=0) target=(s16)(target+0x18);
 old=*(s16*)(self+0x72);
 if((s16)old<0 || *(s16*)(self+0x74)<0) { *(s16*)(self+0x72)=target; *(s16*)(self+0x74)=0; }
 else {
-*(s16*)(self+0x72)=(old+(target+1))>>1;
+*(s16*)(self+0x72)=(old+((s16)target+1))>>1;
 *(s16*)(self+0x74)=(*(s16*)(self+0x74)+1)>>1;
 }
 x=*(s16*)(self+0x72); y=*(s16*)(self+0x74);
@@ -15731,8 +15794,9 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
     s16 pt[2];
-    s16 a54, a4e, a56, a62, diff, x;
-    s32 prod;
+    s16 temp_r6;
+    s16 temp_r6_2;
+    s32 temp_r7;
 #pragma cplusplus on
     struct Obj {
         virtual void v0() = 0;
@@ -15750,16 +15814,12 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    a54 = M2C_FIELD(arg1, s16 *, 0x54);
-    a4e = M2C_FIELD(arg1, s16 *, 0x4E);
-    a56 = M2C_FIELD(arg1, s16 *, 0x56);
-    diff = (s16)(a4e - a54);
-    x = M2C_FIELD(arg1, s16 *, 0x60);
-    a62 = M2C_FIELD(arg1, s16 *, 0x62);
-    prod = a56 * diff;
-    pt[0] = x;
-    pt[1] = (s16)(prod + a62);
-    *arg0 = *fn_8013F748(arg1, &spC, pt, a62, prod, diff);
+    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
+    temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
+    temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
+    pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
+    pt[1] = (s16)(temp_r7 + temp_r6_2);
+    *arg0 = *fn_8013F748(arg1, &spC, pt, temp_r6_2, temp_r7, temp_r6);
 }
 #pragma optimization_level reset
 void *fn_801D2C20(void) {
