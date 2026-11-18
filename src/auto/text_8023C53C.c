@@ -69,6 +69,9 @@ u8 *p=lbl_80368950->cursor;
 lbl_80368950->cursor=p+1;
 return *p;
 }
+static inline f32 ThpReadQuantValue(void) {
+    return (f32)ThpReadByte();
+}
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *lbl_80368950;
 u8 **cursor=&lbl_80368950->cursor;
@@ -527,25 +530,26 @@ s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
 extern ThpDecodeState *lbl_80368950;
 f32 table[64];
-u16 size; u16 i; u16 row; u32 id; u8 *p; f64 *scale;
+u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; u8 *p; f64 *scale;
 size=ThpReadWord()-2;
 do {
 id=ThpReadByte();
 for(i=0;i<64;i++) table[lbl_80282FD8[i]]=(f32)(u32)ThpReadByte();
+state=lbl_80368950;
 scale=(f64 *)(lbl_80282FD8+0x50);
 for(row=0,i=0;row<8;row++,scale++) {
-lbl_80368950->tables[id][(u16)(i+0)]=((f64 *)(lbl_80282FD8+0x50))[0]*((f64)table[(u16)(i+0)]* *scale);
-lbl_80368950->tables[id][(u16)(i+1)]=((f64 *)(lbl_80282FD8+0x50))[1]*((f64)table[(u16)(i+1)]* *scale);
-lbl_80368950->tables[id][(u16)(i+2)]=((f64 *)(lbl_80282FD8+0x50))[2]*((f64)table[(u16)(i+2)]* *scale);
-lbl_80368950->tables[id][(u16)(i+3)]=((f64 *)(lbl_80282FD8+0x50))[3]*((f64)table[(u16)(i+3)]* *scale);
-lbl_80368950->tables[id][(u16)(i+4)]=((f64 *)(lbl_80282FD8+0x50))[4]*((f64)table[(u16)(i+4)]* *scale);
-lbl_80368950->tables[id][(u16)(i+5)]=((f64 *)(lbl_80282FD8+0x50))[5]*((f64)table[(u16)(i+5)]* *scale);
-lbl_80368950->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(i+6)]* *scale);
-lbl_80368950->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
+state->tables[id][(u16)(i+0)]=((f64 *)(lbl_80282FD8+0x50))[0]*((f64)table[(u16)(i+0)]* *scale);
+state->tables[id][(u16)(i+1)]=((f64 *)(lbl_80282FD8+0x50))[1]*((f64)table[(u16)(i+1)]* *scale);
+state->tables[id][(u16)(i+2)]=((f64 *)(lbl_80282FD8+0x50))[2]*((f64)table[(u16)(i+2)]* *scale);
+state->tables[id][(u16)(i+3)]=((f64 *)(lbl_80282FD8+0x50))[3]*((f64)table[(u16)(i+3)]* *scale);
+state->tables[id][(u16)(i+4)]=((f64 *)(lbl_80282FD8+0x50))[4]*((f64)table[(u16)(i+4)]* *scale);
+state->tables[id][(u16)(i+5)]=((f64 *)(lbl_80282FD8+0x50))[5]*((f64)table[(u16)(i+5)]* *scale);
+state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(i+6)]* *scale);
+state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
 i+=8;
 }
 size-=65;
-} while(size);
+} while((u16)size);
 return 0;
 }
 
