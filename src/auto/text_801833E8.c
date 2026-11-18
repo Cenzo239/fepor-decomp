@@ -9317,9 +9317,9 @@ void fn_80194FAC(void *arg0) {
     extern u32 gUiInputFlags;
 
     u8 *self;
-    u8 *data;
-    s32 i;
     s32 offset;
+    s32 i;
+    u8 *data;
     f32 value;
 
     self = (u8 *)arg0;
@@ -9366,19 +9366,12 @@ void fn_80194FAC(void *arg0) {
         *(f32 *)(data + 0x16040) = value;
     }
 
+    i = 0;
     offset = 0;
-
-    for (i = 0; i < 8; i++) {
-        fn_80195178(
-            *(u8 **)(self + 0x30) + offset
-        );
-
-        fn_8006785C(
-            2,
-            fn_801959FC,
-            *(u8 **)(self + 0x30) + offset
-        );
-
+    for (; i < 8; ) {
+        fn_80195178(*(u8 **)(self + 0x30) + offset);
+        fn_8006785C(2, fn_801959FC, *(u8 **)(self + 0x30) + offset);
+        i += 1;
         offset += 0x3250;
     }
 }
