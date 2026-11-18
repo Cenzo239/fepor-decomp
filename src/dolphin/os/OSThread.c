@@ -148,12 +148,11 @@ struct OSThread {
     OSThread *next, *prev;
 };
 #pragma opt_common_subs on
-#pragma global_optimizer off
 static inline void PopThread(OSThreadQueue *queue, OSThread **out) {
-    register OSThread *thread = queue->head;
-    register OSThread *next = thread->next;
+    OSThread *thread = queue->head;
+    OSThread *next = thread->next;
     *out = thread;
-    if ((u32)next == 0) queue->tail = NULL;
+    if (next == NULL) queue->tail = NULL;
     else next->prev = NULL;
     queue->head = next;
 }
@@ -193,7 +192,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     OSThread *next;
     OSThread *tail;
     OSThread *pred;
-    u32 prio;
+    s32 prio;
     OSThreadQueue *q;
         OSContext *cur; OSContext *context;
 
@@ -228,7 +227,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
             thread->next = NULL;
             thread->queue->tail = thread;
             {
-                s32 one = 1;
+                u32 one = 1;
                 RunQueueBits_80368518 |= one << (0x1F - thread->priority);
                 RunQueueHint_8036851C = one;
             }
@@ -254,7 +253,7 @@ void *SelectThread_8020A2C4(s32 arg0) {
     RunQueueHint_8036851C = 0;
     prio = __cntlzw((u32)RunQueueBits_80368518);
     q = (OSThreadQueue *)queue;
-    q += prio;
+    q += (u32)prio;
     PopThread(q, &next);
     if (q->head == NULL) {
         s32 one = 1;
