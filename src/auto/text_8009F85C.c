@@ -1981,7 +1981,7 @@ void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
     s8 Unit_GetCon(void *);
     s8 Unit_GetMov(void *);
     s8 fn_8003C114(void *);
-    s32 fn_800386E0(void *);
+    s8 fn_800386E0(void *);
     f32 fn_80037904(void *, s32);
     s8 fn_8003A1E0(void *);
 
@@ -2011,63 +2011,63 @@ void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
 
     switch (item[0x3A]) {
     case 0:
-        value = (s8)unit[0x19A];
+        value = *(s8 *)(unit + 0x19A);
         break;
 
     case 1:
-        value = (u8)fn_800386B0(unit);
+        value = fn_800386B0(unit);
         break;
 
     case 2:
-        value = (s8)Unit_GetHp(unit);
+        value = Unit_GetHp(unit);
         break;
 
     case 3:
-        value = (s8)unit[0x1A8];
+        value = *(s8 *)(unit + 0x1A8);
         break;
 
     case 4:
-        value = (s8)Unit_GetStr(unit);
+        value = Unit_GetStr(unit);
         break;
 
     case 5:
-        value = (s8)Unit_GetMag(unit);
+        value = Unit_GetMag(unit);
         break;
 
     case 6:
-        value = (s8)Unit_GetSkl(unit);
+        value = Unit_GetSkl(unit);
         break;
 
     case 7:
-        value = (s8)Unit_GetSpd(unit);
+        value = Unit_GetSpd(unit);
         break;
 
     case 8:
-        value = (s8)Unit_GetLck(unit);
+        value = Unit_GetLck(unit);
         break;
 
     case 9:
-        value = (s8)Unit_GetDef(unit);
+        value = Unit_GetDef(unit);
         break;
 
     case 10:
-        value = (s8)Unit_GetRes(unit);
+        value = Unit_GetRes(unit);
         break;
 
     case 11:
-        value = (s8)Unit_GetCon(unit);
+        value = Unit_GetCon(unit);
         break;
 
     case 12:
-        value = (s8)Unit_GetMov(unit);
+        value = Unit_GetMov(unit);
         break;
 
     case 13:
-        value = (s8)fn_8003C114(unit);
+        value = fn_8003C114(unit);
         break;
 
     case 14:
-        value = (s8)fn_800386E0(unit);
+        value = fn_800386E0(unit);
         break;
 
     case 15:
@@ -2080,7 +2080,7 @@ void fn_800A2410(s32 arg0, s32 arg1, void *arg2)
         break;
 
     case 17:
-        value = (s8)fn_8003A1E0(unit);
+        value = fn_8003A1E0(unit);
         break;
     }
 
