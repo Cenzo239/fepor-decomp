@@ -28,15 +28,13 @@ typedef struct HashKey {
     u32 h2;
 } HashKey;
 
-static inline HashKey Res_HashPair(char *str) {
-    HashKey key;
-    key.h2 = key.h1 = 0;
+static inline void Res_HashPair(char *str, HashKey *key) {
+    key->h2 = key->h1 = 0;
     while (*str) {
-        key.h1 = (s8)*str + key.h1 * 37;
-        key.h2 = (s8)*str + key.h2 * 31;
+        key->h1 = (s8)*str + key->h1 * 37;
+        key->h2 = (s8)*str + key->h2 * 31;
         str++;
     }
-    return key;
 }
 
 static inline u8 *Res_AllocEntry(char *name, void *value) {
