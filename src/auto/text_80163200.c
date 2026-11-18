@@ -18638,8 +18638,6 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
     return ret;
 }
 
-typedef struct UiListPoint { s16 x, y; } UiListPoint;
-typedef struct UiListMetrics { u8 pad[0x4E]; s16 index; u8 pad50[4]; s16 step; s16 x; s16 y; } UiListMetrics;
 #pragma optimization_level 2
 void fn_80181C40(s32 *arg0, void *arg1) {
 struct Point {s16 x,y;};
