@@ -2,6 +2,8 @@
 #include "common.h"
 #include "actor.h"
 extern u8 lbl_8032FE24[];
+typedef struct FE24Buf { u8 buf[36]; } FE24Buf;
+extern FE24Buf fe24buf;
 extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
 
@@ -7657,7 +7659,7 @@ def:
 }
 #pragma use_lmw_stmw reset
 
-u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
+s32 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 {
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
@@ -7688,9 +7690,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     void fn_80079198(void *, void *);
     void fn_800791F0(void *, void *);
     void fn_801222A4(void *, void *);
-    void fn_80122170(void *, void *, u16);
-    u8 fn_8011F184(void *,
-                   u8 **);
+    void fn_80122170(void *, void *, s32);
+    u8 fn_8011F184(void *, u8 **);
     void *Sound_FindByName(void *);
     void Sound_FadeToVol(void *, s32);
     void Sound_FadeFromZero(void *, s32);
@@ -7701,723 +7702,504 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     void *fn_8014D8FC(void *);
     void fn_8008A290(s32, s32);
 
-    u8 *self;
+    struct Item {
+        u8 pad[0x34];
+        void **unk34;
+        f32 unk38;
+        f32 unk3C;
+        u8 pad40[3];
+        u8 unk43;
+    };
+    struct Obj {
+        u8 pad0[0x18];
+        void *unk18;
+        u8 pad1C[0x14];
+        u8 *text;
+        void *pad34[4];
+        void *unk44;
+        struct Item *items[4];
+        void *unk58;
+        u8 pad5C[2];
+        s8 unk5E;
+        u8 pad5F;
+        u8 unk60;
+        u8 pad61;
+        u8 unk62;
+        u8 unk63;
+        u8 unk64;
+        u8 unk65;
+        u8 unk66;
+        u8 unk67;
+        s16 unk68;
+    };
+
     u8 **textRef;
+    struct Obj *self;
     u8 *text;
-    u8 *item;
-    u8 *cur;
+    struct Item *item;
     u8 *buffer;
     u8 *soundName;
     void *object;
     void *sound;
-    s32 ch;
+    u8 ch;
     s32 command;
     s32 index;
-    s32 selected;
+    u8 selected;
     s32 count;
     s32 i;
+    struct Obj *cur;
     s32 result;
-    s32 color;
+    u8 color;
     s32 speed;
     u8 oldSlot;
+    s8 idx;
+    s32 bit;
 
-    self = (u8 *)arg0;
+    self = (struct Obj *)arg0;
     textRef = (u8 **)arg1;
 
     text = *textRef;
-    ch = (s8)*text;
+    ch = *text;
 
-    if (ch == 0) {
+    if ((s8)ch == 0) {
         gUiPanelFlags |= 0x20;
         return 0;
     }
 
-    if (ch == 0xA) {
+    if ((s8)ch == 0xA) {
         fn_801220B8(lbl_8032BDE8);
-        fn_801229F8(*(void **)(self + 0x44));
-
+        fn_801229F8(self->unk44);
         text = *textRef;
         *textRef = text + 1;
-
         return 1;
     }
 
-    if (ch == '#') {
-        selected = (s8)self[0x5E];
-
-        if (selected < 0) {
-            index = -1;
-        } else if (
-            *(void **)(self + 0x48) != 0 &&
-            (s8)(*(u8 **)(self + 0x48))[0x43] ==
-                selected
-        ) {
-            index = 0;
-        } else if (
-            *(void **)(self + 0x4C) != 0 &&
-            (s8)(*(u8 **)(self + 0x4C))[0x43] ==
-                selected
-        ) {
-            index = 1;
-        } else if (
-            *(void **)(self + 0x50) != 0 &&
-            (s8)(*(u8 **)(self + 0x50))[0x43] ==
-                selected
-        ) {
-            index = 2;
-        } else if (
-            *(void **)(self + 0x54) != 0 &&
-            (s8)(*(u8 **)(self + 0x54))[0x43] ==
-                selected
-        ) {
-            index = 3;
+    if ((s8)ch == '#') {
+        selected = self->unk5E;
+        if ((s8)selected < 0) {
+            idx = -1;
+        } else if (self->items[0] != 0 && (s8)self->items[0]->unk43 == (s8)selected) {
+            idx = 0;
+        } else if (self->items[1] != 0 && (s8)self->items[1]->unk43 == (s8)selected) {
+            idx = 1;
+        } else if (self->items[2] != 0 && (s8)self->items[2]->unk43 == (s8)selected) {
+            idx = 2;
+        } else if (self->items[3] != 0 && (s8)self->items[3]->unk43 == (s8)selected) {
+            idx = 3;
         } else {
-            index = -1;
+            idx = -1;
         }
 
-        if ((s8)index < 0) {
+        if (idx < 0) {
             item = 0;
         } else {
-            item = *(u8 **)(self + 0x48 + index * 4);
+            item = self->items[idx];
         }
 
         if (item != 0) {
-            fn_80121D60(
-                lbl_8032BDE8,
-                **(void ***)(item + 0x34)
-            );
-
-            if (self[0x67] == 0) {
-                self[0x67] = 1;
-
-                Ui_SetTooltip(
-                    **(void ***)(item + 0x34),
-                    (s32)*(f32 *)(item + 0x38),
-                    (s32)*(f32 *)(item + 0x3C),
-                    self
-                );
-
-                if ((s8)self[0x65] !=
-                    (s8)self[0x5E]) {
-
-                    self[0x65] = self[0x5E];
-
+            fn_80121D60(lbl_8032BDE8, *item->unk34);
+            if (self->unk67 == 0) {
+                self->unk67 = 1;
+                Ui_SetTooltip(*item->unk34, (s32)item->unk38, (s32)item->unk3C, self);
+                if ((s8)self->unk65 != (s8)self->unk5E) {
+                    self->unk65 = self->unk5E;
                     cur = self;
                     i = 0;
-
                     do {
-                        item = *(u8 **)(cur + 0x48);
-
+                        item = *(struct Item **)((u8 *)cur + 0x48);
                         if (item != 0) {
-                            if ((s8)item[0x43] ==
-                                (s8)self[0x5E]) {
-
-                                if (
-                                    *(void **)(self + 0x58) != 0 &&
-                                    fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    ) != 0 &&
-                                    fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    ) != 0xFF
-                                ) {
-                                    color = fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    );
+                            if ((s8)item->unk43 == (s8)self->unk5E) {
+                                if (self->unk58 != 0 && fn_80109B24(self->unk58) != 0
+                                    && (u8)fn_80109B24(self->unk58) != 0xFF) {
+                                    color = fn_80109B24(self->unk58);
                                 } else {
                                     color = 0xFF;
                                 }
-
-                                Obj_StartTintEase(
-                                    *(void **)(cur + 0x48),
-                                    (u8)color
-                                );
+                                Obj_StartTintEase(*(void **)((u8 *)cur + 0x48), color);
                             } else {
-                                if (
-                                    *(void **)(self + 0x58) != 0 &&
-                                    fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    ) != 0 &&
-                                    fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    ) != 0xFF
-                                ) {
-                                    color = fn_80109B24(
-                                        *(void **)(self + 0x58)
-                                    );
+                                if (self->unk58 != 0 && fn_80109B24(self->unk58) != 0
+                                    && (u8)fn_80109B24(self->unk58) != 0xFF) {
+                                    color = fn_80109B24(self->unk58);
                                 } else {
                                     color = 0xFF;
                                 }
-
-                                Obj_StartTintEase(
-                                    *(void **)(cur + 0x48),
-                                    (u8)(color - 0x4D)
-                                );
+                                Obj_StartTintEase(*(void **)((u8 *)cur + 0x48), (u8)(color - 0x4D));
                             }
                         }
-
-                        i++;
-                        cur += 4;
+                        i += 1;
+                        cur = (struct Obj *)((u8 *)cur + 4);
                     } while (i < 4);
                 }
             }
         }
 
         count = fn_80010710(*textRef);
-
         i = 0;
-
         while (i < count) {
             text = *textRef;
-
-            fn_80122114(
-                lbl_8032BDE8,
-                *text
-            );
-
+            fn_80122114(lbl_8032BDE8, *text);
+            object = self->unk44;
             text = *textRef;
             *textRef = text + 1;
-
-            fn_80122A2C(
-                *(void **)(self + 0x44),
-                *text
-            );
-
+            fn_80122A2C(object, *text);
             i++;
         }
-
         return 1;
     }
 
-    if (ch != '$') {
+    if ((s8)ch != '$') {
         return 3;
     }
 
     text = *textRef;
     *textRef = text + 1;
-
     text = *textRef;
     *textRef = text + 1;
-
     command = (s8)*text;
 
     switch (command) {
-    case '<':
-        self[0x60] = 0;
-
+    case 'K':
+        self->unk60 = 0;
         text = *textRef;
-
-        TalkUi_SpawnKeyWait2(
-            *(void **)(self + 0x44),
-            self,
-            (s8)text[1] == 'P'
-        );
-
+        TalkUi_SpawnKeyWait2(self->unk44, self, (s8)text[1] == 'P');
         return 2;
 
-    case '=':
+    case 'P':
+    clear_box:
         fn_801220B8(lbl_8032BDE8);
-
-        object = *(void **)(self + 0x44);
-
+        object = self->unk44;
         if (object != 0) {
             fn_801225D4(object, self);
         }
-
         return 2;
 
-    case '>':
+    case 'c':
         text = *textRef;
         *textRef = text + 1;
-
         index = (u8)(*text - '0');
-
         *textRef -= 3;
-
         TalkUi_LayoutSlot(self, index);
-
         text = *textRef;
         *textRef = text + 3;
-
-        oldSlot = self[0x5E];
-
+        oldSlot = self->unk5E;
         if ((s8)oldSlot != index) {
-            self[0x65] = oldSlot;
-            self[0x5E] = index;
+            self->unk65 = oldSlot;
+            self->unk5E = (s8)index;
             fn_80120F94();
         }
-
         buffer = lbl_8032FE24;
-
-        while (**textRef != '|') {
-            text = *textRef;
+        text = *textRef;
+        while ((s8)*text != '|') {
             *textRef = text + 1;
-
             *buffer++ = *text;
+            text = *textRef;
         }
-
         *buffer = 0;
-
         text = *textRef;
         *textRef = text + 1;
-
-        object = fn_80049DA4(
-            (s32)((u8 *)TalkUi_str + 0x6F),
-            (s32)lbl_8032FE24,
-            0
-        );
-
+        object = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x6F), (s32)lbl_8032FE24, 0);
         fn_8011FB58(self, (s32)object);
-
         return 2;
 
-    case '?':
+    case 'd':
         text = *textRef;
         *textRef = text + 1;
-
         index = (u8)(*text - '0');
-
         *textRef -= 3;
-
         TalkUi_LayoutSlot(self, index);
-
         text = *textRef;
         *textRef = text + 3;
-
-        oldSlot = self[0x5E];
-
-        if ((s8)oldSlot != index) {
-            self[0x65] = oldSlot;
-            self[0x5E] = index;
+        oldSlot = self->unk5E;
+        if ((s8)oldSlot == index) {
+            result = 0;
+        } else {
+            self->unk65 = oldSlot;
+            self->unk5E = (s8)index;
+            fn_80120F94();
+            result = 1;
+        }
+        if ((u8)result == 0) {
             fn_80120F94();
         }
-
         if (!(gUiInputFlags & 3)) {
-            fn_80122238(
-                *(void **)(self + 0x44),
-                self
-            );
+            fn_80122238(self->unk44, self);
         }
-
-        selected = (s8)self[0x5E];
-        index = -1;
-
-        if (selected >= 0) {
-            for (i = 0; i < 4; i++) {
-                item = *(u8 **)(self + 0x48 + i * 4);
-
-                if (item != 0 &&
-                    (s8)item[0x43] == selected) {
-                    index = i;
-                    break;
-                }
-            }
-        }
-
-        if (gUiInputFlags & 3) {
-            item = *(u8 **)(self + 0x48 + index * 4);
-            fn_8007AD6C(item);
+        selected = self->unk5E;
+        if ((s8)selected < 0) {
+            idx = -1;
+        } else if (self->items[0] != 0 && (s8)self->items[0]->unk43 == (s8)selected) {
+            idx = 0;
+        } else if (self->items[1] != 0 && (s8)self->items[1]->unk43 == (s8)selected) {
+            idx = 1;
+        } else if (self->items[2] != 0 && (s8)self->items[2]->unk43 == (s8)selected) {
+            idx = 2;
+        } else if (self->items[3] != 0 && (s8)self->items[3]->unk43 == (s8)selected) {
+            idx = 3;
         } else {
-            item = *(u8 **)(self + 0x48 + index * 4);
-            fn_800790D4(item, self);
+            idx = -1;
         }
-
-        *(void **)(self + 0x48 + index * 4) = 0;
-        self[0x5E] = 0xFF;
-
+        if (gUiInputFlags & 3) {
+            fn_8007AD6C(self->items[idx]);
+        } else {
+            fn_800790D4(self->items[idx], self);
+        }
+        self->items[idx] = 0;
+        self->unk5E = -1;
         return 2;
 
-    case 'A':
+    case 's':
         text = *textRef;
         *textRef = text + 1;
-
         index = (u8)(*text - '0');
-
-        if ((s8)self[0x5E] != index) {
-            self[0x65] = self[0x5E];
-            self[0x5E] = index;
+        if ((s8)self->unk5E != index) {
+            self->unk65 = self->unk5E;
+            self->unk5E = (s8)index;
             fn_80120F94();
         }
-
-        item = *(u8 **)(self + 0x34 + index * 4);
-
-        if (item != 0 && item[0x68] != 0) {
+        object = self->pad34[index];
+        if (object != 0 && *(u8 *)((u8 *)object + 0x68) != 0) {
             *textRef -= 3;
-
             TalkUi_LayoutSlot(self, index);
-
             *textRef += 3;
+            goto clear_box;
         }
-
         return 1;
 
-    case 'B':
+    case 'W':
         text = *textRef;
-
-        if ((s8)*text == 'D') {
+        ch = *text;
+        switch ((s8)ch) {
+        case 'D':
             *textRef = text + 1;
-
             if (!(gUiInputFlags & 3)) {
-                fn_80122238(
-                    *(void **)(self + 0x44),
-                    self
-                );
+                fn_80122238(self->unk44, self);
             }
-
             fn_80120F94();
-
             return 2;
-        }
-
-        if ((s8)*text == '-') {
+        case '-':
             *textRef = text + 1;
-
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
-                    sound = Sound_FindByName(
-                        (void *)lbl_80367A5C
-                    );
-
+                    sound = Sound_FindByName((void *)lbl_80367A5C);
                     Sound_FadeToVol(sound, 8);
                 }
-
-                cur = self;
                 i = 0;
-
+                cur = self;
                 do {
-                    object = *(void **)(cur + 0x34);
-
-                    if (object != 0) {
-                        fn_80122238(object, self);
-                    }
-
+                    object = *(void **)((u8 *)cur + 0x34);
+                    if (object != 0) fn_80122238(object, self);
                     i++;
-                    cur += 4;
+                    cur = (struct Obj *)((u8 *)cur + 4);
                 } while (i < 4);
-
-                cur = self;
                 i = 0;
-
+                cur = self;
                 do {
-                    object = *(void **)(cur + 0x48);
-
-                    if (object != 0) {
-                        fn_80079198(object, self);
-                    }
-
+                    object = *(void **)((u8 *)cur + 0x48);
+                    if (object != 0) fn_80079198(object, self);
                     i++;
-                    cur += 4;
+                    cur = (struct Obj *)((u8 *)cur + 4);
                 } while (i < 4);
             }
-
             return 2;
-        }
-
-        if ((s8)*text == '+') {
+        case '+':
             *textRef = text + 1;
-
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
-                    sound = Sound_FindByName(
-                        (void *)lbl_80367A5C
-                    );
-
+                    sound = Sound_FindByName((void *)lbl_80367A5C);
                     Sound_FadeFromZero(sound, 8);
                 }
-
-                cur = self;
                 i = 0;
-
+                cur = self;
                 do {
-                    object = *(void **)(cur + 0x34);
-
-                    if (object != 0) {
-                        fn_801222A4(object, self);
-                    }
-
+                    object = *(void **)((u8 *)cur + 0x34);
+                    if (object != 0) fn_801222A4(object, self);
                     i++;
-                    cur += 4;
+                    cur = (struct Obj *)((u8 *)cur + 4);
                 } while (i < 4);
-
-                cur = self;
                 i = 0;
-
+                cur = self;
                 do {
-                    object = *(void **)(cur + 0x48);
-
-                    if (object != 0) {
-                        fn_800791F0(object, self);
-                    }
-
+                    object = *(void **)((u8 *)cur + 0x48);
+                    if (object != 0) fn_800791F0(object, self);
                     i++;
-                    cur += 4;
+                    cur = (struct Obj *)((u8 *)cur + 4);
                 } while (i < 4);
             }
-
             return 2;
+        default:
+            text = *textRef;
+            *textRef = text + 1;
+            index = (u8)(*text - '0');
+            result = TalkUi_LayoutSlot(self, index);
+            return (u8)result ? 2 : 1;
         }
 
-        return 3;
-
-    case 'C':
+    case 'w':
+        self->unk60 = 0;
         text = *textRef;
+        object = self->unk44;
         *textRef = text + 1;
-
-        index = (u8)(*text - '0');
-
-        result = TalkUi_LayoutSlot(self, index);
-
-        return result != 0 ? 2 : 1;
-
-    case 'D':
-        self[0x60] = 0;
-
-        text = *textRef;
-        *textRef = text + 1;
-
         index = (s8)*text - '0';
+        fn_80122170(object, self, 1 << index);
+        bit = gUiPanelFlags & 0x200;
+        return 2 + (bit != 0);
 
-        fn_80122170(
-            *(void **)(self + 0x44),
-            self,
-            1 << index
-        );
-
-        return 2 + ((gUiPanelFlags & 0x200) != 0);
-
-    case 'E':
+    case 'Y':
         return 2;
 
     case 'F':
         return fn_8011F184(self, textRef);
 
-    case 'G':
+    case 'R':
         buffer = lbl_8032FE24;
-
-        while (**textRef != '|') {
-            text = *textRef;
+        text = *textRef;
+        while ((s8)*text != '|') {
             *textRef = text + 1;
-
             *buffer++ = *text;
+            text = *textRef;
         }
-
         *buffer = 0;
-
         text = *textRef;
         *textRef = text + 1;
-
-        sound = fn_80049DA4(
-            (s32)((u8 *)TalkUi_str + 0x74),
-            (s32)lbl_8032FE24,
-            0
-        );
-
+        sound = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x74), (s32)lbl_8032FE24, 0);
         Sound_Create(sound, self);
-
-        if (self[0x63] != 0) {
-            if (!(gUiInputFlags & 3)) {
-                Process_Goto(self, 0);
-            }
-
+        if (self->unk63 != 0) {
+            if (!(gUiInputFlags & 3)) Process_Goto(self, 0);
             return 2;
         }
-
         return 1;
+
+    case '<':
+        fn_8008A290(self->unk64, self->unk68);
+        return 1;
+
+    case '>':
+        fn_8008A290(3, self->unk68);
+        return 1;
+
+    case 'B':
+        buffer = lbl_8032FE24;
+        text = *textRef;
+        while ((s8)*text != '|') {
+            *textRef = text + 1;
+            *buffer++ = *text;
+            text = *textRef;
+        }
+        *buffer = 0;
+        text = *textRef;
+        *textRef = text + 1;
+        soundName = lbl_8032FE24;
+        if (Str_Cmp(soundName, (u8 *)TalkUi_str + 0x79) == 0) {
+            soundName = (u8 *)TalkUi_str + 0x82;
+            object = fn_8014D8FC(gBattleState);
+            if (object != 0) {
+                soundName = *(u8 **)((u8 *)object + 0x50) + 4;
+            }
+        }
+        if (!(gUiInputFlags & 3)) {
+            sound = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x74), (s32)soundName, 0);
+            self->unk58 = Sound_Create(sound, self);
+        }
+        return 1;
+
+    case 'U':
+        if (self->unk18 == 0) {
+            text = *textRef;
+            *textRef = text + 1;
+            return 1;
+        }
+        text = *textRef;
+        switch ((s8)*text) {
+        case 'b':
+        case 'B':
+            gUiPanelFlags |= 0x100;
+            *textRef = text + 1;
+            Process_DetachChild(self);
+            return 1;
+        default:
+            return 3;
+        }
 
     case 'H':
-        fn_8008A290(
-            self[0x64],
-            *(s16 *)(self + 0x68)
-        );
-
-        return 1;
-
-    case 'I':
-        fn_8008A290(
-            3,
-            *(s16 *)(self + 0x68)
-        );
-
-        return 1;
-
-    case 'J':
-        buffer = lbl_8032FE24;
-
-        while (**textRef != '|') {
-            text = *textRef;
-            *textRef = text + 1;
-
-            *buffer++ = *text;
-        }
-
-        *buffer = 0;
-
+        self->unk60 = 0;
         text = *textRef;
-        *textRef = text + 1;
+        *textRef = text - 2;
+        gUiPanelFlags |= 0x30;
+        return 2;
 
-        soundName = lbl_8032FE24;
-
-        if (Str_Cmp(
-                soundName,
-                (u8 *)TalkUi_str + 0x79
-            ) == 0) {
-
-            object = fn_8014D8FC(gBattleState);
-
-            if (object != 0) {
-                soundName =
-                    *(u8 **)((u8 *)object + 0x50) + 4;
-            } else {
-                soundName = (u8 *)TalkUi_str + 0x82;
-            }
-        }
-
-        if (!(gUiInputFlags & 3)) {
-            sound = fn_80049DA4(
-                (s32)((u8 *)TalkUi_str + 0x74),
-                (s32)soundName,
-                0
-            );
-
-            *(void **)(self + 0x58) =
-                Sound_Create(sound, self);
-        }
-
-        return 1;
-
-    case 'K':
-        if (*(void **)(self + 0x18) == 0) {
-            text = *textRef;
-            *textRef = text + 1;
-            return 1;
-        }
-
+    case 'D':
         text = *textRef;
-
-        if ((s8)*text == 'b') {
-            gUiPanelFlags |= 0x100;
-
-            *textRef = text + 1;
-
-            Process_DetachChild(self);
-
-            return 1;
-        }
-
-        if ((s8)*text == 'B') {
-            self[0x60] = 0;
-
-            *textRef = text - 2;
-
-            gUiPanelFlags |= 0x30;
-
-            return 2;
-        }
-
-        return 3;
-
-    case 'L':
-        text = *textRef;
-
-        if (*text == 'C') {
+        if ((s8)*text == 'C') {
             *textRef = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
-
         return 3;
 
-    case 'M':
+    case 'S':
         text = *textRef;
-
-        if ((s8)*text == 'D') {
+        ch = *text;
+        if ((s8)ch == 'D') {
             *textRef = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
-
-        if ((s8)*text == 'E') {
+        if ((s8)ch == 'E') {
             *textRef = text + 1;
             gUiPanelFlags &= ~8;
             return 1;
         }
-
-        return 3;
-
     case 'N':
         text = *textRef;
-
-        if (*text == 'D') {
+        if ((s8)*text == 'D') {
             *textRef = text + 1;
             gUiPanelFlags ^= 0x40;
             return 1;
         }
+        fn_801220B8(lbl_8032BDE8);
+        fn_801229F8(self->unk44);
+        return 1;
 
-        return 3;
+    case 'M':
+        text = *textRef;
+        switch ((s8)*text) {
+        case 'C':
+            self->unk62 = 0;
+            *textRef = text + 1;
+            break;
+        case 'D':
+            self->unk62 = 1;
+            *textRef = text + 1;
+            break;
+        }
+        return 1;
 
     case 'O':
-        fn_801220B8(lbl_8032BDE8);
-        fn_801229F8(*(void **)(self + 0x44));
-
+        text = *textRef;
+        *textRef = text + 1;
+        self->unk66 = (u8)(*text - '0');
         return 1;
 
-    case 'P':
+    case '=':
         text = *textRef;
-
-        if ((s8)*text == 'C') {
-            self[0x62] = 0;
-            *textRef = text + 1;
-        } else if ((s8)*text == 'D') {
-            self[0x62] = 1;
-            *textRef = text + 1;
+        *textRef = text + 1;
+        self->unk68 = ((s8)*text - '0') * 1000;
+        text = *textRef;
+        *textRef = text + 1;
+        self->unk68 = self->unk68 + ((s8)*text - '0') * 100;
+        text = *textRef;
+        *textRef = text + 1;
+        self->unk68 = self->unk68 + ((s8)*text - '0') * 10;
+        text = *textRef;
+        *textRef = text + 1;
+        self->unk68 = self->unk68 + ((s8)*text - '0');
+        if (self->unk68 == 9999) {
+            self->unk68 = 0x10B;
         }
-
         return 1;
 
-    case 'Q':
-        text = *textRef;
-        *textRef = text + 1;
-
-        self[0x66] = (u8)(*text - '0');
-
-        return 1;
-
-    case 'R':
-        text = *textRef;
-        *textRef = text + 1;
-        speed = ((s8)*text - '0') * 1000;
-        *(s16 *)(self + 0x68) = speed;
-
-        text = *textRef;
-        *textRef = text + 1;
-        speed = *(s16 *)(self + 0x68);
-        speed += ((s8)*text - '0') * 100;
-        *(s16 *)(self + 0x68) = speed;
-
-        text = *textRef;
-        *textRef = text + 1;
-        speed = *(s16 *)(self + 0x68);
-        speed += ((s8)*text - '0') * 10;
-        *(s16 *)(self + 0x68) = speed;
-
-        text = *textRef;
-        *textRef = text + 1;
-        speed = *(s16 *)(self + 0x68);
-        speed += (s8)*text - '0';
-        *(s16 *)(self + 0x68) = speed;
-
-        if (*(s16 *)(self + 0x68) == 9999) {
-            *(s16 *)(self + 0x68) = 0x10B;
-        }
-
-        return 1;
-
-    case 'S':
-        fn_80121D60(
-            lbl_8032BDE8,
-            (u8 *)TalkUi_str + 0x8E
-        );
-
+    case 'G':
+        fn_80121D60(lbl_8032BDE8, (u8 *)TalkUi_str + 0x8E);
         return 1;
 
     default:
@@ -9197,100 +8979,239 @@ void fn_801207D8(void *arg0) {
 
 extern s32 fn_80010710(u8* arg0);
 extern s32 gActiveCam;
-#pragma push
-#pragma optimization_level 3
+#pragma scheduling on
 /* TODO: verify command mappings after table index 23. read_data truncates
  * jumptable_80290110 relocations there; cases s/n/w remain provisional.
  * Instruction match alone does not validate those jump-table entries. */
-s32 fn_801208BC(s8 *text, s32 wanted) {
-s32 fn_80010428(s8 **,s32,f32);
-s8 *fn_80104970(s8 *);
-extern f32 lbl_8036A248;
-s32 longest=-1;
-s32 width;
-s32 selected=wanted;
-s32 font=2;
-u8 *out;
-for (;;) {
-width=0;
-for (;;) {
-if (!(s8)*text) goto done;
-if((s8)*text=='\n') { ++text;break; }
-if((s8)*text=='#') {
-if((s32)(u8)text[1]=='F') font=(s8)text[3]-'0';
-text+=fn_80010710((u8*)text);
-}
-if((s32)(u8)*text=='$') {
-++text;
-switch((s8)*text++) {
-case 'N':
-if((s32)(u8)*text=='D') { ++text;continue; }
-break;
-case 's':
-switch((s8)*text++) {
-case '0':selected=0;continue;
-case '1':selected=1;continue;
-case '2':selected=2;continue;
-case '3':selected=3;continue;
-case '4':selected=4;continue;
-case 'D':if(selected==wanted) goto done;continue;
-default:continue;
-}
-case 'n': {
-switch((s8)*text++) {
-case '0':selected=0;break;
-case '1':selected=1;break;
-case '2':selected=2;break;
-case '3':selected=3;break;
-}
+s32 fn_801208BC(s8 *text, s32 wanted)
 {
-out=lbl_8032FE24;
-while((s32)(u8)*text!='|') *out++=*text++;
-*out=0;++text;continue;
+  s32 fn_80010428(s8 **, s32, f32);
+  s8 *fn_80104970(s8 *);
+  extern f32 lbl_8036A248;
+  s32 longest = -1;
+  s32 width;
+  s32 selected = wanted;
+  s32 font = 2;
+  u8 *out;
+  for (;;)
+  {
+    width = 0;
+    for (;;)
+    {
+      if (!((s8) (*text)))
+      {
+        goto done;
+      }
+      if (((s8) (*text)) == '\n')
+      {
+        ++text;
+        break;
+      }
+      if (((s8) (*text)) == '#')
+      {
+        if (((s32) ((u8) text[1])) == 'F')
+        {
+          font = ((s8) text[3]) - '0';
+        }
+        text += fn_80010710((u8 *) text);
+      }
+      if (((s32) ((u8) (*text))) == '$')
+      {
+        ++text;
+        switch ((s8) (*(text++)))
+        {
+          case 'N':
+            if (((s32) ((u8) (*text))) == 'D')
+          {
+            ++text;
+            continue;
+          }
+
+          case 's':
+            switch ((s8) (*(text++)))
+          {
+            case '0':
+              selected = 0;
+              continue;
+
+            case '1':
+              selected = 1;
+              continue;
+
+            break;
+            case '2':
+              selected = 2;
+              continue;
+
+            case '3':
+              selected = 3;
+              continue;
+
+            case '4':
+              selected = 4;
+              continue;
+
+            case 'D':
+              if (selected == wanted)
+            {
+              goto done;
+            }
+              continue;
+
+            default:
+              continue;
+
+          }
+
+
+          case 'n':
+          {
+            switch ((s8) (*(text++)))
+            {
+              case '0':
+                selected = 0;
+                break;
+
+              case '1':
+                selected = 1;
+                break;
+
+              case '2':
+                selected = 2;
+                break;
+
+              case '3':
+                selected = 3;
+                break;
+
+            }
+
+            {
+              out = lbl_8032FE24;
+              while (((s32) ((u8) (*text))) != '|')
+              {
+                *(out++) = *(text++);
+              }
+
+              *out = 0;
+              ++text;
+              continue;
+            }
+          }
+
+          case 'w':
+            switch ((s8) (*(text++)))
+          {
+            case '0':
+              selected = 0;
+              break;
+
+            case '1':
+              selected = 1;
+              break;
+
+            case '2':
+              selected = 2;
+              break;
+
+            case '3':
+              selected = 3;
+              break;
+
+          }
+
+            if (selected == wanted)
+          {
+            goto done;
+          }
+            continue;
+
+          case 'D':
+
+          case 'M':
+
+          case 'O':
+
+          case 'S':
+            ++text;
+            continue;
+
+          case '=':
+            text += 4;
+            continue;
+
+          case 'F':
+            switch ((s32) ((u8) (*(text++))))
+          {
+            case 'C':
+            {
+              out = lbl_8032FE24;
+              while (((s32) ((u8) (*text))) != '|')
+              {
+                *(out++) = *(text++);
+              }
+
+              *out = 0;
+              ++text;
+              continue;
+            }
+              break;
+
+          }
+
+            continue;
+
+          case 'B':
+
+          case 'R':
+          {
+            {
+              out = lbl_8032FE24;
+              while (((s32) ((u8) (*text))) != '|')
+              {
+                *(out++) = *(text++);
+              }
+
+              *out = 0;
+              ++text;
+              continue;
+            }
+          }
+
+          case 'P':
+            goto done;
+
+          default:
+            continue;
+
+        }
+
+        break;
+      }
+      if (selected == wanted)
+      {
+        width += fn_80010428(&text, font, lbl_8036A248);
+      }
+      else
+      {
+        text = fn_80104970(text);
+      }
+    }
+
+    if (longest < width)
+    {
+      longest = width;
+    }
+  }
+
+  done:
+  if (longest < width)
+  {
+    longest = width;
+  }
+
+  return longest;
 }
-}
-case 'w':
-switch((s8)*text++) {
-case '0':selected=0;break;
-case '1':selected=1;break;
-case '2':selected=2;break;
-case '3':selected=3;break;
-}
-if(selected==wanted) goto done;continue;
-case 'D':case 'M':case 'O':case 'S': ++text;continue;
-case '=':text+=4;continue;
-case 'F':
-switch((s32)(u8)*text++) { case 'C':
-{
-out=lbl_8032FE24;
-while((s32)(u8)*text!='|') *out++=*text++;
-*out=0;++text;continue;
-}
-break;
-}
-continue;
-case 'B':case 'R': {
-{
-out=lbl_8032FE24;
-while((s32)(u8)*text!='|') *out++=*text++;
-*out=0;++text;continue;
-}
-}
-case 'P':goto done;
-default:continue;
-}
-break;
-}
-if(selected==wanted) width+=fn_80010428(&text,font,lbl_8036A248);
-else text=fn_80104970(text);
-}
-if(longest<width)longest=width;
-}
-done:
-if(longest<width)longest=width;
-return longest;
-}
-#pragma pop
 #include "common.h"
 extern struct SomeStruct* gCardWork; // example struct
 #include "common.h"
