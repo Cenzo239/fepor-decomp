@@ -1,6 +1,31 @@
 /* Functions from 0x80074370 to 0x8007C534, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+#pragma cplusplus on
+struct PopupDrawObj {
+u8 pad[4];
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+virtual void v12() = 0;
+virtual void v13() = 0;
+virtual void v14() = 0;
+virtual void v15() = 0;
+virtual void v16() = 0;
+virtual void v17() = 0;
+virtual s16 v18() = 0;
+};
+#pragma cplusplus reset
+
 static inline s32 get_B4D8_mode(u16 flags) {
  s32 mode=3;
  if(flags&2)mode=6;
