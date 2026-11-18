@@ -8146,15 +8146,17 @@ void fn_80253298(void *arg0, u32 *arg1)
 void fn_80253518(void *voice, u32 *step) {
     void fn_8025FFC8(void *, u8, s32, u8, s32, u8);
     void fn_8025EEE8(u8, u8, s32);
-    u32 word;
+    u32 tableIndex;
+u32 word;
     u32 word0;
     u64 flags;
     u64 mask;
     u8 slot;
+u8 controller;
     u32 key;
     s32 pitch;
     s32 adj;
-    u8 param;
+    u32 param;
     void *dest;
     word = step[1];
     mask = *(u64 *)((u8 *)lbl_8029F400 + __rlwinm(word,11,21,28));
@@ -8162,7 +8164,8 @@ void fn_80253518(void *voice, u32 *step) {
     slot = 0;
     key=word>>24;
     dest = lbl_8034CBB4 + *(u8 *)((u8 *)voice + 0x11F) * 0x90 + key * 0x24;
-    key = *(u32 *)((u8 *)lbl_8029F420 + __rlwinm(word,10,22,29));
+    tableIndex = __rlwinm(word,10,22,29);
+    key = *(u32 *)((u8 *)lbl_8029F420 + tableIndex);
     if ((flags & mask) == 0) {
         *(u64 *)((u8 *)voice + 0x114) = flags | mask;
     } else {
@@ -8177,8 +8180,9 @@ void fn_80253518(void *voice, u32 *step) {
         adj = ((s32)((s8)(step[1] >> 16) << 8)) / 100;
         pitch = pitch + adj;
     }
-    param = (u8)(step[1] >> 8);
-    fn_8025FFC8(dest, (u8)(word0 >> 8), pitch, slot, param != 0, param);
+    controller = (u8)(word0 >> 8);
+    param = (step[1] >> 8)&255;
+    fn_8025FFC8(dest, controller, pitch, slot, (u8)(param != 0), param);
     if (key & 0x80000000) {
         fn_8025EEE8(*(u8 *)((u8 *)voice + 0x121), *(u8 *)((u8 *)voice + 0x122), key);
     } else {
@@ -14649,23 +14653,16 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma fp_contract on
 #pragma global_optimizer off
 #pragma scheduling on
-f64 fn_80261344(f32 x)
-{
-    extern f32 lbl_802831B8[];
-    f64 three, half, guess, square, zero, result;
-    result = x;
-    zero = lbl_802831B8[0];
-    three = lbl_802831B8[-2];
-    half = lbl_802831B8[-1];
-    if (x == zero) return result;
-    {
-        guess = __frsqrte(x);
-        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
-        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
-        square = guess * guess; guess *= half; square = three - x * square; guess *= square;
-        result = x * guess;
-    }
-    return result;
+f64 fn_80261344(f32 x) {
+extern f32 lbl_802831B8[];
+f64 three; f64 half; f64 guess; f64 square; f64 zero;
+zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
+if(x==(f32)zero) return x;
+guess=__frsqrte(x);
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+return x*guess;
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
@@ -17389,4 +17386,5 @@ return 1;
 }
 return 0;
 }
-
+extern u64 lbl_8029F3D0[4];
+extern u32 lbl_8029F3F0[4];
