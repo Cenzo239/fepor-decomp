@@ -12617,24 +12617,21 @@ s32 fn_8025DAA0(
     typedef struct { u32 next; f32 v1; f32 v2; f32 v3; f32 v4; f32 v5; f32 v6; void *arg0; } Node;
     extern u8 lbl_80368AAD;
 
-    Entry *walk;
-    Entry *base;
     u8 count;
     s32 index;
-    Node *pool;
-    Node *node;
+    Entry *base;
     u8 **next;
     u8 *current;
     u8 *previous;
-    s32 index2;
     u8 nodeIndex;
+    Node *node;
 
-    walk = (Entry *)lbl_8035BF18;
     count = lbl_80368AAE;
     index = 0;
+    base = (Entry *)lbl_8035BF18;
 
-    for (; index < (s32)count; walk++, index++) {
-        if (*(u32 *)((u8 *)arg0 + 0x3C) == *(u32 *)walk) {
+    for (; index < (s32)count; index++) {
+        if (*(u32 *)((u8 *)arg0 + 0x3C) == base[index].key) {
             break;
         }
     }
@@ -12675,28 +12672,25 @@ s32 fn_8025DAA0(
             current = *(u8 **)previous;
         } while (current != 0);
 
-        pool = (Node *)lbl_8035C918;
-        node = (Node *)((u8 *)pool + ((u8)nodeIndex << 5));
+        node = (Node *)((u8 *)lbl_8035C918 + ((u8)nodeIndex << 5));
         node->next = (u32)current;
         *(u8 **)previous = (u8 *)node;
     } else {
-        pool = (Node *)lbl_8035C918;
-        node = (Node *)((u8 *)pool + ((u8)nodeIndex << 5));
+        node = (Node *)((u8 *)lbl_8035C918 + ((u8)nodeIndex << 5));
         node->next = (u32)current;
         *next = (u8 *)node;
     }
 
-    index2 = lbl_80368AAD;
-    pool = (Node *)lbl_8035C918;
-    node = (Node *)((u8 *)pool + (index2 << 5));
+    nodeIndex = lbl_80368AAD;
+    node = (Node *)((u8 *)lbl_8035C918 + (nodeIndex << 5));
     node->arg0 = arg0;
     node->v5 = arg5;
     node->v6 = arg6;
     node->v2 = arg2;
     node->v3 = arg3;
     node->v4 = arg4;
-    lbl_80368AAD = index2 + 1;
-    pool[(u8)index2].v1 = arg1;
+    lbl_80368AAD = nodeIndex + 1;
+    ((Node *)lbl_8035C918)[(u8)nodeIndex].v1 = arg1;
 
     return 1;
 }
@@ -14816,17 +14810,15 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma global_optimizer off
 #pragma scheduling on
 f64 fn_80261344(f32 x) {
-extern const f32 lbl_802831B8[];
-f64 three,half,guess,square; f32 zero; const f32 *constants=lbl_802831B8-2;
-three=constants[0]; half=constants[1]; zero=constants[2];
-if(x!=zero) {
+extern f32 lbl_802831B8[];
+f64 three; f64 half; f64 guess; f64 square; f64 zero;
+zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
+if(x==(f32)zero) return x;
 guess=__frsqrte(x);
-square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
-square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
-square=guess*guess;guess=guess*half;square=three-x*square;guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
+square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
 return x*guess;
-}
-return x;
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
@@ -15420,8 +15412,8 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     extern u8 *gSoundVoices;
     extern u8 gSoundStudios[];
     extern u16 lbl_802831E0[];
-    extern f32 lbl_8036C35C;
-    extern f32 lbl_8036C370;
+    extern const f32 lbl_8036C35C;
+    extern const f32 lbl_8036C370;
 
     extern void fn_8025CC38();
 
@@ -15439,15 +15431,13 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
 
     entry = gSoundVoices + arg0 * 0xF8;
 
-    if (!(arg3 >= lbl_8036C35C)) {
+    if (arg3 >= lbl_8036C35C) {
         arg3 = lbl_8036C35C;
     }
-
-    if (!(arg4 >= lbl_8036C35C)) {
+    if (arg4 >= lbl_8036C35C) {
         arg4 = lbl_8036C35C;
     }
-
-    if (!(arg5 >= lbl_8036C35C)) {
+    if (arg5 >= lbl_8036C35C) {
         arg5 = lbl_8036C35C;
     }
 
@@ -15462,9 +15452,9 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     fn_8025CC38(arg1, values, arg2, 0, sign, option,
                   arg3, arg4, arg5);
 
-    x = (s32)(values[0] * lbl_8036C370);
-    y = (s32)(values[1] * lbl_8036C370);
-    z = (s32)(values[2] * lbl_8036C370);
+    x = (s32)(lbl_8036C370 * values[0]);
+    y = (s32)(lbl_8036C370 * values[1]);
+    z = (s32)(lbl_8036C370 * values[2]);
 
     if (*(u8 *)(entry + 0xE9) == 0xFF ||
         *(u16 *)(entry + 0x4C) != (u16)x ||
@@ -15479,9 +15469,9 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
         *(u8 *)(entry + 0xE9) = 0;
     }
 
-    x = (s32)(values[3] * lbl_8036C370);
-    y = (s32)(values[4] * lbl_8036C370);
-    z = (s32)(values[5] * lbl_8036C370);
+    x = (s32)(lbl_8036C370 * values[3]);
+    y = (s32)(lbl_8036C370 * values[4]);
+    z = (s32)(lbl_8036C370 * values[5]);
 
     if (*(u8 *)(entry + 0xEA) == 0xFF ||
         *(u16 *)(entry + 0x52) != (u16)x ||
@@ -15496,9 +15486,9 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
         *(u8 *)(entry + 0xEA) = 0;
     }
 
-    x = (s32)(values[6] * lbl_8036C370);
-    y = (s32)(values[7] * lbl_8036C370);
-    z = (s32)(values[8] * lbl_8036C370);
+    x = (s32)(lbl_8036C370 * values[6]);
+    y = (s32)(lbl_8036C370 * values[7]);
+    z = (s32)(lbl_8036C370 * values[8]);
 
     if (*(u8 *)(entry + 0xEB) == 0xFF ||
         *(u16 *)(entry + 0x58) != (u16)x ||
@@ -15514,7 +15504,7 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     }
 
     if (flags & 0x80000000) {
-        index = ((u32)arg2 << 17 | (u32)arg2 >> 15) & 0x1FE;
+        index = (((u32)arg2 >> 15) | ((u32)arg2 << 17)) & 0x1FE;
 
         value = *(u16 *)((u8 *)lbl_802831E0 + index);
 
@@ -17312,70 +17302,58 @@ s32 fn_802649AC(void *arg0)
     extern void fn_80264BA4(void *arg0);
     extern void *fn_802637A4(s32 arg0);
 
-    u8 *state;
-    u32 value;
-    u32 multiplier;
+    u32 *state;
+    u32 zero;
     u32 i;
-    u32 *buffer0;
-    u32 *buffer1;
-    u32 *buffer2;
+    u32 *p0;
+    u32 *p1;
+    u32 *p2;
 
-    state = (u8 *)arg0;
+    state = (u32 *)arg0;
 
     fn_80264BA4(arg0);
 
-    multiplier = 0x99999999;
-    value = 0x51EB851F;
+    zero = 0;
 
-    *(u32 *)(state + 0x00) =
-        (u32)(((u64)multiplier * ((*(u32 *)(state + 0x3C) - 5) * 32 + 0x9F)) >> 39);
-    *(u32 *)(state + 0x0C) = 0;
+    state[0] = (((state[0x3C / 4] - 5) << 5) + 0x9F) / 160U;
+    state[0xC / 4] = zero;
 
-    *(u32 *)(state + 0x18) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x48) << 7)) >> 37);
+    state[0x18 / 4] = (state[0x48 / 4] << 7) / 100U;
 
-    *(u32 *)(state + 0x24) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x54) << 7)) >> 37);
+    state[0x24 / 4] = (state[0x54 / 4] << 7) / 100U;
 
-    *(u32 *)(state + 0x04) =
-        (u32)(((u64)multiplier * ((*(u32 *)(state + 0x40) - 5) * 32 + 0x9F)) >> 39);
-    *(u32 *)(state + 0x10) = 0;
+    state[1] = (((state[0x40 / 4] - 5) << 5) + 0x9F) / 160U;
+    state[0x10 / 4] = zero;
 
-    *(u32 *)(state + 0x1C) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x4C) << 7)) >> 37);
+    state[0x1C / 4] = (state[0x4C / 4] << 7) / 100U;
 
-    *(u32 *)(state + 0x28) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x58) << 7)) >> 37);
+    state[0x28 / 4] = (state[0x58 / 4] << 7) / 100U;
 
-    *(u32 *)(state + 0x08) =
-        (u32)(((u64)multiplier * ((*(u32 *)(state + 0x44) - 5) * 32 + 0x9F)) >> 39);
-    *(u32 *)(state + 0x14) = 0;
+    state[2] = (((state[0x44 / 4] - 5) << 5) + 0x9F) / 160U;
+    state[0x14 / 4] = zero;
 
-    *(u32 *)(state + 0x20) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x50) << 7)) >> 37);
+    state[0x20 / 4] = (state[0x50 / 4] << 7) / 100U;
 
-    *(u32 *)(state + 0x2C) =
-        (u32)(((u64)value * (*(u32 *)(state + 0x5C) << 7)) >> 37);
+    state[0x2C / 4] = (state[0x5C / 4] << 7) / 100U;
 
-    buffer0 = fn_802637A4(*(u32 *)(state + 0x00) * 0x280);
-    *(u32 **)(state + 0x30) = buffer0;
+    state[0x30 / 4] = (u32)fn_802637A4((s32)(state[0] * 0x280));
+    state[0x34 / 4] = (u32)fn_802637A4((s32)(state[1] * 0x280));
+    state[0x38 / 4] = (u32)fn_802637A4((s32)(state[2] * 0x280));
 
-    buffer1 = fn_802637A4(*(u32 *)(state + 0x04) * 0x280);
-    *(u32 **)(state + 0x34) = buffer1;
+    p0 = (u32 *)state[0x30 / 4];
+    p1 = (u32 *)state[0x34 / 4];
+    p2 = (u32 *)state[0x38 / 4];
 
-    buffer2 = fn_802637A4(*(u32 *)(state + 0x08) * 0x280);
-    *(u32 **)(state + 0x38) = buffer2;
-
-    for (i = 0; i < *(u32 *)(state + 0x00) * 0xA0; i++) {
-        buffer0[i] = 0;
+    for (i = 0, zero = 0; i < state[0] * 0xA0U; i++) {
+        *p0++ = zero;
     }
 
-    for (i = 0; i < *(u32 *)(state + 0x04) * 0xA0; i++) {
-        buffer1[i] = 0;
+    for (i = 0, zero = 0; i < state[1] * 0xA0U; i++) {
+        *p1++ = zero;
     }
 
-    for (i = 0; i < *(u32 *)(state + 0x08) * 0xA0; i++) {
-        buffer2[i] = 0;
+    for (i = 0, zero = 0; i < state[2] * 0xA0U; i++) {
+        *p2++ = zero;
     }
 
     return 1;
