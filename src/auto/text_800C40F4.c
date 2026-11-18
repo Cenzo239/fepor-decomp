@@ -12605,13 +12605,13 @@ extern "C" void fn_800DF584(void *arg0) {
         u8 flag_2c;
     };
     Obj *self = (Obj *)arg0;
-    Obj *callObj = self;
+    u8 *selfFlag = (u8 *)self + 0x2c;
     Other *other;
 
     if (self->flag_3c != 0) {
         other = (Other *)self->field_38;
-        if (other != NULL && other->flag_2c != 0 && self->flag_2c != 0) {
-            callObj->v3();
+        if (other != NULL && other->flag_2c != 0 && *selfFlag != 0) {
+            self->v3();
         }
     }
 }
@@ -17449,36 +17449,22 @@ extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
 }
 #pragma cplusplus reset
 
-void *fn_800E80D8(void *arg0, void *arg1, void *arg2)
-{
-    extern void *String_CStr(void *);
-    extern void fn_800DF670(void *);
-
-    u8 *obj;
-    void *value1;
-    void *value2;
+#pragma cplusplus on
+extern "C" void *fn_800E80D8(void *arg0, void *arg1, void *arg2) {
+    void *String_CStr(void *);
+    void fn_800DF670(void *);
+    struct Obj {
+        u8 pad[0x10];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void *v2(void *, void *) = 0;
+    };
     void *result;
-    void *(*callback)(void *, void *, void *);
-
-    obj = (u8 *)arg0;
-
-    value2 = String_CStr(arg2);
-    value1 = String_CStr(arg1);
-
-    callback = *(void *(**)(void *, void *, void *))(
-        *(u8 **)(obj + 0x10) + 0x10
-    );
-
-    result = callback(obj, value1, value2);
-
-    if (result != 0) {
-        fn_800DF670(result);
-    }
-
+    result = String_CStr(arg2);
+    result = ((Obj *)arg0)->v2(String_CStr(arg1), result);
+    if (result != 0) fn_800DF670(result);
     return result;
 }
-
-#pragma cplusplus on
 extern "C" void fn_800E8154(void *arg0) {
     struct Obj {
         u8 pad[0x10];
@@ -19513,12 +19499,8 @@ s32 fn_800EB854(void) {
     extern u8 gCardWork[];
     u8 *p = gCardWork + 0x10000;
     s32 result = 0;
-
-    if (*(s32 *)(p - 0x5FFC) == -1)
-        goto end;
-    if (*(p - 0x5FE6) != 0)
+    if (*(s32 *)(p - 0x5FFC) == -1 || *(p - 0x5FE6) != 0)
         result = 1;
-end:
     return result;
 }
 #pragma peephole reset
