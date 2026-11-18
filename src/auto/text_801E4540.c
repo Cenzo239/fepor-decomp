@@ -2,6 +2,22 @@
 #include "common.h"
 #include "global.h"
 
+typedef struct { void *node; } TabCountIt;
+typedef struct { s8 value; } TabCountKey;
+#pragma global_optimizer off
+static inline s32 TabCountChanges(TabCountIt begin, TabCountIt end, TabCountKey key, s32 offset) {
+s32 count=0;
+while(begin.node!=end.node) {
+s8 value=(*(u8 **)((u8 *)begin.node+8))[offset];
+u8 found;
+if(key.value!=value) {key.value=value; found=1;} else found=0;
+if(found) count++;
+begin.node=*(void **)((u8 *)begin.node+4);
+}
+return count;
+}
+#pragma global_optimizer reset
+
 struct UnkStruct {
     u32 field_0[0x10];
     u32 field_8;
@@ -2628,70 +2644,72 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
+#pragma cplusplus off
 #pragma global_optimizer off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
 It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, beginCCopy, beginC, endCCopy, endC;
 struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
+u8 *arg;
 void *end;
 s32 count;
-s32 result;
 u8 found;
-u8 value;
+s8 value;
 s8 tab;
-tab = (s8)*((u8*)arg0+0x30);
+arg = (u8 *)arg0;
+tab = (s8)arg[0x30];
 switch(tab) {
 case 0:
-end=(u8*)arg0+0x54;
+end=arg+0x54;
 endACopy.node=end;
-beginACopy.node=*(void**)((u8*)arg0+0x58);
+beginACopy.node=*(void**)(arg+0x58);
 beginA=beginACopy;
 aCopy=beginA; a=aCopy;
 endA=endACopy; aeCopy=endA; ae=aeCopy;
-initA.value=-1;keyA=initA;
 count=0;
-while(a.node!=end) {
+initA.value=-1;keyA=initA;
+for (; a.node != end; ) {
 value=(*(u8**)((u8*)a.node+8))[2];
-if(keyA.value!=(s8)value) {keyA.value=(s8)value;found=1;} else found=0;
-if(found) count++;
+if(keyA.value!=value) {keyA.value=value;found=1;} else found=0;
+if(found) ++count;
 a.node=*(void**)((u8*)a.node+4);
 }
-result=count; break;
+return count;
 case 1:
-end=(u8*)arg0+0x54;
+end=arg+0x54;
 endBCopy.node=end;
-beginBCopy.node=*(void**)((u8*)arg0+0x58);
+beginBCopy.node=*(void**)(arg+0x58);
 beginB=beginBCopy;
 bCopy=beginB; b=bCopy;
 endB=endBCopy; beCopy=endB; be=beCopy;
-initB.value=-1;keyB=initB;
 count=0;
-while(b.node!=end) {
+initB.value=-1;keyB=initB;
+for (; b.node != end; ) {
 value=(*(u8**)((u8*)b.node+8))[1];
-if(keyB.value!=(s8)value) {keyB.value=(s8)value;found=1;} else found=0;
-if(found) count++;
+if(keyB.value!=value) {keyB.value=value;found=1;} else found=0;
+if(found) ++count;
 b.node=*(void**)((u8*)b.node+4);
 }
-result=count; break;
+return count;
 case 2:
-end=(u8*)arg0+0x54;
+end=arg+0x54;
 endCCopy.node=end;
-beginCCopy.node=*(void**)((u8*)arg0+0x58);
+beginCCopy.node=*(void**)(arg+0x58);
 beginC=beginCCopy;
 cCopy=beginC; c=cCopy;
 endC=endCCopy; ceCopy=endC; ce=ceCopy;
-initC.value=-1;keyC=initC;
 count=0;
-while(c.node!=end) {
+initC.value=-1;keyC=initC;
+for (; c.node != end; ) {
 value=(*(u8**)((u8*)c.node+8))[4];
-if(keyC.value!=(s8)value) {keyC.value=(s8)value;found=1;} else found=0;
-if(found) count++;
+if(keyC.value!=value) {keyC.value=value;found=1;} else found=0;
+if(found) ++count;
 c.node=*(void**)((u8*)c.node+4);
 }
-result=count; break;
+return count;
 }
-return result;
+return (s32)arg0;
 }
 #pragma global_optimizer on
 /* Clear the status under the tab-menu cursor and run its clear event. */
