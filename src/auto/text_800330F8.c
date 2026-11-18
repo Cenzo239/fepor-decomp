@@ -2889,19 +2889,17 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
+    s32 xa;
+    s32 xb;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
-    {
-        s8 xa;
-        s8 xb;
-        xa = *(s8 *)((u8 *)a + 0x19E);
-        xb = *(s8 *)((u8 *)b + 0x19E);
-        dx = xa - xb;
-    }
+    xa = *(s8 *)((u8 *)a + 0x19E);
+    xb = *(s8 *)((u8 *)b + 0x19E);
+    dx = xa - xb;
     if (dx < 0) {
         dx = -dx;
     }
@@ -5998,15 +5996,14 @@ s32 Unit_CheckReceiveItem(s32 unit, void *item) {
     return 0;
 }
 
-s32 fn_8003DC80(s32 arg0, s32 arg1)
-{
+s32 fn_8003DC80(s32 arg0, s32 arg1) {
     s8 fn_8003AEB0(s32);
-    s32 b;
-    s32 a;
+    s32 temp_r31;
+    s32 temp_r4;
 
-    b = (s8)fn_8003AEB0(arg1);
-    a = (s8)fn_8003AEB0(arg0);
-    return b > a;
+    temp_r31 = (s8)fn_8003AEB0(arg1);
+    temp_r4 = (s8)fn_8003AEB0(arg0);
+    return temp_r31 < temp_r4;
 }
 
 void fn_8003DCDC(u8 *arg0, u8 *arg1, s32 arg2, s8 *arg3, s8 *arg4) {
@@ -12383,13 +12380,26 @@ return (char *)lbl_802EFFC8;
 
 typedef struct StringValueByte { u8 pad0[0xC]; u8 value; } StringValueByte;
 #pragma cplusplus on
-extern "C" char *fn_8004B078(void *arg0, s32 arg1) {
-    void sprintf(void *, void *, ...);
+char *fn_8004B078(void *arg0, s32 arg1)
+{
+    void fn_80231D94(void *, void *, ...);
     extern u8 lbl_8026A9B0[];
     extern u8 lbl_802EFFC8[];
-    StringValueByte *address = (StringValueByte *)((u8 *)arg0 + arg1);
-    sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xAD, lbl_8026A9B0 + 0xA8,
-            *(void **)((u8 *)arg0 + 4), address->value);
+
+    void *address;
+    void *value;
+
+    address = (u8 *)arg0 + arg1;
+    value = *(void **)((u8 *)arg0 + 4);
+
+    fn_80231D94(
+        lbl_802EFFC8,
+        lbl_8026A9B0 + 0xAD,
+        lbl_8026A9B0 + 0xA8,
+        value,
+        *(u8 *)((u8 *)address + 0xC)
+    );
+
     return (char *)lbl_802EFFC8;
 }
 #pragma cplusplus reset
