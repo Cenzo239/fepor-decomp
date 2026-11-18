@@ -1,5 +1,6 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
+typedef struct EventResourceRequest { s16 code; s16 active; u32 flags; } EventResourceRequest;
 #include "global.h"
 static inline u32 Event_ScanCommandFlagsInline(s16 *idx,s32 cur) {
 extern u8 gBattle[];
@@ -296,7 +297,7 @@ switch(kind) {case 1: case 2: case 3: GActor_RequestRes(fn_80055204(unit,0));bre
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_80096418(s32 arg0) {
+void fn_80096418(s16 arg0) {
 void *Item_GetFlagsPtr(void *);
 void fn_8004FC70(s32,s32);
 void *fn_80055204(void *,s32);
