@@ -681,7 +681,7 @@ return heap;
 }
 static inline u32 Heap_AlignSize(u32 n) { u32 aligned=(n+31)&~31U; return aligned; }
 static inline s32 Heap_FindFrom(u32 *table, s32 i) {
-for(;i<16;table++,i++) { if(*table==0)return i; }return -1;
+for(;i<16;i++) { if(table[i]==0)return i; }return -1;
 }
 static inline s32 Heap_FindEmpty(u32 *table, s32 *result) {
  for(*result=0;*result<16;table++,(*result)++) { if(*table==0) return *result; } return *result=-1;
@@ -969,7 +969,7 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void DebugPrint(const char *, ...);
 
     s32 index;
-    u8 *heap;
+    register u8 *heap;
     u32 size;
     u8 *data;
     u32 *table;
