@@ -1,5 +1,17 @@
 #include "common.h"
 #pragma cplusplus on
+struct UiAnimatedSprite {
+    virtual void m08(); virtual void m0C(); virtual void m10();
+    virtual s32 getTexId();
+    virtual s16 getUvW(); virtual s16 getUvH();
+    virtual s16 getW(); virtual s16 getH();
+    virtual void m28(); virtual void m2C();
+    virtual void draw(s32, s32, f32, f32, f32);
+    u32 unk4;
+    s32 direction;
+    u8 visible, moving;
+    s16 x, y, z, frame, movement;
+};
 struct LensFlareView {
     u8 pad[0x40];
     virtual void v0(); virtual void v1(); virtual void v2();
