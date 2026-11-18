@@ -261,11 +261,6 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
-static inline void Camera_SelectPoint(u32 flags, CameraVec **a, CameraVec *b) {
-    if ((flags & 0x20000000) && *a) return;
-    *a = b;
-}
-
 static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
