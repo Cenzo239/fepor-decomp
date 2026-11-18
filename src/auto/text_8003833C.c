@@ -1708,7 +1708,7 @@ s8 Unit_GetMaxHp(void *arg0)
     return (s8)(var_r5 + var_r6);
 }
 
-#pragma opt_peephole off
+#pragma opt_peephole on
 s8 Unit_GetRes(void *arg0) {
     void *p;
     void *q;
@@ -1731,7 +1731,6 @@ s8 Unit_GetRes(void *arg0) {
     }
     return var;
 }
-#pragma opt_peephole off
 s8 Unit_GetDef(void *arg0) {
     void *p18c;
     void *p188;
@@ -1831,17 +1830,14 @@ s8 Unit_GetMag(void *arg0) {
 }
 #pragma opt_peephole reset
 s8 Unit_GetStr(void *arg0) {
-    void *p18c;
-    s8 lim;
-    u8 t;
+    s32 p;
     s8 var;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    t = *(u8 *)((u8 *)arg0 + 0x1AC);
-    lim = *(u8 *)((u8 *)p18c + 0x4D);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1E) + *(u8 *)((u8 *)p18c + 0x45)) + t;
-    if (var > lim) {
-        var = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1E) + *(u8 *)(p + 0x45)) + *(u8 *)((u8 *)arg0 + 0x1AC);
+    p = *(s8 *)(p + 0x4D);
+    if (var > (s8)p) {
+        var = (s8)p;
     }
     if (var < 0) {
         return 0;
