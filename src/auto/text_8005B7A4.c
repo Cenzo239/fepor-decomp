@@ -8655,7 +8655,7 @@ next: node=M2C_FIELD(node,void **,4);
 }
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma fp_contract off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
@@ -8681,22 +8681,22 @@ f32 local4[12],turn4[12],trans4[12],temp4[12];
 f32 align1[12],inv1[12],align3[12],inv3[12];
 typedef struct { f32 v[9]; } Basis;
 
-u8 *table,*cursor,*joint; void *info;
+u8 *table;
 typedef struct { f32 v[3]; } Vector;
 Vector direction,direction4;
 Basis basis1;
 Vector axis1;
 Basis basis3;
 Vector axis3;
-s32 count,i,index;
-void *parent;
-s16 *slots; u8 *transformData; Basis *basis=(Basis *)lbl_8026B888;
+u8 *joint; u8 *cursor; s32 count; u8 *transformData; s16 *slots; Basis *basis=(Basis *)lbl_8026B888; void *info; s32 i; s32 index;
 f32 dot,angle,angle2,angle4;
 info=GActor_GetNodeTable(actor);
 table=M2C_FIELD(node,u8 **,0x1C);
 if(table==0) {
-slots=lbl_80285F40; transformData=(u8 *)actor+0x10;
-for(count=0;count<10;count++,slots++) {
+s16 *rootSlots; u8 *rootTransform; s32 rootCount;
+rootTransform=(u8 *)actor+0x10;
+rootCount=0; rootSlots=lbl_80285F40;
+do {
 switch(M2C_FIELD(actor,u32 *,0xC)) {
 case 1:
 PSMTXRotRad(rootX,'X',lbl_80369298*M2C_FIELD(actor,f32 *,0x1C));
@@ -8731,9 +8731,9 @@ break;
 case 8:
 PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
 PSMTXTrans(rootT,M2C_FIELD(actor,f32 *,0x10),M2C_FIELD(actor,f32 *,0x14),M2C_FIELD(actor,f32 *,0x18));
-QUATMtx(transformData,rootX);
+QUATMtx(rootTransform,rootX);
 PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootX,root,root); PSMTXConcat(rootT,root,root); goto rootDone;
-case 7: PSMTXCopy(transformData,root); goto rootDone;
+case 7: PSMTXCopy(rootTransform,root); goto rootDone;
 default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
 }
 PSMTXScale(rootS,M2C_FIELD(actor,f32 *,0x28),M2C_FIELD(actor,f32 *,0x2C),M2C_FIELD(actor,f32 *,0x30));
@@ -8742,9 +8742,10 @@ PSMTXConcat(rootX,rootS,root); PSMTXConcat(rootY,root,root); PSMTXConcat(rootZ,r
 
 rootDone:
 PSMTXConcat(Camera_GetViewMtx(),root,root);
-GXLoadPosMtxImm(root,*slots);
-fn_80202238(root,root); fn_80224DCC(root,*slots);
-}
+GXLoadPosMtxImm(root,*rootSlots);
+fn_80202238(root,root); fn_80224DCC(root,*rootSlots);
+rootCount++; rootSlots++;
+} while(rootCount<10);
 return;
 }
 cursor=table+2; i=table[1];
@@ -8752,7 +8753,7 @@ if((s32)table[0]!=0x10) Game_Assert(lbl_8026B8AC+0x27,0x3D4,lbl_8026B8AC+0x30);
 if(i>10) Game_Assert(lbl_8026B8AC+0x27,0x3D5,lbl_8026B8AC+0x50);
 if(M2C_FIELD(info,s32 *,8)>=256) Game_Assert(lbl_8026B8AC+0x27,0x3D6,lbl_8026B8AC+0x76);
 slots=lbl_80285F40; transformData=(u8 *)actor+0x10;
-for(count=0;count<i;count++,slots++) {
+for(count=0;count<i;slots++,count++) {
 index=*cursor++;
 joint=M2C_FIELD(info,u8 **,0xC)+index*0xF4;
 switch(M2C_FIELD(actor,u32 *,0xC)) {
