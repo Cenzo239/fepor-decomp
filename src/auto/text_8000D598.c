@@ -1585,7 +1585,7 @@ extern "C" s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale)
 
             val = 0;
             digi = 1;
-            shift = val;
+            shift = 0;
             while (digi >= 0)
             {
               val += digits[digi] << shift;
