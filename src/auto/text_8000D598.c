@@ -1,5 +1,23 @@
 /* Functions from 0x80006264 to 0x80011968, found by decomp-toolkit. */
 #include "common.h"
+#pragma cplusplus on
+struct TextWidthFontInterface {
+    virtual s32 v0() = 0;
+    virtual s32 v1() = 0;
+    virtual s32 v2() = 0;
+    virtual s32 v3() = 0;
+    virtual s32 v4() = 0;
+    virtual s32 v5() = 0;
+    virtual s32 v6() = 0;
+    virtual s32 v7() = 0;
+    virtual s32 v8() = 0;
+    virtual s32 v9() = 0;
+    virtual s32 v10() = 0;
+    virtual s32 v11() = 0;
+    virtual s32 v12() = 0;
+    virtual s32 v13() = 0;
+};
+#pragma cplusplus reset
 
 typedef struct {
     void *unk0;
@@ -1395,15 +1413,17 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     return result;
 }
 
-#pragma fp_contract off
+#pragma opt_peephole off
 s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
     extern f32 lbl_80368BE8;
-    extern u32 jumptable_80283DA0[];
+    extern f32 lbl_80368BDC;
+    extern f32 lbl_80368BE0;
+    extern void *lbl_80367168;
     extern u8 *fn_80105124(u8 *, s32 *);
-    register u8 *digits;
+
     u32 *tbl;
     u32 found;
-    s32 i;
+    s32 index;
     f32 result;
     f32 fmax;
     u8 *p;
@@ -1412,37 +1432,34 @@ s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
     s16 digi;
     s16 shift;
     s32 val;
-    f32 ftmp;
+    u8 *digits;
     s32 width;
+    f32 advance;
+    u8 flag;
+    void *obj;
+    u32 raw;
 
     p = str;
     if (idx == -1) {
         idx = 0;
     }
-    found = (u32)fn_8010494C((void *)lbl_802AEE20[idx]);
+    found = (u32)fn_8010494C(lbl_802AEE20[idx]);
     tbl = (u32 *)lbl_802AEE20;
-    if (tbl[0] == found) {
-        i = 0;
-    } else if (tbl[1] == found) {
-        i = 1;
-    } else if (tbl[2] == found) {
-        i = 2;
-    } else if (tbl[3] == found) {
-        i = 3;
-    } else if (tbl[4] == found) {
-        i = 4;
-    } else {
-        i = -1;
+    { u32 *q=tbl; s32 j;
+    for(j=0;j<5;j++,q++) { if(*q==found) { index=j; goto font_found; } }
+    index=-1;
+    font_found:;
     }
 
     result = lbl_80368BE8;
     fmax = lbl_80368BDC;
 
-    while ((s8)*p != 0) {
-        if ((s8)*p == '#') {
+    while ((s8)(raw = *p) != 0) {
+        flag = 0;
+        if ((s8)raw == '#') {
             c = (s8)p[1];
             p += 2;
-            code = c - '#';
+            code = c - 0x23;
             if ((u32)code <= 0x56U) {
                 switch (code) {
                 case 30:
@@ -1454,23 +1471,63 @@ s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
                 case 53:
                 case 85:
                     p += 2;
-                    break;
-                case 45:
-                    p += 3;
-                    break;
-                case 35:
+                    goto next;
+                case 48:
+                case 54: {
+                    s16 shift;
+                    s16 digi;
+                    u8 n;
+                    s32 val;
+                    u8 *digits;
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         c = (s8)*p++;
                         if (c >= '0' && c <= '9') {
-                            digits[(u8)digi] = (u8)(c - '0');
+                            digits[n] = (u8)(c - '0');
                         } else if (c >= 'a' && c <= 'f') {
-                            digits[(u8)digi] = (u8)(c - 0x57);
+                            digits[n] = (u8)(c - 0x57);
                         } else if (c >= 'A' && c <= 'F') {
-                            digits[(u8)digi] = (u8)(c - 0x37);
+                            digits[n] = (u8)(c - 0x37);
                         }
-                        digi += 1;
+                        n += 1;
+                    }
+                    val = 0;
+                    digi = 1;
+                    shift = 0;
+                    while (digi >= 0) {
+                        val += digits[digi] << shift;
+                        digi -= 1;
+                        shift += 4;
+                    }
+                    fmax = (f32)(u32)val * lbl_80368BE0;
+                    goto next;
+                }
+                case 86:
+                    fmax = lbl_80368BDC;
+                    goto next;
+                case 45:
+                    flag = 1;
+                    p += 3;
+                    break;
+                case 35: {
+                    s16 shift;
+                    s16 digi;
+                    u8 n;
+                    s32 val;
+                    u8 *digits;
+                    digits = (u8 *)__alloca(8);
+                    n = 0;
+                    while (n < 2) {
+                        c = (s8)*p++;
+                        if (c >= '0' && c <= '9') {
+                            digits[n] = (u8)(c - '0');
+                        } else if (c >= 'a' && c <= 'f') {
+                            digits[n] = (u8)(c - 0x57);
+                        } else if (c >= 'A' && c <= 'F') {
+                            digits[n] = (u8)(c - 0x37);
+                        }
+                        n += 1;
                     }
                     val = 0;
                     digi = 1;
@@ -1483,64 +1540,35 @@ s32 Text_MeasureWidth(u8 *str, s32 idx, f32 scale) {
                     if (val == -1) {
                         val = 0;
                     }
-                    found = (u32)fn_8010494C((void *)lbl_802AEE20[val]);
-                    if (tbl[0] == found) {
-                    } else if (tbl[1] == found) {
-                    } else if (tbl[2] == found) {
-                    } else if (tbl[3] == found) {
-                    } else if (tbl[4] == found) {
-                    }
-                    break;
-                case 48:
-                case 54:
-                    digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
-                        c = (s8)*p++;
-                        if (c >= '0' && c <= '9') {
-                            digits[(u8)digi] = (u8)(c - '0');
-                        } else if (c >= 'a' && c <= 'f') {
-                            digits[(u8)digi] = (u8)(c - 0x57);
-                        } else if (c >= 'A' && c <= 'F') {
-                            digits[(u8)digi] = (u8)(c - 0x37);
-                        }
-                        digi += 1;
-                    }
-                    val = 0;
-                    digi = 1;
-                    shift = 0;
-                    while (digi >= 0) {
-                        val += digits[digi] << shift;
-                        digi -= 1;
-                        shift += 4;
-                    }
-                    fmax = (f32)(u32)val * lbl_80368BE0;
-                    break;
+                    found = (u32)fn_8010494C(lbl_802AEE20[val]);
+                    Text_FindFontIndex(tbl, found);
+                    goto next;
+                }
                 default:
                     p -= 1;
                     break;
                 }
             }
-        } else {
-            p = fn_80105124(p, &width);
-            ftmp = (f32)(u32)width * fmax;
-            result += scale * ftmp;
         }
+        if ((u8)flag == 0) {
+            p = fn_80105124(p, &width);
+            advance = scale * ((f32)width * fmax);
+        } else {
+            obj = lbl_80367168;
+            advance = (f32)(*(s32 (**)(void *))(*(u32 *)obj + 0x3c))(obj);
+        }
+        result += advance;
+    next:;
     }
 
-    if (i == -1) {
-        i = 0;
+    if (index == -1) {
+        index = 0;
     }
-    found = (u32)fn_8010494C((void *)lbl_802AEE20[i]);
-    if (tbl[0] == found) {
-    } else if (tbl[1] == found) {
-    } else if (tbl[2] == found) {
-    } else if (tbl[3] == found) {
-    } else if (tbl[4] == found) {
-    }
+    found = (u32)fn_8010494C(lbl_802AEE20[index]);
+    Text_FindFontIndex(tbl, found);
     return (s32)result;
 }
-#pragma fp_contract on
+#pragma opt_peephole reset
 void fn_80010FF0(void) {
     M2C_UNK fn_801047D0();
     fn_801047D0();
