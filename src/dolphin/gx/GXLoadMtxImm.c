@@ -394,8 +394,6 @@ bottom=temp_r8&0x7ff;
 #pragma scheduling reset
 #pragma global_optimizer reset
 
-#pragma peephole off
-#pragma global_optimizer off
 void fn_80225118(s32 x, s32 y)
 {
   s32 xoff;
@@ -416,8 +414,6 @@ void fn_80225118(s32 x, s32 y)
   GXWGFifo.u32 = value;
   __GXData[1] = 0;
 }
-#pragma global_optimizer reset
-#pragma peephole reset
 
 void fn_80225158(u32 arg0)
 {
