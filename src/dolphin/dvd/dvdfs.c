@@ -1400,6 +1400,8 @@ void stateReady(void) {
     }
 }
 #pragma opt_common_subs reset
+#pragma global_optimizer off
+#pragma peephole off
 void stateBusy_8020E178(void *arg0) {
     extern void (*lbl_803685E0)(void *);
     extern void *executing_80368598;
