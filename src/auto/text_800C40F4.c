@@ -13235,6 +13235,8 @@ void fn_800E0A94(void *arg0, void *arg1, s32 *arg2, u32 arg3, s32 *arg4) {
     // It's a placeholder until more structural understanding is gained
 }
 
+#pragma cplusplus off
+#pragma global_optimizer on
 void fn_800E0C44(s32 *begin, s32 *end, PairAB *first, PairAB *last, s32 *out) {
  s32 Sort_GetKey(void *);
  if (begin == end) {
@@ -15984,6 +15986,7 @@ void GActor_ApplyPoseMtx(void *obj) {
     }
 }
 
+#pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void fn_800E5DEC(void *arg0) {
  void Model_SetAlpha(void*,u8);
@@ -16016,6 +16019,7 @@ extern "C" void fn_800E5DEC(void *arg0) {
  }
 }
 #pragma cplusplus reset
+#pragma global_optimizer reset
 /* Destroy an actor: unlink GActor nodes, nested member, strings, then base; free if asked. */
 void *Actor_Dtor(void *self, s16 freeHeap) {
     void fn_800DDC2C(void *, void *);
@@ -18420,16 +18424,17 @@ extern u8 gCardWork[];
 extern void Card_AsyncDone;
 s32 fn_8021D004(s32,s32,void *);
 s32 fn_8021D118(s32,s32,void *,void *);
-u8 status[0x6c];
+CardFileStatus status;
+CardFileStatus *stat=&status;
 u32 skip;
-s32 proc;
-u8 *resultBase;
 u8 *base;
+u8 *resultBase;
 s32 file;
+s32 proc;
 u8 *busyBase;
 proc=arg0;
 resultBase=gCardWork+0x10000;
-if(*(s32*)(resultBase-0x5ffc)<0) {
+if(*(volatile s32*)(resultBase-0x5ffc)<0) {
 Process_Goto(proc,0x63);
 gCardWork[0xa01a]=0;skip=1;
 } else skip=0;
@@ -18437,24 +18442,24 @@ if((u8)skip==0) {
 base=gCardWork+0x10000;
 if(*(s32*)(base-0x5fec)>=0) {
 file=*(s32*)(base-0x5fe0);
-fn_8021D004(*(s32*)(base-0x6000),file,status);
-*(u32*)(status+0x38)=0x2000;
-*(u32*)(status+0x30)=0;
-status[0x2e]=(status[0x2e]&~3)|1;
-status[0x2e]=(status[0x2e]&~4)|4;
-*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~3)|1;
-*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~3)|3;
-*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~12)|4;
-*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~12)|8;
-*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~48)|16;
-*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~48)|48;
-*(u16*)(status+0x34)=(*(u16*)(status+0x34)&~192);
-*(u16*)(status+0x36)=(*(u16*)(status+0x36)&~192);
-*(u32*)(status+0x38)=*(s32*)(base-0x5fec);
+fn_8021D004(*(s32*)(base-0x6000),file,&status);
+stat->commentAddress=0x2000;
+stat->iconAddress=0;
+stat->iconFormat=(stat->iconFormat&~3)|1;
+stat->iconSpeed=(stat->iconSpeed&~3)|3;
+stat->iconFormat=(stat->iconFormat&~12)|4;
+stat->iconSpeed=(stat->iconSpeed&~12)|8;
+stat->iconFormat=(stat->iconFormat&~48)|16;
+stat->iconSpeed=(stat->iconSpeed&~48)|48;
+stat->iconFormat=(stat->iconFormat&~192);
+stat->iconSpeed=(stat->iconSpeed&~192);
+stat->bannerFormat=(stat->bannerFormat&~3)|1;
+stat->bannerFormat=(stat->bannerFormat&~4)|4;
+stat->commentAddress=*(s32*)(base-0x5fec);
 busyBase=gCardWork+0x10000;
 busyBase[-0x5fe6]=1;
-*(s32*)(resultBase-0x5ffc)=fn_8021D118(*(s32*)(base-0x6000),file,status,&Card_AsyncDone);
-if(*(s32*)(resultBase-0x5ffc)<0) {
+*(volatile s32*)(resultBase-0x5ffc)=fn_8021D118(*(s32*)(base-0x6000),file,&status,&Card_AsyncDone);
+if(*(volatile s32*)(resultBase-0x5ffc)<0) {
 Process_Goto(proc,0x63);busyBase[-0x5fe6]=0;
 }
 }
