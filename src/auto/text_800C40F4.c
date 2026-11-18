@@ -16551,7 +16551,6 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     u32 strlen(char *);
     extern u8 gActorVtbl[];
     extern char lbl_802720E0[];
-    extern f32 lbl_80369F3C;
     extern f32 lbl_80369F58;
     u8 buf108[0x20];
     u8 bufE8[0x20];
