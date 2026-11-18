@@ -4022,7 +4022,6 @@ node->prev=0;
 }
 
 #pragma global_optimizer reset
-#pragma push
 #pragma scheduling on
 void fn_80249D6C(void *arg0) {
     void fn_80249C1C(void *, s32, s32);
@@ -4042,7 +4041,7 @@ void fn_80249D6C(void *arg0) {
     fn_80249C1C(arg0, 0, 0);
     fn_80249C1C(arg0, 1, 0);
 }
-#pragma pop
+#pragma scheduling reset
 
 void fn_80249DD0(s32 arg0) {
     void fn_80249C1C(s32, s32, s32);
