@@ -1453,7 +1453,10 @@ extern f32 lbl_80368BDC;
 extern f32 lbl_80368BE0;
 extern f64 lbl_80368C20;
 s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
-    register u8 *digits;
+#pragma push
+#pragma use_lmw_stmw on
+    extern f32 lbl_80368BDC;
+    extern f32 lbl_80368BE0;
     u32 *tbl;
     u32 found;
     s32 i;
@@ -1462,9 +1465,6 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     u8 *p;
     s32 c;
     s32 code;
-    s16 digi;
-    s16 shift;
-    s32 val;
     f32 ftmp;
     s32 rnd;
 
@@ -1474,28 +1474,31 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     }
     found = (u32)fn_8010494C((void *)lbl_802AEE20[idx]);
     tbl = (u32 *)lbl_802AEE20;
-    if (tbl[0] == found) {
-        i = 0;
-    } else if (tbl[1] == found) {
-        i = 1;
-    } else if (tbl[2] == found) {
-        i = 2;
-    } else if (tbl[3] == found) {
-        i = 3;
-    } else if (tbl[4] == found) {
-        i = 4;
-    } else {
+    {
+        u32 *q = tbl;
+        s32 j;
+        for (j = 0; j < 5; j++, q++) {
+            if (*q == found) {
+                i = j;
+                goto font_found;
+            }
+        }
         i = -1;
+    font_found:
+        ;
     }
 
     fmax = lbl_80368BDC;
     result = 0;
 
     while ((s8)*p != 0) {
-        if (*p++ == '#') {
-            c = (s8)*p++;
-            code = c - '#';
-            if ((u32)code <= 0x56U) {
+        c = *p;
+        p++;
+        if ((s8)c == '#') {
+            c = (s8)*p;
+            p++;
+            code = c - 0x23;
+            if ((((u32)code) + 1) <= (0x56U + 1)) {
                 switch (code) {
                 case 30:
                 case 31:
@@ -1510,23 +1513,28 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
                 case 45:
                     p += 3;
                     break;
-                case 35:
+                case 35: {
+                    s16 shift;
+                    s16 digi;
+                    u8 n;
+                    s32 val;
+                    u8 *digits;
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         c = (s8)*p++;
                         if (c >= '0' && c <= '9') {
-                            digits[(u8)digi] = (u8)(c - '0');
+                            digits[n] = (u8)(c - '0');
                         } else if (c >= 'a' && c <= 'f') {
-                            digits[(u8)digi] = (u8)(c - 0x57);
+                            digits[n] = (u8)(c - 0x57);
                         } else if (c >= 'A' && c <= 'F') {
-                            digits[(u8)digi] = (u8)(c - 0x37);
+                            digits[n] = (u8)(c - 0x37);
                         }
-                        digi += 1;
+                        n += 1;
                     }
                     val = 0;
-                    digi = 1;
-                    shift = 0;
+                    digi = (s16)(val + 1);
+                    shift = (s16)val;
                     while (digi >= 0) {
                         val += digits[digi] << shift;
                         digi -= 1;
@@ -1536,31 +1544,32 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
                         val = 0;
                     }
                     found = (u32)fn_8010494C((void *)lbl_802AEE20[val]);
-                    if (tbl[0] == found) {
-                    } else if (tbl[1] == found) {
-                    } else if (tbl[2] == found) {
-                    } else if (tbl[3] == found) {
-                    } else if (tbl[4] == found) {
-                    }
+                    Text_FindFontIndex(tbl, found);
                     break;
+                }
                 case 48:
-                case 54:
+                case 54: {
+                    s16 shift;
+                    s16 digi;
+                    u8 n;
+                    s32 val;
+                    u8 *digits;
                     digits = (u8 *)__alloca(8);
-                    digi = 0;
-                    while ((u8)digi < 2) {
+                    n = 0;
+                    while (n < 2) {
                         c = (s8)*p++;
                         if (c >= '0' && c <= '9') {
-                            digits[(u8)digi] = (u8)(c - '0');
+                            digits[n] = (u8)(c - '0');
                         } else if (c >= 'a' && c <= 'f') {
-                            digits[(u8)digi] = (u8)(c - 0x57);
+                            digits[n] = (u8)(c - 0x57);
                         } else if (c >= 'A' && c <= 'F') {
-                            digits[(u8)digi] = (u8)(c - 0x37);
+                            digits[n] = (u8)(c - 0x37);
                         }
-                        digi += 1;
+                        n += 1;
                     }
                     val = 0;
-                    digi = 1;
-                    shift = 0;
+                    digi = (s16)(val + 1);
+                    shift = (s16)val;
                     while (digi >= 0) {
                         val += digits[digi] << shift;
                         digi -= 1;
@@ -1571,6 +1580,7 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
                         fmax = ftmp;
                     }
                     break;
+                }
                 default:
                     break;
                 }
@@ -1589,13 +1599,9 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
         i = 0;
     }
     found = (u32)fn_8010494C((void *)lbl_802AEE20[i]);
-    if (tbl[0] == found) {
-    } else if (tbl[1] == found) {
-    } else if (tbl[2] == found) {
-    } else if (tbl[3] == found) {
-    } else if (tbl[4] == found) {
-    }
+    Text_FindFontIndex(tbl, found);
     return result;
+#pragma pop
 }
 
 #pragma push
