@@ -776,73 +776,14 @@ s32 fn_80217D4C(void) {
 }
 
 s32 fn_80217D68(u32 arg0) {
-    u32 var_ctr;
-    u32 temp_r6;
-    u32 var_r9;
-    u32 var_r10;
-    u32 var_r7;
-    u32 var_r8;
-
-    var_ctr = 8;
-    temp_r6 = arg0 >> 0x1FU;
-    var_r9 = 0;
-    var_r10 = 1;
-    var_r7 = 0;
-    var_r8 = 0;
-
-    for (var_ctr = 8; var_ctr; --var_ctr) {
-        if (var_r8 > 0xF) {
-            if (var_r8 == 0x1F) {
-                var_r7 |= temp_r6;
-            } else {
-                var_r7 |= (arg0 & (1U << var_r8)) >> var_r10;
-                var_r10 += 2;
-            }
-        } else {
-            var_r7 |= (arg0 & (1U << var_r8)) << ((0x1F - var_r8) - var_r9);
-            var_r9 += 1;
-        }
-
-        if (var_r8 + 1 > 0xF) {
-            if (var_r8 + 1 == 0x1F) {
-                var_r7 |= temp_r6;
-            } else {
-                var_r7 |= (arg0 & (1U << (var_r8 + 1))) >> var_r10;
-                var_r10 += 2;
-            }
-        } else {
-            var_r7 |= (arg0 & (1U << (var_r8 + 1))) << ((0x1F - (var_r8 + 1)) - var_r9);
-            var_r9 += 1;
-        }
-
-        if (var_r8 + 2 > 0xF) {
-            if (var_r8 + 2 == 0x1F) {
-                var_r7 |= temp_r6;
-            } else {
-                var_r7 |= (arg0 & (1U << (var_r8 + 2))) >> var_r10;
-                var_r10 += 2;
-            }
-        } else {
-            var_r7 |= (arg0 & (1U << (var_r8 + 2))) << ((0x1F - (var_r8 + 2)) - var_r9);
-            var_r9 += 1;
-        }
-
-        if (var_r8 + 3 > 0xF) {
-            if (var_r8 + 3 == 0x1F) {
-                var_r7 |= temp_r6;
-            } else {
-                var_r7 |= (arg0 & (1U << (var_r8 + 3))) >> var_r10;
-                var_r10 += 2;
-            }
-        } else {
-            var_r7 |= (arg0 & (1U << (var_r8 + 3))) << ((0x1F - (var_r8 + 3)) - var_r9);
-            var_r9 += 1;
-        }
-
-        var_r8 += 4;
-    }
-
-    return var_r7;
+u32 sign=arg0>>31;
+u32 result, i, left, right;
+left=0; right=1; result=0;
+for(i=0;i<32;i++){
+if(i>15){if(i==31) result|=sign; else {result|=(arg0&(1U<<i))>>right;right+=2;}}
+else {result|=(arg0&(1U<<i))<<((31-i)-left);left++;}
+}
+return result;
 }
 
 s32 fn_80217ED4(s32 chan, u32 addr, void *buffer, s32 length, s32 mode) {
@@ -1499,78 +1440,34 @@ void fn_80219334(s32 arg0, s32 arg1) {
         }
     }
 }
-#pragma optimization_level reset
-s32 fn_802193FC(s32 arg0, u32 arg1)
-{
-    s32 fn_802195B0(s32, void *);
-
-    u8 *entry;
-    u8 *data;
-    u16 *slots;
-    u16 current;
-    u16 first;
-    u16 previous;
-    u16 next;
-    u16 limit;
-    u32 attempts;
-
-    entry = (u8 *)__CARDBlock + arg0 * 0x110;
-
-    if (*(s32 *)entry == 0) {
-        return -3;
-    }
-
-    data = *(u8 **)(entry + 0x88);
-
-    if (*(u16 *)(data + 6) < arg1) {
-        return -9;
-    }
-
-    *(u16 *)(data + 6) -= arg1;
-
-    current = *(u16 *)(data + 8);
-    first = 0xFFFF;
-    attempts = 0;
-    slots = (u16 *)data;
-    limit = *(u16 *)(entry + 0x10);
-
-    do {
-        attempts++;
-
-        if ((s32)(limit - 5) < (s32)attempts) {
-            return -6;
-        }
-
-        current++;
-
-        if (current >= 5 && current >= limit) {
-            current = 5;
-        }
-
-        next = slots[current];
-
-        if (next != 0) {
-            continue;
-        }
-
-        if (first == 0xFFFF) {
-            first = current;
-        } else {
-            slots[previous] = current;
-        }
-
-        slots[current] = 0xFFFF;
-        previous = current;
-
-        arg1--;
-    } while (arg1 != 0);
-
-    *(u16 *)(data + 8) = current;
-    *(u16 *)(entry + 0xBE) = first;
-
-    return fn_802195B0(arg0, data);
+#pragma optimization_level 4
+s32 fn_802193FC(s32 arg0,u32 arg1,void *arg2) {
+s32 fn_802195B0(s32,void *,void *);
+u8 *entry; u16 *data;
+u16 current,first,previous,attempts;
+if(*(s32 *)(entry=(u8 *)__CARDBlock+arg0*0x110)==0)return -3;
+if((data=*(u16 **)(entry+0x88))[3]<arg1)return -9;
+data[3]-=arg1;
+current=data[4];
+first=0xFFFF;
+attempts=0;
+while(arg1!=0){
+u16 limit=*(u16 *)(entry+0x10);
+if(limit-5 < ++attempts)return -6;
+current++;
+if(current<5 || current>=limit)current=5;
+if(data[current]==0){
+if(first==0xFFFF)first=current;
+else data[previous]=current;
+data[current]=0xFFFF;
+previous=current;
+arg1--;
 }
-
+}
+data[4]=current;
+*(u16 *)(entry+0xBE)=first;
+return fn_802195B0(arg0,data,arg2);
+}
 #pragma optimization_level 3
 s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
