@@ -115,24 +115,24 @@ s32 fn_801A2C30(s32 arg0) {
 }
 
   
-  s32 fn_801A2CC0(void) {
+#pragma global_optimizer off
+s32 fn_801A2CC0(void) {
     s32 fn_801044E0(s32);
-    extern s32 gUiContext;
-    extern u8 gMapBlendMode;
-    u8 temp_r0;
-    u8 var_r4;
+    extern u8 gUiContext[], gMapBlendMode;
+    s32 flag;
+    u32 t;
 
-    var_r4 = 1;
-    temp_r0 = gMapBlendMode - 1;
-    if (((u32) ((1 | ~temp_r0) - ((u32) (1 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
-        var_r4 = 0;
+    flag = 1;
+    t = ((u8)(gMapBlendMode - 1) <= (u32)flag);
+    if (!t) {
+        flag = 0;
     }
-    if (var_r4 == 0) {
+    if ((u8)flag == 0) {
         return 0;
     }
-    return fn_801044E0(gUiContext + 0x1A4);
+    return fn_801044E0(*(s32 *)gUiContext + 0x1A4);
 }
-
+#pragma global_optimizer reset
 s32 fn_801A2D2C(s32 arg0) {
 void **UiCtx_GetItemSlot(void*);
 void *UnitRef_GetName(void*);
