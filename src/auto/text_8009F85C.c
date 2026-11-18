@@ -1,6 +1,15 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void MenuCmd_SetPackedSlots(u8 *save, s32 count)
+{
+    s32 i;
+    for (i = 0; i < 30; ++i) {
+        if (i < count - 1) save[i + 0x12] = i + 1;
+        else save[i + 0x12] = 0;
+    }
+}
+
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
     void *fn_80105C5C(void *, u8);
@@ -385,21 +394,21 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
-#pragma scheduling off
+#pragma optimization_level 3
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
-    s32 value;
-    a = lbl_80366E25;
-    value = 2;
+    s32 v = 2;
+
+    a = (u8)lbl_80366E25;
     b = a ^ 1;
-    a = (u8)b;
     lbl_80366E25 = b;
-    if (a != 0)
-        value = 0;
-    *((u8 *)c + 0x39) = value;
+    if ((u8)b != 0) {
+        v = 0;
+    }
+    *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
-#pragma scheduling reset
+#pragma optimization_level reset
 extern u8 lbl_80366E25;
 u32 fn_800A0144(void) {
     extern u8 lbl_80366E25;
@@ -421,16 +430,12 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
-    register u32 v;
-
+    u8 v;
     a = (u8)lbl_80367708;
     v = 2;
     b = a ^ 1;
     lbl_80367708 = b;
-    a = (u8)b;
-    if (a != 0) {
-        v = 0;
-    }
+    if ((u8)b != 0) v = 0;
     *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
@@ -528,13 +533,16 @@ void *fn_800A02E4(void) {
 
 s32 fn_800A02F4(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367707;
-    register s16 value;
-    a = lbl_80367707;
+    s32 v;
+
+    a = (u8)lbl_80367707;
     b = a ^ 1;
     lbl_80367707 = b;
-    value = 2;
-    if ((u8)b) value = 0;
-    *((u8 *)arg2 + 0x39) = value;
+    v = 2;
+    if ((u8)b != 0) {
+        v = 0;
+    }
+    *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
 
