@@ -2,6 +2,19 @@
 #include "common.h"
 #include "structs.h"
 #pragma cplusplus on
+class WindowDrawInterface {
+public:
+ u8 data[0x40];
+ virtual void unk08();
+ virtual void unk0C();
+ virtual void unk10();
+ virtual void unk14();
+ virtual void unk18();
+ virtual void unk1C();
+ virtual void draw(s32, s32, void *, s32, s32, f32);
+};
+#pragma cplusplus reset
+#pragma cplusplus on
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
@@ -9053,21 +9066,59 @@ void fn_800DA358(void) {
     lbl_803678B8[0x89] = 1;
 }
 
-void fn_800DA368(void* arg0, void* arg1) {
-    if (arg0 != NULL && arg1 != NULL) {
-        int* data = (int*)arg1;
-        int count = *data;
-        int* dest = (int*)arg0;
-        
-        if (count > 0) {
-            int i;
-            for (i = 0; i < count; i++) {
-                dest[i] = data[i + 1];
-            }
-        }
-    }
+#pragma global_optimizer off
+#pragma dont_inline on
+#pragma use_lmw_stmw on
+void fn_800DA368(void) {
+ extern void *lbl_803678B8;
+ extern char lbl_802711B0[];
+ u32 strlen(const char*);
+ void String_AssignCStr(void*,const char*,u32);
+ void fn_800C99A0(void*,void*,s32,s32);
+ void fn_800C992C(void*,const char*,u32);
+ char *String_CStr(void*);
+ void *File_Open(const char*,const char*);
+ void File_Close(void*);
+ s32 fn_800E5068(void*);
+ void *fn_800E5070(void*,s32);
+ s32 fn_801FFD00(void*,const char*,...);
+ void *String_Destroy(void*,s16);
+ String path;
+ u8 *self;
+ s32 i;
+ void *file;
+ s32 count;
+ String *entry;
+ s32 field;
+ char *name,*value;
+ self=(u8*)lbl_803678B8;
+ path.cap=0;path.size=0;path.data=0;path.cap=0;
+ String_AssignCStr(&path,lbl_802711B0+0x12A,strlen(lbl_802711B0+0x12A));
+ fn_800C99A0(&path,self+0x70,0,-1);
+ fn_800C992C(&path,lbl_802711B0+0x130,strlen(lbl_802711B0+0x130));
+ file=File_Open(String_CStr(&path),lbl_802711B0+0x139);
+ if(!file){String_Destroy(&path,-1);return;}
+ count=fn_800E5068(*(void**)(self+0x10));
+ for(i=0;i<count;i++) {
+ entry=(String*)fn_800E5070(*(void**)(self+0x10),i);
+ name=String_CStr(entry);
+ value=String_CStr(entry+1);
+ field=*(s32*)(entry+2);
+ fn_801FFD00(file,lbl_802711B0+0x13B);
+ fn_801FFD00(file,lbl_802711B0+0x13D);
+ fn_801FFD00(file,lbl_802711B0+0x140);
+ fn_801FFD00(file,lbl_802711B0+0x153,name);
+ fn_801FFD00(file,lbl_802711B0+0x15E,value);
+ fn_801FFD00(file,lbl_802711B0+0x16B,field);
+ fn_801FFD00(file,lbl_802711B0+0x177);
+ }
+ fn_801FFD00(file,lbl_802711B0+0x17B);
+ File_Close(file);
+ String_Destroy(&path,-1);
 }
-
+#pragma dont_inline reset
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
 void fn_800DA530(void *arg0, void *arg1, s32 arg2)
 {
     extern void *lbl_803678B8;
@@ -14581,74 +14632,37 @@ void fn_800E3BD8(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 0x5C) = (s32) (arg2 + (M2C_FIELD(arg0, s32 *, 0x80) - M2C_FIELD(arg0, s32 *, 0x78)));
 }
 
-void fn_800E3C04(void* arg0) {
-    void* temp_r3;
-    void** temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    u32* temp_r7;
-    void** temp_r9;
-    void* temp_r10;
-    void* temp_r11;
-
-    if (arg0 != 0) {
-        // Load virtual table pointer from arg0 + 4
-        temp_r9 = *(void***)((char*)arg0 + 4);
-        if (temp_r9 != 0) {
-            // First call - check if it's the right class type by checking function at index 0x8
-            temp_r4 = temp_r9;
-            temp_r5 = *((s32*)temp_r9 + 2); // This is probably a function ptr, offset 0x8
-
-            // Check if calling function with correct argument signature
-            temp_r10 = (void*)temp_r5; // Store function pointer value
-            if (temp_r10 != 0) {
-                s32 field_0x2B0 = *(s32*)((char*)arg0 + 0x2B0);
-                
-                // Call virtual method Heap_Free
-                temp_r6 = *(s32*)((char*)temp_r9 + 8) + 0x10;
-                if (temp_r6 != 0) {
-                    void* r30 = *temp_r9;
-                    if (r30 == 0 || field_0x2B0 < 0) {
-                        // Call to Heap_Free with arg1 = arg0 + 0x2B4
-                        temp_r7 = *(u32**)((char*)arg0 + 0x2B4);
-                        if (temp_r7 != 0 && (s32)*temp_r7 > 0) {
-                            // Need to understand virtual table structure, check the call pattern carefully
-                            temp_r11 = (void*)*(s32*)((char*)temp_r9 + 0x18); // Function at offset 0x18
-                        
-                            if (temp_r11 != 0 && field_0x2B0 < 0) {
-                                // This is a bit complex but based on the assembly, calling a function with arg0
-                                // The pattern shows that we're looking at something like:
-                                // *(void**)arg0 = *(void**)temp_r9 + *(s32*)((char*)temp_r9 + 0x18) - need to check what this does exactly
-                                temp_r3 = *temp_r9;
-                                // Some data update or virtual call with arg0 at different offset
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Final processing with data from arg0, handling complex vtable accesses
-        // This requires the actual virtual method signatures from the project's struct
-        *(s32*)((char*)arg0 + 0x2B0) = *(s32*)((char*)arg0 + 0x2B0) - 1;
-        
-        if ((*((s32*)arg0 + 0xA9)) < 0) {
-            // Possibly another check or function call here
-            return;
-        }
-        
-        // Another virtual method call with multiple conditions
-        temp_r7 = *(u32**)((char*)arg0 + 0x8);
-        if (temp_r7 != 0) {
-            s32 temp = (s32)*(s32*)((char*)temp_r7 + 2);
-            if (temp >= 0 && temp < 3) {
-                // Handle this case properly
-                *(u16*)((char*)arg0 + 8) = *(u16*)((char*)arg0 + 8) - 1;
-            }
-        }
-    }
+#pragma dont_inline on
+#pragma use_lmw_stmw on
+void fn_800E3C04(void *arg0,s32 arg1) {
+ void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
+ s32 fn_800E7FB4(s32,void*);
+ void *String_Init(void*,char*,void*);
+ extern char lbl_80271F28[];
+ extern f32 lbl_80369F30[];
+ String a,b,c;
+ s32 scratchA,scratchB,scratchC;
+ u8 *self=(u8*)arg0;
+ s32 owner,item,color;
+ color=128;
+ owner=*(s32*)self;
+ if(self[0x9C]) color=255;
+ ((void(*)(void*,s32,s32,void*,s32,s32,f32))(*(void***)(self+0x40))[8])(self,M2C_FIELD(self,s32*,0x48)+M2C_FIELD(self,s32*,0x68),M2C_FIELD(self,s32*,0x4C)+M2C_FIELD(self,s32*,0x6C),self+0xAC,1,255,lbl_80369F30[0]);
+ String_Init(&a,lbl_80271F28,&scratchA);
+ item=fn_800E7FB4(owner,&a);
+ String_Destroy(&a,-1);
+ fn_800E3040(item,arg1,3,M2C_FIELD(self,s32*,0x48)+(M2C_FIELD(self,s32*,0x60)-20),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ String_Init(&b,lbl_80271F28+6,&scratchB);
+ item=fn_800E7FB4(owner,&b);
+ String_Destroy(&b,-1);
+ fn_800E3040(item,arg1,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),16,color,color,color,255,0);
+ String_Init(&c,lbl_80271F28+11,&scratchC);
+ item=fn_800E7FB4(owner,&c);
+ String_Destroy(&c,-1);
+ fn_800E3040(item,arg1,0,M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),M2C_FIELD(self,s32*,0x60),M2C_FIELD(self,s32*,0x64),255,255,255,255,0);
 }
-
+#pragma dont_inline reset
+#pragma use_lmw_stmw reset
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
 void *fn_800E4688(void *,void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
@@ -29188,35 +29202,44 @@ void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     }
 }
 
+#pragma global_optimizer off
 void fn_800FF75C(void *arg0) {
-    M2C_UNK BattleState_SetCamPos(M2C_UNK *, u8, f32, f32);
-    extern M2C_UNK gBattleMap;
-    extern M2C_UNK gUiContext;
-    extern M2C_UNK gBattleState;
-    extern u8 gMapBlendMode;
-    u8 temp_r0;
-    u8 var_r7;
-
-    var_r7 = 1;
-    M2C_FIELD(arg0, s8 *, 0x34) = 1;
-    temp_r0 = gMapBlendMode - 1;
-    if (((u32) ((1 | ~temp_r0) - ((u32) (1 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
-        var_r7 = 0;
-    }
-    if ((var_r7 != 0) && ((u8) M2C_FIELD(&gBattleState, u8 *, 0x11) == 1)) {
-        if (((u8) M2C_FIELD((&gBattleMap + (s8) M2C_FIELD(&gUiContext, u8 *, 0xB) + ((s8) M2C_FIELD(&gUiContext, u8 *, 0xC) << 6)), u8 *, 0x200D) != 0) || ((u8) M2C_FIELD((&gBattleMap + (s8) M2C_FIELD(&gUiContext, u8 *, 0xD) + ((s8) M2C_FIELD(&gUiContext, u8 *, 0xE) << 6)), u8 *, 0x200D) != 0)) {
-            BattleState_SetCamPos(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
-            return;
-        }
-        M2C_FIELD(arg0, s8 *, 0x34) = 0;
-        if ((u8) M2C_FIELD(&gUiContext, u8 *, 8) == 0x25) {
-            BattleState_SetCamPos(&gBattleState, M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
-        }
-    } else {
-        BattleState_SetCamPos(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
-    }
+void BattleState_SetCamPos(void *,f32,f32);
+extern u8 gUiContext[],gBattleMap[],gBattleState[],gMapBlendMode;
+u8 *ctx;
+u32 diff;
+u8 *map;
+s32 flag;
+u8 y,x;
+MapVisibilityCell *cell;
+ctx=gUiContext;map=gBattleMap;flag=1;
+*(u8*)((u8*)arg0+0x34)=flag;
+{
+u32 t=(u8)(gMapBlendMode-1);
+u32 mask=flag|~t;
+diff=flag-t;
+t=mask-(diff>>1);
+if((t>>31)==0) flag=0;
 }
-
+if((u8)flag && gBattleState[0x11]==1) {
+y=ctx[12];x=ctx[11];
+cell=(MapVisibilityCell*)(map+(s8)x);
+cell=(MapVisibilityCell*)((u8*)cell+((s8)y<<6));
+if(cell->value) goto visible;
+cell=(MapVisibilityCell*)(map+(s8)ctx[13]);
+cell=(MapVisibilityCell*)((u8*)cell+((s8)ctx[14]<<6));
+if(cell->value) {
+visible:
+BattleState_SetCamPos(gBattleState,(f32)(s8)x,(f32)(s8)y);
+} else {
+*(u8*)((u8*)arg0+0x34)=0;
+if(ctx[8]==0x25) BattleState_SetCamPos(gBattleState,(f32)(s8)ctx[11],(f32)(s8)ctx[12]);
+}
+} else {
+BattleState_SetCamPos(gBattleState,(f32)(s8)ctx[11],(f32)(s8)ctx[12]);
+}
+}
+#pragma global_optimizer reset
 void fn_800FF918(s32 arg0) {
     extern u16 lbl_8028E888[66];
     Process_CreateChild(lbl_8028E888, arg0);
