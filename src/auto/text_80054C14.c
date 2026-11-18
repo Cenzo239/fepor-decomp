@@ -284,8 +284,8 @@ static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec 
     }
 }
 static inline void Camera_ChoosePointOut(u8 *state, CameraVec *first, CameraVec *second, CameraVec **out) {
-    if ((*(u32 *)(state+8)&0x20000000) && first) *out=first;
-    else *out=second;
+    if ((*(u32 *)(state+8)&0x20000000) && first) { *out=first; return; }
+    *out=second;
 }
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
@@ -308,7 +308,7 @@ void fn_80054C14(void *arg0) {
     void fn_8018CF48(s32);
     extern void *gPadInput;
     u8 *unit2, *unit1;
-    const CameraVec *b, *a;
+    CameraVec *b, *a;
     void *pad;
     u8 *proc = arg0;
     CameraButtons buttons;
@@ -349,7 +349,7 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
+        Camera_ChoosePointOut(*(u8 **)(proc+0x30),a,b,&a);
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
