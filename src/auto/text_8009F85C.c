@@ -128,22 +128,18 @@ s32 fn_8009FABC(s32 arg0, s32 arg1, void *arg2) {
     if(entry) Status_Set(dst+0x1BC,entry[0x18]);
     return 0;
 }
-#pragma use_lmw_stmw reset
+#pragma use_lmw_stmw on
 s32 fn_8009FB4C(s32 arg0, s32 arg1, void *arg2) {
-void *Map_GetCursorUnit(void); void *fn_80105C5C(s32,u8); void Ui_CreateMenu(void*,s32,s32); extern u8 lbl_803675E4;
-s32 src; s32 idx; s32 count; s32 target; void *entry;
-Map_GetCursorUnit(); target=*((u8*)arg2+0x3A); src=(s32)Map_GetCursorUnit();
-idx=0;
-for(count=idx;idx<0x62;idx++) {
-entry=fn_80105C5C(src+0x1BC,(u8)idx);
-if(entry!=0) { if(count==target) goto after; count++; }
+    void *Map_GetCursorUnit(void);
+    void Ui_CreateMenu(void *, s32, s32);
+    extern u8 lbl_803675E4;
+    u8 *entry;
+    Map_GetCursorUnit();
+    entry=MenuCmd_FindStatus(*((u8 *)arg2+0x3A));
+    if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
+    return 0;
 }
-entry=0;
-after:
-if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
-return 0;
-}
-
+#pragma use_lmw_stmw reset
 
 
 #pragma use_lmw_stmw on
