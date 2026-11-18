@@ -1198,15 +1198,18 @@ s32 fn_800760E4(s32 arg0, s32 arg1, s32 arg2) {
     return (fn_8009204C(*(s32 *)gUiContext, value) == 0) + 1;
 }
 
-s32 fn_80076148(s32 arg0,s32 arg1,void *arg2) {
-extern u8 gUiContext[];
-u8 *selected;
-if(*((u8 *)arg2+0x39)==2) return 16;
-selected=gUiContext+10;
-*selected=*((u8 *)arg2+0x3a);
-return 5;
+#pragma cplusplus on
+extern "C" s32 fn_80076148(s32 arg0, s32 arg1, void *arg2) {
+    extern u8 gUiContext[];
+    volatile u8 *p;
+    if (*((u8 *)arg2 + 0x39) == 2) {
+        return 0x10;
+    }
+    p = gUiContext;
+    p[0xA] = *((u8 *)arg2 + 0x3A);
+    return 5;
 }
-
+#pragma cplusplus reset
 #pragma cplusplus on
 extern "C" void Prim2D_SetColorByte(s32);
 extern "C" void Prim2D_AddZ(f32);
