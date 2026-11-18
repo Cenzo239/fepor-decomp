@@ -8286,13 +8286,13 @@ char *fn_8004B078(void *arg0, s32 arg1) {
       return (char *)lbl_802EFFC8;
   }
 void *fn_8004B0C8(void *arg0) {
-    void sprintf(void *, void *, ...);
-    extern u8 lbl_8026A9B0[];
-    extern u8 lbl_802EFFC8[];
+      void sprintf(void *, void *, ...);
+      extern u16 lbl_8026A9B0[40];
+      extern u8 lbl_802EFFC8[];
 
-    sprintf(lbl_802EFFC8, lbl_8026A9B0 + 0xBC, lbl_8026A9B0 + 0xA8, *(s32 *)((u8 *)arg0 + 4));
-    return lbl_802EFFC8;
-}
+      sprintf(lbl_802EFFC8, (u8 *)lbl_8026A9B0 + 0xBC, (u8 *)lbl_8026A9B0 + 0xA8, *(s32 *)((u8 *)arg0 + 4));
+      return lbl_802EFFC8;
+  }
 
 extern u16 lbl_8026A9B0[40];
 extern u16 lbl_802EFFC8[16];
