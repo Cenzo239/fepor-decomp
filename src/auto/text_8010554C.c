@@ -1,6 +1,16 @@
 /* Functions from 0x8010554C to 0x80110128, found by decomp-toolkit. */
 #include "common.h"
 
+typedef struct SoundTweenProc {
+    u8 pad0[0x18];
+    void *parent;
+    u8 pad1C[0x14];
+    void *target;
+    u8 param, mode;
+    u8 pad36[2];
+    f32 time, duration, start, end;
+} SoundTweenProc;
+
 static inline s32 fn_8010EF74_cost(u8 *map, s8 x, s8 y) {
     return (*(s16 **)(map + 0x14190))[x + (y << 6)];
 }
@@ -2927,24 +2937,77 @@ void fn_80109244(struct Arg0 *arg0) {
     Prim2D_PrepareTex();
 }
 
-void Sound_TweenParam(void *arg0, s32 arg1) {
-    void *temp_r3;
-    s32 temp_r5;
-
-    if (arg1 != 0) {
-        temp_r3 = *(void **)((char *)arg0 + 0x34);
-        temp_r5 = ((s32)*(u32*)((char *)arg0 + 0x38)) >> 0x18;
-        while (temp_r5 < 0x10) {
-            if (*(u32 *)((char *)temp_r3 + (temp_r5 * 0x4)) != 0) {
-                Dispos_ParseEntry(arg0, *(void **)((char *)temp_r3 + (temp_r5 * 0x4)), arg1);
-            }
-            temp_r5 += 1;
-            if (temp_r5 >= 0x10) {
-                break;
-            }
-        }
-    }
+void Sound_TweenParam(void *arg0, s32 arg1, s32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+extern f32 lbl_8036A138,lbl_8036A130;
+extern u32 gUiInputFlags;
+void *Process_Create(void *,void *);
+extern u8 lbl_8028F374[];
+void *proc,*target;
+f32 cur;
+if(gUiInputFlags&1) { if(lbl_8036A138 != arg4) {switch((u8)arg1) {
+case 0: *(f32 *)((u8 *)arg0+64)=arg4; break;
+case 1: *(f32 *)((u8 *)arg0+68)=arg4; break;
+case 2: *(f32 *)((u8 *)arg0+72)=arg4; break;
+case 3: *(f32 *)((u8 *)arg0+76)=arg4; break;
+case 4: *(f32 *)((u8 *)arg0+80)=arg4; break;
+case 5: *(f32 *)((u8 *)arg0+84)=arg4; break;
+case 6: *(f32 *)((u8 *)arg0+88)=arg4; break;
+case 7: *(f32 *)((u8 *)arg0+84)=arg4; *(f32 *)((u8 *)arg0+88)=arg4; break;
+case 8: *(f32 *)((u8 *)arg0+92)=arg4; break;
+case 9: *((u8 *)arg0+96)=(s32)arg4; break;
+case 10: *((u8 *)arg0+97)=(s32)arg4; break;
 }
+} return; }
+if(arg3==arg4) {if(lbl_8036A138 != arg3) {switch((u8)arg1) {
+case 0: *(f32 *)((u8 *)arg0+64)=arg3; break;
+case 1: *(f32 *)((u8 *)arg0+68)=arg3; break;
+case 2: *(f32 *)((u8 *)arg0+72)=arg3; break;
+case 3: *(f32 *)((u8 *)arg0+76)=arg3; break;
+case 4: *(f32 *)((u8 *)arg0+80)=arg3; break;
+case 5: *(f32 *)((u8 *)arg0+84)=arg3; break;
+case 6: *(f32 *)((u8 *)arg0+88)=arg3; break;
+case 7: *(f32 *)((u8 *)arg0+84)=arg3; *(f32 *)((u8 *)arg0+88)=arg3; break;
+case 8: *(f32 *)((u8 *)arg0+92)=arg3; break;
+case 9: *((u8 *)arg0+96)=(s32)arg3; break;
+case 10: *((u8 *)arg0+97)=(s32)arg3; break;
+}
+} return;}
+proc=Process_Create(lbl_8028F374,arg0);
+*(void **)((u8 *)proc+0x30)=*(void **)((u8 *)proc+0x18);
+*((u8 *)proc+0x34)=arg1; *((u8 *)proc+0x35)=arg2;
+if(lbl_8036A138==arg3) {
+target=*(void **)((u8 *)proc+0x30);
+switch((u8)arg1) {
+case 0: cur=*(f32 *)((u8 *)target+64); break;
+case 1: cur=*(f32 *)((u8 *)target+68); break;
+case 2: cur=*(f32 *)((u8 *)target+72); break;
+case 3: cur=*(f32 *)((u8 *)target+76); break;
+case 4: cur=*(f32 *)((u8 *)target+80); break;
+case 5: cur=*(f32 *)((u8 *)target+84); break;
+case 6: cur=*(f32 *)((u8 *)target+88); break;
+case 8: cur=*(f32 *)((u8 *)target+92); break;
+case 9: cur=*((u8 *)target+96); break;
+case 10: cur=*((u8 *)target+97); break;
+default:cur=lbl_8036A130;break;}
+*(f32 *)((u8 *)proc+0x40)=cur;
+} else { *(f32 *)((u8 *)proc+0x40)=arg3; }
+*(f32 *)((u8 *)proc+0x44)=arg4;
+*(f32 *)((u8 *)proc+0x3c)=(f32)(s32)arg5;
+*(f32 *)((u8 *)proc+0x38)=lbl_8036A130;
+if(lbl_8036A138!=arg3) {switch((u8)arg1) {
+case 0: *(f32 *)((u8 *)arg0+64)=arg3; break;
+case 1: *(f32 *)((u8 *)arg0+68)=arg3; break;
+case 2: *(f32 *)((u8 *)arg0+72)=arg3; break;
+case 3: *(f32 *)((u8 *)arg0+76)=arg3; break;
+case 4: *(f32 *)((u8 *)arg0+80)=arg3; break;
+case 5: *(f32 *)((u8 *)arg0+84)=arg3; break;
+case 6: *(f32 *)((u8 *)arg0+88)=arg3; break;
+case 7: *(f32 *)((u8 *)arg0+84)=arg3; *(f32 *)((u8 *)arg0+88)=arg3; break;
+case 8: *(f32 *)((u8 *)arg0+92)=arg3; break;
+case 9: *((u8 *)arg0+96)=(s32)arg3; break;
+case 10: *((u8 *)arg0+97)=(s32)arg3; break;
+}
+} }
 
 #pragma global_optimizer off
 void fn_801097DC(void *arg0) {
