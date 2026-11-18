@@ -4021,7 +4021,7 @@ node->prev=0;
 *head=node;
 }
 
-#pragma global_optimizer reset
+#pragma scheduling on
 void fn_80249D6C(void *arg0) {
     void fn_80249C1C(void *, s32, s32);
     extern s32 lbl_803689BC;
@@ -4031,12 +4031,12 @@ void fn_80249D6C(void *arg0) {
 
     v0 = lbl_803689B8;
     v1 = lbl_803689BC;
-    M2C_FIELD(arg0, s32 *, 0x28) = v1;
-    M2C_FIELD(arg0, s32 *, 0x24) = v0;
+    *(s32 *)((u8 *)arg0 + 0x28) = v1;
+    *(s32 *)((u8 *)arg0 + 0x24) = v0;
     v0 = lbl_803689B8;
     v1 = lbl_803689BC;
-    M2C_FIELD((u32)arg0, s32 *, 0x2C) = v0;
-    M2C_FIELD(arg0, s32 *, 0x30) = v1;
+    *(s32 *)((u8 *)arg0 + 0x30) = v1;
+    *(s32 *)((u8 *)arg0 + 0x2C) = v0;
     fn_80249C1C(arg0, 0, 0);
     fn_80249C1C(arg0, 1, 0);
 }
