@@ -237,82 +237,89 @@ s32 fn_8021D91C(s32 arg0) {
     return 1;
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs off
 void __GXInitRevisionBits(void) {
-    extern u8 *__GXData;
-
-    volatile u8 *fifo8;
-    volatile u32 *fifo32;
+    extern u8 *const __GXData;
+    u32 idx3c;
+    u32 one;
+    u32 idx1c;
     u8 *gx;
-    u32 i;
     u32 offset;
-    u32 value;
+    u32 i;
+    u32 v;
+    u32 eight;
     u32 regA;
     u32 regB;
     u32 regC;
 
-    fifo8 = (volatile u8 *)0xCC008000;
-    fifo32 = (volatile u32 *)0xCC008000;
-
     i = 0;
     offset = i << 2;
 
-    for (i = 0; i < 8; i++) {
+
+    for (; i < 8; i++) {
+        one=1;
+        eight=8;
         gx = __GXData;
+        idx1c = offset + 0x1C;
+        idx3c = offset + 0x3C;
 
-        value = *(u32 *)(gx + offset + 0x1C);
-        value = __rlwimi(value, 1, 30, 1, 1);
-        *(u32 *)(gx + offset + 0x1C) = value;
+        v = *(u32 *)(gx + idx1c);
+        v = __rlwimi(v, one, 30, 1, 1);
+        *(u32 *)(gx + idx1c) = v;
 
-        value = *(u32 *)(gx + offset + 0x3C);
-        value = __rlwimi(value, 1, 31, 0, 0);
-        *(u32 *)(gx + offset + 0x3C) = value;
+        v = *(u32 *)(gx + idx3c);
+        v = __rlwimi(v, one, 31, 0, 0);
+        *(u32 *)(gx + idx3c) = v;
 
-        *fifo8 = 8;
-        *fifo8 = (u8)(i | 0x80);
-        *fifo32 = *(u32 *)(gx + offset + 0x3C);
+        *(volatile u8 *)0xCC008000 = (u8)eight;
+        *(volatile u8 *)0xCC008000 = (u8)(i | 0x80);
+        *(volatile u32 *)0xCC008000 = *(u32 *)(gx + idx3c);
 
         offset += 4;
     }
 
-    regA = 0;
-    regB = 0;
-    regC = 0;
+    {
+        regA = 0;
+        regB = 0;
+        regC = 0;
 
-    regA = __rlwimi(regA, 1, 0, 31, 31);
-    regB = __rlwimi(regB, 1, 0, 31, 31);
+        regA = __rlwimi(regA, 1, 0, 31, 31);
+        regB = __rlwimi(regB, 1, 0, 31, 31);
 
-    regA = __rlwimi(regA, 1, 1, 30, 30);
-    regA = __rlwimi(regA, 1, 2, 29, 29);
-    regA = __rlwimi(regA, 1, 3, 28, 28);
-    regA = __rlwimi(regA, 1, 4, 27, 27);
+        regA = __rlwimi(regA, 1, 1, 30, 30);
+        regA = __rlwimi(regA, 1, 2, 29, 29);
+        regA = __rlwimi(regA, 1, 3, 28, 28);
+        regA = __rlwimi(regA, 1, 4, 27, 27);
 
-    regB = __rlwimi(regB, 1, 1, 30, 30);
+        regB = __rlwimi(regB, 1, 1, 30, 30);
 
-    *fifo8 = 0x10;
-    *fifo32 = 0x1000;
+        *(volatile u8 *)0xCC008000 = 0x10;
+        *(volatile u32 *)0xCC008000 = 0x1000;
 
-    regA = __rlwimi(regA, 1, 5, 26, 26);
-    regB = __rlwimi(regB, 1, 2, 29, 29);
+        regA = __rlwimi(regA, 1, 5, 26, 26);
+        regB = __rlwimi(regB, 1, 2, 29, 29);
 
-    *fifo32 = regA;
+        *(volatile u32 *)0xCC008000 = regA;
 
-    regC = __rlwimi(regC, 1, 0, 31, 31);
+        regC = __rlwimi(regC, 1, 0, 31, 31);
 
-    *fifo8 = 0x10;
+        *(volatile u8 *)0xCC008000 = 0x10;
 
-    regB = __rlwimi(regB, 1, 3, 28, 28);
+        regB = __rlwimi(regB, 1, 3, 28, 28);
 
-    *fifo32 = 0x1012;
+        *(volatile u32 *)0xCC008000 = 0x1012;
 
-    regB = __rlwimi(regB, 0x58, 24, 0, 7);
+        regB = __rlwimi(regB, 0x58, 24, 0, 7);
 
-    *fifo32 = regC;
+        *(volatile u32 *)0xCC008000 = regC;
 
-    *fifo8 = 0x61;
-    *fifo32 = regB;
+        *(volatile u8 *)0xCC008000 = 0x61;
+        *(volatile u32 *)0xCC008000 = regB;
+    }
 }
-
-#pragma use_lmw_stmw on
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 void *GXInit(void *base, u32 size) {
     void OSRegisterVersion(char *);
     void GXSetMisc(u32, u32);
@@ -1295,85 +1302,209 @@ case 20: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),
  M2C_FIELD(__GXData,u32 *,0x5ac)|=8;
 }
 
-void GXSetVtxDescv(s32 arg0, s32 arg1) {
-    extern u16 *const __GXData;
-    
-    if (arg0 >= 0 && arg0 <= 23) {
-        switch (arg0) {
-            case 0:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x8000) | ((arg1 & 1) << 15);
-                break;
-            case 1:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x4000) | ((arg1 & 1) << 14);
-                break;
-            case 2:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x2000) | ((arg1 & 1) << 13);
-                break;
-            case 3:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x1000) | ((arg1 & 1) << 12);
-                break;
-            case 4:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x800) | ((arg1 & 1) << 11);
-                break;
-            case 5:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x400) | ((arg1 & 1) << 10);
-                break;
-            case 6:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x200) | ((arg1 & 1) << 9);
-                break;
-            case 7:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x100) | ((arg1 & 1) << 8);
-                break;
-            case 8:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x80) | ((arg1 & 1) << 7);
-                break;
-            case 9:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x60) | ((arg1 & 3) << 5);
-                break;
-            case 10:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x1) | ((arg1 & 1) << 0);
-                break;
-            case 11:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x4) | ((arg1 & 1) << 2);
-                break;
-            case 12:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x10) | ((arg1 & 1) << 4);
-                break;
-            case 13:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x20) | ((arg1 & 1) << 5);
-                break;
-            case 14:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x80) | ((arg1 & 1) << 7);
-                break;
-            case 15:
-                __GXData[0x14/2] = (__GXData[0x14/2] & ~0x200) | ((arg1 & 1) << 9);
-                break;
-            case 16:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0xC000) | ((arg1 & 3) << 14);
-                break;
-            case 17:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0x3000) | ((arg1 & 3) << 12);
-                break;
-            case 18:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0xC00) | ((arg1 & 3) << 10);
-                break;
-            case 19:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0x300) | ((arg1 & 3) << 8);
-                break;
-            case 20:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0xC0) | ((arg1 & 3) << 6);
-                break;
-            case 21:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0x30) | ((arg1 & 3) << 4);
-                break;
-            case 22:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0xC) | ((arg1 & 3) << 2);
-                break;
-            case 23:
-                __GXData[0x18/2] = (__GXData[0x18/2] & ~0x3) | ((arg1 & 3) << 0);
-                break;
+void GXSetVtxDescv(s32 *arg0)
+{
+    extern u8 *__GXData;
+
+    u32 attr;
+    u32 type;
+    u32 word;
+    u8 *gx;
+
+    while (arg0[0] != 0xFF) {
+        attr = arg0[0];
+        type = arg0[1];
+
+        switch (attr) {
+        case 0:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 0, 31, 31);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 1:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 1, 30, 30);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 2:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 2, 29, 29);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 3:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 3, 28, 28);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 4:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 4, 27, 27);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 5:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 5, 26, 26);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 6:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 6, 25, 25);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 7:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 7, 24, 24);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 8:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 8, 23, 23);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 9:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 9, 21, 22);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 10:
+            if (type != 0) {
+                gx = __GXData;
+                gx[0x4D4] = 1;
+                gx[0x4D5] = 0;
+                *(u32 *)(gx + 0x4D0) = type;
+            } else {
+                gx = __GXData;
+                gx[0x4D4] = 0;
+            }
+            break;
+
+        case 25:
+            if (type != 0) {
+                gx = __GXData;
+                gx[0x4D5] = 1;
+                gx[0x4D4] = 0;
+                *(u32 *)(gx + 0x4D0) = type;
+            } else {
+                gx = __GXData;
+                gx[0x4D5] = 0;
+            }
+            break;
+
+        case 11:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 13, 17, 18);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 12:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x14);
+            word = __rlwimi(word, type, 15, 15, 16);
+            *(u32 *)(gx + 0x14) = word;
+            break;
+
+        case 13:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 0, 30, 31);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 14:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 2, 28, 29);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 15:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 4, 26, 27);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 16:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 6, 24, 25);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 17:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 8, 22, 23);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 18:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 10, 20, 21);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 19:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 12, 18, 19);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+
+        case 20:
+            gx = __GXData;
+            word = *(u32 *)(gx + 0x18);
+            word = __rlwimi(word, type, 14, 16, 17);
+            *(u32 *)(gx + 0x18) = word;
+            break;
+        }
+
+        arg0 += 2;
+    }
+
+    gx = __GXData;
+
+    if (gx[0x4D4] == 0) {
+        if (gx[0x4D5] != 0) {
+            type = *(u32 *)(gx + 0x4D0);
+            word = *(u32 *)(gx + 0x14);
+
+            word = __rlwimi(word, type, 11, 19, 20);
+
+            *(u32 *)(gx + 0x14) = word;
+        } else {
+            word = *(u32 *)(gx + 0x14);
+
+            word = __rlwimi(word, 0, 11, 19, 20);
+
+            *(u32 *)(gx + 0x14) = word;
         }
     }
+
+    gx = __GXData;
+    *(u32 *)(gx + 0x5AC) |= 8;
 }
 
 #pragma optimization_level 3
