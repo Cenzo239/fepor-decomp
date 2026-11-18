@@ -262,15 +262,15 @@ extern void fn_80065E68(void);
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 
-s32 Pad_IsActive(u16 *arg0) {
-    if (arg0[0x7C / 2] != 0xFFFF)
+s32 Pad_IsActive(u8 *arg0) {
+    if (*(u16 *)(arg0 + 0x7C) != 0xFFFF)
         return 1;
-    if (arg0[0x7E / 2] != 0xFFFF)
+    if (*(u16 *)(arg0 + 0x7E) != 0xFFFF)
         return 1;
-    arg0 += 2;
-    if (arg0[0x7C / 2] != 0xFFFF)
+    arg0 += 4;
+    if (*(u16 *)(arg0 + 0x7C) != 0xFFFF)
         return 1;
-    if (arg0[0x7E / 2] != 0xFFFF)
+    if (*(u16 *)(arg0 + 0x7E) != 0xFFFF)
         return 1;
     return 0;
 }
