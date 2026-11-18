@@ -387,14 +387,19 @@ void *fn_800A010C(void) {
 }
 
 #pragma global_optimizer off
-s32 fn_800A011C(s32 a, s32 b, void *c) {
+static inline u8 MenuCmd_ToggleByte(u8 *state) {
+    *state ^= 1;
+    return *state;
+}
+
+s32 fn_800A011C(s32 a,s32 b,void *c) {
 extern u8 lbl_80366E25;
 s32 v=2;
-a=lbl_80366E25;
-b=a^1;
+b=lbl_80366E25 ^ 1;
 lbl_80366E25=b;
-if ((u8)b != 0) v=0;
-*((u8 *)c+0x39)=v;
+a=(u8)b;
+if(a) v=0;
+*(u8 *)((u8 *)c+0x39)=v;
 return 0;
 }
 #pragma global_optimizer reset
