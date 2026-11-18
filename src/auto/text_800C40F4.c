@@ -19511,7 +19511,6 @@ void Card_AsyncDone(void) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
 s32 fn_800EB854(void) {
     extern u8 gCardWork[];
     s32 result = 0;
@@ -19521,7 +19520,6 @@ s32 fn_800EB854(void) {
 done:
     return result;
 }
-#pragma peephole reset
 #pragma global_optimizer reset
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
