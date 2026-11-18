@@ -1,5 +1,9 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
+
+/* signed int/s16 -> float conversion constant (shared .sdata2) */
+const f64 lbl_80368D80 = 4503601774854144.0;
+
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
