@@ -48,6 +48,7 @@ M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)
 #pragma opt_common_subs on
 extern u32 gUiContext[];
 extern u16 gUiMsgStrings[];
+void fn_8006D8E8(void *);
 extern u16 gUiListPanelProc[];
 
 typedef struct Unk8016F694_Inner {
@@ -14168,23 +14169,27 @@ static inline void Stream_InitBase(void *self) {
     *(u8 *)((u8 *)self + 0xC) = 0;
 }
 #pragma cplusplus on
-#pragma global_optimizer off
 extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
     extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
-    void *vt = gStreamBaseVtbl;
+    void *vt;
+    void *vt2;
+    s32 zero;
+
+    vt = gStreamBaseVtbl;
+    vt2 = lbl_802842B8;
+    zero = 0;
     *(void **)((char *)arg0 + 0x10) = vt;
-    *(s32 *)((char *)arg0 + 4) = 0;
-    *(s32 *)arg0 = 0;
-    *(s32 *)((char *)arg0 + 8) = 0;
-    *(u8 *)((char *)arg0 + 0xC) = 0;
-    *(void **)((char *)arg0 + 0x10) = lbl_802842B8;
+    *(s32 *)((char *)arg0 + 4) = zero;
+    *(s32 *)arg0 = zero;
+    *(s32 *)((char *)arg0 + 8) = zero;
+    *(u8 *)((char *)arg0 + 0xC) = zero;
+    *(void **)((char *)arg0 + 0x10) = vt2;
     *(s32 *)((char *)arg0 + 4) = arg1;
     *(s32 *)arg0 = arg1;
-    *(u8 *)((char *)arg0 + 0xC) = 0;
+    *(u8 *)((char *)arg0 + 0xC) = zero;
 }
-#pragma global_optimizer reset
-#pragma cplusplus reset
+#pragma cplusplus off
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
     memcpy(arg2, M2C_FIELD(arg0, s32 *, 4), arg1);
@@ -16190,6 +16195,63 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 flags, s32 frame, f32 x, f32 y,
     Prim2D_AddZ(dstW);
     Prim2D_PrepareTex();
 }
+
+void fn_8017DC60(void *arg0, s32 arg1) {
+    s32 spC;
+    s32 sp8;
+    f32 temp_f29;
+    f32 temp_f30;
+    f32 var_f30;
+    f32 var_f31;
+    s16 temp_r5;
+    s16 temp_r6;
+    s16 temp_r6_2;
+    s32 temp_r0;
+    s32 temp_r3;
+
+    M2C_FIELD(arg0, s16 *, 0x14) = (s16) (M2C_FIELD(arg0, s16 *, 0x14) + 1);
+    if ((s16) M2C_FIELD(arg0, s16 *, 0x16) != 0) {
+        M2C_FIELD(arg0, s16 *, 0x14) = (s16) (M2C_FIELD(arg0, s16 *, 0x14) + 2);
+        M2C_FIELD(arg0, s16 *, 0x16) = (s16) (M2C_FIELD(arg0, s16 *, 0x16) + 1);
+    }
+    if ((s32) ((s16) M2C_FIELD(arg0, s16 *, 0x14) >> 2) >= 0xC) {
+        M2C_FIELD(arg0, s16 *, 0x14) = 0;
+    }
+    if ((s32) ((s16) M2C_FIELD(arg0, s16 *, 0x16) >> 2) > 6) {
+        M2C_FIELD(arg0, s16 *, 0x16) = 0;
+    }
+    temp_r6 = M2C_FIELD(arg0, s16 *, 0xE);
+    spC = temp_r6 ^ 0x80000000;
+    sp8 = 0x43300000;
+    temp_r6_2 = M2C_FIELD(arg0, s16 *, 0x14);
+    temp_f30 = (f32) M2C_FIELD(arg0, s16 *, 0x10);
+    temp_f29 = (f32) M2C_FIELD(arg0, s16 *, 0x12);
+    var_f31 = (f32) temp_r6 - (f32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0), s16 (**)(void *, s16), 0x20)(arg0, temp_r6_2) >> 1);
+    temp_r5 = M2C_FIELD(arg0, s16 *, 0x16);
+    var_f30 = temp_f30 - (f32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0), s16 (**)(void *), 0x24)(arg0) >> 1);
+    if ((temp_r5 > 0) && ((u8) M2C_FIELD(arg0, u8 *, 0xD) != 0)) {
+        temp_r0 = M2C_FIELD(arg0, s32 *, 8);
+        temp_r3 = 6 - (temp_r5 >> 2);
+        switch (temp_r0) {                          /* irregular */
+        case 0:
+            var_f31 -= (f32) temp_r3;
+            break;
+        case 1:
+            var_f31 += (f32) temp_r3;
+            break;
+        case 2:
+            var_f30 -= (f32) temp_r3;
+            break;
+        case 3:
+            var_f30 += (f32) temp_r3;
+            break;
+        }
+    }
+    if ((u8) M2C_FIELD(arg0, u8 *, 0xC) != 0) {
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0), M2C_UNK (**)(void *, s32, s32, f32, f32, f32), 0x30)(arg0, arg1, temp_r6_2 >> 2, var_f31, var_f30, temp_f29);
+    }
+}
+
 #pragma cplusplus reset
 
 void fn_8017DEE8(void *arg0) {
@@ -16842,8 +16904,163 @@ void fn_8017F1F8(void *arg0) {
  Process_AttachFunc(fn_8017F258,arg0);
 }
 
-void fn_8017F258(void *arg0) {
-    (void)arg0;
+void fn_8017F258(void *arg0)
+{
+    void fn_8009822C(void *, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_BindTexture(s32, s32, s32);
+    void Prim2D_SetColorByte(u8);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_ResetState(void);
+
+    extern u32 lbl_8036AC10;
+    extern u32 lbl_8036AC14;
+    extern f32 lbl_8036AC1C;
+    extern f32 lbl_8036AC30;
+    extern f64 lbl_8036AC38;
+    extern f32 lbl_8036AC48;
+    extern f32 lbl_8036AC4C;
+    extern f32 lbl_8036AC7C;
+    extern f32 lbl_8036AC80;
+
+    struct Vec3 {
+        f32 x;
+        f32 y;
+        f32 z;
+    };
+
+    struct Vec3 pos;
+    struct Vec3 tempPos;
+
+    u8 *proc;
+    s32 number;
+    s32 value;
+    s32 digitCount;
+    s32 digit;
+    s32 quotient;
+    s32 xOffset;
+    s32 packedColor;
+    s32 colorCopy;
+    s32 alternateColor;
+
+    proc = (u8 *)arg0;
+
+    fn_8009822C(
+        &tempPos,
+        *(s32 *)(proc + 0x30)
+    );
+
+    number = *(s32 *)(proc + 0x3C);
+
+    pos.x = tempPos.x;
+    pos.y = tempPos.y;
+    pos.z = tempPos.z;
+
+    packedColor = lbl_8036AC10;
+
+    if (number <= 0) {
+        number *= -1;
+    } else {
+        alternateColor = lbl_8036AC14;
+
+        ((u8 *)&packedColor)[0] =
+            ((u8 *)&alternateColor)[0];
+
+        ((u8 *)&packedColor)[1] =
+            ((u8 *)&alternateColor)[1];
+
+        ((u8 *)&packedColor)[2] =
+            ((u8 *)&alternateColor)[2];
+
+        ((u8 *)&packedColor)[3] =
+            ((u8 *)&alternateColor)[3];
+    }
+
+    Prim2D_Begin();
+
+    Prim2D_SetTransform(
+        pos.x,
+        pos.y + *(f32 *)(proc + 0x40),
+        lbl_8036AC7C,
+        lbl_8036AC48
+    );
+
+    Prim2D_BindTexture(
+        *(s32 *)(proc + 0x34),
+        8,
+        0x11
+    );
+
+    Prim2D_SetColorByte(
+        (u8)*(u32 *)(proc + 0x44)
+    );
+
+    Prim2D_PrepareTex();
+
+    if (number == 0) {
+        Prim2D_AddPrim(1);
+
+        Prim2D_SetRectUv(
+            lbl_8036AC80,
+            lbl_8036AC30,
+            lbl_8036AC30,
+            lbl_8036AC30,
+            lbl_8036AC4C,
+            lbl_8036AC1C
+        );
+
+        Prim2D_EmitQuad();
+
+        colorCopy = packedColor;
+        Prim2D_SetColorPacked(&colorCopy);
+
+        Prim2D_EndPrim();
+    } else {
+        digitCount = 0;
+        value = number;
+
+        while (value != 0) {
+            value /= 10;
+            digitCount++;
+        }
+
+        xOffset = ((digitCount - 2) * 12) / 2;
+        colorCopy = packedColor;
+
+        while (number != 0) {
+            Prim2D_AddPrim(1);
+
+            quotient = number / 10;
+            digit = number - quotient * 10;
+
+            Prim2D_SetRectUv(
+                (f32)xOffset,
+                lbl_8036AC30,
+                (f32)(digit << 4),
+                lbl_8036AC30,
+                lbl_8036AC4C,
+                lbl_8036AC1C
+            );
+
+            Prim2D_EmitQuad();
+
+            colorCopy = packedColor;
+            Prim2D_SetColorPacked(&colorCopy);
+
+            Prim2D_EndPrim();
+
+            xOffset -= 12;
+            number /= 10;
+        }
+    }
+
+    Prim2D_ResetState();
 }
 
 void fn_8017F474(s32 arg0) {
@@ -18617,7 +18834,7 @@ s32 y=*(s16*)((u8*)arg1+0x58);
 s32 x=*(s16*)((u8*)arg1+0x56);
 s32 index=*(s16*)((u8*)arg1+0x4e);
 s32 step=*(s16*)((u8*)arg1+0x54);
-s32 row=step*index;
+u32 row=step*index;
 in.y=row+y;
 in.x=x;
 *arg0=*(s32*)fn_8013F748(arg1,outp,inp);
