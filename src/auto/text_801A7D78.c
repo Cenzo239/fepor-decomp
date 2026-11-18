@@ -1431,12 +1431,13 @@ void fn_801AA228(void *arg0) {
 void fn_801AAD74(void *arg0)
 {
     void fn_801AA228(void *);
-    s16 v = *(s16 *)((char *)arg0 + 0x32);
-
-    if (v == 0) {
-        return;
+    switch (*(s16 *)((char *)arg0 + 0x32)) {
+    case 0:
+        fn_801AA228(arg0);
+        break;
+    default:
+        break;
     }
-    fn_801AA228(arg0);
 }
 #pragma peephole reset
 
