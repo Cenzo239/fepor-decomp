@@ -308,7 +308,10 @@ auto/text_8009F0BC.c:
 	.ctors      start:0x80267ABC end:0x80267AC0
 
 auto/text_8009F85C.c:
-	.text       start:0x8009F85C end:0x800A399C
+	.text       start:0x8009F85C end:0x800A0170
+
+auto/text_800A0170.c:
+	.text       start:0x800A0170 end:0x800A399C
 
 auto/text_800A399C.c:
 	.text       start:0x800A399C end:0x800A39AC
