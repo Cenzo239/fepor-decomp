@@ -386,18 +386,22 @@ void *fn_800A010C(void) {
     return (char *)gMenuCmdStrings + 0x39E;
 }
 
+#pragma global_optimizer reset
 #pragma global_optimizer off
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
     u32 original;
-    s8 value;
-    u32 toggled;
+    s32 v;
+    u32 changed;
+
     original = lbl_80366E25;
-    value = 2;
-    toggled = original ^ 1;
-    lbl_80366E25 = toggled;
-    if ((u8)toggled != 0) value = 0;
-    *(u8 *)((u8 *)c + 0x39) = value;
+    v = 2;
+    changed = original ^ 1;
+    lbl_80366E25 = changed;
+    if ((u8)changed != 0) {
+        v = 0;
+    }
+    *(u8 *)((char *)c + 0x39) = v;
     return 0;
 }
 #pragma global_optimizer reset
@@ -422,12 +426,15 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 s32 fn_800A0170(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367708;
-    u8 v;
-    a = (u8)lbl_80367708;
-    v = 2;
-    b = a ^ 1;
+    u8 t;
+    s32 v = 2;
+
+    t = lbl_80367708;
+    b = t ^ 1;
     lbl_80367708 = b;
-    if ((u8)b != 0) v = 0;
+    if ((u8)b != 0) {
+        v = 0;
+    }
     *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
@@ -525,12 +532,12 @@ void *fn_800A02E4(void) {
 
 s32 fn_800A02F4(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367707;
+    u8 t;
     s32 v;
-
-    a = (u8)lbl_80367707;
-    b = a ^ 1;
-    lbl_80367707 = b;
+    t = lbl_80367707;
     v = 2;
+    b = t ^ 1;
+    lbl_80367707 = b;
     if ((u8)b != 0) {
         v = 0;
     }
