@@ -14,6 +14,13 @@ typedef struct DVDReadyCommand {
 extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
 
+static inline void dvdClearDiStatus(void) {
+    u32 *base = (u32 *)0xCC000000;
+    u32 tmp = base[0x1801];
+    u32 *di = base + 0x1800;
+    di[1] = tmp;
+}
+
 typedef struct {
     u8 unk0;
     u8 pad1;
@@ -1407,33 +1414,33 @@ void stateBusy_8020E178(void *arg0) {
     extern void *executing_80368598;
     extern u8 DummyCommandBlock_80339F80[];
     extern s32 lbl_803685AC;
-    extern void (*lbl_80366F70)(void *);
-    extern volatile u32 __DIRegs[16];
-    void fn_8020BE28(void *);
+    extern void (*lbl_80366F70)(void *, void *);
+    void fn_8020BE28(void *, void *);
     void fn_8020BAD0(void *, void *, void *, void *);
     void fn_8020BD68(void *, void *);
     void DVDLowStopMotor(void *);
     void fn_8020C118(void *, void *);
     void fn_8020C080(void *, void *, void *, void *);
     void fn_8020C1A4(void *, void *, void *);
-    void fn_8020BFE4(void *);
+    void fn_8020BFE4(void *, void *);
     void stateReady(void);
     void fn_8020E4B8(void);
     u8 *b = (u8 *)arg0;
-    u32 status;
     void *old;
     void (*cb)(void *, void *);
     u32 remaining;
     u32 len;
+    u32 *base;
+    u32 *di;
+    u32 tmp;
 
     lbl_803685E0 = stateBusy_8020E178;
 
     switch (*(u32 *)(b + 0x8)) {
     case 5:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         *(u32 *)(b + 0x1c) = 0x20;
-        fn_8020BE28(*(void **)(b + 0x18));
+        fn_8020BE28(*(void **)(b + 0x18), (void *)fn_8020E4B8);
         break;
     case 1:
     case 4:
@@ -1442,13 +1449,12 @@ void stateBusy_8020E178(void *arg0) {
             executing_80368598 = DummyCommandBlock_80339F80;
             *(u32 *)((u8 *)old + 0xc) = 0;
             cb = *(void **)((u8 *)old + 0x28);
-            if (cb != NULL) {
+            if (cb) {
                 cb(NULL, old);
             }
             stateReady();
         } else {
-            status = __DIRegs[1];
-            __DIRegs[1] = status;
+            base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
             remaining = *(u32 *)(b + 0x14) - *(u32 *)(b + 0x20);
             len = 0x80000;
             if (remaining <= 0x80000) {
@@ -1462,8 +1468,7 @@ void stateBusy_8020E178(void *arg0) {
         }
         break;
     case 2:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020BD68(*(void **)(b + 0x10), (void *)fn_8020E4B8);
         break;
     case 3:
@@ -1473,8 +1478,7 @@ void stateBusy_8020E178(void *arg0) {
         DVDLowStopMotor((void *)fn_8020E4B8);
         break;
     case 6:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         if (lbl_803685AC != 0) {
             *(u32 *)((u8 *)executing_80368598 + 0x1c) = 0;
             fn_8020C118(NULL, (void *)fn_8020E4B8);
@@ -1484,55 +1488,46 @@ void stateBusy_8020E178(void *arg0) {
         }
         break;
     case 7:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C080((void *)0x10000, NULL, NULL, (void *)fn_8020E4B8);
         break;
     case 8:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         lbl_803685AC = 1;
         fn_8020C080(NULL, NULL, NULL, (void *)fn_8020E4B8);
         break;
     case 9:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C118(NULL, (void *)fn_8020E4B8);
         break;
     case 10:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C118((void *)0x10000, (void *)fn_8020E4B8);
         break;
     case 11:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C118((void *)0x20000, (void *)fn_8020E4B8);
         break;
     case 12:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C118((void *)0x30000, (void *)fn_8020E4B8);
         break;
     case 13:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         fn_8020C1A4(*(void **)(b + 0x10), *(void **)(b + 0x14), (void *)fn_8020E4B8);
         break;
     case 14:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         *(u32 *)(b + 0x1c) = 0x20;
-        fn_8020BFE4(*(void **)(b + 0x18));
+        fn_8020BFE4(*(void **)(b + 0x18), (void *)fn_8020E4B8);
         break;
     case 16:
-        status = __DIRegs[1];
-        __DIRegs[1] = status;
+        base = (u32 *)0xCC000000; tmp = base[0x1801]; di = base + 0x1800; di[1] = tmp;
         DVDLowStopMotor((void *)fn_8020E4B8);
         break;
     case 0:
     default:
-        lbl_80366F70(arg0);
+        lbl_80366F70(arg0, (void *)fn_8020E4B8);
         break;
     }
 }
