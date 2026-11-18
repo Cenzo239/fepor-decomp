@@ -7317,7 +7317,6 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
 }
 
 #pragma global_optimizer off
-#pragma scheduling on
 void fn_80049594(void *self)
 {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -7340,6 +7339,7 @@ void fn_80049594(void *self)
     u8 sp38[0x30];
     u8 sp8[0x30];
 
+    f32 half;
     u8 *ent;
     u8 *map;
     u8 *p0;
@@ -7349,12 +7349,12 @@ void fn_80049594(void *self)
     f32 f29v;
     f32 f28v;
     f32 t30;
-    f32 half;
     f32 scale;
     f32 temp_f0;
     s32 ival;
 
-    *(s32 *)((u8 *)self + 0x40) = *(s32 *)((u8 *)self + 0x40) + 1;
+    half = lbl_80368EE4;
+    *(s32 *)((u8 *)self + 0x40) += 1;
 
     ival = (s32)Math_EaseOutPow(
         2,
@@ -7363,9 +7363,7 @@ void fn_80049594(void *self)
         (f32)*(s32 *)((u8 *)self + 0x3C),
         (f32)*(s32 *)((u8 *)self + 0x40)
     );
-    p0 = *(u8 **)((u8 *)self + 0x30);
-    half = lbl_80368EE4;
-    *(f32 *)(p0 + 8) = (f32)ival;
+    *(f32 *)(*(u8 **)((u8 *)self + 0x30) + 8) = (f32)ival;
 
     ent = *(u8 **)((u8 *)self + 0x30);
     map = (u8 *)gMap;
@@ -7378,7 +7376,7 @@ void fn_80049594(void *self)
 
     if (*(u8 *)(map + 0x68) == 1) {
         a = *(s16 *)map;
-        p0 = (u8 *)*(s16 *)(map + 2);
+        p0 = (u8 *)(s32)*(s16 *)(map + 2);
         a = (s32)(((u32)a >> 31) + a) >> 1;
         f28v -= (f32)a;
         f30v -= (f32)((s32)(((u32)(s32)p0 >> 31) + (s32)p0) >> 1);
@@ -7408,7 +7406,6 @@ void fn_80049594(void *self)
         Process_ClearFunc(self);
     }
 }
-#pragma scheduling reset
 #pragma global_optimizer reset
 void fn_8004982C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x48);
@@ -7575,7 +7572,7 @@ void MapObj_FadeOut(void *arg0, u8 arg1) {
     void fn_80044450(s32, s32);
     void fn_80016180(void);
     extern f32 lbl_80368F2C;
-    extern u16 *gMap;
+    extern void *gMap;
     u8 temp;
 
     temp = *(u8 *)((u8 *)arg0 + 2);
