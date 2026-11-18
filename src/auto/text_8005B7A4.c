@@ -2775,7 +2775,6 @@ s32 Pad_IsActive(u8 *arg0) {
     }
     return 0;
 }
-#pragma optimization_level reset
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 static inline u32 GetListField44(void *p) {
