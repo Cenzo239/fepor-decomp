@@ -606,7 +606,10 @@ dolphin/gx/GXTexture_rest.c:
 	.text       start:0x80224304 end:0x80224828
 
 dolphin/gx/GXSetZCompLoc.c:
-	.text       start:0x80224828 end:0x80224CF0
+	.text       start:0x80224828 end:0x80224860
+
+dolphin/gx/GXTexture_rest2.c:
+	.text       start:0x80224860 end:0x80224CF0
 
 dolphin/gx/GXLoadMtx.c:
 	.text       start:0x80224CF0 end:0x80224D7C
