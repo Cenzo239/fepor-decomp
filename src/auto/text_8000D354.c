@@ -28,37 +28,7 @@ typedef struct HashKey {
     u32 h2;
 } HashKey;
 
-static inline void Res_HashPair(char *str, HashKey *key) {
-    key->h2 = key->h1 = 0;
-    while (*str) {
-        key->h1 = (s8)*str + key->h1 * 37;
-        key->h2 = (s8)*str + key->h2 * 31;
-        str++;
-    }
-}
 
-static inline u8 *Res_AllocEntry(char *name, void *value) {
-    extern u8 lbl_802ADB20[];
-    u8 *entry;
-    s32 slot;
-    u32 hash;
-    char *str;
-    do {
-        slot = *(s32 *)lbl_802ADB20;
-        entry = *(u8 **)(lbl_802ADB20 + 4);
-        entry += slot * 16;
-        *(s32 *)lbl_802ADB20 = slot + 1;
-        *(s32 *)lbl_802ADB20 %= 0x2800;
-    } while (*(char **)(entry + 8));
-    *(u8 **)entry = 0;
-    hash = 0;
-    for(str=name; *str; str++)
-        hash = (s8)*str + hash * 31;
-    *(u32 *)(entry+4) = hash;
-    *(char **)(entry+8) = name;
-    *(void **)(entry+12) = value;
-    return entry;
-}
 
 extern struct UnkStruct_802AEE80 gUnk_802AEE80;
 
@@ -100,10 +70,10 @@ void fn_8000D3EC(char *arg0, void *arg1)
     u8 *entry;
     u8 *next;
     u8 *prev;
-    s32 hash31;
-    char *str;
-    u32 hash37;
-    u8 ch;
+    register s32 hash31;
+    register char *str;
+    register u32 hash37;
+    register u8 ch;
     u32 index;
     s32 slot;
 
