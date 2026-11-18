@@ -285,8 +285,8 @@ volatile u32 __EXIRegs_802677E4[16] : 0xCC006800;
 
 #pragma push
 #pragma global_optimizer on
-
-#pragma scheduling on
+#pragma use_lmw_stmw on
+#pragma scheduling off
 int fn_802677E4(u8 *arg0, int arg1, int arg2)
 {
   volatile u32 *cr;
@@ -304,7 +304,7 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
       p++;
     }
 
-    *((volatile u32 *) 0xCC006838) = value;
+    __EXIRegs_802677E4[14] = value;
   }
   cr = (volatile u32 *) 0xCC006800;
   *(cr += 13) = (((arg1 - 1) << 4) | 1) | (((u32) arg2) << 2);
@@ -316,7 +316,7 @@ int fn_802677E4(u8 *arg0, int arg1, int arg2)
   if (((u32) new_var) == 0)
   {
     s32 i = 0;
-    u32 value = *((volatile u32 *) 0xCC006838);
+    u32 value = __EXIRegs_802677E4[14];
     for (; i < arg1; i++)
     {
       *(arg0++) = (u8) (value >> ((3 - i) * 8));
