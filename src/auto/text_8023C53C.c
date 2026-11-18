@@ -7297,7 +7297,7 @@ void fn_80250F18(void *arg0, u32 *arg1)
     count = *(u16 *)(voice + 0xAA) - 1;
     *(u16 *)(voice + 0xAA) = count;
     if ((count & 0xFFFF) == 0)
-        goto update;
+        return;
 
 flags:
     flags = arg1[0];
@@ -7306,7 +7306,7 @@ flags:
         vf = *(u64 *)(voice + 0x114);
         if ((vf & 0x10000000008ULL) == 8ULL) {
             *(u16 *)(voice + 0xAA) = 0;
-            goto update;
+            return;
         }
     }
 
@@ -7315,12 +7315,11 @@ flags:
         if ((vf & 0x20ULL) == 0) {
             if (Sound_IsHwVoiceActive(*(u32 *)(voice + 0xF4) & 0xFF) == 0) {
                 *(u16 *)(voice + 0xAA) = 0;
+                return;
             }
-            goto update;
         }
     }
 
-update:
     value = (arg1[1] & 0xFFFF) << 3;
     *(u32 *)(voice + 0x38) = *(u32 *)(voice + 0x34) + value;
 }
@@ -12819,6 +12818,7 @@ s32 fn_8025DAA0(
     u8 *current;
     u8 *previous;
     s32 index;
+    s32 index2;
     u8 count;
     u8 nodeIndex;
     
@@ -12883,16 +12883,16 @@ s32 fn_8025DAA0(
         *next = (u8 *)node;
     }
 
-    nodeIndex = lbl_80368AAD;
-    node = pool + nodeIndex;
+    index2 = lbl_80368AAD;
+    node = pool + (index2 << 5);
     node->arg0 = arg0;
     node->v5 = arg5;
     node->v6 = arg6;
     node->v2 = arg2;
     node->v3 = arg3;
     node->v4 = arg4;
-    lbl_80368AAD = nodeIndex + 1;
-    pool[(u8)nodeIndex].v1 = arg1;
+    lbl_80368AAD = index2 + 1;
+    pool[(u8)index2].v1 = arg1;
 
     return 1;
 }
