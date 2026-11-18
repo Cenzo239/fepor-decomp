@@ -282,7 +282,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_PrepareTex();
 }
 #pragma use_lmw_stmw on
-#pragma global_optimizer on
+#pragma global_optimizer off
 void fn_80083278(void *arg0) {
 extern u8 gBattle[];
 extern f32 lbl_80369430, lbl_803695C8;
