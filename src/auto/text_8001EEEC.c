@@ -1826,13 +1826,128 @@ f32 Map_GetTileCornerHeight(void *arg0, s8 arg1, s8 arg2, u8 arg3)
     return height * scale;
 }
 #pragma opt_strength_reduction reset
-void Map_SampleHeight(u16 *a0, u16 *a1, f32 a2, f32 a3) {
-    extern f32 lbl_8036A7F0;
-    
-    *(f32*)((u8*)a0 + 0x534) = a2;
-    *(f32*)((u8*)a0 + 0x538) = a3;
-    *(f32*)((u8*)a1 + 0x534) = a2;
-    *(f32*)((u8*)a1 + 0x538) = a3;
+#pragma fp_contract on
+f32 Map_SampleHeight(void *arg0, f32 x, f32 y) {
+    void fn_80203290(f32 *, f32 *, f32 *);
+    extern u8 lbl_80268CE8[];
+    extern f32 lbl_80368D88;
+    f32 sp5C[3];
+    f32 sp50[3];
+    f32 sp44[3];
+    f32 sp38[3];
+    f32 sp34;
+    f32 sp2C;
+    f32 sp30;
+    f32 sp28;
+    f32 sp20;
+    f32 sp24;
+    f32 sp1C;
+    f32 sp14;
+    f32 sp18;
+    f32 sp10;
+    f32 sp8;
+    f32 spC;
+    u8 *tbl;
+    s32 ix_i;
+    s32 iy_i;
+    s32 six;
+    s32 siy;
+    f32 scale;
+    f32 h;
+    u8 *cell;
+    u8 *base2;
+    f32 t;
+    f32 f0;
+    f32 f1;
+    f32 nz;
+
+    tbl = lbl_80268CE8;
+    ix_i = (s32)x;
+    iy_i = (s32)y;
+    six = (s8)ix_i;
+    siy = (s8)iy_i;
+    if (((y + (x - (f32)six)) - (f32)siy) > lbl_80368D88) {
+        u32 w54, w4c, w50, w60, w58, w5c;
+        s16 ha, hb, hc;
+        base2 = (u8 *)arg0 + 0x20000;
+        cell = base2 + ((six + (siy << 6)) * 8);
+        w54 = *(u32 *)(tbl + 0x54);
+        w4c = *(u32 *)(tbl + 0x4C);
+        ha = *(s16 *)(cell - 0x3D22);
+        hb = *(s16 *)(cell - 0x3D24);
+        scale = *(f32 *)(base2 - 0x3D2C);
+        w50 = *(u32 *)(tbl + 0x50);
+        w60 = *(u32 *)(tbl + 0x60);
+        h = (f32)ha * scale;
+        w58 = *(u32 *)(tbl + 0x58);
+        w5c = *(u32 *)(tbl + 0x5C);
+        t = (f32)hb * scale;
+        *(u32 *)&sp34 = w54;
+        *(u32 *)&sp5C[0] = w4c;
+        *(u32 *)&sp5C[1] = w50;
+        *(u32 *)&sp28 = w60;
+        sp34 = t - h;
+        *(u32 *)&sp2C = w4c;
+        *(u32 *)&sp5C[2] = *(u32 *)&sp34;
+        *(u32 *)&sp30 = w50;
+        hc = *(s16 *)(cell - 0x3D26);
+        *(u32 *)&sp20 = w58;
+        *(u32 *)&sp24 = w5c;
+        *(u32 *)&sp50[0] = w58;
+        *(u32 *)&sp50[1] = w5c;
+        t = (f32)hc * scale;
+        sp28 = t - h;
+        *(u32 *)&sp50[2] = *(u32 *)&sp28;
+        fn_80203290(sp5C, sp50, sp5C);
+        f0 = sp5C[1] * y;
+        f0 = f0 + sp5C[0] * x;
+        nz = sp5C[2];
+        f1 = sp5C[1] * (f32)(siy + 1);
+        f1 = f1 + sp5C[0] * (f32)(six + 1);
+        f1 = -(f1 + nz * h);
+        return -(f1 + f0) / nz;
+    }
+    {
+        u32 w6c, w64, w68, w78, w70, w74;
+        s16 ha, hb, hc;
+        base2 = (u8 *)arg0 + 0x20000;
+        cell = base2 + ((six + (siy << 6)) * 8);
+        w6c = *(u32 *)(tbl + 0x6C);
+        w64 = *(u32 *)(tbl + 0x64);
+        ha = *(s16 *)(cell - 0x3D28);
+        hb = *(s16 *)(cell - 0x3D26);
+        scale = *(f32 *)(base2 - 0x3D2C);
+        w68 = *(u32 *)(tbl + 0x68);
+        w78 = *(u32 *)(tbl + 0x78);
+        h = (f32)ha * scale;
+        w70 = *(u32 *)(tbl + 0x70);
+        w74 = *(u32 *)(tbl + 0x74);
+        t = (f32)hb * scale;
+        *(u32 *)&sp1C = w6c;
+        *(u32 *)&sp44[0] = w64;
+        *(u32 *)&sp44[1] = w68;
+        *(u32 *)&sp10 = w78;
+        sp1C = t - h;
+        *(u32 *)&sp14 = w64;
+        *(u32 *)&sp44[2] = *(u32 *)&sp1C;
+        *(u32 *)&sp18 = w68;
+        hc = *(s16 *)(cell - 0x3D24);
+        *(u32 *)&sp8 = w70;
+        *(u32 *)&spC = w74;
+        *(u32 *)&sp38[0] = w70;
+        *(u32 *)&sp38[1] = w74;
+        t = (f32)hc * scale;
+        sp10 = t - h;
+        *(u32 *)&sp38[2] = *(u32 *)&sp10;
+        fn_80203290(sp44, sp38, sp44);
+        f0 = sp44[1] * y;
+        f0 = f0 + sp44[0] * x;
+        nz = sp44[2];
+        f1 = sp44[1] * (f32)siy;
+        f1 = f1 + sp44[0] * (f32)six;
+        f1 = -(f1 + nz * h);
+        return -(f1 + f0) / nz;
+    }
 }
 
 typedef struct {
@@ -3969,11 +4084,14 @@ void fn_80026724(void *arg0) {
     void fn_800915E8(void *, void *);
     extern u8 gUiContext[];
     void *ctx;
+    void *ctx2;
     void *param;
     void *node;
+
     ctx = *(void **)gUiContext;
+    ctx2 = ctx;
     param = *(void **)((u8 *)arg0 + 0x54);
-    node = *(void **)((u8 *)ctx + 0x190);
+    node = *(void **)((u8 *)ctx2 + 0x190);
     if (*(u8 *)((u8 *)node + 8) != 1) {
         fn_800915E8(param, arg0);
     } else {
