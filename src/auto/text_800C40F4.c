@@ -672,6 +672,13 @@ s32 fn_800C4740(void) {
     return -1;
 }
 #pragma use_lmw_stmw on
+static inline u8 *Heap_ReserveAtEnd(u32 size) {
+extern u32 lbl_8036786C, lbl_80367864;
+u32 end=lbl_8036786C;
+u8 *heap;
+if(end) heap=(u8 *)(end-size); else heap=(u8 *)(lbl_80367864-size);
+return heap;
+}
 static inline u32 Heap_AlignSize(u32 n) { u32 aligned=(n+31)&~31U; return aligned; }
 static inline void Heap_FindEmpty(u32 *table, s32 *result) {
  for(*result=0;*result<16;(*result)++,table++) { if(*table==0) return; } *result=-1;
@@ -966,7 +973,7 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     s32 groups;
     u32 end;
 
-    size = (arg1 + 0x1F) & ~0x1F;
+    size = Heap_AlignSize(arg1);
 
     end=lbl_8036786C;
     if (end != 0) {
