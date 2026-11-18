@@ -1111,8 +1111,191 @@ s32 fn_8001473C(void *arg0)
     return 1;
 }
 
-u32 fn_80014790(u32 arg0) {
-    return 0;
+void fn_80014790(void) {
+    s32 DVDGetDriveStatus(void);
+    s32 DVDKeepAlive(void);
+    void fn_80212CC0(s32, s32);
+    void fn_800B28DC(void);
+    void fn_800B27BC(void);
+    void fn_8020AC68(s32);
+    s32 fn_801FBC30(s32);
+    s32 fn_801FBAD4(void);
+    s32 fn_801FB9E0(s32);
+    void DEMOBeforeRender(void);
+    void fn_802240F0(s32, void *, f32, f32, f32, f32);
+    void fn_8022462C(s32);
+    void fn_80224658(s32);
+    void GXSetZMode(s32, s32, s32);
+    void fn_802246B8(s32);
+    void fn_80223E5C(s32, s32, s32, s32, s32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
+    void GXSetProjection(void *, s32);
+    void fn_8022100C(s32);
+    void PSMTXIdentity(void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void fn_80224DCC(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32);
+    void GXSetChanMatColor(s32, void *);
+    void GXSetNumTevStages(s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumTexGens(s32);
+    void GXSetNumChans(s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void GXBegin(s32, s32, s32);
+    void *Ui_GetColor(void);
+    void fn_801FB5D8(void *, s32, f32, f32, f32, f32);
+    void fn_8006E660(void);
+    void VIWaitForRetrace(void);
+    void fn_80025970(void);
+    void Game_PollSoftReset(void);
+    extern u8 *gPadInput;
+    extern u8 lbl_803671B0;
+    extern u32 gUiInputFlags;
+    extern s32 lbl_803671B4;
+    extern f32 lbl_80368C4C;
+    extern u32 lbl_8036C400;
+    extern f32 lbl_80368C50;
+    extern f32 lbl_80368C54;
+    extern f32 lbl_80368C58;
+    extern u32 lbl_80368C48;
+    extern f64 lbl_80368C68;
+    extern f32 lbl_80368C5C;
+    extern f32 lbl_80368C60;
+    extern f32 lbl_80368C64;
+
+    s32 code;
+    s32 status;
+    s32 tmp28;
+    s32 tmp29;
+    s32 tmp30;
+    u32 proj[0x1C / 4];
+    f32 mtx[3][4];
+    u32 color;
+    u32 matColor;
+    f32 f1, f2;
+
+    for (;;) {
+        code = -1;
+        status = DVDGetDriveStatus();
+        switch (status + 1) {
+        case 6:
+            code = 0;
+            break;
+        case 5:
+            code = 1;
+            break;
+        case 7:
+            code = 2;
+            break;
+        case 12:
+            code = 3;
+            break;
+        case 0:
+            code = 4;
+            break;
+        }
+
+        if (code >= 0) {
+            if (DVDKeepAlive() == 0) {
+                lbl_803671B0 = 1;
+                fn_80212CC0(gPadInput[0x1C], 2);
+            }
+        } else {
+            if (DVDKeepAlive() != 0) {
+                lbl_803671B0 = 0;
+            }
+        }
+
+        if (code >= 0) {
+            fn_800B28DC();
+        } else {
+            fn_800B27BC();
+        }
+
+        if (gUiInputFlags & 0x100) {
+            lbl_803671B0 = 0;
+        }
+
+        if (lbl_803671B0 != 0 && code >= 0) {
+            if (status == -1) {
+                fn_8020AC68(lbl_803671B4);
+            }
+            tmp28 = fn_801FBC30(code);
+            tmp29 = fn_801FBAD4();
+            tmp30 = fn_801FB9E0(tmp28);
+            DEMOBeforeRender();
+            {
+                f32 z = lbl_80368C4C;
+                matColor = lbl_8036C400;
+                fn_802240F0(0, &matColor, z, z, z, z);
+            }
+            fn_8022462C(1);
+            fn_80224658(1);
+            GXSetZMode(1, 3, 1);
+            fn_802246B8(1);
+            fn_80223E5C(7, 0, 1, 7, 0);
+            C_MTXOrtho(proj, lbl_80368C4C, lbl_80368C50, lbl_80368C4C, lbl_80368C54, lbl_80368C4C, lbl_80368C58);
+            GXSetProjection(proj, 1);
+            fn_8022100C(0);
+            PSMTXIdentity(mtx);
+            GXLoadPosMtxImm(mtx, 0);
+            fn_80224DCC(mtx, 0);
+            GXSetCurrentMtx(0);
+            fn_802245D8(1, 4, 5, 0);
+            GXClearVtxDesc();
+            GXSetVtxDesc(9, 1);
+            GXSetVtxAttrFmt(0, 9, 1, 3, 0);
+            GXSetCullMode(1);
+            GXSetBlendMode(4, 0, 0, 0, 0);
+            matColor = lbl_80368C48;
+            GXSetChanMatColor(4, &matColor);
+            GXSetNumTevStages(1);
+            GXSetTevOrder(0, 0, 0, 4);
+            GXSetNumTexGens(0);
+            GXSetNumChans(1);
+            fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
+            GXBegin(0x80, 0, 4);
+            {
+                volatile s16 *fifo = (volatile s16 *)0xCC008000;
+                fifo[0] = 0;
+                fifo[0] = 0;
+                fifo[0] = 0x5A;
+                fifo[0] = 0x260;
+                fifo[0] = 0;
+                fifo[0] = 0x5A;
+                fifo[0] = 0x260;
+                fifo[0] = 0x1C0;
+                fifo[0] = 0x5A;
+                fifo[0] = 0;
+                fifo[0] = 0x1C0;
+                fifo[0] = 0x5A;
+            }
+            {
+                void *uc = Ui_GetColor();
+                color = *(u32 *)uc;
+                f1 = (f32)(0x260 - tmp29) * lbl_80368C5C;
+                f2 = (f32)(0x1C0 - tmp30) * lbl_80368C5C;
+                fn_801FB5D8(&color, tmp28, f1, lbl_80368C60, f2, lbl_80368C64);
+            }
+            fn_8006E660();
+            if (status == -1) {
+                VIWaitForRetrace();
+            }
+            fn_80025970();
+            Game_PollSoftReset();
+        } else {
+            if (lbl_803671B0 != 0) {
+                Game_PollSoftReset();
+            }
+            VIWaitForRetrace();
+        }
+    }
 }
 
 #pragma global_optimizer off
@@ -1348,19 +1531,17 @@ void fn_80014EA8(void) {
 
 #pragma optimization_level 3
 s32 fn_80014EDC(u32 arg0) {
-    s32 Res_GetByName(s32);
-    s32 Msg_Expand(s32);
+    s32 fn_8000D354(s32);
+    s32 fn_8000E0E4(s32);
     extern void *lbl_80367210;
     s32 var_r31;
     u8 *p;
-    u32 off;
 
-    off = (arg0 & 0xFF) << 2;
     p = (u8 *)lbl_80367210;
-    p += off;
+    p += (arg0 & 0xFF) << 2;
     var_r31 = *(s32 *)(p + 4);
-    if (Res_GetByName(var_r31) != 0U) {
-        var_r31 = Msg_Expand(var_r31);
+    if (fn_8000D354(var_r31) != 0U) {
+        var_r31 = fn_8000E0E4(var_r31);
     }
     return var_r31;
 }
@@ -2283,6 +2464,26 @@ void fn_8001621C(void) {
         fn_8004EA60(node, 0);
         node = next;
     }
+}
+
+void fn_80016358(void)
+{
+    void Allegiance_FillMask(s32, u8 *);
+    void fn_8004EB14(u8 *, s32);
+    extern u8 gUnits[];
+    u8 sp8[8];
+    s32 i;
+    u8 *unit;
+    Allegiance_FillMask(5, sp8);
+    i = 1;
+    do {
+        if ((u8)i != 0) unit = gUnits + ((u8)i - 1) * 0x280;
+        else unit = NULL;
+        if (*(u32 *)(unit + 0x188) != 0) {
+            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) fn_8004EB14(unit, 0);
+        }
+        i += 1;
+    } while (i <= 0x9F);
 }
 
 void fn_800163F8(void)
