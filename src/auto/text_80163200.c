@@ -19344,7 +19344,7 @@ s32 Ai_TryMoveToFactionPos(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_80101448(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 gAiState[];
-    struct Obj *p = arg0;
+    struct Obj *p = (struct Obj *)arg0;
     s8 temp_r30;
     s8 temp_r3;
 
