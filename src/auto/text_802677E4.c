@@ -2,10 +2,15 @@
 #include "common.h"
 
 static inline u32 PackExiBytes(const u8 *data, int length) {
+    const u8 *p = data;
+    u32 value;
     int i;
-    u32 value = 0;
-    for (i = 0; i < length; ++i)
-        value |= (u32)*data++ << ((3 - i) * 8);
+    i = 0;
+    value = 0;
+    for (; i < length; ++i) {
+        value |= (u32)*p << ((3 - i) * 8);
+        ++p;
+    }
     return value;
 }
 
