@@ -16333,8 +16333,9 @@ void FloatAnim_Start(void *target, s32 amount, void *parent) {
 }
 #pragma opt_strength_reduction reset
 void FloatAnim_UnlinkSame(void *arg0, u32 arg1) {
+    void Process_Unlink(void *);
     if (*(u32 *)((u8 *)arg0 + 0x30) == arg1) {
-        Process_Unlink();
+        Process_Unlink(arg0);
     }
 }
 
