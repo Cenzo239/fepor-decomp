@@ -1718,29 +1718,29 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 #pragma scheduling on
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma optimization_level 3
-#pragma peephole off
-void fn_80134C24(s32 *arg0, void *arg1) {
+#pragma peephole on
+void fn_80134C24(s32 *dst, void *self) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
 extern f32 lbl_8036A5AC;
 Vec2s out,in;
 u32 rowH;
+f32 scale=lbl_8036A5AC;
 s16 kind,colW;
 u32 quot;
 s32 rem,hdiv,t;
-s16 x,y,off48,off4a;
-s32 half;
-colW=*(s16*)((u8*)arg1+0x44);
-kind=*(s16*)((u8*)arg1+0x3e);
+s16 x,y,half,off48,off4a;
+colW=*(s16*)((u8*)self+0x44);
+kind=*(s16*)((u8*)self+0x3e);
 quot=kind/colW;
-t=*(s16*)((u8*)arg1+0x12);
-rem=*(s16*)((u8*)arg1+0x16);
+t=*(s16*)((u8*)self+0x12);
+rem=*(s16*)((u8*)self+0x16);
 rem-=t;
-rowH=*(u16*)((u8*)arg1+0x46);
-off48=*(s16*)((u8*)arg1+0x48);
-off4a=*(s16*)((u8*)arg1+0x4a);
+rowH=*(u16*)((u8*)self+0x46);
+off48=*(s16*)((u8*)self+0x48);
+off4a=*(s16*)((u8*)self+0x4a);
 t=(s16)rem;
 hdiv=t/colW;
 t=(s16)hdiv;
@@ -1749,10 +1749,10 @@ rem=(s16)rem;
 rem=t*rem;
 x=(s16)(rem+off48);
 y=(s16)(rowH*(s16)quot+off4a);
-t=Text_MeasureHeight(-1,lbl_8036A5AC);
+t=Text_MeasureHeight(-1,scale);
 half=(s16)(((s32)(s16)rowH-t)>>1);
 in.x=x; in.y=y+half;
-*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
+*dst=*(s32*)fn_8013F748(self,&out,&in);
 }
 #pragma peephole reset
 #pragma optimization_level reset
