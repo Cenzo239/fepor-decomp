@@ -1427,6 +1427,7 @@ void fn_801AA228(void *arg0) {
     }
 }
 
+#pragma peephole off
 void fn_801AAD74(void *arg0)
 {
     void fn_801AA228(void *);
@@ -1437,6 +1438,7 @@ void fn_801AAD74(void *arg0)
     }
     fn_801AA228(arg0);
 }
+#pragma peephole reset
 
 #pragma optimization_level 4
 #pragma opt_common_subs off
