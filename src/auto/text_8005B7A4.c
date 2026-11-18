@@ -8359,8 +8359,66 @@ s32 GMaterial_GetCurrent(void) {
     return gGMaterialCurrent;
 }
 
-void fn_8006A384(s32* arg0) {
-    return;
+void fn_8006A384(s32 *arg0) {
+void PSMTXRotRad(void *,s32,f32);
+void PSMTXScale(void *,f32,f32,f32);
+void PSMTXTrans(void *,f32,f32,f32);
+void PSMTXConcat(void *,void *,void *);
+void PSMTXCopy(void *,void *);
+void QUATMtx(void *,void *);
+void Game_Assert(void *,s32,void *);
+extern f32 lbl_80369298;
+extern u8 lbl_8026B8AC[];
+extern void *gGMaterialCurrent,*gGMaterialNode;
+f32 rz[12],ry[12],rx[12],trans[12],scale[12];
+u8 *p=gGMaterialCurrent;
+switch(*(u32 *)(p+12)) {
+case 1:
+PSMTXRotRad(rx,88,lbl_80369298 * *(f32 *)(p+28));
+PSMTXRotRad(ry,89,lbl_80369298 * *(f32 *)(p+32));
+PSMTXRotRad(rz,90,lbl_80369298 * *(f32 *)(p+36));
+break;
+case 2:
+PSMTXRotRad(rx,89,lbl_80369298 * *(f32 *)(p+32));
+PSMTXRotRad(ry,90,lbl_80369298 * *(f32 *)(p+36));
+PSMTXRotRad(rz,88,lbl_80369298 * *(f32 *)(p+28));
+break;
+case 3:
+PSMTXRotRad(rx,90,lbl_80369298 * *(f32 *)(p+36));
+PSMTXRotRad(ry,88,lbl_80369298 * *(f32 *)(p+28));
+PSMTXRotRad(rz,89,lbl_80369298 * *(f32 *)(p+32));
+break;
+case 4:
+PSMTXRotRad(rx,88,lbl_80369298 * *(f32 *)(p+28));
+PSMTXRotRad(ry,90,lbl_80369298 * *(f32 *)(p+36));
+PSMTXRotRad(rz,89,lbl_80369298 * *(f32 *)(p+32));
+break;
+case 5:
+PSMTXRotRad(rx,89,lbl_80369298 * *(f32 *)(p+32));
+PSMTXRotRad(ry,88,lbl_80369298 * *(f32 *)(p+28));
+PSMTXRotRad(rz,90,lbl_80369298 * *(f32 *)(p+36));
+break;
+case 6:
+PSMTXRotRad(rx,90,lbl_80369298 * *(f32 *)(p+36));
+PSMTXRotRad(ry,89,lbl_80369298 * *(f32 *)(p+32));
+PSMTXRotRad(rz,88,lbl_80369298 * *(f32 *)(p+28));
+break;
+case 8:
+PSMTXScale(scale,*(f32 *)(p+40),*(f32 *)(p+44),*(f32 *)(p+48));
+PSMTXTrans(trans,*(f32 *)(p+16),*(f32 *)(p+20),*(f32 *)(p+24));
+QUATMtx(p+16,rx);
+PSMTXConcat(rx,scale,arg0); PSMTXConcat(rx,arg0,arg0); PSMTXConcat(trans,arg0,arg0);
+goto done;
+case 7: PSMTXCopy(p+16,arg0); goto done;
+default: Game_Assert(lbl_8026B8AC,0xB8,lbl_8026B8AC+8); break;
+}
+PSMTXScale(scale,*(f32 *)(p+40),*(f32 *)(p+44),*(f32 *)(p+48));
+PSMTXTrans(trans,*(f32 *)(p+16),*(f32 *)(p+20),*(f32 *)(p+24));
+PSMTXConcat(rx,scale,arg0); PSMTXConcat(ry,arg0,arg0); PSMTXConcat(rz,arg0,arg0); PSMTXConcat(trans,arg0,arg0);
+done:
+if ((*(u16 *)((u8 *)gGMaterialNode+8)&3)==0) {
+PSMTXConcat(arg0,*(u8 **)((u8 *)gGMaterialCurrent+0x60)+*(s16 *)((u8 *)gGMaterialNode+12)*48,arg0);
+}
 }
 
 void GXSetCullMode(s32);
@@ -8688,7 +8746,7 @@ Basis basis1;
 Vector axis1;
 Basis basis3;
 Vector axis3;
-s32 i; void *info; Basis *basis=(Basis *)lbl_8026B888; s16 *slots; u8 *transformData; s32 count; u8 *cursor; u8 *joint; s32 index;
+s32 i; u8 *info; Basis *basis=(Basis *)lbl_8026B888; s16 *slots; u8 *transformData; s32 count; u8 *cursor; u8 *joint; u32 index;
 f32 dot,angle,angle2,angle4;
 info=GActor_GetNodeTable(actor);
 table=M2C_FIELD(node,u8 **,0x1C);
