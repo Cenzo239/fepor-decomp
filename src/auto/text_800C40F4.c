@@ -1125,7 +1125,6 @@ s32 Heap_GetFree(void) {
     hi = (u8 *)lbl_8036786C;
     if (hi == NULL) {
         hi = (u8 *)lbl_80367864;
-    } else {
     }
     return hi - lo;
 }
@@ -30836,7 +30835,7 @@ s32 Ai_FindLowestCostUnitTile(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *
 
     for (y = gBattleMap.yMin; y <= gBattleMap.yMax - 1; y++) {
         for (x = gBattleMap.xMin; x <= gBattleMap.xMax - 1; x++) {
-            cost = &gBattleMap.costMap[0][(s8)x + ((s8)y << 6)];
+            cost = (s16 *)((u8 *)&gBattleMap + (((s8)x + ((s8)y << 6)) * 2) + 0x610E);
             if (*cost < 0) {
                 continue;
             }
