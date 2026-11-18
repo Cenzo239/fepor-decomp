@@ -1121,19 +1121,7 @@ static inline u8 *Heap_GetFreeEnd(void) {
     return (u8 *)lbl_80367864;
 }
 #pragma optimization_level 3
-s32 Heap_GetFree(void) {
-    u8 *lo;
-    u8 *hi;
-    HeapC55 *heap;
-
-    heap = (HeapC55 *)lbl_80367868;
-    if (heap != NULL) {
-        lo = (u8 *)heap + heap->extent;
-    } else {
-        lo = (u8 *)lbl_80367860;
-    }
-    return Heap_GetFreeEnd() - lo;
-}
+s32 Heap_GetFree(void) { u8 *lo = Heap_GetFreeStart(); u8 *hi = Heap_GetFreeEnd(); return hi-lo; }
 #pragma optimization_level reset
 void fn_800C5300(void) {
 s32 OSGetArenaLo(void); s32 OSGetArenaHi(void); void DebugPrint(void *, ...);
