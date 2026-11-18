@@ -3,6 +3,12 @@
 
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
+static inline void SoundMenu_AddEntry(u8 *entry) {
+    s32 index=lbl_80367B04;
+    s32 value=*(s32 *)entry;
+    lbl_80367B04=index+1;
+    ((s32 *)lbl_80367B00)[index]=value;
+}
 extern u8 lbl_80367B0E;
 extern u8 lbl_80367B44;
 
@@ -179,12 +185,13 @@ void *fn_8014A6FC(void) {
 s32 fn_8014A70C(s32 arg0, s32 arg1)
 {
     extern u16 gSoundMenuStrings[];
-    s32 off;
+    u32 off;
     s32 ctr;
     u8 *node;
     u8 *next;
     u8 flag;
     s32 idx;
+    s32 *table;
 
     (void)arg0;
     lbl_80367B08 = 0;
@@ -202,15 +209,17 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
 
 loop:
     if ((s8)lbl_80367B08 == 0) {
-        if (!(node[5] & 4)) {
-            goto skip_store;
-        }
+        if (node[5] & 4) goto store_node;
+        goto skip_store;
     } else if (node[5] & 4) {
         goto skip_store;
     }
+store_node:
     idx = lbl_80367B04;
+    { s32 value=*(s32 *)node;
+    table=(s32 *)lbl_80367B00;
     lbl_80367B04 = idx + 1;
-    ((s32 *)lbl_80367B00)[idx] = *(s32 *)node;
+    table[idx] = value; }
 skip_store:
     if (node[4] == 0) {
         node = NULL;
