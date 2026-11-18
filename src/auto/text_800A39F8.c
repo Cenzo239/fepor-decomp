@@ -1621,15 +1621,24 @@ s32 fn_800A6630(s32 arg0) {
     return 1;
 }
 
+#pragma global_optimizer off
 s32 fn_800A66B4(void) {
- s32 fn_801044E0(s32);
- extern u8 gUiContext[],gMapBlendMode;
- s32 valid=1;
- if (!((u32)(u8)(gMapBlendMode-1)<=(u32)valid)) valid=0;
- if((u8)valid==0) return 0;
- return fn_801044E0(*(s32 *)gUiContext+0x1A4);
-}
+    s32 fn_801044E0(s32);
+    extern u8 gUiContext[], gMapBlendMode;
+    s32 flag;
+    u32 t;
 
+    flag = 1;
+    t = ((u8)(gMapBlendMode - 1) <= (u32)flag);
+    if (!t) {
+        flag = 0;
+    }
+    if ((u8)flag == 0) {
+        return 0;
+    }
+    return fn_801044E0(*(s32 *)gUiContext + 0x1A4);
+}
+#pragma global_optimizer reset
 s32 fn_800A6720(s32 arg0) {
 void Battle_SetupUnit(void *, s32, s32);
 void fn_801A4714(void *, u8);
@@ -2766,16 +2775,18 @@ void fn_800A8F94(s32 arg0) {
     extern u8 gOptionsStr[];
     extern f32 lbl_80369C08;
     extern f32 lbl_80369BA8;
-    typedef struct { u8 pad[0x40]; f32 f40; f32 f44; } SO;
-    SO *obj;
-    f32 b, a;
+    void *obj;
+    f32 b;
+    f32 a;
+    u8 *base;
 
     obj = Sound_Create(gOptionsStr + 0x96, arg0);
     a = lbl_80369C08;
     b = lbl_80369BA8;
-    obj->f40 = a;
-    obj->f44 = b;
-    fn_80148618(gOptionsStr + 0x73, 0x1f4);
+    base = gOptionsStr;
+    *(f32 *)((u8 *)obj + 0x40) = a;
+    *(f32 *)((u8 *)obj + 0x44) = b;
+    fn_80148618(base + 0x73, 0x1f4);
 }
 
 #pragma optimization_level reset
