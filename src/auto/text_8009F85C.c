@@ -186,18 +186,7 @@ void fn_8009FBE0(s32 unused, s32 parent, void *item) {
     void *name;
 
     slot = *(u8 *)((u8 *)item + 0x3A);
-    unit = Map_GetCursorUnit();
-    count = 0;
-    i = count;
-    for (; i < 0x62; i++) {
-        status = fn_80105C5C(unit + 0x1BC, (u8)i);
-        if (status != 0) {
-            if (count == slot) goto found;
-            count++;
-        }
-    }
-    status = 0;
-found:
+    status = MenuCmd_FindStatus(slot);
     if (status != 0) {
         count = status[0x18];
         name = fn_8010586C(status);
