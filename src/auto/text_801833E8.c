@@ -16389,23 +16389,21 @@ u8 fn_801A2690(void) {
 }
 
 void fn_801A26CC(void *arg0) {
-    extern u16 gBattleState[];
-    extern s32 gUiInputFlags;
-    s32 fn_80040824(void *);
-    void *Map_Get(void);
-    void Map_ReloadTileFlags(void *, s32);
-    void fn_8004DC54(s32);
-    u8 *obj;
-
-    obj = (u8 *)arg0;
-    ((u8 *)gBattleState)[0xA0] = obj[0x33];
-    if (obj[0x36] == 0) {
-        gUiInputFlags &= ~0x1000;
-        if ((u8)fn_80040824(arg0) != 0) {
-            Map_ReloadTileFlags(Map_Get(), 1);
-            fn_8004DC54(1);
-        }
-    }
+extern u16 gBattleState[];
+extern s32 gUiInputFlags;
+s32 fn_80040824(void *);
+void *Map_Get(void);
+void Map_ReloadTileFlags(void *,s32);
+void fn_8004DC54(s32);
+u8 *obj=(u8*)arg0;
+((u8*)gBattleState)[0xa0]=obj[0x33];
+if(obj[0x36]==0) {
+gUiInputFlags &= ~0x1000;
+if((u8)fn_80040824(arg0)!=0) {
+Map_ReloadTileFlags(Map_Get(),1);
+}
+}
+fn_8004DC54(1);
 }
 
 void fn_801A2730(void *arg0)
