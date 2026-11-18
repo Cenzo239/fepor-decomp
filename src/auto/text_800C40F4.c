@@ -12583,7 +12583,6 @@ void fn_800DF50C(f32 *arg0) {
     arg0[17] = vals[0];
     arg0[14] = vals[0];
 }
-#pragma scheduling reset
 
 #pragma cplusplus on
 extern "C" void fn_800DF584(void *arg0) {
