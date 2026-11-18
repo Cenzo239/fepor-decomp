@@ -5,6 +5,7 @@
 
 #pragma push
 #pragma use_lmw_stmw on
+#pragma optimization_level 2
 void fn_80072408(void)
 {
     void fn_8022C260(void *, void (*)(void), void *, s32, u32);
