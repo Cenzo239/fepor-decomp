@@ -1265,11 +1265,11 @@ u32 Bin_ReadU32(u8 **arg0) {
 #pragma scheduling off
 u32 fn_8001B8E0(u8 **arg0)
 {
-    u8 *data;
     u8 *next;
-    u32 b2;
     u32 result;
     u32 b0;
+    u32 b2;
+    u8 *data;
     u32 b3;
 
     data = *arg0;
