@@ -261,35 +261,10 @@ typedef struct { u16 buttons[14]; } CameraButtons;
 extern CameraButtons lbl_8026ABF0;
 extern const f32 lbl_80369098, lbl_8036909C, lbl_80369084;
 extern u8 lbl_802859E0[];
-static inline CameraVec *Camera_ChoosePoint(u8 *proc, CameraVec *a, CameraVec *b) {
-    if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) return a;
-    return b;
-}
 static inline void Camera_SetPosition(u8 *proc, f32 x, f32 y, f32 z) {
     *(f32 *)(*(u8 **)(proc+0x30)+0xc)=x;
     *(f32 *)(*(u8 **)(proc+0x30)+0x10)=y;
     *(f32 *)(*(u8 **)(proc+0x30)+0x14)=z;
-}
-static inline void Camera_SelectAndSet(u8 *proc, CameraVec *a, CameraVec *b) {
-    CameraVec *point=Camera_ChoosePoint(proc,a,b);
-    if(point) Camera_SetPosition(proc,point->x,point->y,lbl_8036909C+point->z);
-}
-static inline void Camera_GetUnitPoint(u8 *unit, CameraVec *position, CameraVec **out) {
-    f32 Map_SampleHeightRaw(void *,f32,f32);
-    if(unit) {
-        position->x=lbl_80369098+(s8)unit[0x19e];
-        position->y=lbl_80369098+(s8)unit[0x19f];
-        position->z=Map_SampleHeightRaw(gBattleMap,(s8)unit[0x19e],(s8)unit[0x19f]);
-        *out=position;
-    }
-}
-static inline void Camera_ChoosePointOut(u8 *state, CameraVec *first, CameraVec *second, CameraVec **out) {
-    if ((*(u32 *)(state+8)&0x20000000) && first) { *out=first; return; }
-    *out=second;
-}
-static inline void Camera_ClearPoints(CameraVec **a, CameraVec **b) {
-    *a=NULL;
-    *b=*a;
 }
 #pragma use_lmw_stmw on
 #pragma opt_propagation reset
@@ -353,7 +328,7 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        Camera_ChoosePointOut(*(u8 **)(proc+0x30),a,b,&a);
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }
