@@ -1230,27 +1230,25 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 u8 Unit_GetDistance(void *a, void *b) {
     s32 dy;
     s32 dx;
+    s8 xa;
+    u8 xb_u;
 
     dy = *(s8 *)((u8 *)b + 0x19F);
     dy = *(s8 *)((u8 *)a + 0x19F) - dy;
     if (dy < 0) {
         dy = -dy;
     }
-    {
-        s32 xa;
-        s32 xb;
-        xa = *(u8 *)((u8 *)a + 0x19E);
-        xb = *(u8 *)((u8 *)b + 0x19E);
-        xb=(s8)xb;
-        xa=(s8)xa;
-        dx = xa - xb;
-    }
+    xa = *(s8 *)((u8 *)a + 0x19E);
+    xb_u = *((u8 *)b + 0x19E);
+    dx = xa - (s8)xb_u;
     if (dx < 0) {
         dx = -dx;
     }
     return (u8)(dx + dy);
 }
 #pragma global_optimizer reset
+void *Unit_GetActiveItemPtr(void *);
+void *fn_80037C20(void *);
 void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     void Unit_SetWorldXY(void *, f32, f32);
     extern f32 lbl_80368EC0;
