@@ -10898,41 +10898,24 @@ s32 Item_GetUiKind(s32 unused, void **itemRef) {
 
 #pragma cplusplus on
 extern "C" void fn_80142934(void *arg0, s32 arg1) {
-    extern u8 lbl_80292314[];
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-    };
-    struct Node {
-        Node *prev;
-        Node *next;
-        Obj *obj;
-    };
-    typedef void (Obj::*PTMF)(s32);
-    struct Pair {
-        PTMF ptmf;
-        s32 arg;
-    };
-    Pair p[2];
-    Node *it;
-    Node *sent;
-
-    ((Obj *)arg0)->v6();
-    sent = (Node *)((u8 *)arg0 + 0x40);
-    p[0].ptmf = *(PTMF *)lbl_80292314;
-    p[0].arg = arg1;
-    p[1].ptmf = *(PTMF *)lbl_80292314;
-    it = sent->next;
-    p[1].arg = arg1;
-    while (it != sent) {
-        (it->obj->*p[0].ptmf)(p[0].arg);
-        it = it->next;
-    }
+extern u8 lbl_80292314[];
+struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; };
+struct Node { Node *prev; Node *next; Obj *obj; };
+typedef void (Obj::*PTMF)(s32);
+struct Pair { PTMF ptmf; s32 arg; };
+Pair p[2];
+Node *it;
+Node *sent;
+((Obj*)arg0)->v6();
+sent=(Node*)((u8*)arg0+0x40);
+p[0].ptmf=*(PTMF*)lbl_80292314;
+p[0].arg=arg1;
+((u32*)&p[1].ptmf)[0]=((u32*)&p[0].ptmf)[0];
+it=sent->next;
+((u32*)&p[1].ptmf)[1]=((u32*)&p[0].ptmf)[1];
+((u32*)&p[1].ptmf)[2]=((u32*)&p[0].ptmf)[2];
+p[1].arg=arg1;
+while(it!=sent) { (it->obj->*p[0].ptmf)(p[0].arg); it=it->next; }
 }
 
 struct UiPageSelector {
