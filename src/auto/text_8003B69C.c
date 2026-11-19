@@ -11756,14 +11756,11 @@ void *Effect_Create(void *name, u32 priority) {
 
 void fn_80053D84(void *arg0) {
     u8 *obj;
-    u32 *slot;
     u32 v;
 
     obj = *(u8 **)((u8 *)arg0 + 0x30);
-    slot = (u32 *)(obj + 8);
-    v = *slot;
-    v |= 0x80000000;
-    *slot = v;
+    v = *(u32 *)(obj + 8);
+    *(u32 *)(obj + 8) = v | 0x80000000;
 }
 
 void fn_80053D98(void *arg0, s32 arg1) {
