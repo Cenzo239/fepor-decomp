@@ -7642,8 +7642,9 @@ s32 MapObj_IsVisible(void *arg0) {
     return !(*(u8 *)((u8 *)arg0 + 2) & 3);
 }
 
-s32 MapObj_IsHidden(void *arg0) {
-    return (M2C_FIELD(arg0, u8 *, 2) & 3) != 0;
+s32 MapObj_IsHidden(u8 *arg0) {
+    unsigned int flag = arg0[2] & 3;
+    return (unsigned int)(-flag | flag) >> 31;
 }
 
 #pragma global_optimizer off
