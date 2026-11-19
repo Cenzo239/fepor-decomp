@@ -746,7 +746,10 @@ auto/text_8023C7B0.c:
 	.text       start:0x8023C7B0 end:0x8023C7F4
 
 auto/text_8023C7F4.c:
-	.text       start:0x8023C7F4 end:0x80249DD0
+	.text       start:0x8023C7F4 end:0x80247D74
+
+auto/text_80247D74.c:
+	.text       start:0x80247D74 end:0x80249DD0
 
 auto/text_80249DD0.c:
 	.text       start:0x80249DD0 end:0x80255FB0
