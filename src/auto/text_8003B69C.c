@@ -7638,8 +7638,8 @@ void fn_80049D30(s32 arg0) {
     fn_8005FEE8(arg0 + 0x14, 0.0f);
 }
 
-s32 MapObj_IsVisible(void *arg0) {
-    return (M2C_FIELD(arg0, u8 *, 2) & 3) == 0;
+s32 MapObj_IsVisible(u8 *arg0) {
+    return !(arg0[2] & 3);
 }
 
 s32 MapObj_IsHidden(void *arg0) {
@@ -8042,11 +8042,19 @@ void fn_8004A864(s32 x,s32 y,u8 *color) {
 void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
+extern f64 lbl_80368F90;
+f64 k90;
+f32 z;
+k90 = lbl_80368F90;
 GXBegin(0x98,0,4);
-Map_WriteColorVertex((f32)(x),(f32)(y),fn_800233D0(gBattleMap,(s8)x,(s8)y,0),color);
-Map_WriteColorVertex((f32)(x+1),(f32)(y),fn_800233D0(gBattleMap,(s8)x,(s8)y,1),color);
-Map_WriteColorVertex((f32)(x),(f32)(y+1),fn_800233D0(gBattleMap,(s8)x,(s8)y,2),color);
-Map_WriteColorVertex((f32)(x+1),(f32)(y+1),fn_800233D0(gBattleMap,(s8)x,(s8)y,3),color);
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
+Map_WriteColorVertex((f32)(x),(f32)(y),z,color);
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
+Map_WriteColorVertex((f32)(x+1),(f32)(y),z,color);
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
+Map_WriteColorVertex((f32)(x),(f32)(y+1),z,color);
+z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
+Map_WriteColorVertex((f32)(x+1),(f32)(y+1),z,color);
 }
 #pragma global_optimizer on
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
