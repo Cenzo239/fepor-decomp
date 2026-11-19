@@ -7638,8 +7638,8 @@ void fn_80049D30(s32 arg0) {
     fn_8005FEE8(arg0 + 0x14, 0.0f);
 }
 
-s32 MapObj_IsVisible(u8 *arg0) {
-    return !(arg0[2] & 3);
+s32 MapObj_IsVisible(void *arg0) {
+    return !(*(u8 *)((u8 *)arg0 + 2) & 3);
 }
 
 s32 MapObj_IsHidden(void *arg0) {
@@ -11755,10 +11755,15 @@ void *Effect_Create(void *name, u32 priority) {
 }
 
 void fn_80053D84(void *arg0) {
-    void *temp_r3;
+    u8 *obj;
+    u32 *slot;
+    u32 v;
 
-    temp_r3 = M2C_FIELD(arg0, void **, 0x30);
-    M2C_FIELD(temp_r3, s32 *, 8) = (s32) (M2C_FIELD(temp_r3, s32 *, 8) | 0x80000000);
+    obj = *(u8 **)((u8 *)arg0 + 0x30);
+    slot = (u32 *)(obj + 8);
+    v = *slot;
+    v |= 0x80000000;
+    *slot = v;
 }
 
 void fn_80053D98(void *arg0, s32 arg1) {
