@@ -1303,54 +1303,20 @@ void Text_Draw(s32 x, s32 y, s32 color, const char *fmt, ...) {
  Prim2D_EndPrim();
 }
 
-s32 Text_MeasureHeight(s32 arg0, f32 arg1)
-{
-    extern s32 lbl_802AEE20[5];
-    extern f64 lbl_80368C28;
-
-    void *fn_8010494C(void *);
+s32 Text_MeasureHeight(s32 arg0, f32 arg1) {
+    s32 fn_8010494C(s32);
     s32 fn_80104E40(void);
-
-    s32 *table;
-    void *result;
-    s32 index;
-    s32 value;
-    s32 i;
-
-    table = lbl_802AEE20;
-    index = arg0;
-
-    if (index == -1) {
-        result = fn_8010494C((void *)table[0]);
-
-        if (table[0] == (s32)result) {
-            index = 0;
-        } else if (table[1] == (s32)result) {
-            index = 1;
-        } else if (table[2] == (s32)result) {
-            index = 2;
-        } else if (table[3] == (s32)result) {
-            index = 3;
-        } else if (table[4] == (s32)result) {
-            index = 4;
-        } else {
-            index = -1;
-        }
-    }
-
+    s32 index, value;
+    u32 *table;
+    u32 result;
+    if (arg0 == -1) arg0 = 0;
+    result = (u32)fn_8010494C(lbl_802AEE20[arg0]);
+    table = (u32 *)lbl_802AEE20;
+    index = Text_FindFontIndex(table, result);
     value = (s32)(arg1 * (f32)fn_80104E40());
-
-    if (index == -1) {
-        index = 0;
-        result = fn_8010494C((void *)table[index]);
-
-        for (i = 0; i < 5; i++) {
-            if (table[i] == (s32)result) {
-                break;
-            }
-        }
-    }
-
+    if (index == -1) index = 0;
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    Text_FindFontIndex(table, result);
     return value;
 }
 
