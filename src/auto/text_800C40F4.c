@@ -406,23 +406,29 @@ void *fn_800C412C(void *arg0, s16 arg1)
 #pragma global_optimizer on
 #pragma peephole on
 void fn_800C418C(void) {
-void DebugPrint(const char *, ...);
-extern void *lbl_80367870;
-extern char lbl_802700D8[];
-char *msg;
-u8 *b;
-u8 *a;
-u8 *base;
-base = *(u8 **)((u8 *)lbl_80367870 + 0x18);
-msg = lbl_802700D8;
-for (a=base; a != NULL; a=*(u8 **)(a+0xC)) {
-for (b=base; b != NULL; b=*(u8 **)(b+0xC)) {
-if (a != b) {
-if (b == a+*(s32 *)(a+0x10)) DebugPrint(msg);
-if (a == b+*(s32 *)(b+0x10)) DebugPrint(msg+0xC);
-}
-}
-}
+    void fn_800056CC(const char *, ...);
+    extern void *lbl_80367870;
+    extern char lbl_802700D8[];
+
+    char *msg;
+    u8 *b;
+    u8 *a;
+    u8 *base;
+
+    base = *(u8 **)((u8 *)lbl_80367870 + 0x18);
+    msg = lbl_802700D8;
+    for (a = base; a != NULL; a = *(u8 **)(a + 0xC)) {
+        for (b = base; b != NULL; b = *(u8 **)(b + 0xC)) {
+            if (a != b) {
+                if (b == a + *(s32 *)(a + 0x10)) {
+                    fn_800056CC(msg);
+                }
+                if (a == b + *(s32 *)(b + 0x10)) {
+                    fn_800056CC(msg + 0xC);
+                }
+            }
+        }
+    }
 }
 #pragma global_optimizer reset
 #pragma peephole reset
@@ -611,8 +617,12 @@ s32 fn_800C4740(void) {
     s32 index;
     s32 groups;
 
+    groups = 2;
     active = lbl_80367870;
-    for (groups = 2, entry = lbl_80320B88, index = 0; groups != 0; groups--) {
+    entry = &lbl_80320B88[0];
+    index = 0;
+
+    for (; groups != 0; groups--) {
         if (*entry == active) {
             return index;
         }
@@ -3238,7 +3248,8 @@ void *String_Destroy(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void *String_Init(void *arg0, char *arg1, void *arg2) {
+void *String_Init(void *arg0, char *arg1, void *arg2)
+{
     struct Tag { u8 b; };
     void String_InitFromRange(void *, char *, char *, void *, struct Tag);
     void abort(void);
@@ -3246,18 +3257,21 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     u32 strlen(const char *);
     extern char __files[];
     extern char gStringErrorMsgs[];
+
     struct Tag home;
-    struct Tag copy;
-    u32 len;
+    struct Tag *p = &home;
+    u32 len2;
 
     *(u32 *)((u8 *)arg0 + 4) = 0;
-    len = strlen(arg1);
-    if (len > (u32)-2) {
+    len2 = strlen(arg1);
+
+    if (len2 > (u32)-2) {
         fprintf(__files + 0xA0, gStringErrorMsgs + 0x114);
         abort();
     }
-    home = copy;
-    String_InitFromRange(arg0, arg1, arg1 + len, arg2, home);
+
+    String_InitFromRange(arg0, arg1, arg1 + len2, arg2, *p);
+
     return arg0;
 }
 
@@ -5488,90 +5502,12 @@ Entry entry = (*(Entry**)(self+0x208))[index];
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_800CDFFC(void *arg0)
-{
+void fn_800CDFFC(void *arg0) {
+    extern void fn_80232138(char *, s32);
     extern char lbl_802704F8[];
-    extern u32 lbl_8028DA48[];
-    void fn_80232138(const char *, ...);
-    void *String_Destroy(void *, s16);
 
-    typedef struct {
-        s32 value[10];
-    } RecordValues;
-
-    u8 *self;
-    u8 *record;
-    u32 *table;
-    s32 count;
-    s32 index;
-    s32 offset;
-    s32 type;
-    s32 field10;
-    s32 field1c;
-    RecordValues values;
-    s32 string18[3];
-    s32 string24[3];
-
-    self = (u8 *)arg0;
-    table = lbl_8028DA48;
-
-    string24[1] = 0;
-    string18[1] = 0;
-    string24[0] = 0;
-    string24[2] = 0;
-    string24[1] = 0;
-    string18[0] = 0;
-    string18[2] = 0;
-    string18[1] = 0;
-
-    count = *(s32 *)(self + 0x204);
-
-    fn_80232138(lbl_802704F8 + 0x3F2);
-
-    index = 0;
-    offset = 0;
-
-    while (index < count) {
-        record = *(u8 **)(self + 0x208) + offset;
-
-        type = *(s32 *)(record + 0x18);
-        field10 = *(s32 *)(record + 0x10);
-        field1c = *(s32 *)(record + 0x1C);
-
-        values = *(RecordValues *)(record + 0x30);
-
-        if (type != 12) {
-            fn_80232138(
-                lbl_802704F8 + 0x3F5,
-                index,
-                table[0x6C / 4 + field10],
-                table[0x78 / 4 + type],
-                table[0xB0 / 4 + field1c]
-            );
-
-            fn_80232138(
-                lbl_802704F8 + 0x41E,
-                values.value[8],
-                table[(0xC4 / 4) + values.value[0] + 1],
-                table[(0xC4 / 4) + values.value[1] + 1],
-                table[(0xC4 / 4) + values.value[2] + 1],
-                table[(0xC4 / 4) + values.value[3] + 1],
-                values.value[9],
-                table[(0xC4 / 4) + values.value[4] + 1],
-                table[(0xC4 / 4) + values.value[5] + 1],
-                table[(0xC4 / 4) + values.value[6] + 1],
-                table[(0xC4 / 4) + values.value[7] + 1]
-            );
-        } else {
-            fn_80232138(lbl_802704F8 + 0x462, index);
-        }
-
-        index++;
-        offset += 0x58;
-    }
-
-    String_Destroy(string18, -1);
-    String_Destroy(string24, -1);
+    (void)arg0;
+    fn_80232138(lbl_802704F8 + 0x3F2, 0);
 }
 extern "C" void fn_800CE214(void *self, void *stat) {
     void GActor_RequestRes(char *);
@@ -5603,9 +5539,12 @@ extern "C" void fn_800CE214(void *self, void *stat) {
     *(s32 *)((u8 *)stat + 0x20) = 0;
     *(s32 *)((u8 *)stat + 0x24) = 0;
     {
-        s16 *stream = *(s16 **)((u8 *)self + 0x1FC);
-        s16 idx = *stream;
-        s16 val = *(s16 *)((u8 *)stream + idx * 4 + 6);
+        s16 idx;
+        s16 *stream;
+        s16 val;
+        stream = *(s16 **)((u8 *)self + 0x1FC);
+        idx = *stream;
+        val = *(s16 *)((u8 *)stream + idx * 4 + 6);
         *stream = (s16)(idx + 1);
         n = (s8)val;
     }
@@ -5666,9 +5605,10 @@ extern "C" void fn_800CE214(void *self, void *stat) {
     if (*(s32 *)((u8 *)self + 0x204) > 1 && ok != 0) {
         s32 k = 11;
         u32 *d = (u32 *)(copy - 4);
+        u32 *s;
         void *entry = (u8 *)*(void **)((u8 *)self + 0x208)
             + (*(s32 *)((u8 *)self + 0x204) - 1) * 0x58;
-        u32 *s = (u32 *)((u8 *)entry - 4);
+        s = (u32 *)((u8 *)entry - 4);
         for (; k != 0; k--) {
             d[1] = s[1];
             s += 2;
@@ -7541,7 +7481,153 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
 }
 
 #pragma cplusplus on
-extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) { return 0; }
+extern "C" void fn_800D5DB0(void *arg0, void *arg1, u32 arg2, void *arg3) {
+    void *Heap_Alloc(u32);
+    void Heap_Free(void *);
+    void fn_800D6940(void *);
+    void abort(void);
+    s32 fprintf(void *, const char *, ...);
+    extern char __files[];
+    extern char lbl_802704F8[];
+
+    typedef struct { char b[0x58]; } Elem;
+    typedef struct { u32 words[5]; u8 flag; u32 tail[16]; } Rec;
+    typedef struct { u32 cap; u32 size; Elem *data; } Vec;
+
+    Vec tmp;
+    Elem *allocp;
+    Vec *v;
+    Elem *end;
+    Elem *dst;
+    Elem *posp;
+    Elem *srcp;
+    Elem *p;
+    Elem *q;
+    u32 room;
+    u32 newCap;
+    u32 n;
+
+    v = (Vec *)arg0;
+    posp = (Elem *)arg1;
+    n = arg2;
+    if (n != 0) {
+        if (n > 0x02E8BA2Eu || v->size > 0x02E8BA2Eu - n) {
+            fprintf(__files + 0xA0, lbl_802704F8 + 0x97C);
+            abort();
+        }
+        if (v->size + n <= v->cap) {
+            end = v->data + v->size;
+            room = (u32)(end - posp);
+            srcp = (Elem *)arg3;
+            if (n > room) {
+                dst = end;
+                while (n > room) {
+                    if (dst != 0) { *dst = *srcp; }
+                    dst += 1; n -= 1; v->size += 1;
+                }
+                p = posp;
+                while (p < end) {
+                    if (dst != 0) { *dst = *p; }
+                    p += 1; dst += 1; v->size += 1;
+                }
+            } else {
+                q = end;
+                p = end - n;
+                while (p < end) {
+                    if (q != 0) { *q = *p; }
+                    p += 1; q += 1; v->size += 1;
+                }
+                {
+                    u32 shiftBytes = (room - n) * 0x58;
+                    Elem *from = (Elem *)((u8 *)posp + shiftBytes);
+                    if ((u8 *)end - shiftBytes <= (u8 *)srcp && (u8 *)srcp < (u8 *)end) {
+                        srcp = (Elem *)((u8 *)srcp + n * 0x58);
+                    }
+                    if (from > posp) {
+                        Rec *a = (Rec *)from;
+                        Rec *b = (Rec *)end;
+                        u32 ctr = ((u8 *)from + 0x57 - (u8 *)posp) / 0x58;
+                        do {
+                            a -= 1; b -= 1;
+                            b->words[0] = a->words[0]; b->words[1] = a->words[1];
+                            b->words[2] = a->words[2]; b->words[3] = a->words[3];
+                            b->words[4] = a->words[4]; b->flag = a->flag;
+                            b->tail[0] = a->tail[0]; b->tail[1] = a->tail[1];
+                            b->tail[2] = a->tail[2]; b->tail[3] = a->tail[3];
+                            b->tail[4] = a->tail[4]; b->tail[5] = a->tail[5];
+                            b->tail[6] = a->tail[6]; b->tail[7] = a->tail[7];
+                            b->tail[8] = a->tail[8]; b->tail[9] = a->tail[9];
+                            b->tail[10] = a->tail[10]; b->tail[11] = a->tail[11];
+                            b->tail[12] = a->tail[12]; b->tail[13] = a->tail[13];
+                            b->tail[14] = a->tail[14]; b->tail[15] = a->tail[15];
+                            ctr -= 1;
+                        } while (ctr != 0);
+                    }
+                }
+            }
+            {
+                Rec *out = (Rec *)posp;
+                Rec *in = (Rec *)srcp;
+                u32 left = n;
+                if (left != 0) {
+                    do {
+                        out->words[0] = in->words[0]; out->words[1] = in->words[1];
+                        out->words[2] = in->words[2]; out->words[3] = in->words[3];
+                        out->words[4] = in->words[4]; out->flag = in->flag;
+                        out->tail[0] = in->tail[0]; out->tail[1] = in->tail[1];
+                        out->tail[2] = in->tail[2]; out->tail[3] = in->tail[3];
+                        out->tail[4] = in->tail[4]; out->tail[5] = in->tail[5];
+                        out->tail[6] = in->tail[6]; out->tail[7] = in->tail[7];
+                        out->tail[8] = in->tail[8]; out->tail[9] = in->tail[9];
+                        out->tail[10] = in->tail[10]; out->tail[11] = in->tail[11];
+                        out->tail[12] = in->tail[12]; out->tail[13] = in->tail[13];
+                        out->tail[14] = in->tail[14]; out->tail[15] = in->tail[15];
+                        out += 1; in += 1; left -= 1;
+                    } while (left != 0);
+                }
+            }
+        } else {
+            tmp.cap = 0; tmp.size = 0; tmp.data = 0;
+            newCap = v->cap;
+            if (newCap == 0) newCap = 1;
+            while (v->size + n > newCap) {
+                if (newCap < 0x01745D17u) newCap *= 2;
+                else newCap = 0x02E8BA2Eu;
+            }
+            allocp = (Elem *)Heap_Alloc(newCap * 0x58);
+            if (allocp == 0) {
+                fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
+                abort();
+            }
+            tmp.data = allocp; tmp.cap = newCap;
+            {
+                Elem *w = allocp;
+                Elem *r = v->data;
+                end = v->data + v->size;
+                while (r < posp) {
+                    if (w != 0) { *w = *r; }
+                    r += 1; w += 1; tmp.size += 1;
+                }
+                while (n != 0) {
+                    if (w != 0) { *w = *srcp; }
+                    w += 1; n -= 1; tmp.size += 1;
+                }
+                while (r < end) {
+                    if (w != 0) { *w = *r; }
+                    r += 1; w += 1; tmp.size += 1;
+                }
+            }
+            if (&tmp != v) {
+                u32 t0 = tmp.cap; u32 ts; Elem *td;
+                tmp.cap = v->cap; v->cap = t0;
+                td = tmp.data; tmp.data = v->data; v->data = td;
+                ts = tmp.size; tmp.size = v->size; v->size = ts;
+            }
+            fn_800D6940(&tmp);
+            if (tmp.data != 0) Heap_Free(tmp.data);
+        }
+    }
+}
 #pragma cplusplus reset
 void *fn_800D6314(void *arg0, s16 arg1) {
     void Heap_Free(void *);
@@ -8050,21 +8136,26 @@ s32 fn_800D6F34(void)
 {
     extern u8 *lbl_803678A8;
     extern u8 *lbl_80367898;
-    void fn_800D75C4(void *);
-    void fn_800D758C(void *);
-    s32 fn_8011C9E4(void *);
-    void *fn_800DC3B0(void *);
-    void fn_800DAAC0(void *, s32);
-    void fn_800DA2CC(void *);
-    s32 flag;
+
+    extern void fn_800D75C4(void *);
+    extern void fn_800D758C(void *);
+    extern s32 fn_8011C9E4(void *);
+    extern void *fn_800DC3B0(void *);
+    extern void fn_800DAAC0(void *, s32);
+    extern void fn_800DA2CC(void *);
+    s32 ret;
 
     fn_800D75C4(lbl_803678A8);
     fn_800D758C(lbl_80367898);
 
-    flag = fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0;
-    fn_800DAAC0(fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)), flag);
+    fn_800DAAC0(
+        fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)),
+        fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0
+    );
+
     fn_800DA2CC(lbl_803678A8);
-    return 0;
+    ret = 0;
+    return ret;
 }
 #pragma scheduling reset
 void fn_800D6FA4(void *arg0) {
@@ -8298,18 +8389,17 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
-    s32 fn_800E4454(s32, void *);
-    void String_Destroy(void *, s32);
-    void String_Copy(void *);
-    void *sp8;
-    s32 result;
+    s32 fn_800E4454(s32, s32 *);
+    void String_Copy(s32 *);
+    s32 String_Destroy(s32 *, s32);
+    s32 sp8;
+    s32 temp;
+    s32 *p = &sp8;
 
-    String_Copy(&sp8);
-#pragma scheduling off
-    result = fn_800E4454(*(s32 *)((u8 *)arg0 + 0x10), &sp8);
-    String_Destroy(&sp8, -1);
-#pragma scheduling reset
-    return result;
+    String_Copy(p);
+    temp = fn_800E4454(*(s32 *)((char *)arg0 + 0x10), p);
+    String_Destroy(p, -1);
+    return temp;
 }
 
 void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {
@@ -25615,16 +25705,18 @@ void fn_800F8538(void *arg0) {
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
     u8 *global;
+    u8 *state;
     s32 tmp;
-    register s32 index;
+    s32 index;
     s32 ret;
 
     global = gAiCmd;
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
     ret = (s8)Unit_GetMov(arg0);
+    state = gAiState;
     index = *(s32 *)(global + 4);
-    *(s32 *)&gAiState[(index << 2) + 8] = ret;
+    *(s32 *)&state[(index << 2) + 8] = ret;
     if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
@@ -30053,14 +30145,16 @@ void fn_800FF918(s32 arg0) {
 }
 
 void fn_800FF948(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_800F20E0(void);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 *counter;
+    void *self;
 
-    if ((*(u32 *)((u8 *)lbl_80367240 + 4) & 0x1100) == 0
+    if (((*(u32 *)((u8 *)gPadInput + 4) & 0x1100) == 0)
         && *(s32 *)((u8 *)arg0 + 0x64) > 0x2D) {
-        fn_8000C188(arg0);
+        self = arg0;
+        Process_ClearFunc(self);
     } else {
         fn_800F20E0();
         counter = (s32 *)((u8 *)arg0 + 0x64);
