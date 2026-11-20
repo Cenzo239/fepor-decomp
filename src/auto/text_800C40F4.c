@@ -8050,24 +8050,20 @@ s32 fn_800D6F34(void)
 {
     extern u8 *lbl_803678A8;
     extern u8 *lbl_80367898;
-
-    extern void fn_800D75C4(void *);
-    extern void fn_800D758C(void *);
-    extern s32 fn_8011C9E4(void *);
-    extern void *fn_800DC3B0(void *);
-    extern void fn_800DAAC0(void *, s32);
-    extern void fn_800DA2CC(void *);
+    void fn_800D75C4(void *);
+    void fn_800D758C(void *);
+    s32 fn_8011C9E4(void *);
+    void *fn_800DC3B0(void *);
+    void fn_800DAAC0(void *, s32);
+    void fn_800DA2CC(void *);
+    s32 flag;
 
     fn_800D75C4(lbl_803678A8);
     fn_800D758C(lbl_80367898);
 
-    fn_800DAAC0(
-        fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)),
-        fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0
-    );
-
+    flag = fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0;
+    fn_800DAAC0(fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)), flag);
     fn_800DA2CC(lbl_803678A8);
-
     return 0;
 }
 #pragma scheduling reset
@@ -11816,32 +11812,27 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
 
 void *fn_800DDB94(void *arg0)
 {
-    extern void *fn_800D59CC(void *);
-    extern void fn_800C9758(void *, void *, s32, s32);
-    extern void *fn_800C93EC(void *);
-    extern void fn_800C9A60(void *, s32);
+    extern void *StringMap_FindOrInsert(void *);
+    extern void String_Assign(void *, void *, s32, s32);
+    extern void *String_CStr(void *);
+    extern void String_Destroy(void *, s32);
 
-    u32 temp[3];
-    void *source;
+    struct StrInner { u8 pad[0xC]; u32 field; };
+    struct StrInner *str;
     void *result;
+    u32 temp[3];
 
     temp[1] = 0;
     temp[0] = 0;
     temp[2] = 0;
     temp[1] = 0;
 
-    source = fn_800D59CC((u8 *)arg0 + 0x68);
+    str = (struct StrInner *)StringMap_FindOrInsert((u8 *)arg0 + 0x68);
+    String_Assign(temp, &str->field, 0, -1);
 
-    fn_800C9758(
-        temp,
-        (u8 *)source + 0xC,
-        0,
-        -1
-    );
+    result = String_CStr(temp);
 
-    result = fn_800C93EC(temp);
-
-    fn_800C9A60(temp, -1);
+    String_Destroy(temp, -1);
 
     return result;
 }
@@ -13422,14 +13413,18 @@ extern "C" void fn_800DFD64(void *arg0) {
         Obj **items;
     };
     List *list = (List *)arg0;
+    s32 off;
     s32 i;
 
-    for (i = list->count - 1; i >= 0; ) {
-        Obj *p = list->items[i];
+    i = list->count - 1;
+    off = i * 4;
+    while (i >= 0) {
+        Obj *p = *(Obj **)((u8 *)list->items + off);
         if (p->owner == list) {
             delete p;
         }
         i--;
+        off -= 4;
     }
     list->count = 0;
 }
