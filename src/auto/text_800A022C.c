@@ -144,12 +144,12 @@ void *fn_800A0338(void) {
 
 s32 fn_800A0348(s32 a, s32 b, void *arg2) {
  extern u8 lbl_80367705;
- register u8 value = 2;
- a = lbl_80367705;
- b = a ^ 1;
- lbl_80367705 = b;
- if ((u8)b != 0) value = 0;
- *((u8 *)arg2 + 0x39) = value;
+ s32 v=2;
+ a=lbl_80367705;
+ b=a^1;
+ lbl_80367705=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
  return 0;
 }
 
@@ -171,16 +171,14 @@ void *fn_800A038C(void) {
 
 s32 fn_800A039C(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367704;
-    u8 tmp[1];
-
+    register s32 v = 2;
     a = (u8)lbl_80367704;
     b = a ^ 1;
     lbl_80367704 = b;
-    tmp[0] = 2;
     if ((u8)b != 0) {
-        tmp[0] = 0;
+        v = 0;
     }
-    *(u8 *)((char *)arg2 + 0x39) = tmp[0];
+    *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
 
@@ -233,16 +231,16 @@ void *fn_800A0434(void) {
 
 s32 fn_800A0444(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367702;
-    u8 v;
+    s32 v;
 
-    a = lbl_80367702;
+    a = (u8)lbl_80367702;
     b = a ^ 1;
-    lbl_80367702 = (u8)b;
+    lbl_80367702 = b;
     v = 2;
-    if ((u8)b) {
+    if ((u8)b != 0) {
         v = 0;
     }
-    *((u8 *)arg2 + 0x39) = v;
+    *(u8 *)((char *)arg2 + 0x39) = v;
     return 0;
 }
 
@@ -2183,6 +2181,7 @@ s32 fn_800A320C(void) {
     return 0;
 }
 
+#pragma optimization_level 3
 s32 fn_800A3278(void *a, void *b, void *arg) {
     extern u8 gBattleState[];
     extern u8 lbl_80367558;
@@ -2190,23 +2189,23 @@ s32 fn_800A3278(void *a, void *b, void *arg) {
     void fn_800BDB78(void *, s32);
     u8 fn_800BDB9C(void *, s32);
     s32 index;
-    void *base;
+    u8 *base;
     s32 col;
     s32 row;
 
     col = *((u8 *)arg + 0x3a);
-    base = gBattleState + 0xb4;
+    base = (u8 *)((u32)gBattleState + 0xb4);
     row = (s8)lbl_80367558;
     index = (row << 4) + col - 1;
 
-    if (*(u32 *)((u8 *)base + (index << 2)) == 0) {
+    if (*(u32 *)(base + (index << 2)) == 0) {
         return 0;
     }
     if (fn_800BDB9C(base, index)) fn_800BDB54(base, index);
     else fn_800BDB78(base, index);
     return 0;
 }
-
+#pragma optimization_level reset
 void fn_800A3314(s32 arg0,s32 arg1,void *item) {
 void sprintf(void *,void *,...);
 void Prim2D_Begin(void);
@@ -2386,9 +2385,9 @@ void fn_800A3770(void) {
     extern u8 gMenuCmdStrings[];
     extern s32 lbl_80312290[];
     extern s32 lbl_80367520;
-    s32 item;
     s32 *arr;
     u8 *base;
+    s32 item;
     s32 count;
     s32 i;
     s32 idx;

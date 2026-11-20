@@ -941,6 +941,127 @@ void *ent=GfxEnt_Get(p[0x40+index]);
 #pragma cplusplus reset
 }
 
+extern "C" void fn_8013D85C(void *self, void *host, void *slot) {
+    void Prim2D_SetText(s32);
+    void Prim2D_SetTextScale(s32, f32);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetAlphaByte(u8);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    s32 Text_MeasureHeight(s32, f32);
+    s16 Text_MeasureWidth(s32, s32, f32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
+    s32 *Ui_GetColor(s32);
+    extern u8 gUiIconDrawer[];
+    extern f32 lbl_8036A6C0;
+    extern f32 gUiMenuSlotPlainTextScale;
+
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual s32 getLabel(void *) = 0;
+        virtual s32 getIconId() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void draw() = 0;
+    };
+    struct Host {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual s16 getInnerH() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31() = 0;
+        virtual void v32() = 0;
+        virtual void v33() = 0;
+        virtual void v34() = 0;
+        virtual s16 getInnerW() = 0;
+    };
+
+    s32 packedColor;
+    s32 hostH;
+    s32 iconPad;
+    s32 yOff;
+    s32 iconYOff;
+    s32 labelWidth;
+    s16 hostW;
+    f32 drawX;
+    f32 drawY;
+
+    ((Obj *)self)->draw();
+
+    {
+        s32 v = ((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId();
+        void *p3c = *(void **)((u8 *)host + 0x3c);
+        iconPad = v != 0 ? 0x18 : 0;
+        hostH = ((Host *)p3c)->getInnerH();
+    }
+    yOff = (hostH - Text_MeasureHeight(-1, lbl_8036A6C0)) >> 1;
+    iconYOff = ((((Host *)*(void **)((u8 *)host + 0x3c))->getInnerH() - 0x18) >> 1);
+
+    labelWidth = Text_MeasureWidth(((Obj *)*(void **)((u8 *)slot + 0x34))->getLabel(slot), -1, lbl_8036A6C0);
+    hostW = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerW();
+    drawX = (f32)(*(s16 *)((u8 *)slot + 0x30) + ((hostW - (labelWidth + iconPad)) >> 1));
+    drawY = (f32)*(s16 *)((u8 *)slot + 0x32);
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(drawX + (f32)iconPad, drawY + (f32)yOff);
+    if (*(u8 *)((u8 *)slot + 0x39) == 2) {
+        packedColor = *Ui_GetColor(0);
+        Prim2D_SetColorPacked(&packedColor);
+    } else {
+        Prim2D_SetTextScale(1, gUiMenuSlotPlainTextScale);
+    }
+    Prim2D_SetText(((Obj *)*(void **)((u8 *)slot + 0x34))->getLabel(slot));
+    Prim2D_EndPrim();
+    if (((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId() != 0) {
+        Ui_DrawIcon(gUiIconDrawer, (s32)drawX, (s32)(drawY + (f32)iconYOff), ((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId());
+    }
+    Prim2D_Begin();
+    Prim2D_SetAlphaByte(0x80);
+    Prim2D_PrepareTex();
+}
+
 #pragma cplusplus reset
 
 void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {

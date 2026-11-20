@@ -268,177 +268,450 @@ u8 *fn_8001FC40(void *arg0, s8 arg1, s8 arg2) {
 
 extern u8 lbl_80366DB8[8];
 s32 Rand_Range(s32);
-u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
-    u8 cand[4];
-    u16 dist[4];
-    u8 buf[0x88];
-    u8 *start;
-    u8 *src;
-    u8 *dst;
-    u8 *out;
-    s32 i;
-    u16 min;
-    u8 n;
-    u8 dir;
+u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3)
+{
+  u16 dist[4];
+  u8 buf[0x88];
+  u8 *start;
+  s8 *new_var7;
+  s8 *new_var2;
+  u16 *new_var;
+  u8 cand[4];
+  u8 *dst;
+  u8 *out;
+  u8 *src;
+  s8 *new_var4;
+  s32 i;
+  u8 *new_var3;
+  u16 min;
+  s8 *new_var5;
+  u8 n;
+  u8 dir;
+  s8 *new_var6;
+  start = arg1;
+  new_var4 = (s8 *) arg0;
+  new_var = (u16 *) (((u8 *) arg0) + 0x408E);
+  new_var3 = (u8 *) (((s8 *) arg0) + 0x24EEA);
+  while ((*((s16 **) (((s8 *) arg0) + 0x14190)))[arg2 + (arg3 << 6)] != 0)
+  {
+    new_var2 = ((s8 *) arg0) + 0x14190;
+    if ((*new_var3) != 0)
+    {
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 + 1)) + (arg3 << 6)] & 0x10)
+      {
+        dist[0] = 0xFFFF;
+      }
+      else
+      {
+        dist[0] = (*((s16 **) new_var2))[((s8) (arg2 + 1)) + (arg3 << 6)];
+      }
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 - 1)) + (arg3 << 6)] & 0x20)
+      {
+        dist[1] = 0xFFFF;
+      }
+      else
+      {
+        dist[1] = (*((s16 **) (new_var4 + 0x14190)))[((s8) (arg2 - 1)) + (arg3 << 6)];
+      }
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 + 1)) << 6)] & 0x80)
+      {
+        dist[3] = 0xFFFF;
+      }
+      else
+      {
+        dist[3] = (*((s16 **) new_var2))[arg2 + (((s8) (arg3 + 1)) << 6)];
+      }
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 - 1)) << 6)] & 0x40)
+      {
+        dist[2] = 0xFFFF;
+      }
+      else
+      {
+        dist[2] = (*((s16 **) new_var2))[arg2 + (((s8) (arg3 - 1)) << 6)];
+      }
+    }
+    else
+    {
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 + 1)) + (arg3 << 6)] & 0x1)
+      {
+        dist[0] = (*((s16 **) (((s8 *) arg0) + 0x14190)))[((s8) (arg2 + 1)) + (arg3 << 6)];
+      }
+      else
+      {
+        dist[0] = 0xFFFF;
+      }
+      new_var6 = (new_var7 = (s8 *) arg0);
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 - 1)) + (arg3 << 6)] & 0x2)
+      {
+        dist[1] = (*((s16 **) (new_var7 + 0x14190)))[((s8) (arg2 - 1)) + (arg3 << 6)];
+      }
+      else
+      {
+        dist[1] = 0xFFFF;
+      }
+      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 + 1)) << 6)] & 0x8)
+      {
+        dist[3] = (*((s16 **) (new_var6 + 0x14190)))[arg2 + ((((s8) (arg3 + 1)) ^ 0) << 6)];
+      }
+      else
+      {
+        dist[3] = 0xFFFF;
+      }
+      new_var5 = new_var7;
+      if (new_var[arg2 + (((s8) (arg3 - 1)) << 6)] & 0x4)
+      {
+        dist[2] = (*((s16 **) (new_var5 + 0x14190)))[arg2 + (((s8) (arg3 - 1)) << 6)];
+      }
+      else
+      {
+        dist[2] = 0xFFFF;
+      }
+    }
+    min = 0xFFFF;
+    n = 0;
+    for (i = 0; i < 4; i++)
+    {
+      if (min > dist[i])
+      {
+        min = dist[i];
+      }
+    }
 
-    start = arg1;
-    while (M2C_FIELD(arg0, s16 **, 0x14190)[arg2 + (arg3 << 6)] != 0) {
-        if (M2C_FIELD(arg0, u8 *, 0x24EEA) != 0) {
-            if (((u16 *)((u8 *)arg0 + 0x408E))[(s8)(arg2 + 1) + (arg3 << 6)] & 0x10) {
-                dist[0] = 0xFFFF;
-            } else {
-                dist[0] = M2C_FIELD(arg0, s16 **, 0x14190)[(s8)(arg2 + 1) + (arg3 << 6)];
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[(s8)(arg2 - 1) + (arg3 << 6)] & 0x20) {
-                dist[1] = 0xFFFF;
-            } else {
-                dist[1] = M2C_FIELD(arg0, s16 **, 0x14190)[(s8)(arg2 - 1) + (arg3 << 6)];
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[arg2 + ((s8)(arg3 + 1) << 6)] & 0x80) {
-                dist[3] = 0xFFFF;
-            } else {
-                dist[3] = M2C_FIELD(arg0, s16 **, 0x14190)[arg2 + ((s8)(arg3 + 1) << 6)];
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[arg2 + ((s8)(arg3 - 1) << 6)] & 0x40) {
-                dist[2] = 0xFFFF;
-            } else {
-                dist[2] = M2C_FIELD(arg0, s16 **, 0x14190)[arg2 + ((s8)(arg3 - 1) << 6)];
-            }
-        } else {
-            if (((u16 *)((u8 *)arg0 + 0x408E))[(s8)(arg2 + 1) + (arg3 << 6)] & 0x1) {
-                dist[0] = M2C_FIELD(arg0, s16 **, 0x14190)[(s8)(arg2 + 1) + (arg3 << 6)];
-            } else {
-                dist[0] = 0xFFFF;
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[(s8)(arg2 - 1) + (arg3 << 6)] & 0x2) {
-                dist[1] = M2C_FIELD(arg0, s16 **, 0x14190)[(s8)(arg2 - 1) + (arg3 << 6)];
-            } else {
-                dist[1] = 0xFFFF;
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[arg2 + ((s8)(arg3 + 1) << 6)] & 0x8) {
-                dist[3] = M2C_FIELD(arg0, s16 **, 0x14190)[arg2 + ((s8)(arg3 + 1) << 6)];
-            } else {
-                dist[3] = 0xFFFF;
-            }
-            if (((u16 *)((u8 *)arg0 + 0x408E))[arg2 + ((s8)(arg3 - 1) << 6)] & 0x4) {
-                dist[2] = M2C_FIELD(arg0, s16 **, 0x14190)[arg2 + ((s8)(arg3 - 1) << 6)];
-            } else {
-                dist[2] = 0xFFFF;
-            }
-        }
-        min = 0xFFFF;
-        n = 0;
-        for (i = 0; i < 4; i++) {
-            if (min > dist[i]) {
-                min = dist[i];
-            }
-        }
-        for (i = 0; i < 4; i++) {
-            if (min == dist[i]) {
-                cand[n++] = lbl_80366DB8[i];
-            }
-        }
-        switch (n) {
-        case 1:
-            dir = cand[0];
-            break;
-        case 2:
-        case 3:
-        case 4:
-            dir = cand[Rand_Range(n)];
-            break;
-        }
-        *arg1++ = dir;
-        switch (dir) {
-        case 1:
-            arg2++;
-            break;
-        case 2:
-            arg2--;
-            break;
-        case 8:
-            arg3++;
-            break;
-        case 4:
-            arg3--;
-            break;
-        }
+    for (i = 0; i < 4; i++)
+    {
+      if (min == dist[i])
+      {
+        cand[n++] = lbl_80366DB8[i];
+      }
     }
-    src = arg1;
-    out = start;
-    dst = buf;
-    while (src > start) {
-        *dst++ = *--src;
+
+    switch (n)
+    {
+      case 1:
+        dir = cand[0];
+        break;
+
+      case 2:
+
+      case 3:
+
+      case 4:
+        dir = cand[fn_8000CEE4(n)];
+        if (1)
+      {
+        break;
+      }
+
     }
-    *dst = 0x10;
-    src = buf;
-    while (*src != 0x10) {
-        *out++ = *src++;
+
+    *(arg1++) = dir;
+    switch (dir)
+    {
+      case 1:
+        arg2++;
+        break;
+
+      case 2:
+        arg2--;
+        break;
+
+      case 8:
+        arg3++;
+        break;
+
+      case 4:
+        arg3--;
+        break;
+
     }
-    *out = 0x10;
-    return start;
+
+  }
+
+  src = arg1;
+  out = start;
+  dst = buf;
+  while (src > start)
+  {
+    *(dst++) = *(--src);
+  }
+
+  *dst = 0x10;
+  src = buf;
+  while ((*src) != 0x10)
+  {
+    *(out++) = *(src++);
+  }
+
+  *out = 0x10;
+  return start;
 }
 
-void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
+volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
-    void Map_FillLayer(void *, s32, s32);
-    s8 x;
-    void *self;
-    s8 y;
+  void Map_FillLayer(void *, s32, s32);
+  u8 *self;
+  u8 *state;
+  u8 *read;
+  u8 *write;
+  u8 *entry;
+  s16 *distance;
+  s8 x;
+  s8 y;
+  volatile long new_var2;
+  volatile char new_var4;
+  s8 nx;
+  s8 ny;
+  u8 **new_var3;
+  s32 index;
+  s32 nextIndex;
+  s32 direction;
+  s32 mask;
+  u16 terrain;
+  u16 cost;
+  u16 oldCost;
+  u8 *new_var;
+  int new_var5;
+  volatile unsigned long new_var6;
+  u16 nextCost;
+  u8 type;
+  u8 flags;
+  u8 slot;
+  s32 i;
+  self = (u8 *) arg0;
+  state[0x4EE0] = 0;
+  x = arg1;
+  y = arg2;
+  state = self + 0x20000;
+  *((u16 *) (state + 0x4EE2)) = arg4;
+  *((u8 **) (state + 0x4ED8)) = self + 0x242D8;
+  *((u8 **) (state + 0x4EDC)) = self + 0x248D8;
+  state[0x4EE9] = arg3;
+  write = *((u8 **) (state + 0x4EDC));
+  write[0] = x;
+  write = *((u8 **) (state + 0x4EDC));
+  write[1] = y;
+  write = *((u8 **) (state + 0x4EDC));
+  write[2] = 0x20;
+  write = *((u8 **) (state + 0x4EDC));
+  *((u16 *) (write + 4)) = 0;
+  write = *((u8 **) (state + 0x4EDC));
+  *((u8 **) (state + 0x4EDC)) = write + 6;
+  new_var5 = 0x1C;
+  write = *((u8 **) (state + 0x4EDC));
+  write[2] = 0x10;
+  Map_FillLayer(self, 0xB, -1);
+  distance = *((s16 **) (self + 0x14190));
+  distance[((s8) x) + (((s8) y) << 6)] = 0;
+  for (;;)
+  {
+    slot = state[0x4EE0];
+    *((u8 **) (state + 0x4EDC)) = (self + 0x242D8) + (slot * 0x600);
+    state[0x4EE0] ^= 1;
+    slot = state[0x4EE0];
+    *((u8 **) (state + 0x4ED8)) = (self + 0x242D8) + (slot * 0x600);
+    state[0x4EE1] = 0;
+    read = *((u8 **) (state + 0x4ED8));
+    if (read[2] == 0x10)
+    {
+      break;
+    }
+    do
+    {
+      entry = *((u8 **) (state + 0x4ED8));
+      type = entry[2];
+      switch (type)
+      {
+        case 0x20:
+          mask = 0xF;
+          break;
 
-    x = arg1;
-    self = arg0;
-    y = arg2;
+        case 0x08:
+          mask = 0xB;
+          break;
 
-    ((u8 *)self + 0x20000)[0x4EE0] = 0;
-    *(u16 *)((u8 *)self + 0x24EE2) = arg4;
-    *(void **)((u8 *)self + 0x24ED8) = (u8 *)self + 0x242D8;
-    *(void **)((u8 *)self + 0x24EDC) = (u8 *)self + 0x248D8;
-    ((u8 *)self + 0x20000)[0x4EE9] = arg3;
+        case 0x04:
+          mask = 0xE;
+          break;
 
-    (*(u8 **)((u8 *)self + 0x24EDC))[0] = (u8)x;
-    (*(u8 **)((u8 *)self + 0x24EDC))[1] = (u8)y;
-    (*(u8 **)((u8 *)self + 0x24EDC))[2] = 0x20;
-    *(u16 *)(*(u8 **)((u8 *)self + 0x24EDC) + 4) = 0;
-    *(u8 **)((u8 *)self + 0x24EDC) = *(u8 **)((u8 *)self + 0x24EDC) + 6;
-    (*(u8 **)((u8 *)self + 0x24EDC))[2] = 0x10;
+        case 0x01:
+          mask = 0x7;
+          break;
 
-    Map_FillLayer(self, 0xB, -1);
+        case 0x02:
+          mask = 0xD;
+          break;
 
-    (*(s16 **)((u8 *)self + 0x14190))[(s8)x + ((s8)y << 6)] = 0;
+        default:
+          x = 0;
+          mask = x;
+          break;
 
-    for (;;) {
-        u8 slot;
-        u8 *ed8;
-        u8 *edc;
+      }
 
-        slot = ((u8 *)self + 0x20000)[0x4EE0];
-        *(void **)((u8 *)self + 0x24EDC) = (u8 *)self + slot * 0x600 + 0x242D8;
-        ((u8 *)self + 0x20000)[0x4EE0] = (u8)(slot ^ 1);
-        slot = ((u8 *)self + 0x20000)[0x4EE0];
-        *(void **)((u8 *)self + 0x24ED8) = (u8 *)self + slot * 0x600 + 0x242D8;
-        ((u8 *)self + 0x20000)[0x4EE1] = 0;
-
-        ed8 = *(u8 **)((u8 *)self + 0x24ED8);
-        if (ed8[2] == 0x10) {
+      x = entry[0];
+      y = entry[1];
+      index = ((s8) x) + (((s8) y) << 6);
+      for (i = 0; (i + 1) < (4 + 1); i++)
+      {
+        direction = 1 << i;
+        if (!(mask & direction))
+        {
+          continue;
+        }
+        nx = x;
+        ny = y;
+        switch (direction)
+        {
+          new_var2 = x + 1;
+          case 1:
+            ny = 1;
+            ny = y - ny;
+            flags = 0x08;
             break;
+
+          case 2:
+            nx = new_var2;
+            flags = 0x04;
+            break;
+
+          case 4:
+            nx = x - 1;
+            flags = 0x01;
+            break;
+
+          default:
+            ny = y + 1;
+            flags = 0x02;
+            break;
+
         }
 
-        do {
-            switch (ed8[2]) {
-            case 0x20:
-            case 0x8:
-            case 0x4:
-            case 0x1:
-            case 0x2:
-                break;
+        ;
+        new_var4 = index;
+        nextCost = direction == 2;
+        new_var6 = self[new_var4 + 0x100D] == new_var5;
+        if (direction == 1)
+        {
+          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x8080)
+          {
+            continue;
+            if (((!arg1) && (!arg1)) && (!arg1))
+            {
             }
-            edc = *(u8 **)((u8 *)self + 0x24EDC);
-            edc[2] = 0x10;
-            ed8 += 6;
-            *(u8 **)((u8 *)self + 0x24ED8) = ed8;
-        } while (ed8[2] != 0x10);
+          }
+        }
+        else
+          if (nextCost != 0.0f)
+        {
+          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x4040)
+          {
+            continue;
+          }
+        }
+        else
+          if (direction == 4)
+        {
+          type = 0x408E;
+          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x1010)
+          {
+            continue;
+          }
+        }
+        else
+          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x2020)
+        {
+          continue;
+        }
+        cost = (u16) (distance[new_var4] + 1);
+        if (direction == 1)
+        {
+          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x0808)
+          {
+            cost++;
+          }
+          else
+            if (new_var6)
+          {
+            cost += 2;
+          }
+        }
+        else
+          if (nextCost != 0.0f)
+        {
+          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x0404)
+          {
+            cost++;
+          }
+          else
+            if ((self[new_var4 + 0x100D] & 0xFFFFFFFFFFFFFFFFu) == new_var5)
+          {
+            cost += 2;
+          }
+        }
+        else
+          if (direction == 4)
+        {
+          if ((*((u16 *) ((self + 0x408E) + ((new_var4 & 0xFFFFFFFFFFFFFFFF) * 2)))) & 0x0101)
+          {
+            cost++;
+          }
+          else
+            if (self[new_var4 + 0x100D] == new_var5)
+          {
+            cost += 2;
+          }
+        }
+        else
+          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x0202)
+        {
+          cost++;
+        }
+        else
+          if (self[new_var4 + 0x100D] == new_var5)
+        {
+          cost += 2;
+        }
+        nextCost = cost;
+        nextIndex = ((s8) nx) + (((s8) ny) << 6);
+        oldCost = distance[nextIndex];
+        new_var6 = nextCost >= oldCost;
+        if (new_var6)
+        {
+          continue;
+        }
+        if (nextCost > (*((u16 *) (state + 0x4EE2))))
+        {
+          continue;
+        }
+        write = *((u8 **) (state + 0x4EDC));
+        write[0] = nx;
+        write = *((u8 **) (state + 0x4EDC));
+        write[1] = ny;
+        write = *((u8 **) (state + 0x4EDC));
+        write[2] = flags;
+        new_var3 = (u8 **) (state + 0x4EDC);
+        write = *((u8 **) (state + 0x4EDC));
+        *((u16 *) (write + 4)) = cost;
+        write = *new_var3;
+        *new_var3 = write + 6;
+        state[0x4EE1]++;
+        distance[nextIndex] = cost;
+        if (nextCost >= state[0x4EE9])
+        {
+          *((u16 *) ((self + 0x1C18E) + (nextIndex * 2))) = 1;
+        }
+      }
+
+      write = *new_var3;
+      write[2] = 0x10;
+      new_var = *((u8 **) (state + 0x4ED8));
+      read = new_var;
+      *((u8 **) (state + 0x4ED8)) = read + 6;
+      read = new_var;
     }
+    while (read[2] != 0x10);
+  }
+
 }
 
 s16 fn_8002134C(u8 *map, s8 x, s8 y)

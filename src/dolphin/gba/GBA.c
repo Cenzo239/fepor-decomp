@@ -639,8 +639,11 @@ extern u8 lbl_803669A0[];
 extern s32 fn_80266CFC(s32,s32,s32,void*);
 extern void fn_80266B6C(s32);
 void fn_80265430(s32); void fn_80266B38(void);
+u8 *entry;
 s32 ret;
-u8 *entry = lbl_803669A0 + (chan << 8);
+u8 dummy[8];
+
+entry = lbl_803669A0 + (chan << 8);
 if (*(u32*)(entry+0x1c)) ret=2;
 else {
 *entry=0;

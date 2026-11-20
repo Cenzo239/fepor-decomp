@@ -2142,67 +2142,58 @@ s32 fn_801E87EC(void *arg0, s32 arg1) {
     return 0;
 }
 
-s8 fn_801E8920(void *arg0, u8 arg1) {
-    typedef struct { void *node; } It;
-    It sp74;
-    It sp70;
-    It sp6C;
-    It sp68;
-    It sp64;
-    It sp60;
-    It sp5C;
-    It sp58;
-    It sp54;
-    It sp50;
-    It sp4C;
-    It sp48;
-    It sp44;
-    It sp40;
-    It sp3C;
-    It sp38;
-    It sp34;
-    It sp30;
-    It sp2C;
-    It sp28;
-    It sp24;
-    It sp20;
+#pragma cplusplus on
+extern "C" s8 fn_801E8920(void *arg0, u8 arg1) {
+    struct It {
+        void *node;
+        It(void *n) : node(n) {}
+        It(const It &o) : node(o.node) {}
+        void *operator*() const { return *(void **)node; }
+        void next() { node = *(void **)node; }
+        int operator==(const It &o) const { return node == o.node; }
+        int operator!=(const It &o) const { return node != o.node; }
+    };
+
     u8 sp1C;
     u8 sp18;
     u8 sp14;
     u8 sp10;
     u8 spC;
     u8 sp8;
+    s8 key;
     void *head;
     void *tail;
-    void *node;
     void *data;
-    s32 count;
+    void *node;
     u8 found;
-    s8 key;
+    s32 count;
+    It result((void *)0);
 
     key = *(s8 *)((u8 *)arg0 + 0x30);
     head = (u8 *)arg0 + 0x54;
     tail = *(void **)((u8 *)arg0 + 0x58);
-    sp3C.node = head;
-    sp38.node = head;
-    sp34.node = head;
-    sp30.node = head;
-    sp70.node = head;
-    sp2C.node = tail;
-    sp28.node = tail;
-    sp24.node = tail;
-    sp20.node = tail;
-    sp6C.node = tail;
+
+    It sp70(head);
+    It sp3C(head);
+    It sp38(head);
+    It sp34(head);
+    It sp30(head);
+    It sp6C(tail);
+    It sp2C(tail);
+    It sp28(tail);
+    It sp24(tail);
+    It sp20(tail);
 
     switch (key) {
-    case 0:
+    case 0: {
         sp18 = arg1;
         sp1C = arg1;
-        sp60.node = tail;
-        sp64.node = head;
-        while (sp64.node != tail) {
+        It sp60(tail);
+        It sp64(head);
+        for (;;) {
+            if (sp64 == It(tail)) break;
             found = 0;
-            node = *(void **)sp64.node;
+            node = *sp64;
             data = *(void **)((u8 *)node + 8);
             if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 2)) {
                 found = 1;
@@ -2213,17 +2204,19 @@ s8 fn_801E8920(void *arg0, u8 arg1) {
             }
             break;
         }
-        sp68 = sp64;
-        sp74 = sp64;
+        It sp68(sp64);
+        result = sp64;
         break;
-    case 1:
+    }
+    case 1: {
         sp10 = arg1;
         sp14 = arg1;
-        sp54.node = tail;
-        sp58.node = head;
-        while (sp58.node != tail) {
+        It sp54(tail);
+        It sp58(head);
+        for (;;) {
+            if (sp58 == It(tail)) break;
             found = 0;
-            node = *(void **)sp58.node;
+            node = *sp58;
             data = *(void **)((u8 *)node + 8);
             if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 1)) {
                 found = 1;
@@ -2234,17 +2227,19 @@ s8 fn_801E8920(void *arg0, u8 arg1) {
             }
             break;
         }
-        sp5C = sp58;
-        sp74 = sp58;
+        It sp5C(sp58);
+        result = sp58;
         break;
-    case 2:
+    }
+    case 2: {
         sp8 = arg1;
         spC = arg1;
-        sp48.node = tail;
-        sp4C.node = head;
-        while (sp4C.node != tail) {
+        It sp48(tail);
+        It sp4C(head);
+        for (;;) {
+            if (sp4C == It(tail)) break;
             found = 0;
-            node = *(void **)sp4C.node;
+            node = *sp4C;
             data = *(void **)((u8 *)node + 8);
             if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 4)) {
                 found = 1;
@@ -2255,28 +2250,27 @@ s8 fn_801E8920(void *arg0, u8 arg1) {
             }
             break;
         }
-        sp50 = sp4C;
-        sp74 = sp4C;
+        It sp50(sp4C);
+        result = sp4C;
         break;
     }
-
-    node = *(void **)sp74.node;
-    data = *(void **)((u8 *)node + 8);
-    if (*(s8 *)data >= 0) {
-        count = 0;
-        sp40 = sp74;
-        sp44 = sp6C;
-        while (sp40.node != sp6C.node) {
-            count += 1;
-            sp40.node = *(void **)sp40.node;
-        }
-        return (s8)(count - 1);
     }
-          return *(s8 *)data;
-}
 
-#pragma global_optimizer off
-#pragma optimization_level 3
+    node = *result;
+    data = *(void **)((u8 *)node + 8);
+    if (*(s8 *)data < 0) {
+        return (s8)*(s8 *)data;
+    }
+    count = 0;
+    It cur(result);
+    It end(sp6C);
+    while (cur != end) {
+        count += 1;
+        cur.next();
+    }
+    return (s8)(count - 1);
+}
+#pragma cplusplus reset
 s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     s8 thresh;
     s32 var_r6;
@@ -2538,8 +2532,8 @@ void fn_801E8D34(void *arg0) {
 }
 
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
-    s16 temp_r6;
     s32 var_r8;
+    s16 temp_r6;
     u32 temp_r5;
     u32 temp_r0;
     s32 temp_r6_2;
@@ -3173,7 +3167,7 @@ default: {
 }
 
 void fn_801EA018(s32 *arg0, u8 *arg1) {
-    void Heap_Free(void *);
+    void fn_800C428C(void *);
     void fn_801EA618(s32 *, s32 *, u8 *);
     void *sp1C;
     void *sp18;
@@ -3274,7 +3268,7 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
             while (var_r29 != &sp18) {
                 temp_r3 = var_r29;
                 var_r29 = *(void **)((u8 *)var_r29 + 4);
-                Heap_Free(temp_r3);
+                fn_800C428C(temp_r3);
                 sp14 -= 1;
             }
         }

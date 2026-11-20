@@ -825,24 +825,22 @@ void __GXFlushTextureState(void)
 void GXSetNumTexGens(s32 arg0, u32 arg1)
 {
     extern u8 lbl_8029E2E0[];
-    u32 table;
-    u32 table2;
-    u32 *p;
+    u8 *table;
     u32 *q;
+    u32 *p;
     u8 *gx;
     u8 *base;
-    u32 value;
     u32 other;
+    u32 value;
 
-    table = (u32)lbl_8029E2E0;
-    table2 = table;
+    table = lbl_8029E2E0;
 
     if (arg0 == 0) {
         p = (u32 *)(table + (arg1 << 2));
-        q = (u32 *)((u32)p + 0x28);
+        q = (u32 *)((u8 *)p + 0x28);
     } else {
         p = (u32 *)(table + (arg1 << 2) + 0x14);
-        q = (u32 *)(table2 + (arg1 << 2) + 0x3C);
+        q = (u32 *)(table + (arg1 << 2) + 0x3C);
     }
 
     gx = (u8 *)__GXData;
@@ -885,8 +883,8 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     u8 cmd;
     u16 *gx;
-    u32 value;
     u32 *stage;
+    u32 value;
 
     stage = (u32 *)((u8 *)__GXData + (arg0 << 2));
     value = stage[0x130 / 4];

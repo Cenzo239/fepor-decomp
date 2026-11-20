@@ -1713,7 +1713,8 @@ void fn_800892E8(void *arg0) {
     u8 *obj;
     s32 size;
     void *tmp;
-    f32 v[2];
+    f32 f3c;
+    f32 f38;
 
     obj = (u8 *)arg0;
     *(s32 *)(obj + 0x48) = 0;
@@ -1724,10 +1725,10 @@ void fn_800892E8(void *arg0) {
     GXInitTexObjLOD(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
     tmp = Process_Create(lbl_80289998, 6);
     *(void **)((u8 *)tmp + 0x54) = arg0;
-    v[0] = lbl_803696A8;
-    v[1] = lbl_803696AC;
-    *(f32 *)(obj + 0x38) = v[0];
-    *(f32 *)(obj + 0x3C) = v[1];
+    f38 = lbl_803696A8;
+    f3c = lbl_803696AC;
+    *(f32 *)(obj + 0x38) = f38;
+    *(f32 *)(obj + 0x3C) = f3c;
     *(u16 *)(obj + 0x34) = 0;
     obj[0x30] = 0;
 }

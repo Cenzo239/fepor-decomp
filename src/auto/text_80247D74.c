@@ -430,72 +430,67 @@ void fn_80247D74(void)
     extern u8 lbl_8033E590[];
     extern u32 lbl_80368958;
 
-    SynthVoice *sv;
-    u16 *table;
-    u8 *node;
-    u8 *previous;
-    u32 i;
+    struct { VidList *node; VidList *prev; SynthVoice *sv; u16 *table; void *z; } s;
+    u32 i = 0;
     u32 j;
 
-    gKeyedVoices = NULL;
-    gActiveVoices = NULL;
+    s.z = 0;
+    gKeyedVoices = s.z;
+    gActiveVoices = s.z;
+    s.sv = gSynthVoicePool;
+    s.table = lbl_8034BDD0;
 
-    sv = gSynthVoicePool;
-    table = lbl_8034BDD0;
-
-    for (i = 0; i < 8; i++, sv++) {
+    for (; i < 8; i++, s.sv++) {
         if (i == 0) {
-            lbl_8036896C = sv;
-            sv->prev = NULL;
+            lbl_8036896C = s.sv;
+            s.sv->prev = s.z;
         } else {
-            sv[-1].next = sv;
-            sv->prev = &gSynthVoicePool[i - 1];
+            s.sv[-1].next = s.sv;
+            s.sv->prev = &gSynthVoicePool[i - 1];
         }
 
-        table[0] = 0xFFFF;
-        table[1] = 0xFFFF;
-        table[2] = 0xFFFF;
-        table[3] = 0xFFFF;
-        table[4] = 0xFFFF;
-        table[5] = 0xFFFF;
-        table[6] = 0xFFFF;
-        table[7] = 0xFFFF;
-        table[8] = 0xFFFF;
-        table[9] = 0xFFFF;
-        table[10] = 0xFFFF;
-        table[11] = 0xFFFF;
-        table[12] = 0xFFFF;
-        table[13] = 0xFFFF;
+        s.table[0] = 0xFFFF;
+        s.table[1] = 0xFFFF;
+        s.table[2] = 0xFFFF;
+        s.table[3] = 0xFFFF;
+        s.table[4] = 0xFFFF;
+        s.table[5] = 0xFFFF;
+        s.table[6] = 0xFFFF;
+        s.table[7] = 0xFFFF;
+        s.table[8] = 0xFFFF;
+        s.table[9] = 0xFFFF;
+        s.table[10] = 0xFFFF;
+        s.table[11] = 0xFFFF;
+        s.table[12] = 0xFFFF;
+        s.table[13] = 0xFFFF;
 
-        sv->id = i;
+        s.sv->id = i;
 
-        table[14] = 0xFFFF;
-        sv->state = 0;
+        s.table[14] = 0xFFFF;
+        s.sv->state = 0;
 
-        table[15] = 0xFFFF;
-        table += 16;
+        s.table[15] = 0xFFFF;
+        s.table += 16;
     }
 
-    gSynthVoicePool[i - 1].next = NULL;
+    s.prev = NULL;
+    j = (u32)s.prev;
 
-    node = lbl_8033E590;
-    previous = NULL;
+    gSynthVoicePool[i - 1].next = s.z;
+    lbl_80368964 = (VidList *)lbl_8033E590;
+    s.sv = (SynthVoice *)lbl_8033E590;
+    *(void **)((u8 *)s.sv + 4) = s.prev;
 
-    lbl_80368964 = (VidList *)node;
-    *(void **)(node + 4) = NULL;
-
-    for (j = 0; j < 0x100; j++) {
-        if (previous != NULL) {
-            *(void **)previous = node;
+    for (; j < 0x100; j++) {
+        if (s.prev != NULL) {
+            *(void **)s.prev = (void *)s.sv;
         }
-
-        previous = node;
-        *(void **)(node + 0x18) = previous;
-
-        node = node + 0x14;
+        s.prev = (VidList *)s.sv;
+        *(void **)((u8 *)s.sv + 0x18) = s.prev;
+        s.sv = (SynthVoice *)((u8 *)s.sv + 0x14);
     }
 
-    *(void **)previous = NULL;
+    *(void **)s.prev = NULL;
 
     lbl_80368958 = 0;
 }

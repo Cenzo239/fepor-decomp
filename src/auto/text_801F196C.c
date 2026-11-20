@@ -3818,8 +3818,8 @@ void fn_801F99C4(void *arg0) {
     void **var_r4;
     void *temp_r28;
     void *temp_r31;
-    s8 var_r30;
     void *temp_r29;
+    s8 var_r30;
     s32 var_r3;
     void *temp_r3;
     void *temp_r3_2;
@@ -3845,7 +3845,7 @@ void fn_801F99C4(void *arg0) {
     }
     temp_r28 = StaffRoll_str + 0x259;
     sprintf(sp8, StaffRoll_str + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
-    sprintf(temp_r28, StaffRoll_str + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
+    sprintf(temp_r28, StaffRoll_str + 0x273, *(s8 *)((u8 *)temp_r29 + 0x54));
     *(void **)((u8 *)temp_r31 + 0x58) = Sound_Create(sp8, temp_r29);
     *(void **)((u8 *)temp_r31 + 0x5C) = Sound_Create(temp_r28, *(void **)((u8 *)temp_r31 + 0x58));
     temp_r4 = var_r30 * 2;
@@ -4143,18 +4143,19 @@ void fn_801FA478(void *arg0) {
 void fn_801FA4B8(s32 arg0, s32 arg1) {
     extern u8 lbl_8029B2F4[];
     extern f32 lbl_8036BA00;
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
+    struct Fields { s32 a; s32 pad0; f32 b; s32 pad1; s32 pad2; s32 c; };
     void *temp;
     s32 zero;
     f32 f;
 
-    temp = fn_8000CAF0(lbl_8029B2F4, arg1);
+    temp = Process_Create(lbl_8029B2F4, arg1);
     if (temp != NULL) {
         zero = 0;
         f = lbl_8036BA00;
-        *(s32 *)((u8 *)temp + 0x30) = zero;
-        *(f32 *)((u8 *)temp + 0x38) = f;
-        *(s32 *)((u8 *)temp + 0x44) = arg0;
+        ((struct Fields *)((u8 *)temp + 0x30))->a = zero;
+        ((struct Fields *)((u8 *)temp + 0x30))->b = f;
+        ((struct Fields *)((u8 *)temp + 0x30))->c = arg0;
     }
 }
 

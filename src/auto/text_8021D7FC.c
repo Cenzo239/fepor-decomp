@@ -1114,7 +1114,6 @@ void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
 
 void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write)
 {
-  u32 tmp;
   u16 new_var;
   extern void *__GXCurrentCPUFifo;
   extern void *__GXCurrentGPFifo;
@@ -1122,14 +1121,14 @@ void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write)
   extern u16 *__cpReg;
   if (fifo == __GXCurrentCPUFifo)
   {
-    tmp = __piReg[5] & (~0x04000000);
-    fifo->wrPtr = (void *) (tmp + 0x80000000);
+    fifo->wrPtr = (void *) ((__piReg[5] & (~0x04000000)) + 0x80000000);
   }
   if (fifo == __GXCurrentGPFifo)
   {
-    u32 hi = __cpReg[29];
-    u32 lo = __cpReg[28];
-    fifo->rdPtr = (void *) (((hi << 16) | lo) + 0x80000000);
+    u16 *cp = __cpReg;
+    u32 hi = cp[29];
+    u32 lo = cp[28];
+    fifo->rdPtr = (void *) ((lo | (hi << 16)) + 0x80000000);
     hi = __cpReg[25];
     lo = (new_var = __cpReg[24]);
     fifo->count = lo | (hi << 16);
@@ -2578,12 +2577,12 @@ void fn_80220F84(u32 arg0, u32 arg1) {
     *(u16 *)(gx + 2) = 0;
 }
 
-void fn_80220FC4(u32 arg0,u32 arg1,u8 arg2) {
+void fn_80220FC4(u32 arg0,u32 arg1,u32 arg2) {
 extern u32 __GXData;
 u8 *gx=(u8*)__GXData;
 u8 *reg=gx+arg0*4;
 *(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),arg1,18,13,13);
-*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),(u32)arg2,19,12,12);
+*(u32*)(reg+0xB8)=__rlwimi(*(u32*)(reg+0xB8),(u8)arg2,19,12,12);
 *(volatile u8*)0xCC008000=0x61;
 *(volatile u32*)0xCC008000=*(u32*)(reg+0xB8);
 *(u16*)(gx+2)=0;

@@ -949,22 +949,26 @@ void *fn_80057998(void *arg0) {
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern u8 lbl_80285BF0[];
-    extern f32 lbl_80369108;
+    extern f32 gF32_0;
+    void *self;
+    s32 zero;
     f32 f0;
 
-    *(void **)((u8 *)arg0 + 0x2C) = lbl_80285BF0;
-    *(s32 *)arg0 = fn_8006D948(lbl_8026AD80 + 0xAA);
-    f0 = lbl_80369108;
-    *(s32 *)((u8 *)arg0 + 0x14) = 0;
-    *(s32 *)((u8 *)arg0 + 0x18) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x20) = 0;
-    *(f32 *)((u8 *)arg0 + 4) = f0;
-    *(f32 *)((u8 *)arg0 + 8) = f0;
-    *(f32 *)((u8 *)arg0 + 0xC) = f0;
-    *(s32 *)((u8 *)arg0 + 0x24) = 0;
-    *(s32 *)((u8 *)arg0 + 0x28) = 0;
-    return arg0;
+    self = arg0;
+    *(void **)((u8 *)self + 0x2C) = lbl_80285BF0;
+    *(s32 *)self = fn_8006D948(lbl_8026AD80 + 0xAA);
+    zero = 0;
+    f0 = gF32_0;
+    *(s32 *)((u8 *)self + 0x14) = zero;
+    *(s32 *)((u8 *)self + 0x18) = zero;
+    *(s32 *)((u8 *)self + 0x1C) = zero;
+    *(s32 *)((u8 *)self + 0x20) = zero;
+    *(f32 *)((u8 *)self + 4) = f0;
+    *(f32 *)((u8 *)self + 8) = f0;
+    *(f32 *)((u8 *)self + 0xC) = f0;
+    *(s32 *)((u8 *)self + 0x24) = zero;
+    *(s32 *)((u8 *)self + 0x28) = zero;
+    return self;
 }
 
 void *fn_80057A10(void *arg0, s16 arg1) {
@@ -1337,14 +1341,15 @@ void GActor_SetNodeLinkActive(void *arg0, u8 arg1) {
 
 #pragma scheduling off
 void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
+    volatile u8 *vsrc = arg1;
+    u8 chk;
     u8 a;
     u8 b;
     u8 c;
     u8 d;
-    u8 chk;
 
     a = arg1[0];
-    chk = arg1[0];
+    chk = vsrc[0];
     ((u8 *)arg0)[0x38] = a;
     b = arg1[1];
     c = arg1[2];
@@ -1801,13 +1806,15 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
   extern f32 lbl_8036912C;
   extern f32 lbl_8036915C;
   extern f64 lbl_80369160;
+  f64 k;
   f32 temp_f10;
   f32 temp_f12;
   f32 temp_f6;
+  k = lbl_80369160;
   temp_f12 = lbl_80369104 * farg4;
   temp_f10 = farg4 - lbl_8036912C;
   temp_f6 = lbl_8036912C - farg4;
-  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (lbl_80369160 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (lbl_80369160 * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
+  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (k * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (k * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
 }
 
 #pragma use_lmw_stmw on
@@ -1847,7 +1854,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     f32 scale;
     f32 fz;
     f32 f0;
-    f32 f1;
+    register f32 f1;
     s32 x1;
     s32 y1;
     s32 a0;

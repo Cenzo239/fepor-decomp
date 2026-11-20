@@ -97,35 +97,18 @@ void fn_80010FF0(void) {
 
 #pragma global_optimizer off
 s32 fn_80011010(s32 arg0) {
+    s32 index;
+    s32 value;
     u32 result;
-    u32 *p;
     s32 fn_8010494C(s32);
-    s32 i;
 
+    value = arg0;
     if (arg0 == -1) {
-        i = 0;
-        result = (u32)fn_8010494C(lbl_802AEE20[i]);
-        p = (u32 *)lbl_802AEE20;
-        if (*p == result) {
-            return 0;
-        }
-        p = p + 1;
-        if (*p == result) {
-            return 1;
-        }
-        p = p + 1;
-        if (*p == result) {
-            return 2;
-        }
-        p = p + 1;
-        if (*p == result) {
-            return 3;
-        }
-        if (p[1] == result) {
-            return 4;
-        }
+        index = 0;
+        value = lbl_802AEE20[index];
     }
-    return -1;
+    result = (u32)fn_8010494C(value);
+    return Text_FindFontIndex((u32 *)lbl_802AEE20, result);
 }
 #pragma global_optimizer on
 void fn_800110B8(void) {

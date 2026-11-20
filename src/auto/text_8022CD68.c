@@ -982,7 +982,7 @@ s32 fn_8022F0B4(RuntimeDecimal *a, RuntimeDecimal *b) {
 }
 
 void fn_8022F1C0(RuntimeDecimal *d,s32 code) { extern char lbl_80282B78[]; void fn_80230944(void *,void *,void *); RuntimeDecimal half, temp; s32 i; char *s; u8 *p; switch(code){
-case -64: d->exponent=-20; d->sign=0; s=lbl_80282B78+37; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -64: d->exponent=-20; i=d->sign=0; s=lbl_80282B78+37; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -990,7 +990,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round0; ++t; } if(!(d->dig
 round0: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -53: d->exponent=-16; d->sign=0; s=lbl_80282B78+83; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -53: d->exponent=-16; i=d->sign=0; s=lbl_80282B78+83; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -998,7 +998,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round1; ++t; } if(!(d->dig
 round1: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -32: d->exponent=-10; d->sign=0; s=lbl_80282B78+122; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -32: d->exponent=-10; i=d->sign=0; s=lbl_80282B78+122; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1006,7 +1006,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round2; ++t; } if(!(d->dig
 round2: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -16: d->exponent=-5; d->sign=0; s=lbl_80282B78+146; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -16: d->exponent=-5; i=d->sign=0; s=lbl_80282B78+146; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1014,7 +1014,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round3; ++t; } if(!(d->dig
 round3: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -8: d->exponent=-3; d->sign=0; s=lbl_80282B78+159; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -8: d->exponent=-3; i=d->sign=0; s=lbl_80282B78+159; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1022,7 +1022,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round4; ++t; } if(!(d->dig
 round4: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -7: d->exponent=-3; d->sign=0; s=lbl_80282B78+166; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -7: d->exponent=-3; i=d->sign=0; s=lbl_80282B78+166; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1030,7 +1030,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round5; ++t; } if(!(d->dig
 round5: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -6: d->exponent=-2; d->sign=0; s=lbl_80282B78+172; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -6: d->exponent=-2; i=d->sign=0; s=lbl_80282B78+172; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1038,7 +1038,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round6; ++t; } if(!(d->dig
 round6: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -5: d->exponent=-2; d->sign=0; s=lbl_80282B78+178; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -5: d->exponent=-2; i=d->sign=0; s=lbl_80282B78+178; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1046,7 +1046,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round7; ++t; } if(!(d->dig
 round7: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -4: d->exponent=-2; d->sign=0; s=lbl_80282B78+183; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -4: d->exponent=-2; i=d->sign=0; s=lbl_80282B78+183; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1054,7 +1054,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round8; ++t; } if(!(d->dig
 round8: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -3: d->exponent=-1; d->sign=0; s=lbl_80282B78+187; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -3: d->exponent=-1; i=d->sign=0; s=lbl_80282B78+187; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1062,7 +1062,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round9; ++t; } if(!(d->dig
 round9: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -2: d->exponent=-1; d->sign=0; s=lbl_80282B78+191; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -2: d->exponent=-1; i=d->sign=0; s=lbl_80282B78+191; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1070,7 +1070,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round10; ++t; } if(!(d->di
 round10: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case -1: d->exponent=-1; d->sign=0; s=lbl_80282B78+194; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case -1: d->exponent=-1; i=d->sign=0; s=lbl_80282B78+194; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1078,7 +1078,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round11; ++t; } if(!(d->di
 round11: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 0: d->exponent=0; d->sign=0; s=lbl_80282B78+196; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 0: d->exponent=0; i=d->sign=0; s=lbl_80282B78+196; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1086,7 +1086,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round12; ++t; } if(!(d->di
 round12: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 1: d->exponent=0; d->sign=0; s=lbl_80282B78+198; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 1: d->exponent=0; i=d->sign=0; s=lbl_80282B78+198; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1094,7 +1094,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round13; ++t; } if(!(d->di
 round13: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 2: d->exponent=0; d->sign=0; s=lbl_80282B78+200; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 2: d->exponent=0; i=d->sign=0; s=lbl_80282B78+200; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1102,7 +1102,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round14; ++t; } if(!(d->di
 round14: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 3: d->exponent=0; d->sign=0; s=lbl_80282B78+202; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 3: d->exponent=0; i=d->sign=0; s=lbl_80282B78+202; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1110,7 +1110,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round15; ++t; } if(!(d->di
 round15: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 4: d->exponent=1; d->sign=0; s=lbl_80282B78+204; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 4: d->exponent=1; i=d->sign=0; s=lbl_80282B78+204; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1118,7 +1118,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round16; ++t; } if(!(d->di
 round16: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 5: d->exponent=1; d->sign=0; s=lbl_80282B78+207; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 5: d->exponent=1; i=d->sign=0; s=lbl_80282B78+207; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1126,7 +1126,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round17; ++t; } if(!(d->di
 round17: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 6: d->exponent=1; d->sign=0; s=lbl_80282B78+210; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 6: d->exponent=1; i=d->sign=0; s=lbl_80282B78+210; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1134,7 +1134,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round18; ++t; } if(!(d->di
 round18: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 7: d->exponent=2; d->sign=0; s=lbl_80282B78+213; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 7: d->exponent=2; i=d->sign=0; s=lbl_80282B78+213; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1142,7 +1142,7 @@ if(*s<=5) { char *t=s+1; while(*t) { if(*t!='0') goto round19; ++t; } if(!(d->di
 round19: {u8 *base=d->digits; p=base+(d->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++d->exponent;break;} *p=0; }}
  break;
-case 8: d->exponent=2; d->sign=0; s=lbl_80282B78+217; for(i=0;i<36 && *s;i++) d->digits[i]=*s++-'0';
+case 8: d->exponent=2; i=d->sign=0; s=lbl_80282B78+217; for(;i<36 && *s;i++) d->digits[i]=*s++-'0';
 d->length=i;
 if(!*s) goto done;
 if(*s<5) goto done;
@@ -1165,7 +1165,7 @@ round22: {u8 *base=(&half)->digits; p=base+((&half)->length-1);
 for(;;--p) { if(*p<9){++*p;break;} if(p==base){*p=1;++(&half)->exponent;break;} *p=0; }}
 } multiply: fn_80230944(d,&temp,&half);}break;} done:; }
 
-#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_80230944(u8 *dest, u8 *a, u8 *b) {
     u8 sp8[0x54];
     u8 *out;
@@ -1173,6 +1173,7 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
     u8 dig_b = b[4];
     u8 dig_a = a[4];
     s32 pos = dig_a + (dig_b - 1);
+    s32 q;
     u32 acc = 0;
     s32 i, j, n, n8;
     u8 *pa, *pb;
@@ -1182,11 +1183,12 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
     u8 *p, *base;
     u8 d;
 
-    out = sp8 + (pos + 1);
+    q = pos + 1;
+    out = sp8 + q;
     dest[0] = 0;
     end = out;
 
-    while (pos > 0) {
+    for (;;) {
         j = dig_b - 1;
         i = (pos - j) - 1;
         if (i < 0) {
@@ -1234,6 +1236,7 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
             acc = magic >> 3;
             *--out = d;
         }
+        if (pos <= 0) break;
     }
 
     *(s16 *)(dest + 2) = *(s16 *)(a + 2) + *(s16 *)(b + 2);
@@ -1287,7 +1290,7 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
 done:
     ;
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
 
 s32 fn_80230BBC(s32 arg0) {
     s32 temp_r4;

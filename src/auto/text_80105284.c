@@ -121,23 +121,26 @@ s32 fn_801053E4(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
 }
 #pragma use_lmw_stmw on
 s32 fn_80105474(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, u16)) {
-s32 key;
-s32 count;
-s32 mid_ptr;
-s32 mid;
+    s32 key;
+    s32 count;
+    s32 mid_ptr;
+    s32 mid;
+    u8 (*pred)(s32, u16);
 
-key=*arg2;
-count=(arg1-arg0)/16;
-
-while(count>0) {
-mid=count/2;
-mid_ptr=arg0+(mid<<4);
-if(arg3(mid_ptr,(u16)key)!=0) {
-arg0=mid_ptr+0x10;
-count-=mid+1;
-} else count=mid;
-}
-return arg0;
+    count = (arg1 - arg0) / 16;
+    pred = arg3;
+    while (count > 0) {
+        mid = count / 2;
+        mid_ptr = arg0 + (mid << 4);
+        key = *arg2;
+        if (pred(mid_ptr, (u16)key) != 0) {
+            arg0 = mid_ptr + 0x10;
+            count -= mid + 1;
+        } else {
+            count = mid;
+        }
+    }
+    return arg0;
 }
 #pragma use_lmw_stmw off
 extern u16 lbl_802734D0;

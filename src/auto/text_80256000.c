@@ -1044,7 +1044,7 @@ s32 fn_80256C14(u8 arg0)
     return index;
 }
 
-int fn_80256DD8(int arg0) {
+void fn_80256DD8(int arg0) {
     u32 Sound_IsHwVoiceActive(void);
     void fn_802618E4(s32);
     void Sound_SetSynthVoiceState(void *, s32);
@@ -1062,8 +1062,6 @@ int fn_80256DD8(int arg0) {
     u8 *n2;
     u8 *tbl;
     s32 off;
-    u8 prev;
-    u8 next;
     u16 p2;
     u16 n2v;
     s32 id;
@@ -1086,22 +1084,18 @@ int fn_80256DD8(int arg0) {
         node += ((u8)id << 2);
         if (*(u16 *)(node + 2) == 1) {
             if (node[0] != 0xFF) {
-                prev = node[0];
                 tbl = base + 0x800;
-                tbl += (prev << 2);
+                tbl += (node[0] << 2);
                 tbl[1] = node[1];
             } else {
-                next = node[1];
                 tbl = base + 0x900;
                 tbl += voice[0x10C];
-                *tbl = next;
+                *tbl = node[1];
             }
             if (node[1] != 0xFF) {
-                next = node[1];
-                prev = node[0];
                 tbl = base + 0x800;
-                tbl += next << 2;
-                *tbl = prev;
+                tbl += (node[1] << 2);
+                *tbl = node[0];
             } else if (node[0] == 0xFF) {
                 n2 = base + 0xA00;
                 n2 += (voice[0x10C] << 2);
@@ -1152,7 +1146,6 @@ int fn_80256DD8(int arg0) {
         *(s32 *)(voice + 0xF4) = -1;
         ((u8 *)gSynthVoices + off)[0x11C] = 0;
     }
-    return 0;
 }
 
 void fn_80256FF0(Fn80256FF0Arg arg0) {
@@ -4685,7 +4678,7 @@ void fn_8025F0EC(u8 arg0, u8 arg1) {
         return;
     }
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 void fn_8025F310(u8 arg0, u8 arg1) {
     extern u8 gSoundChanParams[];
     extern u8 lbl_80361618[];
@@ -4694,30 +4687,34 @@ void fn_8025F310(u8 arg0, u8 arg1) {
 
     u8 *cell;
     u16 code;
+    s32 mul90;
+    s32 mul9;
     u8 *row;
     u8 *p;
-    u8 val;
-    u32 i;
     s32 off;
+    u32 i;
+    u8 val;
     u8 *vp;
     u8 a0;
     u8 a1;
-    s32 mul90;
-    s32 mul9;
     s32 idx;
+    s32 t0;
+    s32 t1;
 
-    cell = gSoundChanParams + (arg0 * 0x860) + (arg1 * 0x86);
+    t0 = arg0 * 0x860;
+    t1 = arg1 * 0x86;
+    cell = gSoundChanParams + t0 + t1;
     code = (u16)(cell[0x64] | (cell[0x65] << 8));
     switch ((s32)code) {
     case 0:
         mul90 = arg0 * 0x90;
         mul9 = arg1 * 9;
         row = lbl_80361618 + mul90;
-        val = row[mul9];
+        val = *(row + mul9);
         if (val < 0x18U) {
             val = (u8)(val + 1);
         }
-        row[mul9] = val;
+        *(row + mul9) = val;
         a0 = arg0;
         a1 = arg1;
         i = 0;
@@ -4740,11 +4737,12 @@ void fn_8025F310(u8 arg0, u8 arg1) {
         if (*(u32 *)(p += 1) != 0x3FFFU) {
             *(u32 *)p = *(u32 *)p + 1;
         }
-        p = lbl_80361618 + mul90 + mul9 + 1;
+        i = 0;
+        p = lbl_80361618 + mul90 + mul9;
+        off = i;
+        p += 1;
         a0 = arg0;
         a1 = arg1;
-        i = 0;
-        off = i;
         while (i < gSoundData[0x210]) {
             vp = (u8 *)gSynthVoices + off;
             if (a0 == vp[0x122] && a1 == vp[0x121]) {
@@ -4761,11 +4759,12 @@ void fn_8025F310(u8 arg0, u8 arg1) {
         if (*(u32 *)(p += 5) != 0x3FFFU) {
             *(u32 *)p = *(u32 *)p + 1;
         }
-        p = lbl_80361618 + mul90 + mul9 + 5;
+        i = 0;
+        p = lbl_80361618 + mul90 + mul9;
+        off = i;
+        p += 5;
         a0 = arg0;
         a1 = arg1;
-        i = 0;
-        off = i;
         while (i < gSoundData[0x210]) {
             vp = (u8 *)gSynthVoices + off;
             if (a0 == vp[0x122] && a1 == vp[0x121]) {
@@ -4777,7 +4776,7 @@ void fn_8025F310(u8 arg0, u8 arg1) {
         return;
     }
 }
-
+#pragma global_optimizer on
 int Sound_WriteParamU8(param,channel,bank,value)
 s32 param;
 s32 channel;
@@ -6165,15 +6164,16 @@ void fn_802618E4(s32 arg0)
 
     off = arg0 * 0xF8;
     object = lbl_80368AA0 + off;
-    do {
-        if (object[0xF0] != 1) break;
-        if (lbl_80368AD0 != 0) break;
-        object[0xF2] = 1;
-        q = lbl_80368AA0;
-        q = q + off;
-        q = q + (lbl_80368AD0 << 2);
-        *(u32 *)(q + 0x24) |= 0x20;
-    } while (0);
+
+    if (object[0xF0] != 1 || lbl_80368AD0 != 0) {
+        goto end;
+    }
+    object[0xF2] = 1;
+    q = lbl_80368AA0;
+    q = q + off;
+    q = q + (lbl_80368AD0 << 2);
+    *(u32 *)(q + 0x24) |= 0x20;
+end:
     return;
 }
 #pragma peephole on

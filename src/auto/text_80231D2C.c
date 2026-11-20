@@ -2150,34 +2150,29 @@ block_8:
 }
 
 f64 fn_80235B4C(f64 farg0) {
+    f64 z;
     f64 sp8;
     f64 f10;
-    f64 y;
-    f64 N;
-    f64 D;
     f64 f2;
     f64 f0;
-    f64 z;
+    f64 N;
+    f64 D;
     f64 h;
     f64 Nz;
     f64 Dz;
     f64 sp10;
     s32 unksp14;
-    union { f64 d; u32 w[2]; } cv;
     s32 temp_r4;
     s32 temp_r3;
-    u32 temp_r0;
     u32 chk;
 
     sp8 = farg0;
-    cv.d = sp8;
-    temp_r4 = (s32)cv.w[0];
+    temp_r4 = *(s32 *)&sp8;
     temp_r3 = temp_r4 & 0x7FFFFFFF;
-    temp_r0 = cv.w[1];
 
     if (temp_r3 >= 0x3FF00000) {
         chk = (u32)temp_r3 - 0x3FF00000u;
-        if ((chk | temp_r0) == 0) {
+        if ((chk | *(u32 *)((u8 *)&sp8 + 4)) == 0) {
             if (temp_r4 > 0) {
                 return lbl_8036BE20;
             }
@@ -2190,10 +2185,9 @@ f64 fn_80235B4C(f64 farg0) {
             return lbl_8036BE30;
         }
         f10 = farg0 * farg0;
-        y = f10;
-        N = ((((lbl_8036BE68 * y + lbl_8036BE60) * y + lbl_8036BE58) * y + lbl_8036BE48) * y + lbl_8036BE70) * y + lbl_8036BE80;
-        D = ((((lbl_8036BE90 * y + lbl_8036BE88) * y + lbl_8036BE40) * y + lbl_8036BE50) * y + lbl_8036BE90);
-        f2 = y * N / D;
+        N = ((((lbl_8036BE68 * f10 + lbl_8036BE60) * f10 + lbl_8036BE58) * f10 + lbl_8036BE48) * f10 + lbl_8036BE70) * f10 + lbl_8036BE80;
+        D = ((((lbl_8036BE90 * f10 + lbl_8036BE88) * f10 + lbl_8036BE40) * f10 + lbl_8036BE50) * f10 + lbl_8036BE90);
+        f2 = f10 * N / D;
         f0 = lbl_8036BE38 - farg0 * f2;
         f0 = farg0 - f0;
         return lbl_8036BE30 - f0;
@@ -2339,40 +2333,370 @@ f64 __ieee754_fmod(f64 x, f64 y) {
     return x;
 }
 
-f64 fn_802360C4(f64 farg0, f64 farg1) {
-    f64 fn_80238A9C(f64, f64);
-    f64 fn_80238378(s32, f64);
-    extern f64 lbl_80282CD0[];
-    extern f32 lbl_80367068;
-    extern s32 errno;
-    extern f64 lbl_8036BEA8;
-    extern f64 lbl_8036BEB0;
-    extern f64 lbl_8036BEB8;
-    f64 x;
-    f64 y;
-    s32 hx, hy, ix, iy;
+double fn_802360C4(double x, double y)
+{
+    typedef union {
+        double d;
+        struct {
+            unsigned int hi;
+            unsigned int lo;
+        } w;
+    } DoubleBits;
 
-    x = farg0;
-    y = farg1;
-    hx = ((s32 *)&x)[0];
-    hy = ((s32 *)&y)[0];
-    ix = hx & 0x7FFFFFFF;
-    iy = hy & 0x7FFFFFFF;
-    if (((iy | ((s32 *)&y)[1]) == 0)) {
-        return lbl_8036BEA8;
-    }
-    if (ix > 0x7FF00000 || (ix == 0x7FF00000 && ((s32 *)&x)[1] != 0) ||
-        iy > 0x7FF00000 || (iy == 0x7FF00000 && ((s32 *)&y)[1] != 0)) {
+    extern double fn_80238A9C(double);
+    extern double fn_80238378(double, int);
+    extern int errno;
+
+    static const double bp[2] = {
+        1.0, 1.5
+    };
+    static const double dp_h[2] = {
+        0.0, 5.84962487220764160156e-01
+    };
+    static const double dp_l[2] = {
+        0.0, 1.35003920212974897128e-08
+    };
+
+    const double zero = 0.0;
+    const double one = 1.0;
+    const double two = 2.0;
+    const double two53 = 9007199254740992.0;
+    const double huge = 1.0e300;
+    const double tiny = 1.0e-300;
+
+    const double L1 = 5.99999999999994648725e-01;
+    const double L2 = 4.28571428578550184252e-01;
+    const double L3 = 3.33333329818377432918e-01;
+    const double L4 = 2.72728123808534006489e-01;
+    const double L5 = 2.30660745775561754067e-01;
+    const double L6 = 2.06975017800338417784e-01;
+
+    const double P1 = 1.66666666666666019037e-01;
+    const double P2 = -2.77777777770155933842e-03;
+    const double P3 = 6.61375632143793436117e-05;
+    const double P4 = -1.65339022054652515390e-06;
+    const double P5 = 4.13813679705723846039e-08;
+
+    const double lg2 = 6.93147180559945286227e-01;
+    const double lg2_h = 6.93147182464599609375e-01;
+    const double lg2_l = -1.90465429995776804525e-09;
+    const double ovt = 8.0085662595372944372e-17;
+
+    const double cp = 9.61796693925975554329e-01;
+    const double cp_h = 9.61796700954437255859e-01;
+    const double cp_l = -7.02846165095275826516e-09;
+
+    const double ivln2 = 1.44269504088896338700e+00;
+    const double ivln2_h = 1.44269502162933349609e+00;
+    const double ivln2_l = 1.92596299112661746887e-08;
+
+    double z, ax, z_h, z_l, p_h, p_l;
+    double y1, t1, t2, r, s, t, u, v, w;
+    double ss, s2, s_h, s_l, t_h, t_l;
+
+    int i, j, k, yisint, n;
+    int hx, hy, ix, iy;
+    unsigned int lx, ly;
+    DoubleBits bits;
+
+    bits.d = y;
+    hy = (int)bits.w.hi;
+    ly = bits.w.lo;
+
+    bits.d = x;
+    hx = (int)bits.w.hi;
+    lx = bits.w.lo;
+
+    ix = hx & 0x7fffffff;
+    iy = hy & 0x7fffffff;
+
+    if ((iy | ly) == 0)
+        return one;
+
+    if (ix > 0x7ff00000 ||
+        (ix == 0x7ff00000 && lx != 0) ||
+        iy > 0x7ff00000 ||
+        (iy == 0x7ff00000 && ly != 0))
         return x + y;
+
+    yisint = 0;
+
+    if (hx < 0) {
+        if (iy >= 0x43400000) {
+            yisint = 2;
+        } else if (iy >= 0x3ff00000) {
+            k = (iy >> 20) - 0x3ff;
+
+            if (k > 20) {
+                j = ly >> (52 - k);
+                if ((unsigned int)(j << (52 - k)) == ly)
+                    yisint = 2 - (j & 1);
+            } else if (ly == 0) {
+                j = iy >> (20 - k);
+                if ((j << (20 - k)) == iy)
+                    yisint = 2 - (j & 1);
+            }
+        }
     }
-    (void)lbl_80282CD0;
-    (void)lbl_80367068;
-    (void)errno;
-    (void)lbl_8036BEB0;
-    (void)lbl_8036BEB8;
-    (void)fn_80238A9C;
-    (void)fn_80238378;
-    return x;
+
+    if (ly == 0) {
+        if (iy == 0x7ff00000) {
+            if (((ix - 0x3ff00000) | lx) == 0)
+                return y - y;
+            else if (ix >= 0x3ff00000)
+                return hy >= 0 ? y : zero;
+            else
+                return hy < 0 ? -y : zero;
+        }
+
+        if (iy == 0x3ff00000) {
+            if (hy < 0)
+                return one / x;
+            return x;
+        }
+
+        if (hy == 0x40000000)
+            return x * x;
+
+        if (hy == 0x3fe00000 && hx >= 0)
+            return fn_80238A9C(x);
+    }
+
+    bits.d = x;
+    bits.w.hi &= 0x7fffffff;
+    ax = bits.d;
+
+    if (lx == 0) {
+        if (ix == 0x7ff00000 ||
+            ix == 0 ||
+            ix == 0x3ff00000) {
+            z = ax;
+
+            if (hy < 0)
+                z = one / z;
+
+            if (hx < 0) {
+                if (((ix - 0x3ff00000) | yisint) == 0) {
+                    z = (z - z) / (z - z);
+                } else if (yisint == 1) {
+                    z = -z;
+                }
+            }
+            return z;
+        }
+    }
+
+    n = (hx >> 31) + 1;
+
+    if ((n | yisint) == 0) {
+        errno = 33;
+        return (x - x) / (x - x);
+    }
+
+    s = one;
+
+    if ((n | (yisint - 1)) == 0)
+        s = -one;
+
+    if (iy > 0x41e00000) {
+        if (iy > 0x43f00000) {
+            if (ix <= 0x3fefffff)
+                return hy < 0 ? huge * huge : tiny * tiny;
+
+            if (ix >= 0x3ff00000)
+                return hy > 0 ? huge * huge : tiny * tiny;
+        }
+
+        if (ix < 0x3fefffff)
+            return hy < 0 ? s * huge * huge : s * tiny * tiny;
+
+        if (ix > 0x3ff00000)
+            return hy > 0 ? s * huge * huge : s * tiny * tiny;
+
+        t = ax - one;
+        w = (t * t) *
+            (0.5 - t * (0.3333333333333333333333 - t * 0.25));
+
+        u = ivln2_h * t;
+        v = t * ivln2_l - w * ivln2;
+
+        t1 = u + v;
+        bits.d = t1;
+        bits.w.lo = 0;
+        t1 = bits.d;
+
+        t2 = v - (t1 - u);
+    } else {
+        n = 0;
+
+        if (ix < 0x00100000) {
+            ax *= two53;
+            n -= 53;
+            bits.d = ax;
+            ix = bits.w.hi;
+        }
+
+        n += (ix >> 20) - 0x3ff;
+        j = ix & 0x000fffff;
+        ix = j | 0x3ff00000;
+
+        if (j <= 0x3988E) {
+            k = 0;
+        } else if (j < 0xBB67A) {
+            k = 1;
+        } else {
+            k = 0;
+            n++;
+            ix -= 0x00100000;
+        }
+
+        bits.d = ax;
+        bits.w.hi = ix;
+        ax = bits.d;
+
+        u = ax - bp[k];
+        v = one / (ax + bp[k]);
+        ss = u * v;
+
+        s_h = ss;
+        bits.d = s_h;
+        bits.w.lo = 0;
+        s_h = bits.d;
+
+        t_h = zero;
+        bits.d = t_h;
+        bits.w.hi = ((ix >> 1) | 0x20000000) +
+                    0x00080000 + (k << 18);
+        t_h = bits.d;
+
+        t_l = ax - (t_h - bp[k]);
+        s_l = v * ((u - s_h * t_h) - s_h * t_l);
+
+        s2 = ss * ss;
+
+        r = s2 * s2 *
+            (L1 + s2 *
+            (L2 + s2 *
+            (L3 + s2 *
+            (L4 + s2 *
+            (L5 + s2 * L6)))));
+
+        r += s_l * (s_h + ss);
+
+        s2 = s_h * s_h;
+        t_h = 3.0 + s2 + r;
+
+        bits.d = t_h;
+        bits.w.lo = 0;
+        t_h = bits.d;
+
+        t_l = r - ((t_h - 3.0) - s2);
+
+        u = s_h * t_h;
+        v = s_l * t_h + t_l * ss;
+
+        p_h = u + v;
+        bits.d = p_h;
+        bits.w.lo = 0;
+        p_h = bits.d;
+
+        p_l = v - (p_h - u);
+
+        z_h = cp_h * p_h;
+        z_l = cp_l * p_h + p_l * cp + dp_l[k];
+
+        t = (double)n;
+        t1 = ((z_h + z_l) + dp_h[k]) + t;
+
+        bits.d = t1;
+        bits.w.lo = 0;
+        t1 = bits.d;
+
+        t2 = z_l - (((t1 - t) - dp_h[k]) - z_h);
+    }
+
+    y1 = y;
+    bits.d = y1;
+    bits.w.lo = 0;
+    y1 = bits.d;
+
+    p_l = (y - y1) * t1 + y * t2;
+    p_h = y1 * t1;
+
+    z = p_l + p_h;
+    bits.d = z;
+    j = (int)bits.w.hi;
+    i = (int)bits.w.lo;
+
+    if (j >= 0x40900000) {
+        if (((j - 0x40900000) | i) != 0)
+            return s * huge * huge;
+
+        if (p_l + ovt > z - p_h)
+            return s * huge * huge;
+    } else if ((j & 0x7fffffff) >= 0x4090cc00) {
+        if (((unsigned int)j - 0xc090cc00U) | (unsigned int)i)
+            return s * tiny * tiny;
+
+        if (p_l <= z - p_h)
+            return s * tiny * tiny;
+    }
+
+    i = j & 0x7fffffff;
+    k = (i >> 20) - 0x3ff;
+    n = 0;
+
+    if (i > 0x3fe00000) {
+        n = j + (0x00100000 >> (k + 1));
+        k = ((n & 0x7fffffff) >> 20) - 0x3ff;
+
+        t = zero;
+        bits.d = t;
+        bits.w.hi = n & ~(0x000fffff >> k);
+        t = bits.d;
+
+        n = ((n & 0x000fffff) | 0x00100000) >> (20 - k);
+
+        if (j < 0)
+            n = -n;
+
+        p_h -= t;
+    }
+
+    t = p_l + p_h;
+    bits.d = t;
+    bits.w.lo = 0;
+    t = bits.d;
+
+    u = t * lg2_h;
+    v = (p_l - (t - p_h)) * lg2 + t * lg2_l;
+
+    z = u + v;
+    w = v - (z - u);
+
+    t = z * z;
+
+    t1 = z - t *
+        (P1 + t *
+        (P2 + t *
+        (P3 + t *
+        (P4 + t * P5))));
+
+    r = (z * t1) / (t1 - two) - (w + z * w);
+    z = one - (r - z);
+
+    bits.d = z;
+    j = (int)bits.w.hi;
+    j += n << 20;
+
+    if ((j >> 20) <= 0) {
+        z = fn_80238378(z, n);
+    } else {
+        bits.w.hi += n << 20;
+        z = bits.d;
+    }
+
+    return s * z;
 }
 
 f64 fn_802380A8(f64 farg0, f64 farg1) {
@@ -2479,7 +2803,7 @@ magnitude=high & 0x7fffffff;
 if (magnitude>=0x7ff00000 || (magnitude | low)==0) return farg0;
 if (magnitude<0x100000) {
 f64 scale = lbl_8036C148;
-*arg0=-54;
+*(volatile s32 *)arg0=-54;
 farg0=farg0*scale;
 high=*(s32*)&farg0;
 magnitude=high & 0x7fffffff;
@@ -2934,24 +3258,21 @@ void fmod(void) {
 f64 fn_802387E8(f64 x) {
     extern s32 errno;
     extern f64 lbl_8036C188;
+    u32 t2;
     u32 r;
+    u32 t1;
     u32 s1;
     u32 q1;
-    u32 q0;
     u32 s0;
-    u32 t1;
+    s32 q0;
     u32 t;
-    u32 t2;
     s32 m;
     s32 ix0;
-    s32 pad;
-    s32 i;
     u32 ix1;
     f64 z;
 
     ix0 = ((s32 *)&x)[0];
     ix1 = ((u32 *)&x)[1];
-    pad = 0;
 
     if ((u32)((ix0 & 0x7FF00000) + 0x80100000) == 0U) {
         errno = 0x21;
@@ -2962,14 +3283,16 @@ f64 fn_802387E8(f64 x) {
             return x;
         }
         if (ix0 < 0) {
-            f32 *nanp = (f32 *)0x80367068;
             errno = 0x21;
-            return *nanp;
+            return *(f32 *)0x80367068;
         }
     }
 
     m = ix0 >> 20;
     if (m == 0) {
+        s32 i;
+        s32 a;
+        u32 b;
         goto denorm_check;
     denorm_shift:
         t = ix1 >> 11;
@@ -2989,84 +3312,86 @@ f64 fn_802387E8(f64 x) {
         if ((ix0 & 0x100000) == 0) {
             goto denorm_bit_shift;
         }
-        t = ix1 >> (32 - i);
+        a = i - 1;
+        b = 32 - i;
+        t = ix1 >> b;
         ix1 <<= i;
-        m -= i - 1;
+        m -= a;
         ix0 |= (s32)t;
     }
 
     t = (u32)(m - 0x3FF);
-    r = (u32)(ix0 & 0xFFFFF) | 0x100000;
+    ix0 = (ix0 & 0xFFFFF) | 0x100000;
     if (t & 1) {
         t = ix1 >> 31;
         ix1 += ix1;
-        t = t + r;
-        r = r + t;
+        t = t + ix0;
+        ix0 = ix0 + t;
     }
     t = ix1 >> 31;
     ix1 += ix1;
-    t = t + r;
+    t = t + ix0;
+    ix0 = ix0 + t;
     s1 = 0;
-    r = r + t;
     s0 = 0;
     q1 = 0;
     q0 = 0;
-    t1 = 0x200000;
+    r = 0x200000;
     goto loop1_check;
  loop1:
-    t = s0 + t1;
-    if ((s32)t <= (s32)r) {
-        s0 = t + t1;
-        r = r - t;
-        q0 = q0 + t1;
+    t = s0 + r;
+    if ((s32)t <= (s32)ix0) {
+        s0 = t + r;
+        ix0 = ix0 - t;
+        q0 = q0 + r;
     }
     t = ix1 >> 31;
     ix1 += ix1;
-    t = t + r;
-    t1 >>= 1;
-    r = r + t;
+    t = t + ix0;
+    ix0 = ix0 + t;
+    r >>= 1;
  loop1_check:
-    if (t1 != 0) {
+    if (r != 0) {
         goto loop1;
     }
 
-    t1 = 0x80000000;
+    r = 0x80000000;
     goto loop2_check;
  loop2:
     t = s0;
-    t2 = s1 + t1;
-    if ((s32)s0 < (s32)r) {
+    t1 = s1 + r;
+    if ((s32)s0 < (s32)ix0) {
         goto loop2_take;
     }
-    if (s0 != r) {
+    if (s0 != ix0) {
         goto loop2_skip;
     }
-    if (t2 > ix1) {
+    if (t1 > ix1) {
         goto loop2_skip;
     }
  loop2_take:
-    s1 = t2 + t1;
-    if ((u32)((t2 & 0x80000000) + 0x80000000) == 0U && (s1 & 0x80000000) == 0) {
+    s1 = t1 + r;
+    if ((u32)((t1 & 0x80000000) + 0x80000000) == 0U && (s1 & 0x80000000) == 0) {
         s0 = s0 + 1;
     }
-    r = r - t;
-    if (ix1 < t2) {
-        r = r - 1;
+    ix0 = ix0 - t;
+    if (ix1 < t1) {
+        ix0 = ix0 - 1;
     }
-    ix1 = ix1 - t2;
-    q1 = q1 + t1;
+    ix1 = ix1 - t1;
+    q1 = q1 + r;
  loop2_skip:
     t = ix1 >> 31;
     ix1 += ix1;
-    t = t + r;
-    t1 >>= 1;
-    r = r + t;
+    t = t + ix0;
+    ix0 = ix0 + t;
+    r >>= 1;
  loop2_check:
-    if (t1 != 0) {
+    if (r != 0) {
         goto loop2;
     }
 
-    if ((r | ix1) != 0) {
+    if ((ix0 | ix1) != 0) {
         z = lbl_8036C188;
         z = lbl_8036C188;
         if ((u32)(q1 + 0x10000) == 0xFFFFU) {
@@ -3087,7 +3412,7 @@ f64 fn_802387E8(f64 x) {
         }
         ((u32 *)&z)[1] = lo;
         hi += ((m - 0x3FF) >> 1) << 20;
-        ((s32 *)&z)[0] = hi + pad;
+        ((s32 *)&z)[0] = hi;
     }
     return z;
 }

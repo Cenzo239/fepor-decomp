@@ -469,19 +469,20 @@ void fn_8007D044(void) {
     fn_800875B4();
 }
 
+#pragma scheduling on
 void fn_8007D064(s32 arg0, s32 arg1, s32 arg2) {
- void *Process_CreateChild(void *, s32);
- void Ui_PlaySeCue(void *, s32, void *);
- extern u8 lbl_80289894[];
- extern u8 gUiStrings[];
- s32 *p = Process_CreateChild(lbl_80289894, arg1);
- u8 *cue = gUiStrings;
- s32 volume = 100;
- p[13] = arg0;
- p[14] = arg2;
- Ui_PlaySeCue(cue + 0x140, volume, cue);
-}
+    void *fn_8000CAA0(void *, s32);
+    void fn_801475FC(void *, s32, void *);
+    extern u8 lbl_80289894[];
+    extern u8 lbl_8026C86C[];
+    void *temp_r3;
 
+    temp_r3 = fn_8000CAA0(lbl_80289894, arg1);
+    *(s32 *)((u8 *)temp_r3 + 0x34) = arg0;
+    *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
+    fn_801475FC(lbl_8026C86C + 0x140, 0x64, lbl_8026C86C);
+}
+#pragma scheduling reset
 void fn_8007D0C0(void *arg0) {
     extern f32 lbl_80369418;
     extern f32 lbl_80369448;

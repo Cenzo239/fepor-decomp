@@ -1229,17 +1229,14 @@ s32 GActor_FindNode(void *arg0, void *name) {
     void *cur;
 
     cur = arg0;
-    goto check;
-body:
-    node = *(void **)((u8 *)cur + 0x40);
-    if (node == NULL)
-        goto next;
-    goto search;
-next:
-    cur = *(void **)((u8 *)cur + 4);
-check:
-    if (cur != NULL)
-        goto body;
+    while (cur != NULL) {
+        node = *(void **)((u8 *)cur + 0x40);
+        if (node == NULL) {
+            cur = *(void **)((u8 *)cur + 4);
+            continue;
+        }
+        goto search;
+    }
     node = NULL;
 search:
     entry = *(void **)((u8 *)node + 0xC);
@@ -2637,12 +2634,12 @@ M2C_UNK fn_80063954(char *arg0) {
 }
 
 #pragma inline_depth(0)
-void *fn_800639B4(void *arg0) {
-    extern M2C_UNK fn_8005C82C(char *, s32);
+void *fn_800639B4(char *arg0) {
     void fn_80063A14(void *);
-    void *result;
+    extern M2C_UNK fn_8005C82C(char *, s32);
     s32 flags;
-    result = (void *)fn_8005C82C((char *)arg0, 0);
+    register void *result;
+    result = (void *)fn_8005C82C(arg0, 0);
     flags = FileCache_GetFlags(arg0);
     if ((flags & 0x4000) == 0) {
         fn_80063A14(result);
@@ -3220,13 +3217,17 @@ s32 fn_80064F24(s16 *arr, s32 key, s32 n) {
             mid = -1;
         } else {
             mid = n - 1;
-            if (low <= mid) {
-                if (arr[low * 2] <= key) {
-                    mid = low;
+            do {
+                if (low <= mid) {
+                    if (arr[low * 2] <= key) {
+                        mid = low;
+                    } else {
+                        mid = low - 1;
+                    }
                 } else {
-                    mid = low - 1;
+                    break;
                 }
-            }
+            } while (0);
         }
     }
 done:
@@ -3525,23 +3526,47 @@ check:
     return best;
 }
 
-void *fn_80065634(void ***arg0, s32 arg1) {
- void **mid;
- u8 *base;
- s32 count;
- s32 index;
- if(arg0==NULL) base=NULL;
- else { mid=*arg0; if(mid!=NULL) base=(u8 *)*mid; else base=NULL; }
- if(base==NULL) return NULL;
- count=*(u16 *)base;
- index=0;
- while(count>0) {
- u16 offset=*(u16 *)((u8 *)*(void **)(base+4)+index);
- u8 *entry=(u8 *)((u32)(base+offset) & -(s32)(offset != (u16)-1));
- if(*(u16 *)entry==arg1) return entry;
- index+=2; count--;
- }
- return NULL;
+void *fn_80065634(void ***arg0, s32 arg1)
+{
+  void **mid;
+  u8 *base;
+  s32 index;
+  s32 count;
+  if (arg0 == NULL)
+  {
+    base = NULL;
+  }
+  else
+  {
+    mid = *arg0;
+    if (mid != NULL)
+    {
+      base = (u8 *) (*mid);
+    }
+    else
+    {
+      base = NULL;
+    }
+  }
+  if (base == NULL)
+  {
+    return NULL;
+  }
+  count = *((u16 *) base);
+  index = 0;
+  while (count > 0)
+  {
+    u16 offset = *((u16 *) (((u8 *) (*((void **) (base + 4)))) + index));
+    u8 *entry = (u8 *) (((u32) (base + offset)) & (-((s32) (offset != ((u16) (-1))))));
+    if ((*((u16 *) entry)) == arg1)
+    {
+      return entry;
+    }
+    index += 2;
+    count--;
+  }
+
+  return NULL;
 }
 
 #pragma optimization_level 2
@@ -5886,15 +5911,23 @@ void fn_80069C7C(void) {
 
 #pragma global_optimizer off
 void fn_80069C98(void) {
- void fn_802238A8(s32);
- void fn_802238CC(s32);
- extern s32 gMaterialStageIds[];
- extern u8 lbl_80367304;
- s32 *p;
- s32 i;
- if (!lbl_80367304) return;
- for(p=gMaterialStageIds,i=0;i<8;i++,p++) fn_802238CC(*p);
- fn_802238A8(0);
+    void fn_802238A8(s32);
+    void fn_802238CC(s32);
+    extern s32 lbl_80285E88[];
+    extern u8 lbl_80367304;
+    s32 *var_r31;
+    s32 var_r30;
+
+    if (lbl_80367304 != 0) {
+        var_r30 = 0;
+        var_r31 = lbl_80285E88;
+        do {
+            fn_802238CC(*var_r31);
+            var_r30 += 1;
+            var_r31 += 1;
+        } while (var_r30 < 8);
+        fn_802238A8(0);
+    }
 }
 #pragma global_optimizer off
 void *fn_80069CFC(void) {
@@ -6997,31 +7030,206 @@ void *fn_8006CE14(char *name) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8006CF60(void *arg0) {
-    void *memcpy(void *, const void *, u32);
-    void DCFlushRange(void *, u32);
-    void *mesh; void *anim; s32 *kf; s32 *kf_prev; s32 n; s32 i; u8 *entry; u8 *dst; f32 t; f32 w; f32 v; f32 d; u32 gqr; u16 tmp; s8 tmp8;
-    mesh = *(void **)((u8 *)arg0 + 0x48); anim = *(void **)((u8 *)arg0 + 0x50); kf = *(s32 **)((u8 *)anim + 0x20);
-    memcpy(*(void **)((u8 *)arg0 + 0x6c), *(void **)((u8 *)mesh + 0x24), *(u16 *)((u8 *)mesh + 0x4c) * 6 + *(u16 *)((u8 *)mesh + 0x4e) * 3);
-    n = *(s32 *)((u8 *)anim + 0x1c);
-    if (n > 0) { do { if (*(f32 *)((u8 *)arg0 + 0x58) < (f32)*kf) break; kf_prev = kf; kf = (s32 *)((u8 *)kf + 0x1c); } while (--n); }
-    gqr = (*(u8 *)((u8 *)anim + 8) << 8) | 6; gqr = (gqr << 16) | (gqr & 0x7FFF); (void)gqr;
-    mesh = *(void **)((u8 *)arg0 + 0x48); gqr = (*(u8 *)((u8 *)mesh + 0x5c) << 8) | 7; gqr = (gqr << 16) | (gqr & 0xFFFF); (void)gqr;
-    t = (*(f32 *)((u8 *)arg0 + 0x58) - (f32)kf_prev[0]) / (f32)(kf[0] - kf_prev[0]);
-    i = 0; entry = *(u8 **)((u8 *)anim + 0x24) + (kf[1] << 2); dst = *(u8 **)((u8 *)arg0 + 0x6c);
-    while (i < kf[2]) { dst += entry[0] * 6; d = (f32)(s8)entry[1]; v = (f32)*(s16 *)dst + d * t; tmp = (u16)(s32)v; *(u16 *)dst = tmp; d = (f32)(s8)entry[2]; v = (f32)*(s16 *)(dst + 2) + d * t; tmp = (u16)(s32)v; *(u16 *)(dst + 2) = tmp; d = (f32)(s8)entry[3]; v = (f32)*(s16 *)(dst + 4) + d * t; tmp = (u16)(s32)v; *(u16 *)(dst + 4) = tmp; i++; entry += 4; }
-    w = lbl_803692B8 - t;
-    i = 0; entry = *(u8 **)((u8 *)anim + 0x24) + (kf_prev[1] << 2); dst = *(u8 **)((u8 *)arg0 + 0x6c);
-    while (i < kf_prev[2]) { dst += entry[0] * 6; d = (f32)(s8)entry[1]; v = (f32)*(s16 *)dst + d * w; tmp = (u16)(s32)v; *(u16 *)dst = tmp; d = (f32)(s8)entry[2]; v = (f32)*(s16 *)(dst + 2) + d * w; tmp = (u16)(s32)v; *(u16 *)(dst + 2) = tmp; d = (f32)(s8)entry[3]; v = (f32)*(s16 *)(dst + 4) + d * w; tmp = (u16)(s32)v; *(u16 *)(dst + 4) = tmp; i++; entry += 4; }
-    gqr = (*(u8 *)((u8 *)anim + 9) << 8) | 6; gqr = (gqr << 16) | (gqr & 0x7FFF); (void)gqr;
-    w = lbl_803692B8 - w;
-    i = 0; entry = *(u8 **)((u8 *)anim + 0x28) + (kf[3] << 2); dst = *(u8 **)((u8 *)arg0 + 0x70);
-    while (i < kf[4]) { dst += entry[0] * 3; d = (f32)(s8)entry[1]; v = (f32)(s8)dst[0] + d * w; tmp8 = (s8)(s32)v; dst[0] = (u8)tmp8; d = (f32)(s8)entry[2]; v = (f32)(s8)dst[1] + d * w; tmp8 = (s8)(s32)v; dst[1] = (u8)tmp8; d = (f32)(s8)entry[3]; v = (f32)(s8)dst[2] + d * w; tmp8 = (s8)(s32)v; dst[2] = (u8)tmp8; i++; entry += 4; }
-    w = lbl_803692B8 - w;
-    i = 0; entry = *(u8 **)((u8 *)anim + 0x28) + (kf_prev[3] << 2); dst = *(u8 **)((u8 *)arg0 + 0x70);
-    while (i < kf_prev[4]) { dst += entry[0] * 3; d = (f32)(s8)entry[1]; v = (f32)(s8)dst[0] + d * w; tmp8 = (s8)(s32)v; dst[0] = (u8)tmp8; d = (f32)(s8)entry[2]; v = (f32)(s8)dst[1] + d * w; tmp8 = (s8)(s32)v; dst[1] = (u8)tmp8; d = (f32)(s8)entry[3]; v = (f32)(s8)dst[2] + d * w; tmp8 = (s8)(s32)v; dst[2] = (u8)tmp8; i++; entry += 4; }
-    mesh = *(void **)((u8 *)arg0 + 0x48);
-    DCFlushRange(*(void **)((u8 *)arg0 + 0x6c), *(u16 *)((u8 *)mesh + 0x4c) * 6 + *(u16 *)((u8 *)mesh + 0x4e) * 3);
+void fn_8006CF60(void *arg0)
+{
+  volatile unsigned short new_var11;
+  u8 *new_var6;
+  void *memcpy(void *, const void *, u32);
+  volatile unsigned int new_var12;
+  s32 *kf_prev;
+  void DCFlushRange(void *, u32);
+  void __mtspr(s32, u32);
+  s32 i;
+  u8 new_var3;
+  u8 **new_var4;
+  u8 *self;
+  u8 *mesh;
+  s8 new_var10;
+  unsigned int new_var9;
+  int new_var2;
+  u8 *anim;
+  u8 *entry;
+  u8 *new_var5;
+  unsigned int new_var7;
+  u8 *dst;
+  u8 new_var8;
+  s32 *kf;
+  int new_var13;
+  f32 t;
+  s32 n;
+  f32 w;
+  f32 v;
+  f32 d;
+  char gqr;
+  s32 **new_var;
+  f32 new_var16;
+  s8 tmp8;
+  u16 tmp;
+  u8 new_var15;
+  short new_var14;
+  self = (u8 *) arg0;
+  mesh = *((u8 **) (self + 0x48));
+  new_var5 = mesh + 0x4C;
+  anim = *((u8 **) (self + 0x50));
+  new_var12 = (*((u16 *) (mesh + 0x4E))) * 3;
+  kf = *((s32 **) (anim + 0x20));
+  memcpy(*((void **) (self + 0x6C)), *((void **) (mesh + 0x24)), ((*((u16 *) (mesh + 0x4E))) * 3) + ((*((u16 *) new_var5)) * 6));
+  new_var11 = ((u32) anim[8]) << 8;
+  n = *((s32 *) (anim - (-0x1C)));
+  if (((n - 1) - 1) > ((0 - 1) - 1))
+  {
+    do
+    {
+      do
+      {
+        new_var16 = *((f32 *) (self + 0x58));
+        if (new_var16 < ((f32) (*kf)))
+        {
+          if (((!tmp8) && (!tmp8)) && (!tmp8))
+          {
+          }
+        }
+        kf_prev = kf;
+        kf = (s32 *) (((u8 *) kf) + 0x1C);
+      }
+      while (--n);
+    }
+    while (0);
+  }
+  gqr = ((long) new_var11) | 6;
+  ;
+  __mtspr(914, (gqr << 16) | (gqr & 0x7FFF));
+  mesh = *((u8 **) (self + 0x48));
+  gqr = (((u32) mesh[0x5C]) << 8) | 7;
+  gqr = ((gqr << 5) << 11) | (gqr & 0xFFFF);
+  i = 0;
+  __mtspr(915, gqr);
+  t = (new_var16 - ((f32) kf_prev[0])) / ((f32) (kf[0] - kf_prev[0]));
+  new_var14 = 2;
+  entry = (*((u8 **) (anim + 0x24))) + (kf[1] << new_var14);
+  new_var6 = *((u8 **) (self + 0x6C));
+  new_var7 = 0;
+  new_var = &kf;
+  dst = new_var6;
+  while (i < (*new_var)[new_var14])
+  {
+    dst += entry[0] * 6;
+    d = (f32) entry[1];
+    v = d * t;
+    v = ((f32) (*((s16 *) (dst + new_var7)))) + v;
+    new_var9 = new_var7;
+    tmp = (u16) ((s32) v);
+    new_var7 = new_var9;
+    *((u16 *) (dst + new_var7)) = tmp;
+    d = (f32) ((s8) entry[new_var14]);
+    v = d * t;
+    v = ((f32) (*((s16 *) (dst + new_var14)))) + v;
+    tmp = (u16) ((s32) v);
+    *((u16 *) (dst + 4)) = (*((u16 *) (dst + new_var14)) = tmp);
+    d = (f32) ((s8) entry[3]);
+    v = d * t;
+    v = ((f32) (*((s16 *) (dst + 4)))) + v;
+    tmp = (u16) ((s32) v);
+    i++;
+    entry += 4;
+  }
+
+  w = lbl_803692B8 - t;
+  i = new_var7;
+  entry = (*((u8 **) (anim + 0x24))) + (kf_prev[1] << new_var14);
+  new_var13 = 1;
+  dst = new_var6;
+  while (i < kf_prev[new_var14])
+  {
+    gqr = entry[0] * 6;
+    dst += gqr;
+    new_var15 = entry[1];
+    d = (f32) ((s8) new_var15);
+    v = d;
+    v = v * w;
+    v = ((f32) (*((s16 *) (dst + new_var7)))) + v;
+    tmp = (u16) ((s32) v);
+    *((u16 *) (dst + new_var7)) = tmp;
+    break;
+    d = (f32) ((s8) entry[new_var14]);
+    v = d * w;
+    v = ((f32) (*((s16 *) (dst + new_var14)))) + v;
+    tmp = (u16) ((s32) v);
+    *((u16 *) (dst + new_var14)) = tmp;
+    d = (f32) ((s8) entry[3]);
+    v = d * w;
+    v = ((f32) (v = *((s16 *) (dst + 4)))) + v;
+    i = new_var7;
+    tmp = (u16) ((s32) v);
+    *((u16 *) (dst + 4)) = (tmp & 0xFF) & 0xFF;
+    i++;
+    entry += 4;
+  }
+
+  gqr = (((u32) anim[9]) << 8) | 6;
+  gqr = gqr << 16;
+  gqr = gqr | (gqr & 0x7FFF);
+  __mtspr(914, gqr);
+  __mtspr(916, 0x07060706);
+  w = lbl_803692B8 - w;
+  ;
+  entry = (*((u8 **) (anim + 0x28))) + ((*new_var)[3] << new_var14);
+  dst = *((u8 **) (self + 0x70));
+  while (new_var7 < (*new_var)[4])
+  {
+    dst += entry[0] * 3;
+    tmp8 = (s8) ((s32) v);
+    d = (f32) ((s8) entry[new_var13]);
+    v = d * w;
+    v = ((f32) ((s8) dst[new_var7])) + v;
+    tmp8 = (s8) ((s32) v);
+    dst[0] = (u8) tmp8;
+    d = (f32) ((s8) entry[new_var14]);
+    v = d * w;
+    v = ((f32) ((s8) dst[1])) + v;
+    dst[1] = (u8) tmp8;
+    new_var8 = dst[new_var14];
+    d = (f32) ((s8) entry[3]);
+    v = d * w;
+    v = ((f32) ((s8) new_var8)) + v;
+    dst[new_var14] = (u8) tmp8;
+    tmp8 = (s8) ((s32) v);
+    i++;
+    entry += 4;
+  }
+
+  w = lbl_803692B8 - w;
+  entry = (*((u8 **) (anim + 0x28))) + (kf_prev[3] << new_var14);
+  dst = *((u8 **) (self + 0x70));
+  new_var4 = (u8 **) (self + 0x48);
+  v = ((f32) ((s8) dst[new_var7])) + v;
+  new_var10 = (s8) entry[new_var14];
+  while (i < kf_prev[4])
+  {
+    dst += entry[new_var7] * 3;
+    d = (f32) ((s8) entry[1]);
+    new_var3 = entry[3];
+    v = (v = d * w);
+    tmp8 = (s8) ((s32) v);
+    dst[0] = (u8) tmp8;
+    d = (f32) new_var10;
+    v = ((f32) ((s8) dst[new_var13])) + v;
+    tmp8 = (tmp8 = (s8) ((s32) v));
+    dst[new_var13] = (dst[new_var14] = (u8) tmp8);
+    d = (f32) ((s8) new_var3);
+    v = ((f32) ((s8) dst[new_var14])) + v;
+    i++;
+    entry += 4;
+  }
+
+  mesh = *new_var4;
+  new_var2 = 6;
+  DCFlushRange(*((void **) (self + 0x6C)), ((*((u16 *) (0x4C + mesh))) * new_var2) + ((*((u16 *) (mesh + 0x4E))) * 3));
+  __mtspr(914, 0x00040004);
+  __mtspr(915, 0x00050005);
+  v = d * w;
+  __mtspr(916, 0x00060006);
+  __mtspr(917, 0x00070007);
 }
 
 #pragma optimization_level 3
@@ -8286,83 +8494,69 @@ s32 fn_8006F014(void) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3)
-{
+void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *fn_800C0658(void);
     void Ui_CreateMenu(void *, void *, s32);
     extern u8 lbl_80311CA8[];
-    u8 *base;
-    u8 *entries;
-    u8 *table;
-    void *p0;
-    void *p1;
-    void *p2;
+    struct MenuDef {
+        u8 pad[0x4c];
+        s32 args[8];
+        void *table[5];
+    };
+    struct MenuDef *d = (struct MenuDef *)lbl_80311CA8;
+    volatile void **tbl = (volatile void **)d->table;
 
-    base = lbl_80311CA8;
-    entries = base + 0x4C;
-    table = base + 0x6C;
-    p0 = entries + 8;
-    p1 = entries + 0x10;
-    p2 = entries + 0x18;
-
-    *(void **)(table + 0) = entries;
-    *(void **)(entries + 4) = arg0;
-    *(void **)(table + 4) = p0;
-    *(void **)(entries + 0xC) = arg1;
-    *(void **)(table + 8) = p1;
-    *(void **)(entries + 0x14) = arg2;
-    *(void **)(table + 0xC) = p2;
-    *(void **)(entries + 0x1C) = arg3;
-    *(void **)(table + 0x10) = (void *)0;
-
-    Ui_CreateMenu(base + 0x94, fn_800C0658(), 0);
+    tbl[0] = d->args;
+    d->args[1] = (s32)arg0;
+    tbl[1] = &d->args[2];
+    d->args[3] = (s32)arg1;
+    tbl[2] = &d->args[4];
+    d->args[5] = (s32)arg2;
+    tbl[3] = &d->args[6];
+    d->args[7] = (s32)arg3;
+    tbl[4] = 0;
+    Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
 #pragma opt_strength_reduction on
 #pragma global_optimizer on
-void fn_8006F09C(void *arg0, void *arg1, void *arg2)
-{
+void fn_8006F09C(void *arg0, void *arg1, void *arg2) {
     void *fn_800C0658(void);
     void Ui_CreateMenu(void *, void *, s32);
     extern u8 lbl_80311CA8[];
-    u8 *base;
-    u8 *entries;
-    u8 *table;
-    void *p0;
-    void *p1;
-    void *result;
+    struct MenuDef {
+        u8 pad[0x4c];
+        s32 table[8];
+        void *entries[4];
+    };
+    struct Entries { void *e[4]; };
+    struct MenuDef *d = (struct MenuDef *)lbl_80311CA8;
+    struct Entries *e = (struct Entries *)((u8 *)d + 0x6c);
 
-    base = lbl_80311CA8;
-    entries = base + 0x4C;
-    table = base + 0x6C;
-
-    *(void **)table = entries;
-    p0 = entries + 8;
-    p1 = entries + 0x10;
-    *(void **)(entries + 4) = arg0;
-    *(void **)(table + 4) = p0;
-    *(void **)(entries + 0xC) = arg1;
-    *(void **)(table + 8) = p1;
-    *(void **)(entries + 0x14) = arg2;
-    *(u32 *)(table + 0xC) = 0;
-
-    result = fn_800C0658();
-    Ui_CreateMenu(base + 0x80, result, 0);
+    e->e[0] = (void *)d->table;
+    d->table[1] = (s32)arg0;
+    e->e[1] = (void *)(d->table + 2);
+    d->table[3] = (s32)arg1;
+    e->e[2] = (void *)(d->table + 4);
+    d->table[5] = (s32)arg2;
+    e->e[3] = 0;
+    Ui_CreateMenu((u8 *)d + 0x80, fn_800C0658(), 0);
 }
 #pragma global_optimizer off
 void fn_8006F10C(s32 arg0, s32 arg1) {
- extern u8 lbl_80311CA8[];
- s32 fn_800C0658(void);
- void Ui_CreateMenu(void *,s32,s32);
- u8 *base=lbl_80311CA8;
- s32 *table=(s32 *)(base+0x4c);
- void **entries=(void **)(base+0x6c);
- *entries++=table;
- table[1]=arg0;
- table+=2;
- *entries++=table;
- table[1]=arg1;
- *entries=0;
- Ui_CreateMenu(base+0x80,fn_800C0658(),0);
+    extern u8 lbl_80311CA8[];
+    s32 fn_800C0658(void);
+    void Ui_CreateMenu(void *, s32, s32);
+    u8 *base = lbl_80311CA8;
+    volatile s32 *table = (volatile s32 *)(base + 0x4c);
+    volatile void **entries = (volatile void **)(base + 0x6c);
+
+    entries[0] = (void *)table;
+    table[1] = arg0;
+    table += 2;
+    entries[1] = (void *)table;
+    table[1] = arg1;
+    entries[2] = 0;
+    Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 
 void fn_8006F170(void *arg0, void *arg1, void *arg2) {
@@ -8749,23 +8943,105 @@ void UiWin_SetupPrim2D(void *unused, void *win) {
 }
 #pragma cplusplus reset
 
-s32 fn_8006F7F0(s32 arg0) {
-    s32 var_r3;
-    s32 i;
-    
-    if (arg0 < 0 || arg0 >= 0x100) {
-        return -1;
-    }
-    
-    for (i = 0; i < 0x100; i++) {
-        if (gBattleState[i] == 0) {
-            gBattleState[i] = arg0;
-            var_r3 = i;
-            break;
+void fn_8006F7F0(void *arg0)
+{
+    void Ui_DrawMsgPanelAlt(s32, s32);
+    void *Heap_AllocRaw(u32);
+    void Heap_FreeRaw(void *);
+    u32 strlen(const char *);
+    char *strcpy(char *, const char *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetText(void *);
+    void Prim2D_EndPrim(void);
+    s32 Text_MeasureHeight(s32, f32);
+
+    extern f64 lbl_803692E8;
+    extern f32 lbl_803692E0;
+    extern f32 lbl_803692FC;
+    extern f32 lbl_80369300;
+
+    u8 *self;
+    char *buffer;
+    char *line;
+    char *cursor;
+    char *text;
+    void **vtable;
+    s32 length;
+    s32 lineIndex;
+    s32 height;
+    f32 x;
+    f32 y;
+
+    self = (u8 *)arg0;
+
+    vtable = *(void ***)(self + 4);
+    ((void (*)(void *))vtable[31])(self);
+
+    Ui_DrawMsgPanelAlt(0, 0);
+
+    vtable = *(void ***)(self + 4);
+    text = ((char *(*)(void *))vtable[2])(self);
+
+    length = strlen(text);
+    buffer = Heap_AllocRaw(length + 1);
+
+    vtable = *(void ***)(self + 4);
+    text = ((char *(*)(void *))vtable[2])(self);
+
+    strcpy(buffer, text);
+
+    x = (f32)*(s16 *)(self + 0x10);
+    y = lbl_803692FC;
+    lineIndex = 0;
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369300);
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+
+    line = buffer;
+    cursor = buffer;
+
+    while (*cursor != 0) {
+        if ((s8)*cursor == '\n') {
+            *cursor = 0;
+
+            Prim2D_AddPrim(6);
+            Prim2D_SetPos(x, y);
+            Prim2D_SetColor(0, 0, 0, 255);
+            Prim2D_SetText(line);
+            Prim2D_EndPrim();
+
+            lineIndex++;
+
+            x = (f32)*(s16 *)(self + 0x10 + (s16)lineIndex * 2);
+
+            height = Text_MeasureHeight(-1, lbl_803692E0);
+            y += (f32)(height + 2);
+
+            line = cursor + 1;
         }
+
+        cursor++;
     }
-    
-    return var_r3;
+
+    Prim2D_AddPrim(6);
+    Prim2D_SetPos(x, y);
+    Prim2D_SetColor(0, 0, 0, 255);
+    Prim2D_SetText(line);
+    Prim2D_EndPrim();
+
+    Heap_FreeRaw(buffer);
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_803692E0);
+    Prim2D_PrepareTex();
 }
 
 void fn_8006F9F4(void *arg0, void *arg1) {

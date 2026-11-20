@@ -2512,7 +2512,7 @@ extern "C" void fn_80201778(void *arg0) {
     char *String_CStr(void *);
     void fn_800C9874(void *, u32, char);
     void String_Destroy(void *, s16);
-    u8 *fn_80104970(u8 *);
+    s8 *fn_80104970(s8 *);
     u8 *fn_8013CD90(void *);
     extern u8 lbl_802820B8[];
     extern f32 lbl_8036BBD8;
@@ -2523,72 +2523,40 @@ extern "C" void fn_80201778(void *arg0) {
 
     struct Obj {
         u8 pad[4];
-        virtual void v0();
-        virtual void v1();
-        virtual void v2();
-        virtual void v3();
-        virtual void v4();
-        virtual void v5();
-        virtual void v6();
-        virtual void v7();
-        virtual void v8();
-        virtual void v9();
-        virtual void v10();
-        virtual void v11();
-        virtual void v12();
-        virtual void v13();
-        virtual void v14();
-        virtual void v15();
-        virtual void v16();
-        virtual void v17();
-        virtual void v18();
-        virtual void v19();
-        virtual void v20();
-        virtual void v21();
-        virtual void v22();
-        virtual void v23();
-        virtual void v24();
-        virtual void v25();
-        virtual void v26();
-        virtual void v27();
-        virtual void v28();
-        virtual void v29();
-        virtual void v30();
-        virtual void v31();
-        virtual void v32();
-        virtual void v33();
-        virtual void v34();
-        virtual void v35();
-        virtual void v36();
-        virtual void v37();
-        virtual void v38();
-        virtual void v39();
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+        virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+        virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+        virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+        virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+        virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
     };
 
-    typedef struct {
-        u32 size;
-        u32 cap;
-        char *data;
-    } String;
+    typedef struct { u32 size; u32 cap; char *data; } String;
 
     String sp8;
-    f32 var_f31;
+    f64 xf;
     f32 var_f30;
+    s8 *var_r29;
+    u8 var_r28;
+    u32 obj;
+    s8 *var_r30;
     u8 *var_r31;
-    u8 *var_r30;
-    u8 *var_r29;
-    s32 var_r28;
 
-    var_r28 = (s32)arg0;
-    ((Obj *)var_r28)->v39();
-    if (fn_8013CD90((void *)var_r28) != NULL) {
+    obj = (u32)arg0;
+    ((Obj *)obj)->v39();
+    if (fn_8013CD90((void *)obj) != NULL) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036BC08);
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         var_f30 = lbl_8036BC0C;
-        var_r29 = fn_8013CD90((void *)var_r28);
-        var_f31 = lbl_8036BC10;
+        var_r29 = (s8 *)fn_8013CD90((void *)obj);
+        xf = lbl_8036BC10;
+        var_r30 = 0;
         var_r31 = lbl_802820B8;
         for (;;) {
             var_r28 = 0;
@@ -2596,7 +2564,7 @@ extern "C" void fn_80201778(void *arg0) {
             sp8.size = 0;
             sp8.data = 0;
             sp8.cap = 0;
-            while (((u8)var_r28) == 0) {
+            while (var_r28 == 0) {
                 switch ((s8)*var_r29) {
                 case 0:
                 case 0xA:
@@ -2605,29 +2573,24 @@ extern "C" void fn_80201778(void *arg0) {
                     break;
                 default:
                     var_r30 = fn_80104970(var_r29);
-                    while (var_r29 != var_r30) {
+                    while (var_r30 != var_r29) {
                         fn_800C9874(&sp8, 1, (s8)*var_r29);
                         var_r29++;
                     }
                     break;
                 }
             }
-            {
-                s32 x = (s32)var_f31;
-                s32 y = (s32)var_f30;
-                Text_Draw(x, y, 1, var_r31 + 0xB6, String_CStr(&sp8));
-            }
+            Text_Draw((s32)xf, (s32)var_f30, 1, var_r31 + 0xB6, String_CStr(&sp8));
             if (*var_r29 == 0xA) {
                 var_f30 += (f32)Text_MeasureHeight(-1, lbl_8036BBD8);
                 String_Destroy(&sp8, -1);
-                var_r29++;
             } else if ((s8)*var_r29 == 0) {
                 String_Destroy(&sp8, -1);
                 break;
             } else {
                 String_Destroy(&sp8, -1);
-                var_r29++;
             }
+            var_r29++;
         }
     }
     Prim2D_Begin();

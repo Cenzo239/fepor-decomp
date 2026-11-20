@@ -154,27 +154,20 @@ void fn_8020B294(s64 ticks, void *td) {
     s64 __mod2i(s64, s64);
     s64 __div2i(s64, s64);
     void fn_8020B0F8(s32, void *);
-    void *cal;
-    s64 d;
-    s64 tmp;
     s32 days;
     s32 secs;
     s32 hours;
-    s32 tickHi;
-    u32 tickLo;
+    s64 d;
+    s64 tmp;
 
-    cal = td;
-    tickHi = (s32)(ticks >> 32);
-    tickLo = (u32)ticks;
-    d = __mod2i(((s64)tickHi << 32) | tickLo, (s64)(*(u32 *)0x800000F8 >> 2));
+    d = __mod2i(ticks, (s64)(*(u32 *)0x800000F8 >> 2));
     if (d < 0) {
         d += (s64)(*(u32 *)0x800000F8 >> 2);
     }
-    tmp = __div2i(d * 8, (s64)(u32)((((u64)0x431BDE83ULL * (*(u32 *)0x800000F8 >> 2)) >> 32) >> 15));
-    *(s32 *)((u8 *)cal + 0x24) = (s32)__mod2i(tmp, 1000);
-    tmp = __div2i(d, (s64)(u32)((((u64)0x10624DD3ULL * (*(u32 *)0x800000F8 >> 2)) >> 32) >> 6));
-    *(s32 *)((u8 *)cal + 0x20) = (s32)__mod2i(tmp, 1000);
-    ticks = ((s64)tickHi << 32) | tickLo;
+    tmp = __div2i(d * 8, (s64)(__mulhwu(0x431BDE83, *(u32 *)0x800000F8 >> 2) >> 15));
+    *(s32 *)((u8 *)td + 0x24) = (s32)__mod2i(tmp, 1000);
+    tmp = __div2i(d, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
+    *(s32 *)((u8 *)td + 0x20) = (s32)__mod2i(tmp, 1000);
     ticks = ticks - d;
     tmp = __div2i(ticks, (s64)(*(u32 *)0x800000F8 >> 2));
     days = (s32)(__div2i(tmp, 86400) + 0xB2575);
@@ -183,11 +176,11 @@ void fn_8020B294(s64 ticks, void *td) {
         days -= 1;
         secs += 86400;
     }
-    fn_8020B0F8(days, cal);
+    fn_8020B0F8(days, td);
     hours = secs / 60;
-    *(s32 *)((u8 *)cal + 0x8) = hours / 60;
-    *(s32 *)((u8 *)cal + 0x4) = hours % 60;
-    *(s32 *)((u8 *)cal + 0x0) = secs % 60;
+    *(s32 *)((u8 *)td + 0x8) = hours / 60;
+    *(s32 *)((u8 *)td + 0x4) = hours % 60;
+    *(s32 *)((u8 *)td + 0x0) = secs % 60;
 }
 #pragma use_lmw_stmw reset
 void __init_cpp(void);

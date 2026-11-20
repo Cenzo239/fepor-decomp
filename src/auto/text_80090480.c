@@ -51,48 +51,67 @@ extern f32 lbl_803697E4;
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 
-void UnitInfo_DrawCombatStats(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
-    s32 sp14;
-    s32 sp18;
-    f32 sp1C;
-    f32 sp20;
-    f32 sp24;
-    f32 sp28;
-    f32 sp2C;
-    f32 sp30;
-    f32 sp34;
-    
-    s32 var_r3 = arg0;
-    s32 var_r4 = arg1;
-    void* var_r5 = arg2;
-    s32 var_r6 = arg3;
+void UnitInfo_DrawCombatStats(void *arg0, s32 arg1) {
+    void fn_8008BA80(void *, s32, s32, s32);
+    void fn_8007D044(s32, u8, f32, f32, f32, f32);
+    void fn_8008CD64(f32);
+    void fn_8008CD34(void);
+    s8 Unit_GetMaxHp(void *);
+    s32 fn_8003A778(void *);
+    void *Msg_Expand(char *);
+    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    s32 fn_8010418C(void *, s32);
+    s32 fn_8010424C(void *);
+    void Ui_DrawIcon(void *, s32, s32, s32);
 
-    if (arg0 < 0) {
-        var_r3 = -var_r3;
+    extern f32 gZeroF;
+    extern f32 lbl_80369780;
+    extern f32 lbl_80369784;
+    extern f32 lbl_8036978C;
+    extern f32 lbl_80369768;
+    extern f32 lbl_80369754;
+    extern char gBattleHelpStrings[];
+    extern u8 gUiIconDrawer[];
+
+    s32 var_r31;
+    u8 *self;
+    s32 hp;
+    s32 var_r29;
+    void *text1;
+    void *text2;
+    void *text3;
+    void *text4;
+
+    var_r31 = arg1;
+    self = (u8 *)arg0;
+    fn_8008BA80(self, 0, 0, 0);
+    fn_8007D044(0xB3, *(u8 *)(*(u8 **)(self + 0x190) + 8), gZeroF, lbl_80369780, lbl_80369784, lbl_8036978C);
+    fn_8008CD64(lbl_80369768);
+    fn_8008CD34();
+
+    hp = *(u8 *)(self + 0x1A8);
+    var_r29 = (s8)Unit_GetMaxHp(self);
+    text1 = Msg_Expand(gBattleHelpStrings + 0x111);
+    fn_8001003C(0x10, 0x2C, 1, 1, 0, gBattleHelpStrings + 0xFA, text1, (s8)hp, lbl_80369754, gZeroF, (s8)var_r29);
+
+    var_r29 = (s8)fn_8003A778(self);
+    text2 = Msg_Expand(gBattleHelpStrings + 0x143);
+    fn_8001003C(0x10, 0x48, 1, 1, 0, gBattleHelpStrings + 0x117, text2, var_r29, lbl_80369754, gZeroF);
+
+    text3 = Msg_Expand(gBattleHelpStrings + 0x14B);
+    fn_8001003C(0x86, 0x48, 1, 1, 0, gBattleHelpStrings + 0x117, text3, var_r31, lbl_80369754, gZeroF);
+
+    text4 = Msg_Expand(gBattleHelpStrings + 0x135);
+    fn_8001003C(0x10, 0x64, 1, 1, 0, gBattleHelpStrings + 0x12D, text4, lbl_80369754, gZeroF);
+
+    var_r31 = (s32)gUiIconDrawer;
+    var_r29 = 0;
+    hp = 0x48;
+    while (var_r29 < fn_8010424C(self + 0x1A4)) {
+        Ui_DrawIcon((void *)var_r31, hp, 0x66, fn_8010418C(self + 0x1A4, var_r29));
+        hp += 0x1A;
+        var_r29++;
     }
-    
-    if (arg1 < 0) {
-        var_r4 = -var_r4;
-    }
-    
-    sp14 = arg1;
-    sp18 = arg0; 
-    
-    sp1C = lbl_8036A118 * var_r3;
-    sp20 = lbl_8036A120 * var_r4;
-    sp24 = lbl_8036A130 * var_r3;
-    sp28 = gTextScale2 * var_r4;
-    
-    if (arg3 == 0) {
-        sp30 = sp1C + sp20 + sp24 + sp28;
-        sp34 = sp1C - sp20 - sp24 - sp28;
-    } else {
-        sp30 = sp1C + sp20 + sp24 - sp28;
-        sp34 = sp1C - sp20 - sp24 + sp28;
-    }
-    
-    *(f32*)var_r5 = sp30;
-    *((f32*)var_r5 + 1) = sp34;
 }
 
 #pragma use_lmw_stmw on

@@ -1324,7 +1324,7 @@ s32 fn_80094A54(s32 arg0, s32 arg1)
   fn_8001D780(&sp8, arg1);
   new_var = &sp8;
   temp_r31 = fn_80094ABC(arg0, new_var);
-  fn_8001C5F8(&sp8, -1);
+  fn_8001C5F8(new_var, -1);
   return temp_r31;
 }
 

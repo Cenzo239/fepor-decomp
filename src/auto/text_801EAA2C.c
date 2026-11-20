@@ -781,9 +781,9 @@ void fn_801EBBB8(void *arg0) {
     extern u8 lbl_80293C58[];
     extern u8 gTargetList[];
     extern u8 gBattleState[];
-    void String_CStr(void *, s32);
-    s32 fn_80106DC8(void *);
-    void fn_8002F728(void *, void *);
+    void *String_CStr(void *);
+    s32 fn_80106DC8(void *, u8 *);
+    void fn_8002F728(void *);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
     void *Process_Create(void *, void *);
     void *Heap_Alloc(s32, void *);
@@ -794,8 +794,8 @@ void fn_801EBBB8(void *arg0) {
     s32 strlen(void *);
     u8 sp8[128];
     s32 count;
-    s32 i;
     u8 *p;
+    s32 i;
     void *temp_r4;
     s32 temp_r5;
     void *temp_r3_2;
@@ -803,9 +803,8 @@ void fn_801EBBB8(void *arg0) {
 
     lbl_803683B8 = 0;
     gUiInputFlags &= 0xFFFFFFFE;
-    String_CStr((u8 *)arg0 + 0x40, 0);
-    count = fn_80106DC8(sp8);
-    fn_8002F728(gTargetList, gTargetList);
+    count = fn_80106DC8(String_CStr((u8 *)arg0 + 0x40), sp8);
+    fn_8002F728(gTargetList);
     p = sp8;
     for (i = 0; i < count; i++) {
         fn_8002F6E8(gTargetList, p[0], p[1], 0, 0);
@@ -859,7 +858,8 @@ void fn_801EBBB8(void *arg0) {
         temp_r3->unk0 = lbl_80293C58;
         temp_r3->unk8 = -0x1000;
         temp_r3->unk48 = 1;
-        String_AssignCStr((u8 *)temp_r3 + 0x3c, lbl_8027EE08 + 0x147, strlen(lbl_8027EE08 + 0x147));
+        temp_r5 = strlen(lbl_8027EE08 + 0x147);
+        String_AssignCStr((u8 *)temp_r3 + 0x3c, lbl_8027EE08 + 0x147, temp_r5);
         temp_r5 = temp_r3->unk34 | 0x10;
         temp_r3->unk34 = temp_r5;
         temp_r3->unk58 = 1;
@@ -882,13 +882,16 @@ void fn_801EBE00(void *arg0) {
     void fn_80162054();
     fn_801620AC(arg0);
     if (fn_8005BA10() != 0) {
-        if (fn_80161FB8() == 0) {
-            return;
+        for (;;) {
+            if (fn_80161FB8() == 0) {
+                break;
+            }
+            fn_80162054();
+            fn_801620AC(arg0);
+            *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
+            fn_8000C188(arg0);
+            break;
         }
-        fn_80162054();
-        fn_801620AC(arg0);
-        *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
-        fn_8000C188(arg0);
     }
 }
 
@@ -1526,7 +1529,7 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void DCFlushRange(s32, s32);
     void ARQPostRequest(void *, s32, s32, s32, s32, s32, s32, void *);
     void *fn_80234200(s32, s32);
-    s32 Str_Cmp(void *);
+    s32 Str_Cmp(void *, void *);
     void strcpy(void *, s32, s32);
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
@@ -1542,13 +1545,12 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 flag;
     s32 size;
     s32 i;
-    u8 *slot;
-    u8 *p;
     u8 *node;
+    void *temp;
     void *next;
     void *prev;
-    void *temp;
     void *cell;
+    void *name;
 
     size = arg2;
     path = arg0;
@@ -1558,20 +1560,12 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     if (gAramHeapSize < size) {
         return 0;
     }
-    i = 0xFF;
-    for (p = gAramSlotPool; i >= 0; p += 0x6C, i--) {
-        if (*(s32 *)(p + 0x64) == 0) {
-            slot = p;
-            goto found;
-        }
-    }
-    slot = 0;
-found:
-    if (slot == 0) {
+    if (AramFindFreeSlot() == NULL) {
         return 0;
     }
     flag = 0;
-    if (fn_80234200(path, 0x2F) != 0 && Str_Cmp(lbl_8027F1D0 + 0x35) == 0) {
+    name = fn_80234200(path, 0x2F);
+    if (name != 0 && Str_Cmp(name, lbl_8027F1D0 + 0x35) == 0) {
         size = 0;
         node = gAramSlotPool;
         do {
@@ -1600,7 +1594,7 @@ found:
     if (cell == 0) {
         return 0;
     }
-    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | (u8)flag;
+    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | flag;
     {
         s32 id = gAramRequestCount;
         gAramRequestCount = id + 1;
@@ -2402,15 +2396,16 @@ void fn_801EDF7C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801EDFCC(void) {
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     void fn_80146AF0(void);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
-    void *p = lbl_8032FF08;
+    s32 p;
 
+    p = (s32)gFxChannels;
     fn_80146AF0();
-    fn_801487D0(p, 0x3E8);
-    fn_8014876C(p, 0x64, 0x3E8);
+    Fx_FadeIn((void *)p, 0x3E8);
+    fn_8014876C((void *)p, 0x64, 0x3E8);
 }
 #pragma global_optimizer reset
 void fn_801EE018(void *arg0) {

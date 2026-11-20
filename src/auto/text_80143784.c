@@ -4035,18 +4035,23 @@ found:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
+#pragma scheduling on
 void fn_8014876C(void *arg0, s8 arg1, s16 arg2) {
     extern f32 gMsPerFrame;
-    s16 frames = (s16)((s32)((f32)arg2 / gMsPerFrame));
-    if (frames <= 0) {
-        frames = 1;
+    s32 temp;
+    s16 var_r6;
+
+    temp = (s32)((f32)arg2 / gMsPerFrame);
+    var_r6 = (s16)temp;
+    if (var_r6 <= 0) {
+        var_r6 = 1;
     }
     M2C_FIELD(arg0, u8 *, 0x28) = (u8)M2C_FIELD(arg0, u8 *, 0x16);
     M2C_FIELD(arg0, s8 *, 0x29) = arg1;
-    M2C_FIELD(arg0, s16 *, 0x2E) = frames;
+    M2C_FIELD(arg0, s16 *, 0x2E) = var_r6;
     M2C_FIELD(arg0, s16 *, 0x2C) = 0;
 }
-
+#pragma scheduling reset
 extern f64 lbl_8036A788;
 #pragma cplusplus on
 extern "C" void Fx_FadeIn(void *arg0, s16 arg1) {

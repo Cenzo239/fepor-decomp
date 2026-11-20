@@ -2053,8 +2053,8 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_AddZ(lbl_8036AF98);
     Prim2D_PrepareTex();
     tex = *fn_8006EDD8(self->unk50, 8);
-    f31 = (f32)tex[0] * lbl_8036AF9C;
     f30 = (f32)tex[1] * lbl_8036AF9C;
+    f31 = (f32)tex[0] * lbl_8036AF9C;
     col1 = *(u32 *)Ui_GetColor(1);
     Prim2D_Begin();
     Prim2D_BindTexture(self->unk50, 8, 0x11);
@@ -2078,8 +2078,8 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_EndPrim();
 
     tex = *fn_8006EDD8(self->unk50, 0xA);
-    f31 = (f32)tex[0] * lbl_8036AF9C;
     f30 = (f32)tex[1] * lbl_8036AF9C;
+    f31 = (f32)tex[0] * lbl_8036AF9C;
     col3 = *(u32 *)Ui_GetColor(1);
     Prim2D_Begin();
     Prim2D_BindTexture(self->unk50, 0xA, 0x11);
@@ -2092,8 +2092,8 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_EndPrim();
 
     tex = *fn_8006EDD8(self->unk50, 0xD);
-    f31 = (f32)tex[0] * lbl_8036AF9C;
     f30 = (f32)tex[1] * lbl_8036AF9C;
+    f31 = (f32)tex[0] * lbl_8036AF9C;
     col4 = *(u32 *)Ui_GetColor(1);
     Prim2D_Begin();
     Prim2D_BindTexture(self->unk50, 0xD, 0x11);
@@ -2117,8 +2117,8 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_EndPrim();
 
     tex = *fn_8006EDD8(self->unk50, 0xF);
-    f31 = (f32)tex[0] * lbl_8036AF9C;
     f30 = (f32)tex[1] * lbl_8036AF9C;
+    f31 = (f32)tex[0] * lbl_8036AF9C;
     col6 = *(u32 *)Ui_GetColor(1);
     Prim2D_Begin();
     Prim2D_BindTexture(self->unk50, 0xF, 0x11);

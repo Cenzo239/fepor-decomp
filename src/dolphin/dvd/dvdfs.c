@@ -2668,12 +2668,15 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     extern u32 lbl_80368608;
     extern s32 lbl_8036860C;
 
-    s16 sp16;
-    s16 sp14;
-    OSContext ctx;
+    struct {
+        s16 sp14;
+        s16 sp16;
+        OSContext ctx;
+    } local;
     volatile u16 *r5;
     volatile u16 *rp;
-    u16 val;
+    u16 val0;
+    u16 val1;
     s32 regMask;
     s32 didFlush;
     s32 bit;
@@ -2689,62 +2692,63 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     timing = lbl_8033A068;
     regMask = 0;
     r5 = (volatile u16 *)0xCC002000;
-    val = *(r5 += 0x18);
-    if (val & 0x8000) {
-        *r5 = (u16)(val & ~0x8000);
+    val0 = *(r5 += 0x18);
+    if (val0 & 0x8000) {
+        *r5 = (u16)(val0 & ~0x8000);
         regMask |= 1;
     }
     rp = (volatile u16 *)0xCC000000;
-    val = *(rp += 0x101A);
-    if (val & 0x8000) {
-        *rp = (u16)(val & ~0x8000);
+    val1 = *(rp += 0x101A);
+    if (val1 & 0x8000) {
+        *rp = (u16)(val1 & ~0x8000);
         regMask |= 2;
     }
     rp = (volatile u16 *)0xCC000000;
-    val = *(rp += 0x101C);
-    if (val & 0x8000) {
-        *rp = (u16)(val & ~0x8000);
+    val1 = *(rp += 0x101C);
+    if (val1 & 0x8000) {
+        *rp = (u16)(val1 & ~0x8000);
         regMask |= 4;
     }
     rp = (volatile u16 *)0xCC000000;
-    val = *(rp += 0x101E);
-    if (val & 0x8000) {
-        *rp = (u16)(val & ~0x8000);
+    val1 = *(rp += 0x101E);
+    if (val1 & 0x8000) {
+        *rp = (u16)(val1 & ~0x8000);
         regMask |= 8;
     }
     if ((regMask & 4) || (regMask & 8)) {
-        OSClearContext(&ctx);
-        OSSetCurrentContext(&ctx);
+        OSClearContext(&local.ctx);
+        OSSetCurrentContext(&local.ctx);
         if (lbl_8036861C != NULL) {
-            fn_80211B30((s32)&sp16, (s32)&sp14);
-            ((void (*)(s16, s16))lbl_8036861C)(sp16, sp14);
+            fn_80211B30((s32)&local.sp16, (s32)&local.sp14);
+            ((void (*)(s16, s16))lbl_8036861C)(local.sp16, local.sp14);
         }
-        OSClearContext(&ctx);
+        OSClearContext(&local.ctx);
         OSSetCurrentContext(ctxArg);
         return;
     }
     lbl_80368604 += 1;
-    OSClearContext(&ctx);
-    OSSetCurrentContext(&ctx);
-    if (lbl_80368614 != 0) {
+    OSClearContext(&local.ctx);
+    OSSetCurrentContext(&local.ctx);
+    if ((u32)lbl_80368614 != 0) {
         ((void (*)(u32))lbl_80368614)(lbl_80368604);
     }
     if (lbl_80368608 != 0) {
         if ((u32)lbl_80368638 != 1 || fn_802116D4() != 0) {
             regsBase = (u8 *)0xCC002000;
-            while (((u32)lbl_80368640 | (u32)lbl_80368644) != 0) {
+            lo = 0;
+            while ((((u32)lbl_80368640 ^ lo) | ((u32)lbl_80368644 ^ lo)) != 0) {
                 t27 = (u32)lbl_80368644;
                 tmp = fn_8022CB2C((u32)lbl_80368640, t27, 0x20);
                 bit = __cntlzw(tmp);
                 if (bit >= 0x20) {
                     bit = __cntlzw(t27) + 0x20;
                 }
-                *(volatile u16 *)(regsBase + (bit << 1)) = *(u16 *)(timing + 0x78 + (bit << 1));
+                *(volatile u16 *)(regsBase + (bit << 1)) = *(u16 *)((u8 *)(timing + (bit << 1)) + 0x78);
                 tmp = 0;
                 tmp2 = 1;
                 tmp2 = fn_8022CB08(tmp, tmp2, 0x3F - bit, bit << 1);
-                lbl_80368640 = (void *)((u32)lbl_80368640 & ~(tmp | tmp));
-                lbl_80368644 = (void *)((u32)lbl_80368644 & ~(tmp2 | tmp2));
+                lbl_80368640 = (void *)((u32)lbl_80368640 & ~tmp);
+                lbl_80368644 = (void *)((u32)lbl_80368644 & ~tmp2);
             }
             lbl_80368638 = (void *)0;
             didFlush = 1;
@@ -2760,11 +2764,11 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
         }
     }
     if (lbl_80368618 != NULL) {
-        OSClearContext(&ctx);
+        OSClearContext(&local.ctx);
         ((void (*)(u32))lbl_80368618)(lbl_80368604);
     }
     fn_8020AEC4(&lbl_8036860C);
-    OSClearContext(&ctx);
+    OSClearContext(&local.ctx);
     OSSetCurrentContext(ctxArg);
 }
 #pragma use_lmw_stmw reset
@@ -2823,10 +2827,10 @@ void fn_802100F4(u32 arg0) {
     u32 tv;
     u32 mode;
     u32 val;
+    volatile u32 grit;
     u32 pad0;
     u32 pad1;
     u32 pad2;
-    volatile u32 grit;
     u8 lo;
     u8 hi;
     u16 tmp;
@@ -2836,7 +2840,7 @@ void fn_802100F4(u32 arg0) {
     tv = arg0 & 3;
     *(u32 *)0x800000CC = mode;
     tm = fn_8021004C(arg0);
-    regs = (volatile u16 *)0xCC002000;
+    regs = (volatile u16 *)(0xCC000000 + 0x2000);
     *++regs = 2;
     grit = 0;
     if (grit < 1000) {
@@ -2846,36 +2850,36 @@ void fn_802100F4(u32 arg0) {
     }
     *regs = 0;
     tmp = tm->unk1A;
-    *(volatile u16 *)0xCC002006 = tmp;
+    *(volatile u16 *)(0xCC000000 + 0x2006) = tmp;
     hi = tm->unk1D;
     lo = tm->unk1E;
-    *(volatile u16 *)0xCC002004 = lo | (hi << 8);
+    *(volatile u16 *)(0xCC000000 + 0x2004) = lo | (hi << 8);
     hi = tm->unk1F;
     lo = tm->unk1C;
-    *(volatile u16 *)0xCC00200A = lo | (hi << 7);
+    *(volatile u16 *)(0xCC000000 + 0x200A) = lo | (hi << 7);
     tmp = tm->unk20;
-    *(volatile u16 *)0xCC002008 = (tmp & 0x7FFF) << 1;
+    *(volatile u16 *)(0xCC000000 + 0x2008) = (tmp & 0x7FFF) << 1;
     tmp = tm->unk2;
     lo = tm->unk0;
     tmp = (tmp * 2) - 2;
-    *(volatile u16 *)0xCC002000 = lo;
-    *(volatile u16 *)0xCC00200E = tm->unk4 + tmp;
-    *(volatile u16 *)0xCC00200C = tm->unk8 + 2;
+    *(volatile u16 *)(0xCC000000 + 0x2000) = lo;
+    *(volatile u16 *)(0xCC000000 + 0x200E) = tm->unk4 + tmp;
+    *(volatile u16 *)(0xCC000000 + 0x200C) = tm->unk8 + 2;
     tmp = tm->unk2;
     tmp = (tmp * 2) - 2;
-    *(volatile u16 *)0xCC002012 = tm->unk6 + tmp;
-    *(volatile u16 *)0xCC002010 = tm->unkA + 2;
-    *(volatile u16 *)0xCC002016 = tm->unkC | (tm->unk10 << 5);
-    *(volatile u16 *)0xCC002014 = tm->unkE | (tm->unk14 << 5);
-    *(volatile u16 *)0xCC00201A = tm->unkD | (tm->unk12 << 5);
-    *(volatile u16 *)0xCC002018 = tm->unkF | (tm->unk16 << 5);
-    *(volatile u16 *)0xCC002048 = 0x2828;
-    *(volatile u16 *)0xCC002036 = 1;
-    *(volatile u16 *)0xCC002034 = 0x1001;
+    *(volatile u16 *)(0xCC000000 + 0x2012) = tm->unk6 + tmp;
+    *(volatile u16 *)(0xCC000000 + 0x2010) = tm->unkA + 2;
+    *(volatile u16 *)(0xCC000000 + 0x2016) = tm->unkC | (tm->unk10 << 5);
+    *(volatile u16 *)(0xCC000000 + 0x2014) = tm->unkE | (tm->unk14 << 5);
+    *(volatile u16 *)(0xCC000000 + 0x201A) = tm->unkD | (tm->unk12 << 5);
+    *(volatile u16 *)(0xCC000000 + 0x2018) = tm->unkF | (tm->unk16 << 5);
+    *(volatile u16 *)(0xCC000000 + 0x2048) = 0x2828;
+    *(volatile u16 *)(0xCC000000 + 0x2036) = 1;
+    *(volatile u16 *)(0xCC000000 + 0x2034) = 0x1001;
     tmp = tm->unk18;
     tmp2 = tm->unk1A;
-    *(volatile u16 *)0xCC002032 = tmp2 + 1;
-    *(volatile u16 *)0xCC002030 = ((s16)tmp / 2 + 1) | 0x1000;
+    *(volatile u16 *)(0xCC000000 + 0x2032) = tmp2 + 1;
+    *(volatile u16 *)(0xCC000000 + 0x2030) = ((s16)tmp / 2 + 1) | 0x1000;
     if ((s32)mode < 4) {
         if ((s32)mode >= 1) {
             val = mode;
@@ -2887,10 +2891,10 @@ void fn_802100F4(u32 arg0) {
     }
     if (tv <= 1) {
         *regs = (u16)((((tv & 1) << 2) | 1) | (val << 8));
-        *(volatile u16 *)0xCC00206C = 0;
+        *(volatile u16 *)(0xCC000000 + 0x206C) = 0;
     } else {
         *regs = (u16)((val << 8) | 5);
-        *(volatile u16 *)0xCC00206C = 1;
+        *(volatile u16 *)(0xCC000000 + 0x206C) = 1;
     }
 }
 

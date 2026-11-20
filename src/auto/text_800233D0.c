@@ -117,21 +117,16 @@ extern Map_802CA518 gBattleMap;
 
 f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 {
-    typedef struct {
-        char pad[0x42D4];
-        s16 val;
-    } T;
-    u8 *base;
-    u8 *row;
-    s32 index;
-    T *t;
-
-    base = (u8 *)arg0 + 0x20000;
-    row = (u8 *)arg0 + 0x10000;
-    index = arg1 + (arg2 << 6);
-    index = (u8)arg3 + (index << 2);
-    t = (T *)(row + (index << 1));
-    return (f32)t->val * *(f32 *)(base - 0x3D2C);
+  u8 *base;
+  u8 *row;
+  s32 index;
+  s16 *p;
+  base = ((u8 *) arg0) + 0x20000;
+  row = ((u8 *) arg0) + 0x10000;
+  index = arg1 + (arg2 << 6);
+  index = ((u8) arg3) + (index << 2);
+  p = (s16 *) (row + (index = index << 1));
+  return ((f32) p[0x216A]) * (*((f32 *) (base - 0x3D2C)));
 }
 
 #pragma fp_contract on
@@ -1812,6 +1807,97 @@ void *fn_8002595C(s32 arg0) {
     return (u8 *)lbl_802EF438 + arg0 * 0x24;
 }
 
+void fn_80025970(void) {
+    u64 OSGetTime(void);
+    s64 __div2i(s64, s64);
+    void Pad_UpdateButtons(void *);
+    void fn_80211CC0(void *);
+    void fn_8021264C(u32);
+    void fn_802129C0(void *, u16 *, u16 *, u16 *);
+    void fn_80212CC0(u8, s32);
+    extern s32 lbl_80367248;
+    extern u32 lbl_8036724C;
+    extern u8 lbl_802EF408[48];
+    extern u8 lbl_802EF438[144];
+    extern s32 lbl_80268E30[4];
+    u8 *status;
+    s32 *flags;
+    u8 *pad;
+    u32 mask;
+    u64 now;
+    s32 i;
+    u8 tmp;
+    s8 mode;
+
+    while (1) {
+        now = OSGetTime();
+        if (__div2i((s64)(now - (((u64)(u32)lbl_80367248 << 32) | (u32)lbl_8036724C)) * 8,
+                    (s64)((*(u32 *)0x800000F8 >> 2) / 125000)) >= 1000) break;
+    }
+    now = OSGetTime();
+    lbl_8036724C = (u32)now;
+    lbl_80367248 = (u32)(now >> 32);
+    mask = 0;
+    pad = lbl_802EF438;
+    *(s32 *)(pad + 0x14) = *(u16 *)*(void **)(pad + 0);
+    *(s32 *)(pad + 0x38) = *(u16 *)*(void **)(pad + 0x24);
+    *(s32 *)(pad + 0x5C) = *(u16 *)*(void **)(pad + 0x48);
+    *(s32 *)(pad + 0x80) = *(u16 *)*(void **)(pad + 0x6C);
+    fn_802129C0(lbl_802EF408, *(u16 **)(pad + 0x6C), *(u16 **)(pad + 0x48), *(u16 **)(pad + 0x24));
+    fn_80211CC0(lbl_802EF408);
+    status = lbl_802EF408;
+    flags = lbl_80268E30;
+    for (i = 0; i < 4; i++) {
+        mode = (s8)status[0xA];
+        if (mode == -1) goto set_mask;
+        if (mode >= -1) goto do_body;
+        if (mode == -3) goto skip_body;
+        goto do_body;
+    set_mask:
+        mask |= (u32)*flags;
+    do_body:
+        *(u32 *)(pad + 8) = *(u32 *)(pad + 4);
+        Pad_UpdateButtons(pad);
+        tmp = *(u8 *)(pad + 0x20);
+        if (tmp != 0) {
+            *(u8 *)(pad + 0x20) = (u8)(tmp - 1);
+            if (*(u8 *)(pad + 0x20) == 0) {
+                fn_80212CC0(*(u8 *)(pad + 0x1C), 0);
+            }
+        }
+        {
+            u32 cur = *(u32 *)(pad + 4);
+            u32 diff2 = cur & (*(u32 *)(pad + 8) ^ cur);
+            *(u32 *)(pad + 0x10) = diff2;
+            *(u32 *)(pad + 0xC) = diff2;
+            cur = *(u32 *)(pad + 4);
+            if (cur != 0 && *(u32 *)(pad + 8) == cur) {
+                *(u8 *)(pad + 0x1D) = (u8)(*(u8 *)(pad + 0x1D) - 1);
+                *(u8 *)(pad + 0x1E) = (u8)(*(u8 *)(pad + 0x1E) - 1);
+                if (*(u8 *)(pad + 0x1D) == 0) {
+                    *(u32 *)(pad + 0x10) = *(u32 *)(pad + 4);
+                    *(u8 *)(pad + 0x1D) = 2;
+                }
+                if (*(u8 *)(pad + 0x1E) == 0) {
+                    *(u32 *)(pad + 0xC) = *(u32 *)(pad + 4);
+                    *(u8 *)(pad + 0x1E) = 4;
+                }
+            } else {
+                *(u8 *)(pad + 0x1E) = 0xC;
+                *(u8 *)(pad + 0x1D) = 0xC;
+            }
+            *(u8 *)(pad + 0x1F) = (u8)(*(u8 *)(pad + 0x1F) + 1);
+        }
+    skip_body:
+        status += 0xC;
+        flags++;
+        pad += 0x24;
+    }
+    if (mask != 0) {
+        fn_8021264C(mask);
+    }
+}
+
 void fn_80025BA0(void) {
 void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
 extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
@@ -3156,22 +3242,18 @@ void UiCtx_GetItemSlot(void *arg0) {
 }
 #pragma scheduling off
 void fn_800285EC(void) {
-    void fn_80098A9C(void);
-    void fn_800D5818(void);
     extern u8 lbl_80367707;
     extern u8 gBattle[];
-    u8 *r4;
-    u8 *r5;
     u32 flags;
+    u8 *base;
 
     if (lbl_80367707 == 0) {
-        r4 = (u8 *)((u32)&gBattle[0] & 0xFFFF0000);
-        r5 = gBattle;
-        flags = *(u32 *)(r5 + 0xCAC);
+        base = gBattle;
+        flags = *(u32 *)(base + 0xCAC);
         if ((flags & 0x80000000) != 0) {
             fn_80098A9C();
         } else {
-            *(u32 *)(r5 + 0xCAC) = flags | 0x10000000;
+            *(u32 *)(base + 0xCAC) = flags | 0x10000000;
             fn_800D5818();
         }
     }
@@ -3227,16 +3309,14 @@ void fn_80028724(void) {
     extern u8 gFxChannels[];
     extern u8 gBattleState[];
     extern u8 lbl_80268E40[];
-    u8 *channels;
     u8 *battle;
     u8 *msg;
-    u8 flag;
+    u8 *channels;
 
+    battle = gBattleState;
+    msg = lbl_80268E40;
     channels = gFxChannels;
-    battle = gBattleState + 0xB4;
-    msg = lbl_80268E40 + 0x21E;
-    flag = EventFlag_IsSet(battle, msg);
-    if (flag == 0) {
+    if (EventFlag_IsSet(battle + 0xB4, msg + 0x21E) == 0) {
         fn_80146AF0();
         Fx_FadeIn(channels, 0x3E8);
         fn_8014876C(channels, 0x64, 0x3E8);

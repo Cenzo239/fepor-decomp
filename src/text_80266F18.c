@@ -351,6 +351,79 @@ void fn_80267000(void) {
 
 }
 
+s32 fn_80267004(s32 arg0, s32 arg1) {
+    s32 fn_80267580(s32, s32, s32);
+    s32 fn_802677E4(s32 *, s32, s32);
+    extern u8 lbl_803670E0;
+    static volatile u32 exi[16] : 0xCC006800;
+    s32 c = 0x40000000;
+    s32 sp54;
+    s32 sp50;
+    s32 sp4C;
+    s32 sp44;
+    s32 sp3C;
+    s32 temp_r24;
+    s32 temp_r26;
+    s32 temp_r28;
+    s32 temp_r3;
+    s32 temp_r3_2;
+    s32 var_r3;
+
+    temp_r28 = OSDisableInterrupts();
+    do {
+        exi[10] = (exi[10] & 0x405) | 0xC0;
+        sp50 = c;
+        fn_802677E4(&sp50, 2, 1);
+        while (exi[13] & 1) {
+        }
+        fn_802677E4(&sp54, 4, 0);
+        while (exi[13] & 1) {
+        }
+        exi[10] = exi[10] & 0x405;
+    } while (sp54 & 2);
+    lbl_803670E0 += 1;
+    if (lbl_803670E0 & 1) {
+        var_r3 = 0x1000;
+    } else {
+        var_r3 = 0;
+    }
+    while (fn_80267580(var_r3 | 0x10000 | 0xC000, arg0, (arg1 + 3) & 0xFFFFFFFC) == 0) {
+    }
+    do {
+        exi[10] = (exi[10] & 0x405) | 0xC0;
+        sp4C = c;
+        fn_802677E4(&sp4C, 2, 1);
+        while (exi[13] & 1) {
+        }
+        fn_802677E4(&sp54, 4, 0);
+        while (exi[13] & 1) {
+        }
+        exi[10] = exi[10] & 0x405;
+    } while (sp54 & 2);
+    temp_r24 = (((lbl_803670E0 << 0x10) | 0x1F000000 | arg1) & 0x1FFFFFFF) | 0xC0000000;
+    do {
+        exi[10] = (exi[10] & 0x405) | 0xC0;
+        sp44 = temp_r24;
+        temp_r3 = !fn_802677E4(&sp44, 4, 1);
+        while (exi[13] & 1) {
+        }
+        exi[10] = exi[10] & 0x405;
+    } while (temp_r3);
+    do {
+        exi[10] = (exi[10] & 0x405) | 0xC0;
+        sp3C = c;
+        temp_r26 = fn_802677E4(&sp3C, 2, 1) == 0;
+        while (exi[13] & 1) {
+        }
+        temp_r3_2 = temp_r26 | (!fn_802677E4(&sp54, 4, 0));
+        while (exi[13] & 1) {
+        }
+        exi[10] = exi[10] & 0x405;
+    } while (temp_r3_2 != 0 || (sp54 & 2));
+    OSRestoreInterrupts(temp_r28);
+    return 0;
+}
+
 s32 fn_80267264(s32 arg0, s32 arg1) {
     s32 temp_r31;
     s32 var_r3;
@@ -415,11 +488,12 @@ void fn_802673E0(s32 *arg0, s32 arg1)
     extern void __OSMaskInterrupts(u32);
     extern s32 lbl_80368B40;
     extern s32 lbl_80368B30;
+    volatile u32 *const hwReg = (volatile u32 *)0xCC006828;
     u32 enabled = OSDisableInterrupts();
     lbl_80368B40 = (s32)&lbl_80368B44;
     *arg0 = lbl_80368B40;
     lbl_80368B30 = arg1;
     __OSMaskInterrupts(0x18000U);
-    *(volatile u32 *)0xCC006828 = 0;
+    *hwReg = 0;
     OSRestoreInterrupts(enabled);
 }

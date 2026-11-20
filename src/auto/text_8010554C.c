@@ -1193,17 +1193,16 @@ void fn_801069A0(u8 *arg0) {
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
-    u32 sp8;
     u32 spC;
+    u32 sp8;
     u8 sp10[0x68];
-    s32 var_r30;
-    s32 var_r31;
     s32 var_r26;
     s32 var_r27;
     s32 var_r28;
     s32 var_r29;
+    s32 var_r30;
+    s32 var_r31;
     u32 var_r0;
-    s32 temp;
 
     *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
     arg0[0x63] = fn_80107874(arg0 + 0x30, *(void **)(arg0 + 0x68));
@@ -1216,45 +1215,30 @@ void fn_801069A0(u8 *arg0) {
     if (fn_801A2300() == 0) {
         return;
     }
-    var_r30 = 0;
-    temp = (s32)(arg0 + 0x30);
-    var_r31 = var_r30;
-    sp8 = Hash_Lookup((void *)temp);
+    var_r31 = 0;
+    var_r30 = var_r31;
+    sp8 = Hash_Lookup((void *)(arg0 + 0x30));
     if (sp8 == 0) {
         var_r0 = 0;
-        goto after_parse;
+    } else {
+        var_r29 = Bin_ReadU8(&sp8);
+        switch ((u8)Bin_ReadU8(&sp8)) {
+        case 2:
+            var_r28 = 0;
+            break;
+        case 3:
+            Bin_ReadU8(&sp8);
+            var_r28 = Bin_ReadU8(&sp8);
+            Bin_ReadU32(&sp8);
+            break;
+        case 4:
+            Bin_ReadU8(&sp8);
+            var_r28 = Bin_ReadU8(&sp8);
+            break;
+        }
+        var_r0 = (sp8 + 3) & ~3;
+        sp8 = var_r0;
     }
-    var_r29 = Bin_ReadU8(&sp8);
-    var_r0 = Bin_ReadU8(&sp8);
-    if ((s32)var_r0 == 3) {
-        goto case3;
-    } else if ((s32)var_r0 >= 3) {
-        goto check5;
-    }
-    if ((s32)var_r0 >= 2) {
-        goto case2;
-    }
-    goto sw_end;
-case2:
-    var_r28 = 0;
-    goto sw_end;
-check5:
-    if ((s32)var_r0 >= 5) {
-        goto sw_end;
-    }
-    goto case4;
-case3:
-    Bin_ReadU8(&sp8);
-    var_r28 = Bin_ReadU8(&sp8);
-    Bin_ReadU32(&sp8);
-    goto sw_end;
-case4:
-    Bin_ReadU8(&sp8);
-    var_r28 = Bin_ReadU8(&sp8);
-sw_end:
-    var_r0 = (sp8 + 3) & ~3;
-    sp8 = var_r0;
-after_parse:
     spC = var_r0;
     if (var_r0 != 0) {
         var_r26 = 0;
@@ -2897,37 +2881,48 @@ void Prim2D_SetAlphaByte(s8 arg0);
 void Prim2D_SetColorByte(s8 arg0);
 void fn_80009C20(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8);
 void fn_80109244(struct Arg0 *arg0) {
+    void Prim2D_Begin(void);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_SetColorByte(u8);
+    void Prim2D_SetAlphaByte(u8);
+    extern f64 lbl_8036A128;
+    extern f64 lbl_8036A120;
+    extern f32 lbl_8036A134;
+    extern f32 lbl_8036A130;
     struct UnkCycler *outer;
-    struct Arg0 *a0 = arg0;
     s32 i;
     s32 temp_r31;
+    s32 next;
+    s32 count;
     f32 f1_2;
+    f32 pos;
 
-    a0->unk3C = a0->unk3C + a0->unk38;
-    if (a0->unk3C >= a0->unk34) {
-        a0->unk3C = a0->unk3C - a0->unk34;
+    arg0->unk3C = arg0->unk3C + arg0->unk38;
+    if (arg0->unk34 <= arg0->unk3C) {
+        arg0->unk3C = arg0->unk3C - arg0->unk34;
     }
     Prim2D_Begin();
-    outer = a0->unk30;
-    fn_80009C20(outer, a0->unk40, a0->unk44, a0->unk48 + (f32)outer->unk6, a0->unk4C, a0->unk50, a0->unk54, a0->unk58, arg0->unk5C);
-    Prim2D_SetColorByte(a0->unk60);
-    Prim2D_SetAlphaByte(a0->unk61);
+    fn_80009C20(arg0->unk30, arg0->unk40, arg0->unk44, arg0->unk48 + (f32)((struct UnkCycler *)arg0->unk30)->unk6, arg0->unk4C, arg0->unk50, arg0->unk54, arg0->unk58, arg0->unk5C);
+    Prim2D_SetColorByte(arg0->unk60);
+    Prim2D_SetAlphaByte(arg0->unk61);
     Prim2D_PrepareTex();
-    if (outer->unk5 == 0) {
-        i = outer->unk4 - 1;
-        do {
+    pos = arg0->unk3C;
+    if (arg0->unk30->unk5 == 0) {
+        outer = arg0->unk30;
+        for (i = outer->unk4 - 1; i >= 0; i--) {
             outer->unk14[i]->v1(0xFF);
-            i--;
-        } while (i >= 0);
-    } else if (outer->unk5 == 2) {
-        temp_r31 = (s32)a0->unk3C;
-        f1_2 = lbl_8036A134 * (a0->unk3C - (f32)temp_r31);
-        if (f1_2 != lbl_8036A130) {
-            outer->unk14[(temp_r31 + 1) % outer->unk4]->v1((s32)f1_2);
         }
-        outer->unk14[temp_r31]->v1(0xFF);
-    } else if (outer->unk5 == 1) {
-        outer->unk14[(s32)a0->unk3C]->v1(0xFF);
+    } else if (arg0->unk30->unk5 == 2) {
+        temp_r31 = (s32)pos;
+        next = temp_r31 + 1;
+        count = arg0->unk30->unk4;
+        f1_2 = lbl_8036A134 * (pos - (f32)temp_r31);
+        if (f1_2 != lbl_8036A130) {
+            arg0->unk30->unk14[next % count]->v1((s32)f1_2);
+        }
+        arg0->unk30->unk14[temp_r31]->v1(0xFF);
+    } else if (arg0->unk30->unk5 == 1) {
+        arg0->unk30->unk14[(s32)pos]->v1(0xFF);
     }
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
@@ -4832,6 +4827,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
+#pragma opt_strength_reduction off
 s32 Ai_TryUseHealItem(void *arg0) {
     void *Item_GetByIid(void *);
     void *Unit_GetItemSlot(void *, s32);
@@ -4856,6 +4852,9 @@ s32 Ai_TryUseHealItem(void *arg0) {
     void *best;
     s32 i;
     void *key;
+    s32 vb;
+    s32 vc;
+    s32 dv;
 
     best = 0;
     i = 0;
@@ -4872,9 +4871,9 @@ loop:
         } else {
             key = *(void **)best;
             chosen = best;
-            if (key == Item_GetByIid(lbl_80273B40 + 0x1D)) {
+            if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
                 valBest = 0xA;
-            } else if (key == Item_GetByIid(lbl_80273B40 + 0x2B)) {
+            } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
                 valBest = Unit_GetMaxHp(arg0);
             } else {
                 valBest = 0;
@@ -4883,26 +4882,34 @@ loop:
             temp = valBest;
             if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
                 valCur = 0xA;
-            } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
+            } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
                 valCur = Unit_GetMaxHp(arg0);
             } else {
                 valCur = 0;
             }
-            if ((s8)valBest != (s8)valCur) {
-                if ((s8)valBest > (s8)valCur) {
+            vb = (s8)valBest;
+            vc = (s8)valCur;
+            if (vb != vc) {
+                if (vb > vc) {
                     temp = valCur;
                     valCur = valBest;
                     chosen = slot;
                     slot = best;
                 }
                 valBest = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                a = Abs((s8)(valBest - (s8)valCur));
+                dv = (s8)(valBest - vc);
+                a = Abs(dv);
                 if (Abs((s8)(valBest - (s8)temp)) > a) {
-                    chosen = slot;
+                    goto set_other;
                 }
-            } else if (*(u8 *)((u8 *)slot + 4) > *(u8 *)((u8 *)best + 4)) {
+                goto after_dist;
+            set_other:
+                chosen = slot;
+            after_dist:
+                ;
+            } else if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
                 chosen = best;
-            } else if (*(u8 *)((u8 *)slot + 4) < *(u8 *)((u8 *)best + 4)) {
+            } else if (*(u8 *)((u8 *)best + 4) > *(u8 *)((u8 *)slot + 4)) {
                 chosen = slot;
             } else {
                 chosen = best;
@@ -4917,7 +4924,7 @@ loop:
     }
 after_loop:
     if (best == 0) {
-        return 0;
+        goto ret0;
     }
     for (idx = 4; idx < 8; idx++) {
         if (best == Unit_GetItemSlot(arg0, idx)) {
@@ -4932,9 +4939,12 @@ after_loop:
     sp8 = 0;
     fn_800FB96C(4, (s8)sp12, (s8)sp10, arg0, (s8)sp12, (s8)sp10, (s8)idx, 0, 0);
     return best != 0;
+ret0:
+    return 0;
 }
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
+#pragma opt_strength_reduction reset
 
 s32 Unit_HasLowHpAi(void *arg0) {
     void *Res_GetByName(s32);
@@ -6681,27 +6691,25 @@ void fn_8010FD70(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
 
 #pragma global_optimizer off
 void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
-    void *src;
-    u16 half;
-    u8 byte;
-    char *entry;
+    u16 temp_r9;
+    u8 temp_r10;
+    char *temp_r8;
     s8 zero;
 
-    src = arg4;
-    half = *(u16 *)((char *)src + 0xE);
-    byte = *(u8 *)((char *)src + 0x18);
-    entry = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
+    temp_r9 = *(u16 *)((char *)arg4 + 0xE);
+    temp_r10 = *(u8 *)((char *)arg4 + 0x18);
     zero = 0;
-    entry[0] = arg1;
-    entry[1] = arg2;
-    entry[2] = 7;
-    entry[3] = arg3;
-    entry[0xA] = zero;
+    temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
+    temp_r8[0] = arg1;
+    temp_r8[1] = arg2;
+    temp_r8[2] = 7;
+    temp_r8[3] = arg3;
+    temp_r8[0xA] = zero;
     *(s32 *)((char *)arg0 + 0x200) = *(s32 *)((char *)arg0 + 0x200) + 1;
-    entry[4] = half;
-    entry[5] = byte;
-    entry[6] = zero;
-    entry[7] = zero;
+    temp_r8[4] = temp_r9;
+    temp_r8[5] = temp_r10;
+    temp_r8[6] = zero;
+    temp_r8[7] = zero;
 }
 #pragma global_optimizer reset
 void MapObjEvent_Remove(void *arg0, s8 arg1, s8 arg2, u8 arg3) {

@@ -114,13 +114,13 @@ void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(vo
 u16 b;
 u16 a;
 u16 *p=&gUiPanelFlags;
-a=gUiPanelFlags; b=p[1];
+a=gUiPanelFlags; b=*(p+1);
 gUiInputFlags |= 2;
 if(!(a&0x40)) {
 if((u32)Process_Find(gUiTooltipProc)!=0U) {
 if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
 }}
-gUiPanelFlags=a; p[1]=b;
+gUiPanelFlags=a; *(p+1)=b;
 }
 #pragma scheduling on
 #pragma peephole on
@@ -1732,11 +1732,11 @@ extern "C" void fn_80123634(void *arg0) {
 #pragma cplusplus reset
 void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void *);
-    void String_Init(void *, void *, void *);
-    void Xml_GetNamedValue(void *, void *, void *);
-    void String_AssignCStr(void *, void *, u32);
-    void String_Destroy(void *, s32);
-    s32 String_Compare(void *, u32, u32, char *, u32);
+    void fn_800C9ABC(void *, void *, void *);
+    void fn_800C8DCC(void *, void *, void *);
+    void fn_800C96F8(void *, void *, u32);
+    void fn_800C9A60(void *, s32);
+    s32 fn_800C9400(void *, u32, u32, char *, u32);
     s32 fn_800E7FB4(void *, void *);
     u32 strlen(const char *);
     extern u8 lbl_802902E8[];
@@ -1814,22 +1814,22 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     sp48.data = 0;
     sp48.cap = 0;
 
-    String_Init(&sp3C, lbl_80274DB0 + 0x12, &sp14);
-    Xml_GetNamedValue(spC0, path, &sp3C);
+    fn_800C9ABC(&sp3C, lbl_80274DB0 + 0x12, &sp14);
+    fn_800C8DCC(spC0, path, &sp3C);
     buf = (Obj *)spC0;
-    String_AssignCStr(&self->str54, buf, strlen((char *)buf));
-    String_Destroy(&sp3C, -1);
+    fn_800C96F8(&self->str54, buf, strlen((char *)buf));
+    fn_800C9A60(&sp3C, -1);
 
-    String_Init(&sp30, lbl_80274DB0 + 0x1A, &sp10);
-    Xml_GetNamedValue(spA0, path, &sp30);
+    fn_800C9ABC(&sp30, lbl_80274DB0 + 0x1A, &sp10);
+    fn_800C8DCC(spA0, path, &sp30);
     buf = (Obj *)spA0;
-    String_AssignCStr(&sp48, buf, strlen((char *)buf));
-    String_Destroy(&sp30, -1);
+    fn_800C96F8(&sp48, buf, strlen((char *)buf));
+    fn_800C9A60(&sp30, -1);
 
-    String_Init(&sp24, lbl_80274DB0 + 0x1F, &spC);
-    Xml_GetNamedValue(sp80, path, &sp24);
+    fn_800C9ABC(&sp24, lbl_80274DB0 + 0x1F, &spC);
+    fn_800C8DCC(sp80, path, &sp24);
     self->unk68 = *(s32 *)sp80;
-    String_Destroy(&sp24, -1);
+    fn_800C9A60(&sp24, -1);
 
     t1 = lbl_8036A2F8;
     self->unk6C = t1;
@@ -1844,20 +1844,20 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     self->unk8C = t0;
     self->unk90 = 0;
 
-    String_Init(&sp18, lbl_80274DB0 + 0x23, &sp8);
-    Xml_GetNamedValue(sp60, path, &sp18);
+    fn_800C9ABC(&sp18, lbl_80274DB0 + 0x23, &sp8);
+    fn_800C8DCC(sp60, path, &sp18);
     self->unk94 = *(s32 *)sp60;
-    String_Destroy(&sp18, -1);
+    fn_800C9A60(&sp18, -1);
 
     buf = (Obj *)(lbl_80274DB0 + 0x2B);
-    if (String_Compare(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
+    if (fn_800C9400(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
         self->unk64 = 1;
     } else {
         self->unk64 = 0;
     }
     self->unk60 = fn_800E7FB4(saved, &self->str54);
-    String_Destroy(&sp48, -1);
-    String_Destroy(&sp54, -1);
+    fn_800C9A60(&sp48, -1);
+    fn_800C9A60(&sp54, -1);
     return self;
 }
 
@@ -1894,11 +1894,11 @@ void fn_80123988(SkyProc *self)
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
 
-    u32 skyIndex;
+    u8 *base;
     u8 *proc;
     u8 *map;
     SkyVector sp8;
-    u8 *base;
+    u32 skyIndex;
 
     self->skyIndex = -1;
 
@@ -2801,8 +2801,8 @@ void fn_80125130(void *arg0) {
 
     i = 0;
     M2C_FIELD(arr, s32 *, 0x14) = i;
-    off = i;
     idx = i;
+    off = i;
     while (i < M2C_FIELD(arr, s32 *, 0x18)) {
         i += 1;
         *(void **)((u8 *)M2C_FIELD(arr, void **, 4) + idx) =
@@ -3178,33 +3178,34 @@ void fn_80125B94(void *arg0)
 }
 #pragma scheduling on
 s32 fn_80125BB0(void) {
-    void *Process_Find(M2C_UNK *, M2C_UNK *);
+    void *Process_Find(u8 *, u8 *);
     s32 GMaterial_AllocMtx();
     s32 GMaterial_AllocTexCoord();
     s32 GMaterial_AllocTexMap();
     s32 GMaterial_AllocTevStage();
-    M2C_UNK fn_8006A384(M2C_UNK *);
-    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
-    M2C_UNK PSMTXConcat(M2C_UNK *, M2C_UNK *, M2C_UNK *);
-    M2C_UNK fn_802026E4(M2C_UNK *, f32 *, s32 *, f32 *, s32, s32, f32, f32, f32, f32);
-    M2C_UNK C_MTXLightOrtho(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
-    M2C_UNK fn_802201A8(s32, M2C_UNK, M2C_UNK, s32, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80222C50(M2C_UNK *, s32);
-    M2C_UNK GXSetTevColorIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevAlphaIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevColorOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevAlphaOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevOrder(s32, s32, s32, M2C_UNK);
-    M2C_UNK fn_80224E50(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_80274EE0;
-    extern M2C_UNK lbl_80290328;
+    void fn_8006A384(f32 *);
+    s32 Ui_LoadAtlasTex(s32, u8 *, s32);
+    void PSMTXConcat(f32 *, f32 *, f32 *);
+    void fn_802026E4(f32 *, f32 *, s32 *, f32 *, s32, s32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(f32 *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void fn_80222C50(u8 *, s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void fn_80224E50(f32 *, s32, s32);
+    extern u8 lbl_80274EE0[0x30];
+    extern u8 lbl_80290328[0x60];
     extern f32 lbl_8036A378;
     extern f32 lbl_8036A3B4;
-    M2C_UNK spF4;
-    M2C_UNK spC4;
-    M2C_UNK sp94;
-    M2C_UNK sp64;
-    M2C_UNK sp44;
+    f32 spF4[12];
+    f32 spC4[12];
+    f32 sp94[12];
+    f32 sp64[12];
+    u8 sp44[0x20];
+    f32 scratch[12];
     s32 sp40;
     f32 sp3C;
     f32 sp38;
@@ -3228,45 +3229,48 @@ s32 fn_80125BB0(void) {
     s32 temp_r28;
     s32 temp_r29;
     void *temp_r3;
+    u8 *cfg;
 
-    temp_r3 = Process_Find(&lbl_80290328, &lbl_80274EE0);
+    scratch[0] = 0.0f;
+    cfg = lbl_80274EE0;
+    temp_r3 = Process_Find(lbl_80290328, cfg);
     if (temp_r3 == NULL) {
         return 1;
     }
-    fn_8006A384(&sp64);
+    fn_8006A384(sp64);
     temp_r28 = GMaterial_AllocTexCoord();
     temp_r29 = GMaterial_AllocTevStage();
     temp_r27 = GMaterial_AllocTexMap();
     temp_r26 = GMaterial_AllocMtx();
-    temp_f1 = lbl_8036A3B4 + M2C_FIELD(temp_r3, f32 *, 0x4C);
-    temp_f0 = lbl_8036A3B4 + M2C_FIELD(temp_r3, f32 *, 0x50);
-    sp14 = M2C_FIELD(&lbl_80274EE0, f32 *, 0xC);
-    sp18 = M2C_FIELD(&lbl_80274EE0, f32 *, 0x10);
-    sp8 = M2C_FIELD(&lbl_80274EE0, f32 *, 0x18);
+    temp_f1 = lbl_8036A3B4 + *(f32 *)((u8 *)temp_r3 + 0x4C);
+    temp_f0 = lbl_8036A3B4 + *(f32 *)((u8 *)temp_r3 + 0x50);
+    sp14 = *(f32 *)(cfg + 0xC);
+    sp18 = *(f32 *)(cfg + 0x10);
+    sp8 = *(f32 *)(cfg + 0x18);
     sp18 = temp_f0;
-    spC = M2C_FIELD(&lbl_80274EE0, f32 *, 0x1C);
+    spC = *(f32 *)(cfg + 0x1C);
     sp8 = temp_f1;
     sp14 = temp_f1;
     spC = temp_f0;
-    sp1C = M2C_FIELD(&lbl_80274EE0, s32 *, 0x14);
+    sp1C = *(s32 *)(cfg + 0x14);
     sp38 = sp14;
     sp3C = sp18;
-    sp40 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x14);
-    sp10 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x20);
+    sp40 = *(s32 *)(cfg + 0x14);
+    sp10 = *(s32 *)(cfg + 0x20);
     sp2C = sp8;
     sp30 = spC;
-    sp34 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x20);
-    sp20 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x24);
-    sp24 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x28);
-    sp28 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x2C);
-    fn_802026E4(&sp94, &sp2C, &sp20, &sp38, M2C_FIELD(&lbl_80274EE0, s32 *, 0x28), M2C_FIELD(&lbl_80274EE0, s32 *, 0x24), spC, sp8, temp_f1, lbl_8036A3B4);
+    sp34 = *(s32 *)(cfg + 0x20);
+    sp20 = *(s32 *)(cfg + 0x24);
+    sp24 = *(s32 *)(cfg + 0x28);
+    sp28 = *(s32 *)(cfg + 0x2C);
+    fn_802026E4(sp94, &sp2C, &sp20, &sp38, *(s32 *)(cfg + 0x28), *(s32 *)(cfg + 0x24), spC, sp8, temp_f1, lbl_8036A3B4);
     temp_f1_2 = -lbl_8036A3B4;
-    C_MTXLightOrtho(&spC4, temp_f1_2, lbl_8036A3B4, temp_f1_2, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
-    PSMTXConcat(&sp94, &sp64, &sp94);
-    PSMTXConcat(&spC4, &sp94, &spF4);
-    fn_80224E50(&spF4, temp_r26, 0);
-    Ui_LoadAtlasTex(M2C_FIELD(temp_r3, s32 *, 0x54), &sp44, 5);
-    fn_80222C50(&sp44, temp_r27);
+    C_MTXLightOrtho(spC4, temp_f1_2, lbl_8036A3B4, temp_f1_2, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
+    PSMTXConcat(sp94, sp64, sp94);
+    PSMTXConcat(spC4, sp94, spF4);
+    fn_80224E50(spF4, temp_r26, 0);
+    Ui_LoadAtlasTex(*(s32 *)((u8 *)temp_r3 + 0x54), sp44, 5);
+    fn_80222C50(sp44, temp_r27);
     fn_802201A8(temp_r28, 0, 0, temp_r26, 0, 0x7D);
     GXSetTevOrder(temp_r29, temp_r28, temp_r27, 4);
     GXSetTevColorIn(temp_r29, 0xF, 0, 8, 0xF);

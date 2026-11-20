@@ -759,16 +759,19 @@ s32 fn_800A4BC4(void) {
     extern u8 lbl_803123A0[];
     u8 *p = lbl_803123A0;
     u32 prod;
-    s32 w;
+    s32 v44;
+    s32 aligned;
     s32 sum;
     s32 t0;
     u8 a7;
 
     if (*(s32 *)(p + 0xA0) != 0) {
-        w = *(s32 *)(p + 0x80);
-        prod = w * *(s32 *)(p + 0x84);
+        s32 *q = (s32 *)(p + 0x80);
+        prod = q[0] * q[1];
+        v44 = *(s32 *)(p + 0x44);
         a7 = p[0xA7];
-        sum = ((*(s32 *)(p + 0x44) + 0x1F) & ~0x1F) * 0xA;
+        aligned = (v44 + 0x1F) & ~0x1F;
+        sum = aligned * 0xA;
         sum += (prod + 0x1F) & ~0x1F;
         t0 = ((prod >> 2) + 0x1F) & ~0x1F;
         sum = sum + t0;
@@ -2770,14 +2773,19 @@ void Ui_DrawPromptSprites(void *proc) {
     }
 }
 void fn_800A8F94(s32 arg0) {
-void *fn_80109180(void *, s32); void fn_80148618(void *, s32);
-extern u8 lbl_8026E470[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
-void *temp; f32 b; f32 a;
-temp = fn_80109180(lbl_8026E470+0x96,arg0);
-a=lbl_80369C08; b=lbl_80369BA8;
-*(f32 *)((u8 *)temp+0x40)=a;
-*(f32 *)((u8 *)temp+0x44)=b;
-fn_80148618(lbl_8026E470+0x73,500);
+    void *Sound_Create(void *, s32);
+    void fn_80148618(void *, s32);
+    extern u8 gOptionsStr[];
+    extern f32 lbl_80369C08;
+    extern f32 lbl_80369BA8;
+    f32 b;
+    f32 a;
+    f32 *p = (f32 *)((u8 *)Sound_Create(gOptionsStr + 0x96, arg0) + 0x40);
+
+    a = lbl_80369C08;
+    b = lbl_80369BA8;
+    p[0] = a;
+    fn_80148618(gOptionsStr + 0x73, (p[1] = b, 500));
 }
 
 #pragma optimization_level reset
@@ -2866,18 +2874,18 @@ void fn_800A9174(void) {
         u8 pad[3];
         void *vt;
     } tmp;
+    struct { s32 v; } aw;
     s32 b;
-    s32 a;
 
     fn_8017A764(&tmp, gOptionsStr + 0xb5, 0);
     tmp.cur += 4;
-    a = fn_8017A950(&tmp);
+    aw.v = fn_8017A950(&tmp);
     b = fn_8017A950(&tmp);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369C0C, gOptionsIdentityScale);
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
-    fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, a, b, gOptionsIdentityScale, lbl_80369BA8);
+    fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, aw.v, b, gOptionsIdentityScale, lbl_80369BA8);
     tmp.vt = lbl_802842B8;
     tmp.vt = gStreamBaseVtbl;
     if (tmp.flag != 0) {

@@ -106,28 +106,28 @@ void fn_80091A1C(void *arg0) {
 #pragma optimization_level reset
 void fn_80091B38(void *arg0)
 {
-  u8 *new_var;
-  extern f32 lbl_80369764;
+  extern f32 gZeroF;
   extern f32 lbl_803697A4;
   s32 zero;
   s32 eight;
   s32 three;
-  f32 x;
-  f32 y;
-  f32 z;
   f32 w;
+  f32 z;
+  f32 y;
+  f32 x;
+  f32 t;
   z++;
   z--;
   zero = 0;
   eight = 8;
-  new_var = ((u8 *) arg0) + 0x3C;
   three = 3;
   x = *((f32 *) (((u8 *) arg0) + 0x38));
+  t = 0.0f;
   y = *((f32 *) (((u8 *) arg0) + 0x34));
   z = *((f32 *) (((u8 *) arg0) + 0x30));
   w = lbl_803697A4;
-  *((f32 *) new_var) = z;
-  z = lbl_80369764;
+  *((f32 *) (((u8 *) arg0) + 0x3C)) = z;
+  z = gZeroF;
   *((f32 *) (((u8 *) arg0) + 0x40)) = y;
   *((f32 *) (((u8 *) arg0) + 0x44)) = x;
   y = *((f32 *) (((u8 *) arg0) + 0x34));
@@ -249,7 +249,7 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
  u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
  if (flags & 5ULL) return fn_800940B0(arg0, arg1) != 0;
  if (flags & 0x18ULL) return fn_800940B0(arg0, arg1);
- else return (flags & 0x18ULL);
+ return (u8)((flags & 0x18ULL) >> 32);
 }
 #pragma global_optimizer reset
 /* If the item's _UFX resource allows the current game state, invoke it. */

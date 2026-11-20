@@ -82,6 +82,8 @@ void fn_8007F410(void *arg0) {
     extern f32 lbl_803694D0;
     extern f32 lbl_803694E8;
     extern f32 lbl_80369500;
+    extern f64 lbl_80369440;
+    extern f64 lbl_80369470;
     f32 by;
     f32 h;
     f32 bx;
@@ -99,6 +101,8 @@ void fn_8007F410(void *arg0) {
     void *obj;
     s32 id;
     s32 width;
+    f64 magic_u;
+    f64 magic_s;
 
     x = M2C_FIELD(arg0, f32 *, 0x14);
     y = M2C_FIELD(arg0, f32 *, 0x18);
@@ -119,12 +123,14 @@ void fn_8007F410(void *arg0) {
     Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     tex = *fn_8006EDD8(gUiAtlas, 0x1D);
-    sh = lbl_80369430 * tex[0];
-    sw = lbl_80369430 * tex[1];
+    magic_u = lbl_80369440;
+    (void)magic_u;
+    sh = (f32)tex[0] * lbl_80369430;
+    sw = (f32)tex[1] * lbl_80369430;
     color = *Ui_GetColor(1);
     tex = *fn_8006EDD8((id = gUiAtlas), 0x1D);
-    w = tex[1];
-    h = tex[0];
+    w = (f32)tex[1];
+    h = (f32)tex[0];
     Prim2D_Begin();
     Prim2D_BindTexture(id, 0x1D, 0x11);
     Prim2D_PrepareTex();
@@ -155,6 +161,8 @@ void fn_8007F410(void *arg0) {
     id = fn_8003B938(pid);
     obj = fn_8003B9AC(pid);
     width = Text_MeasureWidth(obj, -1, lbl_80369430);
+    magic_s = lbl_80369470;
+    (void)magic_s;
     Ui_DrawIcon(gUiIconDrawer, lbl_80369500 + (nx + width), by, id);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);

@@ -488,14 +488,14 @@ s32 fn_80096C18(void) {
 
 u8 fn_80096C78(s32 arg0)
 {
-  extern u8 lbl_80330EAC[];
+  extern u8 gBattle[];
   s16 saved;
   unsigned char new_var;
   s16 *idx;
   s32 count;
   new_var = ((s16) arg0) + 1;
   count = 0;
-  idx = (s16 *) (lbl_80330EAC + 0x8A0);
+  idx = (s16 *) (gBattle + 0x8A0);
   saved = *idx;
   *idx = (s16) arg0;
   *idx = (s16) new_var;
@@ -504,53 +504,30 @@ u8 fn_80096C78(s32 arg0)
     switch (((u8 *) idx)[((*idx) * 4) + 4])
     {
       case 0:
-
       case 0x20:
-
       case 0x21:
-
       case 0x22:
-
       case 0x24:
-
       case 0x37:
-
       case 0x38:
-
       case 0x39:
-        if (1)
-      {
-      }
-
       case 0x3D:
-
       case 0x3F:
-
       case 0x40:
-
       case 0x41:
-
       case 0x42:
-
       case 0x48:
         goto done;
-
       case 0x50:
-
       case 0x51:
-
       case 0x52:
         ++count;
         break;
-
     }
-
     *idx += 1;
   }
-
   done:
   *idx = saved;
-
   return (u8) (count >= 2);
 }
 
@@ -665,8 +642,8 @@ s32 Event_GetCmdKind(s32 arg0)
     u8 *base;
     s32 result;
     s16 *s;
-    s16 next;
     s16 saved;
+    s16 next;
 
     base = gBattle;
     result = -1;
@@ -676,8 +653,8 @@ s32 Event_GetCmdKind(s32 arg0)
     *(s16 *)(base + 0x8A0) = arg0;
     *(s16 *)(base + 0x8A0) = next;
     for (;;) {
-        s16 idx = *s;
-        s32 c = *((u8 *)s + (idx << 2) + 4);
+        s16 idx = *(volatile s16 *)s;
+        s32 c = *((volatile u8 *)s + (idx << 2) + 4);
         switch (c) {
         case 0x20:
         case 0x21:
@@ -687,7 +664,7 @@ s32 Event_GetCmdKind(s32 arg0)
         case 0x50:
         case 0x51:
         case 0x52:
-            result = *(volatile u8 *)((u8 *)s + (idx << 2) + 4);
+            result = *((volatile u8 *)s + (idx << 2) + 4);
             goto done;
         case 0:
             *(volatile s16 *)s = *(volatile s16 *)s + 1;

@@ -598,13 +598,17 @@ void fn_800AE52C(void *arg0)
 }
 
 void fn_800AE5A8(void *arg0) {
- f32 Math_Lerp(f32,f32,f32,f32); f32 Math_EaseOutPow(M2C_UNK,f32,f32,f32,f32);
- extern f32 lbl_80369C90; extern f32 gPhaseBannerZero; extern f32 lbl_80369C80;
- f32 start; f32 end; f32 duration; f32 time;
- M2C_FIELD(arg0,s32*,0x30)++; start=lbl_80369C90; end=gPhaseBannerZero; duration=(f32)M2C_FIELD(arg0,s32*,0x44); time=(f32)M2C_FIELD(arg0,s32*,0x30);
- M2C_FIELD(arg0,f32*,0x38)=Math_EaseOutPow(2,start,end,duration,time);
- M2C_FIELD(arg0,s32*,0x34)=(s32)Math_Lerp(gPhaseBannerZero,lbl_80369C80,(f32)M2C_FIELD(arg0,s32*,0x44),(f32)M2C_FIELD(arg0,s32*,0x30));
- if(M2C_FIELD(arg0,s32*,0x30)>=M2C_FIELD(arg0,s32*,0x44)) Process_ClearFunc(arg0);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
+    extern f32 lbl_80369C7C;
+    extern f32 lbl_80369C80;
+    extern f32 lbl_80369C90;
+    M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) + 1);
+    M2C_FIELD(arg0, f32 *, 0x38) = fn_8005A028(2, lbl_80369C90, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) fn_80059F64(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    if ((s32) M2C_FIELD(arg0, s32 *, 0x30) >= (s32) M2C_FIELD(arg0, s32 *, 0x44)) {
+        fn_8000C188(arg0);
+    }
 }
 
 /* Set up the phase-change banner: ambient FX for this army, banner widget, and draw callback. */
@@ -1166,7 +1170,7 @@ void fn_800B1720(s32 arg0, u8 *arg1)
     void OSRestoreInterrupts(s32);
     void fn_8024CE60(void *, s32, u8, u8, s32);
     void fn_8024E100(void *);
-    extern u8 gSoundSys[];
+    extern u8 lbl_80317338[];
     extern f32 lbl_80369CB4;
     u8 *base;
     u8 *base2;
@@ -1184,14 +1188,13 @@ void fn_800B1720(s32 arg0, u8 *arg1)
     s32 ctr;
     u8 *e2;
     u32 nest;
-    s32 z;
 
-    base = gSoundSys;
+    base = lbl_80317338;
     if (*(u16 *)(base + 0x124) == 0) {
-        *(s32 *)(gSoundSys + 0x128) = OSDisableInterrupts();
+        *(s32 *)(lbl_80317338 + 0x128) = OSDisableInterrupts();
     }
     *(u16 *)(base + 0x124) = (u16)(*(u16 *)(base + 0x124) + 1);
-    base2 = gSoundSys;
+    base2 = lbl_80317338;
 
     for (i = 0; i < 3; i++) {
         entry = *(u8 **)(base2 + 0xF8) + i * 0x13C;
@@ -1241,10 +1244,9 @@ void fn_800B1720(s32 arg0, u8 *arg1)
         }
     }
 
-    z = 0;
-    j = z;
-    ctr = 3;
+    j = 0;
     off = j;
+    ctr = j + 3;
     for (; ctr != 0; ctr--) {
         e2 = *(u8 **)(base2 + 0xF8) + off;
         flags = *(u16 *)e2;
@@ -1310,7 +1312,7 @@ cleanup:
         nest -= 1;
         *(u16 *)(base + 0x124) = nest;
         if ((u16)nest == 0) {
-            OSRestoreInterrupts(*(s32 *)(gSoundSys + 0x128));
+            OSRestoreInterrupts(*(s32 *)(lbl_80317338 + 0x128));
         }
     }
 }
@@ -2274,18 +2276,18 @@ void fn_800B4080(void) {
     s32 fn_8024B7DC(void *);
     extern u8 gSoundSys[];
     void fn_8024B714(u32);
-    unsigned long off;
+    register unsigned long off;
     u8 *sys;
     long i;
-    u8 *entry;
+    register u8 *entry;
     u8 *p;
     unsigned long result;
 
     fn_800B22D8();
     i = 0;
     sys = gSoundSys;
-    off = i;
     entry = *(u8 **)(sys + 0xF4);
+    off = i;
     while (i < 0x28) {
         if (*(u16 *)entry != 0) {
             entry[9] = (u8)(entry[9] + 1);
@@ -5365,9 +5367,111 @@ s32 fn_800B9CD4(u32 name, s32 x, s32 y, s32 frames, u32 arg4, f32 scale) {
     return 1;
 }
 
-s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
+s32 fn_800B9EA8(u8 *arg0, u8 *arg1, s32 arg2)
 {
-    return fn_80010710(arg0);
+    s32 Str_NCmp(void *, void *, s32);
+    void *Sound_FindByName(u32);
+    void *ScriptObj_FindByName(u32);
+    void Process_ClearFunc(void *);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+
+    extern u8 lbl_8026ECB8[];
+    extern u32 gUiInputFlags;
+
+    u8 *proc;
+    u8 *sound;
+    u8 *obj;
+    s32 frame;
+    s32 duration;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 scale;
+
+    proc = arg0;
+
+    if (Str_NCmp(
+        *(void **)(proc + 0x54),
+        lbl_8026ECB8 + 0xA47,
+        8
+    ) != 0) {
+        sound = Sound_FindByName(*(u32 *)(proc + 0x54));
+
+        if (sound == 0) {
+            Process_ClearFunc(proc);
+            return 0;
+        }
+    } else {
+        obj = ScriptObj_FindByName(*(u32 *)(proc + 0x54));
+
+        if (obj == 0) {
+            Process_ClearFunc(proc);
+            return 0;
+        }
+    }
+
+    *(s32 *)(proc + 0x60) =
+        *(s32 *)(proc + 0x60) + 1;
+
+    if (gUiInputFlags & 1) {
+        *(s32 *)(proc + 0x60) =
+            *(s32 *)(proc + 0x64);
+    }
+
+    frame = *(s32 *)(proc + 0x60);
+    duration = *(s32 *)(proc + 0x64);
+
+    x = Math_Ease(
+        0,
+        *(f32 *)(proc + 0x3C),
+        *(f32 *)(proc + 0x48),
+        (f32)frame,
+        (f32)duration
+    );
+
+    y = Math_Ease(
+        0,
+        *(f32 *)(proc + 0x40),
+        *(f32 *)(proc + 0x4C),
+        (f32)*(s32 *)(proc + 0x60),
+        (f32)*(s32 *)(proc + 0x64)
+    );
+
+    z = Math_Ease(
+        0,
+        *(f32 *)(proc + 0x44),
+        *(f32 *)(proc + 0x50),
+        (f32)*(s32 *)(proc + 0x60),
+        (f32)*(s32 *)(proc + 0x64)
+    );
+
+    scale = Math_Ease(
+        0,
+        *(f32 *)(proc + 0x30),
+        *(f32 *)(proc + 0x34),
+        (f32)*(s32 *)(proc + 0x60),
+        (f32)*(s32 *)(proc + 0x64)
+    );
+
+    if (Str_NCmp(
+        *(void **)(proc + 0x54),
+        lbl_8026ECB8 + 0xA47,
+        8
+    ) != 0) {
+        *(f32 *)(sound + 0x40) = x;
+        *(f32 *)(sound + 0x44) = y;
+        *(f32 *)(sound + 0x54) = z;
+        *(f32 *)(sound + 0x58) = scale;
+    } else {
+        *(s16 *)(obj + 0x18) = (s16)(s32)x;
+        *(s16 *)(obj + 0x1A) = (s16)(s32)y;
+        *(f32 *)(obj + 0x1C) = z;
+    }
+
+    if (*(s32 *)(proc + 0x60) >=
+        *(s32 *)(proc + 0x64)) {
+        Process_ClearFunc(proc);
+    }
 }
 
 s32 ScriptCmd_SetPos(u32 name, s32 x, s32 y) {
@@ -7536,20 +7640,30 @@ s32 fn_800BDB9C(s32 arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 void EventFlag_Clear(s32 arg0, s32 arg1) {
- s32 i; u32 hash; s32 p; s32 walk;
- hash=fn_8000D598(arg1); walk=arg0; i=0;
- for (;;) {
- if(hash==*(u32 *)(walk+0x180)) {
- if(Str_Cmp(*(s32 *)walk,arg1)!=0) goto next;
- goto found;
- }
-next:
- ++i; walk+=4;
- if(i<0x60) continue;
- i=-1; break;
- }
+    s32 i;
+    u32 hash;
+    s32 p;
+    s32 walk;
+
+    hash = fn_8000D598(arg1);
+    walk = arg0;
+    i = 0;
+    for (;;) {
+        if (hash != *(u32 *)(walk + 0x180)) goto next;
+        if (Str_Cmp(*(s32 *)walk, arg1) != 0) goto next;
+        goto found;
+    next:
+        ++i;
+        walk += 4;
+        if (i < 0x60) continue;
+        i = -1;
+        break;
+    }
 found:
- if(i>=0) { p=arg0+(i>>3); *(u8 *)(p+0x300)=*(u8 *)(p+0x300)&~(1<<(i&7)); }
+    if (i >= 0) {
+        p = arg0 + (i >> 3);
+        *(u8 *)(p + 0x300) = *(u8 *)(p + 0x300) & ~(1 << (i & 7));
+    }
 }
 
 #pragma dont_inline on
@@ -7567,16 +7681,13 @@ void fn_800BDC68(void *arg0, void *arg1) {
     var_r29 = a0;
     var_r30 = 0;
 loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, a1) == 0)) {
-
-    } else {
+    if (!(temp_r31 == *(u32 *)(var_r29 + 0x180) && Str_Cmp(*(s32 *)var_r29, a1) == 0)) {
         var_r30 += 1;
         var_r29 += 4;
-        if (var_r30 >= 0x60) {
-            var_r30 = -1;
-        } else {
+        if (var_r30 < 0x60) {
             goto loop_1;
         }
+        var_r30 = -1;
     }
     if (var_r30 >= 0) {
         temp_r5 = a0 + (var_r30 >> 3);
@@ -7608,7 +7719,7 @@ void fn_800BDDCC(void *arg0, s32 arg1) {
     void *self;
     u32 *p;
     s32 i;
-    s32 off;
+    u32 off;
     s32 n;
     s32 value;
 
@@ -7617,10 +7728,10 @@ void fn_800BDDCC(void *arg0, s32 arg1) {
     p = (u32 *)((u8 *)self + 0x17C);
     for (n = 0x60; n != 0; n--, i--) {
         if (*p == 0) {
-            off = i << 2;
+            off = i * 4;
             *(s32 *)((u8 *)self + off) = arg1;
             value = fn_8000D598(arg1);
-            p = (u32 *)(off + (u32)self);
+            p = (u32 *)((u8 *)self + off);
             p[0x60] = value;
             return;
         }
@@ -8024,7 +8135,8 @@ s16 fn_800BE798(s32 arg0) {
     return *(s16 *)(entry + 0x18);
 }
 
-s32 fn_800BE800(s32 arg0) {
+#pragma scheduling on
+u32 fn_800BE800(s32 arg0) {
     void *Event_NextEntry(void *);
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
@@ -8032,7 +8144,7 @@ s32 fn_800BE800(s32 arg0) {
     u8 *entry;
     s32 count;
     s32 kind;
-    s32 result;
+    u32 result;
 
     kind = 0xE;
     entry = Event_NextEntry(0);
@@ -8050,7 +8162,6 @@ s32 fn_800BE800(s32 arg0) {
     result = fn_80013880();
     return result != 0;
 }
-
 extern u8 lbl_80317334[];
 extern s32 lbl_80368320;
 void fn_800BE890(s32 arg0) {
@@ -8846,9 +8957,108 @@ after2:
 }
 
 extern u16* const lbl_8036A0D0;
-void fn_800BFCA8(void) {
-    gUnitRef = 0x22;
-    lbl_8036A0D0[4] = 0;
+s32 fn_800BFCA8(s32 arg0)
+{
+  void *Battle_GetActiveCombatant(void *);
+  void *Event_NextEntry(void *);
+  void *Event_GetString(void *, u16);
+  void *Person_GetByPid(void *);
+  void *Process_CreateChild(void *, s32);
+  s32 fn_800BA9BC(void);
+  s32 fn_800BFECC(void);
+  extern u8 gBattle[];
+  extern u16 gBattleState[700];
+  extern s32 gUiInputFlags;
+  void *entry;
+  void *person;
+  void *combatant;
+  void *proc;
+  u8 found;
+  s32 match;
+  if (Battle_GetActiveCombatant(gBattle) == NULL)
+  {
+    return 0;
+    return match;
+  }
+  entry = Event_NextEntry(NULL);
+  while (entry != NULL)
+  {
+    if (((s32) (*((u8 *) (((u8 *) entry) + 0xC)))) == 0xB)
+    {
+      person = Person_GetByPid(Event_GetString(entry, (u16) (*((s16 *) (((u8 *) entry) + 0x14)))));
+      combatant = Battle_GetActiveCombatant(gBattle);
+      if (combatant == NULL)
+      {
+        match = 0;
+      }
+      else
+      {
+        match = (*((void **) (((u8 *) combatant) + 0x188))) == person;
+      }
+      if ((u8) match)
+      {
+        found = 1;
+        goto after1;
+      }
+    }
+    entry = Event_NextEntry(entry);
+  }
+
+  found = 0;
+  after1:
+  if (found)
+  {
+    proc = Process_CreateChild(E_EventCaller_script, arg0);
+    *((s32 *) (((u8 *) proc) + 0x34)) = 0xB;
+    *((s32 *) (((u8 *) proc) + 0x38)) = (s32) fn_800BFECC;
+    gUiInputFlags |= 4;
+    return 1;
+  }
+
+  if ((((u8 *) gBattleState)[0x9F] >> 3) & 1)
+  {
+    return 0;
+  }
+  entry = Event_NextEntry(NULL);
+  while (entry != NULL)
+  {
+    if (((s32) (*((u8 *) (((u8 *) entry) + 0xC)))) == 0xA)
+    {
+      person = Person_GetByPid(Event_GetString(entry, (u16) (*((s16 *) (((u8 *) entry) + 0x14)))));
+      combatant = Battle_GetActiveCombatant(gBattle);
+      if (combatant == NULL)
+      {
+        match = 0;
+      }
+      else
+      {
+        match = (*((void **) (((u8 *) combatant) + 0x188))) == person;
+      }
+      if ((u8) match)
+      {
+        found = 1;
+        goto after2;
+      }
+    }
+    entry = Event_NextEntry(entry);
+  }
+
+  found = 0;
+  after2:
+  if (found)
+  {
+    proc = Process_CreateChild(E_EventCaller_script, arg0);
+    *((s32 *) (((u8 *) proc) + 0x34)) = 0xA;
+    *((s32 *) (((u8 *) proc) + 0x38)) = (s32) fn_800BFECC;
+    gUiInputFlags |= 4;
+    return 1;
+  }
+
+  match = fn_800BA9BC() != 0;
+  if (match)
+  {
+    gUiInputFlags |= 4;
+  }
 }
 
 s32 fn_800BFECC(void *arg0)
@@ -10235,13 +10445,225 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
     return NULL;
 }
 
-int fn_800C221C(void* arg0, void* arg1, u32 arg2)
+s32 fn_800C221C(void *arg0, void *arg1, u32 arg2)
 {
-    void** r3 = (void**)arg0;
-    if (*r3 == NULL) {
-        return 0;
+    void DebugPrint(const char *, ...);
+    void fn_800142C0(s32 *, s16 *);
+    void *Event_NextEntry(void *);
+    char *Allegiance_GetNameStr(s32);
+
+    extern char lbl_8026FE18[];
+
+    s32 entry;
+    s16 count;
+    s32 i;
+    s32 j;
+    s32 k;
+    u8 *event;
+    u8 *script;
+    s32 type;
+    const char *name;
+    char *base;
+
+    base = lbl_8026FE18;
+
+    DebugPrint(base + 0x29);
+    fn_800142C0(&entry, &count);
+
+    for (i = 0; i < count; i++) {
+        DebugPrint(base + 0x47, **(s32 **)&entry);
+
+        for (j = 0; j < (s8)((u8 *)entry)[0xD]; j++) {
+            DebugPrint(base + 0x52);
+
+            if (j < (s8)((u8 *)entry)[0xD] - 1) {
+                DebugPrint(base + 0x56);
+            }
+        }
+
+        DebugPrint(base + 0x58);
+        entry += 0x10;
     }
-    return 1;
+
+    i = 0;
+    event = Event_NextEntry(0);
+
+    while (event != 0) {
+        DebugPrint(base + 0x5B, i);
+
+        script = *(u8 **)(event + 8);
+
+        if (script != 0) {
+            DebugPrint(base + 0x62, script + 4);
+        } else {
+            DebugPrint(base + 0x66);
+        }
+
+        if (*(void **)event != 0) {
+            DebugPrint(base + 0x6E);
+        } else {
+            type = (s8)event[0xC];
+
+            if (type != 0) {
+                switch (type) {
+                case 1:
+                    name = base + 0x71;
+                    break;
+                case 2:
+                    name = base + 0x7A;
+                    break;
+                case 3:
+                    name = base + 0x83;
+                    break;
+                case 4:
+                    name = base + 0x8C;
+                    break;
+                case 5:
+                    name = base + 0x91;
+                    break;
+                case 6:
+                    name = base + 0x9B;
+                    break;
+                case 7:
+                    name = base + 0xA0;
+                    break;
+                case 8:
+                    name = base + 0xA5;
+                    break;
+                case 9:
+                    name = base + 0xAB;
+                    break;
+                case 10:
+                    name = base + 0xB0;
+                    break;
+                case 11:
+                    name = base + 0xB9;
+                    break;
+                case 12:
+                    name = base + 0xBD;
+                    break;
+                case 13:
+                    name = base + 0xC6;
+                    break;
+                case 14:
+                    name = base + 0xCE;
+                    break;
+                case 15:
+                    name = base + 0xD7;
+                    break;
+                default:
+                    name = base + 0xDC;
+                    break;
+                }
+
+                DebugPrint(name);
+            } else {
+                DebugPrint(base + 0xED);
+            }
+        }
+
+        DebugPrint(base + 0xF3);
+
+        type = (s8)event[0xC];
+
+        if (type != 0) {
+            switch (type) {
+            case 1:
+                DebugPrint(
+                    base + 0xF5,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x14)
+                );
+                break;
+
+            case 2:
+                DebugPrint(
+                    base + 0xFA,
+                    *(s16 *)(event + 0x14),
+                    *(s16 *)(event + 0x16),
+                    Allegiance_GetNameStr(*(s16 *)(event + 0x18))
+                );
+                break;
+
+            case 3:
+                DebugPrint(
+                    base + 0x103,
+                    *(s16 *)(event + 0x14),
+                    *(s16 *)(event + 0x16),
+                    *(s16 *)(event + 0x18),
+                    *(s16 *)(event + 0x1A),
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x1E),
+                    Allegiance_GetNameStr(*(s16 *)(event + 0x1C))
+                );
+                break;
+
+            case 4:
+                DebugPrint(
+                    base + 0x117,
+                    *(s16 *)(event + 0x14),
+                    *(s16 *)(event + 0x16),
+                    *(s16 *)(event + 0x18),
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x1A)
+                );
+                break;
+
+            case 5:
+                DebugPrint(
+                    base + 0x130,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x14),
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x16),
+                    (*(s16 *)(event + 0x18) != 0)
+                        ? base + 0x125 : base + 0x12A,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x1A)
+                );
+                break;
+
+            case 6:
+                DebugPrint(
+                    base + 0x142,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x14),
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x16),
+                    (s8)base[0x152 + *(s16 *)(event + 0x18)]
+                );
+                break;
+
+            case 7:
+                DebugPrint(
+                    base + 0x157,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x14),
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
+                        + *(s16 *)(event + 0x16),
+                    *(s16 *)(event + 0x18)
+                );
+                break;
+
+            default:
+                for (k = 0; k < (s8)event[0xD]; k++) {
+                    DebugPrint(base + 0x52);
+
+                    if (k < (s8)event[0xD] - 1) {
+                        DebugPrint(base + 0x56);
+                    }
+                }
+
+                DebugPrint(base + 0x58);
+                break;
+            }
+        }
+
+        i++;
+        event = Event_NextEntry(event);
+    }
+
+    DebugPrint(base + 0x164);
 }
 
 s32 Event_GetString(void *arg0, u16 arg1) {
@@ -11110,12 +11532,12 @@ extern f32 lbl_80369CD0;
 void fn_800AFC54(s32 arg0)
 {
   extern u8 lbl_80317338[];
+  f32 minimum;
   u8 *sys;
   u16 rate;
   u16 *new_var;
   f32 var_f2;
   f32 *new_var2;
-  f32 minimum;
   u8 *entry;
   sys = (u8 *) lbl_80317338;
   entry = (*((u8 **) (sys + 0xF8))) + (arg0 * 0x13C);

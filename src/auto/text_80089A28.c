@@ -297,8 +297,9 @@ div=lbl_803696C8; ptr=(u8*)lbl_803674E8;
 color.w=lbl_8036C470;
 color.b[0]=arg0; color.b[1]=arg1; color.b[2]=arg2;
 ptr[0x34]=color.b[0]; ptr[0x35]=color.b[1]; ptr[0x36]=color.b[2]; ptr[0x37]=color.b[3];
-*(u16*)(ptr+0x38)=0; *(u16*)(ptr+0x3A)=(s32)((f32)arg3/div);
-*(u16*)(ptr+0x3C)=0; *(u16*)(ptr+0x3E)=(s32)((f32)arg4/div);
+*(u16*)(ptr+0x38)=0; *(u16*)(ptr+0x3C)=0;
+*(u16*)(ptr+0x3A)=(s32)((f32)arg3/div);
+*(u16*)(ptr+0x3E)=(s32)((f32)arg4/div);
 }
 
 /* Ease fullscreen fade alpha and draw a colored ortho quad when alpha is non-zero. */

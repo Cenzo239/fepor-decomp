@@ -710,31 +710,32 @@ void fn_8023D350(void)
     extern u8 *lbl_803688E0;
 
     u32 j;
-    u8 *base;
-    u8 *ptr;
-    u32 *pBit;
-    u32 bitpos;
-    u32 low;
-    u8 *aligned;
     u32 i;
     u32 off;
     u32 ctr;
     u32 idx;
     u32 slot;
+    u8 *base;
+    u8 *ptr;
+    volatile u32 *pBit;
+    u32 bitpos;
+    u32 low;
+    u32 aligned;
     u8 *p;
     u8 *q;
     u8 *table;
     s32 code;
-    u32 w340;
-    u32 w390;
     u8 b682, b688, b68e, b687, b68d, b681;
-    u32 t681, t687, t68d, t682, t688, t68e;
+    u32 s682, s688, s68e, s687, s68d, s681;
+    u32 m681, m687, m68d, m682, m688, m68e;
+    u32 p681, p687, p68d, p682, p688, p68e;
+    u32 pad0, pad1;
 
     base = lbl_80368950;
     ptr = *(u8 **)(base + 0x69c);
-    pBit = (u32 *)(base + 0x6a4);
+    pBit = (volatile u32 *)(base + 0x6a4);
     bitpos = *pBit;
-    aligned = (u8 *)((u32)ptr & ~3);
+    aligned = (u32)ptr & ~3;
     low = (u32)ptr & 3;
     if (bitpos != 0x21) {
         *pBit = bitpos - ((3 - low) * 8);
@@ -744,7 +745,7 @@ void fn_8023D350(void)
 
     i = 0;
     off = 0;
-    *(u8 **)(lbl_80368950 + 0x69c) = aligned;
+    *(u8 **)(lbl_80368950 + 0x69c) = (u8 *)aligned;
     *(u32 *)(lbl_80368950 + 0x6a0) = *(u32 *)aligned;
 
     do {
@@ -756,9 +757,7 @@ void fn_8023D350(void)
                     q = p + (j * 4);
                     code = (s32)(idx >> (4 - j));
                     if (code <= *(s32 *)(q + 0x348)) {
-                        w340 = *(u32 *)(p + 0x340);
-                        w390 = *(u32 *)(q + 0x390);
-                        table = (u8 *)w390 + w340;
+                        table = (u8 *)(*(u32 *)(q + 0x390) + *(u32 *)(p + 0x340));
                         lbl_80368950[slot + 0x300] = table[code];
                         lbl_80368950[slot + 0x320] = j + 1;
                         j = 0x63;
@@ -773,9 +772,7 @@ void fn_8023D350(void)
                     q = p + (j * 4);
                     code = (s32)(idx >> (4 - j));
                     if (code <= *(s32 *)(q + 0x348)) {
-                        w340 = *(u32 *)(p + 0x340);
-                        w390 = *(u32 *)(q + 0x390);
-                        table = (u8 *)w390 + w340;
+                        table = (u8 *)(*(u32 *)(q + 0x390) + *(u32 *)(p + 0x340));
                         lbl_80368950[slot + 0x300] = table[code];
                         lbl_80368950[slot + 0x320] = j + 1;
                         j = 0x63;
@@ -797,33 +794,33 @@ void fn_8023D350(void)
     b68d = base[0x68d];
     b681 = base[0x681];
 
-    t682 = (b682 << 1) + 1;
-    t688 = (b688 << 1) + 1;
-    t68e = (b68e << 1) + 1;
-    t687 = b687 << 1;
-    t68d = b68d << 1;
-    t681 = b681 << 1;
+    s682 = (b682 << 1) + 1;
+    s688 = (b688 << 1) + 1;
+    s68e = (b68e << 1) + 1;
+    s687 = b687 << 1;
+    s68d = b68d << 1;
+    s681 = b681 << 1;
 
-    t681 *= 0xe0;
-    t687 *= 0xe0;
-    t68d *= 0xe0;
-    t682 *= 0xe0;
-    t688 *= 0xe0;
-    t68e *= 0xe0;
+    m681 = s681 * 0xe0;
+    m687 = s687 * 0xe0;
+    m68d = s68d * 0xe0;
+    m682 = s682 * 0xe0;
+    m688 = s688 * 0xe0;
+    m68e = s68e * 0xe0;
 
-    t681 += 0x300;
-    t687 += 0x300;
-    t68d += 0x300;
-    t682 += 0x300;
-    t688 += 0x300;
-    t68e += 0x300;
+    p681 = m681 + 0x300;
+    p687 = m687 + 0x300;
+    p68d = m68d + 0x300;
+    p682 = m682 + 0x300;
+    p688 = m688 + 0x300;
+    p68e = m68e + 0x300;
 
-    lbl_80368840 = base + t681;
-    lbl_80368860 = base + t687;
-    lbl_80368880 = base + t68d;
-    lbl_803688A0 = base + t682;
-    lbl_803688C0 = base + t688;
-    lbl_803688E0 = base + t68e;
+    lbl_80368840 = base + p681;
+    lbl_80368860 = base + p687;
+    lbl_80368880 = base + p68d;
+    lbl_803688A0 = base + p682;
+    lbl_803688C0 = base + p688;
+    lbl_803688E0 = base + p68e;
 }
 #pragma use_lmw_stmw reset
 
@@ -892,16 +889,421 @@ void fn_8023D6A8(void) {
     } while (i < 2);
 }
 
-void fn_8023F130(void) {
-    extern u8 lbl_8033E460[];
-    void fn_8020543C(s32);
-    fn_8020543C(3);
-    (void)lbl_8033E460;
+void fn_8023F130(void)
+{
+  extern u8 lbl_8033E460[];
+  const f32 (*new_var2)[8];
+  extern u8 *lbl_80368950;
+  extern void *lbl_80368900;
+  extern u32 lbl_80368920;
+  extern u8 *lbl_80368940;
+  extern f32 lbl_8036C198;
+  extern f32 lbl_8036C19C;
+  extern f32 lbl_8036C1A0;
+  extern f32 lbl_8036C1A4;
+  extern f32 lbl_8036C1A8;
+  void fn_8020543C(s32);
+  void fn_80242668(void *, void *);
+  void fn_80242CE4(void *, void *);
+  u8 *new_var;
+  void fn_8024338C(void *, void *);
+  void fn_80205390(void *, const void *, u32);
+  static const f32 basis[8][8] = {{0.707106781f, 0.980785280f, 0.923879533f, 0.831469612f, 0.707106781f, 0.555570233f, 0.382683432f, 0.195090322f}, {0.707106781f, 0.831469612f, 0.382683432f, -0.195090322f, -0.707106781f, -0.980785280f, -0.923879533f, -0.555570233f}, {0.707106781f, 0.555570233f, -0.382683432f, -0.980785280f, -0.707106781f, 0.195090322f, 0.923879533f, 0.831469612f}, {0.707106781f, 0.195090322f, -0.923879533f, -0.555570233f, 0.707106781f, 0.831469612f, -0.382683432f, -0.980785280f}, {0.707106781f, -0.195090322f, -0.923879533f, 0.555570233f, 0.707106781f, -0.831469612f, -0.382683432f, 0.980785280f}, {0.707106781f, -0.555570233f, -0.382683432f, 0.980785280f, -0.707106781f, -0.195090322f, 0.923879533f, -0.831469612f}, {0.707106781f, -0.831469612f, 0.382683432f, 0.195090322f, -0.707106781f, 0.980785280f, -0.923879533f, 0.555570233f}, {0.707106781f, -0.980785280f, 0.923879533f, -0.831469612f, 0.707106781f, -0.555570233f, 0.382683432f, -0.195090322f}};
+  u8 *state;
+  u8 *workbuf;
+  s16 *coefficients;
+  f32 *quant;
+  f32 *intermediate;
+  u8 *dst;
+  u16 width;
+  u16 halfWidth;
+  u16 mcuCount;
+  volatile long block;
+  u32 componentWidth;
+  u32 offset;
+  u32 row;
+  u32 col;
+  u32 index;
+  u32 mcuIndex;
+  u32 term;
+  u32 stride;
+  u32 bitPos;
+  f32 sum;
+  f32 pixel;
+  f32 bias;
+  f32 c0;
+  f32 c1;
+  f32 c2;
+  f32 c3;
+  workbuf = lbl_8033E460;
+  state = lbl_80368950;
+  width = 0x280;
+  fn_8020543C(3);
+  c0 = lbl_8036C198;
+  c1 = lbl_8036C19C;
+  c2 = lbl_8036C1A0;
+  c3 = lbl_8036C1A4;
+  bias = lbl_8036C1A8;
+  (void) c0;
+  (void) c1;
+  (void) c2;
+  (void) c3;
+  halfWidth = 0x140;
+  mcuCount = *((u16 *) (state + 0x696));
+  mcuIndex = 0;
+  while (mcuIndex < mcuCount)
+  {
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x118)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x11C)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x120)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x124)));
+    state = lbl_80368950;
+    fn_80242CE4(state, *((void **) (workbuf + 0x128)));
+    state = lbl_80368950;
+    new_var = workbuf + 0x110;
+    fn_8024338C(state, *((void **) (workbuf + 0x12C)));
+    for (block = 0; block < 6; block++)
+    {
+      if (block == 0)
+      {
+        lbl_80368900 = *((void **) (workbuf + 0x10C));
+        lbl_80368920 = 0x280;
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x680]) << 8);
+      }
+      else
+        if (block == 4)
+      {
+        lbl_80368900 = *((void **) new_var);
+        lbl_80368920 = 0x140;
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x686]) << 8);
+      }
+      else
+        if (block == 5)
+      {
+        lbl_80368900 = *((void **) (workbuf + 0x114));
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x68C]) << 8);
+      }
+      componentWidth = (4 > block) ? (0x280) : (0x140);
+      quant = (f32 *) lbl_80368940;
+      coefficients = *((s16 **) ((workbuf + 0x118) + (block * 4)));
+      intermediate = (f32 *) workbuf;
+      dst = (u8 *) lbl_80368900;
+      if (block < 4)
+      {
+        offset = mcuIndex << 6;
+        if (block & 1)
+        {
+          offset += 32;
+        }
+        if (block & 2)
+        {
+          offset += 0x1400;
+        }
+      }
+      else
+      {
+        offset = mcuIndex << 5;
+      }
+      for (row = 0; row < 8; row++)
+      {
+        s16 *r = coefficients + (row * 8);
+        f32 *q = quant + (row * 8);
+        new_var2 = basis;
+        if (((((((r[1] == 0) && (r[2] == 0)) && (r[3] == 0)) && (r[4] == 0)) && (r[5] == 0)) && (r[6] == 0)) && (r[7] == 0))
+        {
+          f32 dc = (((f32) r[0]) * q[0]) * new_var2[0][0];
+          for (col = 0; col < 8; col++)
+          {
+            intermediate[(row * 8) + col] = dc;
+          }
+
+        }
+        else
+        {
+          for (col = 0; col < 8; col++)
+          {
+            sum = 0.0f;
+            for (term = 0; term < 8; term++)
+            {
+              sum += (((f32) r[term]) * q[term]) * new_var2[col][term];
+            }
+
+            intermediate[(row * 8) + col] = sum;
+          }
+
+        }
+      }
+
+      for (row = 0; row < 8; row++)
+      {
+        for (col = 0; col < 8; col++)
+        {
+          sum = 0.0f;
+          for (term = 0; term < 8; term++)
+          {
+            sum += intermediate[(term * 8) + col] * new_var2[row][term];
+          }
+
+          pixel = (sum * 0.25f) + bias;
+          if (pixel < 0.0f)
+          {
+            register pixel = 0.0f;
+          }
+          else
+            if (pixel > 255.0f)
+          {
+            pixel = 255.0f;
+          }
+          stride = ((((row >> 2) * componentWidth) * 4) + ((row & 3) << 3)) + col;
+          dst[offset + stride] = (u8) pixel;
+        }
+
+      }
+
+    }
+
+    state = lbl_80368950;
+    if (state[0x6A9] != 0)
+    {
+      *((u16 *) (state + 0x6AC)) -= 1;
+      if ((*((u16 *) (state + 0x6AC))) == 0)
+      {
+        *((u16 *) (state + 0x6AC)) = *((u16 *) (state + 0x6AA));
+        bitPos = *((u32 *) (state + 0x6A4));
+        bitPos = ((bitPos + 6) & (~7U)) + 1;
+        if (bitPos > 32)
+        {
+          bitPos = 33;
+        }
+        *((u32 *) (state + 0x6A4)) = bitPos;
+        *((u16 *) (state + 0x684)) = 0;
+        *((u16 *) (state + 0x68A)) = 0;
+        *((u16 *) (state + 0x690)) = 0;
+      }
+    }
+    mcuIndex++;
+  }
+
+  state = lbl_80368950;
+  fn_80205390(*((void **) (state + 0x6B0)), *((void **) (workbuf + 0x10C)), 0x2800);
+  fn_80205390(*((void **) (state + 0x6B4)), *((void **) (workbuf + 0x110)), 0xA00);
+  fn_80205390(*((void **) (state + 0x6B8)), *((void **) (workbuf + 0x114)), 0xA00);
+  state = lbl_80368950;
+  *((u8 **) (state + 0x6B0)) += 0x2800;
+  state = lbl_80368950;
+  *((u8 **) (state + 0x6B4)) += 0xA00;
+  state = lbl_80368950;
+  *((u8 **) (state + 0x6B8)) += 0xA00;
 }
 
-void fn_80240BBC(void) {
-    void fn_8020543C(s32);
-    fn_8020543C(3);
+void fn_80240BBC(void)
+{
+  extern u8 lbl_8033E460[];
+  extern u8 *lbl_80368950;
+  extern void *lbl_80368900;
+  extern u32 lbl_80368920;
+  extern u8 *lbl_80368940;
+  extern f32 lbl_8036C198;
+  extern f32 lbl_8036C19C;
+  extern f32 lbl_8036C1A0;
+  extern f32 lbl_8036C1A4;
+  extern f32 lbl_8036C1A8;
+  void fn_8020543C(s32);
+  void fn_80242668(void *, void *);
+  void fn_80242CE4(void *, void *);
+  void fn_8024338C(void *, void *);
+  u32 fn_80205390(s32, s32, s32);
+  static const f32 basis[8][8] = {{0.707106781f, 0.980785280f, 0.923879533f, 0.831469612f, 0.707106781f, 0.555570233f, 0.382683432f, 0.195090322f}, {0.707106781f, 0.831469612f, 0.382683432f, -0.195090322f, -0.707106781f, -0.980785280f, -0.923879533f, -0.555570233f}, {0.707106781f, 0.555570233f, -0.382683432f, -0.980785280f, -0.707106781f, 0.195090322f, 0.923879533f, 0.831469612f}, {0.707106781f, 0.195090322f, -0.923879533f, -0.555570233f, 0.707106781f, 0.831469612f, -0.382683432f, -0.980785280f}, {0.707106781f, -0.195090322f, -0.923879533f, 0.555570233f, 0.707106781f, -0.831469612f, -0.382683432f, 0.980785280f}, {0.707106781f, -0.555570233f, -0.382683432f, 0.980785280f, -0.707106781f, -0.195090322f, 0.923879533f, -0.831469612f}, {0.707106781f, -0.831469612f, 0.382683432f, 0.195090322f, -0.707106781f, 0.980785280f, -0.923879533f, 0.555570233f}, {0.707106781f, -0.980785280f, 0.923879533f, -0.831469612f, 0.707106781f, -0.555570233f, 0.382683432f, -0.195090322f}};
+  u8 *state;
+  u8 *workbuf;
+  s16 *coefficients;
+  f32 *quant;
+  f32 *intermediate;
+  u8 *dst;
+  u16 width;
+  u16 halfWidth;
+  u16 mcuCount;
+  f32 new_var2;
+  u32 block;
+  u32 componentWidth;
+  short offset;
+  u32 row;
+  u32 col;
+  u32 index;
+  u32 mcuIndex;
+  u32 term;
+  u32 stride;
+  u32 bitPos;
+  u32 chromaCount;
+  f32 sum;
+  f32 pixel;
+  f32 bias;
+  f32 c0;
+  f32 c1;
+  int new_var;
+  f32 c2;
+  f32 c3;
+  workbuf = lbl_8033E460;
+  state = lbl_80368950;
+  width = *((u16 *) (state + 0x692));
+  fn_8020543C(3);
+  c0 = lbl_8036C198;
+  c1 = lbl_8036C19C;
+  c2 = lbl_8036C1A0;
+  new_var2 = lbl_8036C1A4;
+  c3 = new_var2;
+  bias = lbl_8036C1A8;
+  (void) c0;
+  (void) c1;
+  (void) c2;
+  (void) c3;
+  halfWidth = width >> 1;
+  mcuCount = *((u16 *) (state + 0x696));
+  mcuIndex = 0;
+  while (mcuIndex < mcuCount)
+  {
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x118)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x11C)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x120)));
+    state = lbl_80368950;
+    fn_80242668(state, *((void **) (workbuf + 0x124)));
+    state = lbl_80368950;
+    fn_80242CE4(state, *((void **) (workbuf + 0x128)));
+    state = lbl_80368950;
+    fn_8024338C(state, *((void **) (workbuf + 0x12C)));
+    for (block = 0; block < 6; block++)
+    {
+      if (block == 0)
+      {
+        lbl_80368900 = *((void **) (workbuf + 0x10C));
+        lbl_80368920 = width;
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x680]) << 8);
+      }
+      else
+        if (block == 4)
+      {
+        lbl_80368900 = *((void **) (workbuf + 0x110));
+        lbl_80368920 = halfWidth;
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x686]) << 8);
+      }
+      else
+        if (block == 5)
+      {
+        lbl_80368900 = *((void **) (workbuf + 0x114));
+        state = lbl_80368950;
+        lbl_80368940 = state + (((u32) state[0x68C]) << 8);
+      }
+      componentWidth = (block < 4) ? (width) : (halfWidth);
+      quant = (f32 *) lbl_80368940;
+      new_var = 5;
+      coefficients = *((s16 **) ((workbuf + 0x118) + (block * 4)));
+      intermediate = (f32 *) workbuf;
+      dst = (u8 *) lbl_80368900;
+      if (block < 4)
+      {
+        offset = mcuIndex << 6;
+        if (block & 1)
+        {
+          offset += 32;
+        }
+        if (block & 2)
+        {
+          offset += ((u32) width) << 3;
+        }
+      }
+      else
+      {
+        offset = mcuIndex << new_var;
+      }
+      for (row = 0; row < 8; row++)
+      {
+        for (col = 0; col < 8; col++)
+        {
+          sum = 0.0f;
+          for (term = 0; term < 8; term++)
+          {
+            index = ((term * 8) & 0xFFFFFFFFFFFFFFFFu) + col;
+            sum += (((f32) coefficients[index]) * quant[index]) * basis[row][term];
+          }
+
+          intermediate[(row * 8) + col] = sum;
+        }
+
+      }
+
+      for (row = 0; row < 8; row++)
+      {
+        for (col = 0; (col - 1) < (8 - 1); col++)
+        {
+          sum = 0.0f;
+          for (term = 0; term < 8; term++)
+          {
+            sum += intermediate[(row * 8) + term] * basis[col][term];
+          }
+
+          pixel = (sum * 0.25f) + bias;
+          if (pixel < 0.0f)
+          {
+            pixel = 0.0f;
+          }
+          else
+            if (pixel > 255.0f)
+          {
+            pixel = 255.0f;
+            stride = ((((row >> 2) * componentWidth) * 4) + ((row & 3) << 3)) + col;
+          }
+          dst[offset + stride] = (u8) pixel;
+        }
+
+        coefficients += 0;
+      }
+
+    }
+
+    state = lbl_80368950;
+    if (state[0x6A9] != 0)
+    {
+      *((u16 *) (state + 0x6AC)) -= 1;
+      if ((*((u16 *) (state + 0x6AC))) == 0)
+      {
+        *((u16 *) (state + 0x6AC)) = *((u16 *) (state + 0x6AA));
+        bitPos = *((u32 *) (state + 0x6A4));
+        ;
+        if ((((bitPos + 6) & (~7U)) + 1) > 32)
+        {
+          bitPos = 33;
+        }
+        *((u32 *) (state + 0x6A4)) = bitPos;
+        *((u16 *) (state + 0x684)) = (*((u16 *) (state + 0x68A)) = 0);
+        *((u16 *) (state + 0x690)) = 0;
+      }
+    }
+    mcuIndex++;
+  }
+
+  state = lbl_80368950;
+  chromaCount = width >> 4;
+  fn_80205390((s32) (*((void **) (state + 0x6B0))), (s32) (*((void **) (workbuf + 0x10C))), width << 4);
+  fn_80205390((s32) (*((void **) (state + 0x6B4))), (s32) (*((void **) (workbuf + 0x110))), (s32) ((width >> 4) << 6));
+  fn_80205390((s32) (*((void **) (state + 0x6B8))), (s32) (*((void **) (workbuf + 0x114))), (s32) (chromaCount << 6));
+  state = (state = lbl_80368950);
+  *((u8 **) (state + 0x6B0)) += (width >> 4) << 8;
+  state = lbl_80368950;
+  *((u8 **) (state + 0x6B4)) += (width >> 4) << 6;
+  state = lbl_80368950;
+  *((u8 **) (state + 0x6B8)) += (width >> 4) << 6;
 }
 
 void fn_80242668(void *arg0, s16 *arg1) {
@@ -1249,38 +1651,226 @@ void fn_80242668(void *arg0, s16 *arg1) {
     *(u32 *)(ctx+0x6a0)=bitbuf;
 }
 
-void fn_80242CE4(void *arg0, s16 *arg1) {
+void fn_80242CE4(void *arg0, s16 *arg1)
+{
     extern u8 *lbl_80368860;
     extern u8 *lbl_803688C0;
     extern u8 lbl_80282FD8[];
-    s32 bitpos;
+
+    u8 *ctx;
+    u8 *table;
+    u8 *lengths;
+    u8 *symbols;
+    u32 *stream;
     u32 bitbuf;
+    s32 bitpos;
+    s32 phase;
+    s32 index;
     s32 code;
-    s32 n;
-    u8 *tbl;
-    u8 *lens;
+    s32 length;
+    s32 symbol;
+    s32 bits;
+    s32 run;
+    s32 value;
+    s32 shift;
+    s32 limit;
+    s32 offset;
+    s32 dc;
+    u32 bit;
+    u32 mask;
+
+    ctx = (u8 *)arg0;
 
     __dcbz(arg1, 0);
-    tbl = lbl_80368860;
-    lens = tbl + 0x20;
-    bitpos = *(s32 *)((u8 *)arg0 + 0x6A4);
-    bitbuf = *(u32 *)((u8 *)arg0 + 0x6A0);
-    code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
-    if (bitpos <= 0x1C) {
-        n = tbl[code];
-        if (n != 0xFF) {
-            *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos + lens[code];
+
+    stream = *(u32 **)(ctx + 0x69C);
+    bitbuf = *(u32 *)(ctx + 0x6A0);
+    bitpos = *(s32 *)(ctx + 0x6A4);
+
+    table = lbl_80368860;
+    lengths = table + 0x20;
+
+    code = 0;
+    length = 0;
+
+    for (;;) {
+        if (bitpos == 33) {
+            stream++;
+            bitbuf = *stream;
+            bitpos = 1;
+
+            *(u32 **)(ctx + 0x69C) = stream;
+            *(u32 *)(ctx + 0x6A0) = bitbuf;
+        }
+
+        bit = (bitbuf >> (32 - bitpos)) & 1;
+        bitpos++;
+
+        code = (code << 1) | bit;
+        length++;
+
+        if (length == 5) {
+            symbol = table[code];
+
+            if (symbol != 0xFF) {
+                break;
+            }
+        }
+
+        if (length > 5) {
+            limit = *(s32 *)(table + 0x44 + length * 4);
+
+            if (code <= limit) {
+                symbols = *(u8 **)(table + 0x40);
+                offset = *(s32 *)(table + 0x8C + length * 4);
+                symbol = symbols[code + offset];
+                break;
+            }
         }
     }
+
+    *(u32 **)(ctx + 0x69C) = stream;
+    *(u32 *)(ctx + 0x6A0) = bitbuf;
+    *(s32 *)(ctx + 0x6A4) = bitpos;
+
+    bits = symbol;
+    value = 0;
+
+    if (bits != 0) {
+        for (index = 0; index < bits; index++) {
+            if (bitpos == 33) {
+                stream++;
+                bitbuf = *stream;
+                bitpos = 1;
+            }
+
+            bit = (bitbuf >> (32 - bitpos)) & 1;
+            bitpos++;
+
+            value = (value << 1) | bit;
+        }
+
+        if ((value & (1 << (bits - 1))) == 0) {
+            value += 1 - (1 << bits);
+        }
+    }
+
+    *(u32 **)(ctx + 0x69C) = stream;
+    *(u32 *)(ctx + 0x6A0) = bitbuf;
+    *(s32 *)(ctx + 0x6A4) = bitpos;
+
+    dc = *(s16 *)(ctx + 0x68A);
+    dc += value;
+
+    *(s16 *)(ctx + 0x68A) = dc;
+    arg1[0] = (s16)dc;
+
     __dcbz(arg1, 0x20);
     __dcbz(arg1, 0x40);
     __dcbz(arg1, 0x60);
-    {
-        s16 s = *(s16 *)((u8 *)arg0 + 0x68A);
-        *arg1 = s;
+
+    table = lbl_803688C0;
+    lengths = table + 0x20;
+
+    index = 1;
+
+    while (index < 64) {
+        code = 0;
+        length = 0;
+
+        for (;;) {
+            if (bitpos == 33) {
+                stream++;
+                bitbuf = *stream;
+                bitpos = 1;
+
+                *(u32 **)(ctx + 0x69C) = stream;
+                *(u32 *)(ctx + 0x6A0) = bitbuf;
+            }
+
+            bit = (bitbuf >> (32 - bitpos)) & 1;
+            bitpos++;
+
+            code = (code << 1) | bit;
+            length++;
+
+            if (length == 5) {
+                symbol = table[code];
+
+                if (symbol != 0xFF) {
+                    break;
+                }
+            }
+
+            if (length > 5) {
+                limit = *(s32 *)(table + 0x44 + length * 4);
+
+                if (code <= limit) {
+                    symbols = *(u8 **)(table + 0x40);
+                    offset = *(s32 *)(table + 0x8C + length * 4);
+                    symbol = symbols[code + offset];
+                    break;
+                }
+            }
+        }
+
+        *(u32 **)(ctx + 0x69C) = stream;
+        *(u32 *)(ctx + 0x6A0) = bitbuf;
+        *(s32 *)(ctx + 0x6A4) = bitpos;
+
+        if (symbol == 0) {
+            break;
+        }
+
+        run = symbol >> 4;
+        bits = symbol & 0xF;
+
+        if (bits == 0) {
+            if (run == 15) {
+                index += 16;
+                continue;
+            }
+
+            break;
+        }
+
+        index += run;
+
+        if (index >= 64) {
+            break;
+        }
+
+        value = 0;
+
+        for (shift = 0; shift < bits; shift++) {
+            if (bitpos == 33) {
+                stream++;
+                bitbuf = *stream;
+                bitpos = 1;
+            }
+
+            bit = (bitbuf >> (32 - bitpos)) & 1;
+            bitpos++;
+
+            value = (value << 1) | bit;
+        }
+
+        if ((value & (1 << (bits - 1))) == 0) {
+            value += 1 - (1 << bits);
+        }
+
+        arg1[lbl_80282FD8[index]] = (s16)value;
+
+        index++;
+
+        *(u32 **)(ctx + 0x69C) = stream;
+        *(u32 *)(ctx + 0x6A0) = bitbuf;
+        *(s32 *)(ctx + 0x6A4) = bitpos;
     }
-    (void)lbl_803688C0;
-    (void)lbl_80282FD8;
+
+    *(u32 **)(ctx + 0x69C) = stream;
+    *(u32 *)(ctx + 0x6A0) = bitbuf;
+    *(s32 *)(ctx + 0x6A4) = bitpos;
 }
 
 void fn_8024338C(void *arg0, s16 *arg1) {
@@ -2761,7 +3351,451 @@ done:
 #pragma dont_inline on
 StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 {
-    return (StreamQueueNode *)(((u32)arg0 + 1) * (arg1 + 1));
+    void fn_80245518(void *, s32 *, u8);
+    void fn_8024A6F8(u32);
+    void fn_8025FA50(s32, u8, u8, s32);
+    void fn_8025FB74(u8, u8, u8);
+    void Sound_WriteParamU8(s32, s32, u8, s32);
+    void *fn_80246070(u8);
+    s32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8,
+                    s32, s32, s32, s32, s32, s32, s32, s32);
+
+    extern StreamState *lbl_80368968;
+    extern u32 lbl_80368960;
+    extern u32 lbl_80368964;
+    extern u8 lbl_8036895C;
+    extern u8 lbl_8034BDD0[];
+    extern u8 lbl_8034CB64[];
+
+    u8 *msg;
+    u8 *state;
+    u8 *data;
+    u8 *channel;
+    u8 *sequence;
+    u8 *cursor;
+    u8 *voice;
+    u8 *source;
+    u8 *destination;
+    u8 *node;
+    u8 *next;
+    u8 *prev;
+    u8 *head;
+    u8 *record;
+    u8 *table;
+    u8 *bank;
+    u8 *entry;
+
+    u32 value;
+    u32 value2;
+    u32 offset;
+    u32 command;
+    u32 first;
+    u32 second;
+    u32 index;
+    u32 group;
+    u32 flags;
+    u32 length;
+    u32 result;
+    u32 eventType;
+    u32 high;
+    u32 low;
+    u32 time;
+    u32 bankIndex;
+    u32 instrument;
+    u32 key;
+    u32 i;
+    u32 j;
+
+    s32 volume;
+    s32 pan;
+    s32 temp;
+    s32 amount;
+    s32 combined;
+
+    msg = (u8 *)arg0;
+    state = (u8 *)lbl_80368968;
+
+    switch (msg[0x14]) {
+    case 4:
+        data = *(u8 **)(msg + 0xC);
+        bank = *(u8 **)(state + 0x118);
+
+        index = *(u16 *)(data + 8);
+        sequence = bank + *(u32 *)(*(u8 **)(bank + 4) + index * 4);
+
+        channel = state + 0x364 + msg[0x15] * 0x2C;
+
+        *(u32 *)(channel + 0) = 0;
+        *(u32 *)(channel + 4) = *(u32 *)data;
+        *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
+        *(u32 *)(channel + 0xC) = (u32)data;
+
+        offset = *(u32 *)(sequence + 4);
+
+        if (offset != 0) {
+            cursor = bank + offset;
+
+            first = cursor[0];
+            second = cursor[1];
+
+            if (first == 0x80 && second == 0) {
+                cursor = 0;
+            } else {
+                if (first & 0x80) {
+                    value = ((first & 0x7F) << 8) | second;
+                    cursor += 2;
+                } else {
+                    value = first;
+                    cursor++;
+                }
+
+                first = cursor[0];
+                second = cursor[1];
+
+                if (first & 0x80) {
+                    temp = (s16)(((first & 0x7F) << 8) | second);
+                    cursor += 2;
+                    temp |= (temp << 1) & 0x8000;
+                } else {
+                    temp = (s8)(first | ((first << 1) & 0x80));
+                    cursor++;
+                }
+
+                *(s16 *)(channel + 0x16) = temp;
+                *(u32 *)(channel + 0x18) = value & 0xFFFF;
+            }
+        } else {
+            cursor = 0;
+        }
+
+        *(u32 *)(channel + 0x10) = (u32)cursor;
+
+        if (cursor == 0) {
+            *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
+        }
+
+        *(u16 *)(channel + 0x14) = 0x2000;
+
+        offset = *(u32 *)(sequence + 8);
+
+        if (offset != 0) {
+            cursor = bank + offset;
+
+            first = cursor[0];
+            second = cursor[1];
+
+            if (first == 0x80 && second == 0) {
+                cursor = 0;
+            } else {
+                if (first & 0x80) {
+                    value = ((first & 0x7F) << 8) | second;
+                    cursor += 2;
+                } else {
+                    value = first;
+                    cursor++;
+                }
+
+                first = cursor[0];
+                second = cursor[1];
+
+                if (first & 0x80) {
+                    temp = (s16)(((first & 0x7F) << 8) | second);
+                    cursor += 2;
+                    temp |= (temp << 1) & 0x8000;
+                } else {
+                    temp = (s8)(first | ((first << 1) & 0x80));
+                    cursor++;
+                }
+
+                *(s16 *)(channel + 0x22) = temp;
+                *(u32 *)(channel + 0x24) = value & 0xFFFF;
+            }
+        } else {
+            cursor = 0;
+        }
+
+        *(u32 *)(channel + 0x1C) = (u32)cursor;
+
+        if (cursor == 0) {
+            *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
+        }
+
+        *(u16 *)(channel + 0x20) = 0;
+
+        table = *(u8 **)(bank + 8);
+        channel[0x28] = table[msg[0x15]];
+
+        instrument = data[4];
+
+        if (instrument != 0xFF) {
+            bankIndex = channel[0x28];
+
+            *(u16 *)(lbl_8034BDD0 +
+                (lbl_80368960 << 5) +
+                bankIndex * 2) = 0xFFFF;
+
+            if (bankIndex == 9) {
+                instrument = *(u8 *)(state + instrument + 0x98);
+
+                if (instrument != 0xFF) {
+                    source = *(u8 **)(state + 0x94) + instrument * 6;
+                    destination = state + 0xE70 + bankIndex * 6;
+
+                    *(u16 *)destination = *(u16 *)source;
+                    destination[2] = source[2];
+                    destination[3] = source[3];
+                    destination[4] = instrument;
+                }
+            } else {
+                instrument = *(u8 *)(state + instrument + 0x14);
+
+                if (instrument != 0xFF) {
+                    source = *(u8 **)(state + 0x10) + instrument * 6;
+                    destination = state + 0xE70 + bankIndex * 6;
+
+                    *(u16 *)destination = *(u16 *)source;
+                    destination[2] = source[2];
+                    destination[3] = source[3];
+                    destination[4] = instrument;
+                }
+            }
+        }
+
+        if (data[5] != 0xFF) {
+            Sound_WriteParamU8(
+                7,
+                channel[0x28],
+                (u8)lbl_80368960,
+                data[5]
+            );
+        }
+        break;
+
+    case 0:
+        data = *(u8 **)(msg + 0xC);
+        channel = *(u8 **)(msg + 0x10);
+
+        command = data[3];
+        value = data[2];
+        index = channel[0x28];
+
+        if (value & 0x80) {
+            switch (command) {
+            case 0:
+            case 1:
+                *(u16 *)(lbl_8034BDD0 +
+                    (lbl_80368960 << 5) +
+                    index * 2) = 0xFFFF;
+
+                instrument = value & 0x7F;
+
+                if (index == 9) {
+                    instrument = *(u8 *)(state + instrument + 0x98);
+
+                    if (instrument != 0xFF) {
+                        source = *(u8 **)(state + 0x94) +
+                                 instrument * 6;
+
+                        destination = state + 0xE70 + index * 6;
+
+                        *(u16 *)destination = *(u16 *)source;
+                        destination[2] = source[2];
+                        destination[3] = source[3];
+                        destination[4] = instrument;
+                    }
+                } else {
+                    instrument = *(u8 *)(state + instrument + 0x14);
+
+                    if (instrument != 0xFF) {
+                        source = *(u8 **)(state + 0x10) +
+                                 instrument * 6;
+
+                        destination = state + 0xE70 + index * 6;
+
+                        *(u16 *)destination = *(u16 *)source;
+                        destination[2] = source[2];
+                        destination[3] = source[3];
+                        destination[4] = instrument;
+                    }
+                }
+                break;
+
+            default:
+                Sound_WriteParamU8(
+                    0x82,
+                    index,
+                    (u8)lbl_80368960,
+                    value & 0x7F
+                );
+                break;
+            }
+        } else {
+            if ((command & 0x80) == 0x80) {
+                value = command & 0x7F;
+
+                switch (value) {
+                case 0x68:
+                    if (state[0xF00] != 0) {
+                        fn_80245518(
+                            state + 0xED4,
+                            *(s32 **)(state + 0xEFC),
+                            1
+                        );
+                        state[0xF00] = 0;
+                    }
+                    break;
+
+                case 0x69:
+                    *(u16 *)(lbl_8034BDD0 +
+                        (lbl_80368960 << 5) +
+                        index * 2) = value & 0x7F;
+                    break;
+
+                case 0x6A:
+                    *(u16 *)(lbl_8034BDD0 +
+                        (lbl_80368960 << 5) +
+                        index * 2) = (value & 0x7F) + 0x80;
+                    break;
+
+                case 0x6B:
+                    fn_8025FB74(
+                        index,
+                        (u8)lbl_80368960,
+                        0
+                    );
+                    break;
+
+                default:
+                    Sound_WriteParamU8(
+                        value,
+                        index,
+                        (u8)lbl_80368960,
+                        command & 0x7F
+                    );
+                    break;
+                }
+            }
+        }
+        break;
+
+    case 2:
+        channel = *(u8 **)(msg + 0x10);
+
+        *(u16 *)(channel + 0x14) +=
+            *(s16 *)(channel + 0x16);
+
+        cursor = *(u8 **)(channel + 0x10);
+
+        if (cursor != 0) {
+            first = cursor[0];
+            second = cursor[1];
+
+            if (first == 0x80 && second == 0) {
+                cursor = 0;
+            } else {
+                if (first & 0x80) {
+                    value = ((first & 0x7F) << 8) | second;
+                    cursor += 2;
+                } else {
+                    value = first;
+                    cursor++;
+                }
+
+                first = cursor[0];
+                second = cursor[1];
+
+                if (first & 0x80) {
+                    temp = (s16)(((first & 0x7F) << 8) | second);
+                    cursor += 2;
+                    temp |= (temp << 1) & 0x8000;
+                } else {
+                    temp = (s8)(first | ((first << 1) & 0x80));
+                    cursor++;
+                }
+
+                *(s16 *)(channel + 0x16) = temp;
+                *(u32 *)(channel + 0x18) += value & 0xFFFF;
+            }
+        }
+
+        *(u32 *)(channel + 0x10) = (u32)cursor;
+
+        if (cursor == 0) {
+            *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
+        }
+
+        fn_8025FA50(
+            0x80,
+            channel[0x28],
+            (u8)lbl_80368960,
+            *(u16 *)(channel + 0x14)
+        );
+        break;
+
+    case 1:
+        channel = *(u8 **)(msg + 0x10);
+
+        *(u16 *)(channel + 0x20) +=
+            *(s16 *)(channel + 0x22);
+
+        cursor = *(u8 **)(channel + 0x1C);
+
+        if (cursor != 0) {
+            first = cursor[0];
+            second = cursor[1];
+
+            if (first == 0x80 && second == 0) {
+                cursor = 0;
+            } else {
+                if (first & 0x80) {
+                    value = ((first & 0x7F) << 8) | second;
+                    cursor += 2;
+                } else {
+                    value = first;
+                    cursor++;
+                }
+
+                first = cursor[0];
+                second = cursor[1];
+
+                if (first & 0x80) {
+                    temp = (s16)(((first & 0x7F) << 8) | second);
+                    cursor += 2;
+                    temp |= (temp << 1) & 0x8000;
+                } else {
+                    temp = (s8)(first | ((first << 1) & 0x80));
+                    cursor++;
+                }
+
+                *(s16 *)(channel + 0x22) = temp;
+                *(u32 *)(channel + 0x24) += value & 0xFFFF;
+            }
+        }
+
+        *(u32 *)(channel + 0x1C) = (u32)cursor;
+
+        if (cursor == 0) {
+            *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
+        }
+
+        fn_8025FA50(
+            1,
+            channel[0x28],
+            (u8)lbl_80368960,
+            *(u16 *)(channel + 0x20)
+        );
+        break;
+
+    case 3:
+        channel = *(u8 **)(msg + 0x10);
+        *(u32 *)(channel + 0) |= 1;
+        return 0;
+
+    default:
+        return (StreamQueueNode *)fn_80246070(msg[0x15]);
+    }
+
+    return 0;
 }
 
 void fn_80246D48(void) { u32 i; StreamQueueNode *node; StreamTempo *t;

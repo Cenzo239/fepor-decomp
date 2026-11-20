@@ -405,12 +405,12 @@ void fn_802250D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3)
 void fn_80225118(s32 x, s32 y)
 {
   u32 value;
-  u32 yoff;
-  u32 xoff;
+  s32 yoff;
+  s32 xoff;
 
   xoff = x + 0x156;
   yoff = y + 0x156;
-  value = __rlwimi(__rlwimi(0, xoff, 31, 22, 31) + 0, yoff, 9, 12, 21);
+  value = __rlwimi(__rlwimi(0, (u32)xoff, 31, 22, 31) + 0, (u32)yoff, 9, 12, 21);
   GXWGFifo.u8 = 0x61;
   value = __rlwimi(value, 0x59, 24, 0, 7);
   GXWGFifo.u32 = value;

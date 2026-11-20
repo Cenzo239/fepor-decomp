@@ -85,6 +85,7 @@ f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
   float new_var2;
   extern f32 lbl_80368D78;
   extern f32 lbl_80368D7C;
+  extern f64 lbl_80368D80;
   void *self;
   u8 *row;
   f32 t1;
@@ -97,11 +98,14 @@ f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
   f32 s0;
   f32 s1;
   s32 idx;
-  s8 y;
   s8 x;
+  s8 y;
+  f64 magic;
+  magic = lbl_80368D80;
+  (void)magic;
   self = arg0;
-  y = arg2;
   x = arg1;
+  y = arg2;
   switch (arg3)
   {
     case 8:

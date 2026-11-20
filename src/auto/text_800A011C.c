@@ -50,10 +50,9 @@ extern s32 lbl_803676F8;
 #pragma opt_lifetimes on
 s32 fn_800A011C(s32 a, s32 b, void *c) {
     extern u8 lbl_80366E25;
-    s32 v;
+    s32 v = 2;
 
     a = (u8)lbl_80366E25;
-    v = 2;
     b = a ^ 1;
     lbl_80366E25 = b;
     if ((u8)b != 0) {

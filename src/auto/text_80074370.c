@@ -1672,11 +1672,11 @@ extern "C" s32 fn_80076A88(s32 arg0, void *arg1, void *arg2) {
     };
     extern u8 lbl_8026C0B8[];
     extern u8 gUiContext[];
-    s32 Msg_Expand(void *);
+    void *Msg_Expand(void *);
     void fn_80166AE8(s32, s32, s32, void *);
     s32 a;
+    void *str;
     s32 b;
-    u32 str;
     s16 y;
     s16 x;
     Obj *obj;
@@ -1688,7 +1688,7 @@ extern "C" s32 fn_80076A88(s32 arg0, void *arg1, void *arg2) {
         str = Msg_Expand(lbl_8026C0B8 + 0x2fc);
         a = obj->v22();
         b = obj->v21();
-        fn_80166AE8(b + x, a + y, str, arg1);
+        fn_80166AE8(b + x, a + y, (s32)str, arg1);
         return 0;
     }
     gUiContext[8] = 0x1e;
@@ -3007,11 +3007,11 @@ extern "C" s32 fn_80078AB8(s32 arg0, void *arg1, void *arg2) {
         virtual s16 v22() = 0;
     };
     extern u8 lbl_8026C0B8[];
-    extern u8 gUiContext[];
-    s32 Msg_Expand(void *);
+    extern u8 lbl_802EF4C8[];
+    s32 fn_8000E0E4(void *);
     void fn_80166AE8(s32, s32, s32, void *);
     s32 a;
-    register s32 str;
+    s32 str;
     s16 y;
     s16 x;
     Obj *obj;
@@ -3021,14 +3021,14 @@ extern "C" s32 fn_80078AB8(s32 arg0, void *arg1, void *arg2) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
         x = *(s16 *)((u8 *)arg2 + 0x30);
-        str = Msg_Expand(lbl_8026C0B8 + 0x535);
-        a = (obj->v22)();
+        str = fn_8000E0E4(lbl_8026C0B8 + 0x535);
+        a = obj->v22();
         b = obj->v21();
         fn_80166AE8(b + x, a + y, str, arg1);
         return 0;
     }
     {
-        u8 *p = gUiContext;
+        u8 *p = lbl_802EF4C8;
         p[8] = 7;
     }
     return 5;

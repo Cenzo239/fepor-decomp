@@ -752,36 +752,37 @@ extern "C" void fn_801436AC(void *arg0, void *arg1) {
     Unk1 unk;
     ListIter ret;
     ListIter it;
-    ListIter dummy;
     Pair pairs[2];
-    u8 gap[0x10];
-    u8 *cursor = (u8 *)arg0;
+    ListNode *sentinel;
+    ListNode *node;
+    u8 *fp = &unk.unk0;
+    void *self = arg0;
+    u8 *cursor = (u8 *)self;
+    u8 flag = *fp;
     for (s32 i = 0; i < 11; cursor += 12, i++) {
-        pairs[0].f = unk.unk0;
+        pairs[0].f = flag;
+        List *list = (List *)(cursor + 0x90);
+        node = *(ListNode **)(cursor + 0x98);
+        sentinel = (ListNode *)((u8 *)list + 4);
         pairs[0].v = (u32)arg1;
         *(u32 *)&pairs[1] = *(u32 *)&pairs[0];
-        pairs[1].v = pairs[0].v;
-        gap[0] = pairs[0].f;
-        List *list = (List *)(cursor + 0x90);
-        ListNode *sentinel = (ListNode *)((u8 *)list + 4);
-        ListNode *node = *(ListNode **)(cursor + 0x98);
+        pairs[1].v = (u32)arg1;
         goto check;
         for (;;) {
             node = node->next;
         check:
-            if (node == sentinel)
-                break;
-            if (node->val != (void *)pairs[1].v)
-                continue;
-            if (node != (ListNode *)(cursor + 0x94)) {
-                it.node = node;
-                fn_80144E34(&ret, list, &it);
-                if ((u32)*(s16 *)((u8 *)arg0 + (i << 1) + 0x64) >= (u32)list->size)
-                    *(s16 *)((u8 *)arg0 + (i << 1) + 0x64) = list->size - 1;
+            if (node != sentinel) {
+                if (node->val != (void *)pairs[1].v)
+                    continue;
             }
+            if ((u32)node == (u32)list + 4)
+                break;
+            it.node = node;
+            fn_80144E34(&ret, list, &it);
+            if ((u32)*(s16 *)((u8 *)self + (i << 1) + 0x64) >= (u32)list->size)
+                *(s16 *)((u8 *)self + (i << 1) + 0x64) = list->size - 1;
             return;
         }
-        dummy.node = 0;
     }
 }
 #pragma cplusplus on

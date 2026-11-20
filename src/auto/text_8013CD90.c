@@ -529,11 +529,8 @@ extern "C" void fn_8013692C(s32, s32, s32, s32, s32, s32);
 #pragma scheduling on
 
 #pragma scheduling on
-void *fn_8013CD90(void *self)
-{
+void *fn_8013CD90(void *arg0) {
     void *Msg_Expand(void *);
-    extern u8 lbl_80276908[];
-    void *msg = *(void **)((u8 *)self + 0x20);
-    return msg ? Msg_Expand(msg) : (void *)(lbl_80276908 + 0x72);
+    extern char lbl_80276908[];
+    return *(void **)((char *)arg0 + 0x20) ? Msg_Expand(*(void **)((char *)arg0 + 0x20)) : &lbl_80276908[0x72];
 }
-#pragma scheduling reset

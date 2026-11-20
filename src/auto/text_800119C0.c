@@ -235,23 +235,1188 @@ void fn_80011D20(void) {
     *(void **)(ctx + 0x14) = base;
 }
 
-void fn_80011EDC(void *arg0) {
+void fn_80011EDC(void *arg0)
+{
     void fn_800142B0(s32);
+    void fn_80011D20(void);
+    void DebugPrint(char *, ...);
     extern void *lbl_80367180;
-    u8 op;
+    extern void *lbl_80367198;
+    extern void *lbl_803671A4;
+    extern char lbl_80267E20[];
+    u8 *ctx;
+    u8 *pc;
+    u8 *scene;
+    u8 *file;
+    u8 *text1;
+    u8 *text2;
+    u32 *sp;
+    u32 *base;
+    u32 *array;
+    u32 *frame;
+    u32 *dst;
+    u32 value;
+    u32 left;
+    u32 right;
+    u32 result;
+    u32 op;
+    s32 index;
+    s32 n;
+    s32 count;
+    s32 i;
 
     lbl_80367180 = arg0;
-    *(u8 *)((u8 *)arg0 + 0x1C) = 0;
+    *((u8 *)arg0 + 0x1C) = 0;
     fn_800142B0(0);
+
     for (;;) {
-        op = *(*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
+        ctx = (u8 *)lbl_80367180;
+        if ((s8)ctx[0x1C] != 0) {
+            break;
+        }
+        pc = *(u8 **)(ctx + 0xC);
+        *(u8 **)(ctx + 0xC) = pc + 1;
+        op = *pc;
         if (op > 0x41) {
             continue;
         }
         switch (op) {
+        case 0x00: /* nop */
+            break;
+        case 0x01: { /* val.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x02: { /* val.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x03: { /* valx.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            index += (s32)value;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x04: { /* valx.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            index += (s32)value;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x05: { /* valy.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            array = (u32 *)base[index];
+            result = array[(s32)value];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x06: { /* valy.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            array = (u32 *)base[index];
+            result = array[(s32)value];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x07: { /* ref.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x08: { /* ref.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x09: { /* refx.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            index += (s32)value;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0A: { /* refx.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            index += (s32)value;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0B: { /* refy.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            array = (u32 *)base[index];
+            result = (u32)(array + (s32)value);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0C: { /* refy.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = *(u32 **)(ctx + 0x14);
+            array = (u32 *)base[index];
+            result = (u32)(array + (s32)value);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0D: { /* gval.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0E: { /* gval.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x0F: { /* gvalx.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            index += (s32)value;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x10: { /* gvalx.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            index += (s32)value;
+            result = base[index];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x11: { /* gvaly.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            array = (u32 *)base[index];
+            result = array[(s32)value];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x12: { /* gvaly.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            array = (u32 *)base[index];
+            result = array[(s32)value];
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x13: { /* gref.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x14: { /* gref.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x15: { /* grefx.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            index += (s32)value;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x16: { /* grefx.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            index += (s32)value;
+            result = (u32)(base + index);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x17: { /* grefy.8 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            array = (u32 *)base[index];
+            result = (u32)(array + (s32)value);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x18: { /* grefy.16 */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            base = (u32 *)lbl_80367198;
+            array = (u32 *)base[index];
+            result = (u32)(array + (s32)value);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x19: { /* number.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(index);
+            break;
+        }
+        case 0x1A: { /* number.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(index);
+            break;
+        }
+        case 0x1B: { /* number.32 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(index);
+            break;
+        }
+        case 0x1C: { /* string.8 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            file = *(u8 **)(ctx + 8);
+            file = *(u8 **)(file + 8);
+            file = *(u8 **)(file + 0x24);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(file + index);
+            break;
+        }
+        case 0x1D: { /* string.16 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            file = *(u8 **)(ctx + 8);
+            file = *(u8 **)(file + 8);
+            file = *(u8 **)(file + 0x24);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(file + index);
+            break;
+        }
+        case 0x1E: { /* string.32 */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            file = *(u8 **)(ctx + 8);
+            file = *(u8 **)(file + 8);
+            file = *(u8 **)(file + 0x24);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(file + index);
+            break;
+        }
+        case 0x1F: { /* deref */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            result = *(u32 *)sp[-1];
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = result;
+            break;
+        }
+        case 0x20: { /* disc */
+            ctx = (u8 *)lbl_80367180;
+            *(u32 **)(ctx + 0x18) -= 1;
+            break;
+        }
+        case 0x21: { /* store */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            *(u32 *)left = value;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(value);
+            break;
+        }
+        case 0x22: { /* add */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left + right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x23: { /* sub */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (s32)left - (s32)right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x24: { /* mul */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left * right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x25: { /* div */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (s32)left / (s32)right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x26: { /* mod */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (s32)left % (s32)right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x27: { /* neg */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            result = (u32)-(s32)right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x28: { /* mvn */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            result = ~right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x29: { /* not */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            result = (right == 0);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2A: { /* orr */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left | right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2B: { /* and */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left & right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2C: { /* xor */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left ^ right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2D: { /* lsl */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = left << right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2E: { /* lsr */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (s32)left >> right;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x2F: { /* eq */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (left == right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x30: { /* ne */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = (left != right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x31: { /* lt */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = ((s32)left < (s32)right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x32: { /* le */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = ((s32)left <= (s32)right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x33: { /* gt */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = ((s32)left > (s32)right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x34: { /* ge */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            result = ((s32)left >= (s32)right);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x35: { /* eqstr */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            text1 = (u8 *)left;
+            text2 = (u8 *)right;
+            while ((s8)*text1 == (s8)*text2 && (s8)*text1 != 0) {
+                text1++;
+                text2++;
+            }
+            result = ((s8)*text1 == (s8)*text2);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x36: { /* nestr */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            right = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            left = *sp;
+            text1 = (u8 *)left;
+            text2 = (u8 *)right;
+            while ((s8)*text1 == (s8)*text2 && (s8)*text1 != 0) {
+                text1++;
+                text2++;
+            }
+            result = ((s8)*text1 != (s8)*text2);
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(result);
+            break;
+        }
+        case 0x37: { /* call.loc */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            file = *(u8 **)((u8 *)arg0 + 8);
+            file = *(u8 **)(file + 8);
+            scene = ((u8 **)*(u8 **)(file + 0x28))[index];
+            ctx = (u8 *)arg0;
+            if (ctx == 0) {
+                ctx = (u8 *)lbl_803671A4;
+            }
+            count = (s8)scene[0xD];
+            n = *(s16 *)(scene + 0x12);
+            sp = *(u32 **)(ctx + 0x18);
+            base = sp - count;
+            *(u32 **)(ctx + 0x18) = base + n;
+            file = *(u8 **)(scene + 8);
+            dst = (u32 *)lbl_80367198 + *(u16 *)(file + 0x20);
+            sp = base + count;
+            for (i = count; i < n; ++i) {
+                *sp++ = 0;
+            }
+            lbl_80367180 = ctx;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = *(u32 *)(ctx + 0xC);
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = *(u32 *)(ctx + 8);
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = *(u32 *)(ctx + 0x10);
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = *(u32 *)(ctx + 0x14);
+            *(u32 *)(ctx + 0xC) = *(u32 *)(scene + 4);
+            *(u8 **)(ctx + 8) = scene;
+            *(u32 **)(ctx + 0x10) = dst;
+            *(u32 **)(ctx + 0x14) = base;
+            break;
+        }
+        case 0x38: { /* call.ext */
+            fn_80011D20();
+            break;
+        }
+        case 0x39: { /* ret */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            ctx = (u8 *)lbl_80367180;
+            scene = *(u8 **)(ctx + 8);
+            n = *(s16 *)(scene + 0x12);
+            sp = *(u32 **)(ctx + 0x14) + n + 4;
+            *(u32 **)(ctx + 0x18) = sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            *(u32 *)(ctx + 0x14) = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            *(u32 *)(ctx + 0x10) = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            *(u32 *)(ctx + 0x8) = *sp;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            *(u32 *)(ctx + 0xC) = *sp;
+            ctx = (u8 *)lbl_80367180;
+            *(u32 **)(ctx + 0x18) -= n;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18);
+            *(u32 **)(ctx + 0x18) = sp + 1;
+            *sp = (u32)(value);
+            if (*(u8 **)((u8 *)lbl_80367180 + 0xC) == 0) {
+                return;
+            }
+            break;
+        }
+        case 0x3A: { /* b */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (index << 8) + *pc;
+            ctx = (u8 *)lbl_80367180;
+            *(u8 **)(ctx + 0xC) += index - 2;
+            break;
+        }
+        case 0x3B: { /* by */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            if (value == 0) {
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += 2;
+            } else {
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (s8)*pc;
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (index << 8) + *pc;
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += index - 2;
+            }
+            break;
+        }
+        case 0x3C: { /* bky */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            if (value == 0) {
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += 2;
+            } else {
+                ctx = (u8 *)lbl_80367180;
+                sp = *(u32 **)(ctx + 0x18);
+                *(u32 **)(ctx + 0x18) = sp + 1;
+                *sp = (u32)(1);
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (s8)*pc;
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (index << 8) + *pc;
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += index - 2;
+            }
+            break;
+        }
+        case 0x3D: { /* bn */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            if (value != 0) {
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += 2;
+            } else {
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (s8)*pc;
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (index << 8) + *pc;
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += index - 2;
+            }
+            break;
+        }
+        case 0x3E: { /* bkn */
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - 1;
+            *(u32 **)(ctx + 0x18) = sp;
+            value = *sp;
+            if (value != 0) {
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += 2;
+            } else {
+                ctx = (u8 *)lbl_80367180;
+                sp = *(u32 **)(ctx + 0x18);
+                *(u32 **)(ctx + 0x18) = sp + 1;
+                *sp = (u32)(0);
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (s8)*pc;
+                pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+                index = (index << 8) + *pc;
+                *(u8 **)((u8 *)lbl_80367180 + 0xC) += index - 2;
+            }
+            break;
+        }
+        case 0x3F: { /* yield */
+            ctx = (u8 *)lbl_80367180;
+            ctx[0x1C] = 1;
+            break;
+        }
+        case 0x40: { /* dummy */
+            ctx = (u8 *)lbl_80367180;
+            pc = *(u8 **)(ctx + 0xC);
+            *(u8 **)(ctx + 0xC) = pc + 1;
+            pc = *(u8 **)(ctx + 0xC);
+            *(u8 **)(ctx + 0xC) = pc + 1;
+            pc = *(u8 **)(ctx + 0xC);
+            *(u8 **)(ctx + 0xC) = pc + 1;
+            pc = *(u8 **)(ctx + 0xC);
+            *(u8 **)(ctx + 0xC) = pc + 1;
+            break;
+        }
+        case 0x41: { /* printf */
+            pc = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+            *(u8 **)((u8 *)lbl_80367180 + 0xC) = pc + 1;
+            index = (s8)*pc;
+            ctx = (u8 *)lbl_80367180;
+            sp = *(u32 **)(ctx + 0x18) - index;
+            *(u32 **)(ctx + 0x18) = sp;
+            if ((u32)index <= 9) {
+                switch (index) {
+                case 0:
+                    DebugPrint((char *)sp[0]);
+                    break;
+                case 1:
+                    DebugPrint((char *)sp[0]);
+                    break;
+                case 2:
+                    DebugPrint((char *)sp[0], sp[1]);
+                    break;
+                case 3:
+                    DebugPrint((char *)sp[0], sp[1], sp[2]);
+                    break;
+                case 4:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3]);
+                    break;
+                case 5:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3], sp[4]);
+                    break;
+                case 6:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3], sp[4], sp[5]);
+                    break;
+                case 7:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+                    break;
+                case 8:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6], sp[7]);
+                    break;
+                default:
+                    DebugPrint((char *)sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6], sp[7], sp[8]);
+                    break;
+                }
+            }
+            DebugPrint(lbl_80267E20);
+            break;
+        }
         default:
             break;
         }
+    }
+
+    ctx = (u8 *)lbl_80367180;
+    if ((s8)ctx[0x1C] != 0) {
+        sp = *(u32 **)(ctx + 0x18);
+        *(u32 **)(ctx + 0x18) = sp + 1;
+        *sp = 0;
+        fn_800142B0(6);
     }
 }
 
@@ -2784,13 +3949,15 @@ void Unit_WriteAll(s32 arg0) {
     void Unit_Write(void *, s32);
     u8 *unit;
     s32 i;
+    s32 a;
 
+    a = arg0;
     unit = gUnits;
     i = 0;
     do {
-        Unit_Write(unit, arg0);
-        i += 1;
+        Unit_Write(unit, a);
         unit += 0x280;
+        i += 1;
     } while (i < 0x9F);
 }
 #pragma global_optimizer reset

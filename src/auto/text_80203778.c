@@ -2600,22 +2600,21 @@ s32 __OSGetInterruptHandler(s16 arg0) {
 }
 
 void __OSInterruptInit(void) {
-    extern void *InterruptHandlerTable_803684C8;
-    extern void ExternalInterruptHandler(void);
-    void *memset(void *, s32, u32);
-    void __OSSetExceptionHandler(s32, void *);
-    u32 __OSMaskInterrupts(u32);
-    extern volatile u32 OS_PIRegs[];
-    u32 *base;
-
-    base = (u32 *)0x80000000;
-    InterruptHandlerTable_803684C8 = (void *)((u8 *)base + 0x3040);
-    memset(InterruptHandlerTable_803684C8, 0, 0x80);
-    base[0xC4 / 4] = 0;
-    base[0xC8 / 4] = 0;
-    OS_PIRegs[1] = 0xF0;
-    __OSMaskInterrupts(-0x20);
-    __OSSetExceptionHandler(4, ExternalInterruptHandler);
+extern void *InterruptHandlerTable_803684C8;
+extern void ExternalInterruptHandler(void);
+void *memset(void *, int, u32);
+void __OSSetExceptionHandler(s32, void *);
+u32 __OSMaskInterrupts(u32);
+u32 *base=(u32 *)0x80000000;
+extern volatile u32 OS_PIRegs[16];
+u32 *pi=(u32 *)OS_PIRegs;
+InterruptHandlerTable_803684C8=(void *)((u8 *)base+0x3040);
+memset(InterruptHandlerTable_803684C8,0,0x80);
+base[0xC4/4]=0;
+base[0xC8/4]=0;
+pi[1]=0xF0;
+__OSMaskInterrupts(-0x20);
+__OSSetExceptionHandler(4,ExternalInterruptHandler);
 }
 volatile u16 OS_MEMRegs[64] : 0xCC004000;
 volatile u16 OS_DSPRegs[64] : 0xCC005000;

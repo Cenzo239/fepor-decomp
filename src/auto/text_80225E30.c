@@ -1672,10 +1672,10 @@ s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
 #pragma use_lmw_stmw on
 s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     void *TRKGetBuffer(s32);
-    s32 TRKMessageSend(s32);
+    s32 fn_802262E8(s32);
     s32 fn_8022641C(void *, u8 *, u32);
-    s32 TRKAppendBuffer(s32, void *, u32);
-    void TRKSetBufferPosition(void *, u32);
+    s32 fn_80226698(s32, void *, u32);
+    void fn_8022692C(void *, u32);
     void fn_8022699C(s32);
     s32 fn_80226A2C(s32 *, s32 *);
     s32 fn_802283A8(s32, s32 *, s32, s32, s32);
@@ -1725,9 +1725,9 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
         *(u32 *)(msg + 8) = arg0;
         *(u16 *)(msg + 0xC) = (u16)var_r31;
         fn_80226A2C(&spC, &sp8);
-        var_r21 = TRKAppendBuffer(sp8, msg, 0x40U);
+        var_r21 = fn_80226698(sp8, msg, 0x40U);
         if ((arg5 == 0) && (var_r21 == 0)) {
-            var_r21 = TRKAppendBuffer(sp8, arg1 + var_r30, var_r31);
+            var_r21 = fn_80226698(sp8, arg1 + var_r30, var_r31);
         }
         if (var_r21 == 0) {
             if (arg4 != 0) {
@@ -1742,7 +1742,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
                 temp_r20 = (u8)*(u32 *)((u8 *)var_r22 + 0x20);
                 temp_r19 = *(u16 *)((u8 *)var_r22 + 0x24);
                 if ((arg5 != 0) && (var_r21 == 0) && ((u32)temp_r19 <= (u32)var_r31)) {
-                    TRKSetBufferPosition(var_r22, 0x40);
+                    fn_8022692C(var_r22, 0x40);
                     var_r21 = fn_8022641C(var_r22, arg1 + var_r30, temp_r19);
                     if (var_r21 == 0x302) {
                         var_r21 = 0;
@@ -1755,7 +1755,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
                 *arg3 = temp_r20;
                 fn_8022699C(sp10);
             } else {
-                var_r21 = TRKMessageSend(sp8);
+                var_r21 = fn_802262E8(sp8);
             }
         }
         fn_8022699C(spC);
@@ -2395,6 +2395,239 @@ arg0=fn_8022632C(arg2,registers,count);
 if(status[0xd]) {arg0=0x702;*arg3=0;}
 *(ExceptionStatus *)gTRKExceptionStatus_8029E574=saved;
 return arg0;
+}
+
+s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
+{
+    extern u8 gTRKExceptionStatus_8029E574[];
+    extern u32 lbl_802827B0[];
+    extern u32 lbl_80282760[];
+    extern u8 lbl_8033CFB4[];
+
+    u32 fn_80228948(void);
+    void fn_80228950(u32);
+    void fn_80228858(void *, s32);
+    void fn_80228CDC(f64 *);
+    void fn_80228D00(f64 *);
+    s32 fn_802264B4(void *, u8 *);
+    s32 fn_80226700(void *, u64);
+
+    typedef void (*Thunk)(void *, void *);
+
+    u32 vals[2];
+    u32 saved[4];
+    u32 specialWrite[10];
+    u32 specialRead[10];
+    u32 fprWrite[10];
+    u32 fprRead[10];
+
+    u32 *tmpl;
+    u32 *source;
+    u8 *status;
+    u32 opcode;
+    u32 regBits;
+    u32 msr;
+    u32 count;
+    s32 result;
+    s32 i;
+
+    if (arg1 > 0x21) {
+        return 0x701;
+    }
+
+    status = gTRKExceptionStatus_8029E574;
+
+    saved[0] = *(u32 *)(status + 0);
+    saved[1] = *(u32 *)(status + 4);
+    saved[2] = *(u32 *)(status + 8);
+    saved[3] = *(u32 *)(status + 12);
+
+    status[13] = 0;
+
+    msr = fn_80228948();
+    fn_80228950(msr | 0x2000);
+
+    *arg3 = 0;
+
+    regBits = (u32)arg0 << 21;
+    result = 0;
+
+    while (arg0 <= arg1 && result == 0) {
+        if (arg4 != 0) {
+            source = lbl_802827B0;
+
+            fprRead[0] = source[0];
+            fprRead[1] = source[1];
+            fprRead[2] = source[2];
+            fprRead[3] = source[3];
+            fprRead[4] = source[4];
+            fprRead[5] = source[5];
+            fprRead[6] = source[6];
+            fprRead[7] = source[7];
+            fprRead[8] = source[8];
+            fprRead[9] = source[9];
+
+            if (arg0 < 0x20) {
+                opcode = regBits | 0xC8030000;
+
+                if (arg4 != 0) {
+                    opcode = regBits | 0xD8030000;
+                }
+
+                fprRead[0] = opcode;
+                fprRead[9] = 0x4E800020;
+
+                fn_80228858(fprRead, 0x28);
+
+                ((Thunk)fprRead)(vals, lbl_8033CFB4);
+            } else if (arg0 == 0x20) {
+                if (arg4 != 0) {
+                    fn_80228CDC((f64 *)vals);
+                } else {
+                    fn_80228D00((f64 *)vals);
+                }
+
+                vals[0] &= 0;
+                vals[1] &= 0xFFFFFFFF;
+            } else if (arg0 == 0x21) {
+                if (arg4 == 0) {
+                    vals[0] = vals[1];
+                }
+
+                source = lbl_80282760;
+
+                specialRead[0] = source[0];
+                specialRead[1] = source[1];
+                specialRead[2] = source[2];
+                specialRead[3] = source[3];
+                specialRead[4] = source[4];
+                specialRead[5] = source[5];
+                specialRead[6] = source[6];
+                specialRead[7] = source[7];
+                specialRead[8] = source[8];
+                specialRead[9] = source[9];
+
+                if (arg4 != 0) {
+                    specialRead[0] = 0x7C9FFAA6;
+                    specialRead[1] = 0x90830000;
+                } else {
+                    specialRead[0] = 0x80830000;
+                    specialRead[1] = 0x7C9FFBA6;
+                }
+
+                specialRead[9] = 0x4E800020;
+
+                fn_80228858(specialRead, 0x28);
+
+                ((Thunk)specialRead)(vals, lbl_8033CFB4);
+
+                if (arg4 != 0) {
+                    vals[1] = vals[0] & 0xFFFFFFFF;
+                    vals[0] = 0;
+                }
+            }
+
+            result = fn_80226700(
+                arg2,
+                ((u64)vals[0] << 32) | vals[1]
+            );
+        } else {
+            fn_802264B4(arg2, (u8 *)vals);
+
+            source = lbl_802827B0;
+
+            fprWrite[0] = source[0];
+            fprWrite[1] = source[1];
+            fprWrite[2] = source[2];
+            fprWrite[3] = source[3];
+            fprWrite[4] = source[4];
+            fprWrite[5] = source[5];
+            fprWrite[6] = source[6];
+            fprWrite[7] = source[7];
+            fprWrite[8] = source[8];
+            fprWrite[9] = source[9];
+
+            if (arg0 < 0x20) {
+                opcode = regBits | 0xC8030000;
+
+                if (arg4 != 0) {
+                    opcode = regBits | 0xD8030000;
+                }
+
+                fprWrite[0] = opcode;
+                fprWrite[9] = 0x4E800020;
+
+                fn_80228858(fprWrite, 0x28);
+
+                ((Thunk)fprWrite)(vals, lbl_8033CFB4);
+            } else if (arg0 == 0x20) {
+                if (arg4 != 0) {
+                    fn_80228CDC((f64 *)vals);
+                } else {
+                    fn_80228D00((f64 *)vals);
+                }
+
+                vals[0] &= 0;
+                vals[1] &= 0xFFFFFFFF;
+            } else if (arg0 == 0x21) {
+                if (arg4 == 0) {
+                    vals[0] = vals[1];
+                }
+
+                source = lbl_80282760;
+
+                specialWrite[0] = source[0];
+                specialWrite[1] = source[1];
+                specialWrite[2] = source[2];
+                specialWrite[3] = source[3];
+                specialWrite[4] = source[4];
+                specialWrite[5] = source[5];
+                specialWrite[6] = source[6];
+                specialWrite[7] = source[7];
+                specialWrite[8] = source[8];
+                specialWrite[9] = source[9];
+
+                if (arg4 != 0) {
+                    specialWrite[0] = 0x7C9FFAA6;
+                    specialWrite[1] = 0x90830000;
+                } else {
+                    specialWrite[0] = 0x80830000;
+                    specialWrite[1] = 0x7C9FFBA6;
+                }
+
+                specialWrite[9] = 0x4E800020;
+
+                fn_80228858(specialWrite, 0x28);
+
+                ((Thunk)specialWrite)(vals, lbl_8033CFB4);
+
+                if (arg4 != 0) {
+                    vals[1] = vals[0] & 0xFFFFFFFF;
+                    vals[0] = 0;
+                }
+            }
+
+            result = 0;
+        }
+
+        regBits += 0x200000;
+        arg0++;
+
+        count = *(u32 *)arg3;
+        *arg3 = count + 8;
+    }
+
+    if (status[13] != 0) {
+        *arg3 = 0;
+        result = 0x702;
+    }
+
+    *(u32 *)(status + 0) = saved[0];
+    *(u32 *)(status + 4) = saved[1];
+    *(u32 *)(status + 8) = saved[2];
+    *(u32 *)(status + 12) = saved[3];
+
+    return result;
 }
 
 #pragma optimization_level reset

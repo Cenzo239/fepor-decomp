@@ -87,7 +87,7 @@ void fn_800AD700(void *arg0) {
     } *u;
 
     u = *(void **)((u8 *)arg0 + 0x30);
-    fn_8014CBD8(lbl_80330708, (f32)u->y, (f32)u->x);
+    fn_8014CBD8(lbl_80330708, (f32)*(volatile s8 *)&u->y, (f32)u->x);
 }
 
 /* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */

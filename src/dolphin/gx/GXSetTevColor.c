@@ -219,7 +219,8 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 #pragma scheduling off
 
-void GXSetTevColor(s32 id, GXColor color) {
+#pragma scheduling off
+void GXSetTevColor(s32 id, u32 *color) {
     u16 *gx;
     u8 cmd;
     u32 idx;
@@ -228,7 +229,7 @@ void GXSetTevColor(s32 id, GXColor color) {
     u16 zero;
 
     idx = id << 1;
-    c = *(u32 *)&color;
+    c = *color;
     reg = idx + 0xE0;
     gx = __GXData;
     cmd = 0x61;
@@ -253,3 +254,4 @@ void GXSetTevColor(s32 id, GXColor color) {
 
     gx[1] = zero;
 }
+#pragma scheduling reset

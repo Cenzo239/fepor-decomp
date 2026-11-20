@@ -6231,38 +6231,142 @@ done:
 
 void *fn_80046EB8(void *arg0,void *arg1) { u8 *base; s32 i; if(arg1==0)return 0; for(i=*(s16*)((u8*)arg0+6)-1;i>=0;i--) {base=*(u8**)((u8*)arg0+0x14); if(arg1==*(void**)(base+i*0xB4+0x10))return base+i*0xB4;} return 0; }
 
-s32 Map_FindObjNear(void *arg0, s32 arg1) {
-    void **temp_r7;
-    s32 var_r9;
-    void *temp_r5;
-    s32 *temp_r3;
+void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
+{
+    s32 count;
+    s32 i;
+    s32 offset;
+    s32 direction;
+    s32 dx;
+    s32 dy;
+    s32 x;
+    s32 y;
+    u32 flags;
+    u8 dir;
+    u8 valid;
+    u8 *base;
+    u8 *entry;
+    void *found;
 
-    temp_r7 = (void **)((char *)arg0 + 0x188);
-    if (*(void **)temp_r7 == NULL) {
-        return 0;
-    }
-    temp_r5 = (char *)temp_r7 + 0x50;
-    if (*(void **)temp_r5 == NULL) {
-        return 0;
-    }
+    count = *(s16 *)((u8 *)arg0 + 6);
+    i = count - 1;
+    offset = i * 0xB4;
+    found = 0;
 
-    temp_r3 = (s32 *)((char *)arg0 + 0x210);
-    var_r9 = *(s32 *)((char *)temp_r5 + arg1 * 8);
-    if (var_r9 >= 0) {
-        if ((u32)(var_r9 - *(s32 *)temp_r3) > 0U) {
-            return 0;
-        }
-    } else {
-        s32 temp = *(s32 *)((char *)arg0 + arg1 * 8 + 0x24C);
-        if (temp >= 0) {
-            if ((u32)(temp - *(s32 *)temp_r3) > 0U) {
-                return 0;
+    if (i >= 0) {
+        base = *(u8 **)((u8 *)arg0 + 0x14);
+
+        for (; i >= 0; i--, offset -= 0xB4) {
+            entry = base + offset;
+            flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+
+            if (!(flags & arg4)) {
+                if (arg3 == 0 || (arg3 & flags) == arg3) {
+                    if (arg1 >= *(s8 *)(entry + 4) &&
+                        arg1 <= *(s8 *)(entry + 6) &&
+                        arg2 >= *(s8 *)(entry + 5) &&
+                        arg2 <= *(s8 *)(entry + 7)) {
+                        valid = 1;
+                    } else {
+                        valid = 0;
+                    }
+
+                    if (valid != 0) {
+                        found = base + i * 0xB4;
+                        break;
+                    }
+                }
             }
-        } else {
-            return 0;
         }
     }
-    return 1;
+
+    if (found != 0) {
+        return found;
+    }
+
+    for (direction = 0; direction < 4; direction++) {
+        switch (direction) {
+        case 0:
+            dir = 1;
+            break;
+        case 1:
+            dir = 2;
+            break;
+        case 2:
+            dir = 4;
+            break;
+        case 3:
+            dir = 8;
+            break;
+        default:
+            dir = 0x10;
+            break;
+        }
+
+        switch (dir) {
+        case 1:
+            dx = -1;
+            break;
+        case 2:
+            dx = 1;
+            break;
+        default:
+            dx = 0;
+            break;
+        }
+
+        switch (dir) {
+        case 4:
+            dy = 1;
+            break;
+        case 8:
+            dy = -1;
+            break;
+        default:
+            dy = 0;
+            break;
+        }
+
+        x = arg1 + dx;
+        y = arg2 + dy;
+
+        i = count - 1;
+        offset = i * 0xB4;
+        found = 0;
+
+        if (i >= 0) {
+            base = *(u8 **)((u8 *)arg0 + 0x14);
+
+            for (; i >= 0; i--, offset -= 0xB4) {
+                entry = base + offset;
+                flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+
+                if (!(flags & arg4)) {
+                    if (arg3 == 0 || (arg3 & flags) == arg3) {
+                        if (x >= *(s8 *)(entry + 4) &&
+                            x <= *(s8 *)(entry + 6) &&
+                            y >= *(s8 *)(entry + 5) &&
+                            y <= *(s8 *)(entry + 7)) {
+                            valid = 1;
+                        } else {
+                            valid = 0;
+                        }
+
+                        if (valid != 0) {
+                            found = base + i * 0xB4;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (found != 0) {
+            return found;
+        }
+    }
+
+    return 0;
 }
 
 s32 Map_FindObjAtXY(void *arg0, s32 arg1, s32 arg2)

@@ -1798,31 +1798,31 @@ s32 Rand_Chance(s32 arg0) {
     return (((u16)t6 * 100) / 65536) < arg0;
 }
 #pragma global_optimizer off
-s32 Rand_Range(s32 arg0) {
-    struct RandSt { u16 a; u16 b; u16 c; };
-    extern struct RandSt lbl_80367150;
-    u16 t6;
-    s32 t4;
-    s32 s1;
-    s32 s2;
-    s32 s0;
-    struct RandSt *st;
-
-    st = &lbl_80367150;
-    s0 = lbl_80367150.a;
-    s2 = st->c;
-    s1 = st->b;
-    t4 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    st->c = t4;
-    if (s1 & 0x8000) {
-        st->c = t4 + 1;
-    }
-    t6 ^= st->c;
-    st->c = st->b;
-    st->b = lbl_80367150.a;
-    lbl_80367150.a = t6;
-    return (arg0 * (u16)t6) / 65536;
+s32 Rand_Range(s32 arg0)
+{
+  struct RandSt
+  {
+    u16 a;
+    u16 b;
+    u16 c;
+  };
+  extern struct RandSt lbl_80367150;
+  unsigned int t6;
+  s32 s0;
+  s32 s2;
+  s32 s1;
+  s32 t4;
+  struct RandSt *st;
+  st = &lbl_80367150;
+  s0 = lbl_80367150.a;
+  s1 = st->b;
+  s2 = st->c;
+  t4 = (s2 * 2) & 0xFFFE;
+  t6 = (u16) ((s0 >> 5) + (s1 << 11));
+  st->c = t4;
+ do { if (s1 & 0x8000) { st->c = 1 + t4; } t6 ^= st->c; st->c = st->b; st->b = lbl_80367150.a; } while (0);
+  lbl_80367150.a = t6;
+  return (arg0 * ((u16) t6)) / 65536;
 }
 #pragma global_optimizer reset
 void fn_8000CF4C(u32 arg0) {
@@ -1995,9 +1995,17 @@ s32 Hash_Remove(s8 *str) {
     return 0;
 }
 
+#pragma opt_strength_reduction reset
+#pragma use_lmw_stmw reset
+#pragma inline_depth reset
+#pragma global_optimizer on
+#pragma optimization_level 4
 s32 Hash_Lookup(s8 *str) {
     extern u8 lbl_802ADB20[];
-    HashKey key;
+    struct {
+        u32 h2;
+        u32 h1;
+    } key;
     u32 *node;
 
     if (str == NULL) {
@@ -2017,7 +2025,8 @@ s32 Hash_Lookup(s8 *str) {
     }
     return 0;
 }
-
+#pragma optimization_level reset
+#pragma global_optimizer reset
 extern struct UnkStruct_802AEE80 gUnk_802AEE80;
 
 extern s32 gUnknown_0x80369C84;
