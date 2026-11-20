@@ -1,5 +1,7 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+extern f64 lbl_8036C250;
+extern f64 lbl_8036C258;
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -1630,11 +1632,10 @@ void fn_8024BB90(void) {
     *(s32 *)(p + 4) = 0;
 }
 #pragma optimization_level reset
-void fn_8024BC58(void *arg0)
-{
+void fn_8024BC58(void *arg0) {
     M2C_UNK fn_80261E6C(s32, M2C_UNK, s32, s32, f32, f32, f32, f32);
     extern f32 lbl_8036C228;
-    fn_80261E6C(M2C_FIELD(arg0, s32 *, 0x4C), 0, M2C_FIELD(arg0, u8 *, 0x5A) << 0x10, M2C_FIELD(arg0, u8 *, 0x5B) << 0x10, lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x59), lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x5C), lbl_8036C228 * (f32) M2C_FIELD(arg0, u8 *, 0x5D), lbl_8036C228);
+    fn_80261E6C(M2C_FIELD(arg0, s32 *, 0x4C), 0, M2C_FIELD(arg0, u8 *, 0x5A) << 0x10, M2C_FIELD(arg0, u8 *, 0x5B) << 0x10, lbl_8036C228 * (f32)(u32) M2C_FIELD(arg0, u8 *, 0x59), lbl_8036C228 * (f32)(u32) M2C_FIELD(arg0, u8 *, 0x5C), lbl_8036C228 * (f32)(u32) M2C_FIELD(arg0, u8 *, 0x5D), lbl_8036C228);
 }
 
 void fn_8024BCE4(void) {
@@ -2797,14 +2798,15 @@ s32 AudioWave_Remove(u16 id) {
     extern struct AudioWaveKey gAudioWaveKeys[];
     extern u16 gAudioWaveKeyCount;
 
-    struct AudioWaveKey *p;
-    u16 count;
     s32 i;
+    u16 count;
+    struct AudioWaveKey *p;
 
     Audio_Lock();
     count = gAudioWaveKeyCount;
+    i = 0;
     p = gAudioWaveKeys;
-    for (i = 0; i < (s32)count && id != p->id; p++, i++) {
+    for (; i < (s32)count && id != p->id; p++, i++) {
     }
 
     if (i != (s32)count) {
@@ -4014,6 +4016,56 @@ void fn_8025164C(void *arg0)
 
     *(u8 *)(data + 0x130) =
         ((lower - value) * 100) / (upper - lower);
+}
+
+void fn_802517EC(void *arg0, u32 *arg1) {
+    s32 fn_80250884(u16);
+    void Sound_SetVoiceEnvelope(u8, void *, s32);
+    extern f32 gSoundVolCurve[];
+    extern f32 lbl_8036C240;
+    extern f32 lbl_8036C244;
+    extern f32 lbl_8036C248;
+
+    f32 vol;
+    union {
+        s16 h[4];
+        struct { s32 v0; s32 v4; s16 c; s16 d; u8 pad[0xC]; } s;
+        u8 all[0x18];
+    } env;
+    void *sv;
+    u8 *data;
+    u16 h8;
+    s32 vC;
+    s32 v10;
+
+    sv = arg0;
+    data = (u8 *)fn_80250884((u16)(arg1[0] >> 8));
+    if (data != NULL) {
+        if ((arg1[0] >> 24) == 0) {
+            env.h[0] = (u16)((*(u16 *)(data + 0) >> 8) | (*(u16 *)(data + 0) << 8));
+            env.h[1] = (u16)((*(u16 *)(data + 2) >> 8) | (*(u16 *)(data + 2) << 8));
+            env.h[2] = (u16)((*(u16 *)(data + 4) >> 8) | (*(u16 *)(data + 4) << 8));
+            env.h[3] = (u16)((*(u16 *)(data + 6) >> 8) | (*(u16 *)(data + 6) << 8));
+            Sound_SetVoiceEnvelope((u8)*(u32 *)((u8 *)sv + 0xF4), &env, 0);
+        } else {
+            h8 = (u16)((*(u16 *)(data + 8) >> 8) | (*(u16 *)(data + 8) << 8));
+            vol = lbl_8036C240 * gSoundVolCurve[h8 >> 5];
+            env.s.v0 = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
+            env.s.v4 = data[4] | (data[5] << 8) | (data[6] << 16) | (data[7] << 24);
+            env.s.c = (s16)vol;
+            env.s.d = (u16)((*(u16 *)(data + 0xA) >> 8) | (*(u16 *)(data + 0xA) << 8));
+            vC = data[0xC] | (data[0xD] << 8) | (data[0xE] << 16) | (data[0xF] << 24);
+            v10 = data[0x10] | (data[0x11] << 8) | (data[0x12] << 16) | (data[0x13] << 24);
+            if ((u32)(vC + 0x80000000) != 0) {
+                env.s.v0 += (s32)(lbl_8036C244 * (f32)*(u32 *)((u8 *)sv + 0x15C) * (f32)vC);
+            }
+            if ((u32)(v10 + 0x80000000) != 0) {
+                env.s.v4 += (s32)(lbl_8036C248 * (f32)*(u8 *)((u8 *)sv + 0x131) * (f32)v10);
+            }
+            Sound_SetVoiceEnvelope((u8)*(u32 *)((u8 *)sv + 0xF4), &env, 1);
+        }
+        *(u32 *)((u8 *)sv + 0x118) |= 0x100;
+    }
 }
 
 /* Build ADSR envelope from packed channel params and apply it to the synth voice. */
@@ -5377,25 +5429,23 @@ s32 fn_802555A0(
     void fn_80256054(void *, u8);
     void fn_8025FB74(u8, u8, u8);
     void *fn_802506A8(u16);
+    u16 fn_8024B594(u8, u8);
     u32 Sound_AddVid(SynthVoice *, u32);
     s32 Sound_IsHwVoiceActive(s32);
     void fn_802618E4(int);
     void fn_80249DD0(s32);
 
-    u8 *voice;
-    u8 *sample;
-    u8 *prev;
-    u8 *next;
-    u32 flags;
-    u32 high;
-    u32 low;
-    s32 index;
     s32 result;
-    u32 linked;
+    u32 flags;
+    s32 index;
+    u8 *sample;
+    u8 *voice;
+    u8 v13;
 
+    v13 = arg13;
     sample = (u8 *)fn_802506A8(arg0);
     if (sample == 0) {
-        return -1;
+        goto fail;
     }
 
     flags = arg4 & 0x80;
@@ -5407,41 +5457,35 @@ s32 fn_802555A0(
     }
 
     index = fn_80256628(arg1, arg2, arg3, flags != 0);
-    if (index == -1) {
-        return -1;
+    if ((u32)index == 0xFFFFFFFFu) {
+        goto fail;
     }
 
     voice = (u8 *)gSynthVoices + index * 0x458;
     fn_80255B20(voice);
 
-    if (*(s32 *)(voice + 0x4C) == 0) {
-        prev = *(u8 **)(voice + 0x40);
-        next = *(u8 **)(voice + 0x3C);
-        if (prev == 0) {
-            gSynthIdleList = (s32)next;
-        } else {
-            *(u8 **)(prev + 0x3C) = next;
-        }
-        if (next != 0) {
-            *(u8 **)(next + 0x40) = prev;
-        }
-    }
-
     if (*(s32 *)(voice + 0x4C) != 2) {
-        high = *(u32 *)(voice + 0x98);
-        low = *(u32 *)(voice + 0x9C);
-
-        if ((high | low) != 0 &&
-            (high != 0xFFFFFFFF || low != 0xFFFFFFFF)) {
-            prev = *(u8 **)(voice + 0x48);
-            next = *(u8 **)(voice + 0x44);
-            if (prev == 0) {
-                gSynthSchedList = (s32)next;
+        if (*(s32 *)(voice + 0x4C) == 0) {
+            if (*(u8 **)(voice + 0x40) == 0) {
+                gSynthIdleList = (s32)*(u8 **)(voice + 0x3C);
             } else {
-                *(u8 **)(prev + 0x44) = next;
+                *(u8 **)(*(u8 **)(voice + 0x40) + 0x3C) = *(u8 **)(voice + 0x3C);
             }
-            if (next != 0) {
-                *(u8 **)(next + 0x48) = prev;
+            if (*(u8 **)(voice + 0x3C) != 0) {
+                *(u8 **)(*(u8 **)(voice + 0x3C) + 0x40) = *(u8 **)(voice + 0x40);
+            }
+        }
+
+        if (*(u64 *)(voice + 0x98) != 0) {
+            if (*(u64 *)(voice + 0x98) != 0xFFFFFFFFFFFFFFFFULL) {
+                if (*(u8 **)(voice + 0x48) == 0) {
+                    gSynthSchedList = (s32)*(u8 **)(voice + 0x44);
+                } else {
+                    *(u8 **)(*(u8 **)(voice + 0x48) + 0x44) = *(u8 **)(voice + 0x44);
+                }
+                if (*(u8 **)(voice + 0x44) != 0) {
+                    *(u8 **)(*(u8 **)(voice + 0x44) + 0x48) = *(u8 **)(voice + 0x48);
+                }
             }
         }
 
@@ -5496,7 +5540,7 @@ s32 fn_802555A0(
     *(u32 *)(voice + 0xEC) = 0xFFFFFFFF;
     *(u32 *)(voice + 0xF0) = 0xFFFFFFFF;
     *(u32 *)(voice + 0x108) = 0xFFFFFFFF;
-    *(u8 *)(voice + 0x21A) = arg13;
+    *(u8 *)(voice + 0x21A) = v13;
     *(u8 *)(voice + 0x21B) = arg14;
     *(u8 *)(voice + 0x21C) = arg15 == 0;
     *(u8 *)(voice + 0x442) = 0;
@@ -5508,22 +5552,18 @@ s32 fn_802555A0(
     fn_80256054(voice, arg1);
     result = (s32)Sound_AddVid((SynthVoice *)voice, arg12);
 
-    if (result != -1) {
+    if ((u32)result != 0xFFFFFFFFu) {
         if (*(s32 *)(voice + 0x4C) != 0) {
-            high = *(u32 *)(voice + 0x98);
-            low = *(u32 *)(voice + 0x9C);
-
-            if ((high | low) != 0 &&
-                (high != 0xFFFFFFFF || low != 0xFFFFFFFF)) {
-                prev = *(u8 **)(voice + 0x48);
-                next = *(u8 **)(voice + 0x44);
-                if (prev == 0) {
-                    gSynthSchedList = (s32)next;
-                } else {
-                    *(u8 **)(prev + 0x44) = next;
-                }
-                if (next != 0) {
-                    *(u8 **)(next + 0x48) = prev;
+            if (*(u64 *)(voice + 0x98) != 0) {
+                if (*(u64 *)(voice + 0x98) != 0xFFFFFFFFFFFFFFFFULL) {
+                    if (*(u8 **)(voice + 0x48) == 0) {
+                        gSynthSchedList = (s32)*(u8 **)(voice + 0x44);
+                    } else {
+                        *(u8 **)(*(u8 **)(voice + 0x48) + 0x44) = *(u8 **)(voice + 0x44);
+                    }
+                    if (*(u8 **)(voice + 0x44) != 0) {
+                        *(u8 **)(*(u8 **)(voice + 0x44) + 0x48) = *(u8 **)(voice + 0x48);
+                    }
                 }
             }
 
@@ -5533,20 +5573,21 @@ s32 fn_802555A0(
             *(u32 *)(voice + 0xA4) = (u32)gSynthTimeLo;
             *(u32 *)(voice + 0xA0) = (u32)gSynthTimeHi;
             *(u32 *)(voice + 0x118) &= 0xFFFBFFFB;
+            *(u32 *)(voice + 0x4C) = 0;
             *(u32 *)(voice + 0x114) = 0;
 
-            next = (u8 *)gSynthIdleList;
-            *(u8 **)(voice + 0x3C) = next;
-            if (next != 0) {
-                *(u8 **)(next + 0x40) = voice;
+            if (*(u8 **)gSynthIdleList != 0) {
+                *(u8 **)(*(u8 **)gSynthIdleList + 0x40) = voice;
             }
             *(u32 *)(voice + 0x40) = 0;
+            *(u8 **)(voice + 0x3C) = (u8 *)gSynthIdleList;
             gSynthIdleList = (s32)voice;
             *(u32 *)(voice + 0x4C) = 0;
         }
         return result;
     }
 
+fail:
     if (Sound_IsHwVoiceActive(index) != 0) {
         fn_802618E4(index);
     }
