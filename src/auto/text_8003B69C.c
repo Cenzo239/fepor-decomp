@@ -1,5 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -8048,14 +8049,54 @@ f64 k90;
 f32 z;
 k90 = lbl_80368F90;
 GXBegin(0x98,0,4);
+{
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
-Map_WriteColorVertex((f32)(x),(f32)(y),z,color);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+{
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
-Map_WriteColorVertex((f32)(x+1),(f32)(y),z,color);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+{
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
-Map_WriteColorVertex((f32)(x),(f32)(y+1),z,color);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
+{
+u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
-Map_WriteColorVertex((f32)(x+1),(f32)(y+1),z,color);
+r=color[0];g=color[1];b=color[2];a=color[3];
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
+}
 }
 #pragma global_optimizer on
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
