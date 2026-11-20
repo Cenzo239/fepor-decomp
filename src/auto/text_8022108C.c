@@ -437,6 +437,7 @@ void GXSetCopyClear(u8 *clear, u32 z) {
 }
 
 #pragma use_lmw_stmw on
+#pragma scheduling off
 void fn_80221824(u8 aa, const u8 sample_pattern[12][2], u8 vf, const u8 vfilter[7]) {
     u32 reg2;
     u32 reg1;
