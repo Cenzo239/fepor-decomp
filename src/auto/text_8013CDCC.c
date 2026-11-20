@@ -1625,12 +1625,15 @@ extern "C" s16 fn_8013E684(void *arg0, void *arg1) {
         s8 field_60;
     };
     s16 temp;
+    s32 d;
     s32 sum;
 
     temp = ((Obj *)arg0)->v34();
-    sum = (s32)temp + ((Arg1 *)arg1)->field_60;
+    d = temp;
+    sum = d;
+    sum += ((Arg1 *)arg1)->field_60;
     sum -= 1;
-    return (s16)(sum / (s32)temp);
+    return (s16)(sum / d);
 }
 #pragma cplusplus reset
 s16 fn_8013E6D8(void *arg0) {
