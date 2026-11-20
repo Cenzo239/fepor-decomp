@@ -199,7 +199,7 @@ return 0;
 }
 
 void fn_8005B820(void) {
-    void *Terrain_GetEntry(u8);
+    void *fn_80019DBC(u8);
     extern u32 lbl_802F03A8[];
     u32 *out;
     u8 *entry;
@@ -208,7 +208,7 @@ void fn_8005B820(void) {
     u8 *s;
     u8 b;
 
-    entry = Terrain_GetEntry(0);
+    entry = fn_80019DBC(0);
     out = lbl_802F03A8;
     for (i = 0x4D; i != 0; i--) {
         s = *(u8 **)entry;
@@ -932,13 +932,13 @@ void fn_8005CBC8(void)
 
 #pragma global_optimizer off
 void *fn_8005CEC0(void) {
-    void fn_8005C8D8();
+    void fn_8005C8D8(s32);
     extern u8 lbl_802F04E0[];
+    u8 *base;
     u8 *e;
     s32 i;
     s32 j;
     unsigned ctr;
-    u8 *base;
 
     i = 0;
     base = lbl_802F04E0;
@@ -961,7 +961,7 @@ void *fn_8005CEC0(void) {
     }
     return NULL;
 }
-
+#pragma global_optimizer on
 int fn_8005CF6C(int arg0) {
  void fn_8020F334(void *); void fn_800C4588(void *); void fn_8003FED8(void *); void OS_YieldThread(void); extern u8 gFileCache[];
  u8 *entry; s32 index;
@@ -997,18 +997,19 @@ void FileCache_ReleaseByName(char *name) {
 
 #pragma global_optimizer off
 void FileCache_ReleaseByKey(u32 arg0) {
- void FileCache_Release(void *);
- extern u8 gFileCache[];
- u8 *found=0;
- u8 *e;
- u32 i;
- for (e=gFileCache,i=0;i<1024;e+=124,++i) {
- if (*(u32 *)(e+56)==arg0) {
- found=gFileCache+124*i;
- break;
- }
- }
- FileCache_Release(found);
+    void FileCache_Release(void *);
+    extern u8 gFileCache[];
+    u8 *found = 0;
+    u8 *e;
+    u32 i;
+
+    for (i = 0, e = gFileCache; i < 1024; ++i, e += 124) {
+        if (*(u32 *)(e + 56) == arg0) {
+            found = gFileCache + 124 * i;
+            break;
+        }
+    }
+    FileCache_Release(found);
 }
 
 #pragma use_lmw_stmw on
@@ -1915,23 +1916,24 @@ u32 fn_8005E55C(void) {
 }
 
 #pragma dont_inline on
-void *fn_8005E594(s8 arg0, u32 arg1, char *arg2) {
+void *fn_8005E594(s32 arg0, u32 arg1, char *arg2) {
     void DebugPrint(char *, ...);
+    void fn_8005BC8C();
     u32 fn_800C44F4(s32);
     void *fn_800C4604(s32, u32, char *, u32);
     void fn_800C4384(void);
     unsigned long strlen(const char *);
     extern u8 lbl_8026B330[];
-    u32 a1;
-    char *a2;
     void *result;
+    char *a2;
+    u32 a1;
     s32 ofs;
 
-    result = (void *)(s32)arg0;
+    result = (void *)arg0;
     a2 = arg2;
     a1 = arg1;
     DebugPrint((char *)(lbl_8026B330 + 0x230));
-    fn_8005BC8C((s8)(s32)result);
+    fn_8005BC8C((s8)arg0);
     if (fn_800C44F4((s32)result) < a1) {
         result = NULL;
     } else {
@@ -1941,7 +1943,7 @@ void *fn_8005E594(s8 arg0, u32 arg1, char *arg2) {
         }
         result = fn_800C4604((s32)result, a1, a2 + ofs, a1);
     }
-    if (result == NULL) {
+    if (result == 0) {
         fn_800C4384();
     }
     return result;
