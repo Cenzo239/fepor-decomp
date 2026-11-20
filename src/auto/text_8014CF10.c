@@ -367,6 +367,8 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     extern u8 gMapObjEventList[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
+    struct Flags9F { u8 highbit : 1; u8 known : 7; };
+    volatile u8 *volatile vbase = (volatile u8 *)arg0;
     u8 var_r27;
     s32 var_r26;
     s32 temp_r28;
@@ -400,7 +402,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     *(u8 *)((u8 *)arg0 + 0x51C) = arg1;
     fn_801998B0((u8 *)arg0 + 0x9C);
     *(u8 *)((u8 *)arg0 + 0xA6) = var_r27;
-    *(u8 *)((u8 *)arg0 + 0x9F) = (*(u8 *)((u8 *)arg0 + 0x9F) & ~0x80) | ((var_r26 << 7) & 0x80);
+    ((struct Flags9F *)((u8 *)arg0 + 0x9F))->highbit = var_r26;
     *(s32 *)((u8 *)arg0 + 0x80) = 0;
     *(s32 *)((u8 *)arg0 + 0x7C) = 0;
     *(s32 *)((u8 *)arg0 + 0x78) = 0;
@@ -417,10 +419,10 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     var_r30 = var_r29 + var_r27;
     for (i = 0; i < count; i++) {
         if (var_r30[5] & 2) {
-            Status_Clear((u8 *)arg0 + 0x74, var_r29[0]);
+            Status_Clear((void *)(vbase + 0x74), var_r29[0]);
         }
         if (var_r30[5] & 1) {
-            Status_Clear((u8 *)arg0 + 0x84, var_r29[0]);
+            Status_Clear((void *)(vbase + 0x84), var_r29[0]);
         }
         var_r30 += 0x18;
         var_r29 += 0x18;
@@ -435,41 +437,18 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_800C32A4(gIconSlots);
     p = (u8 *)arg0;
     for (j = 0; j < 5; j++) {
-        p[0x3C4] = 0;
-        p[0x3C5] = 0;
-        *(s16 *)(p + 0x3C6) = 0;
-        *(s32 *)(p + 0x3C8) = 0;
-        p[0x3CC] = 0;
-        p[0x3CD] = 0;
-        *(s16 *)(p + 0x3CE) = 0;
-        *(s32 *)(p + 0x3D0) = 0;
-        p[0x3D4] = 0;
-        p[0x3D5] = 0;
-        *(s16 *)(p + 0x3D6) = 0;
-        *(s32 *)(p + 0x3D8) = 0;
-        p[0x3DC] = 0;
-        p[0x3DD] = 0;
-        *(s16 *)(p + 0x3DE) = 0;
-        *(s32 *)(p + 0x3E0) = 0;
-        p[0x3E4] = 0;
-        p[0x3E5] = 0;
-        *(s16 *)(p + 0x3E6) = 0;
-        *(s32 *)(p + 0x3E8) = 0;
-        p[0x3EC] = 0;
-        p[0x3ED] = 0;
-        *(s16 *)(p + 0x3EE) = 0;
-        *(s32 *)(p + 0x3F0) = 0;
-        p[0x3F4] = 0;
-        p[0x3F5] = 0;
-        *(s16 *)(p + 0x3F6) = 0;
-        *(s32 *)(p + 0x3F8) = 0;
-        p[0x3FC] = 0;
-        p[0x3FD] = 0;
-        *(s16 *)(p + 0x3FE) = 0;
-        *(s32 *)(p + 0x400) = 0;
+        p[0x3C4] = 0; p[0x3C5] = 0; *(s16 *)(p + 0x3C6) = 0; *(s32 *)(p + 0x3C8) = 0;
+        p[0x3CC] = 0; p[0x3CD] = 0; *(s16 *)(p + 0x3CE) = 0; *(s32 *)(p + 0x3D0) = 0;
+        p[0x3D4] = 0; p[0x3D5] = 0; *(s16 *)(p + 0x3D6) = 0; *(s32 *)(p + 0x3D8) = 0;
+        p[0x3DC] = 0; p[0x3DD] = 0; *(s16 *)(p + 0x3DE) = 0; *(s32 *)(p + 0x3E0) = 0;
+        p[0x3E4] = 0; p[0x3E5] = 0; *(s16 *)(p + 0x3E6) = 0; *(s32 *)(p + 0x3E8) = 0;
+        p[0x3EC] = 0; p[0x3ED] = 0; *(s16 *)(p + 0x3EE) = 0; *(s32 *)(p + 0x3F0) = 0;
+        p[0x3F4] = 0; p[0x3F5] = 0; *(s16 *)(p + 0x3F6) = 0; *(s32 *)(p + 0x3F8) = 0;
+        p[0x3FC] = 0; p[0x3FD] = 0; *(s16 *)(p + 0x3FE) = 0; *(s32 *)(p + 0x400) = 0;
         p += 0x40;
     }
 }
+#pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
 #pragma scheduling off
