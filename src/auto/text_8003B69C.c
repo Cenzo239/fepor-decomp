@@ -1,6 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
-extern f64 lbl_80368F90;
+f64 lbl_80368F90 = 4503601772645824.0;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -8039,15 +8039,12 @@ extern u8 lbl_80285828[];
 }
 #pragma global_optimizer on
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 void fn_8004A864(s32 x,s32 y,u8 *color) {
 void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
-extern f64 lbl_80368F90;
-f64 k90;
 f32 z;
-k90 = lbl_80368F90;
 GXBegin(0x98,0,4);
 {
 u8 a,b,g,r;
@@ -8098,7 +8095,6 @@ r=color[0];g=color[1];b=color[2];a=color[3];
 *(u8 *)0xCC008000=a;
 }
 }
-#pragma global_optimizer on
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
 void Map_SetupColorGx(void) {
     void *Camera_GetViewMtx(void);
@@ -8838,11 +8834,11 @@ s32 Mu_IsAnimDone(void *arg0) {
 }
 
 u8 fn_8004C00C(void *arg0) {
- extern f32 lbl_80368FC4;
- { f32 x=(s8)M2C_FIELD(arg0,u8 *,0x19E);
- if(lbl_80368FC4+x != M2C_FIELD(arg0,f32 *,4)+M2C_FIELD(arg0,f32 *,0x10)) return 1; }
- { f32 y=(s8)M2C_FIELD(arg0,u8 *,0x19F);
- return (u8)(lbl_80368FC4+y != M2C_FIELD(arg0,f32 *,8)+M2C_FIELD(arg0,f32 *,0x14)); }
+    extern f32 lbl_80368FC4;
+    if ((lbl_80368FC4 + (f32)*(s8 *)((u8 *)arg0 + 0x19E)) != (*(f32 *)((u8 *)arg0 + 4) + *(f32 *)((u8 *)arg0 + 0x10))) {
+        return 1U;
+    }
+    return (u8) ((lbl_80368FC4 + (f32)*(s8 *)((u8 *)arg0 + 0x19F)) != (*(f32 *)((u8 *)arg0 + 8) + *(f32 *)((u8 *)arg0 + 0x14)));
 }
 
 void fn_8004C0A0(void *arg0) {
