@@ -940,9 +940,10 @@ void fn_8020D724(void) {
     void DVDLowStopMotor(void (*)(u32));
     void DCInvalidateRange(void *, u32);
 
-    
+    u8 *base;
+    DVDReadyCommand *block;
+    base = (u8 *)BB2_80339F40;
 
-    u8 *base=(u8*)BB2_80339F40;
     switch (CurrCommand_803685B4) {
     case 3:
         if (fn_8020F9E8(
@@ -951,7 +952,8 @@ void fn_8020D724(void) {
 
             memcpy(IDShouldBe_8036859C, (base + 0x20), 0x20);
 
-            ((DVDReadyCommand *)executing_80368598)->state = 1;
+            block = (DVDReadyCommand *)executing_80368598;
+            block->state = 1;
 
             DCInvalidateRange(base, 0x20);
 
@@ -1089,7 +1091,7 @@ void fn_8020DA08(u32 arg0) {
     void OSPanic(void *, s32, char *, ...);
     extern void (*lbl_803685E0)(void *);
     extern u8 *bootInfo_803685A0;
-    extern u16 BB2_80339F40[];
+    extern u8 BB2_80339F40[];
     extern s32 lbl_80366F74;
     extern char lbl_8029D0DC[];
     extern s32 lbl_803685CC;
@@ -1098,13 +1100,16 @@ void fn_8020DA08(u32 arg0) {
         DVDReset();
         cbForStateError(0);
     } else if (arg0 & 1) {
-        u32 *length;
-        lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
         lbl_803685CC = 0;
-        length = (u32 *)((u8 *)BB2_80339F40+8);
-        if (*(u32 *)(bootInfo_803685A0+0x3C) < *length)
-            OSPanic(&lbl_80366F74,0x295,lbl_8029D0DC);
-        fn_8020BAD0(*(void **)(bootInfo_803685A0+0x38),(*length+31)&~31,*(u32 *)((u8 *)BB2_80339F40+4),fn_8020D040);
+        lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
+        if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *(u32 *)(BB2_80339F40 + 8))
+            OSPanic(&lbl_80366F74, 0x295, lbl_8029D0DC);
+        fn_8020BAD0(
+            *(void **)(bootInfo_803685A0 + 0x38),
+            (*(u32 *)(BB2_80339F40 + 8) + 0x1F) & ~0x1F,
+            *(u32 *)(BB2_80339F40 + 4),
+            fn_8020D040
+        );
     } else {
         fn_8020BF58((void *)fn_8020D27C);
     }
