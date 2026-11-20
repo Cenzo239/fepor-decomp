@@ -3138,21 +3138,24 @@ void fn_8025C9E0(void *arg0, u8 arg1)
     ((u8 *)arg0)[0xF3] = arg1;
 }
 
-void fn_8025CA80(u8 *arg0) {
-    extern u8 gSoundStudios[];
+void fn_8025CA80(void *arg0) {
+    typedef struct { u8 pad[0x48]; u32 val; u8 pad2[0xBC - 0x4C]; } SoundStudio;
+    extern SoundStudio gSoundStudios[];
+    void *node;
 
-    if (arg0[0xF0] != 0) {
-        u8 *node = *(u8 **)(arg0 + 0x10);
+    if (*(u8 *)((u8 *)arg0 + 0xF0) != 0) {
+        node = *(void **)((u8 *)arg0 + 0x10);
         if (node != NULL) {
-            *(u32 *)(node + 0xC) = *(u32 *)(arg0 + 0xC);
+            *(void **)((u8 *)node + 0xC) = *(void **)((u8 *)arg0 + 0xC);
         } else {
-            *(u32 *)(gSoundStudios + 0xBC * (u32)arg0[0xF3] + 0x48) = *(u32 *)(arg0 + 0xC);
+            u8 idx = *(u8 *)((u8 *)arg0 + 0xF3);
+            gSoundStudios[idx].val = *(u32 *)((u8 *)arg0 + 0xC);
         }
-        node = *(u8 **)(arg0 + 0xC);
+        node = *(void **)((u8 *)arg0 + 0xC);
         if (node != NULL) {
-            *(u32 *)(node + 0x10) = *(u32 *)(arg0 + 0x10);
+            *(void **)((u8 *)node + 0x10) = *(void **)((u8 *)arg0 + 0x10);
         }
-        arg0[0xF0] = 0;
+        *(u8 *)((u8 *)arg0 + 0xF0) = 0;
     }
 }
 
@@ -5852,15 +5855,30 @@ void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, v
 #pragma scheduling off
 #pragma opt_common_subs off
 f64 fn_80261344(f32 x) {
-extern f32 lbl_802831B8[];
-f64 three; f64 half; f64 guess; f64 square; f64 zero;
-zero=lbl_802831B8[0]; three=lbl_802831B8[-2]; half=lbl_802831B8[-1];
-guess=__frsqrte(x);
-if (!(x > (f32)zero || x < (f32)zero)) return x;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-square=guess*guess; guess=guess*half; square=three-x*square; guess=guess*square;
-return x*guess;
+    f64 three;
+    f64 half;
+    f64 guess;
+    f64 square;
+    f64 zero;
+    zero = *(f32 *)0x802831B8;
+    three = *(f32 *)0x802831B0;
+    half = *(f32 *)0x802831B4;
+    guess = __frsqrte(x);
+    if (!(x > (f32)zero || x < (f32)zero))
+        return x;
+    square = guess * guess;
+    guess = guess * half;
+    square = three - x * square;
+    guess = guess * square;
+    square = guess * guess;
+    guess = guess * half;
+    square = three - x * square;
+    guess = guess * square;
+    square = guess * guess;
+    guess = guess * half;
+    square = three - x * square;
+    guess = guess * square;
+    return x * guess;
 }
 #pragma opt_common_subs reset
 #pragma scheduling reset
@@ -6147,16 +6165,16 @@ void fn_802618E4(s32 arg0)
 
     off = arg0 * 0xF8;
     object = lbl_80368AA0 + off;
-
-    if (object[0xF0] == 1) {
-        if (lbl_80368AD0 == 0) {
-            object[0xF2] = 1;
-            q = lbl_80368AA0;
-            q = q + off;
-            q = q + (lbl_80368AD0 << 2);
-            *(u32 *)(q + 0x24) |= 0x20;
-        }
-    }
+    do {
+        if (object[0xF0] != 1) break;
+        if (lbl_80368AD0 != 0) break;
+        object[0xF2] = 1;
+        q = lbl_80368AA0;
+        q = q + off;
+        q = q + (lbl_80368AD0 << 2);
+        *(u32 *)(q + 0x24) |= 0x20;
+    } while (0);
+    return;
 }
 #pragma peephole on
 void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
