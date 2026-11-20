@@ -140,34 +140,34 @@ s32 fn_801EAB90(s32 unused, void *obj) {
     extern u8 gUnitLists[];
     extern s32 gTargetList[];
     u32 flags;
-    void *node;
+    u32 node;
     s32 count;
     u32 nf;
+    s32 ret;
 
-    unused = 0;
+    ret = 0;
     flags = *(u32 *)((u8 *)obj + 0x1A0);
     if (flags & 0x400000) {
         *(u32 *)((u8 *)obj + 0x1A0) = flags & ~0x400000;
         return 1;
     }
     if (flags & 0x200000) {
-        return unused;
+        return 0;
     }
     count = 0;
-    node = *(void **)(gUnitLists + 0x3C);
-    while (node != NULL) {
-        nf = *(u32 *)((u8 *)node + 0x1A0);
-        node = *(void **)((u8 *)node + 0x184);
+    node = *(u32 *)(gUnitLists + 0x3C);
+    while (node != 0) {
+        nf = *(u32 *)(node + 0x1A0);
+        node = *(u32 *)(node + 0x184);
         if (nf & 0x400000) {
             count += 1;
         }
     }
-    if (count >= gTargetList[0]) {
-        return unused;
+    if (count < gTargetList[0]) {
+        *(u32 *)((u8 *)obj + 0x1A0) |= 0x400000;
+        ret = 1;
     }
-    flags = *(u32 *)((u8 *)obj + 0x1A0);
-    *(u32 *)((u8 *)obj + 0x1A0) = flags | 0x400000;
-    return 1;
+    return ret;
 }
 #pragma global_optimizer on
 void fn_801EAC14(void *arg0) {
