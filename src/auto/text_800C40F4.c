@@ -2818,14 +2818,14 @@ int fn_800C8F70(void *arg0, int arg1) {
 }
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
-    M2C_UNK *fn_800C93EC(void *);
+    char *String_CStr(String *);
     char *strcpy(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    strcpy((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
+    strcpy((char *)arg0 + 0x28, String_CStr(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
     b = 0;
     a = arg2[0];
