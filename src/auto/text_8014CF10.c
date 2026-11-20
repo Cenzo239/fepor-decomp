@@ -470,6 +470,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
         p += 0x40;
     }
 }
+#pragma use_lmw_stmw reset
 
 #pragma scheduling off
 s32 BattleState_IsPhaseZero(void *arg0) {
