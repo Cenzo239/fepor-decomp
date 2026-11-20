@@ -194,16 +194,22 @@ void UnitRef_Draw(void *, bool, s16, s16);
 extern u64 lbl_8036746C;
 extern void *lbl_80367468;
 void *result;
+s32 addend;
+u64 val;
+u64 *new_var2;
 s32 index;
+
 ((Obj *)arg0)->v17();
-index=((u8 *)arg2)[0x3A];
-if(index==4) result=&lbl_8036746C;
-else {
-u64 flags=*Item_GetFlagsPtr(&lbl_8036746C);
-void *base=lbl_80367468;
-result=Unit_GetItemSlot(base, ((flags & 5ULL)?0:4)+index);
+index = ((u8 *)arg2)[0x3A];
+if (index == 4) {
+    result = &lbl_8036746C;
+} else {
+    new_var2 = Item_GetFlagsPtr(&lbl_8036746C);
+    val = *new_var2;
+    addend = ((val & 5ULL) != 0ULL) ? 0 : 4;
+    result = Unit_GetItemSlot(lbl_80367468, addend + index);
 }
-UnitRef_Draw(result,((u8 *)arg2)[0x39]==0,*(s16 *)((u8 *)arg2+0x30),*(s16 *)((u8 *)arg2+0x32));
+UnitRef_Draw(result, ((u8 *)arg2)[0x39] == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 #pragma cplusplus reset
 
@@ -3293,19 +3299,17 @@ void fn_800791F0(s32 arg0, s32 arg1) {
 void fn_80079248(void*p){f32 Math_Ease(s32,f32,f32,f32,f32);*(s32*)((u8*)p+0x34)+=1;*(s8*)((u8*)*(void**)((u8*)p+0x30)+0x42)=Math_Ease(0,(f32)*(s32*)((u8*)p+0x3c),(f32)*(s32*)((u8*)p+0x40),(f32)*(s32*)((u8*)p+0x34),(f32)*(s32*)((u8*)p+0x38));}
 
 void fn_80079300(void *arg0, s8 arg1) {
- extern s16 lbl_80312060[];
- s32 offset;
- s16 *row;
- s32 x;
- if(arg1>=0) {
- offset=arg1*6;
- *(s8 *)((u8 *)arg0+0x43)=arg1;
- x=lbl_80312060[arg1*3];
- row=(s16 *)((u8 *)lbl_80312060+offset);
- *(f32 *)((u8 *)arg0+0x38)=x;
- *(f32 *)((u8 *)arg0+0x3C)=row[1];
- *(u16 *)((u8 *)arg0+0x46)|=(s16)((u16 *)row)[2];
- }
+    extern s16 lbl_80312060[];
+    s16 *row;
+    s16 v0;
+    if (arg1 >= 0) {
+        M2C_FIELD(arg0, s8 *, 0x43) = arg1;
+        v0 = lbl_80312060[arg1 * 3];
+        row = (s16 *)((u8 *)lbl_80312060 + arg1 * 6);
+        M2C_FIELD(arg0, f32 *, 0x38) = (f32) v0;
+        M2C_FIELD(arg0, f32 *, 0x3C) = (f32) row[1];
+        M2C_FIELD(arg0, u16 *, 0x46) = (u16) (M2C_FIELD(arg0, u16 *, 0x46) | (s16) *(u16 *)&row[2]);
+    }
 }
 
 void *fn_80079380(s8 arg0) {
