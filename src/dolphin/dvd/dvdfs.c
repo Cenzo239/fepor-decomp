@@ -556,18 +556,15 @@ void fn_8020CFAC(void) {
     s32 fn_8020BAD0(void *, u32, u32, void (*)(u32));
     void fn_8020D040(u32);
 
-    u32 *fstLength;
-
     lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
-    fstLength = (u32 *)(BB2_80339F40 + 8);
 
-    if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *fstLength) {
+    if (*(u32 *)(bootInfo_803685A0 + 0x3C) < *(u32 *)(BB2_80339F40 + 8)) {
         OSPanic(&lbl_80366F74, 0x295, lbl_8029D0DC);
     }
 
     fn_8020BAD0(
         *(void **)(bootInfo_803685A0 + 0x38),
-        (*fstLength + 0x1F) & ~0x1F,
+        (*(u32 *)(BB2_80339F40 + 8) + 0x1F) & ~0x1F,
         *(u32 *)(BB2_80339F40 + 4),
         fn_8020D040
     );
