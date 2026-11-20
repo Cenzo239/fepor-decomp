@@ -613,26 +613,23 @@ s32 FileCache_GetSize(char *name) {
 s32 fn_8005C368(u32 arg0)
 {
     extern u8 gFileCache[];
+    struct { u8 *e; unsigned long j; } s;
     u8 *found;
-    unsigned long j;
-    u8 *e;
-    unsigned ctr;
+    s32 ctr;
 
-    e = gFileCache;
-    j = 0;
+    s.j = 0;
+    s.e = gFileCache;
     for (ctr = 0x400; ctr > 0; ctr--) {
-        if (*(u32 *)(e + 0x38) == arg0) {
-            found = gFileCache + j * 0x7C;
+        if (*(u32 *)(s.e + 0x38) == arg0) {
+            found = gFileCache + s.j * 0x7C;
             goto done;
         }
-        e += 0x7C;
-        j += 1;
+        s.e += 0x7C;
+        s.j += 1;
     }
     found = 0;
 done:
-    if (found == 0) {
-        return -1;
-    }
+    if (found == 0) return -1;
     return *(u16 *)(found + 0x32);
 }
 
@@ -839,13 +836,98 @@ s8 arg0;
     } while (index < 0x400);
 }
 #pragma opt_common_subs reset
-void fn_8005CBC8(void) {
-    extern u8 lbl_803672E9;
-    if (lbl_803672E9 != 0) {
-        return;
-    }
-    lbl_803672E9 = 1;
-    fn_8005C8D8();
+void fn_8005CBC8(void)
+{
+    extern char lbl_8026B330[];
+    extern unsigned char gFileCache[];
+    extern float lbl_803691A8;
+    extern float lbl_803691AC;
+    extern float lbl_803691B0;
+    extern void DebugPrint(const char *, ...);
+    extern long long OSGetTime(void);
+
+    unsigned char *entry;
+    unsigned short flags;
+    int count;
+    int total;
+    int i;
+    char buffer[16];
+    char *p;
+    float size1;
+    float size2;
+
+    DebugPrint(lbl_8026B330 + 0x69);
+
+    entry = gFileCache;
+    count = 0;
+    total = 0;
+    i = 0;
+
+    do {
+        if ((signed char)*entry != 0) {
+            unsigned int ticks;
+
+            ticks = (unsigned int)(
+                OSGetTime() /
+                (long long)(*(volatile unsigned int *)0x800000F8 >> 2)
+            );
+
+            DebugPrint(
+                lbl_8026B330 + 0x8C,
+                *(unsigned short *)(entry + 0x32),
+                ticks - *(unsigned int *)(entry + 0x34),
+                *(unsigned int *)(entry + 0x38),
+                *(unsigned int *)(entry + 0x3C)
+            );
+
+            if (*(volatile unsigned short *)(entry + 0x30) & 0x5E07) {
+                flags = *(volatile unsigned short *)(entry + 0x30);
+
+                p = buffer;
+                *p++ = '[';
+
+                if (flags & 0x0001) *p++ = 'I';
+                if (flags & 0x0002) *p++ = 'Z';
+                if (flags & 0x0004) *p++ = 'V';
+                if (flags & 0x0400) *p++ = 'c';
+                if (flags & 0x0800) *p++ = 'P';
+                if (flags & 0x1000) *p++ = 'C';
+                if (flags & 0x4000) *p++ = 'U';
+                if (flags & 0x0200) *p++ = 'R';
+
+                *p++ = ']';
+                *p = 0;
+
+                DebugPrint(buffer);
+            }
+
+            DebugPrint(lbl_8026B330 + 0x9C, entry);
+
+            count++;
+            total += *(unsigned int *)(entry + 0x3C);
+        }
+
+        i++;
+        entry += 0x7C;
+    } while (i < 0x400);
+
+    DebugPrint(lbl_8026B330 + 0xA0);
+    DebugPrint(lbl_8026B330 + 0xCF);
+    DebugPrint(lbl_8026B330 + 0xF9);
+    DebugPrint(lbl_8026B330 + 0x121);
+    DebugPrint(lbl_8026B330 + 0x145);
+    DebugPrint(lbl_8026B330 + 0x165);
+    DebugPrint(lbl_8026B330 + 0x185);
+    DebugPrint(lbl_8026B330 + 0x1A9);
+    DebugPrint(lbl_8026B330 + 0x1CD);
+    DebugPrint(lbl_8026B330 + 0x1CF, count);
+
+    size1 = (float)total / lbl_803691B0;
+    size1 = lbl_803691AC * size1;
+    size2 = (float)total / lbl_803691A8;
+
+    DebugPrint(lbl_8026B330 + 0x1F1, size2, size1);
+    DebugPrint(lbl_8026B330 + 0x21D);
 }
 
 #pragma global_optimizer off
