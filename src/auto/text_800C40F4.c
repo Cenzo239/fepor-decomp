@@ -2819,13 +2819,13 @@ int fn_800C8F70(void *arg0, int arg1) {
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     M2C_UNK *fn_800C93EC(void *);
-    char *fn_80234450(char *, const char *);
+    char *strcpy(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    fn_80234450((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
+    strcpy((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
     b = arg2[1];
     a = arg2[0];
@@ -7727,42 +7727,147 @@ return dst;
 
 void Tree_InsertFixup(void *arg0, void *arg1)
 {
-    // If arg0 is NULL, return
-    if (arg0 == NULL) {
-        return;
-    }
+    typedef struct Node {
+        struct Node *left;
+        struct Node *right;
+        unsigned int parent_color;
+    } Node;
 
-    // Set bit 0 of arg0->unk8 to 1
-    *(u32*)((char*)arg0 + 8) |= 1;
+    void fn_800D6E0C(Node *, Node **);
+    void fn_800D6E8C(Node *, Node **);
 
-    // Main processing loop
-    while(1) {
-        void *current = (void*)(*(u32*)((char*)arg0 + 8) & ~1); // Clear LSB
-        
-        if (current == arg1) {
-            break;
-        }
-        
-        // Check bit 0 of current->unk8 
-        if (*(u32*)((char*)current + 8) & 1) {
-            void *next_node = *(void**)((char*)current + 0);
-            
-            if (next_node == *(void**)((char*)arg0 + 8)) {
-                // Call fn_800D6E8C 
-                ((void(*)(void*))0x800D6E8C)(*(void**)((char*)arg0 + 8));
+    Node *node;
+    Node *root;
+    Node *parent;
+    Node *grandparent;
+    Node *uncle;
+
+    node = (Node *)arg0;
+    root = (Node *)arg1;
+
+    node->parent_color |= 1;
+
+    goto check;
+
+    while (1) {
+        parent = (Node *)(node->parent_color & ~1U);
+        grandparent = (Node *)(parent->parent_color & ~1U);
+
+        if (parent == grandparent->left) {
+            uncle = grandparent->right;
+
+            if (uncle != 0) {
+                if ((uncle->parent_color & 1) == 1) {
+                    *(volatile unsigned int *)&parent->parent_color =
+                        *(volatile unsigned int *)&parent->parent_color & ~1U;
+
+                    uncle->parent_color &= ~1U;
+
+                    parent = (Node *)(
+                        *(volatile unsigned int *)&node->parent_color & ~1U
+                    );
+
+                    grandparent = (Node *)(
+                        *(volatile unsigned int *)&parent->parent_color & ~1U
+                    );
+
+                    node = grandparent;
+                    node->parent_color |= 1;
+
+                    goto check;
+                }
             }
-            
-            // Clear and set bit 0 of current and next_node
-            *(u32*)((char*)current + 8) &= ~1;
-            *(u32*)((char*)current + 8) |= 1;
+
+            if (node == parent->right) {
+                node = parent;
+                fn_800D6E8C(node, &root);
+            }
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            parent->parent_color &= ~1U;
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            grandparent = (Node *)(
+                *(volatile unsigned int *)&parent->parent_color & ~1U
+            );
+            grandparent->parent_color |= 1;
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            grandparent = (Node *)(
+                *(volatile unsigned int *)&parent->parent_color & ~1U
+            );
+
+            fn_800D6E0C(grandparent, &root);
+        } else {
+            uncle = grandparent->left;
+
+            if (uncle != 0) {
+                if ((uncle->parent_color & 1) == 1) {
+                    *(volatile unsigned int *)&parent->parent_color =
+                        *(volatile unsigned int *)&parent->parent_color & ~1U;
+
+                    uncle->parent_color &= ~1U;
+
+                    parent = (Node *)(
+                        *(volatile unsigned int *)&node->parent_color & ~1U
+                    );
+
+                    grandparent = (Node *)(
+                        *(volatile unsigned int *)&parent->parent_color & ~1U
+                    );
+
+                    node = grandparent;
+                    node->parent_color |= 1;
+
+                    goto check;
+                }
+            }
+
+            if (node == parent->left) {
+                node = parent;
+                fn_800D6E0C(node, &root);
+            }
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            parent->parent_color &= ~1U;
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            grandparent = (Node *)(
+                *(volatile unsigned int *)&parent->parent_color & ~1U
+            );
+            grandparent->parent_color |= 1;
+
+            parent = (Node *)(
+                *(volatile unsigned int *)&node->parent_color & ~1U
+            );
+            grandparent = (Node *)(
+                *(volatile unsigned int *)&parent->parent_color & ~1U
+            );
+
+            fn_800D6E8C(grandparent, &root);
         }
-        
-        // Continue to next node in chain by incrementing arg0 pointer
-        arg0 = (void**)((char*)arg0 + 4);
+
+check:
+        if (node == root)
+            break;
+
+        parent = (Node *)(node->parent_color & ~1U);
+
+        if ((parent->parent_color & 1) != 1)
+            break;
     }
 
-    // Clear bit 0 of arg1->unk8 
-    *(u32*)((char*)arg1 + 8) &= ~1;
+    root->parent_color &= ~1U;
 }
 
 void fn_800D6E0C(void *arg0, void **arg1)
@@ -7838,18 +7943,14 @@ s32 fn_800D6F34(void)
     extern void fn_800DAAC0(void *, s32);
     extern void fn_800DA2CC(void *);
 
-    s32 result;
-    u8 *obj;
-
     fn_800D75C4(lbl_803678A8);
     fn_800D758C(lbl_80367898);
 
-    obj = lbl_80367898;
-    result = fn_8011C9E4(*(void **)(obj + 0x428));
-    result = (result != 0);
+    fn_800DAAC0(
+        fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)),
+        fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0
+    );
 
-    obj = lbl_80367898;
-    fn_800DAAC0(fn_800DC3B0(*(void **)(obj + 0x424)), result);
     fn_800DA2CC(lbl_803678A8);
 
     return 0;
@@ -13206,11 +13307,12 @@ extern "C" void fn_800DFD64(void *arg0) {
     List *list = (List *)arg0;
     s32 i;
 
-    for (i = list->count - 1; i >= 0; i--) {
+    for (i = list->count - 1; i >= 0; ) {
         Obj *p = list->items[i];
         if (p->owner == list) {
             delete p;
         }
+        i--;
     }
     list->count = 0;
 }
@@ -13535,6 +13637,7 @@ extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *
 s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
     s32 Sort_GetKey(void *);
     s32 *start;
+    s32 *end;
     s32 *keyp;
     s32 count;
     s32 mid;
@@ -13543,8 +13646,9 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
     s32 key;
 
     start = arg0;
-    count = arg1 - start;
+    end = arg1;
     keyp = arg2;
+    count = end - start;
     while (count > 0) {
         mid = count / 2;
         ptr = start + mid;
@@ -15833,12 +15937,11 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
+    extern const f32 lbl_80369F3C;
     extern f32 lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
-    f32 z;
-    f32 y;
-    f32 x;
+    f32 z, y, x;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
@@ -15860,7 +15963,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
-    return;
 }
 
 void fn_800E4F0C(void *arg0) {
