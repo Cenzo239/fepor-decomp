@@ -23,7 +23,7 @@ extern u16 jumptable_80283AE8[];
 #pragma global_optimizer reset
 
 #pragma global_optimizer on
-#pragma opt_strength_reduction off
+#pragma opt_strength_reduction on
 
 void fn_80006388(void) {
     s32 OSDisableInterrupts(void);
