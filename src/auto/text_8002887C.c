@@ -2703,29 +2703,21 @@ void fn_8002CC64(void *arg0, void *arg1) {
 
 void fn_8002CCF0(void *arg0, void *arg1) {
     void fn_8002F6E8(void *, u8, u8, u8, u8);
-    u8 fn_8003DD7C(void *);
-    extern u8 lbl_802EF4E0[];
-    typedef struct {
-        u8 pad190[0x190];
-        u32 id;
-        void *ptr194;
-        u8 b198;
-        u8 pad199[5];
-        u8 b19E;
-        u8 b19F;
-        u32 flags;
-    } Unit;
-    Unit *u;
-    Unit *v;
+    u8 fn_8003DD7C(void *, void *);
+    extern u8 gTargetList[];
+    void *inner;
     u32 flags;
 
-    u = *(Unit **)((u8 *)arg0 + 4);
-    v = (Unit *)arg1;
-    if (u->id == v->id) {
-        flags = v->flags;
-        if ((flags & 2) && !(flags & 0x100000) && fn_8003DD7C(v->ptr194) != 0) {
-            fn_8002F6E8(lbl_802EF4E0, v->b19E, v->b19F, v->b198,
-                *(u8 *)((u8 *)v->ptr194 + 0x198));
+    inner = *(void **)((u8 *)arg0 + 4);
+    if (*(u32 *)((u8 *)inner + 0x190) == *(u32 *)((u8 *)arg1 + 0x190)) {
+        flags = *(u32 *)((u8 *)arg1 + 0x1A0);
+        if ((flags & 2) && !(flags & 0x100000)
+            && fn_8003DD7C(inner, *(void **)((u8 *)arg1 + 0x194)) != 0) {
+            fn_8002F6E8(gTargetList,
+                *(u8 *)((u8 *)arg1 + 0x19E),
+                *(u8 *)((u8 *)arg1 + 0x19F),
+                *(u8 *)((u8 *)arg1 + 0x198),
+                *(u8 *)((u8 *)*(void **)((u8 *)arg1 + 0x194) + 0x198));
         }
     }
 }
