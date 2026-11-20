@@ -142,6 +142,7 @@ void fn_8009A76C(void *arg0) {
         Process_ClearFunc(arg0);
     }
 }
+#pragma global_optimizer reset
 
 void fn_8009A864(void *arg0) {
     void fn_8006D8E8(u32);
