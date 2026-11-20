@@ -5930,21 +5930,19 @@ void *fn_8018FFB4(void *arg0, s16 arg1) {
 
 #pragma global_optimizer off
 void fn_80190020(void *arg0) {
-    s32 t2, t1, t3, t0, w, h;
-    *(s16 *)((u8 *)arg0 + 0x44) = 8;
-    *(s16 *)((u8 *)arg0 + 0x46) = 0;
-    t0 = *(s16 *)((u8 *)arg0 + 0xC);
-    t1 = *(s16 *)((u8 *)arg0 + 0x10);
-    t2 = *(s16 *)((u8 *)arg0 + 0xA);
-    t3 = *(s16 *)((u8 *)arg0 + 0xE);
-    h = (s16)((s16)t1 - (s16)t0);
-    *(s16 *)((u8 *)arg0 + 0x12) = 0x1C;
-    w = (s16)((s16)t3 - (s16)t2);
-    h -= 0x14;
-    *(s16 *)((u8 *)arg0 + 0x14) = 0x14;
-    w -= 0x1C;
-    *(s16 *)((u8 *)arg0 + 0x16) = w;
-    *(s16 *)((u8 *)arg0 + 0x18) = h;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+    p[0x44/2] = 8;
+    p[0x46/2] = 0;
+    height = p[0x10/2] - p[0xC/2];
+    width = p[0xE/2] - p[0xA/2];
+    bottom = height - 0x14;
+    right = width - 0x1C;
+    p[0x12/2] = 0x1C;
+    p[0x14/2] = 0x14;
+    p[0x16/2] = right;
+    p[0x18/2] = bottom;
 }
 #pragma global_optimizer reset
 void *fn_80190074(void *arg0, s16 arg1) {
