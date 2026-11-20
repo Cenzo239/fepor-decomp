@@ -2115,11 +2115,10 @@ void fn_8020F068(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
     u32 enabled;
-
     enabled = OSDisableInterrupts();
-    PauseFlag_803685A4 = 0;
-    if (PausingFlag_803685A8 != 0) {
-        PausingFlag_803685A8 = 0;
+    *(volatile s32 *)&PauseFlag_803685A4 = 0;
+    if (*(volatile s32 *)&PausingFlag_803685A8 != 0) {
+        *(volatile s32 *)&PausingFlag_803685A8 = 0;
         stateReady();
     }
     OSRestoreInterrupts(enabled);
