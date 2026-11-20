@@ -2476,9 +2476,9 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     } else {
         fn_801A9600(var_r30, var_r29);
         temp_r3 = Item_GetFlagsPtr(var_r29);
-        if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
+        if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
             temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(var_r30));
-            if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
+            if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
                 BattleUnit_GetWeaponSlot((u8 *)var_r30 + 0x2E0);
                 Item_Clear();
@@ -2490,9 +2490,9 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     }
     fn_801A9600(var_r30, var_r31);
     temp_r3 = Item_GetFlagsPtr(var_r31);
-    if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
+    if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
         temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(var_r30));
-        if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
+        if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
             *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
             BattleUnit_GetWeaponSlot((char *)var_r30 + 0x2E0);
             Item_Clear();
