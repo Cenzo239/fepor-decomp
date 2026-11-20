@@ -1368,7 +1368,7 @@ s32 Actor_IsWaitAnim(void *actor) {
     }
     return 0;
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     void *StringMap_FindOrInsert(void *, void *);
     void String_Assign(void *, void *, s32, s32);
@@ -1388,14 +1388,9 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     String sp18;
     String spC;
     void *sp8;
-    void *a2;
-    void *self;
-    s32 idx;
     s32 n;
+    u8 *p;
 
-    idx = arg1;
-    self = arg0;
-    a2 = arg2;
     sp48.cap = 0;
     sp3C.cap = 0;
     sp48.size = 0;
@@ -1405,22 +1400,25 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     sp3C.data = 0;
     sp3C.cap = 0;
 
-    String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, arg3) + 0xC, 0, -1);
+    p = (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x1BC, arg3) + 0xC;
+    String_Assign(&sp3C, p, 0, -1);
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
     if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
-        String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, a2) + 0xC, 0, -1);
+        p = (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x1BC, arg2) + 0xC;
+        String_Assign(&sp3C, p, 0, -1);
     }
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
     if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
-        String_Init(&sp30, lbl_8028F6B8[idx & 3], &sp8);
-        String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, &sp30) + 0xC, 0, -1);
+        String_Init(&sp30, lbl_8028F6B8[arg1 & 3], &sp8);
+        p = (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x1BC, &sp30) + 0xC;
+        String_Assign(&sp3C, p, 0, -1);
         String_Destroy(&sp30, -1);
     }
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x449));
     if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x449), n) == 0) {
-        String_Assign(&sp3C, (u8 *)self + 0xB0, 0, -1);
+        String_Assign(&sp3C, (u8 *)arg0 + 0xB0, 0, -1);
     }
-    String_JoinCStr(&sp24, (char *)((u8 *)gActorXmlStrs + 0x450), (u8 *)self + 0xB0);
+    String_JoinCStr(&sp24, (char *)((u8 *)gActorXmlStrs + 0x450), (u8 *)arg0 + 0xB0);
     String_ConcatCStr(&sp18, &sp24, (char *)((u8 *)gActorXmlStrs + 0x454));
     String_Assign(&sp48, &sp18, 0, -1);
     String_Destroy(&sp18, -1);
@@ -1428,12 +1426,11 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     String_ConcatCStr(&spC, &sp3C, (char *)((u8 *)gActorXmlStrs + 0x456));
     fn_800C99A0(&sp48, &spC, 0, -1);
     String_Destroy(&spC, -1);
-    fn_800E5044(self, String_CStr(&sp48));
+    fn_800E5044(arg0, String_CStr(&sp48));
     String_Destroy(&sp3C, -1);
     String_Destroy(&sp48, -1);
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer on
 /* Load an actor animation from a relative path under the actor base dir. */
 void Actor_LoadAnim(void *actor, void *relPath, s32 flag, s32 arg3, s32 arg4) {
     void String_Concat(void *, void *, void *);
