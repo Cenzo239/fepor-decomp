@@ -2819,13 +2819,13 @@ int fn_800C8F70(void *arg0, int arg1) {
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     M2C_UNK *fn_800C93EC(void *);
-    char *strcpy(char *, const char *);
+    char *fn_80234450(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    strcpy((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
+    fn_80234450((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
     b = arg2[1];
     a = arg2[0];
@@ -4899,6 +4899,86 @@ else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,s
 
 }
 
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+extern "C" void fn_800CC7E4(void *self, s32 arg1) {
+    void *Heap_Alloc(u32);
+    void fn_800056A0(s32);
+    u16 FileCache_Probe(char *);
+    char *String_CStr(String *);
+    void String_AssignCStr(String *, char *, u32);
+    void fn_800C992C(String *, char *, u32);
+    void fn_800C99A0(String *, s32, s32, s32);
+    void String_ConcatCStr(String *, String *, char *);
+    void String_Assign(String *, String *, s32, s32);
+    void String_Destroy(String *, s32);
+    void *String_Init(String *, char *, void *);
+    void *BattleTerrain_Create(void *, void *, String *, String *);
+    u32 strlen(const char *);
+    extern char lbl_802704F8[];
+
+    struct Host {
+        u8 pad[0x10];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5(void *);
+        virtual void v6(const char *, const char *);
+    };
+
+    s32 id;
+    String sp30;
+    String sp24;
+    String sp18;
+    String spC;
+    void *scratch;
+    void *tmp;
+    s8 made;
+
+    id = arg1;
+    sp30.cap = 0;
+    sp24.cap = 0;
+    sp30.size = 0;
+    sp30.data = 0;
+    sp30.cap = 0;
+    sp24.size = 0;
+    sp24.data = 0;
+    sp24.cap = 0;
+
+    ((Host *)*(void **)((u8 *)self + 4))->v6(lbl_802704F8 + 0x337, lbl_802704F8 + 0x345);
+    String_AssignCStr(&sp30, lbl_802704F8 + 0x324, strlen(lbl_802704F8 + 0x324));
+    fn_800C99A0(&sp30, id, 0, -1);
+    fn_800C992C(&sp30, lbl_802704F8 + 0x1CD, strlen(lbl_802704F8 + 0x1CD));
+    String_ConcatCStr(&sp18, &sp30, lbl_802704F8 + 0x348);
+    String_Assign(&sp24, &sp18, 0, -1);
+    String_Destroy(&sp18, -1);
+    if ((u16)FileCache_Probe(String_CStr(&sp24)) == 0x8000) {
+        *(s32 *)((u8 *)self + 0x80) = 0;
+        fn_800056A0(0);
+        String_Destroy(&sp24, -1);
+        String_Destroy(&sp30, -1);
+        return;
+    }
+    made = 0;
+    tmp = Heap_Alloc(0x54);
+    if (tmp != 0) {
+        String_Init(&spC, lbl_802704F8 + 0x345, &scratch);
+        made = 1;
+        tmp = BattleTerrain_Create(tmp, *(void **)((u8 *)self + 4), &spC, &sp30);
+    }
+    *(void **)((u8 *)self + 0x80) = tmp;
+    if (made != 0) {
+        String_Destroy(&spC, -1);
+    }
+    ((Host *)*(void **)((u8 *)self + 4))->v5(*(void **)((u8 *)self + 0x80));
+    String_Destroy(&sp24, -1);
+    String_Destroy(&sp30, -1);
+#pragma cplusplus reset
+#pragma use_lmw_stmw reset
+}
+
 #pragma cplusplus reset
 #pragma use_lmw_stmw on
 void fn_800CC9D8(u8 *self, char *arg1) {
@@ -5405,59 +5485,57 @@ Entry entry = (*(Entry**)(self+0x208))[index];
 #pragma cplusplus reset
 }
 
-void fn_800CDFFC(void *self) {
-    void fn_80232138(char *, ...);
-    void *String_Destroy(String *, s32);
-    extern char lbl_802704F8[];
-    extern u8 lbl_8028DA48[];
-    String s0;
-    String s1;
-    s32 count;
-    s32 i;
-    u8 *e;
-    s32 type;
-
-    s1.cap = 0;
-    s0.cap = 0;
-    s1.size = 0;
-    s1.data = 0;
-    s1.cap = 0;
-    s0.size = 0;
-    s0.data = 0;
-    s0.cap = 0;
-
-    count = *(s32 *)((u8 *)self + 0x204);
-    fn_80232138(lbl_802704F8 + 0x3F2);
-
-    for (i = 0; i < count; i++) {
-        e = *(u8 **)((u8 *)self + 0x208) + i * 0x58;
-        type = *(s32 *)(e + 0x18);
-        if (type == 0xC) {
-            fn_80232138(lbl_802704F8 + 0x462, i);
-        } else {
-            fn_80232138(lbl_802704F8 + 0x3F5, i,
-                ((void **)(lbl_8028DA48 + 0x6C))[*(s32 *)(e + 0x10)],
-                ((void **)(lbl_8028DA48 + 0x78))[type],
-                ((void **)(lbl_8028DA48 + 0xB0))[*(s32 *)(e + 0x1c)]);
-            fn_80232138(lbl_802704F8 + 0x41E,
-                *(s32 *)(e + 0x50),
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x30)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x34)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x38)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x3c)],
-                *(s32 *)(e + 0x54),
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x40)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x44)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x48)],
-                ((void **)(lbl_8028DA48 + 0xC4 + 4))[*(s32 *)(e + 0x4c)]);
-        }
-    }
-    String_Destroy(&s0, -1);
-    String_Destroy(&s1, -1);
-}
-
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+void fn_800CDFFC(u8 *self) {
+    typedef struct DbgEntry {
+        u32 f0, f4, f8, fc, f10;
+        u8 f14;
+        u32 f18, f1c, f20, f24, f28, f2c, f30, f34, f38, f3c, f40, f44, f48, f4c, f50, f54;
+    } DbgEntry;
+    extern char lbl_802704F8[];
+    extern u32 lbl_8028DA48[];
+    void fn_80232138(char *, ...);
+    void *String_Destroy(void *, s16);
+
+    String s1 = {0}, s2 = {0};
+    u32 vals[10];
+    s32 count = *(s32 *)(self + 0x204);
+    s32 i, off;
+
+    fn_80232138(lbl_802704F8 + 0x3F2);
+    for (i = 0, off = 0; i < count; i++, off += 0x58) {
+        DbgEntry *e = (DbgEntry *)((u8 *)*(void **)(self + 0x208) + off);
+        u32 *t = (u32 *)(lbl_8028DA48 + 0xC4);
+
+        vals[0] = e->f30;
+        vals[1] = e->f34;
+        vals[2] = e->f38;
+        vals[3] = e->f3c;
+        vals[4] = e->f40;
+        vals[5] = e->f44;
+        vals[6] = e->f48;
+        vals[7] = e->f4c;
+        vals[8] = e->f50;
+        vals[9] = e->f54;
+
+        if (e->f18 != 12) {
+            fn_80232138(lbl_802704F8 + 0x3F5, i,
+                ((u32 *)(lbl_8028DA48 + 0x6C))[e->f10],
+                ((u32 *)(lbl_8028DA48 + 0x78))[e->f18],
+                ((u32 *)(lbl_8028DA48 + 0xB0))[e->f1c]);
+            fn_80232138(lbl_802704F8 + 0x41E,
+                vals[1], t[vals[0] + 1], t[vals[1] + 1], t[vals[2] + 1],
+                t[vals[3] + 1], vals[9], t[vals[4] + 1],
+                t[vals[5] + 1], t[vals[6] + 1], t[vals[7] + 1]);
+        } else {
+            fn_80232138(lbl_802704F8 + 0x462, i);
+        }
+    }
+
+    String_Destroy(&s1, -1);
+    String_Destroy(&s2, -1);
+}
 extern "C" void fn_800CE214(void *self, void *stat) {
     void GActor_RequestRes(char *);
     void fn_800D5DB0(void *, void *, s32, void *);
@@ -8187,16 +8265,16 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
+    s32 fn_800E4454(s32, M2C_UNK *);
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK String_Copy(M2C_UNK *);
-    s32 fn_800E4454(s32, M2C_UNK *);
     M2C_UNK sp8;
-    s32 ret;
+    s32 result;
 
     String_Copy(&sp8);
-    ret = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+    result = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
     String_Destroy(&sp8, -1);
-    return ret;
+    return result;
 }
 
 void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {
