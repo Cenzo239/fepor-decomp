@@ -348,6 +348,7 @@ void fn_8014D678(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void *Hash_Lookup(void *);
     void Unit_ResetAll(void);
