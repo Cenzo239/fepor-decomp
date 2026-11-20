@@ -383,9 +383,11 @@ void fn_800C3AB0(void *, void *);
 s32 Convoy_FindEmpty(void *);
 extern char lbl_802734D0[];
 extern u8 gConvoy[0x640];
-register char *str = lbl_802734D0;
-while (Convoy_FindEmpty(gConvoy) >= 0) {
-fn_800C3AB0(gConvoy, str + 0x1B1);
+struct { u8 *obj; char *str; } s;
+s.obj = gConvoy;
+s.str = lbl_802734D0;
+while (Convoy_FindEmpty(s.obj) >= 0) {
+fn_800C3AB0(s.obj, s.str + 0x1B1);
 }
 return 6;
 }
