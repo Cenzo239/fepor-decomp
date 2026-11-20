@@ -369,15 +369,15 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
     struct Flags9F { u8 highbit : 1; u8 known : 7; };
-    volatile u8 *volatile vbase = (volatile u8 *)arg0;
-    u8 var_r27;
-    s32 var_r26;
+    u8 *var_r30;
+    u8 *var_r29;
     s32 temp_r28;
-    u32 *temp_r3;
     u32 count;
     u32 i;
-    u8 *var_r29;
-    u8 *var_r30;
+    u8 var_r27;
+    s32 var_r26;
+    u32 *temp_r3;
+    u8 *entry;
     u8 *p;
     s32 j;
 
@@ -415,15 +415,16 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_801E45FC();
     temp_r28 = Archive_Load();
     temp_r3 = Hash_Lookup(lbl_80277060 + 0x1AF);
-    var_r29 = (u8 *)temp_r3 + 4;
+    entry = (u8 *)temp_r3 + 4;
+    var_r29 = entry;
     count = temp_r3[0];
-    var_r30 = var_r29 + var_r27;
+    var_r30 = entry + var_r27;
     for (i = 0; i < count; i++) {
         if (var_r30[5] & 2) {
-            Status_Clear((void *)(vbase + 0x74), var_r29[0]);
+            Status_Clear((u8 *)arg0 + 0x74, var_r29[0]);
         }
         if (var_r30[5] & 1) {
-            Status_Clear((void *)(vbase + 0x84), var_r29[0]);
+            Status_Clear((u8 *)arg0 + 0x84, var_r29[0]);
         }
         var_r30 += 0x18;
         var_r29 += 0x18;
