@@ -747,61 +747,39 @@ virtual s32 page()=0;
 
 extern "C" void fn_80143784(void *arg0, void *arg1) {
     struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
+        virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
+        virtual void v6() = 0; virtual void v7() = 0; virtual void v8() = 0;
+        virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
         virtual s32 v12(void *) = 0;
     };
-    struct PNode {
-        PNode *prev;
-        PNode *next;
-        void *key;
-        void *owner;
-    };
-    struct Pair {
-        u8 f;
-        u32 v;
-    };
-    extern u32 lbl_8036C4E8;
-    extern u32 lbl_8036C4EC;
+    struct PNode { PNode *prev; PNode *next; void *key; void *owner; };
+    struct Pair { u8 f; u32 v; };
+    extern u32 lbl_8036C4E8; extern u32 lbl_8036C4EC;
     void *Unit_GetHeldItemSlot(void *, s32);
     void fn_80144E34(ListIter *, List *, ListIter *);
     void fn_80144EAC(void *, void *, void *, void *);
     void memcpy(void *, void *, u32);
 
     u8 saved[0x16];
-    ListIter ret;
-    ListIter it;
-    u32 pair1[2];
-    u32 pair2[2];
-    void *entry1;
-    void *entry2;
-    u32 result1;
-    u32 result2;
+    ListIter ret; ListIter it;
+    u32 pairA[2]; u32 pairB[2];
+    void *entry1; void *entry2;
+    u32 result1; u32 result2;
+    Unk1 unk;
+    Pair pairs[2];
+    ListNode *sentinel;
+    ListNode *node2;
+    u8 *fp;
     u8 flag;
-    Pair pa;
-    Pair pb;
-    s32 j;
-    List *lst;
-    s32 oi;
-    void *self;
-    void *unit;
-    u8 *p;
-    PNode *sent;
-    PNode *node;
+    s32 j; List *lst; s32 oi;
+    void *self; void *unit; u8 *p;
+    PNode *sent; PNode *node;
 
     memcpy(saved, (u8 *)arg0 + 0x64, 0x16);
-    self = arg0;
-    unit = arg1;
+    self = arg0; unit = arg1;
+    fp = &unk.unk0;
+    flag = *fp;
 
     for (oi = 0, p = (u8 *)self; oi < 11; p += 0xc, oi++) {
         node = *(PNode **)(p + 0x98);
@@ -809,35 +787,31 @@ extern "C" void fn_80143784(void *arg0, void *arg1) {
         goto ocheck;
         for (;;) {
             if (node->owner == unit) {
-                u8 *c2;
-                PNode *n;
-                PNode *s;
-                void *key;
+                u8 *c2; void *key;
                 key = node->key;
-                pa.f = flag;
-                pa.v = (u32)key;
-                pb.f = pa.f;
-                pb.v = pa.v;
-                j = 0;
-                c2 = (u8 *)self;
+                j = 0; c2 = (u8 *)self;
                 for (; j < 11; c2 += 0xc, j++) {
+                    pairs[0].f = flag;
                     lst = (List *)(c2 + 0x90);
-                    n = *(PNode **)(c2 + 0x98);
-                    s = (PNode *)((u8 *)lst + 4);
+                    node2 = *(ListNode **)(c2 + 0x98);
+                    sentinel = (ListNode *)((u8 *)lst + 4);
+                    pairs[0].v = (u32)key;
+                    *(u32 *)&pairs[1] = *(u32 *)&pairs[0];
+                    pairs[1].v = (u32)key;
                     goto scheck;
                     for (;;) {
-                        n = n->next;
+                        node2 = node2->next;
                     scheck:
-                        if (n == s)
-                            break;
-                        if (n->key != (void *)pb.v)
-                            continue;
-                        if (n != (PNode *)((u8 *)lst + 4)) {
-                            it.node = (ListNode *)n;
-                            fn_80144E34(&ret, lst, &it);
-                            if ((u32)*(s16 *)((u8 *)self + (j << 1) + 0x64) >= (u32)lst->size)
-                                *(s16 *)((u8 *)self + (j << 1) + 0x64) = lst->size - 1;
+                        if (node2 != sentinel) {
+                            if (node2->val != (void *)pairs[1].v)
+                                continue;
                         }
+                        if ((u32)node2 == (u32)lst + 4)
+                            break;
+                        it.node = node2;
+                        fn_80144E34(&ret, lst, &it);
+                        if ((u32)*(s16 *)((u8 *)self + (j << 1) + 0x64) >= (u32)lst->size)
+                            *(s16 *)((u8 *)self + (j << 1) + 0x64) = lst->size - 1;
                         goto onext;
                     }
                 }
@@ -845,63 +819,48 @@ extern "C" void fn_80143784(void *arg0, void *arg1) {
         onext:
             node = node->next;
         ocheck:
-            if (node == sent)
-                break;
+            if (node == sent) break;
         }
     }
 
     {
-        s32 hi;
-        void *slot;
-        s32 index;
+        s32 hi; void *slot; s32 index;
         for (hi = 0; hi < 4; hi++) {
             slot = Unit_GetHeldItemSlot(unit, hi);
-            if (*(u32 *)slot == 0)
-                continue;
+            if (*(u32 *)slot == 0) continue;
             index = ((Obj *)self)->v12(slot);
-            if (index == 0xc)
-                continue;
-            pair1[0] = lbl_8036C4E8;
-            pair1[1] = lbl_8036C4EC;
+            if (index == 0xc) continue;
+            pairA[0] = lbl_8036C4E8; pairA[1] = lbl_8036C4EC;
             lst = (List *)((u8 *)self + index * 0xc + 0x90);
-            pair1[0] = (u32)slot;
-            pair1[1] = (u32)unit;
+            pairA[0] = (u32)slot; pairA[1] = (u32)unit;
             entry1 = (u8 *)lst + 4;
-            fn_80144EAC(&result1, lst, &entry1, pair1);
+            fn_80144EAC(&result1, lst, &entry1, pairA);
         }
     }
 
     {
-        s32 ei;
-        void *itemp;
-        s32 index;
+        s32 ei; void *itemp; s32 index;
         for (ei = 0, p = (u8 *)unit; ei < 4; p += 8, ei++) {
             itemp = p + 0x1ec;
-            if (*(u32 *)(p + 0x1ec) == 0)
-                continue;
+            if (*(u32 *)(p + 0x1ec) == 0) continue;
             index = ((Obj *)self)->v12(itemp);
-            if (index == 0xc)
-                continue;
-            pair2[0] = lbl_8036C4E8;
-            pair2[1] = lbl_8036C4EC;
+            if (index == 0xc) continue;
+            pairB[0] = lbl_8036C4E8; pairB[1] = lbl_8036C4EC;
             lst = (List *)((u8 *)self + index * 0xc + 0x90);
-            pair2[0] = (u32)itemp;
-            pair2[1] = (u32)unit;
+            pairB[0] = (u32)itemp; pairB[1] = (u32)unit;
             entry2 = (u8 *)lst + 4;
-            fn_80144EAC(&result2, lst, &entry2, pair2);
+            fn_80144EAC(&result2, lst, &entry2, pairB);
         }
     }
 
     memcpy((u8 *)arg0 + 0x64, saved, 0x16);
-
     {
-        u8 *a = (u8 *)self;
-        u8 *b = (u8 *)self;
+        u8 *a = (u8 *)self; u8 *b = (u8 *)self;
         for (oi = 0; oi < 11; oi++) {
+            u32 end = (u32)lst + 4;
             if ((u32)*(s16 *)(b + 0x64) >= (u32)*(s32 *)(a + 0x90))
                 *(s16 *)(b + 0x64) = *(s32 *)(a + 0x90) - 1;
-            a += 0xc;
-            b += 2;
+            a += 0xc; b += 2;
         }
     }
 }
@@ -1062,15 +1021,15 @@ extern "C" s16 fn_80143C58(void *arg0) {
         virtual void v7() = 0;
         virtual void v8() = 0;
         virtual void v9() = 0;
-        virtual u16 v10() = 0;
+        virtual u32 v10() = 0;
     };
     typedef struct {
         u8 pad[0x64];
         s16 unk64[1];
     } Unk80143C58;
     Unk80143C58 *obj = (Unk80143C58 *)arg0;
-
-    return obj->unk64[(u32)((Obj *)arg0)->v10()];
+    s16 result = obj->unk64[((Obj *)arg0)->v10()];
+    return result;
 }
 
 extern "C" void fn_80143C9C(void *unit) {
