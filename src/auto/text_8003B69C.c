@@ -972,8 +972,8 @@ void fn_8003C6BC(void *arg0, void *arg1, void *arg2) {
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
 
-    u8 *unit;
     u8 *job;
+    u8 *unit;
     void *resource;
     void *person;
 
@@ -996,36 +996,34 @@ void fn_8003C6BC(void *arg0, void *arg1, void *arg2) {
             goto finish;
         }
 
-        if (Status_Test(
-                *(u8 **)(unit + 0x18C) + 0x1C,
-                2
-            ) != 0) {
-            if (Status_Test(job + 0x1C, 2) == 0) {
-                if (*(void **)(job + 0xC) != NULL) {
-                    job = (u8 *)Res_GetByName(*(void **)(job + 0xC));
-                } else {
-                    job = NULL;
-                }
+        if (Status_Test(*(u8 **)(unit + 0x18C) + 0x1C, 2) != 0) {
+            if (Status_Test(job + 0x1C, 2) != 0) goto finish;
+            if (*(void **)(job + 0xC) != NULL) {
+                resource = Res_GetByName(*(void **)(job + 0xC));
+            } else {
+                resource = NULL;
             }
-        } else {
-            if (Status_Test(job + 0x1C, 2) != 0) {
-                if (*(void **)(job + 0xC) != NULL) {
-                    job = (u8 *)Res_GetByName(*(void **)(job + 0xC));
-                } else {
-                    job = NULL;
-                }
+            job = (u8 *)resource;
+            goto finish;
+        }
+
+        if (Status_Test(job + 0x1C, 2) != 0) {
+            if (*(void **)(job + 0xC) != NULL) {
+                resource = Res_GetByName(*(void **)(job + 0xC));
+            } else {
+                resource = NULL;
             }
+            job = (u8 *)resource;
         }
     }
 
 finish:
     if (job != NULL) {
         *(void **)(unit + 0x18C) = job;
-
-        fn_800951D0(unit, -1);
-        fn_8004E9D8(unit, 0);
-        fn_80050C90(unit);
     }
+    fn_800951D0(unit, -1);
+    fn_8004E9D8(unit, 0);
+    fn_80050C90(unit);
 }
 
 s32 Unit_HasHitBlockStatus(s32 arg0) {
@@ -8046,56 +8044,54 @@ void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
 f32 z;
-u8 *dst;
-dst = (u8 *)0xCC008000;
 GXBegin(0x98,0,4);
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)dst=(f32)(x);
-*(f32 *)dst=(f32)(y);
-*(f32 *)dst=z;
-*dst=r;
-*dst=g;
-*dst=b;
-*dst=a;
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)dst=(f32)(x+1);
-*(f32 *)dst=(f32)(y);
-*(f32 *)dst=z;
-*dst=r;
-*dst=g;
-*dst=b;
-*dst=a;
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)dst=(f32)(x);
-*(f32 *)dst=(f32)(y+1);
-*(f32 *)dst=z;
-*dst=r;
-*dst=g;
-*dst=b;
-*dst=a;
+*(f32 *)0xCC008000=(f32)(x);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)dst=(f32)(x+1);
-*(f32 *)dst=(f32)(y+1);
-*(f32 *)dst=z;
-*dst=r;
-*dst=g;
-*dst=b;
-*dst=a;
+*(f32 *)0xCC008000=(f32)(x+1);
+*(f32 *)0xCC008000=(f32)(y+1);
+*(f32 *)0xCC008000=z;
+*(u8 *)0xCC008000=r;
+*(u8 *)0xCC008000=g;
+*(u8 *)0xCC008000=b;
+*(u8 *)0xCC008000=a;
 }
 }
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
