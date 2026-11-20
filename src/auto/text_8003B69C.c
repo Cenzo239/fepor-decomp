@@ -7396,30 +7396,21 @@ void fn_8004982C(void *arg0) {
 void fn_8004983C(void *arg0) {
     extern f32 lbl_80368F74;
     extern f32 lbl_80368F78;
-    struct Obj {
-        u8 pad[0x30];
-        f32 *ptr;
-        u8 pad2[4];
-        f32 unk38;
-        u8 pad3[4];
-        s32 flag;
-        f32 a;
-        f32 b;
-    };
-    struct Obj *obj = (struct Obj *)arg0;
-    f32 diff;
+    f32 temp_f2;
+    f32 temp_f3;
 
-    obj->flag = 0;
-    obj->a = obj->ptr[2];
-    obj->b = obj->unk38;
-    diff = (f32)__fabs((f64)(obj->a - obj->b));
-    if (diff > lbl_80368F74) {
-        if (obj->a < obj->b) {
-            obj->a = obj->a + lbl_80368F78;
+    *(s32 *)((u8 *)arg0 + 0x40) = 0;
+    *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)(*(u8 **)((u8 *)arg0 + 0x30) + 8);
+    *(f32 *)((u8 *)arg0 + 0x48) = *(f32 *)((u8 *)arg0 + 0x38);
+    temp_f3 = *(f32 *)((u8 *)arg0 + 0x44);
+    temp_f2 = *(f32 *)((u8 *)arg0 + 0x48);
+    if ((f32)__fabs((f64)(temp_f3 - temp_f2)) > lbl_80368F74) {
+        if (temp_f3 < temp_f2) {
+            *(f32 *)((u8 *)arg0 + 0x44) = temp_f3 + lbl_80368F78;
             return;
         }
-        if (obj->a > obj->b) {
-            obj->b = obj->b + lbl_80368F78;
+        if (temp_f3 > temp_f2) {
+            *(f32 *)((u8 *)arg0 + 0x48) = temp_f2 + lbl_80368F78;
         }
     }
 }
@@ -8040,13 +8031,16 @@ void fn_8004A864(s32 x,s32 y,u8 *color) {
 void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
+extern f64 lbl_80368F90;
 f32 z;
+union { f64 d; u32 w[2]; } u;
 GXBegin(0x98,0,4);
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x);
+u.w[0]=0x43300000u; u.w[1]=(u32)x^0x8000u;
+*(f32 *)0xCC008000=(f32)(u.d-lbl_80368F90);
 *(f32 *)0xCC008000=(f32)(y);
 *(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=r;
@@ -8829,6 +8823,7 @@ s32 Mu_IsAnimDone(void *arg0) {
     return (*(u32 *)sub >> 4) & 1;
 }
 
+#pragma global_optimizer off
 u8 fn_8004C00C(void *arg0) {
     extern f32 lbl_80368FC4;
     if ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19E)) != (M2C_FIELD(arg0, f32 *, 4) + M2C_FIELD(arg0, f32 *, 0x10))) {
@@ -8836,7 +8831,7 @@ u8 fn_8004C00C(void *arg0) {
     }
     return (u8) ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19F)) != (M2C_FIELD(arg0, f32 *, 8) + M2C_FIELD(arg0, f32 *, 0x14)));
 }
-
+#pragma global_optimizer reset
 void fn_8004C0A0(void *arg0) {
     void *Map_Get(void);
     u8 fn_80040B1C(void *, s32, s32);
@@ -8860,7 +8855,164 @@ void fn_8004C108(void)
     }
 }
 
-void fn_8004C148(void) {
+void fn_8004C148(void)
+{
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    void fn_80222C50(void *, s32);
+    void fn_8022100C(s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void *Light_GetChannel(s32);
+    void fn_80222164(s32, void *);
+    void GXSetNumTevStages(s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void *Camera_GetViewMtx(void);
+    void PSMTXConcat(void *, void *, void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void GXSetZMode(s32, s32, s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void fn_80223E5C(s32, s32, s32, s32, s32);
+    void GXSetNumTexGens(s32, s32);
+    void Allegiance_FillMask(s32, void *);
+    void *Map_Get(void);
+    u8 fn_80040B1C(void *, s32, s32);
+    void fn_8004C444(void *);
+    void fn_80066D00(s32);
+
+    extern s32 gUnitShadowMat;
+    extern f32 lbl_80368FCC;
+    extern f32 gUnitShadowZ;
+    extern u32 lbl_80368FB0;
+    extern u8 gUnits[];
+
+    u8 tex[0x20];
+    u8 mask[4];
+    f32 trans[3][4];
+    f32 view[3][4];
+    u32 color;
+    u8 *channel;
+    u8 *unit;
+    u8 *classData;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 id;
+    s32 x;
+    s32 y;
+    s32 valid;
+
+    Ui_LoadAtlasTex(gUnitShadowMat, tex, 1);
+    fn_80222C50(tex, 0);
+
+    fn_8022100C(2);
+
+    GXClearVtxDesc();
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(11, 1);
+
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+
+    GXSetCullMode(1);
+
+    GXSetBlendMode(0, 1, 0, 1, 0, 0, 2);
+    GXSetBlendMode(2, 0, 1, 1, 0, 0, 2);
+
+    channel = Light_GetChannel(0);
+
+    red = channel[4] + channel[0];
+    green = channel[5] + channel[1];
+    blue = channel[6] + channel[2];
+
+    if (red > 255)
+        red = 255;
+
+    if (green > 255)
+        green = 255;
+
+    if (blue > 255)
+        blue = 255;
+
+    color = lbl_80368FB0;
+
+    ((u8 *)&color)[0] = red;
+    ((u8 *)&color)[1] = green;
+    ((u8 *)&color)[2] = blue;
+
+    fn_80222164(4, &color);
+
+    GXSetNumTevStages(1);
+    GXSetTevOrder(0, 0, 0, 4);
+    GXSetNumChans(1);
+
+    PSMTXTrans(trans, lbl_80368FCC, lbl_80368FCC, gUnitShadowZ);
+    PSMTXConcat(Camera_GetViewMtx(), trans, view);
+    GXLoadPosMtxImm(view, 0);
+    GXSetCurrentMtx(0);
+
+    GXSetZMode(1, 3, 0);
+    fn_802245D8(1, 4, 5, 7);
+    fn_80223E5C(7, 0, 1, 7, 0);
+
+    GXSetNumTexGens(0, 0);
+
+    Allegiance_FillMask(3, mask);
+
+    for (id = 1; id <= 159; id++)
+    {
+        if ((u8)id != 0)
+        {
+            unit = gUnits + ((u8)id - 1) * 0x280;
+        }
+        else
+        {
+            unit = 0;
+        }
+
+        if (*(void **)(unit + 0x188) == 0)
+            continue;
+
+        classData = *(u8 **)(unit + 0x190);
+
+        if (mask[classData[8]] == 0)
+            continue;
+
+        x = (s32)*(f32 *)(unit + 4);
+        y = (s32)*(f32 *)(unit + 8);
+
+        if (fn_80040B1C(Map_Get(), x, y) != 0)
+            continue;
+
+        if ((*(u32 *)(unit + 0x1A0) & 0x010000FC) != 0)
+        {
+            valid = 0;
+        }
+        else if ((unit[3] & 0x22) != 2)
+        {
+            valid = 0;
+        }
+        else if (unit[0x27] == 0)
+        {
+            valid = 0;
+        }
+        else
+        {
+            valid = 1;
+        }
+
+        if (valid != 0)
+        {
+            fn_8004C444(unit);
+        }
+    }
+
+    fn_80066D00(-1);
 }
 
 #pragma use_lmw_stmw on
