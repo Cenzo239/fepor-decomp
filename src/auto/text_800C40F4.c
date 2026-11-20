@@ -2819,16 +2819,17 @@ int fn_800C8F70(void *arg0, int arg1) {
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     M2C_UNK *fn_800C93EC(void *);
-    char *fn_80234450(char *, const char *);
+    char *strcpy(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    fn_80234450((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
+    strcpy((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
-    b = arg2[1];
+    b = 0;
     a = arg2[0];
+    b = arg2[1];
     dst[0] = a;
     a = arg2[2];
     dst[1] = b;
@@ -13777,19 +13778,17 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
 #pragma dont_inline on
 void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     s32 Sort_GetKey(void *);
-    void *key;
     s32 count;
     void **mid_ptr;
     s32 mid;
     s32 mid_val;
 
-    key = (void *)*arg2;
     count = ((s32)arg1 - (s32)arg0) / 4;
     while (count > 0) {
         mid = count / 2;
         mid_ptr = (void **)((u8 *)arg0 + (mid * 4));
         mid_val = Sort_GetKey(*mid_ptr);
-        if (Sort_GetKey(key) > mid_val) {
+        if (Sort_GetKey((void *)*arg2) > mid_val) {
             arg0 = mid_ptr + 1;
             count -= (u32)mid + 1;
         } else {
