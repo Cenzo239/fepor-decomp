@@ -1234,6 +1234,7 @@ void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
  layer[(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6)]=saved;
 }
 
+#pragma global_optimizer on
 void fn_8003CE88(void *unit, s32 range) {
 #pragma use_lmw_stmw on
 extern u8 gBattleMap[];
@@ -1277,18 +1278,14 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003AF28(void *);
     u8 Unit_GetDistance(void *, void *);
     s32 t;
-    s32 scaled;
     s32 u;
-    s32 sum;
-    s32 adj;
+    s32 scaled;
     s32 v;
 
     t = (s8)Unit_GetMagAtk(arg0);
     scaled = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
-    sum = scaled + u;
-    adj = sum + 0x1E;
-    v = adj - ((u8)Unit_GetDistance(arg0, arg1) << 1);
+    v = (scaled + u + 0x1E) - ((u8)Unit_GetDistance(arg0, arg1) << 1);
     if (v > 0x64) {
         v = 0x64;
     }
