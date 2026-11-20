@@ -95,21 +95,21 @@ void fn_800059B0(void) {
 void fn_800059B4(void)
 {
   extern void *lbl_80367100;
-  s32 off;
+  struct { s32 off; u8 z; } s;
   s32 i;
-  s32 z;
   void *table;
   u8 *p;
-  off = 0;
+
+  s.off = 0;
   i = 0;
-  z = 0;
+  s.z = s.off;
   while (i < (*((s16 *) (((u8 *) lbl_80367100) + 6))))
   {
     table = *((void **) lbl_80367100);
     i += 1;
-    p = *((u8 **) (((u8 *) table) + off));
-    *p = z;
-    off += 4;
+    p = *((u8 **) (((u8 *) table) + s.off));
+    *p = s.z;
+    s.off += 4;
   }
 
   *((u32 *) (((u8 *) lbl_80367100) + 0x2C)) = 0;
