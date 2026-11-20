@@ -13751,7 +13751,7 @@ extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *
 
 #pragma use_lmw_stmw on
 s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
     s32 key;
     s32 elem;
     s32 count;
@@ -13763,8 +13763,8 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
         mid = count / 2;
         ptr = arg0 + mid;
         elem = *ptr;
-        key = fn_800DF6B0((void *)*arg2);
-        if (fn_800DF6B0((void *)elem) <= key) {
+        key = Sort_GetKey((void *)*arg2);
+        if (Sort_GetKey((void *)elem) <= key) {
             arg0 = ptr + 1;
             count -= mid + 1;
         } else {
