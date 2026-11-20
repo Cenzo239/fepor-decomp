@@ -2845,6 +2845,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
 #pragma cplusplus reset
 #pragma global_optimizer reset
 
+#pragma global_optimizer off
 void fn_8011631C(void *arg0, s8 arg1)
 {
     String sp24;
@@ -2852,19 +2853,33 @@ void fn_8011631C(void *arg0, s8 arg1)
     String spC;
     s32 sp8;
     u8 flag;
+    s32 n;
+    s32 n2;
+    extern u16 gActorXmlStrs[];
+    s32 strlen(char *);
+    s32 String_Compare(void *, s32, void *, char *, s32);
+    s32 String_Find(void *, char *, s32, s32);
+    u8 Actor_IsBusy(void *);
+    void String_Init(void *, char *, void *);
+    void String_Assign(void *, void *, s32, s32);
+    void String_Destroy(void *, s32);
+    void String_AssignCStr(void *, char *, s32);
+    void *String_CStr(void *);
+    void fn_801134EC(void *, void *, void *);
+    void Actor_LoadAnim(void *, void *, s32, s32, s32);
 
     sp24.size = 0;
     sp24.cap = 0;
     sp24.data = 0;
     sp24.cap = 0;
 
+    n = strlen((char *)gActorXmlStrs + 0x43F);
     if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
-                    (char *)&gActorXmlStrs + 0x43f,
-                    strlen((char *)&gActorXmlStrs + 0x43f)) == 0
-        || (u32)(String_Find((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x43f, 0,
-                             strlen((char *)&gActorXmlStrs + 0x43f)) + 0x10000) != (u32)-1
-        || ((u32)(String_Find((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x444, 0,
-                              strlen((char *)&gActorXmlStrs + 0x444)) + 0x10000) != (u32)-1
+                       (char *)gActorXmlStrs + 0x43F, n) == 0
+        || (u32)(String_Find((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
+                             strlen((char *)gActorXmlStrs + 0x43F)) + 0x10000) != 0xFFFF
+        || ((u32)(String_Find((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
+                              strlen((char *)gActorXmlStrs + 0x444)) + 0x10000) != 0xFFFF
             && Actor_IsBusy(arg0) == 0)) {
         flag = 1;
     } else {
@@ -2872,27 +2887,27 @@ void fn_8011631C(void *arg0, s8 arg1)
     }
 
     if (flag == 0 && *(u8 *)((u8 *)arg0 + 0x1A6) == 0) {
-        String_Init(&sp18, (char *)&gActorXmlStrs + 0x43f, &sp8);
+        String_Init(&sp18, (char *)gActorXmlStrs + 0x43F, &sp8);
         fn_801134EC(&spC, arg0, &sp18);
         String_Assign(&sp24, &spC, 0, -1);
         String_Destroy(&spC, -1);
         String_Destroy(&sp18, -1);
         *(u8 *)((u8 *)arg0 + 0x184) = arg1;
 
-        if (String_Compare(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
-                        strlen((char *)&gActorXmlStrs + 0x43f)) == 0) {
+        n2 = strlen((char *)gActorXmlStrs + 0x43F);
+        if (String_Compare(&sp24, 0, (void *)sp24.size, (char *)gActorXmlStrs + 0x43F, n2) == 0) {
             Actor_LoadAnim(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
         } else {
             Actor_LoadAnim(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
-            String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x43f,
-                        strlen((char *)&gActorXmlStrs + 0x43f));
+            String_AssignCStr((u8 *)arg0 + 0x16C, (char *)gActorXmlStrs + 0x43F,
+                              strlen((char *)gActorXmlStrs + 0x43F));
         }
     }
 
     *(u8 *)((u8 *)arg0 + 0x1A8) = 0;
     String_Destroy(&sp24, -1);
 }
-
+#pragma global_optimizer reset
 s32 fn_8011654C(void *arg0) {
     s32 fn_801992F0(void *);
     void *v;
@@ -2916,10 +2931,8 @@ s32 fn_80116580(void *arg0) {
 }
 
 #pragma peephole off
-void fn_801165B4(void *arg0, void *arg1)
-{
+void *fn_801165B4(void *arg0, void *arg1) {
     void fn_80199318(void *, void *);
-    void String_Init(void *, char *, void *);
     u8 sp8[8];
     void *self;
     void *v;
@@ -2931,9 +2944,7 @@ void fn_801165B4(void *arg0, void *arg1)
     } else {
         String_Init(self, (char *)((u8 *)gActorXmlStrs + 0x1C), sp8);
     }
-    if (self == NULL) {
-        return;
-    }
+    return self;
 }
 #pragma peephole reset
 s32 fn_80116604(void *arg0) {
@@ -3589,7 +3600,7 @@ void *fn_801179DC(void *arg0, s16 arg1) {
     return arg0;
 }
 
-#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
 {
     String sp24;
@@ -3613,6 +3624,9 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
 
     {
         u8 *self = (u8 *)arg0;
+        f32 fv1B0;
+        f32 fv128;
+        f32 fv124;
 
         *(void **)(self + 0x40) = lbl_8028F6C8;
 
@@ -3636,10 +3650,13 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
         fn_800D6878(self + 0x1BC, &sp8, &spC);
 
         *(s32 *)(self + 0x118) = 0;
+        fv124 = lbl_8036A1DC;
         *(s32 *)(self + 0x11C) = 0;
+        fv128 = fActorDefaultRadius;
         *(s32 *)(self + 0x120) = 0;
-        *(f32 *)(self + 0x124) = lbl_8036A1DC;
-        *(f32 *)(self + 0x128) = fActorDefaultRadius;
+        fv1B0 = lbl_8036A1C8;
+        *(f32 *)(self + 0x124) = fv124;
+        *(f32 *)(self + 0x128) = fv128;
         *(s32 *)(self + 0x12C) = 0;
         *(s32 *)(self + 0x130) = 0;
         *(s32 *)(self + 0x134) = 0;
@@ -3663,7 +3680,7 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
         self[0x1A7] = 0;
         self[0x1A8] = 0;
         *(s32 *)(self + 0x1AC) = a4;
-        *(f32 *)(self + 0x1B0) = lbl_8036A1C8;
+        *(f32 *)(self + 0x1B0) = fv1B0;
         self[0x1B4] = 0;
         self[0x1B5] = 0;
         self[0x1B6] = 0;
@@ -3680,7 +3697,7 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
         return self;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
 
 s32 fn_80117CC0(void *arg0, s32 arg1) {
     return M2C_FIELD(arg0, s32 *, 8) + arg1;
