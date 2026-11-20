@@ -568,6 +568,7 @@ void fn_80221824(u8 aa, const u8 sample_pattern[12][2], u8 vf, const u8 vfilter[
     GXWGFifo.u32 = reg54;
     __GXData[1] = 0;
 }
+#pragma scheduling reset
 #pragma use_lmw_stmw reset
 
 void fn_80221A2C(s32 arg0) {
