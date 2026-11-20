@@ -1461,7 +1461,7 @@ void fn_80185A64(void *arg0) {
             *flags |= 4;
             fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
             flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-            *flags &= ~4;
+            *flags &= 0xFFFFFFFB;
         }
     }
 }
@@ -11637,8 +11637,8 @@ s32 MapSelect_UpdateMove(void *arg0)
     PSMTXRotRad(mtx, 0x58, lbl_8036AF18);
     fn_802029C4(mtx, vec, vec);
 
-    f24 = (f32)*(s16 *)(obj + 0x4A) * lbl_8036AF00;
     scaled = lbl_8036AF1C * vec[2];
+    f24 = (f32)*(s16 *)(obj + 0x4A) * lbl_8036AF00;
     f25 = lbl_8036AF20;
     if ((f32)*(s16 *)(obj + 0x48) < f24) {
         f31 += Math_EaseOutPow(2, lbl_8036AF24, -scaled, f24, (f32)*(s16 *)(obj + 0x48));
@@ -16618,15 +16618,15 @@ void fn_801A251C(void) {
 void fn_801A2570(void) {
     void fn_800C1060(void);
     extern u8 gMapBlendMode;
-    u8 flag;
+    u32 flag;
     u8 temp;
 
     flag = 1;
     temp = (u8)(gMapBlendMode - 1);
-    if (!(temp <= 1U)) {
+    if (!(temp <= flag)) {
         flag = 0;
     }
-    if (flag) {
+    if ((u8)flag) {
         fn_800C1060();
     }
 }
