@@ -864,13 +864,13 @@ s32 fn_80075664(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" s32 fn_80075784(void *arg0, void *arg1, s32 arg2) {
-    void **fn_80037BD0(void *, u8);
+    void **Unit_GetItemSlot(void *, u8);
     u8 fn_800939FC(void *, void *);
-    extern void *lbl_802EF4C8[];
+    extern u8 gUiContext[24];
     void *temp_r4;
     u8 val;
 
-    temp_r4 = *fn_80037BD0(lbl_802EF4C8[0], arg2);
+    temp_r4 = *Unit_GetItemSlot(*(void **)gUiContext, arg2);
     if (temp_r4 == NULL) {
         return 3;
     }
@@ -878,7 +878,7 @@ extern "C" s32 fn_80075784(void *arg0, void *arg1, s32 arg2) {
     if (val == 7) {
         return 2;
     }
-    return (fn_800939FC(lbl_802EF4C8[0], temp_r4) == 0) ? 2 : 0;
+    return (fn_800939FC(*(void **)gUiContext, temp_r4) == 0) ? 2 : 0;
 }
 
 extern "C" s32 fn_80075814(s32 arg0, s32 arg1, void *arg2) {
