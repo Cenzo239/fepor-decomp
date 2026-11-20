@@ -114,7 +114,6 @@ void fn_8009A67C(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
 void fn_8009A76C(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
