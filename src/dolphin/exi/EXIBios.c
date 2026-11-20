@@ -369,7 +369,7 @@ BOOL EXIDma(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
     return TRUE;
 }
 
-s32 fn_80204410(void);
+u8 fn_80204410(void);
 u32 OSGetConsoleType(void);
 s32 EXISync(s32 arg0) {
     EXIControl *exi;
@@ -391,44 +391,46 @@ wait:
     }
 
     enabled = OSDisableInterrupts();
-    if (exi->state & 2) {
-        if (exi->state & 1) {
-            len = exi->immLen;
-            if (len != 0) {
-                buf = exi->immBuf;
-                data = __EXIRegs[arg0 * 5 + 4];
-                if ((s32)data > 0) {
-                    temp = len - 8;
-                    if (len > 8) {
-                        ctr = (u32)(temp + 7) >> 3;
-                        if (temp > 0) {
-                            i = 0;
-                            do {
-                                buf[0] = (s8)(data >> ((3 - i) * 8));
-                                buf[1] = (s8)(data >> ((3 - (i + 1)) * 8));
-                                buf[2] = (s8)(data >> ((3 - (i + 2)) * 8));
-                                buf[3] = (s8)(data >> ((3 - (i + 3)) * 8));
-                                buf[4] = (s8)(data >> ((3 - (i + 4)) * 8));
-                                buf[5] = (s8)(data >> ((3 - (i + 5)) * 8));
-                                buf[6] = (s8)(data >> ((3 - (i + 6)) * 8));
-                                buf[7] = (s8)(data >> ((3 - (i + 7)) * 8));
-                                buf += 8;
-                                i += 8;
-                                ctr -= 1;
-                            } while (ctr != 0);
-                        }
-                        ctr2 = len - i;
-                        if (i < len) {
-                            do {
-                                *buf = (s8)(data >> ((3 - i) * 8));
-                                buf += 1;
-                                i += 1;
-                                ctr2 -= 1;
-                            } while (ctr2 != 0);
+    if (exi->state & 4) {
+        if (exi->state & 3) {
+            if (exi->state & 2) {
+                len = exi->immLen;
+                if (len != 0) {
+                    buf = exi->immBuf;
+                    data = __EXIRegs[arg0 * 5 + 4];
+                    i = 0;
+                    if ((s32)data > 0) {
+                        temp = len - 8;
+                        if (len > 8) {
+                            ctr = (u32)(temp + 7) >> 3;
+                            if (temp > 0) {
+                                do {
+                                    buf[0] = (u8)(data >> ((3 - i) * 8));
+                                    buf[1] = (u8)(data >> ((3 - (i + 1)) * 8));
+                                    buf[2] = (u8)(data >> ((3 - (i + 2)) * 8));
+                                    buf[3] = (u8)(data >> ((3 - (i + 3)) * 8));
+                                    buf[4] = (u8)(data >> ((3 - (i + 4)) * 8));
+                                    buf[5] = (u8)(data >> ((3 - (i + 5)) * 8));
+                                    buf[6] = (u8)(data >> ((3 - (i + 6)) * 8));
+                                    buf[7] = (u8)(data >> ((3 - (i + 7)) * 8));
+                                    buf += 8;
+                                    i += 8;
+                                    ctr -= 1;
+                                } while (ctr != 0);
+                            }
+                            ctr2 = len - i;
+                            if (i < len) {
+                                do {
+                                    *buf = (u8)(data >> ((3 - i) * 8));
+                                    buf += 1;
+                                    i += 1;
+                                    ctr2 -= 1;
+                                } while (ctr2 != 0);
+                            }
                         }
                     }
+                    exi->state &= ~3;
                 }
-                exi->state &= ~3;
             }
         }
         if (fn_80204410() == 0xFF &&
@@ -440,7 +442,7 @@ wait:
         }
     }
     OSRestoreInterrupts(enabled);
-    if (exi->state & 2) {
+    if (exi->state & 4) {
         goto wait;
     }
     return ret;
