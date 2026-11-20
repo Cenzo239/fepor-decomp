@@ -369,7 +369,7 @@ BOOL EXIDma(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
     return TRUE;
 }
 
-u8 fn_80204410(void);
+u32 fn_80204410(void);
 u32 OSGetConsoleType(void);
 s32 EXISync(s32 arg0) {
     EXIControl *exi;
@@ -437,7 +437,10 @@ wait:
             (OSGetConsoleType() & 0xF0000000) != 0x20000000 &&
             exi->immLen == 4 &&
             (__EXIRegs[arg0 * 5] & 0x0E000000) == 0 &&
-            *(u16 *)0x800030E6 == 0x8200) {
+            (__EXIRegs[arg0 * 5 + 4] == 0x01010000 ||
+             __EXIRegs[arg0 * 5 + 4] == 0x05070000 ||
+             (__EXIRegs[arg0 * 5 + 4] == 0x04220001 &&
+              *(u16 *)0x800030E6 == 0x8200))) {
             ret = 1;
         }
     }
