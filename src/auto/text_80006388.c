@@ -23,7 +23,7 @@ extern u16 jumptable_80283AE8[];
 #pragma global_optimizer reset
 
 #pragma global_optimizer on
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction off
 
 void fn_80006388(void) {
     s32 OSDisableInterrupts(void);
@@ -105,8 +105,7 @@ loop_body:
                                 dst[7] = back[7];
                                 back += 8;
                                 dst += 8;
-                                var_ctr -= 1;
-                            } while (var_ctr != 0);
+                            } while (--var_ctr != 0);
                         }
                     }
                     var_ctr_2 = copyLen - copied;
@@ -117,8 +116,7 @@ loop_body:
                             back += 1;
                             *dst = t6;
                             dst += 1;
-                            var_ctr_2 -= 1;
-                        } while (var_ctr_2 != 0);
+                        } while (--var_ctr_2 != 0);
                     }
                 }
             }
