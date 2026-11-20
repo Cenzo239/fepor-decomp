@@ -389,15 +389,16 @@ void fn_8003B844(void *arg0, s32 arg1)
 {
     void *Person_GetByPid(void *);
     s32 j;
+    u8 *walk;
     void *outer;
     s32 i;
     void *pid;
 
     for (outer = arg0, i = 0; i < arg1; i++) {
-        for (j = 0; j < *(s32 *)((u8 *)outer + 4); j++) {
-            pid = *(void **)((u8 *)outer + 8 + (j << 3));
+        for (j = 0, walk = (u8 *)outer; j < *(s32 *)((u8 *)outer + 4); walk += 8, j++) {
+            pid = *(void **)(walk + 8);
             if (pid != NULL) {
-                *(void **)((u8 *)outer + 8 + (j << 3)) = Person_GetByPid(pid);
+                *(void **)(walk + 8) = Person_GetByPid(pid);
             }
         }
         *(void **)((u8 *)Person_GetByPid(*(void **)outer) + 0x50) = outer;
@@ -8045,54 +8046,56 @@ void GXBegin(s32,s32,s32);
 f32 fn_800233D0(void *,s8,s8,s32);
 extern u8 gBattleMap[];
 f32 z;
+u8 *dst;
+dst = (u8 *)0xCC008000;
 GXBegin(0x98,0,4);
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,0);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x);
-*(f32 *)0xCC008000=(f32)(y);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
+*(f32 *)dst=(f32)(x);
+*(f32 *)dst=(f32)(y);
+*(f32 *)dst=z;
+*dst=r;
+*dst=g;
+*dst=b;
+*dst=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,1);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x+1);
-*(f32 *)0xCC008000=(f32)(y);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
+*(f32 *)dst=(f32)(x+1);
+*(f32 *)dst=(f32)(y);
+*(f32 *)dst=z;
+*dst=r;
+*dst=g;
+*dst=b;
+*dst=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,2);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x);
-*(f32 *)0xCC008000=(f32)(y+1);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
+*(f32 *)dst=(f32)(x);
+*(f32 *)dst=(f32)(y+1);
+*(f32 *)dst=z;
+*dst=r;
+*dst=g;
+*dst=b;
+*dst=a;
 }
 {
 u8 a,b,g,r;
 z=fn_800233D0(gBattleMap,(s8)x,(s8)y,3);
 r=color[0];g=color[1];b=color[2];a=color[3];
-*(f32 *)0xCC008000=(f32)(x+1);
-*(f32 *)0xCC008000=(f32)(y+1);
-*(f32 *)0xCC008000=z;
-*(u8 *)0xCC008000=r;
-*(u8 *)0xCC008000=g;
-*(u8 *)0xCC008000=b;
-*(u8 *)0xCC008000=a;
+*(f32 *)dst=(f32)(x+1);
+*(f32 *)dst=(f32)(y+1);
+*(f32 *)dst=z;
+*dst=r;
+*dst=g;
+*dst=b;
+*dst=a;
 }
 }
 /* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
@@ -8835,10 +8838,10 @@ s32 Mu_IsAnimDone(void *arg0) {
 
 u8 fn_8004C00C(void *arg0) {
     extern f32 lbl_80368FC4;
-    if ((lbl_80368FC4 + (f32)*(s8 *)((u8 *)arg0 + 0x19E)) != (*(f32 *)((u8 *)arg0 + 4) + *(f32 *)((u8 *)arg0 + 0x10))) {
+    if ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19E)) != (M2C_FIELD(arg0, f32 *, 4) + M2C_FIELD(arg0, f32 *, 0x10))) {
         return 1U;
     }
-    return (u8) ((lbl_80368FC4 + (f32)*(s8 *)((u8 *)arg0 + 0x19F)) != (*(f32 *)((u8 *)arg0 + 8) + *(f32 *)((u8 *)arg0 + 0x14)));
+    return (u8) ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19F)) != (M2C_FIELD(arg0, f32 *, 8) + M2C_FIELD(arg0, f32 *, 0x14)));
 }
 
 void fn_8004C0A0(void *arg0) {
