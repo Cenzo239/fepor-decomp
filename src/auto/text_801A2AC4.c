@@ -1201,31 +1201,35 @@ final:
 
 #pragma opt_strength_reduction off
 void fn_801A5008(s32 arg0) {
-    s32 *Item_GetFlagsPtr(s32);
+    u64 *Item_GetFlagsPtr(s32);
     void BattleAnim_Queue(s32, s32, s32);
     s32 Unit_GetMaxHp(s32);
     void fn_801A601C(s32, s32, s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
     extern u8 gBattleHitTbl[];
     extern u8 gBattleState[];
+    u8 *hitTbl;
     u8 *var_r3;
     u8 *var_r5;
+    s32 self;
     s32 temp_r0;
     s32 i;
-    s32 *temp_r3;
+    u64 *temp_r3;
     u32 var_r4;
 
-    fn_801A601C(arg0, arg0, 0, 0);
-    BattleAnim_Queue(arg0 + 0x8A0, 0xF, Unit_GetMaxHp(arg0 + 0x2E0));
-    BattleAnim_Queue(arg0 + 0x8A0, 0x10, *(u8 *)(arg0 + 0x488));
-    BattleAnim_Queue(arg0 + 0x8A0, 0x54, 0);
-    *(u8 *)(arg0 + 0xCA4) = 0;
-    BattleAnim_Queue(arg0 + 0x8A0, 0x20, 0);
-    Battle_PerformAttacks(arg0, arg0, arg0 + 0x2E0);
+    self = arg0;
+    fn_801A601C(self, self, 0, 0);
+    BattleAnim_Queue(self + 0x8A0, 0xF, Unit_GetMaxHp(self + 0x2E0));
+    BattleAnim_Queue(self + 0x8A0, 0x10, *(u8 *)(self + 0x488));
+    BattleAnim_Queue(self + 0x8A0, 0x54, 0);
+    *(u8 *)(self + 0xCA4) = 0;
+    BattleAnim_Queue(self + 0x8A0, 0x20, 0);
+    Battle_PerformAttacks(self, self, self + 0x2E0);
 
-    var_r3 = gBattleHitTbl;
+    hitTbl = gBattleHitTbl;
     temp_r0 = 0;
-    var_r3[0x61] = (u8)temp_r0;
+    hitTbl[0x61] = (u8)temp_r0;
+    var_r3 = gBattleHitTbl;
     var_r5 = var_r3;
     var_r3[0x60] = (u8)temp_r0;
     for (i = 0; i < 2; i++) {
@@ -1265,35 +1269,35 @@ void fn_801A5008(s32 arg0) {
         var_r5 += 0x20;
     }
 
-    if (*(u32 *)(arg0 + 0xCAC) & 0x1305) {
+    if (*(u32 *)(self + 0xCAC) & 0x1305) {
         goto block_18;
     }
-    if (*(u8 *)(*(u8 **)(arg0 + 0x190) + 8) != 0) {
-        if (*(u8 *)(*(u8 **)(arg0 + 0x470) + 8) != 0) {
+    if (*(u8 *)(*(u8 **)(self + 0x190) + 8) != 0) {
+        if (*(u8 *)(*(u8 **)(self + 0x470) + 8) != 0) {
             goto block_18;
         }
     }
-    if (*(u32 *)(arg0 + 0x28C) != 0) {
-        temp_r3 = Item_GetFlagsPtr(arg0 + 0x28C);
-        if (((((temp_r3[0] & 0x80) ^ 0) | ((temp_r3[1] & 0x400) ^ 0)) == 0) == 0) {
+    if (*(u32 *)(self + 0x28C) != 0) {
+        temp_r3 = Item_GetFlagsPtr(self + 0x28C);
+        if ((*temp_r3 & 0x8000000400ULL) != 0) {
             goto block_18;
         }
     }
     temp_r0 = (s32)((gBattleState[0x9C] >> 6) & 3);
     if (temp_r0 != 1) {
         if (temp_r0 < 1) {
-            if (temp_r0 < 0) {
-                goto block_18;
+            if (temp_r0 >= 0) {
+                goto block_19;
             }
-            goto block_19;
+            goto block_18;
         }
         if (temp_r0 < 3) {
             var_r4 = 0;
-            if (*(u8 *)(*(u8 **)(arg0 + 0x190) + 8) == 0) {
-                var_r4 = (u32)arg0;
+            if (*(u8 *)(*(u8 **)(self + 0x190) + 8) == 0) {
+                var_r4 = (u32)self;
             }
-            if (*(u8 *)(*(u8 **)(arg0 + 0x470) + 8) == 0) {
-                var_r4 = (u32)(arg0 + 0x2E0);
+            if (*(u8 *)(*(u8 **)(self + 0x470) + 8) == 0) {
+                var_r4 = (u32)(self + 0x2E0);
             }
             if (var_r4 != 0) {
                 if ((*(u32 *)(var_r4 + 0x1A0) & 0x80000000U) == 0) {
@@ -1307,13 +1311,13 @@ void fn_801A5008(s32 arg0) {
         goto block_18;
     }
 block_18:
-    *(u32 *)(arg0 + 0xCAC) |= 0x80000000;
+    *(u32 *)(self + 0xCAC) |= 0x80000000;
     return;
 block_19:
     if ((gBattleState[0x9F] >> 4) & 1) {
-        *(u32 *)(arg0 + 0xCAC) |= 0x40000000;
+        *(u32 *)(self + 0xCAC) |= 0x40000000;
     }
-    *(u32 *)(arg0 + 0xCAC) &= 0x7FFFFFFF;
+    *(u32 *)(self + 0xCAC) &= 0x7FFFFFFF;
 }
 
 #pragma opt_strength_reduction off
