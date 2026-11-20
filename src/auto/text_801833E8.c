@@ -1444,24 +1444,26 @@ void fn_80185830(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_80185A64(void *arg0) {
+    void GActor_RequestRes(void *);
     void fn_8004F5EC(void *, s32);
     u8 fn_800504FC(void *, s32);
     void fn_8004FC70(void *, s32);
-    void GActor_RequestRes(void *);
     extern u8 MoveAnim_str[];
     void *obj;
     u8 *flags;
 
-    if (*((u8 *)arg0 + 0x3C) == 0) return;
-    GActor_RequestRes(MoveAnim_str + 0x1C1);
-    obj = *(void **)((u8 *)arg0 + 0x30);
-    if (fn_800504FC(obj, 0xA) == 0) return;
-    fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
-    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-    *flags |= 4;
-    fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
-    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-    *flags &= ~4;
+    if (*((u8 *)arg0 + 0x3C) != 0) {
+        GActor_RequestRes(MoveAnim_str + 0x1C1);
+        obj = *(void **)((u8 *)arg0 + 0x30);
+        if (fn_800504FC(obj, 0xA) != 0) {
+            fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
+            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+            *flags |= 4;
+            fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
+            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+            *flags &= ~4;
+        }
+    }
 }
 
 void fn_80185AF4(void *arg0) {
