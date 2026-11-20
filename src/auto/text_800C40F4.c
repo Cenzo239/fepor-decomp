@@ -5487,54 +5487,90 @@ Entry entry = (*(Entry**)(self+0x208))[index];
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_800CDFFC(u8 *self) {
-    typedef struct DbgEntry {
-        u32 f0, f4, f8, fc, f10;
-        u8 f14;
-        u32 f18, f1c, f20, f24, f28, f2c, f30, f34, f38, f3c, f40, f44, f48, f4c, f50, f54;
-    } DbgEntry;
+void fn_800CDFFC(void *arg0)
+{
     extern char lbl_802704F8[];
     extern u32 lbl_8028DA48[];
-    void fn_80232138(char *, ...);
+    void fn_80232138(const char *, ...);
     void *String_Destroy(void *, s16);
 
-    String s1 = {0}, s2 = {0};
-    u32 vals[10];
-    s32 count = *(s32 *)(self + 0x204);
-    s32 i, off;
+    typedef struct {
+        s32 value[10];
+    } RecordValues;
+
+    u8 *self;
+    u8 *record;
+    u32 *table;
+    s32 count;
+    s32 index;
+    s32 offset;
+    s32 type;
+    s32 field10;
+    s32 field1c;
+    RecordValues values;
+    s32 string18[3];
+    s32 string24[3];
+
+    self = (u8 *)arg0;
+    table = lbl_8028DA48;
+
+    string24[1] = 0;
+    string18[1] = 0;
+    string24[0] = 0;
+    string24[2] = 0;
+    string24[1] = 0;
+    string18[0] = 0;
+    string18[2] = 0;
+    string18[1] = 0;
+
+    count = *(s32 *)(self + 0x204);
 
     fn_80232138(lbl_802704F8 + 0x3F2);
-    for (i = 0, off = 0; i < count; i++, off += 0x58) {
-        DbgEntry *e = (DbgEntry *)((u8 *)*(void **)(self + 0x208) + off);
-        u32 *t = (u32 *)(lbl_8028DA48 + 0xC4);
 
-        vals[0] = e->f30;
-        vals[1] = e->f34;
-        vals[2] = e->f38;
-        vals[3] = e->f3c;
-        vals[4] = e->f40;
-        vals[5] = e->f44;
-        vals[6] = e->f48;
-        vals[7] = e->f4c;
-        vals[8] = e->f50;
-        vals[9] = e->f54;
+    index = 0;
+    offset = 0;
 
-        if (e->f18 != 12) {
-            fn_80232138(lbl_802704F8 + 0x3F5, i,
-                ((u32 *)(lbl_8028DA48 + 0x6C))[e->f10],
-                ((u32 *)(lbl_8028DA48 + 0x78))[e->f18],
-                ((u32 *)(lbl_8028DA48 + 0xB0))[e->f1c]);
-            fn_80232138(lbl_802704F8 + 0x41E,
-                vals[1], t[vals[0] + 1], t[vals[1] + 1], t[vals[2] + 1],
-                t[vals[3] + 1], vals[9], t[vals[4] + 1],
-                t[vals[5] + 1], t[vals[6] + 1], t[vals[7] + 1]);
+    while (index < count) {
+        record = *(u8 **)(self + 0x208) + offset;
+
+        type = *(s32 *)(record + 0x18);
+        field10 = *(s32 *)(record + 0x10);
+        field1c = *(s32 *)(record + 0x1C);
+
+        values = *(RecordValues *)(record + 0x30);
+
+        if (type != 12) {
+            fn_80232138(
+                lbl_802704F8 + 0x3F5,
+                index,
+                table[0x6C / 4 + field10],
+                table[0x78 / 4 + type],
+                table[0xB0 / 4 + field1c]
+            );
+
+            fn_80232138(
+                lbl_802704F8 + 0x41E,
+                values.value[8],
+                table[(0xC4 / 4) + values.value[0] + 1],
+                table[(0xC4 / 4) + values.value[1] + 1],
+                table[(0xC4 / 4) + values.value[2] + 1],
+                table[(0xC4 / 4) + values.value[3] + 1],
+                values.value[9],
+                table[(0xC4 / 4) + values.value[4] + 1],
+                table[(0xC4 / 4) + values.value[5] + 1],
+                table[(0xC4 / 4) + values.value[6] + 1],
+                table[(0xC4 / 4) + values.value[7] + 1]
+            );
         } else {
-            fn_80232138(lbl_802704F8 + 0x462, i);
+            fn_80232138(lbl_802704F8 + 0x462, index);
         }
+
+        index++;
+        offset += 0x58;
     }
 
-    String_Destroy(&s1, -1);
-    String_Destroy(&s2, -1);
+    String_Destroy(string18, -1);
+    String_Destroy(string24, -1);
 }
 extern "C" void fn_800CE214(void *self, void *stat) {
     void GActor_RequestRes(char *);
@@ -8265,15 +8301,17 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
-    s32 fn_800E4454(s32, M2C_UNK *);
-    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
-    M2C_UNK String_Copy(M2C_UNK *);
-    M2C_UNK sp8;
+    s32 fn_800E4454(s32, void *);
+    void String_Destroy(void *, s32);
+    void String_Copy(void *);
+    void *sp8;
     s32 result;
 
     String_Copy(&sp8);
-    result = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+#pragma scheduling off
+    result = fn_800E4454(*(s32 *)((u8 *)arg0 + 0x10), &sp8);
     String_Destroy(&sp8, -1);
+#pragma scheduling reset
     return result;
 }
 
@@ -13713,33 +13751,27 @@ extern "C" void fn_800E0398(SortIterator *result, s32 *first1, s32 *last1, s32 *
 
 #pragma use_lmw_stmw on
 s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
-    s32 Sort_GetKey(void *);
-    s32 *start;
-    s32 *end;
-    s32 *keyp;
-    s32 count;
-    s32 mid;
-    s32 *ptr;
-    s32 elem;
+    s32 fn_800DF6B0(void *);
     s32 key;
+    s32 elem;
+    s32 count;
+    s32 *ptr;
+    s32 mid;
 
-    start = arg0;
-    end = arg1;
-    keyp = arg2;
-    count = end - start;
+    count = arg1 - arg0;
     while (count > 0) {
         mid = count / 2;
-        ptr = start + mid;
+        ptr = arg0 + mid;
         elem = *ptr;
-        key = Sort_GetKey((void *)*keyp);
-        if (Sort_GetKey((void *)elem) <= key) {
-            start = ptr + 1;
+        key = fn_800DF6B0((void *)*arg2);
+        if (fn_800DF6B0((void *)elem) <= key) {
+            arg0 = ptr + 1;
             count -= mid + 1;
         } else {
             count = mid;
         }
     }
-    return start;
+    return arg0;
 }
 
 #pragma dont_inline on
@@ -21592,11 +21624,149 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     return 1;
 }
 
-void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32* arg3)
+void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
 {
-    *arg3 = arg0;
-    *(arg3 + 1) = arg1;
-    *(arg3 + 2) = arg2;
+    void fn_8006A384(void *);
+    s32 GMaterial_AllocTevStage(void);
+    s32 GMaterial_AllocTexMap(void);
+    s32 GMaterial_AllocTexCoord(void);
+    s32 GMaterial_AllocMtx(void);
+    void *Map_Get(void);
+    void fn_802029C4(void *, void *, void *);
+    void fn_802026E4(void *, void *, void *, void *);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void fn_80224E50(void *, s32, s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void Ui_LoadAtlasTex(s32, void *, u16);
+    void fn_80222C50(void *, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
+
+    extern u8 lbl_80272C00[];
+    extern f32 lbl_80369FC8;
+    extern f32 lbl_80369FD4;
+
+    f32 spF4[3][4];
+    f32 spC4[3][4];
+    f32 sp94[3][4];
+    f32 sp64[3][4];
+    u8 sp44[0x20];
+    f32 sp2C[6];
+    f32 sp8[3];
+    f32 sp14[3];
+    f32 sp20[3];
+
+    u8 *tbl;
+    u8 *self;
+    u8 *entry;
+    u8 *map;
+
+    s32 path;
+    s32 tev;
+    s32 texMap;
+    s32 texCoord;
+    s32 mtxId;
+    u16 atlasId;
+
+    f32 width;
+    f32 height;
+    f32 extent;
+    f32 mapScale;
+
+    self = (u8 *)arg0;
+    path = arg1;
+    tbl = lbl_80272C00;
+
+    fn_8006A384(spC4);
+
+    tev = GMaterial_AllocTevStage();
+    texMap = GMaterial_AllocTexMap();
+    texCoord = GMaterial_AllocTexCoord();
+
+    entry = *(u8 **)(self + 0x14);
+    entry += self[6] * 0x1C;
+    atlasId = *(u16 *)(entry - 0x18);
+
+    map = Map_Get();
+
+    mapScale = *(f32 *)(map + 0x6C);
+
+    width = (f32)map[0x5E] * mapScale;
+    width = lbl_80369FD4 * width;
+
+    height = (f32)map[0x5F] * mapScale;
+    height = lbl_80369FD4 * height;
+
+    *(s32 *)&sp2C[0] = *(s32 *)(tbl + 0x1C);
+    *(s32 *)&sp2C[2] = *(s32 *)(tbl + 0x24);
+    *(s32 *)&sp2C[3] = *(s32 *)(tbl + 0x28);
+    *(s32 *)&sp2C[5] = *(s32 *)(tbl + 0x30);
+
+    sp2C[0] = width;
+    sp2C[2] = height;
+    sp2C[3] = width;
+    sp2C[5] = height;
+
+    extent = (f32)map[0x60] * mapScale;
+    extent = lbl_80369FD4 * extent;
+    extent = extent * lbl_80369FC8;
+
+    *(s32 *)&sp2C[1] = *(s32 *)(tbl + 0x20);
+
+    *(s32 *)&sp8[0] = *(s32 *)&sp2C[0];
+    *(s32 *)&sp8[1] = *(s32 *)(tbl + 0x20);
+    *(s32 *)&sp8[2] = *(s32 *)&sp2C[2];
+
+    *(s32 *)&sp2C[4] = *(s32 *)(tbl + 0x2C);
+
+    *(s32 *)&sp14[0] = *(s32 *)&sp2C[3];
+    *(s32 *)&sp14[1] = *(s32 *)(tbl + 0x2C);
+    *(s32 *)&sp14[2] = *(s32 *)&sp2C[5];
+
+    *(s32 *)&sp20[0] = *(s32 *)(tbl + 0x34);
+    *(s32 *)&sp20[1] = *(s32 *)(tbl + 0x38);
+    *(s32 *)&sp20[2] = *(s32 *)(tbl + 0x3C);
+
+    map = Map_Get();
+
+    fn_802029C4(map + 0x70, sp8, sp8);
+    fn_802029C4(map + 0x70, sp14, sp14);
+    fn_802029C4(map + 0x70, sp20, sp20);
+
+    fn_802026E4(sp64, sp8, sp20, sp14);
+
+    C_MTXLightOrtho(
+        sp94,
+        -extent,
+        extent,
+        -extent,
+        extent,
+        lbl_80369FC8,
+        lbl_80369FC8,
+        lbl_80369FC8,
+        lbl_80369FC8
+    );
+
+    PSMTXConcat(sp64, spC4, sp64);
+    PSMTXConcat(sp94, sp64, spF4);
+
+    mtxId = GMaterial_AllocMtx();
+
+    fn_80224E50(spF4, mtxId, 0);
+    fn_802201A8(texCoord, 0, 0, mtxId, 0, 0x7D);
+
+    Ui_LoadAtlasTex(path, sp44, atlasId);
+    fn_80222C50(sp44, texMap);
+
+    GXSetTevOrder(tev, texCoord, texMap, 4);
+    GXSetTevColorOp(tev, 0, 0, 0, 1, 0);
+    GXSetTevColorIn(tev, 0xF, 0, 8, 0xF);
+    GXSetTevAlphaOp(tev, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn(tev, 7, 7, 7, 0);
 }
 
 s32 Map_SetupProjTexTev(void) {
