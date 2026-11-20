@@ -313,6 +313,7 @@ void fn_80222CF0(u32 *texture, void *arg1)
     void __GXFlushTextureState(void);
     u32 *region;
     register u32 v;
+    struct Copy { u32 a, b, c; };
 
     region = (*(u32 *(**)(void *))((u8 *)__GXData + 0x4CC))(arg1);
     __GXFlushTextureState();
@@ -323,8 +324,7 @@ void fn_80222CF0(u32 *texture, void *arg1)
     __GXFlushTextureState();
     v = region[0];
     texture[0] = __rlwimi(texture[0], v, 0, 22, 31);
-    *(u64 *)((u8 *)region + 4) = *(u64 *)texture;
-    region[3] = texture[2];
+    *(struct Copy *)(region + 1) = *(struct Copy *)texture;
 }
 
 void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even, u32 tmem_odd, s32 size_odd)
@@ -885,8 +885,8 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     u8 cmd;
     u16 *gx;
-    u32 *stage;
     u32 value;
+    u32 *stage;
 
     stage = (u32 *)((u8 *)__GXData + (arg0 << 2));
     value = stage[0x130 / 4];
