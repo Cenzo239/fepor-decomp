@@ -22,6 +22,7 @@ void fn_800E6418(void *, s32, void *, s32, s32, void *);
 void fn_800D6878(void *, void *, void *);
 void String_AssignCStr(void *, char *, u32);
 s32 String_Compare(void *, s32, void *, char *, s32);
+s32 fn_800C9400(void *, u32, u32, char *, u32);
 s32 String_Find(void *, char *, s32, s32);
 u8 Actor_IsBusy(void *);
 void Actor_LoadAnim(void *, void *, s32, s32, s32);
