@@ -7713,7 +7713,7 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg0;
 }
 
-#pragma scheduling reset
+#pragma scheduling on
 void fn_801DDE44(void *arg0) {
     extern f32 lbl_8036B630;
     *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
