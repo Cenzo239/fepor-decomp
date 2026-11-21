@@ -257,7 +257,7 @@ s32 fn_8000ACE0(void *arg0) {
     for (; i < 0x100; i++) {
         for (j = 0; j < 8; j++) {
             if (*(u32 *)p == value) {
-                *(u32 *)(p + 0x10) = zero;
+                *(u32 *)(p + 0x10) = i;
             }
             p += 0x70;
         }
@@ -278,50 +278,18 @@ s32 fn_8000ADA0(void *arg0) {
 
 s32 fn_8000ADE4(void *arg0)
 {
-  extern u8 lbl_802A66D8[];
-  u8 *p;
-  u32 value;
-  u8 *new_var;
-  u8 **new_var3;
-  unsigned int new_var2;
-  s32 i;
-  s32 j;
-  s32 idx;
-  value = *((u32 *) (((u8 *) (*((void **) (((u8 *) arg0) + 4)))) + 4));
-  new_var = lbl_802A66D8;
-  new_var2 = 0;
-  new_var3 = (u8 **) (((u8 *) arg0) + 4);
-  p = new_var;
-  idx = 0;
-  for (i = 0; i <= (0x100 - 1); i++)
-  {
-    for (j = new_var2; j < 8; j++)
-    {
-      if ((*((u32 *) p)) != value)
-      {
-        p += 0x70;
-      }
-      else
-      {
-        goto found;
-      }
-    }
-
-    idx += 7;
-    i += 7;
+  extern u8 gProcesses[];
+  s32 idx = 0;
+  u32 value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
+  u8 *p = gProcesses;
+  for (; idx < 256; idx++, p += 0x70) {
+    if (*(u32 *)p != value) continue;
+    goto found;
   }
-
   p = 0;
-  found:
-  if (p != 0)
-  {
-    return 0;
-  }
-
-  {
-    u8 *cur = *new_var3;
- do { if (1) { *((u8 **) (((u8 *) arg0) + 4)) = cur + 8; } } while (0);
-  }
+found:
+  if (p != 0) return 0;
+  *(u8 **)((u8 *)arg0 + 4) += 8;
   return 1;
 }
 
@@ -1017,75 +985,51 @@ void *Process_FindByName(u8 *arg0) {
 void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
     extern u8 gProcesses[];
-    u8 *entry;
-    s32 n;
-    u8 *name;
+    u8 *var_r31;
+    s32 var_r30;
+    u8 *var_r29;
     u8 *a;
     u8 *b;
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
-    s32 c2;
-    u32 diff;
 
-    entry = gProcesses;
-    n = 0;
-    name = arg0;
+    var_r31 = gProcesses;
+    var_r30 = 0;
+    var_r29 = arg0;
     do {
-        if (*(u32 *)entry != 0) {
-            a = *(u8 **)(entry + 0x14);
-            b = name;
-            goto ld;
-        cmp:
-            if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
-                goto done;
+        if (*(u32 *)var_r31 != 0) {
+            s32 d;
+            s32 c1;
+            s32 c2;
+            a = *(u8 **)(var_r31 + 0x14);
+            b = var_r29;
+            goto load;
+        compare:
+            if ((s8)c1 != (s8)c2) {
+                d = (s8)c1 - (s8)c2;
+                goto check;
             }
             a += 1;
             b += 1;
-        ld:
-            raw1 = *a;
-            raw2 = *b;
-            c1 = (s8)raw1;
-            c2 = (s8)raw2;
-            if ((c1 | c2) != 0) {
-                goto cmp;
+        load:
+            c1 = *a;
+            c2 = *b;
+            if (((s8)c1 | (s8)c2) != 0) {
+                goto compare;
             }
-            diff = 0;
-        done:
-            if (diff == 0) {
-                Process_Unlink(entry);
+            d = 0;
+        check:
+            if ((u32)d == 0) {
+                Process_Unlink(var_r31);
             }
         }
-        n += 1;
-        entry += 0x70;
-    } while (n < 0x100);
+        var_r30 += 1;
+        var_r31 += 0x70;
+    } while (var_r30 < 0x100);
 }
 
 #pragma global_optimizer off
 void fn_8000BE54(u32 arg0) {
-    extern u8 gProcesses[];
-    u8 *p;
-    s32 i;
-    s32 j;
-    s32 n;
-
-    p = gProcesses;
-    n = 0;
-    for (i = 0; i < 0x20; i++) {
-        for (j = 0; j < 8; j++) {
-            if (*(u32 *)p == arg0) {
-                *(u32 *)(p + 0x10) = 0;
-            }
-            p += 0x70;
-        }
-        n += 7;
-        p += 0;
-    }
-    switch (n) {
-    default:
-        break;
-    }
+ extern u8 lbl_802A66D8[]; u8 *p=lbl_802A66D8; s32 i,j;
+ for(i=0;i<32;i++){for(j=0;j<8;j++){if(*(u32*)p==arg0)*(u32*)(p+0x10)=0;p+=0x70;}}
 }
 #pragma global_optimizer reset
 void Process_UnlinkByKey(u32 arg0) {
@@ -1663,18 +1607,18 @@ extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
 extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
-    extern u8 lbl_802A66D8[];
+    extern u8 gProcesses[];
     extern u8 lbl_80283828[];
-    extern void *lbl_80367148;
-    u8 *base;
+    extern void *gProcessFreeTop;
     u8 *p;
     u8 **q;
+    u32 zero;
+    u8 *base;
     s32 i;
     s16 neg1;
     u8 ff;
-    u32 zero;
 
-    base = lbl_802A66D8;
+    base = gProcesses;
     p = base;
     q = (u8 **)(base + 0x7000);
     neg1 = -1;
@@ -1703,7 +1647,7 @@ void fn_8000CC88(void) {
     }
     *(u32 *)(base + 0x7424) = zero;
     *(u32 *)(base + 0x7400) = zero;
-    lbl_80367148 = base + 0x7000;
+    gProcessFreeTop = base + 0x7000;
     *(u32 *)(base + 0x7428) = zero;
     *(u32 *)(base + 0x742C) = zero;
     *(u32 *)(base + 0x7430) = zero;
@@ -1984,6 +1928,11 @@ typedef struct HashKey {
     u32 h2;
 } HashKey;
 
+#pragma opt_strength_reduction reset
+#pragma use_lmw_stmw reset
+#pragma inline_depth reset
+#pragma global_optimizer on
+#pragma optimization_level 4
 s32 Hash_Remove(s8 *str) {
     extern u8 lbl_802ADB20[];
     HashKey key;
@@ -1993,7 +1942,8 @@ s32 Hash_Remove(s8 *str) {
     u32 index;
 
     key.h2 = 0;
-    key.h1 = key.h2;
+    key.h1 = 0;
+    key.h2 = key.h1;
     while (*str != 0) {
         key.h1 = *str + key.h1 * 37;
         key.h2 = *str + key.h2 * 31;
@@ -2018,12 +1968,6 @@ s32 Hash_Remove(s8 *str) {
     }
     return 0;
 }
-
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
-#pragma inline_depth reset
-#pragma global_optimizer on
-#pragma optimization_level 4
 s32 Hash_Lookup(s8 *str) {
     extern u8 lbl_802ADB20[];
     struct {
