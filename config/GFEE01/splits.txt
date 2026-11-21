@@ -168,7 +168,10 @@ auto/text_8005B760.c:
 	.text       start:0x8005B760 end:0x8005B7A4
 
 auto/text_8005B7A4.c:
-	.text       start:0x8005B7A4 end:0x8005EB5C
+	.text       start:0x8005B7A4 end:0x8005E644
+
+auto/text_8005E644.c:
+	.text       start:0x8005E644 end:0x8005EB5C
 
 auto/text_8005EB5C.c:
 	.text       start:0x8005EB5C end:0x8005F7F0
