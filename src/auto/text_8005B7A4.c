@@ -1406,8 +1406,7 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     }
     dst = arg0;
     *(s32 *)(arg0 + 0x2C) = 0;
-    i = 0x29;
-    do {
+    for (i = 0x29; i > 0; i--) {
         c = *src;
         if (c >= 'A' && c <= 'Z') {
             *src = (char)(c + 0x20);
@@ -1417,10 +1416,10 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
         if (c == 0) {
             break;
         }
-        *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
         dst++;
         src++;
-    } while (--i != 0);
+        *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
+    }
 
     arg0[0x29] = lbl_803672E8;
     *(u16 *)(arg0 + 0x32) = 0;
@@ -1569,8 +1568,8 @@ void FileCache_ExpandBuffer(void *a)
     s32 strlen(void *);
     extern u8 fn_8005DF60[];
     u32 n;
-    u8 ch_u;
-    s8 ch;
+    u32 ch;
+    u32 ch2;
     u32 old;
     s32 len;
     u32 result;
@@ -1578,22 +1577,22 @@ void FileCache_ExpandBuffer(void *a)
     old = *(u32 *)((u8 *)a + 0x38);
     n = fn_80006AC0(old);
     *(u32 *)((u8 *)a + 0x3c) = n;
-    ch_u = *(u8 *)((u8 *)a + 0x29);
+    ch = *(s8 *)((u8 *)a + 0x29);
     n = *(u32 *)((u8 *)a + 0x3c);
-    ch = (s8)ch_u;
-    if (fn_800C44F4(ch) < n) {
+    if (fn_800C44F4((s8)ch) < n) {
         result = 0;
     } else {
         len = strlen(a) - 0xf;
         if (len < 0) {
             len = 0;
         }
-        result = fn_800C4604(ch, n, (u8 *)a + len, n);
+        result = fn_800C4604((s8)ch, n, (u8 *)a + len, n);
     }
     *(u32 *)((u8 *)a + 0x38) = result;
     if (*(u32 *)((u8 *)a + 0x38) == 0) {
+        ch2 = *(s8 *)((u8 *)a + 0x29);
         *(u32 *)((u8 *)a + 0x38) =
-            fn_8005E594(*(u8 *)((u8 *)a + 0x29), *(u32 *)((u8 *)a + 0x3c), a);
+            fn_8005E594((s8)ch2, *(u32 *)((u8 *)a + 0x3c), a);
     }
     fn_800065B0(old, *(u32 *)((u8 *)a + 0x38), fn_8005DF60, a);
 }
