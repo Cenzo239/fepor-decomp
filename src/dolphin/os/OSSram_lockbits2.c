@@ -158,7 +158,6 @@ s32 fn_802098F8(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
     s32 fn_8020931C(s32, s32);
-    extern u16 Scb_80339420[];
 
     u8 *scb;
     s32 *locked;
@@ -171,13 +170,13 @@ s32 fn_802098F8(void) {
     locked = (s32 *)(scb + 0x48);
     if (*locked) {
         OSRestoreInterrupts(irq);
-        result = 0;
+        scb = NULL;
     } else {
         *(u32 *)(scb + 0x44) = irq;
         *locked = 1;
-        result = (scb[0x13] >> 7) & 1;
-        fn_8020931C(0, 0);
     }
+    result = (scb[0x13] >> 7) & 1;
+    fn_8020931C(0, 0);
     return result;
 }
 #pragma optimization_level reset
