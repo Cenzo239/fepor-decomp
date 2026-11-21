@@ -1229,8 +1229,8 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         s16 y;
         Obj *obj;
     };
-    u32 *pad;
     u32 trig;
+    u32 *pad;
     u32 held;
     u32 pressed;
     u8 sel;
@@ -1266,26 +1266,32 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         (*(u8 *)((u8 *)arg1 + 0x62))++;
     }
     if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
-        p = (u8 *)arg1 + (s8)*(u8 *)((u8 *)arg1 + 0x63);
+        p = (u8 *)arg1;
+        p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
         node = (Node *)GfxEnt_Get(p[0x40]);
         node->obj->v15(arg1, node);
-        p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
+        p = (u8 *)arg1;
+        p += *(s8 *)((u8 *)arg1 + 0x62);
         node = (Node *)GfxEnt_Get(p[0x40]);
         node->obj->v14(arg1, node);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
+            p = (u8 *)arg1;
+            p += *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)GfxEnt_Get(p[0x40]);
             f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + node->x);
-            p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
+            p = (u8 *)arg1;
+            p += *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)GfxEnt_Get(p[0x40]);
             f30 = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + node->y);
-            p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
+            p = (u8 *)arg1;
+            p += *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)GfxEnt_Get(p[0x40]);
             ret = node->obj->v2();
             if (ret != NULL) {
                 Ui_ShowUnitInfoText(gUnitInfoPopup, f31, f30);
             } else {
-                p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
+                p = (u8 *)arg1;
+                p += *(s8 *)((u8 *)arg1 + 0x62);
                 node2 = (Node *)GfxEnt_Get(p[0x40]);
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
             }
@@ -1901,10 +1907,10 @@ void fn_80025970(void) {
 void fn_80025BA0(void) {
 void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
 extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
-u8 *src; u8 *pads; u8 *dst; s32 i;
+u8 *pads; u8 *dst; s32 i;
 SISetSamplingRate(1); fn_80212870();
-src=&lbl_80368DC8; pads=lbl_802EF408; dst=lbl_802EF438;
-for(i=0;i<4;i++){dst[0x1c]=src[i]; *(u8**)dst=pads; *(s32*)(dst+0x18)=0; dst[0x20]=0; dst+=0x24; pads+=12;}
+pads=lbl_802EF408; dst=lbl_802EF438;
+for(i=0;i<4;i++){dst[0x1c]=(&lbl_80368DC8)[i]; *(u8**)dst=pads; *(s32*)(dst+0x18)=0; dst[0x20]=0; dst+=0x24; pads+=12;}
 fn_8021275C(0xF0000000);
 lbl_8036724C=0; lbl_80367248=0; gPadInput=(u32)lbl_802EF438;
 }
@@ -2291,7 +2297,7 @@ void fn_80026678(void *arg0) {
     void Unit_RemoveItem(s32, u8);
     void fn_80094ABC(s32, void *, s32, void *);
     void Battle_Apply(void *);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 gBattle[];
     struct { u8 hi:1; u8 flag:1; u8 lo:6; } *bf;
     s32 zero;
@@ -2302,11 +2308,11 @@ void fn_80026678(void *arg0) {
     zero = 0;
     temp_r4 = *(void **)((u8 *)arg0 + 0x54);
     bf = (void *)((u8 *)temp_r4 + 5);
-    a0 = *(s32 *)lbl_802EF4C8;
-    temp_r31 = *(s32 *)(lbl_802EF4C8 + 4);
+    a0 = *(s32 *)gUiContext;
+    temp_r31 = *(s32 *)(gUiContext + 4);
     bf->flag = zero;
-    fn_80094ABC(a0, temp_r4, zero, lbl_802EF4C8);
-    Unit_RemoveItem(temp_r31, lbl_802EF4C8[0xA]);
+    fn_80094ABC(a0, temp_r4, 0, gUiContext);
+    Unit_RemoveItem(temp_r31, gUiContext[0xA]);
     Battle_Apply(gBattle);
 }
 
@@ -3162,13 +3168,14 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma peephole off
-void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
+void UiCtx_BeginMoveSelect(void **arg0, void *arg1) {
     s8 Unit_GetMov(void *);
-    void *self = arg0;
+    void *self;
     s8 x;
     s8 y;
 
-    *(void **)arg0 = arg1;
+    *arg0 = arg1;
+    self = (void *)arg0;
     *((u8 *)self + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)self + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)self + 0x11) = Unit_GetMov(arg1);
