@@ -161,8 +161,7 @@ void fn_80209968(u32 arg0) {
     extern u16 Scb_80339420[];
 
     u8 *scb;
-    s32 *locked;
-    s32 lockedVal;
+    volatile s32 *locked;
     u32 interrupts;
     u32 mode;
     u8 flags;
@@ -172,11 +171,11 @@ void fn_80209968(u32 arg0) {
     mode = (arg0 & 1) << 7;
 
     interrupts = OSDisableInterrupts();
-    lockedVal = *(s32 *)(scb + 0x48);
-    locked = (s32 *)(scb + 0x48);
-    if (lockedVal != 0) {
+    locked = (volatile s32 *)(scb + 0x48);
+
+    if (*locked != 0) {
         OSRestoreInterrupts(interrupts);
-        scb = 0;
+        scb = NULL;
     } else {
         *(u32 *)(scb + 0x44) = interrupts;
         *locked = 1;
@@ -187,7 +186,8 @@ void fn_80209968(u32 arg0) {
         fn_8020931C(0, 0);
     } else {
         scb[0x13] = flags & ~0x80;
-        scb[0x13] |= mode;
+        flags = scb[0x13];
+        scb[0x13] = flags | mode;
         fn_8020931C(1, 0);
     }
 }
