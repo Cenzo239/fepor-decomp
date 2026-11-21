@@ -468,59 +468,60 @@ s32 fn_80036B20(void *arg0, s32 arg1) {
 #pragma scheduling off
 s32 fn_80036DE0(void *arg0, void *arg1)
 {
-    s32 index;
-    u32 value;
-    u8 *obj;
-    s32 offset;
-
-    index = 0;
-    value = *(u32 *)((u8 *)arg1 + 0x188);
-    obj = *(u8 **)((u8 *)arg0 + 0x188);
-    offset = (s32)(u32)index;
-
-    goto check;
-
-loop:
+  s32 index;
+  u32 value;
+  u8 *table;
+  s32 offset;
+  u8 *obj;
+  index = 0;
+  value = *((u32 *) (((u8 *) arg1) + 0x188));
+  obj = *((u8 **) (((u8 *) arg0) + 0x188));
+  offset = index & 0xFFFFFFFF;
+  goto check;
+  loop:
+  {
+    u32 entry;
+    table = *((u8 **) (((u8 *) obj) + 0x50));
+    entry = *((u32 *) ((table + offset) + 8));
+    if (entry == value)
     {
-        u8 *table;
-        u32 entry;
-        table = *(u8 **)((u8 *)obj + 0x50);
-        entry = *(u32 *)(table + offset + 8);
-
-        if (entry == value) {
-            return (s8)index;
-        }
+      return (s8) index;
     }
+  }
 
-    offset += 8;
-    index++;
-
-check:
+  offset += 8;
+  index++;
+  check:
+  {
+    u8 *table;
+    u8 lim;
+    table = *((u8 **) (((u8 *) obj) + 0x50));
+    if (table == 0)
     {
-        u8 *table;
-        u8 lim;
-        table = *(u8 **)((u8 *)obj + 0x50);
-
-        if (table == 0) {
-            lim = 0;
-        } else {
-            lim = (u8)*(u32 *)(table + 4);
-            lim = (u8)(lim & 0xFF);
-        }
-
-        if (index < (s32)lim) {
-            goto loop;
-        }
+      lim = 0;
     }
+    else
+    {
+      lim = (u8) (*((u32 *) (table + 4)));
+      lim = (u8) (lim & 0xFF);
+    }
+    if (index < ((s32) lim))
+    {
+      goto loop;
+    }
+  }
 
-    return -1;
+  return -1;
 }
 #pragma scheduling reset
 s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
 {
+    u8 *table;
     s32 offset;
     u8 *obj;
     s32 index;
+    u8 lim;
+    u32 entry;
 
     obj = *(u8 **)((u8 *)arg0 + 0x188);
     index = 0;
@@ -529,36 +530,28 @@ s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
     goto check;
 
 loop:
-    {
-        u8 *table;
-        u32 entry;
-        table = *(u8 **)(obj + 0x50);
-        entry = *(u32 *)(table + offset + 8);
+    table = *(u8 **)(obj + 0x50);
+    entry = *(u32 *)(table + offset + 8);
 
-        if (entry == arg1) {
-            return (s8)index;
-        }
+    if (entry == arg1) {
+        return (s8)index;
     }
 
     offset += 8;
     index++;
 
 check:
-    {
-        u8 *table;
-        u8 lim;
-        table = *(u8 **)(obj + 0x50);
+    table = *(u8 **)(obj + 0x50);
 
-        if (table == NULL) {
-            lim = 0;
-        } else {
-            lim = (u8)*(u32 *)(table + 4);
-            lim = (u8)(lim & 0xFF);
-        }
+    if ((u32)table == 0) {
+        lim = 0;
+    } else {
+        lim = (u8)*(u32 *)(table + 4);
+        lim = (u8)(lim & 0xFF);
+    }
 
-        if (index < (s32)lim) {
-            goto loop;
-        }
+    if (index < (s32)lim) {
+        goto loop;
     }
 
     return -1;
