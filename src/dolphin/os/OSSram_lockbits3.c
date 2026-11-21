@@ -199,22 +199,22 @@ s32 fn_80209A0C(void) {
 
     u8 *scb;
     s32 *locked;
-    u32 interrupts;
+    u32 irq;
+    u8 result;
     u8 pad[8];
 
     scb = (u8 *)Scb_80339420;
-    interrupts = OSDisableInterrupts();
+    irq = OSDisableInterrupts();
     locked = (s32 *)(scb + 0x48);
-    if (*locked != 0) {
-        OSRestoreInterrupts(interrupts);
+    if (*locked) {
+        OSRestoreInterrupts(irq);
         scb = NULL;
     } else {
-        *(u32 *)(scb + 0x44) = interrupts;
+        *(u32 *)(scb + 0x44) = irq;
         *locked = 1;
-        interrupts = scb[0x12];
-        scb = (u8 *)interrupts;
-        fn_8020931C(0, 0);
     }
-    return (s32)scb;
+    result = scb[0x12];
+    fn_8020931C(0, 0);
+    return result;
 }
 #pragma optimization_level reset
