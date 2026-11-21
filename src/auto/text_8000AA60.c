@@ -276,38 +276,53 @@ s32 fn_8000ADA0(void *arg0) {
     return 1;
 }
 
-s32 fn_8000ADE4(void *arg0) {
-    extern u8 gProcesses[];
-    u8 *p;
-    u32 value;
-    s32 i;
-    s32 j;
-    s32 idx;
-
-    value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
-    p = gProcesses;
-    idx = 0;
-    for (i = 0; i < 0x100; i++) {
-        for (j = 0; j < 8; j++) {
-            if (*(u32 *)p != value) {
-                p += 0x70;
-            } else {
-                goto found;
-            }
-        }
-        idx += 7;
-        i += 7;
-    }
-    p = 0;
-found:
-    if (p != 0) {
-        return 0;
-    }
+s32 fn_8000ADE4(void *arg0)
+{
+  extern u8 lbl_802A66D8[];
+  u8 *p;
+  u32 value;
+  u8 *new_var;
+  u8 **new_var3;
+  unsigned int new_var2;
+  s32 i;
+  s32 j;
+  s32 idx;
+  value = *((u32 *) (((u8 *) (*((void **) (((u8 *) arg0) + 4)))) + 4));
+  new_var = lbl_802A66D8;
+  new_var2 = 0;
+  new_var3 = (u8 **) (((u8 *) arg0) + 4);
+  p = new_var;
+  idx = 0;
+  for (i = 0; i <= (0x100 - 1); i++)
+  {
+    for (j = new_var2; j < 8; j++)
     {
-        u8 *cur = *(u8 **)((u8 *)arg0 + 4);
-        *(u8 **)((u8 *)arg0 + 4) = cur + 8;
+      if ((*((u32 *) p)) != value)
+      {
+        p += 0x70;
+      }
+      else
+      {
+        goto found;
+      }
     }
-    return 1;
+
+    idx += 7;
+    i += 7;
+  }
+
+  p = 0;
+  found:
+  if (p != 0)
+  {
+    return 0;
+  }
+
+  {
+    u8 *cur = *new_var3;
+ do { if (1) { *((u8 **) (((u8 *) arg0) + 4)) = cur + 8; } } while (0);
+  }
+  return 1;
 }
 
 s32 fn_8000AEB4(void *arg0) {
@@ -2021,7 +2036,8 @@ s32 Hash_Lookup(s8 *str) {
         return 0;
     }
     key.h2 = 0;
-    key.h1 = key.h2;
+    key.h1 = 0;
+    key.h2 = key.h1;
     while (*str != 0) {
         key.h1 = *str + key.h1 * 37;
         key.h2 = *str + key.h2 * 31;
