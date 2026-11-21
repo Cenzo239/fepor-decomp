@@ -633,7 +633,7 @@ s32 fn_80265544(s32 arg0, s32 arg1, u32 arg2) {
  return fn_80266CFC(arg0,1,3,fn_80265430);
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void GBAGetStatus(s32 chan, s32 dest) {
 extern u8 lbl_803669A0[];
 extern s32 fn_80266CFC(s32,s32,s32,void*);
@@ -641,17 +641,19 @@ extern void fn_80266B6C(s32);
 void fn_80265430(s32); void fn_80266B38(void);
 u8 *entry;
 s32 ret;
+s32 ch;
 u8 dummy[8];
 
-entry = lbl_803669A0 + (chan << 8);
+ch = chan;
+entry = lbl_803669A0 + (ch << 8);
 if (*(u32*)(entry+0x1c)) ret=2;
 else {
 *entry=0;
 *(s32*)(entry+0x14)=dest;
 *(void**)(entry+0x1c)=fn_80266B38;
-ret=fn_80266CFC(chan,1,3,fn_80265430);
+ret=fn_80266CFC(ch,1,3,fn_80265430);
 }
-switch(ret) { case 0: fn_80266B6C(chan); break; default: break; }
+switch(ret) { case 0: fn_80266B6C(ch); break; default: break; }
 }
 #pragma scheduling on
 s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
