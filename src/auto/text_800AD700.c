@@ -7,7 +7,6 @@ typedef struct {
 } ItemFlagBits;
 
 extern f64 lbl_80369CF8;
-const f64 lbl_80369C60 = 4503599627370496.0 + 2147483648.0;
 
 static inline u32 LoadSoundBankB(void *path) {
     s32 fn_800B4A84(void *, s32, s32);
