@@ -108,9 +108,9 @@ extern void Unit_ApplyTransform(void);
 void fn_800AE444(void *arg0) {
     f32 fn_80059F64(f32, f32, f32, f32);
     f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
-    extern f32 lbl_80369C78;
-    extern f32 lbl_80369C7C;
-    extern f32 lbl_80369C80;
+    extern const f32 lbl_80369C78;
+    extern const f32 lbl_80369C7C;
+    extern const f32 lbl_80369C80;
     M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) - 1);
     M2C_FIELD(arg0, f32 *, 0x38) = fn_8005A028(2, lbl_80369C78, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     M2C_FIELD(arg0, s32 *, 0x34) = (s32) fn_80059F64(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
