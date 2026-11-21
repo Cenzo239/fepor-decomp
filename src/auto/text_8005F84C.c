@@ -9888,6 +9888,97 @@ extern "C" void fn_80070C24(void *arg0, s32 arg1, void *arg2) {
     ((Obj *)arg0)->v17();
     UnitRef_Draw(((Obj *)arg0)->v16(arg2), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
+
+#pragma cplusplus on
+extern "C" void fn_80070C98(void *win, void *state) {
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual f32 v25() = 0;
+    };
+    f32 UiWin_GetFade(void *);
+    void Prim2D_Begin(void);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_AddZ(f32);
+    void fn_8008B464(s32, s32, s32);
+    void fn_8007149C(void *, void *, f32, f32, s32, s32);
+    s32 Text_MeasureHeight(s32, f32);
+    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    void fn_8007CFB8(void *, s32, f32, f32);
+    u64 *Item_GetFlagsPtr(void *);
+    void Ui_DrawWeaponTriangle(void *, void *, f32, f32);
+    extern u8 gBattle[];
+    f32 fade;
+    s32 tex;
+    s32 flag;
+    void *p;
+    void *battle;
+
+    fade = UiWin_GetFade(state);
+    *(s16 *)((u8 *)state + 0x30) = 0;
+    *(s16 *)((u8 *)state + 0x32) = 0;
+    Prim2D_Begin();
+    Prim2D_SetColorByte((s32)(255.0f * fade));
+    Prim2D_PrepareTex();
+    tex = *(s32 *)((u8 *)win + 0xC);
+    Prim2D_Begin();
+    Prim2D_SetTransform(0.0f, 0.0f, ((Obj *)win)->v25(), 1.0f);
+    Prim2D_PrepareTex();
+    fn_8008B464(tex, (s32)(16.0f * fade + 16.0f), 35);
+    fn_8007149C(win, state, 16.0f * fade + 16.0f, 136.0f, *(s32 *)((u8 *)win + 0xC), 1);
+    if (*(s16 *)((u8 *)state + 0x3A) >= 5) {
+        Prim2D_Begin();
+        Prim2D_AddZ(-0.1f);
+        Prim2D_PrepareTex();
+        flag = 0;
+        if ((*(u8 *)((u8 *)state + 0x2D) == 0) && (*(u8 *)((u8 *)state + 0x2E) == 0))
+            flag = 1;
+        fn_8008AB7C(((Obj *)win)->v18() / 2 + 0x28,
+                    *(s16 *)((u8 *)state + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
+                    (s32)(0.9f * ((Obj *)win)->v18()), 0x18, 0x19, 0x4B, flag);
+        Prim2D_Begin();
+        Prim2D_AddZ(0.1f);
+        Prim2D_PrepareTex();
+    }
+    battle = gBattle;
+    if (battle != NULL) {
+        p = (u8 *)battle + 0x28C;
+        if (p != NULL) {
+            if ((*Item_GetFlagsPtr(p) & 1ULL) != 0) {
+                fn_8007CFB8(battle, 0, 312.0f, 282.0f);
+            }
+        }
+    }
+    Ui_DrawWeaponTriangle(win, battle, 500.0f, 212.0f);
+}
+#pragma cplusplus reset
+
 #pragma cplusplus reset
 void fn_80070EDC(void) {
 
