@@ -678,6 +678,7 @@ extern void fn_80266B6C(s32);
 void fn_80265430(s32);
 void fn_80266B38(void);
 s32 ret;
+u8 dummy[8];
 u8 *entry = lbl_803669A0 + (chan << 8);
 if (*(u32*)(entry+0x1C)) ret=2;
 else {
@@ -686,7 +687,7 @@ entry[0]=0xFF;
 *(void**)(entry+0x1C)=fn_80266B38;
 ret=fn_80266CFC(chan,1,3,fn_80265430);
 }
-switch(ret) { case 0: fn_80266B6C(chan); break; default: return; }
+switch(ret) { case 0: fn_80266B6C(chan); break; default: break; }
 }
 #pragma peephole on
 #pragma global_optimizer reset
