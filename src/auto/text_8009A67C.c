@@ -41,7 +41,7 @@ extern void fn_8017E394(void* arg0, void* arg1, void* arg2, s32 arg3);
 extern u8 lbl_80289EB8[16];
 
 extern f32 lbl_803697E0;
-extern f32 lbl_803697E4;
+extern const f32 lbl_803697E4;
 
 #pragma scheduling reset
 
