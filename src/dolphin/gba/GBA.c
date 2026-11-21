@@ -908,73 +908,73 @@ void fn_80265CB4(s32 arg0, s32 arg1)
     u8 *config;
     u32 value;
     u32 threshold;
+    u32 a;
     s32 result;
     void (*callback)(s32, s32);
+    u8 dummy[8];
 
+    config = lbl_802A4DE8;
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
-    config = lbl_802A4DE8;
     result = arg1;
 
-    if (arg1 == 0) {
-        value = *(u32 *)((u8 *)*(u32 *)(entry + 0xF8) + 0x20);
-        *(u32 *)(queue + 0x58) = value;
+    if (result == 0) {
+        *(u32 *)(queue + 0x58) = *(u32 *)(*(u8 **)(entry + 0xF8) + 0x20);
+        *(u32 *)(queue + 0x5C) = *(u32 *)(*(u8 **)(entry + 0xF8) + 0x24);
 
-        value = *(u32 *)((u8 *)*(u32 *)(entry + 0xF8) + 0x24);
-        *(u32 *)(queue + 0x5C) = value;
-
-        if (queue[0x1B] != 0 &&
-            queue[0x1A] != 0 &&
-            (value = *(u32 *)(queue + 0x58),
-             (value & ((u32)config[0x05] << 9)) != 0) &&
-            queue[0x19] != 0 &&
-            (value >> 15) != 0 &&
-            queue[0x18] != 0) {
+        if (queue[0x1B] == 0)
+            goto fail;
+        if (queue[0x1A] == 0)
+            goto fail;
+        value = *(u32 *)(queue + 0x58);
+        if ((value & ((u32)config[0x05] << 9)) == 0)
+            goto fail;
+        if (queue[0x19] == 0)
+            goto fail;
+        if ((value >> 15) == 0)
+            goto fail;
+        if (queue[0x18] == 0) {
+        fail:
             result = 3;
-            goto done;
-        }
-
-        value = (*(u32 *)(queue + 0x0C) + config[0x24])
-              & ~(u32)config[0x24];
-
-        *(u32 *)(queue + 0x20) = value;
-
-        threshold = (u32)config[0x14] << config[0x21];
-
-        if (value < threshold) {
-            *(u32 *)(queue + 0x20) = threshold;
-            *(u32 *)(queue + 0x64) = threshold;
-            value = threshold - threshold;
-            *(u32 *)(queue + 0x20) = value;
+        } else {
+            a = ~*(volatile u8 *)(config + 0x24);
             *(u32 *)(queue + 0x20) =
-                (u32)((s32)value >> config[0x20]);
+                (*(u32 *)(queue + 0x0C) + *(volatile u8 *)(config + 0x24)) & a;
+
+            threshold = (u32)config[0x14] << config[0x21];
+
+            if ((s32)*(u32 *)(queue + 0x20) < (s32)threshold) {
+                *(u32 *)(queue + 0x20) = threshold;
+            }
+
+            *(u32 *)(queue + 0x64) = *(u32 *)(queue + 0x20);
+            *(u32 *)(queue + 0x20) = *(u32 *)(queue + 0x20) - threshold;
+            *(u32 *)(queue + 0x20) =
+                (u32)((s32)*(u32 *)(queue + 0x20) >> config[0x20]);
+
+            queue[0x1C] = (u8)*(u32 *)(queue + 0x5C);
+            queue[0x1D] = (u8)((s32)*(u32 *)(queue + 0x5C) >> 8);
+            queue[0x1F] = (u8)((s32)*(u32 *)(queue + 0x5C) >> 24);
+            queue[0x1E] = (u8)((s32)*(u32 *)(queue + 0x5C) >> 16);
+
+            *(u32 *)(queue + 0x38) =
+                ((u32)config[0x26] + 1) << config[0x22];
+
+            *(u32 *)(queue + 0x34) = config[0x08];
+
+            *(u64 *)(queue + 0x28) = OSGetTime();
+
+            *(u32 *)(queue + 0x30) = 1;
+
+            result = fn_80266904(
+                arg0,
+                queue + 0x1C,
+                *(void **)(queue + 0x10),
+                fn_80265E90
+            );
         }
-
-        value = *(u32 *)(queue + 0x5C);
-
-        queue[0x1C] = (u8)value;
-        queue[0x1D] = (u8)((s32)value >> 8);
-        queue[0x1E] = (u8)((s32)value >> 16);
-        queue[0x1F] = (u8)((s32)value >> 24);
-
-        *(u32 *)(queue + 0x38) =
-            ((u32)config[0x26] + 1) << config[0x22];
-
-        *(u32 *)(queue + 0x34) = config[0x08];
-
-        *(u64 *)(queue + 0x28) = OSGetTime();
-
-        *(u32 *)(queue + 0x30) = 1;
-
-        result = fn_80266904(
-            arg0,
-            queue + 0x1C,
-            *(void **)(queue + 0x10),
-            fn_80265E90
-        );
     }
 
-done:
     if (result != 0) {
         *(u32 *)(queue + 0x2C) = 0;
         *(u32 *)(queue + 0x28) = 0;
