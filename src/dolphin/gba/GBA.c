@@ -670,8 +670,7 @@ s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
     return fn_80266CFC(arg0, 1, 3, fn_80265430);
 }
 
-#pragma global_optimizer off
-#pragma peephole off
+#pragma scheduling on
 void fn_8026569C(s32 chan, s32 dest) {
 extern u8 lbl_803669A0[];
 extern s32 fn_80266CFC(s32,s32,s32,void*);
