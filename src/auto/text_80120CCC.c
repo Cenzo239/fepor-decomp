@@ -114,13 +114,13 @@ void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(vo
 u16 b;
 u16 a;
 u16 *p=&gUiPanelFlags;
-a=gUiPanelFlags; b=*(p+1);
+a=gUiPanelFlags; b=p[1];
 gUiInputFlags |= 2;
 if(!(a&0x40)) {
 if((u32)Process_Find(gUiTooltipProc)!=0U) {
 if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
 }}
-gUiPanelFlags=a; *(p+1)=b;
+gUiPanelFlags=a; p[1]=b;
 }
 #pragma scheduling on
 #pragma peephole on
@@ -2651,6 +2651,7 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
     f32 dx, dy, dz;
     f32 px, py, pz;
     f32 ax, ay;
+    u32 gqr;
 
     list = *(void **)((u8 *)arg0 + 0x58);
     node = **(void ***)((u8 *)list + 0x8);
@@ -2676,7 +2677,8 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
     rnd = Rand_Next();
     rnd = (rnd % 200) + 0xC8;
     scale = (s16)((*(u8 *)((u8 *)arg0 + 0x4D) * rnd) / 100);
-    __builtin_mtspr(917, 0x00070007);
+    gqr = 0x00070007;
+    __builtin_mtspr(917, gqr);
     dx = arg2[0] - arg1[0];
     dy = arg2[1] - arg1[1];
     dz = arg2[2] - arg1[2];
@@ -2696,7 +2698,8 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
     *(f32 *)((u8 *)node + 0x18) = pz;
     ay = lbl_8036A360 * (f32)sp8;
     *(f32 *)((u8 *)node + 0x1C) = py;
-    __builtin_mtspr(917, 0x08070007);
+    gqr = 0x08070007;
+    __builtin_mtspr(917, gqr);
     *(s16 *)((u8 *)node + 0xE) = (s16)ax;
     *(s16 *)((u8 *)node + 0x10) = (s16)lbl_8036A30C;
     *(s16 *)((u8 *)node + 0x12) = (s16)ay;
@@ -4011,6 +4014,88 @@ void fn_80127170(s32 arg0) {
     extern u8 gScriptCmdNames[];
 
     Sound_Create(gScriptCmdNames + 0x493, Process_CreateChild(lbl_80290504, arg0));
+}
+
+void fn_801271B0(s32 arg0) {
+    void *Sound_FindByName(void *);
+    void *Process_Create(void *, s32);
+    void *Sound_Create(void *, void *);
+    void Sound_FadeFromZero(void *, u8);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Text_Draw(s32, s32, s32, void *, ...);
+    void Process_ClearFunc(void *);
+    extern u32 *gPadInput;
+    extern u8 gScriptCmdNames[];
+    extern u8 lbl_802904E0[];
+    extern f32 lbl_8036A3D4;
+    extern f32 lbl_8036A404;
+
+    u32 held;
+    u32 down;
+    void *proc;
+    void *proc9;
+
+    held = gPadInput[1];
+    down = held & (gPadInput[2] ^ held);
+
+    if ((down & 0x08000008) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x49B, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x04000004) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4A5, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x01000001) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4AF, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x02000002) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4B9, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x100) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4C3, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x200) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4CD, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x400) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4D7, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x800) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc + 0x30) = Sound_Create(gScriptCmdNames + 0x4E1, proc);
+        Sound_FadeFromZero(*(void **)((u8 *)proc + 0x30), 5);
+    }
+    if ((down & 0x10) && Sound_FindByName(gScriptCmdNames + 0x493) != NULL) {
+        proc9 = Process_Create(lbl_802904E0, arg0);
+        *(void **)((u8 *)proc9 + 0x30) = Sound_Create(gScriptCmdNames + 0x4EB, proc9);
+        Sound_FadeFromZero(*(void **)((u8 *)proc9 + 0x30), 5);
+    }
+
+    Prim2D_Begin();
+    Prim2D_SetTransform(lbl_8036A3D4, lbl_8036A3D4, lbl_8036A3D4, lbl_8036A404);
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+    Text_Draw(0x32, 0x154, 1, gScriptCmdNames + 0x4F5);
+
+    if (gPadInput[1] == 0x160) {
+        Process_ClearFunc((void *)arg0);
+    }
 }
 
 void fn_80127594(void *arg0) {
