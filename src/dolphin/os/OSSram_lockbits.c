@@ -149,27 +149,25 @@ s32 fn_8020931C(s32 commit, s32 offset);
 s32 fn_80209A78(void) {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
-    void fn_8020931C(s32, s32);
+    s32 fn_8020931C(s32, s32);
 
     u8 *scb;
     s32 *locked;
-    u32 interrupts;
+    u32 irq;
+    s32 result;
     u8 pad[8];
-    s32 zero;
 
     scb = (u8 *)Scb_80339420;
-    interrupts = OSDisableInterrupts();
+    irq = OSDisableInterrupts();
     locked = (s32 *)(scb + 0x48);
-    if (*locked != 0) {
-        OSRestoreInterrupts(interrupts);
+    if (*locked) {
+        OSRestoreInterrupts(irq);
         scb = NULL;
     } else {
-        *(u32 *)(scb + 0x44) = interrupts;
+        *(u32 *)(scb + 0x44) = irq;
         *locked = 1;
-        interrupts = scb[0x11];
-        scb = (u8 *)((interrupts >> 6) & 1);
-        zero = (s32)(interrupts & 0);
-        fn_8020931C(zero, zero);
     }
-    return (s32)scb;
+    result = (scb[0x11] >> 6) & 1;
+    fn_8020931C(0, 0);
+    return result;
 }
