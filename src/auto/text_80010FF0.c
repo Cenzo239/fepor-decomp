@@ -1,5 +1,6 @@
 /* Functions from 0x80006264 to 0x80011968, found by decomp-toolkit. */
 #include "common.h"
+M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
 #pragma cplusplus on
 struct TextWidthFontInterface {
     virtual s32 v0() = 0;
@@ -252,8 +253,8 @@ s32 fn_800113BC(void) {
 
 #pragma cplusplus on
 extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z) {
-    f64 fmod(f64, f64);
-    void GXBegin(s32, s32, s32);
+    f64 fn_802387C8(f64, f64);
+    void fn_80220DEC(s32, s32, s32);
     extern f64 lbl_80368C38;
     extern f64 lbl_80368C40;
     extern f32 lbl_80368BF0;
@@ -295,11 +296,11 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
         return;
     }
     {
-        f32 f = (f32)fmod(lbl_80368C38, lbl_80368C40);
+        f32 f = (f32)fn_802387C8(lbl_80368C38, lbl_80368C40);
         f30 = (f32)(s32)(f * (x + (lbl_80368BF0 / f))) / f;
     }
     {
-        f32 f = (f32)fmod(lbl_80368C38, lbl_80368C40);
+        f32 f = (f32)fn_802387C8(lbl_80368C38, lbl_80368C40);
         f29 = (f32)(s32)(f * (y + (lbl_80368BF0 / f))) / f;
     }
     t = ((Obj *)obj)->v13();
@@ -312,9 +313,9 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
     f27 = (f32)(rem * t);
     f26 = (f32)((Obj *)obj)->v13();
     f25 = (f32)((Obj *)obj)->v14();
-    GXBegin(0x80, 0, 4);
+    fn_80220DEC(0x80, 0, 4);
     wg = (u8 *)0xCC010000;
-    r = color[wg - (u8 *)0xCC010000];
+    r = color[0];
     *(volatile f32 *)(wg - 0x8000) = f30;
     f0 = f30 + f26;
     g = color[1];
