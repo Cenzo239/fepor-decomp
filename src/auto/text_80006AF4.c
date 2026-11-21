@@ -2202,10 +2202,10 @@ void fn_8000A860(void) {
 
     for (i = 0; i < 8; i++) {
         if (lbl_802ADADC[i] == 0) {
-            break;
+            continue;
         }
         sp8 = lbl_80368BC8;
-        fn_8014BB58(0, spC << 3, &sp8, lbl_802838C8[i]);
+        fn_8014BB58(0, spC * 8, &sp8, lbl_802838C8[i]);
         {
             s32 old = spC;
             spC = old + 1;
