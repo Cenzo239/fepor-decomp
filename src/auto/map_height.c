@@ -83,99 +83,107 @@ typedef struct {
 #pragma fp_contract off
 #pragma global_optimizer off
 
-f64 lbl_80368D80 = 4503601774854144.0;
+const f64 lbl_80368D80 = 4503601774854144.0;
 
+#pragma fp_contract off
+#pragma global_optimizer off
 f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
 {
-    float new_var2;
-    extern f32 lbl_80368D78;
-    extern f32 lbl_80368D7C;
-    void *self;
-    u8 *row;
-    f32 t1;
-    float new_var;
-    s16 *cell;
-    f32 t0;
-    f32 t2;
-    f32 scale;
-    f32 t3;
-    f32 s0;
-    f32 s1;
-    s32 idx;
-    s8 x;
-    s8 y;
-
-    self = arg0;
-    y = arg2;
-    x = arg1;
-    switch (arg3) {
+  float new_var2;
+  extern f32 lbl_80368D78;
+  extern f32 lbl_80368D7C;
+  void *self;
+  u8 *row;
+  f32 t1;
+  float new_var;
+  s16 *cell;
+  f32 t0;
+  f32 t2;
+  f32 scale;
+  f32 t3;
+  f32 s0;
+  f32 s1;
+  s32 idx;
+  s8 x;
+  s8 y;
+  self = arg0;
+  x = arg1;
+  y = arg2;
+  switch (arg3)
+  {
     case 8:
-        row = (u8 *)self + 0x10000;
-        idx = (x + (y << 6)) << 3;
-        cell = (s16 *)(row + idx);
-        scale = *(f32 *)((u8 *)arg0 + 0x20000 - 0x3D2C);
-        t0 = (f32)*(s16 *)((u8 *)cell + 0x42D4);
-        t1 = (f32)*(s16 *)((u8 *)cell + 0x42D6);
-        t2 = (f32)*(s16 *)((u8 *)cell + 0x42D8);
-        t3 = (f32)*(s16 *)((u8 *)cell + 0x42DA);
-        t0 = t0 * scale;
-        t1 = t1 * scale;
-        s0 = (t0 + t1) * lbl_80368D78;
-        t2 = t2 * scale;
-        t3 = t3 * scale;
-        new_var = t2 + t3;
-        s1 = new_var * lbl_80368D78;
-        return s0 - s1;
+      row = ((u8 *) self) + 0x10000;
+      idx = (x + (y << 6)) << 3;
+      cell = (s16 *) (row + idx);
+      scale = *((f32 *) (((u8 *) arg0) + 0x1C2D4));
+      t0 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D4)));
+      t1 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D6)));
+      t2 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D8)));
+      t3 = (f32) (*((s16 *) (((u8 *) cell) + 0x42DA)));
+      t0 = t0 * scale;
+      t1 = t1 * scale;
+      s0 = (t0 + t1) * lbl_80368D78;
+      t2 = t2 * scale;
+      t3 = t3 * scale;
+      new_var = t2 + t3;
+      s1 = new_var * lbl_80368D78;
+      return s0 - s1;
+
     case 4:
-        row = (u8 *)self + 0x10000;
-        idx = (x + (y << 6)) << 3;
-        cell = (s16 *)(row + idx);
-        scale = *(f32 *)((u8 *)arg0 + 0x20000 - 0x3D2C);
-        t0 = (f32)*(s16 *)((u8 *)cell + 0x42D8);
-        t1 = (f32)*(s16 *)((u8 *)cell + 0x42DA);
-        t2 = (f32)*(s16 *)((u8 *)cell + 0x42D4);
-        t3 = (f32)*(s16 *)((u8 *)cell + 0x42D6);
-        t0 = t0 * scale;
-        t1 = t1 * scale;
-        s0 = (t0 + t1) * lbl_80368D78;
-        t2 = t2 * scale;
-        t3 = t3 * scale;
-        s1 = (t2 + t3) * lbl_80368D78;
-        return s0 - s1;
+      row = ((u8 *) self) + 0x10000;
+      idx = (x + (y << 6)) << 3;
+      cell = (s16 *) (row + idx);
+      scale = *((f32 *) (((u8 *) arg0) + 0x1C2D4));
+      t0 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D8)));
+      t1 = (f32) (*((s16 *) (((u8 *) cell) + 0x42DA)));
+      t2 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D4)));
+      t3 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D6)));
+      t0 = t0 * scale;
+      t1 = t1 * scale;
+      s0 = (t0 + t1) * lbl_80368D78;
+      t2 = t2 * scale;
+      t3 = t3 * scale;
+      s1 = (t2 + t3) * lbl_80368D78;
+      return s0 - s1;
+
     case 1:
-        row = (u8 *)self + 0x10000;
-        idx = (x + (y << 6)) << 3;
-        cell = (s16 *)(row + idx);
-        scale = *(f32 *)((u8 *)arg0 + 0x20000 - 0x3D2C);
-        t0 = (f32)*(s16 *)((u8 *)cell + 0x42D4);
-        t1 = (f32)*(s16 *)((u8 *)cell + 0x42D8);
-        t2 = (f32)*(s16 *)((u8 *)cell + 0x42D6);
-        t3 = (f32)*(s16 *)((u8 *)cell + 0x42DA);
-        t0 = t0 * scale;
-        t1 = t1 * scale;
-        s0 = (t0 + t1) * lbl_80368D78;
-        t2 = t2 * scale;
-        t3 = t3 * scale;
-        new_var2 = t2 + t3;
-        s1 = new_var2 * lbl_80368D78;
-        return s0 - s1;
+      row = ((u8 *) self) + 0x10000;
+      idx = (x + (y << 6)) << 3;
+      cell = (s16 *) (row + idx);
+      scale = *((f32 *) (((u8 *) arg0) + 0x1C2D4));
+      t0 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D4)));
+      t1 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D8)));
+      t2 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D6)));
+      t3 = (f32) (*((s16 *) (((u8 *) cell) + 0x42DA)));
+      t0 = t0 * scale;
+      t1 = t1 * scale;
+      s0 = (t0 + t1) * lbl_80368D78;
+      t2 = t2 * scale;
+      t3 = t3 * scale;
+      new_var2 = t2 + t3;
+      s1 = new_var2 * lbl_80368D78;
+      return s0 - s1;
+
     case 2:
-        row = (u8 *)self + 0x10000;
-        idx = (x + (y << 6)) << 3;
-        cell = (s16 *)(row + idx);
-        scale = *(f32 *)((u8 *)arg0 + 0x20000 - 0x3D2C);
-        t0 = (f32)*(s16 *)((u8 *)cell + 0x42D6);
-        t1 = (f32)*(s16 *)((u8 *)cell + 0x42DA);
-        t2 = (f32)*(s16 *)((u8 *)cell + 0x42D4);
-        t3 = (f32)*(s16 *)((u8 *)cell + 0x42D8);
-        t0 = t0 * scale;
-        t1 = t1 * scale;
-        s0 = (t0 + t1) * lbl_80368D78;
-        t2 = t2 * scale;
-        t3 = t3 * scale;
-        s1 = (t2 + t3) * lbl_80368D78;
-        return s0 - s1;
+      row = ((u8 *) self) + 0x10000;
+      idx = (x + (y << 6)) << 3;
+      cell = (s16 *) (row + idx);
+      scale = *((f32 *) (((u8 *) arg0) + 0x1C2D4));
+      t0 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D6)));
+      t1 = (f32) (*((s16 *) (((u8 *) cell) + 0x42DA)));
+      t2 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D4)));
+      t3 = (f32) (*((s16 *) (((u8 *) cell) + 0x42D8)));
+      t0 = t0 * scale;
+      t1 = t1 * scale;
+      s0 = (t0 + t1) * lbl_80368D78;
+      t2 = t2 * scale;
+      t3 = t3 * scale;
+      s1 = (t2 + t3) * lbl_80368D78;
+      return s0 - s1;
+
     default:
-        return lbl_80368D7C;
-    }
+      return lbl_80368D7C;
+
+  }
+
 }
