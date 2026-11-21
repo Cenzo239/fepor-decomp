@@ -7,7 +7,6 @@ typedef struct {
 } ItemFlagBits;
 
 extern f64 lbl_80369CF8;
-extern f64 lbl_80369C60;
 
 static inline u32 LoadSoundBankB(void *path) {
     s32 fn_800B4A84(void *, s32, s32);
@@ -82,12 +81,13 @@ extern u8 lbl_8028D064[16];
 void fn_800AD700(void *arg0) {
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
-    struct A { u8 pad[0x30]; s8 *p; } *a;
-    s8 *p;
+    u8 *p;
+    f32 x, y;
 
-    a = (struct A *)arg0;
-    p = a->p;
-    BattleState_SetCamPos(gBattleState, (f32)p[0x19F], (f32)p[0x19E]);
+    p = *(u8 **)((u8 *)arg0 + 0x30);
+    x = (f32)(s8)p[0x19F];
+    y = (f32)(s8)p[0x19E];
+    BattleState_SetCamPos(gBattleState, x, y);
 }
 #pragma global_optimizer reset
 /* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */
