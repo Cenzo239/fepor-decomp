@@ -1233,21 +1233,21 @@ void fn_80008B94(void)
 }
 
 void fn_80008C24(void *arg0, void *arg1, u8 *arg2, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
-    s32 fn_80011010(s32);
     void *fn_80005C40();
+    s32 fn_80011010(s32);
     void *fn_801047DC(u8 *);
     u8 *fn_801049E0(u8 *, s32 *, s32 *, s32 *, s32 *, s32 *, u8, u8, f32);
-    void PSMTXScale(void *, u16, f32, f32, f32);
-    void GXBegin(u32, u32, u32);
-    void fn_80222644(void *, s32, u16, u16, u16, u32, u32, u32);
-    void fn_80222C50(void *, u32);
-    void fn_80224E50(void *, u16, u32);
-    extern f32 gFloat1;
+    M2C_UNK fn_802025C0(M2C_UNK *, u16, f32, f32, f32);
+    M2C_UNK fn_80220DEC(M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK fn_80222644(M2C_UNK *, s32, u16, u16, u16, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK fn_80222C50(M2C_UNK *, M2C_UNK);
+    M2C_UNK fn_80224E50(M2C_UNK *, M2C_UNK, M2C_UNK);
+    extern f32 lbl_80368B94;
     extern f32 lbl_80368BB8;
     s32 sp7C;
     s32 sp78;
-    u32 sp3C;
-    u32 sp1C;
+    M2C_UNK sp3C;
+    M2C_UNK sp1C;
     s32 sp18;
     s32 sp14;
     s32 sp10;
@@ -1288,51 +1288,51 @@ void fn_80008C24(void *arg0, void *arg1, u8 *arg2, f32 farg0, f32 farg1, f32 far
     var_r27 = arg2;
     temp_r28 = fn_80011010(-1);
     temp_r3 = fn_80005C40();
-    temp_r5 = *(u16 *)((char *)temp_r3 + 0x1E);
-    PSMTXScale(&sp3C, temp_r5, gFloat1 / (f32) temp_r5, gFloat1 / (f32) *(u16 *)((char *)temp_r3 + 0x20), gFloat1);
+    temp_r5 = M2C_FIELD(temp_r3, u16 *, 0x1E);
+    fn_802025C0(&sp3C, temp_r5, lbl_80368B94 / (f32) temp_r5, lbl_80368B94 / (f32) M2C_FIELD(temp_r3, u16 *, 0x20), lbl_80368B94);
     fn_80224E50(&sp3C, 0x1E, 1);
     temp_f18 = lbl_80368BB8;
 loop_2:
     if ((s8) *var_r27 != 0) {
         temp_r3_2 = fn_801047DC(var_r27);
-        temp_r10 = *(u8 *)((char *)temp_r3_2 + 8);
-        temp_r9 = *(u8 *)((char *)temp_r3_2 + 9);
-        temp_f24 = ((f32) (s8) *(u8 *)((char *)temp_r3_2 + 0xA) * farg3) + var_f19;
+        temp_r10 = M2C_FIELD(temp_r3_2, u8 *, 8);
+        temp_r9 = M2C_FIELD(temp_r3_2, u8 *, 9);
+        temp_f24 = ((f32) (s8) M2C_FIELD(temp_r3_2, u8 *, 0xA) * farg3) + var_f19;
         sp7C = (s32) temp_r10;
-        temp_f1 = (f32) (s8) *(u8 *)((char *)temp_r3_2 + 0xB);
+        temp_f1 = (f32) (s8) M2C_FIELD(temp_r3_2, u8 *, 0xB);
         sp78 = 0x43300000;
-        temp_f23 = -((temp_f1 * farg3) - (((f32) *(u16 *)((char *)temp_r3 + 8) * farg3) + farg1));
+        temp_f23 = -((temp_f1 * farg3) - (((f32) M2C_FIELD(temp_r3, u16 *, 8) * farg3) + farg1));
         temp_f26 = (f32) temp_r10;
         temp_f25 = (f32) temp_r9;
         var_r27 = fn_801049E0(var_r27, &sp18, &sp14, &sp10, &spC, &sp8, temp_r9, temp_r10, temp_f1);
         temp_f29 = (f32) sp14;
         temp_f28 = (f32) sp10;
         temp_f27 = (f32) sp8;
-        fn_80222644(&sp1C, sp18, *(u16 *)((char *)temp_r3 + 0x1E), *(u16 *)((char *)temp_r3 + 0x20), *(u16 *)((char *)temp_r3 + 0x18), 0, 0, 0);
+        fn_80222644(&sp1C, sp18, M2C_FIELD(temp_r3, u16 *, 0x1E), M2C_FIELD(temp_r3, u16 *, 0x20), M2C_FIELD(temp_r3, u16 *, 0x18), 0, 0, 0);
         fn_80222C50(&sp1C, 0);
         temp_f24_2 = (farg3 * (temp_f18 * (temp_f27 - (f32) spC))) + temp_f24;
-        GXBegin(0x80, 0, 4);
+        fn_80220DEC(0x80, 0, 4);
         *(f32 *)0xCC008000 = temp_f24_2;
-        temp_r6 = *(u8 *)((char *)arg0 + 0);
+        temp_r6 = M2C_FIELD(arg0, u8 *, 0);
         *(f32 *)0xCC008000 = temp_f23;
         temp_f2 = temp_f29 + temp_f26;
-        temp_r7 = *(u8 *)((char *)arg0 + 1);
+        temp_r7 = M2C_FIELD(arg0, u8 *, 1);
         *(f32 *)0xCC008000 = farg2;
-        temp_r8 = *(u8 *)((char *)arg0 + 2);
+        temp_r8 = M2C_FIELD(arg0, u8 *, 2);
         temp_f1_2 = temp_f24_2 + (temp_f26 * farg3);
         *(f32 *)0xCC008000 = temp_r6;
         temp_f0 = temp_f23 + (temp_f25 * farg3);
-        temp_r9_2 = *(u8 *)((char *)arg0 + 3);
+        temp_r9_2 = M2C_FIELD(arg0, u8 *, 3);
         temp_f3 = temp_f28 + temp_f25;
         *(f32 *)0xCC008000 = temp_r7;
-        temp_r0 = *(u8 *)((char *)arg1 + 0);
+        temp_r0 = M2C_FIELD(arg1, u8 *, 0);
         var_f19 += temp_f27 * farg3;
         *(f32 *)0xCC008000 = temp_r8;
-        temp_r3_3 = *(u8 *)((char *)arg1 + 1);
+        temp_r3_3 = M2C_FIELD(arg1, u8 *, 1);
         *(f32 *)0xCC008000 = temp_r9_2;
-        temp_r4 = *(u8 *)((char *)arg1 + 2);
+        temp_r4 = M2C_FIELD(arg1, u8 *, 2);
         *(f32 *)0xCC008000 = temp_f29;
-        temp_r5_2 = *(u8 *)((char *)arg1 + 3);
+        temp_r5_2 = M2C_FIELD(arg1, u8 *, 3);
         *(f32 *)0xCC008000 = temp_f28;
         *(f32 *)0xCC008000 = temp_f1_2;
         *(f32 *)0xCC008000 = temp_f23;
@@ -1798,6 +1798,8 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     int mask;
     unsigned long a;
     int b;
+    u32 c;
+    u32 d;
     u32 sp[8];
     register u8 *p;
     register u8 ff;
@@ -1805,11 +1807,11 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     Ui_LoadAtlasTex(arg0, sp, arg1);
     mask = 0xFFFF7B0C;
     p = *(u8 **)&gPrim2D;
-    b = sp[1];
-    a = sp[0];
+    b = sp[0];
+    a = sp[1];
     ff = 0xFF;
-    *(u32 *)(p + 0x38) = b;
-    *(u32 *)(p + 0x34) = a;
+    *(u32 *)(p + 0x34) = b;
+    *(u32 *)(p + 0x38) = a;
     a = sp[2];
     b = sp[3];
     *(u32 *)(p + 0x3C) = a;
@@ -1820,8 +1822,10 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     *(u32 *)(p + 0x48) = b;
     a = sp[6];
     b = sp[7];
-    *(u32 *)(p + 0x50) = b;
-    *(u32 *)(p + 0x4C) = a;
+    c = a;
+    d = b;
+    *(u32 *)(p + 0x4C) = c;
+    *(u32 *)(p + 0x50) = d;
     (*(u8 **)&gPrim2D)[0x22] = ff;
     *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
         *(u16 *)(*(u8 **)&gPrim2D + 0x20) & mask;
@@ -1939,9 +1943,9 @@ void *fn_8000A2A8(u32 arg0)
   u32 n;
   void *p;
   u8 *new_var;
-  f32 f2;
-  f32 f1;
   f32 f0;
+  f32 f1;
+  f32 f2;
   if (arg0 == 0)
   {
     arg0 = 0xFFE0;
@@ -1950,9 +1954,9 @@ void *fn_8000A2A8(u32 arg0)
   p = lbl_80366DA0(n);
   *((void **) (&gPrim2D)) = p;
   f2 = gFloat1;
-  new_var = ((u8 *) (*((void **) (&gPrim2D)))) + 4;
-  f1 = lbl_80368BB8;
   *((void **) p) = p;
+  f1 = lbl_80368BB8;
+  new_var = ((u8 *) (*((void **) (&gPrim2D)))) + 4;
   f0 = lbl_80368B98;
   *((u32 *) new_var) = n;
   *((f32 *) (((u8 *) (*((void **) (&gPrim2D)))) + 0x98)) = f2;
@@ -2015,130 +2019,161 @@ void fn_8000A440(s32 arg0, s32 arg1) {
 
 void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
 {
-    extern u8 lbl_80267CB0[];
-
-    u8 *node;
-    u8 *current;
-    u8 *text;
-    s32 length;
-    u32 color;
-    s32 depth;
-
-    current = (u8 *)arg0;
-    node = *(u8 **)(current + 0x24);
-
-    if (node != 0) {
-        if (*(u8 **)(node + 0x24) != 0) {
-            fn_8000A454(*(void **)(node + 0x24), arg1, arg2);
-        }
-
-        color = 0xFFFFFFFF;
-        depth = *arg1;
-        *arg1 = depth + 1;
-
-        if ((node[0x2C] & 2) != 0) {
-            color = 0xFFC0C0FF;
-        }
-
-        if (node[0x2D] != 0) {
-            color = 0xA0A0A0FF;
-        }
-
-        if ((node[0x2C] & 4) != 0) {
-            if ((*(u8 **)(node + 0x18))[0x2D] != 0) {
-                color = 0xA0A0A0FF;
-            }
-        }
-
-        if (node[0x2E] != 0) {
-            color = 0x4040FFFF;
-        }
-
-        fn_8014BB58(
-            depth * 8,
-            *arg2 * 8,
-            &color,
-            *(void **)(node + 0x14)
-        );
-
-        if (*(u32 *)(node + 0x0C) != 0) {
-            text = *(u8 **)(node + 0x14);
-            length = 0;
-
-            while (text[length] != 0) {
-                length++;
-            }
-
-            fn_8014BB58(
-                (depth + length + 1) * 8,
-                *arg2 * 8,
-                &color,
-                lbl_80267CB0 + 0x76
-            );
-
-            (*arg2)++;
-        }
-
-        if (*(u8 **)(node + 0x1C) != 0) {
-            fn_8000A454(*(void **)(node + 0x1C), arg1, arg2);
-        }
-
-        (*arg1)--;
+  extern u8 lbl_80267CB0[];
+  struct 
+  {
+    u32 siblingColor;
+    u32 siblingDraw;
+    u32 siblingExtra;
+    u32 childColor;
+    u32 childDraw;
+    u32 childExtra;
+    u32 currentExtra;
+    u32 currentDraw;
+    u32 currentColor;
+  } colors;
+  u8 *current;
+  u8 *node;
+  int new_var;
+  s8 *text;
+  s32 depth;
+  current = (u8 *) arg0;
+  node = *((u8 **) (current + 0x24));
+  if (node != ((unsigned long) 0))
+  {
+    if ((*((u8 **) (node + 0x24))) != 0)
+    {
+      fn_8000A454(*((void **) (node + 0x24)), arg1, arg2);
     }
-
-    color = 0xFFFFFFFF;
     depth = *arg1;
+    colors.childColor = 0xFFFFFFFF;
     *arg1 = depth + 1;
-
-    if ((current[0x2C] & 2) != 0) {
-        color = 0xFFC0C0FF;
+    if (node[0x2C] & 2)
+    {
+      colors.childColor = 0xFFC0C0FF;
     }
-
-    if (current[0x2D] != 0) {
-        color = 0xA0A0A0FF;
+    if (node[0x2D] != 0)
+    {
+      colors.childColor = 0xA0A0A0FF;
     }
-
-    if ((current[0x2C] & 4) != 0) {
-        if ((*(u8 **)(current + 0x18))[0x2D] != 0) {
-            color = 0xA0A0A0FF;
-        }
+    if (node[0x2C] & 4)
+    {
+      if ((*((u8 **) (node + 0x18)))[0x2D] != 0)
+      {
+        colors.childColor = 0xA0A0A0FF;
+      }
     }
-
-    if (current[0x2E] != 0) {
-        color = 0x4040FFFF;
+    if (node[0x2E] != 0)
+    {
+      colors.childColor = 0x4040FFFF;
     }
+    colors.childDraw = colors.childColor;
+    fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.childDraw, *((void **) (node + 0x14)));
+    if ((*((u32 *) (node + 0x0C))) != 0)
+    {
+      text = *((s8 **) (node + 0x14));
+      text = text;
+      while ((*(text++)) != 0)
+      {
+      }
 
-    fn_8014BB58(
-        depth * 8,
-        *arg2 * 8,
-        &color,
-        *(void **)(current + 0x14)
-    );
-
-    if (*(u32 *)(current + 0x0C) != 0) {
-        text = *(u8 **)(current + 0x14);
-        length = 0;
-
-        while (text[length] != 0) {
-            length++;
-        }
-
-        fn_8014BB58(
-            (depth + length + 1) * 8,
-            *arg2 * 8,
-            &color,
-            lbl_80267CB0 + 0x76
-        );
-
-        (*arg2)++;
+      colors.childExtra = colors.childColor;
+      fn_8014BB58(((short) (((*arg1) + (text - text)) + 1)) * 8, (*arg2) * 8, &colors.childExtra, lbl_80267CB0 + 0x76);
+      (*arg2)++;
     }
-
-    if (*(u8 **)(current + 0x1C) != 0) {
-        fn_8000A454(*(void **)(current + 0x1C), arg1, arg2);
+    if ((*((u8 **) (node + 0x1C))) != 0)
+    {
+      fn_8000A454(*((void **) (node + 0x1C)), arg1, arg2);
     }
-
     (*arg1)--;
+  }
+  depth = *arg1;
+  colors.currentColor = 0xFFFFFFFF;
+  *arg1 = depth + 1;
+  if (current[0x2C] & 2)
+  {
+    colors.currentColor = 0xFFC0C0FF;
+  }
+  if (current[0x2D] != 0)
+  {
+    colors.currentColor = 0xA0A0A0FF;
+  }
+  if (current[0x2C] & 4)
+  {
+    if ((*((u8 **) (current + 0x18)))[0x2D] != 0)
+    {
+      colors.currentColor = 0xA0A0A0FF;
+    }
+  }
+  if (current[0x2E] != 0)
+  {
+    colors.currentColor = 0x4040FFFF;
+  }
+  colors.currentDraw = colors.currentColor;
+  fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.currentDraw, *((void **) (current + 0x14)));
+  if ((*((u32 *) (current + 0x0C))) != 0)
+  {
+    text = *((s8 **) (current + 0x14));
+    text = text;
+    while ((*(text++)) != 0)
+    {
+    }
+
+    colors.currentExtra = colors.currentColor;
+    fn_8014BB58((((*arg1) + (text - text)) + 1) * 8, (*arg2) * 8, &colors.currentExtra, lbl_80267CB0 + 0x76);
+    (*arg2)++;
+  }
+  node = *((u8 **) (current + 0x1C));
+  if (node != 0)
+  {
+    if ((*((u8 **) (node + 0x24))) != 0)
+    {
+      fn_8000A454(*((void **) (node + 0x24)), arg1, arg2);
+    }
+    depth = *arg1;
+    colors.siblingColor = 0xFFFFFFFF;
+    *arg1 = depth + 1;
+    if (node[0x2C] & 2)
+    {
+      colors.siblingColor = 0xFFC0C0FF;
+    }
+    if (node[0x2D] != 0)
+    {
+      colors.siblingColor = 0xA0A0A0FF;
+    }
+    if (node[0x2C] & 4)
+    {
+      if ((*((u8 **) (node + 0x18)))[0x2D] != 0)
+      {
+        colors.siblingColor = 0xA0A0A0FF;
+      }
+    }
+    if (node[0x2E] != 0)
+    {
+      colors.siblingColor = 0x4040FFFF;
+    }
+    colors.siblingDraw = colors.siblingColor;
+    fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.siblingDraw, *((void **) (node + 0x14)));
+    if ((*((u32 *) (node + 0x0C))) != 0)
+    {
+      text = *((s8 **) (node + 0x14));
+      text = text;
+      new_var = 2;
+      while ((*(text++)) != 0)
+      {
+      }
+
+      colors.siblingExtra = colors.siblingColor;
+      fn_8014BB58(new_var * (4 * (((*arg1) + (text - text)) + 1)), (*arg2) * 8, &colors.siblingExtra, lbl_80267CB0 + 0x76);
+      (*arg2)++;
+    }
+    if ((*((u8 **) (node + 0x1C))) != 0)
+    {
+      fn_8000A454(*((void **) (node + 0x1C)), arg1, arg2);
+    }
     (*arg1)--;
+  }
+  (*arg1)--;
 }
 
 void fn_8000A860(void) {
