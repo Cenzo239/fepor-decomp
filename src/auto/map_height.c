@@ -80,13 +80,6 @@ typedef struct {
 #pragma fp_contract off
 #pragma global_optimizer off
 
-#pragma fp_contract off
-#pragma global_optimizer off
-
-const f64 lbl_80368D80 = 4503601774854144.0;
-
-#pragma fp_contract off
-#pragma global_optimizer off
 f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
 {
   float new_var2;
