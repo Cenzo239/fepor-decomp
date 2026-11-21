@@ -15885,6 +15885,7 @@ extern "C" void *fn_800E45EC(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
+#pragma use_lmw_stmw off
 extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void);
     void String_Init(String *, char *, void *);
