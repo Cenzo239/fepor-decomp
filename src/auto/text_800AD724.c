@@ -6569,15 +6569,14 @@ s32 fn_800BC204(u8 arg0) {
     return slot + 4;
 }
 
-#pragma optimization_level 4
-#pragma opt_common_subs on
+#pragma optimization_level 3
 s32 fn_800BC29C(u8 arg0) {
     void *fn_80037BBC(void *, s32);
     s32 fn_80037E00(void *);
     u8 fn_80105BC0(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     extern u8 lbl_802B14E4[];
-    register void *unit;
+    void *unit;
     s8 slot;
     void *item;
     u8 t;
