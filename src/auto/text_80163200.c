@@ -2844,12 +2844,14 @@ void Ui_HideUnitInfoPopup(void *arg0) {
  extern u8 lbl_80277A20[]; extern s32 lbl_8036A938;
  extern f32 lbl_8036A93C; extern f32 lbl_8036A940; extern f32 lbl_8036A92C;
  s32 flags; s32 mask; s32 eight; u8 *base;
- f32 t; f32 zero; f32 dy; f32 dx;
+ f32 zero = lbl_8036A92C;
+ f32 t; f32 dy; f32 dx;
  flags=*(s32 *)arg0;
  if(!(flags&1)) {
  mask=lbl_8036A938; dx=lbl_8036A93C; eight=8;
- *(s32 *)arg0=flags|mask; dy=lbl_8036A940;
- base=lbl_80277A20; zero=lbl_8036A92C;
+ mask = flags | mask;
+ *(s32 *)arg0=mask; dy=lbl_8036A940;
+ base=lbl_80277A20;
  t=*(f32 *)((u8 *)arg0+0xF4); *(f32 *)((u8 *)arg0+0xFC)=t;
  t=*(f32 *)((u8 *)arg0+0xF8); *(f32 *)((u8 *)arg0+0x100)=t;
  t=*(f32 *)((u8 *)arg0+0xDC); *(f32 *)((u8 *)arg0+0x104)=dx+t;
@@ -3275,108 +3277,96 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         virtual void v0() = 0;
         virtual void v1() = 0;
     };
-    void *r31;
-    void *r30;
-    s32 z;
-    s16 n1;
-    s16 c108;
+    void *self;
+    u8 *self2;
     f32 one;
-    s32 e1;
-    s32 e2;
-    s32 e3;
 
-    z = 0;
-    n1 = -1;
-    c108 = 0x108;
     one = lbl_8036A9AC;
-    r31 = arg0;
-    r30 = r31;
-    *(void **)r31 = lbl_8028FDB0;
-    e1 = arg1;
-    *(s32 *)((u8 *)r31 + 4) = z;
-    *(void **)r31 = lbl_80292230;
-    e2 = arg2;
-    e3 = arg3;
-    *(s16 *)((u8 *)r31 + 8) = n1;
-    *(s16 *)((u8 *)r31 + 0xA) = arg1;
-    *(s16 *)((u8 *)r31 + 0xC) = arg2;
-    *(s16 *)((u8 *)r31 + 0xE) = (s16)(e1 + 0x108);
-    *(s16 *)((u8 *)r31 + 0x10) = (s16)(e2 + e3);
-    *(s16 *)((u8 *)r31 + 0x12) = z;
-    *(s16 *)((u8 *)r31 + 0x14) = z;
-    *(s16 *)((u8 *)r31 + 0x16) = c108;
-    *(s16 *)((u8 *)r31 + 0x18) = arg3;
-    *(s16 *)((u8 *)r31 + 0x1A) = z;
-    *(s16 *)((u8 *)r31 + 0x1C) = z;
-    *(u8 *)((u8 *)r31 + 0x1E) = 0xFF;
-    *(u8 *)((u8 *)r31 + 0x1F) = 0xFF;
-    *(u8 *)((u8 *)r31 + 0x20) = 0xFF;
-    *(u8 *)((u8 *)r31 + 0x21) = 0xFF;
-    *(s16 *)((u8 *)r31 + 0x22) = arg4;
-    *(s16 *)((u8 *)r31 + 0x24) = z;
-    *(f32 *)((u8 *)r31 + 0x28) = one;
-    *(f32 *)((u8 *)r31 + 0x2C) = one;
-    *(f32 *)((u8 *)r31 + 0x30) = one;
-    *(s32 *)((u8 *)r31 + 0x34) = z;
-    *(s32 *)((u8 *)r31 + 0x38) = z;
-    *(void **)r31 = lbl_80292208;
-    fn_80142060((u8 *)r30 + 0x3C);
-    *(void **)r31 = gUiPanelMidVtbl;
-    *(s32 *)((u8 *)r31 + 0x48) = 0;
-    *(u8 *)((u8 *)r31 + 0x4C) = 1;
-    *(u8 *)((u8 *)r31 + 0x4D) = 0;
-    *(s16 *)((u8 *)r31 + 0x4E) = 0;
-    *(s16 *)((u8 *)r31 + 0x52) = -1;
-    *(s16 *)((u8 *)r31 + 0x54) = -1;
-    *(s16 *)((u8 *)r31 + 0x56) = 0;
-    *(s16 *)((u8 *)r31 + 0x58) = 1;
-    *(s16 *)((u8 *)r31 + 0x5A) = 0x20;
-    *(f32 *)((u8 *)r31 + 0x5C) = lbl_8036A9B0;
-    *(s16 *)((u8 *)r31 + 0x60) = 0;
-    *(s16 *)((u8 *)r31 + 0x62) = 0x10;
-    *(s16 *)((u8 *)r31 + 0x64) = 0;
-    fn_8013BBF8((u8 *)r31 + 0x70);
-    *(s32 *)((u8 *)r31 + 0x7C) = 0;
-    *(void **)((u8 *)r31 + 0x84) = gEmptyVtbl;
+    self = arg0;
+    self2 = (u8 *)arg0;
+    *(void **)self = lbl_8028FDB0;
+    *(s32 *)((u8 *)self + 4) = 0;
+    *(void **)self = lbl_80292230;
+    *(s16 *)((u8 *)self + 8) = -1;
+    *(s16 *)((u8 *)self + 0xA) = arg1;
+    *(s16 *)((u8 *)self + 0xC) = arg2;
+    *(s16 *)((u8 *)self + 0xE) = (s16)(arg1 + 0x108);
+    *(s16 *)((u8 *)self + 0x10) = (s16)(arg2 + arg3);
+    *(s16 *)((u8 *)self + 0x12) = 0;
+    *(s16 *)((u8 *)self + 0x14) = 0;
+    *(s16 *)((u8 *)self + 0x16) = 0x108;
+    *(s16 *)((u8 *)self + 0x18) = arg3;
+    *(s16 *)((u8 *)self + 0x1A) = 0;
+    *(s16 *)((u8 *)self + 0x1C) = 0;
+    *(u8 *)((u8 *)self + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)self + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)self + 0x20) = 0xFF;
+    *(u8 *)((u8 *)self + 0x21) = 0xFF;
+    *(s16 *)((u8 *)self + 0x22) = arg4;
+    *(s16 *)((u8 *)self + 0x24) = 0;
+    *(f32 *)((u8 *)self + 0x28) = one;
+    *(f32 *)((u8 *)self + 0x2C) = one;
+    *(f32 *)((u8 *)self + 0x30) = one;
+    *(s32 *)((u8 *)self + 0x34) = 0;
+    *(s32 *)((u8 *)self + 0x38) = 0;
+    *(void **)self = lbl_80292208;
+    fn_80142060(self2 + 0x3C);
+    *(void **)self = gUiPanelMidVtbl;
+    *(s32 *)((u8 *)self + 0x48) = 0;
+    *(u8 *)((u8 *)self + 0x4C) = 1;
+    *(u8 *)((u8 *)self + 0x4D) = 0;
+    *(s16 *)((u8 *)self + 0x4E) = 0;
+    *(s16 *)((u8 *)self + 0x52) = -1;
+    *(s16 *)((u8 *)self + 0x54) = -1;
+    *(s16 *)((u8 *)self + 0x56) = 0;
+    *(s16 *)((u8 *)self + 0x58) = 1;
+    *(s16 *)((u8 *)self + 0x5A) = 0x20;
+    *(f32 *)((u8 *)self + 0x5C) = lbl_8036A9B0;
+    *(s16 *)((u8 *)self + 0x60) = 0;
+    *(s16 *)((u8 *)self + 0x62) = 0x10;
+    *(s16 *)((u8 *)self + 0x64) = 0;
+    fn_8013BBF8((u8 *)self + 0x70);
+    *(s32 *)((u8 *)self + 0x7C) = 0;
+    *(void **)((u8 *)self + 0x84) = gEmptyVtbl;
     {
-        f32 f1 = lbl_8036A9AC;
         f32 f0 = lbl_8036A9B0;
-        *(s32 *)((u8 *)r31 + 0x88) = 0;
-        *(s32 *)((u8 *)r31 + 0x8C) = 2;
-        *(u8 *)((u8 *)r31 + 0x90) = 1;
-        *(u8 *)((u8 *)r31 + 0x91) = 1;
-        *(s16 *)((u8 *)r31 + 0x98) = 0;
-        *(s16 *)((u8 *)r31 + 0x9A) = 0;
-        *(f32 *)((u8 *)r31 + 0x9C) = f1;
-        *(f32 *)((u8 *)r31 + 0xA0) = f1;
-        *(u8 *)((u8 *)r31 + 0xA4) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xA5) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xA6) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xA7) = 0xFF;
-        *(f32 *)((u8 *)r31 + 0xA8) = f0;
-        ((Sub *)((u8 *)r31 + 0x84))->v1();
+        f32 f1 = lbl_8036A9AC;
+        *(s32 *)((u8 *)self + 0x88) = 0;
+        *(s32 *)((u8 *)self + 0x8C) = 2;
+        *(u8 *)((u8 *)self + 0x90) = 1;
+        *(u8 *)((u8 *)self + 0x91) = 1;
+        *(s16 *)((u8 *)self + 0x98) = 0;
+        *(s16 *)((u8 *)self + 0x9A) = 0;
+        *(f32 *)((u8 *)self + 0x9C) = f1;
+        *(f32 *)((u8 *)self + 0xA0) = f1;
+        *(u8 *)((u8 *)self + 0xA4) = 0xFF;
+        *(u8 *)((u8 *)self + 0xA5) = 0xFF;
+        *(u8 *)((u8 *)self + 0xA6) = 0xFF;
+        *(u8 *)((u8 *)self + 0xA7) = 0xFF;
+        *(f32 *)((u8 *)self + 0xA8) = f0;
+        ((Sub *)((u8 *)self + 0x84))->v1();
     }
-    *(void **)((u8 *)r31 + 0xAC) = gEmptyVtbl;
+    *(void **)((u8 *)self + 0xAC) = gEmptyVtbl;
     {
-        f32 f1 = lbl_8036A9AC;
         f32 f0 = lbl_8036A9B0;
-        *(s32 *)((u8 *)r31 + 0xB0) = 0;
-        *(s32 *)((u8 *)r31 + 0xB4) = 3;
-        *(u8 *)((u8 *)r31 + 0xB8) = 1;
-        *(u8 *)((u8 *)r31 + 0xB9) = 1;
-        *(s16 *)((u8 *)r31 + 0xC0) = 0;
-        *(s16 *)((u8 *)r31 + 0xC2) = 0;
-        *(f32 *)((u8 *)r31 + 0xC4) = f1;
-        *(f32 *)((u8 *)r31 + 0xC8) = f1;
-        *(u8 *)((u8 *)r31 + 0xCC) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xCD) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xCE) = 0xFF;
-        *(u8 *)((u8 *)r31 + 0xCF) = 0xFF;
-        *(f32 *)((u8 *)r31 + 0xD0) = f0;
-        ((Sub *)((u8 *)r31 + 0xAC))->v1();
+        f32 f1 = lbl_8036A9AC;
+        *(s32 *)((u8 *)self + 0xB0) = 0;
+        *(s32 *)((u8 *)self + 0xB4) = 3;
+        *(u8 *)((u8 *)self + 0xB8) = 1;
+        *(u8 *)((u8 *)self + 0xB9) = 1;
+        *(s16 *)((u8 *)self + 0xC0) = 0;
+        *(s16 *)((u8 *)self + 0xC2) = 0;
+        *(f32 *)((u8 *)self + 0xC4) = f1;
+        *(f32 *)((u8 *)self + 0xC8) = f1;
+        *(u8 *)((u8 *)self + 0xCC) = 0xFF;
+        *(u8 *)((u8 *)self + 0xCD) = 0xFF;
+        *(u8 *)((u8 *)self + 0xCE) = 0xFF;
+        *(u8 *)((u8 *)self + 0xCF) = 0xFF;
+        *(f32 *)((u8 *)self + 0xD0) = f0;
+        ((Sub *)((u8 *)self + 0xAC))->v1();
     }
-    ((Obj *)r31)->v8();
-    return r31;
+    ((Obj *)self)->v8();
+    return self;
 }
 
 extern "C" void fn_80169394(void) {
@@ -11018,6 +11008,84 @@ ret=fn_8013FF94(self,-0x1000,0);
 if(ret) fn_801658DC(ret,(u8*)lbl_80278080+0x1fd);
 }
 
+void *fn_80175A2C(void) {
+    void *Heap_Alloc(u32);
+    extern u8 gUiMenuDrawVtbl[];
+    extern u8 lbl_8028459C[], lbl_80291FF8[], lbl_80292090[], lbl_802920E0[];
+    extern u8 lbl_802945DC[], lbl_80294B38[], lbl_80294BD0[], lbl_80294C68[];
+    extern u8 lbl_80294E90[], lbl_80294EE0[], lbl_80294F30[], lbl_80294F80[];
+    extern u8 lbl_80294FD0[], lbl_80295020[], lbl_80295070[], lbl_802950C0[], lbl_80295110[];
+    extern s8 lbl_803681A0, lbl_803681A8, lbl_803681B0, lbl_803681B8;
+    extern s8 lbl_803681C4, lbl_803681CC, lbl_803681D4, lbl_803681DC, lbl_803681E4;
+    extern void *lbl_803681A4, *lbl_803681AC, *lbl_803681B4;
+    extern void * volatile lbl_803681BC;
+    extern void *lbl_803681C8, *lbl_803681D0, *lbl_803681D8, *lbl_803681E0, *lbl_803681E8;
+    extern f32 lbl_8036AB70;
+    void *p;
+
+    if (!lbl_803681A0) {
+        lbl_803681A4 = lbl_802950C0;
+        lbl_803681A0 = 1;
+    }
+    if (!lbl_803681A8) {
+        lbl_803681AC = lbl_80295070;
+        lbl_803681A8 = 1;
+    }
+    if (!lbl_803681B0) {
+        lbl_803681B4 = lbl_80295020;
+        lbl_803681B0 = 1;
+    }
+    if (!lbl_803681B8) {
+        lbl_803681BC = lbl_8028459C;
+        lbl_803681BC = lbl_80292090;
+        lbl_803681BC = lbl_80295110;
+        lbl_803681BC = lbl_80294FD0;
+        lbl_803681B8 = 1;
+    }
+    if (!lbl_803681C4) {
+        lbl_803681C8 = lbl_80294F80;
+        lbl_803681C4 = 1;
+    }
+    if (!lbl_803681CC) {
+        lbl_803681D0 = lbl_80294F30;
+        lbl_803681CC = 1;
+    }
+    if (!lbl_803681D4) {
+        lbl_803681D8 = lbl_80294EE0;
+        lbl_803681D4 = 1;
+    }
+    if (!lbl_803681DC) {
+        lbl_803681E0 = lbl_80294E90;
+        lbl_803681DC = 1;
+    }
+    if (!lbl_803681E4) {
+        lbl_803681E8 = lbl_80294C68;
+        lbl_803681E4 = 1;
+    }
+    p = Heap_Alloc(0x24);
+    if (p) {
+        M2C_FIELD(p, void **, 4) = gUiMenuDrawVtbl;
+        M2C_FIELD(p, void **, 0) = lbl_802945DC;
+        M2C_FIELD(p, void **, 4) = lbl_802920E0;
+        M2C_FIELD(p, s16 *, 8) = 0;
+        M2C_FIELD(p, s16 *, 0xC) = 0x80;
+        M2C_FIELD(p, s16 *, 0xA) = 0;
+        M2C_FIELD(p, s16 *, 0xE) = 0;
+        M2C_FIELD(p, s16 *, 0x10) = 2;
+        M2C_FIELD(p, s16 *, 0x12) = 0xC;
+        M2C_FIELD(p, s16 *, 0x14) = 0x10;
+        M2C_FIELD(p, s16 *, 0x16) = 0;
+        M2C_FIELD(p, f32 *, 0x18) = lbl_8036AB70;
+        M2C_FIELD(p, s16 *, 0x1C) = 0x20;
+        M2C_FIELD(p, s16 *, 0x1E) = 4;
+        M2C_FIELD(p, void **, 4) = lbl_80291FF8;
+        M2C_FIELD(p, s16 *, 0x20) = 2;
+        M2C_FIELD(p, void **, 4) = lbl_80294BD0;
+        M2C_FIELD(p, void **, 4) = lbl_80294B38;
+    }
+    return p;
+}
+
 void *fn_80175C34(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *lbl_80294BD0[];
@@ -14259,11 +14327,8 @@ s32 Stream_ReadU16(void *arg0) {
 }
 
 u8 Stream_ReadU8(void *arg0) {
-    u8 *temp_r4;
-
-    temp_r4 = *(u8 **)((char *)arg0 + 4);
-    *(u8 **)((char *)arg0 + 4) = temp_r4 + 1;
-    return *temp_r4;
+    u8 **pp = (u8 **)((u8 *)arg0 + 4);
+    return *(*pp)++;
 }
 
 void fn_8017A9F0(s32 arg0, s32 arg1, void *arg2) {
