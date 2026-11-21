@@ -777,6 +777,7 @@ u8 *entry;
 u8 *queue;
 s32 result=arg1;
 void (*callback)(s32,s32);
+u8 dummy[8];
 entry=lbl_803669A0+(arg0<<8);
 queue=entry+0x40;
 if(result==0) {
