@@ -1724,7 +1724,6 @@ void fn_800AB75C(void *arg0) {
 extern "C" void *Item_Copy(void *, void *);
 extern "C" void Item_Clear(void *);
 #pragma cplusplus off
-#pragma global_optimizer off
 void fn_800ABA3C(void) {
     void Item_Init(void *);
     void Item_Clear(void *);
