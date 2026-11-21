@@ -1,6 +1,10 @@
 /* Functions from 0x80006264 to 0x80011968, found by decomp-toolkit. */
 #include "common.h"
 M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+void fn_8006EBC4(s32, void *, void *, s32, s32);
+void fn_80222A3C(void *, s32, s32);
+void fn_80222C50(void *, s32);
+void fn_80222CF0(void *, s32);
 #pragma cplusplus on
 struct TextWidthFontInterface {
     virtual s32 v0() = 0;
