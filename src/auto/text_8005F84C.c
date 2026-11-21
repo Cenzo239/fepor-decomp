@@ -673,7 +673,6 @@ u32 fn_800604F4(void *arg0) {
 u32 fn_80060520(void *arg0) {
     s32 Camera_Get(void);
     u32 var_r31;
-    u32 value;
     void *var_r30;
 
     var_r30 = arg0;
@@ -687,8 +686,7 @@ u32 fn_80060520(void *arg0) {
     return 0U;
 found:
     if (((u8 *)Camera_Get())[3] & 1) {
-        value = FindUnk48(var_r30);
-        var_r31 += (((M2C_FIELD(M2C_FIELD(value, void **, 0x48), s16 *, 0xA) * 12) + 31) & ~31) / 2 * 2;
+        var_r31 += (((M2C_FIELD(M2C_FIELD(FindUnk48(var_r30), void **, 0x48), s16 *, 0xA) * 12) + 31) & ~31) / 2 * 2;
     }
     return var_r31;
 }
