@@ -2318,15 +2318,15 @@ void fn_801CF99C(void *arg0) {
 #pragma global_optimizer on
 void fn_801CFA44(void *arg0)
 {
-    extern void fn_8000C60C(void *);
+    extern void Process_Unlink(void *);
     extern void fn_801C18FC(s32);
 
     s32 i;
     u8 *ptr;
-    u32 zero;
+    register s32 zero;
 
-    zero = 0U;
-    i = (s32)zero;
+    zero = 0;
+    i = zero;
     ptr = (u8 *)arg0;
 
     *(s32 *)(ptr + 0x8) = zero;
@@ -2335,7 +2335,7 @@ void fn_801CFA44(void *arg0)
         *(u8 *)(ptr + 0x28) = zero;
 
         if (*(void **)(ptr + 0x2C) != 0) {
-            fn_8000C60C(*(void **)(ptr + 0x2C));
+            Process_Unlink(*(void **)(ptr + 0x2C));
             *(s32 *)(ptr + 0x2C) = zero;
         }
 
@@ -7714,13 +7714,12 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
 #pragma scheduling on
 void fn_801DDE44(void *arg0) {
     extern f32 lbl_8036B630;
-    void Process_ClearFunc(void);
-    f32 d = lbl_8036B630;
+    f32 delta = lbl_8036B630;
+    f32 d2 = delta;
     f32 *p = (f32 *)((u8 *)arg0 + 0x30);
-
-    *p += d;
+    *p += d2;
     if (*p >= *(f32 *)((u8 *)arg0 + 0x34)) {
-        Process_ClearFunc();
+        fn_8000C188();
     }
 }
 #pragma global_optimizer off
@@ -7883,26 +7882,25 @@ void fn_801DE3D8(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern f32 lbl_8036B6B8, lbl_8036B6BC;
-    u8 gate;
     u32 flags;
+    u8 gate;
     void *pad;
     f32 tmp;
 
     gate = 0;
     flags = gUiInputFlags;
-    if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+    gate |= (flags & 0x10) && !(flags & 0x20);
+    if (gate) {
+        return;
     }
-    if (!gate) {
-        tmp = *(f32 *)((char *)arg0 + 0x44);
-        pad = gPadInput;
-        flags = *(u32 *)((u8 *)pad + 0xc);
-        if ((s16)tmp == 0) {
-            if ((flags & 0x04000004) && *(u8 *)((char *)arg0 + 0x84)) {
-                *(f32 *)((char *)arg0 + 0x44) = lbl_8036B6B8;
-            } else if ((flags & 0x08000008) && *(u8 *)((char *)arg0 + 0x5C)) {
-                *(f32 *)((char *)arg0 + 0x44) = lbl_8036B6BC;
-            }
+    tmp = *(f32 *)((char *)arg0 + 0x44);
+    pad = gPadInput;
+    flags = *(u32 *)((u8 *)pad + 0xc);
+    if ((s16)tmp == 0) {
+        if ((flags & 0x04000004) && *(u8 *)((char *)arg0 + 0x84)) {
+            *(f32 *)((char *)arg0 + 0x44) = lbl_8036B6B8;
+        } else if ((flags & 0x08000008) && *(u8 *)((char *)arg0 + 0x5C)) {
+            *(f32 *)((char *)arg0 + 0x44) = lbl_8036B6BC;
         }
     }
 }
