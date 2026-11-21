@@ -406,10 +406,6 @@ extern "C" void fn_800116F0(void *arg0) {
 #pragma cplusplus reset
 void fn_800117B0(void *arg0) {
 #pragma cplusplus on
-    void fn_8006EBC4(s32, void *, void *, s32, s32);
-    void fn_80222A3C(void *, s32, s32);
-    void fn_80222C50(void *, s32);
-    void fn_80222CF0(void *, s32);
     struct Obj {
         virtual s32 v0() = 0;
         virtual s32 v1() = 0;
