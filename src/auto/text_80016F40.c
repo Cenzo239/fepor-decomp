@@ -1,6 +1,5 @@
 /* Functions from 0x80016F40 to 0x80019558, found by decomp-toolkit. */
 #include "common.h"
-#pragma scheduling on
 
 extern u16 gBattleState[700]; // 1400 bytes / 2 = 700 u16s
 
@@ -1289,7 +1288,6 @@ extern "C" void fn_80018EC0(void)
 #pragma optimization_level 2
 #pragma peephole off
 extern "C" void Camera_InitSlots(void) {
-#pragma scheduling on
     s32 Camera_Get(void);
     extern u8 lbl_802CA2C8[];
     extern u8 lbl_803671C1;
