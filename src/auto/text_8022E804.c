@@ -206,6 +206,7 @@ void fn_8022CDD0(void *);
 f64 fn_802380A8(f64, f64);
 
 #pragma use_lmw_stmw on
+#pragma scheduling on
 
 void fn_8022E804(void *dst, f64 x) {
     u64 __div2u(u32, u32, u32, u32);
@@ -234,11 +235,11 @@ void fn_8022E804(void *dst, f64 x) {
     s32 hx;
     s32 clas;
     s32 clas2;
-    s32 m;
     u32 xbits;
-    s32 n;
-    s32 j;
     s32 k;
+    s32 n;
+    s32 m;
+    s32 j;
     u32 xb;
     u32 lo;
     u64 uq;
