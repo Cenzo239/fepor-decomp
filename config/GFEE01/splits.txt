@@ -325,7 +325,10 @@ auto/text_80098D30.c:
 	.text       start:0x80098D30 end:0x8009A5F4
 
 auto/text_8009A5F4.c:
-	.text       start:0x8009A5F4 end:0x8009B55C
+	.text       start:0x8009A5F4 end:0x8009A67C
+
+auto/text_8009A67C.c:
+	.text       start:0x8009A67C end:0x8009B55C
 
 auto/text_8009B55C.c:
 	.text       start:0x8009B55C end:0x8009EA14
