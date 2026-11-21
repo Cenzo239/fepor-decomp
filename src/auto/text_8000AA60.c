@@ -1808,16 +1808,17 @@ s32 Rand_Range(s32 arg0)
   };
   extern struct RandSt lbl_80367150;
   unsigned int t6;
-  s32 s0;
-  s32 s2;
-  s32 s1;
   s32 t4;
+  s32 s1;
+  s32 s2;
+  s32 s0;
   struct RandSt *st;
+
   st = &lbl_80367150;
   s0 = lbl_80367150.a;
-  s1 = st->b;
   s2 = st->c;
-  t4 = (s2 * 2) & 0xFFFE;
+  s1 = st->b;
+  t4 = (s2 << 1) & 0xFFFE;
   t6 = (u16) ((s0 >> 5) + (s1 << 11));
   st->c = t4;
  do { if (s1 & 0x8000) { st->c = 1 + t4; } t6 ^= st->c; st->c = st->b; st->b = lbl_80367150.a; } while (0);
@@ -1825,52 +1826,60 @@ s32 Rand_Range(s32 arg0)
   return (arg0 * ((u16) t6)) / 65536;
 }
 #pragma global_optimizer reset
-void fn_8000CF4C(u32 arg0) {
-    struct RandSt { u16 a; u16 b; u16 c; };
-    extern struct RandSt lbl_80367150;
-    extern u32 lbl_80267D30[];
-    u32 stack[4];
-    u16 *tbl;
-    struct RandSt *st;
-    u32 rem7;
-    s32 rem23;
-    s32 s0;
-    s32 s1;
-    s32 s2;
-    s32 t4;
-    u16 t6;
-
-    rem7 = arg0 % 7U;
-
-    {
-        u32 *p = lbl_80267D30;
-        stack[0] = *p;
-    }
-    stack[1] = lbl_80267D30[1];
-    stack[2] = lbl_80267D30[2];
-    stack[3] = lbl_80267D30[3];
-
-    tbl = (u16 *)stack;
-    lbl_80367150.a = tbl[rem7 & 7];
+void fn_8000CF4C(u32 arg0)
+{
+  struct RandSt
+  {
+    u16 a;
+    u16 b;
+    u16 c;
+  };
+  extern struct RandSt lbl_80367150;
+  extern u32 lbl_80267D30[];
+  u32 stack[4];
+  u16 *tbl;
+  struct RandSt *st;
+  u32 rem7;
+  u32 *p = lbl_80267D30;
+  s32 rem23;
+  s32 s0;
+  s32 s2;
+  s32 t4;
+  s32 s1;
+  u16 t6;
+  ;
+  {
+    stack[0] = p[0];
+    stack[1] = p[1];
+    stack[2] = p[2];
+    stack[3] = p[3];
+  }
+  if (1)
+  {
+    ;
     st = &lbl_80367150;
-    st->b = tbl[(rem7 + 1) & 7];
-    st->c = tbl[(rem7 + 2) & 7];
-
-    for (rem23 = (s32)(arg0 % 23U); rem23 > 0; rem23--) {
-        s1 = st->b;
-        s2 = st->c;
-        s0 = lbl_80367150.a;
-        t4 = (s2 * 2) & 0xFFFE;
-        t6 = (u16)((s1 << 11) + (s0 >> 5));
-        st->c = t4;
-        if (s1 & 0x8000) {
-            st->c = t4 + 1;
-        }
-        t6 ^= st->c;
-        st->c = st->b;
-        st->b = lbl_80367150.a;
-        lbl_80367150.a = t6;
+  }
+  lbl_80367150.a = ((u16 *) stack)[(arg0 % 7U) & 7];
+  st->b = ((u16 *) stack)[((arg0 % 7U) + 1) & 7];
+  st->c = ((u16 *) stack)[((arg0 % 7U) + 2) & 7];
+  for (rem23 = (s32) (arg0 % 23U); rem23 > 0; rem23--)
+  {
+    s1 = st->b;
+    s2 = st->c;
+    s0 = lbl_80367150.a;
+    ;
+    t6 = (u16) ((s1 << 11) + (s0 >> 5));
+    st->c = (s2 * 2) & 0xFFFE;
+    if (s1 & 0x8000)
+    {
+      st->c = ((s2 * 2) & 0xFFFE) + 1;
     }
+    t6 ^= st->c;
+    st->c = st->b;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
+  }
+
 }
 
 void fn_8000D048(void)
