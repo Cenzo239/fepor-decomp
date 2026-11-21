@@ -1629,7 +1629,6 @@ void fn_801136EC(f32 *arg0, void *arg1) {
 
 void fn_801137AC(f32 *out, void *arg1, u8 arg2) {
     s32 fn_800E4F0C(void *, char *);
-    extern u16 lbl_80273DF8[];
     void fn_80060F70(void *, s32, f32 *);
     extern f32 lbl_8036A184;
     extern f32 lbl_8036A1B4;
