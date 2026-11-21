@@ -2,7 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-#pragma global_optimizer reset
+#pragma global_optimizer off
 void fn_800C3F18(void) {
     void fn_8022C260(void *, void *, void *, s32, s32);
     void __register_global_object(void *, void (*)(void), void *);
