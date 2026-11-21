@@ -3388,25 +3388,100 @@ s32 fn_800653C8(void ***arg0, u16 *out) {
 #pragma global_optimizer off
 
 #pragma global_optimizer off
-s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
+s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2)
+{
+  void **mid;
+  u8 *entry;
+  u16 lim;
+  u16 *table;
+  u8 *base;
+  u8 *walk;
+  s32 tmp;
+  s32 best;
+  s32 j;
+  s32 index;
+  s32 diff1;
+  s32 diff2;
+  u16 offset;
+  s32 mask;
+  u16 n;
+  u16 v;
+  u16 count;
+  s32 i;
+  if (((u32) arg0) == 0)
+  {
+    base = NULL;
+  }
+  else
+  {
+    mid = *arg0;
+    if (((u32) mid) != 0)
+    {
+      base = (u8 *) (*mid);
+    }
+    else
+    {
+      base = NULL;
+    }
+  }
+  if (((u32) base) == 0)
+  {
+    return -1;
+  }
+  tmp = 0x10000 - 1;
+  count = *((u16 *) base);
+  lim = (u16) tmp;
+  best = -1;
+  i = 0;
+  index = 0;
+  while (i < ((s32) count))
+  {
+    table = *((u16 **) (base + 4));
+    offset = *((u16 *) (((u8 *) table) + index));
+    diff1 = ((s32) offset) - ((s32) lim);
+    diff2 = ((s32) lim) - ((s32) offset);
+    mask = (~(diff1 | diff2)) >> 31;
+    entry = (u8 *) ((((s32) base) + ((s32) offset)) & (~mask));
+    walk = entry;
+    n = *((u16 *) (entry + 2));
+    for (j = 0; j < ((s32) n); j++)
+    {
+      if ((*((u16 *) (walk + 4))) == arg2)
+      {
+        v = *((u16 *) entry);
+        if ((((s32) v) > arg1) && ((best < 0) || (((s32) v) <= best)))
+        {
+          best = v;
+        }
+      }
+      walk += 2;
+    }
+
+    index += 2;
+    i += 1;
+  }
+
+  return best;
+}
+#pragma global_optimizer reset
+s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
     void **mid;
+    u8 *base;
     u8 *entry;
-    u16 lim;
+    u8 *walk;
     u16 *table;
     u16 offset;
-    u8 *base;
-    u8 *walk;
-    s32 tmp;
-    s32 best;
-    s32 j;
+    s32 result;
     s32 index;
-    s32 diff1;
-    s32 diff2;
-    s32 mask;
-    u16 n;
-    u16 v;
-    u16 count;
     s32 i;
+    s32 j;
+    s32 a;
+    s32 b;
+    s32 mask;
+    u16 lim;
+    u16 n;
+    u16 ctr;
+    u32 key;
 
     if ((u32)arg0 == 0) {
         base = NULL;
@@ -3422,27 +3497,29 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
         return -1;
     }
 
-    tmp = 0x10000 - 1;
-    count = *(u16 *)base;
-    lim = (u16)tmp;
-    best = -1;
+    n = *(u16 *)base;
+    lim = (u16)(0x10000 - 1);
+    key = arg2 & 0xFFFF;
+    result = -1;
     i = 0;
     index = 0;
 
-    while (i < (s32)count) {
+    while (i < (s32)n) {
         table = *(u16 **)(base + 4);
         offset = *(u16 *)((u8 *)table + index);
-        diff1 = (s32)offset - (s32)lim;
-        diff2 = (s32)lim - (s32)offset;
-        mask = ~(diff1 | diff2) >> 31;
+        a = (s32)offset - (s32)lim;
+        b = (s32)lim - (s32)offset;
+        mask = ~(a | b) >> 31;
         entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
+        ctr = *(u16 *)(entry + 2);
         walk = entry;
-        n = *(u16 *)(entry + 2);
-        for (j = 0; j < (s32)n; j++) {
-            if (*(u16 *)(walk + 4) == arg2) {
-                v = *(u16 *)entry;
-                if ((s32)v > arg1 && (best < 0 || (s32)v <= best)) {
-                    best = v;
+        for (j = 0; j < (s32)ctr; j++) {
+            if (*(u16 *)(walk + 4) == key) {
+                u16 v = *(u16 *)entry;
+                if ((s32)v < arg1) {
+                    if (result < 0 || (s32)v >= result) {
+                        result = v;
+                    }
                 }
             }
             walk += 2;
@@ -3450,78 +3527,7 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
         index += 2;
         i += 1;
     }
-    return best;
-}
-#pragma global_optimizer reset
-s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
-    void **temp;
-    u8 *base;
-    u16 n;
-    u16 lim;
-    u32 key;
-    s32 best;
-    s32 i;
-    s32 off_idx;
-    u8 *group;
-    u8 *cursor;
-    u16 *off_table;
-    u16 off;
-    s32 ctr;
-    s32 j;
-    u16 val;
-
-    if (arg0 == NULL) {
-        base = NULL;
-    } else {
-        temp = *arg0;
-        if (temp != NULL) {
-            base = (u8 *)*temp;
-        } else {
-            base = NULL;
-        }
-    }
-    if (base == NULL) {
-        return -1;
-    }
-
-    lim = (u16)(0x10000 - 1);
-    n = *(u16 *)base;
-    key = arg2 & 0xFFFF;
-    best = -1;
-    i = 0;
-    off_idx = 0;
-    goto check;
-body:
-    off_table = *(u16 **)(base + 4);
-    off = *(u16 *)((u8 *)off_table + off_idx);
-    {
-        s32 a = off - lim;
-        s32 b = lim - off;
-        s32 m = (~(a | b)) >> 31;
-        group = (u8 *)(((s32)base + off) & ~m);
-    }
-    ctr = *(u16 *)(group + 2);
-    cursor = group;
-    {
-        for (j = 0; j < ctr; j++) {
-            if (*(u16 *)(cursor + 4) == key) {
-                val = *(u16 *)group;
-                if ((s32)val < arg1) {
-                    if (best < 0 || (s32)val >= best) {
-                        best = val;
-                    }
-                }
-            }
-            cursor += 2;
-        }
-    }
-    off_idx += 2;
-    i += 1;
-check:
-    if (i < (s32)n) {
-        goto body;
-    }
-    return best;
+    return result;
 }
 
 void *fn_80065634(void ***arg0, s32 arg1)
@@ -8037,7 +8043,6 @@ void fn_80211614(s32);
 void VIFlush(void);
 void VIWaitForRetrace(void);
 void *next;
-void *cur;
 if(gDemoStatEnable) fn_8006DFD8();
 else {
 GXSetZMode(1,3,1); fn_8022462C(1); GXCopyDisp(DemoCurrentBuffer,1);
@@ -8048,9 +8053,7 @@ if(lbl_80366DE0) { fn_80211614(0); lbl_80366DE0=0; }
 VIFlush();
 if(gGameFlags&1) { if(!(gGameFlags&4)) VIWaitForRetrace(); gGameFlags &= ~4; }
 VIWaitForRetrace();
-cur=DemoCurrentBuffer;
-next=DemoFrameBuffer1;
-if(cur==next) next=DemoFrameBuffer2;
+next = (DemoCurrentBuffer==DemoFrameBuffer1) ? DemoFrameBuffer2 : DemoFrameBuffer1;
 DemoCurrentBuffer=next;
 }
 }
