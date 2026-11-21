@@ -14140,13 +14140,19 @@ void fn_8017A38C(u8 **arg0, u8 *arg1) {
 }
 
 void Stream_WritePad(void *arg0, s32 arg1, u8 arg2) {
-    memset(M2C_FIELD(arg0, s32 *, 4), arg2, arg1);
-    M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
+    M2C_UNK memset(s32, s32, s32);
+    struct S { u8 pad[4]; s32 ptr; } *s = (struct S *)arg0;
+    s32 dst = s->ptr;
+    memset(dst, arg2, arg1);
+    s->ptr = s->ptr + arg1;
 }
 
 void Stream_Write(void *arg0, s32 arg1, s32 arg2) {
-    memcpy(M2C_FIELD(arg0, s32 *, 4), arg2, arg1);
-    M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
+    M2C_UNK memcpy(s32, s32, s32);
+    struct S { u8 pad[4]; s32 ptr; } *s = (struct S *)arg0;
+    s32 dst = s->ptr;
+    memcpy(dst, arg2, arg1);
+    s->ptr = s->ptr + arg1;
 }
 
 void Stream_WriteStr(void *arg0, s32 arg1, s32 arg2) {
@@ -14293,8 +14299,10 @@ extern "C" void fn_8017A7D4(void *arg0, s32 arg1) {
 #pragma cplusplus reset
 void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
-    memcpy(arg2, M2C_FIELD(arg0, s32 *, 4), arg1);
-    M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
+    struct S { u8 pad[4]; s32 ptr; } *s = (struct S *)arg0;
+    s32 src = s->ptr;
+    memcpy(arg2, src, arg1);
+    s->ptr = s->ptr + arg1;
 }
 
 u64 fn_8017A860(u8 **arg0) {
