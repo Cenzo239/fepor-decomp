@@ -77,12 +77,13 @@ extern u8 lbl_8028D064[16];
 
 #pragma optimization_level reset
 
+#pragma global_optimizer off
 void fn_800AD700(void *arg0) {
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
     u8 *p;
 
-    p = *(u8 **)((u8 *)arg0 + 0x30);
+    p = ((u8 **)arg0)[0x30 / 4];
     BattleState_SetCamPos(gBattleState, (f32)(s8)p[0x19F], (f32)(s8)p[0x19E]);
 }
 #pragma global_optimizer reset
