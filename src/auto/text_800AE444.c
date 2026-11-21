@@ -112,6 +112,7 @@ void fn_800AE444(void *arg0) {
     extern const f32 lbl_80369C78;
     extern const f32 gPhaseBannerZero;
     extern const f32 lbl_80369C80;
+    extern const f64 lbl_80369C88;
     M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) - 1);
     M2C_FIELD(arg0, f32 *, 0x38) = Math_EaseOutPow(2, lbl_80369C78, gPhaseBannerZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
