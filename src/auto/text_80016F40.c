@@ -1443,6 +1443,7 @@ extern "C" void Camera_InitSlots(void) {
     gActiveCamIndex = 0;
     gActiveCam = (s32)base;
 }
+#pragma scheduling reset
 
 extern "C" void fn_80019208(void *arg0) {
     extern u8 gEventLockDepth, lbl_803671C1, lbl_8036728B;
