@@ -81,13 +81,14 @@ extern u8 lbl_8028D064[16];
 void fn_800AD700(void *arg0) {
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
-    u8 *p;
-    f32 x, y;
+    void *u;
+    s8 y;
+    s8 x;
 
-    p = *(u8 **)((u8 *)arg0 + 0x30);
-    x = (f32)(s8)p[0x19F];
-    y = (f32)(s8)p[0x19E];
-    BattleState_SetCamPos(gBattleState, x, y);
+    u = *(void **)((u8 *)arg0 + 0x30);
+    y = *(s8 *)((u8 *)u + 0x19F);
+    x = *(s8 *)((u8 *)u + 0x19E);
+    BattleState_SetCamPos(gBattleState, (f32)x, (f32)y);
 }
 #pragma global_optimizer reset
 /* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */
