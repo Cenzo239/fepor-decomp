@@ -21,7 +21,7 @@ typedef struct List {
 
 static inline s32 CountUnitItemReferences(u8 *unit,u8 *target) {
 void **Unit_GetHeldItemSlot(void *,s32);
-u8 *entry; void *item; s32 count=0; s32 i;
+s32 i; u8 *entry; void *item; s32 count=0;
 if((*(u64 *)(target+0x38)&5ULL)!=0) {
 for(i=count;i<4;i++) { entry=(u8 *)Unit_GetHeldItemSlot(unit,i);item=*(void **)entry; if(!item) break;
 if(!(entry[5]&63) && target==item) count++;
@@ -5748,14 +5748,14 @@ extern "C" void fn_8018F338(void *arg0) {
 #pragma cplusplus on
 extern "C" s32 fn_8018F374(void *arg0) {
     void *fn_80105710(void *);
-    extern u32 gUnitLists[];
+    extern u32 lbl_802CA264[];
     typedef struct Entry {
         void *ptr;
         u8 unk4;
         u8 flags;
         u8 pad[2];
     } Entry;
-    extern Entry gConvoy[];
+    extern Entry lbl_803200AC[];
     Entry *e;
     void *p0;
     s32 i;
@@ -5766,8 +5766,6 @@ extern "C" s32 fn_8018F374(void *arg0) {
     void *tmp;
 
     tmp = *(void **)((u8 *)arg0 + 0x3C);
-    goto after_load;
-after_load:
     total = 0;
     if (tmp == NULL) {
         return -1;
@@ -5776,7 +5774,7 @@ after_load:
         return -1;
     }
     target = fn_80105710(*(void **)((u8 *)arg0 + 0x3C));
-    unit = *(u8 **)((u8 *)gUnitLists + 0);
+    unit = *(u8 **)((u8 *)lbl_802CA264 + 0);
     goto loop1_test;
 loop1_body:
     next = *(u8 **)(unit + 0x184);
@@ -5786,7 +5784,7 @@ loop1_test:
     if (unit != NULL) {
         goto loop1_body;
     }
-    unit = *(u8 **)((u8 *)gUnitLists + 0x3C);
+    unit = *(u8 **)((u8 *)lbl_802CA264 + 0x3C);
     goto loop2_test;
 loop2_body:
     next = *(u8 **)(unit + 0x184);
@@ -5796,7 +5794,7 @@ loop2_test:
     if (unit != NULL) {
         goto loop2_body;
     }
-    e = gConvoy;
+    e = lbl_803200AC;
     for (i = 0; i < 200; i++) {
         p0 = e->ptr;
         if (p0 != NULL && (e->flags & 0x3F) == 0 && target == p0) {
