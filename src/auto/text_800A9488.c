@@ -1839,7 +1839,6 @@ void fn_800ABA3C(void) {
 
  }
 }
-#pragma global_optimizer reset
 void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
     void Process_Goto(void *, s32);
