@@ -43,10 +43,8 @@ extern u8 lbl_80289EB8[16];
 extern f32 lbl_803697E0;
 extern const f32 lbl_803697E4;
 
-#pragma scheduling reset
-
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma global_optimizer reset
+#pragma scheduling on
 
 #pragma scheduling off
 #pragma global_optimizer off
