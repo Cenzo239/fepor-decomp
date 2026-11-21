@@ -1522,11 +1522,11 @@ void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
 void OSDumpContext(OSContext *context) {
     extern char lbl_8029BDE0[];
     s32 __cvt_fp2unsigned(f64);
+    char *str;
     OSContext exceptionContext;
     OSContext *oldCtx;
     BOOL enabled;
     u32 i;
-    char *str;
     u32 *p;
     u32 j;
     s32 hi;
@@ -1536,17 +1536,21 @@ void OSDumpContext(OSContext *context) {
 
     str = lbl_8029BDE0;
     OSReport(str, context);
-    for (i = 0; i < 16; i++) {
+    i = 0;
+    if (16 != 0) do {
         gpr = context->gpr[i];
         gpr2 = context->gpr[i + 16];
         OSReport(str + 0x44, i, gpr, gpr, i + 16, gpr2, gpr2);
-    }
+        i++;
+    } while (i < 16);
     OSReport(str + 0x74, context->lr, context->cr);
     OSReport(str + 0xA4, context->srr0, context->srr1);
     OSReport(str + 0xD4);
-    for (i = 0; i < 4; i++) {
+    i = 0;
+    if (4 != 0) do {
         OSReport(str + 0xE8, i, context->gqr[i], i + 4, context->gqr[i + 4]);
-    }
+        i++;
+    } while (i < 4);
     if (context->state & 1u) {
         enabled = OSDisableInterrupts();
         oldCtx = *(OSContext **)0x800000D4;
@@ -1557,17 +1561,21 @@ void OSDumpContext(OSContext *context) {
         }
         OSSetCurrentContext(&exceptionContext);
         OSReport(str + 0x10C);
-        for (i = 0; i < 32; i += 2) {
+        i = 0;
+        if (32 != 0) do {
             hi = __cvt_fp2unsigned(context->fpr[i + 1]);
             lo = __cvt_fp2unsigned(context->fpr[i]);
             OSReport(str + 0x120, i, lo, i + 1, hi);
-        }
+            i += 2;
+        } while (i < 32);
         OSReport(str + 0x13C);
-        for (i = 0; i < 32; i += 2) {
+        i = 0;
+        if (32 != 0) do {
             hi = __cvt_fp2unsigned(context->psf[i + 1]);
             lo = __cvt_fp2unsigned(context->psf[i]);
             OSReport(str + 0x150, i, lo, i + 1, hi);
-        }
+            i += 2;
+        } while (i < 32);
         exceptionContext.mode = 0;
         exceptionContext.state = 0;
         if (&exceptionContext == *(OSContext **)0x800000D8) {
@@ -2280,21 +2288,17 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     s32 OSFontCodeToIndex(u16, u16);
     extern u32 lbl_8036BCA0;
     extern u32 lbl_8036BCA4;
-    u32 sp1C;
-    u32 sp20;
     s32 var_r25;
     s32 var_r26;
     s32 var_r27;
     u8 *var_r31;
     u32 size;
     s32 idx;
-    s32 cells;
     s32 sheet;
     s32 pos;
     s32 row;
     s32 col;
     s32 x;
-    s32 y;
     u8 *base;
     s32 temp_r0;
     s32 temp_r3;
@@ -2302,6 +2306,8 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     s32 temp_r8;
     s32 temp_r9;
     u32 imageOffset;
+    u32 sp1C;
+    u32 sp20;
 
     if (arg1 == 1) {
         var_r31 = arg0;
@@ -2320,20 +2326,20 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
             var_r31 += var_r25;
         }
     } else {
-        var_r26 = (s32)arg0;
+        var_r27 = (s32)arg0;
         var_r31 = (u8 *)0x1FCF00;
-        var_r27 = 0x3000;
-        while (var_r27 > 0) {
-            if (var_r27 <= 0x100) {
-                var_r25 = var_r27;
+        var_r26 = 0x3000;
+        while (var_r26 > 0) {
+            if (var_r26 <= 0x100) {
+                var_r25 = var_r26;
             } else {
                 var_r25 = 0x100;
             }
-            var_r27 -= var_r25;
+            var_r26 -= var_r25;
             do {
-            } while (fn_802096B0((u8 *)var_r26, var_r25, (s32)var_r31) == 0);
+            } while (fn_802096B0((u8 *)var_r27, var_r25, (s32)var_r31) == 0);
             var_r31 += var_r25;
-            var_r26 += var_r25;
+            var_r27 += var_r25;
         }
     }
 
@@ -2355,35 +2361,34 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
         imageOffset = arg2->imageOffset;
         temp_r5 = arg2->height;
         temp_r0 = arg2->sheetWidth;
-        cells = temp_r8;
-        sheet = idx / cells;
-        pos = idx % cells;
+        sheet = idx / temp_r8;
+        pos = idx % temp_r8;
         row = pos / temp_r9;
-        col = pos - row * temp_r9;
         temp_r5 = row * temp_r5;
+        col = pos - row * temp_r9;
         x = col * arg2->width;
-        y = temp_r5;
-        base = (u8 *)arg2 + imageOffset + ((u32)(sheet * arg2->sheetSize) >> 1);
+        base = (u8 *)arg2 + imageOffset;
+        base += ((u32)(sheet * arg2->sheetSize) >> 1);
         temp_r0 = ((temp_r0 / 8) << 5) / 2;
         temp_r8 = (x / 8) * 16;
         temp_r3 = (x % 8) / 4;
 
         {
-            s32 a = y + 4;
+            s32 a = temp_r5 + 4;
             *(u16 *)(base + temp_r0 * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp1C)[0];
         }
         {
-            s32 a = y + 5;
+            s32 a = temp_r5 + 5;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
             *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp1C)[1];
         }
         {
-            s32 a = y + 6;
+            s32 a = temp_r5 + 6;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
             *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp20)[0];
         }
         {
-            s32 a = y + 7;
+            s32 a = temp_r5 + 7;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
             *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp20)[1];
         }
@@ -2541,7 +2546,7 @@ cells=h->columns*h->rows;
 x=(index%cells % h->columns)*h->width;
 y=(index%cells / h->columns)*h->height;
 base=(u8*)h+h->imageOffset;
-base+=(u32)(h->sheetSize*(index/cells))/2;
+base+=((u32)((index/cells)*h->sheetSize)>>1);
 palette=h->palette;
 stride=((arg3*4)/8)<<5;
 for(row=0;row<h->height;row++){
@@ -2834,8 +2839,12 @@ void fn_8020801C(u8 unused, OSContext *context) {
     void (*handler)(s16, OSContext *);
     s16 interrupt;
     u32 stackMasked;
+    u32 dummy1;
+    u32 dummy2;
 
     (void)unused;
+    (void)&dummy1;
+    (void)&dummy2;
     cause = OS_PIRegs[0];
     cause &= ~0x00010000;
     if (cause == 0 || (cause & OS_PIRegs[1]) == 0) {
@@ -2845,115 +2854,56 @@ void fn_8020801C(u8 unused, OSContext *context) {
     exceptmask = 0;
     if (cause & 0x00000080) {
         reg = OS_MEMRegs[0x1E / 2];
-        if (reg & 0x00000001) {
-            exceptmask |= 0x80000000;
-        }
-        if (reg & 0x00000002) {
-            exceptmask |= 0x40000000;
-        }
-        if (reg & 0x00000004) {
-            exceptmask |= 0x20000000;
-        }
-        if (reg & 0x00000008) {
-            exceptmask |= 0x10000000;
-        }
-        if (reg & 0x00000010) {
-            exceptmask |= 0x08000000;
-        }
+        if (reg & 0x00000001) { exceptmask |= 0x80000000; }
+        if (reg & 0x00000002) { exceptmask |= 0x40000000; }
+        if (reg & 0x00000004) { exceptmask |= 0x20000000; }
+        if (reg & 0x00000008) { exceptmask |= 0x10000000; }
+        if (reg & 0x00000010) { exceptmask |= 0x08000000; }
     }
-
     if (cause & 0x00000040) {
         reg = OS_DSPRegs[0xA / 2];
-        if (reg & 0x00000008) {
-            exceptmask |= 0x04000000;
-        }
-        if (reg & 0x00000020) {
-            exceptmask |= 0x02000000;
-        }
-        if (reg & 0x00000080) {
-            exceptmask |= 0x01000000;
-        }
+        if (reg & 0x00000008) { exceptmask |= 0x04000000; }
+        if (reg & 0x00000020) { exceptmask |= 0x02000000; }
+        if (reg & 0x00000080) { exceptmask |= 0x01000000; }
     }
-
     if ((cause & 0x00000020) && (OS_AIRegs[0] & 0x00000008)) {
         exceptmask |= 0x00800000;
     }
-
     if (cause & 0x00000010) {
         reg = OS_EXIRegs[0];
-        if (reg & 0x00000002) {
-            exceptmask |= 0x00400000;
-        }
-        if (reg & 0x00000008) {
-            exceptmask |= 0x00200000;
-        }
-        if (reg & 0x00000800) {
-            exceptmask |= 0x00100000;
-        }
-
+        if (reg & 0x00000002) { exceptmask |= 0x00400000; }
+        if (reg & 0x00000008) { exceptmask |= 0x00200000; }
+        if (reg & 0x00000800) { exceptmask |= 0x00100000; }
         reg = OS_EXIRegs[0x14 / 4];
-        if (reg & 0x00000002) {
-            exceptmask |= 0x00080000;
-        }
-        if (reg & 0x00000008) {
-            exceptmask |= 0x00040000;
-        }
-        if (reg & 0x00000800) {
-            exceptmask |= 0x00020000;
-        }
-
+        if (reg & 0x00000002) { exceptmask |= 0x00080000; }
+        if (reg & 0x00000008) { exceptmask |= 0x00040000; }
+        if (reg & 0x00000800) { exceptmask |= 0x00020000; }
         reg = OS_EXIRegs[0x28 / 4];
-        if (reg & 0x00000002) {
-            exceptmask |= 0x00010000;
-        }
-        if (reg & 0x00000008) {
-            exceptmask |= 0x00008000;
-        }
+        if (reg & 0x00000002) { exceptmask |= 0x00010000; }
+        if (reg & 0x00000008) { exceptmask |= 0x00008000; }
     }
-
-    if (cause & 0x00002000) {
-        exceptmask |= 0x00000020;
-    }
-    if (cause & 0x00001000) {
-        exceptmask |= 0x00000040;
-    }
-    if (cause & 0x00000400) {
-        exceptmask |= 0x00001000;
-    }
-    if (cause & 0x00000200) {
-        exceptmask |= 0x00002000;
-    }
-    if (cause & 0x00000100) {
-        exceptmask |= 0x00000080;
-    }
-    if (cause & 0x00000008) {
-        exceptmask |= 0x00000800;
-    }
-    if (cause & 0x00000004) {
-        exceptmask |= 0x00000400;
-    }
-    if (cause & 0x00000002) {
-        exceptmask |= 0x00000200;
-    }
-    if (cause & 0x00000800) {
-        exceptmask |= 0x00004000;
-    }
-    if (cause & 0x00000001) {
-        exceptmask |= 0x00000100;
-    }
+    if (cause & 0x00002000) { exceptmask |= 0x00000020; }
+    if (cause & 0x00001000) { exceptmask |= 0x00000040; }
+    if (cause & 0x00000400) { exceptmask |= 0x00001000; }
+    if (cause & 0x00000200) { exceptmask |= 0x00002000; }
+    if (cause & 0x00000100) { exceptmask |= 0x00000080; }
+    if (cause & 0x00000008) { exceptmask |= 0x00000800; }
+    if (cause & 0x00000004) { exceptmask |= 0x00000400; }
+    if (cause & 0x00000002) { exceptmask |= 0x00000200; }
+    if (cause & 0x00000800) { exceptmask |= 0x00004000; }
+    if (cause & 0x00000001) { exceptmask |= 0x00000100; }
 
     stackMasked = exceptmask & ~(*(u32 *)0x800000C4 | *(u32 *)0x800000C8);
     if (stackMasked) {
         prio = (u32 *)lbl_8029CDF8;
-        goto loop_test;
-    loop_incr:
-        prio++;
-    loop_test:
-        bit = *prio & stackMasked;
-        if (bit == 0) {
-            goto loop_incr;
+        while (1) {
+            bit = stackMasked & *prio;
+            if (bit != 0) {
+                interrupt = (s16)__cntlzw(bit);
+                break;
+            }
+            prio++;
         }
-        interrupt = (s16)__cntlzw(bit);
         handler = ((void (**)(s16, OSContext *))InterruptHandlerTable_803684C8)[interrupt];
         if (handler != 0) {
             if (interrupt > 4) {
