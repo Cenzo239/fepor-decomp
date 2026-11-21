@@ -3328,35 +3328,34 @@ s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
     return result;
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer reset
 s32 fn_800653C8(void ***arg0, u16 *out) {
     void **mid;
+    u16 lim;
     u8 *base;
     u8 *entry;
     u8 *walk;
     u16 *table;
     u16 offset;
-    u16 lim;
     s32 tmp;
     s32 result;
+    s32 index;
     s32 i;
     s32 j;
-    s32 index;
     s32 diff1;
-    s32 diff2;
     s32 mask;
 
-    if (arg0 == NULL) {
+    if ((u32)arg0 == 0) {
         base = NULL;
     } else {
         mid = *arg0;
-        if (mid != NULL) {
+        if ((u32)mid != 0) {
             base = (u8 *)*mid;
         } else {
             base = NULL;
         }
     }
-    if (base == NULL) {
+    if ((u32)base == 0) {
         return 0;
     }
 
@@ -3371,8 +3370,7 @@ s32 fn_800653C8(void ***arg0, u16 *out) {
         j = 0;
         offset = *(u16 *)((u8 *)table + index);
         diff1 = (s32)offset - (s32)lim;
-        diff2 = (s32)lim - (s32)offset;
-        mask = ~(diff1 | diff2) >> 31;
+        mask = ~(diff1 | ((s32)lim - (s32)offset)) >> 31;
         entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
         walk = entry;
         while (j < (s32)*(u16 *)(entry + 2)) {
@@ -3387,7 +3385,7 @@ s32 fn_800653C8(void ***arg0, u16 *out) {
     }
     return result;
 }
-#pragma global_optimizer reset
+#pragma global_optimizer off
 
 #pragma global_optimizer off
 s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
@@ -5288,21 +5286,21 @@ void fn_80068550(s32 arg0) {
 #pragma use_lmw_stmw on
 void fn_80068558(void *arg0, void *arg1, void *arg2)
 {
-    void *Res_GetByName(void *);
+    void *fn_8000D354(void *);
     void fn_800C4588(void *);
-    s32 Str_Cmp(void *, void *);
-    s32 i;
-    void *entry;
-    void *found;
-    s32 j;
+    s32 fn_802342B8(void *, void *);
     void **arr;
+    void *entry;
     void **p;
-    s32 k;
+    s32 j;
     s32 off;
+    s32 i;
+    s32 k;
+    void *found;
     s32 n;
 
     found = NULL;
-    if (arg0 != NULL && arg1 == NULL) {
+    if (arg0 != NULL && arg1 == (u32)NULL) {
         i = 0;
         j = 0;
         while (i < *(u16 *)((u8 *)arg0 + 0x54)) {
@@ -5311,9 +5309,8 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
             if (arr != NULL) {
                 if (arg2 != NULL) {
                     p = arr;
-                    k = 0;
                     off = 0;
-                    for (; k < 8; k++) {
+                    for (k = 0; k < 8; k++) {
                         if (*p == arg2) {
                             off = k * 4;
                             n = 7 - k;
@@ -5328,8 +5325,8 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
                             *(void **)((u8 *)*(void **)((u8 *)entry + 0x18) + 0x1C) = NULL;
                             break;
                         }
-                        p++;
                         off += 4;
+                        p += 1;
                     }
                 } else {
                     fn_800C4588(*(void **)((u8 *)entry + 0x18));
@@ -5344,12 +5341,12 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         }
     } else {
         if (arg0 == NULL) {
-            found = Res_GetByName(arg1);
+            found = fn_8000D354(arg1);
         } else {
             i = 0;
-            j = i;
+            j = 0;
             while (i < *(u16 *)((u8 *)arg0 + 0x54)) {
-                if (Str_Cmp(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + j), arg1) == 0) {
+                if (fn_802342B8(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + j), arg1) == 0) {
                     found = (u8 *)*(void **)((u8 *)arg0 + 0x34) + (i << 5);
                     break;
                 }
@@ -5360,12 +5357,13 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         if (found != NULL && (arr = *(void ***)((u8 *)found + 0x18), arr != NULL)) {
             if (arg2 != NULL) {
                 p = arr;
+                off = 0;
                 for (k = 0; k < 8; k++) {
                     if (*p == arg2) {
                         off = k * 4;
                         n = 7 - k;
                         if (k < 7) {
-                            while (n != 0) {
+                            while (n) {
                                 arr = *(void ***)((u8 *)found + 0x18);
                                 *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
                                 off += 4;
@@ -5375,6 +5373,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
                         *(void **)((u8 *)*(void **)((u8 *)found + 0x18) + 0x1C) = NULL;
                         break;
                     }
+                    off += 4;
                     p++;
                 }
             } else {
