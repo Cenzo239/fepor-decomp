@@ -1304,7 +1304,6 @@ extern "C" void Camera_InitSlots(void) {
     struct Slot { u8 pad[0x78]; };
     struct Slot *base;
     struct Slot *slot;
-    struct Obj *obj;
     f32 f1;
 
     base = (struct Slot *)lbl_802CA2C8;
@@ -1315,8 +1314,7 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    obj = (struct Obj *)slot;
-    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
+    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0x78);
@@ -1349,8 +1347,7 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    obj = (struct Obj *)slot;
-    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
+    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0xF0);
@@ -1383,8 +1380,7 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    obj = (struct Obj *)slot;
-    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
+    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0x16C);
@@ -1417,8 +1413,7 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    obj = (struct Obj *)slot;
-    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
+    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
     *(f32 *)((u8 *)slot + 0x18) = f1;
     *(f32 *)((u8 *)slot + 0xC) = f1;
     *((u8 *)slot + 0x24) = 1;
@@ -1443,7 +1438,6 @@ extern "C" void Camera_InitSlots(void) {
     gActiveCamIndex = 0;
     gActiveCam = (s32)base;
 }
-#pragma scheduling reset
 
 extern "C" void fn_80019208(void *arg0) {
     extern u8 gEventLockDepth, lbl_803671C1, lbl_8036728B;
