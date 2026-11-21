@@ -768,7 +768,7 @@ if(result!=0) *(u32*)(queue+20)=0;
 return result;
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void fn_802659EC(s32 arg0,s32 arg1) {
 extern u8 lbl_803669A0[];
 s32 fn_80265638(s32,s32,void*);
