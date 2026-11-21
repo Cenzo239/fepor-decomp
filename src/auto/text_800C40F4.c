@@ -5373,11 +5373,11 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  void fn_800E4D24(void *); void fn_800E4BA4(void *,s32); void fn_800E4B84(void *); void fn_800E4B44(void *);
  extern char lbl_802704F8[]; extern u8 lbl_8036788C;
  struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(void *); };
+ s32 self;
  String sp74,sp68,sp5C,sp50,sp44,sp38,sp2C,sp20,sp14;
  u32 sp10,spC,sp8;
  void *result;
  s8 made1,made2;
- s32 self;
  self=arg0;
 
  String_Init(&sp74,lbl_802704F8+0x3DB,&sp10);
@@ -5441,7 +5441,95 @@ DebugPrint(lbl_802704F8+0x3af,String_CStr(&out));
 String_Destroy(&out,-1);return 0;
 }
 
-s32 fn_800CDBA4(s32 *arg1, u32 arg2) {
+extern "C" s32 fn_800CDBA4(void *arg0, s32 arg1, u32 arg2) {
+#pragma opt_common_subs off
+    u16 FileCache_Probe(void);
+    s32 FileCache_Load(void);
+    char *String_CStr(String *);
+    void String_AssignCStr(String *, char *, u32);
+    void String_Assign(String *, String *, s32, s32);
+    void String_Destroy(String *, s32);
+    void String_Concat(String *, String *, void *);
+    void String_ConcatCStr(String *, String *, char *);
+    void String_JoinCStr(String *, char *, s32);
+    char *fn_801992F8(u32);
+    u32 strlen(const char *);
+    extern char lbl_802704F8[];
+
+    s32 ret;
+    char *p;
+    String name;
+    String result;
+
+    (void)arg0;
+    name.cap = 0;
+    result.cap = 0;
+    name.size = 0;
+    name.data = 0;
+    name.cap = 0;
+    result.size = 0;
+    result.data = 0;
+    result.cap = 0;
+
+    if (arg2 != 0) {
+        p = fn_801992F8(arg2);
+        String_AssignCStr(&result, p, strlen(p));
+    } else {
+        String_AssignCStr(&result, &lbl_802704F8[0x16F], strlen(&lbl_802704F8[0x16F]));
+    }
+
+    {
+        String a, b, c, d, e, f;
+        String_JoinCStr(&a, &lbl_802704F8[0x3DB], arg1);
+        String_ConcatCStr(&b, &a, &lbl_802704F8[0x1CD]);
+        String_Concat(&c, &b, (void *)arg1);
+        String_ConcatCStr(&d, &c, &lbl_802704F8[0x1CF]);
+        String_Concat(&e, &d, &result);
+        String_ConcatCStr(&f, &e, &lbl_802704F8[0x3E8]);
+        String_Assign(&name, &f, 0, -1);
+        String_Destroy(&f, -1);
+        String_Destroy(&e, -1);
+        String_Destroy(&d, -1);
+        String_Destroy(&c, -1);
+        String_Destroy(&b, -1);
+        String_Destroy(&a, -1);
+    }
+    String_CStr(&name);
+    if ((u16)FileCache_Probe() != 0x8000) {
+        String_CStr(&name);
+        ret = FileCache_Load();
+        String_Destroy(&result, -1);
+        String_Destroy(&name, -1);
+        return ret;
+    }
+
+    {
+        String a, b, c, d, e, f;
+        String_JoinCStr(&a, &lbl_802704F8[0x3DB], arg1);
+        String_ConcatCStr(&b, &a, &lbl_802704F8[0x1CD]);
+        String_Concat(&c, &b, (void *)arg1);
+        String_ConcatCStr(&d, &c, &lbl_802704F8[0x1CF]);
+        String_Concat(&e, &d, &result);
+        String_ConcatCStr(&f, &e, &lbl_802704F8[0x3ED]);
+        String_Assign(&name, &f, 0, -1);
+        String_Destroy(&f, -1);
+        String_Destroy(&e, -1);
+        String_Destroy(&d, -1);
+        String_Destroy(&c, -1);
+        String_Destroy(&b, -1);
+        String_Destroy(&a, -1);
+    }
+    String_CStr(&name);
+    if ((u16)FileCache_Probe() != 0x8000) {
+        String_CStr(&name);
+        ret = FileCache_Load();
+        String_Destroy(&result, -1);
+        String_Destroy(&name, -1);
+        return ret;
+    }
+
+    String_Destroy(&result, -1);
+    String_Destroy(&name, -1);
     return 0;
 }
 
@@ -6936,6 +7024,7 @@ void fn_800D06BC(u8 *self) {
 #pragma cplusplus on
 extern "C" s32 fn_800D0C5C(void *arg0) {
 #include "fn_800D0C5C_body.inc"
+    return 0;
 }
 #pragma cplusplus reset
 s32 fn_800D3534(s32 *arg0, s32 arg1) {
@@ -8145,7 +8234,6 @@ s32 fn_800D6F34(void)
     extern void *fn_800DC3B0(void *);
     extern void fn_800DAAC0(void *, s32);
     extern void fn_800DA2CC(void *);
-    s32 ret;
 
     fn_800D75C4(lbl_803678A8);
     fn_800D758C(lbl_80367898);
@@ -8156,8 +8244,8 @@ s32 fn_800D6F34(void)
     );
 
     fn_800DA2CC(lbl_803678A8);
-    ret = 0;
-    return ret;
+
+    return 0;
 }
 #pragma scheduling reset
 void fn_800D6FA4(void *arg0) {
@@ -8391,17 +8479,18 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
-    s32 fn_800E4454(s32, s32 *);
-    void String_Copy(s32 *);
-    s32 String_Destroy(s32 *, s32);
-    s32 sp8;
-    s32 temp;
-    s32 *p = &sp8;
+    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
+    M2C_UNK String_Copy(M2C_UNK *);
+    M2C_UNK fn_800E4454(s32, M2C_UNK *);
+    M2C_UNK sp8;
+    M2C_UNK result;
+    M2C_UNK *p;
 
+    p = &sp8;
     String_Copy(p);
-    temp = fn_800E4454(*(s32 *)((char *)arg0 + 0x10), p);
+    result = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), p);
     String_Destroy(p, -1);
-    return temp;
+    return result;
 }
 
 void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {
@@ -9336,6 +9425,7 @@ String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 
 #pragma use_lmw_stmw on
 s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
+#pragma opt_common_subs off
     u16 FileCache_Probe(void);
     s32 FileCache_Load(void);
     char *String_CStr(String *);
@@ -9349,14 +9439,12 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     u32 strlen(const char *);
     extern char lbl_802711B0[];
 
+    s32 ret;
+    char *p;
     String result;
     String name;
-    char *p;
-    s32 ret;
-    s32 path;
 
     (void)arg0;
-    path = arg1;
     result.cap = 0;
     name.cap = 0;
     result.size = 0;
@@ -9375,9 +9463,9 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 
     {
         String a, b, c, d, e, f;
-        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], arg1);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
-        String_Concat(&c, &b, (void *)path);
+        String_Concat(&c, &b, (void *)arg1);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
         String_Concat(&e, &d, &result);
         String_ConcatCStr(&f, &e, &lbl_802711B0[0x1F6]);
@@ -9400,9 +9488,9 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 
     {
         String a, b, c, d, e, f;
-        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], arg1);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
-        String_Concat(&c, &b, (void *)path);
+        String_Concat(&c, &b, (void *)arg1);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
         String_Concat(&e, &d, &result);
         String_ConcatCStr(&f, &e, &lbl_802711B0[0x1FB]);
@@ -13231,6 +13319,7 @@ void *fn_800DF724(void *arg0, s16 arg1) {
 
 #pragma cplusplus on
 extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
+#pragma opt_common_subs off
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -15796,7 +15885,7 @@ extern "C" void *fn_800E45EC(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-#pragma use_lmw_stmw on
+#pragma use_lmw_stmw off
 extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void);
     void String_Init(String *, char *, void *);
@@ -16137,7 +16226,9 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     extern f32 lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
-    f32 z, y, x;
+    f32 z;
+    f32 y;
+    f32 x;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
@@ -22786,32 +22877,32 @@ void MapCursor_InitTrail(s8 arg0, s8 arg1, s8 arg2) {
 }
 
 void fn_800F0C54(u8 *arg0) {
-void Ui_LoadAtlasTex(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
-void *Camera_GetViewMtx(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
-extern s32 gUiRouteAtlas; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
+void fn_8006ECCC(s32,void *,s32); void fn_802025C0(void *,f32,f32,f32); void fn_80202540(void *,f32,f32,f32);
+void *fn_80067FDC(void); void fn_80202024(void *,void *,void *); f32 fn_8002300C(void *,u8,u8,s32);
+extern s32 lbl_803674F0; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 lbl_802CA518[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018; union { f64 d; struct {u32 hi,lo;} w; } dx,dy; f64 magic;
 f32 one,fx,fy,fx1,fy1,z;
-Ui_LoadAtlasTex(gUiRouteAtlas,sp8,0);
-GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0);GXSetVtxAttrFmt(0,13,1,1,0);
-GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetNumTexGens(0,3);GXSetTevOrder(0,0,0,255);
-GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);
-PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
-PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(Camera_GetViewMtx(),sp28,sp28);
-GXLoadPosMtxImm(sp28,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);
+fn_8006ECCC(lbl_803674F0,sp8,0);
+fn_8021FBB8();fn_8021F4E4(9,1);fn_8021F4E4(13,1);fn_8021FBF0(0,9,1,4,0);fn_8021FBF0(0,13,1,1,0);
+fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);fn_802240C8(1);fn_802239D0(0,3);fn_80223F2C(0,0,0,255);
+fn_80220428(1);fn_802201A8(0,1,4,30,0,125);
+fn_802025C0(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
+fn_80202540(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);fn_80202024(fn_80067FDC(),sp28,sp28);
+fn_80224D7C(sp28,0);fn_80224E1C(0);fn_802245D8(1,4,5,0);
 magic=lbl_8036A018; one=lbl_8036A024;
 for(i=0;i<=(s8)arg0[0x100];i++){
 p=arg0+i; x=p[0];y=p[0x40]; dx.w.hi=0x43300000; dx.w.lo=(s32)(s8)x^0x80000000; dy.w.hi=0x43300000; dy.w.lo=(s32)(s8)y^0x80000000; fx=dx.d-magic;fy=dy.d-magic;fx1=one+fx;fy1=one+fy;
-GXBegin(0x98,0,4);
-z=Map_GetTileCornerHeight(gBattleMap,x,y,0);
+fn_80220DEC(0x98,0,4);
+z=fn_8002300C(lbl_802CA518,x,y,0);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=0;
-z=Map_GetTileCornerHeight(gBattleMap,x,y,1);
+z=fn_8002300C(lbl_802CA518,x,y,1);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=0;
-z=Map_GetTileCornerHeight(gBattleMap,x,y,2);
+z=fn_8002300C(lbl_802CA518,x,y,2);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=1;
-z=Map_GetTileCornerHeight(gBattleMap,x,y,3);
+z=fn_8002300C(lbl_802CA518,x,y,3);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=1;
 }fn_80066D00(-1);
@@ -23168,7 +23259,7 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
 void fn_800F20E0(void) {
     void fn_80060060(void *);
     void fn_800F1C24(void *);
-    s32 i;
+    register s32 i;
 
     fn_80060060(lbl_8032AC58 + 0x288);
     i = 0;
@@ -25707,7 +25798,6 @@ void fn_800F8538(void *arg0) {
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
     u8 *global;
-    u8 *state;
     s32 tmp;
     s32 index;
     s32 ret;
@@ -25716,9 +25806,9 @@ void fn_800F8538(void *arg0) {
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
     ret = (s8)Unit_GetMov(arg0);
-    state = gAiState;
-    index = *(s32 *)(global + 4);
-    *(s32 *)&state[(index << 2) + 8] = ret;
+    index = 0;
+    index |= *(s32 *)(global + 4);
+    *(s32 *)&gAiState[(index << 2) + 8] = ret;
     if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
@@ -29593,6 +29683,7 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     u8 var_r5;
     u8 var_r6;
     u8 var_r7;
+    u8 result;
     u8 *p;
 
     if (gBattleState[0x11] != 2) {
@@ -29607,7 +29698,7 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     temp_r4 = p[0x100D];
 
     if ((u8)(temp_r4 - 0x26) <= var_r6) {
-        var_r7 = 1;
+        var_r7 = var_r6;
     } else {
         var_r7 = 0;
     }
@@ -29621,7 +29712,8 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
             var_r6 = 0;
         }
     }
-    return var_r6;
+    result = var_r6;
+    return result;
 }
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
@@ -29765,6 +29857,97 @@ void fn_800FEC0C(void) {
 
     *(void **)(gAiState + 0x218) = table;
 }
+
+void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
+    void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
+    void Sort_Three(s32 *, s32 *, s32 *, u8 (*)(s32, s32));
+    void Sort_Selection(s32 *, s32 *, u8 (*)(s32, s32));
+    extern s32 lbl_80367910;
+    extern s8 lbl_80367914;
+    s32 *last;
+    s32 *i;
+    s32 *j;
+    s32 *a;
+    s32 *b;
+    s32 n;
+    s32 r;
+    s32 tmp;
+
+    while (1) {
+        n = end - begin;
+        if (n <= 1) {
+            return;
+        }
+        if (n <= 20) {
+            Sort_Selection(begin, end, cmp);
+            return;
+        }
+        if (lbl_80367914 == 0) {
+            lbl_80367910 = -4;
+            lbl_80367914 = 1;
+        }
+        r = lbl_80367910;
+        a = begin + (n / 4 + (r % 5));
+        lbl_80367910 = r + 1;
+        if (r + 1 >= 5) {
+            lbl_80367910 = -4;
+        }
+        r = lbl_80367910;
+        b = begin + ((n * 3) / 4 + (r % 5));
+        lbl_80367910 = r + 1;
+        if (r + 1 >= 5) {
+            lbl_80367910 = -4;
+        }
+        last = end - 1;
+        Sort_Three(a, b, last, cmp);
+        i = begin;
+        j = last;
+        while (1) {
+            while (cmp(*i, *last) != 0) {
+                i += 1;
+            }
+            while (cmp(*j, *last) != 0) {
+                j -= 1;
+            }
+            if (i >= j) {
+                break;
+            }
+            tmp = *i;
+            *i = *j;
+            *j = tmp;
+        }
+        if (i == begin) {
+            tmp = *i;
+            *i = *last;
+            *last = tmp;
+            i += 1;
+            j = last;
+            if (cmp(*begin, *j) == 0) {
+                do {
+                    i += 1;
+                } while (cmp(*begin, *i) == 0);
+            }
+            if (i < j) {
+                do {
+                    j -= 1;
+                } while (cmp(*begin, *j) != 0);
+            }
+            if (i < j) {
+                tmp = *i;
+                *i = *j;
+                *j = tmp;
+            }
+        }
+        if ((i - begin) < (end - i)) {
+            fn_800FEC9C(begin, i, cmp);
+            begin = i;
+        } else {
+            fn_800FEC9C(i, end, cmp);
+            end = i;
+        }
+    }
+}
+
 #pragma opt_common_subs reset
 
 void Sort_Three(s32 *left, s32 *mid, s32 *right, u8 (*less)(s32, s32)) {
@@ -30276,6 +30459,116 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
     obj.unk8 = arg1;
     fn_8002F728(gTargetList);
     fn_8002C47C(&obj, 0);
+}
+
+s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
+    s32 Unit_GetMov(void *);
+    void *Unit_GetActiveItemPtr(void *);
+    u8 Item_GetRangeForUnit(void *, void *);
+    void **Unit_GetHeldItemSlot(void *, s32);
+    u8 fn_8009339C(void *, void *);
+    void fn_800FE398(void *, s32, s32);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+
+    void *u = unit;
+    u8 (*cb)(void *) = arg0;
+    u8 flg = arg2;
+    u8 *map;
+    s32 rowOff;
+    s32 count;
+    s32 range;
+    void **slot;
+    void *item, *other;
+    u8 *row, *tile, *cell;
+    s8 ux, uy;
+    s32 x_lo, y_lo, x_hi, y_hi;
+    s32 y, x, idx2;
+    u8 v;
+    s32 i;
+
+    range = (s32)((float)(s8)Unit_GetMov(u) * farg0);
+    if ((u8)flg != 0) {
+        slot = (void **)Unit_GetActiveItemPtr(u);
+        if ((slot != NULL) && (*slot != NULL)) {
+            v = (*slot != NULL) ? Item_GetRangeForUnit(*slot, u) : 0;
+            range += (u8)v;
+        } else {
+            for (i = 0; i < 4; i++) {
+                slot = Unit_GetHeldItemSlot(u, i);
+                if (*slot == NULL) {
+                    break;
+                }
+                if ((u8)fn_8009339C(u, *slot) != 0) {
+                    item = *slot;
+                    v = (item != NULL) ? Item_GetRangeForUnit(item, u) : 0;
+                    range += (u8)v;
+                }
+            }
+        }
+    }
+    fn_800FE398(u, 6, range);
+
+    ux = *(s8 *)((u8 *)u + 0x19E);
+    uy = *(s8 *)((u8 *)u + 0x19F);
+    x_lo = (s8)ux - range;
+    if (x_lo < (s8)gBattleMap[8]) {
+        x_lo = (s8)gBattleMap[8];
+    }
+    count = 0;
+    y_lo = (s8)uy - range;
+    if (y_lo < (s8)gBattleMap[9]) {
+        y_lo = (s8)gBattleMap[9];
+    }
+    x_hi = (s8)ux + range;
+    if (x_hi > (s8)gBattleMap[0xA] - 1) {
+        x_hi = (s8)gBattleMap[0xA] - 1;
+    }
+    y_hi = (s8)uy + range;
+    if (y_hi > (s8)gBattleMap[0xB] - 1) {
+        y_hi = (s8)gBattleMap[0xB] - 1;
+    }
+    map = gBattleMap;
+    y = y_lo;
+    goto y_cond;
+  y_body:
+    rowOff = (s32)(s8)y << 6;
+    row = map + rowOff;
+    x = x_lo;
+    goto x_cond;
+  x_body:
+    idx2 = (s8)x + rowOff;
+    cell = map + (idx2 * 2);
+    if (*(s16 *)(cell + 0x818E) < 0) {
+        goto x_next;
+    }
+    tile = row + (s8)x;
+    if ((s8)tile[0xE18E] != 0) {
+        goto x_next;
+    }
+    if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
+        goto x_next;
+    }
+    if (tile[0xD] == 0) {
+        goto x_next;
+    }
+    other = tile[0xD] ? gUnits + (tile[0xD] - 1) * 0x280 : NULL;
+    if (other != u && cb(other) != 0) {
+        count++;
+    }
+  x_next:
+    x++;
+  x_cond:
+    if (x <= x_hi) {
+        goto x_body;
+    }
+    y++;
+  y_cond:
+    if (y <= y_hi) {
+        goto y_body;
+    }
+    return count;
 }
 
 #pragma dont_inline on
@@ -31764,19 +32057,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     u8 Ai_UnitIsHostileToActive(void *);
     void fn_8002F728(void *);
     void fn_8002C618(void *, s8, s8);
-    extern struct {
-        s32 width;
-        s32 height;
-        s8 xMin;
-        s8 yMin;
-        s8 xMax;
-        s8 yMax;
-        u8 pad0C;
-        u8 unitMap[8][64][64];
-        u8 pad800D[0x181];
-        s16 costMap[3][64 * 64];
-        s8 fogMap[64][64];
-    } gBattleMap;
+    extern u8 gBattleMap[];
     extern u8 gUnits[];
     extern s16 lbl_802732A0[];
     extern void *lbl_80284E20;
@@ -31796,7 +32077,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     s16 bestY;
     s32 y;
     s32 x;
-    s16 *cost;
+    s32 ci;
     u8 id;
     void *unit;
     s16 *nei;
@@ -31804,29 +32085,32 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     s32 count;
     s32 oob;
     u8 *base;
+    u8 *map;
 
     outX = arg3;
     outY = arg4;
     mode = arg2;
     self = arg0;
-    fn_800FE398(self, 6, gBattleMap.width * gBattleMap.height);
+    base = gBattleMap;
+    fn_800FE398(self, 6, *(s32 *)base * *(s32 *)(base + 4));
     flag1 = arg1 & 1;
     flag2 = arg1 & 2;
     best = 0x7FFF;
-    for (y = gBattleMap.yMin; y <= gBattleMap.yMax - 1; y++) {
-        for (x = gBattleMap.xMin; x <= gBattleMap.xMax - 1; x++) {
-            cost = &gBattleMap.costMap[0][(s8)x + ((s8)y << 6)];
-            if (*cost < 0) {
+    map = gBattleMap;
+    for (y = (s8)base[9]; y <= (s8)base[0xB] - 1; y++) {
+        ci = (s8)y << 6;
+        for (x = (s8)base[8]; x <= (s8)base[0xA] - 1; x++) {
+            if (*(s16 *)(map + ((s8)x + ci) * 2 + 0x818E) < 0) {
                 continue;
             }
-            if (gBattleMap.fogMap[(s8)y][(s8)x] != 0) {
+            if (map[ci + (s8)x + 0xE18E] != 0) {
                 continue;
             }
             if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
                 continue;
             }
             if (flag1 != 0) {
-                id = gBattleMap.unitMap[0][(s8)y][(s8)x];
+                id = base[ci + (s8)x + 0xD];
                 if (id != 0) {
                     if (id != 0) {
                         unit = gUnits + (id - 1) * 0x280;
@@ -31845,11 +32129,11 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                     nx = (s16)x + nei[0];
                     ny = (s16)y + nei[1];
                     oob = 0;
-                    if (nx < gBattleMap.xMin || gBattleMap.xMax - 1 < nx || ny < gBattleMap.yMin || gBattleMap.yMax - 1 < ny) {
+                    if (nx < (s8)base[8] || (s8)base[0xA] - 1 < nx || ny < (s8)base[9] || (s8)base[0xB] - 1 < ny) {
                         oob = 1;
                     }
                     if (oob == 0) {
-                        id = gBattleMap.unitMap[0][(s8)ny][(s8)nx];
+                        id = base[((s8)ny << 6) + (s8)nx + 0xD];
                         if (id != 0) {
                             if (id != 0) {
                                 unit = gUnits + (id - 1) * 0x280;
@@ -31873,8 +32157,8 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
             sp18[1] = (void *)mode;
             fn_8002C618(sp18, (s8)x, (s8)y);
             if (gTargetList != 0) {
-                if (*cost < best) {
-                    best = *cost;
+                if (*(s16 *)(map + ((s8)x + ci) * 2 + 0x818E) < best) {
+                    best = *(s16 *)(map + ((s8)x + ci) * 2 + 0x818E);
                     sp20 = (s16)x;
                     bestY = (s16)y;
                 }
