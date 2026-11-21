@@ -106,16 +106,18 @@ extern void Unit_OnZeroHp(void);
 extern void Unit_ApplyTransform(void);
 
 void fn_800AE5A8(void *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
-    f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
-    extern f32 lbl_80369C7C;
-    extern f32 lbl_80369C80;
-    extern f32 lbl_80369C90;
+    f32 Math_Lerp(f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
+    extern const f32 lbl_80369C90;
+    extern const f32 gPhaseBannerZero;
+    extern const f32 lbl_80369C80;
+    extern const f64 lbl_80369C88;
     M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) + 1);
-    M2C_FIELD(arg0, f32 *, 0x38) = fn_8005A028(2, lbl_80369C90, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) fn_80059F64(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, f32 *, 0x38) = Math_EaseOutPow(2, lbl_80369C90, gPhaseBannerZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x30) >= (s32) M2C_FIELD(arg0, s32 *, 0x44)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
