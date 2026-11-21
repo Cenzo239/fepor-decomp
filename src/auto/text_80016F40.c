@@ -1097,22 +1097,22 @@ void fn_80018B18(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80018B24(void) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void *Map_Get(void);
-    void PSMTXRotRad(f32 *, s32, f32);
-    void PSMTXConcat(f32 *, f32 *, f32 *);
-    void fn_802029C4(f32 *, f32 *, f32 *);
-    void fn_80067FE8(f32 *, f32 *, f32 *);
-    void fn_8006785C(s32, void (*)(void *), void *);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    void *fn_80040844(void);
+    void fn_80202300(void *, s32, f32);
+    void fn_80202024(void *, void *, void *);
+    void fn_802029C4(void *, void *, void *);
+    void fn_80067FE8(void *, void *, void *);
+    void fn_8006785C(s32, void *, void *);
     void fn_800193D8(void *);
-    extern long gActiveCam;
+    extern long lbl_803671C4;
     extern u8 lbl_8036728B;
-    extern s32 gBattleMap[];
+    extern s32 lbl_802CA518[];
     extern f32 lbl_80368C88;
     extern f32 lbl_80368CA4;
     extern f32 lbl_80368CBC;
-    extern f32 lbl_80368CB4;
     extern f32 lbl_80368CB8;
+    extern f32 lbl_80368CB4;
     extern f32 lbl_80368CC0;
     extern f32 lbl_80368CC4;
     struct Cam {
@@ -1124,25 +1124,25 @@ extern "C" void fn_80018B24(void) {
     };
     f32 sp38[12];
     f32 sp8[12];
-    void *r31;
-    f32 f31;
+    register void *r31;
+    register f32 f31;
     f32 f30;
     f32 f29;
     void *child;
-    f32 t;
     f32 a;
+    f32 t;
     f32 b;
 
-    ((Cam *)gActiveCam)->v3();
-    r31 = (void *)gActiveCam;
+    ((Cam *)lbl_803671C4)->v3();
+    r31 = (void *)lbl_803671C4;
     if ((lbl_8036728B & 1) != 0) {
         t = lbl_80368C88;
         *(f32 *)((u8 *)r31 + 0x64) = t;
         *(f32 *)((u8 *)r31 + 0x68) = t;
     } else {
-        f29 = lbl_80368CA4 * (f32)gBattleMap[1];
-        f30 = lbl_80368CA4 * (f32)gBattleMap[0];
-        f31 = Math_Lerp(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
+        f29 = lbl_80368CA4 * (f32)lbl_802CA518[1];
+        f30 = lbl_80368CA4 * (f32)lbl_802CA518[0];
+        f31 = fn_80059F64(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
                           *(f32 *)((u8 *)r31 + 0x18) - lbl_80368CBC);
         if (f31 < lbl_80368C88) {
             f31 = lbl_80368C88;
@@ -1151,9 +1151,9 @@ extern "C" void fn_80018B24(void) {
             f31 = lbl_80368CB4;
         }
         a = *(f32 *)((u8 *)r31 + 0x40);
-        *(f32 *)((u8 *)r31 + 0x64) = -Math_Lerp(lbl_80368C88, f31, f30, a - f30);
+        *(f32 *)((u8 *)r31 + 0x64) = -fn_80059F64(lbl_80368C88, f31, f30, a - f30);
         a = *(f32 *)((u8 *)r31 + 0x44);
-        *(f32 *)((u8 *)r31 + 0x68) = -Math_Lerp(lbl_80368C88, f31, f29, a - f29);
+        *(f32 *)((u8 *)r31 + 0x68) = -fn_80059F64(lbl_80368C88, f31, f29, a - f29);
     }
     t = *(f32 *)((u8 *)r31 + 0x18);
     child = *(void **)r31;
@@ -1164,8 +1164,8 @@ extern "C" void fn_80018B24(void) {
     t = *(f32 *)((u8 *)r31 + 0x14);
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0x100) = t;
-    a = *(f32 *)((u8 *)r31 + 0x40);
     b = *(f32 *)((u8 *)r31 + 0x58);
+    a = *(f32 *)((u8 *)r31 + 0x40);
     t = *(f32 *)((u8 *)r31 + 0x64);
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0xE0) = (a + b) + t;
@@ -1175,10 +1175,10 @@ extern "C" void fn_80018B24(void) {
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0xE4) = (a + b) + t;
     {
-        void *cam = Map_Get();
-        f32 z;
+        void *cam = fn_80040844();
+        register f32 z;
         f32 c0;
-        f32 c4;
+        register f32 c4;
         a = *(f32 *)((u8 *)r31 + 0x48);
         b = *(f32 *)((u8 *)r31 + 0x60);
         t = *(f32 *)((u8 *)*(void **)((u8 *)cam + 0x30) + 0x48);
@@ -1200,15 +1200,15 @@ extern "C" void fn_80018B24(void) {
         child = *(void **)r31;
         *(f32 *)((u8 *)child + 0xDC) = -*(f32 *)((u8 *)child + 0xF8);
         child = *(void **)r31;
-        PSMTXRotRad(sp8, 0x58, c4 * *(f32 *)((u8 *)child + 0x100));
+        fn_80202300(sp8, 0x58, c4 * *(f32 *)((u8 *)child + 0x100));
         child = *(void **)r31;
-        PSMTXRotRad(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
+        fn_80202300(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
     }
-    PSMTXConcat(sp38, sp8, sp38);
+    fn_80202024(sp38, sp8, sp38);
     child = *(void **)r31;
-    fn_802029C4(sp38, (f32 *)((u8 *)child + 0xD4), (f32 *)((u8 *)child + 0xD4));
+    fn_802029C4(sp38, (u8 *)child + 0xD4, (u8 *)child + 0xD4);
     child = *(void **)r31;
-    fn_802029C4(sp38, (f32 *)((u8 *)child + 0xEC), (f32 *)((u8 *)child + 0xEC));
+    fn_802029C4(sp38, (u8 *)child + 0xEC, (u8 *)child + 0xEC);
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0xD4) =
         *(f32 *)((u8 *)child + 0xD4) + *(f32 *)((u8 *)child + 0xE0);
@@ -1219,7 +1219,7 @@ extern "C" void fn_80018B24(void) {
     *(f32 *)((u8 *)child + 0xDC) =
         *(f32 *)((u8 *)child + 0xDC) + *(f32 *)((u8 *)child + 0xE8);
     child = *(void **)r31;
-    fn_80067FE8((f32 *)((u8 *)child + 0xD4), (f32 *)((u8 *)child + 0xEC), (f32 *)((u8 *)child + 0xE0));
+    fn_80067FE8((u8 *)child + 0xD4, (u8 *)child + 0xEC, (u8 *)child + 0xE0);
     fn_8006785C(0, fn_800193D8, r31);
 }
 
@@ -1287,6 +1287,7 @@ extern "C" void fn_80018EC0(void)
 #pragma cplusplus on
 #pragma optimization_level 2
 #pragma peephole off
+#pragma scheduling on
 extern "C" void Camera_InitSlots(void) {
     s32 Camera_Get(void);
     extern u8 lbl_802CA2C8[];
@@ -1303,6 +1304,7 @@ extern "C" void Camera_InitSlots(void) {
     struct Slot { u8 pad[0x78]; };
     struct Slot *base;
     struct Slot *slot;
+    struct Obj *obj;
     f32 f1;
 
     base = (struct Slot *)lbl_802CA2C8;
@@ -1313,7 +1315,8 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
+    obj = (struct Obj *)slot;
+    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0x78);
@@ -1346,7 +1349,8 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
+    obj = (struct Obj *)slot;
+    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0xF0);
@@ -1379,7 +1383,8 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
+    obj = (struct Obj *)slot;
+    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
     {
         struct Slot *saved = slot;
         slot = (struct Slot *)((char *)base + 0x16C);
@@ -1412,7 +1417,8 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
     *(f32 *)((u8 *)slot + 0x8) = lbl_80368CC8;
-    f1 = ((Obj *)slot)->v2(*(s32 *)((u8 *)slot + 0x20));
+    obj = (struct Obj *)slot;
+    f1 = obj->v2(*(s32 *)((u8 *)slot + 0x20));
     *(f32 *)((u8 *)slot + 0x18) = f1;
     *(f32 *)((u8 *)slot + 0xC) = f1;
     *((u8 *)slot + 0x24) = 1;
