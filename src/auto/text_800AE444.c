@@ -105,6 +105,8 @@ extern void Unit_OnZeroHp(void);
 
 extern void Unit_ApplyTransform(void);
 
+const u64 lbl_80369C88 = 0x4330000080000000ull;
+
 void fn_800AE444(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
