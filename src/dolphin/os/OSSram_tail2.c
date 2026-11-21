@@ -193,7 +193,6 @@ s32 fn_80209B8C(s32 arg0) {
     s32 *locked;
     u32 irq;
     u16 result;
-    u8 *row;
     u8 pad[8];
 
     scb = (u8 *)Scb_80339420;
@@ -201,13 +200,14 @@ s32 fn_80209B8C(s32 arg0) {
     locked = (s32 *)(scb + 0x48);
     if (*locked) {
         OSRestoreInterrupts(irq);
-        return 0;
+        scb = 0;
+    } else {
+        *(u32 *)(scb + 0x44) = irq;
+        *locked = 1;
+        scb += 0x14;
     }
-    *(u32 *)(scb + 0x44) = irq;
-    row = scb + 0x14;
-    *locked = 1;
-    row += arg0 << 1;
-    result = *(u16 *)(row + 0x1c);
+    scb += arg0 << 1;
+    result = *(u16 *)(scb + 0x1c);
     fn_8020931C(0, 0x14);
     return result;
 }
