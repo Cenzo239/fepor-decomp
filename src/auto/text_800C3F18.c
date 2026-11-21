@@ -2,7 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-#pragma global_optimizer off
+#pragma global_optimizer reset
 void fn_800C3F18(void) {
     void fn_8022C260(void *, void *, void *, s32, s32);
     void __register_global_object(void *, void (*)(void), void *);
@@ -17,8 +17,9 @@ void fn_800C3F18(void) {
     u8 *p;
     s32 i;
 
-    init = Item_Init;
+    /* assign destroy before init to control argument register order */
     dtor = Item_Destroy;
+    init = Item_Init;
     base = lbl_803200A0;
     fn_8022C260(base + 0xC, init, dtor, 8, 0xC8);
     __register_global_object(base + 0xC, fn_800C412C, base + 0);
