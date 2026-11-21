@@ -1948,7 +1948,6 @@ void *fn_8005E594(s32 arg0, u32 arg1, char *arg2) {
     return result;
 }
 #pragma dont_inline reset
-#pragma opt_common_subs off
 void fn_8005E644(void *arg0) {
     void fn_8005F12C(void *, void *);
     void fn_8005F230(void *);
