@@ -1984,9 +1984,9 @@ extern "C" void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
     extern u8 gUnits[];
 
     void *MapObjEvent_Find(void *, s32, s32, s32);
-    void fn_8002F728(void *);
     void Map_SelectRangeBuffer(void *, s32);
     void *Item_Get(s32);
+    void fn_8002F728(void *);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
     void Map_ClipRangeByFacing(void *, s32, s32, s32);
@@ -1994,28 +1994,28 @@ extern "C" void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
     u8 *source;
     u8 *unit;
     u8 *base;
-    u8 *row;
-    u8 *cell;
     u8 *table;
-    u8 *entry;
-    u8 *data;
-    s32 threshold;
-    s32 result;
     s32 rowIndex;
-    s32 columnIndex;
-    s32 rowOffset;
-    s32 columnOffset;
     s32 count;
+    u8 *entry;
+    unsigned long result;
+    s32 columnOffset;
+    u8 *data;
+    u8 *cell;
+    register s32 columnIndex;
+    u32 rowOffset;
+    int threshold;
+    u8 *row;
     void *localObject[2];
 #pragma cplusplus on
 struct Visitor { virtual void apply(void *)=0; };
 u8 minRange,py,px;
 u8 id;
-    void *vtable;
+    register void *vtable;
 
     source = (u8 *)arg1;
 
-    if (source == 0) {
+    if (!source) {
         source = (u8 *)MapObjEvent_Find(
             gMapObjEventList,
             *((u8 *)arg0 + 0x19E),
@@ -2068,17 +2068,17 @@ result = Item_GetMaxRange(unit);
 
     while ((s8)rowIndex < *(s32 *)(base + 4)) {
         count = rowOffset;
-        columnIndex = 0;
+        register columnIndex = 0;
         
         cell = row;
 
         while ((s8)columnIndex < *(s32 *)base) {
             columnOffset=count*2;
-            if (*(s16 *)(*(u8 **)(table+0x4190) + columnOffset) >= threshold) {
+            if (*(s16 *)(*(u8 **)(table+0x4190) + (s32)columnOffset) >= threshold) {
                 id = cell[0xD];
 
-                if (id != 0) {
-                    if (id != 0) {
+                if (id) {
+                    if (id) {
 entry = gUnits + (id - 1) * 0x280;
 } else { entry = 0; }
 
@@ -2086,10 +2086,10 @@ entry = gUnits + (id - 1) * 0x280;
                 }
             }
 
-            count++;
+            count += 1;
             
             cell++;
-            columnIndex++;
+            columnIndex += 1;
         }
 
         rowOffset += 0x40;
@@ -2312,9 +2312,13 @@ extern "C" void fn_8002C3D8(void *arg0, void *arg1) {
     void fn_8002F6E8(void *, u8, u8, u8, s32);
     extern u8 gTargetList[];
     void *child;
+    u32 a;
+    u32 b;
 
     child = *(void **)((u8 *)arg0 + 4);
-    if (*(u32 *)((u8 *)arg1 + 0x190) == *(u32 *)((u8 *)child + 0x190)) {
+    a = *(u32 *)((u8 *)arg1 + 0x190);
+    b = *(u32 *)((u8 *)child + 0x190);
+    if (a == b) {
         if (fn_80093088(child) == 0 || fn_80093088(arg1) == 0) {
             fn_8002F6E8(
                 gTargetList,
