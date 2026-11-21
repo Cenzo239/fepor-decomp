@@ -851,6 +851,9 @@ void fn_80225D3C(void)
   __GXData[1] = 0;
 }
 
+#pragma global_optimizer off
+#pragma scheduling off
+#pragma peephole on
 void fn_80225D6C(u32 *arg0, u32 *arg1, u32 *arg2, u32 *arg3) {
     *arg2 = __GXReadCPCounterU32(32, 33);
     *arg3 = __GXReadCPCounterU32(34, 35);
