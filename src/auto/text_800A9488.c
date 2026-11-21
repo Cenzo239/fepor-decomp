@@ -1836,10 +1836,11 @@ void fn_800ABA3C(void) {
             Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
-        Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
+             Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
 
-    }
+ }
 }
+#pragma global_optimizer reset
 void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
     void Process_Goto(void *, s32);
