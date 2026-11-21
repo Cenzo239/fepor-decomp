@@ -56,12 +56,11 @@ void fn_8009A67C(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern f32 lbl_803697E8;
+    extern const f32 lbl_803697E8;
     extern const f64 lbl_803697F0;
     u8 t;
     f32 start, end;
 
-    (void)lbl_803697F0;
     t = *(u8 *)((u8 *)arg0 + 0x3e);
     if (t != 0) {
         *(u8 *)((u8 *)arg0 + 0x3e) = (u8)(t - 1);
