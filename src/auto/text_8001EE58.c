@@ -35,3 +35,5 @@ void fn_8001EE58(void)
     }
     __register_global_object(&lbl_80367218, Item_Destroy, lbl_802CA4B0);
 }
+
+__declspec(section ".ctors") void (*lbl_80267A94)(void) = fn_8001EE58;
