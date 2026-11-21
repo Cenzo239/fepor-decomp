@@ -106,28 +106,28 @@ void fn_80091A1C(void *arg0) {
 #pragma optimization_level reset
 void fn_80091B38(void *arg0)
 {
-  extern f32 gZeroF;
+  u8 *new_var;
+  extern f32 lbl_80369764;
   extern f32 lbl_803697A4;
   s32 zero;
   s32 eight;
   s32 three;
-  f32 w;
-  f32 z;
-  f32 y;
   f32 x;
-  f32 t;
+  f32 y;
+  f32 z;
+  f32 w;
   z++;
   z--;
   zero = 0;
   eight = 8;
+  new_var = ((u8 *) arg0) + 0x3C;
   three = 3;
   x = *((f32 *) (((u8 *) arg0) + 0x38));
-  t = 0.0f;
   y = *((f32 *) (((u8 *) arg0) + 0x34));
   z = *((f32 *) (((u8 *) arg0) + 0x30));
   w = lbl_803697A4;
-  *((f32 *) (((u8 *) arg0) + 0x3C)) = z;
-  z = gZeroF;
+  *((f32 *) new_var) = z;
+  z = lbl_80369764;
   *((f32 *) (((u8 *) arg0) + 0x40)) = y;
   *((f32 *) (((u8 *) arg0) + 0x44)) = x;
   y = *((f32 *) (((u8 *) arg0) + 0x34));
@@ -396,17 +396,18 @@ s32 fn_8009226C(u8 *arg0, u8 *arg1) {
 void fn_8009233C(u8 *arg0, u8 *arg1) {
     u8 Status_Test(u8 *, s32);
     void Item_GetKeyFlags(u8 *, s32);
-    u8 sp8;
-    s32 i;
-    u8 *p;
     s32 flags;
+    u8 sp8;
+    u8 *p;
+    s32 i;
 
+    p = arg1;
     flags = 0;
-    if (Status_Test(arg1 + 0x1BC, 0x5B) != 0) {
+    if (Status_Test(p + 0x1BC, 0x5B) != 0) {
         *arg0 = 8;
         return;
     }
-    if (Status_Test(arg1 + 0x1BC, 0x50) != 0) {
+    if (Status_Test(p + 0x1BC, 0x50) != 0) {
         if (*(s32 *)(gBattleState + 0x18) < 0x32) {
             flags |= 0x20;
         } else {
@@ -414,7 +415,6 @@ void fn_8009233C(u8 *arg0, u8 *arg1) {
             return;
         }
     }
-    p = arg1;
     for (i = 0; i < 4; ) {
         if (*(u32 *)(p + 0x1EC) == 0) {
             break;
