@@ -118,37 +118,3 @@ void fn_800AE444(void *arg0) {
         fn_8000C188(arg0);
     }
 }
-
-void fn_800AE52C(void *arg0)
-{
-    extern u8 *gPadInput;
-
-    extern void Process_ClearFunc(void *);
-    extern void fn_800535B0(void *);
-
-    u8 *obj;
-    u8 *input;
-    u32 previous;
-    u32 current;
-
-    obj = (u8 *)arg0;
-
-    *(s32 *)(obj + 0x48) -= 1;
-
-    if (*(s32 *)(obj + 0x48) == 0) {
-        Process_ClearFunc(obj);
-    } else {
-        input = gPadInput;
-
-        previous = *(u32 *)(input + 0x4);
-        current = *(u32 *)(input + 0x8);
-
-        if ((previous & (current ^ previous)) & 0x100) {
-            if (*(void **)(obj + 0x4C) != 0) {
-                fn_800535B0(*(void **)(obj + 0x4C));
-            }
-
-            Process_ClearFunc(obj);
-        }
-    }
-}
