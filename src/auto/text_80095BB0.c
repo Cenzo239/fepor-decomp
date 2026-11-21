@@ -486,7 +486,6 @@ s32 fn_80096C18(void) {
     return lbl_803697BC == *(f32 *)(p[0] + 0x10);
 }
 
-#pragma scheduling on
 u8 fn_80096C78(s32 arg0)
 {
   extern u8 gBattle[];
