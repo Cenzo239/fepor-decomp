@@ -51,23 +51,24 @@ extern s32 gUnknown_0x80369C88;
 s32 Res_GetByName(s8 *str) {
     extern u8 lbl_802ADB20[];
     struct {
-        u32 h1;
         u32 h2;
-    } h;
+        u32 h1;
+    } key;
     u32 *node;
 
     if (str == NULL) {
         return 0;
     }
-    h.h2 = 0;
-    h.h1 = h.h2;
+    key.h2 = 0;
+    key.h1 = 0;
+    key.h2 = key.h1;
     while (*str != 0) {
-        h.h1 = *str + h.h1 * 37;
-        h.h2 = *str + h.h2 * 31;
+        key.h1 = *str + key.h1 * 37;
+        key.h2 = *str + key.h2 * 31;
         str++;
     }
-    for (node = ((u32 **)(lbl_802ADB20 + 8))[h.h1 % 509]; node != NULL; node = (u32 *)node[0]) {
-        if (h.h2 == node[1]) {
+    for (node = ((u32 **)(lbl_802ADB20 + 8))[key.h1 % 509]; node != NULL; node = (u32 *)node[0]) {
+        if (key.h2 == node[1]) {
             return node[3];
         }
     }
