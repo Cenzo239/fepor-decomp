@@ -20,6 +20,7 @@ extern f32 lbl_803693D8;
 extern f32 gFaceDbgTextScale;
 
 extern u8 gBattleState[1400];
+extern const f64 lbl_80369848;
 
 extern u16 *lbl_803674E0;
 
@@ -60,26 +61,27 @@ void fn_8009A76C(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern f32 lbl_803697E4;
-    extern f32 lbl_803697E8;
-    u8 *p = arg0;
-    f32 start, end;
+    extern const f32 lbl_803697E8;
+    extern const f64 lbl_803697F0;
+    u8 t;
+    f32 end, start;
 
-    if (p[0x3E] < p[0x40]) {
-        ++p[0x3E];
+    t = *(u8 *)((u8 *)arg0 + 0x3e);
+    if (t < *(u8 *)((u8 *)arg0 + 0x40)) {
+        *(u8 *)((u8 *)arg0 + 0x3e) = (u8)(t + 1);
     }
-    *(s8 *)(p + 0x3D) = (s8)Math_Lerp(
+    *(s8 *)((u8 *)arg0 + 0x3d) = (s8)Math_Lerp(
         lbl_803697E4,
-        (f32)(u32)p[0x3F],
-        (f32)(u32)p[0x40],
-        (f32)(u32)p[0x3E]);
+        (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3f),
+        (f32)(u32)*(u8 *)((u8 *)arg0 + 0x40),
+        (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3e));
     start = lbl_803697E8;
     end = lbl_803697E4;
-    *(f32 *)(p + 0x30) = Math_EaseOutPow(
+    *(f32 *)((u8 *)arg0 + 0x30) = Math_EaseOutPow(
         2, start, end,
-        (f32)(u32)p[0x40],
-        (f32)(u32)p[0x3E]);
-    if (p[0x3E] == p[0x40]) {
+        (f32)(u32)*(u8 *)((u8 *)arg0 + 0x40),
+        (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3e));
+    if (*(u8 *)((u8 *)arg0 + 0x3e) == *(u8 *)((u8 *)arg0 + 0x40)) {
         Process_ClearFunc(arg0);
     }
 }
