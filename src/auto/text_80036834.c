@@ -285,26 +285,25 @@ s32 Unit_GetSupportRankTotal(u8 *arg0)
   u8 *entry;
   u8 *new_var3[2];
   int new_var2;
+  s32 offset;
   u8 *obj;
   s32 result;
   s32 index;
-  s32 offset;
   u8 value;
   u8 unit_val;
   u8 lim;
   obj = *((u8 **) (arg0 + 0x188));
-  if ((*((void **) (obj + 0x50))) == NULL)
+  if ((*(void * volatile *) (obj + 0x50)) == NULL)
   {
     return 0;
   }
   result = 0;
   new_var2 = 0;
-  new_var3[1] = obj + 0x50;
   index = new_var2;
   offset = new_var2;
   goto check;
   loop:
-  table = *((u8 **) new_var3[1]);
+  table = *((u8 * volatile *) (obj + 0x50));
 
   entry = table + offset;
   if ((*((u32 *) (entry + 8))) != new_var2)
@@ -354,7 +353,7 @@ s32 Unit_GetSupportRankTotal(u8 *arg0)
   offset += 8;
   index += 1;
   check:
-  table = *((u8 **) (obj + 0x50));
+  table = *((u8 * volatile *) (obj + 0x50));
 
   if (table == NULL)
   {
