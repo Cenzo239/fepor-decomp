@@ -955,15 +955,16 @@ s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2) {
 extern u8 *lbl_802984C0[];
 extern char lbl_8027DD60[];
 s32 count=0;
-u8 **table=(u8**)count;
-
+u8 **table=(u8**)0;
+s16 width;
 u8 *result;
+table=(u8**)count;
 switch(arg0) {case 0: table=lbl_802984C0; break;}
 while((s32)**table!=10) {table++;count++;}
-count=(s16)(count+1);
+width=count+1;
 table=0;
 switch(arg0) {case 0: table=lbl_802984C0;break;}
-result=table[(s16)arg1+count*(s16)arg2];
+result=table[(s16)arg1+width*(s16)arg2];
 if(result) return (s32)result;
 return (s32)(lbl_8027DD60+0x16);
 }
@@ -994,6 +995,7 @@ s32 fn_801CD548(s32 arg0) {
     u8 **cur;
 
     count = 0;
+    table = (u8 **)0;
     table = (u8 **)count;
     n = 0;
 
@@ -4410,8 +4412,8 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
     s16 pt[2];
-    s16 temp_r6;
     s16 temp_r6_2;
+    s16 temp_r6;
     s32 temp_r7;
 #pragma cplusplus on
     struct Obj {
@@ -7711,14 +7713,11 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg0;
 }
 
-#pragma scheduling on
+#pragma scheduling reset
 void fn_801DDE44(void *arg0) {
     extern f32 lbl_8036B630;
-    f32 delta = lbl_8036B630;
-    f32 d2 = delta;
-    f32 *p = (f32 *)((u8 *)arg0 + 0x30);
-    *p += d2;
-    if (*p >= *(f32 *)((u8 *)arg0 + 0x34)) {
+    *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
+    if (*(f32 *)((u8 *)arg0 + 0x30) >= *(f32 *)((u8 *)arg0 + 0x34)) {
         fn_8000C188();
     }
 }
