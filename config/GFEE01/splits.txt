@@ -734,7 +734,10 @@ auto/text_8022CD68.c:
 	.text       start:0x8022CD68 end:0x8022E804
 
 auto/text_8022E804.c:
-	.text       start:0x8022E804 end:0x80231CC8
+	.text       start:0x8022E804 end:0x8022EBB8
+
+auto/text_8022EBB8.c:
+	.text       start:0x8022EBB8 end:0x80231CC8
 
 auto/text_80231CC8.c:
 	.text       start:0x80231CC8 end:0x80231D84
