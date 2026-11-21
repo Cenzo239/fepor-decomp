@@ -131,16 +131,16 @@ static inline u32 __GXReadPECounterU32(u32 lo, u32 hi) {
 extern u16* __cpReg;
 
 static inline u32 __GXReadCPCounterU32(u32 lo, u32 hi) {
-    u32 ctrH0;
-    u32 ctrH1;
-    u32 ctrL;
     volatile u16 *base;
     volatile u16 *regH;
     volatile u16 *regL;
+    u32 ctrH0;
+    u32 ctrH1;
+    u32 ctrL;
 
     base = __cpReg;
     regH = base + hi;
-    ctrH0 = base[hi];
+    ctrH0 = *((volatile u16 *)base + hi);
     regL = base + lo;
     do {
         ctrH1 = ctrH0;
