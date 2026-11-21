@@ -401,22 +401,34 @@ extern "C" void fn_800116F0(void *arg0) {
 }
 #pragma cplusplus reset
 void fn_800117B0(void *arg0) {
+#pragma cplusplus on
     void fn_8006EBC4(s32, void *, void *, s32, s32);
     void fn_80222A3C(void *, s32, s32);
     void fn_80222C50(void *, s32);
     void fn_80222CF0(void *, s32);
+    struct Obj {
+        virtual s32 v0() = 0;
+        virtual s32 v1() = 0;
+        virtual s32 v2() = 0;
+        virtual s32 v3() = 0;
+        virtual s32 v4() = 0;
+        virtual s32 v5() = 0;
+        virtual s32 v6() = 0;
+        virtual s32 v7() = 0;
+        virtual s32 v8() = 0;
+        virtual s32 v9() = 0;
+        virtual s32 v10() = 0;
+        s32 unk04;
+    };
     u8 sp8[0xC];
     u8 sp14[0x20];
-    void *obj;
-    s32 temp;
+    Obj *obj;
 
-    obj = arg0;
-    temp = (*(s32 (**)(void *))((u8 *)*(void **)obj + 0x24))(obj);
-    fn_8006EBC4(*(s32 *)((u8 *)obj + 4), sp14, sp8,
-        (*(s32 (**)(void *))((u8 *)*(void **)obj + 0x28))(obj), temp);
+    obj = (Obj *)arg0;
+    fn_8006EBC4(obj->unk04, sp14, sp8, obj->v8(), obj->v7());
     fn_80222A3C(sp14, 0, 0);
     fn_80222C50(sp14, 1);
-    fn_80222CF0(sp8, (*(s32 (**)(void *))((u8 *)*(void **)obj + 0x28))(obj));
+    fn_80222CF0(sp8, obj->v8());
 }
 #pragma cplusplus reset
 void fn_8001185C(void) {
