@@ -4,6 +4,7 @@
 extern u8 lbl_8032FE24[];
 extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
+extern u8 lbl_80273DF8[];
 
 typedef struct String {
     u32 size;
@@ -727,11 +728,11 @@ after_3c:
 #pragma cplusplus on
 extern "C" void fn_80111740(void *arg0) {
     s32 strlen(char *);
-    void *Heap_Alloc(s32);
-    void Camera_GetLookAt(void *, void *);
+    void *fn_800C42D8(s32);
+    void fn_800DBB74(void *, void *);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_80151894(void *);
-    extern void *gGame;
+    extern void *lbl_80368278;
 
     struct V3 {
         f32 x, y, z;
@@ -797,39 +798,39 @@ extern "C" void fn_80111740(void *arg0) {
     sp54.data = 0;
     sp54.cap = 0;
 
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x109));
-    if (String_Compare(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)gActorXmlStrs + 0x109), n) == 0)
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x109));
+    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+                    (char *)((u32)lbl_80273DF8 + 0x109), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x10E));
-    if (String_Compare(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)gActorXmlStrs + 0x10E), n) == 0)
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x10E));
+    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+                    (char *)((u32)lbl_80273DF8 + 0x10E), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x113));
-    if (String_Compare(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)gActorXmlStrs + 0x113), n) == 0)
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x113));
+    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+                    (char *)((u32)lbl_80273DF8 + 0x113), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x118));
-    if (String_Compare(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)gActorXmlStrs + 0x118), n) == 0)
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x118));
+    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+                    (char *)((u32)lbl_80273DF8 + 0x118), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x11D));
-    if (String_Compare(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)gActorXmlStrs + 0x11D), n) == 0)
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x11D));
+    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+                    (char *)((u32)lbl_80273DF8 + 0x11D), n) == 0)
         goto fail;
 
     switch (self->state) {
     case 1:
-        n = strlen((char *)((u8 *)gActorXmlStrs + 0x122));
-        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x122), n);
+        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x122));
+        fn_800C96F8(&sp54, (char *)((u32)lbl_80273DF8 + 0x122), n);
         break;
     case 2:
-        n = strlen((char *)((u8 *)gActorXmlStrs + 0x133));
-        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x133), n);
+        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x133));
+        fn_800C96F8(&sp54, (char *)((u32)lbl_80273DF8 + 0x133), n);
         break;
     case 3:
-        n = strlen((char *)((u8 *)gActorXmlStrs + 0x144));
-        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x144), n);
+        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x144));
+        fn_800C96F8(&sp54, (char *)((u32)lbl_80273DF8 + 0x144), n);
         break;
     default:
         goto fail;
@@ -838,38 +839,38 @@ extern "C" void fn_80111740(void *arg0) {
     *(f32 *)&pos.z = lbl_8036A184;
     *(f32 *)&pos.y = lbl_8036A184;
     *(f32 *)&pos.x = lbl_8036A184;
-    n = strlen((char *)((u8 *)gActorXmlStrs + 0x4E));
-    if (String_Compare(&sp54, 0, (void *)sp54.size,
-                    (char *)((u32)gActorXmlStrs + 0x4E), n) != 0) {
+    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x4E));
+    if (fn_800C9400(&sp54, 0, (void *)sp54.size,
+                    (char *)((u32)lbl_80273DF8 + 0x4E), n) != 0) {
         got = ((Actor *)self)->GetPos(0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
         *(f32 *)&pos.x = got.x;
         *(f32 *)&pos.z = got.z;
         *(f32 *)&pos.y = lbl_8036A184;
-        obj = Heap_Alloc(0xC8);
+        obj = fn_800C42D8(0xC8);
         if (obj != NULL) {
-            Camera_GetLookAt(&tmpVec, self);
+            fn_800DBB74(&tmpVec, self);
             copyA = tmpVec;
             copyB = pos;
-            String_Init(&sp48, (char *)gActorXmlStrs + 0x51, &scratch);
+            fn_800C9ABC(&sp48, (char *)lbl_80273DF8 + 0x51, &scratch);
             flag = 1;
             obj = fn_80151D50(obj, self->mgr, &sp48, &sp54, &copyB, &copyA, 0);
         }
         if (flag) {
-            String_Destroy(&sp48, -1);
+            fn_800C9A60(&sp48, -1);
         }
         ((Actor *)obj)->Color(
-            *(f32 *)((u8 *)gGame + 0x104),
-            *(f32 *)((u8 *)gGame + 0x108),
-            *(f32 *)((u8 *)gGame + 0x10C));
+            *(f32 *)((u8 *)lbl_80368278 + 0x104),
+            *(f32 *)((u8 *)lbl_80368278 + 0x108),
+            *(f32 *)((u8 *)lbl_80368278 + 0x10C));
         fn_80151894(obj);
         (*(Manager **)(&self->mgr))->Add(obj);
     }
-    String_Destroy(&sp54, -1);
+    fn_800C9A60(&sp54, -1);
     return;
 fail:
-    String_Destroy(&sp54, -1);
+    fn_800C9A60(&sp54, -1);
 }
 
 #pragma use_lmw_stmw on
