@@ -105,6 +105,7 @@ extern void Unit_OnZeroHp(void);
 
 extern void Unit_ApplyTransform(void);
 
+#pragma scheduling on
 void fn_800AE444(void *arg0) {
     f32 fn_80059F64(f32, f32, f32, f32);
     f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
