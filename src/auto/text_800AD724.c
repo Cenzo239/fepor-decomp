@@ -2375,7 +2375,7 @@ void DCInvalidateRange(void *,u32); void fn_8005E0F0(void); void fn_80208780(voi
 extern s32 lbl_8036780C; extern u8 lbl_80367810; extern u8 lbl_80313020[];
 u8 sp8[0x1C]; s32 dest; s32 size; u8 *base;
 if(lbl_8036780C!=0) {
-size=lbl_8036780C; base=(u8*)fn_802142B0()+0x500; dest=0x81200000u-(u32)size; lbl_80367810=1;
+size=lbl_8036780C; base=(u8*)fn_802142B0()+0x500; dest=0x81200000-size; lbl_80367810=1;
 fn_8005E0F0(); fn_8020A824(lbl_80313020); fn_80215EF8(); DCInvalidateRange((void*)dest,size);
 ARQPostRequest(sp8,0,1,0,(s32)base,(void*)dest,size,fn_800B4794);
 while(lbl_80367810!=0) {} fn_80208780((void*)dest,0x81200000);
@@ -4411,49 +4411,51 @@ s32 fn_800B850C(s32 arg0, s8 arg1, s16 arg2) {
 
 s32 fn_800B8534(void) {
     extern u8 gBattleHitTbl[];
+    u8 zero;
     u8 *p;
-    u16 *q;
+    u8 *q;
     s32 i;
 
+    zero = 0;
     p = gBattleHitTbl;
-    p[0x61] = 0;
-    q = (u16 *)p;
-    p[0x60] = 0;
+    p[0x61] = zero;
+    q = p;
+    p[0x60] = zero;
     for (i = 0; i < 2; i++) {
-        p[0] = 0;
-        q[0x10] = 0;
-        p[1] = 0;
-        q[0x11] = 0;
-        p[2] = 0;
-        q[0x12] = 0;
-        p[3] = 0;
-        q[0x13] = 0;
-        p[4] = 0;
-        q[0x14] = 0;
-        p[5] = 0;
-        q[0x15] = 0;
-        p[6] = 0;
-        q[0x16] = 0;
-        p[7] = 0;
-        q[0x17] = 0;
-        p[8] = 0;
-        q[0x18] = 0;
-        p[9] = 0;
-        q[0x19] = 0;
-        p[10] = 0;
-        q[0x1a] = 0;
-        p[11] = 0;
-        q[0x1b] = 0;
-        p[12] = 0;
-        q[0x1c] = 0;
-        p[13] = 0;
-        q[0x1d] = 0;
-        p[14] = 0;
-        q[0x1e] = 0;
-        p[15] = 0;
+        p[0] = zero;
+        *(u16 *)(q + 0x20) = 0;
+        p[1] = zero;
+        *(u16 *)(q + 0x22) = 0;
+        p[2] = zero;
+        *(u16 *)(q + 0x24) = 0;
+        p[3] = zero;
+        *(u16 *)(q + 0x26) = 0;
+        p[4] = zero;
+        *(u16 *)(q + 0x28) = 0;
+        p[5] = zero;
+        *(u16 *)(q + 0x2A) = 0;
+        p[6] = zero;
+        *(u16 *)(q + 0x2C) = 0;
+        p[7] = zero;
+        *(u16 *)(q + 0x2E) = 0;
+        p[8] = zero;
+        *(u16 *)(q + 0x30) = 0;
+        p[9] = zero;
+        *(u16 *)(q + 0x32) = 0;
+        p[10] = zero;
+        *(u16 *)(q + 0x34) = 0;
+        p[11] = zero;
+        *(u16 *)(q + 0x36) = 0;
+        p[12] = zero;
+        *(u16 *)(q + 0x38) = 0;
+        p[13] = zero;
+        *(u16 *)(q + 0x3A) = 0;
+        p[14] = zero;
+        *(u16 *)(q + 0x3C) = 0;
+        p[15] = zero;
         p += 0x10;
-        q[0x1f] = 0;
-        q += 0x10;
+        *(u16 *)(q + 0x3E) = 0;
+        q += 0x20;
     }
     return 1;
 }
@@ -6567,7 +6569,7 @@ s32 fn_800BC204(u8 arg0) {
     return slot + 4;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level reset
 s32 fn_800BC29C(u8 arg0) {
     void *fn_80037BBC(void *, s32);
     s32 fn_80037E00(void *);
@@ -7699,13 +7701,14 @@ s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
  s32 i; u32 hash; s32 row; u8 *p;
  if (*(s8 *)arg1 == 0) return 0;
  hash=fn_8000D598(arg1); row=arg0; i=0;
- for (;;) {
- if ((hash==*(u32 *)(row+0x180)) && (Str_Cmp(*(s32 *)row,arg1)==0)) {
- break;
- }
- i++; row+=4;
- if(i>=0x60) { i=-1; break; }
- }
+ do {
+  if(hash==*(u32 *)(row+0x180)) {
+   if(Str_Cmp(*(s32 *)row,arg1)!=0) { } else goto found;
+  }
+  i++; row+=4;
+ } while(i<0x60);
+ i=-1;
+found:
  if(i<0) return 0;
  p=(u8 *)arg0; p+=i>>3;
  return (p[0x300] & (1<<(i&7)))!=0;
@@ -9807,19 +9810,17 @@ void fn_800C0F94(void) {
  void fn_800C4588(void *);
  extern u8 lbl_8028D588[], lbl_8028D560[];
  extern void *gMapBlendBufs[];
- void *zero;
  void **p;
  s32 i;
  Process_UnlinkByKey(lbl_8028D588);
  Process_UnlinkByKey(lbl_8028D560);
  i = 0;
- zero = NULL;
  p = gMapBlendBufs;
  do {
   fn_800C4588(*p);
-  *p = zero;
+  *p = NULL;
   i += 1;
-  *p = zero;
+  *p = NULL;
   p += 1;
  } while (i < 3);
 }
@@ -11226,6 +11227,112 @@ void fn_800C3468(void *arg0) {
         p2 += 0x50;
     }
     DebugPrint(fmt + 0x25, count);
+}
+
+void Convoy_AddItem(u32 *arg0, void *arg1) {
+    void fn_8001C4FC(void *, void *);
+    s32 fn_8001CA2C(u32 *);
+    s32 temp_r3;
+    s32 ctr;
+    s32 ctr2;
+    s32 var_r27;
+    s32 var_r28;
+    s32 var_r29;
+    s32 idx;
+    s32 idx2;
+    u8 *itm;
+    u8 *base;
+    u8 *p;
+    u32 *q;
+    u8 ok;
+
+    itm = (u8 *)arg1;
+    base = (u8 *)arg0;
+    idx = 0;
+    *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx << 7) & 0x80);
+    p = base;
+    for (ctr = 20; ctr != 0; ctr--) {
+        if (*(u32 *)(p + 0x0) != 0) goto c1; else goto done1;
+    c1: idx++;
+        if (*(u32 *)(p + 0x8) != 0) goto c2; else goto done1;
+    c2: idx++;
+        if (*(u32 *)(p + 0x10) != 0) goto c3; else goto done1;
+    c3: idx++;
+        if (*(u32 *)(p + 0x18) != 0) goto c4; else goto done1;
+    c4: idx++;
+        if (*(u32 *)(p + 0x20) != 0) goto c5; else goto done1;
+    c5: idx++;
+        if (*(u32 *)(p + 0x28) != 0) goto c6; else goto done1;
+    c6: idx++;
+        if (*(u32 *)(p + 0x30) != 0) goto c7; else goto done1;
+    c7: idx++;
+        if (*(u32 *)(p + 0x38) != 0) goto c8; else goto done1;
+    c8: idx++;
+        if (*(u32 *)(p + 0x40) != 0) goto c9; else goto done1;
+    c9: idx++;
+        if (*(u32 *)(p + 0x48) != 0) goto c10; else goto done1;
+    c10: idx++;
+        p += 0x50;
+        idx++;
+    }
+    idx = -1;
+done1:
+    if (idx < 0) {
+        ok = 0;
+    } else {
+        fn_8001C4FC(arg0 + (idx * 2), arg1);
+        ok = 1;
+    }
+    if (ok == 0) {
+        q = arg0;
+        var_r27 = 0xF423F;
+        var_r28 = -1;
+        var_r29 = 0;
+        do {
+            if ((u32)*q != 0U) {
+                temp_r3 = fn_8001CA2C(q);
+                if (var_r27 > temp_r3) {
+                    var_r27 = temp_r3;
+                    var_r28 = var_r29;
+                }
+            }
+            var_r29++;
+            q++;
+        } while (var_r29 < 0xC8);
+        fn_8001D580(arg0 + (var_r28 * 2));
+        idx2 = 0;
+        p = base;
+        *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx2 << 7) & 0x80);
+        for (ctr2 = 20; ctr2 != 0; ctr2--) {
+            if (*(u32 *)(p + 0x0) != 0) goto d1; else goto done2;
+        d1: idx2++;
+            if (*(u32 *)(p + 0x8) != 0) goto d2; else goto done2;
+        d2: idx2++;
+            if (*(u32 *)(p + 0x10) != 0) goto d3; else goto done2;
+        d3: idx2++;
+            if (*(u32 *)(p + 0x18) != 0) goto d4; else goto done2;
+        d4: idx2++;
+            if (*(u32 *)(p + 0x20) != 0) goto d5; else goto done2;
+        d5: idx2++;
+            if (*(u32 *)(p + 0x28) != 0) goto d6; else goto done2;
+        d6: idx2++;
+            if (*(u32 *)(p + 0x30) != 0) goto d7; else goto done2;
+        d7: idx2++;
+            if (*(u32 *)(p + 0x38) != 0) goto d8; else goto done2;
+        d8: idx2++;
+            if (*(u32 *)(p + 0x40) != 0) goto d9; else goto done2;
+        d9: idx2++;
+            if (*(u32 *)(p + 0x48) != 0) goto d10; else goto done2;
+        d10: idx2++;
+            p += 0x50;
+            idx2++;
+        }
+        idx2 = -1;
+    done2:
+        if (idx2 >= 0) {
+            fn_8001C4FC(arg0 + (idx2 * 2), arg1);
+        }
+    }
 }
 
 void fn_800C3864(s32 arg0, s32 arg1) {
