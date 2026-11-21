@@ -105,12 +105,14 @@ static inline u8 *FindEntryByName(char *name) {
 }
 
 static inline u32 FindUnk48(void *arg0) {
-    while (arg0 != NULL) {
-        u32 temp = M2C_FIELD(arg0, u32 *, 0x48);
+    u32 temp;
+    void *current = arg0;
+    while (current != NULL) {
+        temp = M2C_FIELD(current, u32 *, 0x48);
         if (temp != 0U) {
             return temp;
         }
-        arg0 = M2C_FIELD(arg0, void **, 4);
+        current = M2C_FIELD(current, void **, 4);
     }
     return 0U;
 }
