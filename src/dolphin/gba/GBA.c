@@ -737,10 +737,10 @@ s32 fn_8026573C(s32 arg0, u8 *arg1)
     OSRestoreInterrupts(interruptState);
     return status;
 }
-#pragma use_lmw_stmw reset
+#pragma use_lmw_stmw on
 #pragma global_optimizer reset
 #pragma peephole reset
-#pragma scheduling reset
+#pragma scheduling on
 s32 fn_802658B0(s32 chan,s32 mode,s32 offset,u8 *data,s32 length,void *input,void *callback) {
 extern u8 lbl_803669A0[],lbl_802A4DE8[];
 s32 fn_8026573C(s32,u8*);
@@ -796,36 +796,29 @@ void fn_80265A94(s32 arg0, s32 arg1)
     extern u8 lbl_802A4DE8[];
     extern int fn_80265544(s32, void *, void *);
     extern void fn_80265B64(s32, s32);
-
     u8 *entry;
     u8 *queue;
-    s32 result;
+    s32 result=arg1;
     void (*callback)(s32, s32);
+    u8 dummy[8];
 
-    result = arg1;
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
-
     if (result == 0) {
-        if (*(u8 *)*(u32 *)(queue + 0x10) != lbl_802A4DE8[0x25]) {
-            result = 3;
-        }
+        if (*(u8 *)*(u32 *)(queue + 0x10) == lbl_802A4DE8[0x25]) goto done;
+        result = 3;
     }
-
     if (result == 0) {
-        result = fn_80265544(arg0, *(void **)(queue + 0x10), fn_80265B64);
+        if ((result = fn_80265544(arg0, *(void **)(queue + 0x10), fn_80265B64)) == 0) goto done;
     }
-
-    if (result != 0) {
-        *(u32 *)(queue + 0x2C) = 0;
-        *(u32 *)(queue + 0x28) = 0;
-        callback = *(void (**)(s32, s32))(queue + 0x14);
-        if (callback != 0) {
-            *(u32 *)(queue + 0x14) = 0;
-            callback(arg0, result);
-        }
+    *(u32 *)(queue + 0x2C) = 0;
+    *(u32 *)(queue + 0x28) = 0;
+    callback = *(void (**)(s32, s32))(queue + 0x14);
+    if (callback) {
+        *(u32 *)(queue + 0x14) = 0;
+        callback(arg0, result);
     }
-
+done:
     *(u32 *)(entry + 0x20) = result;
 }
 
