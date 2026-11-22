@@ -2246,8 +2246,8 @@ extern "C" void fn_801354E8(void *arg0, s16 arg1, s16 arg2, s32 unused, void *ar
         textY, 0, 0, *((u8 *)item + 0x1A));
     Prim2D_EndPrim();
     Ui_DrawIcon(gItemIconDrawer, x, y, *((u8 *)item + 0x19));
-}
 #pragma use_lmw_stmw reset
+}
 
 s32 fn_80135664(void *arg0, void *arg1) {
     u8 Status_Test(s32, u8);
