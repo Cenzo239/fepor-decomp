@@ -1,1 +1,1 @@
-#include "../.cursor-home/a.h"
+#include "../.cursor-home/.cursor/projects/c.h"
