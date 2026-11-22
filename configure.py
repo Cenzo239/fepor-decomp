@@ -292,7 +292,7 @@ config.libs = [
         "cflags": cflags_base,
         "progress_category": "game",
         "objects": [
-            Object(NonMatching, "auto/text_800056A0.c", mw_version="GC/3.0a3"),
+            Object(NonMatching, "auto/text_800056A0.c"),
             Object(NonMatching, "auto/text_80006264.c"),
             Object(Matching, "auto/text_80006314.c"),
             Object(NonMatching, "auto/text_80006388.c"),
