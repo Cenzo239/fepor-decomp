@@ -4152,11 +4152,11 @@ void fn_8002F564(void) {
     p = (u8 *)&gTargetList;
     i = 0;
     for (n = limit; n > 0; n--) {
-        if (i >= limit) {
-            entry = NULL;
-        } else {
-            entry = p + 8;
-        }
+                  if (i >= limit) {
+              entry = (u8 *)0;
+          } else {
+              entry = p + 8;
+          }
         y = (s8)entry[1];
         p += 0x14;
         x = (s8)entry[0];
