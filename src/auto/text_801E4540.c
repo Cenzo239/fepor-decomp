@@ -2,7 +2,6 @@
 #include "common.h"
 #include "global.h"
 
-extern f64 lbl_8036B6E0;
 
 struct UnkStruct {
     u32 field_0[0x10];
@@ -1484,7 +1483,6 @@ void fn_801E6CEC(void *arg0) {
     extern f32 lbl_8036B74C;
     extern f32 lbl_8036B750;
     extern f32 lbl_8036B754;
-    extern f64 lbl_8036B6E0;
 
     u8 pal[3];
     Color c0, c1;
