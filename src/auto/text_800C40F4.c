@@ -5106,7 +5106,7 @@ u16 FileCache_Probe(char*);
 void *fn_8005C82C(char*,s32);
 void DebugPrint(char*,...);
 extern char lbl_802704F8[];
-void *result;
+struct Ret { void *p; } result;
 String out; String a; String b;
 out.cap=0;out.size=0;out.data=0;out.cap=0;
 String_JoinCStr(&a,lbl_802704F8+0x1c7,arg1);
@@ -5114,8 +5114,8 @@ String_ConcatCStr(&b,&a,lbl_802704F8+0x3a6);
 String_Assign(&out,&b,0,-1);
 String_Destroy(&b,-1);String_Destroy(&a,-1);
 if(FileCache_Probe(String_CStr(&out))!=0x8000){
-result=fn_8005C82C(String_CStr(&out),8);
-String_Destroy(&out,-1);return result;
+result.p=fn_8005C82C(String_CStr(&out),8);
+String_Destroy(&out,-1);return result.p;
 }
 DebugPrint(lbl_802704F8+0x3af,String_CStr(&out));
 String_Destroy(&out,-1);return 0;
