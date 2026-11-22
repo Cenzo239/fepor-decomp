@@ -10836,9 +10836,13 @@ s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     s32 *p;
     item = (void *)Item_GetByIid(arg1);
     for (p = arg0, i = 0; i < 200; p += 2, i++) {
-        if (*(void **)p == item) return i;
+        if (*(void **)p != item) goto next;
+        goto found;
+    next:
+        ;
     }
     i = -1;
+found:
     return i;
 }
 
@@ -10885,7 +10889,7 @@ found:
     Item_Destroy(item, -1);
     return result;
 }
-#pragma optimization_level reset
+#pragma optimization_level 3
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
