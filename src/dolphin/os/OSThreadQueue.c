@@ -593,8 +593,9 @@ void fn_8020AEC4(void *arg0) {
             thread->prev = prev;
             thread->next = NULL;
             thread->queue->tail = thread;
-            RunQueueBits_80368518 |= 1 << (31 - thread->priority);
-            RunQueueHint_8036851C = thread->state;
+            *(volatile s32 *)&RunQueueBits_80368518 =
+                RunQueueBits_80368518 | (1 << (31 - thread->priority));
+            *(volatile s32 *)&RunQueueHint_8036851C = 1;
         }
     }
     if (RunQueueHint_8036851C != 0) {
