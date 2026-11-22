@@ -414,7 +414,10 @@ auto/text_800AE52C.c:
 	.text       start:0x800AE52C end:0x800AE5A8
 
 auto/text_800AE5A8.c:
-	.text       start:0x800AE5A8 end:0x800C3F18
+	.text       start:0x800AE5A8 end:0x800C2980
+
+auto/icon.c:
+	.text       start:0x800C2980 end:0x800C3F18
 
 auto/text_800C3F18.c:
 	.text       start:0x800C3F18 end:0x800C40F4
