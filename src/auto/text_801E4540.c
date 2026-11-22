@@ -3434,7 +3434,7 @@ void fn_801EA514(s32 *arg0, s32 *arg1) {
             previous = node2[0];
 
             ((void **)previous)[1] = ((void **)last)[1];
-            walk[0] = previous;
+            ((void **)((void **)last)[1])[0] = node2[0];
 
             ((void **)node[0])[1] = node2;
             node2[0] = node[0];
