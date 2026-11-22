@@ -2323,14 +2323,14 @@ s32 Unit_ResolveWarpPos(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void 
                     cost = -1;
                 } else {
                     if (arg5 != NULL && arg4 > 0) {
-                        s32 ctr = arg4;
-                        do {
+                        { s32 k;
+                        for (k = 0; k < arg4; k++) {
                             if ((s8)p[0xA] == x && (s8)p[0xB] == y) {
                                 cost = -1;
                                 goto arm4_done;
                             }
                             p += 0x110;
-                        } while (--ctr != 0);
+                        } }
                     }
                     {
                         s32 xx = (s8)x;
