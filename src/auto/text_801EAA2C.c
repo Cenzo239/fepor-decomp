@@ -3682,7 +3682,7 @@ void fn_801EFDC8(void *arg0) {
         flag1 = 0;
         flag2 = 0;
         file2 = Heap_Alloc(0x60);
-        if (file2 != NULL) {
+        if (file2) {
             String_Init(&spA4, gGActorPathExt + 0x1DB, &sp1C);
             flag0 = 1;
             String_Concat(&sp98, &str13c, &str148);
