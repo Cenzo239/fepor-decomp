@@ -9435,12 +9435,14 @@ void fn_800C1208(void) {
     extern u8 *gMapBlendBufs[4];
     extern s32 gMapBlendBufIndex;
     void DCFlushRange(void *, u32);
-    u8 v;
     s32 i;
     u8 *dst;
     u8 *src;
     s32 j;
     s32 k;
+    u8 v;
+    s32 a;
+    s32 b;
 
     src = gMapBlendBufs[(gMapBlendBufIndex + 2) % 3];
     dst = gMapBlendBufs[gMapBlendBufIndex];
@@ -9448,7 +9450,9 @@ void fn_800C1208(void) {
         for (j = 0; j < 8; j++) {
             for (k = 0; k < 8; k++) {
                 v = *src++;
-                *dst++ = (u8)(((s32)((v * 0x10) & 0xF0) >> 4) + (v & 0xF0));
+                a = (v * 0x10) & 0xF0;
+                b = v & 0xF0;
+                *dst++ = (u8)((a >> 4) + b);
             }
         }
     }
@@ -10176,6 +10180,7 @@ s32 Event_GetString(void *arg0, u16 arg1) {
 
 #pragma global_optimizer off
 void fn_800C2750(void) {
+    u8 *work;
     M2C_UNK fn_80014000(s32, s32);
     M2C_UNK fn_80013F6C(void *, s32);
     M2C_UNK EventWork_Set(void *);
@@ -10190,21 +10195,20 @@ void fn_800C2750(void) {
     extern u8 gEventWork[];
     extern u8 lbl_8026FE18[];
     extern u16 gBattleState[700];
-    u8 *work;
 
-    work = &gEventWork[0];
+    work = gEventWork;
     fn_80014000(0x20, 0x1A0);
-    fn_80013F6C(&work[0x0], 0x80);
-    fn_80013F6C(&work[0x20], 0x80);
-    fn_80013F6C(&work[0x40], 0x80);
-    EventWork_Set(&work[0x0]);
+    fn_80013F6C(work + 0x0, 0x80);
+    fn_80013F6C(work + 0x20, 0x80);
+    fn_80013F6C(work + 0x40, 0x80);
+    EventWork_Set(work + 0x0);
     fn_800BB0E8();
     fn_800B5708();
     Script_RegisterCommands();
     Script_RegisterEventArrowCommands();
     fn_8019DB68();
     ScriptCmd_CmLoadScript(lbl_8026FE18 + 0x167);
-    work = &((u8 *)gBattleState)[0xB4];
+    work = (u8 *)gBattleState + 0xB4;
     EventFlag_Reset((s32 *)work);
     fn_800BDE40(work, (s32)(lbl_8026FE18 + 0x17B));
     fn_800BDE40(work, (s32)(lbl_8026FE18 + 0x187));
