@@ -1760,6 +1760,7 @@ extern "C" void fn_8002B520(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
+#pragma use_lmw_stmw on
 extern "C" void fn_800227F8(void *, s32);
 extern "C" void fn_8002F728(void *);
 extern "C" void fn_8002B758(void *arg0) {
