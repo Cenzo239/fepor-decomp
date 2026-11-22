@@ -15839,6 +15839,7 @@ s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
     void *unit;
     void *host;
     u32 tmp;
+    s32 result;
 
     if (unitId != 0) {
         unit = gUnits + ((unitId - 1) * 0x280);
@@ -15846,20 +15847,19 @@ s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
         unit = NULL;
     }
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
-        return 0;
+        result = 0;
+        goto done;
     }
     GfxEnt_ForEachKey(lbl_80296FE0, fn_801A0C3C, unit);
     if (!(gUiInputFlags & 1) && arg2 < 0) {
         fn_8004FE98(unit, arg1);
         fn_8004BF24(unit);
-        return 0;
+        result = 0;
+        goto done;
     }
     host = Process_Find(Proc_MuEventInst);
     if (host != NULL) {
-        *(void **)((u8 *)host + 0x54) = unit;
-        *(s32 *)((u8 *)host + 0x60) = arg1;
-        *(s32 *)((u8 *)host + 0x64) = arg2;
-        return 1;
+        goto stores;
     }
     tmp = fn_80127C48();
     if (tmp == 0) {
@@ -15867,10 +15867,13 @@ s32 fn_801A0B20(u8 unitId, s32 arg1, s32 arg2) {
     }
     host = Process_Create(Proc_MuEventInst, tmp);
     host = Process_CreateChild(lbl_80296FE0, host);
+stores:
     *(void **)((u8 *)host + 0x54) = unit;
     *(s32 *)((u8 *)host + 0x60) = arg1;
     *(s32 *)((u8 *)host + 0x64) = arg2;
-    return 1;
+    result = 1;
+done:
+    return result;
 }
 
 void fn_801A0C3C(void *arg0, u32 arg1) {
@@ -15929,6 +15932,7 @@ s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
 
     u8 *unit;
     void *parent;
+    void *found;
     s32 duration;
     u32 temp;
 
@@ -15944,24 +15948,20 @@ s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
 
     if (gUiInputFlags & 1) {
         fn_80184750(unit, arg1, 0, 0);
-        return 1;
-    }
-
-    parent = Process_Find(Proc_MuEventInst);
-
-    if (parent == 0) {
-        temp = fn_80127C48();
-
-        if (temp == 0) {
-            temp = fn_800C0658();
+    } else {
+        found = Process_Find(Proc_MuEventInst);
+        if (found != 0) {
+            parent = found;
+        } else {
+            temp = fn_80127C48();
+            if (temp == 0) {
+                temp = fn_800C0658();
+            }
+            parent = Process_Create(Proc_MuEventInst, temp);
         }
-
-        parent = Process_Create(Proc_MuEventInst, temp);
+        duration = (s32)((f32)arg2 / lbl_8036AF74);
+        fn_80184750(unit, arg1, duration, (s32)parent);
     }
-
-    duration = (s32)((f32)arg2 / lbl_8036AF74);
-
-    fn_80184750(unit, arg1, duration, (s32)parent);
 
     return 1;
 }
