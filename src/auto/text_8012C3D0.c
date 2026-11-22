@@ -3,6 +3,8 @@
 
 
 #include "global.h"
+extern f64 lbl_8036A4F0;
+extern f64 lbl_8036A4F8;
 #include "unit.h"
 #pragma cplusplus on
 struct UnitListDrawablePanel {
@@ -2062,8 +2064,8 @@ void fn_8012F5CC(void *arg0) {
     fn_8001003C(0, 0, 1, 0, 1, &gUiSelectMenuStrings[0x1C3], self[0x63] + 1, lbl_8036A50C, lbl_8036A510);
     fn_8001003C(0x10, 0, 6, 0, 1, &gUiSelectMenuStrings[0x1C6], lbl_8036A50C, lbl_8036A510);
     fn_8001003C(0x20, 0, 6, 0, 1, (char *)gUiSelectMenuStrings + 0x1C3, self[0x6D], lbl_8036A50C, lbl_8036A510);
-    fKeep = lbl_8036A4EC;
     f30 = fn_80059EB8(0x40, self[0x6E], lbl_8036A510, lbl_8036A544) - lbl_8036A548;
+    fKeep = lbl_8036A4EC;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036A54C, lbl_8036A550 + (lbl_8036A518 + f30), lbl_8036A500, lbl_8036A50C);
     Prim2D_BindTexture(*(void **)(self + 0x40), 0x12, 0x11);
