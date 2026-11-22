@@ -1193,7 +1193,7 @@ void Battle_QueuePromotionGains(s32 battle, void *unit) {
 }
 #pragma use_lmw_stmw reset
 
-void fn_80034A8C(void *arg0, void *arg1, u8 arg2, void *arg3, u8 arg4) {
+void fn_80034A8C(void *arg0, void *arg1, u8 value, void *arg3, u8 arg4) {
  u8 fn_8003D094(void *, u8);
  u8 fn_8003D13C(void *);
  void Battle_SetupUnit(void *,void *,s32);
@@ -1204,21 +1204,19 @@ void fn_80034A8C(void *arg0, void *arg1, u8 arg2, void *arg3, u8 arg4) {
  void Battle_TryStartGrowSeq(void *);
  extern u8 gBattleState[];
  struct BattleUnitView { u8 pad[0x2C9]; u8 gain; u8 pad2[0x5D6]; u8 anim[1]; };
- void *grow=arg3;
- u8 value=arg2;
- void *other=arg1;
- struct BattleUnitView *unit=arg0;
- if(arg4) value=fn_8003D094(other,value);
- if(value>fn_8003D13C(other)) value=fn_8003D13C(other);
- if(value) {
- Battle_SetupUnit(unit,other,-1);
- BattleAnim_Queue(unit->anim,0x27,(s8)fn_800386B0(other));
- if(value>fn_8003D13C(other)) value=fn_8003D13C(other);
- BattleAnim_Queue(unit->anim,0x28,(s8)value);
- unit->gain=value;
- fn_8014C5F4(gBattleState,(u8)value);
- fn_800351FC(unit,value,0,unit->anim);
- Battle_TryStartGrowSeq(grow);
+ struct BattleUnitView *unit = arg0;
+ u8 v = value;
+ if (arg4) v = fn_8003D094(arg1, v);
+ if (v > fn_8003D13C(arg1)) v = fn_8003D13C(arg1);
+ if (v) {
+  Battle_SetupUnit(unit, arg1, -1);
+  BattleAnim_Queue(unit->anim, 0x27, (s8)fn_800386B0(arg1));
+  if (v > fn_8003D13C(arg1)) v = fn_8003D13C(arg1);
+  BattleAnim_Queue(unit->anim, 0x28, (s8)v);
+  unit->gain = v;
+  fn_8014C5F4(gBattleState, (u8)v);
+  fn_800351FC(unit, v, 0, unit->anim);
+  Battle_TryStartGrowSeq(arg3);
  }
 }
 
@@ -1516,13 +1514,11 @@ void fn_80036150(s32 arg0) {
     void fn_800351FC(s32, u8, s32, s32);
     extern u8 gBattleState[];
     u8 var_r30;
-    u16 *p16;
 
     if (fn_8003D13C(arg0) != 0) {
         BattleAnim_Queue(arg0 + 0x8A0, 0x25, 0);
         BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
-        p16 = (u16 *)((u8 *)*(void **)(arg0 + 0x28C) + 0x10);
-        var_r30 = fn_8003D094(arg0, (u8)(*p16 / 20 + 0xA));
+        var_r30 = fn_8003D094(arg0, (u8)(*(u16 *)((u8 *)*(void **)(arg0 + 0x28C) + 0x10) / 20 + 0xA));
         if (var_r30 > fn_8003D13C(arg0)) {
             var_r30 = fn_8003D13C(arg0);
         }
