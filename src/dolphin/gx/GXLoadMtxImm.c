@@ -115,15 +115,21 @@ extern u16 *__GXData;
 extern f32 lbl_8036BDC0;
 
 static inline u32 __GXReadPECounterU32(u32 lo, u32 hi) {
+    volatile u16 *base;
+    volatile u16 *regH;
+    volatile u16 *regL;
     u32 ctrH0;
     u32 ctrH1;
     u32 ctrL;
 
-    ctrH0 = *((volatile u16 *)__peReg + hi);
+    base = __peReg;
+    regH = base + hi;
+    ctrH0 = *((volatile u16 *)base + hi);
+    regL = base + lo;
     do {
         ctrH1 = ctrH0;
-        ctrL = *((volatile u16 *)__peReg + lo);
-        ctrH0 = *((volatile u16 *)__peReg + hi);
+        ctrL = *regL;
+        ctrH0 = *regH;
     } while (ctrH0 != ctrH1);
     return (ctrH0 << 16) | ctrL;
 }
