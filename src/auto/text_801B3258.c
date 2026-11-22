@@ -12624,30 +12624,30 @@ void fn_801CB2A4(void *arg0) {
     extern f32 lbl_8036B4B0;
     extern f32 lbl_8036B4B8;
 
-    f32 eyeZ;
-    f32 eyeY;
-    f32 eyeX;
-    f32 lookZ;
-    f32 lookY;
-    f32 lookX;
-    f32 sp1C;
-    f32 sp18;
-    f32 sp14;
-    f32 sp10;
-    f32 spC;
-    f32 sp8;
+    struct CamEntry {
+        f32 ex, ey, ez;
+        f32 lx, ly, lz;
+        f32 fov;
+        u32 slot;
+    };
+    struct Vec3 { f32 x, y, z; };
+
+    struct Vec3 hi;
+    struct Vec3 lo;
+    struct Vec3 eyeArg;
+    struct Vec3 lookArg;
     void *self;
-    f32 *entry;
-    f32 t0, t1, t2, t3, t4, t5, t6;
+    struct CamEntry *entry;
+    f32 t6;
     u32 slot;
 
     self = arg0;
-    eyeZ = 0.0f;
-    eyeY = 0.0f;
-    eyeX = 0.0f;
-    lookZ = 0.0f;
-    lookY = 0.0f;
-    lookX = 0.0f;
+    hi.z = 0.0f;
+    hi.y = 0.0f;
+    hi.x = 0.0f;
+    lo.z = 0.0f;
+    lo.y = 0.0f;
+    lo.x = 0.0f;
 
     if (*(void **)((u8 *)self + 0x6C) == NULL) {
         return;
@@ -12665,36 +12665,26 @@ void fn_801CB2A4(void *arg0) {
         }
     }
 
-    entry = (f32 *)(*(u8 **)((u8 *)self + 0x50) + (*(s32 *)((u8 *)self + 0x74) << 5));
-    t0 = entry[0];
-    t1 = entry[1];
-    t2 = entry[2];
-    t3 = entry[3];
-    t4 = entry[4];
-    t5 = entry[5];
-    eyeX = t0;
-    eyeY = t1;
-    eyeZ = t2;
-    lookX = t3;
-    lookY = t4;
-    lookZ = t5;
-    t6 = entry[6];
-    slot = *(u32 *)((u8 *)entry + 0x1C);
+    entry = (struct CamEntry *)(*(u8 **)((u8 *)self + 0x50) + (*(s32 *)((u8 *)self + 0x74) << 5));
+    hi.x = entry->ex;
+    hi.y = entry->ey;
+    hi.z = entry->ez;
+    lo.x = entry->lx;
+    lo.y = entry->ly;
+    lo.z = entry->lz;
+    t6 = entry->fov;
+    slot = entry->slot;
 
     if (*(u8 *)((u8 *)self + 0x78) != 0) {
-        lookY = lbl_8036B4B0 - (t4 - lbl_8036B4B4);
+        lo.y = lbl_8036B4B0 - (lo.y - lbl_8036B4B4);
     }
     if (*(u8 *)((u8 *)self + 0x79) != 0) {
-        eyeX = eyeX * lbl_8036B4B8;
+        hi.x = hi.x * lbl_8036B4B8;
     }
 
-    *(u32 *)&sp8 = *(u32 *)&lookX;
-    *(u32 *)&spC = *(u32 *)&lookY;
-    *(u32 *)&sp10 = *(u32 *)&lookZ;
-    *(u32 *)&sp14 = *(u32 *)&eyeX;
-    *(u32 *)&sp18 = *(u32 *)&eyeY;
-    *(u32 *)&sp1C = *(u32 *)&eyeZ;
-    fn_800E8BF8(*(void **)((u8 *)self + 0x6C), &sp14, &sp8, (s32)slot, t6);
+    lookArg = lo;
+    eyeArg = hi;
+    fn_800E8BF8(*(void **)((u8 *)self + 0x6C), (f32 *)&eyeArg, (f32 *)&lookArg, (s32)slot, t6);
 
     *(s32 *)((u8 *)self + 0x74) = *(s32 *)((u8 *)self + 0x74) + 1;
     if (*(s32 *)((u8 *)self + 0x74) >= *(s32 *)((u8 *)self + 0x70)) {
