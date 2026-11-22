@@ -2954,66 +2954,48 @@ s32 fn_8024F964(void *entries, s32 data) {
     return 1;
 }
 
-s32 fn_8024FACC(void *arg0)
-{
+s32 fn_8024FACC(void *arg0) {
     struct AudioGroup {
         void *entries;
         u32 data;
         u16 count;
         u16 pad;
     };
-
     extern struct AudioGroup gAudioGroups[];
     extern u16 gAudioGroupCount;
-
     void Audio_Lock(void);
     void Audio_Unlock(void);
 
-    struct AudioGroup *group;
-    u8 *entry;
     s32 i;
     s32 j;
-    s32 count;
+    u16 count;
+    u8 *entry;
 
-    group = gAudioGroups;
-    i = 0;
     count = gAudioGroupCount;
-
-    while (i < count) {
-        if (group->entries == arg0) {
-            break;
-        }
-
-        group++;
-        i++;
+    for (i = 0; i < (s32)count && gAudioGroups[i].entries != arg0; i++) {
     }
-
-    if (i == count) {
-        return 0;
+    if (i == (s32)count) {
+        goto ret0;
     }
-
     Audio_Lock();
-
     entry = (u8 *)arg0;
-
     while (*(u16 *)entry != 0xFFFF) {
         if (*(u16 *)(entry + 2) != 0) {
-            Audio_Unlock();
-            return 0;
+            break;
         }
-
         entry += 0x20;
     }
-
-    for (j = i + 1; j < gAudioGroupCount; j++) {
-        gAudioGroups[j - 1] = gAudioGroups[j];
+    if (*(u16 *)entry == 0xFFFF) {
+        for (j = i + 1; j < gAudioGroupCount; j++) {
+            gAudioGroups[j - 1] = gAudioGroups[j];
+        }
+        gAudioGroupCount--;
+        Audio_Unlock();
+        return 1;
     }
-
-    gAudioGroupCount--;
-
     Audio_Unlock();
-
-    return 1;
+ret0:
+    return 0;
 }
 
 #pragma optimization_level 3
@@ -3157,46 +3139,32 @@ s32 fn_8024FF5C(u16 arg0)
         void *data;
     };
 
-    struct Entry *entries;
-    struct Entry *entry;
+    u8 *q;
+    u8 *moving;
     s32 i;
     s32 j;
-    s32 count;
+    u16 count;
 
-    entries = (struct Entry *)lbl_803548B8;
-    i = 0;
+    q = lbl_803548B8;
+    for (i = 0; i < (s32)lbl_80368A08 && arg0 != *(u16 *)q; q += 12, i++) {
+    }
 
-    while (i < lbl_80368A08) {
-        if (entries[i].id == arg0) {
-            break;
+    if (i != (s32)lbl_80368A08) {
+        q = lbl_803548B8 + i * 12;
+        *(u16 *)(q + 4) = *(u16 *)(q + 4) - 1;
+        if (*(u16 *)(q + 4) == 0) {
+            Audio_Lock();
+            count = lbl_80368A08;
+            moving = lbl_803548B8 + (i + 1) * 12;
+            for (j = i + 1; j < (s32)count; j++, moving += 12) {
+                *(struct Entry *)(moving - 12) = *(struct Entry *)moving;
+            }
+            lbl_80368A08--;
+            Audio_Unlock();
+            return 1;
         }
-        i++;
     }
-
-    if (i == lbl_80368A08) {
-        return 0;
-    }
-
-    entry = &entries[i];
-    entry->refCount--;
-
-    if (entry->refCount != 0) {
-        return 0;
-    }
-
-    Audio_Lock();
-
-    count = lbl_80368A08;
-
-    for (j = i + 1; j < count; j++) {
-        entries[j - 1] = entries[j];
-    }
-
-    lbl_80368A08--;
-
-    Audio_Unlock();
-
-    return 1;
+    return 0;
 }
 
 #pragma opt_strength_reduction off
