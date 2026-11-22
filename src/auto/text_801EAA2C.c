@@ -3565,11 +3565,11 @@ void fn_801EFDC8(void *arg0) {
     void **slot;
     char *s;
     char *strBase;
-    char *p204;
+    void *self;
+    void *base;
     void *file;
     void *file2;
-    void *base;
-    void *self;
+    char *p204;
     s32 i, j, pos, count, kind;
     s8 flag0, flag1, flag2;
 
