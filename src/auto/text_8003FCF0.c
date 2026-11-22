@@ -2045,7 +2045,7 @@ void fn_800432D8(void *arg0) {
     fn_80067708(2, 3, fn_80043DEC, self);
 }
 
-void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6)
+void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7)
 {
     extern void *lbl_803672A8;
     extern u8 lbl_8026A660[];
@@ -2059,66 +2059,40 @@ void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5,
     void fn_800432D8(void *);
     void *Process_CreateChild(void *, void *);
 
-    u8 *work;
-    void *buffer;
-    u32 size;
-    f32 width;
-    f32 height;
     f32 scale;
-    f32 limit;
+    u32 size;
+    void *buffer;
 
-    work = (u8 *)Heap_Alloc(0x20);
-    lbl_803672A8 = work;
+    lbl_803672A8 = Heap_Alloc(0x20);
 
-    *(f32 *)(work + 0x00) = arg2;
-    *(f32 *)(work + 0x04) = arg3;
-    *(f32 *)(work + 0x10) = arg5;
-    *(f32 *)(work + 0x14) = arg6;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x00) = arg2;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x04) = arg3;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x10) = arg6;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x14) = arg7;
 
-    scale = arg4 * arg6 / arg5;
+    scale = arg4;
+    scale = scale * arg7 / arg6;
 
-    if (scale < arg4) {
-        scale = arg4;
+    if (scale < arg5) {
+        scale = arg5;
     }
-
     if (scale > lbl_80368F30) {
         scale = lbl_80368F30;
     }
 
-    work = (u8 *)lbl_803672A8;
-    *(f32 *)(work + 0x08) = scale;
-    *(f32 *)(work + 0x0C) = scale;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x08) = scale;
+    *(f32 *)((u8 *)lbl_803672A8 + 0x0C) = scale;
 
-    if (arg5 > arg6) {
-        *(f32 *)(work + 0x08) =
-            *(f32 *)(work + 0x08) * (arg5 / arg6);
+    if (arg6 > arg7) {
+        *(f32 *)((u8 *)lbl_803672A8 + 0x08) *= arg6 / arg7;
     } else {
-        *(f32 *)(work + 0x0C) =
-            *(f32 *)(work + 0x0C) * (arg6 / arg5);
+        *(f32 *)((u8 *)lbl_803672A8 + 0x0C) *= arg7 / arg6;
     }
 
-    width = arg5;
-    height = arg6;
-
-    size = GXGetTexBufferSize(
-        (s32)width,
-        (s32)height,
-        4,
-        0,
-        0
-    );
-
-    buffer = fn_800C45B8(
-        -(s32)size,
-        lbl_8026A660 + 0x245,
-        0
-    );
-
-    work = (u8 *)lbl_803672A8;
-    *(void **)(work + 0x1C) = buffer;
-
-    work = (u8 *)lbl_803672A8;
-    DCInvalidateRange(*(void **)(work + 0x1C), size);
+    size = GXGetTexBufferSize((s32)arg6, (s32)arg7, 4, 0, 0);
+    buffer = fn_800C45B8(-(s32)size, lbl_8026A660 + 0x245, 0);
+    *(void **)((u8 *)lbl_803672A8 + 0x1C) = buffer;
+    DCInvalidateRange(*(void **)((u8 *)lbl_803672A8 + 0x1C), size);
 
     if (arg1 == 0) {
         fn_800432D8(arg0);
@@ -4538,12 +4512,12 @@ void fn_80048A90(void *arg0)
     extern u8 lbl_8036728C;
     extern u8 lbl_8036728D;
     extern u8 lbl_8036728E;
-    extern u8 lbl_80367290[];
+    extern u8 lbl_80367290;
     extern u8 lbl_80367294;
     extern u8 lbl_80367295;
-    extern u8 lbl_80367298[];
-    extern u8 lbl_8036729C[];
-    extern f32 lbl_80368F6C;
+    extern u8 lbl_80367298;
+    extern u8 lbl_8036729C;
+    extern const f32 lbl_80368F6C;
 
     u8 Stream_ReadU8(void *);
     u16 Stream_ReadU16(void *);
@@ -4566,20 +4540,20 @@ void fn_80048A90(void *arg0)
     lbl_8036728D = Stream_ReadU8(stream);
     lbl_8036728E = Stream_ReadU8(stream);
 
-    lbl_80367290[0] = Stream_ReadU8(stream);
-    lbl_80367290[1] = Stream_ReadU8(stream);
-    lbl_80367290[2] = Stream_ReadU8(stream);
+    *(u8 *)&lbl_80367290 = Stream_ReadU8(stream);
+    *((u8 *)&lbl_80367290 + 1) = Stream_ReadU8(stream);
+    *((u8 *)&lbl_80367290 + 2) = Stream_ReadU8(stream);
 
     lbl_80367294 = Stream_ReadU8(stream);
     lbl_80367295 = Stream_ReadU8(stream);
 
-    lbl_80367298[0] = Stream_ReadU8(stream);
-    lbl_80367298[1] = Stream_ReadU8(stream);
-    lbl_80367298[2] = Stream_ReadU8(stream);
+    *(u8 *)&lbl_80367298 = Stream_ReadU8(stream);
+    *((u8 *)&lbl_80367298 + 1) = Stream_ReadU8(stream);
+    *((u8 *)&lbl_80367298 + 2) = Stream_ReadU8(stream);
 
-    lbl_8036729C[0] = Stream_ReadU8(stream);
-    lbl_8036729C[1] = Stream_ReadU8(stream);
-    lbl_8036729C[2] = Stream_ReadU8(stream);
+    *(u8 *)&lbl_8036729C = Stream_ReadU8(stream);
+    *((u8 *)&lbl_8036729C + 1) = Stream_ReadU8(stream);
+    *((u8 *)&lbl_8036729C + 2) = Stream_ReadU8(stream);
 
     value = Stream_ReadU8(stream);
     x = (s16)Stream_ReadU16(stream);
@@ -4601,9 +4575,9 @@ void fn_80048A90(void *arg0)
         Stream_ReadU8(stream);
     }
 
-    lbl_80367298[3] = 0xFF;
-    lbl_8036729C[3] = 0xFF;
-    lbl_80367290[3] = 0xFF;
+    *((u8 *)&lbl_80367298 + 3) = 0xFF;
+    *((u8 *)&lbl_8036729C + 3) = 0xFF;
+    *((u8 *)&lbl_80367290 + 3) = 0xFF;
     lbl_80367288 = 1;
 }
 
@@ -4743,26 +4717,24 @@ void fn_80049174(void *arg0, void *arg1, void *arg2, void *arg3) {
     u8 *process;
     u32 rgba;
     u8 *model;
+    s32 owner;
 
-    self = (u8 *)arg0;
-    color = (u8 *)arg2;
+    self = arg0;
+    color = arg2;
+    owner = (s32)arg3;
 
-    if (arg3 == NULL) {
-        rgba = *(u32 *)color;
-        model = self + 0x14;
-
-        Model_SetColor(
-            model,
-            ((u8 *)&rgba)[0],
-            ((u8 *)&rgba)[1],
-            ((u8 *)&rgba)[2]
-        );
-
-        Model_SetAlpha(model, ((u8 *)&rgba)[3]);
-        return;
+    if (owner) {
+        goto create;
     }
 
-    if (arg1 != NULL) {
+    rgba = *(u32 *)color;
+    model = self + 0x14;
+    Model_SetColor(model, ((u8 *)&rgba)[0], ((u8 *)&rgba)[1], ((u8 *)&rgba)[2]);
+    Model_SetAlpha(model, ((u8 *)&rgba)[3]);
+    return;
+
+create:
+    if (arg1) {
         process = Process_CreateChild(lbl_80285710, arg1);
     } else {
         process = Process_Create(lbl_80285710, 3);
@@ -4773,8 +4745,8 @@ void fn_80049174(void *arg0, void *arg1, void *arg2, void *arg3) {
     process[0x42] = color[2];
     process[0x43] = color[3];
 
-    *(void **)(process + 0x38) = arg3;
-    *(void **)(process + 0x30) = arg0;
+    *(void **)(process + 0x38) = (void *)owner;
+    *(void **)(process + 0x30) = self;
 }
 
 void fn_80049238(void *arg0) {
@@ -4971,10 +4943,10 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
         enabled = 0;
     }
 
-    if (enabled != 0) {
-        mode = (u8)arg2;
-        node = obj + 0x14;
+    mode = (u8)arg2;
+    node = obj + 0x14;
 
+    if (enabled != 0) {
         switch (mode) {
         case 3:
             fn_8005FEE8(node, lbl_80368EE4);
@@ -4987,9 +4959,6 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
             break;
         }
     } else {
-        mode = (u8)arg2;
-        node = obj + 0x14;
-
         process = (u8 *)Process_CreateEx(lbl_802856C8);
 
         *(void **)(process + 0x34) = node;
@@ -5662,7 +5631,7 @@ s32 fn_8004ABD4(void *arg0, u8 arg1) {
     u32 m;
 
     item = arg0;
-    if (arg0 != NULL) {
+    if (item != NULL) {
         if (arg1 == 0) {
             if (*(void **)item != NULL) {
                 range = (u8)Item_GetMaxRange(*(void **)item);
@@ -8387,6 +8356,8 @@ void fn_80050C90(void *arg0)
     u8 *unit;
     s32 x;
     s32 y;
+    f32 fx;
+    f32 fy;
     u32 flags;
     u8 mode;
     u8 enabled;
@@ -8395,17 +8366,15 @@ void fn_80050C90(void *arg0)
     unit = (u8 *)arg0;
 
     if (fn_80040824(unit) != 0) {
-        x = (s8)unit[0x19E];
-        y = (s8)unit[0x19F];
+        x = *(s8 *)(unit + 0x19E);
+        y = *(s8 *)(unit + 0x19F);
 
-        *(f32 *)(unit + 4) = lbl_80368FC4 + (f32)x;
-        *(f32 *)(unit + 8) = lbl_80368FC4 + (f32)y;
+        fx = lbl_80368FC4 + (f32)x;
+        fy = lbl_80368FC4 + (f32)y;
+        *(f32 *)(unit + 4) = fx;
+        *(f32 *)(unit + 8) = fy;
 
-        *(f32 *)(unit + 0xC) = Map_SampleHeightRaw(
-            gBattleMap,
-            *(f32 *)(unit + 4),
-            *(f32 *)(unit + 8)
-        );
+        *(f32 *)(unit + 0xC) = Map_SampleHeightRaw(gBattleMap, fx, fy);
 
         flags = *(u32 *)(unit + 0x1A0);
         *(u32 *)(unit + 0x1A0) = flags & ~0x240;
@@ -8413,10 +8382,10 @@ void fn_80050C90(void *arg0)
         Model_SetAlpha(unit + 0x1C, 0xFF);
 
         enabled = 1;
-        mode = gMapBlendMode - 1;
+        mode = (u8)(gMapBlendMode - 1);
 
-        if (((u32)((1 | ~mode) -
-            ((u32)(1 - mode) >> 1)) >> 31) == 0) {
+        if (((u32)((~(mode) | enabled) -
+            ((u32)(enabled - mode) >> 1)) >> 31) == 0) {
             enabled = 0;
         }
 
