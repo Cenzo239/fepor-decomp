@@ -1719,7 +1719,8 @@ extern "C" void fn_80113A24(void *arg0, u8 arg1) {
  Vec3 a(0.0f), b(0.0f), c(0.0f);
  if(arg1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==2) {
  VTable *vt = *(VTable **)((u8 *)arg0+0x40);
- a=vt->GetPos(arg0,0);
+ Vec3 (*fp)(void *, s32) = vt->GetPos;
+ a=fp(arg0,0);
  b=Camera_GetLookAt(arg0);
  } else {
  a=(*(Actor **)((u8 *)arg0+0x118))->GetPos(0);
@@ -1898,15 +1899,17 @@ void fn_80113F88(void *arg0) {
     SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
 void fn_80114078(void *arg0) {
+    void *self = arg0;
     s32 n;
-    *(u8 *)((u8 *)arg0 + 0x184) = 1;
-    Actor_LoadAnim(arg0, (u8 *)&gActorXmlStrs + 0x498, *(s32 *)((u8 *)arg0 + 0x188) * 2, 0, 1);
+
+    *(u8 *)((u8 *)self + 0x184) = 1;
+    Actor_LoadAnim(self, (u8 *)&gActorXmlStrs + 0x498, *(s32 *)((u8 *)self + 0x188) * 2, 0, 1);
     n = strlen((char *)&gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x1C, n);
+    String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x1C, n);
     n = strlen((char *)&gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x1C, n);
-    *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
-    *(u8 *)((u8 *)arg0 + 0x1A6) = 1;
+    String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x1C, n);
+    *(u8 *)((u8 *)self + 0x1A4) = 1;
+    *(u8 *)((u8 *)self + 0x1A6) = 1;
 }
 
 #pragma cplusplus on
@@ -2134,16 +2137,16 @@ after_dist:
 extern "C" void fn_801146BC(void *arg0) {
     void *Heap_Alloc(s32);
     void String_Init(void *, char *, void *);
-    void String_Destroy(void *, s32);
     void Camera_GetLookAt(void *, void *);
+    void String_Destroy(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     struct Actor {
         u8 pad[0x40];
         virtual void v0() = 0;
         virtual void v1() = 0;
         virtual void v2() = 0;
-        virtual void v3() = 0;
         virtual void v4() = 0;
+        virtual void v3() = 0;
         virtual void v5() = 0;
         virtual void v6() = 0;
         virtual void v7() = 0;
@@ -2157,22 +2160,22 @@ extern "C" void fn_801146BC(void *arg0) {
         u8 pad[0x10];
         virtual void v0() = 0;
         virtual void v1() = 0;
-        virtual void v2() = 0;
         virtual void v3() = 0;
+        virtual void v2() = 0;
         virtual void v4() = 0;
         virtual void Add(void *) = 0;
     };
     typedef struct { s32 x, y, z; } Word3;
-    Vec3f pos;
+    register Vec3f pos;
     Vec3f got;
-    Word3 copyA;
+    String strShort;
+    register Word3 copyA;
     Word3 lookAt;
+    void *scratch1;
     Word3 copyB;
     String strLong;
-    String strShort;
-    void *scratch1;
     void *scratch2;
-    void *obj;
+    register void *obj;
     s8 flagLong;
     s8 flagShort;
 
@@ -2182,8 +2185,8 @@ extern "C" void fn_801146BC(void *arg0) {
     got = ((Actor *)arg0)->GetPos(0);
     flagLong = 0;
     flagShort = 0;
-    pos.y = got.y;
     pos.x = got.x;
+    pos.y = got.y;
     pos.z = got.z;
     pos.y = 6.0f + *(f32 *)((u8 *)arg0 + 0x4C);
     obj = Heap_Alloc(0xC8);
@@ -4374,22 +4377,27 @@ void fn_80118B7C(void *arg0) {
 
 void fn_80118C1C(void) {
     void fn_800A6AE4(void);
-    void fn_8002297C(void *);
     void fn_800C1060(s32);
-    extern u8 lbl_802CA518[];
-    extern u8 lbl_80367289;
-    u8 flag;
-    u8 temp;
+    void Map_RefreshUnitMap(void *);
+    extern u8 gBattleMap[];
+    extern u8 gMapBlendMode;
+    s32 var_r4;
+    s32 temp;
+    s32 a, b;
+    s32 arg;
 
     fn_800A6AE4();
-    fn_8002297C(lbl_802CA518);
-    flag = 1;
-    temp = (u8)(lbl_80367289 - 1);
-    if (((u32)((flag | ~temp) - ((u32)(flag - temp) >> 1)) >> 31) == 0) {
-        flag = 0;
+    Map_RefreshUnitMap(gBattleMap);
+    var_r4 = 1;
+    temp = (u8)(gMapBlendMode - 1);
+    b = var_r4 | ~temp;
+    a = (u32)(1 - temp) >> 1;
+    if (((u32)(b - a) >> 31) == 0) {
+        var_r4 = 0;
     }
-    if (flag) {
-        fn_800C1060(0);
+    arg = 0;
+    if ((u8)var_r4 != 0) {
+        fn_800C1060(arg);
     }
 }
 
@@ -7056,21 +7064,17 @@ void fn_8011CB2C(void *arg0) {
 }
 
 void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
-    s32 t48;
-    u8 flag;
-    s32 t4c;
     s32 x;
-    s32 t64;
     s32 y;
+    u8 flag;
     s32 t60;
+    s32 t64;
     s32 tc8;
 
-    t48 = *(s32 *)((u8 *)arg0 + 0x48);
+    x = arg1 - *(s32 *)((u8 *)arg0 + 0x48);
+    y = arg2 - *(s32 *)((u8 *)arg0 + 0x4C);
     flag = 0;
-    t4c = *(s32 *)((u8 *)arg0 + 0x4C);
-    x = arg1 - t48;
     t64 = *(s32 *)((u8 *)arg0 + 0x64);
-    y = arg2 - t4c;
     t60 = *(s32 *)((u8 *)arg0 + 0x60);
     tc8 = *(s32 *)((u8 *)arg0 + 0xC8);
     *(s32 *)((u8 *)arg0 + 0xCC) = flag;
@@ -7350,9 +7354,12 @@ void *fn_8011D118(void *arg0, void *arg1, void *xml) {
     *(s32 *)(self + 0xC8) = *(s32 *)(self + 0x64);
     *(s32 *)(self + 0xFC) = 0;
     {
-        s32 n = *(s32 *)(self + 0xB0);
-        s32 w = *(s32 *)(self + 0x60);
-        s32 c8 = *(s32 *)(self + 0xC8);
+        s32 n;
+        s32 w;
+        s32 c8;
+        n = *(s32 *)(self + 0xB0);
+        c8 = *(s32 *)(self + 0xC8);
+        w = *(s32 *)(self + 0x60);
         *(s32 *)(self + 0xCC) = 0;
         *(s32 *)(self + 0xD0) = c8;
         *(s32 *)(self + 0xD4) = w;
