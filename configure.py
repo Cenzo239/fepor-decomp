@@ -492,6 +492,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8022E804.c", mw_version="GC/1.3"),
             Object(NonMatching, "auto/text_8022EBB8.c"),
             Object(NonMatching, "auto/text_80230944.c"),
+            Object(NonMatching, "auto/text_80230BBC.c"),
             Object(NonMatching, "auto/text_80231CC8.c"),
             Object(NonMatching, "auto/text_80231D2C.c"),
             Object(NonMatching, "dolphin/exi/EXIBios.c", mw_version="GC/1.2.5n"),
