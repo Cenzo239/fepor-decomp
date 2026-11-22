@@ -497,8 +497,3 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     }
     return (u8 *)result + 0x20;
 }
-
-void Archive_Load(s32 arg0) {
-    void Archive_LoadFlags(s32, s32);
-    Archive_LoadFlags(arg0, 0);
-}
