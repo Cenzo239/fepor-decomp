@@ -8257,46 +8257,55 @@ void fn_80170E18(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80170EB0(void *arg0) {
-#pragma cplusplus on
 void *Heap_Alloc(u32);
 void *Ui_CreateMenu(void *,void *,s32);
 void *Ui_FindChild(void *,s32,s32);
 void Ui_SetWidgetText(void *,void *);
 extern u8 lbl_8028459C[],lbl_80292090[],lbl_80295320[],lbl_802952D0[],lbl_80295280[],gUiMenuDrawVtbl[],lbl_802945A0[],lbl_802920E0[],lbl_802951E4[];
 extern s8 lbl_80368138,lbl_80368144;
-extern void *lbl_8036813C,*lbl_80368148;
+extern void * volatile lbl_8036813C;
+extern void *lbl_80368148;
 extern f32 lbl_8036AB68;
-struct Init { void set(void **slot, void *value) { *slot=value; } }; Init init;
 void *p;
-if(!lbl_80368138) {
-init.set(&lbl_8036813C,lbl_8028459C); init.set(&lbl_8036813C,lbl_80292090); init.set(&lbl_8036813C,lbl_80295320); init.set(&lbl_8036813C,lbl_802952D0); lbl_80368138=1;
+if (!lbl_80368138) {
+    lbl_8036813C = lbl_8028459C;
+    lbl_8036813C = lbl_80292090;
+    lbl_8036813C = lbl_80295320;
+    lbl_8036813C = lbl_802952D0;
+    lbl_80368138 = 1;
 }
-if(!lbl_80368144) { lbl_80368148=lbl_80295280; lbl_80368144=1; }
-p=Heap_Alloc(0x20);
-if(p) {
-M2C_FIELD(p,void **,4)=gUiMenuDrawVtbl;
-M2C_FIELD(p,void **,0)=lbl_802945A0;
-M2C_FIELD(p,void **,4)=lbl_802920E0;
-M2C_FIELD(p,s16 *,8)=0x20;
-M2C_FIELD(p,s16 *,10)=0x38;
-M2C_FIELD(p,s16 *,12)=0x108;
-M2C_FIELD(p,s16 *,14)=0x1c;
-M2C_FIELD(p,s16 *,16)=0;
-M2C_FIELD(p,s16 *,18)=0;
-M2C_FIELD(p,s16 *,20)=0;
-M2C_FIELD(p,s16 *,22)=0;
-M2C_FIELD(p,f32 *,24)=10.0f;
-M2C_FIELD(p,s16 *,28)=0x20;
-M2C_FIELD(p,s16 *,30)=4;
-M2C_FIELD(p,void **,4)=lbl_802951E4;
+if (!lbl_80368144) {
+    lbl_80368148 = lbl_80295280;
+    lbl_80368144 = 1;
 }
-M2C_FIELD(p,s16 *,30)=0;
-M2C_FIELD(arg0,void **,0x5c)=Ui_CreateMenu(p,arg0,0);
-p=Ui_FindChild(arg0,-0x1000,0);
-if(p) Ui_SetWidgetText(p,(u8 *)gUiMsgStrings+0x2a3);
-#pragma cplusplus reset
+p = Heap_Alloc(0x20);
+if (p) {
+    M2C_FIELD(p, void **, 4) = gUiMenuDrawVtbl;
+    M2C_FIELD(p, void **, 0) = lbl_802945A0;
+    M2C_FIELD(p, void **, 4) = lbl_802920E0;
+    M2C_FIELD(p, s16 *, 8) = 0x20;
+    M2C_FIELD(p, s16 *, 10) = 0x38;
+    M2C_FIELD(p, s16 *, 12) = 0x108;
+    M2C_FIELD(p, s16 *, 14) = 0x1c;
+    M2C_FIELD(p, s16 *, 16) = 0;
+    M2C_FIELD(p, s16 *, 18) = 0;
+    M2C_FIELD(p, s16 *, 20) = 0;
+    M2C_FIELD(p, s16 *, 22) = 0;
+    M2C_FIELD(p, f32 *, 24) = 10.0f;
+    M2C_FIELD(p, s16 *, 28) = 0x20;
+    M2C_FIELD(p, s16 *, 30) = 4;
+    M2C_FIELD(p, void **, 4) = lbl_802951E4;
 }
+M2C_FIELD(p, s16 *, 30) = 0;
+M2C_FIELD(arg0, void **, 0x5c) = Ui_CreateMenu(p, arg0, 0);
+p = Ui_FindChild(arg0, -0x1000, 0);
+if (p) {
+    Ui_SetWidgetText(p, (u8 *)gUiMsgStrings + 0x2a3);
+}
+}
+#pragma global_optimizer reset
 
 void fn_80171004(void *arg0)
 {
@@ -15007,12 +15016,11 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     };
     extern u8 lbl_80278780[];
     extern f32 lbl_8036ABA8;
+    s16 w,h;
     u8 *unit;
     s32 num;
     f32 target;
     f32 cur;
-    s16 x0,y0,x1,y1;
-    s32 w,h;
 
     unit = M2C_FIELD(arg0, u8 **, 0x4C);
     num = Status_SumBonus(unit + 0x1BC);
@@ -15032,13 +15040,9 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         Ui_PlaySeCue(lbl_80278780 + 0x9E, 0x64);
     }
     ((Obj *)arg0)->v2(arg1);
-    x0 = M2C_FIELD(arg0, s16 *, 0xA);
-    y0 = M2C_FIELD(arg0, s16 *, 0xC);
-    x1 = M2C_FIELD(arg0, s16 *, 0xE);
-    y1 = M2C_FIELD(arg0, s16 *, 0x10);
-    w = x1 - x0;
-    h = y1 - y0;
-    Ui_DrawJobPersonalPanel(0, 0, (s16)w, (s16)h,
+    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
+    h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
+    Ui_DrawJobPersonalPanel(0, 0, w, h,
                 M2C_FIELD(M2C_FIELD(unit, u8 **, 0x18C), u8 *, 0x40), 0xCC, 0x10,
                 M2C_FIELD(arg0, f32 *, 0x50));
 }
