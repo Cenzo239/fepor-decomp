@@ -835,15 +835,22 @@ void fn_80225BF4(void) {
     M2C_FIELD(__cpReg, s16 *, 4) = 4;
 }
 
+#pragma scheduling off
 void fn_80225C04(u32 *top_pixels_in, u32 *top_pixels_out, u32 *bot_pixels_in, u32 *bot_pixels_out, u32 *clear_pixels_in, u32 *copy_clks) {
-    *top_pixels_in = __GXReadPECounterU32(0xC, 0xD) * 4;
-    *top_pixels_out = __GXReadPECounterU32(0xE, 0xF) * 4;
-    *bot_pixels_in = __GXReadPECounterU32(0x10, 0x11) * 4;
-    *bot_pixels_out = __GXReadPECounterU32(0x12, 0x13) * 4;
-    *clear_pixels_in = __GXReadPECounterU32(0x14, 0x15) * 4;
+    u32 v;
+    v = __GXReadPECounterU32(0xC, 0xD);
+    *top_pixels_in = v * 4;
+    v = __GXReadPECounterU32(0xE, 0xF);
+    *top_pixels_out = v * 4;
+    v = __GXReadPECounterU32(0x10, 0x11);
+    *bot_pixels_in = v * 4;
+    v = __GXReadPECounterU32(0x12, 0x13);
+    *bot_pixels_out = v * 4;
+    v = __GXReadPECounterU32(0x14, 0x15);
+    *clear_pixels_in = v * 4;
     *copy_clks = __GXReadPECounterU32(0x16, 0x17);
 }
-
+#pragma scheduling reset
 void fn_80225D3C(void)
 {
   extern u16 *__GXData;
