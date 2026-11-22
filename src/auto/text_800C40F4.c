@@ -15116,6 +15116,7 @@ extern "C" void fn_800E3C04(u8 *self,s32 context) {
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
+#pragma opt_strength_reduction reset
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
 void *fn_800E4688(void *,void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
