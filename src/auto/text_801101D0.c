@@ -5593,42 +5593,48 @@ void *fn_8011AC78(void *arg0)
     return result;
 }
 
+#pragma use_lmw_stmw on
 void fn_8011ACFC(void) {
     void fn_8001594C(void *, s8);
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
     extern u8 gUnitLists[];
     void *list[3];
+    u8 *iter;
+    u8 *node;
     u32 flags;
     u8 *next;
-    u8 *node;
-    fn_8001594C(list,0);
-    node=*(u8 **)gUnitLists;
-    for(;node;node=next) {
-        next=*(u8 **)(node+0x184);
-        if(!(*(u32 *)(node+0x1A0)&0x010000DC)) {
-            fn_800156A0(*(void **)(node+0x190),node);
-            fn_80015718(list,node);
+
+    fn_8001594C(list, 0);
+    node = *(u8 **)gUnitLists;
+    while (node != NULL) {
+        next = *(u8 **)(node + 0x184);
+        if (!(*(u32 *)(node + 0x1A0) & 0x010000DC)) {
+            fn_800156A0(*(void **)(node + 0x190), node);
+            fn_80015718(list, node);
         }
+        node = next;
     }
-    node=*(u8 **)gUnitLists;
-    for(;node;node=next) {
-        next=*(u8 **)(node+0x184);
-        if(!(*(u32 *)(node+0x1A0)&0x010000DC)) break;
-        fn_800156A0(*(void **)(node+0x190),node);
-        fn_80015718(list,node);
-        *(u32 *)(node+0x1A0)|=0x010000DC;
+    node = *(u8 **)gUnitLists;
+    while (node != NULL) {
+        next = *(u8 **)(node + 0x184);
+        if (!(*(u32 *)(node + 0x1A0) & 0x010000DC))
+            break;
+        fn_800156A0(*(void **)(node + 0x190), node);
+        fn_80015718(list, node);
+        *(u32 *)(node + 0x1A0) |= 0x010000DC;
+        node = next;
     }
-    node=list[0];
-    for(;node;node=next) {
-        next=*(u8 **)(node+0x184);
-        flags=*(u32 *)(node+0x1A0)&0x010000DC;
-        fn_800156A0(*(void **)(node+0x190),node);
-        fn_80015718(gUnitLists,node);
-        if(flags) *(u32 *)(node+0x1A0)|=0x010000DC;
+    for (iter = list[0]; iter != NULL; iter = next) {
+        next = *(u8 **)(iter + 0x184);
+        flags = *(u32 *)(iter + 0x1A0) & 0x010000DC;
+        fn_800156A0(*(void **)(iter + 0x190), iter);
+        fn_80015718(gUnitLists, iter);
+        if (flags)
+            *(u32 *)(iter + 0x1A0) |= 0x010000DC;
     }
 }
-
+#pragma use_lmw_stmw reset
 void fn_8011AE2C(void *arg0) {
     M2C_UNK Unit_SetMapPos(s32, u8, u8);
     M2C_UNK fn_80050C90(s32);
@@ -6014,6 +6020,8 @@ extern "C" void fn_8011B5FC(void *arg0, void *arg1) {
         virtual void v27() = 0;
         virtual void v28() = 0;
         virtual void Draw(void *) = 0;
+        u8 pad2[0x36];
+        s16 field3A;
     };
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
@@ -6039,7 +6047,7 @@ extern "C" void fn_8011B5FC(void *arg0, void *arg1) {
     Prim2D_PrepareTex();
     temp_f2 = (f32) ((Obj *)arg0)->GetTextSize();
     temp_r29 = (s32) (lbl_8036A238 * temp_f2);
-    temp_r31 = M2C_FIELD(state, s16 *, 0x3A);
+    temp_r31 = state->field3A;
     temp_r30 = Text_MeasureHeight(-1, lbl_8036A1E8, temp_f2) >> 1;
     fn_8008AB7C(((Obj *)arg0)->GetTextSize() >> 1, temp_r31 + temp_r30, temp_r29, 0x17, 0xA, 0x28, 1);
     Prim2D_Begin();
@@ -6501,6 +6509,7 @@ s32 fn_8011C000(void) {
 
 #pragma use_lmw_stmw on
 s32 fn_8011C018(void *self) {
+#pragma use_lmw_stmw on
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
     s16 bestDist;
@@ -6516,7 +6525,6 @@ s32 fn_8011C018(void *self) {
     u32 ox;
     u32 sy;
     u32 sx;
-    s32 neg;
 
     bestDist = 0x7FFF;
     best = NULL;
@@ -6531,8 +6539,7 @@ s32 fn_8011C018(void *self) {
             continue;
         }
         dy = (s8)sy - (s8)oy;
-        neg = dy < 0;
-        if (neg) {
+        if ((s8)sy - (s8)oy < 0) {
             dy = -dy;
         }
         ox = ((u8 *)other)[0];
@@ -6633,7 +6640,7 @@ s32 fn_8011C164(void *self) {
     *(void **)((u8 *)self + 0x8) = result;
     return best != NULL;
 }
-#pragma global_optimizer on
+#pragma global_optimizer off
 s32 fn_8011C2B8(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
@@ -7427,30 +7434,20 @@ void fn_8011D4C8(void) {
 
     self = Process_Find(gUiPanelProc);
     if (self) {
-        i = 0;
-        zero = i;
-        p = self;
-        do {
+        for (i = 0, p = self, zero = i; i < 4; i++, p += 4) {
             void *obj = *(void **)(p + 0x34);
             if (obj) {
                 fn_80122C84(obj);
                 *(s32 *)(p + 0x34) = zero;
             }
-            i += 1;
-            p += 4;
-        } while (i < 4);
-        i = 0;
-        zero = i;
-        p = self;
-        do {
+        }
+        for (i = 0, p = self, zero = i; i < 4; i++, p += 4) {
             void *obj = *(void **)(p + 0x48);
             if (obj) {
                 fn_8007AD6C(obj);
                 *(s32 *)(p + 0x48) = zero;
             }
-            i += 1;
-            p += 4;
-        } while (i < 4);
+        }
         *(s32 *)((u8 *)self + 0x30) = 0;
         if (lbl_80367A5C) {
             fn_80109020((void *)lbl_80367A5C);
