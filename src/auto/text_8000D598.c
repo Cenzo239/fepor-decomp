@@ -576,14 +576,12 @@ block_37:
 int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float f1, float f2, float f3, float f4);
 #pragma push
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
 void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
     s32 index;
     u32 *table;
     u32 result;
 
-    index = 3;
-    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    result = (u32)fn_8010494C(lbl_802AEE20[3]);
     table = (u32 *)lbl_802AEE20;
     index = Text_FindFontIndex(table, result);
 
@@ -645,10 +643,10 @@ void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
 }
 #pragma pop
 void fn_8000E684(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
+u32 *p;
 u32 *table;
 u32 result;
 s32 index;
-u32 *p;
 index=0;
 result=(u32)fn_8010494C(lbl_802AEE20[index]);
 table=(u32*)lbl_802AEE20;
