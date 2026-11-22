@@ -2383,30 +2383,30 @@ s32 fn_8021B20C(s32 chan) {
 }
 
 #pragma dont_inline on
-void fn_8021B2B8(s32 arg0, s32 arg1) {
+void fn_8021B2B8(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 __CARDEraseSector(s32, s32, void *);
     s32 fn_802191F0(s32, s32, s32, s32, void *);
     void *memcpy(void *, const void *, u32);
     s32 __CARDPutControlBlock(void *, s32);
     u8 *card;
-    s32 chan;
     void (*callback)(s32, s32);
-    s32 result;
+    s32 step;
+    s32 i;
 
-    chan = arg0;
     card = (u8 *)__CARDBlock + chan * 0x110;
-    result = arg1;
     if (result >= 0) {
         *(s32 *)(card + 0x28) = *(s32 *)(card + 0x28) + 1;
-        if (*(s32 *)(card + 0x28) < 5) {
-            result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * *(s32 *)(card + 0x28), fn_8021B2B8);
+        step = *(s32 *)(card + 0x28);
+        if (step < 5) {
+            result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * step, fn_8021B2B8);
             if (result >= 0) {
                 return;
             }
-        } else if (*(s32 *)(card + 0x28) < 10) {
-            result = fn_802191F0(chan, *(s32 *)(card + 0xC) * (*(s32 *)(card + 0x28) - 5), 0x2000,
-                                (s32)(*(u8 **)(card + 0x80) + ((*(s32 *)(card + 0x28) - 5) << 13)), fn_8021B2B8);
+        } else if (step < 10) {
+            i = step - 5;
+            result = fn_802191F0(chan, *(s32 *)(card + 0xC) * i, 0x2000,
+                                (s32)(*(u8 **)(card + 0x80) + (i << 13)), fn_8021B2B8);
             if (result >= 0) {
                 return;
             }
@@ -2706,83 +2706,87 @@ after:
     }
     return result;
 }
-s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
+s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 {
+#pragma use_lmw_stmw on
     u8 *__CARDGetDirBlock(void *);
     s32 fn_80231944(const void *, const void *, u32);
     extern u8 lbl_8033A420[];
 
     u8 *entry;
-    u8 *reference;
-    u8 *defaultReference;
+    u8 *gamecode;
+    u8 *defaultCode;
     char *name;
-    s32 index;
-    s32 status;
-    s32 remaining;
-    s32 matched;
-    s8 c1;
-    s8 c2;
+    char *dirName;
+    s32 i;
+    s32 result;
+    s32 n;
+    s8 a;
+    s8 b;
 
-    if (*(s32 *)arg0 == 0) {
+    if (*(s32 *)card == 0) {
         return -3;
     }
 
-    entry = __CARDGetDirBlock(arg0);
-    defaultReference = lbl_8033A420;
-    index = 0;
+    entry = __CARDGetDirBlock(card);
+    defaultCode = lbl_8033A420;
+    for (i = 0; i < 0x7F; i++, entry += 0x40) {
+        gamecode = *(u8 **)((u8 *)card + 0x10C);
 
-    do {
-        reference = *(u8 **)((u8 *)arg0 + 0x10C);
-
-        if (entry[0] == 0xFF) {
-            status = -4;
-        } else if (reference == defaultReference) {
-            status = -10;
-        } else if (fn_80231944(entry, reference, 4) == 0 &&
-                   fn_80231944(entry + 4, reference + 4, 2) == 0) {
-            status = 0;
+        if (*entry == 0xFF) {
+            result = -4;
         } else {
-            status = -10;
+            if (gamecode == defaultCode) {
+                result = 0;
+            } else {
+                if (fn_80231944(entry, gamecode, 4) != 0) {
+                    result = -10;
+                } else if (fn_80231944(entry + 4, gamecode + 4, 2) != 0) {
+                    result = -10;
+                } else {
+                    result = 0;
+                }
+            }
         }
 
-        if (status >= 0) {
-            name = arg1;
-            reference = entry + 8;
-            remaining = 0x20;
-            matched = 0;
-
-            do {
-                c1 = (s8)*reference++;
-                c2 = (s8)*name++;
-
-                if (c1 != c2) {
-                    matched = 0;
-                    break;
-                }
-
-                if (c2 == 0) {
-                    matched = 1;
-                    break;
-                }
-
-                remaining--;
-            } while (remaining >= 0);
-
-            if (remaining < 0) {
-                matched = ((s8)*name == 0);
+        if (result >= 0) {
+            name = filename;
+            dirName = (char *)(entry + 8);
+            n = 0x20;
+            goto str_test;
+        str_loop:
+            a = *dirName;
+            dirName = dirName + 1;
+            b = *name;
+            name = name + 1;
+            if (a != b) {
+                result = 0;
+                goto str_done;
             }
-
-            if (matched != 0) {
-                *arg2 = index;
+            if (b == 0) {
+                result = 1;
+                goto str_done;
+            }
+        str_test:
+            n = n - 1;
+            if (n >= 0) {
+                goto str_loop;
+            }
+            if ((s8)*name == 0) {
+                result = 1;
+            } else {
+                result = 0;
+            }
+        str_done:
+            if (result != 0) {
+                *outIndex = i;
                 return 0;
             }
         }
-
-        index++;
-        entry += 0x40;
-    } while (index < 0x7F);
+    }
 
     return -4;
+#pragma use_lmw_stmw reset
 }
 
 s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
@@ -3092,10 +3096,9 @@ void fn_8021C5D8(s32 chan, s32 result)
                 } else {
                     count = *(s32 *)(file + 0xC);
                     blockSize = *(s32 *)(card + 0xC);
-                    if (count < blockSize)
-                        goto after_min;
-                    count = blockSize;
-                after_min:
+                    if (count >= blockSize) {
+                        count = blockSize;
+                    }
                     result = fn_802190A4(
                         chan,
                         blockSize * next,
@@ -3132,8 +3135,8 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     u8 *entry;
     u32 sectorSize;
     u32 offset;
-    u32 length;
-    u32 boundary;
+    s32 length;
+    s32 boundary;
     s32 result;
     void *callback;
 
@@ -3142,33 +3145,28 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     }
 
     result = fn_8021C420(arg0, arg2, arg3, &card);
-    if (result < 0) {
-        return result;
-    }
+    if (result < 0) return result;
 
     entry = (u8 *)__CARDGetDirBlock(card);
     entry += arg0[1] << 6;
 
     result = fn_8021BCCC(card, entry);
-    if (result < 0) {
-        return __CARDPutControlBlock(card, result);
-    }
+    if (result < 0) return __CARDPutControlBlock(card, result);
 
-    DCInvalidateRange((void *)arg1, arg3);
+    DCInvalidateRange((void *)arg1, arg2);
 
     if (arg4 != 0) {
         callback = arg4;
     } else {
         callback = (void *)fn_80216994;
     }
-
     *(void **)((u8 *)card + 0xD0) = callback;
 
     offset = *(u32 *)((u8 *)arg0 + 8);
     sectorSize = *(u32 *)((u8 *)card + 0xC);
     boundary = sectorSize - (offset & (sectorSize - 1));
 
-    length = arg3;
+    length = arg2;
     if (length >= boundary) {
         length = boundary;
     }
@@ -3181,10 +3179,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
         (void *)fn_8021C5D8
     );
 
-    if (result < 0) {
-        __CARDPutControlBlock(card, result);
-    }
-
+    if (result < 0) __CARDPutControlBlock(card, result);
     return result;
 }
 
