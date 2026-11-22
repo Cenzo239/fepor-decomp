@@ -849,40 +849,42 @@ void fn_801A9600(void *arg0, void *arg1) {
 }
 void fn_801A96FC(void *arg0, u8 arg1) {
     void Item_Clear(void *);
-    void Item_Copy(void *,void *);
-    void *Unit_GetItemSlot(void *,s8);
-    u8 Unit_CanEquipItem(void *,void *);
+    void Item_Copy(void *, void *);
+    void *Unit_GetItemSlot(void *, s32);
+    u8 Unit_CanEquipItem(void *, void *);
     void **fn_80037C20(void *);
-    void *slot;
+    extern u16 lbl_80367218;
+    s8 flag;
     void *item;
     void **held;
-    u8 count;
-    u8 *self=arg0;
-    self[0x294]=arg1;
-    if((s8)self[0x294]<0) {
-        Item_Clear(self+0x284);
-        Item_Clear(self+0x28C);
+    u8 *self = arg0;
+    self[0x294] = arg1;
+    if ((s8)self[0x294] < 0) {
+        Item_Clear(self + 0x284);
+        Item_Clear(self + 0x28C);
         return;
     }
-    Item_Copy(self+0x284,Unit_GetItemSlot(self,(s8)self[0x294]));
-    count=self[0x294];
-    Item_Copy(self+0x28C,Unit_GetItemSlot(self,(s8)count));
-    self[0x2C8]=self[0x288];
-    count=self[0x2C8];
-    if((s8)count<=0) slot=&lbl_80367218;
-    else slot=self+0x284;
-    if(*(void **)slot) {
-        if((s8)count<=0) slot=&lbl_80367218;
-        else slot=self+0x284;
-        item=*(void **)slot;
-        if(!Unit_CanEquipItem(self,item)) Item_Clear(self+0x284);
+    Item_Copy(self + 0x284, Unit_GetItemSlot(self, (s8)self[0x294]));
+    Item_Copy(self + 0x28C, Unit_GetItemSlot(self, *(s8 *)(self + 0x294)));
+    self[0x2C8] = self[0x288];
+    flag = *(s8 *)(self + 0x2C8);
+    if (*(void **)(flag <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)) != NULL) {
+        void *sel = flag <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284);
+        void *it = *(void * volatile *)sel;
+        if (Unit_CanEquipItem(self, it) == 0) {
+            Item_Clear(self + 0x284);
+        }
     }
-    item=*(void **)(self+0x28C);
-    if(item) *(u16 *)(self+0x2AE)|=*(u16 *)((u8 *)item+0xC);
-    held=fn_80037C20(self);
-    if(held) {
-        item=*held;
-        if(item) *(u16 *)(self+0x2AE)|=*(u16 *)((u8 *)item+0xC);
+    item = *(void **)(self + 0x28C);
+    if (item != NULL) {
+        *(u16 *)(self + 0x2AE) |= *(u16 *)((u8 *)item + 0xC);
+    }
+    held = fn_80037C20(self);
+    if (held != NULL) {
+        void *r = *held;
+        if (r != NULL) {
+            *(u16 *)(self + 0x2AE) |= *(u16 *)((u8 *)r + 0xC);
+        }
     }
 }
 
@@ -1316,103 +1318,368 @@ void fn_801AA1B0(void *arg0) {
     }
 }
 
-void fn_801AA228(void *arg0) {
-    extern void *gPadInput;
-    extern u8 lbl_8027B838[];
+void fn_801AA228(void *arg0)
+{
+    extern u8 *gPadInput;
     extern u8 gOptionsTable[];
+    extern u8 lbl_8027B838[];
     extern f32 lbl_8036AF98;
     extern f32 lbl_8036AF9C;
+    extern u8 lbl_80367AE8;
+    extern u8 lbl_80367AEA;
     void Ui_PlaySeCue(void *, s32);
     void Process_Goto(void *, s32);
     void fn_80057E6C(void *);
-    u8 *self;
-    u8 prevSel;
-    s32 buttons;
-    s32 trig;
-    s32 held;
-    s32 pressed;
-    s32 sel;
-    u8 *row;
+    void fn_80145E9C(s32);
+    void fn_80209854(s32);
+    void fn_80025624(void *, s32);
+    u8 *p = (u8 *)arg0;
+    u8 before = p[0x3C];
+    u32 held = *(u32 *)(gPadInput + 4);
+    u32 previous = *(u32 *)(gPadInput + 8);
+    u32 repeat = *(u32 *)(gPadInput + 12);
+    u32 edge = held & (previous ^ held);
+    s32 i;
+    u8 *entry;
+    s32 top;
+    u8 value;
+    s32 next;
+    u16 flags;
 
-    self = (u8 *)arg0;
-    prevSel = self[0x3C];
-    buttons = *(s32 *)((u8 *)gPadInput + 4);
-    trig = *(s32 *)((u8 *)gPadInput + 8);
-    held = *(s32 *)((u8 *)gPadInput + 0xC);
-    pressed = buttons & (trig ^ buttons);
-
-    if (pressed & 0x200) {
-        Ui_PlaySeCue(lbl_8027B838 + 0x2C8, 0x64);
-        Process_Goto(self, 3);
+    if (edge & 0x200) {
+        Ui_PlaySeCue(lbl_8027B838 + 0x2C8, 100);
+        Process_Goto(arg0, 3);
         return;
     }
-
-    if (held & 0x80000008) {
-        sel = prevSel;
-        row = gOptionsTable + sel * 0xC;
-        if (sel > 0) {
-            do {
-                row -= 0xC;
-                sel -= 1;
-                if (row[0] != 0) {
-                    break;
-                }
-            } while (sel > 0);
+    if (repeat & 0x08000008) {
+        i = before;
+        entry = gOptionsTable + i * 12;
+        while (i > 0) {
+            entry -= 12;
+            --i;
+            if (*entry != 0) break;
         }
-        if (sel >= 0) {
-            self[0x3C] = (u8)sel;
-            if ((s32)self[0x3C] - (s32)self[0x36] <= 0 && self[0x36] != 0) {
-                self[0x36] = self[0x36] - 1;
-                *(f32 *)(self + 0x38) = lbl_8036AF98;
-                fn_80057E6C(*(void **)(self + 0x54));
-            }
-            self[0x3D] = 4;
-            *(s16 *)(self + 0x48) = *(s16 *)(self + 0x44);
-            *(s16 *)(self + 0x4A) = *(s16 *)(self + 0x46);
-            *(s16 *)(self + 0x4C) = 0x14;
-            *(s16 *)(self + 0x4E) = (s16)(((s32)self[0x3C] - (s32)self[0x36]) * 0x20 + 0x7F);
+        if (i >= 0) p[0x3C] = (u8)i;
+        top = p[0x36];
+        if ((s32)p[0x3C] - top <= 0 && top != 0) {
+            p[0x36] = (u8)(top - 1);
+            *(f32 *)(p + 0x38) = lbl_8036AF98;
+            fn_80057E6C(*(void **)(p + 0x54));
         }
+        p[0x3D] = 4;
+        *(s16 *)(p + 0x48) = *(s16 *)(p + 0x44);
+        *(s16 *)(p + 0x4A) = *(s16 *)(p + 0x46);
+        *(s16 *)(p + 0x4C) = 20;
+        *(s16 *)(p + 0x4E) = (s16)((p[0x3C] - p[0x36]) * 32 + 127);
     }
-
-    if (held & 0x40000004) {
-        sel = self[0x3C];
-        row = gOptionsTable + sel * 0xC;
-        if (sel < 0x16) {
-            do {
-                row += 0xC;
-                sel += 1;
-                if (row[0] != 0) {
-                    break;
-                }
-            } while (sel < 0x16);
+    if (repeat & 0x04000004) {
+        i = p[0x3C];
+        entry = gOptionsTable + i * 12;
+        while (i < 22) {
+            entry += 12;
+            ++i;
+            if (*entry != 0) break;
         }
-        if (sel < 0x16) {
-            self[0x3C] = (u8)sel;
-            if ((s32)self[0x3C] - (s32)self[0x36] >= 7 && (s32)self[0x36] < (s32)self[0x31] - 8) {
-                self[0x36] = self[0x36] + 1;
-                *(f32 *)(self + 0x38) = lbl_8036AF9C;
-                fn_80057E6C(*(void **)(self + 0x58));
-            }
-            self[0x3D] = 4;
-            *(s16 *)(self + 0x48) = *(s16 *)(self + 0x44);
-            *(s16 *)(self + 0x4A) = *(s16 *)(self + 0x46);
-            *(s16 *)(self + 0x4C) = 0x14;
-            *(s16 *)(self + 0x4E) = (s16)(((s32)self[0x3C] - (s32)self[0x36]) * 0x20 + 0x7F);
+        if (i < 22) p[0x3C] = (u8)i;
+        top = p[0x36];
+        if ((s32)p[0x3C] - top >= 7 && top < p[0x31] - 8) {
+            p[0x36] = (u8)(top + 1);
+            *(f32 *)(p + 0x38) = lbl_8036AF9C;
+            fn_80057E6C(*(void **)(p + 0x58));
         }
+        p[0x3D] = 4;
+        *(s16 *)(p + 0x48) = *(s16 *)(p + 0x44);
+        *(s16 *)(p + 0x4A) = *(s16 *)(p + 0x46);
+        *(s16 *)(p + 0x4C) = 20;
+        *(s16 *)(p + 0x4E) = (s16)((p[0x3C] - p[0x36]) * 32 + 127);
     }
+    if (p[0x3C] != before)
+        Ui_PlaySeCue(lbl_8027B838 + 0x2D8, 100);
 
-    if (prevSel != self[0x3C]) {
-        Ui_PlaySeCue(lbl_8027B838 + 0x2D8, 0x64);
-    }
-
-    switch (self[0x3C]) {
+    switch (p[0x3C]) {
     case 0:
-        if ((pressed & 0x100) && self[0x5E] == 2) {
-            Process_Goto(self, 1);
-            Ui_PlaySeCue(lbl_8027B838 + 0x2F4, 0x64);
+        if ((edge & 0x100) && p[0x5E] == 2) {
+            Process_Goto(arg0, 1);
+            Ui_PlaySeCue(lbl_8027B838 + 0x2F4, 100);
+            break;
+        }
+        value = p[0x5E];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x5E] - 1;
+            next &= ~(next >> 31);
+            p[0x5E] = (u8)next;
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x5E] + 1;
+            if (next > 2) next = 2;
+            p[0x5E] = (u8)next;
+        }
+        if (p[0x5E] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
         }
         break;
-    default:
+    case 1:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x4000;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x4000;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 2:
+        value = p[0x5F];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x5F] - 1;
+            next &= ~(next >> 31);
+            p[0x5F] = (u8)next;
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x5F] + 1;
+            if (next > 1) next = 1;
+            p[0x5F] = (u8)next;
+        }
+        if (p[0x5F] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 3:
+        value = p[0x60];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x60] - 1;
+            next &= ~(next >> 31);
+            p[0x60] = (u8)next;
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x60] + 1;
+            if (next > 3) next = 3;
+            p[0x60] = (u8)next;
+        }
+        if (p[0x60] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 4:
+        if (edge & 0x400) p[0x61] = 20;
+        if (held & 0x01000001) {
+            next = (s32)p[0x61] - 1;
+            next &= ~(next >> 31);
+            p[0x61] = (u8)next;
+        }
+        if (held & 0x02000002) {
+            next = (s32)p[0x61] + 1;
+            if (next > 100) next = 100;
+            p[0x61] = (u8)next;
+        }
+        break;
+    case 5:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x1;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x1;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 6:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x2;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x2;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 7:
+        value = p[0x62];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x62] - 1;
+            next &= ~(next >> 31);
+            p[0x62] = (u8)next;
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x62] + 1;
+            if (next > 2) next = 2;
+            p[0x62] = (u8)next;
+        }
+        if (p[0x62] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 8:
+        value = p[0x63];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x63] - 1;
+            next &= ~(next >> 31);
+            p[0x63] = (u8)next;
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x63] + 1;
+            if (next > 2) next = 2;
+            p[0x63] = (u8)next;
+        }
+        if (p[0x63] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 9:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x20;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x20;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 10:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x40;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x40;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 11:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x80;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x80;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 12:
+        if (edge & 0x100) {
+            Process_Goto(arg0, 2);
+            Ui_PlaySeCue(lbl_8027B838 + 0x2F4, 100);
+        }
+        break;
+    case 13:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x100;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x100;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 14:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x200;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x200;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 15:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x400;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x400;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 16:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x2000;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x2000;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
+        break;
+    case 17:
+        value = p[0x66];
+        if (repeat & 0x01000001) {
+            next = (s32)p[0x66] - 1;
+            next &= ~(next >> 31);
+            p[0x66] = (u8)next;
+            fn_80145E9C(p[0x66]);
+        }
+        if (repeat & 0x02000002) {
+            next = (s32)p[0x66] + 1;
+            if (next > 2) next = 2;
+            p[0x66] = (u8)next;
+            fn_80145E9C(p[0x66]);
+        }
+        if (p[0x66] != value) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+            if (p[0x66] == 0) fn_80209854(0);
+            else if (p[0x66] < 3) fn_80209854(1);
+        }
+        break;
+    case 18:
+        value = p[0x67];
+        if (held & 0x01000001) {
+            next = (s32)p[0x67] - 1;
+            next &= ~(next >> 31);
+            p[0x67] = (u8)next;
+            lbl_80367AE8 = p[0x67];
+        }
+        if (held & 0x02000002) {
+            next = (s32)p[0x67] + 1;
+            if (next > 100) next = 100;
+            p[0x67] = (u8)next;
+            lbl_80367AE8 = p[0x67];
+        }
+        if ((edge & 0x400) && p[0x67] != value) {
+            p[0x68] = p[0x67];
+            lbl_80367AEA = p[0x68];
+        }
+        break;
+    case 19:
+        value = p[0x68];
+        if (held & 0x01000001) {
+            next = (s32)p[0x68] - 1;
+            next &= ~(next >> 31);
+            p[0x68] = (u8)next;
+            lbl_80367AEA = p[0x68];
+        }
+        if (held & 0x02000002) {
+            next = (s32)p[0x68] + 1;
+            if (next > 100) next = 100;
+            p[0x68] = (u8)next;
+            lbl_80367AEA = p[0x68];
+        }
+        if ((edge & 0x400) && p[0x68] != value) {
+            p[0x67] = p[0x68];
+            lbl_80367AE8 = p[0x67];
+        }
+        break;
+    case 20:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x800;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x800;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+            if (*(u16 *)(p + 0x5C) & 0x800)
+                fn_80025624(gPadInput, 8);
+        }
+        break;
+    case 21:
+        flags = *(u16 *)(p + 0x5C);
+        if (repeat & 0x01000001)
+            *(u16 *)(p + 0x5C) = flags | 0x1000;
+        if (repeat & 0x02000002)
+            *(u16 *)(p + 0x5C) &= (u16)~0x1000;
+        if (*(u16 *)(p + 0x5C) != flags) {
+            Ui_PlaySeCue(lbl_8027B838 + 0x304, 100);
+        }
         break;
     }
 }
