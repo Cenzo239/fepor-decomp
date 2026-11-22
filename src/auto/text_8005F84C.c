@@ -3533,45 +3533,47 @@ s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
 
 void *fn_80065634(void ***arg0, s32 arg1)
 {
-  void **mid;
-  u8 *base;
-  s32 index;
-  s32 count;
-  if (arg0 == NULL)
-  {
-    base = NULL;
-  }
-  else
-  {
-    mid = *arg0;
-    if (mid != NULL)
-    {
-      base = (u8 *) (*mid);
-    }
-    else
-    {
-      base = NULL;
-    }
-  }
-  if (base == NULL)
-  {
-    return NULL;
-  }
-  count = *((u16 *) base);
-  index = 0;
-  while (count > 0)
-  {
-    u16 offset = *((u16 *) (((u8 *) (*((void **) (base + 4)))) + index));
-    u8 *entry = (u8 *) (((u32) (base + offset)) & (-((s32) (offset != ((u16) (-1))))));
-    if ((*((u16 *) entry)) == arg1)
-    {
-      return entry;
-    }
-    index += 2;
-    count--;
-  }
+    void **mid;
+    u16 lim;
+    u8 *base;
+    s32 index;
+    s32 count;
+    u8 *entry;
+    u16 *table;
+    u16 offset;
+    s32 diff1;
+    s32 mask;
 
-  return NULL;
+    if ((u32)arg0 == 0) {
+        base = NULL;
+    } else {
+        mid = *arg0;
+        if ((u32)mid != 0) {
+            base = (u8 *)*mid;
+        } else {
+            base = NULL;
+        }
+    }
+    if ((u32)base == 0) {
+        return NULL;
+    }
+
+    lim = 0xFFFF;
+    count = *(u16 *)base;
+    index = 0;
+    while (count > 0) {
+        table = *(u16 **)(base + 4);
+        offset = *(u16 *)((u8 *)table + index);
+        diff1 = (s32)offset - (s32)lim;
+        mask = ~(diff1 | ((s32)lim - (s32)offset)) >> 31;
+        entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
+        if (*(u16 *)entry == arg1) {
+            return entry;
+        }
+        index += 2;
+        count--;
+    }
+    return NULL;
 }
 
 #pragma optimization_level 2
@@ -5672,34 +5674,34 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
-    void Ui_LoadAtlasTex(void *, void *, u16);
-    void Game_Assert(void *, s32, void *);
+    void fn_8006ECCC(void *, void *, u16);
+    void fn_8006DA64(void *, s32, void *);
     void fn_8006EBC4(void *, void *, void *, s32);
     f32 fn_80064164(void **, s16, f32);
     f32 fn_8006469C(void **, s16, f32);
     f32 fn_80064400(void **, s16, f32);
     f32 fn_80063EC8(void **, s16, f32);
     f32 fn_80063C2C(void **, s16, f32);
-    void PSMTXIdentity(void *);
-    void PSMTXTrans(void *, f32, f32, f32);
-    void PSMTXRotRad(void *, s32, f32);
-    void PSMTXConcat(void *, void *, void *);
-    void PSMTXScale(void *, f32, f32, f32);
+    void fn_80201FC4(void *);
+    void fn_80202540(void *, f32, f32, f32);
+    void fn_80202300(void *, s32, f32);
+    void fn_80202024(void *, void *, void *);
+    void fn_802025C0(void *, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     s32 fn_80222AA8(void *);
     s32 fn_80222AA0(void *);
-    s32 GXGetTexObjHeight(void *);
-    s32 GXGetTexObjWidth(void *);
+    s32 fn_80222A90(void *);
+    s32 fn_80222A80(void *);
     s32 fn_80222A74(void *);
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
     void fn_80222CF0(void *, s32);
     void fn_80222C50(void *, s32);
-    void GXSetTevOrder(s32, s32, s32, s32);
-    void GXSetNumTexGens(s32, s32);
-    extern u8 gGMaterialAssertMsg[];
-    extern s32 gMaterialStageIds[];
-    extern u8 gMaterialTevStageCount;
+    void fn_80223F2C(s32, s32, s32, s32);
+    void fn_802239D0(s32, s32);
+    extern u8 lbl_8026B7F8[];
+    extern s32 lbl_80285E88[];
+    extern u8 lbl_80367300;
     extern u8 lbl_80367301;
     extern u8 lbl_80367302;
     extern u8 lbl_80367303;
@@ -5723,28 +5725,28 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     s32 *base;
     u8 idx;
 
-    pool = gMaterialStageIds;
-    Ui_LoadAtlasTex(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
+    pool = lbl_80285E88;
+    fn_8006ECCC(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
     if (lbl_80367301 >= 8) {
-        Game_Assert(gGMaterialAssertMsg + 1, 0x4F, gGMaterialAssertMsg + 0xD);
+        fn_8006DA64(lbl_8026B7F8 + 1, 0x4F, lbl_8026B7F8 + 0xD);
     }
     idx = lbl_80367301;
     base = (s32 *)((u8 *)pool + 0x40);
     lbl_80367301 = idx + 1;
     r30 = base[idx];
     if (lbl_80367302 >= 8) {
-        Game_Assert(gGMaterialAssertMsg + 1, 0x70, gGMaterialAssertMsg + 0x25);
+        fn_8006DA64(lbl_8026B7F8 + 1, 0x70, lbl_8026B7F8 + 0x25);
     }
     idx = lbl_80367302;
     base = (s32 *)((u8 *)pool + 0x60);
     lbl_80367302 = idx + 1;
     r29 = base[idx];
-    if (gMaterialTevStageCount >= 0x10) {
-        Game_Assert(gGMaterialAssertMsg + 1, 0x2C, gGMaterialAssertMsg + 0x3F);
+    if (lbl_80367300 >= 0x10) {
+        fn_8006DA64(lbl_8026B7F8 + 1, 0x2C, lbl_8026B7F8 + 0x3F);
     }
-    idx = gMaterialTevStageCount;
+    idx = lbl_80367300;
     base = pool;
-    gMaterialTevStageCount = idx + 1;
+    lbl_80367300 = idx + 1;
     r28 = base[idx];
 
     if ((arg1 == 0 || *arg1 == 0) && (*(u16 *)arg3 & 1)) {
@@ -5775,28 +5777,28 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
                 }
             }
         }
-        PSMTXIdentity(sp34);
+        fn_80201FC4(sp34);
         if (lbl_80369270 != f31) {
-            PSMTXTrans(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
-            PSMTXRotRad(sp94, 0x7A, lbl_80369278 * -f31);
-            PSMTXConcat(sp94, sp64, sp94);
-            PSMTXTrans(sp64, lbl_8036927C, lbl_8036927C, lbl_80369270);
-            PSMTXConcat(sp64, sp94, sp34);
+            fn_80202540(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
+            fn_80202300(sp94, 0x7A, lbl_80369278 * -f31);
+            fn_80202024(sp94, sp64, sp94);
+            fn_80202540(sp64, lbl_8036927C, lbl_8036927C, lbl_80369270);
+            fn_80202024(sp64, sp94, sp34);
         }
         if (lbl_80369280 != f28 || lbl_80369280 != f27) {
-            PSMTXTrans(sp64, lbl_80369270, lbl_80369284, lbl_80369270);
-            PSMTXScale(spC4, f28, f27, lbl_80369280);
-            PSMTXConcat(spC4, sp64, spC4);
-            PSMTXTrans(sp64, lbl_80369270, lbl_80369280, lbl_80369270);
-            PSMTXConcat(sp64, spC4, spC4);
-            PSMTXConcat(spC4, sp34, sp34);
+            fn_80202540(sp64, lbl_80369270, lbl_80369284, lbl_80369270);
+            fn_802025C0(spC4, f28, f27, lbl_80369280);
+            fn_80202024(spC4, sp64, spC4);
+            fn_80202540(sp64, lbl_80369270, lbl_80369280, lbl_80369270);
+            fn_80202024(sp64, spC4, spC4);
+            fn_80202024(spC4, sp34, sp34);
         }
         if (lbl_80369270 != f30 || lbl_80369270 != f29) {
-            PSMTXTrans(sp64, f30, -f29, lbl_80369270);
-            PSMTXConcat(sp64, sp34, sp34);
+            fn_80202540(sp64, f30, -f29, lbl_80369270);
+            fn_80202024(sp64, sp34, sp34);
         }
         if (lbl_80367303 >= 0x3C) {
-            Game_Assert(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
+            fn_8006DA64(lbl_8026B7F8 + 1, 0x96, lbl_8026B7F8 + 0x5B);
         }
         idx = lbl_80367303;
         base = (s32 *)((u8 *)pool + 0x80);
@@ -5808,8 +5810,8 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     if (*(u16 *)arg3 & 0x20) {
         t31 = fn_80222AA8(sp14);
         t25 = fn_80222AA0(sp14);
-        t24 = GXGetTexObjHeight(sp14);
-        t23 = GXGetTexObjWidth(sp14);
+        t24 = fn_80222A90(sp14);
+        t23 = fn_80222A80(sp14);
         t4 = fn_80222A74(sp14);
         fn_80222644(sp14, t4, t23, t24, t25, 1, 1, t31);
     }
@@ -5822,8 +5824,8 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
         }
     }
     fn_80222C50(sp14, r30);
-    GXSetTevOrder(r28, r29, r30, 4);
-    GXSetNumTexGens(r28, 0);
+    fn_80223F2C(r28, r29, r30, 4);
+    fn_802239D0(r28, 0);
 }
 /* Compute material color/alpha and bind it to GX channel + optional TEV stages. */
 s32 GMaterial_SetupColor(void *mat, s32 animCtx, void *matParam, void *obj)
@@ -6839,11 +6841,11 @@ fn_80202238(root,root); fn_80224DCC(root,*slots);
 #pragma use_lmw_stmw on
 void fn_8006C2A4(void *arg0,s32 arg1){
 u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006049C(void*);s32 fn_80060520(void*);s32 fn_800604F4(void*);s32 fn_800604C8(void*);
-void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void GMaterial_ApplyRenderState(void*,s32);
-void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
-void fn_802245D8(s32,s32,s32,s32);void GXSetZMode(s32,s32,s32);void fn_80067490(s32);
-void Gfx_SetupVtxFormat(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
-extern u8 lbl_8026B8AC[];extern void *gGMaterialCurrent,*gGMaterialNode;
+void fn_80220154(s32,s32,s32);void fn_8006DA64(void*,s32,void*);void fn_8006C748(void*,s32);
+void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void fn_80224E1C(s16);
+void fn_802245D8(s32,s32,s32,s32);void fn_80224684(s32,s32,s32);void fn_80067490(s32);
+void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
+extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
 u8 *data,*node,*p;
 s32 aux,work,addr1,addr2;
 u32 geometry,last,format;
@@ -6854,33 +6856,33 @@ fn_80220154(13,*(s32*)(data+0x2c),4);fn_80220154(14,*(s32*)(data+0x2c),4);
 /* Original initializes GQR2 through GQR5 here. */
 switch(arg1){
 case 0:node=*(u8**)(data+0x3c);break;
-case 1:node=*(u8**)(data+0x40);break;
+case 1:node=*(u8**)(data+(int)0x40);break;
 case 2:node=*(u8**)(data+0x44);break;
-default:Game_Assert(lbl_8026B8AC+0x27,0x162,lbl_8026B8AC+0x9d);break;
+default:fn_8006DA64(lbl_8026B8AC+0x27,0x162,lbl_8026B8AC+0x9d);break;
 }
-draw=1;GMaterial_ApplyRenderState(arg0,arg1);
+draw=1;fn_8006C748(arg0,arg1);
 for(p=node;p;p=*(u8**)(p+4))*(s16*)(p+0xe)=-1;
 for(;node;node=*(u8**)(node+4)){
 if(!(*(u16*)(node+8)&0x400)&&(!(*(u32*)arg0&0x400000)||(*(u16*)(node+8)&0x8000))){
 if(*(u16*)(node+8)&2)fn_8006B39C(node,arg0,work);
-else{if(*(s16*)(node+0xe)<0)fn_8006A930(node,arg0,work);GXSetCurrentMtx(*(s16*)(node+0xe));}
+else{if(*(s16*)(node+0xe)<0)fn_8006A930(node,arg0,work);fn_80224E1C(*(s16*)(node+0xe));}
 if(*(u16*)(node+8)&0x1e0){
 if(*(u16*)(node+8)&0x40)fn_802245D8(1,4,1,0);
 if(*(u16*)(node+8)&0x80)fn_802245D8(3,0,0,0);
-if(*(u16*)(node+8)&0x100)GXSetZMode(0,3,0);
+if(*(u16*)(node+8)&0x100)fn_80224684(0,3,0);
 if(*(u16*)(node+8)&0x20)fn_80067490(0);
 }
-gGMaterialCurrent=arg0;gGMaterialNode=node;
+lbl_80367308=arg0;lbl_8036730C=node;
 format=*(u32*)(node+0x10)&0xfffffff;
 if(last!=format){
 last=format;
 if(*(u16*)(node+8)&1){
-Gfx_SetupVtxFormat(format,(*(u8**)(data+0x48))[0xc],0,data[0x5e],1);
+fn_8006A6C8(format,(*(u8**)(data+0x48))[0xc],0,data[0x5e],1);
 fn_80220154(9,fn_80060520(arg0),12);
 if(format&0x800)fn_80220154(25,fn_80060520(arg0)+6,12);
 else fn_80220154(10,fn_80060520(arg0)+6,12);
 }else {
-Gfx_SetupVtxFormat(format,data[0x5c],data[0x5d],data[0x5e],0);
+fn_8006A6C8(format,data[0x5c],data[0x5d],data[0x5e],0);
 if(!geometry){
 fn_80220154(9,*(s32*)(data+0x24),6);
 if(format&0x800)fn_80220154(25,*(s32*)(data+0x28),3);
@@ -6891,10 +6893,10 @@ if(format&0x800)fn_80220154(25,addr2,3);else fn_80220154(10,addr2,3);
 }
 }
 }
-if((*(u32*)arg0&0xc00000)||!(*(u16*)(node+8)&4))draw=fn_80068D84(arg0,aux,node,*(s32*)(data+0x34)+(*(s16*)(node+0xa)<<5));
+if((*(u32*)arg0&0xc00000)||!(*(u16*)(node+8)&4))draw=fn_80068D84(arg0,(unsigned)aux,node,*(s32*)(data+0x34)+(*(s16*)(node+0xa)<<5));
 if(draw)fn_80224A68(*(s32*)(node+0x14),*(s32*)(node+0x18));
 if(!(*(u16*)(node+8)&0x1e0))reset=0;else {fn_80066D00(-1);reset=1;}
-if(reset)GMaterial_ApplyRenderState(arg0,arg1);
+if(reset)fn_8006C748(arg0,arg1);
 fn_80069C98();
 }
 }
@@ -7893,24 +7895,24 @@ void fn_8006DFD8(void) {
     void GXSetGPFifo(void *);
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
-    void OSPanic(void *, s32, void *, ...);
-    void GXAdjustForOverscan(void *, void *, s32, s32);
+    void fn_8020602C(void *, s32, void *, ...);
+    void fn_8022108C(void *, void *, s32, s32);
     void *GXInit(s32, s32);
-    void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void GXSetScissor(s32, s32, u16, u16);
+    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void fn_80225058(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
     void fn_802211D0(s32, s32, u16, u16);
     void fn_802212C8(u16, u16);
-    void fn_80221824(u8, void *, s32, void *);
     void fn_802246EC(s32, s32);
-    void GXCopyDisp(void *, s32);
+    void fn_80221824(u8, void *, s32, void *);
+    void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
-    void VIConfigure(void *);
-    void VISetNextFrameBuffer(void *);
-    void VIFlush(void);
-    void VIWaitForRetrace(void);
-    void GXSetZMode(s32, s32, s32);
+    void fn_80210C70(void *);
+    void fn_802115A8(void *);
+    void fn_80211478(void);
+    void fn_802107A8(void);
+    void fn_80224684(s32, s32, s32);
     void fn_8022462C(s32);
     void fn_802208BC(s32);
     u16 fn_80220970(void);
@@ -7920,53 +7922,53 @@ void fn_8006DFD8(void) {
     u32 fn_80211690(void);
     void fn_80211614(s32);
     void fn_80225204(s32, s32);
-    extern char DEMOInit_str[];
-    extern u8 DEMORmodeObj[];
-    extern void *DEMORmode;
-    extern void *DefaultFifoObj;
-    extern void *DemoCurrentBuffer;
-    extern void *DemoFrameBuffer2;
-    extern void *DemoFrameBuffer1;
+    extern char lbl_8026B990[];
+    extern u8 lbl_80311C68[];
+    extern void *lbl_80367324;
+    extern void *lbl_80367320;
+    extern void *lbl_80367318;
+    extern void *lbl_80367314;
+    extern void *lbl_80367310;
     extern u32 lbl_80367330;
-    extern u32 gDemoStatHangLimit;
-    extern u8 GXNtsc480IntDf[];
-    extern u8 GXPal528IntDf[];
-    extern u8 GXEurgb60Hz480IntDf[];
-    extern u8 GXMpal480IntDf[];
+    extern u32 lbl_80367334;
+    extern u8 lbl_8029DFA8[];
+    extern u8 lbl_8029E020[];
+    extern u8 lbl_8029E05C[];
+    extern u8 lbl_8029DFE4[];
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
-    extern u32 gDvdCheckSnapshot;
-    extern u32 gGameFlags;
+    extern u32 lbl_803682A0;
+    extern u32 lbl_803682A4;
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
     u8 fifo[0x80];
     void *buf;
     s32 a;
-    s32 b;
+    s32 timed_out;
     s32 c;
     u16 xfbHeight;
     u8 *dst;
     void *src;
-    s32 timed_out;
+    s32 b;
     volatile u8 *gx;
 
     timed_out = 0;
-    GXSetZMode(1, 3, 1);
+    fn_80224684(1, 3, 1);
     fn_8022462C(1);
-    GXCopyDisp(DemoCurrentBuffer, 1);
+    fn_80221A40(lbl_80367318, 1);
     fn_802208BC(0xB00B);
     lbl_80367330 = 0;
     goto check;
 body:
-    if (lbl_80367330 < gDemoStatHangLimit) {
+    if (lbl_80367330 < lbl_80367334) {
         goto check;
     }
-    OSReport(DEMOInit_str + 0xF9);
+    OSReport(lbl_8026B990 + 0xF9);
     timed_out = 1;
     fn_8006DDDC();
-    src = DEMORmode;
-    buf = fn_800C4638(0x10000, DEMOInit_str, 0);
+    src = lbl_80367324;
+    buf = fn_800C4638(0x10000, lbl_8026B990, 0);
     a = fn_8021F4CC();
     b = fn_8021F250();
     c = fn_8021F258(a);
@@ -7975,7 +7977,7 @@ body:
     GXSetCPUFifo(fifo);
     GXSetGPFifo(fifo);
     if (src != NULL) {
-        dst = DEMORmodeObj;
+        dst = lbl_80311C68;
         *(u32 *)dst = *(u32 *)src;
         *(u16 *)(dst + 4) = *(u16 *)((u8 *)src + 4);
         *(u16 *)(dst + 6) = *(u16 *)((u8 *)src + 6);
@@ -7991,67 +7993,67 @@ body:
         *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)src + 0x22);
         *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)src + 0x2a);
         fn_8022C1B8(dst + 0x32, (u8 *)src + 0x32, 7);
-        DEMORmode = DEMORmodeObj;
+        lbl_80367324 = lbl_80311C68;
     } else {
         switch (VIGetTvFormat()) {
         case 0:
-            DEMORmode = GXNtsc480IntDf;
+            lbl_80367324 = lbl_8029DFA8;
             break;
         case 1:
-            DEMORmode = GXPal528IntDf;
+            lbl_80367324 = lbl_8029E020;
             break;
         case 5:
-            DEMORmode = GXEurgb60Hz480IntDf;
+            lbl_80367324 = lbl_8029E05C;
             break;
         case 2:
-            DEMORmode = GXMpal480IntDf;
+            lbl_80367324 = lbl_8029DFE4;
             break;
         default:
-            OSPanic(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
+            fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
-        DEMORmode = DEMORmodeObj;
+        fn_8022108C(lbl_80367324, lbl_80311C68, 0, 0x10);
+        lbl_80367324 = lbl_80311C68;
     }
-    DefaultFifoObj = GXInit(b, c);
+    lbl_80367320 = GXInit(b, c);
     {
-        void *rm = DEMORmode;
+        void *rm = lbl_80367324;
         u16 w = *(u16 *)((u8 *)rm + 4);
         u16 h = *(u16 *)((u8 *)rm + 6);
-        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
+        fn_80224FEC(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
     }
     {
-        void *rm = DEMORmode;
-        GXSetScissor(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
+        void *rm = lbl_80367324;
+        fn_80225058(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
     {
-        void *rm = DEMORmode;
+        void *rm = lbl_80367324;
         fn_802214A8(*(u16 *)((u8 *)rm + 6), *(u16 *)((u8 *)rm + 8));
     }
     xfbHeight = (u16)fn_802216E0();
     {
-        void *rm = DEMORmode;
+        void *rm = lbl_80367324;
         fn_802211D0(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
-    fn_802212C8(*(u16 *)((u8 *)DEMORmode + 4), xfbHeight);
+    fn_802212C8(*(u16 *)((u8 *)lbl_80367324 + 4), xfbHeight);
     {
-        void *rm = DEMORmode;
+        void *rm = lbl_80367324;
         fn_80221824(*((u8 *)rm + 0x19), (u8 *)rm + 0x1a, 1, (u8 *)rm + 0x32);
     }
-    if (*((u8 *)DEMORmode + 0x19) != 0) {
+    if (*((u8 *)lbl_80367324 + 0x19) != 0) {
         fn_802246EC(2, 0);
     } else {
         fn_802246EC(1, 0);
     }
-    GXCopyDisp(DemoCurrentBuffer, 1);
+    fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
-    VIConfigure(DEMORmode);
-    VISetNextFrameBuffer(DemoFrameBuffer1);
-    DemoCurrentBuffer = DemoFrameBuffer2;
-    VIFlush();
-    VIWaitForRetrace();
-    if (*(u32 *)DEMORmode & 1) {
-        VIWaitForRetrace();
+    fn_80210C70(lbl_80367324);
+    fn_802115A8(lbl_80367310);
+    lbl_80367318 = lbl_80367314;
+    fn_80211478();
+    fn_802107A8();
+    if (*(u32 *)lbl_80367324 & 1) {
+        fn_802107A8();
     }
     fn_800C4588(buf);
     fn_80225204(0x23, 0x16);
@@ -8073,24 +8075,24 @@ check:
     }
 done:
     fn_8009E870();
-    if (gDvdCheckSnapshot != fn_80211690() && !(gGameFlags & 8)) {
-        gGameFlags |= 4;
+    if (lbl_803682A0 != fn_80211690() && !(lbl_803682A4 & 8)) {
+        lbl_803682A4 |= 4;
     }
-    VISetNextFrameBuffer(DemoCurrentBuffer);
-    if (lbl_80366DE0 != 0) {
+    fn_802115A8(lbl_80367318);
+    if (lbl_80366DE0) {
         fn_80211614(0);
         lbl_80366DE0 = 0;
     }
-    VIFlush();
-    if (gGameFlags & 1) {
-        if (!(gGameFlags & 4)) {
-            VIWaitForRetrace();
+    fn_80211478();
+    if (lbl_803682A4 & 1) {
+        if (!(lbl_803682A4 & 4)) {
+            fn_802107A8();
         }
-        gGameFlags &= ~4;
+        lbl_803682A4 &= ~4;
     }
-    VIWaitForRetrace();
-    if (DemoCurrentBuffer == DemoFrameBuffer1) {
-        DemoCurrentBuffer = DemoFrameBuffer2;
+    fn_802107A8();
+    if (lbl_80367318 == lbl_80367310) {
+        lbl_80367318 = lbl_80367314;
     }
 }
 
