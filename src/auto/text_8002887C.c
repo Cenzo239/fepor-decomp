@@ -3677,13 +3677,13 @@ void Battle_ResetAllyTurnVisuals(void)
     state = gBattleState;
     i = 1;
     do {
-        if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
-        } else {
-            unit = NULL;
-        }
-        if (*(u32 *)(unit + 0x188) != 0) {
-            if (factionMask[(*(u8 **)(unit + 0x190))[8]] != 0) {
+                  if ((u8)i != 0) {
+              unit = gUnits + ((u8)i - 1) * 0x280;
+          } else {
+              unit = (u8 *)0;
+          }
+          if (*(u32 *)(unit + 0x188) != 0) {
+              if (factionMask[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 *(u32 *)(unit + 0x1A0) &= ~1;
                 if (!((state[0x9E] >> 4) & 1)) {
                     if (Map_IsInViewBounds(gBattleMap, unit[0x19E], unit[0x19F]) != 0) {
