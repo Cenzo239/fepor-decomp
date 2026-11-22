@@ -476,53 +476,85 @@ void fn_8007D064(s32 arg0, s32 arg1, s32 arg2) {
     extern u8 lbl_80289894[];
     extern u8 lbl_8026C86C[];
     void *temp_r3;
+    u8 *base;
+    s32 vol;
 
+    base = lbl_8026C86C;
+    vol = 0x64;
     temp_r3 = fn_8000CAA0(lbl_80289894, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x34) = arg0;
     *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
-    fn_801475FC(lbl_8026C86C + 0x140, 0x64, lbl_8026C86C);
+    fn_801475FC(base + 0x140, vol, base);
 }
 #pragma scheduling reset
 void fn_8007D0C0(void *arg0) {
-    extern f32 lbl_80369418;
-    extern f32 lbl_80369448;
-    extern f32 lbl_8036944C;
-    extern f32 lbl_80369450;
-    extern f32 lbl_80369454;
-    extern f32 lbl_80369458;
-    extern f32 lbl_8036945C;
-    extern f32 lbl_80369460;
-    extern f32 lbl_80369464;
-    extern f32 lbl_80369468;
-    extern f32 lbl_8036946C;
-    s16 temp_r4;
-    s16 temp_r4_2;
-    s16 temp_r4_3;
-    s16 temp_r4_4;
-    s16 temp_r4_5;
-    s8 temp_r0;
-    void *temp_r31;
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
 
-    temp_r31 = *(void **)((u8 *)arg0 + 0x30);
-    *(s16 *)((u8 *)temp_r31 + 6) = *(s16 *)((u8 *)temp_r31 + 6) - 1;
-    if (*(s32 *)((u8 *)temp_r31 + 0x20) == 1) {
-        temp_r4 = *(s16 *)((u8 *)temp_r31 + 6);
-        *(f32 *)((u8 *)temp_r31 + 0x10) = Math_Ease(4, temp_r4, lbl_80369448, lbl_8036944C, (f32)(7 - temp_r4), lbl_80369450);
-        temp_r4_2 = *(s16 *)((u8 *)temp_r31 + 6);
-        *(f32 *)((u8 *)temp_r31 + 0x18) = Math_Ease(4, temp_r4_2, lbl_80369454, lbl_80369458, (f32)(7 - temp_r4_2), lbl_80369450);
+    extern const f32 lbl_80369418;
+    extern const f32 lbl_80369448;
+    extern const f32 lbl_8036944C;
+    extern const f32 lbl_80369450;
+    extern const f32 lbl_80369454;
+    extern const f32 lbl_80369458;
+    extern const f32 lbl_8036945C;
+    extern const f32 lbl_80369460;
+    extern const f32 lbl_80369464;
+    extern const f32 lbl_80369468;
+    extern const f32 lbl_8036946C;
+
+    u8 *data;
+    s32 temp;
+
+    data = *(u8 **)((u8 *)arg0 + 0x30);
+    *(s16 *)(data + 6) = *(s16 *)(data + 6) - 1;
+
+    if (*(s32 *)(data + 0x20) == 1) {
+        *(f32 *)(data + 0x10) = Math_Ease(
+            4,
+            lbl_80369448,
+            lbl_8036944C,
+            (f32)(7 - *(s16 *)(data + 6)),
+            lbl_80369450
+        );
+        *(f32 *)(data + 0x18) = Math_Ease(
+            4,
+            lbl_80369454,
+            lbl_80369458,
+            (f32)(7 - *(s16 *)(data + 6)),
+            lbl_80369450
+        );
     } else {
-        temp_r4_3 = *(s16 *)((u8 *)temp_r31 + 6);
-        *(f32 *)((u8 *)temp_r31 + 0x10) = Math_Ease(4, temp_r4_3, lbl_8036945C, lbl_8036944C, (f32)(7 - temp_r4_3), lbl_80369450);
-        temp_r4_4 = *(s16 *)((u8 *)temp_r31 + 6);
-        *(f32 *)((u8 *)temp_r31 + 0x18) = Math_Ease(4, temp_r4_4, lbl_80369460, lbl_80369458, (f32)(7 - temp_r4_4), lbl_80369450);
+        *(f32 *)(data + 0x10) = Math_Ease(
+            4,
+            lbl_8036945C,
+            lbl_8036944C,
+            (f32)(7 - *(s16 *)(data + 6)),
+            lbl_80369450
+        );
+        *(f32 *)(data + 0x18) = Math_Ease(
+            4,
+            lbl_80369460,
+            lbl_80369458,
+            (f32)(7 - *(s16 *)(data + 6)),
+            lbl_80369450
+        );
     }
-    *(f32 *)((u8 *)temp_r31 + 0xC) = lbl_80369464;
-    *(f32 *)((u8 *)temp_r31 + 0x14) = lbl_80369468;
-    temp_r4_5 = *(s16 *)((u8 *)temp_r31 + 6);
-    temp_r0 = (s8) Math_Ease(4, temp_r4_5, lbl_80369418, lbl_8036946C, (f32)(7 - temp_r4_5), lbl_80369450);
-    *(s8 *)((u8 *)temp_r31 + 0xA) = temp_r0;
-    *(s8 *)((u8 *)temp_r31 + 8) = temp_r0;
-    if (*(s16 *)((u8 *)temp_r31 + 6) <= 0) {
+
+    *(f32 *)(data + 0xC) = lbl_80369464;
+    *(f32 *)(data + 0x14) = lbl_80369468;
+
+    temp = (s32)Math_Ease(
+        4,
+        lbl_80369418,
+        lbl_8036946C,
+        (f32)(7 - *(s16 *)(data + 6)),
+        lbl_80369450
+    );
+    data[0xA] = temp;
+    data[8] = temp;
+
+    if (*(s16 *)(data + 6) <= 0) {
         Process_ClearFunc(arg0);
     }
 }
@@ -1358,7 +1390,7 @@ void fn_8007EAD8(void *arg0) {
     extern f32 lbl_80369518;
     extern f32 lbl_8036951C;
 
-    u32 c0, c1, c2, c3, c4;
+    u32 c4, c3, c2, c1, c0;
     void *unit;
     f32 x, y;
     f32 bx, by, tx;
