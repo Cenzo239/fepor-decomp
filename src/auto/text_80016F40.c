@@ -35,62 +35,100 @@ void *fn_80016F78(void *arg0) {
 void *fn_80017010(u8 *arg0) {
     void *Msg_Expand(void *);
     extern u8 lbl_80268128[];
+    void *var_r31;
     u8 *temp_r3;
-    void *var_r31 = lbl_80268128 + 0x1D;
-    u8 temp_r4 = *arg0;
+    u8 temp_r4;
     u8 var_r0;
+
+    temp_r4 = *arg0;
+    var_r31 = lbl_80268128 + 0x1D;
 
     switch (temp_r4) {
     case 0:
     case 5:
-    case 6: {
+    case 6:
         temp_r3 = BattleState_GetFactionInfo(gBattleState, temp_r4);
         if (temp_r3 == NULL) {
             var_r0 = 0;
         } else {
-            u8 temp_r0 = *temp_r3;
-            switch (temp_r0) {
-            case 0: var_r0 = 0; break;
-            case 1: var_r0 = 8; break;
-            case 2: var_r0 = 7; break;
-            case 3: var_r0 = 4; break;
-            case 4: var_r0 = 5; break;
-            default: var_r0 = 0; break;
-            }
-            switch (var_r0) {
-            case 5: var_r31 = lbl_80268128 + 0x40; break;
-            case 8: var_r31 = lbl_80268128 + 0x46; break;
-            case 0: var_r31 = lbl_80268128 + 0x34; break;
-            case 4: var_r31 = lbl_80268128 + 0x3A; break;
-            default: break;
+            switch (*temp_r3) {
+            case 0:
+                var_r0 = 0;
+                break;
+            case 1:
+                var_r0 = 8;
+                break;
+            case 2:
+                var_r0 = 7;
+                break;
+            case 3:
+                var_r0 = 4;
+                break;
+            case 4:
+                var_r0 = 5;
+                break;
+            default:
+                var_r0 = 0;
+                break;
             }
         }
+        switch (var_r0) {
+        case 7:
+            var_r31 = lbl_80268128 + 0x22;
+            break;
+        case 4:
+            var_r31 = lbl_80268128 + 0x28;
+            break;
+        case 5:
+            var_r31 = lbl_80268128 + 0x2E;
+            break;
+        default:
+            break;
+        }
         break;
-    }
-    case 3: {
+    case 3:
         temp_r3 = BattleState_GetFactionInfo(gBattleState, temp_r4);
         if (temp_r3 == NULL) {
             var_r0 = 0;
         } else {
-            u8 temp_r0 = *temp_r3;
-            switch (temp_r0) {
-            case 0: var_r0 = 0; break;
-            case 1: var_r0 = 8; break;
-            case 2: var_r0 = 7; break;
-            case 3: var_r0 = 4; break;
-            case 4: var_r0 = 5; break;
-            default: var_r0 = 0; break;
-            }
-            switch (var_r0) {
-            case 6: break;
-            case 7: var_r31 = lbl_80268128 + 0x22; break;
-            case 4: var_r31 = lbl_80268128 + 0x28; break;
-            case 5: var_r31 = lbl_80268128 + 0x2E; break;
-            default: break;
+            switch (*temp_r3) {
+            case 0:
+                var_r0 = 0;
+                break;
+            case 1:
+                var_r0 = 8;
+                break;
+            case 2:
+                var_r0 = 7;
+                break;
+            case 3:
+                var_r0 = 4;
+                break;
+            case 4:
+                var_r0 = 5;
+                break;
+            default:
+                var_r0 = 0;
+                break;
             }
         }
+        switch (var_r0) {
+        case 0:
+            var_r31 = lbl_80268128 + 0x34;
+            break;
+        case 4:
+            var_r31 = lbl_80268128 + 0x3A;
+            break;
+        case 5:
+            var_r31 = lbl_80268128 + 0x40;
+            break;
+        case 8:
+            var_r31 = lbl_80268128 + 0x46;
+            break;
+        default:
+            break;
+        }
         break;
-    }
     default:
         break;
     }
