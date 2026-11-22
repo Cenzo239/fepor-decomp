@@ -2832,7 +2832,7 @@ void fn_8010913C(void *arg0) {
     }
 }
 
-void *Sound_Create(s32 arg0, u32 arg1) {
+void *Sound_Create(s32 arg0, unsigned long arg1) {
     void *Process_Create(void *, u32);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];
@@ -2842,10 +2842,10 @@ void *Sound_Create(s32 arg0, u32 arg1) {
     tbl = lbl_8028F390;
     switch (arg1) {
     case 0:
-        arg1 = 3U;
+        arg1 = 3;
         break;
     }
-    result = Process_Create(tbl, arg1);
+    result = Process_Create(tbl, (u32)arg1);
     fn_80109F88(result, arg0);
     return result;
 }
@@ -3894,23 +3894,31 @@ s32 fn_8010AD94(void *arg0) {
     void Map_SelectRangeBuffer(void *, s32);
     void Map_FillLayer(void *, s32, s32);
     extern u8 gUiContext[], gBattleMap[], gAiState[], Ai_UnitIsHostileToActive[];
-    u8 *map;
-    u8 *ui;
-    s32 x;
-    s32 y;
-    u8 result;
-    if(fn_80102EA8()) return 0;
-    ui=gUiContext;
-    if(ui[8]==0x2C) return 0;
-    x=(s8)ui[0xD]; y=(s8)ui[0xE];
-    if(fn_8010B30C(arg0,x,y)) return 1;
-    if((map=gBattleMap, Status_Test((u8*)arg0+0x1BC,0x3C)) &&
-       (Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
-        (*(s16**)(map+0x14190))[x+(y<<6)]=0,
-        fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
-    else result=0;
-    if(result) return 1;
-    return 0;
+#pragma cplusplus on
+struct Range {
+static u8 Test(void *arg0, s32 x, s32 y) {
+u8 *map;
+u8 result;
+map=gBattleMap;
+if(Status_Test((u8*)arg0+0x1BC,0x3C) &&
+(Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
+(*(s16**)(map+0x14190))[x+(y<<6)]=0,
+fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
+else result=0;
+return result;
+}
+};
+s32 x;
+s32 y;
+u8 result;
+if(fn_80102EA8()) return 0;
+if(gUiContext[8]==0x2C) return 0;
+x=((s8*)gUiContext)[0xD]; y=((s8*)gUiContext)[0xE];
+if(fn_8010B30C(arg0,x,y)) return 1;
+result=Range::Test(arg0,x,y);
+if(result) return 1;
+return 0;
+#pragma cplusplus reset
 }
 
 s32 fn_8010AEC8(void *arg0, s32 arg1) {
