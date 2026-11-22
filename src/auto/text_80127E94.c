@@ -191,25 +191,18 @@ void fn_80128134(void) {
 }
 
 void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, u32);
-    u32 fn_801090C0(s32);
+    void *Process_Create(void *, u32);
+    u32 Sound_FindByName(s32);
     extern u8 lbl_802905C0[];
     u32 temp_r3;
-    void *obj;
-    f32 f40;
-    f32 f44;
-    f32 f3c;
-
-    temp_r3 = fn_801090C0(arg0);
+    void *temp_r3_2;
+    temp_r3 = Sound_FindByName(arg0);
     if (temp_r3 != 0U) {
-        obj = fn_8000CAF0(lbl_802905C0, temp_r3);
-        f40 = lbl_8036A3C0;
-        f44 = lbl_8036A3C4;
-        f3c = (f32)arg2;
-        *(s32 *)((u8 *)obj + 0x38) = arg1;
-        *(f32 *)((u8 *)obj + 0x3C) = f3c;
-        *(f32 *)((u8 *)obj + 0x40) = f40;
-        *(f32 *)((u8 *)obj + 0x44) = f44;
+        temp_r3_2 = Process_Create(lbl_802905C0, temp_r3);
+        M2C_FIELD(temp_r3_2, s32 *, 0x38) = arg1;
+        M2C_FIELD(temp_r3_2, f32 *, 0x3C) = (f32)arg2;
+        M2C_FIELD(temp_r3_2, f32 *, 0x40) = lbl_8036A3C0;
+        M2C_FIELD(temp_r3_2, f32 *, 0x44) = lbl_8036A3C4;
     }
 }
 
