@@ -1832,34 +1832,26 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8029180C[];
     extern u8 lbl_80292230[];
     extern f32 lbl_8036A5AC;
+    s32 zero;
+    s32 neg1;
     s16 right;
     s16 bottom;
+    s32 ff;
+    f32 f;
     s16 w;
     s16 h;
-    f32 f;
-    s32 zero;
-    s16 neg1;
-    u8 ff;
-    s16 two;
-    s16 thirty;
-    s16 sixteen;
-    s16 eight;
 
     zero = 0;
     neg1 = -1;
     ff = 0xFF;
     f = lbl_8036A5AC;
-    thirty = 0x30;
-    two = 2;
-    eight = 8;
-    sixteen = 0x10;
+    right = (s16)arg1 + (s16)arg3;
+    bottom = (s16)arg2 + (s16)arg4;
 
     *(void **)arg0 = lbl_8028FDB0;
-    right = (s16)arg1 + (s16)arg3;
     *(s32 *)((u8 *)arg0 + 4) = zero;
-    bottom = (s16)arg2 + (s16)arg4;
     *(void **)arg0 = lbl_80292230;
-    *(s16 *)((u8 *)arg0 + 8) = neg1;
+    *(s16 *)((u8 *)arg0 + 8) = (s16)neg1;
     *(s16 *)((u8 *)arg0 + 0xA) = (s16)arg1;
     *(s16 *)((u8 *)arg0 + 0xC) = (s16)arg2;
     *(s16 *)((u8 *)arg0 + 0xE) = right;
@@ -1870,10 +1862,10 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)arg4;
     *(s16 *)((u8 *)arg0 + 0x1A) = (s16)zero;
     *(s16 *)((u8 *)arg0 + 0x1C) = (s16)zero;
-    ((u8 *)arg0)[0x1E] = ff;
-    ((u8 *)arg0)[0x1F] = ff;
-    ((u8 *)arg0)[0x20] = ff;
-    ((u8 *)arg0)[0x21] = ff;
+    ((u8 *)arg0)[0x1E] = (u8)ff;
+    ((u8 *)arg0)[0x1F] = (u8)ff;
+    ((u8 *)arg0)[0x20] = (u8)ff;
+    ((u8 *)arg0)[0x21] = (u8)ff;
     *(s16 *)((u8 *)arg0 + 0x22) = (s16)arg5;
     *(s16 *)((u8 *)arg0 + 0x24) = (s16)zero;
     *(f32 *)((u8 *)arg0 + 0x28) = f;
@@ -1885,16 +1877,16 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     ((u8 *)arg0)[0x3C] = 1;
     ((u8 *)arg0)[0x3D] = 1;
     *(s16 *)((u8 *)arg0 + 0x3E) = (s16)zero;
-    *(s16 *)((u8 *)arg0 + 0x40) = neg1;
-    *(s16 *)((u8 *)arg0 + 0x42) = neg1;
-    *(s16 *)((u8 *)arg0 + 0x44) = two;
-    *(s16 *)((u8 *)arg0 + 0x46) = thirty;
-    *(s16 *)((u8 *)arg0 + 0x48) = sixteen;
+    *(s16 *)((u8 *)arg0 + 0x40) = (s16)neg1;
+    *(s16 *)((u8 *)arg0 + 0x42) = (s16)neg1;
+    *(s16 *)((u8 *)arg0 + 0x44) = 2;
+    *(s16 *)((u8 *)arg0 + 0x46) = 0x30;
+    *(s16 *)((u8 *)arg0 + 0x48) = 0x10;
     *(s16 *)((u8 *)arg0 + 0x4A) = (s16)zero;
     h = (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xC));
     w = (s16)(*(s16 *)((u8 *)arg0 + 0xE) - *(s16 *)((u8 *)arg0 + 0xA));
-    *(s16 *)((u8 *)arg0 + 0x12) = two;
-    *(s16 *)((u8 *)arg0 + 0x14) = eight;
+    *(s16 *)((u8 *)arg0 + 0x12) = 2;
+    *(s16 *)((u8 *)arg0 + 0x14) = 8;
     *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)(h - 8);
 }
@@ -6404,100 +6396,87 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     *ret_p = *end_p;
 }
 
-void fn_8013BAD4(void *arg0, void *arg1, void *arg2, void *arg3) {
+#pragma use_lmw_stmw on
+void fn_8013BAD4(void **outNode, s32 *listHead, void ***insertBefore, s32 *unitPtr) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void fprintf(void *, void *, ...);
     void abort(void);
     void fn_800616A0(void *);
     void *GActor_Create(void);
-    void fn_800506E0(void *, s32, void *);
+    void fn_800506E0(s32, s32, void *);
     s32 fn_800639B4(void);
     void GActor_Finalize(void *);
-
     extern char __files[];
-    extern u8 lbl_802768A0[];
-
+    extern char lbl_802768A0[];
+    struct Obj {
+        u32 flags;
+        s32 unk4;
+        u8 pad8[0x3C];
+        s32 anim;
+    };
+    struct Value {
+        s32 unit;
+        struct Obj *actor;
+    };
     struct Node {
         struct Node *prev;
         struct Node *next;
-        void *unit;
-        void *actor;
+        struct Value value;
     };
-
+    struct Holder {
+        void *list;
+        struct Node *node;
+    };
+    struct Value *value;
     struct Node *node;
-    struct Node *position;
-    struct Node *previous;
-    struct Node *owned;
-    u8 *data;
-    void *unit;
-    void *actor;
+    s32 unit;
     void *list;
-    struct Node *holder;
+    struct Obj *actor;
+    struct Node *pos;
+    struct Node *n;
+    struct Holder h;
+    struct Holder *hp;
 
-    list = (u8 *)arg1 + 4;
-
+    list = listHead + 1;
     node = (struct Node *)Heap_Alloc(0x10);
-
-    if (node == NULL) {
-        fprintf(
-            __files + 0xA0,
-            lbl_802768A0 + 0x47,
-            __files
-        );
+    if (node == 0) {
+        fprintf(__files + 0xA0, lbl_802768A0 + 0x47);
         abort();
     }
-
-    data = (u8 *)node + 8;
-    holder = node;
-    owned = node;
-
-    if (data != NULL) {
-        unit = *(void **)arg3;
-
-        *(void **)(data + 0) = unit;
-        *(void **)(data + 4) = NULL;
-
-        actor = *(void **)(data + 4);
-
-        if (actor != NULL) {
-            fn_800616A0(actor);
+    hp = &h;
+    hp->list = list;
+    hp->node = node;
+    value = &node->value;
+    if (value != 0) {
+        unit = *unitPtr;
+        value->unit = unit;
+        value->actor = 0;
+        if (value->actor != 0) {
+            fn_800616A0(value->actor);
         }
-
-        actor = GActor_Create();
-        *(void **)(data + 4) = actor;
-
-        *(void **)((u8 *)actor + 4) = (u8 *)unit + 0x1C;
-        *(u32 *)actor |= 0x50028400;
-
+        value->actor = (struct Obj *)GActor_Create();
+        value->actor->unk4 = unit + 0x1C;
+        actor = value->actor;
+        actor->flags |= 0x50028400;
         fn_800506E0(unit, 0, actor);
-
-        *(s32 *)((u8 *)actor + 0x44) = fn_800639B4();
-
-        GActor_Finalize(actor);
+        value->actor->anim = fn_800639B4();
+        GActor_Finalize(value->actor);
     }
-
-    position = *(struct Node **)arg2;
-
-    owned = NULL;
-
-    previous = position->prev;
-
-    previous->next = holder;
-    holder->prev = previous;
-
-    position->prev = holder;
-    holder->next = position;
-
-    (*(s32 *)arg1)++;
-
-    *(struct Node **)arg0 = holder;
-
-    if (owned != NULL) {
-        Heap_Free(owned);
+    pos = (struct Node *)*insertBefore;
+    n = hp->node;
+    hp->node = 0;
+    pos->prev->next = n;
+    n->prev = pos->prev;
+    pos->prev = n;
+    n->next = pos;
+    (*listHead)++;
+    *outNode = n;
+    if (hp->node != 0) {
+        Heap_Free(hp->node);
     }
 }
-
+#pragma use_lmw_stmw reset
 int fn_8013BBF8(void *arg0) {
     u32 *ptr;
 
