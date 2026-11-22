@@ -1187,32 +1187,40 @@ void fn_80058008(void *arg0) {
 }
 
 void fn_8005806C(void *arg0) {
+    void Process_ClearFunc(void *);
     extern f32 gF32_0;
     extern f32 lbl_80369158;
-    f32 temp_f0;
-    f32 temp_f2;
-    f32 temp_f3;
-    f32 temp_f3_2;
-    f32 temp_f4;
-    f32 temp_f4_2;
-    f32 temp_f6;
-    u32 temp_r3;
+    f32 dur;
+    f32 step;
+    f32 diff;
+    f32 y;
+    f32 from;
+    f32 half;
+    s32 prod;
+    u8 counter;
+    u8 byte;
 
-    M2C_FIELD(arg0, u8 *, 0x53) = (u8) (M2C_FIELD(arg0, u8 *, 0x53) + 1);
-    if ((s32) M2C_FIELD(arg0, u8 *, 0x53) >= 0x14) {
-        M2C_FIELD(arg0, u8 *, 0x53) = 0x14U;
-        Process_ClearFunc();
+    ((u8 *)arg0)[0x53] = ((u8 *)arg0)[0x53] + 1;
+    if ((s32)((u8 *)arg0)[0x53] >= 0x14) {
+        ((u8 *)arg0)[0x53] = 0x14;
+        Process_ClearFunc(arg0);
     }
-    temp_f6 = lbl_80369158 * lbl_80369158;
-    temp_f0 = lbl_80369158 - (f32) M2C_FIELD(arg0, u8 *, 0x53);
-    temp_f4 = (f32) M2C_FIELD(arg0, u8 *, 0x3F);
-    temp_f3 = gF32_0 - temp_f4;
-    M2C_FIELD(arg0, s8 *, 0x3B) = (s8) (temp_f4 + (temp_f3 - ((temp_f3 * (temp_f0 * temp_f0)) / temp_f6)));
-    temp_r3 = M2C_FIELD(arg0, u16 *, 0x4C) * M2C_FIELD(arg0, u8 *, 0x51);
-    temp_f3_2 = lbl_80369158 - (f32) M2C_FIELD(arg0, u8 *, 0x53);
-    temp_f4_2 = (f32) temp_r3;
-    temp_f2 = (f32) ((s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1) - temp_f4_2;
-    M2C_FIELD(arg0, s16 *, 0x4A) = (s16) (temp_f4_2 + (temp_f2 - ((temp_f2 * (temp_f3_2 * temp_f3_2)) / temp_f6)));
+    counter = ((u8 *)arg0)[0x53];
+    byte = ((u8 *)arg0)[0x3f];
+    dur = lbl_80369158;
+    y = dur * dur;
+    from = (f32)byte;
+    step = dur - (f32)counter;
+    diff = gF32_0 - from;
+    ((u8 *)arg0)[0x3b] = (u8)(from + (diff - (diff * (step * step)) / y));
+
+    prod = *(u16 *)((u8 *)arg0 + 0x4c) * ((u8 *)arg0)[0x51];
+    counter = ((u8 *)arg0)[0x53];
+    step = dur - (f32)counter;
+    from = (f32)prod;
+    half = (f32)(prod / 2);
+    diff = half - from;
+    *(s16 *)((u8 *)arg0 + 0x4a) = (s16)(from + (diff - (diff * (step * step)) / y));
 }
 
 #pragma use_lmw_stmw on
@@ -1764,8 +1772,8 @@ void fn_80059240(void *arg0) {
     M2C_FIELD(arg0, M2C_UNK (**)(s32), 0x30)(M2C_FIELD(arg0, s32 *, 0x18));
 }
 
+#pragma use_lmw_stmw on
 void fn_8005926C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-#pragma optimize_for_size off
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
@@ -1788,10 +1796,8 @@ void fn_8005926C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
             value /= 10;
         }
     }
-#pragma optimize_for_size reset
 }
-
-#pragma optimize_for_size off
+#pragma use_lmw_stmw reset
 f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     f64 fn_80237E90(f32);
     extern f32 gF32_0;
