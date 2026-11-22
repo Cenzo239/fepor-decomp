@@ -873,12 +873,9 @@ extern void fn_8021D614(u32, s32*, u32);
   #pragma optimization_level reset
   
   static inline u32 save_slot_size(u8 *slot) {
-    u32 size = *(u32 *)(slot + 0x48);
-    if (size > 0x100000U) {
-        return 0;
-    }
-    return size;
-}
+      u32 size = *(u32 *)(slot + 0x48);
+      return size & ~-(size > 0x100000U);
+  }
 
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
@@ -1023,6 +1020,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     extern u8 gSystemSave[];
     extern void *gSaveDataBase;
 
+    u8 *best;
     u8 hist[0x28];
     struct {
         void *start;
@@ -1034,7 +1032,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     } w;
     u32 minSize;
     s32 off;
-    u8 *best;
     s32 i;
     void *other;
     s32 ctr;
@@ -1355,8 +1352,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     diff = (s32)best - (s32)gSaveDataBase;
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, other);
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
@@ -1387,6 +1382,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     s32 i;
     void *other;
     s32 ctr;
+    u8 *base;
     u8 *slot;
     u8 hdrOk;
     u32 clamped;
@@ -1408,8 +1404,10 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     saved47 = gSystemSave[0x47];
     minSize = (u32)-1;
 
+#pragma global_optimizer off
     for (ctr = 3; ctr != 0; ctr--) {
-        slot = *arg0 + off;
+        base = *arg0;
+        slot = base + off;
         if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
             hdrOk = 0;
         } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
@@ -1425,7 +1423,8 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
             }
         }
         off += 0x4000;
-        slot = *arg0 + off;
+        base = *arg0;
+        slot = base + off;
         if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
             hdrOk = 0;
         } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
@@ -1443,6 +1442,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
         off += 0x4000;
         i += 1;
     }
+#pragma global_optimizer reset
 
     fn_80006298(best, 0, 0x4000);
     *(s32 *)(best + 0x4C) = 0x4000;
@@ -1720,7 +1720,7 @@ void fn_801E25EC(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma opt_strength_reduction off
 void fn_801E2620(void **arg0, u8 arg1) {
     u8 fn_800EB520(void *);
     void fn_800EB760(s32);
@@ -1740,7 +1740,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 counts[5];
     s8 best_idx[5];
     u32 best_val[5];
-    u8 hist[6];
+    u8 hist[8];
     u8 *slots[2];
     s32 spC;
     s32 sp8;
@@ -1755,7 +1755,6 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 *dst;
     u8 *src;
     s32 j;
-    u32 size;
     u32 capped;
     u8 *best;
     u32 bestc;
@@ -1829,12 +1828,11 @@ void fn_801E2620(void **arg0, u8 arg1) {
         } else {
         accumulate:
             idx = blk[0x62];
-            size = *(u32 *)(blk + 0x48);
-            capped = (size <= 0x100000U) ? size : 0;
+            capped = save_slot_size(blk);
             counts[idx] = (u8)(counts[idx] + 1);
             if (best_val[idx] < capped) {
                 best_idx[idx] = (s8)i;
-                best_val[idx] = capped;
+                best_val[idx] = save_slot_size(blk);
             }
         }
         i += 1;
@@ -1935,10 +1933,8 @@ void fn_801E2620(void **arg0, u8 arg1) {
     }
 
     {
-        u32 ca = *(u32 *)(slots[0] + 0x48);
-        u32 cb = *(u32 *)(slots[1] + 0x48);
-        ca = (ca <= 0x100000U) ? ca : 0;
-        cb = (cb <= 0x100000U) ? cb : 0;
+        u32 ca = save_slot_size(slots[0]);
+        u32 cb = save_slot_size(slots[1]);
         if (ca < cb) {
             less = slots[0];
             more = slots[1];
@@ -1966,11 +1962,10 @@ after_pair:
             ok = 1;
         }
         if (ok != 0) {
-            size = *(u32 *)(sys + 0x48);
-            capped = (size <= 0x100000U) ? size : 0;
+            capped = save_slot_size(sys);
             if (bestc < capped) {
                 best = sys;
-                bestc = capped;
+                bestc = save_slot_size(sys);
             }
         }
         off += 0x4000;
@@ -1983,11 +1978,10 @@ after_pair:
             ok = 1;
         }
         if (ok != 0) {
-            size = *(u32 *)(sys + 0x48);
-            capped = (size <= 0x100000U) ? size : 0;
+            capped = save_slot_size(sys);
             if (bestc < capped) {
                 best = sys;
-                bestc = capped;
+                bestc = save_slot_size(sys);
             }
         }
         off += 0x4000;
@@ -2001,11 +1995,10 @@ after_pair:
         ok = 1;
     }
     if (ok != 0) {
-        size = *(u32 *)(sys + 0x48);
-        capped = (size <= 0x100000U) ? size : 0;
+        capped = save_slot_size(sys);
         if (bestc < capped) {
             best = sys;
-            bestc = capped;
+            bestc = save_slot_size(sys);
         }
     }
     sys = (u8 *)*arg0 + 0x20000;
@@ -2017,8 +2010,7 @@ after_pair:
         ok = 1;
     }
     if (ok != 0) {
-        size = *(u32 *)(sys + 0x48);
-        capped = (size <= 0x100000U) ? size : 0;
+        capped = save_slot_size(sys);
         if (bestc < capped) {
             best = sys;
         }
@@ -2137,7 +2129,7 @@ after_pair:
     *(u32 *)(gSystemSave + 0x30) = 0;
     fn_800EB760(-0x42);
 }
-#pragma global_optimizer reset
+#pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
 void fn_801E2F9C(s32 *arg0, s32 arg1) {
