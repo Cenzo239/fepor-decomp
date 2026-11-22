@@ -3018,9 +3018,10 @@ if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg
 M2C_FIELD(arg0,void **,0x48)=child;
 M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
 fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
-#pragma cplusplus on
+#pragma cplusplus reset
 }
 
+#pragma cplusplus on
 extern "C" void fn_8013692C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 struct Sub { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual s16 height()=0; };
 extern u8 lbl_802921B0[];
