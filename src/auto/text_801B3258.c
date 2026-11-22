@@ -6573,7 +6573,6 @@ void *fn_801BEF90(void *arg0)
     char *str;
     s8 madePath;
     s8 madeName;
-    f32 zero = lbl_8036B2F0;
 
     *(u32 *)(self + 0x0) = 0;
     *(u32 *)(self + 0x4) = 0;
