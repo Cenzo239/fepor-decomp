@@ -107,132 +107,102 @@ break;
 
 void fn_80011D20(void) {
     extern void *lbl_80367180;
-    extern s32 lbl_803671A4;
-    extern s32 lbl_80367198;
-
-    u32 Res_GetByName(void *);
+    extern void *lbl_803671A4;
+    extern void *lbl_80367198;
+    void *Res_GetByName(void *);
     void fn_80011A5C(void *);
     void fn_800142B0(s32);
-
-    u8 *ctx;
-    u8 *script;
-    u8 *inner;
+    void *ctx;
+    void *script;
+    void *inner;
     u8 *code;
-    u8 *resource;
-    u32 *stack;
-    u32 *base;
+    void *resource;
+    s32 *stack;
+    s32 base;
+    s32 i;
+    s32 *p;
+    s32 zero;
+    void *table;
+    s32 val;
     s32 index;
     s32 count;
-    s32 i;
-    s32 value;
-    s32 offset;
-    u32 result;
-    u32 zero;
 
-    ctx = (u8 *)lbl_80367180;
+    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
+    index = (s8)*code << 8;
 
-    code = *(u8 **)(ctx + 0xC);
-    *(u8 **)(ctx + 0xC) = code + 1;
-    index = (s8)*code;
-    index <<= 8;
-
-    ctx = (u8 *)lbl_80367180;
-    code = *(u8 **)(ctx + 0xC);
-    *(u8 **)(ctx + 0xC) = code + 1;
+    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
     index += *code;
 
-    ctx = (u8 *)lbl_80367180;
-    inner = *(u8 **)(ctx + 8);
-    resource = *(u8 **)(inner + 8);
-    resource = *(u8 **)(resource + 0x24);
+    inner = *(void **)((u8 *)lbl_80367180 + 8);
+    resource = *(void **)((u8 *)inner + 8);
+    resource = *(void **)((u8 *)resource + 0x24);
+    script = Res_GetByName((u8 *)resource + index);
 
-    script = (u8 *)Res_GetByName(resource + index);
-
-    ctx = (u8 *)lbl_80367180;
-    code = *(u8 **)(ctx + 0xC);
-    *(u8 **)(ctx + 0xC) = code + 1;
-
+    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
+    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
     count = (s8)*code;
 
-    if (count == 0) {
-        ctx = (u8 *)lbl_80367180;
-
-        stack = *(u32 **)(ctx + 0x18);
-        stack -= count;
-        *(u32 **)(ctx + 0x18) = stack;
-
+    if (script == NULL) {
         zero = 0;
-        stack = *(u32 **)(ctx + 0x18);
-        *(u32 **)(ctx + 0x18) = stack + 1;
+        *(s32 *)((u8 *)lbl_80367180 + 0x18) = *(s32 *)((u8 *)lbl_80367180 + 0x18) - (count << 2);
+        stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+        *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
         *stack = zero;
-
         fn_800142B0(0);
         return;
     }
 
-    inner = *(u8 **)(script + 8);
-
+    inner = *(void **)((u8 *)script + 8);
     if (inner == NULL) {
         fn_80011A5C(script);
         return;
     }
 
-    ctx = (u8 *)lbl_80367180;
-
+    ctx = lbl_80367180;
     if (ctx == NULL) {
-        ctx = (u8 *)lbl_803671A4;
+        ctx = lbl_803671A4;
     }
 
-    count = (s8)script[0xD];
-    offset = *(s16 *)(script + 0x12);
-
-    stack = *(u32 **)(ctx + 0x18);
-    base = stack - count;
-
-    *(u32 **)(ctx + 0x18) = base + offset;
-
-    index = *(u16 *)(inner + 0x20);
-    resource = (u8 *)lbl_80367198 + (index << 2);
-
-    i = count;
-    stack = base + i;
     zero = 0;
-
-    while (i < *(s16 *)(script + 0x12)) {
-        *stack = zero;
-        stack++;
-        i++;
+    i = (s8)*(u8 *)((u8 *)script + 0xD);
+    base = *(s32 *)((u8 *)ctx + 0x18) - (i << 2);
+    *(s32 *)((u8 *)ctx + 0x18) = base + (*(s16 *)((u8 *)script + 0x12) << 2);
+    table = (u8 *)lbl_80367198 + (*(u16 *)((u8 *)inner + 0x20) << 2);
+    i = (s8)*(u8 *)((u8 *)script + 0xD);
+    p = (s32 *)(base + (i << 2));
+    while (i < *(s16 *)((u8 *)script + 0x12)) {
+        *p = zero;
+        p += 1;
+        i += 1;
     }
 
     lbl_80367180 = ctx;
+    stack = *(s32 **)((u8 *)ctx + 0x18);
+    val = *(s32 *)((u8 *)ctx + 0xC);
+    *(s32 **)((u8 *)ctx + 0x18) = stack + 1;
+    *stack = val;
 
-    stack = *(u32 **)(ctx + 0x18);
-    value = *(u32 *)(ctx + 0xC);
-    *(u32 **)(ctx + 0x18) = stack + 1;
-    *stack = value;
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    val = *(s32 *)((u8 *)ctx + 0x8);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
+    *stack = val;
 
-    ctx = (u8 *)lbl_80367180;
-    value = *(u32 *)(ctx + 8);
-    stack = *(u32 **)(ctx + 0x18);
-    *(u32 **)(ctx + 0x18) = stack + 1;
-    *stack = value;
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    val = *(s32 *)((u8 *)ctx + 0x10);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
+    *stack = val;
 
-    ctx = (u8 *)lbl_80367180;
-    value = *(u32 *)(ctx + 0x10);
-    stack = *(u32 **)(ctx + 0x18);
-    *(u32 **)(ctx + 0x18) = stack + 1;
-    *stack = value;
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    val = *(s32 *)((u8 *)ctx + 0x14);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
+    *stack = val;
 
-    ctx = (u8 *)lbl_80367180;
-    value = *(u32 *)(ctx + 0x14);
-    stack = *(u32 **)(ctx + 0x18);
-    *(u32 **)(ctx + 0x18) = stack + 1;
-    *stack = value;
-
-    *(u32 *)(ctx + 0xC) = *(u32 *)(script + 4);
-    *(void **)(ctx + 8) = script;
-    *(void **)(ctx + 0x10) = resource;
-    *(void **)(ctx + 0x14) = base;
+    *(s32 *)((u8 *)ctx + 0xC) = *(s32 *)((u8 *)script + 4);
+    *(void **)((u8 *)ctx + 0x8) = script;
+    *(void **)((u8 *)ctx + 0x10) = table;
+    *(s32 *)((u8 *)ctx + 0x14) = base;
 }
 
 void fn_80011EDC(void *arg0)
@@ -1536,94 +1506,85 @@ s32 fn_800138BC(void *arg0) {
 u32 ScriptCtx_Call(void) {
 #pragma dont_inline on
     void fn_800142B0(s32);
-    extern u8 *lbl_80367184;
-    extern u8 *lbl_80367180;
+    void fn_80011A5C(void *);
+    void fn_80011EDC(void *);
+    extern void *lbl_80367184;
+    extern void *lbl_80367180;
     extern void *lbl_8036718C;
-    u8 *command;
-    u8 *ctx;
-    u32 *sp;
-    fn_800142B0(0);
-    command=lbl_80367184;
-    if (command==0) {
-        *(void **)(lbl_80367180+0x18)=lbl_8036718C;
-        fn_800142B0(5);
-        return 0;
-    }
-    if (*(void **)(command+8)==0) {
-        fn_80011A5C(command);
-        ctx=lbl_80367180;
-        sp=*(u32 **)(ctx+0x18)-1;
-        *(u32 **)(ctx+0x18)=sp;
-        return *sp;
-    }
-    { void *context=lbl_80367180; 
     extern void *lbl_803671A4;
     extern void *lbl_80367198;
-    extern void *lbl_80367180;
-
+    void *command;
+    void *context;
+    void *inner;
+    s32 *stack;
     s32 base;
     s32 i;
     s32 *p;
-    s32 *stack;
-    s32 val;
-    void *table;
-    u8 *inner;
     s32 zero;
-    void *saved;
+    void *table;
+    s32 val;
 
+    fn_800142B0(0);
+    command = lbl_80367184;
+    if (command == NULL) {
+        *(void **)((u8 *)lbl_80367180 + 0x18) = lbl_8036718C;
+        fn_800142B0(5);
+        return 0;
+    }
+    inner = *(void **)((u8 *)command + 8);
+    if (inner == NULL) {
+        fn_80011A5C(command);
+        context = lbl_80367180;
+        stack = *(s32 **)((u8 *)context + 0x18);
+        stack -= 1;
+        *(s32 **)((u8 *)context + 0x18) = stack;
+        val = *stack;
+        return val;
+    }
+    context = lbl_80367180;
     if (context == NULL) {
         context = lbl_803671A4;
     }
-
     zero = 0;
-    inner = *(u8 **)(command + 8);
-    base = *(s32 *)((u8 *)context + 0x18) - ((s8)command[0xd] * 4);
-    *(s32 *)((u8 *)context + 0x18) = base + (*(s16 *)(command + 0x12) * 4);
-    table = (u8 *)lbl_80367198 + (*(u16 *)(inner + 0x20) * 4);
-
-    i = (s8)command[0xd];
-    p = (s32 *)(base + (i * 4));
-    while (i < *(s16 *)(command + 0x12)) {
+    i = (s8)*(u8 *)((u8 *)command + 0xD);
+    base = *(s32 *)((u8 *)context + 0x18) - (i << 2);
+    *(s32 *)((u8 *)context + 0x18) = base + (*(s16 *)((u8 *)command + 0x12) << 2);
+    table = (u8 *)lbl_80367198 + (*(u16 *)((u8 *)inner + 0x20) << 2);
+    i = (s8)*(u8 *)((u8 *)command + 0xD);
+    p = (s32 *)(base + (i << 2));
+    while (i < *(s16 *)((u8 *)command + 0x12)) {
         *p = zero;
         p += 1;
         i += 1;
     }
-
     lbl_80367180 = context;
-
     stack = *(s32 **)((u8 *)context + 0x18);
-    val = *(s32 *)((u8 *)context + 0xc);
-    *(s32 **)((u8 *)context + 0x18) = (s32 *)((u8 *)stack + 4);
+    val = *(s32 *)((u8 *)context + 0xC);
+    *(s32 **)((u8 *)context + 0x18) = stack + 1;
     *stack = val;
-
-    saved = lbl_80367180;
     val = *(s32 *)((u8 *)context + 0x8);
-    stack = *(s32 **)((u8 *)saved + 0x18);
-    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
     *stack = val;
-
-    saved = lbl_80367180;
     val = *(s32 *)((u8 *)context + 0x10);
-    stack = *(s32 **)((u8 *)saved + 0x18);
-    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
     *stack = val;
-
-    saved = lbl_80367180;
     val = *(s32 *)((u8 *)context + 0x14);
-    stack = *(s32 **)((u8 *)saved + 0x18);
-    *(s32 **)((u8 *)saved + 0x18) = (s32 *)((u8 *)stack + 4);
+    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
+    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
     *stack = val;
-
-    *(s32 *)((u8 *)context + 0xc) = *(s32 *)(command + 4);
+    *(s32 *)((u8 *)context + 0xC) = *(s32 *)((u8 *)command + 4);
     *(void **)((u8 *)context + 0x8) = command;
     *(void **)((u8 *)context + 0x10) = table;
     *(s32 *)((u8 *)context + 0x14) = base;
- }
     fn_80011EDC(lbl_80367180);
-    ctx=lbl_80367180;
-    sp=*(u32 **)(ctx+0x18)-1;
-    *(u32 **)(ctx+0x18)=sp;
-    return *sp;
+    context = lbl_80367180;
+    stack = *(s32 **)((u8 *)context + 0x18);
+    stack -= 1;
+    *(s32 **)((u8 *)context + 0x18) = stack;
+    val = *stack;
+    return val;
 }
 
 #pragma scheduling off
@@ -3100,7 +3061,11 @@ void fn_80015718(void *arg0, void *arg1) {
     if (kind >= 0) {
         goto case04;
     }
-    goto done_sw;
+    if (kind < 0) {
+        goto done_sw;
+    } else {
+        goto done_sw;
+    }
 case04:
     *(u32 *)((u8 *)node + 0x1A0) &= ~0x18;
     goto done_sw;
@@ -3146,6 +3111,11 @@ void fn_800157DC(void *arg0, void *arg1) {
     if (kind >= 0) {
         goto case04;
     }
+    if (kind < 0) {
+        goto done_sw;
+    }
+    goto Ldup;
+Ldup:
     goto done_sw;
 case04:
     *(u32 *)((u8 *)node + 0x1A0) &= ~0x18;
@@ -4058,6 +4028,7 @@ void fn_80016C58(void) {
     void *unit;
     void *list4;
     s32 i;
+    s32 j;
     s32 alleg;
 
     {
@@ -4089,15 +4060,15 @@ void fn_80016C58(void) {
         unit = (u8 *)unit + 0x280;
     } while (i < 0x9F);
 
-    i = 0;
+    j = 0;
     {
         void *cur;
         cur = *(void **)(gUnitLists + 0x3C);
         while (cur != NULL) {
             unit = *(void **)((u8 *)cur + 0x184);
-            Unit_SetMapPos(cur, (s8)((i % 16) * 4 + 1), (s8)((i / 16) * 4 + 0x41));
+            Unit_SetMapPos(cur, (s8)((j % 16) * 4 + 1), (s8)((j / 16) * 4 + 0x41));
             cur = unit;
-            i += 1;
+            j += 1;
         }
     }
 
