@@ -3482,6 +3482,11 @@ else *(s32 *)(stat+0x64)=-1;
 }
 
 s32 fn_8021D004(s32 arg0, s32 arg1, s32 arg2) {
+    s32 fn_80217B18(s32, s32 *);
+    s32 fn_8021BCCC(void *, void *);
+    void fn_8021CE0C(void *, void *);
+    s32 __CARDPutControlBlock(void *, s32);
+    u8 *__CARDGetDirBlock(void *);
     s32 card;
     s32 result;
     u8 *entry;
