@@ -2753,18 +2753,12 @@ s32 SampleKey_Remove(u16 id) {
     extern SampleKey gSampleKeys[];
     extern u16 gSampleKeyCount;
 
-    u16 uid;
     s32 i;
     u16 count;
 
-    uid = id;
     Audio_Lock();
     count = gSampleKeyCount;
-    {
-        SampleKey *p;
-        p = gSampleKeys;
-        for (i = 0; i < (s32)count && uid != p->id; p++, i++) {
-        }
+    for (i = 0; i < (s32)count && id != gSampleKeys[i].id; i++) {
     }
 
     if (i != (s32)count) {
@@ -3780,90 +3774,95 @@ void fn_8025106C(void *arg0, u32 *arg1)
     s32 fn_802555A0(
         u32, u32, u32, u32, u32,
         u32, u32, u32, u32, u32,
-        u32, u32, u32, u32, u32
+        u32, u32, u32, u32, u32, u32
     );
 
-    void fn_8024A674(s32, s32);
+    void fn_8024A674(void *, void *);
 
     u8 *voice;
-    u8 *entry;
     u32 word;
-    u32 command;
-    u32 value;
-    u32 index;
-    s32 volume;
+    s32 sum;
+    s32 vol;
     s32 result;
-    s32 previous;
+    s32 prev;
+    s32 off;
+    u8 *entry;
+    u8 one;
+    u32 zero;
 
     voice = (u8 *)arg0;
-    command = arg1[0];
+    arg0 = voice;
+
+    sum = (s32)*(u8 *)((u8 *)arg0 + 0x131) + (s8)((arg1[0] >> 8) & 0xFF);
+    if (sum < 0) {
+        vol = 0;
+    } else {
+        vol = 0x7F;
+        if (sum <= 0x7F) {
+            vol = sum;
+        }
+    }
+
+    if (*(u8 *)((u8 *)arg0 + 0x11D) != 0) {
+        vol |= 0x80;
+    }
+
+    one = 1;
+    zero = 0;
+    *(u8 *)((u8 *)arg0 + 0x11C) = one;
     word = arg1[1];
 
-    volume = (s32)*(u8 *)(voice + 0x131);
-    volume += (s8)((command >> 8) & 0xFF);
-
-    if (volume < 0) {
-        volume = 0;
-    } else if (volume > 0x7F) {
-        volume = 0x7F;
-    }
-
-    if (*(u8 *)(voice + 0x11D) != 0) {
-        volume |= 0x80;
-    }
-
-    *(u8 *)(voice + 0x11C) = 1;
-
     result = fn_802555A0(
-        command >> 16,
+        arg1[0] >> 16,
         (word >> 16) & 0xFF,
         word >> 24,
-        *(u32 *)(voice + 0x100),
-        (u8)volume,
-        (*(u32 *)(voice + 0x158) >> 16) & 0xFF,
-        (*(u32 *)(voice + 0x174) >> 16) & 0xFF,
-        *(u8 *)(voice + 0x121),
-        *(u8 *)(voice + 0x122),
-        *(u8 *)(voice + 0x123),
+        *(u32 *)((u8 *)arg0 + 0x100),
+        (u8)vol,
+        (*(u32 *)((u8 *)arg0 + 0x158) >> 16) & 0xFF,
+        (*(u32 *)((u8 *)arg0 + 0x174) >> 16) & 0xFF,
+        *(u8 *)((u8 *)arg0 + 0x121),
+        *(u8 *)((u8 *)arg0 + 0x122),
+        *(u8 *)((u8 *)arg0 + 0x123),
         word & 0xFFFF,
-        *(u8 *)(voice + 0x120),
-        0,
-        *(u8 *)(voice + 0x11E),
-        *(u8 *)(voice + 0x11F)
+        *(u8 *)((u8 *)arg0 + 0x120),
+        zero,
+        *(u8 *)((u8 *)arg0 + 0x11E),
+        *(u8 *)((u8 *)arg0 + 0x11F),
+        *(u8 *)((u8 *)arg0 + 0x197) == 0
     );
 
-    *(u8 *)(voice + 0x11C) = 0;
+    *(u8 *)((u8 *)arg0 + 0x11C) = 0;
 
-    if (result == -1) {
-        *(s32 *)(voice + 0x108) = -1;
-        return;
-    }
+    if ((u32)(result + 0x10000) != 0xFFFFU) {
+        off = (u8)result * 0x458;
+        entry = (u8 *)gSynthVoices;
+        entry += off;
+        *(u32 *)((u8 *)arg0 + 0x108) = *(u32 *)(*(u8 **)(entry + 0xF8) + 8);
 
-    index = (u8)result;
-    entry = (u8 *)gSynthVoices + index * 0x458;
+        entry = (u8 *)gSynthVoices;
+        entry += off;
+        *(u32 *)(entry + 0xF0) = *(u32 *)((u8 *)arg0 + 0xF4);
 
-    *(u32 *)(voice + 0x108) =
-        *(u32 *)(*(u8 **)(entry + 0xF8) + 8);
+        prev = *(s32 *)((u8 *)arg0 + 0xEC);
+        if ((u32)(prev + 0x10000) != 0xFFFFU) {
+            entry = (u8 *)gSynthVoices;
+            entry += off;
+            *(s32 *)(entry + 0xEC) = prev;
+            prev = *(s32 *)((u8 *)arg0 + 0xEC);
+            entry = (u8 *)gSynthVoices;
+            entry += (u8)prev * 0x458;
+            *(s32 *)(entry + 0xF0) = result;
+        }
 
-    *(u32 *)(entry + 0xF0) =
-        *(u32 *)(voice + 0xF4);
+        *(s32 *)((u8 *)arg0 + 0xEC) = result;
 
-    previous = *(s32 *)(voice + 0xEC);
-
-    if (previous != -1) {
-        *(s32 *)(entry + 0xEC) = previous;
-
-        *(s32 *)(
-            (u8 *)gSynthVoices
-            + ((u8)previous * 0x458)
-            + 0xF0
-        ) = result;
-    }
-
-    *(s32 *)(voice + 0xEC) = result;
-
-    if (*(u8 *)(voice + 0x11D) != 0) {
-        fn_8024A674((s32)entry, (s32)voice);
+        if (*(u8 *)((u8 *)arg0 + 0x11D) != 0) {
+            entry = (u8 *)gSynthVoices;
+            entry += off;
+            fn_8024A674(entry, arg0);
+        }
+    } else {
+        *(s32 *)((u8 *)arg0 + 0x108) = -1;
     }
 }
 
@@ -3973,26 +3972,27 @@ void fn_8025164C(void *arg0)
 {
     extern u16 lbl_8029F1B0[];
 
+    struct Ret { s32 v; };
+    struct Ret h;
     u8 *data;
     u32 value1;
-    u32 value2;
-    u32 ratio;
     u32 scaled;
-    u32 count;
-    u32 index;
+    u32 ratio;
     u32 value;
-    u32 base;
+    u32 index;
+    u32 count;
+    s32 base;
     u32 lower;
     u32 upper;
+    u16 *p;
     u32 i;
+    u16 cur;
 
     data = (u8 *)arg0;
 
+    scaled = (*(u32 *)(data + 0x128)) & 0xFFFFFF;
+    ratio = (*(u32 *)(data + 0x124)) & 0xFFFFFF;
     value1 = *(u32 *)(data + 0x124);
-    value2 = *(u32 *)(data + 0x128);
-
-    ratio = value1 & 0xFFFFFF;
-    scaled = value2 & 0xFFFFFF;
 
     if (ratio == scaled) {
         *(u16 *)(data + 0x12E) = value1 >> 24;
@@ -4003,74 +4003,58 @@ void fn_8025164C(void *arg0)
     if (ratio < scaled) {
         value = (scaled << 12) / ratio;
         count = 0;
-
         scaled = value >> 12;
-
         for (i = 0; i < 11; i++) {
             if (scaled < (1U << (count + 1))) {
                 break;
             }
             count++;
         }
-
         value = value / (1U << count);
-
+        p = &lbl_8029F1B0[11];
         index = 11;
-
-        while (value <= lbl_8029F1B0[index]) {
+        while (1) {
+            cur = *p;
+            if (value > cur) break;
+            p--;
             index--;
         }
-
-        base = value1 >> 24;
-
-        *(u16 *)(data + 0x12E) =
-            base + count * 12 + index;
-
+        *(u16 *)(data + 0x12E) = (value1 >> 24) + count * 12 + index;
         lower = lbl_8029F1B0[index];
         upper = lbl_8029F1B0[index + 1];
-
-        *(u8 *)(data + 0x130) =
-            ((value - lower) * 100) / (upper - lower);
-
+        *(u8 *)(data + 0x130) = ((value - lower) * 100) / (upper - lower);
         return;
     }
 
     value = (ratio << 12) / scaled;
     count = 0;
-
     ratio = value >> 12;
-
     for (i = 0; i < 11; i++) {
         if (ratio < (1U << (count + 1))) {
             break;
         }
         count++;
     }
-
     value = value / (1U << count);
-
+    p = &lbl_8029F1B0[11];
     index = 11;
-
-    while (value <= lbl_8029F1B0[index]) {
+    while (1) {
+        cur = *p;
+        if (value > cur) break;
+        p--;
         index--;
     }
-
+    h.v = value1 >> 24;
     base = count * 12 + index;
-    scaled = value1 >> 24;
-
-    if (base > scaled) {
+    if (base > h.v) {
         *(u8 *)(data + 0x130) = 0;
         *(u16 *)(data + 0x12E) = 0;
         return;
     }
-
-    *(u16 *)(data + 0x12E) = scaled - base;
-
+    *(u16 *)(data + 0x12E) = h.v - base;
     lower = lbl_8029F1B0[index];
     upper = lbl_8029F1B0[index + 1];
-
-    *(u8 *)(data + 0x130) =
-        ((lower - value) * 100) / (upper - lower);
+    *(u8 *)(data + 0x130) = ((lower - value) * 100) / (upper - lower);
 }
 
 void fn_802517EC(void *arg0, u32 *arg1) {
@@ -4426,85 +4410,95 @@ void fn_80252188(void *arg0, u32 *arg1)
 void fn_802522C4(void *arg0, u32 *arg1)
 {
     u16 fn_802611F8(void);
-    s32 fn_802575A0(void *);
+    u32 fn_802575A0(void *);
     void fn_80260174(u8, u8, u8);
-    s32 fn_80250B58(void *, u32 *);
+    void fn_80250B58(void *, u32 *);
 
-    u8 *voice;
-    u32 word0;
-    u32 word1;
-    u32 minimum;
-    u32 maximum;
-    u32 randomValue;
     u32 pitch;
-    u32 command;
+    void *voice;
+    u32 *cmd;
+    u32 maximum;
+    u32 minimum;
+    u32 word1;
+    u32 word0;
     s32 temp;
+    s32 lo;
+    s32 hi;
+    s32 rand;
+    u32 command;
 
-    voice = (u8 *)arg0;
-    word0 = arg1[0];
-    word1 = arg1[1];
+    cmd = arg1;
+    voice = arg0;
+    word1 = cmd[1];
 
     if (((word1 >> 8) & 0xFF) == 0) {
+        word0 = cmd[0];
         minimum = (word0 >> 8) & 0xFF;
         maximum = word0 >> 24;
-
         if (minimum > maximum) {
-            temp = minimum;
+            temp = (s32)minimum;
             minimum = maximum;
-            maximum = temp;
+            maximum = (u32)temp;
         }
     } else {
-        temp = *(u16 *)(voice + 0x12E);
-        minimum = temp - ((word0 >> 8) & 0xFF);
-        maximum = temp + (word0 >> 24);
-
-        if ((s32)minimum < 0) {
-            minimum = 0;
-        } else if ((s32)minimum > 0x7F) {
-            minimum = 0x7F;
+        word0 = cmd[0];
+        lo = (s32)((word0 >> 8) & 0xFF);
+        hi = *(u16 *)((u8 *)voice + 0x12E);
+        temp = (s32)(word0 >> 24);
+        lo = hi - lo;
+        hi = hi + temp;
+        if (lo < 0) {
+            temp = 0;
+        } else {
+            temp = 0x7F;
+            if (lo <= 0x7F) {
+                temp = lo;
+            }
         }
-
-        if ((s32)maximum < 0) {
-            maximum = 0;
-        } else if ((s32)maximum > 0x7F) {
-            maximum = 0x7F;
+        minimum = (u8)temp;
+        if (hi < 0) {
+            temp = 0;
+        } else {
+            temp = 0x7F;
+            if (hi <= 0x7F) {
+                temp = hi;
+            }
         }
+        maximum = (u8)temp;
     }
 
     if ((word1 & 0xFF) != 0) {
-        randomValue = fn_802611F8();
-        pitch = (randomValue % 201) - 100;
-        pitch &= 0xFF;
+        rand = (s32)fn_802611F8();
+        pitch = (u8)((rand % 201) - 100);
     } else {
-        pitch = (word0 >> 16) & 0xFF;
+        pitch = (cmd[0] >> 16) & 0xFF;
     }
 
-    randomValue = fn_802611F8();
-
+    minimum = (u8)minimum;
+    rand = (s32)fn_802611F8();
+    maximum = (u8)maximum;
     temp = (s32)maximum - (s32)minimum + 1;
-    randomValue = (s32)randomValue % temp;
-
-    randomValue += minimum;
+    rand = (s32)(u16)rand % temp;
+    rand = (s32)minimum + rand;
 
     command = (pitch << 16) | 0x19;
-    command |= randomValue << 8;
+    command |= ((u32)rand << 8);
+    cmd[0] = command;
+    cmd[1] = 0;
 
-    arg1[0] = command;
-    arg1[1] = 0;
+    *(u16 *)((u8 *)voice + 0x12E) = (u16)((command >> 8) & 0x7F);
+    *(u8 *)((u8 *)voice + 0x130) = (u8)(command >> 16);
 
-    *(u16 *)(voice + 0x12E) = (command >> 8) & 0x7F;
-    *(u8 *)(voice + 0x130) = command >> 16;
-
-    if (fn_802575A0(arg0) != 0) {
+    if (fn_802575A0(voice) != 0) {
         fn_80260174(
-            *(u8 *)(voice + 0x121),
-            *(u8 *)(voice + 0x122),
-            (u8)*(u16 *)(voice + 0x12E)
+            *(u8 *)((u8 *)voice + 0x121),
+            *(u8 *)((u8 *)voice + 0x122),
+            (u8)*(u16 *)((u8 *)voice + 0x12E)
         );
     }
 
-    arg1[0] = 4;
-    fn_80250B58(arg0, arg1);
+    cmd[0] = 4;
+    fn_80250B58(voice, cmd);
 }
 
 void Sound_SelectSource0(void *voice, u32 *step) {
