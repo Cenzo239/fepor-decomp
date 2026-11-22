@@ -2117,7 +2117,7 @@ s32 Unit_ResolveWarpPos(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void 
         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
             cost = -1;
         } else {
-            id = map[0xD + x + row];
+            id = gBattleMap[0xD + x + row];
             if (id != 0) {
                 unit = (u8 *)gUnits + ((id - 1) * 0x280);
             } else {
