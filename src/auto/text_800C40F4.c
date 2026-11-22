@@ -7683,11 +7683,10 @@ void fn_800D6A84(void *arg0, u32 arg1, s32 arg2) {
 void *fn_800D6AB4(String *dst, String *src) {
 void *Heap_Alloc(s32); void *memcpy(void *,const void *,u32); void fprintf(void *,const char *,...); void abort(void);
 extern char lbl_802704F8[]; extern u8 lbl_80366E50;
-u32 size, cap;
+u32 size;
 char *allocation, *end, *begin;
-cap=src[0].cap;
 begin=src[0].data;
-dst[0].cap=cap; end=begin+src[0].size;
+dst[0].cap=src[0].cap; end=begin+src[0].size;
 dst[0].data=0; dst[0].size=0; dst[0].cap=0;
 if(begin!=end) {
 size=end-begin; dst[0].cap=size+3-(size&3);
@@ -7695,9 +7694,8 @@ allocation=Heap_Alloc(dst[0].cap+1);
 if(!allocation){fprintf(__files+0xA0,lbl_802704F8+0x999);abort();}
 dst[0].data=allocation; memcpy(dst[0].data,begin,size); dst[0].size=size; dst[0].data[size]=lbl_80366E50;
 }
-cap=src[1].cap;
 begin=src[1].data;
-dst[1].cap=cap; end=begin+src[1].size;
+dst[1].cap=src[1].cap; end=begin+src[1].size;
 dst[1].data=0; dst[1].size=0; dst[1].cap=0;
 if(begin!=end) {
 size=end-begin; dst[1].cap=size+3-(size&3);
@@ -8180,6 +8178,7 @@ s32 fn_800D75FC(void *arg0) {
     return temp_r31;
 }
 
+#pragma optimization_level 4
 void *fn_800D764C(u8 *self,void *owner,s32 x,s32 y,void *arg4,void *name) {
 void fn_800E8154(void *,void *);
 char *String_CStr(void *);
@@ -8189,7 +8188,7 @@ extern char lbl_80271010[];
 #pragma cplusplus on
 class Object { public: char data[64]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void setup(s32,s32); };
 class Owner { public: char data[16]; virtual void v0(); virtual void v1(); virtual Object *get(char *,char *); };
-u32 i;
+s32 i;
 u8 *p;
 *(void **)(self+0xC)=lbl_8028DDC8;
 fn_800E8154(owner,arg4);
@@ -8199,39 +8198,15 @@ fn_800E8154(owner,arg4);
 *(u32 *)self=0;
 self[0x420]=fn_800DF6A8(*(void **)(self+0x10));
 for(i=0;i<8;i++) {
-p=self+i*0x80;
-*(u32 *)(p+0x14)=0;
-*(u32 *)(p+0x18)=0;
-*(u32 *)(p+0x1c)=0;
-*(u32 *)(p+0x20)=0;
-*(u32 *)(p+0x24)=0;
-*(u32 *)(p+0x28)=0;
-*(u32 *)(p+0x2c)=0;
-*(u32 *)(p+0x30)=0;
-*(u32 *)(p+0x34)=0;
-*(u32 *)(p+0x38)=0;
-*(u32 *)(p+0x3c)=0;
-*(u32 *)(p+0x40)=0;
-*(u32 *)(p+0x44)=0;
-*(u32 *)(p+0x48)=0;
-*(u32 *)(p+0x4c)=0;
-*(u32 *)(p+0x50)=0;
-*(u32 *)(p+0x54)=0;
-*(u32 *)(p+0x58)=0;
-*(u32 *)(p+0x5c)=0;
-*(u32 *)(p+0x60)=0;
-*(u32 *)(p+0x64)=0;
-*(u32 *)(p+0x68)=0;
-*(u32 *)(p+0x6c)=0;
-*(u32 *)(p+0x70)=0;
-*(u32 *)(p+0x74)=0;
-*(u32 *)(p+0x78)=0;
-*(u32 *)(p+0x7c)=0;
-*(u32 *)(p+0x80)=0;
-*(u32 *)(p+0x84)=0;
-*(u32 *)(p+0x88)=0;
-*(u32 *)(p+0x8c)=0;
-*(u32 *)(p+0x90)=0;
+p=self+(i<<7);
+*(u32 *)(p+0x14)=0; *(u32 *)(p+0x18)=0; *(u32 *)(p+0x1c)=0; *(u32 *)(p+0x20)=0;
+*(u32 *)(p+0x24)=0; *(u32 *)(p+0x28)=0; *(u32 *)(p+0x2c)=0; *(u32 *)(p+0x30)=0;
+*(u32 *)(p+0x34)=0; *(u32 *)(p+0x38)=0; *(u32 *)(p+0x3c)=0; *(u32 *)(p+0x40)=0;
+*(u32 *)(p+0x44)=0; *(u32 *)(p+0x48)=0; *(u32 *)(p+0x4c)=0; *(u32 *)(p+0x50)=0;
+*(u32 *)(p+0x54)=0; *(u32 *)(p+0x58)=0; *(u32 *)(p+0x5c)=0; *(u32 *)(p+0x60)=0;
+*(u32 *)(p+0x64)=0; *(u32 *)(p+0x68)=0; *(u32 *)(p+0x6c)=0; *(u32 *)(p+0x70)=0;
+*(u32 *)(p+0x74)=0; *(u32 *)(p+0x78)=0; *(u32 *)(p+0x7c)=0; *(u32 *)(p+0x80)=0;
+*(u32 *)(p+0x84)=0; *(u32 *)(p+0x88)=0; *(u32 *)(p+0x8c)=0; *(u32 *)(p+0x90)=0;
 }
 *(u32 *)(self+0x414)=0;
 *(u32 *)(self+0x418)=0;
@@ -8240,8 +8215,6 @@ self[8]=0;
 return self;
 #pragma cplusplus reset
 }
-
-#pragma optimization_level reset
 s32 fn_800D77B0(void) {
     M2C_UNK fn_800DA358();
     fn_800DA358();
@@ -13556,8 +13529,9 @@ void fn_800E0FBC(void *,s32);
 void StableSort(s32 *,s32 *,void *,void *,void *);
 void Heap_FreeRaw(void *);
 #pragma cplusplus on
+struct Allocation { s32 *data; s32 count; } allocated;
 struct Buffer { s32 capacity,count; s32 *data;
-Buffer(s32 n) { struct Allocation {s32 *data; s32 count;} allocated; fn_800E0FBC(&allocated,n); capacity=allocated.count; count=0; data=allocated.data; }
+Buffer(struct Allocation a) { capacity=a.count; count=0; data=a.data; }
 SortIterator begin() { s32 raw[2]; raw[0]=(s32)data; raw[1]=(s32)this; return *(struct SortIterator*)raw; }
 SortIterator end() { s32 raw[2]; raw[0]=(s32)(data+capacity); raw[1]=(s32)this; return *(struct SortIterator*)raw; }
 };
@@ -13571,7 +13545,8 @@ if(Sort_GetKey((void*)value)>key) { s32 temp=*begin; *begin=end[-1]; end[-1]=tem
 u8 comp=*compare;
 fn_800E0F2C(begin,end,&comp);
 } else {
-Buffer buffer(n);
+fn_800E0FBC(&allocated,n);
+Buffer buffer(allocated);
 StableSort(begin,end,&buffer.begin(),&buffer.end(),&SortCompare(*(SortCompare*)compare));
 for(s32 *p=buffer.data;p<buffer.data+buffer.count;++p) { }
 Heap_FreeRaw(buffer.data);
@@ -14652,24 +14627,22 @@ void fn_800DF7A0(void *,void *);
 void Xml_GetNamedValue(void *,void *,void *);
 extern u16 lbl_8028E090[];
 extern char lbl_80271DB0[];
-struct Value { u32 v[8]; };
-union { struct Value value; u32 words[8]; } result;
-struct Value temp,temp2;
+struct Value { u32 v[8]; } value, temp;
 String name,name2;
 s32 scratch,scratch2;
 fn_800DF7A0(self,arg1);
 *(void **)(self+0x40)=lbl_8028E090;
 String_Init(&name,lbl_80271DB0,&scratch);
 Xml_GetNamedValue(&temp,arg2,&name);
-result.value=temp;
+value=temp;
 String_Destroy(&name,-1);
-*(u32 *)(self+0x48)=result.words[0];
-*(u32 *)(self+0x4C)=result.words[1];
+*(u32 *)(self+0x48)=value.v[0];
+*(u32 *)(self+0x4C)=value.v[1];
 String_Init(&name2,lbl_80271DB0+4,&scratch2);
-Xml_GetNamedValue(&temp2,arg2,&name2);
-result.value=temp2;
+Xml_GetNamedValue(&temp,arg2,&name2);
+value=temp;
 String_Destroy(&name2,-1);
-self[0x50]=result.words[0]; self[0x51]=result.words[1]; self[0x52]=result.words[2]; self[0x53]=result.words[3];
+self[0x50]=value.v[0]; self[0x51]=value.v[1]; self[0x52]=value.v[2]; self[0x53]=value.v[3];
 return self;
 }
 
@@ -18096,6 +18069,7 @@ void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
 s32 fn_800E7FB4(s32,void *);
 void *String_Init(void *,char *,void *);
 extern char lbl_802723E8[];
+extern const f32 lbl_80369F70;
 #pragma cplusplus on
 class Window {
 public:
@@ -18106,9 +18080,14 @@ virtual void draw(s32,s32,void *,s32,s32,f32);
 };
 String name;
 s32 scratch, item, owner;
-s32 mode=0, dx=0, dy=0;
+u32 dx=0, dy=0, mode=0;
+u32 xoff, yoff, px, py;
 if(M2C_FIELD(arg0,u8 *,0x71)){mode=1;dy=2;dx=2;}
-((Window*)arg0)->draw(M2C_FIELD(arg0,u32 *,0x48)+(u32)(M2C_FIELD(arg0,s32 *,0x68)+dx),M2C_FIELD(arg0,u32 *,0x4C)+(u32)(M2C_FIELD(arg0,s32 *,0x6C)+dy),(u8*)arg0+0xAC,1,255,16.0f);
+xoff=M2C_FIELD(arg0,u32 *,0x68)+dx;
+yoff=M2C_FIELD(arg0,u32 *,0x6c)+dy;
+px=M2C_FIELD(arg0,u32 *,0x48)+xoff;
+py=M2C_FIELD(arg0,u32 *,0x4c)+yoff;
+((Window*)arg0)->draw(px,py,(u8*)arg0+0xAC,1,255,lbl_80369F70);
 owner=*(s32*)arg0;
 String_Init(&name,lbl_802723E8,&scratch);
 item=fn_800E7FB4(owner,&name);
@@ -20969,17 +20948,12 @@ void fn_800ED960(void *self) {
     void fn_800E51A8(void *, void *);
     void fn_800DB1FC(void *, void *);
     void String_Init(void *, char *, void *);
-    void *String_Destroy(void *, s32);
-    void sprintf(char *, char *, ...);
+    void String_Destroy(void *, s32);
+    s32 sprintf(char *, char *, ...);
     extern char Win3_str[];
     char buf[0x18];
-    u8 str1[0xC];
-    u8 str2[0xC];
-    u8 str3[0xC];
-    u8 str4[0xC];
-    u32 scratch10;
-    u32 scratchC;
-    u32 scratch8;
+    u8 str1[0xC], str2[0xC], str3[0xC], str4[0xC];
+    u32 scratch10, scratchC, scratch8;
 
     *(void **)((u8 *)self + 0x440) = fn_800DA5FC();
     if (*(void **)((u8 *)self + 0x440) != 0) {
@@ -23505,9 +23479,10 @@ u8 fn_800F30E0(s32 arg0, u8 arg1) {
     return gAiState[0x21C];
 }
 s32 fn_800F32A4(u8 *arg) {
-extern u8 gBattleMap[];
-void Map_BuildUnitMoveRange(void *, s32, s32);
-u8 Map_IsAiTerrainBlocked(s8,s8);
+  extern u8 gBattleMap[];
+  void Map_BuildUnitMoveRange(void *, s32, s32);
+  u8 Map_IsAiTerrainBlocked(s8,s8);
+  void fn_800FDDBC(s8,s8,u8,u8,s32);
 u8 *arg0; u8 flags[8]; void **weapon; u8 *map; u8 *unit; s32 row; u8 *p; s32 id; s32 y; s32 x;  u8 *q; s32 dist,dy; u8 a,b; u8 range,outside,cx,cy,r,t;
 if ((M2C_FIELD(arg,u16*,0x1A4)>>7 & 7) || (M2C_FIELD(arg,u8*,0x1A5)&7) || (M2C_FIELD(arg,u32*,0x1A0)&0x9D)) return 0;
 arg0=arg;
@@ -25182,6 +25157,7 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
   #pragma auto_inline reset
   #pragma cplusplus reset
 
+#pragma use_lmw_stmw on
 s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     u8 Allegiance_Compare(s32, s32);
     extern u8 lbl_80272E98[];
@@ -25195,6 +25171,7 @@ s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     u8 id;
     s16 x, y;
     void *unit;
+    s32 a, b;
 
     while (*p != 0x7F) {
         x = baseX + p[0];
@@ -25209,7 +25186,9 @@ s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
                     unit = gUnits + (id - 1) * 0x280;
                 else
                     unit = 0;
-                if ((u8)(Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) == 1)
+                b = *(s32 *)((u8 *)unit + 0x190);
+                a = *(s32 *)((u8 *)arg0 + 0x190);
+                if ((u8)(Allegiance_Compare(a, b) == 1) == 1)
                     score -= p[2];
                 else
                     score += p[2];
@@ -25219,7 +25198,7 @@ s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     }
     return score;
 }
-
+#pragma use_lmw_stmw reset
 s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
@@ -28227,6 +28206,7 @@ void fn_800FC150(void) {
     fn_800FF918();
 }
 
+#pragma use_lmw_stmw on
 void fn_800FC170(u8 *arg0) {
 extern u8 gUiContext[], gAiState[];
 extern void (*lbl_8028E6F8[][6])(void *);
@@ -28234,29 +28214,27 @@ u8 fn_80102EA8(void *);
 void fn_8002807C(void *);
 void Process_Goto(void *,s32);
 void Process_ClearFunc(void *);
+u8 *ctx = gUiContext;
+u8 *unit = *(u8 **)ctx;
 u8 *ai;
-u8 *self;
-u8 *ctx;
-u8 *unit;
-ctx=gUiContext; unit=*(u8 **)ctx; self=arg0;
-self[0x30]=0;
-if(fn_80102EA8(unit)) self[0x30]=3;
+arg0[0x30]=0;
+if(fn_80102EA8(unit)) arg0[0x30]=3;
 goto setup;
 run:
-while(lbl_8028E6F8[self[0x30]][(u8)(s8)ai[0]]) {
+while(lbl_8028E6F8[arg0[0x30]][(u8)(s8)ai[0]]) {
 *(u16 *)(ai+4)=0xFFFF;
-lbl_8028E6F8[self[0x30]][(u8)(s8)ai[0]](unit);
+lbl_8028E6F8[arg0[0x30]][(u8)(s8)ai[0]](unit);
 if(ai[0x21C]) break;
 ai[0]++;
 }
 if(!ai[0x21C] || (ctx[8]==1 && (s8)ctx[13]==(s8)unit[0x19E] && (s8)ctx[14]==(s8)unit[0x19F])) {
 *(u32 *)(unit+0x254)|=0x10000;
-fn_8002807C(ctx); Process_Goto(self,0);
-} else Process_ClearFunc(self);
+fn_8002807C(ctx); Process_Goto(arg0,0);
+} else Process_ClearFunc(arg0);
 return;
 setup: ai=gAiState; goto run;
 }
-
+#pragma use_lmw_stmw reset
 void fn_800FC2C4(s32 arg0) {
     extern u32 gUiContext[];
     u32 fn_800FCF74(u32, s32);
