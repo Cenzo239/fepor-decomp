@@ -20274,7 +20274,7 @@ u8 fn_800EBF58(void) {
     s32 CARDGetResultCode(s32);
     s32 fn_8021A7D4(s32, s32);
     void fn_8021B20C(s32);
-    void DebugPrint(void *, u32, u8, u32);
+    s32 DebugPrint(char *, ...);
     extern u8 gCardWork[];
     extern u8 gCardStrings[];
     s32 spC;
@@ -20283,7 +20283,6 @@ u8 fn_800EBF58(void) {
     u8 result;
     s32 r;
     u32 elapsed;
-    u32 tickRate;
     u32 conv;
     u32 divres;
 
@@ -20291,9 +20290,7 @@ u8 fn_800EBF58(void) {
     result = 0;
     PADInit();
     r = CARDProbeEx(0, &spC, &sp8);
-    if (r == -1) goto L_AFD0;
-    if (r < 0) goto END;
-L_AFD0:
+    if (r == -1 || r < 0) goto END;
     r = fn_8021AFD0(0, gCardWork, 0, 0);
     if (r < 0) goto END;
     r = CARDGetResultCode(0);
@@ -20311,7 +20308,7 @@ L_second:
     r = CARDGetResultCode(0);
     if (r == -1) goto L_second2;
     if (r == -6) goto L_B20C;
-    if (r >= 0) goto L_check0;
+    if (r >= -6) goto L_check0;
     if (r == -13) goto L_B20C;
     goto END;
 L_check0:
@@ -20326,10 +20323,9 @@ L_second2:
     goto END;
 END:
     elapsed = OSGetTick() - start;
-    tickRate = *(volatile u32 *)0x800000F8;
-    conv = (u32)(((u64)0x10624dd3ULL * (tickRate >> 2)) >> 32) >> 6;
+    conv = (*(u32 *)0x800000F8 >> 2) / 1000;
     divres = elapsed / conv;
-    DebugPrint(gCardStrings + 0x293, divres, result, elapsed);
+    DebugPrint((char *)gCardStrings + 0x293, divres, result, elapsed);
     return result;
 }
 
@@ -20337,38 +20333,10 @@ u32 Crc32_Calc(u32 *table, u8 *data, s32 len)
 {
     u32 crc;
     s32 i;
-    s32 rem;
-    s32 ctr;
-    u8 *p;
 
     crc = -1;
-    i = 0;
-    if (len > 0) {
-        rem = len - 8;
-        if (len > 8) {
-            ctr = (u32)(rem + 7) >> 3;
-            if (rem > 0) {
-                do {
-                    p = data + i;
-                    i += 8;
-                    crc = (crc >> 8) ^ table[(crc ^ p[0]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[1]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[2]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[3]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[4]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[5]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[6]) & 0xFF];
-                    crc = (crc >> 8) ^ table[(crc ^ p[7]) & 0xFF];
-                } while (--ctr);
-            }
-        }
-        rem = len - i;
-        data = data + i;
-        if (i < len) {
-            do {
-                crc = (crc >> 8) ^ table[(crc ^ *data++) & 0xFF];
-            } while (--rem);
-        }
+    for (i = 0; i < len; i++) {
+        crc = (crc >> 8) ^ table[(crc ^ data[i]) & 0xFF];
     }
     return crc ^ -1;
 }
