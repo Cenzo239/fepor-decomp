@@ -1105,7 +1105,11 @@ loop_test:
 #pragma use_lmw_stmw reset
 void fn_80164940(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x18, 0x19, 0x4C, arg5);
+    s32 w = arg3;
+    s32 h = arg4;
+    s32 x = arg1;
+    s32 y = arg2;
+    fn_8008AB7C(x + (w >> 1), y + (h >> 1), w, 0x18, 0x19, 0x4C, arg5);
 }
 
 void fn_80164994(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5) {
