@@ -495,7 +495,6 @@ void *fn_80183C6C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
     f32 x;
     f32 y;
 
-    (void)lbl_8036ACE0;
     proc = (u8 *)Process_CreateEx(lbl_80295B38, arg5);
 
     *(void **)(proc + 0x30) = arg0;
@@ -10096,27 +10095,28 @@ void fn_80196018(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80196078(void) {
-#pragma optimization_level 3
     void fn_8000D3EC(void *, void *);
     extern u8 lbl_8027A688[];
     extern u8 lbl_80296700[];
-    u8 *dst=lbl_80296700;
-    fn_8000D3EC(lbl_8027A688+40,dst+52);
-    fn_8000D3EC(lbl_8027A688+60,dst+68);
-    fn_8000D3EC(lbl_8027A688+75,dst+68);
-    fn_8000D3EC(lbl_8027A688+93,dst+68);
-    fn_8000D3EC(lbl_8027A688+111,dst+68);
-    fn_8000D3EC(lbl_8027A688+128,dst+68);
-    fn_8000D3EC(lbl_8027A688+146,dst+68);
-    fn_8000D3EC(lbl_8027A688+163,dst+68);
-    fn_8000D3EC(lbl_8027A688+179,dst+68);
-    fn_8000D3EC(lbl_8027A688+194,dst+84);
-    fn_8000D3EC(lbl_8027A688+208,dst+84);
-    fn_8000D3EC(lbl_8027A688+225,dst+100);
-#pragma optimization_level reset
-}
+    u8 *dst;
 
+    dst = lbl_80296700;
+    fn_8000D3EC(lbl_8027A688 + 0x28, dst + 0x34);
+    fn_8000D3EC(lbl_8027A688 + 0x3C, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0x4B, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0x5D, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0x6F, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0x80, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0x92, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0xA3, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0xB3, dst + 0x44);
+    fn_8000D3EC(lbl_8027A688 + 0xC2, dst + 0x54);
+    fn_8000D3EC(lbl_8027A688 + 0xD0, dst + 0x54);
+    fn_8000D3EC(lbl_8027A688 + 0xE1, dst + 0x64);
+}
+#pragma global_optimizer on
 /* Advance UI unit's active weapon rank, then open weapon-kind help under parent. */
 s32 Ui_OpenActiveWpnKindHelp(s32 parent) {
     void **Unit_GetActiveItemPtr(void *);
@@ -15919,11 +15919,13 @@ s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
     extern u8 Proc_MuEventInst[];
     extern u32 gUiInputFlags;
     extern f32 lbl_8036AF74;
+    extern f64 lbl_8036AF78;
 
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
+    void *fn_80184750(void *, u32, s32, s32);
 
     u8 *unit;
     void *parent;
@@ -15941,9 +15943,7 @@ s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
     }
 
     if (gUiInputFlags & 1) {
-        ((s32 (*)(void *, s32, s32, void *))fn_80184750)(
-            unit, arg1, 0, 0
-        );
+        fn_80184750(unit, arg1, 0, 0);
         return 1;
     }
 
@@ -15961,12 +15961,7 @@ s32 fn_801A0D64(u8 arg0, s32 arg1, s32 arg2) {
 
     duration = (s32)((f32)arg2 / lbl_8036AF74);
 
-    ((s32 (*)(void *, s32, s32, void *))fn_80184750)(
-        unit,
-        arg1,
-        duration,
-        parent
-    );
+    fn_80184750(unit, arg1, duration, (s32)parent);
 
     return 1;
 }
