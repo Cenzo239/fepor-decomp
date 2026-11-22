@@ -10889,7 +10889,7 @@ found:
     Item_Destroy(item, -1);
     return result;
 }
-#pragma optimization_level 3
+#pragma optimization_level reset
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
