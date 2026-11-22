@@ -1,1 +1,1 @@
-#include "/home/kw/.local/share/decompnet/projects/GFEE01/README.md"
+#include "/proc/self/cwd/README.md"
