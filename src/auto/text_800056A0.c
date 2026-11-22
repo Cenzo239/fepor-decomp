@@ -535,7 +535,8 @@ void fn_80006198(void) {
 
 void fn_800061CC(void *arg0) {
     void Process_Goto(void *, u8);
-    Process_Goto(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
+    u32 v = *(u32 *)((u8 *)arg0 + 0x60);
+    Process_Goto(arg0, (u8)v);
 }
 
 s32 Game_GetState(void) {
