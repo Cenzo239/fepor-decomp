@@ -5649,64 +5649,74 @@ void Map_SetupColorGx(void) {
     fn_802245D8(1, 4, 1, 0);
 }
 
-#pragma global_optimizer off
-s32 fn_8004ABD4(void **arg0, u8 arg1) {
-    void *Item_GetFlagsPtr(void **);
-    u8 Item_GetMaxRange();
-    u8 var_r0;
-    u8 var_r0_2;
-    u8 var_r0_3;
-    void *temp_r3;
-    void *temp_r3_2;
-    void *temp_r3_3;
+s32 fn_8004ABD4(void *arg0, u8 arg1) {
+    s32 Item_GetMaxRange(void *);
+    u32 *Item_GetFlagsPtr(void *);
+    void *item;
+    u8 range;
+    u8 kind;
+    u32 *p;
+    u32 a;
+    u32 b;
+    u32 m;
 
-    if (arg0 != NULL) {
+    item = arg0;
+    if (item != NULL) {
         if (arg1 == 0) {
-            if ((void *) *arg0 != NULL) {
-                var_r0 = Item_GetMaxRange();
+            if (*(void **)item != NULL) {
+                range = (u8)Item_GetMaxRange(*(void **)item);
             } else {
-                var_r0 = 0;
+                range = 0;
             }
-            if ((var_r0 > 1U) && (temp_r3 = Item_GetFlagsPtr(arg0), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x40) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) == 0) != 0))) {
-                temp_r3_2 = *arg0;
-                if (temp_r3_2 != NULL) {
-                    var_r0_2 = M2C_FIELD(temp_r3_2, u8 *, 0x12);
+            if (range > 1U) {
+                {
+                    u32 z;
+                    p = Item_GetFlagsPtr(item);
+                    a = p[0];
+                    z = 0;
+                    b = p[1];
+                    m = 0x40;
+                    a = a & z;
+                    m = b & m;
+                    m = m ^ z;
+                    a = a ^ z;
+                    if ((m | a) != 0) {
+                        goto block_16;
+                    }
+                }
+                if (*(void **)item != NULL) {
+                    kind = *((u8 *)*(void **)item + 0x12);
                 } else {
-                    var_r0_2 = 0xC;
+                    kind = 0xC;
                 }
-                switch ((s32) var_r0_2) {           /* switch 1; irregular */
-                case 2:                             /* switch 1 */
-                    return 3;
-                case 1:                             /* switch 1 */
+                switch (kind) {
+                case 1:
                     return 5;
+                case 2:
+                    return 3;
                 }
-            } else {
-                goto block_16;
-            }
-        } else {
-block_16:
-            temp_r3_3 = *arg0;
-            if (temp_r3_3 != NULL) {
-                var_r0_3 = M2C_FIELD(temp_r3_3, u8 *, 0x12);
-            } else {
-                var_r0_3 = 0xC;
-            }
-            switch ((s32) var_r0_3) {               /* switch 2; irregular */
-            case 1:                                 /* switch 2 */
-                return 4;
-            case 3:                                 /* switch 2 */
-                return 6;
-            case 8:                                 /* switch 2 */
-                return 0;
-            case 2:                                 /* switch 2 */
-                return 2;
-            case 0:                                 /* switch 2 */
-                return 1;
             }
         }
-    } else {
-        return 0;
+    block_16:
+        if (*(void **)item != NULL) {
+            kind = *((u8 *)*(void **)item + 0x12);
+        } else {
+            kind = 0xC;
+        }
+        switch (kind) {
+        case 0:
+            return 1;
+        case 1:
+            return 4;
+        case 2:
+            return 2;
+        case 3:
+            return 6;
+        case 8:
+            return 0;
+        }
     }
+    return 0;
 }
 
 #pragma global_optimizer off
