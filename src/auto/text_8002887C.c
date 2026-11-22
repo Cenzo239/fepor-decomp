@@ -1098,29 +1098,34 @@ extern "C" void fn_8002A63C(void *arg0) {
         u8 flag;
     } obj;
     s8 y;
-    register s8 x;
+    s8 x;
+    s32 ys;
+    s32 xs;
+    s32 d;
+    void *pf;
 
     obj.vtbl = lbl_80284E20;
+    pf = &obj.flag;
     obj.vtbl = lbl_80284DB0;
     obj.flag = 0;
     obj.flag = 2;
-    fn_8001EDA0(&obj.flag);
+    fn_8001EDA0(pf);
     fn_8002F728(gTargetList);
     if (obj.flag & 3) {
-        y = M2C_FIELD(arg0, s8 *, 0x19F);
-        x = M2C_FIELD(arg0, s8 *, 0x19E);
-        if (y - 1 >= 0) {
-            ((Visitor *)&obj)->visit(x, y - 1);
-        }
-        if (x + 1 < gBattleMap[0]) {
-            ((Visitor *)&obj)->visit(x + 1, y);
-        }
-        if (y + 1 < gBattleMap[1]) {
-            ((Visitor *)&obj)->visit(x, y + 1);
-        }
-        if (x - 1 >= 0) {
-            ((Visitor *)&obj)->visit(x - 1, y);
-        }
+        y = *((s8 *)arg0 + 0x19f);
+        x = *((s8 *)arg0 + 0x19e);
+        ys = y;
+        d = ys - 1;
+        if (d >= 0)
+            ((Visitor *)&obj)->visit(x, d);
+        xs = x;
+        if (xs + 1 < gBattleMap[0])
+            ((Visitor *)&obj)->visit(xs + 1, y);
+        if (ys + 1 < gBattleMap[1])
+            ((Visitor *)&obj)->visit(x, ys + 1);
+        d = xs - 1;
+        if (d >= 0)
+            ((Visitor *)&obj)->visit(d, y);
     }
 }
 
