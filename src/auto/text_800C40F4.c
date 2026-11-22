@@ -4979,9 +4979,10 @@ extern "C" s32 fn_800CD630(void *arg0) {
 extern "C" void fn_800CD678(void *arg0, char *arg1) {
 void *Heap_Alloc(u32);
 void *String_Init(void *,char *,void *);
-void *String_Destroy(void *,s16);
+void String_Destroy(void *,s16);
 void *fn_80151D50(void *,void *,void *,void *,void *,void *,s32);
 extern char lbl_802704F8[];
+extern f32 lbl_80369DC8;
 #pragma cplusplus on
 class Host { public: u8 pad[0x10]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void add(void *); };
 union Vector { struct { f32 x,y,z; } f; u32 words[3]; };
@@ -4989,14 +4990,13 @@ Vector copyA,a,copyB,b;
 u8 name[12],type[12];
 s32 scratchA,scratchB;
 void *obj;
-s8 madeA,madeB;
-char *path;
-void *self;
-self=arg0; path=arg1; madeA=0; madeB=0;
+char *path=arg1;
+void *self=arg0;
+s8 madeA=0,madeB=0;
 obj=Heap_Alloc(0xC8);
 if(obj) {
-a.f.x=a.f.y=a.f.z=0.0f;
-b.f.x=b.f.y=b.f.z=0.0f;
+a.f.x=a.f.y=a.f.z=lbl_80369DC8;
+b.f.x=b.f.y=b.f.z=lbl_80369DC8;
 copyA.words[0]=a.words[0]; copyA.words[1]=a.words[1]; copyA.words[2]=a.words[2];
 copyB.words[0]=b.words[0]; copyB.words[1]=b.words[1]; copyB.words[2]=b.words[2];
 String_Init(name,path,&scratchA); madeA=1;
@@ -15159,28 +15159,35 @@ void fn_800E3F54(void *arg0) {
 
 #pragma dont_inline on
 #pragma use_lmw_stmw on
-void *fn_800E3F60(u8 *self) {
+#pragma cplusplus on
+extern "C" void *fn_800E3F60(u8 *self) {
     u8 fn_800DF6A8(void *);
+    struct List {
+        u32 unk;
+        s32 count;
+        u8 pad[8];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void *get(s32);
+        s32 size() { return this ? count : 0; }
+        void *at(s32 i) { return i < size() ? get(i) : 0; }
+    };
     void *candidate;
     s32 field8c;
     s32 field90;
     s32 i;
     s32 match;
     s32 val;
-    void *list;
-    s32 count;
+    List *list;
 
     if (!fn_800DF6A8(self)) {
         return 0;
     }
-    if (*(void **)(self + 0xa0)) {
-        for (i = 0; list = *(void **)(self + 0xa0), i < (list ? *(s32 *)((u8 *)list + 4) : 0); i++) {
-            count = list ? *(s32 *)((u8 *)list + 4) : 0;
-            if (i < count) {
-                candidate = (*(void *(**)(void *, s32))(*(u8 **)((u8 *)list + 0x10) + 0x18))(list, i);
-            } else {
-                candidate = 0;
-            }
+    if (*(List **)(self + 0xa0)) {
+        for (i = 0; list = *(List **)(self + 0xa0), i < list->size(); i++) {
+            candidate = list->at(i);
             field90 = *(s32 *)(self + 0x90);
             field8c = *(s32 *)(self + 0x8c);
             if (!fn_800DF6A8(candidate)) {
@@ -15188,11 +15195,12 @@ void *fn_800E3F60(u8 *self) {
             } else {
                 val = *(s32 *)((u8 *)candidate + 0x84);
                 if (field8c == val) {
-                    goto match_yes;
+                    goto check88;
                 }
                 if (val != -1) {
                     goto match_no;
                 }
+            check88:
                 val = *(s32 *)((u8 *)candidate + 0x88);
                 if (field90 == val) {
                     goto match_yes;
@@ -15214,6 +15222,7 @@ void *fn_800E3F60(u8 *self) {
         }
     }
     return self;
+#pragma cplusplus off
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
