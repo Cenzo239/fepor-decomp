@@ -455,8 +455,7 @@ void fn_80007370(float arg0, float arg1, float arg2)
 
     float matrix1[12];
     float matrix2[12];
-    float sine;
-    float cosine;
+    float x, z;
     float scale;
     void *object;
 
@@ -472,50 +471,27 @@ void fn_80007370(float arg0, float arg1, float arg2)
 
     PSMTXTrans(matrix1, arg0, arg1, lbl_80368B98);
 
-    PSMTXConcat(matrix1, matrix2, matrix1);
+    PSMTXConcat(matrix1, matrix2, matrix2);
 
-    sine = matrix2[0];
-    cosine = matrix2[1];
+    x = *(float *)((u8 *)object + 0x10);
+    z = *(float *)((u8 *)object + 0x14);
+    *(float *)((u8 *)object + 0x10) = matrix2[3] + (matrix2[0] * x + matrix2[1] * z);
+    *(float *)((u8 *)object + 0x14) = matrix2[7] + (matrix2[4] * x + matrix2[5] * z);
 
-    *(float *)((u8 *)object + 0x10) =
-        matrix2[2] +
-        sine * *(float *)((u8 *)object + 0x30) +
-        cosine * *(float *)((u8 *)object + 0x34);
+    x = *(float *)((u8 *)object + 0x30);
+    z = *(float *)((u8 *)object + 0x34);
+    *(float *)((u8 *)object + 0x30) = matrix2[3] + (matrix2[0] * x + matrix2[1] * z);
+    *(float *)((u8 *)object + 0x34) = matrix2[7] + (matrix2[4] * x + matrix2[5] * z);
 
-    *(float *)((u8 *)object + 0x14) =
-        matrix2[5] +
-        matrix2[4] * *(float *)((u8 *)object + 0x30) +
-        matrix2[3] * *(float *)((u8 *)object + 0x34);
+    x = *(float *)((u8 *)object + 0x40);
+    z = *(float *)((u8 *)object + 0x44);
+    *(float *)((u8 *)object + 0x40) = matrix2[3] + (matrix2[0] * x + matrix2[1] * z);
+    *(float *)((u8 *)object + 0x44) = matrix2[7] + (matrix2[4] * x + matrix2[5] * z);
 
-    *(float *)((u8 *)object + 0x30) =
-        matrix2[2] +
-        sine * *(float *)((u8 *)object + 0x30) +
-        cosine * *(float *)((u8 *)object + 0x34);
-
-    *(float *)((u8 *)object + 0x34) =
-        matrix2[5] +
-        matrix2[4] * *(float *)((u8 *)object + 0x30) +
-        matrix2[3] * *(float *)((u8 *)object + 0x34);
-
-    *(float *)((u8 *)object + 0x40) =
-        matrix2[2] +
-        sine * *(float *)((u8 *)object + 0x40) +
-        cosine * *(float *)((u8 *)object + 0x44);
-
-    *(float *)((u8 *)object + 0x44) =
-        matrix2[5] +
-        matrix2[4] * *(float *)((u8 *)object + 0x40) +
-        matrix2[3] * *(float *)((u8 *)object + 0x44);
-
-    *(float *)((u8 *)object + 0x20) =
-        matrix2[2] +
-        sine * *(float *)((u8 *)object + 0x20) +
-        cosine * *(float *)((u8 *)object + 0x24);
-
-    *(float *)((u8 *)object + 0x24) =
-        matrix2[5] +
-        matrix2[4] * *(float *)((u8 *)object + 0x20) +
-        matrix2[3] * *(float *)((u8 *)object + 0x24);
+    x = *(float *)((u8 *)object + 0x20);
+    z = *(float *)((u8 *)object + 0x24);
+    *(float *)((u8 *)object + 0x20) = matrix2[3] + (matrix2[0] * x + matrix2[1] * z);
+    *(float *)((u8 *)object + 0x24) = matrix2[7] + (matrix2[4] * x + matrix2[5] * z);
 }
 
 void Prim2D_RotateUvCw(void)
@@ -2036,17 +2012,17 @@ void Prim2D_PopZ(void *src, f32 farg0) {
 #pragma optimization_level 3
 void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_8006EBC4(void *, void *, void *, s32, s32);
-    extern u16 lbl_80367140;
+    extern u16 gPrim2D;
+    register u8 *p;
+    register u16 flags;
     register s32 mask;
     unsigned long a;
     u32 b;
     u8 sp8[0xC];
     u8 sp14[0x20];
-    register u8 *p;
-    register u16 flags;
 
     fn_8006EBC4(arg0, sp14, sp8, arg2, arg1);
-    p = *(u8 **)&lbl_80367140;
+    p = *(u8 **)&gPrim2D;
     mask = 0xFFFF7B0C;
     a = *(u32 *)(sp14 + 0);
     flags = (u16)(arg3 | 0x8000);
@@ -2065,17 +2041,17 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     b = *(u32 *)(sp14 + 0x1C);
     *(u32 *)(p + 0x4C) = a;
     *(u32 *)(p + 0x50) = b;
-    p = *(u8 **)&lbl_80367140;
+    p = *(u8 **)&gPrim2D;
     a = *(u32 *)(sp8 + 0);
     b = *(u32 *)(sp8 + 4);
     *(u32 *)(p + 0x58) = b;
     *(u32 *)(p + 0x54) = a;
     *(u32 *)(p + 0x5C) = *(u32 *)(sp8 + 8);
-    (*(u8 **)&lbl_80367140)[0x22] = arg2;
-    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
-        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) & mask;
-    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
-        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | flags;
+    (*(u8 **)&gPrim2D)[0x22] = arg2;
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
+        *(u16 *)(*(u8 **)&gPrim2D + 0x20) & mask;
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
+        *(u16 *)(*(u8 **)&gPrim2D + 0x20) | flags;
 }
 #pragma optimization_level reset
 void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
