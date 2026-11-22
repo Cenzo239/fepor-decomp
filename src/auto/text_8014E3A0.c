@@ -4234,8 +4234,8 @@ void fn_801569C4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     Prim2D_PopZ(saved, sp14);
 }
 
-void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
-    void fn_80006B18(s32, s16, s32, s32, u8);
+void fn_80157700(s16 x, s16 y, s32 a2, s32 flags) {
+    void fn_80006B18(s32, s32, s32, s32, u8);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -4258,29 +4258,26 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     extern f32 lbl_8036A878;
     extern u8 gUiTexScratch[64];
     extern u8 lbl_802774F0[];
+    int new_var2;
     f32 spC;
+    long new_var3;
     s32 sp8;
     s32 str;
     s16 h;
     s16 w;
     s16 *rect;
     s32 saved;
-    s32 flags;
-    s32 a2;
-    s16 y;
-    s16 x;
+    int new_var;
+    long new_var4;
 
-    x = arg0;
-    y = arg1;
-    a2 = arg2;
-    flags = arg3;
     saved = Prim2D_PushZ(&spC);
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)gUiTexScratch, 0x49);
     rect = (s16 *)&lbl_80368008;
     h = (s16)(rect[3] - rect[1]);
     w = (s16)(rect[2] - lbl_80368008.f0);
     if (w != 0) {
-        if (h != 0) {
+        new_var2 = h != 0;
+        if (new_var2) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)gUiTexScratch, (u16)(flags | 1));
             Prim2D_PrepareTex();
@@ -4293,22 +4290,24 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
     flags = x;
-    Ui_DrawRouteTexCw(flags + 0x18, (s16)y - 3, 0);
+    y = y;
+    Ui_DrawRouteTexCw(0x18 + flags, y - 3, 0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     Prim2D_SetTex(NULL, 0x13);
     Prim2D_PrepareTex();
-    x = (s16)(rect[3] - rect[1]);
+    new_var = rect[3] - rect[1];
+    new_var4 = (s16)new_var;
+    x = new_var4;
     x = (s16)((x - Text_MeasureHeight(-1, lbl_8036A874)) >> 1);
     str = Msg_Expand(lbl_802774F0 + 0x1f6);
-    x = y + x;
-    Text_Draw((s16)(flags + 0x40), (s16)x, 0xF, str);
+    Text_Draw((s16)(flags + 0x40), (s16)(y + x), 0xF, str);
     Prim2D_AddPrim(6);
     sp8 = *Ui_GetColor(2);
     Prim2D_SetColorPacked(&sp8);
-    fn_80006B18(flags + 0xC0, (s16)x, 0, 0, (u8)a2);
+    fn_80006B18(0xC0 + flags, new_var3 = (y + x), 0, 0, (u8)a2);
     Prim2D_EndPrim();
     Prim2D_PopZ(saved, spC);
 }
