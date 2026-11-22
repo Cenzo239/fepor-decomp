@@ -3026,11 +3026,12 @@ void fn_801E9B80(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_801E9C24(void) {
-    extern u32 lbl_80299FA8[];
-    extern u32 lbl_80299FC4[];
-    extern u8 gTabMenuStrings[];
+      void fn_8005C8B4(void *);
+      extern u32 lbl_80299FA8[];
+      extern u32 lbl_80299FC4[];
+      extern u8 gTabMenuStrings[];
 
-    fn_8005C8B4((void *)lbl_80299FA8[1]);
+      fn_8005C8B4((void *)lbl_80299FA8[1]);
     fn_8005C8B4((void *)lbl_80299FC4[1]);
     fn_8005C8B4(&gTabMenuStrings[0x22f]);
 }
