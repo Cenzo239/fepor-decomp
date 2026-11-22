@@ -1659,6 +1659,7 @@ void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
 void QUATMtx(f32 *, void *);
 void QUATSlerp(f32 *, f32 *, f32 *, f32);
+#pragma inline_depth(0)
 void fn_80061A08(void *arg0)
 {
     f32 sp258[4];
@@ -2126,7 +2127,7 @@ void fn_80061A08(void *arg0)
         }
     }
 }
-
+#pragma inline_depth(8)
 void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *arg5)
 {
     void fn_80201FC4(void *);
@@ -8424,6 +8425,7 @@ s32 fn_8006EBA4(void *arg0, s32 arg1) {
     return *(s32 *)(base + (arg1 << 3) + 4) != 0;
 }
 
+#pragma global_optimizer off
 void fn_8006EBC4(void *arg0, void *arg1, void *arg2, u32 arg3, s32 arg4) {
     void fn_80222CA4(u32 *, u32, u32, u16);
     void GXInitTexObjCI(void *, void *, u16, u16, s32, s32, s32, u8, u32);
@@ -8431,22 +8433,19 @@ void fn_8006EBC4(void *arg0, void *arg1, void *arg2, u32 arg3, s32 arg4) {
 
     u8 *table;
     u8 *entry;
-    u8 *texture;
     u8 *palette;
-    s32 mipmap;
+    u8 mipmap;
 
     table = *(u8 **)((u8 *)arg0 + 8);
     entry = table + (arg4 << 3);
 
-    texture = *(u8 **)entry;
-    palette = *(u8 **)(entry + 4);
-
-    if (texture[0x21] == texture[0x22]) {
+    if ((*(u8 **)entry)[0x21] == (*(u8 **)entry)[0x22]) {
         mipmap = 0;
     } else {
         mipmap = 1;
     }
 
+    palette = *(u8 **)(entry + 4);
     fn_80222CA4(
         (u32 *)arg2,
         *(u32 *)(palette + 8),
@@ -8454,32 +8453,33 @@ void fn_8006EBC4(void *arg0, void *arg1, void *arg2, u32 arg3, s32 arg4) {
         *(u16 *)palette
     );
 
-    GXInitTexObjCI(
-        arg1,
-        *(void **)(texture + 8),
-        *(u16 *)(texture + 2),
-        *(u16 *)texture,
-        *(s32 *)(texture + 4),
-        *(s32 *)(texture + 0xC),
-        *(s32 *)(texture + 0x10),
-        (u8)mipmap,
-        arg3
-    );
+    {
+        u8 *tex = *(u8 **)entry;
+        GXInitTexObjCI(
+            arg1,
+            *(void **)(tex + 8),
+            *(u16 *)(tex + 2),
+            *(u16 *)tex,
+            *(s32 *)(tex + 4),
+            *(s32 *)(tex + 0xC),
+            *(s32 *)(tex + 0x10),
+            mipmap,
+            arg3
+        );
+    }
 
     GXInitTexObjLOD(
         (u32 *)arg1,
-        *(s32 *)(texture + 0x14),
-        *(s32 *)(texture + 0x18),
-        (f32)texture[0x21],
-        (f32)texture[0x22],
-        *(f32 *)(texture + 0x1C),
+        *(s32 *)(*(u8 **)entry + 0x14),
+        *(s32 *)(*(u8 **)entry + 0x18),
+        (f32)(*(u8 **)entry)[0x21],
+        (f32)(*(u8 **)entry)[0x22],
+        *(f32 *)(*(u8 **)entry + 0x1C),
         0,
-        texture[0x20],
+        (*(u8 **)entry)[0x20],
         0
     );
 }
-
-#pragma global_optimizer off
 void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
 {
     void fn_80222644(void *, void *, u16, u16, s32, s32, s32, s32);
@@ -8581,16 +8581,17 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
 }
 
 void fn_8006EEFC(void *arg0, void *arg1) {
+    u8 *FileCache_Load(s32);
+    u16 i;
     u8 *file;
     u8 *table;
     u8 *record;
     u32 offset;
     u32 value;
-    u32 i;
-    u32 count;
 
-    file = ((u8 *(*)(s32))FileCache_Load)((s32)arg1);
+    file = FileCache_Load((s32)arg1);
     *(u8 **)arg0 = file;
+    file = *(u8 **)arg0;
 
     if (*(u32 *)file == 0x0020AF31U) {
         return;
@@ -8608,13 +8609,13 @@ void fn_8006EEFC(void *arg0, void *arg1) {
         value = *(u32 *)(table + offset);
 
         if (value != 0) {
-            *(u32 *)(table + offset) = value + (u32)file;
+            *(u32 *)(table + offset) = (u32)file + value;
 
             table = *(u8 **)(file + 8);
             record = *(u8 **)(table + offset);
 
             if (record[0x23] == 0) {
-                *(u32 *)(record + 8) += (u32)file;
+                *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
                 record = *(u8 **)(table + offset);
@@ -8623,20 +8624,19 @@ void fn_8006EEFC(void *arg0, void *arg1) {
         }
 
         table = *(u8 **)(file + 8);
-        offset += 4;
-        value = *(u32 *)(table + offset);
+        value = *(u32 *)(table + offset + 4);
 
         if (value != 0) {
-            *(u32 *)(table + offset) = value + (u32)file;
+            *(u32 *)(table + offset + 4) = (u32)file + value;
 
             table = *(u8 **)(file + 8);
-            record = *(u8 **)(table + offset);
+            record = *(u8 **)(table + offset + 4);
 
             if (record[2] == 0) {
-                *(u32 *)(record + 8) += (u32)file;
+                *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
-                record = *(u8 **)(table + offset);
+                record = *(u8 **)(table + offset + 4);
                 record[2] = 1;
             }
         }
