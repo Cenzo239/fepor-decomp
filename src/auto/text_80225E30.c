@@ -866,7 +866,7 @@ s32 TRKInitializeDispatcher(void) {
     return 0;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_80227024(void *arg0) {
     extern char gTRK_str_SerialIO[];
     s32 fn_80226E24(char *);
@@ -882,7 +882,7 @@ s32 fn_80227024(void *arg0) {
     strings = gTRK_str_SerialIO;
 
     if (*((u8 *)arg0 + 0x18) == 1) {
-        fn_80226E24(strings + (enabled ^ enabled));
+        fn_80226E24(strings + 0);
         if (enabled != 0) {
             fn_80226E24(strings + 0x20);
         } else {
@@ -898,7 +898,7 @@ s32 fn_80227024(void *arg0) {
     TRK_cc_write(reply, 0x40);
     return 0;
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 s32 fn_802270CC(void) {
     s32 fn_80228DF8(void);
     s32 TRK_cc_write(s32, s32);
@@ -2197,7 +2197,7 @@ void TRKPostInterruptEvent(void) {
     fn_80225F4C(event, type);
     fn_80225F64(event);
 }
-#pragma global_optimizer reset
+#pragma optimization_level 1
 s32 TRKTargetAccessExtended2(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
 void fn_802264B4(s32, s32 *);
 s32 fn_80226700(s32, s32, s32);
@@ -2219,11 +2219,11 @@ extern u8 lbl_8033CFB4[];
         u32 buf0[10];
         u32 gap[4];
     } st;
-    s32 s3, s2, s1, s0;
-    u32 *p4;
-    u32 *tmpl;
-    u32 tr;
     u8 *status;
+    u32 *tmpl;
+    u32 *p4;
+    u32 tr;
+    s32 s3, s2, s1, s0;
     u32 op;
     s32 err;
     u32 *src;
@@ -2367,7 +2367,7 @@ extern u8 lbl_8033CFB4[];
     *(s32 *)(status + 0xC) = st.saved[3];
     return err + (s32)(st.gap[0] & 0);
 }
-
+#pragma optimization_level reset
 s32 TRKTargetAccessExtended1(u32 arg0,u32 arg1,void *arg2,s32 *arg3,s32 arg4) {
 extern u8 gTRKExceptionStatus_8029E574[];
 extern u8 gTRKRestoreFlags[];
@@ -2742,7 +2742,8 @@ s32 fn_8022A230(u32 start, s32 length, s32 mode) {
     s32 j;
     u32 entryEnd;
 
-    end = start + length - 1;
+    end = start + length;
+    end = end - 1;
     result = 0x700;
     if (end < start) {
         return 0x700;
@@ -2756,7 +2757,8 @@ s32 fn_8022A230(u32 start, s32 length, s32 mode) {
             result = 0;
             if (start < lbl_80282750[i].start) {
                 sub = 0x700;
-                subEnd = (lbl_80282750[i].start - start) + start - 1;
+                subEnd = lbl_80282750[i].start - start;
+                subEnd = subEnd + start - 1;
                 if (subEnd >= start) {
                     j = 0;
                     if (start <= lbl_80282750[0].end && subEnd >= lbl_80282750[0].start) {
@@ -2783,7 +2785,8 @@ s32 fn_8022A230(u32 start, s32 length, s32 mode) {
                 entryEnd = lbl_80282750[i].end;
                 if (end > entryEnd) {
                     sub = 0x700;
-                    subEnd = (end - entryEnd) + entryEnd - 1;
+                    subEnd = end - entryEnd;
+                    subEnd = subEnd + entryEnd - 1;
                     if (subEnd >= entryEnd) {
                         j = 0;
                         if (entryEnd <= lbl_80282750[0].end && subEnd >= lbl_80282750[0].start) {
@@ -2917,6 +2920,7 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
         }
     }
 }
+#pragma intrinsic __dcbi
 void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
 u32 fn_80214058(void);
 void fn_80214094(s32,s32,u32,u32);
@@ -2953,20 +2957,19 @@ s32 TRKInitializeTarget(void) {
 }
 
 void fn_8022AD08(void) {
-    extern u32 lbl_8033CFC8;
+    extern u32 lbl_8033CFC8[];
     extern u32 lbl_8029E598[];
     extern u8 gTRKInterruptVectorTable[];
     extern void fn_80003488(u32, void *, u32);
     extern void fn_80228858(u32, u32);
 
     u32 *var_r5;
-    u32 temp_r29;
-    u8 *var_r31;
     s32 var_r30;
+    u32 temp_r29;
     u32 temp_r6;
     u32 var_r27;
 
-    if (lbl_8033CFC8 > 0x44 && lbl_8033CFC8 + 0x4000 > 0x44 &&
+    if (lbl_8033CFC8[0] <= 0x44 && lbl_8033CFC8[0] + 0x4000 > 0x44 &&
         (*(u32 *)((u8 *)gTRKCPUState + 0x238) & 3)) {
         var_r5 = (u32 *)0x44;
     } else {
@@ -2974,12 +2977,11 @@ void fn_8022AD08(void) {
     }
     temp_r29 = *var_r5;
 
-    var_r31 = (u8 *)lbl_8029E598;
-    for (var_r30 = 0; var_r30 <= 0xE; var_r30++, var_r31 += 4) {
+    for (var_r30 = 0; var_r30 <= 0xE; var_r30++) {
         if ((temp_r29 & (1 << var_r30)) && var_r30 != 4) {
-            temp_r6 = *(u32 *)var_r31;
-            if (temp_r6 >= lbl_8033CFC8 &&
-                temp_r6 < lbl_8033CFC8 + 0x4000 &&
+            temp_r6 = lbl_8029E598[var_r30];
+            if (temp_r6 >= lbl_8033CFC8[0] &&
+                temp_r6 < lbl_8033CFC8[0] + 0x4000 &&
                 (*(u32 *)((u8 *)gTRKCPUState + 0x238) & 3)) {
                 var_r27 = temp_r6;
             } else if (temp_r6 >= 0x7e000000U && temp_r6 <= 0x80000000U) {
@@ -3361,17 +3363,17 @@ s32 ddh_cc_write(void *arg0, s32 arg1) {
     s32 remaining;
     u8 *buffer;
     s32 written;
-    u8 *messages;
+    char *messages;
     buffer = (u8 *)arg0;
     remaining = arg1;
-    messages = (u8 *)lbl_80282900;
+    messages = lbl_80282900;
     if (lbl_803687B8 == 0) {
-        MWTRACE(8, (char *)&messages[0]);
+        MWTRACE(8, messages + 0);
         return -0x2711;
     }
-    MWTRACE(8, (char *)messages + 0x14, arg0, arg1);
+    MWTRACE(8, messages + 0x14, arg0, arg1);
     while (remaining > 0) {
-        MWTRACE(1, (char *)messages + 0x40, remaining);
+        MWTRACE(1, messages + 0x40, remaining);
         written = fn_8023C554(buffer, remaining);
         if (written == 0) break;
         buffer += written;
