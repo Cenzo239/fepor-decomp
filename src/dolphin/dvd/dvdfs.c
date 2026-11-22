@@ -431,8 +431,8 @@ s32 fn_8020CC28(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void OSPanic(void *, s32, char *, ...);
-    void fn_8020CD40(void);
-    s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, void (*)(void), s32);
+    s32 fn_8020CD40(void);
+    s32 DVDReadAbsAsyncPrio(void *, s32, s32, s32, s32 (*)(void), s32);
     void OSSleepThread(void *);
     extern void *__DVDThreadQueue;
     extern char lbl_8029D01C[];
@@ -1549,7 +1549,7 @@ void fn_8020E4B8(u32 arg0) {
     void fn_8020D27C(u32);
     extern u16 BB2_80339F40[];
     extern volatile u32 CurrCommand_803685B4;
-    extern s32 lbl_803685CC;
+    extern volatile s32 lbl_803685CC;
     extern s32 ResetRequired_803685D0;
     extern u32 lbl_803685B8;
     extern void *executing_80368598;
@@ -1577,13 +1577,12 @@ void fn_8020E4B8(u32 arg0) {
     u8 *base;
     u32 cmd;
     s32 flag;
-    s32 zero;
-    u32 *di;
     u32 *tbl;
     u32 val;
+    volatile u32 *di;
 
     base = (u8 *)BB2_80339F40;
-    di = (u32 *)0xCC006000;
+    di = (volatile u32 *)0xCC006000;
 
     if (arg0 == 0x10) {
         __DVDStoreErrorCode(0x01234568);
@@ -1598,15 +1597,14 @@ void fn_8020E4B8(u32 arg0) {
             DVDLowStopMotor(cbForStateError);
             return;
         }
-        zero = 0;
-        lbl_803685CC = zero;
+        lbl_803685CC = 0;
         if (CurrCommand_803685B4 == 0xF) {
             ResetRequired_803685D0 = 1;
         }
         if (lbl_803685B8 != 0) {
             ResumeFromHere_803685C0 = 7;
             block = (DVDReadyCommand *)executing_80368598;
-            lbl_803685B8 = zero;
+            lbl_803685B8 = 0;
             executing_80368598 = base + 0x40;
             block->state = 0xA;
             if (block->callback != NULL) {
@@ -1641,9 +1639,8 @@ void fn_8020E4B8(u32 arg0) {
     }
 
     if (arg0 & 8) {
-        zero = 0;
         block = (DVDReadyCommand *)executing_80368598;
-        lbl_803685B8 = zero;
+        lbl_803685B8 = 0;
         executing_80368598 = base + 0x40;
         block->state = 0xA;
         if (block->callback != NULL) {
@@ -1657,13 +1654,12 @@ void fn_8020E4B8(u32 arg0) {
     }
 
     if (arg0 & 1) {
-        zero = 0;
-        lbl_803685CC = zero;
+        lbl_803685CC = 0;
         if (CurrCommand_803685B4 == 0x10) {
             block = (DVDReadyCommand *)executing_80368598;
             MotorState_803685D8 = 1;
             executing_80368598 = base + 0x40;
-            block->state = zero;
+            block->state = 0;
             if (block->callback != NULL) {
                 block->callback(0, block);
             }
@@ -1671,9 +1667,9 @@ void fn_8020E4B8(u32 arg0) {
             return;
         }
         if (lbl_803685B8 != 0) {
-            ResumeFromHere_803685C0 = zero;
+            ResumeFromHere_803685C0 = 0;
             block = (DVDReadyCommand *)executing_80368598;
-            lbl_803685B8 = zero;
+            lbl_803685B8 = 0;
             executing_80368598 = base + 0x40;
             block->state = 0xA;
             if (block->callback != NULL) {
@@ -1791,10 +1787,9 @@ void fn_8020E4B8(u32 arg0) {
         CurrCommand_803685B4 == 0xE) {
         block = (DVDReadyCommand *)executing_80368598;
         if (block->unk20 == block->unk14) {
-            zero = 0;
             if (lbl_803685B8 != 0) {
-                ResumeFromHere_803685C0 = zero;
-                lbl_803685B8 = zero;
+                ResumeFromHere_803685C0 = 0;
+                lbl_803685B8 = 0;
                 executing_80368598 = base + 0x40;
                 block->state = 0xA;
                 if (block->callback != NULL) {
@@ -2513,7 +2508,7 @@ u8 ErrorCode2Num(s32 error)
 
     table = (u32 *)lbl_8029D210;
 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 18; i++) {
         if ((u32)error == table[i]) {
             return (u8)i;
         }
@@ -2904,12 +2899,14 @@ extern u8 lbl_8029D2C8[],lbl_8033A068[];extern s32 lbl_80368600,lbl_80368604,lbl
 extern s16 lbl_80368626;extern u32 CurrTvMode_8036864C;extern u8 lbl_8036860C[8];
 void OSRegisterVersion(const char*);void *__OSLockSram(void);void __OSUnlockSram(s32);
 void OSInitThreadQueue(void*);void __OSSetInterruptHandler(s32,void(*)(void));void __OSUnmaskInterrupts(u32);void fn_8020FD50(void);
-u8 *data=lbl_8029D2C8,*v=lbl_8033A068;volatile u16 *regs=(volatile u16*)0xcc002000;volatile u16 *controlp;
+u8 *data=lbl_8029D2C8,*v=lbl_8033A068;volatile u16 *controlp;
 u16 *tim;u32 *modep,*progp;u16 control;u32 tv,mode; s16 maxx,x,zero; s32 divisor,parity,y,limit,high,low,tmp;
 if(!lbl_80368600){
 OSRegisterVersion(lbl_80366F90);lbl_80368600=1;lbl_80368620=(void*)1;
 controlp=(volatile u16*)0xcc002000;if(!(*++controlp&1))fn_802100F4(0);
 lbl_80368604=0;lbl_80368634=0;lbl_80368630=0;lbl_80368644=0;lbl_80368640=0;lbl_80368628=0;lbl_80368638=0;lbl_80368608=0;
+{
+volatile u16 *regs=(volatile u16*)0xcc002000;
 regs[39]=*(u16*)(data+0x1c0)|((*(u16*)(data+0x1c2)<<10)&0xfc00);
 regs[38]=((s32)*(u16*)(data+0x1c2)>>6)|(*(u16*)(data+0x1c4)<<4);
 regs[41]=*(u16*)(data+0x1c6)|((*(u16*)(data+0x1c8)<<10)&0xfc00);
@@ -2926,6 +2923,7 @@ regs[51]=*(u16*)(data+0x1ea)|(*(u16*)(data+0x1ec)<<8);
 regs[50]=*(u16*)(data+0x1ee)|(*(u16*)(data+0x1f0)<<8);
 
 regs[0x70/2]=640;
+}
 *(s16*)&lbl_80368624=(s8)((u8*)__OSLockSram())[0x10];lbl_80368626=0;__OSUnlockSram(0);
 control=*controlp;progp=(u32*)(v+0x114);modep=(u32*)(v+0x118);*progp=(control>>2)&1;*modep=(control>>8)&3;
 if(*(u32*)0x800000cc==1&&*modep==0)*modep=5;
@@ -2951,7 +2949,10 @@ tmp=*(s16*)(v+0xf2)+lbl_80368626;if(tmp-parity<0)low=tmp-parity;else low=0;
 *(u16*)(v+0x102)=640;*(u16*)(v+0x104)=(tim[1]*2)&0xfffe;
 *(u16*)(v+0x106)=0;*(u16*)(v+0x108)=0;*(u16*)(v+0x10a)=640;*(u16*)(v+0x10c)=(tim[1]*2)&0xfffe;
 *(u32*)(v+0x110)=0;v[0x11c]=v[0x11d]=v[0x11e]=40;v[0x12c]=0;*(u32*)(v+0x130)=1;*(u32*)(v+0x134)=0;
-OSInitThreadQueue(lbl_8036860C);regs[0x30/2]=regs[0x30/2]&0x7fff;regs[0x34/2]=regs[0x34/2]&0x7fff;
+OSInitThreadQueue(lbl_8036860C);{
+volatile u16 *regs=(volatile u16*)0xcc002000;
+regs[0x30/2]=regs[0x30/2]&0x7fff;regs[0x34/2]=regs[0x34/2]&0x7fff;
+}
 lbl_80368614=0;lbl_80368618=0;__OSSetInterruptHandler(24,fn_8020FD50);__OSUnmaskInterrupts(0x80);
 }
 }
@@ -2969,6 +2970,102 @@ previous=lbl_80368604;
 do { OSSleepThread(&lbl_8036860C); } while(previous==lbl_80368604);
 OSRestoreInterrupts(enabled);
 }
+
+void fn_802107FC(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4) {
+    extern u8 lbl_8033A068[];
+    u8 *a = (u8 *)arg0;
+    u8 *base = lbl_8033A068;
+    u32 *p1 = (u32 *)arg1;
+    u32 *p2 = (u32 *)arg2;
+    u32 *p3 = (u32 *)arg3;
+    u32 *p4 = (u32 *)arg4;
+    s32 shift = *(u8 *)(a + 0x2C) << 5;
+    u32 mult = *(u16 *)(a + 0xE);
+    u16 ext = *(u16 *)(a + 0x16);
+    s32 v20 = *(s32 *)(a + 0x20);
+    u32 v30 = *(u32 *)(a + 0x30);
+    s32 v0A = *(u16 *)(a + 0xA);
+    u32 prod = shift * mult;
+    u32 term = (ext * 2) & 0xFFFFFFE0;
+    u32 sum = term + prod;
+    u32 var;
+    u32 tmp;
+
+    *p1 = v30 + sum;
+    if (v20 == 0) {
+        var = *p1;
+    } else {
+        var = *p1 + shift;
+    }
+    *p2 = var;
+    if ((v0A % 2) == 1) {
+        tmp = *p1;
+        *p1 = *p2;
+        *p2 = tmp;
+    }
+    *p1 &= 0x3FFFFFFF;
+    *p2 &= 0x3FFFFFFF;
+    if (*(s32 *)(a + 0x44) != 0) {
+        s32 shift2 = *(u8 *)(a + 0x2C) << 5;
+        u32 prod2 = shift2 * *(u16 *)(a + 0xE);
+        u32 term2 = (*(u16 *)(a + 0x16) * 2) & 0xFFFFFFE0;
+        s32 v20b = *(s32 *)(a + 0x20);
+        s32 v0Ab = *(u16 *)(a + 0xA);
+        u32 val2 = *(u32 *)(a + 0x48) + (term2 + prod2);
+        *p3 = val2;
+        if (v20b == 0) {
+            var = *p3;
+        } else {
+            var = *p3 + shift2;
+        }
+        *p4 = var;
+        if ((v0Ab % 2) == 1) {
+            tmp = *p3;
+            *p3 = *p4;
+            *p4 = tmp;
+        }
+        *p3 &= 0x3FFFFFFF;
+        *p4 &= 0x3FFFFFFF;
+    }
+    if ((*p1 < 0x01000000U) && (*p2 < 0x01000000U) && (*p3 < 0x01000000U) && (*p4 < 0x01000000U)) {
+        var = 0;
+    } else {
+        var = 1;
+    }
+    if (var != 0) {
+        *p1 >>= 5;
+        *p2 >>= 5;
+        *p3 >>= 5;
+        *p4 >>= 5;
+    }
+    *(u16 *)(base + 0x1E) = (u16) *p1;
+    *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+    lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 16));
+    *(u16 *)(base + 0x1C) = (u16) ((var << 0xC) | ((*p1 >> 0x10) | (*(u8 *)(a + 0x3C) << 8)));
+    *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+    lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 17));
+    *(u16 *)(base + 0x26) = (u16) *p2;
+    *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+    lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 12));
+    *(u16 *)(base + 0x24) = (u16) (*p2 >> 0x10);
+    *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+    lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 13));
+    if (*(s32 *)(a + 0x44) != 0) {
+        *(u16 *)(base + 0x22) = (u16) *p3;
+        *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+        lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 14));
+        *(u16 *)(base + 0x20) = (u16) (*p3 >> 0x10);
+        *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+        lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 15));
+        *(u16 *)(base + 0x2A) = (u16) *p4;
+        *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+        lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 10));
+        *(u16 *)(base + 0x28) = (u16) (*p4 >> 0x10);
+        *(volatile u32 *)&lbl_80368634 = *(volatile u32 *)&lbl_80368634;
+        lbl_80368630 = (void *)((u32)lbl_80368630 | (1 << 11));
+    }
+}
+
 #pragma peephole reset
 void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 nonInterlace) {
     extern u8 lbl_8033A068[];
@@ -3047,7 +3144,7 @@ void VIConfigure(void *arg0) {
     u8 *v;
     BOOL irq;
     u32 *progp;
-    u32 tv;
+    s32 tv;
     u32 mode;
     u32 tmp;
     VITiming *tm;
@@ -3057,6 +3154,8 @@ void VIConfigure(void *arg0) {
     s32 divisor, parity, y, limit, high, low, tmpi;
     u16 val, r2, r6c;
     u32 r0;
+    u32 sp8;
+    u32 unused0, unused1, unused2, unused3, unused4, unused5;
 
     self = arg0;
     data = lbl_8029D2C8;
@@ -3068,7 +3167,7 @@ void VIConfigure(void *arg0) {
         lbl_80368628 = (void *)1;
         *progp = tmp;
     }
-    tv = *(u32 *)0x800000CC;
+    tv = *(s32 *)0x800000CC;
     mode = *(u32 *)self >> 2;
     if (mode == 4 && lbl_80368660 == 0) {
         lbl_80368660 = 1;
@@ -3082,25 +3181,30 @@ void VIConfigure(void *arg0) {
     }
     if (tv == 2) {
         goto path_02;
-    } else if (tv >= 2) {
-        if (tv == 5) {
-            goto path_157;
-        } else if (tv < 5) {
-            goto path_err;
-        } else if (tv >= 8) {
-            goto path_err;
-        } else {
-            goto path_157;
-        }
-    } else if (tv == 0) {
+    }
+    if (tv >= 2) {
+        goto tv_high;
+    }
+    if (tv == 0) {
         goto path_02;
-    } else if (tv >= 0) {
+    }
+    if (tv >= 0) {
         goto path_157;
-    } else {
+    }
+    goto path_err;
+tv_high:
+    if (tv == 5) {
+        goto path_157;
+    }
+    if (tv < 5) {
         goto path_err;
     }
+    if (tv >= 8) {
+        goto path_err;
+    }
+    goto path_157;
 path_02:
-    if (mode == 0 || mode == 2 || (mode - 6) <= 1) {
+    if (mode == 0 || mode == 2 || (u32)(mode - 6) <= 1) {
         goto path_ok;
     }
     goto path_err;
@@ -3113,13 +3217,13 @@ path_err:
 path_ok:
     p118 = (u32 *)(v + 0x118);
     if (mode == 0 || mode == 2) {
-        *p118 = tv;
+        *p118 = (u32)tv;
     } else {
         *p118 = mode;
     }
     *(u16 *)(v + 0xf0) = *(u16 *)((u8 *)self + 0xa);
     if (*progp == 1) {
-        val = (u16)((*(u16 *)((u8 *)self + 0xc) * 2) & 0xfffe);
+        val = (u16)(*(u16 *)((u8 *)self + 0xc) << 1);
     } else {
         val = *(u16 *)((u8 *)self + 0xc);
     }
@@ -3145,90 +3249,67 @@ path_ok:
     } else if (*progp == 3) {
         val = *p10C;
     } else if (*p110 == 0) {
-        val = (u16)((*p10C * 2) & 0xfffe);
+        val = (u16)(*p10C << 1);
     } else {
         val = *p10C;
     }
     pF6 = (u16 *)(v + 0xf6);
     *pF6 = val;
     p134 = (u32 *)(v + 0x134);
-    if (*progp == 3) {
-        *p134 = 1;
-    } else {
-        *p134 = 0;
-    }
+    *p134 = (*progp == 3) ? 1 : 0;
     tm = fn_8021004C((*p118 << 2) + *progp);
     *(VITiming **)(v + 0x144) = tm;
     maxx = (s16)(0x2d0 - *pF4);
     x = (s16)*(u16 *)(v + 0xf0) + *(s16 *)&lbl_80368624;
     if (x > maxx) {
+        unused0 = 0;
+    } else if (x < 0) {
+        maxx = 0;
     } else {
-        if (x < 0) {
-            x = 0;
-        }
         maxx = x;
     }
     *(u16 *)(v + 0xf8) = maxx;
-    if (*p110 == 0) {
-        divisor = 2;
-    } else {
-        divisor = 1;
-    }
+    divisor = (*p110 == 0) ? 2 : 1;
     parity = *pF2 & 1;
     y = (s16)*pF2 + lbl_80368626;
-    if (y > parity) {
-    } else {
+    if (y <= parity) {
         y = (s16)parity;
     }
     pFA = (u16 *)(v + 0xfa);
     *pFA = y;
-    limit = ((s16)tm->unk2 * 2) - parity;
+    limit = ((s16)tm->unk2 << 1) - parity;
     tmpi = (s16)*pF2 + ((s16)*pF6 + lbl_80368626);
-    if (tmpi - limit > 0) {
-        high = tmpi - limit;
-    } else {
-        high = 0;
-    }
+    high = (tmpi - limit > 0) ? (tmpi - limit) : 0;
     tmpi = (s16)*pF2 + lbl_80368626;
-    if (tmpi - parity < 0) {
-        low = tmpi - parity;
-    } else {
-        low = 0;
-    }
+    low = (tmpi - parity < 0) ? (tmpi - parity) : 0;
     pFC = (u16 *)(v + 0xfc);
     *pFC = (u16)(*pF6 + low - high);
     tmpi = (s16)*pF2 + lbl_80368626;
-    if (tmpi - parity < 0) {
-        low = tmpi - parity;
-    } else {
-        low = 0;
-    }
+    low = (tmpi - parity < 0) ? (tmpi - parity) : 0;
     *(u16 *)(v + 0xfe) = (u16)(*p108 - low / divisor);
     tmpi = (s16)*pF2 + ((s16)*pF6 + lbl_80368626);
-    if (tmpi - limit > 0) {
-        high = tmpi - limit;
-    } else {
-        high = 0;
-    }
+    high = (tmpi - limit > 0) ? (tmpi - limit) : 0;
     tmpi = (s16)*pF2 + lbl_80368626;
-    if (tmpi - parity < 0) {
-        low = tmpi - parity;
-    } else {
-        low = 0;
-    }
+    low = (tmpi - parity < 0) ? (tmpi - parity) : 0;
     *(u16 *)(v + 0x100) = (u16)(*p10C + low / divisor - high / divisor);
     if (lbl_80368620 == 0) {
         *p118 = 3;
     }
-    if ((tm->unk18 % 2) != 0) {
-        val = tm->unk1A;
-    } else {
-        val = 0;
+    {
+        u16 t18 = tm->unk18;
+        u16 half = (u16)((s32)t18 >> 1);
+        half = (u16)((t18 / 2));
+        unused1 = half;
+        if ((t18 & 1) != 0) {
+            val = tm->unk1A;
+        } else {
+            val = 0;
+        }
+        *(u16 *)(v + 0x32) = (u16)(val + 1);
+        lbl_80368634 = lbl_80368634;
+        lbl_80368630 = (void *)((u32)lbl_80368630 | 0x40);
+        *(u16 *)(v + 0x30) = (u16)(((t18 / 2) + 1) | 0x1000);
     }
-    *(u16 *)(v + 0x32) = (u16)(val + 1);
-    lbl_80368634 = lbl_80368634;
-    lbl_80368630 = (void *)((u32)lbl_80368630 | 0x40);
-    *(u16 *)(v + 0x30) = (u16)(((tm->unk18 / 2) + 1) | 0x1000);
     lbl_80368634 = lbl_80368634;
     lbl_80368630 = (void *)((u32)lbl_80368630 | 0x80);
     r2 = *(u16 *)(v + 2);
@@ -3242,32 +3323,50 @@ path_ok:
     }
     r2 = (u16)((r2 & ~8) | (*p134 << 3));
     if (*p118 == 1 || (*p118 - 2) <= 1) {
-        r2 = (u16)((r2 & 0xFCFF) | (*p118 << 8));
+        r0 = (r2 & 0xFCFF) | (*p118 << 8);
     } else {
-        r2 = (u16)(r2 & 0xFCFF);
+        r0 = r2 & 0xFCFF;
     }
-    *(u16 *)(v + 2) = r2;
+    *(u16 *)(v + 2) = (u16)r0;
     *(u16 *)(v + 0x6c) = r6c;
-    lbl_80368634 = lbl_80368634;
-    lbl_80368630 = (void *)((u32)lbl_80368630 | 0x40000000);
-    lbl_80368634 = (void *)((u32)lbl_80368634 | 0x200);
-    lbl_80368630 = lbl_80368630;
+    {
+        u32 a = (u32)lbl_80368630;
+        u32 b = (u32)lbl_80368634;
+        lbl_80368634 = (void *)b;
+        lbl_80368630 = (void *)(a | 0x40000000);
+        a = (u32)lbl_80368630;
+        b = (u32)lbl_80368634;
+        lbl_80368634 = (void *)(b | 0x200);
+        lbl_80368630 = (void *)a;
+    }
     if (*p134 != 0) {
-        val = (u16)(*p10A * 2);
+        val = (u16)(*p10A << 1);
     } else {
         val = *p10A;
     }
     if (val < *pF4) {
         *(u16 *)(v + 0x4a) = (u16)(((*pF4 + ((val << 8) - 1)) / *pF4) | 0x1000);
-        lbl_80368634 = (void *)((u32)lbl_80368634 | 0x04000000);
-        lbl_80368630 = lbl_80368630;
+        {
+            u32 a = (u32)lbl_80368630;
+            u32 b = (u32)lbl_80368634;
+            lbl_80368634 = (void *)(b | 0x04000000);
+            lbl_80368630 = (void *)a;
+        }
         *(u16 *)(v + 0x70) = val;
-        lbl_80368634 = (void *)((u32)lbl_80368634 | 0x80);
-        lbl_80368630 = lbl_80368630;
+        {
+            u32 a = (u32)lbl_80368630;
+            u32 b = (u32)lbl_80368634;
+            lbl_80368634 = (void *)(b | 0x80);
+            lbl_80368630 = (void *)a;
+        }
     } else {
         *(u16 *)(v + 0x4a) = 0x100;
-        lbl_80368634 = (void *)((u32)lbl_80368634 | 0x04000000);
-        lbl_80368630 = lbl_80368630;
+        {
+            u32 a = (u32)lbl_80368630;
+            u32 b = (u32)lbl_80368634;
+            lbl_80368634 = (void *)(b | 0x04000000);
+            lbl_80368630 = (void *)a;
+        }
     }
     *(u16 *)(v + 6) = tm->unk1A;
     lbl_80368634 = lbl_80368634;
@@ -3279,7 +3378,7 @@ path_ok:
     *(u16 *)(v + 0xa) = (u16)(tm->unk1C | ((r0 << 7) & 0xFF80));
     lbl_80368634 = lbl_80368634;
     lbl_80368630 = (void *)((u32)lbl_80368630 | 0x04000000);
-    *(u16 *)(v + 8) = (u16)((r0 >> 9) | (((tm->unk20 + *(u16 *)(v + 0xf8) + 0x28) - (0x2d0 - *pF4)) * 2));
+    *(u16 *)(v + 8) = (u16)((r0 >> 9) | (((tm->unk20 + *(u16 *)(v + 0xf8) + 0x28) - (0x2d0 - *pF4)) << 1));
     lbl_80368634 = lbl_80368634;
     lbl_80368630 = (void *)((u32)lbl_80368630 | 0x08000000);
     *(u16 *)(v + 0x16) = (u16)(tm->unkC | (tm->unk10 << 5));
@@ -3298,21 +3397,27 @@ path_ok:
     if (*p110 == 0) {
         v[0x11d] = v[0x11c];
     } else {
-        v[0x11d] = (u8)((v[0x11c] << 1) & 0xfe);
+        v[0x11d] = (u8)(v[0x11c] << 1);
     }
     v[0x12c] = (u8)(*p106 % 16);
     v[0x11e] = (u8)((v[0x12c] + (*p10A + 0xf)) / 16);
     *(u16 *)(v + 0x48) = (u16)(v[0x11d] | (v[0x11e] << 8));
-    lbl_80368634 = (void *)((u32)lbl_80368634 | 0x08000000);
-    lbl_80368630 = lbl_80368630;
+    {
+        u32 a = (u32)lbl_80368630;
+        u32 b = (u32)lbl_80368634;
+        lbl_80368634 = (void *)(b | 0x08000000);
+        lbl_80368630 = (void *)a;
+    }
     if (lbl_80368658 != 0) {
         fn_802107FC(v + 0xf0, v + 0x124, v + 0x128, v + 0x13c, v + 0x140);
     }
-    {
-        u32 sp8 = *(u32 *)(v + 0x130);
-        (void)sp8;
-        fn_80210AD0(*pFA, *pFC, tm->unk0, tm->unk2, tm->unk4, tm->unk6, tm->unk8, tm->unkA);
-    }
+    sp8 = *(u32 *)(v + 0x130);
+    unused2 = sp8;
+    unused3 = unused2;
+    unused4 = unused3;
+    unused5 = unused4;
+    (void)unused5;
+    fn_80210AD0(*pFA, *pFC, tm->unk0, tm->unk2, tm->unk4, tm->unk6, tm->unk8, tm->unkA);
     OSRestoreInterrupts(irq);
 }
 
