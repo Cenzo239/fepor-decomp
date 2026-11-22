@@ -1576,14 +1576,18 @@ void fn_8012DFA8(void *arg0) {
         sel = -1;
     } else {
         sel = 0;
-        off = 0;
+        off = sel;
         slot = *(u8 **)(self + 0x3C);
-        for (i = self[0x61]; i != 0; i--) {
-            if (*(void **)(slot + off) == find) {
-                goto found_sel;
-            }
-            off += 0x24;
-            sel++;
+        i = self[0x61];
+        if (i > 0) {
+            do {
+                if (*(void **)(slot + off) != find) {
+                    off += 0x24;
+                    sel++;
+                } else {
+                    goto found_sel;
+                }
+            } while (--i != 0);
         }
         sel = -1;
     found_sel:;
