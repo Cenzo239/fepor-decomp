@@ -5017,8 +5017,9 @@ void fn_8016B700(void) {
 
 extern u8 E_Jyokyo_script[16];
 void fn_8016B730(s32 arg0) {
-    void Process_CreateChild(void *, s32);
+    void Process_CreateChild(u8 *, s32);
     extern u8 E_Jyokyo_script[16];
+
     Process_CreateChild(E_Jyokyo_script, arg0);
 }
 
