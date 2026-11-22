@@ -1132,16 +1132,15 @@ void fn_801CD940(void *arg0, void *arg1)
 
     u8 *self;
     u8 *str;
-    void **vtable;
     s32 offset;
     s16 y;
     s16 xOffset;
     s32 x;
 
     self = (u8 *)arg0;
+    offset = 0;
 
-    vtable = *(void ***)self;
-    ((void (*)(void *))vtable[4])(self);
+    ((void (*)(void *))(*(void ***)self)[4])(self);
 
     fn_801583D0(
         0,
@@ -1154,8 +1153,7 @@ void fn_801CD940(void *arg0, void *arg1)
         0x10
     );
 
-    vtable = *(void ***)self;
-    ((void (*)(void *, void *))vtable[5])(self, arg1);
+    ((void (*)(void *, void *))(*(void ***)self)[5])(self, arg1);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B4EC);
@@ -1163,8 +1161,6 @@ void fn_801CD940(void *arg0, void *arg1)
 
     y = (s16)((0x20 -
         Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
-
-    offset = 0;
 
     if (*(s32 *)(self + 0x78) != 0) {
         Ui_DrawIcon(
@@ -2314,94 +2310,79 @@ void fn_801CFA44(void *arg0)
     fn_801C18FC(1);
 }
 
-void fn_801CFAB8(void *arg0, u8 arg1, void *arg2)
-{
-    extern f32 lbl_8036B56C;
+void fn_801CFAB8(void *arg0, u8 arg1, void *arg2) {
+    extern const f32 lbl_8036B56C;
     extern u8 lbl_8027DF20[];
     char *strcpy(char *, const char *);
-
-    u8 *obj;
+    u8 *obj = (u8 *)arg0;
     u16 type;
+    s32 one = 1;
+    s32 zero = 0;
+    s32 hundred = 100;
+    s32 ff;
+    f32 f;
 
-    obj = (u8 *)arg0;
-
-    *(s32 *)(obj + 0x08) = 1;
-    obj[0x0C] = arg1;
-    *(s16 *)(obj + 0x0E) = 0;
-    *(s16 *)(obj + 0x10) = 0;
-    *(s16 *)(obj + 0x12) = 0;
-
-    obj[0x14] = 100;
-    obj[0x15] = 100;
-    obj[0x16] = 100;
-
-    *(s16 *)(obj + 0x18) = 0;
-    *(s16 *)(obj + 0x1A) = 0;
-    *(f32 *)(obj + 0x1C) = lbl_8036B56C;
-
-    obj[0x20] = 0xFF;
-    obj[0x21] = 0xFF;
+    f = lbl_8036B56C;
+    obj[0xC] = arg1;
+    ff = 0xFF;
     *(void **)(obj + 0x24) = arg2;
+    *(s32 *)(obj + 0x8) = one;
+    *(s16 *)(obj + 0x18) = zero;
+    *(s16 *)(obj + 0x1A) = zero;
+    *(f32 *)(obj + 0x1C) = f;
+    obj[0x20] = ff;
+    obj[0x21] = ff;
+    *(s16 *)(obj + 0xE) = zero;
+    obj[0x14] = hundred;
+    *(s16 *)(obj + 0x10) = zero;
+    obj[0x15] = hundred;
+    *(s16 *)(obj + 0x12) = zero;
+    obj[0x16] = hundred;
+    obj[0x28] = zero;
+    obj[0x30] = zero;
+    obj[0x38] = zero;
+    obj[0x40] = zero;
+    obj[0x48] = zero;
+    obj[0x50] = zero;
+    obj[0x58] = zero;
+    obj[0x61] = zero;
+    obj[0x6F] = zero;
+    obj[0x7D] = zero;
+    obj[0x8B] = zero;
+    obj[0x99] = zero;
+    obj[0xA7] = zero;
+    obj[0xB5] = zero;
+    obj[0xC3] = zero;
+    obj[0xD1] = zero;
+    obj[0xDF] = zero;
+    obj[0xEC] = zero;
+    obj[0xF4] = zero;
+    obj[0xFC] = zero;
+    obj[0x104] = zero;
+    obj[0x10C] = zero;
+    obj[0x114] = zero;
+    obj[0x11C] = zero;
+    obj[0x124] = zero;
 
-    obj[0x28] = 0;
-    obj[0x30] = 0;
-    obj[0x38] = 0;
-    obj[0x40] = 0;
-    obj[0x48] = 0;
-    obj[0x50] = 0;
-    obj[0x58] = 0;
-
-    obj[0x61] = 0;
-    obj[0x6F] = 0;
-    obj[0x7D] = 0;
-    obj[0x8B] = 0;
-    obj[0x99] = 0;
-    obj[0xA7] = 0;
-    obj[0xB5] = 0;
-    obj[0xC3] = 0;
-    obj[0xD1] = 0;
-    obj[0xDF] = 0;
-
-    obj[0xEC] = 0;
-    obj[0xF4] = 0;
-    obj[0xFC] = 0;
-    obj[0x104] = 0;
-    obj[0x10C] = 0;
-    obj[0x114] = 0;
-    obj[0x11C] = 0;
-    obj[0x124] = 0;
-
-    type = *(u16 *)((u8 *)arg2 + 4);
-
+    type = *(u16 *)((u8 *)*(void **)(obj + 0x24) + 4);
     switch (type) {
     case 0:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x14C);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x14C);
         break;
-
     case 1:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x161);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x161);
         break;
-
     case 2:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x176);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x176);
         break;
-
     case 3:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x18C);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x18C);
         break;
-
     case 4:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x1A0);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x1A0);
         break;
-
     case 5:
-        strcpy((char *)obj + 0x12C,
-               (char *)lbl_8027DF20 + 0x1B4);
+        strcpy((char *)obj + 0x12C, (char *)lbl_8027DF20 + 0x1B4);
         break;
     }
 }
@@ -8083,6 +8064,7 @@ void fn_801DE074(void) {
 
 #pragma global_optimizer off
 #pragma opt_loop_invariants off
+#pragma opt_propagation off
 void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
@@ -8096,15 +8078,13 @@ u8 *base;
 s32 id;
 Process_UnlinkByKey(lbl_80299C58);
 i = 0;
+base = lbl_80299A78;
 clear = i;
-p = base = lbl_80299A78;
-do {
+for (p = base; i < 40; i++, p += 12) {
 if (*(u32 *)(p + 8))
 FileCache_ReleaseSlot(p + 8);
-i++;
 *(u32 *)(p + 8) = clear;
-p += 12;
-} while (i < 40);
+}
 for (; (id = *cursor) != -1; cursor++) {
 p = MenuResource_FindIn(base, id);
 if (p) {
@@ -8114,6 +8094,7 @@ fn_8005C8B4(path);
 }
 Process_CreateChild(lbl_80299C58, owner);
 }
+#pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 #pragma global_optimizer on
 void fn_801DE274(void) {
