@@ -1832,14 +1832,17 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8029180C[];
     extern u8 lbl_80292230[];
     extern f32 lbl_8036A5AC;
+    void *new_var;
+    s16 w;
+    s16 h;
+    s16 *new_var2;
+    u8 *new_var3;
     s32 zero;
     s16 neg1;
     s16 right;
     s16 bottom;
     u8 ff;
     f32 f;
-    s16 w;
-    s16 h;
 
     zero = 0;
     neg1 = -1;
@@ -1849,11 +1852,12 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     bottom = (s16)arg2 + (s16)arg4;
 
     *(void **)arg0 = lbl_8028FDB0;
+    new_var2 = (s16 *)((u8 *)arg0 + 0xC);
     *(s32 *)((u8 *)arg0 + 4) = zero;
     *(void **)arg0 = lbl_80292230;
     *(s16 *)((u8 *)arg0 + 8) = neg1;
     *(s16 *)((u8 *)arg0 + 0xA) = (s16)arg1;
-    *(s16 *)((u8 *)arg0 + 0xC) = (s16)arg2;
+    *new_var2 = (s16)arg2;
     *(s16 *)((u8 *)arg0 + 0xE) = right;
     *(s16 *)((u8 *)arg0 + 0x10) = bottom;
     *(s16 *)((u8 *)arg0 + 0x12) = (s16)zero;
@@ -1883,12 +1887,14 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     *(s16 *)((u8 *)arg0 + 0x46) = 0x30;
     *(s16 *)((u8 *)arg0 + 0x48) = 0x10;
     *(s16 *)((u8 *)arg0 + 0x4A) = (s16)zero;
-    h = (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xC));
-    w = (s16)(*(s16 *)((u8 *)arg0 + 0xE) - *(s16 *)((u8 *)arg0 + 0xA));
+    new_var = arg0;
+    h = (s16)(*(s16 *)((u8 *)new_var + 0x10) - *(s16 *)((u8 *)new_var + 0xC));
+    w = (s16)(*(s16 *)((u8 *)new_var + 0xE) - *(s16 *)((u8 *)new_var + 0xA));
     *(s16 *)((u8 *)arg0 + 0x12) = 2;
-    *(s16 *)((u8 *)arg0 + 0x14) = 8;
-    *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
+    new_var3 = (u8 *)arg0 + 0x14;
+    *(s16 *)new_var3 = 8;
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)(h - 8);
+    *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
 }
 #pragma scheduling reset
 void *fn_80134F74(void *arg0, s16 arg1) {
@@ -2994,22 +3000,12 @@ void *Heap_Alloc(s32);
 void *fn_8013692C(void *,s32,s32,s32,s32,s32);
 void fn_8013F0F0(void *,void *);
 void fn_8013F1A0(void *,void *);
+#pragma cplusplus on
 void *child;
-s16 r5,r7,r8,r9,t,s;
 s16 mid,height;
-t=2;s=12;
-r9=M2C_FIELD(arg0,s16 *,0xC);
-r8=M2C_FIELD(arg0,s16 *,0x10);
-r7=M2C_FIELD(arg0,s16 *,0xA);
-r5=M2C_FIELD(arg0,s16 *,0xE);
-r8=(s16)(r8-r9);
-M2C_FIELD(arg0,s16 *,0x12)=t;
-t=(s16)(r5-r7);
-r5=r8-12;
-M2C_FIELD(arg0,s16 *,0x14)=s;
-t=t-2;
-M2C_FIELD(arg0,s16 *,0x16)=t;
-M2C_FIELD(arg0,s16 *,0x18)=r5;
+Rect367FC *outer=(Rect367FC *)((u8 *)arg0+0xA);
+Rect367FC *inner=(Rect367FC *)((u8 *)arg0+0x12);
+inner->set(2,12,outer->width()-2,outer->height()-12);
 M2C_FIELD(arg0,s16 *,0x8A)=(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12))>>1;
 M2C_FIELD(arg0,s16 *,0x8C)=0;
 M2C_FIELD(arg0,s16 *,0x8E)=0;
@@ -3024,7 +3020,6 @@ if(child) child=fn_8013692C(child,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg
 M2C_FIELD(arg0,void **,0x48)=child;
 M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
 fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
-#pragma cplusplus on
 }
 
 extern "C" void fn_8013692C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
@@ -5534,6 +5529,7 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     s32 flag;
     s32 name;
     s32 meas;
+    s32 diff;
 
     flag = arg5 != 0;
     if ((u32) ((M2C_FIELD(arg4, s32 *, 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
@@ -5545,13 +5541,20 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     name = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
     h = ((Panel *)arg0)->height();
     meas = Text_MeasureHeight(-1, lbl_8036A674);
+    diff = (s16)h;
+    diff = diff - meas;
     y = (s16)arg2;
-    Text_Draw(arg1, (s16)(y + (s16)((h - meas) >> 1)), flag, lbl_802768A0 + 0x39, name);
+    Text_Draw(arg1, (s16)(y + (s16)(diff >> 1)), flag, lbl_802768A0 + 0x39, name);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);
     Prim2D_PrepareTex();
     h = ((Panel *)arg0)->height();
-    fn_80152010((s16)(arg1 - 6), (s16)(y + (h >> 1)), (s16)((((Panel *)arg0)->width() - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
+    {
+        s32 w = ((Panel *)arg0)->width();
+        s16 pad = M2C_FIELD(arg0, s16 *, 0x62);
+        diff = (s16)h;
+        fn_80152010((s16)(arg1 - 6), (s16)(y + (diff >> 1)), (s16)((w - (pad * 2)) + 6), 0xFF, 0x10);
+    }
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
