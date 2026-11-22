@@ -136,7 +136,7 @@ first=*(void **)((u8*)first+4);
 extern u16 gSystemSave[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
-extern f64 lbl_8036A720;
+f64 lbl_8036A720 = 4503599644147712.0;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
@@ -751,6 +751,49 @@ extern "C" void fn_8013D140(void *arg0) {
     Prim2D_PrepareTex();
 }
 
+#pragma cplusplus on
+extern "C" void fn_8013D18C(void *arg0, s32 arg1) {
+    f32 UiWin_GetFade(s32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_PrepareTex(void);
+    void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
+    extern f32 lbl_8036A6C0;
+    extern f32 lbl_8036A6E0;
+    extern f32 lbl_8036A6E4;
+    extern f64 lbl_8036A6C8;
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
+        virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
+        virtual void v6() = 0; virtual void v7() = 0; virtual void v8() = 0;
+        virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0;
+        virtual void v15() = 0; virtual void v16() = 0; virtual void v17() = 0;
+        virtual void v18() = 0; virtual void v19() = 0; virtual void v20() = 0;
+        virtual s16 v21() = 0;
+        virtual s16 v22() = 0;
+        virtual void v23() = 0; virtual void v24() = 0;
+        virtual f32 v25() = 0;
+    };
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 fade;
+    f32 eased;
+
+    fade = UiWin_GetFade(arg1);
+    eased = Math_Ease(5, lbl_8036A6E0, lbl_8036A6C0, fade, lbl_8036A6C0);
+    Prim2D_Begin();
+    z = ((Obj *)arg0)->v25();
+    y = (f32)((Obj *)arg0)->v22();
+    x = (f32)((Obj *)arg0)->v21();
+    fn_80009C20(x, y, z, lbl_8036A6E0, lbl_8036A6E0, eased, eased, lbl_8036A6E0);
+    Prim2D_SetColorByte((s32)(lbl_8036A6E4 * fade));
+    Prim2D_PrepareTex();
+}
+#pragma cplusplus reset
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
@@ -884,45 +927,22 @@ extern "C" void fn_8013D6E0(void *arg0, void *arg1) {
 void *GfxEnt_Get(u8);
 #pragma cplusplus on
 struct Obj { u8 pad[4];
-virtual s32 v0()=0;
-virtual s32 v1()=0;
-virtual s32 v2()=0;
-virtual s32 v3()=0;
-virtual s32 v4()=0;
-virtual s32 v5()=0;
-virtual s32 v6()=0;
-virtual s32 v7()=0;
-virtual s32 v8()=0;
-virtual s32 v9()=0;
-virtual s32 v10()=0;
-virtual s32 v11()=0;
-virtual s32 v12()=0;
-virtual s32 v13()=0;
-virtual s32 v14()=0;
-virtual s32 v15()=0;
-virtual s32 v16()=0;
-virtual s32 v17()=0;
-virtual s32 v18()=0;
-virtual s32 v19()=0;
-virtual s16 v20()=0;
-virtual s32 v21()=0;
-virtual s32 v22()=0;
-virtual s32 v23()=0;
-virtual s32 v24()=0;
-virtual s32 v25()=0;
-virtual s32 v26()=0;
-virtual s32 v27()=0;
-virtual s32 v28()=0;
-virtual s32 v29()=0;
-virtual s32 v30()=0;
-virtual s32 v31()=0;
-virtual s32 v32()=0;
-virtual s16 v33(void *)=0;
-virtual s16 v34()=0;
-virtual s16 v35()=0;
+virtual s32 v0()=0; virtual s32 v1()=0; virtual s32 v2()=0;
+virtual s32 v3()=0; virtual s32 v4()=0; virtual s32 v5()=0;
+virtual s32 v6()=0; virtual s32 v7()=0; virtual s32 v8()=0;
+virtual s32 v9()=0; virtual s32 v10()=0; virtual s32 v11()=0;
+virtual s32 v12()=0; virtual s32 v13()=0; virtual s32 v14()=0;
+virtual s32 v15()=0; virtual s32 v16()=0; virtual s32 v17()=0;
+virtual s32 v18()=0; virtual s32 v19()=0; virtual s16 v20()=0;
+virtual s32 v21()=0; virtual s32 v22()=0; virtual s32 v23()=0;
+virtual s32 v24()=0; virtual s32 v25()=0; virtual s32 v26()=0;
+virtual s32 v27()=0; virtual s32 v28()=0; virtual s32 v29()=0;
+virtual s32 v30()=0; virtual s32 v31()=0; virtual s32 v32()=0;
+virtual s16 v33(void *)=0; virtual s16 v34()=0; virtual s16 v35()=0;
 };
-Obj *self=(Obj*)arg0; u8 *p=(u8*)arg1;
-s16 dx=self->v35();
+u8 *p=(u8*)arg1;
+s16 dx=((Obj*)arg0)->v35();
+Obj *self=(Obj*)arg0;
 s16 dy=self->v20();
 s32 xoff=self->v31();
 s16 x=xoff+self->v16();
@@ -937,8 +957,7 @@ s32 col=0;
 for (;col<cols && index<(s8)p[0x60];++col,++index) {
 void *ent=GfxEnt_Get(p[0x40+index]);
 *(s16*)((u8*)ent+0x30)=x+col*dx;
-
-*(s16*)((u8*)ent+0x32)=yy;
+*(s16*)((u8*)ent+0x32)=(int)yy;
 }
 }
 #pragma cplusplus reset
@@ -2498,9 +2517,10 @@ void fn_8013F3D0(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036A718;
+    extern f64 lbl_8036A720;
 
     struct Point { s16 x, y; } pt;
-    s16 z;
+    s32 z;
     s16 midX;
     s16 midY;
     f32 scale;
@@ -2515,7 +2535,7 @@ void fn_8013F3D0(void *arg0) {
     Prim2D_Begin();
     z = M2C_FIELD(arg0, s16 *, 0x22);
     scale = fn_8013FA44(arg0);
-    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
+    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)(s16)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
     Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
     Prim2D_SetColorByte(fn_80138908(arg0));
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
@@ -2524,29 +2544,37 @@ void fn_8013F3D0(void *arg0) {
 
 void fn_8013F54C(void *arg0) {
 #pragma opt_common_subs off
-void fn_8013F748(void *,void *,void *);
-f32 fn_8013FA44(void *);
-s32 fn_80138908(void *);
-s32 fn_8013FA10(void *);
-void fn_80009C20(f32,f32,f32,f32,f32,f32,f32,f32);
-void Prim2D_SetColorByte(s32);
-void Prim2D_SetAlphaByte(s32);
-extern f32 lbl_8036A718;
-struct Point { s16 x,y; } pt;
-s16 z,height,width;
-f32 scale;
-*(u32 *)&pt=M2C_FIELD(arg0,u32 *,0xA);
-if(M2C_FIELD(arg0,void **,0x38)) fn_8013F748(M2C_FIELD(arg0,void **,0x38),&pt,&pt);
-Prim2D_Begin();
-height=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
-width=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
-z=M2C_FIELD(arg0,s16 *,0x22);
-scale=fn_8013FA44(arg0);
-fn_80009C20((f32)pt.x,(f32)pt.y,(f32)z,(f32)(width>>1),(f32)(height>>1),fn_8013FA44(arg0),scale,lbl_8036A718);
-Prim2D_SetTex(0,(u16)(M2C_FIELD(arg0,u32 *,0x34)|2));
-Prim2D_SetColorByte(fn_80138908(arg0));
-Prim2D_SetAlphaByte(fn_8013FA10(arg0));
-Prim2D_PrepareTex();
+    void fn_8013F748(void *, void *, void *);
+    f32 fn_8013FA44(void *);
+    s32 fn_80138908(void *);
+    s32 fn_8013FA10(void *);
+    void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetAlphaByte(s32);
+    extern f32 lbl_8036A718;
+    struct Point { s16 x, y; } pt;
+    s16 z, height, width;
+    f32 scale, a, b, c, d, e, f;
+
+    *(u32 *)&pt = M2C_FIELD(arg0, u32 *, 0xA);
+    if (M2C_FIELD(arg0, void **, 0x38))
+        fn_8013F748(M2C_FIELD(arg0, void **, 0x38), &pt, &pt);
+    Prim2D_Begin();
+    height = (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC));
+    width = (s16)(M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA));
+    z = M2C_FIELD(arg0, s16 *, 0x22);
+    scale = fn_8013FA44(arg0);
+    f = fn_8013FA44(arg0);
+    a = (f32)pt.x;
+    b = (f32)pt.y;
+    c = (f32)z;
+    d = (f32)(width >> 1);
+    e = (f32)(height >> 1);
+    fn_80009C20(a, b, c, d, e, f, scale, lbl_8036A718);
+    Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
+    Prim2D_SetColorByte(fn_80138908(arg0));
+    Prim2D_SetAlphaByte(fn_8013FA10(arg0));
+    Prim2D_PrepareTex();
 #pragma opt_common_subs reset
 }
 
@@ -3263,6 +3291,7 @@ extern "C" void Ui_ClearPanelChildrenMid(void *self) {
 
 void fn_801406B0(void *arg0) {
 extern f32 lbl_8036A730, lbl_8036A740;
+extern f64 lbl_8036A738;
 f32 Math_Ease(s32,f32,f32,f32,f32);
 #pragma cplusplus on
 struct Point {
@@ -3275,8 +3304,10 @@ struct Target { u8 pad[0x24]; s16 duration; };
 struct Link { void *prev,*next; Target *value; };
 struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
 State *self=(State*)arg0;
-s32 durationInt=self->get()->duration+1;
-s32 timeInt=self->time+1;
+s16 durationInt=self->get()->duration;
+s16 timeInt=self->time;
+durationInt++;
+timeInt++;
 f32 duration=durationInt;
 f32 time=timeInt;
 f32 t=Math_Ease(5,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
