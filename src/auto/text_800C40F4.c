@@ -27259,11 +27259,7 @@ void fn_800FAB28(void *arg0) {
     cmd = gAiCmd;
 
     if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
-        filter = (u8 (*)(void *))fn_800FB45C;
-
-        if (*(s32 *)(cmd + 0x10) != 0) {
-            filter = (u8 (*)(void *))fn_800FB3E4;
-        }
+        filter = *(s32 *)(cmd + 0x10) != 0 ? (u8 (*)(void *))fn_800FB3E4 : (u8 (*)(void *))fn_800FB45C;
 
         if (*(s32 *)(cmd + 0x10) != 0) {
             Ai_TryAttackAction(filter, 0xF);
