@@ -9640,46 +9640,42 @@ void fn_80173440(void *arg0) {
     Process_Goto(temp_r31, 0xF);
 }
 
-void fn_801734D8(void *arg0) {
-    s32 temp_r30;
-    void **temp_r31;
-    void **temp_r3;
-    void *temp_r4;
-    void fn_80143570(s32);
-    void fn_801436AC(s32);
-    void fn_80143784(s32, s32);
-    void fn_80143C9C(s32);
-    void Process_CreateChild(void *, void *);
-    void Process_ClearFunc(void *);
+#pragma cplusplus on
+extern "C" void fn_801734D8(void *arg0) {
+    u32 *Unit_GetItemSlot(s32, s32);
+    void fn_80143570(void *);
+    void fn_801436AC(void *, void *);
+    void fn_80143784(void *, u32);
+    void fn_80143C9C(void *);
     void Ui_DecBusy(void *);
-
+    void Process_ClearFunc(void *);
+    void *Process_CreateChild(void *, void *);
+    extern u8 lbl_80294B10[];
     extern u32 gUiContext[];
-    extern u8 lbl_80294B10[0xA0];
-
-    temp_r3 = (void **)((u32 *)arg0 + 0x4C / sizeof(u32));
-    temp_r31 = (void **)((u32 *)arg0 + 0x50 / sizeof(u32));
-    ((void (*)(void **, s32))((u32 *)*temp_r3)[0x34 / sizeof(u32)])(temp_r3, gUiContext[0]);
-    ((void (*)(void **, s32))((u32 *)*temp_r31)[0x34 / sizeof(u32)])(temp_r31, gUiContext[1]);
-    temp_r30 = ((s32 *)arg0)[0x54 / sizeof(s32)];
-    fn_80143784(temp_r30, gUiContext[0]);
-    fn_80143784(temp_r30, gUiContext[1]);
-    fn_80143570(temp_r30);
-    // Simple loop without complex field access
-    {
-        s8 i;
-        for (i = 0; i < 8; i++) {
-            temp_r4 = *(void**)((u32*)arg0 + 0x68 / sizeof(u32));
-            if ((u32)temp_r4 != 0U) {
-                fn_801436AC(temp_r30);
-            }
-        }
+    UnitPanelView *right;
+    void *list;
+    s8 i;
+    UnitPanelView *left;
+    u32 *item;
+    void *self = arg0;
+    left = *(UnitPanelView **)((u8 *)self + 0x4C);
+    right = *(UnitPanelView **)((u8 *)self + 0x50);
+    left->setUnit(gUiContext[0]);
+    right->setUnit(gUiContext[1]);
+    list = *(void **)((u8 *)self + 0x54);
+    fn_80143784(list, gUiContext[0]);
+    fn_80143784(list, gUiContext[1]);
+    fn_80143570(list);
+    for (i = 0; i < 8; i++) {
+        item = Unit_GetItemSlot(gUiContext[0], i);
+        if (*item != 0) fn_801436AC(list, item);
     }
-    fn_80143C9C(temp_r30);
-    Ui_DecBusy(arg0);
-    Process_CreateChild(lbl_80294B10, arg0);
-    Process_ClearFunc(arg0);
+    fn_80143C9C(list);
+    Ui_DecBusy(self);
+    Process_CreateChild(lbl_80294B10, self);
+    Process_ClearFunc(self);
 }
-
+#pragma cplusplus reset
 void fn_801735F0(void *arg0) {
     u32 *Unit_GetItemSlot(s32, s32);
     void fn_800AAE78(s32, s32, s32, s8);
@@ -16332,33 +16328,23 @@ extern "C" void *Ui_DtorGoldCostPanel(void *self, s16 doFree) {
 }
 
 extern "C" void fn_8017D8CC(void *arg0) {
-    extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
-    extern const f64 lbl_8036ABD0;
-    s16 height, width;
-    s32 bottom, right;
-    s16 *p = (s16 *)arg0;
-
-    (void)lbl_8036ABD0;
-    height = p[0x10 / 2] - p[0xC / 2];
-    width = p[0xE / 2] - p[0xA / 2];
-    p[0x12 / 2] = 3;
-    right = width - 3;
-    bottom = height - 5;
-    p[0x14 / 2] = 5;
-    p[0x16 / 2] = (s16)right;
-    p[0x18 / 2] = (s16)bottom;
-
-    height = p[0x10 / 2] - p[0xC / 2];
-    width = p[0xE / 2] - p[0xA / 2];
-    p[0x52 / 2] = (s16)(width >> 2);
-    p[0x54 / 2] = (s16)(lbl_8036ABC0 * (f32)height - lbl_8036ABC4);
-    p[0x56 / 2] = 0;
-
-    height = p[0x10 / 2] - p[0xC / 2];
-    width = p[0xE / 2] - p[0xA / 2];
-    p[0x7A / 2] = (s16)(width >> 2);
-    p[0x7C / 2] = (s16)(lbl_8036ABC0 * (f32)height + lbl_8036ABC8);
-    p[0x7E / 2] = 0;
+extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
+s16 h = M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
+s16 w = M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
+M2C_FIELD(arg0,s16 *,0x12)=3;
+M2C_FIELD(arg0,s16 *,0x14)=5;
+M2C_FIELD(arg0,s16 *,0x16)=w-3;
+M2C_FIELD(arg0,s16 *,0x18)=h-5;
+h=M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
+w=M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
+M2C_FIELD(arg0,s16 *,0x52)=w>>2;
+M2C_FIELD(arg0,s16 *,0x54)=(s16)(lbl_8036ABC0*h-lbl_8036ABC4);
+M2C_FIELD(arg0,s16 *,0x56)=0;
+h=M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
+w=M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
+M2C_FIELD(arg0,s16 *,0x7A)=w>>2;
+M2C_FIELD(arg0,s16 *,0x7C)=(s16)(lbl_8036ABC0*h+lbl_8036ABC8);
+M2C_FIELD(arg0,s16 *,0x7E)=0;
 }
 
 #pragma cplusplus reset
