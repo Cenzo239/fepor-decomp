@@ -6545,19 +6545,22 @@ u8 fn_800BCD58(void) {
 s32 fn_800BCD7C(u8 arg0) {
     extern u8 gUnits[];
     void *unit;
+    u32 flags;
 
     if (arg0 != 0) {
         unit = gUnits + (arg0 - 1) * 0x280;
     } else {
         unit = NULL;
     }
-    if (unit == NULL || *(void **)((u8 *)unit + 0x188) == NULL) {
+    if (unit == NULL || M2C_FIELD(unit, void **, 0x188) == NULL) {
         return 0;
     }
-    switch (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) {
+    switch (M2C_FIELD(M2C_FIELD(unit, void **, 0x190), u8 *, 8)) {
     case 0:
     case 5:
-        *(u32 *)((u8 *)unit + 0x1A0) |= 0x20000;
+        flags = M2C_FIELD(unit, u32 *, 0x1A0);
+        flags |= 0x20000;
+        M2C_FIELD(unit, u32 *, 0x1A0) = flags;
         break;
     }
     return 1;
@@ -10515,7 +10518,8 @@ s32 Icon_GetSlot(s32 arg0, s32 arg1) {
     return arg0 + ((arg1 - 1) * 0x18);
 }
 
-#pragma optimization_level 3
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     void fn_8022C1B8(u8 *, u8 *, s32, u8);
     u8 *src;
@@ -10524,7 +10528,7 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     u8 *dst;
     s32 offset;
     u8 byte;
-    u8 *p;
+    u8 flag;
 
     byte = *(u8 *)arg2;
     slot = arg1;
@@ -10532,35 +10536,39 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     base = (u8 *)arg0;
     offset = slot * 0x18;
     dst = base + offset;
-    *(u8 *)(dst - 0x18) = byte;
+    dst[-0x18] = byte;
     fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
-    p = dst;
-    *(u8 *)(dst - 0x8) = *(u8 *)(src + 0x10);
-    *(u8 *)(dst - 0x7) = *(u8 *)(src + 0x11);
-    *(u8 *)(dst - 0x6) = *(u8 *)(src + 0x12);
-    *(u8 *)(dst - 0x5) = *(u8 *)(src + 0x13);
+    flag = 0;
+    dst[-0x8] = src[0x10];
+    dst[-0x7] = src[0x11];
+    dst[-0x6] = src[0x12];
+    dst[-0x5] = src[0x13];
     *(u32 *)(dst - 0x4) = *(u32 *)(src + 0x14);
 
-    if ((s8)*(u8 *)(dst - 0x17) == 0 && (s8)*p == 0 && (s8)*(u8 *)(p - 0x7) == 0 &&
-        (s8)*(u8 *)(p - 0x6) == 0 && (s8)*(u8 *)(p - 0x5) == 0 &&
-        *(u8 *)(p - 0x4) == 0x80 && *(u8 *)(p - 0x3) == 0x80 &&
-        *(u8 *)(p - 0x2) == 0x80 && *(u8 *)(p - 0x1) == 0xFF) {
-        u8 *dst2 = base + offset;
-        *(u8 *)(dst - 0x18) = 0;
-        *(u8 *)(p - 0x17) = 0;
-        *(u8 *)(p - 0x5) = 0;
-        *(u8 *)(p - 0x6) = 0;
-        *(u8 *)(p - 0x7) = 0;
-        *(u8 *)p = 0;
-        *(u8 *)(dst2 - 0x2) = 0x80;
-        *(u8 *)(dst2 - 0x3) = 0x80;
-        *(u8 *)(p - 0x4) = 0x80;
-        *(u8 *)(dst2 - 0x1) = 0xFF;
-        return 1;
+    if (((s8)dst[-0x17] == 0) && ((s8)dst[-0x8] == 0) && ((s8)dst[-0x7] == 0) &&
+        ((s8)dst[-0x6] == 0) && ((s8)dst[-0x5] == 0) &&
+        (dst[-0x4] == 0x80) && (dst[-0x3] == 0x80) &&
+        (dst[-0x2] == 0x80) && (dst[-0x1] == 0xFF)) {
+        flag = 1;
     }
-    return arg1;
+    if (flag != 0) {
+        u8 *p = (u8 *)arg0 + offset;
+        dst[-0x18] = 0;
+        dst[-0x17] = 0;
+        dst[-0x5] = 0;
+        dst[-0x6] = 0;
+        dst[-0x7] = 0;
+        dst[-0x8] = 0;
+        p[-0x2] = 0x80;
+        p[-0x3] = 0x80;
+        dst[-0x4] = 0x80;
+        p[-0x1] = 0xFF;
+        return 0;
+    }
+    return slot;
 }
-#pragma optimization_level reset
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset
 void Icon_FreeSlot(s32 arg0, s32 arg1) {
     u8 *temp_r3;
 
