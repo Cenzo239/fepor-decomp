@@ -6601,6 +6601,8 @@ void *fn_801BEF90(void *arg0)
     *(u32 *)(self + 0x1AC) = 0;
 
     String_Init(&frame.name[99], lbl_8027C9F8 + 0x8, &frame.allocator[98]);
+    madePath = 0;
+    madeName = 0;
     allocated = Heap_Alloc(0x60);
     xml = allocated;
     if (allocated != 0) {
