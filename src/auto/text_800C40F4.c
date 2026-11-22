@@ -18080,14 +18080,9 @@ virtual void draw(s32,s32,void *,s32,s32,f32);
 };
 String name;
 s32 scratch, item, owner;
-u32 dx=0, dy=0, mode=0;
-u32 xoff, yoff, px, py;
+s32 mode=0, dx=0, dy=0;
 if(M2C_FIELD(arg0,u8 *,0x71)){mode=1;dy=2;dx=2;}
-xoff=M2C_FIELD(arg0,u32 *,0x68)+dx;
-yoff=M2C_FIELD(arg0,u32 *,0x6c)+dy;
-px=M2C_FIELD(arg0,u32 *,0x48)+xoff;
-py=M2C_FIELD(arg0,u32 *,0x4c)+yoff;
-((Window*)arg0)->draw(px,py,(u8*)arg0+0xAC,1,255,lbl_80369F70);
+((Window*)arg0)->draw(M2C_FIELD(arg0,s32 *,0x68)+dx+M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x6c)+dy+M2C_FIELD(arg0,s32 *,0x4c),(u8*)arg0+0xAC,1,255,lbl_80369F70);
 owner=*(s32*)arg0;
 String_Init(&name,lbl_802723E8,&scratch);
 item=fn_800E7FB4(owner,&name);
@@ -20948,12 +20943,12 @@ void fn_800ED960(void *self) {
     void fn_800E51A8(void *, void *);
     void fn_800DB1FC(void *, void *);
     void String_Init(void *, char *, void *);
-    void String_Destroy(void *, s32);
-    s32 sprintf(char *, char *, ...);
+    void *String_Destroy(void *, s32);
+    void sprintf(char *, char *, ...);
     extern char Win3_str[];
-    char buf[0x18];
     u8 str1[0xC], str2[0xC], str3[0xC], str4[0xC];
     u32 scratch10, scratchC, scratch8;
+    char buf[0x18];
 
     *(void **)((u8 *)self + 0x440) = fn_800DA5FC();
     if (*(void **)((u8 *)self + 0x440) != 0) {
@@ -23557,11 +23552,12 @@ Item_Destroy(weapon,-1);return ret;
 }
 
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
-extern u8 gAiState[],gUiContext[],gBattleMap[];
-int Abs(int);
-void *Item_Destroy(void *,s16);
-u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
-void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
+  extern u8 gAiState[],gUiContext[],gBattleMap[];
+  int Abs(int);
+  void *Item_Destroy(void *,s16);
+  u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
+  void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
+  void fn_800FDDBC(s8,s8,u8,u8,s32);
 struct {u8 x,y;u16 item;u8 *unit;s32 score;} result;
 struct {void *ptr;u32 state;} weapon;
 u8 flags[8];
