@@ -842,8 +842,8 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 sp8[0x34];
     f32 temp_f31;
     void *temp_r3;
-    f32 a;
     f32 b;
+    f32 a;
 
     a = gHalf + (f32)arg1;
     b = gHalf + (f32)arg2;
@@ -10159,12 +10159,12 @@ s32 fn_80196268(void *arg0) {
     s32 fn_80092C50(void *, u8, u8);
     s32 fn_8001CFA8(s32);
     s8 fn_80092414(void *);
-    s32 v2;
+    s32 v1;
     void *obj;
     void *obj2;
     u8 kind;
     void **slot;
-    s32 v1;
+    s32 v2;
 
     slot = Unit_GetActiveItemPtr(arg0);
     if (slot == NULL || (obj = *(void **)slot) == NULL) return 0;
