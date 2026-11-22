@@ -12402,7 +12402,6 @@ s32 fn_8017762C(void) {
     return (u8)result;
 }
 #pragma use_lmw_stmw reset
-#pragma global_optimizer on
 /* If entry type is 2, show a lock-message popup at parent+entry pos; else set UI command 0x87. */
 s32 Ui_SetCmd87OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
