@@ -9682,6 +9682,85 @@ u8 fn_80173220(u32 *arg0, void *arg1) {
     return var_r4;
 }
 
+#pragma cplusplus on
+extern "C" void fn_801732B0(void *panel) {
+    void Ui_AddChild(void *, void *);
+    void Ui_ListSetCursor(void *, s16);
+    void Ui_RemoveChild(void *, void *);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+
+    struct RefObj {
+        virtual void destroy(s32);
+        s32 refCount;
+    };
+
+    void *self;
+    void *list;
+    RefObj *child;
+    s16 slidePos[2];
+    s16 slidePos2[2];
+    s16 slidePos3[2];
+    s16 savedY;
+    s32 refs;
+
+    self = panel;
+    list = *(void **)((u8 *)self + 0x40);
+    Ui_AddChild(self, list);
+    savedY = *(s16 *)((u8 *)list + 0xA);
+    slidePos[0] = savedY;
+    slidePos[1] = 0x10;
+    Ui_SlideWidgetChildMode1(self, list, slidePos, 0);
+    Ui_ListSetCursor(list, *(s16 *)((u8 *)list + 0x50));
+    *(u8 *)((u8 *)list + 0x4D) = 0;
+    *(s32 *)((u8 *)list + 0x7C) = 0;
+    *(s32 *)((u8 *)list + 0x80) = 0;
+
+    child = *(RefObj **)((u8 *)self + 0x54);
+    savedY = *(s16 *)((u8 *)child + 0xC);
+    slidePos2[0] = 0x260;
+    slidePos2[1] = savedY;
+    Ui_SlideWidgetChild(self, child, slidePos2, 1);
+
+    child = *(RefObj **)((u8 *)self + 0x54);
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
+        }
+        *(void **)((u8 *)self + 0x54) = NULL;
+    }
+
+    child = *(RefObj **)((u8 *)self + 0x58);
+    savedY = *(s16 *)((u8 *)child + 0xC);
+    slidePos3[0] = 0x260;
+    slidePos3[1] = savedY;
+    Ui_SlideWidgetChild(self, child, slidePos3, 0);
+
+    child = *(RefObj **)((u8 *)self + 0x58);
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
+        }
+        *(void **)((u8 *)self + 0x58) = NULL;
+    }
+
+    Ui_RemoveChild(self, *(void **)((u8 *)self + 0x50));
+    child = *(RefObj **)((u8 *)self + 0x50);
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
+        }
+        *(void **)((u8 *)self + 0x50) = NULL;
+    }
+}
+#pragma cplusplus reset
+
 void fn_80173440(void *arg0) {
     M2C_UNK Mu_StartBlend(void *, s32, s32, s32);
     M2C_UNK Ui_SetPortraitUnit(void *, void *);
