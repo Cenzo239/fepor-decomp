@@ -15083,6 +15083,7 @@ void fn_800E3BD8(void *arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma opt_strength_reduction off
+#pragma global_optimizer off
 #pragma cplusplus on
 #pragma dont_inline on
 #pragma use_lmw_stmw on
@@ -15103,7 +15104,7 @@ extern "C" void fn_800E3C04(u8 *self,s32 context) {
  String_Init(&a,lbl_80271F28,&scratchA);
  item=fn_800E7FB4(owner,&a);
  String_Destroy(&a,-1);
- fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)-(20-M2C_FIELD(self,s32*,0x60)),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ fn_800E3040(item,context,3,(M2C_FIELD(self,s32*,0x60)-20)+M2C_FIELD(self,s32*,0x48),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
  String_Init(&b,lbl_80271F28+6,&scratchB);
  item=fn_800E7FB4(owner,&b);
  String_Destroy(&b,-1);
@@ -15116,6 +15117,7 @@ extern "C" void fn_800E3C04(u8 *self,s32 context) {
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
+#pragma global_optimizer on
 #pragma opt_strength_reduction reset
 void *fn_800E3DEC(u8 *self, void *owner, void *xml) {
 void *fn_800E4688(void *,void *,void *);
@@ -27500,7 +27502,7 @@ void fn_800FB0F0(void *arg0) {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
     void *Res_GetByName(void *);
-    u8 *unit;
+    u8 *obj;
     u8 *cmd;
     u8 *entry;
     s32 *state;
@@ -27508,10 +27510,10 @@ void fn_800FB0F0(void *arg0) {
     s32 op;
     s32 value;
     s32 result;
-    s32 i;
-    s32 label;
+    long i;
+    long label;
 
-    unit = (u8 *)arg0;
+    obj = (u8 *)arg0;
     cmd = gAiCmd;
     index = *(s32 *)(cmd + 4);
     op = *(s32 *)(cmd + 8);
@@ -27540,33 +27542,37 @@ void fn_800FB0F0(void *arg0) {
         result = 0;
         break;
     }
-    if ((u8)result != 0) {
+    if ((u8)result) {
         i = 0;
         label = *(s32 *)(cmd + 0x10);
         if (gAiCmdIsAlt == 0) {
-            entry = Res_GetByName(*(void **)(unit + 0x238));
+            entry = Res_GetByName(*(void **)(obj + 0x238));
         } else {
-            entry = Res_GetByName(*(void **)(unit + 0x23C));
+            entry = Res_GetByName(*(void **)(obj + 0x23C));
         }
-        if (label != 0) {
+        if (label) {
             while (*(s32 *)entry != 0 || *(s32 *)(entry + 0xC) != label) {
                 entry += 0x1C;
                 i++;
             }
-            if (gAiCmdIsAlt == 0) {
-                unit[0x250] = (u8)i;
+            if (!gAiCmdIsAlt) {
+                obj[0x250] = i;
             } else {
-                unit[0x251] = (u8)i;
+                obj[0x251] = i;
             }
-        } else if (gAiCmdIsAlt == 0) {
-            unit[0x250] = 0;
         } else {
-            unit[0x251] = 0;
+            if (!gAiCmdIsAlt) {
+                obj[0x250] = 0;
+            } else {
+                obj[0x251] = 0;
+            }
         }
-    } else if (gAiCmdIsAlt == 0) {
-        unit[0x250]++;
     } else {
-        unit[0x251]++;
+        if (!gAiCmdIsAlt) {
+            obj[0x250]++;
+        } else {
+            obj[0x251]++;
+        }
     }
 }
 
