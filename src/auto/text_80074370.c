@@ -678,8 +678,9 @@ s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     }
     gUiContext[0xA] = *(entry + 0x3A);
     return 5;
-#pragma use_lmw_stmw reset
 }
+
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus on
 extern "C" void fn_80075290(void *arg0, s32 arg1, void *arg2) {
@@ -2653,7 +2654,7 @@ s32 Ui_CanMapObjAttack(void) {
 }
 
 s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
-    char *Msg_Expand(void *);
+    s32 Msg_Expand(void *);
     void fn_80166AE8(s32, s32, s32, void *);
     void *MapObjEvent_Find(void *, u8, u8, s32);
     void *Item_GetByIid(void *);
@@ -2688,7 +2689,7 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
         virtual s16 v22() = 0;
     };
     s32 vy;
-    char *str;
+    s32 str;
     s16 y;
     s16 x;
     Obj *obj;
@@ -2696,8 +2697,7 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
     u8 *event;
     u8 *unit;
     u8 *item;
-    s32 ux;
-    s32 uy;
+    u8 *ctx;
     if (*((u8 *)arg2 + 0x39)) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
@@ -2705,14 +2705,13 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
         str = Msg_Expand(lbl_8026C0B8 + 0x4C6);
         vy = obj->v22();
         vx = obj->v21();
-        fn_80166AE8(vx + x, vy + y, (s32)str, arg1);
+        fn_80166AE8(vx + x, vy + y, str, arg1);
         return 0;
     }
 #pragma cplusplus reset
-    unit = *(u8 **)gUiContext;
-    uy = unit[0x19F];
-    ux = unit[0x19E];
-    event = (u8 *)MapObjEvent_Find(gMapObjEventList, ux, uy, 7);
+    ctx = gUiContext;
+    unit = *(u8 **)ctx;
+    event = (u8 *)MapObjEvent_Find(gMapObjEventList, unit[0x19E], unit[0x19F], 7);
     item = (u8 *)Item_GetByIid(lbl_8026C0B8 + 0x4CF);
     if (event[4] == *(u16 *)(item + 0xE))
         gUiContext[8] = 0x31;
