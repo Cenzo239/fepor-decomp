@@ -1305,6 +1305,23 @@ s16 UnitInv_FindEmpty(void *inv) {
     return (s16)result;
 }
 
+s16 UnitInv_FindFilledUp(void *inv, s16 startSlot) {
+    s16 result;
+    if (startSlot < 0) {
+        startSlot = 0;
+    }
+    for (; startSlot < 8; startSlot++) {
+        if (IsSlotAvailable(inv, startSlot)) {
+            break;
+        }
+    }
+    result = -1;
+    if (startSlot < 8) {
+        result = startSlot;
+    }
+    return result;
+}
+
 #pragma scheduling reset
 /* Find the next filled inventory slot at or below startSlot, or -1 if none. */
 s16 UnitInv_FindFilledDown(void *inv, s16 startSlot) {
@@ -2436,6 +2453,8 @@ u32 str[3];
 u8 scratchTag[4];
 u8 scratchStr[4];
 s32 i;
+u32 off;
+char *fmt;
 fn_800DBBE4(self,owner,xml);
 M2C_FIELD(self,void **,0x40)=lbl_80293CD0;
 M2C_FIELD(self,f32 *,0x134)=0.0f;
@@ -2450,14 +2469,16 @@ M2C_FIELD(self,f32 *,0x144)=0.0f;
 String_Init(tag,lbl_80277990+0x21,scratchTag);
 Xml_GetNamedValue(named,xml,tag);
 String_Destroy(tag,-1);
+fmt=(char *)lbl_80277990;
 for(i=0;i<16;i++) {
-sprintf(name,(char *)lbl_80277990+0x2A,i);
+off=i*4;
+sprintf(name,fmt+0x2A,i);
 String_Init(str,name,scratchStr);
-*(void **)((u32)self+(0xAC+i*4))=fn_800E7DF8(owner,str);
+*(void **)((u8 *)self+0xAC+off)=fn_800E7DF8(owner,str);
 String_Destroy(str,-1);
 Xml_AdvanceChild(xml);
 Xml_GetChildValue(child,xml);
-*(f32 *)((u32)self+(0xEC+i*4))=child[0];
+*(f32 *)((u8 *)self+0xEC+off)=child[0];
 }
 M2C_FIELD(self,f32 *,0x13C)=0.0f;
 M2C_FIELD(self,f32 *,0x138)=0.0f;
@@ -2897,7 +2918,7 @@ void Ui_HideUnitInfoPopup(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
-    void *Process_Find(void *, void *);
+    void *Process_Find(void *);
     void Process_Create(void *, s32);
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -2907,30 +2928,34 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80277A20[];
     extern f32 lbl_8036A92C;
-    
-    void *temp_r3 = Process_Find(lbl_80293D20, lbl_80293D20);
-    
-    if (temp_r3 == NULL) {
-        return;
+    void *proc;
+    u8 flag;
+    f32 z;
+    u8 *sfx;
+
+    proc = Process_Find(lbl_80293D20);
+    if (proc == NULL) {
+        flag = 0;
+    } else if (*(u8 *)((u8 *)proc + 0x2E) != 0) {
+        flag = 0;
+    } else {
+        flag = 1;
     }
-    
-    if (*(u8*)((u8*)temp_r3 + 0x2E) != 0) {
-        return;
+    if (flag == 0) {
+        Process_Create(lbl_80293D20, arg1);
+        memset(gUnitInfoPopup, 0, 0x124);
+        *(f32 *)((u8 *)arg0 + 0xDC) = farg0;
+        z = lbl_8036A92C;
+        sfx = lbl_80277A20;
+        *(f32 *)((u8 *)arg0 + 0xE0) = farg1;
+        *(f32 *)((u8 *)arg0 + 0xF4) = farg0;
+        *(f32 *)((u8 *)arg0 + 0xF8) = farg1;
+        *(f32 *)((u8 *)arg0 + 0x10C) = z;
+        *(f32 *)((u8 *)arg0 + 0x110) = z;
+        fn_8005C8B4(sfx + 0x42);
+        Ui_PlaySeCue(lbl_80277A20 + 0x52, 0x64);
+        Ui_ShowUnitInfoPopup(arg0, arg2, farg0, farg1);
     }
-    
-    Process_Create(lbl_80293D20, arg1);
-    memset(gUnitInfoPopup, 0, 0x124);
-    
-    *(f32*)((u8*)arg0 + 0xDC) = farg0;
-    *(f32*)((u8*)arg0 + 0xE0) = farg1;
-    *(f32*)((u8*)arg0 + 0xF4) = farg0;
-    *(f32*)((u8*)arg0 + 0xF8) = farg1;
-    *(f32*)((u8*)arg0 + 0x10C) = lbl_8036A92C;
-    *(f32*)((u8*)arg0 + 0x110) = lbl_8036A92C;
-    
-    fn_8005C8B4(lbl_80277A20 + 0x42);
-    Ui_PlaySeCue(lbl_80277A20 + 0x52, 0x64);
-    Ui_ShowUnitInfoPopup(arg0, arg2, farg0, farg1);
 }
 
 void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
@@ -12696,7 +12721,6 @@ void *fn_801780A8(void) {
 }
 
 s32 fn_801780B8(void *arg0) {
-#pragma opt_common_subs off
 u8 fn_8014D8DC(void *);
 void *Item_GetFlagsPtr(void *);
 u32 *Unit_GetItemSlot(void *,s32);
@@ -12724,7 +12748,6 @@ if((*(u64 *)Item_GetFlagsPtr(slot)&0x200ULL)==0) { flag=z; break; }
 if(flag) { M2C_FIELD(arg0,u8 *,4)=1; return 2; }
 if(200-fn_800C3E54(gConvoy)<=0) { M2C_FIELD(arg0,u8 *,4)=2; return 2; }
 return 0;
-#pragma opt_common_subs reset
 }
 
 /* If the list option is disabled (state 2), show a help popup for the selected submenu index; otherwise set UI command 0x83 and advance the list panel. */
@@ -14975,7 +14998,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
 s32 Status_SumBonus(void *);
 #pragma cplusplus on
-extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s16, s16, s32, s32, s32, f32);
+extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s32, s32, s32, s32, s32, f32);
 extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -14988,6 +15011,8 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     s32 num;
     f32 target;
     f32 cur;
+    s16 x0,y0,x1,y1;
+    s32 w,h;
 
     unit = M2C_FIELD(arg0, u8 **, 0x4C);
     num = Status_SumBonus(unit + 0x1BC);
@@ -15007,59 +15032,54 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         Ui_PlaySeCue(lbl_80278780 + 0x9E, 0x64);
     }
     ((Obj *)arg0)->v2(arg1);
-    Ui_DrawJobPersonalPanel(
-        0,
-        0,
-        M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA),
-        M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC),
-        M2C_FIELD(M2C_FIELD(unit, u8 **, 0x18C), u8 *, 0x40),
-        0xCC,
-        0x10,
-        M2C_FIELD(arg0, f32 *, 0x50)
-    );
+    x0 = M2C_FIELD(arg0, s16 *, 0xA);
+    y0 = M2C_FIELD(arg0, s16 *, 0xC);
+    x1 = M2C_FIELD(arg0, s16 *, 0xE);
+    y1 = M2C_FIELD(arg0, s16 *, 0x10);
+    w = x1 - x0;
+    h = y1 - y0;
+    Ui_DrawJobPersonalPanel(0, 0, (s16)w, (s16)h,
+                M2C_FIELD(M2C_FIELD(unit, u8 **, 0x18C), u8 *, 0x40), 0xCC, 0x10,
+                M2C_FIELD(arg0, f32 *, 0x50));
 }
 #pragma cplusplus reset
 
 #pragma use_lmw_stmw on
 void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, u8 arg6) {
-    M2C_UNK fn_80006B18(s32, s32, M2C_UNK, M2C_UNK, u8);
-    M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
-    M2C_UNK Prim2D_SetColorPacked(s32 *);
-    M2C_UNK Text_Draw(s16, s16, s32, void *, ...);
-    s32 Text_MeasureHeight(M2C_UNK, f32);
-    M2C_UNK Ui_DrawIcon(void *, s32, s32, u8);
+    void fn_80006B18(s32, s32, s32, s32, u8);
+    void Prim2D_SetTextScale(s32, f32);
+    void Prim2D_SetColorPacked(void *);
+    void Text_Draw(s16, s16, s32, void *, ...);
+    s32 Text_MeasureHeight(s32, f32);
+    void Ui_DrawIcon(void *, s32, s32, u8);
     s32 fn_8010586C(void *);
-    s32 *Ui_GetColor(s32);
+    u32 *Ui_GetColor(s32);
     extern u8 lbl_80278780[];
     extern u8 gItemIconDrawer[];
     extern f32 lbl_8036AB94;
     extern f32 lbl_8036ABB8;
-    
-    s16 temp_arg1 = arg1;
-    s16 temp_arg2 = arg2;
-    u8 temp_arg6 = arg6;
-    s32 flag = temp_arg6 != 0;
-    s32 sp8;
+    s32 flag = arg6 ? 1 : 0;
+    u32 sp8;
     s16 off;
 
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 3));
+    Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 3));
     Prim2D_SetColorByte(arg3);
     Prim2D_PrepareTex();
-    off = (0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1;
-    Text_Draw(temp_arg1 + 0x20, temp_arg2 + off, flag, lbl_80278780 + 0xB3, fn_8010586C(arg4));
+    off = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1);
+    Text_Draw((s16)(arg1 + 0x20), (s16)(arg2 + off), flag, lbl_80278780 + 0xB3, fn_8010586C(arg4));
     Prim2D_AddPrim(6);
     sp8 = *Ui_GetColor(flag);
     Prim2D_SetColorPacked(&sp8);
     Prim2D_SetTextScale(1, lbl_8036ABB8);
-    fn_80006B18(temp_arg1 + 0x8C, temp_arg2 + off, 0, 0, M2C_FIELD(arg4, u8 *, 0x1A));
+    fn_80006B18(arg1 + 0x8C, arg2 + off, 0, 0, *((u8 *)arg4 + 0x1A));
     Prim2D_EndPrim();
-    Ui_DrawIcon(gItemIconDrawer, temp_arg1, temp_arg2, M2C_FIELD(arg4, u8 *, 0x19));
+    Ui_DrawIcon(gItemIconDrawer, arg1, arg2, *((u8 *)arg4 + 0x19));
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw on
+#pragma use_lmw_stmw reset
 void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
     void fn_8000A258(void);
     void fn_8000A174(s32, u16);
@@ -15437,8 +15457,7 @@ void fn_8017BE54(void *arg0) {
 u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
 extern f32 lbl_8036ABBC;
 void *unit; void *parent; void *item; void *self;
-s32 i; u8 check; u8 found;
-f32 f;
+s32 i; u8 check; u8 found; f32 f;
 f = lbl_8036ABBC;
 self = arg0;
 i = 0;
