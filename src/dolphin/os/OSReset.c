@@ -226,7 +226,8 @@ void OSReport(const char *msg, ...);
 void *memset(void *dst, int val, u32 n);
 extern u32 bootThisDol_803684F0;
 void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu) {
-    BOOL rc;
+    BOOL disableRecalibration;
+    u32 rebootArgs[2];
 
     OSDisableScheduler();
     if (reset == 1 && forceMenu) {
@@ -238,8 +239,6 @@ void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu) {
         resetCode = 0;
     }
     if (reset == 2 || (reset == 0 && (bootThisDol_803684F0 || resetCode + 0x3FFF0000 == 0))) {
-        BOOL disableRecalibration;
-
         __OSStopAudioSystem();
         disableRecalibration = __PADDisableRecalibration(TRUE);
         while (!__OSCallResetFunctions(FALSE))
@@ -247,7 +246,7 @@ void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu) {
         while (!__OSSyncSram())
             ;
         OSDisableInterrupts();
-        rc = __OSCallResetFunctions(TRUE);
+        __OSCallResetFunctions(TRUE);
         LCDisable();
         __PADDisableRecalibration(disableRecalibration);
         KillThreads();
@@ -258,18 +257,22 @@ void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu) {
         while (!__OSSyncSram())
             ;
         OSDisableInterrupts();
-        rc = __OSCallResetFunctions(TRUE);
+        __OSCallResetFunctions(TRUE);
         LCDisable();
         KillThreads();
     }
     if (reset == 1) {
-        __OSHotReset(resetCode);
+        OSDisableInterrupts();
+        __VIRegs[1] = 0;
+        ICFlashInvalidate();
+        Reset(resetCode * 8);
     } else if (reset == 0) {
         if (forceMenu == TRUE) {
             OSReport("OSResetSystem(): You can't specify TRUE to forceMenu if you restart. Ignored\n");
         }
         OSEnableScheduler();
-        __OSReboot(resetCode, bootThisDol_803684F0);
+        rebootArgs[0] = resetCode;
+        __OSReboot(rebootArgs[0], bootThisDol_803684F0);
     }
     memset((void *)0x80000040, 0, 0xCC - 0x40);
     memset((void *)0x800000D4, 0, 0xE8 - 0xD4);
