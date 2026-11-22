@@ -3304,7 +3304,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     void *__CARDGetDirBlock(void);
     s32 fn_8021BB98(void *, void *);
     void fn_80205110(void *, u32);
-    s32 __CARDEraseSector(void *, u32);
+    s32 __CARDEraseSector(void *, u32, void *);
 
     extern void fn_80216994(void);
     extern void __CARDEraseCallback(void);
@@ -3352,7 +3352,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     size = *(u32 *)((u8 *)state + 0xC);
     size *= *(u16 *)((u8 *)arg0 + 0x10);
 
-    result = __CARDEraseSector(*(void **)arg0, size);
+    result = __CARDEraseSector(*(void **)arg0, size, __CARDEraseCallback);
 
     if (result < 0) {
         __CARDPutControlBlock(state, result);
