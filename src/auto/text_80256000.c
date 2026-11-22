@@ -906,9 +906,9 @@ not_found:
 
 s32 fn_80256628(u8 a,u8 b,s32 c,u8 d) {
 extern u8 lbl_80368A4E,lbl_80368A4F,lbl_80368A50,lbl_80368A51;
-struct VoiceFlag { u8 pad[0x11D]; u8 flag; u8 tail[0x33A]; };
 s32 index;
 u8 *node;
+u8 *voice;
 index=fn_802562A0(a,b,c,d);
 if(index != -1) {
 node=(u8 *)lbl_8035A510+index*4;
@@ -918,8 +918,11 @@ else lbl_80368A51=node[1];
 if((s32)node[1]!=255) ((u8 *)lbl_8035A510)[node[1]*4]=node[0];
 if(index==lbl_80368A50) lbl_80368A50=node[0];
 *(u16 *)(node+2)=0;
-} else if(((struct VoiceFlag *)gSynthVoices)[index].flag) --lbl_80368A4F;
+} else {
+voice=(u8 *)gSynthVoices+index*0x458;
+if(voice[0x11D]) --lbl_80368A4F;
 else --lbl_80368A4E;
+}
 if(d) ++lbl_80368A4F; else ++lbl_80368A4E;
 }
 return index;
@@ -3046,35 +3049,85 @@ void fn_8025A14C(void **arr, s32 lo, s32 hi) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8025A3A4(void *arg0, u32 arg1) {
+void fn_8025A3A4(void *arg0, u32 arg1)
+{
     void fn_80259E40(void *, void *);
-    void fn_8025C99C(void *, s32);
+    s32 fn_8025C99C(void *, s32);
     void fn_8025CA80(void *);
-    void fn_8020516C(void *, u16);
+    void fn_8020516C(void *, u32);
+    s32 fn_80257C04(void *);
+    void fn_80257D7C(void *);
+    void fn_80257C2C(void *, s32);
+    void fn_80259CD8(void *, void *, u16);
+    s32 Sound_ApplyParamStep(void *, void *, void *, u16, u16 *, u32);
+    s32 Sound_TickAdsr(void *, u16 *, u16 *);
+    void fn_80259D20(void *);
+    void fn_80259D94(void *, void *, void *);
+    void fn_8025A14C(void *, s32, s32);
+    void DCFlushRange(void *, u32);
+    void DCFlushRangeNoSync(void *, u32);
+    void *memset(void *, s32, u32);
+
     extern u8 *gSoundAuxBuf;
+    extern u8 gSoundStudios[];
+    extern u8 gSoundStudioCount;
+    extern u8 lbl_80368AD3;
+    extern u8 lbl_80368AD4;
+    extern u8 lbl_8035BE18[];
+    extern u16 lbl_80283088[];
+    extern u16 lbl_80283068[];
+    extern u16 lbl_802A1BC0[];
+    extern u8 lbl_802A0180[];
     extern u32 lbl_80368A6C;
     extern u8 *lbl_80368A80;
     extern u8 *lbl_80368A78;
     extern u8 *lbl_80368A7C;
-    extern u32 lbl_80368A90;
-    extern u32 lbl_80368A8C;
-    extern u8 gSoundStudios[];
     extern void *lbl_80368A70;
     extern u16 lbl_80368A74;
     extern u16 lbl_80368A84;
-    u32 tick;
-    u8 *aux;
+    extern u32 lbl_80368A8C;
+    extern u32 lbl_80368A90;
+    extern u32 lbl_80368A98;
+
+    u8 * volatile studioBase;
     u8 *studio;
-    void *voice;
-    void *next;
-    u16 pad0;
-    u8 studioIdx;
-    u8 *studioBase;
-    void *saved;
+    u8 *voice;
+    u8 *next;
+    u8 *dsp;
+    u8 *aux;
+    u8 *info;
+    u8 *data;
+    u8 *cmd;
+    u8 *savedVoice;
+    u8 **sortedEnd;
+    u8 *otherStudio;
+    u8 *otherVoice;
+    u8 *otherNext;
+    u32 otherIdx;
+    u32 tick;
     u32 tmp;
     u32 len;
+    u32 flags;
+    u32 addr;
+    u32 addr2;
+    u32 count;
+    u32 i;
+    u32 j;
+    u32 k;
+    u32 rate;
+    u32 sampleLength;
+    u32 sampleOffset;
+    s32 value;
+    s32 changed;
+    s32 result;
+    volatile u32 needMore;
+    volatile u32 hasDspCommands;
+    u8 *previousDsp;
+    u16 steps[5];
+    u16 adsrA;
+    u16 adsrB;
+    volatile u8 studioIdx;
 
-    saved = arg0;
     aux = gSoundAuxBuf;
     lbl_80368A6C = 0;
     lbl_80368A80 = aux;
@@ -3083,84 +3136,1022 @@ void fn_8025A3A4(void *arg0, u32 arg1) {
     if (arg1 < 0xC8) {
         tick = 0x28BE;
     } else {
-        tmp = *(u32 *)0x800000F8;
-        tmp = ((u32)(((u64)(tmp) * 0x51EB851Fu) >> 32)) >> 7;
-        tmp = ((u32)(((u64)(tmp) * 0xD1B71759u) >> 32)) >> 12;
+        tmp = *(volatile u32 *)0x800000F8;
+        tmp = (u32)(((u64)tmp * 0x51EB851FULL) >> 32) >> 7;
+        tmp = (u32)(((u64)tmp * 0xD1B71759ULL) >> 32) >> 12;
         tick = (arg1 - 0xC8) * tmp + 0x28BE;
     }
-    if (lbl_80368A90 != 0) {
-        tick += 0xAFC8;
-    }
-    if (lbl_80368A8C != 0) {
-        tick += 0xBB8;
-    }
-    pad0 = 0;
+    if (lbl_80368A90 != 0) tick += 0xAFC8;
+    if (lbl_80368A8C != 0) tick += 0xBB8;
+    steps[0] = 0;
     studioBase = gSoundStudios;
-    studioIdx = 0;
-    for (;;) {
-        studio = studioBase + studioIdx * 0xBC;
-        if (studio[0x50] != 1) {
-            break;
+
+    for (studioIdx = 0; studioIdx < gSoundStudioCount; ++studioIdx) {
+        studio = studioBase + (u32)studioIdx * 0xBC;
+        if (studio[0x50] != 1) continue;
+        dsp = *(u8 **)studio;
+
+        voice = *(u8 **)(studio + 0x48);
+        while (voice != 0) {
+            next = *(u8 **)(voice + 0xC);
+            if (voice[0xF1] == 0) {
+                if ((*(u32 *)(voice + 0x24) & 0x20) == 0) {
+                    voice = next;
+                    continue;
+                }
+                fn_80259E40(studio, voice);
+            }
+            if ((u32)(*(u32 *)(voice + 0xEC) + 0x10000) != 0xFFFFU)
+                fn_8025C99C(voice, 3);
+            if (voice[0xF0] == 1 && voice[0xF2] != 0) {
+                fn_8025CA80(voice);
+                voice[0xF2] = 0;
+            }
+            voice = next;
         }
-        voice = *(void **)(studio + 0x48);
-        while (voice != NULL) {
-            next = *(void **)((u8 *)voice + 0xC);
-            if (*(u8 *)((u8 *)voice + 0xF1) == 0) {
-                if ((*(u32 *)((u8 *)voice + 0x24) & 0x20) != 0) {
-                    fn_80259E40(studio, voice);
-                }
-            } else {
-                if ((u32)(*(u32 *)((u8 *)voice + 0xEC) + 0x10000) != 0xFFFFU) {
-                    fn_8025C99C(voice, 3);
-                }
-                if (*(u8 *)((u8 *)voice + 0xF0) == 1) {
-                    if (*(u8 *)((u8 *)voice + 0xF2) != 0) {
-                        fn_8025CA80(voice);
-                        *(u8 *)((u8 *)voice + 0xF2) = 0;
+        voice = *(u8 **)(studio + 0x4C);
+        while (voice != 0) {
+            fn_80259E40(studio, voice);
+            voice = *(u8 **)(voice + 0x14);
+        }
+        *(u32 *)(studio + 0x4C) = 0;
+if ((u32)(lbl_80368A80 + 6) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+*(u16 *)lbl_80368A80 = 0;
+*(u16 *)(lbl_80368A80 + 2) = (u16)(*(u32 *)studio >> 16);
+*(u16 *)(lbl_80368A80 + 4) = (u16)*(u32 *)studio;
+lbl_80368A80 += 6;
+tick += 0x2C62;
+for (i = 0; i < studio[0x52]; ++i) {
+if ((u32)(lbl_80368A80 + 12) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)lbl_80368A80 = 1;
+    addr = *(u32 *)(gSoundStudios + studio[0x58 + i * 12] * 0xBC + 0x28 + ((lbl_80368AD4 ^ 1) << 2));
+    *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+    *(u16 *)(lbl_80368A80 + 6) = *(u16 *)(studio + 0x5A + i * 12);
+    *(u16 *)(lbl_80368A80 + 8) = *(u16 *)(studio + 0x5C + i * 12);
+    *(u16 *)(lbl_80368A80 + 10) = *(u16 *)(studio + 0x5E + i * 12);
+    lbl_80368A80 += 12;
+    tick += 0x294D;
+}
+
+count = 0;
+voice = *(u8 **)(studio + 0x48);
+while (voice != 0) {
+    ((void **)lbl_8035BE18)[count++] = voice;
+    voice = *(u8 **)(voice + 0xC);
+}
+fn_8025A14C(lbl_8035BE18, (s32)count - 1, 0);
+hasDspCommands = 0;
+previousDsp = 0;
+sortedEnd = (u8 **)lbl_8035BE18 + count;
+while (count != 0) {
+    voice = sortedEnd[-1];
+    if (voice[0xF0] == 0) goto nextSortedVoice;
+    dsp = *(u8 **)voice;
+    steps[1] = 0;
+    steps[2] = 0;
+    steps[3] = 0;
+    steps[4] = 0;
+
+    if (voice[0xF0] == 1) {
+        *(u32 *)(voice + 0xEC) = (u32)-1;
+        *(u16 *)(dsp + 0x66) = 0x8000;
+        if (fn_80257C04(voice + 0xA4) != 0) {
+            fn_8025C99C(voice, 0);
+            fn_8025CA80(voice);
+            goto nextSortedVoice;
+        }
+        *(u32 *)(voice + 0xEC) = (u32)-1;
+        if (voice[0x90] >= 5 && voice[0x90] < 7) {
+            *(u32 *)(voice + 0x98) = 0;
+            *(u32 *)(voice + 0xEC) = (u32)fn_8025C99C(voice, 2);
+            if (*(u32 *)(voice + 0x98) == 0) {
+                fn_8025C99C(voice, 1);
+                fn_8025CA80(voice);
+                goto nextSortedVoice;
+            }
+        }
+    *(u16 *)(dsp + 0xAA) = 0;
+    *(u16 *)(dsp + 0xAC) = 0;
+    *(u16 *)(dsp + 0xAE) = 0;
+    *(u16 *)(dsp + 0xB0) = 0;
+    *(u16 *)(dsp + 0xB2) = 0;
+    if ((*(u32 *)(voice + 0xF4) & 0x80000000U) != 0) {
+        memset(*(void **)(voice + 8), 0, 0x40);
+        DCFlushRange(*(void **)(voice + 8), 0x40);
+        *(u16 *)(dsp + 0x40) = *(u16 *)(voice + 0xD0);
+        *(u16 *)(dsp + 0x3C) = *(u16 *)(voice + 0xD0);
+        *(u16 *)(dsp + 0x42) = *(u16 *)(voice + 0xD2);
+        *(u16 *)(dsp + 0x3E) = *(u16 *)(voice + 0xD2);
+        *(u16 *)(dsp + 0x36) = 1;
+    } else {
+        *(u16 *)(dsp + 0x36) = 0;
+    }
+/* DSP voice sample-format setup. */
+switch (voice[0x90]) {
+case 0:
+case 4:
+case 5:
+    *(u16 *)(dsp + 0x70) = 0;
+    *(u16 *)(dsp + 0x9E) = 0;
+    *(u16 *)(dsp + 0xA4) = 0;
+    *(u16 *)(dsp + 0xA2) = 0;
+    data = *(u8 **)(voice + 0x7C);
+    *(u16 *)(dsp + 0xA0) = data[2];
+        *(u16 *)(dsp + 0x7E) = *(s16 *)(data + 0x8);
+    *(u16 *)(dsp + 0x80) = *(s16 *)(data + 0xA);
+    *(u16 *)(dsp + 0x82) = *(s16 *)(data + 0xC);
+    *(u16 *)(dsp + 0x84) = *(s16 *)(data + 0xE);
+    *(u16 *)(dsp + 0x86) = *(s16 *)(data + 0x10);
+    *(u16 *)(dsp + 0x88) = *(s16 *)(data + 0x12);
+    *(u16 *)(dsp + 0x8A) = *(s16 *)(data + 0x14);
+    *(u16 *)(dsp + 0x8C) = *(s16 *)(data + 0x16);
+    *(u16 *)(dsp + 0x8E) = *(s16 *)(data + 0x18);
+    *(u16 *)(dsp + 0x90) = *(s16 *)(data + 0x1A);
+    *(u16 *)(dsp + 0x92) = *(s16 *)(data + 0x1C);
+    *(u16 *)(dsp + 0x94) = *(s16 *)(data + 0x1E);
+    *(u16 *)(dsp + 0x96) = *(s16 *)(data + 0x20);
+    *(u16 *)(dsp + 0x98) = *(s16 *)(data + 0x22);
+    *(u16 *)(dsp + 0x9A) = *(s16 *)(data + 0x24);
+    *(u16 *)(dsp + 0x9C) = *(s16 *)(data + 0x26);
+    *(u32 *)(voice + 0xE0) = 0;
+    *(u32 *)(voice + 0xDC) = 0;
+    sampleOffset = *(u32 *)(voice + 0x78) * 2;
+    sampleLength = sampleOffset + 2;
+    if (voice[0x90] == 4 || voice[0x90] == 5) {
+        *(u16 *)(dsp + 0x10) = 1;
+    } else {
+        *(u16 *)(dsp + 0xB8) = *(s16 *)(data + 4);
+        *(u16 *)(dsp + 0xB6) = *(s16 *)(data + 6);
+        *(u16 *)(dsp + 0xB4) = data[3];
+        *(u16 *)(dsp + 0x10) = 0;
+    }
+    break;
+case 1:
+    *(u16 *)(dsp + 0x70) = 0;
+    *(u16 *)(dsp + 0x9E) = 0;
+    data = *(u8 **)(voice + 0x7C);
+    value = *(u32 *)(voice + 0x80) + 13;
+    j = (u32)value / 14;
+    sampleLength = (j << 4) + 2;
+    *(u16 *)(dsp + 0xA4) = *(s16 *)(data + 0x28 + j * 6);
+    *(u16 *)(dsp + 0xA2) = *(s16 *)(data + 0x2A + j * 6);
+    *(u16 *)(dsp + 0xA0) = data[0x2C + j * 6];
+    *(u16 *)(dsp + 0xB8) = *(s16 *)(data + 4);
+    *(u16 *)(dsp + 0xB6) = *(s16 *)(data + 6);
+    *(u16 *)(dsp + 0xB4) = data[3];
+        *(u16 *)(dsp + 0x7E) = *(s16 *)(data + 0x8);
+    *(u16 *)(dsp + 0x80) = *(s16 *)(data + 0xA);
+    *(u16 *)(dsp + 0x82) = *(s16 *)(data + 0xC);
+    *(u16 *)(dsp + 0x84) = *(s16 *)(data + 0xE);
+    *(u16 *)(dsp + 0x86) = *(s16 *)(data + 0x10);
+    *(u16 *)(dsp + 0x88) = *(s16 *)(data + 0x12);
+    *(u16 *)(dsp + 0x8A) = *(s16 *)(data + 0x14);
+    *(u16 *)(dsp + 0x8C) = *(s16 *)(data + 0x16);
+    *(u16 *)(dsp + 0x8E) = *(s16 *)(data + 0x18);
+    *(u16 *)(dsp + 0x90) = *(s16 *)(data + 0x1A);
+    *(u16 *)(dsp + 0x92) = *(s16 *)(data + 0x1C);
+    *(u16 *)(dsp + 0x94) = *(s16 *)(data + 0x1E);
+    *(u16 *)(dsp + 0x96) = *(s16 *)(data + 0x20);
+    *(u16 *)(dsp + 0x98) = *(s16 *)(data + 0x22);
+    *(u16 *)(dsp + 0x9A) = *(s16 *)(data + 0x24);
+    *(u16 *)(dsp + 0x9C) = *(s16 *)(data + 0x26);
+    *(u32 *)(voice + 0xDC) = j * 14;
+    sampleOffset = *(u32 *)(voice + 0x78) << 1;
+    sampleLength += sampleOffset;
+    *(u32 *)(voice + 0xE0) = 0;
+    break;
+case 3:
+    *(u16 *)(dsp + 0x70) = 0x19;
+    *(u16 *)(dsp + 0x9E) = 0x100;
+        *(u16 *)(dsp + 0x7E) = 0;
+    *(u16 *)(dsp + 0x80) = 0;
+    *(u16 *)(dsp + 0x82) = 0;
+    *(u16 *)(dsp + 0x84) = 0;
+    *(u16 *)(dsp + 0x86) = 0;
+    *(u16 *)(dsp + 0x88) = 0;
+    *(u16 *)(dsp + 0x8A) = 0;
+    *(u16 *)(dsp + 0x8C) = 0;
+    *(u16 *)(dsp + 0x8E) = 0;
+    *(u16 *)(dsp + 0x90) = 0;
+    *(u16 *)(dsp + 0x92) = 0;
+    *(u16 *)(dsp + 0x94) = 0;
+    *(u16 *)(dsp + 0x96) = 0;
+    *(u16 *)(dsp + 0x98) = 0;
+    *(u16 *)(dsp + 0x9A) = 0;
+    *(u16 *)(dsp + 0x9C) = 0;
+    sampleOffset = *(u32 *)(voice + 0x78);
+    sampleLength = *(u32 *)(voice + 0x80) + sampleOffset;
+    *(u32 *)(voice + 0xDC) = *(u32 *)(voice + 0x80);
+    *(u32 *)(voice + 0xE0) = 0;
+    break;
+case 2:
+case 6:
+    *(u16 *)(dsp + 0x70) = 0xA;
+    *(u16 *)(dsp + 0x9E) = 0x800;
+        *(u16 *)(dsp + 0x7E) = 0;
+    *(u16 *)(dsp + 0x80) = 0;
+    *(u16 *)(dsp + 0x82) = 0;
+    *(u16 *)(dsp + 0x84) = 0;
+    *(u16 *)(dsp + 0x86) = 0;
+    *(u16 *)(dsp + 0x88) = 0;
+    *(u16 *)(dsp + 0x8A) = 0;
+    *(u16 *)(dsp + 0x8C) = 0;
+    *(u16 *)(dsp + 0x8E) = 0;
+    *(u16 *)(dsp + 0x90) = 0;
+    *(u16 *)(dsp + 0x92) = 0;
+    *(u16 *)(dsp + 0x94) = 0;
+    *(u16 *)(dsp + 0x96) = 0;
+    *(u16 *)(dsp + 0x98) = 0;
+    *(u16 *)(dsp + 0x9A) = 0;
+    *(u16 *)(dsp + 0x9C) = 0;
+    sampleOffset = *(u32 *)(voice + 0x78) >> 1;
+    sampleLength = *(u32 *)(voice + 0x80) + sampleOffset;
+    *(u32 *)(voice + 0xDC) = *(u32 *)(voice + 0x80);
+    *(u32 *)(voice + 0xE0) = 0;
+    if (voice[0x90] == 6) *(u16 *)(dsp + 0x10) = 1;
+    break;
+default:
+    sampleOffset = 0;
+    sampleLength = 0;
+    break;
+}
+*(u16 *)(dsp + 0x7A) = (u16)(sampleLength >> 16);
+*(u16 *)(dsp + 0x7C) = (u16)sampleLength;
+*(u32 *)(voice + 0x20) = sampleLength;
+if (*(u32 *)(voice + 0x8C) != 0) {
+    *(u16 *)(dsp + 0x6E) = 1;
+    switch (voice[0x90]) {
+    case 0:
+    case 4:
+        value = *(u32 *)(voice + 0x88);
+        sampleOffset = (*(u32 *)(voice + 0x78) << 1) + value + ((u32)value / 14) * 2;
+        value += *(u32 *)(voice + 0x8C) - 1;
+        sampleLength = (*(u32 *)(voice + 0x78) << 1) + (u32)value + ((u32)value / 14) * 2 + 2;
+        break;
+    case 1:
+        value = *(u32 *)(voice + 0x88) + *(u32 *)(voice + 0x8C) - 1;
+        addr = (u32)value / 14;
+        sampleLength = (*(u32 *)(voice + 0x78) << 1) + (u32)value + ((u32)value / 14) * 2 + 2;
+        *(u32 *)(voice + 0x9C) = 0;
+        sampleOffset = *(u32 *)(voice + 0x94) * 2 + 2;
+        break;
+    case 2:
+    case 6:
+        sampleOffset = *(u32 *)(voice + 0x94) >> 1;
+        sampleLength = *(u32 *)(voice + 0x98) + sampleOffset - 1;
+        *(u32 *)(voice + 0x9C) = 0;
+        break;
+    case 3:
+        sampleOffset = *(u32 *)(voice + 0x94);
+        sampleLength = *(u32 *)(voice + 0x98) + sampleOffset - 1;
+        break;
+    default:
+        break;
+    }
+    *(u16 *)(dsp + 0x72) = (u16)(sampleOffset >> 16);
+    *(u16 *)(dsp + 0x74) = (u16)sampleOffset;
+    *(u16 *)(dsp + 0x76) = (u16)(sampleLength >> 16);
+    *(u16 *)(dsp + 0x78) = (u16)sampleLength;
+} else {
+    *(u16 *)(dsp + 0x6E) = 0;
+}
+*(u16 *)(dsp + 8) = *(u16 *)(voice + 0xCC);
+*(u16 *)(dsp + 10) = *(u16 *)(voice + 0xCE);
+*(u16 *)(dsp + 0xBA) = (u16)(voice[0xD4] != 0);
+if (voice[0xD4] != 0) {
+    *(u16 *)(dsp + 0xBE) = *(u16 *)(voice + 0xD6);
+    *(u16 *)(dsp + 0xC0) = *(u16 *)(voice + 0xD8);
+    *(u16 *)(dsp + 0xBC) = 0;
+}
+*(u16 *)(dsp + 0xE) = (u16)(voice[0xDA] == 0);
+*(u16 *)(voice + 0x5E) = *(u16 *)(voice + 0x4C);
+*(u16 *)(dsp + 0x12) = *(u16 *)(voice + 0x4C);
+*(u16 *)(voice + 0x60) = *(u16 *)(voice + 0x4E);
+*(u16 *)(dsp + 0x16) = *(u16 *)(voice + 0x4E);
+*(u16 *)(voice + 0x62) = *(u16 *)(voice + 0x50);
+*(u16 *)(dsp + 0x2E) = *(u16 *)(voice + 0x50);
+*(u16 *)(voice + 0x64) = *(u16 *)(voice + 0x52);
+*(u16 *)(dsp + 0x1A) = *(u16 *)(voice + 0x52);
+*(u16 *)(voice + 0x66) = *(u16 *)(voice + 0x54);
+*(u16 *)(dsp + 0x1E) = *(u16 *)(voice + 0x54);
+*(u16 *)(voice + 0x68) = *(u16 *)(voice + 0x56);
+*(u16 *)(dsp + 0x32) = *(u16 *)(voice + 0x56);
+*(u16 *)(dsp + 0xC) = 0;
+if ((*(u16 *)(dsp + 0x12) | *(u16 *)(dsp + 0x16)) != 0)
+    *(u16 *)(dsp + 0xC) |= 3;
+if ((*(u16 *)(dsp + 0x1A) | *(u16 *)(dsp + 0x1E)) != 0)
+    *(u16 *)(dsp + 0xC) |= 0x30;
+if (*(u16 *)(dsp + 0x32) != 0)
+    *(u16 *)(dsp + 0xC) |= 0x80;
+*(u16 *)(voice + 0x6A) = *(u16 *)(voice + 0x58);
+*(u16 *)(dsp + 0x22) = *(u16 *)(voice + 0x58);
+*(u16 *)(voice + 0x6C) = *(u16 *)(voice + 0x5A);
+*(u16 *)(dsp + 0x26) = *(u16 *)(voice + 0x5A);
+*(u16 *)(voice + 0x6E) = *(u16 *)(voice + 0x5C);
+*(u16 *)(dsp + 0x2A) = *(u16 *)(voice + 0x5C);
+*(u16 *)(dsp + 0x14) = 0;
+*(u16 *)(dsp + 0x18) = 0;
+*(u16 *)(dsp + 0x30) = 0;
+*(u16 *)(dsp + 0x1C) = 0;
+*(u16 *)(dsp + 0x20) = 0;
+*(u16 *)(dsp + 0x34) = 0;
+*(u16 *)(dsp + 0x24) = 0;
+*(u16 *)(dsp + 0x28) = 0;
+*(u16 *)(dsp + 0x2C) = 0;
+if (*(u32 *)(studio + 0x54) == 0) {
+    if ((*(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26)) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x600;
+    if (*(u16 *)(dsp + 0x2E) != 0)
+        *(u16 *)(dsp + 0xC) |= 4;
+    if (*(u16 *)(dsp + 0x32) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x80;
+    if (*(u16 *)(dsp + 0x2A) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x1000;
+} else {
+    *(u16 *)(dsp + 0xC) |= 0x4000;
+    if ((*(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26)) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x600;
+    if (*(u16 *)(dsp + 0x32) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x80;
+}
+voice[0xF0] = 2;
+needMore = 1;
+    } else {
+/* Update an already-started hardware voice. */
+if (voice[0x90] == 4 || voice[0x90] == 5)
+    *(u16 *)(dsp + 0xB4) = voice[0xA0];
+if (voice[0x90] == 5 && voice[0x9C] == 0 && *(u16 *)(dsp + 0xC2) != 0) {
+    value = *(u32 *)(voice + 0x98) - 1;
+    j = (u32)value / 14;
+    addr = (*(u32 *)(voice + 0x94) << 1) + (u32)value + j * 2 + 2;
+    *(u16 *)(dsp + 0x76) = (u16)(addr >> 16);
+    *(u16 *)(dsp + 0x78) = (u16)addr;
+    *(u32 *)(voice + 0x78) = *(u32 *)(voice + 0x94);
+    voice[0x9C] = 1;
+}
+if (voice[0x90] == 6 && voice[0x9C] == 0 && *(u16 *)(dsp + 0xC2) != 0) {
+    addr = *(u32 *)(voice + 0x98) + (*(u32 *)(voice + 0x94) >> 1) - 1;
+    *(u32 *)(voice + 0x78) = *(u32 *)(voice + 0x94);
+    *(u16 *)(dsp + 0x76) = (u16)(addr >> 16);
+    *(u16 *)(dsp + 0x78) = (u16)addr;
+    voice[0x9C] = 1;
+}
+if (*(u32 *)(voice + 0x8C) == 0 && *(u32 *)(voice + 0xDC) >= *(u32 *)(voice + 0x84)) {
+    fn_8025C99C(voice, 0);
+    fn_8025CA80(voice);
+    goto nextSortedVoice;
+}
+if ((*(u32 *)(voice + 0x24) & 0x10) != 0 && fn_80257C04(voice + 0xA4) != 0) {
+    fn_8025C99C(voice, 0);
+    fn_8025CA80(voice);
+    goto nextSortedVoice;
+}
+if ((*(u32 *)(voice + 0x24) & 1) != 0) {
+    fn_80259CD8(dsp + 0x14, voice + 0x5E, *(u16 *)(voice + 0x4C));
+    fn_80259CD8(dsp + 0x18, voice + 0x60, *(u16 *)(voice + 0x4E));
+    fn_80259CD8(dsp + 0x30, voice + 0x62, *(u16 *)(voice + 0x50));
+    if ((*(u16 *)(dsp + 0x14) | *(u16 *)(dsp + 0x18)) != 0)
+        *(u16 *)(dsp + 0xC) |= 0xB;
+    else if ((*(u16 *)(dsp + 0x12) | *(u16 *)(dsp + 0x16)) != 0)
+        *(u16 *)(dsp + 0xC) |= 3;
+    else
+        *(u16 *)(dsp + 0xC) &= ~3;
+    if (*(u32 *)(studio + 0x54) == 0) {
+        if (*(u16 *)(dsp + 0x30) != 0)
+            *(u16 *)(dsp + 0xC) |= 0xC;
+        else if (*(u16 *)(dsp + 0x2E) != 0)
+            *(u16 *)(dsp + 0xC) |= 4;
+        else
+            *(u16 *)(dsp + 0xC) &= ~4;
+    } else {
+        *(u16 *)(dsp + 0xC) &= ~4;
+    }
+    if ((*(u16 *)(dsp + 0xC) & 3) != 0) {
+        changed = Sound_ApplyParamStep(dsp + 0x12, dsp + 0x14, voice + 0x5E,
+                                       *(u16 *)(voice + 0x4C), steps, 1);
+        changed |= Sound_ApplyParamStep(dsp + 0x16, dsp + 0x18, voice + 0x60,
+                                        *(u16 *)(voice + 0x4E), steps, 2);
+        if ((changed | *(u16 *)(dsp + 0x12) | *(u16 *)(dsp + 0x16)) == 0)
+            *(u16 *)(dsp + 0xC) &= ~3;
+        else
+            *(u16 *)(dsp + 0xC) |= 8;
+    } else {
+        *(u16 *)(dsp + 0x14) = 0;
+        *(u16 *)(dsp + 0x18) = 0;
+    }
+    if ((*(u16 *)(dsp + 0xC) & 4) != 0) {
+        if (*(u32 *)(studio + 0x54) == 0) {
+            changed = Sound_ApplyParamStep(dsp + 0x2E, dsp + 0x30, voice + 0x62,
+                                           *(u16 *)(voice + 0x50), steps, 4);
+            if ((changed | *(u16 *)(dsp + 0x2E)) == 0)
+                *(u16 *)(dsp + 0xC) &= ~4;
+            else
+                *(u16 *)(dsp + 0xC) |= 8;
+        } else {
+            *(u16 *)(dsp + 0xC) &= ~4;
+        }
+    } else {
+        *(u16 *)(dsp + 0x30) = 0;
+    }
+}
+if ((*(u32 *)(voice + 0x24) & 2) != 0) {
+    fn_80259CD8(dsp + 0x1C, voice + 0x64, *(u16 *)(voice + 0x52));
+    fn_80259CD8(dsp + 0x20, voice + 0x66, *(u16 *)(voice + 0x54));
+    fn_80259CD8(dsp + 0x34, voice + 0x68, *(u16 *)(voice + 0x56));
+    if ((*(u16 *)(dsp + 0x1C) | *(u16 *)(dsp + 0x20)) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x70;
+    else if ((*(u16 *)(dsp + 0x1A) | *(u16 *)(dsp + 0x1E)) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x30;
+    else
+        *(u16 *)(dsp + 0xC) &= ~0x30;
+    if (*(u16 *)(dsp + 0x34) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x180;
+    else if (*(u16 *)(dsp + 0x32) != 0)
+        *(u16 *)(dsp + 0xC) |= 0x80;
+    else
+        *(u16 *)(dsp + 0xC) &= ~0x80;
+    if ((*(u16 *)(dsp + 0xC) & 0x30) != 0) {
+        changed = Sound_ApplyParamStep(dsp + 0x1A, dsp + 0x1C, voice + 0x64,
+                                       *(u16 *)(voice + 0x52), steps, 8);
+        changed |= Sound_ApplyParamStep(dsp + 0x1E, dsp + 0x20, voice + 0x66,
+                                        *(u16 *)(voice + 0x54), steps, 0x10);
+        if ((changed | *(u16 *)(dsp + 0x1A) | *(u16 *)(dsp + 0x1E)) == 0)
+            *(u16 *)(dsp + 0xC) &= ~0x30;
+        else
+            *(u16 *)(dsp + 0xC) |= 0x40;
+    } else {
+        *(u16 *)(dsp + 0x1C) = 0;
+        *(u16 *)(dsp + 0x20) = 0;
+    }
+    if ((*(u16 *)(dsp + 0xC) & 0x80) != 0) {
+        changed = Sound_ApplyParamStep(dsp + 0x32, dsp + 0x34, voice + 0x68,
+                                       *(u16 *)(voice + 0x56), steps, 0x20);
+        if ((changed | *(u16 *)(dsp + 0x32)) == 0)
+            *(u16 *)(dsp + 0xC) &= ~0x80;
+        else
+            *(u16 *)(dsp + 0xC) |= 0x100;
+    } else {
+        *(u16 *)(dsp + 0x34) = 0;
+    }
+}
+if ((*(u32 *)(voice + 0x24) & 4) != 0) {
+    if (*(u32 *)(studio + 0x54) == 0) {
+        fn_80259CD8(dsp + 0x24, voice + 0x6A, *(u16 *)(voice + 0x58));
+        fn_80259CD8(dsp + 0x28, voice + 0x6C, *(u16 *)(voice + 0x5A));
+        fn_80259CD8(dsp + 0x2C, voice + 0x6E, *(u16 *)(voice + 0x5C));
+        if ((*(u16 *)(dsp + 0x24) | *(u16 *)(dsp + 0x28)) != 0)
+            *(u16 *)(dsp + 0xC) |= 0xE00;
+        else if ((*(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26)) != 0)
+            *(u16 *)(dsp + 0xC) |= 0x600;
+        else
+            *(u16 *)(dsp + 0xC) &= ~0x600;
+        if (*(u16 *)(dsp + 0x2C) != 0)
+            *(u16 *)(dsp + 0xC) |= 0x3000;
+        else if (*(u16 *)(dsp + 0x2A) != 0)
+            *(u16 *)(dsp + 0xC) |= 0x1000;
+        else
+            *(u16 *)(dsp + 0xC) &= ~0x1000;
+    } else {
+        fn_80259CD8(dsp + 0x24, voice + 0x6A, *(u16 *)(voice + 0x58));
+        fn_80259CD8(dsp + 0x28, voice + 0x6C, *(u16 *)(voice + 0x5A));
+        if ((*(u16 *)(dsp + 0x24) | *(u16 *)(dsp + 0x28)) != 0)
+            *(u16 *)(dsp + 0xC) |= 0x4E00;
+        else if ((*(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26) |
+                  *(u16 *)(dsp + 0x32) | *(u16 *)(dsp + 0x34)) != 0)
+            *(u16 *)(dsp + 0xC) |= 0x4600;
+        else
+            *(u16 *)(dsp + 0xC) &= ~0x4600;
+    }
+    if (*(u32 *)(studio + 0x54) == 0) {
+        if ((*(u16 *)(dsp + 0xC) & 0x600) != 0) {
+            changed = Sound_ApplyParamStep(dsp + 0x22, dsp + 0x24, voice + 0x6A,
+                                           *(u16 *)(voice + 0x58), steps, 0x40);
+            changed |= Sound_ApplyParamStep(dsp + 0x26, dsp + 0x28, voice + 0x6C,
+                                            *(u16 *)(voice + 0x5A), steps, 0x80);
+            if ((changed | *(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26)) == 0)
+                *(u16 *)(dsp + 0xC) &= ~0x600;
+            else
+                *(u16 *)(dsp + 0xC) |= 0x800;
+        } else {
+            *(u16 *)(dsp + 0x24) = 0;
+            *(u16 *)(dsp + 0x28) = 0;
+        }
+        if ((*(u16 *)(dsp + 0xC) & 0x1000) != 0) {
+            changed = Sound_ApplyParamStep(dsp + 0x2A, dsp + 0x2C, voice + 0x6E,
+                                           *(u16 *)(voice + 0x5C), steps, 0x100);
+            if ((changed | *(u16 *)(dsp + 0x2A)) == 0)
+                *(u16 *)(dsp + 0xC) &= ~0x1000;
+            else
+                *(u16 *)(dsp + 0xC) |= 0x2000;
+        } else {
+            *(u16 *)(dsp + 0x2C) = 0;
+        }
+    } else if ((*(u16 *)(dsp + 0xC) & 0x4600) != 0) {
+        changed = Sound_ApplyParamStep(dsp + 0x22, dsp + 0x24, voice + 0x6A,
+                                       *(u16 *)(voice + 0x58), steps, 0x40);
+        changed |= Sound_ApplyParamStep(dsp + 0x26, dsp + 0x28, voice + 0x6C,
+                                        *(u16 *)(voice + 0x5A), steps, 0x80);
+        if ((changed | *(u16 *)(dsp + 0x22) | *(u16 *)(dsp + 0x26)) == 0)
+            *(u16 *)(dsp + 0xC) &= ~0x4600;
+        else
+            *(u16 *)(dsp + 0xC) |= 0x800;
+    } else {
+        *(u16 *)(dsp + 0x24) = 0;
+        *(u16 *)(dsp + 0x28) = 0;
+        *(u16 *)(dsp + 0xC) |= 0x4600;
+    }
+}
+if ((*(u32 *)(voice + 0x24) & 0x200) != 0) {
+    *(u16 *)(dsp + 0x40) = *(u16 *)(voice + 0xD0);
+    *(u16 *)(dsp + 0x42) = *(u16 *)(voice + 0xD2);
+}
+if ((*(u32 *)(voice + 0x24) & 0x100) != 0)
+    *(u16 *)(dsp + 8) = *(u16 *)(voice + 0xCC);
+if ((*(u32 *)(voice + 0x24) & 0x80) != 0)
+    *(u16 *)(dsp + 10) = *(u16 *)(voice + 0xCE);
+if ((*(u32 *)(voice + 0x24) & 0x400) != 0) {
+    *(u16 *)(dsp + 0xBA) = (u16)(voice[0xD4] != 0);
+    *(u16 *)(dsp + 0xBC) = 0;
+}
+if ((*(u32 *)(voice + 0x24) & 0x800) != 0 && voice[0xD4] != 0) {
+    *(u16 *)(dsp + 0xBE) = *(u16 *)(voice + 0xD6);
+    *(u16 *)(dsp + 0xC0) = *(u16 *)(voice + 0xD8);
+}
+*(u32 *)(voice + 0x20) = ((u32)*(u16 *)(dsp + 0x7A) << 16) | *(u16 *)(dsp + 0x7C);
+        needMore = 0;
+    }
+    /* Five DSP volume/envelope channels. */
+    cmd = *(u8 **)(voice + 4);
+    for (k = 0; k < 5; ++k) {
+        tmp = *(u32 *)(voice + 0x24 + k * 4);
+        if ((tmp & 0x40) != 0) fn_80257D7C(voice + 0xA4);
+        if ((tmp & 8) != 0) {
+            *(u16 *)(dsp + 0xA6) = (u16)(*(u32 *)(voice + 0x38 + k * 4) >> 16);
+            *(u16 *)(dsp + 0xA8) = (u16)*(u32 *)(voice + 0x38 + k * 4);
+            *(u32 *)(voice + 0xE4) = *(u32 *)(voice + 0x38 + k * 4);
+        }
+        result = Sound_TickAdsr(voice + 0xA4, (u16 *)(dsp + 0x64), (u16 *)(dsp + 0x66));
+        adsrB = *(u16 *)(dsp + 0x66);
+        *(u16 *)(dsp + 0x44) = 0;
+        *(u16 *)(dsp + 0x46) = 0;
+        *(u16 *)(dsp + 0x48) = 0;
+        *(u16 *)(dsp + 0x4A) = 0;
+        *(u16 *)(dsp + 0x4C) = 0;
+        if (k == 0) {
+            *(u16 *)(cmd + 0) = 7;
+            *(u16 *)(cmd + 2) = 1;
+            cmd += 4;
+            ++*(u16 *)(dsp + 0x44);
+            fn_80259D20(voice);
+        } else if (result != 0) {
+            *(u16 *)(cmd + 0) = 7;
+            *(u16 *)(cmd + 2) = 0;
+            cmd += 4;
+            ++*(u16 *)(dsp + 0x44 + k * 2);
+            fn_8025C99C(voice, 0);
+            fn_8025CA80(voice);
+            break;
+        } else {
+            /* Emit the enabled parameter update commands. */
+            if (steps[k] != 0) {
+                for (j = 0; j < 9; ++j) {
+                    if ((steps[k] & (1U << j)) != 0) {
+                        *(u16 *)(cmd + 0) = lbl_80283088[j];
+                        *(u16 *)(cmd + 2) = 0;
+                        cmd += 4;
+                        ++*(u16 *)(dsp + 0x44 + k * 2);
                     }
                 }
             }
-            voice = next;
-        }
-        voice = *(void **)(studio + 0x4C);
-        while (voice != NULL) {
-            next = *(void **)((u8 *)voice + 0x14);
-            fn_80259E40(studio, voice);
-            voice = next;
-        }
-        *(u32 *)(studio + 0x4C) = 0;
-        if (lbl_80368A80 + 6 > lbl_80368A7C - 8) {
-            *(u16 *)lbl_80368A80 = 0xD;
-            *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
-            *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
-            len = (u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78;
-            len = (len + 3) & 0xFFFC;
-            if (lbl_80368A6C != 0) {
-                *(u16 *)((u8 *)lbl_80368A6C + 6) = (u16)len;
-                fn_8020516C(lbl_80368A70, lbl_80368A74);
-            } else {
-                lbl_80368A84 = (u16)len;
+            if ((tmp & 0x20) != 0) {
+                fn_80257C2C(voice + 0xA4, 10);
+                voice[0xF1] = 1;
+            } else if (voice[0xF1] == 0) {
+                if ((tmp & 0x40) != 0) fn_80257D7C(voice + 0xA4);
+                if ((tmp & 8) != 0) {
+                    *(u16 *)(cmd + 0) = 0x53;
+                    *(u16 *)(cmd + 2) = (u16)(*(u32 *)(voice + 0x38 + k * 4) >> 16);
+                    *(u16 *)(cmd + 4) = 0x54;
+                    *(u16 *)(cmd + 6) = (u16)*(u32 *)(voice + 0x38 + k * 4);
+                    cmd += 8;
+                    *(u16 *)(dsp + 0x44 + k * 2) += 2;
+                    *(u32 *)(voice + 0xE4) = *(u32 *)(voice + 0x38 + k * 4);
+                }
             }
-            lbl_80368A6C = (u32)lbl_80368A80;
-            lbl_80368A74 = (u16)len;
-            lbl_80368A70 = lbl_80368A78;
-            lbl_80368A80 = lbl_80368A7C;
-            lbl_80368A78 = lbl_80368A7C;
-            lbl_80368A7C = lbl_80368A7C + 0x180;
+            value = *(u32 *)(voice + 0xB4);
+            result = Sound_TickAdsr(voice + 0xA4, &adsrA, &adsrB);
+            if (*(u16 *)(dsp + 0x66) == adsrB) {
+                if (value != 0) {
+                    *(u16 *)(cmd + 0) = 0x32;
+                    *(u16 *)(cmd + 2) = adsrA;
+                    cmd += 4;
+                    ++*(u16 *)(dsp + 0x44 + k * 2);
+                }
+            } else {
+                *(u16 *)(cmd + 0) = 0x32;
+                *(u16 *)(cmd + 2) = adsrA;
+                *(u16 *)(cmd + 4) = 0x33;
+                *(u16 *)(cmd + 6) = adsrB;
+                cmd += 8;
+                *(u16 *)(dsp + 0x44 + k * 2) += 2;
+                *(u16 *)(dsp + 0x66) = adsrB;
+            }
+            fn_80259D20(voice);
         }
-        *(u16 *)lbl_80368A80 = 0;
-        *(u16 *)(lbl_80368A80 + 2) = (u16)(*(u32 *)studio >> 16);
-        *(u16 *)(lbl_80368A80 + 4) = (u16)*(u32 *)studio;
-        lbl_80368A80 += 6;
-        tick += 0x2C62;
-        studioIdx++;
-        if (studioIdx > 10) {
+    }
+    if (result != 0) {
+        fn_8025C99C(voice, 0);
+        fn_8025CA80(voice);
+    }
+    fn_8020516C(*(u8 **)(voice + 4), (u32)cmd - (u32)*(u8 **)(voice + 4));
+
+    flags = *(u16 *)(dsp + 0xC);
+    tick += 0x4FE;
+    tick += lbl_80283068[flags & 0xF];
+    tick += lbl_80283068[(flags >> 4) & 0x1F];
+    tick += lbl_80283068[(flags >> 9) & 0x1F];
+    if (*(u16 *)(dsp + 0xBA) == 1) tick += 0x229;
+    i = *(u16 *)(dsp + 0xA6);
+    if (i < 2)
+        tick += *(u16 *)((u8 *)lbl_802A1BC0 + i * 6 + (*(u16 *)(dsp + 8) << 1));
+    else
+        tick += lbl_802A1BC0[6 + *(u16 *)(dsp + 8)];
+    tick += (u32)*(u16 *)(dsp + 0x44) << 2;
+    tick += (u32)*(u16 *)(dsp + 0x46) << 2;
+    tick += (u32)*(u16 *)(dsp + 0x48) << 2;
+    tick += (u32)*(u16 *)(dsp + 0x4A) << 2;
+    tick += (u32)*(u16 *)(dsp + 0x4C) << 2;
+
+    rate = *(volatile u32 *)0x800000F8;
+    rate = (u32)(((u64)rate * 0x51EB851FULL) >> 32) >> 7;
+    if (tick > rate) {
+        if (needMore == 0 && result == 0) {
+            fn_80259E40(studio, voice);
+            fn_8025CA80(voice);
+            fn_8025C99C(voice, 1);
+            /* Discard any remaining sorted voices with status 2. */
+            --sortedEnd;
+            --count;
+            while (count != 0) {
+                savedVoice = sortedEnd[-1];
+                if (savedVoice[0xF0] == 2) {
+                    fn_80259E40(studio, savedVoice);
+                    fn_8025CA80(savedVoice);
+                    fn_8025C99C(savedVoice, 1);
+                }
+                --sortedEnd;
+                --count;
+            }
+            /* Target also clears active queued voices in the later studios. */
+            otherIdx = (u8)(studioIdx + 1);
+            while (otherIdx < gSoundStudioCount) {
+                otherStudio = gSoundStudios + (u8)otherIdx * 0xBC;
+                if (otherStudio[0x50] == 1) {
+                    otherVoice = *(u8 **)(otherStudio + 0x48);
+                    while (otherVoice != 0) {
+                        otherNext = *(u8 **)(otherVoice + 0xC);
+                        if (otherVoice[0xF0] == 2) {
+                            fn_80259E40(otherStudio, otherVoice);
+                            fn_8025CA80(otherVoice);
+                            fn_8025C99C(otherVoice, 1);
+                        }
+                        otherVoice = otherNext;
+                    }
+                }
+                ++otherIdx;
+            }
             break;
         }
     }
-    (void)saved;
-    (void)pad0;
-    (void)tick;
+
+if (previousDsp == 0) {
+if ((u32)(lbl_80368A80 + 6) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)lbl_80368A80 = 2;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)dsp >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)dsp;
+    lbl_80368A80 += 6;
+} else {
+    *(u16 *)previousDsp = (u16)((u32)dsp >> 16);
+    *(u16 *)(previousDsp + 2) = (u16)(u32)dsp;
+    DCFlushRangeNoSync(previousDsp, 0xC4);
+}
+hasDspCommands = 1;
+previousDsp = dsp;
+nextSortedVoice:
+    --sortedEnd;
+    --count;
+}
+/* Append DSP parameter and studio master-voice setup. */
+if (hasDspCommands != 0) {
+if ((u32)(lbl_80368A80 + 2) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+*(u16 *)lbl_80368A80 = 3;
+lbl_80368A80 += 2;
+}
+if (previousDsp != 0) {
+    *(u16 *)previousDsp = 0;
+    *(u16 *)(previousDsp + 2) = 0;
+    DCFlushRangeNoSync(previousDsp, 0xC4);
+}
+i = (lbl_80368AD3 + 1) % 3;
+if (*(u32 *)(studio + 0xAC) != 0) {
+if ((u32)(lbl_80368A80 + 10) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)(lbl_80368A80 + 0) = 4;
+    addr = *(u32 *)(studio + 0x30 + lbl_80368AD3 * 4);
+    addr2 = *(u32 *)(studio + 0x30 + i * 4);
+    *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+    *(u16 *)(lbl_80368A80 + 6) = (u16)(addr2 >> 16);
+    *(u16 *)(lbl_80368A80 + 8) = (u16)addr2;
+    lbl_80368A80 += 10;
+}
+if (*(u32 *)(studio + 0x54) == 0) {
+    if (*(u32 *)(studio + 0xB0) != 0) {
+if ((u32)(lbl_80368A80 + 10) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+        *(u16 *)(lbl_80368A80 + 0) = 5;
+        addr = *(u32 *)(studio + 0x3C + lbl_80368AD3 * 4);
+        addr2 = *(u32 *)(studio + 0x3C + i * 4);
+        *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+        *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+        *(u16 *)(lbl_80368A80 + 6) = (u16)(addr2 >> 16);
+        *(u16 *)(lbl_80368A80 + 8) = (u16)addr2;
+        lbl_80368A80 += 10;
+    }
+} else {
+if ((u32)(lbl_80368A80 + 10) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)(lbl_80368A80 + 0) = 0x10;
+    addr = *(u32 *)(studio + 0x3C + lbl_80368AD4 * 4);
+    addr2 = *(u32 *)(studio + 0x3C + (lbl_80368AD4 ^ 1) * 4);
+    *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+    *(u16 *)(lbl_80368A80 + 6) = (u16)(addr2 >> 16);
+    *(u16 *)(lbl_80368A80 + 8) = (u16)addr2;
+    lbl_80368A80 += 10;
+}
+if ((u32)(lbl_80368A80 + 6) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)lbl_80368A80 = 6;
+    addr = *(u32 *)(studio + 0x28 + lbl_80368AD4 * 4);
+    *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+    lbl_80368A80 += 6;
+    info = *(u8 **)studio;
+    fn_80259D94(info, info + 4, studio + 4);
+    fn_80259D94(info + 6, info + 10, studio + 8);
+    fn_80259D94(info + 12, info + 16, studio + 12);
+    fn_80259D94(info + 18, info + 22, studio + 16);
+    fn_80259D94(info + 24, info + 28, studio + 20);
+    fn_80259D94(info + 30, info + 34, studio + 24);
+    fn_80259D94(info + 36, info + 40, studio + 28);
+    fn_80259D94(info + 42, info + 46, studio + 32);
+    fn_80259D94(info + 48, info + 52, studio + 36);
+    DCFlushRangeNoSync(info, 0x36);
+}
+if ((u32)(lbl_80368A80 + 6) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+*(u16 *)lbl_80368A80 = 0x11;
+*(u16 *)(lbl_80368A80 + 2) = (u16)(lbl_80368A98 >> 16);
+*(u16 *)(lbl_80368A80 + 4) = (u16)lbl_80368A98;
+lbl_80368A80 += 6;
+for (i = 0; i < gSoundStudioCount; ++i) {
+    studio = gSoundStudios + i * 0xBC;
+    if (studio[0x50] == 1 && studio[0x51] != 0) {
+if ((u32)(lbl_80368A80 + 6) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+        *(u16 *)(lbl_80368A80 + 0) = 9;
+        addr = *(u32 *)(studio + 0x28 + lbl_80368AD4 * 4);
+        *(u16 *)(lbl_80368A80 + 2) = (u16)(addr >> 16);
+        *(u16 *)(lbl_80368A80 + 4) = (u16)addr;
+        lbl_80368A80 += 6;
+    }
+}
+if (lbl_80368A8C != 0) {
+if ((u32)(lbl_80368A80 + 10) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)(lbl_80368A80 + 0) = 0x12;
+    *(u16 *)(lbl_80368A80 + 2) = 0x8000;
+    *(u16 *)(lbl_80368A80 + 4) = 0xA;
+    *(u16 *)(lbl_80368A80 + 6) = (u16)((u32)lbl_802A0180 >> 16);
+    *(u16 *)(lbl_80368A80 + 8) = (u16)(u32)lbl_802A0180;
+    lbl_80368A80 += 10;
+}
+if ((u32)(lbl_80368A80 + 10) > (u32)(lbl_80368A7C - 8)) {
+    *(u16 *)lbl_80368A80 = 0xD;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)((u32)lbl_80368A7C >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)(u32)lbl_80368A7C;
+    len = ((u32)(lbl_80368A80 + 8) - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    lbl_80368A6C = (u32)lbl_80368A80;
+    lbl_80368A74 = (u16)len;
+    lbl_80368A70 = lbl_80368A78;
+    lbl_80368A80 = lbl_80368A7C;
+    lbl_80368A78 = lbl_80368A7C;
+    lbl_80368A7C += 0x180;
+}
+    *(u16 *)(lbl_80368A80 + 0) = 0xE;
+    *(u16 *)(lbl_80368A80 + 2) = (u16)(lbl_80368A98 >> 16);
+    *(u16 *)(lbl_80368A80 + 4) = (u16)lbl_80368A98;
+    *(u16 *)(lbl_80368A80 + 6) = (u16)((u32)arg0 >> 16);
+    *(u16 *)(lbl_80368A80 + 8) = (u16)(u32)arg0;
+    lbl_80368A80 += 10;
+    *(u16 *)lbl_80368A80 = 0xF;
+    lbl_80368A80 += 2;
+    len = ((u32)lbl_80368A80 - (u32)lbl_80368A78 + 3) & 0xFFFCU;
+    if (lbl_80368A6C != 0) {
+        *(u16 *)(u32)(lbl_80368A6C + 6) = (u16)len;
+        fn_8020516C(lbl_80368A70, lbl_80368A74);
+    } else {
+        lbl_80368A84 = (u16)len;
+    }
+    fn_8020516C(lbl_80368A78, (u32)lbl_80368A80 - (u32)lbl_80368A78);
 }
 
 s32 fn_8025C99C(void *arg0, s32 arg1)
@@ -3308,7 +4299,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
     if (arg0 == 0) {
         tbl = base;
     }
-    if (arg2 == 0x80000000) {
+    if (arg2 - 0x80000000U == 0) {
         arg2 = 0;
         arg3 = 0x7F0000;
     }
@@ -3463,7 +4454,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
         out[8] = lbl_8036C2D8;
     }
 }
-#pragma fp_contract on
+#pragma fp_contract off
 void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *arg5, f32 *arg6) {
     extern f32 lbl_8036C2E0;
     extern f32 lbl_8036C2E4;
@@ -3478,7 +4469,6 @@ void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *ar
     extern u8 lbl_80368AAF;
     void fn_8025ED88(void *, void *, f32 *);
     void fn_8025EE34(f32 *);
-    f64 __frsqrte(f64);
 
     f32 sp1C;
     f32 sp20;
@@ -3665,7 +4655,6 @@ void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *ar
         *arg6 = lbl_8036C2E0;
     }
 }
-#pragma optimization_level 3
 void fn_8025D9A4(u16 *arg0, u32 arg1)
 {
     extern void *lbl_80368ABC;
@@ -3828,13 +4817,14 @@ void fn_8025DBF4(void) {
     extern f32 lbl_8036C320;
     extern f32 lbl_8036C324;
 
+    u8 *voice;
+    u8 *node;
+    s32 i;
     u8 *entry;
-    u8 *p_list;
     u8 *p_head;
     u8 *p_count;
-    u8 *node;
+    u8 *p_list;
     u8 *other;
-    u8 *voice;
     u8 *cmd;
     u8 *list;
     u8 *cur;
@@ -3847,7 +4837,6 @@ void fn_8025DBF4(void) {
     f32 dt;
     f32 ft;
     s32 handle;
-    s32 i;
     s32 v;
     s32 tmp;
     u8 vel;
@@ -3978,7 +4967,7 @@ void fn_8025DBF4(void) {
                     if (list != NULL) {
                         cmd = *(u8 **)(list + 4);
                         n = 0;
-                        while (n < *(u8 *)list) {
+                        while (n < *list) {
                             w = *(u16 *)cmd;
                             if (!(w & 0xFF00)) {
                                 if (w < 0x40 || w == 0x80 || w == 0x84) {
@@ -4134,7 +5123,7 @@ void fn_8025DBF4(void) {
                 if (list != NULL) {
                     cmd = *(u8 **)(list + 4);
                     n = 0;
-                    while (n < *(u8 *)list) {
+                    while (n < *list) {
                         w = *(u16 *)cmd;
                         if (!(w & 0xFF00)) {
                             if (w < 0x40 || w == 0x80 || w == 0x84) {
@@ -4214,6 +5203,7 @@ void fn_8025E4E8(void) {
     u8 vel;
     u16 w;
     f32 f1;
+    f32 f8, fC, f10, f18;
 
     if (lbl_80368AC0 != 0) {
         lbl_80368AC0 -= 1;
@@ -4234,13 +5224,13 @@ void fn_8025E4E8(void) {
                 *(u8 **)(next + 4) = *(u8 **)(node + 4);
             }
             if (*(u8 **)(node + 4) != NULL) {
-                **(u8 ***)(node + 4) = next;
+                **(u8 ***)(node + 4) = *(u8 * volatile *)node;
             } else {
-                lbl_80368ABC = (s32)next;
+                lbl_80368ABC = (s32)*(u8 * volatile *)node;
             }
             *(u32 *)(node + 0xC) = (u16)*(u32 *)(node + 0xC);
             handle = *(s32 *)(node + 0x38);
-            if (handle != -1) {
+            if ((u32)(handle + 0x10000) != 0xFFFFU) {
                 fn_8024A6F8(handle);
             }
         } else {
@@ -4249,10 +5239,9 @@ void fn_8025E4E8(void) {
             }
             flags = *(u32 *)(node + 0xC);
             if (flags & 0x80000) {
-                if (lbl_8036C2E0 != sp1C) {
-                    *(u32 *)(node + 0xC) = (flags & ~0x80000) | 0x20000;
-                }
-            } else if (flags & 0x20000) {
+                goto do_80000;
+            }
+            if (flags & 0x20000) {
                 if (lbl_8036C2E0 == sp1C && (flags & 4)) {
                     *(u32 *)(node + 0xC) = (flags | 0x80000) & ~0x20000;
                     goto apply;
@@ -4262,13 +5251,13 @@ void fn_8025E4E8(void) {
                         *(u8 **)(next + 4) = *(u8 **)(node + 4);
                     }
                     if (*(u8 **)(node + 4) != NULL) {
-                        **(u8 ***)(node + 4) = next;
+                        **(u8 ***)(node + 4) = *(u8 * volatile *)node;
                     } else {
-                        lbl_80368ABC = (s32)next;
+                        lbl_80368ABC = (s32)*(u8 * volatile *)node;
                     }
                     *(u32 *)(node + 0xC) = (u16)*(u32 *)(node + 0xC);
                     handle = *(s32 *)(node + 0x38);
-                    if (handle != -1) {
+                    if ((u32)(handle + 0x10000) != 0xFFFFU) {
                         fn_8024A6F8(handle);
                     }
                 } else if (flags & 1) {
@@ -4293,7 +5282,7 @@ void fn_8025E4E8(void) {
                     }
                     handle = Sound_Start(*(u16 *)(node + 0x40), vel, 0x7F, 0x40, *(u8 *)(node + 0x42), (flags >> 4) & 1);
                     *(s32 *)(node + 0x38) = handle;
-                    if (handle == -1) {
+                    if ((u32)(handle + 0x10000) == 0xFFFFU) {
                         flags = *(u32 *)(node + 0xC);
                         if (!(flags & 2)) {
                             *(u32 *)(node + 0xC) = (flags | 0x40000) & ~0x20000;
@@ -4306,7 +5295,7 @@ void fn_8025E4E8(void) {
             } else {
                 handle = fn_8024B7DC(*(s32 *)(node + 0x38));
                 *(s32 *)(node + 0x38) = handle;
-                if (handle == -1) {
+                if ((u32)(handle + 0x10000) == 0xFFFFU) {
                     flags = *(u32 *)(node + 0xC);
                     if (flags & 2) {
                         *(u32 *)(node + 0xC) = flags | 0x20000;
@@ -4315,7 +5304,7 @@ void fn_8025E4E8(void) {
                     }
                 }
             apply:
-                if (*(s32 *)(node + 0x38) != -1) {
+                if ((u32)(*(s32 *)(node + 0x38) + 0x10000) != 0xFFFFU) {
                     if (*(u32 *)(node + 0xC) & 1) {
                         i = 0;
                         entry = (u8 *)lbl_8035BF18;
@@ -4364,6 +5353,10 @@ void fn_8025E4E8(void) {
                         }
                     } else {
                         handle = *(s32 *)(node + 0x38);
+                        f8 = sp8;
+                        fC = spC;
+                        f10 = sp10;
+                        f18 = sp18;
                         if (*(u32 *)(node + 0xC) & 0x100000) {
                             v = 0x7F;
                             t = (s32)(lbl_8036C314 * (*(f32 *)(node + 0x48) * sp1C));
@@ -4377,22 +5370,22 @@ void fn_8025E4E8(void) {
                             Sound_SetParamU8(handle, 7, (u8)v);
                         }
                         v = 0x7F;
-                        f1 = lbl_8036C318 * (lbl_8036C2E4 + sp18);
+                        f1 = lbl_8036C318 * (lbl_8036C2E4 + f18);
                         t = (s32)f1;
                         if ((u8)t <= 0x7F) v = t;
                         Sound_SetParamU8(handle, 0xA, (u8)v);
                         v = 0x7F;
-                        f1 = lbl_8036C318 * (lbl_8036C2E4 - sp10);
+                        f1 = lbl_8036C318 * (lbl_8036C2E4 - f10);
                         t = (s32)f1;
                         if ((u8)t <= 0x7F) v = t;
                         Sound_SetParamU8(handle, 0x83, (u8)v);
-                        f1 = lbl_8036C31C * spC;
+                        f1 = lbl_8036C31C * fC;
                         if (f1 > lbl_8036C310) v = 0x3FFF;
                         else v = (s32)f1;
                         Sound_SetParamU16(handle, 0x84, (u16)v);
                         if (*(u32 *)(node + 0xC) & 0x180) {
-                            if (lbl_8036C2E0 != sp8) {
-                                f1 = lbl_8036C310 * sp8;
+                            if (lbl_8036C2E0 != f8) {
+                                f1 = lbl_8036C310 * f8;
                                 if (f1 > lbl_8036C310) v = 0x3FFF;
                                 else v = (s32)f1;
                                 Sound_SetParamU16(handle, 0x1F, (u16)v);
@@ -4419,12 +5412,16 @@ void fn_8025E4E8(void) {
                         }
                     }
                 }
-                if (*(u32 *)(node + 0xC) & 0x100000) {
-                    *(f32 *)(node + 0x48) += lbl_8036C328;
-                    if (*(f32 *)(node + 0x48) >= lbl_8036C2E4) {
-                        *(u32 *)(node + 0xC) &= ~0x100000;
-                    }
+            }
+            if (*(u32 *)(node + 0xC) & 0x100000) {
+                *(f32 *)(node + 0x48) += lbl_8036C328;
+                if (*(f32 *)(node + 0x48) >= lbl_8036C2E4) {
+                    *(u32 *)(node + 0xC) &= ~0x100000;
                 }
+            }
+        do_80000:
+            if (lbl_8036C2E0 != sp1C) {
+                *(u32 *)(node + 0xC) = (flags & ~0x80000) | 0x20000;
             }
         }
         node = next;
@@ -7872,13 +8869,7 @@ void fn_80263CF0(void *arg0) {
 }
 
 s32 fn_80263D30(
-    void *arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    f32 arg6
+    void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6
 )
 {
     extern f32 lbl_8036C3A8;
@@ -7892,195 +8883,105 @@ s32 fn_80263D30(
     extern f64 lbl_8036C3C0;
     extern f64 lbl_8036C3D0;
     extern u32 lbl_802A4570[];
-
     extern void *fn_802637A4(s32);
-    extern f64 fmod(f64, f32);
+    extern f64 fmod(f64, f64);
     extern void *memset(void *, s32, u32);
 
     u8 *data;
     u8 *record;
-    u32 channel;
-    u32 sub;
+    u8 channel;
+    u8 sub;
     u32 index;
     u32 length;
     u32 size;
-    s32 offset;
     f32 minimum;
     f32 frequency;
     f32 value;
 
     data = (u8 *)arg0;
 
-    minimum = lbl_8036C3A8;
-
-    if (arg1 < minimum ||
-        arg1 > lbl_8036C3AC ||
-        arg2 < lbl_8036C3B0 ||
-        arg2 > lbl_8036C3B4 ||
-        arg3 < minimum ||
-        arg3 > lbl_8036C3AC ||
-        arg6 < minimum ||
-        arg6 > lbl_8036C3AC ||
-        arg4 < minimum ||
-        arg4 > lbl_8036C3AC ||
-        arg5 < minimum ||
-        arg5 > lbl_8036C3B8) {
+    if (arg1 < lbl_8036C3A8 || arg1 > lbl_8036C3AC ||
+        arg2 < lbl_8036C3B0 || arg2 > lbl_8036C3B4 ||
+        arg3 < lbl_8036C3A8 || arg3 > lbl_8036C3AC ||
+        arg6 < lbl_8036C3A8 || arg6 > lbl_8036C3AC ||
+        arg4 < lbl_8036C3A8 || arg4 > lbl_8036C3AC ||
+        arg5 < lbl_8036C3A8 || arg5 > lbl_8036C3B8) {
         return 0;
     }
-
     memset(data, 0, 0x1C4);
-
+    minimum = lbl_8036C3A8;
     frequency = lbl_8036C3BC * arg2;
 
-    /*
-     * Initialize the first three buffers for each channel.
-     */
     for (channel = 0; channel < 3; channel++) {
         for (sub = 0; sub < 3; sub++) {
             index = channel * 3 + sub;
             record = data + index * 0x14;
-
-            length = lbl_802A4570[index] + 2;
+            length = lbl_802A4570[sub] + 2;
             size = length * 4;
-
             *(u32 *)(record + 0xBC) = size;
             *(void **)(record + 0xC0) = fn_802637A4(size);
-
             memset(*(void **)(record + 0xC0), 0, size);
             *(f32 *)(record + 0xC4) = minimum;
-
-            offset = *(s32 *)(record + 0xB4) -
-                     ((s32)length >> 1) * 4;
-
-            while (offset < 0) {
-                offset += size;
-            }
-
-            if (offset >= 0) {
-                *(s32 *)(record + 0xB4) = 0;
-                offset = -(s32)(lbl_802A4570[index] * 4);
-
-                while (offset < 0) {
-                    offset += size;
-                }
-            }
-
-            *(s32 *)(record + 0xB8) = offset;
-
-            value = (f32)fmod(
-                lbl_8036C3C0,
-                (f32)(-(s32)(lbl_802A4570[index] * 3)) / frequency
-            );
-
+            *(s32 *)(record + 0xB8) = *(s32 *)(record + 0xB4) - ((s32)length >> 1) * 4;
+            while (*(s32 *)(record + 0xB8) < 0) *(s32 *)(record + 0xB8) += *(s32 *)(record + 0xBC);
+            *(s32 *)(record + 0xB4) = 0;
+            *(s32 *)(record + 0xB8) = *(s32 *)(record + 0xB4) - (s32)(lbl_802A4570[sub] * 4);
+            while (*(s32 *)(record + 0xB8) < 0) *(s32 *)(record + 0xB8) += *(s32 *)(record + 0xBC);
+            value = (f32)fmod(lbl_8036C3C0, (f64)(-(s32)(lbl_802A4570[sub] * 3)) / frequency);
             *(f32 *)(data + index * 0x14 + 0x16C) = value;
         }
     }
-
-    /*
-     * Initialize the next two buffers for each channel.
-     */
     for (channel = 0; channel < 3; channel++) {
         for (sub = 0; sub < 2; sub++) {
             index = channel * 3 + sub;
             record = data + index * 0x14;
-
             length = lbl_802A4570[sub + 3] + 2;
             size = length * 4;
-
             *(u32 *)(record + 0x08) = size;
             *(void **)(record + 0x0C) = fn_802637A4(size);
-
             memset(*(void **)(record + 0x0C), 0, size);
             *(f32 *)(record + 0x10) = minimum;
-
-            offset = *(s32 *)(record + 0x00) -
-                     ((s32)length >> 1) * 4;
-
-            while (offset < 0) {
-                offset += size;
-            }
-
-            if (offset >= 0) {
-                *(s32 *)(record + 0x00) = 0;
-                offset = -(s32)(lbl_802A4570[sub + 3] * 4);
-
-                while (offset < 0) {
-                    offset += size;
-                }
-            }
-
-            *(s32 *)(record + 0x04) = offset;
+            *(s32 *)(record + 0x04) = *(s32 *)(record + 0x00) - ((s32)length >> 1) * 4;
+            while (*(s32 *)(record + 0x04) < 0) *(s32 *)(record + 0x04) += *(s32 *)(record + 0x08);
+            *(s32 *)(record + 0x00) = 0;
+            *(s32 *)(record + 0x04) = *(s32 *)(record + 0x00) - (s32)(lbl_802A4570[sub + 3] * 4);
+            while (*(s32 *)(record + 0x04) < 0) *(s32 *)(record + 0x04) += *(s32 *)(record + 0x08);
         }
     }
-
-    /*
-     * Initialize the final buffer for each channel.
-     */
     for (channel = 0; channel < 3; channel++) {
         record = data + channel * 0x3C;
-
         length = lbl_802A4570[channel + 5] + 2;
         size = length * 4;
-
         *(u32 *)(record + 0x30) = size;
         *(void **)(record + 0x34) = fn_802637A4(size);
-
         memset(*(void **)(record + 0x34), 0, size);
         *(f32 *)(record + 0x38) = minimum;
-
-        offset = *(s32 *)(record + 0x28) -
-                 ((s32)length >> 1) * 4;
-
-        while (offset < 0) {
-            offset += size;
-        }
-
-        if (offset >= 0) {
-            *(s32 *)(record + 0x28) = 0;
-            offset = -(s32)(lbl_802A4570[channel + 5] * 4);
-
-            while (offset < 0) {
-                offset += size;
-            }
-        }
-
-        *(s32 *)(record + 0x2C) = offset;
-
+        *(s32 *)(record + 0x2C) = *(s32 *)(record + 0x28) - ((s32)length >> 1) * 4;
+        while (*(s32 *)(record + 0x2C) < 0) *(s32 *)(record + 0x2C) += *(s32 *)(record + 0x30);
+        *(s32 *)(record + 0x28) = 0;
+        *(s32 *)(record + 0x2C) = *(s32 *)(record + 0x28) - (s32)(lbl_802A4570[channel + 5] * 4);
+        while (*(s32 *)(record + 0x2C) < 0) *(s32 *)(record + 0x2C) += *(s32 *)(record + 0x30);
         *(f32 *)(data + channel * 4 + 0x190) = minimum;
     }
-
     *(f32 *)(data + 0x168) = arg1;
     *(f32 *)(data + 0x19C) = arg3;
     *(f32 *)(data + 0x1A8) = arg6;
     *(f32 *)(data + 0x1A0) = arg4;
-
     value = *(f32 *)(data + 0x1A0);
-
     if (value < lbl_8036C3C8) {
         *(f32 *)(data + 0x1A0) = lbl_8036C3C8;
-
-        value = lbl_8036C3C8 +
-                lbl_8036C3CC * *(f32 *)(data + 0x1A0);
-
-        *(f32 *)(data + 0x1A0) =
-            lbl_8036C3AC - value;
+        value = lbl_8036C3C8 + lbl_8036C3CC * *(f32 *)(data + 0x1A0);
+        *(f32 *)(data + 0x1A0) = lbl_8036C3AC - value;
     }
-
     if (arg5 != minimum) {
         value = lbl_8036C3BC * arg5;
         *(u32 *)(data + 0x1A4) = (u32)(s32)value;
-
         for (channel = 0; channel < 3; channel++) {
             record = data + channel * 4;
-
             size = *(u32 *)(data + 0x1A4) * 4;
-
             *(void **)(record + 0x1AC) = fn_802637A4(size);
-
             memset(*(void **)(record + 0x1AC), 0, size);
-
-            *(void **)(record + 0x1B8) =
-                *(void **)(record + 0x1AC);
+            *(void **)(record + 0x1B8) = *(void **)(record + 0x1AC);
         }
     } else {
         *(u32 *)(data + 0x1A4) = 0;
@@ -8091,7 +8992,6 @@ s32 fn_80263D30(
         *(u32 *)(data + 0x1C0) = 0;
         *(u32 *)(data + 0x1B4) = 0;
     }
-
     return 1;
 }
 
@@ -8108,274 +9008,379 @@ void Sound_MixSampleBuffers(s32 *a, s32 *b, f32 c0, f32 c1) {
 #pragma optimization_level reset
 void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
 {
-    extern f32 lbl_8036C3E0;
-    extern f32 lbl_8036C3E4;
-    extern f64 lbl_8036C3D8;
-
-    union {
-        f64 value;
-        u32 word[2];
-    } conversion;
-
-    u8 *src;
-    u8 *dst;
-    u8 *ring;
-    u8 *srcBuf0;
-    u8 *srcBuf1;
-    u8 *srcBuf2;
-    u8 *dstBuf;
-    u8 *ringBase;
-    u8 *ringCursor;
-
-    s32 srcW0, srcR0, srcW1, srcR1, srcW2, srcR2;
-    s32 srcEnd0, srcEnd1, srcEnd2;
-    s32 dstW0, dstR0, dstW1, dstR1, dstW2, dstR2;
-    s32 dstEnd0, dstEnd1, dstEnd2;
-    s32 ringCount;
-    s32 ringLast;
-    s32 channel3;
-    s32 i;
-    s32 nextInput;
-
-    f32 scale;
-    f32 unity;
-    f32 damp;
-    f32 gain;
-    f32 wet;
-    f32 dry;
-    f32 coeff0, coeff1, coeff2;
-    f32 srcVal0, srcVal1, srcVal2;
-    f32 dstVal0, dstVal1, dstVal2;
-    f32 feedback;
-    f32 sample;
-    f32 delayed;
-    f32 sum;
-    f32 out0, out1, out2;
-    f32 stage;
-
-    scale = lbl_8036C3E0;
-    unity = lbl_8036C3E4;
-    damp = *(f32 *)(arg1 + 0x168);
-    gain = *(f32 *)(arg1 + 0x1A0);
-    wet = *(f32 *)(arg1 + 0x19C) * unity;
-    dry = unity - wet;
-
-    channel3 = (arg2 << 1) + arg2;
-    src = arg1 + 0xB4 + channel3 * 0x14;
-    dst = arg1 + channel3 * 0x14;
-    ring = arg1 + (arg2 << 2);
-
-    coeff0 = *(f32 *)(arg1 + channel3 * 4 + 0x16C);
-    coeff1 = *(f32 *)(arg1 + channel3 * 4 + 0x170);
-    coeff2 = *(f32 *)(arg1 + channel3 * 4 + 0x174);
-    feedback = *(f32 *)(ring + 0x190);
-
-    ringCount = *(s32 *)(arg1 + 0x1A4);
-    ringLast = (ringCount - 1) * 4;
-
-    srcW0 = *(s32 *)(src + 0x00);
-    srcR0 = *(s32 *)(src + 0x04);
-    srcW1 = *(s32 *)(src + 0x14);
-    srcR1 = *(s32 *)(src + 0x18);
-    srcW2 = *(s32 *)(src + 0x28);
-    srcR2 = *(s32 *)(src + 0x2C);
-    srcEnd0 = *(s32 *)(src + 0x08);
-    srcEnd1 = *(s32 *)(src + 0x1C);
-    srcEnd2 = *(s32 *)(src + 0x30);
-    srcBuf0 = *(u8 **)(src + 0x0C);
-    srcBuf1 = *(u8 **)(src + 0x20);
-    srcBuf2 = *(u8 **)(src + 0x34);
-    srcVal0 = *(f32 *)(src + 0x10);
-    srcVal1 = *(f32 *)(src + 0x24);
-    srcVal2 = *(f32 *)(src + 0x38);
-
-    dstW0 = *(s32 *)(dst + 0x00);
-    dstR0 = *(s32 *)(dst + 0x04);
-    dstW1 = *(s32 *)(dst + 0x14);
-    dstR1 = *(s32 *)(dst + 0x18);
-    dstW2 = *(s32 *)(dst + 0x28);
-    dstR2 = *(s32 *)(dst + 0x2C);
-    dstEnd0 = *(s32 *)(dst + 0x08);
-    dstEnd1 = *(s32 *)(dst + 0x1C);
-    dstEnd2 = *(s32 *)(dst + 0x30);
-    dstVal0 = *(f32 *)(dst + 0x10);
-    dstVal1 = *(f32 *)(dst + 0x24);
-    dstVal2 = *(f32 *)(dst + 0x38);
-
-    conversion.word[0] = 0x43300000;
-    conversion.word[1] = ((u32)*arg0) ^ 0x80000000;
-    sample = (f32)(conversion.value - lbl_8036C3D8);
-
-    for (i = 0; i < 0x9F; ++i) {
-        delayed = sample;
-        if (ringCount != 0) {
-            ringBase = *(u8 **)(ring + 0x1AC);
-            ringCursor = *(u8 **)(ring + 0x1B8);
-            ringCursor += 4;
-            delayed = *(f32 *)(ringCursor - 4);
-            *(f32 *)(ringCursor - 4) = sample;
-            if (ringCursor == ringBase + ringLast) {
-                ringCursor = ringBase;
-                *(u8 **)(ringBase + 0x1B8) = ringCursor;
-            }
-        }
-
-        out0 = coeff0 * srcVal0 + delayed;
-        nextInput = *++arg0;
-        out1 = coeff1 * srcVal1 + delayed;
-        *(f32 *)(srcBuf0 + srcW0) = out0;
-        srcW0 += 4;
-        *(f32 *)(srcBuf1 + srcW1) = out1;
-        srcVal0 = *(f32 *)(srcBuf0 + srcR0);
-        srcR0 += 4;
-        srcVal1 = *(f32 *)(srcBuf1 + srcR1);
-        srcW1 += 4;
-        srcR1 += 4;
-        if (srcW0 == srcEnd0) srcW0 = 0;
-        if (srcR0 == srcEnd0) srcR0 = 0;
-        sum = srcVal0 + srcVal1;
-        out2 = coeff2 * srcVal2 + delayed;
-        if (srcW1 == srcEnd1) srcW1 = 0;
-        if (srcR1 == srcEnd1) srcR1 = 0;
-        *(f32 *)(srcBuf2 + srcW2) = out2;
-        srcW2 += 4;
-        srcVal2 = *(f32 *)(srcBuf2 + srcR2);
-        srcR2 += 4;
-        if (srcW2 == srcEnd2) srcW2 = 0;
-        if (srcR2 == srcEnd2) srcR2 = 0;
-        sum += srcVal2;
-
-        dstBuf = *(u8 **)(dst + 0x0C);
-        out0 = damp * dstVal0 + sum;
-        *(f32 *)(dstBuf + dstW0) = out0;
-        stage = dstVal0 - damp * out0;
-        dstW0 += 4;
-        dstVal0 = *(f32 *)(dstBuf + dstR0);
-        dstR0 += 4;
-        dstBuf = *(u8 **)(dst + 0x20);
-        out1 = damp * dstVal1 + stage;
-        if (dstW0 == dstEnd0) dstW0 = 0;
-        if (dstR0 == dstEnd0) dstR0 = 0;
-        *(f32 *)(dstBuf + dstW1) = out1;
-        stage = dstVal1 - damp * out1;
-        dstW1 += 4;
-        dstVal1 = *(f32 *)(dstBuf + dstR1);
-        stage *= scale;
-        dstR1 += 4;
-        stage = gain * feedback + stage;
-        if (dstW1 == dstEnd1) dstW1 = 0;
-        dstBuf = *(u8 **)(dst + 0x34);
-        out2 = damp * dstVal2 + stage;
-        feedback = stage;
-        if (dstR1 == dstEnd1) dstR1 = 0;
-        *(f32 *)(dstBuf + dstW2) = out2;
-        stage = dstVal2 - damp * out2;
-        dstVal2 = *(f32 *)(dstBuf + dstR2);
-        dstW2 += 4;
-        dstR2 += 4;
-        out0 = dry * sample;
-        out1 = wet * stage + out0;
-        if (dstW2 == dstEnd2) dstW2 = 0;
-        if (dstR2 == dstEnd2) dstR2 = 0;
-        conversion.word[1] = ((u32)nextInput) ^ 0x80000000;
-        sample = (f32)(conversion.value - lbl_8036C3D8);
-        *(arg0 - 1) = (s32)out1;
-    }
-
-    /* The last input is processed separately; there is no next-input read. */
+  extern f32 lbl_8036C3E0;
+  extern f32 lbl_8036C3E4;
+  extern f64 lbl_8036C3D8;
+  union 
+  {
+    f64 value;
+    u32 word[2];
+  } conversion;
+  u8 *src;
+  u8 *dst;
+  u8 *ring;
+  u8 *new_var6[2];
+  u8 *srcBuf1;
+  u8 *srcBuf2;
+  u8 *dstBuf;
+  u8 *ringBase;
+  u8 *ringCursor;
+  s32 srcW0;
+  unsigned short new_var7;
+  s32 srcR0;
+  s32 srcW1;
+  s32 srcR1;
+  s32 srcW2;
+  s32 srcR2;
+  s32 dstEnd0;
+  s32 srcEnd0;
+  s32 srcEnd1;
+  s32 srcEnd2;
+  s32 dstW0;
+  float new_var3;
+  s32 dstR0;
+  s32 dstW1;
+  s32 dstR1;
+  s32 dstW2;
+  s32 dstR2;
+  s32 dstEnd1;
+  s32 dstEnd2;
+  s32 ringCount;
+  s32 ringLast;
+  s32 new_var5;
+  volatile short new_var8;
+  f32 *new_var2;
+  s32 channel3;
+  s32 i;
+  s32 nextInput;
+  int new_var4;
+  f32 scale;
+  f32 unity;
+  f32 damp;
+  f32 gain;
+  f32 wet;
+  f32 dry;
+  f32 coeff0;
+  f32 coeff1;
+  f32 coeff2;
+  f32 srcVal0;
+  f32 srcVal1;
+  f32 srcVal2;
+  f32 dstVal0;
+  f32 dstVal1;
+  f32 dstVal2;
+  u8 *new_var;
+  f32 feedback;
+  f32 sample;
+  f32 delayed;
+  f32 sum;
+  f32 out0;
+  f32 out1;
+  f32 out2;
+  f32 stage;
+  scale = lbl_8036C3E0;
+  unity = lbl_8036C3E4;
+  damp = *((f32 *) (arg1 + 0x168));
+  gain = *((f32 *) (arg1 + 0x1A0));
+  wet = (*((f32 *) ((new_var6[0] = arg1) + 0x19C))) * unity;
+  dry = unity - wet;
+  channel3 = (arg2 << 1) + arg2;
+  src = (new_var6[0] + 0xB4) + (channel3 * 0x14);
+  dst = new_var6[0] + (channel3 * 0x14);
+  ring = arg1 + (arg2 << 2);
+  coeff0 = *((f32 *) ((arg1 + (channel3 * 4)) + 0x16C));
+  srcR0 = *((s32 *) (src + 0x04));
+  coeff1 = *((f32 *) ((arg1 + (channel3 * 4)) + 0x170));
+  coeff2 = *((f32 *) ((new_var6[0] + (channel3 * 4)) + 0x174));
+  feedback = *((f32 *) (ring + 0x190));
+  ringCount = *((s32 *) (arg1 + 0x1A4));
+  ringLast = (ringCount - 1) * 4;
+  srcW0 = *((s32 *) (src + 0x00));
+  srcW1 = *((s32 *) (src + 0x14));
+  srcR1 = *((s32 *) (src + 0x18));
+  srcW2 = *((s32 *) (src + 0x28));
+  srcR2 = *((s32 *) (src + 0x2C));
+  srcEnd0 = *((s32 *) (src + 0x08));
+  srcEnd1 = *((s32 *) (src + 0x1C));
+  srcEnd2 = *((s32 *) (src + 0x30));
+  new_var6[1] = *((u8 **) (src + 0x0C));
+  srcBuf1 = *((u8 **) (src + 0x20));
+  srcBuf2 = *((u8 **) (src + 0x34));
+  srcVal0 = *((f32 *) (src + 0x10));
+  srcVal1 = *((f32 *) (src + 0x24));
+  srcVal2 = *((f32 *) (src + 0x38));
+  dstW0 = *((s32 *) (dst + 0x00));
+  dstR0 = *((s32 *) (dst + 0x04));
+  new_var8 = *((s32 *) (dst + 0x1C));
+  dstW1 = *((s32 *) (dst + 0x14));
+  dstR1 = *((s32 *) (dst + 0x18));
+  dstW2 = *((s32 *) (dst + 0x28));
+  dstR2 = *((s32 *) (dst + 0x2C));
+  dstEnd0 = *((s32 *) (dst + 0x08));
+  dstEnd1 = new_var8;
+  dstEnd2 = *((s32 *) (dst + 0x30));
+  dstVal0 = *((f32 *) (dst + 0x10));
+  dstVal1 = *((f32 *) (dst + 0x24));
+  dstVal2 = *((f32 *) (dst + 0x38));
+  (&conversion)->word[0] = 0x43300000;
+  conversion.word[1] = ((u32) (*arg0)) ^ 0x80000000;
+  sample = (f32) (conversion.value - lbl_8036C3D8);
+  for (i = 0; i < 0x9F; ++i)
+  {
+    new_var4 = 4;
     delayed = sample;
-    if (ringCount != 0) {
-        ringBase = *(u8 **)(ring + 0x1AC);
-        ringCursor = *(u8 **)(ring + 0x1B8);
-        ringCursor += 4;
-        delayed = *(f32 *)(ringCursor - 4);
-        *(f32 *)(ringCursor - 4) = sample;
-        if (ringCursor == ringBase + ringLast) {
-            ringCursor = ringBase;
-            *(u8 **)(ringBase + 0x1B8) = ringCursor;
+    if (ringCount != 0)
+    {
+      ringBase = *((u8 **) (ring + 0x1AC));
+      ringCursor = *((u8 **) (ring + 0x1B8));
+      ringCursor += new_var4;
+      delayed = *((f32 *) (ringCursor - new_var4));
+      *((f32 *) (ringCursor - new_var4)) = sample;
+      if (ringCursor == (ringBase + ringLast))
+      {
+        if (1)
+        {
+          ringCursor = (*((u8 **) (ringBase + 0x1B8)) = ringBase);
         }
+      }
     }
-
-    out0 = coeff0 * srcVal0 + delayed;
-    out1 = coeff1 * srcVal1 + delayed;
-    *(f32 *)(srcBuf0 + srcW0) = out0;
+    out0 = (coeff0 * srcVal0) + delayed;
+    nextInput = *(++arg0);
+    out1 = delayed;
+    out1 = (coeff1 * srcVal1) + out1;
+    new_var2 = (f32 *) (new_var6[1] + srcW0);
+    *new_var2 = out0;
     srcW0 += 4;
-    *(f32 *)(srcBuf1 + srcW1) = out1;
-    srcVal0 = *(f32 *)(srcBuf0 + srcR0);
-    srcR0 += 4;
-    srcVal1 = *(f32 *)(srcBuf1 + srcR1);
-    srcW1 += 4;
-    srcR1 += 4;
-    if (srcW0 == srcEnd0) srcW0 = 0;
-    if (srcR0 == srcEnd0) srcR0 = 0;
+    *((f32 *) (srcBuf1 + srcW1)) = out1;
+    srcVal0 = *((f32 *) (new_var6[1] + srcR0));
+    srcR0 += new_var4;
+    srcVal1 = *((f32 *) (srcBuf1 + srcR1));
+    srcW1 += new_var4;
+    srcR1 += new_var4;
+    if (srcW0 == srcEnd0)
+    {
+      srcW0 = 0;
+    }
+    if (srcR0 == srcEnd0)
+    {
+      srcR0 = 0;
+    }
     sum = srcVal0 + srcVal1;
-    out2 = coeff2 * srcVal2 + delayed;
-    if (srcW1 == srcEnd1) srcW1 = 0;
-    if (srcR1 == srcEnd1) srcR1 = 0;
-    *(f32 *)(srcBuf2 + srcW2) = out2;
-    srcW2 += 4;
-    srcVal2 = *(f32 *)(srcBuf2 + srcR2);
-    srcR2 += 4;
-    if (srcW2 == srcEnd2) srcW2 = 0;
-    if (srcR2 == srcEnd2) srcR2 = 0;
+    out2 = (coeff2 * srcVal2) + delayed;
+    if (srcW1 == srcEnd1)
+    {
+      srcW1 = 0;
+    }
+    if (srcR1 == srcEnd1)
+    {
+      srcR1 = 0;
+      srcR2 += new_var4;
+    }
+    new_var3 = dry * sample;
+    *((f32 *) (srcBuf2 + srcW2)) = out2;
+    srcW2 += new_var4;
+    srcVal2 = *((f32 *) (srcBuf2 + srcR2));
+    new_var7 = srcW2;
+    coeff0 += 0;
+    if (new_var7 == srcEnd2)
+    {
+      srcW2 = 0;
+    }
+    if (srcR2 == srcEnd2)
+    {
+      srcR2 = 0;
+    }
     sum += srcVal2;
-
-    dstBuf = *(u8 **)(dst + 0x0C);
-    out0 = damp * dstVal0 + sum;
-    *(f32 *)(dstBuf + dstW0) = out0;
-    stage = dstVal0 - damp * out0;
-    dstW0 += 4;
-    dstVal0 = *(f32 *)(dstBuf + dstR0);
-    dstR0 += 4;
-    dstBuf = *(u8 **)(dst + 0x20);
-    out1 = damp * dstVal1 + stage;
-    if (dstW0 == dstEnd0) dstW0 = 0;
-    if (dstR0 == dstEnd0) dstR0 = 0;
-    *(f32 *)(dstBuf + dstW1) = out1;
-    stage = dstVal1 - damp * out1;
+    dstBuf = *((u8 **) (dst + 0x0C));
+    out0 = (damp * dstVal0) + sum;
+    *((f32 *) (dstBuf + dstW0)) = out0;
+    stage = dstVal0 - (damp * out0);
+    dstW0 += new_var4;
+    dstVal0 = *((f32 *) (dstBuf + dstR0));
+    dstR0 += 4 & 0xFFu;
+    dstBuf = *((u8 **) (dst + 0x20));
+    *((f32 *) (dstBuf + dstW1)) = (out1 = (damp * dstVal1) + stage);
+    if (dstW0 == dstEnd0)
+    {
+      dstW0 = 0;
+    }
+    if (dstR0 == dstEnd0)
+    {
+      dstR0 = 0;
+    }
+    stage = dstVal1 - (damp * out1);
     dstW1 += 4;
-    dstVal1 = *(f32 *)(dstBuf + dstR1);
+    dstVal1 = *((f32 *) (dstBuf + dstR1));
     stage *= scale;
-    dstR1 += 4;
-    stage = gain * feedback + stage;
-    if (dstW1 == dstEnd1) dstW1 = 0;
-    dstBuf = *(u8 **)(dst + 0x34);
-    out2 = damp * dstVal2 + stage;
+    dstR1 += new_var4;
+    stage = (gain * feedback) + stage;
+    if (dstW1 == dstEnd1)
+    {
+      dstW1 = 0;
+    }
+    dstBuf = *((u8 **) (dst + 0x34));
+    out2 = (damp * dstVal2) + stage;
+    if (dstW0)
+    {
+    }
     feedback = stage;
-    if (dstR1 == dstEnd1) dstR1 = 0;
-    *(f32 *)(dstBuf + dstW2) = out2;
-    stage = dstVal2 - damp * out2;
-    dstVal2 = *(f32 *)(dstBuf + dstR2);
-    dstW2 += 4;
+    if (dstR1 == dstEnd1)
+    {
+      dstR1 = 0;
+    }
+    *((f32 *) (dstBuf + dstW2)) = out2;
+    stage = dstVal2 - (damp * out2);
+    dstVal2 = *((f32 *) (dstBuf + dstR2));
+    dstW2 += new_var4;
     dstR2 += 4;
-    out0 = dry * sample;
-    out1 = wet * stage + out0;
-    if (dstW2 == dstEnd2) dstW2 = 0;
-    if (dstR2 == dstEnd2) dstR2 = 0;
-    *arg0 = (s32)out1;
+    out0 = new_var3;
+    out1 = (wet * stage) + out0;
+    if (dstW2 == (*((s32 *) (dst + 0x30))))
+    {
+      dstW2 = 0;
+    }
+    if (dstR2 == dstEnd2)
+    {
+      dstR2 = 0;
+    }
+    conversion.word[1] = ((u32) nextInput) ^ 0x80000000;
+    sample = (f32) (conversion.value - lbl_8036C3D8);
+    *(arg0 - 1) = (s32) out1;
+  }
 
-    channel3 = (arg2 << 1) + arg2;
-    src = arg1 + 0xB4 + channel3 * 0x14;
-    *(s32 *)(src + 0x00) = srcW0;
-    *(s32 *)(src + 0x04) = srcR0;
-    *(s32 *)(src + 0x14) = srcW1;
-    *(s32 *)(src + 0x18) = srcR1;
-    *(s32 *)(src + 0x28) = srcW2;
-    *(s32 *)(src + 0x2C) = srcR2;
-    *(f32 *)(src + 0x10) = srcVal0;
-    *(f32 *)(src + 0x24) = srcVal1;
-    *(f32 *)(src + 0x38) = srcVal2;
-
-    *(s32 *)(dst + 0x00) = dstW0;
-    *(s32 *)(dst + 0x04) = dstR0;
-    *(s32 *)(dst + 0x14) = dstW1;
-    *(s32 *)(dst + 0x18) = dstR1;
-    *(s32 *)(dst + 0x28) = dstW2;
-    *(s32 *)(dst + 0x2C) = dstR2;
-    *(f32 *)(dst + 0x10) = dstVal0;
-    *(f32 *)(dst + 0x24) = dstVal1;
-    *(f32 *)(dst + 0x38) = dstVal2;
-    *(f32 *)(ring + 0x190) = feedback;
+  delayed = sample;
+  if (ringCount != ((0, 0)))
+  {
+    ringBase = *((u8 **) (ring + 0x1AC));
+    ringCursor = *((u8 **) (ring + 0x1B8));
+    ringCursor += new_var4;
+    delayed = *((f32 *) (ringCursor - new_var4));
+    *((f32 *) (ringCursor - 4)) = sample;
+    if (ringCursor == (ringBase + ringLast))
+    {
+      ringCursor = ringBase;
+      dstW1 = 0;
+      *((u8 **) (ringBase + 0x1B8)) = ringCursor;
+    }
+  }
+  out0 = (coeff0 * srcVal0) + delayed;
+  out1 = (*((f32 *) (srcBuf1 + srcW1)) = (coeff1 * srcVal1) + delayed);
+  *((f32 *) (new_var6[1] + srcW0)) = out0;
+  srcW0 += 4;
+  srcVal0 = *((f32 *) (new_var6[1] + srcR0));
+  srcR0 += new_var4;
+  srcVal1 = *((f32 *) (srcBuf1 + srcR1));
+  srcW1 += new_var4;
+  srcR1 += 4;
+  if (srcW0 == srcEnd0)
+  {
+    do
+    {
+    }
+    while (0);
+    srcW0 = 0;
+  }
+  if (srcR0 == srcEnd0)
+  {
+    srcR0 = 0;
+  }
+  sum = srcVal0 + srcVal1;
+  out2 = (coeff2 * srcVal2) + delayed;
+  if (srcW1 == srcEnd1)
+  {
+    srcW1 = 0;
+  }
+  if (srcR1 == srcEnd1)
+  {
+    srcR1 = 0;
+  }
+  *((f32 *) (srcBuf2 + srcW2)) = out2;
+  srcW2 += 4;
+  srcVal2 = *((f32 *) (srcBuf2 + srcR2));
+  srcR2 += 4;
+  if (srcW2 == srcEnd2)
+  {
+    srcW2 = 0;
+  }
+  if (srcR2 == srcEnd2)
+  {
+    srcR2 = 0;
+  }
+  sum += srcVal2;
+  dstBuf = *((u8 **) (dst + 0x0C));
+  ;
+  *((f32 *) (dstBuf + dstW0)) = (damp * dstVal0) + sum;
+  new_var5 = *((s32 *) (dst + 0x30));
+  stage = dstVal0 - (damp * out0);
+  dstW0 += 4;
+  dstVal0 = *((f32 *) (dstBuf + dstR0));
+  dstR0 += 4;
+  dstBuf = *((u8 **) (dst + 0x20));
+  out1 = (damp * dstVal1) + stage;
+  if (dstW0 == dstEnd0)
+  {
+    dstW0 = 0;
+  }
+  if (dstR0 == dstEnd0)
+  {
+    dstR0 = 0;
+  }
+  *((f32 *) (dstBuf + dstW1)) = out1;
+  stage = dstVal1 - (damp * out1);
+  dstW1 += 4;
+  dstVal1 = *((f32 *) (dstBuf + dstR1));
+  stage *= scale;
+  dstR1 += new_var4;
+  stage = (gain * feedback) + stage;
+  if (dstW1 == dstEnd1)
+  {
+    dstW1 = 0;
+  }
+  dstBuf = *((u8 **) (dst + 0x34));
+  out2 = (damp * dstVal2) + stage;
+  feedback = stage;
+  if (dstR1 == dstEnd1)
+  {
+    dstR1 = 0;
+  }
+  *((f32 *) (dstBuf + dstW2)) = out2;
+  stage = dstVal2 - (damp * out2);
+  dstVal2 = *((f32 *) (dstBuf + dstR2));
+  dstW2 += new_var4;
+  dstR2 += 4;
+  out0 = dry * sample;
+  out1 = (wet * stage) + out0;
+  if (dstW2 == dstEnd2)
+  {
+    dstW2 = 0;
+  }
+  if (dstR2 == new_var5)
+  {
+    dstR2 = 0;
+  }
+  *arg0 = (s32) out1;
+  channel3 = (arg2 << 1) + arg2;
+  src = (new_var6[0] + 0xB4) + (channel3 * 0x14);
+  *((s32 *) (src + 0x00)) = srcW0;
+  *((s32 *) (src + 0x04)) = srcR0;
+  *((s32 *) (src + 0x14)) = srcW1;
+  *((s32 *) (src + 0x28)) = srcW2;
+  *((s32 *) (src + 0x2C)) = srcR2;
+  *((f32 *) (src + 0x10)) = srcVal0;
+  new_var = dst + 0x04;
+  *((f32 *) (src + 0x24)) = srcVal1;
+  *((f32 *) (src + 0x38)) = srcVal2;
+  *((s32 *) (dst + 0x00)) = dstW0;
+  *((s32 *) new_var) = dstR0;
+  *((s32 *) (dst + 0x14)) = dstW1;
+  *((s32 *) (dst + 0x18)) = dstR1;
+  *((s32 *) (dst + 0x28)) = dstW2;
+  *((s32 *) (dst + 0x2C)) = dstR2;
+  *((s32 *) (src + 0x18)) = srcR1;
+  *((f32 *) (dst + 0x10)) = dstVal0;
+  *((f32 *) (dst + 0x24)) = dstVal1;
+  *((f32 *) (dst + 0x38)) = dstVal2;
+  *((f32 *) (ring + 0x190)) = feedback;
 }
 
 /* Mix wet aux into ch0/ch1 if needed, then run aux FX on all three PCM channels. */
