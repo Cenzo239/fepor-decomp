@@ -6139,45 +6139,82 @@ void fn_8004B8F8(int arg0, int arg1, float arg2, float arg3)
 }
 
 void fn_8004B984(void) {
- void fn_80067708(s32,s32,void *,s32);
- s32 fn_8004BAC4(s32,s32,s32,s32);
- extern void *lbl_803672CC;
- struct Node {struct Node *next,*prev; u8 kind,timer;};
- struct Pool {u8 pad[8]; struct Node **free; struct Node *head,*tail; s32 count;};
- struct Pool *pool;
- struct Node *node;
- struct Node *link;
- u8 keep;
- if(lbl_803672CC) {
- node=0;
- goto next;
- do {
- node->timer++;
- switch(node->kind) {
- case 0: if(node->timer==180) {keep=0;break;} goto alive;
- case 1: if(node->timer==60) {keep=0;break;} goto alive;
- default: alive: keep=1;break;
- }
- if(!keep) {
- pool=lbl_803672CC;
- if(node) {
- link=node->next;
- if(link) link->prev=node->prev;
- link=node->prev;
- if(link) link->next=node->next;
- if(node==pool->head) pool->head=node->next;
- if(node==pool->tail) pool->tail=node->prev;
- pool->free--;
- pool->count--;
- *pool->free=node;
- }
- }
- next:
- pool=lbl_803672CC;
- node = node == 0 ? pool->head : node->next;
- } while(node);
- fn_80067708(2,2,fn_8004BAC4,0);
- }
+    void fn_80067708(s32, s32, void *, s32);
+    void fn_8004BAC4(void);
+    extern void *lbl_803672CC;
+    struct Node {
+        struct Node *next;
+        struct Node *prev;
+        u8 kind;
+        u8 timer;
+    };
+    struct Pool {
+        u8 pad[8];
+        struct Node **free;
+        struct Node *head;
+        struct Node *tail;
+        s32 count;
+    };
+    struct Pool *pool;
+    struct Node *node;
+    struct Node *link;
+    u8 keep;
+
+    if (lbl_803672CC) {
+        node = 0;
+        goto next;
+        do {
+            node->timer++;
+            switch (node->kind) {
+            case 0:
+                if (node->timer == 0xb4) {
+                    keep = 0;
+                    break;
+                }
+                goto alive;
+            case 1:
+                if (node->timer == 0x3c) {
+                    keep = 0;
+                    break;
+                }
+                goto alive;
+            default:
+            alive:
+                keep = 1;
+                break;
+            }
+            if (!keep) {
+                pool = (struct Pool *)lbl_803672CC;
+                if (node != 0) {
+                    link = node->next;
+                    if (link != 0) {
+                        link->prev = node->prev;
+                    }
+                    link = node->prev;
+                    if (link != 0) {
+                        link->next = node->next;
+                    }
+                    if (node == pool->head) {
+                        pool->head = node->next;
+                    }
+                    if (node == pool->tail) {
+                        pool->tail = node->prev;
+                    }
+                    pool->free--;
+                    pool->count--;
+                    *pool->free = node;
+                }
+            }
+        next:
+            pool = (struct Pool *)lbl_803672CC;
+            if (node == 0) {
+                node = pool->head;
+            } else {
+                node = node->next;
+            }
+        } while (node != 0);
+        fn_80067708(2, 2, fn_8004BAC4, 0);
+    }
 }
 
 #pragma use_lmw_stmw reset
