@@ -488,14 +488,14 @@ s32 fn_80096C18(void) {
 
 u8 fn_80096C78(s32 arg0)
 {
-  extern u8 gBattle[];
+  extern u8 lbl_80330EAC[];
   s16 saved;
   unsigned char new_var;
   s16 *idx;
   s32 count;
   new_var = ((s16) arg0) + 1;
   count = 0;
-  idx = (s16 *) (gBattle + 0x8A0);
+  idx = (s16 *) (lbl_80330EAC + 0x8A0);
   saved = *idx;
   *idx = (s16) arg0;
   *idx = (s16) new_var;
@@ -504,30 +504,53 @@ u8 fn_80096C78(s32 arg0)
     switch (((u8 *) idx)[((*idx) * 4) + 4])
     {
       case 0:
+
       case 0x20:
+
       case 0x21:
+
       case 0x22:
+
       case 0x24:
+
       case 0x37:
+
       case 0x38:
+
       case 0x39:
+        if (1)
+      {
+      }
+
       case 0x3D:
+
       case 0x3F:
+
       case 0x40:
+
       case 0x41:
+
       case 0x42:
+
       case 0x48:
         goto done;
+
       case 0x50:
+
       case 0x51:
+
       case 0x52:
         ++count;
         break;
+
     }
+
     *idx += 1;
   }
+
   done:
   *idx = saved;
+
   return (u8) (count >= 2);
 }
 
@@ -737,8 +760,8 @@ done:
 #pragma cplusplus reset
 void fn_800973F0(void *arg0, s32 arg1) {
 u32 *ptr = arg0;
-if(arg1 < 0 || arg1 > 0x45) return;
-switch(arg1) {
+u32 idx = arg1 - 10;
+switch(idx) {
 case 0: *ptr |= 0x8000000U; break;
 case 1: *ptr |= 0x10000000U; break;
 case 2: *ptr |= 0x20000000U; break;
@@ -765,7 +788,7 @@ case 22: *ptr |= 0x8000U; break;
 case 23: *ptr |= 0x10000U; break;
 case 24: *ptr |= 0x800U; break;
 case 25: *ptr |= 0x1000U; break;
-case 26: *ptr |= 0x40000U; break;
+case 0x45: *ptr |= 0x40000U; break;
 }
 }
 
@@ -995,8 +1018,8 @@ extern void *lbl_80367500,*lbl_80367504;
 extern f32 lbl_803697BC;
 void fn_800340E4(void *);
 u8 *base=gEventSlots;
-u8 *second=base+20;
 u8 *script=gBattle+0x8a0;
+u8 *second=base+20;
 u8 *other;
 s16 saved=*(s16 *)script;
 M2C_FIELD(gEventSlots,void **,0)=0;M2C_FIELD(base,f32 *,4)=lbl_803697BC;M2C_FIELD(base,f32 *,8)=lbl_803697BC;M2C_FIELD(base,f32 *,12)=lbl_803697BC;M2C_FIELD(base,f32 *,16)=lbl_803697BC;M2C_FIELD(second,void **,0)=0;M2C_FIELD(base,f32 *,24)=lbl_803697BC;M2C_FIELD(base,f32 *,28)=lbl_803697BC;M2C_FIELD(base,f32 *,32)=lbl_803697BC;M2C_FIELD(base,f32 *,36)=lbl_803697BC;M2C_FIELD(base,void **,40)=0;M2C_FIELD(base,f32 *,44)=lbl_803697BC;M2C_FIELD(base,f32 *,48)=lbl_803697BC;M2C_FIELD(base,f32 *,52)=lbl_803697BC;M2C_FIELD(base,f32 *,56)=lbl_803697BC;M2C_FIELD(gEventSlots,void **,0)=gBattle+0;{ s32 value=0; fn_800340E4(script); other=gBattle+0x2e0;
