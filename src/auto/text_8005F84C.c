@@ -8516,6 +8516,7 @@ s32 fn_8006EDD8(void *arg0, s32 arg1) {
     return M2C_FIELD(arg0, s32 *, 8) + (arg1 * 8);
 }
 
+#pragma global_optimizer off
 int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     u8 *file;
     u8 *table;
@@ -8524,8 +8525,8 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     u32 value;
     u32 i;
 
-    file = (u8 *)fn_8005C82C(arg1, arg2);
-    *(u8 **)arg0 = file;
+    *(u8 **)arg0 = (u8 *)fn_8005C82C(arg1, arg2);
+    file = *(u8 **)arg0;
 
     if (*(u32 *)file == 0x0020AF31U) {
         return;
@@ -8579,15 +8580,15 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
         i++;
     }
 }
-
 void fn_8006EEFC(void *arg0, void *arg1) {
     u8 *FileCache_Load(s32);
     u16 i;
     u8 *file;
     u8 *table;
-    u8 *record;
     u32 offset;
+    u8 *record;
     u32 value;
+    u32 offset2;
 
     file = FileCache_Load((s32)arg1);
     *(u8 **)arg0 = file;
@@ -8618,26 +8619,25 @@ void fn_8006EEFC(void *arg0, void *arg1) {
                 *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
-                record = *(u8 **)(table + offset);
-                record[0x23] = 1;
+                *(u8 *)(*(u8 **)(table + offset) + 0x23) = 1;
             }
         }
 
         table = *(u8 **)(file + 8);
-        value = *(u32 *)(table + offset + 4);
+        offset2 = offset + 4;
+        value = *(u32 *)(table + offset2);
 
         if (value != 0) {
-            *(u32 *)(table + offset + 4) = (u32)file + value;
+            *(u32 *)(table + offset2) = (u32)file + value;
 
             table = *(u8 **)(file + 8);
-            record = *(u8 **)(table + offset + 4);
+            record = *(u8 **)(table + offset2);
 
             if (record[2] == 0) {
                 *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
-                record = *(u8 **)(table + offset + 4);
-                record[2] = 1;
+                *(u8 *)(*(u8 **)(table + offset2) + 2) = 1;
             }
         }
 
