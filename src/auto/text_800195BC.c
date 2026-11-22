@@ -872,6 +872,7 @@ void fn_8001B134(void) {
         u8 pad2[3];
         void *vt;
     } tmp;
+    u8 *s0;
     u8 *src;
     u8 *rec;
     u8 *p;
@@ -883,21 +884,17 @@ void fn_8001B134(void) {
     Archive_Load(lbl_80268510 + 0xCF);
     Archive_Load(lbl_80268510 + 0xDB);
 
-    src = Hash_Lookup(lbl_80268510 + 0x94) + 4;
-    if (src == 0) {
+    s0 = Hash_Lookup(lbl_80268510 + 0x94) + 4;
+    if (s0 == 0) {
         val = 0;
     } else {
-        val = (src[0] << 24) + (src[1] << 16) + (src[2] << 8) + src[3];
-        src += 4;
+        val = (s0[0] << 24) + (s0[1] << 16) + (s0[2] << 8) + s0[3];
+        s0 += 4;
     }
     DebugPrint(lbl_80268510 + 0xA1, val);
 
-    if (src == 0) {
-        val = 0;
-    } else {
-        val = (src[0] << 24) + (src[1] << 16) + (src[2] << 8) + src[3];
-    }
-    DebugPrint(lbl_80268510 + 0xB6, val);
+    DebugPrint(lbl_80268510 + 0xB6,
+        s0 == 0 ? 0 : (s0[0] << 24) + (s0[1] << 16) + (s0[2] << 8) + s0[3]);
     DebugPrint(lbl_80268510 + 0xCB);
     DebugPrint(lbl_80268510 + 0xE9);
 
@@ -2589,28 +2586,37 @@ default: return (char *)gDataStr+0x314;
 }
 
 void fn_8001E71C(u8 *arg0) {
-    u8 v = arg0[0x12];
+    s32 v = arg0[0x12];
 
-    if (v != 7) {
-        if (v >= 7) {
-            if (v == 0xB) {
-                *(u32 *)(arg0 + 0x3C) |= 0x10;
-            } else if (v < 0xC) {
-                if (v >= 0xA) {
-                    *(u32 *)(arg0 + 0x3C) |= 8;
-                } else {
-                    *(u32 *)(arg0 + 0x3C) |= 1;
-                }
-            }
-        } else if (v >= 4) {
-            *(u32 *)(arg0 + 0x3C) |= 3;
-        } else if (v >= 0) {
-            *(u32 *)(arg0 + 0x3C) |= 1;
-        }
-    } else if (arg0[0x19] != 0) {
+    switch (v) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 8:
+    case 9:
+        *(u32 *)(arg0 + 0x3C) |= 1;
+        break;
+    case 4:
+    case 5:
+    case 6:
         *(u32 *)(arg0 + 0x3C) |= 3;
-    } else {
-        *(u32 *)(arg0 + 0x3C) |= 4;
+        break;
+    case 7:
+        if (arg0[0x19] != 0) {
+            *(u32 *)(arg0 + 0x3C) |= 3;
+        } else {
+            *(u32 *)(arg0 + 0x3C) |= 4;
+        }
+        break;
+    case 11:
+        *(u32 *)(arg0 + 0x3C) |= 0x10;
+        break;
+    case 10:
+        *(u32 *)(arg0 + 0x3C) |= 8;
+        break;
+    default:
+        break;
     }
 }
 
