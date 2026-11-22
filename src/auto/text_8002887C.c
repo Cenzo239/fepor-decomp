@@ -554,8 +554,8 @@ void fn_80029858(s8 x, s8 y) {
     void fn_8002F728(void *);
     extern u8 lbl_80284E10[];
     extern u8 lbl_80284E20[];
-    extern u8 gTargetList[];
-    extern u8 gBattleMap[];
+    extern u8 lbl_802EF4E0[];
+    extern u8 lbl_802CA518[];
     struct Visitor {
         virtual void v0(s8, s8) = 0;
         virtual void visit(s8, s8) = 0;
@@ -567,18 +567,18 @@ void fn_80029858(s8 x, s8 y) {
 
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284E10;
-    fn_8002F728(gTargetList);
-    id = gBattleMap[x + (y << 6) + 0xD];
+    fn_8002F728(lbl_802EF4E0);
+    id = lbl_802CA518[x + (y << 6) + 0xD];
     if (id != 0) {
-        fn_8002F6E8(gTargetList, x, y, id, 1);
+        fn_8002F6E8(lbl_802EF4E0, x, y, id, 1);
     }
     if (y - 1 >= 0) {
         ((Visitor *)&obj)->visit(x, y - 1);
     }
-    if (x + 1 < *(s32 *)gBattleMap) {
+    if (x + 1 < *(s32 *)lbl_802CA518) {
         ((Visitor *)&obj)->visit(x + 1, y);
     }
-    if (y + 1 < *(s32 *)(gBattleMap + 4)) {
+    if (y + 1 < *(s32 *)(lbl_802CA518 + 4)) {
         ((Visitor *)&obj)->visit(x, y + 1);
     }
     if (x - 1 >= 0) {
@@ -3423,7 +3423,7 @@ void Battle_AdvancePhase(void) {
             if ((u8)i != 0) {
                 unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
-                unit = NULL;
+                unit = (u8 *)0;
             }
             if (*(u32 *)(unit + 0x188) != 0
                 && factionMaskA[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
