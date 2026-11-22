@@ -577,7 +577,6 @@ int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float 
 #pragma push
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-#pragma scheduling off
 void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
     s32 index;
     u32 *table;
@@ -606,7 +605,7 @@ void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     u32 *table;
     u32 result;
     s32 index;
-    u32 *p;
+    volatile u32 *p;
 
     index = 2;
     result = (u32)fn_8010494C(lbl_802AEE20[index]);
@@ -615,7 +614,7 @@ void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
         index = 0;
     } else {
         p = table + 1;
-        if (*p == result) {
+        if (table[1] == result) {
             index = 1;
         } else if (*++p == result) {
             index = 2;
@@ -632,9 +631,9 @@ void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
         index = 0;
     }
     result = (u32)fn_8010494C(lbl_802AEE20[index]);
-    if (*table != result) {
+    if (table[0] != result) {
         p = table + 1;
-        if (*p != result) {
+        if (table[1] != result) {
             if (*++p != result) {
                 if (*++p != result) {
                     if (p[1] != result) {
