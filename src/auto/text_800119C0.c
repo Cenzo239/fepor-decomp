@@ -126,14 +126,17 @@ void fn_80011D20(void) {
     s32 val;
     s32 index;
     s32 count;
+    s16 size;
+    s32 sp;
+    s32 tidx;
 
     code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
     *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
-    index = (s8)*code << 8;
+    index = (s8)*code;
 
     code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
     *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
-    index += *code;
+    index = (index << 8) + *code;
 
     inner = *(void **)((u8 *)lbl_80367180 + 8);
     resource = *(void **)((u8 *)inner + 8);
@@ -145,11 +148,12 @@ void fn_80011D20(void) {
     count = (s8)*code;
 
     if (script == NULL) {
-        zero = 0;
-        *(s32 *)((u8 *)lbl_80367180 + 0x18) = *(s32 *)((u8 *)lbl_80367180 + 0x18) - (count << 2);
-        stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-        *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-        *stack = zero;
+        ctx = lbl_80367180;
+        *(s32 *)((u8 *)ctx + 0x18) = *(s32 *)((u8 *)ctx + 0x18) - (count << 2);
+        ctx = lbl_80367180;
+        stack = *(s32 **)((u8 *)ctx + 0x18);
+        *(s32 **)((u8 *)ctx + 0x18) = stack + 1;
+        *stack = 0;
         fn_800142B0(0);
         return;
     }
@@ -165,11 +169,17 @@ void fn_80011D20(void) {
         ctx = lbl_803671A4;
     }
 
-    zero = 0;
     i = (s8)*(u8 *)((u8 *)script + 0xD);
-    base = *(s32 *)((u8 *)ctx + 0x18) - (i << 2);
-    *(s32 *)((u8 *)ctx + 0x18) = base + (*(s16 *)((u8 *)script + 0x12) << 2);
-    table = (u8 *)lbl_80367198 + (*(u16 *)((u8 *)inner + 0x20) << 2);
+    zero = 0;
+    size = *(s16 *)((u8 *)script + 0x12);
+    sp = *(s32 *)((u8 *)ctx + 0x18);
+    i = i << 2;
+    tidx = *(u16 *)((u8 *)inner + 0x20);
+    base = sp - i;
+    table = lbl_80367198;
+    *(s32 *)((u8 *)ctx + 0x18) = base + (size << 2);
+    table = (u8 *)table + (tidx << 2);
+
     i = (s8)*(u8 *)((u8 *)script + 0xD);
     p = (s32 *)(base + (i << 2));
     while (i < *(s16 *)((u8 *)script + 0x12)) {
@@ -1917,12 +1927,13 @@ void fn_800140B4(void *arg0, u8 arg1) {
     extern s32 gCmScriptStatus;
 
     s32 i;
-    s32 j;
     u8 *self;
-    u8 *p;
     u8 *entry;
     u8 *walk;
-    u8 a, b, c, d;
+    s32 j;
+    u8 pd, pa, pb, pc;
+    u8 d, a, b, c;
+    u8 *p;
     void *ptr;
 
     self = (u8 *)arg0;
@@ -1957,17 +1968,16 @@ void fn_800140B4(void *arg0, u8 arg1) {
         if (*(u32 *)p == 0) {
             break;
         }
-        a = p[2];
-        b = p[1];
-        c = p[0];
-        d = p[3];
-        p[0] = d;
-        p[1] = a;
-        p[2] = b;
-        p[3] = c;
+        pa = p[2];
+        pb = p[1];
+        pc = p[0];
+        pd = p[3];
+        p[0] = pd;
+        p[1] = pa;
+        p[2] = pb;
+        p[3] = pc;
 
-        *(u32 *)(*(u8 **)(self + 0x28) + i) =
-            *(u32 *)(*(u8 **)(self + 0x28) + i) + (u32)self;
+        *(u32 *)(*(u8 **)(self + 0x28) + i) += (u32)self;
         entry = *(u8 **)(*(u8 **)(self + 0x28) + i);
 
         a = entry[2];
@@ -1979,19 +1989,19 @@ void fn_800140B4(void *arg0, u8 arg1) {
         entry[2] = b;
         entry[3] = c;
 
-        a = entry[6];
-        b = entry[5];
-        c = entry[4];
-        d = entry[7];
-        entry[4] = d;
-        entry[5] = a;
-        entry[6] = b;
-        entry[7] = c;
+        pa = entry[6];
+        pb = entry[5];
+        pc = entry[4];
+        pd = entry[7];
+        entry[4] = pd;
+        entry[5] = pa;
+        entry[6] = pb;
+        entry[7] = pc;
 
-        a = entry[0x12];
-        d = entry[0x13];
-        entry[0x12] = d;
-        entry[0x13] = a;
+        pa = entry[0x12];
+        pd = entry[0x13];
+        entry[0x12] = pd;
+        entry[0x13] = pa;
 
         a = entry[0x10];
         d = entry[0x11];
@@ -3730,7 +3740,7 @@ void fn_80016538(void)
     } while (index < 8);
     #pragma global_optimizer reset
 }
-#pragma use_lmw_stmw reset
+#pragma use_lmw_stmw on
 void fn_80016628(s32 arg0) {
     M2C_UNK fn_80015718(void *, void *);
     M2C_UNK fn_800158A0(void *);
@@ -3738,13 +3748,13 @@ void fn_80016628(s32 arg0) {
     u8 Unit_Read(void *, s32);
     extern u8 gUnits[];
     extern u8 gUnitLists[];
+    struct Ctx { s32 context; u8 *units; } c;
     s32 var_r29;
     register u8 *var_r28;
-    s32 context = arg0;
-    register u8 *var_r31;
     u8 *temp_r27;
     s32 var_r27;
 
+    c.context = arg0;
     fn_8001594C(gUnitLists, 0);
     fn_8001594C(gUnitLists + 0xC, 1);
     fn_8001594C(gUnitLists + 0x18, 2);
@@ -3755,19 +3765,19 @@ void fn_80016628(s32 arg0) {
     fn_8001594C(gUnitLists + 0x48, 6);
     fn_8001594C(gUnitLists + 0x54, 7);
     var_r29 = 0;
-    var_r31 = gUnits;
-    var_r28 = var_r31;
+    c.units = gUnits;
+    var_r28 = c.units;
     do {
         Unit_Clear(var_r28, var_r29 + 1);
         fn_80015718(temp_r27, var_r28);
         var_r29 += 1;
         var_r28 += 0x280;
     } while (var_r29 < 0x9F);
-    var_r28 = var_r31;
+    var_r28 = c.units;
     var_r29 = 0;
     do {
         fn_800156A0(temp_r27, var_r28);
-        if (Unit_Read(var_r28, context) == 0) {
+        if (Unit_Read(var_r28, c.context) == 0) {
             fn_80015718(temp_r27, var_r28);
         }
         var_r29 += 1;
@@ -3784,14 +3794,14 @@ void fn_80016628(s32 arg0) {
     } while (var_r27 < 8);
     var_r27 = 0;
     do {
-        if (((u32) M2C_FIELD(var_r31, u32 *, 0x180) == 0U) && ((u32) M2C_FIELD(var_r31, u32 *, 0x184) == 0U)) {
-            fn_80015718(gUnitLists + (M2C_FIELD(M2C_FIELD(var_r31, void **, 0x190), u8 *, 8) * 0xC), var_r31);
+        if (((u32) M2C_FIELD(c.units, u32 *, 0x180) == 0U) && ((u32) M2C_FIELD(c.units, u32 *, 0x184) == 0U)) {
+            fn_80015718(gUnitLists + (M2C_FIELD(M2C_FIELD(c.units, void **, 0x190), u8 *, 8) * 0xC), c.units);
         }
         var_r27 += 1;
-        var_r31 += 0x280;
+        c.units += 0x280;
     } while (var_r27 < 0x9F);
 }
-
+#pragma use_lmw_stmw reset
 void fn_800167E4(void *arg0)
 {
     extern u8 gUnits[];
@@ -3808,40 +3818,33 @@ void fn_800167E4(void *arg0)
     u8 flags[8];
     u8 savedIds[8];
     void *savedUnits[8];
-
-    u8 temp[0x1CC];
     u8 list1[0x20];
     u8 list2[0x20];
+    u8 temp[0x1CC];
 
     u8 *unit;
     u8 *unitData;
-    u8 *base;
-
     s32 i;
-    s32 count;
     s32 type;
     s32 savedCount;
 
-    base = gUnits;
     savedCount = 0;
 
     Allegiance_SetMask(0, 1, 1, 1, 0, 0, 0, 0, flags);
 
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = base + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = 0;
         }
 
-        if (*(s32 *)(unit + 0x188) != 0) {
+        if (*(u32 *)(unit + 0x188) != 0) {
             unitData = *(u8 **)(unit + 0x190);
-            type = unitData[8];
-
-            if (flags[type] != 0) {
+            if (flags[unitData[8]] != 0) {
                 if ((u8)Status_Test(unit + 0x1BC, 0x59) != 0) {
                     savedUnits[savedCount] = unit;
-                    savedIds[savedCount] = type;
+                    savedIds[savedCount] = *(*(u8 **)(unit + 0x190) + 8);
                     savedCount++;
 
                     Unit_MoveToList(unit, 7);
@@ -3853,23 +3856,22 @@ void fn_800167E4(void *arg0)
     fn_80016F78(temp);
     Unit_Clear(temp, -1);
 
-    unit = base;
-
     for (i = 0; i < 0x9F; i++) {
+        unit = gUnits + i * 0x280;
         unitData = *(u8 **)(unit + 0x190);
         type = unitData[8];
 
-        if (type == 0) {
-            Unit_Write(temp, arg0);
-        } else if (type >= 1 && type < 8) {
-            if (type >= 5) {
+        if (type >= 5) {
+            if (type < 8) {
                 Unit_Write(unit, arg0);
-            } else {
+            }
+        } else {
+            if (type == 0) {
+                Unit_Write(unit, arg0);
+            } else if (type >= 1) {
                 Unit_Write(temp, arg0);
             }
         }
-
-        unit += 0x280;
     }
 
     for (i = 0; i < savedCount; i++) {
