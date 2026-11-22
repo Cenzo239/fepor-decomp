@@ -1,5 +1,6 @@
 /* Functions from 0x8014A370 to 0x8014E350, found by decomp-toolkit. */
 #include "common.h"
+f64 lbl_8036A7F8 = 4503601774854144.0;
 
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
@@ -319,8 +320,7 @@ void fn_8014CAD4(void *arg0, f32 farg0, f32 farg1) {
 }
 
 void fn_8014CB14(void *arg0, void *arg1) {
-    f32 fn_80023068(void *, f32, f32);
-    extern u8 lbl_802CA518[];
+    f32 Map_SampleHeight(void *, f32, f32);
     extern f32 lbl_8036A7F0;
     f32 temp_f31;
     f32 temp_f30;
@@ -333,7 +333,7 @@ void fn_8014CB14(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f30;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(lbl_802CA518, temp_f31, temp_f30);
+    *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap, temp_f31, temp_f30);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f30;
 }
