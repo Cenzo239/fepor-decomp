@@ -4101,11 +4101,11 @@ void fn_8018B884(void *arg0) {
 }
 
 void fn_8018B89C(void *arg0) {
-    f64 fn_80238638(f32);
-    void fn_8000C188(void *);
-    extern f32 lbl_8036ACEC;
-    f32 z;
+    f64 sin(f32);
+    void Process_ClearFunc(void *);
+    extern const f32 lbl_8036ACEC;
     f32 t;
+    f32 scale;
     void *p;
     void *self;
 
@@ -4113,14 +4113,14 @@ void fn_8018B89C(void *arg0) {
     *(s32 *)((u8 *)self + 0x40) += 1;
     *(f32 *)((u8 *)self + 0x44) =
         *(f32 *)((u8 *)self + 0x44) + *(f32 *)((u8 *)self + 0x34);
-    t = (f32)fn_80238638(*(f32 *)((u8 *)self + 0x44));
+    t = (f32)sin(*(f32 *)((u8 *)self + 0x44));
+    scale = *(f32 *)((u8 *)self + 0x3C);
     p = *(void **)((u8 *)self + 0x30);
-    z = lbl_8036ACEC;
-    *(f32 *)((u8 *)p + 0x10) = *(f32 *)((u8 *)self + 0x3C) * t;
-    *(f32 *)((u8 *)p + 0x14) = z;
-    *(f32 *)((u8 *)p + 0x18) = z;
+    *(f32 *)((u8 *)p + 0x10) = scale * t;
+    *(f32 *)((u8 *)p + 0x14) = lbl_8036ACEC;
+    *(f32 *)((u8 *)p + 0x18) = lbl_8036ACEC;
     if (*(s32 *)((u8 *)self + 0x40) >= *(s32 *)((u8 *)self + 0x38)) {
-        fn_8000C188(self);
+        Process_ClearFunc(self);
     }
 }
 
@@ -5021,7 +5021,6 @@ void *Ui_GetColor(u8 arg0)
   f64 sin(f64);
   u8 *color = lbl_80296088 + (arg0 * 4);
   f32 phase;
-  f32 level;
   f32 wave;
   u32 ticks;
   u32 millis;
@@ -5484,11 +5483,11 @@ void Prim2D_Begin(void);
 void Prim2D_AddZ(f32);
 void Prim2D_SetTex(s32,u16);
 void Prim2D_PrepareTex(void);
-s32 y;
+s16 y;
 Obj *self=(Obj *)arg0;
 self->prepare();
 y=*(s16 *)((u8 *)self+0x46);
-y=(s16)(((s16)y+(0x1c-Text_MeasureHeight(-1,lbl_8036ADF0)))>>1);
+y=(s16)(((0x1c-Text_MeasureHeight(-1,lbl_8036ADF0))+(s32)y)>>1);
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036ADF4);
 Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)self+0x34)|0x13)); Prim2D_PrepareTex();
 switch(*(s32 *)((u8 *)self+0x3c)) {
