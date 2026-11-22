@@ -17554,13 +17554,16 @@ u32 fn_8017F9D4(void) {
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     extern u8 gUnitLists[];
-    void *unit;
-    s32 i;
-    u8 count;
-    void *next;
-    void *partner;
-    u8 found;
     u32 result;
+    u8 found;
+    void *partner;
+    s32 count2;
+    s32 i2;
+    void *next2;
+    void *next;
+    s32 count;
+    s32 i;
+    void *unit;
 
     found = 0;
     unit = *(void **)gUnitLists;
@@ -17573,7 +17576,7 @@ loop1:
 for1:
     partner = Unit_GetSupportPartner(unit, i);
     if (partner != NULL) {
-        switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+        switch (*(u8 *)(*(u8 **)((u8 *)partner + 0x190) + 8)) {
         case 0:
         case 5:
             if (fn_80036B20(unit, i)) {
@@ -17585,7 +17588,7 @@ for1:
     }
     i += 1;
 for1_test:
-    if (i < (s32)count) {
+    if (i < count) {
         goto for1;
     }
     found = 0;
@@ -17607,26 +17610,26 @@ after_list1:
         unit = *(void **)(gUnitLists + 0x3C);
         goto loop2_test;
     loop2:
-        next = *(void **)((u8 *)unit + 0x184);
-        count = Unit_CountSupportPartners(unit);
-        i = 0;
+        next2 = *(void **)((u8 *)unit + 0x184);
+        count2 = Unit_CountSupportPartners(unit);
+        i2 = 0;
         goto for2_test;
     for2:
-        partner = Unit_GetSupportPartner(unit, i);
+        partner = Unit_GetSupportPartner(unit, i2);
         if (partner != NULL) {
-            switch (M2C_FIELD(M2C_FIELD(partner, void **, 0x190), u8 *, 8)) {
+            switch (*(u8 *)(*(u8 **)((u8 *)partner + 0x190) + 8)) {
             case 0:
             case 5:
-                if (fn_80036B20(unit, i)) {
+                if (fn_80036B20(unit, i2)) {
                     found = 1;
                     goto after_for2;
                 }
                 break;
             }
         }
-        i += 1;
+        i2 += 1;
     for2_test:
-        if (i < (s32)count) {
+        if (i2 < count2) {
             goto for2;
         }
         found = 0;
@@ -17635,7 +17638,7 @@ after_list1:
             found = 1;
             goto after_list2;
         }
-        unit = next;
+        unit = next2;
     loop2_test:
         if (unit != NULL) {
             goto loop2;
@@ -17832,29 +17835,27 @@ void fn_8017FEF8(void *arg0) {
     s32 i;
     void *obj80;
     Menu *menu;
-    void *obj82;
-    void *tmp;
-    s32 index;
     void *node;
+    s16 index;
+    void *obj82;
 
     Ui_FindChild(arg0, 0x81, 0);
     obj82 = Ui_FindChild(arg0, 0x82, 0);
-    tmp = Ui_FindChild(arg0, 0x80, 0);
-    index = *(s16 *)((u8 *)obj82 + 0x4E);
-    obj80 = tmp;
-    node = *(void **)((u8 *)obj82 + 0x64);
-    if ((s16)index >= 0) {
-        while ((s16)index > 0) {
-            node = *(void **)((u8 *)node + 4);
+    obj80 = Ui_FindChild(arg0, 0x80, 0);
+    index = (s16)M2C_FIELD(obj82, s16 *, 0x4E);
+    node = M2C_FIELD(obj82, void **, 0x64);
+    if (index >= 0) {
+        while (index > 0) {
+            node = M2C_FIELD(node, void **, 4);
             index--;
         }
     } else {
-        while ((s16)index < 0) {
-            node = *(void **)node;
+        while (index < 0) {
+            node = M2C_FIELD(node, void **, 0);
             index++;
         }
     }
-    fn_8000D864(0, Msg_ResolveName(*(void **)((u8 *)node + 8)));
+    fn_8000D864(0, Msg_ResolveName(M2C_FIELD(node, void **, 8)));
     Ui_SetWidgetText(obj80, gUiUnitInfoStrings + 0x2B);
     *(s32 *)((u8 *)obj80 + 0x48) = 0;
     menu = (Menu *)fn_8013BC10(0, 0);
@@ -18199,8 +18200,6 @@ extern "C" void fn_80180624(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
-#pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void fn_80180928(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
@@ -18277,9 +18276,7 @@ extern "C" void fn_80180928(void *arg0) {
         Ui_SetWidgetText(obj82, unit);
     }
 }
-#pragma global_optimizer reset
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
