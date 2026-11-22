@@ -136,7 +136,7 @@ first=*(void **)((u8*)first+4);
 extern u16 gSystemSave[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
-f64 lbl_8036A720 = 4503599644147712.0;
+const f64 lbl_8036A720 = 4503599629518144.0;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
@@ -2517,10 +2517,9 @@ void fn_8013F3D0(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036A718;
-    extern f64 lbl_8036A720;
 
     struct Point { s16 x, y; } pt;
-    s32 z;
+    s16 z;
     s16 midX;
     s16 midY;
     f32 scale;
@@ -2535,7 +2534,7 @@ void fn_8013F3D0(void *arg0) {
     Prim2D_Begin();
     z = M2C_FIELD(arg0, s16 *, 0x22);
     scale = fn_8013FA44(arg0);
-    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)(s16)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
+    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
     Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
     Prim2D_SetColorByte(fn_80138908(arg0));
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
