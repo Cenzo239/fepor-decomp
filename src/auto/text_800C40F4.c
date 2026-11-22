@@ -1012,10 +1012,10 @@ s32 Heap_Create(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
+    u32 size;
     u8 *heap;
     u8 *previous;
     void **table;
-    u32 size;
     s32 index;
     s32 groups;
 
@@ -1033,49 +1033,60 @@ s32 Heap_Create(void *arg0, s32 arg1)
     index = 0;
 
     for (groups = 2; groups != 0; groups--) {
-        if (*table == 0) {
-            goto found;
-        }
+        if (*table != 0)
+            goto cont0;
+        goto found;
+        table = table;
+    cont0:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont1;
+        goto found;
+        table = table;
+    cont1:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont2;
+        goto found;
+        table = table;
+    cont2:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont3;
+        goto found;
+        table = table;
+    cont3:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont4;
+        goto found;
+        table = table;
+    cont4:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont5;
+        goto found;
+        table = table;
+    cont5:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont6;
+        goto found;
+        table = table;
+    cont6:
 
         index++;
-        if (*++table == 0) {
-            goto found;
-        }
-
-        index++;
-        if (*++table == 0) {
-            goto found;
-        }
+        if (*++table != 0)
+            goto cont7;
+        goto found;
+        table = table;
+    cont7:
 
         table++;
         index++;
@@ -1088,14 +1099,14 @@ found:
 
     heap[0xF] = 0;
     *(u32 *)(heap + 0x10) = 0;
+    *(u32 *)(heap + 0x1C) = size;
     *(u32 *)(heap + 0x14) = 0;
     *(void **)(heap + 0x18) = heap + 0x20;
-    *(u32 *)(heap + 0x1C) = size;
     *(u32 *)heap = 0x48454150;
 
-    *(u32 *)(heap + 0x2C) = 0;
-    *(u32 *)(heap + 0x28) = 0;
-    *(u32 *)(heap + 0x30) = size - 0x20;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0x8) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0x10) = *(u32 *)(heap + 0x1C) - 0x20;
 
     lbl_80320B88[index] = heap;
     lbl_80367870 = lbl_80320B88[index];
@@ -2019,16 +2030,35 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
 
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
-    M2C_UNK *String_CStr(void *);
-    void Str_CopyPad(char *, const char *, s32);
-    s32 atoi(char *);
+    M2C_UNK *fn_800C93EC(void *);
+    void fn_8023440C(char *, const char *, s32);
+    s32 fn_802355BC(char *);
     f64 fn_80234524(char *);
 
     typedef struct { u32 d[8]; } Val32;
 
-    Val32 sp18, sp38, sp58, sp78, sp98, spB8, spD8, spF8;
-    Val32 sp118, sp138, sp158, sp178, sp198, sp1B8, sp1D8;
-    Val32 sp1F8, sp218, sp238, sp258, sp278, sp298, sp2B8;
+    volatile Val32 sp18;
+    volatile Val32 sp38;
+    volatile Val32 sp58;
+    volatile Val32 sp78;
+    volatile Val32 sp98;
+    volatile Val32 spB8;
+    Val32 spD8;
+    Val32 spF8;
+    Val32 sp118;
+    volatile Val32 sp138;
+    Val32 sp158;
+    volatile Val32 sp178;
+    volatile Val32 sp198;
+    Val32 sp1B8;
+    volatile Val32 sp1D8;
+    Val32 sp1F8;
+    volatile Val32 sp218;
+    Val32 sp238;
+    volatile Val32 sp258;
+    volatile Val32 sp278;
+    Val32 sp298;
+    volatile Val32 sp2B8;
     void *dst;
     s32 idx;
     String *s;
@@ -2055,17 +2085,23 @@ void fn_800C8328(void *unused, void *dest, s32 index, String *str)
     if (k > 0) {
         for (; k != 0; k--) {
             c = (s8)*p;
-            if (c >= 0x30 && c <= 0x39) {
-                kind = 1;
-            } else if (c == 0x2D || c == 0x2E) {
-                if (c == 0x2E) {
-                    kind = 2;
-                    break;
-                }
-            } else {
+            if (c < 0x30) {
+                goto check_sign;
+            }
+            if (c <= 0x39) {
+                goto numeric;
+            }
+        check_sign:
+            if (c != 0x2D && c != 0x2E) {
                 kind = 0;
                 break;
             }
+            if (c == 0x2E) {
+                kind = 2;
+                break;
+            }
+        numeric:
+            kind = 1;
             p += 1;
         }
     }
@@ -2083,12 +2119,12 @@ void fn_800C8328(void *unused, void *dest, s32 index, String *str)
     return;
 
 case_str:
-    src = (char *)String_CStr(s);
+    src = (char *)fn_800C93EC(s);
     sp118.d[3] = 0;
     sp118.d[2] = 0;
     sp118.d[1] = 0;
     sp118.d[0] = 0;
-    Str_CopyPad((char *)&sp118, src, 0x20);
+    fn_8023440C((char *)&sp118, src, 0x20);
     sp2B8 = sp118;
     *dv = sp118;
     return;
@@ -2192,8 +2228,8 @@ case_int:
             }
         }
 
-        src = (char *)String_CStr(s);
-        val = atoi(src);
+        src = (char *)fn_800C93EC(s);
+        val = fn_802355BC(src);
         sp238 = *dv;
         ((s16 *)sp238.d)[idx] = (s16)val;
         *dv = sp238;
@@ -2202,8 +2238,8 @@ case_int:
     }
 
     if (idx > 4) {
-        src = (char *)String_CStr(s);
-        val = atoi(src);
+        src = (char *)fn_800C93EC(s);
+        val = fn_802355BC(src);
         sp1F8 = *dv;
         ((s16 *)sp1F8.d)[idx] = (s16)val;
         *dv = sp1F8;
@@ -2212,8 +2248,8 @@ case_int:
     }
 
     if (idx != 0) {
-        src = (char *)String_CStr(s);
-        val = atoi(src);
+        src = (char *)fn_800C93EC(s);
+        val = fn_802355BC(src);
         sp1B8 = *dv;
         sp1B8.d[idx] = (u32)val;
         *dv = sp1B8;
@@ -2221,8 +2257,8 @@ case_int:
         return;
     }
 
-    src = (char *)String_CStr(s);
-    val = atoi(src);
+    src = (char *)fn_800C93EC(s);
+    val = fn_802355BC(src);
     dv->d[0] = (u32)val;
     dv->d[1] = 0;
     dv->d[2] = 0;
@@ -2247,7 +2283,7 @@ case_int:
 
 case_float:
     if (idx != 0) {
-        src = (char *)String_CStr(s);
+        src = (char *)fn_800C93EC(s);
         fval = (f32)fn_80234524(src);
         sp158 = *dv;
         ((f32 *)sp158.d)[idx] = fval;
@@ -2256,7 +2292,7 @@ case_float:
         return;
     }
 
-    src = (char *)String_CStr(s);
+    src = (char *)fn_800C93EC(s);
     fval = (f32)fn_80234524(src);
     {
         u32 slot = 0;
@@ -9504,8 +9540,6 @@ void fn_800DA358(void) {
 }
 
 #pragma global_optimizer off
-#pragma dont_inline on
-#pragma use_lmw_stmw on
 void fn_800DA368(void) {
  extern void *lbl_803678B8;
  extern char lbl_802711B0[];
@@ -9526,8 +9560,8 @@ void fn_800DA368(void) {
  void *file;
  s32 count;
  String *entry;
- s32 field;
- char *name,*value;
+ char *name;
+ char *value;
  self=(u8*)lbl_803678B8;
  path.cap=0;path.size=0;path.data=0;path.cap=0;
  String_AssignCStr(&path,lbl_802711B0+0x12A,strlen(lbl_802711B0+0x12A));
@@ -9540,22 +9574,20 @@ void fn_800DA368(void) {
  entry=(String*)fn_800E5070(*(void**)(self+0x10),i);
  name=String_CStr(entry);
  value=String_CStr(entry+1);
- field=*(s32*)(entry+2);
+ entry=(String*)*(s32*)(entry+2);
  fn_801FFD00(file,lbl_802711B0+0x13B);
  fn_801FFD00(file,lbl_802711B0+0x13D);
  fn_801FFD00(file,lbl_802711B0+0x140);
  fn_801FFD00(file,lbl_802711B0+0x153,name);
  fn_801FFD00(file,lbl_802711B0+0x15E,value);
- fn_801FFD00(file,lbl_802711B0+0x16B,field);
+ fn_801FFD00(file,lbl_802711B0+0x16B,(s32)entry);
  fn_801FFD00(file,lbl_802711B0+0x177);
  }
  fn_801FFD00(file,lbl_802711B0+0x17B);
  File_Close(file);
  String_Destroy(&path,-1);
 }
-#pragma dont_inline reset
-#pragma use_lmw_stmw reset
-#pragma global_optimizer reset
+#pragma global_optimizer on
 void fn_800DA530(void *arg0, void *arg1, s32 arg2)
 {
     extern void *lbl_803678B8;
@@ -13723,29 +13755,40 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFi
 #pragma dont_inline off
 #pragma cplusplus on
 extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first2, s32 *last2, s32 *result, SortCompare comp) {
- s32 Sort_GetKey(void*);
- s32 key;
- while(first1.ptr!=last1.ptr && first2!=last2) {
- s32 value=*first1;
- key=Sort_GetKey((void*)*first2);
- if(Sort_GetKey((void*)value)>key) *result=*first2++;
- else {
- *result=*first1++;
- }
- result++;
- }
- if(first1.ptr==last1.ptr) {
- s32 *out=result;
- s32 *cur=first2;
- while(cur<last2) *out++=*cur++;
- } else {
- s32 *out=result;
- SortIterator end=last1;
- SortIterator cur=first1;
- while(cur.ptr!=end.ptr) {
- *out++=*cur++;
- }
- }
+    s32 Sort_GetKey(void *);
+    s32 key;
+    while (first1.ptr != last1.ptr && first2 != last2) {
+        SortIterator t1 = first1;
+        SortIterator *pt1 = &t1;
+        s32 value = *pt1->ptr;
+        key = Sort_GetKey((void *)*first2);
+        if (Sort_GetKey((void *)value) > key) {
+            *result = *first2++;
+        } else {
+            SortIterator tmp = first1++;
+            SortIterator *p = &tmp;
+            *result = *p->ptr;
+        }
+        result++;
+    }
+    if (first1.ptr == last1.ptr) {
+        s32 *out = result;
+        s32 *cur = first2;
+        while (cur < last2)
+            *out++ = *cur++;
+    } else {
+        s32 *out = result;
+        SortIterator end = last1;
+        SortIterator cur = first1;
+        SortIterator *pend = &end;
+        SortIterator *pcur = &cur;
+        while (pcur->ptr != pend->ptr) {
+            SortIterator tmp = *pcur;
+            SortIterator *p = &tmp;
+            *out++ = *p->ptr;
+            pcur->ptr = p->ptr + 1;
+        }
+    }
 }
 #pragma cplusplus reset
 void fn_800E0C44(s32 *begin, s32 *end, PairAB *first, PairAB *last, s32 *out) {
@@ -14680,8 +14723,8 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     s32 y2;
     s32 cols;
     s32 v1;
-    s32 u1;
     s32 v0;
+    s32 u1;
     s32 u0;
 
     w = M2C_FIELD(arg0, s32 *, 0x54);
@@ -14692,8 +14735,8 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
         arg2 = M2C_FIELD(arg0, s32 *, 0x60) - 1;
     }
     cols = M2C_FIELD(arg0, s32 *, 0x5C);
-    u0 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
-    u1 = u0;
+    u1 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
+    u0 = u1;
     u1 = u1 + w;
     v0 = M2C_FIELD(arg0, s32 *, 0x68) + h * (arg2 / cols);
     v1 = v0 + h;
@@ -14710,7 +14753,7 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, s32 arg11, s32 arg12) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
@@ -14757,7 +14800,7 @@ void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
         Prim2D_EndPrim();
     }
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, f32 scale) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
@@ -16448,40 +16491,89 @@ void GActor_ApplyPoseMtx(void *obj) {
     }
 }
 
-#pragma global_optimizer off
+#pragma peephole off
 #pragma cplusplus on
 extern "C" void fn_800E5DEC(void *arg0) {
- void Model_SetAlpha(void*,u8);
- void Model_SetColor(void*,u8,u8,u8);
- void fn_8004AE28(void*,f32,f32,f32);
- u8 *self=(u8*)arg0;
- f32 pos[3];
- s32 r,g,b;
- if(*(void**)(self+0xDC)) {
- if(*(f32*)(self+0x104)!=0.0f) {
- *(f32*)(self+0x108)+=*(f32*)(self+0x104);
- if(*(f32*)(self+0x108)>=1.0f) {*(f32*)(self+0x108)=1.0f;*(f32*)(self+0x104)=0.0f;}
- if(*(f32*)(self+0x108)<=0.0f) {*(f32*)(self+0x108)=0.0f;*(f32*)(self+0x104)=0.0f;}
- Model_SetAlpha(*(void**)(self+0xE0),(u8)(s32)(255.0f* *(f32*)(self+0x108)));
- }
- if(*(s32*)(self+0x114)) {
- b=(s32)*(f32*)(self+0x10C);g=b;r=b;
- *(f32*)(self+0x10C)+=*(f32*)(self+0x110);
- if(*(f32*)(self+0x10C)<128.0f) *(f32*)(self+0x10C)=128.0f;
- if(*(f32*)(self+0x10C)>255.0f) *(f32*)(self+0x10C)=255.0f;
- if(--*(s32*)(self+0x114)<=0) {g=128;b=128;r=g;}
- Model_SetColor(*(void**)(self+0xE0),(u8)r,(u8)g,(u8)b);
- }
- if(*(void**)(self+0xE0)) {
- (*(void(***)(f32*,void*,s32))(self+0x40))[0x38/4](pos,self,0);
- fn_8004AE28(*(void**)(self+0xE0),pos[0],pos[1],pos[2]);
- }
- (*(void(***)(void*))(self+0x40))[0x50/4](self);
- (*(void(***)(void*))(self+0x40))[0x20/4](self);
- }
+    struct Vec3 { f32 x, y, z; };
+    struct Obj {
+        u8 pad[0x40];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+        virtual void v9();
+        virtual void v10();
+        virtual void v11();
+        virtual Vec3 v12(s32);
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+    };
+    void Model_SetAlpha(void *, u8);
+    void Model_SetColor(void *, u8, u8, u8);
+    void fn_8004AE28(void *, f32, f32, f32);
+    extern const f32 lbl_80369F3C;
+    extern const f32 lbl_80369F58;
+    extern const f32 lbl_80369F48;
+    extern const f32 lbl_80369F44;
+    Obj *self = (Obj *)arg0;
+    u8 *p = (u8 *)self;
+    Vec3 pos;
+    f32 zero;
+    f32 spd;
+    s32 r, g, b;
+
+    if (*(void **)(p + 0xDC) != 0) {
+        zero = lbl_80369F3C;
+        spd = *(f32 *)(p + 0x104);
+        if (zero != spd) {
+            *(f32 *)(p + 0x108) = *(f32 *)(p + 0x108) + spd;
+            if (*(f32 *)(p + 0x108) >= lbl_80369F58) {
+                *(f32 *)(p + 0x108) = lbl_80369F58;
+                *(f32 *)(p + 0x104) = zero;
+            }
+            if (*(f32 *)(p + 0x108) <= lbl_80369F3C) {
+                *(f32 *)(p + 0x108) = lbl_80369F3C;
+                *(f32 *)(p + 0x104) = lbl_80369F3C;
+            }
+            Model_SetAlpha(*(void **)(p + 0xE0), (u8)(s32)(lbl_80369F48 * *(f32 *)(p + 0x108)));
+        }
+        if (*(s32 *)(p + 0x114) != 0) {
+            b = (s32)*(f32 *)(p + 0x10C);
+            g = b;
+            r = b;
+            *(f32 *)(p + 0x10C) = *(f32 *)(p + 0x10C) + *(f32 *)(p + 0x110);
+            if (*(f32 *)(p + 0x10C) < lbl_80369F44) {
+                *(f32 *)(p + 0x10C) = lbl_80369F44;
+            }
+            if (*(f32 *)(p + 0x10C) > lbl_80369F48) {
+                *(f32 *)(p + 0x10C) = lbl_80369F48;
+            }
+            if ((*(s32 *)(p + 0x114) = *(s32 *)(p + 0x114) - 1) <= 0) {
+                g = 0x80;
+                b = 0x80;
+                r = g;
+            }
+            Model_SetColor(*(void **)(p + 0xE0), (u8)r, (u8)g, (u8)b);
+        }
+        if (*(void **)(p + 0xE0) != 0) {
+            pos = self->v12(0);
+            fn_8004AE28(*(void **)(p + 0xE0), pos.x, pos.y, pos.z);
+        }
+        self->v18();
+        self->v6();
+    }
 }
 #pragma cplusplus reset
-#pragma global_optimizer reset
+#pragma peephole reset
 /* Destroy an actor: unlink GActor nodes, nested member, strings, then base; free if asked. */
 void *Actor_Dtor(void *self, s16 freeHeap) {
     void fn_800DDC2C(void *, void *);
@@ -18998,55 +19090,73 @@ void fn_800E9CE4(s32 arg0) {
     }
 }
 
-#pragma optimization_level 3
 #pragma global_optimizer off
 void fn_800EA27C(s32 arg0) {
-extern u8 gCardWork[];
-extern void Card_AsyncDone;
-s32 fn_8021D004(s32,s32,void *);
-s32 fn_8021D118(s32,s32,void *,void *);
-CardFileStatus status;
-u32 skip;
-u8 *base;
-u8 *resultBase;
-s32 file;
-s32 proc;
-u8 *busyBase;
-proc=arg0;
-resultBase=gCardWork+0x10000;
-if(*(volatile s32*)(resultBase-0x5ffc)<0) {
-Process_Goto(proc,0x63);
-gCardWork[0xa01a]=0;skip=1;
-} else skip=0;
-if((u8)skip==0) {
-base=gCardWork+0x10000;
-if(*(s32*)(base-0x5fec)>=0) {
-file=*(s32*)(base-0x5fe0);
-fn_8021D004(*(s32*)(base-0x6000),file,&status);
-status.commentAddress=0x2000;
-status.iconAddress=0;
-status.iconFormat=(status.iconFormat&~3)|1;
-status.iconSpeed=(status.iconSpeed&~3)|3;
-status.iconFormat=(status.iconFormat&~12)|4;
-status.iconSpeed=(status.iconSpeed&~12)|8;
-status.iconFormat=(status.iconFormat&~48)|16;
-status.iconSpeed=(status.iconSpeed&~48)|48;
-status.iconFormat=(status.iconFormat&~192);
-status.iconSpeed=(status.iconSpeed&~192);
-status.bannerFormat=(status.bannerFormat&~3)|1;
-status.bannerFormat=(status.bannerFormat&~4)|4;
-status.commentAddress=*(s32*)(base-0x5fec);
-busyBase=gCardWork+0x10000;
-busyBase[-0x5fe6]=1;
-*(volatile s32*)(resultBase-0x5ffc)=fn_8021D118(*(s32*)(base-0x6000),file,&status,&Card_AsyncDone);
-if(*(volatile s32*)(resultBase-0x5ffc)<0) {
-Process_Goto(proc,0x63);busyBase[-0x5fe6]=0;
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 unkA01B;
+        u8 fileInfo[0x14];
+    };
+    extern struct CardWork gCardWork;
+    extern void Card_AsyncDone;
+    s32 fn_8021D004(s32, s32, void *);
+    s32 fn_8021D118(s32, s32, void *, void *);
+    CardFileStatus status;
+    u8 *base;
+    u8 *resultBase;
+    s32 file;
+    s32 proc;
+    u8 *busyBase;
+    u8 skip;
+
+    proc = arg0;
+    resultBase = (u8 *)&gCardWork + 0x10000;
+    if (*(volatile s32 *)(resultBase - 0x5ffc) < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork.busy = 0;
+        skip = 1;
+    } else {
+        skip = 0;
+    }
+    if (skip == 0) {
+        base = (u8 *)&gCardWork + 0x10000;
+        if (*(s32 *)(base - 0x5fec) >= 0) {
+            file = *(s32 *)(base - 0x5fe0);
+            fn_8021D004(*(s32 *)(base - 0x6000), file, &status);
+            status.commentAddress = 0x2000;
+            status.iconAddress = 0;
+            status.iconFormat = (status.iconFormat & ~3) | 1;
+            status.iconSpeed = (status.iconSpeed & ~3) | 3;
+            status.bannerFormat = (status.bannerFormat & ~3) | 1;
+            status.iconFormat = (status.iconFormat & ~12) | 4;
+            status.iconSpeed = (status.iconSpeed & ~12) | 8;
+            status.iconFormat = (status.iconFormat & ~48) | 16;
+            status.iconSpeed = (status.iconSpeed & ~48) | 48;
+            busyBase = (u8 *)&gCardWork + 0x10000;
+            status.bannerFormat = (status.bannerFormat & ~4) | 4;
+            status.iconFormat = status.iconFormat & ~192;
+            status.iconSpeed = status.iconSpeed & ~192;
+            status.commentAddress = *(s32 *)(base - 0x5fec);
+            busyBase[-0x5fe6] = 1;
+            *(volatile s32 *)(resultBase - 0x5ffc) =
+                fn_8021D118(*(s32 *)(base - 0x6000), file, &status, &Card_AsyncDone);
+            if (*(volatile s32 *)(resultBase - 0x5ffc) < 0) {
+                Process_Goto(proc, 0x63);
+                busyBase[-0x5fe6] = 0;
+            }
+        }
+    }
 }
-}
-}
-}
-#pragma global_optimizer reset
-#pragma optimization_level reset
+#pragma global_optimizer on
 void fn_800EA418(s32 proc) {
     struct CardWork {
         u8 workArea[0xA000];
@@ -23277,14 +23387,14 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
 void fn_800F20E0(void) {
     void fn_80060060(void *);
     void fn_800F1C24(void *);
-    register s32 i;
+    s32 counter;
 
     fn_80060060(lbl_8032AC58 + 0x288);
-    i = 0;
+    counter = 0;
     do {
-        fn_80060060(lbl_8032AC58 + i * 0xA0 + 8);
-        i += 1;
-    } while (i < 4);
+        fn_80060060(lbl_8032AC58 + counter * 0xA0 + 8);
+        counter += 1;
+    } while (counter < 4);
     fn_800F1C24(lbl_8032AC58);
 }
 
@@ -23433,7 +23543,7 @@ u8 fn_800F30E0(s32 arg0, u8 arg1) {
     best = 0;
     ctx[8] = arg1;
     bestScore = 0x7FFFFFFF;
-    self = *(u8 **)gUiContext;
+    self = *(u8 **)ctx;
 
     if ((gAiState[1] & 2) || (*(u32 *)(self + 0x254) & 0x03000000)) {
         Map_FillLayer(map, 5, -1);
@@ -25999,7 +26109,7 @@ void fn_800F8C3C(void *unit) {
 #pragma dont_inline reset
 
 #pragma cplusplus on
-extern "C" void fn_800F8E5C(void *arg0) {
+void fn_800F8E5C(void *arg0) {
     extern u8 gAiState[], gUiContext[], gTargetList[];
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
@@ -26007,13 +26117,14 @@ extern "C" void fn_800F8E5C(void *arg0) {
     void *Unit_FindByName(void *);
     u8 fn_800BF1E8(void *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-    void fn_800FFB4C(void *, s32, s32);
+    void fn_800FFB4C(void *, s8, s8);
     void *fn_8002F680(void *, u8, u8);
     void Ai_SetDecision(s8, s32, s8, s8, s8, s8, s8);
-    struct Ret { void *p; } ctx;
     s16 x, y;
     u8 *unit;
     u8 *other;
+    void *ctx;
+    s8 dx, dy;
 
     unit = (u8 *)arg0;
     other = gAiCmd;
@@ -26023,13 +26134,16 @@ extern "C" void fn_800F8E5C(void *arg0) {
             *(s32 *)(gAiState + 12) = 0;
         } else if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
             other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
-            ctx.p = ((AiCommandContext *)gUiContext)->set(other);
-            if (!fn_800BF1E8(ctx.p)) {
+            ctx = gUiContext;
+            *(void **)((u8 *)ctx + 4) = other;
+            if (!fn_800BF1E8(ctx)) {
                 *(s32 *)(gAiState + 8) = 9;
                 *(s32 *)(gAiState + 12) = 9;
             } else {
                 Ai_SetUnitMoveTo(unit, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-                fn_800FFB4C(unit, (s8)gUiContext[0xD], (s8)gUiContext[0xE]);
+                dx = gUiContext[0xD];
+                dy = gUiContext[0xE];
+                fn_800FFB4C(unit, dx, dy);
                 if (fn_8002F680(gTargetList, other[0x19e], other[0x19f]) &&
                     *(s32 *)(gAiState + 8) != 4) {
                     *(s32 *)(gAiState + 8) = 3;
