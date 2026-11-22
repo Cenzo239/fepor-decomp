@@ -2127,10 +2127,10 @@ s32 Unit_ResolveWarpPos(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void 
                 cost = 0;
             } else if (unit != NULL) {
                 cost = -1;
-            } else if (map[0x300D + x + row] != 0) {
+            } else if (gBattleMap[0x300D + x + row] != 0) {
                 cost = -1;
             } else if (arg3 != 0) {
-                cost = (*(s16 **)(map + 0x14190))[x + row];
+                cost = (*(s16 **)(gBattleMap + 0x14190))[x + row];
             } else {
                 cost = 0;
             }
