@@ -3810,12 +3810,11 @@ void fn_800CB070(String *arg0) {
 void *fn_800CB16C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
-
     extern u8 gBattleReplayActive;
     extern u8 *gBattleReplayScene;
     extern u32 gBattle[];
-
     u8 *base;
+    u8 *statusBase;
     void **slot;
     void *obj;
     void *inner;
@@ -3823,50 +3822,38 @@ void *fn_800CB16C(void) {
     u64 bits;
 
     if (gBattleReplayActive != 0) {
-        p = (s8 *)(gBattleReplayScene + 0x310);
-        if (*p != 0) {
-            return p;
+        p = (s8 *)((u8 *)gBattleReplayScene + 0x310);
+        if (*p == 0) {
+            return 0;
         }
-        return 0;
+        return p;
     }
 
     base = (u8 *)gBattle + 0x5C0;
     if (base == NULL) {
         return 0;
     }
-
     slot = (void **)(base + 0x28C);
     bits = *Item_GetFlagsPtr(slot);
-
-    if ((bits & 0x20000000000ULL) != 0) {
-        base += 0x1BC;
-
-        if (Status_Test(base, 8) != 0) {
-            if (Status_Test(base, 9) == 0) {
+    if ((bits & 0x200ULL) != 0) {
+        statusBase = base + 0x1BC;
+        if (Status_Test(statusBase, 8) != 0) {
+            if (Status_Test(statusBase, 9) == 0) {
                 return 0;
             }
         }
     }
 
-    if (slot == NULL) {
-        return 0;
+    if (slot != NULL) {
+        obj = *slot;
+        if (obj != NULL) {
+            inner = obj != NULL ? *(void **)obj : 0;
+            if (inner != NULL) {
+                return (u8 *)inner + 4;
+            }
+            return 0;
+        }
     }
-
-    obj = *slot;
-    if (obj == NULL) {
-        return 0;
-    }
-
-    if (obj != NULL) {
-        inner = *(void **)obj;
-    } else {
-        inner = 0;
-    }
-
-    if (inner != NULL) {
-        return (u8 *)inner + 4;
-    }
-
     return 0;
 }
 
@@ -18353,19 +18340,24 @@ void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
     void fn_802031E8(f32 *, f32 *);
     void fn_802031CC(f32 *, f32 *, f32);
 
-    f32 destination[3];
     f32 current[3];
+    f32 destination[3];
     f32 delta[3];
     f32 distance;
     f32 step;
+    f32 z;
+    f32 x;
+    f32 y;
     u8 *self;
 
     self = (u8 *)arg0;
     step = arg2;
-
-    *(f32 *)(self + 0x78) = arg1[0];
-    *(f32 *)(self + 0x7C) = arg1[1];
-    *(f32 *)(self + 0x80) = arg1[2];
+    x = arg1[0];
+    y = arg1[1];
+    *(f32 *)((u8 *)arg0 + 0x78) = x;
+    z = arg1[2];
+    *(f32 *)(self + 0x7C) = y;
+    *(f32 *)(self + 0x80) = z;
 
     current[0] = *(f32 *)(self + 0xE4);
     current[1] = *(f32 *)(self + 0xE8);
@@ -29259,51 +29251,33 @@ void fn_800FE074(void *arg0, s32 arg1, s32 arg2) {
     void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
     extern u8 gBattleMap[];
 
-    u8 *unit;
+    s32 t14;
+    s32 t15;
+    s32 slot;
+    s32 mov;
+    u8 *u;
     u8 *map;
-    s32 rangeType;
-    s32 movement;
-    s32 status14;
-    s32 status15;
-    u8 result;
+    u8 *p;
 
-    unit = (u8 *)arg0;
-    rangeType = arg1;
-    movement = arg2;
+    u = (u8 *)arg0;
+    mov = arg2;
     map = gBattleMap;
-
-    result = Status_Test(unit + 0x1BC, 0x14);
-    status14 = result != 0;
-
-    result = Status_Test(unit + 0x1BC, 0x15);
-    status15 = result != 0;
-
-    Map_SelectRangeBuffer(gBattleMap, rangeType);
-
-    fn_800227F8(
-        gBattleMap,
-        *(void **)(unit + 0x18C)
-    );
-
+    p = u + 0x1BC;
+    t14 = Status_Test(p, 0x14) != 0;
+    t15 = Status_Test(u + 0x1BC, 0x15) != 0;
+    Map_SelectRangeBuffer(gBattleMap, arg1);
+    fn_800227F8(gBattleMap, *(void **)(u + 0x18C));
     fn_800227D0(gBattleMap, 0x21, 1);
     fn_80022748(gBattleMap, 0);
-
-    if (*(u32 *)(unit + 0x254) & 0x20000) {
+    if (*(u32 *)(u + 0x254) & 0x20000) {
         fn_800227D0(map, 0x37, 0x30);
     }
-
-    if (movement == -1) {
-        movement = (s8)Unit_GetMov(unit);
+    if (mov != -1) {
+        slot = mov;
+    } else {
+        slot = Unit_GetMov(u);
     }
-
-    Map_FloodMoveRange(
-        map,
-        unit[0x19E],
-        unit[0x19F],
-        (u16)movement,
-        status14,
-        status15
-    );
+    Map_FloodMoveRange(map, u[0x19E], u[0x19F], (u16)slot, t14, t15);
 }
 
 void fn_800FE180(void *arg0, s32 arg1, s32 arg2) {
