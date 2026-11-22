@@ -9697,22 +9697,25 @@ void fn_800DA748(s32 arg0)
     String str;
     void *self;
     char *name;
+    u32 n;
 
     str.cap = 0;
     self = lbl_803678B8;
     str.size = 0;
     str.data = 0;
     str.cap = 0;
-    if (*(void **)((u8 *)self + 0x10) != 0 &&
-        String_Compare((String *)((u8 *)self + 0x70), 0, *(u32 *)((u8 *)self + 0x70),
-                       lbl_802711B0 + 0x184, strlen(lbl_802711B0 + 0x184)) == 0) {
-        String_AssignCStr(&str, lbl_802711B0 + 0x189, strlen(lbl_802711B0 + 0x189));
-        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-        fn_800C992C(&str, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
-        fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
-        name = lbl_8028DE60[arg0];
-        fn_800C992C(&str, name, strlen(name));
-        fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
+    if (*(void **)((u8 *)self + 0x10) != 0) {
+        n = strlen(lbl_802711B0 + 0x184);
+        if (String_Compare((String *)((u8 *)self + 0x70), 0, *(u32 *)((u8 *)self + 0x70),
+                           lbl_802711B0 + 0x184, n) == 0) {
+            String_AssignCStr(&str, lbl_802711B0 + 0x189, strlen(lbl_802711B0 + 0x189));
+            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+            fn_800C992C(&str, lbl_802711B0 + 0x18D, strlen(lbl_802711B0 + 0x18D));
+            fn_800C99A0(&str, (String *)((u8 *)self + 0x70), 0, -1);
+            name = lbl_8028DE60[arg0];
+            fn_800C992C(&str, name, strlen(name));
+            fn_800E5044(*(void **)((u8 *)self + 0x10), String_CStr(&str));
+        }
     }
     String_Destroy(&str, -1);
 }
