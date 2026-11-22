@@ -1838,62 +1838,50 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     s16 h;
     s16 *new_var2;
     u8 *new_var3;
-    s32 zero;
-    s16 neg1;
     s16 right;
     s16 bottom;
-    u8 ff;
     f32 f;
-    void *p1;
-    void *p2;
-    void *p3;
 
-    zero = 0;
-    neg1 = -1;
-    ff = 0xFF;
     f = lbl_8036A5AC;
     right = (s16)arg1 + (s16)arg3;
     bottom = (s16)arg2 + (s16)arg4;
-    p1 = lbl_8028FDB0;
-    p2 = lbl_80292230;
-    p3 = lbl_8029180C;
 
-    *(void **)arg0 = p1;
+    *(void **)arg0 = lbl_8028FDB0;
     new_var2 = (s16 *)((u8 *)arg0 + 0xC);
-    *(s32 *)((u8 *)arg0 + 4) = zero;
-    *(void **)arg0 = p2;
-    *(s16 *)((u8 *)arg0 + 8) = neg1;
+    *(s32 *)((u8 *)arg0 + 4) = 0;
+    *(void **)arg0 = lbl_80292230;
+    *(s16 *)((u8 *)arg0 + 8) = -1;
     *(s16 *)((u8 *)arg0 + 0xA) = (s16)arg1;
     *new_var2 = (s16)arg2;
     *(s16 *)((u8 *)arg0 + 0xE) = right;
     *(s16 *)((u8 *)arg0 + 0x10) = bottom;
-    *(s16 *)((u8 *)arg0 + 0x12) = (s16)zero;
-    *(s16 *)((u8 *)arg0 + 0x14) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x12) = 0;
+    *(s16 *)((u8 *)arg0 + 0x14) = 0;
     *(s16 *)((u8 *)arg0 + 0x16) = (s16)arg3;
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)arg4;
-    *(s16 *)((u8 *)arg0 + 0x1A) = (s16)zero;
-    *(s16 *)((u8 *)arg0 + 0x1C) = (s16)zero;
-    ((u8 *)arg0)[0x1E] = ff;
-    ((u8 *)arg0)[0x1F] = ff;
-    ((u8 *)arg0)[0x20] = ff;
-    ((u8 *)arg0)[0x21] = ff;
+    *(s16 *)((u8 *)arg0 + 0x1A) = 0;
+    *(s16 *)((u8 *)arg0 + 0x1C) = 0;
+    ((u8 *)arg0)[0x1E] = 0xFF;
+    ((u8 *)arg0)[0x1F] = 0xFF;
+    ((u8 *)arg0)[0x20] = 0xFF;
+    ((u8 *)arg0)[0x21] = 0xFF;
     *(s16 *)((u8 *)arg0 + 0x22) = (s16)arg5;
-    *(s16 *)((u8 *)arg0 + 0x24) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x24) = 0;
     *(f32 *)((u8 *)arg0 + 0x28) = f;
     *(f32 *)((u8 *)arg0 + 0x2C) = f;
     *(f32 *)((u8 *)arg0 + 0x30) = f;
-    *(s32 *)((u8 *)arg0 + 0x34) = zero;
-    *(s32 *)((u8 *)arg0 + 0x38) = zero;
-    *(void **)arg0 = p3;
+    *(s32 *)((u8 *)arg0 + 0x34) = 0;
+    *(s32 *)((u8 *)arg0 + 0x38) = 0;
+    *(void **)arg0 = lbl_8029180C;
     ((u8 *)arg0)[0x3C] = 1;
     ((u8 *)arg0)[0x3D] = 1;
-    *(s16 *)((u8 *)arg0 + 0x3E) = (s16)zero;
-    *(s16 *)((u8 *)arg0 + 0x40) = neg1;
-    *(s16 *)((u8 *)arg0 + 0x42) = neg1;
+    *(s16 *)((u8 *)arg0 + 0x3E) = 0;
+    *(s16 *)((u8 *)arg0 + 0x40) = -1;
+    *(s16 *)((u8 *)arg0 + 0x42) = -1;
     *(s16 *)((u8 *)arg0 + 0x44) = 2;
     *(s16 *)((u8 *)arg0 + 0x46) = 0x30;
     *(s16 *)((u8 *)arg0 + 0x48) = 0x10;
-    *(s16 *)((u8 *)arg0 + 0x4A) = (s16)zero;
+    *(s16 *)((u8 *)arg0 + 0x4A) = 0;
     new_var = arg0;
     h = (s16)(*(s16 *)((u8 *)new_var + 0x10) - *(s16 *)((u8 *)new_var + 0xC));
     w = (s16)(*(s16 *)((u8 *)new_var + 0xE) - *(s16 *)((u8 *)new_var + 0xA));
@@ -1903,6 +1891,8 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)(h - 8);
     *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
 }
+#pragma global_optimizer on
+#pragma use_lmw_stmw reset
 #pragma scheduling reset
 void *fn_80134F74(void *arg0, s16 arg1) {
     M2C_UNK Heap_Free(void *);
@@ -5829,7 +5819,6 @@ extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
     s32 temp_r4;
     s32 temp_r7;
     s32 temp_r6;
-    s32 q;
     s32 temp_r8;
     s32 t;
 
@@ -5838,8 +5827,7 @@ extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
         temp_r7 = (s16)M2C_FIELD(arg0, s32 *, 0x70);
         temp_r4 = M2C_FIELD(arg0, s16 *, 0x58);
         temp_r6 = temp_r4 - 1;
-        q = (temp_r7 + temp_r6) / temp_r4;
-        temp_r8 = (s16)q;
+        temp_r8 = (s16)((temp_r7 + temp_r6) / temp_r4);
         if ((arg1 < 0) || (temp_r7 <= arg1)) return;
         if (var_r3 > temp_r8) var_r3 = temp_r8;
         if (arg1 < (s16)M2C_FIELD(arg0, s16 *, 0x4E)) {
