@@ -81,110 +81,110 @@ s32 fn_80006AF4(s32 *arg0) { s32 sum=0; s32 n=0; --arg0; do { sum+=*++arg0; } wh
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
     extern void *gPrim2D;
-    extern char lbl_80366DA4[];
-    extern double lbl_80368B88;
+    s32 Text_MeasureWidth(u8 *, s32, f32);
+    extern f64 lbl_80368B88;
 
-    char buffer[32];
-    char *destination;
-    char *source;
-    void *text;
-    void *textBuffer;
+    u8 buffer[16];
+    u8 *digits;
+    u8 *write;
+    u8 *read;
     u8 *prim;
-    s32 value;
-    s32 length;
+    u8 *text;
+    u8 *font;
+    s32 sign;
+    s32 count;
+    s32 i;
     s32 width;
     s32 x;
-    s32 i;
-    s32 j;
-    s32 allocationSize;
-    float yPosition;
+    s32 size;
+    u8 tmp;
+    union {
+        f64 value;
+        struct { u32 hi; u32 lo; } bits;
+    } fx, fy;
 
-    prim = (u8 *)gPrim2D;
-    value = arg4;
-    i = 0;
+    sign = 0;
+    count = 0;
 
     if (arg3 != 0) {
-        if (value < 0) {
-            buffer[i++] = '-';
-            value = -value;
+        if (arg4 < 0) {
+            buffer[0] = '-';
+            arg4 *= -1;
         } else {
-            buffer[i++] = '+';
+            buffer[0] = '+';
         }
-    } else if (value < 0) {
+        sign = 1;
+    } else if (arg4 < 0) {
         buffer[0] = '-';
         buffer[1] = '-';
-        buffer[2] = '\0';
-        goto format_done;
+        buffer[2] = 0;
+        goto formatted;
     }
 
-    length = 0;
-
+    digits = buffer + sign;
+    write = digits;
     do {
-        buffer[i++] = (value % 10) + '0';
-        value /= 10;
-        length++;
-    } while (value != 0);
+        *write++ = (u8)('0' + arg4 % 10);
+        arg4 /= 10;
+        count++;
+    } while (arg4 != 0);
 
-    buffer[i] = '\0';
-
-    for (j = 0; j < length / 2; j++) {
-        char temp;
-
-        temp = buffer[(arg3 != 0 && arg4 < 0 ? 1 : 0) + j];
-        buffer[(arg3 != 0 && arg4 < 0 ? 1 : 0) + j] =
-            buffer[i - 2 - j];
-        buffer[i - 2 - j] = temp;
+    for (i = 0; i < count / 2; ++i) {
+        tmp = digits[i];
+        digits[i] = buffer[sign + count - 1 - i];
+        buffer[sign + count - 1 - i] = tmp;
     }
+    digits[count] = 0;
 
-format_done:
-    text = *(void **)(prim + 0xC);
-    textBuffer = *(void **)((u8 *)text + 4);
-
-    width = Text_MeasureWidth(buffer, -1, *(float *)((u8 *)textBuffer + 0x1C));
+formatted:
+    prim = (u8 *)gPrim2D;
+    text = *(u8 **)(prim + 0xC);
+    font = *(u8 **)(text + 4);
+    width = Text_MeasureWidth(buffer, -1, *(f32 *)(font + 0x1C));
 
     x = arg0;
-
     if (arg2 == 0) {
         x -= width;
     } else if (arg2 == 2) {
-        x -= (width + (width < 0)) / 2;
+        x -= (width + ((u32)width >> 31)) >> 1;
     }
 
-    *(float *)((u8 *)textBuffer + 0x10) = (float)x;
-    *(float *)((u8 *)textBuffer + 0x14) = (float)arg1;
+    prim = (u8 *)gPrim2D;
+    text = *(u8 **)(prim + 0xC);
+    font = *(u8 **)(text + 4);
+    fx.bits.hi = 0x43300000;
+    fx.bits.lo = (u32)x ^ 0x80000000U;
+    fy.bits.hi = 0x43300000;
+    fy.bits.lo = (u32)arg1 ^ 0x80000000U;
+    *(f32 *)(font + 0x10) = (f32)(fx.value - lbl_80368B88);
+    *(f32 *)(font + 0x14) = (f32)(fy.value - lbl_80368B88);
 
-    source = buffer;
-    length = 1;
-
-    while (*source++ != '\0') {
-        length++;
+    read = buffer;
+    size = 1;
+    while (*read++ != 0) {
+        ++size;
+    }
+    size = (size + 3) & 0xFC;
+    if (size > 0xD4) {
+        size = 0xD4;
     }
 
-    allocationSize = (length + 3) & 0xFC;
-
-    if (allocationSize > 0xD4) {
-        allocationSize = 0xD4;
+    prim = (u8 *)gPrim2D;
+    text = *(u8 **)(prim + 0xC);
+    font = *(u8 **)(text + 4);
+    write = *(u8 **)(prim + 8);
+    *(u8 **)(prim + 8) = write + size;
+    read = buffer;
+    while (*read != 0) {
+        *write++ = *read++;
     }
+    *write = 0;
 
-    textBuffer = *(void **)(prim + 8);
-    destination = (char *)textBuffer;
-    destination += allocationSize;
-
-    *(void **)(prim + 8) = destination;
-
-    source = buffer;
-
-    while (*source != '\0') {
-        *destination++ = *source++;
-    }
-
-    *destination = '\0';
-
-    *(u8 *)((u8 *)text + 5) += allocationSize;
-
-    for (i = 0; i < 4; i++) {
-        *((u8 *)text + 0x18 + i) = *((u8 *)text + 0x0C + i);
-    }
+    font[5] += (u8)size;
+    font[0x18] = font[0xC];
+    font[0x19] = font[0xD];
+    font[0x1A] = font[0xE];
+    font[0x1B] = font[0xF];
 }
 
 #pragma global_optimizer off
@@ -1004,7 +1004,11 @@ void Prim2D_AddPrim(u8 arg0) {
 
 void fn_80007B04(void)
 {
-    s32 OSGetTick(void);
+    extern u8 *gPrim2D;
+    extern s16 lbl_802837B0[];
+    extern f32 lbl_80368B98, lbl_80368BA0, lbl_80368BA4;
+    extern f32 lbl_80368BA8, lbl_80368BAC, lbl_80368BB0, lbl_80368BB4;
+    u32 OSGetTick(void);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
     void GXClearVtxDesc(void);
@@ -1013,204 +1017,437 @@ void fn_80007B04(void)
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
-    void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetZMode(s32, s32, s32);
+    void GXSetScissor(u32, u32, u32, u32);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
-    void GXSetScissor(u32, u32, u32);
-    void fn_80009728(void *, void *, u8);
-    void GXLoadPosMtxImm(void *, s16);
-    void GXSetCurrentMtx(s16);
-    void fn_80009008(s32, u8, u8);
-    extern void *gPrim2D;
-    extern f32 lbl_80368B98;
-    extern f32 lbl_80368BA0;
-    extern f32 lbl_80368BA4;
-    extern f32 lbl_80368BA8;
-    extern f32 lbl_80368BAC;
-    extern f32 lbl_80368BB0;
-    extern f32 lbl_80368BB4;
-    extern s16 lbl_802837B0[];
+    void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
+    void fn_80009728(u32, void *, void *, u8);
+    void fn_80009008(void *, u8, u8);
 
-    u8 sp128[0x40];
-    u32 sp24, sp20, sp1C, sp18;
-    u32 sp14, sp10, spC, sp8;
-    void **buf;
-    void **slot;
-    void *node;
-    void **walk;
-    u8 swapped;
-    s32 i;
-    u16 flags;
-    f32 f3, f2, f1;
-    void *mgr;
+    f32 ortho[5][4][4];
+    u32 oldScissor[4], curScissor[4];
+    u8 *prim, *node, *other, *walker;
+    u8 **items, **cursor, **matrixCursor;
+    s16 *matrixIds;
+    u32 flags, changed, alpha;
+    s32 count, j, k;
 
-    mgr = gPrim2D;
-    M2C_FIELD(mgr, s32 *, 0xA4) = OSGetTick();
-    f1 = lbl_80368B98;
-    C_MTXOrtho(sp128, f1, lbl_80368BAC, f1, lbl_80368BB0, f1, lbl_80368BB4);
-    GXSetProjection(sp128, 1);
+    prim = gPrim2D;
+    *(u32 *)(prim + 0xA4) = OSGetTick();
+    C_MTXOrtho(ortho[4], lbl_80368B98, lbl_80368BAC,
+                lbl_80368B98, lbl_80368BB0,
+                lbl_80368B98, lbl_80368BB4);
+    GXSetProjection(ortho[4], 1);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
-    GXSetVtxDesc(0xB, 1);
-    GXSetVtxDesc(0xD, 1);
+    GXSetVtxDesc(11, 1);
+    GXSetVtxDesc(13, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
-    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
-    GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 13, 1, 4, 0);
     GXSetCullMode(1);
     GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
     GXSetNumTevStages(1);
 
-    mgr = gPrim2D;
-    f3 = lbl_80368BA0;
-    f2 = lbl_80368BA4;
-    f1 = lbl_80368BA8;
-    buf = M2C_FIELD(mgr, void ***, 8);
-    M2C_FIELD(mgr, void ***, 8) = (void **)((u8 *)buf + ((M2C_FIELD(mgr, s16 *, 0x90) + 1) << 2));
-    slot = buf;
-    node = M2C_FIELD(gPrim2D, void **, 0xC);
-    while (node != NULL) {
-        *slot = node;
-        slot++;
-        flags = M2C_FIELD(node, u16 *, 0x10);
-        if (!(flags & 0xF0)) {
-            if (flags & 0x800) {
-                M2C_FIELD(node, f32 *, 0x18) = f3;
-            } else {
-                M2C_FIELD(node, f32 *, 0x18) = f2;
-            }
+    prim = gPrim2D;
+    items = *(u8 ***)(prim + 8);
+    count = *(s16 *)(prim + 0x90);
+    *(u8 ***)(prim + 8) = items + count + 1;
+    cursor = items;
+    for (node = *(u8 **)(prim + 12); node != 0; node = *(u8 **)node) {
+        *cursor++ = node;
+        flags = *(u16 *)(node + 0x10);
+        if ((flags & 0xF0) == 0) {
+            if (flags & 0x800)
+                *(f32 *)(node + 0x18) = lbl_80368BA0;
+            else
+                *(f32 *)(node + 0x18) = lbl_80368BA4;
         } else if (flags & 0x800) {
-            M2C_FIELD(node, f32 *, 0x18) += f1;
+            *(f32 *)(node + 0x18) += lbl_80368BA8;
         }
-        node = M2C_FIELD(node, void **, 0);
     }
 
     do {
-        swapped = 0;
-        walk = buf;
-        for (i = 0; i < M2C_FIELD(gPrim2D, s16 *, 0x90) - 1; i++, walk++) {
-            void *a = walk[0];
-            void *b = walk[1];
-            if (M2C_FIELD(a, f32 *, 0x18) < M2C_FIELD(b, f32 *, 0x18)) {
-                walk[0] = b;
-                swapped = 1;
-                walk[1] = a;
+        changed = 0;
+        cursor = items;
+        for (k = 0; k < *(s16 *)(gPrim2D + 0x90) - 1; ++k, ++cursor) {
+            node = cursor[0];
+            other = cursor[1];
+            if (*(f32 *)(node + 0x18) < *(f32 *)(other + 0x18)) {
+                cursor[0] = other;
+                cursor[1] = node;
+                changed = 1;
             }
         }
-    } while (swapped);
+    } while (changed);
 
-    buf[M2C_FIELD(gPrim2D, s16 *, 0x90)] = NULL;
-    fn_802250D0(&sp24, &sp20, &sp1C, &sp18);
-    mgr = gPrim2D;
-    GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
-                M2C_FIELD(mgr, f32 *, 0x9C), M2C_FIELD(mgr, f32 *, 0xA0));
+    items[*(s16 *)(gPrim2D + 0x90)] = 0;
+    fn_802250D0(&oldScissor[0], &oldScissor[1], &oldScissor[2], &oldScissor[3]);
+    GXSetViewport(lbl_80368B98, lbl_80368B98,
+                  lbl_80368BB0, lbl_80368BAC,
+                  *(f32 *)(gPrim2D + 0x9C), *(f32 *)(gPrim2D + 0xA0));
     GXSetZMode(1, 3, 1);
     fn_802246B8(0);
     fn_80223E5C(6, 0x80, 1, 0, 0);
-
-    walk = buf;
-    while (*walk != NULL) {
-        node = *walk;
-        flags = M2C_FIELD(node, u16 *, 0x10);
-        if (!(flags & 0xF0) && !(flags & 0x800)) {
-            fn_802250D0(&sp14, &sp10, &spC, &sp8);
-            if (sp24 != sp14 || sp20 != sp10 || sp1C != spC || sp18 != sp8) {
-                GXSetScissor(sp20, sp1C, sp18);
-            }
-            node = *walk;
-            if (M2C_FIELD(node, u16 *, 0x10) & 0x1000) {
-                void (*cb)(void *, void *, void *, u8) =
-                    (void (*)(void *, void *, void *, u8))M2C_FIELD(node, void **, 0x1C);
-                cb(M2C_FIELD(node, void **, 0x20), (u8 *)node + 0x24, (u8 *)node + 0x44,
-                   M2C_FIELD(node, u8 *, 0x12));
-            } else {
-                fn_80009728((u8 *)node + 0x24, (u8 *)node + 0x44, M2C_FIELD(node, u8 *, 0x12));
-            }
-            if (M2C_FIELD(*walk, s16 *, 0xC) < 0) {
-                void **p = walk;
-                s16 *tbl = lbl_802837B0;
-                s32 n = 0;
-                while (*p != NULL && n < 0xA) {
-                    void *e = *p;
-                    if (M2C_FIELD(e, u16 *, 0x10) & 0x400) {
-                        M2C_FIELD(e, s16 *, 0xC) = lbl_802837B0[n];
-                        GXLoadPosMtxImm((u8 *)*p + 0x50, lbl_802837B0[n]);
-                        break;
-                    }
-                    M2C_FIELD(e, s16 *, 0xC) = *tbl;
-                    GXLoadPosMtxImm((u8 *)*p + 0x50, *tbl);
-                    p++;
-                    tbl++;
-                    n++;
+    cursor = items;
+    while ((node = *cursor) != 0) {
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0xF0) goto pass3;
+        if (flags & 0x800) goto pass2;
+        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
+        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
+            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
+            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x1000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        } else {
+            fn_80009728(flags, node + 0x24, node + 0x44, node[0x12]);
+        }
+        node = *cursor;
+        if (*(s16 *)(node + 0xC) < 0) {
+            matrixCursor = cursor;
+            matrixIds = lbl_802837B0;
+            j = 0;
+            while ((walker = *matrixCursor) != 0 && j < 10) {
+                if (*(u16 *)(walker + 0x10) & 0x400) {
+                    *(s16 *)(walker + 0xC) = lbl_802837B0[j];
+                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    break;
                 }
-            }
-            GXSetCurrentMtx(M2C_FIELD(*walk, s16 *, 0xC));
-            node = *walk;
-            if (M2C_FIELD(node, u16 *, 0x10) & 0x2000) {
-                void (*cb)(void *, void *, void *, u8) =
-                    (void (*)(void *, void *, void *, u8))M2C_FIELD(node, void **, 0x1C);
-                cb(M2C_FIELD(node, void **, 0x20), (u8 *)node + 0x24, (u8 *)node + 0x44,
-                   M2C_FIELD(node, u8 *, 0x12));
-            }
-            {
-                u8 a9 = M2C_FIELD(gPrim2D, u8 *, 0xA9);
-                node = *walk;
-                if (a9 == 0xFF || (M2C_FIELD(node, u16 *, 0x10) & 0x400)) {
-                    node = *walk;
-                    fn_80009008(M2C_FIELD(node, s32 *, 4), M2C_FIELD(node, u8 *, 0x13),
-                                M2C_FIELD(node, u8 *, 0x14));
-                } else if (a9 != 0) {
-                    fn_80009008(M2C_FIELD(node, s32 *, 4),
-                                (u8)((s32)(a9 * M2C_FIELD(node, u8 *, 0x13)) >> 8),
-                                M2C_FIELD(node, u8 *, 0x14));
-                }
-            }
-            node = *walk;
-            if (M2C_FIELD(node, u16 *, 0x10) & 0x4000) {
-                void (*cb)(void *, void *, void *, u8) =
-                    (void (*)(void *, void *, void *, u8))M2C_FIELD(node, void **, 0x1C);
-                cb(M2C_FIELD(node, void **, 0x20), (u8 *)node + 0x24, (u8 *)node + 0x44,
-                   M2C_FIELD(node, u8 *, 0x12));
-            }
-            flags = M2C_FIELD(*walk, u16 *, 0x10);
-            if (flags & 0x400) {
-                if (!(flags & 0xF0)) {
-                    GXSetZMode(1, 3, 1);
-                    fn_802246B8(0);
-                    fn_80223E5C(6, 0x80, 1, 0, 0);
-                } else {
-                    GXSetZMode(1, 3, 0);
-                    fn_802246B8(1);
-                    fn_80223E5C(7, 0, 1, 7, 0);
-                }
-                {
-                    u8 mat[0x40];
-                    f32 z = lbl_80368B98;
-                    C_MTXOrtho(mat, z, lbl_80368BAC, z, lbl_80368BB0, z, lbl_80368BB4);
-                    GXSetProjection(mat, 1);
-                }
-                GXClearVtxDesc();
-                GXSetVtxDesc(9, 1);
-                GXSetVtxDesc(0xB, 1);
-                GXSetVtxDesc(0xD, 1);
-                GXSetVtxAttrFmt(0, 9, 1, 4, 0);
-                GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
-                GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
-                GXSetCullMode(1);
-                GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
-                GXSetNumTevStages(1);
+                *(s16 *)(walker + 0xC) = *matrixIds;
+                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                ++matrixCursor;
+                ++matrixIds;
+                ++j;
             }
         }
-        walk++;
+        node = *cursor;
+        GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x2000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        alpha = gPrim2D[0xA9];
+        if (alpha != 255) {
+            node = *cursor;
+            if (*(u16 *)(node + 0x10) & 0x400) {
+                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+            } else if (alpha != 0) {
+                fn_80009008(*(void **)(node + 4),
+                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
+            }
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x4000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        flags = *(u16 *)(*cursor + 0x10);
+        if (flags & 0x400) {
+            if (flags & 0xF0) {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
+            } else {
+                GXSetZMode(1, 3, 1);
+                fn_802246B8(0);
+                fn_80223E5C(6, 0x80, 1, 0, 0);
+            }
+            C_MTXOrtho(ortho[3], lbl_80368B98, lbl_80368BAC,
+                       lbl_80368B98, lbl_80368BB0,
+                       lbl_80368B98, lbl_80368BB4);
+            GXSetProjection(ortho[3], 1);
+            GXClearVtxDesc();
+            GXSetVtxDesc(9, 1);
+            GXSetVtxDesc(11, 1);
+            GXSetVtxDesc(13, 1);
+            GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+            GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+            GXSetVtxAttrFmt(0, 13, 1, 4, 0);
+            GXSetCullMode(1);
+            GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
+            GXSetNumTevStages(1);
+        }
+        ++cursor;
     }
-
-    mgr = gPrim2D;
+pass2:
     GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
-                M2C_FIELD(mgr, f32 *, 0x94), M2C_FIELD(mgr, f32 *, 0x98));
-    mgr = gPrim2D;
-    M2C_FIELD(mgr, s32 *, 0xA4) = OSGetTick() - M2C_FIELD(mgr, s32 *, 0xA4);
-    M2C_FIELD(gPrim2D, u8 *, 0xA9) = 0xFF;
+                  *(f32 *)(gPrim2D + 0x94), *(f32 *)(gPrim2D + 0x98));
+    while ((node = *cursor) != 0) {
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0xF0) goto pass3;
+        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
+        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
+            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
+            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x1000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        } else {
+            fn_80009728(flags, node + 0x24, node + 0x44, node[0x12]);
+        }
+        node = *cursor;
+        if (*(s16 *)(node + 0xC) < 0) {
+            matrixCursor = cursor;
+            matrixIds = lbl_802837B0;
+            j = 0;
+            while ((walker = *matrixCursor) != 0 && j < 10) {
+                if (*(u16 *)(walker + 0x10) & 0x400) {
+                    *(s16 *)(walker + 0xC) = lbl_802837B0[j];
+                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    break;
+                }
+                *(s16 *)(walker + 0xC) = *matrixIds;
+                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                ++matrixCursor;
+                ++matrixIds;
+                ++j;
+            }
+        }
+        node = *cursor;
+        GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x2000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        alpha = gPrim2D[0xA9];
+        if (alpha != 255) {
+            node = *cursor;
+            if (*(u16 *)(node + 0x10) & 0x400) {
+                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+            } else if (alpha != 0) {
+                fn_80009008(*(void **)(node + 4),
+                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
+            }
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x4000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        flags = *(u16 *)(*cursor + 0x10);
+        if (flags & 0x400) {
+            if (flags & 0xF0) {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
+            } else {
+                GXSetZMode(1, 3, 1);
+                fn_802246B8(0);
+                fn_80223E5C(6, 0x80, 1, 0, 0);
+            }
+            C_MTXOrtho(ortho[2], lbl_80368B98, lbl_80368BAC,
+                       lbl_80368B98, lbl_80368BB0,
+                       lbl_80368B98, lbl_80368BB4);
+            GXSetProjection(ortho[2], 1);
+            GXClearVtxDesc();
+            GXSetVtxDesc(9, 1);
+            GXSetVtxDesc(11, 1);
+            GXSetVtxDesc(13, 1);
+            GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+            GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+            GXSetVtxAttrFmt(0, 13, 1, 4, 0);
+            GXSetCullMode(1);
+            GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
+            GXSetNumTevStages(1);
+        }
+        ++cursor;
+    }
+pass3:
+    GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
+                  *(f32 *)(gPrim2D + 0x94), *(f32 *)(gPrim2D + 0x98));
+    GXSetZMode(1, 3, 0);
+    fn_802246B8(1);
+    fn_80223E5C(7, 0, 1, 7, 0);
+    while ((node = *cursor) != 0) {
+        flags = *(u16 *)(node + 0x10);
+        if (!(flags & 0x800)) goto pass4;
+        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
+        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
+            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
+            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x1000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        } else {
+            fn_80009728(flags, node + 0x24, node + 0x44, node[0x12]);
+        }
+        node = *cursor;
+        if (*(s16 *)(node + 0xC) < 0) {
+            matrixCursor = cursor;
+            matrixIds = lbl_802837B0;
+            j = 0;
+            while ((walker = *matrixCursor) != 0 && j < 10) {
+                if (*(u16 *)(walker + 0x10) & 0x400) {
+                    *(s16 *)(walker + 0xC) = lbl_802837B0[j];
+                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    break;
+                }
+                *(s16 *)(walker + 0xC) = *matrixIds;
+                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                ++matrixCursor;
+                ++matrixIds;
+                ++j;
+            }
+        }
+        node = *cursor;
+        GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x2000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        alpha = gPrim2D[0xA9];
+        if (alpha != 255) {
+            node = *cursor;
+            if (*(u16 *)(node + 0x10) & 0x400) {
+                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+            } else if (alpha != 0) {
+                fn_80009008(*(void **)(node + 4),
+                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
+            }
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x4000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        flags = *(u16 *)(*cursor + 0x10);
+        if (flags & 0x400) {
+            if (flags & 0xF0) {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
+            } else {
+                GXSetZMode(1, 3, 1);
+                fn_802246B8(0);
+                fn_80223E5C(6, 0x80, 1, 0, 0);
+            }
+            C_MTXOrtho(ortho[1], lbl_80368B98, lbl_80368BAC,
+                       lbl_80368B98, lbl_80368BB0,
+                       lbl_80368B98, lbl_80368BB4);
+            GXSetProjection(ortho[1], 1);
+            GXClearVtxDesc();
+            GXSetVtxDesc(9, 1);
+            GXSetVtxDesc(11, 1);
+            GXSetVtxDesc(13, 1);
+            GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+            GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+            GXSetVtxAttrFmt(0, 13, 1, 4, 0);
+            GXSetCullMode(1);
+            GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
+            GXSetNumTevStages(1);
+        }
+        ++cursor;
+    }
+pass4:
+    GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
+                  *(f32 *)(gPrim2D + 0x9C), *(f32 *)(gPrim2D + 0xA0));
+    while ((node = *cursor) != 0) {
+        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
+        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
+            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
+            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x1000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        } else {
+            fn_80009728(flags, node + 0x24, node + 0x44, node[0x12]);
+        }
+        node = *cursor;
+        if (*(s16 *)(node + 0xC) < 0) {
+            matrixCursor = cursor;
+            matrixIds = lbl_802837B0;
+            j = 0;
+            while ((walker = *matrixCursor) != 0 && j < 10) {
+                if (*(u16 *)(walker + 0x10) & 0x400) {
+                    *(s16 *)(walker + 0xC) = lbl_802837B0[j];
+                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    break;
+                }
+                *(s16 *)(walker + 0xC) = *matrixIds;
+                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                ++matrixCursor;
+                ++matrixIds;
+                ++j;
+            }
+        }
+        node = *cursor;
+        GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x2000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        alpha = gPrim2D[0xA9];
+        if (alpha != 255) {
+            node = *cursor;
+            if (*(u16 *)(node + 0x10) & 0x400) {
+                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+            } else if (alpha != 0) {
+                fn_80009008(*(void **)(node + 4),
+                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
+            }
+        }
+        node = *cursor;
+        flags = *(u16 *)(node + 0x10);
+        if (flags & 0x4000) {
+            ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
+                (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
+        }
+        flags = *(u16 *)(*cursor + 0x10);
+        if (flags & 0x400) {
+            if (flags & 0xF0) {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
+            } else {
+                GXSetZMode(1, 3, 1);
+                fn_802246B8(0);
+                fn_80223E5C(6, 0x80, 1, 0, 0);
+            }
+            C_MTXOrtho(ortho[0], lbl_80368B98, lbl_80368BAC,
+                       lbl_80368B98, lbl_80368BB0,
+                       lbl_80368B98, lbl_80368BB4);
+            GXSetProjection(ortho[0], 1);
+            GXClearVtxDesc();
+            GXSetVtxDesc(9, 1);
+            GXSetVtxDesc(11, 1);
+            GXSetVtxDesc(13, 1);
+            GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+            GXSetVtxAttrFmt(0, 11, 1, 5, 0);
+            GXSetVtxAttrFmt(0, 13, 1, 4, 0);
+            GXSetCullMode(1);
+            GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
+            GXSetNumTevStages(1);
+        }
+        ++cursor;
+    }
+    prim = gPrim2D;
+    *(u32 *)(prim + 0xA4) = OSGetTick() - *(u32 *)(prim + 0xA4);
+    gPrim2D[0xA9] = 0xFF;
 }
 
 #pragma global_optimizer on
@@ -1376,15 +1613,18 @@ void fn_80009008(void *list, s32 a, s32 b) {
     void fn_8000E394(s16, s16, s32, void *, void *, void *, f32, f32, f32, f32, f32);
     void fn_80006E8C(void *, u32, u32, u32, u32);
 
+    u8 scale;
+    s32 scale1;
+    u8 cr, cg;
+    u8 cb;
+    u8 ca;
     u8 *node;
     s32 bsave;
-    u8 scale;
-    u8 scale1;
-    u8 cr, cg, cb, ca;
     u8 type;
-    u8 c0[4], c1[4];
+    u8 tmpCol[16], c0[4], c1[4];
     u32 col;
     f32 fx, fy, fz;
+    u8 pr, pg, pb, pa;
     void (*vfn)(s32);
 
     bsave = b;
@@ -1398,50 +1638,115 @@ void fn_80009008(void *list, s32 a, s32 b) {
         cb = (u8)((node[0xE] * scale) >> 7);
         ca = (u8)((node[0xF] * scale1) >> 8);
         type = node[4];
-        if (type <= 11) {
-            switch (type) {
+        switch (type) {
             case 1:
                 GXBegin(0x98, 0, 4);
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x18); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x1C);
+                fx = *(f32 *)(node + 0x18); fy = *(f32 *)(node + 0x1C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x20);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x28); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x1C);
+                fx = *(f32 *)(node + 0x28); fy = *(f32 *)(node + 0x1C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x24); fx = *(f32 *)(node + 0x10);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x18); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x2C);
+                fx = *(f32 *)(node + 0x18); fy = *(f32 *)(node + 0x2C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x24); fx = *(f32 *)(node + 0x20);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x28); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x2C);
+                fx = *(f32 *)(node + 0x28); fy = *(f32 *)(node + 0x2C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                break;
+            case 2:
+                GXBegin(0x98, 0, 4);
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
+                fx = *(f32 *)(node + 0x18); fy = *(f32 *)(node + 0x1C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x34); fx = *(f32 *)(node + 0x30);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
+                fx = *(f32 *)(node + 0x38); fy = *(f32 *)(node + 0x3C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x44); fx = *(f32 *)(node + 0x40);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
+                fx = *(f32 *)(node + 0x48); fy = *(f32 *)(node + 0x4C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x24); fx = *(f32 *)(node + 0x20);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
+                fx = *(f32 *)(node + 0x28); fy = *(f32 *)(node + 0x2C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                break;
+            case 3:
+                GXBegin(0x98, 0, 4);
+                pr = (u8)((node[0xC] * scale) >> 7); pg = (u8)((node[0xD] * scale) >> 7);
+                pb = (u8)((node[0xE] * scale) >> 7); pa = (u8)((node[0xF] * scale1) >> 8);
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = pr; *(volatile u8 *)0xCC008000 = pg; *(volatile u8 *)0xCC008000 = pb; *(volatile u8 *)0xCC008000 = pa;
+                fx = *(f32 *)(node + 0x18); fy = *(f32 *)(node + 0x1C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                pr = (u8)((node[0x50] * scale) >> 7); pg = (u8)((node[0x51] * scale) >> 7);
+                pb = (u8)((node[0x52] * scale) >> 7); pa = (u8)((node[0x53] * scale1) >> 8);
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x34); fx = *(f32 *)(node + 0x30);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = pr; *(volatile u8 *)0xCC008000 = pg; *(volatile u8 *)0xCC008000 = pb; *(volatile u8 *)0xCC008000 = pa;
+                fx = *(f32 *)(node + 0x38); fy = *(f32 *)(node + 0x3C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                pr = (u8)((node[0x54] * scale) >> 7); pg = (u8)((node[0x55] * scale) >> 7);
+                pb = (u8)((node[0x56] * scale) >> 7); pa = (u8)((node[0x57] * scale1) >> 8);
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x44); fx = *(f32 *)(node + 0x40);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = pr; *(volatile u8 *)0xCC008000 = pg; *(volatile u8 *)0xCC008000 = pb; *(volatile u8 *)0xCC008000 = pa;
+                fx = *(f32 *)(node + 0x48); fy = *(f32 *)(node + 0x4C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
+                pr = (u8)((node[0x58] * scale) >> 7); pg = (u8)((node[0x59] * scale) >> 7);
+                pb = (u8)((node[0x5A] * scale) >> 7); pa = (u8)((node[0x5B] * scale1) >> 8);
+                fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x24); fx = *(f32 *)(node + 0x20);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
+                *(volatile u8 *)0xCC008000 = pr; *(volatile u8 *)0xCC008000 = pg; *(volatile u8 *)0xCC008000 = pb; *(volatile u8 *)0xCC008000 = pa;
+                fx = *(f32 *)(node + 0x28); fy = *(f32 *)(node + 0x2C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 break;
             case 4:
+                ca = (u8)((node[0xF] * scale1) >> 8);
                 GXBegin(0xA8, 0, 2);
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x18); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x1C);
+                fx = *(f32 *)(node + 0x18); fy = *(f32 *)(node + 0x1C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x24); fx = *(f32 *)(node + 0x20);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
-                *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x28); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x2C);
+                fx = *(f32 *)(node + 0x28); fy = *(f32 *)(node + 0x2C);
+                *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy;
                 break;
             case 5:
-                col = (cr << 24) | (cg << 16) | (cb << 8) | ca;
+                col = (cr << 24) + (cg << 16) + (cb << 8) + ca;
                 *(u32 *)c1 = col;
                 c0[0] = (u8)((node[0x18] * scale) >> 7);
                 c0[1] = (u8)((node[0x19] * scale) >> 7);
                 c0[2] = (u8)((node[0x1A] * scale) >> 7);
                 c0[3] = (u8)((node[0x1B] * scale1) >> 8);
-                *(u32 *)c1 = col;
+                *(u32 *)tmpCol = *(u32 *)c0;
                 fn_80008C24(c0, c1, node + 0x28, *(f32 *)(node + 0x10), *(f32 *)(node + 0x14), *(f32 *)(node + 0x8), *(f32 *)(node + 0x1C));
                 break;
+            case 10:
+                col = (cr << 24) + (cg << 16) + (cb << 8) + ca;
+                *(u32 *)c1 = col; *(u32 *)c0 = col;
+                fn_8014B388(c0, node + 0x28, *(f32 *)(node + 0x10), *(f32 *)(node + 0x14), *(f32 *)(node + 0x8));
+                break;
             case 6:
-                col = (cr << 24) | (cg << 16) | (cb << 8) | ca;
+                col = (cr << 24) + (cg << 16) + (cb << 8) + ca;
                 *(u32 *)c1 = col;
                 c0[0] = node[0x18]; c0[1] = node[0x19]; c0[2] = node[0x1A];
                 c0[3] = (u8)((node[0x1B] * scale1) >> 8);
@@ -1449,7 +1754,7 @@ void fn_80009008(void *list, s32 a, s32 b) {
                     *(f32 *)(node + 0x10), *(f32 *)(node + 0x14), *(f32 *)(node + 0x8), *(f32 *)(node + 0x1C), *(f32 *)(node + 0x20));
                 break;
             case 7:
-                col = (cr << 24) | (cg << 16) | (cb << 8) | ca;
+                col = (cr << 24) + (cg << 16) + (cb << 8) + ca;
                 *(u32 *)c1 = col;
                 c0[0] = node[0x18]; c0[1] = node[0x19]; c0[2] = node[0x1A];
                 c0[3] = (u8)((node[0x1B] * scale1) >> 8);
@@ -1457,7 +1762,7 @@ void fn_80009008(void *list, s32 a, s32 b) {
                     *(f32 *)(node + 0x10), *(f32 *)(node + 0x14), *(f32 *)(node + 0x8), *(f32 *)(node + 0x1C), *(f32 *)(node + 0x20));
                 break;
             case 8:
-                col = (cr << 24) | (cg << 16) | (cb << 8) | ca;
+                col = (cr << 24) + (cg << 16) + (cb << 8) + ca;
                 *(u32 *)c1 = col;
                 c0[0] = node[0x18]; c0[1] = node[0x19]; c0[2] = node[0x1A];
                 c0[3] = (u8)((node[0x1B] * scale1) >> 8);
@@ -1467,23 +1772,16 @@ void fn_80009008(void *list, s32 a, s32 b) {
             case 9:
                 fn_80006E8C(node, cr, cg, cb, ca);
                 break;
-            case 10:
-                col = (cr << 24) | (cg << 16) | (cb << 8) | ca;
-                *(u32 *)c1 = col; *(u32 *)c0 = col;
-                fn_8014B388(c0, node + 0x28, *(f32 *)(node + 0x10), *(f32 *)(node + 0x14), *(f32 *)(node + 0x8));
-                break;
             case 11:
                 vfn = *(void (**)(s32))(node + 0x10);
                 vfn(*(s32 *)(node + 0x14));
                 break;
             default:
                 break;
-            }
         }
         node = *(u8 **)node;
     }
 }
-
 void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void PSMTXScale(void *, f32, f32, f32);
     void GXSetNumChans(s32);
@@ -1659,49 +1957,37 @@ void Prim2D_AddZ(f32 farg0) {
     *(f32 *)(*(u8 **)&gPrim2D + 0x28) += farg0;
 }
 
-void fn_80009C20(
-    float arg0,
-    float arg1,
-    float arg2,
-    float arg3,
-    float arg4,
-    float arg5,
-    float arg6,
-    float arg7
-)
-{
-    extern float gFloat1;
-    extern float lbl_80368B98;
-    extern float lbl_80368B9C;
-
-    float matrix0[12];
-    float matrix1[12];
-    float matrix2[12];
-    float matrix3[12];
-    float matrix4[12];
-    float result[12];
-    float scalar;
+void fn_80009C20(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
+    void PSMTXRotRad(void *, u32, f32);
+    void PSMTXConcat(void *, void *, void *);
+    void PSMTXCopy(void *, void *);
+    extern f32 gFloat1;
+    extern f32 lbl_80368B98;
+    extern f32 lbl_80368B9C;
+    extern u16 gPrim2D;
+    f32 scale[12];
+    f32 trans[12];
+    f32 rot[12];
+    f32 pos[12];
+    f32 neg[12];
+    f32 result[12];
+    f32 scalar;
 
     scalar = arg2;
-
-    PSMTXTrans(matrix0, arg0, arg1);
-
-    PSMTXScale(matrix1, arg5, arg6, gFloat1);
-
-    PSMTXRotRad(matrix2, 0x5A, lbl_80368B9C * arg7);
-
-    PSMTXTrans(matrix3, -arg3, -arg4, lbl_80368B98);
-    PSMTXTrans(matrix4, arg3, arg4, lbl_80368B98);
-
-    PSMTXConcat(matrix1, matrix3, result);
-    PSMTXConcat(matrix2, result, result);
-    PSMTXConcat(matrix4, result, result);
-    PSMTXConcat(matrix0, result, result);
-
-    PSMTXCopy(result, (u8 *)gPrim2D + 0x60);
-
-    *(float *)((u8 *)gPrim2D + 0x28) = scalar;
-    *(u16 *)((u8 *)gPrim2D + 0x20) &= ~(1 << 10);
+    PSMTXTrans(trans, arg0, arg1, arg2);
+    PSMTXScale(scale, arg5, arg6, gFloat1);
+    PSMTXRotRad(rot, 0x5A, lbl_80368B9C * arg7);
+    PSMTXTrans(neg, -arg3, -arg4, lbl_80368B98);
+    PSMTXTrans(pos, arg3, arg4, lbl_80368B98);
+    PSMTXConcat(scale, neg, result);
+    PSMTXConcat(rot, result, result);
+    PSMTXConcat(pos, result, result);
+    PSMTXConcat(trans, result, result);
+    PSMTXCopy(result, (*(u8 **)&gPrim2D) + 0x60);
+    *(f32 *)((*(u8 **)&gPrim2D) + 0x28) = scalar;
+    *(u16 *)((*(u8 **)&gPrim2D) + 0x20) &= ~0x800;
 }
 
 /* Build XY(Z) translate and optional uniform scale into gPrim2D's matrix; store z and clear flag 0x800. */
@@ -1841,25 +2127,26 @@ u32 b;
 u32 a;
 u8 *g;
 u32 tmp;
-u32 flags=arg3;
 if (arg0) {
 typedef struct { u32 words[8]; } Tex;
 *(Tex *)(*(u8 **)&gPrim2D+0x34)=*(Tex *)arg0;
 } else {
 fn_80006298(*(u8 **)&gPrim2D+0x34,0,0x20);
-if ((flags&3)==0) { flags &= 0xFFFC; tmp=flags|2; flags=tmp&0xFFFF; }
+if ((arg3&3)==0) {
+arg3 = arg3 & 0xFFFC;
+arg3 = (arg3 | 2) & 0xFFFF;
+}
 }
 if (arg1) {
-g=*(u8 **)&gPrim2D;
-flags = (flags | 0x8000)&0xFFFF;
-*(Struct_8000B090 *)(g+0x54)=*(Struct_8000B090 *)arg1;
-(*(u8 **)&gPrim2D)[0x22]=arg2;
+*(Struct_8000B090 *)(*(u8 **)&gPrim2D+0x54)=*(Struct_8000B090 *)arg1;
+arg3 = (arg3 | 0x8000)&0xFFFF;
+(*(u8 **)&gPrim2D)[0x22]=(short)arg2;
 } else {
 fn_80006298(*(u8 **)&gPrim2D+0x54,0,0xC);
 (*(u8 **)&gPrim2D)[0x22]=0xFF;
 }
 *(u16 *)(*(u8 **)&gPrim2D+0x20)&=0xFFFF7B0C;
-*(u16 *)(*(u8 **)&gPrim2D+0x20)|=flags;
+*(u16 *)(*(u8 **)&gPrim2D+0x20)|=arg3;
 }
 
 #pragma global_optimizer off
