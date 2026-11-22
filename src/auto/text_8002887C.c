@@ -562,14 +562,12 @@ void fn_80029858(s8 x, s8 y) {
         void *vtbl;
     } obj;
     u8 id;
-    bool has;
 
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284E10;
     fn_8002F728(gTargetList);
     id = gBattleMap[x + (y << 6) + 0xD];
-    has = map_cell_has_unit(id);
-    if (has) {
+    if (id != 0) {
         fn_8002F6E8(gTargetList, x, y, id, 1);
     }
     if (y - 1 >= 0) {
