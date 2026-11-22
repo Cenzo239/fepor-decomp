@@ -3868,22 +3868,30 @@ u8 Status_Test(void *, u8);
 void Map_SelectRangeBuffer(void *, s32);
 void Map_FillLayer(void *, s32, s32);
 extern u8 gUiContext[], gBattleMap[], gAiState[], Ai_UnitIsHostileToActive[];
-register u8 *map;
-register s32 y;
-register s32 x;
+#pragma cplusplus on
+struct Range {
+static u8 Test(void *arg0, s32 x, s32 y) {
+u8 *map;
 u8 result;
-if(fn_80102EA8()) return 0;
-x=gUiContext[0xD]; y=gUiContext[0xE];
-x=(s8)x; y=(s8)y;
-if(fn_8010B30C(arg0,x,y)) return 1;
 map=gBattleMap;
 if(Status_Test((u8*)arg0+0x1BC,0x3C) &&
 (Map_SelectRangeBuffer(map,5), Map_FillLayer(map,11,-1),
 (*(s16**)(map+0x14190))[x+(y<<6)]=0,
 fn_8018D294(arg0,Ai_UnitIsHostileToActive))) result=gAiState[0x21C];
 else result=0;
+return result;
+}
+};
+s32 x;
+s32 y;
+u8 result;
+if(fn_80102EA8()) return 0;
+x=((s8*)gUiContext)[0xD]; y=((s8*)gUiContext)[0xE];
+if(fn_8010B30C(arg0,x,y)) return 1;
+result=Range::Test(arg0,x,y);
 if(result) return 1;
 return (u8)fn_8010B01C(arg0,x,y)!=0;
+#pragma cplusplus reset
 }
 
 s32 fn_8010AD94(void *arg0) {
