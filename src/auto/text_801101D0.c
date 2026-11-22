@@ -2621,7 +2621,7 @@ s32 fn_80115AF0(void *actor) {
                       (char *)gActorXmlStrs + 0x4ED, n) == 0 ||
         (n = strlen((char *)gActorXmlStrs + 0x444),
          String_Compare((u8 *)actor + 0x160, 0, (void *)*(s32 *)((u8 *)actor + 0x160),
-                       (char *)gActorXmlStrs + 0x444, n) == 0)) {
+                        (char *)gActorXmlStrs + 0x444, n) == 0)) {
         n = strlen((char *)gActorXmlStrs + 0x43F);
         if (String_Compare((u8 *)actor + 0x178, 0, (void *)*(s32 *)((u8 *)actor + 0x178),
                           (char *)gActorXmlStrs + 0x43F, n) == 0 ||
@@ -2632,8 +2632,8 @@ s32 fn_80115AF0(void *actor) {
         return 0;
     }
     return 0;
-#pragma global_optimizer on
 }
+#pragma global_optimizer on
 
 #pragma global_optimizer off
 #pragma cplusplus on
@@ -7428,8 +7428,8 @@ void fn_8011D4C8(void) {
     self = Process_Find(gUiPanelProc);
     if (self) {
         i = 0;
-        p = self;
         zero = i;
+        p = self;
         do {
             void *obj = *(void **)(p + 0x34);
             if (obj) {
@@ -7440,8 +7440,8 @@ void fn_8011D4C8(void) {
             p += 4;
         } while (i < 4);
         i = 0;
-        p = self;
         zero = i;
+        p = self;
         do {
             void *obj = *(void **)(p + 0x48);
             if (obj) {
