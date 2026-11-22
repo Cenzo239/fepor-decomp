@@ -493,6 +493,7 @@ config.libs = [
             Object(NonMatching, "dolphin/exi/EXIBios.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/si/SIBios.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8023C53C.c"),
+            Object(NonMatching, "auto/text_8023C56C.c"),
             Object(Matching, "auto/text_8023C7B0.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8023C7F4.c"),
             Object(NonMatching, "auto/adpcm_80243AD4.c"),
