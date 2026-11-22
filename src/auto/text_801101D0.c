@@ -5600,9 +5600,9 @@ void fn_8011ACFC(void) {
     void fn_80015718(void *, void *);
     extern u8 gUnitLists[];
     void *list[3];
+    u32 flags;
     u8 *iter;
     u8 *node;
-    u32 flags;
     u8 *next;
 
     fn_8001594C(list, 0);
@@ -6521,10 +6521,10 @@ s32 fn_8011C018(void *self) {
     s16 dist;
     u8 prefer;
     void *result;
-    u32 sy;
     u32 oy;
-    u32 sx;
     u32 ox;
+    u32 sy;
+    u32 sx;
 
     bestDist = 0x7FFF;
     best = NULL;
@@ -6575,7 +6575,7 @@ s32 fn_8011C018(void *self) {
 }
 
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma global_optimizer on
 s32 fn_8011C164(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
@@ -6670,14 +6670,11 @@ s32 fn_8011C2B8(void *self) {
         if ((s8)sy <= (s8)oy) {
             continue;
         }
-        dy = (s8)sy - (s8)oy;
-        if ((s8)sy - (s8)oy < 0) {
-            dy = -dy;
-        }
+        dy = ((s8)sy - (s8)oy) < 0 ? -((s8)sy - (s8)oy) : ((s8)sy - (s8)oy);
         ox = ((u8 *)other)[0];
         sx = ((u8 *)self)[0];
         dx = (s8)sx - (s8)ox;
-        if ((s8)sx - (s8)ox < 0) {
+        if (((s8)((u8 *)self)[0] - (s8)ox) < 0) {
             dx = -dx;
         }
         dist = (s16)(dx + dy);
@@ -6710,25 +6707,25 @@ s32 fn_8011C404(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
     s16 bestDist;
-    void *best;
+    u32 best;
     s32 i;
     u8 *op;
-    void *other;
+    s32 other;
     s32 dy;
     s32 dx;
     s16 dist;
     u8 prefer;
-    void *result;
-    u32 sx;
-    u32 sy;
+    u32 result;
     u32 ox;
+    u32 sx;
     u32 oy;
+    u32 sy;
 
     bestDist = 0x7FFF;
-    best = NULL;
+    best = 0;
     for (i = 0; i < *(s32 *)gTargetList; i++) {
-        other = TargetList_GetAt(gTargetList, i);
-        if (self == other) {
+        other = (s32)TargetList_GetAt(gTargetList, i);
+        if (self == (void *)other) {
             continue;
         }
         op = (u8 *)other;
@@ -6751,7 +6748,7 @@ s32 fn_8011C404(void *self) {
         if (bestDist < dist) {
             continue;
         }
-        if (best != NULL && bestDist == dist) {
+        if (best != 0 && bestDist == dist) {
             if ((s8)((u8 *)best)[0] == (s8)ox) {
                 prefer = (s8)((u8 *)best)[1] < (s8)oy;
             } else {
@@ -6764,13 +6761,13 @@ s32 fn_8011C404(void *self) {
         bestDist = dist;
         best = other;
     }
-    if (best != NULL) {
+    if (best != 0) {
         result = best;
     } else {
-        result = self;
+        result = (u32)self;
     }
-    *(void **)((u8 *)self + 0x4) = result;
-    return best != NULL;
+    *(u32 *)((u8 *)self + 0x4) = result;
+    return best != 0;
 }
 #pragma global_optimizer on
 void *fn_8011C558(void *arg0, s16 arg1) {
@@ -7735,32 +7732,59 @@ void UiPanel_Create(void *owner, void *parent) {
 }
 
 void fn_8011DB48(void *arg0) {
- void *Process_Find(void *); void *fn_80122998(void *); void *fn_80122CE0(void *);
- void fn_80122E34(void *,u32); void fn_80122E28(void *,s32,s32); void fn_80122E10(void *,s32);
- void fn_80122E04(void *,u32,u32); void fn_80122E20(void *,u32); void fn_80122E18(void *,u32); void fn_80122DFC(void *,u32);
- void fn_80122DEC(void *,u32,s32,s32); void *Sound_Create(void *,void *); void Sound_FadeFromZero(void *,u8);
- extern u16 gUiPanelProc[]; extern u32 lbl_80367A5C;
- s32 i; u8 *item; u8 *data=arg0; u8 *panel; u8 *entry;
- panel=Process_Find(gUiPanelProc); item=0;
- for(i=(s32)item;i<4;i++) {
- if (((void **)(panel+i*4))[13]==0) {
- void *slot=fn_80122998(panel);
- entry=panel+i*4;
- *(void **)(entry+0x34)=slot;
- slot=fn_80122CE0(*(void **)(entry+0x34));
- *(void **)(panel+0x44)=*(void **)(entry+0x34);
- item=slot; break;
- }}
- fn_80122E34(item,*(u32 *)(data+8));
- fn_80122E28(item,*(s16 *)(data+0x14),*(s16 *)(data+0x16));
- fn_80122E10(item,*(s16 *)(data+0x1c));
- fn_80122E04(item,data[0x1e],data[0x1f]);
- fn_80122E20(item,data[0x20]); fn_80122E18(item,data[0x21]); fn_80122DFC(item,data[0x22]);
- item[0x6a]=data[0x23];
- fn_80122DEC(item,*(u32 *)(data+0x10),*(s16 *)(data+0x18),*(s16 *)(data+0x1a));
- item[0x6b]=data[0x25]; lbl_80367A5C=*(u32 *)(data+0xc);
- panel[0x63]=data[0x24]!=0;
- if(data[0x24]==0 && *(void **)(data+0xc)!=0) Sound_FadeFromZero(Sound_Create(*(void **)(data+0xc),panel),(u8)*(s16 *)(panel+0x68));
+    void *Process_Find(void *);
+    void *fn_80122998(void *);
+    void *fn_80122CE0(void *);
+    void fn_80122E34(void *, u32);
+    void fn_80122E28(void *, s32, s32);
+    void fn_80122E10(void *, s32);
+    void fn_80122E04(void *, u32, u32);
+    void fn_80122E20(void *, u32);
+    void fn_80122E18(void *, u32);
+    void fn_80122DFC(void *, u32);
+    void fn_80122DEC(void *, u32, s32, s32);
+    void *Sound_Create(void *, void *);
+    void Sound_FadeFromZero(void *, u8);
+    extern u16 gUiPanelProc[];
+    extern u32 lbl_80367A5C;
+    u8 *entry;
+    s32 i;
+    void *item;
+    u8 *data;
+    u8 *panel;
+    void *found;
+
+    data = arg0;
+    found = Process_Find(gUiPanelProc);
+    item = 0;
+    i = (s32)item;
+    panel = found;
+    for (; i < 4; i++) {
+        if (((void **)(panel + i * 4))[13] == 0) {
+            void *slot = fn_80122998(panel);
+            entry = panel + i * 4;
+            *(void **)(entry + 0x34) = slot;
+            slot = fn_80122CE0(*(void **)(entry + 0x34));
+            *(void **)(panel + 0x44) = *(void **)(entry + 0x34);
+            item = slot;
+            break;
+        }
+    }
+    fn_80122E34(item, *(u32 *)(data + 8));
+    fn_80122E28(item, *(s16 *)(data + 0x14), *(s16 *)(data + 0x16));
+    fn_80122E10(item, *(s16 *)(data + 0x1c));
+    fn_80122E04(item, data[0x1e], data[0x1f]);
+    fn_80122E20(item, data[0x20]);
+    fn_80122E18(item, data[0x21]);
+    fn_80122DFC(item, data[0x22]);
+    ((u8 *)item)[0x6a] = data[0x23];
+    fn_80122DEC(item, *(u32 *)(data + 0x10), *(s16 *)(data + 0x18), *(s16 *)(data + 0x1a));
+    ((u8 *)item)[0x6b] = data[0x25];
+    lbl_80367A5C = *(u32 *)(data + 0xc);
+    panel[0x63] = data[0x24] != 0;
+    if (data[0x24] == 0 && *(void **)(data + 0xc) != 0) {
+        Sound_FadeFromZero(Sound_Create(*(void **)(data + 0xc), panel), (u8)*(s16 *)(panel + 0x68));
+    }
 }
 
 void fn_8011DCB4(void) {
