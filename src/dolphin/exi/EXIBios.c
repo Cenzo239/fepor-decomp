@@ -1057,49 +1057,79 @@ s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
 fail:
     return 0;
 }
-void __OSEnableBarnacle(s32 chan, s32 dev) {
-s32 fn_8023A61C(s32, s32, s32 *);
-extern u32 lbl_80368808, lbl_8036880C, lbl_80368814, lbl_80368810;
-s32 id;
-s32 d;
-s32 c;
-d = dev;
-if (!EXIGetID(chan, d, (u32 *)&id)) {
-return;
-}
-switch (id) {
-case (s32)0x80000004:
-case (s32)0x80000008:
-case (s32)0x80000010:
-case (s32)0x80000020:
-case -1:
-case 4:
-case 8:
-case 16:
-case 32:
-case 0x01010000:
-case 0x01020000:
-case 0x02020000:
-case 0x03010000:
-case 0x04020100:
-case 0x04020200:
-case 0x04020300:
-case 0x04040404:
-case 0x04060000:
-case 0x04120000:
-case 0x04130000:
-case 0x04220000:
-break;
-default:
-c = chan;
-if (fn_8023A61C(c, d, &id)) {
-lbl_80368808 = c;
-lbl_80368814 = 0xA5FF005A;
-lbl_8036880C = d;
-lbl_80368810 = 0xA5FF005A;
-}
-break;
-}
+void __OSEnableBarnacle(s32 chan, s32 dev)
+{
+  s32 fn_8023A61C(s32, s32, s32 *);
+  extern u32 lbl_80368808;
+  extern u32 lbl_8036880C;
+  extern u32 lbl_80368814;
+  extern u32 lbl_80368810;
+  s32 id;
+  s32 d;
+  s32 c;
+  d = dev;
+  if (!EXIGetID(chan, d, (u32 *) (&id)))
+  {
+    return;
+  }
+  switch (id)
+  {
+    case (s32) 0x80000004:
+
+    case (s32) 0x80000008:
+
+    case (s32) 0x80000010:
+
+    case (s32) 0x80000020:
+
+    case -1:
+
+    case 4:
+
+    case 8:
+
+    case 16:
+
+    case 32:
+
+    case 0x01010000:
+
+    case 0x01020000:
+
+    case 0x02020000:
+
+    case 0x03010000:
+
+    case 0x04020100:
+
+    case 0x04020200:
+
+    case 0x04020300:
+
+    case 0x04040404:
+
+    case 0x04060000:
+
+    case 0x04120000:
+
+    case 0x04130000:
+
+    case 0x04220000:
+      break;
+
+    default:
+      c = chan;
+      if (fn_8023A61C(c, d, &id))
+    {
+      lbl_80368808 = c;
+      lbl_8036880C = d;
+      lbl_80368814 = 0xA5FF005A;
+      lbl_80368810 = 0xA5FF005A;
+    }
+      break;
+
+  }
+
 }
 
 #pragma global_optimizer off
