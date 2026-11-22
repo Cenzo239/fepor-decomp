@@ -3482,7 +3482,7 @@ void Battle_AdvancePhase(void) {
             if ((u8)i != 0) {
                 unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
-                unit = NULL;
+                unit = (u8 *)0;
             }
             if (*(u32 *)(unit + 0x188) != 0
                 && factionMaskB[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
