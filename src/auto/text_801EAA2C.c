@@ -460,7 +460,6 @@ void fn_801EB294(void *arg0)
     u32 ret;
     void *self;
 
-    unit2 = 0;
     self = arg0;
     unit = Map_GetCursorUnit();
     if (unit != NULL) {
@@ -3581,7 +3580,7 @@ void fn_801EFDC8(void *arg0) {
     fn_800C992C(&path, strBase + 0x234, strlen(strBase + 0x234));
     flag0 = 0;
     file = Heap_Alloc(0x60);
-    if (file != NULL) {
+    if (file) {
         String_Init(&spF8, gGActorPathExt + 0x1DB, &sp28);
         flag0 = 1;
         file = Xml_ParseFile(file, &path, &spF8);
