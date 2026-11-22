@@ -628,59 +628,42 @@ s32 fn_802396C8(s32 chan) {
 
 s32 EXISelect(s32 chan, u32 dev, u32 freq)
 {
-    u8 *ecb;
-    u32 interrupts;
-    u32 flags;
-    u32 value;
-    u32 mask;
-    volatile u32 *exi;
+    EXIControl *exi;
+    s32 enabled;
+    u32 csr;
 
-    ecb = (u8 *)Ecb_8033E188 + (chan << 6);
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
 
-    interrupts = OSDisableInterrupts();
+    if (exi->state & 4) goto fail;
+    if (chan == 2) goto select;
 
-    flags = *(u32 *)(ecb + 0xC);
-
-    if (flags & 4) {
-        OSRestoreInterrupts(interrupts);
-        return 0;
+    if (dev == 0 && !(exi->state & 8)) {
+        if (!__EXIProbe(chan)) goto fail;
     }
+    if (!(exi->state & 0x10)) goto fail;
+    if (exi->dev == dev) goto select;
 
-    if (chan != 2) {
-        if (dev == 0 && !(flags & 8)) {
-            if (!__EXIProbe(chan)) {
-                OSRestoreInterrupts(interrupts);
-                return 0;
-            }
-        }
+fail:
+    OSRestoreInterrupts(enabled);
+    return 0;
 
-        if (!(flags & 0x10) ||
-            *(u32 *)(ecb + 0x18) != dev) {
-            OSRestoreInterrupts(interrupts);
-            return 0;
-        }
-    }
+select:
+    exi->state |= 4;
 
-    *(u32 *)(ecb + 0xC) |= 4;
+    csr = __EXIRegs[chan * 5];
+    csr &= 0x405;
+    csr |= ((1U << dev) << 7) | (freq << 4);
+    __EXIRegs[chan * 5] = csr;
 
-    exi = (volatile u32 *)(0xCC006800 + chan * 0x14);
-
-    value = *exi & 0x405;
-    value |= (1U << dev) << 7;
-    value |= freq << 4;
-
-    *exi = value;
-
-    if (*(u32 *)(ecb + 0xC) & 8) {
-        if (chan == 0) {
-            __OSMaskInterrupts(0x00100000);
-        } else if (chan == 1) {
-            __OSMaskInterrupts(0x00020000);
+    if (exi->state & 8) {
+        switch (chan) {
+        case 0: __OSMaskInterrupts(0x00100000); break;
+        case 1: __OSMaskInterrupts(0x00020000); break;
         }
     }
 
-    OSRestoreInterrupts(interrupts);
-
+    OSRestoreInterrupts(enabled);
     return 1;
 }
 
@@ -878,8 +861,8 @@ void UnlockedHandler(s32 chan, void *context) {
 #pragma scheduling off
 #pragma use_lmw_stmw on
 s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
-    u8 filler[8];
     u32 cmd;
+    u8 filler[4];
     s32 err;
     s32 enabled;
     s32 enabled2;
@@ -974,7 +957,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     }
     OSRestoreInterrupts(enabled);
     if (chan < 2 && dev == 0) {
-        enabled3 = OSDisableInterrupts();
+        register enabled3 = OSDisableInterrupts();
         if (!(exi->state & 8)) {
             OSRestoreInterrupts(enabled3);
         } else if ((exi->state & 0x10) && exi->dev == 0) {
