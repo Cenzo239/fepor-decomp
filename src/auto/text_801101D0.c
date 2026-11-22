@@ -3710,6 +3710,7 @@ void fn_80117D20(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 s32 fn_80117D80(void *arg0, void *unit) {
     void Map_RefreshUnitMap(void *);
     void fn_800C1060(s32);
@@ -3721,8 +3722,7 @@ s32 fn_80117D80(void *arg0, void *unit) {
     extern u8 gTargetList[];
     s32 result;
     u32 flags;
-    u8 var_r4;
-    u8 temp;
+    s32 var_r4;
     s32 i;
     u8 *tgt;
     s8 x;
@@ -3736,14 +3736,11 @@ s32 fn_80117D80(void *arg0, void *unit) {
         }
         *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x010000DC;
         Map_RefreshUnitMap(gBattleMap);
-#pragma optimization_level 1
         var_r4 = 1;
-        temp = (u8)(gMapBlendMode - 1);
-        if (((u32)((var_r4 | ~temp) - ((u32)(var_r4 - temp) >> 1)) >> 31) == 0) {
+        if (!(1U >= (u8)(gMapBlendMode - 1))) {
             var_r4 = 0;
         }
-#pragma optimization_level reset
-        if (var_r4 != 0) {
+        if ((u8)var_r4 != 0) {
             fn_800C1060(0);
         }
         result = 1;
@@ -3759,14 +3756,11 @@ s32 fn_80117D80(void *arg0, void *unit) {
                 Unit_SetMapPos(unit, tgt[0], tgt[1]);
                 fn_80050C90(unit);
                 Map_RefreshUnitMap(gBattleMap);
-#pragma optimization_level 1
                 var_r4 = 1;
-                temp = (u8)(gMapBlendMode - 1);
-                if (((u32)((var_r4 | ~temp) - ((u32)(var_r4 - temp) >> 1)) >> 31) == 0) {
+                if (!(1U >= (u8)(gMapBlendMode - 1))) {
                     var_r4 = 0;
                 }
-#pragma optimization_level reset
-                if (var_r4 != 0) {
+                if ((u8)var_r4 != 0) {
                     fn_800C1060(0);
                 }
                 result = 1;
