@@ -111,27 +111,73 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     s32 Text_MeasureHeight(s32,f32);
     s32 Text_MeasureWidth(void *,s32,f32);
     extern f32 lbl_8036A404;
-    s32 height,width,y;
+#pragma cplusplus on
+    struct Model {
+        u8 pad[4];
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void v17()=0;
+        virtual s32 width()=0;
+        virtual void v19()=0;
+        virtual s32 height()=0;
+    };
+    struct Item {
+        virtual void v0()=0;
+        virtual void *text()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void setup(void *)=0;
+    };
     f32 x;
-    void *obj;
-    void *text;
-    obj=M2C_FIELD(arg1,void **,0x3c);
-    height=(s16)M2C_FIELD(M2C_FIELD(obj,void **,4),s32 (**)(void *),0x58)(obj);
+    s32 height,width,y;
+    Model *model;
+    Item *item;
+    item=(Item *)*arg0;
+    model=M2C_FIELD(arg1,Model **,0x3c);
+    height=(s16)model->height();
     height=(height-Text_MeasureHeight(-1,lbl_8036A404))>>1;
     y=(s16)(M2C_FIELD(arg2,s16 *,0x32)+height);
-    obj=M2C_FIELD(arg1,void **,0x3c);
-    height=(s16)M2C_FIELD(M2C_FIELD(obj,void **,4),s32 (**)(void *),0x50)(obj);
-    text=M2C_FIELD(*arg0,void *(**)(void *),0xc)(arg0);
-    x=(f32)((height-Text_MeasureWidth(text,-1,lbl_8036A404))/2);
-    M2C_FIELD(*arg0,void (**)(void *,void *),0x4c)(arg0,arg1);
+    model=M2C_FIELD(arg1,Model **,0x3c);
+    width=(s16)model->width();
+    x=(f32)((width-Text_MeasureWidth(item->text(),-1,lbl_8036A404))/2);
+    item->setup(arg1);
     Prim2D_AddPrim(6);
     Prim2D_SetPos(x,(f32)y);
     Prim2D_SetColor(0,0,0,255);
-    Prim2D_SetText(M2C_FIELD(*arg0,void *(**)(void *),0xc)(arg0));
+    Prim2D_SetText(item->text());
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A404);
     Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 void fn_80128108(void) {
@@ -148,8 +194,6 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
     void *fn_8000CAF0(void *, u32);
     u32 fn_801090C0(s32);
     extern u8 lbl_802905C0[];
-    extern f32 lbl_8036A3C0;
-    extern f32 lbl_8036A3C4;
     u32 temp_r3;
     void *obj;
     f32 f40;
@@ -240,8 +284,7 @@ void fn_801283D4(void *arg0) {
     extern f64 lbl_8036A3D8, lbl_8036A3E0, lbl_8036A3E8;
     u8 *self = arg0;
     u8 *dest;
-    f32 dy, dx, length, x, y, wave, amplitude;
-    f32 scale;
+    f32 dy, dx, length, wave, x, y, amplitude;
     f32 outx, outy;
     f64 estimate;
     union { f32 f; u32 u; } bits;
@@ -272,8 +315,7 @@ void fn_801283D4(void *arg0) {
     y = *(f32 *)(self + 0x44) / length;
     ticks = OSGetTick();
     period = *(s32 *)(self + 0x38);
-    scale = lbl_8036A3F0;
-    wave = (f32)sin(scale * ((f32)((ticks / ((*(u32 *)0x800000F8 >> 2) / 1000)) % period) / (f32)(s32)period));
+    wave = (f32)sin(((f32)((ticks / ((*(u32 *)0x800000F8 >> 2) / 1000)) % period) / (f32)(s32)period) * lbl_8036A3F0);
     amplitude = *(f32 *)(self + 0x3C);
     wave = amplitude * wave - lbl_8036A3F4 * amplitude;
     outx = wave * x + *(f32 *)(self + 0x30);
