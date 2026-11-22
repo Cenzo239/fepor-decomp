@@ -12348,7 +12348,6 @@ void *fn_8017761C(void) {
     return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
-#pragma global_optimizer off
 #pragma use_lmw_stmw on
 s32 fn_8017762C(void) {
     u32 *Unit_GetItemSlot(u32, s32);
