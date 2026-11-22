@@ -2,7 +2,7 @@
 #include "common.h"
 
 void fn_800056A0(s8 arg0) {
-    extern void *lbl_80367100;
+    extern s16 *lbl_80367100;
     M2C_FIELD(lbl_80367100, s8 *, 0x18) = arg0;
 }
 
@@ -20,7 +20,7 @@ s32 DebugPrint(const char *fmt, ...) {
 #pragma optimization_level 3
 void fn_80005720(u32 arg0, s8 arg1)
 {
-    extern void *lbl_80367100;
+    extern s16 *lbl_80367100;
     u16 flags;
     s32 pos;
     s32 lim;
@@ -94,7 +94,7 @@ void fn_800059B0(void) {
 #pragma peephole off
 void fn_800059B4(void)
 {
-  extern void *lbl_80367100;
+  extern s16 *lbl_80367100;
   struct { s32 off; u8 z; } s;
   s32 i;
   void *table;
@@ -117,7 +117,7 @@ void fn_800059B4(void)
 }
 #pragma peephole reset
 void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
-    extern void *lbl_80367100;
+    extern s16 *lbl_80367100;
     s16 x;
     s16 w;
 
@@ -146,7 +146,7 @@ void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
 
 void fn_80005A84(s32 size, s32 count) {
     void *fn_800C4638(s32, void *, s32);
-    extern void *lbl_80367100;
+    extern s16 *lbl_80367100;
     extern u8 lbl_80267B60[];
 
     u8 *self;
@@ -171,7 +171,7 @@ void fn_80005A84(s32 size, s32 count) {
         0
     );
 
-    lbl_80367100 = self;
+    lbl_80367100 = (s16 *)self;
 
     *(s16 *)(self + 4) = (size + 8) & 0xFC;
     *(s16 *)(self + 6) = count;
@@ -230,14 +230,15 @@ void fn_80005A84(s32 size, s32 count) {
 }
 
 void fn_80005C18(void) {
-    M2C_UNK fn_800111FC();
+    void fn_800111FC(void);
+    s32 fn_801047D0(void);
     extern s32 lbl_80367108;
     fn_800111FC();
     lbl_80367108 = fn_801047D0();
 }
 
 void fn_80005C40(void) {
-    M2C_UNK fn_801047D0();
+    s32 fn_801047D0(void);
     fn_801047D0();
 }
 
@@ -308,7 +309,7 @@ void Game_InitSystems(void) {
 }
 
 void fn_80005D88(void) {
-    extern u16 gBattleState[];
+    extern u8 gBattleState[];
     void *temp_r31;
 
     temp_r31 = (u16 *)gBattleState + 0x9C / sizeof(u16);
@@ -357,7 +358,7 @@ void fn_80005EB4(void) {
 }
 
 void fn_80005ED4(void) {
-    extern u16 Game_str[];
+    extern u8 Game_str[];
     Heap_Create((u8 *)Game_str + 0xDF, 0xB00000);
 }
 
@@ -370,7 +371,7 @@ void fn_80005F04(void)
     void Battle_SetPhase(void *, u32);
     void fn_8014D41C(void *);
     void SaveData_Release(void *);
-    void *Process_Find(void *);
+    void *Process_Find();
     void Battle_LoadMap(void);
     void fn_8014D920(void);
     s32 fn_8016947C(void);
@@ -479,13 +480,13 @@ void fn_80005F04(void)
 }
 #pragma optimization_level reset
 void fn_800060F8(void) {
-    M2C_UNK Unit_ResetAll();
+    void Unit_ResetAll(void);
     Unit_ResetAll();
 }
 
 void fn_80006118(void)
 {
-  void *Process_Find(void *, void *);
+  void *Process_Find();
   extern u8 gGameProc[];
   extern u8 gSaveDataBase;
   void *temp;
@@ -502,8 +503,8 @@ void fn_80006118(void)
 
 void fn_80006160(s32 arg0)
 {
-    extern u16 gGameProc[];
-    void *Process_Find(u16 *);
+    extern u8 gGameProc[];
+    void *Process_Find();
     s32 *obj;
 
     obj = (s32 *)Process_Find(gGameProc);
@@ -511,8 +512,8 @@ void fn_80006160(s32 arg0)
 }
 
 void fn_80006198(void) {
-    extern u16 gGameProc[];
-    void *Process_Find(u16 *);
+    extern u8 gGameProc[];
+    void *Process_Find();
     void Process_Goto(void *, u8);
     void *arg0 = Process_Find(gGameProc);
     Process_Goto(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
@@ -524,21 +525,21 @@ void fn_800061CC(void *arg0) {
 }
 
 s32 Game_GetState(void) {
-    extern u16 gGameProc[];
-    void *Process_Find(u16 *);
+    extern u8 gGameProc[];
+    void *Process_Find();
     void *arg0 = Process_Find(gGameProc);
     return *(u32 *)((u8 *)arg0 + 0x60);
 }
 
 void Game_SetState(s32 arg0) {
-    extern u16 gGameProc[];
-    void *Process_Find(u16 *);
+    extern u8 gGameProc[];
+    void *Process_Find();
     s32 *obj;
     obj = (s32 *)Process_Find(gGameProc);
     obj[0x60 / 4] = arg0;
 }
 #include <common.h>
-extern u8 gSaveDataBase[8];
+extern u8 gSaveDataBase;
 extern u32 jumptable_80283748[];
 extern u8 gBattleState[1400];
 extern u8 gGameProc[1100];
