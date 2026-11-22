@@ -5649,6 +5649,7 @@ void Map_SetupColorGx(void) {
     fn_802245D8(1, 4, 1, 0);
 }
 
+#pragma global_optimizer off
 s32 fn_8004ABD4(void *arg0, u8 arg1) {
     s32 Item_GetMaxRange(void *);
     u32 *Item_GetFlagsPtr(void *);
@@ -5661,7 +5662,7 @@ s32 fn_8004ABD4(void *arg0, u8 arg1) {
     u32 m;
 
     item = arg0;
-    if (item != NULL) {
+    if (arg0 != NULL) {
         if (arg1 == 0) {
             if (*(void **)item != NULL) {
                 range = (u8)Item_GetMaxRange(*(void **)item);
@@ -5718,8 +5719,6 @@ s32 fn_8004ABD4(void *arg0, u8 arg1) {
     }
     return 0;
 }
-
-#pragma global_optimizer off
 void fn_8004AD20(void *arg0, f32 *arg1) {
     void *fn_80146B10(s32);
     void DebugPrint(void *, ...);
@@ -5733,27 +5732,19 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     f32 x;
     f32 y;
     f32 z;
-
     z = arg1[2];
     y = arg1[1];
     x = arg1[0];
     entry = (u16 *)arg0;
     for (i = 0; i < 4; i++, entry++) {
         u16 id = *(u16 *)((u8 *)entry + 0x7C);
-        if (id == 0xFFFF) {
-            cue = 0;
-        } else if (id < 0x3E8) {
-            cue = 0;
-        } else {
-            cue = fn_80146B10(id);
-        }
+        if (id == 0xFFFF) cue = 0;
+        else if (id < 0x3E8) cue = 0;
+        else cue = fn_80146B10(id);
         if (cue != 0) {
             DebugPrint(lbl_8026A9B0 + 0x8A, cue);
-            if (z > lbl_80368FA0) {
-                SeCue_PlayAt(cue, 0x64, x, y, z);
-            } else {
-                Ui_PlaySeCue(cue, 0x64);
-            }
+            if (z > lbl_80368FA0) SeCue_PlayAt(cue, 0x64, x, y, z);
+            else Ui_PlaySeCue(cue, 0x64);
         }
     }
 }
