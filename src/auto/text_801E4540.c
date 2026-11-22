@@ -458,6 +458,7 @@ void fn_801E4E8C(void *arg0) {
     }
     fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
 }
+#pragma global_optimizer on
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
