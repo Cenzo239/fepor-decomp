@@ -3752,13 +3752,13 @@ void fn_8002E93C(void) {
     fn_8014D678(gBattleState);
     Allegiance_SetMask(1, 0, 0, 0, 0, 1, 1, 1, allegMask);
     for (i = 1; i <= 0x9F; i++) {
-        if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
-        } else {
-            unit = NULL;
-        }
-        if (*(u32 *)(unit + 0x188) != 0
-            && allegMask[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
+                  if ((u8)i != 0) {
+              unit = gUnits + ((u8)i - 1) * 0x280;
+          } else {
+              unit = (u8 *)0;
+          }
+          if (*(u32 *)(unit + 0x188) != 0
+              && allegMask[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
             *(u32 *)(unit + 0x1A0) &= ~0x4400;
             Status_Set(unit + 0x1BC, 0x5C);
         }
