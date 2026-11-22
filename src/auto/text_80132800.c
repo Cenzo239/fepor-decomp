@@ -2982,6 +2982,12 @@ extern "C" void *Ui_DtorUnitPanelMid(void *self, s16 doFree) {
     return self;
 }
 
+struct Rect367FC {
+s16 left,top,right,bottom;
+s16 width() { return right-left; }
+s16 height() { return bottom-top; }
+void set(s16 l,s16 t,s16 r,s16 b) { left=l; top=t; right=r; bottom=b; }
+};
 extern "C" void fn_801367FC(void *arg0) {
 #pragma cplusplus reset
 void *Heap_Alloc(s32);
