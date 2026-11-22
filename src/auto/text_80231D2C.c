@@ -2788,26 +2788,30 @@ f64 floor(f64 x) {
     return x;
 }
 
-extern f64 lbl_8036C148;
+extern const f64 lbl_8036C148;
 #pragma global_optimizer off
 f64 fn_802382EC(s32 *arg0, f64 farg0) {
-s32 high, magnitude;
-u32 low;
-high=*(s32*)&farg0;
-low=((u32*)&farg0)[1];
-*arg0=0;
-magnitude=high & 0x7fffffff;
-if (magnitude>=0x7ff00000 || (magnitude | low)==0) return farg0;
-if (magnitude<0x100000) {
-f64 scale = lbl_8036C148;
-*(volatile s32 *)arg0=-54;
-farg0=farg0*scale;
-high=*(s32*)&farg0;
-magnitude=high & 0x7fffffff;
-}
-*arg0 += (magnitude>>20)-0x3fe;
-*(s32*)&farg0=(high & 0x800fffff) | 0x3fe00000;
-return farg0;
+    s32 high, magnitude;
+    u32 low;
+    f64 scale;
+    s32 e;
+    high = *(s32 *)&farg0;
+    low = ((u32 *)&farg0)[1];
+    *arg0 = 0;
+    magnitude = high & 0x7fffffff;
+    if (magnitude >= 0x7ff00000 || (magnitude | low) == 0)
+        return farg0;
+    if (magnitude < 0x100000) {
+        scale = lbl_8036C148;
+        e = -54;
+        *arg0 = e;
+        farg0 = farg0 * scale;
+        high = *(s32 *)&farg0;
+        magnitude = high & 0x7fffffff;
+    }
+    *arg0 += (magnitude >> 20) - 0x3fe;
+    *(s32 *)&farg0 = (high & 0x800fffff) | 0x3fe00000;
+    return farg0;
 }
 #pragma global_optimizer on
 extern f64 lbl_8036C150;
