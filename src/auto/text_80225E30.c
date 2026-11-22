@@ -2920,7 +2920,6 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
         }
     }
 }
-#pragma intrinsic __dcbi
 void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
 u32 fn_80214058(void);
 void fn_80214094(s32,s32,u32,u32);
