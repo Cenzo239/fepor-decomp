@@ -209,7 +209,19 @@ f64 fn_802380A8(f64, f64);
 
 void fn_8022EBB8(RuntimeDecimal *out,RuntimeDecimal *left,RuntimeDecimal *right){
 s32 offset,n,len,index,round;u8 *base,*p,*rbase,*tail,*q,*borrow,*end;u8 removed;
-{u32 *dst=(u32*)out,*src=(u32*)left;dst[0]=src[0];dst[1]=src[1];dst[2]=src[2];dst[3]=src[3];dst[4]=src[4];dst[5]=src[5];dst[6]=src[6];dst[7]=src[7];dst[8]=src[8];dst[9]=src[9];*(u16*)(dst+10)=*(u16*)(src+10);}
+{u32 *dst=(u32*)out,*src=(u32*)left;u32 a,b;u16 h;
+a=src[0];b=src[1];dst[0]=a;
+a=src[2];dst[1]=b;
+b=src[3];dst[2]=a;
+a=src[4];dst[3]=b;
+b=src[5];dst[4]=a;
+a=src[6];dst[5]=b;
+b=src[7];dst[6]=a;
+a=src[8];dst[7]=b;
+b=src[9];dst[8]=a;
+h=*(u16*)(src+10);
+dst[9]=b;
+*(u16*)(dst+10)=h;}
 if(!right->digits[0])return;
 n=out->length;if(n<right->length)n=right->length;
 offset=out->exponent-right->exponent;n+=offset;if(n>36)n=36;
