@@ -32,7 +32,9 @@ static inline u8 *map_first(s32 *m) {
 }
 
 #pragma cplusplus on
-static bool map_cell_has_unit(u8 id) {
+static inline bool map_get_unit_id(u8 *map, s32 x, s32 y, u8 *out) {
+    u8 id = map[x + (y << 6) + 0xD];
+    *out = id;
     return id;
 }
 #pragma cplusplus reset
