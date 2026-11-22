@@ -7031,6 +7031,201 @@ void fn_8004D644(void) {
     }
 }
 
+void fn_8004D688(void) {
+    void *Camera_GetActive(void);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
+    void fn_80222C50(void *, s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void fn_8022100C(s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
+    void Allegiance_FillMask(s32, void *);
+    void fn_8004DAFC(void *, f32);
+    u8 fn_800F2E60(void);
+    f32 Map_SampleHeight(void *, f32, f32);
+    void fn_8005A1E8(s32, void *, void *);
+    void fn_80068070(f32, f32, f32, f32);
+    void fn_800680AC(s32, s32, s32, s32);
+    void Camera_ApplyOrtho(s32);
+    void GXBegin(s32, s32, s32);
+    void fn_80067984(s32);
+    void fn_800F2E50(s32);
+    void fn_8022124C(s32, s32, s32, s32);
+    void fn_802212FC(s32, s32, s32, s32);
+    void GXCopyTex(s32, s32);
+    void fn_802209FC(void);
+    void fn_80222EB4(void);
+    void fn_80066D00(s32);
+    extern s32 gUnitShadowMat;
+    extern u8 gUnits[];
+    extern u8 gBattleState[];
+    extern u8 gBattleMap[];
+    extern u32 lbl_8026AAD8[];
+    extern s32 lbl_803672B8;
+    extern f32 lbl_80368FC0;
+    extern f32 lbl_80368FCC;
+    extern f32 lbl_80369020;
+    extern f32 lbl_80369024;
+    extern f32 lbl_80369028;
+    extern f32 lbl_8036902C;
+    extern f32 lbl_80369030;
+    extern f32 lbl_80369034;
+
+    u8 matBuf[0x20];
+    f32 pos[3];
+    u8 allegMask[8];
+    f32 y;
+    f32 scale;
+    void *unit;
+    void *cam;
+    s32 unitId;
+    s32 canDraw;
+    u32 *src;
+
+    scale = lbl_80369020;
+    cam = Camera_GetActive();
+    if (cam != NULL) {
+        scale = Math_Lerp(lbl_80369020, lbl_80369024, lbl_80369024,
+                          *(f32 *)((u8 *)cam + 0x18) - lbl_80369028);
+    }
+    Ui_LoadAtlasTex(gUnitShadowMat, matBuf, 2);
+    fn_80222C50(matBuf, 0);
+    GXClearVtxDesc();
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(0xB, 1);
+    GXSetVtxDesc(0xD, 1);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
+    GXSetNumChans(1);
+    fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
+    GXSetCullMode(1);
+    GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
+    GXSetNumTevStages(1);
+    GXSetTevOrder(0, 0, 0, 4);
+    fn_8022100C(2);
+    GXSetTevColorIn(0, 0xF, 8, 0xA, 0xF);
+    GXSetTevColorOp(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn(0, 7, 7, 7, 6);
+    GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
+    fn_802245D8(1, 1, 1, 0);
+    GXSetZMode(0, 3, 0);
+    Allegiance_FillMask(3, allegMask);
+    unitId = 1;
+    do {
+        if ((u8)unitId != 0) {
+            unit = gUnits + ((u8)unitId - 1) * 0x280;
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
+            allegMask[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
+            if (*(s32 *)((u8 *)unit + 0x1A0) & 0x010000FC) {
+                canDraw = 0;
+            } else if ((u8)(*(u8 *)((u8 *)unit + 3) & 0x22) != 2) {
+                canDraw = 0;
+            } else if (*(u8 *)((u8 *)unit + 0x27) == 0) {
+                canDraw = 0;
+            } else {
+                canDraw = 1;
+            }
+            if ((u8)canDraw != 0) {
+                fn_8004DAFC(unit, scale);
+            }
+        }
+        unitId += 1;
+    } while (unitId <= 0x9F);
+    if (fn_800F2E60() != 0) {
+        src = lbl_8026AAD8;
+        ((u32 *)pos)[0] = src[0];
+        ((u32 *)pos)[1] = src[1];
+        ((u32 *)pos)[2] = src[2];
+        pos[0] = *(f32 *)(gBattleState + 0x534);
+        pos[1] = *(f32 *)(gBattleState + 0x538);
+        pos[2] = Map_SampleHeight(gBattleMap, pos[0], pos[1]);
+        fn_8005A1E8(0, pos, pos);
+        y = pos[0];
+        scale = pos[1];
+        fn_80068070(lbl_80368FCC, lbl_80368FCC, lbl_8036902C, lbl_80369030);
+        fn_800680AC(0, 0, 0xA0, 0x78);
+        Camera_ApplyOrtho(0);
+        GXBegin(0x98, 0, 4);
+        {
+            f32 one;
+            f32 x1;
+            f32 z;
+            f32 y0;
+            f32 x0;
+            f32 half;
+            f32 y1;
+            half = lbl_80369034;
+            z = lbl_80368FCC;
+            x0 = y - half;
+            one = lbl_80368FC0;
+            y0 = scale - half;
+            x1 = y + half;
+            *(volatile f32 *)0xCC008000 = x0;
+            y1 = scale + half;
+            *(volatile f32 *)0xCC008000 = y0;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile f32 *)0xCC008000 = x1;
+            *(volatile f32 *)0xCC008000 = y0;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile f32 *)0xCC008000 = one;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile f32 *)0xCC008000 = x0;
+            *(volatile f32 *)0xCC008000 = y1;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile f32 *)0xCC008000 = one;
+            *(volatile f32 *)0xCC008000 = x1;
+            *(volatile f32 *)0xCC008000 = y1;
+            *(volatile f32 *)0xCC008000 = z;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile f32 *)0xCC008000 = one;
+            *(volatile f32 *)0xCC008000 = one;
+        }
+        fn_80067984(0);
+        fn_800F2E50(0);
+    }
+    fn_8022124C(0, 0, 0xA0, 0x78);
+    fn_802212FC(0xA0, 0x78, 0x20, 0);
+    GXCopyTex(lbl_803672B8, 1);
+    fn_802209FC();
+    fn_80222EB4();
+    fn_80066D00(-1);
+}
+
 void fn_8004DAFC(void *arg0, f32 radius) {
 typedef struct { f32 x,y,z; } Position;
 extern f32 lbl_80368FCC, lbl_8036902C, lbl_80369030, lbl_80368FC0;
