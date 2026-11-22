@@ -481,6 +481,7 @@ void fn_80005F04(void)
 #pragma optimization_level reset
 void fn_800060F8(void) {
     void Unit_ResetAll(void);
+
     Unit_ResetAll();
 }
 
@@ -503,12 +504,26 @@ void fn_80006118(void)
 
 void fn_80006160(s32 arg0)
 {
-    extern u8 gGameProc[];
-    void *Process_Find();
-    s32 *obj;
-
-    obj = (s32 *)Process_Find(gGameProc);
-    obj[0x64 / 4] = arg0;
+  int new_var2;
+  int new_var3;
+  extern u16 lbl_802832FC[];
+  void *fn_8000C0C0(u16 *);
+  int new_var;
+  s32 *obj;
+  s32 *new_var4;
+  new_var4 = (s32 *) fn_8000C0C0(lbl_802832FC);
+  obj = new_var4;
+  new_var = 4;
+  obj[0x64 / new_var] = arg0;
+  if (arg0)
+  {
+  }
+  new_var3 = !arg0;
+  new_var2 = ((new_var3 && new_var3) && new_var3) & 0xFF;
+  if (new_var2)
+  {
+ do { } while (0);
+  }
 }
 
 void fn_80006198(void) {
