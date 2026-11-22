@@ -76,10 +76,9 @@ typedef struct {
     // ... (more fields if needed)
 } UnitStruct;
 
-// Global data for this function
-u8 lbl_8028FDB0[0x10] = { 0 };
-u8 lbl_80292230[0x28] = { 0 };
-u8 lbl_802921E0[0x28] = { 0 };
+extern u8 lbl_8028FDB0[];
+extern u8 lbl_80292230[];
+extern u8 lbl_802921E0[];
 
 extern f32 lbl_8036A1E8;
 extern f32 lbl_8036A1F8;
@@ -1015,12 +1014,14 @@ extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
  void *fn_800DDB94(void *,void *); int sprintf(char *,const char *,...);
  extern f32 lbl_8036A18C,lbl_8036A190;
  char buf[128];
+ void *name;
  u8 *self=(u8 *)arg0; s32 x=arg1; s32 y=arg2;
  Prim2D_Begin(); Prim2D_SetTransform(0.0f,0.0f,0.0f,lbl_8036A18C);
  Prim2D_SetTex(0,19); Prim2D_PrepareTex();
  sprintf(buf,(char *)gActorXmlStrs+0x38b,String_CStr(self+0xbc));
  Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)y); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
- sprintf(buf,(char *)gActorXmlStrs+0x38b,fn_800DDB94(*(void **)(self+0xdc),self+0xbc));
+ name=fn_800DDB94(*(void **)(self+0xdc),self+0xbc);
+ sprintf(buf,(char *)gActorXmlStrs+0x38b,name);
  Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)(y+16)); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
 }
 
@@ -1706,6 +1707,7 @@ Vec3(f32 v) { z=v; y=v; x=v; }
 
 extern "C" void fn_80113A24(void *arg0, u8 arg1) {
  struct Vec3 { f32 x,y,z; Vec3() {} Vec3(f32 f) { z=f; y=f; x=f; } };
+ struct VTable { u8 pad[0x38]; Vec3 (*GetPos)(void *, s32); };
  struct Actor {
  u8 pad[0x40];
  virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
@@ -1716,9 +1718,8 @@ extern "C" void fn_80113A24(void *arg0, u8 arg1) {
  Vec3 Camera_GetLookAt(void *); s32 fn_801992F0(void *); void fn_8019914C(void *,void *,void *,void *);
  Vec3 a(0.0f), b(0.0f), c(0.0f);
  if(arg1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==1 || fn_801992F0(*(void **)((u8 *)arg0+0x11c))==2) {
- typedef Vec3 (*GetPosFn)(void *,s32);
- GetPosFn *table=*(GetPosFn **)((u8 *)arg0+0x40);
- a=table[14](arg0,0);
+ VTable *vt = *(VTable **)((u8 *)arg0+0x40);
+ a=vt->GetPos(arg0,0);
  b=Camera_GetLookAt(arg0);
  } else {
  a=(*(Actor **)((u8 *)arg0+0x118))->GetPos(0);
@@ -5162,78 +5163,86 @@ void fn_8011A184(void *arg0) {
 }
 
 #pragma use_lmw_stmw reset
-void fn_8011A2FC(s32 arg0) {
-    s32 temp_r3;
-    s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
-    s32 temp_r7;
-    s32 temp_r8;
-    s32 temp_r9;
-    s32 temp_r31;
-    
-    // Call Ui_FindChild with parameters 0x40 and 0
-    temp_r3 = Ui_FindChild(0x40, 0);
-    
-    // Check if return value is zero
-    if (temp_r3 == 0) {
-        // Call Heap_Alloc with parameter 0x3C
-        temp_r31 = Heap_Alloc(0x3C);
-        
-        // Check if the return value is not null
-        if (temp_r31 != 0) {
-            // Setup for structure initialization - load the addresses of our globals
-            temp_r4 = (s32)&lbl_8028FDB0;
-            temp_r5 = (s32)&lbl_80292230;
-            temp_r6 = (s32)&lbl_802921E0;
-            
-            // Initialize structure fields
-            *(u32*)temp_r31 = temp_r4;
-            *(u32*)(temp_r31 + 4) = 0;
-            *(u32*)(temp_r31 + 0x0) = temp_r5;
-            
-            *(s16*)(temp_r31 + 8) = -1;
-            *(s16*)(temp_r31 + 0xa) = 0;
-            *(s16*)(temp_r31 + 0xc) = 0;
-            *(s16*)(temp_r31 + 0xe) = 0x260;
-            *(s16*)(temp_r31 + 0x10) = 0x1C0;
-            *(s16*)(temp_r31 + 0x12) = 0;
-            *(s16*)(temp_r31 + 0x14) = 0;
-            *(s16*)(temp_r31 + 0x16) = 0x260;
-            *(s16*)(temp_r31 + 0x18) = 0x1C0;
-            *(s16*)(temp_r31 + 0x1a) = 0;
-            *(s16*)(temp_r31 + 0x1c) = 0;
-            
-            *(u8*)(temp_r31 + 0x1e) = 0xFF;
-            *(u8*)(temp_r31 + 0x1f) = 0xFF;
-            *(u8*)(temp_r31 + 0x20) = 0xFF;
-            *(u8*)(temp_r31 + 0x21) = 0xFF;
-            *(s16*)(temp_r31 + 0x22) = 0x316;
-            *(s16*)(temp_r31 + 0x24) = 0;
-            
-            *(f32*)(temp_r31 + 0x28) = 1.0f;
-            *(f32*)(temp_r31 + 0x2c) = 1.0f;
-            *(f32*)(temp_r31 + 0x30) = 1.0f;
-            
-            *(u32*)(temp_r31 + 0x34) = 0;
-            *(u32*)(temp_r31 + 0x38) = 0;
-            
-            // Update the base address
-            *(u32*)temp_r31 = temp_r6;
-            
-            // Continue initialization
-            *(s16*)(temp_r31 + 8) = 0x40;
-            *(u8*)(temp_r31 + 0x24) = 8;
-            *(f32*)(temp_r31 + 0x2c) = 0.0f;
-            
-            // Call Ui_AddChild with parameters
-            temp_r5 = *(u32*)(temp_r31 + 0x34);
-            temp_r5 = temp_r5 | 0x10;
-            *(u32*)(temp_r31 + 0x34) = temp_r5;
-            
-            Ui_AddChild(arg0, (void*)temp_r31, temp_r5);
-            Ui_OpenChildAnim(arg0, (void*)temp_r31, 1);
+void fn_8011A2FC(void *arg0) {
+    typedef struct {
+        void *unk0;
+        void *unk4;
+        s16 unk8;
+        s16 unkA;
+        s16 unkC;
+        s16 unkE;
+        s16 unk10;
+        s16 unk12;
+        s16 unk14;
+        s16 unk16;
+        s16 unk18;
+        s16 unk1A;
+        s16 unk1C;
+        u8 unk1E;
+        u8 unk1F;
+        u8 unk20;
+        u8 unk21;
+        s16 unk22;
+        s16 unk24;
+        f32 unk28;
+        f32 unk2C;
+        f32 unk30;
+        s32 unk34;
+        s32 unk38;
+    } Unk5C;
+    void *Ui_FindChild(void *, s32, s32);
+    void *Heap_Alloc(s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_OpenChildAnim(void *, void *, s32);
+    Unk5C *widget;
+    u8 color[4];
+
+    if (Ui_FindChild(arg0, 0x40, 0) == 0) {
+        widget = Heap_Alloc(0x3C);
+        if (widget) {
+            widget->unk0 = lbl_8028FDB0;
+            widget->unk4 = NULL;
+            widget->unk0 = lbl_80292230;
+            widget->unk8 = -1;
+            widget->unkA = 0;
+            widget->unkC = 0;
+            widget->unkE = 0x260;
+            widget->unk10 = 0x1C0;
+            widget->unk12 = 0;
+            widget->unk14 = 0;
+            widget->unk16 = 0x260;
+            widget->unk18 = 0x1C0;
+            widget->unk1A = 0;
+            widget->unk1C = 0;
+            widget->unk1E = 0xFF;
+            widget->unk1F = 0xFF;
+            widget->unk20 = 0xFF;
+            widget->unk21 = 0xFF;
+            widget->unk22 = 0x316;
+            widget->unk24 = 0;
+            widget->unk28 = 1.0f;
+            widget->unk2C = 1.0f;
+            widget->unk30 = 1.0f;
+            widget->unk34 = 0;
+            widget->unk38 = 0;
+            widget->unk0 = lbl_802921E0;
         }
+        widget->unk8 = 0x40;
+        color[0] = 0;
+        color[1] = 0;
+        color[2] = 0;
+        color[3] = 0x80;
+        if (&widget->unk1E != &color[0]) {
+            widget->unk1E = color[0];
+            widget->unk1F = color[1];
+            widget->unk20 = color[2];
+            widget->unk21 = color[3];
+        }
+        widget->unk34 |= 0x10;
+        widget->unk24 = 8;
+        widget->unk2C = 0.0f;
+        Ui_AddChild(arg0, widget);
+        Ui_OpenChildAnim(arg0, widget, 1);
     }
 }
 
@@ -5361,8 +5370,8 @@ void fn_8011A694(void) {
     void *head;
     void *unit;
     void *found;
-    s32 var_r4;
-    s32 temp;
+    u8 var_r4;
+    u8 temp;
 
     head = *(void **)gUnitLists;
     unit = *(void **)(gUnitLists + 4);
@@ -5404,7 +5413,7 @@ void fn_8011A694(void) {
         var_r4 = 0;
     }
 #pragma optimization_level reset
-    if ((u8)var_r4 != 0) {
+    if (var_r4 != 0) {
         fn_800C1060(0);
     }
 }
@@ -6592,6 +6601,7 @@ s32 fn_8011C164(void *self) {
     u32 ox;
     u32 sy;
     u32 sx;
+    u8 *s = (u8 *)self;
 
     bestDist = 0x7FFF;
     best = NULL;
@@ -6601,20 +6611,17 @@ s32 fn_8011C164(void *self) {
             continue;
         }
         ox = ((u8 *)other)[0];
-        sx = ((u8 *)self)[0];
+        sx = s[0];
         if ((s8)sx >= (s8)ox) {
             continue;
         }
         oy = ((u8 *)other)[1];
-        sy = ((u8 *)self)[1];
+        sy = s[1];
         dy = (s8)sy - (s8)oy;
-        if ((s8)sy - (s8)oy < 0) {
+        if (((s8)s[1] - (s8)((u8 *)other)[1]) < 0) {
             dy = -dy;
         }
-        dx = (s8)sx - (s8)ox;
-        if (dx < 0) {
-            dx = -dx;
-        }
+        dx = ((s8)sx - (s8)ox) < 0 ? -((s8)sx - (s8)ox) : ((s8)sx - (s8)ox);
         dist = (s16)(dx + dy);
         if (bestDist < dist) {
             continue;
@@ -6637,7 +6644,7 @@ s32 fn_8011C164(void *self) {
     } else {
         result = self;
     }
-    *(void **)((u8 *)self + 0x8) = result;
+    *(void **)(s + 0x8) = result;
     return best != NULL;
 }
 #pragma global_optimizer on
@@ -6716,10 +6723,10 @@ s32 fn_8011C404(void *self) {
     s16 dist;
     u8 prefer;
     u32 result;
-    u32 ox;
     u32 sx;
-    u32 oy;
     u32 sy;
+    u32 ox;
+    u32 oy;
 
     bestDist = 0x7FFF;
     best = 0;
@@ -7762,7 +7769,7 @@ void fn_8011DB48(void *arg0) {
     for (; i < 4; i++) {
         if (((void **)(panel + i * 4))[13] == 0) {
             void *slot = fn_80122998(panel);
-            entry = panel + i * 4;
+            entry = (item = panel + i * 4, (u8 *)item);
             *(void **)(entry + 0x34) = slot;
             slot = fn_80122CE0(*(void **)(entry + 0x34));
             *(void **)(panel + 0x44) = *(void **)(entry + 0x34);
