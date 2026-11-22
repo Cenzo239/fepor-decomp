@@ -2044,46 +2044,86 @@ void fn_802204F8(void)
 
 void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_80203854() & 1) { } PPCMtwpar(0x0C008000); }
 
-void fn_80220588(void) {
-extern u16 *const __GXData;
-extern void *__memReg;
-s64 OSGetTime(void);
-void *fn_8021F4D4(void);
-volatile u32 *pi;
-u32 stack[1];
-u32 oldcount;
-u32 previous,current;
-s64 start;
-stack[0]=0;
-if(*((u8 *)__GXData+0x5AA)!=0 && (u32)fn_8021F4D4()!=0) {
+void fn_80220588(void)
 {
-u32 old,hi,lo;
-volatile u16 *high=(volatile u16 *)__memReg+0x27;
-volatile u16 *low=(volatile u16 *)__memReg+0x28;
-hi=*high;
-do {old=hi; hi=*high; lo=*low;} while(hi!=old);
-previous=(hi<<16)|lo;
-}
-do {
-start=OSGetTime();
-while(OSGetTime()-start<=8) {}
-{
-u32 old,hi,lo;
-volatile u16 *high=(volatile u16 *)__memReg+0x27;
-volatile u16 *low=(volatile u16 *)__memReg+0x28;
-hi=*high;
-do {old=hi; hi=*high; lo=*low;} while(hi!=old);
-current=(hi<<16)|lo;
-}
-oldcount=previous;
-previous=current;
-} while(current!=oldcount);
-}
-pi=(volatile u32 *)0xCC003000;
-*(pi += 6)=1;
-start=OSGetTime(); while(OSGetTime()-start<=50) {}
-*pi=0;
-start=OSGetTime(); while(OSGetTime()-start<=5) {}
+  volatile u16 *new_var;
+  extern u16 * const __GXData;
+  extern void *__memReg;
+  s64 OSGetTime(void);
+  void *fn_8021F4D4(void);
+  volatile u32 *pi;
+  u32 stack[1];
+  u32 oldcount;
+  u32 previous;
+  u32 current;
+  volatile u32 *new_var2;
+  s64 start;
+  s64 new_var3;
+  stack[0] = 5 * 0;
+  if (((*(((u8 *) __GXData) + 0x5AA)) != 0) && (((u32) fn_8021F4D4()) != 0))
+  {
+    {
+      u32 old;
+      u32 hi;
+      u32 lo;
+      volatile u16 *high = ((volatile u16 *) __memReg) + 0x27;
+      volatile u16 *low = ((volatile u16 *) __memReg) + 0x28;
+      hi = *high;
+      high = high;
+      do
+      {
+        old = hi;
+        hi = *high;
+        lo = *low;
+      }
+      while (hi != old);
+      previous = (hi << 16) | lo;
+    }
+    do
+    {
+      start = OSGetTime();
+      while ((OSGetTime() - start) <= 8)
+      {
+      }
+
+      {
+        u32 old;
+        u32 hi;
+        u32 lo;
+        volatile u16 *high = ((volatile u16 *) __memReg) + 0x27;
+        volatile u16 *low = ((volatile u16 *) __memReg) + 0x28;
+        new_var = high;
+        hi = *new_var;
+        do
+        {
+          old = hi;
+          hi = *high;
+          lo = *low;
+        }
+        while (old != hi);
+        current = 16;
+        current = (hi << current) | lo;
+      }
+      oldcount = previous;
+      previous = current;
+    }
+    while (current != oldcount);
+  }
+  pi = (volatile u32 *) 0xCC003000;
+  *(pi += 6) = 1;
+  start = OSGetTime();
+  while ((OSGetTime() - start) <= 50)
+  {
+  }
+
+  new_var2 = pi;
+  *new_var2 = 0;
+  new_var3 = OSGetTime();
+  start = new_var3;
+  while ((OSGetTime() - start) <= 5)
+  {
+  }
+
 }
 
 void fn_802206F4(void) {

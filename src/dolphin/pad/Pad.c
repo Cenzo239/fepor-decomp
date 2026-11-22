@@ -1262,9 +1262,9 @@ void fn_80213CB0(s32 arg0, OSContext *context)
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
     if (lbl_80368698 != 0) {
-        u32 *regs = (u32 *)0xCC006C00;
-        lbl_80368698(regs[2]);
-    }
+ u32 *regs = (u32 *)0xCC006C00;
+ lbl_80368698(regs[2]);
+ }
     OSClearContext(&tempContext);
     OSSetCurrentContext(context);
 }

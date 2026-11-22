@@ -8644,7 +8644,7 @@ extern "C" void fn_801DF4A4(void *arg0, s32 arg1) {
         u8 r, g, b, a;
     };
     void Ui_DrawLine(s32, s32, s16, s32, s32, struct Color *);
-    s16 v, h;
+    s16 h, v;
     struct Color col;
 
     h = *(s16 *)((u8 *)arg0 + 0x12);

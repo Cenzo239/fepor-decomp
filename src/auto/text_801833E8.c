@@ -2637,23 +2637,25 @@ void fn_80187FBC(void *arg0) {
 #pragma opt_strength_reduction on
 
 #pragma global_optimizer off
-void fn_8018820C(void *arg0) {
-    void Unit_SetWorldXY(s32, f32, f32);
-    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    extern f32 gHalf;
-    extern f32 lbl_8036AD0C;
-    f32 temp_f1;
-    f32 temp_f31;
-    void *temp_r31;
-
-    temp_r31 = *(void **)((u8 *)arg0 + 0x18);
-    *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
-    temp_f31 = Math_EaseOutPow(2, gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x38), gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3A), lbl_8036AD0C, (f32)*(s32 *)((u8 *)arg0 + 0x60));
-    temp_f1 = Math_EaseOutPow(2, gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x39), gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3B), lbl_8036AD0C, (f32)*(s32 *)((u8 *)arg0 + 0x60));
-    Unit_SetWorldXY(*(s32 *)((u8 *)temp_r31 + 0x34), temp_f31, temp_f1);
-    if (*(s32 *)((u8 *)arg0 + 0x60) >= 8) {
-        Process_ClearFunc(arg0);
-    }
+void fn_8018820C(void *arg0)
+{
+  void Unit_SetWorldXY(s32, f32, f32);
+  f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+  extern f32 gHalf;
+  extern f32 lbl_8036AD0C;
+  f32 temp_f1;
+  f32 temp_f31;
+  void *temp_r31;
+  temp_r31 = *((void **) (((u8 *) arg0) + 0x18));
+  temp_f31 = *((s32 *) (((u8 *) arg0) + 0x60));
+  *((s32 *) (((u8 *) arg0) + 0x60)) = temp_f31 + 1;
+  temp_f31 = Math_EaseOutPow(2, gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x38))))), gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x3A))))), lbl_8036AD0C, (f32) (*((s32 *) (((u8 *) arg0) + 0x60))));
+  temp_f1 = Math_EaseOutPow(2, gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x39))))), gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x3B))))), lbl_8036AD0C, (f32) (*((s32 *) (((u8 *) arg0) + 0x60))));
+  Unit_SetWorldXY(*((s32 *) (((u8 *) temp_r31) + 0x34)), temp_f31, temp_f1);
+  if ((*((s32 *) (((u8 *) arg0) + 0x60))) >= 8)
+  {
+    Process_ClearFunc(arg0);
+  }
 }
 #pragma global_optimizer on
 void fn_80188368(void *arg0) {
@@ -4649,37 +4651,67 @@ void fn_8018CFA4(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4) {
 }
 
 void fn_8018D034(void *arg0) {
- f32 Math_Lerp(f32,f32,f32,f32); f64 sin(f64); void Process_Unlink(void *);
- extern f32 lbl_8036AD58,lbl_8036AD5C,lbl_8036AD60,lbl_8036AD64;
- typedef struct { f32 x,y,z; } Vec;
- extern Vec lbl_802797CC;
- Vec copy, v;
- s32 target, delta, step, current; f32 x, z, wave; void *obj;
- M2C_FIELD(arg0,s32 *,0x30)++;
- target=M2C_FIELD(arg0,s32 *,0x40); current=M2C_FIELD(arg0,s32 *,0x34);
- if(target!=current) {
- delta=target-current; step=delta/4;
- if(step) M2C_FIELD(arg0,s32 *,0x34)=current+step; else M2C_FIELD(arg0,s32 *,0x34)=current+delta;
- if(delta<0 && M2C_FIELD(arg0,s32 *,0x34)<M2C_FIELD(arg0,s32 *,0x40)) M2C_FIELD(arg0,s32 *,0x34)=M2C_FIELD(arg0,s32 *,0x40);
- if(delta>0 && M2C_FIELD(arg0,s32 *,0x34)>M2C_FIELD(arg0,s32 *,0x40)) M2C_FIELD(arg0,s32 *,0x34)=M2C_FIELD(arg0,s32 *,0x40);
- }
- wave=(f32)sin(Math_Lerp(lbl_8036AD58,lbl_8036AD5C,(f32)M2C_FIELD(arg0,s32 *,0x38),(f32)M2C_FIELD(arg0,s32 *,0x30)));
- v=lbl_802797CC;
- x=lbl_8036AD60*wave; v.x=x*(f32)M2C_FIELD(arg0,s32 *,0x34);
- z=lbl_8036AD64*wave; v.z=z*(f32)M2C_FIELD(arg0,s32 *,0x34);
- obj=M2C_FIELD(arg0,void **,0x44); copy=v;
- M2C_FIELD(obj,f32 *,0x58)=copy.x; M2C_FIELD(obj,f32 *,0x5C)=copy.y; M2C_FIELD(obj,f32 *,0x60)=copy.z;
- if(M2C_FIELD(arg0,s32 *,0x30)>=M2C_FIELD(arg0,s32 *,0x38)) {
- M2C_FIELD(arg0,s32 *,0x30)=0;
- if(M2C_FIELD(arg0,s32 *,0x3C)>0) {
- M2C_FIELD(arg0,s32 *,0x3C)--;
- if(M2C_FIELD(arg0,s32 *,0x3C)==0) { Process_Unlink(arg0); return; }
- goto check;
- }
- } else {
- check:
- if(M2C_FIELD(arg0,s32 *,0x34)==0) Process_Unlink(arg0);
- }
+    f32 Math_Lerp(f32, f32, f32, f32);
+    f64 sin(f64);
+    void Process_Unlink(void *);
+    extern f32 lbl_8036AD58, lbl_8036AD5C, lbl_8036AD60, lbl_8036AD64;
+    typedef struct { f32 x, y, z; } Vec;
+    extern Vec lbl_802797CC;
+    Vec copy, v;
+    s32 step;
+    s32 delta;
+    s32 current;
+    s32 target;
+    f32 x, z, wave;
+    void *obj;
+    void *self;
+
+    self = arg0;
+    M2C_FIELD(self, s32 *, 0x30)++;
+    target = M2C_FIELD(self, s32 *, 0x40);
+    current = M2C_FIELD(self, s32 *, 0x34);
+    if (target != current) {
+        delta = target - current;
+        step = delta / 4;
+        if (step) {
+            M2C_FIELD(self, s32 *, 0x34) = current + step;
+        } else {
+            M2C_FIELD(self, s32 *, 0x34) = current + delta;
+        }
+        if (delta < 0 && M2C_FIELD(self, s32 *, 0x34) < M2C_FIELD(self, s32 *, 0x40)) {
+            M2C_FIELD(self, s32 *, 0x34) = M2C_FIELD(self, s32 *, 0x40);
+        }
+        if (delta > 0 && M2C_FIELD(self, s32 *, 0x34) > M2C_FIELD(self, s32 *, 0x40)) {
+            M2C_FIELD(self, s32 *, 0x34) = M2C_FIELD(self, s32 *, 0x40);
+        }
+    }
+    wave = (f32)sin(Math_Lerp(lbl_8036AD58, lbl_8036AD5C, (f32)M2C_FIELD(self, s32 *, 0x38), (f32)M2C_FIELD(self, s32 *, 0x30)));
+    v = lbl_802797CC;
+    x = lbl_8036AD60 * wave;
+    v.x = x * (f32)M2C_FIELD(self, s32 *, 0x34);
+    z = lbl_8036AD64 * wave;
+    v.z = z * (f32)M2C_FIELD(self, s32 *, 0x34);
+    obj = M2C_FIELD(self, void **, 0x44);
+    copy = v;
+    M2C_FIELD(obj, f32 *, 0x58) = copy.x;
+    M2C_FIELD(obj, f32 *, 0x5C) = copy.y;
+    M2C_FIELD(obj, f32 *, 0x60) = copy.z;
+    if (M2C_FIELD(self, s32 *, 0x30) >= M2C_FIELD(self, s32 *, 0x38)) {
+        M2C_FIELD(self, s32 *, 0x30) = 0;
+        if (M2C_FIELD(self, s32 *, 0x3C) > 0) {
+            M2C_FIELD(self, s32 *, 0x3C)--;
+            if (M2C_FIELD(self, s32 *, 0x3C) == 0) {
+                Process_Unlink(self);
+                return;
+            }
+            goto check;
+        }
+    } else {
+    check:
+        if (M2C_FIELD(self, s32 *, 0x34) == 0) {
+            Process_Unlink(self);
+        }
+    }
 }
 
 void fn_8018D218(void *arg0)
@@ -5024,13 +5056,15 @@ void *Ui_GetColor(u8 arg0)
   f32 wave;
   u32 ticks;
   u32 millis;
+  u32 mod;
   switch (arg0)
   {
     case 19:
     case 34:
       ticks = OSGetTick();
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
-      wave = ((f32) (millis % 1500)) / lbl_8036AD68;
+      mod = millis % 1500;
+      wave = (f32)mod / lbl_8036AD68;
       phase = wave;
       wave = (f32) sin(lbl_8036AD6C * phase);
       wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
@@ -5043,7 +5077,8 @@ void *Ui_GetColor(u8 arg0)
     case 20:
       ticks = OSGetTick();
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
-      phase = ((f32) (millis % 1500)) / lbl_8036AD68;
+      mod = millis % 1500;
+      phase = (f32)mod / lbl_8036AD68;
       wave = (f32) sin(lbl_8036AD6C * phase);
       wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
       wave = lbl_8036AD80 * wave;
@@ -10288,55 +10323,35 @@ s32 fn_80196558(void *arg0, void *arg1) {
     s32 fn_8003ACF8(void *);
     s32 fn_8003AA40(void *);
     s32 fn_8003A778(void *);
-
-    void *unit;
-    void *bonus;
-    s32 a, b, c, d, e, f, g, h;
-    s32 b1f, b20, b21, b22, b23, b24, b25, b26;
-    s32 sa, sb, sc, sd, se, sf, sg, sh;
-    s32 ba;
+    s32 a,b,c,d,e,f,g,h;
+    s32 aa,bb,cc,dd,ee,ff,gg,hh;
     u8 same;
-
-    unit = arg0;
-    bonus = arg1;
-    a = *(u8 *)((u8 *)unit + 0x1A8);
-    b = Unit_GetCarryWtLimit(unit);
-    c = Unit_GetMagAtk(unit);
-    d = fn_8003AF28(unit);
-    e = fn_8003AEB0(unit);
-    f = fn_8003ACF8(unit);
-    g = fn_8003AA40(unit);
-    h = fn_8003A778(unit);
-
-    b1f = *(u8 *)((u8 *)bonus + 0x1F);
-    b20 = *(u8 *)((u8 *)bonus + 0x20);
-    b21 = *(u8 *)((u8 *)bonus + 0x21);
-    b22 = *(u8 *)((u8 *)bonus + 0x22);
-    b23 = *(u8 *)((u8 *)bonus + 0x23);
-    b24 = *(u8 *)((u8 *)bonus + 0x24);
-    b25 = *(u8 *)((u8 *)bonus + 0x25);
-    b26 = *(u8 *)((u8 *)bonus + 0x26);
-
-    ba = (s8)a;
-    sa = (s8)(ba + b1f);
-    sb = (s8)b + b20;
-    sc = (s8)c + b21;
-    sd = (s8)d + b22;
-    se = (s8)e + b23;
-    sf = (s8)f + b24;
-    sg = (s8)g + b25;
-    sh = (s8)h + b26;
-
-    if (ba != sa) same = 0;
-    else if ((s8)b != (s8)sb) same = 0;
-    else if ((s8)c != (s8)sc) same = 0;
-    else if ((s8)e != (s8)se) same = 0;
-    else if ((s8)d != (s8)sd) same = 0;
-    else if ((s8)f != (s8)sf) same = 0;
-    else if ((s8)g != (s8)sg) same = 0;
-    else if ((s8)h != (s8)sh) same = 0;
-    else same = 1;
-    return same == 0;
+    a=M2C_FIELD(arg0,u8 *,0x1A8);
+    b=Unit_GetCarryWtLimit(arg0);
+    c=Unit_GetMagAtk(arg0);
+    d=fn_8003AF28(arg0);
+    e=fn_8003AEB0(arg0);
+    f=fn_8003ACF8(arg0);
+    g=fn_8003AA40(arg0);
+    h=fn_8003A778(arg0);
+    aa=(s8)a+M2C_FIELD(arg1,u8 *,0x1F);
+    bb=(s8)b+M2C_FIELD(arg1,u8 *,0x20);
+    cc=(s8)c+M2C_FIELD(arg1,u8 *,0x21);
+    dd=(s8)d+M2C_FIELD(arg1,u8 *,0x22);
+    ee=(s8)e+M2C_FIELD(arg1,u8 *,0x23);
+    ff=(s8)f+M2C_FIELD(arg1,u8 *,0x24);
+    gg=(s8)g+M2C_FIELD(arg1,u8 *,0x25);
+    hh=(s8)h+M2C_FIELD(arg1,u8 *,0x26);
+    if((s8)a!=(s8)aa) same=0;
+    else if((s8)b!=(s8)bb) same=0;
+    else if((s8)c!=(s8)cc) same=0;
+    else if((s8)e!=(s8)ee) same=0;
+    else if((s8)d!=(s8)dd) same=0;
+    else if((s8)f!=(s8)ff) same=0;
+    else if((s8)g!=(s8)gg) same=0;
+    else if((s8)h!=(s8)hh) same=0;
+    else same=1;
+    return same==0;
 }
 
 s32 fn_80196704(s32 arg0) {
@@ -14930,24 +14945,114 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_8019F2D0(s32 x, s32 y) {
-    extern u32 gUiInputFlags;
+s32 fn_8019F2D0(s32 x, long long y)
+{
+  extern u32 gUiInputFlags;
+  s32 Map_Get(void);
+  void *Map_FindObjAt(void *, s32, s32, u32, s32);
+  void fn_800056A0(s32);
+  void MapObjEvent_Remove(void *, s32, s32, s32);
+  void *MapObjEvent_Find(void *, s32, s32, s32);
+  s32 new_var;
+  void MapObj_FadeIn(void *, s32);
+  void *Map_FindObjNear(void *, s32, s32, u32, s32);
+  s32 Map_CollectLinkedObjs(void *, void *, s32 *);
+  u8 MapObj_IsVisible(void *);
+  void MapObj_Show(void *, s32);
+  void fn_80044450(s32, s32);
+  void fn_80016180(void);
+  void fn_80013864(void);
+  s32 fn_800C0658(void);
+  void fn_80129588(void *, s32);
+  extern u8 gMapObjEventList[];
+  s32 count;
+  s32 i;
+  s32 v;
+  s32 *p;
+  s32 linked[10];
+  if (gUiInputFlags & 1)
+  {
+    {
+      void *obj = Map_FindObjAt((void *) Map_Get(), x, y, 0x1000, 0x10);
+      if (obj == NULL)
+      {
+        fn_800056A0(0);
+      }
+      else
+      {
+        new_var = y;
+        MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
+        {
+          void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) y, 4);
+          if (ev != NULL)
+          {
+            ((u8 *) ev)[4] = ((u8 *) ev)[5];
+          }
+        }
+        MapObj_FadeIn(obj, 0);
+        obj = Map_FindObjNear((void *) Map_Get(), x, new_var, 0x800, 0);
+        if (obj != NULL)
+        {
+          count = Map_CollectLinkedObjs((void *) Map_Get(), obj, linked);
+          p = linked;
+          i = 0;
+          while (i < count)
+          {
+            v = *p;
+            if (((u8) MapObj_IsVisible((void *) v)) == 0)
+            {
+              MapObj_Show((void *) v, 0);
+            }
+            p++;
+            i++;
+          }
+
+        }
+      }
+    }
+    fn_80044450(Map_Get(), 1);
+    fn_80016180();
+    return 0;
+  }
+  {
+    void *obj = Map_FindObjAt((void *) Map_Get(), x, y, 0x1000, 0x10);
+    if (obj == NULL)
+    {
+      fn_800056A0(0);
+      return 0;
+    }
+    MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
+    {
+      void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) new_var, 4);
+      if (ev != NULL)
+      {
+        ((u8 *) ev)[4] = ((u8 *) ev)[5];
+      }
+    }
+    fn_80129588(obj, fn_800C0658());
+  }
+  fn_80013864();
+  return 1;
+}
+
+s32 fn_8019F4A8(s32 arg0, s32 arg1) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
-    void MapObjEvent_Remove(void *, s32, s32, s32);
+    void MapObjEvent_Push(void *, s32, s32, s32, s32);
     void *MapObjEvent_Find(void *, s32, s32, s32);
-    void MapObj_FadeIn(void *, s32);
+    void MapObj_FadeOut(void *, s32);
     void *Map_FindObjNear(void *, s32, s32, u32, s32);
     s32 Map_CollectLinkedObjs(void *, void *, s32 *);
-    u8 MapObj_IsVisible(void *);
-    void MapObj_Show(void *, s32);
+    u8 MapObj_IsHidden(void *);
+    void MapObj_Hide(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
+    void *fn_800C0658(void);
+    void fn_80129708(void *, void *);
     void fn_80013864(void);
-    s32 fn_800C0658(void);
-    void fn_80129588(void *, s32);
     extern u8 gMapObjEventList[];
+    extern u32 gUiInputFlags;
     s32 count;
     s32 i;
     s32 v;
@@ -14956,31 +15061,33 @@ s32 fn_8019F2D0(s32 x, s32 y) {
 
     if (gUiInputFlags & 1) {
         {
-            void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+            void *obj = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
             if (obj == NULL) {
                 fn_800056A0(0);
-            } else {
-                MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
-                {
-                    void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
-                    if (ev != NULL) {
-                        ((u8 *)ev)[4] = ((u8 *)ev)[5];
-                    }
+                return 0;
+            }
+            MapObjEvent_Push(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21, 0);
+            {
+                void *ev = MapObjEvent_Find(gMapObjEventList, (char)arg0, (char)arg1, 4);
+                if (ev != NULL) {
+                    ((u8 *)ev)[4] = 0;
                 }
-                MapObj_FadeIn(obj, 0);
-                obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
-                if (obj != NULL) {
-                    count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
-                    p = linked;
-                    i = 0;
-                    while (i < count) {
-                        v = *p;
-                        if ((u8)MapObj_IsVisible((void *)v) == 0) {
-                            MapObj_Show((void *)v, 0);
-                        }
-                        p++;
-                        i++;
+            }
+            MapObj_FadeOut(obj, 0);
+        }
+        {
+            void *near = Map_FindObjNear((void *)Map_Get(), arg0, arg1, 0x800, 0);
+            if (near != NULL) {
+                count = Map_CollectLinkedObjs((void *)Map_Get(), near, linked);
+                p = linked;
+                i = 0;
+                while (i < count) {
+                    v = *p;
+                    if ((u8)MapObj_IsHidden((void *)v) == 0) {
+                        MapObj_Hide((void *)v, 0);
                     }
+                    p++;
+                    i++;
                 }
             }
         }
@@ -14990,146 +15097,22 @@ s32 fn_8019F2D0(s32 x, s32 y) {
     }
 
     {
-        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+        void *obj = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
         if (obj == NULL) {
             fn_800056A0(0);
             return 0;
         }
-        MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
+        MapObjEvent_Push(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21, 0);
         {
-            void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+            void *ev = MapObjEvent_Find(gMapObjEventList, (char)arg0, (char)arg1, 4);
             if (ev != NULL) {
-                ((u8 *)ev)[4] = ((u8 *)ev)[5];
+                ((u8 *)ev)[4] = 0;
             }
         }
-        fn_80129588(obj, fn_800C0658());
+        fn_80129708(obj, fn_800C0658());
+        fn_80013864();
+        return 1;
     }
-    fn_80013864();
-    return 1;
-}
-
-s32 fn_8019F4A8(s32 arg0, s32 arg1)
-{
-    extern u32 gUiInputFlags;
-    extern u8 gMapObjEventList[];
-
-    void *Map_Get(void);
-    void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    void *Map_FindObjNear(void *, s32, s32, u32, s32);
-    s32 Map_CollectLinkedObjs(void *, void *, s32 *);
-    void MapObjEvent_Push(void *, s32, s32, s32, s32);
-    void *MapObjEvent_Find(void *, s32, s32, s32);
-    void MapObj_FadeOut(void *, s32);
-    u8 MapObj_IsHidden(void *);
-    void MapObj_Hide(void *, s32);
-    void fn_800056A0(s32);
-    void fn_80044450(void *, s32);
-    void fn_80016180(void);
-    void *fn_800C0658(void);
-    void fn_80129708(void *, void *);
-    void fn_80013864(void);
-
-    s32 linked[10];
-    void *obj;
-    void *event;
-    void *nearObj;
-    s32 count;
-    s32 i;
-    s32 *p;
-    void *entry;
-
-    if (gUiInputFlags & 1) {
-        obj = Map_FindObjAt(
-            Map_Get(), arg0, arg1, 0x1000, 0x10
-        );
-
-        if (obj == 0) {
-            fn_800056A0(0);
-        } else {
-            MapObjEvent_Push(
-                gMapObjEventList,
-                (s8)arg0,
-                (s8)arg1,
-                0x21,
-                0
-            );
-
-            event = MapObjEvent_Find(
-                gMapObjEventList,
-                (s8)arg0,
-                (s8)arg1,
-                4
-            );
-
-            if (event != 0) {
-                *(u8 *)((u8 *)event + 4) = 0;
-            }
-
-            MapObj_FadeOut(obj, 0);
-
-            nearObj = Map_FindObjNear(
-                Map_Get(), arg0, arg1, 0x800, 0
-            );
-
-            if (nearObj != 0) {
-                count = Map_CollectLinkedObjs(
-                    Map_Get(), nearObj, linked
-                );
-
-                p = linked;
-                i = 0;
-
-                while (i < count) {
-                    entry = (void *)*p;
-
-                    if (MapObj_IsHidden(entry) == 0) {
-                        MapObj_Hide(entry, 0);
-                    }
-
-                    p++;
-                    i++;
-                }
-            }
-
-            fn_80044450(Map_Get(), 1);
-            fn_80016180();
-        }
-
-        return 0;
-    }
-
-    obj = Map_FindObjAt(
-        Map_Get(), arg0, arg1, 0x1000, 0x10
-    );
-
-    if (obj == 0) {
-        fn_800056A0(0);
-        return 0;
-    }
-
-    MapObjEvent_Push(
-        gMapObjEventList,
-        (s8)arg0,
-        (s8)arg1,
-        0x21,
-        0
-    );
-
-    event = MapObjEvent_Find(
-        gMapObjEventList,
-        (s8)arg0,
-        (s8)arg1,
-        4
-    );
-
-    if (event != 0) {
-        *(u8 *)((u8 *)event + 4) = 0;
-    }
-
-    fn_80129708(obj, fn_800C0658());
-    fn_80013864();
-
-    return 1;
 }
 
 #pragma use_lmw_stmw on

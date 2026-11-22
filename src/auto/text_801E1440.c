@@ -1048,7 +1048,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     u8 *p;
     s32 diff;
     u8 *base;
-    s32 dummy;
 
     other = arg1;
     best = NULL;
@@ -1161,13 +1160,11 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
         }
         rec += 1;
         hist[b] += 1;
-        dummy += 5;
     }
 
     i = 0;
     do {
         off = 0x2000;
-        dummy = 0;
         for (ctr = 2; ctr != 0; ctr--) {
             found = (u8 *)gSaveDataBase + off;
             if ((u32)(*(u32 *)(found + 0x40) + 0xB9BB0000) != 0x384AU) {
@@ -1211,7 +1208,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
                 goto found_id;
             }
             off += 0x4000;
-            dummy += 2;
         }
         found = NULL;
     found_id:
@@ -1253,7 +1249,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     best[0x66] = arg3;
 
     rec = gSystemSave;
-    dummy = 0;
     for (ctr = 3; ctr != 0; ctr--) {
         if (rec[0x12] == 0) {
             break;
@@ -1308,7 +1303,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
         }
         n += 1;
         rec += 1;
-        dummy += 9;
     }
 
     fn_8014D698(gBattleState, best[0x61], best[0x66], arg4, (u8)(n + 1));
@@ -1638,33 +1632,45 @@ return NULL;
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-u8 *fn_801E2458(u8 **arg0) {
-    s32 off = 0x2000;
-    u32 minSize = -1;
-    u8 *best = NULL;
-    s32 i = 0;
-    u8 *slot;
-    u32 clamped;
-    u8 valid;
-
-    for (; i < 6; i++) {
-        slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU)
-            valid = 0;
-        else if (*(u32 *)(slot + 0x44) != 0x20050201U)
-            valid = 0;
-        else
-            valid = 1;
-        if (!valid) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
+u8 *fn_801E2458(u8 **arg0)
+{
+  s32 off = 0x2000;
+  u32 minSize = -1;
+  u8 *new_var;
+  u8 *best = NULL;
+  s32 i = 0;
+  u8 *slot;
+  u8 *new_var2;
+  int new_var3;
+  u8 valid;
+  for (; i < 6; i++)
+  {
+    new_var2 = (*arg0) + off;
+    new_var = new_var2;
+    ;
+    if ((*((u32 *) (new_var + 0x40))) != 0x4645384AU)
+    {
+      valid = 0;
     }
-    return best;
+    else
+      if ((*((u32 *) (new_var + 0x44))) != 0x20050201U)
+    {
+      valid = 0;
+    }
+    else
+    {
+      ;
+    }
+    new_var3 = !1;
+    if (new_var3 && (minSize > save_slot_size(new_var)))
+    {
+      best = slot;
+      minSize = save_slot_size(slot);
+    }
+    off += 0x4000;
+  }
+
+  return best;
 }
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset

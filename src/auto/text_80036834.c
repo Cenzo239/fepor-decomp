@@ -475,7 +475,7 @@ s32 fn_80036DE0(void *arg0, void *arg1)
   index = 0;
   value = *((u32 *) (((u8 *) arg1) + 0x188));
   obj = *((u8 **) (((u8 *) arg0) + 0x188));
-  offset = index & 0xFFFFFFFF;
+  offset = index;
   goto check;
   loop:
   {

@@ -1596,6 +1596,10 @@ void fn_801B6BE4(u8 *out) {
     extern u8 gBattle[];
     void fn_800340E4(void *);
     void fn_801B6DAC(u8 *);
+#pragma cplusplus on
+    struct SX {
+        static s32 s8(s32 v) { return (signed char)v; }
+    };
     u8 *unit;
     u8 *p;
     u8 *arg0 = out;
@@ -1605,31 +1609,14 @@ void fn_801B6BE4(u8 *out) {
     u8 type;
 
     unit = *(u8 **)(gBattle + 0x280);
-    if (unit) {
-        type = (*(u8 **)(unit + 0x190))[8];
-        if (type == 0) {
-            goto found;
-        } else if (type != 5) {
-            goto try2;
+    if (unit && ((type = (*(u8 **)(unit + 0x190))[8]) == 0 || type == 5)) {
+    } else {
+        unit = *(u8 **)(gBattle + 0x560);
+        if (unit && ((type = (*(u8 **)(unit + 0x190))[8]) == 0 || type == 5)) {
         } else {
-            goto found;
+            unit = 0;
         }
     }
-try2:
-    unit = *(u8 **)(gBattle + 0x560);
-    if (unit) {
-        type = (*(u8 **)(unit + 0x190))[8];
-        if (type == 0) {
-            goto found;
-        } else if (type != 5) {
-            goto no_unit;
-        } else {
-            goto found;
-        }
-    }
-no_unit:
-    unit = 0;
-found:
     *(u8 **)arg0 = unit;
     count = 0;
     p = gBattle + 0x8A0;
@@ -1659,7 +1646,7 @@ done1:
             case 0:
                 goto done2;
             case 0x27:
-                value = (s8)*(s16 *)(p + off + 6);
+                value = SX::s8(*(s16 *)(p + off + 6));
                 break;
             }
             *(s16 *)p += 1;
@@ -1677,7 +1664,7 @@ done1:
         case 0:
             goto done3;
         case 0x28:
-            count = (s8)*(s16 *)(p + off + 6);
+            count = SX::s8(*(s16 *)(p + off + 6));
             break;
         }
         *(s16 *)p += 1;
@@ -1686,6 +1673,7 @@ done3:
     *(s16 *)p = saved;
     *(s16 *)(arg0 + 6) = count;
     fn_801B6DAC(arg0 + 10);
+#pragma cplusplus reset
 }
 #pragma global_optimizer reset
 #pragma global_optimizer off
@@ -8000,13 +7988,14 @@ void fn_801C2084(void *arg0)
     f32 Math_Ease(s32, f32, f32, f32, f32);
 
     u8 *self;
-    s16 duration;
     s16 timer;
+    s16 duration;
     s32 value;
 
     self = (u8 *)arg0;
 
-    if (*(s16 *)(self + 0x38) != -1) {
+    timer = *(s16 *)(self + 0x38);
+    if (timer != -1) {
         if (gUiInputFlags & 1) {
             Process_ClearFunc(self);
             return;
