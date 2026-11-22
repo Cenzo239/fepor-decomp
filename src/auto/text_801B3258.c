@@ -7087,7 +7087,7 @@ void *fn_801BEF90(void *arg0)
     Xml_GetNamedValue(&frame.value[20], xml, &frame.name[20]);
     *(f32 *)(self + 0x158) = frame.value[20].real[0];
     String_Destroy(&frame.name[20], -1);
-    if (*(f32 *)(self + 0x158) == zero)
+    if (*(f32 *)(self + 0x158) == lbl_8036B2F0)
         *(f32 *)(self + 0x158) = lbl_8036B2F4;
 
     /* Attribute +0x39E, XML output at original stack +0x8A4. */
