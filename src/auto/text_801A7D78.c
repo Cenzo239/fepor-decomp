@@ -116,8 +116,8 @@ void fn_801A8010(void *arg0) {
     }
 }
 
-void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
 #pragma use_lmw_stmw on
+void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
     void Allegiance_FillMask(s32, void *);
     u8 Unit_GetDistance(void *, void *);
     u8 Status_Test(void *, s32);
@@ -125,41 +125,65 @@ void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
     void *Unit_FindDisposLeader(void *);
     extern u8 gUnits[];
     u8 mask[8];
-    s32 i;
-    u8 *other;
     u8 distance;
+    u8 *other;
+    void *self;
+    s32 *pHit;
+    s32 *pAvoid;
+    s32 *pCrit;
+    s32 i;
+
+    self = unit;
+    pHit = hit;
+    pAvoid = avoid;
+    pCrit = crit;
     *hit = 0;
     *avoid = 0;
     *crit = 0;
     Allegiance_FillMask(3, mask);
-    for (i = 1; i <= 159; i++) {
-        if ((u8)i) other = gUnits + ((u8)i - 1) * 0x280;
-        else other = 0;
-        if (*(u32 *)(other + 0x188) == 0) continue;
-        if (mask[(*(u8 **)(other + 0x190))[8]] == 0) continue;
-        distance = Unit_GetDistance(unit, other);
-        if (distance > 3 || distance < 1) continue;
-        if (!Status_Test(other + 0x1BC, 0x3B)) continue;
-        if (Allegiance_Compare(*(void **)((u8 *)unit + 0x190), *(void **)(other + 0x190)) != 1) continue;
-        *hit -= 5;
-        *crit -= 5;
+    other = 0;
+    for (i = 1; i <= 0x9F; i++) {
+        if ((u8)i) {
+            other = gUnits + ((u8)i - 1) * 0x280;
+        } else {
+            other = 0;
+        }
+        if (*(u32 *)(other + 0x188) == 0) {
+            continue;
+        }
+        if (mask[(*(u8 **)(other + 0x190))[8]] == 0) {
+            continue;
+        }
+        distance = Unit_GetDistance(self, other);
+        if (distance > 3 || distance < 1) {
+            continue;
+        }
+        if (Status_Test(other + 0x1BC, 0x3B) == 0) {
+            continue;
+        }
+        if (Allegiance_Compare(*(void **)((u8 *)self + 0x190), *(void **)(other + 0x190)) != 1) {
+            continue;
+        }
+        *pHit -= 5;
+        *pCrit -= 5;
     }
-    switch ((*(u8 **)((u8 *)unit + 0x190))[8]) {
-    case 0: case 5: case 6: break;
+    switch ((*(u8 **)((u8 *)self + 0x190))[8]) {
+    case 0:
+    case 5:
+    case 6:
+        break;
     default:
-        other = (u8 *)Unit_FindDisposLeader(unit);
-        if (other && Status_Test(other + 0x1BC, 0x3A)) {
-            distance = Unit_GetDistance(unit, other);
+        other = (u8 *)Unit_FindDisposLeader(self);
+        if (other != NULL && Status_Test(other + 0x1BC, 0x3A) != 0) {
+            distance = Unit_GetDistance(self, other);
             if (distance >= 1 && distance <= 3) {
-                *hit += 5;
-                *avoid += 5;
+                *pHit += 5;
+                *pAvoid += 5;
             }
         }
         break;
     }
-#pragma use_lmw_stmw reset
 }
-
 void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 
 #pragma use_lmw_stmw on
@@ -498,7 +522,7 @@ void fn_801A8DA4(void *unit) {
     u8 Unit_CountSupportPartners(void *);
     u8 Unit_GetDistance(void *, void *);
     void AffinityBonuses_Halve(void *);
-    s32 rank;
+    register s32 rank;
     void *partner;
     s32 i;
     struct {
@@ -787,6 +811,7 @@ void fn_801A94B0(void *arg0) {
     void *tname;
     void *name;
 
+    tname = NULL;
     *(void **)((u8 *)arg0 + 0x2B0) = Terrain_GetEntry(
         gBattleMap[(s8)*((u8 *)arg0 + 0x19E) + ((s8)*((u8 *)arg0 + 0x19F) << 6) + 0x100D]);
     if (*(void **)((u8 *)arg0 + 0x2B0) == NULL) {
@@ -806,9 +831,9 @@ void fn_801A94B0(void *arg0) {
     tname = fn_8005B73C(*(void **)((u8 *)arg0 + 0x2B0));
     DebugPrint((const char *)(gBattleDebugMsgs + 0x18D),
                Msg_ResolveName(name), tname,
-               (s8)*((u8 *)arg0 + 0x2B4),
-               (s8)*((u8 *)arg0 + 0x2B5),
-               (s8)*((u8 *)arg0 + 0x2B6));
+               *(s8 *)((u8 *)arg0 + 0x2B4),
+               *(s8 *)((u8 *)arg0 + 0x2B5),
+               *(s8 *)((u8 *)arg0 + 0x2B6));
 }
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
@@ -954,15 +979,10 @@ void fn_801A981C(void *unit, s32 range, s8 slot) {
         ;
     }
     uses = *(s8 *)(self + 0x2C8);
-    if (uses <= 0) {
-        base = &lbl_80367218;
-    } else {
-        base = self + 0x284;
-    }
-    if (*(void **)base != NULL) {
-        if (!Unit_CanEquipItem(
-                (*(void **)(uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)), self),
-                *(void **)(uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)))) {
+    if (*(void **)(uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284)) != NULL) {
+        void *sel = uses <= 0 ? (void *)&lbl_80367218 : (void *)(self + 0x284);
+        void *it = *(void * volatile *)sel;
+        if (Unit_CanEquipItem(self, it) == 0) {
             Item_Clear(self + 0x284);
         }
     }
@@ -1252,10 +1272,10 @@ u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
         goto check;
         do {
             if ((s32)key == entry[0]) {
-                if (handler != NULL) {
-                    goto found;
-                } else {
+                if (handler == NULL) {
                     goto next;
+                } else {
+                    goto found;
                 }
             }
         next:
@@ -2311,7 +2331,7 @@ break;
 
 void fn_801ACF4C(void *arg0) {
     extern u8 lbl_80368220;
-    extern u16 lbl_80368224;
+    extern u16 lbl_80368224[4];
     extern f32 lbl_8036AFA0;
     extern f32 lbl_8036B028;
     extern u8 gOptionsTable[];
@@ -2320,48 +2340,63 @@ void fn_801ACF4C(void *arg0) {
     extern f32 lbl_8036B01C;
     extern f32 lbl_8036B02C;
     extern void fn_801ADD58;
-    
+    void Prim2D_Begin(void);
+    void Prim2D_SetCallback(void *, void *);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_ClearCallbacks(void);
+    void fn_801AB8A8(void *self, s32 option, f32 x, f32 y, f32 unused);
+
+    s32 temp_r4;
     s32 var_r30;
     f32 temp_f3;
     f32 var_f1;
     f32 var_f2;
-    u16 *temp_r4_ptr;
-    s32 temp_r4;
-    
-    if ((s8) lbl_80368220 == 0) {
+    f32 fi;
+    f32 t;
+    u16 a;
+    u16 b;
+    u16 c;
+    u16 d;
+
+    if ((s8)lbl_80368220 == 0) {
         lbl_80368220 = 1;
     }
-    temp_r4_ptr = &lbl_80368224;
-    lbl_80368224 = 0x30;
-    temp_r4_ptr[1] = 0x80;
-    temp_r4_ptr[2] = 0x208;
-    temp_r4_ptr[3] = 0xFE;
+    a = 0x30;
+    b = 0x80;
+    c = 0x208;
+    d = 0xFE;
     var_f1 = lbl_8036AFA0;
-    var_f2 = *(f32*)((char*)arg0 + 0x38);
+    lbl_80368224[0] = a;
+    lbl_80368224[1] = b;
+    lbl_80368224[2] = c;
+    lbl_80368224[3] = d;
+    var_f2 = *(f32 *)((char *)arg0 + 0x38);
     if (var_f2 > var_f1) {
-        *(f32*)((char*)arg0 + 0x38) = var_f2 - lbl_8036B028;
-        if (*(f32*)((char*)arg0 + 0x38) < var_f1) {
-            *(f32*)((char*)arg0 + 0x38) = var_f1;
+        *(f32 *)((char *)arg0 + 0x38) = var_f2 - lbl_8036B028;
+        if (*(f32 *)((char *)arg0 + 0x38) < var_f1) {
+            *(f32 *)((char *)arg0 + 0x38) = var_f1;
         }
     }
-    var_f2 = *(f32*)((char*)arg0 + 0x38);
+    var_f2 = *(f32 *)((char *)arg0 + 0x38);
     var_f1 = lbl_8036AFA0;
     if (var_f2 < var_f1) {
-        *(f32*)((char*)arg0 + 0x38) = var_f2 + lbl_8036B028;
-        if (*(f32*)((char*)arg0 + 0x38) > var_f1) {
-            *(f32*)((char*)arg0 + 0x38) = var_f1;
+        *(f32 *)((char *)arg0 + 0x38) = var_f2 + lbl_8036B028;
+        if (*(f32 *)((char *)arg0 + 0x38) > var_f1) {
+            *(f32 *)((char *)arg0 + 0x38) = var_f1;
         }
     }
     Prim2D_Begin();
-    Prim2D_SetCallback(&fn_801ADD58, &lbl_80368224);
+    Prim2D_SetCallback(&fn_801ADD58, lbl_80368224);
     Prim2D_PrepareTex();
     var_r30 = 0;
     do {
         temp_r4 = var_r30 - 1;
-        temp_r4 = *(u8*)((char*)arg0 + 0x36) + temp_r4;
-        if ((temp_r4 >= 0) && (temp_r4 < *(u8*)((char*)arg0 + 0x31)) && (*(u8*)(gOptionsTable + (temp_r4 * 0xC)) == 1)) {
-            temp_f3 = *(f32*)((char*)arg0 + 0x38);
-            fn_801AB8A8(arg0, lbl_8036B02C, (lbl_8036B030 * temp_f3) + ((lbl_8036B030 * (f32) var_r30) + lbl_8036B01C), temp_f3, lbl_8036B030);
+        temp_r4 += *(u8 *)((char *)arg0 + 0x36);
+        if ((temp_r4 >= 0) && (temp_r4 < *(u8 *)((char *)arg0 + 0x31)) && (*(u8 *)(gOptionsTable + (temp_r4 * 0xC)) == 1)) {
+            fi = var_r30;
+            t = lbl_8036B030 * fi + lbl_8036B01C;
+            temp_f3 = *(f32 *)((char *)arg0 + 0x38);
+            fn_801AB8A8(arg0, temp_r4, lbl_8036B02C, t + lbl_8036B030 * temp_f3, temp_f3);
         }
         var_r30 += 1;
     } while (var_r30 < 0xA);
@@ -2863,7 +2898,7 @@ extern "C" void Options_HandleFocusInput(void *opt) {
     }
 }
 
-#pragma cplusplus reset
+#pragma peephole off
 void fn_801ADFCC(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -2873,11 +2908,9 @@ void fn_801ADFCC(void *arg0, void *arg1) {
     extern f32 lbl_8036B0A0;
 #pragma cplusplus on
     struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void update(void *)=0; };
-    struct Coord { s16 value; s16 get() { return value; } void approach(s32 target) { value = (value + target) >> 1; } };
     s32 active;
     s16 x;
     s16 y;
-    s32 currentX;
     u8 *self = (u8 *)arg0;
     u8 *ctx = (u8 *)arg1;
     ((Obj *)arg0)->update(arg1);
@@ -2886,20 +2919,25 @@ void fn_801ADFCC(void *arg0, void *arg1) {
     case 1: x = 36; y = 64; break;
     case 2: x = 144; y = 64; break;
     }
-    currentX = *(s16 *)(self + 0x42);
-    if ((s16)currentX < 0 || *(s16 *)(self + 0x44) < 0) {
-        *(s16 *)(self + 0x42) = x;
-        *(s16 *)(self + 0x44) = y;
-    } else {
-        u32 nextX = x + 1;
-        u32 nextY = y + 1;
-        *(s16 *)(self + 0x42) = (s32)(currentX + nextX) >> 1;
-        *(s16 *)(self + 0x44) = (s32)(*(s16 *)(self + 0x44) + nextY) >> 1;
+    {
+        s16 t42 = *(s16 *)(self + 0x42);
+        if ((s16)t42 < 0 || *(s16 *)(self + 0x44) < 0) {
+            *(s16 *)(self + 0x42) = x;
+            *(s16 *)(self + 0x44) = y;
+        } else {
+            *(s16 *)(self + 0x42) = (s16)((s32)(t42 + x + 1) >> 1);
+            *(s16 *)(self + 0x44) = (s16)((s32)(*(s16 *)(self + 0x44) + y + 1) >> 1);
+        }
     }
     if (self[0x3C]) {
+        u8 ready;
         active = 0;
-        u8 ready = active;
-        if (ctx[0x2D] == 0 && ctx[0x2E] == 0) ready = 1;
+        ready = active;
+        if (ctx[0x2D] == 0) {
+            if (ctx[0x2E] == 0) {
+                ready = 1;
+            }
+        }
         if (ready) {
             void *selected;
             if (*(u32 *)(ctx + 0x34)) selected = *(void **)(*(u8 **)(ctx + 0x38) + 8);
@@ -2916,8 +2954,7 @@ void fn_801ADFCC(void *arg0, void *arg1) {
     Prim2D_PrepareTex();
 #pragma cplusplus reset
 }
-
-#pragma cplusplus on
+#pragma peephole reset
 extern "C" void fn_801AE154(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
