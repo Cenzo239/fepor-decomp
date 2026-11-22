@@ -14580,7 +14580,6 @@ void fn_800E2A00(Unit *unit, void *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
 
 void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f32 arg6)
 {
-    extern f64 lbl_80369F18;
     extern f32 lbl_80369F00;
     extern f32 lbl_80369F04;
     extern f32 lbl_80369F10;
@@ -14598,30 +14597,24 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
     void Prim2D_EndPrim(void);
     void *String_CStr(void *);
 
-    u8 *self;
-    u8 *data;
-    s32 alpha;
+    void *parent;
+    unsigned int alpha;
     s32 prim;
     f32 scale;
 
-    self = (u8 *)arg0;
-    data = *(u8 **)(self + 0x38);
-
-    alpha = (s32)(
-        (f32)self[0x53] *
-        *(f32 *)(data + 0x6C)
-    );
+    parent = *(void **)((u8 *)arg0 + 0x38);
+    alpha = (s32)(*(f32 *)((u8 *)parent + 0x6C) * (f32)*(u8 *)((u8 *)arg0 + 0x53));
 
     Prim2D_Begin();
 
     Prim2D_SetTransform(
         lbl_80369F00,
         lbl_80369F00,
-        (f32)*(s32 *)(self + 0x44),
+        (f32)*(s32 *)((u8 *)arg0 + 0x44),
         lbl_80369F04
     );
 
-    if (arg4 != 0) {
+    if (arg4) {
         Prim2D_SetTex(0, 0x33);
     } else {
         Prim2D_SetTex(0, 0x13);
@@ -14630,37 +14623,25 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
     Prim2D_PrepareTex();
 
     prim = arg5;
-
-    if ((u8)prim == 0xFF) {
+    if ((u8)arg5 == 0xFF) {
         prim = 5;
     }
 
     Prim2D_AddPrim(prim);
-
     Prim2D_SetPos((f32)arg1, (f32)arg2);
-
     scale = arg6 / lbl_80369F10;
-
     Prim2D_SetScale(scale);
-
     Prim2D_SetText(String_CStr(arg3));
-
     Prim2D_SetTint(0xFF, 0xFF, 0xFF, (u8)alpha);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, (u8)alpha);
-
     Prim2D_EndPrim();
 
-    if (arg4 != 0) {
+    if (arg4) {
         Prim2D_AddPrim(prim);
-
         Prim2D_SetPos((f32)arg1, (f32)arg2);
-
         Prim2D_SetText(String_CStr(arg3));
-
         Prim2D_SetScale(scale);
-
         Prim2D_SetTint(0, 0, 0, (u8)alpha);
-
         Prim2D_EndPrim();
     }
 }
@@ -15101,6 +15082,7 @@ void fn_800E3BD8(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 0x5C) = (s32) (arg2 + (M2C_FIELD(arg0, s32 *, 0x80) - M2C_FIELD(arg0, s32 *, 0x78)));
 }
 
+#pragma opt_strength_reduction off
 #pragma cplusplus on
 #pragma dont_inline on
 #pragma use_lmw_stmw on
@@ -20185,126 +20167,91 @@ void fn_800EBACC(void *arg0, void *arg1) {
     }
 }
 
-void fn_800EBD78(void *arg0, void *arg1)
-{
-    extern u8 gCardStrings[];
-    extern u8 gCardWork[];
-    extern u8 gStreamBaseVtbl[];
-    extern u8 gMemStreamVtbl[];
-
+void fn_800EBD78(void *arg0, void *arg1) {
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 padA01B;
+        u8 fileInfoPad[4];
+        s32 fileNo;
+    };
+    struct MemStream {
+        void *start;
+        void *cur;
+        u32 size;
+        u8 owned;
+        u8 pad[3];
+        void **vtable;
+    };
     u8 fn_800EBF58(void);
     s32 fn_8021BF10(s32, void *, void *);
     void fn_8021D004(s32, s32, void *);
     void fn_8021C02C(void *);
     s32 fn_8021C84C(void *, s32, s32, s32);
     void fn_8017A310(void *, void *);
+    void *fn_800C4638(s32, void *, s32);
     void DebugPrint(const char *, ...);
     void *Heap_Alloc(s32);
-
-    struct MemStream {
-        u8 *start;
-        u8 *current;
-        u32 size;
-        u8 owned;
-        u8 pad[3];
-        void *vtable;
-    };
-
-    u8 stat[0x40];
-    u8 *work;
-    u8 *fileInfo;
-    void *name;
+    extern struct CardWork gCardWork;
+    extern u8 gCardStrings[];
+    extern void *gStreamBaseVtbl[];
+    extern void *gMemStreamVtbl[];
+    u8 status[0x70];
+    void *fileInfo;
     void *path;
     struct MemStream *stream;
+    void *name;
     s32 fileSize;
-    s32 result;
-    s32 chan;
     u8 skip;
+    s32 pos;
 
-    name = arg0;
     path = arg1;
-
-    if (name == 0) {
+    if ((name = arg0) == 0) {
         name = gCardStrings + 0x70;
     }
-
     if (path == 0) {
         path = gCardStrings + 0x27D;
     }
-
     fn_800EBF58();
-
-    work = gCardWork;
-    chan = *(s32 *)(work + 0xA000);
-    fileInfo = work + 0xA01C;
-
-    result = fn_8021BF10(chan, name, fileInfo);
-    *(s32 *)(work + 0xA004) = result;
-
+    fileInfo = (void *)((u8 *)&gCardWork + 0xA01C);
+    gCardWork.result = fn_8021BF10(0, name, fileInfo);
     skip = 0;
-
-    if (result == 0 && work[0xA01A] == 0) {
+    if (gCardWork.result == 0 && gCardWork.busy == 0) {
         skip = 1;
     }
-
     if (skip != 0) {
-        fn_8021D004(
-            0,
-            *(s32 *)(work + 0xA020),
-            stat
-        );
-
-        fileSize = *(s32 *)(stat + 0x20);
-
-        DebugPrint(
-            (char *)gCardStrings + 0x288,
-            fileSize
-        );
-
+        fn_8021D004(0, gCardWork.fileNo, status);
+        fileSize = *(s32 *)&status[0x20];
+        DebugPrint((char *)(gCardStrings + 0x288), fileSize);
         stream = (struct MemStream *)Heap_Alloc(0x14);
-
         if (stream != 0) {
             stream->vtable = gStreamBaseVtbl;
-            stream->current = 0;
+            stream->cur = 0;
             stream->start = 0;
             stream->size = 0;
             stream->owned = 0;
             stream->vtable = gMemStreamVtbl;
-
-            stream->start =
-                ((void *(*)(s32, void *, s32))fn_800C4638)(
-                    fileSize,
-                    gCardStrings + 0x97,
-                    0
-                );
-
-            stream->current = stream->start;
-            stream->size = fileSize;
+            stream->start = fn_800C4638(fileSize, gCardStrings + 0x97, 0);
+            stream->cur = stream->start;
+            stream->size = (u32)fileSize;
             stream->owned = 1;
         }
-
-        result = ((s32 (*)(void *))
-            ((void **)stream->vtable)[2])(stream);
-
-        fn_8021C84C(
-            fileInfo,
-            result,
-            fileSize,
-            0
-        );
-
-        result = ((s32 (*)(void *))
-            ((void **)stream->vtable)[2])(stream);
-
-        stream->current = (u8 *)(result + fileSize);
-
+        pos = ((s32 (*)(void *))((void **)stream->vtable)[2])(stream);
+        fn_8021C84C(fileInfo, pos, fileSize, 0);
+        pos = ((s32 (*)(void *))((void **)stream->vtable)[2])(stream);
+        stream->cur = (void *)(pos + fileSize);
         fn_8021C02C(fileInfo);
-
         fn_8017A310(stream, path);
-
         if (stream != 0) {
-            ((void (*)(void *, s32))
-                ((void **)stream->vtable)[4])(stream, 1);
+            ((void (*)(void *, s32))((void **)stream->vtable)[4])(stream, 1);
         }
     }
 }
@@ -22563,13 +22510,16 @@ void fn_800F07C0(void) {
     extern u8 gBattleMap[];
     extern void *lbl_803678E8;
     extern void *lbl_803678EC;
-    extern f32 lbl_8036A010;
-    extern f32 lbl_8036A014;
+    extern const f32 lbl_8036A010;
+    extern const f32 lbl_8036A014;
     void *r31;
     u8 *data;
     void *obj;
     f32 f30;
     f32 f31;
+    f32 half;
+    s8 sx;
+    s8 sy;
 
     if (BattleState_IsPhaseZero(gBattleState) != 0) {
         if (lbl_803678E8 != NULL) {
@@ -22581,8 +22531,9 @@ void fn_800F07C0(void) {
             } else {
                 obj = *(void **)((u8 *)r31 + 0x30);
                 *(u32 *)((u8 *)obj + 8) &= ~0x10U;
-                f30 = lbl_8036A010 + (f32)(s8)data[2];
-                f31 = lbl_8036A010 + (f32)(s8)data[3];
+                half = lbl_8036A010;
+                f30 = half + (f32)(s8)data[2];
+                f31 = half + (f32)(s8)data[3];
                 Effect_SetPos(r31, f30, f31, Map_SampleHeightRaw(gBattleMap, f30, f31) - lbl_8036A014);
             }
         }
@@ -22595,9 +22546,12 @@ void fn_800F07C0(void) {
             } else {
                 obj = *(void **)((u8 *)r31 + 0x30);
                 *(u32 *)((u8 *)obj + 8) &= ~0x10U;
-                f31 = lbl_8036A010 + (f32)(s8)data[2];
-                f30 = lbl_8036A010 + (f32)(s8)data[3];
-                Effect_SetPos(r31, f31, f30, Map_SampleHeightRaw(gBattleMap, f31, f30) - lbl_8036A014);
+                half = lbl_8036A010;
+                sx = (s8)data[2];
+                sy = (s8)data[3];
+                f30 = half + (f32)sy;
+                f31 = half + (f32)sx;
+                Effect_SetPos(r31, f30, f31, Map_SampleHeightRaw(gBattleMap, f30, f31) - lbl_8036A014);
             }
         }
     }
@@ -27540,14 +27494,11 @@ void fn_800FB074(void *arg0)
     }
 }
 
-void fn_800FB0F0(void *arg0)
-{
+void fn_800FB0F0(void *arg0) {
     extern u8 gAiState[];
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
-
     void *Res_GetByName(void *);
-
     u8 *unit;
     u8 *cmd;
     u8 *entry;
@@ -27556,85 +27507,65 @@ void fn_800FB0F0(void *arg0)
     s32 op;
     s32 value;
     s32 result;
-    s32 label;
     s32 i;
+    s32 label;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
-
     index = *(s32 *)(cmd + 4);
     op = *(s32 *)(cmd + 8);
     value = *(s32 *)(cmd + 0xC);
-
     state = (s32 *)(gAiState + 8 + index * 4);
-
-    result = 0;
-
     switch (op) {
     case 0:
         result = *state > value;
         break;
-
     case 1:
         result = *state >= value;
         break;
-
     case 2:
         result = *state == value;
         break;
-
     case 3:
         result = *state < value;
         break;
-
     case 4:
         result = *state <= value;
         break;
-
     case 5:
         result = *state != value;
         break;
+    default:
+        result = 0;
+        break;
     }
-
-    if (result != 0) {
+    if ((u8)result != 0) {
         i = 0;
         label = *(s32 *)(cmd + 0x10);
-
         if (gAiCmdIsAlt == 0) {
-            entry = Res_GetByName(
-                *(void **)(unit + 0x238)
-            );
+            entry = Res_GetByName(*(void **)(unit + 0x238));
         } else {
-            entry = Res_GetByName(
-                *(void **)(unit + 0x23C)
-            );
+            entry = Res_GetByName(*(void **)(unit + 0x23C));
         }
-
         if (label != 0) {
-            while (*(s32 *)entry != 0 ||
-                   *(s32 *)(entry + 0xC) != label) {
+            while (*(s32 *)entry != 0 || *(s32 *)(entry + 0xC) != label) {
                 entry += 0x1C;
                 i++;
             }
-
             if (gAiCmdIsAlt == 0) {
-                unit[0x250] = i;
+                unit[0x250] = (u8)i;
             } else {
-                unit[0x251] = i;
+                unit[0x251] = (u8)i;
             }
+        } else if (gAiCmdIsAlt == 0) {
+            unit[0x250] = 0;
         } else {
-            if (gAiCmdIsAlt == 0) {
-                unit[0x250] = 0;
-            } else {
-                unit[0x251] = 0;
-            }
+            unit[0x251] = 0;
         }
+    } else if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
     } else {
-        if (gAiCmdIsAlt == 0) {
-            unit[0x250]++;
-        } else {
-            unit[0x251]++;
-        }
+        unit[0x251]++;
     }
 }
 
