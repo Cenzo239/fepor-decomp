@@ -5099,7 +5099,7 @@ void fn_801BCCC4(void *arg0) {
         Ui_RemoveChild(self, p);
     }
 }
-#pragma optimization_level reset
+#pragma optimization_level 3
 void fn_801BCD8C(void *arg0) {
     extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
@@ -5114,7 +5114,6 @@ void fn_801BCD8C(void *arg0) {
     Pair p2;
     Pair p3;
     Pair p4;
-    Pair *pp;
     void *obj1;
     void *obj4;
     s32 t;
@@ -5132,12 +5131,11 @@ void fn_801BCD8C(void *arg0) {
 
     switch (flag) {
     case 0x81:
-        pp = &p1;
         t = *(s16 *)((u8 *)obj1 + 0xA);
         t = *(s16 *)((u8 *)obj1 + 0xE) - t;
-        pp->y = *(s16 *)((u8 *)obj1 + 0xC);
-        pp->x = -(s16)t;
-        Ui_SlideWidgetChild(arg0, obj1, pp, 1);
+        p1.y = *(s16 *)((u8 *)obj1 + 0xC);
+        p1.x = -(s16)t;
+        Ui_SlideWidgetChild(arg0, obj1, &p1, 1);
 
         t = *(s16 *)((u8 *)obj2 + 0xA);
         t = *(s16 *)((u8 *)obj2 + 0xE) - t;
@@ -5167,7 +5165,7 @@ void fn_801BCD8C(void *arg0) {
         break;
     }
 }
-
+#pragma optimization_level reset
 void fn_801BCEC4(void *arg0) {
 extern u8 gUiUnitPanelStrings[];
 void *Ui_FindChild(void *,s32,s32);
@@ -12777,35 +12775,28 @@ return self;
 
 #pragma cplusplus reset
 int fn_801CB7F0(void *arg0, void *arg1, void *unused) {
-    s32 count;
-    u8 *end;
     u8 *src;
     u8 *dst;
-    u32 n;
-    u32 i;
+    u8 *end;
     (void)unused;
-    count = *(s32 *)((u8 *)arg0 + 4);
-    end = *(u8 **)((u8 *)arg0 + 8) + (count << 5);
+    end = *(u8 **)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 5);
     if ((((s32)(end - (u8 *)arg1) / 32) - 1) != 0) {
         src = (u8 *)arg1 + 0x20;
         dst = (u8 *)arg1;
-        n = (u32)((end + 0x1F) - src) >> 5;
-        if (src < end) {
-            for (i = 0; i < n; i++) {
-                ((f32 *)dst)[0] = ((f32 *)src)[0];
-                ((f32 *)dst)[1] = ((f32 *)src)[1];
-                ((f32 *)dst)[2] = ((f32 *)src)[2];
-                ((f32 *)dst)[3] = ((f32 *)src)[3];
-                ((f32 *)dst)[4] = ((f32 *)src)[4];
-                ((f32 *)dst)[5] = ((f32 *)src)[5];
-                ((f32 *)dst)[6] = ((f32 *)src)[6];
-                ((u32 *)dst)[7] = ((u32 *)src)[7];
-                src += 0x20;
-                dst += 0x20;
-            }
+        while (src < end) {
+            ((f32 *)dst)[0] = ((f32 *)src)[0];
+            ((f32 *)dst)[1] = ((f32 *)src)[1];
+            ((f32 *)dst)[2] = ((f32 *)src)[2];
+            ((f32 *)dst)[3] = ((f32 *)src)[3];
+            ((f32 *)dst)[4] = ((f32 *)src)[4];
+            ((f32 *)dst)[5] = ((f32 *)src)[5];
+            ((f32 *)dst)[6] = ((f32 *)src)[6];
+            ((u32 *)dst)[7] = ((u32 *)src)[7];
+            src += 0x20;
+            dst += 0x20;
         }
     }
-    *(s32 *)((u8 *)arg0 + 4) = count - 1;
+    *(s32 *)((u8 *)arg0 + 4) = *(s32 *)((u8 *)arg0 + 4) - 1;
     return (int)arg1;
 }
 
