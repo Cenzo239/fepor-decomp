@@ -2510,17 +2510,17 @@ void fn_801A73E4(void *arg0, void *arg1, void *arg2) {
     void fn_801A981C(void *, s32, s32);
     void fn_801A94B0(void *);
     extern u8 gBattleMap[];
+    u8 *target;
     void *unit;
     u8 *self;
-    u8 *target;
 
     target = arg2;
+    BattleUnit_Reset(arg0);
+    BattleUnit_Reset((u8 *)arg0 + 0x2E0);
+    BattleUnit_Reset((u8 *)arg0 + 0x5C0);
+    fn_800340F0((u8 *)arg0 + 0x8A0);
     self = arg0;
     unit = arg1;
-    BattleUnit_Reset(self);
-    BattleUnit_Reset(self + 0x2E0);
-    BattleUnit_Reset(self + 0x5C0);
-    fn_800340F0(self + 0x8A0);
     *(s32 *)(self + 0xCA8) = 0;
     *(s32 *)(self + 0xCAC) = 0;
     *(s32 *)(self + 0xCB0) = 0;
