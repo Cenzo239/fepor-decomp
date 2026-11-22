@@ -1827,6 +1827,7 @@ s32 fn_80134E40(void) {
 }
 
 #pragma use_lmw_stmw on
+#pragma scheduling on
 void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_8029180C[];
@@ -5516,20 +5517,16 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     extern f32 lbl_8036A6B0;
     extern f32 lbl_8036A6B4;
 #pragma cplusplus on
-#pragma optimization_level 3
     struct Panel {
         virtual void v0()=0; virtual void v1()=0; virtual void v2()=0;
         virtual void v3()=0; virtual void v4()=0; virtual void v5()=0;
         virtual void v6()=0; virtual void v7()=0; virtual void v8()=0;
         virtual void v9()=0; virtual void v10()=0; virtual s32 width()=0;
-        s16 height() { return *(s16 *)((u8 *)this+0x5A); }
     };
-    s16 h;
-    s16 y;
+    s32 h;
+    s32 y;
     s32 flag;
     s32 name;
-    s32 meas;
-    s32 diff;
 
     flag = arg5 != 0;
     if ((u32) ((M2C_FIELD(arg4, s32 *, 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
@@ -5539,26 +5536,22 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 0x13));
     Prim2D_PrepareTex();
     name = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
-    h = ((Panel *)arg0)->height();
-    meas = Text_MeasureHeight(-1, lbl_8036A674);
-    diff = (s16)h;
-    diff = diff - meas;
+    h = *(s16 *)((u8 *)arg0 + 0x5A);
+    h = (s16)h - Text_MeasureHeight(-1, lbl_8036A674);
     y = (s16)arg2;
-    Text_Draw(arg1, (s16)(y + (s16)(diff >> 1)), flag, lbl_802768A0 + 0x39, name);
+    Text_Draw(arg1, (s16)(y + (s16)(h >> 1)), flag, lbl_802768A0 + 0x39, name);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);
     Prim2D_PrepareTex();
-    h = ((Panel *)arg0)->height();
+    h = *(s16 *)((u8 *)arg0 + 0x5A);
     {
         s32 w = ((Panel *)arg0)->width();
         s16 pad = M2C_FIELD(arg0, s16 *, 0x62);
-        diff = (s16)h;
-        fn_80152010((s16)(arg1 - 6), (s16)(y + (diff >> 1)), (s16)((w - (pad * 2)) + 6), 0xFF, 0x10);
+        fn_80152010((s16)(arg1 - 6), (s16)(y + ((s16)h >> 1)), (s16)((w - (pad * 2)) + 6), 0xFF, 0x10);
     }
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
-#pragma optimization_level reset
 #pragma cplusplus reset
 }
 
@@ -5787,83 +5780,54 @@ extern "C" void fn_8013AD70(void *arg0, void *arg1) {
 
 extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
     struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual void v12() = 0;
-        virtual s16 v13() = 0;
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0;
+        virtual void v4() = 0; virtual void v5() = 0; virtual void v6() = 0; virtual void v7() = 0;
+        virtual void v8() = 0; virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual s16 v13() = 0;
     };
-    typedef struct {
-        u8 pad0[0x4E];
-        s16 unk4E;
-        s16 unk50;
-        s16 unk52;
-        s16 unk54;
-        s16 unk56;
-        s16 unk58;
-        u8 pad5A[0x16];
-        s32 unk70;
-    } Unk8013AF08;
-    Unk8013AF08 *obj;
     s16 var_r3;
     s32 temp_r4;
-    s32 temp_r5;
-    s32 temp_r6;
     s32 temp_r7;
+    s32 temp_r6;
     s32 temp_r8;
     s32 t;
 
-    obj = (Unk8013AF08 *)arg0;
-    if (arg1 != obj->unk4E) {
+    if (arg1 != (s16)M2C_FIELD(arg0, s16 *, 0x4E)) {
         var_r3 = ((Obj *)arg0)->v13();
-        temp_r5 = obj->unk70;
-        temp_r4 = obj->unk58;
-        temp_r7 = (s16) temp_r5;
+        temp_r7 = (s16)M2C_FIELD(arg0, s32 *, 0x70);
+        temp_r4 = M2C_FIELD(arg0, s16 *, 0x58);
         temp_r6 = temp_r4 - 1;
-        temp_r8 = (s16) ((temp_r7 + temp_r6) / temp_r4);
-        if ((arg1 < 0) || (temp_r7 <= arg1)) {
-            return;
-        }
-        if (var_r3 > temp_r8) {
-            var_r3 = temp_r8;
-        }
-        if (arg1 < obj->unk4E) {
+        temp_r8 = (s16)((temp_r7 + temp_r6) / temp_r4);
+        if ((arg1 < 0) || (temp_r7 <= arg1)) return;
+        if (var_r3 > temp_r8) var_r3 = temp_r8;
+        if (arg1 < (s16)M2C_FIELD(arg0, s16 *, 0x4E)) {
             do {
-                obj->unk4E = (s16) (obj->unk4E - 1);
-                if (obj->unk4E > temp_r6) {
-                    if ((s16) (obj->unk4E / temp_r4) - obj->unk56 == 0) {
-                        obj->unk56 = (s16) (obj->unk56 - 1);
+                M2C_FIELD(arg0, s16 *, 0x4E) = (s16)(M2C_FIELD(arg0, s16 *, 0x4E) - 1);
+                if ((s16)M2C_FIELD(arg0, s16 *, 0x4E) > temp_r6) {
+                    if ((s16)(M2C_FIELD(arg0, s16 *, 0x4E) / temp_r4) - M2C_FIELD(arg0, s16 *, 0x56) == 0) {
+                        M2C_FIELD(arg0, s16 *, 0x56) = (s16)(M2C_FIELD(arg0, s16 *, 0x56) - 1);
                     }
                 }
-            } while (arg1 < obj->unk4E);
+            } while (arg1 < (s16)M2C_FIELD(arg0, s16 *, 0x4E));
         } else {
             temp_r6 = temp_r7 - 1;
             temp_r7 = temp_r8 - 1;
             temp_r8 = var_r3 - 1;
             do {
-                obj->unk4E = (s16) (obj->unk4E + 1);
-                if (obj->unk4E > temp_r6) {
-                    obj->unk4E = (s16) temp_r6;
+                M2C_FIELD(arg0, s16 *, 0x4E) = (s16)(M2C_FIELD(arg0, s16 *, 0x4E) + 1);
+                if ((s16)M2C_FIELD(arg0, s16 *, 0x4E) > temp_r6) {
+                    M2C_FIELD(arg0, s16 *, 0x4E) = (s16)temp_r6;
                 }
-                t = (s16) (obj->unk4E / temp_r4);
+                t = (s16)(M2C_FIELD(arg0, s16 *, 0x4E) / temp_r4);
                 if (t < temp_r7) {
-                    if (temp_r8 == t - (s16) obj->unk56) {
-                        obj->unk56 = (s16) (obj->unk56 + 1);
+                    if (temp_r8 == t - (s16)M2C_FIELD(arg0, s16 *, 0x56)) {
+                        M2C_FIELD(arg0, s16 *, 0x56) = (s16)(M2C_FIELD(arg0, s16 *, 0x56) + 1);
                     }
                 }
-            } while (obj->unk4E < arg1);
+            } while ((s16)M2C_FIELD(arg0, s16 *, 0x4E) < arg1);
         }
-        obj->unk52 = -1;
-        obj->unk54 = -1;
+        M2C_FIELD(arg0, s16 *, 0x52) = -1;
+        M2C_FIELD(arg0, s16 *, 0x54) = -1;
     }
 }
 #pragma cplusplus reset
