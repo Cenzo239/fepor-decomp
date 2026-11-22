@@ -2124,10 +2124,8 @@ extern "C" void fn_801451BC(void) {
         u8 pad2[0x23];
     } Entry;
     extern u8 lbl_80276BC8[];
-    extern u8 lbl_803301A8[1344];
     void fn_800B3194(void);
 
-    Entry *entry;
     s8 *str;
     s8 *b;
     s8 *a;
@@ -2135,9 +2133,9 @@ extern "C" void fn_801451BC(void) {
     s32 i;
 
     str = (s8 *)(lbl_80276BC8 + 0x8a);
-    entry = (Entry *)lbl_803301A8;
     i = 0;
     do {
+        Entry *entry = (Entry *)(gSeCueSlots + i * 0x30);
         if (entry->flags & 1) {
             a = str;
             b = (s8 *)*entry->names;
@@ -2146,7 +2144,7 @@ extern "C" void fn_801451BC(void) {
             ca = *a;
             if (ca == 0) {
                 if ((s8)i >= 0) {
-                    Obj *obj = (Obj *)(lbl_803301A8 + (s8)i * 0x30);
+                    Obj *obj = (Obj *)(gSeCueSlots + (s8)i * 0x30);
                     if (*((u8 *)obj + 0xC) & 1) {
                         obj->v2();
                     }
@@ -2163,7 +2161,6 @@ extern "C" void fn_801451BC(void) {
             }
         }
         i += 1;
-        entry = (Entry *)((u8 *)entry + 0x30);
     } while (i < 0x1C);
     fn_800B3194();
 }
@@ -2992,39 +2989,36 @@ void fn_80146F0C(void)
 
     s32 value;
     u8 *ptr;
+    u32 next;
     u8 offset;
 
     value = 0xF00000 - fn_800C44F4(-1);
-
-    fn_800B36D8(lbl_80276BC8 + 0x326);
-
+    fn_800B36D8((char *)lbl_80276BC8 + 0x326);
     Heap_AdjustExtent(value);
-
     fn_800B34B0(0);
     fn_800B3490();
-
     Heap_AdjustExtent(-value);
-
     Sound_LoadPack(lbl_80276BC8 + 0x326);
-
     ptr = (u8 *)Archive_Load(lbl_80276BC8 + 0x314);
 
-    while (ptr != 0) {
-        offset = ptr[4];
-
-        if (offset == 0) {
-            break;
-        }
-
-        fn_8000D3EC(*(u32 *)ptr, ptr);
-
-        offset = ptr[4];
-
-        if (offset == 0) {
-            break;
-        }
-
+    goto check;
+body:
+    fn_8000D3EC(*(u32 *)ptr, ptr);
+    offset = ptr[4];
+    if (offset == 0) {
+        ptr = NULL;
+    } else {
         ptr += offset;
+    }
+check:
+    offset = ptr[4];
+    if (offset == 0) {
+        next = 0;
+    } else {
+        next = (u32)ptr + offset;
+    }
+    if (next != 0) {
+        goto body;
     }
 
     lbl_80367AE8 = 100;
@@ -3767,8 +3761,8 @@ extern "C" void fn_80147EBC(s16 arg0) {
     u8 t;
 
     a = arg0;
-    p = gFxChannels;
     i = 0;
+    p = gFxChannels;
     do {
         if ((*(u8 *)((u8 *)p + 0xC) & 1) && p->v25() != 0) {
             temp = (s32)((f32)a / gMsPerFrame);
@@ -3850,12 +3844,12 @@ extern "C" void fn_801480D8(s16 arg0) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern Obj gFxChannels[];
+    extern u8 gFxChannels[];
     extern f32 gMsPerFrame;
     s16 raw;
     s32 a;
     unsigned int temp;
-    Obj *p;
+    u8 *p;
     register s32 i;
     s16 val;
     u8 flags;
@@ -3865,25 +3859,25 @@ extern "C" void fn_801480D8(s16 arg0) {
     p = gFxChannels;
     i = 0;
     do {
-        flags = *(u8 *)((u8 *)p + 0xC);
+        flags = *(u8 *)(p + 0xC);
         if (flags & 1) {
             if (0 >= raw) {
-                p->v2();
+                ((Obj *)p)->v2();
             } else if (!(flags & 8)) {
                 temp = (s32)((f32)a / gMsPerFrame);
                 val = (s16)temp;
                 if (0 >= val) {
                     val = 1;
                 }
-                *(u8 *)((u8 *)p + 0x28) = *(u8 *)((u8 *)p + 0x16);
-                *(u8 *)((u8 *)p + 0x29) = 0;
-                *(s16 *)((u8 *)p + 0x2E) = val;
-                *(s16 *)((u8 *)p + 0x2C) = 0;
-                *(u8 *)((u8 *)p + (unsigned)0xC) = (u8)(*(u8 *)((u8 *)p + (u32)0xC) | 8);
+                *(u8 *)(p + 0x28) = *(u8 *)(p + 0x16);
+                *(u8 *)(p + 0x29) = 0;
+                *(s16 *)(p + 0x2E) = val;
+                *(s16 *)(p + 0x2C) = 0;
+                *(u8 *)(p + 0xC) = (u8)(*(u8 *)(p + 0xC) | 8);
             }
         }
         ++i;
-        p = (Obj *)((u8 *)p + 0x30);
+        p += 0x30;
     } while (i < 4);
 }
 
