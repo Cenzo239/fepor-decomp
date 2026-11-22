@@ -31,9 +31,11 @@ static inline u8 *map_first(s32 *m) {
     return e;
 }
 
-static inline s32 map_cell_has_unit(u8 id) {
-    return id != 0;
+#pragma cplusplus on
+static inline bool map_cell_has_unit(u8 id) {
+    return id;
 }
+#pragma cplusplus reset
 
 void fn_8002887C(void) {
     s32 Unit_GetMov(void *);
@@ -4305,7 +4307,7 @@ void fn_8002F8DC(void) {
     void Battle_SetupPair(void *,void *,void *);
     void fn_801A7528(void *,void *);
     void fn_801A6F34(void *,s32);
-    extern u8 gBattleMap[],gBattleState[],gUnits[],gMapUiStrs[],gUiContext[],gBattle[];
+    extern u8 gBattleState[],gBattleMap[],gUnits[],gMapUiStrs[],gUiContext[],gBattle[];
     u32 item[2];
     void *unit;
     s32 x;
