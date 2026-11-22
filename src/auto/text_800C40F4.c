@@ -10077,9 +10077,11 @@ void fn_800DB228(void *arg0) {
     u8 *self;
     u8 *obj;
     s32 offset;
-    s32 halfWidth;
     s32 x;
     s32 y;
+    s32 halfWidth;
+    f32 hwF;
+    f32 xF;
     f32 drawX;
     f32 fontX;
     f32 drawY;
@@ -10100,10 +10102,12 @@ void fn_800DB228(void *arg0) {
     x = *(s32 *)(self + 0x48) +
         *(s32 *)(obj + 0x60);
 
-    drawX = (f32)x;
+    xF = (f32)x;
+    drawX = xF;
     fontX = *(f32 *)(*(u8 **)(self + 0x38) + 0x68);
     drawX += fontX;
-    drawX += (f32)halfWidth;
+    hwF = (f32)halfWidth;
+    drawX += hwF;
 
     offset = (s32)drawX;
     y = *(s32 *)(self + 0x4C) +
@@ -15867,7 +15871,6 @@ void fn_800E4D24(void *arg0) {
     u8 *Light_GetChannel(s32);
 
     u8 *self;
-    u8 *model;
     u8 *light;
     s32 a;
     s32 b;
@@ -15876,18 +15879,12 @@ void fn_800E4D24(void *arg0) {
     self = (u8 *)arg0;
 
     if (*(void **)(self + 0xDC) != 0) {
-        model = (u8 *)GActor_Create();
-        *(void **)(self + 0xE4) = model;
+        *(void **)(self + 0xE4) = GActor_Create();
 
-        *(u32 *)(model + 4) = *(u32 *)(self + 0xE0);
+        *(u32 *)(*(u8 **)(self + 0xE4) + 4) = *(u32 *)(self + 0xE0);
         self[0xD3] = 1;
 
-        Model_SetColor(
-            *(void **)(self + 0xE4),
-            0,
-            0,
-            0
-        );
+        Model_SetColor(*(void **)(self + 0xE4), 0, 0, 0);
 
         light = Light_GetChannel(0);
 
@@ -15906,10 +15903,8 @@ void fn_800E4D24(void *arg0) {
 
         Model_SetAlpha(*(void **)(self + 0xE4), (u8)alpha);
 
-        model = *(u8 **)(self + 0xE4);
-        model[0x87] = 0;
-
-        *(u32 *)model |= 0x4001E400;
+        *(u8 *)(*(u8 **)(self + 0xE4) + 0x87) = 0;
+        *(u32 *)(*(u8 **)(self + 0xE4)) |= 0x4001E400;
     }
 }
 
@@ -27325,25 +27320,27 @@ void fn_800FAD94(void *arg0) {
     u8 *unit;
     u8 *cmd;
     s32 cmdC;
-    s8 ux;
     s8 uy;
+    s8 ux;
     u8 *tgt;
     s8 tx;
     s8 ty;
+    s32 cond;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
     ux = (s8)gUiContext[0xD];
     uy = (s8)gUiContext[0xE];
     cmdC = *(s32 *)(cmd + 0xC);
+    cond = *(s32 *)(cmd + 0x10) != 0;
 
-    if ((u8)fn_80102DFC(ux, uy, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
-        if (*(s32 *)(cmd + 0x10) != 0) {
+    if ((u8)fn_80102DFC(ux, uy, cmdC, cond)) {
+        if (cond) {
             tgt = TargetList_GetCurrent(gTargetList);
             tx = (s8)tgt[0];
             tgt = TargetList_GetCurrent(gTargetList);
             ty = (s8)tgt[1];
-            Ai_SetDecision((u8)cmdC, (s32)unit, tx, ty, -1, 0, 0);
+            Ai_SetDecision((u8)cmdC, (s32)unit, tx, cond ? ty : uy, -1, 0, 0);
         } else {
             *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
         }
