@@ -8047,10 +8047,11 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
 
 #pragma scheduling on
 void fn_801DDE44(void *arg0) {
-    extern f32 lbl_8036B630;
+    void Process_ClearFunc(void);
+    extern const f32 lbl_8036B630;
     *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
     if (*(f32 *)((u8 *)arg0 + 0x30) >= *(f32 *)((u8 *)arg0 + 0x34)) {
-        fn_8000C188();
+        Process_ClearFunc();
     }
 }
 #pragma global_optimizer off
