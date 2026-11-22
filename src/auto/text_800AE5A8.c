@@ -387,19 +387,21 @@ void fn_800AECC0(void) {
     void fn_800B16EC(void *);
     void fn_800B49E0(void *,s32,s32,s32,void *);
     void DCInvalidateRange(void *,u32);
-    void ARQPostRequest(void *,void *,s32,s32,u32,void *,u32,void *);
-    extern u8 gSoundSys[];
+    void fn_80215D9C(void *,void *,s32,s32,u32,void *,u32,void *);
+    extern u8 lbl_80317338[];
     s32 i;
     u8 *entry;
+    u8 *global;
     u8 *stream;
     u32 size, aligned;
     s32 position;
     u32 base, offset, limit, n, step;
     u16 flags;
+    global = lbl_80317338;
     i = 0;
     position = 0;
     do {
-        entry = *(u8 **)((u8 *)gSoundSys + 0xF8) + position;
+        entry = *(u8 **)(global + 0xF8) + position;
         flags = *(u16 *)entry;
         if ((flags & 8) && !(flags & 2)) {
             if (flags & 1) {
@@ -412,9 +414,9 @@ void fn_800AECC0(void) {
         if (!(flags & 0x400)) {
             fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, *(u16 *)(entry + 4) + offset, fn_800B1720);
         } else {
-            base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + offset + *(u16 *)(entry + 4);
+            base = *(u32 *)((u8 *)lbl_80317338 + *(u16 *)(entry + 2)*4 + 0x134) + offset + *(u16 *)(entry + 4);
             DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
-            ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
+            fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
 
@@ -433,9 +435,9 @@ void fn_800AECC0(void) {
             if (!(flags & 0x400)) {
                 fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, *(u16 *)(entry + 4) + (offset + base), fn_800B1720);
             } else {
-                base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + *(u16 *)(entry + 4);
+                base = offset + base + *(u32 *)((u8 *)lbl_80317338 + *(u16 *)(entry + 2)*4 + 0x134) + *(u16 *)(entry + 4);
                 DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
-                ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
+                fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
 
@@ -469,11 +471,11 @@ void fn_800AF0B4(void) {
     extern u8 gSoundSys[];
     extern f32 lbl_80369CB0;
     extern f32 lbl_80369CB4;
-    s32 off;
+    s32 off2;
     u8 *e;
     s32 i;
     u8 *e2;
-    s32 off2;
+    s32 off;
     u8 *sys;
     u16 flags;
     u16 flags2;
@@ -1836,21 +1838,23 @@ s32 config[2]; u8 *p; u8 *stream; s32 i; u8 *base=lbl_80312BD0;
 config[0]=lbl_80369CA8; config[1]=lbl_80369CAC;
 fn_802141EC(base,8); fn_80215D2C(); fn_80213B44(0); fn_80214184(0xbfc000);
 fn_802624DC(config); Sound_Init(64,64,64,1,1,0xbfc000);
-{ u8 *p=base+0x20;
-M2C_FIELD(p,u8 *,452)=0;
-M2C_FIELD(p,f32 *,464)=lbl_80369CD8;
-M2C_FIELD(p,f32 *,472)=lbl_80369CDC;
-M2C_FIELD(p,f32 *,468)=lbl_80369CE0;
-M2C_FIELD(p,f32 *,456)=lbl_80369CB0;
-M2C_FIELD(p,f32 *,476)=lbl_80369CB0;
-M2C_FIELD(p,f32 *,460)=lbl_80369CE4;
-fn_80263CF0(p); } { u8 *p=base+0x200;M2C_FIELD(p,u8 *,316)=0;
-M2C_FIELD(p,f32 *,328)=lbl_80369CE8;
-M2C_FIELD(p,f32 *,336)=lbl_80369CDC;
-M2C_FIELD(p,f32 *,332)=lbl_80369CEC;
-M2C_FIELD(p,f32 *,320)=lbl_80369CEC;
-M2C_FIELD(p,f32 *,324)=lbl_80369CEC;
-fn_80263830(p); } { u8 *p=base+0x354; M2C_FIELD(p,s32 *,0x90)=10; M2C_FIELD(p,s32 *,0x94)=0; M2C_FIELD(p,s32 *,0x98)=500; fn_80265230(p); } { u8 *p=base+0x3f0;M2C_FIELD(p,s32 *,60)=150;M2C_FIELD(p,s32 *,64)=150;M2C_FIELD(p,s32 *,68)=50;M2C_FIELD(p,s32 *,72)=30;M2C_FIELD(p,s32 *,76)=30;M2C_FIELD(p,s32 *,80)=30;M2C_FIELD(p,s32 *,84)=50;M2C_FIELD(p,s32 *,88)=50;M2C_FIELD(p,s32 *,92)=50;fn_80264B7C(p); }
+M2C_FIELD(base+0x20,u8 *,452)=0;
+M2C_FIELD(base+0x20,f32 *,464)=lbl_80369CD8;
+M2C_FIELD(base+0x20,f32 *,472)=lbl_80369CDC;
+M2C_FIELD(base+0x20,f32 *,468)=lbl_80369CE0;
+M2C_FIELD(base+0x20,f32 *,456)=lbl_80369CB0;
+M2C_FIELD(base+0x20,f32 *,476)=lbl_80369CB0;
+M2C_FIELD(base+0x20,f32 *,460)=lbl_80369CE4;
+fn_80263CF0(base+0x20);
+M2C_FIELD(base+0x200,u8 *,316)=0;
+M2C_FIELD(base+0x200,f32 *,328)=lbl_80369CE8;
+M2C_FIELD(base+0x200,f32 *,336)=lbl_80369CDC;
+M2C_FIELD(base+0x200,f32 *,332)=lbl_80369CEC;
+M2C_FIELD(base+0x200,f32 *,320)=lbl_80369CEC;
+M2C_FIELD(base+0x200,f32 *,324)=lbl_80369CEC;
+fn_80263830(base+0x200);
+M2C_FIELD(base+0x354,s32 *,0x90)=10; M2C_FIELD(base+0x354,s32 *,0x94)=0; M2C_FIELD(base+0x354,s32 *,0x98)=500; fn_80265230(base+0x354);
+M2C_FIELD(base+0x3f0,s32 *,60)=150;M2C_FIELD(base+0x3f0,s32 *,64)=150;M2C_FIELD(base+0x3f0,s32 *,68)=50;M2C_FIELD(base+0x3f0,s32 *,72)=30;M2C_FIELD(base+0x3f0,s32 *,76)=30;M2C_FIELD(base+0x3f0,s32 *,80)=30;M2C_FIELD(base+0x3f0,s32 *,84)=50;M2C_FIELD(base+0x3f0,s32 *,88)=50;M2C_FIELD(base+0x3f0,s32 *,92)=50;fn_80264B7C(base+0x3f0);
 fn_8024BA38(0,fn_80263C94,base+0x20,255,0,fn_80264F74,base+0x354,255,0);
 fn_8024B8EC(127,0,255); M2C_FIELD(base,s32 *,0x4898)=1; fn_8024B94C(1);
 M2C_FIELD(base,s32 *,0x4e40)=fn_8021371C(fn_800AEB90);
@@ -8703,57 +8707,32 @@ void EventEntry_FlagIsSet(void *arg0) {
 }
 
 s32 fn_800C01CC(s32 parent) {
-    void *Event_NextEntry(void *);
-    void *Process_CreateChild(void *, s32);
-    s32 fn_800C03DC(void *);
-
-    u8 *entry;
-    u8 *battle;
-    u8 found;
-    s16 value;
-    s16 turn;
-    void *proc;
-
-    entry = (u8 *)Event_NextEntry(0);
-    battle = (u8 *)gBattleState;
-
-    while (entry != NULL) {
-        if (entry[0xC] == 6) {
-            value = *(s16 *)(entry + 0x18);
-
-            if (value < 0 || value == battle[0x11]) {
-                value = *(s16 *)(entry + 0x14);
-
-                if (value == 0) {
-                    found = 1;
-                    goto check;
-                }
-
-                turn = *(s16 *)(battle + 0x12);
-
-                if (value <= turn &&
-                    *(s16 *)(entry + 0x16) >= turn) {
-                    found = 1;
-                    goto check;
-                }
-            }
-        }
-
-        entry = (u8 *)Event_NextEntry(entry);
-    }
-
-    found = 0;
-
-check:
-    if (found == 0) {
-        return 0;
-    }
-
-    proc = Process_CreateChild(E_EventCaller_script, parent);
-    *(s32 *)((u8 *)proc + 0x34) = 6;
-    *(s32 *)((u8 *)proc + 0x38) = (s32)fn_800C03DC;
-
-    return 1;
+ void *Event_NextEntry(void *); void *Process_CreateChild(void *,s32); s32 fn_800C03DC(void *);
+ u8 *entry; u8 *battle; u8 found; u8 valid; s16 value; s16 turn; void *proc;
+ entry=Event_NextEntry(0); battle=(u8 *)gBattleState;
+ while(entry) {
+ if((s32)entry[0xc]==6) {
+ value=*(s16 *)(entry+0x18);
+ if(value>=0 && value!=battle[0x11]) valid=0;
+ else {
+ value=*(s16 *)(entry+0x14);
+ if(value==0) valid=1;
+ else { turn=*(s16 *)(battle+0x12);
+ if(value>turn) valid=0;
+ else if(*(s16 *)(entry+0x16)<turn) valid=0;
+ else valid=1;
+ }}
+ if(valid) { found=1; goto check; }
+ }
+ entry=Event_NextEntry(entry);
+ }
+ found=0;
+ check:
+ if(!found) return 0;
+ proc=Process_CreateChild(E_EventCaller_script,parent);
+ *(s32 *)((u8 *)proc+0x34)=6;
+ *(s32 *)((u8 *)proc+0x38)=(s32)fn_800C03DC;
+ return 1;
 }
 
 u32 fn_800C02D4(void *arg0) {
@@ -11850,13 +11829,12 @@ void fn_800B1368(void *arg0) {
     void DCInvalidateRange(void *, u32);
     void ARQPostRequest(void *, void *, s32, s32, u32, void *, u32, void *);
 
-
     u32 base, offset, limit, n, step;
     u32 size;
     u32 aligned;
     u8 *entry;
     u8 *stream;
-    s32 i;
+
     entry = *(u8 **)((u8 *)gSoundSys + 0xF8) + (u8)*(u32 *)((u8 *)arg0 + 4) * 0x13C;
     if (*(u32 *)(entry + 0x64) >= (u32)fn_800B49C8(*(void **)(entry + 0x2C))) {
         *(u32 *)(entry + 0x60) = 0;
@@ -11865,8 +11843,8 @@ void fn_800B1368(void *arg0) {
         *(u32 *)(entry + 0xEC) = 0;
         *(u16 *)(entry + 0x78) = 1;
         stream = entry + 0x2C;
+        size = 0x8000;
         step = 0x10000;
-        size = step - 0x8000;
         offset = *(u32 *)(entry + 0x60);
         limit = *(u32 *)(entry + 0x8C);
         if (offset + 0x8000 > limit) size = limit - offset;
@@ -11882,24 +11860,24 @@ void fn_800B1368(void *arg0) {
         }
         aligned = (size + 0x1F) & ~0x1F;
         if (!(*(u16 *)entry & 0x400)) {
-            fn_800B49E0(*(void **)stream, ((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, *(u16 *)(entry + 4) + offset, fn_800B1720);
+            fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, *(u16 *)(entry + 4) + offset, fn_800B1720);
         } else {
             base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + offset + *(u16 *)(entry + 4);
-            DCInvalidateRange((void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], 0x8000);
-            ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
+            DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
+            ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
         if (*(u16 *)(entry + 0x1E) == 2) {
             *(u16 *)(entry + 0x100) = 1;
             stream = entry + 0xB4;
+            size = 0x8000;
             step = 0x10000;
-        size = step - 0x8000;
             offset = *(u32 *)(entry + 0xE8);
             limit = *(u32 *)(entry + 0x114);
             base = limit + (0x20 - (limit & 0x1F));
             if (offset + 0x8000 > limit) size = limit - offset;
             else {
-                    for (n = 2; n < 6; n++) {
+                for (n = 2; n < 6; n++) {
                     if (offset + step > limit) {
                         size -= (0x8000 - (limit - (offset + ((n - 1) << 15)))) / n;
                         size += 0x20 - (size & 0x1F);
@@ -11910,19 +11888,19 @@ void fn_800B1368(void *arg0) {
             }
             aligned = (size + 0x1F) & ~0x1F;
             if (!(*(u16 *)entry & 0x400)) {
-                fn_800B49E0(*(void **)stream, ((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, *(u16 *)(entry + 4) + (offset + base), fn_800B1720);
+                fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, *(u16 *)(entry + 4) + (offset + base), fn_800B1720);
             } else {
                 base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + *(u16 *)(entry + 4);
-                DCInvalidateRange((void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], 0x8000);
-                ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
+                DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
+                ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
         }
     } else {
         limit = fn_800B49C8(*(void **)(entry + 0x2C));
         offset = *(u32 *)(entry + 0x60);
+        size = 0x8000;
         step = 0x10000;
-        size = step - 0x8000;
         if (offset + 0x8000 >= limit) size = limit - offset;
         fn_800B49E0(*(void **)(entry + 0x2C), *(s32 *)(entry + 0x58), (size + 0x1F) & ~0x1F, offset, fn_800B125C);
         *(u32 *)(entry + 0x74) = size;
