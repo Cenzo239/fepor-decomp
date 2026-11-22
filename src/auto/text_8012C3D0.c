@@ -1060,6 +1060,7 @@ void fn_8012DF40(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_8012DFA8(void *arg0) {
     typedef struct { s16 a; s16 b; } S16Pair;
     void Process_Goto(void *, s32);
