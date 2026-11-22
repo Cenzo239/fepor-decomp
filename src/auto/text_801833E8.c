@@ -7238,17 +7238,14 @@ void fn_80191794(void *panel) {
     void *child;
     s32 text;
     s32 price;
-    u8 *state;
     void *entry;
     widget=M2C_FIELD(panel,void **,0x58);
     switch(gUiContext[8]) {
     case 0x81:
         list=M2C_FIELD(panel,void **,0x50);
         item=M2C_FIELD(Ui_FindChild(panel,2,0),void **,0x3C);
-        price=(u16)UnitRef_GetValue(item);
-        price=(s32)(M2C_FIELD(panel,f32 *,0x64)*(f32)price);
-        state=gBattleState;
-        fn_8014D268(state,M2C_FIELD(state,s32 *,0x18)-price);
+        price = (s32)(u16)UnitRef_GetValue(item);
+        fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) - (s32)(*(f32 *)((u8 *)panel + 0x64) * (f32)price));
         if(M2C_FIELD(list,s16 *,0x4E)!=0x7FFF) {
             s32 selected=Ui_ListGetSelected(list);
             entry=M2C_FIELD(item,void **,0);
@@ -14419,48 +14416,68 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     return 1;
 }
 
-void fn_8019E8B0(void *self) {
-    extern u32 gUiInputFlags;
-    extern u8 Proc_MuEventInst[];
-    extern u8 gBattleMap[];
-    extern f32 lbl_8036AF80, lbl_8036AF84;
-    void Process_ClearFunc(void *);
-    u8 GActor_CheckResources(void *);
-    void *Process_Find(void *);
-    void *fn_80127C48(void);
-    void *fn_800C0658(void);
-    void *Process_Create(void *,void *);
-    void *fn_80053AE8(void *,void *);
-    s32 fn_80052F9C(void *);
-    f32 Map_SampleHeight(void *,f32,f32);
-    void Effect_SetPos(void *,f32,f32,f32);
-    void *parent;
-    void *effect;
-    void *host;
-    f32 height;
-    if(gUiInputFlags&1) {
-        Process_ClearFunc(self);
-        return;
+void fn_8019E8B0(void *self)
+{
+  extern u32 gUiInputFlags;
+  extern u8 Proc_MuEventInst[];
+  extern u8 gBattleMap[];
+  extern f64 lbl_8036AF78;
+  extern f32 lbl_8036AF80;
+  extern f32 lbl_8036AF84;
+  void Process_ClearFunc(void *);
+  u8 GActor_CheckResources(void *);
+  void *Process_Find(void *);
+  void *fn_80127C48(void);
+  void *fn_800C0658(void);
+  void *Process_Create(void *, void *);
+  void *fn_80053AE8(void *, void *);
+  s32 fn_80052F9C(void *);
+  f32 Map_SampleHeight(void *, f32, f32);
+  void Effect_SetPos(void *, f32, f32, f32);
+  void *parent;
+  void *effect;
+  void *host;
+  f32 height;
+  (void)lbl_8036AF78;
+  if (gUiInputFlags & 1)
+  {
+    Process_ClearFunc(self);
+    return;
+  }
+  if (GActor_CheckResources((u8 *) self + ((short) 0x30)))
+  {
+    host = Process_Find(Proc_MuEventInst);
+    if (host)
+    {
+      parent = host;
     }
-    if(GActor_CheckResources((u8 *)self+0x30)) {
-        host=Process_Find(Proc_MuEventInst);
-        if(host) { parent=host; } else {
-            parent=fn_80127C48();
-            if(!parent) parent=fn_800C0658();
-            parent=Process_Create(Proc_MuEventInst,parent);
-        }
-        effect=fn_80053AE8((u8 *)self+0x30,parent);
-        switch(fn_80052F9C(effect)) {
-        case 0: {
-            height=Map_SampleHeight(gBattleMap,(f32)(s8)M2C_FIELD(self,s32 *,0x50),(f32)(s8)M2C_FIELD(self,s32 *,0x54));
-            Effect_SetPos(effect,lbl_8036AF80+(f32)M2C_FIELD(self,s32 *,0x50),lbl_8036AF80+(f32)M2C_FIELD(self,s32 *,0x54),height);
+    else
+    {
+      parent = fn_80127C48();
+      if (!parent)
+      {
+        parent = fn_800C0658();
+      }
+      parent = Process_Create(Proc_MuEventInst, parent);
+    }
+    effect = fn_80053AE8(((u8 *) self) + 0x30, parent);
+    switch (fn_80052F9C(effect))
+    {
+      case 0:
+      {
+        height = Map_SampleHeight(gBattleMap, (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x50)))), (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x54)))));
+        Effect_SetPos(effect, lbl_8036AF80 + ((f32) (*((s32 *) (((s8 *) self) + 0x50)))), lbl_8036AF80 + ((f32) (*((s32 *) (((s8 *) self) + 0x54)))), height);
         break;
-        } default: {
-            Effect_SetPos(effect,(f32)M2C_FIELD(self,s32 *,0x50),(f32)M2C_FIELD(self,s32 *,0x54),lbl_8036AF84);
-        }
-        }
-        Process_ClearFunc(self);
+      }
+      default:
+      {
+        Effect_SetPos(effect, (f32) (*((s32 *) (((s8 *) self) + 0x50))), (f32) (*((s32 *) (((s8 *) self) + 0x54))), lbl_8036AF84);
+      }
+
     }
+
+    Process_ClearFunc(self);
+  }
 }
 
 s32 fn_8019EA48(void) {
