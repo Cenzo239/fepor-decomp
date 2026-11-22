@@ -28,7 +28,7 @@ void *fn_800195F4(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80019604(void *arg0) {
-    extern void *gPadInput;
+    extern void *lbl_80367240;
     extern f32 lbl_80368C88;
     extern f32 lbl_80368CA4;
     extern f32 lbl_80368CEC;
@@ -48,19 +48,21 @@ extern "C" void fn_80019604(void *arg0) {
 
     s32 temp_r5;
     f32 z;
+    f32 adj;
     f32 field;
     f32 temp_f2;
     f32 temp_f1;
 
-    temp_r5 = *(s32 *)((u8 *)gPadInput + 4);
-    if (temp_r5 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5) & 0x40) {
+    temp_r5 = *(s32 *)((u8 *)lbl_80367240 + 4);
+    if (temp_r5 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r5) & 0x40) {
         *(s32 *)((u8 *)arg0 + 0x20) = (*(s32 *)((u8 *)arg0 + 0x20) + 1) & 3;
         *(f32 *)((u8 *)arg0 + 0xC) = ((VObj *)arg0)->v2(*(s32 *)((u8 *)arg0 + 0x20));
     }
 
     z = lbl_80368C88;
     field = *(f32 *)((u8 *)arg0 + 8);
-    *(f32 *)((u8 *)arg0 + 8) = field - ((f32)(s8)*(u8 *)(*(u8 **)gPadInput + 5) / lbl_80368CEC);
+    adj = (f32)(s8)*(u8 *)(*(u8 **)lbl_80367240 + 5) / lbl_80368CEC;
+    *(f32 *)((u8 *)arg0 + 8) = field - adj;
     temp_f1 = *(f32 *)((u8 *)arg0 + 8);
     if (temp_f1 < z) {
         *(f32 *)((u8 *)arg0 + 8) = temp_f1 * lbl_80368CA4;
@@ -73,7 +75,8 @@ extern "C" void fn_80019604(void *arg0) {
 
     z = lbl_80368CF4;
     field = *(f32 *)((u8 *)arg0 + 4);
-    *(f32 *)((u8 *)arg0 + 4) = field - ((f32)(s8)*(u8 *)(*(u8 **)gPadInput + 4) / lbl_80368CEC);
+    adj = (f32)(s8)*(u8 *)(*(u8 **)lbl_80367240 + 4) / lbl_80368CEC;
+    *(f32 *)((u8 *)arg0 + 4) = field - adj;
     temp_f2 = *(f32 *)((u8 *)arg0 + 4);
     if (temp_f2 < z) {
         temp_f1 = temp_f2 - lbl_80368CF8;
@@ -85,7 +88,7 @@ extern "C" void fn_80019604(void *arg0) {
         *(f32 *)((u8 *)arg0 + 4) = temp_f1 * lbl_80368CA4;
     }
 
-    if ((s8)*(u8 *)(*(u8 **)gPadInput + 4) == 0) {
+    if ((s8)*(u8 *)(*(u8 **)lbl_80367240 + 4) == 0) {
         temp_f1 = *(f32 *)((u8 *)arg0 + 4);
         if (temp_f1 >= lbl_80368CFC) {
             if (temp_f1 <= lbl_80368D00) {
@@ -2701,52 +2704,46 @@ s32 fn_8001EB44(const char *arg0)
 {
     extern u8 gDataStr[];
     extern s32 Str_Cmp(const char *, const char *);
+    s32 cmp;
 
     if (Str_Cmp(arg0, (char *)gDataStr + 0x478) == 0) {
         return 0;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x47E) == 0) {
         return 1;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x484) == 0) {
         return 2;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x488) == 0) {
         return 3;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x48C) == 0) {
         return 4;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x492) == 0) {
         return 5;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x49A) == 0) {
         return 6;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x49F) == 0) {
         return 7;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x4A3) == 0) {
         return 8;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x188) == 0) {
         return 9;
     }
-
     if (Str_Cmp(arg0, (char *)gDataStr + 0x4A9) == 0) {
         return 10;
     }
-
-    return Str_Cmp(arg0, (char *)gDataStr + 0x4AE) == 0 ? 11 : 0;
+    cmp = Str_Cmp(arg0, (char *)gDataStr + 0x4AE);
+    if (cmp != 0) {
+        return 0;
+    }
+    return 11;
 }
 
 void *fn_8001ED1C(void *arg0) {
