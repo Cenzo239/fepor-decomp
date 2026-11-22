@@ -5547,9 +5547,7 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
 #pragma optimization_level reset
 #pragma cplusplus reset
 }
-#pragma optimization_level reset
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
+
 s32 fn_8013AC00(void *arg0, s32 arg1) {
     u8 (*temp_r12)(s32, s32);
 
