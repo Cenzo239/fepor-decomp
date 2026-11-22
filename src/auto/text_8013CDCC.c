@@ -136,7 +136,7 @@ first=*(void **)((u8*)first+4);
 extern u16 gSystemSave[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
 extern f32 gUiMenuSlotPlainTextScale;
-const f64 lbl_8036A720 = 4503599629518144.0;
+extern f64 lbl_8036A720;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
