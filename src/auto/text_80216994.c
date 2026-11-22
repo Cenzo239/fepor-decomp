@@ -1415,23 +1415,36 @@ void __CARDUpdateFatCallback(s32 chan, s32 result) {
 }
 
 #pragma optimization_level 3
-void fn_80219334(s32 arg0, s32 arg1) {
+void fn_80219334(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
-    s32 fn_802191F0(s32,u32,s32,void *,void (*)(s32,s32));
-    s32 __CARDPutControlBlock(void *,s32);
-    void (*callback)(s32,s32);
+    s32 fn_802191F0(s32, u32, s32, void *, void (*)(s32, s32));
+    s32 __CARDPutControlBlock(void *, s32);
+    void __CARDUpdateFatCallback(s32, s32);
+    u8 pad[8];
+    void (*callback)(s32, s32);
     u8 *fat;
-    s32 result;
+    u8 *dst;
     u8 *card;
-    result = arg1;
-    card = (u8 *)__CARDBlock + arg0 * 0x110;
-    if ((result < 0) || (fat = *(u8 **)(card+0x88), result = fn_802191F0(arg0, *(u32 *)(card+0xC) * ((u32)(fat - *(u8 **)(card+0x80)) >> 13), 0x2000, fat, __CARDUpdateFatCallback), result < 0)) {
-        if (*(u32 *)(card+0xD0) == 0) __CARDPutControlBlock(card,result);
-        callback = *(void (**)(s32,s32))(card+0xD8);
-        if (callback) {
-            *(void **)(card+0xD8) = 0;
-            callback(arg0,result);
-        }
+
+    (void)pad;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (result < 0) {
+        goto fail;
+    }
+    fat = *(u8 **)(card + 0x88);
+    dst = fat;
+    result = fn_802191F0(chan, *(u32 *)(card + 0xC) * ((u32)(fat - *(u8 **)(card + 0x80)) >> 13), 0x2000, dst, __CARDUpdateFatCallback);
+    if (result >= 0) {
+        return;
+    }
+fail:
+    if (*(u32 *)(card + 0xD0) == 0) {
+        __CARDPutControlBlock(card, result);
+    }
+    callback = *(void (**)(s32, s32))(card + 0xD8);
+    if (callback != NULL) {
+        *(void **)(card + 0xD8) = NULL;
+        callback(chan, result);
     }
 }
 #pragma optimization_level 4
@@ -2710,10 +2723,15 @@ after:
 s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 {
 #pragma use_lmw_stmw on
+#pragma scheduling off
     u8 *__CARDGetDirBlock(void *);
+    s32 fn_80231944(const void *, const void *, u32);
+    extern u8 lbl_8033A420[];
 
-    register u8 *entry;
-    register s32 i;
+    u8 *entry;
+    s32 i;
+    u8 *defaultCode;
+    u8 *gamecode;
     s32 result;
     char *p;
     s8 a;
@@ -2726,10 +2744,31 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
     }
 
     entry = __CARDGetDirBlock(card);
+    defaultCode = lbl_8033A420;
     i = 0;
 
     do {
-        result = CARDCheckDirEntry(card, entry);
+        gamecode = *(u8 **)((u8 *)card + 0x10C);
+
+        if (*entry == 0xFF) {
+            result = -4;
+            goto after_check;
+        }
+        if (gamecode == defaultCode) {
+            goto ok;
+        }
+        if (fn_80231944(entry, gamecode, 4) != 0) {
+            goto bad;
+        }
+        if (fn_80231944(entry + 4, gamecode + 4, 2) != 0) {
+            goto bad;
+        }
+    ok:
+        result = 0;
+        goto after_check;
+    bad:
+        result = -10;
+    after_check:
         if (result >= 0) {
             p = (char *)entry + 8;
             name = filename;
@@ -2757,11 +2796,13 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
                 return 0;
             }
         }
+
         i += 1;
         entry += 0x40;
     } while (i < 0x7F);
 
     return -4;
+#pragma scheduling reset
 #pragma use_lmw_stmw reset
 }
 
