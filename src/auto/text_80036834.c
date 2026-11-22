@@ -614,7 +614,10 @@ s32 Unit_GetSupportRank(void *arg0, s32 arg1)
     if (value <= entry[5]) {
         return 1;
     }
-    return (value > entry[6]) ? 3 : 2;
+    if (value <= entry[6]) {
+        return 2;
+    }
+    return 3;
 }
 
 #pragma peephole off
