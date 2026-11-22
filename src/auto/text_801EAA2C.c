@@ -1790,30 +1790,48 @@ ins_d:
     gAramUsedList = alloc_list;
 }
 
-void fn_801ED3D4(void) {
-    extern u8 gAramSlotPool[];
-    extern void *gAramUsedList, *gAramFreeList;
-    extern s32 gAramBase, gAramHeapSize;
-    AramSlot *p;
-    AramSlot *result;
-    s32 i;
-    p = (AramSlot *)gAramSlotPool;
-    for (i = 0; i < 256; i++, p++) {
-        p->size = 0;
-        p->flags = 0;
+void fn_801ED3D4(void)
+{
+  extern u8 gAramSlotPool[];
+  extern void *gAramUsedList;
+  extern void *gAramFreeList;
+  extern s32 gAramBase;
+  extern s32 gAramHeapSize;
+  AramSlot *new_var[2];
+  s32 i;
+  AramSlot *new_var2;
+  new_var2 = new_var[1];
+  new_var[0] = (AramSlot *) gAramSlotPool;
+  for (i = 0; i < 256; i++, new_var[0]++)
+  {
+    new_var[0]->size = 0;
+    new_var[0]->flags = 0;
+  }
+
+  gAramUsedList = 0;
+  new_var[0] = (AramSlot *) gAramSlotPool;
+  for (i = 255; i >= 0; i--, new_var[0]++)
+  {
+    if (new_var[0]->size == 0)
+    {
+      do
+      {
+        new_var[1] = new_var[0];
+        goto found;
+      }
+      while (0);
     }
-    gAramUsedList = 0;
-    p = (AramSlot *)gAramSlotPool;
-    for (i=255; i>=0; i--,p++) {
-        if (p->size == 0) { result=p; goto found; }
-    }
-    result=0;
-found:
-    gAramFreeList=result;
-    result->next=0;
-    ((AramSlot*)gAramFreeList)->prev=0;
-    ((AramSlot*)gAramFreeList)->size=gAramHeapSize;
-    ((AramSlot*)gAramFreeList)->addr=gAramBase;
+  }
+
+  new_var[1] = 0;
+  found:
+  gAramFreeList = new_var[1];
+
+  new_var2->next = 0;
+  new_var[0] = (AramSlot *) gAramSlotPool;
+  ((AramSlot *) gAramFreeList)->prev = 0;
+  ((AramSlot *) gAramFreeList)->size = gAramHeapSize;
+  ((AramSlot *) gAramFreeList)->addr = gAramBase;
 }
 
 void fn_801ED52C(s32 arg0) {
@@ -3911,29 +3929,29 @@ extern "C" void fn_801F0A74(void *arg0) {
     u32 allocator1, allocator0;
     struct Obj { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual s32 v2(void *, void *)=0; };
     void *actor;
-    register u8 *self;
     s8 constructed;
     void *object;
-    self = (u8*)arg0;
+    u8 *self;
     constructed = 0;
     actor = Heap_Alloc(0x48);
+    self = (u8*)arg0;
     if (actor) {
         String_Init(&name, gGActorPathExt+0x221, &allocator0);
         constructed=1;
         actor=fn_800E8504(actor,0,&name);
     }
-    *(void **)((u8*)self+0x30)=actor;
+    *(void **)(self+0x30)=actor;
     if (constructed) String_Destroy(&name,-1);
     String_Init(&path,gGActorPathExt+0x273,&allocator1);
     fn_800C992C(&path,gGActorPathExt+0x279,strlen(gGActorPathExt+0x279));
-    fn_800E8154(*(void **)((u8*)self+0x30),&path);
-    object=*(void **)((u8*)self+0x30);
-    *(s32*)((u8*)self+0x34)=((Obj*)object)->v2(gGActorPathExt+0x287,gGActorPathExt+0x293);
-    *(s16*)((u8*)self+0x4A)=fn_801CAF50(*(s32*)((u8*)self+0x34));
-    *(void **)((u8*)self+0x38)=Heap_Alloc(0x1C);
-    *(void **)((u8*)self+0x3C)=Heap_Alloc(0x1C);
-    *(void **)((u8*)self+0x40)=Heap_Alloc(0x1C);
-    *(void **)((u8*)self+0x44)=Heap_Alloc(0x1C);
+    fn_800E8154(*(void **)(self+0x30),&path);
+    object=*(void **)(self+0x30);
+    *(s32*)(self+0x34)=((Obj*)object)->v2(gGActorPathExt+0x287,gGActorPathExt+0x293);
+    *(s16*)(self+0x4A)=fn_801CAF50(*(s32*)(self+0x34));
+    *(void **)(self+0x38)=Heap_Alloc(0x1C);
+    *(void **)(self+0x3C)=Heap_Alloc(0x1C);
+    *(void **)(self+0x40)=Heap_Alloc(0x1C);
+    *(void **)(self+0x44)=Heap_Alloc(0x1C);
     String_Destroy(&path,-1);
 }
 
@@ -4206,7 +4224,7 @@ s32 fn_801F16D4(s32 arg0, s32 arg1, void *arg2) {
     return 5;
 }
 
-void fn_801F16EC(void **arg0, void *arg1, void *arg2) {
+void fn_801F16EC(void *arg0, void *arg1, void *arg2) {
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 Text_MeasureHeight(s32, f32);
     void Prim2D_AddPrim(s32);
@@ -4217,27 +4235,75 @@ void fn_801F16EC(void **arg0, void *arg1, void *arg2) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036B7C8;
+#pragma cplusplus on
+    struct Model {
+        u8 pad[4];
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void v17()=0;
+        virtual void v18()=0;
+        virtual void v19()=0;
+        virtual s32 height()=0;
+    };
+    struct Item {
+        virtual void v0()=0;
+        virtual void *text()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual void v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16()=0;
+        virtual void setup(void *)=0;
+        virtual void v18(void *)=0;
+    };
     f32 x;
     s16 y;
+    s16 height;
     s32 width;
-    void *object;
+    Model *model;
     void *text;
-    text = (*(void *(**)(void *))((u8*)*arg0+0xC))(arg0);
+    text = ((Item *)arg0)->text();
     width=Text_MeasureWidth(text,-1,lbl_8036B7C8);
-    x=(f32)(*(s16*)((u8*)arg2+0x30)-(width>>1));
-    object=*(void **)((u8*)arg1+0x3C);
-    y=(*(s32 (**)(void *))((u8*)*(void **)((u8*)object+4)+0x58))(object);
-    y=*(s16*)((u8*)arg2+0x32)+((y-Text_MeasureHeight(-1,lbl_8036B7C8))>>1);
-    (*(void (**)(void *,void *))((u8*)*arg0+0x4C))(arg0,arg1);
+    x=(f32)(M2C_FIELD(arg2,s16 *,0x30)-(width>>1));
+    model=M2C_FIELD(arg1,Model **,0x3C);
+    height=model->height();
+    y=((height-Text_MeasureHeight(-1,lbl_8036B7C8))>>1)+M2C_FIELD(arg2,s16 *,0x32);
+    ((Item *)arg0)->setup(arg1);
     Prim2D_AddPrim(6);
     Prim2D_SetPos(x,(f32)y);
-    (*(void (**)(void *,void *))((u8*)*arg0+0x50))(arg0,arg2);
-    text=(*(void *(**)(void *))((u8*)*arg0+0xC))(arg0);
+    ((Item *)arg0)->v18(arg2);
+    text=((Item *)arg0)->text();
     Prim2D_SetText(text);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B7C8);
     Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 void fn_801F1848(void *arg0, void *arg1) {
