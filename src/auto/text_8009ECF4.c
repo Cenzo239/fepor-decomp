@@ -62,9 +62,9 @@ void fn_8009ED1C(void) {
     u8 fn_801E434C(void *);
     extern s32 gSaveDataBase;
     void *obj;
+    s32 i;
     s32 b;
     u8 *base;
-    s32 i;
 
     if (Card_GetResult() == 0 || Card_GetResult() == -0x42) {
         DebugPrint((const char *)(gMenuCmdStrings + 0x198));

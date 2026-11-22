@@ -73,12 +73,18 @@ s32 fn_80006650(s16 *arg0, s16 *arg1) {
 
 void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
     unsigned long long __div2i(s32, u32, s32, u32);
+    s32 *m;
+    s32 *h;
+    s32 *s;
     u32 total;
 
+    m = mins;
+    h = hours;
+    s = secs;
     total = (u32)__div2i(hi, lo, 0, *(u32 *)0x800000F8 >> 2);
-    *secs = (s32)(total % 60);
-    *mins = (s32)((total / 60) % 60);
-    *hours = (s32)(total / 3600);
+    *s = total % 60;
+    *m = (total / 60) % 60;
+    *h = total / 3600;
 }
 
 #pragma optimization_level 4

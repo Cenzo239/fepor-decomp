@@ -8413,72 +8413,65 @@ void Unit_SetWorldXY(void *arg0, f32 farg0, f32 farg1) {
 
 void fn_80050C90(void *arg0)
 {
-    u8 fn_80040824(void *);
-    f32 Map_SampleHeightRaw(void *, f32, f32);
-    void Model_SetAlpha(void *, s32);
-    void *Map_Get(void);
-    u8 fn_8004434C(void *, s32, s32);
-
-    extern u8 gBattleMap[];
-    extern u8 gMapBlendMode;
-    extern f32 lbl_80368FC4;
-    extern f64 lbl_80368FE0;
-
-    u8 *unit;
-    s32 x;
-    s32 y;
-    f32 fx;
-    f32 fy;
-    u32 flags;
-    u8 mode;
-    u8 enabled;
-    u32 value;
-
-    unit = (u8 *)arg0;
-
-    if (fn_80040824(unit) != 0) {
-        x = *(s8 *)(unit + 0x19E);
-        y = *(s8 *)(unit + 0x19F);
-
-        fx = lbl_80368FC4 + (f32)x;
-        fy = lbl_80368FC4 + (f32)y;
-        *(f32 *)(unit + 4) = fx;
-        *(f32 *)(unit + 8) = fy;
-
-        *(f32 *)(unit + 0xC) = Map_SampleHeightRaw(gBattleMap, fx, fy);
-
-        flags = *(u32 *)(unit + 0x1A0);
-        *(u32 *)(unit + 0x1A0) = flags & ~0x240;
-
-        Model_SetAlpha(unit + 0x1C, 0xFF);
-
-        enabled = 1;
-        mode = (u8)(gMapBlendMode - 1);
-
-        if (((u32)((~(mode) | enabled) -
-            ((u32)(enabled - mode) >> 1)) >> 31) == 0) {
-            enabled = 0;
-        }
-
-        if (enabled != 0) {
-            if ((*(u8 **)(unit + 0x190))[8] == 1) {
-                if (gBattleMap[x + y * 0x40 + 0x200D] == 0) {
-                    *(u32 *)(unit + 0x1A0) |= 0x40;
-                    Model_SetAlpha(unit + 0x1C, 0);
-                }
-            }
-        }
-
-        if (fn_8004434C(Map_Get(), x, y) != 0) {
-            *(u32 *)(unit + 0x1A0) |= 0x80;
-            return;
-        }
-
-        value = *(u32 *)(unit + 0x1A0);
-        *(u32 *)(unit + 0x1A0) = value & ~0x80;
-    } else {
-        Model_SetAlpha(unit + 0x1C, 0xFF);
+  u8 fn_80040824(void *);
+  f32 Map_SampleHeightRaw(void *, f32, f32);
+  void Model_SetAlpha(void *, s32);
+  void *Map_Get(void);
+  u8 fn_8004434C(void *, s32, s32);
+  extern u8 gBattleMap[];
+  extern u8 gMapBlendMode;
+  extern f32 lbl_80368FC4;
+  extern f64 lbl_80368FE0;
+  u8 *unit;
+  s32 x;
+  s32 y;
+  f32 fx;
+  f32 fy;
+  u32 flags;
+  u8 mode;
+  u8 enabled;
+  u32 value;
+  unit = (u8 *) arg0;
+  if (fn_80040824(unit) != 0)
+  {
+    x = *((s8 *) (unit + 0x19E));
+    y = *((s8 *) (unit + 0x19F));
+    fx = lbl_80368FC4 + ((f32) x);
+    fy = lbl_80368FC4 + ((f32) y);
+    *((f32 *) (unit + 4)) = fx;
+    *((f32 *) (unit + 8)) = fy;
+    *((f32 *) (unit + 0xC)) = Map_SampleHeightRaw(gBattleMap, fx, fy);
+    flags = *((u32 *) (unit + 0x1A0));
+    *((u32 *) (unit + 0x1A0)) = flags & (~0x240);
+    Model_SetAlpha(unit + 0x1C, 0xFF);
+    enabled = 1;
+    mode = (u8) (gMapBlendMode - 1);
+    if ((((u32) ((enabled | (~mode)) - (((u32) (enabled - mode)) >> 1))) >> 31) == 0)
+    {
+      enabled = 0;
     }
+    if (enabled != 0)
+    {
+      if ((*((u8 **) (unit + 0x190)))[8] == 1)
+      {
+        if (gBattleMap[(x + (y * 0x40)) + 0x200D] == 0)
+        {
+          *((u32 *) (unit + 0x1A0)) |= 0x40;
+          Model_SetAlpha(unit + 0x1C, 0);
+        }
+      }
+    }
+    if (fn_8004434C(Map_Get(), x, y) != 0)
+    {
+ do { *((u32 *) (unit + 0x1A0)) |= 0x80; return; } while (0);
+    }
+    value = *((u32 *) (unit + 0x1A0));
+    *((u32 *) (unit + 0x1A0)) = value & (~0x80);
+  }
+  else
+  {
+    Model_SetAlpha(unit + 0x1C, 0xFF);
+  }
 }
 
 #pragma peephole off

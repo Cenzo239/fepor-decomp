@@ -350,10 +350,10 @@ void fn_8012CA6C(void *arg0) {
     void *Process_AttachFunc(void *, void *);
     void fn_8012F360(void);
     u8 *object = *(u8 **)((u8 *)arg0 + 0x18);
-    s32 i = 0;
+    register s32 i = 0;
     u8 *entry;
     u32 selected;
-    s32 count = object[0x61];
+    register s32 count = object[0x61];
     s32 delta;
     u8 index;
     selected = *(u32 *)(gBattleState + 0xAC);
@@ -364,9 +364,9 @@ void fn_8012CA6C(void *arg0) {
     index = object[0x62];
     delta = (s8)index - *(s16 *)(object + 0x6A) / 32;
     if (delta < 1 || delta >= 8) {
-        if (index == 0) *(s16 *)(object + 0x6A) = 0;
+        if (!index) *(s16 *)(object + 0x6A) = 0;
         else {
-            count = object[0x61];
+            register count = object[0x61];
             if ((s8)index == count - 1) *(s16 *)(object + 0x6A) = (count - 9) << 5;
             else if (delta <= 0) *(s16 *)(object + 0x6A) = ((s8)index - 1) << 5;
             else *(s16 *)(object + 0x6A) = ((s8)index - 7) << 5;
@@ -429,46 +429,52 @@ void fn_8012CCA4(void *arg0)
     extern u8 gBattleState[];
     extern u8 gUiSelectMenuStrings[];
 
+    void Heap_Free(void *);
+    void Heap_FreeRaw(void *);
+    void fn_800616A0(void *);
+    void fn_80056A04(void *, s32);
+    void fn_80057A10(void *, s32);
+    void Process_Unlink(void *);
+    void fn_80109020(void *);
+    void fn_8003F670(void *);
+    void fn_8006D8E8(void *);
+    void fn_8005C7C8(void *);
+
     u8 *object;
-    u8 *global;
-    u32 *array;
     s32 i;
-    s32 count;
+    u32 off;
+    u8 flags;
 
     object = (u8 *)arg0;
-    global = gBattleState;
 
     if ((signed char)object[0x62] < 0) {
-        *(u32 *)(global + 0xB0) = 0;
+        *(u32 *)(gBattleState + 0xB0) = 0;
     } else {
-        array = *(u32 **)(object + 0x3C);
-        *(u32 *)(global + 0xB0) =
-            array[(signed char)object[0x62] * 9];
+        *(u32 *)(gBattleState + 0xB0) =
+            *(u32 *)((u8 *)*(u32 **)(object + 0x3C) + *(s8 *)(object + 0x62) * 0x24);
     }
 
-    global[0xA9] = object[0x63];
+    gBattleState[0xA9] = object[0x63];
+
+    flags = object[0x66];
 
     if ((signed char)object[0x67] < 0) {
-        global[0xAA] = object[0x66] | 0x80;
+        gBattleState[0xAA] = object[0x66] | 0x80;
     } else {
-        global[0xAA] = object[0x66];
+        gBattleState[0xAA] = flags;
 
-        array = *(u32 **)(object + 0x38);
-        count = object[0x6D];
-
-        for (i = 0; i < count; i++) {
-            Heap_Free((void *)array[i]);
+        for (i = 0, off = 0; i < object[0x6D]; off += 4, i++) {
+            Heap_Free(*(void **)((u8 *)*(u32 **)(object + 0x38) + off));
         }
 
         Heap_FreeRaw(*(void **)(object + 0x38));
     }
 
     if (object[0x61] != 0) {
-        array = *(u32 **)(object + 0x3C);
-        count = object[0x61];
-
-        for (i = 0; i < count; i++) {
-            fn_800616A0((void *)array[i + 1]);
+        off = 0;
+        i = 0;
+        for (; i < object[0x61]; off += 0x24, i++) {
+            fn_800616A0(*(void **)((u8 *)*(u32 **)(object + 0x3C) + off + 4));
         }
 
         Heap_FreeRaw(*(void **)(object + 0x3C));
@@ -478,10 +484,10 @@ void fn_8012CCA4(void *arg0)
 
     if (*(void **)(object + 0x4C) != 0) {
         void **vtable;
-        void (**callback)(void *, s32);
+        void *callback;
 
         vtable = *(void ***)(object + 0x4C);
-        callback = (void (**)(void *, s32))((u8 *)vtable[0x2C / 4] + 0x20);
+        callback = *(void **)((u8 *)vtable[0x2C / 4] + 0x20);
         ((void (*)(void *, s32))callback)(*(void **)(object + 0x4C), 1);
     }
 

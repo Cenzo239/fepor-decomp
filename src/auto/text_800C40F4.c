@@ -4126,8 +4126,8 @@ if(*(u32*)(third+0x280)){
 name=**(char ***)((u8*)gBattle+0x748); String_AssignCStr((String*)(self+0x38),name,strlen(name));
 name=Unit_GetMapModelName(third); String_AssignCStr((String*)(self+0x5c),name,strlen(name));
 }else{
-len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x38),lbl_802704F8+0x1b0,len);
-len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x5c),lbl_802704F8+0x1b0,len);
+len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x38),(char*)((u32)lbl_802704F8+0x1b0),len);
+len=strlen(lbl_802704F8+0x1b0); String_AssignCStr((String*)(self+0x5c),(char*)((u32)lbl_802704F8+0x1b0),len);
 }
 }
 
@@ -18069,7 +18069,6 @@ void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
 s32 fn_800E7FB4(s32,void *);
 void *String_Init(void *,char *,void *);
 extern char lbl_802723E8[];
-extern const f32 lbl_80369F70;
 #pragma cplusplus on
 class Window {
 public:
@@ -18082,7 +18081,7 @@ String name;
 s32 scratch, item, owner;
 s32 mode=0, dx=0, dy=0;
 if(M2C_FIELD(arg0,u8 *,0x71)){mode=1;dy=2;dx=2;}
-((Window*)arg0)->draw(M2C_FIELD(arg0,s32 *,0x68)+dx+M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x6c)+dy+M2C_FIELD(arg0,s32 *,0x4c),(u8*)arg0+0xAC,1,255,lbl_80369F70);
+((Window*)arg0)->draw(M2C_FIELD(arg0,s32 *,0x48)+(M2C_FIELD(arg0,s32 *,0x68)+dx),M2C_FIELD(arg0,s32 *,0x4C)+(M2C_FIELD(arg0,s32 *,0x6C)+dy),(u8*)arg0+0xAC,1,255,16.0f);
 owner=*(s32*)arg0;
 String_Init(&name,lbl_802723E8,&scratch);
 item=fn_800E7FB4(owner,&name);
@@ -29132,25 +29131,44 @@ void fn_800FD774(void *arg0) {
     Map_FillLayer(gBattleMap, 7, 0);
 }
 
-int fn_800FDDBC(s32 x,s32 y,s32 min,s32 max,s32 layer) {
-extern u8 gBattleMap[];
-void Map_FillAttackRange(void *,s8,s8,u8,u8);
-s32 left,top,right,bottom,ix,iy;
-u8 *map=gBattleMap;
-Map_FillLayer(map,8,0);
-Map_SelectRangeBuffer(gBattleMap,layer);
-Map_FillAttackRange(gBattleMap,(s8)x,(s8)y,(u8)min,(u8)max);
-left=x-max;if(left<(s8)gBattleMap[8])left=(s8)gBattleMap[8];
-top=y-max;if(top<(s8)gBattleMap[9])top=(s8)gBattleMap[9];
-right=x+max;if(right>(s8)gBattleMap[10]-1)right=(s8)gBattleMap[10]-1;
-bottom=y+max;if(bottom>(s8)gBattleMap[11]-1)bottom=(s8)gBattleMap[11]-1;
-for(iy=top;iy<=bottom;iy++)for(ix=left;ix<=right;ix++){
-s32 index=(s8)ix+((s8)iy<<6);
-if((*(s16**)(map+0x14190))[index]>=0 && *(u16*)(map+0xC18E+index*2)==0)
-(*(s16**)(map+0x14190))[index]=-1;
+#pragma use_lmw_stmw on
+void fn_800FDDBC(s32 x, s32 y, s32 min, s32 max, s32 layer) {
+    extern u8 gBattleMap[];
+    void Map_FillLayer(void *, s32, s32);
+    void Map_SelectRangeBuffer(void *, s32);
+    void Map_FillAttackRange(void *, s8, s8, u8, u8);
+    s32 left, top, right, bottom;
+    s32 iy, ix;
+    s16 *costs;
+    u8 *map = gBattleMap;
+    s32 neg1;
+    Map_FillLayer(map, 8, 0);
+    Map_SelectRangeBuffer(gBattleMap, layer);
+    Map_FillAttackRange(gBattleMap, (s8)x, (s8)y, (u8)min, (u8)max);
+    left = x - max;
+    if (left < (s8)gBattleMap[8])
+        left = (s8)gBattleMap[8];
+    top = y - max;
+    if (top < (s8)gBattleMap[9])
+        top = (s8)gBattleMap[9];
+    right = x + max;
+    if (right > (s8)gBattleMap[10] - 1)
+        right = (s8)gBattleMap[10] - 1;
+    bottom = y + max;
+    if (bottom > (s8)gBattleMap[11] - 1)
+        bottom = (s8)gBattleMap[11] - 1;
+    neg1 = -1;
+    for (iy = top; iy <= bottom; iy++) {
+        for (ix = left; ix <= right; ix++) {
+            s32 index;
+            costs = *(s16 **)(map + 0x14190);
+            index = (s8)ix + ((s8)iy << 6);
+            if (costs[index] >= 0 && *(u16 *)(map + 0xC18E + index * 2) == 0)
+                costs[index] = neg1;
+        }
+    }
 }
-}
-
+#pragma use_lmw_stmw reset
 void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
     extern u8 gBattleMap[];
     void Map_SelectRangeBuffer(void *,s32);
@@ -32030,7 +32048,7 @@ void fn_80103200(void *arg0, s8 arg1, s8 arg2) {
     u8 *base;
     u8 *row;
     s32 yoff;
-    s8 x;
+    s32 x;
     u8 id;
 
     base = gBattleMap;

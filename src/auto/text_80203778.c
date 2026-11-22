@@ -1130,7 +1130,7 @@ void __OSStopAudioSystem(void) {
     u32 OSGetTick(void);
     volatile u16 *ai = (volatile u16 *)0xCC005000;
     volatile u16 *p = ai;
-    u32 start;
+    register u32 start;
     u16 value;
 
     ai[5] = 0x804;
@@ -1139,8 +1139,8 @@ void __OSStopAudioSystem(void) {
     while (value & 0x400) value = *ai;
     value = *ai;
     while (value & 0x200) value = *ai;
-    *ai = 0x8ac;
     p[0] = 0;
+    *ai = 0x8ac;
     while ((((u32)p[2] << 16) | p[3]) & 0x80000000U) {}
     start = OSGetTick();
     while ((s32)(OSGetTick() - start) < 44) {}
@@ -2134,9 +2134,7 @@ void fn_80206E1C(u32 bootDol, u32 resetCode, char **argv) {
     char buffer[0x18];
     s32 sp18;
     s32 sp14;
-    char **newArgv;
-    char **src;
-    char **dst;
+    s32 *newArgv;
     s32 count;
     s32 i;
 
@@ -2150,12 +2148,11 @@ void fn_80206E1C(u32 bootDol, u32 resetCode, char **argv) {
         }
     }
 
-    newArgv = (char **)OSAllocFromArenaLo((count + 2) * 4, 1);
-    newArgv[0] = buffer;
-    src = argv + 1;
-    dst = newArgv + 1;
-    for (i = 0; i < count; i++) {
-        dst[i] = src[i - 1];
+    newArgv = (s32 *)OSAllocFromArenaLo((count + 2) * 4, 1);
+    newArgv[0] = (s32)buffer;
+
+    for (i = 1; i < count + 1; i++) {
+        newArgv[i] = (s32)argv[i - 1];
     }
 
     fn_80206998(-1, (s32)resetCode, sp18, sp14, 0, count + 1, (s32)newArgv);
@@ -2400,6 +2397,7 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
 
 s32 fn_80207628(s32 arg0, s32 arg1) {
     s32 fn_80207304(s32, s32, s32);
+    void fn_80207768(void);
     extern u16 lbl_80366F48;
     extern s32 lbl_803684B8;
     extern s32 lbl_803684BC;
@@ -2414,15 +2412,19 @@ s32 fn_80207628(s32 arg0, s32 arg1) {
         goto do_switch;
     }
     temp_r0 = *(s32 *)0x800000CC;
-    if (temp_r0 == 0) {
-        if (*(u16 *)0xCC00206E & 2) {
-            temp_r0 = 1;
-        } else {
-            temp_r0 = 0;
-        }
-        lbl_80366F48 = (u16)temp_r0;
-        goto set_cb;
+    if (temp_r0 > 0) {
+        goto set_zero;
     }
+    if (temp_r0 < 0) {
+        goto set_zero;
+    }
+    if (*(u16 *)0xCC00206E & 2) {
+        temp_r0 = 1;
+    } else {
+        temp_r0 = 0;
+    }
+    lbl_80366F48 = (u16)temp_r0;
+    goto set_cb;
 set_zero:
     lbl_80366F48 = 0;
 set_cb:
@@ -2439,9 +2441,7 @@ do_switch:
         lbl_803684BC = arg0;
         var_r31 = fn_80207304(arg1, 1, lbl_803684BC);
         break;
-    case 3:
-    case 4:
-    case 5:
+    case 3: case 4: case 5:
         lbl_803684B8 = arg0;
         var_r31 = fn_80207304(arg1, 0, lbl_803684B8);
         if (var_r31 != 0) {
@@ -2449,8 +2449,7 @@ do_switch:
             var_r31 += fn_80207304(arg1, 1, lbl_803684BC);
         }
         break;
-    case 2:
-    default:
+    case 2: default:
         var_r31 = 0;
         break;
     }
@@ -2462,58 +2461,62 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     extern s32 lbl_803684BC;
     extern s32 OSFontCodeToIndex(u16, u16);
 
-    u8 *ptr = arg1;
-    s32 var_r8;
-    u32 var_r4 = 0;
-    s32 var_r6;
-    s32 var_r7;
-    s32 var_r0;
+    u8 *ptr;
+    s32 *out;
+    u32 code;
+    s32 flag1;
+    s32 flag2;
+    s32 font;
+    s32 flag3;
 
+    ptr = arg1;
+    out = arg3;
+    code = 0;
     switch (arg0) {
     case 0:
-        var_r8 = lbl_803684B8;
+        font = lbl_803684B8;
         {
             u8 b0 = *ptr;
-            var_r4 = b0;
+            code = b0;
             if (b0 != 0) {
-                ptr += 1;
+                ptr++;
             }
         }
         break;
     case 1:
-        var_r8 = lbl_803684BC;
+        font = lbl_803684BC;
         {
             u8 b0 = *ptr;
-            var_r4 = b0;
+            code = b0;
             if (b0 != 0) {
-                ptr += 1;
-                var_r6 = 1;
-                var_r7 = 0;
-                if (b0 >= 0x81 && b0 <= 0x9f) {
-                    var_r7 = 1;
+                ptr++;
+                flag1 = 1;
+                flag2 = 0;
+                if ((u8)code >= 0x81 && (u8)code <= 0x9f) {
+                    flag2 = 1;
                 }
-                if (var_r7 == 0) {
-                    var_r7 = 0;
-                    if (b0 >= 0xe0 && b0 <= 0xfc) {
-                        var_r7 = 1;
+                if (flag2 == 0) {
+                    flag2 = 0;
+                    if ((u8)code >= 0xe0 && (u8)code <= 0xfc) {
+                        flag2 = 1;
                     }
-                    if (var_r7 == 0) {
-                        var_r6 = 0;
+                    if (flag2 == 0) {
+                        flag1 = 0;
                     }
                 }
-                if (var_r6 != 0) {
+                if (flag1 != 0) {
                     u8 b1 = *ptr;
-                    var_r0 = 0;
-                    var_r6 = 0;
+                    flag3 = 0;
+                    flag1 = 0;
                     if (b1 >= 0x40 && b1 <= 0xfc) {
-                        var_r6 = 1;
+                        flag1 = 1;
                     }
-                    if (var_r6 != 0 && b1 != 0x7f) {
-                        var_r0 = 1;
+                    if (flag1 != 0 && b1 != 0x7f) {
+                        flag3 = 1;
                     }
-                    if (var_r0 != 0) {
-                        var_r4 = (b0 << 8) | b1;
-                        ptr += 1;
+                    if (flag3 != 0) {
+                        code = (code << 8) | *ptr;
+                        ptr++;
                     }
                 }
             }
@@ -2521,8 +2524,8 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
         break;
     }
 
-    *arg2 = var_r8;
-    *arg3 = OSFontCodeToIndex(arg0, var_r4);
+    *arg2 = font;
+    *out = OSFontCodeToIndex(arg0, code);
     return ptr;
 }
 

@@ -1293,60 +1293,43 @@ u8 fn_80106BCC(void *name) {
     void Unit_SetModelAlpha(void *, s32);
     void fn_80050C90(void *);
     extern struct { u8 pad[0x3C]; void *unk3C; } gUnitLists;
+    struct Ret { u8 v; };
     u8 parsed[0x68];
     u32 cursor;
     u32 header;
     u32 data;
-    u8 count;
-    u8 id;
     u8 applied;
-    void *unit;
     void *next;
+    void *unit;
     u8 *entry;
+    s32 i;
+    struct Ret c;
+    struct Ret d;
 
     applied = 0;
-    *(s32 *)(parsed + 0x10) = 0;
-    parsed[0x30] = 0;
-    *(s32 *)(parsed + 0x48) = 0;
-    *(s32 *)(parsed + 0x14) = 0;
-    parsed[0x31] = 0;
-    *(s32 *)(parsed + 0x4C) = 0;
-    *(s32 *)(parsed + 0x18) = 0;
-    parsed[0x32] = 0;
-    *(s32 *)(parsed + 0x50) = 0;
-    *(s32 *)(parsed + 0x1C) = 0;
-    parsed[0x33] = 0;
-    *(s32 *)(parsed + 0x54) = 0;
-    *(s32 *)(parsed + 0x20) = 0;
-    parsed[0x34] = 0;
-    *(s32 *)(parsed + 0x58) = 0;
-    *(s32 *)(parsed + 0x24) = 0;
-    parsed[0x35] = 0;
-    *(s32 *)(parsed + 0x5C) = 0;
-    *(s32 *)(parsed + 0x28) = 0;
-    parsed[0x36] = 0;
-    *(s32 *)(parsed + 0x60) = 0;
-    *(s32 *)(parsed + 0x2C) = 0;
-    parsed[0x37] = 0;
-    *(s32 *)(parsed + 0x64) = 0;
+    for (i = 0; i < 8; i++) {
+        *(s32 *)((unsigned)parsed + 0x10 + i * 4) = 0;
+        parsed[0x30 + i] = 0;
+        *(s32 *)(parsed + 0x48 + i * 4) = 0;
+    }
 
     header = (u32)Hash_Lookup(name);
     if (!header) {
         data = 0;
     } else {
-        count = Bin_ReadU8(&header);
+        c.v = Bin_ReadU8(&header);
         switch (Bin_ReadU8(&header)) {
         case 2:
-            id = 0;
+            d.v = 0;
             break;
         case 3:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             Bin_ReadU32(&header);
             break;
         case 4:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             break;
         }
         header = (header + 3) & ~3;
@@ -1362,13 +1345,13 @@ u8 fn_80106BCC(void *name) {
         next = *(void **)((u8 *)unit + 0x184);
         if (*(u32 *)((u8 *)unit + 0x1A0) & 0x400000) {
             entry = (u8 *)cursor;
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, id);
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, d.v);
             Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
             fn_80050C90(unit);
             Unit_SetModelAlpha(unit, 0);
             applied += 1;
             entry[0x3C] = *(u8 *)((u8 *)unit + 0x198);
-            if (applied == count) {
+            if (applied == c.v) {
                 break;
             }
         }
@@ -1377,16 +1360,16 @@ u8 fn_80106BCC(void *name) {
 
     {
         u8 j = applied;
-        u8 lim = count;
-        u8 zero = 0;
+        u8 lim = c.v;
+        register u8 zero = 0;
         while (j < lim) {
             entry = (u8 *)cursor;
             entry[0x3C] = zero;
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, id);
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, d.v);
             j += 1;
         }
     }
-    return applied;
+    return (u8)applied;
 }
 #pragma optimization_level reset
 u8 fn_80106DC8(void *name, u8 *out)
@@ -1580,16 +1563,18 @@ void fn_80107294(void *name, s32 arg1) {
     void Unit_MoveToList(void *, s32);
     void Unit_InitFromDispos(void *, void *);
     extern struct { u8 pad[0x30]; void *unk30; } gUnitLists;
+    struct Ret { s32 v; };
+    struct Ret d;
     u32 spC;
     u32 sp8;
     u8 sp10[0x68];
-    s32 id;
     s32 faction;
-    s32 count;
-    s32 idx;
-    s32 count_u8;
-    s32 faction_u8;
     s32 lists;
+    struct Ret c;
+    s32 faction_u8;
+    s32 count;
+    s32 count_u8;
+    s32 idx;
     s32 var_r0;
     u8 *entry;
     void *unit;
@@ -1622,49 +1607,34 @@ void fn_80107294(void *name, s32 arg1) {
     sp8 = Hash_Lookup(name);
     if (sp8 == 0) {
         var_r0 = 0;
-        goto after_parse;
+    } else {
+        c.v = Bin_ReadU8(&sp8);
+        switch ((u8)Bin_ReadU8(&sp8)) {
+        case 2: d.v = 0; break;
+        case 3:
+            Bin_ReadU8(&sp8);
+            d.v = Bin_ReadU8(&sp8);
+            Bin_ReadU32(&sp8);
+            break;
+        case 4:
+            Bin_ReadU8(&sp8);
+            d.v = Bin_ReadU8(&sp8);
+            break;
+        }
+        sp8 = (sp8 + 3) & ~3;
+        var_r0 = sp8;
     }
-    count = Bin_ReadU8(&sp8);
-    var_r0 = (u8)Bin_ReadU8(&sp8);
-    if (var_r0 == 3) {
-        goto case3;
-    } else if (var_r0 >= 3) {
-        goto check5;
-    }
-    if (var_r0 >= 2) {
-        goto case2;
-    }
-    goto sw_end;
-case2:
-    id = 0;
-    goto sw_end;
-check5:
-    if (var_r0 >= 5) {
-        goto sw_end;
-    }
-    goto case4;
-case3:
-    Bin_ReadU8(&sp8);
-    id = Bin_ReadU8(&sp8);
-    Bin_ReadU32(&sp8);
-    goto sw_end;
-case4:
-    Bin_ReadU8(&sp8);
-    id = Bin_ReadU8(&sp8);
-sw_end:
-    var_r0 = (sp8 + 3) & ~3;
-    sp8 = (u32)var_r0;
-after_parse:
-    spC = (u32)var_r0;
+    spC = var_r0;
     if ((u32)var_r0 != 0) {
         lists = (s32)&gUnitLists;
         faction_u8 = (u8)faction;
+        count = c.v;
         count_u8 = (u8)count;
         idx = 0;
         goto loop_cmp;
     loop_body:
         entry = (u8 *)spC;
-        Dispos_ParseEntry(&spC, sp10, id);
+        Dispos_ParseEntry(&spC, sp10, d.v);
         if ((s8)faction >= 0) {
             sp10[9] = (u8)faction_u8;
         }
@@ -1686,10 +1656,10 @@ after_parse:
                 goto after_sw;
             }
         do_move:
-            Unit_MoveToList((void *)count, var_r0);
+            Unit_MoveToList((void*)count, var_r0);
         after_sw:
-            Unit_InitFromDispos((void *)count, sp10);
-            unit = (void *)count;
+            Unit_InitFromDispos((void*)count, sp10);
+            unit = (void*)count;
         }
         idx += 1;
         entry[0x3C] = *(u8 *)((u8 *)unit + 0x198);
@@ -3516,10 +3486,10 @@ extern "C" void fn_8010A330(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EndPrim(void);
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
+    u32 sp24;
+    u32 sp20;
+    u32 sp1C;
+    u32 sp18;
     s32 sp14;
     s32 sp10;
     s32 spC;
@@ -6657,18 +6627,18 @@ void fn_8010FBD8(void *arg0)
     extern T2 lbl_80273CBC;
     struct { T1 t1; T2 t2; } sp;
     void *self;
+    char *strBase;
     T1 *p1;
     T2 *p2;
     u8 *entry;
+    s32 i;
     u8 type;
-    u8 b0;
-    u8 b1;
+    s32 b0;
+    s32 b1;
     u8 b3;
     u8 b4;
     u8 b5;
     char *name;
-    s32 i;
-    char *strBase;
 
     self = arg0;
     if (*(s32 *)((u8 *)self + 0x200) == 0) {

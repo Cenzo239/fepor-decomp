@@ -425,7 +425,7 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 sp[3];
     u32 h;
     u32 var_r0;
-    s32 off;
+    u32 off;
     u8 col;
     s32 idx;
     u16 stride;

@@ -402,6 +402,10 @@ extern f32 lbl_80369CD0;
 
 #pragma opt_strength_reduction reset
 
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma global_optimizer off
+#pragma scheduling on
 s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
     void fn_8022C1B8(u8 *, u8 *, s32, u8);
     s32 offset;
@@ -453,3 +457,7 @@ s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
     }
     return slot;
 }
+#pragma scheduling reset
+#pragma global_optimizer on
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset

@@ -1088,24 +1088,23 @@ struct Panel {
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
 virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
 virtual void v8()=0; virtual void v9()=0; virtual s32 page()=0;
-u32 size(){ return *(u32 *)((u8 *)this+page()*12+0x90); }
 };
 u8 *p;
 s16 visible;
 u32 count;
-if((u32)arg1 > ((Panel *)unit)->size()-1) {
-arg1=((Panel *)unit)->size()-1;
+if(arg1 > *(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90)-1) {
+arg1=*(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90)-1;
 }
 if(arg1<0) arg1=0;
 p=(u8 *)unit+((Panel *)unit)->page()*2;
-count=((Panel *)unit)->size();
+count=*(u32 *)((u8 *)unit+((Panel *)unit)->page()*12+0x90);
 visible=*(s16 *)((u8 *)unit+0x80);
-if(count<=(u32)visible) {
+if(count<=visible) {
 *(s16 *)(p+0x64)=arg1;
 *(s16 *)(p+0x4E)=0;
-} else if(count-arg1<(u32)visible) {
+} else if(count-arg1<visible) {
 *(s16 *)(p+0x64)=arg1;
-*(s16 *)(p+0x4E)=count-visible;
+*(s16 *)(p+0x4E)=(unsigned)count-visible;
 } else if(*(s16 *)(p+0x4E)<arg1 && arg1-*(s16 *)(p+0x4E)<visible-1) {
 *(s16 *)(p+0x64)=arg1;
 } else if(arg1==0) {

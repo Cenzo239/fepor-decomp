@@ -130,9 +130,9 @@ void fn_8001980C(void *arg0) {
     extern f32 lbl_80368D10;
     f32 temp_f1;
     f32 temp_f1_2;
+    f32 one;
     f32 scale;
     f32 zero;
-    f32 one;
     s32 temp_r5;
     void *temp_r6;
 

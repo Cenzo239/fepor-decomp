@@ -14,6 +14,7 @@ void *fn_8022C414(void *arg0, void (*ctor)(void *, int), void (*dtor)(void *, in
     void *p;
     u32 n;
 
+    p = 0;
     if (arg0 != NULL) {
         ((s32 *)arg0)[0] = size;
         ((u32 *)arg0)[1] = count;

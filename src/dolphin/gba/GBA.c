@@ -601,23 +601,54 @@ void fn_80265430(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80265484(void) {
-void OSRegisterVersion(char *); void OSInitThreadQueue(void *); void OSInitAlarm(void); void OSRegisterResetFunction(void *); void fn_80215F8C(void);
-extern s32 lbl_80368B28; extern char *lbl_803670D8; extern u8 lbl_803669A0[]; extern u8 lbl_803668A0[]; extern s32 lbl_80368B2C; extern u8 lbl_802A4DD8[];
-u32 __mulhwu(u32, u32);
-u8 *chan; u8 *buf; u32 period; s32 zero; s32 i;
-if(lbl_80368B28==0) {
-lbl_80368B28=1; OSRegisterVersion(lbl_803670D8);
-period = *(u32*)0x800000F8;
-period >>= 2;
-period = __mulhwu(0x431BDE83, period);
-period >>= 15;
-period *= 0x3C;
-period >>= 3;
-zero=0;
-for(i=0;i<4;i++){chan=lbl_803669A0+i*0x100; buf=lbl_803668A0+i*0x40; *(u32*)(chan+0x34)=period; *(u32*)(chan+0x30)=zero; OSInitThreadQueue(chan+0x24); *(u8**)(chan+0xF8)=buf; }
-OSInitAlarm(); fn_80215F8C(); lbl_80368B2C=0; OSRegisterResetFunction(lbl_802A4DD8);
-}}
+void fn_80265484(void)
+{
+    void OSRegisterVersion(char *);
+    void OSInitThreadQueue(void *);
+    void OSInitAlarm(void);
+    void OSRegisterResetFunction(void *);
+    void fn_80215F8C(void);
+    extern s32 lbl_80368B28;
+    extern char *lbl_803670D8;
+    extern u8 lbl_803669A0[];
+    extern u8 lbl_803668A0[];
+    extern s32 lbl_80368B2C;
+    extern u8 lbl_802A4DD8[];
+
+    u8 *chan;
+    u8 *buf;
+    u32 period;
+    s32 zero;
+    s32 i;
+
+    if (lbl_80368B28 == 0) {
+        lbl_80368B28 = 1;
+        OSRegisterVersion(lbl_803670D8);
+        period = *(u32 *)0x800000F8;
+        period >>= 2;
+        period = __mulhwu(0x431BDE83, period);
+        period >>= 15;
+        period *= 0x3C;
+        chan = lbl_803669A0;
+        buf = lbl_803668A0;
+        period >>= 3;
+        i = 0;
+        zero = 0;
+        do {
+            *(u32 *)(chan + 0x34) = period;
+            *(u32 *)(chan + 0x30) = zero;
+            OSInitThreadQueue(chan + 0x24);
+            i += 1;
+            *(u8 **)(chan + 0xF8) = buf;
+            chan += 0x100;
+            buf += 0x40;
+        } while (i < 4);
+        OSInitAlarm();
+        fn_80215F8C();
+        lbl_80368B2C = 0;
+        OSRegisterResetFunction(lbl_802A4DD8);
+    }
+}
 #pragma use_lmw_stmw reset
 
 s32 fn_80265544(s32 arg0, s32 arg1, u32 arg2) {
@@ -990,7 +1021,7 @@ void fn_80265CB4(s32 arg0, s32 arg1)
     *(u32 *)(entry + 0x20) = result;
 }
 
-/* write fn_80265E90 here */void fn_80265E90(s32 arg0, s32 arg1)
+void fn_80265E90(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
     extern u8 lbl_802A4DE8[];
@@ -1002,62 +1033,64 @@ void fn_80265CB4(s32 arg0, s32 arg1)
     u8 *entry;
     u8 *queue;
     u8 *config;
-    u32 value;
     u32 accumulator;
+    u32 value;
     u32 crc;
     u32 polynomial;
     u32 mask;
-    u32 state;
-    u32 position;
-    u32 count;
+    s32 state;
+    s32 position;
+    s32 count;
     u32 shift;
     u32 temp;
     u32 callbackValue;
     s32 result;
     s32 status;
+    s32 j;
+    u8 *cfg;
     void (*callback)(s32, s32);
+    u8 dummy[16];
 
+    config = lbl_802A4DE8;
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
-    config = lbl_802A4DE8;
     result = arg1;
 
-    if (arg1 != 0) {
+    if (result != 0) {
         goto done;
     }
 
-    if (*(u32 *)(queue + 0x30) != 0) {
+    if (*(s32 *)(queue + 0x30) != 0) {
         *(u32 *)(queue + 0x30) = 0;
     } else {
         status = *(u8 *)(*(u8 **)(queue + 0x10));
 
         if ((status & config[0x14]) != 0) {
             if (((status & config[0x2A]) >> config[0x21]) !=
-                ((*(u32 *)(queue + 0x34) & config[0x21]) >> config[0x1F])) {
+                ((*(s32 *)(queue + 0x34) & config[0x21]) >> config[0x1F])) {
                 result = 3;
                 goto done;
             }
 
-            *(u32 *)(queue + 0x34) =
-                *(u32 *)(queue + 0x34) + config[0x17] - config[0x19];
+            *(s32 *)(queue + 0x34) = *(s32 *)(queue + 0x34) - (config[0x19] - config[0x17]);
         }
     }
 
-    position = *(u32 *)(queue + 0x34);
-    count = *(u32 *)(queue + 0x64);
+    position = *(s32 *)(queue + 0x34);
+    count = *(s32 *)(queue + 0x64);
 
-    if ((s32)position > (s32)count) {
+    if (position > count) {
         goto retry;
     }
 
-    accumulator = 0;
-
     if (position < count) {
-        state = config[0x1D];
-        *(u32 *)(queue + 0x20) = state;
+        cfg = config + 0x1D;
+        state = *cfg;
+        accumulator = state;
+        *(u32 *)(queue + 0x20) = *cfg;
 
         while (state < config[0x21]) {
-            if (*(u32 *)(queue + 0x0C) != 0) {
+            if (*(s32 *)(queue + 0x0C) != 0) {
                 u8 *input;
 
                 input = (u8 *)(*(u32 *)(queue + 0x08));
@@ -1070,23 +1103,22 @@ void fn_80265CB4(s32 arg0, s32 arg1)
                 accumulator |= value << shift;
             }
 
-            state++;
-            *(u32 *)(queue + 0x20) = state;
+            *(u32 *)(queue + 0x20) = *(u32 *)(queue + 0x20) + 1;
+            state = *(s32 *)(queue + 0x20);
         }
 
+        position = *(s32 *)(queue + 0x34);
         if (position == config[0x26]) {
             *(u32 *)(queue + 0x60) = accumulator;
         } else if (position == config[0x27]) {
             accumulator = arg0 << config[0x25];
         }
 
+        position = *(s32 *)(queue + 0x34);
         if (position >= config[0x02]) {
             polynomial =
-                (config[0x26] << 8) +
-                config[0x28] +
-                config[0x2B] -
-                (config[0x2B] << 4) -
-                config[0x23];
+                (*(config + 0x2B) - (config[0x2B] << 4)) +
+                config[0x28] - config[0x23] + (*(config + 0x26) << 8);
 
             crc = *(u32 *)(queue + 0x38);
             value = accumulator;
@@ -1105,23 +1137,24 @@ void fn_80265CB4(s32 arg0, s32 arg1)
 
             *(u32 *)(queue + 0x38) = crc;
 
+            position = *(s32 *)(queue + 0x34);
             if (position == config[0x28] + 0x100) {
                 *(u32 *)(queue + 0x3C) = accumulator;
             } else if (position == config[0x01] + 0x100) {
                 state = config[0x07];
                 *(u32 *)(queue + 0x20) = state;
-                *(u32 *)(queue + 0x3C + (state * 4)) = accumulator;
+                ((u32 *)(queue + 0x3C))[*(u32 *)(queue + 0x20)] = accumulator;
             }
         }
     }
 
-    position = *(u32 *)(queue + 0x34);
     accumulator = *(u32 *)(queue + 0x38) | (position << 16);
+    position = *(s32 *)(queue + 0x34);
 
     if (position > config[0x2B]) {
         mask = config[0x15] |
                (config[0x18] << config[0x25]) |
-               (config[0x18] << config[0x2C]) |
+               (*(volatile u8 *)(config + 0x18) << config[0x2C]) |
                (config[0x17] << config[0x2A]);
 
         value = *(u32 *)(queue + 0x58) * mask;
@@ -1133,7 +1166,7 @@ void fn_80265CB4(s32 arg0, s32 arg1)
         accumulator ^= value;
         accumulator ^= (u32)(-temp);
 
-        value = (config[0x0B] << 24) |
+        value = (*(config + 0x0B) << 24) |
                 (config[0x13] << 16) |
                 (config[0x12] << 8) |
                 config[0x0B];
@@ -1146,22 +1179,26 @@ void fn_80265CB4(s32 arg0, s32 arg1)
         *(u8 *)(queue + 0x1E) = accumulator >> config[0x2A];
     }
 
-    if (position == config[0x01] + config[0x01]) {
+    position = *(s32 *)(queue + 0x34);
+    if (position == *(config + 0x01) + config[0x01]) {
         *(u32 *)(queue + 0x44) = accumulator;
     }
 
-    state = *(u32 *)(queue + 0x20);
+    state = *(s32 *)(queue + 0x20);
 
     if (state < config[0x21]) {
-        *(u32 *)(queue + 0x3C + ((state + 2) * 4)) = accumulator;
+        j = 1 - state;
+        ((u32 *)(queue + 0x3C))[3 - j] = accumulator;
 
-        value = *(u32 *)(queue + 0x3C + ((state + 1) * 4));
-        temp = *(u32 *)(queue + 0x3C + ((4 - state) * 4));
-        *(u32 *)(queue + 0x3C + ((5 - state) * 4)) = value * temp;
+        state = *(s32 *)(queue + 0x20);
+        value = ((u32 *)(queue + 0x3C))[2 - j];
+        temp = ((u32 *)(queue + 0x3C))[4 - state];
+        ((u32 *)(queue + 0x3C))[5 - state] = value * temp;
 
-        value = *(u32 *)(queue + 0x3C + ((state - 1) * 4));
-        temp = *(u32 *)(queue + 0x3C + ((4 - state) * 4));
-        *(u32 *)(queue + 0x3C + ((7 - state) * 4)) = value * temp;
+        state = *(s32 *)(queue + 0x20);
+        value = ((u32 *)(queue + 0x3C))[state - 1];
+        temp = ((u32 *)(queue + 0x3C))[4 - state];
+        ((u32 *)(queue + 0x3C))[7 - state] = value * temp;
     }
 
     result = fn_80266904(
@@ -1209,8 +1246,6 @@ void fn_80266328(s32 arg0, s32 arg1)
 
     u8 *entry;
     u8 *queue;
-    u8 *table;
-    u32 value;
     u32 checksum;
     s32 result;
     s32 count;
@@ -1218,37 +1253,35 @@ void fn_80266328(s32 arg0, s32 arg1)
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
+    result = arg1;
 
-    if (arg1 != 0) {
-        return;
-    }
+    if (result == 0) {
+        *(u32 *)(queue + 0x20) = 0x21;
 
-    *(u32 *)(queue + 0x20) = 0x21;
-    table = lbl_802A4DE8;
+        while ((count = *(s32 *)(queue + 0x20)) < 0x24) {
+            checksum = ((u32)queue[0x1B] ^
+                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 24))
+                     | ((u32)queue[0x1A] ^
+                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 16))
+                     | ((u32)queue[0x19] ^
+                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 8))
+                     | ((u32)queue[0x18] ^
+                        *(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4));
 
-    value = *(u32 *)(queue + 0x60);
-    checksum = ((u32)queue[0x18] ^ (value >> 24))
-             | ((u32)queue[0x19] ^ (value >> 16))
-             | ((u32)queue[0x1A] ^ (value >> 8))
-             | ((u32)queue[0x1B] ^ value);
+            result = checksum << 24;
+            if (result == 0) {
+                break;
+            }
 
-    if ((checksum << 24) != 0) {
-        count = *(s32 *)(queue + 0x20) + 1;
-        *(s32 *)(queue + 0x20) = count;
-
-        if (count < 0x24) {
-            return;
+            *(u32 *)(queue + 0x20) = *(s32 *)(queue + 0x20) + 1;
         }
 
-        result = 3;
-    } else {
-        *(u32 *)(queue + 0x24) = OSGetTick();
-
-        result = fn_80265544(
-            arg0,
-            *(void **)(queue + 0x10),
-            fn_8026649C
-        );
+        if (result != 0) {
+            result = 3;
+        } else {
+            *(u32 *)(queue + 0x24) = OSGetTick();
+            result = fn_80265544(arg0, *(void **)(queue + 0x10), fn_8026649C);
+        }
     }
 
     if (result != 0) {

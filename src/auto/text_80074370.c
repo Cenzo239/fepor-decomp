@@ -649,34 +649,30 @@ s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     extern u8 gUiContext[];
     struct Vtbl { u8 pad[0x5C]; s16 (*getx)(void *); };
     typedef struct Obj { u8 pad[4]; struct Vtbl *vtbl; } Obj;
-    void *self;
     s32 str;
     s16 y;
     s16 x;
-    u8 *entry;
     Obj *obj;
     void *msg;
     s32 vx;
     s32 slot;
-    self = arg1;
-    entry = (u8 *)arg2;
-    if (*(entry + 0x39)) {
-        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(entry + 0x3A));
+    if (*(((u8 *)arg2) + 0x39)) {
+        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(((u8 *)arg2) + 0x3A));
         msg = 0;
         switch (Unit_CheckReceiveItem(*(s32 *)gUiContext, slot, gUiContext)) {
         case 1: msg = lbl_8026C0B8 + 0x1B3; break;
         case 2: msg = lbl_8026C0B8 + 0x1BA; break;
         case 3: msg = lbl_8026C0B8 + 0x1C1; break;
         }
-        y = *(s16 *)(entry + 0x32);
-        x = *(s16 *)(entry + 0x30);
-        obj = *(Obj **)((u8 *)self + 0x3C);
+        y = *(s16 *)(((u8 *)arg2) + 0x32);
+        x = *(s16 *)(((u8 *)arg2) + 0x30);
+        obj = *(Obj **)((u8 *)arg1 + 0x3C);
         str = Msg_Expand(msg);
         vx = obj->vtbl->getx(obj);
-        fn_80166AE8(vx + x, y, str, self);
+        fn_80166AE8(vx + x, y, str, arg1);
         return 0;
     }
-    gUiContext[0xA] = *(entry + 0x3A);
+    gUiContext[0xA] = *(((u8 *)arg2) + 0x3A);
     return 5;
 }
 
@@ -1150,10 +1146,9 @@ s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
     };
 
     u8 saved;
-    s32 adjustedY;
-    s16 y;
-    s32 vy;
-    s32 str;
+    register s32 y;
+    register s32 vy;
+    register s32 str;
     s16 x;
     Obj *obj;
     s32 vx;
@@ -1165,9 +1160,9 @@ s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
         x = *(s16 *)((u8 *)arg2 + 0x30);
         str = Msg_Expand(lbl_8026C0B8 + 0x270);
         vy = obj->v22();
-        adjustedY = y - 0x3C;
+        y -= 0x3C;
         vx = obj->v21();
-        fn_80166AE8(vx + x, vy + adjustedY, str, arg1);
+        fn_80166AE8(vx + x, vy + y, str, arg1);
         return 0;
     }
     Ui_PlaySeCue(lbl_8026C0B8 + 0x277, 100);
@@ -2100,10 +2095,11 @@ s32 fn_80077574(void *arg0) {
     };
     u8 bits;
     void *unit;
+    void *uiUnit;
     Obj *obj = (Obj *)arg0;
-    u8 *ctx = gUiContext;
-    if (*(s8 *)(ctx + 0x12)) return 3;
-    bits = fn_8009233C(*(void **)ctx).bits;
+    if (*(s8 *)(gUiContext + 0x12)) return 3;
+    uiUnit = *(void **)gUiContext;
+    bits = fn_8009233C(uiUnit).bits;
     if (!(bits & 0x38) && !(u8)(bits & obj->flags().bits)) return 3;
     unit = *(void **)gUiContext;
     fn_8002A784(unit, &obj->flags());
@@ -2653,13 +2649,14 @@ s32 Ui_CanMapObjAttack(void) {
     return 0;
 }
 
+#pragma global_optimizer off
 s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
     void fn_80166AE8(s32, s32, s32, void *);
     void *MapObjEvent_Find(void *, u8, u8, s32);
     void *Item_GetByIid(void *);
     extern u8 lbl_8026C0B8[];
-    extern u8 gUiContext[];
+    extern void *gUiContext[];
     extern u8 gMapObjEventList[];
 #pragma cplusplus on
     struct Obj {
@@ -2695,9 +2692,10 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
     Obj *obj;
     s32 vx;
     u8 *event;
-    u8 *unit;
+    void *ptr;
     u8 *item;
-    u8 *ctx;
+    u8 a;
+    u8 b;
     if (*((u8 *)arg2 + 0x39)) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
@@ -2709,17 +2707,18 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
         return 0;
     }
 #pragma cplusplus reset
-    ctx = gUiContext;
-    unit = *(u8 **)ctx;
-    event = (u8 *)MapObjEvent_Find(gMapObjEventList, unit[0x19E], unit[0x19F], 7);
+    ptr = gUiContext[0];
+    a = *((u8 *)ptr + 0x19F);
+    b = *((u8 *)ptr + 0x19E);
+    event = (u8 *)MapObjEvent_Find(gMapObjEventList, b, a, 7);
     item = (u8 *)Item_GetByIid(lbl_8026C0B8 + 0x4CF);
     if (event[4] == *(u16 *)(item + 0xE))
-        gUiContext[8] = 0x31;
+        *((u8 *)gUiContext + 8) = 0x31;
     else
-        gUiContext[8] = 0x2A;
+        *((u8 *)gUiContext + 8) = 0x2A;
     return 5;
 }
-
+#pragma global_optimizer reset
 /* Show move-limit overlay for the type-7 map-obj event at the UI cursor. */
 s32 Ui_ShowMapObjAttackRange(void) {
     void *Item_Get(u8);
@@ -3440,9 +3439,10 @@ void fn_80079634(u8 *obj) {
  *(void**)(obj+0x30)=face; *(f32*)(obj+0x34)=1.0f;
 }
 
+#pragma global_optimizer off
 void fn_8007982C(s32 arg0) {
-    void *fn_8007BD30(s8,s32,s32,s32,s32,s32,s32);
-    void *Process_Create(void *,s32);
+    void *fn_8007BD30(s8, s32, s32, s32, s32, s32, s32);
+    void *Process_Create(void *, s32);
     extern void *gFaceSlots[];
     extern s32 lbl_80367480, lbl_80367484;
     extern s32 *lbl_80367478;
@@ -3450,30 +3450,32 @@ void fn_8007982C(s32 arg0) {
     extern u8 lbl_80288B40[];
     extern void *lbl_803674B0[2];
     void **p;
-    s8 n;
-    s32 i;
+    s32 n, i;
     s32 text;
     u8 face;
     void *proc;
-    n=0;
-    lbl_80367480=0;
-    gActiveFace=0;
-    lbl_80367484=0;
-    text=*lbl_80367478;
-    p=gFaceSlots;
-    for(i=0;i<8;i++,p++) {
-        if(*p==0) { n=i; goto found; }
+    n = 0;
+    lbl_80367480 = n;
+    gActiveFace = (void *)n;
+    lbl_80367484 = n;
+    text = *lbl_80367478;
+    p = gFaceSlots;
+    for (i = 0; i < 8; i++, p++) {
+        if (*p == 0) {
+            n = i + n;
+            goto found;
+        }
     }
-    n=-1;
+    n = -1;
 found:
-    gActiveFace=fn_8007BD30((s8)n,text,0x1E0,0x17C,0,0,0);
-    face=*((u8*)gActiveFace+0x40);
-    proc=Process_Create(lbl_80288B40,3);
-    *(s32*)((u8*)proc+0x60)=face;
-    *(s32*)((u8*)proc+0x64)=8;
-    Ui_CreateMenu(lbl_803674B0,arg0,0);
+    gActiveFace = fn_8007BD30((s8)n, text, 0x1E0, 0x17C, 0, 0, 0);
+    face = *((u8 *)gActiveFace + 0x40);
+    proc = Process_Create(lbl_80288B40, 3);
+    *(s32 *)((u8 *)proc + 0x60) = face;
+    *(s32 *)((u8 *)proc + 0x64) = 8;
+    Ui_CreateMenu(lbl_803674B0, arg0, 0);
 }
-
+#pragma global_optimizer reset
 s32 fn_80079974(void *unused,void *parent) {
  void Process_CreateChild(void *,void *);
  void Process_Unlink(void *);
@@ -3562,9 +3564,9 @@ void fn_80079B9C(void *unused, void *parent, void *node) {
 }
 
 void fn_80079CD8(void *arg0) {
-    M2C_UNK Process_Goto(void *, s32);
-    u32 Rand_Next();
-    void Face_DrawEyes(void *, s32, s32);
+    M2C_UNK fn_8000C070(void *, s32);
+    u32 fn_8000CD60();
+    M2C_UNK fn_8007A524(void *, M2C_UNK, M2C_UNK);
     s32 var_r31 = 0;
     s32 temp_r0 = M2C_FIELD(arg0, s16 *, 0x38);
     u32 temp_r3;
@@ -3572,24 +3574,21 @@ void fn_80079CD8(void *arg0) {
     s32 var_r0;
 
     if (temp_r0 < 0xc) {
-        if (temp_r0 < 6) {
-            if (temp_r0 < 0) {
-            } else {
-                var_r31 = 1;
-            }
-        } else {
-            if (temp_r0 == 0x12) {
-                var_r31 = 2;
-            } else if (temp_r0 >= 0x12) {
-                var_r31 = 0;
-            } else {
-                var_r31 = 1;
-            }
+        switch (temp_r0) {
+        case 0: case 1: case 2: case 3: case 4: case 5:
+            var_r31 = 1;
+            break;
+        case 0x12:
+            var_r31 = 2;
+            break;
+        case 6: case 7: case 8: case 9: case 10: case 11:
+            var_r31 = 1;
+            break;
         }
     } else {
-        Process_Goto(arg0, 1);
+        fn_8000C070(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
-        temp_r3 = Rand_Next() >> 0x10U;
+        temp_r3 = fn_8000CD60() >> 0x10U;
         temp_r0_2 = M2C_FIELD(arg0, s16 *, 0x34);
         switch (temp_r0_2) {
         case 3:
@@ -3598,11 +3597,11 @@ void fn_80079CD8(void *arg0) {
         case 1:
             var_r0 = ((s32) temp_r3 >> 7) + 0x1E;
             break;
-        case 2:
-            var_r0 = 1;
-            break;
         case 4:
             var_r0 = ((s32) temp_r3 >> 10) + 1;
+            break;
+        case 2:
+            var_r0 = 1;
             break;
         case 5:
             var_r0 = 0x7FFFFFFF;
@@ -3614,8 +3613,8 @@ void fn_80079CD8(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
     }
 
-    Face_DrawEyes(arg0, 0, 7);
-    Face_DrawEyes(arg0, var_r31, 0xA);
+    fn_8007A524(arg0, 0, 7);
+    fn_8007A524(arg0, var_r31, 0xA);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16) (M2C_FIELD(arg0, s16 *, 0x38) + 1);
 }
 
@@ -3687,6 +3686,7 @@ void fn_80079E14(void *arg0) {
     Face_DrawEyes(arg0, var_r31, 7);
     Face_DrawEyes(arg0, 0, 0xA);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
+    return;
 }
 
 void fn_80079F44(void *arg0) {
@@ -3731,30 +3731,28 @@ void Face_BlinkWaitProc(void *proc) {
 }
 
 void fn_8007A024(void *arg0) {
-    M2C_UNK var_r31;
-    s32 temp_r0;
+    void Process_Goto(void *, s32);
+    u32 Rand_Next(void);
+    void Face_DrawEyes(void *, s32, s32);
+    s32 var_r31;
     s32 var_r0;
     u32 temp_r3;
     u32 temp_r3_hi;
 
-    temp_r0 = M2C_FIELD(arg0, s16 *, 0x38);
-    if (temp_r0 <= 2) {
+    if (M2C_FIELD(arg0, s16 *, 0x38) <= 2) {
         var_r31 = 0;
-        if (temp_r0 == 9) {
-        } else if (temp_r0 < 9) {
-            if (temp_r0 >= 3) {
-                if (temp_r0 >= 6) {
-                    var_r31 = 1;
-                } else {
-                    var_r31 = 2;
-                }
-            } else {
-                if (temp_r0 >= 0) {
-                    var_r31 = 1;
-                }
-            }
-        } else if (temp_r0 < 0xB) {
+        switch (M2C_FIELD(arg0, s16 *, 0x38)) {
+        case 0: case 1: case 2:
             var_r31 = 1;
+            break;
+        case 3: case 4: case 5:
+            var_r31 = 2;
+            break;
+        case 6: case 7: case 8: case 10:
+            var_r31 = 1;
+            break;
+        case 9:
+            break;
         }
         Process_Goto(arg0, 1);
         Face_DrawEyes(arg0, var_r31, 7);
@@ -3764,21 +3762,21 @@ void fn_8007A024(void *arg0) {
     }
     Face_DrawEyes(arg0, 1, 7);
     Face_DrawEyes(arg0, 1, 0xA);
-    if ((s16)M2C_FIELD(arg0, s16 *, 0x36) != 4) {
+    if (M2C_FIELD(arg0, s16 *, 0x36) != 4) {
         Process_Goto(arg0, 1);
         temp_r3 = Rand_Next();
         temp_r3_hi = temp_r3 >> 0x10U;
-        switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
+        switch (M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
             var_r0 = ((s32)temp_r3_hi >> 7) + 0x12C;
             break;
         case 1:
             var_r0 = ((s32)temp_r3_hi >> 7) + 0x1E;
             break;
-        case 2:
+        case 4:
             var_r0 = ((s32)temp_r3_hi >> 0xA) + 1;
             break;
-        case 4:
+        case 2:
             var_r0 = 1;
             break;
         case 5:

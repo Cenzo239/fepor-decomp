@@ -1844,9 +1844,8 @@ void fn_801ED52C(s32 arg0) {
     extern s32 gAramBase;
     extern s32 gAramHeapSize;
     u8 *var_r4;
-    s32 zero;
-    register u32 ctr1;
-    register u32 ctr2;
+    s32 ctr1;
+    s32 ctr2;
     s32 temp_r0;
     s32 var_r3;
     void *zero_ptr;
@@ -1854,93 +1853,79 @@ void fn_801ED52C(s32 arg0) {
     if (fn_80215F38() == 0) {
         fn_80215D2C();
     }
-    ctr1 = 0x20;
     var_r4 = gAramSlotPool;
-    zero = 0;
-    do {
-        *(s32 *)(var_r4 + 0x64) = zero;
-        *(u8 *)(var_r4 + 0x53) = zero;
-        *(s32 *)(var_r4 + 0xD0) = zero;
-        *(u8 *)(var_r4 + 0xBF) = zero;
-        *(s32 *)(var_r4 + 0x13C) = zero;
-        *(u8 *)(var_r4 + 0x12B) = zero;
-        *(s32 *)(var_r4 + 0x1A8) = zero;
-        *(u8 *)(var_r4 + 0x197) = zero;
-        *(s32 *)(var_r4 + 0x214) = zero;
-        *(u8 *)(var_r4 + 0x203) = zero;
-        *(s32 *)(var_r4 + 0x280) = zero;
-        *(u8 *)(var_r4 + 0x26F) = zero;
-        *(s32 *)(var_r4 + 0x2EC) = zero;
-        *(u8 *)(var_r4 + 0x2DB) = zero;
-        *(s32 *)(var_r4 + 0x358) = zero;
-        *(u8 *)(var_r4 + 0x347) = zero;
+    ctr1 = 0x20;
+    for (;;) {
+        *(s32 *)(var_r4 + 0x64) = 0;
+        *(u8 *)(var_r4 + 0x53) = 0;
+        *(s32 *)(var_r4 + 0xD0) = 0;
+        *(u8 *)(var_r4 + 0xBF) = 0;
+        *(s32 *)(var_r4 + 0x13C) = 0;
+        *(u8 *)(var_r4 + 0x12B) = 0;
+        *(s32 *)(var_r4 + 0x1A8) = 0;
+        *(u8 *)(var_r4 + 0x197) = 0;
+        *(s32 *)(var_r4 + 0x214) = 0;
+        *(u8 *)(var_r4 + 0x203) = 0;
+        *(s32 *)(var_r4 + 0x280) = 0;
+        *(u8 *)(var_r4 + 0x26F) = 0;
+        *(s32 *)(var_r4 + 0x2EC) = 0;
+        *(u8 *)(var_r4 + 0x2DB) = 0;
+        *(s32 *)(var_r4 + 0x358) = 0;
+        *(u8 *)(var_r4 + 0x347) = 0;
         var_r4 += 0x360;
-    } while (--ctr1 != 0);
+        if (--ctr1 == 0) {
+            break;
+        }
+    }
     if (arg0 == 0) {
         arg0 = 0x400000;
     }
     gAramBase = fn_80214184(arg0);
     zero_ptr = 0;
-    ctr2 = 0x20;
-    var_r4 = gAramSlotPool;
     var_r3 = 0xFF;
     gAramHeapSize = arg0;
     gAramUsedList = zero_ptr;
+    var_r4 = gAramSlotPool;
+    ctr2 = 0x20;
 loop_7:
-    if (*(s32 *)(var_r4 + 0x64) != 0) {
-        goto try1;
+    if (*(s32 *)(var_r4 + 0x64) == 0) {
+        goto found;
     }
-    goto found;
-try1:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try2;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try2:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try3;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try3:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try4;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try4:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try5;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try5:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try6;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try6:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto try7;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-try7:
     temp_r0 = *(s32 *)(var_r4 + 0xD0);
     var_r4 += 0x6C;
-    if (temp_r0 != 0) {
-        goto cont;
+    if (temp_r0 == 0) {
+        goto found;
     }
-    goto found;
-cont:
     var_r3 -= 7;
     var_r4 += 0x6C;
     if (--ctr2 != 0) {

@@ -47,9 +47,9 @@ void *fn_8014A398(void) {
 s32 fn_8014A3A8(void) {
 extern u8 gFxChannels[];
 extern u8 gSeCueSlots[];
+u8 active;
 s32 i;
 u8 *p;
-u8 active;
 for(i=0;i<4;i++) {
 p=gFxChannels+(u8)i*0x30;
 active=0;

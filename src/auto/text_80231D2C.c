@@ -551,8 +551,8 @@ char *float2str(char *buffer, void *format, f64 value)
     RuntimeDecimal dec;
     PrintFormat *fmt = (PrintFormat *)format;
     char *out;
-    u8 *digs;
-    u8 *p;
+    s8 *digs;
+    s8 *p;
     s32 i;
     s32 n;
     s32 frac;
@@ -570,17 +570,17 @@ char *float2str(char *buffer, void *format, f64 value)
     ctrl.width = 0x20;
     fn_8022E660(&ctrl, &dec);
 
-    digs = dec.digits;
+    digs = (s8 *)dec.digits;
     p = digs + dec.length;
-    while (dec.length > 1) {
-        if (*--p != 0x30) {
-            break;
-        }
+    while (dec.length > 1 && *--p == 0x30) {
         dec.length -= 1;
         dec.exponent += 1;
     }
 
     switch ((s32)dec.digits[0]) {
+    case 0x30:
+        dec.exponent = 0;
+        break;
     case 0x49:
         if (value < lbl_8036BE00) {
             out = buffer - 5;
@@ -615,13 +615,10 @@ char *float2str(char *buffer, void *format, f64 value)
             }
         }
         return out;
-    case 0x30:
-        dec.exponent = 0;
-        break;
     }
 
     out = buffer - 1;
-    dec.exponent = (s16)(dec.length + dec.exponent - 1);
+    dec.exponent = dec.length + dec.exponent - 1;
     buffer[-1] = 0;
 
     switch (fmt->conv) {
@@ -781,8 +778,9 @@ void fn_80233174(void *arg0, s32 arg1) {
  if(arg1<0) { zero: *(s16*)((u8*)arg0+2)=0; ((u8*)arg0)[4]=1; ((u8*)arg0)[5]='0'; return; }
  if(arg1>=((u8*)arg0)[4]) return;
  p=(u8*)arg0+arg1;
- digit=p[5]; p+=5;
+ digit=p[5];
  digit=digit-'0';
+ p+=5;
  if(digit==5) {
  end=(u8*)arg0+((u8*)arg0)[4]; end+=5;
  while(--end>p && (s32)*end=='0') {}
@@ -820,28 +818,30 @@ char *double2hex(char *buffer, void *format, f64 value) {
         s8 kind;
         s8 pad;
         s16 width;
+        s32 pad2;
     } DecCtrl;
 
-    char sp40[0x38];
+    PrintFormat *fmt = (PrintFormat *)format;
+    s32 prec = fmt->precision;
+    u8 sp40[0x38];
     char sp30[16];
     char sp20[16];
     f64 sp18;
     DecCtrl sp10;
     f64 sp8;
-    PrintFormat *fmt;
+    s32 i;
     char *out;
     char *p;
     s32 exp;
-    s32 prec;
-    s32 i;
-    s8 nibble;
-    u8 b;
+    s16 raw_exp;
     u32 sb;
+    u8 b;
+    s8 nibble;
+    s32 ch;
 
-    fmt = (PrintFormat *)format;
     sp8 = value;
     sp18 = value;
-    if (fmt->precision > 0x1FD) {
+    if (prec > 0x1FD) {
         return NULL;
     }
 
@@ -849,7 +849,7 @@ char *double2hex(char *buffer, void *format, f64 value) {
     sp10.width = 0x20;
     fn_8022E660(&sp10, sp40);
 
-    if ((u8)sp40[5] == 'I') {
+    if (sp40[5] == 'I') {
         if (*(s16 *)&sp18 & 0x8000) {
             out = buffer - 5;
             if (fmt->conv == 'A') {
@@ -868,7 +868,7 @@ char *double2hex(char *buffer, void *format, f64 value) {
         return out;
     }
 
-    if ((u8)sp40[5] == 'N') {
+    if (sp40[5] == 'N') {
         if (*(u8 *)&sp8 & 0x80) {
             out = buffer - 5;
             if (fmt->conv == 'A') {
@@ -900,7 +900,8 @@ char *double2hex(char *buffer, void *format, f64 value) {
     *(s32 *)(sp20 + 8) = 0;
     *(s32 *)(sp20 + 12) = 1;
 
-    exp = (s16)((*(u16 *)&sp18 >> 4) & 0x7FF) - 0x3FF;
+    raw_exp = (*(s16 *)&sp18 >> 4) & 0x7FF;
+    exp = raw_exp - 0x3FF;
     p = long2str_802338EC(exp, buffer, sp20);
 
     if (fmt->conv == 'a') {
@@ -911,26 +912,22 @@ char *double2hex(char *buffer, void *format, f64 value) {
         out = p - 1;
     }
 
-    prec = fmt->precision;
-    i = prec;
-    if (prec >= 1) {
-        do {
-            sb = (u32)i >> 31;
-            b = ((u8 *)&sp8)[((s32)(sb + i) >> 1) + 1];
-            if ((((i & 1) ^ (s32)sb) - (s32)sb) != 0) {
-                nibble = (s8)(b & 0xF);
-            } else {
-                nibble = (s8)((b >> 4) & 0xF);
-            }
-            if (nibble < 0xA) {
-                *--out = nibble + '0';
-            } else if (fmt->conv == 'a') {
-                *--out = nibble + 0x57;
-            } else {
-                *--out = nibble + 0x37;
-            }
-            i -= 1;
-        } while (--prec);
+    for (i = fmt->precision; i >= 1; i--) {
+        sb = (u32)i >> 31;
+        b = ((u8 *)&sp8)[((s32)(sb + i) >> 1) + 1];
+        if ((((i & 1) ^ (s32)sb) - (s32)sb) != 0) {
+            nibble = (s8)(b & 0xF);
+        } else {
+            nibble = (s8)((b >> 4) & 0xF);
+        }
+        if (nibble < 0xA) {
+            ch = nibble + '0';
+        } else if (fmt->conv == 'a') {
+            ch = nibble + 0x57;
+        } else {
+            ch = nibble + 0x37;
+        }
+        *--out = ch;
     }
 
     if (fmt->precision != 0 || fmt->alternate != 0) {
@@ -1648,10 +1645,12 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
     extern f64 lbl_8036BE10;
     extern f64 lbl_8036BE18;
 
+    typedef struct { u32 w[10]; u16 h; } B;
+
     s32 sp60 = 0;
     s32 sp5C = 0;
     s32 sp58 = 0;
-    u8 buf[0x28];
+    u8 buf[0x2C];
     f64 sp18;
     u8 infbuf[12];
     u8 nanbuf[8];
@@ -1672,9 +1671,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
     u8 cls;
     f32 f;
 
-    for (i = 0; i < 0x28; i++) {
-        buf[i] = lbl_80282C88[i];
-    }
+    *(B *)buf = *(B *)lbl_80282C88;
     decimal = *lbl_8029EBA8;
     *arg4 = 0;
     ch = arg1(arg2, 0, 0);
@@ -2920,9 +2917,8 @@ f64 __kernel_cos(f64 x, f64 y) {
     return (__kcos_one - qx) - (((__kcos_half * z) - qx) - ((z * r) - (xLocal * y)));
 }
 
-s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
-    f64 floor(f64);
-    f64 fn_80238378(s32, f64);
+s32 fn_80236D88(const f64 *x, f64 *y, s32 e0, s32 nx, s32 prec, const s32 *ipio2)
+{
     extern s32 lbl_80282E88[];
     extern f64 lbl_80282E98[];
     extern f64 lbl_8036C058;
@@ -2932,86 +2928,235 @@ s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
     extern f64 lbl_8036C078;
     extern f64 lbl_8036C080;
     extern f64 lbl_8036C088;
-    extern f64 lbl_8036C090;
+    f64 fn_80238378(f64, s32);
+    f64 floor(f64);
+    s32 jz, jx, jv, jp, jk, carry, n, iq[20], i, j, k, m, q0, ih;
+    f64 z, fw, f[20], fq[20], q[20];
+    register f64 twon24, two24, eighth, eight, zero;
 
-    f64 buf198[0x30];
-    f64 buf58[0x30];
-    f64 bufF8[0x20];
-    s32 sp8[0x40];
-    s32 n;
-    s32 m;
-    s32 i;
-    s32 j;
-    s32 k;
-    s32 t;
-    s32 sign;
-    s32 expn;
-    s32 sticky;
-    f64 sum;
-    f64 y;
-    f64 z;
-    f64 *p;
-    f64 *q;
-    s32 *ip;
-
-    n = lbl_80282E88[arg4];
-    m = arg3 - 1;
-    t = (arg2 - 3) / 24;
-    if (t < 0) {
-        t = 0;
+    jk = lbl_80282E88[prec];
+    jp = jk;
+    jx = nx - 1;
+    jv = (e0 - 3) / 24;
+    if (jv < 0) {
+        jv = 0;
     }
-    expn = arg2 - ((t + 1) * 0x18);
-    j = t - m;
-    ip = arg5 + j;
-    p = buf198;
-    for (i = 0; i <= m + n; i++) {
-        if (j < 0) {
-            *p = lbl_8036C058;
-        } else {
-            *p = (f64)*ip;
-        }
-        p++;
-        ip++;
-        j++;
-    }
+    q0 = e0 - 24 * (jv + 1);
 
-    q = buf58;
-    for (i = 0; i <= n; i++) {
-        sum = lbl_8036C058;
-        if (m >= 0) {
-            for (j = 0; j <= m; j++) {
-                sum += arg0[j] * buf198[(m + i) - j];
+    j = jv - jx;
+    m = jx + jk;
+    {
+        const s32 *from = ipio2 + j;
+        f64 *to = f;
+        for (i = 0; i <= m; i++, j++, from++, to++) {
+            if (j < 0) {
+                *to = lbl_8036C058;
+            } else {
+                *to = (f64)(*from);
             }
         }
-        *q++ = sum;
     }
 
-    sticky = 0;
-    k = n;
-    for (;;) {
-        y = buf58[k];
-        ip = sp8;
-        for (i = 0; i < k; i++) {
-            z = (f64)(s32)(lbl_8036C060 * y);
-            *ip++ = (s32)(-(lbl_8036C068 * z - y));
-            y = z + (i + 1 < k ? buf58[k - 1 - i] : lbl_8036C058);
+    for (i = 0; i <= jk; i++) {
+        const f64 *px = x;
+        const f64 *pf = f + jx + i;
+        fw = lbl_8036C058;
+        for (j = 0; j <= jx; j++) {
+            fw += (*px++) * (*pf--);
         }
-        if (k > 0) {
-            /* finish residual */
+        q[i] = fw;
+    }
+
+    twon24 = lbl_8036C060;
+    two24 = lbl_8036C068;
+    eighth = lbl_8036C078;
+    eight = lbl_8036C070;
+    zero = lbl_8036C058;
+
+    jz = jk;
+recompute:
+    z = q[jz];
+    for (i = 0, j = jz; j > 0; i++, j--) {
+        s32 integral = (s32)(twon24 * z);
+        fw = (f64)integral;
+        iq[i] = (s32)(z - two24 * fw);
+        z = q[j - 1] + fw;
+    }
+
+    z = fn_80238378(z, q0);
+    z -= eight * floor(z * eighth);
+    n = (s32)z;
+    z -= (f64)n;
+    ih = 0;
+    if (q0 > 0) {
+        i = iq[jz - 1] >> (24 - q0);
+        n += i;
+        iq[jz - 1] -= i << (24 - q0);
+        ih = iq[jz - 1] >> (23 - q0);
+    } else if (q0 == 0) {
+        ih = iq[jz - 1] >> 23;
+    } else if (z >= lbl_8036C080) {
+        ih = 2;
+    }
+
+    if (ih > 0) {
+        n++;
+        carry = 0;
+        for (i = 0; i < jz; i++) {
+            j = iq[i];
+            if (carry == 0) {
+                if (j != 0) {
+                    carry = 1;
+                    iq[i] = 0x1000000 - j;
+                }
+            } else {
+                iq[i] = 0xFFFFFF - j;
+            }
         }
-        y = fn_80238378(expn, 1.0);
-        y = y - lbl_8036C070 * floor(lbl_8036C078 * y);
-        expn = (s32)y;
-        z = y - (f64)expn;
-        sign = 0;
-        if (expn > 0) {
-            /* clipped */
+        if (q0 > 0) {
+            switch (q0) {
+            case 1:
+                iq[jz - 1] &= 0x7FFFFF;
+                break;
+            case 2:
+                iq[jz - 1] &= 0x3FFFFF;
+                break;
+            }
+        }
+        if (ih == 2) {
+            z = lbl_8036C088 - z;
+            if (carry != 0) {
+                z -= fn_80238378(lbl_8036C088, q0);
+            }
+        }
+    }
+
+    if (z == zero) {
+        j = 0;
+        for (i = jz - 1; i >= jk; i--) {
+            j |= iq[i];
+        }
+        if (j == 0) {
+            for (k = 1; iq[jk - k] == 0; k++) {
+            }
+            for (i = jz + 1; i <= jz + k; i++) {
+                const f64 *px = x;
+                const f64 *pf;
+                s32 value = ipio2[jv + i];
+                f[jx + i] = (f64)value;
+                fw = zero;
+                pf = f + jx + i;
+                for (j = 0; j <= jx; j++) {
+                    fw += (*px++) * (*pf--);
+                }
+                q[i] = fw;
+            }
+            jz += k;
+            goto recompute;
+        }
+    }
+
+    if (z == zero) {
+        jz--;
+        q0 -= 24;
+        while (iq[jz] == 0) {
+            jz--;
+            q0 -= 24;
+        }
+    } else {
+        z = fn_80238378(z, -q0);
+        if (z >= two24) {
+            s32 integral = (s32)(twon24 * z);
+            fw = (f64)integral;
+            iq[jz] = (s32)(z - two24 * fw);
+            jz++;
+            q0 += 24;
+            iq[jz] = (s32)fw;
+        } else {
+            iq[jz] = (s32)z;
+        }
+    }
+
+    fw = fn_80238378(lbl_8036C088, q0);
+    for (i = jz; i >= 0; i--) {
+        q[i] = fw * (f64)iq[i];
+        fw *= twon24;
+    }
+    for (i = jz; i >= 0; i--) {
+        const f64 *pi = lbl_80282E98;
+        fw = zero;
+        for (k = 0; k <= jp && k <= jz - i; k++) {
+            fw += (*pi++) * q[i + k];
+        }
+        fq[jz - i] = fw;
+    }
+
+    switch (prec) {
+    case 0:
+        fw = zero;
+        {
+            const f64 *p = &fq[jz];
+            for (i = jz; i >= 0; i--) {
+                fw += *p--;
+            }
+        }
+        y[0] = ih == 0 ? fw : -fw;
+        break;
+    case 1:
+    case 2:
+        fw = zero;
+        {
+            const f64 *p = &fq[jz];
+            for (i = jz; i >= 0; i--) {
+                fw += *p--;
+            }
+        }
+        y[0] = ih == 0 ? fw : -fw;
+        fw = fq[0] - fw;
+        {
+            const f64 *p = &fq[1];
+            for (i = 1; i <= jz; i++) {
+                fw += *p++;
+            }
+        }
+        y[1] = ih == 0 ? fw : -fw;
+        break;
+    case 3:
+        {
+            f64 *p = &fq[jz];
+            for (i = jz; i > 0; i--, p--) {
+                fw = p[-1] + p[0];
+                p[0] += p[-1] - fw;
+                p[-1] = fw;
+            }
+        }
+        {
+            f64 *p = &fq[jz];
+            for (i = jz; i > 1; i--, p--) {
+                fw = p[-1] + p[0];
+                p[0] += p[-1] - fw;
+                p[-1] = fw;
+            }
+        }
+        fw = zero;
+        {
+            const f64 *p = &fq[jz];
+            for (i = jz; i >= 2; i--) {
+                fw += *p--;
+            }
+        }
+        if (ih == 0) {
+            y[0] = fq[0];
+            y[1] = fq[1];
+            y[2] = fw;
+        } else {
+            y[0] = -fq[0];
+            y[1] = -fq[1];
+            y[2] = -fw;
         }
         break;
     }
-
-    *arg1 = buf58[0];
-    return expn & 7;
+    return n & 7;
 }
 
 f64 fn_80237BDC(f64 x, f64 y, s32 iy) {
@@ -3471,7 +3616,7 @@ int fn_802368F4(f64 *y, f64 x) {
     extern f64 lbl_8036C008;
     extern s32 lbl_80282E08[];
     extern s32 lbl_80282D00[];
-    f64 z, w, t, r, fn;
+    f64 w, t, r, fn, z;
     f64 pio2_1, pio2_1t, pio2_2, pio2_2t;
     f64 tx[3];
     int e0, i, j, nx, n, ix, hx;

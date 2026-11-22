@@ -607,71 +607,109 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     return lbl_80320B6C;
 }
 
-s32 fn_800C2EF8(u8 *slots, s32 index, u8 *str) {
-    s32 fn_80010710(u8 *);
-    void *memset(void *, s32, u32);
-    u8 *dst;
-    u8 *src;
-    u32 count;
-    u8 is_sjis;
-    u8 flag;
-    s32 off;
-    u8 *end;
+#pragma opt_common_subs off
+s32 fn_800C2EF8(u8 *slots, s32 index, u8 *str)
+{
+  s32 fn_80010710(u8 *);
+  void *memset(void *, s32, u32);
+  u8 *src;
+  u8 *dst;
+  u32 count;
+  u8 is_sjis;
+  s32 off;
+  u8 *end;
+  u8 *p;
+  u32 b0;
+  int new_var;
+  u32 b1;
+  src = str;
+  dst = (slots + ((index - 1) * 0x18)) + 1;
+  memset(dst, 0, 0xF);
+  count = (new_var = 0);
+  goto check;
+  body:
+  src += fn_80010710(src);
 
-    src = str;
-    dst = slots + ((index - 1) * 0x18) + 1;
-    memset(dst, 0, 0xF);
-    count = 0;
-    while ((s8)*src != 0 && count < 0xEU) {
-        src += fn_80010710(src);
-        if ((s8)*src == 0) {
-            break;
-        }
-        if ((((src[0] >= 0x81U) && (src[0] <= 0x9FU)) || ((src[0] >= 0xE0U) && (src[0] <= 0xFCU))) &&
-            (((src[1] >= 0x40U) && (src[1] <= 0x7EU)) || ((src[1] >= 0x80U) && (src[1] <= 0xFCU)))) {
-            is_sjis = 1;
-        } else {
-            is_sjis = 0;
-        }
-        if (is_sjis != 0) {
-            dst[0] = src[0];
-            dst[1] = src[1];
-            src += 2;
-            dst += 2;
-        } else {
-            *dst = *src;
-            src += 1;
-            dst += 1;
-        }
-        count += 1;
-    }
+  if (((s8) (*src)) == new_var)
+  {
+    goto done;
+  }
+  b0 = (*((volatile u8 *) src)) & 0xFF;
+  if (!(((b0 >= 0x81U) && (b0 <= 0x9FU)) || ((b0 >= 0xE0U) && (b0 <= 0xFCU))))
+  {
+    goto not_sjis;
+  }
+  b1 = src[1];
+  if (!(((b1 >= 0x40U) && (b1 <= 0x7EU)) || ((b1 >= 0x80U) && (b1 <= 0xFCU))))
+  {
+    goto not_sjis;
+  }
+  is_sjis = 1;
+  goto after_sjis;
+  not_sjis:
+  is_sjis = new_var;
 
-    off = index * 0x18;
-    flag = 0;
-    end = slots + off;
-    if (((s8)end[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
-        ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
-        (end[-0x4] == 0x80) && (end[-0x3] == 0x80) &&
-        (end[-0x2] == 0x80) && (end[-0x1] == 0xFF)) {
-        flag = 1;
+  after_sjis:
+  if (is_sjis != new_var)
+  {
+    b0 = src[new_var];
+    b1 = src[1];
+    src += 2;
+    dst[new_var] = (u8) b0;
+    dst[1] = (u8) b1;
+    dst += 2;
+  }
+  else
+  {
+    register u32 tmp = src[new_var];
+    src += 1;
+    dst[new_var] = (u8) tmp;
+    dst += 1;
+  }
+
+  ++count;
+  check:
+  if (((s8) (*src)) == new_var)
+  {
+    goto done;
+  }
+
+  if (count < 0xEU)
+  {
+    goto body;
+  }
+  done:
+  off = index * 0x18;
+
+  end = slots + off;
+  off = new_var;
+  if (((((((((((s8) end[-0x17]) == new_var) && (((s8) end[-0x8]) == new_var)) && (((s8) end[-0x7]) == new_var)) && (((s8) end[-0x6]) == new_var)) && (((s8) end[-0x5]) == new_var)) && (end[-0x4] == 0x80)) && (end[-0x3] == 0x80)) && (end[-0x2] == 0x80)) && (end[-0x1] == 0xFF))
+  {
+    off = 1;
+  }
+  if (off != new_var)
+  {
+    p = slots + off;
+    {
+      u8 z = new_var;
+      u8 a = 0x80;
+      u8 b = 0xFF;
+      p[-0x18] = z;
+      end[-0x17] = z;
+      p[-0x5] = z;
+      p[-0x6] = z;
+      p[-0x7] = z;
+      p[-0x8] = z;
+      p[-0x2] = a;
+      p[-0x3] = a;
+      p[-0x4] = a;
+      p[-0x1] = b;
     }
-    if (flag != 0) {
-        u8 *p = slots + off;
-        p[-0x18] = 0;
-        end[-0x17] = 0;
-        p[-0x5] = 0;
-        p[-0x6] = 0;
-        p[-0x7] = 0;
-        p[-0x8] = 0;
-        p[-0x2] = 0x80;
-        p[-0x3] = 0x80;
-        p[-0x4] = 0x80;
-        p[-0x1] = 0xFF;
-        return 0;
-    }
-    return index;
+    return new_var;
+  }
+  return index;
 }
-
+#pragma opt_common_subs reset
 s32 Icon_GetSlot(s32 arg0, s32 arg1) {
     return arg0 + ((arg1 - 1) * 0x18);
 }

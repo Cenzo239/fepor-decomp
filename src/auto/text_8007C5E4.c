@@ -1012,15 +1012,16 @@ void fn_8007DAC4(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 void fn_8007DD78(void *arg0) {
     void *fn_80105C5C(void *, u8);
-    s32 j;
-    s32 i;
-    s32 count;
-    void *cursor;
-    void *p;
     void *self;
+    void *p;
+    void *cursor;
+    s32 count;
+    s32 i;
+    s32 j;
     u8 flag;
 
     self = arg0;
+    p = self;
 
     *(u32 *)((u8 *)arg0 + 0x38) = 0;
     *(u32 *)((u8 *)arg0 + 0x3C) = 0;
@@ -1031,7 +1032,6 @@ void fn_8007DD78(void *arg0) {
     *(u32 *)((u8 *)arg0 + 0x50) = 0;
     *(u32 *)((u8 *)arg0 + 0x54) = 0;
 
-    p = self;
     for (i = 0; i < 0x62; i++) {
         void *r = fn_80105C5C((u8 *)*(void **)(*(u8 **)((u8 *)self + 0x58) + 0x18C) + 0x1C, (u8)i);
         if (r != NULL && *(u8 *)((u8 *)r + 0x19) != 0) {
@@ -1068,7 +1068,7 @@ void fn_8007DD78(void *arg0) {
         }
     }
 
-    cursor = (u8 *)self + (count * 4);
+    cursor = (u8 *)self + (count << 2);
     for (j = 0; j < 0x62; j++) {
         p = fn_80105C5C((u8 *)*(void **)((u8 *)self + 0x58) + 0x1BC, (u8)j);
         if (p != NULL && *(u8 *)((u8 *)p + 0x19) != 0) {

@@ -7293,7 +7293,7 @@ extern "C" void fn_8016F694(void *arg0) {
     s16 UnitInv_FindFilledDown(void *, s16);
     void Mu_StartBlend(void *, s32, s32, s32);
     void *temp_r29;
-    s32 temp_r30;
+    s16 temp_r30;
     s16 var_r3;
     void *temp_r3;
     void *temp_r4;
@@ -12389,7 +12389,7 @@ s32 fn_8017762C(void) {
             if (*slot != 0) {
                 flags = Item_GetFlagsPtr(slot);
                 if ((*(u64 *)flags & ((u64)pair.mask << 32)) == 0) {
-                    unavailable = pair.z;
+                    unavailable = pair.z & pair.z;
                     break;
                 }
             }
@@ -13671,8 +13671,8 @@ s32 fn_801795D0(void *arg0) {
     extern u8 gConvoy[];
     s8 i;
     u8 flag;
-    void *base;
     u32 z;
+    void *base;
 
     flag = 1;
     base = (void *)gUiContext[0];
@@ -13975,9 +13975,9 @@ M2C_FIELD(p,u8 *,30)=255; M2C_FIELD(p,u8 *,31)=255; M2C_FIELD(p,u8 *,32)=255; M2
 M2C_FIELD(p,s16 *,34)=style; M2C_FIELD(p,s16 *,36)=0;
 M2C_FIELD(p,f32 *,40)=1.0f; M2C_FIELD(p,f32 *,44)=1.0f; M2C_FIELD(p,f32 *,48)=1.0f;
 M2C_FIELD(p,u32 *,52)=0; M2C_FIELD(p,u32 *,56)=0;
-
+void *self2 = p;
 M2C_FIELD(p,void **,0)=lbl_80292208;
-fn_80142060((u8 *)p+0x3c);
+fn_80142060((u8 *)self2+0x3c);
 M2C_FIELD(p,void **,0)=lbl_80292488;
 M2C_FIELD(p,u32 *,0x48)=0;
 M2C_FIELD(p,u8 *,0x4c)=1;
@@ -14130,15 +14130,15 @@ extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    s16 ab[2];
-    s16 cd[2];
-    s32 a5 = arg5;
+    struct Pair { s16 a, b; };
+    struct Pair ab;
+    struct Pair cd;
 
-    cd[0] = arg3;
-    ab[0] = arg1;
-    ab[1] = arg2;
-    cd[1] = arg4;
-    fn_8017A000(arg0, ab, cd, a5);
+    cd.a = arg3;
+    ab.a = arg1;
+    ab.b = arg2;
+    cd.b = arg4;
+    fn_8017A000(arg0, (s16 *)&ab, (s16 *)&cd, arg5);
     *(void **)arg0 = gUiPanelExVtbl;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *)arg0)->m28();
@@ -15317,21 +15317,17 @@ void fn_8017BA98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
     struct { s16 x; s16 y; } sp8;
-    s32 count;
-    s32 base;
-    s32 i;
     s16 y;
+    s32 i;
+    s32 base;
+    s32 count;
     void *p;
-    s32 *dst;
-    void *self;
     u8 r;
     u8 r2;
 
     count = 0;
     y = *(s16 *)((u8 *)arg1 + 0x3E);
-    self = arg1;
     base = (s32)*(void **)((u8 *)arg1 + 0x4C);
-    dst = arg0;
     i = count;
     do {
         p = fn_80105C5C((void *)(base + 0x1BC), (u8)i);
@@ -15339,7 +15335,7 @@ void fn_8017BA98(s32 *arg0, void *arg1) {
             if (*(u8 *)((u8 *)p + 0x19) != 0) {
                 if (*(u8 *)((u8 *)p + 0x19) != 0) {
                     r = fn_80105BC0(
-                        (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x18C) + 0x1C,
+                        (u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x4C) + 0x18C) + 0x1C,
                         *(u8 *)((u8 *)p + 0x18));
                 } else {
                     r = 0;
@@ -15363,7 +15359,7 @@ void fn_8017BA98(s32 *arg0, void *arg1) {
     } while (i < 0x62);
     sp8.x = 0x8B;
     sp8.y = (s16)(((s16)(y + count) << 5) + 0x46);
-    *dst = *fn_8013F748(self, &spC, &sp8.x);
+    *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
 
 void fn_8017BB94(void *arg0) {
@@ -15418,7 +15414,7 @@ void fn_8017BB94(void *arg0) {
     } else {
         cur = *(s16 *)((u8 *)self + 0x3E);
         lim = total - 1;
-        if (cur < total) {
+        if (total > cur) {
             lim = cur;
         }
         *(s16 *)((u8 *)self + 0x3E) = lim;
@@ -17952,14 +17948,10 @@ extern "C" void fn_8018054C(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
     void *Msg_Expand(void *);
     extern u8 gUiUnitInfoStrings[];
-    void *a;
-    void *b;
-    void *tmp;
-    s32 one;
 
-    a = Ui_FindChild(arg0, 0x81, 0);
-    b = Ui_FindChild(arg0, 0x82, 0);
-    one = 1;
+    void *a = Ui_FindChild(arg0, 0x81, 0);
+    void *b = Ui_FindChild(arg0, 0x82, 0);
+    s32 one = 1;
     *(u8 *)((u8 *)a + 0x4C) = one;
     *(u8 *)((u8 *)b + 0x4C) = one;
     a = Ui_FindChild(arg0, 0x80, 0);
@@ -17967,7 +17959,7 @@ extern "C" void fn_8018054C(void *arg0) {
     *(s32 *)((u8 *)a + 0x48) = one;
     Ui_BringChildToFront(arg0, b);
     a = Msg_Expand(gUiUnitInfoStrings + 0xBA);
-    tmp = Ui_FindChild(arg0, -0x1000, 0);
+    void *tmp = Ui_FindChild(arg0, -0x1000, 0);
     if (tmp != NULL) {
         Ui_SetWidgetText(tmp, a);
     }

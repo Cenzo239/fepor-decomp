@@ -436,7 +436,6 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     extern SynthVoice *gActiveVoices;
     extern SynthVoice *gKeyedVoices;
 
-    SynthVoice *sv;
     SynthVoice *n;
     u8 *base;
     u8 *p;
@@ -459,6 +458,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     u16 val;
     s32 z;
     s32 ctr;
+    SynthVoice *sv;
 
     sv = lbl_8036896C;
     if (sv == NULL) {
@@ -1301,37 +1301,47 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
     s32 fn_80259430(u16, u16, s32, s32 *, s32, u8);
     s32 fn_80259584(u16, u16, s32, s32 *, u8);
     typedef struct { s32 a; s32 b; } Pair;
+    typedef struct {
+        s32 flags;
+        s32 fx;
+        s32 voldown;
+        u16 key;
+        u16 vol;
+        u8 pan;
+        u8 pad19;
+        u8 pad1A;
+        u8 pad1B;
+        s32 pad1C;
+        s8 studio;
+        u8 pad21[3];
+        s32 pad24;
+        s32 pad28;
+        s32 pad2C;
+    } PlayArgs;
     extern SynthVoice gSynthVoicePool[];
     extern SynthVoice *gActiveVoices;
     extern SynthVoice *gKeyedVoices;
+    u32 vid;
+    u32 id;
     SynthVoice *sv;
     u8 *base;
     u8 *p;
-    u32 vid;
-    u32 id;
-    u16 vol;
+    u8 *ed0;
     u16 lim;
     u8 flags;
-    u8 i;
+    u32 i;
     s32 off;
-    s32 flags2;
-    u16 pitch;
-    u8 pan;
     u16 t;
-    s32 k;
-    s32 spC;
-    s32 sp10;
-    u16 sp14;
-    u16 sp16;
-    u8 sp18;
-    s8 sp20;
+    u32 k;
+    s32 ret;
+    PlayArgs play;
     Pair *dst;
     Pair *src;
-    s32 pad0, pad1, pad2, pad3;
+    u8 pan;
+    u32 vol;
 
-    (void)pad0; (void)pad1; (void)pad2; (void)pad3;
-    vid = *(u32 *)arg0;
-    id = SynthFindVoice(vid);
+    vol = 0;
+    id = SynthFindVoice(*(u32 *)arg0);
     flags = *((u8 *)arg0 + 0x26);
     if (flags & 4) {
         off = id * 0x1888;
@@ -1349,23 +1359,25 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
         *arg1 = *(u32 *)arg0 | 0x80000000;
         return;
     }
+    vid = *(u32 *)arg0;
     if (arg2 != 0) {
         lim = *(u16 *)((u8 *)arg0 + 4);
         vol = 5;
         if (lim >= 5) {
             vol = lim;
         }
+        vol = (u16)vol;
         if (flags & 1) {
             id = SynthFindVoice(vid);
             if ((u32)(id + 0x10000) != 0xFFFF) {
                 if (!(id & 0x80000000)) {
                     off = id * 0x1888;
-                    base = (u8 *)gSynthVoicePool + off;
-                    fn_8024A780(0, vol, base[0xED0], 2, 0);
-                    p = base;
+                    fn_8024A780(0, (u16)vol, ((u8 *)gSynthVoicePool + off)[0xED0], 2, vid);
+                    p = (u8 *)gSynthVoicePool + off;
+                    ed0 = p + 0xED0;
                     for (i = 0; i < 0x40; i++, p++) {
-                        if (p[0x324] != base[0xED0]) {
-                            fn_8024A780(0, vol, p[0x324], 0, -1);
+                        if (p[0x324] != *ed0) {
+                            fn_8024A780(0, (u16)vol, p[0x324], 0, -1);
                         }
                     }
                 } else {
@@ -1379,12 +1391,12 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
             if ((u32)(id + 0x10000) != 0xFFFF) {
                 if (!(id & 0x80000000)) {
                     off = id * 0x1888;
-                    base = (u8 *)gSynthVoicePool + off;
-                    fn_8024A780(0, vol, base[0xED0], 3, 0);
-                    p = base;
+                    fn_8024A780(0, (u16)vol, ((u8 *)gSynthVoicePool + off)[0xED0], 3, vid);
+                    p = (u8 *)gSynthVoicePool + off;
+                    ed0 = p + 0xED0;
                     for (i = 0; i < 0x40; i++, p++) {
-                        if (p[0x324] != base[0xED0]) {
-                            fn_8024A780(0, vol, p[0x324], 0, -1);
+                        if (p[0x324] != *ed0) {
+                            fn_8024A780(0, (u16)vol, p[0x324], 0, -1);
                         }
                     }
                 } else {
@@ -1398,12 +1410,12 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
             if ((u32)(id + 0x10000) != 0xFFFF) {
                 if (!(id & 0x80000000)) {
                     off = id * 0x1888;
-                    base = (u8 *)gSynthVoicePool + off;
-                    fn_8024A780(0, vol, base[0xED0], 1, 0);
-                    p = base;
+                    fn_8024A780(0, (u16)vol, ((u8 *)gSynthVoicePool + off)[0xED0], 1, vid);
+                    p = (u8 *)gSynthVoicePool + off;
+                    ed0 = p + 0xED0;
                     for (i = 0; i < 0x40; i++, p++) {
-                        if (p[0x324] != base[0xED0]) {
-                            fn_8024A780(0, vol, p[0x324], 0, -1);
+                        if (p[0x324] != *ed0) {
+                            fn_8024A780(0, (u16)vol, p[0x324], 0, -1);
                         }
                     }
                 } else {
@@ -1425,120 +1437,125 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
     flags = *((u8 *)arg0 + 0x26);
     if (flags & 2) {
         id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
-        if ((u32)(id + 0x10000) == 0xFFFF) {
-            *arg1 = -1;
-            return;
-        }
-        if (arg2 != 0) {
-            id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
-            if (!(id & 0x80000000)) {
-                sv = (SynthVoice *)((u8 *)gSynthVoicePool + id * 0x1888);
-                if (sv->state == 2) {
-                    if (sv->prev != NULL) {
-                        sv->prev->next = sv->next;
-                    } else {
-                        gActiveVoices = sv->next;
-                    }
-                    if (sv->next != NULL) {
-                        sv->next->prev = sv->prev;
-                    }
-                    sv->next = gKeyedVoices;
-                    if (gKeyedVoices != NULL) {
-                        gKeyedVoices->prev = sv;
-                    }
-                    sv->prev = NULL;
-                    gKeyedVoices = sv;
-                    sv->state = 1;
-                }
-            } else {
-                base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
-                base[0xEFA] = (u8)(base[0xEFA] & ~8);
-            }
-            pitch = *(u16 *)((u8 *)arg0 + 0xC);
-            pan = *((u8 *)arg0 + 0x18);
-            id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
-            if ((u32)(id + 0x10000) != 0xFFFF) {
+        if ((u32)(id + 0x10000) != 0xFFFF) {
+            if (arg2 != 0) {
+                id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
                 if (!(id & 0x80000000)) {
-                    off = id * 0x1888;
-                    base = (u8 *)gSynthVoicePool + off;
-                    fn_8024A780(pan, pitch, base[0xED0], 0, 0);
-                    p = base;
-                    for (i = 0; i < 0x40; i++, p++) {
-                        if (p[0x324] != base[0xED0]) {
-                            fn_8024A780(pan, pitch, p[0x324], 0, -1);
+                    sv = (SynthVoice *)((u8 *)gSynthVoicePool + id * 0x1888);
+                    if (sv->state == 2) {
+                        if (sv->prev != NULL) {
+                            sv->prev->next = sv->next;
+                        } else {
+                            gActiveVoices = sv->next;
                         }
+                        if (sv->next != NULL) {
+                            sv->next->prev = sv->prev;
+                        }
+                        sv->next = gKeyedVoices;
+                        if (gKeyedVoices != NULL) {
+                            gKeyedVoices->prev = sv;
+                        }
+                        sv->prev = NULL;
+                        gKeyedVoices = sv;
+                        sv->state = 1;
                     }
                 } else {
                     base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
-                    base[0xEEC] = pan;
+                    base[0xEFA] = (u8)(base[0xEFA] & ~8);
                 }
-            }
-            if (*((u8 *)arg0 + 0x26) & 0x10) {
+                vol = *(u16 *)((u8 *)arg0 + 0xC);
+                pan = *((u8 *)arg0 + 0x18);
                 id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
                 if ((u32)(id + 0x10000) != 0xFFFF) {
                     if (!(id & 0x80000000)) {
-                        sv = (SynthVoice *)((u8 *)gSynthVoicePool + id * 0x1888);
-                        sv->unk11C = *(s32 *)((u8 *)arg0 + 0x1C);
-                        sv->unk120 = *(s32 *)((u8 *)arg0 + 0x20);
+                        off = id * 0x1888;
+                        fn_8024A780(pan, (u16)vol, ((u8 *)gSynthVoicePool + off)[0xED0], 0,
+                                    *(u32 *)((u8 *)arg0 + 8));
+                        p = (u8 *)gSynthVoicePool + off;
+                        ed0 = p + 0xED0;
+                        for (i = 0; i < 0x40; i++, p++) {
+                            if (p[0x324] != *ed0) {
+                                fn_8024A780(pan, (u16)vol, p[0x324], 0, -1);
+                            }
+                        }
                     } else {
                         base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
-                        base[0xEFA] = (u8)(base[0xEFA] | 0x10);
-                        *(s32 *)(base + 0xEF0) = *(s32 *)((u8 *)arg0 + 0x1C);
-                        *(s32 *)(base + 0xEF4) = *(s32 *)((u8 *)arg0 + 0x20);
+                        base[0xEEC] = pan;
                     }
                 }
-            }
-            if (*((u8 *)arg0 + 0x26) & 0x20) {
-                id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
-                t = *(u16 *)((u8 *)arg0 + 0x24);
-                if (!(id & 0x80000000)) {
-                    base = (u8 *)gSynthVoicePool + id * 0x1888;
-                    for (k = 0; k < 16; k++) {
-                        *(u16 *)(base + 0x153A + k * 0x38) = t;
+                if (*((u8 *)arg0 + 0x26) & 0x10) {
+                    s32 a, b;
+                    b = *(s32 *)((u8 *)arg0 + 0x20);
+                    a = *(s32 *)((u8 *)arg0 + 0x1C);
+                    id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
+                    if ((u32)(id + 0x10000) != 0xFFFF) {
+                        if (!(id & 0x80000000)) {
+                            sv = (SynthVoice *)((u8 *)gSynthVoicePool + id * 0x1888);
+                            sv->unk11C = a;
+                            sv->unk120 = b;
+                        } else {
+                            base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
+                            base[0xEFA] = (u8)(base[0xEFA] | 0x10);
+                            *(s32 *)(base + 0xEF0) = a;
+                            *(s32 *)(base + 0xEF4) = b;
+                        }
                     }
-                } else {
-                    base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
-                    base[0xEFA] = (u8)(base[0xEFA] | 0x20);
-                    *(u16 *)(base + 0xEF8) = t;
+                }
+                if (*((u8 *)arg0 + 0x26) & 0x20) {
+                    t = *(u16 *)((u8 *)arg0 + 0x24);
+                    id = SynthFindVoice(*(u32 *)((u8 *)arg0 + 8));
+                    if (!(id & 0x80000000)) {
+                        base = (u8 *)gSynthVoicePool + id * 0x1888;
+                        for (k = 0; k < 16; k++) {
+                            *(u16 *)(base + 0x153A + k * 0x38) = t;
+                        }
+                    } else {
+                        base = (u8 *)gSynthVoicePool + (id & 0x7FFFFFFF) * 0x1888;
+                        base[0xEFA] = (u8)(base[0xEFA] | 0x20);
+                        *(u16 *)(base + 0xEF8) = t;
+                    }
+                }
+            } else {
+                fn_8024B420();
+                fn_8024B4B0(*((u8 *)arg0 + 0x18), *(u16 *)((u8 *)arg0 + 0xC),
+                             *(s32 *)((u8 *)arg0 + 8), 0);
+                if (*((u8 *)arg0 + 0x26) & 0x10) {
+                    fn_8024B458(*(s32 *)((u8 *)arg0 + 8),
+                                *(s32 *)((u8 *)arg0 + 0x1C),
+                                *(s32 *)((u8 *)arg0 + 0x20));
+                }
+                if (*((u8 *)arg0 + 0x26) & 0x20) {
+                    fn_8024B3D8(*(s32 *)((u8 *)arg0 + 8), *(u16 *)((u8 *)arg0 + 0x24));
                 }
             }
+            *arg1 = *(s32 *)((u8 *)arg0 + 8);
         } else {
-            fn_8024B420();
-            fn_8024B4B0(*((u8 *)arg0 + 0x18), *(u16 *)((u8 *)arg0 + 0xC),
-                         *(s32 *)((u8 *)arg0 + 8), 0);
-            if (*((u8 *)arg0 + 0x26) & 0x10) {
-                fn_8024B458(*(s32 *)((u8 *)arg0 + 8),
-                            *(s32 *)((u8 *)arg0 + 0x1C),
-                            *(s32 *)((u8 *)arg0 + 0x20));
-            }
-            if (*((u8 *)arg0 + 0x26) & 0x20) {
-                fn_8024B3D8(*(s32 *)((u8 *)arg0 + 8), *(u16 *)((u8 *)arg0 + 0x24));
-            }
+            *arg1 = -1;
         }
-        *arg1 = *(s32 *)((u8 *)arg0 + 8);
         return;
     }
-    flags2 = 4;
+    play.flags = 4;
     if (flags & 8) {
-        flags2 |= 0x10;
+        play.flags |= 0x10;
     }
     if (*((u8 *)arg0 + 0x26) & 0x20) {
-        flags2 |= 2;
-        sp14 = *(u16 *)((u8 *)arg0 + 0x24);
+        play.flags |= 2;
+        play.key = *(u16 *)((u8 *)arg0 + 0x24);
     }
     if (*((u8 *)arg0 + 0x26) & 0x10) {
-        flags2 |= 1;
-        spC = *(s32 *)((u8 *)arg0 + 0x1C);
-        sp10 = *(s32 *)((u8 *)arg0 + 0x20);
+        play.flags |= 1;
+        play.fx = *(s32 *)((u8 *)arg0 + 0x1C);
+        play.voldown = *(s32 *)((u8 *)arg0 + 0x20);
     }
-    sp16 = *(u16 *)((u8 *)arg0 + 0xC);
-    sp18 = *((u8 *)arg0 + 0x18);
-    sp20 = 0;
+    play.vol = *(u16 *)((u8 *)arg0 + 0xC);
+    play.pan = *((u8 *)arg0 + 0x18);
+    play.studio = 0;
     if (arg2 != 0) {
-        *arg1 = fn_80259430(*(u16 *)((u8 *)arg0 + 0x14), *(u16 *)((u8 *)arg0 + 0x16),
-                            *(s32 *)((u8 *)arg0 + 0x10), &flags2, 1,
-                            *((u8 *)arg0 + 0x19));
-        if ((u32)(*arg1 + 0x10000) != 0xFFFF && (*((u8 *)arg0 + 0x26) & 0x80)) {
+        ret = fn_80259430(*(u16 *)((u8 *)arg0 + 0x14), *(u16 *)((u8 *)arg0 + 0x16),
+                          *(s32 *)((u8 *)arg0 + 0x10), &play.flags, 1,
+                          *((u8 *)arg0 + 0x19));
+        *arg1 = ret;
+        if ((u32)(ret + 0x10000) != 0xFFFF && (*((u8 *)arg0 + 0x26) & 0x80)) {
             id = SynthFindVoice(*arg1);
             if ((u32)(id + 0x10000) != 0xFFFF) {
                 if (!(id & 0x80000000)) {
@@ -1554,10 +1571,11 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
             }
         }
     } else {
-        *arg1 = fn_80259584(*(u16 *)((u8 *)arg0 + 0x14), *(u16 *)((u8 *)arg0 + 0x16),
-                            *(s32 *)((u8 *)arg0 + 0x10), &flags2,
-                            *((u8 *)arg0 + 0x19));
-        if ((u32)(*arg1 + 0x10000) != 0xFFFF && (*((u8 *)arg0 + 0x26) & 0x80)) {
+        ret = fn_80259584(*(u16 *)((u8 *)arg0 + 0x14), *(u16 *)((u8 *)arg0 + 0x16),
+                          *(s32 *)((u8 *)arg0 + 0x10), &play.flags,
+                          *((u8 *)arg0 + 0x19));
+        *arg1 = ret;
+        if ((u32)(ret + 0x10000) != 0xFFFF && (*((u8 *)arg0 + 0x26) & 0x80)) {
             fn_8024B458(*arg1, 0, 0);
         }
     }
@@ -2112,9 +2130,56 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     return 0;
 }
 
-void fn_80246D48(void) { u32 i; StreamQueueNode *node; StreamTempo *t;
-if(!lbl_80368968->voices){for(i=0;i<64;i++){node=fn_80246070((u8)i);if(node){ StreamState *state=lbl_80368968; StreamQueueNode *prev=0,*cur=*(StreamQueueNode **)((u8*)state+0x1524); while(cur){if(cur->time>node->time){node->next=cur;node->prev=prev;if(prev)prev->next=node;else *(StreamQueueNode **)((u8*)state+0x1524)=node;cur->prev=node;goto next1;}prev=cur;cur=cur->next;}node->prev=prev;if(prev)prev->next=node;else *(StreamQueueNode **)((u8*)state+0x1524)=node;node->next=0; } next1:;}}
-else {for(i=0;i<64;i++){node=fn_80246070((u8)i);if(node){{s32 offset=lbl_80368968->voices[i]*0x38+0x1508;t=(StreamTempo*)((u8*)lbl_80368968+offset);}{ StreamQueueNode *prev=0,*cur=t->head; while(cur){if(cur->time>node->time){node->next=cur;node->prev=prev;if(prev)prev->next=node;else t->head=node;cur->prev=node;goto next2;}prev=cur;cur=cur->next;}node->prev=prev;if(prev)prev->next=node;else t->head=node;node->next=0; }}next2:;}}}
+void fn_80246D48(void) {
+    u32 i;
+    StreamQueueNode *node;
+    StreamTempo *t;
+    StreamQueueNode *prev, *cur;
+    u8 *voices;
+    struct TempoTable { u8 pad[0x1508]; StreamTempo tempo[16]; };
+    if (!lbl_80368968->voices) {
+        for (i = 0; i < 64; i++) {
+            node = fn_80246070((u8)i);
+            if (node) {
+                StreamState *state = lbl_80368968;
+                prev = 0; cur = *(StreamQueueNode **)((u8 *)state + 0x1524);
+                while (cur) {
+                    if (cur->time > node->time) {
+                        node->next = cur; node->prev = prev;
+                        if (prev) prev->next = node; else *(StreamQueueNode **)((u8 *)state + 0x1524) = node;
+                        cur->prev = node; goto next1;
+                    }
+                    prev = cur; cur = cur->next;
+                }
+                node->prev = prev;
+                if (prev) prev->next = node; else *(StreamQueueNode **)((u8 *)state + 0x1524) = node;
+                node->next = 0;
+            }
+            next1:;
+        }
+    } else {
+        for (i = 0; i < 64; i++) {
+            node = fn_80246070((u8)i);
+            if (node) {
+                voices = lbl_80368968->voices;
+                t = &((struct TempoTable *)lbl_80368968)->tempo[voices[i]];
+                prev = 0; cur = t->head;
+                while (cur) {
+                    if (cur->time > node->time) {
+                        node->next = cur; node->prev = prev;
+                        if (prev) prev->next = node; else t->head = node;
+                        cur->prev = node; goto next2;
+                    }
+                    prev = cur; cur = cur->next;
+                }
+                node->prev = prev;
+                if (prev) prev->next = node; else t->head = node;
+                node->next = 0;
+            }
+            next2:;
+        }
+    }
+}
 
 #pragma dont_inline reset
 
@@ -2123,7 +2188,7 @@ s32 fn_80246EBC(u8 arg0,u32 arg1){
 StreamQueueNode *fn_80246288(StreamQueueNode*,u8,u32*);void fn_80247F1C(s32,u8,s32);
 extern u32 lbl_80368960;extern f32 lbl_8036C1B0,lbl_8036C1B4,lbl_8036C1B8;extern f64 lbl_8036C1C0;
 f64 fn_802387A8(f64,f64);f64 floor(f64);
-u32 changed=0;s32 off=arg0*0x38;StreamTempo *tempo=(StreamTempo*)((u8*)lbl_80368968+off+0x1508);
+s32 off=arg0*0x38;u32 changed=0;StreamTempo *tempo=(StreamTempo*)((u8*)lbl_80368968+off+0x1508);
 StreamTempo *t;StreamQueueNode *node;u32 time;s32 i,j;u32 *event;f32 f;
 goto check;
 for(;;){
@@ -2164,8 +2229,8 @@ node=fn_80246288(node,arg0,&changed);
 if(node)StreamQueueInsert(&tempo->head,node);
 }
 check:
-node=tempo->head;time=node?node->time:0;
-if(time>tempo->buffers[tempo->active*2+1])return 1;
+node=tempo->head;
+if ((node ? node->time : 0) > tempo->buffers[tempo->active*2+1]) return 1;
 }
 }
 
@@ -2176,7 +2241,7 @@ void fn_80247358(u32 arg0) {
     extern u8 lbl_8036895C;
     extern u32 lbl_80368960;
     extern f32 lbl_8036C1B0, lbl_8036C1B4, lbl_8036C1B8;
-    extern f64 lbl_8036C1C0;
+    extern f64 lbl_8036C1C0, lbl_8036C1C8;
     s32 fn_80246EBC(u8, u32);
     void fn_80247F1C(s32, u8, s32);
     void fn_8024A6F8(u32);
@@ -2185,28 +2250,27 @@ void fn_80247358(u32 arg0) {
     void fn_8025FA50(s32, u8, u8, s32);
     f64 fn_802387A8(f64, f64);
     f64 floor(f64);
+    u32 result;
     SynthVoice *sv;
     SynthVoice *svNext;
-    StreamTempo *t;
     VidList *node;
     VidList *nnext;
     VidList *tail;
     u32 *event;
-    u32 result;
+    u32 val;
     u32 hasLists;
     u32 i;
     u32 j;
     u32 off;
     u32 sum;
     s32 cmp;
-    f32 f;
-    f32 f28;
-    f32 f30;
     f32 f31;
+    f32 f30;
+    f32 f28;
     f32 f27;
     u8 *base;
     u8 *p;
-    u8 ch;
+    u32 ch;
     u8 v;
 
     if (arg0 == 0) {
@@ -2221,7 +2285,7 @@ outer:
     lbl_8036895C = (u8)fn_8024ACB0(*(u8 *)((u8 *)sv + 0xED0));
     base = (u8 *)lbl_80368968;
     if (*(u32 *)(base + 0x1504) == 0) {
-        t = (StreamTempo *)(base + 0x1508);
+        StreamTempo *t = (StreamTempo *)(base + 0x1508);
         if (t->start != NULL) {
             goto ev_check0;
         ev_body0:
@@ -2229,8 +2293,9 @@ outer:
                 goto ev_done0;
             }
             if ((*(u32 *)(*(u8 **)((u8 *)lbl_80368968 + 0x118) + 0x10) & 0x40000000) != 0) {
-                t->value = event[1];
-                fn_80247F1C((s32)(event[1] >> 10), (u8)lbl_80368960, 0);
+                val = event[1];
+                t->value = val;
+                fn_80247F1C((s32)(val >> 10), (u8)lbl_80368960, 0);
             } else {
                 fn_80247F1C((s32)event[1], (u8)lbl_80368960, 0);
                 t->value = t->cursor[1] << 10;
@@ -2244,9 +2309,10 @@ outer:
         }
     ev_done0:
         t = (StreamTempo *)((u8 *)lbl_80368968 + 0x1508);
-        f = lbl_8036C1B0 * ((f32)t->value * (f32)arg0) * (lbl_8036C1B4 * (f32)t->scale);
-        t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8 * f, lbl_8036C1C0));
-        t->timing[t->active * 2 + 1] = (s32)(f32)floor(f);
+        f28 = lbl_8036C1B0 * ((f32)t->value * (f32)arg0);
+        f28 = f28 * (lbl_8036C1B4 * (f32)t->scale);
+        t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8 * f28, lbl_8036C1C0));
+        t->timing[t->active * 2 + 1] = (s32)(f32)floor(f28);
         result = (u32)fn_80246EBC(0, arg0);
         for (i = 0; i < 2; i++) {
             node = *(VidList **)((u8 *)lbl_80368968 + 0xE64 + i * 4);
@@ -2321,12 +2387,13 @@ outer:
         *(u32 *)((u8 *)lbl_80368968 + 0x1534) =
             (sum >> 16) + (*(u32 *)((u8 *)lbl_80368968 + 0x1520) + *(u32 *)((u8 *)lbl_80368968 + 0x1534));
     } else {
+        StreamTempo *t;
         f28 = lbl_8036C1B0;
         f30 = lbl_8036C1B4;
         f31 = lbl_8036C1B8;
         result = 0;
         for (ch = 0; ch < 0x10; ch++) {
-            t = (StreamTempo *)((u8 *)lbl_80368968 + (u32)ch * 0x38 + 0x1508);
+            t = (StreamTempo *)((u8 *)lbl_80368968 + ch * 0x38 + 0x1508);
             if (t->start != NULL) {
                 goto ev_check1;
             ev_body1:
@@ -2334,10 +2401,11 @@ outer:
                     goto ev_done1;
                 }
                 if ((*(u32 *)(*(u8 **)((u8 *)lbl_80368968 + 0x118) + 0x10) & 0x40000000) != 0) {
-                    t->value = event[1];
-                    fn_80247F1C((s32)(event[1] >> 10), (u8)lbl_80368960, (s32)ch);
+                    val = event[1];
+                    t->value = val;
+                    fn_80247F1C((s32)(val >> 10), (u8)lbl_80368960, (u8)ch);
                 } else {
-                    fn_80247F1C((s32)event[1], (u8)lbl_80368960, (s32)ch);
+                    fn_80247F1C((s32)event[1], (u8)lbl_80368960, (u8)ch);
                     t->value = t->cursor[1] << 10;
                 }
                 t->cursor += 2;
@@ -2348,11 +2416,12 @@ outer:
                 }
             }
         ev_done1:
-            t = (StreamTempo *)((u8 *)lbl_80368968 + (u32)ch * 0x38 + 0x1508);
-            f27 = f28 * ((f32)t->value * (f32)arg0) * (f30 * (f32)t->scale);
+            t = (StreamTempo *)((u8 *)lbl_80368968 + ch * 0x38 + 0x1508);
+            f27 = f28 * ((f32)t->value * (f32)arg0);
+            f27 = f27 * (f30 * (f32)t->scale);
             t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(f31 * f27, lbl_8036C1C0));
             t->timing[t->active * 2 + 1] = (s32)(f32)floor(f27);
-            result |= (u32)fn_80246EBC(ch, arg0);
+            result |= (u32)fn_80246EBC((u8)ch, arg0);
         }
         for (i = 0; i < 2; i++) {
             node = *(VidList **)((u8 *)lbl_80368968 + 0xE64 + i * 4);
@@ -2437,7 +2506,7 @@ outer:
     }
     if (result == 0 && hasLists == 0) {
         for (ch = 0; ch < 0x10; ch++) {
-            fn_8025FA50(0x40, ch, (u8)lbl_80368960, 0);
+            fn_8025FA50(0x40, (u8)ch, (u8)lbl_80368960, 0);
         }
         if (sv->prev != NULL) {
             sv->prev->next = svNext;

@@ -114,7 +114,7 @@ void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(vo
 u16 b;
 u16 a;
 u16 *p=&gUiPanelFlags;
-a=gUiPanelFlags; b=p[1];
+b=p[1]; a=gUiPanelFlags;
 gUiInputFlags |= 2;
 if(!(a&0x40)) {
 if((u32)Process_Find(gUiTooltipProc)!=0U) {
@@ -340,7 +340,7 @@ void fn_801214A4(void) {
     char *p;
     u8 *b;
     u32 disabled;
-    
+
     fn_8014D8FC(gBattleState);
     sprintf(text, (char *)lbl_80274D20 + 0x1C, fn_801662F0());
     disabled = gUiInputFlags & 0x800;
@@ -368,9 +368,9 @@ void fn_801214A4(void) {
             if (!disabled) {
                 lbl_8032BDE8[0x400C]=0;
                 if (*(s32 *)(lbl_8032BDE8+0x4004)<=0x3E) {
-                    (b + ((u8)(*(s32 *)(lbl_8032BDE8+0x4000)+0x100)<<6))[*(s32 *)(lbl_8032BDE8+0x4004)]=c;
-                    ++*(s32 *)(lbl_8032BDE8+0x4004);
-                    (b + ((u8)(*(s32 *)(lbl_8032BDE8+0x4000)+0x100)<<6))[*(s32 *)(lbl_8032BDE8+0x4004)]=0;
+                    (lbl_8032BDE8 + ((u8)(*(s32 *)(b+0x4000)+0x100)<<6))[*(s32 *)(b+0x4004)]=c;
+                    ++*(s32 *)(b+0x4004);
+                    (lbl_8032BDE8 + ((u8)(*(s32 *)(b+0x4000)+0x100)<<6))[*(s32 *)(b+0x4004)]=0;
                 }
             }
         }
@@ -967,19 +967,19 @@ void fn_801222A4(void *arg0)
 }
 
 void fn_80122314(void *arg0) {
-    extern u16 gUiPanelFlags;
-    extern u32 gUiInputFlags;
-    f32 Math_Ease(s32, f32, f32, f32, f32);
-    void UiPanel_PollSkip(void *);
+    extern u16 lbl_80367A58;
+    extern u32 lbl_80367110;
+    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    void fn_80120CFC(void *);
     s32 cur;
     s32 total;
 
-    UiPanel_PollSkip(&gUiPanelFlags);
+    fn_80120CFC(&lbl_80367A58);
     M2C_FIELD(arg0, s32 *, 0x34)++;
     cur = M2C_FIELD(arg0, s32 *, 0x34);
     total = M2C_FIELD(arg0, s32 *, 0x38);
-    if (cur > total || (gUiInputFlags & 3)) {
-        Process_ClearFunc(arg0);
+    if (cur > total || (lbl_80367110 & 3)) {
+        fn_8000C188(arg0);
         if (M2C_FIELD(arg0, s32 *, 0x40) == 0) {
             struct {
                 u8 pad0[0x30];
@@ -991,9 +991,8 @@ void fn_80122314(void *arg0) {
                 u8 unk48;
             } *p = M2C_FIELD(arg0, void **, 0x30);
             s32 i;
-            void *q;
             for (i = 0; i < p->count; i++) {
-                q = p->items[i];
+                void *q = p->items[i];
                 if (q != NULL) {
                     M2C_FIELD(q, u8 *, 0) = 0;
                     M2C_FIELD(q, void **, 0x40) = q;
@@ -1004,7 +1003,7 @@ void fn_80122314(void *arg0) {
             p->unk48 = 0;
         }
     } else {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) Math_Ease(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) fn_800067BC(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
     }
 }
 
@@ -1472,11 +1471,11 @@ void fn_80122F04(void *arg0, void *arg1) {
     extern f32 lbl_8036A2C4;
     extern f64 lbl_8036A2C8;
     void *self;
-    void *list;
+    register f32 f31;
     f32 f30;
-    f32 f31;
     s32 i;
-    s32 off;
+    void *list;
+    int off;
     void *obj;
 
     self = arg0;
@@ -1492,12 +1491,12 @@ void fn_80122F04(void *arg0, void *arg1) {
                       (f32)*(s32 *)((u8 *)self + 0x48),
                       (f32)(*(s32 *)((u8 *)self + 0x4C) + 0xC),
                       (f32)(*(s32 *)((u8 *)self + 0x44) + 1));
-        i += 1;
+        i++;
         off += 0xC;
         *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x1C) =
             (f32)(s16)(*(s32 *)((u8 *)self + 0x44) + 1);
-        *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x18) = f30;
         *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x20) = f31;
+        *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x18) = f30;
     }
 }
 #pragma use_lmw_stmw reset
@@ -2089,29 +2088,31 @@ void fn_80123D1C(void *arg0) {
     extern f32 lbl_8036A314;
     extern f32 lbl_8036A318;
     extern f32 lbl_8036A31C;
+    extern f64 lbl_8036A320;
 
     u8 sp18[0x20];
-    f32 sp38[3][4];
-    f32 sp68[3][4];
-    f32 sp98[3][4];
-    f32 spC8[3][4];
-    f32 spF8[3][4];
-    f32 sp128[3][4];
     f32 sp158[3][4];
+    f32 sp128[3][4];
+    f32 spF8[3][4];
+    f32 spC8[3][4];
+    f32 sp98[3][4];
+    f32 sp68[3][4];
+    f32 sp38[3][4];
     u32 sp14, sp10, spC, sp8;
     f32 zero;
-    s32 ring;
     s8 fade;
-    u16 count, n;
+    u16 count;
+    u16 n;
     u8 limit;
+    s32 ring;
     f32 *pts;
     s16 *verts;
-    s32 i, j, k;
+    s32 j, k;
     s16 half;
     u8 alpha, a2;
     s8 sx;
-    register volatile s16 *fifo_s;
-    register volatile u8 *fifo_b;
+    s16 vx, vy, vz;
+    s32 i;
 
     Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x58), sp18, 8);
     ring = Game_GetFrameCount();
@@ -2148,41 +2149,55 @@ void fn_80123D1C(void *arg0) {
     fn_802245D8(1, 4, 5, 0);
     GXSetZMode(1, 3, 0);
     fn_8022100C(0);
-    GXBegin(0x80, 0, (s32)((count << 5) & 0xFFE0));
+    GXBegin(0x80, 0, (count & 0x7FF) << 5);
 
-    fifo_s = (volatile s16 *)0xCC008000;
-    fifo_b = (volatile u8 *)0xCC008000;
     j = 7;
     k = 0xD9;
     do {
         half = (s16)((j + 1) << 2);
         alpha = (u8)(((0xFF - k) * (s32)fade) / 100);
-        verts = (s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x5C) + (count * ring * 6));
-        i = (s16)count;
-        if ((s16)(count - 1) >= 0) {
-            do {
-                *fifo_s = (s16)(verts[0] - half);
-                *fifo_s = verts[2];
-                *fifo_s = (s16)(verts[1] - half);
-                *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = alpha;
-                *fifo_b = 0; *fifo_b = 0;
-                *fifo_s = (s16)(verts[0] + half);
-                *fifo_s = verts[2];
-                *fifo_s = (s16)(verts[1] - half);
-                *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = alpha;
-                *fifo_b = 1; *fifo_b = 0;
-                *fifo_s = (s16)(verts[0] + half);
-                *fifo_s = verts[2];
-                *fifo_s = (s16)(verts[1] + half);
-                *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = alpha;
-                *fifo_b = 1; *fifo_b = 1;
-                *fifo_s = (s16)(verts[0] - half);
-                *fifo_s = verts[2];
-                *fifo_s = (s16)(verts[1] + half);
-                verts = (s16 *)((u8 *)verts + 6);
-                *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = 0xFF; *fifo_b = alpha;
-                *fifo_b = 0; *fifo_b = 1;
-            } while (--i != 0);
+        verts = (s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x5C) + count * ring * 6);
+        for (i = count; i != 0; i--) {
+            vx = verts[0];
+            vy = verts[1];
+            vz = verts[2];
+            *(volatile s16 *)0xCC008000 = (s16)(vx - half);
+            *(volatile s16 *)0xCC008000 = vz;
+            *(volatile s16 *)0xCC008000 = (s16)(vy - half);
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = alpha;
+            *(volatile u8 *)0xCC008000 = 0;
+            *(volatile u8 *)0xCC008000 = 0;
+            *(volatile s16 *)0xCC008000 = (s16)(vx + half);
+            *(volatile s16 *)0xCC008000 = vz;
+            *(volatile s16 *)0xCC008000 = (s16)(vy - half);
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = alpha;
+            *(volatile u8 *)0xCC008000 = 1;
+            *(volatile u8 *)0xCC008000 = 0;
+            *(volatile s16 *)0xCC008000 = (s16)(vx + half);
+            *(volatile s16 *)0xCC008000 = vz;
+            *(volatile s16 *)0xCC008000 = (s16)(vy + half);
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = alpha;
+            *(volatile u8 *)0xCC008000 = 1;
+            *(volatile u8 *)0xCC008000 = 1;
+            *(volatile s16 *)0xCC008000 = (s16)(vx - half);
+            *(volatile s16 *)0xCC008000 = vz;
+            *(volatile s16 *)0xCC008000 = (s16)(vy + half);
+            verts = (s16 *)((u8 *)verts + 6);
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = 0xFF;
+            *(volatile u8 *)0xCC008000 = alpha;
+            *(volatile u8 *)0xCC008000 = 0;
+            *(volatile u8 *)0xCC008000 = 1;
         }
         j -= 1;
         ring = (ring + 1) & 7;
@@ -2212,14 +2227,14 @@ void fn_80123D1C(void *arg0) {
     {
         s8 a = *(s8 *)((u8 *)arg0 + 0x50);
         s8 b = *(s8 *)((u8 *)arg0 + 0x51);
-        PSMTXTrans(sp68, (f32)((a + (a < 0 ? 1 : 0)) >> 1), lbl_8036A30C, (f32)((b + (b < 0 ? 1 : 0)) >> 1));
-        PSMTXTrans(sp38, (f32)(((-a) + ((-a) < 0 ? 1 : 0)) >> 1), lbl_8036A30C, (f32)(((-b) + ((-b) < 0 ? 1 : 0)) >> 1));
+        PSMTXTrans(sp68, (f32)((a + (a < 0)) >> 1), lbl_8036A30C, (f32)((b + (b < 0)) >> 1));
+        PSMTXTrans(sp38, (f32)(((-a) + ((-a) < 0)) >> 1), lbl_8036A30C, (f32)(((-b) + ((-b) < 0)) >> 1));
     }
     PSMTXScale(spF8, lbl_8036A310, lbl_8036A314, lbl_8036A310);
     fn_80220F44(6, 0);
     zero = lbl_8036A30C;
     pts = *(f32 **)((u8 *)arg0 + 0x64);
-    for (i = 0; i < (s32)limit; i++, pts += 2) {
+    for (j = 0; j < (s32)limit; j++, pts += 2) {
         if (!(pts[1] < zero)) {
             s16 rem;
             s32 tot;
@@ -2239,17 +2254,21 @@ void fn_80123D1C(void *arg0) {
                 if ((tot >> 3) != 0) {
                     s32 c = tot >> 3;
                     do {
-                        *fifo_s = rem; rem--; *fifo_s = rem; rem--;
-                        *fifo_s = rem; rem--; *fifo_s = rem; rem--;
-                        *fifo_s = rem; rem--; *fifo_s = rem; rem--;
-                        *fifo_s = rem; rem--; *fifo_s = rem; rem--;
-                    } while (--c != 0);
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                    } while (--c);
                     tot &= 7;
                 }
                 if (tot != 0) {
                     do {
-                        *fifo_s = rem; rem--;
-                    } while (--tot != 0);
+                        *(volatile s16 *)0xCC008000 = rem; rem--;
+                    } while (--tot);
                 }
             }
             pts[1] -= lbl_8036A308;
@@ -2449,13 +2468,13 @@ void fn_801248E4(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma peephole off
 void fn_8012497C(void *arg0) {
-    void *Map_Get(void);
-    f32 Math_Lerp(f32, f32, f32, f32);
+    void *fn_80040844(void);
+    f32 fn_80059F64(f32, f32, f32, f32);
     void fn_80067708(s32, s32, void (*)(void *), void *);
     u8 fn_800AA188(void);
     void fn_80124E58(void *, f32 *, f32 *);
-    void Fx_DrawParticles(void *);
-    f32 Vec_Length(void *);
+    void fn_80125388(void *);
+    f32 fn_8020322C(void *);
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
     extern f32 lbl_8036A32C;
@@ -2494,13 +2513,9 @@ void fn_8012497C(void *arg0) {
 
     if (*(u8 *)((u8 *)self + 0x4E) != 0) {
         limit = 0x3C;
-        {
-            u8 z = 0;
-            void *p = (u8 *)self + 0x38;
-            *(u8 *)((u8 *)self + 0x4E) = z;
-            t = Math_Lerp(lbl_8036A30C, lbl_8036A33C, lbl_8036A308,
-                            Vec_Length(p) / *(f32 *)((u8 *)self + 0x50));
-        }
+        *(u8 *)((u8 *)self + 0x4E) = 0;
+        t = fn_80059F64(lbl_8036A30C, lbl_8036A33C, lbl_8036A308,
+                        fn_8020322C((u8 *)self + 0x38) / *(f32 *)((u8 *)self + 0x50));
         t = lbl_8036A33C - t;
         if (t <= lbl_8036A340) {
             t = lbl_8036A340;
@@ -2511,7 +2526,7 @@ void fn_8012497C(void *arg0) {
         *(u8 *)((u8 *)self + 0x4D) = (u8)(s32)t;
     }
 
-    cam = Map_Get();
+    cam = fn_80040844();
     gqrVal = 0x08070807;
     for (outer = 0; outer < limit; outer++) {
         switch (*(u8 *)((u8 *)cam + 0x68)) {
@@ -2589,9 +2604,9 @@ void fn_8012497C(void *arg0) {
             fifth = mx / 5;
             if (cur < fifth) {
                 *(u8 *)((u8 *)node + 0xC) =
-                    (u8)(s32)Math_Lerp(lbl_8036A30C, (f32)amax, (f32)fifth, (f32)cur);
+                    (u8)(s32)fn_80059F64(lbl_8036A30C, (f32)amax, (f32)fifth, (f32)cur);
             } else {
-                *(u8 *)((u8 *)node + 0xC) = (u8)(s32)Math_Lerp(
+                *(u8 *)((u8 *)node + 0xC) = (u8)(s32)fn_80059F64(
                     (f32)amax, lbl_8036A30C, (f32)(mx - fifth), (f32)(cur - fifth));
             }
             keep = 1;
@@ -2634,7 +2649,7 @@ void fn_8012497C(void *arg0) {
         }
     }
 
-    fn_80067708(2, 3, Fx_DrawParticles, self);
+    fn_80067708(2, 3, fn_80125388, self);
 }
 #pragma peephole reset
 void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
@@ -2968,16 +2983,16 @@ void fn_80125624(void *arg0) {
         s32 unk6C;
     } Obj;
     u8 fn_800AA188(void);
-    Cam *Camera_Get(void);
+    Cam *fn_80068548(void);
     void fn_8005A1E8(s32, Vec *, Vec *);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_BindTexture(s32, s32, s32);
+    void fn_80009D74(f32, f32, f32, f32);
+    void fn_80009F90(s32, s32, s32);
     void fn_801258E4(void *);
     void fn_80007340(void (*)(void *), void *);
-    void Prim2D_EndPrim(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
+    void fn_80007884(void);
+    void fn_80007898(s32);
+    void fn_8000A248(void);
+    void fn_8000A258(void);
     Obj *obj = arg0;
     Vec delta = {0.0f, 0.0f, 0.0f};
     Vec pos = {0.0f, 0.0f, 0.0f};
@@ -2989,7 +3004,7 @@ void fn_80125624(void *arg0) {
         if (fn_800AA188() == 0) {
             return;
         }
-        cam = Camera_Get();
+        cam = fn_80068548();
         fn_8005A1E8(0, &cam->pos, &delta);
         fn_8005A1E8(0, &obj->pos, &pos);
         delta.x -= pos.x;
@@ -3006,13 +3021,13 @@ void fn_80125624(void *arg0) {
         obj->scrollY[i] -= (f32)((s32)(obj->scrollY[i] * 0.0078125f) << 7);
         scale *= 1.5f;
     }
-    Prim2D_Begin();
-    Prim2D_SetTransform(0.0f, 0.0f, 800.0f, 1.0f);
-    Prim2D_BindTexture(obj->unk6C, 6, 0x411);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(0xB);
+    fn_8000A258();
+    fn_80009D74(0.0f, 0.0f, 800.0f, 1.0f);
+    fn_80009F90(obj->unk6C, 6, 0x411);
+    fn_8000A248();
+    fn_80007898(0xB);
     fn_80007340(fn_801258E4, obj);
-    Prim2D_EndPrim();
+    fn_80007884();
 }
 
 void fn_80125818(void *arg0) {
@@ -3673,32 +3688,34 @@ void ScriptCmd_Config_Tutorial(void) {
         s32 unkB0;
     };
     extern struct Work gBattleState;
-    u8 one = 1;
-
-    gBattleState.a0 = one;
-    gBattleState.a1 = 0;
-    gBattleState.a2 = one;
-    gBattleState.a3 = 0;
-    gBattleState.a4 = 0;
-    gBattleState.a5 = 0;
-    gBattleState.b0 = 0;
-    gBattleState.b1 = 0;
-    gBattleState.b2 = 0;
-    gBattleState.b3 = 2;
-    gBattleState.b4 = 0;
-    gBattleState.b5 = 0;
-    gBattleState.c0 = 0;
-    gBattleState.c1 = 0;
-    gBattleState.c2 = one;
-    gBattleState.c3 = one;
-    gBattleState.c5 = 0;
-    gBattleState.unkA0 = 0x14;
-    gBattleState.unkA8 = 0;
-    gBattleState.unkAC = 0;
-    gBattleState.unkA9 = 0;
-    gBattleState.unkAA = 0;
-    gBattleState.unkB0 = 0;
-    gBattleState.unkA6 = one;
+    struct Work *p;
+    int one;
+    p = &gBattleState;
+    one = 1;
+    p->a0 = one;
+    p->a1 = 0;
+    p->a2 = one;
+    p->a3 = 0;
+    p->a4 = 0;
+    p->a5 = 0;
+    p->b0 = 0;
+    p->b1 = 0;
+    p->b2 = 0;
+    p->b3 = 2;
+    p->b4 = 0;
+    p->b5 = 0;
+    p->c0 = 0;
+    p->c1 = 0;
+    p->c2 = one;
+    p->c3 = one;
+    p->c5 = 0;
+    p->unkA0 = 0x14;
+    p->unkA8 = 0;
+    p->unkAC = 0;
+    p->unkA9 = 0;
+    p->unkAA = 0;
+    p->unkB0 = 0;
+    p->unkA6 = one;
 }
 
 extern u16 lbl_80290564[];
@@ -3797,13 +3814,13 @@ void fn_80126B34(s32 arg0) {
     menu=(u8*)fn_8013BC10(gScriptCmdNames+0x43D,gScriptCmdNames+0x445);
     *(s16*)(menu+0xC)=0x160;
     *(s16*)(menu+0xE)=0x20;
-    index=0;
     z=lbl_8036A400;
     *(s16*)(menu+0x1C)=0x20;
     *(s16*)(menu+8)=0x80;
     *(s16*)(menu+0xA)=0xF0;
     *(f32*)(menu+0x18)=z;
     menu[0x24]=1;
+    index=0;
     while (((Menu*)menu)->v15(index)!=0) {
         item=((Menu*)menu)->v15(index);
         item->v18(2);
@@ -4150,6 +4167,7 @@ void fn_8012767C(void)
     *(u8 *)(*(u8 **)gPadInput + 0x07) = 0;
 }
 
+#pragma global_optimizer off
 void fn_80127700(void *self) {
     extern u32 gUiInputFlags;
     extern void *volatile gPadInput;
@@ -4157,14 +4175,16 @@ void fn_80127700(void *self) {
     u8 *script;
     s32 cmd;
     u32 mask;
+    u32 zero;
+    u8 t;
 
+    mask = 0;
     gUiInputFlags |= 0x20;
     gUiInputFlags &= ~0x80;
 
     *(u8 *)((u8 *)self + 0x39) = *(u8 *)((u8 *)self + 0x39) - 1;
 
 dispatch:
-    mask = 0;
     *(u32 *)((u8 *)gPadInput + 0x8) = mask;
     *(u32 *)((u8 *)gPadInput + 0x4) = mask;
     *(u32 *)((u8 *)gPadInput + 0xC) = mask;
@@ -4184,82 +4204,84 @@ dispatch:
     *(u8 **)((u8 *)self + 0x30) = script + 1;
     cmd = (s8)*script;
     mask = 0;
-    if ((u32)cmd <= 0x5F) {
-        switch (cmd) {
-        case 1:
-            mask = 0x01000001;
-            break;
-        case 2:
-            mask = 0x02000002;
-            break;
-        case 4:
-            mask = 0x04000004;
-            break;
-        case 5:
-            mask = 0x05000005;
-            break;
-        case 6:
-            mask = 0x06000006;
-            break;
-        case 8:
-            mask = 0x08000008;
-            break;
-        case 9:
-            mask = 0x09000009;
-            break;
-        case 10:
-            mask = 0x0A00000A;
-            break;
-        case 0x10:
-            mask = 0x100;
-            break;
-        case 0x11:
-            mask = 0x200;
-            break;
-        case 0x12:
-            mask = 0x400;
-            break;
-        case 0x13:
-            mask = 0x800;
-            break;
-        case 0x14:
-            mask = 0x10;
-            break;
-        case 0x15:
-            mask = 0x40;
-            break;
-        case 0x16:
-            mask = 0x20;
-            break;
-        case 0x17:
-            mask = 0x1000;
-            break;
-        case 0x1E:
-            *(u8 *)((u8 *)self + 0x38) = (u8)((*(u8 *)((u8 *)self + 0x38) * 2) & 0xFE);
-            goto dispatch;
-        case 0x1F:
-            *(u8 *)((u8 *)self + 0x38) >>= 1;
-            goto dispatch;
-        case 0xF:
-            *(u8 *)((u8 *)self + 0x39) = *(u8 *)((u8 *)self + 0x38);
-            *(u32 *)((u8 *)gPadInput + 0x8) = 0;
-            mask = 0xF;
-            *(u32 *)((u8 *)gPadInput + 0x4) = mask;
-            *(u32 *)((u8 *)gPadInput + 0xC) = mask;
-            *(u32 *)((u8 *)gPadInput + 0x10) = mask;
-            goto check_end;
-        }
+    switch (cmd) {
+    case 0:
+        break;
+    case '1':
+        mask = 0x05000005;
+        break;
+    case '2':
+        mask = 0x04000004;
+        break;
+    case '3':
+        mask = 0x06000006;
+        break;
+    case '4':
+        mask = 0x01000001;
+        break;
+    case '6':
+        mask = 0x02000002;
+        break;
+    case '7':
+        mask = 0x09000009;
+        break;
+    case '8':
+        mask = 0x08000008;
+        break;
+    case '9':
+        mask = 0x0A00000A;
+        break;
+    case 'A':
+        mask = 0x100;
+        break;
+    case 'B':
+        mask = 0x200;
+        break;
+    case 'X':
+        mask = 0x400;
+        break;
+    case 'Y':
+        mask = 0x800;
+        break;
+    case 'Z':
+        mask = 0x10;
+        break;
+    case 'L':
+        mask = 0x40;
+        break;
+    case 'R':
+        mask = 0x20;
+        break;
+    case 'S':
+        mask = 0x1000;
+        break;
+    case '<':
+        *(u8 *)((u8 *)self + 0x38) = (u8)((*(u8 *)((u8 *)self + 0x38) * 2) & 0xFE);
+        goto dispatch;
+    case '>':
+        *(u8 *)((u8 *)self + 0x38) >>= 1;
+        goto dispatch;
+    case '_':
+        mask = 0xF;
+        t = *(u8 *)((u8 *)self + 0x38);
+        zero = 0;
+        *(u8 *)((u8 *)self + 0x39) = t;
+        goto store_body;
+    default:
+        break;
     }
-    *(u32 *)((u8 *)gPadInput + 0x8) = 0;
+    zero = 0;
+store_body:
+    *(u32 *)((u8 *)gPadInput + 0x8) = zero;
     *(u32 *)((u8 *)gPadInput + 0x4) = mask;
     *(u32 *)((u8 *)gPadInput + 0xC) = mask;
     *(u32 *)((u8 *)gPadInput + 0x10) = mask;
-check_end:
+
     if ((s8)**(u8 **)((u8 *)self + 0x30) == 0) {
         Process_ClearFunc(self);
     }
 }
-
+#pragma global_optimizer on
 s32 ScriptCmd_GameUnbind(void) {
     void Process_UnlinkByKey(void *);
     extern u8 lbl_802904AC[];

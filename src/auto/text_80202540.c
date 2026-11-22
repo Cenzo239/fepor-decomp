@@ -209,6 +209,7 @@ void fn_80202870(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, 
 
     scale = lbl_8036BC40 * lbl_8036BC50;
     farg0 = scale * farg0;
+    t = farg1;
     t = lbl_8036BC38 / fn_80238A0C(farg0);
     m[0] = farg2 * (t / farg1);
     z = lbl_8036BC3C;

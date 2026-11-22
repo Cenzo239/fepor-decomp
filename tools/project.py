@@ -667,14 +667,17 @@ def generate_build_ninja(
     # MWCC
     mwcc = compiler_path / "mwcceppc.exe"
     mwcc_cmd = f"{wrapper_cmd}{mwcc} $cflags -MMD -c $in -o $basedir"
+    mwcc_cmd = f"$python tools/fe9_guard_compiler.py {mwcc} $in && " + mwcc_cmd  # FE9_COMPILER_GUARD
     mwcc_implicit: List[Optional[Path]] = [compilers_implicit or mwcc, wrapper_implicit]
 
     # MWCC with UTF-8 to Shift JIS wrapper
     mwcc_sjis_cmd = f"{wrapper_cmd}{sjiswrap} {mwcc} $cflags -MMD -c $in -o $basedir"
+    mwcc_sjis_cmd = f"$python tools/fe9_guard_compiler.py {mwcc} $in && " + mwcc_sjis_cmd  # FE9_COMPILER_GUARD
     mwcc_sjis_implicit: List[Optional[Path]] = [*mwcc_implicit, sjiswrap]
 
     # MWCC for precompiled headers
     mwcc_pch_cmd = f"{wrapper_cmd}{mwcc} $cflags -MMD -c $in -o $basedir -precompile $basefilestem.mch"
+    mwcc_pch_cmd = f"$python tools/fe9_guard_compiler.py {mwcc} $in && " + mwcc_pch_cmd  # FE9_COMPILER_GUARD
     mwcc_pch_implicit: List[Optional[Path]] = [*mwcc_implicit]
 
     # MWCC for precompiled headers with UTF-8 to Shift JIS wrapper

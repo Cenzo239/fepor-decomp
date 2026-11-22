@@ -709,20 +709,58 @@ void fn_80221D6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 far
 }
 
 void fn_80221D88(f32 *obj, f32 angle, u32 mode) {
-f32 cosf(f32);
-f32 a,b,c,t,x;
-if(angle<=0.0f || angle>90.0f) mode=0;
-x=cosf(3.1415927f*angle/180.0f);
-switch(mode) {
-case 1:a=(-1000.0f)*x;b=1000.0f;c=0.0f;break;
-case 2:t=1.0f/(1.0f-x);b=t;a=-x*t;c=0.0f;break;
-case 3:t=1.0f/(1.0f-x);c=t;b=-x*t;a=0.0f;break;
-case 4:t=1.0f/((1.0f-x)*(1.0f-x));a=t*(x*(x-2.0f));b=2.0f*t;c=-t;break;
-case 5:t=1.0f/((1.0f-x)*(1.0f-x));c=(-4.0f)*t;a=c*x;b=(4.0f*(1.0f+x))*t;break;
-case 6:t=1.0f/((1.0f-x)*(1.0f-x));a=t*((2.0f*x)*x);b=(4.0f*x)*t;c=(-2.0f)*t;a=1.0f-a;break;
-case 0:default:a=1.0f;c=0.0f;b=c;break;
-}
-obj[4]=a;obj[5]=b;obj[6]=c;
+    f32 cosf(f32);
+    f32 a, b, c, t, x;
+    if (angle <= 0.0f || angle > 90.0f)
+        mode = 0;
+    x = cosf(3.1415927f * angle / 180.0f);
+    switch (mode) {
+    case 1:
+        a = (-1000.0f) * x;
+        b = 1000.0f;
+        c = 0.0f;
+        break;
+    case 2:
+        t = 1.0f / (1.0f - x);
+        b = t;
+        a = -x * t;
+        c = 0.0f;
+        break;
+    case 3:
+        t = 1.0f / (1.0f - x);
+        c = t;
+        b = -x * t;
+        a = 0.0f;
+        break;
+    case 4:
+        t = 1.0f / ((1.0f - x) * (1.0f - x));
+        a = t * (x * (x - 2.0f));
+        b = 2.0f * t;
+        c = -t;
+        break;
+    case 5:
+        t = 1.0f / ((1.0f - x) * (1.0f - x));
+        c = (-4.0f) * t;
+        a = c * x;
+        b = (4.0f * (1.0f + x)) * t;
+        break;
+    case 6:
+        t = 1.0f / ((1.0f - x) * (1.0f - x));
+        a = t * ((x * 2.0f) * x);
+        b = (x * 4.0f) * t;
+        c = t * (-2.0f);
+        a = 1.0f - a;
+        break;
+    case 0:
+    default:
+        a = 1.0f;
+        b = 0.0f;
+        c = b;
+        break;
+    }
+    obj[4] = a;
+    obj[5] = b;
+    obj[6] = c;
 }
 
 void fn_80221F18(void *arg0, s32 arg1, f32 farg0, f32 farg1) {

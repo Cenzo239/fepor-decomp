@@ -2600,11 +2600,11 @@ found4:
     Audio_Unlock();
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 s32 AudioBank_Insert(u16 id, s32 data) {
     void Audio_Lock(void);
     void Audio_Unlock(void);
-    extern AudioTableEntry lbl_8034EEB8[];
+    extern AudioTableEntry lbl_8034EEB8[256];
     extern u16 lbl_80368A0E;
 
     u16 count;
@@ -2652,7 +2652,6 @@ insert:
     Audio_Unlock();
     return 1;
 }
-#pragma global_optimizer on
 s32 AudioBank_Remove(u16 id) {
     struct AudioBankKey {
         s32 data;

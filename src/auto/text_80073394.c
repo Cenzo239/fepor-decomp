@@ -230,33 +230,34 @@ s32 fn_80073834(s32 arg0, s32 arg1)
     return 5;
 }
 
-void Unit_OfferItem(void *unit, s32 itemArg, void *parent) {
+void Unit_OfferItem(void *unit, s32 item, void *parent) {
     void *Unit_GetItemSlot(void *, s32);
     u8 fn_80094ABC(void *, void *);
-    void fn_80091788(void *, void *, void *);
     void fn_800916B8(void *, void *, void *);
+    void fn_80091788(void *, void *, void *);
     void Item_Copy(void *, void *);
     void Process_CreateChild(void *, void *);
     extern void *lbl_80367468;
     extern u64 lbl_8036746C;
     extern u8 lbl_80287378[];
 
-    void *item;
-    s32 clear;
-    u8 flags;
+    void *p;
+    void *info;
     s32 i;
     void *slot;
-    void *info;
+    u8 flags;
+    void *itemPtr;
     u8 kind;
-    s32 one;
 
-    item = (void *)itemArg;
-    clear = 0;
-    flags = *((u8 *)item + 5);
-    flags = __rlwimi(flags, clear, 7, 24, 24);
-    *((u8 *)item + 5) = flags;
-    flags = __rlwimi(flags, clear, 6, 25, 25);
-    *((u8 *)item + 5) = flags;
+    p = parent;
+    itemPtr = (void *)item;
+    item = 0;
+    flags = *((u8 *)itemPtr + 5);
+    flags = __rlwimi(flags, item, 7, 24, 24);
+    *((u8 *)itemPtr + 5) = flags;
+    flags = (u8)flags;
+    flags = __rlwimi(flags, item, 6, 25, 25);
+    *((u8 *)itemPtr + 5) = flags;
 
     info = *(void **)((u8 *)unit + 0x190);
     if (*((u8 *)info + 8) == 1) {
@@ -269,31 +270,30 @@ void Unit_OfferItem(void *unit, s32 itemArg, void *parent) {
             if (((*((u8 *)slot + 5) >> 6) & 1) != 0) {
                 goto after_flag;
             }
-            i += 1;
+            i++;
             if (i >= 8) {
                 break;
             }
         }
-        one = 1;
-        flags = *((u8 *)item + 5);
-        flags = __rlwimi(flags, one, 6, 25, 25);
-        *((u8 *)item + 5) = flags;
+        flags = *((u8 *)itemPtr + 5);
+        flags = __rlwimi(flags, 1, 6, 25, 25);
+        *((u8 *)itemPtr + 5) = flags;
     }
 after_flag:
-    if (fn_80094ABC(unit, item) != 0) {
+    if (fn_80094ABC(unit, itemPtr) != 0) {
         info = *(void **)((u8 *)unit + 0x190);
         if (*((u8 *)info + 8) != 1) {
-            fn_80091788(item, parent, unit);
+            fn_80091788(itemPtr, p, unit);
         } else {
-            fn_800916B8(item, parent, unit);
+            fn_800916B8(itemPtr, p, unit);
         }
     } else {
         info = *(void **)((u8 *)unit + 0x190);
         kind = *((u8 *)info + 8);
         if (kind == 0 || kind == 5) {
             lbl_80367468 = unit;
-            Item_Copy(&lbl_8036746C, item);
-            Process_CreateChild(lbl_80287378, parent);
+            Item_Copy(&lbl_8036746C, itemPtr);
+            Process_CreateChild(lbl_80287378, p);
         }
     }
 }

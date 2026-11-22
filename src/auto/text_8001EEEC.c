@@ -75,26 +75,26 @@ typedef struct {
 
 void fn_8001EEEC(s8 *p)
 {
-start:
-    switch (*p) {
-    case 0:
-        *p = 0x10;
-        return;
-    case 0x34:
-        *p = 1;
-        break;
-    case 0x38:
-        *p = 8;
-        break;
-    case 0x36:
-        *p = 2;
-        break;
-    case 0x32:
-        *p = 4;
-        break;
+    while (1) {
+        switch (*p) {
+        case 0:
+            *p = 0x10;
+            return;
+        case 0x34:
+            *p = 1;
+            break;
+        case 0x38:
+            *p = 8;
+            break;
+        case 0x36:
+            *p = 2;
+            break;
+        case 0x32:
+            *p = 4;
+            break;
+        }
+        p++;
     }
-    p += 1;
-    goto start;
 }
 
 void fn_8001EF7C(void) {
@@ -184,63 +184,65 @@ outer_test:
         goto outer;
     }
 }
-#pragma opt_strength_reduction reset
+#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
-    void Map_FillLayer(void *, s32, s32);
-    void Map_SetupUnitMoveLimit(void *);
-    extern u8 gUnitLists[];
-    extern u8 gMapBlendMode;
+    void fn_80022DAC(void *, s32, s32);
+    void fn_800AACDC(void *);
+    extern u8 lbl_802CA264[];
+    extern u8 lbl_80367289;
 
-    void *node;
+    register u16 packed;
     void *next;
-    s32 flags;
-    s8 row;
-    s32 row_off;
-    u8 *row_base;
-    s8 col;
-    s32 idx;
     u8 *bp;
-    s32 idx2;
-    u16 *p;
+    s8 row;
+    register s32 i_up;
+    register u8 *row_base;
+    unsigned long t;
+    register s32 idx;
+    register void *node;
+    register s32 idx2;
+    u8 rt;
     s8 r;
-    s32 ro;
-    s8 c;
-    s32 i_cur_u;
-    s32 i_up_u;
-    s32 i_dn_u;
+    int ro;
+    register s32 idx3_2;
+    u8 var_r4;
+    unsigned int i_cur_u;
+    register s32 i_dn_u;
     s32 i_cur;
-    s32 i_up;
+    register s32 row_off;
     s32 i_dn;
     u16 tflags;
-    u32 bit;
-    u32 masked;
+    unsigned int bit;
+    unsigned int masked;
     u8 up;
     u8 dn;
     u8 lf;
-    u8 rt;
-    u16 packed;
-    s32 a;
-    s32 b;
-    s32 x;
-    s32 y;
+    u16 *p;
+    s32 flags;
+    unsigned long one;
+    unsigned int temp;
+    s8 col;
+    s32 u;
+    register s32 i_up_u;
     s8 row2;
     s32 ro2;
     u8 *base2;
-    s8 col2;
     s32 idx3;
     u8 *bp2;
-    s32 idx3_2;
-    s32 zero;
+    s8 col2;
+    s8 c;
+    u32 zero;
 
     OSGetTick();
-    Map_FillLayer(arg0, 9, 0);
-    node = *(void **)(gUnitLists + 0xC);
+    fn_80022DAC(arg0, 9, 0);
+    node = *(void **)(lbl_802CA264 + 0xC);
     while (node != NULL) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
         next = *(void **)((u8 *)node + 0x184);
-        if ((flags & 0x800) != 0 && (flags & 0x010000DC) == 0) {
-            Map_SetupUnitMoveLimit(node);
+        if ((flags & (int)0x800) != 0 && (flags & (u32)0x010000DC) == 0) {
+            fn_800AACDC(node);
             row = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
             row_off = row << 6;
             row_base = (u8 *)arg0 + row_off;
@@ -257,9 +259,9 @@ void fn_8001F140(void *arg0) {
                         }
                     }
                     bp -= 1;
-                    idx -= 1;
-                    idx2 -= 2;
+                    idx--;
                     col -= 1;
+                    idx2 -= 2;
                 }
                 row_base -= 0x40;
                 row_off -= 0x40;
@@ -281,7 +283,7 @@ void fn_8001F140(void *arg0) {
         i_up = i_up_u << 1;
         while (c >= 0) {
             tflags = *(u16 *)((s32)arg0 + (i_cur_u << 1) + 0x1218E);
-            if (tflags != 0) {
+            if (tflags) {
                 bit = (tflags >> 13) & 1;
                 if (r == 0) {
                     up = 0;
@@ -293,7 +295,7 @@ void fn_8001F140(void *arg0) {
                 if (r == *(s32 *)((u8 *)arg0 + 4) - 1) {
                     dn = 0;
                 } else {
-                    masked = *(u16 *)((s32)arg0 + (i_dn_u << 1) + 0x1218E);
+                    register masked = *(u16 *)((s32)arg0 + (i_dn_u << 1) + 0x1218E);
                     masked &= 0x2000;
                     dn = (u32)__cntlzw(masked) >> 5;
                 }
@@ -314,7 +316,7 @@ void fn_8001F140(void *arg0) {
                 packed = 0;
                 packed <<= 1;
                 packed |= (u16)bit;
-                if (bit != 0) {
+                if ((u32)bit != 0) {
                     packed <<= 6;
                     packed |= (u16)(u8)up;
                     packed <<= 1;
@@ -326,7 +328,7 @@ void fn_8001F140(void *arg0) {
                 } else {
                     packed <<= 9;
                 }
-                *(u16 *)((s32)arg0 + (i_cur_u << 1) + 0x1218E) = (packed << 4) & 0xFFF0;
+                *(u16 *)((s32)arg0 + (i_cur_u << 1) + 0x1218E) = (packed << 4) & (u32)0xFFF0;
             }
             i_cur_u -= 1;
             i_cur -= 2;
@@ -340,37 +342,36 @@ void fn_8001F140(void *arg0) {
         r -= 1;
     }
 
-    a = 1;
-    b = gMapBlendMode;
-    b = (u8)(b - 1);
-    x = ~b;
-    y = a - b;
-    x = a | x;
-    if (((u32)(x - ((u32)y >> 1)) >> 31) == 0) {
-        a = 0;
+    one = 1;
+    var_r4 = one;
+    temp = (u8)(lbl_80367289 - 1);
+    u = (u32)(one - temp) >> 1;
+    t = one | ~temp;
+    if (((u32)(t - u) >> 31) == 0) {
+        var_r4 = 0;
     }
-    if ((u8)a != 0) {
-        zero = 0;
+    if ((s32)var_r4 != 0) {
+        register zero = 0;
         row2 = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
         ro2 = row2 << 6;
         base2 = (u8 *)arg0 + ro2;
-        while (row2 >= 0) {
+        while (0 <= row2) {
             col2 = (s8)(*(s32 *)arg0 - 1);
             idx3 = col2 + ro2;
             bp2 = base2 + col2;
             idx3_2 = idx3 << 1;
-            while (col2 >= 0) {
+            while (0 <= col2) {
                 if (bp2[0x200D] == 0) {
                     *(u16 *)((s32)arg0 + (idx3 << 1) + 0x1218E) = zero;
                 }
                 bp2 -= 1;
                 idx3 -= 1;
+                col2--;
                 idx3_2 -= 2;
-                col2 -= 1;
             }
             base2 -= 0x40;
             ro2 -= 0x40;
-            row2 -= 1;
+            row2--;
         }
     }
     OSGetTick();

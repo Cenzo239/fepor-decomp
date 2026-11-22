@@ -1105,6 +1105,7 @@ s32 Sound_PlaySE(u16 soundId, u8 priority, u8 volParam, u8 paramA)
     return idx;
 }
 
+#pragma global_optimizer off
 void fn_800B22D8(void) {
     u8 fn_8024B370(s32);
     void fn_8024B3A0(s32);
@@ -1113,7 +1114,7 @@ void fn_800B22D8(void) {
     extern s16 lbl_80366E38;
     extern s16 lbl_80367808;
     s16 delta;
-    s32 sum;
+    u32 sum;
     u8 *entry;
     s32 i;
     s32 j;
@@ -1162,7 +1163,7 @@ void fn_800B22D8(void) {
         entry += 0x10;
     } while (i < 8);
 }
-
+#pragma global_optimizer on
 s32 fn_800B2494(s32 arg0)
 {
     s32 fn_8024B370(void *);
@@ -1912,7 +1913,8 @@ void fn_800B47C0(s32 arg0) {
 }
 
 void fn_800B47F0(void) {
-    extern M2C_UNK lbl_80312BD0;
+    typedef struct { u8 pad[1104]; } BigGlobal;
+    extern BigGlobal lbl_80312BD0;
     s32 temp_r27_2;
     s32 temp_r4;
     u8 temp_r27;
@@ -1948,7 +1950,7 @@ loop_1:
     M2C_FIELD(temp_r5, s32 *, 0x30) = (s32) M2C_FIELD(temp_r5, s32 *, 0x34);
     M2C_FIELD(temp_r5, s32 *, 0x34) = (s32) M2C_FIELD(temp_r5, s32 *, 0x38);
     M2C_FIELD(temp_r5, s32 *, 0x38) = (s32) M2C_FIELD(temp_r5, s32 *, 0x3C);
-    M2C_FIELD((&lbl_80312BD0 + 0x6E48), s32 *, 0x3C) = 0;
+    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E48) = 0;
     if (temp_r27_2 != 0) {
         fn_80258D74(&fn_800B2DE4, 0x20000);
         Sound_PushGroup(M2C_FIELD(temp_r30, s32 *, 0x28), (u8) (temp_r27_2 - 1), 0, M2C_FIELD(temp_r30, s32 *, 0x48), M2C_FIELD(temp_r30, s32 *, 8));
@@ -1970,7 +1972,7 @@ loop_1:
     M2C_FIELD(temp_r5_2, s32 *, 0x34) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x38);
     temp_r4 = M2C_FIELD(temp_r5_2, s32 *, 0x3C);
     M2C_FIELD(temp_r5_2, s32 *, 0x38) = temp_r4;
-    M2C_FIELD((&lbl_80312BD0 + 0x6E98), s32 *, 0x3C) = 0;
+    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E98) = 0;
     OS_YieldThread(0, temp_r4, temp_r5_2);
     goto loop_1;
 }
@@ -3990,6 +3992,7 @@ s32 fn_800B861C(void) {
     return 0;
 }
 
+#pragma optimization_level 2
 u32 fn_800B864C(u8 *p) {
 s32 flags=0; u8 ch;
 while ((s8)(ch=*p)!=0) {
@@ -4012,7 +4015,7 @@ p++;
 }
 return flags;
 }
-
+#pragma optimization_level 4
 s32 fn_800B870C(u32 arg0) {
     s32 Process_FindByName();
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -9469,6 +9472,7 @@ void fn_800C1360(void *arg0)
     u8 *dst;
     s32 t, inv;
     s32 a, b, loA, loB;
+    s32 p, q, r, s;
     u8 *src, *next;
     M2C_FIELD(arg0, s32*, 0x60)++;
     next = gMapBlendBufs[(gMapBlendBufIndex + 2) % 3];
@@ -9478,18 +9482,16 @@ void fn_800C1360(void *arg0)
     inv = 16 - t;
     for (i=0;i<128;i++) {
         for (j=0;j<32;j++) {
-            {
             a = *src++;
             b = *next++;
             loA = a & 15; a &= 240; loB = b & 15; b &= 240;
-            *dst++ = ((loB*t + loA*inv)>>4) + (((b*t + a*inv)>>4)&240);
-            }
-            {
+            p = loB * t; q = loA * inv; r = b * t; s = a * inv;
+            *dst++ = ((p + q)>>4) + (((r + s)>>4)&240);
             a = *src++;
             b = *next++;
             loA = a & 15; a &= 240; loB = b & 15; b &= 240;
-            *dst++ = ((loB*t + loA*inv)>>4) + (((b*t + a*inv)>>4)&240);
-            }
+            p = loB * t; q = loA * inv; r = b * t; s = a * inv;
+            *dst++ = ((p + q)>>4) + (((r + s)>>4)&240);
         }
     }
     DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
@@ -9520,24 +9522,24 @@ void Map_SyncBlendBuffers(void *proc) {
 }
 
 void fn_800C15A8(void) {
-    s32 GMaterial_AllocMtx(void);
-    s32 GMaterial_AllocTexCoord(void);
-    s32 GMaterial_AllocTexMap(void);
-    s32 GMaterial_AllocTevStage(void);
-    void PSMTXIdentity(void *);
-    void PSMTXConcat(void *, void *, void *);
-    void PSMTXTrans(void *, f32, f32, f32);
-    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    s32 fn_80069D58(void);
+    s32 fn_80069DBC(void);
+    s32 fn_80069E18(void);
+    s32 fn_80069EA8(void);
+    void fn_80201FC4(void *);
+    void fn_80202024(void *, void *, void *);
+    void fn_80202540(void *, f32, f32, f32);
+    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
-    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void GXSetTevOrder(s32, s32, s32, s32);
+    void fn_80223A5C(s32, s32, s32, s32, s32);
+    void fn_80223AA0(s32, s32, s32, s32, s32);
+    void fn_80223AE4(s32, s32, s32, s32, s32, s32);
+    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void fn_80223F2C(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
-    extern s32 gMapBlendBufIndex;
+    extern s32 lbl_8036785C;
     extern f32 lbl_80369D28;
     extern f32 lbl_80369D44;
     extern f32 lbl_80369D48;
@@ -9546,36 +9548,36 @@ void fn_800C15A8(void) {
     u8 sp68[0x30];
     u8 sp38[0x30];
     u8 sp8[0x30];
-    f32 t5;
-    void *p;
-    f32 t1;
-    f32 t2;
     s32 r31;
     s32 r30;
     s32 r29;
     s32 r28;
+    f32 t5;
+    void *p;
+    f32 t1;
+    f32 t2;
 
     t5 = lbl_80369D4C;
     p = sp38;
     t1 = lbl_80369D44;
     t2 = lbl_80369D48;
-    C_MTXLightOrtho(p, t1, t2, t2, t1, t5, t5, t5, t5);
-    PSMTXTrans(sp68, lbl_80369D50, lbl_80369D50, lbl_80369D28);
-    PSMTXIdentity(sp8);
-    PSMTXConcat(sp68, sp8, sp8);
-    PSMTXConcat(sp38, sp8, sp8);
-    r31 = GMaterial_AllocTevStage();
-    r30 = GMaterial_AllocTexCoord();
-    r29 = GMaterial_AllocTexMap();
-    fn_80222C50(lbl_8031FFD0 + (gMapBlendBufIndex << 5), r29);
-    r28 = GMaterial_AllocMtx();
+    fn_8020293C(p, t1, t2, t2, t1, t5, t5, t5, t5);
+    fn_80202540(sp68, lbl_80369D50, lbl_80369D50, lbl_80369D28);
+    fn_80201FC4(sp8);
+    fn_80202024(sp68, sp8, sp8);
+    fn_80202024(sp38, sp8, sp8);
+    r31 = fn_80069EA8();
+    r30 = fn_80069DBC();
+    r29 = fn_80069E18();
+    fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
+    r28 = fn_80069D58();
     fn_80224E50(sp8, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
-    GXSetTevOrder(r31, r30, r29, 0xFF);
-    GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
-    GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn(r31, 7, 7, 7, 0);
-    GXSetTevAlphaOp(r31, 0, 0, 0, 1, 0);
+    fn_80223F2C(r31, r30, r29, 0xFF);
+    fn_80223A5C(r31, 0xF, 0, 8, 0xF);
+    fn_80223AE4(r31, 0, 0, 0, 1, 0);
+    fn_80223AA0(r31, 7, 7, 7, 0);
+    fn_80223B4C(r31, 0, 0, 0, 1, 0);
 }
 
 #pragma optimization_level 2
@@ -9677,7 +9679,7 @@ void fn_800C1984(void) {
     fn_80046360(Map_Get(), 0, Map_SetupBlendTev, 0, 0, 0x8000);
 }
 
-#pragma opt_strength_reduction off
+#pragma peephole off
 void fn_800C19E8(u8 *src) {
     extern u8 *gMapBlendBufs[];
     extern s32 gMapBlendBufIndex;
@@ -9707,8 +9709,7 @@ void fn_800C19E8(u8 *src) {
             do {
                 col = src + x;
                 i = 0;
-                ctr = 4;
-                do {
+                for (ctr = 4; ctr != 0; ctr--) {
                     p = col + lbl_80367858 * (y + i);
                     word = (((((((((((((((word << 4) | ((p[0] >> 4) & 0xF)) << 4) | ((p[1] >> 4) & 0xF)) << 4) | ((p[2] >> 4) & 0xF)) << 4) | ((p[3] >> 4) & 0xF)) << 4) | ((p[4] >> 4) & 0xF)) << 4) | ((p[5] >> 4) & 0xF)) << 4) | ((p[6] >> 4) & 0xF)) << 4) | ((p[7] >> 4) & 0xF);
                     dst[0] = word;
@@ -9718,7 +9719,7 @@ void fn_800C19E8(u8 *src) {
                     dst[1] = word;
                     dst += 2;
                     i += 1;
-                } while (--ctr);
+                }
                 x += 8;
             check_x:
                 ;
@@ -9730,7 +9731,7 @@ void fn_800C19E8(u8 *src) {
     }
     DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
 }
-
+#pragma peephole on
 void fn_800C1BDC(void) {
     void *fn_800C45B8(s32, void *, s32);
     void fn_800C19E8(u8 *);

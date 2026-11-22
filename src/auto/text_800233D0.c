@@ -390,10 +390,10 @@ void fn_80023B80(void *arg0) {
     s16 *dims;
     s32 x;
     s32 y;
-    s32 row;
+    s32 width;
     s32 tile;
     s32 off;
-    register s32 width;
+    s32 row;
     s32 flags;
     s32 t;
     u16 uflags;
@@ -656,11 +656,10 @@ virtual s32 v18()=0;
 virtual s32 v19()=0;
 virtual s32 v20()=0;
 };
-struct Entry { u8 pad[0x30]; s16 x,y; Item *item; u8 a,status,index,slot; u32 value; };
 s32 index;
 s32 total;
 Controller *controller;
-Entry *entry;
+u8 *entry;
 u8 status;
 Item *item;
 s32 i;
@@ -672,30 +671,30 @@ total=0;
 index=total;
 while(1) {
 item=controller->v15(index);
-if(!item) break;
+if(item == 0) break;
 status=item->v7(item,(u8)index);
 if(status!=3) {
 if(status==1) {
 if((s8)self[0x62]<0) self[0x62]=self[0x60];
 status=0;
 }
-entry=(Entry *)Process_Create(lbl_80284588,self);
-entry->item=item;
-entry->index=index;
-entry->slot=self[0x60];
-entry->status=status;
-entry->x=controller->v16();
-entry->y=total+controller->v17();
-entry->value=0;
+entry=(u8 *)Process_Create(lbl_80284588,self);
+*(Item **)(entry+0x34)=item;
+entry[0x3a]=(short)index;
+entry[0x3b]=self[0x60];
+entry[0x39]=status;
+*(s16 *)(entry+0x30)=controller->v16();
+*(s16 *)(entry+0x32)=total+controller->v17();
+*(u32 *)(entry+0x3c)=0;
 total+=controller->v20();
 u8 id=fn_8000B920(entry);
 self[0x40+(s8)self[0x60]++]=id;
 }
-index++;
+index += 1;
 }
 if((s8)self[0x62]<0) self[0x62]=0;
-entry=(Entry *)GfxEnt_Get(self[0x40+(s8)self[0x62]]);
-entry->item->v14(self,entry);
+entry=(u8 *)GfxEnt_Get(self[0x40+(s8)self[0x62]]);
+(*(Item **)(entry+0x34))->v14(self,entry);
 (*(Controller **)(self+0x3c))->v5(self);
 #pragma cplusplus reset
 }

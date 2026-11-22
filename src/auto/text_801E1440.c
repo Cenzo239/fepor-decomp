@@ -1636,32 +1636,26 @@ off+=0x4000;
 return NULL;
 }
 
+#pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 u8 *fn_801E2458(u8 **arg0) {
-    u32 minSize;
-    s32 off;
-    u8 *best;
-    s32 i;
-    s32 ctr;
+    s32 off = 0x2000;
+    u32 minSize = -1;
+    u8 *best = NULL;
+    s32 i = 0;
     u8 *slot;
-    u8 hdrOk;
     u32 clamped;
+    u8 valid;
 
-    minSize = (u32)-1;
-    off = 0x2000;
-    best = NULL;
-    i = 0;
-
-    for (ctr = 3; ctr != 0; ctr--) {
+    for (; i < 6; i++) {
         slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU)
+            valid = 0;
+        else if (*(u32 *)(slot + 0x44) != 0x20050201U)
+            valid = 0;
+        else
+            valid = 1;
+        if (!valid) {
             clamped = save_slot_size(slot);
             if (minSize > clamped) {
                 best = slot;
@@ -1669,28 +1663,11 @@ u8 *fn_801E2458(u8 **arg0) {
             }
         }
         off += 0x4000;
-        slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        i += 1;
     }
-
     return best;
 }
 #pragma opt_strength_reduction reset
+#pragma use_lmw_stmw reset
 s32 Save_GetLargeSlot(s32 *arg0, s32 arg1) {
     return ((arg1 * 0x6000) + 0x20000 + *arg0) - 0x6000;
 }
@@ -1740,7 +1717,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 counts[5];
     s8 best_idx[5];
     u32 best_val[5];
-    u8 hist[8];
+    u8 hist[6];
     u8 *slots[2];
     s32 spC;
     s32 sp8;
@@ -1795,7 +1772,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     best_val[4] = 0;
 
     do {
-        blk = (u8 *)*arg0 + off;
+        blk = (u8 *)*(void * volatile *)arg0 + off;
         if (*(u32 *)(blk + 0x40) != 0x4645384AU) {
             ok = 0;
         } else if (*(u32 *)(blk + 0x44) != 0x20050201U) {
@@ -1865,21 +1842,21 @@ void fn_801E2620(void **arg0, u8 arg1) {
         u8 *hp = hist;
         off = 0x2000;
         for (j = 2; j != 0; j--) {
-            blk = (u8 *)*arg0 + off;
+            blk = (u8 *)*(void * volatile *)arg0 + off;
             if (hp[0] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
                 *(u32 *)(blk + 0x40) = 0;
             }
             off += 0x4000;
-            blk = (u8 *)*arg0 + off;
+            blk = (u8 *)*(void * volatile *)arg0 + off;
             if (hp[1] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
                 *(u32 *)(blk + 0x40) = 0;
             }
             off += 0x4000;
-            blk = (u8 *)*arg0 + off;
+            blk = (u8 *)*(void * volatile *)arg0 + off;
             if (hp[2] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
@@ -1895,7 +1872,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
         off = 0x1A000;
         i = 0;
         do {
-            *sp = (u8 *)*arg0 + off;
+            *sp = (u8 *)*(void * volatile *)arg0 + off;
             blk = *sp;
             if (*(u32 *)(blk + 0x40) != 0x4645384AU) {
                 ok = 0;
@@ -1953,7 +1930,7 @@ after_pair:
     best = NULL;
     off = 0x2000;
     for (j = 3; j != 0; j--) {
-        sys = (u8 *)*arg0 + off;
+        sys = (u8 *)*(void * volatile *)arg0 + off;
         if (*(u32 *)(sys + 0x70) != 0x53595346U) {
             ok = 0;
         } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1969,7 +1946,7 @@ after_pair:
             }
         }
         off += 0x4000;
-        sys = (u8 *)*arg0 + off;
+        sys = (u8 *)*(void * volatile *)arg0 + off;
         if (*(u32 *)(sys + 0x70) != 0x53595346U) {
             ok = 0;
         } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1986,7 +1963,7 @@ after_pair:
         }
         off += 0x4000;
     }
-    sys = (u8 *)*arg0 + 0x1A000;
+    sys = (u8 *)*(void * volatile *)arg0 + 0x1A000;
     if (*(u32 *)(sys + 0x70) != 0x53595346U) {
         ok = 0;
     } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -2001,7 +1978,7 @@ after_pair:
             bestc = save_slot_size(sys);
         }
     }
-    sys = (u8 *)*arg0 + 0x20000;
+    sys = (u8 *)*(void * volatile *)arg0 + 0x20000;
     if (*(u32 *)(sys + 0x70) != 0x53595346U) {
         ok = 0;
     } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -2323,10 +2300,12 @@ s32 SystemSave_TestFlag0(void *arg0) {
     return M2C_FIELD(arg0, u16 *, 0x10) & 1;
 }
 
+#pragma opt_unroll 1
 #pragma opt_strength_reduction off
 void fn_801E3400(u8 *arg0, u8 arg1) {
     extern u8 gBattleState[];
     s32 i;
+    s32 idx;
     u8 v;
 
     switch (gBattleState[0xa6]) {
@@ -2342,17 +2321,20 @@ void fn_801E3400(u8 *arg0, u8 arg1) {
     }
 
     for (i = 0; i < 5; i++) {
-        v = arg0[0x12 + i];
+        idx = i + 0x12;
+        v = arg0[idx];
         if (v == arg1) {
             return;
         }
         if (v == 0) {
-            arg0[0x12 + i] = arg1;
+            arg0 += i;
+            arg0[0x12] = arg1;
             return;
         }
     }
 }
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction reset
+#pragma opt_unroll reset
 void fn_801E3560(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     M2C_FIELD(arg0, s8 *, 0x40) = arg1;
     M2C_FIELD(arg0, s8 *, 0x41) = arg2;
@@ -2471,7 +2453,8 @@ void fn_801E379C(u8 *arg0) {
 
 void fn_801E38E0(void *unused, void *data) {
 struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
-extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
+extern char gSaveStrings[];
+extern u8 gBattleState[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
 extern u16 gStreamBaseVtbl[];
 void fn_8017A38C(void *, void *);
 void BattleState_Write(void *, void *);

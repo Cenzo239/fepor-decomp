@@ -101,67 +101,63 @@ s8 fn_8014CC5C(Obj *arg0, s32 arg1) {
     s32 temp_r6;
     s32 var_r5;
     s32 temp_r3;
-    register s32 ctr1;
-    register s32 ctr2;
-    u8 b;
+    s32 ctr;
     u8 a;
+    u8 b;
 
     temp_r3 = fn_80106DC8(arg1, sp8);
     var_r5 = 0;
     if (temp_r3 > 0) {
         temp_r6 = temp_r3 - 8;
         if (temp_r3 > 8) {
-            ctr1 = (u32)(temp_r6 + 7) >> 3;
             var_r4 = sp8;
-            if (temp_r6 > 0) {
-                do {
-                    b = var_r4[1];
-                    a = var_r4[0];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[3];
-                    a = var_r4[2];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[5];
-                    a = var_r4[4];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[7];
-                    a = var_r4[6];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[9];
-                    a = var_r4[8];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[11];
-                    a = var_r4[10];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[13];
-                    a = var_r4[12];
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    var_r5 += 8;
-                    ((u8 *)arg0)[0x544]++;
-                    b = var_r4[15];
-                    a = var_r4[14];
-                    var_r4 += 0x10;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                    arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                    ((u8 *)arg0)[0x544]++;
-                } while (--ctr1 != 0);
+            for (; temp_r6 > 0; temp_r6 -= 8) {
+                b = var_r4[1];
+                a = var_r4[0];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[3];
+                a = var_r4[2];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[5];
+                a = var_r4[4];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[7];
+                a = var_r4[6];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[9];
+                a = var_r4[8];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[11];
+                a = var_r4[10];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[13];
+                a = var_r4[12];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                var_r5 += 8;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r4[15];
+                a = var_r4[14];
+                var_r4 += 0x10;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
             }
         }
         var_r6 = &sp8[var_r5 * 2];
-        ctr2 = temp_r3 - var_r5;
+        ctr = temp_r3 - var_r5;
         if (var_r5 < temp_r3) {
             do {
                 b = var_r6[1];
@@ -170,7 +166,7 @@ s8 fn_8014CC5C(Obj *arg0, s32 arg1) {
                 arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
                 arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
                 ((u8 *)arg0)[0x544]++;
-            } while (--ctr2 != 0);
+            } while (--ctr != 0);
         }
     }
     return temp_r3;

@@ -317,22 +317,36 @@ void fn_800177E0(s32 arg0) {
 void CamPath_AddPoint(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
     void *Process_Find(void *);
     extern f32 lbl_80368C90;
-    typedef struct { f32 x,y,z; } Point;
+    typedef struct { f32 x, y, z; } Point;
     typedef struct { u8 kind; s32 duration; Point pos; } Entry;
-    extern Point lbl_80268324;
-    u8 *p=Process_Find(lbl_802841B0);
-    if(p) {
+    extern s32 lbl_80268324[];
+    u8 *p = Process_Find(lbl_802841B0);
+    if (p) {
         Point copy;
         Point v;
-        s32 duration=(s32)((f32)arg1/lbl_80368C90);
+        register s32 *src;
+        s32 a, b, c;
+        s32 duration;
         Point *dest;
-        v=lbl_80268324;
-        *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=arg0;
-        (*(Entry **)(p+0x40))[p[0x44]].duration=duration;
-        v.x=x; v.y=y; v.z=z;
-        copy=v;
-        dest=(Point *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
-        dest->x=copy.x; dest->y=copy.y; dest->z=copy.z;
+
+        src = lbl_80268324;
+        duration = (s32)((f32)arg1 / lbl_80368C90);
+        a = src[0];
+        b = src[1];
+        c = src[2];
+        *(u32 *)&v.x = a;
+        *(u32 *)&v.y = b;
+        *(u32 *)&v.z = c;
+        *(u8 *)(*(u8 **)(p + 0x40) + p[0x44] * 20) = arg0;
+        (*(Entry **)(p + 0x40))[p[0x44]].duration = duration;
+        v.x = x;
+        v.y = y;
+        v.z = z;
+        copy = v;
+        dest = (Point *)(*(u8 **)(p + 0x40) + p[0x44] * 20 + 8);
+        dest->x = copy.x;
+        dest->y = copy.y;
+        dest->z = copy.z;
         p[0x44]++;
     }
 }
@@ -583,12 +597,11 @@ void fn_800180F4(void *arg0, u8 arg1) {
     void *cam;
     u8 *dst;
     s32 found;
-    s32 c45;
     s32 c46;
+    s32 c45;
     u8 idx;
     void *walk;
     void *slot;
-    f32 f1;
     f32 f2;
     f32 f0;
     s32 t;
@@ -598,12 +611,11 @@ void fn_800180F4(void *arg0, u8 arg1) {
     *(s32 *)((u8 *)arg0 + 0x30) = arg1;
     fn_80018594(arg0);
     dst = lbl_802CA434;
-    f1 = lbl_80368CA0;
-    f2 = lbl_80368C88;
     f0 = lbl_80368C8C;
+    f2 = lbl_80368C88;
     found = 0;
-    *(f32 *)(dst + 0x28) = f1;
-    *(f32 *)(dst + 0x34) = f1;
+    *(f32 *)(dst + 0x28) = lbl_80368CA0;
+    *(f32 *)(dst + 0x34) = lbl_80368CA0;
     *(f32 *)(dst + 0x58) = f2;
     *(f32 *)(dst + 0x5c) = f2;
     *(f32 *)(dst + 0x60) = f2;
@@ -629,7 +641,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
         } else {
             walk = *(void **)((u8 *)arg0 + 0x48);
             found = 0;
-            for (i = c45; i != 0; i--) {
+            for (i = c45; i > 0; i--) {
                 t = *(s32 *)((u8 *)walk + 4);
                 if ((f32)t == f2) {
                     found = 1;
@@ -675,7 +687,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
             walk = *(void **)((u8 *)arg0 + 0x4c);
             found = 0;
             f0 = lbl_80368C88;
-            for (i = c46; i != 0; i--) {
+            for (i = c46; i > 0; i--) {
                 t = *(s32 *)((u8 *)walk + 4);
                 if ((f32)t == f0) {
                     found = 1;
@@ -731,87 +743,90 @@ void fn_8001840C(void *arg0)
     void BattleState_SetCamPos(void *, f32, f32);
     void fn_800C4588(void *);
 
-    u8 *dst;
+    struct Pt { u32 a, b, c; };
+    struct Pt p1;
+    struct Pt p2;
     u8 *src;
     u8 *obj;
-    u8 *data;
-    f32 x;
-    f32 y;
     f32 z;
-    f32 a;
-    f32 b;
+    f32 y;
+    f32 x;
     f32 c;
+    f32 b;
+    f32 a;
     f32 v0;
     f32 v1;
     f32 v2;
+    f32 off;
 
+    off = lbl_80368CA4;
     obj = (u8 *)arg0;
     src = (u8 *)gActiveCam;
-    data = (u8 *)gBattleState;
-    dst = lbl_802CA2C8;
 
-    x = *(f32 *)(src + 0x40);
-    y = *(f32 *)(src + 0x44);
-    z = *(f32 *)(src + 0x48);
+    p1 = *(struct Pt *)(src + 0x40);
+    x = *(f32 *)&p1.a;
+    y = *(f32 *)&p1.b;
+    z = *(f32 *)&p1.c;
 
-    BattleState_SetCamPos(data, x - lbl_80368CA4, y - lbl_80368CA4);
+    BattleState_SetCamPos((void *)gBattleState, x - off, y - off);
 
-    *(f32 *)(dst + 0x28) = lbl_80368CA0;
-    *(f32 *)(dst + 0x34) = lbl_80368CA0;
+    *(f32 *)(lbl_802CA2C8 + 0x28) = lbl_80368CA0;
+    *(f32 *)(lbl_802CA2C8 + 0x34) = lbl_80368CA0;
 
-    *(f32 *)(dst + 0x58) = lbl_80368C88;
-    *(f32 *)(dst + 0x5C) = lbl_80368C88;
-    *(f32 *)(dst + 0x60) = lbl_80368C88;
-    *(f32 *)(dst + 0x64) = lbl_80368C88;
-    *(f32 *)(dst + 0x68) = lbl_80368C88;
-    *(f32 *)(dst + 0x6C) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x58) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x5C) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x60) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x64) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x68) = lbl_80368C88;
+    *(f32 *)(lbl_802CA2C8 + 0x6C) = lbl_80368C88;
 
-    *(s32 *)(dst + 0x1C) = 0;
-    *(f32 *)(dst + 0x70) = lbl_80368C8C;
+    *(s32 *)(lbl_802CA2C8 + 0x1C) = 0;
+    *(f32 *)(lbl_802CA2C8 + 0x70) = lbl_80368C8C;
 
-    a = *(f32 *)(src + 0x40);
-    b = *(f32 *)(src + 0x44);
-    c = *(f32 *)(src + 0x48);
+    p2 = *(struct Pt *)(src + 0x40);
+    a = *(f32 *)&p2.a;
+    b = *(f32 *)&p2.b;
+    c = *(f32 *)&p2.c;
 
-    *(f32 *)(dst + 0x4C) = a;
-    *(f32 *)(dst + 0x50) = b;
-    *(f32 *)(dst + 0x54) = c;
+    *(f32 *)(lbl_802CA2C8 + 0x4C) = a;
+    *(f32 *)(lbl_802CA2C8 + 0x50) = b;
+    *(f32 *)(lbl_802CA2C8 + 0x54) = c;
 
-    *(f32 *)(dst + 0x40) = a;
-    *(f32 *)(dst + 0x44) = b;
-    *(f32 *)(dst + 0x48) = c;
+    *(f32 *)(lbl_802CA2C8 + 0x40) = a;
+    *(f32 *)(lbl_802CA2C8 + 0x44) = b;
+    *(f32 *)(lbl_802CA2C8 + 0x48) = c;
 
     v2 = *(f32 *)(src + 0x18);
-    *(f32 *)(dst + 0x0C) = v2;
-    *(f32 *)(dst + 0x18) = v2;
+    *(f32 *)(lbl_802CA2C8 + 0x0C) = v2;
+    *(f32 *)(lbl_802CA2C8 + 0x18) = v2;
 
     v0 = *(f32 *)(src + 0x10);
-    *(f32 *)(dst + 0x04) = v0;
-    *(f32 *)(dst + 0x10) = v0;
+    *(f32 *)(lbl_802CA2C8 + 0x04) = v0;
+    *(f32 *)(lbl_802CA2C8 + 0x10) = v0;
 
     v1 = *(f32 *)(src + 0x14);
-    *(f32 *)(dst + 0x08) = v1;
-    *(f32 *)(dst + 0x14) = v1;
+    *(f32 *)(lbl_802CA2C8 + 0x08) = v1;
+    *(f32 *)(lbl_802CA2C8 + 0x14) = v1;
 
-    *(f32 *)(dst + 0x70) = lbl_80368CA8;
+    *(f32 *)(lbl_802CA2C8 + 0x70) = lbl_80368CA8;
 
     if (gUiInputFlags & 1) {
-        *(f32 *)(dst + 0x10) = v0;
+        *(f32 *)(lbl_802CA2C8 + 0x10) = v0;
 
-        x = *(f32 *)(data + 0x52C);
-        y = *(f32 *)(data + 0x530);
-        z = *(f32 *)(data + 0x53C);
+        x = *(f32 *)((u8 *)gBattleState + 0x52C);
+        y = *(f32 *)((u8 *)gBattleState + 0x530);
+        z = *(f32 *)((u8 *)gBattleState + 0x53C);
 
-        *(f32 *)(dst + 0x4C) = x;
-        *(f32 *)(dst + 0x50) = y;
-        *(f32 *)(dst + 0x54) = z;
+        *(f32 *)(lbl_802CA2C8 + 0x4C) = x;
+        *(f32 *)(lbl_802CA2C8 + 0x50) = y;
+        *(f32 *)(lbl_802CA2C8 + 0x54) = z;
 
-        *(f32 *)(dst + 0x40) = x;
-        *(f32 *)(dst + 0x44) = y;
-        *(f32 *)(dst + 0x48) = z;
+        *(f32 *)(lbl_802CA2C8 + 0x40) = x;
+        *(f32 *)(lbl_802CA2C8 + 0x44) = y;
+        *(f32 *)(lbl_802CA2C8 + 0x48) = z;
 
-        *(f32 *)(dst + 0x14) = v1;
-        *(f32 *)(dst + 0x18) = v2;
+        *(f32 *)(lbl_802CA2C8 + 0x14) = v1;
+        *(f32 *)(lbl_802CA2C8 + 0x18) = v2;
     }
 
     gActiveCamIndex = 0;
@@ -1224,7 +1239,8 @@ extern "C" void fn_80018B24(void) {
 }
 
 #pragma peephole off
-void fn_80018E0C(void) {
+extern "C" void fn_80018E0C(void) {
+#pragma peephole on
     void Ui_PlaySeCue(void *, s32);
     extern u8 gEventLockDepth;
     extern u8 gActiveCamIndex;
@@ -1240,16 +1256,16 @@ void fn_80018E0C(void) {
         gActiveCamIndex = index;
         switch (index) {
         case 0:
-            gActiveCam = (s32)base + 0;
+            gActiveCam = (s32)((u32)base + 0);
             break;
         case 1:
-            gActiveCam = (s32)base + 0x78;
+            gActiveCam = (s32)(base + 0x78);
             break;
         case 2:
-            gActiveCam = (s32)base + 0xF0;
+            gActiveCam = (s32)(base + 0xF0);
             break;
         case 3:
-            gActiveCam = (s32)base + 0x16C;
+            gActiveCam = (s32)(base + 0x16C);
             break;
         }
     }
@@ -1452,10 +1468,9 @@ extern "C" void fn_80019208(void *arg0) {
     factor=lbl_80368CCC; one=lbl_80368C8C; dx=lbl_80368CD4; dz=lbl_80368CD8;
     p[28]=(factor*p[28]+one)*lbl_80368CD0;
     a=factor*p[28];
-    b=one+a;
-    p[6]=(p[6]*a+p[3])/b;
-    p[4]=(p[4]*a+p[1])/b;
-    p[5]=(p[5]*a+p[2])/b;
+    p[6]=(p[6]*a+p[3])/(one+a);
+    p[4]=(p[4]*a+p[1])/(one+a);
+    p[5]=(p[5]*a+p[2])/(one+a);
     p[19]=*(f32 *)((u8 *)gBattleState+0x52C);
     p[20]=*(f32 *)((u8 *)gBattleState+0x530);
     p[21]=*(f32 *)((u8 *)gBattleState+0x53C);
@@ -1550,11 +1565,11 @@ void fn_800193D8(void *arg0) {
     struct Vec3 tmp;
     struct Vec3 min;
     struct Vec3 max;
-    struct Vec3 minOut;
-    struct Vec3 maxOut;
-    s32 i;
-    f32 fmin;
+    volatile struct Vec3 minOut;
+    volatile struct Vec3 maxOut;
     f32 fmax;
+    f32 fmin;
+    s32 i;
 
     fmin = lbl_80368CE4;
     fmax = lbl_80368CA0;
@@ -1569,23 +1584,19 @@ void fn_800193D8(void *arg0) {
 
     for (i = 0; i < 4; i++) {
         fn_8005A0E0(0, &points[i], &tmp);
-        if (min.x > tmp.x) {
-            min.x = tmp.x;
-        }
-        if (min.y > tmp.y) {
-            min.y = tmp.y;
-        }
-        if (max.x < tmp.x) {
-            max.x = tmp.x;
-        }
-        if (max.y < tmp.y) {
-            max.y = tmp.y;
-        }
+        if (min.x > tmp.x) min.x = tmp.x;
+        if (min.y > tmp.y) min.y = tmp.y;
+        if (max.x < tmp.x) max.x = tmp.x;
+        if (max.y < tmp.y) max.y = tmp.y;
     }
 
     minOut = min;
     maxOut = max;
-    *(struct Vec3 *)((u8 *)arg0 + 0x28) = minOut;
-    *(struct Vec3 *)((u8 *)arg0 + 0x34) = maxOut;
+    *(f32 *)((u8 *)arg0 + 0x28) = *(f32 *)&minOut.x;
+    *(f32 *)((u8 *)arg0 + 0x2c) = *(f32 *)&minOut.y;
+    *(f32 *)((u8 *)arg0 + 0x30) = *(f32 *)&minOut.z;
+    *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)&maxOut.x;
+    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)&maxOut.y;
+    *(f32 *)((u8 *)arg0 + 0x3c) = *(f32 *)&maxOut.z;
 }
 #pragma use_lmw_stmw reset

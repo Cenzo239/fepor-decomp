@@ -555,7 +555,7 @@ void Sound_DeactivateSynthVoice(void *arg0);
 
 #pragma opt_peephole off
 
-#pragma scheduling off
+#pragma peephole off
 s32 Sound_LookupVid(u32 arg0)
 {
   u32 new_var;
@@ -598,4 +598,4 @@ s32 Sound_LookupVid(u32 arg0)
   }
   return -1;
 }
-#pragma scheduling reset
+#pragma peephole reset

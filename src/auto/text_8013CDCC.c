@@ -1179,13 +1179,13 @@ void Ui_DrawRouteIconEx(s16,s32,u8);
 void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
 s32 width,height; s32 x,y; u8 idle; s32 active;
 self->v30();
-x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
-y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
+x=*(s16*)((u8*)GfxEnt_Get(ctx[*(s8*)(ctx+0x62)+0x40])+0x30);
+y=*(s16*)((u8*)GfxEnt_Get(ctx[*(s8*)(ctx+0x62)+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { u32 ny=y+1; u32 nx=x+1;
-nx+=*(s16*)(ctx+0x38); *(s16*)(ctx+0x38)=(s32)nx/2;
-ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=(s32)ny/2;
+else { s32 nx=x+1; s32 ny=y+1; s32 cur=*(s16*)(ctx+0x38);
+cur+=nx; *(s16*)(ctx+0x38)=cur/2;
+ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=ny/2;
 }
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A6D0);
 idle=0; if(!ctx[0x2d] && !ctx[0x2e]) idle=1;

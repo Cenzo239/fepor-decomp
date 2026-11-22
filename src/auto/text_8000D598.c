@@ -582,8 +582,7 @@ void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     u32 *table;
     u32 result;
 
-    index = 3;
-    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    result = (u32)fn_8010494C(lbl_802AEE20[3]);
     table = (u32 *)lbl_802AEE20;
     index = Text_FindFontIndex(table, result);
 
@@ -602,46 +601,19 @@ void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
-    u32 *table;
     u32 result;
+    u32 *table;
     s32 index;
-    volatile u32 *p;
 
-    index = 2;
-    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    result = (u32)fn_8010494C(lbl_802AEE20[2]);
     table = (u32 *)lbl_802AEE20;
-    if (table[0] == result) {
-        index = 0;
-    } else {
-        p = table + 1;
-        if (table[1] == result) {
-            index = 1;
-        } else if (*++p == result) {
-            index = 2;
-        } else if (*++p == result) {
-            index = 3;
-        } else if (p[1] == result) {
-            index = 4;
-        } else {
-            index = -1;
-        }
-    }
+    index = Text_FindFontIndex(table, result);
     fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5, farg0, farg1, farg2, farg3, farg4);
     if (index == -1) {
         index = 0;
     }
     result = (u32)fn_8010494C(lbl_802AEE20[index]);
-    if (table[0] != result) {
-        p = table + 1;
-        if (table[1] != result) {
-            if (*++p != result) {
-                if (*++p != result) {
-                    if (p[1] != result) {
-                    }
-                }
-            }
-        }
-    }
+    Text_FindFontIndex(table, result);
 }
 #pragma pop
 void fn_8000E684(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {

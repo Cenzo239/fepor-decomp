@@ -174,9 +174,9 @@ s32 fn_8021D91C(s32 arg0) {
     extern u32 lbl_80368768;
     volatile u32 *fifo;
     u32 lo;
-    u32 hi;
-    u32 old;
     u32 val;
+    u32 old;
+    unsigned int hi;
     s64 now;
     volatile u16 *high;
     volatile u16 *low;
@@ -355,7 +355,6 @@ void *GXInit(void *base, u32 size) {
     u32 i;
     u32 hid;
     u32 freq;
-    u32 *table;
     u32 regOff;
     u32 idx;
     u32 a;
@@ -403,39 +402,29 @@ void *GXInit(void *base, u32 size) {
     idx = 0;
     for (i = 0; i < 8; i++) {
         u32 h = idx >> 1;
-        u32 o130 = regOff + 0x130;
-        u32 o170 = regOff + 0x170;
-        u32 o100 = (h << 2) + 0x100;
-        u32 o1b0 = (h << 2) + 0x1B0;
-        u32 o554 = regOff + 0x554;
-        *(u32 *)(gx + o130) = 0;
-        *(u32 *)(gx + o170) = 0;
-        *(u32 *)(gx + o100) = 0;
-        *(u32 *)(gx + o554) = 0xFF;
-        *(u32 *)(gx + o130) = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + regOff + 0x130) = 0;
+        *(u32 *)((u8 *)__GXData + regOff + 0x170) = 0;
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = 0;
+        *(u32 *)((u8 *)__GXData + regOff + 0x554) = 0xFF;
+        *(u32 *)((u8 *)__GXData + regOff + 0x130) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x130), a, 24, 0, 7);
         idx += 1;
         h = idx >> 1;
-        *(u32 *)(gx + o170) = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7);
-        *(u32 *)(gx + o1b0) = __rlwimi(*(u32 *)(gx + o1b0), (idx - 1) / 2 + 0xF6, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + regOff + 0x170) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x170), b, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0), h + 0xF6, 24, 0, 7);
         a += 2;
         b += 2;
-        *(u32 *)(gx + o100) = __rlwimi(*(u32 *)(gx + o100), (idx - 1) / 2 + 0x28, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x100), h + 0x28, 24, 0, 7);
         regOff += 4;
-        o130 = regOff + 0x130;
-        o170 = regOff + 0x170;
-        o100 = (h << 2) + 0x100;
-        o1b0 = (h << 2) + 0x1B0;
-        o554 = regOff + 0x554;
-        *(u32 *)(gx + o130) = 0;
-        *(u32 *)(gx + o170) = 0;
-        *(u32 *)(gx + o100) = 0;
-        *(u32 *)(gx + o554) = 0xFF;
-        *(u32 *)(gx + o130) = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + regOff + 0x130) = 0;
+        *(u32 *)((u8 *)__GXData + regOff + 0x170) = 0;
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = 0;
+        *(u32 *)((u8 *)__GXData + regOff + 0x554) = 0xFF;
+        *(u32 *)((u8 *)__GXData + regOff + 0x130) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x130), a, 24, 0, 7);
         a += 2;
-        *(u32 *)(gx + o170) = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + regOff + 0x170) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x170), b, 24, 0, 7);
         b += 2;
-        *(u32 *)(gx + o1b0) = __rlwimi(*(u32 *)(gx + o1b0), h + 0xF6, 24, 0, 7);
-        *(u32 *)(gx + o100) = __rlwimi(*(u32 *)(gx + o100), h + 0x28, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0), h + 0xF6, 24, 0, 7);
+        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x100), h + 0x28, 24, 0, 7);
         regOff += 4;
         idx += 1;
     }
@@ -629,26 +618,18 @@ void __GXInitGX(void) {
     extern f32 lbl_8036BCC0;
     extern f32 lbl_8036BCC4;
 
-    s32 sp28;
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    f32 mtx[3][4];
     u8 texObj[0x20];
+    f32 mtx[3][4];
+    s32 sp[9];
     u8 *base;
     GXRenderModeObj *rmode;
     u32 i;
     s32 xfbm;
 
     base = lbl_8029DBA0;
-    sp28 = lbl_8036BCB4;
-    sp24 = lbl_8036BCB8;
-    sp20 = lbl_8036BCBC;
+    sp[8] = lbl_8036BCB4;
+    sp[7] = lbl_8036BCB8;
+    sp[6] = lbl_8036BCBC;
 
     switch (VIGetTvFormat()) {
     case 0:
@@ -668,8 +649,8 @@ void __GXInitGX(void) {
         break;
     }
 
-    sp1C = sp28;
-    GXSetCopyClear(&sp1C, 0xFFFFFF);
+    sp[5] = sp[8];
+    GXSetCopyClear(&sp[5], 0xFFFFFF);
 
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_802201A8(1, 1, 5, 0x3C, 0, 0x7D);
@@ -684,17 +665,13 @@ void __GXInitGX(void) {
     GXClearVtxDesc();
     fn_80220198();
 
-    i = 9;
-    do {
+    for (i = 9; i <= 0x18; i++) {
         fn_80220154(i, __GXData, 0);
-        i += 1;
-    } while (i <= 0x18);
+    }
 
-    i = 0;
-    do {
+    for (i = 0; i < 8; i++) {
         GXSetVtxAttrFmtv(i, base + 0x80);
-        i += 1;
-    } while (i < 8);
+    }
 
     fn_80220F44(6, 0);
     fn_80220F84(6, 0);
@@ -736,15 +713,15 @@ void __GXInitGX(void) {
     GXSetCullMode(0);
 
     GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
-    sp18 = sp24;
-    fn_80222164(4, &sp18);
-    sp14 = sp20;
-    GXSetChanMatColor(4, &sp14);
+    sp[4] = sp[7];
+    fn_80222164(4, &sp[4]);
+    sp[3] = sp[6];
+    GXSetChanMatColor(4, &sp[3]);
     GXSetBlendMode(5, 0, 0, 1, 0, 0, 2);
-    sp10 = sp24;
-    fn_80222164(5, &sp10);
-    spC = sp20;
-    GXSetChanMatColor(5, &spC);
+    sp[2] = sp[7];
+    fn_80222164(5, &sp[2]);
+    sp[1] = sp[6];
+    GXSetChanMatColor(5, &sp[1]);
 
     fn_80222EB4();
     fn_80222EFC(fn_8021D7FC);
@@ -782,24 +759,20 @@ void __GXInitGX(void) {
     fn_80223E5C(7, 0, 0, 7, 0);
     fn_80223EA0(0, 0x11, 0);
 
-    i = 0;
-    do {
+    for (i = 0; i < 0x10; i++) {
         fn_80223CDC(i, 6);
         fn_80223D38(i, 0);
         GXSetTevSwapMode(i, 0, 0);
-        i += 1;
-    } while (i < 0x10);
+    }
 
     GXSetTevSwapModeTable(0, 0, 1, 2, 3);
     GXSetTevSwapModeTable(1, 0, 0, 0, 3);
     GXSetTevSwapModeTable(2, 1, 1, 1, 3);
     GXSetTevSwapModeTable(3, 2, 2, 2, 3);
 
-    i = 0;
-    do {
+    for (i = 0; i < 0x10; i++) {
         fn_802238CC(i);
-        i += 1;
-    } while (i < 0x10);
+    }
 
     fn_802238A8(0);
     fn_80223678(0, 0, 0);
@@ -807,8 +780,8 @@ void __GXInitGX(void) {
     fn_80223678(2, 0, 0);
     fn_80223678(3, 0, 0);
 
-    sp8 = sp24;
-    fn_802240F0(0, &sp8, 0.0f, lbl_8036BCC0, lbl_8036BCC4, lbl_8036BCC0);
+    sp[0] = sp[7];
+    fn_802240F0(0, &sp[0], 0.0f, lbl_8036BCC0, lbl_8036BCC4, lbl_8036BCC0);
     fn_802244B4(0, 0, 0);
     fn_802245D8(0, 4, 5, 0);
     fn_8022462C(1);
@@ -820,7 +793,7 @@ void __GXInitGX(void) {
     fn_802246EC(0, 0);
     fn_80224828(1, 1);
 
-    if (rmode->xFBmode == (s32)(rmode->xfbHeight * 2)) {
+    if (rmode->viHeight == (s32)(rmode->xfbHeight * 2)) {
         xfbm = 1;
     } else {
         xfbm = 0;
@@ -850,8 +823,8 @@ void __GXInitGX(void) {
 
 void fn_8021EB88(s32 arg0, void *arg1)
 {
-    extern u8 *__GXData;
     extern u16 *__cpReg;
+    extern u8 *const __GXData;
     extern u32 lbl_80368778;
     extern u32 lbl_80368780;
     extern u32 lbl_80368788;
@@ -862,15 +835,11 @@ void fn_8021EB88(s32 arg0, void *arg1)
     void __GXWriteFifoIntEnable(u32, u8);
 
     u8 context[0x2C8];
-    u32 control;
-    u32 status;
 
     *(u32 *)(__GXData + 0xC) = __cpReg[0];
 
-    control = *(u32 *)(__GXData + 8);
-    if (control & 8) {
-        status = *(u32 *)(__GXData + 0xC);
-        if (status & 2) {
+    if ((*(u32 *)(__GXData + 8) >> 3) & 1) {
+        if ((*(u32 *)(__GXData + 0xC) >> 1) & 1) {
             fn_8020A9E0(lbl_80368778);
             lbl_80368780 = 0;
             __GXWriteFifoIntReset(1, 1);
@@ -878,10 +847,8 @@ void fn_8021EB88(s32 arg0, void *arg1)
         }
     }
 
-    control = *(u32 *)(__GXData + 8);
-    if (control & 4) {
-        status = *(u32 *)(__GXData + 0xC);
-        if (status & 1) {
+    if ((*(u32 *)(__GXData + 8) >> 2) & 1) {
+        if (*(u32 *)(__GXData + 0xC) & 1) {
             lbl_80368788++;
             __GXWriteFifoIntEnable(0, 1);
             __GXWriteFifoIntReset(1, 0);
@@ -890,13 +857,10 @@ void fn_8021EB88(s32 arg0, void *arg1)
         }
     }
 
-    control = *(u32 *)(__GXData + 8);
-    if (control & 0x20) {
-        status = *(u32 *)(__GXData + 0xC);
-        if (status & 0x10) {
-            control &= ~0x20;
-            *(u32 *)(__GXData + 8) = control;
-            __cpReg[1] = (u16)*(u32 *)(__GXData + 8);
+    if ((*(u32 *)(__GXData + 8) >> 5) & 1) {
+        if ((*(u32 *)(__GXData + 0xC) >> 4) & 1) {
+            *(u32 *)(__GXData + 8) = __rlwimi(*(u32 *)(__GXData + 8), 0, 5, 26, 26);
+            __cpReg[1] = *(u32 *)(__GXData + 8);
 
             if (lbl_80368784 != 0) {
                 OSClearContext((void *)context);
@@ -2085,13 +2049,15 @@ extern u16 *const __GXData;
 extern void *__memReg;
 s64 OSGetTime(void);
 void *fn_8021F4D4(void);
-volatile u32 *pi=(volatile u32 *)0xCC003000;
+volatile u32 *pi;
+u32 stack[1];
 u32 oldcount;
 u32 previous,current;
 s64 start;
+stack[0]=0;
 if(*((u8 *)__GXData+0x5AA)!=0 && (u32)fn_8021F4D4()!=0) {
 {
-u32 lo,hi,old;
+u32 old,hi,lo;
 volatile u16 *high=(volatile u16 *)__memReg+0x27;
 volatile u16 *low=(volatile u16 *)__memReg+0x28;
 hi=*high;
@@ -2102,7 +2068,7 @@ do {
 start=OSGetTime();
 while(OSGetTime()-start<=8) {}
 {
-u32 hi,old,lo;
+u32 old,hi,lo;
 volatile u16 *high=(volatile u16 *)__memReg+0x27;
 volatile u16 *low=(volatile u16 *)__memReg+0x28;
 hi=*high;
@@ -2113,10 +2079,10 @@ oldcount=previous;
 previous=current;
 } while(current!=oldcount);
 }
-pi+=6;
-*pi=1;
+pi=(volatile u32 *)0xCC003000;
+*(pi += 6)=1;
 start=OSGetTime(); while(OSGetTime()-start<=50) {}
-*(volatile u32 *)0xCC003018=0;
+*pi=0;
 start=OSGetTime(); while(OSGetTime()-start<=5) {}
 }
 

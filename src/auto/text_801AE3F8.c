@@ -471,7 +471,7 @@ void fn_801AEDA0(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 #pragma optimization_level 3
-extern "C" void fn_801AEE58(void *self) {
+extern "C" void fn_801AEE58(void *arg0) {
     struct Ref {
         virtual void v0(s32) = 0;
         s32 ref;
@@ -479,6 +479,13 @@ extern "C" void fn_801AEE58(void *self) {
     struct Child {
         u8 pad[0xC];
         s16 unkC;
+    };
+    struct Self {
+        u8 pad[0x54];
+        void *unk54;
+        u8 pad58[8];
+        Ref *unk60;
+        Ref *unk64;
     };
     Child *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
@@ -489,14 +496,15 @@ extern "C" void fn_801AEE58(void *self) {
     s16 spC[2];
     s16 sp8[2];
     Child *cb;
+    Self *self;
     void *saved;
     Child *c4;
     Child *c9;
     Child *ca;
     s16 t;
 
-    saved = *(void **)((u8 *)self + 0x54);
-    cb = (Child *)saved;
+    self = (Self *)arg0;
+    saved = self->unk54;
     c4 = Ui_FindChild(self, 4, 0);
     c9 = Ui_FindChild(self, 9, 0);
     ca = Ui_FindChild(self, 0xA, 0);
@@ -519,14 +527,14 @@ extern "C" void fn_801AEE58(void *self) {
         Ui_SlideWidgetChild(self, ca, spC, 0);
     }
     {
-        Ref *p = *(Ref **)((u8 *)self + 0x60);
+        Ref *p = self->unk60;
         if (p != 0) {
             if (--p->ref == 0) {
                 if (p != 0) {
                     p->v0(1);
                 }
             }
-            *(Ref **)((u8 *)self + 0x60) = 0;
+            self->unk60 = 0;
         }
     }
     if (cb != 0) {
@@ -536,14 +544,14 @@ extern "C" void fn_801AEE58(void *self) {
         Ui_SlideWidgetChild(self, cb, sp8, 0);
     }
     {
-        Ref *p = *(Ref **)((u8 *)self + 0x64);
+        Ref *p = self->unk64;
         if (p != 0) {
             if (--p->ref == 0) {
                 if (p != 0) {
                     p->v0(1);
                 }
             }
-            *(Ref **)((u8 *)self + 0x64) = 0;
+            self->unk64 = 0;
         }
     }
     Process_Goto(self, 0x26);
@@ -1570,7 +1578,6 @@ extern "C" void fn_801B0978(void *arg0) {
 
 extern "C" void fn_801B0AEC(void *arg0) {
 #pragma cplusplus on
-#pragma scheduling off
     void *Heap_Alloc(s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, s32);
@@ -1626,7 +1633,6 @@ extern "C" void fn_801B0AEC(void *arg0) {
     caption = *(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x7C);
     child = Ui_FindChild(arg0, -0x1000, 0);
     if (child) Ui_SetWidgetText(child, caption);
-#pragma scheduling on
 #pragma cplusplus reset
 }
 
@@ -1821,14 +1827,14 @@ void fn_801B1194(s32 arg0) {
 extern s32 gActorXmlStrs[];
 extern u16* lbl_80296128;
 void fn_801B1218(void *self) {
+    void Ui_SetWidgetText(void *, s32);
     void TalkUi_ShowMsg(s32);
     void *Ui_FindChild(void *, s32, s32);
-    void Ui_SetWidgetText(void *, s32);
     void fn_8014D268(void *, s32);
     void fn_8001BF3C(void *, s32);
-    void fn_8001BEC0(void *, s32);
-    void fn_8001BE44(void *, s32);
     void fn_8001BDC8(void *, s32);
+    void fn_8001BE44(void *, s32);
+    void fn_8001BEC0(void *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
     void fn_8014017C(void *, void *, s16 *, s32);
@@ -1836,15 +1842,15 @@ void fn_801B1218(void *self) {
     void Process_Goto(void *, s32);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
-    void *obj;
-    void *child;
     void *child2;
-    void *weapon;
+    void *child;
+    void *obj;
     void *slide;
+    void *weapon;
     s16 pos[2];
     s16 pos2[2];
     s16 pos3[2];
-    s32 text;
+    unsigned long text;
 
     obj = *(void **)((u8 *)self + 0x48);
     switch (gUiContext[8]) {
@@ -1868,8 +1874,8 @@ void fn_801B1218(void *self) {
         ((u8 *)obj)[0x51] = 0;
         ((u8 *)obj)[0x3C] = 0;
         ((u8 *)obj)[0x50] = 0;
-        pos[0] = 0x260;
         pos[1] = *(s16 *)((u8 *)child2 + 0xC);
+        pos[0] = 0x260;
         Ui_SlideWidgetChild(self, child2, pos, 0);
         if (*(s16 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x3E) != 4) {
             ((u8 *)obj)[0x3D] = 0;
@@ -2762,6 +2768,7 @@ void fn_801B2A80(void *arg0) {
     void Ui_SetWidgetText(void *, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_802961C4[];
+    extern const f32 lbl_8036B0A8;
 #pragma cplusplus on
     s16 firstPos[2];
     s16 secondPos[2];
@@ -2770,7 +2777,7 @@ void fn_801B2A80(void *arg0) {
     s32 caption;
     void *child;
     panel = (u8 *)Ui_FindChild(arg0, 0, 0);
-    if (!panel) {
+    if (panel == 0) {
         panel = *(u8 **)((u8 *)arg0 + 0x40);
         Ui_AddChild(arg0, panel);
     }
@@ -2783,8 +2790,8 @@ void fn_801B2A80(void *arg0) {
     obj = (u8 *)Heap_Alloc(0x44);
     if (obj) {
         *(u32 *)obj = (u32)lbl_8028FDB0;
-        *(s32 *)(obj + 4) = 0;
         *(u32 *)obj = (u32)lbl_80292230;
+        *(s32 *)(obj + 4) = 0;
         *(s16 *)(obj + 8) = -1;
         *(s16 *)(obj + 0xA) = 0x260;
         *(s16 *)(obj + 0xC) = 0x148;
@@ -2802,9 +2809,9 @@ void fn_801B2A80(void *arg0) {
         obj[0x21] = 0xFF;
         *(s16 *)(obj + 0x22) = 0x226;
         *(s16 *)(obj + 0x24) = 0;
-        *(f32 *)(obj + 0x28) = 0.0f;
-        *(f32 *)(obj + 0x2C) = 0.0f;
-        *(f32 *)(obj + 0x30) = 0.0f;
+        *(f32 *)(obj + 0x28) = lbl_8036B0A8;
+        *(f32 *)(obj + 0x2C) = lbl_8036B0A8;
+        *(f32 *)(obj + 0x30) = lbl_8036B0A8;
         *(s32 *)(obj + 0x34) = 0;
         *(s32 *)(obj + 0x38) = 0;
         *(u32 *)obj = (u32)lbl_802961C4;

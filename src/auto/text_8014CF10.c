@@ -528,21 +528,20 @@ s32 fn_8014DC04(void *arg0) {
 }
 
 void fn_8014DA88(void *arg0, s8 arg1) {
-s32 i;
-s32 offset;
-u8 *base=arg0;
-u8 *entry;
-for(i=0;i<40;i++) {
-if(*(u16*)(base+i*8+2)==0) goto found;
-}
-i=-1;
-found:
-offset=i*8;
-entry=base+offset;
-base[offset]=gBattleState[0x10];
-entry[1]=arg1;
-*(s16*)(entry+2)=*(s16*)(gBattleState+0x12);
-*(u32*)(base+offset+4)=(s64)*(s64*)(gBattleState+0x58)/(u32)(*(u32*)0x800000f8>>2);
+    s32 i;
+    s32 offset;
+    u8 *entry;
+    u32 quot;
+
+    i = fn_8014DC04(arg0);
+    offset = i * 8;
+    entry = (u8 *)arg0 + offset;
+    ((u8 *)arg0)[offset] = gBattleState[0x10];
+    entry[1] = arg1;
+    *(s16 *)(entry + 2) = *(s16 *)(gBattleState + 0x12);
+    quot = (u32)((s64)*(s64 *)(gBattleState + 0x58) /
+                 (u32)(*(u32 *)0x800000F8 >> 2));
+    *(u32 *)((u8 *)arg0 + offset + 4) = quot;
 }
 
 void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {

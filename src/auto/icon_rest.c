@@ -521,47 +521,82 @@ void fn_800C341C(s32 arg0) {
     } while (r30 < 0xC8);
 }
 
+#pragma use_lmw_stmw on
 void fn_800C3468(void *arg0) {
     void *UnitRef_GetName(void *);
     void DebugPrint(void *, ...);
     extern u8 lbl_80270088[];
+    void *base;
     u8 val;
-    u8 *entry = (u8 *)arg0;
-    s32 i, j, count, idx;
-    u8 *fmt = lbl_80270088;
+    u8 *entry;
+    s32 i;
+    u8 *fmt;
     void *unit;
-    u8 *p2;
+    void *name;
+    s32 count;
+    s32 idx;
+    u8 *p;
+    s32 j;
 
-    for (i = 0; i < 200; i++, entry += 8) {
+    base = arg0;
+    i = 0;
+    entry = (u8 *)base;
+    fmt = lbl_80270088;
+    for (; i < 0xC8; i++, entry += 8) {
         unit = *(void **)entry;
-        if (unit == 0) continue;
-        if (unit != 0) {
-            val = *(u8 *)((u8 *)unit + 0x18);
+        if (unit == NULL) {
+            continue;
+        }
+        if (unit != NULL) {
+            val = *((u8 *)unit + 0x18);
         } else {
             val = 0;
         }
-        DebugPrint(fmt + 0x13, i, UnitRef_GetName(entry), *(u8 *)(entry + 4), val);
+        name = UnitRef_GetName(entry);
+        DebugPrint(fmt + 0x13, i, name, entry[4], (int)val);
     }
 
     count = 0;
     idx = count;
-    p2 = (u8 *)arg0;
-    for (; idx < 180; idx += 9) {
-        if (*(u32 *)(p2 + 0)) count++;
-        if (*(u32 *)(p2 + 8)) count++;
-        if (*(u32 *)(p2 + 0x10)) count++;
-        if (*(u32 *)(p2 + 0x18)) count++;
-        if (*(u32 *)(p2 + 0x20)) count++;
-        if (*(u32 *)(p2 + 0x28)) count++;
-        if (*(u32 *)(p2 + 0x30)) count++;
-        if (*(u32 *)(p2 + 0x38)) count++;
-        if (*(u32 *)(p2 + 0x40)) count++;
-        if (*(u32 *)(p2 + 0x48)) count++;
-        p2 += 0x50;
+    p = (u8 *)base;
+    for (j = 0; j < 0x14; j++) {
+        if (*(u32 *)(p + 0) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 8) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x10) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x18) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x20) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x28) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x30) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x38) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x40) != 0) {
+            count++;
+        }
+        if (*(u32 *)(p + 0x48) != 0) {
+            count++;
+        }
+        p += 0x50;
+        idx += 9;
     }
-    DebugPrint(fmt + 0x25, count);
-}
 
+    DebugPrint(lbl_80270088 + 0x25, count);
+}
+#pragma use_lmw_stmw reset
 void Convoy_AddItem(u32 *arg0, void *arg1) {
     void fn_8001C4FC(void *, void *);
     s32 fn_8001CA2C(u32 *);

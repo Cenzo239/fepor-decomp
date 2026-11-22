@@ -4286,7 +4286,7 @@ void fn_801FA874(void *arg0) {
     }
 }
 
-void fn_801FA8B4(void *arg0, s32 (*compare)(void *, void *)) {
+void fn_801FA8B4(void *arg0, u8 (*compare)(void *, void *)) {
     typedef struct Node {
         struct Node *prev;
         struct Node *next;
@@ -4299,7 +4299,7 @@ void fn_801FA8B4(void *arg0, s32 (*compare)(void *, void *)) {
         Node sentinel;
     } List;
 
-    void fn_801FB428(void *, void *, s32 (*)(void *, void *));
+    void fn_801FB428(void *, void *, u8 (*)(void *, void *));
     void fn_800616A0(void *);
     void Heap_Free(void *);
 
@@ -4312,90 +4312,43 @@ void fn_801FA8B4(void *arg0, s32 (*compare)(void *, void *)) {
     Node *previous;
     Node *next;
     Node *temp;
-    s32 half;
-    s32 i;
+    u32 half;
+    u32 n;
 
     list = (List *)arg0;
 
     switch (list->count) {
-    case 0:
-    case 1:
-        break;
-
+    case 0: case 1: break;
     case 2:
-        first = list->sentinel.next;
-        second = first->next;
-
-        if (compare(
-                (u8 *)second + 8,
-                (u8 *)first + 8
-            )) {
-            temp = first->prev;
-            first->prev = first->next;
-            first->next = temp;
-
-            temp = second->prev;
-            second->prev = second->next;
-            second->next = temp;
-
-            temp = list->sentinel.prev;
-            list->sentinel.prev = list->sentinel.next;
-            list->sentinel.next = temp;
+        first = list->sentinel.next; second = first->next;
+        if (compare((u8 *)second + 8, (u8 *)first + 8)) {
+            temp = first->prev; first->prev = first->next; first->next = temp;
+            temp = second->prev; second->prev = second->next; second->next = temp;
+            temp = list->sentinel.prev; list->sentinel.prev = list->sentinel.next; list->sentinel.next = temp;
         }
         break;
-
     default:
-        half = (u32)list->count >> 1;
-        node = list->sentinel.next;
-
-        for (i = 0; i < half; i++) {
-            node = node->next;
-        }
-
-        other.count = 0;
-        other.sentinel.prev = &other.sentinel;
-        other.sentinel.next = &other.sentinel;
-
-        last = list->sentinel.prev;
-        previous = node->prev;
-
-        previous->next = last->next;
-        last->next->prev = previous;
-
-        other.sentinel.prev->next = node;
-        node->prev = other.sentinel.prev;
-
-        other.sentinel.prev = last;
-        last->next = &other.sentinel;
-
-        other.count = list->count - half;
-        list->count = half;
-
-        fn_801FA8B4(list, compare);
-        fn_801FA8B4(&other, compare);
-
+        half = (u32)list->count >> 1; node = list->sentinel.next;
+        for (n=half;n!=0;--n) node=node->next;
+        other.count = 0; other.sentinel.prev = &other.sentinel; other.sentinel.next = &other.sentinel;
+        last = list->sentinel.prev; previous = node->prev;
+        previous->next = last->next; last->next->prev = previous;
+        other.sentinel.prev->next = node; node->prev = other.sentinel.prev;
+        other.sentinel.prev = last; last->next = &other.sentinel;
+        other.count = list->count - half; list->count = half;
+        fn_801FA8B4(list, compare); fn_801FA8B4(&other, compare);
         fn_801FB428(list, &other, compare);
-
         first = other.sentinel.next;
-
         if (first != &other.sentinel) {
             last = other.sentinel.prev;
-
-            first->prev->next = last->next;
-            last->next->prev = first->prev;
-
+            first->prev->next = last->next; last->next->prev = first->prev;
             while (first != &other.sentinel) {
                 if (&first->unit != NULL) {
-                    if (first->actor != NULL) {
-                        fn_800616A0(first->actor);
+                    if (*(u32 *)((u8 *)&first->unit + 4) != 0) {
+                        fn_800616A0(*(void **)((u8 *)&first->unit + 4));
                     }
                 }
-
-                next = first->next;
-                Heap_Free(first);
-                first = next;
-
-                other.count--;
+                next = first->next; Heap_Free(first); first = next; other.count--;
             }
         }
         break;

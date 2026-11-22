@@ -219,7 +219,7 @@ extern s32 fn_802314D8(s32, s32, s32);
 
 #pragma optimization_level 3
 
-#pragma optimization_level 3
+#pragma opt_allocation off
 void fn_80231CC8(void *dst, const void *src, u32 size)
 {
   u32 *d;
@@ -296,4 +296,4 @@ void fn_80231CC8(void *dst, const void *src, u32 size)
     while ((--size) != 0);
   }
 }
-#pragma optimization_level reset
+#pragma opt_allocation reset

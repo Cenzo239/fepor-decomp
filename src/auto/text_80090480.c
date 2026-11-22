@@ -733,7 +733,7 @@ void StatBonus_ShowHelp(void *bonus, s32 parent) {
     Ui_OpenHelpPopup(Msg_Expand(msg), gBattleHelpStrings + 0x1AC, parent, 1);
 }
 
-#pragma use_lmw_stmw on
+#pragma scheduling on
 void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(char *, s32);
@@ -759,7 +759,7 @@ void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x21F, Status_Test(arg2 + 0x1BC, 1)), 0, arg1, 0);
 }
-#pragma use_lmw_stmw reset
+#pragma scheduling reset
 void fn_8009149C(s32 arg0, s32 arg1) {
     extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
@@ -773,6 +773,8 @@ void fn_8009149C(s32 arg0, s32 arg1) {
     Ui_OpenHelpPopup(Msg_Expand((char *)gBattleHelpStrings + 0x22B), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
 
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(char *, s32, void *);
@@ -797,8 +799,8 @@ void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x25A, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, arg1, 0);
 }
-
-#pragma use_lmw_stmw on
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset
 void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
 #pragma scheduling off
     void fn_8000D864(s32, char *);
@@ -825,8 +827,7 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x265, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
-#pragma use_lmw_stmw on
-#pragma opt_common_subs off
+#pragma opt_allocation off
 void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
     extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
@@ -852,8 +853,7 @@ void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
     fn_8000D864(0, sp8);
     Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x270, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, arg1, 0);
 }
-#pragma use_lmw_stmw on
-#pragma optimization_level 2
+#pragma opt_allocation reset
 void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(char *, s32, void *);
@@ -867,16 +867,19 @@ void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
     char sp8[0x80];
     s32 result;
     u8 type;
+    s32 a2 = arg2;
+    s32 a1 = arg1;
+    void **unit = arg0;
     void *entry;
 
-    entry = *arg0;
+    entry = *unit;
     if (entry != 0) {
         type = *(u8 *)((char *)entry + 0x15);
     } else {
         type = 0;
     }
-    result = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    result = UnitRef_GetName(unit);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(unit, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x27B, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x27B, Status_Test(a2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, a1, 0);
 }

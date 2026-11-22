@@ -184,7 +184,6 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
     u8 *base;
     u32 intVal;
     u32 regand;
-    u32 *diBase;
     u32 reg;
     s32 finished;
 
@@ -202,9 +201,8 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
         }
     }
     lbl_80368570 = 0;
-    diBase = (u32 *)0xCC006000;
     StopAtNextInt_80368530 = 0;
-    reg = diBase[0];
+    reg = *(volatile u32 *)0xCC006000;
     masked = reg & 0x2A;
     regand = (reg & 0x54) & (masked << 1);
     if (regand & 0x40) {
@@ -222,8 +220,8 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
     }
     *(volatile u32 *)0xCC006000 = regand | masked;
     if (ResetOccurred_80368548 != 0) {
-        if ((u64)(__OSGetSystemTime() - LastResetEnd_80368540) >
-            ((*(u32 *)0x800000F8 >> 2) / 1000) * 200) {
+        if (__OSGetSystemTime() - LastResetEnd_80368540 >
+            (s64)(((*(u32 *)0x800000F8 >> 2) / 1000) * 200)) {
             {
                 volatile u32 *diPtr = (volatile u32 *)0xCC006000;
                 reg = *++diPtr;
@@ -241,12 +239,14 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
     if (WaitingCoverClose_8036854C != 0) {
         {
             volatile u32 *diPtr = (volatile u32 *)0xCC006000;
+            u32 bit2;
             reg = *++diPtr;
+            bit2 = reg & 2;
             masked = (reg & 4) & ((reg << 1) & 4);
             if (masked & 4) {
                 intVal |= 4;
             }
-            *diPtr = masked | (reg & 2);
+            *diPtr = masked | bit2;
         }
         WaitingCoverClose_8036854C = 0;
     } else {
@@ -256,7 +256,6 @@ after_cover:
     if ((intVal & 8) && (lbl_80368550 == 0)) {
         intVal &= ~8;
     }
-    finished = 0;
     if (intVal & 1) {
         s32 off = NextCommandNumber_80368574 * 0x14;
         s32 c = *(s32 *)(base + off);
@@ -265,12 +264,16 @@ after_cover:
             fn_8020B940(*(void **)(base + off + 4), *(u32 *)(base + off + 8),
                         *(u32 *)(base + off + 0xC), *(void **)(base + off + 0x10));
             finished = 1;
+            goto check_finished;
         } else if (c == 2) {
             NextCommandNumber_80368574++;
             fn_8020BD68(*(u32 *)(base + off + 0xC), *(void **)(base + off + 0x10));
             finished = 1;
+            goto check_finished;
         }
     }
+    finished = 0;
+check_finished:
     if (finished == 0) {
         void (*cb)(u32);
         *(s32 *)base = -1;
@@ -341,10 +344,10 @@ BOOL fn_8020B940(void *addr, u32 length, u32 offset, void *callback) {
     u8 *base;
     u32 timeout;
 
-    StopAtNextInt_80368530 = 0;
-    Callback_80368538 = callback;
-    base = (u8 *)CommandList_80339E70;
     lbl_80368570 = 1;
+    StopAtNextInt_80368530 = 0;
+    base = (u8 *)CommandList_80339E70;
+    Callback_80368538 = callback;
     *(s64 *)&lbl_80368568 = __OSGetSystemTime();
 
     __DIRegs[2] = 0xA8000000;

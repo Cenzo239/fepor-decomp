@@ -87,11 +87,11 @@ s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
     s32 sy2;
     s32 sx1;
     s32 sx2;
-    register s32 dy;
-    register s32 dx;
     u16 flags;
     u8 dir;
     u8 r;
+    register s32 dx;
+    register s32 dy;
 
     sy2 = (s8)y2;
     sy1 = (s8)y1;
@@ -178,48 +178,75 @@ void fn_8001F91C(void *map, s8 cx, s8 cy, s8 rad) {
 }
 
 void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
- s32 dy;
- s8 xmin;
- s8 y;
- s8 x;
- s32 offset;
- s8 ymax;
- s8 xmax;
- s32 ady;
- s32 dx;
- s8 ymin;
- s32 row,index;
- s32 radius=arg3;
- s32 centerX=arg1;
- s32 centerY;
- s32 delta;
- s32 negdy;
- u8 *rowptr,*cell;
- s16 *values;
- xmin=centerX-radius; if(xmin<0) xmin=0;
- centerY=arg2;
- ymin=centerY-radius; if(ymin<0) ymin=0;
- xmax=centerX+radius; if(xmax>*(s32*)arg0-1) xmax=*(s32*)arg0-1;
- ymax=centerY+radius; if(ymax>*(s32*)((u8*)arg0+4)-1) ymax=*(s32*)((u8*)arg0+4)-1;
- delta=arg4;
- row=ymin<<6;
- rowptr=(u8*)arg0+row;
- for(y=ymin;y<=ymax;y++) {
- dy=y-centerY; negdy=-dy;
- index=xmin+row;
- cell=rowptr+xmin;
- offset=index*2;
- for(x=xmin;x<=xmax;x++) {
- ady=dy; if(dy<0) ady=negdy;
- dx=x-centerX; if(dx<0) dx=-dx;
- if(dx+ady<=radius && *(s8*)(cell+0xe18e)==0) {
- values=*(s16**)((u8*)arg0+0x14190);
- values[index]=delta+values[index];
- }
- cell++; index++; offset+=2;
- }
- rowptr+=0x40; row+=0x40;
- }
+    s16 *values;
+    u8 *cell;
+    u8 *rowptr;
+    s32 negdy;
+    s32 delta;
+    s32 centerY;
+    s32 centerX;
+    s32 radius;
+    s32 index;
+    s32 row;
+    s8 ymin;
+    s32 dx;
+    s32 ady;
+    s8 xmax;
+    s8 ymax;
+    s32 offset;
+    s8 x;
+    s8 y;
+    s8 xmin;
+    s32 dy;
+
+    radius = arg3;
+    centerX = arg1;
+    xmin = (s8)(centerX - radius);
+    if (xmin < 0) {
+        xmin = 0;
+    }
+    centerY = arg2;
+    ymin = (s8)(centerY - radius);
+    if (ymin < 0) {
+        ymin = 0;
+    }
+    xmax = (s8)(centerX + radius);
+    if (xmax > *(s32 *)arg0 - 1) {
+        xmax = (s8)(*(s32 *)arg0 - 1);
+    }
+    ymax = (s8)(centerY + radius);
+    if (ymax > *(s32 *)((u8 *)arg0 + 4) - 1) {
+        ymax = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
+    }
+    delta = arg4;
+    row = ymin << 6;
+    rowptr = (u8 *)arg0 + row;
+    for (y = ymin; y <= ymax; y++) {
+        dy = y - centerY;
+        negdy = -dy;
+        index = xmin + row;
+        cell = rowptr + xmin;
+        offset = index * 2;
+        for (x = xmin; x <= xmax; x++) {
+            ady = dy;
+            if (dy < 0) {
+                ady = negdy;
+            }
+            dx = x - centerX;
+            if (dx < 0) {
+                dx = -dx;
+            }
+            if (dx + ady <= radius && *(s8 *)(cell + 0xe18e) == 0) {
+                values = *(s16 **)((u8 *)arg0 + 0x14190);
+                values[index] = delta + values[index];
+            }
+            cell++;
+            index++;
+            offset += 2;
+        }
+        rowptr += 0x40;
+        row += 0x40;
+    }
 }
 
 s32 fn_8001FB04(void *arg0, s8 *x, s8 *y, u8 arg3, u8 *path) {

@@ -17,7 +17,6 @@ void fn_800C3F18(void) {
     u8 *p;
     s32 i;
 
-    /* assign destroy before init to control argument register order */
     dtor = Item_Destroy;
     init = Item_Init;
     base = lbl_803200A0;

@@ -5016,26 +5016,25 @@ void fn_801D3810(s32 arg0) {
 #pragma dont_inline on
 #pragma global_optimizer on
 extern "C" void *fn_801D3860(void *arg0,s32 x,s32 y,s32 id) {
-extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[];
+extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B618,lbl_8036B61C;
 struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
 u8 *base; s32 zero; s16 right; s16 bottom; u8 *self; u8 *initial; f32 scale; f32 one;
-s32 w=0x1E0; s32 h=0x100; s32 ff=0xFF;
 self=(u8 *)arg0;
-one=lbl_8036B618;scale=lbl_8036B61C;
 zero=0;
 right=(s16)x;bottom=(s16)y;
 right+=0x1E0;bottom+=0x100;
 initial=self;
 base=initial;
+one=lbl_8036B618;scale=lbl_8036B61C;
 *(void **)self=lbl_8028FDB0;
 *(s32 *)(initial+4)=zero;
 *(void **)base=lbl_80292230;
 *(s16 *)(base+8)=-1;
 *(s16 *)(base+0xA)=x;*(s16 *)(base+0xC)=y;*(s16 *)(base+0xE)=right;*(s16 *)(base+0x10)=bottom;
-*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=w;*(s16 *)(base+0x18)=h;
+*(s16 *)(base+0x12)=zero;*(s16 *)(base+0x14)=zero;*(s16 *)(base+0x16)=0x1E0;*(s16 *)(base+0x18)=0x100;
 *(s16 *)(base+0x1A)=zero;*(s16 *)(base+0x1C)=zero;
-base[0x1E]=ff;base[0x1F]=ff;base[0x20]=ff;base[0x21]=ff;
+base[0x1E]=255;base[0x1F]=255;base[0x20]=255;base[0x21]=255;
 *(s16 *)(base+0x22)=id;*(s16 *)(base+0x24)=zero;
 *(f32 *)(base+0x28)=one;*(f32 *)(base+0x2C)=one;*(f32 *)(base+0x30)=one;
 *(s32 *)(base+0x34)=zero;*(s32 *)(base+0x38)=zero;
@@ -5047,7 +5046,7 @@ base[0x1E]=ff;base[0x1F]=ff;base[0x20]=ff;base[0x21]=ff;
 self[92]=1;self[93]=1;
 *(s16 *)(self+100)=0;*(s16 *)(self+102)=0;
 *(f32 *)(self+104)=one;*(f32 *)(self+108)=one;
-self[112]=ff;self[113]=ff;self[114]=ff;self[115]=ff;
+self[112]=255;self[113]=255;self[114]=255;self[115]=255;
 *(f32 *)(self+116)=scale;
 ((Obj *)(self+80))->v1();
 one=lbl_8036B618;scale=lbl_8036B61C;
@@ -5057,7 +5056,7 @@ one=lbl_8036B618;scale=lbl_8036B61C;
 self[132]=1;self[133]=1;
 *(s16 *)(self+140)=0;*(s16 *)(self+142)=0;
 *(f32 *)(self+144)=one;*(f32 *)(self+148)=one;
-self[152]=ff;self[153]=ff;self[154]=ff;self[155]=ff;
+self[152]=255;self[153]=255;self[154]=255;self[155]=255;
 *(f32 *)(self+156)=scale;
 ((Obj *)(self+120))->v1();
 ((Obj *)self)->v8();return self;

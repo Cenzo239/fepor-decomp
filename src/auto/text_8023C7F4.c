@@ -358,45 +358,53 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-s32 fn_8023C7F4(void) {
+s32 fn_8023C7F4(void)
+{
   extern u8 *lbl_80368950;
   s32 off;
+  u8 **new_var;
   u8 i;
   u32 value;
-
-  *(u8 **)(lbl_80368950 + 0x69C) += 2;
-  if (*(*(u8 **)(lbl_80368950 + 0x69C))++ != 8)
+  *((u8 **) (lbl_80368950 + 0x69C)) += 2;
+  if ((*((*((u8 **) (lbl_80368950 - -0x69C)))++)) != 8)
+  {
     return 10;
-
-  *(u16 *)(lbl_80368950 + 0x694) =
-      ((*(u8 **)(lbl_80368950 + 0x69C))[0] << 8) |
-      (*(u8 **)(lbl_80368950 + 0x69C))[1];
-  *(u8 **)(lbl_80368950 + 0x69C) += 2;
-
-  *(u16 *)(lbl_80368950 + 0x692) =
-      ((*(u8 **)(lbl_80368950 + 0x69C))[0] << 8) |
-      (*(u8 **)(lbl_80368950 + 0x69C))[1];
-  *(u8 **)(lbl_80368950 + 0x69C) += 2;
-
-  if (*(*(u8 **)(lbl_80368950 + 0x69C))++ != 3)
+  }
+  *((u16 *) (lbl_80368950 + 0x694)) = ((*((u8 **) (lbl_80368950 + 0x69C)))[0] << 8) | (*((u8 **) (lbl_80368950 + 0x69C)))[1];
+  *((u8 **) (lbl_80368950 + 0x69C)) += 2;
+  *((u16 *) (lbl_80368950 + 0x692)) = ((*((u8 **) (lbl_80368950 + 0x69C)))[0] << (i = 8)) | (*(new_var = (u8 **) (lbl_80368950 + 0x69C)))[1];
+  *((u8 **) (lbl_80368950 + 0x69C)) += 2;
+  if ((*((*((u8 **) (lbl_80368950 + 0x69C)))++)) != 3)
+  {
     return 12;
-
-  for (i = 0, off = 0; i < 3; off += 6, i++) {
-    *(u8 **)(lbl_80368950 + 0x69C) += 1;
-    value = *(*(u8 **)(lbl_80368950 + 0x69C))++;
-    if (i == 0) {
+  }
+  for (i = 0, off = 0; i < 3; off += 6, i++)
+  {
+    *((u8 **) (lbl_80368950 + 0x69C)) += 1;
+    value = *((*((u8 **) (lbl_80368950 + 0x69C)))++);
+    if (i == 0)
+    {
       if (value != 0x22)
+      {
         goto fail;
+      }
     }
     if (i == 0)
+    {
       goto success;
+    }
     if (value == 0x11)
+    {
       goto success;
-  fail:
+    }
+    fail:
     return 0x13;
-  success:
-    lbl_80368950[off + 0x680] = *(*(u8 **)(lbl_80368950 + 0x69C))++;
+
+    success:
+    lbl_80368950[off + 0x680] = *((*new_var)++);
+
   }
+
   return 0;
 }
 
@@ -413,9 +421,9 @@ for(i=0,off=0;i<3;off+=6,i++) {
 *(u8 **)(lbl_80368950+0x69C)+=1;
 value=*(*(u8 **)(lbl_80368950+0x69C))++;
 hi=(s32)value>>4;
-lbl_80368950[off+0x681]=hi;
-value &= 15;
-lbl_80368950[off+0x682]=value;
+lbl_80368950[off+0x681]=(u8)hi;
+value = value & 15;
+lbl_80368950[off+0x682]=(u8)value;
 if(!(lbl_80368950[0x6A8] & (1<<hi))) return 15;
 if(!(lbl_80368950[0x6A8] & (1<<(value+1)))) return 15;
 }
@@ -470,22 +478,23 @@ u8 fn_8023CE08(void)
 
     u8 *state;
     u8 *cursor;
-    u8 value;
-    u32 index;
-    u32 i;
-    u32 count;
-    u32 total;
-    u32 length;
+    u8 **pp;
+    s8 value;
+    u8 index;
+    u8 i;
+    u16 length;
+    u16 total;
 
     state = lbl_80368950;
 
     lbl_803688E8 = (u8 *)lbl_8036894C;
     lbl_803688EC = (u16 *)(lbl_8036894C + 0x101);
 
-    cursor = *(u8 **)(state + 0x69C);
+    pp = (u8 **)(state + 0x69C);
+    cursor = *pp;
 
     length = ((u32)cursor[0] << 8) | cursor[1];
-    *(u8 **)(state + 0x69C) = cursor + 2;
+    *pp = cursor + 2;
 
     length -= 2;
 
@@ -496,7 +505,7 @@ u8 fn_8023CE08(void)
         value = *cursor;
         *(u8 **)(state + 0x69C) = cursor + 1;
 
-        index = (value >> 4) + ((value & 0xF) << 1);
+        index = (u8)((value >> 4) + ((value & 0xF) << 1));
 
         lbl_803688E4 = *(u8 **)(state + 0x69C);
 
@@ -549,7 +558,7 @@ u8 fn_8023CE08(void)
         *(u8 **)(state + 0x340 + index * 0xE0) =
             *(u8 **)(state + 0x69C);
 
-        *(u8 **)(state + 0x69C) += (u16)total;
+        *(u8 **)(state + 0x69C) += total;
 
         fn_8023CFE8();
         fn_8023D0D8();
@@ -561,7 +570,7 @@ u8 fn_8023CE08(void)
 
         state[0x6A8] |= 1 << index;
 
-    } while ((u16)length != 0);
+    } while (length != 0);
 
     return 0;
 }
@@ -824,69 +833,292 @@ void fn_8023D350(void)
 }
 #pragma use_lmw_stmw reset
 
-void fn_8023D59C(s32 arg0,s32 arg1,s32 arg2) {
-extern void *lbl_80368950; extern s32 lbl_80368944,lbl_80368948;
-void fn_8023D350(); void fn_8023D6A8(); void fn_8023F130(); void fn_80240BBC();
-u16 row; u16 height;
-*(s32 *)((u8 *)lbl_80368950+0x6B0)=arg0;
-*(s32 *)((u8 *)lbl_80368950+0x6B4)=arg1;
-*(s32 *)((u8 *)lbl_80368950+0x6B8)=arg2;
-row=*(u16 *)((u8 *)lbl_80368950+0x698);
-height=*(u16 *)((u8 *)lbl_80368950+0x694);
-lbl_80368944=__builtin_mfspr(917); lbl_80368948=__builtin_mfspr(918);
-__builtin_mtspr(917,0x70007); __builtin_mtspr(918,0x3D043D04);
-fn_8023D350();
-if(*(u16 *)((u8 *)lbl_80368950+0x692)==0x200 && height==0x1C0) {
-for(;row<height;row+=16) fn_8023D6A8();
-} else if(*(u16 *)((u8 *)lbl_80368950+0x692)==0x280 && height==0x1E0) {
-for(;row<height;row+=16) fn_8023F130();
-} else {for(;row<height;row+=16) fn_80240BBC();}
-__builtin_mtspr(917,lbl_80368944); __builtin_mtspr(918,lbl_80368948);
+void fn_8023D59C(s32 arg0, s32 arg1, s32 arg2)
+{
+  extern void *lbl_80368950;
+  extern s32 lbl_80368944;
+  extern s32 lbl_80368948;
+  void fn_8023D350();
+  void fn_8023D6A8();
+  void fn_8023F130();
+  void fn_80240BBC();
+  u16 row;
+  u16 height;
+  *((s32 *) (((u8 *) lbl_80368950) + 0x6B0)) = arg0;
+  *((s32 *) (((u8 *) lbl_80368950) + 0x6B4)) = arg1;
+  *((s32 *) (((u8 *) lbl_80368950) + 0x6B8)) = arg2;
+  row = *((u16 *) (((u8 *) lbl_80368950) + 0x698));
+  height = *((u16 *) (((u8 *) lbl_80368950) + 0x694));
+  lbl_80368944 = __mfspr(917);
+  lbl_80368948 = __mfspr(918);
+  __mtspr(917, (float) 0x70007);
+  __mtspr(918, 0x3D043D04);
+  fn_8023D350();
+  if (((*((u16 *) (((u8 *) lbl_80368950) + 0x692))) == 0x200) && (height == 0x1C0))
+  {
+    for (; row < height; row += 16)
+    {
+      fn_8023D6A8();
+    }
+
+  }
+  else
+    if (((*((u16 *) (((u8 *) lbl_80368950) + 0x692))) == 0x280) && (height == 0x1E0))
+  {
+    for (; row < height; row += 16)
+    {
+      fn_8023F130();
+    }
+
+  }
+  else
+  {
+    for (; row < height; row += 16)
+    {
+      fn_80240BBC();
+    }
+
+  }
+  __mtspr(917, lbl_80368944);
+  __mtspr(918, lbl_80368948);
 }
 
-void fn_8023D6A8(void) {
-    extern u8 lbl_8033E460[];
-    extern f32 lbl_8036C198;
-    extern f32 lbl_8036C19C;
-    extern f32 lbl_8036C1A0;
-    extern f32 lbl_8036C1A4;
-    extern f32 lbl_8036C1A8;
-    extern void *lbl_80368950;
-    extern void *lbl_80368900;
-    extern u32 lbl_80368920;
-    extern void *lbl_80368940;
-    void fn_8020543C(s32);
-    void fn_80242668(void *, void *);
-    void fn_80242CE4(void *, void *);
-    void fn_8024338C(void *, void *);
-    u8 *buf;
-    u8 i;
-    f32 c0, c1, c2, c3, c4;
-    void *src;
-
-    buf = lbl_8033E460;
-    fn_8020543C(3);
-    c0 = lbl_8036C198;
-    c1 = lbl_8036C19C;
-    c2 = lbl_8036C1A0;
-    c3 = lbl_8036C1A4;
-    c4 = lbl_8036C1A8;
-    i = 0;
-    do {
-        fn_80242668(lbl_80368950, *(void **)(buf + 0x118));
-        fn_80242668(lbl_80368950, *(void **)(buf + 0x11C));
-        fn_80242668(lbl_80368950, *(void **)(buf + 0x120));
-        fn_80242668(lbl_80368950, *(void **)(buf + 0x124));
-        fn_80242CE4(lbl_80368950, *(void **)(buf + 0x128));
-        fn_8024338C(lbl_80368950, *(void **)(buf + 0x12C));
-        lbl_80368900 = *(void **)(buf + 0x100);
+void fn_8023D6A8(void)
+{
+  void fn_8020543C(s32);
+  void fn_80242668(void *, void *);
+  void fn_80242CE4(void *, void *);
+  void fn_8024338C(void *, s16 *);
+  void fn_80205390(void *, void *, s32);
+  extern u8 lbl_8033E460[];
+  extern u8 *lbl_80368950;
+  extern u8 *lbl_80368900;
+  extern u32 lbl_80368920;
+  void *new_var2;
+  extern f32 *lbl_80368940;
+  extern f32 lbl_8036C198;
+  extern f32 lbl_8036C19C;
+  extern f32 lbl_8036C1A0;
+  extern f32 lbl_8036C1A4;
+  extern f32 lbl_8036C1A8;
+  u8 *pixels;
+  u8 *work;
+  u8 *context;
+  s16 *coefficients;
+  f32 *quantization;
+  f32 *scratch;
+  unsigned int new_var;
+  f32 *source;
+  f32 *destination;
+  f32 x0;
+  f32 x1;
+  f32 x2;
+  f32 x3;
+  f32 x4;
+  f32 x5;
+  f32 x6;
+  f32 x7;
+  f32 z10;
+  f32 z11;
+  f32 z12;
+  f32 z13;
+  f32 z5;
+  f32 t0;
+  f32 t1;
+  f32 t2;
+  f32 t3;
+  f32 t4;
+  f32 t5;
+  f32 t6;
+  f32 t7;
+  f32 even0;
+  f32 even1;
+  f32 even2;
+  f32 even3;
+  f32 c1;
+  f32 c2;
+  f32 c3;
+  f32 c4;
+  f32 bias;
+  u32 block;
+  u32 macroblock;
+  u32 row;
+  u32 col;
+  u32 pass;
+  u32 index;
+  u32 selector;
+  u32 rowOffset;
+  u32 halfOffset;
+  u32 stride;
+  u32 zero;
+  s32 sample;
+  u32 bitPosition;
+  u16 counter;
+  ;
+  fn_8020543C(3);
+  scratch = (f32 *) work;
+  c1 = lbl_8036C198;
+  c2 = lbl_8036C19C;
+  c3 = lbl_8036C1A0;
+  c4 = lbl_8036C1A4;
+  *((u32 *) (context + 0x6A4)) = bitPosition;
+  bias = lbl_8036C1A8;
+  for (macroblock = 0; macroblock < (*((u16 *) (lbl_80368950 + 0x696))); ++macroblock)
+  {
+    new_var2 = *((void **) (work + 0x118));
+    fn_80242668(lbl_80368950, new_var2);
+    fn_80242668(lbl_80368950, *((void **) (lbl_8033E460 + 0x11C)));
+    fn_80242668(lbl_80368950, *((void **) (lbl_8033E460 + 0x120)));
+    fn_80242668(lbl_80368950, *((void **) (lbl_8033E460 + 0x124)));
+    fn_80242CE4(lbl_80368950, *((void **) (lbl_8033E460 + 0x128)));
+    fn_8024338C(lbl_80368950, *((s16 **) (lbl_8033E460 + 0x12C)));
+    context = lbl_80368950;
+    for (block = 0; block < 6; ++block)
+    {
+      coefficients = *((s16 **) ((work + 0x118) + (block * 4)));
+      if (block < 4)
+      {
+        selector = context[0x680];
+        lbl_80368900 = *((u8 **) (work + 0x100));
         lbl_80368920 = 0x200;
-        lbl_80368940 = (u8 *)lbl_80368950 + (*(u8 *)((u8 *)lbl_80368950 + 0x680) << 8);
-        /* PS decode body omitted — needs paired-single/GQR */
-        (void)c0; (void)c1; (void)c2; (void)c3; (void)c4;
-        (void)src;
-        i++;
-    } while (i < 2);
+        pixels = ((lbl_80368900 + (macroblock << 6)) + ((block & 1) << 5)) + ((block & 2) << 11);
+        halfOffset = 0x800;
+      }
+      else
+        if (block == 4)
+      {
+        selector = context[0x686];
+        lbl_80368900 = *((u8 **) (work + 0x104));
+        lbl_80368920 = 0x100;
+        pixels = lbl_80368900 + (macroblock << 5);
+        halfOffset = 0x400;
+      }
+      else
+      {
+        selector = context[0x68C];
+        lbl_80368900 = *((u8 **) (work + 0x108));
+        lbl_80368920 = 0x100;
+        pixels = lbl_80368900 + (macroblock << 5);
+        halfOffset = 0x400;
+      }
+      t5 = 0.0f;
+      quantization = (f32 *) (context + (selector << 8));
+      lbl_80368940 = quantization;
+      for (index = 0; index < 64; ++index)
+      {
+        scratch[index] = quantization[index];
+        scratch[index] = ((f32) coefficients[index]) * scratch[index];
+      }
+
+      for (pass = 0; pass < 2; ++pass)
+      {
+        for (row = 0; row < 8; ++row)
+        {
+          source = (destination = scratch + ((pass == 0) ? (row * 8) : (row)));
+          stride = (pass == ((((((((((((0 & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF)) ? (1) : (8);
+          x0 = source[0];
+          x1 = source[stride];
+          x2 = source[stride * 2];
+          x3 = source[stride * 3];
+          x4 = source[stride * 4];
+          x5 = source[stride * 5];
+          x6 = (long) source[stride * 6];
+          c2 = x6;
+          x7 = source[stride * 7];
+          zero = ((((((x1 == t5) && (x2 == 0.0f)) && (x3 == 0.0f)) && (x4 == t5)) && (x5 == 0.0f)) && (c2 == 0.0f)) && (x7 == 0.0f);
+          if (zero)
+          {
+            for (col = 0; col < 8; ++col)
+            {
+              destination[col * stride] = x0;
+            }
+
+          }
+          else
+          {
+            t0 = x0 + x4;
+            t1 = x0 - x4;
+            t3 = x2 + c2;
+            t2 = ((x2 - c2) * c2) - t3;
+            even0 = t0 + t3;
+            even3 = t0 - t3;
+            even1 = t1 + t2;
+            even2 = t1 - t2;
+            z13 = x5 + x3;
+            z10 = x5 - x3;
+            z11 = x1 + x7;
+            z12 = x1 - x7;
+            t7 = z11 + z13;
+            t1 = (z11 - z13) * c2;
+            z5 = (z10 + z12) * c3;
+            t0 = z5 - (z12 * c4);
+            t2 = z5 - (z10 * c1);
+            t6 = t2 - t7;
+            t5 = t1 - t6;
+            t4 = t0 + t5;
+            destination[0] = even0 + t7;
+            destination[1 * stride] = even1 + t6;
+            destination[2 * stride] = even2 + (t1 - t6);
+            destination[3 * stride] = even3 + t4;
+            destination[4 * stride] = even3 - t4;
+            destination[5 * stride] = even2 - (t1 - t6);
+            destination[6 * stride] = even1 - t6;
+            destination[7 * stride] = even0 - t7;
+          }
+          c3 += 0;
+        }
+
+      }
+
+      for (row = 0; row < 8; ++row)
+      {
+        for (col = 0; col < 8; ++col)
+        {
+          rowOffset = ((row & 3) << 3) + ((row >= 4) ? (halfOffset) : (0));
+          sample = (s32) (scratch[(2 * (row * 4)) + col] + bias);
+          if (sample < 0)
+          {
+            sample = 0;
+          }
+          if (sample > 255)
+          {
+            sample = 255;
+          }
+          pixels[rowOffset + col] = (u8) sample;
+        }
+
+      }
+
+    }
+
+    if (context[0x6A9] != 0)
+    {
+      counter = *((u16 *) (context + 0x6AC));
+      counter--;
+      *((u16 *) (context + 0x6AC)) = counter;
+      if (counter == 0)
+      {
+        *((u16 *) (context + 0x6AC)) = *((u16 *) (context + 0x6AA));
+        bitPosition = *((u32 *) (context + 0x6A4));
+        bitPosition = ((bitPosition - (-6)) & (~(new_var = 7U))) + 1;
+        if (bitPosition > 0x21)
+        {
+          bitPosition = 0x21;
+        }
+        *((u32 *) (context + 0x6A4)) = bitPosition;
+        *((u16 *) (context + 0x690)) = (*((u16 *) (lbl_80368950 + 0x684)) = 0);
+        *((u16 *) (lbl_80368950 + 0x68A)) = 0;
+      }
+    }
+  }
+
+  context = lbl_80368950;
+  fn_80205390(*((void **) (context + 0x6B0)), *((void **) (lbl_8033E460 + 0x100)), 0x2000);
+  fn_80205390(*((void **) (context + 0x6B4)), *((void **) (lbl_8033E460 + 0x104)), 0x800);
+  fn_80205390(*((void **) (context + 0x6B8)), *((void **) (lbl_8033E460 + 0x108)), 0x800);
+  *((u32 *) (context + 0x6B0)) += 0x2000;
+  *((u32 *) (context + 0x6B4)) += 0x800;
+  *((u32 *) (context + 0x6B8)) += 0x800;
 }
 
 void fn_8023F130(void)
@@ -1105,10 +1337,12 @@ void fn_8023F130(void)
 
 void fn_80240BBC(void)
 {
+  f32 *new_var7;
   extern u8 lbl_8033E460[];
   extern u8 *lbl_80368950;
   extern void *lbl_80368900;
   extern u32 lbl_80368920;
+  u16 *new_var3;
   extern u8 *lbl_80368940;
   extern f32 lbl_8036C198;
   extern f32 lbl_8036C19C;
@@ -1122,6 +1356,7 @@ void fn_80240BBC(void)
   u32 fn_80205390(s32, s32, s32);
   static const f32 basis[8][8] = {{0.707106781f, 0.980785280f, 0.923879533f, 0.831469612f, 0.707106781f, 0.555570233f, 0.382683432f, 0.195090322f}, {0.707106781f, 0.831469612f, 0.382683432f, -0.195090322f, -0.707106781f, -0.980785280f, -0.923879533f, -0.555570233f}, {0.707106781f, 0.555570233f, -0.382683432f, -0.980785280f, -0.707106781f, 0.195090322f, 0.923879533f, 0.831469612f}, {0.707106781f, 0.195090322f, -0.923879533f, -0.555570233f, 0.707106781f, 0.831469612f, -0.382683432f, -0.980785280f}, {0.707106781f, -0.195090322f, -0.923879533f, 0.555570233f, 0.707106781f, -0.831469612f, -0.382683432f, 0.980785280f}, {0.707106781f, -0.555570233f, -0.382683432f, 0.980785280f, -0.707106781f, -0.195090322f, 0.923879533f, -0.831469612f}, {0.707106781f, -0.831469612f, 0.382683432f, 0.195090322f, -0.707106781f, 0.980785280f, -0.923879533f, 0.555570233f}, {0.707106781f, -0.980785280f, 0.923879533f, -0.831469612f, 0.707106781f, -0.555570233f, 0.382683432f, -0.195090322f}};
   u8 *state;
+  int new_var5;
   u8 *workbuf;
   s16 *coefficients;
   f32 *quant;
@@ -1140,10 +1375,12 @@ void fn_80240BBC(void)
   u32 mcuIndex;
   u32 term;
   u32 stride;
+  int new_var6;
   u32 bitPos;
-  u32 chromaCount;
+  volatile unsigned char chromaCount;
   f32 sum;
   f32 pixel;
+  u8 *new_var4;
   f32 bias;
   f32 c0;
   f32 c1;
@@ -1152,20 +1389,22 @@ void fn_80240BBC(void)
   f32 c3;
   workbuf = lbl_8033E460;
   state = lbl_80368950;
-  width = *((u16 *) (state + 0x692));
   fn_8020543C(3);
   c0 = lbl_8036C198;
+  width = *((u16 *) (state + 0x692));
   c1 = lbl_8036C19C;
   c2 = lbl_8036C1A0;
   new_var2 = lbl_8036C1A4;
+  chromaCount = 5;
   c3 = new_var2;
   bias = lbl_8036C1A8;
-  (void) c0;
+  (void) lbl_8036C198;
   (void) c1;
   (void) c2;
   (void) c3;
+  new_var3 = (u16 *) (state + 0x696);
   halfWidth = width >> 1;
-  mcuCount = *((u16 *) (state + 0x696));
+  mcuCount = *new_var3;
   mcuIndex = 0;
   while (mcuIndex < mcuCount)
   {
@@ -1191,24 +1430,30 @@ void fn_80240BBC(void)
         lbl_80368940 = state + (((u32) state[0x680]) << 8);
       }
       else
+      {
+        pixel = (sum * 0.25f) + bias;
         if (block == 4)
-      {
-        lbl_80368900 = *((void **) (workbuf + 0x110));
-        lbl_80368920 = halfWidth;
-        state = lbl_80368950;
-        lbl_80368940 = state + (((u32) state[0x686]) << 8);
-      }
-      else
-        if (block == 5)
-      {
-        lbl_80368900 = *((void **) (workbuf + 0x114));
-        state = lbl_80368950;
-        lbl_80368940 = state + (((u32) state[0x68C]) << 8);
+        {
+          lbl_80368900 = *((void **) (workbuf + 0x110));
+          lbl_80368920 = halfWidth;
+          state = lbl_80368950;
+          lbl_80368940 = state + (((u32) state[0x686]) << 8);
+        }
+        else
+          if (block == 5)
+        {
+          lbl_80368900 = *((void **) (workbuf + 0x114));
+          state = lbl_80368950;
+          lbl_80368940 = state + (((u32) state[0x68C]) << 8);
+        }
       }
       componentWidth = (block < 4) ? (width) : (halfWidth);
+      new_var4 = workbuf;
+      new_var4 = new_var4 + 0x118;
       quant = (f32 *) lbl_80368940;
-      new_var = 5;
-      coefficients = *((s16 **) ((workbuf + 0x118) + (block * 4)));
+      lbl_80368940 = new_var4 + (block * 4);
+      new_var = chromaCount;
+      coefficients = *((s16 **) lbl_80368940);
       intermediate = (f32 *) workbuf;
       dst = (u8 *) lbl_80368900;
       if (block < 4)
@@ -1216,7 +1461,7 @@ void fn_80240BBC(void)
         offset = mcuIndex << 6;
         if (block & 1)
         {
-          offset += 32;
+          offset += (new_var5 = 32);
         }
         if (block & 2)
         {
@@ -1247,13 +1492,14 @@ void fn_80240BBC(void)
       {
         for (col = 0; (col - 1) < (8 - 1); col++)
         {
+          new_var7 = intermediate;
           sum = 0.0f;
           for (term = 0; term < 8; term++)
           {
-            sum += intermediate[(row * 8) + term] * basis[col][term];
+            sum += new_var7[(row * 8) + term] * basis[col][term];
           }
 
-          pixel = (sum * 0.25f) + bias;
+          new_var6 = (row >> 2) * componentWidth;
           if (pixel < 0.0f)
           {
             pixel = 0.0f;
@@ -1262,7 +1508,7 @@ void fn_80240BBC(void)
             if (pixel > 255.0f)
           {
             pixel = 255.0f;
-            stride = ((((row >> 2) * componentWidth) * 4) + ((row & 3) << 3)) + col;
+            stride = ((new_var6 * 4) + ((row & 3) << 3)) + col;
           }
           dst[offset + stride] = (u8) pixel;
         }
@@ -1273,7 +1519,7 @@ void fn_80240BBC(void)
     }
 
     state = lbl_80368950;
-    if (state[0x6A9] != 0)
+    if (state[0x6A9] != (row * 0))
     {
       *((u16 *) (state + 0x6AC)) -= 1;
       if ((*((u16 *) (state + 0x6AC))) == 0)
@@ -1281,7 +1527,7 @@ void fn_80240BBC(void)
         *((u16 *) (state + 0x6AC)) = *((u16 *) (state + 0x6AA));
         bitPos = *((u32 *) (state + 0x6A4));
         ;
-        if ((((bitPos + 6) & (~7U)) + 1) > 32)
+        if ((((bitPos + 6) & (~7U)) + 1) > new_var5)
         {
           bitPos = 33;
         }
@@ -1294,10 +1540,10 @@ void fn_80240BBC(void)
   }
 
   state = lbl_80368950;
-  chromaCount = width >> 4;
+  ;
   fn_80205390((s32) (*((void **) (state + 0x6B0))), (s32) (*((void **) (workbuf + 0x10C))), width << 4);
   fn_80205390((s32) (*((void **) (state + 0x6B4))), (s32) (*((void **) (workbuf + 0x110))), (s32) ((width >> 4) << 6));
-  fn_80205390((s32) (*((void **) (state + 0x6B8))), (s32) (*((void **) (workbuf + 0x114))), (s32) (chromaCount << 6));
+  fn_80205390((s32) (*((void **) (state + 0x6B8))), (s32) (*((void **) (workbuf + 0x114))), (s32) ((width >> 4) << 6));
   state = (state = lbl_80368950);
   *((u8 **) (state + 0x6B0)) += (width >> 4) << 8;
   state = lbl_80368950;
@@ -1873,38 +2119,315 @@ void fn_80242CE4(void *arg0, s16 *arg1)
     *(s32 *)(ctx + 0x6A4) = bitpos;
 }
 
-void fn_8024338C(void *arg0, s16 *arg1) {
+void fn_8024338C(void *arg0, s16 *arg1)
+{
     extern u8 *lbl_80368880;
     extern u8 *lbl_803688E0;
     extern u8 lbl_80282FD8[];
-    s32 bitpos;
-    u32 bitbuf;
-    s32 code;
-    s32 n;
-    u8 *tbl;
-    u8 *lens;
 
+    u8 *ctx;
+    u8 *table;
+    u8 *lens;
+    u8 *zigzag;
+    u32 *stream;
+    u32 buffer;
+    u32 code;
+    u32 symbol;
+    u32 length;
+    u32 threshold;
+    u32 index;
+    u32 bits;
+    u32 extra;
+    u32 raw;
+    u32 prefix;
+    u32 off;
+    s32 position;
+    s32 category;
+    s32 value;
+    s32 dc;
+    s32 run;
+    s32 coefficient;
+
+    ctx = (u8 *)arg0;
+    /* First 32 bytes of the 8x8 coefficient block. */
     __dcbz(arg1, 0);
-    tbl = lbl_80368880;
-    lens = tbl + 0x20;
-    bitpos = *(s32 *)((u8 *)arg0 + 0x6A4);
-    bitbuf = *(u32 *)((u8 *)arg0 + 0x6A0);
-    code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
-    if (bitpos <= 0x1C) {
-        n = tbl[code];
-        if (n != 0xFF) {
-            *(s32 *)((u8 *)arg0 + 0x6A4) = bitpos + lens[code];
+
+    table = lbl_80368880;
+    lens = table + 0x20;
+    position = *(s32 *)(ctx + 0x6A4);
+    buffer = *(u32 *)(ctx + 0x6A0);
+    code = __rlwnm(buffer, position + 4, 27, 31);
+
+    if (position <= 28) {
+        symbol = table[code];
+        if (symbol != 0xFF) {
+            position += lens[code];
+            *(s32 *)(ctx + 0x6A4) = position;
+            goto dc_decoded;
+        }
+        length = 5;
+        position += 5;
+        goto dc_long;
+    }
+
+    stream = *(u32 **)(ctx + 0x69C);
+    if (position == 33) {
+        stream++;
+        buffer = *stream;
+        *(u32 **)(ctx + 0x69C) = stream;
+        *(u32 *)(ctx + 0x6A0) = buffer;
+        code = (code & 0x10) | (buffer >> 28);
+        symbol = table[code];
+        position = lens[code];
+        *(s32 *)(ctx + 0x6A4) = position;
+        if (symbol != 0xFF) {
+            goto dc_decoded;
+        }
+        length = 5;
+        position = 6;
+        goto dc_long;
+    }
+
+    if (position == 32) {
+        stream++;
+        buffer = *stream;
+        *(u32 **)(ctx + 0x69C) = stream;
+        *(u32 *)(ctx + 0x6A0) = buffer;
+        code = buffer >> 27;
+        symbol = table[code];
+        position = lens[code] + 1;
+        if (symbol != 0xFF) {
+            *(s32 *)(ctx + 0x6A4) = position;
+            goto dc_decoded;
+        }
+        length = 5;
+        position = 6;
+        goto dc_long;
+    }
+
+    symbol = table[code];
+    position += lens[code];
+    if (symbol != 0xFF && position <= 33) {
+        *(s32 *)(ctx + 0x6A4) = position;
+        goto dc_decoded;
+    }
+
+    stream++;
+    buffer = *stream;
+    *(u32 **)(ctx + 0x69C) = stream;
+    *(u32 *)(ctx + 0x6A0) = buffer;
+    code = (position & 0x10) | (buffer >> 28);
+    symbol = table[code];
+    position = lens[code];
+    *(s32 *)(ctx + 0x6A4) = position;
+    if (symbol != 0xFF) {
+        goto dc_decoded;
+    }
+    length = 5;
+    position = 6;
+
+dc_long:
+    /* Resolve a code not represented by the 5-bit fast table. */
+    for (;;) {
+        if (position == 33) {
+            stream = *(u32 **)(ctx + 0x69C);
+            stream++;
+            buffer = *stream;
+            *(u32 **)(ctx + 0x69C) = stream;
+            *(u32 *)(ctx + 0x6A0) = buffer;
+            position = 1;
+        }
+        code = (code << 1) | __rlwnm(buffer, position, 31, 31);
+        position++;
+        length++;
+        threshold = *(u32 *)(table + 0x44 + length * 4);
+        if (code <= threshold) {
+            break;
         }
     }
+    *(s32 *)(ctx + 0x6A4) = position;
+    off = *(u32 *)(table + 0x40);
+    off += *(u32 *)(table + 0x8C + length * 4);
+    symbol = *(u8 *)(off + code);
+
+dc_decoded:
+    /* Clear the remaining three 32-byte cache lines. */
     __dcbz(arg1, 0x20);
     __dcbz(arg1, 0x40);
-    __dcbz(arg1, 0x60);
-    {
-        s16 s = *(s16 *)((u8 *)arg0 + 0x690);
-        *arg1 = s;
+
+    value = 0;
+    category = (s32)symbol;
+    if (category != 0) {
+        position = *(s32 *)(ctx + 0x6A4);
+        buffer = *(u32 *)(ctx + 0x6A0);
+        bits = (u32)category;
+        extra = 33 - position;
+        if (bits <= extra) {
+            raw = (buffer << (position - 1)) >> (32 - bits);
+            position += bits;
+            *(s32 *)(ctx + 0x6A4) = position;
+        } else {
+            stream = *(u32 **)(ctx + 0x69C);
+            prefix = buffer << (position - 1);
+            stream++;
+            buffer = *stream;
+            *(u32 *)(ctx + 0x6A0) = buffer;
+            *(u32 **)(ctx + 0x69C) = stream;
+            position = (s32)bits - (s32)extra + 1;
+            *(s32 *)(ctx + 0x6A4) = position;
+            raw = (prefix + (buffer >> extra)) >> (32 - bits);
+        }
+        if (raw < (1U << (bits - 1))) {
+            raw += 1U - (1U << bits);
+        }
+        value = (s16)raw;
     }
-    (void)lbl_803688E0;
-    (void)lbl_80282FD8;
+
+    __dcbz(arg1, 0x60);
+    dc = (s16)(*(s16 *)(ctx + 0x690) + value);
+    *(s16 *)(ctx + 0x690) = (s16)dc;
+    arg1[0] = (s16)dc;
+    zigzag = lbl_80282FD8;
+
+    /* The remaining 63 coefficients are run-length/Huffman coded. */
+    index = 1;
+    while (index < 64) {
+        table = lbl_803688E0;
+        lens = table + 0x20;
+        position = *(s32 *)(ctx + 0x6A4);
+        buffer = *(u32 *)(ctx + 0x6A0);
+        code = __rlwnm(buffer, position + 4, 27, 31);
+
+        if (position <= 28) {
+            symbol = table[code];
+            if (symbol != 0xFF) {
+                position += lens[code];
+                *(s32 *)(ctx + 0x6A4) = position;
+                goto ac_decoded;
+            }
+            length = 5;
+            position += 5;
+            goto ac_long;
+        }
+
+        stream = *(u32 **)(ctx + 0x69C);
+        if (position == 33) {
+            stream++;
+            buffer = *stream;
+            *(u32 **)(ctx + 0x69C) = stream;
+            *(u32 *)(ctx + 0x6A0) = buffer;
+            code = (code & 0x10) | (buffer >> 28);
+            symbol = table[code];
+            position = lens[code];
+            *(s32 *)(ctx + 0x6A4) = position;
+            if (symbol != 0xFF) {
+                goto ac_decoded;
+            }
+            length = 5;
+            position = 6;
+            goto ac_long;
+        }
+
+        if (position == 32) {
+            stream++;
+            buffer = *stream;
+            *(u32 **)(ctx + 0x69C) = stream;
+            *(u32 *)(ctx + 0x6A0) = buffer;
+            code = buffer >> 27;
+            symbol = table[code];
+            position = lens[code] + 1;
+            if (symbol != 0xFF) {
+                *(s32 *)(ctx + 0x6A4) = position;
+                goto ac_decoded;
+            }
+            length = 5;
+            position = 6;
+            goto ac_long;
+        }
+
+        symbol = table[code];
+        position += lens[code];
+        if (symbol != 0xFF && position <= 33) {
+            *(s32 *)(ctx + 0x6A4) = position;
+            goto ac_decoded;
+        }
+
+        stream++;
+        buffer = *stream;
+        *(u32 **)(ctx + 0x69C) = stream;
+        *(u32 *)(ctx + 0x6A0) = buffer;
+        code = (position & 0x10) | (buffer >> 28);
+        symbol = table[code];
+        position = lens[code];
+        *(s32 *)(ctx + 0x6A4) = position;
+        if (symbol != 0xFF) {
+            goto ac_decoded;
+        }
+        length = 5;
+        position = 6;
+
+ac_long:
+        for (;;) {
+            if (position == 33) {
+                stream = *(u32 **)(ctx + 0x69C);
+                stream++;
+                buffer = *stream;
+                *(u32 **)(ctx + 0x69C) = stream;
+                *(u32 *)(ctx + 0x6A0) = buffer;
+                position = 1;
+            }
+            code = (code << 1) | __rlwnm(buffer, position, 31, 31);
+            position++;
+            length++;
+            threshold = *(u32 *)(table + 0x44 + length * 4);
+            if (code <= threshold) {
+                break;
+            }
+        }
+        *(s32 *)(ctx + 0x6A4) = position;
+        off = *(u32 *)(table + 0x40);
+        off += *(u32 *)(table + 0x8C + length * 4);
+        symbol = *(u8 *)(off + code);
+
+ac_decoded:
+        run = (s32)(symbol >> 4);
+        category = (s32)(symbol & 15);
+        if (category == 0) {
+            if (run == 15) {
+                index += 16;
+                continue;
+            }
+            break;
+        }
+
+        index += run;
+        position = *(s32 *)(ctx + 0x6A4);
+        buffer = *(u32 *)(ctx + 0x6A0);
+        bits = (u32)category;
+        extra = 33 - position;
+        if (bits <= extra) {
+            raw = (buffer << (position - 1)) >> (32 - bits);
+            position += bits;
+            *(s32 *)(ctx + 0x6A4) = position;
+        } else {
+            stream = *(u32 **)(ctx + 0x69C);
+            prefix = buffer << (position - 1);
+            stream++;
+            buffer = *stream;
+            *(u32 *)(ctx + 0x6A0) = buffer;
+            *(u32 **)(ctx + 0x69C) = stream;
+            position = (s32)bits - (s32)extra + 1;
+            *(s32 *)(ctx + 0x6A4) = position;
+            raw = (prefix + (buffer >> extra)) >> (32 - bits);
+        }
+        if (raw < (1U << (bits - 1))) {
+            raw += 1U - (1U << bits);
+        }
+
+        coefficient = (s16)raw;
+        arg1[zigzag[index]] = (s16)coefficient;
+        index++;
+    }
 }
 
 s32 fn_80243A34(void) {

@@ -521,7 +521,6 @@ void fn_8020CED0(void) {
 }
 
 #pragma dont_inline on
-#pragma optimization_level 3
 void DVDInit(void) {
  extern s32 DVDInitialized_803685DC;
  extern const char *__DVDVersion;
@@ -543,7 +542,6 @@ void DVDInit(void) {
  else if(*(u32*)(bootInfo_803685A0+0x20)!=0x0D15EA5E) FirstTimeInBootrom_803685D4=1;
  }
 }
-#pragma optimization_level reset
 #pragma dont_inline reset
 void fn_8020CFAC(void) {
     extern void (*lbl_803685E0)(void *);
@@ -857,8 +855,9 @@ void fn_8020D5BC(void) {
     DVDLowStopMotor(fn_8020D5E4);
 }
 
+#pragma global_optimizer off
+#pragma opt_common_subs off
 void fn_8020D5E4(u32 arg0) {
-    /* cbForStateGoToRetry */
     void __DVDStoreErrorCode(u32);
     void DVDReset(void);
     void cbForStateError(u32);
@@ -866,7 +865,7 @@ void fn_8020D5E4(u32 arg0) {
     void fn_8020DD7C(void);
 
     extern s32 lbl_803685CC;
-    extern volatile s32 CurrCommand_803685B4;
+    extern volatile u32 CurrCommand_803685B4;
     extern s32 ResetRequired_803685D0;
     extern u32 lbl_803685B8;
     extern void *executing_80368598;
@@ -875,6 +874,7 @@ void fn_8020D5E4(u32 arg0) {
     extern void (*lbl_803685BC)(void *, void *);
 
     DVDReadyCommand *finished;
+    s32 flag;
 
     if (arg0 == 0x10) {
         __DVDStoreErrorCode(0x01234568);
@@ -883,47 +883,47 @@ void fn_8020D5E4(u32 arg0) {
         return;
     }
 
-    if (arg0 & 2) {
+    if ((arg0 & 2) != 0) {
         __DVDStoreErrorCode(0x01234567);
         DVDLowStopMotor(cbForStateError);
         return;
     }
 
-    lbl_803685CC = 0;
+    *(volatile s32 *)&lbl_803685CC = 0;
 
-    if (CurrCommand_803685B4 == 4 ||
-        CurrCommand_803685B4 == 5 ||
-        CurrCommand_803685B4 == 13 ||
-        CurrCommand_803685B4 == 15) {
+    if (CurrCommand_803685B4 == 4 || CurrCommand_803685B4 == 5 ||
+        CurrCommand_803685B4 == 13 || CurrCommand_803685B4 == 15) {
         ResetRequired_803685D0 = 1;
     }
 
     if (lbl_803685B8 != 0) {
-        ResumeFromHere_803685C0 = 2;
-        lbl_803685B8 = 0;
-
         finished = (DVDReadyCommand *)executing_80368598;
+        ResumeFromHere_803685C0 = 2;
         executing_80368598 = DummyCommandBlock_80339F80;
-
+        lbl_803685B8 = 0;
         finished->state = 10;
 
         if (finished->callback != 0) {
-            finished->callback(-3, finished);
+            (*finished->callback)(-3, finished);
         }
 
         if (lbl_803685BC != 0) {
-            lbl_803685BC(0, finished);
+            (*lbl_803685BC)((void *)0, finished);
         }
 
         stateReady();
-        return;
+        flag = 1;
+    } else {
+        flag = 0;
     }
 
-    ((DVDReadyCommand *)executing_80368598)->state = 11;
-    fn_8020DD7C();
+    if (flag == 0) {
+        ((DVDReadyCommand *)executing_80368598)->state = 11;
+        fn_8020DD7C();
+    }
 }
-
-#pragma global_optimizer off
+#pragma opt_common_subs reset
+#pragma global_optimizer reset
 void fn_8020D724(void) {
     /* stateCheckID */
     extern u16 BB2_80339F40[];
@@ -2634,7 +2634,7 @@ extern char lbl_8029D258[];
 extern char lbl_80366F80[2], lbl_80366F84[4], lbl_80366F88[3];
 static u8 block[48];
 u8 idBuffer[64];
-register char *format;
+char *format;
 u8 *id;
 u8 *boot;
 format = lbl_8029D258;
@@ -3078,7 +3078,6 @@ void fn_802107FC(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4) {
 #pragma peephole reset
 void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 nonInterlace) {
     extern u8 lbl_8033A068[];
-    s32 ni;
     u8 *v;
     u16 equOfs;
     u16 fldOfs;
@@ -3089,7 +3088,6 @@ void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 
     s32 tmp;
     u16 half;
 
-    ni = nonInterlace;
     v = lbl_8033A068;
     if (*(u16 *)(v + 0x6C) & 1) {
         equOfs = 1;
@@ -3112,7 +3110,7 @@ void fn_80210AD0(u16 arg0, u16 arg1, u8 arg2, u16 arg3, s32 arg4, s32 arg5, s32 
         v0100 = arg6 + (fldOfs * ((equOfs * arg3 - arg1) - arg0));
     }
     half = (u16)(arg1 / equOfs);
-    if (ni != 0) {
+    if (nonInterlace != 0) {
         tmp = (half * 2) - 2;
         h0000 += tmp;
         h0100 += tmp;

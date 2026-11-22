@@ -1472,6 +1472,7 @@ void fn_80182FC4(void *arg0) {
     s8 *tilePtr;
     s8 tile;
     u8 *coords;
+    u8 *coordsBad;
     s16 mapVal;
     u8 *mapHi;
     u8 *mapBase;
@@ -1492,8 +1493,8 @@ void fn_80182FC4(void *arg0) {
     if (tile == 0) {
         mapVal = ((s16 *)(mapBase + 0x610E))[x + (y << 6)];
         if (mapVal < 0) {
-            coords = *(u8 **)((u8 *)arg0 + 0x30);
-            coords[0] = 0;
+            coordsBad = *(u8 **)((u8 *)arg0 + 0x30);
+            coordsBad[0] = 0;
             goto after_coords;
         }
     }

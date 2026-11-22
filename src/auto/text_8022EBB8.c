@@ -888,8 +888,8 @@ int fflush(void *file) {
 
 s32 fn_802312B0(void *arg0) {
     s32 __flush_buffer(void *, s32 *);
+    s32 fn_8022D4C8();
     M2C_UNK fn_8022D014(s32);
-    s32 __flush_all();
     s32 fn_80231748(void *);
     typedef struct {
         u8 pad[4];
@@ -909,13 +909,13 @@ s32 fn_802312B0(void *arg0) {
         u8 flag:1;
         u8 rest:4;
     } B8;
-    S4 *s4 = (S4 *)arg0;
+    register S4 *s4 = (S4 *)arg0;
     B4 *b4 = (B4 *)arg0;
     B8 *b8 = (B8 *)arg0;
+    s32 var_r29;
+    long var_r30;
     s32 temp_r30;
-    register s32 var_r29;
-    s32 var_r30;
-    s32 var_r3;
+    long var_r3;
 
     if (arg0 == NULL) {
         return -1;
@@ -924,7 +924,7 @@ s32 fn_802312B0(void *arg0) {
         return 0;
     }
     if (arg0 == NULL) {
-        var_r29 = __flush_all();
+        var_r29 = fn_8022D4C8();
     } else if (((u8) M2C_FIELD(arg0, u8 *, 0xA) != 0) || (s4->mode == 0)) {
         var_r29 = -1;
     } else if (b4->modeB == 1) {
@@ -951,9 +951,9 @@ s32 fn_802312B0(void *arg0) {
                 M2C_FIELD(arg0, s32 *, 0x28) = 0;
             } else {
                 var_r29 = 0;
-                b8->mode = var_r29;
                 M2C_FIELD(arg0, s32 *, 0x18) = var_r30;
-                M2C_FIELD(arg0, s32 *, 0x28) = var_r29;
+                b8->mode = var_r29;
+                M2C_FIELD(arg0, s32 *, 0x28) = 0;
             }
         }
     }
@@ -964,7 +964,7 @@ s32 fn_802312B0(void *arg0) {
         fn_8022D014(M2C_FIELD(arg0, s32 *, 0x1C));
     }
     var_r3 = 0;
-    if ((var_r29 != 0) || (temp_r30 != 0)) {
+    if ((var_r29) || (temp_r30)) {
         var_r3 = 1;
     }
     return (s32) (-var_r3 | var_r3) >> 0x1F;
@@ -1123,52 +1123,70 @@ s32 fn_80231748(void *arg0) {
  return result;
 }
 
-u32 wcstombs(char *arg0, const u16 *src, u32 arg2) {
-    char *Str_CopyPad(char *,const char *,s32);
-    extern u32 lbl_8036BDF8;
-    char buffer[3];
-    u32 prefixes;
-    s32 count;
-    char *dest;
-    u32 limit;
-    const u16 *p;
-    u32 total;
-    u32 result;
-
-    register u32 ch;
-    char *out;
-    dest=arg0;
-    limit=arg2;
-    total=0;
-    if(dest==0 || src==0) return 0;
-    p=src;
-    while((result=total)<=limit) {
-        ch=*p;
-        if(ch==0) {
-            dest[total]=0;
-            break;
-        }
-        p++;
-        prefixes=lbl_8036BDF8;
-        if(ch<0x80) count=1;
-        else if(ch<0x800) count=2;
-        else count=3;
-        out=buffer+count;
-        switch(count) {
-        case 3:
-            *--out=(ch&0x3F)|0x80;
-            ch=(u16)ch>>6;
-        case 2:
-            *--out=(ch&0x3F)|0x80;
-            ch=(u16)ch>>6;
-        case 1:
-            *--out=ch|((u8*)&prefixes)[count];
-        }
-        if(total+count>limit) break;
-        Str_CopyPad(dest+total,buffer,count);
-        total+=count;
+u32 wcstombs(char *dest, const u16 *src, u32 limit)
+{
+  char *Str_CopyPad(char *, const char *, s32);
+  extern u32 lbl_8036BDF8;
+  register const u16 *p;
+  char buffer[3];
+  u32 prefixes;
+  s32 count;
+  u32 total = 0;
+  u32 ch;
+  char *out;
+  if ((dest == 0) || (src == 0))
+  {
+    return 0;
+  }
+  p = src;
+  while (total <= limit)
+  {
+    ch = *p;
+    if (ch == 0)
+    {
+      dest[total] = 0;
+      break;
     }
-    return result;
+    p++;
+    prefixes = lbl_8036BDF8;
+    if (ch < 0x80)
+    {
+      count = 1;
+    }
+    else
+      if (ch < 0x800)
+    {
+      count = 2;
+    }
+    else
+    {
+      count = 3;
+    }
+    out = buffer + count;
+    switch (count)
+    {
+      case 3:
+        *(--out) = (ch & 0x3F) | 0x80;
+        ch = ((u16) ch) >> 6;
+
+      case 2:
+        *(--out) = (ch & 0x3F) | 0x80;
+        ch = ((u16) ch) >> 6;
+
+      case 1:
+        *(--out) = ch | ((u8 *) (&prefixes))[count];
+
+    }
+
+    if ((total + count) > limit)
+    {
+      break;
+    }
+    Str_CopyPad(dest + total, buffer, count);
+    total += count;
+  }
+
+  return total;
 }
 
 int fn_80231944(const char *str1, const char *str2, int count) {

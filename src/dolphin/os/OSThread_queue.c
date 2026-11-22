@@ -193,6 +193,7 @@ s32 fn_8020A0C8(void *arg0)
   return priority;
 }
 
+#pragma optimization_level 3
 void *fn_8020A104(void *arg0,s32 arg1) {
 void *thread=arg0;
 s32 priority=arg1;
@@ -239,4 +240,3 @@ case 3:default:break;
 }
 return 0;
 }
-

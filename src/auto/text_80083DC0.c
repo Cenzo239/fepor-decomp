@@ -208,10 +208,10 @@ void fn_80083F08(void *arg0) {
     void *unit;
     s32 nameId;
     u32 classId;
-    f32 bx, by;
     f32 sh, sw, th, tw;
     f32 x, y, t, yRow, x0, w;
     f32 f23v, f24v, f25v, f29v, f30v, f31v;
+    f32 bx, by;
     void *str;
     void *child;
     u16 *tex;

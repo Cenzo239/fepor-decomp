@@ -325,12 +325,14 @@ s32 fn_8005BB2C(void) {
     Entry *e;
     u32 time;
     s32 i;
+    s32 j;
 
     if ((u8)fn_800B2FF4(0) == 0) {
         return 0;
     }
     time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
     e = (Entry *)gFileCache;
+    j = 0;
     for (i = 0; i < 0x100; i++) {
         if (e->name != 0) {
             if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
@@ -353,6 +355,7 @@ s32 fn_8005BB2C(void) {
             }
         }
         e++;
+        j += 3;
     }
     return 1;
 }
@@ -384,58 +387,62 @@ void fn_8005BCF0(void) {
     s32 fn_8020A558(u8 *a, void *b, s32 c, u8 *d, s32 e, s32 f, s32 g);
     s32 fn_8020A9E0(u8 *a);
     extern void FileCache_WorkerThread(void);
+    typedef struct { u8 bytes[0x3E0]; } Block;
+    Block *b;
     s32 i;
-    u8 (*e)[0x3E0];
+    s32 z;
 
-    for (i = 0, e = (u8 (*)[0x3E0])gFileCache; i < 0x80; i++, e++) {
-        *(s8 *)(*e + 0x0) = 0;
-        *(s32 *)(*e + 0x2C) = 0;
-        *(s16 *)(*e + 0x30) = 0;
-        *(s16 *)(*e + 0x32) = 0;
-        *(s32 *)(*e + 0x38) = 0;
-        *(s32 *)(*e + 0x3C) = 0;
-        *(s8 *)(*e + 0x7C) = 0;
-        *(s32 *)(*e + 0xA8) = 0;
-        *(s16 *)(*e + 0xAC) = 0;
-        *(s16 *)(*e + 0xAE) = 0;
-        *(s32 *)(*e + 0xB4) = 0;
-        *(s32 *)(*e + 0xB8) = 0;
-        *(s8 *)(*e + 0xF8) = 0;
-        *(s32 *)(*e + 0x124) = 0;
-        *(s16 *)(*e + 0x128) = 0;
-        *(s16 *)(*e + 0x12A) = 0;
-        *(s32 *)(*e + 0x130) = 0;
-        *(s32 *)(*e + 0x134) = 0;
-        *(s8 *)(*e + 0x174) = 0;
-        *(s32 *)(*e + 0x1A0) = 0;
-        *(s16 *)(*e + 0x1A4) = 0;
-        *(s16 *)(*e + 0x1A6) = 0;
-        *(s32 *)(*e + 0x1AC) = 0;
-        *(s32 *)(*e + 0x1B0) = 0;
-        *(s8 *)(*e + 0x1F0) = 0;
-        *(s32 *)(*e + 0x21C) = 0;
-        *(s16 *)(*e + 0x220) = 0;
-        *(s16 *)(*e + 0x222) = 0;
-        *(s32 *)(*e + 0x228) = 0;
-        *(s32 *)(*e + 0x22C) = 0;
-        *(s8 *)(*e + 0x26C) = 0;
-        *(s32 *)(*e + 0x298) = 0;
-        *(s16 *)(*e + 0x29C) = 0;
-        *(s16 *)(*e + 0x29E) = 0;
-        *(s32 *)(*e + 0x2A4) = 0;
-        *(s32 *)(*e + 0x2A8) = 0;
-        *(s8 *)(*e + 0x2E8) = 0;
-        *(s32 *)(*e + 0x314) = 0;
-        *(s16 *)(*e + 0x318) = 0;
-        *(s16 *)(*e + 0x31A) = 0;
-        *(s32 *)(*e + 0x320) = 0;
-        *(s32 *)(*e + 0x324) = 0;
-        *(s8 *)(*e + 0x364) = 0;
-        *(s32 *)(*e + 0x390) = 0;
-        *(s16 *)(*e + 0x394) = 0;
-        *(s16 *)(*e + 0x396) = 0;
-        *(s32 *)(*e + 0x39C) = 0;
-        *(s32 *)(*e + 0x3A0) = 0;
+    z = 0;
+    b = (Block *)gFileCache;
+    for (i = 0; i < 0x80; i++, b++) {
+        *(s8 *)((u8 *)b + 0x0) = z;
+        *(s32 *)((u8 *)b + 0x2C) = z;
+        *(s16 *)((u8 *)b + 0x30) = z;
+        *(s16 *)((u8 *)b + 0x32) = z;
+        *(s32 *)((u8 *)b + 0x38) = z;
+        *(s32 *)((u8 *)b + 0x3C) = z;
+        *(s8 *)((u8 *)b + 0x7C) = z;
+        *(s32 *)((u8 *)b + 0xA8) = z;
+        *(s16 *)((u8 *)b + 0xAC) = z;
+        *(s16 *)((u8 *)b + 0xAE) = z;
+        *(s32 *)((u8 *)b + 0xB4) = z;
+        *(s32 *)((u8 *)b + 0xB8) = z;
+        *(s8 *)((u8 *)b + 0xF8) = z;
+        *(s32 *)((u8 *)b + 0x124) = z;
+        *(s16 *)((u8 *)b + 0x128) = z;
+        *(s16 *)((u8 *)b + 0x12A) = z;
+        *(s32 *)((u8 *)b + 0x130) = z;
+        *(s32 *)((u8 *)b + 0x134) = z;
+        *(s8 *)((u8 *)b + 0x174) = z;
+        *(s32 *)((u8 *)b + 0x1A0) = z;
+        *(s16 *)((u8 *)b + 0x1A4) = z;
+        *(s16 *)((u8 *)b + 0x1A6) = z;
+        *(s32 *)((u8 *)b + 0x1AC) = z;
+        *(s32 *)((u8 *)b + 0x1B0) = z;
+        *(s8 *)((u8 *)b + 0x1F0) = z;
+        *(s32 *)((u8 *)b + 0x21C) = z;
+        *(s16 *)((u8 *)b + 0x220) = z;
+        *(s16 *)((u8 *)b + 0x222) = z;
+        *(s32 *)((u8 *)b + 0x228) = z;
+        *(s32 *)((u8 *)b + 0x22C) = z;
+        *(s8 *)((u8 *)b + 0x26C) = z;
+        *(s32 *)((u8 *)b + 0x298) = z;
+        *(s16 *)((u8 *)b + 0x29C) = z;
+        *(s16 *)((u8 *)b + 0x29E) = z;
+        *(s32 *)((u8 *)b + 0x2A4) = z;
+        *(s32 *)((u8 *)b + 0x2A8) = z;
+        *(s8 *)((u8 *)b + 0x2E8) = z;
+        *(s32 *)((u8 *)b + 0x314) = z;
+        *(s16 *)((u8 *)b + 0x318) = z;
+        *(s16 *)((u8 *)b + 0x31A) = z;
+        *(s32 *)((u8 *)b + 0x320) = z;
+        *(s32 *)((u8 *)b + 0x324) = z;
+        *(s8 *)((u8 *)b + 0x364) = z;
+        *(s32 *)((u8 *)b + 0x390) = z;
+        *(s16 *)((u8 *)b + 0x394) = z;
+        *(s16 *)((u8 *)b + 0x396) = z;
+        *(s32 *)((u8 *)b + 0x39C) = z;
+        *(s32 *)((u8 *)b + 0x3A0) = z;
     }
     if ((u8) lbl_803672E9 == 0) {
         gFileCacheWorkWrite = 0;
@@ -584,7 +591,8 @@ u16 FileCache_Probe(char *name) {
     s32 fn_8020C3E0(char *);
     u8 *entry = FindEntryByName(name);
     u16 flags;
-    s32 tmp;
+    s32 r;
+    u32 bit;
 
     if (entry == NULL) {
         flags = 0x8000;
@@ -594,11 +602,9 @@ u16 FileCache_Probe(char *name) {
     if (!(flags & 0x8000)) {
         return flags;
     }
-    tmp = fn_8020C3E0(name);
-    tmp = ~((tmp + 1) | (-1 - tmp));
-    tmp >>= 31;
-    tmp &= 0x8000;
-    return (u16)tmp;
+    r = fn_8020C3E0(name);
+    bit = 0x8000;
+    return (u16)(bit & (u32)(~((r + 1) | (-1 - r)) >> 31));
 }
 #pragma use_lmw_stmw reset
 /* Return the byte size of the named file-cache entry, or 0 if absent. */
@@ -930,22 +936,22 @@ void fn_8005CBC8(void)
     DebugPrint(lbl_8026B330 + 0x21D);
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 void *fn_8005CEC0(void) {
     void fn_8005C8D8(s32);
-    extern u8 lbl_802F04E0[];
-    u8 *base;
+    extern u8 gFileCache[];
     u8 *e;
+    u8 *base;
     s32 i;
     s32 j;
     unsigned ctr;
 
     i = 0;
-    base = lbl_802F04E0;
-    e = base;
+    base = gFileCache;
+    e = gFileCache;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*e == 0) {
-            return lbl_802F04E0 + i * 0x7C;
+            return gFileCache + i * 0x7C;
         }
         e += 0x7C;
         i += 1;
@@ -954,14 +960,13 @@ void *fn_8005CEC0(void) {
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*base == 0) {
-            return lbl_802F04E0 + j * 0x7C;
+            return gFileCache + j * 0x7C;
         }
         base += 0x7C;
         j += 1;
     }
     return NULL;
 }
-#pragma global_optimizer on
 int fn_8005CF6C(int arg0) {
  void fn_8020F334(void *); void fn_800C4588(void *); void fn_8003FED8(void *); void OS_YieldThread(void); extern u8 gFileCache[];
  u8 *entry; s32 index;
@@ -999,11 +1004,14 @@ void FileCache_ReleaseByName(char *name) {
 void FileCache_ReleaseByKey(u32 arg0) {
     void FileCache_Release(void *);
     extern u8 gFileCache[];
-    u8 *found = 0;
-    u8 *e;
     u32 i;
+    u8 *e;
+    u8 *found;
 
-    for (i = 0, e = gFileCache; i < 1024; ++i, e += 124) {
+    i = 0;
+    e = gFileCache;
+    found = 0;
+    for (; i < 1024; ++i, e += 124) {
         if (*(u32 *)(e + 56) == arg0) {
             found = gFileCache + 124 * i;
             break;
@@ -1020,6 +1028,7 @@ void fn_8005D330(char *name, u16 flags) {
     void *AramCache_Find(char *);
     void fn_801ED7D0(void *);
     u8 *entry = FindEntryByName(name);
+    u16 cur;
     u32 f;
     void *aram;
 
@@ -1034,10 +1043,8 @@ void fn_8005D330(char *name, u16 flags) {
     }
     entry = fn_8005CEC0();
     f = (u16)flags | 0x200U;
-    {
-        u16 cur = *(u16 *)(entry + 0x30);
-        *(u16 *)(entry + 0x30) = cur | f;
-    }
+    cur = *(u16 *)(entry + 0x30);
+    *(u16 *)(entry + 0x30) = cur | f;
     fn_8005E12C(entry, name, f);
 }
 
@@ -1300,8 +1307,8 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
     u8 *item;
     s32 i;
     char *var_r3;
-    char *var_r4;
     char *var_r6;
+    char *var_r4;
     unsigned ctr;
     s32 var_r7;
     u8 temp_r5;
@@ -1313,13 +1320,13 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
         goto check;
     body:
         var_r3 = &path[0];
-        var_r4 = (char *)arg0;
-        var_r6 = var_r3;
+        var_r6 = (char *)arg0;
+        var_r4 = var_r3;
         *(u32 *)(item + 4) = *(u32 *)(item + 4) + (u32)list;
         var_r7 = 0;
         *(u32 *)(item + 8) = *(u32 *)(item + 8) + (u32)list;
         for (ctr = 0x29; ctr > 0; ctr--) {
-            temp_r5 = *(u8 *)var_r4;
+            temp_r5 = *(u8 *)var_r6;
             if ((s8)temp_r5 == 0) {
                 break;
             }
@@ -1327,22 +1334,21 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
                 var_r3 = &path[0] + 1;
                 var_r3 = var_r3 + var_r7;
             }
-            *var_r6 = temp_r5;
-            var_r6 += 1;
-            var_r7 += 1;
+            *var_r4 = temp_r5;
             var_r4 += 1;
+            var_r7 += 1;
+            var_r6 += 1;
         }
         strcpy(var_r3, *(char **)(item + 4));
 
         {
-            u8 *temp_r3 = fn_8005CEC0();
-            entry = temp_r3;
-            *(u16 *)(temp_r3 + 0x32) = 0;
+            entry = fn_8005CEC0();
+            *(u16 *)(entry + 0x32) = 0;
             var_r6 = &path[0];
-            *(u16 *)(temp_r3 + 0x30) = 0x3000;
-            *(u32 *)(temp_r3 + 0x3C) = *(u32 *)(item + 0xC);
-            *(u32 *)(temp_r3 + 0x38) = *(u32 *)(item + 8);
-            temp_r3[0x29] = arg0[0x29];
+            *(u16 *)(entry + 0x30) = 0x3000;
+            *(u32 *)(entry + 0x3C) = *(u32 *)(item + 0xC);
+            *(u32 *)(entry + 0x38) = *(u32 *)(item + 8);
+            entry[0x29] = arg0[0x29];
             if ((s8)path[0] == '/') {
                 var_r6 += 1;
             }

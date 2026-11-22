@@ -258,26 +258,26 @@ extern u16 lbl_802EFE20;
 
 void fn_800548E8(void *arg0)
 {
-    u8 Pad_IsActive(void *);
+    u8 fn_8005F7F0(void *);
     void fn_8004AE28(void *, f32, f32, f32);
     void fn_8004AD20(void *, f32 *);
-    u8 Pad_IsButton(void *, s32);
+    u8 fn_8005F9B8(void *, s32);
     s32 fn_800558FC(void *);
     s32 GActor_FindNode(void *, char *);
-    void fn_80060F70(void *, s32, f32 *);
     f32 fn_80060BA4(void *, s32);
+    void fn_80060F70(void *, s32, f32 *);
     void fn_80055FB4(f32 *, s32 *, s32, f32);
     void fn_80055D9C(void *);
     void *fn_80055DC0(f32 *, s32 *, s32, f32);
     extern f32 lbl_803690CC;
     extern f32 lbl_8036908C;
-    extern s32 gGameFlags;
-    extern char GActor_str[];
+    extern char lbl_8026AC0C[];
+    extern s32 lbl_803682A4;
     struct {
         s32 sp8;
         s32 spC;
         s32 sp10;
-        s32 sp14;
+        unsigned sp14;
         f32 sp18[3];
         f32 sp24[3];
         f32 sp30[3];
@@ -287,43 +287,42 @@ void fn_800548E8(void *arg0)
         f32 sp60[3];
         f32 sp6C[3];
     } s;
-    f32 fv0;
+    register f32 fv0;
     f32 fv1;
     f32 fv2;
     void *unit;
-    s32 idx;
+    int idx;
     void *node;
     f32 scale;
 
     node = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x5C);
-    if (Pad_IsActive(node) != 0) {
+    if (fn_8005F7F0(node) != 0) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         if (*(s8 *)((u8 *)unit + 3) < 0) {
             if (*(u32 *)((u8 *)unit + 8) & 8) {
                 fn_8004AE28(node, lbl_803690CC, lbl_803690CC, lbl_803690CC);
             } else {
-                if ((*(u8 *)((u8 *)*(void **)((u8 *)unit + 0x2C) + 4) & 3) == 0) {
-                    goto ad20;
+                switch (*(u8 *)((u8 *)*(void **)((u8 *)unit + 0x2C) + 4) & 3) {
+                case 0:
+                    fv2 = *(f32 *)((u8 *)unit + 0xC);
+                    fv1 = *(f32 *)((u8 *)unit + 0x10);
+                    fv0 = *(f32 *)((u8 *)unit + 0x14);
+                    s.sp30[0] = fv2;
+                    s.sp30[1] = fv1;
+                    s.sp30[2] = fv0;
+                    *(u32 *)&s.sp54[0] = *(u32 *)&s.sp30[0];
+                    *(u32 *)&s.sp54[1] = *(u32 *)&s.sp30[1];
+                    *(u32 *)&s.sp54[2] = *(u32 *)&s.sp30[2];
+                    fn_8004AD20(node, s.sp54);
+                    goto after_pos;
+                default:
+                    fn_8004AE28(node, lbl_803690CC, lbl_803690CC, lbl_803690CC);
+                    break;
                 }
-                goto ae28;
-            ad20:
-                fv2 = *(f32 *)((u8 *)unit + 0xC);
-                fv1 = *(f32 *)((u8 *)unit + 0x10);
-                fv0 = *(f32 *)((u8 *)unit + 0x14);
-                s.sp30[0] = fv2;
-                s.sp30[1] = fv1;
-                s.sp30[2] = fv0;
-                *(u32 *)&s.sp54[0] = *(u32 *)&s.sp30[0];
-                *(u32 *)&s.sp54[1] = *(u32 *)&s.sp30[1];
-                *(u32 *)&s.sp54[2] = *(u32 *)&s.sp30[2];
-                fn_8004AD20(node, s.sp54);
-                goto after_pos;
-            ae28:
-                fn_8004AE28(node, lbl_803690CC, lbl_803690CC, lbl_803690CC);
             }
         }
     after_pos:
-        if (Pad_IsButton(node, 0x28) != 0) {
+        if (fn_8005F9B8(node, 0x28) != 0) {
             unit = *(void **)((u8 *)arg0 + 0x30);
             fv2 = *(f32 *)((u8 *)unit + 0xC);
             fv1 = *(f32 *)((u8 *)unit + 0x10);
@@ -336,18 +335,18 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp6C[2] = *(u32 *)&s.sp24[2];
             s.sp14 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = GActor_FindNode(node, GActor_str + 0x16A);
-            if (idx >= 0) {
+            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
+            if (0 <= (s32)idx) {
                 fn_80060F70(node, idx, s.sp6C);
                 scale = fn_80060BA4(node, idx);
             }
-            s.spC = s.sp14;
             *(u32 *)&s.sp48[0] = *(u32 *)&s.sp6C[0];
+            s.spC = s.sp14;
             *(u32 *)&s.sp48[1] = *(u32 *)&s.sp6C[1];
             *(u32 *)&s.sp48[2] = *(u32 *)&s.sp6C[2];
             fn_80055FB4(s.sp48, &s.spC, 0, scale);
         }
-        if (Pad_IsButton(node, 0x29) != 0) {
+        if (fn_8005F9B8(node, 0x29) != 0) {
             unit = *(void **)((u8 *)arg0 + 0x30);
             fv2 = *(f32 *)((u8 *)unit + 0xC);
             fv1 = *(f32 *)((u8 *)unit + 0x10);
@@ -360,7 +359,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp60[2] = *(u32 *)&s.sp18[2];
             s.sp10 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = GActor_FindNode(node, GActor_str + 0x16A);
+            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
             if (idx >= 0) {
                 fn_80060F70(node, idx, s.sp60);
                 scale = fn_80060BA4(node, idx);
@@ -372,17 +371,17 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp3C[2] = *(u32 *)&s.sp60[2];
             *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48) = fn_80055DC0(s.sp3C, &s.sp8, 0, scale);
         }
-        if (Pad_IsButton(node, 0x2A) != 0) {
+        if (fn_8005F9B8(node, 0x2A) != 0) {
             fn_80055D9C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48));
             *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48) = NULL;
         }
-        if (Pad_IsButton(node, 0x1C) != 0) {
-            gGameFlags |= 1;
+        if (fn_8005F9B8(node, 0x1C) != 0) {
+            lbl_803682A4 |= 1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) |= 0x40000000;
         }
-        if (Pad_IsButton(node, 0x1D) != 0) {
-            gGameFlags &= ~1;
+        if (fn_8005F9B8(node, 0x1D) != 0) {
+            lbl_803682A4 &= ~1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) &= 0xBFFFFFFF;
         }

@@ -604,56 +604,57 @@ s32 fn_802555A0(u16,u8,s32,s32,u8,u8,u8,u8,u8,u8,u16,u16,u32,u8,u8,s32);
 s32 fn_8024866C(u16,s16,s32,s32,u8,u8,u8,u8,u8,u8,u16,u16,u32,u8,u8,s32);
 s32 fn_80255E88(void *);
 extern s32 gSynthVoices;
-u32 low; s32 note; u32 high; s32 result; s32 last; u8 *entry; s32 first; s32 value; s32 balance; s32 flags; u8 vel; u32 savedPan; u32 valid; s32 status; u16 count;
-first=-1;
-entry=(u8 *)fn_8025094C(id,&count);
-if(entry) {
-low=key&127; high=key&128; savedPan=pan;
-while(count) {
-u16 sample=*(u16 *)entry;
-if(sample!=65535 && entry[2]<=low && entry[3]>=low) {
-value=low+(s8)entry[4];
-if(value>127) note=127; else note=value & ~(value>>31);
-if(!(sample&0xC000)) {
-if(Sound_GetChanParam(0x41,channel,a8)>0x1F80U) {
-result=Sound_RemapVoiceKey(note&127,channel,a8,0,&status);
-valid=status==0;
-} else { result=-1; valid=1; }
-if(!valid) goto next;
-if((u32)(result+0x10000)!=0xFFFF) goto link;
+u32 low; s32 note; u32 high; s32 result; s32 last; u8 *entry; s32 first; s32 value; s32 balance; s32 flags; u8 vel; u32 savedPan; u32 valid; s32 status; u16 count; u8 p;
+p = pan;
+first = -1;
+entry = (u8 *)fn_8025094C(id, &count);
+if (entry) {
+low = key & 127; high = key & 128; savedPan = p;
+while (count) {
+u16 sample = *(u16 *)entry;
+if (sample != 65535 && entry[2] <= low && entry[3] >= low) {
+value = low + (s8)entry[4];
+if (value > 127) note = 127; else note = value & ~(value >> 31);
+if (!(sample & 0xC000)) {
+if (Sound_GetChanParam(0x41, channel, a8) > 0x1F80U) {
+result = Sound_RemapVoiceKey(note & 127, channel, a8, 0, &status);
+valid = status == 0;
+} else { result = -1; valid = 1; }
+if (!valid) goto next;
+if ((u32)(result + 0x10000) != 0xFFFF) goto link;
 }
-balance=entry[8];
-if(!(balance&128)) {
-balance=balance-64; balance+=savedPan;
-if(balance<0) balance=0; else if(balance>127) balance=127;
-} else balance=128;
-volume+=*(s16 *)(entry+6);
-vel=velocity*entry[5]/127;
-if(volume>255) volume=255; else volume=volume & ~(volume>>31);
-flags=*(u16 *)entry&0xC000;
-switch(flags) {
-case 0: result=fn_802555A0(*(u16 *)entry,(u8)volume,arg2,arg3,(u8)(note|high),vel,(u8)balance,channel,a8,a9,a10,a11,0,a13,a14,a15); break;
-case 0x4000: result=fn_8024866C(*(u16 *)entry,volume,arg2,arg3,(u8)(note|high),vel,(u8)balance,channel,a8,a9,a10,a11,0,a13,a14,a15); break;
-case 0x8000: result=fn_802482AC(*(u16 *)entry,volume,arg2,arg3,(u8)(note|high),vel,(u8)balance,channel,a8,a9,a10,a11,0,a13,a14,a15); break;
+balance = entry[8];
+if (!(balance & 128)) {
+balance = balance - 64; balance += savedPan;
+if (balance < 0) balance = 0; else if (balance > 127) balance = 127;
+} else balance = 128;
+volume += *(s16 *)(entry + 6);
+vel = (u8)((velocity * entry[5]) / 127);
+if (volume > 255) volume = 255; else volume = volume & ~(volume >> 31);
+flags = *(u16 *)entry & 0xC000;
+switch (flags) {
+case 0: result = fn_802555A0(*(u16 *)entry, (u8)volume, arg2, arg3, (u8)(note | high), vel, (u8)balance, channel, a8, a9, a10, a11, 0, a13, a14, a15); break;
+case 0x4000: result = fn_8024866C(*(u16 *)entry, volume, arg2, arg3, (u8)(note | high), vel, (u8)balance, channel, a8, a9, a10, a11, 0, a13, a14, a15); break;
+case 0x8000: result = fn_802482AC(*(u16 *)entry, volume, arg2, arg3, (u8)(note | high), vel, (u8)balance, channel, a8, a9, a10, a11, 0, a13, a14, a15); break;
 }
-if((u32)(result+0x10000)!=0xFFFF) {
+if ((u32)(result + 0x10000) != 0xFFFF) {
 link:
-if((u32)(first+0x10000)==0xFFFF) {
-if(a12) first=fn_80255E88((u8 *)gSynthVoices+(u8)result*0x458);
-else first=result;
+if ((u32)(first + 0x10000) == 0xFFFF) {
+if (a12) first = fn_80255E88((u8 *)gSynthVoices + (u8)result * 0x458);
+else first = result;
 } else {
-*(s32 *)((u8 *)gSynthVoices+(u8)last*0x458+0xEC)=result;
-*(s32 *)((u8 *)gSynthVoices+(u8)result*0x458+0xF0)=last;
+*(s32 *)((u8 *)gSynthVoices + (u8)last * 0x458 + 0xEC) = result;
+*(s32 *)((u8 *)gSynthVoices + (u8)result * 0x458 + 0xF0) = last;
 }
-last=result;
-while((u32)(*(s32 *)((u8 *)gSynthVoices+(u8)last*0x458+0xEC)+0x10000)!=0xFFFF) {
-*((u8 *)gSynthVoices+(u8)last*0x458+0x11C)=1;
-last=*(s32 *)((u8 *)gSynthVoices+(u8)last*0x458+0xEC);
+last = result;
+while ((u32)(*(s32 *)((u8 *)gSynthVoices + (u8)last * 0x458 + 0xEC) + 0x10000) != 0xFFFF) {
+*((u8 *)gSynthVoices + (u8)last * 0x458 + 0x11C) = 1;
+last = *(s32 *)((u8 *)gSynthVoices + (u8)last * 0x458 + 0xEC);
 }
-*((u8 *)gSynthVoices+(u8)last*0x458+0x11C)=1;
+*((u8 *)gSynthVoices + (u8)last * 0x458 + 0x11C) = 1;
 }
 }
-next: entry+=12; count--;
+next: entry += 12; count--;
 }
 }
 return first;
@@ -833,15 +834,15 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, s32 panA
 
 void fn_80248D28(s32 arg0)
 {
-    extern s32 gSynthVoices;
+    extern s32 lbl_803689A8;
     extern s32 lbl_803689B8;
     extern s32 lbl_803689BC;
-    u32 Sound_IsHwVoiceActive(u32);
+    u32 fn_802616F4(u32);
     s16 fn_80261214(s32);
     s32 fn_8025807C(s32, s32, s32);
     s32 fn_80260764(void *);
     s32 fn_802607F4(void *);
-    u16 Sound_GetChanParam(s32, u8);
+    u16 fn_8025FC64(s32, u8);
     s32 fn_8025785C(u8, s32);
     s32 fn_80257820(u16);
     u16 fn_802607AC(void *);
@@ -861,8 +862,8 @@ void fn_80248D28(s32 arg0)
     u64 flags;
     u64 now;
 
-    voice = (u8 *)gSynthVoices + arg0 * 0x458;
-    if (Sound_IsHwVoiceActive(arg0) != 0 || *(u32 *)(voice + 0x34) != 0) {
+    voice = (u8 *)lbl_803689A8 + arg0 * 0x458;
+    if (fn_802616F4(arg0) != 0 || *(u32 *)(voice + 0x34) != 0) {
         p = voice;
         i = 0;
         now = ((u64)(u32)lbl_803689B8 << 32) | (u32)lbl_803689BC;
@@ -1000,7 +1001,7 @@ void fn_80248D28(s32 arg0)
         }
 
         if (voice[0x121] != 0xFF) {
-            w = Sound_GetChanParam(0x41, voice[0x122]);
+            w = fn_8025FC64(0x41, voice[0x122]);
             if (w != *(u16 *)(voice + 0x134) ||
                 (*(u64 *)(voice + 0x114) & 0x21000ULL) == 0x20000ULL) {
                 if (w <= 0x1F80U) {
@@ -1066,18 +1067,33 @@ void fn_80248D28(s32 arg0)
     }
 }
 
-void fn_8024946C(s32 arg0) {
+void fn_8024946C(s32 arg0)
+{
     u32 Sound_IsHwVoiceActive(s32);
-    void fn_80249C1C(void *, s32, s32);
+    u16 fn_8026068C(void *);
+    u16 fn_802606D4(void *);
+    u16 fn_8026071C(void *);
+    u16 fn_802607F4(void *);
+    u16 fn_80260884(void *);
+    u16 fn_802608CC(void *);
+    u16 fn_80260914(void *);
+    u16 fn_8026095C(void *);
+    s16 fn_802609A4(void *);
+    u16 fn_802609EC(void *);
+    u16 fn_80260A34(void *);
+    void fn_80261E6C(s32, u32, u32, u32, f32, f32, f32);
+    void fn_80261C98(u32, u16 *, u16 *);
+    void fn_80261D90(s32, s32, u16, u16);
+    void fn_8026171C(s32, u32);
     u8 fn_802616EC(void);
+    void fn_80249C1C(void *, s32, s32);
+
     extern s32 gSynthVoices;
     extern s32 lbl_803689B8;
     extern s32 lbl_803689BC;
     extern s32 lbl_803689A4;
     extern f32 lbl_8034C324[];
     extern u8 lbl_8034C924[];
-    extern f64 lbl_8036C1F8;
-    extern f64 lbl_8036C200;
     extern f32 lbl_8036C1D0;
     extern f32 lbl_8036C1D4;
     extern f32 lbl_8036C1D8;
@@ -1088,63 +1104,222 @@ void fn_8024946C(s32 arg0) {
     extern f32 lbl_8036C1EC;
     extern f32 lbl_8036C1F0;
 
-    u8 *ch;
-    u32 dt;
+    u8 *voice;
+    u64 timestamp;
+    u64 previousTimestamp;
+    u64 flags64;
+    u32 delta;
+    u32 globalFlags;
+    u32 flags;
+    u32 value;
+    u32 end;
+    u32 start;
+    u32 packed;
+    u32 capacity;
+    u32 position;
+    s32 step;
+    s32 target;
+    s32 result;
     s32 dirty;
-    f32 vol;
+    s32 index;
+    s32 group;
+    u16 phaseA;
+    u16 phaseB;
+    u16 resultA;
+    u16 resultB;
+    f32 volume;
     f32 pitch;
+    f32 gain;
+    f32 outputA;
+    f32 outputB;
+    f32 current;
+    f32 wanted;
+    f32 adjustment;
 
-    ch = (u8 *)gSynthVoices + arg0 * 0x458;
+    voice = (u8 *)gSynthVoices + arg0 * 0x458;
+
     if (Sound_IsHwVoiceActive(arg0) != 0) {
-        goto fin;
+        goto finish;
     }
-    if (*(u32 *)(ch + 0x34) == 0) {
-        goto fin;
+    if (*(u32 *)(voice + 0x34) == 0) {
+        goto finish;
     }
-    dt = lbl_803689BC - *(u32 *)(ch + 0x30);
-    *(u32 *)(ch + 0x30) = lbl_803689BC;
-    *(u32 *)(ch + 0x2C) = lbl_803689B8;
+
+    timestamp = ((u64)(u32)lbl_803689B8 << 32) | (u32)lbl_803689BC;
+    previousTimestamp = *(u64 *)(voice + 0x2C);
+    delta = (u32)(timestamp - previousTimestamp);
+    *(u64 *)(voice + 0x2C) = timestamp;
+
+    flags64 = *(u64 *)(voice + 0x114);
     dirty = 0;
-    if (*(u32 *)(ch + 0x118) & 0x8000) {
-        *(s32 *)(ch + 0x1A0) += *(s32 *)(ch + 0x198) * (s32)(dt >> 8);
-        if (*(s32 *)(ch + 0x198) < 0) {
-            if (*(s32 *)(ch + 0x19C) >= *(s32 *)(ch + 0x1A0)) {
-                *(s32 *)(ch + 0x1A0) = *(s32 *)(ch + 0x19C);
-                *(u32 *)(ch + 0x118) &= ~0x8000;
+    if ((flags64 & 0x8000ULL) != 0) {
+        step = *(s32 *)(voice + 0x198);
+        value = *(u32 *)(voice + 0x1A0);
+        value += step * (delta >> 8);
+        *(u32 *)(voice + 0x1A0) = value;
+
+        target = *(s32 *)(voice + 0x19C);
+        if (step < 0) {
+            if (target >= (s32)value) {
+                *(s32 *)(voice + 0x1A0) = target;
+                *(u64 *)(voice + 0x114) &= ~0x8000ULL;
             }
         } else {
-            if (*(s32 *)(ch + 0x19C) <= *(s32 *)(ch + 0x1A0)) {
-                *(s32 *)(ch + 0x1A0) = *(s32 *)(ch + 0x19C);
-                *(u32 *)(ch + 0x118) &= ~0x8000;
+            if (target <= (s32)value) {
+                *(s32 *)(voice + 0x1A0) = target;
+                *(u64 *)(voice + 0x114) &= ~0x8000ULL;
+            }
+        }
+        *(u32 *)(voice + 0x158) = *(u32 *)(voice + 0x1A0);
+        dirty = 1;
+    } else {
+        dirty = (flags64 & ((u64)0x1000 << 32)) != 0;
+    }
+    *(u64 *)(voice + 0x114) &= ~((u64)0x1000 << 32);
+
+    index = (s32)voice[0x11E];
+    group = (voice[0x11D] != 0) + 0x15;
+    volume = lbl_8034C324[index * 12];
+    volume = lbl_8034C324[index * 12 + 5] * volume;
+    volume = volume * lbl_8034C324[group * 12];
+    if (voice[0x120] != 0xFF) {
+        volume = lbl_8036C1D0 * (volume * (f32)lbl_8034C924[voice[0x120]]);
+    }
+    if (volume != *(f32 *)(voice + 0x160)) {
+        *(f32 *)(voice + 0x160) = volume;
+        dirty = 1;
+    }
+
+    pitch = lbl_8036C1D4 * (f32)*(u32 *)(voice + 0x158);
+
+    phaseA = *(u16 *)(voice + 0x170);
+    phaseB = *(u16 *)(voice + 0x172);
+    if ((phaseA | phaseB) != 0) {
+        u32 parameter = fn_802607F4(voice);
+        s32 angle = (s16)fn_802609A4(voice);
+        s32 shift = 0x2000 - ((0x4000 - angle) >> 1);
+
+        adjustment = lbl_8036C1D8 * (f32)shift;
+        wanted = lbl_8036C1DC *
+            ((f32)phaseA * (lbl_8036C1E0 -
+            lbl_8036C1E4 * ((f32)parameter * (f32)(0x1000 - phaseB))));
+        current = *(f32 *)(voice + 0x16C);
+        if (current < wanted) {
+            current += lbl_8036C1E8;
+            *(f32 *)(voice + 0x16C) = current;
+            if (current > wanted) {
+                *(f32 *)(voice + 0x16C) = wanted;
+            }
+        } else if (current > wanted) {
+            current -= lbl_8036C1E8;
+            *(f32 *)(voice + 0x16C) = current;
+            if (current < wanted) {
+                *(f32 *)(voice + 0x16C) = wanted;
             }
         }
         dirty = 1;
-        *(s32 *)(ch + 0x158) = *(s32 *)(ch + 0x1A0);
-    } else {
-        dirty = (*(u32 *)(ch + 0x114) & 0x1000) != 0;
+        pitch *= lbl_8036C1E0 - adjustment *
+                 (lbl_8036C1E0 - *(f32 *)(voice + 0x16C));
     }
-    *(u32 *)(ch + 0x114) &= ~0x1000;
-    {
-        s32 idx = ch[0x11E] * 0x30;
-        f32 *tbl = lbl_8034C324;
-        vol = tbl[idx / 4 + 5] * tbl[idx / 4] * tbl[((ch[0x11D] != 0) + 0x15) * 0x30 / 4];
-        if (ch[0x120] != 0xFF) {
-            vol = lbl_8036C1D0 * (vol * (f32)lbl_8034C924[ch[0x120]]);
-        }
-        if (vol != *(f32 *)(ch + 0x160)) {
-            *(f32 *)(ch + 0x160) = vol;
+
+    globalFlags = (u32)lbl_803689A4;
+    if ((globalFlags & 1) == 0) {
+        flags = *(u32 *)(voice + 0x114);
+        if ((flags & 0x2000) != 0 || (*(u32 *)(voice + 0x220) & 6) != 0) {
+            *(u64 *)(voice + 0x114) &= ~((u64)0x2000 << 32);
+
+            result = (s32)((u16)fn_802606D4(voice)) - 0x2000;
+            result = *(s32 *)(voice + 0x174) + (s32)((u32)result << 9);
+            if (result < 0) {
+                result = 0;
+            } else if (result > 0x7F0000) {
+                result = 0x7F0000;
+            }
+            *(u32 *)(voice + 0x164) = (u32)result;
+
+            if ((globalFlags & 2) != 0) {
+                value = *(u32 *)(voice + 0x178) + ((u32)(u16)fn_8026071C(voice) << 9);
+                *(u32 *)(voice + 0x168) = value;
+                if (value > 0x7F0000U) {
+                    *(u32 *)(voice + 0x168) = 0x7F0000U;
+                }
+            } else {
+                *(u32 *)(voice + 0x168) = 0;
+            }
             dirty = 1;
+        } else if ((globalFlags & 2) == 0) {
+            *(u32 *)(voice + 0x168) = 0;
         }
-        pitch = lbl_8036C1D4 * (f32)*(s32 *)(ch + 0x158);
+    } else {
+        *(u32 *)(voice + 0x164) = 0x400000;
+        *(u32 *)(voice + 0x168) = 0;
+        flags64 = *(u64 *)(voice + 0x114);
+        dirty |= (flags64 & ((u64)0x2000 << 32)) != 0;
+        *(u64 *)(voice + 0x114) = flags64 & ~((u64)0x2000 << 32);
     }
-    (void)pitch;
-    (void)dirty;
-    (void)dt;
-    fn_80249C1C(ch, 1, (5 - fn_802616EC()) << 8);
-fin:
-    if (ch[0xA8] != 0) {
-        ch[0xA8] = 0;
-        *(u32 *)(ch + 0x220) = 0x7FFF;
+
+    if (dirty != 0) {
+        if ((*(u32 *)(voice + 0x220) & 0xF01) != 0) {
+            value = fn_8026068C(voice);
+            gain = lbl_8036C1EC * ((pitch * volume) * (f32)value);
+
+            value = fn_802608CC(voice);
+            outputA = lbl_8036C1D0 *
+                ((f32)voice[0x194] *
+                 (lbl_8036C1EC * (gain * (f32)value)));
+
+            value = fn_80260884(voice);
+            outputB = (lbl_8036C1EC * (pitch * (f32)value)) +
+                      outputA + lbl_8036C1D0 * (f32)voice[0x195];
+
+            value = fn_8026095C(voice);
+            outputA = lbl_8036C1EC * (gain * (f32)value);
+
+            value = fn_80260914(voice);
+            outputA += lbl_8036C1EC * (pitch * (f32)value);
+
+            *(s16 *)(voice + 0x454) = (s16)(lbl_8036C1F0 * gain);
+            fn_80261E6C(arg0, voice[0x196],
+                         *(u32 *)(voice + 0x164),
+                         *(u32 *)(voice + 0x168),
+                         gain, outputB, outputA);
+        }
+    }
+
+    if ((*(u32 *)(voice + 0x220) & 0x6000) != 0) {
+        value = fn_802609EC(voice);
+        if ((u16)value > 0x1FFF) {
+            value = fn_80260A34(voice);
+            start = *(u32 *)(voice + 0x1E0);
+            end = *(u32 *)(voice + 0x1E4);
+            position = (u32)((lbl_8036C1E0 -
+                       lbl_8036C1EC * (f32)(u16)value) *
+                       (f32)(end - start));
+            fn_80261C98(start + position, &resultA, &resultB);
+            fn_80261D90(arg0, 1, resultA, resultB);
+        } else {
+            fn_80261D90(arg0, 0, 0, 0);
+        }
+    }
+
+    capacity = *(u32 *)(voice + 0x110);
+    if (capacity != 0) {
+        result = (s32)capacity - (s32)((u32)*(u16 *)(voice + 0x10E) * delta);
+        *(s32 *)(voice + 0x110) = result;
+        if (result < 0) {
+            *(u32 *)(voice + 0x110) = 0;
+        }
+        packed = (*(u32 *)(voice + 0x110) >> 15) |
+                 ((u32)voice[0x10C] << 24);
+        fn_8026171C(arg0, packed);
+    }
+
+    fn_80249C1C(voice, 1, (5 - (u8)fn_802616EC()) << 8);
+
+finish:
+    if (voice[0xA8] != 0) {
+        voice[0xA8] = 0;
+        *(u32 *)(voice + 0x220) = 0x7FFF;
     }
 }
 

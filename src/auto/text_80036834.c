@@ -691,84 +691,160 @@ void fn_8003712C(void *arg0) {
     s8 slot_bonus;
     s8 cur;
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AB) + (*(u8 *)((u8 *)unit + 0x1D) + *(u8 *)((u8 *)cls + 0x44))) - *(u8 *)((u8 *)cls + 0x4C);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x44];
+        u8 t = u[0x1D];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AB);
+        u32 p = t + s;
+        u8 l = c[0x4C];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AB) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AB) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AB) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AB) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AC) + (*(u8 *)((u8 *)unit + 0x1E) + *(u8 *)((u8 *)cls + 0x45))) - *(u8 *)((u8 *)cls + 0x4D);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x45];
+        u8 t = u[0x1E];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AC);
+        u32 p = t + s;
+        u8 l = c[0x4D];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AC) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AC) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AC) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AC) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AD) + (*(u8 *)((u8 *)unit + 0x1F) + *(u8 *)((u8 *)cls + 0x46))) - *(u8 *)((u8 *)cls + 0x4E);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x46];
+        u8 t = u[0x1F];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AD);
+        u32 p = t + s;
+        u8 l = c[0x4E];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AD) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AD) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AD) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AD) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AE) + (*(u8 *)((u8 *)unit + 0x20) + *(u8 *)((u8 *)cls + 0x47))) - *(u8 *)((u8 *)cls + 0x4F);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x47];
+        u8 t = u[0x20];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AE);
+        u32 p = t + s;
+        u8 l = c[0x4F];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AE) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AE) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AE) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AE) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AF) + (*(u8 *)((u8 *)unit + 0x21) + *(u8 *)((u8 *)cls + 0x48))) - *(u8 *)((u8 *)cls + 0x50);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x48];
+        u8 t = u[0x21];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AF);
+        u32 p = t + s;
+        u8 l = c[0x50];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AF) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AF) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AF) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AF) - excess);
 
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1B0) + (*(u8 *)((u8 *)unit + 0x22) + *(u8 *)((u8 *)cls + 0x49))) - 0x28;
+    {
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 t = u[0x22];
+        u8 s = c[0x49];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1B0);
+        u32 p = t + s;
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - 0x28);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B0) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B0) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B0) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B0) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1B1) + (*(u8 *)((u8 *)unit + 0x23) + *(u8 *)((u8 *)cls + 0x4A))) - *(u8 *)((u8 *)cls + 0x52);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x4A];
+        u8 t = u[0x23];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1B1);
+        u32 p = t + s;
+        u8 l = c[0x52];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B1) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B1) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B1) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B1) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1B2) + (*(u8 *)((u8 *)unit + 0x24) + *(u8 *)((u8 *)cls + 0x4B))) - *(u8 *)((u8 *)cls + 0x53);
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 s = c[0x4B];
+        u8 t = u[0x24];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1B2);
+        u32 p = t + s;
+        u8 l = c[0x53];
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - l);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B2) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B2) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B2) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B2) - excess);
 
-    unit = *(void **)((u8 *)arg0 + 0x188);
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1A9) + (*(u8 *)((u8 *)unit + 0x1B) + *(u8 *)((u8 *)cls + 0x3C))) - 0x63;
+    {
+        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 t = u[0x1B];
+        u8 s = c[0x3C];
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1A9);
+        u32 p = t + s;
+        s8 sm = (s8)(b + p);
+        excess = (s8)(sm - 0x63);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1A9) = (u8)(*(u8 *)((u8 *)arg0 + 0x1A9) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1A9) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1A9) - excess);
 
-    cls = *(void **)((u8 *)arg0 + 0x18C);
-    excess = (s8)(*(u8 *)((u8 *)arg0 + 0x1AA) + *(u8 *)((u8 *)cls + 0x3E)) - 0x14;
+    {
+        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 b = *(u8 *)((u8 *)arg0 + 0x1AA);
+        u8 s = c[0x3E];
+        u32 p = b + s;
+        s8 sm = (s8)p;
+        excess = (s8)(sm - 0x14);
+    }
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AA) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AA) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AA) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AA) - excess);
 
     cls = *(void **)((u8 *)arg0 + 0x18C);
     unit = *(void **)((u8 *)arg0 + 0x188);

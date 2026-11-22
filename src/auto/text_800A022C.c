@@ -171,14 +171,16 @@ void *fn_800A038C(void) {
 
 s32 fn_800A039C(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367704;
-    register s32 v = 2;
+    u8 tmp[1];
+
     a = (u8)lbl_80367704;
     b = a ^ 1;
     lbl_80367704 = b;
+    tmp[0] = 2;
     if ((u8)b != 0) {
-        v = 0;
+        tmp[0] = 0;
     }
-    *(u8 *)((char *)arg2 + 0x39) = v;
+    *(u8 *)((char *)arg2 + 0x39) = tmp[0];
     return 0;
 }
 
@@ -1076,14 +1078,14 @@ extern "C" void fn_800A14A4(void *unused, void *parent, void *item) {
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 s32 fn_800A1658(s32 arg0,s32 arg1,void *arg2) {
-extern u8 *gPadInput; extern u8 gBattleState[]; void fn_8014D244(u8 *,u8,u8);
-u32 previous,current,changed; s32 idx; u8 initial; u8 val;
-previous=*(u32*)(gPadInput+4); current=*(u32*)(gPadInput+8);
-idx=*((u8*)arg2+0x3A)+1; initial=gBattleState[idx+0x14];
+extern u8 *lbl_80367240; extern u8 lbl_80330708[]; void fn_8014D244(u8 *,u8,u8);
+u32 previous,current,changed; s32 idx; u8 val; u8 initial;
+previous=*(u32*)(lbl_80367240+4); current=*(u32*)(lbl_80367240+8);
+idx=*((u8*)arg2+0x3A)+1; initial=lbl_80330708[idx+0x14];
 changed=previous & (current ^ previous); val=initial;
 if(changed&0x01000001) val=(u8)(initial+2);
 if(changed&0x02000002) val=(u8)((u8)val+1);
-val=(u8)((s32)val%3); fn_8014D244(gBattleState,(u8)idx,val); return 0;
+val=(u8)((s32)val%3); fn_8014D244(lbl_80330708,(u8)idx,val); return 0;
 }
 
 s32 fn_800A1710(void) {

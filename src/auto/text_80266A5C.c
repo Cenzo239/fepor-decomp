@@ -391,52 +391,51 @@ s32 fn_80266B6C(s32 arg0)
 
 void fn_80266BD8(s32 arg0, u32 arg1)
 {
+    typedef struct OSContext {
+        u32 gpr[32];
+        u32 ctr;
+        u32 lr;
+        u32 cr;
+        u32 xer;
+        u32 fpscr_pad;
+        f64 fpr[32];
+        u32 fpscr;
+        u32 srr0;
+        u32 srr1;
+        u16 mode;
+        u16 state;
+        u32 gqr[8];
+        u32 psf_pad[2];
+        f64 psf[32];
+    } OSContext;
+    void OSClearContext(OSContext *);
+    void OSSetCurrentContext(OSContext *);
     extern u8 lbl_803669A0[];
     extern s32 lbl_80368B2C;
 
-    extern s32 SITransfer(
-        s32 channel,
-        void *output,
-        void *input,
-        s32 outputLength,
-        s32 inputLength,
-        void *callback,
-        s32 delay
-    );
-
+    extern s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     extern void fn_80266A5C(void);
-    extern void OSClearContext(void *context);
-    extern void OSSetCurrentContext(void *context);
     extern void *__OSReschedule(void);
-    extern void *fn_802059EC(void);
+    extern OSContext *fn_802059EC(void);
 
+    OSContext ctx;
     u8 *entry;
-    void *oldContext;
+    OSContext *oldContext;
     void (*callback)(s32);
     void (*completion)(s32, s32);
 
     entry = lbl_803669A0 + arg0 * 0x100;
 
     if (lbl_80368B2C == 0) {
-        if ((arg1 & 0xFF) == 0) {
-            if ((arg1 & 0xFFFF0000) != 0x00040000) {
-                *(u32 *)(entry + 0x20) = 1;
-                return;
-            }
+        if ((arg1 & 0xFF) == 0 && (arg1 & 0xFFFF0000) != 0x00040000) {
+            *(u32 *)(entry + 0x20) = 1;
+            return;
         }
 
-        if (SITransfer(
-                arg0,
-                entry,
-                entry + 5,
-                *(u32 *)(entry + 0x0C),
-                *(u32 *)(entry + 0x10),
-                fn_80266A5C,
-                *(u32 *)(entry + 0x30)) == 0) {
+        if (SITransfer(arg0, entry, *(u32 *)(entry + 0x0C), entry + 5, *(u32 *)(entry + 0x10), fn_80266A5C, *(s64 *)(entry + 0x30)) == 0) {
             *(u32 *)(entry + 0x20) = 2;
 
-            callback = *(void (**)(s32))(entry + 0x38);
-            if (callback != 0) {
+            if ((callback = *(void (**)(s32))(entry + 0x38)) != 0) {
                 *(u32 *)(entry + 0x38) = 0;
                 callback(arg0);
             }
@@ -446,14 +445,14 @@ void fn_80266BD8(s32 arg0, u32 arg1)
     if (*(u32 *)(entry + 0x1C) != 0) {
         oldContext = fn_802059EC();
 
-        OSClearContext((u8 *)&oldContext + 0x10);
-        OSSetCurrentContext((u8 *)&oldContext + 0x10);
+        OSClearContext(&ctx);
+        OSSetCurrentContext(&ctx);
 
         completion = *(void (**)(s32, s32))(entry + 0x1C);
         *(u32 *)(entry + 0x1C) = 0;
         completion(arg0, *(s32 *)(entry + 0x20));
 
-        OSClearContext((u8 *)&oldContext + 0x10);
+        OSClearContext(&ctx);
         OSSetCurrentContext(oldContext);
         __OSReschedule();
     }

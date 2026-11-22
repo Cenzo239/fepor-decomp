@@ -12039,7 +12039,7 @@ void fn_8019A0C8(void *arg0) {
     fn_801848D8(M2C_FIELD(arg0,s32 *,0x30),M2C_FIELD(arg0,s8 *,0x3A),M2C_FIELD(arg0,s8 *,0x3B),0x18,0);
 }
 
-void fn_8019A1E0(void *arg0)
+void fn_8019A1E0(u8 *self)
 {
   void *Map_Get(void *);
   void *Map_FindObjNear(void *, s8, s8, s32, s32);
@@ -12050,13 +12050,14 @@ void fn_8019A1E0(void *arg0)
   extern u8 gUiContext[];
   extern u8 gBattleMap[];
   extern u8 MapSelect_str[];
-  u8 *self;
   void *map;
-  self = (u8 *) arg0;
+  s8 px, py;
   self[0x38] = gUiContext[0xD];
   self[0x39] = gUiContext[0xE];
   map = Map_Get(gUiContext);
-  *((void **) (self + 0x34)) = Map_FindObjNear(map, (s8) self[0x38], (s8) self[0x39], 0x8000, 0);
+  px = (s8) self[0x38];
+  py = (s8) self[0x39];
+  *((void **) (self + 0x34)) = Map_FindObjNear(map, px, py, 0x8000, 0);
   if ((*((void **) (self + 0x34))) == NULL)
   {
     fn_800056A0(0);
@@ -12064,14 +12065,14 @@ void fn_8019A1E0(void *arg0)
     return;
   }
   self[0x3A] = (*((u8 **) (self + 0x34)))[0];
-  self[0x3B] = (*((u8 **) (((u8 *) arg0) + 0x34)))[1];
-  ((u8 *) arg0)[0x3C] = gUiContext[0xF];
-  ((u8 *) arg0)[0x3D] = gUiContext[0x10];
-  *((f32 *) (((u8 *) arg0) + 0x40)) = Map_SampleHeight(gBattleMap, (f32) ((s8) ((u8 *) arg0)[0x3A]), (f32) ((s8) ((u8 *) arg0)[0x3B]));
-  *((f32 *) (((u8 *) arg0) + 0x44)) = Map_SampleHeight(gBattleMap, (f32) ((s8) ((u8 *) arg0)[0x3C]), (f32) ((s8) ((u8 *) arg0)[0x3D]));
+  self[0x3B] = (*((u8 **) (self + 0x34)))[1];
+  self[0x3C] = gUiContext[0xF];
+  self[0x3D] = gUiContext[0x10];
+  *((f32 *) (self + 0x40)) = Map_SampleHeight(gBattleMap, (f32) ((s8) self[0x3A]), (f32) ((s8) self[0x3B]));
+  *((f32 *) (self + 0x44)) = Map_SampleHeight(gBattleMap, (f32) ((s8) self[0x3C]), (f32) ((s8) self[0x3D]));
   GActor_RequestRes(MapSelect_str + 0xD4);
   GActor_RequestRes(MapSelect_str + 0xCA);
-  *((s32 *) (((u8 *) arg0) + 0x30)) = *((s32 *) gUiContext);
+  *((s32 *) (self + 0x30)) = *((s32 *) gUiContext);
 }
 
 #pragma use_lmw_stmw on

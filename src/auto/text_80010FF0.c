@@ -102,17 +102,16 @@ void fn_80010FF0(void) {
 
 #pragma global_optimizer off
 s32 fn_80011010(s32 arg0) {
-    s32 index;
-    s32 value;
     u32 result;
+    u32 value;
     s32 fn_8010494C(s32);
 
-    value = arg0;
+    value = (u32)arg0;
     if (arg0 == -1) {
-        index = 0;
-        value = lbl_802AEE20[index];
+        arg0 = 0;
+        value = (u32)lbl_802AEE20[arg0];
     }
-    result = (u32)fn_8010494C(value);
+    result = (u32)fn_8010494C((s32)value);
     return Text_FindFontIndex((u32 *)lbl_802AEE20, result);
 }
 #pragma global_optimizer on
@@ -123,7 +122,8 @@ void fn_800110B8(void) {
  s32 Heap_Alloc(u32);
  s32 fn_801053CC(s32);
  void fn_80105284(s32, const char *, s32);
- struct Object { struct VTable { s32 (*method[9])(); } *vtable; u32 value; } *self;
+ struct VTable { void *method[9]; };
+ struct Object { struct VTable *vtable; u32 value; } *self;
  s32 object;
  object = Heap_Alloc(0x10);
  if (object) object = fn_801053CC(object);
@@ -143,7 +143,10 @@ void fn_800110B8(void) {
  fn_80105284(object,lbl_80267DC8+0x33,0);
  self = (struct Object *)lbl_80367160;
  lbl_80367168 = self;
- if (!self->value) fn_8006EEFC(&self->value,self->vtable->method[8](self));
+ if (!self->value) {
+     void *m = self->vtable->method[8];
+     fn_8006EEFC(&self->value, ((s32 (*)(void *))m)(self));
+ }
 }
 
 void fn_800111FC(void) {
@@ -368,7 +371,7 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
 
 #pragma cplusplus on
 extern "C" void fn_800116F0(void *arg0) {
-#pragma scheduling off
+#pragma scheduling on
     void PSMTXScale(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80368BDC;
@@ -401,7 +404,6 @@ extern "C" void fn_800116F0(void *arg0) {
     t = obj->v9();
     PSMTXScale(sp8, lbl_80368BDC / (f32)t, inv_h, lbl_80368BDC);
     fn_80224E50(sp8, 0x21, 1);
-#pragma scheduling reset
 }
 #pragma cplusplus reset
 void fn_800117B0(void *arg0) {

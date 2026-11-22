@@ -871,7 +871,6 @@ void fn_800608AC(void *arg0) {
     void *p;
     if (!arg0) Game_Assert(lbl_8026B590 + 0x28, 0x150, lbl_8026B590 + 0xAB);
     if (!M2C_FIELD(arg0,void **,0x60)) return;
-    dst = 0;
     model=Lookup::model(arg0);
     for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x44)) break;
     for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x48)) break;
@@ -899,6 +898,12 @@ void fn_800609DC(void *arg0) {
             for (; p; p = M2C_FIELD(p, void **, 4)) {
                 void *v = M2C_FIELD(p, void **, 0x40);
                 if (v) return v;
+            }
+            return 0;
+        }
+        static void *unk44(void *p) {
+            for (; p; p = M2C_FIELD(p, void **, 4)) {
+                if (M2C_FIELD(p, void **, 0x44)) return p;
             }
             return 0;
         }
@@ -943,7 +948,7 @@ void fn_800609DC(void *arg0) {
     if (!arg0) Game_Assert(lbl_8026B590 + 0x28, 0x120, lbl_8026B590 + 0xAB);
     if (!M2C_FIELD(arg0, void **, 0x60)) return;
     model = Lookup::model(arg0);
-    for (p = arg0; p; p = M2C_FIELD(p, void **, 4)) if (M2C_FIELD(p, void **, 0x44)) break;
+    p = Lookup::unk44(arg0);
     mesh = Lookup::mesh(arg0);
     geometry = Lookup::geometry(arg0);
     matrices = Lookup::matrices(arg0);
@@ -3252,14 +3257,13 @@ s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
     u16 offset;
     u16 lim;
     s32 tmp;
-    s32 result;
+    s32 index;
     s32 i;
     s32 j;
-    s32 index;
+    s32 result;
     s32 diff1;
     s32 diff2;
     s32 mask;
-    s32 remain;
     u16 val;
 
     if (arg0 == NULL) {
@@ -3275,9 +3279,9 @@ s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
 
     result = 0;
     if (base != NULL) {
-        tmp = 0x10000 - 1;
+        tmp = 0x10000;
         i = 0;
-        lim = (u16)tmp;
+        lim = (u16)(tmp - 1);
         index = 0;
         while (i < (s32)*(u16 *)base) {
             table = *(u16 **)(base + 4);
@@ -3309,13 +3313,9 @@ s32 fn_800651FC(void ***arg0, u16 *out, f32 lo, f32 hi) {
         }
     }
 
-    if (result < 4) {
-        remain = 4 - result;
-        while (remain != 0) {
-            *out = 0xFFFF;
-            out += 1;
-            remain -= 1;
-        }
+    for (i = result; i < 4; i++) {
+        *out = 0xFFFF;
+        out += 1;
     }
     return result;
 }
@@ -7061,24 +7061,24 @@ void fn_8006CAD4(u32 *node) {
     v0 = 0;
     v1 = 1;
     v2 = 2;
-    if (flags & 0x380020) {
-        if (flags & 0x80000) {
+    if (flags & 0x380020U) {
+        if (flags & 0x80000U) {
             v1 = 0;
             v2 = v0;
             v0 = v1;
         }
-        if (flags & 0x100000) {
+        if (flags & 0x100000U) {
             v1 = 1;
             v2 = 1;
             v0 = v1;
         }
-        if (flags & 0x200020) {
+        if (flags & 0x200020U) {
             v1 = 2;
             v2 = 2;
             v0 = v1;
         }
     }
-    if ((flags & 0x20) && ((flags & 0x70000000) == 0x60000000)) {
+    if ((flags & 0x20U) && ((flags & 0x70000000U) == 0x60000000U)) {
         if (data[0xF] != 0) {
             fn_80067708(2, idx, fn_8006C9E8, node);
         }
@@ -7148,38 +7148,48 @@ return archive;
 
 void *fn_8006CE14(char *name) {
     extern u32 FileCache_GetFlags(void *);
-    void *Archive_LoadFlags(char *,s32);
+    void *Archive_LoadFlags(char *, s32);
     extern f32 lbl_803692AC;
-    u8 fresh=1;
+    u8 fresh;
     void *archive;
     u32 *reloc;
-    s32 b,g,r;
+    s32 b, g, r;
     u8 *material;
     s32 i;
     s32 offset;
     f32 factor;
-    if(FileCache_GetFlags(name)&0x4000) fresh=0;
-    archive=Archive_LoadFlags(name,0);
-    if(fresh) {
-        reloc=M2C_FIELD(archive,u32 **,0x48);
-        if(reloc) {
-            reloc[0]+=(u32)reloc;
-            reloc[1]+=(u32)reloc;
+
+    fresh = 1;
+    if (FileCache_GetFlags(name) & 0x4000) {
+        fresh = 0;
+    }
+    archive = Archive_LoadFlags(name, 0);
+    if (fresh) {
+        reloc = *(u32 **)((u8 *)archive + 0x48);
+        if (reloc != 0) {
+            reloc[0] += (u32)reloc;
+            reloc[1] += (u32)reloc;
         }
-        i=0;
-        factor=lbl_803692AC;
-        offset=i;
-        for(;i<M2C_FIELD(archive,u16 *,0x54);offset+=0x20,i++) {
-            material=M2C_FIELD(archive,u8 **,0x34)+offset;
-            r=(s32)(factor*(f32)material[8]);
-            g=(s32)(factor*(f32)material[9]);
-            b=(s32)(factor*(f32)material[10]);
-            if(r>255) r=255;
-            if(g>255) g=255;
-            if(b>255) b=255;
-            material[8]=r;
-            material[9]=g;
-            material[10]=b;
+        i = fresh - 1;
+        factor = lbl_803692AC;
+        offset = i;
+        for (; i < *(u16 *)((u8 *)archive + 0x54); offset += 0x20, i++) {
+            material = *(u8 **)((u8 *)archive + 0x34) + offset;
+            r = (s32)(factor * (f32)(u32)material[8]);
+            g = (s32)(factor * (f32)(u32)material[9]);
+            b = (s32)(factor * (f32)(u32)material[10]);
+            if (r > 255) {
+                r = 255;
+            }
+            if (g > 255) {
+                g = 255;
+            }
+            if (b > 255) {
+                b = 255;
+            }
+            material[8] = (u8)r;
+            material[9] = (u8)g;
+            material[10] = (u8)b;
         }
     }
     return archive;
@@ -7401,11 +7411,12 @@ void fn_8006D378(s32 arg0) {
     void fn_80205348(s32, s32, s32);
     void fn_8020536C(s32, s32, s32);
     void fn_8020543C(s32);
-    s32 i;
-    u8 *entry;
+    s32 tex;
+    s32 vtx;
     u8 *mesh;
-    u32 vtx;
-    u32 tex;
+    u8 *entry;
+    s32 i;
+    s32 parity;
     mesh = *(u8 **)((u8 *)fn_80060638((void *)arg0) + 0x48);
     tex = fn_80060520((void *)arg0);
     entry = *(u8 **)mesh;
@@ -7413,7 +7424,7 @@ void fn_8006D378(s32 arg0) {
     fn_8006D52C((mesh[0xc] << 8) + 7);
     fn_8006D53C(0x804);
     fn_80205348(0xE0000000, *(s32 *)(mesh + 4) + *(s32 *)(entry + 0xc), (s32)(*(u16 *)(entry + 0x10) + 0x1f) / 32);
-    for (i = 0; i < *(s16 *)(mesh + 8) - 1; i++) {
+    for (i = 0; i < *(s16 *)(mesh + 8) - 1;) {
         fn_80205348(0xE0000000 + (((i + 1) & 1) << 12), *(s32 *)(mesh + 4) + *(s32 *)(entry + 0x24), (s32)(*(u16 *)(entry + 0x28) + 0x1f) / 32);
         fn_8006D828(vtx, entry, entry + 8, entry[0x13]);
         fn_8020543C(1);
@@ -7421,10 +7432,12 @@ void fn_8006D378(s32 arg0) {
         fn_8006D54C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x14));
         fn_8006D66C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x16));
         fn_8020536C(tex + *(s32 *)(entry + 0xc), arg0, (s32)(*(u16 *)(entry + 0x10) + 0x1f) / 32);
+        i++;
         entry += 0x18;
     }
     fn_8006D828(vtx, entry, entry + 8, entry[0x13]);
-    arg0 = 0xE0000000 + ((i & 1) << 12);
+    parity = i & 1;
+    arg0 = 0xE0000000 + (parity << 12);
     fn_8006D54C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x14));
     fn_8006D66C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x16));
     fn_8020536C(tex + *(s32 *)(entry + 0xc), arg0, (s32)(*(u16 *)(entry + 0x10) + 0x1f) / 32);
@@ -7830,30 +7843,21 @@ void fn_8006DDDC(void) {
     u8 spA;
     u8 sp9;
     u8 sp8;
+    s32 d;
     u8 eq28_18;
     u8 eq24_14;
     u32 ne20_10;
     u32 ne1C_C;
-    s32 t0;
-    s32 t1;
 
     fn_80225D6C(&sp24, &sp28, &sp1C, &sp20);
     fn_80225D6C(&sp14, &sp18, &spC, &sp10);
 
-    t0 = sp20;
-    t1 = sp10;
-    t0 = t1 - t0;
-    ne20_10 = ((u32)(t0 | -t0)) >> 31;
-    t0 = sp28;
-    t1 = sp18;
-    eq28_18 = (t0 == t1);
-    t0 = sp1C;
-    t1 = spC;
-    t0 = t1 - t0;
-    ne1C_C = ((u32)(t0 | -t0)) >> 31;
-    t0 = sp24;
-    t1 = sp14;
-    eq24_14 = (t0 == t1);
+    d = sp10 - sp20;
+    ne20_10 = ((u32)(d | -d)) >> 31;
+    eq28_18 = (sp28 == sp18);
+    d = spC - sp1C;
+    ne1C_C = ((u32)(d | -d)) >> 31;
+    eq24_14 = (sp24 == sp14);
 
     fn_8021F168(&sp8, &sp8, &spA, &sp9, &sp8, sp14, sp24);
     OSReport(DEMOInit_str + 0x29, spA, sp9, eq28_18, eq24_14, ne20_10, ne1C_C);
@@ -8880,9 +8884,7 @@ u8 *self=(u8*)arg0;
 u8 *obj=(u8*)arg1;
 u8 *row;
 void *ent;
-register s32 sy;
-register s32 sx;
-s32 height,pulse;
+s32 sx,sy,height,pulse;
 s32 iconX,iconY;
 row=obj;
 row+=*(s8*)(row+0x62);
@@ -8983,10 +8985,10 @@ struct TextObj {virtual void v0()=0; virtual void *v1()=0;};
 u8 *self=(u8*)arg0;
 u8 *group=(u8*)arg1;
 s32 i;
-s32 x;
-s32 y;
-s16 height;
+s16 x;
 u8 count;
+s16 y;
+s16 height;
 *(s16*)(self+0xC)=0;
 count=group[0x60];
 height=((Obj*)arg0)->v20()*(s8)count;
@@ -9001,7 +9003,7 @@ x=*(s16*)(self+0xE);
 y=*(s16*)(self+0x10);
 for(i=0;i<(s8)group[0x60];) {
 *(s16*)((u8*)GfxEnt_Get(group[i+0x40])+0x30)=x;
-*(u16*)((u8*)GfxEnt_Get(group[i+0x40])+0x32)=y;
+*(s16*)((u8*)GfxEnt_Get(group[i+0x40])+0x32)=y;
 i++;
 y+=((Obj*)arg0)->v20();
 }
@@ -9264,7 +9266,7 @@ check1:
     j = 0;
     goto check2;
 loop2:
-    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = t26;
+    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = (s16)t26;
     *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
     t26 = t26 + step;
     j += 1;
@@ -9471,42 +9473,57 @@ void fn_8006FE44(void *arg0, void *arg1) {
     self = (u8 *)arg0;
     group = (u8 *)arg1;
     *(s16 *)((u8 *)arg0 + 8) = i;
-    while (i < (s8)(t26 = group[0x60])) {
-        t26 = (s32)GfxEnt_Get(group[i + 0x40]);
-        w = (s16)Text_MeasureWidth(
-            (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4((void *)t26),
-            -1, 1.0f);
-        if (w >= *(s16 *)(self + 8)) {
-            *(s16 *)(self + 8) = w;
-        }
-        i += 1;
+    goto check1;
+loop1:
+    t26 = (s32)GfxEnt_Get(group[i + 0x40]);
+    w = (s16)Text_MeasureWidth(
+        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4((void *)t26),
+        -1, 1.0f);
+    if (w >= *(s16 *)(self + 8)) {
+        *(s16 *)(self + 8) = w;
+    }
+    i += 1;
+check1:
+    t26 = group[0x60];
+    if (i < (s8)t26) {
+        goto loop1;
     }
     w = ((Obj *)arg0)->v18();
     c = (s8)t26;
     step = (s16)((s32)w / ((s32)c + 1));
     t26 = step;
     y = ((Obj *)arg0)->v17();
-    for (j = 0; j < c; j++) {
-        *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = t26;
-        *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
-        t26 = t26 + step;
+    j = 0;
+    goto check2;
+loop2:
+    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = t26;
+    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
+    t26 = t26 + step;
+    j += 1;
+check2:
+    if (j < c) {
+        goto loop2;
     }
     lineW = 0;
     maxLine = -1;
     text = (u8 *)((Obj *)arg0)->v0();
-    while ((s8)*text != 0) {
-        switch ((s8)*text) {
-        case 10:
-            if (lineW > maxLine) {
-                maxLine = lineW;
-            }
-            lineW = 0;
-            text += 1;
-            break;
-        default:
-            lineW += fn_80010428(&text, -1, 1.0f);
-            break;
+    goto check3;
+loop3:
+    switch ((s8)*text) {
+    case 10:
+        if (lineW > maxLine) {
+            maxLine = lineW;
         }
+        lineW = 0;
+        text += 1;
+        break;
+    default:
+        lineW += fn_80010428(&text, -1, 1.0f);
+        break;
+    }
+check3:
+    if ((s8)*text != 0) {
+        goto loop3;
     }
     if (lineW > maxLine) {
         maxLine = lineW;
@@ -9566,7 +9583,7 @@ virtual void v16()=0;
 virtual void v17()=0;
 virtual void v18()=0;
 virtual void v19()=0;
-virtual s32 v20()=0; };
+virtual s16 v20()=0; };
 struct Item {virtual void v0()=0;
 virtual void * v1()=0;
 virtual void v2()=0;
@@ -9588,7 +9605,7 @@ virtual void v17(void *)=0; };
 f32 x;
 s16 y;
 s32 height;
-x=(f32)(M2C_FIELD(arg2,s16 *,0x30)-(Text_MeasureWidth(((Item*)arg0)->v1(),-1,1.0f)>>1));
+x=(f32)(M2C_FIELD((short)arg2,s16 *,0x30)-(Text_MeasureWidth(((Item*)arg0)->v1(),-1,1.0f)>>1));
 height=(s16)M2C_FIELD(arg1,Model **,0x3C)->v20();
 y=M2C_FIELD(arg2,s16 *,0x32)+((height-Text_MeasureHeight(-1,1.0f))>>1);
 ((Item*)arg0)->v17(arg1);
@@ -9784,21 +9801,22 @@ u8 *self=(u8*)arg0;
 u8 *obj=(u8*)arg1;
 u8 *row;
 void *ent;
-s32 sy;
 s32 sx;
+s16 sy;
 s32 height,pulse;
 s32 iconX,iconY;
 row=obj;
 row+=*(s8*)(row+0x62);
 ent=GfxEnt_Get(row[0x40]);
-sx=*(s16*)((u8*)ent+0x30)-(*(s16*)(self+0x8)>>1);
+sx=*(s16*)(self+0x8)>>1;
+sx=*(s16*)((u8*)ent+0x30)-sx;
 sx=(s16)(sx-0x10);
 row=obj;
 row+=*(s8*)(row+0x62);
 ent=GfxEnt_Get(row[0x40]);
 sy=*(s16*)((u8*)ent+0x32);
 height=(s16)((Obj*)arg0)->v20();
-sy=(s16)(sy+((height-Text_MeasureHeight(-1,lbl_803692E0))>>1));
+sy+=(height-Text_MeasureHeight(-1,lbl_803692E0))>>1;
 if(*(s16*)(obj+0x3A)<0) {
 *(s16*)(obj+0x38)=sx; *(s16*)(obj+0x3A)=sy;
 } else {
@@ -9811,7 +9829,7 @@ iconY=*(s16*)(obj+0x3A);
 pulse=0;
 if(!obj[0x2D]&&!obj[0x2E]) pulse=1;
 Ui_DrawRouteIconEx(iconX,iconY,pulse);
-sy=(s16)(*(s16*)(self+0x8)+0x40);
+sy=(s16)(*(s16*)(self+0x8)+0x40)-(s16)(sx-sx);
 sx=(s16)Text_MeasureHeight(-1,lbl_803692E0);
 Prim2D_Begin();Prim2D_AddZ(lbl_803692F4);Prim2D_PrepareTex();
 fn_8008AB7C(*(s16*)(obj+0x38)+(sy>>1)-0x10,*(s16*)(obj+0x3A)+(sx>>1),sy,0x18,0x19,0x4B,1);
@@ -10705,7 +10723,6 @@ extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_EndPrim(void);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
-    extern double lbl_803692E8;
     struct T { virtual void *a()=0; virtual void *b()=0; virtual void *c()=0; virtual void *d()=0; virtual void *e(void *)=0; };
     struct W { u8 pad[4]; virtual s32 a()=0; virtual s32 b()=0; virtual s32 c()=0; virtual s32 d()=0; virtual s32 e()=0; virtual s32 f()=0; virtual s32 g()=0; virtual s32 h()=0; virtual s32 i()=0; virtual s32 j()=0; virtual s32 k()=0; virtual s32 l()=0; virtual s32 m()=0; virtual s32 n()=0; virtual s32 o()=0; virtual s32 p()=0; virtual s32 q()=0; virtual s32 r()=0; virtual s32 s()=0; };
     struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void *, s32)=0; virtual void s(void *)=0; };

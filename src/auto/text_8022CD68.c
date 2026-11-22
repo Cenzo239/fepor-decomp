@@ -373,65 +373,61 @@ void fn_8022D0DC(void *heap, void *ptr, u32 size) {
         void *freeSlots;
         u32 usedSlots;
     } PoolBlock;
-    typedef struct {
-        PoolBlock *head;
-        PoolBlock *tail;
-    } SizeClass;
 
-    extern const u32 lbl_80282B60[];
+    extern u32 lbl_80282B60[];
     void fn_8022D234(void **, void *);
 
-    const u32 *limit;
+    u32 *limit;
     u32 index;
     u8 *slot;
-    SizeClass *sizeClass;
+    PoolBlock **sizeClass;
     PoolBlock *block;
 
-    limit = lbl_80282B60;
     index = 0;
+    limit = lbl_80282B60;
     while (size > *limit) {
         limit++;
         index++;
     }
 
     slot = (u8 *)ptr - 4;
-    sizeClass = (SizeClass *)((u8 *)heap + (index * 8 + 4));
-    block = *(PoolBlock **)slot;
+    block = *(PoolBlock **)((u8 *)ptr - 4);
+    sizeClass = (PoolBlock **)((u8 *)heap + (index << 3) + 4);
 
-    if (block->freeSlots == NULL && sizeClass->tail != block) {
-        if (sizeClass->head == block) {
-            sizeClass->tail = sizeClass->tail->prev;
-            sizeClass->head = sizeClass->head->prev;
+    if (block->freeSlots == NULL && sizeClass[1] != block) {
+        if (sizeClass[0] == block) {
+            sizeClass[1] = sizeClass[1]->prev;
+            sizeClass[0] = sizeClass[0]->prev;
         } else {
             block->prev->next = block->next;
             block->next->prev = block->prev;
-            block->next = sizeClass->tail;
+            block->next = sizeClass[1];
             block->prev = block->next->prev;
             block->prev->next = block;
             block->next->prev = block;
-            sizeClass->tail = block;
+            sizeClass[1] = block;
         }
     }
 
-    *(void **)ptr = block->freeSlots;
+    *(void **)(slot + 4) = block->freeSlots;
     block->freeSlots = slot;
 
     if (--block->usedSlots == 0) {
-        if (sizeClass->tail == block) {
-            sizeClass->tail = block->next;
+        if (sizeClass[1] == block) {
+            sizeClass[1] = block->next;
         }
-        if (sizeClass->head == block) {
-            sizeClass->head = block->prev;
+        if (sizeClass[0] == block) {
+            sizeClass[0] = block->prev;
         }
 
         block->prev->next = block->next;
         block->next->prev = block->prev;
 
-        if (sizeClass->tail == block) {
-            sizeClass->tail = NULL;
+        if (sizeClass[1] == block) {
+            sizeClass[1] = NULL;
         }
-        if (sizeClass->head == block) {
-            sizeClass->head = NULL;
+        if (sizeClass[0] == block) {
+            sizeClass[0] = NULL;
         }
 
         fn_8022D234((void **)heap, block);
@@ -629,51 +625,258 @@ void __close_all(void) {
 f64 fn_802380A8(f64, f64);
 f64 fn_8022D5E0(void *arg0)
 {
+    struct Decimal {
+        s8 sign;
+        u8 unused;
+        s16 exponent;
+        u8 length;
+        u8 digits[36];
+        u8 padding;
+    };
+    union DoubleBits {
+        f64 value;
+        struct {
+            u32 high;
+            u32 low;
+        } words;
+        u8 bytes[8];
+    };
+
+    f64 fn_802380A8(f64, f64);
+    f64 fn_80238378(s32, f64);
+    void fn_8022E804(void *, f64);
+    void fn_8022EBB8(void *, void *, void *);
+    s32 fn_8022F0B4(void *, void *);
+    f64 fmod(f64, f64);
+
     extern f64 lbl_8036BDC8;
     extern f64 lbl_8036BDD0;
     extern f64 lbl_8036BDD8;
+    extern f64 lbl_8036BDE0;
     extern f32 lbl_8036706C;
-    extern f32 lbl_80367068;
-    u8 *p = (u8 *)arg0;
-    f64 sign;
-    u8 kind;
+    extern f64 lbl_8029E740[];
+    extern u8 lbl_8029E8A8[];
+    extern u8 lbl_8029E9A8[];
 
-    if (p[4] == 0) {
-        if ((s8)p[0] == 0) {
+    struct Decimal original;
+    struct Decimal rounded;
+    struct Decimal candidateDecimal;
+    struct Decimal neighborDecimal;
+    struct Decimal difference1;
+    struct Decimal difference2;
+    struct Decimal intermediate;
+    struct Decimal difference3;
+    struct Decimal difference4;
+    struct Decimal *input;
+    union DoubleBits bits;
+    union DoubleBits nextBits;
+    u8 *p;
+    u8 *end;
+    u32 group;
+    u32 digitsLeft;
+    u32 chunk;
+    u32 nibble;
+    u32 i;
+    s32 kind;
+    u32 flags;
+    s32 exponent;
+    s32 decimalCount;
+    s32 comparison;
+    s32 relative;
+    s32 chooseUpper;
+    volatile f64 result;
+    f64 scaled;
+    f64 factor;
+    f64 sign;
+
+    input = (struct Decimal *)arg0;
+    if (input->length == 0) {
+        if (input->sign == 0) {
             sign = lbl_8036BDD0;
         } else {
             sign = lbl_8036BDD8;
         }
         return fn_802380A8(lbl_8036BDC8, sign);
     }
-    kind = p[5];
-    if (kind == 0x49) {
-        if ((s8)p[0] == 0) {
+
+    kind = input->digits[0];
+    switch (kind) {
+    case '0':
+        if (input->sign == 0) {
+            sign = lbl_8036BDD0;
+        } else {
+            sign = lbl_8036BDD8;
+        }
+        return fn_802380A8(lbl_8036BDC8, sign);
+
+    case 'I':
+        if (input->sign == 0) {
             sign = lbl_8036BDD0;
         } else {
             sign = lbl_8036BDD8;
         }
         return fn_802380A8((f64)lbl_8036706C, sign);
-    }
-    if (kind >= 0x4E) {
-        if (kind == 0x4E) {
-            if ((s8)p[0] == 0) {
-                sign = lbl_8036BDD0;
-            } else {
-                sign = lbl_8036BDD8;
-            }
-            return fn_802380A8((f64)lbl_80367068, sign);
+
+    case 'N':
+        bits.words.high = 0x7FF00000U;
+        bits.words.low = 0;
+        if (input->sign != 0) {
+            bits.words.high |= 0x80000000U;
         }
-    } else if (kind == 0x30) {
-        /* digit path */
+        if (input->length == 1) {
+            bits.words.high |= 0x00080000U;
+        } else {
+            digitsLeft = input->length;
+            if (digitsLeft > 14) {
+                digitsLeft = 14;
+            }
+            flags = 0;
+            p = &bits.bytes[1];
+            for (i = 1; i < digitsLeft; ++i) {
+                u8 c = input->digits[i];
+                if (lbl_8029E8A8[c] & 0x10) {
+                    nibble = c - '0';
+                } else if (c == 0xFF) {
+                    nibble = 0xFF;
+                } else {
+                    nibble = (u8)(lbl_8029E9A8[c] - 0x57);
+                }
+                if (nibble != 0) {
+                    flags = 1;
+                }
+                if ((i & 1) != 0) {
+                    *p |= (u8)nibble;
+                    p++;
+                } else {
+                    *p = (u8)(nibble << 4);
+                }
+            }
+            if (flags == 0) {
+                bits.words.high |= 0x00080000U;
+            }
+        }
+        return bits.value;
     }
-    return 0.0;
+
+    /* Copy the whole decimal record to the working stack record. */
+    original = *input;
+    for (i = 0; i < original.length; ++i) {
+        original.digits[i] -= '0';
+    }
+
+    exponent = (s16)(original.exponent + original.length - 1);
+    result = (f64)original.digits[0];
+    p = original.digits + 1;
+    end = original.digits + original.length;
+
+    /* Accumulate the mantissa eight decimal digits at a time. */
+    while (p < end) {
+        digitsLeft = (u32)(end - p);
+        chunk = digitsLeft & 7;
+        if (chunk == 0) {
+            chunk = 8;
+        }
+        group = 0;
+        for (i = 0; i < chunk; ++i) {
+            group = group * 10 + *p++;
+        }
+        result = result * lbl_8029E740[chunk - 1] + (f64)group;
+        exponent -= (s32)chunk;
+    }
+
+    /* Scale the significant digits by the remaining decimal exponent. */
+    if (exponent < 0) {
+        decimalCount = -exponent;
+        factor = fmod(lbl_8036BDE0, (f64)decimalCount);
+        result /= factor;
+    } else if (exponent > 0) {
+        factor = fmod(lbl_8036BDE0, (f64)exponent);
+        result *= factor;
+    }
+
+    result = fn_80238378(exponent, result);
+
+    /* The target compares converted decimal records against the input,
+       then checks adjacent binary doubles for correct rounding. */
+    bits.value = result;
+    fn_8022E804(&candidateDecimal, bits.value);
+    comparison = fn_8022F0B4(&candidateDecimal, &original);
+
+    if (comparison != 0) {
+        nextBits = bits;
+        if (comparison < 0) {
+            if ((nextBits.words.high & 0x7FF00000U) != 0x7FF00000U) {
+                nextBits.words.low++;
+                if (nextBits.words.low == 0) {
+                    nextBits.words.high++;
+                }
+            }
+        } else {
+            if ((nextBits.words.high & 0x7FF00000U) != 0) {
+                if (nextBits.words.low == 0) {
+                    nextBits.words.high--;
+                }
+                nextBits.words.low--;
+            }
+        }
+
+        fn_8022E804(&neighborDecimal, nextBits.value);
+        relative = fn_8022F0B4(&neighborDecimal, &original);
+        if (relative == 0) {
+            bits = nextBits;
+        } else {
+            fn_8022EBB8(&difference1, &original, &candidateDecimal);
+            fn_8022EBB8(&difference2, &neighborDecimal, &original);
+            chooseUpper = fn_8022F0B4(&difference1, &difference2);
+            if (chooseUpper > 0) {
+                bits = nextBits;
+            } else if (chooseUpper == 0) {
+                if (bits.words.low & 1) {
+                    bits = nextBits;
+                }
+            }
+        }
+    }
+
+    /* As in the target, inspect the result's exponent field and retain
+       a correctly rounded finite value or a special exponent. */
+    if ((bits.words.high & 0x7FF00000U) == 0x7FF00000U) {
+        fn_8022E804(&rounded, bits.value);
+        if (fn_8022F0B4(&rounded, &original) != 0) {
+            bits.words.high = 0x7FF00000U;
+            bits.words.low = 0;
+        }
+    } else if ((bits.words.high & 0x7FF00000U) == 0) {
+        fn_8022E804(&rounded, bits.value);
+    }
+
+    /* Recheck the nearest representable candidate against the original. */
+    fn_8022E804(&intermediate, bits.value);
+    if (fn_8022F0B4(&intermediate, &original) != 0) {
+        nextBits = bits;
+        nextBits.words.low++;
+        if (nextBits.words.low == 0) {
+            nextBits.words.high++;
+        }
+        fn_8022E804(&rounded, nextBits.value);
+        fn_8022EBB8(&difference3, &original, &intermediate);
+        fn_8022EBB8(&difference4, &rounded, &original);
+        if (fn_8022F0B4(&difference3, &difference4) > 0) {
+            bits = nextBits;
+        }
+    }
+
+    scaled = bits.value;
+    if (original.sign != 0) {
+        scaled = -scaled;
+    }
+    return scaled;
 }
 
 void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x) {
     void fn_8022E804(void *, f64);
     RuntimeDecimal *d = arg1;
-    s16 requested = *(s16 *)((u8 *)format + 2);
+    s32 requested = *(s16 *)((u8 *)format + 2);
     s32 precision;
     s32 i;
     fn_8022E804(d, x);

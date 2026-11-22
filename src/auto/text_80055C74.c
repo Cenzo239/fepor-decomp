@@ -76,7 +76,7 @@ void fn_80055DB0(void *arg0, u8 *arg1) {
     arg1[*(u8 *)((u8 *)arg0 + 0x30)] = 1;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level reset
 void *fn_80055DC0(void *arg0, u32 *color, u32 priority, f32 intensity)
 {
     void GfxEnt_ForEachKey(void *, void (*)(void *, u8 *), u8 *);
@@ -90,7 +90,7 @@ void *fn_80055DC0(void *arg0, u32 *color, u32 priority, f32 intensity)
     u32 col;
     u8 *proc;
     u8 *light;
-    s32 channel = 0;
+    s32 channel;
 
     flags[0] = 0;
     flags[1] = 0;
@@ -144,19 +144,18 @@ void *fn_80055DC0(void *arg0, u32 *color, u32 priority, f32 intensity)
     *(u16 *)(proc + 0x34) = 0xA;
     return proc;
 }
-#pragma optimization_level reset
 void *fn_80055FB4(void *arg0, u32 *color, u32 priority, f32 intensity) {
     void GfxEnt_ForEachKey(void *, void (*)(void *, u8 *), u8 *);
     void *Process_Create(void *, s32);
-    void *Light_GetChannel(s32);
     void fn_80067304(void *);
+    void *Light_GetChannel(s32);
     extern u8 lbl_80285BB0[];
     struct Position { f32 x,y,z; };
     struct Position pos;
     u8 flags[8];
     u32 col;
-    s32 channel;
     u8 *proc;
+    s32 channel;
     u8 *light;
     flags[0]=0; flags[1]=0; flags[2]=0; flags[3]=0;
     flags[4]=0; flags[5]=0; flags[6]=0; flags[7]=0;

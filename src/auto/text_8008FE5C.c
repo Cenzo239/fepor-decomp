@@ -102,6 +102,7 @@ void Ui_DrawCenteredMsgLines(s32 x, s32 y, u32 msg1, u32 msg2, u32 msg3) {
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 void UnitInfo_DrawPair(u8 *arg0) {
+#pragma scheduling on
     void fn_8008BA80(void *, s32, s32, s32);
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
     void fn_8008CD64(f32);

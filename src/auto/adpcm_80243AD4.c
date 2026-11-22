@@ -382,7 +382,7 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     s64 fn_8022CB08(s32, u32, s32);
     s64 fn_8022CB50(s32, u32, s32);
 
-    struct { u8 gap[0xC]; u8 st[0x10]; } sp;
+    u8 sp[0x1C];
     s16 *dstL;
     s16 *dstR;
     s16 yn1;
@@ -411,16 +411,16 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     }
 
     if (*(u32 *)src == 0) {
-        fn_80243F14(sp.st, base);
+        fn_80243F14(sp + 0xC, base);
         yn1 = *(s16 *)((u8 *)src + 0x48);
         yn2 = *(s16 *)((u8 *)src + 0x4A);
         stride *= 2;
         for (i = 0; i < *(u32 *)((u8 *)src + 4); i++) {
-            s32 ni = fn_80243E84(sp.st);
-            u8 *coef = (u8 *)src + (sp.st[8] << 2);
+            s32 ni = fn_80243E84(sp + 0xC);
+            u8 *coef = (u8 *)src + (sp[0x14] << 2);
             s32 t1 = *(s16 *)(coef + 0xA) * yn2;
             s32 t0 = *(s16 *)(coef + 8) * yn1;
-            s32 t2 = (ni << sp.st[9]) << 11;
+            s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
             acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);
@@ -436,16 +436,16 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             dstL = (s16 *)((u8 *)dstL + stride);
         }
     } else {
-        fn_80243F14(sp.st, base);
+        fn_80243F14(sp + 0xC, base);
         yn1 = *(s16 *)((u8 *)src + 0x48);
         yn2 = *(s16 *)((u8 *)src + 0x4A);
         stride *= 2;
         for (i = 0; i < *(u32 *)((u8 *)src + 4); i++) {
-            s32 ni = fn_80243E84(sp.st);
-            u8 *coef = (u8 *)src + (sp.st[8] << 2);
+            s32 ni = fn_80243E84(sp + 0xC);
+            u8 *coef = (u8 *)src + (sp[0x14] << 2);
             s32 t1 = *(s16 *)(coef + 0xA) * yn2;
             s32 t0 = *(s16 *)(coef + 8) * yn1;
-            s32 t2 = (ni << sp.st[9]) << 11;
+            s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
             acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);
@@ -458,15 +458,15 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             yn1 = samp;
             dstR = (s16 *)((u8 *)dstR + stride);
         }
-        fn_80243F14(sp.st, hdr);
+        fn_80243F14(sp + 0xC, hdr);
         yn1 = *(s16 *)((u8 *)src + 0x4C);
         yn2 = *(s16 *)((u8 *)src + 0x4E);
         for (i = 0; i < *(u32 *)((u8 *)src + 4); i++) {
-            s32 ni = fn_80243E84(sp.st);
-            u8 *coef = (u8 *)src + (sp.st[8] << 2);
+            s32 ni = fn_80243E84(sp + 0xC);
+            u8 *coef = (u8 *)src + (sp[0x14] << 2);
             s32 t1 = *(s16 *)(coef + 0x2A) * yn2;
             s32 t0 = *(s16 *)(coef + 0x28) * yn1;
-            s32 t2 = (ni << sp.st[9]) << 11;
+            s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
             acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);

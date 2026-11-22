@@ -7993,15 +7993,15 @@ void fn_801C1E0C(void *arg0) {
 void fn_801C2084(void *arg0)
 {
     extern u32 gUiInputFlags;
-    extern f32 lbl_8036B338;
-    extern f32 lbl_8036B358;
+    extern const f32 lbl_8036B338;
+    extern const f32 lbl_8036B358;
 
     void Process_ClearFunc(void *);
     f32 Math_Ease(s32, f32, f32, f32, f32);
 
     u8 *self;
-    s16 timer;
     s16 duration;
+    s16 timer;
     s32 value;
 
     self = (u8 *)arg0;

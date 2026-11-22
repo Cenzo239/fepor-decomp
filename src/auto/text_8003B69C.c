@@ -1206,7 +1206,7 @@ void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
  void *Job_GetByJid(void *); void Map_FloodMoveRange(void *,u8,u8,s32,s32,s32);
  u8 Map_IsAiTerrainBlocked(s8,s8); s16 fn_8002134C(u8 *,s8,s8);
  u8 *outY,*outX; void *unit; u8 *map; u8 saved; u8 *layer,*mapHi,*row,*tile;
- s32 rowOff,index; u16 best; register s32 y,x;
+ s32 rowOff,index; u16 best; register s32 y,x; s16 cost;
  outY=arg2; outX=arg1; unit=arg0;
  map=gBattleMap; layer=map+13;
  index=(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6);
@@ -1225,7 +1225,7 @@ void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
  tile=row+(s8)x;
  if((s8)tile[0xE18E]==0 && !Map_IsAiTerrainBlocked((s8)x,(s8)y) && tile[13]==0 &&
  fn_8002134C(gBattleMap,(s8)x,(s8)y)<=30000) {
- s16 cost=(*(s16 **)(mapHi+0x4190))[index];
+ cost=(*(s16 **)(mapHi+0x4190))[index];
  if(best>(u16)cost) { *outX=x; best=(u16)cost; *outY=y; }
  }
  }
@@ -1329,7 +1329,8 @@ u8 fn_8003D094(s32 arg0, u8 arg1) {
 
 u8 fn_8003D13C(void *arg0)
 {
-    extern u8 gBattleState[];
+    typedef struct { u8 pad[0x9F]; u8 flags; } BattleStateBits;
+    extern BattleStateBits gBattleState[];
 
     u8 fn_800386B0(void *);
     u8 Status_Test(void *, s32);
@@ -1341,11 +1342,12 @@ u8 fn_8003D13C(void *arg0)
     s32 result;
     s32 level;
     u8 value;
+    u8 ok;
     void *res;
 
     unit = (u8 *)arg0;
 
-    if (gBattleState[0x9F] & 8) {
+    if ((gBattleState->flags >> 3) & 1) {
         return 0;
     }
 
@@ -1368,32 +1370,28 @@ u8 fn_8003D13C(void *arg0)
     limit = 0x76C;
 
     if (Status_Test(unit + 0x1BC, 2) != 0) {
-        result = 0;
+        ok = 0;
     } else if (Status_Test(unit + 0x1BC, 8) != 0) {
-        result = 0;
+        ok = 0;
     } else if (Status_Test(unit + 0x1BC, 0x4D) != 0) {
-        result = 0;
+        ok = 0;
     } else {
         res = *(void **)(*(u8 **)(unit + 0x18C) + 0xC);
+        res = (res != NULL) ? Res_GetByName(res) : NULL;
 
-        if (res != 0) {
-            res = Res_GetByName(res);
-        }
-
-        if (res == 0) {
-            result = 0;
+        if (res == NULL) {
+            ok = 0;
         } else {
             level = (s8)unit[0x19A];
-
             if (level < 10) {
-                result = 0;
+                ok = 0;
             } else {
-                result = 1;
+                ok = 1;
             }
         }
     }
 
-    if (result != 0) {
+    if (ok) {
         limit = 0x7D0;
     }
 
@@ -1817,7 +1815,7 @@ s32 fn_8003DD7C(s32 arg0, s32 arg1) {
     return (temp_r31 <= (temp_r4 - 2));
 }
 
-#pragma dont_inline on
+#pragma use_lmw_stmw on
 void fn_8003DDF8(void *arg0, s8 *arg1, s8 *arg2) {
     extern u8 gBattleMap[];
     void Map_SelectRangeBuffer(void *, s32);
@@ -1825,43 +1823,44 @@ void fn_8003DDF8(void *arg0, s8 *arg1, s8 *arg2) {
     void fn_80022748(void *, s32);
     void Map_FloodMoveRange(void *, u8, u8, s32, s32, s32);
     s16 fn_8002134C(u8 *, s8, s8);
-    s8 *outY;
-    s8 *outX;
-    void *unit;
-    void *other;
-    u8 *layer;
-    u8 *map;
-    u8 *row;
-    u8 *mapHi;
-    s32 x, y;
-    s32 rowOff;
-    s16 cost;
-    u16 bestCost;
 
-    outY = arg2;
-    outX = arg1;
+    s32 x;
+    s32 y;
+    u16 bestCost;
+    u8 *layer;
+    u8 *mapHi;
+    u8 *row;
+    u8 *map;
+    s32 rowOff;
+    void *unit;
+    s8 *outX;
+    s8 *outY;
+    s16 cost;
+
     unit = arg0;
-    map = gBattleMap;
-    layer = map + 0xD;
-    other = *(void **)((u8 *)unit + 0x194);
+    outX = arg1;
+    outY = arg2;
+
+    layer = gBattleMap + 0xD;
+    map = *(u8 **)((u8 *)unit + 0x194);
     layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = 0;
-    Map_SelectRangeBuffer(map, 5);
+    Map_SelectRangeBuffer(gBattleMap, 5);
     fn_800227F8(gBattleMap, *(void **)((u8 *)unit + 0x18C));
     fn_80022748(gBattleMap, 0);
     Map_FloodMoveRange(gBattleMap, *((u8 *)unit + 0x19E), *((u8 *)unit + 0x19F), 0x3E8, 0, 0);
-    fn_800227F8(gBattleMap, *(void **)((u8 *)other + 0x18C));
-    fn_80022748(gBattleMap, *(s32 *)((u8 *)other + 0x190));
+    fn_800227F8(gBattleMap, *(void **)(map + 0x18C));
+    fn_80022748(gBattleMap, *(s32 *)(map + 0x190));
+
     *outX = -1;
     map = gBattleMap;
     bestCost = 0x7FFF;
     *outY = -1;
     mapHi = map + 0x10000;
-    y = (s8)map[9];
-    while (y <= (s8)map[0xB] - 1) {
+
+    for (y = (s8)map[9]; y <= (s8)map[0xB] - 1; y++) {
         rowOff = (s8)y << 6;
-        x = (s8)map[8];
         row = map + rowOff;
-        while (x <= (s8)map[0xA] - 1) {
+        for (x = (s8)map[8]; x <= (s8)map[0xA] - 1; x++) {
             if ((s16)fn_8002134C(map, (s8)x, (s8)y) <= 0x7530) {
                 if (row[(s8)x + 0xD] == 0 && row[(s8)x + 0x100D] != 0x37) {
                     cost = (*(s16 **)(mapHi + 0x4190))[(s8)x + rowOff];
@@ -1872,31 +1871,29 @@ void fn_8003DDF8(void *arg0, s8 *arg1, s8 *arg2) {
                     }
                 }
             }
-            x = x + 1;
         }
-        y = y + 1;
     }
+
     layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = *((u8 *)unit + 0x198);
 }
-#pragma dont_inline reset
 void fn_8003DFB8(void *arg0) {
-    void fn_800156A0(void *);
+    void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
     void fn_800157DC(void *, void *);
-    void Unit_SetMapPos(void *, u8, u8);
+    void Unit_SetMapPos(void *, s32, s32);
     void Unit_Clear(void *, s32);
     void Unit_MoveToListHead(void *, s32);
     void Unit_SeparateRescue(void *, s32, s32);
     void *fn_8003F1AC(s32);
     u8 fn_8003F1C0(void *);
     void *fn_8003F1C8(void *);
-    s32 fn_8003F1D0(s32 *, s32);
+    u32 fn_8003F1D0(s32 *, s32);
     void fn_8003F1DC(s32 *, s32);
     void fn_8003F1EC(void *, s32);
     void fn_8003F1F4(s32 *, s32);
     void *fn_8003F204(void *);
-    u8 fn_8003F20C(void *);
-    u8 fn_8003F214(void *);
+    s32 fn_8003F20C(void *);
+    s32 fn_8003F214(void *);
     s32 *fn_8003F21C(void *);
     void fn_8004EA60(void *, s32);
     extern u8 gUnitLists[];
@@ -1905,9 +1902,9 @@ void fn_8003DFB8(void *arg0) {
     void *partner = *(void **)((u8 *)self + 0x194);
     s32 flags;
     void *other;
-    void *next;
-    u8 a, b;
+    s32 a, b;
     void *p;
+    void *next;
 
     if (partner == NULL) {
         goto finish;
@@ -1916,8 +1913,8 @@ void fn_8003DFB8(void *arg0) {
     flags = *(s32 *)((u8 *)self + 0x1A0);
     if (flags & 2) {
         a = ((u8 *)self)[0x19F];
-        *(s32 *)((u8 *)self + 0x1A0) = flags & ~2;
         b = ((u8 *)self)[0x19E];
+        *(s32 *)((u8 *)self + 0x1A0) = flags & ~2;
         *(s32 *)((u8 *)partner + 0x1A0) = *(s32 *)((u8 *)partner + 0x1A0) & ~4;
         *(void **)((u8 *)self + 0x194) = NULL;
         *(void **)((u8 *)partner + 0x194) = NULL;
@@ -1954,8 +1951,7 @@ void fn_8003DFB8(void *arg0) {
                     Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
-                    fn_8003F1C8(other);
-                    fn_800156A0(other);
+                    fn_800156A0(fn_8003F1C8(other), other);
                     Unit_Clear(other, -1);
                     fn_80015718(fn_8003F1AC(4), other);
                 }
@@ -1988,8 +1984,7 @@ void fn_8003DFB8(void *arg0) {
                     Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
-                    fn_8003F1C8(other);
-                    fn_800156A0(other);
+                    fn_800156A0(fn_8003F1C8(other), other);
                     Unit_Clear(other, -1);
                     fn_80015718(fn_8003F1AC(4), other);
                 }
@@ -1998,12 +1993,11 @@ void fn_8003DFB8(void *arg0) {
 
         fn_8004EA60(partner, 1);
         if (*(u8 *)(*(u8 **)((u8 *)partner + 0x190) + 8) == 0) {
-            fn_8003F1C8(partner);
-            fn_800156A0(partner);
+            fn_800156A0(fn_8003F1C8(partner), partner);
             fn_800157DC(fn_8003F1AC(5), partner);
             *fn_8003F21C(partner) |= 0x4000;
         } else {
-            fn_800156A0(partner);
+            fn_800156A0(*(void **)((u8 *)partner + 0x190), partner);
             Unit_Clear(partner, -1);
             fn_80015718(gUnitLists + 0x30, partner);
         }
@@ -2048,8 +2042,7 @@ void fn_8003DFB8(void *arg0) {
                     Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
-                    fn_8003F1C8(other);
-                    fn_800156A0(other);
+                    fn_800156A0(fn_8003F1C8(other), other);
                     Unit_Clear(other, -1);
                     fn_80015718(fn_8003F1AC(4), other);
                 }
@@ -2082,8 +2075,7 @@ void fn_8003DFB8(void *arg0) {
                     Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
-                    fn_8003F1C8(other);
-                    fn_800156A0(other);
+                    fn_800156A0(fn_8003F1C8(other), other);
                     Unit_Clear(other, -1);
                     fn_80015718(fn_8003F1AC(4), other);
                 }
@@ -2092,12 +2084,11 @@ void fn_8003DFB8(void *arg0) {
 
         fn_8004EA60(partner, 1);
         if (*(u8 *)(*(u8 **)((u8 *)partner + 0x190) + 8) == 0) {
-            fn_8003F1C8(partner);
-            fn_800156A0(partner);
+            fn_800156A0(fn_8003F1C8(partner), partner);
             fn_800157DC(fn_8003F1AC(5), partner);
             *fn_8003F21C(partner) |= 0x4000;
         } else {
-            fn_800156A0(partner);
+            fn_800156A0(*(void **)((u8 *)partner + 0x190), partner);
             Unit_Clear(partner, -1);
             fn_80015718(gUnitLists + 0x30, partner);
         }
@@ -2106,11 +2097,11 @@ void fn_8003DFB8(void *arg0) {
 finish:
     fn_8004EA60(self, 1);
     if (*(u8 *)(*(u8 **)((u8 *)self + 0x190) + 8) == 0) {
-        fn_800156A0(self);
+        fn_800156A0(fn_8003F1C8(self), self);
         fn_800157DC(fn_8003F1AC(5), self);
         *(s32 *)((u8 *)self + 0x1A0) |= 0x4000;
     } else {
-        fn_800156A0(self);
+        fn_800156A0(*(void **)((u8 *)self + 0x190), self);
         Unit_Clear(self, -1);
         fn_80015718(gUnitLists + 0x30, self);
     }
@@ -2211,7 +2202,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void fn_80036834(void *);
     void fn_800951D0(void *, s32);
     void fn_80095070(void *, s32);
-    s8 Unit_GetMaxHp(void *);
+    s32 Unit_GetMaxHp(void *);
     void Unit_SetHp(void *, s8);
     u8 fn_80091D74(void *);
     void Unit_ApplyTransform(void *);
@@ -2277,7 +2268,8 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
         u8 unkC;
         u8 padD[3];
         void *unk10[8];
-        u8 pad30[8];
+        u8 flags[8];
+        u8 pad38[0x10];
         void *unk48[5];
         u8 unk5C[8];
         u8 unk64;
@@ -2285,21 +2277,13 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
         u8 unk66;
         u8 unk67;
     };
-    struct Cls {
-        u8 pad[0x10];
-        void *unk10;
-        u8 pad14[6];
-        u8 unk1A;
-        u8 pad1B[0x25];
-        u8 unk40[0x10];
-        u8 unk2D_dummy;
-    };
+    struct ItemFlag { u8 pad : 1; u8 flag : 1; u8 rest : 6; };
 
     u8 sp8[8];
-    struct Self *self;
-    struct Src *src;
-    struct Src *walk;
+    struct Src *src = arg1;
+    struct Self *self = arg0;
     s32 i;
+    struct Src *walk;
     u8 t;
     void *item;
     void *p;
@@ -2307,8 +2291,6 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     u8 j;
     void *c;
 
-    self = (struct Self *)arg0;
-    src = (struct Src *)arg1;
     self->unk188 = Res_GetByName(src->unk0);
     self->unk19B = 0;
     self->unk1A9 = 0;
@@ -2351,12 +2333,11 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
         }
         walk = (struct Src *)((u8 *)walk + 4);
     }
-    c = self->unk188;
-    if (Str_Cmp(src->unk4, *(void **)((u8 *)c + 0x10)) != 0 ||
-        src->unkA > (s8)*(u8 *)((u8 *)c + 0x1A)) {
+    if (Str_Cmp(src->unk4, *(void **)((u8 *)self->unk188 + 0x10)) != 0 ||
+        src->unkA > (s8)*(u8 *)((u8 *)self->unk188 + 0x1A)) {
         self->unk19A = src->unkA;
     } else {
-        self->unk19A = *(u8 *)((u8 *)c + 0x1A);
+        self->unk19A = *(u8 *)((u8 *)self->unk188 + 0x1A);
     }
     if (Status_Test(&self->unk1BC, 0x4E) != 0) {
         if (fn_80028854() != 0) {
@@ -2397,18 +2378,18 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     self->unk1BB = *((u8 *)self->unk188 + 0x34);
     for (i = 0; i < 8; i++) {
         if (walk->unk10[0] != 0) {
-            t = *((u8 *)src + i + 0x30);
+            t = src->flags[i];
             if ((t & 2) == 0 || gBattleState[0x57] != 1) {
                 fn_80094A54(self);
-                t = *((u8 *)src + i + 0x30);
+                t = src->flags[i];
                 if (t & 1) {
                     if (t & 2) {
                         fn_800946F0(self);
                         p = Unit_GetItemSlot(self, i);
-                        *(u8 *)((u8 *)p + 5) |= 0x40;
+                        ((struct ItemFlag *)((u8 *)p + 5))->flag = 1;
                     } else if (fn_80094768(self) == 0) {
                         p = Unit_GetItemSlot(self, i);
-                        *(u8 *)((u8 *)p + 5) |= 0x40;
+                        ((struct ItemFlag *)((u8 *)p + 5))->flag = 1;
                     }
                 }
             }
@@ -2436,7 +2417,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     if (src->unk8 & 1) {
         for (i = 0; i < 4; i++) {
             item = Unit_GetHeldItemSlot(self, i);
-            if (item != 0 && *(void **)item != 0 && fn_80093DA8(self) == 0) {
+            if (item != 0 && *(s32 *)item != 0 && fn_80093DA8(self) == 0) {
                 p = *(void **)item;
                 a = p ? *(u8 *)((u8 *)p + 0x12) : 0xC;
                 if (a < 8) {
@@ -2466,7 +2447,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     fn_80036834(self);
     fn_800951D0(self, -1);
     fn_80095070(self, -1);
-    Unit_SetHp(self, Unit_GetMaxHp(self));
+    Unit_SetHp(self, (s8)Unit_GetMaxHp(self));
     if (fn_80091D74(self) != 0 && Status_Test(&self->unk1BC, 9) == 0) {
         Unit_ApplyTransform(self);
     }
@@ -2605,8 +2586,8 @@ calc:
 
 s32 fn_8003F47C(void *arg0)
 {
-    s8 *ref;
     void *ptr;
+    s8 *ref;
     u8 ok;
 
     ptr = arg0;

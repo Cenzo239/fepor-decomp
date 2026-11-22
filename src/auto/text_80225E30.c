@@ -1627,6 +1627,7 @@ return err;
 #pragma pop
 }
 
+#pragma global_optimizer off
 s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
  void fn_80226C34(u32); void fn_8022699C(u32);
  s32 TRKMessageSend(s32); void *TRKGetBuffer(u32); void TRKSetBufferPosition(void*,s32); void fn_80227FEC(void*,u32);
@@ -1668,8 +1669,7 @@ s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
  if(*reply==-1) error=0x800;
  return error;
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer on
 s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     void *TRKGetBuffer(s32);
     s32 fn_802262E8(s32);
@@ -2368,33 +2368,56 @@ extern u8 lbl_8033CFB4[];
     return err + (s32)(st.gap[0] & 0);
 }
 #pragma optimization_level reset
-s32 TRKTargetAccessExtended1(u32 arg0,u32 arg1,void *arg2,s32 *arg3,s32 arg4) {
-extern u8 gTRKExceptionStatus_8029E574[];
-extern u8 gTRKRestoreFlags[];
-typedef struct {u32 words[4];} ExceptionStatus;
-ExceptionStatus saved;
-u8 *status;
-u32 *registers;
-s32 count;
-if(arg1>0x60) return 0x701;
-status=gTRKExceptionStatus_8029E574;
-saved=*(ExceptionStatus *)status;
-status[0xd]=0;
-*arg3=0;
-if(arg0<=arg1) {
-count=arg1-arg0+1;
-*arg3+=count*4;
-registers=(u32 *)(gTRKCPUState+arg0*4+0x1a8);
-if(arg4) arg0=fn_8022659C(arg2,registers,count);
-else {
-if(registers <= (u32 *)(gTRKCPUState+0x1ec) && registers+count-1 >= (u32 *)(gTRKCPUState+0x1e8)) gTRKRestoreFlags[0]=1;
-if(registers <= (u32 *)(gTRKCPUState+0x278) && registers+count-1 >= (u32 *)(gTRKCPUState+0x278)) gTRKRestoreFlags[1]=1;
-arg0=fn_8022632C(arg2,registers,count);
-}
-}
-if(status[0xd]) {arg0=0x702;*arg3=0;}
-*(ExceptionStatus *)gTRKExceptionStatus_8029E574=saved;
-return arg0;
+s32 TRKTargetAccessExtended1(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
+{
+  extern u8 gTRKExceptionStatus_8029E574[];
+  u32 *new_var;
+  u8 *new_var3;
+  int new_var2;
+  extern u8 gTRKRestoreFlags[];
+  typedef struct {
+    u32 words[4];
+  } ExceptionStatus;
+  ExceptionStatus saved;
+  u8 *status;
+  u32 *registers;
+  s32 count;
+  if (arg1 > 0x60) {
+    return 0x701;
+  }
+  status = gTRKExceptionStatus_8029E574;
+  saved = *((ExceptionStatus *)status);
+  status[0xd] = 0;
+  *arg3 = 0;
+  if (arg0 <= arg1) {
+    count = (arg1 - arg0) + 1;
+    new_var3 = gTRKCPUState;
+    registers = (u32 *)((gTRKCPUState + (arg0 * 4)) + 0x1a8);
+    *arg3 += count * 4;
+    if (arg4) {
+      arg0 = fn_8022659C(arg2, registers, count);
+    } else {
+      if ((registers <= ((u32 *)(gTRKCPUState + 0x1ec))) &&
+          (((registers + count) - 1) >= ((u32 *)(gTRKCPUState + 0x1e8)))) {
+        gTRKRestoreFlags[0] = 1;
+        arg0 += 0;
+        if (arg3) {
+        }
+      }
+      new_var2 = count;
+      if ((registers <= ((u32 *)(gTRKCPUState + 0x278))) &&
+          (((new_var = registers + new_var2) - 1) >= ((u32 *)(new_var3 + 0x278)))) {
+        gTRKRestoreFlags[1] = 1;
+      }
+      arg0 = fn_8022632C(arg2, registers, count);
+    }
+  }
+  if (status[0xd]) {
+    arg0 = 0x702;
+    *arg3 = 0;
+  }
+  *((ExceptionStatus *)gTRKExceptionStatus_8029E574) = saved;
+  return arg0;
 }
 
 s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
@@ -2841,6 +2864,7 @@ void InitMetroTRK_BBA(void) {
 
 #pragma intrinsic __dcbi
 void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
+#pragma intrinsic __dcbi
     u32 fn_80214058(void);
     void fn_80214094(s32, void *, u32, u32);
     void fn_80214338(void);
@@ -2848,40 +2872,35 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
     void *fn_80003488(void *, void *, u32);
 
     u8 buf[32] __attribute__((aligned(32)));
-    u32 aligned;
+    u8 *bufp;
+    u16 old;
+    u32 address;
     u32 length;
     u32 offset;
     u32 head;
-    u32 address;
-    u16 old;
-    u8 *bufp;
+    u32 aligned;
     u32 endOff;
     u32 endAlign;
+    u32 endAddr;
     s32 dst;
-    s32 *lenp;
-    s32 dest;
-    u32 memAddr;
 
-    lenp = arg2;
-    dest = arg0;
-    memAddr = arg1;
-    if (memAddr >= 0x4000U) {
-        length = *lenp;
-        if ((u32)(memAddr + length) <= 0x08000000U) {
-            head = memAddr & 31;
-            aligned = memAddr & ~31U;
+    if (arg1 >= 0x4000U) {
+        length = *arg2;
+        if ((u32)(arg1 + length) <= 0x08000000U) {
+            head = arg1 & 31;
+            aligned = arg1 & ~31U;
             length += head;
             offset = 0;
             length = (length + 31) & ~31U;
             for (offset = 0; offset < length; offset += 32) {
-                __dcbf((void *)offset, (int)dest);
+                __dcbf((void *)offset, (int)arg0);
             }
             while (fn_80214058() != 0) {
             }
             old = fn_80214358();
             address = 0x08000000;
-            if ((memAddr & 31) != 0) {
-                head = memAddr & 31;
+            if ((arg1 & 31) != 0) {
+                head = arg1 & 31;
                 address = aligned;
                 bufp = buf;
                 __dcbi(bufp);
@@ -2889,13 +2908,13 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
                 fn_80214094(1, bufp, aligned, 0x20);
                 while (fn_80214358() == 0) {
                 }
-                fn_80003488((void *)dest, bufp, head);
-                __dcbf((void *)0, (int)dest);
+                fn_80003488((void *)arg0, bufp, head);
+                __dcbf((void *)0, (int)arg0);
             }
-            memAddr += *lenp;
-            endOff = memAddr & 31;
+            endAddr = arg1 + *arg2;
+            endOff = endAddr & 31;
             if (endOff != 0) {
-                endAlign = memAddr & ~31U;
+                endAlign = endAddr & ~31U;
                 if (endAlign != address) {
                     bufp = buf;
                     __dcbi(bufp);
@@ -2904,14 +2923,14 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
                     while (fn_80214358() == 0) {
                     }
                 }
-                dst = dest + memAddr;
+                dst = arg0 + endAddr;
                 bufp = buf;
                 fn_80003488((void *)dst, bufp + endOff, 0x20 - endOff);
                 __dcbf((void *)0, (int)dst);
             }
             __sync();
             fn_80214338();
-            fn_80214094(0, (void *)dest, aligned, length);
+            fn_80214094(0, (void *)arg0, aligned, length);
             if (old == 0) {
                 while (fn_80214358() == 0) {
                 }
@@ -2940,6 +2959,8 @@ if(arg1 >= 0x4000) {
  fn_80214094(1,arg0,address,length);
  while(fn_80214358()==0) {}
  if(old==0) fn_80214338();
+ } else {
+ return;
  }
 }
 }
@@ -3548,9 +3569,9 @@ s32 gdev_cc_write(void *arg0, s32 arg1) {
     extern s32 lbl_803687C0;
     extern char lbl_802829E0[];
 
-    u8 *buffer;
-    s32 remaining;
     s32 written;
+    s32 remaining;
+    u8 *buffer;
     char *messages;
 
     buffer = (u8 *)arg0;
@@ -3568,7 +3589,7 @@ s32 gdev_cc_write(void *arg0, s32 arg1) {
         MWTRACE(1, messages + 0x40, remaining);
 
         written = fn_80267004(buffer, remaining);
-        if (written == 0) {
+        if (!written) {
             break;
         }
 
