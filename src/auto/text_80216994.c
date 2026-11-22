@@ -1617,7 +1617,7 @@ s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     if (*arg3 == 0xFFFF) {
         *arg3 = 0;
     }
-    return 0;
+    return (s32)arg0;
 }
 
 #pragma use_lmw_stmw on
