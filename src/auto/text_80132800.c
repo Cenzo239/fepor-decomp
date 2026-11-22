@@ -2989,7 +2989,7 @@ void *fn_8013692C(void *,s32,s32,s32,s32,s32);
 void fn_8013F0F0(void *,void *);
 void fn_8013F1A0(void *,void *);
 void *child;
-s16 r5,r7,r8,r9,s,t;
+s16 r5,r7,r8,r9,t,s;
 s16 mid,height;
 t=2;s=12;
 r9=M2C_FIELD(arg0,s16 *,0xC);
@@ -5504,18 +5504,12 @@ void fn_8013AA60(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x18, 0x19, 0x4C, arg5);
 }
 
-#pragma use_lmw_stmw on
-#pragma cplusplus on
-#pragma optimization_level 3
 void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) {
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(s32, u16);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddZ(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     void Text_Draw(s32, s16, s32, void *, ...);
-    s32 Text_MeasureHeight(s32, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Msg_ResolveName(s32);
-    void fn_80152010(s16, s16, s32, s32, s32);
+    M2C_UNK fn_80152010(s16, s16, s16, M2C_UNK, M2C_UNK);
     extern u8 lbl_802768A0[];
     extern f32 lbl_8036A674;
     extern f32 lbl_8036A6B0;
@@ -5523,46 +5517,30 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
 #pragma cplusplus on
 #pragma optimization_level 3
     struct Panel {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual s32 width() = 0;
+        virtual void v0()=0; virtual void v1()=0; virtual void v2()=0;
+        virtual void v3()=0; virtual void v4()=0; virtual void v5()=0;
+        virtual void v6()=0; virtual void v7()=0; virtual void v8()=0;
+        virtual void v9()=0; virtual void v10()=0; virtual s32 width()=0;
+        s16 height() { return *(s16 *)((u8 *)this+0x5A); }
     };
-    s16 h;
-    s16 y;
-    s32 flag;
-    s32 name;
-    s32 meas;
+    s16 temp_r28;
+    s16 temp_r31;
+    s32 var_r27;
+    s32 temp_r26;
 
-    flag = arg5 != 0;
-    if ((u32)((*(s32 *)((u8 *)arg4 + 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
-        flag = 0;
+    var_r27 = arg5 != 0;
+    if ((u32) ((M2C_FIELD(arg4, s32 *, 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
+        var_r27 = 0;
     }
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 0x13));
+    Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 0x13));
     Prim2D_PrepareTex();
-    name = Msg_ResolveName(*(s32 *)((u8 *)arg4 + 0x188));
-    h = *(s16 *)((u8 *)arg0 + 0x5A);
-    meas = Text_MeasureHeight(-1, lbl_8036A674);
-    y = (s16)arg2;
-    Text_Draw(arg1, (s16)(y + (s16)((h - meas) >> 1)), flag, lbl_802768A0 + 0x39, name);
+    temp_r26 = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
+    Text_Draw(arg1, (s16) (arg2 + (s16) ((s32) (((Panel *)arg0)->height() - Text_MeasureHeight(-1, lbl_8036A674)) >> 1)), var_r27, lbl_802768A0 + 0x39, temp_r26);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);
     Prim2D_PrepareTex();
-    {
-        s16 h2 = *(s16 *)((u8 *)arg0 + 0x5A);
-        s16 pad = *(s16 *)((u8 *)arg0 + 0x62);
-        s32 w = ((Panel *)arg0)->width();
-        fn_80152010((s16)(arg1 - 6), (s16)(y + (h2 >> 1)), (s16)((w - (pad * 2)) + 6), 0xFF, 0x10);
-    }
+    fn_80152010((s16) (arg1 - 6), (s16) (arg2 + (((Panel *)arg0)->height() >> 1)), (s16) ((((Panel *)arg0)->width() - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
