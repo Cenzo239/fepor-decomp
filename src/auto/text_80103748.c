@@ -464,13 +464,13 @@ s32 Options_AdjustRatioPad(s32 unused, void *menu) {
 
 #pragma global_optimizer off
 char *fn_80103FA4(s32 arg0, void *arg1) {
-void fn_80231D94(void *, void *, ...);
+s32 sprintf(void *, void *, ...);
 extern char lbl_8032BAD8[];
 extern u8 lbl_802734D0[];
 extern const f32 lbl_8036A0E8;
 u8 *strings = lbl_802734D0;
 f32 value = *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x18) + 0x3C) + 8);
-fn_80231D94(lbl_8032BAD8, strings + 0x1EB, value * lbl_8036A0E8);
+sprintf(lbl_8032BAD8, strings + 0x1EB, value * lbl_8036A0E8);
 return lbl_8032BAD8;
 }
 #pragma global_optimizer reset
