@@ -480,8 +480,7 @@ void fn_80005F04(void)
 }
 #pragma optimization_level reset
 void fn_800060F8(void) {
-    void Unit_ResetAll(void);
-
+    M2C_UNK Unit_ResetAll();
     Unit_ResetAll();
 }
 
