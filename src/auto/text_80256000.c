@@ -7693,7 +7693,7 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
     extern f32 lbl_8036C38C;
     extern f32 lbl_8036C398;
     extern f32 lbl_8036C39C;
-    extern f64 lbl_8036C3A0;
+    extern const f64 lbl_8036C3A0;
     extern f64 lbl_8036C390;
     extern u32 lbl_802A4560[];
     extern void *fn_802637A4(s32);
@@ -8686,4 +8686,3 @@ return 0;
 }
 extern u64 lbl_8029F3D0[4];
 extern u32 lbl_8029F3F0[4];
-const f64 lbl_8036C3A0 = 4503601774854144.0;
