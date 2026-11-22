@@ -1659,7 +1659,6 @@ void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
 void QUATMtx(f32 *, void *);
 void QUATSlerp(f32 *, f32 *, f32 *, f32);
-#pragma inline_depth 0
 void fn_80061A08(void *arg0)
 {
     f32 sp258[4];
