@@ -3721,8 +3721,8 @@ s32 fn_80117D80(void *arg0, void *unit) {
     extern u8 gTargetList[];
     s32 result;
     u32 flags;
-    s32 var_r4;
-    s32 temp;
+    u8 var_r4;
+    u8 temp;
     s32 i;
     u8 *tgt;
     s8 x;
@@ -3743,7 +3743,7 @@ s32 fn_80117D80(void *arg0, void *unit) {
             var_r4 = 0;
         }
 #pragma optimization_level reset
-        if ((u8)var_r4 != 0) {
+        if (var_r4 != 0) {
             fn_800C1060(0);
         }
         result = 1;
@@ -3766,7 +3766,7 @@ s32 fn_80117D80(void *arg0, void *unit) {
                     var_r4 = 0;
                 }
 #pragma optimization_level reset
-                if ((u8)var_r4 != 0) {
+                if (var_r4 != 0) {
                     fn_800C1060(0);
                 }
                 result = 1;
@@ -6113,7 +6113,7 @@ s32 fn_8011B754(void) {
 #pragma cplusplus on
 extern "C" void *GfxEnt_Get(u8);
 extern "C" u8 Ui_IsUnitInfoPopupOpen(void *);
-extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
+extern "C" s32 fn_8011B78C(void *arg0, u8 *arg1) {
     extern void *gPadInput;
     extern u8 gUiContext[];
     struct Handler {
@@ -6147,7 +6147,7 @@ extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
     void *unit;
     u8 flag;
 
-    unit = GfxEnt_Get(M2C_FIELD(arg1, u8 *, (s8) M2C_FIELD(arg1, u8 *, 0x62) + 0x40));
+    unit = GfxEnt_Get(arg1[0x40 + (s8)arg1[0x62]]);
     flag = 0;
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         flag = 1;
