@@ -2786,65 +2786,54 @@ s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
 
 s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
 {
-    s32 fn_80217B18(void *, void **);
+    s32 fn_80217B18(void *, u8 **);
     void *__CARDGetDirBlock(void *);
     s32 fn_8021BB04(void *, void *);
     s32 fn_8021BA9C(void *, void *);
     s32 __CARDPutControlBlock(void *, s32);
 
-    void *handle;
-    u8 *entry;
-    u8 *base;
     s32 result;
+    u8 *handle;
+    u8 *base;
+    s32 status;
     s32 index;
+    u8 *entry;
     s32 foundIndex;
-    u16 value;
 
     *(s32 *)arg2 = -1;
 
-    result = fn_80217B18(arg0, &handle);
-    if (result < 0) {
-        return result;
-    }
+    status = fn_80217B18(arg0, &handle);
+    if (status < 0) return status;
 
     if (*(s32 *)handle == 0) {
         result = -3;
-    } else {
-        entry = (u8 *)__CARDGetDirBlock(handle);
-        index = 0;
-
-        do {
-            if (fn_8021BB04(handle, entry) >= 0) {
-                if (fn_8021BA9C(entry, arg1) != 0) {
-                    foundIndex = index;
-                    result = 0;
-                    break;
-                }
-            }
-
-            index++;
-            entry += 0x40;
-        } while (index < 0x7F);
-
-        if (index == 0x7F) {
-            result = -4;
-        }
+        goto done;
     }
 
+    entry = (u8 *)__CARDGetDirBlock(handle);
+    for (index = 0; index < 0x7f; index++, entry += 0x40) {
+        if (fn_8021BB04(handle, entry) >= 0 &&
+            fn_8021BA9C(entry, arg1) != 0) {
+            foundIndex = index;
+            result = 0;
+            goto done;
+        }
+    }
+    result = -4;
+
+done:
     if (result >= 0) {
         base = (u8 *)__CARDGetDirBlock(handle);
         entry = base + (foundIndex << 6);
 
-        value = *(u16 *)(entry + 0x36);
-
-        if (value >= 5 &&
-            value >= *(u16 *)((u8 *)handle + 0x10)) {
+        if (*(u16 *)(entry + 0x36) >= 5 &&
+            *(u16 *)(entry + 0x36) >= *(u16 *)((u8 *)handle + 0x10)) {
             result = -6;
         } else {
             *(void **)arg2 = arg0;
             *(s32 *)((u8 *)arg2 + 4) = foundIndex;
             *(s32 *)((u8 *)arg2 + 8) = 0;
-            *(u16 *)((u8 *)arg2 + 0x10) = value;
+            *(u16 *)((u8 *)arg2 + 0x10) = *(u16 *)(entry + 0x36);
         }
     }
 
@@ -2881,25 +2870,20 @@ void fn_8021C088(s32 chan, s32 result)
 
     u8 *card;
     u8 *entry;
-    u8 *source;
     void (*callback)(s32, s32);
-    s32 status;
     u32 ticks;
     s64 time;
 
     card = (u8 *)__CARDBlock + chan * 0x110;
     callback = *(void (**)(s32, s32))(card + 0xD0);
     *(u32 *)(card + 0xD0) = 0;
-    status = result;
 
-    if (status >= 0) {
+    if (result >= 0) {
         entry = (u8 *)__CARDGetDirBlock(card);
         entry += *(u16 *)(card + 0xBC) << 6;
 
-        source = *(u8 **)(card + 0x10C);
-
-        memcpy(entry, source, 4);
-        memcpy(entry + 4, source + 4, 2);
+        memcpy(entry, *(u8 **)(card + 0x10C), 4);
+        memcpy(entry + 4, *(u8 **)(card + 0x10C) + 4, 2);
 
         entry[0x34] = 4;
         entry[0x35] = 0;
@@ -2924,15 +2908,15 @@ void fn_8021C088(s32 chan, s32 result)
 
         *(u32 *)(entry + 0x28) = (u32)(time / ticks);
 
-        status = __CARDUpdateDir(chan, (s32)callback);
+        result = __CARDUpdateDir(chan, (s32)callback);
+        if (result >= 0) goto done;
     }
 
-    if (status < 0) {
-        __CARDPutControlBlock(card, status);
-        if (callback != 0) {
-            callback(chan, status);
-        }
+    __CARDPutControlBlock(card, result);
+    if (callback != 0) {
+        callback(chan, result);
     }
+done:;
 }
 
 #pragma use_lmw_stmw on
@@ -3062,62 +3046,53 @@ return 0;
 
 void fn_8021C5D8(s32 chan, s32 result)
 {
+#pragma use_lmw_stmw on
     extern u16 __CARDBlock[];
     s32 fn_802190A4(s32, u32, u32, void *, void *);
-    s32 __CARDGetFatBlock(void *);
+    void *__CARDGetFatBlock(void *);
     s32 __CARDPutControlBlock(void *, s32);
 
     u8 *card;
     u8 *file;
     u16 *fat;
     s32 remaining;
-    s32 offset;
     s32 blockSize;
     s32 amount;
-    s32 next;
+    u16 next;
     s32 count;
-    s32 status;
     void (*callback)(s32, s32);
+    s32 n;
 
     card = (u8 *)__CARDBlock + chan * 0x110;
-    status = result;
 
-    if (status >= 0) {
+    if (result >= 0) {
         file = *(u8 **)(card + 0xC0);
-
         remaining = *(s32 *)(file + 0xC);
 
         if (remaining < 0) {
-            status = -14;
+            result = -14;
         } else {
             blockSize = *(s32 *)(card + 0xC);
-            offset = *(s32 *)(file + 8);
+            n = blockSize - 1;
+            n = ~n;
+            amount = ((*(s32 *)(file + 8) + blockSize) & n) - *(s32 *)(file + 8);
+            *(s32 *)(file + 0xC) = remaining - amount;
 
-            amount = ((offset + blockSize) & ~(blockSize - 1)) - offset;
-
-            remaining -= amount;
-            *(s32 *)(file + 0xC) = remaining;
-
-            if (remaining > 0) {
+            if (*(s32 *)(file + 0xC) > 0) {
                 fat = (u16 *)__CARDGetFatBlock(card);
-
-                *(s32 *)(file + 8) += amount;
-
-                next = *(u16 *)(file + 0x10);
-                *(u16 *)(file + 0x10) = fat[next];
-
+                *(s32 *)(file + 8) = *(s32 *)(file + 8) + amount;
+                *(u16 *)(file + 0x10) = fat[*(u16 *)(file + 0x10)];
                 next = *(u16 *)(file + 0x10);
 
                 if (next < 5 || next >= *(u16 *)(card + 0x10)) {
-                    status = -6;
+                    result = -6;
                 } else {
-                    count = remaining;
-
+                    count = *(s32 *)(file + 0xC);
+                    blockSize = *(s32 *)(card + 0xC);
                     if (count >= blockSize) {
                         count = blockSize;
                     }
-
-                    status = fn_802190A4(
+                    result = fn_802190A4(
                         chan,
                         blockSize * next,
                         count,
@@ -3128,14 +3103,14 @@ void fn_8021C5D8(s32 chan, s32 result)
             }
         }
 
-        if (status < 0) {
+        if (result < 0) {
             callback = *(void (**)(s32, s32))(card + 0xD0);
             *(void **)(card + 0xD0) = 0;
-
-            __CARDPutControlBlock(card, status);
-            callback(chan, status);
+            __CARDPutControlBlock(card, result);
+            callback(chan, result);
         }
     }
+#pragma use_lmw_stmw reset
 }
 
 s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
