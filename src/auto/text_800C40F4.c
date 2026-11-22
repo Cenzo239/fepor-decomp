@@ -5922,9 +5922,9 @@ void fn_800CF27C(s32 arg0, s32 arg1, s32 arg2)
 
 void fn_800CF2C8(void *arg0, s32 arg1, s32 arg2) {
     void fn_801C6CBC(u32 *, s32, s32, s32);
-    s32 Unit_GetActor(void *);
-    s32 fn_801C6E60(s32);
-    s32 fn_80116604(void *);
+    void *Unit_GetActor(void *);
+    void fn_801C6E60(void *);
+    void *fn_80116604(void *);
 
     extern u8 *gGame;
     extern s32 lbl_80367884;
@@ -5933,63 +5933,44 @@ void fn_800CF2C8(void *arg0, s32 arg1, s32 arg2) {
     u8 tmp[4];
     u32 color;
     u8 value;
-    void *unit;
     void *other;
-    s32 actor;
 
     self = (u8 *)arg0;
 
     value = *(u32 *)(gGame + 0x18C);
-
     tmp[0] = value;
     tmp[1] = value;
     tmp[2] = value;
     tmp[3] = 0xFF;
-
     color = *(u32 *)tmp;
 
     fn_801C6CBC(&color, arg1, lbl_80367884, arg2);
 
-    unit = *(void **)(self + 0x84);
-
-    if (unit != NULL) {
-        actor = Unit_GetActor(unit);
-        fn_801C6E60(actor);
-
-        other = (void *)fn_80116604(unit);
-
+    if (*(void **)(self + 0x84) != NULL) {
+        fn_801C6E60(Unit_GetActor(*(void **)(self + 0x84)));
+        other = fn_80116604(*(void **)(self + 0x84));
         if (other != NULL) {
-            if (Unit_GetActor(other) != 0) {
+            if (Unit_GetActor(other) != NULL) {
                 fn_801C6E60(Unit_GetActor(other));
             }
         }
     }
 
-    unit = *(void **)(self + 0x88);
-
-    if (unit != NULL) {
-        actor = Unit_GetActor(unit);
-        fn_801C6E60(actor);
-
-        other = (void *)fn_80116604(unit);
-
+    if (*(void **)(self + 0x88) != NULL) {
+        fn_801C6E60(Unit_GetActor(*(void **)(self + 0x88)));
+        other = fn_80116604(*(void **)(self + 0x88));
         if (other != NULL) {
-            if (Unit_GetActor(other) != 0) {
+            if (Unit_GetActor(other) != NULL) {
                 fn_801C6E60(Unit_GetActor(other));
             }
         }
     }
 
-    unit = *(void **)(self + 0x8C);
-
-    if (unit != NULL) {
-        actor = Unit_GetActor(unit);
-        fn_801C6E60(actor);
-
-        other = (void *)fn_80116604(unit);
-
+    if (*(void **)(self + 0x8C) != NULL) {
+        fn_801C6E60(Unit_GetActor(*(void **)(self + 0x8C)));
+        other = fn_80116604(*(void **)(self + 0x8C));
         if (other != NULL) {
-            if (Unit_GetActor(other) != 0) {
+            if (Unit_GetActor(other) != NULL) {
                 fn_801C6E60(Unit_GetActor(other));
             }
         }
