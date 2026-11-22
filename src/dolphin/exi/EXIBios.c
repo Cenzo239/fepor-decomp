@@ -1032,16 +1032,17 @@ s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
         return 0;
     }
     err = !EXILock(chan, dev, 0);
-    if (err != 0) goto unlock;
-    err = !EXISelect(chan, dev, 0);
-    if (err != 0) goto unlock;
-    cmd = 0x20011300;
-    err = !EXIImm(chan, &cmd, 4, 1, 0);
-    err |= !EXISync(chan);
-    err |= !EXIImm(chan, id, 4, 0, 0);
-    err |= !EXISync(chan);
-    err |= !EXIDeselect(chan);
-unlock:
+    if (err == 0) {
+        err = !EXISelect(chan, dev, 0);
+        if (err == 0) {
+            cmd = 0x20011300;
+            err = !EXIImm(chan, &cmd, 4, 1, 0);
+            err |= !EXISync(chan);
+            err |= !EXIImm(chan, id, 4, 0, 0);
+            err |= !EXISync(chan);
+            err |= !EXIDeselect(chan);
+        }
+    }
     EXIUnlock(chan);
     if (chan != 2 && dev == 0) {
         fn_802396C8(chan);
@@ -1184,7 +1185,8 @@ s32 WriteUARTN(void *buf, u32 len) {
             EXIDeselect(lbl_80368808);
             space = 0x10 - (s32)(q >> 24);
         }
-        if ((avail = space) < 0) {
+        avail = space;
+        if (space < 0) {
             error = 3;
             break;
         }
@@ -1200,6 +1202,7 @@ s32 WriteUARTN(void *buf, u32 len) {
         EXISync(lbl_80368808);
 
         while (avail != 0 && length != 0) {
+            s32 n;
             if (avail < 4 && (u32)avail < length) {
                 break;
             }
@@ -1208,7 +1211,8 @@ s32 WriteUARTN(void *buf, u32 len) {
             } else {
                 chunk = 4;
             }
-            EXIImm(lbl_80368808, ptr, chunk, 1, 0);
+            n = chunk;
+            EXIImm(lbl_80368808, ptr, n, 1, 0);
             {
                 s32 c = (s32)lbl_80368808;
                 ptr += chunk;
