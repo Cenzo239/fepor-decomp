@@ -378,6 +378,7 @@ void fn_801E4D54(void *arg0) {
     void List_Insert(void *, void *, void *, void *);
     void fn_80057898(void *, s32);
     extern u8 lbl_80332020[];
+    struct Menu { u8 pad[0x50]; void *list; };
     struct { void *node; } iter, copy;
     void *data, *pos, *result;
     struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
@@ -386,10 +387,11 @@ void fn_801E4D54(void *arg0) {
     s32 index;
     void *node;
     u8 found;
+
     bCopy = initB; b = bCopy;
-    fn_801EA430((u8*)arg0+0x50, &b);
+    fn_801EA430(&((struct Menu *)arg0)->list, &b);
     aCopy = initA; a = aCopy;
-    fn_801E9E30((u8*)arg0+0x50, &a);
+    fn_801E9E30(&((struct Menu *)arg0)->list, &a);
     end = (u8*)arg0+0x54; index = 0;
     iter.node = *(void **)((u8*)arg0+0x58);
     entry = lbl_80332020;
@@ -408,43 +410,47 @@ void fn_801E4D54(void *arg0) {
         copy.node = node; iter = copy;
         if (node == end) break;
         data = entry; entry[4] = index; entry[3] = (*(u8 **)((u8*)node+8))[3]; pos = node;
-        List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
+        List_Insert(&result, &((struct Menu *)arg0)->list, &pos, &data);
         entry += 0x18; index++;
     }
     fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
 }
 
+#pragma global_optimizer off
 void fn_801E4E8C(void *arg0) {
     void fn_801EA430(void *, void *);
     void fn_801EA018(void *, void *);
     void List_Insert(void *, void *, void *, void *);
     void fn_80057898(void *, s32);
     extern u8 lbl_80332020[];
-    void *iter, *data, *copy, *pos, *result;
+    struct { void *node; } iter, copy;
+    void *data, *pos, *result;
     struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
     u8 *entry;
     void *end;
     s32 index;
     void *node;
     u8 found;
-    bCopy = initB; b = initB;
+    bCopy = initB; b = bCopy;
     fn_801EA430((u8*)arg0+0x50, &b);
-    aCopy = initA; a = initA;
+    aCopy = initA; a = aCopy;
     fn_801EA018((u8*)arg0+0x50, &a);
     end = (u8*)arg0+0x54; index = 0;
-    iter = *(void **)((u8*)arg0+0x58);
+    iter.node = *(void **)((u8*)arg0+0x58);
     entry = lbl_80332020;
     for (;;) {
-        key.value = index + 1; keyCopy = key;
-        node = iter;
+        keyCopy.value = index + 1; key = keyCopy;
+        node = iter.node;
+        goto search;
+        next: node = *(void **)((u8*)node+4);
         search:
         if (node != end) {
             s8 *p = *(s8 **)((u8*)node+8);
             found = 0;
             if (p[0] >= 0 && (s8)key.value == p[1]) found = 1;
-            if (!found) { node = *(void **)((u8*)node+4); goto search; }
+            if (!found) goto next;
         }
-        copy = node; iter = node;
+        copy.node = node; iter = copy;
         if (node == end) break;
         data = entry; entry[1] = index; pos = node;
         List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
@@ -453,6 +459,8 @@ void fn_801E4E8C(void *arg0) {
     fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
 }
 
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
 void fn_801E4FB8(void *arg0) {
     void fn_801EA430(void *, void *);
     void fn_801EA248(void *, void *);
@@ -467,35 +475,51 @@ void fn_801E4FB8(void *arg0) {
     s32 index;
     void *node;
     u8 found;
-    bCopy = initB; b = initB;
-    fn_801EA430((u8*)arg0+0x50, &b);
-    aCopy = initA; a = initA;
-    fn_801EA248((u8*)arg0+0x50, &a);
-    end = (u8*)arg0+0x54; index = 0;
-    iter.node = *(void **)((u8*)arg0+0x58);
+
+    bCopy = initB;
+    b = bCopy;
+    fn_801EA430((u8 *)arg0 + 0x50, &b);
+    aCopy = initA;
+    a = aCopy;
+    fn_801EA248((u8 *)arg0 + 0x50, &a);
+    end = (u8 *)arg0 + 0x54;
+    index = 0;
+    iter.node = *(void **)((u8 *)arg0 + 0x58);
     entry = lbl_80332020;
     for (;;) {
-        key.value = index + 1; keyCopy = key;
+        keyCopy.value = index + 1;
+        key = keyCopy;
         node = iter.node;
         goto search;
-        next: node = *(void **)((u8*)node+4);
-        search:
+    next:
+        node = *(void **)((u8 *)node + 4);
+    search:
         if (node != end) {
-            s8 *p = *(s8 **)((u8*)node+8);
+            s8 *p = *(s8 **)((u8 *)node + 8);
             found = 0;
-            if (p[0] >= 0 && (s8)key.value == p[2]) found = 1;
-            if (!found) goto next;
+            if (p[0] >= 0 && (s8)key.value == p[2]) {
+                found = 1;
+            }
+            if (!found) {
+                goto next;
+            }
         }
-        copy.node = node; iter.node = node;
-        if (node == end) break;
-        data = entry; entry[2] = index; pos = node;
-        List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
-        entry += 0x18; index++;
+        copy.node = node;
+        iter = copy;
+        if (node == end) {
+            break;
+        }
+        data = entry;
+        entry[2] = index;
+        pos = node;
+        List_Insert(&result, (u8 *)arg0 + 0x50, &pos, &data);
+        entry += 0x18;
+        index++;
     }
-    fn_80057898(*(void **)((u8*)arg0+0x5C), *(s32*)((u8*)arg0+0x50)<<5);
+    fn_80057898(*(void **)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x50) << 5);
 }
-
-#pragma use_lmw_stmw on
+#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 /* Draw the 3-tab menu frame (header + tabs) and the selected tab's contents. */
 void TabMenu_Draw(void *menu)
 {
