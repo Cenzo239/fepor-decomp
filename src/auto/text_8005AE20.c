@@ -381,8 +381,8 @@ s32 fn_8005B4D8(s32 arg0) {
 }
 
 static inline u32 HashString(u8 *s) {
-    u32 hash;
     u8 b;
+    u32 hash;
     hash = 0;
     while ((b = *s, (s8)b != 0)) {
         hash += b;
