@@ -468,11 +468,11 @@ void fn_80222F24(u32 arg0, u32 arg1)
 
 void fn_80222FC4(void)
 {
+    u32 lim;
     u32 i;
     u32 n;
     u32 a;
     u32 b;
-    u32 lim;
     u32 off;
     u32 odd;
     u32 *p;
@@ -512,16 +512,13 @@ void fn_80222FC4(void)
             }
         }
         i = 0;
-        goto copy_lim;
-    copy_lim:
         lim = i;
         for (; i < n; i++) {
             gx = (u8 *)__GXData;
             off = (i >> 1) << 2;
             t = *(u32 *)(gx + 0x554 + lim);
             odd = i & 1;
-            off += 0x100;
-            p = (u32 *)(gx + off);
+            p = (u32 *)(gx + off + 0x100);
             a = t & 0xFFFFFEFF;
             if (odd) {
                 b = (*p >> 15) & 7;
@@ -672,8 +669,8 @@ void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 }
 
 void fn_80223500(s32 arg0, f32 *mtx, s32 arg2) {
+u32 a,b;
 s32 index;
-u32 a,b,c;
 s8 scale;
 switch(arg0) {
 case 1: case 2: case 3: index=arg0-1; break;
@@ -695,12 +692,12 @@ b=__rlwimi(b,(s32)(1024.0f*mtx[4]),11,10,20);
 b=__rlwimi(b,((u32)scale>>2)&3,22,8,9);
 b=__rlwimi(b,index+7,24,0,7);
 GXWGFifo.u8=0x61; GXWGFifo.u32=b;
-c=0;
-c=__rlwimi(c,(s32)(1024.0f*mtx[2]),0,21,31);
-c=__rlwimi(c,(s32)(1024.0f*mtx[5]),11,10,20);
-c=__rlwimi(c,((u32)scale>>4)&3,22,8,9);
-c=__rlwimi(c,index+8,24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=c;
+a=0;
+a=__rlwimi(a,(s32)(1024.0f*mtx[2]),0,21,31);
+a=__rlwimi(a,(s32)(1024.0f*mtx[5]),11,10,20);
+a=__rlwimi(a,((u32)scale>>4)&3,22,8,9);
+a=__rlwimi(a,index+8,24,0,7);
+GXWGFifo.u8=0x61; GXWGFifo.u32=a;
 __GXData[1]=0;
 }
 
