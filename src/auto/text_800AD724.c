@@ -382,7 +382,6 @@ void Battle_SetupTargetSelect(s32 parent) {
 }
 
 #pragma use_lmw_stmw on
-#pragma scheduling off
 s32 fn_800ADEB0(s32 arg0) {
     void fn_8002F728(void *);
     void Allegiance_FillMask(s32, void *);
