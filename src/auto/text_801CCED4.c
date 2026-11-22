@@ -84,6 +84,33 @@ virtual void v13();
 virtual void v14();
 virtual UnitHireItem *get(s32);
 };
+static inline void InitPanelBase480x256(u8 *w, s16 x, s16 y, s16 id, f32 one) {
+    extern u8 lbl_8028FDB0[], lbl_80292230[];
+    s16 right = (s16)(x + 0x1E0);
+    s16 bottom = (s16)(y + 0x100);
+    *(void **)w = lbl_8028FDB0;
+    *(s32 *)(w + 4) = 0;
+    *(void **)w = lbl_80292230;
+    *(s16 *)(w + 8) = -1;
+    *(s16 *)(w + 0xA) = x;
+    *(s16 *)(w + 0xC) = y;
+    *(s16 *)(w + 0xE) = right;
+    *(s16 *)(w + 0x10) = bottom;
+    *(s16 *)(w + 0x12) = 0;
+    *(s16 *)(w + 0x14) = 0;
+    *(s16 *)(w + 0x16) = 0x1E0;
+    *(s16 *)(w + 0x18) = 0x100;
+    *(s16 *)(w + 0x1A) = 0;
+    *(s16 *)(w + 0x1C) = 0;
+    w[0x1E] = 255; w[0x1F] = 255; w[0x20] = 255; w[0x21] = 255;
+    *(s16 *)(w + 0x22) = id;
+    *(s16 *)(w + 0x24) = 0;
+    *(f32 *)(w + 0x28) = one;
+    *(f32 *)(w + 0x2C) = one;
+    *(f32 *)(w + 0x30) = one;
+    *(s32 *)(w + 0x34) = 0;
+    *(s32 *)(w + 0x38) = 0;
+}
 static inline void InitUnitHireWidget(u8 *w) {
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029186C[];
         *(void **)(w+0) = lbl_8028FDB0;
@@ -1083,27 +1110,28 @@ void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
 extern f32 lbl_8036B4E8;
 u8 color[4];
 s16 target; s32 old;
-s32 x,y; s16 x2,y2;
+s32 x,y; s16 x2,y2,ym1;
 ((MenuD28*)self)->v3();
-target=*(s16*)(self+0x70)*0x16;
-if(*(s32*)(self+0x78)!=0) target+=0x18;
+target=(s16)(*(s16*)(self+0x70)*0x16);
+if(*(s32*)(self+0x78)!=0) target=(s16)(target+0x18);
 old=*(s16*)(self+0x72);
 if((s16)old<0 || *(s16*)(self+0x74)<0) { *(s16*)(self+0x72)=target; *(s16*)(self+0x74)=0; }
 else {
-*(s16*)(self+0x72)=(old+(target+1))>>1;
+s32 t=target+1;
+*(s16*)(self+0x72)=(old+t)>>1;
 *(s16*)(self+0x74)=(*(s16*)(self+0x74)+1)>>1;
 }
 x=*(s16*)(self+0x72); y=*(s16*)(self+0x74);
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036B4E8); Prim2D_PrepareTex();
-color[0]=0x9c; x2=(s16)(x+0x16); y2=(s16)(y+0x20); color[1]=0x2f; color[2]=0x12; color[3]=0xff;
-Ui_DrawLine((s16)x,(s16)(y-1),x2,(s16)(y-1),*(s32*)(self+0x34),color);
-Ui_DrawLine((s16)x,(s16)y2,x2,(s16)y2,*(s32*)(self+0x34),color);
-Ui_DrawLine((s16)(x-1),(s16)y,(s16)(x-1),(s16)y2,*(s32*)(self+0x34),color);
-Ui_DrawLine(x2,(s16)y,x2,(s16)y2,*(s32*)(self+0x34),color);
+color[0]=0x9c; x2=(s16)(x+0x16); y2=(s16)(y+0x20); ym1=(s16)(y-1); color[1]=0x2f; color[2]=0x12; color[3]=0xff;
+Ui_DrawLine((s16)x,ym1,x2,ym1,*(s32*)(self+0x34),color);
+Ui_DrawLine((s16)x,y2,x2,y2,*(s32*)(self+0x34),color);
+Ui_DrawLine((s16)(x-1),(s16)y,(s16)(x-1),y2,*(s32*)(self+0x34),color);
+Ui_DrawLine(x2,(s16)y,x2,y2,*(s32*)(self+0x34),color);
 Ui_DrawLine((s16)x,(s16)y,x2,(s16)y,*(s32*)(self+0x34),color);
 Ui_DrawLine((s16)x,(s16)(y2-1),x2,(s16)(y2-1),*(s32*)(self+0x34),color);
-Ui_DrawLine((s16)x,(s16)y,(s16)x,(s16)y2,*(s32*)(self+0x34),color);
-Ui_DrawLine((s16)(x2-1),(s16)y,(s16)(x2-1),(s16)y2,*(s32*)(self+0x34),color);
+Ui_DrawLine((s16)x,(s16)y,(s16)x,y2,*(s32*)(self+0x34),color);
+Ui_DrawLine((s16)(x2-1),(s16)y,(s16)(x2-1),y2,*(s32*)(self+0x34),color);
 }
 #pragma optimization_level reset
 #pragma global_optimizer reset
@@ -4988,7 +5016,7 @@ void fn_801D3810(s32 arg0) {
 #pragma dont_inline on
 #pragma global_optimizer on
 extern "C" void *fn_801D3860(void *arg0,s32 x,s32 y,s32 id) {
-extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[],gBattleState[];
+extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[];
 extern const f32 lbl_8036B618,lbl_8036B61C;
 struct Obj {virtual void v0()=0;virtual void v1()=0;virtual void v2()=0;virtual void v3()=0;virtual void v4()=0;virtual void v5()=0;virtual void v6()=0;virtual void v7()=0;virtual void v8()=0;};
 u8 *base; s32 zero; s16 right; s16 bottom; u8 *self; u8 *initial; f32 scale; f32 one;
@@ -4998,8 +5026,8 @@ right=(s16)x;bottom=(s16)y;
 right+=0x1E0;bottom+=0x100;
 initial=self;
 base=initial;
-*(void **)self=lbl_8028FDB0;
 one=lbl_8036B618;scale=lbl_8036B61C;
+*(void **)self=lbl_8028FDB0;
 *(s32 *)(initial+4)=zero;
 *(void **)base=lbl_80292230;
 *(s16 *)(base+8)=-1;
@@ -5031,7 +5059,8 @@ self[132]=1;self[133]=1;
 self[152]=255;self[153]=255;self[154]=255;self[155]=255;
 *(f32 *)(self+156)=scale;
 ((Obj *)(self+120))->v1();
-((Obj *)self)->v8();return self;
+((Obj *)self)->v8();
+return base;
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
@@ -8026,24 +8055,26 @@ void fn_801DDE44(void *arg0) {
     }
 }
 #pragma global_optimizer off
-void fn_801DDE88(register s32 px, register s32 py, s32 id) {
+void fn_801DDE88(s32 px, s32 py, s32 id) {
 void Prim2D_SetQuadMax(f32,f32,f32,f32);void Prim2D_SetQuadMin(f32,f32,f32,f32);
 void Prim2D_EndPrim(void);void Prim2D_AddPrim(s32);void Prim2D_BindTexture(void*,s32,s32);void Prim2D_PrepareTex(void);void Prim2D_Begin(void);u16 **fn_8006EDD8(void*,s32);
 extern u8 lbl_80299A78[];extern f32 lbl_8036B634;
 u8 *record;
 void *texture;
-u16 w,h;
+u32 w,h;
 u16 *image;
+s32 a,b;
 
+b=py;a=px;
 record=MenuResource_FindIn(lbl_80299A78,id);
 if(record) texture=*(void**)(record+8);else texture=0;
 if(texture) {
 image=*fn_8006EDD8(texture,0);
 w=image[1];h=image[0];
 Prim2D_Begin();Prim2D_BindTexture(texture,0,0x11);Prim2D_PrepareTex();Prim2D_AddPrim(1);
-px=(s16)px;py=(s16)py;
-Prim2D_SetQuadMin((f32)px,(f32)py,lbl_8036B634,lbl_8036B634);
-Prim2D_SetQuadMax((f32)(px+(s32)w),(f32)(py+(s32)h),(f32)(u32)w,(f32)(u32)h);
+a=(s16)a;b=(s16)b;
+Prim2D_SetQuadMin((f32)a,(f32)b,lbl_8036B634,lbl_8036B634);
+Prim2D_SetQuadMax((f32)(a+(s32)w),(f32)(b+(s32)h),(f32)w,(f32)h);
 Prim2D_EndPrim();
 }
 }
@@ -9530,29 +9561,23 @@ gSystemSave[0x47]=save[1][0x63];
 }
 #pragma cplusplus on
 #pragma global_optimizer off
-extern "C" void *fn_801E09B4(u8 **save) {
-    u32 slot;
-    s32 off;
-    u8 *base;
-    s32 i;
-    u8 valid;
-
-    i = 0;
-    off = 0x1a000;
-    for (; i < 2; i++) {
-        base = *save;
-        slot = (u32)base + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU)
-            valid = 0;
-        else if (*(u32 *)(slot + 0x44) != 0x20050201U)
-            valid = 0;
-        else
-            valid = 1;
-        if (valid && Save_FindLinkedSlot(base, *(u8 *)(slot + 0x63)))
-            return (void *)slot;
-        off += 0x6000;
-    }
-    return 0;
+void *fn_801E09B4(u8 **save) {
+u8 *slot;
+s32 off;
+u8 *base;
+s32 i;
+u8 valid;
+i=0; off=0x1a000;
+for(;i<2;i++) {
+base=*save;
+slot=base+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
+off+=0x6000;
+}
+return 0;
 }
 #pragma global_optimizer reset
 #pragma cplusplus reset
