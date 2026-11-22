@@ -3720,13 +3720,14 @@ s32 fn_80117D80(void *arg0, void *unit) {
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
     extern u8 gTargetList[];
-    s32 result;
     u32 flags;
     s32 var_r4;
+    u32 t;
     s32 i;
     u8 *tgt;
     s8 x;
     s8 y;
+    s32 result;
 
     result = 0;
     flags = *(u32 *)((u8 *)unit + 0x1A0);
@@ -3737,7 +3738,8 @@ s32 fn_80117D80(void *arg0, void *unit) {
         *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x010000DC;
         Map_RefreshUnitMap(gBattleMap);
         var_r4 = 1;
-        if (!(1U >= (u8)(gMapBlendMode - 1))) {
+        t = ((u8)(gMapBlendMode - 1) <= (u32)var_r4);
+        if (!t) {
             var_r4 = 0;
         }
         if ((u8)var_r4 != 0) {
@@ -3757,7 +3759,8 @@ s32 fn_80117D80(void *arg0, void *unit) {
                 fn_80050C90(unit);
                 Map_RefreshUnitMap(gBattleMap);
                 var_r4 = 1;
-                if (!(1U >= (u8)(gMapBlendMode - 1))) {
+                t = ((u8)(gMapBlendMode - 1) <= (u32)var_r4);
+                if (!t) {
                     var_r4 = 0;
                 }
                 if ((u8)var_r4 != 0) {
