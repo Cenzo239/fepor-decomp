@@ -1060,7 +1060,6 @@ void fn_8012DF40(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
 void fn_8012DFA8(void *arg0) {
     typedef struct { s16 a; s16 b; } S16Pair;
     void Process_Goto(void *, s32);
@@ -1204,8 +1203,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & mask)) {
                 *(void **)slot = node;
-                tmp = GActor_Create();
-                *(void **)(slot + 4) = tmp;
+                *(void **)(slot + 4) = GActor_Create();
+                tmp = *(void **)(slot + 4);
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1220,8 +1219,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & mask) {
                 *(void **)slot = node;
-                tmp = GActor_Create();
-                *(void **)(slot + 4) = tmp;
+                *(void **)(slot + 4) = GActor_Create();
+                tmp = *(void **)(slot + 4);
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1238,8 +1237,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & 0x400000) {
                 *(void **)slot = node;
-                tmp = GActor_Create();
-                *(void **)(slot + 4) = tmp;
+                *(void **)(slot + 4) = GActor_Create();
+                tmp = *(void **)(slot + 4);
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1254,8 +1253,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & 0x400000)) {
                 *(void **)slot = node;
-                tmp = GActor_Create();
-                *(void **)(slot + 4) = tmp;
+                *(void **)(slot + 4) = GActor_Create();
+                tmp = *(void **)(slot + 4);
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1271,8 +1270,8 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            tmp = GActor_Create();
-            *(void **)(slot + 4) = tmp;
+            *(void **)(slot + 4) = GActor_Create();
+            tmp = *(void **)(slot + 4);
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1285,8 +1284,8 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            tmp = GActor_Create();
-            *(void **)(slot + 4) = tmp;
+            *(void **)(slot + 4) = GActor_Create();
+            tmp = *(void **)(slot + 4);
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1303,8 +1302,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(flags & 8) && !(flags & 0x10)) {
                 *(void **)slot = node;
-                tmp = GActor_Create();
-                *(void **)(slot + 4) = tmp;
+                *(void **)(slot + 4) = GActor_Create();
+                tmp = *(void **)(slot + 4);
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1577,18 +1576,14 @@ void fn_8012DFA8(void *arg0) {
         sel = -1;
     } else {
         sel = 0;
-        off = sel;
+        off = 0;
         slot = *(u8 **)(self + 0x3C);
-        i = self[0x61];
-        if (i > 0) {
-            do {
-                if (*(void **)(slot + off) != find) {
-                    off += 0x24;
-                    sel++;
-                } else {
-                    goto found_sel;
-                }
-            } while (--i != 0);
+        for (i = self[0x61]; i != 0; i--) {
+            if (*(void **)(slot + off) == find) {
+                goto found_sel;
+            }
+            off += 0x24;
+            sel++;
         }
         sel = -1;
     found_sel:;
