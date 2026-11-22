@@ -15,8 +15,8 @@ extern u16 lbl_8036833C;
 extern u16 lbl_80368344;
 extern u16 lbl_8036834C;
 extern u16 lbl_80368354;
-extern u8 lbl_80332020[576];
-extern void fn_801EAA2C(void);
+extern u16* lbl_80332020;
+extern u16* fn_801EAA2C;
 
 void fn_801EA8C0(void) {
  void fn_8022C260(void *,void *,void *,u32,u32);
