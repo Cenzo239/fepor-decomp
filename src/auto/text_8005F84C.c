@@ -871,6 +871,7 @@ void fn_800608AC(void *arg0) {
     void *p;
     if (!arg0) Game_Assert(lbl_8026B590 + 0x28, 0x150, lbl_8026B590 + 0xAB);
     if (!M2C_FIELD(arg0,void **,0x60)) return;
+    dst = 0;
     model=Lookup::model(arg0);
     for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x44)) break;
     for(p=arg0;p;p=M2C_FIELD(p,void **,4)) if(M2C_FIELD(p,void **,0x48)) break;
@@ -1579,77 +1580,65 @@ void *GActor_Create(void) {
 int fn_800618E4(void *arg0) {
     void PSMTXIdentity(void *);
     void fn_8006DA5C(s32 *, s32);
+    void Game_Assert(char *, s32, char *);
     extern char lbl_8026B590[];
-    extern f32 lbl_803691C8;
-    extern f32 lbl_803691D8;
     extern u32 lbl_803691C0;
 
     u8 *self;
     u32 color;
     u32 zero;
+    f32 f0;
+    f32 f1;
+    s32 mask;
 
     self = (u8 *)arg0;
-
     if (self == NULL) {
-        Game_Assert(
-            lbl_8026B590 + 0x28,
-            0x11,
-            lbl_8026B590 + 0xAB
-        );
+        Game_Assert(lbl_8026B590 + 0x28, 0x11, lbl_8026B590 + 0xAB);
     }
 
     zero = 0;
-
-    *(u32 *)(self + 0x00) = zero;
-    *(u32 *)(self + 0x04) = zero;
-
+    mask = 0x10000;
+    *(u32 *)(self + 0) = zero;
+    f1 = 0.0f;
+    *(u32 *)(self + 4) = zero;
+    mask = mask - 1;
+    f0 = 1.0f;
     *(u32 *)(self + 0x40) = zero;
     *(u32 *)(self + 0x44) = zero;
     *(u32 *)(self + 0x48) = zero;
     *(u32 *)(self + 0x4C) = zero;
     *(u32 *)(self + 0x50) = zero;
-
     *(u32 *)(self + 0x60) = zero;
     *(u32 *)(self + 0x64) = zero;
     *(u32 *)(self + 0x68) = zero;
     *(u32 *)(self + 0x6C) = zero;
-
     *(u32 *)(self + 0x54) = zero;
-    *(f32 *)(self + 0x58) = lbl_803691C8;
-    *(f32 *)(self + 0x5C) = lbl_803691D8;
-
+    *(f32 *)(self + 0x58) = f1;
+    *(f32 *)(self + 0x5C) = f0;
     *(u32 *)(self + 0x74) = zero;
-    *(f32 *)(self + 0x78) = lbl_803691D8;
-
-    self[0x08] = 0x80;
-    self[0x09] = 0x80;
-    self[0x0A] = 0x80;
-    self[0x0B] = 0xFF;
-
-    *(u16 *)(self + 0x7C) = 0xFFFF;
-    *(u16 *)(self + 0x7E) = 0xFFFF;
-    *(u16 *)(self + 0x80) = 0xFFFF;
-    *(u16 *)(self + 0x82) = 0xFFFF;
-
+    *(f32 *)(self + 0x78) = f0;
+    self[8] = 0x80;
+    self[9] = 0x80;
+    self[10] = 0x80;
+    self[11] = 0xFF;
+    *(u16 *)(self + 0x7C) = (u16)mask;
+    *(u16 *)(self + 0x7E) = (u16)mask;
+    *(u16 *)(self + 0x80) = (u16)mask;
+    *(u16 *)(self + 0x82) = (u16)mask;
     self[0x84] = 0xFF;
     self[0x85] = 1;
     self[0x86] = 0;
     self[0x87] = 2;
-
     color = lbl_803691C0;
-
     self[0x88] = ((u8 *)&color)[0];
     self[0x89] = ((u8 *)&color)[1];
     self[0x8A] = ((u8 *)&color)[2];
     self[0x8B] = ((u8 *)&color)[3];
-
     *(u32 *)(self + 0x8C) = zero;
     *(u32 *)(self + 0x90) = zero;
     *(u32 *)(self + 0x94) = zero;
-
-    fn_8006DA5C((s32 *)(self + 0x0C), 7);
+    fn_8006DA5C((s32 *)(self + 0xC), 7);
     PSMTXIdentity(self + 0x10);
-
     return (int)self;
 }
 
@@ -4612,7 +4601,7 @@ void fn_800675E8(void *arg0) {
 
     gCamera = cam;
 
-    if (gCamera != NULL) {
+    if (cam != NULL) {
         GXSetScissor(
             *(u16 *)(cam + 0x1C),
             *(u16 *)(cam + 0x1E),
@@ -8519,40 +8508,36 @@ s32 fn_8006EDD8(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     u8 *file;
-    u32 first;
-    u32 i;
     u8 *table;
-    u8 *record;
     u32 offset;
+    u8 *record;
     u32 value;
+    u16 i;
 
-    *(u8 **)arg0 = (u8 *)fn_8005C82C(arg1, arg2);
+    *(u32 *)arg0 = fn_8005C82C(arg1, arg2);
     file = *(u8 **)arg0;
-    first = *(u32 *)file;
 
-    if (first == 0x0020AF31U) {
+    if (*(u32 *)file == 0x0020AF31U) {
         return;
     }
 
-    *(u32 *)file = first + 1;
+    *(u32 *)file += 1;
     *(u32 *)(file + 8) += (u32)file;
 
-    i = 0;
-
-    while ((i & 0xFFFF) < *(u32 *)(file + 4)) {
+    for (i = 0; i < *(u32 *)(file + 4); i++) {
         table = *(u8 **)(file + 8);
         offset = (i & 0xFFFF) << 3;
 
         value = *(u32 *)(table + offset);
 
         if (value != 0) {
-            *(u32 *)(table + offset) = value + (u32)file;
+            *(u32 *)(table + offset) = (u32)file + value;
 
             table = *(u8 **)(file + 8);
             record = *(u8 **)(table + offset);
 
             if (record[0x23] == 0) {
-                *(u32 *)(record + 8) += (u32)file;
+                *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
                 record = *(u8 **)(table + offset);
@@ -8565,21 +8550,19 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
         value = *(u32 *)(table + offset);
 
         if (value != 0) {
-            *(u32 *)(table + offset) = value + (u32)file;
+            *(u32 *)(table + offset) = (u32)file + value;
 
             table = *(u8 **)(file + 8);
             record = *(u8 **)(table + offset);
 
             if (record[2] == 0) {
-                *(u32 *)(record + 8) += (u32)file;
+                *(u32 *)(record + 8) = (u32)file + *(u32 *)(record + 8);
 
                 table = *(u8 **)(file + 8);
                 record = *(u8 **)(table + offset);
                 record[2] = 1;
             }
         }
-
-        i++;
     }
 }
 void fn_8006EEFC(void *arg0, void *arg1) {
@@ -10722,21 +10705,25 @@ extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_EndPrim(void);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
+    extern double lbl_803692E8;
     struct T { virtual void *a()=0; virtual void *b()=0; virtual void *c()=0; virtual void *d()=0; virtual void *e(void *)=0; };
     struct W { u8 pad[4]; virtual s32 a()=0; virtual s32 b()=0; virtual s32 c()=0; virtual s32 d()=0; virtual s32 e()=0; virtual s32 f()=0; virtual s32 g()=0; virtual s32 h()=0; virtual s32 i()=0; virtual s32 j()=0; virtual s32 k()=0; virtual s32 l()=0; virtual s32 m()=0; virtual s32 n()=0; virtual s32 o()=0; virtual s32 p()=0; virtual s32 q()=0; virtual s32 r()=0; virtual s32 s()=0; };
-    struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void*,s32)=0; virtual void s(void*)=0; };
-    void *self; void *param; void *win; s32 textWidth; T *obj; void *text; s32 width; s32 diff;
-    win=arg2; param=arg1; self=arg0;
-    obj=*(T**)((u8*)win+0x34); text=obj->e(win);
-    textWidth=Text_MeasureWidth(text,-1,lbl_803692E0);
-    width=(s16)(*(W**)((u8*)param+0x3C))->s();
-    diff=width-textWidth; textWidth=(s32)(diff+((u32)diff>>31))>>1;
-    ((S*)self)->r(param,diff);
+    struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void *, s32)=0; virtual void s(void *)=0; };
+    void *self; void *param; void *win; s32 textWidth; void *text; s32 width;
+
+    win = arg2;
+    param = arg1;
+    self = arg0;
+    text = ((T *)*(void **)((u8 *)win + 0x34))->e(win);
+    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
+    width = (s16)(*(W **)((u8 *)param + 0x3C))->s();
+    ((S *)self)->r(param, width - textWidth);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32)textWidth,(f32)*(s16*)((u8*)win+0x32));
-    ((S*)self)->s(win);
-    obj=*(T**)((u8*)win+0x34); text=obj->e(win);
-    Prim2D_SetText(text); Prim2D_EndPrim();
+    Prim2D_SetPos((f32)((width - textWidth + ((u32)(width - textWidth) >> 31)) >> 1), (f32)*(s16 *)((u8 *)win + 0x32));
+    ((S *)self)->s(win);
+    text = ((T *)*(void **)((u8 *)win + 0x34))->e(win);
+    Prim2D_SetText(text);
+    Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 void fn_80071CE8(void *arg0, void *arg1) {
