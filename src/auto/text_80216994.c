@@ -3396,23 +3396,29 @@ void fn_8021CC10(s32 chan, s32 result) {
 }
 #pragma optimization_level reset
 s32 fn_8021CCB4(s32 chan, char *name, void *callback) {
+    s32 fn_80217B18(s32, s32 *);
+    s32 fn_8021BDC0(void *, char *, s32 *);
+    s32 fn_8021C080(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
+    u8 *__CARDGetDirBlock(void *);
+    s32 __CARDUpdateDir(s32, s32);
+    void fn_80216994(void);
     void fn_8021CC10(void);
-    s32 fn_8021C080();
     s32 card;
     s32 index;
     s32 result;
     u8 *entry;
-    result=fn_80217B18(chan,&card);
-    if(result<0) return result;
-    result=fn_8021BDC0((void*)card,name,&index);
-    if(result<0) return ((s32 (*)())__CARDPutControlBlock)((void*)card,result);
-    if(fn_8021C080((void*)card,index)!=0) return ((s32 (*)())__CARDPutControlBlock)((void*)card,-1);
-    entry=(u8*)((s32 (*)())__CARDGetDirBlock)((void*)card)+(index<<6);
-    *(u16*)(card+0xbe)=*(u16*)(entry+0x36);
-    memset(entry,255,64);
-    *(void**)(card+0xd0)=callback?callback:(void*)fn_80216994;
-    result=((s32 (*)())__CARDUpdateDir)(chan,(s32)fn_8021CC10);
-    if(result<0) ((s32 (*)())__CARDPutControlBlock)((void*)card,result);
+    result = fn_80217B18(chan, &card);
+    if (result < 0) return result;
+    result = fn_8021BDC0((void *)card, name, &index);
+    if (result < 0) return __CARDPutControlBlock((void *)card, result);
+    if (fn_8021C080((void *)card, index) != 0) return __CARDPutControlBlock((void *)card, -1);
+    entry = __CARDGetDirBlock((void *)card) + (index << 6);
+    *(u16 *)(card + 0xbe) = *(u16 *)(entry + 0x36);
+    memset(entry, 255, 64);
+    *(void **)(card + 0xd0) = callback ? callback : (void *)fn_80216994;
+    result = __CARDUpdateDir(chan, (s32)fn_8021CC10);
+    if (result < 0) __CARDPutControlBlock((void *)card, result);
     return result;
 }
 
