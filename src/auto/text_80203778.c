@@ -2809,25 +2809,35 @@ u32 __OSMaskInterrupts(u32 global) {
     OSRestoreInterrupts(enabled);
     return prev;
 }
-#pragma global_optimizer on
-u32 __OSUnmaskInterrupts(u32 global) {
+#pragma global_optimizer off
+#pragma scheduling off
+u32 __OSUnmaskInterrupts(u32 arg) {
     BOOL OSDisableInterrupts(void);
     BOOL OSRestoreInterrupts(BOOL);
-    u32 prev;
+    u32 SetInterruptMask(u32, u32);
+    u32 global;
     BOOL enabled;
+    BOOL temp;
+    u32 prev;
     u32 ie;
     u32 mask;
-    enabled = OSDisableInterrupts();
+
+    global = arg;
+    temp = OSDisableInterrupts();
     prev = *(u32 *)0x800000C4;
+    enabled = temp;
     ie = *(u32 *)0x800000C8;
     mask = global & (prev | ie);
     global = prev & ~global;
     *(u32 *)0x800000C4 = global;
     global |= ie;
-    while (mask != 0) mask = SetInterruptMask(mask, global);
+    while (mask != 0) {
+        mask = SetInterruptMask(mask, global);
+    }
     OSRestoreInterrupts(enabled);
     return prev;
 }
+#pragma scheduling reset
 #pragma global_optimizer reset
 void fn_8020801C(u8 unused, OSContext *context) {
     extern s32 lbl_8029CDF8[];
