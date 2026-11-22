@@ -10886,16 +10886,7 @@ found:
     return result;
 }
 #pragma optimization_level reset
-static inline s32 fn_800C3C1C_find(void *convoy) {
-    s32 i;
-    for (i = 0; i < 200; i++) {
-        if (*(void **)((char *)convoy + i * 8) == NULL) {
-            return i;
-        }
-    }
-    return -1;
-}
-
+s32 fn_80134E48_placeholder_removed(void);
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
