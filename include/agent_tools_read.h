@@ -1,1 +1,3 @@
-#include "../../agents/cursor-2/.cursor-home/.cursor/projects/home-kw-Decomp-decomp-agents-cursor-2/agent-tools/56061111-5f71-432e-92c1-472f53b4ab04.txt"
+#define _S(x) #x
+#define _STR(x) _S(x)
+int __path_probe[_STR(__FILE__)[0]];
