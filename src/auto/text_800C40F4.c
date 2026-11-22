@@ -15102,7 +15102,7 @@ extern "C" void fn_800E3C04(u8 *self,s32 context) {
  String_Init(&a,lbl_80271F28,&scratchA);
  item=fn_800E7FB4(owner,&a);
  String_Destroy(&a,-1);
- fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)-(20-M2C_FIELD(self,s32*,0x60)),M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
+ fn_800E3040(item,context,3,M2C_FIELD(self,s32*,0x48)+M2C_FIELD(self,s32*,0x60)-20,M2C_FIELD(self,s32*,0x4C),M2C_FIELD(self,s32*,0x44),16,16,255,255,255,255,0);
  String_Init(&b,lbl_80271F28+6,&scratchB);
  item=fn_800E7FB4(owner,&b);
  String_Destroy(&b,-1);
@@ -21226,94 +21226,77 @@ s32 fn_800EE490(void) {
     return result;
 }
 
-void fn_800EE4D0(void *arg0)
-{
-    extern u32 lbl_803678DC;
-    extern u32 lbl_803678E0;
-    extern f64 lbl_80369FB0;
-    extern f32 lbl_80369F90;
-    extern f64 lbl_80369F98;
-    extern f32 lbl_80369FA0;
-    extern f32 lbl_80369FA4;
-    extern f32 lbl_80369FA8;
-    extern f32 lbl_80369FAC;
+#pragma fp_contract off
+void fn_800EE4D0(void *arg0) {
+    extern void *lbl_803678DC;
+    extern void *lbl_803678E0;
+    extern const f64 lbl_80369FB0;
+    extern const f32 lbl_80369F90;
+    extern const f64 lbl_80369F98;
+    extern const f32 lbl_80369FA0;
+    extern const f32 lbl_80369FA4;
+    extern const f32 lbl_80369FA8;
+    extern const f32 lbl_80369FAC;
     void fn_800F047C(void);
-
     f64 sin(f64);
     void DCFlushRange(void *, u32);
-    void fn_80067708(s32, s32, void *, s32);
-
-    u8 *self;
-    u8 *dst;
-    u32 temp;
+    void fn_80067708(s32, s32, void (*)(void), s32);
+    void *bufA;
+    void *self;
     s32 i;
-    s32 value;
-    f32 phase;
-    f32 angle;
-    f32 result;
+    u8 *bufB;
     f32 time;
-    f32 f31;
+    f64 conv;
+    f64 twoPi;
+    f32 step;
+    f32 amp;
+    f32 bias;
+    f32 phase;
+    f32 s;
+    s32 idx;
+    s32 base;
 
-    self = (u8 *)arg0;
-
-    if (lbl_803678DC != 0) {
-        dst = (u8 *)lbl_803678E0;
-
-        time = (f32)*(s32 *)(self + 0x30) *
-               lbl_80369F90;
-
+    bufA = lbl_803678DC;
+    self = arg0;
+    if (bufA != 0) {
         i = 0;
-
+        conv = lbl_80369FB0;
+        time = (f32)*(s32 *)((u8 *)self + 0x30) * lbl_80369F90;
+        bufB = (u8 *)lbl_803678E0;
+        twoPi = lbl_80369F98;
+        step = lbl_80369FA0;
+        amp = lbl_80369FA4;
+        bias = lbl_80369FA8;
         do {
-            phase = (f32)i * lbl_80369FA0 + time;
-            angle = (f32)(lbl_80369F98 * (f64)phase);
-
-            result = (f32)sin(angle);
-            result = lbl_80369FA8 +
-                     lbl_80369FA4 * result;
-
-            value = (s32)result;
-
-            temp = (i >> 2) * 16 + (i & 3) * 4;
-
-            dst[(temp + 0) * 2] = (u8)value;
-            dst[(temp + 0) * 2 + 1] = 0x80;
-
-            dst[(temp + 1) * 2] = (u8)value;
-            dst[(temp + 1) * 2 + 1] = 0x80;
-
-            dst[(temp + 2) * 2] = (u8)value;
-            dst[(temp + 2) * 2 + 1] = 0x80;
-
-            dst[(temp + 3) * 2] = (u8)value;
-            dst[(temp + 3) * 2 + 1] = 0x80;
-
+            phase = (f32)i * step + time;
+            s = (f32)sin((f64)(f32)(twoPi * (f64)phase));
+            s = bias + amp * (f32)s;
+            base = ((i & 3) << 2) + ((i >> 2) << 4);
             i++;
+            idx = base;
+            bufB[idx * 2] = (u8)(s32)s;
+            bufB[idx * 2 + 1] = 0x80;
+            idx = base + 1;
+            bufB[idx * 2] = (u8)(s32)s;
+            bufB[idx * 2 + 1] = 0x80;
+            idx = base + 2;
+            bufB[idx * 2] = (u8)(s32)s;
+            bufB[idx * 2 + 1] = 0x80;
+            idx = base + 3;
+            bufB[idx * 2] = (u8)(s32)s;
+            bufB[idx * 2 + 1] = 0x80;
         } while (i < 16);
-
-        DCFlushRange(dst, 0x80);
-
-        temp = lbl_803678DC;
-        lbl_803678DC = lbl_803678E0;
-        lbl_803678E0 = temp;
-
-        if (*(u32 *)(self + 0x3C) != 0) {
-            fn_80067708(
-                3,
-                1,
-                fn_800F047C,
-                0
-            );
+        DCFlushRange(bufB, 0x80);
+        lbl_803678E0 = bufA;
+        lbl_803678DC = bufB;
+        if (*(u32 *)((u8 *)self + 0x3C) != 0) {
+            fn_80067708(3, 1, fn_800F047C, 0);
         }
     }
-
-    *(s32 *)(self + 0x30) =
-        *(s32 *)(self + 0x30) + 1;
-
-    f31 = *(f32 *)(self + 0x34);
-    *(f32 *)(self + 0x34) = f31 + lbl_80369FAC;
+    *(s32 *)((u8 *)self + 0x30) = *(s32 *)((u8 *)self + 0x30) + 1;
+    *(f32 *)((u8 *)self + 0x34) = *(f32 *)((u8 *)self + 0x34) + lbl_80369FAC;
 }
-
+#pragma fp_contract on
 void fn_800EE6BC(void) {
     extern u32 lbl_803678D0;
     extern void *lbl_803678D4[2];
