@@ -643,10 +643,16 @@ s32 fn_80163D14(void *arg0, void *arg1)
 }
 
 void fn_80163E50(void *arg0) {
-    *(s16 *)((char *)arg0 + 0x12) = 2;
-    *(s16 *)((char *)arg0 + 0x14) = 2;
-    *(s16 *)((char *)arg0 + 0x16) = 0x106;
-    *(s16 *)((char *)arg0 + 0x18) = 0x86;
+    s16 a;
+    s16 b;
+    s16 c;
+    a = 2;
+    b = 0x106;
+    *(s16 *)((char *)arg0 + 0x12) = a;
+    c = 0x86;
+    *(s16 *)((char *)arg0 + 0x14) = a;
+    *(s16 *)((char *)arg0 + 0x16) = b;
+    *(s16 *)((char *)arg0 + 0x18) = c;
 }
 
 #pragma cplusplus on
