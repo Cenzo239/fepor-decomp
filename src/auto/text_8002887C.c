@@ -1765,8 +1765,8 @@ extern "C" void fn_8002F728(void *);
 extern "C" void fn_8002B758(void *arg0) {
     extern u8 lbl_80284D10[];
     extern u8 lbl_80284E20[];
-    extern u8 lbl_802EF4E0[];
-    extern u8 lbl_802CA518[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
     struct Visitor {
         virtual void v0(s8, s8) = 0;
         virtual void visit(s8, s8) = 0;
@@ -1784,13 +1784,13 @@ extern "C" void fn_8002B758(void *arg0) {
     obj.vtbl = lbl_80284E20;
     obj.unit = arg0;
     obj.vtbl = lbl_80284D10;
-    fn_8002F728(lbl_802EF4E0);
-    fn_800227F8(lbl_802CA518, M2C_FIELD(M2C_FIELD(obj.unit, void **, 0x194), s32 *, 0x18C));
+    fn_8002F728(gTargetList);
+    fn_800227F8(gBattleMap, M2C_FIELD(M2C_FIELD(obj.unit, void **, 0x194), s32 *, 0x18C));
     y = M2C_FIELD(obj.unit, s8 *, 0x19F);
     x = M2C_FIELD(obj.unit, s8 *, 0x19E);
     iy = y;
     ix = x;
-    flags = (u16 *)(lbl_802CA518 + 0x408E) + (x + (y << 6));
+    flags = (u16 *)(gBattleMap + 0x408E) + (x + (y << 6));
     if (*flags & 8) {
         ((Visitor *)&obj)->visit(x, iy - 1);
     }
