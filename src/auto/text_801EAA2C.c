@@ -3585,7 +3585,7 @@ void fn_801EFDC8(void *arg0) {
         flag0 = 1;
         file = Xml_ParseFile(file, &path, &spF8);
     }
-    if (flag0 != 0) {
+    if (flag0) {
         String_Destroy(&spF8, -1);
     }
 
