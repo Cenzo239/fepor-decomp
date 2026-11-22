@@ -1826,7 +1826,7 @@ s32 fn_80134E40(void) {
     return 4;
 }
 
-#pragma scheduling on
+#pragma use_lmw_stmw on
 void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_8029180C[];
@@ -5523,24 +5523,29 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
         virtual void v9()=0; virtual void v10()=0; virtual s32 width()=0;
         s16 height() { return *(s16 *)((u8 *)this+0x5A); }
     };
-    s16 temp_r28;
-    s16 temp_r31;
-    s32 var_r27;
-    s32 temp_r26;
+    s16 h;
+    s16 y;
+    s32 flag;
+    s32 name;
+    s32 meas;
 
-    var_r27 = arg5 != 0;
+    flag = arg5 != 0;
     if ((u32) ((M2C_FIELD(arg4, s32 *, 0x1A0) & 0x010000DC) + 0xFF000000) == 0xDCU) {
-        var_r27 = 0;
+        flag = 0;
     }
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 0x13));
     Prim2D_PrepareTex();
-    temp_r26 = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
-    Text_Draw(arg1, (s16) (arg2 + (s16) ((s32) (((Panel *)arg0)->height() - Text_MeasureHeight(-1, lbl_8036A674)) >> 1)), var_r27, lbl_802768A0 + 0x39, temp_r26);
+    name = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
+    h = ((Panel *)arg0)->height();
+    meas = Text_MeasureHeight(-1, lbl_8036A674);
+    y = (s16)arg2;
+    Text_Draw(arg1, (s16)(y + (s16)((h - meas) >> 1)), flag, lbl_802768A0 + 0x39, name);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);
     Prim2D_PrepareTex();
-    fn_80152010((s16) (arg1 - 6), (s16) (arg2 + (((Panel *)arg0)->height() >> 1)), (s16) ((((Panel *)arg0)->width() - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
+    h = ((Panel *)arg0)->height();
+    fn_80152010((s16)(arg1 - 6), (s16)(y + (h >> 1)), (s16)((((Panel *)arg0)->width() - (M2C_FIELD(arg0, s16 *, 0x62) * 2)) + 6), 0xFF, 0x10);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
