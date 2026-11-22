@@ -2071,9 +2071,7 @@ void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5,
     *(f32 *)((u8 *)lbl_803672A8 + 0x14) = arg7;
 
     scale = arg4;
-    scale = scale * arg7 / arg6;
-
-    if (scale < arg5) {
+    if (arg4 * arg7 / arg6 < arg5) {
         scale = arg5;
     }
     if (scale > lbl_80368F30) {
