@@ -1675,14 +1675,14 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     extern s32 gCmScriptStatus;
     void fn_8000D3EC(void *, void *);
     s32 index;
-    s16 next;
+    s32 nextRaw;
     u8 *entry;
 
     index = lbl_8036719E;
-    next = index + 1;
+    nextRaw = index + 1;
     entry = lbl_803671A0 + (index << 4);
-    lbl_8036719E = next;
-    if (next > lbl_8036719C) {
+    lbl_8036719E = nextRaw;
+    if ((s16)nextRaw > lbl_8036719C) {
         gCmScriptStatus = 9;
         return 0;
     }
@@ -2533,11 +2533,11 @@ void main(void) {
     extern f32 lbl_80368C70;
     extern f32 lbl_80368C74;
 
-    typedef struct { u32 pad; } Thread;
+    typedef struct { u8 bytes[0x1000]; } Page;
     u8 *base;
     s32 sp8;
     s32 tmp;
-    u32 stack;
+    Page *stack;
 
     base = lbl_802AEE40;
     lbl_803671B4 = fn_80209FD4();
@@ -2546,8 +2546,8 @@ void main(void) {
     Game_InitVideo();
     DEMOSetStats(5);
     fn_801FBC48();
-    stack = (u32)base + 0x1698;
-    fn_8020A558(base + 0x1380, fn_80014790, 0, (void *)(stack + 0x1000), 0x1000, 0x10, 1);
+    stack = (Page *)(base + 0x1698);
+    fn_8020A558(base + 0x1380, fn_80014790, 0, (void *)(stack + 1), 0x1000, 0x10, 1);
     fn_8020A9E0(base + 0x1380);
     fn_8000D5C8();
     fn_8005BCF0();
@@ -2576,9 +2576,9 @@ void main(void) {
     fn_8000A280();
     lbl_803671B8 = 0;
     fn_8014702C(0);
-    stack = (u32)base + 0x318;
-    fn_8020A558((Thread *)base, fn_80014EA8, 0, (void *)(stack + 0x1000), 0x1000, 0x10, 1);
-    fn_8020A9E0((Thread *)base);
+    stack = (Page *)(base + 0x318);
+    fn_8020A558(base, fn_80014EA8, 0, (void *)(stack + 1), 0x1000, 0x10, 1);
+    fn_8020A9E0(base);
     OS_YieldThread();
     fn_801ED52C(0);
     fn_80005C60();
@@ -2651,7 +2651,6 @@ void main(void) {
         Game_PollSoftReset();
     }
 }
-#pragma global_optimizer reset
 u8 fn_80014E70(void) {
     extern u8 lbl_803671B8;
     return lbl_803671B8;
@@ -3478,11 +3477,11 @@ void fn_80015FA4(void) {
     u8 sp10[8];
     u8 sp8[8];
     u8 *units;
-    s32 i;
     u8 *faction;
 
     if (fn_80055D94(0x200) == 0U) {
         if (gGameFlags & 2) {
+            s32 i;
             Allegiance_FillMask(3, sp10);
             units = gUnits;
             i = 1;
@@ -3501,6 +3500,7 @@ void fn_80015FA4(void) {
                 i += 1;
             } while (i <= 0x9F);
         } else {
+            s32 i;
             Allegiance_FillMask(3, sp8);
             i = 1;
             do {
@@ -3698,32 +3698,33 @@ void fn_80016498(void)
 #pragma use_lmw_stmw on
 void fn_80016538(void)
 {
-    extern u8 lbl_802CA264[];
+    #pragma global_optimizer off
+    extern u8 gUnitLists[];
     extern char lbl_802680A8[];
 
     extern s32 fn_80015680(void *);
-    extern void fn_800056CC(const char *, ...);
-    extern s32 fn_800A8A88(void *);
+    extern s32 DebugPrint(const char *, ...);
+    extern s32 Msg_ResolveName(void *);
 
-    u8 *node;
-    s32 index;
-    u8 *slot;
-    u8 byte2;
-    u8 byte0;
-    u8 byte1;
     s32 field;
+    u8 byte1;
+    u8 byte0;
+    u8 byte2;
+    u8 *slot;
+    s32 index;
+    u8 *node;
     char *strings;
     s32 value;
     s32 result;
     void *ptr;
 
-    slot = lbl_802CA264;
+    slot = gUnitLists;
     index = 0;
     strings = lbl_802680A8;
 
     do {
         value = fn_80015680(slot);
-        fn_800056CC(strings + 0x23, index, value);
+        DebugPrint(strings + 0x23, index, value);
 
         node = *(u8 **)slot;
         while (node != 0) {
@@ -3733,8 +3734,8 @@ void fn_80016538(void)
                 byte1 = *(u8 *)(node + 0x19F);
                 byte0 = *(u8 *)(node + 0x19E);
                 byte2 = *(u8 *)(node + 0x198);
-                result = fn_800A8A88(ptr);
-                fn_800056CC(
+                result = Msg_ResolveName(ptr);
+                DebugPrint(
                     strings + 0x3B,
                     byte2,
                     (s8)byte0,
@@ -3743,7 +3744,7 @@ void fn_80016538(void)
                     result
                 );
             } else {
-                fn_800056CC(
+                DebugPrint(
                     lbl_802680A8 + 0x59,
                     *(u8 *)(node + 0x198),
                     (s8)*(u8 *)(node + 0x19E),
@@ -3757,6 +3758,7 @@ void fn_80016538(void)
         index += 1;
         slot += 0xC;
     } while (index < 8);
+    #pragma global_optimizer reset
 }
 #pragma use_lmw_stmw reset
 void fn_80016628(s32 arg0) {
@@ -3949,16 +3951,12 @@ void Unit_WriteAll(s32 arg0) {
     void Unit_Write(void *, s32);
     u8 *unit;
     s32 i;
-    s32 a;
 
-    a = arg0;
-    unit = gUnits;
-    i = 0;
-    do {
-        Unit_Write(unit, a);
+    unit = (u8 *)gUnits;
+    for (i = 0; i < 0x9F; i++) {
+        Unit_Write(unit, arg0);
         unit += 0x280;
-        i += 1;
-    } while (i < 0x9F);
+    }
 }
 #pragma global_optimizer reset
 s32 fn_80016A9C(s32 arg0) {
@@ -4116,7 +4114,7 @@ void Unit_ResetAll(void) {
     M2C_UNK Unit_Clear(M2C_UNK *, s32);
     extern u8 gUnits[];
     extern u8 gUnitLists[];
-    register u8 *unit;
+    u8 *unit;
     u8 *list;
     s32 i;
     fn_8001594C(gUnitLists, 0);
@@ -4129,7 +4127,7 @@ void Unit_ResetAll(void) {
     fn_8001594C(gUnitLists + 0x48, 6);
     fn_8001594C(gUnitLists + 0x54, 7);
     i = 0;
-    unit = &gUnits[i];
+    unit = gUnits;
     do {
         Unit_Clear((M2C_UNK *)unit, i + 1);
         fn_80015718((M2C_UNK *)list, (M2C_UNK *)unit);
