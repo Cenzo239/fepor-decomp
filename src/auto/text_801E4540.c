@@ -167,41 +167,41 @@ void fn_801E4900(s16 *arg0, void *arg1) {
     struct { s16 a; s16 b; } sp10;
     struct { s16 a; s16 b; } spC;
     struct { s16 a; s16 b; } sp8;
+    register s8 row;
     s16 y;
     s16 x;
-    s8 row;
 
     if (lbl_803682F8 == 0) {
-        sp10.a = 0x100;
-        sp10.b = 0x1B;
+        sp10.a = (u32)0x100;
         spC.a = 0x16A;
         spC.b = 0x1B;
-        sp8.a = 0x1D4;
+        sp10.b = 0x1B;
         sp8.b = 0x1B;
         ((s32 *)lbl_80332260)[0] = *(s32 *)&sp10;
+        sp8.a = 0x1D4;
         ((s32 *)lbl_80332260)[1] = *(s32 *)&spC;
         ((s32 *)lbl_80332260)[2] = *(s32 *)&sp8;
         lbl_803682F8 = 1;
     }
     switch (*(s8 *)((u8 *)arg1 + 0x31)) {
     case 0: {
-        s32 temp = fn_801E4A60(arg1, (s8)*(u8 *)((u8 *)arg1 + 0x32));
-        row = (s8)((s8)temp - (*(s16 *)((u8 *)arg1 + 0x38) / 32));
-        {
-            s16 half = (s16)((0x20 - Text_MeasureHeight(-1, (s8)temp, gTabMenuOne)) >> 1);
-            y = (s16)((s16)(half + 0x62) + (row << 5));
-        }
+        unsigned temp = fn_801E4A60(arg1, (s8)*(u8 *)((u8 *)arg1 + 0x32));
+        s16 half;
+        register row = (s8)((s8)temp - (*(s16 *)((u8 *)arg1 + 0x38) / 32));
+        half = (s16)((0x20 - Text_MeasureHeight(-1, (s8)temp, gTabMenuOne)) >> 1);
+        half = (s16)(half + 0x62);
         x = 0x28;
+        y = (s16)(half + (row << 5));
         break;
     }
     case 1: {
-        s32 div = *(s16 *)((u8 *)arg1 + 0x38) / 32;
+        unsigned div = *(s16 *)((u8 *)arg1 + 0x38) / 32;
+        register s16 half;
         row = (s8)((s8)*(u8 *)((u8 *)arg1 + 0x33) - div);
-        {
-            s16 half = (s16)((0x20 - Text_MeasureHeight(-1, div, gTabMenuOne)) >> 1);
-            y = (s16)((s16)(half + 0x62) + (row << 5));
-        }
+        half = (s16)((0x20 - Text_MeasureHeight(-1, div, gTabMenuOne)) >> 1);
+        half = (s16)(half + 0x62);
         x = 0xA0;
+        y = (s16)(half + (row << 5));
         break;
     }
     }
@@ -210,115 +210,134 @@ void fn_801E4900(s16 *arg0, void *arg1) {
 }
 
 s8 fn_801E4A60(void *arg0, u8 arg1) {
-    void *temp_r3;
-    void *temp_r6;
-    s8 var_r5;
-    u8 temp_r0;
-    u8 var_r4;
-    u8 var_r4_2;
-    u8 var_r4_3;
-    void *temp_r6_2;
-    void *temp_r6_3;
-    void *temp_r6_4;
-    void *sp54;
-    void *sp48;
-    void *sp3C;
-    void *sp50;
-    void *sp44;
-    void *sp38;
-    void *sp58;
-    void *sp4C;
-    void *sp40;
-    void *sp60;
-    void *sp2C;
-    void *sp28;
-    void *sp24;
-    void *sp20;
-    void *sp30;
-    void *sp34;
-    u8 sp1C;
-    u8 sp18;
-    u8 sp14;
-    u8 sp10;
-    u8 spC;
-    u8 sp8;
+    typedef struct Frame {
+        u8 sp8;
+        u8 pad9[3];
+        u8 spC;
+        u8 padD[3];
+        u8 sp10;
+        u8 pad11[3];
+        u8 sp14;
+        u8 pad15[3];
+        u8 sp18;
+        u8 pad19[3];
+        u8 sp1C;
+        u8 pad1D[3];
+        void *sp20;
+        void *sp24;
+        void *sp28;
+        void *sp2C;
+        void *sp30;
+        void *sp34;
+        void *sp38;
+        void *sp3C;
+        void *sp40;
+        void *sp44;
+        void *sp48;
+        void *sp4C;
+        void *sp50;
+        void *sp54;
+        void *sp58;
+        void *sp5C;
+        void *sp60;
+        void *sp64;
+    } Frame;
+    Frame fr;
+    Frame *p;
+    void *list;
+    void *first;
+    void *data;
+    s8 key;
+    s8 count;
+    u8 match;
+    s8 mode;
 
-    temp_r0 = *(u8 *)((char *)arg0 + 0x30);
-    temp_r3 = (char *)arg0 + 0x54;
-    temp_r6 = *(void **)((char *)temp_r3 + 0x4);
-    
-    switch ((s8) temp_r0) {
+    p = &fr;
+    mode = *(s8 *)((char *)arg0 + 0x30);
+    list = (char *)arg0 + 0x54;
+    first = *(void **)((char *)list + 4);
+
+    p->sp24 = list;
+    p->sp2C = first;
+    p->sp28 = first;
+    p->sp60 = first;
+    p->sp20 = list;
+    p->sp5C = list;
+    p->sp64 = p->sp60;
+
+    switch (mode) {
     case 0:
-        sp18 = arg1;
-        sp1C = arg1;
-        sp50 = temp_r3;
-        sp54 = temp_r6;
-        while (sp54 != temp_r3) {
-            temp_r6_2 = *(void **)((char *)sp54 + 0x8);
-            var_r4 = 0;
-            if (((s8) *(u8 *)((char *)temp_r6_2 + 0x0) >= 0) && ((s8) arg1 == (s8) *(u8 *)((char *)temp_r6_2 + 0x2))) {
-                var_r4 = 1;
-            }
-            if (var_r4 == 0) {
-                sp54 = *(void **)((char *)sp54 + 0x4);
-                continue;
-            }
-            break;
+        p->sp18 = arg1;
+        p->sp1C = arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp50 = list;
+        p->sp54 = first;
+        goto cond0;
+    incr0:
+        p->sp54 = *(void **)((char *)p->sp54 + 4);
+    cond0:
+        if (p->sp54 == list) break;
+        data = *(void **)((char *)p->sp54 + 8);
+        match = 0;
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 2)) match = 1;
         }
-        sp58 = sp54;
-        sp30 = sp54;
+        if (!match) goto incr0;
+        p->sp58 = p->sp54;
+        p->sp64 = p->sp54;
         break;
     case 1:
-        sp10 = arg1;
-        sp14 = arg1;
-        sp44 = temp_r3;
-        sp48 = temp_r6;
-        while (sp48 != temp_r3) {
-            temp_r6_3 = *(void **)((char *)sp48 + 0x8);
-            var_r4_2 = 0;
-            if (((s8) *(u8 *)((char *)temp_r6_3 + 0x0) >= 0) && ((s8) arg1 == (s8) *(u8 *)((char *)temp_r6_3 + 0x1))) {
-                var_r4_2 = 1;
-            }
-            if (var_r4_2 == 0) {
-                sp48 = *(void **)((char *)sp48 + 0x4);
-                continue;
-            }
-            break;
+        p->sp10 = arg1;
+        p->sp14 = arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp44 = list;
+        p->sp48 = first;
+        goto cond1;
+    incr1:
+        p->sp48 = *(void **)((char *)p->sp48 + 4);
+    cond1:
+        if (p->sp48 == list) break;
+        data = *(void **)((char *)p->sp48 + 8);
+        match = 0;
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 1)) match = 1;
         }
-        sp4C = sp48;
-        sp30 = sp48;
+        if (!match) goto incr1;
+        p->sp4C = p->sp48;
+        p->sp64 = p->sp48;
         break;
     case 2:
-        sp8 = arg1;
-        spC = arg1;
-        sp38 = temp_r3;
-        sp3C = temp_r6;
-        while (sp3C != temp_r3) {
-            temp_r6_4 = *(void **)((char *)sp3C + 0x8);
-            var_r4_3 = 0;
-            if (((s8) *(u8 *)((char *)temp_r6_4 + 0x0) >= 0) && ((s8) arg1 == (s8) *(u8 *)((char *)temp_r6_4 + 0x4))) {
-                var_r4_3 = 1;
-            }
-            if (var_r4_3 == 0) {
-                sp3C = *(void **)((char *)sp3C + 0x4);
-                continue;
-            }
-            break;
+        p->sp8 = arg1;
+        p->spC = arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp38 = list;
+        p->sp3C = first;
+        goto cond2;
+    incr2:
+        p->sp3C = *(void **)((char *)p->sp3C + 4);
+    cond2:
+        if (p->sp3C == list) break;
+        data = *(void **)((char *)p->sp3C + 8);
+        match = 0;
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 4)) match = 1;
         }
-        sp40 = sp3C;
-        sp30 = sp3C;
+        if (!match) goto incr2;
+        p->sp40 = p->sp3C;
+        p->sp64 = p->sp3C;
         break;
     default:
-        return 0;
+        break;
     }
-    
-    var_r5 = 0;
-    sp34 = sp60;
-    while (sp34 != sp30) {
-        var_r5 += 1;
-        sp34 = *(void **)((char *)sp34 + 0x4);
+
+    count = 0;
+    p->sp30 = p->sp60;
+    p->sp34 = p->sp64;
+    while (p->sp30 != p->sp64) {
+        count++;
+        p->sp30 = *(void **)((char *)p->sp30 + 4);
     }
-    return var_r5;
+    return count;
 }
 
 #pragma global_optimizer off
@@ -423,21 +442,20 @@ void fn_801E4E8C(void *arg0) {
     void List_Insert(void *, void *, void *, void *);
     void fn_80057898(void *, s32);
     extern u8 lbl_80332020[];
-    struct { void *node; } iter, copy;
-    void *data, *pos, *result;
-    struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
+    struct { void *node; } iter, data, copy, pos, result;
+    struct { u8 value; } initB, initA, keyCopy, key, bCopy, b, aCopy, a;
     u8 *entry;
     void *end;
-    s32 index;
+    u32 index;
     void *node;
     u8 found;
     bCopy = initB; b = bCopy;
     fn_801EA430((u8*)arg0+0x50, &b);
     aCopy = initA; a = aCopy;
     fn_801EA018((u8*)arg0+0x50, &a);
+    entry = lbl_80332020;
     end = (u8*)arg0+0x54; index = 0;
     iter.node = *(void **)((u8*)arg0+0x58);
-    entry = lbl_80332020;
     for (;;) {
         keyCopy.value = index + 1; key = keyCopy;
         node = iter.node;
@@ -452,7 +470,7 @@ void fn_801E4E8C(void *arg0) {
         }
         copy.node = node; iter = copy;
         if (node == end) break;
-        data = entry; entry[1] = index; pos = node;
+        data.node = entry; entry[1] = index; pos.node = node;
         List_Insert(&result, (u8*)arg0+0x50, &pos, &data);
         entry += 0x18; index++;
     }
@@ -468,9 +486,8 @@ void fn_801E4FB8(void *arg0) {
     void List_Insert(void *, void *, void *, void *);
     void fn_80057898(void *, s32);
     extern u8 lbl_80332020[];
-    struct { void *node; } iter, copy;
-    void *data, *pos, *result;
-    struct { u8 value; } keyCopy, key, initA, initB, aCopy, a, bCopy, b;
+    struct { u8 value; } initB, initA, keyCopy, key, bCopy, b, aCopy, a;
+    void *sp[5];
     u8 *entry;
     void *end;
     s32 index;
@@ -485,12 +502,12 @@ void fn_801E4FB8(void *arg0) {
     fn_801EA248((u8 *)arg0 + 0x50, &a);
     end = (u8 *)arg0 + 0x54;
     index = 0;
-    iter.node = *(void **)((u8 *)arg0 + 0x58);
+    sp[4] = *(void **)((u8 *)arg0 + 0x58);
     entry = lbl_80332020;
     for (;;) {
         keyCopy.value = index + 1;
         key = keyCopy;
-        node = iter.node;
+        node = sp[4];
         goto search;
     next:
         node = *(void **)((u8 *)node + 4);
@@ -505,15 +522,15 @@ void fn_801E4FB8(void *arg0) {
                 goto next;
             }
         }
-        copy.node = node;
-        iter = copy;
+        sp[2] = node;
+        sp[4] = node;
         if (node == end) {
             break;
         }
-        data = entry;
+        sp[3] = entry;
         entry[2] = index;
-        pos = node;
-        List_Insert(&result, (u8 *)arg0 + 0x50, &pos, &data);
+        sp[1] = node;
+        List_Insert(&sp[0], (u8 *)arg0 + 0x50, &sp[1], &sp[3]);
         entry += 0x18;
         index++;
     }
@@ -2938,7 +2955,7 @@ void TabMenu_Init(void *menu) {
     *(void **)((u8 *)menu + 0x44) = Hash_Lookup(gTabMenuStrings + 0x201);
     *(void **)((u8 *)menu + 0x48) = Hash_Lookup(gTabMenuStrings + 0x20D);
     *(void **)((u8 *)menu + 0x4C) = Hash_Lookup(gTabMenuStrings + 0x21A);
-    table = Hash_Lookup(gTabMenuStrings + 0x226);
+    table = (u32 *)Hash_Lookup(gTabMenuStrings + 0x226);
     count = table[0];
     entry = table + 1;
     listHead = (u8 *)menu + 0x54;
@@ -3115,30 +3132,30 @@ void fn_801E9E30(s32 *arg0, u8 *arg1) {
     void fn_801EA7BC(s32 *, s32 *, u8 *);
     struct {s32 count; void *prev,*next;} list;
     struct Key { u8 value; } sp10,spC,sp8;
-    void *temp_r3;
+    u32 var_r0;
     void *var_r29;
-    void *var_r7;
-    void *temp_r6;
-    void *temp_r8;
-    void *temp_r9;
-    void *temp_r5;
-    void *node8;
-    void *tmp;
-    s32 temp_r0;
-    u32 half;
-    u32 var_r3;
     u32 n;
-    u8 var_r0;
+    u32 temp_r6;
+    u32 temp_r8;
+    u32 temp_r9;
+    u32 temp_r5;
+    u32 node8;
+    void *tmp;
+    void *var_r7;
+    s32 temp_r0;
+    u32 var_r3;
+    u32 half;
+    void *temp_r3;
 
     temp_r0 = arg0[0];
     switch (temp_r0) {
 case 0: case 1: break;
 case 2: {
-        temp_r6 = (void *)arg0[2];
-        temp_r8 = *(void **)((u8 *)temp_r6 + 4);
-        temp_r5 = *(void **)((u8 *)temp_r6 + 8);
-        node8 = *(void **)((u8 *)temp_r8 + 8);
-        if ((s8)*(u8 *)((u8 *)node8 + 3) < (s8)*(u8 *)((u8 *)temp_r5 + 3)) {
+        temp_r6 = (u32)arg0[2];
+        temp_r8 = *(u32 *)(temp_r6 + 4);
+        temp_r5 = *(u32 *)(temp_r6 + 8);
+        node8 = *(u32 *)(temp_r8 + 8);
+        if ((s8)*(u8 *)(node8 + 3) < (s8)*(u8 *)(temp_r5 + 3)) {
             tmp = *(void **)temp_r6;
             *(void **)temp_r6 = *(void **)((u8 *)temp_r6 + 4);
             *(void **)((u8 *)temp_r6 + 4) = tmp;
@@ -3157,17 +3174,17 @@ default: {
         list.count = 0;
         list.next = &list.prev;
         list.prev = &list.prev;
-        temp_r9 = (void *)arg0[1];
+        temp_r9 = (u32)arg0[1];
         tmp = *(void **)var_r7;
-        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)temp_r9 + 4);
+        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)(void *)temp_r9 + 4);
         tmp = *(void **)var_r7;
-        **(void ***)((u8 *)temp_r9 + 4) = tmp;
+        **(void ***)((u8 *)(void *)temp_r9 + 4) = tmp;
         *(void **)((u8 *)list.prev + 4) = var_r7;
         *(void **)var_r7 = list.prev;
-        list.prev = temp_r9;
-        *(void **)((u8 *)temp_r9 + 4) = &list.prev;
-        list.count = arg0[0] - (s32)half;
-        arg0[0] = (s32)half;
+        list.prev = (void *)temp_r9;
+        *(void **)((u8 *)(void *)temp_r9 + 4) = &list.prev;
+        list.count = arg0[0] - half;
+        arg0[0] = half;
         sp10.value = *arg1;
         fn_801E9E30(arg0, &sp10.value);
         spC.value = *arg1;
@@ -3178,7 +3195,6 @@ default: {
         if (var_r29 != &list.prev) {
             tmp = *(void **)var_r29;
             *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
-            tmp = *(void **)var_r29;
             **(void ***)((u8 *)list.prev + 4) = tmp;
             while (var_r29 != &list.prev) {
                 temp_r3 = var_r29;
@@ -3302,47 +3318,51 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
 
 #pragma optimization_level 3
 void fn_801EA248(s32 *arg0, u8 *arg1) {
-    typedef struct Node { void *unk0; void *unk4; u8 *unk8; } Node;
     void Heap_Free(void *);
     void fn_801EA514(s32 *, s32 *, u8 *);
-    struct { s32 count; void *prev; void *next; } list;
-    struct Key { u8 value; } sp10, spC, sp8;
-    Node *temp_r5;
-    Node *temp_r6;
-    Node *var_r7;
+    struct {s32 count; void *prev,*next;} list;
+    struct Key { u8 value; } sp10,spC,sp8;
     void *temp_r3;
     void *var_r29;
-    void *temp_r9;
+    void *node8;
+    unsigned n;
+    void *temp_r8;
     void *tmp;
+    void *temp_r5;
+    void *temp_r9;
+    void *var_r7;
     s32 temp_r0;
+    void *temp_r6;
     u32 half;
-    u32 n;
 
     temp_r0 = arg0[0];
     switch (temp_r0) {
     case 0:
     case 1:
         break;
-    case 2:
-        temp_r5 = (Node *)arg0[2];
-        temp_r6 = (Node *)temp_r5->unk4;
-        if ((s8)temp_r6->unk8[0] < (s8)temp_r5->unk8[0]) {
-            tmp = temp_r5->unk0;
-            temp_r5->unk0 = temp_r5->unk4;
-            temp_r5->unk4 = tmp;
-            tmp = temp_r6->unk0;
-            temp_r6->unk0 = temp_r6->unk4;
-            temp_r6->unk4 = tmp;
+    case 2: {
+        temp_r6 = (void *)arg0[2];
+        temp_r8 = *(void **)((u8 *)temp_r6 + 4);
+        temp_r5 = *(void **)((u8 *)temp_r6 + 8);
+        node8 = *(void **)((u8 *)temp_r8 + 8);
+        if ((s8)*(u8 *)node8 < (s8)*(u8 *)temp_r5) {
+            tmp = *(void **)temp_r6;
+            *(void **)temp_r6 = *(void **)((u8 *)temp_r6 + 4);
+            *(void **)((u8 *)temp_r6 + 4) = tmp;
+            tmp = *(void **)temp_r8;
+            *(void **)temp_r8 = *(void **)((u8 *)temp_r8 + 4);
+            *(void **)((u8 *)temp_r8 + 4) = tmp;
             tmp = (void *)arg0[1];
             arg0[1] = arg0[2];
             arg0[2] = (s32)tmp;
         }
         break;
-    default:
+    }
+    default: {
         half = (u32)temp_r0 >> 1;
-        var_r7 = (Node *)arg0[2];
+        var_r7 = (void *)arg0[2];
         for (n = half; n != 0; --n) {
-            var_r7 = (Node *)var_r7->unk4;
+            var_r7 = *(void **)((u8 *)var_r7 + 4);
         }
         list.count = 0;
         list.next = &list.prev;
@@ -3356,7 +3376,7 @@ void fn_801EA248(s32 *arg0, u8 *arg1) {
         *(void **)var_r7 = list.prev;
         list.prev = temp_r9;
         *(void **)((u8 *)temp_r9 + 4) = &list.prev;
-        list.count = arg0[0] - (s32)half;
+        list.count = arg0[0] - half;
         arg0[0] = (s32)half;
         sp10.value = *arg1;
         fn_801EA248(arg0, &sp10.value);
@@ -3367,17 +3387,17 @@ void fn_801EA248(s32 *arg0, u8 *arg1) {
         var_r29 = list.next;
         if (var_r29 != &list.prev) {
             tmp = *(void **)var_r29;
-            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
             tmp = *(void **)var_r29;
+            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
             **(void ***)((u8 *)list.prev + 4) = tmp;
             while (var_r29 != &list.prev) {
                 temp_r3 = var_r29;
                 var_r29 = *(void **)((u8 *)var_r29 + 4);
                 Heap_Free(temp_r3);
-                list.count -= 1;
+                list.count--;
             }
         }
-        break;
+    }
     }
 }
 #pragma optimization_level reset
