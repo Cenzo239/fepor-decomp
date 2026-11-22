@@ -1302,8 +1302,8 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(flags & 8) && !(flags & 0x10)) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = GActor_Create();
+                *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
