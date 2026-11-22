@@ -3576,8 +3576,7 @@ void fn_801EFDC8(void *arg0) {
     self = arg0;
     fn_800D58C0();
     String_Init(&path, gGActorPathExt + 0x22E, &sp2C);
-    strBase = gGActorPathExt;
-    fn_800C992C(&path, strBase + 0x234, strlen(strBase + 0x234));
+    fn_800C992C(&path, gGActorPathExt + 0x234, strlen(gGActorPathExt + 0x234));
     flag0 = 0;
     file = Heap_Alloc(0x60);
     if (file) {
