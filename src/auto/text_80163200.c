@@ -14998,7 +14998,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
 s32 Status_SumBonus(void *);
 #pragma cplusplus on
-extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s32, s32, s32, s32, s32, f32);
+extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s16, s16, s32, s32, s32, f32);
 extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
