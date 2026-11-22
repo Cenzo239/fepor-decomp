@@ -1526,8 +1526,7 @@ void fn_801070FC(void *name) {
     u32 cursor;
     u32 header;
     u32 data;
-    u8 count;
-    u8 id;
+    u8 new_var3[2];
     s32 i;
     for(i=0;i<8;i++) {
         *(u32 *)(parsed+0x10+i*4)=0;
@@ -1537,17 +1536,17 @@ void fn_801070FC(void *name) {
     header = Hash_Lookup(name);
     if (!header) data = 0;
     else {
-        count = Bin_ReadU8(&header);
+        new_var3[0] = Bin_ReadU8(&header);
         switch (Bin_ReadU8(&header)) {
-        case 2: id = 0; break;
+        case 2: new_var3[1] = 0; break;
         case 3:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
             Bin_ReadU32(&header);
             break;
         case 4:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
             break;
         }
         header = (header + 3) & ~3;
@@ -1555,10 +1554,10 @@ void fn_801070FC(void *name) {
     }
     cursor = data;
     if (data) {
-        for (i=0;i<count;i++) {
+        for (i=0;i<new_var3[0];i++) {
             u8 *entry = (u8 *)cursor;
             void *unit;
-            Dispos_ParseEntry(&cursor,(u32 *)parsed,id);
+            Dispos_ParseEntry(&cursor,(u32 *)parsed,new_var3[1]);
             if (entry[0x3c]) unit = (u8 *)gUnits+(entry[0x3c]-1)*0x280;
             else unit = 0;
             if (unit) fn_8004EB14(unit,0);
@@ -3206,12 +3205,11 @@ u8 fn_80109B48(void *arg0) {
 
 void fn_80109B54(void *arg0, f32 farg0) {
     extern f32 lbl_8036A140;
+    f32 c = lbl_8036A140;
     void *p;
-    f32 c;
 
     p = *(void **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)p + 8) = farg0;
-    c = lbl_8036A140;
     p = *(void **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)arg0 + 0x34) = (f32)*(u8 *)((u8 *)p + 4);
     p = *(void **)((u8 *)arg0 + 0x30);
@@ -6521,27 +6519,29 @@ extern u32 lbl_8028F5F8[48];
 extern u8 gAiState[];
 u8 best;
 s32 i;
-void **slot;
 u8 *item;
+void **slot;
 u32 *entry;
-if((((u8*)arg0)[0x1A5]>>4&7)==0) {
+void *unit;
+s32 mode;
+unit=arg0;
+mode=arg1;
+if((((u8*)unit)[0x1A5]>>4&7)==0) {
 best=0;
 for(i=0;i<4;i++) {
-slot=Unit_GetHeldItemSlot(arg0,i);
+slot=Unit_GetHeldItemSlot(unit,i);
 item=*slot;
 if(item==NULL) break;
 if((u8)(item ? item[0x14]:0xC)==0x81) continue;
 if((u8)(item ? item[0x16]:0)<best) continue;
-if(fn_8009326C(arg0,item)) {
+if(fn_8009326C(unit,item)) {
 for(entry=lbl_8028F5F8;entry[1]!=0;entry+=3) {
-if(item==(u8*)entry[1]) {
-if(entry[2]!=0) { goto found; }
-}
+if(item==(u8*)entry[1] && entry[2]!=0) goto found;
 }
 }
 entry=NULL;
 found:
-if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(arg0,i,arg1)) {
+if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(unit,i,mode)) {
 item=*slot;
 best=item ? item[0x16]:0;
 }
@@ -6870,11 +6870,43 @@ done:
 
 #pragma peephole off
 s32 fn_80110094(void) {
-extern u32 lbl_8032BD5C[32];
-u32 *p=lbl_8032BD5C;
-p[0]=0;
-p[31] = p[30] = p[29] = p[28] = p[27] = p[26] = p[25] = p[24] = p[23] = p[22] = p[21] = p[20] = p[19] = p[18] = p[17] = p[16] = p[15] = p[14] = p[13] = p[12] = p[11] = p[10] = p[9] = p[8] = p[7] = p[6] = p[5] = p[4] = p[3] = p[2] = p[1] = 0;
-return 1;
+    extern u32 lbl_8032BD5C[32];
+    s32 ret;
+
+    *lbl_8032BD5C = 0;
+    ret = 1;
+    lbl_8032BD5C[1] = 0;
+    lbl_8032BD5C[2] = 0;
+    lbl_8032BD5C[3] = 0;
+    lbl_8032BD5C[4] = 0;
+    lbl_8032BD5C[5] = 0;
+    lbl_8032BD5C[6] = 0;
+    lbl_8032BD5C[7] = 0;
+    lbl_8032BD5C[8] = 0;
+    lbl_8032BD5C[9] = 0;
+    lbl_8032BD5C[10] = 0;
+    lbl_8032BD5C[11] = 0;
+    lbl_8032BD5C[12] = 0;
+    lbl_8032BD5C[13] = 0;
+    lbl_8032BD5C[14] = 0;
+    lbl_8032BD5C[15] = 0;
+    lbl_8032BD5C[16] = 0;
+    lbl_8032BD5C[17] = 0;
+    lbl_8032BD5C[18] = 0;
+    lbl_8032BD5C[19] = 0;
+    lbl_8032BD5C[20] = 0;
+    lbl_8032BD5C[21] = 0;
+    lbl_8032BD5C[22] = 0;
+    lbl_8032BD5C[23] = 0;
+    lbl_8032BD5C[24] = 0;
+    lbl_8032BD5C[25] = 0;
+    lbl_8032BD5C[26] = 0;
+    lbl_8032BD5C[27] = 0;
+    lbl_8032BD5C[28] = 0;
+    lbl_8032BD5C[29] = 0;
+    lbl_8032BD5C[30] = 0;
+    lbl_8032BD5C[31] = 0;
+    return ret;
 }
 #pragma peephole reset
 #include "global.h"
@@ -6884,8 +6916,9 @@ extern u16 lbl_8028F3AC;
 extern u8 D_801A39D4;
 extern u8 D_8017C3CC;
 
-u8 fn_8010F670(void *arg0, s32 arg1) {
+#pragma optimization_level 3
 #pragma use_lmw_stmw on
+u8 fn_8010F670(void *arg0, s32 arg1) {
 void **Unit_GetHeldItemSlot(void *, s32);
 u8 fn_8009326C(void *, void *);
 extern u32 lbl_8028F5F8[48];
@@ -6907,20 +6940,16 @@ void **slot;
 u8 best;
 s32 i;
 u32 *entry;
-void *unit;
-s32 mode;
-unit=arg0;
-mode=arg1;
-if((((u8*)unit)[0x1A5]>>4&7)==0) {
+if((((u8*)arg0)[0x1A5]>>4&7)==0) {
 best=0;
 for(i=0;i<4;i++) {
-slot=Unit_GetHeldItemSlot(unit,i);
+slot=Unit_GetHeldItemSlot(arg0,i);
 item=(u8*)*slot;
 if(item==NULL) break;
 if((u8)(item ? item[0x14]:0xC)!=0x81) continue;
 if((u8)(item ? item[0x16]:0)<best) continue;
-entry=Handler::Find(unit,item);
-if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(unit,i,mode)) {
+entry=Handler::Find(arg0,item);
+if(entry!=NULL && ((u8 (*)(void*,s32,s32))entry[2])(arg0,i,arg1)) {
 item=(u8*)*slot;
 best=item ? item[0x16]:0;
 }
@@ -6929,8 +6958,7 @@ best=item ? item[0x16]:0;
 return gAiState[0x21C];
 #pragma cplusplus reset
 }
-
-#pragma use_lmw_stmw on
+#pragma optimization_level reset
 u8 Ai_TryHeldItemAction(void *arg0, s32 arg1) {
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009326C(void *, void *);
