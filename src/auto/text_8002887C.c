@@ -1045,34 +1045,40 @@ extern "C" void fn_8002A2BC(void *arg0) {
     }
 }
 
-void fn_8002A4F4(struct Unit* unit) {
-void fn_8001EDA0(void *);
+extern "C" void fn_8002A4F4(struct Unit* unit) {
+    void fn_8001EDA0(void *);
     void fn_8002F728(void *);
-#pragma cplusplus on
     extern u8 lbl_80284DB0[];
     extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern s32 gBattleMap[];
     struct Visitor { virtual void v0(s8,s8)=0; virtual void visit(s8,s8)=0; };
     struct { void *vtbl; u8 flag; } obj;
-    
+    s8 y;
+    s8 x;
+    s32 ys;
+    s32 xs;
+    s32 d;
+    void *pf;
     obj.vtbl=lbl_80284E20;
+    pf = &obj.flag;
     obj.vtbl=lbl_80284DB0;
     obj.flag=0;
     obj.flag=1;
-    fn_8001EDA0(&obj.flag);
+    fn_8001EDA0(pf);
     fn_8002F728(gTargetList);
     if(obj.flag&3) {
-        s8 y;
-        s8 x;
         y=*((s8*)unit+0x19f);
         x=*((s8*)unit+0x19e);
-        if(y-1>=0) ((Visitor*)&obj)->visit(x,y-1);
-        if(x+1<gBattleMap[0]) ((Visitor*)&obj)->visit(x+1,y);
-        if(y+1<gBattleMap[1]) ((Visitor*)&obj)->visit(x,y+1);
-        if(x-1>=0) ((Visitor*)&obj)->visit(x-1,y);
+        ys=y;
+        d=ys-1;
+        if(d>=0) ((Visitor*)&obj)->visit(x,d);
+        xs=x;
+        if(xs+1<gBattleMap[0]) ((Visitor*)&obj)->visit(xs+1,y);
+        if(ys+1<gBattleMap[1]) ((Visitor*)&obj)->visit(x,ys+1);
+        d=xs-1;
+        if(d>=0) ((Visitor*)&obj)->visit(d,y);
     }
-#pragma cplusplus reset
 }
 
 #pragma cplusplus on
