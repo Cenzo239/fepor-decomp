@@ -1457,9 +1457,11 @@ void OSLoadContext(void *arg0) {
     __rfi();
 }
 
+#pragma dont_inline on
 void *fn_80205B50(void) {
     return 0; /* OSGetStackPointer: asm (mr r3, r1) */
 }
+#pragma dont_inline reset
 
 #pragma dont_inline on
 #pragma peephole off
@@ -3046,6 +3048,7 @@ void __OSInitMemoryProtection(void) {
 extern u8 ResetFunctionInfo_8029CE28[];
 void OSRegisterResetFunction(void *);
 void DCInvalidateRange(void *, u32);
+void Config24MB(void);
 void Config48MB(void);
 u32 size;
 s32 level;
