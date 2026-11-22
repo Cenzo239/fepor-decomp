@@ -4928,6 +4928,10 @@ void fn_80031550(s32 arg0) {
 void fn_80031598(s32 arg0) {
     extern u8 gUiContext[];
     extern u8 lbl_80285088[];
+    s32 fn_8001DD04(s32);
+    void fn_8003CE88(s32, u8);
+    void Map_ShowMoveLimitView(void);
+    void Process_CreateChild(void *, s32);
 
     u8 val2 = (u8)fn_8001DD04(*(s32 *)gUiContext);
     fn_8003CE88(*(s32 *)(gUiContext + 4), val2);
