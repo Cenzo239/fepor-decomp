@@ -108,10 +108,6 @@ void Ui_DrawTerrainInfoDecor(s32 tex, s32 mode, f32 x, f32 y) {
     }
 }
 
-static inline u32 DebugHud_BusMsRate(u32 bus) {
-    return __mulhwu(0x431BDE83, bus) >> 15;
-}
-
 void fn_8009B738(s32 arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
