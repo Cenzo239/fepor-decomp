@@ -4165,8 +4165,8 @@ void fn_8018BA34(void *arg0) {
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD2C;
     extern f32 lbl_8036AD48;
-    register f32 thresh;
     register f32 scale;
+    register f32 thresh;
     register f32 a;
     register f32 b;
     s16 raw;
@@ -6580,7 +6580,7 @@ void fn_80190A1C(void *arg0) {
         virtual void v2() = 0;
     };
     s16 var_r4;
-    u16 temp;
+    register u32 temp;
 
     ((Obj *)arg0)->v2();
     fn_801583D0(0, 0, (s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)), (s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)), 0xFF, 0x10);
@@ -10214,21 +10214,21 @@ s32 fn_80196268(void *arg0) {
 }
 
 s32 fn_80196388(s32 arg0) {
-    void **UiCtx_GetItemSlot(void *);
+    void **fn_800285C0(void *);
     void fn_80037040(s32, u8, u8);
     void fn_80094A08(s32, s32);
-    void StatBonus_ShowHelp(s32, s32, u8 *);
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
+    extern u8 lbl_802EF4C8[];
+    void fn_8009127C(void *, s32, void *);
     s32 temp_r31;
+    extern u8 lbl_80330EAC[];
     void *temp_r30;
 
-    temp_r31 = *(s32 *)gUiContext;
-    temp_r30 = *UiCtx_GetItemSlot(gUiContext);
+    temp_r31 = *(s32 *)lbl_802EF4C8;
+    temp_r30 = *fn_800285C0(lbl_802EF4C8);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
-    fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
-    *(u32 *)((unsigned short)gBattle + 0xCAC) |= 0x2000;
-    StatBonus_ShowHelp((s32)temp_r30, arg0, gBattle);
+    fn_80094A08(temp_r31, *(s8 *)&lbl_802EF4C8[0xA]);
+    *(u32 *)((unsigned short)lbl_80330EAC + 0xCAC) |= 0x2000;
+    fn_8009127C(temp_r30, arg0, lbl_80330EAC);
     return 1;
 }
 
@@ -11462,38 +11462,36 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_801518B4(void *, void *);
     extern u8 gWeaponAttachStr[];
     struct Vec3 { s32 x, y, z; };
-    void *a0;
-    void *a1;
-    void *a2;
-    void *a3;
-    s8 flag;
-    void *obj;
+    struct Args { void *a0, *a1, *a2, *a3; };
     struct Vec3 sp24;
     struct Vec3 sp18;
     u8 spC[0xC];
     u8 sp8[4];
+    s8 flag;
+    struct Args args;
+    void *obj;
 
-    a0 = arg0;
-    a1 = arg1;
-    a2 = arg2;
-    a3 = arg3;
+    args.a0 = arg0;
+    args.a1 = arg1;
+    args.a2 = arg2;
+    args.a3 = arg3;
     flag = 0;
     obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
-        sp24 = *(struct Vec3 *)a2;
-        sp18 = *(struct Vec3 *)a1;
+        sp24 = *(struct Vec3 *)args.a2;
+        sp18 = *(struct Vec3 *)args.a1;
         String_Init(spC, (char *)(gWeaponAttachStr + 0x76), sp8);
         flag = 1;
-        obj = fn_80151D50(obj, *(void **)((u8 *)a0 + 0xAC), spC, (u8 *)a0 + 0x12C, &sp18, &sp24, 1);
+        obj = fn_80151D50(obj, *(void **)((u8 *)args.a0 + 0xAC), spC, (u8 *)args.a0 + 0x12C, &sp18, &sp24, 1);
     }
-    *(void **)((u8 *)a0 + 0x144) = obj;
+    *(void **)((u8 *)args.a0 + 0x144) = obj;
     if (flag) {
         String_Destroy(spC, -1);
     }
-    (*(void (***)(void *, void *))((u8 *)*(void **)((u8 *)a0 + 0xAC) + 0x10))[7](
-        *(void **)((u8 *)a0 + 0xAC),
-        *(void **)((u8 *)a0 + 0x144));
-    fn_801518B4(*(void **)((u8 *)a0 + 0x144), a3);
+    (*(void (***)(void *, void *))((u8 *)*(void **)((u8 *)args.a0 + 0xAC) + 0x10))[7](
+        *(void **)((u8 *)args.a0 + 0xAC),
+        *(void **)((u8 *)args.a0 + 0x144));
+    fn_801518B4(*(void **)((u8 *)args.a0 + 0x144), args.a3);
 }
 
 #pragma global_optimizer off
@@ -16154,9 +16152,9 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     return 1;
 }
 
-s32 fn_801A1198(s32 arg0, u8 *arg1)
+s32 fn_801A1198(s32 arg0, s8 *arg1)
 {
-    extern u8 gUnits[];
+    extern s8 gUnits[];
     extern u8 E_EventState_script[];
     extern u8 Proc_MuEventInst[];
     extern u8 lbl_8027AD98[];
@@ -16164,29 +16162,32 @@ s32 fn_801A1198(s32 arg0, u8 *arg1)
     extern u32 gUiInputFlags;
 
     void *Process_Find(void *);
-    void *Process_Create(void *, void *);
+    void *Process_Create(void *, u32);
     void *fn_800C45B8(s32, void *, s32);
     void fn_800C4588(void *);
     void Unit_SetMapPos(void *, s8, s8);
     void fn_8004FE98(void *, s32);
     void *fn_80184750(void *, s32, s32, s32);
     void fn_80050C90(void *);
-    void *fn_80127C48(void);
-    void *fn_800C0658(void);
+    u32 fn_80127C48(void);
+    u32 fn_800C0658(void);
     void *MoveAnim_BindPath(void *, u8 *, u16, void *);
     void Map_RefreshUnitMap(void *);
 
-    u8 *unit;
-    u8 *path;
-    u8 *buffer;
-    u8 *dst;
-    u8 *state;
-    void *parent;
+    s8 *unit;
     u16 flags;
     s32 x;
     s32 y;
-    s32 mode;
+    u8 *buffer;
+    u8 *dst;
+    u8 *state;
+    u8 mode;
+    s32 mode2;
+    s32 field;
     s32 ch;
+    void *temp;
+    void *var_r6;
+    u32 var_r3;
 
     if ((u8)arg0 != 0) {
         unit = gUnits + ((u8)arg0 - 1) * 0x280;
@@ -16201,105 +16202,66 @@ s32 fn_801A1198(s32 arg0, u8 *arg1)
     flags = 0x80;
 
     state = Process_Find(E_EventState_script);
-
-    if (state != 0) {
-        mode = state[0x30];
-    } else {
-        mode = 1;
-    }
-
+    mode = state != 0 ? state[0x30] : 1;
     if (mode != 0) {
         flags |= 0x40;
     }
 
     state = Process_Find(E_EventState_script);
-
-    if (state != 0) {
-        mode = state[0x31];
-    } else {
-        mode = 0;
-    }
-
+    mode = state != 0 ? state[0x31] : 0;
     if (mode != 0) {
         flags |= 0x200;
     }
 
     state = Process_Find(E_EventState_script);
-
-    if (state != 0) {
-        mode = state[0x32];
-    } else {
-        mode = 0;
-    }
-
-    switch (mode) {
+    mode2 = state != 0 ? state[0x32] : 0;
+    switch (mode2) {
     case 2:
         flags |= 0x20;
         break;
-
     case 1:
         flags |= 0x10;
         break;
     }
 
     state = Process_Find(E_EventState_script);
+    field = state != 0 ? *(u16 *)(state + 0x34) : 0;
+    flags |= field;
 
-    if (state != 0) {
-        mode = *(u16 *)(state + 0x34);
-    } else {
-        mode = 0;
-    }
+    x = unit[0x19E];
+    y = unit[0x19F];
 
-    flags |= mode;
-
-    x = (s8)unit[0x19E];
-    y = (s8)unit[0x19F];
-
-    buffer = fn_800C45B8(
-        -0x80,
-        lbl_8027AD98 + 0x5C5,
-        0
-    );
-
+    buffer = fn_800C45B8(-0x80, lbl_8027AD98 + 0x5C5, 0);
     dst = buffer;
-    path = arg1;
 
-    while (*path != 0) {
-        ch = (s8)*path++;
-
+    while (*arg1 != 0) {
+        ch = *arg1++;
         switch (ch) {
         case '8':
             y--;
             *dst++ = 8;
             break;
-
         case '2':
             y++;
             *dst++ = 4;
             break;
-
         case '4':
             x--;
             *dst++ = 1;
             break;
-
         case '6':
             x++;
             *dst++ = 2;
             break;
-
         case 'U':
             flags |= 8;
             break;
-
         case 'D':
             flags |= 4;
             break;
-
         case 'L':
             flags |= 1;
             break;
-
         case 'R':
             flags |= 2;
             break;
@@ -16312,43 +16274,24 @@ s32 fn_801A1198(s32 arg0, u8 *arg1)
 
     if (gUiInputFlags & 1) {
         fn_8004FE98(unit, 0);
-
-        fn_80184750(
-            unit,
-            flags & 0xF,
-            0,
-            0
-        );
-
+        fn_80184750(unit, flags & 0xF, 0, 0);
         fn_80050C90(unit);
     } else {
-        parent = Process_Find(Proc_MuEventInst);
-
-        if (parent == 0) {
-            parent = fn_80127C48();
-
-            if (parent == 0) {
-                parent = fn_800C0658();
+        temp = Process_Find(Proc_MuEventInst);
+        if (temp != 0) {
+            var_r6 = temp;
+        } else {
+            var_r3 = fn_80127C48();
+            if (var_r3 == 0) {
+                var_r3 = fn_800C0658();
             }
-
-            parent = Process_Create(
-                Proc_MuEventInst,
-                parent
-            );
+            var_r6 = Process_Create(Proc_MuEventInst, var_r3);
         }
-
-        MoveAnim_BindPath(
-            unit,
-            buffer,
-            flags,
-            parent
-        );
+        MoveAnim_BindPath(unit, buffer, flags, var_r6);
     }
 
     fn_800C4588(buffer);
-
     Map_RefreshUnitMap(gBattleMap);
-
     return 1;
 }
 
