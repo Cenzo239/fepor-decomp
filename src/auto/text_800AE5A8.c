@@ -5231,6 +5231,7 @@ extern u8 gUnits[],gUnitLists[],gBattleMap[];
 u8 mask1[8],mask2[8];
 u8 *unit,*rescued;
 s32 i;
+u32 flags;
 {
 Allegiance_FillMask(3,mask1);
 for(i=1;i<=159;i++){
@@ -5239,7 +5240,7 @@ if(*(u32*)(unit+0x188)&&mask1[(*(u8**)(unit+0x190))[8]]){
 rescued=*(u8**)(unit+0x194);
 if(rescued&&(*(u32*)(unit+0x1a0)&2)){
 Unit_SeparateRescue(unit,unit[0x19e],unit[0x19f]);
-if(rescued) *(u32*)(rescued+0x1a0)&=~1;
+if(rescued) { flags=*(u32*)(rescued+0x1a0); flags &= ~1; *(u32*)(rescued+0x1a0)=flags; }
 }
 }
 }
