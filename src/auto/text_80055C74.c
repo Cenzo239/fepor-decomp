@@ -206,6 +206,7 @@ void fn_800561C8(void *arg0) {
 }
 
 void fn_800561EC(void *arg0) {
+#pragma opt_common_subs off
     void Process_ClearFunc(void *);
     extern u32 lbl_80369100;
     extern f64 lbl_80369118;
@@ -220,6 +221,8 @@ void fn_800561EC(void *arg0) {
     s32 pos;
     s32 t;
     f32 f;
+    f32 scale;
+    f32 zero;
     u8 *dst;
     u8 c0, c1, c2;
     u8 r, g, b;
@@ -246,9 +249,11 @@ void fn_800561EC(void *arg0) {
         c1 = *(u8 *)((u8 *)arg0 + 0x39);
         c2 = *(u8 *)((u8 *)arg0 + 0x3A);
         dst = *(u8 **)((u8 *)arg0 + 0x4C);
-        r = (u8)(((f32)t * ((f32)c0 - gF32_0)) * lbl_80369114 + gF32_0);
-        g = (u8)(((f32)t * ((f32)c1 - gF32_0)) * lbl_80369114 + gF32_0);
-        b = (u8)(((f32)t * ((f32)c2 - gF32_0)) * lbl_80369114 + gF32_0);
+        scale = lbl_80369114;
+        zero = gF32_0;
+        r = (u8)(((f32)t * ((f32)c0 - zero)) * scale + zero);
+        g = (u8)(((f32)t * ((f32)c1 - zero)) * scale + zero);
+        b = (u8)(((f32)t * ((f32)c2 - zero)) * scale + zero);
         dst[4] = r;
         sp8[0] = r;
         dst[5] = g;
@@ -301,14 +306,15 @@ void fn_800565B8(void *arg0) {
     M2C_UNK fn_80067708(M2C_UNK, M2C_UNK, void (*)(void *), void *);
     void fn_8000C188(void *);
     void fn_800566D4(void *);
-    extern f32 lbl_80369108;
-    extern f32 lbl_80369130;
+    extern f64 lbl_80369118;
+    extern f32 gF32_0;
     extern f32 lbl_80369134;
+    extern f32 lbl_80369130;
     f32 temp_f0;
 
     fn_80067708(4, 4, fn_800566D4, arg0);
     temp_f0 = lbl_80369134 - (f32) (s8) M2C_FIELD(arg0, u8 *, 0x35);
-    M2C_FIELD(arg0, s8 *, 0x34) = (s8) (lbl_80369108 + (lbl_80369130 - ((lbl_80369130 * (temp_f0 * temp_f0)) / (lbl_80369134 * lbl_80369134))));
+    M2C_FIELD(arg0, s8 *, 0x34) = (s8) (gF32_0 + (lbl_80369130 - ((lbl_80369130 * (temp_f0 * temp_f0)) / (lbl_80369134 * lbl_80369134))));
     M2C_FIELD(arg0, u8 *, 0x35) = (u8) (M2C_FIELD(arg0, u8 *, 0x35) + M2C_FIELD(arg0, u8 *, 0x36));
     if ((s8) M2C_FIELD(arg0, u8 *, 0x35) > 0xA) {
         M2C_FIELD(arg0, u8 *, 0x35) = 0xA;
@@ -949,26 +955,22 @@ void *fn_80057998(void *arg0) {
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern u8 lbl_80285BF0[];
-    extern f32 gF32_0;
-    void *self;
-    s32 zero;
+    extern f32 lbl_80369108;
     f32 f0;
 
-    self = arg0;
-    *(void **)((u8 *)self + 0x2C) = lbl_80285BF0;
-    *(s32 *)self = fn_8006D948(lbl_8026AD80 + 0xAA);
-    zero = 0;
-    f0 = gF32_0;
-    *(s32 *)((u8 *)self + 0x14) = zero;
-    *(s32 *)((u8 *)self + 0x18) = zero;
-    *(s32 *)((u8 *)self + 0x1C) = zero;
-    *(s32 *)((u8 *)self + 0x20) = zero;
-    *(f32 *)((u8 *)self + 4) = f0;
-    *(f32 *)((u8 *)self + 8) = f0;
-    *(f32 *)((u8 *)self + 0xC) = f0;
-    *(s32 *)((u8 *)self + 0x24) = zero;
-    *(s32 *)((u8 *)self + 0x28) = zero;
-    return self;
+    *(void **)((u8 *)arg0 + 0x2C) = lbl_80285BF0;
+    *(s32 *)arg0 = fn_8006D948(lbl_8026AD80 + 0xAA);
+    f0 = lbl_80369108;
+    *(s32 *)((u8 *)arg0 + 0x14) = 0;
+    *(s32 *)((u8 *)arg0 + 0x18) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x20) = 0;
+    *(f32 *)((u8 *)arg0 + 4) = f0;
+    *(f32 *)((u8 *)arg0 + 8) = f0;
+    *(f32 *)((u8 *)arg0 + 0xC) = f0;
+    *(s32 *)((u8 *)arg0 + 0x24) = 0;
+    *(s32 *)((u8 *)arg0 + 0x28) = 0;
+    return arg0;
 }
 
 void *fn_80057A10(void *arg0, s16 arg1) {
@@ -1214,8 +1216,12 @@ void fn_8005806C(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_800581A4(void *arg0) {
-    typedef struct { f32 v[9]; u8 b[4]; } Node40;
+void fn_800581A4(void *arg0)
+{
+    typedef struct {
+        f32 v[9];
+        u8 b[4];
+    } Node40;
     void fn_8005EB5C(void *, void *);
     void fn_8005E644(void *);
     extern f32 lbl_80369104;
@@ -1226,98 +1232,105 @@ void fn_800581A4(void *arg0) {
     extern f64 lbl_80369160;
     extern f32 lbl_80369168;
     extern u32 lbl_803690D4;
-    Node40 n0, n1, n2, n3;
-    u8 t;
-    u8 alpha;
-    u32 col;
-    u32 col2;
-    s32 i, j, k;
-    s32 idx;
-    f32 *dst;
-    f32 *src;
-    f32 f12, f9, f5, f6, f11, f7, f8, f10;
-    f32 a, b, c;
-    f32 scale;
-    s32 count;
-    u16 n48, n4e, n4c, n4a;
-    u8 n51;
+    Node40 nodes[4];
     Node40 *base;
-    f32 *out;
+    f32 *src;
+    f32 *dst;
+    u8 *context;
+    u8 *outBase;
+    u32 color, colorCopy;
+    s32 i, k, index, count;
+    u16 start, length, capacity, tailCount;
+    u8 steps, alpha;
+    volatile u8 t;
+    f32 one, twice, cubic, scale;
+    f32 u, v, w, x, y, z, a, b, c, d;
+    f32 h0, h1, h2, h3;
+    f64 slopeFactor;
 
+    context = (u8 *)arg0;
+    slopeFactor = lbl_80369160;
+    one = lbl_8036912C;
+    twice = lbl_8036915C;
+    cubic = lbl_80369104;
     i = 0;
-    while (i < (s32)M2C_FIELD(arg0, u16 *, 0x4C)) {
-        base = (Node40 *)M2C_FIELD(arg0, void **, 0x40);
-        n48 = M2C_FIELD(arg0, u16 *, 0x48);
-        n4e = M2C_FIELD(arg0, u16 *, 0x4E);
-        n4c = M2C_FIELD(arg0, u16 *, 0x4C);
-        if (i > 0) {
-            n0 = base[(n48 + i - 1) % n4e];
-        } else {
-            n0 = base[(n48 + i) % n4e];
-        }
-        n1 = base[(n48 + i) % n4e];
-        if (i < (s32)(n4c - 1)) {
-            n2 = base[(n48 + i + 1) % n4e];
-        } else {
-            n2 = n1;
-        }
-        if (i < (s32)(n4c - 2)) {
-            n3 = base[(n48 + i + 2) % n4e];
-        } else {
-            n3 = n2;
-        }
-        n51 = M2C_FIELD(arg0, u8 *, 0x51);
-        for (t = 0; t < n51; t++) {
-            f12 = (lbl_8036912C + (f32)t) / (f32)n51;
-            idx = (t + i * n51) * 0x28;
-            f9 = lbl_80369104 * f12;
-            f5 = f12 - lbl_8036912C;
-            f6 = lbl_8036912C - f12;
-            f11 = lbl_8036915C - f9;
-            f7 = f12 * f12;
-            f6 = f6 * f6;
-            f8 = f5 * f12;
-            f10 = lbl_8036912C + f9;
-            f9 = f5 * f5;
-            f5 = f11 * f7;
-            f7 = f12 * f6;
-            f6 = f10 * f9;
-            f8 = f12 * f8;
-            out = (f32 *)((u8 *)M2C_FIELD(arg0, void **, 0x44) + idx);
-            src = &n0.v[0];
+    while (i < (s32)*(u16 *)(context + 0x4c)) {
+        base = *(Node40 **)(context + 0x40);
+        start = *(u16 *)(context + 0x48);
+        capacity = *(u16 *)(context + 0x4e);
+        length = *(u16 *)(context + 0x4c);
+
+        if (i > 0)
+            nodes[0] = base[(start + i - 1) % capacity];
+        else
+            nodes[0] = base[(start + i) % capacity];
+        nodes[1] = base[(start + i) % capacity];
+        if (i < (s32)length - 1)
+            nodes[2] = base[(start + i + 1) % capacity];
+        else
+            nodes[2] = nodes[1];
+        if (i < (s32)length - 2)
+            nodes[3] = base[(start + i + 2) % capacity];
+        else
+            nodes[3] = nodes[2];
+
+        for (t = 0; t < context[0x51]; t++) {
+            u = (one + (f32)t) / (f32)context[0x51];
+            v = cubic * u;
+            w = u - one;
+            x = one - u;
+            y = twice - v;
+            z = u * u;
+            x *= x;
+            h0 = w * w;
+            h1 = y * z;
+            h2 = u * x;
+            h3 = (one + v) * h0;
+            h0 = u * (w * u);
+            index = ((s32)t + i * context[0x51]) * 0x28;
+            dst = (f32 *)(*(u8 **)(context + 0x44) + index);
+            src = (f32 *)nodes;
             for (k = 0; k < 2; k++) {
-                a = f5 * src[20] + f6 * src[10] + (f32)(f7 * (lbl_80369160 * (f64)(src[20] - src[0]))) + (f32)(f8 * (lbl_80369160 * (f64)(src[30] - src[10])));
-                b = f5 * src[21] + f6 * src[11] + (f32)(f7 * (lbl_80369160 * (f64)(src[21] - src[1]))) + (f32)(f8 * (lbl_80369160 * (f64)(src[31] - src[11])));
-                c = f5 * src[22] + f6 * src[12] + (f32)(f7 * (lbl_80369160 * (f64)(src[22] - src[2]))) + (f32)(f8 * (lbl_80369160 * (f64)(src[32] - src[12])));
-                out[0] = a;
-                out[1] = b;
-                out[2] = c;
+                a = h1 * src[20];
+                a = h3 * src[10] + a;
+                b = h1 * src[21];
+                b = h3 * src[11] + b;
+                c = h1 * src[22];
+                c = h3 * src[12] + c;
+                dst[0] = (f32)((f64)h0 * (slopeFactor * (f64)(src[30] - src[10]))
+                      + ((f64)h2 * (slopeFactor * (f64)(src[20] - src[0])) + a));
+                dst[1] = (f32)((f64)h0 * (slopeFactor * (f64)(src[31] - src[11]))
+                      + ((f64)h2 * (slopeFactor * (f64)(src[21] - src[1])) + b));
+                dst[2] = (f32)((f64)h0 * (slopeFactor * (f64)(src[32] - src[12]))
+                      + ((f64)h2 * (slopeFactor * (f64)(src[22] - src[2])) + c));
                 src += 3;
-                out = (f32 *)((u8 *)out + 0xC);
+                dst += 3;
             }
         }
         i++;
     }
-    n51 = M2C_FIELD(arg0, u8 *, 0x51);
-    n4c = M2C_FIELD(arg0, u16 *, 0x4C);
-    n4a = M2C_FIELD(arg0, u16 *, 0x4A);
-    scale = (f32)(M2C_FIELD(arg0, u8 *, 0x3B) * 0x60 / 255) - gF32_0;
-    count = n4c * n51 - n4a;
-    for (i = 0; i < (s32)n4a; i++) {
-        idx = (i + count) * 0x28;
-        alpha = (u8)(gF32_0 + (f32)i * scale / (f32)(n51 - 1));
-        *((u8 *)M2C_FIELD(arg0, void **, 0x44) + idx + 0x24) = alpha;
-        dst = (f32 *)((u8 *)M2C_FIELD(arg0, void **, 0x44) + idx);
+
+    steps = context[0x51];
+    length = *(u16 *)(context + 0x4c);
+    tailCount = *(u16 *)(context + 0x4a);
+    scale = (f32)((context[0x3b] * 0x60) / 255) - gF32_0;
+    count = length * steps - tailCount;
+    for (i = 0; i < (s32)*(u16 *)(context + 0x4a); i++) {
+        index = (i + count) * 0x28;
+        alpha = (u8)(gF32_0 + (f32)i * scale / (f32)(steps - 1));
+        outBase = *(u8 **)(context + 0x44) + index;
+        outBase[0x24] = alpha;
+        dst = (f32 *)outBase;
         dst[6] = dst[0] + (lbl_80369168 * (dst[3] - dst[0])) / lbl_8036912C;
         dst[7] = dst[1] + (lbl_80369168 * (dst[4] - dst[1])) / lbl_8036912C;
         dst[8] = dst[2] + (lbl_80369168 * (dst[5] - dst[2])) / lbl_8036912C;
     }
-    if (M2C_FIELD(arg0, u16 *, 0x54) & 4) {
-        col = lbl_803690D4;
-        ((u8 *)&col)[3] = (u8)(M2C_FIELD(arg0, u8 *, 0x3B) >> 1);
-        col2 = col;
-        fn_8005EB5C(M2C_FIELD(arg0, void **, 0x34), &col2);
-        fn_8005E644(M2C_FIELD(arg0, void **, 0x34));
+    if (*(u16 *)(context + 0x54) & 4) {
+        color = lbl_803690D4;
+        ((u8 *)&color)[3] = (u8)(context[0x3b] >> 1);
+        colorCopy = color;
+        fn_8005EB5C(*(void **)(context + 0x34), &colorCopy);
+        fn_8005E644(*(void **)(context + 0x34));
     }
 }
 #pragma use_lmw_stmw reset
@@ -1339,11 +1352,11 @@ void GActor_SetNodeLinkActive(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, u16 *, 0x54) = (u16) (M2C_FIELD(arg0, u16 *, 0x54) & 0xFFFFFFFB);
 }
 
-#pragma scheduling off
+#pragma scheduling on
 void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     volatile u8 *vsrc = arg1;
-    u8 chk;
     u8 a;
+    s32 chk;
     u8 b;
     u8 c;
     u8 d;
@@ -1373,7 +1386,6 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~2);
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
-#pragma scheduling reset
 void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     char *strcpy(char *, const char *);
@@ -1531,42 +1543,50 @@ void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     );
 }
 
+#pragma use_lmw_stmw on
 void fn_80058C6C(void *arg0) {
-    s32 GActor_FindNode(s32,s32);
-    void fn_80060F70(s32,s32,void *);
+    s32 GActor_FindNode(s32, s32);
+    void fn_80060F70(s32, s32, void *);
     void fn_80058D84(void *);
+    void fn_800581A4(void *);
+    void fn_80067708(s32, s32, void *, void *);
     s32 nodes[2];
     s32 i;
     u8 *entry;
     s32 *node;
-    u8 *obj=*(u8 **)((u8 *)arg0+0x30);
-    if(obj[0x53]==0) {
-        nodes[0]=GActor_FindNode(*(s32 *)(obj+0x34),(s32)(obj+0x56));
-        nodes[1]=GActor_FindNode(*(s32 *)(obj+0x34),(s32)(obj+0x5E));
-        if(nodes[0]>=0 && nodes[1]>=0) {
+    u8 *obj;
+    obj = *(u8 **)((u8 *)arg0 + 0x30);
+    if (obj[0x53] == 0) {
+        nodes[0] = GActor_FindNode(*(s32 *)(obj + 0x34), (s32)(obj + 0x56));
+        nodes[1] = GActor_FindNode(*(s32 *)(obj + 0x34), (s32)(obj + 0x5E));
+        if (nodes[0] >= 0 && nodes[1] >= 0) {
+            u16 capacity;
             u16 count;
             u16 start;
-            u16 capacity;
-            start=*(u16 *)(obj+0x48);
-            count=*(u16 *)(obj+0x4C);
-            capacity=*(u16 *)(obj+0x4E);
-            entry=*(u8 **)(obj+0x40)+((count+start)%capacity)*0x28;
-            if(count==capacity) *(u16 *)(obj+0x48)=(start+1)%capacity;
-            else *(u16 *)(obj+0x4C)=count+1;
-            node=nodes;
-            i=0;
+            start = *(u16 *)(obj + 0x48);
+            count = *(u16 *)(obj + 0x4C);
+            capacity = *(u16 *)(obj + 0x4E);
+            entry = *(u8 **)(obj + 0x40) + ((start + count) % capacity) * 0x28;
+            if ((unsigned)count == capacity) {
+                *(u16 *)(obj + 0x48) = (start + 1) % capacity;
+            } else {
+                *(u16 *)(obj + 0x4C) = count + 1;
+            }
+            node = nodes;
+            i = 0;
             do {
-                fn_80060F70(*(s32 *)(obj+0x34),*node,entry);
-                i++; entry+=0xC; node++;
-            } while(i<2);
-            *(u16 *)(obj+0x4A)=*(u16 *)(obj+0x4C)*obj[0x51];
+                fn_80060F70(*(s32 *)(obj + 0x34), *node, entry);
+                i++;
+                entry += 0xC;
+                node++;
+            } while (i < 2);
+            *(u16 *)(obj + 0x4A) = *(u16 *)(obj + 0x4C) * obj[0x51];
         }
     }
-    fn_800581A4(*(void **)((u8 *)arg0+0x30));
-    fn_80067708(2,3,fn_80058D84,*(void **)((u8 *)arg0+0x30));
+    fn_800581A4(*(void **)((u8 *)arg0 + 0x30));
+    fn_80067708(2, 3, fn_80058D84, *(void **)((u8 *)arg0 + 0x30));
 }
-
-#pragma optimization_level 3
+#pragma use_lmw_stmw reset
 void fn_80058D84(void *arg0) {
     void fn_80066D00(s32);
     void GXClearVtxDesc(void);
@@ -1771,6 +1791,7 @@ void fn_8005926C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 #pragma optimize_for_size reset
 }
 
+#pragma optimize_for_size off
 f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     f64 fn_80237E90(f32);
     extern f32 gF32_0;
@@ -1782,6 +1803,7 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     extern f32 lbl_8036917C;
     f32 dx;
     f32 dy;
+    f32 turns;
 
     (void)lbl_80369118;
     dx = farg2 - farg0;
@@ -1797,24 +1819,23 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     if (dy < gF32_0) {
         dx += lbl_80369174;
     }
-    dx -= (s32)(dx / lbl_8036917C) * lbl_8036917C;
+    turns = (f32)(s32)(dx / lbl_8036917C);
+    dx = dx - lbl_8036917C * turns;
     return dx;
 }
-
+#pragma optimize_for_size reset
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
   extern f32 lbl_80369104;
   extern f32 lbl_8036912C;
   extern f32 lbl_8036915C;
   extern f64 lbl_80369160;
-  f64 k;
   f32 temp_f10;
   f32 temp_f12;
   f32 temp_f6;
-  k = lbl_80369160;
   temp_f12 = lbl_80369104 * farg4;
   temp_f10 = farg4 - lbl_8036912C;
   temp_f6 = lbl_8036912C - farg4;
-  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (k * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (k * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
+  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (lbl_80369160 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (lbl_80369160 * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
 }
 
 #pragma use_lmw_stmw on
