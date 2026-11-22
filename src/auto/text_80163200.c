@@ -8446,38 +8446,64 @@ void fn_80171004(void *arg0)
     );
 }
 
-void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style) {
-extern u16 lbl_802951B8[],lbl_8029518C[];
-s32 width,height;
-extern u16 lbl_8028FDB0[],lbl_80292230[];
-M2C_FIELD(p,void **,0)=lbl_8028FDB0;
-M2C_FIELD(p,s32 *,4)=0;
-M2C_FIELD(p,void **,0)=lbl_80292230;
-M2C_FIELD(p,s16 *,8)=-1;
-M2C_FIELD(p,s16 *,10)=x;
-M2C_FIELD(p,s16 *,12)=y;
-M2C_FIELD(p,s16 *,14)=(s16)x+(s16)w;
-M2C_FIELD(p,s16 *,16)=(s16)y+44;
-M2C_FIELD(p,s16 *,18)=0; M2C_FIELD(p,s16 *,20)=0;
-M2C_FIELD(p,s16 *,22)=w; M2C_FIELD(p,s16 *,24)=44;
-M2C_FIELD(p,s16 *,26)=0; M2C_FIELD(p,s16 *,28)=0;
-M2C_FIELD(p,u8 *,30)=255; M2C_FIELD(p,u8 *,31)=255; M2C_FIELD(p,u8 *,32)=255; M2C_FIELD(p,u8 *,33)=255;
-M2C_FIELD(p,s16 *,34)=style; M2C_FIELD(p,s16 *,36)=0;
-M2C_FIELD(p,f32 *,40)=1.0f; M2C_FIELD(p,f32 *,44)=1.0f; M2C_FIELD(p,f32 *,48)=1.0f;
-M2C_FIELD(p,u32 *,52)=0; M2C_FIELD(p,u32 *,56)=0;
-M2C_FIELD(p,void **,0)=lbl_802951B8;
-M2C_FIELD(p,s16 *,0x3c)=0; M2C_FIELD(p,s16 *,0x3e)=0;
-height=(s16)(M2C_FIELD(p,s16 *,0x10)-M2C_FIELD(p,s16 *,0xc));
-width=(s16)(M2C_FIELD(p,s16 *,0xe)-M2C_FIELD(p,s16 *,0xa));
-M2C_FIELD(p,s16 *,0x12)=2; M2C_FIELD(p,s16 *,0x14)=8;
-M2C_FIELD(p,s16 *,0x16)=width-2; M2C_FIELD(p,s16 *,0x18)=height-8;
-M2C_FIELD(p,void **,0)=lbl_8029518C;
-M2C_FIELD(p,s16 *,0x3c)=0; M2C_FIELD(p,s16 *,0x3e)=0;
-height=(s16)(M2C_FIELD(p,s16 *,0x10)-M2C_FIELD(p,s16 *,0xc));
-width=(s16)(M2C_FIELD(p,s16 *,0xe)-M2C_FIELD(p,s16 *,0xa));
-M2C_FIELD(p,s16 *,0x12)=0; M2C_FIELD(p,s16 *,0x14)=0;
-M2C_FIELD(p,s16 *,0x16)=width; M2C_FIELD(p,s16 *,0x18)=height;
-M2C_FIELD(p,u32 *,0x34)|=0x10;
+void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
+{
+  extern u16 lbl_8028FDB0[];
+  extern u16 lbl_80292230[];
+  extern u16 lbl_802951B8[];
+  extern u16 lbl_8029518C[];
+  void *new_var;
+  s16 width;
+  s16 height;
+  s16 *new_var2;
+  s8 *new_var3;
+  *((void **) (((s8 *) p) + 0)) = lbl_8028FDB0;
+  new_var2 = (s16 *) (((s8 *) p) + 12);
+  *((s32 *) (((s8 *) p) + 4)) = 0;
+  *((void **) (((s8 *) p) + 0)) = lbl_80292230;
+  *((s16 *) (((s8 *) p) + 8)) = -1;
+  *((s16 *) (((s8 *) p) + 10)) = x;
+  *new_var2 = y;
+  *((s16 *) (((s8 *) p) + 14)) = ((s16) x) + ((s16) w);
+  *((s16 *) (((s8 *) p) + 16)) = ((s16) y) + 44;
+  *((s16 *) (((s8 *) p) + 18)) = 0;
+  *((s16 *) (((s8 *) p) + 20)) = 0;
+  *((s16 *) (((s8 *) p) + 22)) = w;
+  *((s16 *) (((s8 *) p) + 24)) = 44;
+  *((s16 *) (((s8 *) p) + 26)) = 0;
+  *((s16 *) (((s8 *) p) + 28)) = 0;
+  *((u8 *) (((s8 *) p) + 30)) = 255;
+  *((u8 *) (((s8 *) p) + 31)) = 255;
+  *((u8 *) (((s8 *) p) + 32)) = 255;
+  *((u8 *) (((s8 *) p) + 33)) = 255;
+  *((s16 *) (((s8 *) p) + 34)) = style;
+  *((s16 *) (((s8 *) p) + 36)) = 0;
+  *((f32 *) (((s8 *) p) + 40)) = 1.0f;
+  *((f32 *) (((s8 *) p) + 44)) = 1.0f;
+  *((f32 *) (((s8 *) p) + 48)) = 1.0f;
+  *((u32 *) (((s8 *) p) + 52)) = 0;
+  *((u32 *) (((s8 *) p) + 56)) = 0;
+  *((void **) (((s8 *) p) + 0)) = lbl_802951B8;
+  *((s16 *) (((s8 *) p) + 0x3c)) = 0;
+  *((s16 *) (((s8 *) p) + 0x3e)) = 0;
+  height = (*((s16 *) (((s8 *) p) + 0x10))) - (*((s16 *) (((s8 *) p) + 0xc)));
+  width = (*((s16 *) (((s8 *) p) + 0xe))) - (*((s16 *) (((s8 *) p) + 0xa)));
+  *((s16 *) (((s8 *) p) + 0x12)) = 2;
+  new_var3 = ((s8 *) p) + 0x14;
+  *((s16 *) new_var3) = 8;
+  *((s16 *) (((s8 *) p) + 0x18)) = height - 8;
+  *((s16 *) (((s8 *) p) + 0x16)) = width - 2;
+  *((void **) (((s8 *) p) + 0)) = lbl_8029518C;
+  *((s16 *) (((s8 *) p) + 0x3c)) = 0;
+  *((s16 *) (((s8 *) p) + 0x3e)) = 0;
+  new_var = p;
+  height = (*((s16 *) (((s8 *) new_var) + 0x10))) - (*((s16 *) (((s8 *) new_var) + 0xc)));
+  width = (*((s16 *) (((s8 *) new_var) + 0xe))) - (*((s16 *) (((s8 *) new_var) + 0xa)));
+  *((s16 *) (((s8 *) p) + 0x12)) = 0;
+  *((s16 *) (((s8 *) p) + 0x14)) = 0;
+  *((s16 *) (((s8 *) new_var) + 0x16)) = width;
+  *((s16 *) (((s8 *) new_var) + 0x18)) = height;
+  *((u32 *) (((s8 *) new_var) + 0x34)) |= 0x10;
 }
 
 #pragma cplusplus on
@@ -12322,31 +12348,62 @@ void *fn_8017761C(void) {
     return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
 s32 fn_8017762C(void) {
-u32 *Unit_GetItemSlot(u32,s32);
-u64 *Item_GetFlagsPtr(u32 *);
-u8 Status_Test(void *,u32);
-s8 i;
-s32 unavailable;
-u32 unit;
-s8 j;
-u32 *slot;
-s32 result;
-unavailable=1; unit=*(u32 *)gUiContext;
-if(Status_Test((u8 *)unit+0x1bc,8)) {
-for(i=0;i<8;i++) {
-slot=Unit_GetItemSlot(unit,i);
-if(*slot && (*Item_GetFlagsPtr(slot)&0x20000000000ULL)==0 && (*Item_GetFlagsPtr(slot)&0x200ULL)==0) { unavailable=0; break; }
-}
-} else {
-for(j=0;j<8;j++) {
-slot=Unit_GetItemSlot(unit,j);
-if(*slot && (*Item_GetFlagsPtr(slot)&0x20000000000ULL)==0) {unavailable=0;break;}
-}
-}
-result=2; if(!(u8)unavailable) result=0; return (u8)result;
-}
+    u32 *Unit_GetItemSlot(u32, s32);
+    u64 *Item_GetFlagsPtr(u32 *);
+    u8 Status_Test(void *, u32);
+    extern u32 gUiContext[];
+    struct { s8 j; u32 z; u32 mask; } pair;
+    s8 i;
+    u8 unavailable;
+    u32 unit;
+    u32 *slot;
+    u64 *flags;
+    u32 t;
+    s32 result;
 
+    unavailable = 1;
+    unit = *(u32 *)gUiContext;
+    if (Status_Test((u8 *)unit + 0x1bc, 8)) {
+        for (i = 0; i < 8; i++) {
+            slot = Unit_GetItemSlot(unit, i);
+            if (*slot != 0) {
+                flags = Item_GetFlagsPtr(slot);
+                if ((*(u64 *)flags & 0x20000000000ULL) == 0) {
+                    flags = Item_GetFlagsPtr(slot);
+                    t = 0;
+                    if ((*(u64 *)flags & 0x200ULL) == 0) {
+                        unavailable = t;
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        pair.j = 0;
+        pair.mask = 0x200;
+        pair.z = pair.j;
+        for (; pair.j < 8; pair.j++) {
+            slot = Unit_GetItemSlot(unit, pair.j);
+            if (*slot != 0) {
+                flags = Item_GetFlagsPtr(slot);
+                if ((*(u64 *)flags & ((u64)pair.mask << 32)) == 0) {
+                    unavailable = pair.z;
+                    break;
+                }
+            }
+        }
+    }
+    result = 2;
+    if (!unavailable) {
+        result = 0;
+    }
+    return (u8)result;
+}
+#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 /* If entry type is 2, show a lock-message popup at parent+entry pos; else set UI command 0x87. */
 s32 Ui_SetCmd87OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
