@@ -8666,6 +8666,7 @@ s32 fn_800C000C(s32 parent) {
     u8 *unit;
     s32 i;
     s32 kind;
+    u32 flags;
 
     kind = 1;
     entry = Event_NextEntry(0);
@@ -8692,8 +8693,12 @@ check:
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0 && mask[(*(u8 **)(unit + 0x190))[8]] != 0) {
-            *(u32 *)(unit + 0x1A0) &= ~1;
-            *(u32 *)(unit + 0x1A0) &= ~0x800;
+            flags = *(u32 *)(unit + 0x1A0);
+            flags &= ~1;
+            *(u32 *)(unit + 0x1A0) = flags;
+            flags = *(u32 *)(unit + 0x1A0);
+            flags &= ~0x800;
+            *(u32 *)(unit + 0x1A0) = flags;
         }
     }
     fn_8001520C((u8 *)gBattleState + 0x94, 0);
@@ -10526,8 +10531,9 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     u8 *src;
     u8 *base;
     s32 slot;
-    u8 *dst;
     s32 offset;
+    u8 *dst;
+    u8 *end;
     u8 byte;
     u8 flag;
 
@@ -10539,6 +10545,7 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     dst = base + offset;
     dst[-0x18] = byte;
     fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
+    end = dst;
     flag = 0;
     dst[-0x8] = src[0x10];
     dst[-0x7] = src[0x11];
@@ -10546,23 +10553,23 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     dst[-0x5] = src[0x13];
     *(u32 *)(dst - 0x4) = *(u32 *)(src + 0x14);
 
-    if (((s8)dst[-0x17] == 0) && ((s8)dst[-0x8] == 0) && ((s8)dst[-0x7] == 0) &&
-        ((s8)dst[-0x6] == 0) && ((s8)dst[-0x5] == 0) &&
-        (dst[-0x4] == 0x80) && (dst[-0x3] == 0x80) &&
-        (dst[-0x2] == 0x80) && (dst[-0x1] == 0xFF)) {
+    if (((s8)dst[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
+        ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
+        (end[-0x4] == 0x80) && (end[-0x3] == 0x80) &&
+        (end[-0x2] == 0x80) && (end[-0x1] == 0xFF)) {
         flag = 1;
     }
     if (flag != 0) {
-        u8 *p = (u8 *)arg0 + offset;
+        u8 *p = base + offset;
         dst[-0x18] = 0;
-        dst[-0x17] = 0;
-        dst[-0x5] = 0;
-        dst[-0x6] = 0;
-        dst[-0x7] = 0;
-        dst[-0x8] = 0;
+        end[-0x17] = 0;
+        end[-0x5] = 0;
+        end[-0x6] = 0;
+        end[-0x7] = 0;
+        end[-0x8] = 0;
         p[-0x2] = 0x80;
         p[-0x3] = 0x80;
-        dst[-0x4] = 0x80;
+        end[-0x4] = 0x80;
         p[-0x1] = 0xFF;
         return 0;
     }
@@ -10845,16 +10852,37 @@ extern struct Unit;
 s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     void *item;
     s32 i;
-    s32 *p;
+    s32 ctr;
+    u8 *p;
     item = (void *)Item_GetByIid(arg1);
-    for (p = arg0, i = 0; i < 200; p += 2, i++) {
-        if (*(void **)p != item) goto next;
-        goto found;
-    next:
-        ;
+    p = (u8 *)arg0;
+    i = 0;
+    for (ctr = 20; ctr != 0; ctr--) {
+        if (*(void **)(p + 0x0) != item) goto c1; else goto done;
+    c1: i++;
+        if (*(void **)(p + 0x8) != item) goto c2; else goto done;
+    c2: i++;
+        if (*(void **)(p + 0x10) != item) goto c3; else goto done;
+    c3: i++;
+        if (*(void **)(p + 0x18) != item) goto c4; else goto done;
+    c4: i++;
+        if (*(void **)(p + 0x20) != item) goto c5; else goto done;
+    c5: i++;
+        if (*(void **)(p + 0x28) != item) goto c6; else goto done;
+    c6: i++;
+        if (*(void **)(p + 0x30) != item) goto c7; else goto done;
+    c7: i++;
+        if (*(void **)(p + 0x38) != item) goto c8; else goto done;
+    c8: i++;
+        if (*(void **)(p + 0x40) != item) goto c9; else goto done;
+    c9: i++;
+        if (*(void **)(p + 0x48) != item) goto c10; else goto done;
+    c10:
+        p += 0x50;
+        i++;
     }
     i = -1;
-found:
+done:
     return i;
 }
 
