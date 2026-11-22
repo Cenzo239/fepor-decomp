@@ -2,99 +2,32 @@
 #include "common.h"
 
 void fn_801A2AC4(void) {
-    extern u16 gMapAnimStr[];
+    extern u8 gMapAnimStr[];
     extern u16 lbl_80297118[];
-    
+
     register u32 r31_reg asm("r31");
     register u32 r4_reg asm("r4");
     register u32 r3_reg asm("r3");
-    
-    // Load base addresses once
-    u16* base1 = &gMapAnimStr[0];
-    u16* base2 = &lbl_80297118[0];
-    
-    r31_reg = (u32)base2;
-    
-    // First call with offset 0xE1 and base2 offset 0x58
-    r3_reg = (u32)&gMapAnimStr[0xE1];
-    r4_reg = r31_reg + 0x58;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Second call with offset 0xEE and base2 offset 0x58
-    r3_reg = (u32)&gMapAnimStr[0xEE];
-    r4_reg = r31_reg + 0x58;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Third call with offset 0xFD and base2 offset 0x58
-    r3_reg = (u32)&gMapAnimStr[0xFD];
-    r4_reg = r31_reg + 0x58;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Fourth call with offset 0x10C and base2 offset 0x58
-    r3_reg = (u32)&gMapAnimStr[0x10C];
-    r4_reg = r31_reg + 0x58;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Fifth call with offset 0x11C and base2 offset 0x68
-    r3_reg = (u32)&gMapAnimStr[0x11C];
-    r4_reg = r31_reg + 0x68;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Sixth call with offset 0x12C and base2 offset 0x78
-    r3_reg = (u32)&gMapAnimStr[0x12C];
-    r4_reg = r31_reg + 0x78;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Seventh call with offset 0x139 and base2 offset 0x88
-    r3_reg = (u32)&gMapAnimStr[0x139];
-    r4_reg = r31_reg + 0x88;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Eighth call with offset 0x149 and base2 offset 0x98
-    r3_reg = (u32)&gMapAnimStr[0x149];
-    r4_reg = r31_reg + 0x98;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Ninth call with offset 0x157 and base2 offset 0xA8
-    r3_reg = (u32)&gMapAnimStr[0x157];
-    r4_reg = r31_reg + 0xA8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Tenth call with offset 0x167 and base2 offset 0xB8
-    r3_reg = (u32)&gMapAnimStr[0x167];
-    r4_reg = r31_reg + 0xB8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Eleventh call with offset 0x177 and base2 offset 0xC8
-    r3_reg = (u32)&gMapAnimStr[0x177];
-    r4_reg = r31_reg + 0xC8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Twelfth call with offset 0x184 and base2 offset 0xD8
-    r3_reg = (u32)&gMapAnimStr[0x184];
-    r4_reg = r31_reg + 0xD8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Thirteenth call with offset 0x193 and base2 offset 0xE8
-    r3_reg = (u32)&gMapAnimStr[0x193];
-    r4_reg = r31_reg + 0xE8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Fourteenth call with offset 0x1A2 and base2 offset 0xF8
-    r3_reg = (u32)&gMapAnimStr[0x1A2];
-    r4_reg = r31_reg + 0xF8;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Fifteenth call with offset 0x1B3 and base2 offset 0x108
-    r3_reg = (u32)&gMapAnimStr[0x1B3];
-    r4_reg = r31_reg + 0x108;
-    fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-    
-    // Sixteenth call with offset 0x1C1 and base2 offset 0x118
-    r3_reg = (u32)&gMapAnimStr[0x1C1];
-    r4_reg = r31_reg + 0x118;
-          fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
-  }
+
+    r31_reg = (u32)&lbl_80297118[0];
+
+    r3_reg = (u32)&gMapAnimStr[0xE1]; r4_reg = r31_reg + 0x58; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0xEE]; r4_reg = r31_reg + 0x58; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0xFD]; r4_reg = r31_reg + 0x58; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x10C]; r4_reg = r31_reg + 0x58; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x11C]; r4_reg = r31_reg + 0x68; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x12C]; r4_reg = r31_reg + 0x78; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x139]; r4_reg = r31_reg + 0x88; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x149]; r4_reg = r31_reg + 0x98; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x157]; r4_reg = r31_reg + 0xA8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x167]; r4_reg = r31_reg + 0xB8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x177]; r4_reg = r31_reg + 0xC8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x184]; r4_reg = r31_reg + 0xD8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x193]; r4_reg = r31_reg + 0xE8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x1A2]; r4_reg = r31_reg + 0xF8; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x1B3]; r4_reg = r31_reg + 0x108; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+    r3_reg = (u32)&gMapAnimStr[0x1C1]; r4_reg = r31_reg + 0x118; fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
+}
 
 s32 fn_801A2C30(s32 arg0) {
     void Battle_SetupUnit(void *, s32, s32);
@@ -689,6 +622,8 @@ s32 Item_GetHealAmount(void *itemDef) {
     return (itemDef == Item_GetByIid(gMapAnimStr + 0x21D)) ? 0x50 : 0;
 }
 
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
 u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
@@ -696,9 +631,10 @@ u8 fn_8001F85C(void *,u8,u8,u8,u8); void **Unit_GetActiveItemPtr(void *);
 void Map_SelectRangeBuffer(void *,s32); void Map_FillLayer(void *,s32,s32);
 u8 Item_GetRangeForUnit(void *,void *); void Map_FillAttackRange(void *,u8,u8,u8,u8);
 void *members[3]; s32 cross[3]; s32 out;
+void *node; s32 count; s32 i; void **walk;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
 if(Status_Test((u8 *)self+0x1bc,84)) {
-void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
+node=gUnitLists[0]; count=0;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
 if(Status_Test((u8 *)node+0x1bc,84) && count<3) members[count++]=node;
@@ -721,7 +657,7 @@ if(data) type=M2C_FIELD(data,u8 *,0x1d); else type=0;
 if(type>1) return 0;
 }}
 else if(Status_Test((u8 *)self+0x1bc,85)) {
-void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
+node=gUnitLists[0]; count=0;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
 if(Status_Test((u8 *)node+0x1bc,85) && count<3) members[count++]=node;
@@ -740,7 +676,7 @@ if(data) type=M2C_FIELD(data,u8 *,0x12); else type=12;
 if(type!=3) return 0;
 Map_SelectRangeBuffer(gBattleMap,6); Map_FillLayer(gBattleMap,8,0);
 {u8 range; u8 reach;
-if(*item) range=Item_GetRangeForUnit(*item,*walk); else range=0;
+if(*item) range=(u8)Item_GetRangeForUnit(*item,*walk); else range=0;
 data=*item;
 if(data) reach=M2C_FIELD(data,u8 *,0x1d); else reach=0;
 unit=*walk;
@@ -763,12 +699,12 @@ if(!inside) return 0;
 }}
 else return 0;
 out=0;
-if(members[0]!=M2C_FIELD(self,void **,0x280)){M2C_FIELD(self,void **,0xcbc)=members[0];out=1;}
-if(members[1]!=M2C_FIELD(self,void **,0x280)){((void **)self)[out+0x32f]=members[1];out++;}
-if(members[2]!=M2C_FIELD(self,void **,0x280)) ((void **)self)[out+0x32f]=members[2];
+if(members[0]!=M2C_FIELD(self,void **,0x280)){*(void **)((u8 *)self+0xcbc+out)=members[0];out+=4;}
+if(members[1]!=M2C_FIELD(self,void **,0x280)){*(void **)((u8 *)self+0xcbc+out)=members[1];out+=4;}
+if(members[2]!=M2C_FIELD(self,void **,0x280)) *(void **)((u8 *)self+0xcbc+out)=members[2];
 return 1;
 }
-
+#pragma use_lmw_stmw reset
 void fn_801A442C(void *arg0) {
     s32 fn_8005B580(s32, u8 *, s32);
     s32 fn_8005B4D8(u8);
@@ -1009,18 +945,15 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
-    s32 cur;
+    u8 orig;
+    s32 delta;
 
-    {
-        s32 orig;
-        orig = obj[0x1A8];
-        a1 = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
-    }
-    cur = obj[0x1A8];
-    a1 = (s8)a1;
-    Unit_SetHp(obj, a1 + (s8)cur);
+    orig = obj[0x1A8];
+    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
+    delta = (s8)delta;
+    Unit_SetHp(obj, delta + (s8)obj[0x1A8]);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(obj + 0x8A0, 0x9, a1);
+    BattleAnim_Queue(obj + 0x8A0, 0x9, delta);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
     if ((s8)obj[0x1A8] <= 0) {
         BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
@@ -1032,19 +965,17 @@ void fn_801A4B40(u8 *obj, s32 a1) {
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
-    s32 orig;
+    register s32 orig;
     s32 v;
-    u8 *o;
 
+    orig = obj[0x488];
     v = a1;
-    o = obj;
-    orig = o[0x488];
-    v = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(o + 0x2E0), (s8)v);
+    v = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)v);
     v = (s8)v;
-    Unit_SetHp(o + 0x2E0, v + (s8)o[0x488]);
-    BattleAnim_Queue(o + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(o + 0x8A0, 0x15, v);
-    BattleAnim_Queue(o + 0x8A0, 0x50, 0);
+    Unit_SetHp(obj + 0x2E0, v + (s8)obj[0x488]);
+    BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
+    BattleAnim_Queue(obj + 0x8A0, 0x15, v);
+    BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
 }
 #pragma opt_common_subs reset
 void Battle_Apply(void *arg0) {
@@ -1510,16 +1441,16 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
 
+    s32 chance;
     u8 *tbl;
     u16 *fl;
-    s8 half;
+    u8 hp;
     s8 tmp_s8;
     s16 tmp_s16;
-    s32 chance;
     s32 i;
     s32 lim;
     u8 ok;
-    u8 hp;
+    s8 half;
     void *p;
     u64 *bits;
     u32 *w;
@@ -1540,7 +1471,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             }
         }
         tbl = gBattleHitTbl;
-        if ((*(u16 *)(tbl + 0x20 + (tbl[0x60] << 1)) & 8) != 0) {
+        if (((*(u16 *)((tbl + (tbl[0x60] << 1)) + 0x20)) & 8) != 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3A, 0);
         }
     }
@@ -1548,8 +1479,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     tbl = gBattleHitTbl;
     fl = (u16 *)(tbl + 0x20);
     if ((fl[tbl[0x60]] & 1) != 0) {
-        tmp_s16 = *(s16 *)((u8 *)arg1 + 0x2AA) + 1;
-        *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)(tmp_s16 / 2);
+        *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)((*(s16 *)((u8 *)arg1 + 0x2AA) + 1) / 2);
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x37, 0);
     }
     if ((fl[tbl[0x60]] & 0x4000) != 0) {
@@ -1876,9 +1806,9 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     s32 u1;
     s32 u2;
     u8 flag;
-    u32 row;
-    u8 cur;
     void *p;
+    s8 *row;
+    u8 cur;
     u8 cls;
 
     self = arg0;
@@ -1887,7 +1817,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     flag = arg3;
 
     if (!(*(u32 *)(self + 0xCAC) & 1)) {
-        row = (u32)lbl_80297240;
+        row = lbl_80297240;
         *(s16 *)(u1 + 0x2C2) = 0;
         *(s16 *)(u1 + 0x2C4) = 0;
         *(s16 *)(u2 + 0x2C2) = 0;
@@ -2053,6 +1983,8 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     }
 }
 
+#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 Rand_Chance(s32);
     u64 *Item_GetFlagsPtr(void *);
@@ -2314,7 +2246,6 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
         BattleAnim_Queue((u8 *)self + 0x8A0, 0x53, 0);
     }
 }
-
 void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
     u64 *Item_GetFlagsPtr(void *);
     void fn_80033E70(s32);
@@ -2568,46 +2499,47 @@ void fn_801A7218(void *arg0, void *arg1, s32 arg2) {
 }
 
 void fn_801A73E4(void *arg0, void *arg1, void *arg2) {
-void BattleUnit_Reset(void*);
-void fn_800340F0(void*);
-void fn_801A9CB8(void*,void*);
-void fn_801A9C0C(void*);
-void Map_SelectRangeBuffer(void*,s32);
-void Map_FillAttackRange(void*,u8,u8,s32,s32);
-void Unit_SetHp(void*,u8);
-void Unit_SetMapPos(void*,u8,u8);
-void fn_801A981C(void*,s32,s32);
-void fn_801A94B0(void*);
-extern u8 gBattleMap[];
-void *unit;
-u8 *self;
-u8 *target;
-target=arg2;
-self=arg0;
-unit=arg1;
-BattleUnit_Reset(arg0);
-BattleUnit_Reset(self+0x2E0);
-BattleUnit_Reset(self+0x5C0);
-fn_800340F0(self+0x8A0);
-*(s32*)(self+0xCA8)=0;
-*(s32*)(self+0xCAC)=0;
-*(s32*)(self+0xCB0)=0;
-*(s32*)(self+0xCB4)=0;
-*(s32*)(self+0xCBC)=0;
-*(s32*)(self+0xCC0)=0;
-fn_801A9CB8(self,unit);
-fn_801A9C0C(self+0x2E0);
-*(s32*)(self+0x560)=0;
-Map_SelectRangeBuffer(gBattleMap,6);
-Map_FillAttackRange(gBattleMap,self[0x19E],self[0x19F],100,15);
-*(s32*)(self+0xCA8)=(*(s16**)(gBattleMap+0x14190))[(s8)target[0]+((s8)target[1]<<6)];
-self[0x48B]=target[5];
-Unit_SetHp(self+0x2E0,target[4]);
-*(s32*)(self+0x474)=0;
-Unit_SetMapPos(self+0x2E0,target[0],target[1]);
-*(u32*)(self+0xCAC)|=0x101;
-fn_801A981C(self,*(s32*)(self+0xCA8),-1);
-fn_801A94B0(self);
+    void BattleUnit_Reset(void *);
+    void fn_800340F0(void *);
+    void fn_801A9CB8(void *, void *);
+    void fn_801A9C0C(void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    void Map_FillAttackRange(void *, u8, u8, s32, s32);
+    void Unit_SetHp(void *, u8);
+    void Unit_SetMapPos(void *, u8, u8);
+    void fn_801A981C(void *, s32, s32);
+    void fn_801A94B0(void *);
+    extern u8 gBattleMap[];
+    void *unit;
+    u8 *self;
+    u8 *target;
+
+    target = arg2;
+    self = arg0;
+    unit = arg1;
+    BattleUnit_Reset(self);
+    BattleUnit_Reset(self + 0x2E0);
+    BattleUnit_Reset(self + 0x5C0);
+    fn_800340F0(self + 0x8A0);
+    *(s32 *)(self + 0xCA8) = 0;
+    *(s32 *)(self + 0xCAC) = 0;
+    *(s32 *)(self + 0xCB0) = 0;
+    *(s32 *)(self + 0xCB4) = 0;
+    *(s32 *)(self + 0xCBC) = 0;
+    *(s32 *)(self + 0xCC0) = 0;
+    fn_801A9CB8(self, unit);
+    fn_801A9C0C(self + 0x2E0);
+    *(s32 *)(self + 0x560) = 0;
+    Map_SelectRangeBuffer(gBattleMap, 6);
+    Map_FillAttackRange(gBattleMap, self[0x19E], self[0x19F], 100, 15);
+    *(s32 *)(self + 0xCA8) = (*(s16 **)(gBattleMap + 0x14190))[(s8)target[0] + ((s8)target[1] << 6)];
+    self[0x48B] = target[5];
+    Unit_SetHp(self + 0x2E0, target[4]);
+    *(s32 *)(self + 0x474) = 0;
+    Unit_SetMapPos(self + 0x2E0, target[0], target[1]);
+    *(u32 *)(self + 0xCAC) |= 0x101;
+    fn_801A981C(self, *(s32 *)(self + 0xCA8), -1);
+    fn_801A94B0(self);
 }
 
 #pragma opt_strength_reduction off
@@ -2725,6 +2657,10 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     p = lbl_8027B630;
     q = lbl_8027B620;
     self = arg0;
+    a = ((u8 *)arg2)[0x19E];
+    b = ((u8 *)arg2)[0x19F];
+    c = ((u8 *)arg1)[0x19E];
+    d = ((u8 *)arg1)[0x19F];
 
     sp8[0] = p[0];
     w1 = p[1];
@@ -2734,12 +2670,8 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     w3 = p[3];
     sp8[1] = w1;
     v2 = q[2];
-    a = ((u8 *)arg2)[0x19E];
-    b = ((u8 *)arg2)[0x19F];
     v3 = q[3];
     sp18[1] = v1;
-    c = ((u8 *)arg1)[0x19E];
-    d = ((u8 *)arg1)[0x19F];
     sp8[2] = w2;
     sp8[3] = w3;
     sp8[0] = (u32)arg2;
