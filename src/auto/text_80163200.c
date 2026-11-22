@@ -15016,11 +15016,11 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     };
     extern u8 lbl_80278780[];
     extern f32 lbl_8036ABA8;
-    s16 w,h;
     u8 *unit;
     s32 num;
     f32 target;
     f32 cur;
+    s16 w,h;
 
     unit = M2C_FIELD(arg0, u8 **, 0x4C);
     num = Status_SumBonus(unit + 0x1BC);
@@ -15040,8 +15040,8 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         Ui_PlaySeCue(lbl_80278780 + 0x9E, 0x64);
     }
     ((Obj *)arg0)->v2(arg1);
-    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
     h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
+    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
     Ui_DrawJobPersonalPanel(0, 0, w, h,
                 M2C_FIELD(M2C_FIELD(unit, u8 **, 0x18C), u8 *, 0x40), 0xCC, 0x10,
                 M2C_FIELD(arg0, f32 *, 0x50));
