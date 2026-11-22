@@ -535,16 +535,12 @@ s32 fn_800A424C(s32 arg0) {
 #pragma optimization_level 3
 s32 fn_800A45C4(void) {
     void fn_8020F334(void *);
-    register u8 *q;
     extern u8 lbl_803123A0[];
-    s32 i;
-    s32 neg1;
-    unsigned long flag;
-    register s32 t64;
-    register s32 t54;
     register u8 *p;
+    register u8 *q;
+    s32 i;
     s32 zero;
-    f32 f;
+    u32 flag;
 
     p = lbl_803123A0;
     if (*(s32 *)(p + 0xA0) != 0 && p[0xA5] == 0) {
@@ -571,23 +567,19 @@ s32 fn_800A45C4(void) {
         }
         q = lbl_803123A0;
         zero = 0;
-        neg1 = -1;
-        t64 = *(s32 *)(q + 0x64);
-        t54 = *(s32 *)(q + 0x54);
-        f = *(f32 *)(q + 0xC8);
         *(s32 *)(q + 0x164) = zero;
         *(s32 *)(q + 0x170) = zero;
         *(s32 *)(q + 0x17C) = zero;
-        *(s32 *)(q + 0x158) = neg1;
+        *(s32 *)(q + 0x158) = -1;
+        *(s32 *)(q + 0xA8) = *(s32 *)(q + 0x64);
+        *(s32 *)(q + 0xBC) = *(s32 *)(q + 0x54);
         *(s32 *)(q + 0xB8) = zero;
-        *(s32 *)(q + 0xA8) = t64;
-        *(s32 *)(q + 0xBC) = t54;
         *(s32 *)(q + 0xC0) = zero;
         *(s32 *)(q + 0xAC) = zero;
         *(s32 *)(q + 0xB4) = zero;
         *(s32 *)(q + 0x180) = zero;
         *(s32 *)(q + 0x184) = zero;
-        *(f32 *)(q + 0xC4) = f;
+        *(f32 *)(q + 0xC4) = *(f32 *)(q + 0xC8);
         *(s32 *)(q + 0xD0) = zero;
         return 1;
     }
