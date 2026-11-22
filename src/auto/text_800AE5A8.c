@@ -10910,7 +10910,6 @@ found:
     Item_Copy((char *)arg0 + (slot << 3), arg1);
     return 1;
 }
-#pragma peephole reset
 
 /* Return index of first empty convoy item slot, or -1 if full. */
 s32 Convoy_FindEmpty(void *convoy) {
