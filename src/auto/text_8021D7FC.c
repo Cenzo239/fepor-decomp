@@ -1267,207 +1267,100 @@ case 20: M2C_FIELD(__GXData,u32 *,0x18)=__rlwimi(M2C_FIELD(__GXData,u32 *,0x18),
 
 void GXSetVtxDescv(s32 *arg0)
 {
-    extern u8 *__GXData;
-
+    extern u16 *const __GXData;
     u32 attr;
-    u32 type;
-    u32 word;
-    u8 *gx;
+    s32 type;
 
     while (arg0[0] != 0xFF) {
         attr = arg0[0];
         type = arg0[1];
-
         switch (attr) {
         case 0:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 0, 31, 31);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 0, 31, 31);
             break;
-
         case 1:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 1, 30, 30);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 1, 30, 30);
             break;
-
         case 2:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 2, 29, 29);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 2, 29, 29);
             break;
-
         case 3:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 3, 28, 28);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 3, 28, 28);
             break;
-
         case 4:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 4, 27, 27);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 4, 27, 27);
             break;
-
         case 5:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 5, 26, 26);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 5, 26, 26);
             break;
-
         case 6:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 6, 25, 25);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 6, 25, 25);
             break;
-
         case 7:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 7, 24, 24);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 7, 24, 24);
             break;
-
         case 8:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 8, 23, 23);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 8, 23, 23);
             break;
-
         case 9:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 9, 21, 22);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 9, 21, 22);
             break;
-
         case 10:
             if (type != 0) {
-                gx = __GXData;
-                gx[0x4D4] = 1;
-                gx[0x4D5] = 0;
-                *(u32 *)(gx + 0x4D0) = type;
+                M2C_FIELD(__GXData, u8 *, 0x4D4) = 1;
+                M2C_FIELD(__GXData, u8 *, 0x4D5) = 0;
+                M2C_FIELD(__GXData, u32 *, 0x4D0) = type;
             } else {
-                gx = __GXData;
-                gx[0x4D4] = 0;
+                M2C_FIELD(__GXData, u8 *, 0x4D4) = 0;
             }
             break;
-
         case 25:
             if (type != 0) {
-                gx = __GXData;
-                gx[0x4D5] = 1;
-                gx[0x4D4] = 0;
-                *(u32 *)(gx + 0x4D0) = type;
+                M2C_FIELD(__GXData, u8 *, 0x4D5) = 1;
+                M2C_FIELD(__GXData, u8 *, 0x4D4) = 0;
+                M2C_FIELD(__GXData, u32 *, 0x4D0) = type;
             } else {
-                gx = __GXData;
-                gx[0x4D5] = 0;
+                M2C_FIELD(__GXData, u8 *, 0x4D5) = 0;
             }
             break;
-
         case 11:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 13, 17, 18);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 13, 17, 18);
             break;
-
         case 12:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x14);
-            word = __rlwimi(word, type, 15, 15, 16);
-            *(u32 *)(gx + 0x14) = word;
+            M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), type, 15, 15, 16);
             break;
-
         case 13:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 0, 30, 31);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 0, 30, 31);
             break;
-
         case 14:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 2, 28, 29);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 2, 28, 29);
             break;
-
         case 15:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 4, 26, 27);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 4, 26, 27);
             break;
-
         case 16:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 6, 24, 25);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 6, 24, 25);
             break;
-
         case 17:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 8, 22, 23);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 8, 22, 23);
             break;
-
         case 18:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 10, 20, 21);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 10, 20, 21);
             break;
-
         case 19:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 12, 18, 19);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 12, 18, 19);
             break;
-
         case 20:
-            gx = __GXData;
-            word = *(u32 *)(gx + 0x18);
-            word = __rlwimi(word, type, 14, 16, 17);
-            *(u32 *)(gx + 0x18) = word;
+            M2C_FIELD(__GXData, u32 *, 0x18) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x18), type, 14, 16, 17);
             break;
         }
-
         arg0 += 2;
     }
-
-    gx = __GXData;
-
-    if (gx[0x4D4] == 0) {
-        if (gx[0x4D5] != 0) {
-            type = *(u32 *)(gx + 0x4D0);
-            word = *(u32 *)(gx + 0x14);
-
-            word = __rlwimi(word, type, 11, 19, 20);
-
-            *(u32 *)(gx + 0x14) = word;
-        } else {
-            word = *(u32 *)(gx + 0x14);
-
-            word = __rlwimi(word, 0, 11, 19, 20);
-
-            *(u32 *)(gx + 0x14) = word;
-        }
-    }
-
-    gx = __GXData;
-    *(u32 *)(gx + 0x5AC) |= 8;
+    if (M2C_FIELD(__GXData, u8 *, 0x4D4) || M2C_FIELD(__GXData, u8 *, 0x4D5))
+        M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), M2C_FIELD(__GXData, u32 *, 0x4D0), 11, 19, 20);
+    else
+        M2C_FIELD(__GXData, u32 *, 0x14) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x14), 0, 11, 19, 20);
+    M2C_FIELD(__GXData, u32 *, 0x5AC) |= 8;
 }
 
 #pragma optimization_level 3
@@ -1796,24 +1689,24 @@ void fn_802200CC(void)
 
     do {
       if ((flags & 1) != 0) {
-        *(volatile u8 *)0xCC008000 = 8;
+        *(u8 *)0xCC008000 = 8;
         t = index | 0x70;
         a = offset + 0x1C;
-        *(volatile u8 *)0xCC008000 = t;
+        *(u8 *)0xCC008000 = t;
         t = index | 0x80;
         b = offset + 0x3C;
         v = *(u32 *)((u32)gx + a);
         c = index | 0x90;
         a = offset + 0x5C;
-        *(volatile u32 *)0xCC008000 = v;
-        *(volatile u8 *)0xCC008000 = 8;
-        *(volatile u8 *)0xCC008000 = t;
+        *(u32 *)0xCC008000 = v;
+        *(u8 *)0xCC008000 = 8;
+        *(u8 *)0xCC008000 = t;
         w = *(u32 *)((u32)gx + b);
-        *(volatile u32 *)0xCC008000 = w;
-        *(volatile u8 *)0xCC008000 = 8;
-        *(volatile u8 *)0xCC008000 = c;
+        *(u32 *)0xCC008000 = w;
+        *(u8 *)0xCC008000 = 8;
+        *(u8 *)0xCC008000 = c;
         z = *(u32 *)((u32)gx + a);
-        *(volatile u32 *)0xCC008000 = z;
+        *(u32 *)0xCC008000 = z;
       }
         flags >>= 1;
         offset += 4;
