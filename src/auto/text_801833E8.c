@@ -12659,7 +12659,7 @@ void fn_8019BE54(void *arg0, void *arg1)
 
 #pragma global_optimizer off
 void fn_8019BEA4(void *arg0) {
-    void fn_8002F658(s32 *, s32);
+    void TargetList_GetAt(s32 *, s32);
     void *UnitRef_GetUnit(void);
     void fn_80053658(void *, s32, void *);
     void fn_80053680(void *, void *);
@@ -12673,7 +12673,7 @@ void fn_8019BEA4(void *arg0) {
     i = 0;
     goto check;
 loop:
-    fn_8002F658(gTargetList, i);
+    TargetList_GetAt(gTargetList, i);
     item = UnitRef_GetUnit();
     obj = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (obj) {
