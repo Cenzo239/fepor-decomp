@@ -2707,61 +2707,30 @@ after:
     }
     return result;
 }
-static inline s32 CARDCheckDirEntry(void *card, u8 *entry)
-{
-    s32 fn_80231944(void *, void *, u32);
-    extern u8 lbl_8033A420[];
-    u8 *p = *(u8 **)((u8 *)card + 0x10C);
-
-    if (*entry == 0xFF) {
-        return -4;
-    }
-    if (p == lbl_8033A420 || (fn_80231944(entry, p, 4) == 0 && fn_80231944(entry + 4, p + 4, 2) == 0)) {
-        return 0;
-    }
-    return -10;
-}
-
 s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 {
 #pragma use_lmw_stmw on
     u8 *__CARDGetDirBlock(void *);
-    s32 fn_80231944(const void *, const void *, u32);
-    extern u8 lbl_8033A420[];
 
-    u8 *gamecode;
-    u8 *defaultCode;
+    register u8 *entry;
+    register s32 i;
     s32 result;
-    s32 i;
-    u8 *entry;
+    char *p;
+    s8 a;
+    s8 b;
+    s32 n;
+    char *name;
 
     if (*(s32 *)card == 0) {
         return -3;
     }
 
     entry = __CARDGetDirBlock(card);
-    defaultCode = lbl_8033A420;
+    i = 0;
 
-    for (i = 0; i < 0x7F; i++, entry += 0x40) {
-        gamecode = *(u8 **)((u8 *)card + 0x10C);
-
-        if (*entry == 0xFF) {
-            result = -4;
-        } else if (gamecode == defaultCode ||
-                   (fn_80231944(entry, gamecode, 4) == 0 &&
-                    fn_80231944(entry + 4, gamecode + 4, 2) == 0)) {
-            result = 0;
-        } else {
-            result = -10;
-        }
-
+    do {
+        result = CARDCheckDirEntry(card, entry);
         if (result >= 0) {
-            char *p;
-            s8 a;
-            s8 b;
-            s32 n;
-            char *name;
-
             p = (char *)entry + 8;
             name = filename;
             n = 0x20;
@@ -2777,14 +2746,20 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
                     goto str_done;
                 }
             }
-            result = ((s8)*name == 0) ? 1 : 0;
+            if ((s8)*name == 0) {
+                result = 1;
+            } else {
+                result = 0;
+            }
         str_done:
             if (result != 0) {
                 *outIndex = i;
                 return 0;
             }
         }
-    }
+        i += 1;
+        entry += 0x40;
+    } while (i < 0x7F);
 
     return -4;
 #pragma use_lmw_stmw reset
