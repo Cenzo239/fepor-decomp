@@ -6521,10 +6521,10 @@ s32 fn_8011C018(void *self) {
     s16 dist;
     u8 prefer;
     void *result;
-    u32 oy;
-    u32 ox;
     u32 sy;
+    u32 oy;
     u32 sx;
+    u32 ox;
 
     bestDist = 0x7FFF;
     best = NULL;
@@ -6640,7 +6640,7 @@ s32 fn_8011C164(void *self) {
     *(void **)((u8 *)self + 0x8) = result;
     return best != NULL;
 }
-#pragma global_optimizer off
+#pragma global_optimizer on
 s32 fn_8011C2B8(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
