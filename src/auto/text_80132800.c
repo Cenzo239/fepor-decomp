@@ -1827,8 +1827,6 @@ s32 fn_80134E40(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma scheduling on
-#pragma global_optimizer off
 void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_8029180C[];
