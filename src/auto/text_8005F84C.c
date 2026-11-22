@@ -4612,7 +4612,7 @@ void fn_800675E8(void *arg0) {
 
     gCamera = cam;
 
-    if (cam != NULL) {
+    if (gCamera != NULL) {
         GXSetScissor(
             *(u16 *)(cam + 0x1C),
             *(u16 *)(cam + 0x1E),
@@ -8519,20 +8519,22 @@ s32 fn_8006EDD8(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     u8 *file;
+    u32 first;
+    u32 i;
     u8 *table;
     u8 *record;
     u32 offset;
     u32 value;
-    u32 i;
 
     *(u8 **)arg0 = (u8 *)fn_8005C82C(arg1, arg2);
     file = *(u8 **)arg0;
+    first = *(u32 *)file;
 
-    if (*(u32 *)file == 0x0020AF31U) {
+    if (first == 0x0020AF31U) {
         return;
     }
 
-    *(u32 *)file += 1;
+    *(u32 *)file = first + 1;
     *(u32 *)(file + 8) += (u32)file;
 
     i = 0;
@@ -9845,52 +9847,65 @@ void fn_80070678(void *arg0) {
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     s32 Text_MeasureWidth(void *, s32, f32);
-
     extern f32 lbl_80369300;
     extern f32 lbl_803692E0;
     extern f32 lbl_8036930C;
-
-    u8 *self;
-    void **vtable;
-    void *text;
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[4];
+        virtual void *v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s32 v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void *v30() = 0;
+    };
+    Obj *self = (Obj *)arg0;
     s32 width;
-    s32 textWidth;
-    s32 x;
+    void *text;
     f32 posX;
 
-    self = (u8 *)arg0;
-
-    vtable = *(void ***)(self + 4);
-    ((void (*)(void *))vtable[0x1F])(self);
-
+    self->v29();
     Ui_DrawMsgPanelBg(0, 0);
-
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369300);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
-    vtable = *(void ***)(self + 4);
-    width = (s16)((s32 (*)(void *))vtable[0x14])(self);
-
-    vtable = *(void ***)(self + 4);
-    text = ((void *(*)(void *))vtable[2])(self);
-
-    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
-
-    x = (width - textWidth);
-    x = (x + ((u32)x >> 31)) >> 1;
-    posX = (f32)x;
-
+    width = (s16)self->v18();
+    text = self->v0();
+    posX = (f32)((width - Text_MeasureWidth(text, -1, lbl_803692E0)) / 2);
     Prim2D_AddPrim(6);
     Prim2D_SetPos(posX, lbl_8036930C);
     Prim2D_SetColor(0, 0, 0, 0xFF);
-
-    vtable = *(void ***)(self + 4);
-    text = ((void *(*)(void *))vtable[2])(self);
-
-    Prim2D_SetText(text);
+    Prim2D_SetText(self->v0());
     Prim2D_EndPrim();
+#pragma cplusplus reset
 }
 
 void fn_80070798(void *arg0, void *arg1) {
@@ -9912,6 +9927,7 @@ void fn_80070798(void *arg0, void *arg1) {
     s32 y;
     s16 width;
     s16 available;
+    u8 *first;
 
     self = (u8 *)arg0;
     group = (u8 *)arg1;
@@ -9919,13 +9935,13 @@ void fn_80070798(void *arg0, void *arg1) {
     *(s16 *)(self + 8) = 0;
 
     for (i = 0; i < (s8)group[0x60]; i++) {
-        entity = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        first = (u8 *)GfxEnt_Get(group[i + 0x40]);
 
         entity = (u8 *)GfxEnt_Get(group[i + 0x40]);
         obj = *(void **)(entity + 0x34);
         vtable = *(void ***)obj;
 
-        text = ((void *(*)(void *, void *))vtable[6])(obj, entity);
+        text = ((void *(*)(void *, void *))vtable[6])(obj, first);
 
         width = (s16)Text_MeasureWidth(text, -1, lbl_803692E0);
 
