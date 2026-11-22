@@ -5708,18 +5708,17 @@ block_16:
     }
 }
 
+#pragma global_optimizer off
 void fn_8004AD20(void *arg0, f32 *arg1) {
-    s32 fn_80146B10(s32);
+    void *fn_80146B10(s32);
     void DebugPrint(void *, ...);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
-
-    extern u16 lbl_8026A9B0[40];
+    extern u8 lbl_8026A9B0[];
     extern f32 lbl_80368FA0;
-
-    u16 *entry;
-    s32 cue;
     s32 i;
+    void *cue;
+    u16 *entry;
     f32 x;
     f32 y;
     f32 z;
@@ -5727,13 +5726,9 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     z = arg1[2];
     y = arg1[1];
     x = arg1[0];
-
     entry = (u16 *)arg0;
-    i = 0;
-
-    while (i < 4) {
+    for (i = 0; i < 4; i++, entry++) {
         u16 id = *(u16 *)((u8 *)entry + 0x7C);
-
         if (id == 0xFFFF) {
             cue = 0;
         } else if (id < 0x3E8) {
@@ -5741,26 +5736,16 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
         } else {
             cue = fn_80146B10(id);
         }
-
         if (cue != 0) {
-            DebugPrint(
-                (u8 *)lbl_8026A9B0 + 0x8A,
-                cue
-            );
-
+            DebugPrint(lbl_8026A9B0 + 0x8A, cue);
             if (z > lbl_80368FA0) {
-                SeCue_PlayAt((void *)cue, 0x64, x, y, z);
+                SeCue_PlayAt(cue, 0x64, x, y, z);
             } else {
-                Ui_PlaySeCue((void *)cue, 0x64);
+                Ui_PlaySeCue(cue, 0x64);
             }
         }
-
-        i++;
-        entry++;
     }
 }
-
-#pragma global_optimizer off
 void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
     void *fn_80146B10(s32);
     void DebugPrint(void *, ...);
