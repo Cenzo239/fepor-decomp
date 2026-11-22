@@ -4990,8 +4990,6 @@ Vector copyA,a,copyB,b;
 u8 name[12],type[12];
 s32 scratchA,scratchB;
 void *obj;
-char *path=arg1;
-void *self=arg0;
 s8 madeA=0,madeB=0;
 obj=Heap_Alloc(0xC8);
 if(obj) {
@@ -4999,11 +4997,11 @@ a.f.x=a.f.y=a.f.z=lbl_80369DC8;
 b.f.x=b.f.y=b.f.z=lbl_80369DC8;
 copyA.words[0]=a.words[0]; copyA.words[1]=a.words[1]; copyA.words[2]=a.words[2];
 copyB.words[0]=b.words[0]; copyB.words[1]=b.words[1]; copyB.words[2]=b.words[2];
-String_Init(name,path,&scratchA); madeA=1;
+String_Init(name,arg1,&scratchA); madeA=1;
 String_Init(type,lbl_802704F8+0x3D7,&scratchB); madeB=1;
-obj=fn_80151D50(obj,*(void **)((u8 *)self+4),type,name,&copyB,&copyA,0);
+obj=fn_80151D50(obj,*(void **)((u8 *)arg0+4),type,name,&copyB,&copyA,0);
 }
-((Host *)*(void **)((u8 *)self+4))->add(obj);
+((Host *)*(void **)((u8 *)arg0+4))->add(obj);
 if(madeB) String_Destroy(type,-1);
 if(madeA) String_Destroy(name,-1);
 #pragma cplusplus reset
@@ -9648,18 +9646,18 @@ extern "C" void fn_800DA608(s32 arg0) {
     };
     String type;
     Vector b, copyB, a, copyA;
-    u8 name[12];
+    String name;
     s32 scratch;
-    void *self;
     void *obj;
+    void *self;
     s8 made;
 
     self = lbl_803678B8;
-    ((String *)name)->cap = 0;
-    ((String *)name)->size = 0;
-    ((String *)name)->data = 0;
-    ((String *)name)->cap = 0;
-    String_Assign((String *)name, (String *)(*(u8 **)((u8 *)self + 0x6C) + arg0 * 0xC), 0, -1);
+    name.cap = 0;
+    name.size = 0;
+    name.data = 0;
+    name.cap = 0;
+    String_Assign(&name, (String *)(*(u8 **)((u8 *)self + 0x6C) + arg0 * 0xC), 0, -1);
     made = 0;
     obj = Heap_Alloc(0xC8);
     if (obj) {
@@ -9673,13 +9671,13 @@ extern "C" void fn_800DA608(s32 arg0) {
         copyB.words[2] = b.words[2];
         String_Init(&type, lbl_802711B0 + 0x17F, &scratch);
         made = 1;
-        obj = fn_80151D50(obj, *(void **)((u8 *)self + 4), &type, name, &copyB, &copyA, 0);
+        obj = fn_80151D50(obj, *(void **)((u8 *)self + 4), &type, &name, &copyB, &copyA, 0);
     }
     ((Host *)*(void **)((u8 *)self + 4))->add(obj);
     if (made)
         String_Destroy(&type, -1);
-          String_Destroy(name, -1);
-  }
+    String_Destroy(&name, -1);
+}
   #pragma cplusplus reset
   
 #pragma global_optimizer off
@@ -10294,16 +10292,16 @@ void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
     f32 destination[3];
     f32 delta[3];
     f32 distance;
-    f32 z;
-    f32 y;
     f32 x;
+    f32 y;
+    f32 z;
     u8 *self;
 
-    self = (u8 *)arg0;
     x = arg1[0];
     y = arg1[1];
-    z = arg1[2];
     *(f32 *)((u8 *)arg0 + 0x78) = x;
+    self = (u8 *)arg0;
+    z = arg1[2];
     *(f32 *)(self + 0x7C) = y;
     *(f32 *)(self + 0x80) = z;
 
@@ -25876,36 +25874,41 @@ bits:
     return flag;
 }
 
-void fn_800F8868(u8 *self) {
-  extern u8 *gAiCmd;
-extern u8 gUiContext[],gAiState[],gTargetList[];
-extern s32 gAiCmdIsAlt;
-u8 fn_801021F0(void *,s16 *,s16 *);
-void *Unit_FindByName(void *);
-u8 fn_800BF1E8(void *);
-void fn_800FFB4C(void *,s32,s32);
-u32 fn_8002F680(void *,u8,u8);
-void fn_800FB96C(s32,u8,u8,void *,s8,s8,s32,s32,s32);
 #pragma cplusplus on
-struct Context { u32 unk; void *unit; Context *set(void *u) { unit=u; return this; } };
-s16 x,y;
-u8 *other=gAiCmd;
-if(fn_801021F0(*(void **)(other+0x14),&x,&y)) {
-other=(u8 *)Unit_FindByName(*(void **)(other+0x14));
-if(!fn_800BF1E8(((Context *)gUiContext)->set(other))) {
-*(s32 *)(gAiState+8)=9; *(s32 *)(gAiState+0xC)=9;
-} else {
-fn_800FFB4C(self,-1,-1);
-if(fn_8002F680(gTargetList,other[0x19E],other[0x19F]) && *(s32 *)(gAiState+8)!=4) {
-*(s32 *)(gAiState+8)=3;
-fn_800FB96C(7,self[0x19E],self[0x19F],other,(s8)x,(s8)y,-1,0,0);
+extern "C" void fn_800F8868(u8 *self) {
+    extern u8 *gAiCmd;
+    extern u8 gUiContext[], gAiState[], gTargetList[];
+    extern s32 gAiCmdIsAlt;
+    u8 fn_801021F0(void *, s16 *, s16 *);
+    void *Unit_FindByName(void *);
+    u8 fn_800BF1E8(void *);
+    void fn_800FFB4C(void *, s32, s32);
+    u32 fn_8002F680(void *, u8, u8);
+    void fn_800FB96C(s32, u8, u8, void *, s8, s8, s32, s32, s32);
+    s16 x, y;
+    u8 *other = gAiCmd;
+    void *ctx;
+    if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
+        other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
+        ctx = gUiContext;
+        *(void **)((u8 *)ctx + 4) = other;
+        if (!fn_800BF1E8(ctx)) {
+            *(s32 *)(gAiState + 8) = 9;
+            *(s32 *)(gAiState + 0xC) = 9;
+        } else {
+            fn_800FFB4C(self, -1, -1);
+            if (fn_8002F680(gTargetList, other[0x19E], other[0x19F]) && *(s32 *)(gAiState + 8) != 4) {
+                *(s32 *)(gAiState + 8) = 3;
+                fn_800FB96C(7, self[0x19E], self[0x19F], other, (s8)x, (s8)y, -1, 0, 0);
+            }
+        }
+    }
+    if (!gAiCmdIsAlt)
+        self[0x250]++;
+    else
+        self[0x251]++;
 }
-}
-}
-if(!gAiCmdIsAlt) self[0x250]++; else self[0x251]++;
 #pragma cplusplus reset
-}
-
 void fn_800F8994(void *arg0) {
  extern u8 gAiState[],gBattleMap[]; extern u8 *gAiCmd; extern s32 gAiCmdIsAlt;
  void Ai_UnitIsHostileToActive(void *);void Ai_UnitNameInCmdList(void *);void Ai_UnitHostileNotInCmdList(void *);
@@ -26693,21 +26696,19 @@ void fn_800F9E90(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80100BA4(s16, s16, s8, s8);
     void *Unit_FindByName(void *);
-    void *cmd = gAiCmd;
+    void *cmd;
     s16 x;
     s16 y;
 
+    cmd = gAiCmd;
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        (u8)fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
+        fn_801021F0(*(void **)((u8 *)cmd + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-        {
-            u8 *ctx = gUiContext;
-            if ((u8)fn_80100BA4(x, y, (s8)ctx[0xd], (s8)ctx[0xe]) &&
-                *(s32 *)(gAiState + 8) != 4) {
-                *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
-                *(s32 *)(gAiState + 8) = 2;
-                gAiState[0x21C] = 0;
-            }
+        if (fn_80100BA4(x, y, (s8)gUiContext[0xd], (s8)gUiContext[0xe]) &&
+            *(s32 *)(gAiState + 8) != 4) {
+            *(void **)(gUiContext + 4) = Unit_FindByName(*(void **)((u8 *)cmd + 0x14));
+            *(s32 *)(gAiState + 8) = 2;
+            gAiState[0x21C] = 0;
         }
     }
     if (gAiCmdIsAlt == 0) {
@@ -29207,9 +29208,9 @@ if((*(s16**)(map+0x14190))[index]>=0 && *(u16*)(map+0xC18E+index*2)==0)
 void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
     extern u8 gBattleMap[];
     void Map_SelectRangeBuffer(void *,s32);
-    u8 *map=gBattleMap;
+    register u8 *map=gBattleMap;
     Map_SelectRangeBuffer(map,mode);
-    (*(u16 **)(gBattleMap+0x14190))[(s8)x+((s8)y<<6)]=value;
+    *(u16 *)(*(u32 *)(gBattleMap+0x14190) + ((((s8)x+((s8)y<<6)))<<1))=(short)value;
     while(*path) {
         u8 outside;
         switch(*path) {
@@ -30791,15 +30792,8 @@ s32 fn_80100BA4(s16 x, s16 y, s16 x2, s16 y2) {
     s32 dy;
     u16 flags;
 
-    dy = (s16)y - (s16)y2;
-    if (dy < 0) {
-        dy = -dy;
-    }
-
-    dx = (s16)x - (s16)x2;
-    if (dx < 0) {
-        dx = -dx;
-    }
+    dy = ((s16)y - (s16)y2) < 0 ? -((s16)y - (s16)y2) : ((s16)y - (s16)y2);
+    dx = ((s16)x - (s16)x2) < 0 ? -((s16)x - (s16)x2) : ((s16)x - (s16)x2);
 
     if (dx + dy > 1) {
         return 0;
@@ -30807,25 +30801,25 @@ s32 fn_80100BA4(s16 x, s16 y, s16 x2, s16 y2) {
 
     if ((s16)y2 == (s16)y - 1) {
         flags = *(u16 *)(gBattleMap + 0x408E +
-            (((s8)x + ((s8)y << 6)) << 1));
+            ((((s8)y << 6) + (s8)x) << 1));
         return (flags >> 3) & 1;
     }
 
     if ((s16)y2 == (s16)y + 1) {
         flags = *(u16 *)(gBattleMap + 0x408E +
-            (((s8)x + ((s8)y << 6)) << 1));
+            ((((s8)y << 6) + (s8)x) << 1));
         return (flags >> 2) & 1;
     }
 
     if ((s16)x2 == (s16)x - 1) {
         flags = *(u16 *)(gBattleMap + 0x408E +
-            (((s8)x + ((s8)y << 6)) << 1));
+            ((((s8)y << 6) + (s8)x) << 1));
         return flags & 1;
     }
 
     if ((s16)x2 == (s16)x + 1) {
         flags = *(u16 *)(gBattleMap + 0x408E +
-            (((s8)x + ((s8)y << 6)) << 1));
+            ((((s8)y << 6) + (s8)x) << 1));
         return (flags >> 1) & 1;
     }
 
