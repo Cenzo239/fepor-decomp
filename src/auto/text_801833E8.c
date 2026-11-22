@@ -12042,7 +12042,7 @@ void fn_8019A0C8(void *arg0) {
 void fn_8019A1E0(u8 *self)
 {
   void *Map_Get(void *);
-  void *Map_FindObjNear(void *, s8, s8, s32, s32);
+  void *Map_FindObjNear(void *, s32, s32, s32, s32);
   void fn_800056A0(s32);
   void Process_Goto(void *, s32);
   f32 Map_SampleHeight(void *, f32, f32);
@@ -12051,13 +12051,10 @@ void fn_8019A1E0(u8 *self)
   extern u8 gBattleMap[];
   extern u8 MapSelect_str[];
   void *map;
-  s8 px, py;
   self[0x38] = gUiContext[0xD];
   self[0x39] = gUiContext[0xE];
   map = Map_Get(gUiContext);
-  px = (s8) self[0x38];
-  py = (s8) self[0x39];
-  *((void **) (self + 0x34)) = Map_FindObjNear(map, px, py, 0x8000, 0);
+  *((void **) (self + 0x34)) = Map_FindObjNear(map, *(s8 *)(self + 0x38), *(s8 *)(self + 0x39), 0x8000, 0);
   if ((*((void **) (self + 0x34))) == NULL)
   {
     fn_800056A0(0);
