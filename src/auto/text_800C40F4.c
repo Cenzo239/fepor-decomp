@@ -15,7 +15,10 @@ public:
 };
 #pragma cplusplus reset
 #pragma cplusplus on
-struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
+struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u); };
+#pragma dont_inline on
+AiCommandContext *AiCommandContext::set(void *u) { unit = u; return this; }
+#pragma dont_inline reset
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
 typedef struct MapVisibilityCell { u8 pad[0x200D]; u8 value; } MapVisibilityCell;
@@ -25885,14 +25888,13 @@ extern "C" void fn_800F8868(u8 *self) {
     void fn_800FFB4C(void *, s32, s32);
     u32 fn_8002F680(void *, u8, u8);
     void fn_800FB96C(s32, u8, u8, void *, s8, s8, s32, s32, s32);
+    struct Ret { void *p; } ctx;
     s16 x, y;
     u8 *other = gAiCmd;
-    void *ctx;
     if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
         other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
-        ctx = gUiContext;
-        *(void **)((u8 *)ctx + 4) = other;
-        if (!fn_800BF1E8(ctx)) {
+        ctx.p = ((AiCommandContext *)gUiContext)->set(other);
+        if (!fn_800BF1E8(ctx.p)) {
             *(s32 *)(gAiState + 8) = 9;
             *(s32 *)(gAiState + 0xC) = 9;
         } else {
