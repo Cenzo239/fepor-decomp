@@ -2980,26 +2980,26 @@ char *strcat(char *,const char *);
 extern char gUiSelectMenuStrings[];
 char buf[8];
 void *out;
-s32 i;
 void *list;
-void *unit;
-void *name;
+s32 i;
+char *strings;
 out=arg0;
-unit=*arg1;
-list=(u8 *)unit+0x1a4;
+list=(u8 *)*arg1+0x1a4;
 switch(arg2) {
 case 0: return 0;
-case 1:
-name=*(void **)((u8 *)unit+0x194);
+case 1: {
+void *name=*(void **)((u8 *)*arg1+0x194);
 if(name) sprintf(out,gUiSelectMenuStrings+0x264,Msg_ResolveName(*(s32 *)((u8 *)name+0x188)));
 else sprintf(out,gUiSelectMenuStrings+0x25b);
 break;
+}
 case 2:
 if(fn_8010424C(list)==0) sprintf(out,gUiSelectMenuStrings+0x25b);
 else {
 sprintf(out,gUiSelectMenuStrings+0x30c);
+strings=gUiSelectMenuStrings;
 for(i=0;i<fn_8010424C(list);i++) {
-sprintf(buf,gUiSelectMenuStrings+0x30d,fn_8010418C(list,i)-1);
+sprintf(buf,strings+0x30d,fn_8010418C(list,i)-1);
 strcat(out,buf);
 }
 }
