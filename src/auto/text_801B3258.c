@@ -1593,60 +1593,99 @@ void Ui_DrawExpBar(void *bar) {
 
 #pragma global_optimizer off
 void fn_801B6BE4(u8 *out) {
-extern u8 gBattle[];
-void fn_800340E4(void *);
-void fn_801B6DAC(u8 *);
-u8 *unit;
-u8 *p;
-u8 *arg0=out;
-s8 count;
-s16 saved;
-u32 off;
-u8 type;
-unit=*(u8 **)(gBattle+0x280);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else {
-unit=*(u8 **)(gBattle+0x560);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else unit=0;
-}
+    extern u8 gBattle[];
+    void fn_800340E4(void *);
+    void fn_801B6DAC(u8 *);
+    u8 *unit;
+    u8 *p;
+    u8 *arg0 = out;
+    s32 count;
+    s16 saved;
+    u32 off;
+    u8 type;
+
+    unit = *(u8 **)(gBattle + 0x280);
+    if (unit) {
+        type = (*(u8 **)(unit + 0x190))[8];
+        if (type == 0) {
+            goto found;
+        } else if (type != 5) {
+            goto try2;
+        } else {
+            goto found;
+        }
+    }
+try2:
+    unit = *(u8 **)(gBattle + 0x560);
+    if (unit) {
+        type = (*(u8 **)(unit + 0x190))[8];
+        if (type == 0) {
+            goto found;
+        } else if (type != 5) {
+            goto no_unit;
+        } else {
+            goto found;
+        }
+    }
+no_unit:
+    unit = 0;
 found:
-*(u8 **)arg0=unit;
-count=0;
-p=gBattle+0x8A0;
-saved=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done1; case 0x29: count++; break; }
-*(s16 *)p+=1;
-}
+    *(u8 **)arg0 = unit;
+    count = 0;
+    p = gBattle + 0x8A0;
+    saved = *(s16 *)p;
+    fn_800340E4(p);
+    for (;;) {
+        off = *(s16 *)p * 4;
+        switch (*(u8 *)(p + off + 4)) {
+        case 0:
+            goto done1;
+        case 0x29:
+            count++;
+            break;
+        }
+        *(s16 *)p += 1;
+    }
 done1:
-*(s16 *)p=saved;
-arg0[8]=count;
-{ s8 value=0; s16 saved2=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done2; case 0x27: value=(s8)*(s16 *)(p+off+6); break; }
-*(s16 *)p+=1;
-}
-done2:
-*(s16 *)p=saved2;
-*(s16 *)(arg0+4)=value;
-}
-count=0;
-saved=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done3; case 0x28: count=(s8)*(s16 *)(p+off+6); break; }
-*(s16 *)p+=1;
-}
+    *(s16 *)p = saved;
+    arg0[8] = count;
+    {
+        s32 value = 0;
+        s16 saved2 = *(s16 *)p;
+        fn_800340E4(p);
+        for (;;) {
+            off = *(s16 *)p * 4;
+            switch (*(u8 *)(p + off + 4)) {
+            case 0:
+                goto done2;
+            case 0x27:
+                value = (s8)*(s16 *)(p + off + 6);
+                break;
+            }
+            *(s16 *)p += 1;
+        }
+    done2:
+        *(s16 *)p = saved2;
+        *(s16 *)(arg0 + 4) = value;
+    }
+    count = 0;
+    saved = *(s16 *)p;
+    fn_800340E4(p);
+    for (;;) {
+        off = *(s16 *)p * 4;
+        switch (*(u8 *)(p + off + 4)) {
+        case 0:
+            goto done3;
+        case 0x28:
+            count = (s8)*(s16 *)(p + off + 6);
+            break;
+        }
+        *(s16 *)p += 1;
+    }
 done3:
-*(s16 *)p=saved;
-*(s16 *)(arg0+6)=count;
-fn_801B6DAC(arg0+10);
+    *(s16 *)p = saved;
+    *(s16 *)(arg0 + 6) = count;
+    fn_801B6DAC(arg0 + 10);
 }
 #pragma global_optimizer reset
 #pragma global_optimizer off
@@ -4153,96 +4192,81 @@ void Ui_HandleUnitManageCursorInput(void *panel) {
 
 void fn_801BB608(void *arg0)
 {
-    void *Ui_FindChild(void *, s32, s32);
-    void Ui_AddChild(void *, void *);
-    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
-    void fn_801402A0(void *, void *, s16 *, s32);
-    f32 Ui_GetWorldScale(void *);
-    void Ui_OpenChildAnim(void *, void *, s32);
-    void Ui_BringChildToFront(void *, void *);
-    void Ui_SetWidgetText(void *, void *);
-
-    extern u8 gUiUnitPanelStrings[];
-    extern f32 lbl_8036B2D8;
-
-    u8 *self;
-    u8 *first;
-    u8 *child;
-    s16 pos10[2];
-    s16 posC[2];
-    s16 pos8[2];
-
-    self = (u8 *)arg0;
-
-    first = (u8 *)Ui_FindChild(self, 0x100, 0);
-
-    if (first == 0) {
-        first = *(u8 **)(self + 0x48);
-        Ui_AddChild(self, first);
-    }
-
-    if (*(s16 *)(first + 0xC) != 0x10) {
-        pos10[0] = *(s16 *)(first + 0xA);
-        pos10[1] = 0x10;
-
-        Ui_SlideWidgetChildMode1(self, first, pos10, 0);
-    }
-
-    first[0x4D] = 0;
-    *(f32 *)(first + 0x30) = lbl_8036B2D8;
-
-    child = (u8 *)Ui_FindChild(self, 0x101, 0);
-
-    if (child == 0) {
-        child = *(u8 **)(self + 0x64);
-        Ui_AddChild(self, child);
-    }
-
-    if (*(s16 *)(child + 0xA) != 0x148) {
-        posC[0] = 0x148;
-        posC[1] = *(s16 *)(child + 0xC);
-
-        Ui_SlideWidgetChildMode1(self, child, posC, 0);
-    }
-
-    child = (u8 *)Ui_FindChild(self, 0x102, 0);
-
-    if (child == 0) {
-        child = *(u8 **)(self + 0x50);
-        Ui_AddChild(self, child);
-    }
-
-    if (Ui_GetWorldScale(child) < lbl_8036B2D8) {
-        Ui_OpenChildAnim(self, child, 0);
-    }
-
-    child = (u8 *)Ui_FindChild(self, 0x106, 0);
-
-    if (child == 0) {
-        child = *(u8 **)(self + 0x60);
-        Ui_AddChild(self, child);
-    }
-
-    if (*(s16 *)(child + 0xC) != 0x94) {
-        pos8[0] = *(s16 *)(child + 0xA);
-        pos8[1] = 0x94;
-
-        fn_801402A0(self, child, pos8, 0);
-    }
-
-    child[0x54] = 0;
-    child[0x3C] = 0;
-
-    Ui_BringChildToFront(self, first);
-
-    child = (u8 *)Ui_FindChild(self, -0x1000, 0);
-
-    if (child != 0) {
-        Ui_SetWidgetText(
-            child,
-            gUiUnitPanelStrings + 0x1A3
-        );
-    }
+  void *Ui_FindChild(void *, s32, s32);
+  void Ui_AddChild(void *, void *);
+  void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+  void fn_801402A0(void *, void *, s16 *, s32);
+  f32 Ui_GetWorldScale(void *);
+  void Ui_OpenChildAnim(void *, void *, s32);
+  void Ui_BringChildToFront(void *, void *);
+  void Ui_SetWidgetText(void *, void *);
+  extern u8 gUiUnitPanelStrings[];
+  s16 new_var;
+  extern const f32 lbl_8036B2D8;
+  u8 *self;
+  u8 *first;
+  u8 *child;
+  s16 pos10[2];
+  s16 posC[2];
+  s16 pos8[2];
+  self = (u8 *) arg0;
+  first = (u8 *) Ui_FindChild(self, 0x100, 0);
+  if (first == 0)
+  {
+    first = *((u8 **) (self + 0x48));
+    Ui_AddChild(self, first);
+  }
+  if ((*((s16 *) (first + 0xC))) != 0x10)
+  {
+    pos10[0] = *((s16 *) (first + 0xA));
+    pos10[1] = 0x10;
+    Ui_SlideWidgetChildMode1(self, first, pos10, 0);
+  }
+  first[0x4D] = 0;
+  *((f32 *) (first + 0x30)) = lbl_8036B2D8;
+  child = (u8 *) Ui_FindChild(self, 0x101, 0);
+  if (child == 0)
+  {
+    child = *((u8 **) (self + 0x64));
+    Ui_AddChild(self, child);
+  }
+  if ((*((s16 *) (child + 0xA))) != 0x148)
+  {
+    new_var = *((s16 *) (child + 0xC));
+    posC[0] = 0x148;
+    posC[1] = new_var;
+    Ui_SlideWidgetChildMode1(self, child, posC, 0);
+  }
+  child = (u8 *) Ui_FindChild(self, 0x102, 0);
+  if (child == 0)
+  {
+    child = *((u8 **) (self + 0x50));
+    Ui_AddChild(self, child);
+  }
+  if (Ui_GetWorldScale(child) < lbl_8036B2D8)
+  {
+    Ui_OpenChildAnim(self, child, 0);
+  }
+  child = (u8 *) Ui_FindChild(self, 0x106, 0);
+  if (child == 0)
+  {
+    child = *((u8 **) (self + 0x60));
+    Ui_AddChild(self, child);
+  }
+  if ((new_var = *((s16 *) (child + 0xC))) != 0x94)
+  {
+    pos8[0] = *((s16 *) (child + 0xA));
+    pos8[1] = 0x94;
+    fn_801402A0(self, child, pos8, 0);
+  }
+  child[0x54] = 0;
+  child[0x3C] = 0;
+  Ui_BringChildToFront(self, first);
+  child = (u8 *) Ui_FindChild(self, -0x1000, 0);
+  if (child != 0)
+  {
+    Ui_SetWidgetText(child, gUiUnitPanelStrings + 0x1A3);
+  }
 }
 
 #pragma cplusplus on
@@ -5075,7 +5099,7 @@ void fn_801BCCC4(void *arg0) {
     void fn_80034A8C(void *, s32, u8, void *, s32);
     void Ui_RemoveChild(void *, void *);
     extern u8 gUiUnitPanelStrings[];
-    extern u8 gUiContext[];
+    extern s32 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
     s32 v;
@@ -5090,7 +5114,7 @@ void fn_801BCCC4(void *arg0) {
     Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x1CE);
     obj = *(void **)((u8 *)self + 0x5C);
     base = gBattleState;
-    v = *(s32 *)gUiContext;
+    v = gUiContext[0];
     saved = *(s32 *)((u8 *)base + 0x1C);
     *(s32 *)((u8 *)base + 0x1C) = saved - (s16)fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
     fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), self, 0);
@@ -6568,13 +6592,14 @@ void *fn_801BEF90(void *arg0)
 
     LocalFrame frame;
     void *allocated;
-    u8 *self = (u8 *)arg0;
+    u8 *self;
     void *xml;
     char *str;
     s8 madePath;
     s8 madeName;
     f32 zero = lbl_8036B2F0;
 
+    self = arg0;
     *(u32 *)(self + 0x0) = 0;
     *(u32 *)(self + 0x4) = 0;
     *(u32 *)(self + 0x8) = 0;
@@ -6615,14 +6640,12 @@ void *fn_801BEF90(void *arg0)
     if (madePath) String_Destroy(&frame.name[97], -1);
     if (madeName) String_Destroy(&frame.name[98], -1);
 
-    /* Attribute +0x1D, XML output at original stack +0x1244. */
     String_Init(&frame.name[96], lbl_8027C9F8 + 0x1D, &frame.allocator[96]);
     Xml_GetNamedValue(&frame.value[96], xml, &frame.name[96]);
     str = frame.value[96].text;
     String_AssignCStr(self, str, strlen(str));
     String_Destroy(&frame.name[96], -1);
 
-    /* Attribute +0x24, XML output at original stack +0x1224. */
     String_Init(&frame.name[95], lbl_8027C9F8 + 0x24, &frame.allocator[95]);
     Xml_GetNamedValue(&frame.value[95], xml, &frame.name[95]);
     frame.copied = frame.value[95];
@@ -6631,7 +6654,6 @@ void *fn_801BEF90(void *arg0)
     *(f32 *)(self + 0x10) = frame.copied.real[1];
     *(f32 *)(self + 0x14) = frame.copied.real[2];
 
-    /* Attribute +0x2D, XML output at original stack +0x1204. */
     String_Init(&frame.name[94], lbl_8027C9F8 + 0x2D, &frame.allocator[94]);
     Xml_GetNamedValue(&frame.value[94], xml, &frame.name[94]);
     frame.copied = frame.value[94];
@@ -6640,7 +6662,6 @@ void *fn_801BEF90(void *arg0)
     *(f32 *)(self + 0x1C) = frame.copied.real[1];
     *(f32 *)(self + 0x20) = frame.copied.real[2];
 
-    /* Attribute +0x36, XML output at original stack +0x11E4. */
     String_Init(&frame.name[93], lbl_8027C9F8 + 0x36, &frame.allocator[93]);
     Xml_GetNamedValue(&frame.value[93], xml, &frame.name[93]);
     frame.copied = frame.value[93];
@@ -6649,325 +6670,271 @@ void *fn_801BEF90(void *arg0)
     *(f32 *)(self + 0x28) = frame.copied.real[1];
     *(f32 *)(self + 0x2C) = frame.copied.real[2];
 
-    /* Attribute +0x3F, XML output at original stack +0x11C4. */
     String_Init(&frame.name[92], lbl_8027C9F8 + 0x3F, &frame.allocator[92]);
     Xml_GetNamedValue(&frame.value[92], xml, &frame.name[92]);
     *(f32 *)(self + 0x30) = frame.value[92].real[0];
     String_Destroy(&frame.name[92], -1);
 
-    /* Attribute +0x4A, XML output at original stack +0x11A4. */
     String_Init(&frame.name[91], lbl_8027C9F8 + 0x4A, &frame.allocator[91]);
     Xml_GetNamedValue(&frame.value[91], xml, &frame.name[91]);
     *(u32 *)(self + 0x34) = frame.value[91].word[0];
     String_Destroy(&frame.name[91], -1);
 
-    /* Attribute +0x53, XML output at original stack +0x1184. */
     String_Init(&frame.name[90], lbl_8027C9F8 + 0x53, &frame.allocator[90]);
     Xml_GetNamedValue(&frame.value[90], xml, &frame.name[90]);
     *(u32 *)(self + 0x38) = frame.value[90].word[0];
     String_Destroy(&frame.name[90], -1);
 
-    /* Attribute +0x5B, XML output at original stack +0x1164. */
     String_Init(&frame.name[89], lbl_8027C9F8 + 0x5B, &frame.allocator[89]);
     Xml_GetNamedValue(&frame.value[89], xml, &frame.name[89]);
     *(u32 *)(self + 0x3C) = frame.value[89].word[0];
     String_Destroy(&frame.name[89], -1);
 
-    /* Attribute +0x64, XML output at original stack +0x1144. */
     String_Init(&frame.name[88], lbl_8027C9F8 + 0x64, &frame.allocator[88]);
     Xml_GetNamedValue(&frame.value[88], xml, &frame.name[88]);
     *(u32 *)(self + 0x40) = frame.value[88].word[0];
     String_Destroy(&frame.name[88], -1);
 
-    /* Attribute +0x6D, XML output at original stack +0x1124. */
     String_Init(&frame.name[87], lbl_8027C9F8 + 0x6D, &frame.allocator[87]);
     Xml_GetNamedValue(&frame.value[87], xml, &frame.name[87]);
     *(u32 *)(self + 0x44) = frame.value[87].word[0];
     String_Destroy(&frame.name[87], -1);
 
-    /* Attribute +0x76, XML output at original stack +0x1104. */
     String_Init(&frame.name[86], lbl_8027C9F8 + 0x76, &frame.allocator[86]);
     Xml_GetNamedValue(&frame.value[86], xml, &frame.name[86]);
     *(u32 *)(self + 0x48) = frame.value[86].word[0];
     String_Destroy(&frame.name[86], -1);
 
-    /* Attribute +0x80, XML output at original stack +0x10E4. */
     String_Init(&frame.name[85], lbl_8027C9F8 + 0x80, &frame.allocator[85]);
     Xml_GetNamedValue(&frame.value[85], xml, &frame.name[85]);
     *(u32 *)(self + 0x4C) = frame.value[85].word[0];
     String_Destroy(&frame.name[85], -1);
 
-    /* Attribute +0x8B, XML output at original stack +0x10C4. */
     String_Init(&frame.name[84], lbl_8027C9F8 + 0x8B, &frame.allocator[84]);
     Xml_GetNamedValue(&frame.value[84], xml, &frame.name[84]);
     *(u32 *)(self + 0x50) = frame.value[84].word[0];
     String_Destroy(&frame.name[84], -1);
 
-    /* Attribute +0x96, XML output at original stack +0x10A4. */
     String_Init(&frame.name[83], lbl_8027C9F8 + 0x96, &frame.allocator[83]);
     Xml_GetNamedValue(&frame.value[83], xml, &frame.name[83]);
     *(u32 *)(self + 0x54) = frame.value[83].word[0];
     String_Destroy(&frame.name[83], -1);
 
-    /* Attribute +0xA1, XML output at original stack +0x1084. */
     String_Init(&frame.name[82], lbl_8027C9F8 + 0xA1, &frame.allocator[82]);
     Xml_GetNamedValue(&frame.value[82], xml, &frame.name[82]);
     *(u32 *)(self + 0x58) = frame.value[82].word[0];
     String_Destroy(&frame.name[82], -1);
 
-    /* Attribute +0xAA, XML output at original stack +0x1064. */
     String_Init(&frame.name[81], lbl_8027C9F8 + 0xAA, &frame.allocator[81]);
     Xml_GetNamedValue(&frame.value[81], xml, &frame.name[81]);
     *(u32 *)(self + 0x5C) = frame.value[81].word[0];
     String_Destroy(&frame.name[81], -1);
 
-    /* Attribute +0xB4, XML output at original stack +0x1044. */
     String_Init(&frame.name[80], lbl_8027C9F8 + 0xB4, &frame.allocator[80]);
     Xml_GetNamedValue(&frame.value[80], xml, &frame.name[80]);
     *(f32 *)(self + 0x60) = frame.value[80].real[0];
     String_Destroy(&frame.name[80], -1);
 
-    /* Attribute +0xC4, XML output at original stack +0x1024. */
     String_Init(&frame.name[79], lbl_8027C9F8 + 0xC4, &frame.allocator[79]);
     Xml_GetNamedValue(&frame.value[79], xml, &frame.name[79]);
     *(f32 *)(self + 0x64) = frame.value[79].real[0];
     String_Destroy(&frame.name[79], -1);
 
-    /* Attribute +0xD3, XML output at original stack +0x1004. */
     String_Init(&frame.name[78], lbl_8027C9F8 + 0xD3, &frame.allocator[78]);
     Xml_GetNamedValue(&frame.value[78], xml, &frame.name[78]);
     *(f32 *)(self + 0x68) = frame.value[78].real[0];
     String_Destroy(&frame.name[78], -1);
 
-    /* Attribute +0xE2, XML output at original stack +0xFE4. */
     String_Init(&frame.name[77], lbl_8027C9F8 + 0xE2, &frame.allocator[77]);
     Xml_GetNamedValue(&frame.value[77], xml, &frame.name[77]);
     *(f32 *)(self + 0x6C) = frame.value[77].real[0];
     String_Destroy(&frame.name[77], -1);
 
-    /* Attribute +0xF0, XML output at original stack +0xFC4. */
     String_Init(&frame.name[76], lbl_8027C9F8 + 0xF0, &frame.allocator[76]);
     Xml_GetNamedValue(&frame.value[76], xml, &frame.name[76]);
     *(f32 *)(self + 0x70) = frame.value[76].real[0];
     String_Destroy(&frame.name[76], -1);
 
-    /* Attribute +0xFC, XML output at original stack +0xFA4. */
     String_Init(&frame.name[75], lbl_8027C9F8 + 0xFC, &frame.allocator[75]);
     Xml_GetNamedValue(&frame.value[75], xml, &frame.name[75]);
     *(f32 *)(self + 0x74) = frame.value[75].real[0];
     String_Destroy(&frame.name[75], -1);
 
-    /* Attribute +0x107, XML output at original stack +0xF84. */
     String_Init(&frame.name[74], lbl_8027C9F8 + 0x107, &frame.allocator[74]);
     Xml_GetNamedValue(&frame.value[74], xml, &frame.name[74]);
     *(u32 *)(self + 0x78) = frame.value[74].word[0];
     String_Destroy(&frame.name[74], -1);
 
-    /* Attribute +0x112, XML output at original stack +0xF64. */
     String_Init(&frame.name[73], lbl_8027C9F8 + 0x112, &frame.allocator[73]);
     Xml_GetNamedValue(&frame.value[73], xml, &frame.name[73]);
     *(u32 *)(self + 0x7C) = frame.value[73].word[0];
     String_Destroy(&frame.name[73], -1);
 
-    /* Attribute +0x11A, XML output at original stack +0xF44. */
     String_Init(&frame.name[72], lbl_8027C9F8 + 0x11A, &frame.allocator[72]);
     Xml_GetNamedValue(&frame.value[72], xml, &frame.name[72]);
     *(f32 *)(self + 0x80) = frame.value[72].real[0];
     String_Destroy(&frame.name[72], -1);
 
-    /* Attribute +0x126, XML output at original stack +0xF24. */
     String_Init(&frame.name[71], lbl_8027C9F8 + 0x126, &frame.allocator[71]);
     Xml_GetNamedValue(&frame.value[71], xml, &frame.name[71]);
     *(f32 *)(self + 0x84) = frame.value[71].real[0];
     String_Destroy(&frame.name[71], -1);
 
-    /* Attribute +0x130, XML output at original stack +0xF04. */
     String_Init(&frame.name[70], lbl_8027C9F8 + 0x130, &frame.allocator[70]);
     Xml_GetNamedValue(&frame.value[70], xml, &frame.name[70]);
     *(f32 *)(self + 0x88) = frame.value[70].real[0];
     String_Destroy(&frame.name[70], -1);
 
-    /* Attribute +0x13B, XML output at original stack +0xEE4. */
     String_Init(&frame.name[69], lbl_8027C9F8 + 0x13B, &frame.allocator[69]);
     Xml_GetNamedValue(&frame.value[69], xml, &frame.name[69]);
     *(f32 *)(self + 0x8C) = frame.value[69].real[0];
     String_Destroy(&frame.name[69], -1);
 
-    /* Attribute +0x146, XML output at original stack +0xEC4. */
     String_Init(&frame.name[68], lbl_8027C9F8 + 0x146, &frame.allocator[68]);
     Xml_GetNamedValue(&frame.value[68], xml, &frame.name[68]);
     *(f32 *)(self + 0x90) = frame.value[68].real[0];
     String_Destroy(&frame.name[68], -1);
 
-    /* Attribute +0x151, XML output at original stack +0xEA4. */
     String_Init(&frame.name[67], lbl_8027C9F8 + 0x151, &frame.allocator[67]);
     Xml_GetNamedValue(&frame.value[67], xml, &frame.name[67]);
     *(f32 *)(self + 0x94) = frame.value[67].real[0];
     String_Destroy(&frame.name[67], -1);
 
-    /* Attribute +0x15E, XML output at original stack +0xE84. */
     String_Init(&frame.name[66], lbl_8027C9F8 + 0x15E, &frame.allocator[66]);
     Xml_GetNamedValue(&frame.value[66], xml, &frame.name[66]);
     *(f32 *)(self + 0x98) = frame.value[66].real[0];
     String_Destroy(&frame.name[66], -1);
 
-    /* Attribute +0x164, XML output at original stack +0xE64. */
     String_Init(&frame.name[65], lbl_8027C9F8 + 0x164, &frame.allocator[65]);
     Xml_GetNamedValue(&frame.value[65], xml, &frame.name[65]);
     *(f32 *)(self + 0x9C) = frame.value[65].real[0];
     String_Destroy(&frame.name[65], -1);
 
-    /* Attribute +0x16E, XML output at original stack +0xE44. */
     String_Init(&frame.name[64], lbl_8027C9F8 + 0x16E, &frame.allocator[64]);
     Xml_GetNamedValue(&frame.value[64], xml, &frame.name[64]);
     *(f32 *)(self + 0xA0) = frame.value[64].real[0];
     String_Destroy(&frame.name[64], -1);
 
-    /* Attribute +0x178, XML output at original stack +0xE24. */
     String_Init(&frame.name[63], lbl_8027C9F8 + 0x178, &frame.allocator[63]);
     Xml_GetNamedValue(&frame.value[63], xml, &frame.name[63]);
     *(f32 *)(self + 0xA4) = frame.value[63].real[0];
     String_Destroy(&frame.name[63], -1);
 
-    /* Attribute +0x185, XML output at original stack +0xE04. */
     String_Init(&frame.name[62], lbl_8027C9F8 + 0x185, &frame.allocator[62]);
     Xml_GetNamedValue(&frame.value[62], xml, &frame.name[62]);
     *(f32 *)(self + 0xA8) = frame.value[62].real[0];
     String_Destroy(&frame.name[62], -1);
 
-    /* Attribute +0x192, XML output at original stack +0xDE4. */
     String_Init(&frame.name[61], lbl_8027C9F8 + 0x192, &frame.allocator[61]);
     Xml_GetNamedValue(&frame.value[61], xml, &frame.name[61]);
     *(f32 *)(self + 0xAC) = frame.value[61].real[0];
     String_Destroy(&frame.name[61], -1);
 
-    /* Attribute +0x19F, XML output at original stack +0xDC4. */
     String_Init(&frame.name[60], lbl_8027C9F8 + 0x19F, &frame.allocator[60]);
     Xml_GetNamedValue(&frame.value[60], xml, &frame.name[60]);
     *(f32 *)(self + 0xB0) = frame.value[60].real[0];
     String_Destroy(&frame.name[60], -1);
 
-    /* Attribute +0x1AB, XML output at original stack +0xDA4. */
     String_Init(&frame.name[59], lbl_8027C9F8 + 0x1AB, &frame.allocator[59]);
     Xml_GetNamedValue(&frame.value[59], xml, &frame.name[59]);
     *(f32 *)(self + 0xB4) = frame.value[59].real[0];
     String_Destroy(&frame.name[59], -1);
 
-    /* Attribute +0x1B7, XML output at original stack +0xD84. */
     String_Init(&frame.name[58], lbl_8027C9F8 + 0x1B7, &frame.allocator[58]);
     Xml_GetNamedValue(&frame.value[58], xml, &frame.name[58]);
     *(u32 *)(self + 0xB8) = frame.value[58].word[0];
     String_Destroy(&frame.name[58], -1);
 
-    /* Attribute +0x1C3, XML output at original stack +0xD64. */
     String_Init(&frame.name[57], lbl_8027C9F8 + 0x1C3, &frame.allocator[57]);
     Xml_GetNamedValue(&frame.value[57], xml, &frame.name[57]);
     *(f32 *)(self + 0xBC) = frame.value[57].real[0];
     String_Destroy(&frame.name[57], -1);
 
-    /* Attribute +0x1D3, XML output at original stack +0xD44. */
     String_Init(&frame.name[56], lbl_8027C9F8 + 0x1D3, &frame.allocator[56]);
     Xml_GetNamedValue(&frame.value[56], xml, &frame.name[56]);
     *(f32 *)(self + 0xC0) = frame.value[56].real[0];
     String_Destroy(&frame.name[56], -1);
 
-    /* Attribute +0x1E3, XML output at original stack +0xD24. */
     String_Init(&frame.name[55], lbl_8027C9F8 + 0x1E3, &frame.allocator[55]);
     Xml_GetNamedValue(&frame.value[55], xml, &frame.name[55]);
     *(u32 *)(self + 0xC4) = frame.value[55].word[0];
     String_Destroy(&frame.name[55], -1);
 
-    /* Attribute +0x1F3, XML output at original stack +0xD04. */
     String_Init(&frame.name[54], lbl_8027C9F8 + 0x1F3, &frame.allocator[54]);
     Xml_GetNamedValue(&frame.value[54], xml, &frame.name[54]);
     *(f32 *)(self + 0xC8) = frame.value[54].real[0];
     String_Destroy(&frame.name[54], -1);
 
-    /* Attribute +0x201, XML output at original stack +0xCE4. */
     String_Init(&frame.name[53], lbl_8027C9F8 + 0x201, &frame.allocator[53]);
     Xml_GetNamedValue(&frame.value[53], xml, &frame.name[53]);
     *(f32 *)(self + 0xCC) = frame.value[53].real[0];
     String_Destroy(&frame.name[53], -1);
 
-    /* Attribute +0x20F, XML output at original stack +0xCC4. */
     String_Init(&frame.name[52], lbl_8027C9F8 + 0x20F, &frame.allocator[52]);
     Xml_GetNamedValue(&frame.value[52], xml, &frame.name[52]);
     *(u32 *)(self + 0xD0) = frame.value[52].word[0];
     String_Destroy(&frame.name[52], -1);
 
-    /* Attribute +0x21D, XML output at original stack +0xCA4. */
     String_Init(&frame.name[51], lbl_8027C9F8 + 0x21D, &frame.allocator[51]);
     Xml_GetNamedValue(&frame.value[51], xml, &frame.name[51]);
     *(f32 *)(self + 0xD4) = frame.value[51].real[0];
     String_Destroy(&frame.name[51], -1);
 
-    /* Attribute +0x22B, XML output at original stack +0xC84. */
     String_Init(&frame.name[50], lbl_8027C9F8 + 0x22B, &frame.allocator[50]);
     Xml_GetNamedValue(&frame.value[50], xml, &frame.name[50]);
     *(f32 *)(self + 0xD8) = frame.value[50].real[0];
     String_Destroy(&frame.name[50], -1);
 
-    /* Attribute +0x234, XML output at original stack +0xC64. */
     String_Init(&frame.name[49], lbl_8027C9F8 + 0x234, &frame.allocator[49]);
     Xml_GetNamedValue(&frame.value[49], xml, &frame.name[49]);
     *(f32 *)(self + 0xDC) = frame.value[49].real[0];
     String_Destroy(&frame.name[49], -1);
 
-    /* Attribute +0x244, XML output at original stack +0xC44. */
     String_Init(&frame.name[48], lbl_8027C9F8 + 0x244, &frame.allocator[48]);
     Xml_GetNamedValue(&frame.value[48], xml, &frame.name[48]);
     *(f32 *)(self + 0xE0) = frame.value[48].real[0];
     String_Destroy(&frame.name[48], -1);
 
-    /* Attribute +0x24F, XML output at original stack +0xC24. */
     String_Init(&frame.name[47], lbl_8027C9F8 + 0x24F, &frame.allocator[47]);
     Xml_GetNamedValue(&frame.value[47], xml, &frame.name[47]);
     *(f32 *)(self + 0xE4) = frame.value[47].real[0];
     String_Destroy(&frame.name[47], -1);
 
-    /* Attribute +0x25A, XML output at original stack +0xC04. */
     String_Init(&frame.name[46], lbl_8027C9F8 + 0x25A, &frame.allocator[46]);
     Xml_GetNamedValue(&frame.value[46], xml, &frame.name[46]);
     *(u32 *)(self + 0xE8) = frame.value[46].word[0];
     String_Destroy(&frame.name[46], -1);
 
-    /* Attribute +0x268, XML output at original stack +0xBE4. */
     String_Init(&frame.name[45], lbl_8027C9F8 + 0x268, &frame.allocator[45]);
     Xml_GetNamedValue(&frame.value[45], xml, &frame.name[45]);
     *(f32 *)(self + 0xEC) = frame.value[45].real[0];
     String_Destroy(&frame.name[45], -1);
 
-    /* Attribute +0x273, XML output at original stack +0xBC4. */
     String_Init(&frame.name[44], lbl_8027C9F8 + 0x273, &frame.allocator[44]);
     Xml_GetNamedValue(&frame.value[44], xml, &frame.name[44]);
     *(f32 *)(self + 0xF0) = frame.value[44].real[0];
     String_Destroy(&frame.name[44], -1);
 
-    /* Attribute +0x281, XML output at original stack +0xBA4. */
     String_Init(&frame.name[43], lbl_8027C9F8 + 0x281, &frame.allocator[43]);
     Xml_GetNamedValue(&frame.value[43], xml, &frame.name[43]);
     *(f32 *)(self + 0xF4) = frame.value[43].real[0];
     String_Destroy(&frame.name[43], -1);
 
-    /* Attribute +0x290, XML output at original stack +0xB84. */
     String_Init(&frame.name[42], lbl_8027C9F8 + 0x290, &frame.allocator[42]);
     Xml_GetNamedValue(&frame.value[42], xml, &frame.name[42]);
     *(f32 *)(self + 0xF8) = frame.value[42].real[0];
     String_Destroy(&frame.name[42], -1);
 
-    /* Attribute +0x29F, XML output at original stack +0xB64. */
     String_Init(&frame.name[41], lbl_8027C9F8 + 0x29F, &frame.allocator[41]);
     Xml_GetNamedValue(&frame.value[41], xml, &frame.name[41]);
     *(u32 *)(self + 0xFC) = frame.value[41].word[0];
     String_Destroy(&frame.name[41], -1);
 
-    /* Attribute +0x2AF, XML output at original stack +0xB44. */
     String_Init(&frame.name[40], lbl_8027C9F8 + 0x2AF, &frame.allocator[40]);
     Xml_GetNamedValue(&frame.value[40], xml, &frame.name[40]);
     *(f32 *)(self + 0x100) = frame.value[40].real[0];
     String_Destroy(&frame.name[40], -1);
 
-    /* Attribute +0x2BA, XML output at original stack +0xB24. */
     String_Init(&frame.name[39], lbl_8027C9F8 + 0x2BA, &frame.allocator[39]);
     Xml_GetNamedValue(&frame.value[39], xml, &frame.name[39]);
     frame.copied = frame.value[39];
@@ -6976,115 +6943,96 @@ void *fn_801BEF90(void *arg0)
     *(f32 *)(self + 0x108) = frame.copied.real[1];
     *(f32 *)(self + 0x10C) = frame.copied.real[2];
 
-    /* Attribute +0x2C7, XML output at original stack +0xB04. */
     String_Init(&frame.name[38], lbl_8027C9F8 + 0x2C7, &frame.allocator[38]);
     Xml_GetNamedValue(&frame.value[38], xml, &frame.name[38]);
     *(f32 *)(self + 0x110) = frame.value[38].real[0];
     String_Destroy(&frame.name[38], -1);
 
-    /* Attribute +0x2D2, XML output at original stack +0xAE4. */
     String_Init(&frame.name[37], lbl_8027C9F8 + 0x2D2, &frame.allocator[37]);
     Xml_GetNamedValue(&frame.value[37], xml, &frame.name[37]);
     *(f32 *)(self + 0x114) = frame.value[37].real[0];
     String_Destroy(&frame.name[37], -1);
 
-    /* Attribute +0x2DD, XML output at original stack +0xAC4. */
     String_Init(&frame.name[36], lbl_8027C9F8 + 0x2DD, &frame.allocator[36]);
     Xml_GetNamedValue(&frame.value[36], xml, &frame.name[36]);
     *(f32 *)(self + 0x118) = frame.value[36].real[0];
     String_Destroy(&frame.name[36], -1);
 
-    /* Attribute +0x2E9, XML output at original stack +0xAA4. */
     String_Init(&frame.name[35], lbl_8027C9F8 + 0x2E9, &frame.allocator[35]);
     Xml_GetNamedValue(&frame.value[35], xml, &frame.name[35]);
     *(f32 *)(self + 0x11C) = frame.value[35].real[0];
     String_Destroy(&frame.name[35], -1);
 
-    /* Attribute +0x2F6, XML output at original stack +0xA84. */
     String_Init(&frame.name[34], lbl_8027C9F8 + 0x2F6, &frame.allocator[34]);
     Xml_GetNamedValue(&frame.value[34], xml, &frame.name[34]);
     *(f32 *)(self + 0x120) = frame.value[34].real[0];
     String_Destroy(&frame.name[34], -1);
 
-    /* Attribute +0x301, XML output at original stack +0xA64. */
     String_Init(&frame.name[33], lbl_8027C9F8 + 0x301, &frame.allocator[33]);
     Xml_GetNamedValue(&frame.value[33], xml, &frame.name[33]);
     *(f32 *)(self + 0x124) = frame.value[33].real[0];
     String_Destroy(&frame.name[33], -1);
 
-    /* Attribute +0x30E, XML output at original stack +0xA44. */
     String_Init(&frame.name[32], lbl_8027C9F8 + 0x30E, &frame.allocator[32]);
     Xml_GetNamedValue(&frame.value[32], xml, &frame.name[32]);
     *(f32 *)(self + 0x128) = frame.value[32].real[0];
     String_Destroy(&frame.name[32], -1);
 
-    /* Attribute +0x317, XML output at original stack +0xA24. */
     String_Init(&frame.name[31], lbl_8027C9F8 + 0x317, &frame.allocator[31]);
     Xml_GetNamedValue(&frame.value[31], xml, &frame.name[31]);
     *(f32 *)(self + 0x12C) = frame.value[31].real[0];
     String_Destroy(&frame.name[31], -1);
 
-    /* Attribute +0x321, XML output at original stack +0xA04. */
     String_Init(&frame.name[30], lbl_8027C9F8 + 0x321, &frame.allocator[30]);
     Xml_GetNamedValue(&frame.value[30], xml, &frame.name[30]);
     *(f32 *)(self + 0x130) = frame.value[30].real[0];
     String_Destroy(&frame.name[30], -1);
 
-    /* Attribute +0x32D, XML output at original stack +0x9E4. */
     String_Init(&frame.name[29], lbl_8027C9F8 + 0x32D, &frame.allocator[29]);
     Xml_GetNamedValue(&frame.value[29], xml, &frame.name[29]);
     *(f32 *)(self + 0x134) = frame.value[29].real[0];
     String_Destroy(&frame.name[29], -1);
 
-    /* Attribute +0x339, XML output at original stack +0x9C4. */
     String_Init(&frame.name[28], lbl_8027C9F8 + 0x339, &frame.allocator[28]);
     Xml_GetNamedValue(&frame.value[28], xml, &frame.name[28]);
     *(f32 *)(self + 0x138) = frame.value[28].real[0];
     String_Destroy(&frame.name[28], -1);
 
-    /* Attribute +0x341, XML output at original stack +0x9A4. */
     String_Init(&frame.name[27], lbl_8027C9F8 + 0x341, &frame.allocator[27]);
     Xml_GetNamedValue(&frame.value[27], xml, &frame.name[27]);
     *(f32 *)(self + 0x13C) = frame.value[27].real[0];
     String_Destroy(&frame.name[27], -1);
 
-    /* Attribute +0x34C, XML output at original stack +0x984. */
     String_Init(&frame.name[26], lbl_8027C9F8 + 0x34C, &frame.allocator[26]);
     Xml_GetNamedValue(&frame.value[26], xml, &frame.name[26]);
     *(f32 *)(self + 0x140) = frame.value[26].real[0];
     String_Destroy(&frame.name[26], -1);
 
-    /* Attribute +0x357, XML output at original stack +0x964. */
     String_Init(&frame.name[25], lbl_8027C9F8 + 0x357, &frame.allocator[25]);
     Xml_GetNamedValue(&frame.value[25], xml, &frame.name[25]);
     *(f32 *)(self + 0x144) = frame.value[25].real[0];
     String_Destroy(&frame.name[25], -1);
 
-    /* Attribute +0x367, XML output at original stack +0x944. */
     String_Init(&frame.name[24], lbl_8027C9F8 + 0x367, &frame.allocator[24]);
     Xml_GetNamedValue(&frame.value[24], xml, &frame.name[24]);
     *(f32 *)(self + 0x148) = (f32)(s32)frame.value[24].word[0];
     String_Destroy(&frame.name[24], -1);
 
-    /* Attribute +0x373, XML output at original stack +0x924. */
     String_Init(&frame.name[23], lbl_8027C9F8 + 0x373, &frame.allocator[23]);
     Xml_GetNamedValue(&frame.value[23], xml, &frame.name[23]);
     *(f32 *)(self + 0x14C) = frame.value[23].real[0];
     String_Destroy(&frame.name[23], -1);
 
-    /* Attribute +0x37F, XML output at original stack +0x904. */
     String_Init(&frame.name[22], lbl_8027C9F8 + 0x37F, &frame.allocator[22]);
     Xml_GetNamedValue(&frame.value[22], xml, &frame.name[22]);
     *(f32 *)(self + 0x150) = frame.value[22].real[0];
     String_Destroy(&frame.name[22], -1);
 
-    /* Attribute +0x38B, XML output at original stack +0x8E4. */
     String_Init(&frame.name[21], lbl_8027C9F8 + 0x38B, &frame.allocator[21]);
     Xml_GetNamedValue(&frame.value[21], xml, &frame.name[21]);
     *(f32 *)(self + 0x154) = frame.value[21].real[0];
     String_Destroy(&frame.name[21], -1);
 
-    /* Attribute +0x394, XML output at original stack +0x8C4. */
     String_Init(&frame.name[20], lbl_8027C9F8 + 0x394, &frame.allocator[20]);
     Xml_GetNamedValue(&frame.value[20], xml, &frame.name[20]);
     *(f32 *)(self + 0x158) = frame.value[20].real[0];
@@ -7092,7 +7040,6 @@ void *fn_801BEF90(void *arg0)
     if (*(f32 *)(self + 0x158) == lbl_8036B2F0)
         *(f32 *)(self + 0x158) = lbl_8036B2F4;
 
-    /* Attribute +0x39E, XML output at original stack +0x8A4. */
     String_Init(&frame.name[19], lbl_8027C9F8 + 0x39E, &frame.allocator[19]);
     Xml_GetNamedValue(&frame.value[19], xml, &frame.name[19]);
     *(f32 *)(self + 0x15C) = frame.value[19].real[0];
@@ -7100,104 +7047,87 @@ void *fn_801BEF90(void *arg0)
     if (*(f32 *)(self + 0x15C) == lbl_8036B2F0)
         *(f32 *)(self + 0x15C) = lbl_8036B2F8;
 
-    /* Attribute +0x3A9, XML output at original stack +0x884. */
     String_Init(&frame.name[18], lbl_8027C9F8 + 0x3A9, &frame.allocator[18]);
     Xml_GetNamedValue(&frame.value[18], xml, &frame.name[18]);
     *(f32 *)(self + 0x164) = frame.value[18].real[0];
     String_Destroy(&frame.name[18], -1);
 
-    /* Attribute +0x3B6, XML output at original stack +0x864. */
     String_Init(&frame.name[17], lbl_8027C9F8 + 0x3B6, &frame.allocator[17]);
     Xml_GetNamedValue(&frame.value[17], xml, &frame.name[17]);
     *(u32 *)(self + 0x168) = frame.value[17].word[0];
     String_Destroy(&frame.name[17], -1);
 
-    /* Attribute +0x3C4, XML output at original stack +0x844. */
     String_Init(&frame.name[16], lbl_8027C9F8 + 0x3C4, &frame.allocator[16]);
     Xml_GetNamedValue(&frame.value[16], xml, &frame.name[16]);
     *(u32 *)(self + 0x16C) = frame.value[16].word[0];
     String_Destroy(&frame.name[16], -1);
 
-    /* Attribute +0x3D4, XML output at original stack +0x824. */
     String_Init(&frame.name[15], lbl_8027C9F8 + 0x3D4, &frame.allocator[15]);
     Xml_GetNamedValue(&frame.value[15], xml, &frame.name[15]);
     *(u32 *)(self + 0x170) = frame.value[15].word[0];
     String_Destroy(&frame.name[15], -1);
 
-    /* Attribute +0x3E7, XML output at original stack +0x804. */
     String_Init(&frame.name[14], lbl_8027C9F8 + 0x3E7, &frame.allocator[14]);
     Xml_GetNamedValue(&frame.value[14], xml, &frame.name[14]);
     *(u32 *)(self + 0x174) = frame.value[14].word[0];
     String_Destroy(&frame.name[14], -1);
 
-    /* Attribute +0x3F7, XML output at original stack +0x7E4. */
     String_Init(&frame.name[13], lbl_8027C9F8 + 0x3F7, &frame.allocator[13]);
     Xml_GetNamedValue(&frame.value[13], xml, &frame.name[13]);
     *(u32 *)(self + 0x178) = frame.value[13].word[0];
     String_Destroy(&frame.name[13], -1);
 
-    /* Attribute +0x40A, XML output at original stack +0x7C4. */
     String_Init(&frame.name[12], lbl_8027C9F8 + 0x40A, &frame.allocator[12]);
     Xml_GetNamedValue(&frame.value[12], xml, &frame.name[12]);
     *(f32 *)(self + 0x17C) = frame.value[12].real[0];
     String_Destroy(&frame.name[12], -1);
 
-    /* Attribute +0x416, XML output at original stack +0x7A4. */
     String_Init(&frame.name[11], lbl_8027C9F8 + 0x416, &frame.allocator[11]);
     Xml_GetNamedValue(&frame.value[11], xml, &frame.name[11]);
     *(u32 *)(self + 0x180) = frame.value[11].word[0];
     String_Destroy(&frame.name[11], -1);
 
-    /* Attribute +0x420, XML output at original stack +0x784. */
     String_Init(&frame.name[10], lbl_8027C9F8 + 0x420, &frame.allocator[10]);
     Xml_GetNamedValue(&frame.value[10], xml, &frame.name[10]);
     *(u32 *)(self + 0x184) = frame.value[10].word[0];
     String_Destroy(&frame.name[10], -1);
 
-    /* Attribute +0x42F, XML output at original stack +0x764. */
     String_Init(&frame.name[9], lbl_8027C9F8 + 0x42F, &frame.allocator[9]);
     Xml_GetNamedValue(&frame.value[9], xml, &frame.name[9]);
     *(u32 *)(self + 0x188) = frame.value[9].word[0];
     String_Destroy(&frame.name[9], -1);
 
-    /* Attribute +0x43C, XML output at original stack +0x744. */
     String_Init(&frame.name[8], lbl_8027C9F8 + 0x43C, &frame.allocator[8]);
     Xml_GetNamedValue(&frame.value[8], xml, &frame.name[8]);
     *(u32 *)(self + 0x18C) = frame.value[8].word[0];
     String_Destroy(&frame.name[8], -1);
 
-    /* Attribute +0x446, XML output at original stack +0x724. */
     String_Init(&frame.name[7], lbl_8027C9F8 + 0x446, &frame.allocator[7]);
     Xml_GetNamedValue(&frame.value[7], xml, &frame.name[7]);
     *(u32 *)(self + 0x190) = frame.value[7].word[0];
     String_Destroy(&frame.name[7], -1);
 
-    /* Attribute +0x454, XML output at original stack +0x704. */
     String_Init(&frame.name[6], lbl_8027C9F8 + 0x454, &frame.allocator[6]);
     Xml_GetNamedValue(&frame.value[6], xml, &frame.name[6]);
     *(u32 *)(self + 0x194) = frame.value[6].word[0];
     String_Destroy(&frame.name[6], -1);
 
-    /* Attribute +0x45E, XML output at original stack +0x6E4. */
     String_Init(&frame.name[5], lbl_8027C9F8 + 0x45E, &frame.allocator[5]);
     Xml_GetNamedValue(&frame.value[5], xml, &frame.name[5]);
     str = frame.value[5].text;
     String_AssignCStr(self + 0x19C, str, strlen(str));
     String_Destroy(&frame.name[5], -1);
 
-    /* Attribute +0x46A, XML output at original stack +0x6C4. */
     String_Init(&frame.name[4], lbl_8027C9F8 + 0x46A, &frame.allocator[4]);
     Xml_GetNamedValue(&frame.value[4], xml, &frame.name[4]);
     *(u32 *)(self + 0x1B4) = frame.value[4].word[0];
     String_Destroy(&frame.name[4], -1);
 
-    /* Attribute +0x477, XML output at original stack +0x6A4. */
     String_Init(&frame.name[3], lbl_8027C9F8 + 0x477, &frame.allocator[3]);
     Xml_GetNamedValue(&frame.value[3], xml, &frame.name[3]);
     *(u32 *)(self + 0x1B8) = frame.value[3].word[0];
     String_Destroy(&frame.name[3], -1);
 
-    /* Attribute +0x484, XML output at original stack +0x684. */
     String_Init(&frame.name[2], lbl_8027C9F8 + 0x484, &frame.allocator[2]);
     Xml_GetNamedValue(&frame.value[2], xml, &frame.name[2]);
     *(f32 *)(self + 0x1BC) = frame.value[2].real[0];
@@ -7205,7 +7135,6 @@ void *fn_801BEF90(void *arg0)
     if (*(f32 *)(self + 0x1BC) == lbl_8036B2F0)
         *(f32 *)(self + 0x1BC) = lbl_8036B2FC;
 
-    /* Attribute +0x48F, XML output at original stack +0x664. */
     String_Init(&frame.name[1], lbl_8027C9F8 + 0x48F, &frame.allocator[1]);
     Xml_GetNamedValue(&frame.value[1], xml, &frame.name[1]);
     *(f32 *)(self + 0x1C0) = frame.value[1].real[0];
@@ -7213,7 +7142,6 @@ void *fn_801BEF90(void *arg0)
     if (*(f32 *)(self + 0x1C0) == lbl_8036B2F0)
         *(f32 *)(self + 0x1C0) = lbl_8036B300;
 
-    /* Attribute +0x49A, XML output at original stack +0x644. */
     String_Init(&frame.name[0], lbl_8027C9F8 + 0x49A, &frame.allocator[0]);
     Xml_GetNamedValue(&frame.value[0], xml, &frame.name[0]);
     *(f32 *)(self + 0x1C4) = frame.value[0].real[0];
@@ -12084,80 +12012,64 @@ void fn_801CA234(void *arg0, s32 arg1, u32 arg2, u32 arg3)
         u32 cap;
         char *data;
     };
+    struct Idx { s32 v; } index;
 
-    u8 *self;
-    s32 index;
+    char buf_dec[0x30];
+    char buf_inc[0x24];
+    struct String str_dec;
+    struct String str_inc;
     s32 value;
-    s32 *values;
+    void *self;
 
-    self = (u8 *)arg0;
+    index.v = 0;
+    self = arg0;
 
-    if (self[0x420] != 0 || (arg2 & 0x1000) != 0) {
+    if (*(u8 *)((u8 *)arg0 + 0x420) != 0 || (arg2 & 0x1000) != 0) {
         fn_800D7254(arg0, arg1, arg2, arg3);
     }
 
-    if (*(s32 *)self != 0 || *(s32 *)(self + 4) != 3) {
-        return;
-    }
+    if (*(s32 *)arg0 == 0) {
+        if (*(s32 *)((u8 *)arg0 + 4) == 3) {
+            self = arg0;
+            index.v = fn_800DC3B0(*(void **)((u8 *)arg0 + 0x438));
+            value = (*(s32 **)((u8 *)arg0 + 0x42C))[index.v];
 
-    index = fn_800DC3B0(*(void **)(self + 0x438));
-    values = *(s32 **)(self + 0x42C);
-    value = values[index];
+            if (arg3 & 1) {
+                value--;
+                if (value < 0) {
+                    value = 0;
+                }
 
-    if (arg3 & 1) {
-        struct String str;
-        char buffer[0x3C];
+                str_dec.cap = 0;
+                str_dec.size = 0;
+                str_dec.data = 0;
+                str_dec.cap = 0;
 
-        value--;
+                (*(s32 **)((u8 *)arg0 + 0x42C))[index.v] = value;
 
-        if (value < 0) {
-            value = 0;
+                sprintf(buf_dec, CameraWin_str + 0x16, index.v, value);
+                String_AssignCStr(&str_dec, buf_dec, strlen(buf_dec));
+                fn_800DC408(*(void **)((u8 *)arg0 + 0x438), index.v, &str_dec);
+                String_Destroy(&str_dec, -1);
+            } else if (arg3 & 2) {
+                value++;
+                if (value > 0x3E7) {
+                    value = 0x3E7;
+                }
+
+                str_inc.cap = 0;
+                str_inc.size = 0;
+                str_inc.data = 0;
+                str_inc.cap = 0;
+
+                (*(s32 **)((u8 *)arg0 + 0x42C))[index.v] = value;
+
+                sprintf(buf_inc, CameraWin_str + 0x16, index.v, value);
+                String_AssignCStr(&str_inc, buf_inc, strlen(buf_inc));
+                fn_800DC408(*(void **)((u8 *)arg0 + 0x438), index.v, &str_inc);
+                String_Destroy(&str_inc, -1);
+            }
         }
-
-        str.size = 0;
-        str.cap = 0;
-        str.data = 0;
-        str.cap = 0;
-
-        values[index] = value;
-
-        sprintf(buffer, CameraWin_str + 0x16, index, value);
-        String_AssignCStr(&str, buffer, strlen(buffer));
-
-        fn_800DC408(
-            *(void **)(self + 0x438),
-            index,
-            &str
-        );
-
-        String_Destroy(&str, -1);
-    } else if (arg3 & 2) {
-        struct String str;
-        char buffer[0x60];
-
-        value++;
-
-        if (value > 0x3E7) {
-            value = 0x3E7;
-        }
-
-        str.size = 0;
-        str.cap = 0;
-        str.data = 0;
-        str.cap = 0;
-
-        values[index] = value;
-
-        sprintf(buffer, CameraWin_str + 0x16, index, value);
-        String_AssignCStr(&str, buffer, strlen(buffer));
-
-        fn_800DC408(
-            *(void **)(self + 0x438),
-            index,
-            &str
-        );
-
-        String_Destroy(&str, -1);
     }
 }
 
