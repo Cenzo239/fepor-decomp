@@ -9076,11 +9076,13 @@ void fn_800C0A24(void *arg0) {
     void fn_80013778(s32, void *);
     void EventLock_Inc(void);
     extern u32 gUiInputFlags;
+    u32 flags;
 
     fn_80013778(0, *(void **)((u8 *)arg0 + 0x30));
     EventLock_Inc();
-
-    gUiInputFlags &= ~0x4;
+    flags = gUiInputFlags;
+    flags &= ~0x4;
+    gUiInputFlags = flags;
 }
 
 void fn_800C0A60(void *arg0)
@@ -10526,6 +10528,7 @@ s32 Icon_GetSlot(s32 arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
+#pragma scheduling on
 s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     void fn_8022C1B8(u8 *, u8 *, s32, u8);
     u8 *src;
@@ -10536,6 +10539,8 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     u8 *end;
     u8 byte;
     u8 flag;
+    u8 a;
+    u8 b;
 
     byte = *(u8 *)arg2;
     slot = arg1;
@@ -10545,13 +10550,17 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     dst = base + offset;
     dst[-0x18] = byte;
     fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
-    end = dst;
+    a = src[0x10];
+    end = base + offset;
+    b = src[0x11];
     flag = 0;
-    dst[-0x8] = src[0x10];
-    dst[-0x7] = src[0x11];
-    dst[-0x6] = src[0x12];
-    dst[-0x5] = src[0x13];
+    dst[-0x8] = a;
+    a = src[0x12];
+    dst[-0x7] = b;
+    b = src[0x13];
+    dst[-0x6] = a;
     *(u32 *)(dst - 0x4) = *(u32 *)(src + 0x14);
+    dst[-0x5] = b;
 
     if (((s8)dst[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
         ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
@@ -10575,6 +10584,7 @@ s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     }
     return slot;
 }
+#pragma scheduling reset
 #pragma opt_common_subs reset
 #pragma use_lmw_stmw reset
 void Icon_FreeSlot(s32 arg0, s32 arg1) {
