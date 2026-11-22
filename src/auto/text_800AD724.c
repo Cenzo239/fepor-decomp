@@ -382,6 +382,7 @@ void Battle_SetupTargetSelect(s32 parent) {
 }
 
 #pragma use_lmw_stmw on
+#pragma scheduling off
 s32 fn_800ADEB0(s32 arg0) {
     void fn_8002F728(void *);
     void Allegiance_FillMask(s32, void *);
@@ -399,6 +400,7 @@ s32 fn_800ADEB0(s32 arg0) {
     u8 hp;
     u8 statusHp;
     s8 damage;
+    s8 maxHp;
     fn_8002F728(gTargetList);
     Allegiance_FillMask(0, mask);
     i = 1;
@@ -408,8 +410,10 @@ s32 fn_800ADEB0(s32 arg0) {
             terrain = Terrain_GetEntry(M2C_FIELD(gBattleMap + (s8)unit[0x19E] + ((s8)unit[0x19F] << 6), u8 *, 0x100D));
             if (((u8 *)*(void **)(terrain+8))[6] != 0) {
                 hp = unit[0x1A8];
-                if ((s8)hp != Unit_GetMaxHp(unit))
-                    fn_8002F6E8(gTargetList, 0, (s8)(((u8 *)*(void **)(terrain+8))[6] * Unit_GetMaxHp(unit) / 100), unit[0x198], 0);
+                if ((s8)hp != Unit_GetMaxHp(unit)) {
+                    maxHp = Unit_GetMaxHp(unit);
+                    fn_8002F6E8(gTargetList, 0, (s8)(maxHp * ((u8 *)*(void **)(terrain+8))[6] / 100), unit[0x198], 0);
+                }
             }
             if (Status_Test(unit+0x1BC, 12)) {
                 statusHp = unit[0x1A8];
@@ -427,6 +431,7 @@ s32 fn_800ADEB0(s32 arg0) {
     Process_CreateChild(lbl_8028CFA0, arg0);
     return 1;
 }
+#pragma scheduling reset
 #pragma use_lmw_stmw reset
 s32 fn_800AE0D4(s32 arg0) {
     void fn_8002F728(void *);
