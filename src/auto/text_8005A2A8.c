@@ -107,6 +107,7 @@ virtual s32 v14()=0;
 virtual s32 v15()=0;
 };
 s32 w, cols;
+s32 offset;
 f32 height,u,v;
 if(arg3) {
 Prim2D_Begin();
@@ -115,10 +116,12 @@ Prim2D_SetTex((u8*)arg0+4,arg2);
 Prim2D_PrepareTex();
 w=((Obj*)arg0)->v14();
 cols=((Obj*)arg0)->v12();
-u=(f32)(((arg3-1)%cols)*w);
+offset=(arg3-1)%cols;
+u=(f32)(offset*w);
 w=((Obj*)arg0)->v15();
 cols=((Obj*)arg0)->v12();
-v=(f32)(((arg3-1)/cols)*w);
+offset=(arg3-1)/cols;
+v=(f32)(offset*w);
 Prim2D_AddPrim(1);
 height=(f32)((Obj*)arg0)->v15();
 w=((Obj*)arg0)->v14();
@@ -224,8 +227,9 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
     s32 a2;
     s32 a1;
     s32 count;
-    s32 off;
+    u32 off;
     s32 src;
+    u8 *srcPtr;
     u16 pix;
     u16 r, g, b;
     s32 w;
@@ -245,9 +249,10 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
             } else {
                 src = fn_80222CDC((u8 *)arg0 + 0x24);
                 count = fn_80222CE8((u8 *)arg0 + 0x24);
+                srcPtr = (u8 *)((u32)src + 0x80000000);
                 nbytes = ((u16)count) << 1;
                 count = (u16)count;
-                memcpy(*(void **)((u8 *)arg0 + 0x3C), (void *)((u32)src + 0x80000000), nbytes);
+                memcpy(*(void **)((u8 *)arg0 + 0x3C), srcPtr, nbytes);
                 for (off = 0; count > 0; off += 2) {
                     pix = *(u16 *)(*(u8 **)((u8 *)arg0 + 0x3C) + off);
                     if (pix & 0x8000) {
@@ -296,7 +301,7 @@ extern s32 lbl_80369180;
 extern f32 lbl_80369188,lbl_80369198,lbl_8036919C;
 long long OSGetTime(void);
 f32 Math_Ease(s32,f32,f32,f32,f32);
-struct Color { u8 r,g,b,a; };
+struct Color { u32 bits; };
 struct Obj {
 u8 pad[0x44];
 virtual void v0()=0;
@@ -316,10 +321,10 @@ return;
 time=(u32)(OSGetTime()/((*(u32 *)0x800000F8>>2)/1000))%600;
 if(time<300) level=(s32)Math_Ease(0,lbl_80369188,lbl_80369198,(f32)time,lbl_8036919C);
 else level=(s32)Math_Ease(0,lbl_80369198,lbl_80369188,(f32)(time-300),lbl_8036919C);
-*(u32 *)&color=lbl_80369180;
-color.r=level;
-color.g=level;
-color.b=level;
+color=*(Color *)&lbl_80369180;
+((u8 *)&color)[0]=level;
+((u8 *)&color)[1]=level;
+((u8 *)&color)[2]=level;
 ((Obj *)arg0)->v5(arg1,arg2,arg3,color);
 }
 
