@@ -3190,25 +3190,26 @@ void fn_801B9818(void *arg0) {
         virtual void v14() = 0;
         virtual Item *get(s32) = 0;
     };
-    void *self = arg0;
-    Menu *menu;
+    u32 self;
+    u32 menu;
     s32 i;
     Item *item;
     void *child;
-    menu = (Menu *)fn_8013BC10(gUiUnitPanelStrings + 0xDF, gUiUnitPanelStrings + 0xEC);
-    M2C_FIELD(menu, s16 *, 0xC) = 0xE8;
-    M2C_FIELD(menu, s16 *, 8) = 0x148;
-    M2C_FIELD(menu, s16 *, 0xA) = 0x38;
-    M2C_FIELD(menu, u8 *, 0x24) = 1;
-    for (i = 0; menu->get(i) != 0; i++) {
-        item = menu->get(i);
+    self = (u32)arg0;
+    menu = (u32)fn_8013BC10(gUiUnitPanelStrings + 0xDF, gUiUnitPanelStrings + 0xEC);
+    M2C_FIELD((void *)menu, s16 *, 0xC) = 0xE8;
+    M2C_FIELD((void *)menu, s16 *, 8) = 0x148;
+    M2C_FIELD((void *)menu, s16 *, 0xA) = 0x38;
+    M2C_FIELD((void *)menu, u8 *, 0x24) = 1;
+    for (i = 0; ((Menu *)menu)->get(i) != 0; i++) {
+        item = ((Menu *)menu)->get(i);
         item->set2(2);
         item->set3(3);
     }
-    Ui_CreateMenu(menu, self, 0);
-    child = Ui_FindChild(self, 0x82, 0);
+    Ui_CreateMenu((void *)menu, (void *)self, 0);
+    child = Ui_FindChild((void *)self, 0x82, 0);
     String_AssignCStr((u8 *)child + 0x3C, gUiUnitPanelStrings + 0xF7, strlen((char *)gUiUnitPanelStrings + 0xF7));
-    child = Ui_FindChild(self, -0x1000, 0);
+    child = Ui_FindChild((void *)self, -0x1000, 0);
     if (child) Ui_SetWidgetText(child, gUiUnitPanelStrings + 0xF8);
 #pragma cplusplus reset
 }
@@ -9571,19 +9572,14 @@ void fn_801C60E8(void *arg0) {
             reset();
         }
     };
-    struct Owner {
-        u8 pad[0x34];
-        f32 a,b,c,d;
-        struct Pool *pool;
-        void init() {
-            struct Pool *p = (struct Pool *)Heap_Alloc(0x1C);
-            if (p) p->init();
-            pool = p;
-            pool->allocate(16);
-            a = 0.0f; b = 0.0f; c = 0.0f; d = 0.0f;
-        }
-    };
-    ((Owner *)arg0)->init();
+    Pool *p = (Pool *)Heap_Alloc(0x1C);
+    if (p) p->init();
+    *(Pool **)((u8 *)arg0 + 0x44) = p;
+    (*(Pool **)((u8 *)arg0 + 0x44))->allocate(16);
+    *(f32 *)((u8 *)arg0 + 0x34) = 0.0f;
+    *(f32 *)((u8 *)arg0 + 0x38) = 0.0f;
+    *(f32 *)((u8 *)arg0 + 0x3C) = 0.0f;
+    *(f32 *)((u8 *)arg0 + 0x40) = 0.0f;
 #pragma cplusplus reset
 }
 
@@ -11921,33 +11917,27 @@ void fn_801C9D94(void *dst, void *win) {
     extern s8 lbl_803682BC;
 
     typedef struct Str { u32 size; u32 cap; char *data; } Str;
-    typedef struct Blk {
-        u8 reg[0x3C];
-        Str strs[5];
-    } Blk;
     void *sp18;
     void *sp14;
     void *sp10;
     void *spC;
     void *sp8;
-    Blk *base;
-
-    base = (Blk *)lbl_80331C88;
+    u8 *base = lbl_80331C88;
 
     if ((s8)lbl_803682BC == 0) {
-        __register_global_object(String_Init(&base->strs[0], CameraWin_str + 0x21, &sp18),
-                                 String_Destroy, (u8 *)base + 0);
-        __register_global_object(String_Init(&base->strs[1], CameraWin_str + 0x2C, &sp14),
-                                 String_Destroy, (u8 *)base + 0xC);
-        __register_global_object(String_Init(&base->strs[2], CameraWin_str + 0x37, &sp10),
-                                 String_Destroy, (u8 *)base + 0x18);
-        __register_global_object(String_Init(&base->strs[3], CameraWin_str + 0x42, &spC),
-                                 String_Destroy, (u8 *)base + 0x24);
-        __register_global_object(String_Init(&base->strs[4], CameraWin_str + 0x4D, &sp8),
-                                 String_Destroy, (u8 *)base + 0x30);
+        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[0], CameraWin_str + 0x21, &sp18),
+                                 String_Destroy, &base[0]);
+        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[1], CameraWin_str + 0x2C, &sp14),
+                                 String_Destroy, &base[0xC]);
+        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[2], CameraWin_str + 0x37, &sp10),
+                                 String_Destroy, &base[0x18]);
+        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[3], CameraWin_str + 0x42, &spC),
+                                 String_Destroy, &base[0x24]);
+        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[4], CameraWin_str + 0x4D, &sp8),
+                                 String_Destroy, &base[0x30]);
         lbl_803682BC = 1;
     }
-    String_Copy(dst, &base->strs[fn_8011C9E4(*(void **)((u8 *)win + 0x434))]);
+    String_Copy(dst, &(*(Str (*)[5])(base + 0x3C))[fn_8011C9E4(*(void **)((u8 *)win + 0x434))]);
 }
 
 #pragma use_lmw_stmw on
@@ -12441,16 +12431,15 @@ void fn_801CADBC(void *arg0, s32 arg1) {
     void fn_800E8FAC(void *, s32);
     void fn_800E8BF8(void *, f32 *, f32 *, s32, f32);
     struct Str { u32 size; u32 cap; char *data; };
-    struct Vec3 { f32 x, y, z; };
     struct Fl { f32 sp2C; f32 sp30; f32 sp34; f32 sp38; f32 sp3C; f32 sp40; };
     struct Fl fl;
     struct Str sp20;
-    struct Vec3 sp14;
-    struct Vec3 sp8;
+    f32 sp14[3];
+    f32 sp8[3];
     f32 *entry;
     s32 unk0;
     void *child;
-    f32 f1, f5, f4, f3, f2, f0;
+    f32 last;
 
     fl.sp40 = 0.0f;
     unk0 = *(s32 *)arg0;
@@ -12464,34 +12453,32 @@ void fn_801CADBC(void *arg0, s32 arg1) {
     } else {
         entry = NULL;
     }
-    if ((u32)entry != 0 && (u32)*(void **)((u8 *)arg0 + 0x6C) != 0) {
+    if (entry != 0 && (u32)*(void **)((u8 *)arg0 + 0x6C) != 0) {
         if (Camera_IsEnabled(*(void **)((u8 *)arg0 + 0x6C)) == 0) {
             fn_800DF6DC(&sp20, *(void **)((u8 *)arg0 + 0x6C));
             fn_800E7B80(unk0, &sp20);
             String_Destroy(&sp20, -1);
         }
         child = fn_800E8BB4(*(void **)((u8 *)arg0 + 0x6C));
-        if ((u32)child != 0 && (u32)*(void **)((u8 *)child + 0x6C) != 0) {
+        if (child != 0 && (u32)*(void **)((u8 *)child + 0x6C) != 0) {
             *(s32 *)((u8 *)child + 0x74) = -1;
             fn_800E8BBC(*(void **)((u8 *)child + 0x6C), 0);
         }
         fn_800E8FAC(*(void **)((u8 *)arg0 + 0x6C), 0);
-        f1 = entry[0];
-        f5 = entry[1];
-        fl.sp38 = f1;
-        f4 = entry[2];
-        f3 = entry[3];
-        f2 = entry[4];
-        f0 = entry[5];
-        fl.sp3C = f5;
-        f1 = entry[6];
-        fl.sp40 = f4;
-        fl.sp2C = f3;
-        fl.sp30 = f2;
-        fl.sp34 = f0;
-        sp8 = *(struct Vec3 *)&fl.sp2C;
-        sp14 = *(struct Vec3 *)&fl.sp38;
-        fn_800E8BF8(*(void **)((u8 *)arg0 + 0x6C), &sp14.x, &sp8.x, 0, f1);
+        fl.sp38 = entry[0];
+        fl.sp3C = entry[1];
+        fl.sp40 = entry[2];
+        fl.sp2C = entry[3];
+        fl.sp30 = entry[4];
+        fl.sp34 = entry[5];
+        last = entry[6];
+        *(u32 *)&sp8[0] = *(u32 *)&fl.sp2C;
+        *(u32 *)&sp8[1] = *(u32 *)&fl.sp30;
+        *(u32 *)&sp8[2] = *(u32 *)&fl.sp34;
+        *(u32 *)&sp14[0] = *(u32 *)&fl.sp38;
+        *(u32 *)&sp14[1] = *(u32 *)&fl.sp3C;
+        *(u32 *)&sp14[2] = *(u32 *)&fl.sp40;
+        fn_800E8BF8(*(void **)((u8 *)arg0 + 0x6C), sp14, sp8, 0, last);
     }
 }
 #pragma global_optimizer on
