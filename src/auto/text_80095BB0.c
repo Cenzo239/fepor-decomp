@@ -579,80 +579,62 @@ s32 fn_80096EEC(s32 *arg0, u32 arg1) {
 
     var_r5 = 0;
     if (arg1 & 0x2000) {
-        var_r5 = (arg0[var_r5] = 0x2000, 1);
+        arg0[var_r5++] = 0x2000;
     }
     if (arg1 & 0x4000) {
-        arg0[var_r5] = 0x4000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x4000;
     }
     if (arg1 & 0x800) {
-        arg0[var_r5] = 0x800;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x800;
     }
     if (arg1 & 0x8000) {
-        arg0[var_r5] = 0x8000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x8000;
     }
     if (arg1 & 0x10000) {
-        arg0[var_r5] = 0x10000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x10000;
     }
     if (arg1 & 0x1000) {
-        arg0[var_r5] = 0x1000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x1000;
     }
     if (arg1 & 0x200) {
-        arg0[var_r5] = 0x200;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x200;
     }
     if (arg1 & 0x100) {
-        arg0[var_r5] = 0x100;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x100;
     }
     if (arg1 & 0x400) {
-        arg0[var_r5] = 0x400;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x400;
     }
     if (arg1 & 2) {
-        arg0[var_r5] = 2;
-        var_r5 += 1;
+        arg0[var_r5++] = 2;
     }
     if (arg1 & 0x04000000) {
-        arg0[var_r5] = 0x04000000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x04000000;
     } else {
         if (arg1 & 0x10000000) {
-            arg0[var_r5] = 0x10000000;
-            var_r5 += 1;
+            arg0[var_r5++] = 0x10000000;
         }
         if (arg1 & 0x20000000) {
-            arg0[var_r5] = 0x20000000;
-            var_r5 += 1;
+            arg0[var_r5++] = 0x20000000;
         }
     }
     if (arg1 & 0x08000000) {
-        arg0[var_r5] = 0x08000000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x08000000;
     }
     if (arg1 & 0x40000000) {
-        arg0[var_r5] = 0x40000000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x40000000;
     }
     if (arg1 & 0x80000000) {
-        arg0[var_r5] = (s32)0x80000000;
-        var_r5 += 1;
+        arg0[var_r5++] = (s32)0x80000000;
     }
     if (arg1 & 0x02000000) {
-        arg0[var_r5] = 0x02000000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x02000000;
     }
     if (arg1 & 0x01000000) {
-        arg0[var_r5] = 0x01000000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x01000000;
     }
     if (arg1 & 0x800000) {
-        arg0[var_r5] = 0x800000;
-        var_r5 += 1;
+        arg0[var_r5++] = 0x800000;
     }
     return var_r5;
 }
