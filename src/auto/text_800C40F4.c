@@ -18345,16 +18345,16 @@ void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
     f32 delta[3];
     f32 distance;
     f32 step;
-    f32 z;
     f32 x;
     f32 y;
+    f32 z;
     u8 *self;
 
     self = (u8 *)arg0;
-    step = arg2;
     x = arg1[0];
     y = arg1[1];
     *(f32 *)((u8 *)arg0 + 0x78) = x;
+    step = arg2;
     z = arg1[2];
     *(f32 *)(self + 0x7C) = y;
     *(f32 *)(self + 0x80) = z;
@@ -29241,16 +29241,15 @@ void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
     }
 }
 
-void fn_800FE074(void *arg0, s32 arg1, s32 arg2) {
-    u8 Status_Test(void *, s32);
-    void Map_SelectRangeBuffer(void *, s32);
-    void fn_800227F8(void *, void *);
-    void fn_800227D0(void *, s32, s32);
-    void fn_80022748(void *, s32);
-    s8 Unit_GetMov(void *);
+void fn_800FE074(u8 *unit, s32 arg1, s32 arg2) {
     void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void fn_80022748(void *, void *);
+    void fn_800227D0(void *, s32, s32);
+    void fn_800227F8(void *, void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    s8 Unit_GetMov(void *);
+    u8 Status_Test(void *, s32);
     extern u8 gBattleMap[];
-
     s32 t14;
     s32 t15;
     s32 slot;
@@ -29259,7 +29258,7 @@ void fn_800FE074(void *arg0, s32 arg1, s32 arg2) {
     u8 *map;
     u8 *p;
 
-    u = (u8 *)arg0;
+    u = unit;
     mov = arg2;
     map = gBattleMap;
     p = u + 0x1BC;
