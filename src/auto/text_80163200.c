@@ -4051,15 +4051,16 @@ void fn_8016A0CC(void *arg0) {
     }
     if (fn_80161FB8() != 0) {
         if (FileCache_IsReady((void *)fn_801620AC()) != 0) {
-            if (FileCache_IsReady(sp8) == 0) {
-            } else {
-                fn_80162054();
-                *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
-                *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
-                Process_ClearFunc(arg0);
+            while (FileCache_IsReady(sp8) == 0) {
+                goto done;
             }
+            fn_80162054();
+            *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
+            *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
+            Process_ClearFunc(arg0);
         }
     }
+done: ;
 }
 
 void fn_8016A1BC(void *arg0) {
@@ -4562,14 +4563,15 @@ virtual void v19()=0;
 virtual void v20()=0;
 virtual s16 v21()=0;
 virtual s16 v22()=0; };
-f32 x,y;
+f32 y,x;
 s16 base;
 void *proc;
 if(*(u8*)((u8*)entry+0x39)==2) {
 base=(*(Obj**)((u8*)panel+0x3C))->v21();
 x=(f32)(base+*(s16*)((u8*)entry+0x30));
 base=(*(Obj**)((u8*)panel+0x3C))->v22();
-Ui_CreateMsgPopup(lbl_80277BC0+0x1D1,panel,x,(f32)(*(s16*)((u8*)entry+0x32)+base));
+y=(f32)(base+*(s16*)((u8*)entry+0x32));
+Ui_CreateMsgPopup(lbl_80277BC0+0x1D1,panel,x,y);
 return 0;
 }
 proc=Process_Find(lbl_80293D8C);
@@ -14438,15 +14440,15 @@ void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     s->ptr = s->ptr + arg1;
 }
 
-u64 fn_8017A860(u8 **arg0) {
-    u64 v = (u64)*arg0[1]++ << 56;
-    v += (u64)*arg0[1]++ << 48;
-    v += (u64)*arg0[1]++ << 40;
-    v += (u64)*arg0[1]++ << 32;
-    v += (u64)*arg0[1]++ << 24;
-    v += (u64)*arg0[1]++ << 16;
-    v += (u64)*arg0[1]++ << 8;
-    v += (u64)*arg0[1]++;
+u64 fn_8017A860(s8 **arg0) {
+    u64 v = (u64)(u8)*arg0[1]++ << 56;
+    v += (u64)(u8)*arg0[1]++ << 48;
+    v += (u64)(u8)*arg0[1]++ << 40;
+    v += (u64)(u8)*arg0[1]++ << 32;
+    v += (u64)(u8)*arg0[1]++ << 24;
+    v += (u64)(u8)*arg0[1]++ << 16;
+    v += (u64)(u8)*arg0[1]++ << 8;
+    v += (u64)(u8)*arg0[1]++;
     return v;
 }
 
@@ -15074,20 +15076,14 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     extern u8 lbl_80278780[];
     extern u8 lbl_802F0350[];
     extern f32 lbl_8036AB94;
-    void *self;
-    void *unit;
-    s32 color;
-    u8 flag;
-    s32 a2;
-    s32 a1;
+    void *self = arg0;
+    s32 a1 = arg1;
+    s32 a2 = arg2;
+    s32 color = arg3;
+    u8 flag = 0;
+    void *unit = arg4;
     s32 ret;
 
-    self = arg0;
-    a1 = arg1;
-    a2 = arg2;
-    color = arg3;
-    unit = arg4;
-    flag = 0;
     if (arg6 != 0) {
         flag = 0x12;
     }
@@ -15108,49 +15104,47 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
 
 #pragma use_lmw_stmw on
 void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(s32, u16);
-    void Prim2D_SetColorByte(s32);
-    void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    void Text_Draw(s16, s16, s32, void *, ...);
-    void Ui_DrawIcon(void *, s16, s16, u8);
+    void fn_8000A258(void);
+    void fn_8000A174(s32, u16);
+    void fn_80009B8C(s32);
+    void fn_8000A248(void);
+    s32 fn_800102BC(s32, f32);
+    void fn_8001019C(s16, s16, s32, void *, ...);
+    void fn_8005AC24(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     extern u8 lbl_80278780[];
-    extern u8 gItemIconDrawer[];
+    extern u8 lbl_802F0350[];
     extern f32 lbl_8036AB94;
-    u8 flag;
-    s32 a2;
+    void *self;
     s32 a1;
+    s32 a2;
     s32 color;
     void *unit;
-    void *self;
+    u8 flag;
+    s32 ret;
 
-    flag = 0;
-    if (arg6 != 0) {
-        flag = 0x11;
-    }
     self = arg0;
     a1 = arg1;
     a2 = arg2;
     color = arg3;
     unit = arg4;
-    (void)arg5;
-    Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)self + 0x34) | 3));
-    Prim2D_SetColorByte(color);
-    Prim2D_PrepareTex();
-    {
-        s32 off = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1);
-        s32 ret = fn_8010586C(unit);
-        a1 = (s16)a1;
-        a2 = (s16)a2;
-        Text_Draw((s16)(a1 + 0x20), (s16)(a2 + off), flag, lbl_80278780 + 0xB3, ret);
-        Ui_DrawIcon(gItemIconDrawer, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    flag = 0;
+    if (arg6 != 0) {
+        flag = 0x11;
     }
-    Prim2D_Begin();
-    Prim2D_SetColorByte(0xFF);
-    Prim2D_PrepareTex();
+    fn_8000A258();
+    fn_8000A174(0, (u16)(*(s32 *)((u8 *)self + 0x34) | 3));
+    fn_80009B8C(color);
+    fn_8000A248();
+    color = (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1);
+    ret = fn_8010586C(unit);
+    a1 = (s16)a1;
+    a2 = (s16)a2;
+    fn_8001019C((s16)(a1 + 0x20), (s16)(a2 + color), flag, lbl_80278780 + 0xB3, ret);
+    fn_8005AC24(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    fn_8000A258();
+    fn_80009B8C(0xFF);
+    fn_8000A248();
 }
 #pragma use_lmw_stmw reset
 s32 fn_8017B8F8(s32 unused, s32 arg1) {
@@ -16338,25 +16332,33 @@ extern "C" void *Ui_DtorGoldCostPanel(void *self, s16 doFree) {
 }
 
 extern "C" void fn_8017D8CC(void *arg0) {
-extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
-s32 h = (s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
-s32 w = (s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
-s16 right=w-3;
-s16 bottom=h-5;
-M2C_FIELD(arg0,s16 *,0x12)=3;
-M2C_FIELD(arg0,s16 *,0x14)=5;
-M2C_FIELD(arg0,s16 *,0x16)=w-3;
-M2C_FIELD(arg0,s16 *,0x18)=h-5;
-h=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
-w=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
-M2C_FIELD(arg0,s16 *,0x52)=w>>2;
-M2C_FIELD(arg0,s16 *,0x54)=(s16)(lbl_8036ABC0*h-lbl_8036ABC4);
-M2C_FIELD(arg0,s16 *,0x56)=0;
-h=(s16)(M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC));
-w=(s16)(M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA));
-M2C_FIELD(arg0,s16 *,0x7A)=w>>2;
-M2C_FIELD(arg0,s16 *,0x7C)=(s16)(lbl_8036ABC0*h+lbl_8036ABC8);
-M2C_FIELD(arg0,s16 *,0x7E)=0;
+    extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
+    extern const f64 lbl_8036ABD0;
+    s16 height, width;
+    s32 bottom, right;
+    s16 *p = (s16 *)arg0;
+
+    (void)lbl_8036ABD0;
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    p[0x12 / 2] = 3;
+    right = width - 3;
+    bottom = height - 5;
+    p[0x14 / 2] = 5;
+    p[0x16 / 2] = (s16)right;
+    p[0x18 / 2] = (s16)bottom;
+
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    p[0x52 / 2] = (s16)(width >> 2);
+    p[0x54 / 2] = (s16)(lbl_8036ABC0 * (f32)height - lbl_8036ABC4);
+    p[0x56 / 2] = 0;
+
+    height = p[0x10 / 2] - p[0xC / 2];
+    width = p[0xE / 2] - p[0xA / 2];
+    p[0x7A / 2] = (s16)(width >> 2);
+    p[0x7C / 2] = (s16)(lbl_8036ABC0 * (f32)height + lbl_8036ABC8);
+    p[0x7E / 2] = 0;
 }
 
 #pragma cplusplus reset
@@ -17550,7 +17552,7 @@ s16 index;
 first=Ui_FindChild(arg0,0x81,0);
 second=Ui_FindChild(arg0,0x82,0);
 unit=Ui_ListGetSelected(first);
-index=M2C_FIELD(second,s16 *,0x4E);
+index=(s16)M2C_FIELD(second,s16 *,0x4E);
 node=M2C_FIELD(second,void **,0x64);
 if(index>=0) { while(index>0) { node=M2C_FIELD(node,void **,4); index--; } }
 else { while(index<0) { node=M2C_FIELD(node,void **,0); index++; } }
