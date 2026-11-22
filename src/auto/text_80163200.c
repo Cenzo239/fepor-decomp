@@ -1305,21 +1305,28 @@ s16 UnitInv_FindEmpty(void *inv) {
     return (s16)result;
 }
 
-s16 UnitInv_FindFilledUp(void *inv, s16 startSlot) {
-    s16 result;
-    if (startSlot < 0) {
-        startSlot = 0;
+volatile unsigned int UnitInv_FindFilledUp(void *inv, s16 startSlot)
+{
+  s16 result;
+  if (startSlot < 0)
+  {
+    startSlot = 0;
+  }
+  result = 8;
+  for (; startSlot < result; startSlot++)
+  {
+    if (IsSlotAvailable(inv, startSlot))
+    {
+      break;
     }
-    for (; startSlot < 8; startSlot++) {
-        if (IsSlotAvailable(inv, startSlot)) {
-            break;
-        }
-    }
-    result = -1;
-    if (startSlot < 8) {
-        result = startSlot;
-    }
-    return result;
+  }
+
+  result = -1;
+  if (startSlot < 8)
+  {
+    result = startSlot & 0xFFFFFFFFu;
+  }
+  return result;
 }
 
 #pragma scheduling reset
