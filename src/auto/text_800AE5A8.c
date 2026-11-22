@@ -10886,7 +10886,6 @@ found:
     return result;
 }
 #pragma optimization_level reset
-#pragma peephole off
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
