@@ -1431,25 +1431,25 @@ void fn_8012A4CC(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8012A530(void *arg0) {
-    void Process_ClearFunc(void *);
+    void fn_8000C188(void *);
     f32 fn_8001F53C(void *, s8, s8, s32);
-    f32 Map_SampleHeight(void *, f32, f32);
-    void *Map_Get(void);
-    void SeCue_PlayAt(void *, s32, f32, f32, f32);
-    void BattleState_SetCamPos(void *, f32, f32);
-    void Mu_StartFlash(void *, s32, s32, s32);
-    void Mu_StartTransfer(void *, s32, s32, s32);
-    void Mu_StartBlend(void *, s32, s32, s32);
-    void PSMTXConcat(void *, void *, void *);
+    f32 fn_80023068(void *, f32, f32);
+    void *fn_80040844(void);
+    void fn_80147578(void *, s32, f32, f32, f32);
+    void fn_8014CBD8(void *, f32, f32);
+    void fn_80184688(void *, s32, s32, s32);
+    void fn_80184BE8(void *, s32, s32, s32);
+    void fn_80184C7C(void *, s32, s32, s32);
+    void fn_80202024(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
-    void PSMTXTrans(void *, f32, f32, f32);
-    void PSMTXScale(void *, f32, f32, f32);
+    void fn_80202540(void *, f32, f32, f32);
+    void fn_802025C0(void *, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_80275734[3];
     extern u8 lbl_80275740[];
-    extern u16 gUnits[];
-    extern u8 gBattleMap[];
-    extern f32 gTileCenter;
+    extern u16 lbl_802B14E4[];
+    extern u8 lbl_802CA518[];
+    extern f32 lbl_8036A410;
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A42C;
@@ -1467,7 +1467,7 @@ void fn_8012A530(void *arg0) {
     extern f32 lbl_8036A45C;
     extern f32 lbl_8036A460;
     extern f32 lbl_8036A464;
-    extern u8 gBattleState[0x578];
+    extern u8 lbl_80330708[0x578];
 
     u8 spD4[0x30];
     u8 spA4[0x30];
@@ -1479,16 +1479,16 @@ void fn_8012A530(void *arg0) {
     s32 oldY;
     s32 newX;
     s32 newY;
-    void *self;
+    register int ib;
     void *sub;
-    f32 scale;
-    f32 z;
     void *cam;
-    void *child;
-    void *unit;
+    f32 z;
     f32 unk38;
-    s32 ia;
-    s32 ib;
+    void *unit;
+    void *child;
+    f32 scale;
+    int ia;
+    void *self;
     void (*cb)(s32, s32, void *);
     u8 id;
     f32 t;
@@ -1512,10 +1512,10 @@ void fn_8012A530(void *arg0) {
         vx = *(f32 *)&vec[0];
         x = *(f32 *)((u8 *)sub + 0x10);
         vz = *(f32 *)&vec[2];
-        scale = scale / lbl_8036A454;
         y = *(f32 *)((u8 *)sub + 0x14);
-        c = gTileCenter;
+        scale = scale / lbl_8036A454;
         vx = vx * scale;
+        c = lbl_8036A410;
         oldX = (s32)(c + x);
         oldY = (s32)(c + y);
         *(f32 *)((u8 *)sub + 0x10) = x + vx;
@@ -1525,13 +1525,13 @@ void fn_8012A530(void *arg0) {
 
         sub = *(void **)((u8 *)self + 0x30);
         {
-            s32 tx = (s32)(c + *(f32 *)((u8 *)sub + 0x10));
-            s32 ty = (s32)(c + *(f32 *)((u8 *)sub + 0x14));
-            id = *((u8 *)sub + 0xA);
+            long tx = (s32)(c + *(f32 *)((u8 *)sub + 0x10));
+            unsigned long ty = (s32)(c + *(f32 *)((u8 *)sub + 0x14));
+            register id = *((u8 *)sub + 0xA);
             newX = tx;
             newY = ty;
             *(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 0x30) =
-                lbl_8036A458 * fn_8001F53C(gBattleMap, (s8)tx, (s8)ty, id);
+                lbl_8036A458 * fn_8001F53C(lbl_802CA518, (s8)tx, (s8)ty, id);
         }
     }
 
@@ -1559,33 +1559,33 @@ void fn_8012A530(void *arg0) {
                 *(f32 *)((u8 *)sub + 0x14) = (f32)(s32)*((u8 *)sub + 0xD);
             }
         }
-        Process_ClearFunc(self);
+        fn_8000C188(self);
     }
 
-    if (oldX != newX || oldY != newY) {
+    if (oldX != newX || oldY != (unsigned short)newY) {
         sub = *(void **)((u8 *)self + 0x30);
         cb = *(void (**)(s32, s32, void *))((u8 *)sub + 0x34);
-        if (cb != 0) {
+        if (cb) {
             cb(newX, newY, self);
         } else {
-            id = *(u8 *)(gBattleMap + ((s8)newY << 6) + (s8)newX + 0xD);
-            if (id != 0) {
-                unit = (u8 *)gUnits + (id - 1) * 0x280;
+            id = *(u8 *)(lbl_802CA518 + ((s8)newY << 6) + (s8)newX + 0xD);
+            if (id) {
+                unit = (u8 *)lbl_802B14E4 + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
-            if (unit != 0) {
-                Mu_StartBlend(unit, 9, 8, 0);
-                Mu_StartTransfer(unit, 0, 8, 0);
-                Mu_StartFlash(unit, 1, 2, 0);
+            if (unit) {
+                fn_80184C7C(unit, 9, 8, 0);
+                fn_80184BE8(unit, 0, 8, 0);
+                fn_80184688(unit, 1, 2, 0);
             }
         }
     }
 
     sub = *(void **)((u8 *)self + 0x30);
-    z = Map_SampleHeight(gBattleMap,
-        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
-        gTileCenter + *(f32 *)((u8 *)sub + 0x14));
+    z = fn_80023068(lbl_802CA518,
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14));
     sub = *(void **)((u8 *)self + 0x30);
     if (*(f32 *)((u8 *)sub + 0x18) < z) {
         *(f32 *)((u8 *)sub + 0x1C) = *(f32 *)((u8 *)sub + 0x1C) * lbl_8036A464;
@@ -1599,46 +1599,42 @@ void fn_8012A530(void *arg0) {
         *(f32 *)((u8 *)sub + 0x18) = z;
     }
 
-    {
-        void *keep = (void *)newY;
-        cam = Map_Get();
-        sub = *(void **)((u8 *)self + 0x30);
-        child = *(void **)sub;
-        fn_802024D0(sp44, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
-        sub = *(void **)((u8 *)self + 0x30);
-        PSMTXConcat(sp44, (u8 *)sub + 0x3C, (u8 *)sub + 0x3C);
-        PSMTXTrans(sp74, lbl_8036A438, lbl_8036A43C, lbl_8036A438);
-        sub = *(void **)((u8 *)self + 0x30);
-        PSMTXConcat((u8 *)sub + 0x3C, sp74, sp44);
-        PSMTXTrans(sp74, lbl_8036A440, lbl_8036A444, lbl_8036A440);
-        PSMTXConcat(sp74, sp44, spA4);
-        t = *(f32 *)((u8 *)cam + 0x6C);
-        PSMTXScale(sp14, t, t, t);
-        PSMTXConcat(sp14, spA4, spA4);
-        sub = *(void **)((u8 *)self + 0x30);
-        PSMTXTrans(sp74,
-            lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x10) * t),
-            lbl_8036A430 * (-*(f32 *)((u8 *)sub + 0x18) * t),
-            lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x14) * t));
-        PSMTXConcat(sp74, spA4, spA4);
-        PSMTXConcat((u8 *)cam + 0x70, spA4, (u8 *)child + 0x24);
-        (void)keep;
-    }
+    cam = fn_80040844();
+    sub = *(void **)((u8 *)self + 0x30);
+    child = *(void **)sub;
+    fn_802024D0(sp44, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
+    sub = *(void **)((u8 *)self + 0x30);
+    fn_80202024(sp44, (u8 *)sub + 0x3C, (u8 *)sub + 0x3C);
+    fn_80202540(sp74, lbl_8036A438, lbl_8036A43C, lbl_8036A438);
+    sub = *(void **)((u8 *)self + 0x30);
+    fn_80202024((u8 *)sub + 0x3C, sp74, sp44);
+    fn_80202540(sp74, lbl_8036A440, lbl_8036A444, lbl_8036A440);
+    fn_80202024(sp74, sp44, spA4);
+    t = *(f32 *)((u8 *)cam + 0x6C);
+    fn_802025C0(sp14, t, t, t);
+    fn_80202024(sp14, spA4, spA4);
+    sub = *(void **)((u8 *)self + 0x30);
+    fn_80202540(sp74,
+        lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x10) * t),
+        lbl_8036A430 * (-*(f32 *)((u8 *)sub + 0x18) * t),
+        lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x14) * t));
+    fn_80202024(sp74, spA4, spA4);
+    fn_80202024((u8 *)cam + 0x70, spA4, (u8 *)child + 0x24);
 
     sub = *(void **)((u8 *)self + 0x30);
     unk38 = *(f32 *)((u8 *)sub + 0x38);
     ia = (s32)(unk38 / lbl_8036A448);
     ib = (s32)((unk38 + *(f32 *)((u8 *)sub + 0x2C)) / lbl_8036A448);
     if (lbl_8036A420 == unk38 || ia != ib) {
-        SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
-            gTileCenter + *(f32 *)((u8 *)sub + 0x10),
-            gTileCenter + *(f32 *)((u8 *)sub + 0x14),
+        fn_80147578(lbl_80275740 + 0x16F, 0x64,
+            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
+            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
     }
     sub = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)sub + 0x38) = *(f32 *)((u8 *)sub + 0x38) + *(f32 *)((u8 *)sub + 0x2C);
     sub = *(void **)((u8 *)self + 0x30);
-    BattleState_SetCamPos(gBattleState,
+    fn_8014CBD8(lbl_80330708,
         *(f32 *)((u8 *)sub + 0x10),
         *(f32 *)((u8 *)sub + 0x14));
 }
@@ -1742,39 +1738,40 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *fn_800056A0(void *);
     void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, s32);
-    void Map_Get(void);
-    void *Map_FindObjNear(s32, s32, u32, u32);
-    s32 Map_FindObjAt(s8, s8, u32, u32);
+    void *Map_Get(void);
+    void *Map_FindObjNear(void *, s32, s32, u32, u32);
+    s32 Map_FindObjAt(void *, s8, s8, u32, u32);
     void BattleState_SetCamPos(void *, f32, f32);
 
     s32 t31;
     void *t30;
     void *r6;
+    u32 a2 = arg2;
+    s32 a1 = arg1;
+    s32 a0 = arg0;
 
-    Map_Get();
-    t30 = Map_FindObjNear(arg0, arg1, 0xA00, 0);
+    t30 = Map_FindObjNear(Map_Get(), a0, a1, 0xA00, 0);
     if (t30 == NULL) {
         fn_800056A0(0);
         return;
     }
-    arg0 = *(s8 *)t30;
-    arg1 = *((s8 *)t30 + 1);
-    Map_Get();
-    t31 = Map_FindObjAt((s8)arg0, (s8)arg1, 0x20000, 0);
+    a1 = *(s8 *)t30;
+    a0 = *((s8 *)t30 + 1);
+    t31 = Map_FindObjAt(Map_Get(), (s8)a1, (s8)a0, 0x20000, 0);
     if (t31 == 0) {
         fn_800056A0(0);
         return;
     }
-    if (arg2 != 0) {
-        r6 = Process_CreateChild(lbl_80290A58, arg2);
+    if (a2 != 0) {
+        r6 = Process_CreateChild(lbl_80290A58, a2);
     } else {
         r6 = Process_Create(lbl_80290A58, 3);
     }
     *(void **)((u8 *)r6 + 0x38) = t30;
     *(s32 *)((u8 *)r6 + 0x3c) = t31;
-    *(s32 *)((u8 *)r6 + 0x30) = arg0;
-    *(s32 *)((u8 *)r6 + 0x34) = arg1;
-    BattleState_SetCamPos(gBattleState, (f32)arg0, (f32)arg1);
+    *(s32 *)((u8 *)r6 + 0x30) = a1;
+    *(s32 *)((u8 *)r6 + 0x34) = a0;
+    BattleState_SetCamPos(gBattleState, (f32)a1, (f32)a0);
 }
 #pragma use_lmw_stmw reset
 void fn_8012AEC4(void *arg0) {
@@ -2081,30 +2078,30 @@ void fn_8012B554(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_8012B7DC(void *arg0) {
-    void Prim2D_SetText(void *);
-    void Prim2D_SetAlpha(u8);
-    void Prim2D_SetColor(s32, s32, s32, u8);
-    void Prim2D_SetRect(f32, f32, f32, f32);
-    void Prim2D_SetPos(f32, f32);
-    void Prim2D_SetPrimParam(f32);
-    void Prim2D_EndPrim(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
-    void Process_ClearFunc(void *);
-    s32 Rand_Range(s32);
+    void fn_80007124(void *);
+    void fn_80007698(u8);
+    void fn_800076AC(s32, s32, s32, u8);
+    void fn_800077D8(f32, f32, f32, f32);
+    void fn_80007858(f32, f32);
+    void fn_80007870(f32);
+    void fn_80007884(void);
+    void fn_80007898(s32);
+    void fn_80009D74(f32, f32, f32, f32);
+    void fn_8000A174(s32, s32);
+    void fn_8000A248(void);
+    void fn_8000A258(void);
+    void fn_8000C188(void *);
+    s32 fn_8000CEE4(s32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
-    void Ui_CreateMenu(void *, void *, s32);
+    void fn_80024398(void *, void *, s32);
     void fn_8007ADC8(s32);
     void *fn_8007BD30(s32, void *, s32, s32, s32, s32, void *);
     void **fn_8007C3F8(void);
     s32 fn_8007C400(void);
     void fn_80109EEC(void *);
-    void sprintf(void *, void *, ...);
+    void fn_80231D94(void *, void *, ...);
     extern char lbl_802758F8[];
-    extern s32 gPadInput;
+    extern s32 lbl_80367240;
     extern s32 lbl_80367A88;
     extern s32 lbl_80367A9C;
     extern f32 lbl_8036A480;
@@ -2148,7 +2145,7 @@ void fn_8012B7DC(void *arg0) {
     f32 t;
 
     scale = lbl_8036A480;
-    pad = (void *)gPadInput;
+    pad = (void *)lbl_80367240;
     if (*(s32 *)((u8 *)pad + 4) & 0x10) {
         f32 f488 = lbl_8036A488;
         f32 f48C = lbl_8036A48C;
@@ -2161,17 +2158,17 @@ void fn_8012B7DC(void *arg0) {
         cam = (void *)lbl_80367A88;
         t = *(f32 *)((u8 *)cam + 0x40);
         *(f32 *)((u8 *)cam + 0x40) = t - (scale * (f32)(s8)stick[2] * f488);
-        pad = (void *)gPadInput;
+        pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x44);
         *(f32 *)((u8 *)cam + 0x44) = t + (scale * (f32)(s8)stick[3] * f488);
-        pad = (void *)gPadInput;
+        pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x54);
         *(f32 *)((u8 *)cam + 0x54) = t - ((scale * (f32)stick[6]) / f48C);
-        pad = (void *)gPadInput;
+        pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x54);
@@ -2182,7 +2179,7 @@ void fn_8012B7DC(void *arg0) {
         }
         cam = (void *)lbl_80367A88;
         *(f32 *)((u8 *)cam + 0x58) = *(f32 *)((u8 *)cam + 0x54);
-        pad = (void *)gPadInput;
+        pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x5C);
@@ -2191,7 +2188,7 @@ void fn_8012B7DC(void *arg0) {
         (void)conv_u;
     }
 
-    pad = (void *)gPadInput;
+    pad = (void *)lbl_80367240;
     buttons = *(s32 *)((u8 *)pad + 4);
     prev = *(s32 *)((u8 *)pad + 8);
     if (buttons & (prev ^ buttons) & 0x1000) {
@@ -2214,75 +2211,75 @@ void fn_8012B7DC(void *arg0) {
     if (*(s16 *)((u8 *)arg0 + 0x4C) < 0) {
         *(s16 *)((u8 *)arg0 + 0x4C) = 0;
     }
-    if (*(s32 *)((u8 *)(void *)gPadInput + 4) & 0x10) {
+    if (*(s32 *)((u8 *)(void *)lbl_80367240 + 4) & 0x10) {
         *(s16 *)((u8 *)arg0 + 0x4C) = 0xFF;
     }
 
     if (*(s16 *)((u8 *)arg0 + 0x4C) != 0) {
-        Prim2D_Begin();
-        Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A498, lbl_8036A480);
-        Prim2D_SetTex(0, 0x13);
-        Prim2D_PrepareTex();
+        fn_8000A258();
+        fn_80009D74(lbl_8036A498, lbl_8036A498, lbl_8036A498, lbl_8036A480);
+        fn_8000A174(0, 0x13);
+        fn_8000A248();
         cam = (void *)lbl_80367A88;
-        sprintf(buf, lbl_802758F8 + 0x2C,
+        fn_80231D94(buf, lbl_802758F8 + 0x2C,
                     (s32)*(f32 *)((u8 *)cam + 0x40),
                     (s32)*(f32 *)((u8 *)cam + 0x44));
-        Prim2D_AddPrim(7);
-        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        Prim2D_SetPos(lbl_8036A49C, lbl_8036A49C);
-        Prim2D_SetText(buf);
-        Prim2D_EndPrim();
+        fn_80007898(7);
+        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        fn_80007858(lbl_8036A49C, lbl_8036A49C);
+        fn_80007124(buf);
+        fn_80007884();
         cam = (void *)lbl_80367A88;
-        sprintf(buf, lbl_802758F8 + 0x39,
+        fn_80231D94(buf, lbl_802758F8 + 0x39,
                     (s32)(lbl_8036A4A0 * *(f32 *)((u8 *)cam + 0x54)));
-        Prim2D_AddPrim(7);
-        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A4);
-        Prim2D_SetText(buf);
-        Prim2D_EndPrim();
+        fn_80007898(7);
+        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        fn_80007858(lbl_8036A49C, lbl_8036A4A4);
+        fn_80007124(buf);
+        fn_80007884();
         cam = (void *)lbl_80367A88;
-        sprintf(buf, lbl_802758F8 + 0x45,
+        fn_80231D94(buf, lbl_802758F8 + 0x45,
                     (s32)*(f32 *)((u8 *)cam + 0x5C));
-        Prim2D_AddPrim(7);
-        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A8);
-        Prim2D_SetText(buf);
-        Prim2D_EndPrim();
-        Prim2D_Begin();
-        Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);
-        Prim2D_SetTex(0, 0x10);
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRect(lbl_8036A49C, lbl_8036A49C, lbl_8036A4B0, lbl_8036A4B4);
-        Prim2D_SetColor(0, 0, 0, (u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        Prim2D_EndPrim();
+        fn_80007898(7);
+        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        fn_80007858(lbl_8036A49C, lbl_8036A4A8);
+        fn_80007124(buf);
+        fn_80007884();
+        fn_8000A258();
+        fn_80009D74(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);
+        fn_8000A174(0, 0x10);
+        fn_8000A248();
+        fn_80007898(1);
+        fn_800077D8(lbl_8036A49C, lbl_8036A49C, lbl_8036A4B0, lbl_8036A4B4);
+        fn_800076AC(0, 0, 0, (u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        fn_80007884();
     }
 
-    pad = (void *)gPadInput;
+    pad = (void *)lbl_80367240;
     held = *(s32 *)((u8 *)pad + 0xC);
     if (held & 9) {
         *(s32 *)((u8 *)arg0 + 0x34) =
             *(s32 *)((u8 *)arg0 + 0x30) + (*(s32 *)((u8 *)arg0 + 0x38) - 1);
         *(s32 *)((u8 *)arg0 + 0x34) %=
             *(s32 *)((u8 *)arg0 + 0x38);
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     } else if (held & 6) {
         *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
         *(s32 *)((u8 *)arg0 + 0x34) %=
             *(s32 *)((u8 *)arg0 + 0x38);
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     } else {
         buttons = *(s32 *)((u8 *)pad + 4);
         if ((u32)(buttons & 0x210) == 0x210U) {
             *(s32 *)((u8 *)arg0 + 0x34) = 0x270F;
-            Process_ClearFunc(arg0);
+            fn_8000C188(arg0);
         } else {
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x400) {
                 *(u8 *)((u8 *)arg0 + 0x40) =
                     *(u8 *)((u8 *)arg0 + 0x40) + 1;
             }
-            pad = (void *)gPadInput;
+            pad = (void *)lbl_80367240;
             buttons = *(s32 *)((u8 *)pad + 4);
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x800) {
@@ -2306,7 +2303,7 @@ void fn_8012B7DC(void *arg0) {
                         p += 0x20;
                         i += 1;
                     }
-                    count = Rand_Range(count);
+                    count = fn_8000CEE4(count);
                     p = (u8 *)list;
                     i = 0;
                     for (; fn_8007C400() > i; ) {
@@ -2347,7 +2344,7 @@ void fn_8012B7DC(void *arg0) {
                         p += 0x20;
                         i += 1;
                     }
-                    count = Rand_Range(count);
+                    count = fn_8000CEE4(count);
                     p = (u8 *)list;
                     i = 0;
                     for (; fn_8007C400() > i; ) {
@@ -2380,21 +2377,21 @@ void fn_8012B7DC(void *arg0) {
                     *(void **)((u8 *)arg0 + 0x44) = NULL;
                 }
             }
-            pad = (void *)gPadInput;
+            pad = (void *)lbl_80367240;
             buttons = *(s32 *)((u8 *)pad + 4);
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x100) {
-                Ui_CreateMenu(&lbl_80367A9C, arg0, 0);
+                fn_80024398(&lbl_80367A9C, arg0, 0);
                 return;
             }
         }
     }
 
     if (!(*(u8 *)((u8 *)arg0 + 0x40) & 1)) {
-        Prim2D_Begin();
-        Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A498, lbl_8036A480);
-        Prim2D_SetTex(0, 0x13);
-        Prim2D_PrepareTex();
+        fn_8000A258();
+        fn_80009D74(lbl_8036A498, lbl_8036A498, lbl_8036A498, lbl_8036A480);
+        fn_8000A174(0, 0x13);
+        fn_8000A248();
         i = 0;
         y = 0x10;
         do {
@@ -2416,15 +2413,15 @@ void fn_8012B7DC(void *arg0) {
         fn_8001003C(0x38, 0x170, 1, 0, 1, lbl_802758F8 + 0xC0, lbl_8036A480, lbl_8036A498);
         fn_8001003C(0x50, 0x188, 1, 0, 1, lbl_802758F8 + 0xD1, lbl_8036A480, lbl_8036A498);
         fn_8001003C(0x38, 0x1A0, 1, 0, 1, lbl_802758F8 + 0xDD, lbl_8036A480, lbl_8036A498);
-        Prim2D_Begin();
-        Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);
-        Prim2D_SetTex(0, 0x10);
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRect(lbl_8036A4B8, lbl_8036A498, lbl_8036A4BC, lbl_8036A4C0);
-        Prim2D_SetColor(0, 0, 0, 0xB4);
-        Prim2D_SetPrimParam(lbl_8036A4C4);
-        Prim2D_EndPrim();
+        fn_8000A258();
+        fn_80009D74(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);
+        fn_8000A174(0, 0x10);
+        fn_8000A248();
+        fn_80007898(1);
+        fn_800077D8(lbl_8036A4B8, lbl_8036A498, lbl_8036A4BC, lbl_8036A4C0);
+        fn_800076AC(0, 0, 0, 0xB4);
+        fn_80007870(lbl_8036A4C4);
+        fn_80007884();
     }
 }
 
