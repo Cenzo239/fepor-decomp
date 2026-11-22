@@ -638,6 +638,8 @@ s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
     return (Unit_CanReceiveItem(*(s32 *)gUiContext, temp) == 0) ? 2 : 0;
 }
 
+#pragma use_lmw_stmw on
+
 s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
     s32 Unit_GetItemSlot(s32, u8);
@@ -647,31 +649,36 @@ s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     extern u8 gUiContext[];
     struct Vtbl { u8 pad[0x5C]; s16 (*getx)(void *); };
     typedef struct Obj { u8 pad[4]; struct Vtbl *vtbl; } Obj;
+    void *self;
     s32 str;
     s16 y;
     s16 x;
+    u8 *entry;
     Obj *obj;
     void *msg;
     s32 vx;
     s32 slot;
-    if (*(((u8 *)arg2) + 0x39)) {
-        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(((u8 *)arg2) + 0x3A));
+    self = arg1;
+    entry = (u8 *)arg2;
+    if (*(entry + 0x39)) {
+        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(entry + 0x3A));
         msg = 0;
         switch (Unit_CheckReceiveItem(*(s32 *)gUiContext, slot, gUiContext)) {
         case 1: msg = lbl_8026C0B8 + 0x1B3; break;
         case 2: msg = lbl_8026C0B8 + 0x1BA; break;
         case 3: msg = lbl_8026C0B8 + 0x1C1; break;
         }
-        y = *(s16 *)(((u8 *)arg2) + 0x32);
-        x = *(s16 *)(((u8 *)arg2) + 0x30);
-        obj = *(Obj **)((u8 *)arg1 + 0x3C);
+        y = *(s16 *)(entry + 0x32);
+        x = *(s16 *)(entry + 0x30);
+        obj = *(Obj **)((u8 *)self + 0x3C);
         str = Msg_Expand(msg);
         vx = obj->vtbl->getx(obj);
-        fn_80166AE8(vx + x, y, str, arg1);
+        fn_80166AE8(vx + x, y, str, self);
         return 0;
     }
-    gUiContext[0xA] = *(((u8 *)arg2) + 0x3A);
+    gUiContext[0xA] = *(entry + 0x3A);
     return 5;
+#pragma use_lmw_stmw reset
 }
 
 #pragma cplusplus on
@@ -2093,8 +2100,9 @@ s32 fn_80077574(void *arg0) {
     u8 bits;
     void *unit;
     Obj *obj = (Obj *)arg0;
-    if (*(s8 *)(gUiContext + 0x12)) return 3;
-    bits = fn_8009233C(*(void **)gUiContext).bits;
+    u8 *ctx = gUiContext;
+    if (*(s8 *)(ctx + 0x12)) return 3;
+    bits = fn_8009233C(*(void **)ctx).bits;
     if (!(bits & 0x38) && !(u8)(bits & obj->flags().bits)) return 3;
     unit = *(void **)gUiContext;
     fn_8002A784(unit, &obj->flags());
