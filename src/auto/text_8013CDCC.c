@@ -1258,26 +1258,11 @@ extern "C" void Ui_DrawListPanelBg(void *panel, s32 count) {
 
 extern "C" void fn_8013E080(void *arg0, void *arg1) {
 struct Obj { u8 pad[4];
-virtual void v0()=0;
-virtual void v1()=0;
-virtual void v2()=0;
-virtual void v3()=0;
-virtual void v4()=0;
-virtual void v5()=0;
-virtual void v6()=0;
-virtual void v7()=0;
-virtual void v8()=0;
-virtual void v9()=0;
-virtual void v10()=0;
-virtual void v11()=0;
-virtual void v12()=0;
-virtual void v13()=0;
-virtual void v14()=0;
-virtual void v15()=0;
-virtual void v16()=0;
-virtual void v17()=0;
-virtual void v18()=0;
-virtual void v19()=0;
+virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
+virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0;
+virtual void v12()=0; virtual void v13()=0; virtual void v14()=0; virtual void v15()=0;
+virtual void v16()=0; virtual void v17()=0; virtual void v18()=0; virtual void v19()=0;
 virtual void v20()=0;
 virtual s16 getX()=0; virtual s16 getY()=0; virtual void v23()=0; virtual void v24()=0; virtual f32 getZ()=0;
 };
@@ -1287,12 +1272,14 @@ void Prim2D_Begin(void); void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte
 extern f32 lbl_8036A6C0, lbl_8036A6E0, lbl_8036A6E4;
 f32 y, z, fade, scale; s16 x;
 u8 focused, alpha;
+void *o;
 fade=UiWin_GetFade(arg1);
 scale=Math_Ease(5,lbl_8036A6E0,lbl_8036A6C0,fade,lbl_8036A6C0);
 Prim2D_Begin();
-z=((Obj *)arg0)->getZ();
-y=((Obj *)arg0)->getY();
-x=((Obj *)arg0)->getX();
+o=arg0;
+z=((Obj *)o)->getZ();
+y=((Obj *)o)->getY();
+x=((Obj *)o)->getX();
 fn_80009C20(x,y,z,lbl_8036A6E0,lbl_8036A6E0,scale,scale,lbl_8036A6E0);
 Prim2D_SetColorByte((s32)(lbl_8036A6E4*fade));
 focused=0;
@@ -2519,7 +2506,7 @@ void fn_8013F3D0(void *arg0) {
     extern f32 lbl_8036A718;
 
     struct Point { s16 x, y; } pt;
-    s16 z;
+    u32 z;
     s16 midX;
     s16 midY;
     f32 scale;
@@ -2534,7 +2521,7 @@ void fn_8013F3D0(void *arg0) {
     Prim2D_Begin();
     z = M2C_FIELD(arg0, s16 *, 0x22);
     scale = fn_8013FA44(arg0);
-    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
+    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)(s16)z, (f32)midX, (f32)midY, fn_8013FA44(arg0), scale, lbl_8036A718);
     Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
     Prim2D_SetColorByte(fn_80138908(arg0));
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
@@ -2894,10 +2881,12 @@ extern "C" void List_Insert(void *outNode, void *list, void *posRef, void *value
 #pragma cplusplus on
 extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
 struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; };
-void *self=arg0;
-void *flag=*(void **)((u8 *)arg0+0x34);
+void *self;
+void *flag;
 Obj *p;
 Obj *q;
+self = arg0;
+flag = *(void **)((u8 *)arg0+0x34);
 if(flag) { p=*(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8); } else p=0;
 if(p) { q=flag ? *(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8):0; q->v7(); }
 }
@@ -3555,97 +3544,72 @@ void *fn_80140E58(void *arg0, void *arg1, u8 arg2, s32 arg3)
 
     extern u8 lbl_80292298[];
     extern f32 lbl_8036A730;
+    extern f64 lbl_8036A738;
 
     u8 *obj;
     u8 *node;
     void *end;
     void *child;
-    void *sp10;
-    void *spC;
     void *sp8;
-    s32 duration;
-    s32 time;
-    f32 f31;
-    f32 f2;
-    f32 f3;
+    u32 key;
+    void *searchKey;
+    void *pos;
+    u32 ret;
+    f32 var_f31;
+    f32 temp_f3;
+    f32 temp_f4;
+    f32 inv;
+    s32 temp_r0;
+    u32 temp_r7;
+    void *var_r3;
+    void *var_r4;
 
-    if (arg2 != 0) {
-        obj = Process_CreateChild(lbl_80292298, arg0);
-    } else {
-        obj = Process_Create(lbl_80292298, arg0);
-    }
+    (void)lbl_8036A738;
 
+    if (arg2) obj = Process_CreateChild(lbl_80292298, arg0);
+    else obj = Process_Create(lbl_80292298, arg0);
     if (obj != NULL) {
         obj[0x30] = 0;
         fn_80142060(obj + 0x34);
     }
-
-    sp10 = arg1;
-
+    key = (u32)arg1;
     if (arg1 != NULL) {
         end = fn_80140B04(obj + 0x34);
         node = (u8 *)fn_80140B04(obj + 0x34);
         node = *(u8 **)(node + 4);
-
-        while (node != (u8 *)end) {
-            if (*(void **)(node + 8) == arg1) {
-                break;
-            }
+        searchKey = (void *)key;
+        goto check;
+        for (;;) {
             node = *(u8 **)(node + 4);
+        check:
+            if (node != (u8 *)end) {
+                if (*(void **)(node + 8) != searchKey) continue;
+            }
+            break;
         }
-
         if (node == obj + 0x38) {
-            spC = obj + 0x38;
-
-            List_Insert(
-                &sp8,
-                obj + 0x34,
-                &spC,
-                &sp10
-            );
+            pos = obj + 0x38;
+            List_Insert(&ret, obj + 0x34, &pos, &key);
+            if (key != 0) {
+                *(s32 *)((u8 *)key + 4) += 1;
+            }
         }
     }
-
-    if (sp10 != NULL) {
-        *(u32 *)((u8 *)sp10 + 4) =
-            *(u32 *)((u8 *)sp10 + 4) + 1;
-    }
-
-    *(s16 *)(obj + 0x28) =
-        *(s16 *)((u8 *)arg1 + 0x24);
-
+    *(s16 *)(obj + 0x28) = *(s16 *)((u8 *)arg1 + 0x24);
     *(s32 *)(obj + 0x40) = arg3;
 
-    if (*(u32 *)(obj + 0x34) != 0) {
-        child = *(void **)(*(u8 **)(obj + 0x38) + 8);
-    } else {
-        child = NULL;
+    temp_r7 = *(u32 *)(obj + 0x34);
+    if (temp_r7 != 0U) var_r4 = *(void **)(*(u8 **)(obj + 0x38) + 8); else var_r4 = NULL;
+    temp_f4 = (f32)(*(s16 *)((u8 *)var_r4 + 0x24) + 1);
+    temp_f3 = (f32)(*(s16 *)(obj + 0x28) + 1);
+    temp_r0 = *(s32 *)(obj + 0x40);
+    switch (temp_r0) {
+    case 0: var_f31 = (lbl_8036A730 / temp_f4) * (temp_f4 - temp_f3); break;
+    case 1: inv = lbl_8036A730 / temp_f4; var_f31 = inv * temp_f3; break;
+    default: break;
     }
-
-    duration = (s32)*(s16 *)((u8 *)child + 0x24) + 1;
-    time = (s32)*(s16 *)(obj + 0x28) + 1;
-
-    f3 = (f32)duration;
-    f2 = (f32)time;
-
-    switch (arg3) {
-    case 0:
-        f31 = (lbl_8036A730 / f3) * (f3 - f2);
-        break;
-
-    case 1:
-        f31 = (lbl_8036A730 / f3) * f2;
-        break;
-    }
-
-    if (*(u32 *)(obj + 0x34) != 0) {
-        child = *(void **)(*(u8 **)(obj + 0x38) + 8);
-    } else {
-        child = NULL;
-    }
-
-    *(f32 *)((u8 *)child + 0x2C) = f31;
-
+    if (temp_r7 != 0U) var_r3 = *(void **)(*(u8 **)(obj + 0x38) + 8); else var_r3 = NULL;
+    *(f32 *)((u8 *)var_r3 + 0x2C) = var_f31;
     return obj;
 }
 
@@ -4006,19 +3970,20 @@ extern "C" void Ui_ClearPanelChildrenEx(void *self) {
 void fn_80141970(void *arg0, s32 arg1) {
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
     extern f32 lbl_8036A730;
-    extern f64 lbl_8036A738;
+    extern f32 lbl_8036A738;
     extern f32 lbl_8036A740;
     s32 temp_r0;
     s32 temp_r4;
     s32 temp_r5;
     f32 temp_f0;
     f32 temp_f1;
+    f32 temp_f2;
     f32 var_f31;
     void *var_r3;
     void *var_r3_2;
     void *var_r3_3;
     void *var_r3_4;
-    (void)lbl_8036A738;
+    temp_f2 = lbl_8036A738;
     var_f31 = 1.0f;
     temp_r0 = *(s32 *)((char *)arg0 + 0x40);
     temp_r5 = *(s16 *)((char *)arg0 + 0x28) + 1;
@@ -4050,7 +4015,9 @@ void fn_80141970(void *arg0, s32 arg1) {
         break;
     }
     temp_f1 = Math_Ease(5, temp_r4, lbl_8036A740, lbl_8036A730, var_f31, lbl_8036A730);
-    if (*(u8 *)((char *)arg0 + 0x44) == 0) {
+    if (*(u8 *)((char *)arg0 + 0x44) != 0) {
+        ;
+    } else {
         var_f31 = lbl_8036A730;
     }
     if (*(u32 *)((char *)arg0 + 0x34) != 0) {
@@ -4329,7 +4296,6 @@ void fn_80142078(void *arg0) {
 void fn_801422C0(void *arg0)
 {
     extern u8 gUnitInfoPopup[];
-    extern f64 lbl_8036A750;
 
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
@@ -4343,9 +4309,11 @@ void fn_801422C0(void *arg0)
     s32 index;
     s16 count;
     s32 offset;
+    s32 idx2;
     s32 pos[2];
     s16 x;
     s16 y;
+    void *unit;
 
     self = (u8 *)arg0;
 
@@ -4374,12 +4342,13 @@ void fn_801422C0(void *arg0)
             (*(void ***)child)[12])(child);
 
         offset = index * 12;
+        idx2 = index * 2;
         entry = child + 0x90 + offset;
 
         if (*(void **)entry == 0) {
             selected = 0;
         } else {
-            count = *(s16 *)(child + 0x64 + index * 2);
+            count = *(s16 *)(child + 0x64 + idx2);
             node = *(u8 **)(entry + 8);
 
             if (count >= 0) {
@@ -4398,6 +4367,7 @@ void fn_801422C0(void *arg0)
         }
 
         if (selected != 0) {
+            unit = *(void **)selected;
             if (*(void **)(self + 0x34) != 0) {
                 child = *(u8 **)(*(u8 **)(self + 0x38) + 8);
             } else {
@@ -4414,7 +4384,7 @@ void fn_801422C0(void *arg0)
 
             Ui_ShowUnitInfoPopup(
                 gUnitInfoPopup,
-                *(void **)selected,
+                unit,
                 (f32)x,
                 (f32)y
             );
