@@ -866,30 +866,40 @@ extern "C" void fn_80143784(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 extern "C" void fn_801439F0(void *arg0, s32 arg1, s32 arg2) {
- struct Obj { virtual void v0() = 0;
-virtual void v1() = 0;
-virtual void v2() = 0;
-virtual void v3() = 0;
-virtual void v4() = 0;
-virtual void v5() = 0;
-virtual void v6() = 0;
-virtual void v7() = 0;
-virtual void v8() = 0;
-virtual void v9() = 0;
-virtual void v10() = 0;
-virtual void v11() = 0; virtual s32 v12()=0; };
- extern u32 lbl_8036C4E8; extern u32 lbl_8036C4EC;
- void fn_80144EAC(void *,void *,void *,void *);
- u32 pair[2]; void *entry; u32 result; s32 index; void *base;
- index=((Obj *)arg0)->v12();
- if(index!=12) {
- 
- pair[0]=lbl_8036C4E8; pair[1]=lbl_8036C4EC;
- index*=12;
- base=(u8 *)arg0+index+0x90;
- pair[0]=arg1; pair[1]=arg2; entry=(u8 *)base+4;
- fn_80144EAC(&result,base,&entry,pair);
- }
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual s32 v12() = 0;
+    };
+    extern u32 lbl_8036C4E8;
+    extern u32 lbl_8036C4EC;
+    void fn_80144EAC(void *, void *, void *, void *);
+    u32 pair[2];
+    void *entry;
+    u32 result;
+    s32 index;
+    void *base;
+
+    index = ((Obj *)arg0)->v12();
+    if (index != 12) {
+        base = (u8 *)arg0 + index * 12 + 0x90;
+        pair[0] = lbl_8036C4E8;
+        pair[1] = lbl_8036C4EC;
+        pair[0] = arg1;
+        pair[1] = arg2;
+        entry = (u8 *)base + 4;
+        fn_80144EAC(&result, base, &entry, pair);
+    }
 }
 #pragma cplusplus on
 extern "C" void *ListWidget_GetSelected(void *arg0) {
@@ -992,9 +1002,9 @@ extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     struct Point *fn_8013F748(void *, struct Point *, struct Point *);
     struct Point out;
     struct Point in;
-    s32 idx;
+    register s32 idx;
     u8 *slot;
-    s16 x88;
+    register s16 x88;
     s16 c;
     s16 a;
     s16 b;
@@ -2227,13 +2237,14 @@ void fn_80145488(void) {
  extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
  extern f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
  s32 base=(s32)gBgmVolFadeProcs; f32 *proc;
+ f32 a; f32 b; f32 c; u32 vol;
  Process_UnlinkByKey((void *)(base+0x28)); Process_UnlinkByKey((void *)(base+0x3C));
  Process_UnlinkByKey((void *)(base+0x50)); Process_UnlinkByKey((void *)(base+0x64));
  Process_UnlinkByKey((void *)(base+0x78)); Process_UnlinkByKey((void *)(base+0x8C));
  proc=Process_Create((void *)(base+0x78),3);
- { f32 a=gBgmVolTimerZero; f32 b=lbl_8036A77C;
- proc[12]=a; proc[13]=b; }
- proc[14]=(f32)(u32)gBgmVol;
+ a=gBgmVolTimerZero; b=lbl_8036A77C;
+ proc[12]=a; proc[13]=b;
+ vol=gBgmVol; c=(f32)vol; proc[14]=c;
 }
 
 void fn_80145520(void) {
@@ -4039,7 +4050,7 @@ found:
 void fn_8014876C(void *arg0, s8 arg1, s16 arg2) {
     extern f32 gMsPerFrame;
     s32 temp;
-    s16 var_r6;
+    register s16 var_r6;
 
     temp = (s32)((f32)arg2 / gMsPerFrame);
     var_r6 = (s16)temp;
