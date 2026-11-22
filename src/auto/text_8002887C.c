@@ -3712,13 +3712,13 @@ void fn_8002E880(void) {
     Allegiance_FillMask(0, sp8);
     i = 1;
     do {
-        if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
-        } else {
-            unit = NULL;
-        }
-        if (*(u32 *)(unit + 0x188) != 0) {
-            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
+                  if ((u8)i != 0) {
+              unit = gUnits + ((u8)i - 1) * 0x280;
+          } else {
+              unit = (u8 *)0;
+          }
+          if (*(u32 *)(unit + 0x188) != 0) {
+              if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 fn_8003B69C(unit);
             }
         }
