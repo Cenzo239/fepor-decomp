@@ -768,28 +768,37 @@ extern u32 IDSerialPort1_80368800;
 extern s32 __OSInIPL;
 extern const char *__EXIVersion;
 void OSRegisterVersion(const char *);
-void __OSSetInterruptHandler(s32, void (*)(s16,OSContext*));
-void __OSEnableBarnacle(s32,s32);
+void __OSSetInterruptHandler(s32, void (*)(s16, OSContext *));
+void __OSEnableBarnacle(s32, s32);
 u32 id;
-volatile u32 *regs=(volatile u32*)0xCC006800;
-while ((regs[3]&1)==1 || (regs[8]&1)==1 || (regs[13]&1)==1) {}
+while ((__EXIRegs[3] & 1) == 1 || (__EXIRegs[8] & 1) == 1 || (__EXIRegs[13] & 1) == 1) {
+}
 __OSMaskInterrupts(0x7F8000);
-*(u32*)0xCC006800=0; *(u32*)0xCC006814=0; *(u32*)0xCC006828=0; *(u32*)0xCC006800=0x2000;
-__OSSetInterruptHandler(9,EXIIntrruptHandler);
-__OSSetInterruptHandler(10,TCIntrruptHandler);
-__OSSetInterruptHandler(11,EXTIntrruptHandler);
-__OSSetInterruptHandler(12,EXIIntrruptHandler);
-__OSSetInterruptHandler(13,TCIntrruptHandler);
-__OSSetInterruptHandler(14,EXTIntrruptHandler);
-__OSSetInterruptHandler(15,EXIIntrruptHandler);
-__OSSetInterruptHandler(16,TCIntrruptHandler);
-EXIGetID(0,2,&IDSerialPort1_80368800);
-if(__OSInIPL) {
-*(u32*)0x800030C4=0; *(u32*)0x800030C0=0;
-Ecb_8033E188[1].idTime=0; Ecb_8033E188[0].idTime=0;
-__EXIProbe(0); __EXIProbe(1);
-} else if(EXIGetID(0,0,&id) && id==0x07010000) __OSEnableBarnacle(1,0);
-else if(EXIGetID(1,0,&id) && id==0x07010000) __OSEnableBarnacle(0,2);
+__EXIRegs[0] = 0;
+__EXIRegs[5] = 0;
+__EXIRegs[10] = 0;
+__EXIRegs[0] = 0x2000;
+__OSSetInterruptHandler(9, EXIIntrruptHandler);
+__OSSetInterruptHandler(10, TCIntrruptHandler);
+__OSSetInterruptHandler(11, EXTIntrruptHandler);
+__OSSetInterruptHandler(12, EXIIntrruptHandler);
+__OSSetInterruptHandler(13, TCIntrruptHandler);
+__OSSetInterruptHandler(14, EXTIntrruptHandler);
+__OSSetInterruptHandler(15, EXIIntrruptHandler);
+__OSSetInterruptHandler(16, TCIntrruptHandler);
+EXIGetID(0, 2, &IDSerialPort1_80368800);
+if (__OSInIPL) {
+__EXIProbeStartTime[1] = 0;
+__EXIProbeStartTime[0] = 0;
+Ecb_8033E188[1].idTime = 0;
+Ecb_8033E188[0].idTime = 0;
+__EXIProbe(0);
+__EXIProbe(1);
+} else if (EXIGetID(0, 0, &id) && id == 0x07010000) {
+__OSEnableBarnacle(1, 0);
+} else if (EXIGetID(1, 0, &id) && id == 0x07010000) {
+__OSEnableBarnacle(0, 2);
+}
 OSRegisterVersion(__EXIVersion);
 }
 
@@ -1014,7 +1023,7 @@ s32 fn_8023A504(s32 chan, u32 dev, u32 *type) {
 }
 
 #pragma inline_depth(0)
-#pragma scheduling off
+#pragma scheduling on
 s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
     u32 cmd;
     s32 err;
@@ -1023,17 +1032,16 @@ s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
         return 0;
     }
     err = !EXILock(chan, dev, 0);
-    if (err == 0) {
-        err = !EXISelect(chan, dev, 0);
-        if (err == 0) {
-            cmd = 0x20011300;
-            err = !EXIImm(chan, &cmd, 4, 1, 0);
-            err |= !EXISync(chan);
-            err |= !EXIImm(chan, id, 4, 0, 0);
-            err |= !EXISync(chan);
-            err |= !EXIDeselect(chan);
-        }
-    }
+    if (err != 0) goto unlock;
+    err = !EXISelect(chan, dev, 0);
+    if (err != 0) goto unlock;
+    cmd = 0x20011300;
+    err = !EXIImm(chan, &cmd, 4, 1, 0);
+    err |= !EXISync(chan);
+    err |= !EXIImm(chan, id, 4, 0, 0);
+    err |= !EXISync(chan);
+    err |= !EXIDeselect(chan);
+unlock:
     EXIUnlock(chan);
     if (chan != 2 && dev == 0) {
         fn_802396C8(chan);
@@ -1048,27 +1056,48 @@ s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
 fail:
     return 0;
 }
-#pragma scheduling reset
-#pragma inline_depth(8)
-void __OSEnableBarnacle(s32 chan,s32 dev) {
-s32 fn_8023A61C(s32,s32,s32*);
-extern u32 lbl_80368808,lbl_8036880C,lbl_80368814,lbl_80368810;
+void __OSEnableBarnacle(s32 chan, s32 dev) {
+s32 fn_8023A61C(s32, s32, s32 *);
+extern u32 lbl_80368808, lbl_8036880C, lbl_80368814, lbl_80368810;
 s32 id;
-if(!EXIGetID(chan,dev,(u32*)&id)) return;
-switch(id) {
-case (s32)0x80000004:case (s32)0x80000008:case (s32)0x80000010:case (s32)0x80000020:case -1:
-case 4:case 8:case 16:case 32:
-case 0x01010000:case 0x01020000:case 0x02020000:case 0x03010000:
-case 0x04020100:case 0x04020200:case 0x04020300:case 0x04040404:
-case 0x04060000:case 0x04120000:case 0x04130000:case 0x04220000:
+s32 d;
+s32 c;
+d = dev;
+if (!EXIGetID(chan, d, (u32 *)&id)) {
 return;
-default:
-if(fn_8023A61C(chan,dev,&id)) {
-lbl_80368808=chan;
-lbl_8036880C=dev;
-lbl_80368814=0xA5FF005A;
-lbl_80368810=0xA5FF005A;
 }
+switch (id) {
+case (s32)0x80000004:
+case (s32)0x80000008:
+case (s32)0x80000010:
+case (s32)0x80000020:
+case -1:
+case 4:
+case 8:
+case 16:
+case 32:
+case 0x01010000:
+case 0x01020000:
+case 0x02020000:
+case 0x03010000:
+case 0x04020100:
+case 0x04020200:
+case 0x04020300:
+case 0x04040404:
+case 0x04060000:
+case 0x04120000:
+case 0x04130000:
+case 0x04220000:
+break;
+default:
+c = chan;
+if (fn_8023A61C(c, d, &id)) {
+lbl_80368808 = c;
+lbl_80368814 = 0xA5FF005A;
+lbl_8036880C = d;
+lbl_80368810 = 0xA5FF005A;
+}
+break;
 }
 }
 
