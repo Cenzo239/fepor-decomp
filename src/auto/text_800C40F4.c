@@ -1340,344 +1340,21 @@ void fn_800C6008(void) {
     fn_800C6028();
 }
 
-void fn_800C6028(void *arg0) {
-    void fn_800C6E44(void *);
-    void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void GXSetCopyClear(void *, s32);
-    void fn_802240F0(s32, void *, f32, f32, f32, f32);
-    void fn_8022462C(s32);
-    void fn_80224658(s32);
-    void GXSetZMode(s32, s32, s32);
-    void fn_802246B8(s32);
-    void fn_80223E5C(s32, s32, s32, s32, s32);
-    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
-    void GXSetProjection(void *, s32);
-    void fn_8022100C(s32);
-    void GXClearVtxDesc(void);
-    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void GXSetVtxDesc(s32, s32);
-    void GXSetCullMode(s32);
-    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
-    void GXSetNumTevStages(s32);
-    void GXSetTevOrder(s32, s32, s32, s32);
-    void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
-    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void GXSetTevColor(s32, void *);
-    void GXSetChanMatColor(s32, void *);
-    void Ui_LoadAtlasTex(s32, void *, s32);
-    void fn_80222C50(void *, s32);
-    u16 GXGetTexObjWidth(void *);
-    u16 GXGetTexObjHeight(void *);
-    void GXSetNumChans(s32);
-    void PSMTXScale(void *, f32, f32);
-    void fn_80224E50(void *, s32, s32);
-    void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void PSMTXIdentity(void *);
-    void GXLoadPosMtxImm(void *, s32);
-    void fn_80224DCC(void *, s32);
-    void GXSetCurrentMtx(s32);
-    void fn_802245D8(s32, s32, s32, s32);
-    void GXBegin(s32, s32, s32);
-    extern f32 lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C;
-    extern f32 lbl_80369DA0, lbl_80369DA4, lbl_80369DA8;
-    extern f64 lbl_80369DB0;
-    extern u32 lbl_8036C498, lbl_8036C49C, lbl_8036C4A0, lbl_8036C4A4;
-    extern u32 lbl_8036C4A8, lbl_8036C4AC, lbl_8036C4B0, lbl_8036C4C0, lbl_8036C4C4;
-    extern u32 lbl_80369D70, lbl_80369D74, lbl_80369D78, lbl_80369D84, lbl_80369D88;
-
-    f32 sp250[3][4];
-    f32 sp210[4][4];
-    f32 sp1E0[3][4];
-    f32 sp1A0[4][4];
-    f32 sp170[3][4];
-    f32 sp130[4][4];
-    f32 sp100[3][4];
-    f32 spC0[4][4];
-    u8 spA0[0x20];
-    u8 sp80[0x20];
-    u8 sp60[0x20];
-    u8 sp40[0x20];
-    u32 sp3C, sp38, sp34, sp30, sp2C, sp28, sp24, sp20, sp1C, sp18, sp14, sp10, spC, sp8;
-    u16 w, h;
-    volatile s16 *fifo;
-    s32 mode;
-
-    mode = *(s32 *)((u8 *)arg0 + 0x34);
-    switch (mode) {
-    case 0:
-        fn_800C6E44(arg0);
-        break;
-    case 2:
-        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
-        sp30 = lbl_8036C4A8;
-        GXSetCopyClear(&sp30, 0xFFFFFF);
-        sp34 = lbl_8036C4AC;
-        fn_802240F0(0, &sp34, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C);
-        fn_8022462C(1);
-        fn_80224658(1);
-        GXSetZMode(1, 3, 1);
-        fn_802246B8(1);
-        fn_80223E5C(7, 0, 1, 7, 0);
-        C_MTXOrtho(sp210, lbl_80369DA0, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        GXSetProjection(sp210, 1);
-        fn_8022100C(0);
-        GXClearVtxDesc();
-        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
-        GXSetVtxDesc(9, 1);
-        GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
-        GXSetVtxDesc(0xD, 1);
-        GXSetCullMode(1);
-        GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
-        GXSetBlendMode(5, 0, 0, 0, 0, 0, 2);
-        GXSetNumTevStages(1);
-        GXSetTevOrder(0, 0, 0, 0xFF);
-        GXSetTevColorIn(0, 2, 4, 8, 0xF);
-        GXSetTevAlphaIn(0, 4, 7, 7, 7);
-        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
-        GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-        sp38 = lbl_8036C4B0;
-        GXSetTevColor(1, &sp38);
-        sp3C = lbl_80369D78;
-        GXSetTevColor(2, &sp3C);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), spA0, *(s32 *)((u8 *)arg0 + 0x34));
-        fn_80222C50(spA0, 0);
-        w = GXGetTexObjWidth(spA0);
-        h = GXGetTexObjHeight(spA0);
-        GXSetNumChans(1);
-        PSMTXScale(sp250, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
-        fn_80224E50(sp250, 0x1E, 1);
-        fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
-        PSMTXIdentity(sp250);
-        GXLoadPosMtxImm(sp250, 0);
-        fn_80224DCC(sp250, 0);
-        GXSetCurrentMtx(0);
-        fn_802245D8(1, 4, 5, 0);
-        GXBegin(0x80, 0, 4);
-        fifo = (volatile s16 *)0xCC008000;
-        fifo[0] = 0x75;
-        fifo[0] = 0x9A;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0;
-        fifo[0] = 0x1ED;
-        fifo[0] = 0x9A;
-        fifo[0] = -0x64;
-        fifo[0] = 0x178;
-        fifo[0] = 0;
-        fifo[0] = 0x1ED;
-        fifo[0] = 0x102;
-        fifo[0] = -0x64;
-        fifo[0] = 0x178;
-        fifo[0] = 0x68;
-        fifo[0] = 0x75;
-        fifo[0] = 0x102;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0x68;
-        break;
-    case 3:
-        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
-        sp24 = lbl_8036C4A0;
-        GXSetCopyClear(&sp24, 0xFFFFFF);
-        sp28 = lbl_8036C4A4;
-        fn_802240F0(0, &sp28, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C);
-        fn_8022462C(1);
-        fn_80224658(1);
-        GXSetZMode(1, 3, 1);
-        fn_802246B8(1);
-        fn_80223E5C(7, 0, 1, 7, 0);
-        C_MTXOrtho(sp1A0, lbl_80369D8C, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        GXSetProjection(sp1A0, 1);
-        fn_8022100C(0);
-        GXClearVtxDesc();
-        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
-        GXSetVtxDesc(9, 1);
-        GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
-        GXSetVtxDesc(0xD, 1);
-        GXSetCullMode(1);
-        GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
-        GXSetBlendMode(5, 0, 0, 0, 0, 0, 2);
-        GXSetNumTevStages(1);
-        GXSetTevOrder(0, 0, 0, 4);
-        GXSetTevColorIn(0, 0xA, 0xF, 0xF, 0xF);
-        GXSetTevAlphaIn(0, 4, 7, 7, 7);
-        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
-        GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-        sp2C = lbl_80369D74;
-        GXSetChanMatColor(0, &sp2C);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp80, *(s32 *)((u8 *)arg0 + 0x34));
-        fn_80222C50(sp80, 0);
-        w = GXGetTexObjWidth(sp80);
-        h = GXGetTexObjHeight(sp80);
-        GXSetNumChans(1);
-        PSMTXScale(sp1E0, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
-        fn_80224E50(sp1E0, 0x1E, 1);
-        fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
-        PSMTXIdentity(sp1E0);
-        GXLoadPosMtxImm(sp1E0, 0);
-        fn_80224DCC(sp1E0, 0);
-        GXSetCurrentMtx(0);
-        fn_802245D8(1, 4, 5, 0);
-        GXBegin(0x80, 0, 4);
-        fifo = (volatile s16 *)0xCC008000;
-        fifo[0] = 0xB4;
-        fifo[0] = 0x96;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0;
-        fifo[0] = 0x19C;
-        fifo[0] = 0x96;
-        fifo[0] = -0x64;
-        fifo[0] = 0xE8;
-        fifo[0] = 0;
-        fifo[0] = 0x19C;
-        fifo[0] = 0x106;
-        fifo[0] = -0x64;
-        fifo[0] = 0xE8;
-        fifo[0] = 0x70;
-        fifo[0] = 0xB4;
-        fifo[0] = 0x106;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0x70;
-        break;
-    case 4:
-        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
-        sp18 = lbl_8036C498;
-        GXSetCopyClear(&sp18, 0xFFFFFF);
-        sp1C = lbl_8036C49C;
-        fn_802240F0(0, &sp1C, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C);
-        fn_8022462C(1);
-        fn_80224658(1);
-        GXSetZMode(1, 3, 1);
-        fn_802246B8(1);
-        fn_80223E5C(7, 0, 1, 7, 0);
-        C_MTXOrtho(sp130, lbl_80369D8C, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        GXSetProjection(sp130, 1);
-        fn_8022100C(0);
-        GXClearVtxDesc();
-        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
-        GXSetVtxDesc(9, 1);
-        GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
-        GXSetVtxDesc(0xD, 1);
-        GXSetCullMode(1);
-        GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
-        GXSetBlendMode(5, 0, 0, 0, 0, 0, 2);
-        GXSetNumTevStages(1);
-        GXSetTevOrder(0, 0, 0, 4);
-        GXSetTevColorIn(0, 0xA, 0xF, 0xF, 0xF);
-        GXSetTevAlphaIn(0, 4, 7, 7, 7);
-        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
-        GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-        sp20 = lbl_80369D70;
-        GXSetChanMatColor(0, &sp20);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp60, *(s32 *)((u8 *)arg0 + 0x34));
-        fn_80222C50(sp60, 0);
-        w = GXGetTexObjWidth(sp60);
-        h = GXGetTexObjHeight(sp60);
-        GXSetNumChans(1);
-        PSMTXScale(sp170, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
-        fn_80224E50(sp170, 0x1E, 1);
-        fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
-        PSMTXIdentity(sp170);
-        GXLoadPosMtxImm(sp170, 0);
-        fn_80224DCC(sp170, 0);
-        GXSetCurrentMtx(0);
-        fn_802245D8(1, 4, 5, 0);
-        GXBegin(0x80, 0, 4);
-        fifo = (volatile s16 *)0xCC008000;
-        fifo[0] = 0;
-        fifo[0] = 0xB0;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0;
-        fifo[0] = 0x260;
-        fifo[0] = 0xB0;
-        fifo[0] = -0x64;
-        fifo[0] = 0x260;
-        fifo[0] = 0;
-        fifo[0] = 0x260;
-        fifo[0] = 0x110;
-        fifo[0] = -0x64;
-        fifo[0] = 0x260;
-        fifo[0] = 0x60;
-        fifo[0] = 0;
-        fifo[0] = 0x110;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0x60;
-        break;
-    case 5:
-        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
-        sp8 = lbl_8036C4C0;
-        GXSetCopyClear(&sp8, 0xFFFFFF);
-        spC = lbl_8036C4C4;
-        fn_802240F0(0, &spC, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C, lbl_80369D8C);
-        fn_8022462C(1);
-        fn_80224658(1);
-        GXSetZMode(1, 3, 1);
-        fn_802246B8(1);
-        fn_80223E5C(7, 0, 1, 7, 0);
-        C_MTXOrtho(spC0, lbl_80369DA0, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        GXSetProjection(spC0, 1);
-        fn_8022100C(0);
-        GXClearVtxDesc();
-        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
-        GXSetVtxDesc(9, 1);
-        GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
-        GXSetVtxDesc(0xD, 1);
-        GXSetCullMode(1);
-        GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
-        GXSetBlendMode(5, 0, 0, 0, 0, 0, 2);
-        GXSetNumTevStages(1);
-        GXSetTevOrder(0, 0, 0, 0xFF);
-        GXSetTevColorIn(0, 2, 4, 8, 0xF);
-        GXSetTevAlphaIn(0, 4, 7, 7, 7);
-        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
-        GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-        sp10 = lbl_80369D84;
-        GXSetTevColor(1, &sp10);
-        sp14 = lbl_80369D88;
-        GXSetTevColor(2, &sp14);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp40, *(s32 *)((u8 *)arg0 + 0x34));
-        fn_80222C50(sp40, 0);
-        w = GXGetTexObjWidth(sp40);
-        h = GXGetTexObjHeight(sp40);
-        GXSetNumChans(1);
-        PSMTXScale(sp100, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
-        fn_80224E50(sp100, 0x1E, 1);
-        fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
-        PSMTXIdentity(sp100);
-        GXLoadPosMtxImm(sp100, 0);
-        fn_80224DCC(sp100, 0);
-        GXSetCurrentMtx(0);
-        fn_802245D8(1, 4, 5, 0);
-        GXBegin(0x80, 0, 4);
-        fifo = (volatile s16 *)0xCC008000;
-        fifo[0] = 0;
-        fifo[0] = 0;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0;
-        fifo[0] = 0x260;
-        fifo[0] = 0;
-        fifo[0] = -0x64;
-        fifo[0] = 0x260;
-        fifo[0] = 0;
-        fifo[0] = 0x260;
-        fifo[0] = 0x1C0;
-        fifo[0] = -0x64;
-        fifo[0] = 0x260;
-        fifo[0] = 0x1C0;
-        fifo[0] = 0;
-        fifo[0] = 0x1C0;
-        fifo[0] = -0x64;
-        fifo[0] = 0;
-        fifo[0] = 0x1C0;
-        break;
-    }
+void fn_800C6028(void *arg0){
+void fn_800C6E44(void*);void GXSetViewport(f32,f32,f32,f32,f32,f32);void GXSetCopyClear(void*,s32);void fn_802240F0(s32,void*,f32,f32,f32,f32);void fn_8022462C(s32);void fn_80224658(s32);void GXSetZMode(s32,s32,s32);void fn_802246B8(s32);void fn_80223E5C(s32,s32,s32,s32,s32);void C_MTXOrtho(void*,f32,f32,f32,f32,f32,f32);void GXSetProjection(void*,s32);void fn_8022100C(s32);void GXClearVtxDesc(void);void GXSetVtxAttrFmt(s32,s32,s32,s32,s32);void GXSetVtxDesc(s32,s32);void GXSetCullMode(s32);void GXSetBlendMode(s32,s32,s32,s32,s32,s32,s32);void GXSetNumTevStages(s32);void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);void GXSetTevColor(s32,void*);void GXSetChanMatColor(s32,void*);void Ui_LoadAtlasTex(s32,void*,s32);void fn_80222C50(void*,s32);u16 GXGetTexObjWidth(void*);u16 GXGetTexObjHeight(void*);void GXSetNumChans(s32);void PSMTXScale(void*,f32,f32);void fn_80224E50(void*,s32,s32);void fn_802201A8(s32,s32,s32,s32,s32,s32);void PSMTXIdentity(void*);void GXLoadPosMtxImm(void*,s32);void fn_80224DCC(void*,s32);void GXSetCurrentMtx(s32);void fn_802245D8(s32,s32,s32,s32);void GXBegin(s32,s32,s32);
+extern f32 lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,lbl_80369D9C;extern f32 lbl_80369DA0,lbl_80369DA4,lbl_80369DA8;extern f64 lbl_80369DB0;extern u32 lbl_8036C498,lbl_8036C49C,lbl_8036C4A0,lbl_8036C4A4;extern u32 lbl_8036C4A8,lbl_8036C4AC,lbl_8036C4B0,lbl_8036C4C0,lbl_8036C4C4;extern u32 lbl_80369D70,lbl_80369D74,lbl_80369D78,lbl_80369D84,lbl_80369D88;
+f32 sp250[3][4];f32 sp210[4][4];f32 sp1E0[3][4];f32 sp1A0[4][4];f32 sp170[3][4];f32 sp130[4][4];f32 sp100[3][4];f32 spC0[4][4];u8 spA0[0x20];u8 sp80[0x20];u8 sp60[0x20];u8 sp40[0x20];u32 sp3C,sp38,sp34,sp30,sp2C,sp28,sp24,sp20,sp1C,sp18,sp14,sp10,spC,sp8;u16 w,h;volatile s16 *fifo;s32 mode;
+mode=*(s32*)((u8*)arg0+0x34);switch(mode){
+case 0:fn_800C6E44(arg0);break;
+case 2:
+GXSetViewport(lbl_80369D8C,lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,lbl_80369D9C);sp30=lbl_8036C4A8;GXSetCopyClear(&sp30,0xFFFFFF);sp34=lbl_8036C4AC;fn_802240F0(0,&sp34,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C);fn_8022462C(1);fn_80224658(1);GXSetZMode(1,3,1);fn_802246B8(1);fn_80223E5C(7,0,1,7,0);C_MTXOrtho(sp210,lbl_80369DA0,lbl_80369D94,lbl_80369D8C,lbl_80369D90,lbl_80369DA4,lbl_80369DA8);GXSetProjection(sp210,1);fn_8022100C(0);GXClearVtxDesc();GXSetVtxAttrFmt(0,9,1,3,0);GXSetVtxDesc(9,1);GXSetVtxAttrFmt(0,0xD,1,3,0);GXSetVtxDesc(0xD,1);GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetBlendMode(5,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetTevOrder(0,0,0,0xFF);GXSetTevColorIn(0,2,4,8,0xF);GXSetTevAlphaIn(0,4,7,7,7);GXSetTevColorOp(0,0,0,0,1,0);GXSetTevAlphaOp(0,0,0,0,1,0);sp38=lbl_8036C4B0;GXSetTevColor(1,&sp38);sp3C=lbl_80369D78;GXSetTevColor(2,&sp3C);Ui_LoadAtlasTex(*(s32*)((u8*)arg0+0x30),spA0,*(s32*)((u8*)arg0+0x34));fn_80222C50(spA0,0);w=GXGetTexObjWidth(spA0);h=GXGetTexObjHeight(spA0);GXSetNumChans(1);{f32 sx=lbl_80369D9C/(f32)(u16)w,sy=lbl_80369D9C/(f32)(u16)h;PSMTXScale(sp250,sx,sy);}fn_80224E50(sp250,0x1E,1);fn_802201A8(0,1,4,0x1E,0,0x7D);PSMTXIdentity(sp250);GXLoadPosMtxImm(sp250,0);fn_80224DCC(sp250,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);GXBegin(0x80,0,4);fifo=(volatile s16*)0xCC008000;fifo[0]=0x75;fifo[0]=0x9A;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0;fifo[0]=0x1ED;fifo[0]=0x9A;fifo[0]=-0x64;fifo[0]=0x178;fifo[0]=0;fifo[0]=0x1ED;fifo[0]=0x102;fifo[0]=-0x64;fifo[0]=0x178;fifo[0]=0x68;fifo[0]=0x75;fifo[0]=0x102;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0x68;break;
+case 3:
+GXSetViewport(lbl_80369D8C,lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,lbl_80369D9C);sp24=lbl_8036C4A0;GXSetCopyClear(&sp24,0xFFFFFF);sp28=lbl_8036C4A4;fn_802240F0(0,&sp28,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C);fn_8022462C(1);fn_80224658(1);GXSetZMode(1,3,1);fn_802246B8(1);fn_80223E5C(7,0,1,7,0);C_MTXOrtho(sp1A0,lbl_80369D8C,lbl_80369D94,lbl_80369D8C,lbl_80369D90,lbl_80369DA4,lbl_80369DA8);GXSetProjection(sp1A0,1);fn_8022100C(0);GXClearVtxDesc();GXSetVtxAttrFmt(0,9,1,3,0);GXSetVtxDesc(9,1);GXSetVtxAttrFmt(0,0xD,1,3,0);GXSetVtxDesc(0xD,1);GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetBlendMode(5,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetTevOrder(0,0,0,4);GXSetTevColorIn(0,0xA,0xF,0xF,0xF);GXSetTevAlphaIn(0,4,7,7,7);GXSetTevColorOp(0,0,0,0,1,0);GXSetTevAlphaOp(0,0,0,0,1,0);sp2C=lbl_80369D74;GXSetChanMatColor(0,&sp2C);Ui_LoadAtlasTex(*(s32*)((u8*)arg0+0x30),sp80,*(s32*)((u8*)arg0+0x34));fn_80222C50(sp80,0);w=GXGetTexObjWidth(sp80);h=GXGetTexObjHeight(sp80);GXSetNumChans(1);{f32 sx=lbl_80369D9C/(f32)(u16)w,sy=lbl_80369D9C/(f32)(u16)h;PSMTXScale(sp1E0,sx,sy);}fn_80224E50(sp1E0,0x1E,1);fn_802201A8(0,1,4,0x1E,0,0x7D);PSMTXIdentity(sp1E0);GXLoadPosMtxImm(sp1E0,0);fn_80224DCC(sp1E0,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);GXBegin(0x80,0,4);fifo=(volatile s16*)0xCC008000;fifo[0]=0xB4;fifo[0]=0x96;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0;fifo[0]=0x19C;fifo[0]=0x96;fifo[0]=-0x64;fifo[0]=0xE8;fifo[0]=0;fifo[0]=0x19C;fifo[0]=0x106;fifo[0]=-0x64;fifo[0]=0xE8;fifo[0]=0x70;fifo[0]=0xB4;fifo[0]=0x106;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0x70;break;
+case 4:
+GXSetViewport(lbl_80369D8C,lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,lbl_80369D9C);sp18=lbl_8036C498;GXSetCopyClear(&sp18,0xFFFFFF);sp1C=lbl_8036C49C;fn_802240F0(0,&sp1C,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C);fn_8022462C(1);fn_80224658(1);GXSetZMode(1,3,1);fn_802246B8(1);fn_80223E5C(7,0,1,7,0);C_MTXOrtho(sp130,lbl_80369D8C,lbl_80369D94,lbl_80369D8C,lbl_80369D90,lbl_80369DA4,lbl_80369DA8);GXSetProjection(sp130,1);fn_8022100C(0);GXClearVtxDesc();GXSetVtxAttrFmt(0,9,1,3,0);GXSetVtxDesc(9,1);GXSetVtxAttrFmt(0,0xD,1,3,0);GXSetVtxDesc(0xD,1);GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetBlendMode(5,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetTevOrder(0,0,0,4);GXSetTevColorIn(0,0xA,0xF,0xF,0xF);GXSetTevAlphaIn(0,4,7,7,7);GXSetTevColorOp(0,0,0,0,1,0);GXSetTevAlphaOp(0,0,0,0,1,0);sp20=lbl_80369D70;GXSetChanMatColor(0,&sp20);Ui_LoadAtlasTex(*(s32*)((u8*)arg0+0x30),sp60,*(s32*)((u8*)arg0+0x34));fn_80222C50(sp60,0);w=GXGetTexObjWidth(sp60);h=GXGetTexObjHeight(sp60);GXSetNumChans(1);{f32 sx=lbl_80369D9C/(f32)(u16)w,sy=lbl_80369D9C/(f32)(u16)h;PSMTXScale(sp170,sx,sy);}fn_80224E50(sp170,0x1E,1);fn_802201A8(0,1,4,0x1E,0,0x7D);PSMTXIdentity(sp170);GXLoadPosMtxImm(sp170,0);fn_80224DCC(sp170,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);GXBegin(0x80,0,4);fifo=(volatile s16*)0xCC008000;fifo[0]=0;fifo[0]=0xB0;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0;fifo[0]=0x260;fifo[0]=0xB0;fifo[0]=-0x64;fifo[0]=0x260;fifo[0]=0;fifo[0]=0x260;fifo[0]=0x110;fifo[0]=-0x64;fifo[0]=0x260;fifo[0]=0x60;fifo[0]=0;fifo[0]=0x110;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0x60;break;
+case 5:
+GXSetViewport(lbl_80369D8C,lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,lbl_80369D9C);sp8=lbl_8036C4C0;GXSetCopyClear(&sp8,0xFFFFFF);spC=lbl_8036C4C4;fn_802240F0(0,&spC,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C,lbl_80369D8C);fn_8022462C(1);fn_80224658(1);GXSetZMode(1,3,1);fn_802246B8(1);fn_80223E5C(7,0,1,7,0);C_MTXOrtho(spC0,lbl_80369DA0,lbl_80369D94,lbl_80369D8C,lbl_80369D90,lbl_80369DA4,lbl_80369DA8);GXSetProjection(spC0,1);fn_8022100C(0);GXClearVtxDesc();GXSetVtxAttrFmt(0,9,1,3,0);GXSetVtxDesc(9,1);GXSetVtxAttrFmt(0,0xD,1,3,0);GXSetVtxDesc(0xD,1);GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetBlendMode(5,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetTevOrder(0,0,0,0xFF);GXSetTevColorIn(0,2,4,8,0xF);GXSetTevAlphaIn(0,4,7,7,7);GXSetTevColorOp(0,0,0,0,1,0);GXSetTevAlphaOp(0,0,0,0,1,0);sp10=lbl_80369D84;GXSetTevColor(1,&sp10);sp14=lbl_80369D88;GXSetTevColor(2,&sp14);Ui_LoadAtlasTex(*(s32*)((u8*)arg0+0x30),sp40,*(s32*)((u8*)arg0+0x34));fn_80222C50(sp40,0);w=GXGetTexObjWidth(sp40);h=GXGetTexObjHeight(sp40);GXSetNumChans(1);{f32 sx=lbl_80369D9C/(f32)(u16)w,sy=lbl_80369D9C/(f32)(u16)h;PSMTXScale(sp100,sx,sy);}fn_80224E50(sp100,0x1E,1);fn_802201A8(0,1,4,0x1E,0,0x7D);PSMTXIdentity(sp100);GXLoadPosMtxImm(sp100,0);fn_80224DCC(sp100,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);GXBegin(0x80,0,4);fifo=(volatile s16*)0xCC008000;fifo[0]=0;fifo[0]=0;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0;fifo[0]=0x260;fifo[0]=0;fifo[0]=-0x64;fifo[0]=0x260;fifo[0]=0;fifo[0]=0x260;fifo[0]=0x1C0;fifo[0]=-0x64;fifo[0]=0x260;fifo[0]=0x1C0;fifo[0]=0;fifo[0]=0x1C0;fifo[0]=-0x64;fifo[0]=0;fifo[0]=0x1C0;break;
+}
 }
 
 void fn_800C6E44(void *arg0) {
@@ -5429,16 +5106,16 @@ u16 FileCache_Probe(char*);
 void *fn_8005C82C(char*,s32);
 void DebugPrint(char*,...);
 extern char lbl_802704F8[];
+void *result;
 String out; String a; String b;
-
 out.cap=0;out.size=0;out.data=0;out.cap=0;
 String_JoinCStr(&a,lbl_802704F8+0x1c7,arg1);
 String_ConcatCStr(&b,&a,lbl_802704F8+0x3a6);
 String_Assign(&out,&b,0,-1);
 String_Destroy(&b,-1);String_Destroy(&a,-1);
 if(FileCache_Probe(String_CStr(&out))!=0x8000){
-arg0=fn_8005C82C(String_CStr(&out),8);
-String_Destroy(&out,-1);return arg0;
+result=fn_8005C82C(String_CStr(&out),8);
+String_Destroy(&out,-1);return result;
 }
 DebugPrint(lbl_802704F8+0x3af,String_CStr(&out));
 String_Destroy(&out,-1);return 0;
@@ -19957,7 +19634,8 @@ void Card_CreateSaveFile(s32 proc) {
     }
 }
 
-void fn_800EB10C(s32 proc) {    struct CardWork {
+void fn_800EB10C(s32 proc) {
+    struct CardWork {
         u8 workArea[0xA000];
         s32 chan;
         volatile s32 result;
@@ -19971,13 +19649,37 @@ void fn_800EB10C(s32 proc) {    struct CardWork {
         u8 unkA01B;
         u8 fileInfo[0x14];
     };
-extern struct CardWork gCardWork; extern char gCardStrings[];
-void Card_AsyncDone(void);s32 fn_8021BF10(s32,void*,void*);void fn_8021C02C(void*);s32 fn_8021CCB4(s32,void*,void*);
-u8 skip;void *info;
-if(gCardWork.result<0){Process_Goto(proc,0x63);gCardWork.busy=0;skip=1;}else skip=0;
-if(skip==0){info=gCardWork.fileInfo;
-if(fn_8021BF10(gCardWork.chan,gCardStrings+0x70,info)!=-4){fn_8021C02C(info);gCardWork.busy=1;gCardWork.result=fn_8021CCB4(gCardWork.chan,(void*)((u32)gCardStrings+0x70),Card_AsyncDone);}
-else{gCardWork.result=0;gCardWork.busy=0;}}}
+    void Process_Goto(s32, s32);
+    void Card_AsyncDone(void);
+    s32 fn_8021BF10(s32, void *, void *);
+    void fn_8021C02C(void *);
+    s32 fn_8021CCB4(s32, void *, void *);
+    extern struct CardWork gCardWork;
+    extern char gCardStrings[];
+    u8 skip;
+    void *fileInfo;
+    u8 *hi;
+
+    if (gCardWork.result < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork.busy = 0;
+        skip = 1;
+    } else {
+        skip = 0;
+    }
+    if (skip == 0) {
+        hi = (u8 *)&gCardWork + 0x10000;
+        fileInfo = hi - 0x5FE4;
+        if (fn_8021BF10(*(s32 *)(hi - 0x6000), gCardStrings + 0x70, fileInfo) != -4) {
+            fn_8021C02C(fileInfo);
+            gCardWork.busy = 1;
+            gCardWork.result = fn_8021CCB4(*(s32 *)(hi - 0x6000), (void *)((u32)gCardStrings + 0x70), Card_AsyncDone);
+        } else {
+            gCardWork.result = 0;
+            gCardWork.busy = 0;
+        }
+    }
+}
 
 #pragma use_lmw_stmw reset
 
@@ -27740,6 +27442,8 @@ void fn_800FAF70(void *arg0) {
     u32 first;
     u32 second;
     s32 alt;
+    register s32 one;
+    register s32 zero;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
@@ -27768,10 +27472,9 @@ void fn_800FAF70(void *arg0) {
         if (alt != 1) {
             goto success;
         }
-    } else {
-        if (second != 0) {
-            goto success;
-        }
+    }
+    if (second != 0) {
+        goto success;
     }
 
 advance:
@@ -27783,8 +27486,10 @@ advance:
     goto finish;
 
 success:
-    gAiCmdOk = 1;
-    gAiState[0] = 0;
+    one = 1;
+    zero = 0;
+    gAiCmdOk = (u8)one;
+    gAiState[0] = (u8)zero;
 
 finish:
     if (first != 0 && second != 0) {
