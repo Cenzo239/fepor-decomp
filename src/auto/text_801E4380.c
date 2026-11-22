@@ -58,4 +58,4 @@ void fn_801E4380(void)
   *((u32 *) (((u8 *) gSystemSave) + 0x04)) = 0xFFFFFFFFU;
   ((volatile u8 *) ((u8 *) gSystemSave))[0x44] = 1;
 }
-__declspec(section ".ctors") static void (*const lbl_80267B14)(void) = fn_801E4380;
+__declspec(section ".ctors") void (*lbl_80267B14)(void) = fn_801E4380;
