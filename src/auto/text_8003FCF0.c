@@ -5729,12 +5729,8 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     s32 i;
     void *cue;
     u16 *entry;
-    f32 x;
-    f32 y;
-    f32 z;
-    z = arg1[2];
-    y = arg1[1];
-    x = arg1[0];
+    f32 x, y, z;
+    z = arg1[2]; y = arg1[1]; x = arg1[0];
     entry = (u16 *)arg0;
     for (i = 0; i < 4; i++, entry++) {
         u16 id = *(u16 *)((u8 *)entry + 0x7C);
