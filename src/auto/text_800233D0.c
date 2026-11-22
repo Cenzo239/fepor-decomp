@@ -357,7 +357,7 @@ outer_test:
 void fn_80023A4C(void *arg0) {
  void *Map_Get(void);
  s32 fn_80047AF8(void *);
- s32 margin=(u8)fn_80047AF8(Map_Get());
+ u8 margin=fn_80047AF8(Map_Get());
  s32 i;
  s32 off;
  u16 *p;
@@ -589,10 +589,9 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
     };
     extern f32 gUiMenuIdentityScale;
     extern f32 lbl_80368DAC;
-    s32 n;
     s32 t;
+    s32 n;
     u8 mode;
-    f32 fn;
 
     mode = *(u8 *)((char *)arg0 + 0x61);
     t = *(s16 *)((char *)arg0 + 0x28) + 1;
@@ -604,8 +603,7 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
         return (gUiMenuIdentityScale / (f32)n) * (f32)(n - t);
     case 2:
         n = ((Model *)*(void **)((char *)arg0 + 0x3C))->v24() + 1;
-        fn = (f32)n;
-        return (gUiMenuIdentityScale / fn) * (f32)t;
+        return (gUiMenuIdentityScale / (f32)n) * (f32)t;
     default:
         return lbl_80368DAC;
     }
@@ -1034,6 +1032,7 @@ void *GfxEnt_Get(u8);void Process_ClearFunc(void*);
 void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void Ui_OpenUnitInfoText(void*,void*,void*,f32,f32);
 extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,gMapUiResult;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 gUnitInfoPopupFlag;
+typedef struct { u8 pad[0x40]; u8 id; } Selection;
 f32 x,y;
 MenuController24768 *ctrl;
 void *item,*q;
@@ -1045,8 +1044,8 @@ if(*(s8*)((u8*)arg0+0x62)<0){ctrl->v13(arg0);return;}
 ctrl->v11(arg0);
 (*(MenuController24768**)((u8*)arg0+0x3c))->v12(arg0);
 if(*((u8*)arg0+0x2b)!=0x7b){
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));lbl_80367238=*((u8*)item+0x3a);
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));lbl_80367239=*((u8*)item+0x3b);
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);lbl_80367238=*((u8*)item+0x3a);
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);lbl_80367239=*((u8*)item+0x3b);
 }
 flags=(*(MenuController24768**)((u8*)arg0+0x3c))->v14(arg0);
 if(*((u8*)arg0+0x2b)!=0x7b)gMapUiResult=flags;
@@ -1056,7 +1055,7 @@ if(flags&8)Ui_PlaySeCue(lbl_80268D90+0x43,100);
 if(flags&16)Ui_PlaySeCue(lbl_80268D90+0x53,100);
 if(flags&1){
 Process_ClearFunc(arg0);
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
 (*(MenuItem24768**)((u8*)item+0x34))->v15(arg0,item);
 if(ctrl->v27())Ui_PlaySeCue(ctrl->v27(),100);
 }else if(flags&2){
@@ -1068,15 +1067,15 @@ if(node[0x2c]&2){node[0x2c]&=~2;((u8*)*(void**)(node+0x18))[0x2d]--;}
 node=*(u8**)(node+0x18);
 }
 }else if(flags&32){
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
 x=(f32)(*(s16*)((u8*)arg0+0x30)+*(s16*)((u8*)item+0x30));
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
 y=(f32)(*(s16*)((u8*)arg0+0x32)+*(s16*)((u8*)item+0x32));
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v2();
 if(q)Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,q,x,y);
 else {
-item=GfxEnt_Get(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
+item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);
 Ui_OpenUnitInfoPopup(gUnitInfoPopup,arg0,q,x,y);
 }
@@ -1162,8 +1161,8 @@ extern u32 gPadInput;
 #pragma cplusplus on
 #pragma opt_strength_reduction off
 extern "C" void fn_80024D74(s32 unused, void *arg1) {
-    void *GfxEnt_Get(u8);
-    extern u32 gPadInput;
+    void *fn_8000B908(u8);
+    extern u32 lbl_80367240;
     struct Item {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -1179,20 +1178,16 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
         virtual void v11() = 0;
         virtual void v12(void *, void *) = 0;
     };
-    struct Row {
-        u8 pad[0x40];
-        u8 id;
-    };
-    u8 *base;
-    struct Row *row;
     void *item;
+    u8 *p;
+    s8 idx;
 
-    if ((((u32 *)gPadInput)[1] & 0x3000003U) == 0) {
+    if ((((u32 *)lbl_80367240)[1] & 0x3000003U) == 0) {
         return;
     }
-    base = (u8 *)arg1;
-    row = (struct Row *)(base + *(s8 *)(base + 0x62));
-    item = GfxEnt_Get(row->id);
+    idx = *(s8 *)((u8 *)arg1 + 0x62);
+    p = (u8 *)arg1 + idx;
+    item = fn_8000B908(*(u8 *)(p + 0x40));
     (*(Item **)((u8 *)item + 0x34))->v12(arg1, item);
 }
 #pragma opt_strength_reduction reset
@@ -2409,8 +2404,8 @@ s32 fn_800268A8(s32 arg0) {
     void *temp_r3;
     void *temp_r3_2;
     void *temp_r3_3;
-    s8 idx1;
     s8 idx2;
+    s8 idx1;
 
     temp_r3 = Battle_GetActiveCombatant(gBattle);
     if (temp_r3 == 0) {
@@ -2520,7 +2515,7 @@ s32 Battle_TryShowWeaponHelp(s32 parent) {
 
 s32 fn_80026BD0(s32 arg0) {
  extern u8 gBattle[],lbl_80268E40[];
- s32 UnitRef_GetName(void *);
+ void *UnitRef_GetName(void *);
  s32 fn_8001D070(void *,s32);
  void fn_80231E74(char *,s32,void *,...);
  void fn_8000D864(s32,void *);
@@ -2530,7 +2525,6 @@ s32 fn_80026BD0(s32 arg0) {
  char buffer[128];
  u8 *unit;
  s32 parent=arg0;
- s32 name;
  u8 *ref;
  u8 kind;
  u8 *item;
@@ -2543,8 +2537,7 @@ s32 fn_80026BD0(s32 arg0) {
  ref=unit+0x28c;
  if(ref==0 || (item=*(u8**)ref)==0) return 0;
  if(item!=0) kind=item[0x15]; else kind=0;
- name=UnitRef_GetName(ref);
- fn_80231E74(buffer,0x80,lbl_80268E40+0x1ea,fn_8001D070(ref,1),name,kind+0x60);
+ fn_80231E74(buffer,0x80,lbl_80268E40+0x1ea,fn_8001D070(ref,1),UnitRef_GetName(ref),kind+0x60);
  fn_8000D864(0,buffer);
  Ui_OpenHelpPopup(fn_8000D910(lbl_80268E40+0x1f5,Status_Test(unit+0x1bc,1)),lbl_80268E40+0x200,parent,0);
  return 1;
@@ -3060,7 +3053,7 @@ void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     Map_RefreshUnitMap(&gBattleMap);
     f = 1;
     t = (u8)(gMapBlendMode - 1);
-    if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
+    if (((u32)(( ~(t) | f) - ((u32)(f - t) >> 1)) >> 31) == 0) {
         f = 0;
     }
     if (f != 0) {
