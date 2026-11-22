@@ -19,8 +19,8 @@ extern u8 gBattleState[0x578];
 
 extern s32 lbl_80367A88;
 
-extern f32 lbl_8036A3C0;
-extern f32 lbl_8036A3C4;
+extern const f32 lbl_8036A3C0;
+extern const f32 lbl_8036A3C4;
 extern f64 lbl_8036A3C8;
 extern f64 lbl_8036A418;
 
