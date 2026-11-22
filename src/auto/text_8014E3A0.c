@@ -2606,30 +2606,24 @@ void fn_80152B4C(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     extern s32 gUiTexAtlas;
     extern u8 gUiTexScratch[64];
     extern struct { s16 x, y, right, bottom; } lbl_80368048;
-    s16 height;
-    s16 width;
+    s16 h;
+    s16 w;
     s16 *rect;
     s32 flags;
     s32 i;
-    s32 x, y;
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xA0);
     flags = arg3 | 1;
     i = 0;
     rect = (s16 *)&lbl_80368048;
     for (; i < arg2; i++) {
-        x = lbl_80368048.x;
-        y = rect[1];
-        x = rect[2] - x;
-        width = x;
-        y = rect[3] - y;
-        width = x;
-        height = y;
-        if (width != 0 && height != 0) {
+        h = (s16)(rect[3] - rect[1]);
+        w = (s16)(rect[2] - lbl_80368048.x);
+        if (w != 0 && h != 0) {
             Prim2D_Begin();
             Prim2D_SetTex(gUiTexScratch, (u16)flags);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv(arg0, arg1, lbl_80368048.x, rect[1], width, height);
+            Prim2D_SetRectUv((f32)arg0, (f32)arg1, (f32)lbl_80368048.x, (f32)rect[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
         arg0 += (s16)(rect[2] - lbl_80368048.x);
