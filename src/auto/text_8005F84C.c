@@ -1230,13 +1230,18 @@ s32 GActor_FindNode(void *arg0, void *name) {
     void *cur;
 
     cur = arg0;
-    while (cur != NULL) {
-        node = *(void **)((u8 *)cur + 0x40);
-        if (node == NULL) {
-            cur = *(void **)((u8 *)cur + 4);
-            continue;
-        }
-        goto search;
+    goto check;
+loop:
+    node = *(void **)((u8 *)cur + 0x40);
+    if (node == NULL) {
+        goto advance;
+    }
+    goto search;
+advance:
+    cur = *(void **)((u8 *)cur + 4);
+check:
+    if (cur != NULL) {
+        goto loop;
     }
     node = NULL;
 search:
@@ -1654,6 +1659,7 @@ void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
 void QUATMtx(f32 *, void *);
 void QUATSlerp(f32 *, f32 *, f32 *, f32);
+#pragma inline_depth 0
 void fn_80061A08(void *arg0)
 {
     f32 sp258[4];
@@ -3218,17 +3224,13 @@ s32 fn_80064F24(s16 *arr, s32 key, s32 n) {
             mid = -1;
         } else {
             mid = n - 1;
-            do {
-                if (low <= mid) {
-                    if (arr[low * 2] <= key) {
-                        mid = low;
-                    } else {
-                        mid = low - 1;
-                    }
+            if (low <= mid) {
+                if (arr[low * 2] <= key) {
+                    mid = low;
                 } else {
-                    break;
+                    mid = low - 1;
                 }
-            } while (0);
+            }
         }
     }
 done:
@@ -3936,43 +3938,45 @@ void fn_800661A8(void *arg0) {
     s32 sp10;
     s32 spC;
     s32 sp8;
-    u8 *cam;
     u8 *p;
     u8 *node;
+    u8 *cam;
     void (*cb)(void *);
     s32 type;
+    s32 i;
     s32 n;
     u8 *lights;
-    s32 i;
 
     lights = lbl_80366DDC;
     if (lights != NULL) {
         i = 0;
         do {
-            if (i < 4) {
-                if (i < 2) {
-                    if (i < 0) {
-                    } else {
-                        fn_802031CC(lights + 0x14, vec, lbl_8036922C);
-                        fn_80202A18(gCamera + 0xA4, vec, vec);
-                        fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
-                        fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
-                        fn_80221D88(mtx, 0, lbl_80369234);
-                    }
-                } else {
-                    fn_80202A18(gCamera + 0xA4, (f32 *)(lights + 0x14), vec2);
-                    fn_80221FF8(mtx, vec2[0], vec2[1], vec2[2]);
-                    fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
-                    fn_80221D88(mtx, 0, lbl_80369234);
-                    fn_80221D6C(mtx, lbl_80369228, lbl_80369228, lbl_80369224, lbl_80369238, lbl_80369228, lbl_8036923C);
-                }
-            } else {
-                if (i < 8) {
-                    fn_802029C4(gCamera + 0xA4, lights + 8, vec);
-                    fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
-                    fn_80221F18(mtx, 2, *(f32 *)(lights + 0x20), lbl_80369230);
-                    fn_80221D88(mtx, 0, lbl_80369234);
-                }
+            switch (i) {
+            case 0:
+            case 1:
+                fn_802031CC(lights + 0x14, vec, lbl_8036922C);
+                fn_80202A18(gCamera + 0xA4, vec, vec);
+                fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
+                fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
+                fn_80221D88(mtx, 0, lbl_80369234);
+                break;
+            case 2:
+            case 3:
+                fn_80202A18(gCamera + 0xA4, (f32 *)(lights + 0x14), vec2);
+                fn_80221FF8(mtx, vec2[0], vec2[1], vec2[2]);
+                fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
+                fn_80221D88(mtx, 0, lbl_80369234);
+                fn_80221D6C(mtx, lbl_80369228, lbl_80369228, lbl_80369224, lbl_80369238, lbl_80369228, lbl_8036923C);
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                fn_802029C4(gCamera + 0xA4, lights + 8, vec);
+                fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
+                fn_80221F18(mtx, 2, *(f32 *)(lights + 0x20), lbl_80369230);
+                fn_80221D88(mtx, 0, lbl_80369234);
+                break;
             }
             sp60 = *(s32 *)(lights + 4);
             fn_802220DC(mtx, &sp60);
@@ -4011,8 +4015,8 @@ void fn_800661A8(void *arg0) {
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
 
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp48 = lbl_8036C440;
@@ -4052,8 +4056,8 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp3C = lbl_8036C440;
@@ -4093,8 +4097,8 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp30 = lbl_8036C440;
@@ -4134,8 +4138,8 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp24 = lbl_8036C440;
@@ -4175,8 +4179,8 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp18 = lbl_8036C440;
@@ -4218,8 +4222,8 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
+    type = lbl_80366DD4[0];
     if (lbl_80366DD8 != 6) {
-        type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             spC = lbl_8036C440;
