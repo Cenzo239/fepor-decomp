@@ -596,6 +596,7 @@ void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     result = (u32)fn_8010494C(lbl_802AEE20[index]);
     Text_FindFontIndex(table, result);
 }
+#pragma pop
 
 #pragma push
 #pragma use_lmw_stmw on
