@@ -1395,54 +1395,57 @@ u8 fn_80106DC8(void *name, u8 *out)
     s32 Bin_ReadU8(u32 *);
     u32 Bin_ReadU32(u32 *);
     void Dispos_ParseEntry(u32 *, void *, s32);
+    struct Ret { s32 v; };
+    struct Ret c;
+    struct Ret d;
     u8 parsed[0x68];
     u32 cursor;
     u32 header;
     u32 data;
     s32 count;
-    s32 id;
     s32 i;
 
     header = Hash_Lookup(name);
     if (!header) {
         data = 0;
     } else {
-        count = Bin_ReadU8(&header);
+        c.v = Bin_ReadU8(&header);
         switch ((u8)Bin_ReadU8(&header)) {
         case 2:
-            id = 0;
+            d.v = 0;
             break;
         case 3:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             Bin_ReadU32(&header);
             break;
         case 4:
             Bin_ReadU8(&header);
-            id = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             break;
         }
         header = (header + 3) & ~3;
         data = header;
     }
     cursor = data;
-    if (!data) {
+    if (data == 0) {
         return 0;
     }
-    count = (u8)count;
+    count = c.v;
     for (i = 0; i < 8; i++) {
         *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
         parsed[0x30 + i] = 0;
-        *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
+        *((u32 *)((parsed + 0x48) + ((unsigned)i * 4))) = 0;
     }
+    count = (u8)count;
     for (i = 0; i < count; i++) {
-        Dispos_ParseEntry(&cursor, parsed, id);
+        Dispos_ParseEntry(&cursor, parsed, d.v);
         out[0] = parsed[0xd];
         out[1] = parsed[0xe];
         out += 2;
     }
     *(s8 *)out = -1;
-    return count;
+    return (u8)count;
 }
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
@@ -6654,11 +6657,9 @@ void fn_8010FBD8(void *arg0)
     extern T2 lbl_80273CBC;
     struct { T1 t1; T2 t2; } sp;
     void *self;
-    char *strBase;
     T1 *p1;
     T2 *p2;
     u8 *entry;
-    s32 i;
     u8 type;
     u8 b0;
     u8 b1;
@@ -6666,6 +6667,8 @@ void fn_8010FBD8(void *arg0)
     u8 b4;
     u8 b5;
     char *name;
+    s32 i;
+    char *strBase;
 
     self = arg0;
     if (*(s32 *)((u8 *)self + 0x200) == 0) {
