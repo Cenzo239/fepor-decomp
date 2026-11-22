@@ -582,15 +582,15 @@ void fn_8013CE7C(void *arg0) {
 
 #pragma opt_lifetimes off
 void fn_8013CED0(void *arg0, void *arg1) {
-    extern u8 lbl_802845E8[];
+    extern void *gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80291DA0[];
     extern f32 lbl_8036A6B8;
-    f32 f;
     s32 z;
+    f32 f;
 
     z = 0;
-    *(void **)((u8 *)arg0 + 4) = lbl_802845E8;
+    *(void **)((u8 *)arg0 + 4) = gUiMenuDrawVtbl;
     *(void **)arg0 = arg1;
     f = lbl_8036A6B8;
     *(void **)((u8 *)arg0 + 4) = lbl_802920E0;
@@ -793,7 +793,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     Outer *self = (Outer *)arg0;
     u8 *p = (u8 *)arg1;
     s8 maxIdx = (s8)p[0x60];
-    s16 rows = (s16)self->Rows();
+    s32 rows = self->Rows();
     s16 cols = (s16)self->Cols();
     s16 colW = cols;
     u8 skip = 0;
@@ -801,6 +801,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     s16 col = (s16)((s8)p[0x62] % colW);
     u32 trig, held, edge;
     s16 rem;
+    s16 sum;
     void *item;
     Inner *inner;
     f32 fx, fy;
@@ -820,8 +821,10 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
             if (trig & 0x01000001) {
                 if (col > 0)
                     p[0x62] = (u8)(p[0x62] - 1);
-                else if (trig == edge)
-                    p[0x62] = (u8)((rem + p[0x62]) - 1);
+                else if (trig == edge) {
+                    sum = (s16)(rem + p[0x62]);
+                    p[0x62] = (u8)(sum - 1);
+                }
             } else if (trig & 0x02000002) {
                 if (col < rem - 1)
                     p[0x62] = (u8)(p[0x62] + 1);
@@ -2160,7 +2163,8 @@ void fn_8013ED84(void *arg0, s16 arg1) {
     }
 }
 
-void *fn_8013EDD4(void *arg0, s16 arg1) {
+#pragma cplusplus on
+extern "C" void *fn_8013EDD4(void *self, s16 doFree) {
     extern u8 lbl_802921B0[];
     extern u8 lbl_80291914[];
     extern u8 lbl_802918E0[];
@@ -2168,58 +2172,53 @@ void *fn_8013EDD4(void *arg0, s16 arg1) {
     extern u8 lbl_8028FDB0[];
     extern u8 gEmptyVtbl[];
     void Heap_Free(void *);
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+    };
+    struct Owner {
+        void *vtbl;
+        u8 pad4[0x48];
+        void *sub4c;
+        u8 pad50[0x24];
+        void *sub74;
+    };
+    Owner *owner;
 
-    u8 *self;
-    u8 *sub;
-    void (**vtbl)(void *);
-
-    self = (u8 *)arg0;
-
+    owner = (Owner *)self;
     if (self != NULL) {
-        *(void **)self = lbl_802921B0;
-
+        owner->vtbl = lbl_802921B0;
         if (self != NULL) {
-            *(void **)self = lbl_80291914;
-
-            if (self + 0x74 != NULL) {
-                *(void **)(self + 0x74) = lbl_802918E0;
-
-                if (self + 0x74 != NULL) {
-                    sub = self + 0x74;
-                    *(void **)sub = gEmptyVtbl;
-                    vtbl = *(void (***)(void *))sub;
-                    vtbl[4](sub);
+            owner->vtbl = lbl_80291914;
+            if (&owner->sub74 != NULL) {
+                owner->sub74 = lbl_802918E0;
+                if (&owner->sub74 != NULL) {
+                    owner->sub74 = gEmptyVtbl;
+                    ((Obj *)&owner->sub74)->v2();
                 }
             }
-
-            if (self + 0x4C != NULL) {
-                *(void **)(self + 0x4C) = lbl_802918E0;
-
-                if (self + 0x4C != NULL) {
-                    sub = self + 0x4C;
-                    *(void **)sub = gEmptyVtbl;
-                    vtbl = *(void (***)(void *))sub;
-                    vtbl[4](sub);
+            if (&owner->sub4c != NULL) {
+                owner->sub4c = lbl_802918E0;
+                if (&owner->sub4c != NULL) {
+                    owner->sub4c = gEmptyVtbl;
+                    ((Obj *)&owner->sub4c)->v2();
                 }
             }
-
             if (self != NULL) {
-                *(void **)self = lbl_80292230;
-
+                owner->vtbl = lbl_80292230;
                 if (self != NULL) {
-                    *(void **)self = lbl_8028FDB0;
+                    owner->vtbl = lbl_8028FDB0;
                 }
             }
         }
-
-        if (arg1 > 0) {
+        if (doFree > 0) {
             Heap_Free(self);
         }
     }
-
     return self;
 }
-
+#pragma cplusplus reset
 s16 fn_8013EED8(void *arg0) {
     return (s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA));
 }
@@ -4884,8 +4883,8 @@ Prim2D_SetCallback(Prim2D_ScissorFromRect, (s16 *)((u8 *)self + 0x114));
 Prim2D_AddZ(lbl_8036A770);
 Prim2D_PrepareTex();
 {
-f32 f = M2C_FIELD(self, f32 *, 0x84);
 f32 zero = lbl_8036A75C;
+f32 f = M2C_FIELD(self, f32 *, 0x84);
 scroll = (s16)f;
 if (f < zero) {
 f = M2C_FIELD(self, f32 *, 0x84) + lbl_8036A760;
@@ -5020,10 +5019,12 @@ void fn_80143570(void *arg0) {
     s32 off;
     u8 e;
     s32 i;
+    s32 p;
 
     off = 0;
     for (i = 0; i != 11; i++) {
-        fn_80144B60((u8 *)arg0 + (off + 0x90), e);
+        p = off + 0x90;
+        fn_80144B60((u8 *)arg0 + p, e);
         off += 0xC;
     }
 }
@@ -5053,7 +5054,6 @@ extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
     struct S {
         u8 f;
         u32 v;
-        S(u8 flag, u32 value) : f(flag), v(value) {}
     };
     u8 flag;
     s32 table;
@@ -5069,13 +5069,13 @@ extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
     if (idx == 0xC) {
         return -1;
     }
-    S a(flag, arg1);
+    S a = { flag, arg1 };
     table = (s32)self + idx * 0xC + 0x90;
     sentinel = (struct Node *)(table + 4);
     head = *(struct Node **)(table + 8);
     S b = a;
     node = head;
-    while (node != sentinel && node->key != b.v) {
+    while (node != sentinel && node->key != arg1) {
         node = node->next;
     }
     i = -1;
