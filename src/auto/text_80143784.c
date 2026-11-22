@@ -1505,8 +1505,8 @@ void fn_801446C4(void *arg0) {
 
     t = 3;
     s = 6;
-    r8 = *(s16 *)((u8 *)arg0 + 0xc);
     r7 = *(s16 *)((u8 *)arg0 + 0x10);
+    r8 = *(s16 *)((u8 *)arg0 + 0xc);
     r6 = *(s16 *)((u8 *)arg0 + 0xa);
     r5 = *(s16 *)((u8 *)arg0 + 0xe);
     r7 = (s16)(r7 - r8);
@@ -2185,15 +2185,13 @@ void fn_801452E8(void) {
 }
 
 s32 fn_80145308(void) {
-extern u8 lbl_80276BC8[]; extern u8 lbl_803301A8[1344];
+extern u8 lbl_80276BC8[];
 s8 *str=(s8*)lbl_80276BC8+0x8a;
-u8 *entry;
 s32 i;
-for(i=0,entry=lbl_803301A8;i<28;entry+=0x30,i++){
-if(entry[0xc]&1){
-s8 *b; s8 *a;
-a=str;
-b=**(s8***)entry;
+for(i=0;i<28;i++){
+if(gSeCueSlots[i*0x30+0xc]&1){
+s8 *b=**(s8***)(gSeCueSlots+i*0x30);
+s8 *a=str;
 while(*b){
 if(!*a)return 1;
 if(*a++ != *b++)break;
@@ -2765,7 +2763,7 @@ s32 fn_80146B10(s32 arg0) {
 
     table = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x30b);
     count = *table;
-    table++;
+    table = (s32 *)((s32)table + 4);
     lo = 0;
     hi = count - 1;
     while (lo <= hi) {
