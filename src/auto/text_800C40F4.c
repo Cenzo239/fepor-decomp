@@ -22659,7 +22659,6 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
     void Map_FloodMoveRange(void *, s32, s32, s32, s32, s32);
 
     u8 *path;
-    u8 *map;
     u8 *route;
     s32 length;
     s32 index;
@@ -22677,31 +22676,31 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
     s32 tileOffset;
 
     path = (u8 *)arg0;
-    map = gBattleMap;
-    x = (s8)arg1;
-    y = (s8)arg2;
     length = (s8)path[0x100];
 
-    if (x == (s8)path[length] &&
-        y == (s8)path[length + 0x40]) {
+    if ((s8)arg1 == (s8)path[length] &&
+        (s8)arg2 == (s8)path[length + 0x40]) {
         return;
     }
+
+    x = (s8)arg1;
+    y = (s8)arg2;
 
     tileOffset = (x + (y << 6)) << 1;
-    if (*(s16 *)(map + 0x610E + tileOffset) < 0) {
+    if (*(s16 *)(gBattleMap + 0x610E + tileOffset) < 0) {
         return;
     }
 
-    index = -1;
-    for (i = 0; i < length; i++) {
-        if (x == (s8)path[i] &&
-            y == (s8)path[i + 0x40]) {
-            index = (s8)i;
-            break;
+    for (index = 0; index < length; index++) {
+        if (x == (s8)path[index] &&
+            y == (s8)path[index + 0x40]) {
+            index = (s8)index;
+            goto index_found;
         }
     }
-
-    if (index >= 0) {
+    index = -1;
+index_found:
+    if ((s8)index >= 0) {
         path[0x100] = (u8)(index - 1);
 
         if ((s8)path[0x100] < 0) {
@@ -22715,35 +22714,34 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
         return;
     }
 
-    distance = (s16)fn_8002134C(map, arg1, arg2);
+    distance = (s16)fn_8002134C(gBattleMap, arg1, arg2);
     length = (s8)path[0x100];
     oldX = (s8)path[length];
     oldY = (s8)path[length + 0x40];
 
     if ((s8)path[length + 0x80] >= distance) {
-        dx = x - oldX;
         dy = y - oldY;
-
-        if (dx < 0) {
-            dx = -dx;
-        }
         if (dy < 0) {
             dy = -dy;
         }
+        dx = x - oldX;
+        if (dx < 0) {
+            dx = -dx;
+        }
 
-        if (dx + dy == 1) {
-            if ((u8)fn_8001F85C(map, arg1, arg2) != 0) {
+        if (dy + dx == 1) {
+            if ((u8)fn_8001F85C(gBattleMap, arg1, arg2) != 0) {
                 fn_800F1494(path, arg1, arg2);
                 return;
             }
         }
     }
 
-    Map_SelectRangeBuffer(map, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     length = (s8)path[0x100];
 
     Map_FloodMoveRange(
-        map,
+        gBattleMap,
         path[length],
         path[length + 0x40],
         (s8)path[length + 0x80],
@@ -22751,14 +22749,14 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
         1
     );
 
-    Map_SelectRangeBuffer(map, 5);
+    Map_SelectRangeBuffer(gBattleMap, 5);
 
-    if (*(s16 *)(map + 0x818E + tileOffset) < 0) {
+    if (*(s16 *)(gBattleMap + 0x818E + tileOffset) < 0) {
         path[0x100] = 0;
 
-        Map_SelectRangeBuffer(map, 6);
+        Map_SelectRangeBuffer(gBattleMap, 6);
         Map_FloodMoveRange(
-            map,
+            gBattleMap,
             path[0],
             path[0x40],
             (s8)path[0x80],
@@ -22766,8 +22764,8 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
             1
         );
 
-        route = fn_8001FC40(map, arg1, arg2);
-        Map_SelectRangeBuffer(map, 5);
+        route = fn_8001FC40(gBattleMap, arg1, arg2);
+        Map_SelectRangeBuffer(gBattleMap, 5);
 
         length = (s8)path[0x100];
         oldX = path[length];
@@ -22793,6 +22791,19 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
             case 8:
                 oldX++;
                 break;
+            case 0:
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
             default:
                 goto done;
             }
@@ -22803,9 +22814,9 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
         goto done;
     }
 
-    Map_SelectRangeBuffer(map, 6);
-    route = fn_8001FC40(map, arg1, arg2);
-    Map_SelectRangeBuffer(map, 5);
+    Map_SelectRangeBuffer(gBattleMap, 6);
+    route = fn_8001FC40(gBattleMap, arg1, arg2);
+    Map_SelectRangeBuffer(gBattleMap, 5);
 
     length = (s8)path[0x100];
     oldX = path[length];
@@ -22831,6 +22842,19 @@ void fn_800F0F90(u16 *arg0, s32 arg1, s32 arg2)
         case 8:
             oldX++;
             break;
+        case 0:
+        case 3:
+        case 5:
+        case 6:
+        case 7:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
         default:
             goto second_finished;
         }
@@ -22857,9 +22881,9 @@ second_finished:
 
     path[0x100] = 0;
 
-    Map_SelectRangeBuffer(map, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     Map_FloodMoveRange(
-        map,
+        gBattleMap,
         path[0],
         path[0x40],
         (s8)path[0x80],
@@ -22867,8 +22891,8 @@ second_finished:
         1
     );
 
-    route = fn_8001FC40(map, arg1, arg2);
-    Map_SelectRangeBuffer(map, 5);
+    route = fn_8001FC40(gBattleMap, arg1, arg2);
+    Map_SelectRangeBuffer(gBattleMap, 5);
 
     length = (s8)path[0x100];
     oldX = path[length];
@@ -22894,6 +22918,19 @@ second_finished:
         case 8:
             oldX++;
             break;
+        case 0:
+        case 3:
+        case 5:
+        case 6:
+        case 7:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
         default:
             goto done;
         }
@@ -25961,43 +25998,51 @@ void fn_800F8C3C(void *unit) {
 #pragma global_optimizer reset
 #pragma dont_inline reset
 
-#pragma dont_inline off
 #pragma cplusplus on
 extern "C" void fn_800F8E5C(void *arg0) {
-extern u8 gAiState[],gUiContext[],gTargetList[];
-extern u8 *gAiCmd;
-extern s32 gAiCmdIsAlt;
-u8 fn_801021F0(void *,s16 *,s16 *);
-void *Unit_FindByName(void *);
-u8 fn_800BF1E8(void *);
-void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
-void fn_800FFB4C(void *,s32,s32);
-void *fn_8002F680(void *,u8,u8);
-void Ai_SetDecision(s8,s32,s8,s8,s8,s8,s8);
-s16 x,y;
-s8 tx,ty;
-AiCommandContext *ctx;
-u8 *unit=(u8*)arg0;
-u8 *other=gAiCmd;
-if(!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x3000000)) {
-if((unit[0x1a5]>>4)&7) {
-*(s32*)(gAiState+8)=0;*(s32*)(gAiState+12)=0;
-} else if(fn_801021F0(*(void**)(other+0x14),&x,&y)) {
-other=(u8*)Unit_FindByName(*(void**)(other+0x14));
-if(!fn_800BF1E8(((AiCommandContext*)gUiContext)->set(other))) {
-*(s32*)(gAiState+8)=9;*(s32*)(gAiState+12)=9;
-} else {
-Ai_SetUnitMoveTo(unit,x,y,1,*(u16*)(gAiState+4),1,0,-1);
-tx=((AiCommandContext*)gUiContext)->x;ty=((AiCommandContext*)gUiContext)->y;
-fn_800FFB4C(unit,tx,ty);
-if(fn_8002F680(gTargetList,other[0x19e],other[0x19f]) && *(s32*)(gAiState+8)!=4) {
-*(s32*)(gAiState+8)=3;
-Ai_SetDecision(7,(s32)other,(s8)x,(s8)y,-1,0,0);
-}
-}
-}
-}
-if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
+    extern u8 gAiState[], gUiContext[], gTargetList[];
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    u8 fn_801021F0(void *, s16 *, s16 *);
+    void *Unit_FindByName(void *);
+    u8 fn_800BF1E8(void *);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+    void fn_800FFB4C(void *, s32, s32);
+    void *fn_8002F680(void *, u8, u8);
+    void Ai_SetDecision(s8, s32, s8, s8, s8, s8, s8);
+    struct Ret { void *p; } ctx;
+    s16 x, y;
+    u8 *unit;
+    u8 *other;
+
+    unit = (u8 *)arg0;
+    other = gAiCmd;
+    if (!(gAiState[1] & 2) && !(*(u32 *)(unit + 0x254) & 0x3000000)) {
+        if ((unit[0x1a5] >> 4) & 7) {
+            *(s32 *)(gAiState + 8) = 0;
+            *(s32 *)(gAiState + 12) = 0;
+        } else if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
+            other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
+            ctx.p = ((AiCommandContext *)gUiContext)->set(other);
+            if (!fn_800BF1E8(ctx.p)) {
+                *(s32 *)(gAiState + 8) = 9;
+                *(s32 *)(gAiState + 12) = 9;
+            } else {
+                Ai_SetUnitMoveTo(unit, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
+                fn_800FFB4C(unit, (s8)gUiContext[0xD], (s8)gUiContext[0xE]);
+                if (fn_8002F680(gTargetList, other[0x19e], other[0x19f]) &&
+                    *(s32 *)(gAiState + 8) != 4) {
+                    *(s32 *)(gAiState + 8) = 3;
+                    Ai_SetDecision(7, (s32)other, (s8)x, (s8)y, -1, 0, 0);
+                }
+            }
+        }
+    }
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
 }
 #pragma cplusplus reset
 void fn_800F8FF4(void *arg0) {
