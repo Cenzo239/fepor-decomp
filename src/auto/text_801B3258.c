@@ -6567,8 +6567,8 @@ void *fn_801BEF90(void *arg0)
     extern f32 lbl_8036B304;
 
     LocalFrame frame;
-    u8 *self = (u8 *)arg0;
     void *allocated;
+    u8 *self = (u8 *)arg0;
     void *xml;
     char *str;
     s8 madePath = 0;
