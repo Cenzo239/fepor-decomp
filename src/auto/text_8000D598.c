@@ -125,8 +125,8 @@ u8 *fn_8000D910(u8 *arg0, u8 arg1) {
     u8 sp8[0x80];
     u8 *entry;
     u32 need;
-    u8 *src;
     u8 *dst;
+    u8 *src;
     u8 *out;
     u8 *p;
     u8 *resolved;
@@ -574,29 +574,27 @@ block_37:
 }
 
 int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float f1, float f2, float f3, float f4);
+#pragma push
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
- u32 *table;
- u32 result;
- s32 index;
- u32 *p;
- index = 3;
- result = (u32)fn_8010494C(lbl_802AEE20[index]);
- table = (u32 *)lbl_802AEE20;
- if (table[0] == result) index = 0;
- else {
- p = table + 1;
- if (table[1] == result) index = 1;
- else if (*++p == result) index = 2;
- else if (*++p == result) index = 3;
- else if (p[1] == result) index = 4;
- else index = -1;
- }
- fn_8000E7FC(arg0,arg1,arg2,arg3,arg4,arg5,farg0,farg1,farg2,farg3,farg4);
- if (index == -1) index = 0;
- result = (u32)fn_8010494C(lbl_802AEE20[index]);
- for (index = 0, p = table; index < 5; ++index, ++p) {
- if (*p == result) break;
- }
+    s32 index;
+    u32 *table;
+    u32 result;
+
+    index = 3;
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    table = (u32 *)lbl_802AEE20;
+    index = Text_FindFontIndex(table, result);
+
+    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5,
+                farg0, farg1, farg2, farg3, farg4);
+
+    if (index == -1) {
+        index = 0;
+    }
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    Text_FindFontIndex(table, result);
 }
 
 #pragma push
