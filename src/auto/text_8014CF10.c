@@ -107,72 +107,83 @@ void fn_8014CF10(Obj *arg0, s8 arg1, s8 arg2) {
 #pragma opt_strength_reduction off
 s8 fn_8014CF48(Obj *arg0, s32 arg1) {
     s32 fn_80106DC8(s32, void *);
-    Entry sp8[0x40];
-    s32 i;
-    Entry *p;
-    Entry *q;
-    s32 n;
-    s32 count;
+    u8 sp8[0x80];
+    u8 *var_r4;
+    u8 *var_r5;
+    u8 *var_r6;
+    s32 temp_r6;
+    s32 var_r4i;
+    s32 temp_r3;
     s32 ctr;
-    u8 b;
     u8 a;
+    u8 b;
 
-    arg0->count = 0;
-    count = fn_80106DC8(arg1, sp8);
-    i = 0;
-    if (count > 0) {
-        n = count - 8;
-        if (count > 8) {
-            p = sp8;
-            for (ctr = (u32)(n + 7) >> 3; ctr != 0; ctr--) {
-                if (n <= 0) break;
-                b = p->b; a = p->a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[1].b; a = p[1].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[2].b; a = p[2].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[3].b; a = p[3].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[4].b; a = p[4].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[5].b; a = p[5].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
-                b = p[6].b; a = p[6].a;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                i += 8;
-                arg0->count++;
-                b = p[7].b; a = p[7].a;
-                p += 8;
-                arg0->entries[(s8)arg0->count].a = a;
-                arg0->entries[(s8)arg0->count].b = b;
-                arg0->count++;
+    ((u8 *)arg0)[0x544] = 0;
+    temp_r3 = fn_80106DC8(arg1, sp8);
+    var_r4i = 0;
+    if (temp_r3 > 0) {
+        temp_r6 = temp_r3 - 8;
+        if (temp_r3 > 8) {
+            var_r5 = sp8;
+            for (; temp_r6 > 0; temp_r6 -= 8) {
+                b = var_r5[1];
+                a = var_r5[0];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[3];
+                a = var_r5[2];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[5];
+                a = var_r5[4];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[7];
+                a = var_r5[6];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[9];
+                a = var_r5[8];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[11];
+                a = var_r5[10];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[13];
+                a = var_r5[12];
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                var_r4i += 8;
+                ((u8 *)arg0)[0x544]++;
+                b = var_r5[15];
+                a = var_r5[14];
+                var_r5 += 0x10;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+                ((u8 *)arg0)[0x544]++;
             }
         }
-        q = &sp8[i];
-        for (ctr = count - i; ctr != 0; ctr--) {
-            if (i >= count) break;
-            b = q->b; a = q->a;
-            q++;
-            arg0->entries[(s8)arg0->count].a = a;
-            arg0->entries[(s8)arg0->count].b = b;
-            arg0->count++;
+        var_r6 = sp8 + (var_r4i * 2);
+        for (ctr = temp_r3 - var_r4i; ctr != 0; ctr--) {
+            if (var_r4i >= temp_r3) {
+                break;
+            }
+            b = var_r6[1];
+            a = var_r6[0];
+            var_r6 += 2;
+            arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
+            arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
+            ((u8 *)arg0)[0x544]++;
         }
     }
-    return (s8)count;
+    return (s8)temp_r3;
 }
 #pragma opt_strength_reduction reset
 
@@ -481,14 +492,13 @@ void fn_8010FF90(void *);
 void ScriptCtx_Begin(void *);
 void ScriptCtx_Call(void);
 void *fn_8016614C(void *,s32);
-u8 *p;
-s32 i;
-u8 *entry;
+u8 *p=gBattleState;
+s32 i=0;
+u8 *entry=p;
 void *str;
-p=gBattleState; i=0; entry=p;
-p[0x11]=i; *(u16*)(p+0x12)=1; p[0x50]=i; p[0x56]=i;
+p[0x11]=(u8)i; *(u16*)(p+0x12)=1; p[0x50]=(u8)i; p[0x56]=(u8)i;
 p[0x14]=1; p[0x15]=2; p[0x16]=2; p[0x17]=2;
-p[0x20]=i; p[0x2c]=i; p[0x38]=i; p[0x44]=i;
+p[0x20]=(u8)i; p[0x2c]=(u8)i; p[0x38]=(u8)i; p[0x44]=(u8)i;
 do {
 str=fn_8016614C(fn_80019F04(p[0x10]),i);
 if(str)strcpy((s32)(entry+0x20),(u32)str);
@@ -509,6 +519,12 @@ s32 fn_8014DA68(void) {
  extern u8 gBattleState[];
  unsigned int flag = (gBattleState[0x9F] >> 7) & 1;
  return (unsigned int)(-flag | flag) >> 31;
+}
+
+s32 fn_8014DC04(void *arg0) {
+ s32 i;
+ for(i=0;i<40;i++) { if (*(u16*)((u8*)arg0+i*8+2)==0) return i; }
+ return -1;
 }
 
 void fn_8014DA88(void *arg0, s8 arg1) {
@@ -535,12 +551,6 @@ void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {
     base += idx;
     *out1 = *(u16 *)(base + 2);
     *out2 = *(s32 *)(base + 4);
-}
-
-s32 fn_8014DC04(void *arg0) {
- s32 i;
- for(i=0;i<40;i++) { if (*(u16*)((u8*)arg0+i*8+2)==0) return i; }
- return -1;
 }
 
 void fn_8014DD10(void *arg0) {
