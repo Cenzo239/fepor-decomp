@@ -2794,7 +2794,6 @@ f64 fn_802382EC(s32 *arg0, f64 farg0) {
     s32 high, magnitude;
     u32 low;
     f64 scale;
-    s32 e;
     high = *(s32 *)&farg0;
     low = ((u32 *)&farg0)[1];
     *arg0 = 0;
@@ -2803,8 +2802,7 @@ f64 fn_802382EC(s32 *arg0, f64 farg0) {
         return farg0;
     if (magnitude < 0x100000) {
         scale = lbl_8036C148;
-        e = -54;
-        *arg0 = e;
+        *arg0 = -54;
         farg0 = farg0 * scale;
         high = *(s32 *)&farg0;
         magnitude = high & 0x7fffffff;
