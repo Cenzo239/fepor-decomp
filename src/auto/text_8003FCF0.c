@@ -5754,13 +5754,9 @@ void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
     void *cue;
     u16 *entry;
     s32 i;
-    f32 fz;
-    f32 fy;
-    f32 fx;
+    f32 fz, fy, fx;
     entry = (u16 *)arg0;
-    fx = x;
-    fy = y;
-    fz = z;
+    fx = x; fy = y; fz = z;
     for (i = 0; i < 4; i++, entry++) {
         u16 id = *(u16 *)((u8 *)entry + 0x7C);
         if (id == 0xFFFF) cue = 0;
