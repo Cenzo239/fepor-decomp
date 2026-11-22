@@ -800,40 +800,38 @@ void fn_801A949C(void *arg0) {
 }
 
 #pragma use_lmw_stmw off
-void fn_801A94B0(void *arg0) {
-    void *Terrain_GetEntry(u8);
-    u8 Status_Test(void *, s32);
-    void *fn_8005B73C(void *);
-    void *Msg_ResolveName(void *);
-    s32 DebugPrint(const char *, ...);
-    extern u8 gBattleMap[];
-    extern u8 gBattleDebugMsgs[];
-    void *tname;
-    void *name;
-
-    tname = NULL;
-    *(void **)((u8 *)arg0 + 0x2B0) = Terrain_GetEntry(
-        gBattleMap[(s8)*((u8 *)arg0 + 0x19E) + ((s8)*((u8 *)arg0 + 0x19F) << 6) + 0x100D]);
-    if (*(void **)((u8 *)arg0 + 0x2B0) == NULL) {
-        DebugPrint((const char *)(gBattleDebugMsgs + 0x175));
-        return;
-    }
-    if (Status_Test((u8 *)arg0 + 0x1BC, 4) != 0) {
-        *((u8 *)arg0 + 0x2B4) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[4];
-        *((u8 *)arg0 + 0x2B5) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[5];
-        *((u8 *)arg0 + 0x2B6) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[3];
-    } else {
-        *((u8 *)arg0 + 0x2B4) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[1];
-        *((u8 *)arg0 + 0x2B5) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[2];
-        *((u8 *)arg0 + 0x2B6) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x2B0), u8 **, 8)[0];
-    }
-    name = *(void **)((u8 *)arg0 + 0x188);
-    tname = fn_8005B73C(*(void **)((u8 *)arg0 + 0x2B0));
-    DebugPrint((const char *)(gBattleDebugMsgs + 0x18D),
-               Msg_ResolveName(name), tname,
-               *(s8 *)((u8 *)arg0 + 0x2B4),
-               *(s8 *)((u8 *)arg0 + 0x2B5),
-               *(s8 *)((u8 *)arg0 + 0x2B6));
+void fn_801A94B0(void *arg0)
+{
+  void *Terrain_GetEntry(u8);
+  u8 Status_Test(void *, s32);
+  void *fn_8005B73C(void *);
+  void *Msg_ResolveName(void *);
+  s32 DebugPrint(const char *, ...);
+  extern u8 gBattleMap[];
+  extern u8 gBattleDebugMsgs[];
+  void *tname;
+  void *name;
+  *((void **) (((u8 *) arg0) + 0x2B0)) = Terrain_GetEntry(gBattleMap[(((s8) (*(((u8 *) arg0) + 0x19E))) + (((s8) (*(((u8 *) arg0) + 0x19F))) << 6)) + 0x100D]);
+  if ((*((void **) (((u8 *) arg0) + 0x2B0))) == NULL)
+  {
+    DebugPrint((const char *) (gBattleDebugMsgs + 0x175));
+    return;
+  }
+  if (Status_Test(((u8 *) arg0) + 0x1BC, 4) != 0)
+  {
+    *(((u8 *) arg0) + 0x2B4) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[4];
+    *(((u8 *) arg0) + 0x2B5) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[5];
+    *(((u8 *) arg0) + 0x2B6) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[3];
+  }
+  else
+  {
+    *(((u8 *) arg0) + 0x2B4) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[1];
+    *(((u8 *) arg0) + 0x2B5) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[2];
+    *(((u8 *) arg0) + 0x2B6) = (*((u8 **) (((s8 *) (*((void **) (((s8 *) arg0) + 0x2B0)))) + 8)))[0];
+  }
+  name = *((void **) (((u8 *) arg0) + 0x188));
+  ;
+  DebugPrint((const char *) (gBattleDebugMsgs + 0x18D), Msg_ResolveName(name), fn_8005B73C(*((void **) (((u8 *) arg0) + 0x2B0))), *((s8 *) (((u8 *) arg0) + 0x2B4)), *((s8 *) (((u8 *) arg0) + 0x2B5)), *((s8 *) (((u8 *) arg0) + 0x2B6)));
 }
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
