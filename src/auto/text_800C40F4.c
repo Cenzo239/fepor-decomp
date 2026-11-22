@@ -2508,7 +2508,6 @@ int fn_800C8F70(void *arg0, int arg1) {
 
     return 1;
 }
-#pragma global_optimizer on
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     char *String_CStr(String *);
@@ -15160,36 +15159,28 @@ void fn_800E3F54(void *arg0) {
 
 #pragma dont_inline on
 #pragma use_lmw_stmw on
-#pragma cplusplus on
-extern "C" void *fn_800E3F60(u8 *self) {
+void *fn_800E3F60(u8 *self) {
     u8 fn_800DF6A8(void *);
-    struct List {
-        u32 unk;
-        s32 count;
-        u8 pad[8];
-        virtual void v0();
-        virtual void v1();
-        virtual void v2();
-        virtual void v3();
-        virtual void v4();
-        virtual void *get(s32);
-        s32 size() { return this ? count : 0; }
-        void *at(s32 i) { return i < size() ? get(i) : 0; }
-    };
     void *candidate;
     s32 field8c;
     s32 field90;
     s32 i;
     s32 match;
     s32 val;
-    List *list;
+    void *list;
+    s32 count;
 
     if (!fn_800DF6A8(self)) {
         return 0;
     }
-    if (*(List **)(self + 0xa0)) {
-        for (i = 0; list = *(List **)(self + 0xa0), i < list->size(); i++) {
-            candidate = list->at(i);
+    if (*(void **)(self + 0xa0)) {
+        for (i = 0; list = *(void **)(self + 0xa0), i < (list ? *(s32 *)((u8 *)list + 4) : 0); i++) {
+            count = list ? *(s32 *)((u8 *)list + 4) : 0;
+            if (i < count) {
+                candidate = (*(void *(**)(void *, s32))(*(u8 **)((u8 *)list + 0x10) + 0x18))(list, i);
+            } else {
+                candidate = 0;
+            }
             field90 = *(s32 *)(self + 0x90);
             field8c = *(s32 *)(self + 0x8c);
             if (!fn_800DF6A8(candidate)) {
@@ -15197,19 +15188,25 @@ extern "C" void *fn_800E3F60(u8 *self) {
             } else {
                 val = *(s32 *)((u8 *)candidate + 0x84);
                 if (field8c == val) {
-                    match = 1;
-                } else if (val != -1) {
-                    match = 0;
-                } else {
-                    val = *(s32 *)((u8 *)candidate + 0x88);
-                    if (field90 == val) {
-                        match = 1;
-                    } else if (val != -1) {
-                        match = 0;
-                    } else {
-                        match = 1;
-                    }
+                    goto match_yes;
                 }
+                if (val != -1) {
+                    goto match_no;
+                }
+                val = *(s32 *)((u8 *)candidate + 0x88);
+                if (field90 == val) {
+                    goto match_yes;
+                }
+                if (val != -1) {
+                    goto match_no;
+                }
+            match_yes:
+                match = 1;
+                goto match_done;
+            match_no:
+                match = 0;
+            match_done:
+                ;
             }
             if ((u8)match) {
                 return candidate;
@@ -15217,7 +15214,6 @@ extern "C" void *fn_800E3F60(u8 *self) {
         }
     }
     return self;
-#pragma cplusplus off
 }
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
