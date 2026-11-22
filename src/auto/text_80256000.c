@@ -8686,3 +8686,4 @@ return 0;
 }
 extern u64 lbl_8029F3D0[4];
 extern u32 lbl_8029F3F0[4];
+const f64 lbl_8036C3A0 = 4503601774854144.0;
