@@ -1041,7 +1041,7 @@ s32 v;
 u32 flags;
 u8 gate;
 u32 input;
-flags=gUiInputFlags;gate=0;
+gate=0;flags=gUiInputFlags;
 if((flags&0x10) && !(flags&0x20)) gate=1;
 if(gate) return;
 input=*(u32*)(gPadInput+0xc);
@@ -1108,6 +1108,7 @@ Ui_DrawLine((s16)(x2-1),(s16)y,(s16)(x2-1),(s16)y2,*(s32*)(self+0x34),color);
 #pragma use_lmw_stmw reset
 #pragma cplusplus off
 extern struct efUnit* gEfUnitArray;
+#pragma global_optimizer off
 void fn_801CD940(void *arg0, void *arg1)
 {
     void fn_801583D0(s16, s16, s32, s32, u8, s32);
@@ -1138,7 +1139,6 @@ void fn_801CD940(void *arg0, void *arg1)
     s32 x;
 
     self = (u8 *)arg0;
-    offset = 0;
 
     ((void (*)(void *))(*(void ***)self)[4])(self);
 
@@ -1159,6 +1159,7 @@ void fn_801CD940(void *arg0, void *arg1)
     Prim2D_AddZ(lbl_8036B4EC);
     Prim2D_PrepareTex();
 
+    offset = 0;
     y = (s16)((0x20 -
         Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
 
@@ -1204,7 +1205,7 @@ void fn_801CD940(void *arg0, void *arg1)
         offset += 0x16;
     }
 }
-
+#pragma global_optimizer on
 void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *self;
     u8 c;
@@ -8695,8 +8696,8 @@ void fn_801DF600(void *arg0)
         u32 words[2];
     } timestamp;
 
+    s8 language;
     u8 *save;
-    s32 language;
 
     save = (u8 *)gSaveDataBase + 0x2000;
 
@@ -8705,16 +8706,15 @@ void fn_801DF600(void *arg0)
     *(u32 *)(save + 0x70) = 0x53595346;
     *(u32 *)(save + 0x74) = 0x20050201;
 
-    timestamp.words[0] = 0;
     timestamp.words[1] = 0;
+    timestamp.words[0] = 0;
 
     fn_8021D614(0, timestamp.words);
 
     timestamp.value += (u64)OSGetTime();
     timestamp.value += (u32)fn_80211690() * 0x7B;
 
-    *(u32 *)(save + 0x7C) = timestamp.words[1];
-    *(u32 *)(save + 0x78) = timestamp.words[0];
+    *(u64 *)(save + 0x78) = timestamp.value;
 
     *(u16 *)(save + 0x80) = 0;
 
@@ -9528,23 +9528,29 @@ gSystemSave[0x47]=save[1][0x63];
 }
 #pragma cplusplus on
 #pragma global_optimizer off
-void *fn_801E09B4(u8 **save) {
-u8 *slot;
-s32 off;
-u8 *base;
-s32 i;
-u8 valid;
-i=0; off=0x1a000;
-for(;i<2;i++) {
-base=*save;
-slot=base+off;
-if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
-off+=0x6000;
-}
-return 0;
+extern "C" void *fn_801E09B4(u8 **save) {
+    u8 *slot;
+    s32 off;
+    u8 *base;
+    s32 i;
+    u8 valid;
+
+    i = 0;
+    off = 0x1a000;
+    for (; i < 2; i++) {
+        base = *save;
+        slot = base + off;
+        if (*(u32 *)(slot + 0x40) != 0x4645384AU)
+            valid = 0;
+        else if (*(u32 *)(slot + 0x44) != 0x20050201U)
+            valid = 0;
+        else
+            valid = 1;
+        if (valid && Save_FindLinkedSlot(base, slot[0x63]))
+            return slot;
+        off += 0x6000;
+    }
+    return 0;
 }
 #pragma global_optimizer reset
 #pragma cplusplus reset
