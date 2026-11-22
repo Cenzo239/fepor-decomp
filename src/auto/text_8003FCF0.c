@@ -351,32 +351,105 @@ void *Res_GetByName(s32);
 
 void fn_8005C7E8(void *);
 
-void *fn_8003FCF0(void *arg0) {
- u8 equal,c; s8 *ref; u8 *p=arg0;
-ref=lbl_80366DC0;
- if((s8)p[24]!=(s8)ref[0]) equal=0;
-else if((s8)p[25]!=(s8)ref[1]) equal=0;
-else if((s8)p[26]!=(s8)ref[2]) equal=0;
-else if((s8)p[27]!=(s8)ref[3]) equal=0;
-else if((s8)p[28]!=(s8)ref[4]) equal=0;
-else if((s8)p[29]!=(s8)ref[5]) equal=0;
-else if((s8)p[30]!=(s8)ref[6]) equal=0;
-else equal=1;
-if(equal) {} else {
- p-=0x20;
- if((s8)p[24]!=(s8)ref[0]) equal=0;
-else if((s8)p[25]!=(s8)ref[1]) equal=0;
-else if((s8)p[26]!=(s8)ref[2]) equal=0;
-else if((s8)p[27]!=(s8)ref[3]) equal=0;
-else if((s8)p[28]!=(s8)ref[4]) equal=0;
-else if((s8)p[29]!=(s8)ref[5]) equal=0;
-else if((s8)p[30]!=(s8)ref[6]) equal=0;
-else equal=1;
-if(equal) {} else {
- p=0;
-}
-}
-return p;
+void *fn_8003FCF0(void *arg0)
+{
+  u8 equal;
+  u8 c;
+  s8 *ref;
+  s8 *new_var;
+  ;
+  if (((s8) lbl_80366DC0[24]) != ((s8) lbl_80366DC0[0]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[25]) != ((s8) lbl_80366DC0[1]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[26]) != ((s8) lbl_80366DC0[2]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[27]) != ((s8) lbl_80366DC0[3]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[28]) != ((s8) lbl_80366DC0[4]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[29]) != ((s8) lbl_80366DC0[5]))
+  {
+    equal = 0;
+  }
+  else
+    if (((s8) lbl_80366DC0[30]) != ((s8) lbl_80366DC0[6]))
+  {
+    equal = 0;
+  }
+  else
+  {
+    equal = 1;
+  }
+  if (equal)
+  {
+  }
+  else
+  {
+    ref -= 0x20;
+    new_var = &ref[2];
+    if (((s8) ref[24]) != ((s8) ref[0]))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[25]) != ((s8) ref[1]))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[26]) != ((s8) (*new_var)))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[27]) != ((s8) ref[3]))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[28]) != ((s8) ref[4]))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[29]) != ((s8) ref[5]))
+    {
+      equal = 0;
+    }
+    else
+      if (((s8) ref[30]) != ((s8) ref[6]))
+    {
+      equal = 0;
+    }
+    else
+    {
+      equal = 1;
+    }
+    if (equal)
+    {
+    }
+    else
+    {
+      ref = 0;
+    }
+  }
+  return ref;
 }
 
 #pragma use_lmw_stmw on
@@ -994,7 +1067,7 @@ switch(M2C_FIELD(arg0,u8 *,0x68)) {
 case 0:
 fn_800C1BDC(); fn_800C1984();
 enabled=1; mode=gMapBlendMode-1;
-if (((u32)((enabled|~mode)-((u32)(1-mode)>>1))>>31)==0) enabled=0;
+if (((u32)((~(mode)|enabled)-((u32)(1-mode)>>1))>>31)==0) enabled=0;
 if(enabled) fn_8014716C(1); else fn_8014716C(0);
 break;
 }
@@ -8232,9 +8305,9 @@ void *fn_800508C4(void *arg0) {
  void *base;
  s32 idx;
  void *name;
- register s32 value;
+ u32 value;
  void *resolved;
- value=get_4F128_id(arg0);
+ value=get_4F5EC_id(arg0);
  base=M2C_FIELD(arg0,void **,0x18C);
  if(M2C_FIELD(arg0,u8 *,3)&4) base=M2C_FIELD(base,void **,0xC)?Res_GetByName(M2C_FIELD(base,void **,0xC)):0;
  idx=0;
@@ -8247,7 +8320,7 @@ void *fn_800508C4(void *arg0) {
  if(!name) name=M2C_FIELD(base,void **,0x18);
  if(!name) {fn_800056A0(0);name=lbl_8026AB18+0x52;}
  if(!name||!*(s8 *)name) return Res_GetByName(lbl_8026AB18+0x53);
- sprintf(buf,lbl_8026AB18+0x5F,name,fn_8004B1A0(value));
+ sprintf(buf,lbl_8026AB18+0x5F,name,fn_8004B1A0((s32)value));
  resolved=Res_GetByName(buf);
  if(!resolved) {
  fn_800056A0(0);return Res_GetByName(lbl_8026AB18+0x53);
@@ -9346,19 +9419,14 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 }
 
 void fn_8005306C(void *arg0) {
+    typedef struct { f32 x, y, z; } Triple;
     f32 Map_SampleHeightRaw(M2C_UNK *, f32, f32, f32);
     f32 Math_Angle2D(f32, f32, f32, f32);
     extern u8 gBattleMap[];
-    extern f32 lbl_80369098;
-    extern f32 lbl_8036909C;
-    f32 sp1C;
-    f32 sp18;
-    f32 sp14;
-    f32 sp10;
-    f32 spC;
-    f32 sp8;
-    f32 *var_r30;
-    f32 *var_r31;
+    extern const f32 lbl_80369098;
+    extern const f32 lbl_8036909C;
+    Triple a;
+    Triple b;
     f32 *var_r3;
     f32 temp_f3;
     f32 temp_f3_2;
@@ -9370,6 +9438,8 @@ void fn_8005306C(void *arg0) {
     void *temp_r3;
     void *temp_r4;
     void *temp_r5;
+    void *var_r30;
+    void *var_r31;
 
     var_r31 = NULL;
     var_r30 = NULL;
@@ -9378,35 +9448,35 @@ void fn_8005306C(void *arg0) {
     temp_r29 = M2C_FIELD(temp_r3, void **, 0x30);
     if (temp_r5 != NULL) {
         temp_r0 = M2C_FIELD(temp_r5, u8 *, 0x19E);
-        sp14 = lbl_80369098 + (f32) (s8) temp_r0;
+        a.x = lbl_80369098 + (f32) (s8) temp_r0;
         temp_r0_2 = M2C_FIELD(temp_r5, u8 *, 0x19F);
         temp_f3 = lbl_80369098 + (f32) (s8) temp_r0_2;
-        sp18 = temp_f3;
-        sp1C = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
-        var_r31 = &sp14;
+        a.y = temp_f3;
+        a.z = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
+        var_r31 = &a.x;
     }
     if (temp_r29 != NULL) {
         temp_r0_3 = M2C_FIELD(temp_r29, u8 *, 0x19E);
-        sp8 = lbl_80369098 + (f32) (s8) temp_r0_3;
+        b.x = lbl_80369098 + (f32) (s8) temp_r0_3;
         temp_r0_4 = M2C_FIELD(temp_r29, u8 *, 0x19F);
         temp_f3_2 = lbl_80369098 + (f32) (s8) temp_r0_4;
-        spC = temp_f3_2;
-        sp10 = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
-        var_r30 = &sp8;
+        b.y = temp_f3_2;
+        b.z = Map_SampleHeightRaw((M2C_UNK *)gBattleMap, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
+        var_r30 = &b.x;
     }
     if ((var_r31 != NULL) && (var_r30 != NULL)) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x24) = Math_Angle2D(M2C_FIELD(var_r31, f32 *, 0), M2C_FIELD(var_r31, f32 *, 4), M2C_FIELD(var_r30, f32 *, 0), M2C_FIELD(var_r30, f32 *, 4));
     }
     temp_r4 = M2C_FIELD(arg0, void **, 0x30);
     if ((M2C_FIELD(temp_r4, s32 *, 8) & 0x20000000) && (var_r31 != NULL)) {
-        var_r3 = var_r31;
+        var_r3 = (f32 *)var_r31;
     } else {
-        var_r3 = var_r30;
+        var_r3 = (f32 *)var_r30;
     }
     if (var_r3 != NULL) {
-        M2C_FIELD(temp_r4, f32 *, 0xC) = (f32) M2C_FIELD(var_r3, f32 *, 0);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = (f32) M2C_FIELD(var_r3, f32 *, 4);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32) (lbl_8036909C + M2C_FIELD(var_r3, f32 *, 8));
+        M2C_FIELD(temp_r4, f32 *, 0xC) = (f32)M2C_FIELD(var_r3, f32 *, 0);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = (f32)M2C_FIELD(var_r3, f32 *, 4);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + M2C_FIELD(var_r3, f32 *, 8));
     }
 }
 
