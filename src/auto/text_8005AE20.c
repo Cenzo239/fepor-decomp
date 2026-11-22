@@ -382,7 +382,7 @@ s32 fn_8005B4D8(s32 arg0) {
 
 static inline u32 HashString(u8 *s) {
     u32 hash;
-    u8 b;
+    s32 b;
     hash = 0;
     while ((b = *s, (s8)b != 0)) {
         hash += b;
@@ -432,6 +432,7 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     u16 count;
     s32 j;
     u32 result;
+    s32 prod;
 
     h = HashString(*(u8 **)arg0);
     var_r0 = ColFromHash(h);
@@ -462,7 +463,8 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
         }
         idx = 0;
     }
-    off = (stride + 1) * idx + 1;
+    prod = (stride + 1) * idx;
+    off = prod + 1;
     sp[0] = sp[2] + ((col + off) * 4);
     result = Bin_ReadU32(&sp[0]);
     if (result == 0) {
