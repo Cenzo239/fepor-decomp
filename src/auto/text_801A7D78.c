@@ -812,9 +812,9 @@ void fn_801A94B0(void *arg0) {
 }
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
-    void fn_8001C4FC(void *, void *);
-    u8 fn_80094614(void *, void *);
-    void fn_8001D580(void *);
+    void Item_Copy(void *, void *);
+    u8 Unit_CanEquipItem(void *, void *);
+    void Item_Clear(void *);
     void *fn_80037C20(void *);
     extern u16 lbl_80367218;
     s8 flag;
@@ -823,16 +823,16 @@ void fn_801A9600(void *arg0, void *arg1) {
     void *r;
 
     *(s8 *)((u8 *)arg0 + 0x294) = -1;
-    fn_8001C4FC((u8 *)arg0 + 0x284, arg1);
-    fn_8001C4FC((u8 *)arg0 + 0x28C, arg1);
+    Item_Copy((u8 *)arg0 + 0x284, arg1);
+    Item_Copy((u8 *)arg0 + 0x28C, arg1);
     *(u8 *)((u8 *)arg0 + 0x2C8) = *(u8 *)((u8 *)arg1 + 4);
     *(u16 *)((u8 *)arg0 + 0x2AE) = 0;
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
     if (*(void **)(flag <= 0 ? (void *)&lbl_80367218 : (void *)((u8 *)arg0 + 0x284)) != NULL) {
         void *sel = flag <= 0 ? (void *)&lbl_80367218 : (void *)((u8 *)arg0 + 0x284);
         void *item = *(void * volatile *)sel;
-        if (fn_80094614(arg0, item) == 0) {
-            fn_8001D580((u8 *)arg0 + 0x284);
+        if (Unit_CanEquipItem(arg0, item) == 0) {
+            Item_Clear((u8 *)arg0 + 0x284);
         }
     }
     p = *(void **)((u8 *)arg0 + 0x28C);
