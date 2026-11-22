@@ -2707,6 +2707,21 @@ after:
     }
     return result;
 }
+static inline s32 CARDCheckDirEntry(void *card, u8 *entry)
+{
+    s32 fn_80231944(void *, void *, u32);
+    extern u8 lbl_8033A420[];
+    u8 *p = *(u8 **)((u8 *)card + 0x10C);
+
+    if (*entry == 0xFF) {
+        return -4;
+    }
+    if (p == lbl_8033A420 || (fn_80231944(entry, p, 4) == 0 && fn_80231944(entry + 4, p + 4, 2) == 0)) {
+        return 0;
+    }
+    return -10;
+}
+
 s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 {
 #pragma use_lmw_stmw on
@@ -2714,16 +2729,11 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
     s32 fn_80231944(const void *, const void *, u32);
     extern u8 lbl_8033A420[];
 
-    u8 *entry;
     u8 *gamecode;
     u8 *defaultCode;
-    char *name;
-    char *dirName;
-    s32 i;
     s32 result;
-    s32 n;
-    s8 a;
-    s8 b;
+    s32 i;
+    u8 *entry;
 
     if (*(s32 *)card == 0) {
         return -3;
@@ -2731,53 +2741,43 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 
     entry = __CARDGetDirBlock(card);
     defaultCode = lbl_8033A420;
+
     for (i = 0; i < 0x7F; i++, entry += 0x40) {
         gamecode = *(u8 **)((u8 *)card + 0x10C);
 
         if (*entry == 0xFF) {
             result = -4;
+        } else if (gamecode == defaultCode ||
+                   (fn_80231944(entry, gamecode, 4) == 0 &&
+                    fn_80231944(entry + 4, gamecode + 4, 2) == 0)) {
+            result = 0;
         } else {
-            if (gamecode == defaultCode) {
-                result = 0;
-            } else {
-                if (fn_80231944(entry, gamecode, 4) != 0) {
-                    result = -10;
-                } else if (fn_80231944(entry + 4, gamecode + 4, 2) != 0) {
-                    result = -10;
-                } else {
-                    result = 0;
-                }
-            }
+            result = -10;
         }
 
         if (result >= 0) {
+            char *p;
+            s8 a;
+            s8 b;
+            s32 n;
+            char *name;
+
+            p = (char *)entry + 8;
             name = filename;
-            dirName = (char *)(entry + 8);
             n = 0x20;
-            goto str_test;
-        str_loop:
-            a = *dirName;
-            dirName = dirName + 1;
-            b = *name;
-            name = name + 1;
-            if (a != b) {
-                result = 0;
-                goto str_done;
+            while (--n >= 0) {
+                a = *p++;
+                b = *name++;
+                if (a != b) {
+                    result = 0;
+                    goto str_done;
+                }
+                if (b == 0) {
+                    result = 1;
+                    goto str_done;
+                }
             }
-            if (b == 0) {
-                result = 1;
-                goto str_done;
-            }
-        str_test:
-            n = n - 1;
-            if (n >= 0) {
-                goto str_loop;
-            }
-            if ((s8)*name == 0) {
-                result = 1;
-            } else {
-                result = 0;
-            }
+            result = ((s8)*name == 0) ? 1 : 0;
         str_done:
             if (result != 0) {
                 *outIndex = i;
