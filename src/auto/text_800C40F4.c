@@ -2474,7 +2474,7 @@ int fn_800C8F70(void *arg0, int arg1) {
     u8 *self;
     int index;
     Val32 temp;
-    Val32 copy;
+    volatile Val32 copy;
     u32 value;
 
     self = (u8 *)arg0;
@@ -2495,7 +2495,7 @@ int fn_800C8F70(void *arg0, int arg1) {
     Str_CopyPad(&temp, gStringErrorMsgs + 4, 0x20);
 
     copy = temp;
-    *(Val32 *)(self + 0x40) = copy;
+    *(Val32 *)(self + 0x40) = temp;
 
     if (index < *(int *)(self + 0x18)) {
         value = ((u32 *)(*(void **)(self + 0x14)))[index];
@@ -16368,10 +16368,10 @@ void fn_800E5A4C(void *arg0) {
     void Model_SetAlpha(void *, u8);
     void *e0;
     u8 *p;
+    s32 a;
+    s32 b;
     s32 alpha;
     s32 temp_r31;
-    s32 t2;
-    s32 t6;
 
     e0 = *(void **)((u8 *)arg0 + 0xE0);
     if (e0 != NULL) {
@@ -16382,9 +16382,11 @@ void fn_800E5A4C(void *arg0) {
         e0 = *(void **)((u8 *)arg0 + 0xE0);
         temp_r31 = ((u8 *)e0)[0xB];
         p = (u8 *)Light_GetChannel(0);
-        t2 = p[2];
-        t6 = p[6];
-        alpha = (((p[4] + (t6 + p[5])) / 3) * (0xFF - ((p[0] + (t2 + p[1])) / 3))) / 255;
+
+        a = (p[0] + p[1] + p[2]) / 3;
+        b = (p[4] + p[5] + p[6]) / 3;
+        alpha = (b * (255 - a)) / 255;
+
         if (alpha < 0) {
             alpha = 0;
         }
