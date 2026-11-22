@@ -2345,31 +2345,40 @@ s32 DVDKeepAlive(void)
 }
 
 void fn_8020F504(void (*arg0)(void *, void *)) {
-s32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(s32);
-void fn_8020F0B8(void *, void (*)(void *, void *));
-s32 inner, resume, outer, pause;
-void *block;
-outer = OSDisableInterrupts();
-__DVDClearWaitingQueue();
-if (lbl_803685B8 != 0) lbl_803685BC = arg0;
-else {
-if (executing_80368598 != 0) ((DVDReadyCommand *)executing_80368598)->callback = 0;
-inner = OSDisableInterrupts();
-pause = OSDisableInterrupts();
-PauseFlag_803685A4 = 1;
-if (executing_80368598 == 0) PausingFlag_803685A8 = 1;
-OSRestoreInterrupts(pause);
-while ((block = (void *)__DVDPopWaitingQueue()) != 0) fn_8020F0B8(block, 0);
-if (executing_80368598 != 0) fn_8020F0B8(executing_80368598, arg0);
-else if (arg0 != 0) arg0(0,0);
-resume = OSDisableInterrupts();
-PauseFlag_803685A4 = 0;
-if (PausingFlag_803685A8 != 0) { PausingFlag_803685A8 = 0; stateReady(); }
-OSRestoreInterrupts(resume);
-OSRestoreInterrupts(inner);
-}
-OSRestoreInterrupts(outer);
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
+    void fn_8020F0B8(void *, void (*)(void *, void *));
+    u32 inner, resume, outer, pause;
+    void *block;
+    outer = OSDisableInterrupts();
+    __DVDClearWaitingQueue();
+    if (lbl_803685B8 != 0) {
+        lbl_803685BC = arg0;
+    } else {
+        if (executing_80368598 != 0)
+            ((DVDReadyCommand *)executing_80368598)->callback = 0;
+        inner = OSDisableInterrupts();
+        pause = OSDisableInterrupts();
+        PauseFlag_803685A4 = 1;
+        if (executing_80368598 == 0)
+            PausingFlag_803685A8 = 1;
+        OSRestoreInterrupts(pause);
+        while ((block = (void *)__DVDPopWaitingQueue()) != 0)
+            fn_8020F0B8(block, 0);
+        if (executing_80368598 != 0)
+            fn_8020F0B8(executing_80368598, arg0);
+        else if (arg0 != 0)
+            arg0(0, 0);
+        resume = OSDisableInterrupts();
+        *(volatile s32 *)&PauseFlag_803685A4 = 0;
+        if (*(volatile s32 *)&PausingFlag_803685A8 != 0) {
+            *(volatile s32 *)&PausingFlag_803685A8 = 0;
+            stateReady();
+        }
+        OSRestoreInterrupts(resume);
+        OSRestoreInterrupts(inner);
+    }
+    OSRestoreInterrupts(outer);
 }
 
 int fn_8020F620(void *arg0) {
