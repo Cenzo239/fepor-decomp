@@ -6381,7 +6381,7 @@ extern "C" void fn_80190440(void *arg0) {
     if (*(u32 *)((u8 *)self + 0x3C) != 0) {
         t14 = *(s16 *)((u8 *)self + 0x14);
         t18 = *(s16 *)((u8 *)self + 0x18);
-        register t12 = *(s16 *)((u8 *)self + 0x12);
+        register int t12 = *(s16 *)((u8 *)self + 0x12);
         t16 = *(s16 *)((u8 *)self + 0x16);
         *(s16 *)((u8 *)self + 0x4A) = 0;
         *(s16 *)((u8 *)self + 0x4C) = 0;
@@ -8356,7 +8356,7 @@ extern "C" void fn_80193344(void *arg0) {
         Ui_AddChild(arg0, obj);
     }
     if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
-        register tmp = M2C_FIELD(obj, s16 *, 0xC);
+        register int tmp = M2C_FIELD(obj, s16 *, 0xC);
         spC.x = 0x108;
         spC.y = tmp;
         Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);
@@ -9302,7 +9302,7 @@ extern "C" void fn_8019477C(void *arg0) {
         Ui_AddChild(arg0, obj);
     }
     if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
-        register tmp = M2C_FIELD(obj, s16 *, 0xC);
+        register int tmp = M2C_FIELD(obj, s16 *, 0xC);
         spC.x = 0x108;
         spC.y = tmp;
         Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);
@@ -11594,11 +11594,11 @@ void fn_8019933C(f32 *arg0, void *arg1)
   else
   {
     ;
-    if ((*((void **) (obj + 0xEC))) != 0)
+    if ((other = *((void **) (obj + 0xEC))) != 0)
     {
       void (**vtable)(f32 *, void *, s32);
       vtable = *((void (***)(f32 *, void *, s32)) (((u8 *) other) + 0x40));
-      vtable[14](pos, *((void **) (obj + 0xEC)), 0);
+      vtable[14](pos, other, 0);
       x = pos[0];
       z = pos[2];
     }
@@ -14945,7 +14945,7 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_8019F2D0(s32 x, long long y)
+s32 fn_8019F2D0(s32 x, s32 y)
 {
   extern u32 gUiInputFlags;
   s32 Map_Get(void);
@@ -14953,7 +14953,7 @@ s32 fn_8019F2D0(s32 x, long long y)
   void fn_800056A0(s32);
   void MapObjEvent_Remove(void *, s32, s32, s32);
   void *MapObjEvent_Find(void *, s32, s32, s32);
-  s32 new_var;
+
   void MapObj_FadeIn(void *, s32);
   void *Map_FindObjNear(void *, s32, s32, u32, s32);
   s32 Map_CollectLinkedObjs(void *, void *, s32 *);
@@ -14980,8 +14980,7 @@ s32 fn_8019F2D0(s32 x, long long y)
       }
       else
       {
-        new_var = y;
-        MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
+        MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) y, 0x21);
         {
           void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) y, 4);
           if (ev != NULL)
@@ -14990,7 +14989,7 @@ s32 fn_8019F2D0(s32 x, long long y)
           }
         }
         MapObj_FadeIn(obj, 0);
-        obj = Map_FindObjNear((void *) Map_Get(), x, new_var, 0x800, 0);
+        obj = Map_FindObjNear((void *) Map_Get(), x, y, 0x800, 0);
         if (obj != NULL)
         {
           count = Map_CollectLinkedObjs((void *) Map_Get(), obj, linked);
@@ -15021,9 +15020,9 @@ s32 fn_8019F2D0(s32 x, long long y)
       fn_800056A0(0);
       return 0;
     }
-    MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
+    MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) y, 0x21);
     {
-      void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) new_var, 4);
+      void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) y, 4);
       if (ev != NULL)
       {
         ((u8 *) ev)[4] = ((u8 *) ev)[5];
