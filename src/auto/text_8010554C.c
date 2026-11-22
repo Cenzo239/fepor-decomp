@@ -2113,7 +2113,7 @@ s32 Unit_ResolveWarpPos(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void 
         cost = -1;
     } else {
         row = y << 6;
-        tmp = Terrain_GetEntry(map[0x100D + x + row]);
+        tmp = Terrain_GetEntry(gBattleMap[0x100D + x + row]);
         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
             cost = -1;
         } else {
