@@ -5013,8 +5013,8 @@ void fn_801D3810(s32 arg0) {
 
 #pragma cplusplus on
 #pragma opt_common_subs off
-#pragma dont_inline off
-#pragma global_optimizer off
+#pragma dont_inline on
+#pragma global_optimizer on
 extern "C" void *fn_801D3860(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[];
 extern const f32 lbl_8036B618,lbl_8036B61C;
