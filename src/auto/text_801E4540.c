@@ -2,6 +2,7 @@
 #include "common.h"
 #include "global.h"
 
+extern f64 lbl_8036B6E0;
 
 struct UnkStruct {
     u32 field_0[0x10];
@@ -718,7 +719,6 @@ void TabMenu_DrawTab2(void *arg0) {
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
     y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
-    rect = &lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
     goto loop_chk;
@@ -726,7 +726,7 @@ void TabMenu_DrawTab2(void *arg0) {
     loop_body:
     data = node->data;
     if ((s8)data[0] < 0) {
-        pad = (s16)((0x20 - (s16)(rect[3] - rect[1])) >> 1);
+        pad = (s16)((0x20 - (s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1])) >> 1);
         pad2 = (s16)(pad + 0xC);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)self + 0x64), lbl_80332000, 0xC);
         Prim2D_Begin();
@@ -735,19 +735,19 @@ void TabMenu_DrawTab2(void *arg0) {
         Prim2D_AddPrim(1);
         y = (s16)((((s8)(row - (s8)page) << 5) + 8) - rem);
         yline = (s16)(y + pad);
-        w = (s16)(rect[2] - rect[0]);
-        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)w, (f32)(s16)(rect[3] - rect[1]));
+        w = (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]);
+        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)((s16 *)&lbl_8036833C)[0], (f32)((s16 *)&lbl_8036833C)[1],
+                    (f32)w, (f32)(s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1]));
         Prim2D_SwapUvU();
-        x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
+        x2 = (s16)(0x208 - (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)(s16)(rect[2] - rect[0]), (f32)(s16)(rect[3] - rect[1]));
+        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)((s16 *)&lbl_8036833C)[0], (f32)((s16 *)&lbl_8036833C)[1],
+                    (f32)(s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]), (f32)(s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1]));
         color[0] = 0xFF;
-        w = (s16)(rect[2] - rect[0]);
+        w = (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]);
         color[1] = 0xFF;
         color[2] = 0xFF;
         x2 = (s16)(0x208 - w);
@@ -858,19 +858,19 @@ void TabMenu_DrawTab2(void *arg0) {
     }
 }
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
-    s32 Text_MeasureWidth(void *, s32, f32);
-    s32 Text_MeasureHeight(s32, f32);
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetPosCorners(f32, f32, f32, f32);
-    void Prim2D_SetColorPacked(s32 *);
-    void Prim2D_EndPrim(void);
-    void Text_Draw(s16, s16, u8, void *, ...);
-    void Prim2D_AddZ(f32);
-    void Prim2D_SetRect(f32, f32, f32, f32);
-    extern f32 gTabMenuOne;
+    s32 fn_80010B78(void *, s32, f32);
+    s32 fn_800102BC(s32, f32);
+    void fn_8000A258(void);
+    void fn_8000A174(s32, s32);
+    void fn_8000A248(void);
+    void fn_80007898(s32);
+    void fn_80007790(f32, f32, f32, f32);
+    void fn_80007668(s32 *);
+    void fn_80007884(void);
+    void fn_8001019C(s16, s16, u8, void *, ...);
+    void fn_80009C0C(f32);
+    void fn_800077D8(f32, f32, f32, f32);
+    extern f32 lbl_8036B6E8;
     extern f32 lbl_8036B71C;
     extern f32 lbl_8036B720;
     extern f32 lbl_8036B724;
@@ -897,11 +897,11 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     s16 tw;
     s32 th;
     s32 mode;
-    s16 px;
+    s32 px;
     s32 py;
 
-    tw = (s16)Text_MeasureWidth(arg6, -1, gTabMenuOne);
-    th = Text_MeasureHeight(-1, gTabMenuOne);
+    tw = (s16)fn_80010B78(arg6, -1, lbl_8036B6E8);
+    th = fn_800102BC(-1, lbl_8036B6E8);
     x = arg1;
     y = arg2;
     left = (s16)(x - 1);
@@ -937,72 +937,72 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     fill[2] = 0x1E;
     fill[3] = 0xFF;
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x12);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(4);
+    fn_8000A258();
+    fn_8000A174(0, 0x12);
+    fn_8000A248();
+    fn_80007898(4);
     f_top = lbl_8036B71C + (f32)top;
     f_left = lbl_8036B71C + (f32)left;
     f_right = lbl_8036B71C + (f32)right;
-    Prim2D_SetPosCorners(f_left, f_top, f_right, f_top);
+    fn_80007790(f_left, f_top, f_right, f_top);
     sp14 = *(s32 *)border;
-    Prim2D_SetColorPacked(&sp14);
-    Prim2D_EndPrim();
+    fn_80007668(&sp14);
+    fn_80007884();
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x12);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(4);
+    fn_8000A258();
+    fn_8000A174(0, 0x12);
+    fn_8000A248();
+    fn_80007898(4);
     f_bottom = lbl_8036B71C + (f32)bottom;
-    Prim2D_SetPosCorners(f_right, f_top, f_right, f_bottom);
+    fn_80007790(f_right, f_top, f_right, f_bottom);
     sp10 = *(s32 *)border;
-    Prim2D_SetColorPacked(&sp10);
-    Prim2D_EndPrim();
+    fn_80007668(&sp10);
+    fn_80007884();
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x12);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(4);
-    Prim2D_SetPosCorners(f_right, f_bottom, f_left, f_bottom);
+    fn_8000A258();
+    fn_8000A174(0, 0x12);
+    fn_8000A248();
+    fn_80007898(4);
+    fn_80007790(f_right, f_bottom, f_left, f_bottom);
     spC = *(s32 *)border;
-    Prim2D_SetColorPacked(&spC);
-    Prim2D_EndPrim();
+    fn_80007668(&spC);
+    fn_80007884();
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x12);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(4);
-    Prim2D_SetPosCorners(f_left, f_bottom, f_left, f_top);
+    fn_8000A258();
+    fn_8000A174(0, 0x12);
+    fn_8000A248();
+    fn_80007898(4);
+    fn_80007790(f_left, f_bottom, f_left, f_top);
     sp8 = *(s32 *)border;
-    Prim2D_SetColorPacked(&sp8);
-    Prim2D_EndPrim();
+    fn_80007668(&sp8);
+    fn_80007884();
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x13);
-    Prim2D_PrepareTex();
-    px = (s16)(x + half_w);
-    mode = 0x16;
+    fn_8000A258();
+    fn_8000A174(0, 0x13);
+    fn_8000A248();
+    px = (s32)(s16)(x + half_w);
     py = y + half_h;
+    mode = 0x16;
     if (arg5 != 0) {
         mode = 0x15;
     }
-    Text_Draw(px, (s16)py, (u8)mode, arg6);
+    fn_8001019C((s16)px, (s16)py, (u8)mode, arg6);
 
-    Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B720);
-    Prim2D_PrepareTex();
+    fn_8000A258();
+    fn_80009C0C(lbl_8036B720);
+    fn_8000A248();
 
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x12);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
+    fn_8000A258();
+    fn_8000A174(0, 0x12);
+    fn_8000A248();
+    fn_80007898(1);
+    fn_800077D8((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
     sp18 = *(s32 *)fill;
-    Prim2D_SetColorPacked(&sp18);
+    fn_80007668(&sp18);
 
-    Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B724);
-    Prim2D_PrepareTex();
+    fn_8000A258();
+    fn_80009C0C(lbl_8036B724);
+    fn_8000A248();
 }
 
 #pragma use_lmw_stmw on
@@ -1245,7 +1245,7 @@ void TabMenu_DrawTab0(void *arg0) {
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
     extern u8 gBattleState[];
     extern u8 lbl_80332000[];
-    extern s16 lbl_8036833C;
+    extern s16 lbl_8036833C[4];
 
     struct Node { struct Node *prev; struct Node *next; u8 *data; };
 
@@ -1253,7 +1253,6 @@ void TabMenu_DrawTab0(void *arg0) {
     s32 color_word;
     void *self = arg0;
     struct Node *node;
-    s16 *rect;
     void *tbl74;
     void *tbl84;
     s8 row;
@@ -1304,7 +1303,6 @@ void TabMenu_DrawTab0(void *arg0) {
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
     y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
-    rect = &lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
     goto loop_chk;
@@ -1312,7 +1310,7 @@ void TabMenu_DrawTab0(void *arg0) {
     loop_body:
     data = node->data;
     if ((s8)data[0] < 0) {
-        pad = (s16)((0x20 - (s16)(rect[3] - rect[1])) >> 1);
+        pad = (s16)((0x20 - (s16)(lbl_8036833C[3] - lbl_8036833C[1])) >> 1);
         pad2 = (s16)(pad + 0xC);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)self + 0x64), lbl_80332000, 0xC);
         Prim2D_Begin();
@@ -1321,19 +1319,19 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_AddPrim(1);
         y = (s16)((((s8)(row - (s8)page) << 5) + 8) - rem);
         yline = (s16)(y + pad);
-        w = (s16)(rect[2] - rect[0]);
-        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)w, (f32)(s16)(rect[3] - rect[1]));
+        w = (s16)(lbl_8036833C[2] - lbl_8036833C[0]);
+        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
+                    (f32)w, (f32)(s16)(lbl_8036833C[3] - lbl_8036833C[1]));
         Prim2D_SwapUvU();
-        x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
+        x2 = (s16)(0x208 - (s16)(lbl_8036833C[2] - lbl_8036833C[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)(s16)(rect[2] - rect[0]), (f32)(s16)(rect[3] - rect[1]));
+        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
+                    (f32)(s16)(lbl_8036833C[2] - lbl_8036833C[0]), (f32)(s16)(lbl_8036833C[3] - lbl_8036833C[1]));
         color[0] = 0xFF;
-        w = (s16)(rect[2] - rect[0]);
+        w = (s16)(lbl_8036833C[2] - lbl_8036833C[0]);
         color[1] = 0xFF;
         color[2] = 0xFF;
         x2 = (s16)(0x208 - w);
@@ -1486,6 +1484,7 @@ void fn_801E6CEC(void *arg0) {
     extern f32 lbl_8036B74C;
     extern f32 lbl_8036B750;
     extern f32 lbl_8036B754;
+    extern f64 lbl_8036B6E0;
 
     u8 pal[3];
     Color c0, c1;
@@ -2355,13 +2354,13 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
 }
 #pragma optimization_level reset
 #pragma global_optimizer on
-void fn_801E8D34(void *arg0) {
+void fn_801E8D34(u8 *arg0) {
     s32 fn_801E9410(void);
     u8 fn_801E85A4(void *, s32);
     s32 Abs(s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
-    void fn_80057860(void *, s16);
+    void fn_80057860(s32, s16);
     s8 fn_801E4A60(void *, u8);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_801E4900(s16 *, void *);
@@ -2382,10 +2381,9 @@ void fn_801E8D34(void *arg0) {
     u32 cur;
     u32 *pad;
     u8 t;
-    s16 pos;
-    s16 tgt;
     s32 pos32;
     s32 tgt32;
+    s16 t36;
     s8 lo;
     s8 hi;
     void *str;
@@ -2396,71 +2394,74 @@ void fn_801E8D34(void *arg0) {
 
     max = fn_801E9410();
     pad = gPadInput;
-    t = *(u8 *)((u8 *)arg0 + 0x32);
+    t = *(u8 *)(arg0 + 0x32);
     held = pad[3];
     cur = pad[1];
     old32 = (s8)t;
     buttons = cur & (pad[2] ^ cur);
 
     if (held & 0x08000008U) {
-        t = *(u8 *)((u8 *)arg0 + 0x32);
+        t = *(volatile u8 *)(arg0 + 0x32);
         if ((s8)t == 0) {
             if (buttons == held) {
-                *(u8 *)((u8 *)arg0 + 0x32) = (u8)(max - 1);
+                *(u8 *)(arg0 + 0x32) = (u8)(max - 1);
             }
         } else {
-            *(u8 *)((u8 *)arg0 + 0x32) = t - 1;
+            *(u8 *)(arg0 + 0x32) = t - 1;
         }
     } else if (held & 0x04000004U) {
-        t = *(u8 *)((u8 *)arg0 + 0x32);
+        t = *(volatile u8 *)(arg0 + 0x32);
         max = max - 1;
         if ((u32)max == (u32)(s8)t) {
             if (buttons == held) {
-                *(u8 *)((u8 *)arg0 + 0x32) = 0;
+                *(u8 *)(arg0 + 0x32) = 0;
             }
         } else {
-            *(u8 *)((u8 *)arg0 + 0x32) = t + 1;
+            *(u8 *)(arg0 + 0x32) = t + 1;
         }
     }
 
-    if (old32 != (s8)*(u8 *)((u8 *)arg0 + 0x32)) {
-        if (fn_801E85A4(arg0, *(u8 *)((u8 *)arg0 + 0x32))) {
-            if (Abs(old32 - (s8)*(u8 *)((u8 *)arg0 + 0x32)) == 1) {
-                *(s16 *)((u8 *)arg0 + 0x3A) = 0x10;
-                pos = *(s16 *)((u8 *)arg0 + 0x36);
-                tgt = *(s16 *)((u8 *)arg0 + 0x38);
-                if (pos == tgt) {
+    if (old32 != (s8)*(u8 *)(arg0 + 0x32)) {
+        if (fn_801E85A4(arg0, *(u8 *)(arg0 + 0x32))) {
+#pragma optimization_level 2
+            if (Abs(old32 - (s8)*(u8 *)(arg0 + 0x32)) == 1) {
+                *(s16 *)(arg0 + 0x3A) = 0x10;
+                pos32 = *(s16 *)(arg0 + 0x36);
+                tgt32 = *(s16 *)(arg0 + 0x38);
+                if (pos32 == tgt32) {
                     Process_ClearFunc(arg0);
                 } else {
-                    pos32 = pos;
-                    tgt32 = tgt;
-                    if (pos32 < tgt32) {
-                        *(s16 *)((u8 *)arg0 + 0x36) = (s16)(*(s16 *)((u8 *)arg0 + 0x3A) + pos);
+                    if ((s16)pos32 < (s16)tgt32) {
+                        *(s16 *)(arg0 + 0x36) = (s16)(*(s16 *)(arg0 + 0x3A) + pos32);
                     } else {
-                        *(s16 *)((u8 *)arg0 + 0x36) = (s16)(pos - *(s16 *)((u8 *)arg0 + 0x3A));
+                        *(s16 *)(arg0 + 0x36) = (s16)(pos32 - *(s16 *)(arg0 + 0x3A));
                     }
-                    fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
-                    if (*(s16 *)((u8 *)arg0 + 0x36) == *(s16 *)((u8 *)arg0 + 0x38)) {
+                    t36 = *(s16 *)(arg0 + 0x36);
+                    fn_80057860(*(s32 *)(arg0 + 0x5C), t36);
+                    if (*(s16 *)(arg0 + 0x36) == *(s16 *)(arg0 + 0x38)) {
                         Process_ClearFunc(arg0);
                     }
                 }
                 Process_Goto(arg0, 4);
-            } else if ((s8)*(u8 *)((u8 *)arg0 + 0x32) < old32) {
-                *(u8 *)((u8 *)arg0 + 0x33) = 0;
-                *(s16 *)((u8 *)arg0 + 0x36) = 0;
-                *(s16 *)((u8 *)arg0 + 0x38) = 0;
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+#pragma optimization_level reset
+            } else if ((s8)*(u8 *)(arg0 + 0x32) < old32) {
+                *(u8 *)(arg0 + 0x33) = 0;
+                *(s16 *)(arg0 + 0x36) = 0;
+                *(s16 *)(arg0 + 0x38) = 0;
+                t36 = *(s16 *)(arg0 + 0x36);
+                fn_80057860(*(s32 *)(arg0 + 0x5C), t36);
             } else {
-                *(u8 *)((u8 *)arg0 + 0x33) = (u8)fn_801E4A60(arg0, *(u8 *)((u8 *)arg0 + 0x32));
-                *(s16 *)((u8 *)arg0 + 0x36) = *(s16 *)((u8 *)arg0 + 0x38);
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+                *(u8 *)(arg0 + 0x33) = (u8)fn_801E4A60(arg0, *(u8 *)(arg0 + 0x32));
+                *(s16 *)(arg0 + 0x36) = *(s16 *)(arg0 + 0x38);
+                t36 = *(s16 *)(arg0 + 0x36);
+                fn_80057860(*(s32 *)(arg0 + 0x5C), t36);
             }
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
             fn_801E4900(spC, arg0);
             str = NULL;
             *(s32 *)sp14 = *(s32 *)spC;
-            switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
+            switch ((s8)*(u8 *)(arg0 + 0x31)) {
             case 0:
                 str = gTabMenuStrings + 0x15B;
                 break;
@@ -2475,49 +2476,50 @@ void fn_801E8D34(void *arg0) {
     }
 
     if (buttons & 0x02000002U) {
-        lo = fn_801E4A60(arg0, *(u8 *)((u8 *)arg0 + 0x32));
-        hi = fn_801E8920(arg0, *(u8 *)((u8 *)arg0 + 0x32));
-        *(u8 *)((u8 *)arg0 + 0x31) = 1;
-        switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
+        lo = fn_801E4A60(arg0, *(u8 *)(arg0 + 0x32));
+        hi = fn_801E8920(arg0, *(u8 *)(arg0 + 0x32));
+        *(u8 *)(arg0 + 0x31) = 1;
+        switch ((s8)*(u8 *)(arg0 + 0x31)) {
         case 0:
-            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+            TextBanner_SetString(*(void **)(arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
             break;
         case 1:
-            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+            TextBanner_SetString(*(void **)(arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
             break;
         }
-        if ((s8)*(u8 *)((u8 *)arg0 + 0x33) > hi) {
-            *(u8 *)((u8 *)arg0 + 0x33) = (u8)hi;
+        if ((s8)*(u8 *)(arg0 + 0x33) > hi) {
+            *(u8 *)(arg0 + 0x33) = (u8)hi;
         }
-        if ((s8)*(u8 *)((u8 *)arg0 + 0x33) < lo) {
-            *(u8 *)((u8 *)arg0 + 0x33) = (u8)lo;
+        if ((s8)*(u8 *)(arg0 + 0x33) < lo) {
+            *(u8 *)(arg0 + 0x33) = (u8)lo;
         }
-        if (fn_801E91E8(arg0, (u8 *)arg0 + 0x33)) {
-            *(s16 *)((u8 *)arg0 + 0x3A) = 0x10;
-            pos = *(s16 *)((u8 *)arg0 + 0x36);
-            tgt = *(s16 *)((u8 *)arg0 + 0x38);
-            if (pos == tgt) {
+        if (fn_801E91E8(arg0, arg0 + 0x33)) {
+#pragma optimization_level 2
+            *(s16 *)(arg0 + 0x3A) = 0x10;
+            pos32 = *(s16 *)(arg0 + 0x36);
+            tgt32 = *(s16 *)(arg0 + 0x38);
+            if (pos32 == tgt32) {
                 Process_ClearFunc(arg0);
             } else {
-                pos32 = pos;
-                tgt32 = tgt;
-                if (pos32 < tgt32) {
-                    *(s16 *)((u8 *)arg0 + 0x36) = (s16)(*(s16 *)((u8 *)arg0 + 0x3A) + pos);
+                if ((s16)pos32 < (s16)tgt32) {
+                    *(s16 *)(arg0 + 0x36) = (s16)(*(s16 *)(arg0 + 0x3A) + pos32);
                 } else {
-                    *(s16 *)((u8 *)arg0 + 0x36) = (s16)(pos - *(s16 *)((u8 *)arg0 + 0x3A));
+                    *(s16 *)(arg0 + 0x36) = (s16)(pos32 - *(s16 *)(arg0 + 0x3A));
                 }
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
-                if (*(s16 *)((u8 *)arg0 + 0x36) == *(s16 *)((u8 *)arg0 + 0x38)) {
+                t36 = *(s16 *)(arg0 + 0x36);
+                fn_80057860(*(s32 *)(arg0 + 0x5C), t36);
+                if (*(s16 *)(arg0 + 0x36) == *(s16 *)(arg0 + 0x38)) {
                     Process_ClearFunc(arg0);
                 }
             }
             Process_Goto(arg0, 4);
+#pragma optimization_level reset
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
             fn_801E4900(sp8, arg0);
             str = NULL;
             *(s32 *)sp10 = *(s32 *)sp8;
-            switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
+            switch ((s8)*(u8 *)(arg0 + 0x31)) {
             case 0:
                 str = gTabMenuStrings + 0x15B;
                 break;
