@@ -116,11 +116,11 @@ extern f32 lbl_8036BDC0;
 
 static inline u32 __GXReadPECounterU32(u32 lo, u32 hi) {
     volatile u16 *base;
-    volatile u16 *regL;
     volatile u16 *regH;
-    u32 ctrL;
+    volatile u16 *regL;
     u32 ctrH0;
     u32 ctrH1;
+    u32 ctrL;
 
     base = __peReg;
     regH = base + hi;
