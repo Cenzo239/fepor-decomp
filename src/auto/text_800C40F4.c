@@ -13180,6 +13180,7 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
     };
     extern void *lbl_8028DFC8[];
     extern char lbl_80271A30[];
+    u32 len;
     Self *self = (Self *)arg0;
 
     self->vtbl = lbl_8028DFC8;
@@ -13206,7 +13207,8 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
     if (self->unk38 != NULL) {
         self->unk28 = fn_800DC018(self->unk38);
     } else {
-        String_AssignCStr(&self->s2, lbl_80271A30, strlen(lbl_80271A30));
+        len = strlen(lbl_80271A30);
+        String_AssignCStr((String *)((u8 *)self + 0x1c), lbl_80271A30, len);
         self->unk28 = 0;
     }
     return arg0;
