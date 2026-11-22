@@ -402,6 +402,7 @@ config.libs = [
             Object(Matching, "auto/text_800AE52C.c", mw_version="GC/2.0"),
             Object(NonMatching, "auto/text_800AE5A8.c", mw_version="GC/1.3"),
             Object(NonMatching, "auto/icon.c", mw_version="GC/1.3"),
+            Object(NonMatching, "auto/icon_copy.c", mw_version="GC/1.3"),
             Object(NonMatching, "auto/text_800C40F4.c", mw_version="GC/2.0"),
             Object(NonMatching, "auto/text_80103748.c"),
             Object(NonMatching, "auto/text_80105124.c"),

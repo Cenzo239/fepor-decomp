@@ -1,0 +1,861 @@
+/* Functions from 0x800AD24C to 0x800C3F18, found by decomp-toolkit. */
+#include "common.h"
+
+typedef struct {
+    u8 flag : 1;
+    u8 unk : 7;
+} ItemFlagBits;
+
+typedef struct {
+    u8 unk0[8];
+    u8 param;
+    u8 pad9[3];
+    u32 handle;
+    u8 pad10[4];
+} SoundChan_800B1BFC;
+
+extern f64 lbl_80369CF8;
+
+static inline u32 LoadSoundBankB(void *path) {
+    s32 fn_800B4A84(void *, s32, s32);
+    s32 fn_800B49C8(void *);
+    s32 fn_800B4A14(void *, s32, s32, s32);
+    void fn_800B49D0(void *);
+    s32 fn_800C4638(s32, void *, s32);
+    void fn_800C4588(s32);
+    extern u8 Sound_str[];
+    s32 handle;
+    s32 size;
+    u32 buffer;
+    u32 value;
+    handle = fn_800B4A84(path, 2, 0);
+    if (handle == 0) return 0;
+    value = fn_800B49C8((void *)handle);
+    if (value == 0) return 0;
+    size = (value + 31) & ~31;
+    buffer = fn_800C4638(size, Sound_str + 0x2E, 0);
+    if (buffer == 0) return 0;
+    if (fn_800B4A14((void *)handle, buffer, size, 0) <= 0) {
+        fn_800C4588(buffer);
+        return 0;
+    }
+    fn_800B49D0((void *)handle);
+    return buffer;
+}
+
+static inline u32 SoundReadSizeB(u32 offset, u32 limit) {
+    u32 size = 0x8000;
+    u32 step = 0x10000;
+    u32 n;
+    if (offset + 0x8000 > limit) size = limit - offset;
+    else {
+        for (n=2;n<6;n++) {
+            if (offset + step > limit) {
+                size -= (0x8000 - (limit - (offset + ((n-1)<<15)))) / n;
+                size += 0x20 - (size & 31);
+                break;
+            }
+            step += 0x8000;
+        }
+    }
+    return size;
+}
+
+typedef struct StreamB { u8 pad[0x2C]; s32 buffers[2]; u8 pad34[0x14]; u32 size; u16 index; } StreamB;
+typedef struct {
+    u8 pad[0x30];
+    void *entries[0xC];
+    u8 kinds[0xC];
+    s16 count;
+    s16 cursor;
+} EventBlessProc;
+extern s32 fn_80010710(u8* arg0);
+  extern s32 gUnitRef;
+  extern s32 E_EventCaller_script[];
+  extern s32 lbl_80319A68[];
+  void Battle_ClearPhaseBannerChild(void *);
+  void Battle_DrawPhaseBanner(void *);
+
+#pragma optimization_level 2
+/* Collect same-allegiance units with Live/Rest statuses into an E_Bless process; return 0 if none. */
+
+/* Advance the E_Bless queue: begin move-select for the next unit, or finish at label 0x63. */
+
+extern u8 lbl_8028D064[16];
+
+#pragma optimization_level reset
+
+/* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */
+
+/* Setup gBattle for healing the current target from proc HP, then open MapSelect. */
+
+void fn_800ADD04(void);
+
+extern u8 gTargetList[];
+extern void fn_8002F61C(void *);
+extern void *TargetList_GetCurrent(void *);
+extern u8 *UnitRef_GetUnit(void);
+extern void Unit_OnZeroHp(void);
+
+/* Init gBattle from the current target entry's unit, apply optional HP delta, and open MapSelect. */
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw reset
+
+extern void Unit_ApplyTransform(void);
+
+/* Set up the phase-change banner: ambient FX for this army, banner widget, and draw callback. */
+
+/* Draw the player/enemy phase banner as two full-width gradient bars. */
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw on
+/* Play a sound effect: find an SE slot, duck pan/vol if the same id is already playing, start the voice. */
+
+extern void *vidListRoot;
+
+#pragma dont_inline on
+#pragma global_optimizer off
+
+#pragma global_optimizer reset
+#pragma dont_inline reset
+
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+/* Load .stm/.slib/.stbl sound banks for pack id into the next gSoundSys slot. */
+
+#pragma global_optimizer reset
+
+/* Return 1 if sound id is present in gSoundIdSlots (stored as id+1). */
+
+extern u16 lbl_80319A18[];
+#pragma opt_strength_reduction off
+
+#pragma opt_strength_reduction reset
+
+#pragma use_lmw_stmw on
+
+#pragma global_optimizer off
+
+/* DVD callback: copy size bytes from gSoundLoadBuf+offset into the sound work buffer. */
+
+#pragma global_optimizer on
+
+void *fn_800C4638(s32, void *, s32);
+
+extern u16 lbl_8028D0FC[];
+
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+
+#pragma global_optimizer reset
+extern u8 *lbl_80367820;
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw reset
+
+extern s32 lbl_8036B3A4;
+extern s32 lbl_8036B3A4;
+
+extern u8 Proc_CpPhaseMain[];
+
+/* Serialize all units and icon slots into a new gUnitSaveBuf. */
+
+#pragma cplusplus on
+
+#pragma cplusplus reset
+
+#pragma cplusplus on
+
+#pragma cplusplus reset
+
+#pragma cplusplus on
+
+#pragma cplusplus reset
+
+extern u8 gMapObjEventList[];
+
+/* Script command: set up and run a battle between two units by deployment id. */
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw reset
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw reset
+
+#pragma use_lmw_stmw on
+
+#pragma use_lmw_stmw reset
+
+/* Open a message window for msgPtr; multi-line if expanded text has a newline. */
+
+extern void fn_8006F6A4(u32 arg0, u32 arg1, u32 arg2);
+
+extern void MsgWin_OpenSingle(u32 arg0, u32 arg1, u32 arg2);
+
+extern void MsgWin_OpenSingle(u32 arg0, u32 arg1, u32 arg2);
+
+/* Script command: play a colored, scaled effect on a named script object at (x,y). */
+
+#pragma optimization_level 1
+
+#pragma optimization_level 4
+
+s32 fn_800B9CD4(u32, s32, s32, s32, u32, f32);
+
+/* Script command: look up a sound by name and tween/set a typed parameter (percent-scaled for types 5-7). */
+
+extern void *Battle_GetActiveCombatant(u32 *);
+extern s32 Res_GetByName();
+extern s32 fn_800A87D4(s32);
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+/* Mark the given inventory slot as droppable if the unit has none already. */
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+extern u16 gBattleState[700];
+
+extern u16 gBattleState[];
+
+#pragma peephole off
+
+#pragma peephole reset
+
+extern u8 gUiContext[24];
+
+extern u16 gUnits[];
+
+/* Script: have rescuerId carry rescueeId (place beside, link, refresh map). */
+
+extern u16 gUnitLists[50];
+
+/* Script UnitSet: write member mid on unit id (level/exp/gauge/HP/dispos); unsupported mids return 0. */
+
+#pragma use_lmw_stmw on
+
+#pragma dont_inline on
+#pragma use_lmw_stmw on
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+#pragma scheduling on
+
+#pragma pop
+
+#pragma optimization_level 1
+
+#pragma optimization_level reset
+
+#pragma global_optimizer off
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+/* True if this talk entry's mode and persons match gTalkState (either order). */
+
+#pragma global_optimizer on
+/* Find the index-th kind-0xE (talk) event, spawn E_Event_script on it, clear run-flag and UI input. */
+
+#pragma scheduling on
+
+extern u8 lbl_80317334[];
+extern s32 lbl_80368320;
+
+#pragma optimization_level 3
+
+#pragma optimization_level 3
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+#pragma optimization_level reset
+
+#pragma optimization_level reset
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+/* True if this talk entry's persons match the UI unit pair (order or swapped). */
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+#pragma dont_inline on
+#pragma global_optimizer off
+
+#pragma global_optimizer reset
+#pragma dont_inline reset
+
+extern u16* const lbl_8036A0D0;
+
+/* If any kind-2 event entry has its flag set, start E_EventCaller under parent and return 1. */
+
+extern s32 lbl_80367FCC;
+
+/* Restore battle-map UI after BMapSuspend: reset UI, restore saved BMap procs, restart the event. */
+
+/* Save BMapMain/BMapPlph state, ensure BMap exists, and switch context for an event. */
+
+extern u8 lbl_8028D4D0[16];
+
+/* Copy the EFB into the capture buffer, then draw it as a Z-rotated textured strip. */
+
+s32 GXGetTexBufferSize(s32, s32, s32, s32, s32);
+void *fn_800C45B8(s32, void *, s32);
+void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
+void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+#pragma optimization_level 2
+/* Set up map blend-mode TEV (ortho UV, texture, blend ops). Returns 0 if blend off. */
+
+#pragma optimization_level 4
+
+#pragma opt_strength_reduction off
+
+#pragma opt_strength_reduction reset
+
+#pragma global_optimizer off
+
+#pragma global_optimizer reset
+extern u8 lbl_8028D768[16];
+
+#pragma scheduling on
+
+#pragma scheduling reset
+
+#pragma optimization_level 2
+
+#pragma optimization_level reset
+
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma global_optimizer off
+#pragma scheduling on
+
+#pragma scheduling reset
+#pragma global_optimizer on
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset
+
+extern struct Unit;
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+/* Return index of first empty convoy item slot, or -1 if full. */
+
+#include "common.h"
+extern u8 gFxChannels[];
+extern void Fx_FadeOut(u32*, s16);
+extern void fn_80146B00(void);
+#include "global.h"
+extern u16 gSoundSys[];
+
+extern u16 gSoundSys[4976];
+
+extern f64 lbl_80369CC0;
+extern f32 lbl_80369CC8;
+extern f32 lbl_80369CCC;
+extern f32 lbl_80369CB0;
+extern f32 lbl_80369CD0;
+
+#pragma optimization_level 3
+#pragma global_optimizer off
+
+#pragma opt_common_subs off
+
+#pragma opt_common_subs reset
+
+#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
+
+#pragma optimization_level 3
+
+#pragma optimization_level reset
+
+#pragma opt_strength_reduction reset
+
+s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
+    void fn_8022C1B8(u8 *, u8 *, s32, u8);
+    s32 offset;
+    u8 *dst;
+    u8 *end;
+    u8 byte;
+    u8 flag;
+    u8 a;
+    u8 b;
+    u32 w;
+
+    byte = *src;
+    offset = slot * 0x18;
+    dst = base + offset;
+    dst[-0x18] = byte;
+    fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
+    a = src[0x10];
+    end = base + offset;
+    b = src[0x11];
+    flag = 0;
+    dst[-0x8] = a;
+    a = src[0x12];
+    dst[-0x7] = b;
+    b = src[0x13];
+    dst[-0x6] = a;
+    w = *(u32 *)(src + 0x14);
+    dst[-0x5] = b;
+    *(u32 *)(dst - 0x4) = w;
+
+    if (((s8)dst[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
+        ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
+        (end[-0x4] == 0x80) && (end[-0x3] == 0x80) &&
+        (end[-0x2] == 0x80) && (end[-0x1] == 0xFF)) {
+        flag = 1;
+    }
+    if (flag != 0) {
+        u8 *p = base + offset;
+        dst[-0x18] = 0;
+        end[-0x17] = 0;
+        end[-0x5] = 0;
+        end[-0x6] = 0;
+        end[-0x7] = 0;
+        end[-0x8] = 0;
+        p[-0x2] = 0x80;
+        p[-0x3] = 0x80;
+        end[-0x4] = 0x80;
+        p[-0x1] = 0xFF;
+        return 0;
+    }
+    return slot;
+}
+
+void Icon_FreeSlot(s32 arg0, s32 arg1) {
+    u8 *temp_r3;
+
+    temp_r3 = (u8 *)(arg0 + (arg1 * 0x18));
+    *(temp_r3 - 0x18) = 0;
+    *(temp_r3 - 0x17) = 0;
+    *(temp_r3 - 0x5) = 0;
+    *(temp_r3 - 0x6) = 0;
+    *(temp_r3 - 0x7) = 0;
+    *(temp_r3 - 0x8) = 0;
+    *(temp_r3 - 0x2) = 0x80;
+    *(temp_r3 - 0x3) = 0x80;
+    *(temp_r3 - 0x4) = 0x80;
+    *(temp_r3 - 0x1) = 0xFF;
+}
+
+s32 Icon_AllocSlot(u8* arg0) {
+    s32 i;
+    u8* p;
+
+    p = arg0;
+    for (i = 0; i < 0x30; i++) {
+        if (*arg0 == 0) {
+            p[i * 0x18] = 1;
+            return i + 1;
+        }
+        arg0 = arg0 + 0x18;
+    }
+    return 0;
+}
+
+void fn_800C32A4(u8 *p) {
+    s32 n;
+    u8 z;
+    u8 m;
+    u8 f;
+
+    n = 0xC;
+    z = 0;
+    m = 0x80;
+    f = 0xFF;
+    do {
+        p[0] = z;
+        p[1] = z;
+        p[0x13] = z;
+        p[0x12] = z;
+        p[0x11] = z;
+        p[0x10] = z;
+        p[0x16] = m;
+        p[0x15] = m;
+        p[0x14] = m;
+        p[0x17] = f;
+        p[0x18] = z;
+        p[0x19] = z;
+        p[0x2B] = z;
+        p[0x2A] = z;
+        p[0x29] = z;
+        p[0x28] = z;
+        p[0x2E] = m;
+        p[0x2D] = m;
+        p[0x2C] = m;
+        p[0x2F] = f;
+        p[0x30] = z;
+        p[0x31] = z;
+        p[0x43] = z;
+        p[0x42] = z;
+        p[0x41] = z;
+        p[0x40] = z;
+        p[0x46] = m;
+        p[0x45] = m;
+        p[0x44] = m;
+        p[0x47] = f;
+        p[0x48] = z;
+        p[0x49] = z;
+        p[0x5B] = z;
+        p[0x5A] = z;
+        p[0x59] = z;
+        p[0x58] = z;
+        p[0x5E] = m;
+        p[0x5D] = m;
+        p[0x5C] = m;
+        p[0x5F] = f;
+        p += 0x60;
+    } while (--n != 0);
+}
+
+void fn_800C3364(s32 arg0, s32 arg1) {
+    s32 r31 = arg0;
+    s32 r30 = 0;
+    
+    do {
+        Item_Read(r31, arg1);
+        r30 += 1;
+        r31 += 8;
+    } while (r30 < 0xC8);
+}
+
+void fn_800C33C0(s32 arg0, s32 arg1) {
+    s32 r31 = arg0;
+    s32 r30 = 0;
+    
+    do {
+        fn_8001C21C(r31, arg1);
+        r30 += 1;
+        r31 += 8;
+    } while (r30 < 0xC8);
+}
+
+void fn_800C341C(s32 arg0) {
+    s32 r31 = arg0;
+    s32 r30 = 0;
+    
+    do {
+        Item_Clear(r31);
+        r30 += 1;
+        r31 += 8;
+    } while (r30 < 0xC8);
+}
+
+void fn_800C3468(void *arg0) {
+    void *UnitRef_GetName(void *);
+    void DebugPrint(void *, ...);
+    extern u8 lbl_80270088[];
+    u8 val;
+    u8 *entry = (u8 *)arg0;
+    s32 i, j, count, idx;
+    u8 *fmt = lbl_80270088;
+    void *unit;
+    u8 *p2;
+
+    for (i = 0; i < 200; i++, entry += 8) {
+        unit = *(void **)entry;
+        if (unit == 0) continue;
+        if (unit != 0) {
+            val = *(u8 *)((u8 *)unit + 0x18);
+        } else {
+            val = 0;
+        }
+        DebugPrint(fmt + 0x13, i, UnitRef_GetName(entry), *(u8 *)(entry + 4), val);
+    }
+
+    count = 0;
+    idx = count;
+    p2 = (u8 *)arg0;
+    for (; idx < 180; idx += 9) {
+        if (*(u32 *)(p2 + 0)) count++;
+        if (*(u32 *)(p2 + 8)) count++;
+        if (*(u32 *)(p2 + 0x10)) count++;
+        if (*(u32 *)(p2 + 0x18)) count++;
+        if (*(u32 *)(p2 + 0x20)) count++;
+        if (*(u32 *)(p2 + 0x28)) count++;
+        if (*(u32 *)(p2 + 0x30)) count++;
+        if (*(u32 *)(p2 + 0x38)) count++;
+        if (*(u32 *)(p2 + 0x40)) count++;
+        if (*(u32 *)(p2 + 0x48)) count++;
+        p2 += 0x50;
+    }
+    DebugPrint(fmt + 0x25, count);
+}
+
+void Convoy_AddItem(u32 *arg0, void *arg1) {
+    void fn_8001C4FC(void *, void *);
+    s32 fn_8001CA2C(u32 *);
+    s32 temp_r3;
+    s32 ctr;
+    s32 ctr2;
+    s32 var_r27;
+    s32 var_r28;
+    s32 var_r29;
+    s32 idx;
+    s32 idx2;
+    u8 *itm;
+    u8 *base;
+    u8 *p;
+    u32 *q;
+    u8 ok;
+
+    itm = (u8 *)arg1;
+    base = (u8 *)arg0;
+    idx = 0;
+    *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx << 7) & 0x80);
+    p = base;
+    for (ctr = 20; ctr != 0; ctr--) {
+        if (*(u32 *)(p + 0x0) != 0) goto c1; else goto done1;
+    c1: idx++;
+        if (*(u32 *)(p + 0x8) != 0) goto c2; else goto done1;
+    c2: idx++;
+        if (*(u32 *)(p + 0x10) != 0) goto c3; else goto done1;
+    c3: idx++;
+        if (*(u32 *)(p + 0x18) != 0) goto c4; else goto done1;
+    c4: idx++;
+        if (*(u32 *)(p + 0x20) != 0) goto c5; else goto done1;
+    c5: idx++;
+        if (*(u32 *)(p + 0x28) != 0) goto c6; else goto done1;
+    c6: idx++;
+        if (*(u32 *)(p + 0x30) != 0) goto c7; else goto done1;
+    c7: idx++;
+        if (*(u32 *)(p + 0x38) != 0) goto c8; else goto done1;
+    c8: idx++;
+        if (*(u32 *)(p + 0x40) != 0) goto c9; else goto done1;
+    c9: idx++;
+        if (*(u32 *)(p + 0x48) != 0) goto c10; else goto done1;
+    c10: idx++;
+        p += 0x50;
+        idx++;
+    }
+    idx = -1;
+done1:
+    if (idx < 0) {
+        ok = 0;
+    } else {
+        fn_8001C4FC(arg0 + (idx * 2), arg1);
+        ok = 1;
+    }
+    if (ok == 0) {
+        q = arg0;
+        var_r27 = 0xF423F;
+        var_r28 = -1;
+        var_r29 = 0;
+        do {
+            if ((u32)*q != 0U) {
+                temp_r3 = fn_8001CA2C(q);
+                if (var_r27 > temp_r3) {
+                    var_r27 = temp_r3;
+                    var_r28 = var_r29;
+                }
+            }
+            var_r29++;
+            q++;
+        } while (var_r29 < 0xC8);
+        fn_8001D580(arg0 + (var_r28 * 2));
+        idx2 = 0;
+        p = base;
+        *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx2 << 7) & 0x80);
+        for (ctr2 = 20; ctr2 != 0; ctr2--) {
+            if (*(u32 *)(p + 0x0) != 0) goto d1; else goto done2;
+        d1: idx2++;
+            if (*(u32 *)(p + 0x8) != 0) goto d2; else goto done2;
+        d2: idx2++;
+            if (*(u32 *)(p + 0x10) != 0) goto d3; else goto done2;
+        d3: idx2++;
+            if (*(u32 *)(p + 0x18) != 0) goto d4; else goto done2;
+        d4: idx2++;
+            if (*(u32 *)(p + 0x20) != 0) goto d5; else goto done2;
+        d5: idx2++;
+            if (*(u32 *)(p + 0x28) != 0) goto d6; else goto done2;
+        d6: idx2++;
+            if (*(u32 *)(p + 0x30) != 0) goto d7; else goto done2;
+        d7: idx2++;
+            if (*(u32 *)(p + 0x38) != 0) goto d8; else goto done2;
+        d8: idx2++;
+            if (*(u32 *)(p + 0x40) != 0) goto d9; else goto done2;
+        d9: idx2++;
+            if (*(u32 *)(p + 0x48) != 0) goto d10; else goto done2;
+        d10: idx2++;
+            p += 0x50;
+            idx2++;
+        }
+        idx2 = -1;
+    done2:
+        if (idx2 >= 0) {
+            fn_8001C4FC(arg0 + (idx2 * 2), arg1);
+        }
+    }
+}
+
+void fn_800C3864(s32 arg0, s32 arg1) {
+    M2C_UNK Item_Clear(s32);
+    Item_Clear(arg0 + (arg1 * 8));
+}
+
+s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
+    void *item;
+    s32 i;
+    s32 *p;
+    item = (void *)Item_GetByIid(arg1);
+    for (p = arg0, i = 0; i < 200; p += 2, i++) {
+        if (*(void **)p == item) goto found;
+    }
+    i = -1;
+found:
+    return i;
+}
+
+s32 fn_800C39A4(void *convoy, void *item) {
+ s32 i;
+ for(i=0;i<200;i++) {
+ if(*(void **)((u8 *)convoy+i*8)==item) return i;
+ }
+ return -1;
+}
+
+s32 fn_800C3AB0(void *convoy, s32 name) {
+    void Item_Init(void *);
+    void Item_SetByName(void *, s32);
+    void Item_Copy(void *, void *);
+    void Item_Destroy(void *, s32);
+    u8 item[8];
+    s32 i;
+    s32 result;
+    s32 slot;
+    u8 t;
+
+    Item_Init(item);
+    Item_SetByName(item, name);
+    i = 0;
+    t = item[5];
+    item[5] = (u8)__rlwimi(t, i, 7, 24, 24);
+
+    for (; i < 200; i++) {
+        if (*(void **)((char *)convoy + i * 8) == NULL) {
+            slot = i;
+            goto found;
+        }
+    }
+    slot = -1;
+found:
+    if (slot < 0) {
+        result = 0;
+    } else {
+        Item_Copy((char *)convoy + (slot << 3), item);
+        result = 1;
+    }
+    Item_Destroy(item, -1);
+    return result;
+}
+
+s32 fn_800C3C1C(void *arg0, void *arg1) {
+    void Item_Copy(void *, void *);
+    s32 i;
+    s32 slot;
+    u8 t;
+
+    i = 0;
+    t = *((u8 *)arg1 + 5);
+    *((u8 *)arg1 + 5) = (u8)__rlwimi(t, i, 7, 24, 24);
+
+    for (; i < 200; i++) {
+        if (*(void **)((char *)arg0 + i * 8) == NULL) {
+            slot = i;
+            goto found;
+        }
+    }
+    slot = -1;
+found:
+    if (slot < 0) {
+        return 0;
+    }
+    Item_Copy((char *)arg0 + (slot << 3), arg1);
+    return 1;
+}
+
+s32 Convoy_FindEmpty(void *convoy) {
+    s32 i;
+
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((char *)convoy + i * 8) == NULL) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+s32 fn_800C3E54(u32 *arg0) {
+    s32 count = 0;
+    s32 i;
+    s32 j = 0;
+
+    for (i = 0; i < 0x14; i++) {
+        if (arg0[0] != 0) {
+            count++;
+        }
+        if (arg0[2] != 0) {
+            count++;
+        }
+        if (arg0[4] != 0) {
+            count++;
+        }
+        if (arg0[6] != 0) {
+            count++;
+        }
+        if (arg0[8] != 0) {
+            count++;
+        }
+        if (arg0[10] != 0) {
+            count++;
+        }
+        if (arg0[12] != 0) {
+            count++;
+        }
+        if (arg0[14] != 0) {
+            count++;
+        }
+        if (arg0[16] != 0) {
+            count++;
+        }
+        if (arg0[18] != 0) {
+            count++;
+        }
+        arg0 += 0x14;
+        j += 9;
+    }
+    return j ? count : count;
+}
