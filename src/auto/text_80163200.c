@@ -1122,14 +1122,17 @@ void fn_80164994(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5) {
     UnitRef_Draw(p, arg5, t1, t2);
 }
 
-s32 fn_801649C8(void *arg0, s32 *arg1) {
-    u8 (*temp_r12)(s32 *, s32);
+s32 fn_801649C8(void *self, s32 *arg1) {
+    s32 fn_80093DA8(s32, s32);
+    u8 (*cb)(s32 *, s32);
+    u8 result;
 
-    temp_r12 = M2C_FIELD(arg0, u8 (**)(s32 *, s32), 0x70);
-    if (temp_r12 != NULL) {
-        return temp_r12(arg1, M2C_FIELD(arg0, s32 *, 0x74)) != 0;
+    cb = *(u8 (**)(s32 *, s32))((u8 *)self + 0x70);
+    if (cb != NULL) {
+        result = cb(arg1, *(s32 *)((u8 *)self + 0x74));
+        return result != 0;
     }
-    return fn_80093DA8(M2C_FIELD(arg0, s32 *, 0x58), *arg1);
+    return fn_80093DA8(*(s32 *)((u8 *)self + 0x58), *arg1);
 }
 
 void UnitInv_GetSlot(void *arg0) {
