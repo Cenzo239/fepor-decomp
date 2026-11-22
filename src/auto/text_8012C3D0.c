@@ -948,8 +948,8 @@ void fn_8012D6A4(void *arg0) {
 }
 
 s32 fn_8012DC74(void *arg0) {
-    M2C_UNK Process_Goto(void *, M2C_UNK);
-    f32 Math_EaseOutPow(M2C_UNK, s32, u8, f32, f32, f32, f32);
+    M2C_UNK fn_8000C070(void *, M2C_UNK);
+    f32 fn_8005A028(M2C_UNK, s32, u8, f32, f32, f32, f32);
     extern f32 lbl_8036A4EC;
     u32 temp_r5;
     u8 temp_r4;
@@ -968,13 +968,13 @@ block_4:
     M2C_FIELD(arg0, u8 *, 0x64) = (u8) (M2C_FIELD(arg0, u8 *, 0x64) + 1);
     temp_r6 = M2C_FIELD(arg0, u8 *, 0x63);
     temp_r5 = (temp_r6 - 1) * 0x120;
-    M2C_FIELD(arg0, s16 *, 0x68) = (s16) Math_EaseOutPow(2, temp_r5, temp_r6, (f32) temp_r5, (f32) (temp_r6 * 0x120), lbl_8036A4EC, (f32) M2C_FIELD(arg0, u8 *, 0x64));
+    M2C_FIELD(arg0, s16 *, 0x68) = (s16) fn_8005A028(2, temp_r5, temp_r6, (f32) temp_r5, (f32) (temp_r6 * 0x120), lbl_8036A4EC, (f32) M2C_FIELD(arg0, u8 *, 0x64));
     if ((u8) M2C_FIELD(arg0, u8 *, 0x64) == 0x10) {
         M2C_FIELD(arg0, u8 *, 0x64) = 0U;
         if ((s8) M2C_FIELD(arg0, u8 *, 0x62) < 0) {
-            Process_Goto(arg0, 6);
+            fn_8000C070(arg0, 6);
         } else {
-            Process_Goto(arg0, 1);
+            fn_8000C070(arg0, 1);
         }
     }
     return 1;
@@ -982,48 +982,43 @@ block_4:
 
 s32 fn_8012DD94(void *arg0)
 {
+    void Process_Goto(void *, s32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    extern f32 lbl_8036A4EC;
     u8 *state;
     u8 *table;
     u8 *entry;
-    u8 frame;
-    float value;
+    u8 idx;
+    u8 fr;
+    s32 a;
+    s32 b;
 
     state = (u8 *)arg0;
 
-    if (state[0x64] != 0) {
-        return 1;
+    if (state[0x64] == 0) {
+        if (state[0x63] == 0) {
+            return 0;
+        }
+        state[0x63]--;
+        if ((s8)state[0x62] < 0) {
+            table = *(u8 **)(state + 0x38);
+            entry = *(u8 **)(table + state[0x63] * 4);
+            state[0x65] = entry[0x21] - 1;
+        } else {
+            state[0x65] = 0;
+        }
     }
 
-    if (state[0x63] == 0) {
-        return 0;
-    }
-
-    state[0x63]--;
-
-    if ((signed char)state[0x62] < 0) {
-        table = *(u8 **)(state + 0x38);
-        entry = *(u8 **)(table + state[0x63] * 4);
-        state[0x65] = entry[0x21] - 1;
-    } else {
-        state[0x65] = 0;
-    }
-
-    frame = state[0x64];
-    state[0x64] = frame + 1;
-
-    value = Math_EaseOutPow(
-        2,
-        (float)(frame + 1),
-        (float)frame,
-        16.0f
-    );
-
-    *(s16 *)(state + 0x68) = (s16)value;
+    state[0x64]++;
+    idx = state[0x63];
+    fr = state[0x64];
+    a = (idx + 1) * 0x120;
+    b = idx * 0x120;
+    *(s16 *)(state + 0x68) = (s16)Math_EaseOutPow(2, (f32)a, (f32)b, lbl_8036A4EC, (f32)fr);
 
     if (state[0x64] == 0x10) {
         state[0x64] = 0;
-
-        if ((signed char)state[0x62] < 0) {
+        if ((s8)state[0x62] < 0) {
             Process_Goto(state, 6);
         } else {
             Process_Goto(state, 1);
