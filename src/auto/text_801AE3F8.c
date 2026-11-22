@@ -1473,7 +1473,7 @@ extern "C" void fn_801B0564(void *arg0) {
     tmp = *(void **)((u8 *)self + 0x58);
     a = saved;
     cur = *(s16 *)((u8 *)tmp + 0x3E);
-    if (a != cur) {
+    if ((s16)(u16)a != (s16)(u16)cur) {
         saved = cur;
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)self + 0x58))->v10();
@@ -3036,6 +3036,7 @@ void *Ui_ConfirmChild_Ctor(void *arg0) {
     s16 w;
     s16 h;
     s16 w8;
+    s16 h2;
 
     fn_80134E48(arg0);
     *(void **)arg0 = lbl_80291758;
@@ -3045,10 +3046,11 @@ void *Ui_ConfirmChild_Ctor(void *arg0) {
 
     w = (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0x0C));
     h = (s16)(*(s16 *)((u8 *)arg0 + 0x0E) - *(s16 *)((u8 *)arg0 + 0x0A));
-    *(s16 *)((u8 *)arg0 + 0x12) = 2;
     w8 = (s16)(w - 8);
+    h2 = (s16)(h - 2);
+    *(s16 *)((u8 *)arg0 + 0x12) = 2;
     *(s16 *)((u8 *)arg0 + 0x14) = 8;
-    *(s16 *)((u8 *)arg0 + 0x16) = (s16)(h - 2);
+    *(s16 *)((u8 *)arg0 + 0x16) = h2;
     *(s16 *)((u8 *)arg0 + 0x18) = w8;
     return arg0;
 }
