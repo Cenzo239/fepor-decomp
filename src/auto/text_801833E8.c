@@ -833,23 +833,19 @@ void *fn_80184750(void *unit, u32 dir, s32 frames, s32 priority) {
 }
 
 void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void *Process_CreateEx(void *, s32);
+    void fn_8000A388(void *, void *, void *);
+    void *fn_8000CA64(void *, s32);
     f32 fn_8004BDA8(f32, f32, f32);
-    void MuFade_UnlinkSame(void *, void *);
-    extern u16 E_MuFade_script[36];
-    extern f32 gHalf;
+    void fn_80185078(void *, void *);
+    extern u16 lbl_80295A78[36];
+    extern f32 lbl_8036ACD8;
     u8 sp8[0x34];
     f32 temp_f31;
     void *temp_r3;
-    f32 b;
-    f32 a;
 
-    a = gHalf + (f32)arg1;
-    b = gHalf + (f32)arg2;
-    temp_f31 = fn_8004BDA8(a, b, gHalf);
+    temp_f31 = fn_8004BDA8(lbl_8036ACD8 + (f32)arg1, lbl_8036ACD8 + (f32)arg2, lbl_8036ACD8);
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    fn_8000A388(&lbl_80295A78, fn_80185078, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -857,7 +853,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * temp_f31);
         return NULL;
     }
-    temp_r3 = Process_CreateEx(&E_MuFade_script, arg4);
+    temp_r3 = fn_8000CA64(&lbl_80295A78, arg4);
     M2C_FIELD(temp_r3, void **, 0x30) = arg0;
     M2C_FIELD(temp_r3, f32 *, 0x34) = temp_f31;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg3;
@@ -1013,46 +1009,52 @@ void *Mu_StartBlend(s32 unit, s32 arg1, s32 hitCount, void *proc) {
     return proc;
 }
 
+#pragma global_optimizer off
 void fn_80184F20(s32 arg0) {
-void GfxEnt_ForEachKey(void*,void*,void*);
-void MuFade_UnlinkSame(void*,void*);
-extern u8 E_MuBlend_script[];
-u8 key0[0x38];
-u8 key1[0x38];
-u8 key2[0x38];
-u8 key3[0x38];
-u8 key4[0x38];
-u8 key5[0x38];
-u8 key6[0x38];
-u8 key7[0x38];
-u8 key8[0x38];
-u8 key9[0x38];
-u8 key10[0x38];
-register u8 *base=E_MuBlend_script;
-*(s32*)(key0+0x30)=arg0;
-GfxEnt_ForEachKey(base+0,MuFade_UnlinkSame,key0);
-*(s32*)(key1+0x30)=arg0;
-GfxEnt_ForEachKey(base+32,MuFade_UnlinkSame,key1);
-*(s32*)(key2+0x30)=arg0;
-GfxEnt_ForEachKey(base+120,MuFade_UnlinkSame,key2);
-*(s32*)(key3+0x30)=arg0;
-GfxEnt_ForEachKey(base+152,MuFade_UnlinkSame,key3);
-*(s32*)(key4+0x30)=arg0;
-GfxEnt_ForEachKey(base+192,MuFade_UnlinkSame,key4);
-*(s32*)(key5+0x30)=arg0;
-GfxEnt_ForEachKey(base+272,MuFade_UnlinkSame,key5);
-*(s32*)(key6+0x30)=arg0;
-GfxEnt_ForEachKey(base+232,MuFade_UnlinkSame,key6);
-*(s32*)(key7+0x30)=arg0;
-GfxEnt_ForEachKey(base+64,MuFade_UnlinkSame,key7);
-*(s32*)(key8+0x30)=arg0;
-GfxEnt_ForEachKey(base+96,MuFade_UnlinkSame,key8);
-*(s32*)(key9+0x30)=arg0;
-GfxEnt_ForEachKey(base+356,MuFade_UnlinkSame,key9);
-*(s32*)(key10+0x30)=arg0;
-GfxEnt_ForEachKey(base+1008,MuFade_UnlinkSame,key10);
-}
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    struct Scr { u8 b; };
+    u8 key0[0x38];
+    u8 key1[0x38];
+    u8 key2[0x38];
+    u8 key3[0x38];
+    u8 key4[0x38];
+    u8 key5[0x38];
+    u8 key6[0x38];
+    u8 key7[0x38];
+    u8 key8[0x38];
+    u8 key9[0x38];
+    u8 key10[0x38];
+    s32 unit;
+    struct Scr *script;
 
+    script = (struct Scr *)E_MuBlend_script;
+    unit = arg0;
+    *(s32 *)(key0 + 0x30) = unit;
+    GfxEnt_ForEachKey(&script->b, MuFade_UnlinkSame, key0);
+    *(s32 *)(key1 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x20, MuFade_UnlinkSame, key1);
+    *(s32 *)(key2 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x78, MuFade_UnlinkSame, key2);
+    *(s32 *)(key3 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x98, MuFade_UnlinkSame, key3);
+    *(s32 *)(key4 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0xC0, MuFade_UnlinkSame, key4);
+    *(s32 *)(key5 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x110, MuFade_UnlinkSame, key5);
+    *(s32 *)(key6 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0xE8, MuFade_UnlinkSame, key6);
+    *(s32 *)(key7 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x40, MuFade_UnlinkSame, key7);
+    *(s32 *)(key8 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x60, MuFade_UnlinkSame, key8);
+    *(s32 *)(key9 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x164, MuFade_UnlinkSame, key9);
+    *(s32 *)(key10 + 0x30) = unit;
+    GfxEnt_ForEachKey((u8 *)script + 0x3F0, MuFade_UnlinkSame, key10);
+}
+#pragma global_optimizer on
 void MoveAnim_MatchUnit(void *arg0, void *arg1) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) == (u32) M2C_FIELD(arg1, u32 *, 0x30)) {
         M2C_FIELD(arg1, void **, 0x34) = arg0;
@@ -1332,8 +1334,8 @@ u32 color;
 s32 duration;
 void *cue;
 effect=Effect_Create(MoveAnim_str+0x1C1,self);
-{ u8 *position=*(u8**)(self+0x30);
-Effect_SetPos(effect,*(f32*)(position+4),*(f32*)(position+8),*(f32*)(position+12)-lbl_8036ACFC); }
+unit=*(u8**)(self+0x30);
+Effect_SetPos(effect,*(f32*)(unit+4),*(f32*)(unit+8),*(f32*)(unit+12)-lbl_8036ACFC);
 *(void(**)(void))(*(u8**)(effect+0x30)+0x40)=fn_80185B94;
 fn_80053658(effect,0,self);
 (*(u8**)(effect+0x30))[5]=4;
@@ -1798,27 +1800,29 @@ void fn_801863F8(void *arg0) {
     }
 }
 
-void fn_80186648(void *arg0) {
+#pragma global_optimizer off
+void fn_80186648(u8 *arg0) {
 f32 Math_EaseOutPow(s32,f32,f32,f32,f32);
 void Unit_SetWorldXY(void*,f32,f32);
 void Model_SetAlpha(void*,u8);
 void Process_ClearFunc(void*);
 extern f32 lbl_8036ACF8,lbl_8036ACEC,lbl_8036AD00,lbl_8036ACF4,gHalf;
+f32 inc=lbl_8036ACF8;
+f32 cur=*(f32*)(arg0+0x4C);
 void *model;
 s32 alpha;
 f32 x,y;
 f32 start=lbl_8036ACEC, end=lbl_8036AD00, duration=lbl_8036ACF4;
-*(f32*)((u8*)arg0+0x4C)+=lbl_8036ACF8;
-model=(u8*)*(void**)((u8*)arg0+0x34)+0x1C;
-alpha=(s32)Math_EaseOutPow(2,start,end,duration,*(f32*)((u8*)arg0+0x4C));
-x=Math_EaseOutPow(2,*(f32*)((u8*)arg0+0x38),gHalf+(f32)*(s32*)((u8*)arg0+0x44),lbl_8036ACF4,*(f32*)((u8*)arg0+0x4C));
-y=Math_EaseOutPow(2,*(f32*)((u8*)arg0+0x3C),gHalf+(f32)*(s32*)((u8*)arg0+0x48),lbl_8036ACF4,*(f32*)((u8*)arg0+0x4C));
-Unit_SetWorldXY(*(void**)((u8*)arg0+0x34),x,y);
+*(f32*)(arg0+0x4C)=cur+inc;
+model=(u8*)*(void**)(arg0+0x34)+0x1C;
+alpha=(s32)Math_EaseOutPow(2,start,end,duration,*(f32*)(arg0+0x4C));
+x=Math_EaseOutPow(2,*(f32*)(arg0+0x38),gHalf+(f32)*(s32*)(arg0+0x44),lbl_8036ACF4,*(f32*)(arg0+0x4C));
+y=Math_EaseOutPow(2,*(f32*)(arg0+0x3C),gHalf+(f32)*(s32*)(arg0+0x48),lbl_8036ACF4,*(f32*)(arg0+0x4C));
+Unit_SetWorldXY(*(void**)(arg0+0x34),x,y);
 Model_SetAlpha(model,(u8)alpha);
-if(*(f32*)((u8*)arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
+if(*(f32*)(arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
 }
-
-#pragma opt_strength_reduction off
+#pragma global_optimizer on
 void fn_80186780(void *proc) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -2100,18 +2104,28 @@ void fn_8018715C(void *arg0) {
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
     extern f32 lbl_8036ACEC;
+    struct Fields {
+        char pad[0x30];
+        void *field30;
+        void *field34;
+        f32 field38;
+        f32 field3C;
+        char pad2[4];
+        f32 field44;
+    };
+    struct Fields *p = (struct Fields *)arg0;
     void *check;
     void *temp_r30;
     void *temp_r3;
     f32 temp_f31;
     u8 sp[0x70];
 
-    *(f32 *)((u8 *)arg0 + 0x44) = lbl_8036ACEC;
-    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 4);
-    *(f32 *)((u8 *)arg0 + 0x3C) = *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 8);
+    p->field44 = lbl_8036ACEC;
+    p->field38 = *(f32 *)((u8 *)p->field34 + 4);
+    p->field3C = *(f32 *)((u8 *)p->field34 + 8);
 
-    check = *(void **)((u8 *)arg0 + 0x34);
-    temp_r30 = *(void **)((u8 *)arg0 + 0x30);
+    check = p->field34;
+    temp_r30 = p->field30;
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x68) = temp_r30;
@@ -2124,8 +2138,8 @@ void fn_8018715C(void *arg0) {
         }
     }
 
-    check = *(void **)((u8 *)arg0 + 0x30);
-    temp_r30 = *(void **)((u8 *)arg0 + 0x34);
+    check = p->field30;
+    temp_r30 = p->field34;
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x30) = temp_r30;
@@ -2622,25 +2636,26 @@ void fn_80187FBC(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction on
 
+#pragma global_optimizer off
 void fn_8018820C(void *arg0) {
-    M2C_UNK Unit_SetWorldXY(s32, f32, f32);
-    f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32, f32);
+    void Unit_SetWorldXY(s32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f32 gHalf;
     extern f32 lbl_8036AD0C;
     f32 temp_f1;
     f32 temp_f31;
     void *temp_r31;
 
-    temp_r31 = M2C_FIELD(arg0, void **, 0x18);
-    M2C_FIELD(arg0, s32 *, 0x60) = (s32) (M2C_FIELD(arg0, s32 *, 0x60) + 1);
-    temp_f31 = Math_EaseOutPow(2, gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), gHalf);
-    temp_f1 = Math_EaseOutPow(2, gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), gHalf);
-    Unit_SetWorldXY(M2C_FIELD(temp_r31, s32 *, 0x34), temp_f31, temp_f1);
-    if ((s32) M2C_FIELD(arg0, s32 *, 0x60) >= 8) {
+    temp_r31 = *(void **)((u8 *)arg0 + 0x18);
+    *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
+    temp_f31 = Math_EaseOutPow(2, gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x38), gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3A), lbl_8036AD0C, (f32)*(s32 *)((u8 *)arg0 + 0x60));
+    temp_f1 = Math_EaseOutPow(2, gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x39), gHalf + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3B), lbl_8036AD0C, (f32)*(s32 *)((u8 *)arg0 + 0x60));
+    Unit_SetWorldXY(*(s32 *)((u8 *)temp_r31 + 0x34), temp_f31, temp_f1);
+    if (*(s32 *)((u8 *)arg0 + 0x60) >= 8) {
         Process_ClearFunc(arg0);
     }
 }
-
+#pragma global_optimizer on
 void fn_80188368(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -4055,7 +4070,7 @@ if(*(s32*)((u8*)arg0+0x44)>=*(s32*)((u8*)arg0+0x40)){
 *(s32*)((u8*)arg0+0x44)=*(s32*)((u8*)arg0+0x40);
 Process_ClearFunc(arg0);
 }
-t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),0.0f,lbl_8036AD44);
+t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),lbl_8036ACEC,lbl_8036AD44);
 red=(s32)Math_Lerp((f32)*((u8*)arg0+0x34),(f32)*((u8*)arg0+0x38),lbl_8036AD44,t);
 green=(s32)Math_Lerp((f32)*((u8*)arg0+0x35),(f32)*((u8*)arg0+0x39),lbl_8036AD44,t);
 Model_SetColor(model,(u8)red,(u8)green,(u8)(s32)Math_Lerp((f32)*((u8*)arg0+0x36),(f32)*((u8*)arg0+0x3A),lbl_8036AD44,t));
@@ -4206,7 +4221,7 @@ fn_8004B8F8((s32)(lbl_8036AD48-(f32)*(s16*)(unit+0x15C)/lbl_8036ACE8),0,pos[0],p
 break;
 case 0x1A:
 unit=*(u8**)((u8*)arg0+0x30);
-{ f32 x,y; y=*(f32*)(unit+8); x=*(f32*)(unit+4); fn_8004B8F8(0,1,x,y); }
+fn_8004B8F8(0,1,*(f32*)(unit+4),*(f32*)(unit+8));
 break;
 }
 }
@@ -6243,15 +6258,13 @@ void fn_801902A8(void *arg0) {
     s16 height;
     s16 x;
     s16 y;
-    s32 aspect;
     s16 left=M2C_FIELD(arg0,s16 *,0x12);
     s16 top=M2C_FIELD(arg0,s16 *,0x14);
     width=M2C_FIELD(arg0,s16 *,0x16)-left;
     height=M2C_FIELD(arg0,s16 *,0x18)-top;
     x=M2C_FIELD(arg0,s16 *,0xA)+left;
-    aspect=width/height;
     y=M2C_FIELD(arg0,s16 *,0xC)+top;
-    fn_80202A6C(projection,30.0f,(f32)aspect,1.0f,1000.0f);
+    fn_80202A6C(projection,30.0f,(f32)(width/height),1.0f,1000.0f);
     GXSetProjection(projection,0);
     fn_80225034(viewport);
     GXSetViewport((f32)x,(f32)y,(f32)width,(f32)height,viewport[4],viewport[5]);
@@ -6313,9 +6326,8 @@ extern "C" void fn_80190440(void *arg0) {
     extern f32 lbl_8036AE10;
     extern f32 lbl_8036AE14;
     f32 mtx[12];
-    void *self;
-    s16 zero;
     s16 t14;
+    void *self;
     s16 t18;
     s16 t12;
     s16 t16;
@@ -6323,13 +6335,12 @@ extern "C" void fn_80190440(void *arg0) {
     self = arg0;
     ((Obj *)self)->v3();
     if (*(u32 *)((u8 *)self + 0x3C) != 0) {
-        zero = 0;
         t14 = *(s16 *)((u8 *)self + 0x14);
         t18 = *(s16 *)((u8 *)self + 0x18);
-        t12 = *(s16 *)((u8 *)self + 0x12);
+        register t12 = *(s16 *)((u8 *)self + 0x12);
         t16 = *(s16 *)((u8 *)self + 0x16);
-        *(s16 *)((u8 *)self + 0x4A) = zero;
-        *(s16 *)((u8 *)self + 0x4C) = zero;
+        *(s16 *)((u8 *)self + 0x4A) = 0;
+        *(s16 *)((u8 *)self + 0x4C) = 0;
         *(s16 *)((u8 *)self + 0x4E) = (s16)(t16 - t12);
         *(s16 *)((u8 *)self + 0x50) = (s16)(t18 - t14);
         fn_8013F748(self, (u8 *)self + 0x4A, (u8 *)self + 0x4A);
@@ -6737,53 +6748,47 @@ void *fn_80190D9C(void *parent, void **names) {
     ListIter out;
     ListIter pos;
     u8 item[8];
-    u8 *base;
-    void *obj;
+    u8 *base = lbl_80296298;
+    u8 *obj;
     u8 mode;
     ListNode *sentinel;
-    base=lbl_80296298;
 
-    if (parent != NULL) {
-        obj = Process_CreateChild(base+0, parent);
-    } else {
-        obj = Process_Create(base+0, parent);
-    }
+    obj = parent != NULL ? Process_CreateChild(base, parent) : Process_Create(base, parent);
     if (obj != NULL) {
         fn_801403F0(obj);
-        ItemList_Init((u8 *)obj + 0x40);
-        *(s32 *)((u8 *)obj + 0x4C) = 0;
-        *(s32 *)((u8 *)obj + 0x50) = 0;
-        *(s32 *)((u8 *)obj + 0x54) = 0;
-        *(s32 *)((u8 *)obj + 0x58) = 0;
-        ((u8 *)obj)[0x5C] = 0;
-        *(f32 *)((u8 *)obj + 0x64) = 1.0f;
-        *(s32 *)((u8 *)obj + 0x68) = 0;
+        ItemList_Init(obj + 0x40);
+        *(s32 *)(obj + 0x4C) = 0;
+        *(s32 *)(obj + 0x50) = 0;
+        *(s32 *)(obj + 0x54) = 0;
+        *(s32 *)(obj + 0x58) = 0;
+        obj[0x5C] = 0;
+        *(f32 *)(obj + 0x64) = 1.0f;
+        *(s32 *)(obj + 0x68) = 0;
     }
     mode = 0;
-    ((u8 *)obj)[0x5C] = mode;
-    switch (((u8 *)obj)[0x5C]) {
+    switch (obj[0x5C] = mode) {
     case 0:
-        *(void **)((u8 *)obj + 0x68) = base + 0x1B0;
+        *(void **)(obj + 0x68) = base + 0x1B0;
         break;
     case 1:
-        *(void **)((u8 *)obj + 0x68) = base + 0x210;
+        *(void **)(obj + 0x68) = base + 0x210;
         break;
     }
-    sentinel = (ListNode *)((u8 *)obj + 0x44);
+    sentinel = (ListNode *)(obj + 0x44);
     end.node = sentinel;
-    start.node = *(ListNode **)((u8 *)obj + 0x48);
-    ItemList_EraseRange(&ret, (List *)((u8 *)obj + 0x40), &start, &end);
+    start.node = *(ListNode **)(obj + 0x48);
+    ItemList_EraseRange(&ret, (List *)(obj + 0x40), &start, &end);
     Item_Init(item);
     if (names == NULL) {
         names = (void **)(base + 0x1A4);
-        if (((u8 *)obj)[0x5C] == 0) {
+        if (obj[0x5C] == 0) {
             names = (void **)(base + 0x180);
         }
     }
     while (*names != NULL) {
         Item_SetByName(item, *names);
         pos.node = sentinel;
-        ItemList_Insert(&out, (u8 *)obj + 0x40, &pos, item);
+        ItemList_Insert(&out, &((List *)(obj + 0x40))[0], &pos, item);
         names++;
     }
     Item_Destroy(item, -1);
@@ -6800,16 +6805,17 @@ void fn_80190F14(void) {
 extern "C" void fn_80190F34(void *panel) {
     extern void Ui_DtorPanelBase(void *, s32);
     extern u16 gUiPanelFlags;
-    void ItemList_EraseRange(ListIter *, List *, ListIter *, ListIter *);
+    void ItemList_EraseRange(void *, List *, ListNode **, ListNode **);
 
     struct RefObj {
         virtual void destroy(s32);
         s32 refCount;
     };
 
-    ListIter end;
-    ListIter start;
-    ListIter ret;
+    ListNode *sp10;
+    ListNode *spC;
+    u8 sp8[4];
+    ListNode *end;
     RefObj *p;
     void *self;
 
@@ -6847,9 +6853,10 @@ extern "C" void fn_80190F34(void *panel) {
         if ((s32)self + 0x40) {
             if ((s32)self + 0x40) {
                 if ((s32)self + 0x40) {
-                    end.node = (ListNode *)(0x44 + (s32)self);
-                    start.node = *(ListNode **)((u8 *)self + 0x48);
-                    ItemList_EraseRange(&ret, (List *)((u8 *)self + 0x40), &start, &end);
+                    end = (ListNode *)((u8 *)self + 0x44);
+                    sp10 = end;
+                    spC = end->next;
+                    ItemList_EraseRange(sp8, (List *)((u8 *)self + 0x40), &spC, &sp10);
                 }
             }
         }
@@ -9919,31 +9926,57 @@ void fn_8019588C(void *arg0, s32 arg1) {
 
 #pragma dont_inline on
 void fn_801958C8(void *arg0, s32 arg1, void *arg2) {
-typedef struct { f32 x,y,z; } Vec3;
-typedef struct { u8 pad[8]; u8 count; u8 pad9[15]; f32 max; u32 pad1c; s32 keys[32]; Vec3 pos[32]; } Data;
-Data *p=arg0;
-Vec3 *v=arg2;
-s32 j,i;
-u8 *keys,*pos;
-Vec3 *dst;
-Vec3 tmp;
-f32 z,y,x;
-x=v->x;y=v->y;z=v->z;
-dst=(Vec3*)((u8*)p+(p->count*12+0xA0));
-dst->x=x; dst->y=y; dst->z=z;
-p->keys[p->count]=arg1;
-p->count++;
-for(i=0;i<p->count;i++){
-for(j=0,keys=(u8*)p,pos=(u8*)p;j<p->count-i-1;keys+=4,pos+=12,j++){
-if(*(s32*)(keys+0x20)>*(s32*)(keys+0x24)){
-s32 key=*(s32*)(keys+0x20); *(s32*)(keys+0x20)=*(s32*)(keys+0x24); *(s32*)(keys+0x24)=key;
-{ Vec3 *next=&p->pos[j+1]; tmp=*(Vec3*)(pos+0xA0);
-((Vec3*)(pos+0xA0))->x=next->x; ((Vec3*)(pos+0xA0))->y=next->y; ((Vec3*)(pos+0xA0))->z=next->z;
-next->x=tmp.x;next->y=tmp.y;next->z=tmp.z; }
-}
-}
-}
-p->max=(f32)p->keys[p->count-1];
+    typedef struct { f32 x, y, z; } Vec3;
+    typedef struct {
+        u8 pad[8];
+        u8 count;
+        u8 pad9[15];
+        f32 max;
+        u32 pad1c;
+        s32 keys[32];
+        Vec3 pos[32];
+    } Data;
+    Data *p = arg0;
+    Vec3 *v = arg2;
+    s32 j, i;
+    u8 *keys, *pos;
+    Vec3 *dst;
+    Vec3 tmp;
+    f32 x;
+    f32 y;
+    f32 z;
+
+#pragma scheduling off
+    x = v->x;
+    y = v->y;
+    z = v->z;
+    dst = (Vec3 *)((u8 *)p + (p->count * 12 + 0xA0));
+    dst->x = x;
+    dst->y = y;
+    dst->z = z;
+#pragma scheduling reset
+    p->keys[p->count] = arg1;
+    p->count++;
+    for (i = 0; i < p->count; i++) {
+        for (j = 0, keys = (u8 *)p, pos = (u8 *)p; j < p->count - i - 1; keys += 4, pos += 12, j++) {
+            if (*(s32 *)(keys + 0x20) > *(s32 *)(keys + 0x24)) {
+                s32 key = *(s32 *)(keys + 0x20);
+                *(s32 *)(keys + 0x20) = *(s32 *)(keys + 0x24);
+                *(s32 *)(keys + 0x24) = key;
+                {
+                    Vec3 *next = &p->pos[j + 1];
+                    tmp = *(Vec3 *)(pos + 0xA0);
+                    ((Vec3 *)(pos + 0xA0))->x = next->x;
+                    ((Vec3 *)(pos + 0xA0))->y = next->y;
+                    ((Vec3 *)(pos + 0xA0))->z = next->z;
+                    next->x = tmp.x;
+                    next->y = tmp.y;
+                    next->z = tmp.z;
+                }
+            }
+        }
+    }
+    p->max = (f32)p->keys[p->count - 1];
 }
 
 #pragma use_lmw_stmw on
@@ -13061,7 +13094,7 @@ void fn_8019C244(void *arg0) {
     extern s32 gTargetList[];
     extern f32 lbl_8036AF20;
     extern f32 lbl_8036AF00;
-    s32 *list;
+    s32 *list = gTargetList;
     s32 i;
     f32 sumX;
     f32 sumY;
@@ -13073,7 +13106,6 @@ void fn_8019C244(void *arg0) {
 
     sumX = lbl_8036AF20;
     sumY = sumX;
-    list = gTargetList;
     for (i = 0; i < list[0];) {
         TargetList_GetAt(list, i);
         unit = UnitRef_GetUnit();
