@@ -2447,22 +2447,17 @@ void Prim2D_EndPrim(void);
 extern s32 gUiTexAtlas;
 extern u8 gUiTexScratch[];
 extern struct {s16 x,y,right,bottom;} lbl_80368078;
-s16 height;
-s16 width;
-s32 x,y;
+s16 h;
+s16 w;
 Ui_LoadAtlasTex(gUiTexAtlas,gUiTexScratch,0xa6);
-x=lbl_80368078.x;
-y=lbl_80368078.y;
-x=lbl_80368078.right-x;
-y=lbl_80368078.bottom-y;
-width=x;
-height=y;
-if(width!=0 && height!=0) {
+h=(s16)(lbl_80368078.bottom-lbl_80368078.y);
+w=(s16)(lbl_80368078.right-lbl_80368078.x);
+if(w!=0 && h!=0) {
 Prim2D_Begin();
 Prim2D_SetTex(gUiTexScratch,(u16)(arg2|1));
 Prim2D_PrepareTex();
 Prim2D_AddPrim(1);
-Prim2D_SetRectUv(arg0,arg1,lbl_80368078.x,lbl_80368078.y,width,height);
+Prim2D_SetRectUv((f32)arg0,(f32)arg1,(f32)lbl_80368078.x,(f32)lbl_80368078.y,(f32)w,(f32)h);
 Prim2D_EndPrim();
 }
 }
