@@ -3770,6 +3770,7 @@ s32 fn_80117D80(void *arg0, void *unit) {
     }
     return result;
 }
+#pragma global_optimizer on
 void fn_80117F1C(void *arg0) {
     M2C_UNK Process_Goto(void *, u8);
     M2C_UNK Ui_DecBusy();
