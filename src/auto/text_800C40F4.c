@@ -10077,9 +10077,9 @@ void fn_800DB228(void *arg0) {
     u8 *self;
     u8 *obj;
     s32 offset;
+    s32 halfWidth;
     s32 x;
     s32 y;
-    s32 halfWidth;
     f32 drawX;
     f32 fontX;
     f32 drawY;
@@ -18350,14 +18350,14 @@ void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
     f32 z;
     u8 *self;
 
-    self = (u8 *)arg0;
     x = arg1[0];
     y = arg1[1];
     *(f32 *)((u8 *)arg0 + 0x78) = x;
     step = arg2;
     z = arg1[2];
-    *(f32 *)(self + 0x7C) = y;
-    *(f32 *)(self + 0x80) = z;
+    *(f32 *)((u8 *)arg0 + 0x7C) = y;
+    *(f32 *)((u8 *)arg0 + 0x80) = z;
+    self = (u8 *)arg0;
 
     current[0] = *(f32 *)(self + 0xE4);
     current[1] = *(f32 *)(self + 0xE8);
@@ -28208,20 +28208,20 @@ void Ai_ConfirmBestMove(s32 proc) {
 
 u8 fn_800FC040(void *arg0) {
     void Unit_IsLowHp(void *);
-    s32 Unit_HasLowHpAi(void *);
+    u8 Unit_HasLowHpAi(void *);
     s32 Ai_TryHandleLowHp(void *);
     u8 Ui_CanConfirmUnitSelect(void *);
 
     extern u8 gUiContext[];
     extern u8 gAiState[];
-    extern u8 gBattleState[];
     extern u8 lbl_8028E6F8[];
+    extern u8 gBattleState[];
 
-    u8 *self;
-    u8 *ctx;
     u8 *unit;
-    u8 *table;
+    u8 *ctx;
+    u8 *self;
     u32 flags;
+    u8 *table;
     u32 index;
     void *handler;
 
@@ -28240,7 +28240,7 @@ u8 fn_800FC040(void *arg0) {
     if ((flags & 1) != 0) {
         if (Unit_HasLowHpAi(unit) != 0) {
             table = lbl_8028E6F8 + self[0x30] * 0x18;
-            index = gAiState[0] * 4;
+            index = (u8)gAiState[0] * 4;
             handler = *(void **)(table + index);
 
             if (handler == (void *)Ai_TryHandleLowHp) {
@@ -28249,16 +28249,15 @@ u8 fn_800FC040(void *arg0) {
         }
     }
 
-    if ((gAiState[1] & 2) == 0) {
-        flags = *(u32 *)(unit + 0x254);
-
-        if ((flags & 0x03000000) != 0) {
-            return 0;
-        }
+    if ((gAiState[1] & 2) != 0) {
+        goto fail;
+    }
+    if ((*(u32 *)(unit + 0x254) & 0x03000000) != 0) {
+    fail:
+        return 0;
     }
 
-    if (gBattleState[0x11] !=
-        (*(u8 **)(unit + 0x190))[8]) {
+    if (gBattleState[0x11] != (*(u8 **)(unit + 0x190))[8]) {
         return 0;
     }
 
