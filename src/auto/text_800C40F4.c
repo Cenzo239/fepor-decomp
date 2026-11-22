@@ -1958,7 +1958,7 @@ u32 strlen(const char*);s32 String_Compare(String*,u32,u32,char*,u32);
 String *String_Assign(String*,String*,s32,s32);void String_Destroy(String*,s32);
 u8 fn_800C7B04(void*,String*,void*,void*,s32);
 u8 buffer[0x100];u8 values[0x18];String str;
-String *entry; s32 count;char *messages=gStringErrorMsgs;
+String *entry; s32 count;
 str.cap=0;str.size=0;str.data=0;str.cap=0;
 while((entry=*(String**)((u8*)list+8)+index, String_Compare(entry,0,entry->size,gStringErrorMsgs,strlen(gStringErrorMsgs)))!=0)index++;
 count=0;
@@ -2508,6 +2508,7 @@ int fn_800C8F70(void *arg0, int arg1) {
 
     return 1;
 }
+#pragma global_optimizer on
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     char *String_CStr(String *);
@@ -15157,70 +15158,69 @@ void fn_800E3F54(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x9C) = 1;
 }
 
-void *fn_800E3F60(void *arg0)
-{
-    void *object;
-    void *entry;
+#pragma dont_inline on
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+extern "C" void *fn_800E3F60(u8 *self) {
+    u8 fn_800DF6A8(void *);
+    struct List {
+        u32 unk;
+        s32 count;
+        u8 pad[8];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void *get(s32);
+        s32 size() { return this ? count : 0; }
+        void *at(s32 i) { return i < size() ? get(i) : 0; }
+    };
     void *candidate;
-    void *result;
-    int index;
-    int count;
-    int value;
-    int match;
+    s32 field8c;
+    s32 field90;
+    s32 i;
+    s32 match;
+    s32 val;
+    List *list;
 
-    object = arg0;
-
-    if ((u8)fn_800DF6A8(object) == 0) {
+    if (!fn_800DF6A8(self)) {
         return 0;
     }
-
-    if (*(void **)((u8 *)object + 0xA0) != 0) {
-        index = 0;
-
-        while (1) {
-            entry = *(void **)((u8 *)object + 0xA0);
-
-            if (entry != 0) {
-                count = *(int *)((u8 *)entry + 4);
+    if (*(List **)(self + 0xa0)) {
+        for (i = 0; list = *(List **)(self + 0xa0), i < list->size(); i++) {
+            candidate = list->at(i);
+            field90 = *(s32 *)(self + 0x90);
+            field8c = *(s32 *)(self + 0x8c);
+            if (!fn_800DF6A8(candidate)) {
+                match = 0;
             } else {
-                count = 0;
-            }
-
-            if (index >= count) {
-                break;
-            }
-
-            candidate = *(void **)((u8 *)*(void **)((u8 *)entry + 0x10) + 0x18);
-            candidate = ((void *(*)(void *, int))candidate)(entry, index);
-
-            if (candidate != 0) {
-                if ((u8)fn_800DF6A8(candidate) != 0) {
-                    value = *(int *)((u8 *)candidate + 0x84);
+                val = *(s32 *)((u8 *)candidate + 0x84);
+                if (field8c == val) {
+                    match = 1;
+                } else if (val != -1) {
                     match = 0;
-
-                    if (value == *(int *)((u8 *)object + 0x8C)) {
+                } else {
+                    val = *(s32 *)((u8 *)candidate + 0x88);
+                    if (field90 == val) {
                         match = 1;
-                    } else if (value == -1) {
-                        value = *(int *)((u8 *)candidate + 0x88);
-
-                        if (value == *(int *)((u8 *)object + 0x90) || value == -1) {
-                            match = 1;
-                        }
-                    }
-
-                    if (match != 0) {
-                        return candidate;
+                    } else if (val != -1) {
+                        match = 0;
+                    } else {
+                        match = 1;
                     }
                 }
             }
-
-            index++;
+            if ((u8)match) {
+                return candidate;
+            }
         }
     }
-
-    return object;
+    return self;
+#pragma cplusplus off
 }
-
+#pragma dont_inline reset
+#pragma use_lmw_stmw reset
 #pragma cplusplus on
 extern "C" void fn_800E4078(void *arg0, s32 arg1, s32 arg2) {
     struct Obj {
