@@ -10833,11 +10833,13 @@ extern struct Unit;
 s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     void *item;
     s32 i;
+    s32 *p;
     item = (void *)Item_GetByIid(arg1);
-    for (i=0; i<200; i++) {
-        if (*(void **)((u8 *)arg0+i*8) == item) return i;
+    for (p = arg0, i = 0; i < 200; p += 2, i++) {
+        if (*(void **)p == item) return i;
     }
-    return -1;
+    i = -1;
+    return i;
 }
 
 s32 fn_800C39A4(void *convoy, void *item) {
@@ -10884,9 +10886,20 @@ found:
     return result;
 }
 #pragma optimization_level reset
+static inline s32 fn_800C3C1C_find(void *convoy) {
+    s32 i;
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((char *)convoy + i * 8) == NULL) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     s32 i;
+    s32 slot;
     u8 t;
 
     i = 0;
@@ -10895,15 +10908,16 @@ s32 fn_800C3C1C(void *arg0, void *arg1) {
 
     for (; i < 200; i++) {
         if (*(void **)((char *)arg0 + i * 8) == NULL) {
+            slot = i;
             goto found;
         }
     }
-    i = -1;
+    slot = -1;
 found:
-    if (i < 0) {
+    if (slot < 0) {
         return 0;
     }
-    Item_Copy((char *)arg0 + (i << 3), arg1);
+    Item_Copy((char *)arg0 + (slot << 3), arg1);
     return 1;
 }
 
