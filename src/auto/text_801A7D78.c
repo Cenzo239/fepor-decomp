@@ -578,7 +578,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     u8 flag;
     s16 t2c2;
     void *obj;
-    u8 kind;
+    u32 kind;
     u8 hit;
     void *base;
     unsigned long tmp;
@@ -611,7 +611,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
         } else {
             kind = 0xC;
         }
-        if ((u8)fn_8001DDC4(kind) != 0) {
+        if ((u8)fn_8001DDC4((u8)kind) != 0) {
             hit = 1;
         }
     }
@@ -651,7 +651,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
             } else {
                 kind = 0xC;
             }
-            if ((u8)fn_8001DDC4((s32)kind) != 0) {
+            if ((u8)fn_8001DDC4((u8)kind) != 0) {
                 *(s16 *)((u8 *)self + 0x298) =
                     (s16)(*(s16 *)((u8 *)self + 0x298) + Unit_GetMagAtk(self));
             } else {
@@ -716,7 +716,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     tmp = (u8)fn_8001D3FC(base);
     t = fn_8003AF28(self);
     *(s16 *)((u8 *)self + 0x2A4) =
-        (s16)((((s32)(t >> 31) + t) >> 1) + tmp);
+        (s16)(((((u32)t >> 31) + t) >> 1) + tmp);
     *(s16 *)((u8 *)self + 0x2A4) =
         (s16)(*(s16 *)((u8 *)self + 0x2A4) + (s8)ret.b4);
 
@@ -810,38 +810,29 @@ void fn_801A94B0(void *arg0) {
                (s8)*((u8 *)arg0 + 0x2B5),
                (s8)*((u8 *)arg0 + 0x2B6));
 }
-#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
-    void Item_Copy(void *, void *);
-    u8 Unit_CanEquipItem(void *, void *);
-    void Item_Clear(void *);
+    void fn_8001C4FC(void *, void *);
+    u8 fn_80094614(void *, void *);
+    void fn_8001D580(void *);
     void *fn_80037C20(void *);
     extern u16 lbl_80367218;
-    void *sel;
     s8 flag;
     void *p;
     void *q;
     void *r;
 
     *(s8 *)((u8 *)arg0 + 0x294) = -1;
-    Item_Copy((u8 *)arg0 + 0x284, arg1);
-    Item_Copy((u8 *)arg0 + 0x28C, arg1);
+    fn_8001C4FC((u8 *)arg0 + 0x284, arg1);
+    fn_8001C4FC((u8 *)arg0 + 0x28C, arg1);
     *(u8 *)((u8 *)arg0 + 0x2C8) = *(u8 *)((u8 *)arg1 + 4);
     *(u16 *)((u8 *)arg0 + 0x2AE) = 0;
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
-    if (flag <= 0) {
-        sel = &lbl_80367218;
-    } else {
-        sel = (u8 *)arg0 + 0x284;
-    }
-    if (*(void **)sel != NULL) {
-        if (flag <= 0) {
-            sel = &lbl_80367218;
-        } else {
-            sel = (u8 *)arg0 + 0x284;
-        }
-        if (Unit_CanEquipItem((*(void **)sel, arg0), *(void **)sel) == 0) {
-            Item_Clear((u8 *)arg0 + 0x284);
+    if (*(void **)(flag <= 0 ? (void *)&lbl_80367218 : (void *)((u8 *)arg0 + 0x284)) != NULL) {
+        void *sel = flag <= 0 ? (void *)&lbl_80367218 : (void *)((u8 *)arg0 + 0x284);
+        void *item = *(void * volatile *)sel;
+        if (fn_80094614(arg0, item) == 0) {
+            fn_8001D580((u8 *)arg0 + 0x284);
         }
     }
     p = *(void **)((u8 *)arg0 + 0x28C);
@@ -856,7 +847,6 @@ void fn_801A9600(void *arg0, void *arg1) {
         }
     }
 }
-
 void fn_801A96FC(void *arg0, u8 arg1) {
     void Item_Clear(void *);
     void Item_Copy(void *,void *);
@@ -2678,7 +2668,7 @@ extern "C" void fn_801AE154(void *arg0) {
     fn_8015267C(0x88, 0x40, 0x10);
 }
 #pragma cplusplus reset
-void fn_801AE1B0(s32 *arg0, void *arg1) {
+void fn_801AE1B0(void *arg0, void *arg1) {
     s32 *fn_8013F748(void *, void *, s16 *);
     void *spC;
     s16 sp8[2];
@@ -2703,7 +2693,7 @@ void fn_801AE1B0(s32 *arg0, void *arg1) {
     }
     sp8[0] = a;
     sp8[1] = b;
-    *arg0 = *fn_8013F748(arg1, &spC, sp8);
+    *(s32 *)arg0 = *fn_8013F748(arg1, &spC, sp8);
 }
 
 s32 fn_801AE24C(void *arg0) {
