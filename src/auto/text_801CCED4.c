@@ -745,50 +745,52 @@ void *fn_801CD0D0(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4)
     extern u8 lbl_80292230[];
     extern u8 gUiPanelEVtbl[];
     extern u8 gEmptyVtbl[];
-    extern f32 lbl_8036B4CC;
-    extern f32 lbl_8036B4D0;
+    extern const f32 lbl_8036B4CC;
+    extern const f32 lbl_8036B4D0;
 
     u8 *self;
+    u8 *p;
     u8 *sub;
     s32 zero;
     s32 one;
     s32 ff;
 
     self = (u8 *)arg0;
+    p = self;
     zero = 0;
     one = 1;
     ff = 0xFF;
 
-    *(void **)self = lbl_8028FDB0;
-    *(s32 *)(self + 4) = zero;
-    *(void **)self = lbl_80292230;
+    *(void **)p = lbl_8028FDB0;
+    *(s32 *)(p + 4) = zero;
+    *(void **)p = lbl_80292230;
 
-    *(s16 *)(self + 0x08) = -1;
-    *(s16 *)(self + 0x0A) = arg1;
-    *(s16 *)(self + 0x0C) = arg2;
-    *(s16 *)(self + 0x0E) = arg1;
-    *(s16 *)(self + 0x10) = arg2;
-    *(s16 *)(self + 0x12) = zero;
-    *(s16 *)(self + 0x14) = zero;
-    *(s16 *)(self + 0x16) = zero;
-    *(s16 *)(self + 0x18) = zero;
-    *(s16 *)(self + 0x1A) = zero;
-    *(s16 *)(self + 0x1C) = zero;
+    *(s16 *)(p + 0x08) = -1;
+    *(s16 *)(p + 0x0A) = arg1;
+    *(s16 *)(p + 0x0C) = arg2;
+    *(s16 *)(p + 0x0E) = arg1;
+    *(s16 *)(p + 0x10) = arg2;
+    *(s16 *)(p + 0x12) = zero;
+    *(s16 *)(p + 0x14) = zero;
+    *(s16 *)(p + 0x16) = zero;
+    *(s16 *)(p + 0x18) = zero;
+    *(s16 *)(p + 0x1A) = zero;
+    *(s16 *)(p + 0x1C) = zero;
 
-    self[0x1E] = ff;
-    self[0x1F] = ff;
-    self[0x20] = ff;
-    self[0x21] = ff;
+    p[0x1E] = ff;
+    p[0x1F] = ff;
+    p[0x20] = ff;
+    p[0x21] = ff;
 
-    *(s16 *)(self + 0x22) = arg3;
-    *(s16 *)(self + 0x24) = zero;
+    *(s16 *)(p + 0x22) = arg3;
+    *(s16 *)(p + 0x24) = zero;
 
-    *(f32 *)(self + 0x28) = lbl_8036B4CC;
-    *(f32 *)(self + 0x2C) = lbl_8036B4CC;
-    *(f32 *)(self + 0x30) = lbl_8036B4CC;
+    *(f32 *)(p + 0x28) = lbl_8036B4CC;
+    *(f32 *)(p + 0x2C) = lbl_8036B4CC;
+    *(f32 *)(p + 0x30) = lbl_8036B4CC;
 
-    *(s32 *)(self + 0x34) = zero;
-    *(s32 *)(self + 0x38) = zero;
+    *(s32 *)(p + 0x34) = zero;
+    *(s32 *)(p + 0x38) = zero;
 
     *(void **)self = gUiPanelEVtbl;
     *(s32 *)(self + 0x3C) = arg4;
@@ -1041,7 +1043,7 @@ s32 v;
 u32 flags;
 u8 gate;
 u32 input;
-gate=0;flags=gUiInputFlags;
+flags=gUiInputFlags;gate=0;
 if((flags&0x10) && !(flags&0x20)) gate=1;
 if(gate) return;
 input=*(u32*)(gPadInput+0xc);
@@ -9485,8 +9487,8 @@ do_init:
 
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
-u8 *slot;
 s32 off;
+u8 *slot;
 s32 i;
 u8 valid;
 i=0; off=0x2000;
@@ -9529,7 +9531,7 @@ gSystemSave[0x47]=save[1][0x63];
 #pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void *fn_801E09B4(u8 **save) {
-    u8 *slot;
+    u32 slot;
     s32 off;
     u8 *base;
     s32 i;
@@ -9539,15 +9541,15 @@ extern "C" void *fn_801E09B4(u8 **save) {
     off = 0x1a000;
     for (; i < 2; i++) {
         base = *save;
-        slot = base + off;
+        slot = (u32)base + off;
         if (*(u32 *)(slot + 0x40) != 0x4645384AU)
             valid = 0;
         else if (*(u32 *)(slot + 0x44) != 0x20050201U)
             valid = 0;
         else
             valid = 1;
-        if (valid && Save_FindLinkedSlot(base, slot[0x63]))
-            return slot;
+        if (valid && Save_FindLinkedSlot(base, *(u8 *)(slot + 0x63)))
+            return (void *)slot;
         off += 0x6000;
     }
     return 0;
