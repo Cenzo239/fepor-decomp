@@ -250,37 +250,46 @@ u8 fn_80222AC0(u32 *arg0) {
 }
 
 void fn_80222AD4(void *obj, void *region, s32 map) {
-extern u8 lbl_80367010[8],lbl_80367018[8],lbl_80367020[8],lbl_80367028[8],lbl_80367030[8],lbl_80367038[8],lbl_80367040[8];
-u32 *tex=obj;
-u32 *reg=region;
-u32 *tlut;
-u32 *(*callback)(u32);
-u8 *gx;
-u8 *slot;
-tex[0]=__rlwimi(tex[0],lbl_80367010[map],24,0,7);
-tex[1]=__rlwimi(tex[1],lbl_80367018[map],24,0,7);
-tex[2]=__rlwimi(tex[2],lbl_80367020[map],24,0,7);
-reg[0]=__rlwimi(reg[0],lbl_80367028[map],24,0,7);
-reg[1]=__rlwimi(reg[1],lbl_80367030[map],24,0,7);
-tex[3]=__rlwimi(tex[3],lbl_80367038[map],24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=tex[0];
-GXWGFifo.u8=0x61; GXWGFifo.u32=tex[1];
-GXWGFifo.u8=0x61; GXWGFifo.u32=tex[2];
-GXWGFifo.u8=0x61; GXWGFifo.u32=reg[0];
-GXWGFifo.u8=0x61; GXWGFifo.u32=reg[1];
-GXWGFifo.u8=0x61; GXWGFifo.u32=tex[3];
-if(!(*((u8 *)tex+0x1f)&2)){
-callback=*(u32 *(**)(u32))((u8 *)__GXData+0x4CC);
-tlut=callback(tex[6]);
-tlut[1]=__rlwimi(tlut[1],lbl_80367040[map],24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=tlut[1];
-}
-gx=(u8 *)__GXData;
-slot=gx+map*4;
-*(u32 *)(slot+0x514)=tex[2];
-*(u32 *)(slot+0x534)=tex[0];
-*(u32 *)(gx+0x5AC)|=1;
-*(u16 *)(gx+2)=0;
+    extern u8 lbl_80367010[8], lbl_80367018[8], lbl_80367020[8], lbl_80367028[8], lbl_80367030[8], lbl_80367038[8], lbl_80367040[8];
+    u32 stack[6];
+    u32 *tex = obj;
+    u32 *reg = region;
+    u32 *tlut;
+    u8 *gx;
+    u8 *slot;
+
+    stack[0] = 0;
+    tex[0] = __rlwimi(tex[0], lbl_80367010[map], 24, 0, 7);
+    tex[1] = __rlwimi(tex[1], lbl_80367018[map], 24, 0, 7);
+    tex[2] = __rlwimi(tex[2], lbl_80367020[map], 24, 0, 7);
+    reg[0] = __rlwimi(reg[0], lbl_80367028[map], 24, 0, 7);
+    reg[1] = __rlwimi(reg[1], lbl_80367030[map], 24, 0, 7);
+    tex[3] = __rlwimi(tex[3], lbl_80367038[map], 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = tex[0];
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = tex[1];
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = tex[2];
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg[0];
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg[1];
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = tex[3];
+    if (!(*((u8 *)tex + 0x1f) & 2)) {
+        tlut = (*(u32 *(**)(u32))((u8 *)__GXData + 0x4CC))(tex[6]);
+        tlut[1] = __rlwimi(tlut[1], lbl_80367040[map], 24, 0, 7);
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = tlut[1];
+    }
+    gx = (u8 *)__GXData;
+    slot = gx + map * 4;
+    *(u32 *)(slot + 0x514) = tex[2];
+    *(u32 *)(slot + 0x534) = tex[0];
+    *(u32 *)(gx + 0x5AC) |= 1;
+    *(u16 *)(gx + 2) = 0;
+    (void)stack[0];
 }
 
 void fn_80222C50(s32 arg0, s32 arg1) {
