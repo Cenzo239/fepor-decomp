@@ -1549,18 +1549,18 @@ extern "C" void fn_801B0978(void *arg0) {
  void Ui_BringChildToFront(void *,void *);
  void Ui_SetWidgetText(void *,s32);
  s16 a[2],b[2],c[2];
- s32 text;
  void *p;
- s16 y;
+ s32 text;
+ s16 y1,y2;
  p=Ui_FindChild(arg0,4,0);
  if(!p){p=M2C_FIELD(arg0,void **,0x4c);Ui_AddChild(arg0,p);}
  if(M2C_FIELD(p,s16 *,10)!=0x138){a[0]=0x138;a[1]=0x74;Ui_SlideWidgetChildMode1(arg0,p,a,0);}
  p=Ui_FindChild(arg0,5,0);
  if(!p){p=M2C_FIELD(arg0,void **,0x50);Ui_AddChild(arg0,p);}
- if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);b[0]=0x138;b[1]=y;Ui_SlideWidgetChildMode1(arg0,p,b,0);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y1=M2C_FIELD(p,s16 *,12);b[0]=0x138;b[1]=y1;Ui_SlideWidgetChildMode1(arg0,p,b,0);}
  p=Ui_FindChild(arg0,7,0);
  if(!p){p=M2C_FIELD(arg0,void **,0x58);Ui_AddChild(arg0,p);}
- if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);c[0]=0x138;c[1]=y;Ui_SlideWidgetChildMode1(arg0,p,c,0);}
+ if(M2C_FIELD(p,s16 *,10)!=0x138){y2=M2C_FIELD(p,s16 *,12);c[0]=0x138;c[1]=y2;Ui_SlideWidgetChildMode1(arg0,p,c,0);}
  Ui_BringChildToFront(arg0,p);
  TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x28));
  text=M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x7c);
@@ -2825,55 +2825,56 @@ void fn_801B2A80(void *arg0) {
 }
 
 void fn_801B2C58(void *arg0) {
-    M2C_UNK Process_Goto(void *, M2C_UNK);
-    M2C_UNK Allegiance_SetMask(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, void *);
-    u8 fn_80092F9C();
+    void Process_Goto(void *, s32);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    u8 fn_80092F9C(u8 *);
     s32 Convoy_FindEmpty(void *);
-    M2C_UNK TalkUi_ShowMsg(s32);
-    u32 Ui_FindChild(void *, M2C_UNK, M2C_UNK, void *);
-    M2C_UNK Ui_SetWidgetText(s32);
-    extern u8 gUnits[101760];
-    extern u8 gConvoy[1600];
-    u8 sp10[16];
-    int var_r29;
-    u8 var_r30;
-    void *var_r3;
-    void *temp_r6;
-    s32 temp_r30;
-    void *self = arg0;
+    void TalkUi_ShowMsg(s32);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_SetWidgetText(void *, s32);
+    extern u8 gUnits[];
+    extern u8 gConvoy[];
+    u8 allegMask[8];
+    void *self;
+    s32 found;
+    s32 i;
+    u8 *unit;
+    u8 *allegInfo;
+    void *inner;
+    void *ret;
 
-    var_r30 = 0;
-    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, sp10);
-    var_r29 = 1;
-    for (;;) {
-        if (var_r29 & 0xFF) {
-            var_r3 = gUnits + ((var_r29 - 1) * 0x280);
+    self = arg0;
+    found = 0;
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, allegMask);
+    for (i = 1; i <= 0x9F; i++) {
+        if ((u8)i != 0) {
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
-            var_r3 = 0;
+            unit = NULL;
         }
-        if (*(u32 *)((u8 *)var_r3 + 0x188) != 0 &&
-            sp10[*(u8 *)(((u8 *)*(void **)((u8 *)var_r3 + 0x190)) + 0x8)] != 0 &&
-            fn_80092F9C() < 4) {
-            var_r30 = 1;
-            break;
-        }
-        var_r29++;
-        if (var_r29 > 0x9F) {
-            break;
+        if (*(u32 *)(unit + 0x188) != 0) {
+            allegInfo = *(u8 **)(unit + 0x190);
+            if (allegMask[allegInfo[8]] != 0 && fn_80092F9C(unit) < 4) {
+                found = 1;
+                break;
+            }
         }
     }
-    if (var_r30 == 0 && Convoy_FindEmpty(gConvoy) >= 0) {
-        var_r30 = 1;
+    if ((u8)found == 0) {
+        if (Convoy_FindEmpty(gConvoy) >= 0) {
+            found = 1;
+        }
     }
-    if (var_r30 != 0) {
-        TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x8));
+    if ((u8)found != 0) {
+        TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x6C) + 0x8));
         return;
     }
-    TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x5C));
-    temp_r6 = *(void **)((u8 *)self + 0x6C);
-    temp_r30 = *(s32 *)((u8 *)temp_r6 + 0x84);
-    if (Ui_FindChild(self, -0x1000, 0, temp_r6) != 0) {
-        Ui_SetWidgetText(temp_r30);
+    TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x6C) + 0x5C));
+    inner = *(void **)((u8 *)self + 0x6C);
+    found = *(s32 *)((u8 *)inner + 0x84);
+    ret = Ui_FindChild(self, -0x1000, 0);
+    if (ret != NULL) {
+        Ui_SetWidgetText(ret, found);
     }
     Process_Goto(self, 0x20);
 }
