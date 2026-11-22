@@ -1,2 +1,1 @@
-#pragma maxerrors 100
-#include "../README.md"
+#include "../.cursor-home/a.h"
