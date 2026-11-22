@@ -5003,7 +5003,7 @@ void fn_8018D864(void *arg0, s8 arg1, s8 arg2) {
 #pragma optimization_level 4
 #pragma inline auto
 extern u8 lbl_80296088[160];
-extern f64 lbl_8036AD88;
+extern const f64 lbl_8036AD88;
 extern f32 lbl_8036AD68;
 extern f32 lbl_8036AD6C;
 extern f32 lbl_8036AD70;
