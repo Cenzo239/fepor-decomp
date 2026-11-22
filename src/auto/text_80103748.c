@@ -467,7 +467,7 @@ char *fn_80103FA4(s32 arg0, void *arg1) {
 void fn_80231D94(void *, void *, ...);
 extern char lbl_8032BAD8[];
 extern u8 lbl_802734D0[];
-extern f32 lbl_8036A0E8;
+extern const f32 lbl_8036A0E8;
 u8 *strings = lbl_802734D0;
 f32 value = *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg1 + 0x18) + 0x3C) + 8);
 fn_80231D94(lbl_8032BAD8, strings + 0x1EB, value * lbl_8036A0E8);
@@ -964,8 +964,6 @@ s32 fn_801047D0(void) {
 void *fn_801047DC(u8 *arg0) {
     u16 sp8;
     u8 is_double;
-    u32 low;
-    s32 high;
     u16 code;
     void **ctx;
     void *base;
@@ -980,9 +978,8 @@ void *fn_801047DC(u8 *arg0) {
        ((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
     else is_double=0;
     if(is_double) {
-        low=arg0[1];
-        high=*(s8 *)arg0;
-        code=__rlwimi(low,high,8,16,23);
+        code=arg0[1];
+        code=__rlwimi(code, (s32)*(s8 *)arg0, 8,16,23);
     } else code=*(s8 *)arg0 & 0xFF;
     sp8=code;
     ctx=lbl_803679C0;
@@ -1203,7 +1200,7 @@ if(end==entry || *(u16*)entry!=0x8199U) ctx[3]=start;
 entry=ctx[3];
 *arg4=*(s8*)(entry+12);
 base=ctx[1];
-*arg1=(u8*)base+(*(u32*)((u8*)base+0x24)+*(u16*)(entry+2)**(u32*)((u8*)base+0x14));
+*arg1=(u8*)(*(u32*)((u8*)base+0x24)+*(u16*)(entry+2)**(u32*)((u8*)base+0x14)+(u32)base);
 *arg2=*(u16*)(entry+4);
 *arg3=*(u16*)(entry+6);
 return next;
@@ -1310,7 +1307,6 @@ s32 fn_80104FC4(u8 **arg0) {
     u32 fn_80104930(u16 *, u16);
     s32 fn_801053E4(s32, s32, u16 *, u32 (*)(u16 *, u16));
     s32 fn_80105474(s32, s32, u16 *, u32 (*)(u16 *, u16));
-    u8 *str;
     u8 *ctx;
     u8 *file;
     u8 *base;
@@ -1318,58 +1314,46 @@ s32 fn_80104FC4(u8 **arg0) {
     u8 *found;
     u8 *next;
     u16 code;
-    u8 c0;
-    s32 isDouble;
+    u16 tmp;
+    u8 isDouble;
+    s32 result;
+    u8 *str;
 
     str = *arg0;
     ctx = lbl_803679C0;
-    c0 = *str;
-    isDouble = 0;
-    if (c0 >= 0x81) {
-        if (c0 <= 0x9F) {
-            goto check2;
-        }
-        if (c0 >= 0xE0) {
-            if (c0 <= 0xFC) {
-check2:
-                c0 = str[1];
-                if (c0 >= 0x40) {
-                    if (c0 <= 0x7E) {
-                        isDouble = 1;
-                    } else if (c0 >= 0x80) {
-                        if (c0 <= 0xFC) {
-                            isDouble = 1;
-                        }
-                    }
-                }
-            }
-        }
+    if ((*str >= 0x81 && *str <= 0x9F) ||
+        (*str >= 0xE0 && *str <= 0xFC &&
+         ((str[1] >= 0x40 && str[1] <= 0x7E) ||
+          (str[1] >= 0x80 && str[1] <= 0xFC)))) {
+        isDouble = 1;
+    } else {
+        isDouble = 0;
     }
 
-    if ((u8)isDouble != 0) {
-        code = str[1];
+    if (isDouble != 0) {
+        tmp = (u16)(str[1] | (((s8)str[0] << 8) & 0xFF00));
         next = str + 2;
-        code = (u16)(code | (((s8)str[0] << 8) & 0xFF00));
     } else {
-        code = *str;
+        tmp = *str;
         next = str + 1;
     }
+    code = tmp;
 
     found = *(u8 **)((u8 *)ctx + 0xC);
-    if (*(u16 *)found != code) {
+    if (*(u16 *)found != tmp) {
         file = *(u8 **)((u8 *)ctx + 4);
         base = file + *(u16 *)(file + 0x22);
         end = base + (*(u32 *)((u8 *)ctx + 8) << 4);
         *(u8 **)((u8 *)ctx + 0xC) = (u8 *)fn_801053E4((s32)base, (s32)end, &code, fn_80104930);
         found = *(u8 **)((u8 *)ctx + 0xC);
-        if (found != end) {
+        if (end != found) {
             if (*(u16 *)found == code) {
                 goto done;
             }
         }
         *(u8 **)((u8 *)ctx + 0xC) = (u8 *)fn_80105474((s32)base, (s32)end, &lbl_80366E80, fn_80104930);
         found = *(u8 **)((u8 *)ctx + 0xC);
-        if (found != end) {
+        if (end != found) {
             if (*(u16 *)found == 0x8199) {
                 goto done;
             }
@@ -1377,7 +1361,8 @@ check2:
         *(u8 **)((u8 *)ctx + 0xC) = base;
     }
 done:
+    result = *(s8 *)(*(u8 **)((u8 *)ctx + 0xC) + 0xC);
     *arg0 = next;
-    return *(s8 *)(*(u8 **)((u8 *)ctx + 0xC) + 0xC);
+    return result;
 }
 #pragma scheduling on
