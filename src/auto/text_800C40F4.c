@@ -19383,99 +19383,59 @@ void Card_SetNoCopyAttr(s32 proc) {
     }
 }
 
-void fn_800EAD68(s32 arg0)
-{
+#pragma optimization_level 3
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+void fn_800EAD68(s32 arg0) {
     extern u8 gCardWork[];
+    extern void Card_AsyncDone;
     void Process_Goto(s32, s32);
     s32 fn_8021D004(s32, s32, void *);
     s32 fn_8021D118(s32, s32, void *, void *);
-    void Card_AsyncDone(void);
-
-    u8 stat[0x40];
-    u8 *work;
-    s32 fileNo;
-    s32 result;
+    CardFileStatus status;
+    u8 *base;
+    u8 *resultBase;
+    s32 file;
+    s32 proc;
     u8 skip;
-    u16 value;
-    u8 attr;
 
-    work = gCardWork;
-
-    if (*(s32 *)(work + 0xA004) < 0) {
-        Process_Goto(arg0, 0x63);
-        work[0xA01A] = 0;
+    proc = arg0;
+    resultBase = gCardWork + 0x10000;
+    if (*(volatile s32 *)(resultBase - 0x5ffc) < 0) {
+        Process_Goto(proc, 0x63);
+        gCardWork[0xa01a] = 0;
         skip = 1;
     } else {
         skip = 0;
     }
-
     if (skip == 0) {
-        fileNo = *(s32 *)(work + 0xA020);
-
-        fn_8021D004(
-            *(s32 *)(work + 0xA000),
-            fileNo,
-            stat
-        );
-
-        *(u32 *)(stat + 0x40 - 8) = 0;
-
-        value = *(u16 *)(stat + 0x3C);
-        value = (value & ~3) | 1;
-        *(u16 *)(stat + 0x3C) = value;
-
-        value = *(u16 *)(stat + 0x3E);
-        value = (value & ~3) | 3;
-        *(u16 *)(stat + 0x3E) = value;
-
-        attr = stat[0x36];
-        attr = (attr & ~3) | 1;
-        stat[0x36] = attr;
-
-        value = *(u16 *)(stat + 0x3C);
-        value = (value & ~0xC) | 4;
-        *(u16 *)(stat + 0x3C) = value;
-
-        value = *(u16 *)(stat + 0x3E);
-        value = (value & ~0xC) | 8;
-        *(u16 *)(stat + 0x3E) = value;
-
-        value = *(u16 *)(stat + 0x3C);
-        value = (value & ~0x30) | 0x10;
-        *(u16 *)(stat + 0x3C) = value;
-
-        value = *(u16 *)(stat + 0x3E);
-        value = (value & ~0x30) | 0x30;
-        *(u16 *)(stat + 0x3E) = value;
-
-        attr = stat[0x36];
-        attr = (attr & ~4) | 4;
-        stat[0x36] = attr;
-
-        *(u16 *)(stat + 0x3C) &= ~0xC0;
-        *(u16 *)(stat + 0x3E) &= ~0xC0;
-
-        *(u32 *)(stat + 0x38) = 0;
-        *(u32 *)(stat + 0x40) = 0x2000;
-
-        work[0xA01A] = 1;
-
-        result = fn_8021D118(
-            *(s32 *)(work + 0xA000),
-            fileNo,
-            stat,
-            (void *)Card_AsyncDone
-        );
-
-        *(s32 *)(work + 0xA004) = result;
-
-        if (*(s32 *)(work + 0xA004) < 0) {
-            Process_Goto(arg0, 0x63);
-            work[0xA01A] = 0;
+        base = gCardWork + 0x10000;
+        file = *(s32 *)(base - 0x5fe0);
+        fn_8021D004(*(s32 *)(base - 0x6000), file, &status);
+        status.commentAddress = 0x2000;
+        status.iconFormat = (status.iconFormat & ~3) | 1;
+        status.iconSpeed = (status.iconSpeed & ~3) | 3;
+        status.bannerFormat = (status.bannerFormat & ~3) | 1;
+        status.iconFormat = (status.iconFormat & ~12) | 4;
+        status.iconSpeed = (status.iconSpeed & ~12) | 8;
+        status.iconFormat = (status.iconFormat & ~48) | 16;
+        status.iconSpeed = (status.iconSpeed & ~48) | 48;
+        status.bannerFormat = (status.bannerFormat & ~4) | 4;
+        status.iconFormat = status.iconFormat & ~192;
+        status.iconSpeed = status.iconSpeed & ~192;
+        status.iconAddress = 0;
+        resultBase[-0x5fe6] = 1;
+        *(volatile s32 *)(resultBase - 0x5ffc) =
+            fn_8021D118(*(s32 *)(base - 0x6000), file, &status, &Card_AsyncDone);
+        if (*(volatile s32 *)(resultBase - 0x5ffc) < 0) {
+            Process_Goto(proc, 0x63);
+            resultBase[-0x5fe6] = 0;
         }
     }
 }
-
+#pragma use_lmw_stmw reset
+#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_800EAEF0(s32 proc) {
     struct CardWork {
         u8 workArea[0xA000];
@@ -26533,11 +26493,11 @@ void fn_800F9C14(void *arg0)
     u8 fn_80100104(void *, s32, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16,
                           s32, s32, s32);
-    void fn_800FB96C(s32, s8, s8, void *, s8, s8,
+    void fn_800FB96C(s32, u8, u8, void *, u8, u8,
                        s32, s32, s32);
 
-    u8 *unit;
     u8 *cmd;
+    u8 *unit;
     s16 x;
     s16 y;
     u16 pc;
@@ -26563,36 +26523,34 @@ void fn_800F9C14(void *arg0)
                     -1
                 );
 
-                if (gAiState[0x21C] != 0) {
-                    if (x == (s8)gUiContext[0xD] &&
-                        y == (s8)gUiContext[0xE]) {
-
-                        fn_800FB96C(
-                            0x25,
-                            (s8)gUiContext[0xD],
-                            (s8)gUiContext[0xE],
-                            *(void **)(gUiContext + 4),
-                            gUiContext[0xF],
-                            gUiContext[0x10],
-                            -1,
-                            0,
-                            0
-                        );
-                    }
+                if (gAiState[0x21C] != 0 &&
+                    x == (s8)gUiContext[0xD] &&
+                    y == (s8)gUiContext[0xE]) {
+                    fn_800FB96C(
+                        0x25,
+                        gUiContext[0xD],
+                        gUiContext[0xE],
+                        *(void **)(gUiContext + 4),
+                        gUiContext[0xF],
+                        gUiContext[0x10],
+                        -1,
+                        0,
+                        0
+                    );
                 }
             } else {
                 *(s32 *)(gAiState + 8) = 9;
             }
         }
-    }
 
-    if (*(s32 *)(cmd + 0xC) != 0) {
-        pc = *(u16 *)(unit + 0x258);
-        pc++;
-        *(u16 *)(unit + 0x258) = pc;
+        if (*(s32 *)(cmd + 0xC) != 0) {
+            pc = *(u16 *)(unit + 0x258);
+            pc++;
+            *(u16 *)(unit + 0x258) = pc;
 
-        if (*(s32 *)(cmd + 0xC) == pc) {
-            *(s32 *)(gAiState + 8) = 10;
+            if (*(s32 *)(cmd + 0xC) == pc) {
+                *(s32 *)(gAiState + 8) = 10;
+            }
         }
     }
 
