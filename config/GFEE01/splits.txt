@@ -310,7 +310,10 @@ auto/text_80095BB0.c:
 	.text       start:0x80095BB0 end:0x80097740
 
 auto/text_80097740.c:
-	.text       start:0x80097740 end:0x80098170
+	.text       start:0x80097740 end:0x80097970
+
+auto/text_80097970.c:
+	.text       start:0x80097970 end:0x80098170
 
 auto/text_80098170.c:
 	.text       start:0x80098170 end:0x800981D0
