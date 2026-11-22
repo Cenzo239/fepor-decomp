@@ -5003,7 +5003,7 @@ void fn_8018D864(void *arg0, s8 arg1, s8 arg2) {
 #pragma optimization_level 4
 #pragma inline auto
 extern u8 lbl_80296088[160];
-extern const f64 lbl_8036AD88;
+extern f64 lbl_8036AD88;
 extern f32 lbl_8036AD68;
 extern f32 lbl_8036AD6C;
 extern f32 lbl_8036AD70;
@@ -10290,47 +10290,53 @@ s32 fn_80196558(void *arg0, void *arg1) {
     s32 fn_8003AA40(void *);
     s32 fn_8003A778(void *);
 
-    void *unit = arg0;
-    void *bonus = arg1;
-    s32 a = *(u8 *)((u8 *)unit + 0x1A8);
-    s32 b = Unit_GetCarryWtLimit(unit);
-    s32 c = Unit_GetMagAtk(unit);
-    s32 d = fn_8003AF28(unit);
-    s32 e = fn_8003AEB0(unit);
-    s32 f = fn_8003ACF8(unit);
-    s32 g = fn_8003AA40(unit);
-    s32 h = fn_8003A778(unit);
-    s32 a0 = (s8)a;
-    s32 ba = a0;
-    s32 sa = a0 + *(u8 *)((u8 *)bonus + 0x1F);
-    s32 sb = (s8)b + *(u8 *)((u8 *)bonus + 0x20);
-    s32 sc = (s8)c + *(u8 *)((u8 *)bonus + 0x21);
-    s32 sd = (s8)d + *(u8 *)((u8 *)bonus + 0x22);
-    s32 se = (s8)e + *(u8 *)((u8 *)bonus + 0x23);
-    s32 sf = (s8)f + *(u8 *)((u8 *)bonus + 0x24);
-    s32 sg = (s8)g + *(u8 *)((u8 *)bonus + 0x25);
-    s32 sh = (s8)h + *(u8 *)((u8 *)bonus + 0x26);
+    void *unit;
+    void *bonus;
+    s32 a, b, c, d, e, f, g, h;
+    s32 b1f, b20, b21, b22, b23, b24, b25, b26;
+    s32 sa, sb, sc, sd, se, sf, sg, sh;
+    s32 ba;
     u8 same;
 
-    if (ba != (s8)sa) {
-        same = 0;
-    } else if ((s8)b != (s8)sb) {
-        same = 0;
-    } else if ((s8)c != (s8)sc) {
-        same = 0;
-    } else if ((s8)e != (s8)se) {
-        same = 0;
-    } else if ((s8)d != (s8)sd) {
-        same = 0;
-    } else if ((s8)f != (s8)sf) {
-        same = 0;
-    } else if ((s8)g != (s8)sg) {
-        same = 0;
-    } else if ((s8)h != (s8)sh) {
-        same = 0;
-    } else {
-        same = 1;
-    }
+    unit = arg0;
+    bonus = arg1;
+    a = *(u8 *)((u8 *)unit + 0x1A8);
+    b = Unit_GetCarryWtLimit(unit);
+    c = Unit_GetMagAtk(unit);
+    d = fn_8003AF28(unit);
+    e = fn_8003AEB0(unit);
+    f = fn_8003ACF8(unit);
+    g = fn_8003AA40(unit);
+    h = fn_8003A778(unit);
+
+    b1f = *(u8 *)((u8 *)bonus + 0x1F);
+    b20 = *(u8 *)((u8 *)bonus + 0x20);
+    b21 = *(u8 *)((u8 *)bonus + 0x21);
+    b22 = *(u8 *)((u8 *)bonus + 0x22);
+    b23 = *(u8 *)((u8 *)bonus + 0x23);
+    b24 = *(u8 *)((u8 *)bonus + 0x24);
+    b25 = *(u8 *)((u8 *)bonus + 0x25);
+    b26 = *(u8 *)((u8 *)bonus + 0x26);
+
+    ba = (s8)a;
+    sa = (s8)(ba + b1f);
+    sb = (s8)b + b20;
+    sc = (s8)c + b21;
+    sd = (s8)d + b22;
+    se = (s8)e + b23;
+    sf = (s8)f + b24;
+    sg = (s8)g + b25;
+    sh = (s8)h + b26;
+
+    if (ba != sa) same = 0;
+    else if ((s8)b != (s8)sb) same = 0;
+    else if ((s8)c != (s8)sc) same = 0;
+    else if ((s8)e != (s8)se) same = 0;
+    else if ((s8)d != (s8)sd) same = 0;
+    else if ((s8)f != (s8)sf) same = 0;
+    else if ((s8)g != (s8)sg) same = 0;
+    else if ((s8)h != (s8)sh) same = 0;
+    else same = 1;
     return same == 0;
 }
 
