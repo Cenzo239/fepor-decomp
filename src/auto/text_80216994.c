@@ -2145,9 +2145,10 @@ s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
     s32 fn_8021A7FC(u32);
     s32 fn_80239508(s32);
     s32 fn_8023A114(s32);
-    s32 card;
+    u8 *card;
     s32 enabled;
     s32 probe;
+    s32 result;
     u32 id;
 
     if (chan < 0 || chan >= 2) {
@@ -2156,16 +2157,16 @@ s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
     if (*(u8 *)0x800030E3 & 0x80) {
         return -3;
     }
-    card = (s32)((u8 *)__CARDBlock + chan * 0x110);
+    card = (u8 *)__CARDBlock + chan * 0x110;
     enabled = OSDisableInterrupts();
     probe = fn_80239508(chan);
     if (probe == -1) {
-        card = (card & 0) - 3;
+        result = -3;
     } else if (probe == 0) {
-        card = (card & 0) - 1;
+        result = -1;
     } else if (*(s32 *)card != 0) {
         if (*(s32 *)(card + 0x24) < 1) {
-            card = (card & 0) - 1;
+            result = -1;
         } else {
             if (memSize != NULL) {
                 *memSize = *(u16 *)(card + 8);
@@ -2173,12 +2174,12 @@ s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
             if (sectorSize != NULL) {
                 *sectorSize = *(s32 *)(card + 0xC);
             }
-            card = card & 0;
+            result = 0;
         }
     } else if (fn_8023A114(chan) & 8) {
-        card = (card & 0) - 2;
+        result = -2;
     } else if (EXIGetID(chan, 0, &id) == 0) {
-        card = (card & 0) - 1;
+        result = -1;
     } else if (fn_8021A7FC(id) != 0) {
         if (memSize != NULL) {
             *memSize = (s32)(id & 0xFC);
@@ -2186,12 +2187,12 @@ s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
         if (sectorSize != NULL) {
             *sectorSize = *(s32 *)((u8 *)lbl_8029DB60 + ((id >> 9) & 0x1C));
         }
-        card = card & 0;
+        result = 0;
     } else {
-        card = (card & 0) - 2;
+        result = -2;
     }
     OSRestoreInterrupts(enabled);
-    return card;
+    return result;
 }
 
 #pragma opt_strength_reduction on
@@ -3134,7 +3135,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     void *card;
     u8 *entry;
     u32 sectorSize;
-    u32 offset;
+    u32 start;
     s32 length;
     s32 boundary;
     s32 result;
@@ -3162,18 +3163,18 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     }
     *(void **)((u8 *)card + 0xD0) = callback;
 
-    offset = *(u32 *)((u8 *)arg0 + 8);
     sectorSize = *(u32 *)((u8 *)card + 0xC);
-    boundary = sectorSize - (offset & (sectorSize - 1));
+    start = *(u32 *)((u8 *)arg0 + 8) & (sectorSize - 1);
+    boundary = sectorSize - start;
 
     length = arg2;
-    if (length >= boundary) {
+    if (arg2 >= boundary) {
         length = boundary;
     }
 
     result = fn_802190A4(
         arg0[0],
-        sectorSize * *(u16 *)((u8 *)arg0 + 0x10) + (offset & (sectorSize - 1)),
+        start + sectorSize * *(u16 *)((u8 *)arg0 + 0x10),
         length,
         (void *)arg1,
         (void *)fn_8021C5D8
