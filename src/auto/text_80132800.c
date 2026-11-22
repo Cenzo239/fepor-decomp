@@ -1890,9 +1890,7 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     *(s16 *)((u8 *)arg0 + 0x18) = (s16)(h - 8);
     *(s16 *)((u8 *)arg0 + 0x16) = (s16)(w - 2);
 }
-#pragma global_optimizer on
 #pragma use_lmw_stmw reset
-#pragma scheduling reset
 void *fn_80134F74(void *arg0, s16 arg1) {
     M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
