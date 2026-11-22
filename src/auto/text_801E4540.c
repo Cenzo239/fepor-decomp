@@ -1484,9 +1484,9 @@ void fn_801E6CEC(void *arg0) {
     extern f32 lbl_8036B750;
     extern f32 lbl_8036B754;
 
-    u8 pal[3];
-    Color c0, c1;
+    Color c1, c0;
     Color tmp;
+    u8 pal[3];
     s16 h;
     s16 y0;
     f32 fy0, fy1;
@@ -3397,15 +3397,15 @@ void fn_801EA514(s32 *arg0, s32 *arg1) {
     void fn_80182514(s32 *, void **, s32 *);
 
     void **node;
-    void **node2;
-    void **walk;
     void *sentinel1;
+    void **node2;
     void *sentinel2;
+    void **walk;
     void *last;
     void *previous;
     void *remaining;
     s8 key;
-    s32 count;
+    unsigned count;
 
     if (arg0 == arg1) {
         return;
@@ -3499,7 +3499,7 @@ void fn_801EA7BC(void *arg0, void *arg1) {
     typedef struct Node {
         struct Node *prev;
         struct Node *next;
-        u8 *data;
+        s8 *data;
     } Node;
 
     typedef struct List {
@@ -3512,8 +3512,8 @@ void fn_801EA7BC(void *arg0, void *arg1) {
     List *dst;
     List *src;
     Node *first;
-    Node *second;
     Node *dstEnd;
+    Node *second;
     Node *srcEnd;
     Node *scan;
     Node *last;
@@ -3533,13 +3533,13 @@ void fn_801EA7BC(void *arg0, void *arg1) {
     srcEnd = &src->sentinel;
 
     while (first != dstEnd && second != srcEnd) {
-        if ((s8)second->data[3] < (s8)first->data[3]) {
+        if (second->data[3] < first->data[3]) {
             scan = second->next;
             count = 1;
-            value = (s8)first->data[3];
+            value = first->data[3];
 
             while (scan != srcEnd) {
-                if ((s8)scan->data[3] >= value) {
+                if (scan->data[3] >= value) {
                     break;
                 }
 
