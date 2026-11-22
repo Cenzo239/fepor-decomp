@@ -2495,9 +2495,8 @@ s8 fn_801B8674(void *arg0) {
     extern u8 gBattleMap[];
     extern struct { void *personA, *personB; u8 flag; s8 value; } *lbl_80367214;
     struct Entry { void *personA, *personB; u8 flag; s8 value; };
-    u8 *unitA;
+    struct Pair { u8 *a; u8 *b; } pair;
     s32 valid;
-    u8 *unitB;
     u8 *unit = (u8 *)arg0;
     u8 *mapFlag = gBattleMap + 0x24EEA;
     s32 total;
@@ -2506,14 +2505,14 @@ s8 fn_801B8674(void *arg0) {
     for (entry = (struct Entry *)lbl_80367214; entry->personA; entry++) {
         if (entry->flag == 1) {
             if (*(void **)(unit + 0x188) == entry->personA || *(void **)(unit + 0x188) == entry->personB) {
-                unitA = (u8 *)Unit_FindByPerson(entry->personB);
-                unitB = (u8 *)Unit_FindByPerson(entry->personA);
-                if (unitB == NULL || unitA == NULL) valid = 0;
-                else if ((u8)Unit_GetDistance(unitB, unitA) != 1) valid = 0;
+                pair.a = (u8 *)Unit_FindByPerson(entry->personB);
+                pair.b = (u8 *)Unit_FindByPerson(entry->personA);
+                if (pair.b == NULL || pair.a == NULL) valid = 0;
+                else if ((u8)Unit_GetDistance(pair.b, pair.a) != 1) valid = 0;
                 else {
                     *mapFlag = 0;
-                    if ((u8)fn_8001F85C(gBattleMap, unitB[0x19E], unitB[0x19F], unitA[0x19E], unitA[0x19F]) == 0) valid = 0;
-                    else if (*(void **)(unitB + 0x190) != *(void **)(unitA + 0x190)) valid = 0;
+                    if ((u8)fn_8001F85C(gBattleMap, pair.b[0x19E], pair.b[0x19F], pair.a[0x19E], pair.a[0x19F]) == 0) valid = 0;
+                    else if (*(void **)(pair.b + 0x190) != *(void **)(pair.a + 0x190)) valid = 0;
                     else valid = 1;
                 }
                 if ((u8)valid) total += entry->value;
