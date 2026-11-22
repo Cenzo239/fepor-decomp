@@ -1,5 +1,6 @@
 /* Functions from 0x8014A370 to 0x8014E350, found by decomp-toolkit. */
 #include "common.h"
+const f64 lbl_8036A7F8 = 4503601774854144.0;
 
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
