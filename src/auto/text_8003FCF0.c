@@ -1283,10 +1283,10 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void fn_80061824(void *);
     s32 fn_80065EE8(void *);
     s32 fn_8006CE14(void *);
-          u8 FileCache_Exists(void *);
-      s32 fn_8006D948(void *);
-      void Archive_Load(s32);
-      void *Archive_LoadFlags(s32, u32);
+    u8 FileCache_Exists(void *);
+    s32 fn_8006D948(void *);
+    s32 Archive_Load(void *);
+    void *Archive_LoadFlags(void *, u32);
     void fn_8005F5B4(void *, void *);
     void GActor_Finalize(void *);
     void fn_80045D50(void *, void *);
@@ -1332,7 +1332,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     extern u8 lbl_80367AF6;
     extern u8 gMapBlendMode;
 
-    s64 t0;
+    volatile s64 t0;
     u8 sp18[0x30];
     void *cursor;
     char *p;
@@ -1349,8 +1349,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     s32 b;
     void *light;
     void *fog;
-    s32 (*fccc)(void *) = (s32 (*)(void *))Archive_Load;
-    void *(*f87c)(void *, s32) = (void *(*)(void *, s32))Archive_LoadFlags;
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
@@ -1373,13 +1371,14 @@ void Map_LoadTerrain(void *arg0, char *arg1)
 
     t0 = OSGetTime();
     mode = ((u8 *)arg0)[0x68];
-    if (mode == 0) {
+    switch (mode) {
+    case 0: {
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x161);
         M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x169);
-        M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
+        M2C_FIELD(arg0, s32 *, 0xC) = Archive_Load(lbl_802EFE20);
         PSMTXRotRad(sp18, 0x58, lbl_80368F18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F1C;
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
@@ -1387,27 +1386,27 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x122);
         if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
-            M2C_FIELD(arg0, void **, 0x18) = f87c(lbl_802EFE20, 8);
+            M2C_FIELD(arg0, void **, 0x18) = Archive_LoadFlags(lbl_802EFE20, 8);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x12D);
         if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
-            M2C_FIELD(arg0, s32 *, 0x1C) = fccc(lbl_802EFE20);
+            M2C_FIELD(arg0, s32 *, 0x1C) = Archive_Load(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x13A);
         if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
-            M2C_FIELD(arg0, s32 *, 0x20) = fccc(lbl_802EFE20);
+            M2C_FIELD(arg0, s32 *, 0x20) = Archive_Load(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x147);
         if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
-            M2C_FIELD(arg0, s32 *, 0x24) = fccc(lbl_802EFE20);
+            M2C_FIELD(arg0, s32 *, 0x24) = Archive_Load(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x154);
         if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
-            M2C_FIELD(arg0, s32 *, 0x28) = fccc(lbl_802EFE20);
+            M2C_FIELD(arg0, s32 *, 0x28) = Archive_Load(lbl_802EFE20);
         }
 
         scale = lbl_80368F10;
@@ -1544,18 +1543,22 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         }
         lbl_80366E90 = 1;
         fn_8006805C(lbl_80368F10, lbl_80368F14);
-    } else if (mode == 1) {
+        break;
+    }
+    case 1: {
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x1D0);
         M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x169);
-        M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
+        M2C_FIELD(arg0, s32 *, 0xC) = Archive_Load(lbl_802EFE20);
         PSMTXIdentity(sp18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F20;
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
         lbl_80366E90 = 0xF;
         fn_8006805C(lbl_80368F24, lbl_80368F28);
+        break;
+    }
     }
 
     FileCache_Load(lbl_8026A660 + 0x112);
@@ -1900,13 +1903,13 @@ void fn_800432D8(void *arg0) {
     u8 flags;
     f32 f31v, f30v, f29v, f28v;
     f32 t30;
+    s16 h;
     s32 a, b;
     f32 scale;
     f32 temp_f0;
-    s16 h;
 
     self = arg0;
-    fn_80067708(0, 1, fn_80043E88, self);
+    fn_80067708(0, 1, fn_80043E88, arg0);
     if (*(u32 *)((u8 *)self + 0xC) != 0) {
         s32 n;
         u8 *e;
@@ -2555,8 +2558,8 @@ extern u8 gBattleMap[];
             sh = t << 3;
             q = t << 2;
             v = *(s16 *)tileA;
-            q1 = q + 1;
             p = ca + sh;
+            q1 = q + 1;
             *(s16 *)(p + 0x142D4) = v;
             v = *(s16 *)tileB;
             *(s16 *)(p + 0x1C2D8) = v;
@@ -2642,8 +2645,8 @@ extern u8 gBattleMap[];
                         q = t << 2;
                         sh = t << 3;
                         v = *(s16 *)tile;
-                        q1 = q + 1;
                         p = ca + sh;
+                        q1 = q + 1;
                         *(s16 *)(p + 0x142D4) = v;
                         *(s16 *)(p + 0x1C2D8) = v;
                         p = ca + (q1 << 1);
@@ -2806,7 +2809,7 @@ fn_80066D00(-1);
 }
 
 void fn_80044BE4(void *arg0) {
-    f32 Map_GetTileCornerHeight(void *, s32, s32, s32);
+    f32 Map_GetTileCornerHeight(void *, s8, s8, u8);
     void *fn_800C45B8(s32, void *, s32);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -2825,24 +2828,23 @@ void fn_80044BE4(void *arg0) {
     void *disp;
     u8 *row;
     u8 *cell;
-    u8 *above;
     u8 *base;
+    u8 *above;
     s32 margin;
-    s32 y;
     s32 x;
+    s32 y;
     s32 tile;
     f32 dx;
     f32 dy;
     f32 a;
     s32 size;
     void *out;
-    s32 do_edge;
 
     margin = M2C_FIELD(arg0, u8 *, 0x61);
     buf = fn_800C45B8(-0x4000, lbl_8026A660 + 0x245, 0);
-    base = (u8 *)buf + (margin << 7);
-    row = base;
     y = margin;
+    row = (u8 *)buf + (margin << 7);
+    base = row;
     while (y < M2C_FIELD(arg0, s16 *, 2) - margin) {
         x = margin;
         cell = row + margin;
@@ -2850,50 +2852,44 @@ void fn_80044BE4(void *arg0) {
         while (x < M2C_FIELD(arg0, s16 *, 0) - margin) {
             *cell = 0;
             tile = gBattleMap[((s8)y << 6) + ((s8)x + 0x100D)];
-            do_edge = 0;
-            if (tile == 0xB) {
-            } else if (tile >= 0xB) {
-                if (tile >= 0x49) {
-                    do_edge = 1;
-                } else if (tile < 0x45) {
-                    do_edge = 1;
-                }
-            } else if (tile == 4) {
-            } else if (tile >= 4) {
-                do_edge = 1;
-            } else if (tile == 0) {
+            if (tile == 0xB) goto next_cell;
+            if (tile < 0xB) {
+                if (tile == 4) goto next_cell;
+                if (tile >= 4) goto do_edge;
+                if (tile == 0) goto next_cell;
             } else {
-                do_edge = 1;
+                if (tile >= 0x49) goto do_edge;
+                if (tile >= 0x45) goto next_cell;
             }
-            if (do_edge) {
-                *cell = 6;
-                if (x == margin) {
+        do_edge:
+            *cell = 6;
+            if (x == margin) {
+                *cell |= 1;
+            } else if (cell[-1] == 0) {
+                *cell |= 1;
+            } else {
+                a = Map_GetTileCornerHeight(gBattleMap, x - 1, y, 1);
+                dx = Map_GetTileCornerHeight(gBattleMap, x, y, 0) - a;
+                a = Map_GetTileCornerHeight(gBattleMap, x - 1, y, 3);
+                dy = Map_GetTileCornerHeight(gBattleMap, x, y, 2) - a;
+                if (dx * dx + dy * dy >= lbl_80368F58) {
                     *cell |= 1;
-                } else if (cell[-1] == 0) {
-                    *cell |= 1;
-                } else {
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)y, 1);
-                    dx = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0) - a;
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)y, 3);
-                    dy = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2) - a;
-                    if (dy * dy + dx * dx >= lbl_80368F58) {
-                        *cell |= 1;
-                    }
-                }
-                if (y == margin) {
-                    *cell |= 8;
-                } else if (*above == 0) {
-                    *cell |= 8;
-                } else {
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)(y - 1), 2);
-                    dx = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0) - a;
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)(y - 1), 3);
-                    dy = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1) - a;
-                    if (dy * dy + dx * dx >= lbl_80368F58) {
-                        *cell |= 8;
-                    }
                 }
             }
+            if (y == margin) {
+                *cell |= 8;
+            } else if (*above == 0) {
+                *cell |= 8;
+            } else {
+                a = Map_GetTileCornerHeight(gBattleMap, x, y - 1, 2);
+                dx = Map_GetTileCornerHeight(gBattleMap, x, y, 0) - a;
+                a = Map_GetTileCornerHeight(gBattleMap, x, y - 1, 3);
+                dy = Map_GetTileCornerHeight(gBattleMap, x, y, 1) - a;
+                if (dx * dx + dy * dy >= lbl_80368F58) {
+                    *cell |= 8;
+                }
+            }
+        next_cell:
             cell += 1;
             above += 1;
             x += 1;
@@ -2913,90 +2909,91 @@ void fn_80044BE4(void *arg0) {
         cell = row + margin;
         while (x < M2C_FIELD(arg0, s16 *, 0) - margin) {
             tile = *cell;
-            if (tile != 0) {
+            if ((u32)tile != 0) {
                 if (tile == 0xE) {
                     goto case_e;
-                } else if (tile >= 0xE) {
-                    if (tile >= 0x10) {
-                    } else {
-                        goto case_f;
-                    }
-                } else if (tile == 7) {
-                    goto case_7;
-                } else if (tile >= 7) {
-                } else if (tile >= 6) {
-                    GXBegin(0xB0, 0, 3);
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
-                    wgpipe[0] = (f32)(x + 1);
-                    wgpipe[0] = (f32)y;
-                    wgpipe[0] = a;
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
-                    wgpipe[0] = (f32)(x + 1);
-                    wgpipe[0] = (f32)(y + 1);
-                    wgpipe[0] = a;
-                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
-                    wgpipe[0] = (f32)x;
-                    wgpipe[0] = (f32)(y + 1);
-                    wgpipe[0] = a;
                 }
-                goto next2;
-            case_7:
-                GXBegin(0xB0, 0, 4);
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
+                if (tile < 0xE) {
+                    if (tile == 7) goto case_7;
+                    if (tile >= 7) goto next2;
+                    if (tile >= 6) goto tri;
+                    goto next2;
+                } else {
+                    if (tile >= 0x10) goto next2;
+                    goto case_f;
+                }
+            tri:
+                GXBegin(0xB0, 0, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
+                goto next2;
+            case_7:
+                GXBegin(0xB0, 0, 4);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
+                wgpipe[0] = (f32)(x + 1);
+                wgpipe[0] = (f32)y;
+                wgpipe[0] = a;
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
+                wgpipe[0] = (f32)(x + 1);
+                wgpipe[0] = (f32)(y + 1);
+                wgpipe[0] = a;
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
+                wgpipe[0] = (f32)x;
+                wgpipe[0] = (f32)(y + 1);
+                wgpipe[0] = a;
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
                 goto next2;
             case_e:
                 GXBegin(0xB0, 0, 4);
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
                 goto next2;
             case_f:
                 GXBegin(0xB0, 0, 5);
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
@@ -3009,8 +3006,8 @@ void fn_80044BE4(void *arg0) {
         y += 1;
     }
 
-    out = M2C_FIELD(arg0, void **, 0xA4);
     size = fn_802249A4(disp);
+    out = M2C_FIELD(arg0, void **, 0xA4);
     if (out != 0) {
         fn_800C4588(out);
         M2C_FIELD(arg0, void **, 0xA4) = 0;
@@ -3026,10 +3023,10 @@ void fn_80044BE4(void *arg0) {
 }
 
 void fn_80045604(s32 unused) {
-    void *Hash_Lookup(void *);
-    u32 Res_GetByName(void *);
+    void *fn_8000D2BC(void *);
+    u32 fn_8000D354(void *);
     extern u8 lbl_8026A660[];
-    extern u8 gBattleMap[];
+    extern u8 lbl_802CA518[];
 
     typedef struct { u8 pad[0x408E]; u16 flags; } FlagTile;
 
@@ -3045,8 +3042,8 @@ void fn_80045604(s32 unused) {
     u32 pairs;
     u8 *base;
 
-    if (Res_GetByName(lbl_8026A660 + 0x2D3) != 0) {
-        data = Hash_Lookup(lbl_8026A660 + 0x2D3);
+    if (fn_8000D354(lbl_8026A660 + 0x2D3) != 0) {
+        data = fn_8000D2BC(lbl_8026A660 + 0x2D3);
         count = *data;
         p = (u8 *)data + 2;
         i = 0;
@@ -3057,16 +3054,16 @@ void fn_80045604(s32 unused) {
                 y = (s8)p[1];
                 v = p[2];
                 p += 3;
-                ((FlagTile *)(gBattleMap + ((x + (y << 6)) * 2)))->flags = v;
+                ((FlagTile *)(lbl_802CA518 + ((x + (y << 6)) * 2)))->flags = v;
             }
         }
     }
 
-    if (Res_GetByName(lbl_8026A660 + 0x2DB) != 0) {
-        data = Hash_Lookup(lbl_8026A660 + 0x2DB);
+    if (fn_8000D354(lbl_8026A660 + 0x2DB) != 0) {
+        data = fn_8000D2BC(lbl_8026A660 + 0x2DB);
         count = *data;
         p = (u8 *)data + 2;
-        base = gBattleMap;
+        base = lbl_802CA518;
         n = count;
         if (n > 0) {
             pairs = (u32)n >> 1;
@@ -3101,8 +3098,8 @@ void fn_80045604(s32 unused) {
         }
     }
 
-    if (Res_GetByName(lbl_8026A660 + 0x2E5) != 0) {
-        data = Hash_Lookup(lbl_8026A660 + 0x2E5);
+    if (fn_8000D354(lbl_8026A660 + 0x2E5) != 0) {
+        data = fn_8000D2BC(lbl_8026A660 + 0x2E5);
         count = *data;
         p = (u8 *)data + 2;
         i = 0;
@@ -3113,7 +3110,7 @@ void fn_80045604(s32 unused) {
                 y = (s8)p[1];
                 v = p[2];
                 p += 3;
-                ((FlagTile *)(gBattleMap + ((x + (y << 6)) * 2)))->flags =
+                ((FlagTile *)(lbl_802CA518 + ((x + (y << 6)) * 2)))->flags =
                     (u16)(v + (((~v) << 4) & 0xF0));
             }
         }
@@ -3457,13 +3454,10 @@ s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
     }
     p = arg2;
     n = arg3;
-    if (n > 0) {
-        do {
-            if (*p == arg1) {
-                return arg3;
-            }
-            p++;
-        } while (--n != 0);
+    for (; n > 0; n--, p++) {
+        if (*p == arg1) {
+            return arg3;
+        }
     }
     arg2[arg3] = arg1;
     mask = *(u32 *)((u8 *)*(void **)((u8 *)arg1 + 0x10) + 0xBC) | 0x200000;
@@ -3495,13 +3489,10 @@ s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
     if (found != NULL) {
         p = arg2;
         n = count;
-        if (n > 0) {
-            do {
-                if (*p == found) {
-                    goto right;
-                }
-                p++;
-            } while (--n != 0);
+        for (; n > 0; n--, p++) {
+            if (*p == found) {
+                goto right;
+            }
         }
         arg2[count] = found;
         n = count + 1;
@@ -3514,6 +3505,8 @@ s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+    } else {
+        goto right;
     }
 right:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2;
@@ -3541,13 +3534,10 @@ right:
     if (found != NULL) {
         p = arg2;
         n = count;
-        if (n > 0) {
-            do {
-                if (*p == found) {
-                    goto up;
-                }
-                p++;
-            } while (--n != 0);
+        for (; n > 0; n--, p++) {
+            if (*p == found) {
+                goto up;
+            }
         }
         arg2[count] = found;
         n = count + 1;
@@ -3560,6 +3550,8 @@ right:
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+    } else {
+        goto up;
     }
 up:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
@@ -3587,13 +3579,10 @@ up:
     if (found != NULL) {
         p = arg2;
         n = count;
-        if (n > 0) {
-            do {
-                if (*p == found) {
-                    goto down;
-                }
-                p++;
-            } while (--n != 0);
+        for (; n > 0; n--, p++) {
+            if (*p == found) {
+                goto down;
+            }
         }
         arg2[count] = found;
         n = count + 1;
@@ -3606,6 +3595,8 @@ up:
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+    } else {
+        goto down;
     }
 down:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
@@ -3633,13 +3624,10 @@ down:
     if (found != NULL) {
         p = arg2;
         n = count;
-        if (n > 0) {
-            do {
-                if (*p == found) {
-                    goto done;
-                }
-                p++;
-            } while (--n != 0);
+        for (; n > 0; n--, p++) {
+            if (*p == found) {
+                goto done;
+            }
         }
         arg2[count] = found;
         n = count + 1;
@@ -3652,6 +3640,8 @@ down:
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
         count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+    } else {
+        goto done;
     }
 done:
     return count;
@@ -5379,97 +5369,95 @@ void fn_8004A264(void *arg0) {
 #pragma global_optimizer off
 void fn_8004A2EC(void *arg0) {
 u8 fn_800AA188(void);
-void GXClearVtxDesc(void);
-void GXSetVtxDesc(s32, s32);
-void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-void GXSetCullMode(s32);
-void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
-void GXSetNumTevStages(s32);
-void GXSetNumTexGens(s32, s32);
-void GXSetTevOrder(s32, s32, s32, s32);
-void GXSetNumChans(s32);
+void fn_8021FBB8(void);
+void fn_8021F4E4(s32, s32);
+void fn_8021FBF0(s32, s32, s32, s32, s32);
+void fn_80222334(s32);
+void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+void fn_802240C8(s32);
+void fn_802239D0(s32, s32);
+void fn_80223F2C(s32, s32, s32, s32);
+void fn_80220428(s32);
 void fn_802201A8(s32, s32, s32, s32, s32, s32);
 void fn_8022100C(s32);
-void PSMTXTrans(void *, f32, f32, f32);
-void *Camera_GetViewMtx(void);
-void PSMTXConcat(void *, void *, void *);
-void GXLoadPosMtxImm(void *, s32);
-void GXSetCurrentMtx(s32);
+void fn_80202540(void *, f32, f32, f32);
+void *fn_80067FDC(void);
+void fn_80202024(void *, void *, void *);
+void fn_80224D7C(void *, s32);
+void fn_80224E1C(s32);
 void fn_802245D8(s32, s32, s32, s32);
-void GXBegin(s32, s32, s32);
-f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
+void fn_80220DEC(s32, s32, s32);
+f32 fn_8002300C(void *, s8, s8, s32);
 void fn_80066D00(s32);
-extern f32 gMapColorDrawZero;
-extern f32 gMapColorDrawZBias;
+extern f32 lbl_80368F84;
+extern f32 lbl_80368F88;
 extern f32 lbl_80368F8C;
 extern f64 lbl_80368F90;
-extern u8 gBattleMap[];
+extern u8 lbl_802CA518[];
 extern u8 lbl_80285828[];
     f32 sp8[12];
-    u8 *ca;
-    u8 *row;
-    s32 yOff;
-    s32 y1;
+    register f32 f31v;
     s32 idx;
-    u8 *cell;
-    u8 *pal;
-    void *self;
-    s8 x;
+    unsigned yOff;
+    register u8 *ca;
     s8 y;
-    f32 k8c;
+    u8 *cell;
+    register f32 k8c;
+    s8 x;
     f64 k90;
-    f32 f31v;
+    register f32 z;
+    register u8 *pal;
     f32 margin;
+    u8 *row;
+    int y1;
     f32 f25v, f26v, f27v, f28v;
-    f32 z;
     s32 th;
 
-    self = arg0;
     if (fn_800AA188() != 0) {
-        GXClearVtxDesc();
-        GXSetVtxDesc(9, 1);
-        GXSetVtxDesc(0xB, 1);
-        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
-        GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
-        GXSetCullMode(1);
-        GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
-        GXSetNumTevStages(1);
-        GXSetNumTexGens(0, 4);
-        GXSetTevOrder(0, 0xFF, 0xFF, 4);
-        GXSetNumChans(0);
+        fn_8021FBB8();
+        fn_8021F4E4(9, 1);
+        fn_8021F4E4(0xB, 1);
+        fn_8021FBF0(0, 9, 1, 4, 0);
+        fn_8021FBF0(0, 0xB, 1, 5, 0);
+        fn_80222334(1);
+        fn_80222370(4, 0, 0, 1, 0, 0, 2);
+        fn_802240C8(1);
+        fn_802239D0(0, 4);
+        fn_80223F2C(0, 0xFF, 0xFF, 4);
+        fn_80220428(0);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_8022100C(0);
-        PSMTXTrans(sp8, gMapColorDrawZero, gMapColorDrawZero, gMapColorDrawZBias);
-        PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
-        GXLoadPosMtxImm(sp8, 0);
-        GXSetCurrentMtx(0);
+        fn_80202540(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        fn_80202024(fn_80067FDC(), sp8, sp8);
+        fn_80224D7C(sp8, 0);
+        fn_80224E1C(0);
         fn_802245D8(1, 4, 1, 0);
-        ca = gBattleMap;
-        k8c = lbl_80368F8C;
         pal = lbl_80285828;
+        ca = lbl_802CA518;
+        k8c = lbl_80368F8C;
         k90 = lbl_80368F90;
         y = *(s32 *)(ca + 4) - 1;
         yOff = y << 6;
         row = ca + yOff;
         goto y_test;
         do {
-            y1 = (s8)y + 1;
             x = *(s32 *)ca - 1;
+            y1 = (s8)y + 1;
+            f31v = k8c + (f32)(s8)y;
             idx = x + yOff;
             cell = row + x;
-            f31v = k8c + (f32)(s8)y;
             goto x_test;
             do {
                 if ((s8)*(cell + 0xE18E) == 0) {
-                    th = *(s16 *)(gBattleMap + (idx << 1) + 0x610E);
+                    th = *(s16 *)(lbl_802CA518 + (idx << 1) + 0x610E);
                     if (th >= 0) {
-                        margin = *(f32 *)((u8 *)self + 0x34);
+                        margin = *(f32 *)((u8 *)arg0 + 0x34);
                         f26v = f31v - margin;
                         f25v = (f32)x;
                         f27v = f25v + margin;
                         f28v = (f32)y1;
-                        GXBegin(0x98, 0, 4);
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
+                        fn_80220DEC(0x98, 0, 4);
+                        z = fn_8002300C(lbl_802CA518, x, y, 0);
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = z;
@@ -5477,23 +5465,23 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x11];
                         *(u8 *)0xCC008000 = pal[0x12];
                         *(u8 *)0xCC008000 = pal[0x13];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                        *(f32 *)0xCC008000 = f27v;
+                        z = fn_8002300C(lbl_802CA518, x, y, 1);
                         *(f32 *)0xCC008000 = f26v;
+                        *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = z;
                         *(u8 *)0xCC008000 = pal[0x14];
                         *(u8 *)0xCC008000 = pal[0x15];
                         *(u8 *)0xCC008000 = pal[0x16];
                         *(u8 *)0xCC008000 = pal[0x17];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                        *(f32 *)0xCC008000 = f25v;
+                        z = fn_8002300C(lbl_802CA518, x, y, 2);
                         *(f32 *)0xCC008000 = f28v;
+                        *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = z;
                         *(u8 *)0xCC008000 = pal[0x18];
                         *(u8 *)0xCC008000 = pal[0x19];
                         *(u8 *)0xCC008000 = pal[0x1A];
                         *(u8 *)0xCC008000 = pal[0x1B];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
+                        z = fn_8002300C(lbl_802CA518, x, y, 3);
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = z;
@@ -5501,14 +5489,14 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x1D];
                         *(u8 *)0xCC008000 = pal[0x1E];
                         *(u8 *)0xCC008000 = pal[0x1F];
-                    } else if (*(u16 *)(gBattleMap + (idx << 1) + 0xC18E) != 0) {
-                        margin = *(f32 *)((u8 *)self + 0x34);
+                    } else if (*(u16 *)(lbl_802CA518 + (idx << 1) + 0xC18E) != 0) {
+                        margin = *(f32 *)((u8 *)arg0 + 0x34);
                         f27v = f31v - margin;
                         f28v = (f32)x;
                         f26v = f28v + margin;
                         f25v = (f32)y1;
-                        GXBegin(0x98, 0, 4);
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
+                        fn_80220DEC(0x98, 0, 4);
+                        z = fn_8002300C(lbl_802CA518, x, y, 0);
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = z;
@@ -5516,23 +5504,23 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x21];
                         *(u8 *)0xCC008000 = pal[0x22];
                         *(u8 *)0xCC008000 = pal[0x23];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                        *(f32 *)0xCC008000 = f26v;
+                        z = fn_8002300C(lbl_802CA518, x, y, 1);
                         *(f32 *)0xCC008000 = f27v;
+                        *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = z;
                         *(u8 *)0xCC008000 = pal[0x24];
                         *(u8 *)0xCC008000 = pal[0x25];
                         *(u8 *)0xCC008000 = pal[0x26];
                         *(u8 *)0xCC008000 = pal[0x27];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                        *(f32 *)0xCC008000 = f28v;
+                        z = fn_8002300C(lbl_802CA518, x, y, 2);
                         *(f32 *)0xCC008000 = f25v;
+                        *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = z;
                         *(u8 *)0xCC008000 = pal[0x28];
                         *(u8 *)0xCC008000 = pal[0x29];
                         *(u8 *)0xCC008000 = pal[0x2A];
                         *(u8 *)0xCC008000 = pal[0x2B];
-                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
+                        z = fn_8002300C(lbl_802CA518, x, y, 3);
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = z;
@@ -5542,7 +5530,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x2F];
                     }
                 }
-                cell -= 1;
+                cell--;
                 idx -= 1;
                 x -= 1;
             x_test:
@@ -5550,7 +5538,7 @@ extern u8 lbl_80285828[];
             } while ((s8)x >= 0);
             row -= 0x40;
             yOff -= 0x40;
-            y -= 1;
+            y--;
         y_test:
             ;
         } while ((s8)y >= 0);
@@ -5772,34 +5760,45 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     }
 }
 
-void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
 #pragma global_optimizer off
- void *fn_80146B10(s32);
- void DebugPrint(void *, ...);
- void SeCue_PlayAt(void *, s32, f32, f32, f32);
- void Ui_PlaySeCue(void *, s32);
- extern u16 lbl_8026A9B0[40];
- extern f32 lbl_80368FA0;
- u16 *entry;
- void *cue;
- s32 i;
- entry=(u16 *)arg0;
- i=0;
- while(i<4) {
- u16 id=*(u16 *)((u8 *)entry+0x7C);
- if(id==0xFFFF) cue=0;
- else if(id<0x3E8) cue=0;
- else cue=fn_80146B10(id);
- if(cue) {
- DebugPrint((u8 *)lbl_8026A9B0+0x8A,cue);
- if(z>lbl_80368FA0) SeCue_PlayAt(cue,0x64,x,y,z);
- else Ui_PlaySeCue(cue,0x64);
- }
- i++; entry++;
- }
-#pragma global_optimizer on
-}
+void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
+    void *fn_80146B10(s32);
+    void DebugPrint(void *, ...);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
+    void Ui_PlaySeCue(void *, s32);
+    extern u8 lbl_8026A9B0[];
+    extern f32 lbl_80368FA0;
+    void *cue;
+    u16 *entry;
+    s32 i;
+    f32 fz;
+    f32 fy;
+    f32 fx;
 
+    entry = (u16 *)arg0;
+    fx = x;
+    fy = y;
+    fz = z;
+    for (i = 0; i < 4; i++, entry++) {
+        u16 id = *(u16 *)((u8 *)entry + 0x7C);
+        if (id == 0xFFFF) {
+            cue = 0;
+        } else if (id < 0x3E8) {
+            cue = 0;
+        } else {
+            cue = fn_80146B10(id);
+        }
+        if (cue != 0) {
+            DebugPrint(lbl_8026A9B0 + 0x8A, cue);
+            if (fz > lbl_80368FA0) {
+                SeCue_PlayAt(cue, 0x64, fx, fy, fz);
+            } else {
+                Ui_PlaySeCue(cue, 0x64);
+            }
+        }
+    }
+}
+#pragma global_optimizer on
 s32 fn_8004AF30(u16 arg0) {
  s32 fn_80146B10(u32);
  if(arg0 == 0xFFFF) return 0;
@@ -6821,6 +6820,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80369010;
     extern f32 lbl_80369014;
     extern f32 lbl_80369018;
+    u8 pad0x20[0x20];
     u8 sp340[0x30];
     u8 sp310[0x30];
     u8 sp2E0[0x30];
@@ -6832,21 +6832,10 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     u8 sp1C0[0x30];
     u8 sp190[0x30];
     u8 sp160[0x30];
-    f32 sp154;
-    f32 sp158;
-    f32 sp15C;
-    f32 sp148;
-    f32 sp14C;
-    f32 sp150;
-    f32 sp124;
-    f32 sp128;
-    f32 sp12C;
+    f32 sp154, sp158, sp15C, sp148, sp14C, sp150;
+    f32 sp124, sp128, sp12C;
     u8 scratch[0x120];
-    u32 sp18;
-    u32 sp14;
-    u32 sp10;
-    u32 spC;
-    u32 sp8;
+    u32 sp18, sp14, sp10, spC, sp8;
     f32 f30, f29, f28, f27, f26, f25, f31, f24;
     f32 dx, dy, t;
     s8 r29, r27;
@@ -6854,7 +6843,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     u8 *r28;
     u8 *tbl;
     f32 lim;
-
+    pad0x20[0] = 0;
     f30 = *(f32 *)(arg0 + 4);
     f29 = *(f32 *)(arg0 + 8);
     r28 = arg0 + 0x1C;
@@ -6865,7 +6854,6 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f27 = lbl_80369004 * ((f32)*(s16 *)(arg0 + 0x162) / lbl_80369008);
     r30 = (u8)((arg1 * arg0[0x27]) / 255);
     tbl = lbl_8026AA98;
-    (void)gBattleMap;
     lim = -(f25 - Map_SampleHeight(gBattleMap));
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
@@ -7656,46 +7644,46 @@ zero=lbl_80368FCC;
 void fn_8004EB14(void *arg0, u32 arg1) {
 #pragma opt_common_subs off
     void fn_800056A0(s32);
-    void DebugPrint(void *, ...);
-    void *Res_GetByName(void *);
-    void *Unit_GetActiveItemPtr(void *);
+    void fn_800056CC(void *, ...);
     s32 fn_8004ABD4(void *, s32);
+    void *fn_80037D54(void *);
+    void *fn_8000D354(void *);
     void *fn_8004B078(void *, s32);
     s32 fn_8004B0C8(void *);
     s32 fn_8004B110(void *);
     void *fn_8004B158(void *);
     s32 fn_8004B1A0(s32);
     void fn_8004FE98(void *, s32);
-    u16 FileCache_Probe(void *);
+    u16 fn_8005C144(void *);
     void *fn_8005C82C(void *, u16);
     void fn_8005F434(void *, void *, u16);
-    void GActor_LoadG(void *, s32);
-    void GActor_LoadGs(void *, s32);
-    void Model_SetAlpha(void *, s32);
+    void fn_8005F4F4(void *, s32);
+    void fn_8005F554(void *, s32);
+    void fn_8005F7B0(void *, s32);
     void fn_8005FEE8(void *, f32);
     void fn_80060638(void *);
+    s32 fn_8006135C(void *, void *);
     void *fn_80060664(void *);
-    s32 GActor_FindNode(void *, void *);
-    void GActor_Finalize(void *);
+    void fn_8006140C(void *);
     void fn_80061824(void *);
     void fn_800688D4(void *, s32, void *, s32);
-    u8 Status_Test(void *, s32);
-    void sprintf(void *, void *, ...);
-    void GMaterial_SetupAtlasTev(void);
+    u8 fn_80105BC0(void *, s32);
+    void fn_80231D94(void *, void *, ...);
+    void fn_8004B3DC(void);
     extern u8 lbl_8026AB18[];
     extern void *lbl_80366DC8;
     extern f32 lbl_80368FCC;
     extern f32 lbl_80368FFC;
     extern u8 lbl_802EFFE8[];
 
-    s32 sp[2];
+    unsigned sp8;
     void *res;
-    void *sub;
-    void *sub2;
-    void *tmp;
-    u8 flags;
-    u8 t;
+    register unsigned spC;
+    register void *sub;
     s32 id;
+    register void *tmp;
+    u8 flags;
+    void *sub2;
 
     flags = M2C_FIELD(arg0, u8 *, 3);
     if (!(flags & 2)) {
@@ -7705,12 +7693,12 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         res = get_4F128_resource(arg0, id);
         sub = (u8 *)arg0 + 0x1C;
         M2C_FIELD(arg0, void **, 0x17C) = res;
+        arg1 = (u16)arg1 | 8;
         fn_80061824(sub);
         M2C_FIELD(sub, u8 *, 0x87) = 1;
-        arg1 = (u16)arg1 | 8;
         M2C_FIELD(arg0, void **, 0x164) = fn_8005C82C(fn_8004B158(res), (u16)arg1);
-        GActor_LoadG(sub, fn_8004B0C8(res));
-        GActor_LoadGs(sub, fn_8004B110(res));
+        fn_8005F4F4(sub, fn_8004B0C8(res));
+        fn_8005F554(sub, fn_8004B110(res));
         id = get_4F128_id(arg0);
         res = get_4F128_resource(arg0, id);
         switch (M2C_FIELD(M2C_FIELD(arg0, void **, 0x190), u8 *, 8)) {
@@ -7720,11 +7708,11 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         case 3: res = fn_8004B078(res, 3); break;
         default: res = fn_8004B078(res, 0); break;
         }
-        if (!res || FileCache_Probe(res) == 0x8000U) {
+        if (!res || fn_8005C144(res) == 0x8000U) {
             res = lbl_80366DC8;
         }
         fn_8005F434(sub, res, (u16)arg1);
-        GActor_Finalize(sub);
+        fn_8006140C(sub);
         if (M2C_FIELD(sub, u32 *, 0x64) != 0) {
             fn_800056A0(0);
         }
@@ -7737,34 +7725,34 @@ void fn_8004EB14(void *arg0, u32 arg1) {
                     fn_8005FEE8(sub2, lbl_80368FFC);
                 }
             }
-            t = M2C_FIELD(arg0, u8 *, 3);
-            M2C_FIELD(arg0, u8 *, 3) = t & 0xEF;
+            M2C_FIELD(arg0, u8 *, 3) &= (u8)~0x10;
         } else {
             fn_8004FE98(arg0, 0);
         }
         {
-            u32 bits = M2C_FIELD(sub, u32 *, 0);
-            M2C_FIELD(sub, u32 *, 0) = (bits | 0x61100000) | 0x8000;
+            register u32 bits = M2C_FIELD(sub, u32 *, 0);
+            bits = (bits | 0x61100000) | 0x8000;
+            M2C_FIELD(sub, u32 *, 0) = bits;
         }
         M2C_FIELD(arg0, f32 *, 0x10) = lbl_80368FCC;
         M2C_FIELD(arg0, f32 *, 0x14) = lbl_80368FCC;
-        M2C_FIELD(arg0, f32 *, 0x18) = lbl_80368FCC;
+        M2C_FIELD((short)arg0, f32 *, 0x18) = lbl_80368FCC;
         M2C_FIELD(arg0, s16 *, 0x15E) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x160) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x162) = 0x3C;
-        sp[0] = GActor_FindNode(sub, lbl_8026AB18 + 0x8F);
-        sp[1] = GActor_FindNode(sub, lbl_8026AB18 + 0x92);
+        sp8 = fn_8006135C(sub, lbl_8026AB18 + 0x8F);
+        spC = fn_8006135C(sub, lbl_8026AB18 + 0x92);
         sub2 = (u8 *)arg0 + 0x1C;
-        M2C_FIELD(arg0, u8 *, 0x168) = sp[0];
-        M2C_FIELD(arg0, u8 *, 0x169) = sp[1];
+        M2C_FIELD(arg0, u8 *, 0x168) = sp8;
+        M2C_FIELD(arg0, u8 *, 0x169) = spC;
         fn_80060638(sub2);
-        fn_800688D4(sub2, 0, GMaterial_SetupAtlasTev, 0x4000);
         M2C_FIELD(sub2, void **, 0x90) = arg0;
-        Model_SetAlpha(sub2, 0);
+        fn_800688D4(sub2, 0, fn_8004B3DC, 0x4000);
+        fn_8005F7B0(sub2, 0);
         sub2 = (u8 *)arg0 + 0xBC;
         fn_80061824(sub2);
         M2C_FIELD(sub2, void **, 4) = lbl_802EFFE8;
-        GActor_Finalize(sub2);
+        fn_8006140C(sub2);
         M2C_FIELD(sub2, u32 *, 0) |= 0x100;
         M2C_FIELD(sub2, void **, 4) = NULL;
     }
