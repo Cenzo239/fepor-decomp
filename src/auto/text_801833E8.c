@@ -8374,30 +8374,42 @@ void fn_80193540(void *self) {
     void fn_8011D908(s32,void *);
     void *Ui_FindChild(void *,s32,s32);
     void Ui_SetWidgetText(void *,s32);
-    void *p;
     void *tmp;
-    struct { u8 *node; } it, end;
-    struct { s32 text; } caption;
-    tmp=Heap_Alloc(0x12C);
-    if(tmp) tmp=fn_80193BB8(tmp,0x108,0x6C,0x138,0xD8,0x1F4);
-    M2C_FIELD(self,void **,0x4C)=tmp;
-    tmp=M2C_FIELD(self,void **,0x4C);
-    if(tmp) M2C_FIELD(tmp,s32 *,4)++;
-    p=M2C_FIELD(self,void **,0x4C);
-    M2C_FIELD(p,s16 *,8)=0;
-    M2C_FIELD(p,s16 *,0x24)=8;
-    M2C_FIELD(p,s16 *,0x8A)=2;
-    M2C_FIELD(p,f32 *,0x128)=M2C_FIELD(self,f32 *,0x64);
-    it.node=M2C_FIELD(self,u8 **,0x48);
-    end.node=(u8 *)self+0x44;
-    for(;it.node!=end.node;it.node=M2C_FIELD(it.node,u8 **,4)) fn_801439F0(p,it.node+8,0);
+    void *node;
+    void *end;
+    void *p;
+    void *owner;
+
+    owner = self;
+    tmp = Heap_Alloc(0x12C);
+    if (tmp) {
+        tmp = fn_80193BB8(tmp, 0x108, 0x6C, 0x138, 0xD8, 0x1F4);
+    }
+    *(void **)((u8 *)owner + 0x4C) = tmp;
+    tmp = *(void **)((u8 *)owner + 0x4C);
+    if (tmp) {
+        *(s32 *)((u8 *)tmp + 4) = *(s32 *)((u8 *)tmp + 4) + 1;
+    }
+    p = *(void **)((u8 *)owner + 0x4C);
+    *(s16 *)((u8 *)p + 8) = 0;
+    *(s16 *)((u8 *)p + 0x24) = 8;
+    *(s16 *)((u8 *)p + 0x8A) = 2;
+    *(f32 *)((u8 *)p + 0x128) = *(f32 *)((u8 *)owner + 0x64);
+    node = *(void **)((u8 *)owner + 0x48);
+    end = (u8 *)owner + 0x44;
+    while (node != end) {
+        fn_801439F0(p, (u8 *)node + 8, 0);
+        node = *(void **)((u8 *)node + 4);
+    }
     fn_80143570(p);
-    M2C_FIELD(p,u8 *,0x4C)=0;
-    Ui_AddChild(self,p);
-    fn_8011D908(M2C_FIELD(M2C_FIELD(self,void **,0x68),s32 *,4),self);
-    caption.text=M2C_FIELD(M2C_FIELD(self,void **,0x68),s32 *,0x50);
-    tmp=Ui_FindChild(self,-0x1000,0);
-    if(tmp) Ui_SetWidgetText(tmp,caption.text);
+    *(u8 *)((u8 *)p + 0x4C) = 0;
+    Ui_AddChild(owner, p);
+    fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)owner + 0x68) + 4), owner);
+    node = (void *)*(s32 *)((u8 *)*(void **)((u8 *)owner + 0x68) + 0x50);
+    tmp = Ui_FindChild(owner, -0x1000, 0);
+    if (tmp) {
+        Ui_SetWidgetText(tmp, (s32)node);
+    }
 }
 
 void fn_80193668(void *arg0) {
@@ -10143,41 +10155,28 @@ s32 Ui_OpenActiveWpnKindHelp(s32 parent) {
 
 s32 fn_80196268(void *arg0) {
     void *Unit_GetActiveItemPtr(void *);
-    s32 Unit_GetWpnExp(void *, s32);
-    s32 fn_80092C50(void *, s32, s32);
+    s32 Unit_GetWpnExp(void *, u8);
+    s32 fn_80092C50(void *, u8, u8);
     s32 fn_8001CFA8(s32);
     s8 fn_80092414(void *);
-    void **slot;
+    s32 v2;
     void *obj;
     void *obj2;
     u8 kind;
+    void **slot;
     s32 v1;
-    s32 v2;
 
     slot = Unit_GetActiveItemPtr(arg0);
-    if (slot != NULL) {
-        obj = *(void **)slot;
-        if (obj == NULL) {
-            return 0;
-        }
-        kind = *(u8 *)((u8 *)obj + 0x12);
-    } else {
-        kind = 0xC;
-    }
-    if (kind >= 8U) {
-        return 0;
-    }
+    if (slot == NULL || (obj = *(void **)slot) == NULL) return 0;
+    kind = (obj != NULL) ? *(u8 *)((u8 *)obj + 0x12) : 0xC;
+    if (kind >= 8U) return 0;
     kind = (obj != NULL) ? *(u8 *)((u8 *)obj + 0x12) : 0xC;
     v1 = Unit_GetWpnExp(arg0, kind);
     v2 = fn_80092C50(arg0, ((obj2 = *(void **)slot) != NULL) ? *(u8 *)((u8 *)obj2 + 0x12) : 0xC, 0xFF);
     v1 = fn_8001CFA8(v1);
     v2 = fn_8001CFA8(v2);
-    if ((u8)v1 == (u8)v2) {
-        return 0;
-    }
-    if ((u8)v1 == 0xB5 && fn_80092414(arg0) >= 0) {
-        return 0;
-    }
+    if ((u8)v1 == (u8)v2) return 0;
+    if ((u8)v1 == 0xB5 && fn_80092414(arg0) >= 0) return 0;
     return 1;
 }
 
@@ -11826,7 +11825,6 @@ void fn_80199A60(void *arg0, s32 arg1) {
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AEA;
     u8 temp;
-    u8 *p2;
 
     Stream_Read(arg1, 4, arg0);
     *(u8 *)((u8 *)arg0 + 4) = Stream_ReadU8(arg1);
@@ -11849,8 +11847,8 @@ void fn_80199A60(void *arg0, s32 arg1) {
         }
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     } else {
-        p2 = (u8 *)arg0 + 2;
-        *p2 = __rlwimi(*p2, 0, 2, 28, 29);
+        register u8 etemp = *(u8 *)((u8 *)arg0 + 2);
+        *(u8 *)((u8 *)arg0 + 2) = __rlwimi(etemp, 0, 2, 28, 29);
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     }
     fn_801C7C18(*(u8 *)((u8 *)arg0 + 6), *(u8 *)((u8 *)arg0 + 7), *(u8 *)((u8 *)arg0 + 5));
