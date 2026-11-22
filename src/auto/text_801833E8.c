@@ -5014,38 +5014,48 @@ extern f32 lbl_8036AD80;
 extern f32 lbl_8036AD84;
 #pragma optimization_level 4
 #pragma inline auto
-void *Ui_GetColor(u8 arg0) {
+void *Ui_GetColor(u8 arg0)
+{
 #pragma fp_contract on
-u32 OSGetTick(void);
-f64 sin(f64);
-u8 *color=lbl_80296088+arg0*4;
-f32 phase, level, wave;
-u32 ticks, millis;
-switch(arg0) {
-case 19: case 34:
-ticks=OSGetTick();
-millis=ticks/((*(u32 *)0x800000F8/4)/1000);
-phase=(f32)(millis%1500)/lbl_8036AD68;
-wave=(f32)sin(lbl_8036AD6C*phase);
-wave=lbl_8036AD78*wave+lbl_8036AD78;
-wave=lbl_8036AD74*wave;
-color[0]=(u8)(lbl_8036AD70+wave);
-color[1]=(u8)(lbl_8036AD7C+wave);
-color[2]=(u8)(lbl_8036AD70+wave);
-break;
-case 20:
-ticks=OSGetTick();
-millis=ticks/((*(u32 *)0x800000F8/4)/1000);
-phase=(f32)(millis%1500)/lbl_8036AD68;
-wave=(f32)sin(lbl_8036AD6C*phase);
-wave=lbl_8036AD78*wave+lbl_8036AD78;
-wave=lbl_8036AD80*wave;
-color[0]=(u8)(lbl_8036AD70+wave);
-color[1]=(u8)(lbl_8036AD84+wave);
-color[2]=(u8)(lbl_8036AD70+wave);
-break;
-}
-return color;
+  u32 OSGetTick(void);
+  f64 sin(f64);
+  u8 *color = lbl_80296088 + (arg0 * 4);
+  f32 phase;
+  f32 level;
+  f32 wave;
+  u32 ticks;
+  u32 millis;
+  switch (arg0)
+  {
+    case 19:
+    case 34:
+      ticks = OSGetTick();
+      millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
+      wave = ((f32) (millis % 1500)) / lbl_8036AD68;
+      phase = wave;
+      wave = (f32) sin(lbl_8036AD6C * phase);
+      wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
+      wave = lbl_8036AD74 * wave;
+      color[0] = (u8) (lbl_8036AD70 + wave);
+      color[1] = (u8) (lbl_8036AD7C + wave);
+      color[2] = (u8) (lbl_8036AD70 + wave);
+      break;
+
+    case 20:
+      ticks = OSGetTick();
+      millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
+      phase = ((f32) (millis % 1500)) / lbl_8036AD68;
+      wave = (f32) sin(lbl_8036AD6C * phase);
+      wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
+      wave = lbl_8036AD80 * wave;
+      color[0] = (u8) (lbl_8036AD70 + wave);
+      color[1] = (u8) (lbl_8036AD84 + wave);
+      color[2] = (u8) (lbl_8036AD70 + wave);
+      break;
+
+  }
+
+  return color;
 }
 void fn_8018DAD4(void) {
     void *Process_Find(M2C_UNK *);
@@ -10272,42 +10282,56 @@ s32 fn_801964C8(s32 arg0) {
 }
 #pragma global_optimizer on
 s32 fn_80196558(void *arg0, void *arg1) {
-    u8 Unit_GetCarryWtLimit(void *);
-    u8 Unit_GetMagAtk(void *);
-    u8 fn_8003AF28(void *);
-    u8 fn_8003AEB0(void *);
-    u8 fn_8003ACF8(void *);
-    u8 fn_8003AA40(void *);
-    u8 fn_8003A778(void *);
-    u8 a,b,c,d,e,f,g,h;
-    s32 aa,bb,cc,dd,ee,ff,gg,hh;
+    s32 Unit_GetCarryWtLimit(void *);
+    s32 Unit_GetMagAtk(void *);
+    s32 fn_8003AF28(void *);
+    s32 fn_8003AEB0(void *);
+    s32 fn_8003ACF8(void *);
+    s32 fn_8003AA40(void *);
+    s32 fn_8003A778(void *);
+
+    void *unit = arg0;
+    void *bonus = arg1;
+    s32 a = *(u8 *)((u8 *)unit + 0x1A8);
+    s32 b = Unit_GetCarryWtLimit(unit);
+    s32 c = Unit_GetMagAtk(unit);
+    s32 d = fn_8003AF28(unit);
+    s32 e = fn_8003AEB0(unit);
+    s32 f = fn_8003ACF8(unit);
+    s32 g = fn_8003AA40(unit);
+    s32 h = fn_8003A778(unit);
+    s32 a0 = (s8)a;
+    s32 ba = a0;
+    s32 sa = a0 + *(u8 *)((u8 *)bonus + 0x1F);
+    s32 sb = (s8)b + *(u8 *)((u8 *)bonus + 0x20);
+    s32 sc = (s8)c + *(u8 *)((u8 *)bonus + 0x21);
+    s32 sd = (s8)d + *(u8 *)((u8 *)bonus + 0x22);
+    s32 se = (s8)e + *(u8 *)((u8 *)bonus + 0x23);
+    s32 sf = (s8)f + *(u8 *)((u8 *)bonus + 0x24);
+    s32 sg = (s8)g + *(u8 *)((u8 *)bonus + 0x25);
+    s32 sh = (s8)h + *(u8 *)((u8 *)bonus + 0x26);
     u8 same;
-    a=M2C_FIELD(arg0,u8 *,0x1A8);
-    b=Unit_GetCarryWtLimit(arg0);
-    c=Unit_GetMagAtk(arg0);
-    d=fn_8003AF28(arg0);
-    e=fn_8003AEB0(arg0);
-    f=fn_8003ACF8(arg0);
-    g=fn_8003AA40(arg0);
-    h=fn_8003A778(arg0);
-    aa=(s8)a+M2C_FIELD(arg1,u8 *,0x1F);
-    bb=(s8)b+M2C_FIELD(arg1,u8 *,0x20);
-    cc=(s8)c+M2C_FIELD(arg1,u8 *,0x21);
-    dd=(s8)d+M2C_FIELD(arg1,u8 *,0x22);
-    ee=(s8)e+M2C_FIELD(arg1,u8 *,0x23);
-    ff=(s8)f+M2C_FIELD(arg1,u8 *,0x24);
-    gg=(s8)g+M2C_FIELD(arg1,u8 *,0x25);
-    hh=(s8)h+M2C_FIELD(arg1,u8 *,0x26);
-    if((s8)a!=(s8)aa) same=0;
-    else if((s8)b!=(s8)bb) same=0;
-    else if((s8)c!=(s8)cc) same=0;
-    else if((s8)e!=(s8)ee) same=0;
-    else if((s8)d!=(s8)dd) same=0;
-    else if((s8)f!=(s8)ff) same=0;
-    else if((s8)g!=(s8)gg) same=0;
-    else if((s8)h!=(s8)hh) same=0;
-    else same=1;
-    return same==0;
+
+    if (ba != (s8)sa) {
+        same = 0;
+    } else if ((s8)b != (s8)sb) {
+        same = 0;
+    } else if ((s8)c != (s8)sc) {
+        same = 0;
+    } else if ((s8)e != (s8)se) {
+        same = 0;
+    } else if ((s8)d != (s8)sd) {
+        same = 0;
+    } else if ((s8)f != (s8)sf) {
+        same = 0;
+    } else if ((s8)g != (s8)sg) {
+        same = 0;
+    } else if ((s8)h != (s8)sh) {
+        same = 0;
+    } else {
+        same = 1;
+    }
+    return same == 0;
 }
 
 s32 fn_80196704(s32 arg0) {
@@ -11802,46 +11826,89 @@ void fn_80199818(u8 *arg0) {
 }
 
 void fn_801998B0(void *arg0) {
-    u32 fn_802097D4(M2C_UNK, M2C_UNK);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) (M2C_FIELD(arg0, u8 *, 0) & ~0xC0);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) (M2C_FIELD(arg0, u8 *, 0) & ~0x20);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) ((M2C_FIELD(arg0, u8 *, 0) & ~0x18) | 8);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) (M2C_FIELD(arg0, u8 *, 0) & ~4);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) (M2C_FIELD(arg0, u8 *, 0) & ~2);
-    M2C_FIELD(arg0, u8 *, 0) = (u8) (M2C_FIELD(arg0, u8 *, 0) & ~1);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~0xC0);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~0x20);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~0x10);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~0xC);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~2);
-    M2C_FIELD(arg0, u8 *, 1) = (u8) (M2C_FIELD(arg0, u8 *, 1) & ~1);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) & ~0x80);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) & ~0x40);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) & ~0x20);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) | 0x10);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) & ~2);
-    M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) | 1);
-    M2C_FIELD(arg0, u8 *, 3) = (u8) (M2C_FIELD(arg0, u8 *, 3) & ~0x80);
-    M2C_FIELD(arg0, u8 *, 3) = (u8) (M2C_FIELD(arg0, u8 *, 3) & ~0x40);
-    M2C_FIELD(arg0, u8 *, 3) = (u8) (M2C_FIELD(arg0, u8 *, 3) & ~0x20);
-    M2C_FIELD(arg0, u8 *, 3) = (u8) (M2C_FIELD(arg0, u8 *, 3) & ~0x10);
-    M2C_FIELD(arg0, u8 *, 3) = (u8) (M2C_FIELD(arg0, u8 *, 3) & ~8);
-    if (fn_802097D4(1, 0) == 1U) {
-        M2C_FIELD(arg0, u8 *, 2) = (u8) ((M2C_FIELD(arg0, u8 *, 2) & ~0xC) | 4);
+    u32 fn_802097D4(void);
+    struct Flags {
+        u8 f0:2;
+        u8 f1:1;
+        u8 f2:2;
+        u8 f3:1;
+        u8 f4:1;
+        u8 f5:1;
+        u8 g0:2;
+        u8 g1:1;
+        u8 g2:1;
+        u8 g3:2;
+        u8 g4:1;
+        u8 g5:1;
+        u8 h0:1;
+        u8 h1:1;
+        u8 h2:1;
+        u8 h3:1;
+        u8 h4:2;
+        u8 h5:1;
+        u8 h6:1;
+        u8 i0:1;
+        u8 i1:1;
+        u8 i2:1;
+        u8 i3:1;
+        u8 i4:1;
+        u8 iPad:3;
+        u8 b4;
+        u8 b5;
+        u8 b6;
+        u8 b7;
+        u8 b8;
+        u8 b9;
+        u8 bA;
+        u8 bB;
+        u8 bC;
+        u8 bD;
+        u8 bE;
+        u8 bF;
+        s32 w10;
+        s32 w14;
+    } *p;
+
+    p = (struct Flags *)arg0;
+    p->f0 = 0;
+    p->f1 = 0;
+    p->f2 = 1;
+    p->f3 = 0;
+    p->f4 = 0;
+    p->f5 = 0;
+    p->g0 = 0;
+    p->g1 = 0;
+    p->g2 = 0;
+    p->g3 = 0;
+    p->g4 = 0;
+    p->g5 = 0;
+    p->h0 = 0;
+    p->h1 = 0;
+    p->h2 = 0;
+    p->h3 = 1;
+    p->h5 = 0;
+    p->h6 = 1;
+    p->i0 = 0;
+    p->i1 = 0;
+    p->i2 = 0;
+    p->i3 = 0;
+    p->i4 = 0;
+    if (fn_802097D4() == 1U) {
+        p->h4 = 1;
     } else {
-        M2C_FIELD(arg0, u8 *, 2) = (u8) (M2C_FIELD(arg0, u8 *, 2) & ~0xC);
+        p->h4 = 0;
     }
-    M2C_FIELD(arg0, s8 *, 4) = 0x14;
-    M2C_FIELD(arg0, s8 *, 5) = 0x40;
-    M2C_FIELD(arg0, s8 *, 6) = 0;
-    M2C_FIELD(arg0, s8 *, 7) = 0;
-    M2C_FIELD(arg0, s8 *, 8) = 0x64;
-    M2C_FIELD(arg0, s8 *, 9) = 0x64;
-    M2C_FIELD(arg0, s8 *, 0xC) = 0;
-    M2C_FIELD(arg0, s32 *, 0x10) = 0;
-    M2C_FIELD(arg0, s8 *, 0xD) = 0;
-    M2C_FIELD(arg0, s8 *, 0xE) = 0;
-    M2C_FIELD(arg0, s32 *, 0x14) = 0;
+    p->b4 = 0x14;
+    p->b5 = 0x40;
+    p->b6 = 0;
+    p->b7 = 0;
+    p->b8 = 0x64;
+    p->b9 = 0x64;
+    p->bC = 0;
+    p->w10 = 0;
+    p->bD = 0;
+    p->bE = 0;
+    p->w14 = 0;
 }
 
 void fn_80199A60(void *arg0, s32 arg1) {
