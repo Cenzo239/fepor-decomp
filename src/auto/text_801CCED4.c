@@ -1128,12 +1128,12 @@ void fn_801CD940(void *arg0, void *arg1)
     extern f32 lbl_8036B4EC;
     extern f32 lbl_8036B4F0;
     extern f32 lbl_8036B4F4;
+    extern f64 lbl_8036B4F8;
 
     u8 *self;
     u8 *str;
     void **vtable;
     s32 offset;
-    s32 width;
     s16 y;
     s16 xOffset;
     s32 x;
@@ -1184,13 +1184,8 @@ void fn_801CD940(void *arg0, void *arg1)
     str = self + 0x3C;
 
     while (*(u32 *)str != 0) {
-        width = fn_8001059C(
-            str,
-            -1,
-            lbl_8036B4F0
-        );
-
-        xOffset = (s16)((0x16 - width) >> 1);
+        xOffset = (s16)((0x16 -
+            fn_8001059C(str, -1, lbl_8036B4F0)) >> 1);
 
         Prim2D_AddPrim(6);
 
@@ -2823,8 +2818,8 @@ void fn_801D029C(u8 *self, s32 index, s32 x, s32 y, u8 *color, f32 scale) {
     Effect_SetPos(effect, (f32)x, (f32)y, 935.0f);
     r = color[0] >> 1;
     data = *(u8 **)(effect + 0x30);
-    g = color[1] >> 1;
     b = color[2] >> 1;
+    g = color[1] >> 1;
     *(f32 *)(data + 0x18) = 0.2f * scale;
     data = *(u8 **)(effect + 0x30);
     {
@@ -7190,7 +7185,16 @@ memset(state+0x51A+i*0x14,0,0x14);
 }
 
 void fn_801DBEA8(void *arg0, s32 type) {
+    extern u32 gFileMenuMsgKeys[12];
+    extern u8 gUiSeCues[];
+    void *Msg_Expand(u32);
+    void strcpy(void *, u8 *);
+    void strcat(void *, void *);
+    u32 *keys;
+    u32 msgKeys[12];
+    s8 slot;
     u8 *self = arg0;
+    u8 *label;
     *(s16 *)(self + 126) = 0;
     *(s16 *)(self + 124) = 0;
     *(s16 *)(self + 178) = 0;
@@ -7203,7 +7207,29 @@ void fn_801DBEA8(void *arg0, s32 type) {
     *(s16 *)(self + 332) = 0;
     *(s16 *)(self + 386) = 0;
     *(s16 *)(self + 384) = 0;
-    FileMenu_InitEntry(self + 0x7C, (s8)self[0x15], type);
+    slot = self[0x15];
+    keys = gFileMenuMsgKeys;
+    msgKeys[0] = keys[0];
+    msgKeys[1] = keys[1];
+    msgKeys[2] = keys[2];
+    msgKeys[3] = keys[3];
+    msgKeys[4] = keys[4];
+    msgKeys[5] = keys[5];
+    msgKeys[6] = keys[6];
+    msgKeys[7] = keys[7];
+    msgKeys[8] = keys[8];
+    msgKeys[9] = keys[9];
+    msgKeys[10] = keys[10];
+    msgKeys[11] = keys[11];
+    memset(self + 0x7C, 0, 0x34);
+    *(s16 *)(self + 0x7E) = 0;
+    *(s16 *)(self + 0x7C) = 0;
+    *(s16 *)(self + 0x86) = slot;
+    *(s16 *)(self + 0x84) = type;
+    *(s16 *)(self + 0x7E) = 0x64;
+    label = self + 0x94;
+    strcpy(label, gUiSeCues + 0x5BB);
+    strcat(label, Msg_Expand(msgKeys[*(s16 *)(self + 0x84)]));
     *(s16 *)(self + 0x7E) = 0x12C;
     *(s16 *)(self + 0x7C) |= 2;
     self[0x15] = 1;
@@ -8055,40 +8081,41 @@ void fn_801DE074(void) {
     } while (i < 0x28);
 }
 
-#pragma cplusplus on
 #pragma global_optimizer off
 #pragma opt_loop_invariants off
-extern "C" void fn_801DE0EC(s32 *list, s32 parent) {
+void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
 char path[64];
-s32 *cursor=list;
-s32 owner=parent;
+s32 *cursor = list;
+s32 owner = parent;
 s32 clear;
 s32 i;
 u8 *p;
 u8 *base;
 s32 id;
 Process_UnlinkByKey(lbl_80299C58);
-base=lbl_80299A78;
-i=0;
-clear=i;
-p=base;
+i = 0;
+clear = i;
+p = base = lbl_80299A78;
 do {
-if(*(u32*)(p+8)) FileCache_ReleaseSlot(p+8);
+if (*(u32 *)(p + 8))
+FileCache_ReleaseSlot(p + 8);
 i++;
-*(u32*)(p+8)=clear;
-p+=12;
-} while(i<40);
-for(;(id=*cursor)!=-1;cursor++) {
-p=MenuResource_FindIn(base,id);
-if(p) {sprintf(path,(char*)gUiSeCues+0x661,*(s32*)(p+4));fn_8005C8B4(path);}
+*(u32 *)(p + 8) = clear;
+p += 12;
+} while (i < 40);
+for (; (id = *cursor) != -1; cursor++) {
+p = MenuResource_FindIn(base, id);
+if (p) {
+sprintf(path, (char *)gUiSeCues + 0x661, *(s32 *)(p + 4));
+fn_8005C8B4(path);
 }
-Process_CreateChild(lbl_80299C58,owner);
+}
+Process_CreateChild(lbl_80299C58, owner);
 }
 #pragma opt_loop_invariants reset
-#pragma global_optimizer reset
-#pragma cplusplus reset
+#pragma global_optimizer on
 void fn_801DE274(void) {
     s32 sprintf(char *, char *, ...);
     s32 FileCache_GetFlags(char *);
@@ -9715,58 +9742,83 @@ found_slot:
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-void fn_801E1018(u8 **arg0, s32 arg1, void *arg2) {
-    void *Process_CreateChild(void *, void *);
-    extern u8 lbl_80299E9C[];
-    s32 i;
-    s32 off;
-    s32 ctr;
-    u8 *slot;
-    u8 valid;
-    void *proc;
-
-    i = 0;
-    off = 0x2000;
-
-    for (ctr = 2; ctr != 0; ctr--) {
-        slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            valid = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            valid = 0;
-        } else {
-            valid = 1;
-        }
-        if (valid && arg1 == *(u8 *)(slot + 0x62))
-            goto create;
-        off += 0x4000;
-        slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            valid = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            valid = 0;
-        } else {
-            valid = 1;
-        }
-        if (valid && arg1 == *(u8 *)(slot + 0x62))
-            goto create;
-        off += 0x4000;
-        slot = *arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            valid = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            valid = 0;
-        } else {
-            valid = 1;
-        }
-        if (valid && arg1 == *(u8 *)(slot + 0x62))
-            goto create;
-        off += 0x4000;
-        i += 2;
+void fn_801E1018(u8 **arg0, s32 arg1, void *arg2)
+{
+  void *Process_CreateChild(void *, void *);
+  extern u8 lbl_80299E9C[];
+  s32 i;
+  s32 off;
+  u8 *slot;
+  u8 valid;
+  void *proc;
+  i = 0;
+  off = 0x2000;
+  for (arg1 = 2; arg1 != 0; arg1--)
+  {
+    slot = (*arg0) + off;
+    if ((*((u32 *) (slot + 0x40))) != 0x4645384AU)
+    {
+      valid = 0;
     }
-create:
-    proc = Process_CreateChild(lbl_80299E9C, arg2);
-    *(s32 *)((u8 *)proc + 0x60) = arg1;
+    else
+      if ((*((u32 *) (slot + 0x44))) != 0x20050201U)
+    {
+      valid = 0;
+    }
+    else
+    {
+      valid = 1;
+    }
+    if (valid && (arg1 == (*((u8 *) (slot + 0x62)))))
+    {
+      goto create;
+    }
+    off += 0x4000;
+    slot = (*arg0) + off;
+    if ((*((u32 *) (slot + 0x40))) != 0x4645384AU)
+    {
+      valid = 0;
+    }
+    else
+      if ((*((u32 *) (slot + 0x44))) != 0x20050201U)
+    {
+      valid = 0;
+    }
+    else
+    {
+      valid = 1;
+    }
+    if (valid && (arg1 == (*((u8 *) (slot + 0x62)))))
+    {
+      goto create;
+    }
+    off += 0x4000;
+    slot = (*arg0) + off;
+    if ((*((u32 *) (slot + 0x40))) != 0x4645384AU)
+    {
+      valid = 0;
+    }
+    else
+      if ((*((u32 *) (slot + 0x44))) != 0x20050201U)
+    {
+      valid = 0;
+    }
+    else
+    {
+      valid = 1;
+    }
+    if (valid && (arg1 == (*((u8 *) (slot + 0x62)))))
+    {
+      goto create;
+    }
+    off += 0x4000;
+    i += 2;
+  }
+
+  create:
+  proc = Process_CreateChild(lbl_80299E9C, arg2);
+
+  *((s32 *) (((u8 *) proc) + 0x60)) = arg1;
 }
 #pragma opt_strength_reduction reset
 #pragma global_optimizer on
