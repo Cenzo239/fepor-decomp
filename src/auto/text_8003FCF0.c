@@ -5649,6 +5649,7 @@ void Map_SetupColorGx(void) {
     fn_802245D8(1, 4, 1, 0);
 }
 
+#pragma global_optimizer off
 s32 fn_8004ABD4(void **arg0, u8 arg1) {
     void *Item_GetFlagsPtr(void **);
     u8 Item_GetMaxRange();
