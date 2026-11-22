@@ -393,44 +393,50 @@ void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2) {
 void GXSetTevOrder(s32 stage, s32 coord, s32 map, s32 color) {
     extern u32 lbl_8029E330[];
     u8 *gx;
-    u32 *used;
+    u32 *p;
+    u32 val;
     u32 raw;
     u32 tex;
     u32 *reg;
     u32 channel;
     s32 enable;
+    u32 w;
     reg = (u32 *)((u8 *)__GXData + 0x100 + (stage / 2) * 4);
     ((u32 *)((u8 *)__GXData + 0x554))[stage] = map;
     raw = map & ~0x100;
     tex = raw >= 8 ? 0 : raw;
     if (coord >= 8) {
-        used=(u32 *)__GXData;
-        *(used += 0x598/4) &= ~(1 << stage);
-        coord=0;
+        p = (u32 *)__GXData;
+        val = *(u32 *)((u8 *)p + 0x598);
+        gx = (u8 *)p + 0x598;
+        coord = 0;
+        *(u32 *)gx = val & ~(1 << stage);
     } else {
-        used=(u32 *)__GXData;
-        *(used += 0x598/4) |= 1 << stage;
+        p = (u32 *)__GXData;
+        gx = (u8 *)p + 0x598;
+        val = *(u32 *)((u8 *)p + 0x598);
+        *(u32 *)gx = val | (1 << stage);
     }
     if (stage & 1) {
-        *reg=__rlwimi(*reg,tex,12,17,19);
-        *reg=__rlwimi(*reg,coord,15,14,16);
-        channel=(color==255) ? 7 : lbl_8029E330[color];
-        *reg=__rlwimi(*reg,channel,19,10,12);
-        enable=map!=255 && !(map & 0x100);
-        *reg=__rlwimi(*reg,enable,18,13,13);
+        *reg = __rlwimi(*reg, tex, 12, 17, 19);
+        *reg = __rlwimi(*reg, coord, 15, 14, 16);
+        channel = (color == 255) ? 7 : lbl_8029E330[color];
+        *reg = __rlwimi(*reg, channel, 19, 10, 12);
+        enable = map != 255 && !(map & 0x100);
+        *reg = __rlwimi(*reg, enable, 18, 13, 13);
     } else {
-        *reg=__rlwimi(*reg,tex,0,29,31);
-        *reg=__rlwimi(*reg,coord,3,26,28);
-        channel=(color==255) ? 7 : lbl_8029E330[color];
-        *reg=__rlwimi(*reg,channel,7,22,24);
-        enable=map!=255 && !(map & 0x100);
-        *reg=__rlwimi(*reg,enable,6,25,25);
+        *reg = __rlwimi(*reg, tex, 0, 29, 31);
+        *reg = __rlwimi(*reg, coord, 3, 26, 28);
+        channel = (color == 255) ? 7 : lbl_8029E330[color];
+        *reg = __rlwimi(*reg, channel, 7, 22, 24);
+        enable = map != 255 && !(map & 0x100);
+        *reg = __rlwimi(*reg, enable, 6, 25, 25);
     }
-    GXWGFifo.u8=0x61;
-    GXWGFifo.u32=*reg;
-    gx=(u8 *)__GXData;
-    *(u16 *)(gx+2)=0;
-    *(u32 *)(gx+0x5AC) |= 1;
+    GXWGFifo.u8 = 0x61;
+    w = *reg;
+    GXWGFifo.u32 = w;
+    *(u16 *)((u8 *)__GXData + 2) = 0;
+    *(u32 *)((u8 *)__GXData + 0x5AC) |= 1;
 }
 
 void GXSetNumTevStages(u8 arg0) {
