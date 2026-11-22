@@ -7216,7 +7216,7 @@ void *fn_801BEF90(void *arg0)
     Xml_GetNamedValue(&frame.value[0], xml, &frame.name[0]);
     *(f32 *)(self + 0x1C4) = frame.value[0].real[0];
     String_Destroy(&frame.name[0], -1);
-    if (*(f32 *)(self + 0x1C4) == zero)
+    if (*(f32 *)(self + 0x1C4) == lbl_8036B2F0)
         *(f32 *)(self + 0x1C4) = lbl_8036B304;
 
     Xml_Destroy(xml, 1);
