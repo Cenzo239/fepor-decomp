@@ -5761,27 +5761,19 @@ void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
     f32 fz;
     f32 fy;
     f32 fx;
-
     entry = (u16 *)arg0;
     fx = x;
     fy = y;
     fz = z;
     for (i = 0; i < 4; i++, entry++) {
         u16 id = *(u16 *)((u8 *)entry + 0x7C);
-        if (id == 0xFFFF) {
-            cue = 0;
-        } else if (id < 0x3E8) {
-            cue = 0;
-        } else {
-            cue = fn_80146B10(id);
-        }
+        if (id == 0xFFFF) cue = 0;
+        else if (id < 0x3E8) cue = 0;
+        else cue = fn_80146B10(id);
         if (cue != 0) {
             DebugPrint(lbl_8026A9B0 + 0x8A, cue);
-            if (fz > lbl_80368FA0) {
-                SeCue_PlayAt(cue, 0x64, fx, fy, fz);
-            } else {
-                Ui_PlaySeCue(cue, 0x64);
-            }
+            if (fz > lbl_80368FA0) SeCue_PlayAt(cue, 0x64, fx, fy, fz);
+            else Ui_PlaySeCue(cue, 0x64);
         }
     }
 }
