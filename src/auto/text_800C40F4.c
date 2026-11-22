@@ -15,10 +15,7 @@ public:
 };
 #pragma cplusplus reset
 #pragma cplusplus on
-struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u); };
-#pragma dont_inline on
-AiCommandContext *AiCommandContext::set(void *u) { unit = u; return this; }
-#pragma dont_inline reset
+struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
 typedef struct MapVisibilityCell { u8 pad[0x200D]; u8 value; } MapVisibilityCell;
