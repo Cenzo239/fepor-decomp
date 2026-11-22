@@ -495,6 +495,7 @@ void *fn_80183C6C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
     f32 x;
     f32 y;
 
+    (void)lbl_8036ACE0;
     proc = (u8 *)Process_CreateEx(lbl_80295B38, arg5);
 
     *(void **)(proc + 0x30) = arg0;
@@ -14477,10 +14478,9 @@ s32 fn_8019EAF4(s32 x, s32 y) {
     extern u32 lbl_8036AF70;
 
     u8 *obj;
-    u8 *other;
-    s32 objX;
-    s32 objY;
     u32 value;
+    struct Pair { s32 x; s32 y; } p;
+    u8 *other;
 
     obj = (u8 *)Map_FindObjNear(
         (void *)Map_Get(),
@@ -14490,18 +14490,18 @@ s32 fn_8019EAF4(s32 x, s32 y) {
         0x10
     );
 
-    if (obj == NULL) {
+    if (obj == (u32)NULL) {
         fn_800056A0(0);
         return 0;
     }
 
-    objX = (s8)obj[0];
-    objY = (s8)obj[1];
+    p.x = M2C_FIELD(obj, s8 *, 0);
+    p.y = M2C_FIELD(obj, s8 *, 1);
 
     MapObjEvent_Push(
         gMapObjEventList,
-        objX,
-        objY,
+        p.x,
+        p.y,
         0x25,
         0
     );
@@ -14511,13 +14511,13 @@ s32 fn_8019EAF4(s32 x, s32 y) {
 
         other = (u8 *)Map_FindObjAt(
             (void *)Map_Get(),
-            objX,
-            objY,
+            p.x,
+            p.y,
             0x20000,
             0
         );
 
-        if (other != NULL) {
+        if (other != (u32)NULL) {
             fn_80049D08(other);
 
             value = lbl_8036AF70;
@@ -14529,7 +14529,7 @@ s32 fn_8019EAF4(s32 x, s32 y) {
         return 0;
     }
 
-    fn_8012ADAC(objX, objY, fn_800C0658());
+    fn_8012ADAC(p.x, p.y, fn_800C0658());
     fn_80013864();
 
     return 1;
