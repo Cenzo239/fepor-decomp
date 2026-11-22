@@ -6566,6 +6566,7 @@ s32 fn_800BCD7C(u8 arg0) {
 s32 fn_800BCDF0(u8 arg0) {
     extern u8 gUnits[];
     void *unit;
+    u32 flags;
 
     if (arg0 != 0) {
         unit = gUnits + (arg0 - 1) * 0x280;
@@ -6578,7 +6579,9 @@ s32 fn_800BCDF0(u8 arg0) {
     switch (M2C_FIELD(M2C_FIELD(unit, void **, 0x190), u8 *, 8)) {
     case 0:
     case 5:
-        M2C_FIELD(unit, u32 *, 0x1A0) |= 0x10000;
+        flags = M2C_FIELD(unit, u32 *, 0x1A0);
+        flags |= 0x10000;
+        M2C_FIELD(unit, u32 *, 0x1A0) = flags;
         break;
     }
     return 1;
