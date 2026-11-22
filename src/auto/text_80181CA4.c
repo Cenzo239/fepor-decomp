@@ -944,32 +944,32 @@ split:
 
 #pragma use_lmw_stmw on
 void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
-    void *Unit_FindByPerson(void *);
-    s32 Unit_FindSupportPartnerIndex(void *, void *);
-    s32 Unit_GetSupportRank(void *, s32);
+    void *fn_80016B7C(void *);
+    s32 fn_80036F5C(void *, s32);
+    s32 fn_80036E48(void *, void *);
     u8 fn_80036FC4(void *, s32);
     void fn_80182514(s32 *, void **, s32 *);
 
     void *sp8;
     void **node;
+    void *sentinel1;
     void **node2;
     void *sentinel2;
-    void *sentinel1;
-    void *id2;
+    void **walk;
     void *id1;
     void *unit2;
+    void *id2;
+    void *link;
+    unsigned int count;
     void *unit1;
-    u8 t;
     u8 take;
-    s32 s2;
+    int s2;
     s32 s1;
     s8 ss2;
     s8 ss1;
     u8 c0;
     u8 c1;
-    void **walk;
-    s32 count;
-    void *link;
+    u8 t;
 
     if (arg0 == arg1) {
         return;
@@ -981,8 +981,8 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
     while (node != sentinel1 && node2 != sentinel2) {
         id2 = node2[2];
         id1 = node[2];
-        unit2 = Unit_FindByPerson(id2);
-        unit1 = Unit_FindByPerson(id1);
+        unit2 = fn_80016B7C(id2);
+        unit1 = fn_80016B7C(id1);
         if (unit2 != NULL) {
             t = *(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8);
             if (t != 0 && t != 5 && t != 6 && t != 7) {
@@ -1002,28 +1002,28 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
         } else if (unit1 == NULL) {
             take = 1;
         } else {
-            s2 = Unit_FindSupportPartnerIndex(*arg2, id2);
-            s1 = Unit_FindSupportPartnerIndex(*arg2, id1);
+            s2 = fn_80036E48(*arg2, id2);
+            s1 = fn_80036E48(*arg2, id1);
             ss1 = (s8)s1;
-            c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+            c0 = (u8)fn_80036F5C(*arg2, ss1);
             ss2 = (s8)s2;
-            c1 = (u8)Unit_GetSupportRank(*arg2, ss2);
+            c1 = (u8)fn_80036F5C(*arg2, ss2);
             if (c1 != c0) {
-                c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
-                take = (c0 <= (u8)Unit_GetSupportRank(*arg2, ss2));
+                c0 = (u8)fn_80036F5C(*arg2, ss1);
+                take = (c0 <= (u8)fn_80036F5C(*arg2, ss2));
             } else {
                 c0 = fn_80036FC4(*arg2, ss1);
                 take = (c0 <= fn_80036FC4(*arg2, ss2));
             }
         }
-        if (take != 0) {
+        if (take) {
             walk = (void **)node2[1];
             count = 1;
             while (walk != sentinel2) {
                 id2 = walk[2];
                 id1 = node[2];
-                unit2 = Unit_FindByPerson(id2);
-                unit1 = Unit_FindByPerson(id1);
+                unit2 = fn_80016B7C(id2);
+                unit1 = fn_80016B7C(id1);
                 if (unit2 != NULL) {
                     t = *(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8);
                     if (t != 0 && t != 5 && t != 6 && t != 7) {
@@ -1043,15 +1043,15 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
                 } else if (unit1 == NULL) {
                     take = 1;
                 } else {
-                    s2 = Unit_FindSupportPartnerIndex(*arg2, id2);
-                    s1 = Unit_FindSupportPartnerIndex(*arg2, id1);
+                    s2 = fn_80036E48(*arg2, id2);
+                    s1 = fn_80036E48(*arg2, id1);
                     ss1 = (s8)s1;
-                    c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+                    c0 = (u8)fn_80036F5C(*arg2, ss1);
                     ss2 = (s8)s2;
-                    c1 = (u8)Unit_GetSupportRank(*arg2, ss2);
+                    c1 = (u8)fn_80036F5C(*arg2, ss2);
                     if (c1 != c0) {
-                        c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
-                        take = (c0 <= (u8)Unit_GetSupportRank(*arg2, ss2));
+                        c0 = (u8)fn_80036F5C(*arg2, ss1);
+                        take = (c0 <= (u8)fn_80036F5C(*arg2, ss2));
                     } else {
                         c0 = fn_80036FC4(*arg2, ss1);
                         take = (c0 <= fn_80036FC4(*arg2, ss2));
@@ -1197,9 +1197,11 @@ s32 Ai_TryMoveToFactionPos(void *arg0) {
     }
     if (gAiState[0x21C] != 0) {
         u8 d = ((u8 *)gUiContext)[0xD];
-        if ((s8)fn_800172D4(&p->unk236) == (s8)d) {
+        s8 t1 = fn_800172D4(&p->unk236);
+        if (t1 == (s8)d) {
             u8 e = ((u8 *)gUiContext)[0xE];
-            if ((s8)fn_80017290(&p->unk236) == (s8)e) {
+            s8 t2 = fn_80017290(&p->unk236);
+            if (t2 == (s8)e) {
                 if (fn_800BE968(0xE, ((u8 *)gUiContext)[0xD], ((u8 *)gUiContext)[0xE]) != 0) {
                     ((u8 *)gUiContext)[0x8] = 0xE;
                 }
@@ -1220,12 +1222,15 @@ s32 Ai_TryReactToIkeStatus(void *arg0) {
     extern u8 gAiState[];
     void *self;
     u8 *ai;
+    u8 d;
+    u8 e;
     s8 y;
     s8 x;
     void *ike;
     u32 flags;
     u8 tx;
     u8 ty;
+    s8 t;
 
     self = arg0;
     ike = Unit_FindIke((u8 *)self + 0x236);
@@ -1250,14 +1255,14 @@ s32 Ai_TryReactToIkeStatus(void *arg0) {
         fn_80101448(self, x, y, 1, 0xFFFF, 1, 0, -1);
     }
     if (ai[0x21C] != 0) {
-        u8 d;
-        u8 e;
         ai = (u8 *)gUiContext;
         d = ai[0xD];
-        if ((s8)fn_800172D4((u8 *)self + 0x236) == (s8)d) {
+        t = fn_800172D4((u8 *)self + 0x236);
+        if (t == (s8)d) {
             self = (u8 *)gUiContext;
             e = ((u8 *)self)[0xE];
-            if ((s8)fn_80017290((u8 *)arg0 + 0x236) == (s8)e) {
+            t = fn_80017290((u8 *)arg0 + 0x236);
+            if (t == (s8)e) {
                 if (fn_800BE968(0xE, ai[0xD], ((u8 *)self)[0xE]) != 0) {
                     ((u8 *)gUiContext)[0x8] = 0xE;
                 }
