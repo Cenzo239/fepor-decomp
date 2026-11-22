@@ -9485,8 +9485,8 @@ do_init:
 
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
-s32 off;
 u8 *slot;
+s32 off;
 s32 i;
 u8 valid;
 i=0; off=0x2000;
