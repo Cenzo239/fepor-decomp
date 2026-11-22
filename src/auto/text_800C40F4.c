@@ -3920,12 +3920,10 @@ void *fn_800CB27C(void) {
 void *fn_800CB37C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
-
     extern u8 gBattleReplayActive;
     extern u8 *gBattleReplayScene;
     extern u32 gBattle[];
-
-    u8 *base;
+    u8 *statusBase;
     void **slot;
     void *obj;
     void *inner;
@@ -3933,48 +3931,34 @@ void *fn_800CB37C(void) {
     u64 bits;
 
     if (gBattleReplayActive != 0) {
-        p = (s8 *)(gBattleReplayScene + 0x40);
-        if (*p != 0) {
-            return p;
+        p = (s8 *)((u8 *)gBattleReplayScene + 0x40);
+        if (*p == 0) {
+            return 0;
         }
-        return 0;
+        return p;
     }
 
-    base = (u8 *)gBattle;
-    slot = (void **)(base + 0x28C);
-
+    slot = (void **)((u8 *)gBattle + 0x28C);
     bits = *Item_GetFlagsPtr(slot);
-
     if ((bits & 0x200ULL) != 0) {
-        base += 0x1BC;
-
-        if (Status_Test(base, 8) != 0) {
-            if (Status_Test(base, 9) == 0) {
+        statusBase = (u8 *)gBattle + 0x1BC;
+        if (Status_Test(statusBase, 8) != 0) {
+            if (Status_Test(statusBase, 9) == 0) {
                 return 0;
             }
         }
     }
 
-    if (slot == NULL) {
-        return 0;
+    if (slot != NULL) {
+        obj = *slot;
+        if (obj != NULL) {
+            inner = obj != NULL ? *(void **)obj : 0;
+            if (inner != NULL) {
+                return (u8 *)inner + 4;
+            }
+            return 0;
+        }
     }
-
-    obj = *slot;
-
-    if (obj == NULL) {
-        return 0;
-    }
-
-    if (obj != NULL) {
-        inner = *(void **)obj;
-    } else {
-        inner = 0;
-    }
-
-    if (inner != NULL) {
-        return (u8 *)inner + 4;
-    }
-
     return 0;
 }
 
@@ -27267,9 +27251,9 @@ void fn_800FAB28(void *arg0) {
     extern u8 gAiState[];
 
     u8 *unit;
-    u8 *cmd;
-    u8 *other;
     u8 (*filter)(void *);
+    u8 *other;
+    u8 *cmd;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
