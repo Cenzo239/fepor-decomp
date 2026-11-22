@@ -1575,15 +1575,20 @@ void fn_8012DFA8(void *arg0) {
     if (find == NULL) {
         sel = -1;
     } else {
+        u8 *base;
         sel = 0;
-        off = 0;
-        slot = *(u8 **)(self + 0x3C);
-        for (i = self[0x61]; i != 0; i--) {
-            if (*(void **)(slot + off) == find) {
-                goto found_sel;
-            }
-            off += 0x24;
-            sel++;
+        off = sel;
+        base = *(u8 **)(self + 0x3C);
+        i = self[0x61];
+        if (i > 0) {
+            do {
+                if (*(void **)(base + off) != find) {
+                    off += 0x24;
+                    sel += 1;
+                } else {
+                    goto found_sel;
+                }
+            } while (--i != 0);
         }
         sel = -1;
     found_sel:;
@@ -1605,7 +1610,7 @@ void fn_8012DFA8(void *arg0) {
     *(s16 *)(self + 0x5A) = y;
     *(s16 *)(self + 0x5C) = spC.a;
     sp8.b = y;
-    *(s16 *)(self + 0x5E) = spC.b;
+    *(s16 *)(self + 0x5E) = y;
 
     tmp = Heap_Alloc(0x58);
     if (tmp != NULL) {
