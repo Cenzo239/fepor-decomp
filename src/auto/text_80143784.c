@@ -1922,6 +1922,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
         Node *next;
         s32 data[2];
     };
+    struct Pair { s32 v[2]; };
     struct Holder {
         void *list;
         Node *node;
@@ -1936,8 +1937,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     Node *pos;
     Node *n;
     void *list;
-    s32 a;
-    s32 b;
+    s32 *dst;
 
     list = (s32 *)arg1 + 1;
     node = (Node *)Heap_Alloc(0x10);
@@ -1947,11 +1947,9 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     }
     {
         Holder h(list, node);
-        if (&node->data[0] != 0) {
-            a = ((s32 *)arg3)[0];
-            b = ((s32 *)arg3)[1];
-            node->data[0] = a;
-            node->data[1] = b;
+        dst = &node->data[0];
+        if (dst != 0) {
+            *(struct Pair *)dst = *(struct Pair *)arg3;
         }
         pos = *(Node **)arg2;
         n = h.node;
@@ -2206,30 +2204,30 @@ return 0;
 }
 
 void fn_801453F0(void) {
-    void fn_8000BF00(void *);
-    void *fn_8000CAF0(void *, s32);
-    extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
-    extern f32 lbl_8036A778;
+    void Process_UnlinkByKey(void *);
+    void *Process_Create(void *, s32);
+    extern u8 gBgmVolFadeProcs[];
+    extern u8 gBgmVol;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
-    f32 a;
-    f32 b;
 
-    base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x8C), 3);
-    a = lbl_8036A778;
-    b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
+    base = (s32)gBgmVolFadeProcs;
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
+    temp_r3 = Process_Create((void *)(base + 0x8C), 3);
+    {
+        f32 a = gBgmVolTimerZero;
+        f32 b = lbl_8036A77C;
+        *(f32 *)((u8 *)temp_r3 + 0x34) = b;
+        *(f32 *)((u8 *)temp_r3 + 0x30) = a;
+    }
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 void fn_80145488(void) {
@@ -2254,26 +2252,27 @@ void fn_80145520(void) {
     extern u8 gBgmVol;
     extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
-    extern f64 lbl_8036A780;
-    s32 base;
-    void *temp_r3;
+    s32 base = (s32)gBgmVolFadeProcs;
+    f32 *proc;
     f32 a;
     f32 b;
+    f32 c;
+    u32 vol;
 
-    (void)lbl_8036A780;
-    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = Process_Create((void *)(base + 0x64), 3);
+    proc = (f32 *)Process_Create((void *)(base + 0x64), 3);
     a = gBgmVolTimerZero;
     b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
+    proc[12] = a;
+    proc[13] = b;
+    vol = gBgmVol;
+    c = (f32)vol;
+    proc[14] = c;
 }
 
 /* Stop BGM volume fades; snap gBgmVol to 0, or start a fade-out over `frames` ticks. */
@@ -2310,30 +2309,30 @@ void BgmVol_FadeOut(s32 frames) {
 }
 
 void fn_80145684(void) {
-    void fn_8000BF00(void *);
-    void *fn_8000CAF0(void *, s32);
-    extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
-    extern f32 lbl_8036A778;
+    void Process_UnlinkByKey(void *);
+    void *Process_Create(void *, s32);
+    extern u8 gBgmVolFadeProcs[];
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
+    extern volatile u8 gBgmVol;
     s32 base;
     void *temp_r3;
     f32 a;
     f32 b;
 
-    base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x3C), 3);
-    a = lbl_8036A778;
+    base = (s32)gBgmVolFadeProcs;
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
+    temp_r3 = Process_Create((void *)(base + 0x3C), 3);
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 void fn_8014571C(void) {
@@ -2347,6 +2346,7 @@ void fn_8014571C(void) {
     void *temp_r3;
     f32 a;
     f32 b;
+    volatile f32 *dst;
 
     base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
@@ -2356,11 +2356,12 @@ void fn_8014571C(void) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = Process_Create((void *)(base + 0x28), 3);
+    dst = (volatile f32 *)((u8 *)temp_r3 + 0x30);
     a = gBgmVolTimerZero;
     b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
+    dst[1] = b;
+    dst[0] = a;
+    dst[2] = (f32)gBgmVol;
 }
 
 void fn_801457B4(void) {
@@ -2591,6 +2592,148 @@ s32 fn_80145F58(void *arg0, void **arg1) {
  if(*(void **)entry && Str_Cmp(*(void **)entry,arg0)==0) { *arg1++=entry; matches++; }
  index++; entry+=0x10;
  } return matches;
+}
+
+void *fn_80145FE8(void) {
+    u8 fn_800BDD08(void *, void *, void *);
+    void *fn_8014D8FC(void *, void *, void *);
+    s32 Str_Cmp(void *, void *);
+    extern u8 lbl_80276BC8[];
+    extern u8 gBattleState[];
+    extern u8 gBattle[];
+    s32 var_r28;
+    void *a;
+    void *b;
+    void *pa;
+    void *pb;
+    u8 state;
+
+    pa = *(void **)(gBattle + 0x188);
+    pb = *(void **)(gBattle + 0x468);
+    a = *(void **)pa;
+    b = *(void **)pb;
+    state = *(u8 *)((u8 *)fn_8014D8FC(gBattleState, *(void **)(gBattle + 0x468), *(void **)(gBattle + 0x188)) + 0x3C);
+    var_r28 = state;
+    if (var_r28 >= 0x32) {
+        var_r28 = var_r28 - 0x32;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xA6) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xA6) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xC3) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xC3) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xCF) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xCF) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xDA) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xDA) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xE7) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xE7) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xF2) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xF2) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0xFD) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0xFD) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x109) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x109) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x114) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x114) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x11F) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x11F) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x12C) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x12C) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x139) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x139) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x146) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x146) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x150) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x150) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x15B) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x15B) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if (((Str_Cmp(a, lbl_80276BC8 + 0x168) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x168) == 0)) && (var_r28 == 0x10)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x173) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x173) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x17F) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x17F) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x18A) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x18A) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x197) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x197) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1A1) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1A1) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1AD) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1AD) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if (((Str_Cmp(a, lbl_80276BC8 + 0x1B9) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1B9) == 0)) && (var_r28 == 0x16)) {
+        return lbl_80276BC8 + 0x1C1;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1CF) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1CF) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1DB) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1DB) == 0)) {
+        return lbl_80276BC8 + 0x1C1;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1E6) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1E6) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x1F3) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x1F3) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x201) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x201) == 0)) {
+        return lbl_80276BC8 + 0x1C1;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x20F) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x20F) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x21C) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x21C) == 0) ||
+        (Str_Cmp(a, lbl_80276BC8 + 0x22C) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x22C) == 0) ||
+        (Str_Cmp(a, lbl_80276BC8 + 0x240) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x240) == 0)) {
+        return lbl_80276BC8 + 0x254;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x269) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x269) == 0)) {
+        return lbl_80276BC8 + 0xB5;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x274) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x274) == 0)) {
+        return lbl_80276BC8 + 0x1C1;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x280) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x280) == 0)) {
+        return lbl_80276BC8 + 0x28C;
+    }
+    if ((Str_Cmp(a, lbl_80276BC8 + 0x2A2) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x2A2) == 0)) {
+        if (fn_800BDD08(gBattleState + 0xB4, lbl_80276BC8 + 0x2AF, gBattleState) == 0) {
+            return lbl_80276BC8 + 0x2C4;
+        }
+        return lbl_80276BC8 + 0x28C;
+    }
+    if (*(u8 *)(*(u8 **)(gBattle + 0x190) + 8) == 0) {
+        if (var_r28 < 0x13) {
+            return lbl_80276BC8 + 0x2D7;
+        }
+        return lbl_80276BC8 + 0x2E4;
+    }
+    if (var_r28 < 0x13) {
+        return lbl_80276BC8 + 0x2F1;
+    }
+    return lbl_80276BC8 + 0x2FE;
 }
 
 s32 fn_80146AE4(void) {
