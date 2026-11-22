@@ -15674,16 +15674,16 @@ s32 fn_801A06EC(u8 arg0, u8 arg1, s32 arg2) {
         return 0;
     }
 
-    var_r29 = (s8)unit2[0x19E];
-    temp = (s8)unit1[0x19E];
-    var_r28 = (s8)unit2[0x19F];
+    var_r29 = *(s8 *)(unit2 + 0x19E);
+    temp = *(s8 *)(unit1 + 0x19E);
+    var_r28 = *(s8 *)(unit2 + 0x19F);
     if (var_r29 > temp) {
         var_r29 = var_r29 + arg2;
     }
     if (var_r29 < temp) {
         var_r29 = var_r29 - arg2;
     }
-    temp = (s8)unit1[0x19F];
+    temp = *(s8 *)(unit1 + 0x19F);
     if (var_r28 > temp) {
         var_r28 = var_r28 + arg2;
     }
