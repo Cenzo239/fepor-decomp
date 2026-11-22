@@ -2498,8 +2498,8 @@ return self;
 void fn_80166AE8(s32 x, s32 y, void *msg, void *parent) {
     void *Process_CreateChild(void *, void *);
     void *Msg_Expand(void *);
-    void *Process_Find(void *);
     void Process_Create(void *, void *);
+    void *Process_Find(void *);
     void *memset(void *, s32, s32);
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -2507,17 +2507,14 @@ void fn_80166AE8(s32 x, s32 y, void *msg, void *parent) {
     extern u8 lbl_80293D40[];
     extern u8 lbl_80293D20[];
     extern u8 gUnitInfoPopup[];
-    extern u8 lbl_80277A20[];
     extern f32 lbl_8036A92C;
-    extern f64 lbl_8036A930;
     extern s32 gUnitInfoPopupFlag;
-    void *expanded;
+    extern u8 lbl_80277A20[];
     void *p;
-    u8 open;
-    f32 f0;
-    u8 *base;
     u8 *popup;
-    f64 conv;
+    u8 open;
+    u8 *base;
+    void *expanded;
 
     Process_CreateChild(lbl_80293D40, parent);
     expanded = Msg_Expand(msg);
@@ -2529,25 +2526,20 @@ void fn_80166AE8(s32 x, s32 y, void *msg, void *parent) {
     } else {
         open = 1;
     }
-    if (open == 0) {
+    if (!open) {
         Process_Create(lbl_80293D20, parent);
         memset(gUnitInfoPopup, 0, 0x124);
         popup = gUnitInfoPopup;
         base = lbl_80277A20;
-        conv = lbl_8036A930;
-        f0 = lbl_8036A92C;
         *(f32 *)(popup + 0xDC) = (f32)x;
         *(f32 *)(popup + 0xE0) = (f32)y;
         *(f32 *)(popup + 0xF4) = (f32)x;
         *(f32 *)(popup + 0xF8) = (f32)y;
-        *(f32 *)(popup + 0x10C) = f0;
-        *(f32 *)(popup + 0x110) = f0;
+        *(f32 *)(popup + 0x10C) = lbl_8036A92C;
+        *(f32 *)(popup + 0x110) = lbl_8036A92C;
         fn_8005C8B4(base + 0x42);
         Ui_PlaySeCue(base + 0x52, 0x64);
-        Ui_ShowUnitInfoText(popup, expanded, (f32)x, (f32)y);
-        if (conv) {
-            /* keep lbl_8036A930 */
-        }
+        Ui_ShowUnitInfoText(gUnitInfoPopup, expanded, (f32)x, (f32)y);
     }
     popup = gUnitInfoPopup;
     *(s16 *)(popup + 0xD8) = 1;
