@@ -860,7 +860,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     void fn_80216050(void *, void *, s32);
     extern void fn_80218C34;
     extern void fn_80218CA4;
-    extern u16 __CARDBlock[];
+    extern u16 lbl_8033A200[];
     extern u8 lbl_8029DA00[];
     extern u32 lbl_80366FE8;
 
@@ -881,7 +881,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     u32 spA4[5];
     u32 w0, w1, w2, w3, w4;
 
-    card = (u8 *)__CARDBlock + chan * 0x110;
+    card = (u8 *)lbl_8033A200 + chan * 0x110;
     work = card + 0x30;
     buf = *(void **)(card + 0x80);
     aligned = ((u32)buf + 0x2F) & ~0x1Fu;
@@ -889,7 +889,7 @@ s32 fn_802180DC(s32 chan, void *out) {
 
     lbl_80366FE8 = OSGetTick();
     lbl_80366FE8 = lbl_80366FE8 * 0x41C64E6D + 0x3039;
-    seed = (0x7FEC8000u | ((lbl_80366FE8 >> 16) & 0x7FFF)) & 0xFFFFF000u;
+    seed = (0x7FED8000u | ((lbl_80366FE8 >> 16) & 0x7FFF)) & 0xFFFFF000u;
 
     tick = fn_80218018();
     if (fn_80217ED4(chan, seed, spA4, tick, 0) < 0) {
@@ -1093,7 +1093,6 @@ s32 fn_802180DC(s32 chan, void *out) {
     scramble |= t >> 31;
     *(u32 *)(card + 0x2C) = scramble;
 
-    /* final 0x21-step and DMA setup */
     scramble = *(u32 *)(card + 0x2C);
     i = 0;
     {
@@ -1179,13 +1178,11 @@ void fn_80218C34(void *arg0)
 
     fn_80215F78(0xFF000000);
 
-#pragma peephole off
     if (fn_80215F40() == 0) {
         fn_80215F78(previous);
         if (fn_80215F40() == 0) {
         }
     }
-#pragma peephole on
 
     (void)chan;
 }
@@ -1237,10 +1234,7 @@ void fn_80218CA4(void *arg0) {
 
     i = 0;
     scramble = *(u32 *)(card + 0x2C);
-    n = (u32)(tick + *(s32 *)(card + 0x14));
-    n += 4;
-    n <<= 3;
-    n += 1;
+    n = (((u32)(tick + *(s32 *)(card + 0x14)) + 4) << 3) + 1;
     if (n != 0) {
         if (n > 8) {
             rem = n - 8;
@@ -1537,25 +1531,36 @@ void fn_80219664(s32 chan, s32 result) {
     }
 }
 
-void fn_80219734(s32 arg0, s32 arg1) {
+void fn_80219734(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
-    s32 fn_802191F0(s32,u32,s32,void *,void (*)(s32,s32));
-    s32 __CARDPutControlBlock(void *,s32);
-    void fn_80219664(s32,s32);
-    void (*callback)(s32,s32);
+    s32 fn_802191F0(s32, u32, s32, void *, void (*)(s32, s32));
+    s32 __CARDPutControlBlock(void *, s32);
+    void fn_80219664(s32, s32);
+    u8 pad[8];
+    void (*callback)(s32, s32);
     u8 *dir;
-    s32 result;
+    u8 *dst;
     u8 *card;
 
-    result = arg1;
-    card = (u8 *)__CARDBlock + arg0 * 0x110;
-    if ((result < 0) || (dir = *(u8 **)(card+0x84), result = fn_802191F0(arg0, *(u32 *)(card+0xC) * ((u32)(dir - *(u8 **)(card+0x80)) >> 13), 0x2000, dir, fn_80219664), result < 0)) {
-        if (*(u32 *)(card+0xD0) == 0) __CARDPutControlBlock(card,result);
-        callback = *(void (**)(s32,s32))(card+0xD8);
-        if (callback) {
-            *(void **)(card+0xD8) = 0;
-            callback(arg0,result);
-        }
+    (void)pad;
+    card = (u8 *)__CARDBlock + chan * 0x110;
+    if (result < 0) {
+        goto fail;
+    }
+    dir = *(u8 **)(card + 0x84);
+    dst = dir;
+    result = fn_802191F0(chan, *(u32 *)(card + 0xC) * ((u32)(dir - *(u8 **)(card + 0x80)) >> 13), 0x2000, dst, fn_80219664);
+    if (result >= 0) {
+        return;
+    }
+fail:
+    if (*(u32 *)(card + 0xD0) == 0) {
+        __CARDPutControlBlock(card, result);
+    }
+    callback = *(void (**)(s32, s32))(card + 0xD8);
+    if (callback != NULL) {
+        *(void **)(card + 0xD8) = NULL;
+        callback(chan, result);
     }
 }
 
@@ -1581,7 +1586,6 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     *(s32 *)(temp_r30 + 0xD8) = arg1;
     return __CARDEraseSector(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
 }
-#pragma optimization_level reset
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;
     u16 temp;
@@ -1922,7 +1926,6 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     s32 fn_80219A70(void *);
     s32 fn_80219CF4(void *, s32 *);
     s32 fn_80219F34(void *, s32 *);
-    void fn_802198C0(u16 *, s32, u16 *, u16 *);
     s32 __CARDUpdateDir(s32, s32);
     s32 fn_802195B0(s32, void *, void *);
 
@@ -1932,9 +1935,9 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     s32 altFat;
     s32 altDir;
     s32 cBlock;
-    s32 flagDirty;
-    s32 flagDir;
-    s32 flagFat;
+    s32 flagFat = 0;
+    s32 flagDir = 0;
+    s32 flagDirty = 0;
     s32 ret;
     u8 *base;
     u16 *scratch;
@@ -1950,10 +1953,10 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     u16 limit;
     u16 cnt;
     s32 irq;
+    u16 temp;
+    u16 *src;
+    u16 *p1;
 
-    flagFat = 0;
-    flagDir = 0;
-    flagDirty = 0;
     if (outSize != 0) {
         *outSize = 0;
     }
@@ -1975,7 +1978,8 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     blockFat[0] = base + 0x6000;
     blockDir[1] = base + 0x4000;
     blockFat[1] = base + 0x8000;
-    if (cBlock == 1) {
+    switch (cBlock) {
+      case 1:
         if (*(void **)((u8 *)card + 0x84) == 0) {
             *(u8 **)((u8 *)card + 0x84) = blockDir[altDir];
             memcpy(blockDir[altDir], blockDir[altDir ^ 1], 0x2000);
@@ -2034,7 +2038,38 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     }
     if (flagDirty != 0) {
         fat = *(u16 **)((u8 *)card + 0x88);
-        fn_802198C0(fat + 2, 0x1FFC, fat, fat + 1);
+        p1 = fat + 1;
+        *fat = 0;
+        *p1 = 0;
+        src = fat + 2;
+        i = 0x1FFC / 2;
+        if (i > 0) {
+            s32 n = (u32)i >> 3;
+            if (n != 0) {
+                do {
+                    *fat += src[0]; temp = src[0]; *p1 += (u16)~temp;
+                    *fat += src[1]; temp = src[1]; *p1 += (u16)~temp;
+                    *fat += src[2]; temp = src[2]; *p1 += (u16)~temp;
+                    *fat += src[3]; temp = src[3]; *p1 += (u16)~temp;
+                    *fat += src[4]; temp = src[4]; *p1 += (u16)~temp;
+                    *fat += src[5]; temp = src[5]; *p1 += (u16)~temp;
+                    *fat += src[6]; temp = src[6]; *p1 += (u16)~temp;
+                    *fat += src[7]; temp = src[7]; src += 8; *p1 += (u16)~temp;
+                } while (--n);
+            }
+            i &= 7;
+            if (i != 0) {
+                do {
+                    *fat += *src; temp = *src; src++; *p1 += (u16)~temp;
+                } while (--i);
+            }
+        }
+        if (*fat == 0xFFFF) {
+            *fat = 0;
+        }
+        if (*p1 == 0xFFFF) {
+            *p1 = 0;
+        }
     }
     memcpy(blockFat[altFat ^ 1], blockFat[altFat], 0x2000);
     if (flagDir != 0) {
@@ -2165,16 +2200,16 @@ s32 EXIGetID(s32,s32,u32*);s32 EXIUnlock(s32);
 s32 fn_8021A7FC(u32);s32 fn_80216E98(s32,void*);s32 fn_80217D4C(void);s32 fn_80216F88(s32);s32 fn_80216DA8(s32,u8*);s32 fn_80239488(s32);s32 fn_802180DC(s32,void*);
 u8 *__OSLockSramEx(void);void __OSUnlockSramEx(s32);
 s32 fn_80216CE8(s32,s32);void fn_80239298(s32,void*);void fn_80216AA4(void);void fn_8021AE98(s32,s32);
-s32 fn_802190A4(s32,u32,u32,void*,void*);void __CARDPutControlBlock(void*,s32);void fn_8021B170(s32,s32);
-extern u16 __CARDBlock[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
+s32 fn_802190A4(s32,u32,u32,void*,void*);void fn_80217BD0(void*,s32);void fn_8021B170(s32,s32);
+extern u16 lbl_8033A200[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
 u8 status;
 u32 id;
 u8 *card;
 s32 rc, i, sum;
 s32 result;
 u16 code;
-u8 *serial, *p, *sram;
-card=(u8*)__CARDBlock+chan*0x110;
+u8 *sram, *p, *serial;
+card=(u8*)lbl_8033A200+chan*0x110;
 if(*(s32*)(card+0x24)==0) {
 if(!EXIGetID(chan,0,&id)) result=-3;
 else if(fn_8021A7FC(id))result=0;else result=-2;
@@ -2213,7 +2248,7 @@ DCInvalidateRange(*(void**)(card+0x80),0xa000);
 }
 i=*(s32*)(card+0x24)-2;
 rc=fn_802190A4(chan,*(s32*)(card+0xc)*i,0x2000,*(u8**)(card+0x80)+(i<<13),fn_8021AE98);
-if(rc<0)__CARDPutControlBlock(card,rc);
+if(rc<0)fn_80217BD0(card,rc);
 return rc;
 fail:
 EXIUnlock(chan);fn_8021B170(chan,result);return result;
@@ -2410,7 +2445,6 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     u16 dsp;
     void *sram;
     s64 time;
-    u32 *timeParts;
     u32 timeLo;
     u32 timeHi;
     s64 seed;
@@ -2438,9 +2472,8 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     __OSUnlockSram(0);
 
     time = OSGetTime();
-    timeParts = (u32 *)&time;
-    timeHi = timeParts[0];
-    timeLo = timeParts[1];
+    timeHi = (u32)(time >> 32);
+    timeLo = (u32)time;
     seed = time;
     flash = __OSLockSramEx() + chan * 0xC;
     p = flash;
