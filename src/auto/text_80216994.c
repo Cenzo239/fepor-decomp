@@ -1599,7 +1599,6 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     *(s32 *)(temp_r30 + 0xD8) = arg1;
     return __CARDEraseSector(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
 }
-#pragma optimization_level reset
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;
 
