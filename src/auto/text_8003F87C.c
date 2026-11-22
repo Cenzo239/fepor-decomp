@@ -1435,8 +1435,10 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void fn_80061824(void *);
     s32 fn_80065EE8(void *);
     s32 fn_8006CE14(void *);
-    u8 FileCache_Exists(void *);
-    s32 fn_8006D948(void *);
+          u8 FileCache_Exists(void *);
+      s32 fn_8006D948(void *);
+      void Archive_Load(s32);
+      void *Archive_LoadFlags(s32, u32);
     void fn_8005F5B4(void *, void *);
     void GActor_Finalize(void *);
     void fn_80045D50(void *, void *);
