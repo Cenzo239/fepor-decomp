@@ -965,7 +965,7 @@ void fn_800609DC(void *arg0) {
 #pragma cplusplus reset
 }
 
-f32 fn_80060BA4(void *actor, s32 index)
+f32 fn_80060BA4(u8 *actor, s32 index)
 {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
@@ -974,25 +974,22 @@ f32 fn_80060BA4(void *actor, s32 index)
     void PSMTXConcat(void *, void *, void *);
     void QUATMtx(void *, void *);
     void fn_802029C4(void *, void *, void *);
-    int Game_Assert(void *, int, void *);
-    extern char lbl_8026B590[];
-    extern f32 lbl_803691C8;
-    extern f32 lbl_803691C4;
+    void Game_Assert(void *, s32, void *);
     f32 Vec_Length(void *);
+    extern char lbl_8026B590[];
+    extern f32 lbl_803691C4;
+    extern f32 lbl_803691C8;
     extern f32 lbl_803691D8;
-    u8 result[0x30];
-    u8 rot3[0x30];
-    u8 rot2[0x30];
-    u8 rot1[0x30];
-    u8 trans[0x30];
-    u8 scale[0x30];
+    f32 result[12];
+    f32 rot3[12];
+    f32 rot2[12];
+    f32 rot1[12];
+    f32 trans[12];
+    f32 scale[12];
     f32 vec[3];
     void *matrices;
-    void *bone;
-    void *p;
     void *model;
-    unsigned long order;
-    f32 zero;
+    u8 *p;
 
     if (actor == NULL) {
         Game_Assert(lbl_8026B590 + 0x28, 0x102, lbl_8026B590 + 0xab);
@@ -1000,10 +997,12 @@ f32 fn_80060BA4(void *actor, s32 index)
 
     p = actor;
     while (p != NULL) {
-        matrices = *(void **)((u8 *)p + 0x60);
-        if (matrices == NULL) {
-            p = *(void **)((u8 *)p + 4);
-        } else {
+        matrices = *(void **)(p + 0x60);
+        switch ((unsigned long)matrices) {
+        case 0U:
+            p = *(u8 **)(p + 4);
+            break;
+        default:
             goto got_matrices;
         }
     }
@@ -1012,9 +1011,9 @@ got_matrices:
 
     p = actor;
     while (p != NULL) {
-        model = *(void **)((u8 *)p + 0x40);
+        model = *(void **)(p + 0x40);
         if (model == NULL) {
-            p = *(void **)((u8 *)p + 4);
+            p = *(u8 **)(p + 4);
         } else {
             goto got_model;
         }
@@ -1022,61 +1021,55 @@ got_matrices:
     model = NULL;
 got_model:
 
-    order = *(u32 *)((u8 *)actor + 0xc);
-
-    switch (order) {
+    switch (*(u32 *)(actor + 0xc)) {
     case 1:
-        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
-        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
-        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
         break;
     case 2:
-        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
-        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
-        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
         break;
     case 3:
-        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
-        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
-        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
         break;
     case 4:
-        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
-        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
-        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
+        PSMTXRotRad(rot1, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
+        PSMTXRotRad(rot2, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
+        PSMTXRotRad(rot3, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
         break;
     case 5:
-        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
-        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
-        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
+        PSMTXRotRad(rot1, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
+        PSMTXRotRad(rot2, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
+        PSMTXRotRad(rot3, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
         break;
     case 6:
-        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x24));
-        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x20));
-        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)((u8 *)actor + 0x1c));
+        PSMTXRotRad(rot1, 0x5a, lbl_803691C4 * *(f32 *)(actor + 0x24));
+        PSMTXRotRad(rot2, 0x59, lbl_803691C4 * *(f32 *)(actor + 0x20));
+        PSMTXRotRad(rot3, 0x58, lbl_803691C4 * *(f32 *)(actor + 0x1c));
         break;
     case 8:
-        PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
-                   *(f32 *)((u8 *)actor + 0x30));
-        PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
-                   *(f32 *)((u8 *)actor + 0x18));
-        QUATMtx((u8 *)actor + 0x10, rot1);
+        PSMTXScale(scale, *(f32 *)(actor + 0x28), *(f32 *)(actor + 0x2c), *(f32 *)(actor + 0x30));
+        PSMTXTrans(trans, *(f32 *)(actor + 0x10), *(f32 *)(actor + 0x14), *(f32 *)(actor + 0x18));
+        QUATMtx(actor + 0x10, rot1);
         PSMTXConcat(rot1, scale, result);
         PSMTXConcat(rot1, result, result);
         PSMTXConcat(trans, result, result);
         goto after_xform;
     case 7:
-        PSMTXCopy((u8 *)actor + 0x10, result);
+        PSMTXCopy(actor + 0x10, result);
         goto after_xform;
     default:
         Game_Assert(lbl_8026B590, 0xb8, lbl_8026B590 + 8);
         break;
     }
 
-    PSMTXScale(scale, *(f32 *)((u8 *)actor + 0x28), *(f32 *)((u8 *)actor + 0x2c),
-               *(f32 *)((u8 *)actor + 0x30));
-    PSMTXTrans(trans, *(f32 *)((u8 *)actor + 0x10), *(f32 *)((u8 *)actor + 0x14),
-               *(f32 *)((u8 *)actor + 0x18));
+    PSMTXScale(scale, *(f32 *)(actor + 0x28), *(f32 *)(actor + 0x2c), *(f32 *)(actor + 0x30));
+    PSMTXTrans(trans, *(f32 *)(actor + 0x10), *(f32 *)(actor + 0x14), *(f32 *)(actor + 0x18));
     PSMTXConcat(rot1, scale, result);
     PSMTXConcat(rot2, result, result);
     PSMTXConcat(rot3, result, result);
@@ -1084,11 +1077,13 @@ got_model:
 
 after_xform:
     PSMTXConcat(result, (u8 *)matrices + index * 0x30, result);
-    *(f32 *)(result+12) = lbl_803691C8;
-    *(f32 *)(result+28) = lbl_803691C8;
-    *(f32 *)(result+44) = lbl_803691C8;
-    vec[0]=lbl_803691D8; vec[1]=lbl_803691C8; vec[2]=lbl_803691C8;
-    fn_802029C4(result,vec,vec);
+    result[3] = lbl_803691C8;
+    result[7] = lbl_803691C8;
+    result[11] = lbl_803691C8;
+    vec[0] = lbl_803691D8;
+    vec[1] = lbl_803691C8;
+    vec[2] = lbl_803691C8;
+    fn_802029C4(result, vec, vec);
     return Vec_Length(vec);
 }
 
@@ -6827,6 +6822,75 @@ GXLoadPosMtxImm(root,*slots);
 fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 }
+
+void fn_8006C100(f32 *src, f32 *dst)
+{
+    typedef struct {
+        f32 v0[3];
+        f32 v1[3];
+        f32 v2[3];
+    } MatrixVectors;
+
+    void PSMTXCopy(f32 *, f32 *);
+    void PSMTXScale(f32 *, f32, f32, f32);
+    void PSMTXIdentity(f32 *);
+    void fn_802029C4(f32 *, f32 *, f32 *);
+    void fn_802031E8(f32 *, f32 *);
+    f32 fn_80203270(f32 *, f32 *);
+    void fn_80203290(f32 *, f32 *, f32 *);
+    void fn_802024D0(f32 *, f32 *, f32);
+    f64 fn_80238788(f64);
+
+    extern MatrixVectors lbl_8026B888;
+    extern f32 lbl_8036929C;
+    extern f32 lbl_803692A0;
+    extern f32 lbl_803692A4;
+
+    f32 axis[3];
+    f32 rotation[12];
+    f32 matrix[12];
+    MatrixVectors vectors;
+    f32 zero;
+    f32 dot;
+    f32 angle;
+
+    vectors = lbl_8026B888;
+    PSMTXCopy(src, matrix);
+
+    zero = lbl_8036929C;
+    matrix[3] = zero;
+    matrix[7] = zero;
+    matrix[11] = zero;
+    fn_802029C4(matrix, vectors.v0, vectors.v0);
+
+    if (lbl_8036929C == (vectors.v0[2] * vectors.v0[2] +
+                          (vectors.v0[0] * vectors.v0[0] +
+                           vectors.v0[1] * vectors.v0[1]))) {
+        PSMTXScale(dst, lbl_8036929C,
+                   lbl_8036929C, lbl_8036929C);
+        return;
+    }
+
+    fn_802031E8(vectors.v0, vectors.v0);
+    dot = fn_80203270(vectors.v0, vectors.v1);
+
+    if (lbl_803692A0 == dot) {
+        PSMTXIdentity(rotation);
+    } else if (lbl_803692A4 == dot) {
+        PSMTXScale(rotation, lbl_803692A4,
+                   lbl_803692A4, lbl_803692A4);
+    } else {
+        angle = (f32)fn_80238788(dot);
+        fn_80203290(vectors.v0, vectors.v1, axis);
+        fn_802024D0(rotation, axis, angle);
+    }
+
+    fn_802029C4(matrix, vectors.v2, vectors.v2);
+    fn_802029C4(rotation, vectors.v2, vectors.v2);
+    PSMTXScale(dst, vectors.v2[0],
+               vectors.v2[1], vectors.v2[2]);
+}
+
 #pragma optimization_level 4
 #pragma fp_contract on
 #pragma global_optimizer reset
