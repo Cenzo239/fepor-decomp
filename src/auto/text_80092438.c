@@ -628,16 +628,16 @@ return fn_800940B0(arg0,arg1)!=0;
 #pragma optimization_level reset
 u8 fn_800934CC(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
-    u8 Status_Test(void *, s32);
+    u8 fn_80105BC0(void *, s32);
     u8 ok;
     u32 lo;
     u8 result;
     u32 hi;
     u64 flags;
 
+    result = 0;
     ok = 1;
     lo = *(u32 *)((u8 *)arg1 + 0x3C);
-    result = 0;
     hi = *(u32 *)((u8 *)arg1 + 0x38) & result;
     flags = ((u64)hi << 32) | lo;
 
@@ -645,7 +645,7 @@ u8 fn_800934CC(void *arg0, void *arg1) {
         if (!(flags & 1)) {
         } else {
             if (flags & 0x200) {
-                if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
+                if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
                     ok = 1;
                 } else {
                     ok = 0;
@@ -655,42 +655,46 @@ u8 fn_800934CC(void *arg0, void *arg1) {
                 ok = result;
             } else if (flags & 4) {
                 ok = result;
-                          } else if (flags & 0x40) {
-              }
-                              if (ok == 0) {
-                    result = 0;
-                } else {
-                    result = fn_800940B0(arg0, arg1) != 0;
-                }
+            } else if (flags & 0x40) {
             }
-            return result;
-        }
-        if (flags & 4) {
-          if (!(flags & 4)) {
-          } else {
-              if (flags & 0x200) {
-                  if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
-                      ok = 1;
-                  } else {
-                      ok = 0;
-                  }
-              } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-              } else if (flags & 2) {
-                  ok = result;
-              } else if (flags & 4) {
-                  ok = result;
-              } else if (flags & 0x40) {
-              }
-                              if (ok == 0) {
-                    result = 0;
-                } else {
-                    result = fn_800940B0(arg0, arg1) != 0;
-                }
+            if (ok == 0) {
+                result = 0;
+            } else if (fn_800940B0(arg0, arg1) == 0) {
+                result = 0;
+            } else {
+                result = 1;
             }
-            return result;
         }
-        return 0;
-  }
+        return result;
+    }
+    if (flags & 4) {
+        if (!(flags & 4)) {
+        } else {
+            if (flags & 0x200) {
+                if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
+                    ok = 1;
+                } else {
+                    ok = 0;
+                }
+            } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
+            } else if (flags & 2) {
+                ok = result;
+            } else if (flags & 4) {
+                ok = result;
+            } else if (flags & 0x40) {
+            }
+            if (ok == 0) {
+                result = 0;
+            } else if (fn_800940B0(arg0, arg1) == 0) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+        }
+        return result;
+    }
+    return 0;
+}
   
 u8 fn_80093708(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
@@ -1310,17 +1314,18 @@ s32 fn_80094A08(s32 arg0) {
 
 s32 fn_80094A54(s32 arg0, s32 arg1)
 {
-  M2C_UNK fn_8001C5F8(M2C_UNK *, M2C_UNK);
-  M2C_UNK fn_8001C76C(M2C_UNK *);
-  M2C_UNK fn_8001D780(M2C_UNK *, s32);
-  u16 fn_80094ABC(s32, M2C_UNK *);
-  M2C_UNK sp8;
-  u16 result;
-  fn_8001C76C(&sp8);
-  fn_8001D780(&sp8, arg1);
-  result = fn_80094ABC(arg0, &sp8);
-  fn_8001C5F8(&sp8, -1);
-  return result;
+  void Item_Init(void *);
+  void Item_SetByName(void *, s32);
+  s32 fn_80094ABC(s32, void *);
+  void Item_Destroy(void *, s32);
+  struct { s32 result; } holder;
+  void *sp8;
+
+  Item_Init(&sp8);
+  Item_SetByName(&sp8, arg1);
+  holder.result = fn_80094ABC(arg0, &sp8);
+  Item_Destroy(&sp8, -1);
+  return holder.result;
 }
 
 s32 fn_80094ABC(void *arg0, void **arg1) {
