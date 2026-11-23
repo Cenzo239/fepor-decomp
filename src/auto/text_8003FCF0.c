@@ -4691,14 +4691,14 @@ for(i=22;i<32;i++) Stream_WriteU8(stream,0);
 
 void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     void *fn_8000CAA0(void *);
-    void *Process_Create(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     void fn_8005F7E0(s32, u8, u8, u8);
     void fn_8005F7B0(s32, u8);
     extern u8 lbl_80285738[];
     s32 sp8;
-    s32 b;
+    u8 b;
     void *var_r3;
-    s32 a;
+    u8 a;
     s32 temp_r31;
 
     if (arg3 == 0) {
@@ -4711,16 +4711,16 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     if (arg1 != 0U) {
         var_r3 = fn_8000CAA0(lbl_80285738);
     } else {
-        var_r3 = Process_Create(lbl_80285738, 3);
+        var_r3 = fn_8000CAF0(lbl_80285738, 3);
     }
     b = ((u8 *)arg2)[1];
     a = ((u8 *)arg2)[0];
-    ((u8 *)var_r3)[0x40] = (u8)a;
+    ((u8 *)var_r3)[0x40] = a;
     a = ((u8 *)arg2)[2];
-    ((u8 *)var_r3)[0x41] = (u8)b;
+    ((u8 *)var_r3)[0x41] = b;
     b = ((u8 *)arg2)[3];
-    ((u8 *)var_r3)[0x42] = (u8)a;
-    ((u8 *)var_r3)[0x43] = (u8)b;
+    ((u8 *)var_r3)[0x42] = a;
+    ((u8 *)var_r3)[0x43] = b;
     *(s32 *)((u8 *)var_r3 + 0x38) = arg3;
     *(s32 *)((u8 *)var_r3 + 0x30) = arg0;
 }
@@ -7366,10 +7366,10 @@ void fn_8004DDB8(s32 arg0) {
     u8 flag;
 
     if (fn_80055D94(0x80) == 0) {
-        c = 0x60;
         p = &lbl_803672C0;
+        c = 0x60;
         flag = 1;
-        lbl_803672C0 = c;
+        *p = c;
         p[1] = c;
         p[2] = c;
         p[3] = c;
@@ -9393,12 +9393,11 @@ s32 fn_80052F9C(void *arg0) {
 
 void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     f32 fn_80059440(f32, f32, f32, f32);
-    extern f32 lbl_8036909C;
+    extern const f32 lbl_8036909C;
     void *temp_r3;
     f32 *var_r4;
-    register f32 x;
-    register f32 z;
-    register f32 y;
+    f32 z;
+    f32 y;
 
     if (arg1 != NULL && arg2 != NULL) {
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
@@ -9415,11 +9414,9 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     if (var_r4 != NULL) {
         z = var_r4[2];
         y = var_r4[1];
-        x = var_r4[0];
-        *(f32 *)((u8 *)temp_r3 + 0xC) = x;
-        z = lbl_8036909C + z;
+        *(f32 *)((u8 *)temp_r3 + 0xC) = var_r4[0];
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x10) = y;
-        *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x14) = z;
+        *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x14) = lbl_8036909C + z;
     }
 }
 
@@ -10440,7 +10437,7 @@ extern void *gMap;
 #include "common.h"
 #include "global.h"
 
-extern u16 lbl_8026A660;
+extern u8 lbl_8026A660[];
 extern void* lbl_803672A8;
 extern u8 gBattleMap[];
 extern void *lbl_803672CC;
