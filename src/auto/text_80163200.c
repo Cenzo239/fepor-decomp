@@ -16345,7 +16345,6 @@ void fn_8017CE1C(void *self, void *arg1) {
 }
 
 #pragma cplusplus on
-#pragma scheduling on
 extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
