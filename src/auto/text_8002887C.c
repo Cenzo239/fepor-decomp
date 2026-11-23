@@ -2596,10 +2596,8 @@ s32 yOff=y<<6;
 u16 f;
 void *unit;
 u8 id;
-s32 off=0x2047;
-flags=(u16 *)(gBattleMap+((x+yOff)<<1));
-f=flags[off];
-flags+=off;
+flags=(u16 *)(gBattleMap+0x408E)+(x+yOff);
+f=*flags;
 
 if ((f&8)!=0) {
 id=gBattleMap[x+((s8)(y-1)<<6)+0xd];
