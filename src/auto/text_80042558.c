@@ -5546,9 +5546,6 @@ void Unit_DrawShadows(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma opt_propagation off
-#pragma opt_common_subs off
-#pragma opt_lifetimes off
 void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 Map_SampleHeight(void *);
     void fn_80051564(void *, s32, f32, f32);
@@ -5577,8 +5574,8 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80368FD8;
     extern f32 lbl_80368FDC;
     extern f32 lbl_80368FFC;
-    extern const f32 lbl_80369004;
-    extern const f32 lbl_80369008;
+    extern f32 lbl_80369004;
+    extern f32 lbl_80369008;
     extern f32 lbl_8036900C;
     extern f32 lbl_80369010;
     extern f32 lbl_80369014;
@@ -5589,8 +5586,8 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     u8 scratch[0xFC];
     u32 sp18, sp14, sp10, spC, sp8;
     f32 f30, f29, f28, f27, f26, f25, f31, f24;
-    f32 t;
-    s8 r29, r27;
+    f32 dx, t;
+    s32 r29, r27;
     u8 r30;
     u8 *r28;
     u8 *tbl;
@@ -5611,7 +5608,6 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {
-        f32 dx;
         fn_80060F70(r28, r29, &sp148);
         fn_80060F70(r28, r27, &sp154);
         f30 = (sp148 + sp154) * lbl_80368FC4;
@@ -5641,8 +5637,6 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             f26 = lbl_80369010 + *(f32 *)(scratch + 0x20);
             f25 = lbl_80369010 + *(f32 *)(scratch + 0x24);
             dx = lbl_80369014 * f24;
-        } else {
-            dx = lbl_80368FCC;
         }
         if (f26 < f28) f26 = f28;
         if (f25 < f27) f25 = f27;
