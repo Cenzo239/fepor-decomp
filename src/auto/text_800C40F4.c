@@ -2744,107 +2744,71 @@ String *fn_800C94F8(String *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
     void *memset(void *, s32, u32);
     void *memmove(void *, const void *, u32);
 
-    String *str;
-    char *newData;
-    u32 remaining;
+    u32 newCapacity;
     u32 count;
     u32 newSize;
-    u32 newCapacity;
+    u32 ch;
+    u32 ins;
+    u32 pos;
+    char *newData;
+    u32 rem;
+    u32 n;
 
-    str = arg0;
+    pos = arg1;
+    ins = arg3;
+    ch = arg4;
+    n = arg2;
 
-    if (arg1 > str->size) {
-        fprintf(
-            __files + 0xA0,
-            gStringErrorMsgs + 0x38
-        );
+    if (pos > arg0->size) {
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x38);
         abort();
     }
 
-    remaining = str->size - arg1;
+    rem = arg0->size - pos;
+    count = *StrMin(&n, &rem);
 
-    if (remaining < arg2) {
-        count = remaining;
-    } else {
-        count = arg2;
-    }
-
-    if (arg3 <= (u32)-2) {
-        if (str->size - count > (u32)-2 - arg3) {
-            fprintf(
-                __files + 0xA0,
-                gStringErrorMsgs + 0x60
-            );
+    if (ins <= (u32)-2) {
+        if (arg0->size - count > (u32)-2 - ins) {
+            fprintf(__files + 0xA0, gStringErrorMsgs + 0x60);
             abort();
         }
     }
 
-    newSize = str->size - count + arg3;
+    newSize = arg0->size - count + ins;
 
-    if (newSize > str->cap) {
-        newCapacity = newSize + 3 - (newSize & 3);
-
-        newData = Heap_Alloc(newCapacity + 1);
-
+    if (newSize > arg0->cap) {
+        newCapacity = (newSize + 3) - (newSize & 3);
+        newData = (char *)Heap_Alloc(newCapacity + 1);
         if (newData == 0) {
-            fprintf(
-                __files + 0xA0,
-                gStringErrorMsgs + 0x7C
-            );
+            fprintf(__files + 0xA0, gStringErrorMsgs + 0x7C);
             abort();
         }
-
-        if (str->data != 0) {
-            memcpy(newData, str->data, arg1);
+        if (arg0->data != 0) {
+            memcpy(newData, arg0->data, pos);
         }
-
-        if (arg3 != 0) {
-            memset(
-                newData + arg1,
-                (u8)arg4,
-                arg3
-            );
+        if (ins != 0) {
+            memset(newData + pos, (u8)ch, ins);
         }
-
-        if (str->data != 0) {
-            memcpy(
-                newData + arg1 + arg3,
-                str->data + arg1 + count,
-                str->size - (arg1 + count)
-            );
+        if (arg0->data != 0) {
+            memcpy(newData + pos + ins, arg0->data + pos + count, arg0->size - (pos + count));
         }
-
         newData[newSize] = lbl_80366E40;
-
-        if (str->data != 0) {
-            Heap_Free(str->data);
+        if (arg0->data != 0) {
+            Heap_Free(arg0->data);
         }
-
-        str->data = newData;
-        str->cap = newCapacity;
-        str->size = newSize;
-    } else {
-        if (str->data != 0) {
-            memmove(
-                str->data + arg1 + arg3,
-                str->data + arg1 + count,
-                str->size - (arg1 + count)
-            );
-
-            if (arg3 != 0) {
-                memset(
-                    str->data + arg1,
-                    (u8)arg4,
-                    arg3
-                );
-            }
-
-            str->data[newSize] = lbl_80366E41;
-            str->size = newSize;
+        arg0->data = newData;
+        arg0->cap = newCapacity;
+        arg0->size = newSize;
+    } else if (arg0->data != 0) {
+        memmove(arg0->data + pos + ins, arg0->data + pos + count, arg0->size - (pos + count));
+        if (ins != 0) {
+            memset(arg0->data + pos, (u8)ch, ins);
         }
+        arg0->data[newSize] = lbl_80366E41;
+        arg0->size = newSize;
     }
 
-    return str;
+    return arg0;
 }
 
 #pragma auto_inline off
@@ -8204,14 +8168,16 @@ void fn_800D75C4(void *arg0) {
 
 #pragma optimization_level 3
 s32 fn_800D75FC(void *arg0) {
+    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
+    M2C_UNK String_Copy(M2C_UNK *);
     s32 fn_800E4454(s32, M2C_UNK *);
     M2C_UNK sp8;
-    s32 temp_r31;
+    s32 ret;
 
-    fn_800C9B6C(&sp8);
-    temp_r31 = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
-    fn_800C9A60(&sp8, -1);
-    return temp_r31;
+    String_Copy(&sp8);
+    ret = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+    String_Destroy(&sp8, -1);
+    return ret;
 }
 
 #pragma optimization_level 4
@@ -8824,9 +8790,9 @@ u32 alloc;
 u32 path;
 s8 made;
 void *xml;
-u32 self;
+u8 *self;
 void *t;
-self=(u32)arg0;path=(u32)arg1;made=0;
+self=arg0;path=(u32)arg1;made=0;
 xml=Heap_Alloc(0x60);
 if(xml) {
 String_Init(&root,lbl_802711B0+0xfa,&alloc);
@@ -8846,7 +8812,7 @@ String_AssignCStr(&text,(char*)path,strlen((char*)path));
 String_Copy(&copy,&name);
 fn_801086CC(lbl_803679C8,&copy);
 String_Destroy(&copy,-1);
-fn_800CA18C((void*)(self+0x40),*(u8**)(self+0x48)+*(s32*)(self+0x44)*12,1,&text);
+fn_800CA18C(self+0x40,*(u8**)(self+0x48)+*(s32*)(self+0x44)*12,1,&text);
 } while(Xml_AdvanceChild(xml));
 t=fn_800DC3B8(*(void**)(lbl_803679C8+0x424));
 fn_8011CA3C(*(void**)(lbl_803678C0+0x43c),t,lbl_803678C0);
@@ -19921,8 +19887,8 @@ s32 fn_800EB854(void) {
     return result;
 }
 #pragma peephole reset
-void fn_800EB884(void)
-{
+void fn_800EB884(void) {
+
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;
@@ -19953,33 +19919,25 @@ void fn_800EB884(void)
     s32 fn_8021CBC8(void *, void *, s32, s32);
     void fn_800C4588(void *);
 
-    u8 *cardWork;
     u8 *fileInfo;
-    u8 *diskID;
     u8 success;
+    u8 *s;
 
-    cardWork = (u8 *)&gCardWork;
-    diskID = (u8 *)0x80000000;
-
-    diskID[0] = gCardStrings[0x26F];
-    diskID[1] = gCardStrings[0x270];
-    diskID[2] = gCardStrings[0x271];
-    diskID[3] = gCardStrings[0x272];
-    diskID[4] = gCardStrings[0x273];
-    diskID[5] = gCardStrings[0x274];
+    s = gCardStrings;
+    *(u8 *)0x80000000 = s[0x26F];
+    *(u8 *)0x80000001 = s[0x270];
+    *(u8 *)0x80000002 = s[0x271];
+    *(u8 *)0x80000003 = s[0x272];
+    *(u8 *)0x80000004 = s[0x273];
+    *(u8 *)0x80000005 = s[0x274];
 
     fn_800EBF58();
 
-    fileInfo = cardWork + 0xA01C;
+    fileInfo = (u8 *)&gCardWork + 0x10000 - 0x5FE4;
 
-    gCardWork.result = fn_8021BF10(
-        0,
-        gCardStrings + 0x70,
-        fileInfo
-    );
+    gCardWork.result = fn_8021BF10(0, gCardStrings + 0x70, fileInfo);
 
     success = 0;
-
     if (gCardWork.result == 0) {
         if (gCardWork.busy == 0) {
             success = 1;
@@ -19987,46 +19945,31 @@ void fn_800EB884(void)
     }
 
     if (success != 0) {
-        gCardWork.buffer = fn_800C4638(
-            0x26000,
-            gCardStrings + 0x97,
-            0
-        );
+        gCardWork.buffer = fn_800C4638(0x26000, gCardStrings + 0x97, 0);
 
-        fn_8021C84C(
-            fileInfo,
-            gCardWork.buffer,
-            0x26000,
-            0
-        );
-
+        fn_8021C84C(fileInfo, gCardWork.buffer, 0x26000, 0);
         fn_8021C02C(fileInfo);
 
-        fn_8021CDC4(
-            gCardWork.chan,
-            gCardStrings + 0x70
-        );
+        fn_8021CDC4(gCardWork.chan, &gCardStrings[0x70]);
 
-        diskID = (u8 *)0x80000000;
-
-        diskID[0] = gCardStrings[0x276];
-        diskID[1] = gCardStrings[0x277];
-        diskID[2] = gCardStrings[0x278];
-        diskID[3] = gCardStrings[0x279];
-        diskID[4] = gCardStrings[0x27A];
-        diskID[5] = gCardStrings[0x27B];
+        s = gCardStrings;
+        *(u8 *)0x80000000 = s[0x276];
+        *(u8 *)0x80000001 = s[0x277];
+        *(u8 *)0x80000002 = s[0x278];
+        *(u8 *)0x80000003 = s[0x279];
+        *(u8 *)0x80000004 = s[0x27A];
+        *(u8 *)0x80000005 = s[0x27B];
 
         fn_800EBF58();
 
         gCardWork.result = fn_8021C3D8(
             gCardWork.chan,
-            gCardStrings + 0x70,
+            (void *)((u32)gCardStrings + 0x70),
             0x26000,
             fileInfo
         );
 
         success = 0;
-
         if (gCardWork.result == 0) {
             if (gCardWork.busy == 0) {
                 success = 1;
@@ -20042,7 +19985,6 @@ void fn_800EB884(void)
             );
 
             success = 0;
-
             if (gCardWork.result == 0) {
                 if (gCardWork.busy == 0) {
                     success = 1;
@@ -23323,14 +23265,14 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
 void fn_800F20E0(void) {
     void fn_80060060(void *);
     void fn_800F1C24(void *);
-    s32 counter;
+    s32 i;
 
     fn_80060060(lbl_8032AC58 + 0x288);
-    counter = 0;
+    i = 0;
     do {
-        fn_80060060(lbl_8032AC58 + counter * 0xA0 + 8);
-        counter += 1;
-    } while (counter < 4);
+        fn_80060060(lbl_8032AC58 + i * 0xA0 + 8);
+        i += 1;
+    } while (i < 4);
     fn_800F1C24(lbl_8032AC58);
 }
 
@@ -29490,7 +29432,6 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     u8 var_r5;
     u8 var_r6;
     u8 var_r7;
-    u8 result;
     u8 *p;
 
     if (gBattleState[0x11] != 2) {
@@ -29505,7 +29446,7 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     temp_r4 = p[0x100D];
 
     if ((u8)(temp_r4 - 0x26) <= var_r6) {
-        var_r7 = var_r6;
+        var_r7 = 1;
     } else {
         var_r7 = 0;
     }
@@ -29519,8 +29460,7 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
             var_r6 = 0;
         }
     }
-    result = var_r6;
-    return result;
+    return var_r6;
 }
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
@@ -30858,12 +30798,13 @@ void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
     u8 *map;
     s32 row;
     u8 *rowp;
- MapCostCell *cost;
- u8 *tile;
+    MapCostCell *cost;
+    u8 *tile;
     s32 uy;
     s32 minRange, maxRange;
     u8 *base;
-    s32 minX,maxX,maxY,y,x,ux,mov,minY,sx;
+    s32 minX,maxX,maxY,y,x,ux,sx;
+    register s32 mov;
     void *item=*arg1;
     base=gBattleMap;
     minRange=(s8)(u8)(item ? *((u8 *)item+0x1D) : 0);
@@ -30875,21 +30816,21 @@ void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
     mov=Unit_GetMov(arg0);
     minX=ux-mov;
     if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
-    minY=uy-mov;
-    if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    y=uy-mov;
+    if(y<(s8)gBattleMap[9]) y=(s8)gBattleMap[9];
     maxX=ux+mov;
     if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
     maxY=uy+mov;
     if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
     maxRange=(u8)maxRange; minRange=(u8)minRange;
- map=gBattleMap;
-    for(y=minY;y<=maxY;y++) {
+    map=gBattleMap;
+    for(;y<=maxY;y++) {
         row=(s8)y<<6;
         rowp=map+row;
         for(x=minX;x<=maxX;x++) {
             sx=(s8)x;
             cost=(MapCostCell *)(map+2*(sx+row));
- if(cost->cost<0) continue;
+            if(cost->cost<0) continue;
             tile=rowp+sx;
             if(*(s8 *)(tile+0xE18E)) continue;
             if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
