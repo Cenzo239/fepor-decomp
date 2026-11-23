@@ -660,7 +660,7 @@ void Unit_ApplyTransform(void *arg0) {
  unit->status[1]|=M2C_FIELD(res,u32 *,0x20);
  unit->status[2]|=M2C_FIELD(res,u32 *,0x24);
  unit->status[3]|=M2C_FIELD(res,u32 *,0x28);
- unit->flags&=~0x2000;
+ unit->flags&=~(1U<<13);
  if(Status_Test(unit->status,9)) unit->gauge=20;
  else unit->gauge=0;
  fn_80091CD8(unit);
@@ -2644,9 +2644,9 @@ s32 fn_8003F47C(void *arg0)
 
 void fn_8005C7E8(void *);
 void fn_8003F670(void *arg0) {
+    u8 ok;
     s8 *ref;
     void *ptr;
-    u8 ok;
 
     ptr = arg0;
     ref = lbl_80366DC0;
