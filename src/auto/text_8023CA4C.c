@@ -384,10 +384,11 @@ state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(
 state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
 i+=8;
 }
-size-=65;
+    size-=65;
 } while((u16)size);
 return 0;
 }
+#pragma scheduling reset
 
 u8 fn_8023CE08(void)
 {
