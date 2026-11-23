@@ -1452,8 +1452,8 @@ void fn_801F3E60(void *arg0) {
                 Prim2D_SetAlphaByte(0x80);
                 Prim2D_AddZ(lbl_8036B854);
                 Prim2D_PrepareTex();
-                y += 0x30;
             }
+            y += 0x30;
         }
     }
     if (*(u8 *)((u8 *)p + 0x26) == 1) {
@@ -1469,6 +1469,8 @@ void fn_801F3E60(void *arg0) {
         }
         if (label != NULL) {
             Prim2D_Begin();
+            Prim2D_AddZ(lbl_8036B890);
+            Prim2D_PrepareTex();
             c7 = *Ui_GetColor(1);
             tex = *fn_8006EDD8(*(s32 *)p, 3);
             tw = tex[1];
