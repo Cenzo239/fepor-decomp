@@ -7203,19 +7203,19 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
 #pragma peephole off
 void fn_802618E4(s32 arg0)
 {
-    extern u8 *lbl_80368AA0;
+    extern u8 *gSoundVoices;
     extern u8 lbl_80368AD0;
     u8 *object;
     u8 *q;
     s32 off;
 
     off = arg0 * 0xF8;
-    object = lbl_80368AA0 + off;
+    object = gSoundVoices + off;
 
     if (object[0xF0] == 1) {
         if (lbl_80368AD0 == 0) {
             object[0xF2] = 1;
-            q = lbl_80368AA0;
+            q = gSoundVoices;
             q = q + off;
             q = q + (lbl_80368AD0 << 2);
             *(u32 *)(q + 0x24) |= 0x20;
@@ -8412,20 +8412,23 @@ void fn_80263384(void) {
     lbl_80368B08 = 1;
 }
 
-#pragma scheduling off
-void fn_80263394(void) {
-extern u32 lbl_80368B18, lbl_80368B14, lbl_80368B10;
-extern void (*lbl_80368B24)(void);
-u32 one = 1; u32 zero = 0;
-lbl_80368B18=one;
-if(lbl_80368B14) {
-lbl_80368B14=zero;
-if(!lbl_80368B10) {
-lbl_80368B10=one; OSEnableInterrupts(); lbl_80368B24(); OSDisableInterrupts(); lbl_80368B10=zero;
-}
-}
-}
 #pragma scheduling on
+void fn_80263394(void) {
+    extern volatile u32 lbl_80368B18, lbl_80368B14, lbl_80368B10;
+    extern void (*lbl_80368B24)(void);
+
+    lbl_80368B18 = 1;
+    if (lbl_80368B14) {
+        lbl_80368B14 = 0;
+        if (!lbl_80368B10) {
+            lbl_80368B10 = 1;
+            OSEnableInterrupts();
+            lbl_80368B24();
+            OSDisableInterrupts();
+            lbl_80368B10 = 0;
+        }
+    }
+}
 void fn_802633F8(void) {
     M2C_UNK fn_8020AEC4(M2C_UNK *);
     extern M2C_UNK lbl_80368B00;
