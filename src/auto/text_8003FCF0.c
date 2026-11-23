@@ -1380,9 +1380,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void fn_800675C8(s32);
     void *Fog_GetColor(void);
     void fn_80067480(void);
-    void fn_80040B78(void *, void *, void *, s8, f32, f32);
-    void *fn_80145EBC(void);
-    void OSReport(void *, ...);
+    void fn_80040B78(void *, u32);
+    void *fn_80145EBC(void *);
+    void DebugPrint(void *, ...);
     s64 __div2i(s64, s64);
     unsigned long __mulhwu(unsigned long, unsigned long);
     extern u8 lbl_802EFE20[];
@@ -1632,8 +1632,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             ((u8 *)arg0)[0xA1] = 0xFF;
             ((u8 *)arg0)[0xA2] = 0xFF;
         }
-        if (((char *)arg0)[0x3C] != 0) {
-            tmp = fn_80145EBC();
+        tmp = (char *)arg0 + 0x3C;
+        if (tmp) {
+            tmp = fn_80145EBC(tmp);
             if (tmp != NULL) {
                 lbl_80367AF6 = ((u8 *)tmp)[4];
             } else {
@@ -1820,11 +1821,12 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)fog)[1] = (&lbl_80367290)[0];
     ((u8 *)fog)[2] = (&lbl_80367290)[1];
     ((u8 *)fog)[3] = (&lbl_80367290)[2];
-    fn_80040B78(arg0, (u8 *)arg0 + 0x3C, &lbl_80367290, (s8)lbl_8036728D, (f32)(s8)lbl_8036728E, lbl_80368EF4);
+    fn_80040B78(arg0, (u32)((char *)arg0 + 0x3C));
     t1 = OSGetTime();
     ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
-    OSReport(lbl_8026A660 + 0x22C, ms);
+    DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
+#pragma global_optimizer on
 
 #pragma use_lmw_stmw on
 void fn_80042558(void *arg0)
