@@ -696,7 +696,10 @@ dolphin/os/OSThread.c:
 	.text       start:0x8020A2C4 end:0x8020A4EC
 
 dolphin/os/OSThreadQueue.c:
-	.text       start:0x8020A4EC end:0x8020B294
+	.text       start:0x8020A4EC end:0x8020AFC8
+
+dolphin/os/OSClearStack.c:
+	.text       start:0x8020AFC8 end:0x8020B294
 
 dolphin/os/OSTime.c:
 	.text       start:0x8020B294 end:0x8020B52C
