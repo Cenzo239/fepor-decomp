@@ -950,63 +950,84 @@ void fn_8007DAB4(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 6) = 7;
 }
 
+#pragma opt_strength_reduction off
 void fn_8007DAC4(void *arg0, void *arg1) {
-    void strcpy(void *, void *);
-    void *Unit_GetItemSlot(void *, s32);
-    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
-    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void *fn_80105814(void *);
-    void *fn_800A8A64(void *);
-    void *fn_800A893C(void *);
-    extern u8 gUiStrings[];
-    extern u8 gUnitInfoPopup[];
-    extern f32 lbl_80369480;
-    extern f32 lbl_80369484;
-    struct Item16 { u8 pad[0x24]; s16 val; };
-    struct Item4 { u8 pad[0x38]; void *ptr; };
-    u8 sp8[0x20];
-    s16 v;
-    u8 kind;
-    s32 idx;
+  void strcpy(void *, void *);
+  void *Unit_GetItemSlot(void *, s32);
+  void Ui_ShowUnitInfoText(void *, void *, f32, f32);
+  void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
+  void *fn_80105814(void *);
+  void *fn_800A8A64(void *);
+  void *fn_800A893C(void *);
+  extern u8 gUiStrings[];
+  extern u8 gUnitInfoPopup[];
+  extern f32 lbl_80369480;
+  extern f32 lbl_80369484;
+  u8 sp8[0x20];
+  f32 *new_var;
+  s16 v;
+  u8 kind;
+  s32 idx;
 
-    kind = *(u8 *)((u8 *)arg1 + 0xD);
-    if (kind >= 0xA && kind <= 0xE) {
-        v = ((struct Item16 *)((u16 *)arg0 + (kind - 0xA)))->val;
-        switch (v) {
-        case 27: strcpy(sp8, gUiStrings + 0x15A); break;
-        case 31: strcpy(sp8, gUiStrings + 0x165); break;
-        case 28: strcpy(sp8, gUiStrings + 0x16E); break;
-        case 29: strcpy(sp8, gUiStrings + 0x178); break;
-        case 30: strcpy(sp8, gUiStrings + 0x184); break;
-        default: sp8[0] = 0; break;
-        }
-        Ui_ShowUnitInfoText(gUnitInfoPopup, sp8, *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-    } else if (kind >= 2 && kind <= 9) {
-        Ui_ShowUnitInfoPopup(gUnitInfoPopup, Unit_GetItemSlot(*(void **)((u8 *)arg0 + 0x58), kind - 2), *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-    } else if (kind >= 0xF && kind <= 0x16) {
-        idx = kind - 0xF;
-        if (kind >= 0xF && kind <= 0x10) {
-            Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((struct Item4 *)((u32 *)arg0 + idx))->ptr), lbl_80369480 + *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-        } else {
-            Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((struct Item4 *)((u32 *)arg0 + idx))->ptr), *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-        }
-    } else if (kind == 0x17) {
-        u8 *p = *(u8 **)((u8 *)arg0 + 0x58);
-        p = *(u8 **)(p + 0x18C);
-        if (*(u16 *)(p + 0x3A) & 0x20) {
-            Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x18E, *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-        } else {
-            Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x194, *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4) - lbl_80369484);
-        }
-    } else if (kind == 0x18) {
-        u8 *p = *(u8 **)((u8 *)arg0 + 0x58);
-        Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A8A64(*(void **)(p + 0x188)), *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-    } else if (kind == 0x19) {
-        u8 *p = *(u8 **)((u8 *)arg0 + 0x58);
-        Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A893C(*(void **)(p + 0x18C)), *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
-    } else {
-        Ui_ShowUnitInfoText(gUnitInfoPopup, *(void **)((u8 *)arg1 + 0x10), *(f32 *)arg1, *(f32 *)((u8 *)arg1 + 4));
+  kind = *((u8 *) (((u8 *) arg1) + 0xD));
+  if ((kind >= 0xA) && (kind <= 0xE))
+  {
+    v = *((s16 *) ((((u8 *) arg0) + ((kind - 0xA) * 2)) + 0x24));
+    switch (v)
+    {
+      case 27: strcpy(sp8, gUiStrings + 0x15A); break;
+      case 31: strcpy(sp8, gUiStrings + 0x165); break;
+      case 28: strcpy(sp8, gUiStrings + 0x16E); break;
+      case 29: strcpy(sp8, gUiStrings + 0x178); break;
+      case 30: strcpy(sp8, gUiStrings + 0x184); break;
+      default: sp8[0] = 0; break;
     }
+    Ui_ShowUnitInfoText(gUnitInfoPopup, sp8, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+  }
+  else if ((kind >= 2) && (kind <= 9))
+  {
+    Ui_ShowUnitInfoPopup(gUnitInfoPopup, Unit_GetItemSlot(*((void **) (((u8 *) arg0) + 0x58)), kind - 2), *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+  }
+  else if ((kind >= 0xF) && (kind <= 0x16))
+  {
+    new_var = (f32 *) (((u8 *) arg1) + 4);
+    idx = kind - 0xF;
+    if ((kind >= 0xF) && (kind <= 0x10))
+    {
+      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(*((void **) ((((u8 *) arg0) + (idx * 4)) + 0x38))), lbl_80369480 + (*((f32 *) arg1)), *((f32 *) (((u8 *) arg1) + 4)));
+    }
+    else
+    {
+      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(*((void **) ((((u8 *) arg0) + (idx * 4)) + 0x38))), *((f32 *) arg1), *new_var);
+    }
+  }
+  else if (kind == 0x17)
+  {
+    u8 *p = *((u8 **) (((u8 *) arg0) + 0x58));
+    p = *((u8 **) (p + 0x18C));
+    if ((*((u16 *) (p + 0x3A))) & 0x20)
+    {
+      Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x18E, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+    }
+    else
+    {
+      Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x194, *((f32 *) arg1), (*((f32 *) (((u8 *) arg1) + 4))) - lbl_80369484);
+    }
+  }
+  else if (kind == 0x18)
+  {
+    u8 *p = *((u8 **) (((u8 *) arg0) + 0x58));
+    Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A8A64(*((void **) (p + 0x188))), *((f32 *) arg1), *new_var);
+  }
+  else if (kind == 0x19)
+  {
+    u8 *p = *((u8 **) (((u8 *) arg0) + 0x58));
+    Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A893C(*((void **) (p + 0x18C))), *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+  }
+  else
+  {
+    Ui_ShowUnitInfoText(gUnitInfoPopup, *((void **) (((u8 *) arg1) + 0x10)), *((f32 *) arg1), *new_var);
+  }
 }
 #pragma use_lmw_stmw on
 void fn_8007DD78(void *arg0) {
