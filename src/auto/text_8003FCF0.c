@@ -1336,7 +1336,7 @@ void fn_80041254(void *arg0) {
     }
 }
 #pragma optimization_level reset
-void Map_LoadTerrain(void *arg0, char *arg1)
+void Map_LoadTerrain_probe(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
     s32 strlen(char *);
