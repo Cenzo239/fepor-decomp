@@ -261,18 +261,15 @@ void fn_800748E8(void) {
     s32 index;
     void *result;
     void *obj;
-    u64 flags;
-    void *unit;
     s32 offset;
 
     index = *(s8 *)(gUiContext + 0xA);
     if (index == 4) {
         result = &lbl_8036746C;
     } else {
-        flags = *Item_GetFlagsPtr(&lbl_8036746C);
-        unit = lbl_80367468;
-        offset = (flags & 0x500000000ULL) ? 0 : 4;
-        result = Unit_GetItemSlot(unit, offset + index);
+        u64 *fp = Item_GetFlagsPtr(&lbl_8036746C);
+        offset = ((*fp & 5) != 0) ? 0 : 4;
+        result = Unit_GetItemSlot(lbl_80367468, offset + index);
     }
     obj = *(void **)result;
     if (obj) {
