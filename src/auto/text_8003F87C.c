@@ -351,6 +351,16 @@ void *Res_GetByName(s32);
 
 void fn_8005C7E8(void *);
 
+static inline void Archive_ScanKey(u32 *p28, u32 *scan, u32 count) {
+    u32 ctr;
+    for (ctr = count; ctr > 0; ctr--) {
+        if (*(volatile u32 *)p28 == *scan) {
+            return;
+        }
+        scan++;
+    }
+}
+
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
     void FileCache_MarkRelocated(s32);
@@ -377,6 +387,7 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     u32 old;
     void *da;
     void *db;
+    u32 ctr;
 
     self = arg0;
     obj = fn_8005C82C(arg0, (u16)(arg1 | 1));
@@ -407,7 +418,7 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
         ok = 1;
     }
 
-    if (ok == 0) {
+    if (!ok) {
         walk = p30;
         i = 0;
         ((u8 *)obj)[0x18] = ref1[0];
@@ -436,14 +447,11 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
             db = (u8 *)base20 + (t & ~3u);
             scan = p30;
             count = *(u32 *)((u8 *)obj + 8);
-            {
-                u32 ctr;
-                for (ctr = count; ctr > 0; ctr--) {
-                    if (*(volatile u32 *)p28 == *scan) {
-                        break;
-                    }
-                    scan += 1;
+            for (ctr = count; ctr > 0; ctr--) {
+                if (*(volatile u32 *)p28 == *scan) {
+                    break;
                 }
+                scan += 1;
             }
             fn_8000D3EC(da, db);
             p28 += 2;
@@ -452,8 +460,8 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     }
 
     FileCache_MarkRelocated(self);
-    ref2 = lbl_80366DC0;
     result = obj;
+    ref2 = lbl_80366DC0;
     if ((s8)((u8 *)obj)[0x18] != ref2[0]) {
         ok = 0;
     } else if ((s8)((u8 *)obj)[0x19] != ref2[1]) {
@@ -472,35 +480,30 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
         ok = 1;
     }
 
-    if (ok == 0) {
-        goto parent;
-    }
-    goto finish;
-parent:
-    result = (u8 *)obj - 0x20;
-    if ((s8)((u8 *)result)[0x18] != ref2[0]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x19] != ref2[1]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x1A] != ref2[2]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x1B] != ref2[3]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x1C] != ref2[4]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x1D] != ref2[5]) {
-        ok = 0;
-    } else if ((s8)((u8 *)result)[0x1E] != ref2[6]) {
-        ok = 0;
+    if (ok) {
     } else {
-        ok = 1;
+        result = (u8 *)obj - 0x20;
+        if ((s8)((u8 *)result)[0x18] != ref2[0]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x19] != ref2[1]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x1A] != ref2[2]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x1B] != ref2[3]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x1C] != ref2[4]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x1D] != ref2[5]) {
+            ok = 0;
+        } else if ((s8)((u8 *)result)[0x1E] != ref2[6]) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok) {
+        } else {
+            result = 0;
+        }
     }
-    if (ok == 0) {
-        goto setnull;
-    }
-    goto finish;
-setnull:
-    result = 0;
-finish:
     return (u8 *)result + 0x20;
 }
