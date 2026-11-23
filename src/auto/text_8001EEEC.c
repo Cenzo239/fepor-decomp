@@ -103,12 +103,6 @@ void fn_8001EF7C(void) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-static inline void Map_ClearFacingCell(volatile u8 *arg0, s32 off, s32 idx)
-{
-    s16 *costs = *(s16 **)(arg0 + 0x14190);
-    costs[idx] = -1;
-    *(s16 *)(arg0 + off + 0xC18E) = 0;
-}
 void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
 {
     u8 Map_IsAiTerrainBlocked(s8, s8);
