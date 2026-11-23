@@ -350,6 +350,19 @@ void *Res_GetByName(s32);
 #pragma use_lmw_stmw reset
 
 void fn_8005C7E8(void *);
+void fn_8000D3EC(void *, void *);
+
+static void Archive_RelocSearch(u32 *p28, u32 *scan, u32 count, void *da, void *db) {
+    u32 ctr;
+    for (ctr = count; ctr > 0; ctr--) {
+        if (*(volatile u32 *)p28 == *scan) {
+            fn_8000D3EC(da, db);
+            return;
+        }
+        scan += 1;
+    }
+    fn_8000D3EC(da, db);
+}
 
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
@@ -431,17 +444,14 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
         j = 0;
         ((u8 *)obj)[0x1F] = 1;
         while (j < *(u32 *)((u8 *)obj + 0xC)) {
-            u32 off;
             t = *p28;
+            da = (u8 *)p29 + p28[1];
+            db = (u8 *)base20 + (t & ~3u);
             scan = p30;
-            off = p28[1];
-            t &= ~3u;
             count = *(u32 *)((u8 *)obj + 8);
-            da = (u8 *)p29 + off;
-            db = (u8 *)base20 + t;
             {
                 u32 ctr;
-                for (ctr = count; ctr != 0; ctr--) {
+                for (ctr = count; ctr > 0; ctr--) {
                     if (*(volatile u32 *)p28 == *scan) {
                         break;
                     }
@@ -455,8 +465,8 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     }
 
     FileCache_MarkRelocated(self);
-    result = obj;
     ref2 = lbl_80366DC0;
+    result = obj;
     if ((s8)((u8 *)obj)[0x18] != ref2[0]) {
         ok = 0;
     } else if ((s8)((u8 *)obj)[0x19] != ref2[1]) {
