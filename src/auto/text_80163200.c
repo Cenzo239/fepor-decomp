@@ -13651,10 +13651,10 @@ void *fn_80179274(void) {
 }
 
 u8 fn_80179284(void) {
- s32 fn_800C3E54(void *);
- extern u8 lbl_803200AC[];
- s32 result=fn_800C3E54(lbl_803200AC);
- return (u8)(((u32)(-result | result)>>31) ? 0 : 2);
+    s32 fn_800C3E54(void *);
+    extern u8 gConvoy[];
+    s32 result = fn_800C3E54(gConvoy);
+    return (u8)(((u32)(-result | result) >> 31) ? 0 : 2);
 }
 
 s32 Ui_ConfirmListCmd80(s32 unused, void *parent, void *entry) {
@@ -14231,15 +14231,14 @@ extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    struct Pair { s16 a, b; };
-    struct Pair ab;
-    struct Pair cd;
+    s16 ab[2];
+    s16 cd[2];
 
-    cd.a = arg3;
-    ab.a = arg1;
-    ab.b = arg2;
-    cd.b = arg4;
-    fn_8017A000(arg0, (s16 *)&ab, (s16 *)&cd, arg5);
+    cd[0] = arg3;
+    ab[0] = arg1;
+    ab[1] = arg2;
+    cd[1] = arg4;
+    fn_8017A000(arg0, ab, cd, arg5);
     *(void **)arg0 = gUiPanelExVtbl;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *)arg0)->m28();
@@ -16345,24 +16344,27 @@ void fn_8017CE1C(void *self, void *arg1) {
     }
 }
 
+#pragma cplusplus on
 #pragma scheduling on
-void fn_8017D4B8(s32 *arg0, void *arg1) {
+extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;
     s32 spC;
-    void *p = arg1;
-    s32 *a = &spC;
-    s16 *b = &sp8;
-    s16 r8 = *(s16 *)((u8 *)p + 0xC);
-    s16 r7 = *(s16 *)((u8 *)p + 0x10);
-    s16 r6 = *(s16 *)((u8 *)p + 0xA);
-    s16 r0 = *(s16 *)((u8 *)p + 0xE);
+    s16 r8;
+    s16 r7;
+    s16 r6;
+    s16 r0;
+
+    r8 = *(s16 *)((u8 *)arg1 + 0xC);
+    r7 = *(s16 *)((u8 *)arg1 + 0x10);
+    r6 = *(s16 *)((u8 *)arg1 + 0xA);
+    r0 = *(s16 *)((u8 *)arg1 + 0xE);
     spA = (s16)((s16)(r7 - r8) >> 1);
     sp8 = (s16)((s16)(r0 - r6) >> 2);
-    *arg0 = *fn_8013F748(p, a, b);
+    *arg0 = *fn_8013F748(arg1, &spC, &sp8);
 }
-#pragma scheduling reset
+#pragma cplusplus off
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
