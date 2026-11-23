@@ -123,7 +123,10 @@ auto/text_8003670C.c:
 	.text       start:0x8003670C end:0x80036834
 
 auto/text_80036834.c:
-	.text       start:0x80036834 end:0x80038128
+	.text       start:0x80036834 end:0x80036DE0
+
+auto/text_80036DE0.c:
+	.text       start:0x80036DE0 end:0x80038128
 
 auto/unit_distance.c:
 	.text       start:0x80038128 end:0x8003816C
