@@ -6975,7 +6975,6 @@ void Unit_DrawShadows(void) {
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_lifetimes off
-#pragma optimization_level 3
 void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 Map_SampleHeight(void *);
     void fn_80051564(void *, s32, f32, f32);
