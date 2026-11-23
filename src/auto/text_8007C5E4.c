@@ -1029,7 +1029,6 @@ void fn_8007DAC4(void *arg0, void *arg1) {
     Ui_ShowUnitInfoText(gUnitInfoPopup, *((void **) (((u8 *) arg1) + 0x10)), *((f32 *) arg1), *new_var);
       }
 }
-#pragma peephole on
 #pragma use_lmw_stmw on
 void fn_8007DD78(void *arg0) {
     void *fn_80105C5C(void *, u8);
