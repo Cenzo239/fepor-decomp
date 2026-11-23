@@ -1638,6 +1638,7 @@ s32 ScriptCtx_Begin(void *arg0) {
     return 1;
 }
 
+#pragma global_optimizer off
 s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
 {
     extern s16 lbl_8036719E;
@@ -1647,11 +1648,13 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     void fn_8000D3EC(void *, void *);
     s32 index;
     s32 nextRaw;
+    u8 *base;
     u8 *entry;
 
     index = lbl_8036719E;
     nextRaw = index + 1;
-    entry = lbl_803671A0 + (index << 4);
+    base = lbl_803671A0;
+    entry = base + (index << 4);
     lbl_8036719E = nextRaw;
     if ((s16)nextRaw > lbl_8036719C) {
         gCmScriptStatus = 9;
@@ -1665,8 +1668,7 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     fn_8000D3EC(arg0, entry);
     return 1;
 }
-
-#pragma scheduling reset
+#pragma global_optimizer on
 u32 Event_NextEntry(void *arg0) {
     extern void *gCmScriptList;
     void *owner;
@@ -2421,7 +2423,7 @@ void fn_80014790(void) {
 #pragma global_optimizer off
 void main(void) {
     void *OSGetTick(void);
-    void DebugPrint(char *, ...);
+    void fn_800056CC(char *, ...);
     void fn_800059B4(void);
     void fn_800059FC(s32, s32, s32, s32, s32);
     void fn_80005A84(s32, s32);
@@ -2446,20 +2448,20 @@ void main(void) {
     void fn_80014EA8(void);
     void fn_80025970(void);
     void fn_80025BA0(void);
-    void Game_PollSoftReset(void);
+    void fn_8005AE78(void);
     void fn_8005BCF0(void);
     void fn_80066124(s32);
     void fn_800675E8(s32);
     void fn_80067DA4(s32);
-    void Camera_ApplyOrtho(s32);
-    void DEMOSetStats(s32);
+    void fn_80067EDC(s32);
+    void fn_8006E568(s32);
     void fn_8006E660(void);
-    void DEMOBeforeRender(void);
+    void fn_8006E748(void);
     void fn_80078DF8(void);
     void fn_800895B8(void);
     void fn_8009B738(s32, s32);
     void fn_8009B900(s32, s32);
-    void Debug_DrawGuideFrame(void);
+    void fn_8009CF28(void);
     void fn_8009D0E8(s32, s32);
     void fn_8009D95C(s32, s32);
     void fn_8009E588(void);
@@ -2476,23 +2478,23 @@ void main(void) {
     void fn_8009E9A0(void);
     void fn_8009E9D0(void);
     void fn_8014702C(s32);
-    void Game_InitVideo(void);
+    void fn_801C9460(void);
     void fn_801ED52C(s32);
     void fn_801FBC48(void);
     void fn_802052E8(void);
     s32 fn_80209FD4(void);
-    void OS_YieldThread(void);
+    void fn_8020A51C(void);
     void fn_8020A558(void *, void *, s32, void *, s32, s32, s32);
     void fn_8020A9E0(void *);
     void fn_80224658(s32);
-    void strcpy(void *, void *);
+    void fn_80234450(void *, void *);
     void fn_8023A504(s32, s32, void *);
     extern u8 lbl_802AEE40[];
     extern char lbl_80268000[];
     extern s32 lbl_803671B4;
     extern u8 lbl_803671B8;
     extern u8 lbl_803671B0;
-    extern s32 gGameFlags;
+    extern s32 lbl_803682A4;
     extern u8 lbl_80367700;
     extern u8 lbl_80367701;
     extern u8 lbl_80367702;
@@ -2504,21 +2506,19 @@ void main(void) {
     extern f32 lbl_80368C70;
     extern f32 lbl_80368C74;
 
-    typedef struct { u8 bytes[0x1000]; } Page;
-    u8 *base;
     s32 sp8;
     s32 tmp;
-    Page *stack;
+    u8 *stack;
+    u8 *base = lbl_802AEE40;
 
-    base = lbl_802AEE40;
     lbl_803671B4 = fn_80209FD4();
     fn_802052E8();
     fn_80025BA0();
-    Game_InitVideo();
-    DEMOSetStats(5);
+    fn_801C9460();
+    fn_8006E568(5);
     fn_801FBC48();
-    stack = (Page *)(base + 0x1698);
-    fn_8020A558(base + 0x1380, fn_80014790, 0, (void *)(stack + 1), 0x1000, 0x10, 1);
+    stack = base + 0x1698;
+    fn_8020A558(base + 0x1380, fn_80014790, 0, (u8 *)((u32)stack + 0x1000), 0x1000, 0x10, 1);
     fn_8020A9E0(base + 0x1380);
     fn_8000D5C8();
     fn_8005BCF0();
@@ -2527,8 +2527,8 @@ void main(void) {
     fn_800059FC(0x10, 0x20, 0x240, 0x1A0, 0x10);
     fn_800059B4();
     base[0x1320] = 0;
-    strcpy(base + 0x1360, lbl_80268000);
-    DebugPrint(lbl_80268000 + 7,
+    fn_80234450(base + 0x1360, lbl_80268000);
+    fn_800056CC(lbl_80268000 + 7,
                 *(s8 *)0x80000000, *(s8 *)0x80000001, *(s8 *)0x80000002,
                 *(s8 *)0x80000003, *(s8 *)0x80000004, *(s8 *)0x80000005);
     fn_8023A504(0, 2, &sp8);
@@ -2547,24 +2547,24 @@ void main(void) {
     fn_8000A280();
     lbl_803671B8 = 0;
     fn_8014702C(0);
-    stack = (Page *)(base + 0x318);
-    fn_8020A558(base, fn_80014EA8, 0, (void *)(stack + 1), 0x1000, 0x10, 1);
-    fn_8020A9E0(base);
-    OS_YieldThread();
+    stack = base + 0x318;
+    fn_8020A558(base + 0, fn_80014EA8, 0, (u8 *)((u32)stack + 0x1000), 0x1000, 0x10, 1);
+    fn_8020A9E0(base + 0);
+    fn_8020A51C();
     fn_801ED52C(0);
     fn_80005C60();
     fn_80008B94();
     for (;;) {
         while (lbl_803671B0) {
-            OS_YieldThread();
+            fn_8020A51C();
         }
-        tmp = gGameFlags;
+        tmp = lbl_803682A4;
         if (tmp & 2) {
-            gGameFlags = tmp & ~2;
+            lbl_803682A4 = tmp & ~2;
             fn_80066124(0);
         } else {
             fn_8009E9D0();
-            DEMOBeforeRender();
+            fn_8006E748();
             fn_8000C194(5);
             fn_80224658(0);
             fn_8009E7DC();
@@ -2577,7 +2577,7 @@ void main(void) {
                 fn_8009D0E8(0x160, 0x10);
             }
             if (lbl_80367704) {
-                Debug_DrawGuideFrame();
+                fn_8009CF28();
             }
             if (lbl_80367705) {
                 fn_8009B900(0x100, 0x10);
@@ -2589,7 +2589,7 @@ void main(void) {
                 fn_8009B738(0xB8, 0x188);
             }
             fn_8009E5F8();
-            Camera_ApplyOrtho(0);
+            fn_80067EDC(0);
             fn_8009E774();
             fn_80007B04();
             fn_8009E71C();
@@ -2598,10 +2598,10 @@ void main(void) {
             fn_8000C194(7);
             fn_8009E6F0();
             fn_8009E6B4();
-            tmp = gGameFlags;
+            tmp = lbl_803682A4;
             if (tmp & 4) {
-                gGameFlags = tmp & ~4;
-                gGameFlags = gGameFlags | 2;
+                lbl_803682A4 = tmp & ~4;
+                lbl_803682A4 = lbl_803682A4 | 2;
             }
         }
         fn_8009E5B4();
@@ -2615,11 +2615,11 @@ void main(void) {
         fn_8009E9A0();
         fn_8009E588();
         fn_80224658(1);
-        if (!(gGameFlags & 2)) {
+        if (!(lbl_803682A4 & 2)) {
             fn_8006E660();
         }
         fn_80006754();
-        Game_PollSoftReset();
+        fn_8005AE78();
     }
 }
 u8 fn_80014E70(void) {
@@ -3675,72 +3675,61 @@ void fn_80016498(void)
     } while (i <= 0x9F);
 }
 
+#pragma global_optimizer off
 #pragma use_lmw_stmw on
 void fn_80016538(void)
 {
-    #pragma global_optimizer off
-    extern u8 gUnitLists[];
-    extern char lbl_802680A8[];
+  extern u8 gUnitLists[];
+  extern char lbl_802680A8[];
+  extern s32 fn_80015680(void *);
+  extern void DebugPrint(const char *, ...);
+  extern s32 Msg_ResolveName(void *);
+  char *strings;
+  unsigned long long new_var;
+  s8 byte1;
+  s8 byte0;
+  u8 byte2;
+  s32 field;
+  u8 *slot;
+  s32 index;
+  u8 *node;
+  void *ptr;
+  s32 result;
+  char *fmt;
+  index = 0;
+  strings = lbl_802680A8;
+  do
+  {
+    DebugPrint(strings + 0x23, index, fn_80015680(slot));
+    node = *((u8 **) slot);
+    while (node != 0)
+    {
+      ptr = *((void **) (node + 0x188));
+      if (ptr != 0)
+      {
+        field = *((s32 *) (node + 0x1A0));
+        new_var = (byte2 = *((u8 *) (node + 0x198)));
+        byte1 = *((s8 *) (node + 0x19F));
+        byte0 = *((s8 *) (node + 0x19E));
+        result = Msg_ResolveName(ptr);
+        fmt = lbl_802680A8 + 0x3B;
+        DebugPrint(fmt, byte2, byte0, byte1, field, result);
+      }
+      else
+      {
+        DebugPrint(lbl_802680A8 + 0x59, *((u8 *) (node + 0x198)), *((s8 *) (node + 0x19E)), *((s8 *) (node + 0x19F)), *((s32 *) (node + 0x1A0)));
+      }
+      node = *((u8 **) (node + 0x184));
+    }
 
-    extern s32 fn_80015680(void *);
-    extern s32 DebugPrint(const char *, ...);
-    extern s32 Msg_ResolveName(void *);
-
-    s32 field;
-    u8 byte1;
-    u8 byte0;
-    u8 byte2;
-    u8 *slot;
-    s32 index;
-    u8 *node;
-    char *strings;
-    s32 value;
-    s32 result;
-    void *ptr;
-
+    index += 1;
+    slot += 0xC;
     slot = gUnitLists;
-    index = 0;
-    strings = lbl_802680A8;
-
-    do {
-        value = fn_80015680(slot);
-        DebugPrint(strings + 0x23, index, value);
-
-        node = *(u8 **)slot;
-        while (node != 0) {
-            ptr = *(void **)(node + 0x188);
-            if (ptr != 0) {
-                field = *(s32 *)(node + 0x1A0);
-                byte1 = *(u8 *)(node + 0x19F);
-                byte0 = *(u8 *)(node + 0x19E);
-                byte2 = *(u8 *)(node + 0x198);
-                result = Msg_ResolveName(ptr);
-                DebugPrint(
-                    strings + 0x3B,
-                    byte2,
-                    (s8)byte0,
-                    (s8)byte1,
-                    field,
-                    result
-                );
-            } else {
-                DebugPrint(
-                    lbl_802680A8 + 0x59,
-                    *(u8 *)(node + 0x198),
-                    (s8)*(u8 *)(node + 0x19E),
-                    (s8)*(u8 *)(node + 0x19F),
-                    *(s32 *)(node + 0x1A0)
-                );
-            }
-            node = *(u8 **)(node + 0x184);
-        }
-
-        index += 1;
-        slot += 0xC;
-    } while (index < 8);
-    #pragma global_optimizer reset
+  }
+  while (index < 8);
 }
-#pragma use_lmw_stmw on
+#pragma global_optimizer on
+#pragma use_lmw_stmw off
 void fn_80016628(s32 arg0) {
     M2C_UNK fn_80015718(void *, void *);
     M2C_UNK fn_800158A0(void *);
@@ -3921,18 +3910,14 @@ void *fn_800169A8(void *arg0, s16 arg1)
 void Unit_WriteAll(s32 arg0) {
     extern u8 gUnits[];
     void Unit_Write(void *, s32);
-    u8 *r31;
-    s32 r30;
+    u8 *unit;
+    s32 i;
 
-    r31 = gUnits;
-    r30 = 0;
-    do {
-        Unit_Write(r31, arg0);
-        r30 += 1;
-        r31 += 0x280;
-    } while (r30 < 0x9F);
+    for (unit = gUnits, i = 0; i < 0x9F; i++, unit += 0x280) {
+        Unit_Write(unit, arg0);
+    }
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 s32 fn_80016A9C(s32 arg0) {
     s32 Unit_FindDisposLeader(s32);
     extern u32 gUnitLists[];
