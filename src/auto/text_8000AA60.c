@@ -14,10 +14,10 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
     s32 c2;
+    s32 c1;
+    u32 raw2;
+    u32 raw1;
     goto ld;
 cmp:
     if ((s8)raw1 != (s8)raw2)
@@ -139,14 +139,11 @@ s32 fn_8000AB90(void *arg0) {
     u8 *entry;
     s32 n;
     u8 *source;
-    u8 *p;
 
-    p = *(u8 **)((u8 *)arg0 + 4);
-    i = 0x80;
-    source = *(u8 **)(p + 4);
+    source = *(u8 **)(*(u8 **)((u8 *)arg0 + 4) + 4);
     entry = gProcesses;
     n = 0;
-    for (; i != 0; i--) {
+    for (i = 0; i < 0x80; i++) {
         if (*(u32 *)entry != 0) {
             if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) != 0) {
                 goto skip1;
