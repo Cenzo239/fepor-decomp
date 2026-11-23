@@ -387,7 +387,6 @@ i+=8;
 } while((u16)size);
 return 0;
 }
-#pragma scheduling reset
 
 u8 fn_8023CE08(void)
 {
