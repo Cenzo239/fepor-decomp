@@ -621,7 +621,6 @@ u16 FileCache_Probe(char *name) {
     u8 *entry = FindEntryByName(name);
     u16 flags;
     s32 r;
-    u32 bit;
 
     if (entry == NULL) {
         flags = 0x8000;
@@ -632,8 +631,12 @@ u16 FileCache_Probe(char *name) {
         return flags;
     }
     r = fn_8020C3E0(name);
-    bit = 0x8000;
-    return (u16)(bit & (u32)(~((r + 1) | (-1 - r)) >> 31));
+    if (r == -1) {
+        flags = 0x8000;
+    } else {
+        flags = 0;
+    }
+    return flags;
 }
 #pragma use_lmw_stmw reset
 /* Return the byte size of the named file-cache entry, or 0 if absent. */
