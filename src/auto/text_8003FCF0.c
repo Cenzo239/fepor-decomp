@@ -4247,18 +4247,19 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     extern f32 lbl_80368F2C;
     extern f32 lbl_80368F5C;
     extern f32 lbl_80368F60;
-    extern f32 lbl_80368F64;
-    extern f32 lbl_80368F68;
+    extern const f32 lbl_80368F64;
+    extern const f32 lbl_80368F68;
     struct Work { f32 quat[4]; f32 corners[8][3]; } wk;
     u8 bufF8[0x30], bufC8[0x30], buf98[0x30], buf68[0x30], buf38[0x30], buf8[0x30];
+    u8 *e;
     f32 *c1 = &wk.corners[1][0]; f32 *c2 = &wk.corners[2][0];
     f32 *c3 = &wk.corners[3][0]; f32 *c4 = &wk.corners[4][0];
     f32 *c5 = &wk.corners[5][0]; f32 *c6 = &wk.corners[6][0];
     f32 *c7 = &wk.corners[7][0];
     u8 *sub;
     u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
-    s32 i; u8 *e; u32 mask = 0x10040;
-    f32 x, y, minX, minY, maxX, maxY, *p, f2c; s32 j; u8 hit;
+    s32 i; u32 mask = 0x10040;
+    f32 f2c, maxY, maxX, minY, minX, x, y, *p; s32 j; u8 hit;
 
     for (i = arg1; i < arg2; i++, entry += 0xB4) {
         e = entry + 0x14;
@@ -8745,60 +8746,62 @@ void Map_InitGfx(void) {
 #pragma global_optimizer reset
 
 void fn_80051328(u8 arg0, void *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
-    typedef struct { u32 a, b, c, d; } Vec4;
-    void fn_802029C4(void *, Vec4 *, Vec4 *);
+    void fn_802029C4(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802026E4(void *, Vec4 *, Vec4 *, Vec4 *);
+    void fn_802026E4(void *, void *, void *, void *);
     void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     extern u8 lbl_8026AA98[];
     extern f32 lbl_80368FC4, lbl_80368FCC, lbl_80368FD8, lbl_80368FDC;
-    u8 spD4[0x30];
-    u8 spA4[0x30];
-    u8 sp74[0x30];
-    u8 sp44[0x30];
-    u32 sp40, sp3C, sp38, sp34, sp30, sp2C, sp28, sp24, sp20, sp1C, sp18, sp14, sp10, spC, sp8;
+    struct Stack {
+        u32 f8, fC, f10, f14, f18, f1C, f20, f24, f28, f2C, f30, f34, f38, f3C, f40;
+        u8 a44[0x30];
+        u8 a74[0x30];
+        u8 aA4[0x30];
+        u8 aD4[0x30];
+    };
+    struct Stack s;
     u8 *tbl;
 
     tbl = lbl_8026AA98;
-    sp2C = *(u32 *)(tbl + 0x1C);
-    sp30 = *(u32 *)(tbl + 0x20);
-    sp38 = *(u32 *)(tbl + 0x28);
-    sp3C = *(u32 *)(tbl + 0x2C);
-    *(f32 *)&sp2C = farg0;
-    *(f32 *)&sp30 = farg1;
-    *(f32 *)&sp38 = farg0;
-    *(f32 *)&sp3C = farg1;
-    sp34 = *(u32 *)(tbl + 0x24);
-    sp8 = sp2C;
-    spC = sp30;
-    sp10 = sp34;
-    sp40 = *(u32 *)(tbl + 0x30);
-    sp14 = sp38;
-    sp18 = sp3C;
-    sp1C = sp40;
-    sp20 = *(u32 *)(tbl + 0x34);
-    sp24 = *(u32 *)(tbl + 0x38);
-    sp28 = *(u32 *)(tbl + 0x3C);
+    s.f2C = *(u32 *)(tbl + 0x1C);
+    s.f30 = *(u32 *)(tbl + 0x20);
+    s.f38 = *(u32 *)(tbl + 0x28);
+    s.f3C = *(u32 *)(tbl + 0x2C);
+    *(f32 *)&s.f2C = farg0;
+    *(f32 *)&s.f30 = farg1;
+    *(f32 *)&s.f38 = farg0;
+    *(f32 *)&s.f3C = farg1;
+    s.f34 = *(u32 *)(tbl + 0x24);
+    s.f8 = s.f2C;
+    s.fC = s.f30;
+    s.f10 = s.f34;
+    s.f40 = *(u32 *)(tbl + 0x30);
+    s.f14 = s.f38;
+    s.f18 = s.f3C;
+    s.f1C = s.f40;
+    s.f20 = *(u32 *)(tbl + 0x34);
+    s.f24 = *(u32 *)(tbl + 0x38);
+    s.f28 = *(u32 *)(tbl + 0x3C);
     if (lbl_80368FCC != farg4) {
-        PSMTXRotRad(spA4, 0x5A, lbl_80368FD8 * farg4);
+        PSMTXRotRad(s.aA4, 0x5A, lbl_80368FD8 * farg4);
         if (arg0 == 0) {
-            fn_802029C4(spA4, (Vec4 *)&sp20, (Vec4 *)&sp20);
+            fn_802029C4(s.aA4, &s.f20, &s.f20);
         }
-        fn_802026E4(sp74, (Vec4 *)&sp14, (Vec4 *)&sp20, (Vec4 *)&sp8);
-        C_MTXLightOrtho(sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-        PSMTXConcat(sp44, sp74, arg1);
-        PSMTXTrans(spD4, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
-        PSMTXConcat(spA4, spD4, spA4);
-        PSMTXTrans(spD4, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
-        PSMTXConcat(spD4, spA4, spA4);
-        PSMTXConcat(spA4, arg1, arg1);
+        fn_802026E4(s.a74, &s.f14, &s.f20, &s.f8);
+        C_MTXLightOrtho(s.a44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+        PSMTXConcat(s.a44, s.a74, arg1);
+        PSMTXTrans(s.aD4, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+        PSMTXConcat(s.aA4, s.aD4, s.aA4);
+        PSMTXTrans(s.aD4, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+        PSMTXConcat(s.aD4, s.aA4, s.aA4);
+        PSMTXConcat(s.aA4, arg1, arg1);
         return;
     }
-    fn_802026E4(sp74, (Vec4 *)&sp14, (Vec4 *)&sp20, (Vec4 *)&sp8);
-    C_MTXLightOrtho(sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-    PSMTXConcat(sp44, sp74, arg1);
+    fn_802026E4(s.a74, &s.f14, &s.f20, &s.f8);
+    C_MTXLightOrtho(s.a44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+    PSMTXConcat(s.a44, s.a74, arg1);
 }
 
 void fn_80051538(s32 *arg0) {
