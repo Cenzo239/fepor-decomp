@@ -6170,9 +6170,21 @@ s32 count=value;
 fn_8008C1D8(0,0,0,count*((Obj *)*(void **)((u8 *)arg1+0x3C))->v20()+0x20,2);
 }
 #pragma cplusplus on
-extern "C" void fn_8011B5FC(void *arg0, void *arg1) {
-    struct Obj {
-        u8 pad[4];
+extern "C" void fn_8011B5FC(void *self, void *ctx)
+{
+    void Ui_DrawObjRouteIcon(void *, void *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32, f32);
+    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    extern f32 lbl_8036A234;
+    extern f32 lbl_8036A238;
+    extern f32 lbl_8036A1E8;
+    extern f32 lbl_8036A23C;
+
+    struct DrawObj {
+        u8 pad04[4];
         virtual void v0() = 0;
         virtual void v1() = 0;
         virtual void v2() = 0;
@@ -6191,9 +6203,7 @@ extern "C" void fn_8011B5FC(void *arg0, void *arg1) {
         virtual void v15() = 0;
         virtual void v16() = 0;
         virtual void v17() = 0;
-        virtual s16 GetTextSize() = 0;
-        virtual void v19() = 0;
-        virtual void v20() = 0;
+        virtual s32 v20() = 0;
         virtual void v21() = 0;
         virtual void v22() = 0;
         virtual void v23() = 0;
@@ -6202,37 +6212,32 @@ extern "C" void fn_8011B5FC(void *arg0, void *arg1) {
         virtual void v26() = 0;
         virtual void v27() = 0;
         virtual void v28() = 0;
-        virtual void Draw(void *) = 0;
-        u8 pad2[0x36];
-        s16 field3A;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31(void *ctx) = 0;
     };
-    M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK Prim2D_PrepareTex();
-    M2C_UNK Prim2D_Begin();
-    s32 Text_MeasureHeight(M2C_UNK, f32, f32);
-    M2C_UNK Ui_DrawObjRouteIcon();
-    M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    extern f32 lbl_8036A1E8;
-    extern f32 lbl_8036A234;
-    extern f32 lbl_8036A238;
-    extern f32 lbl_8036A23C;
-    Obj *state;
-    f32 temp_f2;
-    s16 temp_r31;
-    s32 temp_r30;
-    s32 temp_r29;
 
-    state = (Obj *)arg1;
-    Ui_DrawObjRouteIcon();
-    ((Obj *)arg0)->Draw(state);
+    s16 top;
+    register unsigned int heightOffset;
+    s32 width;
+    s32 scaled;
+
+    Ui_DrawObjRouteIcon(self, ctx);
+    ((DrawObj *)self)->v31(ctx);
+
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A234);
     Prim2D_PrepareTex();
-    temp_f2 = (f32) ((Obj *)arg0)->GetTextSize();
-    temp_r29 = (s32) (lbl_8036A238 * temp_f2);
-    temp_r31 = state->field3A;
-    temp_r30 = Text_MeasureHeight(-1, lbl_8036A1E8, temp_f2) >> 1;
-    fn_8008AB7C(((Obj *)arg0)->GetTextSize() >> 1, temp_r31 + temp_r30, temp_r29, 0x17, 0xA, 0x28, 1);
+
+    scaled = (s32)((f32)(s16)((DrawObj *)self)->v20() * lbl_8036A238);
+
+    heightOffset = Text_MeasureHeight(-1, lbl_8036A1E8) >> 1;
+
+    top = *(s16 *)((u8 *)ctx + 0x3A);
+    width = (s16)((DrawObj *)self)->v20();
+
+    fn_8008AB7C(width >> 1, top + heightOffset, scaled, 0x17, 0xA, 0x28, 1);
+
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A23C);
     Prim2D_PrepareTex();
