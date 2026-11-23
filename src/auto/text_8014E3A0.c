@@ -2826,11 +2826,11 @@ void Ui_DrawSlotFrame(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368018;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368020;
     extern u8 gUiTexScratch[64];
+    s16 var_r26;
+    s16 var_r27;
+    s32 var_r28;
     s16 temp_r30;
     s16 temp_r31;
-    s32 var_r28;
-    s16 var_r27;
-    s16 var_r26;
 
     var_r26 = arg0;
     var_r27 = arg1;
@@ -2839,8 +2839,8 @@ void Ui_DrawSlotFrame(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
         s16 *var_r29;
         Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, 0x4B);
         var_r29 = (s16 *)&lbl_80368018;
-        temp_r30 = (s16)(var_r29[2] - var_r29[0]);
         temp_r31 = (s16)(var_r29[3] - var_r29[1]);
+        temp_r30 = (s16)(var_r29[2] - lbl_80368018.f0);
         if (temp_r30 != 0) {
             if (temp_r31 != 0) {
                 Prim2D_Begin();
@@ -3120,16 +3120,11 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
         }
     }
     {
-        s16 t2, t6, t0, t4;
         s16 *p80 = (s16 *)&lbl_80367F80;
-        s16 off = (s16)(*(s16 *)((u8 *)p80 + 4) - *(s16 *)((u8 *)&lbl_80367F80 + 0));
-        x = (s16)(x + off);
-        t0 = *(s16 *)((u8 *)&lbl_80367F90 + 0);
-        t4 = *(s16 *)((u8 *)rect + 4);
-        t2 = *(s16 *)((u8 *)rect + 2);
-        t6 = *(s16 *)((u8 *)rect + 6);
-        temp_r31 = (s16)(t4 - t0);
-        temp_r30 = (s16)(t6 - t2);
+        s16 raw = (s16)(p80[2] - lbl_80367F80.f0);
+        x = (s16)(x + raw);
+        temp_r31 = (s16)(rect[2] - lbl_80367F90.f0);
+        temp_r30 = (s16)(rect[3] - rect[1]);
         if (temp_r31 != 0 && temp_r30 != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(flags | 1));
@@ -3505,10 +3500,6 @@ void fn_80154F1C(s32 x, s32 y, s32 align, s32 value, s32 flags) {
     s32 len;
     s16 totalW;
     s32 dig;
-    s16 left;
-    s16 right;
-    s16 top;
-    s16 off;
 
     fn_80238ABC(value, buf, 0xA);
     len = strlen(buf);
@@ -3530,34 +3521,20 @@ void fn_80154F1C(s32 x, s32 y, s32 align, s32 value, s32 flags) {
     while ((s8)*p != 0) {
         *(s32 *)&rect[0] = *(s32 *)&lbl_80367F98;
         *(s32 *)&rect[2] = lbl_80367F9C;
-        left = rect[0];
-        dig = (s8)*p;
-        right = rect[2];
-        dig = dig - 0x30;
-        left = rect[0];
-        off = (s16)(right - left);
-        right = rect[2];
-        top = rect[1];
-        off = off + 1;
-        h = (s16)(rect[3] - top);
-        off = dig * off;
-        off = (s16)off;
-        left = left + off;
-        right = right + off;
-        rect[0] = left;
-        left = (s16)left;
-        w = (s16)right;
-        rect[2] = right;
-        w = (s16)(w - left);
-        if (w != 0) {
-            if (h != 0) {
-                Prim2D_Begin();
-                Prim2D_SetTex(gUiTexScratch, (u16)flags);
-                Prim2D_PrepareTex();
-                Prim2D_AddPrim(1);
-                Prim2D_SetRectUv((f32)(s16)x, (f32)(s16)y, (f32)rect[0], (f32)rect[1], (f32)w, (f32)h);
-                Prim2D_EndPrim();
-            }
+        dig = ((s8)*p) - 0x30;
+        w = (s16)(rect[2] - rect[0] + 1);
+        h = (s16)(rect[3] - rect[1]);
+        w = (s16)(dig * w);
+        rect[0] = (s16)(rect[0] + w);
+        rect[2] = (s16)(rect[2] + w);
+        w = (s16)(rect[2] - rect[0]);
+        if (w != 0 && h != 0) {
+            Prim2D_Begin();
+            Prim2D_SetTex(gUiTexScratch, (u16)flags);
+            Prim2D_PrepareTex();
+            Prim2D_AddPrim(1);
+            Prim2D_SetRectUv((f32)(s16)x, (f32)(s16)y, (f32)rect[0], (f32)rect[1], (f32)w, (f32)h);
+            Prim2D_EndPrim();
         }
         p++;
         x += (s16)(base[2] - lbl_80367F98.x);
