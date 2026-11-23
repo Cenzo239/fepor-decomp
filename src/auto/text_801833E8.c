@@ -11989,8 +11989,8 @@ void fn_80199A60(void *arg0, s32 arg1) {
         }
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     } else {
-        register u8 etemp = *(u8 *)((u8 *)arg0 + 2);
-        *(u8 *)((u8 *)arg0 + 2) = __rlwimi(etemp, 0, 2, 28, 29);
+        struct B { u8 pad[2]; u8 hi : 4; u8 mode : 2; u8 lo : 2; };
+        ((struct B *)arg0)->mode = 0;
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     }
     fn_801C7C18(*(u8 *)((u8 *)arg0 + 6), *(u8 *)((u8 *)arg0 + 7), *(u8 *)((u8 *)arg0 + 5));
