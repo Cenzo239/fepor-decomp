@@ -1596,8 +1596,8 @@ void fn_801F3E60(void *arg0) {
             Prim2D_SetColor(c0.r, c0.g, c0.b, 0xFF);
             Prim2D_EmitQuad();
             Prim2D_EndPrim();
-            f30v = (f32)(*(s16 *)((u8 *)p + 0x12) + 0xD0);
-            f29v = (f32)(*(s16 *)((u8 *)p + 0x14) + 1) + f31v;
+            f29v = (f32)(*(s16 *)((u8 *)p + 0x12) + 0xD0);
+            f30v = (f32)(*(s16 *)((u8 *)p + 0x14) + 1) + f31v;
             c1 = *Ui_GetColor(1);
             tex = *fn_8006EDD8(*(s32 *)p, 4);
             tw = tex[1];
@@ -1606,8 +1606,8 @@ void fn_801F3E60(void *arg0) {
             Prim2D_BindTexture(*(s32 *)p, 4, 0x11);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetQuadMin(f30v, f29v, lbl_8036B858 + (f32)tw, lbl_8036B858);
-            Prim2D_SetQuadMax(f30v + (f32)tw, f29v + (f32)th, lbl_8036B858, lbl_8036B858 + (f32)th);
+            Prim2D_SetQuadMin(f29v, f30v, lbl_8036B858 + (f32)tw, lbl_8036B858);
+            Prim2D_SetQuadMax(f29v + (f32)tw, f30v + (f32)th, lbl_8036B858, lbl_8036B858 + (f32)th);
             Prim2D_SetColor(c1.r, c1.g, c1.b, 0xFF);
             Prim2D_EmitQuad();
             Prim2D_EndPrim();
