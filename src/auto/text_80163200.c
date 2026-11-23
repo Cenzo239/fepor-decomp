@@ -17440,7 +17440,7 @@ void fn_8017F5C8(void *arg0) {
 
 void fn_8017F5EC(void *arg0) {
     s32 fn_8006D948(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     void fn_8017F650(void);
     extern u8 lbl_802788B8[];
     extern const f32 lbl_8036AC88;
@@ -17448,7 +17448,7 @@ void fn_8017F5EC(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x40) = 0xFF;
     *(s32 *)((u8 *)arg0 + 0x34) = fn_8006D948((u8 *)lbl_802788B8 + 0x122);
     *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036AC88;
-    fn_80059208(fn_8017F650, arg0);
+    Process_AttachFunc(fn_8017F650, arg0);
 }
 
 void fn_8017F650(void *arg0) {
