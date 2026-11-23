@@ -2786,8 +2786,8 @@ void fn_8010913C(void *arg0) {
     }
 }
 
-void *Sound_Create(s32 arg0, u32 arg1) {
-    void *Process_Create(void *, u32);
+void *Sound_Create(s32 arg0, unsigned arg1) {
+    void *Process_Create(void *, unsigned);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];
     void *tbl;
@@ -2795,8 +2795,8 @@ void *Sound_Create(s32 arg0, u32 arg1) {
 
     tbl = lbl_8028F390;
     switch (arg1) {
-    case 0U:
-        arg1 = 3U;
+    case 0u:
+        arg1 = 3u;
         break;
     default:
         break;
@@ -3178,19 +3178,25 @@ u8 fn_80109B48(void *arg0) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0xC);
 }
 
+#pragma global_optimizer off
 void fn_80109B54(void *arg0, f32 farg0) {
-    extern f32 lbl_8036A140;
-    f32 c = lbl_8036A140;
+    extern const f32 lbl_8036A140;
     void *p;
+    f32 c;
+    f32 t34;
+    f32 t8;
 
     p = *(void **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)p + 8) = farg0;
+    *(volatile f32 *)((u8 *)p + 8) = farg0;
+    c = lbl_8036A140;
     p = *(void **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)arg0 + 0x34) = (f32)*(u8 *)((u8 *)p + 4);
     p = *(void **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)arg0 + 0x34) / (c * *(f32 *)((u8 *)p + 8));
+    t34 = *(f32 *)((u8 *)arg0 + 0x34);
+    t8 = *(f32 *)((u8 *)p + 8);
+    *(f32 *)((u8 *)arg0 + 0x38) = t34 / (c * t8);
 }
-
+#pragma global_optimizer on
 f32 fn_80109BA8(void *arg0) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8);
 }
