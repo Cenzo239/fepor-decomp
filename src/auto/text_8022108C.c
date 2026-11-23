@@ -280,8 +280,8 @@ void fn_80221450(u32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-extern f64 lbl_8036BCD8;
-extern f32 lbl_8036BCD0;
+extern const f64 lbl_8036BCD8;
+extern const f32 lbl_8036BCD0;
 s32 __cvt_fp2unsigned(f32);
 #pragma use_lmw_stmw on
 f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
@@ -301,13 +301,19 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     u32 cmp;
     f32 tmp;
     f32 inv;
+    u32 rawE;
+    u32 rawX;
 
+    rawE = efbHeight;
+    rawX = xfbHeight;
+    bias = lbl_8036BCD8;
+    f256 = lbl_8036BCD0;
     yScale = xfbHeight;
     efb = efbHeight;
     save0 = efbHeight;
     save1 = xfbHeight;
     tmp = (f32)yScale / (f32)efb;
-    inv = lbl_8036BCD0 / tmp;
+    inv = f256 / tmp;
     ratio = tmp;
     denom = (u32)__cvt_fp2unsigned(inv) & 0x1FF;
     fixed = (efb - 1) << 8;
@@ -325,10 +331,8 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     }
     cmp = lines;
 
-    bias = lbl_8036BCD8;
-    f256 = lbl_8036BCD0;
-    xfbOrig = (u16)save1;
-    efbOrig = (u16)save0;
+    xfbOrig = (u16)rawX;
+    efbOrig = (u16)rawE;
 
     while (cmp > xfbOrig) {
         yScale -= 1;
@@ -354,7 +358,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     best = ratio;
     bias = lbl_8036BCD8;
     f256 = lbl_8036BCD0;
-    efbOrig = (u16)save0;
+    efbOrig = (u16)rawE;
 
     while (cmp < xfbOrig) {
         yScale += 1;
