@@ -567,7 +567,7 @@ void fn_80040028(void *arg0, void *arg1)
    obj=*(u8 **)((u8 *)arg0+0x14)+i*0xB4;
    flags=*(u32 *)(*(u8 **)(obj+0x10)+0xBC);
    if(MapObj_HasActionFlag(flags) && !MapObj_HasBlockedAction(flags) &&
-      ((u8)(u32)arg1 || !(flags&0x1000)) && MapObj_IsIdle(obj)) {
+      ((u8)(u32)arg1 || !(flags&0x1000)) && !MapObj_GetState(obj)) {
        list[count++]=obj;
        obj[2]|=2;
    }
@@ -4113,18 +4113,18 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     u8 buf68[0x30];
     u8 buf38[0x30];
     u8 buf8[0x30];
-    s32 i;
-    u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
-    u8 *sub;
-    f32 *c7 = &wk.corners[7][0];
-    f32 *c6 = &wk.corners[6][0];
-    f32 *c5 = &wk.corners[5][0];
-    f32 *c4 = &wk.corners[4][0];
-    f32 *c3 = &wk.corners[3][0];
-    f32 *c2 = &wk.corners[2][0];
     f32 *c1 = &wk.corners[1][0];
+    f32 *c2 = &wk.corners[2][0];
+    f32 *c3 = &wk.corners[3][0];
+    f32 *c4 = &wk.corners[4][0];
+    f32 *c5 = &wk.corners[5][0];
+    f32 *c6 = &wk.corners[6][0];
+    f32 *c7 = &wk.corners[7][0];
+    u8 *sub;
+    u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
+    s32 i;
     u8 *e;
-    u32 mask = 0x1040;
+    u32 mask = 0x10040;
     f32 minX;
     f32 minY;
     f32 maxX;
@@ -4177,9 +4177,6 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
                 PSMTXRotRad(buf98, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
                 PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
                 break;
-            case 7:
-                PSMTXCopy(e + 0x10, bufF8);
-                goto checks;
             case 8:
                 PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
                 PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
@@ -4187,6 +4184,9 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
                 PSMTXConcat(buf68, buf8, bufF8);
                 PSMTXConcat(buf68, bufF8, bufF8);
                 PSMTXConcat(buf38, bufF8, bufF8);
+                goto checks;
+            case 7:
+                PSMTXCopy(e + 0x10, bufF8);
                 goto checks;
             default:
                 goto checks;
@@ -4208,72 +4208,104 @@ checks:
         wk.corners[0][1] = M2C_FIELD(sub, f32 *, 0xA8);
         wk.corners[0][2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, &wk.corners[0][0], &wk.corners[0][0]);
-        hit = !(wk.corners[0][0] * wk.corners[0][0] < lbl_80368F5C && wk.corners[0][1] * wk.corners[0][1] < lbl_80368F60 &&
-                wk.corners[0][2] > lbl_80368F2C && wk.corners[0][2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (wk.corners[0][0] * wk.corners[0][0] < lbl_80368F5C && wk.corners[0][1] * wk.corners[0][1] < lbl_80368F60 &&
+            wk.corners[0][2] > lbl_80368F2C && wk.corners[0][2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c1[0] = M2C_FIELD(sub, f32 *, 0xB0);
         c1[1] = M2C_FIELD(sub, f32 *, 0xA8);
         c1[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c1, c1);
-        hit = !(c1[0] * c1[0] < lbl_80368F5C && c1[1] * c1[1] < lbl_80368F60 &&
-                c1[2] > lbl_80368F2C && c1[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c1[0] * c1[0] < lbl_80368F5C && c1[1] * c1[1] < lbl_80368F60 &&
+            c1[2] > lbl_80368F2C && c1[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c2[0] = M2C_FIELD(sub, f32 *, 0xB0);
         c2[1] = M2C_FIELD(sub, f32 *, 0xB4);
         c2[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c2, c2);
-        hit = !(c2[0] * c2[0] < lbl_80368F5C && c2[1] * c2[1] < lbl_80368F60 &&
-                c2[2] > lbl_80368F2C && c2[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c2[0] * c2[0] < lbl_80368F5C && c2[1] * c2[1] < lbl_80368F60 &&
+            c2[2] > lbl_80368F2C && c2[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c3[0] = M2C_FIELD(sub, f32 *, 0xA4);
         c3[1] = M2C_FIELD(sub, f32 *, 0xB4);
         c3[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c3, c3);
-        hit = !(c3[0] * c3[0] < lbl_80368F5C && c3[1] * c3[1] < lbl_80368F60 &&
-                c3[2] > lbl_80368F2C && c3[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c3[0] * c3[0] < lbl_80368F5C && c3[1] * c3[1] < lbl_80368F60 &&
+            c3[2] > lbl_80368F2C && c3[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c4[0] = M2C_FIELD(sub, f32 *, 0xA4);
         c4[1] = M2C_FIELD(sub, f32 *, 0xA8);
         c4[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c4, c4);
-        hit = !(c4[0] * c4[0] < lbl_80368F5C && c4[1] * c4[1] < lbl_80368F60 &&
-                c4[2] > lbl_80368F2C && c4[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c4[0] * c4[0] < lbl_80368F5C && c4[1] * c4[1] < lbl_80368F60 &&
+            c4[2] > lbl_80368F2C && c4[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c5[0] = M2C_FIELD(sub, f32 *, 0xB0);
         c5[1] = M2C_FIELD(sub, f32 *, 0xA8);
         c5[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c5, c5);
-        hit = !(c5[0] * c5[0] < lbl_80368F5C && c5[1] * c5[1] < lbl_80368F60 &&
-                c5[2] > lbl_80368F2C && c5[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c5[0] * c5[0] < lbl_80368F5C && c5[1] * c5[1] < lbl_80368F60 &&
+            c5[2] > lbl_80368F2C && c5[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c6[0] = M2C_FIELD(sub, f32 *, 0xB0);
         c6[1] = M2C_FIELD(sub, f32 *, 0xB4);
         c6[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c6, c6);
-        hit = !(c6[0] * c6[0] < lbl_80368F5C && c6[1] * c6[1] < lbl_80368F60 &&
-                c6[2] > lbl_80368F2C && c6[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c6[0] * c6[0] < lbl_80368F5C && c6[1] * c6[1] < lbl_80368F60 &&
+            c6[2] > lbl_80368F2C && c6[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         c7[0] = M2C_FIELD(sub, f32 *, 0xA4);
         c7[1] = M2C_FIELD(sub, f32 *, 0xB4);
         c7[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c7, c7);
-        hit = !(c7[0] * c7[0] < lbl_80368F5C && c7[1] * c7[1] < lbl_80368F60 &&
-                c7[2] > lbl_80368F2C && c7[2] < lbl_80368EE4);
-        if (hit == 0) {
+        if (c7[0] * c7[0] < lbl_80368F5C && c7[1] * c7[1] < lbl_80368F60 &&
+            c7[2] > lbl_80368F2C && c7[2] < lbl_80368EE4) {
+            hit = 0;
+        } else {
+            hit = 1;
+        }
+        if (!hit) {
             continue;
         }
         if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) {
@@ -4284,7 +4316,7 @@ checks:
         maxX = lbl_80368F68;
         maxY = maxX;
         p = &wk.corners[0][0];
-        for (j = 0; j < 4; j++, p += 2) {
+        for (j = 0; j < 4; j++) {
             x = p[0];
             y = p[1];
             if (p[2] > lbl_80368EE4) {
@@ -4321,6 +4353,7 @@ checks:
             if (maxY < y) {
                 maxY = y;
             }
+            p += 6;
         }
         if (minX >= lbl_80368F2C) {
             goto res2;
@@ -5764,7 +5797,7 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
     void DebugPrint(void *, ...);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_8026A9B0[];
+    extern u16 lbl_8026A9B0[40];
     extern f32 lbl_80368FA0;
     s32 i;
     void *cue;
@@ -5778,7 +5811,7 @@ void fn_8004AD20(void *arg0, f32 *arg1) {
         else if (id < 0x3E8) cue = 0;
         else cue = fn_80146B10(id);
         if (cue != 0) {
-            DebugPrint(lbl_8026A9B0 + 0x8A, cue);
+            DebugPrint((u8 *)lbl_8026A9B0 + 0x8A, cue);
             if (z > lbl_80368FA0) SeCue_PlayAt(cue, 0x64, x, y, z);
             else Ui_PlaySeCue(cue, 0x64);
         }
