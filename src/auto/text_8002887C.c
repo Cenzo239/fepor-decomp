@@ -616,12 +616,11 @@ void fn_800299B8(void *arg0) {
     obj.vtbl = lbl_80284DE0;
     obj.arg = arg0;
     fn_8002F728(gTargetList);
-    x = (s8)*((u8 *)obj.arg + 0x19E);
+    x = *((s8 *)obj.arg + 0x19E);
     y = (s8)*((u8 *)obj.arg + 0x19F);
     yOff = y << 6;
-    flags = (u16 *)(gBattleMap + ((x + (s32)yOff) << 1));
-    f = *(u16 *)((u8 *)flags + (unsigned)0x408E);
-    flags = (u16 *)((u8 *)flags + 0x408E);
+    flags = (u16 *)(gBattleMap + 0x408E) + (x + (s32)yOff);
+    f = *flags;
     if ((f & 8) != 0) {
         id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
         if (id != 0) {
