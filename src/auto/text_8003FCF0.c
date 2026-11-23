@@ -1439,6 +1439,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     char *b7;
     char *b8;
     char *strBase;
+    s8 defLight;
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
@@ -1451,12 +1452,13 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             break;
         }
     }
-    goto copy_peek;
-    do {
-        *dst++ = *p++;
-    copy_peek:
-        c = *p;
-    } while (c != 0 && c != '/' && c != '\\');
+    c = *p;
+    if (c != 0 && c != '/' && c != '\\') {
+        do {
+            *dst++ = *p++;
+            c = *p;
+        } while (c != 0);
+    }
     *dst = 0;
 
     t0 = OSGetTime();
@@ -1540,7 +1542,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         buf = (char *)lbl_802EFE20;
         b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
         b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-        strBase = (char *)(lbl_8026A660);
+        strBase = (char *)lbl_8026A660;
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -1596,8 +1598,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
                 (&lbl_80367298)[2] = bytes[8];
             }
         } else {
-            lbl_80367294 = (u8)-0x1E;
-            lbl_80367295 = (u8)-0x1E;
+            defLight = -0x1E;
+            lbl_80367294 = defLight;
+            lbl_80367295 = defLight;
             (&lbl_8036729C)[0] = 0x80;
             (&lbl_8036729C)[1] = 0x80;
             (&lbl_8036729C)[2] = 0x80;
@@ -1692,7 +1695,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         buf = (char *)lbl_802EFE20;
         b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
         b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-        strBase = (char *)(lbl_8026A660);
+        strBase = (char *)lbl_8026A660;
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -1746,8 +1749,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
                 (&lbl_80367298)[2] = bytes[8];
             }
         } else {
-            lbl_80367294 = (u8)-0x1E;
-            lbl_80367295 = (u8)-0x1E;
+            defLight = -0x1E;
+            lbl_80367294 = defLight;
+            lbl_80367295 = defLight;
             (&lbl_8036729C)[0] = 0x80;
             (&lbl_8036729C)[1] = 0x80;
             (&lbl_8036729C)[2] = 0x80;
@@ -1818,7 +1822,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)fog)[3] = (&lbl_80367290)[2];
     fn_80040B78(arg0, (u8 *)arg0 + 0x3C, &lbl_80367290, (s8)lbl_8036728D, (f32)(s8)lbl_8036728E, lbl_80368EF4);
     t1 = OSGetTime();
-    ms = __div2i(t1 - t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
+    ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
     OSReport(lbl_8026A660 + 0x22C, ms);
 }
 
@@ -6971,6 +6975,7 @@ void Unit_DrawShadows(void) {
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_lifetimes off
+#pragma optimization_level 3
 void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 Map_SampleHeight(void *);
     void fn_80051564(void *, s32, f32, f32);
@@ -7020,7 +7025,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 sp124, sp128, sp12C;
     u8 scratch[0xF0];
     u32 sp18, sp14, sp10, spC, sp8;
-    f32 f30, f29, f28, f27, f26, f25, f31, f24;
+    f32 f31, f30, f29, f28, f27, f26, f25, f24;
     f32 dx, dy, t;
     s8 r29, r27;
     u8 r30;
