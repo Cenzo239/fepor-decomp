@@ -386,7 +386,7 @@ i+=8;
 } while((u16)size);
 return 0;
 }
-#pragma global_optimizer reset
+#pragma peephole reset
 
 u8 fn_8023CE08(void)
 {
