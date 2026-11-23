@@ -4556,14 +4556,14 @@ char *fn_8004B078(void *arg0, s32 arg1) {
               (p + arg1)[0xC]);
       return (char *)lbl_802EFFC8;
   }
-void *fn_8004B0C8(void *arg0) {
-      void sprintf(void *, void *, ...);
-      extern u16 lbl_8026A9B0[40];
-      extern u16 lbl_802EFFC8[16];
+char *fn_8004B0C8(void *arg0) {
+    void sprintf(char *, const char *, ...);
+    extern u8 lbl_8026A9B0[];
+    extern char lbl_802EFFC8[];
 
-      sprintf((u8 *)lbl_802EFFC8, (u8 *)lbl_8026A9B0 + 0xBC, (u8 *)lbl_8026A9B0 + 0xA8, *(s32 *)((u8 *)arg0 + 4));
-      return lbl_802EFFC8;
-  }
+    sprintf(lbl_802EFFC8, (const char *)(lbl_8026A9B0 + 0xBC), (const char *)(lbl_8026A9B0 + 0xA8), *(s32 *)((u8 *)arg0 + 4));
+    return lbl_802EFFC8;
+}
 
 extern u16 lbl_8026A9B0[40];
 extern u16 lbl_802EFFC8[16];
@@ -5589,7 +5589,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     u8 scratch[0xFC];
     u32 sp18, sp14, sp10, spC, sp8;
     f32 f30, f29, f28, f27, f26, f25, f31, f24;
-    f32 dx, dy, t;
+    f32 t;
     s8 r29, r27;
     u8 r30;
     u8 *r28;
@@ -5611,6 +5611,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {
+        f32 dx;
         fn_80060F70(r28, r29, &sp148);
         fn_80060F70(r28, r27, &sp154);
         f30 = (sp148 + sp154) * lbl_80368FC4;
