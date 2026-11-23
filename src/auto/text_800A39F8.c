@@ -748,29 +748,35 @@ s32 fn_800A49F4(u8 *arg0) {
 }
 
 s32 fn_800A4BC4(void) {
-    extern u8 lbl_803123A0[];
-    u8 *p = lbl_803123A0;
-    s32 v44;
+    struct Buf {
+        u8 pad0[0x44];
+        u32 f44;
+        u32 f48;
+        u8 pad4C[0x34];
+        u32 f80;
+        u32 f84;
+        u8 pad88[0x18];
+        s32 fA0;
+        u8 padA4[3];
+        u8 fA7;
+    };
+    extern struct Buf lbl_803123A0;
+    struct Buf *p = &lbl_803123A0;
     u32 prod;
-    s32 aligned;
-    s32 sum;
-    s32 t0;
-    u8 a7;
+    u32 sum;
+    u32 t0;
 
-    if (*(s32 *)(p + 0xA0) != 0) {
-        v44 = *(s32 *)(p + 0x44);
-        prod = *(u32 *)(p + 0x80) * *(u32 *)(p + 0x84);
-        a7 = p[0xA7];
-        aligned = (v44 + 0x1F) & ~0x1F;
-        sum = aligned * 0xA;
+    if (p->fA0 != 0) {
+        prod = p->f80 * p->f84;
+        sum = ((p->f44 + 0x1F) & ~0x1F) * 0xA;
         sum += (prod + 0x1F) & ~0x1F;
         t0 = ((prod >> 2) + 0x1F) & ~0x1F;
-        sum = sum + t0;
-        sum = sum + t0;
-        if (a7 != 0) {
-            sum += ((((*(s32 *)(p + 0x48) << 2) + 0x1F) & ~0x1F) * 3);
+        sum += t0;
+        sum += t0;
+        if (p->fA7 != 0) {
+            sum += ((((p->f48 << 2) + 0x1F) & ~0x1F) * 3);
         }
-        return sum + 0x1000;
+        return (s32)(sum + 0x1000);
     }
     return 0;
 }
@@ -2932,14 +2938,19 @@ void Ui_DrawPromptSprites(void *proc) {
     }
 }
 void fn_800A8F94(s32 arg0) {
-void *Sound_Create(void *, s32); void fn_80148618(void *, s32);
-extern u8 gOptionsStr[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
-f32 b; f32 a;
-f32 *p = (f32 *)((u8 *)Sound_Create(gOptionsStr+0x96, arg0) + 0x40);
-a = lbl_80369C08; b = lbl_80369BA8;
-p[0] = a;
-p[1] = b;
-fn_80148618(gOptionsStr+0x73, 500);
+    void *Sound_Create(void *, s32);
+    void fn_80148618(void *, s32);
+    extern u8 gOptionsStr[];
+    extern f32 lbl_80369C08;
+    extern const f32 lbl_80369BA8;
+    f32 b;
+    f32 a;
+    f32 *p = (f32 *)((u8 *)Sound_Create(gOptionsStr + 0x96, arg0) + 0x40);
+    a = lbl_80369C08;
+    b = lbl_80369BA8;
+    p[0] = a;
+    p[1] = b;
+    fn_80148618(gOptionsStr + 0x73, 500);
 }
 
 #pragma optimization_level reset
