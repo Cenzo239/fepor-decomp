@@ -351,6 +351,7 @@ void *Res_GetByName(s32);
 
 void fn_8005C7E8(void *);
 
+#pragma opt_strength_reduction off
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
     void FileCache_MarkRelocated(s32);
@@ -367,7 +368,6 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     s8 *ref1;
     s8 *ref2;
     u8 ok;
-    u8 c;
     u32 i;
     u32 *walk;
     u32 *scan;
@@ -377,38 +377,30 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     u32 old;
     void *da;
     void *db;
-    u32 ctr;
+    u32 hi;
+    u32 idx;
+    u32 k;
 
     self = arg0;
     obj = fn_8005C82C(arg0, (u16)(arg1 | 1));
     ref1 = lbl_80366DC0;
     base20 = (u8 *)obj + 0x20;
     t = *(u32 *)((u8 *)obj + 4);
-    c = ((u8 *)obj)[0x18];
     t &= ~3u;
     p30 = (u32 *)(base20 + t);
     p28 = (u32 *)((u8 *)p30 + (*(u32 *)((u8 *)obj + 8) << 2));
     p29 = (u8 *)p28 + (*(u32 *)((u8 *)obj + 0xC) << 3) + (*(u32 *)((u8 *)obj + 0x10) << 3);
 
-    if ((s8)c != ref1[0]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x19] != ref1[1]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1A] != ref1[2]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1B] != ref1[3]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1C] != ref1[4]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1D] != ref1[5]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1E] != ref1[6]) {
-        ok = 0;
-    } else {
-        ok = 1;
+    for (k = 0; k < 7; k++) {
+        if ((s8)((u8 *)obj)[0x18 + k] != ref1[k]) {
+            ok = 0;
+            goto done1;
+        }
     }
+    ok = 1;
+done1:
 
-    if (!ok) {
+    if (ok == 0) {
         walk = p30;
         i = 0;
         ((u8 *)obj)[0x18] = ref1[0];
@@ -433,11 +425,13 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
         ((u8 *)obj)[0x1F] = 1;
         while (j < *(u32 *)((u8 *)obj + 0xC)) {
             t = *p28;
-            da = (u8 *)p29 + p28[1];
-            db = (u8 *)base20 + (t & ~3u);
             scan = p30;
+            hi = p28[1];
+            t &= ~3u;
             count = *(u32 *)((u8 *)obj + 8);
-            for (ctr = count; ctr > 0; ctr--) {
+            da = (u8 *)p29 + hi;
+            db = (u8 *)base20 + t;
+            for (idx = 0; idx < count; idx++) {
                 if (*(volatile u32 *)p28 == *scan) {
                     break;
                 }
@@ -452,48 +446,37 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     FileCache_MarkRelocated(self);
     result = obj;
     ref2 = lbl_80366DC0;
-    if ((s8)((u8 *)obj)[0x18] != ref2[0]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x19] != ref2[1]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1A] != ref2[2]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1B] != ref2[3]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1C] != ref2[4]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1D] != ref2[5]) {
-        ok = 0;
-    } else if ((s8)((u8 *)obj)[0x1E] != ref2[6]) {
-        ok = 0;
-    } else {
-        ok = 1;
+    for (k = 0; k < 7; k++) {
+        if ((s8)((u8 *)obj)[0x18 + k] != ref2[k]) {
+            ok = 0;
+            goto done2;
+        }
     }
+    ok = 1;
+done2:
 
-    if (ok) {
-    } else {
+    switch (ok) {
+    case 0:
         result = (u8 *)obj - 0x20;
-        if ((s8)((u8 *)result)[0x18] != ref2[0]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x19] != ref2[1]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x1A] != ref2[2]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x1B] != ref2[3]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x1C] != ref2[4]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x1D] != ref2[5]) {
-            ok = 0;
-        } else if ((s8)((u8 *)result)[0x1E] != ref2[6]) {
-            ok = 0;
-        } else {
-            ok = 1;
+        for (k = 0; k < 7; k++) {
+            if ((s8)((u8 *)result)[0x18 + k] != ref2[k]) {
+                ok = 0;
+                goto done3;
+            }
         }
-        if (ok) {
-        } else {
+        ok = 1;
+done3:
+        switch (ok) {
+        case 0:
             result = 0;
+            break;
+        default:
+            break;
         }
+        break;
+    default:
+        break;
     }
     return (u8 *)result + 0x20;
 }
+#pragma opt_strength_reduction on
