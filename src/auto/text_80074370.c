@@ -3749,13 +3749,13 @@ void fn_8007A024(void *arg0) {
         case 3: case 4: case 5:
             var_r31 = 2;
             break;
-        case 6: case 7: case 8: case 10:
+        case 6: case 7: case 8:
             var_r31 = 1;
             break;
-        case 9:
+        case 10:
+            Process_Goto(arg0, 1);
             break;
         }
-        Process_Goto(arg0, 1);
         Face_DrawEyes(arg0, var_r31, 7);
         Face_DrawEyes(arg0, var_r31, 0xA);
         M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
@@ -3774,10 +3774,10 @@ void fn_8007A024(void *arg0) {
         case 1:
             var_r0 = ((s32)temp_r3_hi >> 7) + 0x1E;
             break;
-        case 4:
+        case 2:
             var_r0 = ((s32)temp_r3_hi >> 0xA) + 1;
             break;
-        case 2:
+        case 4:
             var_r0 = 1;
             break;
         case 5:
