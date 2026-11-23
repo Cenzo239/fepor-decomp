@@ -103,6 +103,7 @@ void fn_8001EF7C(void) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma global_optimizer off
 void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
 {
     u8 Map_IsAiTerrainBlocked(s8, s8);
@@ -140,32 +141,46 @@ inner:
     if (*(s16 *)((u8 *)costs + off) >= 0) {
         if ((s8)row[xv + 0xE18E] == 0) {
             if (Map_IsAiTerrainBlocked((s8)xv, y) == 0) {
+#pragma global_optimizer off
                 switch (dir) {
                 case 1:
                     if (ox_s < x) {
-                        *(s16 *)((u8 *)*(s16 * volatile *)((u8 *)arg0 + 0x14190) + off) = -1;
+                        volatile u8 *argp = (u8 *)arg0;
+                        costs = *(s16 **)(argp + 0x14190);
+                        *(s16 *)((u8 *)costs + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        idx = idx;
                     }
                     break;
                 case 2:
                     if (x < ox_s) {
-                        *(s16 *)((u8 *)*(s16 * volatile *)((u8 *)arg0 + 0x14190) + off) = -1;
+                        volatile u8 *argp = (u8 *)arg0;
+                        costs = *(s16 **)(argp + 0x14190);
+                        *(s16 *)((u8 *)costs + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        idx = idx;
                     }
                     break;
                 case 8:
                     if (oy_s < y) {
-                        *(s16 *)((u8 *)*(s16 * volatile *)((u8 *)arg0 + 0x14190) + off) = -1;
+                        volatile u8 *argp = (u8 *)arg0;
+                        costs = *(s16 **)(argp + 0x14190);
+                        *(s16 *)((u8 *)costs + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        idx = idx;
                     }
                     break;
                 case 4:
                     if (y < oy_s) {
-                        *(s16 *)((u8 *)*(s16 * volatile *)((u8 *)arg0 + 0x14190) + off) = -1;
+                        volatile u8 *argp = (u8 *)arg0;
+                        costs = *(s16 **)(argp + 0x14190);
+                        *(s16 *)((u8 *)costs + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        idx = idx;
                     }
                     break;
                 }
+#pragma global_optimizer on
             }
         }
     }
