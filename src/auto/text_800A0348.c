@@ -67,14 +67,14 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 
 s32 fn_800A0348(s32 a, s32 b, void *arg2) {
- extern u8 lbl_80367705;
- s32 v=2;
- a=lbl_80367705;
- b=a^1;
- lbl_80367705=b;
- if((u8)b) v=0;
- *(u8 *)((char *)arg2+0x39)=v;
- return 0;
+    extern u8 lbl_80367705;
+    u8 v = 2;
+    a = lbl_80367705;
+    b = a ^ 1;
+    lbl_80367705 = b;
+    if ((u8)b) v = 0;
+    *(u8 *)((char *)arg2 + 0x39) = v;
+    return 0;
 }
 #pragma global_optimizer on
 u32 fn_800A0370(void) {
@@ -94,18 +94,14 @@ void *fn_800A038C(void) {
 }
 
 s32 fn_800A039C(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367704;
-    u8 tmp[1];
-
-    a = (u8)lbl_80367704;
-    b = a ^ 1;
-    lbl_80367704 = b;
-    tmp[0] = 2;
-    if ((u8)b != 0) {
-        tmp[0] = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = tmp[0];
-    return 0;
+ extern u8 lbl_80367704;
+ s32 v=2;
+ a=lbl_80367704;
+ b=a^1;
+ lbl_80367704=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A03C4(void) {
@@ -125,16 +121,14 @@ void *fn_800A03E0(void) {
 }
 
 s32 fn_800A03F0(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367703;
-    s32 v = 2;
-    a = (u8)lbl_80367703;
-    b = a ^ 1;
-    lbl_80367703 = (u8)b;
-    if ((u8)b) {
-        v = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = (u8)v;
-    return 0;
+ extern u8 lbl_80367703;
+ s32 v=2;
+ a=lbl_80367703;
+ b=a^1;
+ lbl_80367703=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A0418(void) {
@@ -154,15 +148,14 @@ void *fn_800A0434(void) {
 }
 
 s32 fn_800A0444(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367702;
-    s32 v;
-    a = (u8)lbl_80367702;
-    b = a ^ 1;
-    lbl_80367702 = b;
-    v = 2;
-    if ((u8)b != 0) v = 0;
-    *(u8 *)((char *)arg2 + 0x39) = v;
-    return 0;
+ extern u8 lbl_80367702;
+ s32 v=2;
+ a=lbl_80367702;
+ b=a^1;
+ lbl_80367702=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A046C(void) {
@@ -182,15 +175,14 @@ void *fn_800A0488(void) {
 }
 
 s32 fn_800A0498(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367706;
-    s32 v;
-    a = (u8)lbl_80367706;
-    b = a ^ 1;
-    lbl_80367706 = b;
-    v = 2;
-    if ((u8)b != 0) v = 0;
-    *(u8 *)((char *)arg2 + 0x39) = v;
-    return 0;
+ extern u8 lbl_80367706;
+ s32 v=2;
+ a=lbl_80367706;
+ b=a^1;
+ lbl_80367706=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A04C0(void) {
@@ -210,15 +202,14 @@ void *fn_800A04DC(void) {
 }
 
 s32 fn_800A04EC(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367701;
-    s32 v;
-    a = (u8)lbl_80367701;
-    b = a ^ 1;
-    lbl_80367701 = b;
-    v = 2;
-    if ((u8)b != 0) v = 0;
-    *(u8 *)((char *)arg2 + 0x39) = v;
-    return 0;
+ extern u8 lbl_80367701;
+ s32 v=2;
+ a=lbl_80367701;
+ b=a^1;
+ lbl_80367701=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A0514(void) {

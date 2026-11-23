@@ -2463,8 +2463,8 @@ void fn_801EDFCC(void) {
     void fn_80146AF0(void);
     void Fx_FadeIn(u8 *, s32);
     void fn_8014876C(u8 *, s32, s32);
-    u8 *p;
-    p = gFxChannels;
+    u8 *p = gFxChannels;
+
     fn_80146AF0();
     Fx_FadeIn(p, 0x3E8);
     fn_8014876C(p, 0x64, 0x3E8);
