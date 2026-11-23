@@ -84,17 +84,18 @@ static inline u8 *FindEntryByName(char *name) {
     char *start;
     u32 hash;
     s32 i;
+    u8 c;
 
     if (*name == '/') {
         name++;
     }
     start = name;
     hash = 0;
-    while (*name != 0) {
-        if (*name >= 'A' && *name <= 'Z') {
-            *name += 0x20;
+    while ((s8)(c = *(u8 *)name) != 0) {
+        if ((s8)c >= 'A' && (s8)c <= 'Z') {
+            *(u8 *)name += 0x20;
         }
-        hash = *name++ + hash * 37;
+        hash = (s8)*(u8 *)name++ + hash * 37;
     }
     for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
         if (hash == *(u32 *)(e + 0x2C) && Str_Cmp(start, e) == 0) {
@@ -1048,62 +1049,76 @@ void fn_8005D330(char *name, u16 flags) {
     fn_8005E12C(entry, name, f);
 }
 
-void *fn_8005D474(char *name,u16 flags) {
- s64 OSGetTime(void);
- void OS_YieldThread(void);
- void *fn_8005CEC0(void);
- void fn_8005DB40(void *,char *,void *,u16);
- void fn_8005E12C(void *,char *,u16);
- void *AramCache_Find(char *);
- s32 Str_Cmp(void *,void *);
- extern u8 gFileCache[];
- u8 *entry;
- {
- s32 i;
- u32 hash;
- u8 *start;
- u8 *p=(u8 *)name;
- u8 *e;
- u8 c;
- if((s32)*(u8 *)name=='/')p++;
- start=p;hash=0;
- while((s8)(c=*p)!=0) {
- if((s8)c>='A' && (s8)c<='Z') *p+=0x20;
- hash=(s8)*p++ + hash*37;
- }
- i=0;
- for(e=gFileCache;i<0x400;i++,e+=0x7c) {
- if(hash==*(u32 *)(e+0x2c)&&Str_Cmp(start,e)==0){entry=gFileCache+i*0x7c;goto found;}
- }
- entry=0;
- found:;
- }
- if(entry) {
- *(u16 *)(entry+0x30)|=flags;
- while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
- *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
- (*(u16 *)(entry+0x32))++;
- *(u16 *)(entry+0x30)&=~0x200;
- return *(void **)(entry+0x38);
- }
- { void *aram=AramCache_Find(name);
- if(aram) {
- entry=fn_8005CEC0();
- fn_8005DB40(entry,name,aram,flags);
- while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
- *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
- (*(u16 *)(entry+0x32))++;
- *(u16 *)(entry+0x30)&=~0x200;
- return *(void **)(entry+0x38);
- }
- }
- entry=fn_8005CEC0();
- fn_8005E12C(entry,name,flags);
- while(!(*(u16 *)(entry+0x30)&0x2000)) OS_YieldThread();
- *(u32 *)(entry+0x34)=(u32)(OSGetTime()/(*(u32 *)0x800000F8>>2));
- (*(u16 *)(entry+0x32))++;
- *(u16 *)(entry+0x30)&=~0x200;
- return *(void **)(entry+0x38);
+void *fn_8005D474(char *name, u16 flags) {
+    s64 OSGetTime(void);
+    void OS_YieldThread(void);
+    void *fn_8005CEC0(void);
+    void fn_8005DB40(void *, char *, void *, u16);
+    void fn_8005E12C(void *, char *, u16);
+    void *AramCache_Find(char *);
+    s32 Str_Cmp(void *, void *);
+    extern u8 gFileCache[];
+    u8 *entry;
+    {
+        s32 i;
+        u32 hash;
+        u8 *start;
+        u8 *p = (u8 *)name;
+        u8 *e;
+        u8 c;
+        if ((s32)*(u8 *)name == '/') {
+            p++;
+        }
+        start = p;
+        hash = 0;
+        while ((s8)(c = *p) != 0) {
+            if ((s8)c >= 'A' && (s8)c <= 'Z') {
+                *p += 0x20;
+            }
+            hash = (s8)*p++ + hash * 37;
+        }
+        for (i = 0, e = &gFileCache[0]; i < 0x400; i++, e += 0x7C) {
+            if (hash == *(u32 *)(e + 0x2C) && Str_Cmp(start, e) == 0) {
+                entry = &gFileCache[i * 0x7C];
+                goto found;
+            }
+        }
+        entry = 0;
+    found:;
+    }
+    if (entry) {
+        *(u16 *)(entry + 0x30) |= flags;
+        while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
+            OS_YieldThread();
+        }
+        *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+        (*(u16 *)(entry + 0x32))++;
+        *(u16 *)(entry + 0x30) &= ~0x200;
+        return *(void **)(entry + 0x38);
+    }
+    {
+        void *aram = AramCache_Find(name);
+        if (aram) {
+            entry = fn_8005CEC0();
+            fn_8005DB40(entry, name, aram, flags);
+            while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
+                OS_YieldThread();
+            }
+            *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+            (*(u16 *)(entry + 0x32))++;
+            *(u16 *)(entry + 0x30) &= ~0x200;
+            return *(void **)(entry + 0x38);
+        }
+    }
+    entry = fn_8005CEC0();
+    fn_8005E12C(entry, name, flags);
+    while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
+        OS_YieldThread();
+    }
+    *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+    (*(u16 *)(entry + 0x32))++;
+    *(u16 *)(entry + 0x30) &= ~0x200;
+    return *(void **)(entry + 0x38);
 }
 
 #pragma use_lmw_stmw reset
