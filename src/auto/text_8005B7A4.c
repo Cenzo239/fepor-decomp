@@ -1087,7 +1087,7 @@ void *fn_8005D474(char *name, u16 flags) {
     u8 *entry;
     void *aram;
 
-    entry = FindEntryByName(name);
+    entry = FindEntryByNameFrom(name, name);
     if (entry) {
         *(u16 *)(entry + 0x30) |= flags;
         while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
