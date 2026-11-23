@@ -359,37 +359,29 @@ extern f64 lbl_8036C148;
 #pragma pop
 
 s32 fn_8023C930(void) {
-    extern u8 *lbl_80368950;
-    s32 off;
-    u8 i;
-    s32 hi;
-    u32 value;
-    s32 one;
-
-    *(u8 **)(lbl_80368950 + 0x69C) += 2;
-    if (*(*(u8 **)(lbl_80368950 + 0x69C))++ != 3)
-        return 12;
-
-    for (i = 0, off = 0; i < 3; off += 6, i++) {
-        *(u8 **)(lbl_80368950 + 0x69C) += 1;
-        one = 1;
-        value = *(*(u8 **)(lbl_80368950 + 0x69C))++;
-        hi = (s32)value >> 4;
-        lbl_80368950[off + 0x681] = (u8)hi;
-        value &= 15;
-        lbl_80368950[off + 0x682] = (u8)value;
-        if (!(lbl_80368950[0x6A8] & (one << hi)))
-            return 15;
-        if (!(lbl_80368950[0x6A8] & (one << (value + 1))))
-            return 15;
-    }
-
-    *(u8 **)(lbl_80368950 + 0x69C) += 3;
-    *(u16 *)(lbl_80368950 + 0x696) = (*(u16 *)(lbl_80368950 + 0x692) + 15) / 16;
-    *(u16 *)(lbl_80368950 + 0x684) = 0;
-    *(u16 *)(lbl_80368950 + 0x68A) = 0;
-    *(u16 *)(lbl_80368950 + 0x690) = 0;
-    return 0;
+extern u8 *lbl_80368950;
+s32 off;
+u8 i;
+s32 hi;
+u32 lo;
+u32 value;
+*(u8 **)(lbl_80368950+0x69C)+=2;
+if(*(*(u8 **)(lbl_80368950+0x69C))++!=3) return 12;
+for(i=0,off=0;i<3;off+=6,i++) {
+*(u8 **)(lbl_80368950+0x69C)+=1;
+value=*(*(u8 **)(lbl_80368950+0x69C))++;
+hi=(s32)value>>4;
+lbl_80368950[off+0x681]=hi;
+lbl_80368950[off+0x682]=(lo=value&15);
+if(!(lbl_80368950[0x6A8] & (1<<hi))) return 15;
+if(!(lbl_80368950[0x6A8] & (1<<(lo+1)))) return 15;
+}
+*(u8 **)(lbl_80368950+0x69C)+=3;
+*(u16 *)(lbl_80368950+0x696)=(*(u16 *)(lbl_80368950+0x692)+15)/16;
+*(u16 *)(lbl_80368950+0x684)=0;
+*(u16 *)(lbl_80368950+0x68A)=0;
+*(u16 *)(lbl_80368950+0x690)=0;
+return 0;
 }
 
 #pragma opt_strength_reduction off
