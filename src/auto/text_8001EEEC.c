@@ -103,7 +103,6 @@ void fn_8001EF7C(void) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-#pragma global_optimizer off
 void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
 {
     u8 Map_IsAiTerrainBlocked(s8, s8);
