@@ -2629,5 +2629,3 @@ extern u16 *__GXData;
 extern u16* lbl_80368790;
 extern u16* __peReg;
 extern u16 *__GXData;
-/* GXInit static: original symbol resetFuncRegistered$145_8036876C */
-u32 resetFuncRegistered_145;
