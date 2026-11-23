@@ -1383,16 +1383,15 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     unit = (u8 *)arg1;
     v = *(u32 *)((u8 *)arg0 + 0x28);
     *(u32 *)((u8 *)arg0 + 0x28) = ++v;
-    if (v < *(u32 *)((u8 *)arg0 + 0x2C)) {
-        return;
-    }
-    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-        Ui_HideUnitInfoPopup(gUnitInfoPopup);
+    if (v >= *(u32 *)((u8 *)arg0 + 0x2C)) {
+        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
+        }
         ent = GfxEnt_Get(unit[0x40 + (s8)unit[0x62]]);
         (*(Handler **)((u8 *)ent + 0x34))->v9(arg1, ent);
-        return;
+    } else {
+        fn_80024B6C();
     }
-    fn_80024B6C();
 }
 extern "C" void fn_801FF480(void *arg0) {
     void fn_801FE84C(s32, s32, s32, s32, s32 *);
