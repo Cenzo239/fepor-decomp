@@ -7193,22 +7193,19 @@ void fn_800BDC68(void *arg0, void *arg1) {
     }
 }
 #pragma dont_inline reset
+#pragma dont_inline off
 s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
- s32 i; u32 hash; s32 row; u8 *p;
- if (*(s8 *)arg1 == 0) return 0;
- hash=fn_8000D598(arg1); row=arg0; i=0;
- do {
-  if(hash==*(u32 *)(row+0x180)) {
-   if(Str_Cmp(*(s32 *)row,arg1)!=0) { } else goto found;
-  }
-  i++; row+=4;
- } while(i<0x60);
- i=-1;
-found:
- if(i<0) return 0;
- p=(u8 *)arg0; p+=i>>3;
- return (p[0x300] & (1<<(i&7)))!=0;
+    s32 i;
+    u8 *p;
+
+    if (*(s8 *)arg1 == 0) return 0;
+    i = EventFlag_Find(arg0, arg1);
+    if (i < 0) return 0;
+    p = (u8 *)arg0;
+    p += i >> 3;
+    return (p[0x300] & (1 << (i & 7))) != 0;
 }
+#pragma dont_inline reset
 #pragma push
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
