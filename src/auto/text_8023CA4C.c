@@ -73,9 +73,10 @@ return *p;
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *volatile lbl_80368950;
 ThpDecodeState *s = lbl_80368950;
-u8 *p = s->cursor;
+u8 **cursor = &s->cursor;
+u8 *p = *cursor;
 u16 value = (p[0] << 8) | p[1];
-s->cursor = p + 2;
+*cursor = p + 2;
 return value;
 }
 static inline u8 SynthAllocateStream(void) {
@@ -383,7 +384,7 @@ state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(
 state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
 i+=8;
 }
-    size-=65;
+size-=65;
 } while((u16)size);
 return 0;
 }
