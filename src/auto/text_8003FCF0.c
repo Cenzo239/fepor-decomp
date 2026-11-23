@@ -5822,7 +5822,7 @@ void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
     void DebugPrint(void *, ...);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_8026A9B0[];
+    extern u16 lbl_8026A9B0[40];
     extern f32 lbl_80368FA0;
     void *cue;
     u16 *entry;
@@ -5836,7 +5836,7 @@ void fn_8004AE28(void *arg0, f32 x, f32 y, f32 z) {
         else if (id < 0x3E8) cue = 0;
         else cue = fn_80146B10(id);
         if (cue != 0) {
-            DebugPrint(lbl_8026A9B0 + 0x8A, cue);
+            DebugPrint((u8 *)lbl_8026A9B0 + 0x8A, cue);
             if (fz > lbl_80368FA0) SeCue_PlayAt(cue, 0x64, fx, fy, fz);
             else Ui_PlaySeCue(cue, 0x64);
         }
