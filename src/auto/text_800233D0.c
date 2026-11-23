@@ -816,7 +816,6 @@ void *GfxEnt_Get(u8);
 void Ui_PlaySeCue(void *, s32);
 
 #pragma cplusplus on
-#pragma use_lmw_stmw on
 extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     extern u8 lbl_80284548[];
     extern u8 lbl_80284588[];
