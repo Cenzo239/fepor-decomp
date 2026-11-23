@@ -139,17 +139,17 @@ u32 fn_800745E8(void *arg0, void *arg1, u8 arg2) {
     void *item;
     if(index==4) item=&lbl_8036746C;
     else {
-        u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
-        void *base=lbl_80367468;
-        item=Unit_GetItemSlot(base,index+((flags)?0:4));
+        u64 *fp=Item_GetFlagsPtr(&lbl_8036746C);
+        s32 offset=((*fp & 5) != 0) ? 0 : 4;
+        item=Unit_GetItemSlot(lbl_80367468,offset+index);
     }
     if(*Item_GetFlagsPtr(item)&0x200ULL) return 2;
     if(!fn_8014D8DC(gBattleState)) {
         if(index==4) item=&lbl_8036746C;
         else {
-            u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
-            void *base=lbl_80367468;
-            item=Unit_GetItemSlot(base,index+((flags)?0:4));
+            u64 *fp=Item_GetFlagsPtr(&lbl_8036746C);
+            s32 offset=((*fp & 5) != 0) ? 0 : 4;
+            item=Unit_GetItemSlot(lbl_80367468,offset+index);
         }
         if(*Item_GetFlagsPtr(item)&0x20000000000ULL) return 2;
     }
