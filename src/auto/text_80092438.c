@@ -524,19 +524,32 @@ s32 fn_80093010(void *arg0, void *arg1)
 }
 
 #pragma optimization_level 3
-s32 fn_80093088(void *arg0) {
 void *Unit_GetHeldItemSlot(void *, s32);
-s32 i=0; s32 r; u8 ok;
-do { if(*(u32 *)Unit_GetHeldItemSlot(arg0,i)==0) break; i++; if(i>=4) {i=-1;break;} }while(1);
-r=i==0; ok=r;
-if(ok) {
- if(*(u32 *)((u8*)arg0+0x1ec)==0) i=0;
- else if(*(u32 *)((u8*)arg0+0x1f4)==0) i=1;
- else if(*(u32 *)((u8*)arg0+0x1fc)==0) i=2;
- else if(*(u32 *)((u8*)arg0+0x204)==0) i=3;
- else i=-1;
- r=i==0;
-} return r;
+static inline s32 fn_80093088_FindEmptyHeld(void *unit) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (*(u32 *)Unit_GetHeldItemSlot(unit, i) == 0) return i;
+    }
+    return -1;
+}
+
+s32 fn_80093088(void *arg0) {
+    s32 i;
+    s32 r;
+    u8 ok;
+
+    i = fn_80093088_FindEmptyHeld(arg0);
+    r = i == 0;
+    ok = r;
+    if (ok) {
+        if (*(u32 *)((u8 *)arg0 + 0x1ec) == 0) i = 0;
+        else if (*(u32 *)((u8 *)arg0 + 0x1f4) == 0) i = 1;
+        else if (*(u32 *)((u8 *)arg0 + 0x1fc) == 0) i = 2;
+        else if (*(u32 *)((u8 *)arg0 + 0x204) == 0) i = 3;
+        else i = -1;
+        r = i == 0;
+    }
+    return r;
 }
 #pragma optimization_level reset
 void Unit_SetHeldItem(s32 arg0, s32 arg1, s32 arg2) {
