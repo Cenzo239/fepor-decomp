@@ -1480,8 +1480,8 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
     u8 *card;
     u16 *fat;
-    if (*(s32 *)((u8 *)__CARDBlock + chan * 0x110) == 0) return -3;
     card = (u8 *)__CARDBlock + chan * 0x110;
+    if (*(s32 *)card == 0) return -3;
     fat = *(u16 **)(card + 0x88);
     while (block != 0xFFFF) {
         u16 next;
@@ -2328,6 +2328,7 @@ void fn_8021B170(s32 chan, s32 result) {
     OSRestoreInterrupts(enabled);
 }
 
+#pragma global_optimizer off
 s32 fn_8021B20C(s32 chan) {
     s32 fn_80217B18(s32, void **);
     u32 OSDisableInterrupts(void);
@@ -2339,7 +2340,7 @@ s32 fn_8021B20C(s32 chan) {
     void *handle;
     s32 result;
     u8 *card;
-    register u32 enabled;
+    u32 enabled;
 
     result = fn_80217B18(chan, &handle);
     if (result < 0) {
@@ -2359,6 +2360,7 @@ s32 fn_8021B20C(s32 chan) {
     OSRestoreInterrupts(enabled);
     return 0;
 }
+#pragma global_optimizer on
 
 #pragma dont_inline on
 void fn_8021B2B8(s32 chan, s32 result) {
