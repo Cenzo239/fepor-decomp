@@ -475,6 +475,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8021D7FC.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8022108C.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/GXSetCopyFilter.c", mw_version="GC/1.2.5n"),
+            Object(NonMatching, "auto/text_80221A2C.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXTexture.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXInitTexObjLOD.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/gx/GXTexture2.c", mw_version="GC/1.2.5n"),
