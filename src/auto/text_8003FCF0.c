@@ -1276,6 +1276,7 @@ void fn_80041254(void *arg0) {
 }
 #pragma optimization_level reset
 #pragma global_optimizer off
+#pragma opt_lifetimes on
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
@@ -1751,7 +1752,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     fn_80040B78(arg0, (u32)((char *)arg0 + 0x3C));
     t1 = OSGetTime();
     ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
-        DebugPrint(lbl_8026A660 + 0x22C, ms);
+    DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
 #pragma global_optimizer on
 #pragma use_lmw_stmw on
@@ -6938,12 +6939,12 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80369014;
     extern f32 lbl_80369018;
     u8 m[11][0x30];
-    f32 sp154, sp158, sp15C, sp148, sp14C, sp150;
-    f32 sp124, sp128, sp12C;
+    f32 sp154, sp158, sp148, sp14C;
+    f32 sp124, sp128;
     u8 scratch[0xFC];
     u32 sp18, sp14, sp10, spC, sp8;
     f32 f30, f29, f28, f27, f26, f25, f31, f24;
-    f32 dx, dy, t;
+    f32 dx, t;
     s8 r29, r27;
     u8 r30;
     u8 *r28;
