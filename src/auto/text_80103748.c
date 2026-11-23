@@ -429,7 +429,7 @@ char *fn_80103E50(s32 arg0, void *arg1) {
     void sprintf(void *, void *, ...);
     extern char lbl_8032BAF8[];
     extern u8 lbl_802734D0[];
-    extern f32 lbl_8036A0D8;
+    extern const f32 lbl_8036A0D8;
     f32 value;
     u8 *strings;
     f32 scale;
