@@ -2507,109 +2507,277 @@ String_Destroy(&anim,-1);
 }
   #pragma pop
   #pragma cplusplus off
-  void fn_80115264(void *self,s32 mode,s32 flag) {
-s32 strlen(char *);
-s32 fn_80199310(void *);
-s32 kind;
-s32 fn_800DDC04(void *,void *);
-void String_Concat(void *,void *,void *);
-void fn_800C992C(void *,char *,s32);
-String spC8,spBC,spB0,spA4,sp98,sp8C,sp80,sp74,sp68,sp5C,sp50,sp44,sp38,sp2C,sp20;
-s32 sc1C,sc18,sc14,sc10,scC,sc8;
-u32 ok;
-u8 saved;
-spC8.cap=0;spBC.cap=0;
-spC8.size=0;spC8.data=0;spC8.cap=0;
-spBC.size=0;spBC.data=0;spBC.cap=0;
-M2C_FIELD(self,u8 *,0x1a8)=1;
-M2C_FIELD(self,s32 *,0x144)=mode;
-switch(mode) {
-case 0: {s32 len=strlen((char *)gActorXmlStrs+0x505); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x505,len);}
-break;
-case 1: {s32 len=strlen((char *)gActorXmlStrs+0x50a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50a,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-break;
-case 2: {s32 len=strlen((char *)gActorXmlStrs+0x50a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50a,len);}
-M2C_FIELD(self,s32 *,0x140)=1;
-break;
-case 3: {s32 len=strlen((char *)gActorXmlStrs+0x50f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x50f,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-if(M2C_FIELD(self,s32 *,0x19c)) M2C_FIELD(self,u8 *,0x1a8)=0;
-break;
-case 4: {s32 len=strlen((char *)gActorXmlStrs+0x46a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46a,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-break;
-case 5: {s32 len=strlen((char *)gActorXmlStrs+0x46f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46f,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-break;
-case 6: {s32 len=strlen((char *)gActorXmlStrs+0x46f); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46f,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-break;
-case 7: {s32 len=strlen((char *)gActorXmlStrs+0x478); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x478,len);}
-M2C_FIELD(self,s32 *,0x140)=0;
-break;
-}
-if(mode<3) { if(!M2C_FIELD(self,s32 *,0x140)) {s32 len=strlen((char *)gActorXmlStrs+0x514); fn_800C992C(&spC8,(char *)gActorXmlStrs+0x514,len);} else {s32 len=strlen((char *)gActorXmlStrs+0x516); fn_800C992C(&spC8,(char *)gActorXmlStrs+0x516,len);} }
-if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x518,strlen((char *)gActorXmlStrs+0x518))==0) {
-String_Init(&sp80,String_CStr(&spC8),&sc18);
-String_Concat(&sp8C,(u8 *)self+0x154,&sp80);
-ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp8C)!=0;
-String_Destroy(&sp8C,-1); String_Destroy(&sp80,-1);
-if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x51e); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x51e,len);}
-}
-if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x524,strlen((char *)gActorXmlStrs+0x524))==0) {
-String_Init(&sp68,String_CStr(&spC8),&sc14);
-String_Concat(&sp74,(u8 *)self+0x154,&sp68);
-ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp74)!=0;
-String_Destroy(&sp74,-1); String_Destroy(&sp68,-1);
-if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x52a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x52a,len);}
-}
-if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x50f,strlen((char *)gActorXmlStrs+0x50f))==0) {
-String_Init(&sp50,String_CStr(&spC8),&sc10);
-String_Concat(&sp5C,(u8 *)self+0x154,&sp50);
-ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp5C)!=0;
-String_Destroy(&sp5C,-1); String_Destroy(&sp50,-1);
-if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x51e); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x51e,len);}
-}
-if(String_Compare(&spC8,0,(void *)spC8.size,(char *)gActorXmlStrs+0x478,strlen((char *)gActorXmlStrs+0x478))==0) {
-String_Init(&sp38,String_CStr(&spC8),&scC);
-String_Concat(&sp44,(u8 *)self+0x154,&sp38);
-ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp44)!=0;
-String_Destroy(&sp44,-1); String_Destroy(&sp38,-1);
-if(!ok) {s32 len=strlen((char *)gActorXmlStrs+0x46a); String_AssignCStr(&spC8,(char *)gActorXmlStrs+0x46a,len);}
-}
-saved=M2C_FIELD(self,u8 *,0x1a2);
-if(M2C_FIELD(M2C_FIELD(self,void **,0x118),u8 *,0x1b6) && !M2C_FIELD(self,u8 *,0x1b6) && M2C_FIELD(self,s32 *,0x1b8)==1) {
-if(saved) M2C_FIELD(self,u8 *,0x1a2)=0; else M2C_FIELD(self,u8 *,0x1a2)=1;
-}
-String_Assign(&spBC,&spC8,0,-1);
-fn_801134EC(&spB0,self,&spC8);
-String_Assign(&spC8,&spB0,0,-1);
-String_Destroy(&spB0,-1);
-Actor_LoadAnim(self,String_CStr(&spC8),M2C_FIELD(self,s32 *,0x188),0,1);
-String_Assign((u8 *)self+0x160,&spBC,0,-1);
-M2C_FIELD(self,u8 *,0x1a2)=saved;
-if(mode) M2C_FIELD(self,s32 *,0x140)=0;
-else { M2C_FIELD(self,s32 *,0x140)++; if(M2C_FIELD(self,s32 *,0x140)>1) M2C_FIELD(self,s32 *,0x140)=0; }
-M2C_FIELD(self,u8 *,0x1a4)=1;
-String_Init(&sp20,(char *)gActorXmlStrs+0x518,&sc8);
-String_Concat(&sp2C,(u8 *)self+0x154,&sp20);
-ok=fn_800DDC04(M2C_FIELD(self,void **,0xdc),&sp2C)!=0;
-String_Destroy(&sp2C,-1);String_Destroy(&sp20,-1);
-if(!ok) {M2C_FIELD(self,s32 *,0x140)=0;flag=0;}
-if(flag) {{s32 len=strlen((char *)gActorXmlStrs+0x1c); String_AssignCStr((u8 *)self+0x16c,(char *)gActorXmlStrs+0x1c,len);}} else {
-String_Init(&spA4,(char *)gActorXmlStrs+0x43f,&sc1C);
-fn_801134EC(&sp98,self,&spA4);
-String_Assign((u8 *)self+0x16c,&sp98,0,-1);
-String_Destroy(&sp98,-1);String_Destroy(&spA4,-1);
-}
-if(M2C_FIELD(self,u8 *,0x1a1) && mode==2 && String_Compare((u8 *)self+0xb0,0,M2C_FIELD(self,void **,0xb0),(char *)gActorXmlStrs+0x530,strlen((char *)gActorXmlStrs+0x530))!=0) M2C_FIELD(self,u8 *,0x1b5)=1;
-if(M2C_FIELD(self,u8 *,0x1a1) && mode==2 && String_Compare((u8 *)self+0xb0,0,M2C_FIELD(self,void **,0xb0),(char *)gActorXmlStrs+0x530,strlen((char *)gActorXmlStrs+0x530))==0) {
-if(M2C_FIELD(self,void **,0x11c)) kind=fn_80199310(M2C_FIELD(self,void **,0x11c)); else kind=-1;
-if(kind==2) M2C_FIELD(self,u8 *,0x1b5)=1;
-}
-if(M2C_FIELD(self,s32 *,0x19c)) M2C_FIELD(self,u8 *,0x1a0)=1;
-String_Destroy(&spBC,-1);String_Destroy(&spC8,-1);
+void fn_80115264(void *self, s32 mode, s32 flag)
+{
+  s32 strlen(char *);
+  void *new_var4;
+  s32 fn_80199310(void *);
+  s32 fn_800DDC04(void *, void *);
+  void String_Concat(void *, void *, void *);
+  void fn_800C992C(void *, char *, s32);
+  char *new_var2;
+  String spC8;
+  String spBC;
+  String spB0;
+  String spA4;
+  String sp98;
+  String sp8C;
+  String sp80;
+  String sp74;
+  String sp68;
+  String sp5C;
+  String sp50;
+  String sp44;
+  String sp38;
+  String sp2C;
+  String sp20;
+  s32 sc1C;
+  s32 sc18;
+  s32 sc14;
+  s32 sc10;
+  s32 scC;
+  u8 *new_var;
+  void *new_var3;
+  s32 sc8;
+  s32 kind;
+  u32 ok;
+  u8 saved;
+  spC8.cap = 0;
+  spBC.cap = 0;
+  spC8.size = 0;
+  spC8.data = 0;
+  spC8.cap = 0;
+  spBC.size = 0;
+  spBC.data = 0;
+  spBC.cap = 0;
+  new_var4 = (void *) spC8.size;
+  *((u8 *) (((s8 *) self) + 0x1A8)) = 1;
+  *((s32 *) (((s8 *) self) + 0x144)) = mode;
+  switch (mode)
+  {
+    case 0:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x505);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x505, n);
+      break;
+    }
+
+    case 1:
+      new_var3 = self;
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x50A);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x50A, n);
+      *((s32 *) (((s8 *) new_var3) + 0x140)) = 0;
+      break;
+    }
+
+    case 2:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x50A);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x50A, n);
+      *((s32 *) (((s8 *) self) + 0x140)) = 1;
+      break;
+    }
+
+    case 3:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x50F);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x50F, n);
+      *((s32 *) (((s8 *) self) + 0x140)) = 0;
+      if (*((s32 *) (((s8 *) new_var3) + 0x19C)))
+      {
+        *((u8 *) (((s8 *) self) + 0x1A8)) = 0;
+      }
+      break;
+    }
+
+    case 4:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x46A);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x46A, n);
+      *((s32 *) (((s8 *) new_var3) + 0x140)) = 0;
+      break;
+    }
+
+    case 5:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x46F);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x46F, n);
+      *((s32 *) (((s8 *) self) + 0x140)) = 0;
+      break;
+    }
+      new_var2 = (char *) gActorXmlStrs;
+
+    case 6:
+    {
+      s32 n = strlen(new_var2 + 0x46F);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x46F, n);
+      *((s32 *) (((s8 *) self) + 0x140)) = 0;
+      break;
+    }
+
+    case 7:
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x478);
+      String_AssignCStr(&spC8, new_var2 + 0x478, n);
+      *((s32 *) (((s8 *) new_var3) + 0x140)) = 0;
+      break;
+    }
+
+  }
+
+  if (mode < 3)
+  {
+    if (!(*((s32 *) (((s8 *) self) + 0x140))))
+    {
+      s32 n = strlen(new_var2 + 0x514);
+      fn_800C992C(&spC8, ((char *) gActorXmlStrs) + 0x514, n);
+    }
+    else
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x516);
+      fn_800C992C(&spC8, ((char *) gActorXmlStrs) + (kind = 0x516), n);
+    }
+  }
+  if (String_Compare(&spC8, 0, new_var4, new_var2 + 0x518, strlen(new_var2 + 0x518)) == 0)
+  {
+    String_Init(&sp80, String_CStr(&spC8), &sc18);
+    String_Concat(&sp8C, ((u8 *) self) + 0x154, &sp80);
+    ok = fn_800DDC04(*((void **) (((s8 *) new_var3) + 0xDC)), &sp8C) != 0;
+    String_Destroy(&sp8C, -1);
+    String_Destroy(&sp80, -1);
+    if (!ok)
+    {
+      s32 n = strlen(new_var2 + 0x51E);
+      String_AssignCStr(&spC8, ((char *) gActorXmlStrs) + 0x51E, n);
+    }
+  }
+  if (String_Compare(&spC8, 0, new_var4, ((char *) gActorXmlStrs) + 0x524, strlen(((char *) gActorXmlStrs) + 0x524)) == 0)
+  {
+    String_Init(&sp68, String_CStr(&spC8), &sc14);
+    String_Concat(&sp74, ((u8 *) new_var3) + 0x154, &sp68);
+    ok = fn_800DDC04(*((void **) (((s8 *) new_var3) + 0xDC)), &sp74) != 0;
+    String_Destroy(&sp74, -1);
+    String_Destroy(&sp68, -1);
+    if (!ok)
+    {
+      s32 n = strlen(new_var2 + 0x52A);
+      String_AssignCStr(&spC8, new_var2 + 0x52A, n);
+    }
+  }
+  if (String_Compare(&spC8, 0, new_var4, new_var2 + 0x50F, strlen(((char *) gActorXmlStrs) + 0x50F)) == 0)
+  {
+    String_Init(&sp50, String_CStr(&spC8), &sc10);
+    String_Concat(&sp5C, ((u8 *) new_var3) + 0x154, &sp50);
+    ok = fn_800DDC04(*((void **) (((s8 *) self) + 0xDC)), &sp5C) != 0;
+    String_Destroy(&sp5C, -1);
+    String_Destroy(&sp50, -1);
+    if (!ok)
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x51E);
+      String_AssignCStr(&spC8, new_var2 + 0x51E, n);
+    }
+  }
+  if (String_Compare(&spC8, 0, new_var4, new_var2 + 0x478, strlen(((char *) gActorXmlStrs) + 0x478)) == 0)
+  {
+    String_Init(&sp38, String_CStr(&spC8), &scC);
+    String_Concat(&sp44, ((u8 *) self) + 0x154, &sp38);
+    ok = fn_800DDC04(*((void **) (((s8 *) self) + 0xDC)), &sp44) != 0;
+    String_Destroy(&sp44, -1);
+    String_Destroy(&sp38, -1);
+    if (!ok)
+    {
+      s32 n = strlen(((char *) gActorXmlStrs) + 0x46A);
+      String_AssignCStr(&spC8, new_var2 + 0x46A, n);
+    }
+  }
+  saved = *((u8 *) (((s8 *) self) + 0x1A2));
+  if ((((*((u8 *) (((s8 *) (*((void **) (((s8 *) self) + 0x118)))) + 0x1B6))) && (!(*((u8 *) (((s8 *) self) + 0x1B6))))) && ((*((s32 *) (((s8 *) new_var3) + 0x1B8))) == 1)) != 0U)
+  {
+    if (saved)
+    {
+      *((u8 *) (((s8 *) self) + 0x1A2)) = 0;
+    }
+    else
+    {
+      *((u8 *) (((s8 *) new_var3) + 0x1A2)) = 1;
+    }
+  }
+  String_Assign(&spBC, &spC8, 0, -1);
+  {
+    void (*format_anim)(void *, void *, void *) = (void (*)(void *, void *, void *)) fn_801134EC;
+    format_anim(&spB0, new_var3, &spC8);
+  }
+  String_Assign(&spC8, &spB0, 0, -1);
+  String_Destroy(&spB0, -1);
+  Actor_LoadAnim(new_var3, String_CStr(&spC8), *((s32 *) (((s8 *) self) + 0x188)), 0, 1);
+  String_Assign(((u8 *) new_var3) + 0x160, &spBC, 0, -1);
+  *((u8 *) (((s8 *) self) + 0x1A2)) = saved;
+  if (mode)
+  {
+    *((s32 *) (((s8 *) new_var3) + 0x140)) = 0;
+  }
+  else
+  {
+    (*((s32 *) (((s8 *) new_var3) + 0x140)))++;
+    if (((*((s32 *) (((s8 *) self) + 0x140))) - 1) >= 1)
+    {
+      *((s32 *) (((s8 *) self) + 0x140)) = 0;
+    }
+  }
+  *((u8 *) (((s8 *) new_var3) + 0x1A4)) = 1;
+  String_Init(&sp20, ((char *) gActorXmlStrs) + 0x518, &sc8);
+  String_Concat(&sp2C, ((u8 *) new_var3) + 0x154, &sp20);
+  new_var = (u8 *) new_var3;
+  ok = fn_800DDC04(*((void **) (((s8 *) new_var3) + 0xDC)), &sp2C) != 0;
+  String_Destroy(&sp2C, -1);
+  String_Destroy(&sp20, -1);
+  if (!ok)
+  {
+    *((s32 *) (((s8 *) new_var3) + 0x140)) = 0;
+    flag = 0;
+  }
+  if (flag)
+  {
+    s32 n = strlen(((char *) gActorXmlStrs) + 0x1C);
+    String_AssignCStr(new_var + 0x16C, new_var2 + 0x1C, n);
+  }
+  else
+  {
+    String_Init(&spA4, new_var2 + 0x43F, &sc1C);
+    {
+      void (*format_anim)(void *, void *, void *) = (void (*)(void *, void *, void *)) fn_801134EC;
+      format_anim(&sp98, self, &spA4);
+    }
+    String_Assign(((u8 *) self) + 0x16C, &sp98, 0, -1);
+    String_Destroy(&sp98, -1);
+    String_Destroy(&spA4, -1);
+  }
+  if (((*((u8 *) (((s8 *) new_var3) + 0x1A1))) && (mode == 2)) && (String_Compare(new_var + 0xB0, 0, *((void **) (((s8 *) self) + 0xB0)), new_var2 + 0x530, strlen(((char *) gActorXmlStrs) + 0x530)) != 0))
+  {
+    *((u8 *) (((s8 *) new_var3) + 0x1B5)) = 1;
+  }
+  if (((*((u8 *) (((s8 *) new_var3) + 0x1A1))) && (mode == 2)) && (String_Compare(new_var + 0xB0, 0, *((void **) (((s8 *) new_var3) + 0xB0)), new_var2 + 0x530, strlen(new_var2 + 0x530)) == 0))
+  {
+    if (*((void **) (((s8 *) new_var3) + 0x11C)))
+    {
+      kind = fn_80199310(*((void **) (((s8 *) new_var3) + 0x11C)));
+    }
+    else
+    {
+      kind = -1;
+    }
+    if (kind == 2)
+    {
+      *((u8 *) (((s8 *) new_var3) + 0x1B5)) = 1;
+    }
+  }
+  if (*((s32 *) (((s8 *) self) + 0x19C)))
+  {
+    *((u8 *) (((s8 *) self) + 0x1A0)) = 1;
+  }
+  String_Destroy(&spBC, -1);
+  String_Destroy(&spC8, -1);
 }
 
 #pragma global_optimizer off
@@ -5528,19 +5696,21 @@ void fn_8011A7FC(void *arg0) {
 }
 
 void fn_8011AB38(void *arg0) {
-    s32 fn_8003FCCC();
-    u8 fn_8005BA10();
-    s32 fn_80161FB8();
-    M2C_UNK fn_80162054();
+    s32 fn_80161FB8(void);
+    void fn_80162054(void);
+    void fn_801620AC(void);
+    u8 FileCache_IsReady(void);
+    s32 Archive_Load(void);
+    void Process_ClearFunc(void *);
+
     fn_801620AC();
-    if (fn_8005BA10() != 0) {
-        if (fn_80161FB8() == 0) {
-            return;
+    if (FileCache_IsReady() != 0) {
+        if (fn_80161FB8() != 0) {
+            fn_80162054();
+            fn_801620AC();
+            M2C_FIELD((short)arg0, s32 *, 0x40) = Archive_Load();
+            Process_ClearFunc(arg0);
         }
-        fn_80162054();
-        fn_801620AC();
-        M2C_FIELD((short)arg0, s32 *, 0x40) = fn_8003FCCC();
-        fn_8000C188(arg0);
     }
 }
 
@@ -7890,126 +8060,128 @@ void fn_8011DDCC(void *arg0) {
 }
 
 void UiPanel_Finish(void *arg0) {
-    void Process_Goto(void *, s32);
-    void Process_Unlink(void *);
-    void fn_800790D4(void *, void *);
-    void fn_8007AD6C(void *);
-    void fn_80089650(s32, s32);
-    void fn_800AA208(void);
-    void fn_80109020(void *);
-    void *Sound_FindByName(void *);
-    void fn_80109BB4(void *, u8);
-    void fn_8011E12C(void *);
-    void fn_80120F0C(void);
-    void fn_80120F94(void);
-    void fn_80122000(void *);
-    void fn_80122238(void *, void *);
-    void fn_80122C84(void *);
-    extern u8 lbl_8032BDE8[];
-    void *self;
-    void *p;
-    s32 i;
-    s32 zero;
-
-    self = arg0;
-    while (!(gUiPanelFlags & 0x20)) {
-        fn_8011E12C(self);
-    }
-    if (gUiPanelFlags & 0x10) {
-        Process_Goto(self, 2);
-        return;
-    }
-    fn_80122000(lbl_8032BDE8);
-    if ((gUiInputFlags & 2) && (*(u8 *)((u8 *)self + 0x63) != 0) && !(gUiInputFlags & 1)) {
-        fn_80089650(2, 0x85);
-    }
-    if (gUiInputFlags & 3) {
-        i = 0;
-        p = self;
-        zero = i ^ i;
-        do {
-            void *obj = *(void **)((u8 *)p + 0x34);
-            if (obj != NULL) {
-                fn_80122C84(obj);
-                *(s32 *)((u8 *)p + 0x34) = zero;
-            }
-            i += 1;
-            p = (u8 *)p + 4;
-        } while (i < 4);
-        i = 0;
-        p = self;
-        zero = i ^ i;
-        do {
-            void *obj = *(void **)((u8 *)p + 0x48);
-            if (obj != NULL) {
-                fn_8007AD6C(obj);
-                *(s32 *)((u8 *)p + 0x48) = zero;
-            }
-            i += 1;
-            p = (u8 *)p + 4;
-        } while (i < 4);
-        *(s32 *)((u8 *)self + 0x30) = 0;
-        if (lbl_80367A5C != 0) {
-            fn_80109020((void *)lbl_80367A5C);
-            lbl_80367A5C = 0;
-        }
-        if (*(void **)((u8 *)self + 0x58) != NULL) {
-            Process_Unlink(*(void **)((u8 *)self + 0x58));
-            *(s32 *)((u8 *)self + 0x58) = 0;
-        }
-        fn_80120F0C();
-        if (gUiPanelFlags & 0x80) {
-            fn_800AA208();
-            *(volatile u16 *)&gUiPanelFlags &= ~0x80;
-        }
-        {
-            s32 t = gUiInputFlags;
-            *(volatile u16 *)&gUiPanelFlags = 0;
-            gUiInputFlags = t & ~2;
-            Process_Goto(self, 4);
-        }
-        return;
-    }
-    if (*(u8 *)((u8 *)self + 0x63) != 0) {
-        Process_Goto(self, 3);
-        return;
-    }
-    fn_80120F94();
-    {
-        void *p2;
-        s32 i2;
-        i2 = 0;
-        p2 = self;
-        do {
-            void *obj = *(void **)((u8 *)p2 + 0x34);
-            if (obj != NULL) {
-                fn_80122238(obj, self);
-            }
-            i2 += 1;
-            p2 = (u8 *)p2 + 4;
-        } while (i2 < 4);
-    }
-    {
-        void *p2;
-        s32 i2;
-        i2 = 0;
-        p2 = self;
-        do {
-            void *obj = *(void **)((u8 *)p2 + 0x48);
-            if (obj != NULL) {
-                if (gUiInputFlags & 3) {
-                    fn_8007AD6C(obj);
-                } else {
-                    fn_800790D4(obj, self);
-                }
-            }
-            i2 += 1;
-            p2 = (u8 *)p2 + 4;
-        } while (i2 < 4);
-    }
-    if (lbl_80367A5C != 0) {
-        fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), (u8)((*(s16 *)((u8 *)self + 0x68) * 0x3C) / 1000));
-    }
+void Process_Goto(void *, s32);
+void Process_Unlink(void *);
+void fn_800790D4(void *, void *);
+void fn_8007AD6C(void *);
+void fn_80089650(s32, s32);
+void fn_800AA208(void);
+void fn_80109020(void *);
+void *Sound_FindByName(void *);
+void fn_80109BB4(void *, u8);
+void fn_8011E12C(void *);
+void fn_80120F0C(void);
+void fn_80120F94(void);
+void fn_80122000(void *);
+void fn_80122238(void *, void *);
+void fn_80122C84(void *);
+extern u8 lbl_8032BDE8[];
+u8 *p;
+u32 nv[2];
+void *self;
+self = arg0;
+while (!(gUiPanelFlags & 0x20)) {
+fn_8011E12C(self);
+}
+if (gUiPanelFlags & 0x10) {
+Process_Goto(self, 2);
+return;
+}
+fn_80122000(lbl_8032BDE8);
+if ((gUiInputFlags & 2) && (*(u8 *)((u8 *)self + 0x63) != 0) && !(gUiInputFlags & 1)) {
+fn_80089650(2, 0x85);
+}
+if (gUiInputFlags & 3) {
+nv[1] = 0;
+p = self;
+nv[0] = nv[1];
+do {
+void *obj = *(void **)(p + 0x34);
+if (obj) {
+fn_80122C84(obj);
+*(s32 *)(p + 0x34) = (s32)nv[0];
+}
+nv[1] += 1;
+p += 4;
+} while ((s32)nv[1] < 4);
+{
+u8 *p2;
+u32 nv2[2];
+nv2[1] = 0;
+p2 = self;
+nv2[0] = nv2[1];
+do {
+void *obj = *(void **)(p2 + 0x48);
+if (obj) {
+fn_8007AD6C(obj);
+*(s32 *)(p2 + 0x48) = (s32)nv2[0];
+}
+nv2[1] += 1;
+p2 += 4;
+} while ((s32)nv2[1] < 4);
+}
+*(s32 *)((u8 *)self + 0x30) = 0;
+if (lbl_80367A5C != 0) {
+fn_80109020((void *)lbl_80367A5C);
+lbl_80367A5C = 0;
+}
+if (*(void **)((u8 *)self + 0x58) != NULL) {
+Process_Unlink(*(void **)((u8 *)self + 0x58));
+*(s32 *)((u8 *)self + 0x58) = 0;
+}
+fn_80120F0C();
+if (gUiPanelFlags & 0x80) {
+fn_800AA208();
+*(volatile u16 *)&gUiPanelFlags &= ~0x80;
+}
+{
+s32 t = gUiInputFlags;
+*(volatile u16 *)&gUiPanelFlags = 0;
+gUiInputFlags = t & ~2;
+Process_Goto(self, 4);
+}
+return;
+}
+if (*(u8 *)((u8 *)self + 0x63) != 0) {
+Process_Goto(self, 3);
+return;
+}
+fn_80120F94();
+{
+void *p2;
+s32 i2;
+i2 = 0;
+p2 = self;
+do {
+void *obj = *(void **)((u8 *)p2 + 0x34);
+if (obj != NULL) {
+fn_80122238(obj, self);
+}
+i2 += 1;
+p2 = (u8 *)p2 + 4;
+} while (i2 < 4);
+}
+{
+void *p2;
+s32 i2;
+i2 = 0;
+p2 = self;
+do {
+void *obj = *(void **)((u8 *)p2 + 0x48);
+if (obj != NULL) {
+if (gUiInputFlags & 3) {
+fn_8007AD6C(obj);
+} else {
+fn_800790D4(obj, self);
+}
+}
+i2 += 1;
+p2 = (u8 *)p2 + 4;
+} while (i2 < 4);
+}
+if (lbl_80367A5C != 0) {
+fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), (u8)((*(s16 *)((u8 *)self + 0x68) * 0x3C) / 1000));
+}
 }
 
 #pragma use_lmw_stmw on
