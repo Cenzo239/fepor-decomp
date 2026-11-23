@@ -351,16 +351,6 @@ void *Res_GetByName(s32);
 
 void fn_8005C7E8(void *);
 
-static inline void Archive_ScanKey(u32 *p28, u32 *scan, u32 count) {
-    u32 ctr;
-    for (ctr = count; ctr > 0; ctr--) {
-        if (*(volatile u32 *)p28 == *scan) {
-            return;
-        }
-        scan++;
-    }
-}
-
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
     void FileCache_MarkRelocated(s32);
