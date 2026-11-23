@@ -879,17 +879,13 @@ void fn_8021EB88(s32 arg0, void *arg1)
 void GXInitFifoBase(__GXFifoObj *fifo, void *base, u32 size) {
     void fn_8021ED98(void *, s32, s32);
     void fn_8021ED28(__GXFifoObj *, void *, void *);
-    u8 *b;
-    __GXFifoObj *f;
 
-    b = (u8 *)base;
-    f = fifo;
-    fifo->base = b;
-    fifo->top = b + (size - 4);
+    fifo->base = (u8 *)base;
+    fifo->top = (u8 *)base + size - 4;
     fifo->size = size;
-    f->count = 0;
+    fifo->count = 0;
     fn_8021ED98(fifo, (s32)(size - 0x4000), (s32)((size >> 1) & ~0x1F));
-    fn_8021ED28(f, b, b);
+    fn_8021ED28(fifo, base, base);
 }
 
 void fn_8021ED28(void *arg0, s32 arg1, s32 arg2) {
