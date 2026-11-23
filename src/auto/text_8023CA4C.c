@@ -363,7 +363,7 @@ extern f64 lbl_8036C148;
 #pragma peephole off
 s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
-extern ThpDecodeState *lbl_80368950;
+extern ThpDecodeState *volatile lbl_80368950;
 f32 table[64];
 u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; u8 *p; f64 *scale;
 size=ThpReadWord()-2;
