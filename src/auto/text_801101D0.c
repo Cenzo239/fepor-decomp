@@ -12,6 +12,12 @@ typedef struct String {
     char *data;
 } String;
 
+typedef struct Fn80116F84Args {
+    s32 a;
+    s32 b;
+    s32 c;
+} Fn80116F84Args;
+
 extern f32 lbl_8036A1DC;
 extern f32 fActorDefaultRadius;
 extern f32 lbl_8036A1C8;
@@ -3487,15 +3493,25 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 
 #pragma optimization_level 1
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
- void fn_800DB7A4(void *, s32 (*)[3]);
- s32 copy[3];
- s32 *src = arg1;
- s32 c = src[2];
- s32 b = src[1];
- s32 a = src[0];
- copy[0]=a; copy[1]=b; copy[2]=c;
- fn_800DB7A4(arg0,&copy);
- if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
+    void fn_800DB7A4(void *, s32 (*)[3]);
+    s32 copy[3];
+    s32 *src;
+    s32 c;
+    s32 b;
+    s32 a;
+
+    src = arg1;
+    c = src[2];
+    b = src[1];
+    a = src[0];
+    copy[0] = a;
+    copy[1] = b;
+    copy[2] = c;
+    fn_800DB7A4(arg0, &copy);
+    if (*(u8 *)((char *)arg0 + 0x195) != 0) {
+        *(s32 *)((char *)arg0 + 0x9c) =
+            *(s32 *)((char *)arg0 + 0xc8) * *(s32 *)((char *)arg0 + 0x198);
+    }
 }
 #pragma optimization_level reset
 #pragma cplusplus off
@@ -5693,25 +5709,27 @@ void fn_8011A7FC(void *arg0) {
     fn_80018B18();
 }
 
+#pragma global_optimizer off
 void fn_8011AB38(void *arg0) {
+    u8 FileCache_IsReady(void);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
-    void fn_801620AC(void);
-    u8 FileCache_IsReady(void);
+    void fn_801620AC(void *);
     s32 Archive_Load(void);
     void Process_ClearFunc(void *);
 
-    fn_801620AC();
+    fn_801620AC(arg0);
     if (FileCache_IsReady() != 0) {
-        if (fn_80161FB8() != 0) {
-            fn_80162054();
-            fn_801620AC();
-            M2C_FIELD((short)arg0, s32 *, 0x40) = Archive_Load();
-            Process_ClearFunc(arg0);
+        if (fn_80161FB8() == 0) {
+            return;
         }
+        fn_80162054();
+        fn_801620AC(arg0);
+        *(s32 *)((char *)arg0 + 0x40) = Archive_Load();
+        Process_ClearFunc(arg0);
     }
 }
-
+#pragma global_optimizer on
 void fn_8011AB98(void) {
     M2C_UNK fn_801620AC();
     M2C_UNK fn_8005C8B4();
