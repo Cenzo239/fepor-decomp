@@ -3124,46 +3124,48 @@ return 0;
 
 s32 fn_8024FF5C(u16 arg0)
 {
-    extern u8 lbl_803548B8[1536];
-    extern u16 lbl_80368A08;
+  extern u16 lbl_80368A08;
+  void Audio_Lock(void);
+  void Audio_Unlock(void);
+  struct Entry
+  {
+    u16 id;
+    u16 field2;
+    u16 refCount;
+    u16 field6;
+    void *data;
+  };
+  struct Entry *p;
+  extern u8 lbl_803548B8[1536];
+  struct Entry *moving;
+  s32 i;
+  s32 j;
+  u16 count;
+  for (i = 0; (i < ((s32) lbl_80368A08)) && (arg0 != p->id); p++, i++)
+  {
+    p = (struct Entry *) lbl_803548B8;
+  }
 
-    void Audio_Lock(void);
-    void Audio_Unlock(void);
+  if (i != ((s32) lbl_80368A08))
+  {
+    p = ((struct Entry *) lbl_803548B8) + i;
+    p->refCount--;
+    if ((((struct Entry *) lbl_803548B8) + i)->refCount == 0)
+    {
+      Audio_Lock();
+      count = lbl_80368A08;
+      for (j = i + 1; j < ((s32) count); j++, moving++)
+      {
+        moving = ((struct Entry *) lbl_803548B8) + (i - (-1));
+        moving[-1] = *(((struct Entry *) lbl_803548B8) + (i - (-1)));
+      }
 
-    struct Entry {
-        u16 id;
-        u16 field2;
-        u16 refCount;
-        u16 field6;
-        void *data;
-    };
-
-    u8 *q;
-    u8 *moving;
-    s32 i;
-    s32 j;
-    u16 count;
-
-    q = lbl_803548B8;
-    for (i = 0; i < (s32)lbl_80368A08 && arg0 != *(u16 *)q; q += 12, i++) {
+      lbl_80368A08--;
+      Audio_Unlock();
+      return 1;
     }
-
-    if (i != (s32)lbl_80368A08) {
-        q = lbl_803548B8 + i * 12;
-        *(u16 *)(q + 4) = *(u16 *)(q + 4) - 1;
-        if (*(u16 *)(q + 4) == 0) {
-            Audio_Lock();
-            count = lbl_80368A08;
-            moving = lbl_803548B8 + (i + 1) * 12;
-            for (j = i + 1; j < (s32)count; j++, moving += 12) {
-                *(struct Entry *)(moving - 12) = *(struct Entry *)moving;
-            }
-            lbl_80368A08--;
-            Audio_Unlock();
-            return 1;
-        }
-    }
-    return 0;
+  }
+  return lbl_80368A08 * 0;
 }
 
 #pragma opt_strength_reduction off
@@ -4892,6 +4894,14 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
     void Sound_DeactivateSynthVoice(void *);
     extern u8 gSoundData[];
     extern s32 gSynthVoices;
+    typedef struct Voice {
+        u8 pad0[0x440];
+        u8 count;
+        u8 pad441;
+        u8 write_idx;
+        u8 pad443;
+        u32 slots[4];
+    } Voice;
     u32 id;
     u32 value;
     u8 i;
@@ -4900,8 +4910,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
     u32 raw;
     u8 index;
     s32 result;
-    u32 *p;
-    u32 *dummy;
+    Voice *v;
 
     bits = *(u32 *)((u8 *)arg1 + 4);
     index = (bits >> 8) & 31;
@@ -4946,18 +4955,16 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
         }
         result = Sound_LookupVid(result);
         if ((u32)result != 0xFFFFFFFF) {
-            state = (u8 *)gSynthVoices + (u8)result * 0x458;
-            if (state[0x440] < 4) {
-                state[0x440]++;
-                p = (u32 *)state + state[0x442];
-                dummy = *&p;
-                dummy[0x111] = value;
-                state[0x442] = (state[0x442] + 1) & 3;
-                if (state[0x68] != 0 && *(u32 *)(state + 0x58) != 0) {
-                    *(u32 *)(state + 0x38) = *(u32 *)(state + 0x64);
-                    *(u32 *)(state + 0x34) = *(u32 *)(state + 0x58);
-                    *(u32 *)(state + 0x58) = 0;
-                    Sound_DeactivateSynthVoice(state);
+            v = (Voice *)((u8 *)gSynthVoices + (u8)result * 0x458);
+            if (v->count < 4) {
+                v->count++;
+                v->slots[v->write_idx] = value;
+                v->write_idx = (v->write_idx + 1) & 3;
+                if (*(u8 *)((u8 *)v + 0x68) != 0 && *(u32 *)((u8 *)v + 0x58) != 0) {
+                    *(u32 *)((u8 *)v + 0x38) = *(u32 *)((u8 *)v + 0x64);
+                    *(u32 *)((u8 *)v + 0x34) = *(u32 *)((u8 *)v + 0x58);
+                    *(u32 *)((u8 *)v + 0x58) = 0;
+                    Sound_DeactivateSynthVoice(v);
                 }
             }
         }
