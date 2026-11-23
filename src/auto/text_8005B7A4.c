@@ -105,6 +105,34 @@ static inline u8 *FindEntryByName(char *name) {
     return NULL;
 }
 
+static inline u8 *FindEntryByNameFrom(char *name, char *path) {
+    extern u8 gFileCache[];
+    s32 Str_Cmp();
+    u8 *e;
+    char *start;
+    u32 hash;
+    s32 i;
+    u8 c;
+
+    if (*(u8 *)name == '/') {
+        path++;
+    }
+    start = path;
+    hash = 0;
+    while ((s8)(c = *(u8 *)path) != 0) {
+        if ((s8)c >= 'A' && (s8)c <= 'Z') {
+            *(u8 *)path += 0x20;
+        }
+        hash = (s8)*(u8 *)path++ + hash * 37;
+    }
+    for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
+        if (hash == *(u32 *)(e + 0x2C) && Str_Cmp(start, e) == 0) {
+            return gFileCache + i * 0x7C;
+        }
+    }
+    return NULL;
+}
+
 static inline u32 FindUnk48(void *arg0) {
     while (arg0 != NULL) {
         u32 temp = M2C_FIELD(arg0, u32 *, 0x48);
@@ -1056,36 +1084,10 @@ void *fn_8005D474(char *name, u16 flags) {
     void fn_8005DB40(void *, char *, void *, u16);
     void fn_8005E12C(void *, char *, u16);
     void *AramCache_Find(char *);
-    s32 Str_Cmp(void *, void *);
-    extern u8 gFileCache[];
     u8 *entry;
-    {
-        s32 i;
-        u32 hash;
-        u8 *start;
-        u8 *p = (u8 *)name;
-        u8 *e;
-        u8 c;
-        if ((s32)*(u8 *)name == '/') {
-            p++;
-        }
-        start = p;
-        hash = 0;
-        while ((s8)(c = *p) != 0) {
-            if ((s8)c >= 'A' && (s8)c <= 'Z') {
-                *p += 0x20;
-            }
-            hash = (s8)*p++ + hash * 37;
-        }
-        for (i = 0, e = &gFileCache[0]; i < 0x400; i++, e += 0x7C) {
-            if (hash == *(u32 *)(e + 0x2C) && Str_Cmp(start, e) == 0) {
-                entry = &gFileCache[i * 0x7C];
-                goto found;
-            }
-        }
-        entry = 0;
-    found:;
-    }
+    void *aram;
+
+    entry = FindEntryByName(name);
     if (entry) {
         *(u16 *)(entry + 0x30) |= flags;
         while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
@@ -1096,19 +1098,17 @@ void *fn_8005D474(char *name, u16 flags) {
         *(u16 *)(entry + 0x30) &= ~0x200;
         return *(void **)(entry + 0x38);
     }
-    {
-        void *aram = AramCache_Find(name);
-        if (aram) {
-            entry = fn_8005CEC0();
-            fn_8005DB40(entry, name, aram, flags);
-            while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
-                OS_YieldThread();
-            }
-            *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
-            (*(u16 *)(entry + 0x32))++;
-            *(u16 *)(entry + 0x30) &= ~0x200;
-            return *(void **)(entry + 0x38);
+    aram = AramCache_Find(name);
+    if (aram) {
+        entry = fn_8005CEC0();
+        fn_8005DB40(entry, name, aram, flags);
+        while (!(*(u16 *)(entry + 0x30) & 0x2000)) {
+            OS_YieldThread();
         }
+        *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+        (*(u16 *)(entry + 0x32))++;
+        *(u16 *)(entry + 0x30) &= ~0x200;
+        return *(void **)(entry + 0x38);
     }
     entry = fn_8005CEC0();
     fn_8005E12C(entry, name, flags);
