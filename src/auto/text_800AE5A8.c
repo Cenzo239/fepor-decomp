@@ -10710,6 +10710,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
 }
 
 #pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
