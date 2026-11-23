@@ -2339,15 +2339,15 @@ s32 fn_8021B20C(s32 chan) {
 
     void *handle;
     s32 result;
-    u8 *card;
     u32 enabled;
+    u8 *card;
 
     result = fn_80217B18(chan, &handle);
     if (result < 0) {
         return result;
     }
 
-    card = (u8 *)__CARDBlock + (chan * 0x110);
+    card = (u8 *)__CARDBlock + chan * 0x110;
     enabled = OSDisableInterrupts();
     if (*(s32 *)card != 0) {
         fn_80239298(chan, 0);
