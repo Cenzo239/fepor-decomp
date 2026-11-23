@@ -361,6 +361,7 @@ extern f64 lbl_8036C148;
 #pragma pop
 
 #pragma use_lmw_stmw on
+#pragma scheduling off
 s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
 extern ThpDecodeState *volatile lbl_80368950;
@@ -383,7 +384,7 @@ state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(
 state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
 i+=8;
 }
-    size-=65;
+size-=65;
 } while((u16)size);
 return 0;
 }
