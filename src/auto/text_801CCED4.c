@@ -1323,36 +1323,38 @@ void *fn_801CDB74(void *arg0) {
     return (u8 *)arg0 + ((s32)*(s16 *)((u8 *)arg0 + 0x70) * 4) + 0x3C;
 }
 #pragma opt_unroll reset
-s16 NameEntry_MoveCaretRight(void *self, u8 flag) {
-    extern s16 lbl_80366EAA;
-    extern u8 lbl_8027DE18[];
-    void Ui_PlaySeCue(void *, s32);
-    s16 sp8;
-    s16 *cap;
-    register s32 i;
-    u32 *p;
-    s16 old;
-    s16 lim;
-    s32 v;
+s16 NameEntry_MoveCaretRight(void *self, u8 flag)
+{
+  extern s16 lbl_80366EAA;
+  extern u8 lbl_8027DE18[];
+  void Ui_PlaySeCue(void *, s32);
+  s16 sp8;
+  s16 *cap;
+  s32 i;
+  u32 *p;
+  s16 lim;
+  s32 v;
+  s16 old;
+  p = (u32 *) (((u8 *) self) + 0x3C);
+  for (i = 0; (*p) != 0; i++, p++)
+  {
+  }
 
-    for (i = 0, p = (u32 *)((u8 *)self + 0x3c); *p != 0; i++, p++) {
-    }
-    sp8 = (s16)i;
-    cap = &sp8;
-    if (lbl_80366EAA < (s16)i) {
-        cap = &lbl_80366EAA;
-    }
-    old = *(s16 *)((u8 *)self + 0x70);
-    lim = *cap;
-    v = old + 1;
-    *(s16 *)((u8 *)self + 0x70) = (s16)v;
-    if ((u32)(s16)v > (u32)lim) {
-        *(s16 *)((u8 *)self + 0x70) = lim & ~(((-(s32)flag) | (s32)flag) >> 31);
-    }
-    if (old != *(s16 *)((u8 *)self + 0x70)) {
-        Ui_PlaySeCue(lbl_8027DE18 + 8, 0x64);
-    }
-    return *(s16 *)((u8 *)self + 0x70);
+  sp8 = (s16) i;
+  cap = (lbl_80366EAA < ((s16) i)) ? (&lbl_80366EAA) : (&sp8);
+  old = *((s16 *) (((u8 *) self) + 0x70));
+  lim = *cap;
+  v = old + 1;
+  *((s16 *) (((u8 *) self) + 0x70)) = (s16) v;
+  if (((u32) ((s16) v)) > ((u32) lim))
+  {
+    *((s16 *) (((u8 *) self) + 0x70)) = lim & (~(((-((s32) flag)) | ((s32) flag)) >> 31));
+  }
+  if (old != (*((s16 *) (((u8 *) self) + 0x70))))
+  {
+    Ui_PlaySeCue(lbl_8027DE18 + 8, 0x64);
+  }
+  return *((s16 *) (((u8 *) self) + 0x70));
 }
 
 s16 NameEntry_MoveCaretLeft(void *self, u8 flag) {
@@ -7283,14 +7285,16 @@ s32 fn_801DBFF8(void)
 
 void *fn_801DC070(void *arg0)
 {
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
     void *fn_801E2324(void *, void *);
     u8 *result;
 
-    result = (u8 *)fn_801E2324(&lbl_803682F0, arg0);
-    if (result == NULL || result[0x60] != 2) {
-        result = NULL;
-    }
+    result = (u8 *)fn_801E2324(&gSaveDataBase, arg0);
+    if (result == NULL) goto clear;
+    if (result[0x60] == 2) goto check2;
+clear:
+    result = NULL;
+check2:
     if (result != NULL) {
         if (result[0x64] != 0x20) {
             result = NULL;
