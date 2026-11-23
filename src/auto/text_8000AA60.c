@@ -285,21 +285,32 @@ s32 fn_8000ADA0(void *arg0) {
     return 1;
 }
 
+#pragma global_optimizer off
 s32 fn_8000ADE4(void *arg0)
 {
     extern u8 gProcesses[];
-    u8 *p = gProcesses;
-    u32 value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
-    s32 i = 0;
-    u8 *found = 0;
-    for (; i < 256; i++, p += 0x70) {
-        if (*(u32 *)p == value) found = p;
+    s32 i;
+    u32 value;
+    u32 p;
+    u8 *tmp;
+
+    tmp = *(u8 **)((u8 *)arg0 + 4);
+    p = (u32)gProcesses;
+    value = *(u32 *)(tmp + 4);
+    for (i = 0; i < 256; i++, p += 0x70) {
+        if (*(u32 *)p == value) {
+            i = i + 0;
+            goto found;
+        }
     }
-    if (found != 0) return 0;
+    p = 0;
+found:
+    if (p != 0)
+        return 0;
     *(u8 **)((u8 *)arg0 + 4) += 8;
     return 1;
 }
-
+#pragma global_optimizer on
 s32 fn_8000AEB4(void *arg0) {
     s32 Process_Create(s32, s16);
     s32 temp_r3 = ((s32 *) arg0)[1];
@@ -1750,26 +1761,30 @@ s32 Rand_Chance(s32 arg0)
     u16 c;
   };
   extern struct RandSt lbl_80367150;
+  u16 t6;
   s32 t4;
-  s32 s1;
+  s32 sum;
   s32 s2;
+  s32 s1;
   s32 s0;
   struct RandSt *st;
   st = &lbl_80367150;
   s0 = lbl_80367150.a;
-  s2 = st->c;
+  t4 = st->c;
   s1 = st->b;
-  t4 = (s2 * 2) & 0xFFFE;
-  s2 = (u16) ((s0 >> 5) + (s1 << 11));
+  sum = s0 >> 5;
+  s2 = (s1 << 11);
+  t4 = (t4 << 1) & 0xFFFE;
   st->c = t4;
-  if (s1 & 0x8000)
-  {
-    st->c = t4 + 1;
+  sum = s2 + sum;
+  t6 = (u16)sum;
+  if (s1 & 0x8000) {
+    st->c = 1 + t4;
   }
-  s2 ^= st->c;
+  t6 ^= st->c;
   st->c = st->b;
   st->b = lbl_80367150.a;
-  lbl_80367150.a = s2;
-  return ((((u16) s2) * 100) / 65536) < arg0;
+  lbl_80367150.a = t6;
+  return (((u16)t6) * 100) / 65536 < arg0;
 }
 #pragma global_optimizer off
