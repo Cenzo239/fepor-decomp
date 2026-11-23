@@ -269,7 +269,7 @@ void fn_8026649C(s32 arg0, s32 arg1)
   extern u8 lbl_803669A0[];
   extern u32 OSGetTick(void);
   extern s32 fn_80265544(s32 channel, void *arg1, void *callback);
-  extern s32 fn_80266D70(s32 channel, s32 arg1, u32 ticks);
+  extern void fn_80266D70(s32 channel, s64 ticks);
   extern s32 fn_802667D4(s32 channel, void *input, void *callback, void *outputCallback);
   extern void fn_802665F8(s32 channel, s32 result);
   u8 *new_var;
@@ -306,14 +306,11 @@ void fn_8026649C(s32 arg0, s32 arg1)
         u32 frequency;
         frequency = (*((u32 *) 0x800000F8)) >> 2;
         ticks = (frequency / 125) & (~7);
-        {
-          extern s64 fn_80266D70(s32, s32, s32, u32);
-          fn_80266D70(arg0, *((s32 *) (queue + 0x10)), 0, ticks);
-        }
+        fn_80266D70(arg0, ticks);
         result = fn_802667D4(arg0, queue + 0x18, *((void **) (queue + 0x10)), fn_802665F8);
         frequency = (*((u32 *) 0x800000F8)) >> 2;
         ticks = ((frequency / 125000) * 60) >> 3;
-        fn_80266D70(arg0, 0, ticks);
+        fn_80266D70(arg0, ticks);
       }
     }
   }
