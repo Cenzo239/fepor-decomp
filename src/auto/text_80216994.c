@@ -2619,13 +2619,12 @@ s32 fn_8021BB98(void *arg0, void *arg1)
         result = -4;
         goto done;
     }
-    if (reference == lbl_8033A420) goto invalid;
-    if (fn_80231944(data, reference, 4) == 0 &&
-        fn_80231944(data + 4, reference + 4, 2) == 0) {
+    if (reference == lbl_8033A420 ||
+        (fn_80231944(data, reference, 4) == 0 &&
+         fn_80231944(data + 4, reference + 4, 2) == 0)) {
         result = 0;
         goto done;
     }
-invalid:
     result = -10;
 done:
     if (result == -10) {
