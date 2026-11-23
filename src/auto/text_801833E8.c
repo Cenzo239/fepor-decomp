@@ -50,9 +50,9 @@ extern f32 lbl_8036AE8C;
 extern f64 lbl_8036AE90;
 extern f64 lbl_8036AE98;
 
-/* int-to-float magics used by MWCC casts in this TU */
-f64 lbl_8036AE60 = 4503601774854144.0;
-f64 lbl_8036AE80 = 4503599627370496.0;
+/* int-to-float magics: const so casts may CSE into .sdata2 names */
+const f64 lbl_8036AE60 = 4503601774854144.0;
+const f64 lbl_8036AE80 = 4503599627370496.0;
 
 typedef struct {
     void *unk0;
@@ -10076,13 +10076,11 @@ void fn_801959FC(void *arg0) {
     extern u32 lbl_80368210;
     extern s32 lbl_8036AE48;
     extern f32 lbl_8036AE50;
-    extern f64 lbl_8036AE60;
     extern f32 lbl_8036AE68;
     extern f32 lbl_8036AE6C;
     extern f32 lbl_8036AE70;
     extern f32 lbl_8036AE74;
     extern f32 lbl_8036AE78;
-    extern f64 lbl_8036AE80;
 
     f32 mtx[3][4];
     s32 color;
