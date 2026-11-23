@@ -27550,10 +27550,10 @@ void fn_800FB0F0(void *arg0) {
     case 2:
         result = *state == value;
         break;
-    case 3:
+    case 4:
         result = *state < value;
         break;
-    case 4:
+    case 3:
         result = *state <= value;
         break;
     case 5:
