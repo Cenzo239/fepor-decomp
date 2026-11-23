@@ -27561,8 +27561,6 @@ void fn_800FAF70(void *arg0) {
     u32 first;
     u32 second;
     s32 alt;
-    register s32 one;
-    register s32 zero;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
@@ -27584,15 +27582,7 @@ void fn_800FAF70(void *arg0) {
 
     alt = gAiCmdIsAlt;
 
-    if (alt == 0) {
-        if (first == 0) {
-            goto advance;
-        }
-        if (alt != 1) {
-            goto success;
-        }
-    }
-    if (second != 0) {
+    if (!((alt == 0 && first == 0) || (alt == 1 && second == 0))) {
         goto success;
     }
 
@@ -27605,10 +27595,8 @@ advance:
     goto finish;
 
 success:
-    one = 1;
-    zero = 0;
-    gAiCmdOk = (u8)one;
-    gAiState[0] = (u8)zero;
+    gAiState[0] = 0;
+    gAiCmdOk = 1;
 
 finish:
     if (first != 0 && second != 0) {
