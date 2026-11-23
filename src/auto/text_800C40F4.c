@@ -25769,26 +25769,22 @@ void fn_800F85C8(void *arg0) {
 
     slot = Unit_FindItemSlot(unit, item);
 
-    if ((s8)slot >= 0) {
-        if ((u8)Item_TryCallUfx((s32)unit, (s32)item) != 0) goto retry;
+    if ((s8)slot < 0 || (u8)Item_TryCallUfx((s32)unit, (s32)item) == 0) {
         gAiState[0x21C] = 0;
-        goto advance;
-    }
-
-retry:
-    slot = Unit_FindItemSlot(unit, item);
-
-    x = unit[0x19E];
-    y = unit[0x19F];
-
-    if (gAiState[0x21C] != 0) {
-        gUiContext[8] = 4;
-        gUiContext[0xA] = slot;
     } else {
-        fn_800FB96C(4, x, y, unit, x, y, slot, 0, 0);
+        slot = Unit_FindItemSlot(unit, item);
+
+        x = unit[0x19E];
+        y = unit[0x19F];
+
+        if (gAiState[0x21C] != 0) {
+            gUiContext[8] = 4;
+            gUiContext[0xA] = slot;
+        } else {
+            fn_800FB96C(4, x, y, unit, x, y, slot, 0, 0);
+        }
     }
 
-advance:
     if (gAiCmdIsAlt == 0) {
         unit[0x250]++;
     } else {
