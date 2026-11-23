@@ -1757,7 +1757,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
                     }
                     i++;
                 }
-                f = neg ? -lbl_80367068 : lbl_80367068;
+                f = neg ? -*(f32 *)(void *)&lbl_80367068 : *(f32 *)(void *)&lbl_80367068;
                 sp18 = f;
                 *arg3 = skipped + n + i + sp5C;
                 return sp18;
