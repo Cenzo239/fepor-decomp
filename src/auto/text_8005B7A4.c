@@ -114,7 +114,7 @@ static inline u8 *FindEntryByNameFrom(char *name, char *path) {
     s32 i;
     u8 c;
 
-    if (*(u8 *)name == '/') {
+    if ((s32)*(u8 *)name == '/') {
         path++;
     }
     start = path;
