@@ -810,6 +810,10 @@ s32 fn_80024390(void) {
 }
 
 void *Process_CreateEx(u8 *);
+u8 *Process_Create(void *, void *);
+u8 fn_8000B920(void *);
+void *GfxEnt_Get(u8);
+void Ui_PlaySeCue(void *, s32);
 
 void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     extern u8 lbl_80284548[];
