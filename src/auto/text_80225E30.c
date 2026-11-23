@@ -1829,63 +1829,52 @@ void fn_80228858(u32 arg0, s32 arg1) {
 #pragma optimization_level 3
 void fn_80228890(void *arg0, u32 arg1, u32 arg2)
 {
-  u8 *dest;
-  u32 value;
-  u32 align;
-  dest = ((u8 *) arg0) - 1;
-  value = (u8) arg1;
-  if (arg2 >= 0x20U)
-  {
-    align = (~((u32) dest)) & 3;
-    if (align != 0)
-    {
-      arg2 -= align;
-      do
-      {
-        *(++dest) = (u8) value;
-      }
-      while ((--align) != 0);
+    u8 *dest;
+    u32 value;
+    u32 align;
+
+    dest = ((u8 *)arg0) - 1;
+    value = (u8)arg1;
+    if (arg2 >= 0x20U) {
+        align = (~((u32)dest)) & 3;
+        if (align != 0) {
+            arg2 -= align;
+            do {
+                *(++dest) = (u8)value;
+            } while ((--align) != 0);
+        }
+        if (value != 0) {
+            value |= ((value << 24) | (value << 16)) | (value << 8);
+        }
+        arg0 = dest - 3;
+        if ((arg1 = arg2 >> 5) != 0) {
+            do {
+                ((u32 *)arg0)[1] = value;
+                ((u32 *)arg0)[2] = value;
+                arg0 = ((u8 *)arg0) + 4;
+                ((u32 *)arg0)[2] = value;
+                ((u32 *)arg0)[3] = value;
+                ((u32 *)arg0)[4] = value;
+                ((u32 *)arg0)[5] = value;
+                ((u32 *)arg0)[6] = value;
+                arg0 = ((u8 *)arg0) + 0x1C;
+                *((u32 *)arg0) = value;
+            } while ((--arg1) != 0);
+        }
+        if ((arg1 = (arg2 >> 2) & 7) != 0) {
+            do {
+                arg0 = ((u32 *)arg0) + 1;
+                *((u32 *)arg0) = value;
+            } while ((--arg1) != 0);
+        }
+        dest = ((u8 *)arg0) + 3;
+        arg2 &= 3;
     }
-    if (value != 0)
-    {
-      value |= ((value << 24) | (value << 16)) | (value << 8);
+    if (arg2 != 0) {
+        do {
+            *(++dest) = (u8)value;
+        } while ((--arg2) != 0);
     }
-    arg0 = dest - 3;
-    if ((arg1 = arg2 >> 5) != 0)
-    {
-      do
-      {
-        ((u32 *) arg0)[1] = value;
-        ((u32 *) arg0)[2] = value;
-        arg0 = ((u8 *) arg0) + 4;
-        ((u32 *) arg0)[3] = value;
-        ((u32 *) arg0)[4] = (((u32 *) arg0)[6] = value);
-        ((u32 *) arg0)[5] = value;
-        ((u32 *) arg0)[7] = value;
-        arg0 = ((u8 *) arg0) + 0x20;
-        *((u32 *) arg0) = value;
-      }
-      while ((--arg1) != 0);
-    }
-    if ((arg1 = (arg2 >> 2) & 7) != 0)
-    {
-      do
-      {
-        *((u32 *) arg0) = value;
-      }
-      while ((--arg1) != 0);
-    }
-    dest = ((u8 *) arg0) + 3;
-    arg2 &= 3;
-  }
-  if (arg2 != 0)
-  {
-    do
-    {
-      *(++dest) = (u8) value;
-    }
-    while ((--arg2) != 0);
-  }
 }
 #pragma optimization_level reset
 s32 fn_80228950(void) {
