@@ -702,27 +702,27 @@ void Event_FaceTalkUnits(s32 parent) {
 
 #pragma use_lmw_stmw on
 void fn_8009A0A4(void *arg0, s16 arg1) {
-    s32 fn_800970C8(s16);
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdKind(s16);
+    s32 Event_GetCmdFlags(s16);
     void fn_800983E0(void *, void *);
     u8 fn_80096C18(void);
-    void fn_80147548(void *, void *, s32);
+    void SeCue_PlayAtPos(void *, void *, s32);
     void fn_80048E08(void *, void *, void *, s32);
     void **fn_800984FC(void **);
-    void fn_80184C7C(void *, s32, s32, s32);
-    void fn_80184BE8(void *, s32, s32, s32);
-    void fn_80184688(void *, s32, s32, void *);
+    void Mu_StartBlend(void *, s32, s32, s32);
+    void Mu_StartTransfer(void *, s32, s32, s32);
+    void Mu_StartFlash(void *, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void fn_80025624(s32, s32);
     void fn_8017E2BC(void);
     void *fn_80095934(void *, s32, s32);
-    void *fn_80053C30(void *, void *);
-    void fn_800536B0(void *, f32, f32, f32);
+    void *Effect_Create(void *, void *);
+    void Effect_SetPos(void *, f32, f32, f32);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
-    extern u8 lbl_8026D230[];
-    extern s32 lbl_80367240;
+    extern u8 gEventUiSeCues[];
+    extern s32 gPadInput;
     extern s32 lbl_803697D8;
     Word3 pos;
     Word3 sp78;
@@ -744,8 +744,8 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     s32 mode;
     u8 item;
 
-    kind = fn_800970C8(arg1);
-    flags = fn_800971F8(arg1);
+    kind = Event_GetCmdKind(arg1);
+    flags = Event_GetCmdFlags(arg1);
     fn_800983E0(&sp78, M2C_FIELD(arg0, void **, 0x3C));
     mode = M2C_FIELD(arg0, u8 *, 0x34);
     pos = sp78;
@@ -753,10 +753,10 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     case 1:
         if (fn_80096C18() != 0) {
             sp6C = pos;
-            fn_80147548(lbl_8026D230 + 0x124, &sp6C, 0x64);
+            SeCue_PlayAtPos(gEventUiSeCues + 0x124, &sp6C, 0x64);
         } else {
             sp60 = pos;
-            fn_80147548(lbl_8026D230 + 0x140, &sp60, 0x64);
+            SeCue_PlayAtPos(gEventUiSeCues + 0x140, &sp60, 0x64);
         }
         if (M2C_FIELD(arg0, void **, 0x30) != NULL) {
             sp8 = lbl_803697D8;
@@ -766,7 +766,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     default:
         if (fn_80096C18() != 0) {
             sp54 = pos;
-            fn_80147548(lbl_8026D230 + 0x155, &sp54, 0x64);
+            SeCue_PlayAtPos(gEventUiSeCues + 0x155, &sp54, 0x64);
         } else {
             tmp = *fn_800984FC(M2C_FIELD(arg0, void **, 0x38));
             if (tmp != NULL) {
@@ -778,55 +778,56 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
             case 1:
             case 3:
                 sp48 = pos;
-                fn_80147548(lbl_8026D230 + 0x16C, &sp48, 0x64);
+                SeCue_PlayAtPos(gEventUiSeCues + 0x16C, &sp48, 0x64);
                 break;
             case 0:
             case 2:
             case 8:
                 if (M2C_FIELD(arg0, u8 *, 0x41) & 1) {
                     sp3C = pos;
-                    fn_80147548(lbl_8026D230 + 0x183, &sp3C, 0x64);
+                    SeCue_PlayAtPos(gEventUiSeCues + 0x183, &sp3C, 0x64);
                 } else {
                     sp30 = pos;
-                    fn_80147548(lbl_8026D230 + 0x104, &sp30, 0x64);
+                    SeCue_PlayAtPos(gEventUiSeCues + 0x104, &sp30, 0x64);
                 }
                 break;
             default:
                 sp24 = pos;
-                fn_80147548(lbl_8026D230 + 0x104, &sp24, 0x64);
+                SeCue_PlayAtPos(gEventUiSeCues + 0x104, &sp24, 0x64);
                 break;
             }
         }
         pp = M2C_FIELD(arg0, void ***, 0x3C);
         if (get_280(pp) != NULL) {
-            fn_80184C7C(get_280(pp), 9, 2, 0);
-            fn_80184BE8(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
-            fn_80184688(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
+            pp = M2C_FIELD(arg0, void ***, 0x3C);
+            Mu_StartBlend(get_280(pp), 9, 2, 0);
+            Mu_StartTransfer(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
+            Mu_StartFlash(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
         }
         break;
     }
     if (flags & 0xFFC00000) {
         sp18 = pos;
-        fn_80147548(lbl_8026D230 + 0x196, &sp18, 0x64);
+        SeCue_PlayAtPos(gEventUiSeCues + 0x196, &sp18, 0x64);
     } else if (kind == 0x51) {
         spC = pos;
-        fn_80147548(lbl_8026D230 + 0x1AE, &spC, 0x64);
+        SeCue_PlayAtPos(gEventUiSeCues + 0x1AE, &spC, 0x64);
     }
     if (kind == 0x51) {
         fn_8018CFA4(0x3C, 6, 2, 0, arg0);
-        fn_80025624(lbl_80367240, 0x10);
+        fn_80025624(gPadInput, 0x10);
         fn_8017E2BC();
     } else {
         fn_8018CFA4(0xF, 6, 2, 0, arg0);
-        fn_80025624(lbl_80367240, 8);
+        fn_80025624(gPadInput, 8);
     }
     tmp = fn_80095934(M2C_FIELD(arg0, void **, 0x38), kind, flags);
     if (tmp != NULL) {
-        created = fn_80053C30(tmp, arg0);
+        created = Effect_Create(tmp, arg0);
         mode = M2C_FIELD(arg0, u8 *, 0x34);
         switch (mode) {
         case 1:
-            fn_800536B0(created, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
+            Effect_SetPos(created, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
             break;
         default:
             fn_800536CC(created, *M2C_FIELD(arg0, void ***, 0x38));
