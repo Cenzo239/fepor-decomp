@@ -468,6 +468,7 @@ config.libs = [
             Object(Matching, "dolphin/os/OSThread.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSThreadQueue.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSClearStack.c", mw_version="GC/1.2.5n"),
+            Object(NonMatching, "dolphin/os/OSGetTime.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSTime.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/dvd/dvdlow.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/dvd/dvdfs.c", mw_version="GC/1.2.5n"),
