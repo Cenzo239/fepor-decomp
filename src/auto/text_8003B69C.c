@@ -2121,6 +2121,8 @@ void Unit_OnZeroHp(void *unit) {
     void Unit_Clear(void *, s32);
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
+    u32 flags;
+    u8 *bs;
 
     if ((s8)((u8 *)unit)[0x1A8] != 0) {
         return;
@@ -2135,8 +2137,11 @@ void Unit_OnZeroHp(void *unit) {
     if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) == 0) {
         fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
         fn_800157DC(gUnitLists + 0x48, unit);
-        *(u32 *)((u8 *)unit + 0x1A0) |= 0x8000;
-        ((u8 *)unit)[0x234] = gBattleState[0x10];
+        flags = *(u32 *)((u8 *)unit + 0x1A0);
+        bs = gBattleState;
+        flags = flags | 0x8000U;
+        *(u32 *)((u8 *)unit + 0x1A0) = flags;
+        ((u8 *)unit)[0x234] = bs[0x10];
         fn_8003670C(unit);
         return;
     }
@@ -2644,9 +2649,9 @@ s32 fn_8003F47C(void *arg0)
 
 void fn_8005C7E8(void *);
 void fn_8003F670(void *arg0) {
-    u8 ok;
     s8 *ref;
     void *ptr;
+    u8 ok;
 
     ptr = arg0;
     ref = lbl_80366DC0;
