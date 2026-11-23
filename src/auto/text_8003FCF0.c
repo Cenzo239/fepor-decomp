@@ -1679,231 +1679,377 @@ void Map_LoadTerrain(void *arg0, char *arg1)
 }
 
 #pragma use_lmw_stmw on
-void fn_80042558(void *arg0) {
+void fn_80042558(void *arg0)
+{
     void fn_8005FEE8(void *, f32);
     void MapObj_FadeOut(void *, s32);
-    s32 Map_CollectLinkedObjs(void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     void MapObj_Hide(void *, s32);
+    s32 fn_8010FF88(void *);
+    void fn_80044450(void *, s32);
+    void Map_RefreshUnitMap(void *);
+    void fn_8012391C(void *);
+    void fn_800C1BDC(void);
+    void fn_800C1984(void);
+    void fn_8014716C(s32);
+    void fn_80067460(s32);
+    void fn_80066F64(void);
+    void *Light_GetChannel(s32);
+    void Light_CopyChannel(void *, void *);
+    void fn_8006720C(void *);
+    void fn_800675C8(s32);
+    void *Fog_GetColor(void);
+    void fn_80067480(void);
+    void fn_80016180(void);
+
     extern u8 gMapObjEventList[];
+    extern u8 gBattleMap[];
+    extern u8 gMapBlendMode;
     extern f32 lbl_80368F2C;
+    extern f32 lbl_80368EF4;
+    extern u8 lbl_80367294;
+    extern u8 lbl_80367295;
+    extern u8 lbl_80367298[3];
+    extern u8 lbl_8036729C[3];
+    extern u8 lbl_8036728C;
+    extern u8 lbl_8036728D;
+    extern u8 lbl_8036728E;
+    extern u8 lbl_80367290[3];
+
     u32 list[19];
     u8 *start = gMapObjEventList;
-    u8 *rec;
-    s32 foundCount = 0;
-    s8 x;
-    s8 y;
-    s32 i;
-    s32 k;
+    u8 *rec = start;
     u8 *ent;
     u8 *found;
-    u32 flags;
+    s32 eventIndex = 0;
     s32 count;
+    s32 i;
+    s32 k;
+    s32 x;
+    s32 y;
+    s32 tx;
+    s32 ty;
+    u32 flags;
 
-    rec = start;
-    while (rec[2] != 0) {
-        x = (s8) rec[0];
-        y = (s8) rec[1];
+    for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
+        x = (s8)rec[0];
+        y = (s8)rec[1];
         switch (rec[2] - 0x21) {
-            case 0:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if (flags & 0x410) {
-                        continue;
-                    }
-                    if ((flags & 0xA00) != 0xA00) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
+        case 0:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0xA00) != 0xA00) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
                 }
-                if (found == NULL) {
-                    break;
-                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
-                break;
-            case 1:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if ((flags & 0x1000) == 0) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
-                }
-                if (found == NULL) {
-                    break;
-                }
-                MapObj_FadeOut(found, 0);
-                break;
-            case 2:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if ((flags & 0x800) == 0) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
-                }
-                if (found == NULL) {
-                    break;
-                }
-                Map_CollectLinkedObjs(arg0, list);
-                break;
-            case 3:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if (flags & 0x410) {
-                        continue;
-                    }
-                    if ((flags & 0x800) == 0) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
-                }
-                if (found == NULL) {
-                    break;
-                }
-                count = Map_CollectLinkedObjs(arg0, list);
-                for (k = 0; k < count; k++) {
-                    MapObj_Hide((void *) list[k], 0);
-                }
-                break;
-            case 4:
-                break;
-            case 5:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if (flags & 0x410) {
-                        continue;
-                    }
-                    if ((flags & 0x200) == 0) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
-                }
-                if (found == NULL) {
-                    break;
-                }
-                fn_8005FEE8(found + 0x14, lbl_80368F2C);
-                break;
-            case 6:
-                found = NULL;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if (flags & 0x410) {
-                        continue;
-                    }
-                    if ((flags & 0xA00) != 0xA00) {
-                        continue;
-                    }
-                    if (x < (s8) M2C_FIELD(ent, u8 *, 4)) {
-                        continue;
-                    }
-                    if (x > (s8) M2C_FIELD(ent, u8 *, 6)) {
-                        continue;
-                    }
-                    if (y < (s8) M2C_FIELD(ent, u8 *, 5)) {
-                        continue;
-                    }
-                    if (y > (s8) M2C_FIELD(ent, u8 *, 7)) {
-                        continue;
-                    }
-                    found = ent;
-                    break;
-                }
-                if (found == NULL) {
-                    break;
-                }
-                M2C_FIELD(found, u8 *, 2) |= 1;
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            default:
-                break;
+            }
         }
-        rec += 3;
+            break;
+        case 1:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if ((flags & 0x1000) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                MapObj_FadeOut(found, 0);
+            }
+        }
+            break;
+        case 2:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if ((flags & 0x800) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found == 0) {
+                s32 direction;
+                for (direction = 0; direction < 4; direction++) {
+                    s32 dx = 0;
+                    s32 dy = 0;
+                    switch (direction) {
+                    case 0: dx = -1; break;
+                    case 1: dx = 1; break;
+                    case 2: dy = 1; break;
+                    case 3: dy = -1; break;
+                    }
+                    tx = x + dx;
+                    ty = y + dy;
+                    count = M2C_FIELD(arg0, s16 *, 6);
+                    for (i = count - 1; i >= 0; i--) {
+                        ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                        flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                        if ((flags & 0x800) == 0) continue;
+                        if (tx < (s8)ent[4] || tx > (s8)ent[6] ||
+                            ty < (s8)ent[5] || ty > (s8)ent[7]) {
+                            continue;
+                        }
+                        found = ent;
+                        break;
+                    }
+                    if (i < 0) found = 0;
+                    if (found != 0) break;
+                }
+            }
+            if (found != 0) {
+                count = Map_CollectLinkedObjs(arg0, found, list);
+                for (k = 0; k < count; k++) {
+                    MapObj_Hide((void *)list[k], 0);
+                }
+            }
+        }
+            break;
+        case 3:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0x800) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                count = Map_CollectLinkedObjs(arg0, found, list);
+                for (k = 0; k < count; k++) {
+                    MapObj_Hide((void *)list[k], 0);
+                }
+            }
+        }
+            break;
+        case 4:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0x200) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                fn_8005FEE8(found + 0x14, lbl_80368F2C);
+            }
+        }
+            break;
+        case 5:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0xA00) != 0xA00) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                found[2] |= 1;
+                count = M2C_FIELD(arg0, s16 *, 6);
+                for (i = count - 1; i >= 0; i--) {
+                    ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                    if ((flags & 0x20000) != 0x20000) continue;
+                    if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                        y < (s8)ent[5] || y > (s8)ent[7]) {
+                        continue;
+                    }
+                    found = ent;
+                    break;
+                }
+                if (i < 0) found = 0;
+                if (found != 0) {
+                    fn_8005FEE8(found + 0x14, lbl_80368F2C);
+                    found[2] &= ~1;
+                }
+            }
+        }
+            break;
+        case 6:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0x800) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                MapObj_Hide(found, 0);
+            }
+        }
+            break;
+        case 7:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if ((flags & 0x10000) != 0x10000) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                MapObj_Hide(found, 0);
+            }
+        }
+            break;
+        case 8:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0x200) == 0) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                fn_8005FEE8(found + 0x14, lbl_80368F2C);
+            }
+        }
+            break;
+        case 9:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if (flags & 0x410) continue;
+                if ((flags & 0x80000) != 0x80000) continue;
+                if (x < (s8)ent[4] || x > (s8)ent[6] ||
+                    y < (s8)ent[5] || y > (s8)ent[7]) {
+                    continue;
+                }
+                found = ent;
+                break;
+            }
+            if (i < 0) found = 0;
+            if (found != 0) {
+                found[2] |= 1;
+            }
+        }
+            break;
+        default:
+            break;
+        }
     }
+
+    fn_80044450(arg0, 1);
+    Map_RefreshUnitMap(gBattleMap);
+    fn_8012391C(M2C_FIELD(arg0, void **, 0x30));
+
+    if (M2C_FIELD(arg0, u8 *, 0x68) == 0) {
+        u8 validBlend = 1;
+        u8 tempMode;
+
+        fn_800C1BDC();
+        fn_800C1984();
+        tempMode = gMapBlendMode - 1;
+        if (tempMode > validBlend) validBlend = 0;
+        if (validBlend) {
+            fn_8014716C(1);
+        } else {
+            fn_8014716C(0);
+        }
+    }
+
+    fn_80067460(0);
+    fn_80066F64();
+    {
+        u8 *channel = Light_GetChannel(0);
+        *(f32 *)(channel + 0x24) = (f32)(s8)lbl_80367294;
+        *(f32 *)(channel + 0x28) = (f32)(s8)lbl_80367295;
+        channel[0] = lbl_8036729C[0];
+        channel[1] = lbl_8036729C[1];
+        channel[2] = lbl_8036729C[2];
+        channel[4] = lbl_80367298[0];
+        channel[5] = lbl_80367298[1];
+        channel[6] = lbl_80367298[2];
+    }
+    {
+        void *channel = Light_GetChannel(2);
+        Light_CopyChannel(Light_GetChannel(0), channel);
+    }
+    fn_8006720C((u8 *)arg0 + 0x70);
+    fn_800675C8(0);
+    {
+        u8 *fog = Fog_GetColor();
+        fn_80067480();
+        fog[0] = lbl_8036728C;
+        *(f32 *)(fog + 4) = (f32)(s8)lbl_8036728D *
+            M2C_FIELD(arg0, f32 *, 0x6C) * lbl_80368EF4;
+        *(f32 *)(fog + 8) = (f32)(s8)lbl_8036728E *
+            M2C_FIELD(arg0, f32 *, 0x6C) * lbl_80368EF4;
+        fog[1] = lbl_80367290[0];
+        fog[2] = lbl_80367290[1];
+        fog[3] = lbl_80367290[2];
+    }
+    fn_80016180();
 }
 #pragma use_lmw_stmw reset
 
@@ -4103,93 +4249,59 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     extern f32 lbl_80368F60;
     extern f32 lbl_80368F64;
     extern f32 lbl_80368F68;
-    struct Work {
-        f32 quat[4];
-        f32 corners[8][3];
-    } wk;
-    u8 bufF8[0x30];
-    u8 bufC8[0x30];
-    u8 buf98[0x30];
-    u8 buf68[0x30];
-    u8 buf38[0x30];
-    u8 buf8[0x30];
-    f32 *c1 = &wk.corners[1][0];
-    f32 *c2 = &wk.corners[2][0];
-    f32 *c3 = &wk.corners[3][0];
-    f32 *c4 = &wk.corners[4][0];
-    f32 *c5 = &wk.corners[5][0];
-    f32 *c6 = &wk.corners[6][0];
+    struct Work { f32 quat[4]; f32 corners[8][3]; } wk;
+    u8 bufF8[0x30], bufC8[0x30], buf98[0x30], buf68[0x30], buf38[0x30], buf8[0x30];
+    f32 *c1 = &wk.corners[1][0]; f32 *c2 = &wk.corners[2][0];
+    f32 *c3 = &wk.corners[3][0]; f32 *c4 = &wk.corners[4][0];
+    f32 *c5 = &wk.corners[5][0]; f32 *c6 = &wk.corners[6][0];
     f32 *c7 = &wk.corners[7][0];
     u8 *sub;
     u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
-    s32 i;
-    u8 *e;
-    u32 mask = 0x10040;
-    f32 minX;
-    f32 minY;
-    f32 maxX;
-    f32 maxY;
-    f32 x;
-    f32 y;
-    f32 *p;
-    s32 j;
-    u8 hit;
+    s32 i; u8 *e; u32 mask = 0x10040;
+    f32 x, y, minX, minY, maxX, maxY, *p, f2c; s32 j; u8 hit;
 
     for (i = arg1; i < arg2; i++, entry += 0xB4) {
         e = entry + 0x14;
         fn_80060638(e);
         sub = M2C_FIELD(entry, u8 **, 0x10);
         M2C_FIELD(entry, u8 *, 2) &= 0x7F;
-        if (M2C_FIELD(sub, u32 *, 0xBC) & mask) {
-            continue;
-        }
+        if (M2C_FIELD(sub, u32 *, 0xBC) & mask) continue;
         fn_8006049C(e);
         switch (M2C_FIELD(e, u32 *, 0xC)) {
-            case 0:
-                break;
+            case 0: break;
             case 1:
                 PSMTXRotRad(buf68, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
                 PSMTXRotRad(buf98, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
-                PSMTXRotRad(bufC8, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
-                break;
+                PSMTXRotRad(bufC8, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24)); break;
             case 2:
                 PSMTXRotRad(buf68, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
                 PSMTXRotRad(buf98, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
-                PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
-                break;
+                PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C)); break;
             case 3:
                 PSMTXRotRad(buf68, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
                 PSMTXRotRad(buf98, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
-                PSMTXRotRad(bufC8, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
-                break;
+                PSMTXRotRad(bufC8, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20)); break;
             case 4:
                 PSMTXRotRad(buf68, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
                 PSMTXRotRad(buf98, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
-                PSMTXRotRad(bufC8, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
-                break;
+                PSMTXRotRad(bufC8, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20)); break;
             case 5:
                 PSMTXRotRad(buf68, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
                 PSMTXRotRad(buf98, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
-                PSMTXRotRad(bufC8, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
-                break;
+                PSMTXRotRad(bufC8, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24)); break;
             case 6:
                 PSMTXRotRad(buf68, 0x5A, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x24));
                 PSMTXRotRad(buf98, 0x59, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x20));
-                PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
-                break;
+                PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C)); break;
             case 8:
                 PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
                 PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
                 QUATMtx(e + 0x10, buf68);
                 PSMTXConcat(buf68, buf8, bufF8);
                 PSMTXConcat(buf68, bufF8, bufF8);
-                PSMTXConcat(buf38, bufF8, bufF8);
-                goto checks;
-            case 7:
-                PSMTXCopy(e + 0x10, bufF8);
-                goto checks;
-            default:
-                goto checks;
+                PSMTXConcat(buf38, bufF8, bufF8); goto checks;
+            case 7: PSMTXCopy(e + 0x10, bufF8); goto checks;
+            default: goto checks;
         }
         Game_Assert(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
         PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
@@ -4198,203 +4310,73 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
         PSMTXConcat(buf98, bufF8, bufF8);
         PSMTXConcat(bufC8, bufF8, bufF8);
         PSMTXConcat(buf38, bufF8, bufF8);
-        wk.quat[0] = lbl_80368EE4;
-        wk.quat[1] = lbl_80368EE4;
-        wk.quat[2] = lbl_80368EE4;
-        wk.quat[3] = lbl_80368F10;
+        wk.quat[0] = lbl_80368EE4; wk.quat[1] = lbl_80368EE4;
+        wk.quat[2] = lbl_80368EE4; wk.quat[3] = lbl_80368F10;
         fn_80202C18(fn_80067FD0(), bufF8, bufF8);
 checks:
         wk.corners[0][0] = M2C_FIELD(sub, f32 *, 0xA4);
         wk.corners[0][1] = M2C_FIELD(sub, f32 *, 0xA8);
         wk.corners[0][2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, &wk.corners[0][0], &wk.corners[0][0]);
-        if (wk.corners[0][0] * wk.corners[0][0] < lbl_80368F5C && wk.corners[0][1] * wk.corners[0][1] < lbl_80368F60 &&
-            wk.corners[0][2] > lbl_80368F2C && wk.corners[0][2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c1[0] = M2C_FIELD(sub, f32 *, 0xB0);
-        c1[1] = M2C_FIELD(sub, f32 *, 0xA8);
-        c1[2] = M2C_FIELD(sub, f32 *, 0xAC);
+        if (wk.corners[0][0]*wk.corners[0][0] < lbl_80368F5C && wk.corners[0][1]*wk.corners[0][1] < lbl_80368F60 &&
+            wk.corners[0][2] > lbl_80368F2C && wk.corners[0][2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c1[0] = M2C_FIELD(sub, f32 *, 0xB0); c1[1] = M2C_FIELD(sub, f32 *, 0xA8); c1[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c1, c1);
-        if (c1[0] * c1[0] < lbl_80368F5C && c1[1] * c1[1] < lbl_80368F60 &&
-            c1[2] > lbl_80368F2C && c1[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c2[0] = M2C_FIELD(sub, f32 *, 0xB0);
-        c2[1] = M2C_FIELD(sub, f32 *, 0xB4);
-        c2[2] = M2C_FIELD(sub, f32 *, 0xAC);
+        if (c1[0]*c1[0] < lbl_80368F5C && c1[1]*c1[1] < lbl_80368F60 && c1[2] > lbl_80368F2C && c1[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c2[0] = M2C_FIELD(sub, f32 *, 0xB0); c2[1] = M2C_FIELD(sub, f32 *, 0xB4); c2[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c2, c2);
-        if (c2[0] * c2[0] < lbl_80368F5C && c2[1] * c2[1] < lbl_80368F60 &&
-            c2[2] > lbl_80368F2C && c2[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c3[0] = M2C_FIELD(sub, f32 *, 0xA4);
-        c3[1] = M2C_FIELD(sub, f32 *, 0xB4);
-        c3[2] = M2C_FIELD(sub, f32 *, 0xAC);
+        if (c2[0]*c2[0] < lbl_80368F5C && c2[1]*c2[1] < lbl_80368F60 && c2[2] > lbl_80368F2C && c2[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c3[0] = M2C_FIELD(sub, f32 *, 0xA4); c3[1] = M2C_FIELD(sub, f32 *, 0xB4); c3[2] = M2C_FIELD(sub, f32 *, 0xAC);
         fn_8020310C(bufF8, c3, c3);
-        if (c3[0] * c3[0] < lbl_80368F5C && c3[1] * c3[1] < lbl_80368F60 &&
-            c3[2] > lbl_80368F2C && c3[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c4[0] = M2C_FIELD(sub, f32 *, 0xA4);
-        c4[1] = M2C_FIELD(sub, f32 *, 0xA8);
-        c4[2] = M2C_FIELD(sub, f32 *, 0xB8);
+        if (c3[0]*c3[0] < lbl_80368F5C && c3[1]*c3[1] < lbl_80368F60 && c3[2] > lbl_80368F2C && c3[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c4[0] = M2C_FIELD(sub, f32 *, 0xA4); c4[1] = M2C_FIELD(sub, f32 *, 0xA8); c4[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c4, c4);
-        if (c4[0] * c4[0] < lbl_80368F5C && c4[1] * c4[1] < lbl_80368F60 &&
-            c4[2] > lbl_80368F2C && c4[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c5[0] = M2C_FIELD(sub, f32 *, 0xB0);
-        c5[1] = M2C_FIELD(sub, f32 *, 0xA8);
-        c5[2] = M2C_FIELD(sub, f32 *, 0xB8);
+        if (c4[0]*c4[0] < lbl_80368F5C && c4[1]*c4[1] < lbl_80368F60 && c4[2] > lbl_80368F2C && c4[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c5[0] = M2C_FIELD(sub, f32 *, 0xB0); c5[1] = M2C_FIELD(sub, f32 *, 0xA8); c5[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c5, c5);
-        if (c5[0] * c5[0] < lbl_80368F5C && c5[1] * c5[1] < lbl_80368F60 &&
-            c5[2] > lbl_80368F2C && c5[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c6[0] = M2C_FIELD(sub, f32 *, 0xB0);
-        c6[1] = M2C_FIELD(sub, f32 *, 0xB4);
-        c6[2] = M2C_FIELD(sub, f32 *, 0xB8);
+        if (c5[0]*c5[0] < lbl_80368F5C && c5[1]*c5[1] < lbl_80368F60 && c5[2] > lbl_80368F2C && c5[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c6[0] = M2C_FIELD(sub, f32 *, 0xB0); c6[1] = M2C_FIELD(sub, f32 *, 0xB4); c6[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c6, c6);
-        if (c6[0] * c6[0] < lbl_80368F5C && c6[1] * c6[1] < lbl_80368F60 &&
-            c6[2] > lbl_80368F2C && c6[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        c7[0] = M2C_FIELD(sub, f32 *, 0xA4);
-        c7[1] = M2C_FIELD(sub, f32 *, 0xB4);
-        c7[2] = M2C_FIELD(sub, f32 *, 0xB8);
+        if (c6[0]*c6[0] < lbl_80368F5C && c6[1]*c6[1] < lbl_80368F60 && c6[2] > lbl_80368F2C && c6[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        c7[0] = M2C_FIELD(sub, f32 *, 0xA4); c7[1] = M2C_FIELD(sub, f32 *, 0xB4); c7[2] = M2C_FIELD(sub, f32 *, 0xB8);
         fn_8020310C(bufF8, c7, c7);
-        if (c7[0] * c7[0] < lbl_80368F5C && c7[1] * c7[1] < lbl_80368F60 &&
-            c7[2] > lbl_80368F2C && c7[2] < lbl_80368EE4) {
-            hit = 0;
-        } else {
-            hit = 1;
-        }
-        if (!hit) {
-            continue;
-        }
-        if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) {
-            continue;
-        }
-        minX = lbl_80368F64;
-        minY = minX;
-        maxX = lbl_80368F68;
-        maxY = maxX;
+        if (c7[0]*c7[0] < lbl_80368F5C && c7[1]*c7[1] < lbl_80368F60 && c7[2] > lbl_80368F2C && c7[2] < lbl_80368EE4) hit = 0; else hit = 1;
+        if (!hit) continue;
+        if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) continue;
+        minX = lbl_80368F64; minY = minX; maxX = lbl_80368F68; maxY = maxX;
+        f2c = lbl_80368F2C;
         p = &wk.corners[0][0];
-        for (j = 0; j < 4; j++) {
-            x = p[0];
-            y = p[1];
-            if (p[2] > lbl_80368EE4) {
-                x *= lbl_80368F2C;
-                y *= lbl_80368F2C;
-            }
-            if (minX > x) {
-                minX = x;
-            }
-            if (minY > y) {
-                minY = y;
-            }
-            if (maxX < x) {
-                maxX = x;
-            }
-            if (maxY < y) {
-                maxY = y;
-            }
-            x = p[3];
-            y = p[4];
-            if (p[5] > lbl_80368EE4) {
-                x *= lbl_80368F2C;
-                y *= lbl_80368F2C;
-            }
-            if (minX > x) {
-                minX = x;
-            }
-            if (minY > y) {
-                minY = y;
-            }
-            if (maxX < x) {
-                maxX = x;
-            }
-            if (maxY < y) {
-                maxY = y;
-            }
-            p += 6;
+        for (j = 0; j < 4; j++, p += 6) {
+            x = p[0]; y = p[1];
+            if (p[2] > lbl_80368EE4) { x *= f2c; y *= f2c; }
+            if (minX > x) minX = x; if (minY > y) minY = y;
+            if (maxX < x) maxX = x; if (maxY < y) maxY = y;
+            x = p[3]; y = p[4];
+            if (p[5] > lbl_80368EE4) { x *= f2c; y *= f2c; }
+            if (minX > x) minX = x; if (minY > y) minY = y;
+            if (maxX < x) maxX = x; if (maxY < y) maxY = y;
         }
-        if (minX >= lbl_80368F2C) {
-            goto res2;
-        }
-        if (maxX <= lbl_80368F10) {
-            goto res2;
-        }
-        if (minY >= lbl_80368F2C) {
-            goto res2;
-        }
-        if (maxY > lbl_80368F10) {
-            continue;
-        }
-        if (minX * minX < lbl_80368F10 && minY * minY < lbl_80368F10) {
-            continue;
-        }
-        if (maxX * maxX < lbl_80368F10 && minY * minY < lbl_80368F10) {
-            continue;
-        }
-        if (maxX * maxX < lbl_80368F10 && maxY * maxY < lbl_80368F10) {
-            continue;
-        }
-        if (minX * minX < lbl_80368F10 && maxY * maxY < lbl_80368F10) {
-            continue;
-        }
+        if (!(minX < lbl_80368F2C)) goto res2;
+        if (!(maxX > lbl_80368F10)) goto res2;
+        if (!(minY < lbl_80368F2C)) goto res2;
+        if (maxY > lbl_80368F10) continue;
+        if (minX*minX < lbl_80368F10 && minY*minY < lbl_80368F10) continue;
+        if (maxX*maxX < lbl_80368F10 && minY*minY < lbl_80368F10) continue;
+        if (maxX*maxX < lbl_80368F10 && maxY*maxY < lbl_80368F10) continue;
+        if (minX*minX < lbl_80368F10 && maxY*maxY < lbl_80368F10) continue;
 res2:
-        if (minX < lbl_80368F2C && maxX > lbl_80368F10 && minY * minY < lbl_80368F10 && maxY * maxY < lbl_80368F10) {
-            continue;
-        }
-        if (minY >= lbl_80368F2C) {
-            continue;
-        }
-        if (maxY <= lbl_80368F10) {
-            continue;
-        }
-        if (minX * minX < lbl_80368F10) {
-            continue;
-        }
-        if (maxX * maxX < lbl_80368F10) {
-            continue;
-        }
+        if (minX < lbl_80368F2C && maxX > lbl_80368F10 && (minY*minY < lbl_80368F10 || maxY*maxY < lbl_80368F10)) continue;
+        if (!(minY < lbl_80368F2C)) continue;
+        if (!(maxY > lbl_80368F10)) continue;
+        if (minX*minX < lbl_80368F10) continue;
+        if (maxX*maxX < lbl_80368F10) continue;
         M2C_FIELD(entry, u8 *, 2) |= 0x80;
     }
 }

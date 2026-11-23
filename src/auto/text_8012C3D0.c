@@ -1832,25 +1832,28 @@ void Ui_DrawUnitListFill(void *panel, void *tex, f32 x, f32 y) {
 
 #pragma cplusplus on
 extern "C" void fn_8012F360(void *arg0) {
-    void fn_800075D8(void);
-    void fn_8000770C(f32, f32, f32, f32, f32, f32);
-    void fn_80007884(void);
-    void fn_80009B28(void);
-    void fn_80007898(s32);
-    void fn_80009B8C(s32);
-    void fn_80009B98(void);
-    void fn_80009D74(f32, f32, f32, f32);
-    void fn_80009F90(void *, s32, s32);
-    void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_ClearCallbacks(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_BindTexture(void *, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    void Prim2D_ResetState(void);
+    void Ui_DrawUnitListModels(void *);
+    void Ui_DrawUnitCountBanner(void *);
     void fn_8012EF5C(void *, void *, s32);
     void fn_8012F5CC(void *);
-    void fn_8012FA3C(void *);
-    void fn_8012FF60(void *);
-    extern f32 lbl_8036A500;
     void fn_801302F4(void *);
+    extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern f32 lbl_8036A510;
+    extern f32 lbl_8036A51C;
+    extern f32 lbl_8036A520;
+    extern f64 lbl_8036A4F0;
     struct Obj {
         u8 pad[0x4C];
         virtual void v0();
@@ -1870,32 +1873,32 @@ extern "C" void fn_8012F360(void *arg0) {
     s32 var_r29;
     s32 sp8;
 
-    fn_8012FF60(arg0);
+    Ui_DrawUnitListModels(arg0);
     var_r30 = arg0;
-    fn_8012FA3C(var_r30);
+    Ui_DrawUnitCountBanner(var_r30);
     fn_8012F5CC(var_r30);
-    fn_8000A258();
-    fn_80009D74(414.0f, 34.0f, lbl_8036A500, lbl_8036A50C);
-    fn_80009F90(*(void **)((u8 *)var_r30 + 0x40), 4, 0x11);
-    fn_80009B98();
-    fn_80009B8C(0xFF);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_SetTransform(lbl_8036A51C, lbl_8036A520, lbl_8036A500, lbl_8036A50C);
+    Prim2D_BindTexture(*(void **)((u8 *)var_r30 + 0x40), 4, 0x11);
+    Prim2D_ClearCallbacks();
+    Prim2D_SetColorByte(0xFF);
+    Prim2D_PrepareTex();
     {
         u8 digit_pair = *((u8 *)var_r30 + 0x66);
-        register void *item = ((void **)*(void **)((u8 *)var_r30 + 0x38))[digit_pair / 10];
+        void *item = ((void **)*(void **)((u8 *)var_r30 + 0x38))[digit_pair / 10];
         ((Obj *)item)->v6(digit_pair % 10, &sp8, &spC, &sp10, &sp14);
     }
     var_r31 = sp10 - sp8;
     var_r29 = sp14 - spC;
-    fn_80007898(1);
-    fn_8000770C((f32)((0x30 - var_r31) / 2), lbl_8036A510, (f32)sp8, (f32)spC, (f32)var_r31, (f32)var_r29);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRectUv((f32)((0x30 - var_r31) / 2), lbl_8036A510, (f32)sp8, (f32)spC, (f32)var_r31, (f32)var_r29);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
     var_r28 = 0;
     var_r31 = var_r28;
-    fn_80009B28();
+    Prim2D_ResetState();
     var_r29 = 0x38E38E39;
-    while (var_r28 < *((u8 *)var_r30 + 0x6D)) {
+    for (; var_r28 < *((u8 *)var_r30 + 0x6D); var_r31 += 4, var_r28 += 1) {
         s16 val = *(s16 *)((u8 *)var_r30 + 0x68);
         s32 quot = val / 288;
         s32 adj = quot;
@@ -1911,8 +1914,6 @@ extern "C" void fn_8012F360(void *arg0) {
         if (in_range != 0) {
             fn_8012EF5C(*(void **)((u8 *)*(void **)((u8 *)var_r30 + 0x38) + var_r31), var_r30, var_r28);
         }
-        var_r31 += 4;
-        var_r28 += 1;
     }
     fn_801302F4(var_r30);
     *((u8 *)var_r30 + 0x6E) += 1;
@@ -2541,16 +2542,17 @@ extern "C" void fn_801305F8(void *arg0) {
     s32 temp_r29;
     s32 var_r28;
     s32 var_r27;
-    s32 t18;
+    s32 factor;
     s32 result1;
     s32 other;
+    s32 w14;
+    s32 w18;
+    s32 t18;
     u8 digit;
-    s8 factor;
     void **table;
     Obj *item;
     Obj *item2;
     u8 tmp[0x24];
-    void *basep;
 
     var_r28 = 0;
     while (var_r28 < *((u8 *)arg0 + 0x61)) {
@@ -2559,10 +2561,9 @@ extern "C" void fn_801305F8(void *arg0) {
         while (var_r27 < (*((u8 *)arg0 + 0x61) - 1 - var_r28)) {
             temp_r29 = (var_r27 + 1) * 0x24;
             digit = *((u8 *)arg0 + 0x66);
-            basep = *(void **)((u8 *)arg0 + 0x3C);
             table = *(void ***)((u8 *)arg0 + 0x38);
             item = (Obj *)table[digit / 10];
-            result1 = item->v1((u8 *)basep + temp_r29, digit % 10);
+            result1 = item->v1((u8 *)*(void **)((u8 *)arg0 + 0x3C) + temp_r29, digit % 10);
             digit = *((u8 *)arg0 + 0x66);
             factor = (s8)*((u8 *)arg0 + 0x67);
             t18 = result1 * factor;
@@ -2586,8 +2587,10 @@ extern "C" void fn_801305F8(void *arg0) {
                 *(s32 *)&pa[8] = *(s32 *)&pb[8];
                 *(s32 *)&pa[0xC] = *(s32 *)&pb[0xC];
                 *(s32 *)&pa[0x10] = *(s32 *)&pb[0x10];
-                *(s32 *)&pa[0x14] = *(s32 *)&pb[0x14];
-                *(s32 *)&pa[0x18] = *(s32 *)&pb[0x18];
+                w18 = *(s32 *)&pb[0x18];
+                w14 = *(s32 *)&pb[0x14];
+                *(s32 *)&pa[0x14] = w14;
+                *(s32 *)&pa[0x18] = w18;
                 pa[0x1C] = pb[0x1C];
                 pa[0x1D] = pb[0x1D];
                 pa[0x1E] = pb[0x1E];
@@ -2596,6 +2599,7 @@ extern "C" void fn_801305F8(void *arg0) {
                 pa[0x21] = pb[0x21];
                 pa[0x22] = pb[0x22];
                 pa[0x23] = pb[0x23];
+                pb = (u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + temp_r29);
                 *(s32 *)&pb[0] = *(s32 *)&tmp[0];
                 *(s32 *)&pb[4] = *(s32 *)&tmp[4];
                 *(s32 *)&pb[8] = *(s32 *)&tmp[8];

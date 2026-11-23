@@ -147,36 +147,20 @@ void OSClearStack(u8 fill) {
     u32 pattern;
     u32 *sp;
     u32 *p;
+    u32 limit;
     u32 size;
-    u32 blocks;
 
     pattern = ((u32)fill << 24) | ((u32)fill << 16) |
               ((u32)fill << 8) | (u32)fill;
     sp = fn_80205B50();
+    limit = (u32)sp + 3;
     p = *(u32 **)((u8 *)*(void **)0x800000E4 + 0x308) + 1;
-    size = (((u32)sp + 3) - (u32)p) >> 2;
+    size = (limit - (u32)p) >> 2;
 
-    if ((u32)p < (u32)sp) {
-        blocks = size >> 3;
-        if (blocks != 0) {
-            do {
-                p[0] = pattern;
-                p[1] = pattern;
-                p[2] = pattern;
-                p[3] = pattern;
-                p[4] = pattern;
-                p[5] = pattern;
-                p[6] = pattern;
-                p[7] = pattern;
-                p += 8;
-            } while (--blocks != 0);
-        }
-
-        size &= 7;
-        if (size != 0) {
-            do {
-                *p++ = pattern;
-            } while (--size != 0);
+    if (p < sp) {
+        while (size) {
+            *p++ = pattern;
+            size--;
         }
     }
 }

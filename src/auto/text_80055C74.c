@@ -1393,6 +1393,7 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~2);
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
+#pragma use_lmw_stmw on
 void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     char *strcpy(char *, const char *);
@@ -1410,17 +1411,16 @@ void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 
     u8 *self;
     u8 *proc;
-    u8 *obj;
-    u8 *entry;
-    u8 *colorBytes;
     s32 nodes[2];
-    s32 *node;
     s32 i;
-    s32 index;
+    u8 *entry;
+    s32 *node;
+    u8 *obj;
     u32 color;
-    u16 start;
-    u16 count;
-    u16 capacity;
+    u8 *cp;
+    u8 t;
+    u8 b1;
+    u8 b2;
 
     self = (u8 *)arg0;
 
@@ -1451,106 +1451,66 @@ void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     );
 
     color = lbl_803690D0;
-    colorBytes = (u8 *)&color;
-
-    self[0x38] = colorBytes[0];
-    self[0x39] = colorBytes[1];
-    self[0x3A] = colorBytes[2];
-    self[0x3B] = colorBytes[3];
+    cp = (u8 *)&color;
+    t = cp[0];
+    self[0x38] = t;
+    t = cp[0];
+    b1 = cp[1];
+    b2 = cp[2];
+    self[0x39] = b1;
+    self[0x3A] = b2;
+    self[0x3B] = cp[3];
 
     self[0x3C] = self[0x38];
     self[0x3D] = self[0x39];
     self[0x3E] = self[0x3A];
     self[0x3F] = self[0x3B];
 
-    if (colorBytes[0] < 0x80 &&
-        colorBytes[1] < 0x80 &&
-        colorBytes[2] < 0x80) {
-
-        *(u16 *)(self + 0x54) =
-            *(u16 *)(self + 0x54) & ~1;
-
-        *(u16 *)(self + 0x54) =
-            *(u16 *)(self + 0x54) | 2;
+    if (t < 0x80 && b1 < 0x80 && b2 < 0x80) {
+        *(u16 *)(self + 0x54) = *(u16 *)(self + 0x54) & ~1;
+        *(u16 *)(self + 0x54) = *(u16 *)(self + 0x54) | 2;
     } else {
-        *(u16 *)(self + 0x54) =
-            *(u16 *)(self + 0x54) & ~2;
-
-        *(u16 *)(self + 0x54) =
-            *(u16 *)(self + 0x54) | 1;
+        *(u16 *)(self + 0x54) = *(u16 *)(self + 0x54) & ~2;
+        *(u16 *)(self + 0x54) = *(u16 *)(self + 0x54) | 1;
     }
 
-    proc = (u8 *)Process_Create(
-        lbl_80285B54,
-        4
-    );
-
+    proc = (u8 *)Process_Create(lbl_80285B54, 4);
     *(void **)(self + 0x30) = proc;
-
     proc = *(u8 **)(self + 0x30);
     *(void **)(proc + 0x30) = self;
 
     obj = *(u8 **)(proc + 0x30);
-
     if (obj[0x53] == 0) {
-        nodes[0] = GActor_FindNode(
-            *(s32 *)(obj + 0x34),
-            (s32)(obj + 0x56)
-        );
-
-        nodes[1] = GActor_FindNode(
-            *(s32 *)(obj + 0x34),
-            (s32)(obj + 0x5E)
-        );
-
+        nodes[0] = GActor_FindNode(*(s32 *)(obj + 0x34), (s32)(obj + 0x56));
+        nodes[1] = GActor_FindNode(*(s32 *)(obj + 0x34), (s32)(obj + 0x5E));
         if (nodes[0] >= 0 && nodes[1] >= 0) {
+            u16 capacity;
+            u16 count;
+            u16 start;
             start = *(u16 *)(obj + 0x48);
             count = *(u16 *)(obj + 0x4C);
             capacity = *(u16 *)(obj + 0x4E);
-
-            index = (start + count) % capacity;
-
-            entry = *(u8 **)(obj + 0x40) +
-                    index * 0x28;
-
-            if (count == capacity) {
-                *(u16 *)(obj + 0x48) =
-                    (start + 1) % capacity;
+            entry = *(u8 **)(obj + 0x40) + ((start + count) % capacity) * 0x28;
+            if ((unsigned)count == capacity) {
+                *(u16 *)(obj + 0x48) = (start + 1) % capacity;
             } else {
                 *(u16 *)(obj + 0x4C) = count + 1;
             }
-
             node = nodes;
             i = 0;
-
             do {
-                fn_80060F70(
-                    *(s32 *)(obj + 0x34),
-                    *node,
-                    entry
-                );
-
+                fn_80060F70(*(s32 *)(obj + 0x34), *node, entry);
                 i++;
-                node++;
                 entry += 0xC;
+                node++;
             } while (i < 2);
-
-            *(u16 *)(obj + 0x4A) =
-                *(u16 *)(obj + 0x4C) * obj[0x51];
+            *(u16 *)(obj + 0x4A) = *(u16 *)(obj + 0x4C) * obj[0x51];
         }
     }
 
     fn_800581A4(*(void **)(proc + 0x30));
-
-    fn_80067708(
-        2,
-        3,
-        fn_80058D84,
-        *(void **)(proc + 0x30)
-    );
+    fn_80067708(2, 3, fn_80058D84, *(void **)(proc + 0x30));
 }
-
-#pragma use_lmw_stmw on
 void fn_80058C6C(void *arg0) {
     s32 GActor_FindNode(s32, s32);
     void fn_80060F70(s32, s32, void *);
@@ -1808,7 +1768,7 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     extern f32 lbl_8036917C;
     f32 dx;
     f32 dy;
-    f32 turns;
+    f32 c;
 
     (void)lbl_80369118;
     dx = farg2 - farg0;
@@ -1824,19 +1784,19 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     if (dy < gF32_0) {
         dx += lbl_80369174;
     }
-    turns = (f32)(s32)(dx / lbl_8036917C);
-    dx = dx - lbl_8036917C * turns;
+    c = lbl_8036917C;
+    dx = dx - (f32)(s32)(dx / c) * c;
     return dx;
 }
 #pragma optimize_for_size reset
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
   extern f32 lbl_80369104;
-  extern f32 lbl_8036912C;
+  extern const f32 lbl_8036912C;
   extern f32 lbl_8036915C;
-  extern f64 lbl_80369160;
-  f32 temp_f10;
-  f32 temp_f12;
+  extern const f64 lbl_80369160;
   f32 temp_f6;
+  f32 temp_f12;
+  f32 temp_f10;
   temp_f12 = lbl_80369104 * farg4;
   temp_f10 = farg4 - lbl_8036912C;
   temp_f6 = lbl_8036912C - farg4;

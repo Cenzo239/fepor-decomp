@@ -1774,17 +1774,22 @@ s32 Rand_Range(s32 arg0)
   s32 t4;
   s32 s1;
   s32 s2;
-  s32 s0;
+  s32 sum;
   struct RandSt *st;
 
   st = &lbl_80367150;
-  s0 = lbl_80367150.a;
   s2 = st->c;
   s1 = st->b;
-  t4 = (s2 << 1) & 0xFFFE;
-  t6 = (u16) ((s0 >> 5) + (s1 << 11));
+  sum = (lbl_80367150.a >> 5) + (s1 << 11);
+  t4 = (s2 * 2) & 0xFFFE;
+  t6 = (u16) sum;
   st->c = t4;
- do { if (s1 & 0x8000) { st->c = 1 + t4; } t6 ^= st->c; st->c = st->b; st->b = lbl_80367150.a; } while (0);
+  if (s1 & 0x8000) {
+    st->c = t4 + 1;
+  }
+  t6 ^= st->c;
+  st->c = st->b;
+  st->b = lbl_80367150.a;
   lbl_80367150.a = t6;
   return (arg0 * ((u16) t6)) / 65536;
 }

@@ -1615,13 +1615,14 @@ void Item_Clear(void*);
 extern u8 gUiContext[];
 extern u8 gMapUiResult;
 extern u8 lbl_80312ACC[];
-s32 rowIndex;
 s32 col;
-u8 *other;
 u8 *entry;
+s32 rowIndex;
+u8 *other;
 s32 slot;
 u8 *base;
 u8 *self;
+u8 zero;
 self=arg0;
 if(self[0x43]==0) {
 gUiContext[8]=0x23;
@@ -1643,11 +1644,13 @@ gMapUiResult=5;
 }
 self[0x42]=2;
 base=lbl_80312ACC;
+rowIndex=0;
 *(u16*)(self+0x28)=4;
-for(rowIndex=0;rowIndex<2;++rowIndex,base+=0x80) {
+zero=0;
+for(;rowIndex<2;++rowIndex,base+=0x80) {
 for(col=0,entry=base;col<8;++col,entry+=0x10) {
 Item_Clear(entry+4);
-entry[0xC]=0;
+entry[0xC]=zero;
 }
 }
 }

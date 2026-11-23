@@ -2547,29 +2547,51 @@ void *fn_8003F224(void *arg0, s32 arg1) {
 
     ref = lbl_80366DC0;
     ptr = arg0;
-    if ((s8)((u8 *)ptr)[0x18] != ref[0]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x19] != ref[1]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) ok = 0;
-    else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) ok = 0;
-    else ok = 1;
-    if (ok == 0) {
+    if ((s8)((u8 *)ptr)[0x18] != ref[0]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x19] != ref[1]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) {
+        ok = 0;
+    } else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) {
+        ok = 0;
+    } else {
+        ok = 1;
+    }
+    if (!ok) {
         ptr = (u8 *)ptr - 0x20;
-        if ((s8)((u8 *)ptr)[0x18] != ref[0]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x19] != ref[1]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) ok = 0;
-        else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) ok = 0;
-        else ok = 1;
-        if (ok == 0) ptr = 0;
-    } else goto calc;
+        if ((s8)((u8 *)ptr)[0x18] != ref[0]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x19] != ref[1]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) {
+            ok = 0;
+        } else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (!ok) {
+            ptr = 0;
+        }
+    } else {
+        goto calc;
+    }
 calc:
     unk4 = *(u32 *)((u8 *)ptr + 4);
-    idx8 = arg1 << 3;
+    idx8 = arg1 * 8;
     unkC = *(u32 *)((u8 *)ptr + 0xC);
     unk4 &= ~3u;
     count = *(u32 *)((u8 *)ptr + 8);
@@ -2582,8 +2604,11 @@ calc:
     t = unk10 * 8;
     entry = (u32 *)((u8 *)base + idx8);
     result = (u8 *)base + unkC + t + entry[1];
-    for (ctr = count; ctr != 0; ctr--) {
-        if (entry[0] == *var_r7) return result;
+
+    for (ctr = count; ctr > 0; ctr--) {
+        if (entry[0] == *var_r7) {
+            return result;
+        }
         var_r7++;
     }
     return result;

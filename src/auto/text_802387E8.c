@@ -324,7 +324,7 @@ f64 fn_802387E8(f64 x) {
 
     m = ix0 >> 20;
     if (m == 0) {
-        u32 i;
+        s32 i;
         u32 a;
         s32 b;
         goto denorm_check;
@@ -346,8 +346,8 @@ f64 fn_802387E8(f64 x) {
         if ((ix0 & 0x100000) == 0) {
             goto denorm_bit_shift;
         }
-        a = 0x20 - i;
-        b = (s32)i - 1;
+        a = 32 - i;
+        b = i - 1;
         t = ix1 >> a;
         ix1 <<= i;
         m -= b;

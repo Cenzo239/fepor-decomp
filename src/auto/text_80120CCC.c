@@ -114,7 +114,7 @@ void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(vo
 u16 b;
 u16 a;
 u16 *p=&gUiPanelFlags;
-b=p[1]; a=gUiPanelFlags;
+a=gUiPanelFlags; b=p[1];
 gUiInputFlags |= 2;
 if(!(a&0x40)) {
 if((u32)Process_Find(gUiTooltipProc)!=0U) {
@@ -2763,12 +2763,17 @@ void fn_80125130(void *arg0) {
     s32 idx;
     f32 f0;
     f32 f1;
+    u8 t;
+    u8 *p;
+    s32 a;
+    s32 b;
 
     self = arg0;
     switch (M2C_FIELD(self, u8 *, 0x4C)) {
     case 6:
+        t = 1;
         f1 = lbl_8036A364;
-        M2C_FIELD(self, u8 *, 0x48) = 1;
+        M2C_FIELD(self, u8 *, 0x48) = t;
         f0 = lbl_8036A368;
         M2C_FIELD(self, f32 *, 0x38) = f1;
         M2C_FIELD(self, f32 *, 0x3C) = f0;
@@ -2776,12 +2781,16 @@ void fn_80125130(void *arg0) {
         break;
     case 5:
         M2C_FIELD(self, u8 *, 0x48) = 2;
+        p = lbl_80274F74;
         f1 = lbl_8036A36C;
-        f0 = lbl_8036A370;
         M2C_FIELD(self, f32 *, 0x38) = f1;
+        p += 0x94;
+        f0 = lbl_8036A370;
+        a = 0x32;
         M2C_FIELD(self, f32 *, 0x3C) = f0;
+        b = 1;
         M2C_FIELD(self, f32 *, 0x40) = f1;
-        Fx_AllocSlot(lbl_80274F74 + 0x94, 0x32, 1);
+        Fx_AllocSlot(p, a, b);
         break;
     case 7:
         M2C_FIELD(self, u8 *, 0x48) = 0x32;
@@ -2824,14 +2833,14 @@ void fn_80125130(void *arg0) {
     DCFlushRange(M2C_FIELD(arr, void **, 0), bytes);
     DCFlushRange(M2C_FIELD(arr, void **, 4), (M2C_FIELD(arr, s32 *, 0x18) + 1) * 4);
 
-    i = 0;
-    M2C_FIELD(arr, s32 *, 0x14) = i;
-    idx = i;
-    off = i;
+    off = 0;
+    M2C_FIELD(arr, s32 *, 0x14) = off;
+    i = off;
+    idx = off;
     while (i < M2C_FIELD(arr, s32 *, 0x18)) {
-        i += 1;
         *(void **)((u8 *)M2C_FIELD(arr, void **, 4) + idx) =
             (u8 *)M2C_FIELD(arr, void **, 0) + off;
+        i += 1;
         off += 0x20;
         idx += 4;
     }

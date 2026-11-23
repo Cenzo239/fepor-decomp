@@ -768,6 +768,7 @@ fn_80018B04();
 }
 
 #pragma use_lmw_stmw on
+#pragma global_optimizer off
 void fn_801EBBB8(void *arg0) {
     extern s32 gUiInputFlags;
     extern s8 lbl_803683B8;
@@ -785,23 +786,22 @@ void fn_801EBBB8(void *arg0) {
     void fn_8002F728(void *);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
     void *Process_Create(void *, void *);
-    void *Heap_Alloc(s32, void *);
+    void *Heap_Alloc(s32);
     void String_AssignCStr(void *, void *, s32);
-    void Ui_AddChild(void *, void *, s32);
+    void Ui_AddChild(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_80018B18(void *);
-    s32 strlen(void *);
-    u8 sp8[128];
+    s32 strlen(const char *);
+
     s32 count;
     u8 *p;
     s32 i;
-    void *temp_r4;
-    s32 temp_r5;
-    void *temp_r3_2;
     Unk5C *temp_r3;
+    s32 len;
+    u8 sp8[128];
 
     lbl_803683B8 = 0;
-    gUiInputFlags &= 0xFFFFFFFE;
+    gUiInputFlags &= ~1;
     count = fn_80106DC8(String_CStr((u8 *)arg0 + 0x40), sp8);
     fn_8002F728(gTargetList);
     p = sp8;
@@ -810,13 +810,13 @@ void fn_801EBBB8(void *arg0) {
         p += 2;
     }
 
-    M2C_FIELD(arg0, void **, 0x50) = Process_Create(lbl_8029A128, arg0);
-    temp_r4 = M2C_FIELD(arg0, void **, 0x50);
-    M2C_FIELD(temp_r4, u8 *, 0x2c) |= 4;
-    temp_r3 = (Unk5C *)Heap_Alloc(0x5c, temp_r4);
-    if (temp_r3 != NULL) {
+    *(void **)((u8 *)arg0 + 0x50) = Process_Create(lbl_8029A128, arg0);
+    *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x50) + 0x2c) |= 4;
+    temp_r3 = (Unk5C *)Heap_Alloc(0x5c);
+    if (temp_r3) {
         temp_r3->unk0 = lbl_8028FDB0;
         temp_r3->unk4 = NULL;
+        temp_r3->unk0 = lbl_80292230;
         temp_r3->unk8 = -1;
         temp_r3->unkA = 0;
         temp_r3->unkC = 0x190;
@@ -834,12 +834,12 @@ void fn_801EBBB8(void *arg0) {
         temp_r3->unk21 = 0xff;
         temp_r3->unk22 = 0x316;
         temp_r3->unk24 = 0;
-        temp_r3->unk28 = lbl_8036B780;
-        temp_r3->unk2C = lbl_8036B780;
-        temp_r3->unk30 = lbl_8036B780;
+        temp_r3->unk28 = 0.0f;
+        temp_r3->unk2C = 0.0f;
+        temp_r3->unk30 = 0.0f;
         temp_r3->unk34 = 0;
         temp_r3->unk38 = 0;
-        temp_r3->unk0 = lbl_80292230;
+        temp_r3->unk0 = lbl_80293C84;
         temp_r3->unk3C = 0;
         temp_r3->unk40 = 0;
         temp_r3->unk44 = 0;
@@ -850,30 +850,28 @@ void fn_801EBBB8(void *arg0) {
         temp_r3->unk50 = 0;
         temp_r3->unk52 = 0;
         temp_r3->unk54 = 0;
-        temp_r3->unk0 = lbl_80293C84;
+        temp_r3->unk0 = lbl_80293C58;
         temp_r3->unk58 = 1;
         temp_r3->unk4E = 0x30;
         temp_r3->unk52 = 0x30;
-        temp_r3->unk0 = lbl_80293C58;
         temp_r3->unk8 = -0x1000;
         temp_r3->unk48 = 1;
-        temp_r5 = strlen(lbl_8027EE08 + 0x147);
-        String_AssignCStr((u8 *)temp_r3 + 0x3c, lbl_8027EE08 + 0x147, temp_r5);
-        temp_r5 = temp_r3->unk34 | 0x10;
-        temp_r3->unk34 = temp_r5;
+        len = strlen((const char *)lbl_8027EE08 + 0x147);
+        String_AssignCStr(&temp_r3->unk3C, lbl_8027EE08 + 0x147, len);
+        temp_r3->unk34 |= 0x10;
         temp_r3->unk58 = 1;
-        Ui_AddChild(arg0, temp_r3, temp_r5);
+        Ui_AddChild(arg0, temp_r3);
     }
-    temp_r3_2 = Ui_FindChild(arg0, -0x1000, 0);
-    if (temp_r3_2 != NULL) {
-        M2C_FIELD(temp_r3_2, s32 *, 0x58) = 0;
+    {
+        Unk5C *child = (Unk5C *)Ui_FindChild(arg0, -0x1000, 0);
+        if (child) child->unk58 = 0;
     }
     gBattleState[0xa9] = 0;
     gBattleState[0xaa] = 0;
     *(u32 *)((u8 *)gBattleState + 0xb0) = 0;
     fn_80018B18(gBattleState);
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer on
 void fn_801EBE00(void *arg0) {
     s32 fn_8003FCCC();
     u8 fn_8005BA10();
@@ -999,6 +997,47 @@ s32 value=*(s8 *)((u8 *)arg1+0x60);
 s32 count=value;
 ((Obj *)arg0)->v29();
 fn_8008C1D8(0,0,0,count*((Obj *)*(void **)((u8 *)arg1+0x3C))->v20()+0x20,2);
+}
+
+extern "C" void fn_801EC02C(void *self, void *ctx)
+{
+    void Ui_DrawObjRouteIcon(void *, void *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32, f32);
+    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    extern f32 lbl_8036B788;
+    extern f32 lbl_8036B78C;
+    extern f32 lbl_8036B780;
+    extern f32 lbl_8036B790;
+
+    s32 scaled;
+    s32 heightOffset;
+    s32 width;
+    s16 top;
+    s16 value;
+
+    Ui_DrawObjRouteIcon(self, ctx);
+    ((void (*)(void *, void *))(*(void ***)((u8 *)self + 4))[31])(self, ctx);
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B788);
+    Prim2D_PrepareTex();
+
+    value = (s16)((s32 (*)(void *))(*(void ***)((u8 *)self + 4))[20])(self);
+    scaled = (s32)((f32)value * lbl_8036B78C);
+
+    heightOffset = Text_MeasureHeight(-1, lbl_8036B780) >> 1;
+
+    top = *(s16 *)((u8 *)ctx + 0x3A);
+    width = (s16)((s32 (*)(void *))(*(void ***)((u8 *)self + 4))[20])(self);
+
+    fn_8008AB7C(width >> 1, top + heightOffset, scaled, 0x17, 0xA, 0x28, 1);
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B790);
+    Prim2D_PrepareTex();
 }
 
 #pragma cplusplus on
@@ -1519,7 +1558,7 @@ void *AramCache_Find(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     void *fn_801ED12C(s32);
     void *AramCache_InsertFree(void *, void *);
     s32 fn_8000D598(s32);
@@ -1536,25 +1575,14 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern void *gAramFreeList;
     extern s32 gAramHeapSize;
     extern s32 gAramRequestCount;
-    s32 a4;
-    s32 a3;
-    s32 buf;
-    s32 path;
-    s32 flag;
-    s32 size;
+    u8 *flag;
     s32 i;
-    u8 *node;
     void *temp;
     void *next;
     void *prev;
     void *cell;
     void *name;
 
-    size = arg2;
-    path = arg0;
-    buf = arg1;
-    a3 = arg3;
-    a4 = arg4;
     if (gAramHeapSize < size) {
         return 0;
     }
@@ -1564,35 +1592,35 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     flag = 0;
     name = fn_80234200(path, 0x2F);
     if (name != 0 && Str_Cmp(name, lbl_8027F1D0 + 0x35) == 0) {
-        size = 0;
-        node = gAramSlotPool;
+        i = 0;
+        flag = gAramSlotPool;
         do {
-            if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
-                next = *(void **)(node + 0x60);
+            if ((flag[0x53] & 2) && *(s32 *)(flag + 0x64) != 0) {
+                next = *(void **)(flag + 0x60);
                 temp = gAramUsedList;
                 if (next != 0) {
-                    *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
+                    *(void **)((u8 *)next + 0x5C) = *(void **)(flag + 0x5C);
                 }
-                prev = *(void **)(node + 0x5C);
+                prev = *(void **)(flag + 0x5C);
                 if (prev != 0) {
-                    *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
+                    *(void **)((u8 *)prev + 0x60) = *(void **)(flag + 0x60);
                 } else {
-                    temp = *(void **)(node + 0x60);
+                    temp = *(void **)(flag + 0x60);
                 }
                 gAramUsedList = temp;
-                gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
+                gAramFreeList = AramCache_InsertFree(gAramFreeList, flag);
             }
-            size += 1;
-            node += 0x6C;
-        } while (size < 0x100);
-        flag = 2;
+            i += 1;
+            flag += 0x6C;
+        } while (i < 0x100);
+        flag = (u8 *)2;
         size = 0x180000;
     }
     cell = fn_801ED12C(size);
     if (cell == 0) {
         return 0;
     }
-    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | flag;
+    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | (s32)flag;
     {
         s32 id = gAramRequestCount;
         gAramRequestCount = id + 1;
@@ -1606,8 +1634,6 @@ s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ARQPostRequest(cell, 0, 0, 0, buf, *(s32 *)((u8 *)cell + 0x68), *(s32 *)((u8 *)cell + 0x64), &fn_801ED800);
     return 1;
 }
-#pragma use_lmw_stmw reset
-
 void fn_801ED12C(s32 arg0) {
     void fn_801EC7B8(void);
     void *AramCache_InsertFree(void *, void *);

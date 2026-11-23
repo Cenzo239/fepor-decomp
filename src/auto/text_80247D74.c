@@ -661,34 +661,28 @@ return first;
 }
 
 #pragma global_optimizer off
-s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pan, s32 arg7, u8 a8, u8 a9, u16 a10, u16 a11, s32 a12, u8 a13, u8 a14, s32 a15) {
+s32 fn_8024866C(u16 id, s32 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pan, s32 arg7, u8 a8, u8 a9, u16 a10, u16 a11, s32 a12, u8 a13, u8 a14, s32 a15) {
     s32 fn_802508E0(u16);
     u16 Sound_GetChanParam(u8, s32, u8);
     s32 Sound_RemapVoiceKey(s32, s32, u8, s32, s32 *);
     s32 fn_802482AC(u16, s16, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
     s32 fn_802555A0(u16, u8, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
-    u8 *table;
-    u8 *entry;
-    u8 *alt;
-    u8 *row;
-    u32 offset;
-    u32 low;
-    u8 original;
-    s32 note;
-    s32 flags;
-    s32 value;
-    s32 result;
-    u32 valid;
-    s32 status;
-    u16 sample;
     s16 v;
-    u16 save10;
-    u16 save11;
-    s32 save15;
+    u16 sample;
+    s32 status;
+    u32 valid;
+    s32 result;
+    s32 value;
+    s32 flags;
+    s32 note;
+    u8 original;
+    u8 *row;
+    u8 *alt;
+    u8 *entry;
+    u8 *table;
+    u32 low;
+    u32 offset;
 
-    save10 = a10;
-    save11 = a11;
-    save15 = a15;
     table = (u8 *)fn_802508E0(id);
     if (table != 0) {
         original = key;
@@ -736,9 +730,9 @@ s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pa
                         return -1;
                     if ((u32)(result + 0x10000) != 0xFFFF)
                         return result;
-                    return fn_802555A0(*(u16 *)entry, (u8)volume, arg2, arg3, (u8)(key | (original & 128)), arg5, pan, arg7, a8, a9, save10, save11, (u8)a12, a13, a14, save15);
+                    return fn_802555A0(*(u16 *)entry, (u8)volume, arg2, arg3, (u8)(key | (original & 128)), arg5, pan, arg7, a8, a9, a10, a11, (u8)a12, a13, a14, a15);
                 }
-                return fn_802482AC(sample, volume, arg2, arg3, (u8)(key | (original & 128)), arg5, pan, arg7, a8, a9, save10, save11, (u8)a12, a13, a14, save15);
+                return fn_802482AC(sample, (s16)volume, arg2, arg3, (u8)(key | (original & 128)), arg5, pan, arg7, a8, a9, a10, a11, (u8)a12, a13, a14, a15);
             }
         }
     }

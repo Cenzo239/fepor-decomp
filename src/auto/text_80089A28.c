@@ -1326,7 +1326,7 @@ void Ui_DrawRouteIconEx(s32 arg0, s32 arg1, u8 arg2) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     u32 OSGetTick(void);
-    f64 fn_802380D0(f64);
+    f64 fn_802380D0(f32);
     extern s32 gUiRouteAtlas;
     extern f64 lbl_803696E8;
     extern f64 lbl_803696F0;
@@ -1350,7 +1350,6 @@ void Ui_DrawRouteIconEx(s32 arg0, s32 arg1, u8 arg2) {
     u32 rem;
     s32 t1;
     s32 t2;
-    f32 sin_arg;
     f32 sin_res;
 
     if (arg2 == 0) {
@@ -1367,8 +1366,7 @@ void Ui_DrawRouteIconEx(s32 arg0, s32 arg1, u8 arg2) {
     }
     ms = OSGetTick() / ((*(u32 *)0x800000F8 >> 2) / 1000);
     rem = ms % 500;
-    sin_arg = lbl_80369728 * ((f32)rem / lbl_80369724);
-    sin_res = (f32)fn_802380D0(sin_arg);
+    sin_res = (f32)fn_802380D0(lbl_80369728 * ((f32)rem / lbl_80369724));
     temp_f31 = lbl_8036972C * (lbl_80369704 + sin_res);
     Ui_LoadAtlasTex(gUiRouteAtlas, sp2.buf, 0x13);
     sp2.x = GXGetTexObjWidth(sp2.buf);

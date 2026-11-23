@@ -424,7 +424,7 @@ void fn_80222F24(u32 arg0, u32 arg1)
 {
     u8 *source;
     u8 *dest;
-    u32 value;
+    register u32 value;
     u32 flags;
     u32 reg;
     u8 b0;
@@ -457,11 +457,10 @@ void fn_80222F24(u32 arg0, u32 arg1)
     reg = __rlwimi(reg, b1, 16, 15, 15);
     *(u32 *)(dest + 0xD8) = reg;
 
-    *(volatile u8 *)0xCC008000 = 0x61;
-    *(volatile u32 *)0xCC008000 = *(u32 *)(dest + 0xB8);
-
-    *(volatile u8 *)0xCC008000 = 0x61;
-    *(volatile u32 *)0xCC008000 = *(u32 *)(dest + 0xD8);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = *(u32 *)(dest + 0xB8);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = *(u32 *)(dest + 0xD8);
 
     *(u16 *)(gx + 2) = 0;
 }
@@ -832,12 +831,12 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
 {
     extern u8 lbl_8029E2E0[];
     u8 *table;
-    u32 *q;
     u32 *p;
+    u32 *q;
     u8 *gx;
     u8 *base;
-    u32 other;
     u32 value;
+    u32 other;
 
     table = lbl_8029E2E0;
 

@@ -940,10 +940,9 @@ void fn_8020D724(void) {
     void DVDLowStopMotor(void (*)(u32));
     void DCInvalidateRange(void *, u32);
 
-    u8 *base;
-    DVDReadyCommand *block;
-    base = (u8 *)BB2_80339F40;
+    
 
+    u8 *base=(u8*)BB2_80339F40;
     switch (CurrCommand_803685B4) {
     case 3:
         if (fn_8020F9E8(
@@ -952,8 +951,7 @@ void fn_8020D724(void) {
 
             memcpy(IDShouldBe_8036859C, (base + 0x20), 0x20);
 
-            block = (DVDReadyCommand *)executing_80368598;
-            block->state = 1;
+            ((DVDReadyCommand *)executing_80368598)->state = 1;
 
             DCInvalidateRange(base, 0x20);
 
@@ -2141,12 +2139,12 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
     case -1:
     case 0:
     case 10:
-        if (cb) {
+        if (cb != 0) {
             cb(0, block);
         }
         break;
     case 1:
-        if (lbl_803685B8) {
+        if (lbl_803685B8 != 0) {
             OSRestoreInterrupts(enabled);
             return 0;
         }
@@ -2164,12 +2162,12 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
         fn_8020F7F0(block);
         block->state = 10;
         cb = block->callback;
-        if (cb) {
+        if (cb != 0) {
             cb(-3, block);
         }
         cb = callback;
     case 3:
-        if (cb) {
+        if (cb != 0) {
             cb(0, block);
         }
         break;
@@ -2183,12 +2181,12 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
         case 5:
         case 13:
         case 15:
-            if (cb) {
+            if (cb != 0) {
                 cb(0, block);
             }
             break;
         default:
-            if (lbl_803685B8) {
+            if (lbl_803685B8 != 0) {
                 OSRestoreInterrupts(enabled);
                 return 0;
             }
@@ -2221,11 +2219,11 @@ s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *)) {
         executing_80368598 = DummyCommandBlock_80339F80;
         block->state = 10;
         cb = block->callback;
-        if (cb) {
+        if (cb != 0) {
             cb(-3, block);
         }
         cb = callback;
-        if (cb) {
+        if (cb != 0) {
             cb(0, block);
         }
         stateReady();
@@ -2844,7 +2842,7 @@ void fn_802100F4(u32 arg0) {
     tv = arg0 & 3;
     *(u32 *)0x800000CC = mode;
     tm = fn_8021004C(arg0);
-    regs = (volatile u16 *)(0xCC000000 + 0x2000);
+    regs = (volatile u16 *)0xCC002000;
     *++regs = 2;
     grit = 0;
     if (grit < 1000) {
@@ -2854,36 +2852,36 @@ void fn_802100F4(u32 arg0) {
     }
     *regs = 0;
     tmp = tm->unk1A;
-    *(volatile u16 *)(0xCC000000 + 0x2006) = tmp;
+    *(volatile u16 *)0xCC002006 = tmp;
     hi = tm->unk1D;
     lo = tm->unk1E;
-    *(volatile u16 *)(0xCC000000 + 0x2004) = lo | (hi << 8);
+    *(volatile u16 *)0xCC002004 = lo | (hi << 8);
     hi = tm->unk1F;
     lo = tm->unk1C;
-    *(volatile u16 *)(0xCC000000 + 0x200A) = lo | (hi << 7);
+    *(volatile u16 *)0xCC00200A = lo | (hi << 7);
     tmp = tm->unk20;
-    *(volatile u16 *)(0xCC000000 + 0x2008) = (tmp & 0x7FFF) << 1;
+    *(volatile u16 *)0xCC002008 = (tmp & 0x7FFF) << 1;
     tmp = tm->unk2;
     lo = tm->unk0;
     tmp = (tmp * 2) - 2;
-    *(volatile u16 *)(0xCC000000 + 0x2000) = lo;
-    *(volatile u16 *)(0xCC000000 + 0x200E) = tm->unk4 + tmp;
-    *(volatile u16 *)(0xCC000000 + 0x200C) = tm->unk8 + 2;
+    *(volatile u16 *)0xCC002000 = lo;
+    *(volatile u16 *)0xCC00200E = tm->unk4 + tmp;
+    *(volatile u16 *)0xCC00200C = tm->unk8 + 2;
     tmp = tm->unk2;
     tmp = (tmp * 2) - 2;
-    *(volatile u16 *)(0xCC000000 + 0x2012) = tm->unk6 + tmp;
-    *(volatile u16 *)(0xCC000000 + 0x2010) = tm->unkA + 2;
-    *(volatile u16 *)(0xCC000000 + 0x2016) = tm->unkC | (tm->unk10 << 5);
-    *(volatile u16 *)(0xCC000000 + 0x2014) = tm->unkE | (tm->unk14 << 5);
-    *(volatile u16 *)(0xCC000000 + 0x201A) = tm->unkD | (tm->unk12 << 5);
-    *(volatile u16 *)(0xCC000000 + 0x2018) = tm->unkF | (tm->unk16 << 5);
-    *(volatile u16 *)(0xCC000000 + 0x2048) = 0x2828;
-    *(volatile u16 *)(0xCC000000 + 0x2036) = 1;
-    *(volatile u16 *)(0xCC000000 + 0x2034) = 0x1001;
+    *(volatile u16 *)0xCC002012 = tm->unk6 + tmp;
+    *(volatile u16 *)0xCC002010 = tm->unkA + 2;
+    *(volatile u16 *)0xCC002016 = tm->unkC | (tm->unk10 << 5);
+    *(volatile u16 *)0xCC002014 = tm->unkE | (tm->unk14 << 5);
+    *(volatile u16 *)0xCC00201A = tm->unkD | (tm->unk12 << 5);
+    *(volatile u16 *)0xCC002018 = tm->unkF | (tm->unk16 << 5);
+    *(volatile u16 *)0xCC002048 = 0x2828;
+    *(volatile u16 *)0xCC002036 = 1;
+    *(volatile u16 *)0xCC002034 = 0x1001;
     tmp = tm->unk18;
     tmp2 = tm->unk1A;
-    *(volatile u16 *)(0xCC000000 + 0x2032) = tmp2 + 1;
-    *(volatile u16 *)(0xCC000000 + 0x2030) = ((s16)tmp / 2 + 1) | 0x1000;
+    *(volatile u16 *)0xCC002032 = tmp2 + 1;
+    *(volatile u16 *)0xCC002030 = ((s16)tmp / 2 + 1) | 0x1000;
     if ((s32)mode < 4) {
         if ((s32)mode >= 1) {
             val = mode;
@@ -2895,10 +2893,10 @@ void fn_802100F4(u32 arg0) {
     }
     if (tv <= 1) {
         *regs = (u16)((((tv & 1) << 2) | 1) | (val << 8));
-        *(volatile u16 *)(0xCC000000 + 0x206C) = 0;
+        *(volatile u16 *)0xCC00206C = 0;
     } else {
         *regs = (u16)((val << 8) | 5);
-        *(volatile u16 *)(0xCC000000 + 0x206C) = 1;
+        *(volatile u16 *)0xCC00206C = 1;
     }
 }
 
@@ -3619,77 +3617,77 @@ s32 fn_802118D8(void) {
 void fn_80211914(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern u16 *lbl_80368648;
     extern u8 lbl_8033A158[];
-    s32 temp_r7;
-    u16 temp_r8;
-    u32 temp_r10;
+    u16 *r9;
     u32 mode;
     u32 var_r0;
-    u16 *r9;
+    u16 temp_r10;
+    u32 temp_r8;
+    s32 temp_r7;
 
     r9 = lbl_80368648;
-    var_r0 = ((u32)(arg1 - 1) * 2) + ((u32)(arg0 - 1) / (u32)*(u16 *)((u8 *)r9 + 0x1a));
+    var_r0 = ((arg1 - 1) * 2) + ((u32)(arg0 - 1) / *(u16 *)((u8 *)r9 + 0x1a));
     mode = *(u32 *)(lbl_8033A158 + 0x24);
 
-    if (mode == 0) {
+    if (mode == 0U) {
         temp_r10 = *(u16 *)((u8 *)r9 + 0x18);
-        if (var_r0 < temp_r10) {
+        if (var_r0 < (u32)temp_r10) {
             temp_r8 = *(u16 *)((u8 *)r9 + 4);
             temp_r7 = *(u8 *)r9 * 3;
-            if (var_r0 < (u32)temp_r8 + temp_r7) {
+            if (var_r0 < (u32)(temp_r8 + temp_r7)) {
                 *(s16 *)arg3 = -1;
-            } else if (var_r0 >= temp_r10 - *(u16 *)((u8 *)r9 + 8)) {
+            } else if (var_r0 >= (u32)(temp_r10 - *(u16 *)((u8 *)r9 + 8))) {
                 *(s16 *)arg3 = -1;
             } else {
-                *(s16 *)arg3 = (var_r0 - temp_r7 - temp_r8) & ~1;
+                *(s16 *)arg3 = ((var_r0 - temp_r7) - temp_r8) & ~1;
             }
         } else {
-            var_r0 = var_r0 - temp_r10;
+            var_r0 -= temp_r10;
             temp_r8 = *(u16 *)((u8 *)r9 + 6);
             temp_r7 = *(u8 *)r9 * 3;
-            if (var_r0 < (u32)temp_r8 + temp_r7) {
+            if (var_r0 < (u32)(temp_r8 + temp_r7)) {
                 *(s16 *)arg3 = -1;
-            } else if (var_r0 >= temp_r10 - *(u16 *)((u8 *)r9 + 0xa)) {
+            } else if (var_r0 >= (u32)(temp_r10 - *(u16 *)((u8 *)r9 + 0xa))) {
                 *(s16 *)arg3 = -1;
             } else {
-                *(s16 *)arg3 = ((var_r0 - temp_r7 - temp_r8) & ~1) + 1;
+                *(s16 *)arg3 = (((var_r0 - temp_r7) - temp_r8) & ~1) + 1;
             }
         }
-    } else if (mode == 1) {
+    } else if (mode == 1U) {
         temp_r10 = *(u16 *)((u8 *)r9 + 0x18);
-        if (var_r0 >= temp_r10) {
-            var_r0 = var_r0 - temp_r10;
+        if (var_r0 >= (u32)temp_r10) {
+            var_r0 -= temp_r10;
         }
         temp_r8 = *(u16 *)((u8 *)r9 + 4);
         temp_r7 = *(u8 *)r9 * 3;
-        if (var_r0 < (u32)temp_r8 + temp_r7) {
+        if (var_r0 < (u32)(temp_r8 + temp_r7)) {
             *(s16 *)arg3 = -1;
-        } else if (var_r0 >= temp_r10 - *(u16 *)((u8 *)r9 + 8)) {
+        } else if (var_r0 >= (u32)(temp_r10 - *(u16 *)((u8 *)r9 + 8))) {
             *(s16 *)arg3 = -1;
         } else {
-            *(s16 *)arg3 = (var_r0 - temp_r7 - temp_r8) & ~1;
+            *(s16 *)arg3 = ((var_r0 - temp_r7) - temp_r8) & ~1;
         }
-    } else if (mode == 2) {
+    } else if (mode == 2U) {
         temp_r10 = *(u16 *)((u8 *)r9 + 0x18);
-        if (var_r0 < temp_r10) {
+        if (var_r0 < (u32)temp_r10) {
             temp_r8 = *(u16 *)((u8 *)r9 + 4);
             temp_r7 = *(u8 *)r9 * 3;
-            if (var_r0 < (u32)temp_r8 + temp_r7) {
+            if (var_r0 < (u32)(temp_r8 + temp_r7)) {
                 *(s16 *)arg3 = -1;
-            } else if (var_r0 >= temp_r10 - *(u16 *)((u8 *)r9 + 8)) {
+            } else if (var_r0 >= (u32)(temp_r10 - *(u16 *)((u8 *)r9 + 8))) {
                 *(s16 *)arg3 = -1;
             } else {
-                *(s16 *)arg3 = var_r0 - temp_r7 - temp_r8;
+                *(s16 *)arg3 = (var_r0 - temp_r7) - temp_r8;
             }
         } else {
-            var_r0 = var_r0 - temp_r10;
+            var_r0 -= temp_r10;
             temp_r8 = *(u16 *)((u8 *)r9 + 6);
             temp_r7 = *(u8 *)r9 * 3;
-            if (var_r0 < (u32)temp_r8 + temp_r7) {
+            if (var_r0 < (u32)(temp_r8 + temp_r7)) {
                 *(s16 *)arg3 = -1;
-            } else if (var_r0 >= temp_r10 - *(u16 *)((u8 *)r9 + 0xa)) {
+            } else if (var_r0 >= (u32)(temp_r10 - *(u16 *)((u8 *)r9 + 0xa))) {
                 *(s16 *)arg3 = -1;
             } else {
-                *(s16 *)arg3 = (var_r0 - temp_r7 - temp_r8) & ~1;
+                *(s16 *)arg3 = ((var_r0 - temp_r7) - temp_r8) & ~1;
             }
         }
     }

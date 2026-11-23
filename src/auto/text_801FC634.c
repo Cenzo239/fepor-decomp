@@ -1359,11 +1359,6 @@ void fn_801FF3AC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
-    extern u8 lbl_80330D68[];
-    u8 fn_80166D8C(void *);
-    void fn_801673D0(void *);
-    void *fn_8000B908(u8);
-    void fn_80024B6C(void);
     struct Handler {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -1376,19 +1371,23 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
         virtual void v8() = 0;
         virtual void v9(void *, void *) = 0;
     };
+    u8 Ui_IsUnitInfoPopupOpen(void *);
+    void Ui_HideUnitInfoPopup(void *);
+    void *GfxEnt_Get(s32);
+    void fn_80024B6C(void);
+    extern u8 gUnitInfoPopup[];
     u32 v;
     void *entry;
     u8 *a1;
 
-    v = *(u32 *)((u8 *)arg0 + 0x28) + 1;
-    *(u32 *)((u8 *)arg0 + 0x28) = v;
+    v = ++*(u32 *)((u8 *)arg0 + 0x28);
     if (v < *(u32 *)((u8 *)arg0 + 0x2C)) {
         return;
     }
-    if (fn_80166D8C(lbl_80330D68) != 0) {
-        fn_801673D0(lbl_80330D68);
+    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+        Ui_HideUnitInfoPopup(gUnitInfoPopup);
         a1 = (u8 *)arg1;
-        entry = fn_8000B908(a1[0x40 + (s8)a1[0x62]]);
+        entry = GfxEnt_Get(a1[0x40 + (s8)a1[0x62]]);
         (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
         return;
     }
@@ -2574,6 +2573,7 @@ extern "C" void fn_80201778(void *arg0) {
     };
 
     typedef struct { u32 size; u32 cap; char *data; } String;
+    struct Icons { u8 pad[0xB6]; u8 icon; };
 
     String sp8;
     f64 xf;
@@ -2581,8 +2581,8 @@ extern "C" void fn_80201778(void *arg0) {
     s8 *var_r29;
     u8 var_r28;
     u32 obj;
-    s8 *var_r30;
-    u8 *var_r31;
+    u8 *endPtr;
+    struct Icons *icons;
 
     obj = (u32)arg0;
     ((Obj *)obj)->v39();
@@ -2594,8 +2594,7 @@ extern "C" void fn_80201778(void *arg0) {
         var_f30 = lbl_8036BC0C;
         var_r29 = (s8 *)fn_8013CD90((void *)obj);
         xf = lbl_8036BC10;
-        var_r30 = 0;
-        var_r31 = lbl_802820B8;
+        icons = (struct Icons *)lbl_802820B8;
         for (;;) {
             var_r28 = 0;
             sp8.cap = 0;
@@ -2610,15 +2609,15 @@ extern "C" void fn_80201778(void *arg0) {
                     var_r28 = 1;
                     break;
                 default:
-                    var_r30 = fn_80104970(var_r29);
-                    while (var_r30 != var_r29) {
+                    endPtr = (u8 *)fn_80104970(var_r29);
+                    while ((s8 *)endPtr != var_r29) {
                         fn_800C9874(&sp8, 1, (s8)*var_r29);
                         var_r29++;
                     }
                     break;
                 }
             }
-            Text_Draw((s32)xf, (s32)var_f30, 1, var_r31 + 0xB6, String_CStr(&sp8));
+            Text_Draw((s32)xf, (s32)var_f30, 1, &icons->icon, String_CStr(&sp8));
             if (*var_r29 == 0xA) {
                 var_f30 += (f32)Text_MeasureHeight(-1, lbl_8036BBD8);
                 String_Destroy(&sp8, -1);

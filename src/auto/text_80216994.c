@@ -2911,11 +2911,11 @@ done:;
 
 #pragma use_lmw_stmw on
 s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callback) {
-    s32 fn_80217B18(s32, s32 *);
-    s32 __CARDPutControlBlock(void *, s32);
-    void *__CARDGetFatBlock(void *);
+    s32 fn_80217B18(s32, CardCtrl **);
+    s32 __CARDPutControlBlock(CardCtrl *, s32);
+    void *__CARDGetFatBlock(CardCtrl *);
     s32 fn_802193FC(s32, u32, void *);
-    u8 *__CARDGetDirBlock(s32);
+    u8 *__CARDGetDirBlock(CardCtrl *);
     s32 fn_8021BA9C(u8 *, char *);
     s32 fn_80231944(u8 *, void *, s32);
     void Str_CopyPad(u8 *, char *, s32);
@@ -2923,7 +2923,7 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
     extern void fn_80216994(void);
     extern void fn_8021C088(void);
 
-    s32 card;
+    CardCtrl *card;
     u8 *dir;
     u8 *ent;
     u16 freeIdx;
@@ -2941,7 +2941,7 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
         return result;
     }
     if (size != 0) {
-        if ((size % *(u32 *)((u8 *)card + 0xC)) != 0) {
+        if ((size % card->sectorSize) != 0) {
             return -0x80;
         }
     }
@@ -2953,39 +2953,38 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
             if (freeIdx == 0xFFFF) {
                 freeIdx = i;
             }
-        } else if (fn_80231944(ent, *(void **)((u8 *)card + 0x10C), 4) == 0
-            && fn_80231944(ent + 4, (u8 *)*(void **)((u8 *)card + 0x10C) + 4, 2) == 0
+        } else if (fn_80231944(ent, card->diskID, 4) == 0
+            && fn_80231944(ent + 4, (u8 *)card->diskID + 4, 2) == 0
             && fn_8021BA9C(ent, name) != 0) {
-            return __CARDPutControlBlock((void *)card, -7);
+            return __CARDPutControlBlock(card, -7);
         }
     }
     if (freeIdx == 0xFFFF) {
-        return __CARDPutControlBlock((void *)card, -8);
+        return __CARDPutControlBlock(card, -8);
     }
-    stat = __CARDGetFatBlock((void *)card);
-    if ((u32)(*(u32 *)((u8 *)card + 0xC) * *(u16 *)((u8 *)stat + 6)) < size) {
-        return __CARDPutControlBlock((void *)card, -9);
+    stat = __CARDGetFatBlock(card);
+    if ((u32)(card->sectorSize * *(u16 *)((u8 *)stat + 6)) < size) {
+        return __CARDPutControlBlock(card, -9);
     }
     if (callback != NULL) {
         cb = callback;
     } else {
         cb = fn_80216994;
     }
-    *(void **)((u8 *)card + 0xD0) = cb;
+    card->apiCb = cb;
     slot = dir + (freeIdx << 6);
-    *(u16 *)((u8 *)card + 0xBC) = freeIdx;
-    *(u16 *)(slot + 0x38) = (u16)(size / *(u32 *)((u8 *)card + 0xC));
+    card->fileNo = freeIdx;
+    *(u16 *)(slot + 0x38) = (u16)(size / card->sectorSize);
     Str_CopyPad(slot + 8, name, 0x20);
-    *(void **)((u8 *)card + 0xC0) = fileInfo;
+    card->apiFd = fileInfo;
     *(s32 *)fileInfo = chan;
     *(u32 *)((u8 *)fileInfo + 4) = freeIdx;
-    result = fn_802193FC(chan, size / *(u32 *)((u8 *)card + 0xC), fn_8021C088);
+    result = fn_802193FC(chan, size / card->sectorSize, fn_8021C088);
     if (result < 0) {
-        return __CARDPutControlBlock((void *)card, result);
+        return __CARDPutControlBlock(card, result);
     }
     return result;
 }
-#pragma use_lmw_stmw reset
 
 s32 fn_8021C3D8(s32 chan, char *name, u32 size, void *fileInfo) {
  s32 fn_80217C64(s32);

@@ -1395,9 +1395,9 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     }
     Prim2D_PrepareTex();
     temp_r26 = ((Obj *)obj)->v14();
-    f30 = (f32)((temp_r25 % ((Obj *)obj)->v12()) * temp_r26);
+    f30 = (f32)(temp_r26 * (temp_r25 % ((Obj *)obj)->v12()));
     temp_r26 = ((Obj *)obj)->v15();
-    f29 = (f32)((temp_r25 / ((Obj *)obj)->v12()) * temp_r26);
+    f29 = (f32)(temp_r26 * (temp_r25 / ((Obj *)obj)->v12()));
     Prim2D_AddPrim(1);
     f31 = (f32)((Obj *)obj)->v15();
     Prim2D_SetRectUv((f32)var_r28, (f32)var_r29, f30, f29, (f32)((Obj *)obj)->v14(), f31);
@@ -1735,125 +1735,153 @@ void fn_80144B5C(void) {
 
 }
 
-void fn_80144B60(s32 *arg0, u8 *arg1) {
-    typedef struct {
-        u8 pad[0xe];
-        u16 key;
-    } KeyObj;
-    typedef struct {
-        KeyObj *obj;
-        u8 unk4;
-    } Entry;
-    typedef struct Node {
-        struct Node *prev;
-        struct Node *next;
-        Entry *val;
-    } Node;
-    typedef struct {
-        s32 count;
-        Node *prev;
-        Node *next;
-    } SortList;
-
-    void fn_8014510C(void *);
-    void fn_80144F78(s32 *, s32 *, u8 *);
-    void Heap_Free(void *);
-
-    SortList other;
-    struct { u8 value; } sp10, spC, sp8;
-    void **p;
-    void *tmp;
-    void *tmp2;
-    Entry *a;
-    Entry *b;
-    Node *first;
-    Node *second;
-    Node *node;
-    Node *last;
-    Node *sentinel;
-    s32 temp_r0;
-    u32 half;
-    u32 n;
-    u8 less;
-    u8 key;
-
-    temp_r0 = arg0[0];
-    switch (temp_r0) {
+void fn_80144B60(s32 *arg0, u8 *arg1)
+{
+  typedef struct 
+  {
+    u8 pad[0xe];
+    u16 key;
+  } KeyObj;
+  typedef struct 
+  {
+    KeyObj *obj;
+    u8 unk4;
+  } Entry;
+  typedef struct Node
+  {
+    struct Node *prev;
+    struct Node *next;
+    Entry *val;
+  } Node;
+  typedef struct 
+  {
+    s32 count;
+    Node *prev;
+    Node *next;
+  } SortList;
+  void fn_8014510C(void *);
+  void fn_80144F78(s32 *, s32 *, u8 *);
+  void Heap_Free(void *);
+  SortList other;
+  struct _PermuterAnon1
+  {
+    u8 value;
+  } sp10;
+  struct _PermuterAnon1 spC;
+  struct _PermuterAnon1 sp8;
+  void **p;
+  void *tmp2;
+  void *tmp;
+  Entry *a;
+  Entry *b;
+  Node *first;
+  Node *second;
+  Node *node;
+  Node *last;
+  Node *sentinel;
+  s32 temp_r0;
+  u32 half;
+  u32 n;
+  u8 less;
+  temp_r0 = arg0[0];
+  switch (temp_r0)
+  {
     case 0:
+
     case 1:
-        break;
+      break;
+
     case 2:
-        first = (Node *)arg0[2];
-        second = first->next;
-        a = first->val;
-        b = second->val;
-        if (a->obj->key == b->obj->key) {
-            if (a->unk4 != b->unk4) {
-                less = b->unk4 < a->unk4;
-            } else {
-                less = (u32)b < (u32)a;
-            }
-        } else {
-            less = b->obj->key < a->obj->key;
+      first = (Node *) arg0[2];
+      second = first->next;
+      a = first->val;
+      b = second->val;
+      if (a->obj->key == b->obj->key)
+    {
+      if (a->unk4 != b->unk4)
+      {
+        do
+        {
+          less = b->unk4 < a->unk4;
         }
-        if (less) {
-            p = (void **)arg0[2];
-            tmp = p[0];
-            tmp2 = p[1];
-            p[0] = tmp2;
-            p[1] = tmp;
-            p = (void **)second;
-            tmp = p[0];
-            tmp2 = p[1];
-            p[0] = tmp2;
-            p[1] = tmp;
-            tmp = (void *)arg0[1];
-            arg0[1] = arg0[2];
-            arg0[2] = (s32)tmp;
-        }
-        break;
-    default:
-        half = (u32)temp_r0 >> 1;
-        node = (Node *)arg0[2];
-        for (n = half; n != 0; --n) {
-            node = node->next;
-        }
-        fn_8014510C(&other);
-        sentinel = (Node *)&other.prev;
-        last = (Node *)arg0[1];
-        tmp = node->prev;
-        tmp2 = *(void **)((u8 *)last + 4);
-        key = *arg1;
-        *(void **)((u8 *)tmp + 4) = tmp2;
-        tmp = node->prev;
-        tmp2 = *(void **)((u8 *)last + 4);
-        *(void **)tmp2 = tmp;
-        other.prev->next = node;
-        node->prev = other.prev;
-        other.prev = last;
-        last->next = sentinel;
-        other.count = arg0[0] - (s32)half;
-        arg0[0] = (s32)half;
-        sp10.value = key;
-        fn_80144B60(arg0, &sp10.value);
-        spC.value = *arg1;
-        fn_80144B60(&other.count, &spC.value);
-        sp8.value = *arg1;
-        fn_80144F78(arg0, &other.count, &sp8.value);
-        node = other.next;
-        if (node != sentinel) {
-            last = other.prev;
-            node->prev->next = last->next;
-            last->next->prev = node->prev;
-            while (node != sentinel) {
-                tmp = node;
-                node = node->next;
-                Heap_Free(tmp);
-                other.count = other.count - 1;
-            }
-        }
-        break;
+        while (0);
+      }
+      else
+      {
+        less = ((u32) b) < ((u32) a);
+      }
     }
+    else
+    {
+      less = b->obj->key < a->obj->key;
+    }
+      if (less)
+    {
+      p = (void **) arg0[2];
+      tmp = p[0];
+      tmp2 = p[1];
+      p[0] = tmp2;
+      p[1] = tmp;
+      p = (void **) second;
+      tmp = p[0];
+      tmp2 = p[1];
+      p[0] = tmp2;
+      p[1] = tmp;
+      tmp = (void *) arg0[1];
+      arg0[1] = arg0[2];
+      arg0[2] = (s32) tmp;
+    }
+      break;
+
+    default:
+      half = ((u32) temp_r0) >> 1;
+      node = (Node *) arg0[2];
+      for (n = half; n != 0; --n)
+    {
+      node = node->next;
+    }
+
+      fn_8014510C(&other);
+      sentinel = (Node *) (&other.prev);
+      last = (Node *) arg0[1];
+      tmp = node->prev;
+      tmp2 = *((void **) (((u8 *) last) + 4));
+      temp_r0 = *arg1;
+      *((void **) (((u8 *) tmp) + 4)) = tmp2;
+      tmp = node->prev;
+      tmp2 = *((void **) (((u8 *) last) + 4));
+      *((void **) tmp2) = tmp;
+      other.prev->next = node;
+      node->prev = other.prev;
+      other.prev = last;
+      last->next = sentinel;
+      other.count = arg0[0] - ((s32) half);
+      arg0[0] = (s32) half;
+      sp10.value = temp_r0;
+      fn_80144B60(arg0, &sp10.value);
+      spC.value = *arg1;
+      fn_80144B60(&other.count, &spC.value);
+      sp8.value = *arg1;
+      fn_80144F78(arg0, &other.count, &sp8.value);
+      node = other.next;
+      if (node != sentinel)
+    {
+      last = other.prev;
+      node->prev->next = last->next;
+      last->next->prev = node->prev;
+      while (node != sentinel)
+      {
+        tmp = node;
+        node = node->next;
+        Heap_Free(tmp);
+        other.count = other.count - 1;
+      }
+
+    }
+      break;
+
+  }
+
 }
 
 s32 fn_80144D74(s32 arg0) {
@@ -2227,7 +2255,7 @@ void fn_801453F0(void) {
 void fn_80145488(void) {
  void Process_UnlinkByKey(void *); void *Process_Create(void *,s32);
  extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
- extern f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
+ extern const f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
  s32 base=(s32)gBgmVolFadeProcs; f32 *proc;
  f32 a; f32 b; f32 c; u32 vol;
  Process_UnlinkByKey((void *)(base+0x28)); Process_UnlinkByKey((void *)(base+0x3C));

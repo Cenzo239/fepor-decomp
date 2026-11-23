@@ -81,16 +81,14 @@ void *fn_800A0338(void) {
 }
 
 s32 fn_800A0348(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367705;
-    s32 v = 2;
-    a = (u8)lbl_80367705;
-    b = a ^ 1;
-    lbl_80367705 = (u8)b;
-    if ((u8)b) {
-        v = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = (u8)v;
-    return 0;
+ extern u8 lbl_80367705;
+ s32 v=2;
+ a=lbl_80367705;
+ b=a^1;
+ lbl_80367705=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 
 u32 fn_800A0370(void) {
@@ -2318,10 +2316,10 @@ void fn_800A3770(void) {
     extern s32 lbl_80367520;
     s32 *arr;
     u8 *base;
-    s32 item;
     s32 count;
     s32 i;
     s32 idx;
+    s32 item;
 
     fn_8005B918(gMenuCmdStrings + 0x7E0);
     count = fn_8005B8CC();

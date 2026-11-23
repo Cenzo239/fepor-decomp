@@ -1127,6 +1127,7 @@ s8 Unit_GetMov(void *arg0) {
     s8 bonus;
     u8 flag_ret;
     void *base;
+    s32 mask;
     s32 addend;
 
     if (((*(u8 *)((u8 *)arg0 + 0x1A4) >> 2) & 7) != 0) {
@@ -1135,10 +1136,12 @@ s8 Unit_GetMov(void *arg0) {
     base = *(void **)((u8 *)arg0 + 0x18C);
     sum = *(u8 *)((u8 *)base + 0x3E);
     sum = sum + (s8)*(u8 *)((u8 *)arg0 + 0x1AA);
-    addend = 2;
     flag_ret = Status_Test((u8 *)arg0 + 0x1BC, 0xE);
-    sum = sum + (addend & ((-(s32)flag_ret | (s32)flag_ret) >> 31));
+    mask = (-(s32)flag_ret | (s32)flag_ret) >> 31;
+    addend = 1;
+    addend = addend + 1;
     bonus = 0;
+    sum += addend & mask;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
         index = bonus;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {

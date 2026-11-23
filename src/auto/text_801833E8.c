@@ -3211,15 +3211,12 @@ void fn_80189698(void *self) {
     u8 key2a[0x38];
     u8 key2b[0x38];
     u8 keyAng[0x38];
-    register u8 *base;
-    u8 dir;
-    u8 bump;
+    u8 *base;
+    u32 dir;
+    u32 bump;
     void *unit;
     s32 yShift;
     s32 ox, oy, x, y;
-    void *obj;
-    void *proc;
-    s32 count;
     s32 frames;
 
     M2C_FIELD(self, f32 *, 0x3C) = lbl_8036ACEC;
@@ -3238,6 +3235,9 @@ void fn_80189698(void *self) {
         s32 frame;
         s32 lvl;
         f32 start;
+        void *obj;
+        void *proc;
+        s32 count;
         M2C_FIELD(M2C_FIELD(self, void **, 0x30), f32 *, 0x78) = lbl_8036ACF8;
         padFlags = M2C_FIELD(gPadInput, u32 *, 4);
         if (M2C_FIELD(self, u16 *, 0x52) & 0x80)
@@ -3330,8 +3330,8 @@ void fn_80189698(void *self) {
             }
         }
         {
-            f32 z0 = lbl_8036ACEC;
             void *u = M2C_FIELD(self, void **, 0x30);
+            f32 z0 = lbl_8036ACEC;
             M2C_FIELD(u, f32 *, 0x10) = z0;
             M2C_FIELD(u, f32 *, 0x14) = z0;
             M2C_FIELD(u, f32 *, 0x18) = z0;
@@ -3377,6 +3377,7 @@ void fn_80189698(void *self) {
     if (!(M2C_FIELD(self, u16 *, 0x52) & 0x200) && unit != 0 && unit != M2C_FIELD(self, void **, 0x30) && fn_8004C00C(unit) == 0) {
         u8 fast;
         u32 padFlags = M2C_FIELD(gPadInput, u32 *, 4);
+        void *proc;
         s32 bit80 = M2C_FIELD(self, u16 *, 0x52) & 0x80;
         if (bit80)
             fast = 0;
@@ -3415,10 +3416,13 @@ void fn_80189698(void *self) {
         }
     } else {
         f32 h0;
+        f32 mapX;
+        void *obj;
         obj = M2C_FIELD(self, void **, 0x30);
         h0 = M2C_FIELD(obj, f32 *, 0xC);
+        mapX = gHalf + (f32)x;
         M2C_FIELD(self, f32 *, 0x44) = h0;
-        M2C_FIELD(self, f32 *, 0x48) = Map_SampleHeightRaw(gBattleMap, gHalf + (f32)x, gHalf + (f32)y);
+        M2C_FIELD(self, f32 *, 0x48) = Map_SampleHeightRaw(gBattleMap, mapX, gHalf + (f32)y);
     }
 
     fn_8012B3C0(x, y, 0);
@@ -3437,10 +3441,12 @@ void fn_80189698(void *self) {
 
     {
         u8 flag = 1;
-        u8 temp = gMapBlendMode - 1;
-        if (!(temp <= flag))
+        u32 mode = (u8)(gMapBlendMode - 1);
+        u32 test = ((u32)flag | ~mode) - (((u32)flag - mode) >> 1);
+        if ((test >> 31) == 0)
             flag = 0;
         if (flag) {
+            void *obj;
             obj = M2C_FIELD(self, void **, 0x30);
             if (M2C_FIELD(obj, u8 **, 0x190)[8] == 1) {
                 u8 *mapTile = gBattleMap + 0x200D;
@@ -3473,6 +3479,8 @@ void fn_80189698(void *self) {
         s16 angle;
         f32 degrees;
         f32 scale;
+        void *obj;
+        void *proc;
         obj = M2C_FIELD(self, void **, 0x30);
         switch (dir & 0xFF) {
         case 4: angle = 0; break;
@@ -4658,58 +4666,60 @@ void fn_8018D034(void *arg0) {
     typedef struct { f32 x, y, z; } Vec;
     extern Vec lbl_802797CC;
     Vec copy, v;
-    s32 step;
-    s32 delta;
-    s32 current;
-    s32 target;
+    s32 prev;
+    s32 delta, step, current, target;
     f32 x, z, wave;
     void *obj;
-    void *self;
 
-    self = arg0;
-    M2C_FIELD(self, s32 *, 0x30)++;
-    target = M2C_FIELD(self, s32 *, 0x40);
-    current = M2C_FIELD(self, s32 *, 0x34);
+    prev = M2C_FIELD(arg0, s32 *, 0x30);
+    M2C_FIELD(arg0, s32 *, 0x30) = prev + 1;
+    target = M2C_FIELD(arg0, s32 *, 0x40);
+    current = M2C_FIELD(arg0, s32 *, 0x34);
     if (target != current) {
         delta = target - current;
         step = delta / 4;
         if (step) {
-            M2C_FIELD(self, s32 *, 0x34) = current + step;
+            M2C_FIELD(arg0, s32 *, 0x34) = current + step;
         } else {
-            M2C_FIELD(self, s32 *, 0x34) = current + delta;
+            M2C_FIELD(arg0, s32 *, 0x34) = current + delta;
         }
-        if (delta < 0 && M2C_FIELD(self, s32 *, 0x34) < M2C_FIELD(self, s32 *, 0x40)) {
-            M2C_FIELD(self, s32 *, 0x34) = M2C_FIELD(self, s32 *, 0x40);
+        if (delta < 0 && M2C_FIELD(arg0, s32 *, 0x34) < M2C_FIELD(arg0, s32 *, 0x40)) {
+            M2C_FIELD(arg0, s32 *, 0x34) = M2C_FIELD(arg0, s32 *, 0x40);
         }
-        if (delta > 0 && M2C_FIELD(self, s32 *, 0x34) > M2C_FIELD(self, s32 *, 0x40)) {
-            M2C_FIELD(self, s32 *, 0x34) = M2C_FIELD(self, s32 *, 0x40);
+        if (delta > 0 && M2C_FIELD(arg0, s32 *, 0x34) > M2C_FIELD(arg0, s32 *, 0x40)) {
+            M2C_FIELD(arg0, s32 *, 0x34) = M2C_FIELD(arg0, s32 *, 0x40);
         }
+        step = prev;
+        (void)step;
+    } else {
+        step = prev;
+        (void)step;
     }
-    wave = (f32)sin(Math_Lerp(lbl_8036AD58, lbl_8036AD5C, (f32)M2C_FIELD(self, s32 *, 0x38), (f32)M2C_FIELD(self, s32 *, 0x30)));
+    wave = (f32)sin(Math_Lerp(lbl_8036AD58, lbl_8036AD5C, (f32)M2C_FIELD(arg0, s32 *, 0x38), (f32)M2C_FIELD(arg0, s32 *, 0x30)));
     v = lbl_802797CC;
     x = lbl_8036AD60 * wave;
-    v.x = x * (f32)M2C_FIELD(self, s32 *, 0x34);
+    v.x = x * (f32)M2C_FIELD(arg0, s32 *, 0x34);
     z = lbl_8036AD64 * wave;
-    v.z = z * (f32)M2C_FIELD(self, s32 *, 0x34);
-    obj = M2C_FIELD(self, void **, 0x44);
+    v.z = z * (f32)M2C_FIELD(arg0, s32 *, 0x34);
+    obj = M2C_FIELD(arg0, void **, 0x44);
     copy = v;
     M2C_FIELD(obj, f32 *, 0x58) = copy.x;
     M2C_FIELD(obj, f32 *, 0x5C) = copy.y;
     M2C_FIELD(obj, f32 *, 0x60) = copy.z;
-    if (M2C_FIELD(self, s32 *, 0x30) >= M2C_FIELD(self, s32 *, 0x38)) {
-        M2C_FIELD(self, s32 *, 0x30) = 0;
-        if (M2C_FIELD(self, s32 *, 0x3C) > 0) {
-            M2C_FIELD(self, s32 *, 0x3C)--;
-            if (M2C_FIELD(self, s32 *, 0x3C) == 0) {
-                Process_Unlink(self);
+    if (M2C_FIELD(arg0, s32 *, 0x30) >= M2C_FIELD(arg0, s32 *, 0x38)) {
+        M2C_FIELD(arg0, s32 *, 0x30) = 0;
+        if (M2C_FIELD(arg0, s32 *, 0x3C) > 0) {
+            M2C_FIELD(arg0, s32 *, 0x3C)--;
+            if (M2C_FIELD(arg0, s32 *, 0x3C) == 0) {
+                Process_Unlink(arg0);
                 return;
             }
             goto check;
         }
     } else {
     check:
-        if (M2C_FIELD(self, s32 *, 0x34) == 0) {
-            Process_Unlink(self);
+        if (M2C_FIELD(arg0, s32 *, 0x34) == 0) {
+            Process_Unlink(arg0);
         }
     }
 }
@@ -9006,7 +9016,8 @@ void fn_80194174(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80194178(void *arg0) {
+#pragma scheduling off
+void fn_80194178(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_CreateChild(void *, void *, void *);
     void *Item_GetFlagsPtr(void *);
@@ -9049,6 +9060,9 @@ extern "C" void fn_80194178(void *arg0) {
     s32 saved;
     void *temp_r6;
     u32 result;
+    u64 flags;
+    u8 t;
+    s32 zero;
 
     switch ((s32)gUiContext[8]) {
     case 0x81:
@@ -9060,10 +9074,12 @@ extern "C" void fn_80194178(void *arg0) {
         fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) + temp_r5, temp_r5);
         ((Obj *)temp_r29)->v12(temp_r31);
         if (__rlwinm(*(u8 *)((u8 *)temp_r31 + 5), 25, 31, 31)) {
-            if ((*(u64 *)Item_GetFlagsPtr(temp_r31) & 0x100000000ULL) != 0
+            flags = *(u64 *)Item_GetFlagsPtr(temp_r31);
+            if ((flags & 0x100000000ULL) != 0
                 && (*(s32 *)((u8 *)temp_r30 + 0x1A0) & 0x800000) != 0) {
-                *(u8 *)((u8 *)temp_r31 + 5) =
-                    (u8)__rlwimi(*(u8 *)((u8 *)temp_r31 + 5), 0, 7, 24, 24);
+                t = *(u8 *)((u8 *)temp_r31 + 5);
+                zero = 0;
+                *(u8 *)((u8 *)temp_r31 + 5) = (u8)__rlwimi(t, zero, 7, 24, 24);
                 *(void **)(gUiContext + 4) = temp_r30;
                 Process_CreateChild(lbl_802966B0, arg0, gUiContext);
             }
@@ -9099,6 +9115,7 @@ extern "C" void fn_80194178(void *arg0) {
         break;
     }
 }
+#pragma scheduling reset
 #pragma cplusplus reset
 
 void fn_80194374(void *arg0) {
@@ -15034,7 +15051,8 @@ s32 fn_8019F2D0(s32 x, s32 y)
   return 1;
 }
 
-s32 fn_8019F4A8(s32 arg0, s32 arg1) {
+#pragma use_lmw_stmw off
+s32 fn_8019F4A8(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
@@ -15060,33 +15078,33 @@ s32 fn_8019F4A8(s32 arg0, s32 arg1) {
 
     if (gUiInputFlags & 1) {
         {
-            void *obj = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
+            void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
             if (obj == NULL) {
                 fn_800056A0(0);
-                return 0;
-            }
-            MapObjEvent_Push(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21, 0);
-            {
-                void *ev = MapObjEvent_Find(gMapObjEventList, (char)arg0, (char)arg1, 4);
-                if (ev != NULL) {
-                    ((u8 *)ev)[4] = 0;
-                }
-            }
-            MapObj_FadeOut(obj, 0);
-        }
-        {
-            void *near = Map_FindObjNear((void *)Map_Get(), arg0, arg1, 0x800, 0);
-            if (near != NULL) {
-                count = Map_CollectLinkedObjs((void *)Map_Get(), near, linked);
-                p = linked;
-                i = 0;
-                while (i < count) {
-                    v = *p;
-                    if ((u8)MapObj_IsHidden((void *)v) == 0) {
-                        MapObj_Hide((void *)v, 0);
+            } else {
+                MapObjEvent_Push(gMapObjEventList, (s8)x, (s8)y, 0x21, 0);
+                {
+                    void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+                    if (ev != NULL) {
+                        ((u8 *)ev)[4] = 0;
                     }
-                    p++;
-                    i++;
+                }
+                MapObj_FadeOut(obj, 0);
+                {
+                    void *obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
+                    if (obj != NULL) {
+                        count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
+                        p = linked;
+                        i = 0;
+                        while (i < count) {
+                            v = *p;
+                            if ((u8)MapObj_IsHidden((void *)v) == 0) {
+                                MapObj_Hide((void *)v, 0);
+                            }
+                            p++;
+                            i++;
+                        }
+                    }
                 }
             }
         }
@@ -15096,14 +15114,14 @@ s32 fn_8019F4A8(s32 arg0, s32 arg1) {
     }
 
     {
-        void *obj = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
+        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
         if (obj == NULL) {
             fn_800056A0(0);
             return 0;
         }
-        MapObjEvent_Push(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21, 0);
+        MapObjEvent_Push(gMapObjEventList, (s8)x, (s8)y, 0x21, 0);
         {
-            void *ev = MapObjEvent_Find(gMapObjEventList, (char)arg0, (char)arg1, 4);
+            void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
             if (ev != NULL) {
                 ((u8 *)ev)[4] = 0;
             }
@@ -15113,8 +15131,7 @@ s32 fn_8019F4A8(s32 arg0, s32 arg1) {
         return 1;
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma use_lmw_stmw reset
 /* Show the 0x1000 map object at (x,y), clear its event, and show linked 0x800 objects. */
 s32 Map_ShowObjAt(s32 x, s32 y) {
     s32 Map_Get(void);

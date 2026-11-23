@@ -301,11 +301,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     u32 cmp;
     f32 tmp;
     f32 inv;
-    u32 rawE;
-    u32 rawX;
 
-    rawE = efbHeight;
-    rawX = xfbHeight;
     bias = lbl_8036BCD8;
     f256 = lbl_8036BCD0;
     yScale = xfbHeight;
@@ -331,8 +327,8 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     }
     cmp = lines;
 
-    xfbOrig = (u16)rawX;
-    efbOrig = (u16)rawE;
+    xfbOrig = (u16)save1;
+    efbOrig = (u16)save0;
 
     while (cmp > xfbOrig) {
         yScale -= 1;
@@ -358,7 +354,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     best = ratio;
     bias = lbl_8036BCD8;
     f256 = lbl_8036BCD0;
-    efbOrig = (u16)rawE;
+    efbOrig = (u16)save0;
 
     while (cmp < xfbOrig) {
         yScale += 1;

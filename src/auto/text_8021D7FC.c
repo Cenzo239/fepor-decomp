@@ -1085,21 +1085,22 @@ void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write)
   extern u16 *__cpReg;
   if (fifo == __GXCurrentCPUFifo)
   {
-    fifo->wrPtr = (void *) ((__piReg[5] & (~0x04000000)) + 0x80000000);
+    fifo->wrPtr = (void *)((__piReg[5] & (~0x04000000)) + 0x80000000);
   }
   if (fifo == __GXCurrentGPFifo)
   {
-    u16 *cp = __cpReg;
-    u32 hi = cp[29];
-    u32 lo = cp[28];
-    fifo->rdPtr = (void *) ((lo | (hi << 16)) + 0x80000000);
+    u32 lo;
+    u32 hi;
+    lo = __cpReg[28];
+    hi = __cpReg[29];
+    fifo->rdPtr = (void *)((lo | (hi << 16)) + 0x80000000);
     hi = __cpReg[25];
     lo = (new_var = __cpReg[24]);
     fifo->count = lo | (hi << 16);
   }
   else
   {
-    fifo->count = ((u8 *) fifo->wrPtr) - ((u8 *) fifo->rdPtr);
+    fifo->count = ((u8 *)fifo->wrPtr) - ((u8 *)fifo->rdPtr);
     if (fifo->count < 0)
     {
       fifo->count += fifo->size;
@@ -1742,10 +1743,10 @@ void fn_80220198(void) {
 void fn_802201A8(s32 stage, s32 color, s32 map, s32 arg3, s32 arg4, s32 arg5) {
     void fn_80225180(s32);
     extern u8 *__GXData;
+    u32 c;
     u32 reg = 0;
     u32 a;
     u32 b;
-    u32 c;
     u32 t;
 
     b = 0;

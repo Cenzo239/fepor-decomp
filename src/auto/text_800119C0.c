@@ -3921,14 +3921,16 @@ void *fn_800169A8(void *arg0, s16 arg1)
 void Unit_WriteAll(s32 arg0) {
     extern u8 gUnits[];
     void Unit_Write(void *, s32);
-    u8 *unit;
-    s32 i;
+    u8 *r31;
+    s32 r30;
 
-    unit = (u8 *)gUnits;
-    for (i = 0; i < 0x9F; i++) {
-        Unit_Write(unit, arg0);
-        unit += 0x280;
-    }
+    r31 = gUnits;
+    r30 = 0;
+    do {
+        Unit_Write(r31, arg0);
+        r30 += 1;
+        r31 += 0x280;
+    } while (r30 < 0x9F);
 }
 #pragma global_optimizer reset
 s32 fn_80016A9C(s32 arg0) {

@@ -4550,20 +4550,18 @@ void fn_80118C1C(void) {
     s32 var_r4;
     s32 temp;
     s32 a, b;
-    s32 arg;
 
     fn_800A6AE4();
     Map_RefreshUnitMap(gBattleMap);
     var_r4 = 1;
     temp = (u8)(gMapBlendMode - 1);
-    b = var_r4 | ~temp;
+    b = ~temp | var_r4;
     a = (u32)(1 - temp) >> 1;
     if (((u32)(b - a) >> 31) == 0) {
         var_r4 = 0;
     }
-    arg = 0;
     if ((u8)var_r4 != 0) {
-        fn_800C1060(arg);
+        fn_800C1060(0);
     }
 }
 
@@ -6076,8 +6074,8 @@ void fn_8011B310(void *arg0) {
     register s32 flags;
     register u8 saved_x;
     register u8 saved_y;
-    register u8 skip;
     register u8 *node;
+    register u8 skip;
     register u8 *base;
 
     skip = 0;

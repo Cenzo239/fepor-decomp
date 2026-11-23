@@ -750,7 +750,6 @@ s32 fn_800A49F4(u8 *arg0) {
 s32 fn_800A4BC4(void) {
     extern u8 lbl_803123A0[];
     u8 *p = lbl_803123A0;
-    s32 w;
     s32 v44;
     u32 prod;
     s32 aligned;
@@ -759,9 +758,8 @@ s32 fn_800A4BC4(void) {
     u8 a7;
 
     if (*(s32 *)(p + 0xA0) != 0) {
-        w = *(s32 *)(p + 0x80);
-        prod = w * *(s32 *)(p + 0x84);
         v44 = *(s32 *)(p + 0x44);
+        prod = *(u32 *)(p + 0x80) * *(u32 *)(p + 0x84);
         a7 = p[0xA7];
         aligned = (v44 + 0x1F) & ~0x1F;
         sum = aligned * 0xA;
@@ -1171,7 +1169,7 @@ void fn_800A5944(s32 arg0) {
     FileCache_ReleaseSlot(arg0 + 0x34);
 }
 
-#pragma optimization_level 2
+#pragma optimization_level reset
 void fn_800A5968(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1185,15 +1183,15 @@ void fn_800A5968(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Process_ClearFunc(void *);
-    extern f32 lbl_80369A50;
-    extern f32 lbl_80369A54;
-    extern f32 lbl_80369A58;
-    extern f32 lbl_80369A5C;
-    extern f32 lbl_80369A60;
-    extern f32 lbl_80369A64;
-    extern f32 lbl_80369A68;
-    extern f32 lbl_80369A6C;
-    extern f32 lbl_80369A70;
+    extern const f32 lbl_80369A70;
+    extern const f32 lbl_80369A6C;
+    extern const f32 lbl_80369A68;
+    extern const f32 lbl_80369A64;
+    extern const f32 lbl_80369A60;
+    extern const f32 lbl_80369A5C;
+    extern const f32 lbl_80369A58;
+    extern const f32 lbl_80369A54;
+    extern const f32 lbl_80369A50;
     s32 temp_r0;
     s32 temp_r3;
 
@@ -1226,7 +1224,6 @@ void fn_800A5968(void *arg0) {
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, M2C_FIELD(arg0, u8 *, 0x60));
     Prim2D_EndPrim();
 }
-#pragma optimization_level reset
 void fn_800A5BB4(s32 arg0) {
     M2C_UNK Process_ClearFunc(s32);
     s32 FileCache_GetFlags(s32);
@@ -2265,6 +2262,9 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     fn_80007884();
     fn_80009B28();
 }
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void fn_800A7C94(void *arg0) {
     void *Process_Create(void *, void *);
     void fn_8006EEFC(void **, s32);
@@ -2283,6 +2283,7 @@ void fn_800A7C94(void *arg0) {
     extern s32 lbl_80369B28;
     extern f32 lbl_80369B30;
     extern f32 lbl_80369B34;
+    extern f64 lbl_80369B38;
     extern void fn_800A7EC0();
 
     struct {
@@ -2316,8 +2317,10 @@ void fn_800A7C94(void *arg0) {
         s16 adj;
         s16 tmp16;
         u16 t;
+        u16 texIdx;
         r30 = Rand_Range(8) + 2;
-        Ui_LoadAtlasTex(r26, st.sp10, (u16)r30);
+        texIdx = (u16)r30;
+        Ui_LoadAtlasTex(r26, st.sp10, texIdx);
         st.sp30 = GXGetTexObjWidth(st.sp10);
         tmp16 = GXGetTexObjHeight(st.sp10);
         t = st.sp30;
@@ -2359,9 +2362,9 @@ cleanup:
     if (r28 != NULL)
         Heap_FreeRaw((u8 *)r28 - 0x10);
 }
-#pragma opt_peephole reset
-#pragma opt_common_subs reset
 #pragma optimization_level reset
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset
 void fn_800A7EC0(void) {
 
 }

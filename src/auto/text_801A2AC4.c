@@ -961,18 +961,18 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
 }
 #pragma opt_common_subs reset
 void fn_801A4B40(u8 *obj, s32 a1) {
-    s32 Unit_GetMaxHp(void *);
+    s32 fn_8003B2D0(void *);
     s32 fn_800AA76C(s32, s32, s32);
-    void Unit_SetHp(void *, s32);
+    void fn_800381EC(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
-    register s32 orig;
     s32 v;
+    s32 orig;
 
+    v = 0;
     orig = obj[0x488];
-    v = a1;
-    v = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)v);
+    v = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj + 0x2E0), (s8)a1);
     v = (s8)v;
-    Unit_SetHp(obj + 0x2E0, v + (s8)obj[0x488]);
+    fn_800381EC(obj + 0x2E0, v + (s8)obj[0x488]);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
     BattleAnim_Queue(obj + 0x8A0, 0x15, v);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
@@ -2754,44 +2754,48 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void fn_801A9CB8(s32, void *);
     void BattleUnit_Reset(s32);
     extern u8 gBattleMap[];
-    void *var_r31;
-    void *var_r30;
+    struct BattleParam {
+        void *unit;
+        u8 x;
+        u8 y;
+        u8 unk6;
+        u8 unk7;
+        void *item;
+        u8 flag;
+        u8 pad[3];
+    };
+    struct BattleParam *var_r31;
+    struct BattleParam *var_r30;
     s32 var_r29;
     void *temp_r28;
     void *temp_r3;
-    void *a;
-    s32 z;
 
-    var_r31 = arg2;
-    var_r30 = arg1;
+    var_r31 = (struct BattleParam *)arg2;
+    var_r30 = (struct BattleParam *)arg1;
     var_r29 = arg0;
     BattleUnit_Reset(var_r29);
     BattleUnit_Reset(var_r29 + 0x2E0);
     BattleUnit_Reset(var_r29 + 0x5C0);
     fn_800340F0(var_r29 + 0x8A0);
-    z = 0;
-    a = *(void **)var_r30;
-    fn_801A9CB8(
-        (*(s32 *)(var_r29 + 0xCA8) = z,
-         *(s32 *)(var_r29 + 0xCAC) = z,
-         *(s32 *)(var_r29 + 0xCB0) = z,
-         *(s32 *)(var_r29 + 0xCB4) = z,
-         *(s32 *)(var_r29 + 0xCBC) = z,
-         *(s32 *)(var_r29 + 0xCC0) = z,
-         var_r29),
-        a);
-    fn_801A9CB8(var_r29 + 0x2E0, *(void **)var_r31);
-    Unit_SetMapPos(var_r29, (s8)((u8 *)var_r30)[4], (s8)((u8 *)var_r30)[5]);
-    Unit_SetMapPos(var_r29 + 0x2E0, (s8)((u8 *)var_r31)[4], (s8)((u8 *)var_r31)[5]);
+    *(s32 *)(var_r29 + 0xCA8) = 0;
+    *(s32 *)(var_r29 + 0xCAC) = 0;
+    *(s32 *)(var_r29 + 0xCB0) = 0;
+    *(s32 *)(var_r29 + 0xCB4) = 0;
+    *(s32 *)(var_r29 + 0xCBC) = 0;
+    *(s32 *)(var_r29 + 0xCC0) = 0;
+    fn_801A9CB8(var_r29, var_r30->unit);
+    fn_801A9CB8(var_r29 + 0x2E0, var_r31->unit);
+    Unit_SetMapPos(var_r29, (s8)var_r30->x, (s8)var_r30->y);
+    Unit_SetMapPos(var_r29 + 0x2E0, (s8)var_r31->x, (s8)var_r31->y);
     Map_SelectRangeBuffer(gBattleMap, 6);
     Map_FillAttackRange(gBattleMap, *(u8 *)(var_r29 + 0x19E), *(u8 *)(var_r29 + 0x19F), 0x64, 0xF);
-    temp_r28 = *(void **)((u8 *)var_r30 + 8);
+    temp_r28 = var_r30->item;
     *(s32 *)(var_r29 + 0xCA8) = ((s16 *)*(void **)(gBattleMap + 0x14190))[(s8)*(u8 *)(var_r29 + 0x47E) + ((s8)*(u8 *)(var_r29 + 0x47F) << 6)];
     if (temp_r28 == NULL) {
-        if (((u8 *)var_r30)[7] == 0) {
-            fn_801A981C(var_r29, *(s32 *)(var_r29 + 0xCA8), (s8)((u8 *)var_r30)[6]);
+        if (var_r30->unk7 == 0) {
+            fn_801A981C(var_r29, *(s32 *)(var_r29 + 0xCA8), (s8)var_r30->unk6);
         } else {
-            fn_801A96FC(var_r29, (s8)((u8 *)var_r30)[6]);
+            fn_801A96FC(var_r29, (s8)var_r30->unk6);
         }
     } else {
         fn_801A9600(var_r29, temp_r28);
@@ -2805,20 +2809,20 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
             }
         }
     }
-    if (*(void **)((u8 *)var_r31 + 8) == NULL) {
-        if (((u8 *)var_r31)[7] == 0) {
-            fn_801A981C(var_r29 + 0x2E0, *(s32 *)(var_r29 + 0xCA8), (s8)((u8 *)var_r31)[6]);
+    if (var_r31->item == NULL) {
+        if (var_r31->unk7 == 0) {
+            fn_801A981C(var_r29 + 0x2E0, *(s32 *)(var_r29 + 0xCA8), (s8)var_r31->unk6);
         } else {
-            fn_801A96FC(var_r29 + 0x2E0, (s8)((u8 *)var_r31)[6]);
+            fn_801A96FC(var_r29 + 0x2E0, (s8)var_r31->unk6);
         }
     } else {
-        fn_801A9600(var_r29 + 0x2E0, *(void **)((u8 *)var_r31 + 8));
+        fn_801A9600(var_r29 + 0x2E0, var_r31->item);
     }
     fn_801A99E8(var_r29 + 0x2E0, var_r29);
-    if (((u8 *)var_r30)[0xC] != 0) {
+    if (var_r30->flag != 0) {
         fn_801A94B0(var_r29);
     }
-    if (((u8 *)var_r31)[0xC] != 0) {
+    if (var_r31->flag != 0) {
         fn_801A94B0(var_r29 + 0x2E0);
     }
 }

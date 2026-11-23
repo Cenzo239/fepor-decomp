@@ -5285,8 +5285,8 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     handle = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x4E);
 
-    w = (s16)(p38[2] - lbl_80367D80.f0);
     h = (s16)(p38[3] - p38[1]);
+    w = (s16)(p38[2] - lbl_80367D80.f0);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg5 | 1));
@@ -5297,8 +5297,8 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     }
 
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x54);
-    w = (s16)(lbl_80367DB0.f4 - lbl_80367DB0.f0);
     h = (s16)(lbl_80367DB0.f6 - lbl_80367DB0.f2);
+    w = (s16)(lbl_80367DB0.f4 - lbl_80367DB0.f0);
     px = (s16)(x2 - w);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
@@ -5310,8 +5310,8 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     }
 
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x4D);
-    w = (s16)(lbl_80367D78.f4 - lbl_80367D78.f0);
     h = (s16)(lbl_80367D78.f6 - lbl_80367D78.f2);
+    w = (s16)(lbl_80367D78.f4 - lbl_80367D78.f0);
     py = (s16)(y2 - h);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
@@ -5413,8 +5413,6 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     }
     Prim2D_PopZ(handle, sp14);
 }
-
-#pragma use_lmw_stmw reset
 
 void fn_8015B820(s16 arg0, s16 arg1, s32 arg2) {
     void Ui_LoadAtlasTex(s32, void *, s32);

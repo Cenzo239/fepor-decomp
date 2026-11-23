@@ -1807,6 +1807,7 @@ void *fn_8002595C(s32 arg0) {
     return (u8 *)lbl_802EF438 + arg0 * 0x24;
 }
 
+#pragma use_lmw_stmw on
 void fn_80025970(void) {
     u64 OSGetTime(void);
     s64 __div2i(s64, s64);
@@ -1897,7 +1898,6 @@ void fn_80025970(void) {
         fn_8021264C(mask);
     }
 }
-
 void fn_80025BA0(void) {
 void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
 extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
@@ -2287,6 +2287,7 @@ void fn_8002666C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x60) = 0;
 }
 
+#pragma global_optimizer off
 void fn_80026678(void *arg0) {
     void Unit_RemoveItem(s32, u8);
     void fn_80094ABC(s32, void *, s32, void *);
@@ -2302,14 +2303,14 @@ void fn_80026678(void *arg0) {
     zero = 0;
     temp_r4 = *(void **)((u8 *)arg0 + 0x54);
     bf = (void *)((u8 *)temp_r4 + 5);
-    a0 = *(s32 *)gUiContext;
+    a0 = *(s32 *)(gUiContext + zero);
     temp_r31 = *(s32 *)(gUiContext + 4);
     bf->flag = zero;
-    fn_80094ABC(a0, temp_r4, 0, gUiContext);
+    fn_80094ABC(a0, temp_r4, zero, gUiContext);
     Unit_RemoveItem(temp_r31, gUiContext[0xA]);
     Battle_Apply(gBattle);
 }
-
+#pragma global_optimizer on
 void fn_800266E4(s32 arg0) {
     extern void *gUiContext[];
     extern u8 gBattle[];
@@ -3160,31 +3161,27 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma peephole off
-void UiCtx_BeginMoveSelect(void **arg0, void *arg1) {
+void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
-    void *self;
-    s8 x;
-    s8 y;
+    u8 *self = (u8 *)arg0;
+    void *p;
 
-    *arg0 = arg1;
-    self = (void *)arg0;
-    *((u8 *)self + 0xB) = *((u8 *)arg1 + 0x19E);
-    *((u8 *)self + 0xC) = *((u8 *)arg1 + 0x19F);
-    *((s8 *)self + 0x11) = Unit_GetMov(arg1);
-    *(s32 *)((u8 *)self + 4) = 0;
-    *((u8 *)self + 8) = 0;
-    *((s8 *)self + 0xA) = -1;
-    *((s8 *)self + 0xD) = -1;
-    *((s8 *)self + 0xE) = -1;
-    *((s8 *)self + 0xF) = -1;
-    *((s8 *)self + 0x10) = -1;
-    *((u8 *)self + 0x14) = 0;
-    *((u8 *)self + 0x15) = 0;
-    *((u8 *)self + 0x12) = 0;
-    *((u8 *)self + 0x16) = 0;
-    x = *((s8 *)self + 0xB);
-    y = *((s8 *)self + 0xC);
-    gBattleMap.unitMap[x + (y << 6)] = 0;
+    *(void **)(p = arg0) = arg1;
+    self[0xB] = ((u8 *)arg1)[0x19E];
+    self[0xC] = ((u8 *)arg1)[0x19F];
+    *(s8 *)(self + 0x11) = Unit_GetMov(arg1);
+    *(s32 *)(self + 4) = 0;
+    self[8] = 0;
+    *(s8 *)(self + 0xA) = -1;
+    *(s8 *)(self + 0xD) = -1;
+    *(s8 *)(self + 0xE) = -1;
+    *(s8 *)(self + 0xF) = -1;
+    *(s8 *)(self + 0x10) = -1;
+    self[0x14] = 0;
+    self[0x15] = 0;
+    self[0x12] = 0;
+    self[0x16] = 0;
+    gBattleMap.unitMap[(s8)self[0xB] + ((s8)self[0xC] << 6)] = 0;
 }
 #pragma peephole reset
 void UiCtx_Reset(void *arg0) {

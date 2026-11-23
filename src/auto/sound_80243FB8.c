@@ -897,7 +897,7 @@ void fn_80244AE8(s32 arg0) {
  extern SynthVoice *gActiveVoices; extern SynthVoice *gKeyedVoices;
  extern SynthVoice gSynthVoicePool[]; extern VidList *lbl_80368964;
  void fn_80257224(s32);
- u32 id, vid; SynthVoice *p, *sv; VidList *tail; u32 i; VidList *node; SynthVoice *walk;
+ u32 id, vid; SynthVoice *p, *sv; u32 i; VidList *node; SynthVoice *walk; SynthVoice *walk2; SynthVoice *walk3; VidList *tail;
  vid=arg0&0x7FFFFFFF;
  for(p=gKeyedVoices;p!=NULL;p=p->next) {
   if(p->vid==vid) {id=p->id|(arg0&0x80000000);goto found;}
@@ -922,17 +922,17 @@ found:
     for(walk=sv;i<2;i++,walk=(SynthVoice*)((u8*)walk+4)) {
      for(node=walk->lists[0];node!=NULL;node=node->next) fn_80257224(node->vid);
     }
-    walk=(SynthVoice *)sv->listE6C;
-    while(walk!=NULL) {
-     fn_80257224(((VidList *)walk)->vid);
-     walk=(SynthVoice *)((VidList *)walk)->next;
+    walk2=(SynthVoice *)sv->listE6C;
+    while(walk2!=NULL) {
+     fn_80257224(((VidList *)walk2)->vid);
+     walk2=(SynthVoice *)((VidList *)walk2)->next;
     }
-    for(i=0,walk=sv;i<2;i++,walk=(SynthVoice*)((u8*)walk+4)) {
-     tail=walk->lists[0];
+    for(i=0,walk3=sv;i<2;i++,walk3=(SynthVoice*)((u8*)walk3+4)) {
+     tail=walk3->lists[0];
      if(tail!=NULL) {
       while(tail->next!=NULL) tail=tail->next;
       if(lbl_80368964!=NULL) {tail->next=lbl_80368964;lbl_80368964->prev=tail;}
-      lbl_80368964=walk->lists[0]; walk->lists[0]=NULL;
+      lbl_80368964=walk3->lists[0]; walk3->lists[0]=NULL;
      }
     }
     tail=sv->listE6C;
@@ -1587,8 +1587,8 @@ void *fn_80246070(u8 arg0) {
     u8 *voices;
     u8 *voiceState;
     StreamMsg *msg;
-    u8 *q;
-    u8 b;
+    u32 temp_r3;
+    u8 temp_r7;
     u8 *p;
     u32 temp_r9;
     u32 temp_r10;
@@ -1651,15 +1651,16 @@ stream:
             }
             msg->unkC = p;
             chan->unk0 = temp_r9;
-            q = chan->unk8;
-            b = q[2];
-            if (b & 0x80) {
-                chan->unk8 = q + 4;
-            } else if ((b | q[3]) == 0) {
-                chan->unk8 = q + 4;
-                continue;
+            temp_r3 = (u32) chan->unk8;
+            temp_r7 = ((u8 *) temp_r3)[2];
+            if (temp_r7 & 0x80) {
+                chan->unk8 = (u8 *) temp_r3 + 4;
             } else {
-                chan->unk8 = q + 6;
+                if ((temp_r7 | ((u8 *) temp_r3)[3]) == 0) {
+                    chan->unk8 = (u8 *) temp_r3 + 4;
+                    continue;
+                }
+                chan->unk8 = (u8 *) temp_r3 + 6;
             }
             msg->unk14 = 0;
             msg->unk8 = temp_r9 + chan->unk4;

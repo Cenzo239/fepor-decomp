@@ -1972,36 +1972,79 @@ void fn_8001D044(s32 arg0, s32 arg1) {
     Stream_Write(arg1, 8, arg0);
 }
 
-void *fn_8001D070(u8 *p,u8 mode) {
- extern u8 gDataStr[];
- void *Res_GetByName(void *);
- char *Msg_Expand(void *);
- u8 *item;
- char *name;
- s32 kind;
- item=*(u8 **)p;
- if(!item) return gDataStr+0x3B;
- if(p[5]&63) return mode?gDataStr+0x49:gDataStr+0x4E;
- if(*(u64 *)(item+0x38)&0x40000000000ULL) kind=1;
- else if(*(u64 *)(item+0x38)&0x80000000000ULL) kind=2;
- else if(*(u64 *)(item+0x38)&0x100000000000ULL) kind=3;
- else if(*(u64 *)(item+0x38)&0x200000000000ULL) kind=0;
- else if(*(u64 *)(item+0x38)&0x20000000000ULL) kind=3;
- else {
- if(Res_GetByName(*(void **)(item+4))) name=Msg_Expand(*(void **)(item+4)); else name=*(char **)item;
- if(!name) kind=0;
- else switch(*name) {
- case 'A':case 'E':case 'I':case 'O':case 'U':
- case 'a':case 'e':case 'i':case 'o':case 'u':kind=2;break;
- default:kind=1;break;
- }
- }
- if(mode) {
- switch(kind) {case 1:return gDataStr+0x53;case 2:return gDataStr+0x56;case 3:return gDataStr+0x49;}
- } else {
- switch(kind) {case 1:return gDataStr+0x5A;case 2:return gDataStr+0x5D;case 3:return gDataStr+0x4E;}
- }
- return gDataStr+0x3B;
+void *fn_8001D070(u8 *p, u8 mode) {
+    extern u8 gDataStr[];
+    void *Res_GetByName(void *);
+    char *Msg_Expand(void *);
+    u8 *item;
+    char *name;
+    s32 kind;
+
+    item = *(u8 **)p;
+    if (!item) {
+        return gDataStr + 0x3B;
+    }
+    if (p[5] & 0x3F) {
+        return mode ? gDataStr + 0x49 : gDataStr + 0x4E;
+    }
+    if (*(u64 *)(item + 0x38) & 0x40000000000ULL) {
+        kind = 1;
+    } else if (*(u64 *)(item + 0x38) & 0x80000000000ULL) {
+        kind = 2;
+    } else if (*(u64 *)(item + 0x38) & 0x100000000000ULL) {
+        kind = 3;
+    } else if (*(u64 *)(item + 0x38) & 0x200000000000ULL) {
+        kind = 0;
+    } else if (*(u64 *)(item + 0x38) & 0x20000000000ULL) {
+        kind = 3;
+    } else {
+        if (Res_GetByName(*(void **)(item + 4))) {
+            name = Msg_Expand(*(void **)(item + 4));
+        } else {
+            name = *(char **)item;
+        }
+        if (!name) {
+            kind = 0;
+        } else {
+            switch (*name) {
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                kind = 2;
+                break;
+            default:
+                kind = 1;
+                break;
+            }
+        }
+    }
+    if (mode) {
+        switch (kind) {
+        case 1:
+            return gDataStr + 0x53;
+        case 2:
+            return gDataStr + 0x56;
+        case 3:
+            return gDataStr + 0x49;
+        }
+    } else {
+        switch (kind) {
+        case 1:
+            return gDataStr + 0x5A;
+        case 2:
+            return gDataStr + 0x5D;
+        case 3:
+            return gDataStr + 0x4E;
+        }
+    }
+    return gDataStr + 0x3B;
 }
 
 u16 UnitRef_GetValue(void* arg0) {

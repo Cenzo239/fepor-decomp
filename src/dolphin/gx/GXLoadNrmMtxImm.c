@@ -222,7 +222,7 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 void fn_80224E50(f32 *mtx, u32 id, s32 type) {
     u32 addr;
     u32 size;
-    register u32 shift;
+    u32 shift;
     f64 a, b, c, d, e, f;
     register volatile u32 *fifo;
     volatile f64 *dst;
@@ -246,11 +246,18 @@ void fn_80224E50(f32 *mtx, u32 id, s32 type) {
     dst = (volatile f64 *)fifo;
 
     if (type == 0) {
-        a = ((f64 *)mtx)[0]; b = ((f64 *)mtx)[1]; c = ((f64 *)mtx)[2];
-        d = ((f64 *)mtx)[3]; e = ((f64 *)mtx)[4]; f = ((f64 *)mtx)[5];
+        a = ((f64 *)mtx)[0];
+        b = ((f64 *)mtx)[1];
+        c = ((f64 *)mtx)[2];
+        d = ((f64 *)mtx)[3];
+        e = ((f64 *)mtx)[4];
+        f = ((f64 *)mtx)[5];
         *dst = a; *dst = b; *dst = c; *dst = d; *dst = e; *dst = f;
     } else {
-        a = ((f64 *)mtx)[0]; b = ((f64 *)mtx)[1]; c = ((f64 *)mtx)[2]; d = ((f64 *)mtx)[3];
+        a = ((f64 *)mtx)[0];
+        b = ((f64 *)mtx)[1];
+        c = ((f64 *)mtx)[2];
+        d = ((f64 *)mtx)[3];
         *dst = a; *dst = b; *dst = c; *dst = d;
     }
 }

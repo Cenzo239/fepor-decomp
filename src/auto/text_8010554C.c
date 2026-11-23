@@ -1028,14 +1028,14 @@ void fn_8010671C(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80106728(u8 *arg0) {
-    void Process_ClearFunc(void);
-    void *Unit_FindByName(void *);
-    void Unit_SetMapPos(void *, u8, u8);
+    void fn_8000C188(void);
+    void *fn_80016BDC(void *);
+    void fn_8003816C(void *, u8, u8);
     void fn_8004F5EC(void *, s32);
     void *fn_80107468(void *);
-    void Dispos_ParseEntry(void *, u32 *, u8);
-    u8 *Unit_ResolveWarpPos(void *, u8 *, u8 *, s32, s32, void *);
-    extern u16 gUnits[];
+    void fn_80107B54(void *, u32 *, u8);
+    u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
+    extern u16 lbl_802B14E4[];
     u8 sp8[0x68];
     u8 idx;
     void *base;
@@ -1047,17 +1047,16 @@ void fn_80106728(u8 *arg0) {
     u8 *src;
     u8 *dst;
     u8 t;
-    u8 *p;
+    int i;
 
-    p = arg0;
-    idx = p[0x62];
-    count = p[0x63];
+    idx = arg0[0x62];
+    count = arg0[0x63];
     if (idx >= count) {
-        Process_ClearFunc();
+        fn_8000C188();
         return;
     }
-    kind = p[0x60];
-    base = *(void **)(p + 0x68);
+    kind = arg0[0x60];
+    base = *(void **)(arg0 + 0x68);
     entry = (u8 *)base + idx * 0x110;
     if (kind == 2) {
         goto case2;
@@ -1078,7 +1077,7 @@ check4:
     }
 case0:
     if ((u8)(s32)fn_80107468(entry) != 0) {
-        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
         dst = entry + 0xC;
         if (src != 0) {
         copy0:
@@ -1105,43 +1104,21 @@ case1:
     goto after_sw;
 case2:
     obj = *(void **)entry;
-    {
-        u32 *buf = (u32 *)sp8;
-        *(s32 *)(sp8 + 0x10) = 0;
-        sp8[0x30] = 0;
-        *(s32 *)(sp8 + 0x48) = 0;
-        *(s32 *)(sp8 + 0x14) = 0;
-        sp8[0x31] = 0;
-        *(s32 *)(sp8 + 0x4C) = 0;
-        *(s32 *)(sp8 + 0x18) = 0;
-        sp8[0x32] = 0;
-        *(s32 *)(sp8 + 0x50) = 0;
-        *(s32 *)(sp8 + 0x1C) = 0;
-        sp8[0x33] = 0;
-        *(s32 *)(sp8 + 0x54) = 0;
-        *(s32 *)(sp8 + 0x20) = 0;
-        sp8[0x34] = 0;
-        *(s32 *)(sp8 + 0x58) = 0;
-        *(s32 *)(sp8 + 0x24) = 0;
-        sp8[0x35] = 0;
-        *(s32 *)(sp8 + 0x5C) = 0;
-        *(s32 *)(sp8 + 0x28) = 0;
-        sp8[0x36] = 0;
-        *(s32 *)(sp8 + 0x60) = 0;
-        *(s32 *)(sp8 + 0x2C) = 0;
-        sp8[0x37] = 0;
-        *(s32 *)(sp8 + 0x64) = 0;
-        Dispos_ParseEntry(entry, buf, entry[0x10D]);
+    for (i = 0; i < 8; i++) {
+        *(s32 *)(sp8 + 0x10 + i * 4) = 0;
+        sp8[0x30 + i] = 0;
+        *(s32 *)(sp8 + 0x48 + i * 4) = 0;
     }
+    fn_80107B54(entry, (u32 *)sp8, entry[0x10D]);
     unit = 0;
     {
         u8 id = *(u8 *)((u8 *)obj + 0x3C);
         if (id != 0) {
             if (id != 0) {
-                unit = (u8 *)gUnits + (id - 1) * 0x280;
+                unit = (u8 *)lbl_802B14E4 + (id - 1) * 0x280;
             }
         } else if (!(entry[0x10C] & 1) && *(u32 *)sp8 != 0) {
-            unit = Unit_FindByName(*(void **)sp8);
+            unit = fn_80016BDC(*(void **)sp8);
             if (unit != 0) {
                 *(u8 *)((u8 *)obj + 0x3C) = *(u8 *)((u8 *)unit + 0x198);
             }
@@ -1152,7 +1129,7 @@ case2:
     }
     *(void **)(entry + 4) = unit;
     if (unit != 0) {
-        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
         dst = entry + 0xC;
         if (src != 0) {
         copy2:
@@ -1171,7 +1148,7 @@ case2:
     }
 after_sw:
     if (*(void **)(entry + 4) != 0) {
-        Unit_SetMapPos(*(void **)(entry + 4), entry[0xA], entry[0xB]);
+        fn_8003816C(*(void **)(entry + 4), entry[0xA], entry[0xB]);
     }
     if (*(void **)(entry + 4) != 0) {
         fn_8004F5EC(*(void **)(entry + 4), 0);
@@ -1193,6 +1170,7 @@ void fn_801069A0(u8 *arg0) {
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
+    u8 *self;
     u32 spC;
     u32 sp8;
     u8 sp10[0x68];
@@ -1204,12 +1182,13 @@ void fn_801069A0(u8 *arg0) {
     s32 var_r31;
     u32 var_r0;
 
-    *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
-    arg0[0x63] = fn_80107874(arg0 + 0x30, *(void **)(arg0 + 0x68));
-    arg0[0x62] = 0;
-    arg0[0x61] = 0;
-    if (arg0[0x63] == 0) {
-        Process_Goto(arg0, 0x63);
+    self = arg0;
+    *(void **)(self + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
+    self[0x63] = fn_80107874(self + 0x30, *(void **)(self + 0x68));
+    self[0x62] = 0;
+    self[0x61] = 0;
+    if (self[0x63] == 0) {
+        Process_Goto(self, 0x63);
         return;
     }
     if (fn_801A2300() == 0) {
@@ -1217,7 +1196,7 @@ void fn_801069A0(u8 *arg0) {
     }
     var_r31 = 0;
     var_r30 = var_r31;
-    sp8 = Hash_Lookup((void *)(arg0 + 0x30));
+    sp8 = Hash_Lookup((void *)(self + 0x30));
     if (sp8 == 0) {
         var_r0 = 0;
     } else {
@@ -2657,52 +2636,55 @@ void fn_80108C80(s32 arg0, s32 arg1) {
 }
 
 void fn_80108CB8(void *arg0) {
-    void Process_ClearFunc(void *);
-    extern void *gPadInput;
-    extern f32 lbl_8036A110;
-    extern f32 lbl_8036A114;
-    extern f32 lbl_8036A118;
-    extern f32 lbl_8036A11C;
-    s32 temp_r5;
-    s32 temp_r4_3;
-    f32 scale;
-    f32 divisor;
-    f32 one;
-    f32 v64;
-    f32 v1b;
-
-    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x200) {
-        Process_ClearFunc(arg0);
-    }
-    scale = lbl_8036A110;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = -(((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 2) * scale) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40));
-    divisor = lbl_8036A114;
-    one = lbl_8036A118;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44) = ((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 3) * scale) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) - ((f32)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 6) / divisor);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) + ((f32)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 7) / divisor);
-    if (M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) < one) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = one;
-    }
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x58) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54);
-    temp_r4_3 = M2C_FIELD(gPadInput, s32 *, 4);
-    if (temp_r4_3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r4_3) & 0x1000) {
-        v64 = lbl_8036A11C;
-        v1b = lbl_8036A118;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = v64;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44) = v64;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = v1b;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x58) = v1b;
-    }
-    if (M2C_FIELD(gPadInput, s32 *, 0xC) & 1) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) + (f32)(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4) - 1);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = (s32)M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) % M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4);
-    }
-    if (M2C_FIELD(gPadInput, s32 *, 0xC) & 2) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) + one;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = (s32)M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) % M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4);
-    }
+void Process_ClearFunc(void *);
+extern u32 *gPadInput;
+extern f32 lbl_8036A110;
+extern f32 lbl_8036A114;
+extern f32 lbl_8036A118;
+extern f32 lbl_8036A11C;
+s32 held;
+f32 fb;
+f32 scale;
+f32 divisor;
+f32 one;
+f32 v64;
+f32 v1b;
+held=(s32)gPadInput[1];
+if(held&((s32)gPadInput[2]^held)&0x200){
+Process_ClearFunc(arg0);
+}
+fb=(f32)(s8)*((u8*)gPadInput[0]+2);
+scale=lbl_8036A110;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)-(fb*scale);
+divisor=lbl_8036A114;
+one=lbl_8036A118;
+fb=(f32)(s8)*((u8*)gPadInput[0]+3);
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x44)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x44)+(fb*scale);
+fb=(f32)*((u8*)gPadInput[0]+6);
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)-(fb/divisor);
+fb=(f32)*((u8*)gPadInput[0]+7);
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)+(fb/divisor);
+if(*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)<one){
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=one;
+}
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x58)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54);
+held=(s32)gPadInput[1];
+if(held&((s32)gPadInput[2]^held)&0x1000){
+v64=lbl_8036A11C;
+v1b=one;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)=v64;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x44)=v64;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=v1b;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x58)=v1b;
+}
+if((s32)gPadInput[3]&1){
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)+(f32)(*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4)-1);
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=(f32)((s32)*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)%*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4));
+}
+if((s32)gPadInput[3]&2){
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)+one;
+*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=(f32)((s32)*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)%*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4));
+}
 }
 
 void fn_80108F38(void) {
@@ -2804,7 +2786,7 @@ void fn_8010913C(void *arg0) {
     }
 }
 
-void *Sound_Create(s32 arg0, unsigned long arg1) {
+void *Sound_Create(s32 arg0, u32 arg1) {
     void *Process_Create(void *, u32);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];
@@ -2813,11 +2795,13 @@ void *Sound_Create(s32 arg0, unsigned long arg1) {
 
     tbl = lbl_8028F390;
     switch (arg1) {
-    case 0:
-        arg1 = 3;
+    case 0U:
+        arg1 = 3U;
+        break;
+    default:
         break;
     }
-    result = Process_Create(tbl, (u32)arg1);
+    result = Process_Create(tbl, arg1);
     fn_80109F88(result, arg0);
     return result;
 }
@@ -2861,39 +2845,57 @@ void fn_80109244(struct Arg0 *arg0) {
     extern f32 lbl_8036A134;
     extern f32 lbl_8036A130;
     struct UnkCycler *outer;
+    struct Arg0 *self;
     s32 i;
     s32 temp_r31;
     s32 next;
     s32 count;
+    s32 rem;
     f32 f1_2;
     f32 pos;
+    f32 f0;
+    f32 f1;
+    u8 *p;
+    struct UnkObject *obj;
 
-    arg0->unk3C = arg0->unk3C + arg0->unk38;
-    if (arg0->unk34 <= arg0->unk3C) {
-        arg0->unk3C = arg0->unk3C - arg0->unk34;
+    self = arg0;
+    self->unk3C = self->unk3C + self->unk38;
+    f0 = self->unk3C;
+    f1 = self->unk34;
+    if (f0 >= f1) {
+        self->unk3C = f0 - f1;
     }
     Prim2D_Begin();
-    fn_80009C20(arg0->unk30, arg0->unk40, arg0->unk44, arg0->unk48 + (f32)((struct UnkCycler *)arg0->unk30)->unk6, arg0->unk4C, arg0->unk50, arg0->unk54, arg0->unk58, arg0->unk5C);
-    Prim2D_SetColorByte(arg0->unk60);
-    Prim2D_SetAlphaByte(arg0->unk61);
+    fn_80009C20(self->unk30, self->unk40, self->unk44, self->unk48 + (f32)self->unk30->unk6, self->unk4C, self->unk50, self->unk54, self->unk58, self->unk5C);
+    Prim2D_SetColorByte(self->unk60);
+    Prim2D_SetAlphaByte(self->unk61);
     Prim2D_PrepareTex();
-    pos = arg0->unk3C;
-    if (arg0->unk30->unk5 == 0) {
-        outer = arg0->unk30;
-        for (i = outer->unk4 - 1; i >= 0; i--) {
-            outer->unk14[i]->v1(0xFF);
+    outer = self->unk30;
+    pos = self->unk3C;
+    if (outer->unk5 == 0) {
+        i = outer->unk4 - 1;
+        p = (u8 *)outer + (i << 2);
+        while (i >= 0) {
+            obj = *(struct UnkObject **)(p + 0x14);
+            obj->v1(0xFF);
+            p -= 4;
+            i--;
         }
-    } else if (arg0->unk30->unk5 == 2) {
+    } else if (outer->unk5 == 2) {
         temp_r31 = (s32)pos;
+        count = outer->unk4;
         next = temp_r31 + 1;
-        count = arg0->unk30->unk4;
         f1_2 = lbl_8036A134 * (pos - (f32)temp_r31);
+        rem = next - (next / count) * count;
         if (f1_2 != lbl_8036A130) {
-            arg0->unk30->unk14[next % count]->v1((s32)f1_2);
+            obj = *(struct UnkObject **)((u8 *)outer + (rem << 2) + 0x14);
+            obj->v1((s32)f1_2);
         }
-        arg0->unk30->unk14[temp_r31]->v1(0xFF);
-    } else if (arg0->unk30->unk5 == 1) {
-        arg0->unk30->unk14[(s32)pos]->v1(0xFF);
+        obj = *(struct UnkObject **)((u8 *)outer + (temp_r31 << 2) + 0x14);
+        obj->v1(0xFF);
+    } else if (outer->unk5 == 1) {
+        obj = *(struct UnkObject **)((u8 *)outer + (((s32)pos) << 2) + 0x14);
+        obj->v1(0xFF);
     }
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
@@ -4524,8 +4526,8 @@ u8 Ai_TrySeekHealTerrain(void *arg0) {
     extern u8 gBattleMap[151280];
     extern u8 Ai_UnitIsHostileToActive[];
     void *self;
-    s8 by;
     s8 bx;
+    s8 by;
     s32 xShift;
     u8 *row;
     u8 *row2;
@@ -4816,8 +4818,8 @@ u8 Ai_TrySeekHealer(void *arg0) {
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
 
-#pragma use_lmw_stmw on
 #pragma optimization_level 2
+#pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 Ai_TryUseHealItem(void *arg0) {
     void *Item_GetByIid(void *);
@@ -4845,7 +4847,6 @@ s32 Ai_TryUseHealItem(void *arg0) {
     void *key;
     s32 vb;
     s32 vc;
-    s32 dv;
 
     best = 0;
     i = 0;
@@ -4888,8 +4889,7 @@ loop:
                     slot = best;
                 }
                 valBest = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                dv = (s8)(valBest - vc);
-                a = Abs(dv);
+                a = Abs((s8)(valBest - vc));
                 if (Abs((s8)(valBest - (s8)temp)) > a) {
                     goto set_other;
                 }
@@ -4914,28 +4914,25 @@ loop:
         goto loop;
     }
 after_loop:
-    if (best == 0) {
-        goto ret0;
-    }
-    for (idx = 4; idx < 8; idx++) {
-        if (best == Unit_GetItemSlot(arg0, idx)) {
-            break;
+    if (best != 0) {
+        for (idx = 4; idx < 8; idx++) {
+            if (best == Unit_GetItemSlot(arg0, idx)) {
+                break;
+            }
         }
+        sp12 = (s8)((u8 *)arg0)[0x19E];
+        sp10 = (s8)((u8 *)arg0)[0x19F];
+        if (!(gAiState[1] & 2) && !(*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
+            fn_801025BC(arg0, &sp12, &sp10);
+        }
+        sp8 = 0;
+        fn_800FB96C(4, (s8)sp12, (s8)sp10, arg0, (s8)sp12, (s8)sp10, (s8)idx, 0, 0);
     }
-    sp12 = (s8)((u8 *)arg0)[0x19E];
-    sp10 = (s8)((u8 *)arg0)[0x19F];
-    if (!(gAiState[1] & 2) && !(*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_801025BC(arg0, &sp12, &sp10);
-    }
-    sp8 = 0;
-    fn_800FB96C(4, (s8)sp12, (s8)sp10, arg0, (s8)sp12, (s8)sp10, (s8)idx, 0, 0);
     return best != 0;
-ret0:
-    return 0;
 }
-#pragma optimization_level reset
+#pragma opt_strength_reduction on
 #pragma use_lmw_stmw reset
-#pragma opt_strength_reduction reset
+#pragma optimization_level reset
 
 s32 Unit_HasLowHpAi(void *arg0) {
     void *Res_GetByName(s32);
@@ -6050,18 +6047,18 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
-    int var_r26;
+    register int var_r26;
     int var_r28;
     register u8 temp_r3;
     int temp_r0;
     s32 var_r27;
-    unsigned int temp_r30;
+    register unsigned int temp_r30;
     register s32 var_r25;
     u8 *var_r21;
     s32 var_r24;
     s32 var_r23;
     int var_r7;
-    u8 *temp_r21;
+    register u8 *temp_r21;
 
     var_r28 = 0;
     Map_SelectRangeBuffer(gBattleMap, 6);

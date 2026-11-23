@@ -371,75 +371,47 @@ BOOL EXIDma(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
 
 u32 fn_80204410(void);
 u32 OSGetConsoleType(void);
-s32 EXISync(s32 arg0) {
-    EXIControl *exi;
-    s32 ret;
-    u32 data;
-    u8 *buf;
-    s32 len;
-    s32 temp;
-    u32 ctr;
+#pragma scheduling off
+#pragma use_lmw_stmw on
+BOOL EXISync(s32 chan) {
+    u8 filler[8];
     s32 i;
-    s32 ctr2;
-    s32 enabled;
+    s32 len;
+    u8 *buf;
+    u32 data;
+    BOOL enabled;
+    BOOL ret;
+    EXIControl *exi;
 
-    exi = &Ecb_8033E188[arg0];
+    (void)filler;
+    exi = &Ecb_8033E188[chan];
     ret = 0;
 
 wait:
-    while (__EXIRegs[arg0 * 5 + 3] & 1) {
+    while (__EXIRegs[chan * 5 + 3] & 1) {
     }
 
     enabled = OSDisableInterrupts();
     if (exi->state & 4) {
         if (exi->state & 3) {
             if (exi->state & 2) {
-                len = exi->immLen;
-                if (len != 0) {
+                if ((len = exi->immLen) != 0) {
                     buf = exi->immBuf;
-                    data = __EXIRegs[arg0 * 5 + 4];
-                    i = 0;
-                    if ((s32)data > 0) {
-                        temp = len - 8;
-                        if (len > 8) {
-                            ctr = (u32)(temp + 7) >> 3;
-                            if (temp > 0) {
-                                do {
-                                    buf[0] = (u8)(data >> ((3 - i) * 8));
-                                    buf[1] = (u8)(data >> ((3 - (i + 1)) * 8));
-                                    buf[2] = (u8)(data >> ((3 - (i + 2)) * 8));
-                                    buf[3] = (u8)(data >> ((3 - (i + 3)) * 8));
-                                    buf[4] = (u8)(data >> ((3 - (i + 4)) * 8));
-                                    buf[5] = (u8)(data >> ((3 - (i + 5)) * 8));
-                                    buf[6] = (u8)(data >> ((3 - (i + 6)) * 8));
-                                    buf[7] = (u8)(data >> ((3 - (i + 7)) * 8));
-                                    buf += 8;
-                                    i += 8;
-                                    ctr -= 1;
-                                } while (ctr != 0);
-                            }
-                            ctr2 = len - i;
-                            if (i < len) {
-                                do {
-                                    *buf = (u8)(data >> ((3 - i) * 8));
-                                    buf += 1;
-                                    i += 1;
-                                    ctr2 -= 1;
-                                } while (ctr2 != 0);
-                            }
-                        }
+                    data = __EXIRegs[chan * 5 + 4];
+                    for (i = 0; i < len; i++) {
+                        *buf++ = (u8)(data >> (8 * (3 - i)));
                     }
-                    exi->state &= ~3;
                 }
             }
+            exi->state &= ~3;
         }
         if (fn_80204410() == 0xFF &&
             (OSGetConsoleType() & 0xF0000000) != 0x20000000 &&
             exi->immLen == 4 &&
-            (__EXIRegs[arg0 * 5] & 0x0E000000) == 0 &&
-            (__EXIRegs[arg0 * 5 + 4] == 0x01010000 ||
-             __EXIRegs[arg0 * 5 + 4] == 0x05070000 ||
-             (__EXIRegs[arg0 * 5 + 4] == 0x04220001 &&
+            (__EXIRegs[chan * 5] & 0x70) == 0 &&
+            (__EXIRegs[chan * 5 + 4] == 0x01010000 ||
+             __EXIRegs[chan * 5 + 4] == 0x05070000 ||
+             (__EXIRegs[chan * 5 + 4] == 0x04220001 &&
               *(u16 *)0x800030E6 == 0x8200))) {
             ret = 1;
         }
@@ -450,7 +422,6 @@ wait:
     }
     return ret;
 }
-
 BOOL EXIClearInterrupts(s32 chan, BOOL exi, BOOL tc, BOOL ext) {
     u32 cpr;
     u32 prev;

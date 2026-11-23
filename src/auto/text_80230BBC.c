@@ -599,7 +599,7 @@ return result;
 }
 
 s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
-    extern s32 errno;
+    extern s32 lbl_803687F0;
     s32 __flush_buffer(void *, s32 *);
     typedef struct {
         u8 pad[4];
@@ -637,7 +637,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
     offset = arg1;
 
     if (s4->mode != 1 || M2C_FIELD(arg0, u8 *, 0xA) != 0) {
-        errno = 0x28;
+        lbl_803687F0 = 0x28;
         return -1;
     }
 
@@ -645,18 +645,17 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
         if (__flush_buffer((void *)arg0, 0) != 0) {
             M2C_FIELD(arg0, u8 *, 0xA) = 1;
             M2C_FIELD(arg0, s32 *, 0x28) = 0;
-            errno = 0x28;
+            lbl_803687F0 = 0x28;
             return -1;
         }
     }
 
     if (whence == 1) {
-        p = 0;
         whence = 0;
         adj = 0;
         if ((s4->mode != 1 && s4->mode != 2) || M2C_FIELD(arg0, u8 *, 0xA) != 0) {
             result = -1;
-            errno = 0x28;
+            lbl_803687F0 = 0x28;
         } else if (b8->mode == 0) {
             result = M2C_FIELD(arg0, s32 *, 0x18);
         } else {
@@ -698,7 +697,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
             if (seek_proc(M2C_FIELD(arg0, s32 *, 0), &offset, whence, M2C_FIELD(arg0, s32 *, 0x48)) != 0) {
                 M2C_FIELD(arg0, u8 *, 0xA) = 1;
                 M2C_FIELD(arg0, s32 *, 0x28) = 0;
-                errno = 0x28;
+                lbl_803687F0 = 0x28;
                 return -1;
             }
         }

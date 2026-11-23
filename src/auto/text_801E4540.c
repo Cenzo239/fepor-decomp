@@ -2181,135 +2181,166 @@ s32 fn_801E87EC(void *arg0, s32 arg1) {
     return 0;
 }
 
-#pragma cplusplus on
-extern "C" s8 fn_801E8920(void *arg0, u8 arg1) {
-    struct It {
-        void *node;
-        It(void *n) : node(n) {}
-        It(const It &o) : node(o.node) {}
-        void *operator*() const { return *(void **)node; }
-        void next() { node = *(void **)node; }
-        int operator==(const It &o) const { return node == o.node; }
-        int operator!=(const It &o) const { return node != o.node; }
-    };
-
-    u8 sp1C;
-    u8 sp18;
-    u8 sp14;
-    u8 sp10;
-    u8 spC;
-    u8 sp8;
-    s8 key;
+#pragma opt_propagation off
+s8 fn_801E8920(void *arg0, s32 arg1) {
+    typedef struct Frame {
+        u8 sp8;
+        u8 pad9[3];
+        u8 spC;
+        u8 padD[3];
+        u8 sp10;
+        u8 pad11[3];
+        u8 sp14;
+        u8 pad15[3];
+        u8 sp18;
+        u8 pad19[3];
+        u8 sp1C;
+        u8 pad1D[3];
+        void *sp20;
+        void *sp24;
+        void *sp28;
+        void *sp2C;
+        void *sp30;
+        void *sp34;
+        void *sp38;
+        void *sp3C;
+        void *sp40;
+        void *sp44;
+        void *sp48;
+        void *sp4C;
+        void *sp50;
+        void *sp54;
+        void *sp58;
+        void *sp5C;
+        void *sp60;
+        void *sp64;
+        void *sp68;
+        void *sp6C;
+        void *sp70;
+        void *sp74;
+    } Frame;
+    Frame fr;
+    Frame *p;
     void *head;
     void *tail;
-    void *data;
+    u8 match;
     void *node;
-    u8 found;
-    s32 count;
-    It result((void *)0);
+    u8 *bytes;
+    s8 key;
+    s8 count;
+    s8 flag;
+    s8 mode;
 
-    key = *(s8 *)((u8 *)arg0 + 0x30);
-    head = (u8 *)arg0 + 0x54;
-    tail = *(void **)((u8 *)arg0 + 0x58);
+    p = &fr;
+    mode = *(s8 *)((char *)arg0 + 0x30);
+    head = (char *)arg0 + 0x54;
+    tail = *(void **)((char *)arg0 + 0x58);
 
-    It sp70(head);
-    It sp3C(head);
-    It sp38(head);
-    It sp34(head);
-    It sp30(head);
-    It sp6C(tail);
-    It sp2C(tail);
-    It sp28(tail);
-    It sp24(tail);
-    It sp20(tail);
+    p->sp3C = head;
+    p->sp38 = head;
+    p->sp34 = head;
+    p->sp30 = head;
+    p->sp70 = head;
+    p->sp2C = tail;
+    p->sp28 = tail;
+    p->sp24 = tail;
+    p->sp20 = tail;
+    p->sp6C = tail;
 
-    switch (key) {
-    case 0: {
-        sp18 = arg1;
-        sp1C = arg1;
-        It sp60(tail);
-        It sp64(head);
-        for (;;) {
-            if (sp64 == It(tail)) break;
-            found = 0;
-            node = *sp64;
-            data = *(void **)((u8 *)node + 8);
-            if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 2)) {
-                found = 1;
-            }
-            if (found == 0) {
-                sp64.node = node;
-                continue;
-            }
+    switch (mode) {
+    case 0:
+        p->sp18 = (u8)arg1;
+        p->sp1C = (u8)arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp60 = tail;
+        p->sp64 = head;
+        goto cond0;
+    incr0:
+        p->sp64 = node;
+    cond0:
+        if (*(void *volatile *)&p->sp64 == tail)
             break;
+        match = 0;
+        node = *(void **)*(void *volatile *)&p->sp64;
+        bytes = *(u8 **)((char *)node + 8);
+        if ((s8)bytes[0] >= 0) {
+            if (key == (s8)bytes[2])
+                match = 1;
         }
-        It sp68(sp64);
-        result = sp64;
+        if (!match)
+            goto incr0;
+        p->sp68 = p->sp64;
+        p->sp74 = p->sp64;
+        break;
+    case 1:
+        p->sp10 = (u8)arg1;
+        p->sp14 = (u8)arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp54 = tail;
+        p->sp58 = head;
+        goto cond1;
+    incr1:
+        p->sp58 = node;
+    cond1:
+        if (*(void *volatile *)&p->sp58 == tail)
+            break;
+        match = 0;
+        node = *(void **)*(void *volatile *)&p->sp58;
+        bytes = *(u8 **)((char *)node + 8);
+        if ((s8)bytes[0] >= 0) {
+            if (key == (s8)bytes[1])
+                match = 1;
+        }
+        if (!match)
+            goto incr1;
+        p->sp5C = p->sp58;
+        p->sp74 = p->sp58;
+        break;
+    case 2:
+        p->sp8 = (u8)arg1;
+        p->spC = (u8)arg1;
+        key = (s8)(arg1 & 0xFF);
+        p->sp48 = tail;
+        p->sp4C = head;
+        goto cond2;
+    incr2:
+        p->sp4C = node;
+    cond2:
+        if (*(void *volatile *)&p->sp4C == tail)
+            break;
+        match = 0;
+        node = *(void **)*(void *volatile *)&p->sp4C;
+        bytes = *(u8 **)((char *)node + 8);
+        if ((s8)bytes[0] >= 0) {
+            if (key == (s8)bytes[4])
+                match = 1;
+        }
+        if (!match)
+            goto incr2;
+        p->sp50 = p->sp4C;
+        p->sp74 = p->sp4C;
+        break;
+    default:
+        p->sp74 = (void *)arg1;
         break;
     }
-    case 1: {
-        sp10 = arg1;
-        sp14 = arg1;
-        It sp54(tail);
-        It sp58(head);
-        for (;;) {
-            if (sp58 == It(tail)) break;
-            found = 0;
-            node = *sp58;
-            data = *(void **)((u8 *)node + 8);
-            if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 1)) {
-                found = 1;
-            }
-            if (found == 0) {
-                sp58.node = node;
-                continue;
-            }
-            break;
-        }
-        It sp5C(sp58);
-        result = sp58;
-        break;
-    }
-    case 2: {
-        sp8 = arg1;
-        spC = arg1;
-        It sp48(tail);
-        It sp4C(head);
-        for (;;) {
-            if (sp4C == It(tail)) break;
-            found = 0;
-            node = *sp4C;
-            data = *(void **)((u8 *)node + 8);
-            if (*(s8 *)data >= 0 && (s8)arg1 == *(s8 *)((u8 *)data + 4)) {
-                found = 1;
-            }
-            if (found == 0) {
-                sp4C.node = node;
-                continue;
-            }
-            break;
-        }
-        It sp50(sp4C);
-        result = sp4C;
-        break;
-    }
-    }
 
-    node = *result;
-    data = *(void **)((u8 *)node + 8);
-    if (*(s8 *)data < 0) {
-        return (s8)*(s8 *)data;
+    node = *(void **)p->sp74;
+    bytes = *(u8 **)((char *)node + 8);
+    flag = (s8)bytes[0];
+    if (flag >= 0) {
+        count = 0;
+        p->sp40 = p->sp74;
+        p->sp44 = p->sp6C;
+        while (p->sp40 != p->sp6C) {
+            count++;
+            p->sp40 = *(void **)p->sp40;
+        }
+        flag = (s8)(count - 1);
     }
-    count = 0;
-    It cur(result);
-    It end(sp6C);
-    while (cur != end) {
-        count += 1;
-        cur.next();
-    }
-    return (s8)(count - 1);
+    return flag;
 }
-#pragma cplusplus reset
+#pragma opt_propagation on
 s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     s8 thresh;
     s32 var_r6;
@@ -2574,8 +2605,8 @@ void fn_801E8D34(u8 *arg0) {
 }
 
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
-    s32 var_r8;
     s16 temp_r6;
+    s32 var_r8;
     u32 temp_r5;
     u32 temp_r0;
     s32 temp_r6_2;
@@ -3211,8 +3242,6 @@ default: {
 void fn_801EA018(s32 *arg0, u8 *arg1) {
     void fn_800C428C(void *);
     void fn_801EA618(s32 *, s32 *, u8 *);
-    void *sp1C;
-    void *sp18;
     s32 sp14;
     u8 sp10;
     u8 spC;
@@ -3231,9 +3260,12 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
     u32 var_r3;
     u32 n;
     u8 var_r0;
+    void *sp1C;
+    void *sp18;
 
     temp_r0 = arg0[0];
-    if (temp_r0 == 2) {
+    switch (temp_r0) {
+    case 2: {
         temp_r6 = (void *)arg0[2];
         temp_r8 = *(void **)((u8 *)temp_r6 + 4);
         temp_r5 = *(void **)((u8 *)temp_r6 + 8);
@@ -3254,7 +3286,12 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
             arg0[1] = arg0[2];
             arg0[2] = (s32)tmp;
         }
-    } else if (temp_r0 < 0 || temp_r0 >= 3) {
+        break;
+    }
+    case 0:
+    case 1:
+        break;
+    default: {
         half = (u32)temp_r0 >> 1;
         var_r7 = (void *)arg0[2];
         var_r3 = half;
@@ -3314,6 +3351,8 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
                 sp14 -= 1;
             }
         }
+        break;
+    }
     }
 }
 

@@ -3816,6 +3816,7 @@ void fn_801F99C4(void *arg0) {
     void sprintf(void *, void *, ...);
     extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA18;
+    extern f64 lbl_8036BA10;
     extern f32 lbl_8036BA88;
     extern f32 lbl_8036BA8C;
 
@@ -3824,13 +3825,14 @@ void fn_801F99C4(void *arg0) {
     void *temp_r28;
     void *temp_r31;
     void *temp_r29;
-    s8 var_r30;
+    s32 var_r30;
     s32 var_r3;
     void *temp_r3;
     void *temp_r3_2;
     s32 temp_r4;
     f32 f2;
 
+    (void)lbl_8036BA10;
     temp_r29 = arg0;
     var_r4 = (void **)((u8 *)temp_r29 + 0x34);
     var_r30 = *(s8 *)((u8 *)arg0 + 0x54);
@@ -4006,8 +4008,8 @@ void fn_801F9E00(void *arg0) {
     Obj *obj;
     s32 temp_r0;
     u8 pk;
-    f32 lim;
     f32 f;
+    f32 lim;
     s32 count;
 
     temp_r28 = gBattleState + 0x3C4;
@@ -4057,8 +4059,8 @@ loop_check:
     if (packet.kind != 0xFF) {
         fn_801FAA9C(&obj->unk30, obj->unk38 + (obj->unk34 << 3), 1, &packet);
     }
-    lim = lbl_8036BA00;
     f = lbl_8036BA04 + obj->unk3C;
+    lim = lbl_8036BA00;
     count = obj->unk34;
     obj->unk40 = f + (f32)(u32)(count << 6);
     obj->unk48 = (s32)((obj->unk40 / lim) * (f32)obj->unk48);
@@ -4150,16 +4152,16 @@ void fn_801FA4B8(s32 arg0, s32 arg1) {
     extern f32 lbl_8036BA00;
     void *Process_Create(void *, s32);
     void *temp;
-    s32 *pz;
-    f32 *pf;
+    s32 zero;
+    f32 f;
 
     temp = Process_Create(lbl_8029B2F4, arg1);
     if (temp != NULL) {
-        pz = (s32 *)((u8 *)temp + 0x30);
-        pf = (f32 *)((u8 *)temp + 0x38);
-        *pz = 0;
-        *pf = lbl_8036BA00;
         *(s32 *)((u8 *)temp + 0x44) = arg0;
+        zero = 0;
+        f = lbl_8036BA00;
+        *(s32 *)((u8 *)temp + 0x30) = zero;
+        *(f32 *)((u8 *)temp + 0x38) = f;
     }
 }
 

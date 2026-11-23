@@ -4,7 +4,7 @@
 
 extern u8 gUiMenuDrawVtbl[128];
 extern u8 lbl_80292808[160];
-extern u8 lbl_80292914[128];
+extern u8 lbl_80292914[124];
 extern u8 lbl_80292990[76];
 extern u8 lbl_802929DC[76];
 extern u8 lbl_80292A28[76];
@@ -13,12 +13,12 @@ extern u8 lbl_80292AC0[76];
 extern u8 lbl_80292B0C[124];
 extern u8 lbl_80292B88[76];
 extern u8 lbl_80292BD4[152];
-extern u8 lbl_80292C6C[128];
-extern u8 lbl_80292CCC[128];
-extern u8 lbl_80292D2C[128];
-extern u8 lbl_80292D8C[128];
-extern u8 lbl_80292DEC[128];
-extern u8 lbl_80292E4C[128];
+extern u8 lbl_80292C6C[96];
+extern u8 lbl_80292CCC[96];
+extern u8 lbl_80292D2C[96];
+extern u8 lbl_80292D8C[96];
+extern u8 lbl_80292DEC[96];
+extern u8 lbl_80292E4C[192];
 extern u8 lbl_80292F0C[84];
 extern void *lbl_80367B18;
 extern void *lbl_80367B1C;

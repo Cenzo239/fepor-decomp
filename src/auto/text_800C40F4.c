@@ -10464,6 +10464,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     f32 y;
     f32 z;
     f32 x;
+    f32 *out = arg0;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
@@ -10476,9 +10477,9 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     z = *(f32 *)((u8 *)arg1 + 0x68);
     y = *(f32 *)((u8 *)arg1 + 0x64);
     x = *(f32 *)((u8 *)arg1 + 0x60);
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
 }
 #pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
@@ -19887,8 +19888,8 @@ s32 fn_800EB854(void) {
     return result;
 }
 #pragma peephole reset
-void fn_800EB884(void) {
-
+void fn_800EB884(void)
+{
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;

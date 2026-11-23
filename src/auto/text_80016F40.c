@@ -878,16 +878,27 @@ void fn_8001840C(void *arg0)
 }
 
 void fn_80018594(void *arg0) {
-    s32 i;
+    struct Rec {
+        u32 w0;
+        s32 w4;
+        s32 w8;
+        s32 wC;
+        s32 w10;
+    };
+    struct Rec tmpA;
+    struct Rec tmpB;
+    struct Rec *cur;
+    struct Rec *nxt;
+    struct Rec *base;
+    s32 mul;
     s32 j;
+    s32 i;
     s32 off;
-    void *base;
-    void *cur;
-    void *nxt;
-    s32 t4, t8, tc, t10;
-    u8 t0;
-    u8 idx;
-    void *slot;
+    s32 a;
+    s32 b;
+    u32 idx;
+    void **slot;
+    s32 val;
 
     i = 0;
     *((u8 *)arg0 + 0x45) = 0;
@@ -900,84 +911,68 @@ void fn_80018594(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x38) = 0;
 
     while (i < *((u8 *)arg0 + 0x44)) {
-        j = 0;
-        off = 0;
-        while (j < (*((u8 *)arg0 + 0x44) - 1) - i) {
-            base = *(void **)((u8 *)arg0 + 0x40);
-            cur = (u8 *)base + off;
-            if (*(s32 *)((u8 *)cur + 4) > *(s32 *)((u8 *)cur + 0x18)) {
-                nxt = (u8 *)base + (j + 1) * 0x14;
-                t0 = *(u8 *)cur;
-                t4 = *(s32 *)((u8 *)cur + 4);
-                t8 = *(s32 *)((u8 *)cur + 8);
-                tc = *(s32 *)((u8 *)cur + 0xc);
-                t10 = *(s32 *)((u8 *)cur + 0x10);
+        for (off = 0, j = 0; j < (*((u8 *)arg0 + 0x44) - 1) - i; off += 0x14, j++) {
+            base = *(struct Rec **)((u8 *)arg0 + 0x40);
+            cur = (struct Rec *)((u8 *)base + off);
+            if (cur->w4 > ((struct Rec *)((u8 *)cur + 0x14))->w4) {
+                mul = (j + 1) * 0x14;
+                nxt = (struct Rec *)((u8 *)base + mul);
+                tmpA = *cur;
                 *(u8 *)cur = *(u8 *)nxt;
-                *(s32 *)((u8 *)cur + 4) = *(s32 *)((u8 *)nxt + 4);
-                *(s32 *)((u8 *)cur + 8) = *(s32 *)((u8 *)nxt + 8);
-                *(s32 *)((u8 *)cur + 0xc) = *(s32 *)((u8 *)nxt + 0xc);
-                *(s32 *)((u8 *)cur + 0x10) = *(s32 *)((u8 *)nxt + 0x10);
-                nxt = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (j + 1) * 0x14;
-                *(u8 *)nxt = t0;
-                *(s32 *)((u8 *)nxt + 4) = t4;
-                *(s32 *)((u8 *)nxt + 8) = t8;
-                *(s32 *)((u8 *)nxt + 0xc) = tc;
-                *(s32 *)((u8 *)nxt + 0x10) = t10;
+                cur->w4 = nxt->w4;
+                a = nxt->w8;
+                b = nxt->wC;
+                cur->w8 = a;
+                cur->wC = b;
+                cur->w10 = nxt->w10;
+                nxt = (struct Rec *)((u8 *)*(struct Rec **)((u8 *)arg0 + 0x40) + mul);
+                *(u8 *)nxt = *(u8 *)&tmpA;
+                nxt->w4 = tmpA.w4;
+                nxt->w8 = tmpA.w8;
+                nxt->wC = tmpA.wC;
+                nxt->w10 = tmpA.w10;
             }
-            off += 0x14;
-            j += 1;
         }
-        i += 1;
+        i++;
     }
 
-    i = 0;
-    while (i < *((u8 *)arg0 + 0x44)) {
-        j = 0;
-        off = 0;
-        while (j < (*((u8 *)arg0 + 0x44) - 1) - i) {
-            base = *(void **)((u8 *)arg0 + 0x40);
-            cur = (u8 *)base + off;
+    for (j = 0; j < *((u8 *)arg0 + 0x44); j++) {
+        for (off = 0, i = 0; i < (*((u8 *)arg0 + 0x44) - 1) - j; off += 0x14, i++) {
+            base = *(struct Rec **)((u8 *)arg0 + 0x40);
+            cur = (struct Rec *)((u8 *)base + off);
             if (*(u8 *)cur > *(u8 *)((u8 *)cur + 0x14)) {
-                nxt = (u8 *)base + (j + 1) * 0x14;
-                t0 = *(u8 *)cur;
-                t4 = *(s32 *)((u8 *)cur + 4);
-                t8 = *(s32 *)((u8 *)cur + 8);
-                tc = *(s32 *)((u8 *)cur + 0xc);
-                t10 = *(s32 *)((u8 *)cur + 0x10);
+                mul = (i + 1) * 0x14;
+                nxt = (struct Rec *)((u8 *)base + mul);
+                tmpB = *cur;
                 *(u8 *)cur = *(u8 *)nxt;
-                *(s32 *)((u8 *)cur + 4) = *(s32 *)((u8 *)nxt + 4);
-                *(s32 *)((u8 *)cur + 8) = *(s32 *)((u8 *)nxt + 8);
-                *(s32 *)((u8 *)cur + 0xc) = *(s32 *)((u8 *)nxt + 0xc);
-                *(s32 *)((u8 *)cur + 0x10) = *(s32 *)((u8 *)nxt + 0x10);
-                nxt = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (j + 1) * 0x14;
-                *(u8 *)nxt = t0;
-                *(s32 *)((u8 *)nxt + 4) = t4;
-                *(s32 *)((u8 *)nxt + 8) = t8;
-                *(s32 *)((u8 *)nxt + 0xc) = tc;
-                *(s32 *)((u8 *)nxt + 0x10) = t10;
+                cur->w4 = nxt->w4;
+                a = nxt->w8;
+                b = nxt->wC;
+                cur->w8 = a;
+                cur->wC = b;
+                cur->w10 = nxt->w10;
+                nxt = (struct Rec *)((u8 *)*(struct Rec **)((u8 *)arg0 + 0x40) + mul);
+                *(u8 *)nxt = *(u8 *)&tmpB;
+                nxt->w4 = tmpB.w4;
+                nxt->w8 = tmpB.w8;
+                nxt->wC = tmpB.wC;
+                nxt->w10 = tmpB.w10;
             }
-            off += 0x14;
-            j += 1;
         }
-        i += 1;
     }
 
-    i = 0;
-    off = 0;
-    while (i < *((u8 *)arg0 + 0x44)) {
-        cur = (u8 *)*(void **)((u8 *)arg0 + 0x40) + off;
+    for (off = 0, i = 0; i < *((u8 *)arg0 + 0x44); off += 0x14, i++) {
+        cur = (struct Rec *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + off);
         idx = *(u8 *)cur;
-        slot = (u8 *)arg0 + (idx * 4) + 0x48;
-        if (*(void **)slot == NULL) {
-            *(void **)slot = cur;
+        slot = (void **)((u8 *)arg0 + idx * 4 + 0x48);
+        if (*slot == NULL) {
+            *slot = cur;
         }
         *((u8 *)arg0 + idx + 0x45) = *((u8 *)arg0 + idx + 0x45) + 1;
-        t4 = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + off + 4);
-        if (t4 > *(s32 *)((u8 *)arg0 + 0x38)) {
-            *(s32 *)((u8 *)arg0 + 0x38) = t4;
+        val = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + off + 4);
+        if (val > *(s32 *)((u8 *)arg0 + 0x38)) {
+            *(s32 *)((u8 *)arg0 + 0x38) = val;
         }
-        off += 0x14;
-        i += 1;
     }
 }
 

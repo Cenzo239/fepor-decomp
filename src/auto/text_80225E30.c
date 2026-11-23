@@ -927,12 +927,18 @@ s32 fn_802290F8(u32, s32);
 s32 TRK_cc_write(s32, s32);
 #pragma use_lmw_stmw on
 s32 fn_80227174(void *arg0) {
-    void *a = arg0;
-    u8 unk18 = *(u8 *)((u8 *)a + 0x18);
+    s32 TRKSetBufferPosition(void *, u32);
+    void *a;
+    u8 unk18;
     u32 unk1C;
-    u32 unk20 = *(u32 *)((u8 *)a + 0x20);
-    u32 unk24 = *(u32 *)((u8 *)a + 0x24);
+    u32 unk20;
+    u32 unk24;
+
+    a = arg0;
     TRKSetBufferPosition(a, 0);
+    unk18 = *(u8 *)((u8 *)a + 0x18);
+    unk20 = *(u32 *)((u8 *)a + 0x20);
+    unk24 = *(u32 *)((u8 *)a + 0x24);
 
     switch (unk18) {
     case 16:
@@ -966,9 +972,18 @@ s32 fn_80227174(void *arg0) {
             return 0;
         }
     }
+    default: {
+        u8 buf[0x40];
+        memset(buf, 0, 0x40);
+        buf[4] = 0x80;
+        *(s32 *)buf = 0x40;
+        buf[8] = 0x12;
+        TRK_cc_write((s32)(void *)buf, 0x40);
+        return 0;
+    }
     case 1:
     case 17: {
-        if (TRKTargetStopper() == 0) {
+        if (TRKTargetStopped() == 0) {
             u8 buf[0x40];
             memset(buf, 0, 0x40);
             buf[4] = 0x80;
@@ -987,15 +1002,6 @@ s32 fn_80227174(void *arg0) {
             break;
         }
     }
-    default: {
-        u8 buf[0x40];
-        memset(buf, 0, 0x40);
-        buf[4] = 0x80;
-        *(s32 *)buf = 0x40;
-        buf[8] = 0x12;
-        TRK_cc_write((s32)(void *)buf, 0x40);
-        return 0;
-    }
     }
     switch (unk18) {
     case 0:
@@ -1007,7 +1013,6 @@ s32 fn_80227174(void *arg0) {
     default:
         return 0;
     }
-    return 0;
 }
 
 s32 fn_80227394(void) {

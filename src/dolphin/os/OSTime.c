@@ -149,40 +149,46 @@ typedef struct OSCalendarTime {
     s32 usec;
 } OSCalendarTime;
 
+#pragma peephole off
 #pragma use_lmw_stmw on
-void fn_8020B294(s64 ticks, void *td) {
+void fn_8020B294(s64 ticks, OSCalendarTime *td) {
     s64 __mod2i(s64, s64);
     s64 __div2i(s64, s64);
     void fn_8020B0F8(s32, void *);
     s32 days;
     s32 secs;
     s32 hours;
-    s64 d;
     s64 tmp;
+    s64 d;
+    u32 *hw;
+    s32 daySec;
 
-    d = __mod2i(ticks, (s64)(*(u32 *)0x800000F8 >> 2));
+    hw = (u32 *)0x80000000;
+    d = __mod2i(ticks, (s64)(hw[0x3E] >> 2));
     if (d < 0) {
-        d += (s64)(*(u32 *)0x800000F8 >> 2);
+        d += (s64)(hw[0x3E] >> 2);
     }
-    tmp = __div2i(d * 8, (s64)(__mulhwu(0x431BDE83, *(u32 *)0x800000F8 >> 2) >> 15));
-    *(s32 *)((u8 *)td + 0x24) = (s32)__mod2i(tmp, 1000);
-    tmp = __div2i(d, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
-    *(s32 *)((u8 *)td + 0x20) = (s32)__mod2i(tmp, 1000);
-    ticks = ticks - d;
-    tmp = __div2i(ticks, (s64)(*(u32 *)0x800000F8 >> 2));
-    days = (s32)(__div2i(tmp, 86400) + 0xB2575);
-    secs = (s32)__mod2i(__div2i(ticks, (s64)(*(u32 *)0x800000F8 >> 2)), 86400);
+    tmp = __div2i(d * 8, (s64)(__mulhwu(0x431BDE83, hw[0x3E] >> 2) >> 15));
+    td->usec = (s32)__mod2i(tmp, 1000);
+    tmp = __div2i(d, (s64)(__mulhwu(0x10624DD3, hw[0x3E] >> 2) >> 6));
+    td->msec = (s32)__mod2i(tmp, 1000);
+    ticks -= d;
+    daySec = 0x15180;
+    tmp = __div2i(ticks, (s64)(hw[0x3E] >> 2));
+    days = (s32)(__div2i(tmp, (s64)daySec) + 0xB2575);
+    secs = (s32)__mod2i(__div2i(ticks, (s64)(hw[0x3E] >> 2)), (s64)daySec);
     if (secs < 0) {
         days -= 1;
-        secs += 86400;
+        secs += 0x15180;
     }
     fn_8020B0F8(days, td);
     hours = secs / 60;
-    *(s32 *)((u8 *)td + 0x8) = hours / 60;
-    *(s32 *)((u8 *)td + 0x4) = hours % 60;
-    *(s32 *)((u8 *)td + 0x0) = secs % 60;
+    td->hour = hours / 60;
+    td->min = hours % 60;
+    td->sec = secs % 60;
 }
 #pragma use_lmw_stmw reset
+#pragma peephole reset
 void __init_cpp(void);
 
 void __init_user(void) {

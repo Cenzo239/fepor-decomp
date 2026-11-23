@@ -365,29 +365,42 @@ GXWGFifo.u32=v;
 __GXData[1]=0;
 }
 
-void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2) {
-    u32 value = 0;
-    u32 format;
-    u32 mode = 0;
-    u16 *gx;
-    u8 cmd;
-    value = __rlwimi(value, arg2, 0, 8, 31);
-    value = __rlwimi(value, 0xF4, 24, 0, 7);
-    switch (arg1) {
-    case 17: format=0; break;
-    case 19: format=1; break;
-    case 22: format=2; break;
-    default: format=2; break;
-    }
-    cmd=0x61;
-    gx=__GXData;
-    GXWGFifo.u8=cmd;
-    mode=__rlwimi(__rlwimi(mode,format,0,30,31),arg0,2,28,29);
-    GXWGFifo.u32=value;
-    mode = (mode & 0x00FFFFFF) | 0xF5000000;
-    GXWGFifo.u8=cmd;
-    GXWGFifo.u32=mode;
-    gx[1]=0;
+void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2)
+{
+  u32 value = 0;
+  u32 mode = 0;
+  u16 *gx;
+  u8 cmd;
+  value = __rlwimi(value, arg2, 0, 8, 31);
+  value = __rlwimi(value, 0xF4, 24, 0, 7);
+  switch (arg1)
+  {
+    case 17:
+      arg1 = 0;
+      break;
+
+    case 19:
+      arg1 = 1;
+      break;
+
+    case 22:
+      arg1 = 2;
+      break;
+
+    default:
+      arg1 = 2;
+      break;
+
+  }
+
+  GXWGFifo.u8 = (cmd = 0x61);
+  ;
+  mode = __rlwimi(__rlwimi(mode, arg1, 0, 30, 31), arg0, 2, 28, 29);
+  GXWGFifo.u32 = value;
+  mode = 0xF5000000 | mode;
+  GXWGFifo.u8 = cmd;
+  GXWGFifo.u32 = mode;
+  __GXData[1] = 0;
 }
 
 void GXSetTevOrder(s32 stage, s32 coord, s32 map, s32 color) {

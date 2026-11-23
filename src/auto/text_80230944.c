@@ -211,15 +211,16 @@ extern s32 D_8022EF64;
 
 #pragma global_optimizer off
 
-void fn_80230944(u8 *dest, u8 *a, u8 *b) {
+#pragma global_optimizer off
+void fn_80230944(RuntimeDecimal *dest, RuntimeDecimal *a, RuntimeDecimal *b) {
     u8 sp8[0x54];
     u8 *out;
     u8 *end;
-    s32 dig_b;
-    s32 dig_a;
-    s32 pos;
+    u8 dig_b = b->length;
+    u8 dig_a = a->length;
+    s32 pos = dig_a + (dig_b - 1);
     s32 q;
-    u32 acc;
+    u32 acc = 0;
     s32 i, j, n, n8;
     u8 *pa, *pb;
     u32 prod;
@@ -228,13 +229,9 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
     u8 *p, *base;
     u8 d;
 
-    dig_b = b[4];
-    dig_a = a[4];
-    pos = dig_a + (dig_b - 1);
-    acc = 0;
     q = pos + 1;
     out = sp8 + q;
-    dest[0] = 0;
+    dest->sign = 0;
     end = out;
 
     for (;;) {
@@ -247,8 +244,8 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
         n = j + 1;
         {
             s32 lim = dig_a - i;
-            pa = a + i + 5;
-            pb = b + j + 5;
+            pa = a->digits + i;
+            pb = b->digits + j;
             if (n > lim) {
                 n = lim;
             }
@@ -288,16 +285,16 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
         if (pos <= 0) break;
     }
 
-    *(s16 *)(dest + 2) = *(s16 *)(a + 2) + *(s16 *)(b + 2);
+    dest->exponent = a->exponent + b->exponent;
     if (acc != 0) {
         *--out = (u8)acc;
-        (*(s16 *)(dest + 2))++;
+        dest->exponent++;
     }
 
     for (c = 0; c < 0x24 && out < end; c++, out++) {
-        dest[c + 5] = *out;
+        dest->digits[c] = *out;
     }
-    dest[4] = (u8)c;
+    dest->length = (u8)c;
 
     if (out < end) {
         d = *out;
@@ -319,8 +316,8 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
                 goto done;
             }
         round_up:
-            base = dest + 5;
-            p = base + dest[4] - 1;
+            base = dest->digits;
+            p = base + dest->length - 1;
             for (;;) {
                 if (*p < 9) {
                     (*p)++;
@@ -328,7 +325,7 @@ void fn_80230944(u8 *dest, u8 *a, u8 *b) {
                 }
                 if (p == base) {
                     *p = 1;
-                    (*(s16 *)(dest + 2))++;
+                    dest->exponent++;
                     break;
                 }
                 *p = 0;

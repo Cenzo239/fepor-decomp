@@ -2914,13 +2914,11 @@ void Ui_HideUnitInfoPopup(void *arg0) {
  extern u8 lbl_80277A20[]; extern s32 lbl_8036A938;
  extern f32 lbl_8036A93C; extern f32 lbl_8036A940; extern f32 lbl_8036A92C;
  s32 flags; s32 mask; s32 eight; u8 *base;
- f32 zero = lbl_8036A92C;
- f32 t; f32 dy; f32 dx;
+ f32 t; f32 zero = lbl_8036A92C; f32 dy; f32 dx;
  flags=*(s32 *)arg0;
  if(!(flags&1)) {
  mask=lbl_8036A938; dx=lbl_8036A93C; eight=8;
- mask = flags | mask;
- *(s32 *)arg0=mask; dy=lbl_8036A940;
+ *(s32 *)arg0=flags|mask; dy=lbl_8036A940;
  base=lbl_80277A20;
  t=*(f32 *)((u8 *)arg0+0xF4); *(f32 *)((u8 *)arg0+0xFC)=t;
  t=*(f32 *)((u8 *)arg0+0xF8); *(f32 *)((u8 *)arg0+0x100)=t;
@@ -16353,18 +16351,16 @@ void fn_8017D4B8(s32 *arg0, void *arg1) {
     s16 sp8;
     s16 spA;
     s32 spC;
-    s16 r8;
-    s16 r7;
-    s16 r6;
-    s16 r0;
-
-    r8 = *(s16 *)((u8 *)arg1 + 0xC);
-    r7 = *(s16 *)((u8 *)arg1 + 0x10);
-    r6 = *(s16 *)((u8 *)arg1 + 0xA);
-    r0 = *(s16 *)((u8 *)arg1 + 0xE);
+    void *p = arg1;
+    s32 *a = &spC;
+    s16 *b = &sp8;
+    s16 r8 = *(s16 *)((u8 *)p + 0xC);
+    s16 r7 = *(s16 *)((u8 *)p + 0x10);
+    s16 r6 = *(s16 *)((u8 *)p + 0xA);
+    s16 r0 = *(s16 *)((u8 *)p + 0xE);
     spA = (s16)((s16)(r7 - r8) >> 1);
     sp8 = (s16)((s16)(r0 - r6) >> 2);
-    *arg0 = *fn_8013F748(arg1, &spC, &sp8);
+    *arg0 = *fn_8013F748(p, a, b);
 }
 #pragma scheduling reset
 s16 fn_8017D52C(void *arg0, s16 arg1) {

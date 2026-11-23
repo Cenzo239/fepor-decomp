@@ -7283,28 +7283,19 @@ s32 fn_801DBFF8(void)
 
 void *fn_801DC070(void *arg0)
 {
-    extern u8 gSaveDataBase;
+    extern u8 lbl_803682F0;
     void *fn_801E2324(void *, void *);
     u8 *result;
 
-    result = (u8 *)fn_801E2324(&gSaveDataBase, arg0);
-    if (result == NULL) {
-        goto clear1;
+    result = (u8 *)fn_801E2324(&lbl_803682F0, arg0);
+    if (result == NULL || result[0x60] != 2) {
+        result = NULL;
     }
-    if (result[0x60] == 2) {
-        goto after1;
+    if (result != NULL) {
+        if (result[0x64] != 0x20) {
+            result = NULL;
+        }
     }
-clear1:
-    result = NULL;
-after1:
-    if (result == NULL) {
-        goto done;
-    }
-    if (result[0x64] == 0x20) {
-        goto done;
-    }
-    result = NULL;
-done:
     return result;
 }
 

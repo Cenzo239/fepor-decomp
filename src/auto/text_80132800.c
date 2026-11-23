@@ -1284,7 +1284,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
         u8 *rowBase;
         u8 *cell;
         s32 vret;
-        s16 rowHs;
+        s32 rowHs;
         s16 colsExt;
         s16 x16;
         s16 curY16;
@@ -2771,10 +2771,9 @@ void fn_80136320(s32 *arg0, void *arg1) {
         s16 x;
         s16 y;
     };
-    struct Point *fn_8013F748(void *, struct Point *, struct Point *);
+    struct Point *fn_8013F748(void *, s32 *, struct Point *);
     struct Point in;
-    struct Point out;
-    void *self = arg1;
+    s32 out;
     s16 v56;
     s16 v4e;
     s32 quot;
@@ -2788,15 +2787,15 @@ void fn_80136320(s32 *arg0, void *arg1) {
     s32 hdiv;
     s32 rem;
 
-    v56 = *(s16 *)((u8 *)self + 0x56);
-    v4e = *(s16 *)((u8 *)self + 0x4E);
+    v56 = *(s16 *)((u8 *)arg1 + 0x56);
+    v4e = *(s16 *)((u8 *)arg1 + 0x4E);
     quot = v4e / v56;
-    v12 = *(s16 *)((u8 *)self + 0x12);
-    v16 = *(s16 *)((u8 *)self + 0x16);
+    v12 = *(s16 *)((u8 *)arg1 + 0x12);
+    v16 = *(s16 *)((u8 *)arg1 + 0x16);
     diff = v16 - v12;
-    v54 = *(s16 *)((u8 *)self + 0x54);
-    v5e = *(s16 *)((u8 *)self + 0x5E);
-    v5c = *(s16 *)((u8 *)self + 0x5C);
+    v54 = *(s16 *)((u8 *)arg1 + 0x54);
+    v5e = *(s16 *)((u8 *)arg1 + 0x5E);
+    v5c = *(s16 *)((u8 *)arg1 + 0x5C);
     t = (s16)diff;
     rem = (s16)quot;
     rem = rem - v54;
@@ -2811,7 +2810,7 @@ void fn_80136320(s32 *arg0, void *arg1) {
     rem = (s16)rem;
     rem = t * rem;
     in.x = rem + v5c;
-    *arg0 = *(s32 *)fn_8013F748(self, &out, &in);
+    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
 #pragma scheduling reset
 void *fn_801363C4(void *arg0, s16 arg1) {
@@ -3095,40 +3094,18 @@ halfHeight=((Sub *)(self+0x74))->height()>>1;
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    struct Sub {
-        virtual void v0() = 0;
-        virtual void v1(s32, s32, f32) = 0;
-    };
-    extern u8 lbl_8028FDB0[];
-    extern u8 lbl_80292230[];
-    extern u8 lbl_80291914[];
-    extern u8 gEmptyVtbl[];
-    extern u8 lbl_802918E0[];
-    extern f32 lbl_8036A5DC;
-    extern f32 lbl_8036A5E4;
-    s32 minus1;
-    f32 f0;
-    s32 temp_r31;
-    void *temp_r30;
-    void *temp_r29;
-    s32 temp_r28;
-    void *temp_r27;
-    s32 flag;
-    s32 a;
-    s32 b;
-    f32 f;
-
-    minus1 = -1;
-    f0 = lbl_8036A5DC;
-    temp_r30 = arg0;
-    temp_r27 = temp_r30;
-    temp_r31 = arg1;
-    temp_r28 = 0;
-    temp_r29 = (u8 *)temp_r30 + 0x4C;
+    struct Sub { virtual void v0() = 0; virtual void v1(s32, s32, f32) = 0; };
+    extern u8 lbl_8028FDB0[]; extern u8 lbl_80292230[]; extern u8 lbl_80291914[];
+    extern u8 lbl_80295478[]; extern u8 lbl_802918E0[];
+    extern f32 lbl_8036A5DC; extern f32 lbl_8036A5E4;
+    s32 temp_r31; void *temp_r30; void *temp_r29; s32 temp_r28; void *temp_r27;
+    s32 flag; s32 a; s32 b; f32 f0; f32 f;
+    temp_r30 = arg0; temp_r27 = temp_r30; temp_r31 = arg1; temp_r28 = 0;
+    temp_r29 = (u8 *)temp_r30 + 0x4C; f0 = lbl_8036A5DC;
     *(void **)temp_r30 = lbl_8028FDB0;
     *(s32 *)((u8 *)temp_r27 + 4) = temp_r28;
     *(void **)temp_r27 = lbl_80292230;
-    *(s16 *)((u8 *)temp_r27 + 8) = minus1;
+    *(s16 *)((u8 *)temp_r27 + 8) = -1;
     *(s16 *)((u8 *)temp_r27 + 0xA) = arg2;
     *(s16 *)((u8 *)temp_r27 + 0xC) = arg3;
     *(s16 *)((u8 *)temp_r27 + 0xE) = (s16)((s16)arg2 + (s16)arg4);
@@ -3157,15 +3134,11 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     *(s16 *)((u8 *)temp_r30 + 0x40) = (s16)temp_r28;
     *(s32 *)((u8 *)temp_r30 + 0x44) = temp_r31;
     *(s32 *)((u8 *)temp_r30 + 0x48) = temp_r28;
-    *(void **)temp_r29 = gEmptyVtbl;
+    *(void **)temp_r29 = lbl_80295478;
     *(s32 *)((u8 *)temp_r30 + 0x50) = temp_r28;
-    if (temp_r31 == 0) {
-        flag = temp_r28;
-    }
+    if (temp_r31 == 0) flag = temp_r28;
     *(s32 *)((u8 *)temp_r29 + 8) = flag;
-    b = 1;
-    a = 0;
-    f = lbl_8036A5DC;
+    b = 1; a = 0; f = lbl_8036A5DC;
     *(u8 *)((u8 *)temp_r29 + 0xC) = (u8)b;
     *(u8 *)((u8 *)temp_r29 + 0xD) = (u8)b;
     *(s16 *)((u8 *)temp_r29 + 0x14) = (s16)a;
@@ -3182,15 +3155,11 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     temp_r27 = (u8 *)temp_r30 + 0x74;
     *(u8 *)((u8 *)temp_r29 + 0xD) = 0;
     flag = 3;
-    *(void **)temp_r27 = gEmptyVtbl;
+    *(void **)temp_r27 = lbl_80295478;
     *(s32 *)((u8 *)temp_r30 + 0x78) = 0;
-    if (temp_r31 == 0) {
-        flag = 1;
-    }
+    if (temp_r31 == 0) flag = 1;
     *(s32 *)((u8 *)temp_r27 + 8) = flag;
-    b = 1;
-    a = 0;
-    f = lbl_8036A5DC;
+    b = 1; a = 0; f = lbl_8036A5DC;
     *(u8 *)((u8 *)temp_r27 + 0xC) = (u8)b;
     *(u8 *)((u8 *)temp_r27 + 0xD) = (u8)b;
     *(s16 *)((u8 *)temp_r27 + 0x14) = (s16)a;
@@ -5353,7 +5322,7 @@ extern "C" void fn_8013A39C(void *self, void *other) {
     extern f32 lbl_8036A674;
     extern f32 lbl_8036A678;
     s16 t5a;
-    u8 r30;
+    u8 r30 = 0;
     s32 r29;
     s16 r28;
     s16 r27;
@@ -5366,16 +5335,23 @@ extern "C" void fn_8013A39C(void *self, void *other) {
     ((Obj *)self)->v3();
     r29 = ((Obj *)self)->v11();
     {
-        s16 t4e = *(s16 *)((u8 *)self + 0x4E);
-        s16 t58 = *(s16 *)((u8 *)self + 0x58);
-        s16 t52 = *(s16 *)((u8 *)self + 0x52);
-        s32 quot = t4e / t58;
-        s16 t56 = *(s16 *)((u8 *)self + 0x56);
+        s16 t56;
+        s16 t62;
+        s16 t58;
+        s16 t4e;
+        s16 t52;
+        s32 quot;
+        s16 t64;
+        t4e = *(s16 *)((u8 *)self + 0x4E);
+        t58 = *(s16 *)((u8 *)self + 0x58);
+        t52 = *(s16 *)((u8 *)self + 0x52);
+        quot = t4e / t58;
+        t56 = *(s16 *)((u8 *)self + 0x56);
         t5a = *(s16 *)((u8 *)self + 0x5A);
-        s16 t62 = *(s16 *)((u8 *)self + 0x62);
-        s16 t64 = *(s16 *)((u8 *)self + 0x64);
-        r28 = (s16)(r29 * (s16)(t4e - quot * t58) + t62);
+        t62 = *(s16 *)((u8 *)self + 0x62);
+        t64 = *(s16 *)((u8 *)self + 0x64);
         r27 = (s16)(t5a * (s16)((s16)quot - t56) + t64);
+        r28 = (s16)(r29 * (s16)(t4e - quot * t58) + t62);
         if (t52 < 0 || *(s16 *)((u8 *)self + 0x54) < 0) {
             *(s16 *)((u8 *)self + 0x52) = r28;
             *(s16 *)((u8 *)self + 0x54) = r27;
@@ -5385,7 +5361,6 @@ extern "C" void fn_8013A39C(void *self, void *other) {
         }
     }
     if (*(u8 *)((u8 *)self + 0x4C) != 0 && *(u32 *)((u8 *)self + 0x70) != 0) {
-        r30 = 0;
         flag = r30;
         if (*(u8 *)((u8 *)other + 0x2D) == 0) {
             if (*(u8 *)((u8 *)other + 0x2E) == 0) {

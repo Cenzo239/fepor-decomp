@@ -1103,9 +1103,10 @@ void *fn_801049E0(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *a
     }
 
     if (is_double != 0) {
-        code = *(u8 *)(arg0 + 1);
+        u16 trail = *(u8 *)(arg0 + 1);
+        s8 lead = *(s8 *)((u8 *)arg0 + 0);
         next = arg0 + 2;
-        code = (u16)(code | (*(s8 *)((u8 *)arg0 + 0) << 8));
+        code = (u16)(trail | ((lead << 8) & 0xFF00));
     } else {
         code = *(u8 *)arg0;
         next = arg0 + 1;
@@ -1130,9 +1131,9 @@ void *fn_801049E0(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *a
     {
         u8 *temp_r5;
         u8 *temp_r6;
-        s32 idx;
-        s32 stride;
         s32 off;
+        s32 stride;
+        s32 idx;
         s32 tmp;
 
         temp_r5 = ctx[3];
