@@ -4918,111 +4918,71 @@ s32 fn_800B9CD4(u32 name, s32 x, s32 y, s32 frames, u32 arg4, f32 scale) {
     return 1;
 }
 
-s32 fn_800B9EA8(u8 *arg0, u8 *arg1, s32 arg2)
+void fn_800B9EA8(u8 *arg0, u8 *arg1, s32 arg2)
 {
-    s32 Str_NCmp(void *, void *, s32);
-    void *Sound_FindByName(u32);
-    void *ScriptObj_FindByName(u32);
-    void Process_ClearFunc(void *);
-    f32 Math_Ease(s32, f32, f32, f32, f32);
-
-    extern u8 lbl_8026ECB8[];
-    extern u32 gUiInputFlags;
-
-    u8 *proc;
-    u8 *sound;
-    u8 *obj;
-    s32 frame;
-    s32 duration;
-    f32 x;
-    f32 y;
-    f32 z;
-    f32 scale;
-
-    proc = arg0;
-
-    if (Str_NCmp(
-        *(void **)(proc + 0x54),
-        lbl_8026ECB8 + 0xA47,
-        8
-    ) != 0) {
-        sound = Sound_FindByName(*(u32 *)(proc + 0x54));
-
-        if (sound == 0) {
-            Process_ClearFunc(proc);
-            return 0;
-        }
-    } else {
-        obj = ScriptObj_FindByName(*(u32 *)(proc + 0x54));
-
-        if (obj == 0) {
-            Process_ClearFunc(proc);
-            return 0;
-        }
+  s32 Str_NCmp(void *, void *, s32);
+  void *Sound_FindByName(u32);
+  void *ScriptObj_FindByName(u32);
+  void Process_ClearFunc(void *);
+  f32 Math_Ease(s32, f32, f32, f32, f32);
+  extern u8 lbl_8026ECB8[];
+  extern u32 gUiInputFlags;
+  u8 *proc;
+  u8 *sound;
+  u8 *obj;
+  s32 frame;
+  s32 duration;
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 scale;
+  proc = arg0;
+  if (Str_NCmp(*((void **) (proc + 0x54)), lbl_8026ECB8 + ((unsigned long long) 0xA47), 8) != 0)
+  {
+    sound = Sound_FindByName(*((u32 *) (proc + 0x54)));
+    if (sound == 0)
+    {
+      Process_ClearFunc(proc);
+      return;
     }
-
-    *(s32 *)(proc + 0x60) =
-        *(s32 *)(proc + 0x60) + 1;
-
-    if (gUiInputFlags & 1) {
-        *(s32 *)(proc + 0x60) =
-            *(s32 *)(proc + 0x64);
+  }
+  else
+  {
+    obj = ScriptObj_FindByName(*((u32 *) (proc + 0x54)));
+    if (obj == 0)
+    {
+      Process_ClearFunc(proc);
+      return;
     }
-
-    frame = *(s32 *)(proc + 0x60);
-    duration = *(s32 *)(proc + 0x64);
-
-    x = Math_Ease(
-        0,
-        *(f32 *)(proc + 0x3C),
-        *(f32 *)(proc + 0x48),
-        (f32)frame,
-        (f32)duration
-    );
-
-    y = Math_Ease(
-        0,
-        *(f32 *)(proc + 0x40),
-        *(f32 *)(proc + 0x4C),
-        (f32)*(s32 *)(proc + 0x60),
-        (f32)*(s32 *)(proc + 0x64)
-    );
-
-    z = Math_Ease(
-        0,
-        *(f32 *)(proc + 0x44),
-        *(f32 *)(proc + 0x50),
-        (f32)*(s32 *)(proc + 0x60),
-        (f32)*(s32 *)(proc + 0x64)
-    );
-
-    scale = Math_Ease(
-        0,
-        *(f32 *)(proc + 0x30),
-        *(f32 *)(proc + 0x34),
-        (f32)*(s32 *)(proc + 0x60),
-        (f32)*(s32 *)(proc + 0x64)
-    );
-
-    if (Str_NCmp(
-        *(void **)(proc + 0x54),
-        lbl_8026ECB8 + 0xA47,
-        8
-    ) != 0) {
-        *(f32 *)(sound + 0x40) = x;
-        *(f32 *)(sound + 0x44) = y;
-        *(f32 *)(sound + 0x54) = z;
-        *(f32 *)(sound + 0x58) = scale;
-    } else {
-        *(s16 *)(obj + 0x18) = (s16)(s32)x;
-        *(s16 *)(obj + 0x1A) = (s16)(s32)y;
-        *(f32 *)(obj + 0x1C) = z;
-    }
-
-    if (*(s32 *)(proc + 0x60) >=
-        *(s32 *)(proc + 0x64)) {
-        Process_ClearFunc(proc);
-    }
+  }
+  *((s32 *) (proc + 0x60)) = (*((s32 *) (proc + 0x60))) + 1;
+  if (gUiInputFlags & 1)
+  {
+    *((s32 *) (proc + 0x60)) = *((s32 *) (proc + 0x64));
+  }
+  frame = *((s32 *) (proc + 0x60));
+  duration = *((s32 *) (proc + 0x64));
+  x = Math_Ease(0, *((f32 *) (proc + 0x3C)), *((f32 *) (proc + 0x48)), (f32) frame, (f32) duration);
+  y = Math_Ease(0, *((f32 *) (proc + 0x40)), *((f32 *) (proc + 0x4C)), (f32) (*((s32 *) (proc + 0x60))), (f32) (*((s32 *) (proc + 0x64))));
+  z = Math_Ease(0, *((f32 *) (proc + 0x44)), *((f32 *) (proc + 0x50)), (f32) (*((s32 *) (proc + 0x60))), (f32) (*((s32 *) (proc + 0x64))));
+  scale = Math_Ease(0, *((f32 *) (proc + 0x30)), *((f32 *) (proc + 0x34)), (f32) (*((s32 *) (proc + 0x60))), (f32) (*((s32 *) (proc + 0x64))));
+  if (Str_NCmp(*((void **) (proc + 0x54)), lbl_8026ECB8 + 0xA47, 8) != 0)
+  {
+    *((f32 *) (sound + 0x40)) = x;
+    *((f32 *) (sound + 0x44)) = y;
+    *((f32 *) (sound + 0x54)) = z;
+    *((f32 *) (sound + 0x58)) = scale;
+  }
+  else
+  {
+    *((s16 *) (obj + 0x18)) = (s16) ((s32) x);
+    *((s16 *) (obj + 0x1A)) = (s16) ((s32) y);
+    *((f32 *) (obj + 0x1C)) = z;
+  }
+  if ((*((s32 *) (proc + 0x60))) >= (*((s32 *) (proc + 0x64))))
+  {
+    Process_ClearFunc(proc);
+  }
 }
 
 s32 ScriptCmd_SetPos(u32 name, s32 x, s32 y) {
