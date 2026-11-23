@@ -586,34 +586,28 @@ void fn_8013CED0(void *arg0, void *arg1) {
     extern u8 lbl_802920E0[];
     extern u8 lbl_80291DA0[];
     extern f32 lbl_8036A6B8;
-    void *v1;
-    void *v2;
-    void *v3;
+    void **slot;
     f32 f;
-    s32 z;
 
-    v1 = gUiMenuDrawVtbl;
-    v2 = lbl_802920E0;
-    z = 0;
-    *(void **)((u8 *)arg0 + 4) = v1;
+    slot = (void **)((u8 *)arg0 + 4);
+    *slot = gUiMenuDrawVtbl;
     *(void **)arg0 = arg1;
     f = lbl_8036A6B8;
-    *(void **)((u8 *)arg0 + 4) = v2;
+    *slot = lbl_802920E0;
     *(s16 *)((u8 *)arg0 + 8) = 0x80;
     *(s16 *)((u8 *)arg0 + 0xA) = 0x9C;
     *(s16 *)((u8 *)arg0 + 0xC) = 0x160;
     *(s16 *)((u8 *)arg0 + 0xE) = 0x88;
-    *(s16 *)((u8 *)arg0 + 0x10) = z;
-    *(s16 *)((u8 *)arg0 + 0x12) = z;
-    *(s16 *)((u8 *)arg0 + 0x14) = z;
-    *(s16 *)((u8 *)arg0 + 0x16) = z;
+    *(s16 *)((u8 *)arg0 + 0x10) = 0;
+    *(s16 *)((u8 *)arg0 + 0x12) = 0;
+    *(s16 *)((u8 *)arg0 + 0x14) = 0;
+    *(s16 *)((u8 *)arg0 + 0x16) = 0;
     *(f32 *)((u8 *)arg0 + 0x18) = f;
     *(s16 *)((u8 *)arg0 + 0x1C) = 0x20;
     *(s16 *)((u8 *)arg0 + 0x1E) = 4;
-    v3 = lbl_80291DA0;
-    *(void **)((u8 *)arg0 + 4) = v3;
-    *(s32 *)((u8 *)arg0 + 0x20) = z;
-    *(s8 *)((u8 *)arg0 + 0x24) = z;
+    *slot = lbl_80291DA0;
+    *(s32 *)((u8 *)arg0 + 0x20) = 0;
+    *(s8 *)((u8 *)arg0 + 0x24) = 0;
 }
 #pragma opt_lifetimes reset
 #pragma cplusplus on

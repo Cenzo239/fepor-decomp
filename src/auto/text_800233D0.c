@@ -2737,6 +2737,7 @@ Battle_Apply(gBattle); break;
 
 #pragma opt_propagation off
 #pragma opt_lifetimes off
+#pragma use_lmw_stmw on
 s32 fn_800271C8(void *arg0, void *proc) {
     void *Process_CreateChild(void *, void *);
     u8 Status_Test(void *, s32);
@@ -2774,12 +2775,29 @@ s32 fn_800271C8(void *arg0, void *proc) {
     void fn_801A7528(void *, void *);
     void fn_800AD64C(void *);
     s32 Abs(s32);
+    void Item_SetByName(void *, void *);
+    s32 fn_800AA288(s32);
+    void Dispos_Apply(void *, void *, s32);
+    void fn_8002AB9C(void *, void *);
+    void fn_8002AD04(void *, void *);
+    void *TargetList_GetAt(s32 *, s32);
+    s32 Unit_GetMagAtk(void *);
+    void fn_8019C110(void *, void (*)(s32));
+    void fn_8019C0C0(void *, void (*)(s32));
+    void fn_8019BD8C(void *, void (*)(void));
+    void fn_80026544(s32);
+    void Event_StartRoundSky(s32);
+    void fn_8002626C(void);
+    s32 fn_80110030(void *);
+    void fn_80129CA8(s32, s32, u8, s32, s32, void *);
+    void fn_80025F0C(void);
     extern u8 lbl_80284668[];
     extern u8 gBattle[];
     extern u8 gUiContext[];
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 lbl_80268E40[];
+    extern f64 lbl_80368DD0;
     void fn_80029C08(void *);
     void Battle_SetupUnit(void *,void *,s32);
     void Battle_QueueDeathAnim(void *);
@@ -2787,30 +2805,59 @@ s32 fn_800271C8(void *arg0, void *proc) {
     void fn_8002F6E8(void *,u8,u8,u8,s32);
     void fn_8019C160(void *,void (*)(void *));
     void fn_80026194(void *);
-    extern u8 gTargetList[];
-    u8 *base = lbl_80284668;
-    u8 *p = arg0;
-    s32 distance;
-    u8 *child;
-    void *event;
-    u8 *unit;
-    void *effect;
-    void *mapEv;
-    u8 item[8];
-    s32 dx, dy;
+    extern s32 gTargetList[];
+    typedef struct { u8 pad : 5; u8 flags : 3; } Bits;
     void *Res_GetByName(void *);
     void fn_8011D908(void *,void *);
     u8 *BattleState_GetFactionInfo(void *,s32);
+    f64 conv;
+    u8 item[16];
+    u8 *base;
+    u8 *p;
+    u8 *child;
+    void *event;
+    u8 *unit;
+    void *mapEv;
+    s32 dx, dy;
+    u8 idx;
+    void *found;
+    s32 i;
+    void *entry;
+    u8 b3, b2;
+    s32 mag;
+    u8 hitKind;
+    u8 *name;
+    u8 faction, fx, fy;
+    u8 *info;
+    u8 y13, x13, y14, x14;
+    u8 *a, *b;
+    s32 dir, opposite;
+    u8 ax, bx, ay, by;
+    u8 vx, vy;
+    Bits *bits;
+    u8 flag;
+    void *saved_effect;
+    void *saved_unit;
+    s32 distance;
 
+    base = lbl_80284668;
+    p = arg0;
+    conv = lbl_80368DD0;
     switch (p[8]) {
     case 0x24:
-        unit = *(u8 **)gUiContext;
-        effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
+        saved_unit = *(void **)gUiContext;
+        saved_effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
         Ui_PlaySeCue(lbl_80268E40 + 0x1c4, 100);
-        Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
+        Effect_SetPos(saved_effect, *(f32 *)((u8 *)saved_unit + 4), *(f32 *)((u8 *)saved_unit + 8), *(f32 *)((u8 *)saved_unit + 12));
         break;
-    case 0x13: {
-        u8 y, x;
+    case 0x1c:
+        MapObjEvent_Find(gMapObjEventList, p[0xd], p[0xe], 9);
+        fn_8012AA90((s8)p[0xd], (s8)p[0xe], proc);
+        flag = 1;
+        bits = (Bits *)(*(u8 **)gUiContext + 0x1a5);
+        bits->flags = flag;
+        break;
+    case 0x13:
         distance = 1;
         if (Status_Test(*(u8 **)(p + 4) + 0x1bc, 0x11) &&
             Rand_Chance((s8)Unit_GetCarryWtLimit(*(void **)(p + 4)))) {
@@ -2819,27 +2866,25 @@ s32 fn_800271C8(void *arg0, void *proc) {
         }
         if (!Status_Test(*(u8 **)(p + 4) + 0x1bc, 4)) {
             if (distance >= 1) {
-                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 1, &x, &y);
-                if (MapObjEvent_Find(gMapObjEventList, x, y, 9))
+                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 1, &x13, &y13);
+                if (MapObjEvent_Find(gMapObjEventList, x13, y13, 9))
                     goto blocked;
             }
             if (distance >= 2) {
-                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 2, &x, &y);
-                if (MapObjEvent_Find(gMapObjEventList, x, y, 9))
+                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 2, &x13, &y13);
+                if (MapObjEvent_Find(gMapObjEventList, x13, y13, 9))
                     goto blocked;
             }
         }
-        fn_8003DCDC(*(void **)p, *(void **)(p + 4), distance, &x, &y);
-        fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x, (s8)y, proc);
+        fn_8003DCDC(*(void **)p, *(void **)(p + 4), distance, &x13, &y13);
+        fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x13, (s8)y13, proc);
         break;
     blocked:
         child = Process_CreateChild(base + 0x8c, proc);
-        *(f32 *)(child + 0x30) = (s8)x;
-        *(f32 *)(child + 0x34) = (s8)y;
+        *(f32 *)(child + 0x30) = (s8)x13;
+        *(f32 *)(child + 0x34) = (s8)y13;
         break;
-    }
-    case 0x14: {
-        u8 y, x;
+    case 0x14:
         distance = 2;
         if (Status_Test(*(u8 **)(p + 4) + 0x1bc, 0x11) &&
             Rand_Chance((s8)Unit_GetCarryWtLimit(*(void **)(p + 4)))) {
@@ -2848,25 +2893,24 @@ s32 fn_800271C8(void *arg0, void *proc) {
         }
         if (!Status_Test(*(u8 **)(p + 4) + 0x1bc, 4)) {
             if (distance >= 1) {
-                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 1, &x, &y);
-                if (MapObjEvent_Find(gMapObjEventList, x, y, 9))
+                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 1, &x14, &y14);
+                if (MapObjEvent_Find(gMapObjEventList, x14, y14, 9))
                     goto blocked2;
             }
             if (distance >= 2) {
-                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 2, &x, &y);
-                if (MapObjEvent_Find(gMapObjEventList, x, y, 9))
+                fn_8003DCDC(*(void **)p, *(void **)(p + 4), 2, &x14, &y14);
+                if (MapObjEvent_Find(gMapObjEventList, x14, y14, 9))
                     goto blocked2;
             }
         }
-        fn_8003DCDC(*(void **)p, *(void **)(p + 4), distance, &x, &y);
-        fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x, (s8)y, proc);
+        fn_8003DCDC(*(void **)p, *(void **)(p + 4), distance, &x14, &y14);
+        fn_80183EAC(*(void **)p, *(void **)(p + 4), (s8)x14, (s8)y14, proc);
         break;
     blocked2:
         child = Process_CreateChild(base + 0x8c, proc);
-        *(f32 *)(child + 0x30) = (s8)x;
-        *(f32 *)(child + 0x34) = (s8)y;
+        *(f32 *)(child + 0x30) = (s8)x14;
+        *(f32 *)(child + 0x34) = (s8)y14;
         break;
-    }
     case 0x19:
         fn_80183DEC(*(void **)p, *(void **)(p + 4), proc);
         break;
@@ -2874,10 +2918,10 @@ s32 fn_800271C8(void *arg0, void *proc) {
         switch (((u8 *)&gBattleMap)[(s8)gUiContext[0xf] + ((s8)gUiContext[0x10] << 6) + 0x300d]) {
         case 1:
             p[8] = 0x24;
-            unit = *(u8 **)gUiContext;
-            effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
+            saved_unit = *(void **)gUiContext;
+            saved_effect = fn_80053AE8(lbl_80268E40 + 0x1b8);
             Ui_PlaySeCue(lbl_80268E40 + 0x1c4, 100);
-            Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
+            Effect_SetPos(saved_effect, *(f32 *)((u8 *)saved_unit + 4), *(f32 *)((u8 *)saved_unit + 8), *(f32 *)((u8 *)saved_unit + 12));
             break;
         case 2:
             Process_CreateChild(base + 0xbc, proc);
@@ -2897,22 +2941,8 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_80033418(gBattle + 0x8a0);
         Process_CreateChild(base + 0x1a8, proc);
         break;
-    case 0x20:
-    case 0x21:
-    case 0x22:
-    case 0x23:
-    case 0x25:
-    case 0x26:
-    case 0x27:
-    case 0x28:
-    case 0x29:
-    case 0x2a:
-    case 0x2b:
-    case 0x2c:
-    case 0x2d:
-    case 0x2e:
-    case 0x2f:
-    case 0x30:
+    case 0x20: case 0x21: case 0x22: case 0x23: case 0x25: case 0x26: case 0x27: case 0x28:
+    case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f: case 0x30:
         mapEv = MapObjEvent_Find(gMapObjEventList, p[0xf], p[0x10], 4);
         fn_801A73E4(gBattle, *(void **)p, mapEv);
         fn_801A5008(gBattle);
@@ -2946,25 +2976,23 @@ s32 fn_800271C8(void *arg0, void *proc) {
     case 0x10:
         Process_CreateChild(base + 0xf8, proc);
         break;
+    case 5:
+        Process_CreateChild(base + 0xe0, proc);
+        gUiContext[8] = 4;
+        break;
     case 4:
         fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, *(s8 *)(p+0xa)), proc);
         break;
-    case 7: {
-        u8 *a = *(u8 **)p;
-        u8 *b = *(u8 **)(p + 4);
-        s32 dir, opposite;
-        u8 ax=a[0x19e],bx=b[0x19e],ay=a[0x19f],by=b[0x19f];
-        if ((s8)ax < (s8)bx)
-            dir = 2;
-        else if ((s8)ax > (s8)bx)
-            dir = 1;
-        else if ((s8)ay < (s8)by)
-            dir = 4;
-        else if ((s8)ay > (s8)by)
-            dir = 8;
-        else
-            dir = 16;
-        dir=(u8)dir;
+    case 7:
+        a = *(u8 **)p;
+        b = *(u8 **)(p + 4);
+        ax=a[0x19e]; bx=b[0x19e]; ay=a[0x19f]; by=b[0x19f];
+        if ((s8)ax < (s8)bx) dir = 2;
+        else if ((s8)ax > (s8)bx) dir = 1;
+        else if ((s8)ay < (s8)by) dir = 4;
+        else if ((s8)ay > (s8)by) dir = 8;
+        else dir = 16;
+        dir = (u8)dir;
         fn_80184750(a, dir, 8, proc);
         switch (dir) {
         case 1: opposite = 2; break;
@@ -2976,11 +3004,53 @@ s32 fn_800271C8(void *arg0, void *proc) {
         fn_80184750(*(void **)(p + 4), opposite, 8, proc);
         fn_800BF32C(proc);
         break;
-    }
     case 0x11:
-        event=Unit_GetItemSlot(*(void **)(gUiContext+4),(s8)gUiContext[0xa]);
-        child=Process_CreateChild(base+0x130,proc);
-        *(void **)(child+0x54)=event;
+        event = Unit_GetItemSlot(*(void **)(gUiContext + 4), (s8)gUiContext[0xa]);
+        child = Process_CreateChild(base + 0x130, proc);
+        *(void **)(child + 0x54) = event;
+        break;
+    case 0x16:
+        idx = gBattleState[0x50];
+        gBattleState[0x50] = idx + 1;
+        found = (void *)fn_800AA288(idx);
+        if (found == 0) {
+            found = (void *)fn_800AA288(idx - 1);
+            if (found == 0) break;
+            unit = *(u8 **)gUiContext;
+            gBattleMap.unitMap[(s8)gUiContext[0xd] + ((s8)gUiContext[0xe] << 6)] = unit[0x198];
+            Dispos_Apply(found, proc, 0);
+        } else {
+            saved_unit = *(void **)p;
+            fn_8002AB9C(saved_unit, Item_GetByIid(lbl_80268E40 + 0x1af));
+            Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
+            Battle_QueueDeathAnim(gBattle);
+            fn_8019C110(proc, fn_80026544);
+        }
+        break;
+    case 0x1e:
+        saved_unit = *(void **)p;
+        fn_8002AD04(saved_unit, Item_GetByIid(lbl_80268E40 + 0x1a6));
+        i = 0;
+        hitKind = 3;
+        while (i < gTargetList[0]) {
+            entry = TargetList_GetAt(gTargetList, i);
+            b3 = ((u8 *)entry)[3];
+            b2 = ((u8 *)entry)[2];
+            mag = Unit_GetMagAtk(saved_unit);
+            ((u8 *)entry)[0] = hitKind;
+            i += 1;
+            ((u8 *)entry)[1] = (u8)mag;
+            ((u8 *)entry)[2] = b2;
+            ((u8 *)entry)[3] = b3;
+        }
+        Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
+        Battle_QueueDeathAnim(gBattle);
+        fn_8019C0C0(proc, Event_StartRoundSky);
+        break;
+    case 0x17:
+        Battle_SetupPair(gBattle, *(void **)p, *(void **)(p + 4));
+        Battle_QueueDeathAnim(gBattle);
+        fn_8019BD8C(proc, fn_8002626C);
         break;
     case 0x12:
         if (gUiContext[8] == 0x2b) {
@@ -2988,21 +3058,29 @@ s32 fn_800271C8(void *arg0, void *proc) {
             Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
         } else {
             fn_8002F728(gTargetList);
-            unit = *(u8 **)(gUiContext+4);
-            fn_8002F6E8(gTargetList,unit[0x19e],unit[0x19f],unit[0x198],0);
-            Battle_SetupPair(gBattle,*(void **)gUiContext,*(void **)(gUiContext+4));
+            unit = *(u8 **)(gUiContext + 4);
+            fn_8002F6E8(gTargetList, unit[0x19e], unit[0x19f], unit[0x198], 0);
+            Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)(gUiContext + 4));
         }
         Battle_QueueDeathAnim(gBattle);
-        fn_8019C160(proc,fn_80026194);
+        fn_8019C160(proc, fn_80026194);
         break;
-    case 9:
-    case 0xd:
-    case 0xe:
+    case 0x18:
+        *(u32 *)(*(u8 **)p + 0x1a0) |= 0x2000;
+        Item_Init(item);
+        Item_SetByName(item, lbl_80268E40 + 0x19a);
+        Battle_SetupPair(gBattle, *(void **)p, *(void **)(p + 4));
+        fn_801A7528(gBattle, item);
+        Battle_Execute(gBattle, 0xf);
+        Battle_CalcHits(gBattle);
+        fn_80033418(gBattle + 0x8a0);
+        Process_CreateChild(base + 0x1a8, proc);
+        Item_Destroy(item, -1);
+        break;
+    case 9: case 0xd: case 0xe:
         fn_800BEAC0(proc, p[8], p[0xd], p[0xe]);
         break;
-    case 0xa:
-    case 0xb:
-    case 0xc:
+    case 0xa: case 0xb: case 0xc:
         if ((gUiContext[0x13] & 0x10) && gBattleState[0x11] == 0)
             fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) - 50);
         if (fn_800BE968(0xb, p[0xf], p[0x10]))
@@ -3010,46 +3088,52 @@ s32 fn_800271C8(void *arg0, void *proc) {
         else if (fn_800BE968(0xc, p[0xf], p[0x10]))
             gUiContext[8] = 0xc;
         if ((s8)gUiContext[0xa] < 0) {
-            unit=*(u8 **)p;
-            fn_8001C7F0(unit, Item_GetByIid(lbl_80268E40 + 0x1da), proc);
+            saved_unit = *(void **)p;
+            fn_8001C7F0(saved_unit, Item_GetByIid(lbl_80268E40 + 0x1da), proc);
         } else
-            fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, *(s8 *)(p+0xa)), proc);
+            fn_8001C7F0(*(void **)p, *(void **)Unit_GetItemSlot(*(void **)p, *(s8 *)(p + 0xa)), proc);
+        break;
+    case 8:
+        vx = gUiContext[0xd];
+        vy = gUiContext[0xe];
+        mapEv = MapObjEvent_Find(gMapObjEventList, vx, vy, 0xa);
+        b3 = ((u8 *)mapEv)[3];
+        mag = fn_80110030(mapEv);
+        fn_80129CA8((s8)vx, (s8)vy, b3, mag, (s32)fn_80025F0C, proc);
         break;
     case 0x32:
-    case 0x33: {
-        u8 *name=0;
-        u8 faction, x, y;
-        u8 *info;
-        if(p[8]==0x32) {
-            faction=p[0x14];
-            switch(faction) {
-            case 2:name=lbl_80268E40+0x13d;break;
-            case 0:name=lbl_80268E40+0x148;break;
-            case 3:name=lbl_80268E40+0x154;break;
-            case 4:name=lbl_80268E40+0x160;break;
+    case 0x33:
+        name = 0;
+        if (p[8] == 0x32) {
+            faction = p[0x14];
+            switch (faction) {
+            case 2: name = lbl_80268E40 + 0x13d; break;
+            case 0: name = lbl_80268E40 + 0x148; break;
+            case 3: name = lbl_80268E40 + 0x154; break;
+            case 4: name = lbl_80268E40 + 0x160; break;
             }
-            y=p[0x10];x=p[0xf];
-            info=BattleState_GetFactionInfo(gBattleState,0);
-            info[0]=faction;
-            if((s8)x>=0)info[2]=x;
-            if((s8)y>=0)info[3]=y;
+            fy = p[0x10]; fx = p[0xf];
+            info = BattleState_GetFactionInfo(gBattleState, 0);
+            info[0] = faction;
+            if ((s8)fx >= 0) info[2] = fx;
+            if ((s8)fy >= 0) info[3] = fy;
         } else {
-            faction=p[0x14];
-            switch(faction) {
-            case 1:name=lbl_80268E40+0x16b;break;
-            case 0:name=lbl_80268E40+0x177;break;
-            case 3:name=lbl_80268E40+0x183;break;
-            case 4:name=lbl_80268E40+0x18f;break;
+            faction = p[0x14];
+            switch (faction) {
+            case 1: name = lbl_80268E40 + 0x16b; break;
+            case 0: name = lbl_80268E40 + 0x177; break;
+            case 3: name = lbl_80268E40 + 0x183; break;
+            case 4: name = lbl_80268E40 + 0x18f; break;
             }
-            y=p[0x10];x=p[0xf];
-            info=BattleState_GetFactionInfo(gBattleState,3);
-            info[0]=faction;
-            if((s8)x>=0)info[2]=x;
-            if((s8)y>=0)info[3]=y;
+            fy = p[0x10]; fx = p[0xf];
+            info = BattleState_GetFactionInfo(gBattleState, 3);
+            info[0] = faction;
+            if ((s8)fx >= 0) info[2] = fx;
+            if ((s8)fy >= 0) info[3] = fy;
         }
-        if(name && Res_GetByName(name))fn_8011D908(name,proc);
+        if (name && Res_GetByName(name))
+            fn_8011D908(name, proc);
         break;
-    }
     case 0x1b:
         break;
     default:
@@ -3057,6 +3141,7 @@ s32 fn_800271C8(void *arg0, void *proc) {
     }
     return 0;
 }
+#pragma use_lmw_stmw reset
 #pragma opt_lifetimes reset
 #pragma opt_propagation reset
 void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {

@@ -1375,13 +1375,16 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void fn_80067460(s32);
     void fn_80066F64(void);
     void *Light_GetChannel(s32);
-    void Light_CopyChannel(void *);
+    void Light_CopyChannel(void *, void *);
     void fn_8006720C(void *);
     void fn_800675C8(s32);
     void *Fog_GetColor(void);
     void fn_80067480(void);
     void fn_80040B78(void *, void *, void *, s8, f32, f32);
     void *fn_80145EBC(void);
+    void OSReport(void *, ...);
+    s64 __div2i(s64, s64);
+    unsigned long __mulhwu(unsigned long, unsigned long);
     extern u8 lbl_802EFE20[];
     extern u8 lbl_8026A660[];
     extern f32 lbl_80368F18;
@@ -1406,12 +1409,15 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     extern u8 gMapBlendMode;
 
     volatile s64 t0;
+    s64 t1;
+    s64 ms;
     u8 sp18[0x30];
     void *cursor;
     char *p;
     char *dst;
-    char c;
-    s32 mode;
+    s8 c;
+    u8 mode;
+    u8 enabled;
     f32 scale;
     s32 i;
     void *entry;
@@ -1422,23 +1428,36 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     s32 b;
     void *light;
     void *fog;
+    char *buf;
+    char *b0;
+    char *b1;
+    char *b2;
+    char *b3;
+    char *b4;
+    char *b5;
+    char *b6;
+    char *b7;
+    char *b8;
+    char *strBase;
+    s8 defLight;
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
-    p = arg1 + strlen(arg1) - 1;
+    p = arg1 + strlen(arg1);
+    p--;
     while (p != arg1) {
-        c = p[-1];
-        p--;
-        if ((s8)c == '/' || (s8)c == '\\') {
+        c = *--p;
+        if (c == '/' || c == '\\') {
             p++;
             break;
         }
     }
-    for (;;) {
-        c = *p;
-        if ((s8)c == 0) break;
-        if ((s8)c == '/' || (s8)c == '\\') break;
-        *dst++ = *p++;
+    c = *p;
+    if (c != 0 && c != '/' && c != '\\') {
+        do {
+            *dst++ = *p++;
+            c = *p;
+        } while (c != 0);
     }
     *dst = 0;
 
@@ -1520,6 +1539,10 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         Map_DecodeHeaderFlags(arg0);
         cursor = Hash_Lookup(lbl_8026A660 + 0x186);
         M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
+        buf = (char *)lbl_802EFE20;
+        b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
+        b5 = buf; b6 = buf; b7 = buf; b8 = buf;
+        strBase = (char *)lbl_8026A660;
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -1533,18 +1556,18 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             M2C_FIELD(entry, void **, 0) = name;
             sub = (u8 *)entry + 4;
             fn_80061824(sub);
-            strcpy(lbl_802EFE20, arg1);
-            strcat(lbl_802EFE20, name);
-            strcat(lbl_802EFE20, lbl_8026A660 + 0x193);
-            M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(lbl_802EFE20);
-            strcpy(lbl_802EFE20, arg1);
-            strcat(lbl_802EFE20, name);
-            strcat(lbl_802EFE20, lbl_8026A660 + 0x196);
-            M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(lbl_802EFE20);
-            strcpy(lbl_802EFE20, arg1);
-            strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
-            strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
-            if (FileCache_Exists(lbl_802EFE20) != 0) {
+            strcpy(b0, arg1);
+            strcat(b1, name);
+            strcat(b2, strBase + 0x193);
+            M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(b3);
+            strcpy(b4, arg1);
+            strcat(b5, name);
+            strcat(b6, strBase + 0x196);
+            M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(b7);
+            strcpy(b8, arg1);
+            strcat(buf, strBase + 0x19A);
+            strcat(buf, strBase + 0x1A2);
+            if (FileCache_Exists(buf) != 0) {
                 strcpy(lbl_802EFE20, arg1);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
@@ -1575,8 +1598,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
                 (&lbl_80367298)[2] = bytes[8];
             }
         } else {
-            lbl_80367294 = (u8)-0x1E;
-            lbl_80367295 = (u8)-0x1E;
+            defLight = -0x1E;
+            lbl_80367294 = defLight;
+            lbl_80367295 = defLight;
             (&lbl_8036729C)[0] = 0x80;
             (&lbl_8036729C)[1] = 0x80;
             (&lbl_8036729C)[2] = 0x80;
@@ -1608,9 +1632,13 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             ((u8 *)arg0)[0xA1] = 0xFF;
             ((u8 *)arg0)[0xA2] = 0xFF;
         }
-        tmp = fn_80145EBC();
-        if (tmp != NULL) {
-            lbl_80367AF6 = ((u8 *)tmp)[4];
+        if (((char *)arg0)[0x3C] != 0) {
+            tmp = fn_80145EBC();
+            if (tmp != NULL) {
+                lbl_80367AF6 = ((u8 *)tmp)[4];
+            } else {
+                lbl_80367AF6 = 0;
+            }
         } else {
             lbl_80367AF6 = 0;
         }
@@ -1628,6 +1656,121 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         PSMTXIdentity(sp18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F20;
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
+
+        if (Res_GetByName(lbl_8026A660 + 0x1D7) != 0) {
+            cursor = Hash_Lookup(lbl_8026A660 + 0x1D7);
+            M2C_FIELD(arg0, s16 *, 0) = *(s16 *)cursor;
+            cursor = (u8 *)cursor + 2;
+            M2C_FIELD(arg0, s16 *, 2) = *(s16 *)cursor;
+            cursor = (u8 *)cursor + 2;
+            M2C_FIELD(arg0, s16 *, 4) = *(s16 *)cursor;
+            cursor = (u8 *)cursor + 2;
+            M2C_FIELD(arg0, s16 *, 6) = *(s16 *)cursor;
+            cursor = (u8 *)cursor + 2;
+            fn_8001B84C(&cursor);
+        }
+        if (Res_GetByName(lbl_8026A660 + 0x1E4) != 0) {
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1E4);
+            ((u8 *)arg0)[0x5C] = bytes[0];
+            ((u8 *)arg0)[0x5D] = bytes[1];
+            ((u8 *)arg0)[0x5E] = bytes[2];
+            ((u8 *)arg0)[0x5F] = bytes[3];
+            ((u8 *)arg0)[0x60] = bytes[4];
+            ((u8 *)arg0)[0x61] = bytes[5];
+            ((u8 *)arg0)[0x62] = bytes[6];
+            ((u8 *)arg0)[0x63] = bytes[7];
+            M2C_FIELD(arg0, s32 *, 0x64) = *(s32 *)(bytes + 8);
+        } else {
+            ((u8 *)arg0)[0x5C] = 0x18;
+            ((u8 *)arg0)[0x5D] = 0x18;
+            ((u8 *)arg0)[0x5E] = 0x20;
+            ((u8 *)arg0)[0x5F] = 0x20;
+            ((u8 *)arg0)[0x60] = 0x40;
+            ((u8 *)arg0)[0x61] = 0;
+            M2C_FIELD(arg0, s32 *, 0x64) = 0;
+        }
+        Map_DecodeHeaderFlags(arg0);
+        cursor = Hash_Lookup(lbl_8026A660 + 0x1EE);
+        M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
+        buf = (char *)lbl_802EFE20;
+        b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
+        b5 = buf; b6 = buf; b7 = buf; b8 = buf;
+        strBase = (char *)lbl_8026A660;
+        entry = M2C_FIELD(arg0, void **, 0x10);
+        for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
+            M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xA8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xAC) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB0) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
+            name = Bin_ReadU32(&cursor);
+            M2C_FIELD(entry, void **, 0) = name;
+            sub = (u8 *)entry + 4;
+            fn_80061824(sub);
+            strcpy(b0, arg1);
+            strcat(b1, name);
+            strcat(b2, strBase + 0x193);
+            M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(b3);
+            strcpy(b4, arg1);
+            strcat(b5, name);
+            strcat(b6, strBase + 0x196);
+            M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(b7);
+            strcpy(b8, arg1);
+            strcat(buf, strBase + 0x19A);
+            strcat(buf, strBase + 0x1A2);
+            if (FileCache_Exists(buf) != 0) {
+                strcpy(lbl_802EFE20, arg1);
+                strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
+                strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
+                M2C_FIELD(sub, s32 *, 0x4C) = fn_8006D948(lbl_802EFE20);
+            }
+            if (M2C_FIELD(entry, s32 *, 0xBC) & 0x200) {
+                strcpy(lbl_802EFE20, arg1);
+                strcat(lbl_802EFE20, name);
+                strcat(lbl_802EFE20, lbl_8026A660 + 0x1A7);
+                fn_8005F5B4(sub, lbl_802EFE20);
+            }
+            GActor_Finalize(sub);
+        }
+        fn_80045D50(arg0, lbl_8026A660 + 0x1FC);
+
+        if (Res_GetByName(lbl_8026A660 + 0x20A) != 0) {
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x20A);
+            if ((s8)bytes[0] != 0) {
+                lbl_80367294 = bytes[1];
+                lbl_80367295 = bytes[2];
+                (&lbl_8036729C)[0] = bytes[3];
+                (&lbl_8036729C)[1] = bytes[4];
+                (&lbl_8036729C)[2] = bytes[5];
+                (&lbl_80367298)[0] = bytes[6];
+                (&lbl_80367298)[1] = bytes[7];
+                (&lbl_80367298)[2] = bytes[8];
+            }
+        } else {
+            defLight = -0x1E;
+            lbl_80367294 = defLight;
+            lbl_80367295 = defLight;
+            (&lbl_8036729C)[0] = 0x80;
+            (&lbl_8036729C)[1] = 0x80;
+            (&lbl_8036729C)[2] = 0x80;
+            (&lbl_80367298)[0] = 0xFF;
+            (&lbl_80367298)[1] = 0xFF;
+            (&lbl_80367298)[2] = 0xFF;
+        }
+        if (Res_GetByName(lbl_8026A660 + 0x214) != 0) {
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x214);
+            b = (s8)bytes[0] != 0;
+            lbl_8036728C = (u8)(((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
+            lbl_8036728D = bytes[2];
+            lbl_8036728E = bytes[3];
+            (&lbl_80367290)[0] = bytes[4];
+            (&lbl_80367290)[1] = bytes[5];
+            (&lbl_80367290)[2] = bytes[6];
+        } else {
+            lbl_8036728C = 0;
+        }
         lbl_80366E90 = 0xF;
         fn_8006805C(lbl_80368F24, lbl_80368F28);
         break;
@@ -1640,10 +1783,15 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     M2C_FIELD(arg0, s32 *, 0x30) = fn_80123BA8();
     M2C_FIELD(arg0, s32 *, 0x64) |= 0x40000000;
     fn_8012391C(M2C_FIELD(arg0, s32 *, 0x30));
-    if (M2C_FIELD(arg0, s32 *, 0x68) == 0) {
+    if (((u8 *)arg0)[0x68] == 0) {
         fn_800C1BDC();
         fn_800C1984();
-        if ((u8)(gMapBlendMode - 1) >= 1) {
+        enabled = 1;
+        mode = gMapBlendMode - 1;
+        if (((u32)((enabled | ~mode) - ((u32)(1 - mode) >> 1)) >> 31) == 0) {
+            enabled = 0;
+        }
+        if (enabled) {
             fn_8014716C(1);
         } else {
             fn_8014716C(0);
@@ -1661,8 +1809,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)light)[5] = (&lbl_80367298)[1];
     ((u8 *)light)[6] = (&lbl_80367298)[2];
     tmp = Light_GetChannel(2);
-    Light_GetChannel(0);
-    Light_CopyChannel(tmp);
+    Light_CopyChannel(Light_GetChannel(0), tmp);
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
     fog = Fog_GetColor();
@@ -1674,8 +1821,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)fog)[2] = (&lbl_80367290)[1];
     ((u8 *)fog)[3] = (&lbl_80367290)[2];
     fn_80040B78(arg0, (u8 *)arg0 + 0x3C, &lbl_80367290, (s8)lbl_8036728D, (f32)(s8)lbl_8036728E, lbl_80368EF4);
-    (void)t0;
-    (void)OSGetTime();
+    t1 = OSGetTime();
+    ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
+    OSReport(lbl_8026A660 + 0x22C, ms);
 }
 
 #pragma use_lmw_stmw on
@@ -6824,6 +6972,9 @@ void Unit_DrawShadows(void) {
 }
 
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 Map_SampleHeight(void *);
     void fn_80051564(void *, s32, f32, f32);
@@ -6858,21 +7009,10 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80369010;
     extern f32 lbl_80369014;
     extern f32 lbl_80369018;
-    u8 pad0x20[0x20];
-    u8 sp340[0x30];
-    u8 sp310[0x30];
-    u8 sp2E0[0x30];
-    u8 sp2B0[0x30];
-    u8 sp280[0x30];
-    u8 sp250[0x30];
-    u8 sp220[0x30];
-    u8 sp1F0[0x30];
-    u8 sp1C0[0x30];
-    u8 sp190[0x30];
-    u8 sp160[0x30];
+    u8 m[11][0x30];
     f32 sp154, sp158, sp15C, sp148, sp14C, sp150;
     f32 sp124, sp128, sp12C;
-    u8 scratch[0x120];
+    u8 scratch[0xFC];
     u32 sp18, sp14, sp10, spC, sp8;
     f32 f30, f29, f28, f27, f26, f25, f31, f24;
     f32 dx, dy, t;
@@ -6881,15 +7021,16 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     u8 *r28;
     u8 *tbl;
     f32 lim;
-    pad0x20[0] = 0;
+    u32 q[6];
+    u32 vec[9];
     f30 = *(f32 *)(arg0 + 4);
     f29 = *(f32 *)(arg0 + 8);
     r28 = arg0 + 0x1C;
     f28 = lbl_80369004 * ((f32)*(s16 *)(arg0 + 0x15E) / lbl_80369008);
+    f27 = lbl_80369004 * ((f32)*(s16 *)(arg0 + 0x162) / lbl_80369008);
     f25 = *(f32 *)(arg0 + 0xC);
     r29 = (s8)arg0[0x168];
     r27 = (s8)arg0[0x169];
-    f27 = lbl_80369004 * ((f32)*(s16 *)(arg0 + 0x162) / lbl_80369008);
     r30 = (u8)((arg1 * arg0[0x27]) / 255);
     tbl = lbl_8026AA98;
     lim = -(f25 - Map_SampleHeight(gBattleMap));
@@ -6917,11 +7058,11 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             if (t < lbl_80368FFC) t = lbl_80368FFC;
             f24 = (f32)fn_80238788(t);
             if (f25 < lbl_80368FCC) f24 *= lbl_80368FFC;
-            PSMTXRotRad(sp340, 0x7A, -f24);
+            PSMTXRotRad(m[10], 0x7A, -f24);
             *(f32 *)(scratch + 0x20) = f26;
             *(f32 *)(scratch + 0x24) = f25;
             *(u32 *)(scratch + 0x28) = *(u32 *)(tbl + 0x6C);
-            fn_802029C4(sp340, scratch + 0x20, scratch + 0x20);
+            fn_802029C4(m[10], scratch + 0x20, scratch + 0x20);
             f26 = lbl_80369010 + *(f32 *)(scratch + 0x20);
             f25 = lbl_80369010 + *(f32 *)(scratch + 0x24);
             dx = lbl_80369014 * f24;
@@ -6931,65 +7072,135 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
         if (f26 < f28) f26 = f28;
         if (f25 < f27) f25 = f27;
         {
-            f32 x1 = f30, y1 = f29;
-            *(f32 *)(scratch + 0x30) = x1;
-            *(f32 *)(scratch + 0x34) = y1;
-            *(u32 *)(scratch + 0x38) = *(u32 *)(tbl + 0x24);
-            *(f32 *)(scratch + 0x3C) = x1;
-            *(f32 *)(scratch + 0x40) = y1;
-            *(u32 *)(scratch + 0x44) = *(u32 *)(tbl + 0x30);
-            *(u32 *)(scratch + 0x48) = *(u32 *)(tbl + 0x34);
-            *(u32 *)(scratch + 0x4C) = *(u32 *)(tbl + 0x38);
-            *(u32 *)(scratch + 0x50) = *(u32 *)(tbl + 0x3C);
+            q[0] = *(u32 *)(tbl + 0x1C);
+            q[1] = *(u32 *)(tbl + 0x20);
+            q[2] = *(u32 *)(tbl + 0x24);
+            q[3] = *(u32 *)(tbl + 0x28);
+            q[4] = *(u32 *)(tbl + 0x2C);
+            q[5] = *(u32 *)(tbl + 0x30);
+            *(f32 *)&q[0] = f30;
+            *(f32 *)&q[1] = f29;
+            *(f32 *)&q[3] = f30;
+            *(f32 *)&q[4] = f29;
+            vec[0] = q[0];
+            vec[1] = q[1];
+            vec[2] = q[2];
+            vec[3] = q[3];
+            vec[4] = q[4];
+            vec[5] = q[5];
+            vec[6] = *(u32 *)(tbl + 0x34);
+            vec[7] = *(u32 *)(tbl + 0x38);
+            vec[8] = *(u32 *)(tbl + 0x3C);
             if (lbl_80368FCC != dx) {
-                PSMTXRotRad(sp2E0, 0x5A, lbl_80368FD8 * dx);
-                fn_802029C4(sp2E0, scratch + 0x48, scratch + 0x48);
-                fn_802026E4(sp2B0, scratch + 0x3C, scratch + 0x48, scratch + 0x30);
-                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(sp280, sp2B0, sp340);
-                PSMTXTrans(sp310, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
-                PSMTXConcat(sp2E0, sp310, sp2E0);
-                PSMTXTrans(sp310, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
-                PSMTXConcat(sp310, sp2E0, sp2E0);
-                PSMTXConcat(sp2E0, sp340, sp340);
+                PSMTXRotRad(m[8], 0x5A, lbl_80368FD8 * dx);
+                fn_802029C4(m[8], &vec[6], &vec[6]);
+                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                PSMTXConcat(m[6], m[7], m[10]);
+                PSMTXTrans(m[9], lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+                PSMTXConcat(m[8], m[9], m[8]);
+                PSMTXTrans(m[9], lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+                PSMTXConcat(m[9], m[8], m[8]);
+                PSMTXConcat(m[8], m[10], m[10]);
             } else {
-                fn_802026E4(sp2B0, scratch + 0x3C, scratch + 0x48, scratch + 0x30);
-                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(sp280, sp2B0, sp340);
+                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                PSMTXConcat(m[6], m[7], m[10]);
             }
         }
         if (fn_80055D94(0x100) != 0) {
             sp18 = lbl_80368FA8;
             ((u8 *)&sp18)[3] = r30;
-            fn_802026E4(sp250, scratch + 0x60, scratch + 0x6C, scratch + 0x54);
-            C_MTXLightOrtho(sp220, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(sp220, sp250, sp340);
-            fn_80224E50(sp340, 0x1E, 0);
+            q[0] = *(u32 *)(tbl + 0x1C);
+            q[1] = *(u32 *)(tbl + 0x20);
+            q[2] = *(u32 *)(tbl + 0x24);
+            q[3] = *(u32 *)(tbl + 0x28);
+            q[4] = *(u32 *)(tbl + 0x2C);
+            q[5] = *(u32 *)(tbl + 0x30);
+            *(f32 *)&q[0] = sp148;
+            *(f32 *)&q[1] = sp14C;
+            *(f32 *)&q[3] = sp148;
+            *(f32 *)&q[4] = sp14C;
+            vec[0] = q[0];
+            vec[1] = q[1];
+            vec[2] = q[2];
+            vec[3] = q[3];
+            vec[4] = q[4];
+            vec[5] = q[5];
+            vec[6] = *(u32 *)(tbl + 0x34);
+            vec[7] = *(u32 *)(tbl + 0x38);
+            vec[8] = *(u32 *)(tbl + 0x3C);
+            fn_802026E4(m[5], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[4], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[4], m[5], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
             sp10 = sp18;
             fn_80051564(&sp10, 1, f30, f29);
-            fn_802026E4(sp1F0, scratch + 0x80, scratch + 0x8C, scratch + 0x74);
-            C_MTXLightOrtho(sp1C0, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(sp1C0, sp1F0, sp340);
-            fn_80224E50(sp340, 0x1E, 0);
+            q[0] = *(u32 *)(tbl + 0x1C);
+            q[1] = *(u32 *)(tbl + 0x20);
+            q[2] = *(u32 *)(tbl + 0x24);
+            q[3] = *(u32 *)(tbl + 0x28);
+            q[4] = *(u32 *)(tbl + 0x2C);
+            q[5] = *(u32 *)(tbl + 0x30);
+            *(f32 *)&q[0] = sp154;
+            *(f32 *)&q[1] = sp158;
+            *(f32 *)&q[3] = sp154;
+            *(f32 *)&q[4] = sp158;
+            vec[0] = q[0];
+            vec[1] = q[1];
+            vec[2] = q[2];
+            vec[3] = q[3];
+            vec[4] = q[4];
+            vec[5] = q[5];
+            vec[6] = *(u32 *)(tbl + 0x34);
+            vec[7] = *(u32 *)(tbl + 0x38);
+            vec[8] = *(u32 *)(tbl + 0x3C);
+            fn_802026E4(m[3], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[2], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[2], m[3], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
             spC = sp18;
             fn_80051564(&spC, 1, f30, f29);
-            return;
         }
     } else {
         fn_80060F70(r28, 1, &sp124);
-        fn_802026E4(sp190, scratch + 0xA0, scratch + 0xAC, scratch + 0x94);
-        C_MTXLightOrtho(sp160, -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-        PSMTXConcat(sp160, sp190, sp340);
+        q[0] = *(u32 *)(tbl + 0x1C);
+        q[1] = *(u32 *)(tbl + 0x20);
+        q[2] = *(u32 *)(tbl + 0x24);
+        q[3] = *(u32 *)(tbl + 0x28);
+        q[4] = *(u32 *)(tbl + 0x2C);
+        q[5] = *(u32 *)(tbl + 0x30);
+        *(f32 *)&q[0] = sp124;
+        *(f32 *)&q[1] = sp128;
+        *(f32 *)&q[3] = sp124;
+        *(f32 *)&q[4] = sp128;
+        vec[0] = q[0];
+        vec[1] = q[1];
+        vec[2] = q[2];
+        vec[3] = q[3];
+        vec[4] = q[4];
+        vec[5] = q[5];
+        vec[6] = *(u32 *)(tbl + 0x34);
+        vec[7] = *(u32 *)(tbl + 0x38);
+        vec[8] = *(u32 *)(tbl + 0x3C);
+        fn_802026E4(m[1], &vec[3], &vec[6], &vec[0]);
+        C_MTXLightOrtho(m[0], -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+        PSMTXConcat(m[0], m[1], m[10]);
     }
-    fn_80224E50(sp340, 0x1E, 0);
+    fn_80224E50(m[10], 0x1E, 0);
     fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
     sp14 = lbl_80368FAC;
     ((u8 *)&sp14)[3] = r30;
     sp8 = sp14;
     fn_80051564(&sp8, 1, f30, f29);
 }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma scheduling reset
+#pragma optimization_level reset
 
 void fn_8004D370(void) {
     void fn_80067708(s32, s32, void (*)(void), s32);
@@ -9688,723 +9899,16 @@ void Effect_SetPos(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = farg2;
 }
 
-void fn_800536CC(void *arg0, s32 arg1) {
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x34) = arg1;
-}
-
-void fn_800536D8(void *arg0, s32 arg1) {
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30) = arg1;
-}
-
-void fn_800536E4(void *arg0, void *arg1) {
-    if ((u32) M2C_FIELD(arg0, u32 *, 0x18) == (u32) M2C_FIELD(arg1, u32 *, 0)) {
-        M2C_FIELD(arg1, void **, 4) = arg0;
-    }
-}
-
-void *fn_800536FC(u16 arg0) {
-    void fn_80053750(void *, void *);
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    extern u8 lbl_80285990[];
-    struct {
-        u16 value;
-        u16 padding;
-        void *result;
-    } data;
-
-    data.value = arg0;
-    data.result = NULL;
-    GfxEnt_ForEachKey(lbl_80285990, fn_80053750, &data);
-    if (data.result != NULL) {
-        return data.result;
-    }
-    return NULL;
-}
-
-void fn_80053750(void *arg0, void *arg1) {
-    if ((u16) M2C_FIELD(arg1, u16 *, 0) == (u16) *M2C_FIELD(arg0, u16 **, 0x30)) {
-        M2C_FIELD(arg1, void **, 4) = arg0;
-    }
-}
-
-void fn_8005376C(void) {
-    u32 Process_Find(u32 *);
-    void *Process_UnlinkByKey(u32 *);
-    void *Process_Create(void *, s32);
-    s32 fn_801451BC(void);
-    u8 fn_80145308(void);
-    void DebugPrint(const char *, ...);
-    void *temp_r3;
-
-    extern u32 lbl_80285990[];
-    extern u8 GActor_str[];
-    extern u8 lbl_80285968[];
-
-    Process_UnlinkByKey(lbl_80285990);
-    if ((Process_Find(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
-        fn_801451BC();
-        DebugPrint((const char *)((u8 *) &GActor_str + 0x12E));
-        return;
-    }
-    temp_r3 = Process_Create(lbl_80285968, 4);
-    *(s32 *)((u8 *) temp_r3 + 0x60) = 0;
-}
 #pragma cplusplus reset
-s32 fn_800537E8(void) {
-    extern u16 lbl_80285990[];
-    s32 v = Process_Find(lbl_80285990);
-    return v != 0;
-}
-
-void *fn_8005381C(void *name, void *parent)
-{
-  extern u8 lbl_80285990[];
-  extern u32 lbl_80369080;
-  extern const f32 lbl_80369084;
-  extern const f32 lbl_80369088;
-  extern const f32 lbl_8036908C;
-  extern const f32 lbl_803690C0;
-  void *Process_CreateChild(void *, void *);
-  void *Heap_Alloc(s32);
-  void *Res_GetByName(void *);
-  void *nameSave;
-  void *new_var2[2];
-  u8 *new_var;
-  u32 color;
-  f32 zero;
-  nameSave = name;
-  new_var2[1] = Process_CreateChild(lbl_80285990, parent);
-  *((void **) (((u8 *) new_var2[1]) + 0x30)) = Heap_Alloc(0x60);
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  zero = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0xC)) = zero;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x10)) = zero;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x14)) = zero;
-  *((u16 *) (((u8 *) new_var2[0]) + 0)) = 0;
-  *((s8 *) (((u8 *) new_var2[0]) + 3)) = -1;
-  *((s8 *) (((u8 *) new_var2[0]) + 4)) = -1;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x30)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x34)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x3C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x40)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x44)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x5C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x48)) = 0;
-  color = lbl_80369080;
-  ((u8 *) new_var2[0])[0x38] = ((u8 *) (&color))[0];
-  ((u8 *) new_var2[0])[0x39] = ((u8 *) (&color))[1];
-  ((u8 *) new_var2[0])[0x3A] = ((u8 *) (&color))[2];
-  ((u8 *) new_var2[0])[0x3B] = ((u8 *) (&color))[3];
-  *((void **) (((u8 *) new_var2[0]) + 0x2C)) = Res_GetByName(nameSave);
-  *((f32 *) (((u8 *) new_var2[0]) + 0x20)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x24)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x28)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_80369088;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x18)) = lbl_8036908C;
-  ((u8 *) new_var2[0])[5] = 3;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x4C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x50)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x54)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x58)) = 0;
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x08000000;
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  new_var = (u8 *) new_var2[1];
-  if (((*(((u8 *) (*((void **) (((u8 *) new_var2[0]) + 0x2C)))) + 4)) & 0xC) == 4U)
-  {
-    *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x20000000;
-  }
-  new_var2[0] = *((void **) (new_var + 0x30));
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 8;
-  new_var2[0] = *((void **) (new_var + 0x30));
-  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_803690C0;
-  return new_var2[1];
-}
-
-void *fn_8005397C(void *name, u32 priority) {
-  extern u8 lbl_80285990[];
-  extern u32 lbl_80369080;
-  extern const f32 lbl_80369084;
-  extern const f32 lbl_80369088;
-  extern const f32 lbl_8036908C;
-  extern const f32 lbl_803690C0;
-  void *Process_Create(void *, s32);
-  void *Heap_Alloc(s32);
-  void *Res_GetByName(void *);
-  void *nameSave;
-  void *new_var2[2];
-  u8 *new_var;
-  u32 color;
-  f32 zero;
-  nameSave = name;
-  if (priority == 0) priority = 4;
-  new_var2[1] = Process_Create(lbl_80285990, priority);
-  *((void **) (((u8 *) new_var2[1]) + 0x30)) = Heap_Alloc(0x60);
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  zero = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0xC)) = zero;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x10)) = zero;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x14)) = zero;
-  *((u16 *) (((u8 *) new_var2[0]) + 0)) = 0;
-  *((s8 *) (((u8 *) new_var2[0]) + 3)) = -1;
-  *((s8 *) (((u8 *) new_var2[0]) + 4)) = -1;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x30)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x34)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x3C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x40)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x44)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x5C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x48)) = 0;
-  color = lbl_80369080;
-  ((u8 *) new_var2[0])[0x38] = ((u8 *) (&color))[0];
-  ((u8 *) new_var2[0])[0x39] = ((u8 *) (&color))[1];
-  ((u8 *) new_var2[0])[0x3A] = ((u8 *) (&color))[2];
-  ((u8 *) new_var2[0])[0x3B] = ((u8 *) (&color))[3];
-  *((void **) (((u8 *) new_var2[0]) + 0x2C)) = Res_GetByName(nameSave);
-  *((f32 *) (((u8 *) new_var2[0]) + 0x20)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x24)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x28)) = lbl_80369084;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_80369088;
-  *((f32 *) (((u8 *) new_var2[0]) + 0x18)) = lbl_8036908C;
-  ((u8 *) new_var2[0])[5] = 3;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x4C)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x50)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x54)) = 0;
-  *((u32 *) (((u8 *) new_var2[0]) + 0x58)) = 0;
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x08000000;
-  new_var2[0] = *((void **) (((u8 *) new_var2[1]) + 0x30));
-  new_var = (u8 *) new_var2[1];
-  if (((*(((u8 *) (*((void **) (((u8 *) new_var2[0]) + 0x2C)))) + 4)) & 0xC) == 4U)
-  {
-    *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 0x20000000;
-  }
-  new_var2[0] = *((void **) (new_var + 0x30));
-  *((u32 *) (((u8 *) new_var2[0]) + 8)) |= 8;
-  new_var2[0] = *((void **) (new_var + 0x30));
-  *((f32 *) (((u8 *) new_var2[0]) + 0x1C)) = lbl_803690C0;
-  return new_var2[1];
-}
-
-void *fn_80053AE8(void *name, void *parent) {
-    extern u8 lbl_80285990[];
-    extern u32 lbl_80369080;
-    extern const f32 lbl_80369084;
-    extern const f32 lbl_80369088;
-    extern const f32 lbl_8036908C;
-    void *Process_CreateChild(void *, void *);
-    void *Heap_Alloc(s32);
-    void *Res_GetByName(void *);
-    void *nameSave;
-    void *init;
-    void *proc;
-    u32 color;
-    f32 zero;
-    nameSave = name;
-    proc = Process_CreateChild(lbl_80285990, parent);
-    *(void **)((u8 *)proc + 0x30) = Heap_Alloc(0x60);
-    init = *(void **)((u8 *)proc + 0x30);
-    zero = lbl_80369084;
-    *(f32 *)((u8 *)init + 0xC) = zero;
-    *(f32 *)((u8 *)init + 0x10) = zero;
-    *(f32 *)((u8 *)init + 0x14) = zero;
-    *(u16 *)((u8 *)init + 0) = 0;
-    *(s8 *)((u8 *)init + 3) = -1;
-    *(s8 *)((u8 *)init + 4) = -1;
-    *(u32 *)((u8 *)init + 0x30) = 0;
-    *(u32 *)((u8 *)init + 0x34) = 0;
-    *(u32 *)((u8 *)init + 0x3C) = 0;
-    *(u32 *)((u8 *)init + 0x40) = 0;
-    *(u32 *)((u8 *)init + 0x44) = 0;
-    *(u32 *)((u8 *)init + 8) = 0;
-    *(u32 *)((u8 *)init + 0x5C) = 0;
-    *(u32 *)((u8 *)init + 0x48) = 0;
-    color = lbl_80369080;
-    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
-    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
-    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
-    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
-    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
-    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
-    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
-    ((u8 *)init)[5] = 3;
-    *(u32 *)((u8 *)init + 0x4C) = 0;
-    *(u32 *)((u8 *)init + 0x50) = 0;
-    *(u32 *)((u8 *)init + 0x54) = 0;
-    *(u32 *)((u8 *)init + 0x58) = 0;
-    init = *(void **)((u8 *)proc + 0x30);
-    *(u32 *)((u8 *)init + 8) |= 0x08000000;
-    init = *(void **)((u8 *)proc + 0x30);
-    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
-        *(u32 *)((u8 *)init + 8) |= 0x20000000;
-    }
-    return proc;
-}
-
-void *Effect_Create(void *name, u32 priority) {
-    extern u8 lbl_80285990[];
-    extern u32 lbl_80369080;
-    extern const f32 lbl_80369084;
-    extern const f32 lbl_80369088;
-    extern const f32 lbl_8036908C;
-    void *Process_Create(void *, s32);
-    void *Heap_Alloc(s32);
-    void *Res_GetByName(void *);
-    void *nameSave;
-    void *init;
-    void *proc;
-    u32 color;
-    f32 zero;
-
-    nameSave = name;
-    if (priority == 0) {
-        priority = 4;
-    }
-    proc = Process_Create(lbl_80285990, priority);
-    *(void **)((u8 *)proc + 0x30) = Heap_Alloc(0x60);
-    init = *(void **)((u8 *)proc + 0x30);
-    zero = lbl_80369084;
-    *(f32 *)((u8 *)init + 0xC) = zero;
-    *(f32 *)((u8 *)init + 0x10) = zero;
-    *(f32 *)((u8 *)init + 0x14) = zero;
-    *(u16 *)((u8 *)init + 0) = 0;
-    *(s8 *)((u8 *)init + 3) = -1;
-    *(s8 *)((u8 *)init + 4) = -1;
-    *(u32 *)((u8 *)init + 0x30) = 0;
-    *(u32 *)((u8 *)init + 0x34) = 0;
-    *(u32 *)((u8 *)init + 0x3C) = 0;
-    *(u32 *)((u8 *)init + 0x40) = 0;
-    *(u32 *)((u8 *)init + 0x44) = 0;
-    *(u32 *)((u8 *)init + 8) = 0;
-    *(u32 *)((u8 *)init + 0x5C) = 0;
-    *(u32 *)((u8 *)init + 0x48) = 0;
-    color = lbl_80369080;
-    ((u8 *)init)[0x38] = ((u8 *)&color)[0];
-    ((u8 *)init)[0x39] = ((u8 *)&color)[1];
-    ((u8 *)init)[0x3A] = ((u8 *)&color)[2];
-    ((u8 *)init)[0x3B] = ((u8 *)&color)[3];
-    *(void **)((u8 *)init + 0x2C) = Res_GetByName(nameSave);
-    *(f32 *)((u8 *)init + 0x20) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x24) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x28) = lbl_80369084;
-    *(f32 *)((u8 *)init + 0x1C) = lbl_80369088;
-    *(f32 *)((u8 *)init + 0x18) = lbl_8036908C;
-    ((u8 *)init)[5] = 3;
-    *(u32 *)((u8 *)init + 0x4C) = 0;
-    *(u32 *)((u8 *)init + 0x50) = 0;
-    *(u32 *)((u8 *)init + 0x54) = 0;
-    *(u32 *)((u8 *)init + 0x58) = 0;
-    init = *(void **)((u8 *)proc + 0x30);
-    *(u32 *)((u8 *)init + 8) |= 0x08000000;
-    init = *(void **)((u8 *)proc + 0x30);
-    if (((*((u8 *)(*(void **)((u8 *)init + 0x2C)) + 4)) & 0xC) == 4U) {
-        *(u32 *)((u8 *)init + 8) |= 0x20000000;
-    }
-    return proc;
-}
-
-void fn_80053D84(void *arg0) {
-    u8 *obj;
-    u32 v;
-
-    obj = *(u8 **)((u8 *)arg0 + 0x30);
-    v = *(u32 *)(obj + 8);
-    *(u32 *)(obj + 8) = v | 0x80000000;
-}
-
-void fn_80053D98(void *arg0, s32 arg1) {
- void fn_80055D9C(void *);
- void *Process_Create(void *, s32);
- void fn_800616A0(void *);
- void sprintf(void *, void *, ...);
- void fn_8005C7C8(void *);
- void fn_800C4588(void *);
- void fn_80053E9C(void *);
- void fn_80059138(void (*)(void *), void *, s32, s32);
- extern u32 gGameFlags;
- extern u8 lbl_80285968[];
- extern u8 GActor_str[];
- char buf[0x40];
- void *obj;
- void (*callback)(void *, void *);
- obj=M2C_FIELD(arg0,void **,0x30);
- callback=M2C_FIELD(obj,void (**)(void *,void *),0x44);
- if(callback) callback(arg0,obj);
- fn_80055D9C(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x48));
- if(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),u32 *,8)&0x40000000) gGameFlags &= ~1U;
- if(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void **,0x30),void **,0x2C),u8 *,5)) {
- void *proc=Process_Create(lbl_80285968,4);
- M2C_FIELD(proc,s32 *,0x60)=0x708;
- }
- arg0=M2C_FIELD(arg0,void **,0x30);
- if(M2C_FIELD(arg0,u32 *,8)&0x88000000) {
- obj=M2C_FIELD(arg0,void **,0x5C);
- if(obj) {
- fn_800616A0(obj);
- sprintf(buf,GActor_str+0x120,GActor_str+0x129,**(void ***)((u8 *)arg0+0x2C));
- fn_8005C7C8(buf);
- }
- fn_800C4588(arg0);
- } else fn_80059138(fn_80053E9C,arg0,1,2);
-}
-
-void fn_80053E9C(void *arg0) {
-    void fn_800616A0(void *);
-    void sprintf(void *, void *, ...);
-    void fn_8005C7C8(void *);
-    void fn_800C4588(void *);
-    extern u8 GActor_str[];
-    char sp8[0x40];
-    void *temp;
-
-    temp = *(void **)((u8 *)arg0 + 0x5C);
-    if (temp != NULL) {
-        fn_800616A0(temp);
-        sprintf(sp8, GActor_str + 0x120, GActor_str + 0x129,
-                    **(void ***)((u8 *)arg0 + 0x2C));
-        fn_8005C7C8(sp8);
-    }
-    fn_800C4588(arg0);
-}
-
-void fn_80053F08(void *arg0) {
-    void fn_800536E4(void *, void *);
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void Process_ClearFunc(void *);
-    extern u8 lbl_80285990[];
-    struct {
-        void *value;
-        void *result;
-    } data;
-
-    data.value = arg0;
-    data.result = NULL;
-    GfxEnt_ForEachKey(lbl_80285990, fn_800536E4, &data);
-    if (data.result == NULL) {
-        Process_ClearFunc(arg0);
-    }
-}
 
 #pragma use_lmw_stmw on
-void fn_80053F68(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void Model_SetColor(void *, u8, u8, u8);
-    void Model_SetAlpha(void *, u8);
-    void fn_8005E644(void *);
-    void fn_80060060(void *);
-    void fn_800609DC(void *);
-    void fn_8006CAD4(void *);
-    void Process_ClearFunc(void *);
-    void MapObj_UpdateMatrix(void *);
-    void fn_800548E8(void *);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_SetColorByte(u8);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
-    void Prim2D_AddPrim(s32);
-    void fn_80007340(void *, void *);
-    void Prim2D_EndPrim(void);
-    u8 fn_800AA188(void);
-    extern f32 lbl_80369084;
-    extern f32 lbl_8036908C;
-    extern f64 lbl_80369090;
-    extern f32 lbl_803690C4;
-    extern f32 lbl_803690C8;
-    extern void fn_80054314;
 
-    typedef struct { f32 x, y, z; } Vec3;
-    u32 color;
-    Vec3 tmp2;
-    Vec3 tmp;
-    void *inner;
-    void *gfx;
-    u8 ok;
-    void *other;
-    s32 alpha;
-    u8 (*cb)(void *);
-    void (*cb2)(void *);
-    s32 cnt;
-    void *dst;
-    void *src;
-    u32 flags;
-    u32 fl;
-    u8 b;
-
-    inner = *(void **)((u8 *)arg0 + 0x30);
-    flags = *(u32 *)((u8 *)inner + 8);
-    gfx = *(void **)((u8 *)inner + 0x5C);
-
-    if ((flags & 0x30) == 0) {
-        ok = 1;
-    } else if (flags & 0x10) {
-        ok = 0;
-    } else if ((flags & 0x20) && fn_800AA188() == 0) {
-        ok = 0;
-    } else {
-        ok = 1;
-    }
-
-    if (ok) {
-        inner = *(void **)((u8 *)arg0 + 0x30);
-        if ((((fl = *(u32 *)((u8 *)inner + 8)) >> 28) & 1) &&
-            (other = *(void **)((u8 *)arg0 + 0x18)) != 0) {
-            *(u32 *)((u8 *)inner + 8) = fl | 0x10000000;
-            *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x30) =
-                *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x30);
-            *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x34) =
-                *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x34);
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            src = *(void **)((u8 *)other + 0x30);
-            tmp.x = *(f32 *)((u8 *)src + 0xC);
-            tmp.y = *(f32 *)((u8 *)src + 0x10);
-            tmp.z = *(f32 *)((u8 *)src + 0x14);
-            tmp2 = tmp;
-            *(f32 *)((u8 *)dst + 0xC) = tmp2.x;
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            *(f32 *)((u8 *)dst + 0x10) = tmp2.y;
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            *(f32 *)((u8 *)dst + 0x14) = tmp2.z;
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x18) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x18);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x20) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x20);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x24);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x28) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x28);
-            ((u8 *)*(void **)((u8 *)arg0 + 0x30))[3] =
-                ((u8 *)*(void **)((u8 *)other + 0x30))[3];
-        }
-
-        dst = *(void **)((u8 *)arg0 + 0x30);
-        alpha = 0xFF;
-        cnt = *(s8 *)((u8 *)dst + 3);
-        if (cnt > 0) {
-            *(s8 *)((u8 *)dst + 3) = (s8)(cnt - 1);
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            alpha = (s32)Math_Lerp(lbl_80369084, lbl_803690C4, lbl_803690C8,
-                                     (f32)*(s8 *)((u8 *)dst + 3));
-            if (alpha == 0) {
-                Process_ClearFunc(arg0);
-            }
-        }
-
-        color = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x38);
-        Model_SetColor(gfx, ((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2]);
-        Model_SetAlpha(gfx, (u8)((((u8 *)&color)[3] * alpha) / 255));
-        fn_8005E644(gfx);
-
-        inner = *(void **)((u8 *)arg0 + 0x30);
-        flags = *(u32 *)((u8 *)inner + 8);
-        if (flags & 0x08000000) {
-            cb2 = *(void (**)(void *))((u8 *)inner + 0x3C);
-            if (cb2 != 0) {
-                cb2(arg0);
-            }
-            inner = *(void **)((u8 *)arg0 + 0x30);
-            *(u32 *)((u8 *)inner + 8) = *(u32 *)((u8 *)inner + 8) & ~0x08000000;
-        } else if ((flags & 0x800) == 0) {
-            fn_80060060(gfx);
-        }
-
-        cb = *(u8 (**)(void *))((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x40);
-        if (cb == 0 || cb(arg0) != 1) {
-            MapObj_UpdateMatrix(arg0);
-        }
-
-        fn_800609DC(gfx);
-
-        inner = *(void **)((u8 *)arg0 + 0x30);
-        if ((*(u32 *)((u8 *)inner + 8) & 8) == 0 &&
-            (*(u8 *)((u8 *)*(void **)((u8 *)inner + 0x2C) + 4) & 3) == 0) {
-            fn_8006CAD4(gfx);
-        } else {
-            Prim2D_Begin();
-            inner = *(void **)((u8 *)arg0 + 0x30);
-            Prim2D_SetTransform(lbl_80369084, lbl_80369084,
-                        (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);
-            Prim2D_SetTex(0, 0x410);
-            Prim2D_SetColorByte(0xFF);
-            Prim2D_PrepareTex();
-            Prim2D_AddPrim(0xB);
-            fn_80007340(&fn_80054314, gfx);
-            Prim2D_EndPrim();
-        }
-
-        fn_800548E8(arg0);
-
-        {
-            void *p = *(void **)((u8 *)arg0 + 0x30);
-            if ((*(u32 *)((u8 *)p + 8) & 4) == 0 && (*(u32 *)gfx & 0x10)) {
-                b = ((u8 *)p)[4];
-                if ((s8)b >= 0) {
-                    ((u8 *)p)[4] = b - 1;
-                } else {
-                    Process_ClearFunc(arg0);
-                }
-            }
-        }
-    }
-}
 #pragma use_lmw_stmw reset
-
-void fn_80054314(void *arg0) {
-    u8 fn_8000A268(void);
-    void fn_80069F04(void *);
-    void Model_SetAlpha(void *, s32);
-    u8 temp_r31;
-    u8 tmp;
-
-    temp_r31 = *(u8 *)((u8 *)arg0 + 0xB);
-    tmp = (u8)((temp_r31 * fn_8000A268()) / 255);
-    if (tmp != 0) {
-        Model_SetAlpha(arg0, tmp);
-        fn_80069F04(arg0);
-        Model_SetAlpha(arg0, temp_r31);
-    }
-}
 
 #pragma use_lmw_stmw on
 /* Build map-object model node from path templates; optionally spawn a linked child object. */
-void MapObj_InitGraphics(void *arg0) {
-#pragma use_lmw_stmw on
-#pragma opt_common_subs off
- void sprintf(void *, void *, ...);
- void fn_8005C82C(void *, s32);
- void *GActor_Create(void);
- void GActor_LoadGs(void *, void *);
- void GActor_LoadG(void *, void *);
- void fn_8005F5B4(void *, void *);
- void GActor_LoadTpl(void *, void *);
- u8 FileCache_Exists(void *);
- void GActor_Finalize(void *);
- void fn_8005EBCC(void *, u8);
- void *Process_Create(void *, void *);
- void *Heap_Alloc(s32);
- void *Res_GetByName(void *);
- void *fn_80060664(void *);
- u32 Game_GetFrameCount(void);
- void fn_8005FEE8(void *, f32);
- extern u8 GActor_str[];
- extern u8 lbl_80285990[];
- extern u32 lbl_80369080;
- extern const f32 lbl_80369084, lbl_80369088, lbl_8036908C;
- typedef struct { f32 x,y,z; } Vec;
- char buf[0x40];
- Vec b,a;
- u32 color;
- u32 name;
- void *child,*node,*init,*base,*ref,*parent;
- u32 range,rnd;
- s32 lo;
- u32 quotient;
- u8 mode;
- f32 zero;
- s32 flag;
- sprintf(buf,GActor_str+0x120,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0));
- flag=0;
- if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x100) flag=8;
- fn_8005C82C(buf,flag);
- node=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x5C)=GActor_Create();
- M2C_FIELD(node,u8 *,0x87)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u8 *,5);
- if (!(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&1)) M2C_FIELD(node,u32 *,0)|=0x400;
- if (!(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&2)) M2C_FIELD(node,u32 *,0)|=0x40000;
- if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&4) M2C_FIELD(node,u32 *,0)|=0x180;
- if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x80) M2C_FIELD(node,u32 *,0)|=0x10000000;
- sprintf(buf,GActor_str+330,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadGs(node,buf);
-sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadG(node,buf);
-sprintf(buf,GActor_str+345,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
-sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(FileCache_Exists(buf)) GActor_LoadTpl(node,buf);
- GActor_Finalize(node);
- base=M2C_FIELD(arg0,void * *,0x30);
- mode=M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,7);
- if(mode) {M2C_FIELD(base,u8 *,4)=mode; fn_8005EBCC(node,mode);}
- name=M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),u32 *,8);
- if(name) {
- parent=arg0;
- if(!arg0) parent=(void *)4;
- child=Process_Create(lbl_80285990,parent);
- M2C_FIELD(child,void * *,0x30)=Heap_Alloc(0x60);
- init=M2C_FIELD(child,void * *,0x30);
- zero=lbl_80369084;
- M2C_FIELD(init,f32 *,0xC)=zero; M2C_FIELD(init,f32 *,0x10)=zero; M2C_FIELD(init,f32 *,0x14)=zero;
- M2C_FIELD(init,u16 *,0)=0; M2C_FIELD(init,s8 *,3)=-1; M2C_FIELD(init,s8 *,4)=-1;
- M2C_FIELD(init,u32 *,48)=0; M2C_FIELD(init,u32 *,52)=0; M2C_FIELD(init,u32 *,60)=0; M2C_FIELD(init,u32 *,64)=0; M2C_FIELD(init,u32 *,68)=0; M2C_FIELD(init,u32 *,8)=0; M2C_FIELD(init,u32 *,92)=0; M2C_FIELD(init,u32 *,72)=0;
- color=lbl_80369080;
- M2C_FIELD(init,u8 *,0x38)=((u8 *)&color)[0]; M2C_FIELD(init,u8 *,0x39)=((u8 *)&color)[1]; M2C_FIELD(init,u8 *,0x3A)=((u8 *)&color)[2]; M2C_FIELD(init,u8 *,0x3B)=((u8 *)&color)[3];
- M2C_FIELD(init,void * *,0x2C)=Res_GetByName((void *)name);
- zero=lbl_80369084;
- M2C_FIELD(init,f32 *,0x20)=zero; M2C_FIELD(init,f32 *,0x24)=zero; M2C_FIELD(init,f32 *,0x28)=zero;
- M2C_FIELD(init,f32 *,0x1C)=lbl_80369088; M2C_FIELD(init,f32 *,0x18)=lbl_8036908C; M2C_FIELD(init,u8 *,5)=3;
- M2C_FIELD(init,u32 *,76)=0; M2C_FIELD(init,u32 *,80)=0; M2C_FIELD(init,u32 *,84)=0; M2C_FIELD(init,u32 *,88)=0;
- M2C_FIELD(M2C_FIELD(child,void * *,0x30),u32 *,8)|=0x08000000;
- base=M2C_FIELD(child,void * *,0x30);
- if((M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,4)&0xCU)==4U) M2C_FIELD(base,u32 *,8)|=0x20000000;
- if(arg0) {
- M2C_FIELD(M2C_FIELD(child,void * *,0x30),u32 *,8)|=0x10000000;
- M2C_FIELD(M2C_FIELD(child,void * *,0x30),u32 *,48)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,48);
-M2C_FIELD(M2C_FIELD(child,void * *,0x30),u32 *,52)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,52);
- base=M2C_FIELD(arg0,void * *,0x30);
- a.x=M2C_FIELD(base,f32 *,0xC); a.y=M2C_FIELD(base,f32 *,0x10); a.z=M2C_FIELD(base,f32 *,0x14); b=a;
- M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,0xC)=b.x; M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,0x10)=b.y; M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,0x14)=b.z;
- M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,24)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),f32 *,24);
-M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,32)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),f32 *,32);
-M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,36)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),f32 *,36);
-M2C_FIELD(M2C_FIELD(child,void * *,0x30),f32 *,40)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),f32 *,40);
-M2C_FIELD(M2C_FIELD(child,void * *,0x30),u8 *,3)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u8 *,3);
- }}
- if(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x1000) {
- ref=fn_80060664(node); range=M2C_FIELD(ref,u32 *,0x18)-M2C_FIELD(ref,s32 *,0x14);
- rnd=Game_GetFrameCount();
- quotient=rnd/range;
- rnd-=quotient*range;
- lo=M2C_FIELD(ref,s32 *,0x14);
- fn_8005FEE8(node,(f32)(s32)(lo+rnd));
- }
-}
+
 #pragma use_lmw_stmw reset
-
-void fn_80054808(void *arg0) {
-    M2C_UNK Process_ClearFunc(void *);
-    u8 GActor_CheckResources(s32);
-    if (GActor_CheckResources(*M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 **, 0x2C)) != 0) {
-        Process_ClearFunc(arg0);
-    }
-}
-
-void fn_80054850(void *arg0) {
-    s64 OSGetTime(void);
-    void Process_Goto(void *, s32);
-    void fn_800555EC(s32, s32);
-    u8 GActor_CheckResources(s32);
-    s32 temp_r31;
-    u32 flags;
-    void *temp_r3;
-    s32 var_r4;
-
-    *(s64 *)((u8 *)arg0 + 0x38) = OSGetTime();
-    temp_r3 = *(void **)((u8 *)arg0 + 0x30);
-    flags = *(u32 *)((u8 *)temp_r3 + 8);
-    temp_r31 = **(s32 **)((u8 *)temp_r3 + 0x2C);
-    if ((flags >> 28) & 1) {
-        Process_Goto(arg0, 0);
-        return;
-    }
-    var_r4 = 0;
-    if (flags & 0x100) {
-        var_r4 = 8;
-    }
-    fn_800555EC(temp_r31, var_r4);
-    if (GActor_CheckResources(temp_r31) != 0) {
-        Process_Goto(arg0, 0);
-    }
-}
 
 #pragma use_lmw_stmw on
 

@@ -252,7 +252,7 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
         return fn_800940B0(arg0, arg1) != 0;
     if (flags & 0x18ULL)
         return fn_800940B0(arg0, arg1);
-    return (u8)(((flags & 5ULL) >> 32) ^ ((5ULL & 0ULL) >> 32));
+    return (u8)(((5ULL & 0ULL) >> 32) ^ ((flags & 5ULL) >> 32));
 }
 #pragma global_optimizer reset
 /* If the item's _UFX resource allows the current game state, invoke it. */

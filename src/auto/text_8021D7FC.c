@@ -318,8 +318,9 @@ void __GXInitRevisionBits(void) {
         *(volatile u32 *)0xCC008000 = regB;
     }
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void *GXInit(void *base, u32 size) {
     void OSRegisterVersion(char *);
     void GXSetMisc(u32, u32);
@@ -340,7 +341,7 @@ void *GXInit(void *base, u32 size) {
     void __GXSetTmemConfig(u32);
     void __GXInitGX(void);
     extern char *__GXVersion;
-    extern u8 *__GXData;
+    extern u8 *const __GXData;
     extern u16 *__cpReg;
     extern void *__piReg;
     extern void *__peReg;
@@ -348,187 +349,102 @@ void *GXInit(void *base, u32 size) {
     extern u8 FifoObj_8033A440[];
     extern u8 GXResetFuncInfo_8029DDCC[];
     extern u32 GXTexRegionAddrTable_8029DD0C[];
-
     static u32 resetFuncRegistered;
     void *fifo;
     u8 *gx;
     u32 i;
-    u32 hid;
-    u32 freq;
-    u32 regOff;
-    u32 idx;
-    u32 a;
-    u32 b;
-    volatile u8 *wf8;
-    volatile u32 *wf32;
-
     fifo = FifoObj_8033A440;
     OSRegisterVersion(__GXVersion);
     gx = __GXData;
     gx[0x5A8] = 0;
-    gx[0x5A9] = 1;
-    gx[0x5AA] = 1;
-    *(u32 *)(gx + 0x594) = 0;
-    *(u32 *)(gx + 0x598) = 0;
-    GXSetMisc(1, 0);
-    __cpReg = (u16 *)0xCC000000;
-    __piReg = (void *)0xCC003000;
-    __peReg = (void *)0xCC001000;
-    __memReg = (void *)0xCC004000;
+    GXSetMisc(1, (gx[0x5A9] = 1, gx[0x5AA] = 1, *(u32 *)(gx + 0x594) = 0, *(u32 *)(gx + 0x598) = 0, 0));
+    { u32 *regs = (u32 *)0xCC000000; __cpReg = (u16 *)regs; __piReg = (void *)((u8 *)regs + 0x3000); __peReg = (void *)((u8 *)regs + 0x1000); __memReg = (void *)((u8 *)regs + 0x4000); }
     __GXFifoInit();
     GXInitFifoBase(fifo, base, size);
     GXSetCPUFifo(fifo);
     GXSetGPFifo(fifo);
-    if (resetFuncRegistered == 0) {
-        OSRegisterResetFunction(GXResetFuncInfo_8029DDCC);
-        resetFuncRegistered = 1;
-    }
+    if (resetFuncRegistered == 0) { OSRegisterResetFunction(GXResetFuncInfo_8029DDCC); resetFuncRegistered = 1; }
     __GXPEInit();
-    hid = PPCMfhid2();
-    PPCMtwpar(0xC008000);
-    PPCMthid2(hid | 0x40000000);
-
-    gx = __GXData;
-    *(u32 *)(gx + 0x204) = 0;
-    *(u32 *)(gx + 0x204) = __rlwimi(*(u32 *)(gx + 0x204), 0, 24, 0, 7);
-    a = 0xC0;
-    *(u32 *)(gx + 0x124) = 0xFF;
-    b = 0xC1;
-    *(u32 *)(gx + 0x124) = __rlwimi(*(u32 *)(gx + 0x124), 0xF, 24, 0, 7);
-    *(u32 *)(gx + 0x7C) = 0;
-    *(u32 *)(gx + 0x7C) = __rlwimi(*(u32 *)(gx + 0x7C), 0x22, 24, 0, 7);
-
-    regOff = 0;
-    idx = 0;
-    for (i = 0; i < 8; i++) {
-        u32 h = idx >> 1;
-        *(u32 *)((u8 *)__GXData + regOff + 0x130) = 0;
-        *(u32 *)((u8 *)__GXData + regOff + 0x170) = 0;
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = 0;
-        *(u32 *)((u8 *)__GXData + regOff + 0x554) = 0xFF;
-        *(u32 *)((u8 *)__GXData + regOff + 0x130) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x130), a, 24, 0, 7);
-        idx += 1;
-        h = idx >> 1;
-        *(u32 *)((u8 *)__GXData + regOff + 0x170) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x170), b, 24, 0, 7);
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0), h + 0xF6, 24, 0, 7);
-        a += 2;
-        b += 2;
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x100), h + 0x28, 24, 0, 7);
-        regOff += 4;
-        *(u32 *)((u8 *)__GXData + regOff + 0x130) = 0;
-        *(u32 *)((u8 *)__GXData + regOff + 0x170) = 0;
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = 0;
-        *(u32 *)((u8 *)__GXData + regOff + 0x554) = 0xFF;
-        *(u32 *)((u8 *)__GXData + regOff + 0x130) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x130), a, 24, 0, 7);
-        a += 2;
-        *(u32 *)((u8 *)__GXData + regOff + 0x170) = __rlwimi(*(u32 *)((u8 *)__GXData + regOff + 0x170), b, 24, 0, 7);
-        b += 2;
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x1B0), h + 0xF6, 24, 0, 7);
-        *(u32 *)((u8 *)__GXData + (h << 2) + 0x100) = __rlwimi(*(u32 *)((u8 *)__GXData + (h << 2) + 0x100), h + 0x28, 24, 0, 7);
-        regOff += 4;
-        idx += 1;
-    }
-
-    *(u32 *)(gx + 0x120) = 0;
-    *(u32 *)(gx + 0x120) = __rlwimi(*(u32 *)(gx + 0x120), 0x27, 24, 0, 7);
+    { u32 hid = PPCMfhid2(); PPCMtwpar(0xC008000); PPCMthid2(hid | 0x40000000); }
     {
-        u32 off2 = 0;
-        u32 c = 0x30;
-        u32 d = 0x31;
-        for (i = 0; i < 2; i++) {
-            u32 n;
-            for (n = 0; n < 4; n++) {
-                u32 oB8 = off2 + 0xB8;
-                u32 oD8 = off2 + 0xD8;
-                *(u32 *)(gx + oB8) = 0;
-                *(u32 *)(gx + oD8) = 0;
-                *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7);
-                c += 2;
-                *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7);
-                d += 2;
-                off2 += 4;
-            }
-        }
-    }
-
-    gx = __GXData;
-    *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), 0x20, 24, 0, 7);
-    *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), 0x21, 24, 0, 7);
-    *(u32 *)(gx + 0x1D0) = __rlwimi(*(u32 *)(gx + 0x1D0), 0x41, 24, 0, 7);
-    *(u32 *)(gx + 0x1D4) = __rlwimi(*(u32 *)(gx + 0x1D4), 0x42, 24, 0, 7);
-    *(u32 *)(gx + 0x1D8) = __rlwimi(*(u32 *)(gx + 0x1D8), 0x40, 24, 0, 7);
-    *(u32 *)(gx + 0x1DC) = __rlwimi(*(u32 *)(gx + 0x1DC), 0x43, 24, 0, 7);
-    *(u32 *)(gx + 0x1FC) = __rlwimi(*(u32 *)(gx + 0x1FC), 0, 7, 23, 24);
-    *(f32 *)(gx + 0x510) = 16777216.0f;
-    *(f32 *)(gx + 0x50C) = 0.0f;
-    *(u32 *)(gx + 0x5AC) = 0;
-    gx[0x5AB] = 0;
-
-    freq = *(u32 *)0x800000F8 / 500U;
-    __GXFlushTextureState();
-    wf8 = (volatile u8 *)0xCC008000;
-    wf32 = (volatile u32 *)0xCC008000;
-    *wf8 = 0x61;
-    *wf32 = (freq >> 11) | 0x69000400;
-    __GXFlushTextureState();
-    *wf8 = 0x61;
-    *wf32 = (freq / 4224U) | 0x46000200;
-    __GXInitRevisionBits();
-
-    {
-        u32 *tbl = GXTexRegionAddrTable_8029DD0C;
-        u32 roff = 0;
+        u32 idx, sh, a, b, regOff, zero;
+        gx = __GXData; regOff = 0; idx = 0;
+        *(u32 *)(gx + 0x204) = regOff; sh = idx << 1;
+        *(u32 *)(gx + 0x204) = __rlwimi(*(u32 *)(gx + 0x204), regOff, 24, 0, 7);
+        a = sh + 0xC0; *(u32 *)(gx + 0x124) = 0xFF; b = sh + 0xC1;
+        *(u32 *)(gx + 0x124) = __rlwimi(*(u32 *)(gx + 0x124), 0xF, 24, 0, 7);
+        *(u32 *)(gx + 0x7C) = regOff; *(u32 *)(gx + 0x7C) = __rlwimi(*(u32 *)(gx + 0x7C), 0x22, 24, 0, 7);
         for (i = 0; i < 8; i++) {
-            gx = __GXData;
-            GXInitTexCacheRegion(gx + 0x208 + roff, 0, tbl[0], 0, tbl[8], 0);
-            gx = __GXData;
-            GXInitTexCacheRegion(gx + 0x288 + roff, 0, tbl[16], 0, tbl[24], 0);
-            gx = __GXData;
-            GXInitTexCacheRegion(gx + 0x308 + roff, 1, tbl[32], 0, tbl[40], 0);
-            tbl += 1;
-            roff += 0x10;
+            u32 h = idx >> 1, t, off; gx = __GXData;
+            off = regOff + 0x130; *(u32 *)(gx + off) = 0; off = regOff + 0x170; *(u32 *)(gx + off) = 0;
+            off = (h << 2) + 0x100; *(u32 *)(gx + off) = 0; off = regOff + 0x554; *(u32 *)(gx + off) = 0xFF;
+            { u32 o130 = regOff + 0x130, o170 = regOff + 0x170, o100 = (h << 2) + 0x100, o1b0 = (h << 2) + 0x1B0, old_h = h;
+              regOff += 4; t = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7); *(u32 *)(gx + o130) = t; idx += 1; h = idx >> 1;
+              t = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7); *(u32 *)(gx + o170) = t;
+              t = __rlwimi(*(u32 *)(gx + o1b0), old_h + 0xF6, 24, 0, 7); *(u32 *)(gx + o1b0) = t; a += 2; b += 2;
+              t = __rlwimi(*(u32 *)(gx + o100), old_h + 0x28, 24, 0, 7); *(u32 *)(gx + o100) = t; }
+            { u32 o130 = regOff + 0x130, o170 = regOff + 0x170, o554 = regOff + 0x554, o100 = (h << 2) + 0x100, o1b0 = (h << 2) + 0x1B0;
+              *(u32 *)(gx + o130) = 0; *(u32 *)(gx + o170) = 0; *(u32 *)(gx + o100) = 0; *(u32 *)(gx + o554) = 0xFF;
+              regOff += 4; idx += 1; t = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7); *(u32 *)(gx + o130) = t; a += 2;
+              t = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7); *(u32 *)(gx + o170) = t; b += 2;
+              t = __rlwimi(*(u32 *)(gx + o1b0), h + 0xF6, 24, 0, 7); *(u32 *)(gx + o1b0) = t;
+              t = __rlwimi(*(u32 *)(gx + o100), h + 0x28, 24, 0, 7); *(u32 *)(gx + o100) = t; }
         }
+        zero = 0; *(u32 *)(gx + 0x120) = zero; *(u32 *)(gx + 0x120) = __rlwimi(*(u32 *)(gx + 0x120), 0x27, 24, 0, 7);
+        { u32 sh2 = zero << 1, c = sh2 + 0x30, d = sh2 + 0x31, stride = zero;
+          for (i = 0; i < 2; i++) {
+            u32 oB8, oD8; gx = __GXData; oB8 = stride + 0xB8; oD8 = stride + 0xD8;
+            *(u32 *)(gx + oB8) = zero; stride += 4; *(u32 *)(gx + oD8) = zero;
+            *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7); c += 2; oB8 = stride + 0xB8;
+            *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7); d += 2; oD8 = stride + 0xD8;
+            *(u32 *)(gx + oB8) = zero; *(u32 *)(gx + oD8) = zero; stride += 4;
+            *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7); c += 2; oB8 = stride + 0xB8;
+            *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7); d += 2; oD8 = stride + 0xD8;
+            *(u32 *)(gx + oB8) = zero; *(u32 *)(gx + oD8) = zero; stride += 4;
+            *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7); c += 2; oB8 = stride + 0xB8;
+            *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7); d += 2; oD8 = stride + 0xD8;
+            *(u32 *)(gx + oB8) = zero; *(u32 *)(gx + oD8) = zero;
+            *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7); c += 2;
+            *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7); d += 2;
+          }
+        }
+        *(u32 *)(gx + 0xF8) = __rlwimi(*(u32 *)(gx + 0xF8), 0x20, 24, 0, 7);
+        *(u32 *)(gx + 0xFC) = __rlwimi(*(u32 *)(gx + 0xFC), 0x21, 24, 0, 7);
+        *(u32 *)(gx + 0x1D0) = __rlwimi(*(u32 *)(gx + 0x1D0), 0x41, 24, 0, 7);
+        *(u32 *)(gx + 0x1D4) = __rlwimi(*(u32 *)(gx + 0x1D4), 0x42, 24, 0, 7);
+        *(u32 *)(gx + 0x1D8) = __rlwimi(*(u32 *)(gx + 0x1D8), 0x40, 24, 0, 7);
+        *(u32 *)(gx + 0x1DC) = __rlwimi(*(u32 *)(gx + 0x1DC), 0x43, 24, 0, 7);
+        *(u32 *)(gx + 0x1FC) = __rlwimi(*(u32 *)(gx + 0x1FC), zero, 7, 23, 24);
+        *(f32 *)(gx + 0x510) = 1.6777216e7f; *(f32 *)(gx + 0x50C) = 0.0f;
+        *(u32 *)(gx + 0x5AC) = zero; gx[0x5AB] = (u8)zero;
     }
-
-    {
-        u32 tmem = 0xC0000;
-        u32 roff = 0;
-        for (i = 0; i < 16; i++) {
-            gx = __GXData;
-            GXInitTlutRegion(gx + 0x388 + roff, tmem, 0x10);
-            tmem += 0x2000;
-            roff += 0x10;
-        }
-        tmem = 0xE0000;
-        for (i = 0; i < 4; i++) {
-            gx = __GXData;
-            GXInitTlutRegion(gx + 0x388 + ((i + 0x10) << 4), tmem, 0x40);
-            tmem += 0x8000;
-        }
+    { u32 freq = *(u32 *)0x800000F8 / 500U; __GXFlushTextureState();
+      *(volatile u8 *)0xCC008000 = 0x61; *(volatile u32 *)0xCC008000 = (freq >> 11) | 0x69000400;
+      __GXFlushTextureState(); *(volatile u8 *)0xCC008000 = 0x61; *(volatile u32 *)0xCC008000 = (freq / 4224U) | 0x46000200; }
+    __GXInitRevisionBits();
+    { u32 *tbl = GXTexRegionAddrTable_8029DD0C;
+      for (i = 0; i < 8; i++) {
+        GXInitTexCacheRegion(__GXData + 0x208 + (i << 4), 0, tbl[i], 0, tbl[i + 8], 0);
+        GXInitTexCacheRegion(__GXData + 0x288 + (i << 4), 0, tbl[i + 16], 0, tbl[i + 24], 0);
+        GXInitTexCacheRegion(__GXData + 0x308 + (i << 4), 1, tbl[i + 32], 0, tbl[i + 40], 0);
+      }
     }
-
-    *(u16 *)((u8 *)__cpReg + 6) = 0;
-    gx = __GXData;
+    { for (i = 0; i < 16; i++) GXInitTlutRegion(__GXData + 0x388 + (i << 4), 0xC0000 + (i << 13), 0x10);
+      for (i = 0; i < 4; i++) GXInitTlutRegion(__GXData + 0x388 + ((i + 0x10) << 4), 0xE0000 + (i << 15), 0x40); }
+    __cpReg[3] = 0; gx = __GXData;
     *(u32 *)(gx + 0x5A4) = __rlwimi(*(u32 *)(gx + 0x5A4), 0, 4, 24, 27);
-    wf8 = (volatile u8 *)0xCC008000;
-    wf32 = (volatile u32 *)0xCC008000;
-    *wf8 = 8;
-    *wf8 = 0x20;
-    *wf32 = *(u32 *)(gx + 0x5A4);
-    *wf8 = 0x10;
-    *wf32 = 0x1006;
-    *wf32 = 0;
-    *wf8 = 0x61;
-    *wf32 = 0x23000000;
-    *wf8 = 0x61;
-    *wf32 = 0x24000000;
-    *wf8 = 0x61;
-    *wf32 = 0x67000000;
-    __GXSetIndirectMask(0);
-    __GXSetTmemConfig(2);
-    __GXInitGX();
+    *(volatile u8 *)0xCC008000 = 8; *(volatile u8 *)0xCC008000 = 0x20;
+    *(volatile u32 *)0xCC008000 = *(u32 *)(gx + 0x5A4);
+    *(volatile u8 *)0xCC008000 = 0x10; *(volatile u32 *)0xCC008000 = 0x1006; *(volatile u32 *)0xCC008000 = 0;
+    *(volatile u8 *)0xCC008000 = 0x61; *(volatile u32 *)0xCC008000 = 0x23000000;
+    *(volatile u8 *)0xCC008000 = 0x61; *(volatile u32 *)0xCC008000 = 0x24000000;
+    *(volatile u8 *)0xCC008000 = 0x61; *(volatile u32 *)0xCC008000 = 0x67000000;
+    __GXSetIndirectMask(0); __GXSetTmemConfig(2); __GXInitGX();
     return fifo;
 }
+#pragma opt_lifetimes on
+#pragma opt_propagation on
+#pragma opt_common_subs on
 
 void __GXInitGX(void) {
     s32 VIGetTvFormat(void);

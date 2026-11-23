@@ -3493,20 +3493,15 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 
 #pragma optimization_level 1
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
-    void fn_800DB7A4(void *, s32 (*)[3]);
-    s32 copy[3];
-    s32 *src = arg1;
-    s32 c = src[2];
-    s32 b = src[1];
-    s32 a = src[0];
-    copy[0] = a;
-    copy[1] = b;
-    copy[2] = c;
-    fn_800DB7A4(arg0, &copy);
-    if (*(u8 *)((u8 *)arg0 + 0x195) != 0) {
-        *(s32 *)((u8 *)arg0 + 0x9c) =
-            *(s32 *)((u8 *)arg0 + 0xc8) * *(s32 *)((u8 *)arg0 + 0x198);
-    }
+ void fn_800DB7A4(void *, s32 (*)[3]);
+ s32 copy[3];
+ s32 *src = arg1;
+ s32 c = src[2];
+ s32 b = src[1];
+ s32 a = src[0];
+ copy[0]=a; copy[1]=b; copy[2]=c;
+ fn_800DB7A4(arg0,&copy);
+ if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
 }
 #pragma optimization_level reset
 #pragma cplusplus off
@@ -5715,15 +5710,13 @@ void fn_8011AB38(void *arg0) {
 
     fn_801620AC(arg0);
     if (FileCache_IsReady() != 0) {
-        while (fn_80161FB8() == 0) {
-            goto end;
+        if (fn_80161FB8() == 0) {
+            return;
         }
         fn_80162054();
         fn_801620AC(arg0);
         *(s32 *)((char *)arg0 + 0x40) = Archive_Load();
         Process_ClearFunc(arg0);
-    end:
-        ;
     }
 }
 #pragma global_optimizer on

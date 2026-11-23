@@ -64,17 +64,19 @@ typedef struct SynthStateLink { u8 pad[0xEC]; s32 next; u8 padF0[0x458 - 0xF0]; 
 typedef s32 Fn80256FF0Arg;
 typedef struct ThpDecodeState { f32 tables[3][64]; u8 pad[0x398]; u16 count; u16 pad69A; u8 *cursor; u32 pad6A0; u32 bits; } ThpDecodeState;
 static inline u32 ThpReadByte(void) {
-extern ThpDecodeState *lbl_80368950;
-u8 *p=lbl_80368950->cursor;
-lbl_80368950->cursor=p+1;
+extern ThpDecodeState *volatile lbl_80368950;
+ThpDecodeState *s = lbl_80368950;
+u8 *p = s->cursor;
+s->cursor = p + 1;
 return *p;
 }
 static inline u16 ThpReadWord(void) {
-extern ThpDecodeState *lbl_80368950;
-u8 **cursor=&lbl_80368950->cursor;
-u8 *p=*cursor;
-u16 value=(p[0]<<8)|p[1];
-*cursor=p+2;
+extern ThpDecodeState *volatile lbl_80368950;
+ThpDecodeState *s = lbl_80368950;
+u8 **cursor = &s->cursor;
+u8 *p = *cursor;
+u16 value = (p[0] << 8) | p[1];
+*cursor = p + 2;
 return value;
 }
 static inline u8 SynthAllocateStream(void) {
@@ -358,21 +360,20 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
-
 s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
-extern ThpDecodeState *lbl_80368950;
-u32 size; u32 id; u16 row; u16 i; f64 *scale; u8 *p; ThpDecodeState *state;
+extern ThpDecodeState *volatile lbl_80368950;
 f32 table[64];
+u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; f64 *scale;
 size=ThpReadWord()-2;
 do {
 id=ThpReadByte();
 for(i=0;i<64;i++) table[lbl_80282FD8[i]]=(f32)(u32)ThpReadByte();
 state=lbl_80368950;
 scale=(f64 *)(lbl_80282FD8+0x50);
-for(row=0,i=0;row<8;row++,scale++) {
+i=0;
+for(row=0;row<8;row++,scale++) {
 state->tables[id][(u16)(i+0)]=((f64 *)(lbl_80282FD8+0x50))[0]*((f64)table[(u16)(i+0)]* *scale);
 state->tables[id][(u16)(i+1)]=((f64 *)(lbl_80282FD8+0x50))[1]*((f64)table[(u16)(i+1)]* *scale);
 state->tables[id][(u16)(i+2)]=((f64 *)(lbl_80282FD8+0x50))[2]*((f64)table[(u16)(i+2)]* *scale);
@@ -391,7 +392,7 @@ return 0;
 u8 fn_8023CE08(void)
 {
     extern s32 lbl_8036894C;
-    extern u8 *lbl_80368950;
+    extern u8 *volatile lbl_80368950;
     extern u8 *lbl_803688E4;
     extern u8 *lbl_803688E8;
     extern u16 *lbl_803688EC;
@@ -501,134 +502,3 @@ u8 fn_8023CE08(void)
 
 #pragma use_lmw_stmw off
 #pragma opt_strength_reduction on
-void fn_8023CFE8(void) {
-    extern u8 *lbl_803688E4;
-    extern u8 *volatile lbl_803688E8;
-    s32 out;
-    s32 val;
-    s32 n;
-    u8 v;
-    s32 i;
-
-    out = 0;
-    val = 1;
-    goto outer_test;
-outer:
-    n = lbl_803688E4[val - 1];
-    v = val;
-    if (n == 0) {
-        goto next;
-    }
-    n = n;
-    i = (u32)n >> 3;
-    if (i == 0) {
-        goto rem;
-    }
-    do {
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-    } while (--i);
-rem:
-    n &= 7;
-    if (n == 0) {
-        goto next;
-    }
-    do {
-        lbl_803688E8[out++] = v;
-    } while (--n);
-next:
-    val++;
-outer_test:
-    if (val <= 16) {
-        goto outer;
-    }
-    lbl_803688E8[out] = 0;
-}
-
-#pragma global_optimizer off
-#pragma scheduling off
-void fn_8023D0D8(void) {
-extern u8 *lbl_803688E8; extern u16 *lbl_803688EC;
-s32 one; u32 cur_ext; u16 *dst; u8 *src; u8 current; u16 index; u16 count;
-src=lbl_803688E8; index=0; dst=lbl_803688EC; count=0; current=src[0]; one=1;
-while(src[index]!=0) {
-cur_ext=current;
-while(cur_ext==src[index]) { dst[index]=count; index++; count++; }
-count=(u16)(count<<one); current++;
-}
-}
-#pragma scheduling reset
-#pragma global_optimizer reset
-void fn_8023D140(u8 arg0) {
-extern u8 *lbl_80368950;
-extern u8 *lbl_803688E4;
-extern u16 *lbl_803688EC;
-u8 *base = lbl_80368950 + (arg0 * 0xE0 + 0x300);
-s32 n = 0;
-s32 i;
-u8 *p = base + 4;
-i = 1;
-{ s32 count = 4;
-do {
-if (lbl_803688E4[i-1]) {
-*(s32 *)(p + 0x8C) = n - lbl_803688EC[n];
-n += lbl_803688E4[i-1];
-*(s32 *)(p + 0x44) = lbl_803688EC[n-1];
-} else {
-*(s32 *)(p + 0x44) = -1;
-*(s32 *)(p + 0x8C) = -1;
-}
-i++; p+=4;
-if (lbl_803688E4[i-1]) {
-*(s32 *)(p + 0x8C) = n - lbl_803688EC[n];
-n += lbl_803688E4[i-1];
-*(s32 *)(p + 0x44) = lbl_803688EC[n-1];
-} else {
-*(s32 *)(p + 0x44) = -1;
-*(s32 *)(p + 0x8C) = -1;
-}
-i++; p+=4;
-if (lbl_803688E4[i-1]) {
-*(s32 *)(p + 0x8C) = n - lbl_803688EC[n];
-n += lbl_803688E4[i-1];
-*(s32 *)(p + 0x44) = lbl_803688EC[n-1];
-} else {
-*(s32 *)(p + 0x44) = -1;
-*(s32 *)(p + 0x8C) = -1;
-}
-i++; p+=4;
-if (lbl_803688E4[i-1]) {
-*(s32 *)(p + 0x8C) = n - lbl_803688EC[n];
-n += lbl_803688E4[i-1];
-*(s32 *)(p + 0x44) = lbl_803688EC[n-1];
-} else {
-*(s32 *)(p + 0x44) = -1;
-*(s32 *)(p + 0x8C) = -1;
-}
-i++; p+=4;
-} while (--count);
-}
-*(s32 *)(base + 0x88) = 0xFFFFF;
-}
-
-void fn_8023D2FC(void)
-{
-    extern u8 *lbl_80368950;
-
-    *(u8 *)(lbl_80368950 + 0x6a9) = 1;
-    *(u32 *)(lbl_80368950 + 0x69c) += 2;
-    *(u16 *)(lbl_80368950 + 0x6aa) = ((*(u8 **)(lbl_80368950 + 0x69c))[0] << 8) | (*(u8 **)(lbl_80368950 + 0x69c))[1];
-    {
-        u8 *p = *(u8 **)(lbl_80368950 + 0x69c);
-        *(u8 **)(lbl_80368950 + 0x69c) = p + 2;
-    }
-    *(u16 *)(lbl_80368950 + 0x6ac) = *(u16 *)(lbl_80368950 + 0x6aa);
-}
-
-#pragma use_lmw_stmw on

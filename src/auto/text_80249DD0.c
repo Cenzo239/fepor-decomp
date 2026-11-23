@@ -1063,7 +1063,7 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
     s32 size;
     s32 off;
     s8 n;
-    s32 ctr;
+    u32 ctr;
     u8 *t9;
     void *p;
     s32 k;
@@ -1086,81 +1086,51 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
 
     n = 0;
     off = 0;
-    for (ctr = arg1; ctr > 0; ctr--) {
-        s32 a158 = off + 0x158;
-        s32 a196 = off + 0x196;
-        s32 a194 = off + 0x194;
-        s32 a195 = off + 0x195;
-        s32 a184 = off + 0x184;
-        s32 a174 = off + 0x174;
-        s32 a188 = off + 0x188;
-        s32 a178 = off + 0x178;
-        s32 a1A4 = off + 0x1A4;
-        s32 a1A8 = off + 0x1A8;
-        s32 a1BC = off + 0x1BC;
-        s32 a1BD = off + 0x1BD;
-        s32 a11C = off + 0x11C;
-        s32 a11E = off + 0x11E;
-        s32 a106 = off + 0x106;
-        s32 a197 = off + 0x197;
-        s32 a1C4 = off + 0x1C4;
-        s32 a1C8 = off + 0x1C8;
-        s32 a1CA = off + 0x1CA;
-        s32 a1D0 = off + 0x1D0;
-        s32 a140 = off + 0x140;
-        s32 a133 = off + 0x133;
-        s32 a11F = off + 0x11F;
-        s32 a208 = off + 8;
-        s32 a209 = off + 9;
-        s32 a214 = off + 0x14;
-        s32 a215 = off + 0x15;
-        s32 a220 = off + 0x20;
-        s32 a221 = off + 0x21;
-        *(s32 *)(gSynthVoices + (off + 0xF4)) = -1;
-        t9 = (u8 *)(gSynthVoices + (off + 0x114));
-        *(s32 *)(t9 + 4) = 0;
-        *(s32 *)t9 = 0;
-        *(s32 *)(gSynthVoices + (off + 0x110)) = 0;
-        *((u8 *)gSynthVoices + (off + 0x10C)) = 0;
-        *((u8 *)gSynthVoices + (off + 0x121)) = 0xFF;
-        *(s32 *)(gSynthVoices + a158) = 0;
-        *((u8 *)gSynthVoices + a196) = 0;
-        *((u8 *)gSynthVoices + a194) = 0x80;
-        *((u8 *)gSynthVoices + a195) = 0;
-        *(s32 *)(gSynthVoices + a184) = 0x400000;
-        *(s32 *)(gSynthVoices + a174) = 0x400000;
-        *(s32 *)(gSynthVoices + a188) = 0;
-        *(s32 *)(gSynthVoices + a178) = 0;
-        *(s32 *)(gSynthVoices + a1A4) = 0;
-        *(s32 *)(gSynthVoices + a1A8) = 0;
-        *((u8 *)gSynthVoices + a1BC) = 0;
-        *((u8 *)gSynthVoices + a1BD) = 0;
-        *((u8 *)gSynthVoices + a11C) = 0;
-        *((u8 *)gSynthVoices + a11E) = 0x17;
-        *((u8 *)gSynthVoices + a106) = 0;
-        *((u8 *)gSynthVoices + a197) = 1;
-        *(s32 *)(gSynthVoices + a1C4) = 0;
-        *(u16 *)(gSynthVoices + a1C8) = 0;
-        *(u16 *)(gSynthVoices + a1CA) = 0x7FFF;
-        *(s32 *)(gSynthVoices + a1D0) = 0;
-        *(u16 *)(gSynthVoices + (off + 0x1D4)) = 0;
-        *(u16 *)(gSynthVoices + (off + 0x1D6)) = 0x7FFF;
-        *(s32 *)(gSynthVoices + a140) = 0x6400;
-        *((u8 *)gSynthVoices + a133) = 0;
-        *((u8 *)gSynthVoices + a11F) = 0;
-        *((u8 *)gSynthVoices + a208) = n;
-        *((u8 *)gSynthVoices + a209) = 0xFF;
-        *((u8 *)gSynthVoices + a214) = n;
-        *((u8 *)gSynthVoices + a215) = 0xFF;
-        *((u8 *)gSynthVoices + a220) = n;
-        n += 1;
-        *((u8 *)gSynthVoices + a221) = 0xFF;
-        off += 0x458;
+    for (ctr = 0; ctr < arg1; ctr++) {
+            *(s32 *)(gSynthVoices + off + 0xF4) = -1;
+            t9 = (u8 *)(gSynthVoices + off + 0x114);
+            *(s32 *)(t9 + 4) = 0;
+            *(s32 *)t9 = 0;
+            *(s32 *)(gSynthVoices + off + 0x110) = 0;
+            *(u8 *)(gSynthVoices + off + 0x10C) = 0;
+            *(u8 *)(gSynthVoices + off + 0x121) = 0xFF;
+            *(s32 *)(gSynthVoices + off + 0x158) = 0;
+            *(u8 *)(gSynthVoices + off + 0x196) = 0;
+            *(u8 *)(gSynthVoices + off + 0x194) = 0x80;
+            *(u8 *)(gSynthVoices + off + 0x195) = 0;
+            *(s32 *)(gSynthVoices + off + 0x184) = 0x400000;
+            *(s32 *)(gSynthVoices + off + 0x174) = 0x400000;
+            *(s32 *)(gSynthVoices + off + 0x188) = 0;
+            *(s32 *)(gSynthVoices + off + 0x178) = 0;
+            *(s32 *)(gSynthVoices + off + 0x1A4) = 0;
+            *(s32 *)(gSynthVoices + off + 0x1A8) = 0;
+            *(u8 *)(gSynthVoices + off + 0x1BC) = 0;
+            *(u8 *)(gSynthVoices + off + 0x1BD) = 0;
+            *(u8 *)(gSynthVoices + off + 0x11C) = 0;
+            *(u8 *)(gSynthVoices + off + 0x11E) = 0x17;
+            *(u8 *)(gSynthVoices + off + 0x106) = 0;
+            *(u8 *)(gSynthVoices + off + 0x197) = 1;
+            *(s32 *)(gSynthVoices + off + 0x1C4) = 0;
+            *(u16 *)(gSynthVoices + off + 0x1C8) = 0;
+            *(u16 *)(gSynthVoices + off + 0x1CA) = 0x7FFF;
+            *(s32 *)(gSynthVoices + off + 0x1D0) = 0;
+            *(u16 *)(gSynthVoices + off + 0x1D4) = 0;
+            *(u16 *)(gSynthVoices + off + 0x1D6) = 0x7FFF;
+            *(s32 *)(gSynthVoices + off + 0x140) = 0x6400;
+            *(u8 *)(gSynthVoices + off + 0x133) = 0;
+            *(u8 *)(gSynthVoices + off + 0x11F) = 0;
+            *(u8 *)(gSynthVoices + off + 8) = n;
+            *(u8 *)(gSynthVoices + off + 9) = 0xFF;
+            *(u8 *)(gSynthVoices + off + 0x14) = n;
+            *(u8 *)(gSynthVoices + off + 0x15) = 0xFF;
+            *(u8 *)(gSynthVoices + off + 0x20) = n;
+            n += 1;
+            *(u8 *)(gSynthVoices + off + 0x21) = 0xFF;
+            off += 0x458;
     }
 
     p = bed + 0x454;
-    k = 2;
-    do {
+    for (k = 0; k < 2; k++) {
         *(f32 *)((u8 *)p + 0) = lbl_8036C208;
         *(f32 *)((u8 *)p + 0x14) = lbl_8036C1E0;
         ((u8 *)p)[0x2D] = 4;
@@ -1210,8 +1180,7 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
         *(f32 *)((u8 *)p + 0x2E4) = lbl_8036C1E0;
         ((u8 *)p)[0x2FD] = 4;
         p = (u8 *)p + 0x300;
-        k -= 1;
-    } while (k != 0);
+    }
 
     {
         u8 *t = bed + 0x454;
@@ -1288,18 +1257,12 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
 
     {
         s32 *w = (s32 *)(bed + 0xCA4);
-        w[0] = 0; w[1] = 0; w[2] = 0; w[3] = 0;
-        w[4] = 0; w[5] = 0; w[6] = 0; w[7] = 0;
-        w[8] = 0; w[9] = 0; w[10] = 0; w[11] = 0;
-        w[12] = 0; w[13] = 0; w[14] = 0; w[15] = 0;
+        for (k = 0; k < 16; k++) *w++ = 0;
         fn_802576DC();
     }
 
-    j = 0;
-loop:
-    if (j < 0x20U) {
+    for (j = 0; j < 0x20; j += 8) {
         slot = bed + 0xA94 + j * 0xC;
-        j += 8;
         ((s32 *)slot)[0] = 0; ((s32 *)slot)[1] = 0; ((s32 *)slot)[2] = 0;
         ((s32 *)slot)[3] = 0; ((s32 *)slot)[4] = 0; ((s32 *)slot)[5] = 0;
         ((s32 *)slot)[6] = 0; ((s32 *)slot)[7] = 0; ((s32 *)slot)[8] = 0;
@@ -1308,7 +1271,6 @@ loop:
         ((s32 *)slot)[15] = 0; ((s32 *)slot)[16] = 0; ((s32 *)slot)[17] = 0;
         ((s32 *)slot)[18] = 0; ((s32 *)slot)[19] = 0; ((s32 *)slot)[20] = 0;
         ((s32 *)slot)[21] = 0; ((s32 *)slot)[22] = 0; ((s32 *)slot)[23] = 0;
-        goto loop;
     }
 
     lbl_80368979 = 0;

@@ -147,7 +147,19 @@ auto/text_8003FCCC.c:
 	.text       start:0x8003FCCC end:0x8003FCF0
 
 auto/text_8003FCF0.c:
-	.text       start:0x8003FCF0 end:0x800548E8
+	.text       start:0x8003FCF0 end:0x800536CC
+
+auto/text_800536CC.c:
+	.text       start:0x800536CC end:0x800537E8
+
+auto/text_800537E8.c:
+	.text       start:0x800537E8 end:0x80054314
+
+auto/text_80054314.c:
+	.text       start:0x80054314 end:0x80054850
+
+auto/text_80054850.c:
+	.text       start:0x80054850 end:0x800548E8
 
 auto/text_800548E8.c:
 	.text       start:0x800548E8 end:0x80054C14
@@ -732,7 +744,13 @@ dolphin/pad/Pad.c:
 	.text       start:0x80211DD4 end:0x80216994
 
 auto/text_80216994.c:
-	.text       start:0x80216994 end:0x8021D7FC
+	.text       start:0x80216994 end:0x8021D614
+
+auto/CARDGetSerialNo.c:
+	.text       start:0x8021D614 end:0x8021D6D8
+
+auto/CardFileAttr.c:
+	.text       start:0x8021D6D8 end:0x8021D7FC
 
 auto/text_8021D7FC.c:
 	.text       start:0x8021D7FC end:0x8022108C
@@ -860,7 +878,13 @@ auto/text_8023C930.c:
 	.text       start:0x8023C930 end:0x8023CA4C
 
 auto/text_8023CA4C.c:
-	.text       start:0x8023CA4C end:0x8023D350
+	.text       start:0x8023CA4C end:0x8023CFE8
+
+auto/text_8023CFE8.c:
+	.text       start:0x8023CFE8 end:0x8023D0D8
+
+auto/text_8023D0D8.c:
+	.text       start:0x8023D0D8 end:0x8023D350
 
 auto/text_8023D350.c:
 	.text       start:0x8023D350 end:0x80243AD4

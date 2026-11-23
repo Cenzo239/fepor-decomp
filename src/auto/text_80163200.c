@@ -2004,34 +2004,37 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     Xml_Destroy(xml, 1);
     return self;
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
-void fn_80165E90(void *arg0, s32 arg1, f32 arg2)
+#pragma optimization_level 2
+void fn_80165E90(u8 *arg0, void *unit, f32 arg2)
 {
     extern u8 lbl_80277888[];
-    extern f32 lbl_8036A8C8;
+    extern const f32 lbl_8036A8C8;
     extern f32 lbl_8036A8CC;
     extern f32 lbl_8036A8D0;
     extern f32 lbl_8036A8D4;
-
     u8 Status_Test(void *, s32);
 
     u8 table[25];
+    u8 *rom;
     u8 *dst;
-    u8 *src;
     u8 index;
-    u32 offset;
-    s32 value;
+    u32 off;
+    s8 s;
+    f32 f;
+    s16 t;
 
-    dst = (u8 *)arg0;
+    f = lbl_8036A8C8;
+    rom = lbl_80277888;
+    dst = arg0;
+    index = 0;
 
-    *(u32 *)(table + 0) = *(u32 *)(lbl_80277888 + 0);
-    *(u32 *)(table + 4) = *(u32 *)(lbl_80277888 + 4);
-    *(u32 *)(table + 8) = *(u32 *)(lbl_80277888 + 8);
-    *(u32 *)(table + 12) = *(u32 *)(lbl_80277888 + 12);
-    *(u32 *)(table + 16) = *(u32 *)(lbl_80277888 + 16);
-    *(u32 *)(table + 20) = *(u32 *)(lbl_80277888 + 20);
-    table[24] = lbl_80277888[24];
+    *(u32 *)(table + 0) = *(u32 *)(rom + 0);
+    *(u32 *)(table + 4) = *(u32 *)(rom + 4);
+    *(u32 *)(table + 8) = *(u32 *)(rom + 8);
+    *(u32 *)(table + 12) = *(u32 *)(rom + 12);
+    *(u32 *)(table + 16) = *(u32 *)(rom + 16);
+    *(u32 *)(table + 20) = *(u32 *)(rom + 20);
+    table[24] = rom[24];
 
     dst[4] = 0;
     dst[3] = 0;
@@ -2039,60 +2042,58 @@ void fn_80165E90(void *arg0, s32 arg1, f32 arg2)
     dst[1] = 0;
     dst[0] = 0;
 
-    index = 0;
-
-    if (arg2 <= lbl_8036A8C8) {
+    if (arg2 <= f) {
         index = 1;
     }
-
     if (arg2 <= lbl_8036A8CC) {
-        index = (u8)(index + 1);
+        index = (u8)((u8)index + 1);
     }
-
     if (arg2 <= lbl_8036A8D0) {
-        index = (u8)(index + 1);
+        index = (u8)((u8)index + 1);
     }
-
     if (arg2 <= lbl_8036A8D4) {
-        index = (u8)(index + 1);
+        index = (u8)((u8)index + 1);
     }
 
-    offset = (u8)index * 5;
-    src = table + offset;
+    off = (u8)index * 5;
+    dst[0] = table[off + 0];
+    dst[1] = table[off + 1];
+    dst[2] = table[off + 2];
+    dst[3] = table[off + 3];
+    dst[4] = table[off + 4];
 
-    dst[0] = src[0];
-    dst[1] = src[1];
-    dst[2] = src[2];
-    dst[3] = src[3];
-    dst[4] = src[4];
-
-    if (Status_Test((void *)arg1, 0x12) != 0) {
-        dst[0] = dst[0] * 2;
-        dst[1] = dst[1] * 2;
-        dst[2] = dst[2] * 2;
-        dst[3] = dst[3] * 2;
-        dst[4] = dst[4] * 2;
+    if (Status_Test(unit, 0x12) != 0) {
+        t = dst[0];
+        t <<= 1;
+        dst[0] = t;
+        t = dst[1];
+        t <<= 1;
+        dst[1] = t;
+        t = dst[2];
+        t <<= 1;
+        dst[2] = t;
+        t = dst[3];
+        t <<= 1;
+        dst[3] = t;
+        t = dst[4];
+        t <<= 1;
+        dst[4] = t;
     }
 
-    if (Status_Test((void *)arg1, 0x13) != 0) {
-        value = (s8)dst[0];
-        dst[0] = (value + ((u32)value >> 31)) >> 1;
-
-        value = (s8)dst[1];
-        dst[1] = (value + ((u32)value >> 31)) >> 1;
-
-        value = (s8)dst[2];
-        dst[2] = (value + ((u32)value >> 31)) >> 1;
-
-        value = (s8)dst[3];
-        dst[3] = (value + ((u32)value >> 31)) >> 1;
-
-        value = (s8)dst[4];
-        dst[4] = (value + ((u32)value >> 31)) >> 1;
+    if (Status_Test(unit, 0x13) != 0) {
+        s = dst[0];
+        dst[0] = s / 2;
+        s = dst[1];
+        dst[1] = s / 2;
+        s = dst[2];
+        dst[2] = s / 2;
+        s = dst[3];
+        dst[3] = s / 2;
+        s = dst[4];
+        dst[4] = s / 2;
     }
 }
-
-#pragma use_lmw_stmw reset
+#pragma optimization_level reset
 
 s32 fn_801660A8(void) {
     return (M2C_FIELD(&gBattleState, u8 *, 0x10) * 7) + 0x39A81;
@@ -13658,11 +13659,13 @@ u8 fn_80179284(void)
   s32 result;
   s32 ret;
   s32 tmp;
+  int new_var;
   result = fn_800C3E54(gConvoy);
   ret = 2;
-  tmp = -result;
+  new_var = -result;
+  tmp = new_var;
   tmp = tmp | result;
-  tmp = (s32) ((((((((((((((u32) tmp) >> 26) >> 5) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF);
+  tmp = (s32) (((u32) tmp) >> 31);
   if (tmp != 0)
   {
     ret = 0;
@@ -16359,7 +16362,7 @@ void fn_8017CE1C(void *self, void *arg1) {
 }
 
 #pragma cplusplus on
-void fn_8017D4B8(s32 *arg0, void *arg1) {
+extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;
