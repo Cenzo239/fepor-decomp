@@ -190,8 +190,7 @@ day=days-start;
 ((s32*)out)[7]=day;
 leap=(year%4==0 && year%100!=0)||year%400==0;
 table=leap?lbl_8029CEB8:lbl_8029CE88;
-month=12;
-do {--month;} while(day<table[month]);
+for(month=12; day<table[--month];) ;
 ((s32*)out)[4]=month;
 ((s32*)out)[3]=day-table[month]+1;
 }
