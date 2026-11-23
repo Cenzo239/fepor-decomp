@@ -1336,6 +1336,9 @@ void fn_80041254(void *arg0) {
     }
 }
 #pragma optimization_level reset
+#if 0
+#include "claim_echo.h"
+#endif
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
@@ -7009,22 +7012,12 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80369010;
     extern f32 lbl_80369014;
     extern f32 lbl_80369018;
-    u8 sp340[0x30];
-    u8 sp310[0x30];
-    u8 sp2E0[0x30];
-    u8 sp2B0[0x30];
-    u8 sp280[0x30];
-    u8 sp250[0x30];
-    u8 sp220[0x30];
-    u8 sp1F0[0x30];
-    u8 sp1C0[0x30];
-    u8 sp190[0x30];
-    u8 sp160[0x30];
+    u8 m[11][0x30];
     f32 sp154, sp158, sp15C, sp148, sp14C, sp150;
     f32 sp124, sp128, sp12C;
-    u8 scratch[0xF0];
+    u8 scratch[0xFC];
     u32 sp18, sp14, sp10, spC, sp8;
-    f32 f31, f30, f29, f28, f27, f26, f25, f24;
+    f32 f30, f29, f28, f27, f26, f25, f31, f24;
     f32 dx, dy, t;
     s8 r29, r27;
     u8 r30;
@@ -7068,11 +7061,11 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             if (t < lbl_80368FFC) t = lbl_80368FFC;
             f24 = (f32)fn_80238788(t);
             if (f25 < lbl_80368FCC) f24 *= lbl_80368FFC;
-            PSMTXRotRad(sp340, 0x7A, -f24);
+            PSMTXRotRad(m[10], 0x7A, -f24);
             *(f32 *)(scratch + 0x20) = f26;
             *(f32 *)(scratch + 0x24) = f25;
             *(u32 *)(scratch + 0x28) = *(u32 *)(tbl + 0x6C);
-            fn_802029C4(sp340, scratch + 0x20, scratch + 0x20);
+            fn_802029C4(m[10], scratch + 0x20, scratch + 0x20);
             f26 = lbl_80369010 + *(f32 *)(scratch + 0x20);
             f25 = lbl_80369010 + *(f32 *)(scratch + 0x24);
             dx = lbl_80369014 * f24;
@@ -7102,20 +7095,20 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             vec[7] = *(u32 *)(tbl + 0x38);
             vec[8] = *(u32 *)(tbl + 0x3C);
             if (lbl_80368FCC != dx) {
-                PSMTXRotRad(sp2E0, 0x5A, lbl_80368FD8 * dx);
-                fn_802029C4(sp2E0, &vec[6], &vec[6]);
-                fn_802026E4(sp2B0, &vec[3], &vec[6], &vec[0]);
-                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(sp280, sp2B0, sp340);
-                PSMTXTrans(sp310, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
-                PSMTXConcat(sp2E0, sp310, sp2E0);
-                PSMTXTrans(sp310, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
-                PSMTXConcat(sp310, sp2E0, sp2E0);
-                PSMTXConcat(sp2E0, sp340, sp340);
+                PSMTXRotRad(m[8], 0x5A, lbl_80368FD8 * dx);
+                fn_802029C4(m[8], &vec[6], &vec[6]);
+                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                PSMTXConcat(m[6], m[7], m[10]);
+                PSMTXTrans(m[9], lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+                PSMTXConcat(m[8], m[9], m[8]);
+                PSMTXTrans(m[9], lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+                PSMTXConcat(m[9], m[8], m[8]);
+                PSMTXConcat(m[8], m[10], m[10]);
             } else {
-                fn_802026E4(sp2B0, &vec[3], &vec[6], &vec[0]);
-                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(sp280, sp2B0, sp340);
+                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                PSMTXConcat(m[6], m[7], m[10]);
             }
         }
         if (fn_80055D94(0x100) != 0) {
@@ -7140,10 +7133,10 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             vec[6] = *(u32 *)(tbl + 0x34);
             vec[7] = *(u32 *)(tbl + 0x38);
             vec[8] = *(u32 *)(tbl + 0x3C);
-            fn_802026E4(sp250, &vec[3], &vec[6], &vec[0]);
-            C_MTXLightOrtho(sp220, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(sp220, sp250, sp340);
-            fn_80224E50(sp340, 0x1E, 0);
+            fn_802026E4(m[5], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[4], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[4], m[5], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
             sp10 = sp18;
             fn_80051564(&sp10, 1, f30, f29);
@@ -7166,10 +7159,10 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             vec[6] = *(u32 *)(tbl + 0x34);
             vec[7] = *(u32 *)(tbl + 0x38);
             vec[8] = *(u32 *)(tbl + 0x3C);
-            fn_802026E4(sp1F0, &vec[3], &vec[6], &vec[0]);
-            C_MTXLightOrtho(sp1C0, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(sp1C0, sp1F0, sp340);
-            fn_80224E50(sp340, 0x1E, 0);
+            fn_802026E4(m[3], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[2], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[2], m[3], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
             spC = sp18;
             fn_80051564(&spC, 1, f30, f29);
@@ -7195,11 +7188,11 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
         vec[6] = *(u32 *)(tbl + 0x34);
         vec[7] = *(u32 *)(tbl + 0x38);
         vec[8] = *(u32 *)(tbl + 0x3C);
-        fn_802026E4(sp190, &vec[3], &vec[6], &vec[0]);
-        C_MTXLightOrtho(sp160, -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-        PSMTXConcat(sp160, sp190, sp340);
+        fn_802026E4(m[1], &vec[3], &vec[6], &vec[0]);
+        C_MTXLightOrtho(m[0], -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+        PSMTXConcat(m[0], m[1], m[10]);
     }
-    fn_80224E50(sp340, 0x1E, 0);
+    fn_80224E50(m[10], 0x1E, 0);
     fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
     sp14 = lbl_80368FAC;
     ((u8 *)&sp14)[3] = r30;
