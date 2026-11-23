@@ -239,7 +239,7 @@ void BattleState_LoadMap(void *arg0, char *arg1) {
     void *fn_800408A8(s32);
     void fn_8004084C(void *);
     void *Map_Get(void);
-    void Map_LoadTerrain_probe(void *, char *);
+    void Map_LoadTerrain(void *, char *);
     void fn_80023D14(void *);
     void fn_800AA15C(void);
     void DebugPrint(char *, ...);
@@ -259,7 +259,7 @@ void BattleState_LoadMap(void *arg0, char *arg1) {
     }
     sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
-    Map_LoadTerrain_probe(Map_Get(), buffer);
+    Map_LoadTerrain(Map_Get(), buffer);
     fn_80023D14(gBattleMap);
     fn_800AA15C();
     DebugPrint((char *)lbl_80277060 + 0x15e, str);
