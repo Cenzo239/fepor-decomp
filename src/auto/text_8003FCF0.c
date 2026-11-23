@@ -9899,67 +9899,6 @@ void Effect_SetPos(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = farg2;
 }
 
-void fn_800536CC(void *arg0, s32 arg1) {
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x34) = arg1;
-}
-
-void fn_800536D8(void *arg0, s32 arg1) {
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30) = arg1;
-}
-
-void fn_800536E4(void *arg0, void *arg1) {
-    if ((u32) M2C_FIELD(arg0, u32 *, 0x18) == (u32) M2C_FIELD(arg1, u32 *, 0)) {
-        M2C_FIELD(arg1, void **, 4) = arg0;
-    }
-}
-
-void *fn_800536FC(u16 arg0) {
-    void fn_80053750(void *, void *);
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    extern u8 lbl_80285990[];
-    struct {
-        u16 value;
-        u16 padding;
-        void *result;
-    } data;
-
-    data.value = arg0;
-    data.result = NULL;
-    GfxEnt_ForEachKey(lbl_80285990, fn_80053750, &data);
-    if (data.result != NULL) {
-        return data.result;
-    }
-    return NULL;
-}
-
-void fn_80053750(void *arg0, void *arg1) {
-    if ((u16) M2C_FIELD(arg1, u16 *, 0) == (u16) *M2C_FIELD(arg0, u16 **, 0x30)) {
-        M2C_FIELD(arg1, void **, 4) = arg0;
-    }
-}
-
-void fn_8005376C(void) {
-    u32 Process_Find(u32 *);
-    void *Process_UnlinkByKey(u32 *);
-    void *Process_Create(void *, s32);
-    s32 fn_801451BC(void);
-    u8 fn_80145308(void);
-    void DebugPrint(const char *, ...);
-    void *temp_r3;
-
-    extern u32 lbl_80285990[];
-    extern u8 GActor_str[];
-    extern u8 lbl_80285968[];
-
-    Process_UnlinkByKey(lbl_80285990);
-    if ((Process_Find(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
-        fn_801451BC();
-        DebugPrint((const char *)((u8 *) &GActor_str + 0x12E));
-        return;
-    }
-    temp_r3 = Process_Create(lbl_80285968, 4);
-    *(s32 *)((u8 *) temp_r3 + 0x60) = 0;
-}
 #pragma cplusplus reset
 
 #pragma use_lmw_stmw on
