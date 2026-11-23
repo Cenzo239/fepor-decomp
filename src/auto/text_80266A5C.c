@@ -320,7 +320,7 @@ void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
         u16 mode;
         u16 state;
         u32 gqr[8];
-        u32 psf_pad;
+        u32 psf_pad[2];
         f64 psf[32];
     } OSContext;
     void OSClearContext(OSContext *);
@@ -342,8 +342,7 @@ void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
             *(s32 *)(entry + 0x20) = 0;
         }
 
-        cb = *(void (**)(s32))(entry + 0x38);
-        if (cb) {
+        if ((cb = *(void (**)(s32))(entry + 0x38)) != 0) {
             *(u32 *)(entry + 0x38) = 0;
             cb(arg0);
         }
@@ -427,34 +426,38 @@ void fn_80266BD8(s32 arg0, u32 arg1)
     entry = lbl_803669A0 + arg0 * 0x100;
 
     if (lbl_80368B2C == 0) {
-        if ((arg1 & 0xFF) == 0 && (arg1 & 0xFFFF0000) != 0x00040000) {
-            *(u32 *)(entry + 0x20) = 1;
-            return;
-        }
-
-        if (SITransfer(arg0, entry, *(u32 *)(entry + 0x0C), entry + 5, *(u32 *)(entry + 0x10), fn_80266A5C, *(s64 *)(entry + 0x30)) == 0) {
-            *(u32 *)(entry + 0x20) = 2;
-
-            if ((callback = *(void (**)(s32))(entry + 0x38)) != 0) {
-                *(u32 *)(entry + 0x38) = 0;
-                callback(arg0);
+        if ((arg1 & 0xFF) == 0) {
+            if ((arg1 & 0xFFFF0000) != 0x00040000) {
+                *(u32 *)(entry + 0x20) = 1;
+                goto do_completion;
             }
         }
-    }
 
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        oldContext = fn_802059EC();
+        if (SITransfer(arg0, entry, *(u32 *)(entry + 0x0C), entry + 5, *(u32 *)(entry + 0x10), fn_80266A5C, *(s64 *)(entry + 0x30)) != 0) {
+            return;
+        }
+        *(u32 *)(entry + 0x20) = 2;
 
-        OSClearContext(&ctx);
-        OSSetCurrentContext(&ctx);
+        if ((callback = *(void (**)(s32))(entry + 0x38)) != 0) {
+            *(u32 *)(entry + 0x38) = 0;
+            callback(arg0);
+        }
 
-        completion = *(void (**)(s32, s32))(entry + 0x1C);
-        *(u32 *)(entry + 0x1C) = 0;
-        completion(arg0, *(s32 *)(entry + 0x20));
+do_completion:
+        if (*(u32 *)(entry + 0x1C) != 0) {
+            oldContext = fn_802059EC();
 
-        OSClearContext(&ctx);
-        OSSetCurrentContext(oldContext);
-        __OSReschedule();
+            OSClearContext(&ctx);
+            OSSetCurrentContext(&ctx);
+
+            completion = *(void (**)(s32, s32))(entry + 0x1C);
+            *(u32 *)(entry + 0x1C) = 0;
+            completion(arg0, *(s32 *)(entry + 0x20));
+
+            OSClearContext(&ctx);
+            OSSetCurrentContext(oldContext);
+            __OSReschedule();
+        }
     }
 }
 
