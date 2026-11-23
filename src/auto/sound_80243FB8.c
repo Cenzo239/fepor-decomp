@@ -1587,8 +1587,6 @@ void *fn_80246070(u8 arg0) {
     u8 *voices;
     u8 *voiceState;
     StreamMsg *msg;
-    u32 temp_r3;
-    u8 temp_r7;
     u8 *p;
     u32 temp_r9;
     u32 temp_r10;
@@ -1651,16 +1649,13 @@ stream:
             }
             msg->unkC = p;
             chan->unk0 = temp_r9;
-            temp_r3 = (u32) chan->unk8;
-            temp_r7 = ((u8 *) temp_r3)[2];
-            if (temp_r7 & 0x80) {
-                chan->unk8 = (u8 *) temp_r3 + 4;
+            if (chan->unk8[2] & 0x80) {
+                chan->unk8 += 4;
+            } else if ((chan->unk8[2] | chan->unk8[3]) == 0) {
+                chan->unk8 += 4;
+                continue;
             } else {
-                if ((temp_r7 | ((u8 *) temp_r3)[3]) == 0) {
-                    chan->unk8 = (u8 *) temp_r3 + 4;
-                    continue;
-                }
-                chan->unk8 = (u8 *) temp_r3 + 6;
+                chan->unk8 += 6;
             }
             msg->unk14 = 0;
             msg->unk8 = temp_r9 + chan->unk4;
@@ -1690,8 +1685,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     void fn_8025FB74(u8, u8, u8);
     void Sound_WriteParamU8(s32, s32, u8, s32);
     void *fn_80246070(u8);
-    s32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8,
-                    s32, s32, s32, s32, s32, s32, s32, s32);
+    u32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8,
+                    s32, u8, s32, s32, s32, s32, s32, s32);
 
     extern StreamState *lbl_80368968;
     extern u32 lbl_80368960;
@@ -1700,77 +1695,91 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     extern u8 lbl_8034BDD0[];
     extern u8 lbl_8034CB64[];
 
+    struct LocalInst {
+        u16 progId;
+        u8 vol;
+        u8 prio;
+        u8 idx;
+        u8 pad;
+    };
+    struct LocalTempo {
+        u8 pad0[0x30];
+        u8 listIdx;
+        u8 pad31[7];
+    };
+    struct LocalList {
+        u8 *head;
+    };
+    struct LocalState {
+        u8 pad0[0xA];
+        u16 unkA;
+        u8 padC[4];
+        struct LocalInst *instTable;
+        u8 instMap[0x80];
+        struct LocalInst *drumTable;
+        u8 drumMap[0x80];
+        u8 *bank;
+        u32 trackMask[2];
+        u8 pad124[0x200];
+        u8 trackPrio[0x40];
+        u8 channels[0xB00];
+        struct LocalList activeList[2];
+        u8 *freeList;
+        struct LocalInst chanInst[16];
+        u8 padED0[4];
+        u8 unkED4[0x28];
+        s32 *unkEFC;
+        u8 unkF00;
+        u8 unkF01;
+        u8 padF02[0x606];
+        struct LocalTempo tempo[16];
+    };
+
     u8 *msg;
-    u8 *state;
     u8 *data;
     u8 *channel;
     u8 *sequence;
     u8 *cursor;
-    u8 *voice;
-    u8 *source;
-    u8 *destination;
+    u8 *bank;
+    struct LocalState *state;
     u8 *node;
     u8 *next;
     u8 *prev;
-    u8 *head;
-    u8 *record;
-    u8 *table;
-    u8 *bank;
-    u8 *entry;
-
-    u32 value;
-    u32 value2;
+    u8 *cur;
     u32 offset;
+    u16 value;
     u32 command;
-    u32 first;
-    u32 second;
+    u8 first;
+    u8 second;
     u32 index;
-    u32 group;
-    u32 flags;
-    u32 length;
-    u32 result;
-    u32 eventType;
-    u32 high;
-    u32 low;
-    u32 time;
-    u32 bankIndex;
+    u8 bankIndex;
     u32 instrument;
-    u32 key;
-    u32 i;
-    u32 j;
-
-    s32 volume;
-    s32 pan;
     s32 temp;
-    s32 amount;
-    s32 combined;
+    s32 key;
+    s32 vel;
+    u32 i;
 
     msg = (u8 *)arg0;
-    state = (u8 *)lbl_80368968;
 
     switch (msg[0x14]) {
     case 4:
         data = *(u8 **)(msg + 0xC);
-        bank = *(u8 **)(state + 0x118);
-
+        state = (struct LocalState *)lbl_80368968;
+        bank = state->bank;
         index = *(u16 *)(data + 8);
-        sequence = bank + *(u32 *)(*(u8 **)(bank + 4) + index * 4);
+        sequence = bank + *(u32 *)((u8 *)((u32 *)bank + index) + *(u32 *)(bank + 4));
+        channel = (u8 *)state + 0x364 + msg[0x15] * 0x2C;
 
-        channel = state + 0x364 + msg[0x15] * 0x2C;
-
+        *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
         *(u32 *)(channel + 0) = 0;
         *(u32 *)(channel + 4) = *(u32 *)data;
-        *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
         *(u32 *)(channel + 0xC) = (u32)data;
 
         offset = *(u32 *)(sequence + 4);
-
         if (offset != 0) {
-            cursor = bank + offset;
-
+            cursor = ((struct LocalState *)lbl_80368968)->bank + offset;
             first = cursor[0];
             second = cursor[1];
-
             if (first == 0x80 && second == 0) {
                 cursor = 0;
             } else {
@@ -1781,42 +1790,35 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                     value = first;
                     cursor++;
                 }
-
                 first = cursor[0];
                 second = cursor[1];
-
                 if (first & 0x80) {
                     temp = (s16)(((first & 0x7F) << 8) | second);
                     cursor += 2;
                     temp |= (temp << 1) & 0x8000;
+                    *(s16 *)(channel + 0x16) = temp;
                 } else {
-                    temp = (s8)(first | ((first << 1) & 0x80));
+                    temp = (s8)(u8)(first | ((first << 1) & 0x80));
                     cursor++;
+                    *(s16 *)(channel + 0x16) = temp;
                 }
-
-                *(s16 *)(channel + 0x16) = temp;
-                *(u32 *)(channel + 0x18) = value & 0xFFFF;
+            }
+            *(u32 *)(channel + 0x10) = (u32)cursor;
+            if (cursor != 0) {
+                *(u32 *)(channel + 0x18) = value;
+            } else {
+                *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
             }
         } else {
-            cursor = 0;
-        }
-
-        *(u32 *)(channel + 0x10) = (u32)cursor;
-
-        if (cursor == 0) {
             *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
         }
-
         *(u16 *)(channel + 0x14) = 0x2000;
 
         offset = *(u32 *)(sequence + 8);
-
         if (offset != 0) {
-            cursor = bank + offset;
-
+            cursor = ((struct LocalState *)lbl_80368968)->bank + offset;
             first = cursor[0];
             second = cursor[1];
-
             if (first == 0x80 && second == 0) {
                 cursor = 0;
             } else {
@@ -1827,185 +1829,245 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                     value = first;
                     cursor++;
                 }
-
                 first = cursor[0];
                 second = cursor[1];
-
                 if (first & 0x80) {
                     temp = (s16)(((first & 0x7F) << 8) | second);
                     cursor += 2;
                     temp |= (temp << 1) & 0x8000;
+                    *(s16 *)(channel + 0x22) = temp;
                 } else {
-                    temp = (s8)(first | ((first << 1) & 0x80));
+                    temp = (s8)(u8)(first | ((first << 1) & 0x80));
                     cursor++;
+                    *(s16 *)(channel + 0x22) = temp;
                 }
-
-                *(s16 *)(channel + 0x22) = temp;
-                *(u32 *)(channel + 0x24) = value & 0xFFFF;
+            }
+            *(u32 *)(channel + 0x1C) = (u32)cursor;
+            if (cursor != 0) {
+                *(u32 *)(channel + 0x24) = value;
+            } else {
+                *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
             }
         } else {
-            cursor = 0;
-        }
-
-        *(u32 *)(channel + 0x1C) = (u32)cursor;
-
-        if (cursor == 0) {
             *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
         }
-
         *(u16 *)(channel + 0x20) = 0;
 
-        table = *(u8 **)(bank + 8);
-        channel[0x28] = table[msg[0x15]];
+        bank = ((struct LocalState *)lbl_80368968)->bank;
+        channel[0x28] = *(u8 *)(bank + msg[0x15] + *(u32 *)(bank + 8));
 
         instrument = data[4];
-
         if (instrument != 0xFF) {
             bankIndex = channel[0x28];
-
-            *(u16 *)(lbl_8034BDD0 +
-                (lbl_80368960 << 5) +
-                bankIndex * 2) = 0xFFFF;
-
-            if (bankIndex == 9) {
-                instrument = *(u8 *)(state + instrument + 0x98);
-
+            *(u16 *)(lbl_8034BDD0 + (lbl_80368960 << 5) + bankIndex * 2) = 0xFFFF;
+            state = (struct LocalState *)lbl_80368968;
+            if (bankIndex != 9) {
+                instrument = state->instMap[instrument];
                 if (instrument != 0xFF) {
-                    source = *(u8 **)(state + 0x94) + instrument * 6;
-                    destination = state + 0xE70 + bankIndex * 6;
-
-                    *(u16 *)destination = *(u16 *)source;
-                    destination[2] = source[2];
-                    destination[3] = source[3];
-                    destination[4] = instrument;
+                    state->chanInst[bankIndex].progId = state->instTable[instrument].progId;
+                    state->chanInst[bankIndex].vol = state->instTable[instrument].vol;
+                    state->chanInst[bankIndex].prio = state->instTable[instrument].prio;
+                    state->chanInst[bankIndex].idx = instrument;
                 }
             } else {
-                instrument = *(u8 *)(state + instrument + 0x14);
-
+                instrument = state->drumMap[instrument];
                 if (instrument != 0xFF) {
-                    source = *(u8 **)(state + 0x10) + instrument * 6;
-                    destination = state + 0xE70 + bankIndex * 6;
-
-                    *(u16 *)destination = *(u16 *)source;
-                    destination[2] = source[2];
-                    destination[3] = source[3];
-                    destination[4] = instrument;
+                    state->chanInst[bankIndex].progId = state->drumTable[instrument].progId;
+                    state->chanInst[bankIndex].vol = state->drumTable[instrument].vol;
+                    state->chanInst[bankIndex].prio = state->drumTable[instrument].prio;
+                    state->chanInst[bankIndex].idx = instrument;
                 }
             }
         }
 
         if (data[5] != 0xFF) {
-            Sound_WriteParamU8(
-                7,
-                channel[0x28],
-                (u8)lbl_80368960,
-                data[5]
-            );
+            Sound_WriteParamU8(7, channel[0x28], (u8)lbl_80368960, data[5]);
         }
         break;
 
     case 0:
         data = *(u8 **)(msg + 0xC);
         channel = *(u8 **)(msg + 0x10);
-
-        command = data[3];
         value = data[2];
-        index = channel[0x28];
+        command = data[3];
+        bankIndex = channel[0x28];
 
         if (value & 0x80) {
             switch (command) {
             case 0:
-            case 1:
-                *(u16 *)(lbl_8034BDD0 +
-                    (lbl_80368960 << 5) +
-                    index * 2) = 0xFFFF;
-
+                *(u16 *)(lbl_8034BDD0 + (lbl_80368960 << 5) + bankIndex * 2) = 0xFFFF;
                 instrument = value & 0x7F;
-
-                if (index == 9) {
-                    instrument = *(u8 *)(state + instrument + 0x98);
-
+                state = (struct LocalState *)lbl_80368968;
+                if (bankIndex != 9) {
+                    instrument = state->instMap[instrument];
                     if (instrument != 0xFF) {
-                        source = *(u8 **)(state + 0x94) +
-                                 instrument * 6;
-
-                        destination = state + 0xE70 + index * 6;
-
-                        *(u16 *)destination = *(u16 *)source;
-                        destination[2] = source[2];
-                        destination[3] = source[3];
-                        destination[4] = instrument;
+                        state->chanInst[bankIndex].progId = state->instTable[instrument].progId;
+                        state->chanInst[bankIndex].vol = state->instTable[instrument].vol;
+                        state->chanInst[bankIndex].prio = state->instTable[instrument].prio;
+                        state->chanInst[bankIndex].idx = instrument;
                     }
                 } else {
-                    instrument = *(u8 *)(state + instrument + 0x14);
-
+                    instrument = state->drumMap[instrument];
                     if (instrument != 0xFF) {
-                        source = *(u8 **)(state + 0x10) +
-                                 instrument * 6;
-
-                        destination = state + 0xE70 + index * 6;
-
-                        *(u16 *)destination = *(u16 *)source;
-                        destination[2] = source[2];
-                        destination[3] = source[3];
-                        destination[4] = instrument;
+                        state->chanInst[bankIndex].progId = state->drumTable[instrument].progId;
+                        state->chanInst[bankIndex].vol = state->drumTable[instrument].vol;
+                        state->chanInst[bankIndex].prio = state->drumTable[instrument].prio;
+                        state->chanInst[bankIndex].idx = instrument;
                     }
                 }
                 break;
 
+            case 1:
+                Sound_WriteParamU8(0x82, bankIndex, (u8)lbl_80368960, value & 0x7F);
+                break;
+
             default:
-                Sound_WriteParamU8(
-                    0x82,
-                    index,
-                    (u8)lbl_80368960,
-                    value & 0x7F
-                );
+                if ((s32)(command & 0x80) == 0x80) {
+                    u32 cc = command & 0x7F;
+                    switch (cc) {
+                    case 0x68:
+                        if (((struct LocalState *)lbl_80368968)->unkF00 != 0) {
+                            fn_80245518(((struct LocalState *)lbl_80368968)->unkED4, ((struct LocalState *)lbl_80368968)->unkEFC, 1);
+                            ((struct LocalState *)lbl_80368968)->unkF00 = 0;
+                        }
+                        break;
+
+                    case 0x69:
+                        *(u16 *)(lbl_8034BDD0 + (lbl_80368960 << 5) + bankIndex * 2) = value & 0x7F;
+                        break;
+
+                    case 0x6A:
+                        *(u16 *)(lbl_8034BDD0 + (lbl_80368960 << 5) + bankIndex * 2) = (value & 0x7F) + 0x80;
+                        break;
+
+                    case 0x79:
+                        fn_8025FB74(bankIndex, (u8)lbl_80368960, 0);
+                        break;
+
+                    case 0x7B:
+                        for (i = 0; i < 2; i++) {
+                            node = ((struct LocalState *)lbl_80368968)->activeList[i].head;
+                            while (node != 0) {
+                                u8 *n;
+                                next = *(u8 **)(node + 0);
+                                fn_8024A6F8(*(u32 *)(node + 8));
+                                n = *(u8 **)(node + 0);
+                                ((struct LocalState *)lbl_80368968)->activeList[i].head = n;
+                                if (n != 0) {
+                                    *(u32 *)(((struct LocalState *)lbl_80368968)->activeList[i].head + 4) = 0;
+                                }
+                                n = ((struct LocalState *)lbl_80368968)->freeList;
+                                *(u8 **)(node + 0) = n;
+                                if (n != 0) {
+                                    *(u8 **)(((struct LocalState *)lbl_80368968)->freeList + 4) = node;
+                                }
+                                ((struct LocalState *)lbl_80368968)->freeList = node;
+                                node = next;
+                            }
+                        }
+                        break;
+
+                    default:
+                        Sound_WriteParamU8(cc, bankIndex, (u8)lbl_80368960, value & 0x7F);
+                        break;
+                    }
+                }
                 break;
             }
         } else {
-            if ((command & 0x80) == 0x80) {
-                value = command & 0x7F;
-
-                switch (value) {
-                case 0x68:
-                    if (state[0xF00] != 0) {
-                        fn_80245518(
-                            state + 0xED4,
-                            *(s32 **)(state + 0xEFC),
-                            1
-                        );
-                        state[0xF00] = 0;
+            state = (struct LocalState *)lbl_80368968;
+            if ((state->trackMask[(u32)msg[0x15] >> 5] & (1 << (msg[0x15] & 0x1F))) != 0) {
+                u16 progId = state->chanInst[bankIndex].progId;
+                if (progId != 0xFFFF) {
+                    u8 *chanData = *(u8 **)(channel + 0xC);
+                    u32 endTime;
+                    key = (s32)value + (s8)chanData[0xA];
+                    if (key > 0x7F) {
+                        key = 0x7F;
+                    } else {
+                        key = key < 0 ? 0 : key;
                     }
-                    break;
-
-                case 0x69:
-                    *(u16 *)(lbl_8034BDD0 +
-                        (lbl_80368960 << 5) +
-                        index * 2) = value & 0x7F;
-                    break;
-
-                case 0x6A:
-                    *(u16 *)(lbl_8034BDD0 +
-                        (lbl_80368960 << 5) +
-                        index * 2) = (value & 0x7F) + 0x80;
-                    break;
-
-                case 0x6B:
-                    fn_8025FB74(
-                        index,
-                        (u8)lbl_80368960,
-                        0
-                    );
-                    break;
-
-                default:
-                    Sound_WriteParamU8(
-                        value,
-                        index,
-                        (u8)lbl_80368960,
-                        command & 0x7F
-                    );
-                    break;
+                    vel = (s32)command + (s8)chanData[0xB];
+                    if (vel > 0x7F) {
+                        vel = 0x7F;
+                    } else {
+                        vel = vel < 0 ? 0 : vel;
+                    }
+                    node = (u8 *)lbl_80368964;
+                    endTime = *(u32 *)(msg + 8) + *(u16 *)(data + 4);
+                    if (node != 0) {
+                        lbl_80368964 = *(u32 *)(node + 0);
+                        if (lbl_80368964 != 0) {
+                            *(u32 *)((u8 *)lbl_80368964 + 4) = 0;
+                        }
+                        *(u32 *)(node + 0xC) = endTime;
+                        node[0x10] = arg1;
+                        node[0x11] = ((struct LocalState *)lbl_80368968)->tempo[arg1].listIdx;
+                        prev = 0;
+                        cur = ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head;
+                        while (cur != 0) {
+                            if (*(s32 *)(cur + 0xC) > *(s32 *)(node + 0xC)) {
+                                *(u8 **)(node + 0) = cur;
+                                *(u8 **)(node + 4) = prev;
+                                if (prev != 0) {
+                                    *(u8 **)(prev + 0) = node;
+                                } else {
+                                    ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = node;
+                                }
+                                *(u8 **)(cur + 4) = node;
+                                goto inserted;
+                            }
+                            prev = cur;
+                            cur = *(u8 **)(cur + 0);
+                        }
+                        *(u8 **)(node + 4) = prev;
+                        if (prev != 0) {
+                            *(u8 **)(prev + 0) = node;
+                        } else {
+                            ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = node;
+                        }
+                        *(u32 *)(node + 0) = 0;
+                    }
+                inserted:
+                    if (node != 0) {
+                        struct LocalState *st = (struct LocalState *)lbl_80368968;
+                        u8 track = msg[0x15];
+                        u8 unkF01 = st->unkF01;
+                        u32 handle = fn_802488C8(
+                            progId,
+                            st->chanInst[bankIndex].vol,
+                            st->chanInst[bankIndex].prio,
+                            st->unkA | ((u32)st->chanInst[bankIndex].idx << 16) | ((u32)(bankIndex == 9) << 24),
+                            (u8)key,
+                            (u8)vel,
+                            0x40,
+                            bankIndex,
+                            (u8)lbl_80368960,
+                            arg1,
+                            0,
+                            track,
+                            st->trackPrio[track],
+                            (s16)(lbl_8036895C != 0 ? -1 : 0),
+                            unkF01,
+                            lbl_8034CB64[unkF01 * 2]);
+                        *(u32 *)(node + 8) = handle;
+                        if (handle == 0xFFFFFFFF) {
+                            if (*(u8 **)(node + 0) != 0) {
+                                *(u8 **)(*(u8 **)(node + 0) + 4) = *(u8 **)(node + 4);
+                            }
+                            if (*(u8 **)(node + 4) != 0) {
+                                *(u8 **)(*(u8 **)(node + 4) + 0) = *(u8 **)(node + 0);
+                            } else {
+                                ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = *(u8 **)(node + 0);
+                            }
+                            *(u32 *)(node + 0) = lbl_80368964;
+                            if (lbl_80368964 != 0) {
+                                *(u8 **)((u8 *)lbl_80368964 + 4) = node;
+                            }
+                            *(u32 *)(node + 4) = 0;
+                            lbl_80368964 = (u32)node;
+                        }
+                    }
                 }
             }
         }
@@ -2013,16 +2075,11 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 
     case 2:
         channel = *(u8 **)(msg + 0x10);
-
-        *(u16 *)(channel + 0x14) +=
-            *(s16 *)(channel + 0x16);
-
+        *(u16 *)(channel + 0x14) += *(s16 *)(channel + 0x16);
         cursor = *(u8 **)(channel + 0x10);
-
         if (cursor != 0) {
             first = cursor[0];
             second = cursor[1];
-
             if (first == 0x80 && second == 0) {
                 cursor = 0;
             } else {
@@ -2033,50 +2090,38 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                     value = first;
                     cursor++;
                 }
-
                 first = cursor[0];
                 second = cursor[1];
-
                 if (first & 0x80) {
                     temp = (s16)(((first & 0x7F) << 8) | second);
                     cursor += 2;
                     temp |= (temp << 1) & 0x8000;
+                    *(s16 *)(channel + 0x16) = temp;
                 } else {
-                    temp = (s8)(first | ((first << 1) & 0x80));
+                    temp = (s8)(u8)(first | ((first << 1) & 0x80));
                     cursor++;
+                    *(s16 *)(channel + 0x16) = temp;
                 }
-
-                *(s16 *)(channel + 0x16) = temp;
-                *(u32 *)(channel + 0x18) += value & 0xFFFF;
             }
-        }
-
-        *(u32 *)(channel + 0x10) = (u32)cursor;
-
-        if (cursor == 0) {
+            *(u32 *)(channel + 0x10) = (u32)cursor;
+            if (cursor != 0) {
+                *(u32 *)(channel + 0x18) += value;
+            } else {
+                *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
+            }
+        } else {
             *(u32 *)(channel + 0x18) = 0x7FFFFFFF;
         }
-
-        fn_8025FA50(
-            0x80,
-            channel[0x28],
-            (u8)lbl_80368960,
-            *(u16 *)(channel + 0x14)
-        );
+        fn_8025FA50(0x80, channel[0x28], (u8)lbl_80368960, *(u16 *)(channel + 0x14));
         break;
 
     case 1:
         channel = *(u8 **)(msg + 0x10);
-
-        *(u16 *)(channel + 0x20) +=
-            *(s16 *)(channel + 0x22);
-
+        *(u16 *)(channel + 0x20) += *(s16 *)(channel + 0x22);
         cursor = *(u8 **)(channel + 0x1C);
-
         if (cursor != 0) {
             first = cursor[0];
             second = cursor[1];
-
             if (first == 0x80 && second == 0) {
                 cursor = 0;
             } else {
@@ -2087,50 +2132,38 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                     value = first;
                     cursor++;
                 }
-
                 first = cursor[0];
                 second = cursor[1];
-
                 if (first & 0x80) {
                     temp = (s16)(((first & 0x7F) << 8) | second);
                     cursor += 2;
                     temp |= (temp << 1) & 0x8000;
+                    *(s16 *)(channel + 0x22) = temp;
                 } else {
-                    temp = (s8)(first | ((first << 1) & 0x80));
+                    temp = (s8)(u8)(first | ((first << 1) & 0x80));
                     cursor++;
+                    *(s16 *)(channel + 0x22) = temp;
                 }
-
-                *(s16 *)(channel + 0x22) = temp;
-                *(u32 *)(channel + 0x24) += value & 0xFFFF;
             }
-        }
-
-        *(u32 *)(channel + 0x1C) = (u32)cursor;
-
-        if (cursor == 0) {
+            *(u32 *)(channel + 0x1C) = (u32)cursor;
+            if (cursor != 0) {
+                *(u32 *)(channel + 0x24) += value;
+            } else {
+                *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
+            }
+        } else {
             *(u32 *)(channel + 0x24) = 0x7FFFFFFF;
         }
-
-        fn_8025FA50(
-            1,
-            channel[0x28],
-            (u8)lbl_80368960,
-            *(u16 *)(channel + 0x20)
-        );
+        fn_8025FA50(1, channel[0x28], (u8)lbl_80368960, *(u16 *)(channel + 0x20));
         break;
 
     case 3:
-        channel = *(u8 **)(msg + 0x10);
-        *(u32 *)(channel + 0) |= 1;
+        *arg2 |= 1;
         return 0;
-
-    default:
-        return (StreamQueueNode *)fn_80246070(msg[0x15]);
     }
 
-    return 0;
+    return (StreamQueueNode *)fn_80246070(msg[0x15]);
 }
-
 void fn_80246D48(void) {
     u32 i;
     StreamQueueNode *node;
