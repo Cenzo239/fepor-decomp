@@ -147,7 +147,10 @@ auto/text_8003FCCC.c:
 	.text       start:0x8003FCCC end:0x8003FCF0
 
 auto/text_8003FCF0.c:
-	.text       start:0x8003FCF0 end:0x80054850
+	.text       start:0x8003FCF0 end:0x80054314
+
+auto/text_80054314.c:
+	.text       start:0x80054314 end:0x80054850
 
 auto/text_80054850.c:
 	.text       start:0x80054850 end:0x800548E8
