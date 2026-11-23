@@ -2940,10 +2940,8 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
     if (result < 0) {
         return result;
     }
-    if (size != 0) {
-        if ((size % card->sectorSize) != 0) {
-            return -0x80;
-        }
+    if (size == 0 || (size % card->sectorSize) != 0) {
+        return -0x80;
     }
     freeIdx = 0xFFFF;
     dir = __CARDGetDirBlock(card);
