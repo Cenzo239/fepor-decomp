@@ -1635,7 +1635,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
     extern u8 lbl_8029EAA8[];
     extern u8 lbl_80282CB4[];
     extern f32 lbl_8036706C;
-    extern f32 lbl_80367068;
+    extern f32 lbl_80367068[];
     extern f64 lbl_80367080;
     extern f64 lbl_80367088;
     extern f64 lbl_80367090;
