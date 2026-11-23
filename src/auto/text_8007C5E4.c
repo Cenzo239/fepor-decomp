@@ -472,19 +472,18 @@ void fn_8007D044(void) {
 #pragma scheduling on
 void fn_8007D064(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_CreateChild(void *, s32);
-    void Ui_PlaySeCue(void *, s32, void *);
+    void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_80289894[];
     extern u8 gUiStrings[];
     void *temp_r3;
-    u8 *base;
-    s32 vol;
+    s32 saved0;
+    s32 saved2;
 
+    saved2 = arg2;
+    saved0 = arg0;
     temp_r3 = Process_CreateChild(lbl_80289894, arg1);
-    *(s32 *)((u8 *)temp_r3 + 0x34) = arg0;
-    base = gUiStrings;
-    vol = 100;
-    *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
-    Ui_PlaySeCue(base + 0x140, vol, base);
+    *(s32 *)((u8 *)temp_r3 + 0x34) = saved0;
+    Ui_PlaySeCue((*(s32 *)((u8 *)temp_r3 + 0x38) = saved2, gUiStrings + 0x140), 0x64);
 }
 #pragma scheduling reset
 void fn_8007D0C0(void *arg0) {
@@ -951,7 +950,8 @@ void fn_8007DAB4(void *arg0) {
 }
 
 #pragma opt_strength_reduction off
-void fn_8007DAC4(void *arg0, void *arg1) {
+void fn_8007DAC4(void *arg0, void *arg1)
+{
   void strcpy(void *, void *);
   void *Unit_GetItemSlot(void *, s32);
   void Ui_ShowUnitInfoText(void *, void *, f32, f32);
@@ -968,11 +968,14 @@ void fn_8007DAC4(void *arg0, void *arg1) {
   s16 v;
   u8 kind;
   s32 idx;
+  s32 idx16;
+  void *text;
 
   kind = *((u8 *) (((u8 *) arg1) + 0xD));
   if ((kind >= 0xA) && (kind <= 0xE))
   {
-    v = *((s16 *) ((((u8 *) arg0) + ((kind - 0xA) * 2)) + 0x24));
+    idx16 = kind - 0xA;
+    v = ((s16 *)((u8 *)arg0 + 0x24))[idx16];
     switch (v)
     {
       case 27: strcpy(sp8, gUiStrings + 0x15A); break;
@@ -994,11 +997,11 @@ void fn_8007DAC4(void *arg0, void *arg1) {
     idx = kind - 0xF;
     if ((kind >= 0xF) && (kind <= 0x10))
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(*((void **) ((((u8 *) arg0) + (idx * 4)) + 0x38))), lbl_80369480 + (*((f32 *) arg1)), *((f32 *) (((u8 *) arg1) + 4)));
+      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]), lbl_80369480 + (*((f32 *) arg1)), *((f32 *) (((u8 *) arg1) + 4)));
     }
     else
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(*((void **) ((((u8 *) arg0) + (idx * 4)) + 0x38))), *((f32 *) arg1), *new_var);
+      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]), *((f32 *) arg1), *new_var);
     }
   }
   else if (kind == 0x17)
@@ -1026,8 +1029,9 @@ void fn_8007DAC4(void *arg0, void *arg1) {
   }
   else
   {
-    Ui_ShowUnitInfoText(gUnitInfoPopup, *((void **) (((u8 *) arg1) + 0x10)), *((f32 *) arg1), *new_var);
-      }
+    text = *((void **) (((u8 *) arg1) + 0x10));
+    Ui_ShowUnitInfoText(gUnitInfoPopup, text, *((f32 *) arg1), *new_var);
+  }
 }
 #pragma use_lmw_stmw on
 void fn_8007DD78(void *arg0) {
