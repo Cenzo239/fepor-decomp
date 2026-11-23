@@ -484,6 +484,7 @@ void fn_8014D8FC(void *arg0) {
     fn_80019F04(M2C_FIELD(arg0, u8 *, 0x10));
 }
 
+#pragma global_optimizer off
 void fn_8014D920(void) {
 void fn_8001520C(void *,s32);
 void fn_800BDED8(void *);
@@ -492,29 +493,44 @@ void fn_8010FF90(void *);
 void ScriptCtx_Begin(void *);
 void ScriptCtx_Call(void);
 void *fn_8016614C(void *,s32);
-u8 *p=gBattleState;
-s32 i=0;
-u8 *entry=p;
+u8 *p;
+s32 i;
+u8 *entry;
 void *str;
-p[0x11]=(u8)i; *(u16*)(p+0x12)=1; p[0x50]=(u8)i; p[0x56]=(u8)i;
-p[0x14]=1; p[0x15]=2; p[0x16]=2; p[0x17]=2;
-p[0x20]=(u8)i; p[0x2c]=(u8)i; p[0x38]=(u8)i; p[0x44]=(u8)i;
+p = gBattleState;
+i = 0;
+entry = p;
+p[0x11] = i;
+*(u16 *)(p + 0x12) = 1;
+p[0x50] = i;
+p[0x56] = i;
+p[0x14] = 1;
+p[0x15] = 2;
+p[0x16] = 2;
+p[0x17] = 2;
+p[0x20] = i;
+p[0x2c] = i;
+p[0x38] = i;
+p[0x44] = i;
 do {
-str=fn_8016614C(fn_80019F04(p[0x10]),i);
-if(str)strcpy((s32)(entry+0x20),(u32)str);
-i++; entry+=12;
-}while(i<4);
-fn_8001520C(gBattleState+0x94,0);
-fn_8001520C(gBattleState+0x98,3);
-entry=gBattleState+0xb4;
+str = fn_8016614C(fn_80019F04(p[0x10]), i);
+if (str) strcpy((s32)(entry + 0x20), (u32)str);
+i++;
+entry += 12;
+} while (i < 4);
+fn_8001520C(gBattleState + 0x94, 0);
+fn_8001520C(gBattleState + 0x98, 3);
+entry = gBattleState + 0xb4;
 fn_800BDED8(entry);
-EventFlag_Clear(entry,lbl_80277060+0x17e);
-EventFlag_Clear(entry,lbl_80277060+0x18a);
+EventFlag_Clear(entry, lbl_80277060 + 0x17e);
+EventFlag_Clear(entry, lbl_80277060 + 0x18a);
 fn_8010FF90(gMapObjEventList);
-ScriptCtx_Begin(lbl_80277060+0x196); ScriptCtx_Call();
-ScriptCtx_Begin(lbl_80277060+0x19e); ScriptCtx_Call();
+ScriptCtx_Begin(lbl_80277060 + 0x196);
+ScriptCtx_Call();
+ScriptCtx_Begin(lbl_80277060 + 0x19e);
+ScriptCtx_Call();
 }
-
+#pragma global_optimizer on
 s32 fn_8014DA68(void) {
  extern u8 gBattleState[];
  unsigned int flag = (gBattleState[0x9F] >> 7) & 1;
