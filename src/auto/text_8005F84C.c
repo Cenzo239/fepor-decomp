@@ -4349,8 +4349,7 @@ void fn_80067058(void) {
     u8 *lights;
     s32 i;
 
-    lights = lbl_80366DDC;
-    if (lights == NULL) {
+    if ((lights = lbl_80366DDC) == NULL) {
         return;
     }
     for (i = 0; i < 8; i++, lights += 0x2C) {
