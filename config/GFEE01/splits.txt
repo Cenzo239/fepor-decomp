@@ -48,7 +48,10 @@ auto/text_8000A950.c:
 	.text       start:0x8000A950 end:0x8000AA60
 
 auto/text_8000AA60.c:
-	.text       start:0x8000AA60 end:0x8000D354
+	.text       start:0x8000AA60 end:0x8000CEE4
+
+auto/text_8000B0XX.c:
+	.text       start:0x8000CEE4 end:0x8000D354
 
 auto/text_8000D354.c:
 	.text       start:0x8000D354 end:0x8000D598
