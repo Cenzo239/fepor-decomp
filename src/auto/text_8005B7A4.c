@@ -1056,7 +1056,7 @@ void fn_8005D330(char *name, u16 flags) {
     void fn_8005E12C(u8 *, char *, u16);
     void *AramCache_Find(char *);
     void fn_801ED7D0(void *);
-    u8 *entry = FindEntryByName(name);
+    u8 *entry = FindEntryByNameFrom(name, name);
     u16 cur;
     u32 f;
     void *aram;
