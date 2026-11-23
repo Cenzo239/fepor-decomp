@@ -1246,27 +1246,32 @@ void fn_80266328(s32 arg0, s32 arg1)
 
     u8 *entry;
     u8 *queue;
+    u8 *config;
+    volatile u8 *p;
     u32 checksum;
     s32 result;
     s32 count;
     void (*callback)(s32, s32);
+    u8 dummy[8];
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
     result = arg1;
 
     if (result == 0) {
+        config = lbl_802A4DE8;
         *(u32 *)(queue + 0x20) = 0x21;
 
         while ((count = *(s32 *)(queue + 0x20)) < 0x24) {
+            p = config + count;
             checksum = ((u32)queue[0x1B] ^
-                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 24))
+                        (*(u32 *)(queue + 0x3C + *p * 4) >> 24))
                      | ((u32)queue[0x1A] ^
-                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 16))
+                        (*(u32 *)(queue + 0x3C + *p * 4) >> 16))
                      | ((u32)queue[0x19] ^
-                        (*(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4) >> 8))
+                        (*(u32 *)(queue + 0x3C + *p * 4) >> 8))
                      | ((u32)queue[0x18] ^
-                        *(u32 *)(queue + 0x3C + lbl_802A4DE8[count] * 4));
+                        *(u32 *)(queue + 0x3C + *p * 4));
 
             result = checksum << 24;
             if (result == 0) {
