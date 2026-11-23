@@ -1499,7 +1499,7 @@ void fn_80122F04(void *arg0, void *arg1) {
         *(f32 *)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x18) = f30;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma use_lmw_stmw on
 void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8005397C(void *, s32);
@@ -1517,8 +1517,8 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *self;
     void *list;
     f32 t3;
-    f32 f31;
-    f32 f30;
+    register f32 f31;
+    register f32 f30;
     f32 t0;
 
     self = arg0;
@@ -1560,7 +1560,6 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
         M2C_FIELD(M2C_FIELD(obj, void **, 0x30), f32 *, 0x18) = f30;
     }
 }
-#pragma dont_reuse_strings reset
 #pragma use_lmw_stmw reset
 
 void fn_8012323C(void *arg0) {
@@ -1740,8 +1739,8 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     u32 strlen(const char *);
     extern u8 lbl_802902E8[];
     extern u8 lbl_80274DB0[];
-    extern f32 lbl_8036A2F8;
-    extern f32 lbl_8036A2E8;
+    extern const f32 lbl_8036A2F8;
+    extern const f32 lbl_8036A2E8;
 
     typedef struct {
         u32 size;
@@ -1771,6 +1770,11 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
         s32 unk94;
     } Obj;
 
+    typedef struct {
+        char pad[0x2B];
+        char left[4];
+    } LeftTbl;
+
     char spC0[0x20];
     char spA0[0x20];
     char sp80[0x20];
@@ -1789,8 +1793,10 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     Obj *path;
     Obj *self;
     Obj *buf;
-    f32 t1;
+    char *left;
+    u32 len;
     f32 t0;
+    f32 t1;
 
     path = (Obj *)arg2;
     self = (Obj *)arg0;
@@ -1848,8 +1854,9 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     self->unk94 = *(s32 *)sp60;
     fn_800C9A60(&sp18, -1);
 
-    buf = (Obj *)(lbl_80274DB0 + 0x2B);
-    if (fn_800C9400(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
+    len = strlen(((LeftTbl *)lbl_80274DB0)->left);
+    left = (char *)(lbl_80274DB0 + 0x2B);
+    if (fn_800C9400(&sp48, 0, sp48.size, left, len) == 0) {
         self->unk64 = 1;
     } else {
         self->unk64 = 0;
@@ -3196,105 +3203,103 @@ void fn_80125B94(void *arg0)
 }
 #pragma scheduling on
 s32 fn_80125BB0(void) {
-    void *Process_Find(u8 *, u8 *);
-    s32 GMaterial_AllocMtx();
-    s32 GMaterial_AllocTexCoord();
-    s32 GMaterial_AllocTexMap();
-    s32 GMaterial_AllocTevStage();
-    void fn_8006A384(f32 *);
-    s32 Ui_LoadAtlasTex(s32, u8 *, s32);
-    void PSMTXConcat(f32 *, f32 *, f32 *);
-    void fn_802026E4(f32 *, f32 *, s32 *, f32 *, s32, s32, f32, f32, f32, f32);
-    void C_MTXLightOrtho(f32 *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void *Process_Find(void *);
+    s32 GMaterial_AllocMtx(void);
+    s32 GMaterial_AllocTexCoord(void);
+    s32 GMaterial_AllocTexMap(void);
+    s32 GMaterial_AllocTevStage(void);
+    void fn_8006A384(void *);
+    s32 Ui_LoadAtlasTex(s32, void *, s32);
+    void PSMTXConcat(void *, void *, void *);
+    void fn_802026E4(void *, void *, void *, void *);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80222C50(u8 *, s32);
+    void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_80224E50(f32 *, s32, s32);
+    void fn_80224E50(void *, s32, s32);
     extern u8 lbl_80274EE0[0x30];
     extern u8 lbl_80290328[0x60];
     extern f32 lbl_8036A378;
     extern f32 lbl_8036A3B4;
-    f32 spF4[12];
-    f32 spC4[12];
-    f32 sp94[12];
-    f32 sp64[12];
-    u8 sp44[0x20];
-    f32 scratch[12];
-    s32 sp40;
-    f32 sp3C;
-    f32 sp38;
-    s32 sp34;
-    f32 sp30;
-    f32 sp2C;
-    s32 sp28;
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    f32 sp18;
-    f32 sp14;
-    s32 sp10;
-    f32 spC;
-    f32 sp8;
+    f32 spF4[3][4];
+    f32 spC4[3][4];
+    f32 sp94[3][4];
+    f32 sp64[3][4];
+    f32 sp44[8];
+    u32 sp40;
+    u32 sp3C;
+    u32 sp38;
+    u32 sp34;
+    u32 sp30;
+    u32 sp2C;
+    u32 sp28;
+    u32 sp24;
+    u32 sp20;
+    u32 sp1C;
+    u32 sp18;
+    u32 sp14;
+    u32 sp10;
+    u32 spC;
+    u32 sp8;
     f32 temp_f0;
     f32 temp_f1;
-    f32 temp_f1_2;
-    s32 temp_r26;
-    s32 temp_r27;
-    s32 temp_r28;
-    s32 temp_r29;
-    void *temp_r3;
+    s32 texCoord;
+    s32 tevStage;
+    s32 texMap;
+    s32 mtxId;
+    void *proc;
     u8 *cfg;
+    s32 z;
 
-    scratch[0] = 0.0f;
     cfg = lbl_80274EE0;
-    temp_r3 = Process_Find(lbl_80290328, cfg);
-    if (temp_r3 == NULL) {
+    proc = Process_Find(lbl_80290328);
+    if (proc == NULL) {
         return 1;
     }
     fn_8006A384(sp64);
-    temp_r28 = GMaterial_AllocTexCoord();
-    temp_r29 = GMaterial_AllocTevStage();
-    temp_r27 = GMaterial_AllocTexMap();
-    temp_r26 = GMaterial_AllocMtx();
-    temp_f1 = lbl_8036A3B4 + *(f32 *)((u8 *)temp_r3 + 0x4C);
-    temp_f0 = lbl_8036A3B4 + *(f32 *)((u8 *)temp_r3 + 0x50);
-    sp14 = *(f32 *)(cfg + 0xC);
-    sp18 = *(f32 *)(cfg + 0x10);
-    sp8 = *(f32 *)(cfg + 0x18);
-    sp18 = temp_f0;
-    spC = *(f32 *)(cfg + 0x1C);
-    sp8 = temp_f1;
-    sp14 = temp_f1;
-    spC = temp_f0;
-    sp1C = *(s32 *)(cfg + 0x14);
+    texCoord = GMaterial_AllocTexCoord();
+    tevStage = GMaterial_AllocTevStage();
+    texMap = GMaterial_AllocTexMap();
+    mtxId = GMaterial_AllocMtx();
+    temp_f1 = lbl_8036A3B4 + *(f32 *)((u8 *)proc + 0x4C);
+    temp_f0 = lbl_8036A3B4 + *(f32 *)((u8 *)proc + 0x50);
+    sp14 = *(u32 *)(cfg + 0xC);
+    sp18 = *(u32 *)(cfg + 0x10);
+    sp8 = *(u32 *)(cfg + 0x18);
+    *(f32 *)&sp18 = temp_f0;
+    spC = *(u32 *)(cfg + 0x1C);
+    *(f32 *)&sp8 = temp_f1;
+    *(f32 *)&sp14 = temp_f1;
+    *(f32 *)&spC = temp_f0;
+    z = *(s32 *)(cfg + 0x14);
+    sp1C = z;
     sp38 = sp14;
     sp3C = sp18;
-    sp40 = *(s32 *)(cfg + 0x14);
-    sp10 = *(s32 *)(cfg + 0x20);
+    sp40 = z;
+    sp10 = *(u32 *)(cfg + 0x20);
     sp2C = sp8;
     sp30 = spC;
-    sp34 = *(s32 *)(cfg + 0x20);
-    sp20 = *(s32 *)(cfg + 0x24);
-    sp24 = *(s32 *)(cfg + 0x28);
-    sp28 = *(s32 *)(cfg + 0x2C);
-    fn_802026E4(sp94, &sp2C, &sp20, &sp38, *(s32 *)(cfg + 0x28), *(s32 *)(cfg + 0x24), spC, sp8, temp_f1, lbl_8036A3B4);
-    temp_f1_2 = -lbl_8036A3B4;
-    C_MTXLightOrtho(spC4, temp_f1_2, lbl_8036A3B4, temp_f1_2, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
+    sp34 = *(u32 *)(cfg + 0x20);
+    sp20 = *(u32 *)(cfg + 0x24);
+    sp24 = *(u32 *)(cfg + 0x28);
+    sp28 = *(u32 *)(cfg + 0x2C);
+    fn_802026E4(sp94, &sp2C, &sp20, &sp38);
+    C_MTXLightOrtho(spC4, -lbl_8036A3B4, lbl_8036A3B4, -lbl_8036A3B4, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
     PSMTXConcat(sp94, sp64, sp94);
     PSMTXConcat(spC4, sp94, spF4);
-    fn_80224E50(spF4, temp_r26, 0);
-    Ui_LoadAtlasTex(*(s32 *)((u8 *)temp_r3 + 0x54), sp44, 5);
-    fn_80222C50(sp44, temp_r27);
-    fn_802201A8(temp_r28, 0, 0, temp_r26, 0, 0x7D);
-    GXSetTevOrder(temp_r29, temp_r28, temp_r27, 4);
-    GXSetTevColorIn(temp_r29, 0xF, 0, 8, 0xF);
-    GXSetTevColorOp(temp_r29, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn(temp_r29, 7, 7, 7, 0);
-    GXSetTevAlphaOp(temp_r29, 1, 0, 0, 1, 0);
+    fn_80224E50(spF4, mtxId, 0);
+    Ui_LoadAtlasTex(*(s32 *)((u8 *)proc + 0x54), sp44, 5);
+    fn_80222C50(sp44, texMap);
+    fn_802201A8(texCoord, 0, 0, mtxId, 0, 0x7D);
+    GXSetTevOrder(tevStage, texCoord, texMap, 4);
+    GXSetTevColorIn(tevStage, 0xF, 0, 8, 0xF);
+    GXSetTevColorOp(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn(tevStage, 7, 7, 7, 0);
+    GXSetTevAlphaOp(tevStage, 1, 0, 0, 1, 0);
     return 1;
 }
 
