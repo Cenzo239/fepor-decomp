@@ -50,9 +50,6 @@ extern f32 lbl_8036AE8C;
 extern f64 lbl_8036AE90;
 extern f64 lbl_8036AE98;
 
-/* int-to-float magics: const so casts may CSE into .sdata2 names */
-const f64 lbl_8036AE60 = 4503601774854144.0;
-const f64 lbl_8036AE80 = 4503599627370496.0;
 
 typedef struct {
     void *unk0;
@@ -10052,7 +10049,7 @@ void fn_801958C8(void *arg0, s32 arg1, void *arg2) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801959FC(void *arg0) {
+void fn_801959FC(u8 *self) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void *Camera_GetViewMtx(void);
     u32 fn_8006D948(void *);
@@ -10084,28 +10081,20 @@ void fn_801959FC(void *arg0) {
 
     f32 mtx[3][4];
     s32 color;
-    u8 *tip;
-    s32 r;
     s32 g;
+    s32 r;
     volatile f32 *fifo;
     u8 alphaByte;
-    u8 *self;
     s32 i;
     s32 alpha;
     f32 *nrm;
     f32 *pos;
     void *view;
-    s16 len;
-    s32 b;
     f32 f29;
-    f64 f30;
-    f64 f31;
-    f32 s;
-    f32 t;
-    f32 nx, ny, px, py, pz;
+    u8 *tip;
+    f32 s, t, nx, ny, px, py, pz;
     volatile f32 *out;
 
-    self = (u8 *)arg0;
     if (self[8] == 0) return;
     if (lbl_8036AE50 == *(f32 *)(self + 0xC)) return;
     if (*(s16 *)(self + 0xA) == 0) return;
@@ -10133,21 +10122,19 @@ void fn_801959FC(void *arg0) {
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
     GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
 
-    len = *(s16 *)(self + 6);
     pos = (f32 *)(self + 0x220);
     alpha = self[3];
     nrm = (f32 *)(self + 0x1A38);
-    if (len > 0) {
-        alpha = (s32)(((f32)(s32)alpha * Math_Lerp(lbl_8036AE6C, lbl_8036AE50, lbl_8036AE70, (f32)len)) / lbl_8036AE6C);
+    if (*(s16 *)(self + 6) > 0) {
+        alpha = (s32)(((f32)(s32)alpha * Math_Lerp(lbl_8036AE6C, lbl_8036AE50, lbl_8036AE70, (f32)*(s16 *)(self + 6))) / lbl_8036AE6C);
     }
     GXBegin(0x98, 0, (*(s16 *)(self + 0xA) << 1) & 0xFFFE);
-    f30 = lbl_8036AE80;
     alphaByte = (u8)alpha;
-    f31 = lbl_8036AE60;
     i = 0;
     f29 = lbl_8036AE74;
     fifo = (volatile f32 *)0xCC008000;
     while (i < *(s16 *)(self + 0xA)) {
+        s32 b;
         r = (s32)Math_Lerp((f32)(u32)self[0], lbl_8036AE6C, (f32)(*(s16 *)(self + 0xA) - 1), (f32)i);
         g = (s32)Math_Lerp((f32)(u32)self[1], lbl_8036AE6C, (f32)(*(s16 *)(self + 0xA) - 1), (f32)i);
         b = (s32)Math_Lerp((f32)(u32)self[2], lbl_8036AE6C, (f32)(*(s16 *)(self + 0xA) - 1), (f32)i);
@@ -10155,9 +10142,7 @@ void fn_801959FC(void *arg0) {
         px = nrm[0] * f29 + pos[0];
         py = nrm[1] * f29 + pos[1];
         pz = pos[2];
-        fifo[0] = px;
-        fifo[0] = py;
-        fifo[0] = pz;
+        fifo[0] = px; fifo[0] = py; fifo[0] = pz;
         ((volatile u8 *)fifo)[0] = r;
         ((volatile u8 *)fifo)[0] = g;
         ((volatile u8 *)fifo)[0] = b;
@@ -10165,9 +10150,7 @@ void fn_801959FC(void *arg0) {
         px = pos[0] - nrm[0] * f29;
         py = pos[1] - nrm[1] * f29;
         pz = pos[2];
-        fifo[0] = px;
-        fifo[0] = py;
-        fifo[0] = pz;
+        fifo[0] = px; fifo[0] = py; fifo[0] = pz;
         ((volatile u8 *)fifo)[0] = r;
         ((volatile u8 *)fifo)[0] = g;
         ((volatile u8 *)fifo)[0] = b;
@@ -10187,9 +10170,7 @@ void fn_801959FC(void *arg0) {
     pz = *(f32 *)(tip + 0x228);
     py = ny * s + py;
     t = lbl_8036AE78;
-    out[0] = px;
-    out[0] = py;
-    out[0] = pz;
+    out[0] = px; out[0] = py; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     nx = *(f32 *)(tip + 0x1A38);
     px = *(f32 *)(tip + 0x220);
@@ -10198,9 +10179,7 @@ void fn_801959FC(void *arg0) {
     px = px - nx * s;
     pz = *(f32 *)(tip + 0x228);
     py = py - ny * s;
-    out[0] = px;
-    out[0] = py;
-    out[0] = pz;
+    out[0] = px; out[0] = py; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     ny = *(f32 *)(tip + 0x1A3C);
     nx = *(f32 *)(tip + 0x1A38);
@@ -10209,9 +10188,7 @@ void fn_801959FC(void *arg0) {
     nx = nx * s;
     py = *(f32 *)(tip + 0x224);
     pz = *(f32 *)(tip + 0x228);
-    out[0] = t * ny + px;
-    out[0] = py - t * nx;
-    out[0] = pz;
+    out[0] = t * ny + px; out[0] = py - t * nx; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     nx = *(f32 *)(tip + 0x1A38);
     px = *(f32 *)(tip + 0x220);
@@ -10220,9 +10197,7 @@ void fn_801959FC(void *arg0) {
     px = px - nx * s;
     pz = *(f32 *)(tip + 0x228);
     py = py - ny * s;
-    out[0] = px;
-    out[0] = py;
-    out[0] = pz;
+    out[0] = px; out[0] = py; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     nx = *(f32 *)(tip + 0x1A38);
     ny = *(f32 *)(tip + 0x1A3C);
@@ -10231,9 +10206,7 @@ void fn_801959FC(void *arg0) {
     ny = ny * s;
     py = *(f32 *)(tip + 0x224);
     pz = *(f32 *)(tip + 0x228);
-    out[0] = px - t * nx;
-    out[0] = py - t * ny;
-    out[0] = pz;
+    out[0] = px - t * nx; out[0] = py - t * ny; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     ny = *(f32 *)(tip + 0x1A3C);
     nx = *(f32 *)(tip + 0x1A38);
@@ -10242,9 +10215,7 @@ void fn_801959FC(void *arg0) {
     nx = nx * s;
     py = *(f32 *)(tip + 0x224);
     pz = *(f32 *)(tip + 0x228);
-    out[0] = t * ny + px;
-    out[0] = py - t * nx;
-    out[0] = pz;
+    out[0] = t * ny + px; out[0] = py - t * nx; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     nx = *(f32 *)(tip + 0x1A38);
     px = *(f32 *)(tip + 0x220);
@@ -10253,9 +10224,7 @@ void fn_801959FC(void *arg0) {
     px = nx * s + px;
     pz = *(f32 *)(tip + 0x228);
     py = ny * s + py;
-    out[0] = px;
-    out[0] = py;
-    out[0] = pz;
+    out[0] = px; out[0] = py; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     ny = *(f32 *)(tip + 0x1A3C);
     nx = *(f32 *)(tip + 0x1A38);
@@ -10264,9 +10233,7 @@ void fn_801959FC(void *arg0) {
     nx = nx * s;
     py = *(f32 *)(tip + 0x224);
     pz = *(f32 *)(tip + 0x228);
-    out[0] = t * ny + px;
-    out[0] = py - t * nx;
-    out[0] = pz;
+    out[0] = t * ny + px; out[0] = py - t * nx; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
     nx = *(f32 *)(tip + 0x1A38);
     ny = *(f32 *)(tip + 0x1A3C);
@@ -10275,9 +10242,7 @@ void fn_801959FC(void *arg0) {
     ny = ny * s;
     py = *(f32 *)(tip + 0x224);
     pz = *(f32 *)(tip + 0x228);
-    out[0] = t * nx + px;
-    out[0] = t * ny + py;
-    out[0] = pz;
+    out[0] = t * nx + px; out[0] = t * ny + py; out[0] = pz;
     ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = 0xFF; ((volatile u8 *)out)[0] = alpha;
 }
 void fn_80196018(void *arg0) {
