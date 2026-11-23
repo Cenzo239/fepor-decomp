@@ -815,72 +815,118 @@ u8 fn_8000B920(void *);
 void *GfxEnt_Get(u8);
 void Ui_PlaySeCue(void *, s32);
 
-void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     extern u8 lbl_80284548[];
     extern u8 lbl_80284588[];
 
+    struct Menu {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual u8 v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3(void *) = 0;
+        virtual void v4() = 0;
+        virtual void v5(void *) = 0;
+        virtual void v6() = 0;
+        virtual void v7(void *, u8) = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void *v15(s32) = 0;
+        virtual s32 v16() = 0;
+        virtual s32 v17() = 0;
+        virtual s32 v18() = 0;
+        virtual s32 v19() = 0;
+        virtual s32 v20() = 0;
+        virtual s32 v21() = 0;
+        virtual s32 v22() = 0;
+        virtual s32 v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual u32 v26() = 0;
+    };
+    struct Item {
+        virtual void i0() = 0;
+        virtual void i1() = 0;
+        virtual void i2() = 0;
+        virtual void i3() = 0;
+        virtual void i4() = 0;
+        virtual void i5() = 0;
+        virtual void i6() = 0;
+        virtual s32 i7(void *, u8) = 0;
+    };
+
+    s32 index;
+    s32 total;
     u8 *object;
-    void *entry;
+    u8 *entry;
+    s32 status;
     void *item;
     void *first;
     void *second;
     void *selected;
-    s32 index;
-    s32 total;
     s32 value;
     s32 width;
     s32 height;
-    u32 status;
 
     object = (u8 *)Process_CreateEx(lbl_80284548);
 
-    if ((arg2 & 0xFF) != 0) {
+    if ((u8)arg2 != 0) {
         object[0x2B] = (u8)arg2;
-        object[0x60] = 0;
-        *(s8 *)(object + 0x62) = -1;
-
         total = 0;
         index = total;
+        object[0x60] = (u8)total;
+        *(s8 *)(object + 0x62) = -1;
 
         while (1) {
-            item = ((void *(*)(void *, s32))(*(void ***)((u8 *)arg0 + 4))[0x44 / 4])(arg0, index);
+            item = ((Menu *)arg0)->v15(index);
 
             if (item == NULL) {
                 break;
             }
 
-            status = ((s32 (*)(void *, void *, u8))(*(void ***)item)[0x24 / 4])(item, item, (u8)index);
+            status = ((Item *)item)->i7(item, (u8)index);
 
-            if ((status & 0xFF) == 3) {
+            if ((u8)status == 3) {
                 break;
             }
 
-            if ((status & 0xFF) == 1 && (s8)object[0x62] < 0) {
-                object[0x62] = object[0x60];
+            if ((u8)status == 1) {
+                if ((s8)object[0x62] < 0) {
+                    object[0x62] = object[0x60];
+                    status = 0;
 
-                entry = (void *)Process_Create(lbl_80284588, object);
+                    entry = (u8 *)Process_Create(lbl_80284588, object);
 
-                *(void **)((u8 *)entry + 0x34) = item;
-                ((u8 *)entry)[0x3A] = (u8)index;
-                ((u8 *)entry)[0x3B] = object[0x60];
-                ((u8 *)entry)[0x39] = 0;
+                    *(void **)(entry + 0x34) = item;
+                    entry[0x3A] = (u8)index;
+                    entry[0x3B] = object[0x60];
+                    entry[0x39] = (u8)status;
 
-                *(s16 *)((u8 *)entry + 0x30) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x48 / 4])(arg0);
+                    *(s16 *)(entry + 0x30) = ((Menu *)arg0)->v16();
 
-                value = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x4C / 4])(arg0);
-                *(s16 *)((u8 *)entry + 0x32) = total + value;
+                    value = ((Menu *)arg0)->v17();
+                    *(s16 *)(entry + 0x32) = total + value;
 
-                *(u32 *)((u8 *)entry + 0x3C) = 0;
+                    *(u32 *)(entry + 0x3C) = 0;
 
-                value = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x58 / 4])(arg0);
-                total += value;
+                    value = ((Menu *)arg0)->v20();
+                    total += value;
 
-                value = fn_8000B920(entry);
+                    value = fn_8000B920(entry);
 
-                index = (s8)object[0x60];
-                object[0x60]++;
-
-                object[0x40 + index] = (u8)value;
+                    {
+                        s8 slot = (s8)object[0x60];
+                        object[0x60]++;
+                        object[0x40 + slot] = (u8)value;
+                    }
+                }
             }
 
             index++;
@@ -891,16 +937,16 @@ void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
         object[0x62] = 0;
         *(void **)(object + 0x3C) = arg0;
 
-        *(s16 *)(object + 0x30) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x5C / 4])(arg0);
-        *(s16 *)(object + 0x32) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x60 / 4])(arg0);
-        *(s16 *)(object + 0x34) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x50 / 4])(arg0);
+        *(s16 *)(object + 0x30) = ((Menu *)arg0)->v21();
+        *(s16 *)(object + 0x32) = ((Menu *)arg0)->v22();
+        *(s16 *)(object + 0x34) = ((Menu *)arg0)->v18();
 
-        value = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x54 / 4])(arg0);
+        value = ((Menu *)arg0)->v19();
         if ((s16)value != 0) {
-            *(s16 *)(object + 0x36) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x54 / 4])(arg0);
+            *(s16 *)(object + 0x36) = ((Menu *)arg0)->v19();
         } else {
-            width = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x58 / 4])(arg0);
-            height = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x4C / 4])(arg0);
+            width = ((Menu *)arg0)->v20();
+            height = ((Menu *)arg0)->v17();
             *(s16 *)(object + 0x36) = height + width * (s8)object[0x60];
         }
     }
@@ -909,8 +955,8 @@ void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     *(s16 *)(object + 0x38) = -1;
     *(s16 *)(object + 0x3A) = -1;
 
-    ((void (*)(void *, void *))(*(void ***)((u8 *)arg0 + 4))[0x14 / 4])(arg0, object);
-    ((void (*)(void *, void *))(*(void ***)((u8 *)arg0 + 4))[0x1C / 4])(arg0, object);
+    ((Menu *)arg0)->v3(object);
+    ((Menu *)arg0)->v5(object);
 
     first = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
     second = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
@@ -918,23 +964,21 @@ void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     selected = *(void **)((u8 *)second + 0x34);
     ((void (*)(void *, void *, void *))(*(void ***)selected)[0x40 / 4])(selected, object, first);
 
-    *(s16 *)(object + 0x28) = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x64 / 4])(arg0);
+    *(s16 *)(object + 0x28) = ((Menu *)arg0)->v23();
 
     object[0x61] = 1;
 
-    if (((u32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x70 / 4])(arg0) != 0) {
-        value = ((s32 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x70 / 4])(arg0);
+    if (((Menu *)arg0)->v26() != 0) {
+        value = ((Menu *)arg0)->v26();
         Ui_PlaySeCue((void *)value, 0x64);
     }
 
-    if (((u8 (*)(void *))(*(void ***)((u8 *)arg0 + 4))[0x0C / 4])(arg0) != 0) {
+    if (((Menu *)arg0)->v1() != 0) {
         *(s8 *)(object + 0x62) = -1;
     }
 
     return object;
 }
-
-#pragma cplusplus on
 extern "C" void fn_800246E0(void *arg0) {
     struct Model {
         u8 pad[4];
