@@ -10465,7 +10465,7 @@ void GActor_FreeTexWork(void *arg0) {
     s32 i;
     void **ptr;
     void **walk;
-    void *z;
+    s32 zero;
     s32 base;
 
     base = (s32)LightFade_script;
@@ -10477,17 +10477,19 @@ void GActor_FreeTexWork(void *arg0) {
     ptr = *(void ***)((u8 *)arg0 + 0x30);
     if (ptr != NULL) {
         fn_800C4588(*ptr);
-        z = 0;
+        zero = base - base;
         walk = ptr;
-        *ptr = z;
-        i = (s32)z;
-        *ptr = z;
-        for (; i < 0x20; i += 1, walk = (void **)((u8 *)walk + 0x14)) {
+        *ptr = (void *)zero;
+        i = zero;
+        *ptr = (void *)zero;
+        do {
             if (walk[1] != NULL) {
                 fn_8005FA14(walk[1], 0);
-                walk[1] = z;
+                walk[1] = (void *)zero;
             }
-        }
+            i += 1;
+            walk = (void **)((u8 *)walk + 0x14);
+        } while (i < 0x20);
         Heap_Free(ptr);
     }
     *(void **)((u8 *)arg0 + 0x30) = 0;

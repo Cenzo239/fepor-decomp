@@ -1225,120 +1225,177 @@ void fn_8005806C(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_800581A4(void *arg0)
 {
-    typedef struct {
-        f32 v[9];
-        u8 b[4];
-    } Node40;
-    void fn_8005EB5C(void *, void *);
-    void fn_8005E644(void *);
-    extern f32 lbl_80369104;
-    extern f32 gF32_0;
-    extern f64 lbl_80369118;
-    extern f32 lbl_8036912C;
-    extern f32 lbl_8036915C;
-    extern f64 lbl_80369160;
-    extern f32 lbl_80369168;
-    extern u32 lbl_803690D4;
-    Node40 nodes[4];
-    Node40 *base;
-    f32 *src;
-    f32 *dst;
-    u8 *context;
-    u8 *outBase;
-    u32 color, colorCopy;
-    s32 i, k, index, count;
-    u16 start, length, capacity, tailCount;
-    u8 steps, alpha;
-    volatile u8 t;
-    f32 one, twice, cubic, scale;
-    f32 u, v, w, x, y, z, a, b, c, d;
-    f32 h0, h1, h2, h3;
-    f64 slopeFactor;
+  u16 *new_var4;
+  int new_var8;
+  u16 new_var9;
+  void **new_var6;
+  f32 new_var5;
+  u8 new_var7;
+  double new_var;
+  float new_var3;
+  f32 new_var2;
+  typedef struct 
+  {
+    f32 v[9];
+    u8 b[4];
+  } Node40;
+  void fn_8005EB5C(void *, void *);
+  void fn_8005E644(void *);
+  extern f32 lbl_80369104;
+  extern f32 gF32_0;
+  extern f64 lbl_80369118;
+  extern f32 lbl_8036912C;
+  extern f32 lbl_8036915C;
+  extern f64 lbl_80369160;
+  extern f32 lbl_80369168;
+  extern u32 lbl_803690D4;
+  Node40 nodes[4];
+  Node40 *base;
+  f32 *src;
+  f32 *dst;
+  u8 *context;
+  u8 *outBase;
+  u32 color;
+  u32 colorCopy;
+  s32 i;
+  s32 k;
+  s32 index;
+  s32 count;
+  u16 start;
+  u16 length;
+  u16 capacity;
+  u16 tailCount;
+  u8 steps;
+  u8 alpha;
+  volatile u8 t;
+  f32 one;
+  f32 twice;
+  f32 cubic;
+  f32 scale;
+  f32 u;
+  f32 v;
+  f32 w;
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 a;
+  f32 b;
+  f32 c;
+  f32 d;
+  f32 h0;
+  f32 h1;
+  f32 h2;
+  f32 h3;
+  f64 slopeFactor;
+  ;
+  slopeFactor = lbl_80369160;
+  one = lbl_8036912C;
+  twice = lbl_8036915C;
+  cubic = lbl_80369104;
+  i = 0;
+  while (i < ((s32) (*((u16 *) (((u8 *) arg0) + 0x4c)))))
+  {
+    base = *((Node40 **) (context + 0x40));
+    start = *((u16 *) (context + 0x48));
+    capacity = *((u16 *) (context + 0x4e));
+    if (i > 0)
+    {
+      nodes[0] = base[((start + i) - 1) % capacity];
+      new_var4 = (u16 *) (context + 0x4c);
+    }
+    else
+    {
+      nodes[0] = (*((Node40 **) (((u8 *) arg0) + (new_var8 = 0x40))))[(start + i) % capacity];
+    }
+    length = *new_var4;
+    nodes[1] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[(start + i) % capacity];
+    new_var9 = *new_var4;
+    if (i < (((s32) length) - 1))
+    {
+      nodes[2] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[((start + i) + 1) % capacity];
+    }
+    else
+    {
+      nodes[2] = nodes[1];
+    }
+    if (i < (((s32) new_var9) - 2))
+    {
+      nodes[3] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[(((*((u16 *) (context + 0x48))) + i) + 2) % capacity];
+    }
+    else
+    {
+      nodes[3] = nodes[2];
+    }
+    for (t = 0; t < ((u8 *) arg0)[0x51]; t++)
+    {
+      u = (one + ((f32) t)) / ((f32) context[0x51]);
+      v = cubic * u;
+      w = u - one;
+      x = (x = one - u);
+      y = twice - v;
+      z = u * u;
+      h0 = w * w;
+      h1 = y * z;
+      h2 = u * x;
+      new_var3 = u * (w * u);
+      h3 = (one + v) * h0;
+      h0 = new_var3;
+      index = (((s32) t) + (i * context[0x51])) * 0x28;
+      dst = (f32 *) ((*((u8 **) (context + 0x44))) + index);
+      src = (f32 *) nodes;
+      for (k = 0; k < 2; k++)
+      {
+        a = h1 * src[20];
+        a = (h3 * src[10]) + a;
+        b = src[21];
+        b = h1 * b;
+        new_var5 = h2;
+        b = (h3 * src[11]) + b;
+        scale = a;
+        c = h1 * src[22];
+        c = (h3 * src[12]) + c;
+        dst[0] = (f32) ((((f64) h0) * (slopeFactor * ((f64) (src[30] - src[10])))) + (new_var = (((f64) new_var5) * (slopeFactor * ((f64) (src[20] - src[0])))) + scale));
+        dst[1] = (f32) ((((f64) h0) * (slopeFactor * ((f64) (src[31] - src[11])))) + ((((f64) new_var5) * (slopeFactor * ((f64) (src[21] - src[1])))) + b));
+        dst[2] = (f32) (((float) (((f64) h0) * (slopeFactor * ((f64) (src[32] - src[12]))))) + ((((f64) new_var5) * (slopeFactor * ((f64) (src[22] - src[2])))) + c));
+        src += 3;
+        dst += 3;
+      }
 
-    context = (u8 *)arg0;
-    slopeFactor = lbl_80369160;
-    one = lbl_8036912C;
-    twice = lbl_8036915C;
-    cubic = lbl_80369104;
-    i = 0;
-    while (i < (s32)*(u16 *)(context + 0x4c)) {
-        base = *(Node40 **)(context + 0x40);
-        start = *(u16 *)(context + 0x48);
-        capacity = *(u16 *)(context + 0x4e);
-        length = *(u16 *)(context + 0x4c);
-
-        if (i > 0)
-            nodes[0] = base[(start + i - 1) % capacity];
-        else
-            nodes[0] = base[(start + i) % capacity];
-        nodes[1] = base[(start + i) % capacity];
-        if (i < (s32)length - 1)
-            nodes[2] = base[(start + i + 1) % capacity];
-        else
-            nodes[2] = nodes[1];
-        if (i < (s32)length - 2)
-            nodes[3] = base[(start + i + 2) % capacity];
-        else
-            nodes[3] = nodes[2];
-
-        for (t = 0; t < context[0x51]; t++) {
-            u = (one + (f32)t) / (f32)context[0x51];
-            v = cubic * u;
-            w = u - one;
-            x = one - u;
-            y = twice - v;
-            z = u * u;
-            x *= x;
-            h0 = w * w;
-            h1 = y * z;
-            h2 = u * x;
-            h3 = (one + v) * h0;
-            h0 = u * (w * u);
-            index = ((s32)t + i * context[0x51]) * 0x28;
-            dst = (f32 *)(*(u8 **)(context + 0x44) + index);
-            src = (f32 *)nodes;
-            for (k = 0; k < 2; k++) {
-                a = h1 * src[20];
-                a = h3 * src[10] + a;
-                b = h1 * src[21];
-                b = h3 * src[11] + b;
-                c = h1 * src[22];
-                c = h3 * src[12] + c;
-                dst[0] = (f32)((f64)h0 * (slopeFactor * (f64)(src[30] - src[10]))
-                      + ((f64)h2 * (slopeFactor * (f64)(src[20] - src[0])) + a));
-                dst[1] = (f32)((f64)h0 * (slopeFactor * (f64)(src[31] - src[11]))
-                      + ((f64)h2 * (slopeFactor * (f64)(src[21] - src[1])) + b));
-                dst[2] = (f32)((f64)h0 * (slopeFactor * (f64)(src[32] - src[12]))
-                      + ((f64)h2 * (slopeFactor * (f64)(src[22] - src[2])) + c));
-                src += 3;
-                dst += 3;
-            }
-        }
-        i++;
     }
 
-    steps = context[0x51];
-    length = *(u16 *)(context + 0x4c);
-    tailCount = *(u16 *)(context + 0x4a);
-    scale = (f32)((context[0x3b] * 0x60) / 255) - gF32_0;
-    count = length * steps - tailCount;
-    for (i = 0; i < (s32)*(u16 *)(context + 0x4a); i++) {
-        index = (i + count) * 0x28;
-        alpha = (u8)(gF32_0 + (f32)i * scale / (f32)(steps - 1));
-        outBase = *(u8 **)(context + 0x44) + index;
-        outBase[0x24] = alpha;
-        dst = (f32 *)outBase;
-        dst[6] = dst[0] + (lbl_80369168 * (dst[3] - dst[0])) / lbl_8036912C;
-        dst[7] = dst[1] + (lbl_80369168 * (dst[4] - dst[1])) / lbl_8036912C;
-        dst[8] = dst[2] + (lbl_80369168 * (dst[5] - dst[2])) / lbl_8036912C;
+    i++;
+  }
+
+  steps = context[0x51];
+  length = new_var9;
+  new_var2 = lbl_80369168;
+  tailCount = *((u16 *) (context + 0x4a));
+  new_var6 = (void **) (((u8 *) arg0) + (0x34 & 0xFFFFFFFF));
+  scale = ((f32) ((context[0x3b] * 0x60) / 255)) - gF32_0;
+  count = (length * steps) - tailCount;
+  for (i = 0; i < ((s32) (*((u16 *) (((u8 *) arg0) + 0x4a)))); i++)
+  {
+    index = (((unsigned short) i) + count) * 0x28;
+    alpha = (outBase[0x24] = (u8) (gF32_0 + ((((f32) i) * scale) / ((f32) (steps - 1)))));
+    outBase = (*((u8 **) (context + 0x44))) + index;
+    dst = (f32 *) outBase;
+    ((f32 *) outBase)[6] = ((f32 *) outBase)[0] + ((new_var2 * (((f32 *) outBase)[3] - ((f32 *) outBase)[0])) / lbl_8036912C);
+    ((f32 *) outBase)[7] = ((f32 *) outBase)[1] + ((new_var2 * (((f32 *) outBase)[4] - dst[1])) / lbl_8036912C);
+    if (1)
+    {
     }
-    if (*(u16 *)(context + 0x54) & 4) {
-        color = lbl_803690D4;
-        ((u8 *)&color)[3] = (u8)(context[0x3b] >> 1);
-        colorCopy = color;
-        fn_8005EB5C(*(void **)(context + 0x34), &colorCopy);
-        fn_8005E644(*(void **)(context + 0x34));
-    }
+    ((f32 *) outBase)[8] = ((f32 *) outBase)[2] + ((new_var2 * (((f32 *) outBase)[5] - ((f32 *) outBase)[2])) / lbl_8036912C);
+  }
+
+  if (((*((u16 *) (((u8 *) arg0) + 0x54))) & 4) != 0)
+  {
+    new_var7 = ((u8 *) arg0)[0x3b];
+    color = lbl_803690D4;
+    ((u8 *) (&color))[3] = (u8) (new_var7 >> 1);
+    colorCopy = color;
+    fn_8005EB5C(*((void **) (((u8 *) arg0) + 0x34)), &colorCopy);
+    fn_8005E644(*new_var6);
+  }
 }
 #pragma use_lmw_stmw reset
 
@@ -1791,20 +1848,22 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
 #pragma optimize_for_size reset
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
-  extern const f32 lbl_80369104;
-  extern const f32 lbl_8036912C;
-  extern const f32 lbl_8036915C;
-  f32 temp_f6;
-  f32 temp_f12;
-  f32 temp_f10;
-  f32 h00;
+  extern f32 lbl_80369104;
+  extern f32 lbl_8036912C;
+  extern f32 lbl_8036915C;
+  f32 one;
   f32 h01;
-  temp_f12 = lbl_80369104 * farg4;
-  temp_f10 = farg4 - lbl_8036912C;
-  temp_f6 = lbl_8036912C - farg4;
+  f32 h00;
+  f32 t1m;
+  f32 two_t;
+  f32 tm1;
+  one = lbl_8036912C;
+  two_t = lbl_80369104 * farg4;
+  tm1 = farg4 - one;
+  t1m = one - farg4;
   h01 = ((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4));
-  h00 = ((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10));
-  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (0.5 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (0.5 * ((f64) (farg2 - farg0)))) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
+  h00 = ((one + two_t) * (tm1 * tm1));
+  return (f32) ((((f64) (farg4 * (tm1 * farg4))) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (farg4 * (t1m * t1m))) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
 
 #pragma use_lmw_stmw on

@@ -1560,226 +1560,361 @@ void fn_80242668(void *arg0, s16 *arg1) {
     *(u32 *)(ctx+0x6a0)=bitbuf;
 }
 
-void fn_80242CE4(void *arg0, s16 *arg1)
-{
+void fn_80242CE4(void *arg0, s16 *arg1) {
     extern u8 *lbl_80368860;
     extern u8 *lbl_803688C0;
     extern u8 lbl_80282FD8[];
-
-    u8 *ctx;
-    u8 *table;
-    u8 *lengths;
-    u8 *symbols;
-    u32 *stream;
-    u32 bitbuf;
+    u8 *ctx = arg0;
+    u8 *tbl;
+    u8 *lens;
+    u8 *zigzag;
     s32 bitpos;
-    s32 phase;
-    s32 index;
+    u32 bitbuf;
     s32 code;
-    s32 length;
-    s32 symbol;
-    s32 bits;
-    s32 run;
-    s32 value;
-    s32 shift;
-    s32 limit;
-    s32 offset;
-    s32 dc;
-    u32 bit;
-    u32 mask;
-
-    ctx = (u8 *)arg0;
+    s32 val;
+    s32 i;
+    s32 run, bits, remaining, extra, shift;
+    u32 x, oldbits;
+    u32 *wp;
+    s32 *maxcode;
+    s32 limit, length, step;
+    u32 *stream;
 
     __dcbz(arg1, 0);
+    tbl = lbl_80368860;
+    bitpos = *(s32 *)(ctx + 0x6a4);
+    lens = tbl + 0x20;
+    bitbuf = *(u32 *)(ctx + 0x6a0);
 
-    stream = *(u32 **)(ctx + 0x69C);
-    bitbuf = *(u32 *)(ctx + 0x6A0);
-    bitpos = *(s32 *)(ctx + 0x6A4);
-
-    table = lbl_80368860;
-    lengths = table + 0x20;
-
-    code = 0;
-    length = 0;
-
-    for (;;) {
+    code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
+    if (bitpos <= 28) {
+        val = tbl[code];
+        step = lens[code];
+        if (val != 255) {
+            bitpos += step;
+            *(s32 *)(ctx + 0x6a4) = bitpos;
+        } else {
+            maxcode = (s32 *)(tbl + 0x44);
+            bitpos += 5;
+            length = 5;
+            maxcode += 5;
+            for (;;) {
+                code <<= 1;
+                if (bitpos != 33) {
+                    step = __rlwnm(bitbuf, bitpos, 31, 31);
+                    limit = *++maxcode;
+                    code |= step;
+                    bitpos++;
+                } else {
+                    stream = *(u32 **)(ctx + 0x69c);
+                    bitpos = 1;
+                    bitbuf = *++stream;
+                    limit = *++maxcode;
+                    *(u32 **)(ctx + 0x69c) = stream;
+                    code = __rlwimi(code, bitbuf, 1, 31, 31);
+                    *(u32 *)(ctx + 0x6a0) = bitbuf;
+                    for (;;) {
+                        bitpos++;
+                        length++;
+                        if (code <= limit)
+                            break;
+                        code <<= 1;
+                        step = __rlwnm(bitbuf, bitpos, 31, 31);
+                        limit = *++maxcode;
+                        code |= step;
+                    }
+                    break;
+                }
+                length++;
+                if (code <= limit)
+                    break;
+            }
+            *(s32 *)(ctx + 0x6a4) = bitpos;
+            val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+        }
+    } else {
+        stream = *(u32 **)(ctx + 0x69c);
         if (bitpos == 33) {
-            stream++;
-            bitbuf = *stream;
-            bitpos = 1;
-
-            *(u32 **)(ctx + 0x69C) = stream;
-            *(u32 *)(ctx + 0x6A0) = bitbuf;
-        }
-
-        bit = (bitbuf >> (32 - bitpos)) & 1;
-        bitpos++;
-
-        code = (code << 1) | bit;
-        length++;
-
-        if (length == 5) {
-            symbol = table[code];
-
-            if (symbol != 0xFF) {
-                break;
+            bitbuf = *++stream;
+            code = bitbuf >> 27;
+            *(u32 **)(ctx + 0x69c) = stream;
+            val = tbl[code];
+            step = lens[code];
+            *(u32 *)(ctx + 0x6a0) = bitbuf;
+            if (val != 255) {
+                bitpos = step + 1;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+            } else {
+                length = 5;
+                do {
+                    step = 31 - length;
+                    length++;
+                    code = bitbuf >> step;
+                    limit = *(s32 *)(tbl + 0x44 + length * 4);
+                } while (code > limit);
+                bitpos = length + 1;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
             }
-        }
-
-        if (length > 5) {
-            limit = *(s32 *)(table + 0x44 + length * 4);
-
-            if (code <= limit) {
-                symbols = *(u8 **)(table + 0x40);
-                offset = *(s32 *)(table + 0x8C + length * 4);
-                symbol = symbols[code + offset];
-                break;
+        } else if (bitpos == 32) {
+            bitbuf = *++stream;
+            *(u32 **)(ctx + 0x69c) = stream;
+            code = __rlwimi(code, bitbuf, 4, 28, 31);
+            val = tbl[code];
+            step = lens[code];
+            *(u32 *)(ctx + 0x6a0) = bitbuf;
+            bitpos = step;
+            *(s32 *)(ctx + 0x6a4) = bitpos;
+            if (val == 255) {
+                maxcode = (s32 *)(tbl + 0x44) + 5;
+                {
+                    u32 prefix = ((u32)code << 27) | (bitbuf >> 1);
+                    length = 5;
+                    do {
+                        step = 31 - length;
+                        limit = *++maxcode;
+                        code = prefix >> step;
+                        length++;
+                    } while (code > limit);
+                }
+                bitpos = length;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+            }
+        } else {
+            val = tbl[code];
+            step = lens[code];
+            length = bitpos + step;
+            if (val != 255 && length <= 33) {
+                bitpos = length;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+            } else {
+                step = 33 - bitpos;
+                code = bitbuf & ~(~0U << step);
+                maxcode = (s32 *)(tbl + 0x44) + step;
+                length = step + 1;
+                stream = *(u32 **)(ctx + 0x69c);
+                bitbuf = *++stream;
+                *(u32 **)(ctx + 0x69c) = stream;
+                code <<= 1;
+                *(u32 *)(ctx + 0x6a0) = bitbuf;
+                code = __rlwimi(code, bitbuf, 1, 31, 31);
+                limit = *++maxcode;
+                bitpos = 2;
+                for (;;) {
+                    step = __rlwnm(bitbuf, bitpos, 31, 31);
+                    if (code <= limit)
+                        break;
+                    code <<= 1;
+                    length++;
+                    limit = *++maxcode;
+                    code += step;
+                    bitpos++;
+                }
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
             }
         }
     }
-
-    *(u32 **)(ctx + 0x69C) = stream;
-    *(u32 *)(ctx + 0x6A0) = bitbuf;
-    *(s32 *)(ctx + 0x6A4) = bitpos;
-
-    bits = symbol;
-    value = 0;
-
-    if (bits != 0) {
-        for (index = 0; index < bits; index++) {
-            if (bitpos == 33) {
-                stream++;
-                bitbuf = *stream;
-                bitpos = 1;
-            }
-
-            bit = (bitbuf >> (32 - bitpos)) & 1;
-            bitpos++;
-
-            value = (value << 1) | bit;
-        }
-
-        if ((value & (1 << (bits - 1))) == 0) {
-            value += 1 - (1 << bits);
-        }
-    }
-
-    *(u32 **)(ctx + 0x69C) = stream;
-    *(u32 *)(ctx + 0x6A0) = bitbuf;
-    *(s32 *)(ctx + 0x6A4) = bitpos;
-
-    dc = *(s16 *)(ctx + 0x68A);
-    dc += value;
-
-    *(s16 *)(ctx + 0x68A) = dc;
-    arg1[0] = (s16)dc;
 
     __dcbz(arg1, 0x20);
+    x = 0;
     __dcbz(arg1, 0x40);
+    if (val != 0) {
+        bitpos = *(s32 *)(ctx + 0x6a4);
+        remaining = 33 - bitpos;
+        bitbuf = *(u32 *)(ctx + 0x6a0);
+        extra = val - remaining;
+        shift = bitpos - 1;
+        if (extra <= 0) {
+            *(s32 *)(ctx + 0x6a4) = bitpos + val;
+            x = (bitbuf << shift) >> (32 - val);
+        } else {
+            wp = *(u32 **)(ctx + 0x69c);
+            oldbits = bitbuf << shift;
+            bitbuf = *++wp;
+            *(u32 *)(ctx + 0x6a0) = bitbuf;
+            *(u32 **)(ctx + 0x69c) = wp;
+            *(s32 *)(ctx + 0x6a4) = extra + 1;
+            x = ((bitbuf >> remaining) + oldbits) >> (32 - val);
+        }
+        if ((s32)__cntlzw((s16)x) > 32 - val)
+            x = (~0U << val) + x + 1;
+    }
     __dcbz(arg1, 0x60);
-
-    table = lbl_803688C0;
-    lengths = table + 0x20;
-
-    index = 1;
-
-    while (index < 64) {
-        code = 0;
-        length = 0;
-
-        for (;;) {
-            if (bitpos == 33) {
-                stream++;
-                bitbuf = *stream;
-                bitpos = 1;
-
-                *(u32 **)(ctx + 0x69C) = stream;
-                *(u32 *)(ctx + 0x6A0) = bitbuf;
-            }
-
-            bit = (bitbuf >> (32 - bitpos)) & 1;
-            bitpos++;
-
-            code = (code << 1) | bit;
-            length++;
-
-            if (length == 5) {
-                symbol = table[code];
-
-                if (symbol != 0xFF) {
-                    break;
-                }
-            }
-
-            if (length > 5) {
-                limit = *(s32 *)(table + 0x44 + length * 4);
-
-                if (code <= limit) {
-                    symbols = *(u8 **)(table + 0x40);
-                    offset = *(s32 *)(table + 0x8C + length * 4);
-                    symbol = symbols[code + offset];
-                    break;
-                }
-            }
-        }
-
-        *(u32 **)(ctx + 0x69C) = stream;
-        *(u32 *)(ctx + 0x6A0) = bitbuf;
-        *(s32 *)(ctx + 0x6A4) = bitpos;
-
-        if (symbol == 0) {
-            break;
-        }
-
-        run = symbol >> 4;
-        bits = symbol & 0xF;
-
-        if (bits == 0) {
-            if (run == 15) {
-                index += 16;
-                continue;
-            }
-
-            break;
-        }
-
-        index += run;
-
-        if (index >= 64) {
-            break;
-        }
-
-        value = 0;
-
-        for (shift = 0; shift < bits; shift++) {
-            if (bitpos == 33) {
-                stream++;
-                bitbuf = *stream;
-                bitpos = 1;
-            }
-
-            bit = (bitbuf >> (32 - bitpos)) & 1;
-            bitpos++;
-
-            value = (value << 1) | bit;
-        }
-
-        if ((value & (1 << (bits - 1))) == 0) {
-            value += 1 - (1 << bits);
-        }
-
-        arg1[lbl_80282FD8[index]] = (s16)value;
-
-        index++;
-
-        *(u32 **)(ctx + 0x69C) = stream;
-        *(u32 *)(ctx + 0x6A0) = bitbuf;
-        *(s32 *)(ctx + 0x6A4) = bitpos;
+    {
+        s32 dc = *(s16 *)(ctx + 0x68A) + (s32)x;
+        *(s16 *)(ctx + 0x68A) = dc;
+        arg1[0] = (s16)dc;
     }
 
-    *(u32 **)(ctx + 0x69C) = stream;
-    *(u32 *)(ctx + 0x6A0) = bitbuf;
-    *(s32 *)(ctx + 0x6A4) = bitpos;
+    zigzag = lbl_80282FD8;
+    for (i = 1; i < 64; i++) {
+        tbl = lbl_803688C0;
+        bitpos = *(s32 *)(ctx + 0x6a4);
+        lens = tbl + 0x20;
+        bitbuf = *(u32 *)(ctx + 0x6a0);
+
+        code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
+        if (bitpos <= 28) {
+            val = tbl[code];
+            step = lens[code];
+            if (val != 255) {
+                bitpos += step;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+            } else {
+                maxcode = (s32 *)(tbl + 0x44);
+                bitpos += 5;
+                length = 5;
+                maxcode += 5;
+                for (;;) {
+                    code <<= 1;
+                    if (bitpos != 33) {
+                        step = __rlwnm(bitbuf, bitpos, 31, 31);
+                        limit = *++maxcode;
+                        code |= step;
+                        bitpos++;
+                    } else {
+                        stream = *(u32 **)(ctx + 0x69c);
+                        bitpos = 1;
+                        bitbuf = *++stream;
+                        limit = *++maxcode;
+                        *(u32 **)(ctx + 0x69c) = stream;
+                        code = __rlwimi(code, bitbuf, 1, 31, 31);
+                        *(u32 *)(ctx + 0x6a0) = bitbuf;
+                        for (;;) {
+                            bitpos++;
+                            length++;
+                            if (code <= limit)
+                                break;
+                            code <<= 1;
+                            step = __rlwnm(bitbuf, bitpos, 31, 31);
+                            limit = *++maxcode;
+                            code |= step;
+                        }
+                        break;
+                    }
+                    length++;
+                    if (code <= limit)
+                        break;
+                }
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+            }
+        } else {
+            stream = *(u32 **)(ctx + 0x69c);
+            if (bitpos == 33) {
+                bitbuf = *++stream;
+                code = bitbuf >> 27;
+                *(u32 **)(ctx + 0x69c) = stream;
+                val = tbl[code];
+                step = lens[code];
+                *(u32 *)(ctx + 0x6a0) = bitbuf;
+                if (val != 255) {
+                    bitpos = step + 1;
+                    *(s32 *)(ctx + 0x6a4) = bitpos;
+                } else {
+                    length = 5;
+                    do {
+                        step = 31 - length;
+                        length++;
+                        code = bitbuf >> step;
+                        limit = *(s32 *)(tbl + 0x44 + length * 4);
+                    } while (code > limit);
+                    bitpos = length + 1;
+                    *(s32 *)(ctx + 0x6a4) = bitpos;
+                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+                }
+            } else if (bitpos == 32) {
+                bitbuf = *++stream;
+                *(u32 **)(ctx + 0x69c) = stream;
+                code = __rlwimi(code, bitbuf, 4, 28, 31);
+                val = tbl[code];
+                step = lens[code];
+                *(u32 *)(ctx + 0x6a0) = bitbuf;
+                bitpos = step;
+                *(s32 *)(ctx + 0x6a4) = bitpos;
+                if (val == 255) {
+                    maxcode = (s32 *)(tbl + 0x44) + 5;
+                    {
+                        u32 prefix = ((u32)code << 27) | (bitbuf >> 1);
+                        length = 5;
+                        do {
+                            step = 31 - length;
+                            limit = *++maxcode;
+                            code = prefix >> step;
+                            length++;
+                        } while (code > limit);
+                    }
+                    bitpos = length;
+                    *(s32 *)(ctx + 0x6a4) = bitpos;
+                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+                }
+            } else {
+                val = tbl[code];
+                step = lens[code];
+                length = bitpos + step;
+                if (val != 255 && length <= 33) {
+                    bitpos = length;
+                    *(s32 *)(ctx + 0x6a4) = bitpos;
+                } else {
+                    step = 33 - bitpos;
+                    code = bitbuf & ~(~0U << step);
+                    maxcode = (s32 *)(tbl + 0x44) + step;
+                    length = step + 1;
+                    stream = *(u32 **)(ctx + 0x69c);
+                    bitbuf = *++stream;
+                    *(u32 **)(ctx + 0x69c) = stream;
+                    code <<= 1;
+                    *(u32 *)(ctx + 0x6a0) = bitbuf;
+                    code = __rlwimi(code, bitbuf, 1, 31, 31);
+                    limit = *++maxcode;
+                    bitpos = 2;
+                    for (;;) {
+                        step = __rlwnm(bitbuf, bitpos, 31, 31);
+                        if (code <= limit)
+                            break;
+                        code <<= 1;
+                        length++;
+                        limit = *++maxcode;
+                        code += step;
+                        bitpos++;
+                    }
+                    *(s32 *)(ctx + 0x6a4) = bitpos;
+                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+                }
+            }
+        }
+
+        bits = val & 15;
+        run = val >> 4;
+        if (bits != 0) {
+            i += run;
+            remaining = 33 - bitpos;
+            bitbuf = *(u32 *)(ctx + 0x6a0);
+            extra = bits - remaining;
+            shift = bitpos - 1;
+            if (extra <= 0) {
+                *(s32 *)(ctx + 0x6a4) = bitpos + bits;
+                x = (bitbuf << shift) >> (32 - bits);
+            } else {
+                wp = *(u32 **)(ctx + 0x69c);
+                oldbits = bitbuf << shift;
+                bitbuf = *++wp;
+                *(u32 *)(ctx + 0x6a0) = bitbuf;
+                *(u32 **)(ctx + 0x69c) = wp;
+                *(s32 *)(ctx + 0x6a4) = extra + 1;
+                x = ((bitbuf >> remaining) + oldbits) >> (32 - bits);
+            }
+            if ((s32)__cntlzw(x) > 32 - bits)
+                x = (~0U << bits) + x + 1;
+            arg1[zigzag[i]] = (s16)x;
+        } else {
+            if (run != 15)
+                break;
+            i += 15;
+        }
+    }
 }
 
 void fn_8024338C(void *arg0, s16 *arg1)

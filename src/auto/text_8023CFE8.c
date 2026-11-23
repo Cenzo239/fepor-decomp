@@ -370,46 +370,41 @@ void fn_8023CFE8(void) {
     s32 out;
     s32 val;
     s32 n;
+    s32 n2;
     u8 v;
     s32 i;
 
     out = 0;
     val = 1;
-    goto outer_test;
-outer:
-    n = lbl_803688E4[val - 1];
-    v = val;
-    if (n == 0) {
-        goto next;
-    }
-    n = n;
-    i = (u32)n >> 3;
-    if (i == 0) {
-        goto rem;
-    }
-    do {
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-        lbl_803688E8[out++] = v;
-    } while (--i);
-rem:
-    n &= 7;
-    if (n == 0) {
-        goto next;
-    }
-    do {
-        lbl_803688E8[out++] = v;
-    } while (--n);
-next:
-    val++;
-outer_test:
-    if (val <= 16) {
-        goto outer;
+    while (1) {
+        n = lbl_803688E4[val - 1];
+        v = (u8)val;
+        n2 = n;
+        if (n2 != 0) {
+            i = (u32)n2 >> 3;
+            if (i != 0) {
+                do {
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                    lbl_803688E8[out++] = v;
+                } while (--i);
+            }
+            n2 &= 7;
+            if (n2 != 0) {
+                do {
+                    lbl_803688E8[out++] = v;
+                } while (--n2);
+            }
+        }
+        val += 1;
+        if (val > 16) {
+            break;
+        }
     }
     lbl_803688E8[out] = 0;
 }

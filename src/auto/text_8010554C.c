@@ -6697,15 +6697,15 @@ void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
 
     temp_r9 = *(u16 *)((char *)arg4 + 0xE);
     temp_r10 = *(u8 *)((char *)arg4 + 0x18);
+    zero = (s8)(temp_r9 ^ temp_r9);
     temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
     temp_r8[0] = arg1;
     temp_r8[1] = arg2;
     temp_r8[2] = 7;
     temp_r8[3] = arg3;
-    zero = (s8)(temp_r9 & ~temp_r9);
     temp_r8[0xA] = zero;
     *(s32 *)((char *)arg0 + 0x200) = *(s32 *)((char *)arg0 + 0x200) + 1;
-    temp_r8[4] = (s8)temp_r9;
+    temp_r8[4] = temp_r9;
     temp_r8[5] = temp_r10;
     temp_r8[6] = zero;
     temp_r8[7] = zero;

@@ -3906,20 +3906,20 @@ void *fn_800169A8(void *arg0, s16 arg1)
     return arg0;
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 2
 void Unit_WriteAll(s32 arg0) {
     extern u8 gUnits[];
     void Unit_Write(void *, s32);
-    u8 *unit;
-    s32 i;
-    s32 saved;
+    u8 *unit = gUnits;
+    s32 i = 0;
 
-    saved = arg0;
-    for (unit = gUnits, i = 0; i < 0x9F; i++, unit += 0x280) {
-        Unit_Write(unit, saved);
-    }
+    do {
+        Unit_Write(unit, arg0);
+        i += 1;
+        unit += 0x280;
+    } while (i < 0x9F);
 }
-#pragma global_optimizer on
+#pragma optimization_level 4
 s32 fn_80016A9C(s32 arg0) {
     s32 Unit_FindDisposLeader(s32);
     extern u32 gUnitLists[];

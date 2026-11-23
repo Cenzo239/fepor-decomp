@@ -62,21 +62,20 @@ extern u8 lbl_80367708;
 
 #pragma global_optimizer off
 
-#pragma opt_lifetimes off
+#pragma scheduling off
 s32 fn_800A02F4(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367707;
+    u8 t;
     s32 v;
-    s32 t;
-    s32 x;
 
+    t = lbl_80367707;
     v = 2;
-    t = (u8)lbl_80367707;
-    x = t ^ 1;
-    lbl_80367707 = x;
-    if ((u8)x != 0) {
+    t ^= 1;
+    lbl_80367707 = t;
+    if (t != 0) {
         v = 0;
     }
-    *(u8 *)((char *)arg2 + 0x39) = v;
+    *(u8 *)((char *)arg2 + 0x39) = (u8)v;
     return 0;
 }
-#pragma opt_lifetimes on
+#pragma scheduling on

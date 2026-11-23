@@ -190,6 +190,8 @@ void __CARDEraseCallback(s32 chan, s32 result);
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 s32 fn_8021D614(s32 chan, u32 *serial)
 {
     s32 fn_80217B18(s32, s32 *);
@@ -199,7 +201,6 @@ s32 fn_8021D614(s32 chan, u32 *serial)
     u32 check1;
     u32 check0;
     u32 *face;
-    int q;
 
     if (chan < 0 || chan >= 2) {
         return -0x80;
@@ -211,20 +212,23 @@ s32 fn_8021D614(s32 chan, u32 *serial)
     check1 = 0;
     check0 = 0;
     face = *(u32 **)(card + 0x80);
-    check1 ^= face[1];
-    q = (int)face + 8;
-    check0 ^= face[0];
-    check0 ^= face[2];
-    check1 ^= ((u32 *)q)[1];
-    q = (int)face + 16;
-    check0 ^= face[4];
-    check1 ^= ((u32 *)q)[1];
-    q = (int)face + 24;
-    check0 ^= face[6];
-    check1 ^= ((u32 *)q)[1];
+    {
+        u32 *q;
+        check1 ^= face[1];
+        check0 ^= face[0];
+        q = face + 2;
+        check0 ^= face[2];
+        check1 ^= q[1];
+        q = face + 4;
+        check0 ^= face[4];
+        check1 ^= q[1];
+        q = face + 6;
+        check0 ^= face[6];
+        check1 ^= q[1];
+    }
     serial[1] = check1;
     serial[0] = check0;
     return __CARDPutControlBlock((void *)card, 0);
 }
-
-#pragma dont_inline on
+#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset

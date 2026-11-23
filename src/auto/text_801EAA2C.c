@@ -873,19 +873,25 @@ void fn_801EBBB8(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_801EBE00(void *arg0) {
-    s32 fn_8003FCCC();
-    u8 fn_8005BA10();
-    s32 fn_80161FB8();
-    void fn_80162054();
+    void *Archive_Load(void);
+    u8 FileCache_IsReady(void);
+    s32 fn_80161FB8(void);
+    void fn_80162054(void);
+    void fn_801620AC(void *);
+    void Process_ClearFunc(void *);
+
     fn_801620AC(arg0);
-    if (fn_8005BA10() != 0) {
-        if (fn_80161FB8() == 0) {
-            return;
+    if (FileCache_IsReady() != 0) {
+        switch (fn_80161FB8()) {
+        case 0:
+            break;
+        default:
+            fn_80162054();
+            fn_801620AC(arg0);
+            *(s32 *)((char *)arg0 + 0x4C) = (s32)Archive_Load();
+            Process_ClearFunc(arg0);
+            break;
         }
-        fn_80162054();
-        fn_801620AC(arg0);
-        *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
-        fn_8000C188(arg0);
     }
 }
 
@@ -2453,11 +2459,12 @@ void fn_801EDF7C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801EDFCC(void) {
-    extern u8 gFxChannels[];
+    extern u8 gFxChannels[192];
     void fn_80146AF0(void);
-    void Fx_FadeIn(void *, s32);
-    void fn_8014876C(void *, s32, s32);
-    void *p = gFxChannels;
+    void Fx_FadeIn(u8 *, s32);
+    void fn_8014876C(u8 *, s32, s32);
+    u8 *p;
+    p = gFxChannels;
     fn_80146AF0();
     Fx_FadeIn(p, 0x3E8);
     fn_8014876C(p, 0x64, 0x3E8);

@@ -214,7 +214,7 @@ extern "C" void UnitInfo_DrawStatus(s32);
 #pragma scheduling off
 
 s32 fn_80036DE0(void *arg0, void *arg1) {
-    s32 index;
+    register s32 index;
     u32 value;
     u8 *table;
     s32 offset;
@@ -225,7 +225,7 @@ s32 fn_80036DE0(void *arg0, void *arg1) {
     index = 0;
     value = *(u32 *)((u8 *)arg1 + 0x188);
     obj = *(u8 **)((u8 *)arg0 + 0x188);
-    offset = (s32)(void *)index;
+    offset = index;
 
     goto check;
 
