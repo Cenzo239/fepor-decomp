@@ -8172,12 +8172,12 @@ s32 fn_800D75FC(void *arg0) {
     M2C_UNK String_Copy(M2C_UNK *);
     s32 fn_800E4454(s32, M2C_UNK *);
     M2C_UNK sp8;
-    s32 ret;
+    struct { s32 result; } holder;
 
     String_Copy(&sp8);
-    ret = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
+    holder.result = fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
     String_Destroy(&sp8, -1);
-    return ret;
+    return holder.result;
 }
 
 #pragma optimization_level 4
@@ -10456,7 +10456,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma optimization_level 3
-void fn_800DBAB8(f32 *arg0, void *arg1) {
+void fn_800DBAB8(void *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -10464,22 +10464,21 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     f32 y;
     f32 z;
     f32 x;
-    f32 *out = arg0;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * M2C_FIELD(arg1, f32 *, 0x58));
     fn_802029C4(mtx, vec, vec);
-    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
-    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
-    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
-    z = *(f32 *)((u8 *)arg1 + 0x68);
-    y = *(f32 *)((u8 *)arg1 + 0x64);
-    x = *(f32 *)((u8 *)arg1 + 0x60);
-    out[0] = x;
-    out[1] = y;
-    out[2] = z;
+    M2C_FIELD(arg1, f32 *, 0x60) = vec[0];
+    M2C_FIELD(arg1, f32 *, 0x64) = vec[1];
+    M2C_FIELD(arg1, f32 *, 0x68) = vec[2];
+    z = M2C_FIELD(arg1, f32 *, 0x68);
+    y = M2C_FIELD(arg1, f32 *, 0x64);
+    x = M2C_FIELD(arg1, f32 *, 0x60);
+    M2C_FIELD(arg0, f32 *, 0x0) = x;
+    M2C_FIELD(arg0, f32 *, 0x4) = y;
+    M2C_FIELD(arg0, f32 *, 0x8) = z;
 }
 #pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
@@ -19908,7 +19907,7 @@ void fn_800EB884(void)
     };
 
     extern struct CardWork gCardWork;
-    extern u8 gCardStrings[];
+    extern volatile u8 gCardStrings[];
 
     u8 fn_800EBF58(void);
     s32 fn_8021BF10(s32, void *, void *);
@@ -19922,7 +19921,7 @@ void fn_800EB884(void)
 
     u8 *fileInfo;
     u8 success;
-    u8 *s;
+    volatile u8 *s;
 
     s = gCardStrings;
     *(u8 *)0x80000000 = s[0x26F];
@@ -19936,7 +19935,7 @@ void fn_800EB884(void)
 
     fileInfo = (u8 *)&gCardWork + 0x10000 - 0x5FE4;
 
-    gCardWork.result = fn_8021BF10(0, gCardStrings + 0x70, fileInfo);
+    gCardWork.result = fn_8021BF10(0, (void *)(u8 *)(gCardStrings + 0x70), fileInfo);
 
     success = 0;
     if (gCardWork.result == 0) {
@@ -19946,12 +19945,12 @@ void fn_800EB884(void)
     }
 
     if (success != 0) {
-        gCardWork.buffer = fn_800C4638(0x26000, gCardStrings + 0x97, 0);
+        gCardWork.buffer = fn_800C4638(0x26000, (void *)(u8 *)(gCardStrings + 0x97), 0);
 
         fn_8021C84C(fileInfo, gCardWork.buffer, 0x26000, 0);
         fn_8021C02C(fileInfo);
 
-        fn_8021CDC4(gCardWork.chan, &gCardStrings[0x70]);
+        fn_8021CDC4(gCardWork.chan, (void *)(u8 *)&gCardStrings[0x70]);
 
         s = gCardStrings;
         *(u8 *)0x80000000 = s[0x276];
