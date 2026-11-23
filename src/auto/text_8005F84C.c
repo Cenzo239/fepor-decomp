@@ -3425,9 +3425,9 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2)
   {
     table = *((u16 **) (base + 4));
     offset = *((u16 *) (((u8 *) table) + index));
-    diff1 = ((s32) offset) - ((s32) lim);
-    diff2 = ((s32) lim) - ((s32) offset);
-    mask = (~(diff1 | diff2)) >> 31;
+    diff2 = ((s32) offset) - ((s32) lim);
+    diff1 = ((s32) lim) - ((s32) offset);
+    mask = (~(diff2 | diff1)) >> 31;
     entry = (u8 *) ((((s32) base) + ((s32) offset)) & (~mask));
     walk = entry;
     n = *((u16 *) (entry + 2));
@@ -3451,70 +3451,82 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2)
   return best;
 }
 #pragma global_optimizer reset
-s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
-    void **mid;
-    u8 *base;
-    u8 *entry;
-    u8 *walk;
-    u16 *table;
-    u16 offset;
-    s32 result;
-    s32 index;
-    s32 i;
-    s32 j;
-    s32 a;
-    s32 b;
-    s32 mask;
-    u16 lim;
-    u16 n;
-    u16 ctr;
-    u32 key;
-
-    if ((u32)arg0 == 0) {
-        base = NULL;
-    } else {
-        mid = *arg0;
-        if ((u32)mid != 0) {
-            base = (u8 *)*mid;
-        } else {
-            base = NULL;
+s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2)
+{
+  void **mid;
+  u16 ctr;
+  u8 *base;
+  u8 *entry;
+  u8 *walk;
+  u16 *table;
+  u16 offset;
+  s32 result;
+  s32 index;
+  s32 i;
+  s32 j;
+  s32 diff1;
+  s32 mask;
+  u16 lim;
+  u16 n;
+  u32 key;
+  if (((u32) arg0) == 0)
+  {
+    base = NULL;
+  }
+  else
+  {
+    mid = *arg0;
+    if (((u32) mid) != 0)
+    {
+      base = (u8 *) (*mid);
+    }
+    else
+    {
+      base = NULL;
+    }
+  }
+  if (((u32) base) == 0)
+  {
+    return -1;
+  }
+  n = *((u16 *) base);
+  ctr = arg2 & 0xFFFF;
+  lim = (u16) (0x10000 - 1);
+  key = ctr;
+  result = -1;
+  i = 0;
+  index = 0;
+  while (i < ((s32) n))
+  {
+    table = *((u16 **) (base + 4));
+    offset = *((u16 *) (((u8 *) table) + index));
+    i = (s32) base;
+    diff1 = ((s32) offset) - ((s32) lim);
+    mask = (~(diff1 | (((s32) lim) - ((s32) offset)))) >> 31;
+    entry = (u8 *) ((i + ((s32) offset)) & (~mask));
+    ctr = *((u16 *) (entry + 2));
+    walk = entry;
+    for (j = 0; j < ((s32) ctr); j++)
+    {
+      if ((*((u16 *) (walk + 4))) == key)
+      {
+        u16 v = *((u16 *) entry);
+        if (((s32) v) < arg1)
+        {
+          if ((result < 0) || (((s32) v) >= result))
+          {
+            result = v;
+          }
         }
-    }
-    if ((u32)base == 0) {
-        return -1;
+      }
+      walk += 2;
     }
 
-    n = *(u16 *)base;
-    lim = (u16)(0x10000 - 1);
-    key = arg2 & 0xFFFF;
-    result = -1;
-    i = 0;
-    index = 0;
+    index += 2;
+    i += 1;
+  }
 
-    while (i < (s32)n) {
-        table = *(u16 **)(base + 4);
-        offset = *(u16 *)((u8 *)table + index);
-        a = (s32)offset - (s32)lim;
-        b = (s32)lim - (s32)offset;
-        mask = ~(a | b) >> 31;
-        entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
-        ctr = *(u16 *)(entry + 2);
-        walk = entry;
-        for (j = 0; j < (s32)ctr; j++) {
-            if (*(u16 *)(walk + 4) == key) {
-                u16 v = *(u16 *)entry;
-                if ((s32)v < arg1) {
-                    if (result < 0 || (s32)v >= result) {
-                        result = v;
-                    }
-                }
-            }
-            walk += 2;
-        }
-        index += 2;
-        i += 1;
-    }
-    return result;
+  return result;
 }
 
 void *fn_80065634(void ***arg0, s32 arg1)
