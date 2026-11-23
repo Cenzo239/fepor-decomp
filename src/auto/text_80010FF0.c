@@ -112,38 +112,58 @@ s32 fn_80011010(s32 arg0) {
     return Text_FindFontIndex((u32 *)lbl_802AEE20, result);
 }
 #pragma global_optimizer on
-void fn_800110B8(void) {
- extern char lbl_80267DC8[];
- extern u32 lbl_80367160[2];
- extern void *lbl_80367168;
- s32 Heap_Alloc(u32);
- s32 fn_801053CC(s32);
- void fn_80105284(s32, const char *, s32);
- struct VTable { void *method[9]; };
- struct Object { struct VTable *vtable; u32 value; } *self;
- s32 object;
- object = Heap_Alloc(0x10);
- if (object) object = fn_801053CC(object);
- lbl_802AEE20[1] = object;
- fn_80105284(object,lbl_80267DC8,0);
- object = Heap_Alloc(0x10);
- if (object) object = fn_801053CC(object);
- lbl_802AEE20[2] = object;
- fn_80105284(object,lbl_80267DC8+0x12,0);
- object = Heap_Alloc(0x10);
- if (object) object = fn_801053CC(object);
- lbl_802AEE20[3] = object;
- fn_80105284(object,lbl_80267DC8+0x21,0);
- object = Heap_Alloc(0x10);
- if (object) object = fn_801053CC(object);
- lbl_802AEE20[4] = object;
- fn_80105284(object,lbl_80267DC8+0x33,0);
- self = (struct Object *)lbl_80367160;
- lbl_80367168 = self;
- if (!self->value) {
-     void *m = self->vtable->method[8];
-     fn_8006EEFC(&self->value, ((s32 (*)(void *))m)(self));
- }
+void fn_800110B8(void)
+{
+    extern char lbl_80267DC8[];
+    extern u32 lbl_80367160[2];
+    extern void *lbl_80367168;
+    s32 Heap_Alloc(u32);
+    s32 fn_801053CC(s32);
+    void fn_80105284(s32, const char *, s32);
+    void fn_8006EEFC(u32 *, s32);
+#pragma cplusplus on
+    struct Obj {
+        virtual void _0();
+        virtual void _1();
+        virtual void _2();
+        virtual void _3();
+        virtual void _4();
+        virtual void _5();
+        virtual s32 get();
+        u32 value;
+    };
+    Obj *self;
+    s32 object;
+
+    object = Heap_Alloc(0x10);
+    if (object)
+        object = fn_801053CC(object);
+    lbl_802AEE20[1] = object;
+    fn_80105284(object, lbl_80267DC8, 0);
+
+    object = Heap_Alloc(0x10);
+    if (object)
+        object = fn_801053CC(object);
+    lbl_802AEE20[2] = object;
+    fn_80105284(object, lbl_80267DC8 + 0x12, 0);
+
+    object = Heap_Alloc(0x10);
+    if (object)
+        object = fn_801053CC(object);
+    lbl_802AEE20[3] = object;
+    fn_80105284(object, lbl_80267DC8 + 0x21, 0);
+
+    object = Heap_Alloc(0x10);
+    if (object)
+        object = fn_801053CC(object);
+    lbl_802AEE20[4] = object;
+    fn_80105284(object, lbl_80267DC8 + 0x33, 0);
+
+    self = (Obj *)lbl_80367160;
+    lbl_80367168 = self;
+    if (!self->value)
+        fn_8006EEFC(&self->value, self->get());
+#pragma cplusplus reset
 }
 
 void fn_800111FC(void) {
