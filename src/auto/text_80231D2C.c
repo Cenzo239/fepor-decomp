@@ -7,7 +7,6 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
-extern f32 lbl_80367068;
 extern f64 lbl_8036BE20;
 extern f64 lbl_8036BE28;
 extern f64 lbl_8036BE30;
@@ -2146,63 +2145,73 @@ block_8:
     return 0;
 }
 
-f64 fn_80235B4C(f64 farg0) {
-    f64 z;
-    f64 sp8;
-    f64 f10;
-    f64 f2;
-    f64 f0;
-    f64 N;
-    f64 D;
-    f64 h;
-    f64 Nz;
-    f64 Dz;
-    f64 sp10;
-    s32 unksp14;
-    s32 temp_r4;
-    s32 temp_r3;
-    u32 chk;
+f64 fn_80235B4C(f64 x) {
+    extern f64 lbl_8036BE20;
+    extern f64 lbl_8036BE28;
+    extern f64 lbl_8036BE30;
+    extern f64 lbl_8036BE38;
+    extern f64 lbl_8036BE40;
+    extern f64 lbl_8036BE48;
+    extern f64 lbl_8036BE50;
+    extern f64 lbl_8036BE58;
+    extern f64 lbl_8036BE60;
+    extern f64 lbl_8036BE68;
+    extern f64 lbl_8036BE70;
+    extern f64 lbl_8036BE78;
+    extern f64 lbl_8036BE80;
+    extern f64 lbl_8036BE88;
+    extern f64 lbl_8036BE90;
+    extern f64 lbl_8036BE98;
+    extern f64 lbl_8036BEA0;
+    extern f32 lbl_80367068;
+    extern f64 fn_80238A9C(f64);
+    f64 y, z, h, p, q, r, s, w, df, c, sp8;
+    s32 hx, ix;
 
-    sp8 = farg0;
-    temp_r4 = *(s32 *)&sp8;
-    temp_r3 = temp_r4 & 0x7FFFFFFF;
-
-    if (temp_r3 >= 0x3FF00000) {
-        chk = (u32)temp_r3 - 0x3FF00000u;
-        if ((chk | *(u32 *)((u8 *)&sp8 + 4)) == 0) {
-            if (temp_r4 > 0) {
+    sp8 = x;
+    hx = *(s32 *)&sp8;
+    ix = hx & 0x7FFFFFFF;
+    if (ix >= 0x3FF00000) {
+        if (((ix - 0x3FF00000) | *(s32 *)((s8 *)&sp8 + 4)) == 0) {
+            if (hx > 0)
                 return lbl_8036BE20;
-            }
             return lbl_8036BE28;
         }
-        return (f64)lbl_80367068;
+        return *(f32 *)0x80367068;
     }
-    if (temp_r3 < 0x3FE00000) {
-        if (temp_r3 <= 0x3C600000) {
+    if (ix < 0x3FE00000) {
+        if (ix <= 0x3C600000)
             return lbl_8036BE30;
-        }
-        f10 = farg0 * farg0;
-        N = ((((lbl_8036BE68 * f10 + lbl_8036BE60) * f10 + lbl_8036BE58) * f10 + lbl_8036BE48) * f10 + lbl_8036BE70) * f10 + lbl_8036BE80;
-        D = ((((lbl_8036BE90 * f10 + lbl_8036BE88) * f10 + lbl_8036BE40) * f10 + lbl_8036BE50) * f10 + lbl_8036BE90);
-        f2 = f10 * N / D;
-        f0 = lbl_8036BE38 - farg0 * f2;
-        f0 = farg0 - f0;
-        return lbl_8036BE30 - f0;
+        y = x * x;
+        p = ((((lbl_8036BE68 * y + lbl_8036BE60) * y + lbl_8036BE58) * y + lbl_8036BE50) * y + lbl_8036BE48) * y + lbl_8036BE40;
+        q = (((lbl_8036BE90 * y + lbl_8036BE88) * y + lbl_8036BE80) * y + lbl_8036BE78) * y + lbl_8036BE70;
+        r = (y * p) / q;
+        s = lbl_8036BE38 - (x * r);
+        return lbl_8036BE30 - (x - s);
     }
-    if (temp_r4 < 0) {
-        z = lbl_8036BE98 * (lbl_8036BE70 + farg0);
-        h = fn_80238A9C(z, lbl_8036BE98);
-        Nz = ((((lbl_8036BE68 * z + lbl_8036BE60) * z + lbl_8036BE58) * z + lbl_8036BE48) * z + lbl_8036BE70) * z + lbl_8036BE80;
-        Dz = ((((lbl_8036BE90 * z + lbl_8036BE88) * z + lbl_8036BE40) * z + lbl_8036BE50) * z + lbl_8036BE90);
-        return -((lbl_8036BEA0 * (h + (Nz / Dz * h - lbl_8036BE38))) - lbl_8036BE28);
+    if (hx < 0) {
+        z = lbl_8036BE98 * (lbl_8036BE70 + x);
+        h = fn_80238A9C(z);
+        p = ((((lbl_8036BE68 * z + lbl_8036BE60) * z + lbl_8036BE58) * z + lbl_8036BE50) * z + lbl_8036BE48) * z + lbl_8036BE40;
+        q = (((lbl_8036BE90 * z + lbl_8036BE88) * z + lbl_8036BE80) * z + lbl_8036BE78) * z + lbl_8036BE70;
+        r = (z * p) / q;
+        w = (r * h) - lbl_8036BE38;
+        return lbl_8036BE28 - (lbl_8036BEA0 * (h + w));
     }
-    z = lbl_8036BE98 * (lbl_8036BE70 - farg0);
-    h = fn_80238A9C(z, lbl_8036BE98);
-    sp10 = h;
-    unksp14 = 0;
-    Nz = ((((lbl_8036BE68 * z + lbl_8036BE60) * z + lbl_8036BE58) * z + lbl_8036BE48) * z + lbl_8036BE70) * z + lbl_8036BE80;
-    Dz = ((((lbl_8036BE90 * z + lbl_8036BE88) * z + lbl_8036BE40) * z + lbl_8036BE50) * z + lbl_8036BE90);
-    return lbl_8036BEA0 * (sp10 + (Nz / Dz * h + (-((sp10 * sp10) - z) / (h + sp10))));
+    z = lbl_8036BE98 * (lbl_8036BE70 - x);
+    h = fn_80238A9C(z);
+    df = h;
+    p = lbl_8036BE68 * z + lbl_8036BE60;
+    *(s32 *)((s8 *)&df + 4) = 0;
+    p = (p * z + lbl_8036BE58) * z + lbl_8036BE50;
+    c = z - df * df;
+    q = lbl_8036BE90 * z + lbl_8036BE88;
+    p = (p * z + lbl_8036BE48) * z + lbl_8036BE40;
+    q = ((q * z + lbl_8036BE80) * z + lbl_8036BE78) * z + lbl_8036BE70;
+    r = (z * p) / q;
+    s = c / (h + df);
+    w = (r * h) + s;
+    return lbl_8036BEA0 * (df + w);
 }
 
 /* IEEE754 double remainder: return x - n*y for integer n, same sign as x. */
