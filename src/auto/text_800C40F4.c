@@ -29518,20 +29518,10 @@ void fn_800227F8(void *, void *);
 void Map_SelectRangeBuffer(void *, s32);
 u8 Status_Test(void *, s32);
 extern u8 gBattleMap[];
-u32 flags; s32 y; s32 x; s32 t14; u8 *map; void *obj; s32 t15;
+u32 flags; s32 y; s32 x; u8 *map; void *obj;
 x=arg0; y=arg1; obj=arg2; flags=arg4; map=gBattleMap;
 Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
-if (obj != NULL) {
-    t14 = Status_Test((u8*)obj+0x1C,0x14) != 0;
-} else {
-    t14 = 1;
-}
-if (obj != NULL) {
-    t15 = Status_Test((u8*)obj+0x1C,0x15) != 0;
-} else {
-    t15 = 0;
-}
-Map_FloodMoveRange(map,x,y,flags,t14,t15);
+Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
