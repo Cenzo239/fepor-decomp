@@ -544,20 +544,18 @@ s32 fn_8014DC04(void *arg0) {
 }
 
 void fn_8014DA88(void *arg0, s8 arg1) {
-    s32 i;
+    u8 *base;
     s32 offset;
-    u8 *entry;
-    u32 quot;
+    s32 i;
 
+    base = (u8 *)arg0;
     i = fn_8014DC04(arg0);
-    offset = i * 8;
-    entry = (u8 *)arg0 + offset;
-    ((u8 *)arg0)[offset] = gBattleState[0x10];
-    entry[1] = arg1;
-    *(s16 *)(entry + 2) = *(s16 *)(gBattleState + 0x12);
-    quot = (u32)((s64)*(s64 *)(gBattleState + 0x58) /
-                 (u32)(*(u32 *)0x800000F8 >> 2));
-    *(u32 *)((u8 *)arg0 + offset + 4) = quot;
+    offset = i << 3;
+    base[offset] = gBattleState[0x10];
+    base[offset + 1] = arg1;
+    *(s16 *)&base[offset + 2] = *(s16 *)(gBattleState + 0x12);
+    *(u32 *)&base[offset + 4] =
+        (u32)(*(s64 *)(gBattleState + 0x58) / (*(u32 *)0x800000F8 >> 2));
 }
 
 void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {

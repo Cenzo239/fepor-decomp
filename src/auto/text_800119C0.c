@@ -3912,9 +3912,11 @@ void Unit_WriteAll(s32 arg0) {
     void Unit_Write(void *, s32);
     u8 *unit;
     s32 i;
+    s32 saved;
 
+    saved = arg0;
     for (unit = gUnits, i = 0; i < 0x9F; i++, unit += 0x280) {
-        Unit_Write(unit, arg0);
+        Unit_Write(unit, saved);
     }
 }
 #pragma global_optimizer on

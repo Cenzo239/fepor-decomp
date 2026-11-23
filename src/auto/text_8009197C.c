@@ -246,11 +246,13 @@ s8 Unit_FindItemSlot(void* arg0, void* arg1) {
 
 #pragma global_optimizer off
 u8 Unit_CanUseItem(s32 arg0, void *arg1) {
- u8 fn_800940B0(s32, void *);
- u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
- if (flags & 5ULL) return fn_800940B0(arg0, arg1) != 0;
- if (flags & 0x18ULL) return fn_800940B0(arg0, arg1);
- return (u8)((flags & 0x18ULL) >> 32);
+    u8 fn_800940B0(s32, void *);
+    u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+    if (flags & 5ULL)
+        return fn_800940B0(arg0, arg1) != 0;
+    if (flags & 0x18ULL)
+        return fn_800940B0(arg0, arg1);
+    return (u8)(((flags & 5ULL) >> 32) ^ ((5ULL & 0ULL) >> 32));
 }
 #pragma global_optimizer reset
 /* If the item's _UFX resource allows the current game state, invoke it. */

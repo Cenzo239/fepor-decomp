@@ -2329,13 +2329,13 @@ void fn_801CFA44(void *arg0)
     s32 zero;
 
     zero = 0;
-    i = zero & zero;
+    i = zero ^ zero;
     ptr = (u8 *)arg0;
 
     *(s32 *)(ptr + 0x8) = zero;
 
     do {
-        *(u8 *)(ptr + 0x28) = zero;
+        *(u8 *)(ptr + 0x28) = (u8)zero;
 
         if (*(void **)(ptr + 0x2C) != 0) {
             Process_Unlink(*(void **)(ptr + 0x2C));

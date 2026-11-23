@@ -266,80 +266,70 @@ extern s32 lbl_8033E578[];
 
 void fn_8026649C(s32 arg0, s32 arg1)
 {
-    extern u8 lbl_803669A0[];
-    extern u32 OSGetTick(void);
-    extern s32 fn_80265544(s32 channel, void *arg1, void *callback);
-    extern s32 fn_80266D70(s32 channel, s32 arg1, u32 ticks);
-    extern s32 fn_802667D4(s32 channel, void *input, void *callback,
-                           void *outputCallback);
-    extern void fn_802665F8(s32 channel, s32 result);
-
-    u8 *entry;
-    u8 *queue;
-    u32 elapsed;
-    s32 result;
-
-    entry = lbl_803669A0 + (arg0 << 8);
-    queue = entry + 0x40;
-    result = arg1;
-
-    if (result == 0) {
-        elapsed = OSGetTick() - *(u32 *)(queue + 0x24);
-
-        if ((*(u32 *)0x800000F8 >> 2) * 10 <= elapsed) {
-            result = 3;
-        } else {
-            u8 status;
-
-            status = **(u8 **)(queue + 0x10);
-
-            if ((status & 0x32) != 0) {
-                result = 3;
-            } else if (status != 8) {
-                result = fn_80265544(arg0, *(void **)(queue + 0x10), fn_8026649C);
-            } else {
-                u32 ticks;
-                u32 frequency;
-
-                frequency = *(u32 *)0x800000F8 >> 2;
-                ticks = (frequency / 125) & ~7;
-                {
-                    extern s64 fn_80266D70(s32, s32, s32, u32);
-                    fn_80266D70(arg0, *(s32 *)(queue + 0x10), 0, ticks);
-                }
-
-                result = fn_802667D4(
-                    arg0,
-                    queue + 0x18,
-                    *(void **)(queue + 0x10),
-                    fn_802665F8
-                );
-
-                frequency = *(u32 *)0x800000F8 >> 2;
-                ticks = ((frequency / 125000) * 60) >> 3;
-                fn_80266D70(arg0, 0, ticks);
-            }
-        }
+  extern u8 lbl_803669A0[];
+  extern u32 OSGetTick(void);
+  extern s32 fn_80265544(s32 channel, void *arg1, void *callback);
+  extern s32 fn_80266D70(s32 channel, s32 arg1, u32 ticks);
+  extern s32 fn_802667D4(s32 channel, void *input, void *callback, void *outputCallback);
+  extern void fn_802665F8(s32 channel, s32 result);
+  u8 *new_var;
+  u8 *entry;
+  u8 *queue;
+  u32 elapsed;
+  s32 result;
+  entry = lbl_803669A0 + (arg0 << 8);
+  queue = entry + 0x40;
+  result = arg1;
+  if (result == 0)
+  {
+    elapsed = OSGetTick() - (*((u32 *) (queue + 0x24)));
+    if ((((*((u32 *) 0x800000F8)) >> 2) * 10) <= elapsed)
+    {
+      result = 3;
     }
-
-    if (result != 0) {
-        void (*callback)(s32, s32);
-        s32 cbArg0;
-        s32 cbResult;
-
-        *(u32 *)(queue + 0x2C) = 0;
-        *(u32 *)(queue + 0x28) = 0;
-
-        callback = *(void (**)(s32, s32))(queue + 0x14);
-        if (callback != 0) {
-            *(u32 *)(queue + 0x14) = 0;
-            cbArg0 = arg0;
-            cbResult = result;
-            callback(cbArg0, cbResult);
+    else
+    {
+      u8 status;
+      status = *(*((u8 **) (queue + 0x10)));
+      if ((status & 0x32) != 0)
+      {
+        result = 3;
+      }
+      else
+        if (status != 8)
+      {
+        result = fn_80265544(arg0, *((void **) (queue + 0x10)), fn_8026649C);
+      }
+      else
+      {
+        u32 ticks;
+        u32 frequency;
+        frequency = (*((u32 *) 0x800000F8)) >> 2;
+        ticks = (frequency / 125) & (~7);
+        {
+          extern s64 fn_80266D70(s32, s32, s32, u32);
+          fn_80266D70(arg0, *((s32 *) (queue + 0x10)), 0, ticks);
         }
+        result = fn_802667D4(arg0, queue + 0x18, *((void **) (queue + 0x10)), fn_802665F8);
+        frequency = (*((u32 *) 0x800000F8)) >> 2;
+        ticks = ((frequency / 125000) * 60) >> 3;
+        fn_80266D70(arg0, 0, ticks);
+      }
     }
-
-    *(s32 *)(entry + 0x20) = result;
+  }
+  if (result != 0)
+  {
+    void (*callback)(s32, s32);
+    *((u32 *) (queue + 0x2C)) = 0;
+    *((u32 *) (queue + 0x28)) = 0;
+    callback = *((void (**)(s32, s32)) ((new_var = queue) + 0x14));
+    if (callback != 0)
+    {
+      *((u32 *) (new_var + 0x14)) = 0;
+      callback(arg0, result);
+    }
+  }
+  *((s32 *) (entry + 0x20)) = result;
 }
 
 #pragma global_optimizer off

@@ -600,8 +600,8 @@ void fn_800A46E0(void) {
 s32 fn_800A46F4(s32 arg0) {
     s32 fn_8020CC28(void *, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
-    s32 temp_r6_2;
     u32 temp_r4;
+    s32 temp_r6_2;
     u32 var_r29;
     u32 var_r28;
     void *temp_r6;
@@ -1323,11 +1323,11 @@ void fn_800A5DC4(void *arg0)
     void fn_800A4FF8(void);
     void fn_8009E638(void);
     void fn_801C9714(void);
-    void Heap_FreeRaw(void *);
+    void fn_800C426C(void *);
     void *fn_8006E658(void);
     void fn_80221824(u8, void *, s32, void *);
-    extern u8 gBattleState[];
-    extern s32 gGameFlags;
+    extern u8 lbl_80330708[];
+    extern s32 lbl_803682A4;
     extern f32 lbl_80369A68;
     extern f32 lbl_80369A80;
     extern f32 lbl_80369A84;
@@ -1359,13 +1359,13 @@ void fn_800A5DC4(void *arg0)
     fn_800A4FF8();
     fn_8009E638();
     fn_801C9714();
-    Heap_FreeRaw(*(void **)((u8 *)arg0 + 0x5C));
-    if (gGameFlags & 0x40) {
+    fn_800C426C(*(void **)((u8 *)arg0 + 0x5C));
+    if (lbl_803682A4 & 0x40) {
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
         var_r7 = 0;
-        temp_r0 = (s32)((f32)(s8)gBattleState[0xA1] * lbl_80369A68);
-        temp_r8 = (s8)gBattleState[0xA1] - (u16)temp_r0;
+        temp_r0 = (s32)((f32)(s8)lbl_80330708[0xA1] * lbl_80369A68);
+        temp_r8 = (s8)lbl_80330708[0xA1] - (u16)temp_r0;
         count = temp_r8 % 4;
         for (var_ctr = 2; var_ctr != 0; var_ctr--) {
             if (var_r7 < count) {

@@ -346,8 +346,8 @@ BOOL fn_8020B940(void *addr, u32 length, u32 offset, void *callback) {
 
     lbl_80368570 = 1;
     StopAtNextInt_80368530 = 0;
-    base = (u8 *)CommandList_80339E70;
     Callback_80368538 = callback;
+    base = (u8 *)CommandList_80339E70;
     *(s64 *)&lbl_80368568 = __OSGetSystemTime();
 
     __DIRegs[2] = 0xA8000000;
@@ -654,7 +654,7 @@ BOOL fn_8020C1A4(s32 arg0, u32 arg1, void *callback) {
     Callback_80368538 = callback;
     StopAtNextInt_80368530 = 0;
 
-    if (arg0 != 0) {
+    if (arg0) {
         cmd = 0x10000;
         cmd |= 0xE4000000;
         __DIRegs[2] = arg1 | cmd;

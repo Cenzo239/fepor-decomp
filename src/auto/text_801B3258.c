@@ -1458,68 +1458,122 @@ void fn_801B6784(void *arg0) {
 
 #pragma global_optimizer off
 #pragma opt_common_subs off
-void fn_801B67D0(u8 *out) {
-extern u8 gBattle[];
-extern u8 lbl_8027C248[];
-void Process_Goto(void *,s32);
-u8 fn_80028640(void);
-void fn_8005C8B4(void *);
-void fn_800340E4(void *);
-void fn_801B6DAC(u8 *);
-u8 *unit;
-u8 *p;
-u8 *arg0=out;
-s32 count;
-s16 saved;
-u32 off;
-u8 type;
-unit=Battle_FindActiveSideUnit();
-found:
-*(u8 **)(arg0+0x44)=unit;
-count=0;
-p=gBattle+0x8A0;
-saved=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done1; case 0x29: count++; break; }
-*(s16 *)p+=1;
-}
-done1:
-*(s16 *)p=saved;
-arg0[0x4c]=count;
-{ s32 value=0; s16 saved2=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done2; case 0x27: value=(s8)*(s16 *)(p+off+6); break; }
-*(s16 *)p+=1;
-}
-done2:
-*(s16 *)p=saved2;
-*(s16 *)(arg0+0x48)=value;
-}
-count=0;
-saved=*(s16 *)p;
-fn_800340E4(p);
-for(;;) {
-off=*(s16 *)p*4;
-switch(*(u8 *)(p+off+4)) { case 0: goto done3; case 0x28: count=(s8)*(s16 *)(p+off+6); break; }
-*(s16 *)p+=1;
-}
-done3:
-*(s16 *)p=saved;
-*(s16 *)(arg0+0x4a)=count;
-fn_801B6DAC(arg0+0x4e);
-if (*(s16 *)(arg0+0x4a)==0) Process_Goto(arg0,0x63);
-else {
-*(s16 *)(arg0+0x3e)=*(s16 *)(arg0+0x48);
-*(s16 *)(arg0+0x3c)=0;
-arg0[0x39]=0;
-*(s32 *)(arg0+0x40)=0;
-if (fn_80028640()) arg0[0x3a]=1; else arg0[0x3a]=0;
-fn_8005C8B4(lbl_8027C248+0x114);
-}
+void fn_801B67D0(u8 *out)
+{
+  extern u8 gBattle[];
+  extern u8 lbl_8027C248[];
+  void Process_Goto(void *, s32);
+  u8 fn_80028640(void);
+  void fn_8005C8B4(void *);
+  void fn_800340E4(void *);
+  void fn_801B6DAC(u8 *);
+  u8 *unit;
+  u8 *p;
+  u8 *arg0 = out;
+  s32 count;
+  s16 saved;
+  u32 off;
+  u8 type;
+  unit = Battle_FindActiveSideUnit();
+  found:
+  *((u8 **) (out + 0x44)) = unit;
+
+  count = 0;
+  p = gBattle + 0x8A0;
+  saved = *((s16 *) p);
+  fn_800340E4(p);
+  for (;;)
+  {
+    off = (*((s16 *) p)) * 4;
+    switch (*((u8 *) ((p + off) + 4)))
+    {
+      case 0:
+        goto done1;
+
+      case 0x29:
+        count++;
+        break;
+
+    }
+
+    *((s16 *) p) += 1;
+  }
+
+  done1:
+  *((s16 *) p) = saved;
+
+  arg0[0x4c] = count;
+  {
+    s32 value = 0;
+    s16 saved2 = *((s16 *) p);
+    fn_800340E4(p);
+    for (;;)
+    {
+      off = (*((s16 *) p)) * 4;
+      switch (*((u8 *) ((p + off) + 4)))
+      {
+        case 0:
+          goto done2;
+
+        case 0x27:
+          value = (s8) (*((s16 *) ((p + off) + 6)));
+          break;
+
+      }
+
+      *((s16 *) p) += 1;
+    }
+
+    done2:
+    *((s16 *) p) = saved2;
+
+    *((s16 *) (arg0 + 0x48)) = value;
+  }
+  count = 0;
+  saved = *((s16 *) p);
+  fn_800340E4(p);
+  for (;;)
+  {
+    off = (*((s16 *) p)) * 4;
+    switch (*((u8 *) ((p + off) + 4)))
+    {
+      case 0:
+        goto done3;
+
+      case 0x28:
+        count = (s8) (*((s16 *) ((p + off) + 6)));
+        break;
+
+    }
+
+    *((s16 *) p) += 1;
+  }
+
+  done3:
+  *((s16 *) p) = saved;
+
+  *((s16 *) (arg0 + 0x4a)) = count;
+  fn_801B6DAC(arg0 + 0x4e);
+  if ((*((s16 *) (arg0 + 0x4a))) == 0)
+  {
+    Process_Goto(out, 0x63);
+  }
+  else
+  {
+    *((s16 *) (out + 0x3e)) = *((s16 *) (out + 0x48));
+    *((s16 *) (out + 0x3c)) = 0;
+    out[0x39] = 0;
+    *((s32 *) (out + 0x40)) = 0;
+    if (fn_80028640())
+    {
+      out[0x3a] = 1;
+    }
+    else
+    {
+      out[0x3a] = 0;
+    }
+    fn_8005C8B4(lbl_8027C248 + 0x114);
+  }
 }
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
@@ -2623,22 +2677,21 @@ void fn_801B88D4(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801B893C(void *arg0) {
-    void Process_ClearFunc(void);
-    void Ui_PlaySeCue(void *, s32);
-    s32 AchieveList_GetTotalGold(void *);
-    s32 AchieveList_SumBonuses(void *);
+    void fn_8000C188(void);
+    void fn_801475FC(void *, s32);
+    s32 fn_801B767C(void *);
+    s32 fn_801B7734(void *);
     extern u8 lbl_8027C5E8[];
-    extern void *gPadInput;
+    extern void *lbl_80367240;
     extern s32 lbl_80368258;
     extern s8 lbl_8036825C;
 
     void *pad;
     void *st;
     void *data;
-    s32 state;
     s32 btn;
 
-    pad = gPadInput;
+    pad = lbl_80367240;
     st = *(void **)((u8 *)arg0 + 0x30);
     btn = *(s32 *)((u8 *)pad + 4);
     {
@@ -2651,8 +2704,7 @@ void fn_801B893C(void *arg0) {
         lbl_80368258 = (s32)pad;
         lbl_8036825C = 1;
     }
-    state = *(s32 *)st;
-    switch (state) {
+    switch (*(s32 *)st) {
     case 0:
         *(s32 *)st = 1;
         *(s32 *)((u8 *)st + 4) = 0;
@@ -2682,13 +2734,13 @@ void fn_801B893C(void *arg0) {
             if (i < *(s32 *)((u8 *)data + 0x224)) {
                 goto loop_body;
             }
-            *(s32 *)((u8 *)st + 0x24) = AchieveList_SumBonuses(data);
-            *(s32 *)((u8 *)st + 0x28) = AchieveList_GetTotalGold(data);
+            *(s32 *)((u8 *)st + 0x24) = fn_801B7734(data);
+            *(s32 *)((u8 *)st + 0x28) = fn_801B767C(data);
             *(s32 *)st = 6;
             break;
         }
         {
-            s32 idx = state - 1;
+            s32 idx = *(s32 *)st - 1;
             void *slot = (u8 *)st + (idx * 4);
             void *src = (u8 *)data + (idx * 4);
             s32 cur = *(s32 *)((u8 *)slot + 0x10);
@@ -2709,15 +2761,15 @@ void fn_801B893C(void *arg0) {
             }
             *(s32 *)((u8 *)slot + 0x10) = cur + 7;
             *(s32 *)((u8 *)st + 0x24) = *(s32 *)((u8 *)st + 0x24) + 7;
-            if (*(s32 *)((u8 *)st + 0x24) > AchieveList_SumBonuses(data)) {
-                *(s32 *)((u8 *)st + 0x24) = AchieveList_SumBonuses(data);
+            if (*(s32 *)((u8 *)st + 0x24) > fn_801B7734(data)) {
+                *(s32 *)((u8 *)st + 0x24) = fn_801B7734(data);
             }
             *(s32 *)((u8 *)st + 0x28) = *(s32 *)((u8 *)st + 0x28) + 7;
-            if (*(s32 *)((u8 *)st + 0x28) > AchieveList_GetTotalGold(data)) {
-                *(s32 *)((u8 *)st + 0x28) = AchieveList_GetTotalGold(data);
+            if (*(s32 *)((u8 *)st + 0x28) > fn_801B767C(data)) {
+                *(s32 *)((u8 *)st + 0x28) = fn_801B767C(data);
             }
             if (lbl_80368258 == 0) {
-                Ui_PlaySeCue(lbl_8027C5E8 + 0x58, 0x64);
+                fn_801475FC(lbl_8027C5E8 + 0x58, 0x64);
             }
             {
                 s32 t = lbl_80368258 + 1;
@@ -2728,7 +2780,7 @@ void fn_801B893C(void *arg0) {
         break;
     case 6:
         if ((btn & 0x100) != 0 || (btn & 0x200) != 0) {
-            Process_ClearFunc();
+            fn_8000C188();
         }
         break;
     }
@@ -4887,15 +4939,15 @@ extern "C" void fn_801BBDA0(void *arg0) {
 #pragma global_optimizer off
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
-    s16 Unit_GetGoldCost(s32, s32, u8 *);
-    extern s32 gBattleState[];
+    s16 fn_8017D604(s32, s32, u8 *);
+    extern u8 lbl_80330708[];
     s32 t;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    t = gBattleState[7];
-    return (Unit_GetGoldCost(arg0, 1, (u8 *)gBattleState) <= t) ? 1 : 0;
+    t = *(s32 *)(lbl_80330708 + 0x1C);
+    return (fn_8017D604(arg0, 1, lbl_80330708) <= t) ? 1 : 0;
 }
 #pragma global_optimizer reset
 
@@ -6387,7 +6439,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     s16 x1;
     s16 x0;
     void *vt92208;
-    void *tmp;
+    u8 *tmp;
     f32 one;
     s16 y1;
 
@@ -6401,7 +6453,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     vt92208 = lbl_80292208;
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = zero;
-    tmp = self;
+    tmp = (u8 *)self;
     one = lbl_8036B2D8;
     *(void **)self = vt92230;
     *(s16 *)((u8 *)self + 8) = neg1;
@@ -6428,7 +6480,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x34) = zero;
     *(s32 *)((u8 *)self + 0x38) = zero;
     *(void **)self = vt92208;
-    fn_80142060((u8 *)tmp + 0x3C);
+    fn_80142060(tmp + 0x3C);
     *(void **)self = gUiUnitPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
@@ -6445,8 +6497,8 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(void **)((u8 *)self + 0x7C) = gEmptyVtbl;
     {
         Sub *sub;
-        f32 f1;
         f32 f0;
+        f32 f1;
         f1 = lbl_8036B2D8;
         sub = (Sub *)((u8 *)self + 0x7C);
         *(s32 *)((u8 *)self + 0x80) = 0;
@@ -6468,8 +6520,8 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(void **)((u8 *)self + 0xA4) = gEmptyVtbl;
     {
         Sub *sub;
-        f32 f1;
         f32 f0;
+        f32 f1;
         f1 = lbl_8036B2D8;
         sub = (Sub *)((u8 *)self + 0xA4);
         *(s32 *)((u8 *)self + 0xA8) = 0;
@@ -7573,19 +7625,26 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern f32 lbl_8036B318;
     extern f32 lbl_8036B31C;
     struct Work {
-        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
-        virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
-        virtual void v6() = 0; virtual void v7() = 0; virtual void v8() = 0;
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
     };
-    struct Sub { virtual void v0() = 0; virtual void v1() = 0; };
-    u32 pad;
+    struct Sub {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+    };
     s32 z = 0;
     s32 temp_r11;
     s32 temp_r10;
     void *self;
     f32 one = lbl_8036B318;
 
-    pad = 0;
     self = arg0;
     *(void **)((u8 *)self + 0x0) = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 0x4) = z;
@@ -7893,23 +7952,23 @@ void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(s16 *)((u8 *)obj + 0x3A) = v;
 }
 void fn_801C1E0C(void *arg0) {
-    void Prim2D_SetCornerColors(void *, void *, void *, void *);
-    void Prim2D_EmitQuad(void);
-    void Prim2D_SetColor(s32, s32, s32, s32);
-    void Prim2D_SetRect(f32, f32, f32, f32);
-    void Prim2D_EndPrim(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetColorByte(u8);
-    void Prim2D_AddZ(f32);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
-    void *Msg_Expand(void *);
+    void fn_800072B0(void *, void *, void *, void *);
+    void fn_800075D8(void);
+    void fn_800076AC(s32, s32, s32, s32);
+    void fn_800077D8(f32, f32, f32, f32);
+    void fn_80007884(void);
+    void fn_80007898(s32);
+    void fn_80009B8C(u8);
+    void fn_80009C0C(f32);
+    void fn_80009D74(f32, f32, f32, f32);
+    void fn_8000A174(s32, s32);
+    void fn_8000A248(void);
+    void fn_8000A258(void);
+    void *fn_8000E0E4(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 fn_80010B78(void *, s32, f32);
     void **fn_8006EDD8(void *, s32);
-    extern void *gUiAtlas;
+    extern void *lbl_803674F4;
     extern u32 lbl_8036B320;
     extern u32 lbl_8036B324;
     extern f32 lbl_8036B338;
@@ -7937,45 +7996,45 @@ void fn_801C1E0C(void *arg0) {
     f32 tw;
 
     self = arg0;
-    mgr = gUiAtlas;
-    Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036B338, lbl_8036B338, lbl_8036B33C, lbl_8036B340);
-    Prim2D_SetColorByte(*(u8 *)((u8 *)self + 0x32));
-    Prim2D_PrepareTex();
+    mgr = lbl_803674F4;
+    fn_8000A258();
+    fn_80009D74(lbl_8036B338, lbl_8036B338, lbl_8036B33C, lbl_8036B340);
+    fn_80009B8C(*(u8 *)((u8 *)self + 0x32));
+    fn_8000A248();
     pair = (u16 *)*fn_8006EDD8(mgr, 0x1F);
     h = pair[1];
     h4 = (u16)(pair[0] - 4);
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x10);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)*(s16 *)((u8 *)self + 0x3C), (f32)*(s16 *)((u8 *)self + 0x3E), (f32)h, (f32)h4);
-    Prim2D_SetColor(0, 0, 0, 0xA0);
-    Prim2D_EndPrim();
-    Prim2D_AddPrim(3);
-    Prim2D_SetRect((f32)(*(s16 *)((u8 *)self + 0x3C) + h), (f32)*(s16 *)((u8 *)self + 0x3E), lbl_8036B344, (f32)h4);
-    Prim2D_EmitQuad();
+    fn_8000A258();
+    fn_8000A174(0, 0x10);
+    fn_8000A248();
+    fn_80007898(1);
+    fn_800077D8((f32)*(s16 *)((u8 *)self + 0x3C), (f32)*(s16 *)((u8 *)self + 0x3E), (f32)h, (f32)h4);
+    fn_800076AC(0, 0, 0, 0xA0);
+    fn_80007884();
+    fn_80007898(3);
+    fn_800077D8((f32)(*(s16 *)((u8 *)self + 0x3C) + h), (f32)*(s16 *)((u8 *)self + 0x3E), lbl_8036B344, (f32)h4);
+    fn_800075D8();
     sp8 = lbl_8036C50C;
     spC = lbl_8036B324;
     sp10 = lbl_8036C508;
     sp14 = lbl_8036B320;
-    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
-    Prim2D_EndPrim();
-    Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B348);
-    Prim2D_PrepareTex();
-    textW = Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x44)), -1, lbl_8036B340);
+    fn_800072B0(&sp14, &sp10, &spC, &sp8);
+    fn_80007884();
+    fn_8000A258();
+    fn_80009C0C(lbl_8036B348);
+    fn_8000A248();
+    textW = fn_80010B78(fn_8000E0E4(*(void **)((u8 *)self + 0x44)), -1, lbl_8036B340);
     tw = (f32)textW;
     x = (s32)((f32)(*(s16 *)((u8 *)self + 0x3C) + 0x4E) - lbl_8036B34C * tw);
     y = *(s16 *)((u8 *)self + 0x3E);
-    Prim2D_Begin();
-    Prim2D_SetTex(0, 0x13);
-    Prim2D_PrepareTex();
-    str = Msg_Expand(*(void **)((u8 *)self + 0x44));
+    fn_8000A258();
+    fn_8000A174(0, 0x13);
+    fn_8000A248();
+    str = fn_8000E0E4(*(void **)((u8 *)self + 0x44));
     fn_8001003C(x, y, 0xD, 0, 0, str, lbl_8036B340, lbl_8036B338);
-    Prim2D_Begin();
-    Prim2D_SetColorByte(0xFF);
-    Prim2D_PrepareTex();
+    fn_8000A258();
+    fn_80009B8C(0xFF);
+    fn_8000A248();
 }
 
 void fn_801C2084(void *arg0)
@@ -9868,10 +9927,11 @@ void fn_801C6978(u32 arg0) {
     f32 sp10;
     f32 spC;
     f32 sp8;
-    f32 t;
+    register f32 t;
     void *p;
     u8 *base;
     u8 *entry;
+    u8 *entry2;
     s32 i;
     u8 *walk;
     s16 max;
@@ -9924,11 +9984,11 @@ void fn_801C6978(u32 arg0) {
                 walk = base;
                 for (; i < 0x20; walk += 0x14, i++) {
                     if (*(u32 *)(walk + 4) == arg0) {
-                        entry = base + i * 0x14 + 4;
-                        obj = *(void **)entry;
+                        entry2 = base + i * 0x14 + 4;
+                        obj = *(void **)entry2;
                         if (obj != NULL) {
                             fn_8005FA14(obj, 0);
-                            *(u32 *)entry = 0;
+                            *(u32 *)entry2 = 0;
                         }
                         break;
                     }
@@ -10393,6 +10453,7 @@ void fn_801C77A4(void) {
     Process_Create((void*)&LightFade_script, 4);
 }
 
+#pragma opt_common_subs off
 void GActor_FreeTexWork(void *arg0) {
     void Process_UnlinkByKey(void *);
     void GActor_UnlinkNodeLink(void);
@@ -10404,7 +10465,7 @@ void GActor_FreeTexWork(void *arg0) {
     s32 i;
     void **ptr;
     void **walk;
-    s32 zero;
+    void *z;
     s32 base;
 
     base = (s32)LightFade_script;
@@ -10416,24 +10477,22 @@ void GActor_FreeTexWork(void *arg0) {
     ptr = *(void ***)((u8 *)arg0 + 0x30);
     if (ptr != NULL) {
         fn_800C4588(*ptr);
-        zero = 0;
+        z = 0;
         walk = ptr;
-        *ptr = (void *)zero;
-        i = zero | 0;
-        *ptr = (void *)zero;
-        do {
+        *ptr = z;
+        i = (s32)z;
+        *ptr = z;
+        for (; i < 0x20; i += 1, walk = (void **)((u8 *)walk + 0x14)) {
             if (walk[1] != NULL) {
                 fn_8005FA14(walk[1], 0);
-                walk[1] = (void *)zero;
+                walk[1] = z;
             }
-            i += 1;
-            walk = (void **)((u8 *)walk + 0x14);
-        } while (i < 0x20);
+        }
         Heap_Free(ptr);
     }
     *(void **)((u8 *)arg0 + 0x30) = 0;
 }
-
+#pragma opt_common_subs on
 void GActor_InitTexWork(void *proc) {
     /* Alloc 32-slot tex work, load 608x448 texture into slot 0, attach to proc. */
     void *Heap_Alloc(s32);
@@ -10499,9 +10558,10 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
     extern u16 lbl_8027D594[];
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B434;
+    struct Pair { u32 a, b; };
     void *obj;
     void *dst;
-    void *out;
+    u32 *out;
     s32 param;
     u8 flag;
     s32 id1;
@@ -10517,9 +10577,9 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
     f32 sp8[3];
 
     obj = arg2;
-    *(void **)arg1 = obj;
     dst = arg1;
     out = arg0;
+    *(void **)dst = obj;
     *(s16 *)((u8 *)dst + 6) = arg4;
     *(s16 *)((u8 *)dst + 4) = 0;
     param = arg3;
@@ -10584,9 +10644,8 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
         *(f32 *)((u8 *)dst + 0x10) = ((f32 *)sp2c)[2];
     }
 
-    *(u32 *)((u8 *)out + 0) = sp38[0];
-    *(u32 *)((u8 *)out + 4) = sp38[1];
-    *(u32 *)((u8 *)out + 8) = sp38[2];
+    *(struct Pair *)out = *(struct Pair *)sp38;
+    out[2] = sp38[2];
 }
 void fn_801C7BF8(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
@@ -13220,7 +13279,13 @@ extern "C" void fn_801CC5C4(void *arg0, void *arg1) {
     {
         s16 py;
         void *ptr;
-        bool eq;
+        struct { unsigned b : 8; } eq;
+        bool eqv;
+        s32 x1;
+        s32 y1;
+        s32 x2;
+        s32 y2;
+        u8 alpha;
 
         py = *(s16 *)((u8 *)self + 0x4E);
         if (*(u32 *)((u8 *)arg + 0x34) != 0) {
@@ -13228,14 +13293,9 @@ extern "C" void fn_801CC5C4(void *arg0, void *arg1) {
         } else {
             ptr = 0;
         }
-        eq = (ptr == self);
-        if (eq) {
-            s32 x1;
-            s32 y1;
-            s32 x2;
-            s32 y2;
-            u8 alpha;
-
+        eq.b = (ptr == self);
+        eqv = eq.b;
+        if (eqv) {
             Prim2D_Begin();
             Prim2D_AddZ(lbl_8036B4C8);
             Prim2D_PrepareTex();
@@ -13247,7 +13307,7 @@ extern "C" void fn_801CC5C4(void *arg0, void *arg1) {
             alpha = 0x80;
             y2 = (s16)(y1 + 0x30);
             color[2] = 0x12;
-            if (eq) {
+            if (eqv) {
                 alpha = 0xFF;
             }
             color[3] = alpha;

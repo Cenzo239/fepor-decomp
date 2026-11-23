@@ -1527,18 +1527,18 @@ s8 fn_8003AF28(void *arg0) {
     s8 result;
     s8 lim;
     {
-        u8 *c;
-        u8 *u;
+        void *c;
+        void *u;
+        u8 b;
         s32 s;
-        s32 b;
-        s32 lim_u;
-        c = *(u8 **)((u8 *)arg0 + 0x18C);
-        u = *(u8 **)((u8 *)arg0 + 0x188);
-        s = c[0x47];
-        b = *((u8 *)arg0 + 0x1AE);
-        lim_u = c[0x4F];
+        u8 lim_u;
+        c = *(void **)((u8 *)arg0 + 0x18C);
+        u = *(void **)((u8 *)arg0 + 0x188);
+        s = *(u8 *)((u8 *)c + 0x47);
+        b = *(u8 *)((u8 *)arg0 + 0x1AE);
+        lim_u = *(u8 *)((u8 *)c + 0x4F);
         s = s + b;
-        b = u[0x20];
+        b = *(u8 *)((u8 *)u + 0x20);
         lim = (s8)lim_u;
         result = (s8)(b + s);
     }

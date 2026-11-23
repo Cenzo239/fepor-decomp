@@ -1185,6 +1185,7 @@ s32 Ai_TryMoveToFactionPos(void *arg0) {
     struct Obj *p = (struct Obj *)arg0;
     s8 temp_r30;
     s8 temp_r3;
+    s8 t;
 
     temp_r30 = fn_80017290(&p->unk236);
     temp_r3 = fn_800172D4(&p->unk236);
@@ -1197,11 +1198,11 @@ s32 Ai_TryMoveToFactionPos(void *arg0) {
     }
     if (gAiState[0x21C] != 0) {
         u8 d = ((u8 *)gUiContext)[0xD];
-        s8 t1 = fn_800172D4(&p->unk236);
-        if (t1 == (s8)d) {
+        t = fn_800172D4(&p->unk236);
+        if (t == (s8)d) {
             u8 e = ((u8 *)gUiContext)[0xE];
-            s8 t2 = fn_80017290(&p->unk236);
-            if (t2 == (s8)e) {
+            t = fn_80017290(&p->unk236);
+            if (t == (s8)e) {
                 if (fn_800BE968(0xE, ((u8 *)gUiContext)[0xD], ((u8 *)gUiContext)[0xE]) != 0) {
                     ((u8 *)gUiContext)[0x8] = 0xE;
                 }

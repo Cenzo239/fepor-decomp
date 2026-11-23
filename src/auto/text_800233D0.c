@@ -860,28 +860,45 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
         virtual void i6() = 0;
         virtual s32 i7(void *, u8) = 0;
     };
+    struct Selected {
+        virtual void s0() = 0;
+        virtual void s1() = 0;
+        virtual void s2() = 0;
+        virtual void s3() = 0;
+        virtual void s4() = 0;
+        virtual void s5() = 0;
+        virtual void s6() = 0;
+        virtual void s7() = 0;
+        virtual void s8() = 0;
+        virtual void s9() = 0;
+        virtual void s10() = 0;
+        virtual void s11() = 0;
+        virtual void s12() = 0;
+        virtual void s13() = 0;
+        virtual void s14(void *, void *) = 0;
+    };
+    struct { u8 *ptr; } holder;
 
     s32 index;
     s32 total;
     u8 *object;
-    u8 *entry;
     s32 status;
     void *item;
     void *first;
     void *second;
-    void *selected;
+    Selected *selected;
     s32 value;
-    s32 width;
     s32 height;
+    s32 neg;
 
     object = (u8 *)Process_CreateEx(lbl_80284548);
 
     if ((u8)arg2 != 0) {
         object[0x2B] = (u8)arg2;
-        total = 0;
-        index = total;
-        object[0x60] = (u8)total;
-        *(s8 *)(object + 0x62) = -1;
+        index = total = 0;
+        neg = -1;
+        object[0x60] = total;
+        *(s8 *)(object + 0x62) = neg;
 
         while (1) {
             item = ((Menu *)arg0)->v15(index);
@@ -900,31 +917,31 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
                 if ((s8)object[0x62] < 0) {
                     object[0x62] = object[0x60];
                     status = 0;
+                }
 
-                    entry = (u8 *)Process_Create(lbl_80284588, object);
+                holder.ptr = (u8 *)Process_Create(lbl_80284588, object);
 
-                    *(void **)(entry + 0x34) = item;
-                    entry[0x3A] = (u8)index;
-                    entry[0x3B] = object[0x60];
-                    entry[0x39] = (u8)status;
+                *(void **)(holder.ptr + 0x34) = item;
+                holder.ptr[0x3A] = (u8)index;
+                holder.ptr[0x3B] = object[0x60];
+                holder.ptr[0x39] = (u8)status;
 
-                    *(s16 *)(entry + 0x30) = ((Menu *)arg0)->v16();
+                *(s16 *)(holder.ptr + 0x30) = ((Menu *)arg0)->v16();
 
-                    value = ((Menu *)arg0)->v17();
-                    *(s16 *)(entry + 0x32) = total + value;
+                value = ((Menu *)arg0)->v17();
+                *(s16 *)(holder.ptr + 0x32) = total + value;
 
-                    *(u32 *)(entry + 0x3C) = 0;
+                *(u32 *)(holder.ptr + 0x3C) = 0;
 
-                    value = ((Menu *)arg0)->v20();
-                    total += value;
+                value = ((Menu *)arg0)->v20();
+                total += value;
 
-                    value = fn_8000B920(entry);
+                value = fn_8000B920(holder.ptr);
 
-                    {
-                        s8 slot = (s8)object[0x60];
-                        object[0x60]++;
-                        object[0x40 + slot] = (u8)value;
-                    }
+                {
+                    s8 slot = (s8)object[0x60];
+                    object[0x60]++;
+                    object[0x40 + slot] = (u8)value;
                 }
             }
 
@@ -944,9 +961,10 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
         if ((s16)value != 0) {
             *(s16 *)(object + 0x36) = ((Menu *)arg0)->v19();
         } else {
-            width = ((Menu *)arg0)->v20();
+            total = ((Menu *)arg0)->v20();
+            total *= (s8)object[0x60];
             height = ((Menu *)arg0)->v17();
-            *(s16 *)(object + 0x36) = height + width * (s8)object[0x60];
+            *(s16 *)(object + 0x36) = height + total;
         }
     }
 
@@ -960,8 +978,8 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     first = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
     second = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
 
-    selected = *(void **)((u8 *)second + 0x34);
-    ((void (*)(void *, void *, void *))(*(void ***)selected)[0x40 / 4])(selected, object, first);
+    selected = *(Selected **)((u8 *)second + 0x34);
+    selected->s14(object, first);
 
     *(s16 *)(object + 0x28) = ((Menu *)arg0)->v23();
 
@@ -3167,25 +3185,27 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 #pragma peephole off
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
-    u8 *self = (u8 *)arg0;
-    void *p;
+    u8 *map;
+    void **out;
 
-    *(void **)(p = arg0) = arg1;
-    self[0xB] = ((u8 *)arg1)[0x19E];
-    self[0xC] = ((u8 *)arg1)[0x19F];
-    *(s8 *)(self + 0x11) = Unit_GetMov(arg1);
-    *(s32 *)(self + 4) = 0;
-    self[8] = 0;
-    *(s8 *)(self + 0xA) = -1;
-    *(s8 *)(self + 0xD) = -1;
-    *(s8 *)(self + 0xE) = -1;
-    *(s8 *)(self + 0xF) = -1;
-    *(s8 *)(self + 0x10) = -1;
-    self[0x14] = 0;
-    self[0x15] = 0;
-    self[0x12] = 0;
-    self[0x16] = 0;
-    gBattleMap.unitMap[(s8)self[0xB] + ((s8)self[0xC] << 6)] = 0;
+    out = (void **)arg0;
+    *out = arg1;
+    *((u8 *)arg0 + 0xB) = *((u8 *)arg1 + 0x19E);
+    *((u8 *)arg0 + 0xC) = *((u8 *)arg1 + 0x19F);
+    *((s8 *)arg0 + 0x11) = Unit_GetMov(arg1);
+    map = (u8 *)&gBattleMap;
+    *(s32 *)((u8 *)arg0 + 4) = 0;
+    *((u8 *)arg0 + 8) = 0;
+    *((s8 *)arg0 + 0xA) = -1;
+    *((s8 *)arg0 + 0xD) = -1;
+    *((s8 *)arg0 + 0xE) = -1;
+    *((s8 *)arg0 + 0xF) = -1;
+    *((s8 *)arg0 + 0x10) = -1;
+    *((u8 *)arg0 + 0x14) = 0;
+    *((u8 *)arg0 + 0x15) = 0;
+    *((u8 *)arg0 + 0x12) = 0;
+    *((u8 *)arg0 + 0x16) = 0;
+    map[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
 }
 #pragma peephole reset
 void UiCtx_Reset(void *arg0) {
@@ -3316,7 +3336,7 @@ void fn_80028724(void) {
     battle = gBattleState;
     msg = lbl_80268E40;
     channels = gFxChannels;
-    if (EventFlag_IsSet(battle + 0xB4, msg + 0x21E) == 0) {
+    if (!EventFlag_IsSet(battle + 0xB4, msg + 0x21E)) {
         fn_80146AF0();
         Fx_FadeIn(channels, 0x3E8);
         fn_8014876C(channels, 0x64, 0x3E8);

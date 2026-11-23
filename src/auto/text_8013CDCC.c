@@ -582,18 +582,23 @@ void fn_8013CE7C(void *arg0) {
 
 #pragma opt_lifetimes off
 void fn_8013CED0(void *arg0, void *arg1) {
-    extern void *gUiMenuDrawVtbl[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80291DA0[];
     extern f32 lbl_8036A6B8;
-    s32 z;
+    void *v1;
+    void *v2;
+    void *v3;
     f32 f;
+    s32 z;
 
+    v1 = gUiMenuDrawVtbl;
+    v2 = lbl_802920E0;
     z = 0;
-    *(void **)((u8 *)arg0 + 4) = gUiMenuDrawVtbl;
+    *(void **)((u8 *)arg0 + 4) = v1;
     *(void **)arg0 = arg1;
     f = lbl_8036A6B8;
-    *(void **)((u8 *)arg0 + 4) = lbl_802920E0;
+    *(void **)((u8 *)arg0 + 4) = v2;
     *(s16 *)((u8 *)arg0 + 8) = 0x80;
     *(s16 *)((u8 *)arg0 + 0xA) = 0x9C;
     *(s16 *)((u8 *)arg0 + 0xC) = 0x160;
@@ -605,7 +610,8 @@ void fn_8013CED0(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x18) = f;
     *(s16 *)((u8 *)arg0 + 0x1C) = 0x20;
     *(s16 *)((u8 *)arg0 + 0x1E) = 4;
-    *(void **)((u8 *)arg0 + 4) = lbl_80291DA0;
+    v3 = lbl_80291DA0;
+    *(void **)((u8 *)arg0 + 4) = v3;
     *(s32 *)((u8 *)arg0 + 0x20) = z;
     *(s8 *)((u8 *)arg0 + 0x24) = z;
 }
@@ -5097,12 +5103,10 @@ void fn_80143570(void *arg0) {
     s32 off;
     u8 e;
     s32 i;
-    s32 p;
 
     off = 0;
     for (i = 0; i != 11; i++) {
-        p = off + 0x90;
-        fn_80144B60((u8 *)arg0 + p, e);
+        fn_80144B60((u8 *)arg0 + (off + 0x90), e);
         off += 0xC;
     }
 }

@@ -1582,22 +1582,23 @@ s32 fn_80205110(void *, s32);
 void fn_80219734(s32, s32);
 #pragma optimization_level 3
 s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
-    u8 *temp_r30;
-    u8 *temp_r31;
+    u8 *dir;
+    u8 *card;
     void *temp_r6;
-    u32 pad[2];
+    u8 *tmp[1];
 
-    temp_r30 = (u8 *)__CARDBlock + arg0 * 0x110;
-    if (*(s32 *)temp_r30 == 0) {
+    tmp[0] = (u8 *)__CARDBlock + arg0 * 0x110;
+    if (*(s32 *)tmp[0] == 0) {
         return -3;
     }
-    temp_r31 = *(u8 **)(temp_r30 + 0x84);
-    temp_r6 = temp_r31 + 0x1FC0;
-    *(u16 *)(temp_r31 + 0x1FFA) = (u16)(*(s16 *)(temp_r31 + 0x1FFA) + 1);
-    fn_802198C0((u16 *)temp_r31, 0x1FFC, (u16 *)((u8 *)temp_r6 + 0x3C), (u16 *)((u8 *)temp_r6 + 0x3E));
-    fn_80205110(temp_r31, 0x2000);
-    *(s32 *)(temp_r30 + 0xD8) = arg1;
-    return __CARDEraseSector(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
+    dir = *(u8 **)(tmp[0] + 0x84);
+    card = tmp[0];
+    temp_r6 = dir + 0x1FC0;
+    *(u16 *)(dir + 0x1FFA) = (u16)(*(s16 *)(dir + 0x1FFA) + 1);
+    fn_802198C0((u16 *)dir, 0x1FFC, (u16 *)((u8 *)temp_r6 + 0x3C), (u16 *)((u8 *)temp_r6 + 0x3E));
+    fn_80205110(dir, 0x2000);
+    *(s32 *)(card + 0xD8) = arg1;
+    return __CARDEraseSector(arg0, *(s32 *)(card + 0x0C) * ((u32)(dir - *(u8 **)(card + 0x80)) >> 13), (void *)fn_80219734);
 }
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;

@@ -213,6 +213,7 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 #pragma ppc_intrinsics on
 #pragma optimization_level 3
 
+#pragma ppc_intrinsics on
 void GXSetProjection(f32 *mtx, s32 type)
 {
     u8 *gx;
@@ -244,7 +245,6 @@ void GXSetProjection(f32 *mtx, s32 type)
     *(volatile u32 *)fifo = *(u32 *)(gx + 0x4D8);
     *(u16 *)(gx + 2) = 1;
 }
-#pragma optimization_level reset
 
 #pragma peephole off
 

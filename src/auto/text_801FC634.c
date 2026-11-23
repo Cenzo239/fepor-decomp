@@ -1359,6 +1359,11 @@ void fn_801FF3AC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
+    extern u8 gUnitInfoPopup[];
+    u8 Ui_IsUnitInfoPopupOpen(void *);
+    void Ui_HideUnitInfoPopup(void *);
+    void *GfxEnt_Get(u8);
+    void fn_80024B6C(void);
     struct Handler {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -1371,24 +1376,20 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
         virtual void v8() = 0;
         virtual void v9(void *, void *) = 0;
     };
-    u8 Ui_IsUnitInfoPopupOpen(void *);
-    void Ui_HideUnitInfoPopup(void *);
-    void *GfxEnt_Get(s32);
-    void fn_80024B6C(void);
-    extern u8 gUnitInfoPopup[];
     u32 v;
-    void *entry;
-    u8 *a1;
+    void *ent;
+    u8 *unit;
 
-    v = ++*(u32 *)((u8 *)arg0 + 0x28);
+    unit = (u8 *)arg1;
+    v = *(u32 *)((u8 *)arg0 + 0x28);
+    *(u32 *)((u8 *)arg0 + 0x28) = ++v;
     if (v < *(u32 *)((u8 *)arg0 + 0x2C)) {
         return;
     }
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         Ui_HideUnitInfoPopup(gUnitInfoPopup);
-        a1 = (u8 *)arg1;
-        entry = GfxEnt_Get(a1[0x40 + (s8)a1[0x62]]);
-        (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
+        ent = GfxEnt_Get(unit[0x40 + (s8)unit[0x62]]);
+        (*(Handler **)((u8 *)ent + 0x34))->v9(arg1, ent);
         return;
     }
     fn_80024B6C();

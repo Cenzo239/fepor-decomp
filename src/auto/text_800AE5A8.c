@@ -7478,6 +7478,7 @@ s32 Battle_CheckEndFlags(void) {
 
 #pragma optimization_level 3
 s32 fn_800BE3CC(void *unitA, void *unitB, u8 mode, s32 parent) {
+#pragma optimization_level 3
     void *Event_NextEntry(void *);
     void *Event_GetString(void *, u32);
     void *Person_GetByPid(void);

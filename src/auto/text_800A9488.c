@@ -1083,8 +1083,6 @@ void fn_800AA89C(void *arg0) {
     u8 *rowBase;
     u8 *cell;
     s32 cellOff;
-    u8 *map2;
-    u8 *costPtr;
 
     self = arg0;
     bestMin = 0x64;
@@ -1134,8 +1132,7 @@ y_loop:
         x = 0;
         goto x_cmp;
 x_loop:
-        costPtr = map + (cellOff << 1);
-        if (*(s16 *)(costPtr + 0x610E) >= 0
+        if (*(s16 *)((map + (cellOff << 1)) + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
             Map_FillAttackRange(gBattleMap, x, y, (u8)pp, (u8)atk);
@@ -1163,7 +1160,7 @@ slot_cmp:
     }
 slots_done:
     if (Status_Test((u8 *)self + 0x1BC, 0x43) != 0) {
-        map2 = gBattleMap;
+        u8 *map2 = gBattleMap;
         y = 0;
         yOff = 0;
         rowBase = map2;
@@ -1174,8 +1171,7 @@ y2_loop:
         x = 0;
         goto x2_cmp;
 x2_loop:
-        costPtr = map2 + (cellOff << 1);
-        if (*(s16 *)(costPtr + 0x610E) >= 0
+        if (*(s16 *)((map2 + (cellOff << 1)) + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
             Map_FillAttackRange(gBattleMap, x, y, 1, 2);
@@ -1661,9 +1657,9 @@ void fn_800AB73C(void) {
 }
 
 void fn_800AB75C(void *arg0) {
-    void Item_Init(void *);
-    void *Item_Copy(void *, void *);
-    void *Item_Destroy(void *, s32);
+    void fn_8001C76C(void *);
+    void *fn_8001C4FC(void *, void *);
+    void *fn_8001C5F8(void *, s32);
     void fn_800ABA3C(void *);
     extern u8 lbl_80312ACC[];
 
@@ -1683,14 +1679,14 @@ void fn_800AB75C(void *arg0) {
                                   + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 9))->flag = 0;
     ((Entry9Bits *)(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                                   + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 9))->flag = 0;
-    Item_Init(sp8);
-    Item_Copy(sp8, lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
+    fn_8001C76C(sp8);
+    fn_8001C4FC(sp8, lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
                                  + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 4);
-    Item_Copy(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
+    fn_8001C4FC(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
                            + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 4,
                 lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                              + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 4);
-    Item_Copy(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
+    fn_8001C4FC(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                            + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 4, sp8);
     fn_800ABA3C(self);
     var_r8 = (u8 *)(u32)lbl_80312ACC;
@@ -1719,7 +1715,7 @@ void fn_800AB75C(void *arg0) {
         *(u8 *)((u8 *)self + 0x3C) = temp_x;
         *(u8 *)((u8 *)self + 0x3D) = (u8)y;
     }
-    Item_Destroy(sp8, -1);
+    fn_8001C5F8(sp8, -1);
 }
 
 #pragma cplusplus on

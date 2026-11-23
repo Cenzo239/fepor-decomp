@@ -102,85 +102,73 @@ void fn_8001EF7C(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
-#pragma global_optimizer off
+#pragma opt_common_subs off
 void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
 {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
+    struct MapHi {
+        u8 pad[0x4190];
+        s16 *costs;
+    };
     s32 yoff;
     u8 *row;
-    u8 *mapHi;
+    struct MapHi *mapHi;
     s32 dir;
-    s8 ox_s;
-    s8 oy_s;
+    s32 ox_s;
+    s32 oy_s;
     s32 off;
     s32 idx;
-    s8 y;
-    s8 x;
+    s32 y;
+    s32 x;
     s32 xv;
     s16 *costs;
 
     dir = (u8)facing;
-    mapHi = gBattleMap + 0x10000;
+    mapHi = (struct MapHi *)(gBattleMap + 0x10000);
     ox_s = (s8)ox;
     oy_s = (s8)oy;
     y = (s8)gBattleMap[9];
     goto outer_test;
 outer:
-    xv = y;
+    yoff = (s8)y << 6;
     x = (s8)gBattleMap[8];
-    yoff = xv << 6;
     row = gBattleMap + yoff;
     goto inner_test;
 inner:
-    xv = x;
-    costs = *(s16 **)(mapHi + 0x4190);
+    xv = (s8)x;
+    costs = mapHi->costs;
     idx = xv + yoff;
     off = idx << 1;
     if (*(s16 *)((u8 *)costs + off) >= 0) {
         if ((s8)row[xv + 0xE18E] == 0) {
-            if (Map_IsAiTerrainBlocked((s8)xv, y) == 0) {
-#pragma global_optimizer off
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
                 switch (dir) {
                 case 1:
                     if (ox_s < x) {
-                        volatile u8 *argp = (u8 *)arg0;
-                        costs = *(s16 **)(argp + 0x14190);
-                        *(s16 *)((u8 *)costs + off) = -1;
+                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
-                        idx = idx;
                     }
                     break;
                 case 2:
                     if (x < ox_s) {
-                        volatile u8 *argp = (u8 *)arg0;
-                        costs = *(s16 **)(argp + 0x14190);
-                        *(s16 *)((u8 *)costs + off) = -1;
+                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
-                        idx = idx;
                     }
                     break;
                 case 8:
                     if (oy_s < y) {
-                        volatile u8 *argp = (u8 *)arg0;
-                        costs = *(s16 **)(argp + 0x14190);
-                        *(s16 *)((u8 *)costs + off) = -1;
+                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
-                        idx = idx;
                     }
                     break;
                 case 4:
                     if (y < oy_s) {
-                        volatile u8 *argp = (u8 *)arg0;
-                        costs = *(s16 **)(argp + 0x14190);
-                        *(s16 *)((u8 *)costs + off) = -1;
+                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
-                        idx = idx;
                     }
                     break;
                 }
-#pragma global_optimizer on
             }
         }
     }
@@ -195,8 +183,8 @@ outer_test:
         goto outer;
     }
 }
-#pragma opt_strength_reduction on
-#pragma use_lmw_stmw off
+#pragma opt_common_subs reset
+#pragma use_lmw_stmw reset
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
     void fn_80022DAC(void *, s32, s32);

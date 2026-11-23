@@ -532,74 +532,74 @@ root_walk:
         ((u8 *)node)[10] = spC[2];
     }
 }
-void fn_8005F12C(void *arg0, void *arg1) {
-    void PSMTXCopy(void *, void *);
-    void fn_8006D378(void *);
-    void fn_801505A8(void *, void *);
-
-    s32 offset;
-    u32 info;
-    s32 i;
-    u32 dest;
-    u32 source;
-    u32 node;
-
-    source = (u32)arg0;
-    dest = (u32)arg1;
-
-    if (source == 0) return;
-    if (dest == 0) return;
-
-    node = source;
-
-    while (node != 0) {
-        info = *(u32 *)(node + 0x40);
-        if (info == 0) {
-            node = *(u32 *)(node + 4);
-            continue;
-        }
-        break;
+void fn_8005F12C(void *arg0, void *arg1)
+{
+  void PSMTXCopy(void *, void *);
+  void *new_var2;
+  void fn_8006D378(void *);
+  void fn_801505A8(void *, void *);
+  s32 offset;
+  u32 info;
+  s32 i;
+  u32 dest;
+  u32 source;
+  s32 new_var;
+  u32 node;
+  ;
+  new_var2 = arg1;
+  dest = (u32) new_var2;
+  if (((u32) arg0) == 0)
+  {
+    return;
+  }
+  if (dest == 0)
+  {
+    return;
+  }
+  node = source;
+  while (node != 0)
+  {
+    info = *((u32 *) (node + 0x40));
+    if (info != 0)
+    {
+      break;
     }
+    ;
+  }
 
-    if (node == 0) {
-        info = 0;
-    }
+  if ((*((u32 *) (node + 4))) == 0)
+  {
+    info = 0;
+  }
+  i = 0;
+  offset = 0;
+  while (i < (*((s32 *) (info + 8))))
+  {
+    PSMTXCopy((void *) ((*((u32 *) (((u32) arg0) + 0x60))) + offset), (void *) ((*((u32 *) (dest + 0x60))) + offset));
+    offset += 0x30;
+    i++;
+  }
 
+  if ((*((u32 *) (((u32) arg0) + 0x64))) != 0)
+  {
     i = 0;
     offset = 0;
-
-    while (i < *(s32 *)(info + 8)) {
-        PSMTXCopy(
-            (void *)(*(u32 *)(source + 0x60) + offset),
-            (void *)(*(u32 *)(dest + 0x60) + offset)
-        );
-        offset += 0x30;
-        i++;
+    while (i < (*((s32 *) (info + 8))))
+    {
+      new_var = offset;
+      PSMTXCopy((void *) ((*((u32 *) (((u32) arg0) + 0x64))) + new_var), (void *) ((*((u32 *) (dest + 0x64))) + new_var));
+      offset += 0x30;
+      i++;
     }
 
-    if (*(u32 *)(source + 0x64) != 0) {
-        i = 0;
-        offset = i;
-
-        while (i < *(s32 *)(info + 8)) {
-            PSMTXCopy(
-                (void *)(*(u32 *)(source + 0x64) + offset),
-                (void *)(*(u32 *)(dest + 0x64) + offset)
-            );
-            offset += 0x30;
-            i++;
-        }
-    }
-
-    fn_8006D378((void *)dest);
-
-    PSMTXCopy((void *)(source + 0x10), (void *)(dest + 0x10));
-
-    if (*(u32 *)(source + 0x54) != 0) {
-        fn_801505A8((void *)source, (void *)dest);
-    }
-
-    *(f32 *)(dest + 0x58) = *(f32 *)(source + 0x58);
+  }
+  fn_8006D378((void *) dest);
+  PSMTXCopy((void *) (((u32) arg0) + 0x10), (void *) (dest + 0x10));
+  if ((*((u32 *) (((u32) arg0) + 0x54))) != 0)
+  {
+    fn_801505A8((void *) ((u32) arg0), (void *) dest);
+  }
+  *((f32 *) (dest + 0x58)) = *((f32 *) (((u32) arg0) + 0x58));
 }
 
 #pragma global_optimizer on
@@ -623,12 +623,12 @@ void fn_8005F230(void *node) {
             }
             return i;
         }
-        static s32 index(void *node, void *p) {
-            s32 i; s32 j;
-            j=0;
+        static s32 index(void *node) {
+            s32 i;
+            void *p=root(node);
             i=0;
             for (;;) {
-                if(p==node) return i+j;
+                if(p==node) return i;
                 p=M2C_FIELD(p,void **,0x8C);
                 if(p) i++; else break;
             }
@@ -639,8 +639,8 @@ void fn_8005F230(void *node) {
     void *root=Chain::root(node);
     if(root) {
         s32 count=Chain::count(node);
-        s32 index=Chain::index(node,Chain::root(node));
-        s32 alpha; s32 t;
+        s32 index=Chain::index(node);
+        s32 t; s32 alpha;
         *(u32 *)color=M2C_FIELD(root,u32 *,0x88);
         t=M2C_FIELD(root,u8 *,0xB);
         alpha=((t-(t*index)/(count+1))*color[3])/255;

@@ -230,7 +230,7 @@ s32 fn_80073834(s32 arg0, s32 arg1)
     return 5;
 }
 
-void Unit_OfferItem(void *unit, s32 item, void *parent) {
+void Unit_OfferItem(void *unit, void *item, void *parent) {
     void *Unit_GetItemSlot(void *, s32);
     u8 fn_80094ABC(void *, void *);
     void fn_800916B8(void *, void *, void *);
@@ -241,23 +241,16 @@ void Unit_OfferItem(void *unit, s32 item, void *parent) {
     extern u64 lbl_8036746C;
     extern u8 lbl_80287378[];
 
-    void *p;
     void *info;
     s32 i;
     void *slot;
-    u8 flags;
-    void *itemPtr;
+    u32 t;
     u8 kind;
 
-    p = parent;
-    itemPtr = (void *)item;
-    item = 0;
-    flags = *((u8 *)itemPtr + 5);
-    flags = __rlwimi(flags, item, 7, 24, 24);
-    *((u8 *)itemPtr + 5) = flags;
-    flags = (u8)flags;
-    flags = __rlwimi(flags, item, 6, 25, 25);
-    *((u8 *)itemPtr + 5) = flags;
+    t = __rlwimi(*((u8 *)item + 5), 0, 7, 24, 24);
+    *((u8 *)item + 5) = t;
+    t = __rlwimi(t & 0xFF, 0, 6, 25, 25);
+    *((u8 *)item + 5) = t;
 
     info = *(void **)((u8 *)unit + 0x190);
     if (*((u8 *)info + 8) == 1) {
@@ -275,25 +268,24 @@ void Unit_OfferItem(void *unit, s32 item, void *parent) {
                 break;
             }
         }
-        flags = *((u8 *)itemPtr + 5);
-        flags = __rlwimi(flags, 1, 6, 25, 25);
-        *((u8 *)itemPtr + 5) = flags;
+        t = __rlwimi(*((u8 *)item + 5), 1, 6, 25, 25);
+        *((u8 *)item + 5) = t;
     }
 after_flag:
-    if (fn_80094ABC(unit, itemPtr) != 0) {
+    if (fn_80094ABC(unit, item) != 0) {
         info = *(void **)((u8 *)unit + 0x190);
         if (*((u8 *)info + 8) != 1) {
-            fn_80091788(itemPtr, p, unit);
+            fn_80091788(item, parent, unit);
         } else {
-            fn_800916B8(itemPtr, p, unit);
+            fn_800916B8(item, parent, unit);
         }
     } else {
         info = *(void **)((u8 *)unit + 0x190);
         kind = *((u8 *)info + 8);
         if (kind == 0 || kind == 5) {
             lbl_80367468 = unit;
-            Item_Copy(&lbl_8036746C, itemPtr);
-            Process_CreateChild(lbl_80287378, p);
+            Item_Copy(&lbl_8036746C, item);
+            Process_CreateChild(lbl_80287378, parent);
         }
     }
 }

@@ -43,10 +43,10 @@ void fn_80033080(void) {
     base = lbl_802EFCB8;
     lastTable = lbl_80285424;
 
-    slot0 = (Record *)base;
-    slot0->table = table;
     slot1 = (Record *)(base + 0xC);
     slot1->table = table;
+    slot0 = (Record *)base;
+    slot0->table = table;
 
     table = lbl_80285458;
     slot1->table = table;

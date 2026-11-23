@@ -10503,18 +10503,19 @@ void fn_8004781C(void *arg0)
         struct EntryTail tail;
     };
 
+    s32 nextOffset;
     u8 *map;
     u8 *base;
     u8 *node;
     struct MapEntry temp;
-    struct MapEntry *first;
-    struct MapEntry *second;
     u32 flags;
     u32 firstPriority;
     u32 secondPriority;
+    struct MapEntry *first;
+    struct MapEntry *second;
+    s32 offset;
     s32 i;
     s32 j;
-    s32 offset;
     s32 count;
 
     map = (u8 *)arg0;
@@ -10590,9 +10591,11 @@ inner_loop:
     if (firstPriority > secondPriority) {
         temp = *first;
 
+        nextOffset = (j + 1) * 0xB4;
+
         base = *(u8 *volatile *)(map + 0x14);
+        second = (struct MapEntry *)(base + nextOffset);
         first = (struct MapEntry *)(base + offset);
-        second = (struct MapEntry *)(base + (j + 1) * 0xB4);
 
         first->bytes[0] = second->bytes[0];
         first->bytes[1] = second->bytes[1];
@@ -10609,7 +10612,7 @@ inner_loop:
         first->tail = second->tail;
 
         base = *(u8 *volatile *)(map + 0x14);
-        second = (struct MapEntry *)(base + (j + 1) * 0xB4);
+        second = (struct MapEntry *)(base + nextOffset);
 
         second->bytes[0] = temp.bytes[0];
         second->bytes[1] = temp.bytes[1];

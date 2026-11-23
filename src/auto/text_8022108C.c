@@ -168,10 +168,10 @@ void GXAdjustForOverscan(const GXRenderModeObj *rmin, GXRenderModeObj *rmout, u1
 void fn_802211D0(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
 {
   u8 *gx;
-  u32 w;
   u32 zero;
-  u32 new_var[2];
+  u32 w;
   u32 c49;
+  u32 new_var[2];
   gx = (u8 *) __GXData;
   zero = 0;
   w = arg2;

@@ -1268,12 +1268,12 @@ void GActor_Finalize(void *arg0)
 
     extern char lbl_8026B590[];
 
-    u8 *self;
-    u8 *cur;
     u8 *model;
     u8 *mesh;
     u8 *geometry;
     u8 *scaleNode;
+    u8 *self;
+    u8 *cur;
     u8 *source;
     u8 *buffer;
     s32 i;
@@ -1312,81 +1312,69 @@ void GActor_Finalize(void *arg0)
 
 model_loop:
     model = *(u8 **)(cur + 0x40);
+    if (model == 0) goto model_advance;
+    goto model_found;
 
-    if (model != 0) {
-        goto mesh_start;
-    }
-
+model_advance:
     cur = *(u8 **)(cur + 4);
 
 model_test:
-    if (cur != 0) {
-        goto model_loop;
-    }
-
+    if (cur != 0) goto model_loop;
     model = 0;
 
-mesh_start:
+model_found:
+
     cur = self;
     goto mesh_test;
 
 mesh_loop:
     mesh = *(u8 **)(cur + 0x48);
+    if (mesh == 0) goto mesh_advance;
+    goto mesh_found;
 
-    if (mesh != 0) {
-        goto geometry_start;
-    }
-
+mesh_advance:
     cur = *(u8 **)(cur + 4);
 
 mesh_test:
-    if (cur != 0) {
-        goto mesh_loop;
-    }
-
+    if (cur != 0) goto mesh_loop;
     mesh = 0;
 
-geometry_start:
+mesh_found:
+
     cur = self;
     goto geometry_test;
 
 geometry_loop:
     geometry = *(u8 **)(cur + 0x50);
+    if (geometry == 0) goto geometry_advance;
+    goto geometry_found;
 
-    if (geometry != 0) {
-        goto scale_start;
-    }
-
+geometry_advance:
     cur = *(u8 **)(cur + 4);
 
 geometry_test:
-    if (cur != 0) {
-        goto geometry_loop;
-    }
-
+    if (cur != 0) goto geometry_loop;
     geometry = 0;
 
-scale_start:
+geometry_found:
+
     cur = self;
     goto scale_test;
 
 scale_loop:
     scaleNode = *(u8 **)(cur + 0x44);
+    if (scaleNode == 0) goto scale_advance;
+    goto scale_found;
 
-    if (scaleNode != 0) {
-        goto allocate_start;
-    }
-
+scale_advance:
     cur = *(u8 **)(cur + 4);
 
 scale_test:
-    if (cur != 0) {
-        goto scale_loop;
-    }
-
+    if (cur != 0) goto scale_loop;
     scaleNode = 0;
 
-allocate_start:
+scale_found:
+
     if (model != 0) {
         count = *(s32 *)(model + 8);
 
@@ -2846,15 +2834,12 @@ f32 fn_80064164(void **arg0, s32 arg1, f32 frame) {
         if ((s32)count == 0) mid = -1;
         else {
             lo = value; hi = count-1; time = (s32)frame;
-            goto search_test;
-search_body: {
+            while (lo <= hi) {
                 mid = lo + ((hi-lo)>>1);
                 if (keys[mid][0] < time) lo = mid+1;
                 else if (keys[mid][0] > time) hi = mid-1;
                 else goto found;
             }
-search_test:
-            if (lo <= hi) goto search_body;
             if (hi < 0) mid = -1;
             else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
         }
@@ -2892,7 +2877,7 @@ f32 fn_80064400(void **arg0, s32 arg1, f32 frame) {
     s32 lo, time;
     u16 offset;
     u8 *base, *track;
-    s32 interpolate;
+    u8 interpolate;
     if (arg0 == 0) base = 0;
     else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x10); else base = 0; }
     if (!base) return lbl_803691E4;
@@ -2922,13 +2907,15 @@ f32 fn_80064400(void **arg0, s32 arg1, f32 frame) {
 found:
         if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
         else if (mid < count-1) {
-            t0 = keys[mid][0];
-            t1 = keys[mid+1][0];
-            v0 = keys[mid][1];
-            value = keys[mid+1][1];
+            s32 next = mid + 1;
+            u16 a = keys[mid][0];
+            u16 b = keys[next][0];
+            u16 c = keys[mid][1];
+            u16 d = keys[next][1];
+            t0 = a; t1 = b; v0 = c; value = d;
             interpolate = 1;
         } else { v0 = keys[mid][1]; interpolate = 0; }
-        if (!(u8)interpolate) value = v0;
+        if (!interpolate) value = v0;
         else switch(mode) {
         case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
         case 1: value = v0; break;
@@ -2959,13 +2946,11 @@ f32 fn_8006469C(void **arg0, s32 arg1, f32 frame) {
     if (offset == 0xFFFF) track = 0; else track = base + offset;
     if (!track) return lbl_803691E4;
     count = *(u16 *)track;
-    t0 = -1;
+    t1 = t0 = -1;
     mode = *(u16 *)(track+2);
-    t1 = t0;
     keys = (u16 (*)[2])(track+4);
     value = 0;
-    if ((u32)count == 0) goto done;
-    {
+    if ((u32)count != 0) {
         if ((s32)count == 0) mid = -1;
         else {
             lo = value; hi = count-1; time = (s32)frame;
@@ -2982,11 +2967,10 @@ found:
         if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
         else if (mid < count-1) {
             s32 next = mid + 1;
-            u16 a, c, b, d;
-            a = keys[mid][0];
-            b = keys[next][0];
-            c = keys[mid][1];
-            d = keys[next][1];
+            u16 a = keys[mid][0];
+            u16 b = keys[next][0];
+            u16 c = keys[mid][1];
+            u16 d = keys[next][1];
             t0 = a; t1 = b; v0 = c; value = d;
             interpolate = 1;
         } else { v0 = keys[mid][1]; interpolate = 0; }
@@ -2996,6 +2980,8 @@ found:
         case 1: value = v0; break;
         default: value = 0; break;
         }
+    } else {
+        goto done;
     }
 done:
     return lbl_80369208 * (f32)value;
@@ -3166,15 +3152,11 @@ ready:
     g1 = ((s32)value1>>3)&0xFC;
     b1 = ((u32)value1&31)<<3;
     switch(mode) {
-    case 0: {
-        s32 red = (s32)(factor*(f32)(s32)(r1-r0)+(f32)r0);
-        s32 green = (s32)(factor*(f32)(s32)(g1-g0)+(f32)g0);
-        s32 blue = (s32)(factor*(f32)(s32)(b1-b0)+(f32)b0);
-        ((u8 *)arg1)[0] = red;
-        ((u8 *)arg1)[1] = green;
-        ((u8 *)arg1)[2] = blue;
+    case 0:
+        ((u8 *)arg1)[0] = (s32)(factor*(f32)(s32)(r1-r0)+(f32)r0);
+        ((u8 *)arg1)[1] = (s32)(factor*(f32)(s32)(g1-g0)+(f32)g0);
+        ((u8 *)arg1)[2] = (s32)(factor*(f32)(s32)(b1-b0)+(f32)b0);
         break;
-    }
     case 1:
         ((u8 *)arg1)[0] = r0; ((u8 *)arg1)[1] = g0; ((u8 *)arg1)[2] = b0;
         break;
@@ -5551,7 +5533,7 @@ s32 fn_80068D84(void *arg0, s32 arg1, void *arg2, void *arg3) {
         }
     }
     if (!(*(u32 *)arg0 & 0x20000) && (M2C_FIELD(arg3,u16 *,4)&0x8000) && M2C_FIELD(arg3,void **,0x18)) {
-        for(offset=0,i=0;i<8;i++,offset+=4) {
+        for(offset=0,i=0;i<8;offset+=4,i++) {
             cb=*(void (**)(void *,u32))((u8 *)M2C_FIELD(arg3,void **,0x18)+offset);
             if(cb) cb(arg3,ctx);
         }
@@ -9183,88 +9165,90 @@ void fn_8006F7F0(void *arg0)
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     s32 Text_MeasureHeight(s32, f32);
-
     extern f64 lbl_803692E8;
     extern f32 lbl_803692E0;
     extern f32 lbl_803692FC;
     extern f32 lbl_80369300;
-
-    u8 *self;
-    char *buffer;
+    char *buf;
+    void *p;
+    void *self;
     char *line;
-    char *cursor;
-    char *text;
-    void **vtable;
-    s32 length;
+    f32 posX;
+    f32 posY;
     s32 lineIndex;
-    s32 height;
-    f32 x;
-    f32 y;
+    char c;
+#pragma cplusplus on
+    struct Obj {
+        u8 pad[4];
+        virtual char *v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual void v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+    };
 
-    self = (u8 *)arg0;
-
-    vtable = *(void ***)(self + 4);
-    ((void (*)(void *))vtable[31])(self);
-
+    self = arg0;
+    ((Obj *)self)->v29();
     Ui_DrawMsgPanelAlt(0, 0);
-
-    vtable = *(void ***)(self + 4);
-    text = ((char *(*)(void *))vtable[2])(self);
-
-    length = strlen(text);
-    buffer = Heap_AllocRaw(length + 1);
-
-    vtable = *(void ***)(self + 4);
-    text = ((char *(*)(void *))vtable[2])(self);
-
-    strcpy(buffer, text);
-
-    x = (f32)*(s16 *)(self + 0x10);
-    y = lbl_803692FC;
+    buf = (char *)Heap_AllocRaw(strlen(((Obj *)self)->v0()) + 1);
+    line = buf;
+    strcpy(buf, ((Obj *)self)->v0());
+    posX = (f32)*(s16 *)((u8 *)self + 0x10);
+    posY = lbl_803692FC;
     lineIndex = 0;
-
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369300);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-
-    line = buffer;
-    cursor = buffer;
-
-    while (*cursor != 0) {
-        if ((s8)*cursor == '\n') {
-            *cursor = 0;
-
+    for (p = buf; (c = *(char *)p) != 0; p = (void *)((char *)p + 1)) {
+        if ((s8)c == 0xA) {
+            *(char *)p = 0;
             Prim2D_AddPrim(6);
-            Prim2D_SetPos(x, y);
-            Prim2D_SetColor(0, 0, 0, 255);
+            Prim2D_SetPos(posX, posY);
+            Prim2D_SetColor(0, 0, 0, 0xFF);
             Prim2D_SetText(line);
             Prim2D_EndPrim();
-
             lineIndex++;
-
-            x = (f32)*(s16 *)(self + 0x10 + (s16)lineIndex * 2);
-
-            height = Text_MeasureHeight(-1, lbl_803692E0);
-            y += (f32)(height + 2);
-
-            line = cursor + 1;
+            posX = (f32)*(s16 *)((u8 *)self + 0x10 + (s16)lineIndex * 2);
+            posY += (f32)(Text_MeasureHeight(-1, lbl_803692E0) + 2);
+            line = (char *)p + 1;
         }
-
-        cursor++;
     }
-
     Prim2D_AddPrim(6);
-    Prim2D_SetPos(x, y);
-    Prim2D_SetColor(0, 0, 0, 255);
+    Prim2D_SetPos(posX, posY);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_SetText(line);
     Prim2D_EndPrim();
-
-    Heap_FreeRaw(buffer);
-
+    Heap_FreeRaw(buf);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803692E0);
     Prim2D_PrepareTex();
+#pragma cplusplus reset
 }
 
 void fn_8006F9F4(void *arg0, void *arg1) {

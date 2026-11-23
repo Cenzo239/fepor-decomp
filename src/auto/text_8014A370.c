@@ -44,25 +44,53 @@ void *fn_8014A398(void) {
     return (u8 *)gSoundMenuStrings + 0xc6;
 }
 
-s32 fn_8014A3A8(void) {
-extern u8 gFxChannels[];
-extern u8 gSeCueSlots[];
-u8 active;
-s32 i;
-u8 *p;
-for(i=0;i<4;i++) {
-p=gFxChannels+(u8)i*0x30;
-active=0;
-if((p[12]&1) && (*(u8 (**)(void *))(*(u8 **)(p+8)+8))(p)) active=1;
-if(active) (*(void (**)(void *))(*(u8 **)(p+8)+16))(p);
-}
-for(i=0;i<28;i++) {
-p=gSeCueSlots+(u8)i*0x30;
-active=0;
-if((p[12]&1) && (*(u8 (**)(void *))(*(u8 **)(p+8)+8))(p)) active=1;
-if(active) (*(void (**)(void *))(*(u8 **)(p+8)+16))(p);
-}
-return 0;
+s32 fn_8014A3A8(void)
+{
+    extern u8 gFxChannels[];
+    extern u8 gSeCueSlots[];
+#pragma cplusplus on
+    struct Pad {
+        u8 pad[8];
+    };
+    struct Chan : Pad {
+        virtual u8 check();
+        virtual void gap();
+        virtual void update();
+        u8 flags;
+    };
+
+    s32 i;
+    Chan *p;
+    u8 active;
+    u8 *base;
+
+    base = gFxChannels;
+    i = 0;
+    while (i < 4) {
+        p = (Chan *)(base + (u8)i * 0x30);
+        active = 0;
+        if ((p->flags & 1) && p->check())
+            active = 1;
+        if (active)
+            p->update();
+        i++;
+    }
+
+    base = gSeCueSlots;
+    active = 0;
+    i = 0;
+    while (i < 28) {
+        p = (Chan *)(base + (u8)i * 0x30);
+        active = 0;
+        if ((p->flags & 1) && p->check())
+            active = 1;
+        if (active)
+            p->update();
+        i++;
+    }
+
+    return 0;
+#pragma cplusplus reset
 }
 
 void *fn_8014A4C8(void) {

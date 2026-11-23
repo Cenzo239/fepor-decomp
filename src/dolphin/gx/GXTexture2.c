@@ -422,9 +422,7 @@ s32 fn_80222F10(s32 arg0) {
 
 void fn_80222F24(u32 arg0, u32 arg1)
 {
-    u8 *source;
-    u8 *dest;
-    register u32 value;
+    u32 value;
     u32 flags;
     u32 reg;
     u8 b0;
@@ -432,35 +430,36 @@ void fn_80222F24(u32 arg0, u32 arg1)
     u8 *gx;
 
     gx = (u8 *)__GXData;
-    source = gx + (arg0 << 2);
-    value = *(u32 *)(source + 0x514);
-    dest = gx + (arg1 << 2);
+    arg0 <<= 2;
+    arg1 <<= 2;
 
-    reg = *(u32 *)(dest + 0xB8);
+    value = *(u32 *)(gx + arg0 + 0x514);
+
+    reg = *(u32 *)(gx + arg1 + 0xB8);
     reg = __rlwimi(reg, value & 0x3FF, 0, 16, 31);
-    *(u32 *)(dest + 0xB8) = reg;
+    *(u32 *)(gx + arg1 + 0xB8) = reg;
 
     value = (value >> 10) & 0x3FF;
-    reg = *(u32 *)(dest + 0xD8);
+    reg = *(u32 *)(gx + arg1 + 0xD8);
     reg = __rlwimi(reg, value, 0, 16, 31);
-    *(u32 *)(dest + 0xD8) = reg;
+    *(u32 *)(gx + arg1 + 0xD8) = reg;
 
-    flags = *(u32 *)(source + 0x534);
+    flags = *(u32 *)(gx + arg0 + 0x534);
 
-    reg = *(u32 *)(dest + 0xB8);
+    reg = *(u32 *)(gx + arg1 + 0xB8);
     b0 = (flags & 3) == 1;
     b1 = ((flags >> 2) & 3) == 1;
     reg = __rlwimi(reg, b0, 16, 15, 15);
-    *(u32 *)(dest + 0xB8) = reg;
+    *(u32 *)(gx + arg1 + 0xB8) = reg;
 
-    reg = *(u32 *)(dest + 0xD8);
+    reg = *(u32 *)(gx + arg1 + 0xD8);
     reg = __rlwimi(reg, b1, 16, 15, 15);
-    *(u32 *)(dest + 0xD8) = reg;
+    *(u32 *)(gx + arg1 + 0xD8) = reg;
 
     GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(dest + 0xB8);
+    GXWGFifo.u32 = *(u32 *)(gx + arg1 + 0xB8);
     GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(dest + 0xD8);
+    GXWGFifo.u32 = *(u32 *)(gx + arg1 + 0xD8);
 
     *(u16 *)(gx + 2) = 0;
 }
@@ -643,7 +642,7 @@ void __GXSetTmemConfig(u32 nTmemConfig)
 }
 
 void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, u8 arg_sp8, s32 arg_spC) {
-  u16 *gx;
+  u32 *gx;
   u32 value;
   u8 flag;
   s32 mode;
@@ -654,7 +653,7 @@ void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
   value = __rlwimi(value, arg2, 2, 28, 29);
   mode = arg_spC;
   value = __rlwimi(value, arg3, 4, 25, 27);
-  gx = __GXData;
+  gx = (u32 *)__GXData;
   value = __rlwimi(value, mode, 7, 23, 24);
   value = __rlwimi(value, arg4, 9, 19, 22);
   value = __rlwimi(value, arg5, 13, 16, 18);
@@ -664,7 +663,7 @@ void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
   value = __rlwimi(value, arg7, 20, 11, 11);
   value = __rlwimi(value, arg0 + 0x10, 24, 0, 7);
   *(u32 *)0xCC008000 = value;
-  gx[1] = 0;
+  *(u16 *)((u8 *)gx + 2) = 0;
 }
 
 void fn_80223500(s32 arg0, f32 *mtx, s32 arg2) {
@@ -885,52 +884,60 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
-void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    u8 cmd;
-    u16 *gx;
-    u32 *stage;
-    u32 value;
+void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+{
+  u8 cmd;
+  u16 *gx;
+  u32 *ptr;
+  u32 value;
 
-    stage = (u32 *)((u8 *)__GXData + (arg0 << 2));
-    value = stage[0x130 / 4];
-    value = __rlwimi(value, arg1, 18, 13, 13);
-    if (arg1 <= 1) {
-        value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
-    } else {
-        value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
-    }
-    cmd = 0x61;
-    gx = __GXData;
-    GXWGFifo.u8 = cmd;
-    value = __rlwimi(value, arg4, 19, 12, 12);
-    value = __rlwimi(value, arg5, 22, 8, 9);
-    GXWGFifo.u32 = value;
-    stage[0x130 / 4] = value;
-    gx[1] = 0;
+  ptr = (u32 *)__GXData;
+  value = ptr[(0x130 / 4) + arg0];
+  cmd = (u8)arg1;
+  value = __rlwimi(value, cmd, 18, 13, 13);
+  if (arg1 <= 1) {
+    value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
+  } else {
+    value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
+  }
+  cmd = 0x61;
+  gx = __GXData;
+  ptr = (u32 *)__GXData;
+  GXWGFifo.u8 = cmd;
+  value = __rlwimi(value, arg4, 19, 12, 12);
+  value = __rlwimi(value, arg5, 22, 8, 9);
+  GXWGFifo.u32 = value;
+  ptr[(0x130 / 4) + arg0] = value;
+  *(u16 *)((u8 *)gx + 2) = 0;
 }
 
-void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    u8 cmd;
-    u16 *gx;
-    u32 *stage;
-    u32 value;
-
-    stage = (u32 *)((u8 *)__GXData + (arg0 << 2));
-    value = stage[0x170 / 4];
-    value = __rlwimi(value, arg1, 18, 13, 13);
-    if (arg1 <= 1) {
-        value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
-    } else {
-        value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
-    }
-    cmd = 0x61;
-    gx = __GXData;
-    GXWGFifo.u8 = cmd;
-    value = __rlwimi(value, arg4, 19, 12, 12);
-    value = __rlwimi(value, arg5, 22, 8, 9);
-    GXWGFifo.u32 = value;
-    stage[0x170 / 4] = value;
-    gx[1] = 0;
+void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+{
+  u8 cmd;
+  u16 *gx;
+  u32 *ptr;
+  u32 value;
+  ptr = (u32 *) __GXData;
+  value = ptr[(0x170 / 4) + arg0];
+  cmd = arg1;
+  value = __rlwimi(value, cmd, 18, 13, 13);
+  if (arg1 <= 1)
+  {
+    value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
+  }
+  else
+  {
+    value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
+  }
+  cmd = 0x61;
+  gx = __GXData;
+  ptr = (u32 *) __GXData;
+  GXWGFifo.u8 = cmd;
+  value = __rlwimi(value, arg4, 19, 12, 12);
+  value = __rlwimi(value, arg5, 22, 8, 9);
+  GXWGFifo.u32 = value;
+  ptr[(0x170 / 4) + arg0] = value;
+  gx[1] = 0;
 }
 
 #pragma scheduling off

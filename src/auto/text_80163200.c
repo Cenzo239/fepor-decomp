@@ -13650,13 +13650,26 @@ void *fn_80179274(void) {
     return (char *)&gUiMsgStrings + 0x674;
 }
 
-u8 fn_80179284(void) {
-    s32 fn_800C3E54(void *);
-    extern u8 gConvoy[];
-    s32 result = fn_800C3E54(gConvoy);
-    return (u8)(((u32)(-result | result) >> 31) ? 0 : 2);
+#pragma global_optimizer off
+u8 fn_80179284(void)
+{
+  s32 fn_800C3E54(void *);
+  extern u8 gConvoy[];
+  s32 result;
+  s32 ret;
+  s32 tmp;
+  result = fn_800C3E54(gConvoy);
+  ret = 2;
+  tmp = -result;
+  tmp = tmp | result;
+  tmp = (s32) ((((((((((((((u32) tmp) >> 26) >> 5) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF);
+  if (tmp != 0)
+  {
+    ret = 0;
+  }
+  return (u8) ret;
 }
-
+#pragma global_optimizer on
 s32 Ui_ConfirmListCmd80(s32 unused, void *parent, void *entry) {
     /* If the menu entry is locked, show a popup; otherwise set UI cmd 0x80 and advance. */
     void *Process_CreateChild(void *, void *);
@@ -14231,14 +14244,15 @@ extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    s16 ab[2];
-    s16 cd[2];
+    typedef struct { s16 x; s16 y; } Pair;
+    Pair ab;
+    Pair cd;
 
-    cd[0] = arg3;
-    ab[0] = arg1;
-    ab[1] = arg2;
-    cd[1] = arg4;
-    fn_8017A000(arg0, ab, cd, arg5);
+    cd.x = arg3;
+    ab.x = arg1;
+    ab.y = arg2;
+    cd.y = arg4;
+    fn_8017A000(arg0, &ab.x, &cd.x, arg5);
     *(void **)arg0 = gUiPanelExVtbl;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *)arg0)->m28();
@@ -16345,7 +16359,7 @@ void fn_8017CE1C(void *self, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
+void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;

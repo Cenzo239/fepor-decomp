@@ -5241,13 +5241,112 @@ Entry entry = (*(Entry**)(self+0x208))[index];
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_800CDFFC(void *arg0) {
-    extern void fn_80232138(char *, s32);
+#pragma cplusplus reset
+void fn_800CDFFC(void *arg0)
+{
     extern char lbl_802704F8[];
+    extern u32 lbl_8028DA48[];
+    void fn_80232138(const char *, ...);
+    void *String_Destroy(void *, s16);
 
-    (void)arg0;
-    fn_80232138(lbl_802704F8 + 0x3F2, 0);
+    typedef struct {
+        s32 value[10];
+    } RecordValues;
+    typedef struct {
+        u8 reserved[0x30];
+        RecordValues data;
+    } LocalRecord;
+
+    u8 *self;
+    u8 *record;
+    u32 *table;
+    u32 *valueTable;
+    u32 *lookup6c;
+    u32 *lookup78;
+    u32 *lookupb0;
+    s32 count;
+    s32 index;
+    s32 offset;
+    s32 type;
+    s32 field10;
+    s32 field1c;
+    s32 field20;
+    s32 field24;
+    LocalRecord values;
+    s32 string24[3];
+    s32 string18[3];
+
+    self = (u8 *)arg0;
+    table = lbl_8028DA48;
+
+    string24[1] = 0;
+    string18[1] = 0;
+    string24[0] = 0;
+    string24[2] = 0;
+    string24[1] = 0;
+    string18[0] = 0;
+    string18[2] = 0;
+    string18[1] = 0;
+
+    count = *(s32 *)(self + 0x204);
+
+    fn_80232138(lbl_802704F8 + 0x3F2);
+
+    index = 0;
+    offset = 0;
+
+    while (index < count) {
+        record = *(u8 **)(self + 0x208) + offset;
+
+        type = *(s32 *)(record + 0x18);
+        field10 = *(s32 *)(record + 0x10);
+        field1c = *(s32 *)(record + 0x1C);
+        field20 = *(s32 *)(record + 0x20);
+        field24 = *(s32 *)(record + 0x24);
+
+        values.data = *(RecordValues *)(record + 0x30);
+
+        if (type != 12) {
+            lookup6c = (u32 *)((u8 *)table + 0x6C);
+            lookup78 = (u32 *)((u8 *)table + 0x78);
+            lookupb0 = (u32 *)((u8 *)table + 0xB0);
+            fn_80232138(
+                lbl_802704F8 + 0x3F5,
+                index,
+                lookup6c[field10],
+                lookup78[type],
+                lookupb0[field1c],
+                field20,
+                field24
+            );
+
+            valueTable = (u32 *)((u8 *)table + 0xC4);
+
+            fn_80232138(
+                lbl_802704F8 + 0x41E,
+                values.data.value[8],
+                valueTable[values.data.value[0] + 1],
+                valueTable[values.data.value[1] + 1],
+                valueTable[values.data.value[2] + 1],
+                valueTable[values.data.value[3] + 1],
+                values.data.value[9],
+                valueTable[values.data.value[4] + 1],
+                valueTable[values.data.value[5] + 1],
+                valueTable[values.data.value[6] + 1],
+                valueTable[values.data.value[7] + 1]
+            );
+        } else {
+            fn_80232138(lbl_802704F8 + 0x462, index);
+        }
+
+        index++;
+        offset += 0x58;
+    }
+
+    String_Destroy(string18, -1);
+    String_Destroy(string24, -1);
 }
+#pragma cplusplus on
 extern "C" void fn_800CE214(void *self, void *stat) {
     void GActor_RequestRes(char *);
     void fn_800D5DB0(void *, void *, s32, void *);
@@ -7914,26 +8013,25 @@ s32 fn_800D6F0C(void) {
 #pragma scheduling off
 s32 fn_800D6F34(void)
 {
-    extern u8 *lbl_803678A8;
-    extern u8 *lbl_80367898;
+    extern void *lbl_803678A8;
+    extern void *lbl_80367898;
 
-    extern void fn_800D75C4(void *);
-    extern void fn_800D758C(void *);
-    extern s32 fn_8011C9E4(void *);
-    extern void *fn_800DC3B0(void *);
-    extern void fn_800DAAC0(void *, s32);
-    extern void fn_800DA2CC(void *);
+    void fn_800D75C4(void *);
+    void fn_800D758C(void *);
+    s32 fn_8011C9E4(void *);
+    void *fn_800DC3B0(void *);
+    void fn_800DAAC0(void *, s32);
+    void fn_800DA2CC(void *);
 
     fn_800D75C4(lbl_803678A8);
     fn_800D758C(lbl_80367898);
 
     fn_800DAAC0(
         fn_800DC3B0(*(void **)((u8 *)lbl_80367898 + 0x424)),
-        fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428)) != 0
+        !!fn_8011C9E4(*(void **)((u8 *)lbl_80367898 + 0x428))
     );
 
     fn_800DA2CC(lbl_803678A8);
-
     return 0;
 }
 #pragma scheduling reset
@@ -9525,9 +9623,9 @@ void fn_800DA368(void) {
  s32 i;
  void *file;
  s32 count;
- String *entry;
- char *name;
- char *value;
+ u8 *entry;
+ s32 field;
+ char *name,*value;
  self=(u8*)lbl_803678B8;
  path.cap=0;path.size=0;path.data=0;path.cap=0;
  String_AssignCStr(&path,lbl_802711B0+0x12A,strlen(lbl_802711B0+0x12A));
@@ -9537,16 +9635,16 @@ void fn_800DA368(void) {
  if(!file){String_Destroy(&path,-1);return;}
  count=fn_800E5068(*(void**)(self+0x10));
  for(i=0;i<count;i++) {
- entry=(String*)fn_800E5070(*(void**)(self+0x10),i);
+ entry=(u8*)fn_800E5070(*(void**)(self+0x10),i);
  name=String_CStr(entry);
- value=String_CStr(entry+1);
- entry=(String*)*(s32*)(entry+2);
+ value=String_CStr(entry+0xC);
+ field=*(s32*)(entry+0x18);
  fn_801FFD00(file,lbl_802711B0+0x13B);
  fn_801FFD00(file,lbl_802711B0+0x13D);
  fn_801FFD00(file,lbl_802711B0+0x140);
  fn_801FFD00(file,lbl_802711B0+0x153,name);
  fn_801FFD00(file,lbl_802711B0+0x15E,value);
- fn_801FFD00(file,lbl_802711B0+0x16B,(s32)entry);
+ fn_801FFD00(file,lbl_802711B0+0x16B,field);
  fn_801FFD00(file,lbl_802711B0+0x177);
  }
  fn_801FFD00(file,lbl_802711B0+0x17B);
@@ -10455,32 +10553,32 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma optimization_level 3
-void fn_800DBAB8(void *arg0, void *arg1) {
+#pragma use_lmw_stmw on
+void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
+    f32 x;
     f32 y;
     f32 z;
-    f32 x;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 0x59, 0.0174533f * M2C_FIELD(arg1, f32 *, 0x58));
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
-    M2C_FIELD(arg1, f32 *, 0x60) = vec[0];
-    M2C_FIELD(arg1, f32 *, 0x64) = vec[1];
-    M2C_FIELD(arg1, f32 *, 0x68) = vec[2];
-    z = M2C_FIELD(arg1, f32 *, 0x68);
-    y = M2C_FIELD(arg1, f32 *, 0x64);
-    x = M2C_FIELD(arg1, f32 *, 0x60);
-    M2C_FIELD(arg0, f32 *, 0x0) = x;
-    M2C_FIELD(arg0, f32 *, 0x4) = y;
-    M2C_FIELD(arg0, f32 *, 0x8) = z;
+    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
+    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
+    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
+    z = *(f32 *)((u8 *)arg1 + 0x68);
+    y = *(f32 *)((u8 *)arg1 + 0x64);
+    x = *(f32 *)((u8 *)arg1 + 0x60);
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
 }
-#pragma optimization_level reset
+#pragma use_lmw_stmw reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -19919,8 +20017,8 @@ void fn_800EB884(void)
     s32 fn_8021CBC8(void *, void *, s32, s32);
     void fn_800C4588(void *);
 
+    struct { u8 ok; } flag;
     u8 *fileInfo;
-    u8 success;
     volatile u8 *s;
 
     s = gCardStrings;
@@ -19937,14 +20035,14 @@ void fn_800EB884(void)
 
     gCardWork.result = fn_8021BF10(0, (void *)(u8 *)(gCardStrings + 0x70), fileInfo);
 
-    success = 0;
+    flag.ok = 0;
     if (gCardWork.result == 0) {
         if (gCardWork.busy == 0) {
-            success = 1;
+            flag.ok = 1;
         }
     }
 
-    if (success != 0) {
+    if (flag.ok != 0) {
         gCardWork.buffer = fn_800C4638(0x26000, (void *)(u8 *)(gCardStrings + 0x97), 0);
 
         fn_8021C84C(fileInfo, gCardWork.buffer, 0x26000, 0);
@@ -19969,14 +20067,14 @@ void fn_800EB884(void)
             fileInfo
         );
 
-        success = 0;
+        flag.ok = 0;
         if (gCardWork.result == 0) {
             if (gCardWork.busy == 0) {
-                success = 1;
+                flag.ok = 1;
             }
         }
 
-        if (success != 0) {
+        if (flag.ok != 0) {
             gCardWork.result = fn_8021CBC8(
                 fileInfo,
                 gCardWork.buffer,
@@ -19984,14 +20082,14 @@ void fn_800EB884(void)
                 0
             );
 
-            success = 0;
+            flag.ok = 0;
             if (gCardWork.result == 0) {
                 if (gCardWork.busy == 0) {
-                    success = 1;
+                    flag.ok = 1;
                 }
             }
 
-            if (success != 0) {
+            if (flag.ok != 0) {
                 fn_8021C02C(fileInfo);
             }
         }
@@ -29428,10 +29526,10 @@ Map_FloodMoveRange(map,x,y,flags,t14,t15);
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
     u8 temp_r4;
-    u8 var_r5;
-    u8 var_r6;
-    u8 var_r7;
     u8 *p;
 
     if (gBattleState[0x11] != 2) {
@@ -29439,23 +29537,22 @@ u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     }
 
     var_r6 = 1;
-    p = gBattleMap + arg0;
     var_r5 = var_r6;
-    p += arg1 << 6;
     var_r7 = var_r6;
+    p = gBattleMap + arg0;
+    p += arg1 << 6;
     temp_r4 = p[0x100D];
 
-    if ((u8)(temp_r4 - 0x26) <= var_r6) {
-        var_r7 = 1;
+    if ((u8)(temp_r4 - 0x26) <= 1) {
     } else {
         var_r7 = 0;
     }
-    if (var_r7 == 0) {
+    if ((u8)var_r7 == 0) {
         if (temp_r4 != 0x28) {
             var_r5 = 0;
         }
     }
-    if (var_r5 == 0) {
+    if ((u8)var_r5 == 0) {
         if (temp_r4 != 0x2A) {
             var_r6 = 0;
         }

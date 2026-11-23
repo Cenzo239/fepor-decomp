@@ -1033,16 +1033,16 @@ void FileCache_ReleaseByName(char *name) {
 void FileCache_ReleaseByKey(u32 arg0) {
     void FileCache_Release(void *);
     extern u8 gFileCache[];
-    u32 i;
     u8 *e;
-    u8 *found;
+    u32 i;
+    void *found;
 
-    i = 0;
     e = gFileCache;
+    i = 0;
     found = 0;
-    for (; i < 1024; ++i, e += 124) {
-        if (*(u32 *)(e + 56) == arg0) {
-            found = gFileCache + 124 * i;
+    for (; i < 0x400; i++, e += 0x7C) {
+        if (*(u32 *)(e + 0x38) == arg0) {
+            found = gFileCache + i * 0x7C;
             break;
         }
     }

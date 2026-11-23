@@ -157,48 +157,71 @@ void fn_80209E68(void) {
 }
 
 #pragma global_optimizer off
-#pragma opt_common_subs off
-void __OSThreadInit(void) {
-extern u8 _stack_addr[], _stack_end[];
-extern void (*SwitchThreadCallback_80366F50)(void *,void *);
-extern s32 Reschedule_80368520;
-void OSClearStack(s32);
-void OSInitThreadQueue(void *);
-u8 *base;
-u8 *tail;
-u8 **active;
-s32 i;
-u8 *queue;
-u8 *thread;
-base=(u8*)RunQueue_80339478; thread=base+0x418;
-*(u16*)(base+0x6e0)=2; *(u16*)(base+0x6e2)=1;
-*(s32*)(base+0x6ec)=16; *(s32*)(base+0x6e8)=16;
-*(s32*)(base+0x6e4)=0; *(s32*)(base+0x6f0)=-1;
-*(s32*)(base+0x708)=0;
-OSInitThreadQueue(thread+0x2e8);
-*(s32*)(base+0x710)=0; *(s32*)(base+0x70c)=0;
-*(void**)0x800000d8=thread;
-OSClearContext((OSContext*)thread); OSSetCurrentContext((OSContext*)thread);
-*(void**)(base+0x71c)=_stack_addr; *(void**)(base+0x720)=_stack_end;
-**(u32**)(base+0x720)=0xdeadbabe;
-SwitchThreadCallback_80366F50(*(void**)0x800000e4,thread);
-*(void**)0x800000e4=thread;
-OSClearStack(0);
-RunQueueBits_80368518=0; i=0; RunQueueHint_8036851C=0;
-queue=base+i*8;
-do {OSInitThreadQueue(queue); i++; queue+=8;}while(i<=31);
-OSInitThreadQueue((void*)0x800000dc);
-active=(u8**)0x800000dc;
-tail=*++active;
-if(!tail) *(void**)0x800000dc=thread;
-else *(void**)(tail+0x2fc)=thread;
-*(void**)(thread+0x300)=tail;
-*(void**)(thread+0x2fc)=0;
-*active=thread;
-OSClearContext((OSContext*)(base+0x730));
-Reschedule_80368520=0;
+void __OSThreadInit(void)
+{
+  extern u8 _stack_addr[];
+  extern u8 _stack_end[];
+  extern void (*SwitchThreadCallback_80366F50)(void *, void *);
+  extern s32 Reschedule_80368520;
+  void OSClearStack(s32);
+  void OSInitThreadQueue(void *);
+  u8 *base;
+  u8 *tail;
+  int new_var;
+  u8 **active;
+  s32 i;
+  u8 *queue;
+  u8 *thread;
+  base = (u8 *) RunQueue_80339478;
+  thread = base + 0x418;
+  *((u16 *) (base + 0x6e0)) = 2;
+  *((u16 *) (base + 0x6e2)) = 1;
+  *((s32 *) (base + 0x6ec)) = 16;
+  *((s32 *) (base + 0x6e8)) = 16;
+  *((s32 *) (base + 0x6e4)) = 0;
+  *((s32 *) (base + 0x6f0)) = -1;
+  *((s32 *) (base + 0x708)) = 0;
+  OSInitThreadQueue(thread + 0x2e8);
+  *((s32 *) (base + 0x710)) = 0;
+  *((s32 *) (base + 0x70c)) = 0;
+  *((void **) 0x800000d8) = thread;
+  OSClearContext((OSContext *) thread);
+  OSSetCurrentContext((OSContext *) thread);
+  *((void **) (base + 0x71c)) = _stack_addr;
+  *((void **) (base + 0x720)) = _stack_end;
+  *(*((u32 **) (base + 0x720))) = 0xdeadbabe;
+  SwitchThreadCallback_80366F50(*((void **) 0x800000e4), thread);
+  *((void **) 0x800000e4) = thread;
+  OSClearStack(0);
+  new_var = 8;
+  RunQueueBits_80368518 = 0;
+  RunQueueHint_8036851C = 0;
+  i = 0;
+  queue = base + (i * new_var);
+  do
+  {
+    OSInitThreadQueue(queue);
+    i++;
+    queue += new_var;
+  }
+  while (i <= 31);
+  OSInitThreadQueue((void *) 0x800000dc);
+  active = (u8 **) 0x800000dc;
+  tail = *(++active);
+  if (!tail)
+  {
+    *((void **) 0x800000dc) = thread;
+  }
+  else
+  {
+    *((void **) (tail + 0x2fc)) = thread;
+  }
+  *((void **) (thread + 0x300)) = tail;
+  *((void **) (thread + 0x2fc)) = 0;
+  *active = thread;
+  OSClearContext((OSContext *) (base + 0x730));
+  Reschedule_80368520 = 0;
 }
-#pragma opt_common_subs reset
 #pragma global_optimizer reset
 void OSInitThreadQueue(void *arg0) {
     M2C_FIELD(arg0, s32 *, 4) = 0;

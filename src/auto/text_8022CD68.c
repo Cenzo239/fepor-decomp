@@ -228,31 +228,33 @@ return i;
 return -1;
 }
 
+#pragma peephole off
 void fn_8022CDD0(void *arg0) {
-u32 OSGetArenaLo(void);
-u32 OSGetArenaHi(void);
-void OSSetArenaLo(u32);
-void OSReport(const char *,...);
-u32 fn_80204CE4(u32,u32,s32);
-s32 fn_80204D54(u32,u32);
-void fn_80204CD4(s32);
-void fn_80204C58(s32,void *);
-u32 lo, hi;
-if (lbl_80366F28 == -1) {
-OSReport(lbl_80282AE8);
-OSReport(lbl_80282B20);
-lo=OSGetArenaLo();
-hi=OSGetArenaHi();
-lo=fn_80204CE4(lo,hi,1);
-hi &= ~31;
-OSSetArenaLo(lo);
-lo=(lo+31)&~31;
-fn_80204CD4(fn_80204D54(lo,hi));
-OSSetArenaLo(hi);
-}
-fn_80204C58(lbl_80366F28,arg0);
-}
+    u32 OSGetArenaLo(void);
+    u32 OSGetArenaHi(void);
+    void OSSetArenaLo(u32);
+    void OSReport(const char *, ...);
+    u32 fn_80204CE4(u32, u32, s32);
+    s32 fn_80204D54(u32, u32);
+    void fn_80204CD4(s32);
+    void fn_80204C58(s32, void *);
+    u32 lo, hi;
 
+    if (lbl_80366F28 == -1) {
+        OSReport(lbl_80282AE8);
+        OSReport(lbl_80282B20);
+        lo = OSGetArenaLo();
+        hi = OSGetArenaHi();
+        lo = fn_80204CE4(lo, hi, 1);
+        OSSetArenaLo(lo);
+        lo = (lo + 31) & ~31;
+        hi &= ~31;
+        fn_80204CD4(fn_80204D54(lo, hi));
+        OSSetArenaLo(hi);
+    }
+    fn_80204C58(lbl_80366F28, arg0);
+}
+#pragma peephole on
 void exit(void) {
     void __begin_critical_region(s32);
     void __end_critical_region(s32);

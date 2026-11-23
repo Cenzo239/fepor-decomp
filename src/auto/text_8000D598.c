@@ -860,6 +860,7 @@ case 48: { u8 *digits; s16 shift,digi; s32 val; u8 n;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
 scale=(f32)(u32)val*lbl_80368BE0;scale2=scale;continue;
 }
+case 80:scale=lbl_80368BDC;scale2=scale;continue;
 case 53: { u8 *digits; s16 shift,digi; s32 val; u8 n;
 
                     digits = (u8 *)__alloca(8);
@@ -875,6 +876,7 @@ case 53: { u8 *digits; s16 shift,digi; s32 val; u8 n;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
 scale2=(f32)(u32)val*lbl_80368BE0;continue;
 }
+case 85:scale2=lbl_80368BDC;continue;
 case 54: { u8 *digits; s16 shift,digi; s32 val; u8 n;
 
                     digits = (u8 *)__alloca(8);
@@ -890,6 +892,7 @@ case 54: { u8 *digits; s16 shift,digi; s32 val; u8 n;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
 scale=(f32)(u32)val*lbl_80368BE0;continue;
 }
+case 86:scale=lbl_80368BDC;continue;
 case 38: { u8 *digits; s16 shift,digi; s32 val; u8 n;
 
                     digits = (u8 *)__alloca(8);
@@ -905,9 +908,6 @@ case 38: { u8 *digits; s16 shift,digi; s32 val; u8 n;
                     while (digi >= 0) { val += digits[digi] << shift; digi -= 1; shift += 4; }
 fpad1=(f32)(u32)val*lbl_80368BE4;continue;
 }
-case 80:scale=lbl_80368BDC;scale2=scale;continue;
-case 85:scale2=lbl_80368BDC;continue;
-case 86:scale=lbl_80368BDC;continue;
 case 70:fpad1=lbl_80368BE8;continue;
 case 45: { u8 *digits; s16 shift,digi; s32 val; u8 n;
 
@@ -974,7 +974,13 @@ default:break;
             extern f32 lbl_80368BF4;
             f32 iconY;
             (*(void (**)(void *))(*(u32 *)obj+0xc))(obj);
-            iconY=((f32)fn_80104E40()*sy-lbl_80368BF4)*lbl_80368BF0+ypos;
+            {
+                f32 glyphAdvance = (f32)fn_80104E40();
+                f32 offset = lbl_80368BF4;
+                f32 multiplier = lbl_80368BF0;
+                f32 delta = (glyphAdvance * sy) - offset;
+                iconY = ypos + multiplier * delta;
+            }
             modulated[0]=modulated[1]=modulated[2]=(u8)alpha_scaled;
             modulated[3]=(u8)((upper[3]+lower[3]+1)>>1);
             (*(void (**)(void *,s32,void *,f32,f32,f32))(*(u32 *)obj+0x1c))(obj,ctr,modulated,xpos,iconY,zpos);

@@ -919,21 +919,21 @@ s32 fn_80213530(s32 arg0)
   s32 fn_8023ABD4();
   extern s32 lbl_80366FA4;
   extern u32 lbl_80368670;
-  int new_var2;
   extern u32 lbl_80368688;
   extern s32 lbl_8036868C;
   s32 var_r31;
   s32 var_r3;
-  if (((u32) lbl_80368688) != 0U)
+  u32 t;
+  if (lbl_80368688 != 0U)
   {
     fn_8021364C(0);
   }
   if (arg0 == 0)
   {
+    t = lbl_80368670;
     var_r31 = 0;
-    var_r3 = var_r31;
-    new_var2 = ((u32) lbl_80368670) == 0U;
-    if (new_var2 && (((s32) lbl_80366FA4) == 0x20))
+    var_r3 = (s32)(s16)var_r31;
+    if (t == 0 && lbl_80366FA4 == 0x20)
     {
       var_r3 = 1;
     }
@@ -942,10 +942,10 @@ s32 fn_80213530(s32 arg0)
     {
       var_r31 = new_var;
     }
-    if ((((s32) lbl_8036868C) == 0) && (var_r31 != 0))
+    if ((lbl_8036868C == 0) && (var_r31 != 0))
     {
       lbl_8036868C = fn_8021275C(0xF0000000);
-      return (int) 0;
+      return 0;
     }
     return var_r31;
   }

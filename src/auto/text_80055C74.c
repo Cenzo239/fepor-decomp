@@ -1789,18 +1789,22 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     return dx;
 }
 #pragma optimize_for_size reset
-f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
-  extern f32 lbl_80369104;
+f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
+{
+  extern const f32 lbl_80369104;
   extern const f32 lbl_8036912C;
-  extern f32 lbl_8036915C;
-  extern const f64 lbl_80369160;
+  extern const f32 lbl_8036915C;
   f32 temp_f6;
   f32 temp_f12;
   f32 temp_f10;
+  f32 h00;
+  f32 h01;
   temp_f12 = lbl_80369104 * farg4;
   temp_f10 = farg4 - lbl_8036912C;
   temp_f6 = lbl_8036912C - farg4;
-  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (lbl_80369160 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (lbl_80369160 * ((f64) (farg2 - farg0)))) + ((f64) ((((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10)) * farg1) + (((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4)) * farg2)))));
+  h01 = ((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4));
+  h00 = ((lbl_8036912C + temp_f12) * (temp_f10 * temp_f10));
+  return (f32) ((((f64) (farg4 * (temp_f10 * farg4))) * (0.5 * ((f64) (farg3 - farg1)))) + ((((f64) (farg4 * (temp_f6 * temp_f6))) * (0.5 * ((f64) (farg2 - farg0)))) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
 
 #pragma use_lmw_stmw on

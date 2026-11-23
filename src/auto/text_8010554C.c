@@ -2786,8 +2786,8 @@ void fn_8010913C(void *arg0) {
     }
 }
 
-void *Sound_Create(s32 arg0, unsigned arg1) {
-    void *Process_Create(void *, unsigned);
+void *Sound_Create(s32 arg0, u32 arg1) {
+    void *Process_Create(void *, u32);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];
     void *tbl;
@@ -2795,10 +2795,8 @@ void *Sound_Create(s32 arg0, unsigned arg1) {
 
     tbl = lbl_8028F390;
     switch (arg1) {
-    case 0u:
-        arg1 = 3u;
-        break;
-    default:
+    case 0:
+        arg1 = 3U;
         break;
     }
     result = Process_Create(tbl, arg1);
@@ -3542,6 +3540,7 @@ void fn_8010A4D4(void *arg0) {
     s32 dest;
 
     p = arg0;
+    out = (u8 *)lbl_80312060;
     dest = 0;
     i = 0;
     while (i < *(s16 *)((char *)arg0 + 8)) {
@@ -3549,8 +3548,9 @@ void fn_8010A4D4(void *arg0) {
         default:
             break;
         case 0: {
-            off = (s8)dest * 6;
+            off = (s8)dest;
             c = *(u8 *)(p + 0x10);
+            off *= 6;
             b = *(s16 *)(p + 0xC);
             a = *(s16 *)(p + 0xA);
             dest++;
@@ -6697,15 +6697,15 @@ void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
 
     temp_r9 = *(u16 *)((char *)arg4 + 0xE);
     temp_r10 = *(u8 *)((char *)arg4 + 0x18);
-    zero = (s8)(temp_r9 & ~temp_r9);
     temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
     temp_r8[0] = arg1;
     temp_r8[1] = arg2;
     temp_r8[2] = 7;
     temp_r8[3] = arg3;
+    zero = (s8)(temp_r9 & ~temp_r9);
     temp_r8[0xA] = zero;
     *(s32 *)((char *)arg0 + 0x200) = *(s32 *)((char *)arg0 + 0x200) + 1;
-    temp_r8[4] = temp_r9;
+    temp_r8[4] = (s8)temp_r9;
     temp_r8[5] = temp_r10;
     temp_r8[6] = zero;
     temp_r8[7] = zero;

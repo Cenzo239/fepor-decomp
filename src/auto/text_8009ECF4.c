@@ -49,7 +49,7 @@ void fn_8009ECF4(s32 arg0) {
     fn_801E32C4(&gSaveDataBase, arg0);
 }
 
-#pragma optimization_level 2
+#pragma global_optimizer off
 void fn_8009ED1C(void) {
     s32 DebugPrint(const char *, ...);
     s32 Card_GetResult(void);
@@ -68,8 +68,8 @@ void fn_8009ED1C(void) {
 
     if (Card_GetResult() == 0 || Card_GetResult() == -0x42) {
         DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        base = gMenuCmdStrings;
         i = 0;
+        base = gMenuCmdStrings;
         do {
             DebugPrint((const char *)(base + 0x1C6), i);
             obj = Save_GetSmallSlot(&gSaveDataBase, i);
@@ -86,12 +86,12 @@ void fn_8009ED1C(void) {
             i += 1;
         } while (i < 6);
         DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        base = gMenuCmdStrings;
         i = 0;
+        base = gMenuCmdStrings;
         do {
             DebugPrint((const char *)(base + 0x220), i);
             obj = fn_801E2324(&gSaveDataBase, i);
-            if (obj == NULL) {
+            if (!obj) {
                 DebugPrint((const char *)(gMenuCmdStrings + 0x227));
             } else {
                 b = *((u8 *)obj + 0x62);
@@ -100,8 +100,8 @@ void fn_8009ED1C(void) {
             i += 1;
         } while (i < 5);
         DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        base = gMenuCmdStrings;
         i = 0;
+        base = gMenuCmdStrings;
         do {
             DebugPrint((const char *)(base + 0x23D), i);
             obj = Save_GetLargeSlot(&gSaveDataBase, i);
@@ -122,7 +122,7 @@ void fn_8009ED1C(void) {
     }
     SaveData_Release(&gSaveDataBase);
 }
-#pragma optimization_level reset
+#pragma global_optimizer on
 void fn_8009F000(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
     fn_801E3118(&gSaveDataBase, arg0, 0);

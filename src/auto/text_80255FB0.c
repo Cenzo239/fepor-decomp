@@ -598,4 +598,4 @@ s32 Sound_LookupVid(u32 arg0)
   }
   return -1;
 }
-#pragma peephole reset
+#pragma peephole on

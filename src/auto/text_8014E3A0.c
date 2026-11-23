@@ -5236,7 +5236,7 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     void Prim2D_EndPrim(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
-    void Prim2D_SetColorPacked(void *);
+    void Prim2D_SetColorPacked(s32 *);
     void Prim2D_AddZ(f32);
     s32 Prim2D_PushZ(f32 *);
     void Prim2D_PopZ(s32, f32);
@@ -5254,18 +5254,22 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     extern f32 lbl_8036A888;
     extern f64 lbl_8036A868;
     f32 sp14;
+    u8 sp10[4];
+    s32 spC;
+    u8 sp8;
     s32 handle;
-    u8 color[4];
     s16 x, y, x2, y2;
     s16 t14, t18, t19, t20;
     s16 w, h, px, py;
-    s32 packed;
     s16 *p38;
     s16 *p58;
+    s16 *pDB0;
     f64 magic;
 
     magic = lbl_8036A868;
     (void)magic;
+    sp8 = arg4;
+    sp10[3] = arg4;
     x = arg0;
     y = arg1;
     x2 = (s16)(x + arg2);
@@ -5297,15 +5301,16 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     }
 
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x54);
-    h = (s16)(lbl_80367DB0.f6 - lbl_80367DB0.f2);
-    w = (s16)(lbl_80367DB0.f4 - lbl_80367DB0.f0);
+    pDB0 = (s16 *)&lbl_80367DB0;
+    w = (s16)(pDB0[2] - lbl_80367DB0.f0);
     px = (s16)(x2 - w);
+    h = (s16)(pDB0[3] - pDB0[1]);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg5 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)px, (f32)arg1, (f32)lbl_80367DB0.f0, (f32)lbl_80367DB0.f2, (f32)w, (f32)h);
+        Prim2D_SetRectUv((f32)px, (f32)arg1, (f32)lbl_80367DB0.f0, (f32)pDB0[1], (f32)w, (f32)h);
         Prim2D_EndPrim();
     }
 
@@ -5377,7 +5382,7 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
 
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x50);
     w = (s16)(lbl_80367D90.f4 - lbl_80367D90.f0);
-    py = (s16)(y + (s16)(lbl_80367DB0.f6 - lbl_80367DB0.f2));
+    py = (s16)(y + (s16)(pDB0[3] - pDB0[1]));
     if (w != 0 && t18 != 0) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg5 | 1));
@@ -5394,10 +5399,9 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x55);
     h = (s16)(y2 - y);
     w = (s16)((s16)(x2 - 1) - px);
-    color[0] = 0xFF;
-    color[1] = 0xFF;
-    color[2] = 0xFF;
-    color[3] = arg4;
+    sp10[0] = 0xFF;
+    sp10[1] = 0xFF;
+    sp10[2] = 0xFF;
     if (w != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg5 | 1));
@@ -5407,8 +5411,8 @@ void Ui_DrawListWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32
         Prim2D_SetUvRect((f32)lbl_80368000.f0, (f32)lbl_80368000.f2,
                     (f32)(s16)(lbl_80368000.f4 - lbl_80368000.f0),
                     (f32)(s16)(lbl_80368000.f6 - lbl_80368000.f2));
-        packed = *(s32 *)color;
-        Prim2D_SetColorPacked(&packed);
+        spC = *(s32 *)sp10;
+        Prim2D_SetColorPacked(&spC);
         Prim2D_EndPrim();
     }
     Prim2D_PopZ(handle, sp14);

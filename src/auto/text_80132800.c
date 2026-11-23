@@ -572,7 +572,7 @@ extern "C" void fn_80132FD0(void *arg0) {
     extern s32 gUiInputFlags;
     extern void *gPadInput;
     s16 temp_r0;
-    s16 temp_r31;
+    s32 temp_r31;
     s32 temp_r3_2;
     s32 temp_r4;
     s16 temp_r5;
@@ -592,10 +592,10 @@ extern "C" void fn_80132FD0(void *arg0) {
     temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x30)(arg0);
     temp_r8 = M2C_FIELD(arg0, s16 *, 0x3E);
     var_r3 = 0;
-    var_r7 = (s16) (temp_r8 / temp_r31);
-    temp_r6 = temp_r31 + temp_r5;
-    temp_r6 = (s16)((temp_r6 - 1) / temp_r31);
-    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % temp_r31;
+    var_r7 = (s16) (temp_r8 / (s16) temp_r31);
+    temp_r6 = (s16) temp_r31 + temp_r5;
+    temp_r6 = (s16)((temp_r6 - 1) / (s16) temp_r31);
+    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % (s16) temp_r31;
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         var_r3 = 1;
     }
@@ -612,10 +612,10 @@ extern "C" void fn_80132FD0(void *arg0) {
                 M2C_FIELD(arg0, s16 *, 0x3E) = 2;
             }
         } else {
-            if (temp_r31 > 1) {
-                var_r12 = temp_r5 - (var_r7 * temp_r31);
-                if (var_r12 > temp_r31) {
-                    var_r12 = temp_r31;
+            if ((s16) temp_r31 > 1) {
+                var_r12 = temp_r5 - (var_r7 * (s16) temp_r31);
+                if (var_r12 > (s16) temp_r31) {
+                    var_r12 = (s16) temp_r31;
                 }
                 if (temp_r0_2 & 0x01000001) {
                     if (temp_r0 > 0) {
@@ -637,20 +637,20 @@ extern "C" void fn_80132FD0(void *arg0) {
                 if (var_r7 == 0) {
                     if (temp_r0_2 == temp_r3) {
                         temp_r4 = temp_r5 - 1;
-                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + ((temp_r6 - 1) * temp_r31));
+                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + ((temp_r6 - 1) * (s16) temp_r31));
                         if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r4) {
                             M2C_FIELD(arg0, s16 *, 0x3E) = temp_r4;
                         }
                     }
                 } else {
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - temp_r31);
+                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - (s16) temp_r31);
                 }
             } else if (temp_r0_2 & 0x04000004) {
                 if (var_r7 == (s32) (temp_r6 - 1)) {
                     M2C_FIELD(arg0, s16 *, 0x3E) = 4;
                 } else {
                     temp_r3_2 = temp_r5 - 1;
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + temp_r31);
+                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + (s16) temp_r31);
                     if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r3_2) {
                         M2C_FIELD(arg0, s16 *, 0x3E) = temp_r3_2;
                     }
@@ -1485,7 +1485,6 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     s32 temp_r29;
     s16 temp_r28;
     s16 temp_r27;
-    Obj *self;
     s16 x1;
     s16 y1;
     s16 y2;
@@ -1494,6 +1493,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     s16 cy;
     s32 i;
     s32 startX;
+    Obj *self;
 
     self = (Obj *)arg0;
     startX = arg1;
@@ -1570,89 +1570,108 @@ extern "C" void fn_8013475C(void *arg0) {
     extern u8 lbl_802764BC[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
-    s16 temp_r0;
-    s16 temp_r31;
-    s32 temp_r3_2;
-    s32 temp_r4;
-    s16 temp_r5;
-    s16 temp_r6;
-    s32 var_r11;
-    s32 temp_r0_2;
-    s32 temp_r10;
-    s32 temp_r11;
-    s32 temp_r3;
-    s32 temp_r6_2;
-    s32 var_r9;
-    u8 var_r3;
-    s16 previous;
-    s16 var_r7;
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual s16 v10() = 0;
+        u8 pad4[0x3A];
+        s16 unk3E;
+        u8 pad40[4];
+        s16 unk44;
+    };
+    s16 cols;
+    s16 count;
+    s16 cursor;
+    s16 row;
+    s16 rows;
+    s16 rem;
+    s32 cols32;
+    s32 count32;
+    s32 width;
+    s32 held;
+    s32 trig;
+    s32 repeat;
+    s32 edge;
+    s32 lastRow;
+    s32 tmp;
+    s32 cols_cmp;
+    u8 skip;
+    s16 prev;
 
-    temp_r31 = M2C_FIELD(arg0, s16 *, 0x44);
-    temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0), s32 (**)(void *), 0x30)(arg0);
-    var_r3 = 0;
-    var_r7 = (s16) ((s16) M2C_FIELD(arg0, s16 *, 0x3E) / temp_r31);
-    temp_r6 = (s16) ((s32) ((temp_r31 + temp_r5) - 1) / temp_r31);
-    temp_r0 = M2C_FIELD(arg0, s16 *, 0x3E) % temp_r31;
+    cols = ((Obj *)arg0)->unk44;
+    count = ((Obj *)arg0)->v10();
+    skip = 0;
+    cursor = ((Obj *)arg0)->unk3E;
+    cols32 = cols;
+    count32 = count;
+    row = (s16)(cursor / cols32);
+    rows = (s16)((cols32 + count32 + -1) / cols32);
+    rem = (s16)(cursor - row * cols32);
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
-        var_r3 = 1;
+        skip = 1;
     }
-    if (var_r3 == 0) {
-        previous=M2C_FIELD(arg0, s16 *, 0x3E);
-        temp_r11 = M2C_FIELD(gPadInput, s32 *, 4);
-        temp_r0_2 = M2C_FIELD(gPadInput, s32 *, 0xC);
-        temp_r3 = temp_r11 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r11);
-        if (temp_r31 > 1) {
-            var_r11 = temp_r5 - (var_r7 * temp_r31);
-            if (var_r11 > temp_r31) {
-                var_r11 = temp_r31;
+    if (skip == 0) {
+        prev = ((Obj *)arg0)->unk3E;
+        held = *(s32 *)((u8 *)gPadInput + 4);
+        repeat = *(s32 *)((u8 *)gPadInput + 0xC);
+        trig = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
+        cols_cmp = cols;
+        if (cols_cmp > 1) {
+            width = count32 - (row * cols32);
+            if (width > cols32) {
+                width = cols_cmp;
             }
-            if (temp_r0_2 & 0x01000001) {
-                if (temp_r0 > 0) {
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - 1);
-                } else if (temp_r0_2 == temp_r3) {
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) ((var_r11 + M2C_FIELD(arg0, s16 *, 0x3E)) - 1);
+            if (repeat & 0x01000001) {
+                if (rem > 0) {
+                    ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E - 1);
+                } else if (repeat == trig) {
+                    tmp = width + ((Obj *)arg0)->unk3E;
+                    ((Obj *)arg0)->unk3E = (s16)(tmp - 1);
                 }
-            } else if (temp_r0_2 & 0x02000002) {
-                temp_r10 = var_r11 - 1;
-                if (temp_r0 < temp_r10) {
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + 1);
-                } else if (temp_r0_2 == temp_r3) {
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - temp_r10);
+            } else if (repeat & 0x02000002) {
+                edge = width - 1;
+                if (rem < edge) {
+                    ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E + 1);
+                } else if (repeat == trig) {
+                    ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E - edge);
                 }
             }
         }
-        var_r9 = temp_r0_2 & 0x08000008;
-        if (var_r9 != 0) {
-            
-            if (var_r7 == 0) {
-                if (temp_r0_2 == temp_r3) {
-                    temp_r4 = temp_r5 - 1;
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + ((temp_r6 - 1) * temp_r31));
-                    if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r4) {
-                        M2C_FIELD(arg0, s16 *, 0x3E) = temp_r4;
+        if (repeat & 0x08000008) {
+            if (row == 0) {
+                if (repeat == trig) {
+                    tmp = count32 - 1;
+                    ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E + ((rows - 1) * cols32));
+                    if (((Obj *)arg0)->unk3E > tmp) {
+                        ((Obj *)arg0)->unk3E = (s16)tmp;
                     }
                 }
             } else {
-                M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - temp_r31);
+                ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E - cols);
             }
-        } else {
-            var_r9 = temp_r0_2 & 0x04000004;
-            if (var_r9 != 0) {
-                temp_r6_2 = temp_r6 - 1;
-                if (var_r7 == temp_r6_2) {
-                    if (temp_r0_2 == temp_r3) {
-                        M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) - (temp_r6_2 * temp_r31));
-                    }
-                } else {
-                    temp_r3_2 = temp_r5 - 1;
-                    M2C_FIELD(arg0, s16 *, 0x3E) = (s16) (M2C_FIELD(arg0, s16 *, 0x3E) + temp_r31);
-                    if ((s16) M2C_FIELD(arg0, s16 *, 0x3E) > temp_r3_2) {
-                        M2C_FIELD(arg0, s16 *, 0x3E) = temp_r3_2;
-                    }
+        } else if (repeat & 0x04000004) {
+            lastRow = rows - 1;
+            if (row == lastRow) {
+                if (repeat == trig) {
+                    ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E - (lastRow * cols32));
+                }
+            } else {
+                tmp = count32 - 1;
+                ((Obj *)arg0)->unk3E = (s16)(((Obj *)arg0)->unk3E + cols);
+                if (((Obj *)arg0)->unk3E > tmp) {
+                    ((Obj *)arg0)->unk3E = (s16)tmp;
                 }
             }
         }
-        if (previous != M2C_FIELD(arg0, s16 *, 0x3E)) {
+        if (prev != ((Obj *)arg0)->unk3E) {
             Ui_PlaySeCue(lbl_802764BC + 0x1DF, 0x64);
         }
     }
@@ -2048,16 +2067,18 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     s16 ax;
     s16 ay;
     Obj *self;
+    s16 pad;
+    u8 *str;
     u8 *p;
     s32 arg;
     s16 w;
     s16 h;
-    s16 pad;
     u8 *end;
     u8 done;
     s32 buf[3];
-    u8 ch;
+    s32 ch;
     s16 *rect;
+    s32 tmp;
 
     self = (Obj *)arg0;
     arg = arg1;
@@ -2086,8 +2107,10 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
     pad = (s16)((0x1A - Text_MeasureHeight(-1, lbl_8036A5DC)) >> 1);
-    ay = (s16)(pad + (Text_MeasureHeight(-1, lbl_8036A5DC) * 2 + ay));
+    tmp = Text_MeasureHeight(-1, lbl_8036A5DC) * 2 + ay;
+    ay = (s16)(pad + tmp);
     p = fn_801057BC(saved);
+    str = lbl_80276720;
     for (;;) {
         done = 0;
         buf[1] = 0;
@@ -2095,15 +2118,18 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
         buf[2] = 0;
         buf[1] = 0;
         while (done == 0) {
-            ch = *p;
-            if ((s8)ch != 0xA) {
-                if ((s8)ch >= 0xA) {
-                    goto copy_run;
-                }
-                if ((s8)ch != 0) {
-                    goto copy_run;
-                }
+            ch = (s8)*p;
+            if (ch == 0xA) {
+                goto newline;
             }
+            if (ch >= 0xA) {
+                goto copy_run;
+            }
+            if (ch == 0) {
+                goto newline;
+            }
+            goto copy_run;
+        newline:
             fn_800C9874(buf, 1, 0);
             done = 1;
             continue;
@@ -2114,19 +2140,18 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
                 p += 1;
             } while (p != end);
         }
-        Text_Draw(ax, ay, 1, lbl_80276720 + 0x1D, String_CStr(buf));
+        Text_Draw(ax, ay, 1, str + 0x1D, String_CStr(buf));
         ch = *p;
-        if ((s32)ch == 0xA) {
+        if (ch == 0xA) {
             ay += 0x1A;
             String_Destroy(buf, -1);
-            p += 1;
-        } else if ((s8)ch != 0) {
-            String_Destroy(buf, -1);
-            p += 1;
-        } else {
+        } else if ((s8)ch == 0) {
             String_Destroy(buf, -1);
             break;
+        } else {
+            String_Destroy(buf, -1);
         }
+        p += 1;
     }
     Prim2D_Begin();
     Prim2D_ClearCallbacks();
@@ -2462,11 +2487,11 @@ extern "C" void fn_80135AC0(void *self, void *other) {
         PTMF ptmf;
         void *arg;
     };
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    void Ui_DrawRouteIconEx(s16, s32, u8);
+    void fn_8000A258(void);
+    void fn_80009C0C(f32);
+    void fn_8000A248(void);
+    s32 fn_800102BC(s32, f32);
+    void fn_8008BF68(s16, s32, u8);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, u8);
     extern u8 lbl_80291854[];
     extern f32 lbl_8036A5F4;
@@ -2518,8 +2543,7 @@ extern "C" void fn_80135AC0(void *self, void *other) {
     }
     if (*(u8 *)((u8 *)self + 0x4C) != 0 && *(u32 *)((u8 *)self + 0x68) != 0) {
         r31 = 0;
-        flag = 0;
-        flag += r31;
+        flag = r31;
         if (*(u8 *)((u8 *)other + 0x2D) == 0) {
             if (*(u8 *)((u8 *)other + 0x2E) == 0) {
                 flag = 1;
@@ -2535,15 +2559,15 @@ extern "C" void fn_80135AC0(void *self, void *other) {
                 r31 = 1;
             }
         }
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A5F4);
-        Prim2D_PrepareTex();
-        Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 0x50),
-                    *(s16 *)((u8 *)self + 0x52) + (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036A5DC)) >> 1),
+        fn_8000A258();
+        fn_80009C0C(lbl_8036A5F4);
+        fn_8000A248();
+        fn_8008BF68(*(s16 *)((u8 *)self + 0x50),
+                    *(s16 *)((u8 *)self + 0x52) + (s16)((0x20 - fn_800102BC(-1, lbl_8036A5DC)) >> 1),
                     r31);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A5F8);
-        Prim2D_PrepareTex();
+        fn_8000A258();
+        fn_80009C0C(lbl_8036A5F8);
+        fn_8000A248();
         fn_8008AB7C((r30 >> 1) + (r29 - *(s16 *)((u8 *)self + 0x5C)),
                     r28 + 0x10, r30, 0x18, 0x19, 0x4C, r31);
     }
@@ -2766,51 +2790,31 @@ s32 fn_801362C8(void *arg0) {
 }
 
 #pragma scheduling on
-void fn_80136320(s32 *arg0, void *arg1) {
-    struct Point {
-        s16 x;
-        s16 y;
-    };
-    struct Point *fn_8013F748(void *, s32 *, struct Point *);
-    struct Point in;
+void fn_80136320(s32 *arg0, s16 *arg1) {
+    s32 *fn_8013F748(s16 *, s32 *, s16 *);
+    s16 in[2];
     s32 out;
-    s16 v56;
-    s16 v4e;
-    s32 quot;
-    s16 v12;
-    s16 v16;
-    s32 diff;
-    s16 v54;
-    s16 v5e;
-    s16 v5c;
-    s32 t;
-    s32 hdiv;
-    s32 rem;
-
-    v56 = *(s16 *)((u8 *)arg1 + 0x56);
-    v4e = *(s16 *)((u8 *)arg1 + 0x4E);
-    quot = v4e / v56;
-    v12 = *(s16 *)((u8 *)arg1 + 0x12);
-    v16 = *(s16 *)((u8 *)arg1 + 0x16);
-    diff = v16 - v12;
-    v54 = *(s16 *)((u8 *)arg1 + 0x54);
-    v5e = *(s16 *)((u8 *)arg1 + 0x5E);
-    v5c = *(s16 *)((u8 *)arg1 + 0x5C);
-    t = (s16)diff;
-    rem = (s16)quot;
-    rem = rem - v54;
-    rem = (s16)rem;
-    rem = rem << 5;
-    v5e = rem + v5e;
-    hdiv = t / v56;
-    in.y = v5e;
-    rem = quot * v56;
-    t = (s16)hdiv;
-    rem = v4e - rem;
-    rem = (s16)rem;
-    rem = t * rem;
-    in.x = rem + v5c;
-    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
+    s16 v56 = arg1[0x56 / 2];
+    s16 *self = arg1;
+    s16 v4e = arg1[0x4E / 2];
+    s32 quot = v4e / v56;
+    s16 v12 = self[0x12 / 2];
+    s16 v16 = self[0x16 / 2];
+    s32 diff = v16 - v12;
+    s16 v54 = self[0x54 / 2];
+    s16 v5e = self[0x5E / 2];
+    s16 v5c = self[0x5C / 2];
+    s32 t = (s16)diff;
+    s32 rem = (s16)((s16)quot - v54);
+    rem = (s16)rem << 5;
+    in[1] = rem + v5e;
+    {
+        s32 hdiv = t / v56;
+        rem = v4e - quot * v56;
+        rem = (s16)hdiv * (s16)rem;
+        in[0] = rem + v5c;
+    }
+    *arg0 = *fn_8013F748(self, &out, in);
 }
 #pragma scheduling reset
 void *fn_801363C4(void *arg0, s16 arg1) {
@@ -3096,7 +3100,7 @@ halfHeight=((Sub *)(self+0x74))->height()>>1;
 extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
     struct Sub { virtual void v0() = 0; virtual void v1(s32, s32, f32) = 0; };
     extern u8 lbl_8028FDB0[]; extern u8 lbl_80292230[]; extern u8 lbl_80291914[];
-    extern u8 lbl_80295478[]; extern u8 lbl_802918E0[];
+    extern u8 gEmptyVtbl[]; extern u8 lbl_802918E0[];
     extern f32 lbl_8036A5DC; extern f32 lbl_8036A5E4;
     s32 temp_r31; void *temp_r30; void *temp_r29; s32 temp_r28; void *temp_r27;
     s32 flag; s32 a; s32 b; f32 f0; f32 f;
@@ -3134,7 +3138,7 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     *(s16 *)((u8 *)temp_r30 + 0x40) = (s16)temp_r28;
     *(s32 *)((u8 *)temp_r30 + 0x44) = temp_r31;
     *(s32 *)((u8 *)temp_r30 + 0x48) = temp_r28;
-    *(void **)temp_r29 = lbl_80295478;
+    *(void **)temp_r29 = gEmptyVtbl;
     *(s32 *)((u8 *)temp_r30 + 0x50) = temp_r28;
     if (temp_r31 == 0) flag = temp_r28;
     *(s32 *)((u8 *)temp_r29 + 8) = flag;
@@ -3155,7 +3159,7 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     temp_r27 = (u8 *)temp_r30 + 0x74;
     *(u8 *)((u8 *)temp_r29 + 0xD) = 0;
     flag = 3;
-    *(void **)temp_r27 = lbl_80295478;
+    *(void **)temp_r27 = gEmptyVtbl;
     *(s32 *)((u8 *)temp_r30 + 0x78) = 0;
     if (temp_r31 == 0) flag = 1;
     *(s32 *)((u8 *)temp_r27 + 8) = flag;
@@ -4358,7 +4362,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
         s16 t62 = *(s16 *)((u8 *)self + 0x62);
         s32 quot = t4e / t58;
         s16 t52 = *(s16 *)((u8 *)self + 0x52);
-        s16 t62m = t62 - 0x20;
+        s32 t62m = t62 - 0x20;
         s16 t56 = *(s16 *)((u8 *)self + 0x56);
         t5a = *(s16 *)((u8 *)self + 0x5A);
         s16 t64 = *(s16 *)((u8 *)self + 0x64);
@@ -4398,7 +4402,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
         {
             s32 h = fn_800102BC(-1, lbl_8036A674);
             s16 xpos = *(s16 *)((u8 *)self + 0x52);
-            h = ((s16)t24 - h) >> 1;
+            h = ((s32)(s16)t24 - h) >> 1;
             s16 ypos = *(s16 *)((u8 *)self + 0x54);
             fn_8008BF68((s16)(xpos + 0x20), ypos + h, r30);
         }
@@ -4960,18 +4964,23 @@ extern "C" void fn_80139B3C(void *self, void *other) {
     ((Obj *)self)->v3();
     r29 = ((Obj *)self)->v11();
     {
-        s16 t4e = *(s16 *)((u8 *)self + 0x4E);
-        s16 t58 = *(s16 *)((u8 *)self + 0x58);
-        s16 t52 = *(s16 *)((u8 *)self + 0x52);
-        s32 quot = t4e / t58;
-        s16 t56 = *(s16 *)((u8 *)self + 0x56);
+        s16 t56;
+        s16 t62;
+        s16 t58;
+        s16 t4e;
+        s16 t52;
+        s32 quot;
+        s16 t64;
+        t4e = *(s16 *)((u8 *)self + 0x4E);
+        t58 = *(s16 *)((u8 *)self + 0x58);
+        t52 = *(s16 *)((u8 *)self + 0x52);
+        quot = t4e / t58;
+        t56 = *(s16 *)((u8 *)self + 0x56);
         t5a = *(s16 *)((u8 *)self + 0x5A);
-        s16 t62 = *(s16 *)((u8 *)self + 0x62);
-        s16 t64 = *(s16 *)((u8 *)self + 0x64);
-        s16 rem = (s16)(t4e - (quot * t58));
-        s16 adj = (s16)((s16)quot - t56);
-        r28 = (s16)((r29 * rem) + t62);
-        r27 = (s16)((t5a * adj) + t64);
+        t62 = *(s16 *)((u8 *)self + 0x62);
+        t64 = *(s16 *)((u8 *)self + 0x64);
+        r27 = (s16)(t5a * (s16)((s16)quot - t56) + t64);
+        r28 = (s16)(r29 * (s16)(t4e - quot * t58) + t62);
         if (t52 < 0 || *(s16 *)((u8 *)self + 0x54) < 0) {
             *(s16 *)((u8 *)self + 0x52) = r28;
             *(s16 *)((u8 *)self + 0x54) = r27;
@@ -6557,25 +6566,8 @@ void *fn_8013BC10(void *arg0, void *arg1) {
         lbl_80367AD5 = 1;
     }
 
-    {
-        void *tmp_obj;
-        if (arg0 == NULL) {
-            tmp_obj = lbl_80276908 + 0x46;
-        } else {
-            tmp_obj = arg0;
-        }
-        *(void **)(lbl_8032FEF0 + 4) = tmp_obj;
-    }
-
-    {
-        void *tmp_obj;
-        if (arg1 == NULL) {
-            tmp_obj = lbl_80276908 + 0x4E;
-        } else {
-            tmp_obj = arg1;
-        }
-        *(void **)(lbl_8032FEFC + 4) = tmp_obj;
-    }
+    *(void **)(lbl_8032FEF0 + 4) = arg0 ? arg0 : lbl_80276908 + 0x46;
+    *(void **)(lbl_8032FEFC + 4) = arg1 ? arg1 : lbl_80276908 + 0x4E;
 
     lbl_8032FEF0[8] = 1;
     lbl_8032FEFC[8] = 1;
@@ -6584,29 +6576,31 @@ void *fn_8013BC10(void *arg0, void *arg1) {
 
     obj = Heap_Alloc(0x28);
     if (obj != NULL) {
-        *(void **)((u8 *)obj + 4) = gUiMenuDrawVtbl;
-        *(void **)obj = lbl_80291BE0;
-        *(void **)((u8 *)obj + 4) = lbl_802920E0;
-        *(s16 *)((u8 *)obj + 8) = 0x80;
-        *(s16 *)((u8 *)obj + 0xA) = 0x9C;
-        *(s16 *)((u8 *)obj + 0xC) = 0x160;
-        *(s16 *)((u8 *)obj + 0xE) = 0x88;
-        *(s16 *)((u8 *)obj + 0x10) = 0;
-        *(s16 *)((u8 *)obj + 0x12) = 0;
-        *(s16 *)((u8 *)obj + 0x14) = 0;
-        *(s16 *)((u8 *)obj + 0x16) = 0;
-        *(f32 *)((u8 *)obj + 0x18) = lbl_8036A6B8;
-        *(s16 *)((u8 *)obj + 0x1C) = 0x20;
-        *(s16 *)((u8 *)obj + 0x1E) = 4;
-        *(void **)((u8 *)obj + 4) = lbl_80291DA0;
-        *(s32 *)((u8 *)obj + 0x20) = 0;
-        *(s8 *)((u8 *)obj + 0x24) = 0;
-        *(void **)((u8 *)obj + 4) = lbl_80291CF8;
-        *(s16 *)((u8 *)obj + 0xE) = 0x1C;
-        *(s16 *)((u8 *)obj + 0xC) = 0xC8;
-        *(f32 *)((u8 *)obj + 0x18) = lbl_8036A6BC;
-        *(s16 *)((u8 *)obj + 0x10) = 0;
-        *(s16 *)((u8 *)obj + 0x12) = 0;
+        u8 *p = (u8 *)obj;
+
+        *(void **)(p + 4) = gUiMenuDrawVtbl;
+        *(void **)p = lbl_80291BE0;
+        *(void **)(p + 4) = lbl_802920E0;
+        *(s16 *)(p + 8) = 0x80;
+        *(s16 *)(p + 0xA) = 0x9C;
+        *(s16 *)(p + 0xC) = 0x160;
+        *(s16 *)(p + 0xE) = 0x88;
+        *(s16 *)(p + 0x10) = 0;
+        *(s16 *)(p + 0x12) = 0;
+        *(s16 *)(p + 0x14) = 0;
+        *(s16 *)(p + 0x16) = 0;
+        *(f32 *)(p + 0x18) = lbl_8036A6B8;
+        *(s16 *)(p + 0x1C) = 0x20;
+        *(s16 *)(p + 0x1E) = 4;
+        *(void **)(p + 4) = lbl_80291DA0;
+        *(s32 *)(p + 0x20) = 0;
+        *(s8 *)(p + 0x24) = 0;
+        *(void **)(p + 4) = lbl_80291CF8;
+        *(s16 *)(p + 0xE) = 0x1C;
+        *(s16 *)(p + 0xC) = 0xC8;
+        *(f32 *)(p + 0x18) = lbl_8036A6BC;
+        *(s16 *)(p + 0x10) = 0;
+        *(s16 *)(p + 0x12) = 0;
     }
     return obj;
 }
@@ -6828,16 +6822,19 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
                 }
             }
         }
-        if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
-            p = (u8 *)arg1;
-            p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
-            tmp = GfxEnt_Get(p[0x40]);
-            (*(Inner **)((u8 *)tmp + 0x34))->v15(arg1, tmp);
-            p = (u8 *)arg1;
-            p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-            tmp = GfxEnt_Get(p[0x40]);
-            (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
-            Ui_PlaySeCue(lbl_80276908 + 0x56, 0x64);
+        {
+            u8 raw62 = *(u8 *)((u8 *)arg1 + 0x62);
+            if ((s8)raw62 != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
+                p = (u8 *)arg1;
+                p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
+                tmp = GfxEnt_Get(p[0x40]);
+                (*(Inner **)((u8 *)tmp + 0x34))->v15(arg1, tmp);
+                p = (u8 *)arg1;
+                p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
+                tmp = GfxEnt_Get(p[0x40]);
+                (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
+                Ui_PlaySeCue(lbl_80276908 + 0x56, 0x64);
+            }
         }
     }
 }
@@ -6910,21 +6907,23 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     extern f32 lbl_8036A6D4;
     extern f32 lbl_8036A6D8;
     extern f32 lbl_8036A6DC;
-    s16 iconH;
-    s16 iconW;
+    s32 iconH;
+    s32 iconW;
     s32 flag;
     s32 v;
     s16 t3a;
     s16 t38;
-    s32 halfW;
     s16 w;
     s16 x;
     void *item;
+    s32 halfW;
     void *self;
     u8 *a1;
     f32 scaled;
     f32 sum;
     s16 y;
+    s16 v38;
+    s16 y3a;
 
     self = arg0;
     a1 = (u8 *)arg1;
@@ -6947,13 +6946,14 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6D0);
     Prim2D_PrepareTex();
-    v = ((Outer *)self)->v38();
-    scaled = (f32)((s16)v - w) * lbl_8036A6D4;
-    sum = scaled + (f32)*(s16 *)(a1 + 0x3a);
+    v38 = (s16)((Outer *)self)->v38();
+    scaled = (f32)(v38 - w) * lbl_8036A6D4;
+    y3a = *(s16 *)(a1 + 0x3a);
+    sum = scaled + (f32)y3a;
     Ui_DrawRouteIconEx(*(s16 *)(a1 + 0x38), (s32)sum, 1);
     if (*(u8 *)((u8 *)self + 0x24) != 0) {
-        iconW = (s16)((Outer *)self)->v35();
-        iconH = (s16)((Outer *)self)->v20();
+        iconW = ((Outer *)self)->v35();
+        iconH = ((Outer *)self)->v20();
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A6D8);
         Prim2D_PrepareTex();
@@ -6962,7 +6962,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
             flag = 1;
         }
         fn_8008AB7C(*(s16 *)(a1 + 0x38) + (halfW >> 1),
-            *(s16 *)(a1 + 0x3a) + (iconH >> 1),
+            *(s16 *)(a1 + 0x3a) + ((s16)iconH >> 1),
             iconW, 0x18, 0x19, 0x4c, flag);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A6DC);
@@ -7061,7 +7061,7 @@ extern "C" void fn_8013C814(void *arg0) {
         f31 = (f32)(half - (Text_MeasureWidth(ptr, -1, lbl_8036A6C0) / 2));
         half = ((s16)self->v38() - Text_MeasureHeight(-1, lbl_8036A6C0)) / 2;
         v36v = (void *)(s32)(s16)self->v36();
-        f30 = (f32)(half + ((s16)(s32)v36v - (s16)self->v38()));
+        f30 = (f32)(((s16)(s32)v36v - (s16)self->v38()) + half);
         Prim2D_AddPrim(6);
         Prim2D_SetPos(f31, f30);
         Prim2D_SetColor(0, 0, 0, 0xff);
@@ -7166,14 +7166,15 @@ extern "C" void fn_8013CA68(void *arg0, void *arg1) {
     void Prim2D_SetAlphaByte(u8);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036A6C0;
+    extern f64 lbl_8036A6C8;
     extern f32 lbl_8036A6E0;
     extern f32 lbl_8036A6E4;
+    f32 f31;
+    f32 f30;
+    f32 half2_f;
+    f32 half_f;
     f32 fade;
     f32 eased;
-    f32 half_f;
-    f32 half2_f;
-    f32 f30;
-    f32 f31;
     s16 v;
     s16 v2;
     u8 flag;
@@ -7183,9 +7184,9 @@ extern "C" void fn_8013CA68(void *arg0, void *arg1) {
     eased = Math_Ease(5, lbl_8036A6E0, lbl_8036A6C0, fade, lbl_8036A6C0);
     Prim2D_Begin();
     v = ((Obj *)arg0)->v19();
-    half_f = (f32)((v + (v >> 31)) >> 1);
+    half_f = (f32)((v + (s32)((u32)v >> 31)) >> 1);
     v2 = ((Obj *)arg0)->v18((s32)half_f, v);
-    half2_f = (f32)((v2 + (v2 >> 31)) >> 1);
+    half2_f = (f32)((v2 + (s32)((u32)v2 >> 31)) >> 1);
     f30 = ((Obj *)arg0)->v25((s32)half2_f, v2);
     f31 = ((Obj *)arg0)->v22();
     fn_80009C20((f32)((Obj *)arg0)->v21(), f31, f30, half2_f, half_f, eased, eased, lbl_8036A6E0);

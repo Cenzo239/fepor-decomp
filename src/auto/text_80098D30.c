@@ -225,11 +225,11 @@ void fn_80099094(void *arg0)
   s32 sp14[3];
   s32 sp8[3];
   void *self;
+  s32 temp_r30;
   s16 temp_r29;
   void *temp_r29_2;
   void *temp_r3;
   void *var_r0;
-  s32 temp_r30;
   self = arg0;
   temp_r29 = *((s16 *) (((u8 *) self) + 0x46));
   Event_AdvanceCmd(temp_r29);

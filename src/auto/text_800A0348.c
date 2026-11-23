@@ -68,13 +68,12 @@ extern u8 lbl_80367708;
 
 s32 fn_800A0348(s32 a, s32 b, void *arg2) {
  extern u8 lbl_80367705;
- s32 v;
- a = lbl_80367705;
- b = a ^ 1;
- v = 2;
- lbl_80367705 = b;
- if ((u8)b) v = 0;
- *(u8 *)((char *)arg2+0x39) = v;
+ s32 v=2;
+ a=lbl_80367705;
+ b=a^1;
+ lbl_80367705=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
  return 0;
 }
 #pragma global_optimizer on
@@ -96,16 +95,16 @@ void *fn_800A038C(void) {
 
 s32 fn_800A039C(s32 a, s32 b, void *arg2) {
     extern u8 lbl_80367704;
-    s32 v;
+    u8 tmp[1];
 
-    v = 2;
     a = (u8)lbl_80367704;
     b = a ^ 1;
     lbl_80367704 = b;
-    if ((u8)b) {
-        v = 0;
+    tmp[0] = 2;
+    if ((u8)b != 0) {
+        tmp[0] = 0;
     }
-    *(u8 *)((char *)arg2 + 0x39) = v;
+    *(u8 *)((char *)arg2 + 0x39) = tmp[0];
     return 0;
 }
 
@@ -663,16 +662,16 @@ char *fn_800A0E24(void) {
     return gItemMenuTextBuf;
 }
 
-#pragma optimization_level 2
+#pragma global_optimizer off
 s32 fn_800A0E74(void) {
 #pragma optimization_level 3
     u8 SystemSave_CountPackedSlots(void *);
     extern void *gPadInput;
     extern u8 gSystemSave[];
     s32 dir;
-    s32 limit;
     s32 i;
-    u8 *p;
+    int new_var;
+    s32 limit;
     s32 zero;
     s32 ctr;
     u8 count;
@@ -693,16 +692,19 @@ s32 fn_800A0E74(void) {
     if (dir == 0) {
         return 0;
     }
-
     count = (u8)SystemSave_CountPackedSlots(gSystemSave);
     limit = count + dir;
     for (i = 0; i < 30; i++) {
-        if (i < limit - 1) gSystemSave[i + 0x12] = i + 1;
-        else gSystemSave[i + 0x12] = 0;
+        new_var = limit - 1;
+        if (i < new_var) {
+            gSystemSave[i + 0x12] = i + 1;
+        } else {
+            gSystemSave[i + 0x12] = 0;
+        }
     }
     return 0;
 }
-#pragma optimization_level reset
+#pragma global_optimizer on
 char *fn_800A101C(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];

@@ -1175,8 +1175,8 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     extern f32 lbl_80369708;
     struct { u8 buf[0x20]; u16 w; u16 h; } sp;
     void *text;
-    s32 atlas = gUiAtlas;
     u8 *texture = sp.buf;
+    s32 atlas = gUiAtlas;
     u16 tile = 0x18;
     if (arg3) tile = 0x17;
     Ui_LoadAtlasTex(atlas, texture, tile);

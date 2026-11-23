@@ -879,15 +879,13 @@ void fn_801EBE00(void *arg0) {
     void fn_80162054();
     fn_801620AC(arg0);
     if (fn_8005BA10() != 0) {
-        if (fn_80161FB8() != 0) goto success;
-        goto done;
-success:
+        if (fn_80161FB8() == 0) {
+            return;
+        }
         fn_80162054();
         fn_801620AC(arg0);
-        *(s32 *)((char *)arg0 + 0x4C) = fn_8003FCCC();
+        *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
         fn_8000C188(arg0);
-done:
-        return;
     }
 }
 
@@ -2459,8 +2457,7 @@ void fn_801EDFCC(void) {
     void fn_80146AF0(void);
     void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
-    void *p = &gFxChannels[0];
-
+    void *p = gFxChannels;
     fn_80146AF0();
     Fx_FadeIn(p, 0x3E8);
     fn_8014876C(p, 0x64, 0x3E8);

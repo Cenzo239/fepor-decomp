@@ -87,7 +87,7 @@ void fn_800956D8(u8 *arg0) {
  if(*(f32 *)(cam+8)<minimum) *(f32 *)(cam+8)=minimum;
  if(*(s32 *)(gBattle+0xCA8)>=5 && *(s32 *)(cam+0x20)==0) fn_80019384(cam,1);
  if(*(s32 *)(gBattle+0xCA8)>=5) {
- x=0.0f; count=0; y=0.0f; 
+ x=0.0f; count=0; y=0.0f;
  for(i=0;i<3;i++) {
  u8 *event=*(u8 **)(gEventSlots+i*20);
  if(event) unit=*(u8 **)(event+0x280); else unit=0;

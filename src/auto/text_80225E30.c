@@ -702,16 +702,22 @@ int TRKInitializeMessageBuffers(void) {
     void fn_802287B8(void *);
     void fn_802287B0(void *);
     void fn_802287A8(void *);
+    s32 zero;
     u8 *queue;
     s32 i;
 
-    for (queue = lbl_8033B078, i = 0; i < 3; queue += 0x890, i++) {
+    zero = 0;
+    queue = &lbl_8033B078[0];
+    i = 0;
+    while (i < 3) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-        *(u32 *)(queue + 4) = 0;
+        ((u32 *)queue)[1] = zero;
         fn_802287A8(queue);
+        i++;
+        queue = queue + 0x890;
     }
-    return 0;
+    return zero;
 }
 
 s32 fn_80226B68(void) {

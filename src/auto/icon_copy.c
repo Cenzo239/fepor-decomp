@@ -402,10 +402,7 @@ extern f32 lbl_80369CD0;
 
 #pragma opt_strength_reduction reset
 
-#pragma use_lmw_stmw on
-#pragma opt_common_subs off
 #pragma global_optimizer off
-#pragma scheduling on
 s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
     void fn_8022C1B8(u8 *, u8 *, s32, u8);
     s32 offset;
@@ -422,18 +419,18 @@ s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
     dst = base + offset;
     dst[-0x18] = byte;
     fn_8022C1B8(base + (slot - 1) * 0x18 + 1, src + 1, 0xF, byte);
-    a = src[0x10];
     end = base + offset;
-    b = src[0x11];
     flag = 0;
-    dst[-0x8] = a;
+    a = src[0x10];
+    b = src[0x11];
+    end[-0x8] = a;
     a = src[0x12];
-    dst[-0x7] = b;
+    end[-0x7] = b;
     b = src[0x13];
-    dst[-0x6] = a;
+    end[-0x6] = a;
     w = *(u32 *)(src + 0x14);
-    dst[-0x5] = b;
-    *(u32 *)(dst - 0x4) = w;
+    end[-0x5] = b;
+    *(u32 *)(end - 0x4) = w;
 
     if (((s8)dst[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
         ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
@@ -457,7 +454,4 @@ s32 Icon_CopySlot(u8 *base, s32 slot, u8 *src) {
     }
     return slot;
 }
-#pragma scheduling reset
-#pragma global_optimizer on
-#pragma opt_common_subs reset
-#pragma use_lmw_stmw reset
+#pragma global_optimizer reset

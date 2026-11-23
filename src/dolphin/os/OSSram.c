@@ -204,13 +204,12 @@ s32 EXIDma(s32,void *,s32,s32,s32);
 s32 EXIDeselect(s32);
 u16 OSGetGbsMode(void);
 void OSSetGbsMode(u16);
-struct SramScb { u8 pad[0x40]; s32 f40; s32 f44; s32 f48; s32 f4C; };
 s32 command;
-struct SramScb *scb;
+u8 *scb;
 s32 result=0;
-scb=(struct SramScb *)Scb_80339420;
-scb->f44=0;
-scb->f48=0;
+scb=(u8 *)Scb_80339420;
+*(s32 *)(scb+0x44)=0;
+*(s32 *)(scb+0x48)=0;
 DCInvalidateRange(scb,0x40);
 if(!EXILock(0,1,0)) { result=0; }
 else if(!EXISelect(0,1,3)) { EXIUnlock(0); }
@@ -224,8 +223,8 @@ result|=!EXIDeselect(0);
 EXIUnlock(0);
 result=!result;
 }
-scb->f4C=result;
-scb->f40=0x40;
+*(s32 *)(scb+0x4C)=result;
+*(s32 *)(scb+0x40)=0x40;
 OSSetGbsMode(OSGetGbsMode());
 }
 

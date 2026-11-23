@@ -23,13 +23,13 @@ void fn_8013275C(void) {
     extern void *lbl_80367AC0;
     extern void *lbl_80367AC4[2];
     extern void *lbl_80367ACC;
-    void *g;
-    void *v;
     void **p;
+    void *v;
+    void *acc;
 
-    g = gUiMenuDrawVtbl;
     p = lbl_80367AC4;
-    p[1] = g;
+    acc = lbl_80291448;
+    p[1] = gUiMenuDrawVtbl;
     v = lbl_802916E0;
     lbl_80367AA8 = v;
     lbl_80367AAC = lbl_80291694;
@@ -40,5 +40,5 @@ void fn_8013275C(void) {
     lbl_80367AC0 = lbl_80291518;
     lbl_80367AC4[0] = lbl_80291428;
     p[1] = lbl_8029149C;
-    lbl_80367ACC = lbl_80291448;
+    lbl_80367ACC = acc;
 }

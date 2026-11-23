@@ -43,33 +43,54 @@ extern u8 lbl_80289EB8[16];
 extern f32 lbl_803697E0;
 extern f32 lbl_803697E4;
 
+#pragma use_lmw_stmw on
 void fn_80081CF4(void *arg0) {
 extern f32 lbl_8036948C, lbl_80369494, lbl_8036955C, lbl_8036942C, lbl_80369528, lbl_803695AC, lbl_803695B0, lbl_80369430;
+extern f64 lbl_80369470;
 extern void *Unit_GetItemSlot(void *, s32);
-extern s32 fn_80093DA8(void *, void *);
+extern s32 fn_80093DA8(void *);
 extern void fn_80086020(s32, s32, f32, f32, f32, f32);
 extern void UnitRef_Draw(void *, s32, s32, s32);
-s32 i, x, off;
-void *unit, *slot;
-f32 y, a, b;
-a=lbl_8036948C+*(f32*)((u8*)arg0+0x14);
-y=*(f32*)((u8*)arg0+0x18);
-unit=*(void**)((u8*)arg0+0x58);
-fn_80086020(0xb3,0,a,y,lbl_80369494,lbl_8036955C);
-Prim2D_Begin(); Prim2D_AddZ(lbl_8036942C); Prim2D_PrepareTex();
-x=(s32)(lbl_80369528+a);
-b=lbl_803695AC+y; a=lbl_803695B0+y;
-for(i=0,off=0;i<8;i++,off+=28){
-slot=Unit_GetItemSlot(unit,i);
-if(*(u32*)slot!=0){
-if(i<4)y=b+(f32)off;else y=a+(f32)((i-4)*28);
-UnitRef_Draw(slot,fn_80093DA8(unit,*(void**)slot),x,(s32)y);
-}}
-Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
-}
+s32 off;
+s32 x;
+void *unit;
+void *slot;
+s32 i;
+f32 row0;
+f32 row1;
+f32 y;
+f32 xpos;
+u32 item;
 
-#pragma global_optimizer off
-#pragma use_lmw_stmw off
+y = *(f32 *)((u8 *)arg0 + 0x18);
+xpos = lbl_8036948C + *(f32 *)((u8 *)arg0 + 0x14);
+unit = *(void **)((u8 *)arg0 + 0x58);
+fn_80086020(0xb3, 0, xpos, y, lbl_80369494, lbl_8036955C);
+Prim2D_Begin();
+Prim2D_AddZ(lbl_8036942C);
+Prim2D_PrepareTex();
+x = (s32)(lbl_80369528 + xpos);
+row0 = lbl_803695AC + y;
+row1 = lbl_803695B0 + y;
+i = 0;
+off = 0;
+do {
+    item = *(u32 *)(slot = Unit_GetItemSlot(unit, i));
+    if (item != 0) {
+        if (i < 4) {
+            y = row0 + (f32)off;
+        } else {
+            y = row1 + (f32)((i - 4) * 28);
+        }
+        UnitRef_Draw(slot, fn_80093DA8(unit), x, (s32)y);
+    }
+    i++;
+    off += 28;
+} while (i < 8);
+Prim2D_Begin();
+Prim2D_AddZ(lbl_80369430);
+Prim2D_PrepareTex();
+}
 void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
     void Prim2D_EmitQuad(void);
