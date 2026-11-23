@@ -7211,6 +7211,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
 #pragma scheduling reset
+#pragma optimization_level reset
 
 void fn_8004D370(void) {
     void fn_80067708(s32, s32, void (*)(void), s32);
