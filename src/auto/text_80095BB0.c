@@ -488,69 +488,44 @@ s32 fn_80096C18(void) {
 
 u8 fn_80096C78(s32 arg0)
 {
-  extern u8 lbl_80330EAC[];
+  extern u8 gBattle[];
   s16 saved;
-  unsigned char new_var;
   s16 *idx;
   s32 count;
-  new_var = ((s16) arg0) + 1;
   count = 0;
-  idx = (s16 *) (lbl_80330EAC + 0x8A0);
+  idx = (s16 *) (gBattle + 0x8A0);
   saved = *idx;
   *idx = (s16) arg0;
-  *idx = (s16) new_var;
+  (*idx)++;
   for (;;)
   {
     switch (((u8 *) idx)[((*idx) * 4) + 4])
     {
       case 0:
-
       case 0x20:
-
       case 0x21:
-
       case 0x22:
-
       case 0x24:
-
       case 0x37:
-
       case 0x38:
-
       case 0x39:
-        if (1)
-      {
-      }
-
       case 0x3D:
-
       case 0x3F:
-
       case 0x40:
-
       case 0x41:
-
       case 0x42:
-
       case 0x48:
         goto done;
-
       case 0x50:
-
       case 0x51:
-
       case 0x52:
         ++count;
         break;
-
     }
-
     *idx += 1;
   }
-
   done:
   *idx = saved;
-
   return (u8) (count >= 2);
 }
 
