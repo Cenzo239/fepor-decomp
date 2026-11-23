@@ -14,10 +14,10 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
     s32 c2;
+    s32 c1;
+    u32 raw2;
+    u32 raw1;
     goto ld;
 cmp:
     if ((s8)raw1 != (s8)raw2)
@@ -135,16 +135,9 @@ s32 fn_8000AA60(void *arg0)
 #pragma global_optimizer off
 s32 fn_8000AB90(void *arg0) {
     extern u8 gProcesses[];
+    s32 n;
     u8 *entry;
     u8 *source;
-    u8 *a;
-    u8 *b;
-    u32 n;
-    u32 diff;
-    u32 raw1;
-    u32 raw2;
-    s32 c1;
-    s32 c2;
     u8 *p;
     u32 ctr;
 
@@ -153,65 +146,20 @@ s32 fn_8000AB90(void *arg0) {
     source = *(u8 **)(p + 4);
     entry = gProcesses;
     n = 0;
-    for (; ctr != 0; ctr--) {
+    do {
         if (*(u32 *)entry != 0) {
-            a = *(u8 **)(entry + 0x14);
-            b = source;
-            goto cmp1_ld;
-        cmp1:
-            if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
-                goto cmp1_done;
+            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) == 0) {
+                goto found;
             }
-            a += 1;
-            b += 1;
-        cmp1_ld:
-            raw1 = *a;
-            raw2 = *b;
-            c1 = (s8)raw1;
-            c2 = (s8)raw2;
-            if ((c1 | c2) != 0) {
-                goto cmp1;
-            }
-            diff = 0;
-        cmp1_done:
-            if (diff != 0) {
-                goto next1;
-            }
-            goto found;
         }
-    next1:
-        entry += 0x70;
-        if (*(u32 *)entry != 0) {
-            b = source;
-            a = *(u8 **)(entry + 0x14);
-            goto cmp2_ld;
-        cmp2:
-            if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
-                goto cmp2_done;
+        if (*(u32 *)(entry += 0x70) != 0) {
+            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) == 0) {
+                goto found;
             }
-            a += 1;
-            b += 1;
-        cmp2_ld:
-            raw1 = *a;
-            raw2 = *b;
-            c1 = (s8)raw1;
-            c2 = (s8)raw2;
-            if ((c1 | c2) != 0) {
-                goto cmp2;
-            }
-            diff = 0;
-        cmp2_done:
-            if (diff != 0) {
-                goto next2;
-            }
-            goto found;
         }
-    next2:
         n += 1;
         entry += 0x70;
-    }
+    } while (--ctr != 0);
     entry = 0;
 found:
     if (entry == 0) {
@@ -1763,35 +1711,28 @@ s32 Rand_Chance(s32 arg0)
 #pragma global_optimizer off
 s32 Rand_Range(s32 arg0)
 {
-  struct RandSt
-  {
-    u16 a;
-    u16 b;
-    u16 c;
-  };
+  struct RandSt { u16 a; u16 b; u16 c; };
   extern struct RandSt lbl_80367150;
   unsigned int t6;
   s32 t4;
   s32 s1;
   s32 s2;
-  s32 sum;
+  s32 s0;
   struct RandSt *st;
 
   st = &lbl_80367150;
-  s2 = st->c;
+  s0 = lbl_80367150.a;
   s1 = st->b;
-  sum = (lbl_80367150.a >> 5) + (s1 << 11);
+  s2 = st->c;
   t4 = (s2 * 2) & 0xFFFE;
-  t6 = (u16) sum;
+  t6 = (u16)((s0 >> 5) + (s1 << 11));
   st->c = t4;
-  if (s1 & 0x8000) {
-    st->c = t4 + 1;
-  }
+  if (s1 & 0x8000) { st->c = 1 + t4; }
   t6 ^= st->c;
   st->c = st->b;
   st->b = lbl_80367150.a;
   lbl_80367150.a = t6;
-  return (arg0 * ((u16) t6)) / 65536;
+  return (arg0 * ((u16)t6)) / 65536;
 }
 #pragma global_optimizer reset
 void fn_8000CF4C(u32 arg0)
