@@ -1142,24 +1142,24 @@ void fn_80185244(void *arg0) {
 
 #pragma opt_strength_reduction off
 void fn_80185280(void *arg0) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void Process_Goto(void *, s32);
-    void *Process_CreateEx(void *, s32);
+    void fn_8000A388(void *, void *, void *);
+    void fn_8000C070(void *, s32);
+    void *fn_8000CA64(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
     void fn_8004FE98(void *, s32);
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
-    f32 Math_Lerp(f32, f32, f32, f32);
+    f32 fn_80059F64(f32, f32, f32, f32);
     void fn_8005FC74(void *, void *, s32);
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(void *);
     void *fn_80060664(void *);
     void *fn_800639B4(void);
-    u8 Status_Test(void *, s32);
-    void MuFade_UnlinkSame(void *, void *);
-    extern u8 E_MuBlend_script[];
-    extern u8 E_MuTransfer_script[];
+    u8 fn_80105BC0(void *, s32);
+    void fn_80185078(void *, void *);
+    extern u8 lbl_80295A00[];
+    extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1175,22 +1175,22 @@ void fn_80185280(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, sp40);
+        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
+        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if ((s32)lvl > 0x14) {
             if ((s32)lvl > 0x28) {
                 count <<= 1;
             }
             if ((s32)lvl <= 0x28) {
-                count = (s32)((f32)count + Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
+                count = (s32)((f32)count + fn_80059F64(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
             }
         }
         if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
             fn_8004FE98(obj, 0xB);
         } else {
-            tmp = Process_CreateEx(E_MuBlend_script, 0);
+            tmp = fn_8000CA64(lbl_80295A00, 0);
             *(void **)((u8 *)tmp + 0x30) = obj;
             *(s32 *)((u8 *)tmp + 0x34) = (s32)obj + 0x1C;
             *(s32 *)((u8 *)tmp + 0x38) = 0xB;
@@ -1202,8 +1202,8 @@ void fn_80185280(void *arg0) {
             fn_8004FE90(*(void **)((u8 *)tmp + 0x30), (u8)*(s32 *)((u8 *)tmp + 0x38));
         }
     }
-    if (Status_Test((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
-        Process_Goto(arg0, 0xA);
+    if (fn_80105BC0((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
+        fn_8000C070(arg0, 0xA);
         return;
     }
     end = fn_80060664((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C);
@@ -1407,6 +1407,7 @@ void fn_80185830(void *arg0) {
     void *tmp;
     u8 lvl;
     s32 z;
+    s32 z0;
 
     self = arg0;
     base = E_MuBlend_script;
@@ -1417,17 +1418,17 @@ void fn_80185830(void *arg0) {
             r29 = (s32)*(void **)((u8 *)self + 0x30);
             r28 = self;
             *(s32 *)(sp78 + 0x30) = r29;
-            GfxEnt_ForEachKey(base + 0x40, MuFade_UnlinkSame, sp78);
+            GfxEnt_ForEachKey(base + z, MuFade_UnlinkSame, sp78);
             if ((u32)self == 0U) {
                 r28 = (void *)3;
             }
-            *(s32 *)((u8 *)Process_Create(base + 0x40, (s32)r28) + 0x30) = r29;
+            *(s32 *)((u8 *)Process_Create(base + z, (s32)r28) + 0x30) = r29;
             r29 = 0x10;
             r28 = *(void **)((u8 *)self + 0x30);
             if (fn_8004C0F0(r28) != 0) {
-                z -= 0x40;
+                z0 = z - 0x40;
                 *(void **)(sp40 + 0x30) = r28;
-                GfxEnt_ForEachKey(base + z, MuFade_UnlinkSame, sp40);
+                GfxEnt_ForEachKey(base + z0, MuFade_UnlinkSame, sp40);
                 *(void **)(sp8 + 0x30) = r28;
                 GfxEnt_ForEachKey(base + 0x20, MuFade_UnlinkSame, sp8);
                 lvl = *(u8 *)((u8 *)fn_800508C4(r28) + 9);
@@ -1441,7 +1442,7 @@ void fn_80185830(void *arg0) {
                 if ((r29 == 0) || (fn_80060440((u8 *)r28 + 0x1C) >= 4)) {
                     fn_8004FE98(r28, 0xA);
                 } else {
-                    tmp = Process_CreateEx(base + z, 0);
+                    tmp = Process_CreateEx(base + z0, 0);
                     *(void **)((u8 *)tmp + 0x30) = r28;
                     *(s32 *)((u8 *)tmp + 0x34) = (s32)r28 + 0x1C;
                     *(s32 *)((u8 *)tmp + 0x38) = 0xA;
@@ -1468,12 +1469,12 @@ void fn_80185A64(void *arg0) {
     u8 fn_800504FC(void *, s32);
     void fn_8004FC70(void *, s32);
     void fn_800558D8(void *);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     void *obj;
     u8 *flags;
 
     if (*((u8 *)arg0 + 0x3C) != 0) {
-        fn_800558D8(lbl_80278E24 + 0x1C1);
+        fn_800558D8(MoveAnim_str + 0x1C1);
         obj = *(void **)((u8 *)arg0 + 0x30);
         if (fn_800504FC(obj, 0xA) != 0) {
             fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
@@ -1729,74 +1730,69 @@ void fn_801863BC(void *arg0) {
 void fn_801863F8(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    u8 fn_8004C0F0(s32);
-    s32 fn_8004FE90(s32, u8);
-    s32 fn_8004FE98(s32, s32);
-    s32 fn_800506E0(s32, s32);
-    void *fn_800508C4(s32);
+    u8 fn_8004C0F0(void *);
+    void fn_8004FE90(void *, u8);
+    void fn_8004FE98(void *, s32);
+    void fn_800506E0(void *, s32);
+    void *fn_800508C4(void *);
     f32 Math_Lerp(f32, f32, f32, f32);
-    s32 fn_8005FC74(void *, void *, s32);
-    s32 fn_8005FEE8(void *, f32);
-    s32 fn_80060440(s32);
-    void *fn_800639B4();
-    
-    extern void E_MuBlend_script;
-    extern void E_MuTransfer_script;
+    void fn_8005FC74(void *, void *, s32);
+    void fn_8005FEE8(void *, f32);
+    s32 fn_80060440(void *);
+    void *fn_800639B4(void);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
     extern f64 lbl_8036ACE0;
-    
-    s32 temp_r30;
-    u8 temp_r3;
-    void *temp_r3_2;
-    s32 var_r29;
-    f32 temp_f3;
-    void *temp_r30_2;
-    void *temp_r4;
-    void *temp_r7;
-    s32 sp70;
-    s32 sp40;
-    s32 sp38;
-    s32 sp8;
 
-    var_r29 = 0x10;
-    temp_r30 = *(s32 *)((u8 *)arg0 + 0x34);
-    if (fn_8004C0F0(temp_r30) != 0) {
-        sp70 = temp_r30;
-        GfxEnt_ForEachKey(&E_MuBlend_script, &MuFade_UnlinkSame, &sp40);
-        sp38 = temp_r30;
-        GfxEnt_ForEachKey(&E_MuTransfer_script, &MuFade_UnlinkSame, &sp8);
-        temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r30) + 9);
-        if ((s32) temp_r3 > 0x14) {
-            if ((s32) temp_r3 > 0x28) {
-                var_r29 = 0x20;
-            } else {
-                temp_f3 = Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32) (temp_r3 - 0x14));
-                var_r29 = (s32) temp_f3;
+    u8 blendKey[0x34];
+    u8 transferKey[0x38];
+    void *unit;
+    s32 hitCount;
+    void *animSrc;
+
+    unit = *(void **)((u8 *)arg0 + 0x34);
+    hitCount = 8;
+    hitCount += 8;
+    if (fn_8004C0F0(unit) != 0) {
+        *(void **)(blendKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
+        *(void **)(transferKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
+        {
+            u8 level = *(u8 *)((u8 *)fn_800508C4(unit) + 9);
+            if ((s32)level > 0x14) {
+                if ((s32)level > 0x28) {
+                    hitCount <<= 1;
+                } else {
+                    hitCount = (s32)((f32)hitCount + Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)level - 0x14)));
+                }
             }
         }
-        if ((var_r29 == 0) || (fn_80060440(temp_r30 + 0x1C) >= 4)) {
-            fn_8004FE98(temp_r30, 0);
+        if ((hitCount == 0) || (fn_80060440((u8 *)unit + 0x1C) >= 4)) {
+            fn_8004FE98(unit, 0);
             return;
         }
-        temp_r3_2 = Process_CreateEx(&E_MuBlend_script, arg0);
-        *(s32 *)((u8 *)temp_r3_2 + 0x30) = temp_r30;
-        *(void **)((u8 *)temp_r3_2 + 0x34) = (void *) (temp_r30 + 0x1C);
-        *(s32 *)((u8 *)temp_r3_2 + 0x38) = 0;
-        *(s32 *)((u8 *)temp_r3_2 + 0x3C) = var_r29;
-        *(s32 *)((u8 *)temp_r3_2 + 0x40) = 0;
-        fn_800506E0(*(s32 *)((u8 *)temp_r3_2 + 0x30), 0);
-        temp_r7 = *(void **)((u8 *)temp_r3_2 + 0x34);
-        temp_r30_2 = fn_800639B4();
-        temp_r4 = *(void **)((u8 *)temp_r7 + 0x44);
-        if (temp_r4 != NULL) {
-            temp_f3 = (f32) *(s32 *)((u8 *)temp_r4 + 0x14);
-            Math_Lerp((f32) *(s32 *)((u8 *)temp_r30_2 + 0x14), (f32) *(s32 *)((u8 *)temp_r30_2 + 0x18), (f32) *(s32 *)((u8 *)temp_r4 + 0x18) - temp_f3, *(f32 *)((u8 *)temp_r7 + 0x58) - temp_f3);
+        arg0 = Process_CreateEx(E_MuBlend_script, arg0);
+        *(void **)((u8 *)arg0 + 0x30) = unit;
+        *(s32 *)((u8 *)arg0 + 0x34) = (s32)unit + 0x1C;
+        *(s32 *)((u8 *)arg0 + 0x38) = 0;
+        *(s32 *)((u8 *)arg0 + 0x3C) = hitCount;
+        *(s32 *)((u8 *)arg0 + 0x40) = 0;
+        fn_800506E0(*(void **)((u8 *)arg0 + 0x30), 0);
+        animSrc = fn_800639B4();
+        hitCount = 0;
+        if (*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x44) != NULL) {
+            void *range = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x44);
+            f32 rangeStart = (f32)*(s32 *)((u8 *)range + 0x14);
+            hitCount = (s32)Math_Lerp((f32)*(s32 *)((u8 *)animSrc + 0x14), (f32)*(s32 *)((u8 *)animSrc + 0x18), (f32)*(s32 *)((u8 *)range + 0x18) - rangeStart, *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x58) - rangeStart);
         }
-        fn_8005FC74(*(void **)((u8 *)temp_r3_2 + 0x34), temp_r30_2, 1);
-        fn_8005FEE8(*(void **)((u8 *)temp_r3_2 + 0x34), (f32) var_r29);
-        fn_8004FE90(*(s32 *)((u8 *)temp_r3_2 + 0x30), (u8) *(s32 *)((u8 *)temp_r3_2 + 0x38));
+        fn_8005FC74(*(void **)((u8 *)arg0 + 0x34), animSrc, 1);
+        fn_8005FEE8(*(void **)((u8 *)arg0 + 0x34), (f32)hitCount);
+        fn_8004FE90(*(void **)((u8 *)arg0 + 0x30), (u8)*(s32 *)((u8 *)arg0 + 0x38));
     }
 }
 
@@ -2495,26 +2491,27 @@ void fn_80187BD4(void *arg0) {
 
 #pragma global_optimizer reset
 void fn_80187D70(void *arg0) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void *Process_CreateEx(void *, void *);
-    f32 Unit_GetAngleTo(void *);
+    void fn_8000A388(void *, void *, void *);
+    void *fn_8000CA64(void *, void *);
+    f32 fn_8004BE18(void *);
     f32 fn_8004BDA8(void *, f32, f32);
     void fn_8004FC70(void *, s32);
-    void GActor_RequestRes(void *);
-    s32 Abs(s32);
-    void MuFade_UnlinkSame(void *, void *);
-    extern u16 E_MuFade_script[36];
-    extern u8 MoveAnim_str[];
+    void fn_800558D8(void *);
+    s32 fn_80230BCC(s32);
+    void fn_80185078(void *, void *);
+    extern u16 lbl_80295A78[36];
+    extern u8 lbl_80278E24[];
     extern f32 lbl_8036ACEC;
-    extern f32 gHalf;
+    extern f32 lbl_8036ACD8;
 
     u8 sp[0x70];
     void *unit;
     void *node;
     f32 f;
-    void *temp_r4;
-    u8 *base;
-    u8 *msg;
+    void *msg;
+    register void *temp_r4;
+    s32 a;
+    s32 b;
     s32 sum;
 
     *(f32 *)((u8 *)arg0 + 0x3C) = lbl_8036ACEC;
@@ -2523,11 +2520,11 @@ void fn_80187D70(void *arg0) {
     if (temp_r4 != NULL) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         if (temp_r4 != NULL) {
-            f = Unit_GetAngleTo(unit);
+            f = fn_8004BE18(unit);
             *(void **)(sp + 0x68) = unit;
-            GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
+            fn_8000A388(&lbl_80295A78, fn_80185078, sp + 0x38);
             if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-                node = Process_CreateEx(&E_MuFade_script, arg0);
+                node = fn_8000CA64(&lbl_80295A78, arg0);
                 *(void **)((u8 *)node + 0x30) = unit;
                 *(f32 *)((u8 *)node + 0x34) = f;
                 *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -2538,11 +2535,11 @@ void fn_80187D70(void *arg0) {
         fn_8004FC70(*(void **)((u8 *)arg0 + 0x34), 9);
     } else {
         unit = *(void **)((u8 *)arg0 + 0x30);
-        f = fn_8004BDA8(unit, gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
+        f = fn_8004BDA8(unit, lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
         *(void **)(sp + 0x30) = unit;
-        GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
+        fn_8000A388(&lbl_80295A78, fn_80185078, sp);
         if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-            node = Process_CreateEx(&E_MuFade_script, arg0);
+            node = fn_8000CA64(&lbl_80295A78, arg0);
             *(void **)((u8 *)node + 0x30) = unit;
             *(f32 *)((u8 *)node + 0x34) = f;
             *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -2550,15 +2547,15 @@ void fn_80187D70(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x38) = *(u8 *)((u8 *)arg0 + 0x3A);
         *(u8 *)((u8 *)arg0 + 0x39) = *(u8 *)((u8 *)arg0 + 0x3B);
     }
-    sum = Abs((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
-    if ((sum = Abs((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39)) + sum, sum >= 2)) {
-        base = MoveAnim_str;
-        msg = base + 0x360;
+    a = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
+    b = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39));
+    sum = a + b;
+    if (sum >= 2) {
+        msg = lbl_80278E24 + 0x360;
     } else {
-        base = MoveAnim_str;
-        msg = base + 0x371;
+        msg = lbl_80278E24 + 0x371;
     }
-    GActor_RequestRes(msg);
+    fn_800558D8(msg);
 }
 
 #pragma opt_strength_reduction off
@@ -4850,8 +4847,10 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
         i++;
     }
     if (bestDist != 0x7FFFFFFF) {
-        s8 bx = *(u8 *)((u8 *)bestUnit + 0x19E);
-        s8 by = *(u8 *)((u8 *)bestUnit + 0x19F);
+        register s8 bx;
+        register s8 by;
+        bx = *(u8 *)((u8 *)bestUnit + 0x19E);
+        by = *(u8 *)((u8 *)bestUnit + 0x19F);
         fn_8010F3F4(arg0, bx, by, &sp12, &sp10);
         *(u16 *)((u8 *)arg0 + 0x258) =
             *(u16 *)((u8 *)arg0 + 0x258) + 1;
@@ -7198,11 +7197,11 @@ extern "C" void fn_80191590(void *arg0) {
     s16 spC[2];
     s16 sp8[2];
     Child *c6;
-    Self *self;
     void *saved;
     Child *c2;
     Child *c4;
     Child *c5;
+    Self *self;
     s16 t;
 
     self = (Self *)arg0;
@@ -7487,6 +7486,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80291A3C[];
     extern u8 lbl_80292230[];
+    extern const f32 lbl_8036AE20;
 
     struct Obj {
         virtual void v0();
@@ -7509,6 +7509,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     void *temp_r30;
     register s16 temp_r7;
     register void *temp_r28;
+    f32 zf;
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x50);
     temp_r28 = fn_8013FF94(arg0, 2, 0);
@@ -7548,9 +7549,10 @@ extern "C" void fn_80191CFC(void *arg0) {
         M2C_FIELD(temp_r31, u8 *, 0x21) = 0xFF;
         M2C_FIELD(temp_r31, s16 *, 0x22) = 0x190;
         M2C_FIELD(temp_r31, s16 *, 0x24) = 0;
-        M2C_FIELD(temp_r31, f32 *, 0x28) = 1.0f;
-        M2C_FIELD(temp_r31, f32 *, 0x2C) = 1.0f;
-        M2C_FIELD(temp_r31, f32 *, 0x30) = 1.0f;
+        zf = lbl_8036AE20;
+        M2C_FIELD(temp_r31, f32 *, 0x28) = zf;
+        M2C_FIELD(temp_r31, f32 *, 0x2C) = zf;
+        M2C_FIELD(temp_r31, f32 *, 0x30) = zf;
         M2C_FIELD(temp_r31, s32 *, 0x34) = 0;
         M2C_FIELD(temp_r31, s32 *, 0x38) = 0;
         M2C_FIELD(temp_r31, void **, 0) = lbl_80291A3C;
@@ -9294,6 +9296,7 @@ extern "C" void fn_8019477C(void *arg0) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_802961F4[];
+    extern const f32 lbl_8036AE40;
     struct { s16 x; s16 y; } spC;
     struct { s16 x; s16 y; } sp8;
     void *p;
@@ -9327,33 +9330,35 @@ extern "C" void fn_8019477C(void *arg0) {
     if (Ui_FindChild(arg0, 1, 0) == NULL) {
         p = Heap_Alloc(0x44);
         if (p != NULL) {
+            s32 zero;
+            zero = 0;
             M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
             M2C_FIELD(p, void **, 0) = lbl_80292230;
-            M2C_FIELD(p, u32 *, 4) = 0;
+            M2C_FIELD(p, u32 *, 4) = zero;
             M2C_FIELD(p, s16 *, 8) = -1;
             M2C_FIELD(p, s16 *, 0xA) = 0x260;
             M2C_FIELD(p, s16 *, 0xC) = 0x14C;
             M2C_FIELD(p, s16 *, 0xE) = 0x349;
             M2C_FIELD(p, s16 *, 0x10) = 0x193;
-            M2C_FIELD(p, s16 *, 0x12) = 0;
-            M2C_FIELD(p, s16 *, 0x14) = 0;
+            M2C_FIELD(p, s16 *, 0x12) = zero;
+            M2C_FIELD(p, s16 *, 0x14) = zero;
             M2C_FIELD(p, s16 *, 0x16) = 0xE9;
             M2C_FIELD(p, s16 *, 0x18) = 0x47;
-            M2C_FIELD(p, s16 *, 0x1A) = 0;
-            M2C_FIELD(p, s16 *, 0x1C) = 0;
+            M2C_FIELD(p, s16 *, 0x1A) = zero;
+            M2C_FIELD(p, s16 *, 0x1C) = zero;
             M2C_FIELD(p, u8 *, 0x1E) = 0xFF;
             M2C_FIELD(p, u8 *, 0x1F) = 0xFF;
             M2C_FIELD(p, u8 *, 0x20) = 0xFF;
             M2C_FIELD(p, u8 *, 0x21) = 0xFF;
             M2C_FIELD(p, s16 *, 0x22) = 0x1F4;
-            M2C_FIELD(p, s16 *, 0x24) = 0;
-            M2C_FIELD(p, f32 *, 0x28) = 1.0f;
-            M2C_FIELD(p, f32 *, 0x2C) = 1.0f;
-            M2C_FIELD(p, f32 *, 0x30) = 1.0f;
-            M2C_FIELD(p, u32 *, 0x34) = 0;
-            M2C_FIELD(p, u32 *, 0x38) = 0;
+            M2C_FIELD(p, s16 *, 0x24) = zero;
+            M2C_FIELD(p, f32 *, 0x28) = lbl_8036AE40;
+            M2C_FIELD(p, f32 *, 0x2C) = lbl_8036AE40;
+            M2C_FIELD(p, f32 *, 0x30) = lbl_8036AE40;
+            M2C_FIELD(p, u32 *, 0x34) = zero;
+            M2C_FIELD(p, u32 *, 0x38) = zero;
             M2C_FIELD(p, void **, 0) = lbl_802961F4;
-            M2C_FIELD(p, u32 *, 0x3C) = 0;
+            M2C_FIELD(p, u32 *, 0x3C) = zero;
             ((Obj *)p)->v8();
         }
         M2C_FIELD(p, s16 *, 8) = 1;
@@ -16149,10 +16154,9 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     u8 *var_r31;
     u16 var_r30;
     void *temp;
+    s32 temp_r28;
     u8 sp9;
     u8 sp8;
-    s32 temp_r28;
-    u16 temp_r0;
     void *var_r6;
     u32 var_r3;
     u8 b;
@@ -16204,12 +16208,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     }
 
     temp = Process_Find(E_EventState_script);
-    if (temp != NULL) {
-        temp_r0 = *(u16 *)((u8 *)temp + 0x34);
-    } else {
-        temp_r0 = 0;
-    }
-    temp_r0 = var_r30 | temp_r0;
+    var_r30 = (u16)(var_r30 | (temp != NULL ? *(u16 *)((u8 *)temp + 0x34) : 0));
 
     sp9 = arg1;
     sp8 = arg2;
@@ -16218,7 +16217,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         Unit_SetMapPos(var_r31, sp9, sp8);
         if (gUiInputFlags & 1) {
             fn_8004FE98(var_r31, 0);
-            fn_80184750(var_r31, temp_r0 & 0xF, 0, 0);
+            fn_80184750(var_r31, var_r30 & 0xF, 0, 0);
             fn_80050C90(var_r31);
         } else {
             temp = Process_Find(Proc_MuEventInst);
@@ -16231,7 +16230,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
                 }
                 var_r6 = Process_Create(Proc_MuEventInst, var_r3);
             }
-            MoveAnim_BindPath(var_r31, temp_r28, temp_r0, var_r6);
+            MoveAnim_BindPath(var_r31, temp_r28, var_r30, var_r6);
         }
     }
     Map_RefreshUnitMap(gBattleMap);
