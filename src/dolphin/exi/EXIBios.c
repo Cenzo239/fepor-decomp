@@ -1003,18 +1003,22 @@ s32 fn_8023A61C(s32 chan, u32 dev, u32 *id) {
         return 0;
     }
     err = !EXILock(chan, dev, 0);
-    if (err == 0) {
-        err = !EXISelect(chan, dev, 0);
-        if (err == 0) {
-            cmd = 0x20011300;
-            err = !EXIImm(chan, &cmd, 4, 1, 0);
-            err |= !EXISync(chan);
-            err |= !EXIImm(chan, id, 4, 0, 0);
-            err |= !EXISync(chan);
-            err |= !EXIDeselect(chan);
-        }
+    if (err != 0) {
+        goto after_unlock;
     }
+    err = !EXISelect(chan, dev, 0);
+    if (err != 0) {
+        goto do_unlock;
+    }
+    cmd = 0x20011300;
+    err = !EXIImm(chan, &cmd, 4, 1, 0);
+    err |= !EXISync(chan);
+    err |= !EXIImm(chan, id, 4, 0, 0);
+    err |= !EXISync(chan);
+    err |= !EXIDeselect(chan);
+do_unlock:
     EXIUnlock(chan);
+after_unlock:
     if (chan != 2 && dev == 0) {
         fn_802396C8(chan);
     }
