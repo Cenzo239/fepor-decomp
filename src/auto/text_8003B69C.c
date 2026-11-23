@@ -1144,7 +1144,7 @@ void Unit_Write(void *arg0, s32 arg1) {
     out = arg1;
     self = arg0;
     p = *(void **)((u8 *)self + 0x188);
-    if (p == NULL) {
+    if (!p) {
         Stream_WriteU16(out, 0);
         return;
     }
@@ -1152,21 +1152,21 @@ void Unit_Write(void *arg0, s32 arg1) {
     Stream_WriteU16(out, *(u16 *)((u8 *)*(void **)((u8 *)self + 0x18C) + 0x38));
     Stream_WriteU8(out, *((u8 *)*(void **)((u8 *)self + 0x190) + 8));
     p = *(void **)((u8 *)self + 0x180);
-    if (p != NULL) {
+    if (p) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
     Stream_WriteU8(out, (u8)tmp);
     p = *(void **)((u8 *)self + 0x184);
-    if (p != NULL) {
+    if (p) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
     Stream_WriteU8(out, (u8)tmp);
     p = *(void **)((u8 *)self + 0x194);
-    if (p != NULL) {
+    if (p) {
         b = *((u8 *)p + 0x198);
     } else {
         b = 0;
@@ -1243,10 +1243,10 @@ void Map_SelectRangeBuffer(void *,s32);
 void Map_FillLayer(void *,s32,s32);
 void fn_800227F8(void *,void *);
 s16 fn_8002134C(u8 *,s8,s8);
+s32 negativeDy, dy;
 u8 *row;
-s32 dy, negativeDy;
-s32 sx, sy;
-s32 y, x;
+s32 sy, sx;
+s32 x, y;
 x = *((u8 *)unit + 0x19E);
 y = *((u8 *)unit + 0x19F);
 Map_SelectRangeBuffer(gBattleMap, 5);
