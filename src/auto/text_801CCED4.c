@@ -2326,10 +2326,10 @@ void fn_801CFA44(void *arg0)
 
     s32 i;
     u8 *ptr;
-    register s32 zero;
+    s32 zero;
 
     zero = 0;
-    i = zero;
+    i = zero & zero;
     ptr = (u8 *)arg0;
 
     *(s32 *)(ptr + 0x8) = zero;
@@ -3710,9 +3710,9 @@ extern "C" void fn_801D1C80(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801D1CAC(void *arg0) {
     void fn_8013ED84(void *, s16);
-    void Ui_PlaySeCue(void *, s32);
-    extern s32 gUiInputFlags;
-    extern void *gPadInput;
+    void fn_801475FC(void *, s32);
+    extern s32 lbl_80367110;
+    extern void *lbl_80367240;
     extern f64 lbl_8036B5D8;
     extern u8 lbl_8027E0F8[];
     struct Obj {
@@ -3754,12 +3754,12 @@ extern "C" void fn_801D1CAC(void *arg0) {
     }
     var_r5 = 0;
     temp_r7 = *(s16 *)((u8 *)arg0 + 0x4E);
-    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
+    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
         var_r5 = 1;
     }
     if (var_r5 == 0) {
         temp_r5 = *(s16 *)((u8 *)arg0 + 0x4E);
-        pads = (s32 *)gPadInput;
+        pads = (s32 *)lbl_80367240;
         held = pads[1];
         pressed = held & (pads[2] ^ held);
         pad3 = pads[3];
@@ -3816,7 +3816,7 @@ extern "C" void fn_801D1CAC(void *arg0) {
                     *(u8 *)((u8 *)arg0 + 0xAD) = 1;
                 }
                 if (temp_r5 != *(s16 *)((u8 *)arg0 + 0x4E)) {
-                    Ui_PlaySeCue(lbl_8027E0F8 + 8, 0x64);
+                    fn_801475FC(lbl_8027E0F8 + 8, 0x64);
                 }
             }
         }
@@ -4434,13 +4434,13 @@ extern "C" void fn_801D2C30(void *arg0) {
     s32 fn_800BE914(void);
     u8 fn_800BE800(s32);
     s32 fn_800BE728(s32);
-    u8 Id_GetKind(void);
-    u32 Unit_FindByName(s32);
+    u8 fn_80019CC0(void);
+    u32 fn_80016BDC(s32);
     void fn_800616A0(void *);
-    void *GActor_Create(void);
+    void *fn_80061870(void);
     void fn_800506E0(u32, s32, void *);
     s32 fn_800639B4(void);
-    void GActor_Finalize(void *);
+    void fn_8006140C(void *);
 
     struct Obj {
         virtual void v0() {}
@@ -4507,13 +4507,13 @@ extern "C" void fn_801D2C30(void *arg0) {
             row.unit = 0;
             item = fn_800BE728(idx);
             unit = 0;
-            kind = (s32)(u8)Id_GetKind();
+            kind = (s32)(u8)fn_80019CC0();
             if (kind == 5) {
             } else if (kind >= 5) {
             } else {
                 switch (kind) {
                 case 1:
-                    unit = Unit_FindByName(item);
+                    unit = fn_80016BDC(item);
                     break;
                 }
             }
@@ -4522,7 +4522,7 @@ extern "C" void fn_801D2C30(void *arg0) {
                 if (row.node != 0) {
                     fn_800616A0(row.node);
                 }
-                row.node = GActor_Create();
+                row.node = fn_80061870();
                 *(s32 *)((u8 *)row.node + 4) = (s32)(unit + 0x1C);
                 p = (u32 *)row.node;
                 *p = *p | 0x50028400;
@@ -4530,7 +4530,7 @@ extern "C" void fn_801D2C30(void *arg0) {
                 *(s32 *)((u8 *)row.node + 0x44) = fn_800639B4();
                 row.unit = unit;
                 *(u32 *)((u8 *)row.node + 0x90) = unit;
-                GActor_Finalize(row.node);
+                fn_8006140C(row.node);
             }
             spC = endPtr;
             fn_801D2FE4(&sp8, &self->count, &spC, &row);
@@ -4543,10 +4543,10 @@ extern "C" void fn_801D2C30(void *arg0) {
     {
         u32 count = self->count;
         s32 cur32 = cur;
-        register u32 last = count - 1;
+        u32 last = count - 1;
         s16 v;
         s16 scroll;
-        if ((u32)cur32 > last) {
+        if ((u32)(s16)cur32 > last) {
             cur = (s16)last;
         }
         if (cur < 0) {
@@ -9339,20 +9339,21 @@ extern "C" void fn_801DF468(void *arg0) {
 #pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void fn_801DF4A4(void *arg0, s32 arg1) {
-    struct Color {
-        u8 r, g, b, a;
-    };
+    struct Color { u8 r, g, b, a; };
     void Ui_DrawLine(s32, s32, s16, s32, s32, struct Color *);
-    s16 h, v;
     struct Color col;
+    s32 h;
+    s16 hs;
+    s16 v;
 
     h = *(s16 *)((u8 *)arg0 + 0x12);
     h = *(s16 *)((u8 *)arg0 + 0x16) - h;
     col.r = 0x80;
+    hs = (s16)h;
     col.g = 0x78;
+    v = hs - 0x10;
     col.b = 0x50;
     col.a = 0xE6;
-    v = h - 0x10;
     Ui_DrawLine(0x10, arg1, v, arg1, 0x10, &col);
 }
 #pragma global_optimizer reset
