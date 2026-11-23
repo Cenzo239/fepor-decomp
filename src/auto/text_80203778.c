@@ -1273,31 +1273,31 @@ void fn_8020536C(s32 arg0, s32 arg1, u32 arg2) {
     M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r6 */);
 }
 
-u32 fn_80205390(s32 arg0, s32 arg1, s32 arg2) {
+#pragma peephole off
+u32 fn_80205390(s32 dest, s32 src, s32 size) {
     void fn_8020536C(s32, s32, u32);
     u32 remaining;
     u32 count;
-    s32 src;
-    s32 dest;
-    dest = arg0;
-    src = arg1;
-    arg0 = (u32)(arg2 + 31) >> 5;
-    remaining = arg0;
-    count = ((u32)arg0 + 127) >> 7;
-    while (remaining != 0) {
+
+    remaining = (u32)(size + 31) >> 5;
+    count = (remaining + 127) >> 7;
+    goto test;
+    do {
         if (remaining < 128) {
             fn_8020536C(dest, src, remaining);
             remaining = 0;
         } else {
             fn_8020536C(dest, src, 0);
             remaining -= 128;
-            dest += 4096;
-            src += 4096;
+            dest += 0x1000;
+            src += 0x1000;
         }
-    }
+    test:
+        ;
+    } while (remaining != 0);
     return count;
 }
-
+#pragma peephole reset
 extern u32 __SPR_392;
 void fn_8020543C(s32 arg0) { s32 value; do { value = ((u32)__SPR_392 >> 24) & 15; } while(value > arg0); }
 
