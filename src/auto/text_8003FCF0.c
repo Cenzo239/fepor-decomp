@@ -2958,7 +2958,6 @@ f32 matrix[3][4];
 u32 color,mat,amb;
 s32 stage;
 u8 enabled;
-u8 mode;
 if(M2C_FIELD(arg0,u32 *,0x64)&1){
 M2C_FIELD(arg0,u32 *,0x64)&=~1;
 fn_80044BE4(arg0);
@@ -2989,9 +2988,8 @@ fn_802245D8(1,4,5,0);
 fn_802246B8(1);
 fn_80223E5C(0,0,1,7,0);
 GXSetZMode(1,3,0);
-mode=gMapBlendMode-1;
 enabled=1;
-if(!(mode<=1U)) enabled=0;
+if(!((u8)(gMapBlendMode-1)<=enabled)) enabled=0;
 if(enabled) fn_800C15A8();
 GXSetNumTevStages(fn_80069E74());
 GXSetNumChans(fn_80069DB4());
@@ -3842,48 +3840,47 @@ void *fn_80046EB8(void *arg0,void *arg1) { u8 *base; s32 i; if(arg1==0)return 0;
 
 void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
 {
+    void *found;
+    u8 *base;
+    u8 *entry;
+    u32 flags;
     s32 count;
+    s32 n;
     s32 i;
-    s32 offset;
     s32 direction;
     s32 dx;
     s32 dy;
     s32 x;
     s32 y;
-    u32 flags;
     u8 dir;
     u8 valid;
-    u8 *base;
-    u8 *entry;
-    void *found;
+    s32 offset;
 
     count = *(s16 *)((u8 *)arg0 + 6);
-    i = count - 1;
+    n = count - 1;
+    i = n;
     offset = i * 0xB4;
     found = 0;
 
-    if (i >= 0) {
+    for (; i >= 0; i--, offset -= 0xB4) {
         base = *(u8 **)((u8 *)arg0 + 0x14);
+        entry = base + offset;
+        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
 
-        for (; i >= 0; i--, offset -= 0xB4) {
-            entry = base + offset;
-            flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+        if (!(flags & arg4)) {
+            if (arg3 == 0 || (arg3 & flags) == arg3) {
+                if (arg1 >= *(s8 *)(entry + 4) &&
+                    arg1 <= *(s8 *)(entry + 6) &&
+                    arg2 >= *(s8 *)(entry + 5) &&
+                    arg2 <= *(s8 *)(entry + 7)) {
+                    valid = 1;
+                } else {
+                    valid = 0;
+                }
 
-            if (!(flags & arg4)) {
-                if (arg3 == 0 || (arg3 & flags) == arg3) {
-                    if (arg1 >= *(s8 *)(entry + 4) &&
-                        arg1 <= *(s8 *)(entry + 6) &&
-                        arg2 >= *(s8 *)(entry + 5) &&
-                        arg2 <= *(s8 *)(entry + 7)) {
-                        valid = 1;
-                    } else {
-                        valid = 0;
-                    }
-
-                    if (valid != 0) {
-                        found = base + i * 0xB4;
-                        break;
-                    }
+                if (valid != 0) {
+                    found = base + i * 0xB4;
+                    break;
                 }
             }
         }
@@ -3895,76 +3892,49 @@ void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
 
     for (direction = 0; direction < 4; direction++) {
         switch (direction) {
-        case 0:
-            dir = 1;
-            break;
-        case 1:
-            dir = 2;
-            break;
-        case 2:
-            dir = 4;
-            break;
-        case 3:
-            dir = 8;
-            break;
-        default:
-            dir = 0x10;
-            break;
+        case 0: dir = 1; break;
+        case 1: dir = 2; break;
+        case 2: dir = 4; break;
+        case 3: dir = 8; break;
+        default: dir = 0x10; break;
         }
-
         switch (dir) {
-        case 1:
-            dx = -1;
-            break;
-        case 2:
-            dx = 1;
-            break;
-        default:
-            dx = 0;
-            break;
+        case 1: dx = -1; break;
+        case 2: dx = 1; break;
+        default: dx = 0; break;
         }
-
         switch (dir) {
-        case 4:
-            dy = 1;
-            break;
-        case 8:
-            dy = -1;
-            break;
-        default:
-            dy = 0;
-            break;
+        case 4: dy = 1; break;
+        case 8: dy = -1; break;
+        default: dy = 0; break;
         }
 
         x = arg1 + dx;
         y = arg2 + dy;
 
-        i = count - 1;
+        i = n;
         offset = i * 0xB4;
         found = 0;
 
-        if (i >= 0) {
+        for (; i >= 0; i--, offset -= 0xB4) {
             base = *(u8 **)((u8 *)arg0 + 0x14);
+            entry = base + offset;
+            flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
 
-            for (; i >= 0; i--, offset -= 0xB4) {
-                entry = base + offset;
-                flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+            if (!(flags & arg4)) {
+                if (arg3 == 0 || (arg3 & flags) == arg3) {
+                    if (x >= *(s8 *)(entry + 4) &&
+                        x <= *(s8 *)(entry + 6) &&
+                        y >= *(s8 *)(entry + 5) &&
+                        y <= *(s8 *)(entry + 7)) {
+                        valid = 1;
+                    } else {
+                        valid = 0;
+                    }
 
-                if (!(flags & arg4)) {
-                    if (arg3 == 0 || (arg3 & flags) == arg3) {
-                        if (x >= *(s8 *)(entry + 4) &&
-                            x <= *(s8 *)(entry + 6) &&
-                            y >= *(s8 *)(entry + 5) &&
-                            y <= *(s8 *)(entry + 7)) {
-                            valid = 1;
-                        } else {
-                            valid = 0;
-                        }
-
-                        if (valid != 0) {
-                            found = base + i * 0xB4;
-                            break;
-                        }
+                    if (valid != 0) {
+                        found = base + i * 0xB4;
+                        break;
                     }
                 }
             }
@@ -4975,13 +4945,12 @@ void fn_8004982C(void *arg0) {
 }
 
 void fn_8004983C(void *arg0) {
-    extern f32 lbl_80368F74;
+    extern const f32 lbl_80368F74;
     extern f32 lbl_80368F78;
     f32 temp_f2;
     f32 temp_f3;
-    s32 zero = 0;
 
-    *(s32 *)((u8 *)arg0 + 0x40) = zero;
+    *(s32 *)((u8 *)arg0 + 0x40) = 0;
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)(*(u8 **)((u8 *)arg0 + 0x30) + 8);
     *(f32 *)((u8 *)arg0 + 0x48) = *(f32 *)((u8 *)arg0 + 0x38);
     temp_f3 = *(f32 *)((u8 *)arg0 + 0x44);
@@ -9352,9 +9321,13 @@ void fn_80052CA8(void *arg0) {
  *(u32 *)(object+8)^=0x20000000;
  object=*(u8 **)((u8 *)arg0+0x30);
  if(*(u32 *)(object+8)&0x20000000) {
- unit=*(u8 **)(object+0x34);
- if(unit==0) unit=*(u8 **)(object+0x30);
- } else unit=*(u8 **)(object+0x30);
+     unit=*(u8 **)(object+0x34);
+     if(unit==0) goto obj30;
+ } else goto obj30;
+ goto unit_found;
+obj30:
+ unit=*(u8 **)(object+0x30);
+unit_found:
  x=unit[0x19e]; y=unit[0x19f];
  dest.x=lbl_80369098+(f32)(s8)x;
  dest.y=lbl_80369098+(f32)(s8)y;
