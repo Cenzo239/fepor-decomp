@@ -13658,11 +13658,13 @@ u8 fn_80179284(void)
   s32 result;
   s32 ret;
   s32 tmp;
+  int new_var;
   result = fn_800C3E54(gConvoy);
   ret = 2;
-  tmp = -result;
+  new_var = -result;
+  tmp = new_var;
   tmp = tmp | result;
-  tmp = (s32) ((((((((((((((u32) tmp) >> 26) >> 5) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF) & 0xFFFFFFFF);
+  tmp = (s32) (((u32) tmp) >> 31);
   if (tmp != 0)
   {
     ret = 0;
