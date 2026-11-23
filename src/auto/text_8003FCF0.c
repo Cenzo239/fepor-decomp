@@ -351,105 +351,44 @@ void *Res_GetByName(s32);
 
 void fn_8005C7E8(void *);
 
-void *fn_8003FCF0(void *arg0)
-{
-  u8 equal;
-  u8 c;
-  s8 *ref;
-  s8 *new_var;
-  ;
-  if (((s8) lbl_80366DC0[24]) != ((s8) lbl_80366DC0[0]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[25]) != ((s8) lbl_80366DC0[1]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[26]) != ((s8) lbl_80366DC0[2]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[27]) != ((s8) lbl_80366DC0[3]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[28]) != ((s8) lbl_80366DC0[4]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[29]) != ((s8) lbl_80366DC0[5]))
-  {
-    equal = 0;
-  }
-  else
-    if (((s8) lbl_80366DC0[30]) != ((s8) lbl_80366DC0[6]))
-  {
-    equal = 0;
-  }
-  else
-  {
-    equal = 1;
-  }
-  if (equal)
-  {
-  }
-  else
-  {
-    ref -= 0x20;
-    new_var = &ref[2];
-    if (((s8) ref[24]) != ((s8) ref[0]))
-    {
-      equal = 0;
+void *fn_8003FCF0(void *arg0) {
+    extern s8 *lbl_80366DC0;
+    s8 *ref;
+    void *ptr;
+    u8 ok;
+    u32 k;
+
+    ptr = arg0;
+    ref = lbl_80366DC0;
+
+    for (k = 0; k < 7; k++) {
+        if ((s8)((u8 *)ptr)[0x18 + k] != ref[k]) {
+            ok = 0;
+            goto done1;
+        }
     }
-    else
-      if (((s8) ref[25]) != ((s8) ref[1]))
-    {
-      equal = 0;
+    ok = 1;
+done1:
+
+    if (ok) {
+        return ptr;
     }
-    else
-      if (((s8) ref[26]) != ((s8) (*new_var)))
-    {
-      equal = 0;
+
+    ptr = (u8 *)ptr - 0x20;
+
+    for (k = 0; k < 7; k++) {
+        if ((s8)((u8 *)ptr)[0x18 + k] != ref[k]) {
+            ok = 0;
+            goto done2;
+        }
     }
-    else
-      if (((s8) ref[27]) != ((s8) ref[3]))
-    {
-      equal = 0;
+    ok = 1;
+done2:
+
+    if (ok) {
+        return ptr;
     }
-    else
-      if (((s8) ref[28]) != ((s8) ref[4]))
-    {
-      equal = 0;
-    }
-    else
-      if (((s8) ref[29]) != ((s8) ref[5]))
-    {
-      equal = 0;
-    }
-    else
-      if (((s8) ref[30]) != ((s8) ref[6]))
-    {
-      equal = 0;
-    }
-    else
-    {
-      equal = 1;
-    }
-    if (equal)
-    {
-    }
-    else
-    {
-      ref = 0;
-    }
-  }
-  return ref;
+    return 0;
 }
 
 #pragma use_lmw_stmw on
@@ -1429,15 +1368,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void *light;
     void *fog;
     char *buf;
-    char *b0;
-    char *b1;
-    char *b2;
-    char *b3;
-    char *b4;
-    char *b5;
-    char *b6;
-    char *b7;
-    char *b8;
     char *strBase;
     s8 defLight;
 
@@ -1536,38 +1466,36 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             ((u8 *)arg0)[0x61] = 0;
             M2C_FIELD(arg0, s32 *, 0x64) = 0;
         }
-                  Map_DecodeHeaderFlags(arg0);
-          cursor = Hash_Lookup(lbl_8026A660 + 0x186);
-          M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
-          buf = (char *)lbl_802EFE20;
-          b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
-          b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-          strBase = (char *)lbl_8026A660;
-          entry = M2C_FIELD(arg0, void **, 0x10);
-          for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
-              M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xA8) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xAC) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB0) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
-              name = Bin_ReadU32(&cursor);
-              M2C_FIELD(entry, void **, 0) = name;
-              sub = (u8 *)entry + 4;
-              fn_80061824(sub);
-              strcpy(buf, arg1);
-              strcat(buf, name);
-              strcat(buf, strBase + 0x193);
-              M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(b0);
-              strcpy(b1, arg1);
-              strcat(b2, name);
-              strcat(b3, strBase + 0x196);
-              M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(b4);
-              strcpy(b5, arg1);
-              strcat(b6, strBase + 0x19A);
-              strcat(b7, strBase + 0x1A2);
-              if (FileCache_Exists(b8) != 0) {
+        Map_DecodeHeaderFlags(arg0);
+        cursor = Hash_Lookup(lbl_8026A660 + 0x186);
+        M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
+        buf = (char *)lbl_802EFE20;
+        strBase = (char *)lbl_8026A660;
+        entry = M2C_FIELD(arg0, void **, 0x10);
+        for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
+            M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xA8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xAC) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB0) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
+            name = Bin_ReadU32(&cursor);
+            M2C_FIELD(entry, void **, 0) = name;
+            sub = (u8 *)entry + 4;
+            fn_80061824(sub);
+            strcpy(buf, arg1);
+            strcat(buf, name);
+            strcat(buf, strBase + 0x193);
+            M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(buf);
+            strcpy(buf, arg1);
+            strcat(buf, name);
+            strcat(buf, strBase + 0x196);
+            M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(buf);
+            strcpy(buf, arg1);
+            strcat(buf, strBase + 0x19A);
+            strcat(buf, strBase + 0x1A2);
+            if (FileCache_Exists(buf) != 0) {
                 strcpy(lbl_802EFE20, arg1);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
@@ -1690,38 +1618,36 @@ void Map_LoadTerrain(void *arg0, char *arg1)
             ((u8 *)arg0)[0x61] = 0;
             M2C_FIELD(arg0, s32 *, 0x64) = 0;
         }
-                  Map_DecodeHeaderFlags(arg0);
-          cursor = Hash_Lookup(lbl_8026A660 + 0x1EE);
-          M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
-          buf = (char *)lbl_802EFE20;
-          b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
-          b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-          strBase = (char *)lbl_8026A660;
-          entry = M2C_FIELD(arg0, void **, 0x10);
-          for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
-              M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xA8) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xAC) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB0) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
-              M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
-              name = Bin_ReadU32(&cursor);
-              M2C_FIELD(entry, void **, 0) = name;
-              sub = (u8 *)entry + 4;
-              fn_80061824(sub);
-              strcpy(buf, arg1);
-              strcat(buf, name);
-              strcat(buf, strBase + 0x193);
-              M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(b0);
-              strcpy(b1, arg1);
-              strcat(b2, name);
-              strcat(b3, strBase + 0x196);
-              M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(b4);
-              strcpy(b5, arg1);
-              strcat(b6, strBase + 0x19A);
-              strcat(b7, strBase + 0x1A2);
-              if (FileCache_Exists(b8) != 0) {
+        Map_DecodeHeaderFlags(arg0);
+        cursor = Hash_Lookup(lbl_8026A660 + 0x1EE);
+        M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
+        buf = (char *)lbl_802EFE20;
+        strBase = (char *)lbl_8026A660;
+        entry = M2C_FIELD(arg0, void **, 0x10);
+        for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
+            M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xA8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xAC) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB0) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
+            M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
+            name = Bin_ReadU32(&cursor);
+            M2C_FIELD(entry, void **, 0) = name;
+            sub = (u8 *)entry + 4;
+            fn_80061824(sub);
+            strcpy(buf, arg1);
+            strcat(buf, name);
+            strcat(buf, strBase + 0x193);
+            M2C_FIELD(sub, s32 *, 0x40) = fn_80065EE8(buf);
+            strcpy(buf, arg1);
+            strcat(buf, name);
+            strcat(buf, strBase + 0x196);
+            M2C_FIELD(sub, s32 *, 0x48) = fn_8006CE14(buf);
+            strcpy(buf, arg1);
+            strcat(buf, strBase + 0x19A);
+            strcat(buf, strBase + 0x1A2);
+            if (FileCache_Exists(buf) != 0) {
                 strcpy(lbl_802EFE20, arg1);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
