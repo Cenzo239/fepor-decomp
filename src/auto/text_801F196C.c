@@ -1844,16 +1844,21 @@ void fn_801F5D14(void *arg0) {
 #pragma global_optimizer on
 void fn_801F5DD0(void *arg0)
 {
-    u8 *object;
+    void Process_Goto(void *, s32);
+    s32 GBAGetStatus(void *, void *);
+    s32 GBAWrite(void *, void *, void *);
+    void Process_ClearFunc(void *);
     s32 r;
+    u8 *object;
 
+    r = 0;
     object = (u8 *)arg0;
 
-    r = GBAGetStatus(*(u32 *)(object + 0x38), object + 0x4B);
+    r = GBAGetStatus(*(void **)(object + 0x38), object + 0x4B);
     if (r == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
-            fn_8000C070(arg0, 2);
+            Process_Goto(arg0, 2);
             return;
         }
     }
@@ -1861,15 +1866,15 @@ void fn_801F5DD0(void *arg0)
         return;
     }
 
-    if (GBAWrite(*(u32 *)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
+    if (GBAWrite(*(void **)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
-            fn_8000C070(arg0, 2);
+            Process_Goto(arg0, 2);
             return;
         }
     }
 
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 #pragma opt_common_subs off
@@ -4147,22 +4152,23 @@ void fn_801FA478(void *arg0) {
     }
 }
 
-void fn_801FA4B8(s32 arg0, s32 arg1) {
-    extern u8 lbl_8029B2F4[];
-    extern f32 lbl_8036BA00;
-    void *Process_Create(void *, s32);
-    void *temp;
-    s32 zero;
-    f32 f;
-
-    temp = Process_Create(lbl_8029B2F4, arg1);
-    if (temp != NULL) {
-        *(s32 *)((u8 *)temp + 0x44) = arg0;
-        zero = 0;
-        f = lbl_8036BA00;
-        *(s32 *)((u8 *)temp + 0x30) = zero;
-        *(f32 *)((u8 *)temp + 0x38) = f;
-    }
+void fn_801FA4B8(s32 arg0, s32 arg1)
+{
+  extern u8 lbl_8029B2F4[];
+  extern const f32 lbl_8036BA00;
+  void *Process_Create(void *, s32);
+  void *temp;
+  s32 zero;
+  f32 f;
+  temp = Process_Create(lbl_8029B2F4, arg1);
+  if (temp != NULL)
+  {
+    zero = 0;
+    f = lbl_8036BA00;
+    *((s32 *) (((u8 *) temp) + 0x30)) = zero;
+    *((f32 *) (((u8 *) temp) + 0x38)) = f;
+  }
+  *((s32 *) (((u8 *) temp) + 0x44)) = arg0;
 }
 
 void fn_801FA508(void *arg0) {
