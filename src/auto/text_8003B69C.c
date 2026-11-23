@@ -2657,53 +2657,43 @@ done2:
 
 void fn_8005C7E8(void *);
 void fn_8003F670(void *arg0) {
+    void fn_8005C7E8(void *);
+    extern s8 *lbl_80366DC0;
     s8 *ref;
     void *ptr;
     u8 ok;
+    u32 k;
 
     ptr = arg0;
     ref = lbl_80366DC0;
-    if ((s8)((u8 *)ptr)[0x18] != ref[0]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x19] != ref[1]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) {
-        ok = 0;
-    } else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) {
-        ok = 0;
-    } else {
-        ok = 1;
-    }
-    if (ok) {
-    } else {
-        ptr = (u8 *)ptr - 0x20;
-        if ((s8)((u8 *)ptr)[0x18] != ref[0]) {
+
+    for (k = 0; k < 7; k++) {
+        if ((s8)((u8 *)ptr)[0x18 + k] != ref[k]) {
             ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x19] != ref[1]) {
-            ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x1A] != ref[2]) {
-            ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x1B] != ref[3]) {
-            ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x1C] != ref[4]) {
-            ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x1D] != ref[5]) {
-            ok = 0;
-        } else if ((s8)((u8 *)ptr)[0x1E] != ref[6]) {
-            ok = 0;
-        } else {
-            ok = 1;
+            goto done1;
         }
-        if (ok) {
-        } else {
+    }
+    ok = 1;
+done1:
+
+    switch (ok) {
+    case 0:
+        ptr = (u8 *)ptr - 0x20;
+
+        for (k = 0; k < 7; k++) {
+            if ((s8)((u8 *)ptr)[0x18 + k] != ref[k]) {
+                ok = 0;
+                goto done2;
+            }
+        }
+        ok = 1;
+done2:
+
+        switch (ok) {
+        case 0:
             ptr = 0;
         }
     }
+
     fn_8005C7E8(ptr);
 }
