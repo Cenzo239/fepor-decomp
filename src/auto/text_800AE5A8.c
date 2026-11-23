@@ -1619,14 +1619,14 @@ s32 fn_800B34B0(u8 *arg0) {
     extern void *gSoundLoadBuf;
     extern s32 lbl_8036780C;
     extern u8 Sound_str[];
+    s32 i;
     u8 *base;
     s32 handle;
     u32 buffer;
     s32 size;
     u32 value;
-    s32 i;
     u32 *counter_ptr;
-    
+
     base = gSoundSys;
     if (*(u32 *)(base + 0xE0) >= 8) {
         return 0;
@@ -1677,13 +1677,13 @@ stored:
         if (arg0 != NULL) {
             while (*arg0 != 0xFF) {
                 Sound_PushGroup(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
-                *(u32 *)counter_ptr += 1;
+                *counter_ptr += 1;
                 arg0++;
             }
         } else {
             for (i = 0; i < 6; i++) {
                 if (Sound_PushGroup(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
-                    *(u32 *)counter_ptr += 1;
+                    *counter_ptr += 1;
                     *(u32 *)(ptr + 0xE8) += 1;
                 }
             }
@@ -3993,27 +3993,59 @@ s32 fn_800B861C(void) {
 }
 
 #pragma optimization_level 2
-u32 fn_800B864C(u8 *p) {
-s32 flags=0; u8 ch;
-while ((s8)(ch=*p)!=0) {
-switch((s8)ch) {
-case '2': flags|=0x04000004; break;
-case '4': flags|=0x01000001; break;
-case '6': flags|=0x02000002; break;
-case '8': flags|=0x08000008; break;
-case 'A': flags|=0x100; break;
-case 'B': flags|=0x200; break;
-case 'X': flags|=0x400; break;
-case 'Y': flags|=0x800; break;
-case 'Z': flags|=0x10; break;
-case 'L': flags|=0x40; break;
-case 'R': flags|=0x20; break;
-case 'S': flags|=0x1000; break;
-case '*': flags|=-1; break;
-}
-p++;
-}
-return flags;
+u32 fn_800B864C(u8 *p)
+{
+  s32 flags = 0;
+  u8 ch;
+  int new_var;
+  while (((s8) (ch = *p)) != 0)
+  {
+    switch ((s8) ch)
+    {
+      case '2':
+        flags |= 0x04000004;
+        break;
+      case '4':
+        flags |= 0x01000001;
+        break;
+      case '6':
+        flags |= 0x02000002;
+        break;
+      case '8':
+        flags |= 0x08000008;
+        break;
+      case 'A':
+        flags |= 0x100;
+        break;
+      case 'B':
+        flags |= 0x200;
+        break;
+      case 'X':
+        flags |= 0x400;
+        break;
+      case 'Y':
+        flags |= 0x800;
+        break;
+      new_var = 1;
+      case 'Z':
+        flags |= 0x10;
+        break;
+      case 'L':
+        flags |= 0x40;
+        break;
+      case 'R':
+        flags |= 0x20;
+        break;
+      case 'S':
+        flags |= 0x1000;
+        break;
+      case '*':
+        flags |= (new_var = -1);
+        break;
+    }
+    p++;
+  }
+  return flags;
 }
 #pragma optimization_level 4
 s32 fn_800B870C(u32 arg0) {
@@ -10399,7 +10431,6 @@ extern f32 lbl_80369CD0;
 void fn_800AFC54(s32 arg0)
 {
   extern u8 lbl_80317338[];
-  f32 minimum;
   u8 *sys;
   u16 rate;
   u16 *new_var;
@@ -10417,6 +10448,7 @@ void fn_800AFC54(s32 arg0)
     new_var = (u16 *) entry;
     if (var_f2 < lbl_80369CCC)
     {
+      f32 minimum;
       var_f2 = minimum;
     }
     *new_var = (*new_var) & (~2);
@@ -10457,10 +10489,10 @@ void fn_800AFE0C(s32 arg0) {
     void fn_800B49D0(void *);
     void fn_8024DA2C(void *);
     u8 *sys;
-    u8 *entry;
     u8 *p;
-    u8 *sys2;
+    u8 *entry;
     u16 nest;
+    u16 *slot;
 
     sys = (u8 *)gSoundSys;
     entry = *(u8 **)(sys + 0xF8) + arg0 * 0x13C;
@@ -10471,24 +10503,25 @@ void fn_800AFE0C(s32 arg0) {
         }
         if (*(u16 *)entry & 0x400) {
             p = sys + (*(u16 *)(entry + 2) * 2);
-            *(u16 *)(p + 0x13E) = 0;
+            slot = (u16 *)(p + 0x13E);
+            *slot = 0;
         }
         *(u16 *)entry = 0;
-        sys2 = (u8 *)gSoundSys;
-        if (*(u16 *)(sys2 + 0x124) == 0) {
+        sys = (u8 *)gSoundSys;
+        if (*(u16 *)(sys + 0x124) == 0) {
             *(s32 *)((u8 *)gSoundSys + 0x128) = OSDisableInterrupts();
         }
-        *(u16 *)(sys2 + 0x124) += 1;
+        *(u16 *)(sys + 0x124) += 1;
         fn_800B49D0(*(void **)(entry + 0x2C));
         fn_800B49D0(*(void **)(entry + 0xB4));
         fn_8024DA2C(*(void **)(entry + 0x50));
         if (*(u16 *)(entry + 0x1E) == 2) {
             fn_8024DA2C(*(void **)(entry + 0xD8));
         }
-        nest = *(u16 *)(sys2 + 0x124);
-        if (nest != 0) {
+        nest = *(u16 *)(sys + 0x124);
+        if (nest) {
             nest -= 1;
-            *(u16 *)(sys2 + 0x124) = nest;
+            *(u16 *)(sys + 0x124) = nest;
             if ((u16)nest == 0) {
                 OSRestoreInterrupts(*(s32 *)((u8 *)gSoundSys + 0x128));
             }
