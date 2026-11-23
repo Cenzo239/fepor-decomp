@@ -9954,227 +9954,179 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
     return NULL;
 }
 
-s32 fn_800C221C(void *arg0, void *arg1, u32 arg2)
+#pragma global_optimizer off
+void fn_800C221C(void)
 {
     void DebugPrint(const char *, ...);
-    void fn_800142C0(s32 *, s16 *);
+    void fn_800142C0(s32 **, s16 *);
     void *Event_NextEntry(void *);
     char *Allegiance_GetNameStr(s32);
-
     extern char lbl_8026FE18[];
-
-    s32 entry;
+#pragma global_optimizer off
+    s32 *entry;
     s16 count;
+    u8 type;
+    const char *name;
+    char *baseA;
     s32 i;
     s32 j;
-    s32 k;
     u8 *event;
-    u8 *script;
-    s32 type;
-    const char *name;
-    char *base;
+    char *baseB;
+    u32 head;
 
-    base = lbl_8026FE18;
-
-    DebugPrint(base + 0x29);
+    DebugPrint(lbl_8026FE18 + 0x29);
     fn_800142C0(&entry, &count);
 
+    baseA = lbl_8026FE18;
     for (i = 0; i < count; i++) {
-        DebugPrint(base + 0x47, **(s32 **)&entry);
-
+        DebugPrint(baseA + 0x47, *entry);
         for (j = 0; j < (s8)((u8 *)entry)[0xD]; j++) {
-            DebugPrint(base + 0x52);
-
+            DebugPrint(baseA + 0x52);
             if (j < (s8)((u8 *)entry)[0xD] - 1) {
-                DebugPrint(base + 0x56);
+                DebugPrint(baseA + 0x56);
             }
         }
-
-        DebugPrint(base + 0x58);
-        entry += 0x10;
+        DebugPrint(baseA + 0x58);
+        entry = (s32 *)((u8 *)entry + 0x10);
     }
 
     i = 0;
-    event = Event_NextEntry(0);
-
+    event = Event_NextEntry((void *)0);
+    baseB = lbl_8026FE18;
     while (event != 0) {
-        DebugPrint(base + 0x5B, i);
-
-        script = *(u8 **)(event + 8);
-
-        if (script != 0) {
-            DebugPrint(base + 0x62, script + 4);
+        DebugPrint(baseB + 0x5B, i);
+        if (*(u8 **)(event + 8) != 0) {
+            DebugPrint(lbl_8026FE18 + 0x62, *(u8 **)(event + 8) + 4);
         } else {
-            DebugPrint(base + 0x66);
+            DebugPrint(lbl_8026FE18 + 0x66);
         }
-
-        if (*(void **)event != 0) {
-            DebugPrint(base + 0x6E);
+        head = *(u32 *)event;
+        if (head != 0) {
+            DebugPrint(lbl_8026FE18 + 0x6E, head);
         } else {
-            type = (s8)event[0xC];
-
-            if (type != 0) {
-                switch (type) {
-                case 1:
-                    name = base + 0x71;
-                    break;
-                case 2:
-                    name = base + 0x7A;
-                    break;
-                case 3:
-                    name = base + 0x83;
-                    break;
-                case 4:
-                    name = base + 0x8C;
-                    break;
-                case 5:
-                    name = base + 0x91;
-                    break;
-                case 6:
-                    name = base + 0x9B;
-                    break;
-                case 7:
-                    name = base + 0xA0;
-                    break;
-                case 8:
-                    name = base + 0xA5;
-                    break;
-                case 9:
-                    name = base + 0xAB;
-                    break;
-                case 10:
-                    name = base + 0xB0;
-                    break;
-                case 11:
-                    name = base + 0xB9;
-                    break;
-                case 12:
-                    name = base + 0xBD;
-                    break;
-                case 13:
-                    name = base + 0xC6;
-                    break;
-                case 14:
-                    name = base + 0xCE;
-                    break;
-                case 15:
-                    name = base + 0xD7;
-                    break;
-                default:
-                    name = base + 0xDC;
-                    break;
+            type = event[0xC];
+            if ((s8)type != 0) {
+                switch ((s8)type) {
+                case 1: name = lbl_8026FE18 + 0x71; break;
+                case 2: name = lbl_8026FE18 + 0x7A; break;
+                case 3: name = lbl_8026FE18 + 0x83; break;
+                case 4: name = lbl_8026FE18 + 0x8C; break;
+                case 5: name = lbl_8026FE18 + 0x91; break;
+                case 6: name = lbl_8026FE18 + 0x9B; break;
+                case 7: name = lbl_8026FE18 + 0xA0; break;
+                case 8: name = lbl_8026FE18 + 0xA5; break;
+                case 9: name = lbl_8026FE18 + 0xAB; break;
+                case 10: name = lbl_8026FE18 + 0xB0; break;
+                case 11: name = lbl_8026FE18 + 0xB9; break;
+                case 12: name = lbl_8026FE18 + 0xBD; break;
+                case 13: name = lbl_8026FE18 + 0xC6; break;
+                case 14: name = lbl_8026FE18 + 0xCE; break;
+                case 15: name = lbl_8026FE18 + 0xD7; break;
+                default: name = lbl_8026FE18 + 0xDC; break;
+                case 0: name = lbl_8026FE18 + 0xE3; break;
                 }
-
                 DebugPrint(name);
             } else {
-                DebugPrint(base + 0xED);
+                DebugPrint(lbl_8026FE18 + 0xED);
             }
         }
-
-        DebugPrint(base + 0xF3);
-
-        type = (s8)event[0xC];
-
-        if (type != 0) {
-            switch (type) {
+        DebugPrint(baseB + 0xF3);
+        type = event[0xC];
+        if ((s8)type != 0) {
+            switch ((s8)type) {
             case 1:
-                DebugPrint(
-                    base + 0xF5,
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x14)
-                );
+                DebugPrint(lbl_8026FE18 + 0xF5,
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24) + *(s16 *)(event + 0x14));
                 break;
-
             case 2:
-                DebugPrint(
-                    base + 0xFA,
+                DebugPrint(lbl_8026FE18 + 0xFA,
                     *(s16 *)(event + 0x14),
                     *(s16 *)(event + 0x16),
-                    Allegiance_GetNameStr(*(s16 *)(event + 0x18))
-                );
+                    Allegiance_GetNameStr(*(s16 *)(event + 0x18)));
                 break;
-
             case 3:
-                DebugPrint(
-                    base + 0x103,
+                DebugPrint(lbl_8026FE18 + 0x103,
                     *(s16 *)(event + 0x14),
                     *(s16 *)(event + 0x16),
                     *(s16 *)(event + 0x18),
                     *(s16 *)(event + 0x1A),
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x1E),
-                    Allegiance_GetNameStr(*(s16 *)(event + 0x1C))
-                );
+                    Allegiance_GetNameStr(*(s16 *)(event + 0x1C)),
+                    *(s32 *)(*(u8 **)(event + 0x8) + 0x24) + *(s16 *)(event + 0x1E));
                 break;
-
             case 4:
-                DebugPrint(
-                    base + 0x117,
+                DebugPrint(lbl_8026FE18 + 0x117,
                     *(s16 *)(event + 0x14),
                     *(s16 *)(event + 0x16),
                     *(s16 *)(event + 0x18),
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x1A)
-                );
+                    *(s32 *)(*(u8 **)(event + 8) + 0x24) + *(s16 *)(event + 0x1A));
                 break;
-
-            case 5:
-                DebugPrint(
-                    base + 0x130,
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x14),
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x16),
-                    (*(s16 *)(event + 0x18) != 0)
-                        ? base + 0x125 : base + 0x12A,
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x1A)
-                );
-                break;
-
-            case 6:
-                DebugPrint(
-                    base + 0x142,
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x14),
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x16),
-                    (s8)base[0x152 + *(s16 *)(event + 0x18)]
-                );
-                break;
-
-            case 7:
-                DebugPrint(
-                    base + 0x157,
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x14),
-                    *(s32 *)(*(u8 **)(event + 8) + 0x24)
-                        + *(s16 *)(event + 0x16),
-                    *(s16 *)(event + 0x18)
-                );
-                break;
-
-            default:
-                for (k = 0; k < (s8)event[0xD]; k++) {
-                    DebugPrint(base + 0x52);
-
-                    if (k < (s8)event[0xD] - 1) {
-                        DebugPrint(base + 0x56);
-                    }
+            case 5: {
+                char *s;
+                const char *tag;
+                u8 *scr;
+                s = (char *)lbl_8026FE18;
+                tag = s + 0x12A;
+                if (*(s16 *)(event + 0x18) != 0) {
+                    tag = s + 0x125;
                 }
-
-                DebugPrint(base + 0x58);
+                scr = *(u8 **)(event + 8);
+                DebugPrint(lbl_8026FE18 + 0x130,
+                    *(s32 *)(scr + 0x24) + *(s16 *)(event + 0x14),
+                    *(s32 *)(scr + 0x24) + *(s16 *)(event + 0x16),
+                    tag,
+                    *(s32 *)(scr + 0x24) + *(s16 *)(event + 0x1A));
                 break;
             }
+            case 6: {
+                s8 *p;
+                s16 x;
+                u8 *scr;
+                s32 tab;
+                char *base;
+                base = lbl_8026FE18;
+                scr = *(u8 **)(event + 8);
+                p = (s8 *)(base + *(s16 *)(event + 0x18));
+                x = *(s16 *)(event + 0x14);
+                tab = *(s32 *)(scr + 0x24);
+                DebugPrint(base + 0x142, tab + x, tab + *(s16 *)(event + 0x16), p[0x152]);
+                break;
+            }
+            case 7: {
+                u8 *scr;
+                scr = *(u8 **)(event + 8);
+                DebugPrint(lbl_8026FE18 + 0x157,
+                    *(s32 *)(scr + 0x24) + *(s16 *)(event + 0x14),
+                    *(s32 *)(scr + 0x24) + *(s16 *)(event + 0x16),
+                    *(s16 *)(event + 0x18));
+                break;
+            }
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            default: {
+                s32 k;
+                baseA = lbl_8026FE18;
+                for (k = 0; k < (s8)event[0xD]; k++) {
+                    DebugPrint(baseA + 0x52);
+                    if (k < (s8)event[0xD] - 1) {
+                        DebugPrint(baseA + 0x56);
+                    }
+                }
+                DebugPrint(baseB + 0x58);
+                break;
+            }
+            }
         }
-
         i++;
         event = Event_NextEntry(event);
     }
-
-    DebugPrint(base + 0x164);
+    DebugPrint(lbl_8026FE18 + 0x164);
 }
-
+#pragma global_optimizer on
 s32 Event_GetString(void *arg0, u16 arg1) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 8), s32 *, 0x24) + arg1;
 }
