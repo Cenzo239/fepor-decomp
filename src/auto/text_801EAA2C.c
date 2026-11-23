@@ -1012,26 +1012,58 @@ extern "C" void fn_801EC02C(void *self, void *ctx)
     extern f32 lbl_8036B780;
     extern f32 lbl_8036B790;
 
-    s32 scaled;
-    s32 heightOffset;
-    s32 width;
+    struct DrawObj {
+        u8 pad04[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s32 v20() = 0;
+        virtual void v21() = 0;
+        virtual void v22() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual void v25() = 0;
+        virtual void v26() = 0;
+        virtual void v27() = 0;
+        virtual void v28() = 0;
+        virtual void v29() = 0;
+        virtual void v30() = 0;
+        virtual void v31(void *ctx) = 0;
+    };
+
     s16 top;
-    s16 value;
+    register unsigned int heightOffset;
+    s32 width;
+    s32 scaled;
 
     Ui_DrawObjRouteIcon(self, ctx);
-    ((void (*)(void *, void *))(*(void ***)((u8 *)self + 4))[31])(self, ctx);
+    ((DrawObj *)self)->v31(ctx);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B788);
     Prim2D_PrepareTex();
 
-    value = (s16)((s32 (*)(void *))(*(void ***)((u8 *)self + 4))[20])(self);
-    scaled = (s32)((f32)value * lbl_8036B78C);
+    scaled = (s32)((f32)(s16)((DrawObj *)self)->v20() * lbl_8036B78C);
 
     heightOffset = Text_MeasureHeight(-1, lbl_8036B780) >> 1;
 
     top = *(s16 *)((u8 *)ctx + 0x3A);
-    width = (s16)((s32 (*)(void *))(*(void ***)((u8 *)self + 4))[20])(self);
+    width = (s16)((DrawObj *)self)->v20();
 
     fn_8008AB7C(width >> 1, top + heightOffset, scaled, 0x17, 0xA, 0x28, 1);
 
