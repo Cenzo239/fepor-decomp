@@ -2558,8 +2558,8 @@ void fn_80187D70(void *arg0) {
     fn_800558D8(msg);
 }
 
-#pragma opt_strength_reduction off
-#pragma optimization_level 2
+#pragma opt_strength_reduction on
+#pragma optimization_level 4
 void fn_80187FBC(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -2589,8 +2589,9 @@ void fn_80187FBC(void *arg0) {
     s32 lvl;
     f32 temp_f3;
 
+    count = 8;
+    count += 8;
     node = 0;
-    count = 0x10;
     obj = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18) + 0x34);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
@@ -2601,8 +2602,7 @@ void fn_80187FBC(void *arg0) {
         if (lvl > 0x14) {
             if (lvl > 0x28) {
                 count <<= 1;
-            }
-            if (count == 0x10) {
+            } else {
                 count = (s32)((f32)count + Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)(lvl - 0x14)));
             }
         }
