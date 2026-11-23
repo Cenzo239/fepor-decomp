@@ -1056,7 +1056,7 @@ void fn_80043A00(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 void fn_80043AC8(void *arg0) {
     M2C_UNK fn_80068550(s32);
     M2C_UNK fn_800C4588(void *);
-    extern s32 gGameFlags;
+    extern u32 gGameFlags;
     void *temp_r31;
 
     fn_80068550(M2C_FIELD(arg0, s32 *, 0x54));
@@ -1064,7 +1064,7 @@ void fn_80043AC8(void *arg0) {
     fn_800C4588(M2C_FIELD(temp_r31, void **, 0x114));
     M2C_FIELD(temp_r31, void **, 0x114) = NULL;
     fn_800C4588(temp_r31);
-    gGameFlags &= 0xFFFFFFF7;
+    gGameFlags &= ~8U;
 }
 
 void fn_80043B20(void) {
@@ -5577,8 +5577,8 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80368FD8;
     extern f32 lbl_80368FDC;
     extern f32 lbl_80368FFC;
-    extern f32 lbl_80369004;
-    extern f32 lbl_80369008;
+    extern const f32 lbl_80369004;
+    extern const f32 lbl_80369008;
     extern f32 lbl_8036900C;
     extern f32 lbl_80369010;
     extern f32 lbl_80369014;
