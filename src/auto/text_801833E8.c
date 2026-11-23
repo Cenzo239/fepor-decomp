@@ -2589,9 +2589,9 @@ void fn_80187FBC(void *arg0) {
     s32 lvl;
     f32 temp_f3;
 
+    node = 0;
     count = 8;
     count += 8;
-    node = 0;
     obj = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18) + 0x34);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
