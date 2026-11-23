@@ -660,9 +660,9 @@ void fn_801B46FC(void *arg0) {
         effect = Effect_Create(gUnitStatusStr + 0xB1, self);
         pos = *(f32 **)((u8 *)unitStatus + 0x14);
         Effect_SetPos(effect, pos[1], pos[2], pos[3]);
-        Ui_PlaySeCue(gUnitStatusStr + 0xC7, 100);
-        fn_8014876C(gFxChannels + (u32)unitStatus[0x10C] * 0x30, 50, 250);
     }
+    Ui_PlaySeCue(gUnitStatusStr + 0xC7, 100);
+    fn_8014876C(gFxChannels + (u32)unitStatus[0x10C] * 0x30, 50, 250);
     *(u32 *)((u8 *)unitStatus + 0x18) = 0;
 }
 
