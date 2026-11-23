@@ -2163,9 +2163,9 @@ f64 fn_80235B4C(f64 x) {
     extern f64 lbl_8036BE90;
     extern f64 lbl_8036BE98;
     extern f64 lbl_8036BEA0;
-    extern f32 lbl_80367068;
+    extern f32 lbl_80367068[];
     extern f64 fn_80238A9C(f64);
-    f64 y, z, h, p, q, r, s, w, df, c, sp8;
+    f64 y, z, h, p, q, r, s, w, c, df, sp8;
     s32 hx, ix;
 
     sp8 = x;
@@ -2177,7 +2177,7 @@ f64 fn_80235B4C(f64 x) {
                 return lbl_8036BE20;
             return lbl_8036BE28;
         }
-        return *(f32 *)0x80367068;
+        return lbl_80367068[0];
     }
     if (ix < 0x3FE00000) {
         if (ix <= 0x3C600000)
@@ -2203,14 +2203,14 @@ f64 fn_80235B4C(f64 x) {
     df = h;
     p = lbl_8036BE68 * z + lbl_8036BE60;
     *(s32 *)((s8 *)&df + 4) = 0;
-    p = (p * z + lbl_8036BE58) * z + lbl_8036BE50;
+    p = (z * p + lbl_8036BE58) * z + lbl_8036BE50;
     c = z - df * df;
     q = lbl_8036BE90 * z + lbl_8036BE88;
-    p = (p * z + lbl_8036BE48) * z + lbl_8036BE40;
-    q = ((q * z + lbl_8036BE80) * z + lbl_8036BE78) * z + lbl_8036BE70;
-    r = (z * p) / q;
+    p = (z * p + lbl_8036BE48) * z + lbl_8036BE40;
+    q = ((z * q + lbl_8036BE80) * z + lbl_8036BE78) * z + lbl_8036BE70;
     s = c / (h + df);
-    w = (r * h) + s;
+    r = (z * p) / q;
+    w = r * h + s;
     return lbl_8036BEA0 * (df + w);
 }
 
@@ -3409,204 +3409,6 @@ void fn_802387A8(void) {
 void fmod(void) {
     M2C_UNK fn_802360C4();
     fn_802360C4();
-}
-
-f64 fn_802387E8(f64 x) {
-    extern s32 errno;
-    extern f64 lbl_8036C188;
-    u32 t2;
-    u32 r;
-    u32 t1;
-    u32 s1;
-    u32 q1;
-    u32 s0;
-    s32 q0;
-    u32 t;
-    s32 m;
-    s32 ix0;
-    u32 ix1;
-    f64 z;
-
-    ix0 = ((s32 *)&x)[0];
-    ix1 = ((u32 *)&x)[1];
-
-    if ((u32)((ix0 & 0x7FF00000) + 0x80100000) == 0U) {
-        errno = 0x21;
-        return x * x + x;
-    }
-    if (ix0 <= 0) {
-        if ((ix1 | (ix0 & 0x7FFFFFFF)) == 0) {
-            return x;
-        }
-        if (ix0 < 0) {
-            errno = 0x21;
-            return *(f32 *)0x80367068;
-        }
-    }
-
-    m = ix0 >> 20;
-    if (m == 0) {
-        s32 i;
-        s32 a;
-        u32 b;
-        goto denorm_check;
-    denorm_shift:
-        t = ix1 >> 11;
-        ix1 <<= 21;
-        ix0 |= (s32)t;
-        m -= 0x15;
-    denorm_check:
-        if (ix0 == 0) {
-            goto denorm_shift;
-        }
-        i = 0;
-        goto denorm_bit_check;
-    denorm_bit_shift:
-        ix0 <<= 1;
-        i += 1;
-    denorm_bit_check:
-        if ((ix0 & 0x100000) == 0) {
-            goto denorm_bit_shift;
-        }
-        a = i - 1;
-        b = 32 - i;
-        t = ix1 >> b;
-        ix1 <<= i;
-        m -= a;
-        ix0 |= (s32)t;
-    }
-
-    t = (u32)(m - 0x3FF);
-    ix0 = (ix0 & 0xFFFFF) | 0x100000;
-    if (t & 1) {
-        t = ix1 >> 31;
-        ix1 += ix1;
-        t = t + ix0;
-        ix0 = ix0 + t;
-    }
-    t = ix1 >> 31;
-    ix1 += ix1;
-    t = t + ix0;
-    ix0 = ix0 + t;
-    s1 = 0;
-    s0 = 0;
-    q1 = 0;
-    q0 = 0;
-    r = 0x200000;
-    goto loop1_check;
- loop1:
-    t = s0 + r;
-    if ((s32)t <= (s32)ix0) {
-        s0 = t + r;
-        ix0 = ix0 - t;
-        q0 = q0 + r;
-    }
-    t = ix1 >> 31;
-    ix1 += ix1;
-    t = t + ix0;
-    ix0 = ix0 + t;
-    r >>= 1;
- loop1_check:
-    if (r != 0) {
-        goto loop1;
-    }
-
-    r = 0x80000000;
-    goto loop2_check;
- loop2:
-    t = s0;
-    t1 = s1 + r;
-    if ((s32)s0 < (s32)ix0) {
-        goto loop2_take;
-    }
-    if (s0 != ix0) {
-        goto loop2_skip;
-    }
-    if (t1 > ix1) {
-        goto loop2_skip;
-    }
- loop2_take:
-    s1 = t1 + r;
-    if ((u32)((t1 & 0x80000000) + 0x80000000) == 0U && (s1 & 0x80000000) == 0) {
-        s0 = s0 + 1;
-    }
-    ix0 = ix0 - t;
-    if (ix1 < t1) {
-        ix0 = ix0 - 1;
-    }
-    ix1 = ix1 - t1;
-    q1 = q1 + r;
- loop2_skip:
-    t = ix1 >> 31;
-    ix1 += ix1;
-    t = t + ix0;
-    ix0 = ix0 + t;
-    r >>= 1;
- loop2_check:
-    if (r != 0) {
-        goto loop2;
-    }
-
-    if ((ix0 | ix1) != 0) {
-        z = lbl_8036C188;
-        z = lbl_8036C188;
-        if ((u32)(q1 + 0x10000) == 0xFFFFU) {
-            q1 = 0;
-            q0 = q0 + 1;
-        } else {
-            q1 = q1 + (q1 & 1);
-        }
-    }
-
-    {
-        s32 q0_odd = (s32)(q0 & 1);
-        s32 hi = (s32)(q0 >> 1);
-        u32 lo = q1 >> 1;
-        hi += 0x3FE00000;
-        if (q0_odd == 1) {
-            lo |= 0x80000000;
-        }
-        ((u32 *)&z)[1] = lo;
-        hi += ((m - 0x3FF) >> 1) << 20;
-        ((s32 *)&z)[0] = hi;
-    }
-    return z;
-}
-
-f32 fn_80238A0C(void) {
-    f64 fn_80238710();
-    return (f32) fn_80238710();
-}
-
-f32 sinf(void) {
-    f64 sin();
-    return (f32) sin();
-}
-
-f32 cosf(void) {
-    f64 fn_802380D0();
-    return (f32) fn_802380D0();
-}
-
-f32 acosf(void) {
-    f64 fn_80238788();
-    return (f32) fn_80238788();
-}
-
-f64 fn_80238A9C(f64, f64) {
-    M2C_UNK fn_802387E8();
-    fn_802387E8();
-}
-
-void fn_80238ABC(void) {
-    M2C_UNK fn_8023108C();
-    fn_8023108C();
-}
-
-u8 *fn_80238ADC(u8 *arg0) { extern u16 lbl_8029E9A8[256]; u8 *table=(u8*)lbl_8029E9A8; s32 tmp; s32 c; u8 *p=arg0; goto check; do { tmp=(s8)c; if (tmp == -1) tmp=-1; else tmp=table[(u8)tmp]; *p++=(u8)tmp; check: c=*p; } while ((s8)c != 0); return arg0; }
-
-s32 Hu_IsStub(void) {
-    return 0;
 }
 
 extern u16 Ecb_8033E188[];

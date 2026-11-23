@@ -818,7 +818,10 @@ auto/text_80231CC8.c:
 	.text       start:0x80231CC8 end:0x80231D84
 
 auto/text_80231D2C.c:
-	.text       start:0x80231D84 end:0x80238B28
+	.text       start:0x80231D84 end:0x802387E8
+
+auto/text_802387E8.c:
+	.text       start:0x802387E8 end:0x80238B28
 
 dolphin/exi/EXIBios.c:
 	.text       start:0x80238B28 end:0x8023ABD4
