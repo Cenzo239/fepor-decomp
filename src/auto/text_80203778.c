@@ -1466,49 +1466,53 @@ void OSClearContext(OSContext *context) {
 #pragma peephole reset
 #pragma dont_inline reset
 void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
-    *(s32 *) ((u8 *) arg0 + 0x198) = arg1;
-    *(s32 *) ((u8 *) arg0 + 4) = arg2;
-    *(s32 *) ((u8 *) arg0 + 0x19C) = 0x9032;
-    *(s32 *) ((u8 *) arg0 + 0x80) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x8C) = 0;
-    *(s32 *) ((u8 *) arg0 + 8) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x34) = 0;
-    *(s32 *) ((u8 *) arg0 + 0xC) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x10) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x14) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x18) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x20) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x24) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x28) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x2C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x30) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x38) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x3C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x40) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x44) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x48) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x4C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x50) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x54) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x58) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x5C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x60) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x64) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x68) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x6C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x70) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x74) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x78) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x7C) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1A4) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1A8) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1AC) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1B0) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1B4) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1B8) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1BC) = 0;
-    *(s32 *) ((u8 *) arg0 + 0x1C0) = 0;
+    u32 srr1;
+
+    *(s32 *)((u8 *)arg0 + 0x198) = arg1;
+    *(s32 *)((u8 *)arg0 + 4) = arg2;
+    srr1 = 0;
+    srr1 |= 0x9032;
+    *(s32 *)((u8 *)arg0 + 0x19C) = srr1;
+    *(s32 *)((u8 *)arg0 + 0x80) = 0;
+    *(s32 *)((u8 *)arg0 + 0x8C) = 0;
+    *(s32 *)((u8 *)arg0 + 8) = 0;
+    *(s32 *)((u8 *)arg0 + 0x34) = 0;
+    *(s32 *)((u8 *)arg0 + 0xC) = 0;
+    *(s32 *)((u8 *)arg0 + 0x10) = 0;
+    *(s32 *)((u8 *)arg0 + 0x14) = 0;
+    *(s32 *)((u8 *)arg0 + 0x18) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x20) = 0;
+    *(s32 *)((u8 *)arg0 + 0x24) = 0;
+    *(s32 *)((u8 *)arg0 + 0x28) = 0;
+    *(s32 *)((u8 *)arg0 + 0x2C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x30) = 0;
+    *(s32 *)((u8 *)arg0 + 0x38) = 0;
+    *(s32 *)((u8 *)arg0 + 0x3C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x40) = 0;
+    *(s32 *)((u8 *)arg0 + 0x44) = 0;
+    *(s32 *)((u8 *)arg0 + 0x48) = 0;
+    *(s32 *)((u8 *)arg0 + 0x4C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x50) = 0;
+    *(s32 *)((u8 *)arg0 + 0x54) = 0;
+    *(s32 *)((u8 *)arg0 + 0x58) = 0;
+    *(s32 *)((u8 *)arg0 + 0x5C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x60) = 0;
+    *(s32 *)((u8 *)arg0 + 0x64) = 0;
+    *(s32 *)((u8 *)arg0 + 0x68) = 0;
+    *(s32 *)((u8 *)arg0 + 0x6C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x70) = 0;
+    *(s32 *)((u8 *)arg0 + 0x74) = 0;
+    *(s32 *)((u8 *)arg0 + 0x78) = 0;
+    *(s32 *)((u8 *)arg0 + 0x7C) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1A4) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1A8) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1AC) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1B0) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1B4) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1B8) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1BC) = 0;
+    *(s32 *)((u8 *)arg0 + 0x1C0) = 0;
 }
 
 #pragma use_lmw_stmw on
@@ -2957,26 +2961,26 @@ return 1;
 #pragma peephole on
 void MEMIntrruptHandler(s32 interrupt, OSContext *context)
 {
-    volatile u16 *regs;
-    u32 high;
-    u8 *base;
-    u32 address;
-    u32 cause;
-    OSErrorHandler handler;
-
-    base = (u8 *)0xCC000000;
-    regs = OS_MEMRegs;
-    high = *(volatile u16 *)(base + 0x4024);
-    address = regs[0x11];
-    cause = regs[0x0F];
-    address = __rlwimi(address, high, 16, 6, 15);
-    regs[0x10] = 0;
-    handler = __OSErrorTable[15];
-    if (handler != 0) {
-        handler(15, context, cause, address);
-    } else {
-        __OSUnhandledException(15, context, cause, address);
-    }
+  u32 high;
+  volatile u16 *regs;
+  u32 address;
+  u32 cause;
+  OSErrorHandler handler;
+  regs = OS_MEMRegs;
+  high = *(volatile u16 *)((u8 *)regs + 0x24);
+  address = regs[0x11];
+  cause = regs[0x0F];
+  address = __rlwimi(address, high, 16, 6, 15);
+  regs[0x10] = 0;
+  handler = __OSErrorTable[15];
+  if (handler != 0)
+  {
+    handler(15, context, cause, address);
+  }
+  else
+  {
+    __OSUnhandledException(15, context, cause, address);
+  }
 }
 void Config24MB(void) {
     register u32 zero;
