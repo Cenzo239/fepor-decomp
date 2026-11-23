@@ -395,9 +395,9 @@ done2:
 #pragma global_optimizer off
 void fn_8003FED8(u8 *arg0) {
     void Hash_Remove(void *);
-    u8 *obj;
     u32 j;
     u32 *p28;
+    u8 *obj;
     u32 *p30;
     u8 *p29;
     u32 *scan;
@@ -1750,9 +1750,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     fn_80040B78(arg0, (u32)((char *)arg0 + 0x3C));
     t1 = OSGetTime();
     ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
-    DebugPrint(lbl_8026A660 + 0x22C, ms);
+        DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
-
+#pragma global_optimizer on
 #pragma use_lmw_stmw on
 void fn_80042558(void *arg0)
 {
