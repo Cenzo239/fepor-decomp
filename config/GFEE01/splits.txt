@@ -499,7 +499,10 @@ auto/text_801101D0.c:
 	.text       start:0x801101D0 end:0x8011AB38
 
 auto/archive_load_proc.c:
-	.text       start:0x8011AB38 end:0x80120CC0
+	.text       start:0x8011AB38 end:0x8011AB98
+
+auto/text_8011AB98.c:
+	.text       start:0x8011AB98 end:0x80120CC0
 
 auto/text_80120CC0.c:
 	.text       start:0x80120CC0 end:0x80120CCC

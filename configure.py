@@ -424,6 +424,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8010554C.c"),
             Object(NonMatching, "auto/text_801101D0.c"),
             Object(NonMatching, "auto/archive_load_proc.c"),
+            Object(NonMatching, "auto/text_8011AB98.c"),
             Object(NonMatching, "auto/text_80120CCC.c"),
             Object(NonMatching, "auto/text_80127E94.c"),
             Object(NonMatching, "auto/text_8012C3D0.c"),
