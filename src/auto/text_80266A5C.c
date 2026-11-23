@@ -425,40 +425,51 @@ void fn_80266BD8(s32 arg0, u32 arg1)
 
     entry = lbl_803669A0 + arg0 * 0x100;
 
-    if (lbl_80368B2C == 0) {
-        if ((arg1 & 0xFF) == 0) {
-            if ((arg1 & 0xFFFF0000) != 0x00040000) {
-                *(u32 *)(entry + 0x20) = 1;
-                goto do_completion;
-            }
-        }
-
-        if (SITransfer(arg0, entry, *(u32 *)(entry + 0x0C), entry + 5, *(u32 *)(entry + 0x10), fn_80266A5C, *(s64 *)(entry + 0x30)) != 0) {
-            return;
-        }
-        *(u32 *)(entry + 0x20) = 2;
-
-        if ((callback = *(void (**)(s32))(entry + 0x38)) != 0) {
-            *(u32 *)(entry + 0x38) = 0;
-            callback(arg0);
-        }
-
-do_completion:
-        if (*(u32 *)(entry + 0x1C) != 0) {
-            oldContext = fn_802059EC();
-
-            OSClearContext(&ctx);
-            OSSetCurrentContext(&ctx);
-
-            completion = *(void (**)(s32, s32))(entry + 0x1C);
-            *(u32 *)(entry + 0x1C) = 0;
-            completion(arg0, *(s32 *)(entry + 0x20));
-
-            OSClearContext(&ctx);
-            OSSetCurrentContext(oldContext);
-            __OSReschedule();
-        }
+    if (lbl_80368B2C != 0) {
+        goto end;
     }
+
+    if ((arg1 & 0xFF) != 0) {
+        goto status1;
+    }
+
+    if ((arg1 & 0xFFFF0000) == 0x00040000) {
+        goto transfer;
+    }
+
+status1:
+    *(u32 *)(entry + 0x20) = 1;
+    goto do_callback;
+
+transfer:
+    if (SITransfer(arg0, entry, *(u32 *)(entry + 0x0C), entry + 5, *(u32 *)(entry + 0x10), fn_80266A5C, *(s64 *)(entry + 0x30)) != 0) {
+        goto end;
+    }
+    *(u32 *)(entry + 0x20) = 2;
+
+do_callback:
+    if ((callback = *(void (**)(s32))(entry + 0x38)) != 0) {
+        *(u32 *)(entry + 0x38) = 0;
+        callback(arg0);
+    }
+
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        oldContext = fn_802059EC();
+
+        OSClearContext(&ctx);
+        OSSetCurrentContext(&ctx);
+
+        completion = *(void (**)(s32, s32))(entry + 0x1C);
+        *(u32 *)(entry + 0x1C) = 0;
+        completion(arg0, *(s32 *)(entry + 0x20));
+
+        OSClearContext(&ctx);
+        OSSetCurrentContext(oldContext);
+        __OSReschedule();
+    }
+
+end:
+    ;
 }
 
 s32 fn_80266CFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
