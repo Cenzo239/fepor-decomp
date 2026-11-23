@@ -14,10 +14,10 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
-    s32 c2;
-    s32 c1;
-    u32 raw2;
     u32 raw1;
+    u32 raw2;
+    s32 c1;
+    s32 c2;
     goto ld;
 cmp:
     if ((s8)raw1 != (s8)raw2)
@@ -135,38 +135,49 @@ s32 fn_8000AA60(void *arg0)
 #pragma global_optimizer off
 s32 fn_8000AB90(void *arg0) {
     extern u8 gProcesses[];
-    s32 n;
+    s32 i;
     u8 *entry;
+    s32 n;
     u8 *source;
     u8 *p;
-    u32 ctr;
 
     p = *(u8 **)((u8 *)arg0 + 4);
-    ctr = 0x80;
+    i = 0x80;
     source = *(u8 **)(p + 4);
     entry = gProcesses;
     n = 0;
-    do {
+    for (; i != 0; i--) {
         if (*(u32 *)entry != 0) {
-            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) == 0) {
-                goto found;
+            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) != 0) {
+                goto skip1;
             }
+            n = n + 0;
+            goto found;
+        skip1:
+            ;
         }
         if (*(u32 *)(entry += 0x70) != 0) {
-            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) == 0) {
-                goto found;
+            if (Process_CompareNameExt(*(u8 **)(entry + 0x14), source) != 0) {
+                goto skip2;
             }
+            n = n + 0;
+            goto found;
+        skip2:
+            ;
         }
         n += 1;
         entry += 0x70;
-    } while (--ctr != 0);
+    }
     entry = 0;
 found:
-    if (entry == 0) {
-        *(u8 **)((u8 *)arg0 + 4) = *(u8 **)((u8 *)arg0 + 4) + 8;
-        return 1;
+    if (entry != 0) {
+        return n - n;
     }
-    return 0;
+    {
+        u8 **pp = (u8 **)((u8 *)arg0 + 4);
+        *pp = *pp + 8;
+    }
+    return 1;
 }
 #pragma global_optimizer on
 s32 fn_8000ACA0(void *arg0) {
@@ -231,8 +242,7 @@ s32 fn_8000ADE4(void *arg0)
   u32 value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
   u8 *p = gProcesses;
   for (; idx < 256; idx++, p += 0x70) {
-    if (*(u32 *)p != value) continue;
-    goto found;
+    if (*(u32 *)p == value) goto found;
   }
   p = 0;
 found:
@@ -865,11 +875,13 @@ void *Process_FindByName(u8 *arg0) {
     u32 raw1;
     u32 diff;
     s32 i;
+    u8 *entry;
+    s32 n;
     u8 *b;
     u8 *a;
-    u8 *entry;
 
     entry = gProcesses;
+    n = 0;
     for (i = 0; i < 0x80; i++) {
         if (*(u32 *)entry != 0) {
             a = *(u8 **)(entry + 0x14);
@@ -893,6 +905,7 @@ void *Process_FindByName(u8 *arg0) {
             diff = 0;
         cmp1_done:
             if (diff == 0) {
+                n = n + 0;
                 return entry;
             }
         }
@@ -918,9 +931,11 @@ void *Process_FindByName(u8 *arg0) {
             diff = 0;
         cmp2_done:
             if (diff == 0) {
+                n = n + 0;
                 return entry;
             }
         }
+        n += 1;
         entry += 0x70;
     }
     return 0;
@@ -1714,25 +1729,25 @@ s32 Rand_Range(s32 arg0)
   struct RandSt { u16 a; u16 b; u16 c; };
   extern struct RandSt lbl_80367150;
   unsigned int t6;
-  s32 t4;
   s32 s1;
   s32 s2;
   s32 s0;
+  s32 t4;
   struct RandSt *st;
 
   st = &lbl_80367150;
   s0 = lbl_80367150.a;
   s1 = st->b;
   s2 = st->c;
+  t6 = (u16) ((s0 >> 5) + (s1 << 11));
   t4 = (s2 * 2) & 0xFFFE;
-  t6 = (u16)((s0 >> 5) + (s1 << 11));
   st->c = t4;
   if (s1 & 0x8000) { st->c = 1 + t4; }
   t6 ^= st->c;
   st->c = st->b;
   st->b = lbl_80367150.a;
   lbl_80367150.a = t6;
-  return (arg0 * ((u16)t6)) / 65536;
+  return (arg0 * ((u16) t6)) / 65536;
 }
 #pragma global_optimizer reset
 void fn_8000CF4C(u32 arg0)
