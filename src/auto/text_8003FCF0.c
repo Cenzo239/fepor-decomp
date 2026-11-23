@@ -1826,7 +1826,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ms = __div2i(t1 - (s64)t0, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
     DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
-#pragma global_optimizer on
 
 #pragma use_lmw_stmw on
 void fn_80042558(void *arg0)
