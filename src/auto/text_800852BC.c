@@ -1870,7 +1870,7 @@ void fn_80089680(void *arg0) {
     extern f32 gOrthoFar;
     extern f32 gFadeQuadZ;
     extern f32 gViewportFar;
-    extern f32 lbl_803696BC;
+    extern const f32 lbl_803696BC;
     u8 spC[0x44];
     s32 sp8;
     f32 ratio;
