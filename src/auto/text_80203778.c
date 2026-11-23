@@ -644,7 +644,6 @@ void InsertAlarm(void *alarm_p, s64 fire, void (*handler)(void *, OSContext *)) 
     struct OSAlarm *next;
     struct OSAlarm *prev;
     s64 time;
-    s64 new_var[2];
     s32 zg;
     struct OSAlarm *alarm;
 
@@ -673,12 +672,10 @@ void InsertAlarm(void *alarm_p, s64 fire, void (*handler)(void *, OSContext *)) 
             }
             AlarmQueue_80368490.head = alarm;
             time = __OSGetSystemTime();
-            new_var[0] = alarm->fire - time;
-            new_var[1] = (u32)new_var[0];
-            if (new_var[0] < 0) {
+            if (alarm->fire - time < 0) {
                 PPCMtdec(0);
-            } else if (new_var[0] < 0x80000000LL) {
-                PPCMtdec(new_var[1]);
+            } else if (alarm->fire - time < 0x80000000LL) {
+                PPCMtdec((u32)(alarm->fire - time));
             } else {
                 PPCMtdec(0x7FFFFFFF);
             }
@@ -697,12 +694,10 @@ void InsertAlarm(void *alarm_p, s64 fire, void (*handler)(void *, OSContext *)) 
     AlarmQueue_80368490.tail = alarm;
     AlarmQueue_80368490.head = alarm;
     time = __OSGetSystemTime();
-    new_var[0] = alarm->fire - time;
-    new_var[1] = (u32)new_var[0];
-    if (new_var[0] < 0) {
+    if (alarm->fire - time < 0) {
         PPCMtdec(0);
-    } else if (new_var[0] < 0x80000000LL) {
-        PPCMtdec(new_var[1]);
+    } else if (alarm->fire - time < 0x80000000LL) {
+        PPCMtdec((u32)(alarm->fire - time));
     } else {
         PPCMtdec(0x7FFFFFFF);
     }
@@ -808,8 +803,7 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
   extern void OSDisableScheduler(void);
   extern void OSEnableScheduler(void);
   extern void __OSReschedule(void);
-  OSContext exceptionContext;
-  u8 pad[8];
+  u8 exceptionContext[0x2C0];
   struct OSAlarm *alarm;
   struct OSAlarm *next;
   void (*handler)(void *, OSContext *);
@@ -817,7 +811,6 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
   s64 new_var[2];
   struct OSAlarm *head;
   (void) type;
-  (void) pad[0];
   now = __OSGetSystemTime();
   alarm = AlarmQueue_80368490.head;
   if (alarm == NULL)
@@ -833,8 +826,7 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
     {
       PPCMtdec(0);
     }
-    else
-      if (new_var[0] < 0x80000000LL)
+    else if (new_var[0] < 0x80000000LL)
     {
       PPCMtdec(new_var[1]);
     }
@@ -870,8 +862,7 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
     {
       PPCMtdec(0);
     }
-    else
-      if (new_var[0] < 0x80000000LL)
+    else if (new_var[0] < 0x80000000LL)
     {
       PPCMtdec(new_var[1]);
     }
@@ -881,10 +872,10 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
     }
   }
   OSDisableScheduler();
-  OSClearContext(&exceptionContext);
-  OSSetCurrentContext(&exceptionContext);
+  OSClearContext((OSContext *)exceptionContext);
+  OSSetCurrentContext((OSContext *)exceptionContext);
   handler(alarm, context);
-  OSClearContext(&exceptionContext);
+  OSClearContext((OSContext *)exceptionContext);
   OSSetCurrentContext(context);
   OSEnableScheduler();
   __OSReschedule();
@@ -1646,18 +1637,19 @@ void OSPanic(char *file, int line, char *fmt, ...) {
 #pragma peephole reset
 }
 
-#pragma use_lmw_stmw on
+#pragma peephole on
+#pragma scheduling reset
 OSErrorHandler OSSetErrorHandler(u16 error, OSErrorHandler handler)
 {
     u32 msr;
     OSErrorHandler oldHandler;
     BOOL enabled;
-    u32 fpscr;
     OSContext *context;
     s32 i;
     u32 stackPad[4];
+    u32 fpscr;
 
-    (void)stackPad[0];
+    (void)stackPad;
 
     enabled = OSDisableInterrupts();
     oldHandler = __OSErrorTable[error];
@@ -1715,8 +1707,8 @@ OSErrorHandler OSSetErrorHandler(u16 error, OSErrorHandler handler)
                 context->fpscr |= (lbl_80366F38 & 0xF8);
                 context->fpscr &= (0x60060000 - 0x701);
             }
-            msr |= 0x900;
             fpscr |= (lbl_80366F38 & 0xF8);
+            msr |= 0x900;
         } else {
             for (context = *(OSContext **)0x800000DC; context;
                  context = *(OSContext **)((u8 *)context + 0x2FC)) {
@@ -1733,7 +1725,7 @@ OSErrorHandler OSSetErrorHandler(u16 error, OSErrorHandler handler)
     OSRestoreInterrupts(enabled);
     return oldHandler;
 }
-#pragma use_lmw_stmw reset
+#pragma scheduling on
 extern char lbl_8029BFB8[];
 extern char lbl_80366F3C;
 extern s16 __OSLastInterrupt;
