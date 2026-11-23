@@ -4026,18 +4026,24 @@ void fn_8025164C(void *arg0)
     *(u8 *)(data + 0x130) = ((lower - value) * 100) / (upper - lower);
 }
 
+#pragma fp_contract off
 void fn_802517EC(void *arg0, u32 *arg1) {
     s32 fn_80250884(u16);
     void Sound_SetVoiceEnvelope(u8, void *, s32);
+    f32 new_var;
     extern f32 gSoundVolCurve[];
     extern f32 lbl_8036C240;
     extern f32 lbl_8036C244;
     extern f32 lbl_8036C248;
-
-    f32 vol;
     union {
         s16 h[4];
-        struct { s32 v0; s32 v4; s16 c; s16 d; u8 pad[0xC]; } s;
+        struct {
+            s32 v0;
+            s32 v4;
+            s16 c;
+            s16 d;
+            u8 pad[0xC];
+        } s;
         u8 all[0x18];
     } env;
     void *sv;
@@ -4045,6 +4051,7 @@ void fn_802517EC(void *arg0, u32 *arg1) {
     u16 h8;
     s32 vC;
     s32 v10;
+    f32 curve;
 
     sv = arg0;
     data = (u8 *)fn_80250884((u16)(arg1[0] >> 8));
@@ -4057,25 +4064,27 @@ void fn_802517EC(void *arg0, u32 *arg1) {
             Sound_SetVoiceEnvelope((u8)*(u32 *)((u8 *)sv + 0xF4), &env, 0);
         } else {
             h8 = (u16)((*(u16 *)(data + 8) >> 8) | (*(u16 *)(data + 8) << 8));
-            vol = lbl_8036C240 * gSoundVolCurve[h8 >> 5];
-            env.s.v0 = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-            env.s.v4 = data[4] | (data[5] << 8) | (data[6] << 16) | (data[7] << 24);
-            env.s.c = (s16)vol;
+            curve = gSoundVolCurve[h8 >> 5];
+            env.s.v0 = ((data[0] | (data[1] << 8)) | (data[2] << 16)) | (data[3] << 24);
+            env.s.v4 = ((data[4] | (data[5] << 8)) | (data[6] << 16)) | (data[7] << 24);
+            env.s.c = (s16)(lbl_8036C240 * curve);
             env.s.d = (u16)((*(u16 *)(data + 0xA) >> 8) | (*(u16 *)(data + 0xA) << 8));
-            vC = data[0xC] | (data[0xD] << 8) | (data[0xE] << 16) | (data[0xF] << 24);
-            v10 = data[0x10] | (data[0x11] << 8) | (data[0x12] << 16) | (data[0x13] << 24);
-            if ((u32)(vC + 0x80000000) != 0) {
-                env.s.v0 += (s32)(lbl_8036C244 * (f32)*(u32 *)((u8 *)sv + 0x15C) * (f32)vC);
+            vC = ((data[0xC] | (data[0xD] << 8)) | (data[0xE] << 16)) | (data[0xF] << 24);
+            v10 = ((data[0x10] | (data[0x11] << 8)) | (data[0x12] << 16)) | (data[0x13] << 24);
+            if (((u32)(vC + 0x80000000)) != 0) {
+                new_var = lbl_8036C244 * ((f32)(*(u32 *)((u8 *)sv + 0x15C)));
+                env.s.v0 += (s32)(new_var * ((f32)vC));
             }
-            if ((u32)(v10 + 0x80000000) != 0) {
-                env.s.v4 += (s32)(lbl_8036C248 * (f32)*(u8 *)((u8 *)sv + 0x131) * (f32)v10);
+            if (((u32)(v10 + 0x80000000)) != 0) {
+                new_var = lbl_8036C248 * ((f32)(*(u8 *)((u8 *)sv + 0x131)));
+                env.s.v4 += (s32)(new_var * ((f32)v10));
             }
             Sound_SetVoiceEnvelope((u8)*(u32 *)((u8 *)sv + 0xF4), &env, 1);
         }
-        *(u32 *)((u8 *)sv + 0x118) |= 0x100;
+        *((u32 *)(((u8 *)sv) + 0x118)) |= 0x100;
     }
 }
-
+#pragma fp_contract on
 /* Build ADSR envelope from packed channel params and apply it to the synth voice. */
 void Sound_ApplyVoiceAdsr(SynthVoice *sv, u32 *paramsIn) {
     extern f32 gSoundVolCurve[];
@@ -4122,6 +4131,7 @@ void fn_80251B70(void *arg0, u32 *arg1) {
     u16 hA;
     u32 idx;
     u8 *p;
+    s32 e16;
 
     sv = arg0;
     data = (u8 *)fn_80250884((u16)(arg1[0] >> 8));
@@ -4136,7 +4146,8 @@ void fn_80251B70(void *arg0, u32 *arg1) {
         }
 
         p = data;
-        vC = (p[0xD] << 8) | p[0xC] | (p[0xE] << 16) | (p[0xF] << 24);
+        e16 = p[0xE] << 16;
+        vC = (p[0xD] << 8) | p[0xC] | e16 | (p[0xF] << 24);
         v0 = (p[0x1] << 8) | p[0x0] | (p[0x2] << 16) | (p[0x3] << 24);
         h8 = (u16)((*(u16 *)(p + 8) >> 8) | (*(u16 *)(p + 8) << 8));
         v4 = (p[0x5] << 8) | p[0x4] | (p[0x6] << 16) | (p[0x7] << 24);
