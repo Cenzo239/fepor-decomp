@@ -182,20 +182,31 @@ s32 Rand_Range(s32 arg0)
     u16 c;
   };
   extern struct RandSt lbl_80367150;
-  unsigned int t6;
+  u16 t6;
   s32 t4;
+  s32 sum;
+  s32 s2;
   s32 s1;
   s32 s0;
   struct RandSt *st;
   st = &lbl_80367150;
   s0 = lbl_80367150.a;
+  t4 = st->c;
   s1 = st->b;
-  t4 = (st->c * 2) & 0xFFFE;
-  t6 = (u16) ((s0 >> 5) + (s1 << 11));
+  sum = s0 >> 5;
+  s2 = (s1 << 11);
+  t4 = (t4 << 1) & 0xFFFE;
   st->c = t4;
- do { if (s1 & 0x8000) { st->c = 1 + t4; } t6 ^= st->c; st->c = st->b; st->b = lbl_80367150.a; } while (0);
+  sum = s2 + sum;
+  t6 = (u16)sum;
+  if (s1 & 0x8000) {
+    st->c = 1 + t4;
+  }
+  t6 ^= st->c;
+  st->c = st->b;
+  st->b = lbl_80367150.a;
   lbl_80367150.a = t6;
-  return (arg0 * ((u16) t6)) / 65536;
+  return (arg0 * ((u16)t6)) / 65536;
 }
 #pragma global_optimizer reset
 void fn_8000CF4C(u32 arg0)
@@ -256,44 +267,53 @@ void fn_8000CF4C(u32 arg0)
 
 void fn_8000D048(void)
 {
-    s32 DebugPrint(const char *, ...);
-    extern u8 lbl_802ADB20[];
-    extern u8 lbl_80267D40[];
-    u32 *table;
-    s32 index;
-    s32 total;
-    s32 i;
-    u8 *entry;
-
-    entry = *(u8 **)(lbl_802ADB20 + 4);
-    total = 0;
-
-    for (index = 0; index < 0x2800; index++) {
-        if (*(s8 **)(entry + 8) != 0) {
-            DebugPrint((const char *)lbl_80267D40, index, *(u32 *)(entry + 0xC), *(u32 *)(entry + 4), *(s8 **)(entry + 8));
-            {
-                s8 *p = *(s8 **)(entry + 8);
-                while (*p++ != 0) {
-                    total++;
-                }
-            }
+  s32 DebugPrint(const char *, ...);
+  extern u8 lbl_802ADB20[];
+  extern u8 lbl_80267D40[];
+  u8 *table;
+  s32 index;
+  u8 *new_var;
+  s32 total;
+  s32 i;
+  u8 *entry;
+  u8 *new_var2;
+  entry = *((u8 **) (lbl_802ADB20 + 4));
+  total = 0;
+  for (index = 0; index < 0x2800; index++)
+  {
+    if ((*((s8 **) (entry + 8))) != 0)
+    {
+      new_var = entry + 0xC;
+      DebugPrint((const char *) lbl_80267D40, index, *((u32 *) new_var), *((u32 *) (entry + 4)), *((s8 **) (entry + 8)));
+      {
+        s8 *p = *((s8 **) (entry + 8));
+        while ((*(p++)) != 0)
+        {
+          total++;
         }
-        entry += 0x10;
-    }
 
-    table = (u32 *)lbl_802ADB20;
-    for (i = 0; i < 0x1FD; i++) {
-        if ((i % 18) == 0) {
-            DebugPrint((const char *)(lbl_80267D40 + 0x13));
-        }
-        DebugPrint((const char *)(lbl_80267D40 + 0x15), table[0x1FF]);
-        table++;
+      }
     }
-    DebugPrint((const char *)(lbl_80267D40 + 0x1A));
-    DebugPrint((const char *)(lbl_80267D40 + 0x1D), *(u32 *)lbl_802ADB20);
-    DebugPrint((const char *)(lbl_80267D40 + 0x3D), total);
-    DebugPrint((const char *)(lbl_80267D40 + 0x59), 0x28FF0);
-    DebugPrint((const char *)(lbl_80267D40 + 0x13));
+    entry += 0x10;
+    table = lbl_802ADB20;
+  }
+
+  for (i = 0; i < 0x1FD; i++)
+  {
+    if ((i % 18) == 0)
+    {
+      DebugPrint((const char *) (lbl_80267D40 + 0x13));
+    }
+    new_var2 = lbl_80267D40 + 0x15;
+    DebugPrint((const char *) new_var2, *((u32 *) (table + 0x7FC)));
+    table += 4;
+  }
+
+  DebugPrint((const char *) (lbl_80267D40 + 0x1A));
+  DebugPrint((const char *) (lbl_80267D40 + 0x1D), *((u32 *) lbl_802ADB20));
+  DebugPrint((const char *) (lbl_80267D40 + 0x3D), total);
+  DebugPrint((const char *) (lbl_80267D40 + 0x59), 0x28FF0);
+  DebugPrint((const char *) (lbl_80267D40 + 0x13));
 }
 
 s32 fn_8000D1B4(s32 arg0) {
