@@ -296,23 +296,18 @@ void fn_8011AB38(void *arg0) {
     u8 FileCache_IsReady(void);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
-    void fn_801620AC(void *);
+    s32 fn_801620AC(void);
     s32 Archive_Load(void);
     void Process_ClearFunc(void *);
 
-    fn_801620AC(arg0);
-    if (FileCache_IsReady() == 0) {
-        goto end;
+    fn_801620AC();
+    if (FileCache_IsReady() == 0 || fn_80161FB8() == 0) {
+        return;
+    } else {
+        fn_80162054();
+        fn_801620AC();
+        *(s32 *)((char *)arg0 + 0x40) = Archive_Load();
+        Process_ClearFunc(arg0);
     }
-    if (fn_80161FB8() != 0) {
-        goto work;
-    }
-    goto end;
-work:
-    fn_80162054();
-    fn_801620AC(arg0);
-    *(s32 *)((char *)arg0 + 0x40) = Archive_Load();
-    Process_ClearFunc(arg0);
-end:;
 }
 #pragma global_optimizer on
