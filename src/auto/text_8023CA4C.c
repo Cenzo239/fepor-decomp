@@ -392,7 +392,7 @@ return 0;
 u8 fn_8023CE08(void)
 {
     extern s32 lbl_8036894C;
-    extern u8 *lbl_80368950;
+    extern u8 *volatile lbl_80368950;
     extern u8 *lbl_803688E4;
     extern u8 *lbl_803688E8;
     extern u16 *lbl_803688EC;
