@@ -320,6 +320,8 @@ void __GXInitRevisionBits(void) {
 }
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
+#pragma opt_propagation off
+#pragma opt_common_subs off
 void *GXInit(void *base, u32 size) {
     void OSRegisterVersion(char *);
     void GXSetMisc(u32, u32);
