@@ -359,41 +359,31 @@ extern f64 lbl_8036C148;
 #pragma pop
 
 #pragma use_lmw_stmw on
-
+#pragma global_optimizer off
 s32 fn_8023CA4C(void) {
 extern u8 lbl_80282FD8[];
-extern u8 *lbl_80368950;
+extern ThpDecodeState *lbl_80368950;
 f32 table[64];
-u8 *p;
-u16 value;
-u32 size;
-u32 id;
-u16 i;
-u16 row;
-f64 *scale;
-p = *(u8 **)(lbl_80368950 + 0x69C);
-value = (p[0] << 8) | p[1];
-*(u8 **)(lbl_80368950 + 0x69C) = p + 2;
-size = value - 2;
+u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; u8 *p; f64 *scale;
+size=ThpReadWord()-2;
 do {
-id = *(*(u8 **)(lbl_80368950 + 0x69C))++;
-for (i = 0; i < 64; i++) {
-table[lbl_80282FD8[i]] = (f32)(u32)*(*(u8 **)(lbl_80368950 + 0x69C))++;
+id=ThpReadByte();
+for(i=0;i<64;i++) table[lbl_80282FD8[i]]=(f32)(u32)ThpReadByte();
+state=lbl_80368950;
+scale=(f64 *)(lbl_80282FD8+0x50);
+for(row=0,i=0;row<8;row++,scale++) {
+state->tables[id][(u16)(i+0)]=((f64 *)(lbl_80282FD8+0x50))[0]*((f64)table[(u16)(i+0)]* *scale);
+state->tables[id][(u16)(i+1)]=((f64 *)(lbl_80282FD8+0x50))[1]*((f64)table[(u16)(i+1)]* *scale);
+state->tables[id][(u16)(i+2)]=((f64 *)(lbl_80282FD8+0x50))[2]*((f64)table[(u16)(i+2)]* *scale);
+state->tables[id][(u16)(i+3)]=((f64 *)(lbl_80282FD8+0x50))[3]*((f64)table[(u16)(i+3)]* *scale);
+state->tables[id][(u16)(i+4)]=((f64 *)(lbl_80282FD8+0x50))[4]*((f64)table[(u16)(i+4)]* *scale);
+state->tables[id][(u16)(i+5)]=((f64 *)(lbl_80282FD8+0x50))[5]*((f64)table[(u16)(i+5)]* *scale);
+state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(i+6)]* *scale);
+state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
+i+=8;
 }
-scale = (f64 *)(lbl_80282FD8 + 0x50);
-for (row = 0, i = 0; row < 8; row++, scale++) {
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 0) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[0] * ((f64)table[(u16)(i + 0)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 1) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[1] * ((f64)table[(u16)(i + 1)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 2) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[2] * ((f64)table[(u16)(i + 2)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 3) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[3] * ((f64)table[(u16)(i + 3)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 4) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[4] * ((f64)table[(u16)(i + 4)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 5) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[5] * ((f64)table[(u16)(i + 5)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 6) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[6] * ((f64)table[(u16)(i + 6)] * *scale);
-*(f32 *)(lbl_80368950 + (id << 8) + ((u16)(i + 7) << 2)) = ((f64 *)(lbl_80282FD8 + 0x50))[7] * ((f64)table[(u16)(i + 7)] * *scale);
-i += 8;
-}
-size -= 65;
-} while ((u16)size);
+size-=65;
+} while((u16)size);
 return 0;
 }
 
