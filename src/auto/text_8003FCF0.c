@@ -10589,34 +10589,6 @@ void fn_80054808(void *arg0) {
     }
 }
 
-void fn_80054850(void *arg0) {
-    s64 OSGetTime(void);
-    void Process_Goto(void *, s32);
-    void fn_800555EC(s32, s32);
-    u8 GActor_CheckResources(s32);
-    s32 temp_r31;
-    u32 flags;
-    void *temp_r3;
-    s32 var_r4;
-
-    *(s64 *)((u8 *)arg0 + 0x38) = OSGetTime();
-    temp_r3 = *(void **)((u8 *)arg0 + 0x30);
-    flags = *(u32 *)((u8 *)temp_r3 + 8);
-    temp_r31 = **(s32 **)((u8 *)temp_r3 + 0x2C);
-    if ((flags >> 28) & 1) {
-        Process_Goto(arg0, 0);
-        return;
-    }
-    var_r4 = 0;
-    if (flags & 0x100) {
-        var_r4 = 8;
-    }
-    fn_800555EC(temp_r31, var_r4);
-    if (GActor_CheckResources(temp_r31) != 0) {
-        Process_Goto(arg0, 0);
-    }
-}
-
 #pragma use_lmw_stmw on
 
 #pragma use_lmw_stmw reset
