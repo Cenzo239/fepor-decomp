@@ -21001,9 +21001,14 @@ void fn_800ED960(void *self) {
     void *String_Destroy(void *, s32);
     void sprintf(char *, char *, ...);
     extern char Win3_str[];
-    u8 str1[0xC], str2[0xC], str3[0xC], str4[0xC];
-    u32 scratch10, scratchC, scratch8;
-    char buf[0x18];
+    char buf[0x10];
+    u8 str1[0xC];
+    u8 str2[0xC];
+    u8 str3[0xC];
+    u8 str4[0xC];
+    u32 scratch10;
+    u32 scratchC;
+    u32 scratch8;
 
     *(void **)((u8 *)self + 0x440) = fn_800DA5FC();
     if (*(void **)((u8 *)self + 0x440) != 0) {
