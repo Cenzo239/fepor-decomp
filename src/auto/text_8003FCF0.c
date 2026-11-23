@@ -1336,9 +1336,6 @@ void fn_80041254(void *arg0) {
     }
 }
 #pragma optimization_level reset
-#if 0
-#include "claim_echo.h"
-#endif
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
