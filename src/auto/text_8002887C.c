@@ -2315,6 +2315,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
+    void fn_8002F728(void *);
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -2323,37 +2324,51 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
         void *arg;
         s8 flag;
     } obj;
+    s32 y;
+    s32 x;
     u16 *flags;
-    s8 x;
-    s8 y;
+    s32 yOff;
     void *unit;
     u8 id;
     u16 f;
+    u8 *entry;
 
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284CB0;
     obj.arg = arg0;
     obj.flag = arg1;
     fn_8002F728(gTargetList);
-    y = *(s8 *)((u8 *)arg0 + 0x19F);
-    x = *(s8 *)((u8 *)arg0 + 0x19E);
-    flags = (u16 *)(gBattleMap + ((x + (y << 6)) << 1));
-    f = *(u16 *)((u8 *)flags + 0x408E);
-    flags = (u16 *)((u8 *)flags + 0x408E);
-    if ((f & 8) != 0) {
-        id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
-        if (id != 0) {
-            unit = gUnits + (id - 1) * 0x280;
-        } else {
-            unit = 0;
-        }
-        if (unit != 0) {
-            ((Visitor *)&obj)->apply(unit);
+    {
+        u8 *map;
+        y = *(s8 *)((u8 *)arg0 + 0x19F);
+        x = *(s8 *)((u8 *)arg0 + 0x19E);
+        map = gBattleMap;
+        yOff = y << 6;
+        flags = (u16 *)(map + ((x + yOff) << 1));
+        f = *(u16 *)((u8 *)flags + 0x408E);
+        flags = (u16 *)((u8 *)flags + 0x408E);
+        if ((f & 8) != 0) {
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
+            if (id) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = 0;
+            }
+            if (unit) {
+                ((Visitor *)&obj)->apply(unit);
+            }
         }
     }
     if ((*flags & 2) != 0) {
-        id = gBattleMap[(s8)(x + 1) + (y << 6) + 0xD];
-        if (id != 0) {
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x + 1);
+        entry = t + yOff;
+        id = entry[0xD];
+        if (id) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
@@ -2363,7 +2378,10 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
         }
     }
     if ((*flags & 4) != 0) {
-        id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
+        u8 *map = gBattleMap;
+        entry = map + x;
+        entry = entry + ((s8)(y + 1) << 6);
+        id = entry[0xD];
         if (id != 0) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
@@ -2374,7 +2392,12 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
         }
     }
     if ((*flags & 1) != 0) {
-        id = gBattleMap[(s8)(x - 1) + (y << 6) + 0xD];
+        u8 *map;
+        u8 *t;
+        map = gBattleMap;
+        t = map + (s8)(x - 1);
+        entry = t + yOff;
+        id = entry[0xD];
         if (id != 0) {
             unit = gUnits + (id - 1) * 0x280;
         } else {
