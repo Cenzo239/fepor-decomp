@@ -569,6 +569,8 @@ void *GXInit(void *base, u32 size) {
     __GXInitGX();
     return fifo;
 }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 
 void __GXInitGX(void) {
     s32 VIGetTvFormat(void);
