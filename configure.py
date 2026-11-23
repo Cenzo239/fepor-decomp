@@ -508,7 +508,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8023C56C.c", mw_version="GC/1.2.5n"),
             Object(Matching, "auto/text_8023C7B0.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8023C7F4.c"),
-            Object(NonMatching, "auto/text_8023D350.c"),
+            Object(NonMatching, "auto/text_8023D350.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/adpcm_80243AD4.c"),
             Object(NonMatching, "auto/sound_80243FB8.c"),
             Object(NonMatching, "auto/text_80247D74.c"),
