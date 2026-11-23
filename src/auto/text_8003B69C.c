@@ -578,7 +578,7 @@ void fn_8003BBD4(void *arg0, s32 arg1)
     unit->status[2] |= *(u32 *)((u8 *)res + 0x24);
     unit->status[3] |= *(u32 *)((u8 *)res + 0x28);
 
-    unit->flags &= ~0x2000;
+    unit->flags &= ~(1U << 13);
 
     if (Status_Test(unit->status, 9) != 0) {
         unit->gauge = 0x14;
