@@ -350,19 +350,6 @@ void *Res_GetByName(s32);
 #pragma use_lmw_stmw reset
 
 void fn_8005C7E8(void *);
-void fn_8000D3EC(void *, void *);
-
-static void Archive_RelocSearch(u32 *p28, u32 *scan, u32 count, void *da, void *db) {
-    u32 ctr;
-    for (ctr = count; ctr > 0; ctr--) {
-        if (*(volatile u32 *)p28 == *scan) {
-            fn_8000D3EC(da, db);
-            return;
-        }
-        scan += 1;
-    }
-    fn_8000D3EC(da, db);
-}
 
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
