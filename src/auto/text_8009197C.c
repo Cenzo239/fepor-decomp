@@ -112,10 +112,11 @@ void fn_80091B38(void *arg0)
   s32 zero;
   s32 eight;
   s32 three;
-  f32 x;
+  f32 w;
+  f32 y2;
   f32 y;
   f32 z;
-  f32 w;
+  f32 x;
   z++;
   z--;
   zero = 0;
@@ -130,9 +131,9 @@ void fn_80091B38(void *arg0)
   z = gZeroF;
   *((f32 *) (((u8 *) arg0) + 0x40)) = y;
   *((f32 *) (((u8 *) arg0) + 0x44)) = x;
-  y = *((f32 *) (((u8 *) arg0) + 0x34));
+  y2 = *((f32 *) (((u8 *) arg0) + 0x34));
   *((f32 *) (((u8 *) arg0) + 0x48)) = w;
-  *((f32 *) (((u8 *) arg0) + 0x4C)) = y;
+  *((f32 *) (((u8 *) arg0) + 0x4C)) = y2;
   *((f32 *) (((u8 *) arg0) + 0x50)) = z;
   *((u8 *) (((u8 *) arg0) + 0x54)) = (u8) zero;
   *((u8 *) (((u8 *) arg0) + 0x55)) = (u8) eight;
