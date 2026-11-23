@@ -17,9 +17,7 @@ extern u16 lbl_8036834C;
 extern u16 lbl_80368354;
 extern u8 lbl_80332020[];
 void fn_801EAA2C(void *, int);
-void fn_8022C260(void *, void (*)(void *, int), void (*)(void *, int), u32, u32);
 
-#pragma global_optimizer off
 void fn_801EA8C0(void) {
  void fn_8022C260(void *,void *,void *,u32,u32,u32,void *,void *);
  u32 z=0;
