@@ -732,7 +732,10 @@ dolphin/pad/Pad.c:
 	.text       start:0x80211DD4 end:0x80216994
 
 auto/text_80216994.c:
-	.text       start:0x80216994 end:0x8021D7FC
+	.text       start:0x80216994 end:0x8021D614
+
+auto/CARDGetSerialNo.c:
+	.text       start:0x8021D614 end:0x8021D7FC
 
 auto/text_8021D7FC.c:
 	.text       start:0x8021D7FC end:0x8022108C
