@@ -1275,6 +1275,7 @@ void fn_80041254(void *arg0) {
     }
 }
 #pragma optimization_level reset
+#pragma global_optimizer off
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
