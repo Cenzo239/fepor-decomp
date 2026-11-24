@@ -111,7 +111,20 @@ s64 __mod2i(s64 a, s64 b) {
 
 typedef struct { u32 hi; u32 lo; } UL64;
 
-s32 __shl2i(s32 arg0, u32 arg1, s32 arg2) { u32 high = (u32)arg0 << arg2; high |= arg1 >> (32-arg2); high |= arg1 << (arg2-32); return high; }
+#pragma push
+asm s64 __shl2i(register s64 value, register int shift) {
+    nofralloc
+    subfic r8, r5, 0x20
+    subic r9, r5, 0x20
+    slw r3, r3, r5
+    srw r10, r4, r8
+    or r3, r3, r10
+    slw r10, r4, r9
+    or r3, r3, r10
+    slw r4, r4, r5
+    blr
+}
+#pragma pop
 
 u32 __shr2u(u32 hi, u32 lo, s32 s) {
     return (lo >> s) | (hi << (0x20 - s)) | (hi >> (s - 0x20));
