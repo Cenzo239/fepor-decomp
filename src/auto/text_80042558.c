@@ -451,94 +451,87 @@ void fn_80042558(void *arg0)
     s32 y;
     s32 tx;
     s32 ty;
+    u8 hit;
     u32 flags;
 
     for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
         x = (s8)rec[0];
         y = (s8)rec[1];
         switch (rec[2] - 0x21) {
-        case 0:
+        case 3:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
                 if ((flags & 0xA00) != 0xA00) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
         }
             break;
-        case 1:
+        case 0:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x1000) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if ((flags & 0x1000) != 0x1000) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 MapObj_FadeOut(found, 0);
             }
         }
             break;
-        case 2:
+        case 9:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x800) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if ((flags & 0x800) != 0x800) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found == 0) {
                 s32 direction;
                 for (direction = 0; direction < 4; direction++) {
                     s32 dx = 0;
                     s32 dy = 0;
                     switch (direction) {
-                    case 0: dx = -1; break;
-                    case 1: dx = 1; break;
-                    case 2: dy = 1; break;
-                    case 3: dy = -1; break;
+                    case 0: dx = 1; break;
+                    case 1: dx = -1; break;
+                    case 2: dy = -1; break;
+                    case 3: dy = 1; break;
                     }
                     tx = x + dx;
                     ty = y + dy;
                     count = M2C_FIELD(arg0, s16 *, 6);
+                    found = 0;
                     for (i = count - 1; i >= 0; i--) {
                         ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                         flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                        if ((flags & 0x800) == 0) continue;
-                        if (tx < (s8)ent[4] || tx > (s8)ent[6] ||
-                            ty < (s8)ent[5] || ty > (s8)ent[7]) {
-                            continue;
-                        }
+                        if ((flags & 0x800) != 0x800) continue;
+                        hit = (tx >= (s8)ent[4] && tx <= (s8)ent[6] && ty >= (s8)ent[5] && ty <= (s8)ent[7]);
+                        if (hit == 0) continue;
                         found = ent;
                         break;
                     }
-                    if (i < 0) found = 0;
                     if (found != 0) break;
                 }
             }
@@ -550,22 +543,20 @@ void fn_80042558(void *arg0)
             }
         }
             break;
-        case 3:
+        case 1:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
-                if ((flags & 0x800) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if ((flags & 0x800) != 0x800) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 count = Map_CollectLinkedObjs(arg0, found, list);
                 for (k = 0; k < count; k++) {
@@ -574,58 +565,52 @@ void fn_80042558(void *arg0)
             }
         }
             break;
-        case 4:
+        case 2:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
-                if ((flags & 0x200) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if ((flags & 0x200) != 0x200) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
         }
             break;
-        case 5:
+        case 4:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
                 if ((flags & 0xA00) != 0xA00) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 found[2] |= 1;
                 count = M2C_FIELD(arg0, s16 *, 6);
+                found = 0;
                 for (i = count - 1; i >= 0; i--) {
                     ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                     flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                     if ((flags & 0x20000) != 0x20000) continue;
-                    if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                        y < (s8)ent[5] || y > (s8)ent[7]) {
-                        continue;
-                    }
+                    hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                    if (hit == 0) continue;
                     found = ent;
                     break;
                 }
-                if (i < 0) found = 0;
                 if (found != 0) {
                     fn_8005FEE8(found + 0x14, lbl_80368F2C);
                     found[2] &= ~1;
@@ -633,22 +618,38 @@ void fn_80042558(void *arg0)
             }
         }
             break;
-        case 6:
+        case 5:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
-                if ((flags & 0x800) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if ((flags & 0x800) != 0x800) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
+            if (found != 0) {
+                MapObj_Hide(found, 0);
+            }
+        }
+            break;
+        case 6:
+        {
+            count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
+            for (i = count - 1; i >= 0; i--) {
+                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
+                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+                if ((flags & 0x10000) != 0x10000) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
+                found = ent;
+                break;
+            }
             if (found != 0) {
                 MapObj_Hide(found, 0);
             }
@@ -657,60 +658,36 @@ void fn_80042558(void *arg0)
         case 7:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x10000) != 0x10000) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                if (flags & 0x410) continue;
+                if ((flags & 0x200) != 0x200) continue;
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
-                MapObj_Hide(found, 0);
+                fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
         }
             break;
         case 8:
         {
             count = M2C_FIELD(arg0, s16 *, 6);
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x200) == 0) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
-                found = ent;
-                break;
-            }
-            if (i < 0) found = 0;
-            if (found != 0) {
-                fn_8005FEE8(found + 0x14, lbl_80368F2C);
-            }
-        }
-            break;
-        case 9:
-        {
-            count = M2C_FIELD(arg0, s16 *, 6);
+            found = 0;
             for (i = count - 1; i >= 0; i--) {
                 ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
                 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
                 if (flags & 0x410) continue;
                 if ((flags & 0x80000) != 0x80000) continue;
-                if (x < (s8)ent[4] || x > (s8)ent[6] ||
-                    y < (s8)ent[5] || y > (s8)ent[7]) {
-                    continue;
-                }
+                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+                if (hit == 0) continue;
                 found = ent;
                 break;
             }
-            if (i < 0) found = 0;
             if (found != 0) {
                 found[2] |= 1;
             }
@@ -773,6 +750,7 @@ void fn_80042558(void *arg0)
     }
     fn_80016180();
 }
+#pragma opt_lifetimes on
 #pragma use_lmw_stmw reset
 
 s32 fn_800431E4(void *arg0) {
@@ -5584,19 +5562,27 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     extern f32 lbl_80369014;
     extern f32 lbl_80369018;
     u8 m[11][0x30];
-    f32 sp154, sp158, sp15C, sp148, sp14C, sp150;
-    f32 sp124, sp128, sp12C;
-    u8 scratch[0xFC];
-    u32 sp18, sp14, sp10, spC, sp8;
-    f32 f30, f29, f28, f27, f26, f25, f31, f24;
-    f32 dx, t;
-    s32 r29, r27;
-    u8 r30;
-    u8 *r28;
-    u8 *tbl;
-    f32 lim;
     u32 q[6];
     u32 vec[9];
+    u32 q1[6];
+    u32 vec1[9];
+    u32 q2[6];
+    u32 vec2[9];
+    u32 q3[6];
+    u32 vec3[9];
+    f32 pos[2][3];
+    f32 nrm[3];
+    f32 dir[3];
+    f32 out[3];
+    f32 tmp[3];
+    f32 tmp2[3];
+    u32 sp18, sp14, sp10, spC, sp8;
+    f32 f30, f29, f28, f27, f26, f25, f31, f24;
+    f32 dx, t, lim;
+    s32 r29, r27, r30;
+    u8 *r28;
+    u8 *tbl;
+
     f30 = *(f32 *)(arg0 + 4);
     f29 = *(f32 *)(arg0 + 8);
     r28 = arg0 + 0x1C;
@@ -5605,149 +5591,62 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f25 = *(f32 *)(arg0 + 0xC);
     r29 = (s8)arg0[0x168];
     r27 = (s8)arg0[0x169];
-    r30 = (u8)((arg1 * arg0[0x27]) / 255);
+    r30 = (arg1 * arg0[0x27]) / 255;
     tbl = lbl_8026AA98;
     lim = -(f25 - Map_SampleHeight(gBattleMap));
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {
-        fn_80060F70(r28, r29, &sp148);
-        fn_80060F70(r28, r27, &sp154);
-        f30 = (sp148 + sp154) * lbl_80368FC4;
-        f29 = (sp14C + sp158) * lbl_80368FC4;
-        f26 = f30 - sp148;
-        f25 = f29 - sp14C;
+        fn_80060F70(r28, r29, pos[0]);
+        fn_80060F70(r28, r27, pos[1]);
+        f30 = (pos[0][0] + pos[1][0]) * lbl_80368FC4;
+        f29 = (pos[0][1] + pos[1][1]) * lbl_80368FC4;
+        f26 = f30 - pos[0][0];
+        f25 = f29 - pos[0][1];
         if (lbl_80368FCC != f26 || lbl_80368FCC != f25) {
-            *(f32 *)(scratch + 0) = (f32)(s32)(lbl_80369008 * f26);
-            *(f32 *)(scratch + 4) = (f32)(s32)(lbl_80369008 * f25);
-            *(u32 *)(scratch + 0x10) = *(u32 *)(tbl + 0x4C);
-            *(u32 *)(scratch + 0x14) = *(u32 *)(tbl + 0x50);
-            *(u32 *)(scratch + 0x18) = *(u32 *)(tbl + 0x54);
-            *(f32 *)(scratch + 0x20) = *(f32 *)(scratch + 0);
-            *(f32 *)(scratch + 0x24) = *(f32 *)(scratch + 4);
-            *(u32 *)(scratch + 0x28) = *(u32 *)(tbl + 0x60);
-            fn_802031E8(scratch + 0x20, scratch + 0x20);
-            t = fn_80203270(scratch + 0x10, scratch + 0x20);
+            *(u32 *)&tmp[0] = *(u32 *)(tbl + 0x58);
+            *(u32 *)&tmp[1] = *(u32 *)(tbl + 0x5C);
+            tmp[0] = (f32)(s32)(lbl_80369008 * f26);
+            tmp[1] = (f32)(s32)(lbl_80369008 * f25);
+            *(u32 *)&nrm[0] = *(u32 *)(tbl + 0x4C);
+            *(u32 *)&nrm[1] = *(u32 *)(tbl + 0x50);
+            *(u32 *)&nrm[2] = *(u32 *)(tbl + 0x54);
+            *(u32 *)&tmp[2] = *(u32 *)(tbl + 0x60);
+            *(u32 *)&dir[0] = *(u32 *)&tmp[0];
+            *(u32 *)&dir[1] = *(u32 *)&tmp[1];
+            *(u32 *)&dir[2] = *(u32 *)&tmp[2];
+            fn_802031E8(dir, dir);
+            t = fn_80203270(nrm, dir);
             if (t > lbl_80368FC0) t = lbl_80368FC0;
             if (t < lbl_80368FFC) t = lbl_80368FFC;
-            f24 = (f32)fn_80238788(t);
+            f24 = fn_80238788(t);
             if (f25 < lbl_80368FCC) f24 *= lbl_80368FFC;
+            *(u32 *)&tmp2[0] = *(u32 *)(tbl + 0x64);
+            *(u32 *)&tmp2[1] = *(u32 *)(tbl + 0x68);
+            *(u32 *)&tmp2[2] = *(u32 *)(tbl + 0x6C);
+            tmp2[0] = f26;
+            tmp2[1] = f25;
+            dir[0] = tmp2[0];
+            dir[1] = tmp2[1];
+            dir[2] = tmp2[2];
             PSMTXRotRad(m[10], 0x7A, -f24);
-            *(f32 *)(scratch + 0x20) = f26;
-            *(f32 *)(scratch + 0x24) = f25;
-            *(u32 *)(scratch + 0x28) = *(u32 *)(tbl + 0x6C);
-            fn_802029C4(m[10], scratch + 0x20, scratch + 0x20);
-            f26 = lbl_80369010 + *(f32 *)(scratch + 0x20);
-            f25 = lbl_80369010 + *(f32 *)(scratch + 0x24);
+            fn_802029C4(m[10], dir, dir);
+            f26 = lbl_80369010 + dir[0];
+            f25 = lbl_80369010 + dir[1];
             dx = lbl_80369014 * f24;
         }
         if (f26 < f28) f26 = f28;
         if (f25 < f27) f25 = f27;
-        {
-            q[0] = *(u32 *)(tbl + 0x1C);
-            q[1] = *(u32 *)(tbl + 0x20);
-            q[2] = *(u32 *)(tbl + 0x24);
-            q[3] = *(u32 *)(tbl + 0x28);
-            q[4] = *(u32 *)(tbl + 0x2C);
-            q[5] = *(u32 *)(tbl + 0x30);
-            *(f32 *)&q[0] = f30;
-            *(f32 *)&q[1] = f29;
-            *(f32 *)&q[3] = f30;
-            *(f32 *)&q[4] = f29;
-            vec[0] = q[0];
-            vec[1] = q[1];
-            vec[2] = q[2];
-            vec[3] = q[3];
-            vec[4] = q[4];
-            vec[5] = q[5];
-            vec[6] = *(u32 *)(tbl + 0x34);
-            vec[7] = *(u32 *)(tbl + 0x38);
-            vec[8] = *(u32 *)(tbl + 0x3C);
-            if (lbl_80368FCC != dx) {
-                PSMTXRotRad(m[8], 0x5A, lbl_80368FD8 * dx);
-                fn_802029C4(m[8], &vec[6], &vec[6]);
-                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
-                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(m[6], m[7], m[10]);
-                PSMTXTrans(m[9], lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
-                PSMTXConcat(m[8], m[9], m[8]);
-                PSMTXTrans(m[9], lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
-                PSMTXConcat(m[9], m[8], m[8]);
-                PSMTXConcat(m[8], m[10], m[10]);
-            } else {
-                fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
-                C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-                PSMTXConcat(m[6], m[7], m[10]);
-            }
-        }
-        if (fn_80055D94(0x100) != 0) {
-            sp18 = lbl_80368FA8;
-            ((u8 *)&sp18)[3] = r30;
-            q[0] = *(u32 *)(tbl + 0x1C);
-            q[1] = *(u32 *)(tbl + 0x20);
-            q[2] = *(u32 *)(tbl + 0x24);
-            q[3] = *(u32 *)(tbl + 0x28);
-            q[4] = *(u32 *)(tbl + 0x2C);
-            q[5] = *(u32 *)(tbl + 0x30);
-            *(f32 *)&q[0] = sp148;
-            *(f32 *)&q[1] = sp14C;
-            *(f32 *)&q[3] = sp148;
-            *(f32 *)&q[4] = sp14C;
-            vec[0] = q[0];
-            vec[1] = q[1];
-            vec[2] = q[2];
-            vec[3] = q[3];
-            vec[4] = q[4];
-            vec[5] = q[5];
-            vec[6] = *(u32 *)(tbl + 0x34);
-            vec[7] = *(u32 *)(tbl + 0x38);
-            vec[8] = *(u32 *)(tbl + 0x3C);
-            fn_802026E4(m[5], &vec[3], &vec[6], &vec[0]);
-            C_MTXLightOrtho(m[4], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(m[4], m[5], m[10]);
-            fn_80224E50(m[10], 0x1E, 0);
-            fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
-            sp10 = sp18;
-            fn_80051564(&sp10, 1, f30, f29);
-            q[0] = *(u32 *)(tbl + 0x1C);
-            q[1] = *(u32 *)(tbl + 0x20);
-            q[2] = *(u32 *)(tbl + 0x24);
-            q[3] = *(u32 *)(tbl + 0x28);
-            q[4] = *(u32 *)(tbl + 0x2C);
-            q[5] = *(u32 *)(tbl + 0x30);
-            *(f32 *)&q[0] = sp154;
-            *(f32 *)&q[1] = sp158;
-            *(f32 *)&q[3] = sp154;
-            *(f32 *)&q[4] = sp158;
-            vec[0] = q[0];
-            vec[1] = q[1];
-            vec[2] = q[2];
-            vec[3] = q[3];
-            vec[4] = q[4];
-            vec[5] = q[5];
-            vec[6] = *(u32 *)(tbl + 0x34);
-            vec[7] = *(u32 *)(tbl + 0x38);
-            vec[8] = *(u32 *)(tbl + 0x3C);
-            fn_802026E4(m[3], &vec[3], &vec[6], &vec[0]);
-            C_MTXLightOrtho(m[2], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-            PSMTXConcat(m[2], m[3], m[10]);
-            fn_80224E50(m[10], 0x1E, 0);
-            fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
-            spC = sp18;
-            fn_80051564(&spC, 1, f30, f29);
-        }
-    } else {
-        fn_80060F70(r28, 1, &sp124);
         q[0] = *(u32 *)(tbl + 0x1C);
         q[1] = *(u32 *)(tbl + 0x20);
         q[2] = *(u32 *)(tbl + 0x24);
         q[3] = *(u32 *)(tbl + 0x28);
         q[4] = *(u32 *)(tbl + 0x2C);
         q[5] = *(u32 *)(tbl + 0x30);
-        *(f32 *)&q[0] = sp124;
-        *(f32 *)&q[1] = sp128;
-        *(f32 *)&q[3] = sp124;
-        *(f32 *)&q[4] = sp128;
+        *(f32 *)&q[0] = f30;
+        *(f32 *)&q[1] = f29;
+        *(f32 *)&q[3] = f30;
+        *(f32 *)&q[4] = f29;
         vec[0] = q[0];
         vec[1] = q[1];
         vec[2] = q[2];
@@ -5757,7 +5656,101 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
         vec[6] = *(u32 *)(tbl + 0x34);
         vec[7] = *(u32 *)(tbl + 0x38);
         vec[8] = *(u32 *)(tbl + 0x3C);
-        fn_802026E4(m[1], &vec[3], &vec[6], &vec[0]);
+        if (lbl_80368FCC != dx) {
+            PSMTXRotRad(m[8], 0x5A, lbl_80368FD8 * dx);
+            fn_802029C4(m[8], &vec[6], &vec[6]);
+            fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[6], m[7], m[10]);
+            PSMTXTrans(m[9], lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+            PSMTXConcat(m[8], m[9], m[8]);
+            PSMTXTrans(m[9], lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+            PSMTXConcat(m[9], m[8], m[8]);
+            PSMTXConcat(m[8], m[10], m[10]);
+        } else {
+            fn_802026E4(m[7], &vec[3], &vec[6], &vec[0]);
+            C_MTXLightOrtho(m[6], -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[6], m[7], m[10]);
+        }
+        if (fn_80055D94(0x100) != 0) {
+            sp18 = lbl_80368FA8;
+            ((u8 *)&sp18)[3] = r30;
+            q1[0] = *(u32 *)(tbl + 0x1C);
+            q1[1] = *(u32 *)(tbl + 0x20);
+            q1[2] = *(u32 *)(tbl + 0x24);
+            q1[3] = *(u32 *)(tbl + 0x28);
+            q1[4] = *(u32 *)(tbl + 0x2C);
+            q1[5] = *(u32 *)(tbl + 0x30);
+            *(f32 *)&q1[0] = pos[0][0];
+            *(f32 *)&q1[1] = pos[0][1];
+            *(f32 *)&q1[3] = pos[0][0];
+            *(f32 *)&q1[4] = pos[0][1];
+            vec1[0] = q1[0];
+            vec1[1] = q1[1];
+            vec1[2] = q1[2];
+            vec1[3] = q1[3];
+            vec1[4] = q1[4];
+            vec1[5] = q1[5];
+            vec1[6] = *(u32 *)(tbl + 0x34);
+            vec1[7] = *(u32 *)(tbl + 0x38);
+            vec1[8] = *(u32 *)(tbl + 0x3C);
+            fn_802026E4(m[5], &vec1[3], &vec1[6], &vec1[0]);
+            C_MTXLightOrtho(m[4], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[4], m[5], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
+            fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
+            sp10 = sp18;
+            fn_80051564(&sp10, 1, f30, f29);
+            q2[0] = *(u32 *)(tbl + 0x1C);
+            q2[1] = *(u32 *)(tbl + 0x20);
+            q2[2] = *(u32 *)(tbl + 0x24);
+            q2[3] = *(u32 *)(tbl + 0x28);
+            q2[4] = *(u32 *)(tbl + 0x2C);
+            q2[5] = *(u32 *)(tbl + 0x30);
+            *(f32 *)&q2[0] = pos[1][0];
+            *(f32 *)&q2[1] = pos[1][1];
+            *(f32 *)&q2[3] = pos[1][0];
+            *(f32 *)&q2[4] = pos[1][1];
+            vec2[0] = q2[0];
+            vec2[1] = q2[1];
+            vec2[2] = q2[2];
+            vec2[3] = q2[3];
+            vec2[4] = q2[4];
+            vec2[5] = q2[5];
+            vec2[6] = *(u32 *)(tbl + 0x34);
+            vec2[7] = *(u32 *)(tbl + 0x38);
+            vec2[8] = *(u32 *)(tbl + 0x3C);
+            fn_802026E4(m[3], &vec2[3], &vec2[6], &vec2[0]);
+            C_MTXLightOrtho(m[2], lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            PSMTXConcat(m[2], m[3], m[10]);
+            fn_80224E50(m[10], 0x1E, 0);
+            fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
+            spC = sp18;
+            fn_80051564(&spC, 1, f30, f29);
+            return;
+        }
+    } else {
+        fn_80060F70(r28, 1, out);
+        q3[0] = *(u32 *)(tbl + 0x1C);
+        q3[1] = *(u32 *)(tbl + 0x20);
+        q3[2] = *(u32 *)(tbl + 0x24);
+        q3[3] = *(u32 *)(tbl + 0x28);
+        q3[4] = *(u32 *)(tbl + 0x2C);
+        q3[5] = *(u32 *)(tbl + 0x30);
+        *(f32 *)&q3[0] = out[0];
+        *(f32 *)&q3[1] = out[1];
+        *(f32 *)&q3[3] = out[0];
+        *(f32 *)&q3[4] = out[1];
+        vec3[0] = q3[0];
+        vec3[1] = q3[1];
+        vec3[2] = q3[2];
+        vec3[3] = q3[3];
+        vec3[4] = q3[4];
+        vec3[5] = q3[5];
+        vec3[6] = *(u32 *)(tbl + 0x34);
+        vec3[7] = *(u32 *)(tbl + 0x38);
+        vec3[8] = *(u32 *)(tbl + 0x3C);
+        fn_802026E4(m[1], &vec3[3], &vec3[6], &vec3[0]);
         C_MTXLightOrtho(m[0], -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(m[0], m[1], m[10]);
     }
