@@ -2661,11 +2661,19 @@ OSSetArenaHi(*(void **)(bb2_803685F4+0x10));
 }
 
 #pragma use_lmw_stmw on
+static inline u32 fn_8020FD50_cntlzd(u64 bit) {
+    u32 hi = (u32)(bit >> 32);
+    u32 lo = (u32)(bit & 0xFFFFFFFF);
+    u32 value = __cntlzw(hi);
+    if (value < 32) {
+        return value;
+    }
+    return 32 + __cntlzw(lo);
+}
+
 void fn_8020FD50(s32 unused, OSContext *arg1) {
     void fn_80211B30(s32, s32);
     u32 fn_802116D4(void);
-    u32 fn_8022CB2C(u32, u32, s32);
-    u32 fn_8022CB08(u32, u32, s32, s32);
     void fn_8023C518(void);
     void fn_8020AEC4(s32 *);
     extern u8 lbl_8033A068[];
@@ -2685,13 +2693,9 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     s32 regMask;
     s32 didFlush;
     s32 bit;
-    u32 lo;
-    u32 tmp;
-    u32 tmp2;
     u8 *regsBase;
     OSContext *ctxArg;
     u8 *timing;
-    u32 t27;
 
     ctxArg = arg1;
     timing = lbl_8033A068;
@@ -2740,20 +2744,10 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     if (lbl_80368608 != 0) {
         if ((u32)lbl_80368638 != 1 || fn_802116D4() != 0) {
             regsBase = (u8 *)0xCC002000;
-            lo = 0;
-            while ((((u32)lbl_80368640 ^ lo) | ((u32)lbl_80368644 ^ lo)) != 0) {
-                t27 = (u32)lbl_80368644;
-                tmp = fn_8022CB2C((u32)lbl_80368640, t27, 0x20);
-                bit = __cntlzw(tmp);
-                if (bit >= 0x20) {
-                    bit = __cntlzw(t27) + 0x20;
-                }
+            while (*(u64 *)&lbl_80368640 != 0) {
+                bit = fn_8020FD50_cntlzd(*(u64 *)&lbl_80368640);
                 *(volatile u16 *)(regsBase + (bit << 1)) = *(u16 *)((u8 *)(timing + (bit << 1)) + 0x78);
-                tmp = 0;
-                tmp2 = 1;
-                tmp2 = fn_8022CB08(tmp, tmp2, 0x3F - bit, bit << 1);
-                lbl_80368640 = (void *)((u32)lbl_80368640 & ~tmp);
-                lbl_80368644 = (void *)((u32)lbl_80368644 & ~tmp2);
+                *(u64 *)&lbl_80368640 &= ~((u64)1 << (63 - bit));
             }
             lbl_80368638 = (void *)0;
             didFlush = 1;

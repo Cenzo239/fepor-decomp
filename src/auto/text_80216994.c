@@ -2412,7 +2412,6 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     u8 *__OSLockSramEx(void);
     void __OSUnlockSramEx(s32);
     s64 OSGetTime(void);
-    s64 __shr2i(s64, s32);
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, s32, void *, void *);
@@ -2461,44 +2460,44 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     limit = 4;
 
     while (i < limit) {
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i] = (u8)((u32)seed + *p);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 1] = (u8)((u32)seed + flash[i + 1]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 2] = (u8)((u32)seed + flash[i + 2]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 3] = (u8)((u32)seed + flash[i + 3]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 4] = (u8)((u32)seed + flash[i + 4]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 5] = (u8)((u32)seed + flash[i + 5]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 6] = (u8)((u32)seed + flash[i + 6]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 7] = (u8)((u32)seed + flash[i + 7]);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         p += 8;
@@ -2507,9 +2506,9 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
 
     p = flash + i;
     while (i < 0xC) {
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i] = (u8)((u32)seed + *p);
-        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
         p += 1;
         i += 1;

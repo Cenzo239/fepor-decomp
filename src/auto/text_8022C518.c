@@ -127,7 +127,7 @@ asm s64 __shl2i(register s64 value, register int shift) {
 #pragma pop
 
 #pragma push
-asm s64 __shr2u(register s64 value, register int shift) {
+asm u64 __shr2u(register u64 value, register int shift) {
     nofralloc
     subfic r8, r5, 0x20
     subic r9, r5, 0x20
