@@ -1632,7 +1632,7 @@ s32 fn_80219A70(void *arg0)
     u16 v;
     u32 sum, inv;
     u8 *sram;
-    u64 random;
+    s64 random;
     u8 *header;
     s32 i;
     u8 *serial;
@@ -1659,16 +1659,15 @@ s32 fn_80219A70(void *arg0)
     if (*(u16 *)(header + 0x1fc) != (u16)sum || *(u16 *)(header + 0x1fe) != (u16)inv) {
         return -6;
     }
-    random = *(u64 *)(header + 12);
-    sram = (u8 *)__OSLockSramEx() + (((u8 *)arg0 - (u8 *)__CARDBlock) / 0x110) * 12;
-    serial = header;
-    for (i = 0; i < 12; i++, sram++, serial++) {
-        random = (random * 0x41c64e6dULL + 12345) >> 16;
-        if (*serial != (u8)(random + *sram)) {
+    random = *(s64 *)(header + 12);
+    sram = __OSLockSramEx();
+    for (i = 0; i < 12; i++) {
+        random = (random * 1103515245 + 12345) >> 16;
+        if (header[i] != (u8)(sram[(((u8 *)arg0 - (u8 *)__CARDBlock) / 0x110) * 12 + i] + random)) {
             __OSUnlockSramEx(0);
             return -6;
         }
-        random = ((random * 0x41c64e6dULL + 12345) >> 16) & 0x7fff;
+        random = ((random * 1103515245 + 12345) >> 16) & 0x7fff;
     }
     __OSUnlockSramEx(0);
     if (*(u16 *)(header + 0x24) != fn_80217AD8()) {
@@ -2414,7 +2413,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     u8 *__OSLockSramEx(void);
     void __OSUnlockSramEx(s32);
     s64 OSGetTime(void);
-    s64 fn_8022CB50(s64, s32);
+    s64 __shr2i(s64, s32);
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, s32, void *, void *);
@@ -2463,44 +2462,44 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     limit = 4;
 
     while (i < limit) {
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i] = (u8)((u32)seed + *p);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 1] = (u8)((u32)seed + flash[i + 1]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 2] = (u8)((u32)seed + flash[i + 2]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 3] = (u8)((u32)seed + flash[i + 3]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 4] = (u8)((u32)seed + flash[i + 4]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 5] = (u8)((u32)seed + flash[i + 5]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 6] = (u8)((u32)seed + flash[i + 6]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i + 7] = (u8)((u32)seed + flash[i + 7]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
 
         p += 8;
@@ -2509,9 +2508,9 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
 
     p = flash + i;
     while (i < 0xC) {
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         work[i] = (u8)((u32)seed + *p);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = __shr2i(seed * 0x41C64E6D + 0x3039, 16);
         seed &= 0x7FFF;
         p += 1;
         i += 1;

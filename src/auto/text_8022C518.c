@@ -111,13 +111,13 @@ s64 __mod2i(s64 a, s64 b) {
 
 typedef struct { u32 hi; u32 lo; } UL64;
 
-s32 fn_8022CB08(s32 arg0, u32 arg1, s32 arg2) { u32 high = (u32)arg0 << arg2; high |= arg1 >> (32-arg2); high |= arg1 << (arg2-32); return high; }
+s32 __shl2i(s32 arg0, u32 arg1, s32 arg2) { u32 high = (u32)arg0 << arg2; high |= arg1 >> (32-arg2); high |= arg1 << (arg2-32); return high; }
 
-u32 fn_8022CB2C(u32 hi, u32 lo, s32 s) {
+u32 __shr2u(u32 hi, u32 lo, s32 s) {
     return (lo >> s) | (hi << (0x20 - s)) | (hi >> (s - 0x20));
 }
 
-u64 fn_8022CB50(s32 hi,u32 lo,s32 s) { s32 right; u32 low=lo>>s; low|=(u32)hi<<(32-s); right=s-32; { s32 extra=hi>>right; if(s>32) low|=extra; } return ((u64)(u32)(hi>>s)<<32)|low; }
+u64 __shr2i(s32 hi,u32 lo,s32 s) { s32 right; u32 low=lo>>s; low|=(u32)hi<<(32-s); right=s-32; { s32 extra=hi>>right; if(s>32) low|=extra; } return ((u64)(u32)(hi>>s)<<32)|low; }
 
 f32 fn_8022CB78(s32 hi, u32 lo) {
     u32 sign;
