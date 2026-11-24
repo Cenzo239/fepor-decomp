@@ -8240,22 +8240,10 @@ static inline void *fn_801DC10C_inline(void *arg0)
 
 void *fn_801DC070(void *arg0)
 {
-    extern u8 gSaveDataBase;
-    void *fn_801E2324(void *, void *);
-    u8 *result;
+    u8 *result = (u8 *)fn_801DC10C_inline(arg0);
 
-    result = (u8 *)fn_801E2324(&gSaveDataBase, arg0);
-    if (result != NULL) {
-        if (result[0x60] == 2) {
-            goto ok;
-        }
-    }
-    result = NULL;
-ok:
-    if (result != NULL) {
-        if (result[0x64] != 0x20) {
-            result = NULL;
-        }
+    if (result != NULL && result[0x64] != 0x20) {
+        result = NULL;
     }
     return result;
 }
