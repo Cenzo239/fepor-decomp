@@ -281,8 +281,6 @@ BOOL EXIImm(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
 {
     BOOL enabled;
     EXIControl *exi = &Ecb_8033E188[chan];
-    u32 data;
-    s32 i;
 
     enabled = OSDisableInterrupts();
     if ((exi->state & 3) || !(exi->state & 4)) {
@@ -299,9 +297,11 @@ BOOL EXIImm(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
     exi->state |= 2;
 
     if (type != 0) {
+        u32 data;
+        int i;
         data = 0;
         for (i = 0; i < len; i++) {
-            data |= ((u8 *)buf)[i] << (8 * (3 - i));
+            data |= ((u8 *)buf)[i] << ((3 - i) * 8);
         }
         __EXIRegs[chan * 5 + 4] = data;
     }

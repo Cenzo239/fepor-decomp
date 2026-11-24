@@ -2016,33 +2016,24 @@ void fn_801F5D14(void *arg0) {
 void fn_801F5DD0(void *arg0)
 {
     void Process_Goto(void *, s32);
-    s32 GBAGetStatus(void *, void *);
-    s32 GBAWrite(void *, void *, void *);
     void Process_ClearFunc(void *);
-    s32 r;
     u8 *object;
+    s32 r;
 
-    r = 0;
     object = (u8 *)arg0;
 
-    r = GBAGetStatus(*(void **)(object + 0x38), object + 0x4B);
-    if (r == 0) {
-        r = object[0x4B];
-        if ((r & 0x30) != 0x30) {
-            Process_Goto(arg0, 2);
-            return;
-        }
+    r = GBAGetStatus(*(u32 *)(object + 0x38), object + 0x4B);
+    if (r != 0 || ((r = object[0x4B]) & 0x30) != 0x30) {
+        Process_Goto(arg0, 2);
+        return;
     }
     if (r & 2) {
         return;
     }
 
-    if (GBAWrite(*(void **)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
-        r = object[0x4B];
-        if ((r & 0x30) != 0x30) {
-            Process_Goto(arg0, 2);
-            return;
-        }
+    if (GBAWrite(*(u32 *)(object + 0x38), object + 0x44, object + 0x4B) != 0 || (object[0x4B] & 0x30) != 0x30) {
+        Process_Goto(arg0, 2);
+        return;
     }
 
     Process_ClearFunc(arg0);
@@ -2191,14 +2182,13 @@ void fn_801F6170(void *arg0)
 
     *(u8 *)((u8 *)arg0 + 0x4C) = 1;
 
-    local[0] = src[0];
-    local[1] = src[1];
-    local[2] = src[2];
-    local[3] = src[3];
-
     p = local;
     i = 0;
     while (i < 4) {
+        local[0] = src[0];
+        local[1] = src[1];
+        local[2] = src[2];
+        local[3] = src[3];
         if (fn_8023C410(*p) == 0x40000) {
             tmp[0] = lbl_80280B48[0];
             tmp[1] = lbl_80280B48[1];
@@ -2212,7 +2202,6 @@ void fn_801F6170(void *arg0)
         }
         i++;
         p++;
-        if (src == lbl_80280B48) { (void)0; }
     }
 }
 #pragma global_optimizer reset

@@ -8241,17 +8241,16 @@ u8 fn_80263074(u32 arg0, u32 smallest, void *previous)
             if (smallest > *(u32 *)((u8 *)current + 0x0C)) {
                 selected = current;
                 smallest = *(u32 *)((u8 *)current + 0x0C);
-                previous = current;
             }
         }
 
+        previous = current;
         current = *(void **)current;
     }
 
     if (selected == 0) {
         if (lbl_80368AD8 != 0) {
-            current = fn_80258AD8();
-            if (*(u32 *)((u8 *)current + 8) <= lbl_80368AEC - size) {
+            if (lbl_80368AEC - size >= *(u32 *)((u8 *)fn_80258AD8() + 8)) {
                 current = lbl_80368AD8;
                 selected = current;
                 lbl_80368AD8 = *(void **)current;
@@ -8536,9 +8535,9 @@ s32 fn_80263534(void)
     lbl_80368B08 = zero;
     Audio_Unlock();
 
-    if (lbl_80368B08) {
-        Audio_Lock();
+    while (*(volatile u32 *)&lbl_80368B08 == 0) {
     }
+    Audio_Lock();
 
     return 1;
 }
@@ -8568,11 +8567,10 @@ void fn_80263608(s32 arg0)
     PPCSync();
 
     fn_80215F78((u32)lbl_80368A84 | 0xBABE0000);
-    if (fn_80215F40() == 0) {
-        fn_80215F78(aux);
-        if (fn_80215F40() != 0) {
-            return;
-        }
+    while (fn_80215F40() != 0) {
+    }
+    fn_80215F78(aux);
+    while (fn_80215F40() != 0) {
     }
 }
 #pragma peephole on

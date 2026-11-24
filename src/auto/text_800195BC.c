@@ -1659,18 +1659,19 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 void strcpy(void *, s32);
 void strcat(void *, void *);
 void *Res_GetByName(void *);
-extern void *lbl_80367230;
-extern u8 lbl_802CA4FC[], gDataStr[];
+extern void *gItemUfxCache;
+extern u8 gItemUfxPath[], gDataStr[];
 void *obj;
-if(lbl_80367230 != arg1) {
-lbl_80367230=arg1;
-strcpy(lbl_802CA4FC,*(s32 *)arg1);
-strcat(lbl_802CA4FC,gDataStr+0x3C);
+if(gItemUfxCache != arg1) {
+gItemUfxCache=arg1;
+strcpy(gItemUfxPath,*(s32 *)arg1);
+strcat(gItemUfxPath,gDataStr+0x3C);
 }
-obj=Res_GetByName(lbl_802CA4FC);
+obj=Res_GetByName(gItemUfxPath);
 if(obj==0) {
-(*(void (**)(void *))((u8 *)obj+0xC))(arg2);
+obj=0;
 }
+(*(void (**)(void *))((u8 *)obj+0xC))(arg2);
 }
 
 s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
@@ -1690,13 +1691,15 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
         strcat(gItemUfxPath, gDataStr + 0x3C);
     }
     obj = Res_GetByName(gItemUfxPath);
-    if (obj != 0) goto ret1;
+    if (obj != 0) {
+    } else {
+        obj = 0;
+    }
     p = (void **)obj;
-    if (p[2] == 0) goto ret0;
-    ((void (*)(void *))p[2])(arg2);
-ret1:
-    return 1;
-ret0:
+    if (p[2] != 0) {
+        ((void (*)(void *))p[2])(arg2);
+        return 1;
+    }
     return 0;
 }
 

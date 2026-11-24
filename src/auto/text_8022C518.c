@@ -111,13 +111,52 @@ s64 __mod2i(s64 a, s64 b) {
 
 typedef struct { u32 hi; u32 lo; } UL64;
 
-s32 fn_8022CB08(s32 arg0, u32 arg1, s32 arg2) { u32 high = (u32)arg0 << arg2; high |= arg1 >> (32-arg2); high |= arg1 << (arg2-32); return high; }
-
-u32 fn_8022CB2C(u32 hi, u32 lo, s32 s) {
-    return (lo >> s) | (hi << (0x20 - s)) | (hi >> (s - 0x20));
+#pragma push
+asm s64 __shl2i(register s64 value, register int shift) {
+    nofralloc
+    subfic r8, r5, 0x20
+    subic r9, r5, 0x20
+    slw r3, r3, r5
+    srw r10, r4, r8
+    or r3, r3, r10
+    slw r10, r4, r9
+    or r3, r3, r10
+    slw r4, r4, r5
+    blr
 }
+#pragma pop
 
-u64 fn_8022CB50(s32 hi,u32 lo,s32 s) { s32 right; u32 low=lo>>s; low|=(u32)hi<<(32-s); right=s-32; { s32 extra=hi>>right; if(s>32) low|=extra; } return ((u64)(u32)(hi>>s)<<32)|low; }
+#pragma push
+asm u64 __shr2u(register u64 value, register int shift) {
+    nofralloc
+    subfic r8, r5, 0x20
+    subic r9, r5, 0x20
+    srw r4, r4, r5
+    slw r10, r3, r8
+    or r4, r4, r10
+    srw r10, r3, r9
+    or r4, r4, r10
+    srw r3, r3, r5
+    blr
+}
+#pragma pop
+
+#pragma push
+asm s64 __shr2i(register s64 value, register int shift) {
+    nofralloc
+    subfic r8, r5, 0x20
+    subic. r9, r5, 0x20
+    srw r4, r4, r5
+    slw r10, r3, r8
+    or r4, r4, r10
+    sraw r10, r3, r9
+    ble L_8
+    or r4, r4, r10
+L_8:
+    sraw r3, r3, r5
+    blr
+}
+#pragma pop
 
 f32 fn_8022CB78(s32 hi, u32 lo) {
     u32 sign;

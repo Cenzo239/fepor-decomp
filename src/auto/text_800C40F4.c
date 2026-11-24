@@ -10348,9 +10348,9 @@ void fn_800DB58C(void *arg0) {
     if (lbl_80369E70 == *(f32 *)(p + 0xA4)) {
         s32 n = *(s32 *)(p + 0x9C) - 1;
         *(s32 *)(p + 0x9C) = n;
-        if (*(s32 *)(p + 0x9C) <= 0) {
-            *(s32 *)(p + 0x9C) = 0;
-        }
+    }
+    if (*(s32 *)(p + 0x9C) <= 0) {
+        *(s32 *)(p + 0x9C) = 0;
     }
 }
 #pragma optimization_level reset
@@ -18546,34 +18546,31 @@ void fn_800E8CEC(void *arg0) {
 
     if (*(s32 *)(self + 0x160) != 0) {
         Vec3Interp_Update(self + 0x134);
+        fn_800DF41C(
+            self + 0x134,
+            (f32 *)(self + 0xF0),
+            (f32 *)(self + 0xF4),
+            *(f32 *)(self + 0xF8)
+        );
     }
-
-    fn_800DF41C(
-        self + 0x134,
-        (f32 *)(self + 0xF0),
-        (f32 *)(self + 0xF4),
-        *(f32 *)(self + 0xF8)
-    );
 
     if (*(s32 *)(self + 0x1C0) != 0) {
         Vec3Interp_Update(self + 0x194);
+        fn_800DF41C(
+            self + 0x194,
+            (f32 *)(self + 0x54),
+            (f32 *)(self + 0x58),
+            *(f32 *)(self + 0x5C)
+        );
     }
-
-    fn_800DF41C(
-        self + 0x194,
-        (f32 *)(self + 0x54),
-        (f32 *)(self + 0x58),
-        *(f32 *)(self + 0x5C)
-    );
 
     if (*(s32 *)(self + 0x280) != 0) {
         Vec3Interp_Update(self + 0x254);
+        fn_800DF410(
+            (f32 *)(self + 0x254),
+            (f32 *)(self + 0x104)
+        );
     }
-
-    fn_800DF410(
-        (f32 *)(self + 0x254),
-        (f32 *)(self + 0x104)
-    );
 }
 
 void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
@@ -21147,9 +21144,14 @@ void fn_800ED960(void *self) {
     void *String_Destroy(void *, s32);
     void sprintf(char *, char *, ...);
     extern char Win3_str[];
-    u8 str1[0xC], str2[0xC], str3[0xC], str4[0xC];
-    u32 scratch10, scratchC, scratch8;
-    char buf[0x18];
+    char buf[0x10];
+    u8 str1[0xC];
+    u8 str2[0xC];
+    u8 str3[0xC];
+    u8 str4[0xC];
+    u32 scratch10;
+    u32 scratchC;
+    u32 scratch8;
 
     *(void **)((u8 *)self + 0x440) = fn_800DA5FC();
     if (*(void **)((u8 *)self + 0x440) != 0) {
@@ -25268,10 +25270,14 @@ s32 fn_800F73EC(void *arg0, void *arg1, void **arg2) {
         tempMin = 0;
     }
     minRange = (u8)tempMin;
-    if (*arg2 != NULL) {
-        maxRange = (u8)Item_GetRangeForUnit(*arg2, arg0);
-    } else {
-        maxRange = (u8)0;
+    {
+        s32 t;
+        if (*arg2 != NULL) {
+            t = Item_GetRangeForUnit(*arg2, arg0);
+        } else {
+            t = 0;
+        }
+        maxRange = (u8)t;
     }
     return ((s32)minRange <= dist && dist <= maxRange);
 }
@@ -25909,26 +25915,22 @@ void fn_800F85C8(void *arg0) {
 
     slot = Unit_FindItemSlot(unit, item);
 
-    if ((s8)slot >= 0) {
-        if ((u8)Item_TryCallUfx((s32)unit, (s32)item) != 0) goto retry;
+    if ((s8)slot < 0 || (u8)Item_TryCallUfx((s32)unit, (s32)item) == 0) {
         gAiState[0x21C] = 0;
-        goto advance;
-    }
-
-retry:
-    slot = Unit_FindItemSlot(unit, item);
-
-    x = unit[0x19E];
-    y = unit[0x19F];
-
-    if (gAiState[0x21C] != 0) {
-        gUiContext[8] = 4;
-        gUiContext[0xA] = slot;
     } else {
-        fn_800FB96C(4, x, y, unit, x, y, slot, 0, 0);
+        slot = Unit_FindItemSlot(unit, item);
+
+        x = unit[0x19E];
+        y = unit[0x19F];
+
+        if (gAiState[0x21C] != 0) {
+            gUiContext[8] = 4;
+            gUiContext[0xA] = slot;
+        } else {
+            fn_800FB96C(4, x, y, unit, x, y, slot, 0, 0);
+        }
     }
 
-advance:
     if (gAiCmdIsAlt == 0) {
         unit[0x250]++;
     } else {
@@ -27559,8 +27561,6 @@ void fn_800FAF70(void *arg0) {
     u32 first;
     u32 second;
     s32 alt;
-    register s32 one;
-    register s32 zero;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
@@ -27582,15 +27582,7 @@ void fn_800FAF70(void *arg0) {
 
     alt = gAiCmdIsAlt;
 
-    if (alt == 0) {
-        if (first == 0) {
-            goto advance;
-        }
-        if (alt != 1) {
-            goto success;
-        }
-    }
-    if (second != 0) {
+    if (!((alt == 0 && first == 0) || (alt == 1 && second == 0))) {
         goto success;
     }
 
@@ -27603,10 +27595,8 @@ advance:
     goto finish;
 
 success:
-    one = 1;
-    zero = 0;
-    gAiCmdOk = (u8)one;
-    gAiState[0] = (u8)zero;
+    gAiState[0] = 0;
+    gAiCmdOk = 1;
 
 finish:
     if (first != 0 && second != 0) {
@@ -27668,10 +27658,10 @@ void fn_800FB0F0(void *arg0) {
     case 2:
         result = *state == value;
         break;
-    case 3:
+    case 4:
         result = *state < value;
         break;
-    case 4:
+    case 3:
         result = *state <= value;
         break;
     case 5:
@@ -29600,24 +29590,29 @@ void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
 
 #pragma use_lmw_stmw reset
 
+static inline s32 fn_800FE770_Has(void *obj, s32 id, s32 def) {
+    u8 Status_Test(void *, s32);
+    if (obj != NULL) {
+        return Status_Test((u8*)obj+0x1C,id) != 0;
+    }
+    return def;
+}
 #pragma optimization_level 2
 void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
     void Map_SelectRangeBuffer(void *, s32);
     void fn_800227F8(void *, void *);
     void fn_80022748(void *, s32);
-    u8 fn_80105BC0(void *, s32);
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
-    extern u8 lbl_802CA518[];
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
+    extern u8 gBattleMap[];
 
     void *map;
 
-    map = lbl_802CA518;
+    map = gBattleMap;
     Map_SelectRangeBuffer(map, arg4);
-    fn_800227F8(lbl_802CA518, arg2);
-    fn_80022748(lbl_802CA518, arg3);
-    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)arg5,
-        arg2 ? (fn_80105BC0((u8 *)arg2 + 0x1C, 0x15) != 0) : 0,
-        arg2 ? (fn_80105BC0((u8 *)arg2 + 0x1C, 0x14) != 0) : 1);
+    fn_800227F8(gBattleMap, arg2);
+    fn_80022748(gBattleMap, arg3);
+    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)arg5,
+        fn_800FE770_Has(arg2, 0x14, 1), fn_800FE770_Has(arg2, 0x15, 0));
 }
 #pragma optimization_level reset
 void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
@@ -29627,20 +29622,10 @@ void fn_800227F8(void *, void *);
 void Map_SelectRangeBuffer(void *, s32);
 u8 Status_Test(void *, s32);
 extern u8 gBattleMap[];
-u32 flags; s32 y; s32 x; s32 t14; u8 *map; void *obj; s32 t15;
+u32 flags; s32 y; s32 x; u8 *map; void *obj;
 x=arg0; y=arg1; obj=arg2; flags=arg4; map=gBattleMap;
 Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
-if (obj != NULL) {
-    t14 = Status_Test((u8*)obj+0x1C,0x14) != 0;
-} else {
-    t14 = 1;
-}
-if (obj != NULL) {
-    t15 = Status_Test((u8*)obj+0x1C,0x15) != 0;
-} else {
-    t15 = 0;
-}
-Map_FloodMoveRange(map,x,y,flags,t14,t15);
+Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {

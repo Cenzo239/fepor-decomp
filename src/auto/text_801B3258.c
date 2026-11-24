@@ -660,9 +660,9 @@ void fn_801B46FC(void *arg0) {
         effect = Effect_Create(gUnitStatusStr + 0xB1, self);
         pos = *(f32 **)((u8 *)unitStatus + 0x14);
         Effect_SetPos(effect, pos[1], pos[2], pos[3]);
-        Ui_PlaySeCue(gUnitStatusStr + 0xC7, 100);
-        fn_8014876C(gFxChannels + (u32)unitStatus[0x10C] * 0x30, 50, 250);
     }
+    Ui_PlaySeCue(gUnitStatusStr + 0xC7, 100);
+    fn_8014876C(gFxChannels + (u32)unitStatus[0x10C] * 0x30, 50, 250);
     *(u32 *)((u8 *)unitStatus + 0x18) = 0;
 }
 
@@ -7227,6 +7227,8 @@ void fn_801C0A9C(void *arg0) {
     }
 }
 
+#pragma push
+#pragma global_optimizer reset
 void fn_801C0ADC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
@@ -7281,15 +7283,15 @@ void fn_801C0ADC(void *arg0) {
         virtual void v14() = 0;
         virtual Item *get(s32) = 0;
     };
+    void *list;
     Menu *menu;
     s32 i;
     Item *item;
     void *t2;
 
-    menu = (Menu *)Ui_FindChild(arg0, 0x81, 0);
-    t2 = Ui_FindChild(arg0, 0x80, 0);
-    fn_8000D864(0, fn_801D2B04(menu));
-    menu = (Menu *)t2;
+    list = Ui_FindChild(arg0, 0x81, 0);
+    menu = (Menu *)Ui_FindChild(arg0, 0x80, 0);
+    fn_8000D864(0, fn_801D2B04(list));
     Ui_SetWidgetText(menu, gUiScrollListStrings + 0x31);
     *(u32 *)((u8 *)menu + 0x48) = 0;
     menu = (Menu *)fn_8013BC10(0, 0);
@@ -7309,6 +7311,7 @@ void fn_801C0ADC(void *arg0) {
     }
 #pragma cplusplus reset
 }
+#pragma pop
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
@@ -8037,6 +8040,8 @@ void fn_801C1E0C(void *arg0) {
     fn_8000A248();
 }
 
+#pragma push
+#pragma optimization_level reset
 void fn_801C2084(void *arg0)
 {
     extern u32 gUiInputFlags;
@@ -8129,6 +8134,7 @@ void fn_801C2084(void *arg0)
         break;
     }
 }
+#pragma pop
 
 void fn_801C2250(void *arg0) {
     if (arg0 != NULL) {

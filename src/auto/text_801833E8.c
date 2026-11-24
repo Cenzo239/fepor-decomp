@@ -1466,26 +1466,26 @@ void fn_80185830(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_80185A64(void *arg0) {
+    void GActor_RequestRes(void *);
     void fn_8004F5EC(void *, s32);
     u8 fn_800504FC(void *, s32);
     void fn_8004FC70(void *, s32);
-    void fn_800558D8(void *);
     extern u8 MoveAnim_str[];
     void *obj;
     u8 *flags;
 
     if (*((u8 *)arg0 + 0x3C) != 0) {
-        fn_800558D8(MoveAnim_str + 0x1C1);
+        GActor_RequestRes(MoveAnim_str + 0x1C1);
         obj = *(void **)((u8 *)arg0 + 0x30);
         if (fn_800504FC(obj, 0xA) != 0) {
             fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
-            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-            *flags |= 4;
-            fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
-            flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
-            *flags &= ~4;
         }
     }
+    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+    *flags |= 4;
+    fn_8004F5EC(*(void **)((u8 *)arg0 + 0x30), 0);
+    flags = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 3;
+    *flags &= 0xFFFFFFFB;
 }
 
 void fn_80185AF4(void *arg0) {
@@ -4746,6 +4746,34 @@ void fn_8018D25C(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+static inline s32 AiItemTableIndex_inl(void *unit, void **entry) {
+    u32 *Hash_Lookup(char *);
+    u8 Unit_CanReceiveItem(void *, void **);
+    s32 Str_Cmp(s32, u32);
+    extern u8 lbl_802798D0[];
+    u32 *tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
+    s32 dist;
+    s32 val;
+    u32 t;
+    if (!Unit_CanReceiveItem(unit, entry)) {
+        return -1;
+    }
+    dist = 0;
+    while ((t = *tbl) != 0) {
+        if (*(u32 *)entry != 0) {
+            val = *(s32 *)*(void **)entry;
+        } else {
+            val = 0;
+        }
+        if (Str_Cmp(val, t) == 0) {
+            return dist;
+        }
+        tbl++;
+        dist++;
+    }
+    return -1;
+}
+
 u8 fn_8018D294(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void fn_8002F728(void *);
@@ -4807,32 +4835,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
             while ((s8)slot < 8) {
                 entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
-                    tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
-                    if (!Unit_CanReceiveItem(arg0, entry)) {
-                        dist = -1;
-                    } else {
-                        dist = 0;
-                        goto lbl_check;
-                    lbl_body:
-                        if (*(u32 *)entry != 0) {
-                            val = *(s32 *)*(void **)entry;
-                        } else {
-                            val = 0;
-                        }
-                        if (Str_Cmp(val, t) == 0) {
-                            goto lbl_done;
-                        }
-                        tbl++;
-                        dist++;
-                    lbl_check:
-                        t = *tbl;
-                        if (t != 0) {
-                            goto lbl_body;
-                        }
-                        dist = -1;
-                    lbl_done:
-                        ;
-                    }
+                    dist = AiItemTableIndex_inl(arg0, entry);
                     if (dist >= 0) {
                         foundSlot = slot;
                         foundDist = dist;
@@ -4850,10 +4853,10 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
         i++;
     }
     if (bestDist != 0x7FFFFFFF) {
-        register s8 bx;
-        register s8 by;
-        bx = *(u8 *)((u8 *)bestUnit + 0x19E);
-        by = *(u8 *)((u8 *)bestUnit + 0x19F);
+        s32 bx;
+        s32 by;
+        bx = *(s8 *)((u8 *)bestUnit + 0x19E);
+        by = *(s8 *)((u8 *)bestUnit + 0x19F);
         fn_8010F3F4(arg0, bx, by, &sp12, &sp10);
         *(u16 *)((u8 *)arg0 + 0x258) =
             *(u16 *)((u8 *)arg0 + 0x258) + 1;
@@ -12051,8 +12054,8 @@ void fn_80199A60(void *arg0, s32 arg1) {
         }
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     } else {
-        register u8 etemp = *(u8 *)((u8 *)arg0 + 2);
-        *(u8 *)((u8 *)arg0 + 2) = __rlwimi(etemp, 0, 2, 28, 29);
+        struct B { u8 pad[2]; u8 hi : 4; u8 mode : 2; u8 lo : 2; };
+        ((struct B *)arg0)->mode = 0;
         fn_80145E9C((*(u8 *)((u8 *)arg0 + 2) >> 2) & 3);
     }
     fn_801C7C18(*(u8 *)((u8 *)arg0 + 6), *(u8 *)((u8 *)arg0 + 7), *(u8 *)((u8 *)arg0 + 5));

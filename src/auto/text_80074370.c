@@ -139,17 +139,17 @@ u32 fn_800745E8(void *arg0, void *arg1, u8 arg2) {
     void *item;
     if(index==4) item=&lbl_8036746C;
     else {
-        u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
-        void *base=lbl_80367468;
-        item=Unit_GetItemSlot(base,index+((flags)?0:4));
+        u64 *fp=Item_GetFlagsPtr(&lbl_8036746C);
+        s32 offset=((*fp & 5) != 0) ? 0 : 4;
+        item=Unit_GetItemSlot(lbl_80367468,offset+index);
     }
     if(*Item_GetFlagsPtr(item)&0x200ULL) return 2;
     if(!fn_8014D8DC(gBattleState)) {
         if(index==4) item=&lbl_8036746C;
         else {
-            u64 flags=*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL;
-            void *base=lbl_80367468;
-            item=Unit_GetItemSlot(base,index+((flags)?0:4));
+            u64 *fp=Item_GetFlagsPtr(&lbl_8036746C);
+            s32 offset=((*fp & 5) != 0) ? 0 : 4;
+            item=Unit_GetItemSlot(lbl_80367468,offset+index);
         }
         if(*Item_GetFlagsPtr(item)&0x20000000000ULL) return 2;
     }
@@ -261,18 +261,15 @@ void fn_800748E8(void) {
     s32 index;
     void *result;
     void *obj;
-    u64 flags;
-    void *unit;
     s32 offset;
 
     index = *(s8 *)(gUiContext + 0xA);
     if (index == 4) {
         result = &lbl_8036746C;
     } else {
-        flags = *Item_GetFlagsPtr(&lbl_8036746C);
-        unit = lbl_80367468;
-        offset = (flags & 0x500000000ULL) ? 0 : 4;
-        result = Unit_GetItemSlot(unit, offset + index);
+        u64 *fp = Item_GetFlagsPtr(&lbl_8036746C);
+        offset = ((*fp & 5) != 0) ? 0 : 4;
+        result = Unit_GetItemSlot(lbl_80367468, offset + index);
     }
     obj = *(void **)result;
     if (obj) {
@@ -3748,13 +3745,13 @@ void fn_8007A024(void *arg0) {
         case 3: case 4: case 5:
             var_r31 = 2;
             break;
-        case 6: case 7: case 8: case 10:
+        case 6: case 7: case 8:
             var_r31 = 1;
             break;
-        case 9:
+        case 10:
+            Process_Goto(arg0, 1);
             break;
         }
-        Process_Goto(arg0, 1);
         Face_DrawEyes(arg0, var_r31, 7);
         Face_DrawEyes(arg0, var_r31, 0xA);
         M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
@@ -3773,10 +3770,10 @@ void fn_8007A024(void *arg0) {
         case 1:
             var_r0 = ((s32)temp_r3_hi >> 7) + 0x1E;
             break;
-        case 4:
+        case 2:
             var_r0 = ((s32)temp_r3_hi >> 0xA) + 1;
             break;
-        case 2:
+        case 4:
             var_r0 = 1;
             break;
         case 5:

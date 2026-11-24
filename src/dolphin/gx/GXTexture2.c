@@ -339,7 +339,6 @@ void fn_80222CF0(u32 *texture, void *arg1)
 void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even, u32 tmem_odd, s32 size_odd)
 {
     s32 var_r9;
-    u32 odd;
 
     switch (size_even) {
     case 0:
@@ -372,10 +371,8 @@ void GXInitTexCacheRegion(void *region, s8 is_32b, u32 tmem_even, s32 size_even,
         var_r9 = 0;
         break;
     }
-    odd = 0;
-    *((u32 *)region + 1) = odd;
-    odd = __rlwimi(*((u32 *)region + 1), tmem_odd, 27, 17, 31);
-    *((u32 *)region + 1) = odd;
+    *((u32 *)region + 1) = 0;
+    *((u32 *)region + 1) = __rlwimi(*((u32 *)region + 1), tmem_odd >> 5, 0, 17, 31);
     *((u32 *)region + 1) = __rlwimi(*((u32 *)region + 1), var_r9, 15, 14, 16);
     *((u32 *)region + 1) = __rlwimi(*((u32 *)region + 1), var_r9, 18, 11, 13);
     *((s8 *)region + 0xC) = is_32b;
@@ -759,9 +756,9 @@ case 3:
  *(u32 *)(gx+0x120)=__rlwimi(*(u32 *)(gx+0x120),arg1,21,8,10);
  break;
  }
- gx=(u8 *)__GXData;
  GXWGFifo.u8=0x61;
- GXWGFifo.u32=*(u32 *)(gx+0x120);
+ GXWGFifo.u32=*(u32 *)((u8 *)__GXData+0x120);
+ gx=(u8 *)__GXData;
  *(u32 *)(gx+0x5AC)|=3;
  *(u16 *)(gx+2)=0;
 }

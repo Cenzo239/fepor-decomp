@@ -379,8 +379,8 @@ extern f64 lbl_8036C148;
 u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     s32 fn_80243E84(void *);
     void fn_80243F14(void *, u8 *);
-    s64 fn_8022CB08(s32, u32, s32);
-    s64 fn_8022CB50(s32, u32, s32);
+    s64 __shl2i(s64, int);
+    s64 __shr2i(s64, int);
 
     u8 sp[0x1C];
     s16 *dstL;
@@ -423,11 +423,11 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
-            acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);
+            acc = __shl2i(acc, 5);
             acc += 0x8000;
             if (acc > 0x7FFFFFFFLL) acc = 0x7FFFFFFFLL;
             if (acc < -0x80000000LL) acc = -0x80000000LL;
-            samp = (s16)fn_8022CB50((s32)(acc >> 32), (u32)acc, 0x10);
+            samp = (s16)__shr2i(acc, 0x10);
             *dstR = samp;
             yn2 = yn1;
             yn1 = samp;
@@ -448,11 +448,11 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
-            acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);
+            acc = __shl2i(acc, 5);
             acc += 0x8000;
             if (acc > 0x7FFFFFFFLL) acc = 0x7FFFFFFFLL;
             if (acc < -0x80000000LL) acc = -0x80000000LL;
-            samp = (s16)fn_8022CB50((s32)(acc >> 32), (u32)acc, 0x10);
+            samp = (s16)__shr2i(acc, 0x10);
             *dstR = samp;
             yn2 = yn1;
             yn1 = samp;
@@ -469,11 +469,11 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             s32 t2 = (ni << sp[0x15]) << 11;
             s64 acc = (s64)t1 + (s64)t0 + (s64)t2;
             s16 samp;
-            acc = fn_8022CB08((s32)(acc >> 32), (u32)acc, 5);
+            acc = __shl2i(acc, 5);
             acc += 0x8000;
             if (acc > 0x7FFFFFFFLL) acc = 0x7FFFFFFFLL;
             if (acc < -0x80000000LL) acc = -0x80000000LL;
-            samp = (s16)fn_8022CB50((s32)(acc >> 32), (u32)acc, 0x10);
+            samp = (s16)__shr2i(acc, 0x10);
             *dstL = samp;
             yn2 = yn1;
             yn1 = samp;

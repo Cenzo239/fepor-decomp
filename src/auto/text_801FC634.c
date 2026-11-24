@@ -1377,22 +1377,21 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
         virtual void v9(void *, void *) = 0;
     };
     u32 v;
-    void *entry;
-    u8 *a1;
+    void *ent;
+    u8 *unit;
 
-    a1 = (u8 *)arg1;
+    unit = (u8 *)arg1;
     v = *(u32 *)((u8 *)arg0 + 0x28);
     *(u32 *)((u8 *)arg0 + 0x28) = ++v;
-    if (v < *(u32 *)((u8 *)arg0 + 0x2C)) {
-        return;
+    if (v >= *(u32 *)((u8 *)arg0 + 0x2C)) {
+        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
+        }
+        ent = GfxEnt_Get(unit[0x40 + (s8)unit[0x62]]);
+        (*(Handler **)((u8 *)ent + 0x34))->v9(arg1, ent);
+    } else {
+        fn_80024B6C();
     }
-    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-        Ui_HideUnitInfoPopup(gUnitInfoPopup);
-        entry = GfxEnt_Get(a1[0x40 + (s8)a1[0x62]]);
-        (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
-        return;
-    }
-    fn_80024B6C();
 }
 extern "C" void fn_801FF480(void *arg0) {
     void fn_801FE84C(s32, s32, s32, s32, s32 *);
@@ -1432,13 +1431,11 @@ extern "C" void fn_801FF480(void *arg0) {
         virtual void v30();
     };
     s32 sp8;
-    s16 temp_r31;
     Obj *self = (Obj *)arg0;
 
     self->v30();
     sp8 = lbl_8036BB50;
-    temp_r31 = self->v19();
-    fn_801FE84C(0, 0, self->v18(), temp_r31, &sp8);
+    fn_801FE84C(0, 0, self->v18(), self->v19(), &sp8);
 }
 
 extern "C" void fn_801FF50C(void *arg0) {

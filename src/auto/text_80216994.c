@@ -1177,11 +1177,10 @@ void fn_80218C34(void *arg0)
     previous = *(u32 *)(card + 0x80);
 
     fn_80215F78(0xFF000000);
-
-    if (fn_80215F40() == 0) {
-        fn_80215F78(previous);
-        if (fn_80215F40() == 0) {
-        }
+    while (fn_80215F40() != 0) {
+    }
+    fn_80215F78(previous);
+    while (fn_80215F40() != 0) {
     }
 
     (void)chan;
@@ -1494,20 +1493,20 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     return fn_802195B0(chan,fat,callback);
 }
 #pragma optimization_level reset
-s32 fn_802195B0(s32 arg0, void *arg1, void *arg2) {
+s32 fn_802195B0(s32 arg0, u16 *fat, void *arg2) {
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, u32, void *);
     void fn_80219334(void);
     extern u16 __CARDBlock[];
-    u8 *entry;
+    u8 *card;
 
-    *(u16 *)((u8 *)arg1 + 4) = (u16)(*(u16 *)((u8 *)arg1 + 4) + 1);
-    entry = (u8 *)__CARDBlock + arg0 * 0x110;
-    fn_802198C0((u8 *)arg1 + 4, 0x1FFCU, arg1, (u8 *)arg1 + 2);
-    fn_80205110(arg1, 0x2000U);
-    *(void **)(entry + 0xD8) = arg2;
-    return __CARDEraseSector(arg0, *(u32 *)(entry + 0xC) * (((u32)arg1 - *(u32 *)(entry + 0x80)) >> 13), fn_80219334);
+    card = (u8 *)__CARDBlock + arg0 * 0x110;
+    ++fat[2];
+    fn_802198C0(fat + 2, 0x1FFC, fat, fat + 1);
+    fn_80205110(fat, 0x2000);
+    *(void **)(card + 0xD8) = arg2;
+    return __CARDEraseSector(arg0, (((u32)fat - *(u32 *)(card + 0x80)) / 0x2000) * *(u32 *)(card + 0xC), fn_80219334);
 }
 
 s32 __CARDGetDirBlock(void *arg0) {
@@ -1632,7 +1631,7 @@ s32 fn_80219A70(void *arg0)
     u16 v;
     u32 sum, inv;
     u8 *sram;
-    u64 random;
+    s64 random;
     u8 *header;
     s32 i;
     u8 *serial;
@@ -1659,16 +1658,15 @@ s32 fn_80219A70(void *arg0)
     if (*(u16 *)(header + 0x1fc) != (u16)sum || *(u16 *)(header + 0x1fe) != (u16)inv) {
         return -6;
     }
-    random = *(u64 *)(header + 12);
-    sram = (u8 *)__OSLockSramEx() + (((u8 *)arg0 - (u8 *)__CARDBlock) / 0x110) * 12;
-    serial = header;
-    for (i = 0; i < 12; i++, sram++, serial++) {
-        random = (random * 0x41c64e6dULL + 12345) >> 16;
-        if (*serial != (u8)(random + *sram)) {
+    random = *(s64 *)(header + 12);
+    sram = __OSLockSramEx();
+    for (i = 0; i < 12; i++) {
+        random = (random * 1103515245 + 12345) >> 16;
+        if (header[i] != (u8)(sram[(((u8 *)arg0 - (u8 *)__CARDBlock) / 0x110) * 12 + i] + random)) {
             __OSUnlockSramEx(0);
             return -6;
         }
-        random = ((random * 0x41c64e6dULL + 12345) >> 16) & 0x7fff;
+        random = ((random * 1103515245 + 12345) >> 16) & 0x7fff;
     }
     __OSUnlockSramEx(0);
     if (*(u16 *)(header + 0x24) != fn_80217AD8()) {
@@ -2414,7 +2412,6 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     u8 *__OSLockSramEx(void);
     void __OSUnlockSramEx(s32);
     s64 OSGetTime(void);
-    s64 fn_8022CB50(s64, s32);
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, s32, void *, void *);
@@ -2463,44 +2460,44 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     limit = 4;
 
     while (i < limit) {
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i] = (u8)((u32)seed + *p);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 1] = (u8)((u32)seed + flash[i + 1]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 2] = (u8)((u32)seed + flash[i + 2]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 3] = (u8)((u32)seed + flash[i + 3]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 4] = (u8)((u32)seed + flash[i + 4]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 5] = (u8)((u32)seed + flash[i + 5]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 6] = (u8)((u32)seed + flash[i + 6]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i + 7] = (u8)((u32)seed + flash[i + 7]);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         p += 8;
@@ -2509,9 +2506,9 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
 
     p = flash + i;
     while (i < 0xC) {
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         work[i] = (u8)((u32)seed + *p);
-        seed = fn_8022CB50(seed * 0x41C64E6D + 0x3039, 16);
+        seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
         p += 1;
         i += 1;
@@ -2619,13 +2616,12 @@ s32 fn_8021BB98(void *arg0, void *arg1)
         result = -4;
         goto done;
     }
-    if (reference == lbl_8033A420) goto invalid;
-    if (fn_80231944(data, reference, 4) == 0 &&
-        fn_80231944(data + 4, reference + 4, 2) == 0) {
+    if (reference == lbl_8033A420 ||
+        (fn_80231944(data, reference, 4) == 0 &&
+         fn_80231944(data + 4, reference + 4, 2) == 0)) {
         result = 0;
         goto done;
     }
-invalid:
     result = -10;
 done:
     if (result == -10) {
@@ -2687,148 +2683,121 @@ after:
     }
     return result;
 }
-s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
+static inline BOOL fn_8021BDC0_CompareFileName(u8 *ent, const char *fileName)
 {
-#pragma use_lmw_stmw on
-#pragma scheduling off
-    u8 *__CARDGetDirBlock(void *);
+    char *entName;
+    char c1;
+    char c2;
+    int n;
+
+    entName = (char *)ent + 8;
+    n = 0x20;
+    while (0 <= --n) {
+        if ((c1 = *entName++) != (c2 = *fileName++)) {
+            return FALSE;
+        } else if (c2 == '\0') {
+            return TRUE;
+        }
+    }
+    if (*fileName == '\0') {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static inline s32 fn_8021BDC0_Access(void *card, u8 *ent)
+{
     s32 fn_80231944(const void *, const void *, u32);
     extern u8 lbl_8033A420[];
+    u8 *diskID = *(u8 **)((u8 *)card + 0x10C);
 
-    u8 *entry;
-    s32 i;
-    u8 *defaultCode;
-    u8 *gamecode;
+    if (ent[0] == 0xFF) {
+        return -4;
+    }
+    if (diskID == lbl_8033A420 || (fn_80231944(ent, diskID, 4) == 0 && fn_80231944(ent + 4, diskID + 4, 2) == 0)) {
+        return 0;
+    }
+    return -10;
+}
+
+#pragma push
+#pragma opt_loop_invariants off
+s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
+{
+    u8 *__CARDGetDirBlock(void *);
+    u8 *dir;
+    u8 *ent;
+    s32 fileNo;
     s32 result;
-    char *p;
-    s8 a;
-    s8 b;
-    s32 n;
-    char *name;
 
     if (*(s32 *)card == 0) {
         return -3;
     }
-
-    entry = __CARDGetDirBlock(card);
-    defaultCode = lbl_8033A420;
-    i = 0;
-
-    do {
-        gamecode = *(u8 **)((u8 *)card + 0x10C);
-
-        if (*entry == 0xFF) {
-            result = -4;
-            goto after_check;
+    ent = __CARDGetDirBlock(card);
+    for (fileNo = 0; fileNo < 0x7F; fileNo++, ent += 0x40) {
+        result = fn_8021BDC0_Access(card, ent);
+        if (result < 0) {
+            continue;
         }
-        if (gamecode == defaultCode) {
-            goto ok;
+        if (fn_8021BDC0_CompareFileName(ent, filename)) {
+            *outIndex = fileNo;
+            return 0;
         }
-        if (fn_80231944(entry, gamecode, 4) != 0) {
-            goto bad;
-        }
-        if (fn_80231944(entry + 4, gamecode + 4, 2) != 0) {
-            goto bad;
-        }
-    ok:
-        result = 0;
-        goto after_check;
-    bad:
-        result = -10;
-    after_check:
-        if (result >= 0) {
-            p = (char *)entry + 8;
-            name = filename;
-            n = 0x20;
-            while (--n >= 0) {
-                a = *p++;
-                b = *name++;
-                if (a != b) {
-                    result = 0;
-                    goto str_done;
-                }
-                if (b == 0) {
-                    result = 1;
-                    goto str_done;
-                }
-            }
-            if ((s8)*name == 0) {
-                result = 1;
-            } else {
-                result = 0;
-            }
-        str_done:
-            if (result != 0) {
-                *outIndex = i;
-                return 0;
-            }
-        }
-
-        i += 1;
-        entry += 0x40;
-    } while (i < 0x7F);
-
+    }
     return -4;
-#pragma scheduling reset
-#pragma use_lmw_stmw reset
+}
+#pragma pop
+
+static inline s32 fn_8021BF10_GetFileNo(void *card, void *fileName, s32 *pfileNo)
+{
+    void *__CARDGetDirBlock(void *);
+    s32 fn_8021BB04(void *, void *);
+    s32 fn_8021BA9C(void *, void *);
+    u8 *ent;
+    s32 fileNo;
+    s32 result;
+
+    if (*(s32 *)card == 0) return -3;
+    ent = (u8 *)__CARDGetDirBlock(card);
+    for (fileNo = 0; fileNo < 0x7f; fileNo++, ent += 0x40) {
+        result = fn_8021BB04(card, ent);
+        if (result < 0) continue;
+        if (fn_8021BA9C(ent, fileName)) {
+            *pfileNo = fileNo;
+            return 0;
+        }
+    }
+    return -4;
 }
 
 s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
 {
     s32 fn_80217B18(void *, void **);
     void *__CARDGetDirBlock(void *);
-    s32 fn_8021BB04(void *, void *);
-    s32 fn_8021BA9C(void *, void *);
     s32 __CARDPutControlBlock(void *, s32);
-
-    void *handle;
-    u8 *base;
-    s32 status;
-    s32 index;
-    u8 *entry;
-    s32 foundIndex;
-    u32 card;
+    void *card;
+    u8 *dir;
+    u8 *ent;
     s32 result;
+    s32 fileNo;
 
     *(s32 *)arg2 = -1;
-
-    status = fn_80217B18(arg0, &handle);
-    if (status < 0) return status;
-    card = (u32)handle;
-
-    if (*(s32 *)card == 0) {
-        result = -3;
-        goto done;
-    }
-
-    entry = (u8 *)__CARDGetDirBlock((void *)card);
-    for (index = 0; index < 0x7f; index++, entry += 0x40) {
-        if (fn_8021BB04((void *)card, entry) >= 0 &&
-            fn_8021BA9C(entry, arg1) != 0) {
-            foundIndex = index;
-            result = 0;
-            goto done;
-        }
-    }
-    result = -4;
-
-done:
-    if (result >= 0) {
-        base = (u8 *)__CARDGetDirBlock(handle);
-        entry = base + (foundIndex << 6);
-
-        if (*(u16 *)(entry + 0x36) >= 5 &&
-            *(u16 *)(entry + 0x36) >= *(u16 *)((u8 *)handle + 0x10)) {
+    result = fn_80217B18(arg0, &card);
+    if (result < 0) return result;
+    result = fn_8021BF10_GetFileNo(card, arg1, &fileNo);
+    if (0 <= result) {
+        dir = (u8 *)__CARDGetDirBlock(card);
+        ent = dir + (fileNo << 6);
+        if (!(5 <= *(u16 *)(ent + 0x36) && *(u16 *)(ent + 0x36) < *(u16 *)((u8 *)card + 0x10))) {
             result = -6;
         } else {
             *(void **)arg2 = arg0;
-            *(s32 *)((u8 *)arg2 + 4) = foundIndex;
+            *(s32 *)((u8 *)arg2 + 4) = fileNo;
             *(s32 *)((u8 *)arg2 + 8) = 0;
-            *(u16 *)((u8 *)arg2 + 0x10) = *(u16 *)(entry + 0x36);
+            *(u16 *)((u8 *)arg2 + 0x10) = *(u16 *)(ent + 0x36);
         }
     }
-
-    return __CARDPutControlBlock(handle, result);
+    return __CARDPutControlBlock(card, result);
 }
 
 s32 fn_8021C02C(s32 *arg0) {
@@ -2941,10 +2910,8 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
     if (result < 0) {
         return result;
     }
-    if (size != 0) {
-        if ((size % card->sectorSize) != 0) {
-            return -0x80;
-        }
+    if (size == 0 || (size % card->sectorSize) != 0) {
+        return -0x80;
     }
     freeIdx = 0xFFFF;
     dir = __CARDGetDirBlock(card);
@@ -3005,7 +2972,6 @@ u8 *file=arg0;
 u8 *entry;
 u16 *fat;
 s32 result;
-s32 size;
 u8 *dirBlock;
 result=fn_80217B18(*(s32 *)file,(void **)&card);
 if(result<0) return result;
@@ -3014,8 +2980,7 @@ if(*(u16 *)(file+0x10)<5 || *(u16 *)(file+0x10)>=*(u16 *)(card+0x10) ||
 return __CARDPutControlBlock(card,-128);
 dirBlock=__CARDGetDirBlock(card);
 entry=dirBlock+(*(s32 *)(file+4)<<6);
-size=*(u32 *)(card+0xC)**(u16 *)(entry+0x38);
-if(size<=offset||size<offset+length) return __CARDPutControlBlock(card,-11);
+if(*(u16 *)(entry+0x38)**(s32 *)(card+0xC)<=offset||*(u16 *)(entry+0x38)**(s32 *)(card+0xC)<offset+length) return __CARDPutControlBlock(card,-11);
 *(void **)(card+0xC0)=file;
 *(s32 *)(file+0xC)=length;
 if(offset<*(s32 *)(file+8)){
@@ -3118,10 +3083,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
 
     void *card;
     u8 *entry;
-    u32 sectorSize;
     u32 start;
-    s32 length;
-    s32 boundary;
     s32 result;
     void *callback;
 
@@ -3147,19 +3109,12 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     }
     *(void **)((u8 *)card + 0xD0) = callback;
 
-    sectorSize = *(u32 *)((u8 *)card + 0xC);
-    start = *(u32 *)((u8 *)arg0 + 8) & (sectorSize - 1);
-    boundary = sectorSize - start;
-
-    length = arg2;
-    if (arg2 >= boundary) {
-        length = boundary;
-    }
-
+    start = *(u32 *)((u8 *)arg0 + 8) & (*(u32 *)((u8 *)card + 0xC) - 1);
+    arg2 = (arg2 < (s32)(*(u32 *)((u8 *)card + 0xC) - start)) ? arg2 : (s32)(*(u32 *)((u8 *)card + 0xC) - start);
     result = fn_802190A4(
         arg0[0],
-        start + sectorSize * *(u16 *)((u8 *)arg0 + 0x10),
-        length,
+        *(u32 *)((u8 *)card + 0xC) * *(u16 *)((u8 *)arg0 + 0x10) + start,
+        arg2,
         (void *)arg1,
         (void *)fn_8021C5D8
     );
@@ -3586,7 +3541,6 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 ret;
     u8 *base;
     CardDirEntry *slot;
-    u8 *fileNameEnd;
     u8 *fileName;
 
     if (arg1 < 0 || arg1 >= 0x7F || arg2->unk8[0] == 0xFF || arg2->unk8[0] == 0) {
@@ -3602,12 +3556,9 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     if (ret < 0) {
         return __CARDPutControlBlock((void *)sp18, ret);
     }
-    fileName = arg2->unk8;
-    fileNameEnd = (u8 *)arg2 + 0x28;
-    for (; fileName < fileNameEnd; fileName++) {
+    for (fileName = arg2->unk8; fileName < arg2->unk8 + 0x20; fileName++) {
         if (*fileName == 0) {
-            fileNameEnd = (u8 *)arg2 + 0x28;
-            while (++fileName < fileNameEnd) {
+            while (++fileName < (u8 *)&arg2->unk28) {
                 *fileName = 0;
             }
             break;
@@ -3632,10 +3583,10 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
                 }
             }
         }
+        memcpy(slot->unk8, arg2->unk8, 0x20);
+        memcpy(slot->unk0, arg2->unk0, 4);
+        memcpy(slot->unk4, arg2->unk4, 2);
     }
-    memcpy(slot->unk8, arg2->unk8, 0x20);
-    memcpy(slot->unk0, arg2->unk0, 4);
-    memcpy(slot->unk4, arg2->unk4, 2);
     slot->unk28 = arg2->unk28;
     slot->unk7 = arg2->unk7;
     slot->unk2C = arg2->unk2C;

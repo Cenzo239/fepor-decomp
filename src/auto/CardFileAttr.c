@@ -203,44 +203,20 @@ s32 Card_GetFileAttr(s32 arg0, s32 arg1, u8 *arg2) {
     return result;
 }
 
-s32 Card_SetFileAttr(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 Card_SetFileAttr(s32 arg0, s32 arg1, u8 attr, s32 arg3) {
     s32 fn_8021D2D4(s32, s32, void *);
     s32 fn_8021D378(s32, s32, void *, s32);
     extern u8 lbl_80366FF2;
-    u8 entry[0x40];
+    CardDirEntry dirent;
     s32 result;
-    u8 e;
-    u32 bit20;
-    u32 bit40;
-    u32 a20;
-    if ((((u8) arg2) & (~lbl_80366FF2)) != 0) { return -0xA; }
-    result = fn_8021D2D4(arg0, arg1, entry);
-    if (result < 0) { return result; }
-    e = entry[0x34];
-    bit20 = e & 0x20;
-    if ((arg3 && arg3) && arg3) {}
-    if (bit20 != 0) {
-        if ((((u8) arg2) & 0x20) == 0) { goto err; }
-    }
-    bit40 = e & 0x40;
-    if (bit40 != 0) {
-        if ((((u8) arg2) & 0x40) == 0) {
-          err: return -0xA;
-        }
-    }
-    a20 = ((u8) arg2) & 0x20;
-    if (a20 != 0) {
-        if ((((u8) arg2) & 0x40) != 0) { goto ok; }
-    }
-    if (a20 != 0) {
-        if (bit40 != 0) { goto ok; }
-    }
-    if ((((u8) arg2) & 0x40) != 0) {
-        if (bit20 != 0) { return -0xA; }
-    }
-  ok:
-    entry[0x34] = arg2;
-    return fn_8021D378(arg0, arg1, entry, arg3);
+
+    if (attr & ~lbl_80366FF2) return -0xA;
+    result = fn_8021D2D4(arg0, arg1, &dirent);
+    if (result < 0) return result;
+    if (((dirent.unk34 & 0x20u) && !(attr & 0x20u)) || ((dirent.unk34 & 0x40u) && !(attr & 0x40u))) return -0xA;
+    if (((attr & 0x20u) && (attr & 0x40u)) || ((attr & 0x20u) && (dirent.unk34 & 0x40u)) || ((attr & 0x40u) && (dirent.unk34 & 0x20u))) return -0xA;
+    dirent.unk34 = attr;
+    return fn_8021D378(arg0, arg1, &dirent, arg3);
 }
 
 #pragma dont_inline reset

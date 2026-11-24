@@ -2039,44 +2039,16 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 #pragma optimization_level reset
 void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
+    typedef struct { u32 w[8]; } Blk;
     void Ui_LoadAtlasTex(void *, void *, s32);
     extern u16 gPrim2D;
-    int mask;
-    unsigned long a;
-    int b;
-    u32 c;
-    u32 d;
-    u32 sp[8];
-    register u8 *p;
-    register u8 ff;
+    Blk sp;
 
-    Ui_LoadAtlasTex(arg0, sp, arg1);
-    mask = 0xFFFF7B0C;
-    p = *(u8 **)&gPrim2D;
-    b = sp[0];
-    a = sp[1];
-    ff = 0xFF;
-    *(u32 *)(p + 0x34) = b;
-    *(u32 *)(p + 0x38) = a;
-    a = sp[2];
-    b = sp[3];
-    *(u32 *)(p + 0x3C) = a;
-    *(u32 *)(p + 0x40) = b;
-    a = sp[4];
-    b = sp[5];
-    *(u32 *)(p + 0x44) = a;
-    *(u32 *)(p + 0x48) = b;
-    a = sp[6];
-    b = sp[7];
-    c = a;
-    d = b;
-    *(u32 *)(p + 0x4C) = c;
-    *(u32 *)(p + 0x50) = d;
-    (*(u8 **)&gPrim2D)[0x22] = ff;
-    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
-        *(u16 *)(*(u8 **)&gPrim2D + 0x20) & mask;
-    *(u16 *)(*(u8 **)&gPrim2D + 0x20) =
-        *(u16 *)(*(u8 **)&gPrim2D + 0x20) | flags;
+    Ui_LoadAtlasTex(arg0, &sp, arg1);
+    *(Blk *)(*(u8 **)&gPrim2D + 0x34) = sp;
+    (*(u8 **)&gPrim2D)[0x22] = 0xFF;
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) &= 0xFFFF7B0C;
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) |= flags;
 }
 
 void fn_8000A03C(void *arg0, void *arg1, s8 arg2, u32 arg3) {
