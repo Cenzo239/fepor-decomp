@@ -897,7 +897,7 @@ void fn_80244AE8(s32 arg0) {
  extern SynthVoice *gActiveVoices; extern SynthVoice *gKeyedVoices;
  extern SynthVoice gSynthVoicePool[]; extern VidList *lbl_80368964;
  void fn_80257224(s32);
- u32 id, vid; SynthVoice *p, *sv; u32 i; VidList *node; SynthVoice *walk; SynthVoice *walk2; SynthVoice *walk3; VidList *tail;
+ u32 id, vid; SynthVoice *p, *sv; VidList *tail; u32 i; VidList *node; SynthVoice *walk; SynthVoice *walk2;
  vid=arg0&0x7FFFFFFF;
  for(p=gKeyedVoices;p!=NULL;p=p->next) {
   if(p->vid==vid) {id=p->id|(arg0&0x80000000);goto found;}
@@ -927,12 +927,12 @@ found:
      fn_80257224(((VidList *)walk2)->vid);
      walk2=(SynthVoice *)((VidList *)walk2)->next;
     }
-    for(i=0,walk3=sv;i<2;i++,walk3=(SynthVoice*)((u8*)walk3+4)) {
-     tail=walk3->lists[0];
+    for(i=0,walk=sv;i<2;i++,walk=(SynthVoice*)((u8*)walk+4)) {
+     tail=walk->lists[0];
      if(tail!=NULL) {
       while(tail->next!=NULL) tail=tail->next;
       if(lbl_80368964!=NULL) {tail->next=lbl_80368964;lbl_80368964->prev=tail;}
-      lbl_80368964=walk3->lists[0]; walk3->lists[0]=NULL;
+      lbl_80368964=walk->lists[0]; walk->lists[0]=NULL;
      }
     }
     tail=sv->listE6C;
@@ -1676,7 +1676,7 @@ done:
     return NULL;
 }
 
-#pragma dont_inline on
+#pragma opt_strength_reduction off
 StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 {
     void fn_80245518(void *, s32 *, u8);
@@ -1702,14 +1702,6 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         u8 idx;
         u8 pad;
     };
-    struct LocalTempo {
-        u8 pad0[0x30];
-        u8 listIdx;
-        u8 pad31[7];
-    };
-    struct LocalList {
-        u8 *head;
-    };
     struct LocalState {
         u8 pad0[0xA];
         u16 unkA;
@@ -1723,7 +1715,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         u8 pad124[0x200];
         u8 trackPrio[0x40];
         u8 channels[0xB00];
-        struct LocalList activeList[2];
+        u8 *activeList[2];
         u8 *freeList;
         struct LocalInst chanInst[16];
         u8 padED0[4];
@@ -1731,8 +1723,6 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         s32 *unkEFC;
         u8 unkF00;
         u8 unkF01;
-        u8 padF02[0x606];
-        struct LocalTempo tempo[16];
     };
 
     u8 *msg;
@@ -1764,10 +1754,10 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     switch (msg[0x14]) {
     case 4:
         data = *(u8 **)(msg + 0xC);
+        index = *(u16 *)(data + 8);
         state = (struct LocalState *)lbl_80368968;
         bank = state->bank;
-        index = *(u16 *)(data + 8);
-        sequence = bank + *(u32 *)((u8 *)((u32 *)bank + index) + *(u32 *)(bank + 4));
+        sequence = bank + ((u32 *)(bank + *(u32 *)(bank + 4)))[index];
         channel = (u8 *)state + 0x364 + msg[0x15] * 0x2C;
 
         *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
@@ -1946,15 +1936,15 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 
                     case 0x7B:
                         for (i = 0; i < 2; i++) {
-                            node = ((struct LocalState *)lbl_80368968)->activeList[i].head;
+                            node = ((struct LocalState *)lbl_80368968)->activeList[i];
                             while (node != 0) {
                                 u8 *n;
                                 next = *(u8 **)(node + 0);
                                 fn_8024A6F8(*(u32 *)(node + 8));
                                 n = *(u8 **)(node + 0);
-                                ((struct LocalState *)lbl_80368968)->activeList[i].head = n;
+                                ((struct LocalState *)lbl_80368968)->activeList[i] = n;
                                 if (n != 0) {
-                                    *(u32 *)(((struct LocalState *)lbl_80368968)->activeList[i].head + 4) = 0;
+                                    *(u32 *)(((struct LocalState *)lbl_80368968)->activeList[i] + 4) = 0;
                                 }
                                 n = ((struct LocalState *)lbl_80368968)->freeList;
                                 *(u8 **)(node + 0) = n;
@@ -2002,9 +1992,9 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                         }
                         *(u32 *)(node + 0xC) = endTime;
                         node[0x10] = arg1;
-                        node[0x11] = ((struct LocalState *)lbl_80368968)->tempo[arg1].listIdx;
+                        node[0x11] = *((u8 *)lbl_80368968 + (arg1 * 0x38 + 0x1538));
                         prev = 0;
-                        cur = ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head;
+                        cur = *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64));
                         while (cur != 0) {
                             if (*(s32 *)(cur + 0xC) > *(s32 *)(node + 0xC)) {
                                 *(u8 **)(node + 0) = cur;
@@ -2012,7 +2002,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                                 if (prev != 0) {
                                     *(u8 **)(prev + 0) = node;
                                 } else {
-                                    ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = node;
+                                    *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64)) = node;
                                 }
                                 *(u8 **)(cur + 4) = node;
                                 goto inserted;
@@ -2024,7 +2014,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                         if (prev != 0) {
                             *(u8 **)(prev + 0) = node;
                         } else {
-                            ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = node;
+                            *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64)) = node;
                         }
                         *(u32 *)(node + 0) = 0;
                     }
@@ -2058,7 +2048,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                             if (*(u8 **)(node + 4) != 0) {
                                 *(u8 **)(*(u8 **)(node + 4) + 0) = *(u8 **)(node + 0);
                             } else {
-                                ((struct LocalState *)lbl_80368968)->activeList[node[0x11]].head = *(u8 **)(node + 0);
+                                *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64)) = *(u8 **)(node + 0);
                             }
                             *(u32 *)(node + 0) = lbl_80368964;
                             if (lbl_80368964 != 0) {
@@ -2164,19 +2154,18 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 
     return (StreamQueueNode *)fn_80246070(msg[0x15]);
 }
+#pragma opt_strength_reduction reset
 void fn_80246D48(void) {
     u32 i;
     StreamQueueNode *node;
-    StreamTempo *t;
-    StreamQueueNode *prev, *cur;
-    u8 *voices;
     struct TempoTable { u8 pad[0x1508]; StreamTempo tempo[16]; };
     if (!lbl_80368968->voices) {
         for (i = 0; i < 64; i++) {
             node = fn_80246070((u8)i);
             if (node) {
                 StreamState *state = lbl_80368968;
-                prev = 0; cur = *(StreamQueueNode **)((u8 *)state + 0x1524);
+                StreamQueueNode *prev = 0;
+                StreamQueueNode *cur = *(StreamQueueNode **)((u8 *)state + 0x1524);
                 while (cur) {
                     if (cur->time > node->time) {
                         node->next = cur; node->prev = prev;
@@ -2195,9 +2184,10 @@ void fn_80246D48(void) {
         for (i = 0; i < 64; i++) {
             node = fn_80246070((u8)i);
             if (node) {
-                voices = lbl_80368968->voices;
-                t = &((struct TempoTable *)lbl_80368968)->tempo[voices[i]];
-                prev = 0; cur = t->head;
+                StreamQueueNode *prev = 0;
+                StreamState *state = lbl_80368968;
+                StreamTempo *t = &((struct TempoTable *)state)->tempo[state->voices[i]];
+                StreamQueueNode *cur = t->head;
                 while (cur) {
                     if (cur->time > node->time) {
                         node->next = cur; node->prev = prev;
