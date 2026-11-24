@@ -1193,6 +1193,11 @@ s32 fn_80133FA4(void *arg0) {
 
 void Item_Copy(void *);
 void Ui_ConfirmChild_BindItem(void *arg0, void *arg1) {
+    s8 fn_8001BFB8(void *);
+    s8 fn_8001BFFC(void *);
+    s8 fn_8001C040(void *);
+    s8 fn_8001C084(void *);
+    void Item_Copy(void *);
  s32 positive=5; s32 negative=-5;
  u8 *self=(u8*)arg0;
  Item_Copy((u8 *)arg0+0x60);

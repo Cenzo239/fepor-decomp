@@ -55,17 +55,11 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 
 #pragma optimization_level 4
-s32 fn_800A0170(s32 a, s32 b, void *arg2) {
+s32 fn_800A0170(s32 a, s32 b, void *item) {
     extern u8 lbl_80367708;
-    s32 v;
+    enum { MENU_TOGGLE_ON = 0, MENU_TOGGLE_OFF = 2 };
 
-    a = (u8)lbl_80367708;
-    v = 2;
-    b = a ^ 1;
-    lbl_80367708 = b;
-    if ((u8)b != 0) {
-        v = 0;
-    }
-    *(u8 *)((char *)arg2 + 0x39) = v;
+    lbl_80367708 ^= 1;
+    *((u8 *)item + 0x39) = lbl_80367708 ? MENU_TOGGLE_ON : MENU_TOGGLE_OFF;
     return 0;
 }

@@ -1012,53 +1012,27 @@ s32 fn_801CD508(s32 arg0) {
     return count;
 }
 
-#pragma opt_propagation on
+#pragma push
 #pragma global_optimizer on
-s32 fn_801CD548(s32 arg0) {
-    extern u8 *lbl_802984C0[];
-    s32 count;
-    u8 **table;
-    s32 n;
-    s16 stride;
-    s32 step;
-    u8 **tmp;
-    u8 **cur;
-
-    count = 0;
-    table = (u8 **)0;
-    table = (u8 **)count;
-    n = 0;
-
-    switch(arg0) { case 0: table=lbl_802984C0; break; }
-    goto search;
-
-loop1:
-    table += 1;
-    count += 1;
-search:
-    if ((s32)**table != 0xA) {
-        goto loop1;
-    }
-
-    stride = (s16)(count + 1);
-    tmp = (u8 **)0;
-
-    switch(arg0) {case 0: tmp=lbl_802984C0;break;}
-
-    cur = tmp;
-    step = stride << 2;
-    goto check;
-loop2:
-    cur = (u8 **)((u8 *)cur + step);
-    n += 1;
-check:
-    if (*cur != NULL) {
-        goto loop2;
-    }
+#pragma use_lmw_stmw off
+#pragma opt_common_subs on
+#pragma peephole on
+static inline u8 **GetTbl(s32 k) {
+    extern u8 *lbl_802984C0[]; u8 **r = 0; switch (k) { case 0: r = lbl_802984C0; break; } return r; }
+static inline s32 Width(s32 k) {
+    s32 n = 0;
+    u8 **p = GetTbl(k);
+    while ((s32)**p != 10) { p++; n++; }
     return n;
 }
-#pragma global_optimizer reset
-#pragma opt_propagation reset
+s32 fn_801CD548(s32 k) {
+    s32 n = 0;
+    s16 w = Width(k) + 1;
+    u8 **p = GetTbl(k);
+    while (*p != 0) { p += w; n++; }
+    return n;
+}
+#pragma pop
 void fn_801CD5CC(void *self) {
 extern u32 gUiInputFlags; extern u8 *gPadInput; extern s16 lbl_80366EA8,lbl_80366EAA; extern u8 lbl_8027DE18[];
 void Ui_PlaySeCue(void*,s32);
@@ -1497,50 +1471,18 @@ void *fn_801CDF5C(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_801CDFC8(void *arg0)
-{
-  s16 *p;
-  s32 pad;
-  s16 ten;
-  s16 eight;
-  s16 c;
-  s16 t10;
-  s16 a;
-  s16 e;
-  s16 diff_v;
-  s16 diff_h;
-  s16 tmp;
-  s32 half;
-  p = (s16 *) arg0;
-  pad = 0x128;
-  if ((*((s32 *) (((u8 *) arg0) + 0x78))) != 0)
-  {
-    pad = 0x140;
-  }
-  ten = 0x10;
-  eight = 8;
-  p[0xE / 2] = p[0xA / 2] + pad;
-  c = p[0xC / 2];
-  t10 = p[0x10 / 2];
-  tmp = t10 - c;
-  a = p[0xA / 2];
-  e = p[0xE / 2];
-  diff_v = tmp;
-  p[0x12 / 2] = ten;
-  diff_h = e - a;
-  tmp = diff_v - 8;
-  p[0x14 / 2] = eight;
-  p[0x16 / 2] = diff_h - 0x10;
-  p[0x18 / 2] = tmp;
-  a = p[0xA / 2];
-  e = p[0xE / 2];
-  c = p[0xC / 2];
-  diff_h = e - a;
-  a = (0x200 - diff_h) >> 1;
-  half = a;
-  p[0xE / 2] = ((s16) half) + diff_h;
-  p[0xA / 2] = half;
-  p[0x10 / 2] = c + ((s16) (p[0x10 / 2] - p[0xC / 2]));
+typedef struct { u8 pad[0xa]; s16 xa, xc, xe, x10, x12, x14, x16, x18; u8 pad2[0x78 - 0x1a]; s32 x78; } O_801CDFC8;
+static inline s16 W(O_801CDFC8 *o) { return o->xe - o->xa; }
+static inline s16 H(O_801CDFC8 *o) { return o->x10 - o->xc; }
+static inline void Set(O_801CDFC8 *o, s16 a, s16 b, s16 c, s16 d) { o->x12 = a; o->x14 = b; o->x16 = c; o->x18 = d; }
+static inline void Move(O_801CDFC8 *o, s16 x, s16 y) { o->xe = x + W(o); o->xa = x; o->x10 = y + H(o); o->xc = y; }
+void fn_801CDFC8(void *o_) {
+    O_801CDFC8 *o = (O_801CDFC8 *)o_;
+    s32 w = 0x128;
+    if (o->x78 != 0) w = 0x140;
+    o->xe = o->xa + w;
+    Set(o, 0x10, 8, W(o) - 0x10, H(o) - 8);
+    Move(o, (0x200 - W(o)) >> 1, o->xc);
 }
 
 void *fn_801CE070(s32 a,char*b,s32 c){void *Process_CreateChild(void*,s32);void fn_801403F0(void);void String_AssignCStr(void*,char*,s32);extern u8 lbl_802986A8[];void*p=Process_CreateChild(lbl_802986A8,c);if(p){fn_801403F0();*(s32*)((char*)p+0x40)=0;*(s32*)((char*)p+0x44)=0;*(s32*)((char*)p+0x4c)=0;*(s32*)((char*)p+0x50)=0;*(s32*)((char*)p+0x54)=0;*(s32*)((char*)p+0x58)=0;*(s32*)((char*)p+0x5c)=0;*(s32*)((char*)p+0x58)=0;*(s32*)((char*)p+0x48)=0;}*(s32*)((char*)p+0x4c)=0;*(s32*)((char*)p+0x50)=a;String_AssignCStr((char*)p+0x54,b,strlen(b));return p;}
@@ -2320,33 +2262,21 @@ void fn_801CF99C(void *arg0) {
     }
 }
 #pragma global_optimizer on
-void fn_801CFA44(void *arg0)
-{
-    extern void fn_8000C60C(void *);
-    extern void fn_801C18FC(s32);
-
+typedef struct { u8 x28; void *x2c; } Slot;
+typedef struct { u8 pad[8]; s32 x8; u8 pad2[0x1c]; Slot s[7]; } Obj_801CFA44;
+static inline void Clr(Obj_801CFA44 *o, s32 v) {
+    void Process_Unlink(void *);
     s32 i;
-    u8 *ptr;
-    s32 zero;
-
-    zero = 0;
-    i = zero;
-    ptr = (u8 *)arg0;
-
-    *(s32 *)(ptr + 0x8) = zero;
-
-    do {
-        *(u8 *)(ptr + 0x28) = zero;
-
-        if (*(void **)(ptr + 0x2C) != 0) {
-            fn_8000C60C(*(void **)(ptr + 0x2C));
-            *(s32 *)(ptr + 0x2C) = zero;
-        }
-
-        ptr += 8;
-        i++;
-    } while (i < 7);
-
+    o->x8 = v;
+    for (i = 0; i < 7; i++, o = (Obj_801CFA44 *)((u8 *)o + 8)) {
+        o->s[0].x28 = v;
+        if (o->s[0].x2c) { Process_Unlink(o->s[0].x2c); o->s[0].x2c = (void *)v; }
+    }
+}
+void fn_801CFA44(void *o_) {
+    Obj_801CFA44 *o = (Obj_801CFA44 *)o_;
+    void fn_801C18FC(s32);
+    Clr(o, 0);
     fn_801C18FC(1);
 }
 
@@ -2450,47 +2380,13 @@ void fn_801CFC80(void *arg0, s32 arg1) {
 }
 
 extern void *gPrim2D;
-#pragma global_optimizer off
-void fn_801CFCB4(s8 *a) {
-    s32 c = 3;
-    s32 x;
-    s32 n = 0x10;
-
-    x = a[0xEC];
-    if (x) {
-        a[0xEC] = c;
-    }
-    x = a[0xF4];
-    if (x) {
-        a[0xF4] = c;
-    }
-    a += n;
-    x = a[0xEC];
-    if (x) {
-        a[0xEC] = c;
-    }
-    x = a[0xF4];
-    if (x) {
-        a[0xF4] = c;
-    }
-    x = a[0xFC];
-    if (x) {
-        a[0xFC] = c;
-    }
-    x = a[0x104];
-    if (x) {
-        a[0x104] = c;
-    }
-    x = a[0x10C];
-    if (x) {
-        a[0x10C] = c;
-    }
-    x = a[0x114];
-    if (x) {
-        a[0x114] = c;
+void fn_801CFCB4(s8 *o_) {
+    u8 *o = (u8 *)o_;
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        if ((s8)o[0xec + i * 8] != 0) o[0xec + i * 8] = 3;
     }
 }
-#pragma global_optimizer reset
 void fn_801CFD40(u8 *arg0, s32 arg1) {
     arg1 = (arg1 << 3) + 0xEC;
     if ((s8)arg0[arg1] != 0) {
@@ -2531,54 +2427,11 @@ void fn_801CFDBC(s32 arg0, s32 arg1) {
     *(u8 *)(arg0 + temp_r4) = *(u8 *)(arg0 + temp_r4) | 1;
 }
 #pragma global_optimizer on
-void fn_801CFDD4(s8 *a)
-{
-    s32 c;
-    s32 x;
-    s8 *p;
-
-    c = 0x63;
-    x = a[0x61];
-    if (x) {
-        a[0x61] = c;
-    }
-    x = a[0x6f];
-    if (x) {
-        a[0x6f] = c;
-    }
-    p = a;
-    p += 0x1c;
-    x = p[0x61];
-    if (x) {
-        p[0x61] = c;
-    }
-    x = p[0x6f];
-    if (x) {
-        p[0x6f] = c;
-    }
-    x = p[0x7d];
-    if (x) {
-        p[0x7d] = c;
-    }
-    x = p[0x8b];
-    if (x) {
-        p[0x8b] = c;
-    }
-    x = p[0x99];
-    if (x) {
-        p[0x99] = c;
-    }
-    x = p[0xa7];
-    if (x) {
-        p[0xa7] = c;
-    }
-    x = p[0xb5];
-    if (x) {
-        p[0xb5] = c;
-    }
-    x = p[0xc3];
-    if (x) {
-        p[0xc3] = c;
+void fn_801CFDD4(s8 *o_) {
+    u8 *o = (u8 *)o_;
+    s32 i;
+    for (i = 0; i < 10; i++) {
+        if ((s8)o[0x61 + i * 14] != 0) o[0x61 + i * 14] = 0x63;
     }
 }
 #pragma opt_strength_reduction on
@@ -5074,37 +4927,18 @@ self[152]=255;self[153]=255;self[154]=255;self[155]=255;
 #pragma dont_inline reset
 #pragma opt_common_subs reset
 #pragma cplusplus reset
-void fn_801D3A4C(u8 *arg0) {
-    s16 height, width;
-    s32 bottom, right;
-    s16 *p = (s16 *)arg0;
-    s16 v12, v16, v14, v18, t;
-
-    height = p[0x10 / 2] - p[0xC / 2];
-    width = p[0xE / 2] - p[0xA / 2];
-    bottom = height - 8;
-    right = width - 4;
-    p[0x12 / 2] = 4;
-    p[0x14 / 2] = 8;
-    p[0x16 / 2] = right;
-    p[0x18 / 2] = bottom;
-
-    v12 = p[0x12 / 2];
-    v16 = p[0x16 / 2];
-    t = (s16)(v16 - v12);
-    p[0x5E / 2] = t >> 1;
-    p[0x60 / 2] = 0;
-    p[0x62 / 2] = 0;
-
-    v12 = p[0x12 / 2];
-    v16 = p[0x16 / 2];
-    v14 = p[0x14 / 2];
-    t = (s16)(v16 - v12);
-    v18 = p[0x18 / 2];
-    t = t >> 1;
-    p[0x86 / 2] = t;
-    p[0x88 / 2] = v18 - v14;
-    p[0x8A / 2] = 0;
+typedef struct { u8 pad[0xa]; s16 xa, xc, xe, x10, x12, x14, x16, x18; u8 pad2[0x5e - 0x1a]; s16 x5e, x60, x62; u8 pad3[0x86 - 0x64]; s16 x86, x88, x8a; } O_801D3A4C;
+static inline s16 W_801D3A4C(O_801D3A4C *o) { return o->xe - o->xa; }
+static inline s16 H_801D3A4C(O_801D3A4C *o) { return o->x10 - o->xc; }
+static inline void Set_801D3A4C(O_801D3A4C *o, s16 a, s16 b, s16 c, s16 d) { o->x12 = a; o->x14 = b; o->x16 = c; o->x18 = d; }
+static inline s16 W2(O_801D3A4C *o) { return o->x16 - o->x12; }
+static inline s16 H2(O_801D3A4C *o) { return o->x18 - o->x14; }
+static inline void Set3(s16 *p, s16 a, s16 b, s16 c) { p[0] = a; p[1] = b; p[2] = c; }
+void fn_801D3A4C(u8 *o_) {
+    O_801D3A4C *o = (O_801D3A4C *)o_;
+    Set_801D3A4C(o, 4, 8, W_801D3A4C(o) - 4, H_801D3A4C(o) - 8);
+    Set3(&o->x5e, W2(o) >> 1, 0, 0);
+    Set3(&o->x86, W2(o) >> 1, H2(o), 0);
 }
 
 void fn_801D3AE0(s32 arg0) {
@@ -5155,38 +4989,34 @@ void fn_801D3B7C(s32 arg0) {
     lbl_803682E0 = 0;
 }
 
-void fn_801D3BD0(void *arg0) {
-    void Process_UnlinkByKey(void*);
-    void Process_Unlink(void);
-    void FileCache_ReleaseSlot(void*);
-    void fn_800C4588(void*);
-    void fn_801457B4(void);
-    void fn_80161F7C(void);
-    extern u8 lbl_80299C58[];
+typedef struct { u8 pad[8]; void *x8; } E_801D3BD0;
+typedef struct { u8 pad[8]; void *x8; void *xc; u8 pad2[0x4a]; u8 x5a; } W_801D3BD0;
+static inline void Clr_801D3BD0(void *v) {
     extern u8 lbl_80299A78[];
+    void FileCache_ReleaseSlot(void *);
     s32 i;
-    void *obj;
-    obj = *(void**)((u8*)arg0 + 0x30);
-    Process_UnlinkByKey(lbl_80299C58);
-    i = 0;
-    do {
-        if (*(u32*)(lbl_80299A78 + i * 0xc + 8) != 0) {
-            FileCache_ReleaseSlot(lbl_80299A78 + i * 0xc + 8);
-        }
-        *(u32*)(lbl_80299A78 + i * 0xc + 8) = 0;
-        i++;
-    } while (i < 0x28);
-    if (*(u8*)((u8*)obj + 0x5a) != 0) {
-        fn_80161F7C();
+    for (i = 0; i < 0x28; i++) {
+        if (((E_801D3BD0 *)lbl_80299A78)[i].x8) FileCache_ReleaseSlot(&((E_801D3BD0 *)lbl_80299A78)[i].x8);
+        ((E_801D3BD0 *)lbl_80299A78)[i].x8 = v;
     }
-    if (*(void**)((u8*)obj + 0xc) != 0) {
-        Process_Unlink();
-    }
-    if (*(u32*)((u8*)obj + 0x8) != 0) {
-        FileCache_ReleaseSlot((u8*)obj + 0x8);
-    }
-    fn_800C4588(obj);
-    *(u32*)((u8*)arg0 + 0x30) = 0;
+}
+void fn_801D3BD0(void *o_) {
+    u8 *o = (u8 *)o_;
+    extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
+    void Process_UnlinkByKey(void *);
+    void FileCache_ReleaseSlot(void *);
+    void fn_80161F7C(void);
+    void Process_Unlink(void *);
+    void fn_800C4588(void *);
+    void fn_801457B4(void);
+    W_801D3BD0 *w = *(W_801D3BD0 **)(o + 0x30);
+    Process_UnlinkByKey(((u8 *)lbl_80299C58));
+    Clr_801D3BD0(0);
+    if (w->x5a) fn_80161F7C();
+    if (w->xc) Process_Unlink(w->xc);
+    if (w->x8) FileCache_ReleaseSlot(&w->x8);
+    fn_800C4588(w);
+    *(void **)(o + 0x30) = 0;
     fn_801457B4();
 }
 
@@ -8198,39 +8028,10 @@ void fn_801DBEA8(void *arg0, s32 type) {
     self[0x15] = 1;
 }
 
-s32 fn_801DBFF8(void)
-{
-  void *fn_801E2324(void *, s32);
-  extern s32 lbl_803682F0;
-  s32 i;
-  s32 count;
-  void *obj;
-  count = 0;
-  for (i = 0; i < 5; i++)
-  {
-    obj = fn_801E2324(&lbl_803682F0, i);
-    if (obj != NULL)
-    {
-      if ((*(((u8 *) obj) + 0x60)) == 2)
-      {
-        obj = NULL;
-      }
-      else
-      {
-      }
-    }
-    else
-    {
-      obj = NULL;
-    }
-    if (obj != NULL)
-    {
-      count += 1;
-    }
-  }
-
-  return count;
-}
+static inline u8 *A_801DBFF8(u8 *p) { if (p != 0 && p[0x60] == 2) return p; return 0; }
+s32 fn_801DBFF8(void) {
+    extern u8 gSaveDataBase;
+    u8 *fn_801E2324(void *, s32); s32 i; s32 n; n = 0; for (i = 0; i < 5; i++) { if (A_801DBFF8(fn_801E2324(&gSaveDataBase, i)) != 0) n++; } return n; }
 
 static inline void *fn_801DC10C_inline(void *arg0)
 {

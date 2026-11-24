@@ -1147,45 +1147,27 @@ void fn_801226D0(void *arg0)
   }
 }
 
-void fn_80122780(void *arg0)
-{
-  struct 
-  {
-    u8 pad0[0x30];
-    void *items[5];
-    u8 unk44;
-    s8 count;
-    u8 unk46;
-    u8 unk47;
-    u8 unk48;
-  } *p;
-  s32 new_var[2];
-  void *q;
-  if ((*((s32 *) (((s8 *) arg0) + 0x3C))) != 0)
-  {
-    p = *((void **) (((s8 *) arg0) + 0x30));
-    for (new_var[0] = 0; new_var[0] < p->count; new_var[0]++)
-    {
-      q = p->items[new_var[0]];
-      if (q != NULL)
-      {
-        *((u8 *) (((s8 *) q) + 0)) = 0;
-        *((void **) (((s8 *) q) + 0x40)) = q;
-      }
+typedef struct { u8 x0; u8 pad[0x3f]; void *x40; } It_80122780;
+typedef struct { u8 pad0[0x30]; It_80122780 *items[5]; u8 x44; s8 count; u8 x46, x47, x48; } P_80122780;
+static inline void Set_80122780(It_80122780 *q, u8 v) { q->x0 = v; q->x40 = q; }
+static inline void Clr_80122780(P_80122780 *p, u8 v) {
+    s32 i;
+    for (i = 0; i < p->count; i++) {
+        if (p->items[i]) Set_80122780(p->items[i], v);
     }
-
-    p->unk46 = 0;
-    p->unk47 = 0;
-    p->unk48 = 0;
-    return;
-  }
-  p = *((void **) (((s8 *) arg0) + 0x30));
-  new_var[1] = ((s8) p->unk46) % p->count;
-  q = p->items[new_var[1]];
-  *((u8 *) (((s8 *) q) + 0)) = 0;
-  *((void **) (((s8 *) q) + 0x40)) = q;
-  p->unk46 = (u8) (p->unk46 + 1);
-  p->unk48 = 0;
+    p->x46 = 0; p->x47 = 0; p->x48 = 0;
+}
+void fn_80122780(void *o_) {
+    u8 *o = (u8 *)o_;
+    if (*(s32 *)(o + 0x3c) != 0) {
+        Clr_80122780(*(P_80122780 **)(o + 0x30), 0);
+    } else {
+        P_80122780 *p = *(P_80122780 **)(o + 0x30);
+        It_80122780 *q = p->items[(s8)p->x46 % p->count];
+        q->x0 = 0; q->x40 = q;
+        p->x46++;
+        p->x48 = 0;
+    }
 }
 
 extern struct efUnit* gUiPanelFlags;
@@ -3776,8 +3758,8 @@ void fn_80126A98(s32 arg0) {
 void fn_80126B34(s32 arg0) {
 #pragma cplusplus on
     void *fn_8013BC10(void *,void *);
-    void Ui_CreateMenu(void *,s32,s32);
-    extern u8 gScriptCmdNames[];
+    void fn_80024398(void *,s32,s32);
+    extern u8 lbl_80275048[];
     extern f32 lbl_8036A400;
     struct Item {
         virtual void v0()=0;
@@ -3825,14 +3807,14 @@ void fn_80126B34(s32 arg0) {
     s32 index;
     Item *item;
     f32 z;
-    menu=(u8*)fn_8013BC10(gScriptCmdNames+0x43D,gScriptCmdNames+0x445);
+    menu=(u8*)fn_8013BC10(lbl_80275048+0x43D,lbl_80275048+0x445);
     *(s16*)(menu+0xC)=0x160;
     *(s16*)(menu+0xE)=0x20;
     z=lbl_8036A400;
     *(s16*)(menu+0x1C)=0x20;
     *(s16*)(menu+8)=0x80;
     *(s16*)(menu+0xA)=0xF0;
-    *(f32*)(menu+0x18)=z;
+    *(f32*)(menu+0x18)=10.0f;
     menu[0x24]=1;
     index=0;
     while (((Menu*)menu)->v15(index)!=0) {
@@ -3841,7 +3823,7 @@ void fn_80126B34(s32 arg0) {
         item->v20(3);
         index++;
     }
-    Ui_CreateMenu(menu,arg0,0);
+    fn_80024398(menu,arg0,0);
 #pragma cplusplus reset
 }
 

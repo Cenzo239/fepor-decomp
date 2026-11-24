@@ -2181,57 +2181,56 @@ u32 fn_8011D484(void) {
     return 0U;
 }
 
-void fn_8011D4C8(void) {
+typedef struct { u16 flags; u16 pad; } Flags;
+typedef struct { u8 pad[0x30]; void *x30; void *x34[4]; s32 x44; void *x48[4]; void *x58; } Obj_8011D4C8;
+static inline void Shutdown(Obj_8011D4C8 *o) {
+    extern u16 gUiPanelFlags;
+    extern s32 gUiInputFlags;
+    extern u32 lbl_80367A5C;
     void fn_80122C84(void *);
     void fn_8007AD6C(void *);
     void fn_80109020(void *);
     void Process_Unlink(void *);
     void fn_80120F0C(void);
     void fn_800AA208(void);
-    void *Process_Find(void *);
-    extern u8 gUiPanelProc[];
-    extern u32 lbl_80367A5C;
-    u8 *p;
     s32 i;
-    s32 zero;
-    void *self;
-
-    self = Process_Find(gUiPanelProc);
-    if (self) {
-        for (i = 0, p = self, zero = i; i < 4; i++, p += 4) {
-            void *obj = *(void **)(p + 0x34);
-            if (obj) {
-                fn_80122C84(obj);
-                *(s32 *)(p + 0x34) = zero;
-            }
+    for (i = 0; i < 4; i++) {
+        if (o->x34[i]) {
+            fn_80122C84(o->x34[i]);
+            o->x34[i] = NULL;
         }
-        for (i = 0, p = self, zero = i; i < 4; i++, p += 4) {
-            void *obj = *(void **)(p + 0x48);
-            if (obj) {
-                fn_8007AD6C(obj);
-                *(s32 *)(p + 0x48) = zero;
-            }
+    }
+    for (i = 0; i < 4; i++) {
+        if (o->x48[i]) {
+            fn_8007AD6C(o->x48[i]);
+            o->x48[i] = NULL;
         }
-        *(s32 *)((u8 *)self + 0x30) = 0;
-        if (lbl_80367A5C) {
-            fn_80109020((void *)lbl_80367A5C);
-            lbl_80367A5C = 0;
-        }
-        if (*(void **)((u8 *)self + 0x58)) {
-            Process_Unlink(*(void **)((u8 *)self + 0x58));
-            *(void **)((u8 *)self + 0x58) = 0;
-        }
-        fn_80120F0C();
-        if (gUiPanelFlags & 0x80) {
-            fn_800AA208();
-            *(volatile u16 *)&gUiPanelFlags &= ~0x80;
-        }
-        {
-            s32 t = gUiInputFlags;
-            *(volatile u16 *)&gUiPanelFlags = 0;
-            gUiInputFlags = t & ~2;
-        }
-        Process_Unlink(self);
+    }
+    o->x30 = NULL;
+    if ((*(void * *)&lbl_80367A5C)) {
+        fn_80109020((*(void * *)&lbl_80367A5C));
+        (*(void * *)&lbl_80367A5C) = NULL;
+    }
+    if (o->x58) {
+        Process_Unlink(o->x58);
+        o->x58 = NULL;
+    }
+    fn_80120F0C();
+    if ((*(Flags *)&gUiPanelFlags).flags & 0x80) {
+        fn_800AA208();
+        (*(Flags *)&gUiPanelFlags).flags &= ~0x80;
+    }
+    (*(u32 *)&gUiInputFlags) &= ~2;
+    (*(Flags *)&gUiPanelFlags).flags = 0;
+}
+void fn_8011D4C8(void) {
+    void Process_Unlink(void *);
+    void *Process_Find(void *);
+    extern u16 gUiPanelProc[];
+    Obj_8011D4C8 *o = Process_Find(((u8 *)gUiPanelProc));
+    if (o) {
+        Shutdown(o);
+        Process_Unlink(o);
     }
 }
 
@@ -2498,59 +2497,52 @@ void UiPanel_Create(void *owner, void *parent) {
     }
 }
 
-void fn_8011DB48(void *arg0) {
-    void *Process_Find(void *);
-    void *fn_80122998(void *);
-    void *fn_80122CE0(void *);
-    void fn_80122E34(void *, u32);
-    void fn_80122E28(void *, s32, s32);
-    void fn_80122E10(void *, s32);
-    void fn_80122E04(void *, u32, u32);
-    void fn_80122E20(void *, u32);
-    void fn_80122E18(void *, u32);
-    void fn_80122DFC(void *, u32);
-    void fn_80122DEC(void *, u32, s32, s32);
-    void *Sound_Create(void *, void *);
-    void Sound_FadeFromZero(void *, u8);
-    extern u16 gUiPanelProc[];
-    extern u32 lbl_80367A5C;
-    u8 *entry;
-    s32 i;
-    void *item;
-    u8 *data;
-    u8 *panel;
-    void *found;
-
-    data = arg0;
-    found = Process_Find(gUiPanelProc);
-    item = 0;
-    i = (s32)item;
-    panel = found;
-    for (; i < 4; i++) {
-        if (((void **)(panel + i * 4))[13] == 0) {
-            void *slot = fn_80122998(panel);
-            entry = (item = panel + i * 4, (u8 *)item);
-            *(void **)(entry + 0x34) = slot;
-            slot = fn_80122CE0(*(void **)(entry + 0x34));
-            *(void **)(panel + 0x44) = *(void **)(entry + 0x34);
-            item = slot;
+typedef struct { u8 pad[0x30]; void *x30; void *x34[4]; void *x44; void *x48[4]; void *x58; u8 pad2[7]; u8 x63; u8 pad3[4]; s16 x68; } Obj_8011DB48;
+typedef struct { u8 pad[0x6a]; u8 x6a, x6b; } Win;
+typedef struct { u8 pad[8]; void *x8; void *xc; void *x10; s16 x14, x16, x18, x1a, x1c; u8 x1e, x1f, x20, x21, x22, x23, x24, x25; } Cfg;
+static inline Win *New(Obj_8011DB48 *o) {
+    void *fn_80122998(Obj_8011DB48 *);
+    Win *fn_80122CE0(void *); Win *w = NULL; s32 i;
+    for (i = 0; i < 4; i++) {
+        if (o->x34[i] == NULL) {
+            o->x34[i] = fn_80122998(o);
+            w = fn_80122CE0(o->x34[i]);
+            o->x44 = o->x34[i];
             break;
         }
     }
-    fn_80122E34(item, *(u32 *)(data + 8));
-    fn_80122E28(item, *(s16 *)(data + 0x14), *(s16 *)(data + 0x16));
-    fn_80122E10(item, *(s16 *)(data + 0x1c));
-    fn_80122E04(item, data[0x1e], data[0x1f]);
-    fn_80122E20(item, data[0x20]);
-    fn_80122E18(item, data[0x21]);
-    fn_80122DFC(item, data[0x22]);
-    ((u8 *)item)[0x6a] = data[0x23];
-    fn_80122DEC(item, *(u32 *)(data + 0x10), *(s16 *)(data + 0x18), *(s16 *)(data + 0x1a));
-    ((u8 *)item)[0x6b] = data[0x25];
-    lbl_80367A5C = *(u32 *)(data + 0xc);
-    panel[0x63] = data[0x24] != 0;
-    if (data[0x24] == 0 && *(void **)(data + 0xc) != 0) {
-        Sound_FadeFromZero(Sound_Create(*(void **)(data + 0xc), panel), (u8)*(s16 *)(panel + 0x68));
+    return w; }
+void fn_8011DB48(void *c_) {
+    Cfg *c = (Cfg *)c_;
+    extern u16 gUiPanelProc[];
+    extern u32 lbl_80367A5C;
+    Obj_8011DB48 *Process_Find(void *);
+    void fn_80122E34(Win *, void *);
+    void fn_80122E28(Win *, s32, s32);
+    void fn_80122E10(Win *, s32);
+    void fn_80122E04(Win *, s32, s32);
+    void fn_80122E20(Win *, s32);
+    void fn_80122E18(Win *, s32);
+    void fn_80122DFC(Win *, s32);
+    void fn_80122DEC(Win *, void *, s32, s32);
+    void *Sound_Create(void *, Obj_8011DB48 *);
+    void Sound_FadeFromZero(void *, s32);
+    Obj_8011DB48 *o = Process_Find(((u8 *)gUiPanelProc));
+    Win *w = New(o);
+    fn_80122E34(w, c->x8);
+    fn_80122E28(w, c->x14, c->x16);
+    fn_80122E10(w, c->x1c);
+    fn_80122E04(w, c->x1e, c->x1f);
+    fn_80122E20(w, c->x20);
+    fn_80122E18(w, c->x21);
+    fn_80122DFC(w, c->x22);
+    w->x6a = c->x23;
+    fn_80122DEC(w, c->x10, c->x18, c->x1a);
+    w->x6b = c->x25;
+    (*(void * *)&lbl_80367A5C) = c->xc;
+    o->x63 = c->x24 != 0;
+    if (c->x24 == 0 && c->xc != NULL) {
+        Sound_FadeFromZero(Sound_Create(c->xc, o), (u8)o->x68);
     }
 }
 
@@ -2603,45 +2595,39 @@ void fn_8011DD80(void *arg0)
 }
 
 extern u32 lbl_80367A5C;
-void fn_8011DDCC(void *arg0) {
-    void fn_80122C84(void *);
-    void fn_8007AD6C(void *);
+typedef struct { u8 pad[0x30]; void *x30; void *x34[4]; s32 x44; void *x48[4]; void *x58; } Obj_8011DDCC;
+static inline void Free1(Obj_8011DDCC *o, void *z) {
+    void fn_80122C84(void *); s32 i; for (i = 0; i < 4; i++) { if (o->x34[i]) { fn_80122C84(o->x34[i]); o->x34[i] = z; } } }
+static inline void Free3(Obj_8011DDCC *o, void *z) {
+    void fn_8007AD6C(void *); s32 i; for (i = 0; i < 4; i++) { if (o->x48[i]) { fn_8007AD6C(o->x48[i]); o->x48[i] = z; } } }
+void fn_8011DDCC(void *o_) {
+    Obj_8011DDCC *o = (Obj_8011DDCC *)o_;
+    extern u16 gUiPanelFlags;
+    extern s32 gUiInputFlags;
+    extern u32 lbl_80367A5C;
     void fn_80109020(void *);
     void Process_Unlink(void *);
     void fn_80120F0C(void);
     void fn_800AA208(void);
-    u8 *self = arg0;
-    u8 *p;
     s32 i;
-    s32 zero;
-    i = 0;
-    p = self;
-    zero = i ^ i;
-    do {
-        void *obj = *(void **)(p + 0x34);
-        if (obj) { fn_80122C84(obj); *(s32 *)(p + 0x34) = zero; }
-        i += 1;
-        p += 4;
-    } while (i < 4);
-    i = 0;
-    p = self;
-    zero = i ^ i;
-    do {
-        void *obj = *(void **)(p + 0x48);
-        if (obj) { fn_8007AD6C(obj); *(s32 *)(p + 0x48) = zero; }
-        i += 1;
-        p += 4;
-    } while (i < 4);
-    *(s32 *)(self + 0x30) = 0;
-    if (lbl_80367A5C) { fn_80109020((void *)lbl_80367A5C); lbl_80367A5C = 0; }
-    if (*(void **)(self + 0x58)) { Process_Unlink(*(void **)(self + 0x58)); *(void **)(self + 0x58) = 0; }
-    fn_80120F0C();
-    if (gUiPanelFlags & 0x80) { fn_800AA208(); *(volatile u16 *)&gUiPanelFlags &= ~0x80; }
-    {
-        s32 t = gUiInputFlags;
-        *(volatile u16 *)&gUiPanelFlags = 0;
-        gUiInputFlags = t & ~2;
+    Free1(o, NULL);
+    Free3(o, NULL);
+    o->x30 = NULL;
+    if ((*(void * *)&lbl_80367A5C)) {
+        fn_80109020((*(void * *)&lbl_80367A5C));
+        (*(void * *)&lbl_80367A5C) = NULL;
     }
+    if (o->x58) {
+        Process_Unlink(o->x58);
+        o->x58 = NULL;
+    }
+    fn_80120F0C();
+    if ((*(Flags *)&gUiPanelFlags).flags & 0x80) {
+        fn_800AA208();
+        (*(Flags *)&gUiPanelFlags).flags &= ~0x80;
+    }
+    (*(u32 *)&gUiInputFlags) &= ~2;
+    (*(Flags *)&gUiPanelFlags).flags = 0;
 }
 
 void UiPanel_Finish(void *arg0) {

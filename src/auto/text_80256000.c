@@ -7203,22 +7203,23 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
 #pragma optimization_level 2
 void fn_802618E4(s32 arg0)
 {
-    extern u8 *gSoundVoices;
+    extern void (*lbl_803689AC)(u32,u32);
+    extern u8 *lbl_80368AA0;
     extern u8 lbl_80368AD0;
     u8 *object;
     u8 *q;
     s32 off;
 
     off = arg0 * 0xF8;
-    object = gSoundVoices + off;
+    object = lbl_80368AA0 + off;
 
     if (object[0xF0] == 1 && lbl_80368AD0 == 0) {
         object[0xF2] = 1;
-        q = gSoundVoices;
+    }
+        q = lbl_80368AA0;
         q = q + off;
         q = q + (lbl_80368AD0 << 2);
         *(u32 *)(q + 0x24) |= 0x20;
-    }
 }
 #pragma optimization_level 4
 void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
