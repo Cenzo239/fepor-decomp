@@ -750,7 +750,6 @@ void fn_80042558(void *arg0)
     }
     fn_80016180();
 }
-#pragma opt_lifetimes on
 #pragma use_lmw_stmw reset
 
 s32 fn_800431E4(void *arg0) {
