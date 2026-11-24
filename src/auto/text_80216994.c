@@ -2771,62 +2771,56 @@ s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
 #pragma use_lmw_stmw reset
 }
 
+static inline s32 fn_8021BF10_GetFileNo(void *card, void *fileName, s32 *pfileNo)
+{
+    void *__CARDGetDirBlock(void *);
+    s32 fn_8021BB04(void *, void *);
+    s32 fn_8021BA9C(void *, void *);
+    u8 *ent;
+    s32 fileNo;
+    s32 result;
+
+    if (*(s32 *)card == 0) return -3;
+    ent = (u8 *)__CARDGetDirBlock(card);
+    for (fileNo = 0; fileNo < 0x7f; fileNo++, ent += 0x40) {
+        result = fn_8021BB04(card, ent);
+        if (result < 0) continue;
+        if (fn_8021BA9C(ent, fileName)) {
+            *pfileNo = fileNo;
+            return 0;
+        }
+    }
+    return -4;
+}
+
 s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
 {
     s32 fn_80217B18(void *, void **);
     void *__CARDGetDirBlock(void *);
-    s32 fn_8021BB04(void *, void *);
-    s32 fn_8021BA9C(void *, void *);
     s32 __CARDPutControlBlock(void *, s32);
-
-    void *handle;
-    u8 *base;
-    s32 status;
-    s32 index;
-    u8 *entry;
-    s32 foundIndex;
-    u32 card;
+    void *card;
+    u8 *dir;
+    u8 *ent;
     s32 result;
+    s32 fileNo;
 
     *(s32 *)arg2 = -1;
-
-    status = fn_80217B18(arg0, &handle);
-    if (status < 0) return status;
-    card = (u32)handle;
-
-    if (*(s32 *)card == 0) {
-        result = -3;
-        goto done;
-    }
-
-    entry = (u8 *)__CARDGetDirBlock((void *)card);
-    for (index = 0; index < 0x7f; index++, entry += 0x40) {
-        if (fn_8021BB04((void *)card, entry) >= 0 &&
-            fn_8021BA9C(entry, arg1) != 0) {
-            foundIndex = index;
-            result = 0;
-            goto done;
-        }
-    }
-    result = -4;
-
-done:
-    if (result >= 0) {
-        base = (u8 *)__CARDGetDirBlock(handle);
-        entry = base + (foundIndex << 6);
-
-        if (*(u16 *)(entry + 0x36) >= 5 &&
-            *(u16 *)(entry + 0x36) >= *(u16 *)((u8 *)handle + 0x10)) {
+    result = fn_80217B18(arg0, &card);
+    if (result < 0) return result;
+    result = fn_8021BF10_GetFileNo(card, arg1, &fileNo);
+    if (0 <= result) {
+        dir = (u8 *)__CARDGetDirBlock(card);
+        ent = dir + (fileNo << 6);
+        if (!(5 <= *(u16 *)(ent + 0x36) && *(u16 *)(ent + 0x36) < *(u16 *)((u8 *)card + 0x10))) {
             result = -6;
         } else {
             *(void **)arg2 = arg0;
-            *(s32 *)((u8 *)arg2 + 4) = foundIndex;
+            *(s32 *)((u8 *)arg2 + 4) = fileNo;
             *(s32 *)((u8 *)arg2 + 8) = 0;
-            *(u16 *)((u8 *)arg2 + 0x10) = *(u16 *)(entry + 0x36);
+            *(u16 *)((u8 *)arg2 + 0x10) = *(u16 *)(ent + 0x36);
         }
     }
-
-    return __CARDPutControlBlock(handle, result);
+    return __CARDPutControlBlock(card, result);
 }
 
 s32 fn_8021C02C(s32 *arg0) {
