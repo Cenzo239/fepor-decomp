@@ -1053,11 +1053,11 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
     extern s32 gSynthVoices;
     extern s32 lbl_803689A0;
     extern s32 lbl_8036899C;
-    extern u8 lbl_80368994;
-    extern u8 lbl_80368984;
+    extern u8 lbl_80368994[8];
+    extern u8 lbl_80368984[8];
     extern s8 lbl_80368979;
-    extern f32 lbl_8036C208;
-    extern f32 lbl_8036C1E0;
+    extern const f32 lbl_8036C208;
+    extern const f32 lbl_8036C1E0;
 
     u8 *bed;
     s32 size;
@@ -1067,9 +1067,6 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
     u8 *t9;
     void *p;
     s32 k;
-    u8 *r7;
-    u8 *r6p;
-    u8 *r4p;
     u8 j;
     u8 *slot;
 
@@ -1200,57 +1197,14 @@ void fn_8024ADFC(s32 arg0, s32 arg1) {
         fn_80260BE4(0);
     }
 
-    r7 = bed + 0xC94;
-    r6p = bed + 0xC34;
-    r4p = bed + 0xC74;
-    *(s32 *)(bed + 0xC34) = 0;
-    (&lbl_80368994)[0] = 0xFF;
-    *(s32 *)(bed + 0xC74) = 0;
-    (&lbl_80368984)[0] = 0xFF;
-    r7[1] = 0;
-    bed[0xC94] = 0;
-    *(s32 *)(r6p + 4) = 0;
-    (&lbl_80368994)[1] = 0xFF;
-    *(s32 *)(r4p + 4) = 0;
-    (&lbl_80368984)[1] = 0xFF;
-    r7[3] = 0;
-    r7[2] = 0;
-    *(s32 *)(r6p + 8) = 0;
-    (&lbl_80368994)[2] = 0xFF;
-    *(s32 *)(r4p + 8) = 0;
-    (&lbl_80368984)[2] = 0xFF;
-    r7[5] = 0;
-    r7[4] = 0;
-    *(s32 *)(r6p + 0xC) = 0;
-    (&lbl_80368994)[3] = 0xFF;
-    *(s32 *)(r4p + 0xC) = 0;
-    (&lbl_80368984)[3] = 0xFF;
-    r7[7] = 0;
-    r7[6] = 0;
-    *(s32 *)(r6p + 0x10) = 0;
-    (&lbl_80368994)[4] = 0xFF;
-    *(s32 *)(r4p + 0x10) = 0;
-    (&lbl_80368984)[4] = 0xFF;
-    r7[9] = 0;
-    r7[8] = 0;
-    *(s32 *)(r6p + 0x14) = 0;
-    (&lbl_80368994)[5] = 0xFF;
-    *(s32 *)(r4p + 0x14) = 0;
-    (&lbl_80368984)[5] = 0xFF;
-    r7[0xB] = 0;
-    r7[0xA] = 0;
-    *(s32 *)(r6p + 0x18) = 0;
-    (&lbl_80368994)[6] = 0xFF;
-    *(s32 *)(r4p + 0x18) = 0;
-    (&lbl_80368984)[6] = 0xFF;
-    r7[0xD] = 0;
-    r7[0xC] = 0;
-    *(s32 *)(r6p + 0x1C) = 0;
-    (&lbl_80368994)[7] = 0xFF;
-    *(s32 *)(r4p + 0x1C) = 0;
-    (&lbl_80368984)[7] = 0xFF;
-    r7[0xF] = 0;
-    r7[0xE] = 0;
+    for (k = 0; k < 8; k++) {
+        *(s32 *)(bed + 0xC34 + k * 4) = 0;
+        lbl_80368994[k] = 0xFF;
+        *(s32 *)(bed + 0xC74 + k * 4) = 0;
+        lbl_80368984[k] = 0xFF;
+        bed[0xC94 + k * 2 + 1] = 0;
+        bed[0xC94 + k * 2] = 0;
+    }
     fn_802559D8();
     fn_80255A40();
     fn_80256974();
@@ -5559,26 +5513,17 @@ fail:
 }
 
 void fn_802559D8(void) {
-    s32 offset;
     u32 i;
-    s32 zero;
-    s32 two;
 
-    zero = 0;
-    gSynthIdleList = zero;
-    offset = (s32)(u32)zero;
-    i = 0;
-    gSynthSchedList = zero;
-    two = 2;
-    gSynthTimeLo = zero;
-    gSynthTimeHi = zero;
+    gSynthIdleList = 0;
+    gSynthSchedList = 0;
+    gSynthTimeLo = 0;
+    gSynthTimeHi = 0;
 
-    while (i < gSoundData[0x210]) {
-        *(s32 *)(gSynthVoices + offset + 0x34) = zero;
-        *(s32 *)(gSynthVoices + offset + 0x4C) = two;
-        *(u16 *)(gSynthVoices + offset + 0xAA) = (u16)zero;
-        offset += 0x458;
-        i++;
+    for (i = 0; i < gSoundData[0x210]; i++) {
+        *(s32 *)(gSynthVoices + i * 0x458 + 0x34) = 0;
+        *(s32 *)(gSynthVoices + i * 0x458 + 0x4C) = 2;
+        *(u16 *)(gSynthVoices + i * 0x458 + 0xAA) = 0;
     }
 }
 
