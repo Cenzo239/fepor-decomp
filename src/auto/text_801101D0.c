@@ -3497,8 +3497,8 @@ extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
  s32 copy[3];
  s32 *src = arg1;
  s32 c = src[2];
- s32 b = src[1];
  s32 a = src[0];
+ s32 b = src[1];
  copy[0]=a; copy[1]=b; copy[2]=c;
  fn_800DB7A4(arg0,&copy);
  if(M2C_FIELD(arg0,u8*,0x195)) M2C_FIELD(arg0,s32*,0x9C)=M2C_FIELD(arg0,s32*,0xC8)*M2C_FIELD(arg0,s32*,0x198);
@@ -4549,24 +4549,16 @@ void fn_80118B7C(void *arg0) {
 
 void fn_80118C1C(void) {
     void fn_800A6AE4(void);
-    void fn_800C1060(s32);
     void Map_RefreshUnitMap(void *);
+    void fn_800C1060(s32);
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
-    s32 var_r4;
-    s32 temp;
-    s32 a, b;
+    u8 flag;
 
     fn_800A6AE4();
     Map_RefreshUnitMap(gBattleMap);
-    var_r4 = 1;
-    temp = (u8)(gMapBlendMode - 1);
-    b = ~temp | var_r4;
-    a = (u32)(1 - temp) >> 1;
-    if (((u32)(b - a) >> 31) == 0) {
-        var_r4 = 0;
-    }
-    if ((u8)var_r4 != 0) {
+    flag = (gMapBlendMode == 1 || gMapBlendMode == 2);
+    if (flag) {
         fn_800C1060(0);
     }
 }
