@@ -1177,11 +1177,10 @@ void fn_80218C34(void *arg0)
     previous = *(u32 *)(card + 0x80);
 
     fn_80215F78(0xFF000000);
-
-    if (fn_80215F40() == 0) {
-        fn_80215F78(previous);
-        if (fn_80215F40() == 0) {
-        }
+    while (fn_80215F40() != 0) {
+    }
+    fn_80215F78(previous);
+    while (fn_80215F40() != 0) {
     }
 
     (void)chan;
