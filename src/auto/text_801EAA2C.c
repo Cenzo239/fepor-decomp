@@ -2465,7 +2465,7 @@ void fn_801EDFCC(void) {
     fn_801487D0(p, 0x3E8);
     fn_8014876C(p, 0x64, 0x3E8);
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 void fn_801EE018(void *arg0) {
     extern u8 gFxChannels[];
     void fn_80148980(void *, s32, s32);

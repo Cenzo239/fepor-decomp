@@ -1855,8 +1855,8 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   f32 h01;
   f32 h00;
   f32 t1m;
-  f32 tm1;
   f32 two_t;
+  f32 tm1;
   one = lbl_8036912C;
   two_t = lbl_80369104 * farg4;
   tm1 = farg4 - one;

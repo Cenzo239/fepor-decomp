@@ -1560,359 +1560,507 @@ void fn_80242668(void *arg0, s16 *arg1) {
     *(u32 *)(ctx+0x6a0)=bitbuf;
 }
 
-void fn_80242CE4(void *arg0, s16 *arg1) {
+void fn_80242CE4(void *arg0, s16 *arg1)
+{
     extern u8 *lbl_80368860;
     extern u8 *lbl_803688C0;
     extern u8 lbl_80282FD8[];
-    u8 *ctx = arg0;
-    u8 *tbl;
-    u8 *lens;
+    typedef struct {
+        u8 unused[0x68A];
+        s16 predictor;
+        u8 padding[0x10];
+        u32 *stream;
+        u32 word;
+        s32 pos;
+    } DecoderState;
+    typedef struct {
+        u8 quick[32];
+        u8 lengths[32];
+        u8 *values;
+        s32 maxcode[18];
+        s32 offsets[18];
+    } HuffmanTable;
+
+    DecoderState *ctx = (DecoderState *)arg0;
+    u32 raw;
     u8 *zigzag;
-    s32 bitpos;
-    u32 bitbuf;
-    s32 code;
-    s32 val;
     s32 i;
-    s32 run, bits, remaining, extra, shift;
-    u32 x, oldbits;
-    u32 *wp;
-    s32 *maxcode;
-    s32 limit, length, step;
-    u32 *stream;
 
     __dcbz(arg1, 0);
-    tbl = lbl_80368860;
-    bitpos = *(s32 *)(ctx + 0x6a4);
-    lens = tbl + 0x20;
-    bitbuf = *(u32 *)(ctx + 0x6a0);
+    {
+        s32 pos;
+        HuffmanTable *tbl;
+        u8 *lens;
+        u32 word;
+        s32 code;
+        s32 val;
+        s32 len;
+        s32 step;
+        s32 limit;
+        s32 *maxcode;
+        u32 *stream;
+        u32 prefixWord;
+        s32 offset;
+        s32 nextPos;
+        s32 endPos;
+        u8 *values;
+        u8 *offsetBase;
 
-    code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
-    if (bitpos <= 28) {
-        val = tbl[code];
-        step = lens[code];
-        if (val != 255) {
-            bitpos += step;
-            *(s32 *)(ctx + 0x6a4) = bitpos;
-        } else {
-            maxcode = (s32 *)(tbl + 0x44);
-            bitpos += 5;
-            length = 5;
-            maxcode += 5;
-            for (;;) {
-                code <<= 1;
-                if (bitpos != 33) {
-                    step = __rlwnm(bitbuf, bitpos, 31, 31);
-                    limit = *++maxcode;
-                    code |= step;
-                    bitpos++;
-                } else {
-                    stream = *(u32 **)(ctx + 0x69c);
-                    bitpos = 1;
-                    bitbuf = *++stream;
-                    limit = *++maxcode;
-                    *(u32 **)(ctx + 0x69c) = stream;
-                    code = __rlwimi(code, bitbuf, 1, 31, 31);
-                    *(u32 *)(ctx + 0x6a0) = bitbuf;
-                    for (;;) {
-                        bitpos++;
-                        length++;
-                        if (code <= limit)
-                            break;
-                        code <<= 1;
-                        step = __rlwnm(bitbuf, bitpos, 31, 31);
-                        limit = *++maxcode;
-                        code |= step;
-                    }
-                    break;
-                }
-                length++;
-                if (code <= limit)
-                    break;
-            }
-            *(s32 *)(ctx + 0x6a4) = bitpos;
-            val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-        }
-    } else {
-        stream = *(u32 **)(ctx + 0x69c);
-        if (bitpos == 33) {
-            bitbuf = *++stream;
-            code = bitbuf >> 27;
-            *(u32 **)(ctx + 0x69c) = stream;
-            val = tbl[code];
-            step = lens[code];
-            *(u32 *)(ctx + 0x6a0) = bitbuf;
+        tbl = (HuffmanTable *)lbl_80368860;
+        pos = ctx->pos;
+        lens = tbl->lengths;
+        word = ctx->word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+
+        if (pos <= 28) {
+            val = (s32)tbl->quick[code];
+            step = (s32)lens[code];
             if (val != 255) {
-                bitpos = step + 1;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-            } else {
-                length = 5;
-                do {
-                    step = 31 - length;
-                    length++;
-                    code = bitbuf >> step;
-                    limit = *(s32 *)(tbl + 0x44 + length * 4);
-                } while (code > limit);
-                bitpos = length + 1;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+                pos += step;
+                ctx->pos = pos;
+                goto dc_decoded;
             }
-        } else if (bitpos == 32) {
-            bitbuf = *++stream;
-            *(u32 **)(ctx + 0x69c) = stream;
-            code = __rlwimi(code, bitbuf, 4, 28, 31);
-            val = tbl[code];
-            step = lens[code];
-            *(u32 *)(ctx + 0x6a0) = bitbuf;
-            bitpos = step;
-            *(s32 *)(ctx + 0x6a4) = bitpos;
-            if (val == 255) {
-                maxcode = (s32 *)(tbl + 0x44) + 5;
-                {
-                    u32 prefix = ((u32)code << 27) | (bitbuf >> 1);
-                    length = 5;
-                    do {
-                        step = 31 - length;
-                        limit = *++maxcode;
-                        code = prefix >> step;
-                        length++;
-                    } while (code > limit);
-                }
-                bitpos = length;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-            }
-        } else {
-            val = tbl[code];
-            step = lens[code];
-            length = bitpos + step;
-            if (val != 255 && length <= 33) {
-                bitpos = length;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-            } else {
-                step = 33 - bitpos;
-                code = bitbuf & ~(~0U << step);
-                maxcode = (s32 *)(tbl + 0x44) + step;
-                length = step + 1;
-                stream = *(u32 **)(ctx + 0x69c);
-                bitbuf = *++stream;
-                *(u32 **)(ctx + 0x69c) = stream;
-                code <<= 1;
-                *(u32 *)(ctx + 0x6a0) = bitbuf;
-                code = __rlwimi(code, bitbuf, 1, 31, 31);
-                limit = *++maxcode;
-                bitpos = 2;
-                for (;;) {
-                    step = __rlwnm(bitbuf, bitpos, 31, 31);
-                    if (code <= limit)
-                        break;
-                    code <<= 1;
-                    length++;
-                    limit = *++maxcode;
-                    code += step;
-                    bitpos++;
-                }
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-            }
-        }
-    }
+            maxcode = tbl->maxcode;
+            pos += 5;
+            len = 5;
+            maxcode += 5;
+dc_short_more:
+            code <<= 1;
+            if (pos == 33)
+                goto dc_short_refill;
+            step = __rlwnm(word, pos, 31, 31);
+            limit = *++maxcode;
+            code |= step;
+            ++pos;
+            goto dc_short_compare;
 
-    __dcbz(arg1, 0x20);
-    x = 0;
-    __dcbz(arg1, 0x40);
-    if (val != 0) {
-        bitpos = *(s32 *)(ctx + 0x6a4);
-        remaining = 33 - bitpos;
-        bitbuf = *(u32 *)(ctx + 0x6a0);
-        extra = val - remaining;
-        shift = bitpos - 1;
-        if (extra <= 0) {
-            *(s32 *)(ctx + 0x6a4) = bitpos + val;
-            x = (bitbuf << shift) >> (32 - val);
-        } else {
-            wp = *(u32 **)(ctx + 0x69c);
-            oldbits = bitbuf << shift;
-            bitbuf = *++wp;
-            *(u32 *)(ctx + 0x6a0) = bitbuf;
-            *(u32 **)(ctx + 0x69c) = wp;
-            *(s32 *)(ctx + 0x6a4) = extra + 1;
-            x = ((bitbuf >> remaining) + oldbits) >> (32 - val);
+dc_short_refill:
+            stream = ctx->stream;
+            pos = 1;
+            word = *++stream;
+            limit = *++maxcode;
+            ctx->stream = stream;
+            code = __rlwimi(code, word, 1, 31, 31);
+            ctx->word = word;
+            goto dc_refill_test;
+
+dc_refill_more:
+            code <<= 1;
+            step = __rlwnm(word, pos, 31, 31);
+            limit = *++maxcode;
+            code |= step;
+dc_refill_test:
+            ++pos;
+            ++len;
+            if (code > limit)
+                goto dc_refill_more;
+            goto dc_long_done;
+
+dc_short_compare:
+            ++len;
+            if (code > limit)
+                goto dc_short_more;
+dc_long_done:
+            ctx->pos = pos;
+            offsetBase = (u8 *)tbl + len * 4;
+            values = tbl->values;
+            values += ((HuffmanTable *)offsetBase)->offsets[0];
+            val = values[code];
+            goto dc_decoded;
         }
-        if ((s32)__cntlzw((s16)x) > 32 - val)
-            x = (~0U << val) + x + 1;
+
+        stream = ctx->stream;
+        if (pos == 33)
+            goto dc_fresh_word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+        if (pos == 32)
+            goto dc_one_bit;
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        endPos = pos + step;
+        if (val == 255)
+            goto dc_cross_word;
+        ctx->pos = endPos;
+        if (endPos > 33)
+            goto dc_cross_word;
+        goto dc_decoded;
+
+dc_one_bit:
+        word = *++stream;
+        ctx->stream = stream;
+        code = __rlwimi(code, word, 4, 28, 31);
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        ctx->word = word;
+        ctx->pos = step;
+        if (val != 255)
+            goto dc_decoded;
+        maxcode = tbl->maxcode;
+        maxcode += 5;
+        prefixWord = __rlwimi((u32)code << 27, word, 31, 1, 31);
+        pos = 5;
+        do {
+            step = 31 - pos;
+            limit = *++maxcode;
+            code = (s32)(prefixWord >> step);
+            ++pos;
+        } while (code > limit);
+        ctx->pos = pos;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+        goto dc_decoded;
+
+dc_fresh_word:
+        word = *++stream;
+        code = word >> 27;
+        ctx->stream = stream;
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        ctx->word = word;
+        ++step;
+        if (val != 255) {
+            ctx->pos = step;
+            goto dc_decoded;
+        }
+        pos = 5;
+        offset = 0x14;
+        do {
+            step = 31 - pos;
+            ++pos;
+            offset += 4;
+            code = (s32)(word >> step);
+            offsetBase = (u8 *)tbl + offset;
+            limit = ((HuffmanTable *)offsetBase)->maxcode[0];
+        } while (code > limit);
+        ctx->pos = pos + 1;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+        goto dc_decoded;
+
+dc_cross_word:
+        code = (s32)(word & ~(~0U << (33 - pos)));
+        maxcode = tbl->maxcode;
+        stream = ctx->stream;
+        step = 33 - pos;
+        pos = step + 1;
+        word = *++stream;
+        maxcode += step;
+        ctx->stream = stream;
+        code <<= 1;
+        ctx->word = word;
+        code = __rlwimi(code, word, 1, 31, 31);
+        limit = *++maxcode;
+        nextPos = 2;
+        goto dc_cross_test;
+dc_cross_more:
+        code <<= 1;
+        ++pos;
+        limit = *++maxcode;
+        code += step;
+        ++nextPos;
+dc_cross_test:
+        step = __rlwnm(word, nextPos, 31, 31);
+        if (code > limit)
+            goto dc_cross_more;
+        ctx->pos = nextPos;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+
+dc_decoded:
+        __dcbz(arg1, 0x20);
+        raw = 0;
+        __dcbz(arg1, 0x40);
+        if (val != 0) {
+            s32 bitpos;
+            s32 remaining;
+            u32 word;
+            s32 extra;
+            s32 shift;
+            u32 *wp;
+            u32 oldbits;
+            u32 combined;
+            bitpos = ctx->pos;
+            remaining = 33 - bitpos;
+            word = ctx->word;
+            extra = val - remaining;
+            shift = bitpos - 1;
+            if (extra <= 0) {
+                s32 end = bitpos + val;
+                combined = word << shift;
+                ctx->pos = end;
+                raw = combined >> (32 - val);
+            } else {
+                wp = ctx->stream;
+                oldbits = word << shift;
+                word = *++wp;
+                ++extra;
+                ctx->word = word;
+                combined = word >> remaining;
+                ctx->stream = wp;
+                combined += oldbits;
+                ctx->pos = extra;
+                raw = combined >> (32 - val);
+            }
+            if ((s32)__cntlzw((s16)raw) > 32 - val) {
+                raw += ~0U << val;
+                ++raw;
+            }
+        }
     }
     __dcbz(arg1, 0x60);
     {
-        s32 dc = *(s16 *)(ctx + 0x68A) + (s32)x;
-        *(s16 *)(ctx + 0x68A) = dc;
-        arg1[0] = (s16)dc;
+        u32 dc = (s32)ctx->predictor + raw;
+        *(unsigned short *)&ctx->predictor = (unsigned short)dc;
+        *(unsigned short *)arg1 = (unsigned short)dc;
     }
 
     zigzag = lbl_80282FD8;
-    for (i = 1; i < 64; i++) {
-        tbl = lbl_803688C0;
-        bitpos = *(s32 *)(ctx + 0x6a4);
-        lens = tbl + 0x20;
-        bitbuf = *(u32 *)(ctx + 0x6a0);
+    for (i = 1; i < 64; ++i) {
+        register s32 pos;
+        register HuffmanTable *tbl;
+        u8 *lens;
+        u32 word;
+        s32 code;
+        s32 val;
+        s32 len;
+        s32 step;
+        s32 limit;
+        s32 *maxcode;
+        u32 *stream;
+        u32 prefixWord;
+        s32 offset;
+        s32 nextPos;
+        s32 endPos;
+        u8 *values;
+        u8 *offsetBase;
 
-        code = __rlwnm(bitbuf, bitpos + 4, 27, 31);
-        if (bitpos <= 28) {
-            val = tbl[code];
-            step = lens[code];
+        tbl = (HuffmanTable *)lbl_803688C0;
+        pos = ctx->pos;
+        lens = tbl->lengths;
+        word = ctx->word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+
+        if (pos <= 28) {
+            val = (s32)tbl->quick[code];
+            step = (s32)lens[code];
             if (val != 255) {
-                bitpos += step;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-            } else {
-                maxcode = (s32 *)(tbl + 0x44);
-                bitpos += 5;
-                length = 5;
-                maxcode += 5;
-                for (;;) {
-                    code <<= 1;
-                    if (bitpos != 33) {
-                        step = __rlwnm(bitbuf, bitpos, 31, 31);
-                        limit = *++maxcode;
-                        code |= step;
-                        bitpos++;
-                    } else {
-                        stream = *(u32 **)(ctx + 0x69c);
-                        bitpos = 1;
-                        bitbuf = *++stream;
-                        limit = *++maxcode;
-                        *(u32 **)(ctx + 0x69c) = stream;
-                        code = __rlwimi(code, bitbuf, 1, 31, 31);
-                        *(u32 *)(ctx + 0x6a0) = bitbuf;
-                        for (;;) {
-                            bitpos++;
-                            length++;
-                            if (code <= limit)
-                                break;
-                            code <<= 1;
-                            step = __rlwnm(bitbuf, bitpos, 31, 31);
-                            limit = *++maxcode;
-                            code |= step;
-                        }
-                        break;
-                    }
-                    length++;
-                    if (code <= limit)
-                        break;
-                }
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-                val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
+                pos += step;
+                ctx->pos = pos;
+                goto ac_decoded;
             }
-        } else {
-            stream = *(u32 **)(ctx + 0x69c);
-            if (bitpos == 33) {
-                bitbuf = *++stream;
-                code = bitbuf >> 27;
-                *(u32 **)(ctx + 0x69c) = stream;
-                val = tbl[code];
-                step = lens[code];
-                *(u32 *)(ctx + 0x6a0) = bitbuf;
-                if (val != 255) {
-                    bitpos = step + 1;
-                    *(s32 *)(ctx + 0x6a4) = bitpos;
-                } else {
-                    length = 5;
-                    do {
-                        step = 31 - length;
-                        length++;
-                        code = bitbuf >> step;
-                        limit = *(s32 *)(tbl + 0x44 + length * 4);
-                    } while (code > limit);
-                    bitpos = length + 1;
-                    *(s32 *)(ctx + 0x6a4) = bitpos;
-                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-                }
-            } else if (bitpos == 32) {
-                bitbuf = *++stream;
-                *(u32 **)(ctx + 0x69c) = stream;
-                code = __rlwimi(code, bitbuf, 4, 28, 31);
-                val = tbl[code];
-                step = lens[code];
-                *(u32 *)(ctx + 0x6a0) = bitbuf;
-                bitpos = step;
-                *(s32 *)(ctx + 0x6a4) = bitpos;
-                if (val == 255) {
-                    maxcode = (s32 *)(tbl + 0x44) + 5;
-                    {
-                        u32 prefix = ((u32)code << 27) | (bitbuf >> 1);
-                        length = 5;
-                        do {
-                            step = 31 - length;
-                            limit = *++maxcode;
-                            code = prefix >> step;
-                            length++;
-                        } while (code > limit);
-                    }
-                    bitpos = length;
-                    *(s32 *)(ctx + 0x6a4) = bitpos;
-                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-                }
-            } else {
-                val = tbl[code];
-                step = lens[code];
-                length = bitpos + step;
-                if (val != 255 && length <= 33) {
-                    bitpos = length;
-                    *(s32 *)(ctx + 0x6a4) = bitpos;
-                } else {
-                    step = 33 - bitpos;
-                    code = bitbuf & ~(~0U << step);
-                    maxcode = (s32 *)(tbl + 0x44) + step;
-                    length = step + 1;
-                    stream = *(u32 **)(ctx + 0x69c);
-                    bitbuf = *++stream;
-                    *(u32 **)(ctx + 0x69c) = stream;
-                    code <<= 1;
-                    *(u32 *)(ctx + 0x6a0) = bitbuf;
-                    code = __rlwimi(code, bitbuf, 1, 31, 31);
-                    limit = *++maxcode;
-                    bitpos = 2;
-                    for (;;) {
-                        step = __rlwnm(bitbuf, bitpos, 31, 31);
-                        if (code <= limit)
-                            break;
-                        code <<= 1;
-                        length++;
-                        limit = *++maxcode;
-                        code += step;
-                        bitpos++;
-                    }
-                    *(s32 *)(ctx + 0x6a4) = bitpos;
-                    val = (*(u8 **)(tbl + 0x40))[code + *(s32 *)(tbl + 0x8c + length * 4)];
-                }
-            }
+            maxcode = tbl->maxcode;
+            pos += 5;
+            len = 5;
+            maxcode += 5;
+ac_short_more:
+            code <<= 1;
+            if (pos == 33)
+                goto ac_short_refill;
+            step = __rlwnm(word, pos, 31, 31);
+            limit = *++maxcode;
+            code |= step;
+            ++pos;
+            goto ac_short_compare;
+
+ac_short_refill:
+            stream = ctx->stream;
+            pos = 1;
+            word = *++stream;
+            limit = *++maxcode;
+            ctx->stream = stream;
+            code = __rlwimi(code, word, 1, 31, 31);
+            ctx->word = word;
+            goto ac_refill_test;
+
+ac_refill_more:
+            code <<= 1;
+            step = __rlwnm(word, pos, 31, 31);
+            limit = *++maxcode;
+            code |= step;
+ac_refill_test:
+            ++pos;
+            ++len;
+            if (code > limit)
+                goto ac_refill_more;
+            goto ac_long_done;
+
+ac_short_compare:
+            ++len;
+            if (code > limit)
+                goto ac_short_more;
+ac_long_done:
+            ctx->pos = pos;
+            offsetBase = (u8 *)tbl + len * 4;
+            values = tbl->values;
+            values += ((HuffmanTable *)offsetBase)->offsets[0];
+            val = values[code];
+            goto ac_decoded;
         }
 
-        bits = val & 15;
-        run = val >> 4;
-        if (bits != 0) {
-            i += run;
-            remaining = 33 - bitpos;
-            bitbuf = *(u32 *)(ctx + 0x6a0);
-            extra = bits - remaining;
-            shift = bitpos - 1;
-            if (extra <= 0) {
-                *(s32 *)(ctx + 0x6a4) = bitpos + bits;
-                x = (bitbuf << shift) >> (32 - bits);
+        stream = ctx->stream;
+        if (pos == 33)
+            goto ac_fresh_word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+        if (pos == 32)
+            goto ac_one_bit;
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        endPos = pos + step;
+        if (val == 255)
+            goto ac_cross_word;
+        ctx->pos = endPos;
+        if (endPos > 33)
+            goto ac_cross_word;
+        goto ac_decoded;
+
+ac_one_bit:
+        word = *++stream;
+        ctx->stream = stream;
+        code = __rlwimi(code, word, 4, 28, 31);
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        ctx->word = word;
+        ctx->pos = step;
+        if (val != 255)
+            goto ac_decoded;
+        maxcode = tbl->maxcode;
+        maxcode += 5;
+        prefixWord = __rlwimi((u32)code << 27, word, 31, 1, 31);
+        pos = 5;
+        do {
+            step = 31 - pos;
+            limit = *++maxcode;
+            code = (s32)(prefixWord >> step);
+            ++pos;
+        } while (code > limit);
+        ctx->pos = pos;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+        goto ac_decoded;
+
+ac_fresh_word:
+        word = *++stream;
+        code = word >> 27;
+        ctx->stream = stream;
+        val = (s32)tbl->quick[code];
+        step = (s32)lens[code];
+        ctx->word = word;
+        ++step;
+        if (val != 255) {
+            ctx->pos = step;
+            goto ac_decoded;
+        }
+        pos = 5;
+        offset = 0x14;
+        do {
+            step = 31 - pos;
+            ++pos;
+            offset += 4;
+            code = (s32)(word >> step);
+            offsetBase = (u8 *)tbl + offset;
+            limit = ((HuffmanTable *)offsetBase)->maxcode[0];
+        } while (code > limit);
+        ctx->pos = pos + 1;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+        goto ac_decoded;
+
+ac_cross_word:
+        code = (s32)(word & ~(~0U << (33 - pos)));
+        maxcode = tbl->maxcode;
+        stream = ctx->stream;
+        step = 33 - pos;
+        pos = step + 1;
+        word = *++stream;
+        maxcode += step;
+        ctx->stream = stream;
+        code <<= 1;
+        ctx->word = word;
+        code = __rlwimi(code, word, 1, 31, 31);
+        limit = *++maxcode;
+        nextPos = 2;
+        goto ac_cross_test;
+ac_cross_more:
+        code <<= 1;
+        ++pos;
+        limit = *++maxcode;
+        code += step;
+        ++nextPos;
+ac_cross_test:
+        step = __rlwnm(word, nextPos, 31, 31);
+        if (code > limit)
+            goto ac_cross_more;
+        ctx->pos = nextPos;
+        offsetBase = (u8 *)tbl + pos * 4;
+        values = tbl->values;
+        values += ((HuffmanTable *)offsetBase)->offsets[0];
+        val = values[code];
+
+ac_decoded:
+        {
+            register s32 bits;
+            s32 run;
+            u32 raw;
+            bits = val & 15;
+            run = val >> 4;
+            if (bits != 0) {
+                i += run;
+                {
+                    s32 bitpos;
+                    s32 remaining;
+                    u32 word;
+                    s32 extra;
+                    s32 shift;
+                    u32 *wp;
+                    u32 oldbits;
+                    u32 combined;
+                    bitpos = ctx->pos;
+                    remaining = 33 - bitpos;
+                    word = ctx->word;
+                    extra = bits - remaining;
+                    shift = bitpos - 1;
+                    if (extra <= 0) {
+                        s32 end = bitpos + bits;
+                        combined = word << shift;
+                        ctx->pos = end;
+                        raw = combined >> (32 - bits);
+                    } else {
+                        wp = ctx->stream;
+                        oldbits = word << shift;
+                        word = *++wp;
+                        ++extra;
+                        ctx->word = word;
+                        combined = word >> remaining;
+                        ctx->stream = wp;
+                        combined += oldbits;
+                        ctx->pos = extra;
+                        raw = combined >> (32 - bits);
+                    }
+                    if ((s32)__cntlzw(raw) > 32 - bits) {
+                        raw += ~0U << bits;
+                        ++raw;
+                    }
+                }
+                {
+                    u8 *scan = zigzag + i;
+                    s16 coefficient = (s16)raw;
+                    arg1[*scan] = coefficient;
+                }
             } else {
-                wp = *(u32 **)(ctx + 0x69c);
-                oldbits = bitbuf << shift;
-                bitbuf = *++wp;
-                *(u32 *)(ctx + 0x6a0) = bitbuf;
-                *(u32 **)(ctx + 0x69c) = wp;
-                *(s32 *)(ctx + 0x6a4) = extra + 1;
-                x = ((bitbuf >> remaining) + oldbits) >> (32 - bits);
+                if (run != 15)
+                    break;
+                i += 15;
             }
-            if ((s32)__cntlzw(x) > 32 - bits)
-                x = (~0U << bits) + x + 1;
-            arg1[zigzag[i]] = (s16)x;
-        } else {
-            if (run != 15)
-                break;
-            i += 15;
         }
     }
 }
@@ -1922,309 +2070,471 @@ void fn_8024338C(void *arg0, s16 *arg1)
     extern u8 *lbl_80368880;
     extern u8 *lbl_803688E0;
     extern u8 lbl_80282FD8[];
-
-    u8 *ctx;
-    u8 *table;
-    u8 *lens;
-    u8 *zigzag;
-    u32 *stream;
-    u32 buffer;
-    u32 code;
-    u32 symbol;
-    u32 length;
-    u32 threshold;
-    u32 index;
-    u32 bits;
-    u32 extra;
+    u8 *ctx = (u8 *)arg0;
     u32 raw;
-    u32 prefix;
-    u32 off;
-    s32 position;
-    s32 category;
-    s32 value;
-    s32 dc;
-    s32 run;
-    s32 coefficient;
+    u8 *zigzag;
+    s32 i;
 
-    ctx = (u8 *)arg0;
-    /* First 32 bytes of the 8x8 coefficient block. */
     __dcbz(arg1, 0);
+    {
+        register u8 *tbl;
+        register s32 pos;
+        u32 word;
+        u8 *lens;
+        s32 code;
+        s32 val;
+        s32 len;
+        s32 step;
+        s32 limit;
+        s32 *maxcode;
+        u32 *stream;
+        u32 prefixWord;
+        s32 offset;
+        s32 nextPos;
+        s32 endPos;
+        u8 *values;
+        u8 *offsetBase;
 
-    table = lbl_80368880;
-    lens = table + 0x20;
-    position = *(s32 *)(ctx + 0x6A4);
-    buffer = *(u32 *)(ctx + 0x6A0);
-    code = __rlwnm(buffer, position + 4, 27, 31);
+        tbl = lbl_80368880;
+        pos = *(s32 *)(ctx + 0x6A4);
+        lens = tbl + 0x20;
+        word = *(u32 *)(ctx + 0x6A0);
+        code = __rlwnm(word, pos + 4, 27, 31);
 
-    if (position <= 28) {
-        symbol = table[code];
-        if (symbol != 0xFF) {
-            position += lens[code];
-            *(s32 *)(ctx + 0x6A4) = position;
-            goto dc_decoded;
-        }
-        length = 5;
-        position += 5;
-        goto dc_long;
-    }
-
-    stream = *(u32 **)(ctx + 0x69C);
-    if (position == 33) {
-        stream++;
-        buffer = *stream;
-        *(u32 **)(ctx + 0x69C) = stream;
-        *(u32 *)(ctx + 0x6A0) = buffer;
-        code = (code & 0x10) | (buffer >> 28);
-        symbol = table[code];
-        position = lens[code];
-        *(s32 *)(ctx + 0x6A4) = position;
-        if (symbol != 0xFF) {
-            goto dc_decoded;
-        }
-        length = 5;
-        position = 6;
-        goto dc_long;
-    }
-
-    if (position == 32) {
-        stream++;
-        buffer = *stream;
-        *(u32 **)(ctx + 0x69C) = stream;
-        *(u32 *)(ctx + 0x6A0) = buffer;
-        code = buffer >> 27;
-        symbol = table[code];
-        position = lens[code] + 1;
-        if (symbol != 0xFF) {
-            *(s32 *)(ctx + 0x6A4) = position;
-            goto dc_decoded;
-        }
-        length = 5;
-        position = 6;
-        goto dc_long;
-    }
-
-    symbol = table[code];
-    position += lens[code];
-    if (symbol != 0xFF && position <= 33) {
-        *(s32 *)(ctx + 0x6A4) = position;
-        goto dc_decoded;
-    }
-
-    stream++;
-    buffer = *stream;
-    *(u32 **)(ctx + 0x69C) = stream;
-    *(u32 *)(ctx + 0x6A0) = buffer;
-    code = (position & 0x10) | (buffer >> 28);
-    symbol = table[code];
-    position = lens[code];
-    *(s32 *)(ctx + 0x6A4) = position;
-    if (symbol != 0xFF) {
-        goto dc_decoded;
-    }
-    length = 5;
-    position = 6;
-
-dc_long:
-    /* Resolve a code not represented by the 5-bit fast table. */
-    for (;;) {
-        if (position == 33) {
-            stream = *(u32 **)(ctx + 0x69C);
-            stream++;
-            buffer = *stream;
-            *(u32 **)(ctx + 0x69C) = stream;
-            *(u32 *)(ctx + 0x6A0) = buffer;
-            position = 1;
-        }
-        code = (code << 1) | __rlwnm(buffer, position, 31, 31);
-        position++;
-        length++;
-        threshold = *(u32 *)(table + 0x44 + length * 4);
-        if (code <= threshold) {
-            break;
-        }
-    }
-    *(s32 *)(ctx + 0x6A4) = position;
-    off = *(u32 *)(table + 0x40);
-    off += *(u32 *)(table + 0x8C + length * 4);
-    symbol = *(u8 *)(off + code);
-
-dc_decoded:
-    /* Clear the remaining three 32-byte cache lines. */
-    __dcbz(arg1, 0x20);
-    __dcbz(arg1, 0x40);
-
-    value = 0;
-    category = (s32)symbol;
-    if (category != 0) {
-        position = *(s32 *)(ctx + 0x6A4);
-        buffer = *(u32 *)(ctx + 0x6A0);
-        bits = (u32)category;
-        extra = 33 - position;
-        if (bits <= extra) {
-            raw = (buffer << (position - 1)) >> (32 - bits);
-            position += bits;
-            *(s32 *)(ctx + 0x6A4) = position;
-        } else {
-            stream = *(u32 **)(ctx + 0x69C);
-            prefix = buffer << (position - 1);
-            stream++;
-            buffer = *stream;
-            *(u32 *)(ctx + 0x6A0) = buffer;
-            *(u32 **)(ctx + 0x69C) = stream;
-            position = (s32)bits - (s32)extra + 1;
-            *(s32 *)(ctx + 0x6A4) = position;
-            raw = (prefix + (buffer >> extra)) >> (32 - bits);
-        }
-        if (raw < (1U << (bits - 1))) {
-            raw += 1U - (1U << bits);
-        }
-        value = (s16)raw;
-    }
-
-    __dcbz(arg1, 0x60);
-    dc = (s16)(*(s16 *)(ctx + 0x690) + value);
-    *(s16 *)(ctx + 0x690) = (s16)dc;
-    arg1[0] = (s16)dc;
-    zigzag = lbl_80282FD8;
-
-    /* The remaining 63 coefficients are run-length/Huffman coded. */
-    index = 1;
-    while (index < 64) {
-        table = lbl_803688E0;
-        lens = table + 0x20;
-        position = *(s32 *)(ctx + 0x6A4);
-        buffer = *(u32 *)(ctx + 0x6A0);
-        code = __rlwnm(buffer, position + 4, 27, 31);
-
-        if (position <= 28) {
-            symbol = table[code];
-            if (symbol != 0xFF) {
-                position += lens[code];
-                *(s32 *)(ctx + 0x6A4) = position;
-                goto ac_decoded;
+        if (pos <= 28) {
+            val = (s32)tbl[code];
+            step = (s32)lens[code];
+            if (val != 255) {
+                pos += step;
+                *(s32 *)(ctx + 0x6A4) = pos;
+                goto dc_decoded;
             }
-            length = 5;
-            position += 5;
-            goto ac_long;
+            maxcode = (s32 *)(tbl + 0x44);
+            pos += 5;
+            len = 5;
+            maxcode += 5;
+            do {
+                if (pos == 33) {
+                    code <<= 1;
+                    stream = *(u32 **)(ctx + 0x69C);
+                    pos = 1;
+                    word = *++stream;
+                    limit = *++maxcode;
+                    *(u32 **)(ctx + 0x69C) = stream;
+                    code = __rlwimi(code, word, 1, 31, 31);
+                    *(u32 *)(ctx + 0x6A0) = word;
+                    goto dc_refill_test;
+                    do {
+                        code <<= 1;
+                        step = __rlwnm(word, pos, 31, 31);
+                        limit = *++maxcode;
+                        code |= step;
+dc_refill_test:
+                        ++pos;
+                        ++len;
+                    } while (code > limit);
+                    goto dc_long_done;
+                }
+                code <<= 1;
+                step = __rlwnm(word, pos, 31, 31);
+                limit = *++maxcode;
+                code |= step;
+                ++pos;
+                ++len;
+            } while (code > limit);
+dc_long_done:
+            *(s32 *)(ctx + 0x6A4) = pos;
+            offsetBase = tbl + len * 4;
+            values = *(u8 **)(tbl + 0x40);
+            values += *(s32 *)(offsetBase + 0x8C);
+            val = values[code];
+            goto dc_decoded;
         }
 
         stream = *(u32 **)(ctx + 0x69C);
-        if (position == 33) {
-            stream++;
-            buffer = *stream;
-            *(u32 **)(ctx + 0x69C) = stream;
-            *(u32 *)(ctx + 0x6A0) = buffer;
-            code = (code & 0x10) | (buffer >> 28);
-            symbol = table[code];
-            position = lens[code];
-            *(s32 *)(ctx + 0x6A4) = position;
-            if (symbol != 0xFF) {
-                goto ac_decoded;
-            }
-            length = 5;
-            position = 6;
-            goto ac_long;
-        }
+        if (pos == 33)
+            goto dc_fresh_word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+        if (pos == 32)
+            goto dc_one_bit;
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        endPos = pos + step;
+        if (val == 255)
+            goto dc_cross_word;
+        *(s32 *)(ctx + 0x6A4) = endPos;
+        if (endPos > 33)
+            goto dc_cross_word;
+        goto dc_decoded;
 
-        if (position == 32) {
-            stream++;
-            buffer = *stream;
-            *(u32 **)(ctx + 0x69C) = stream;
-            *(u32 *)(ctx + 0x6A0) = buffer;
-            code = buffer >> 27;
-            symbol = table[code];
-            position = lens[code] + 1;
-            if (symbol != 0xFF) {
-                *(s32 *)(ctx + 0x6A4) = position;
-                goto ac_decoded;
-            }
-            length = 5;
-            position = 6;
-            goto ac_long;
-        }
-
-        symbol = table[code];
-        position += lens[code];
-        if (symbol != 0xFF && position <= 33) {
-            *(s32 *)(ctx + 0x6A4) = position;
-            goto ac_decoded;
-        }
-
-        stream++;
-        buffer = *stream;
+dc_one_bit:
+        word = *++stream;
         *(u32 **)(ctx + 0x69C) = stream;
-        *(u32 *)(ctx + 0x6A0) = buffer;
-        code = (position & 0x10) | (buffer >> 28);
-        symbol = table[code];
-        position = lens[code];
-        *(s32 *)(ctx + 0x6A4) = position;
-        if (symbol != 0xFF) {
+        code = __rlwimi(code, word, 4, 28, 31);
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        *(u32 *)(ctx + 0x6A0) = word;
+        *(s32 *)(ctx + 0x6A4) = step;
+        if (val != 255)
+            goto dc_decoded;
+        maxcode = (s32 *)(tbl + 0x44);
+        maxcode += 5;
+        prefixWord = __rlwimi((u32)code << 27, word, 31, 1, 31);
+        pos = 5;
+        do {
+            step = 31 - pos;
+            limit = *++maxcode;
+            code = (s32)(prefixWord >> step);
+            ++pos;
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = pos;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
+        goto dc_decoded;
+
+dc_fresh_word:
+        word = *++stream;
+        code = word >> 27;
+        *(u32 **)(ctx + 0x69C) = stream;
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        *(u32 *)(ctx + 0x6A0) = word;
+        ++step;
+        if (val != 255) {
+            *(s32 *)(ctx + 0x6A4) = step;
+            goto dc_decoded;
+        }
+        pos = 5;
+        offset = 0x14;
+        do {
+            step = 31 - pos;
+            ++pos;
+            offset += 4;
+            code = (s32)(word >> step);
+            offsetBase = tbl + offset;
+            limit = *(s32 *)(offsetBase + 0x44);
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = pos + 1;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
+        goto dc_decoded;
+
+dc_cross_word:
+        code = (s32)(word & ~(~0U << (33 - pos)));
+        maxcode = (s32 *)(tbl + 0x44);
+        stream = *(u32 **)(ctx + 0x69C);
+        step = 33 - pos;
+        pos = step + 1;
+        word = *++stream;
+        maxcode += step;
+        *(u32 **)(ctx + 0x69C) = stream;
+        code <<= 1;
+        *(u32 *)(ctx + 0x6A0) = word;
+        code = __rlwimi(code, word, 1, 31, 31);
+        limit = *++maxcode;
+        nextPos = 2;
+        goto dc_cross_test;
+        do {
+            code <<= 1;
+            ++pos;
+            limit = *++maxcode;
+            code += step;
+            ++nextPos;
+dc_cross_test:
+            step = __rlwnm(word, nextPos, 31, 31);
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = nextPos;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
+
+dc_decoded:
+        __dcbz(arg1, 0x20);
+        raw = 0;
+        __dcbz(arg1, 0x40);
+        if (val != 0) {
+            s32 bitpos;
+            s32 remaining;
+            u32 word;
+            s32 extra;
+            s32 shift;
+            u32 *wp;
+            u32 oldbits;
+            u32 combined;
+            bitpos = *(s32 *)(ctx + 0x6A4);
+            remaining = 33 - bitpos;
+            word = *(u32 *)(ctx + 0x6A0);
+            extra = val - remaining;
+            shift = bitpos - 1;
+            if (extra <= 0) {
+                s32 end = bitpos + val;
+                combined = word << shift;
+                *(s32 *)(ctx + 0x6A4) = end;
+                raw = combined >> (32 - val);
+            } else {
+                wp = *(u32 **)(ctx + 0x69C);
+                oldbits = word << shift;
+                word = *++wp;
+                ++extra;
+                *(u32 *)(ctx + 0x6A0) = word;
+                combined = word >> remaining;
+                *(u32 **)(ctx + 0x69C) = wp;
+                combined += oldbits;
+                *(s32 *)(ctx + 0x6A4) = extra;
+                raw = combined >> (32 - val);
+            }
+            if ((s32)__cntlzw((s16)raw) > 32 - val) {
+                raw += ~0U << val;
+                ++raw;
+            }
+        }
+    }
+    __dcbz(arg1, 0x60);
+    {
+        u32 dc = (s32)*(s16 *)(ctx + 0x690) + raw;
+        *(u16 *)(ctx + 0x690) = (u16)dc;
+        *(u16 *)arg1 = (u16)dc;
+    }
+
+    zigzag = lbl_80282FD8;
+    for (i = 1; i < 64; ++i) {
+        register s32 pos;
+        register u8 *tbl;
+        u8 *lens;
+        u32 word;
+        s32 code;
+        s32 val;
+        s32 len;
+        s32 step;
+        s32 limit;
+        s32 *maxcode;
+        u32 *stream;
+        u32 prefixWord;
+        s32 offset;
+        s32 nextPos;
+        s32 endPos;
+        u8 *values;
+        u8 *offsetBase;
+
+        tbl = lbl_803688E0;
+        pos = *(s32 *)(ctx + 0x6A4);
+        lens = tbl + 0x20;
+        word = *(u32 *)(ctx + 0x6A0);
+        code = __rlwnm(word, pos + 4, 27, 31);
+
+        if (pos <= 28) {
+            val = (s32)tbl[code];
+            step = (s32)lens[code];
+            if (val != 255) {
+                pos += step;
+                *(s32 *)(ctx + 0x6A4) = pos;
+                goto ac_decoded;
+            }
+            maxcode = (s32 *)(tbl + 0x44);
+            pos += 5;
+            len = 5;
+            maxcode += 5;
+            do {
+                if (pos == 33) {
+                    code <<= 1;
+                    stream = *(u32 **)(ctx + 0x69C);
+                    pos = 1;
+                    word = *++stream;
+                    limit = *++maxcode;
+                    *(u32 **)(ctx + 0x69C) = stream;
+                    code = __rlwimi(code, word, 1, 31, 31);
+                    *(u32 *)(ctx + 0x6A0) = word;
+                    goto ac_refill_test;
+                    do {
+                        code <<= 1;
+                        step = __rlwnm(word, pos, 31, 31);
+                        limit = *++maxcode;
+                        code |= step;
+ac_refill_test:
+                        ++pos;
+                        ++len;
+                    } while (code > limit);
+                    goto ac_long_done;
+                }
+                code <<= 1;
+                step = __rlwnm(word, pos, 31, 31);
+                limit = *++maxcode;
+                code |= step;
+                ++pos;
+                ++len;
+            } while (code > limit);
+ac_long_done:
+            *(s32 *)(ctx + 0x6A4) = pos;
+            offsetBase = tbl + len * 4;
+            values = *(u8 **)(tbl + 0x40);
+            values += *(s32 *)(offsetBase + 0x8C);
+            val = values[code];
             goto ac_decoded;
         }
-        length = 5;
-        position = 6;
 
-ac_long:
-        for (;;) {
-            if (position == 33) {
-                stream = *(u32 **)(ctx + 0x69C);
-                stream++;
-                buffer = *stream;
-                *(u32 **)(ctx + 0x69C) = stream;
-                *(u32 *)(ctx + 0x6A0) = buffer;
-                position = 1;
-            }
-            code = (code << 1) | __rlwnm(buffer, position, 31, 31);
-            position++;
-            length++;
-            threshold = *(u32 *)(table + 0x44 + length * 4);
-            if (code <= threshold) {
-                break;
-            }
+        stream = *(u32 **)(ctx + 0x69C);
+        if (pos == 33)
+            goto ac_fresh_word;
+        code = __rlwnm(word, pos + 4, 27, 31);
+        if (pos == 32)
+            goto ac_one_bit;
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        endPos = pos + step;
+        if (val == 255)
+            goto ac_cross_word;
+        *(s32 *)(ctx + 0x6A4) = endPos;
+        if (endPos > 33)
+            goto ac_cross_word;
+        goto ac_decoded;
+
+ac_one_bit:
+        word = *++stream;
+        *(u32 **)(ctx + 0x69C) = stream;
+        code = __rlwimi(code, word, 4, 28, 31);
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        *(u32 *)(ctx + 0x6A0) = word;
+        *(s32 *)(ctx + 0x6A4) = step;
+        if (val != 255)
+            goto ac_decoded;
+        maxcode = (s32 *)(tbl + 0x44);
+        maxcode += 5;
+        prefixWord = __rlwimi((u32)code << 27, word, 31, 1, 31);
+        pos = 5;
+        do {
+            step = 31 - pos;
+            limit = *++maxcode;
+            code = (s32)(prefixWord >> step);
+            ++pos;
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = pos;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
+        goto ac_decoded;
+
+ac_fresh_word:
+        word = *++stream;
+        code = word >> 27;
+        *(u32 **)(ctx + 0x69C) = stream;
+        val = (s32)tbl[code];
+        step = (s32)lens[code];
+        *(u32 *)(ctx + 0x6A0) = word;
+        ++step;
+        if (val != 255) {
+            *(s32 *)(ctx + 0x6A4) = step;
+            goto ac_decoded;
         }
-        *(s32 *)(ctx + 0x6A4) = position;
-        off = *(u32 *)(table + 0x40);
-        off += *(u32 *)(table + 0x8C + length * 4);
-        symbol = *(u8 *)(off + code);
+        pos = 5;
+        offset = 0x14;
+        do {
+            step = 31 - pos;
+            ++pos;
+            offset += 4;
+            code = (s32)(word >> step);
+            offsetBase = tbl + offset;
+            limit = *(s32 *)(offsetBase + 0x44);
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = pos + 1;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
+        goto ac_decoded;
+
+ac_cross_word:
+        code = (s32)(word & ~(~0U << (33 - pos)));
+        maxcode = (s32 *)(tbl + 0x44);
+        stream = *(u32 **)(ctx + 0x69C);
+        step = 33 - pos;
+        pos = step + 1;
+        word = *++stream;
+        maxcode += step;
+        *(u32 **)(ctx + 0x69C) = stream;
+        code <<= 1;
+        *(u32 *)(ctx + 0x6A0) = word;
+        code = __rlwimi(code, word, 1, 31, 31);
+        limit = *++maxcode;
+        nextPos = 2;
+        goto ac_cross_test;
+        do {
+            code <<= 1;
+            ++pos;
+            limit = *++maxcode;
+            code += step;
+            ++nextPos;
+ac_cross_test:
+            step = __rlwnm(word, nextPos, 31, 31);
+        } while (code > limit);
+        *(s32 *)(ctx + 0x6A4) = nextPos;
+        offsetBase = tbl + pos * 4;
+        values = *(u8 **)(tbl + 0x40);
+        values += *(s32 *)(offsetBase + 0x8C);
+        val = values[code];
 
 ac_decoded:
-        run = (s32)(symbol >> 4);
-        category = (s32)(symbol & 15);
-        if (category == 0) {
-            if (run == 15) {
-                index += 16;
-                continue;
+        {
+            register s32 bits;
+            s32 run;
+            u32 raw;
+            bits = val & 15;
+            run = val >> 4;
+            if (bits != 0) {
+                i += run;
+                {
+                    s32 bitpos;
+                    s32 remaining;
+                    u32 word;
+                    s32 extra;
+                    s32 shift;
+                    u32 *wp;
+                    u32 oldbits;
+                    u32 combined;
+                    bitpos = *(s32 *)(ctx + 0x6A4);
+                    remaining = 33 - bitpos;
+                    word = *(u32 *)(ctx + 0x6A0);
+                    extra = bits - remaining;
+                    shift = bitpos - 1;
+                    if (extra <= 0) {
+                        s32 end = bitpos + bits;
+                        combined = word << shift;
+                        *(s32 *)(ctx + 0x6A4) = end;
+                        raw = combined >> (32 - bits);
+                    } else {
+                        wp = *(u32 **)(ctx + 0x69C);
+                        oldbits = word << shift;
+                        word = *++wp;
+                        ++extra;
+                        *(u32 *)(ctx + 0x6A0) = word;
+                        combined = word >> remaining;
+                        *(u32 **)(ctx + 0x69C) = wp;
+                        combined += oldbits;
+                        *(s32 *)(ctx + 0x6A4) = extra;
+                        raw = combined >> (32 - bits);
+                    }
+                    if ((s32)__cntlzw(raw) > 32 - bits) {
+                        raw += ~0U << bits;
+                        ++raw;
+                    }
+                }
+                {
+                    u8 *scan = zigzag + i;
+                    s16 coefficient = (s16)raw;
+                    arg1[*scan] = coefficient;
+                }
+            } else {
+                if (run != 15)
+                    break;
+                i += 15;
             }
-            break;
         }
-
-        index += run;
-        position = *(s32 *)(ctx + 0x6A4);
-        buffer = *(u32 *)(ctx + 0x6A0);
-        bits = (u32)category;
-        extra = 33 - position;
-        if (bits <= extra) {
-            raw = (buffer << (position - 1)) >> (32 - bits);
-            position += bits;
-            *(s32 *)(ctx + 0x6A4) = position;
-        } else {
-            stream = *(u32 **)(ctx + 0x69C);
-            prefix = buffer << (position - 1);
-            stream++;
-            buffer = *stream;
-            *(u32 *)(ctx + 0x6A0) = buffer;
-            *(u32 **)(ctx + 0x69C) = stream;
-            position = (s32)bits - (s32)extra + 1;
-            *(s32 *)(ctx + 0x6A4) = position;
-            raw = (prefix + (buffer >> extra)) >> (32 - bits);
-        }
-        if (raw < (1U << (bits - 1))) {
-            raw += 1U - (1U << bits);
-        }
-
-        coefficient = (s16)raw;
-        arg1[zigzag[index]] = (s16)coefficient;
-        index++;
     }
 }
 

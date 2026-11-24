@@ -633,10 +633,10 @@ f64 fn_8022D5E0(void *arg0)
         s16 exponent;
         u8 length;
         u8 digits[36];
-        u8 padding;
     };
     union DoubleBits {
         f64 value;
+        unsigned long long integer;
         struct {
             u32 high;
             u32 low;
@@ -656,223 +656,575 @@ f64 fn_8022D5E0(void *arg0)
     extern f64 lbl_8036BDD8;
     extern f64 lbl_8036BDE0;
     extern f32 lbl_8036706C;
+    extern f64 lbl_80367078;
     extern f64 lbl_8029E740[];
     extern u8 lbl_8029E8A8[];
     extern u8 lbl_8029E9A8[];
+    extern u8 lbl_80282B78[];
 
     struct Decimal original;
-    struct Decimal rounded;
-    struct Decimal candidateDecimal;
-    struct Decimal neighborDecimal;
-    struct Decimal difference1;
-    struct Decimal difference2;
-    struct Decimal intermediate;
-    struct Decimal difference3;
-    struct Decimal difference4;
+    struct Decimal limit;
+    struct Decimal current;
+    struct Decimal upperDecimal;
+    struct Decimal upperDiffLow;
+    struct Decimal upperDiffHigh;
+    struct Decimal lowerDecimal;
+    struct Decimal lowerDiffLow;
+    struct Decimal lowerDiffHigh;
+    union DoubleBits nan;
+    volatile f64 result;
+    union DoubleBits upper;
+    union DoubleBits lower;
+    union DoubleBits initialClass;
+    union DoubleBits upperClass;
+    union DoubleBits loopClass;
     struct Decimal *input;
-    union DoubleBits bits;
-    union DoubleBits nextBits;
     u8 *p;
     u8 *end;
+    register u8 *begin;
+    register u8 *scan;
+    s32 i;
+    register s32 exponent;
     u32 group;
-    u32 digitsLeft;
-    u32 chunk;
-    u32 nibble;
-    u32 i;
+    s32 chunk;
     s32 kind;
-    u32 flags;
-    s32 exponent;
-    s32 decimalCount;
-    s32 comparison;
-    s32 relative;
-    s32 chooseUpper;
-    volatile f64 result;
-    f64 scaled;
+    s32 less;
+    f64 product;
+    f64 sum;
     f64 factor;
-    f64 sign;
+    f64 scaled;
+    f64 adjacent;
 
     input = (struct Decimal *)arg0;
     if (input->length == 0) {
-        if (input->sign == 0) {
-            sign = lbl_8036BDD0;
-        } else {
-            sign = lbl_8036BDD8;
-        }
-        return fn_802380A8(lbl_8036BDC8, sign);
+        return fn_802380A8(lbl_8036BDC8,
+            input->sign == 0 ? lbl_8036BDD0 : lbl_8036BDD8);
     }
 
-    kind = input->digits[0];
-    switch (kind) {
+    switch (input->digits[0]) {
     case '0':
-        if (input->sign == 0) {
-            sign = lbl_8036BDD0;
-        } else {
-            sign = lbl_8036BDD8;
-        }
-        return fn_802380A8(lbl_8036BDC8, sign);
-
+        return fn_802380A8(lbl_8036BDC8,
+            input->sign == 0 ? lbl_8036BDD0 : lbl_8036BDD8);
     case 'I':
-        if (input->sign == 0) {
-            sign = lbl_8036BDD0;
-        } else {
-            sign = lbl_8036BDD8;
-        }
-        return fn_802380A8((f64)lbl_8036706C, sign);
-
+        return fn_802380A8((f64)lbl_8036706C,
+            input->sign == 0 ? lbl_8036BDD0 : lbl_8036BDD8);
     case 'N':
-        bits.words.high = 0x7FF00000U;
-        bits.words.low = 0;
-        if (input->sign != 0) {
-            bits.words.high |= 0x80000000U;
+        {
+            s32 count;
+            s32 nonzero;
+            s32 lowNibble;
+            s32 c;
+            s32 digit;
+            nan.integer = 0x7FF0000000000000ULL;
+            if (input->sign != 0) {
+                nan.integer |= 0x8000000000000000ULL;
+            }
+            if (input->length == 1) {
+                nan.words.high |= 0x00080000U;
+            } else {
+                count = input->length;
+                p = &nan.bytes[1];
+                nonzero = 0;
+                lowNibble = 1;
+                if (count > 14) count = 14;
+                for (i = 1; i < count; ++i) {
+                    c = input->digits[i];
+                    if (lbl_8029E8A8[c] & 0x10) {
+                        digit = c - '0';
+                    } else {
+                        if (c == -1) {
+                            digit = (u8)(-1);
+                        } else {
+                            digit = (u8)(lbl_8029E9A8[c] - 0x57);
+                        }
+                    }
+                    if (digit != 0) nonzero = 1;
+                    if (lowNibble != 0) {
+                        *p |= digit;
+                        ++p;
+                    } else {
+                        *p = (u8)(digit << 4);
+                    }
+                    lowNibble = !lowNibble;
+                }
+                if (nonzero == 0) nan.words.high |= 0x00080000U;
+            }
+            return nan.value;
         }
-        if (input->length == 1) {
-            bits.words.high |= 0x00080000U;
-        } else {
-            digitsLeft = input->length;
-            if (digitsLeft > 14) {
-                digitsLeft = 14;
-            }
-            flags = 0;
-            p = &bits.bytes[1];
-            for (i = 1; i < digitsLeft; ++i) {
-                u8 c = input->digits[i];
-                if (lbl_8029E8A8[c] & 0x10) {
-                    nibble = c - '0';
-                } else if (c == 0xFF) {
-                    nibble = 0xFF;
-                } else {
-                    nibble = (u8)(lbl_8029E9A8[c] - 0x57);
-                }
-                if (nibble != 0) {
-                    flags = 1;
-                }
-                if ((i & 1) != 0) {
-                    *p |= (u8)nibble;
-                    p++;
-                } else {
-                    *p = (u8)(nibble << 4);
-                }
-            }
-            if (flags == 0) {
-                bits.words.high |= 0x00080000U;
-            }
-        }
-        return bits.value;
     }
 
-    /* Copy the whole decimal record to the working stack record. */
     original = *input;
-    for (i = 0; i < original.length; ++i) {
-        original.digits[i] -= '0';
+    begin = original.digits;
+    end = begin + original.length;
+    for (scan = begin; scan < end; ++scan) {
+        *scan -= '0';
     }
 
-    exponent = (s16)(original.exponent + original.length - 1);
-    result = (f64)original.digits[0];
-    p = original.digits + 1;
-    end = original.digits + original.length;
-
-    /* Accumulate the mantissa eight decimal digits at a time. */
+    result = *begin;
+    p = begin + 1;
+    original.exponent += original.length - 1;
+    exponent = original.exponent;
     while (p < end) {
-        digitsLeft = (u32)(end - p);
-        chunk = digitsLeft & 7;
-        if (chunk == 0) {
-            chunk = 8;
-        }
         group = 0;
-        for (i = 0; i < chunk; ++i) {
-            group = group * 10 + *p++;
+        chunk = (s32)(end - p) % 8;
+        if (chunk == 0) chunk = 8;
+        for (i = 0; i < chunk; ++i, ++p) {
+            group = group * 10 + *p;
         }
-        result = result * lbl_8029E740[chunk - 1] + (f64)group;
-        exponent -= (s32)chunk;
+        product = result * lbl_8029E740[chunk - 1];
+        sum = product + (f64)group;
+        if (group != 0 && product == sum) break;
+        result = sum;
+        exponent -= chunk;
     }
 
-    /* Scale the significant digits by the remaining decimal exponent. */
     if (exponent < 0) {
-        decimalCount = -exponent;
-        factor = fmod(lbl_8036BDE0, (f64)decimalCount);
-        result /= factor;
-    } else if (exponent > 0) {
+        factor = fmod(lbl_8036BDE0, (f64)-exponent);
+        scaled = result / factor;
+    } else {
         factor = fmod(lbl_8036BDE0, (f64)exponent);
-        result *= factor;
+        scaled = result * factor;
+    }
+    result = scaled;
+    scaled = fn_80238378(exponent, scaled);
+
+    initialClass.value = scaled;
+    result = scaled;
+    switch ((s32)(initialClass.words.high & 0x7FF00000U)) {
+    case 0x7FF00000:
+        if ((initialClass.words.high & 0xFFFFFU) || (s32)initialClass.words.low)
+            kind = 1;
+        else
+            kind = 2;
+        break;
+    case 0:
+        if ((initialClass.words.high & 0xFFFFFU) || (s32)initialClass.words.low)
+            kind = 5;
+        else
+            kind = 3;
+        break;
+    default:
+        kind = 4;
+        break;
+    }
+    if (kind == 2) {
+        const s8 *str;
+        const s8 *tail;
+        limit.sign = 0;
+        limit.exponent = 308;
+        str = (const s8 *)lbl_80282B78;
+        for (i = 0; i < 36 && *str != 0; ++i) {
+            limit.digits[i] = *str++ - '0';
+        }
+        limit.length = i;
+        if (*str == 0) goto limit_round_done;
+        if (*str < 5) goto limit_round_done;
+        if (*str > 5) goto round_limit;
+        for (tail = str + 1; *tail != 0; ++tail) {
+            if (*tail != '0') goto round_limit;
+        }
+        if (!(limit.digits[i - 1] & 1)) goto limit_round_done;
+round_limit:
+        begin = limit.digits;
+        p = begin + limit.length - 1;
+        for (;;) {
+            if (*p < 9) {
+                ++*p;
+                break;
+            }
+            if (p == begin) {
+                *p = 1;
+                ++limit.exponent;
+                break;
+            }
+            *p-- = 0;
+        }
+limit_round_done:
+        {
+            s32 n, lenA, lenB, j;
+            const struct Decimal *lhs, *rhs;
+            if (limit.digits[0] == 0) {
+                if (original.digits[0] != 0) {
+                    less = 1;
+                } else {
+                    less = 0;
+                }
+                goto limit_cmp_done;
+            }
+            if (original.digits[0] == 0) {
+                less = 0;
+                goto limit_cmp_done;
+            }
+            if (limit.exponent == original.exponent) {
+                lenA = limit.length;
+                lenB = original.length;
+                n = lenA;
+                if (n > lenB) n = lenB;
+                rhs = &original;
+                lhs = &limit;
+                for (j = 0; j < n; ++j) {
+                    if (lhs->digits[j] < rhs->digits[j]) {
+                        less = 1;
+                        goto limit_cmp_done;
+                    }
+                    if (rhs->digits[j] < lhs->digits[j]) {
+                        less = 0;
+                        goto limit_cmp_done;
+                    }
+                }
+                if (n == lenA) {
+                    for (; j < lenB; ++j) {
+                        if (rhs->digits[j] != 0) {
+                            less = 1;
+                            goto limit_cmp_done;
+                        }
+                    }
+                }
+                less = 0;
+            } else {
+                less = (limit.exponent < original.exponent);
+            }
+        limit_cmp_done:
+            ;
+        }
+        if (less) goto finish;
+        result = lbl_80367078;
     }
 
-    result = fn_80238378(exponent, result);
+    fn_8022E804(&current, result);
+    if (fn_8022F0B4(&current, &original)) goto finish;
 
-    /* The target compares converted decimal records against the input,
-       then checks adjacent binary doubles for correct rounding. */
-    bits.value = result;
-    fn_8022E804(&candidateDecimal, bits.value);
-    comparison = fn_8022F0B4(&candidateDecimal, &original);
-
-    if (comparison != 0) {
-        nextBits = bits;
-        if (comparison < 0) {
-            if ((nextBits.words.high & 0x7FF00000U) != 0x7FF00000U) {
-                nextBits.words.low++;
-                if (nextBits.words.low == 0) {
-                    nextBits.words.high++;
+    {
+        s32 n, lenA, lenB, j;
+        const struct Decimal *lhs, *rhs;
+        if (current.digits[0] == 0) {
+            if (original.digits[0] != 0) {
+                less = 1;
+            } else {
+                less = 0;
+            }
+            goto initial_cmp_done;
+        }
+        if (original.digits[0] == 0) {
+            less = 0;
+            goto initial_cmp_done;
+        }
+        if (current.exponent == original.exponent) {
+            lenA = current.length;
+            lenB = original.length;
+            n = lenA;
+            if (n > lenB) n = lenB;
+            rhs = &original;
+            lhs = &current;
+            for (j = 0; j < n; ++j) {
+                if (lhs->digits[j] < rhs->digits[j]) {
+                    less = 1;
+                    goto initial_cmp_done;
+                }
+                if (rhs->digits[j] < lhs->digits[j]) {
+                    less = 0;
+                    goto initial_cmp_done;
                 }
             }
+            if (n == lenA) {
+                for (; j < lenB; ++j) {
+                    if (rhs->digits[j] != 0) {
+                        less = 1;
+                        goto initial_cmp_done;
+                    }
+                }
+            }
+            less = 0;
         } else {
-            if ((nextBits.words.high & 0x7FF00000U) != 0) {
-                if (nextBits.words.low == 0) {
-                    nextBits.words.high--;
+            less = (current.exponent < original.exponent);
+        }
+    initial_cmp_done:
+        ;
+    }
+    if (less) {
+        upper.value = result;
+        ++upper.integer;
+        adjacent = upper.value;
+        upperClass.value = adjacent;
+        switch ((s32)(upperClass.words.high & 0x7FF00000U)) {
+        case 0x7FF00000:
+            if ((upperClass.words.high & 0xFFFFFU) || (s32)upperClass.words.low)
+                kind = 1;
+            else
+                kind = 2;
+            break;
+        case 0:
+            if ((upperClass.words.high & 0xFFFFFU) || (s32)upperClass.words.low)
+                kind = 5;
+            else
+                kind = 3;
+            break;
+        default:
+            kind = 4;
+            break;
+        }
+        if (kind == 2) {
+            result = adjacent;
+            goto finish;
+        }
+        fn_8022E804(&upperDecimal, adjacent);
+        goto upper_test;
+upper_step:
+        scaled = upper.value;
+        ++upper.integer;
+        current = upperDecimal;
+        adjacent = upper.value;
+        loopClass.value = adjacent;
+        result = scaled;
+        switch ((s32)(loopClass.words.high & 0x7FF00000U)) {
+        case 0x7FF00000:
+            if ((loopClass.words.high & 0xFFFFFU) || (s32)loopClass.words.low)
+                kind = 1;
+            else
+                kind = 2;
+            break;
+        case 0:
+            if ((loopClass.words.high & 0xFFFFFU) || (s32)loopClass.words.low)
+                kind = 5;
+            else
+                kind = 3;
+            break;
+        default:
+            kind = 4;
+            break;
+        }
+        if (kind == 2) {
+            result = adjacent;
+            goto finish;
+        }
+        fn_8022E804(&upperDecimal, adjacent);
+upper_test:
+        {
+            s32 n, lenA, lenB, j;
+            const struct Decimal *lhs, *rhs;
+            if (upperDecimal.digits[0] == 0) {
+                if (original.digits[0] != 0) {
+                    less = 1;
+                } else {
+                    less = 0;
                 }
-                nextBits.words.low--;
+                goto upper_cmp_done;
             }
-        }
-
-        fn_8022E804(&neighborDecimal, nextBits.value);
-        relative = fn_8022F0B4(&neighborDecimal, &original);
-        if (relative == 0) {
-            bits = nextBits;
-        } else {
-            fn_8022EBB8(&difference1, &original, &candidateDecimal);
-            fn_8022EBB8(&difference2, &neighborDecimal, &original);
-            chooseUpper = fn_8022F0B4(&difference1, &difference2);
-            if (chooseUpper > 0) {
-                bits = nextBits;
-            } else if (chooseUpper == 0) {
-                if (bits.words.low & 1) {
-                    bits = nextBits;
+            if (original.digits[0] == 0) {
+                less = 0;
+                goto upper_cmp_done;
+            }
+            if (upperDecimal.exponent == original.exponent) {
+                lenA = upperDecimal.length;
+                lenB = original.length;
+                n = lenA;
+                if (n > lenB) n = lenB;
+                rhs = &original;
+                lhs = &upperDecimal;
+                for (j = 0; j < n; ++j) {
+                    if (lhs->digits[j] < rhs->digits[j]) {
+                        less = 1;
+                        goto upper_cmp_done;
+                    }
+                    if (rhs->digits[j] < lhs->digits[j]) {
+                        less = 0;
+                        goto upper_cmp_done;
+                    }
                 }
+                if (n == lenA) {
+                    for (; j < lenB; ++j) {
+                        if (rhs->digits[j] != 0) {
+                            less = 1;
+                            goto upper_cmp_done;
+                        }
+                    }
+                }
+                less = 0;
+            } else {
+                less = (upperDecimal.exponent < original.exponent);
             }
+        upper_cmp_done:
+            ;
         }
+        if (less) goto upper_step;
+        fn_8022EBB8(&upperDiffLow, &original, &current);
+        fn_8022EBB8(&upperDiffHigh, &upperDecimal, &original);
+        if (fn_8022F0B4(&upperDiffLow, &upperDiffHigh)) {
+            if ((*(volatile unsigned long long *)&result & 1ULL) != 0) {
+                result = upper.value;
+            }
+            goto finish;
+        }
+        {
+            s32 n, lenA, lenB, j;
+            const struct Decimal *lhs, *rhs;
+            if (upperDiffLow.digits[0] == 0) {
+                if (upperDiffHigh.digits[0] != 0) {
+                    less = 1;
+                } else {
+                    less = 0;
+                }
+                goto upper_diff_cmp_done;
+            }
+            if (upperDiffHigh.digits[0] == 0) {
+                less = 0;
+                goto upper_diff_cmp_done;
+            }
+            if (upperDiffLow.exponent == upperDiffHigh.exponent) {
+                lenA = upperDiffLow.length;
+                lenB = upperDiffHigh.length;
+                n = lenA;
+                if (n > lenB) n = lenB;
+                rhs = &upperDiffHigh;
+                lhs = &upperDiffLow;
+                for (j = 0; j < n; ++j) {
+                    if (lhs->digits[j] < rhs->digits[j]) {
+                        less = 1;
+                        goto upper_diff_cmp_done;
+                    }
+                    if (rhs->digits[j] < lhs->digits[j]) {
+                        less = 0;
+                        goto upper_diff_cmp_done;
+                    }
+                }
+                if (n == lenA) {
+                    for (; j < lenB; ++j) {
+                        if (rhs->digits[j] != 0) {
+                            less = 1;
+                            goto upper_diff_cmp_done;
+                        }
+                    }
+                }
+                less = 0;
+            } else {
+                less = (upperDiffLow.exponent < upperDiffHigh.exponent);
+            }
+        upper_diff_cmp_done:
+            ;
+        }
+        if (!less) result = upper.value;
+    } else {
+        lower.value = result;
+        --lower.integer;
+        fn_8022E804(&lowerDecimal, lower.value);
+        goto lower_test;
+lower_step:
+        scaled = lower.value;
+        --lower.integer;
+        current = lowerDecimal;
+        adjacent = lower.value;
+        result = scaled;
+        fn_8022E804(&lowerDecimal, adjacent);
+lower_test:
+        {
+            s32 n, lenA, lenB, j;
+            const struct Decimal *lhs, *rhs;
+            if (original.digits[0] == 0) {
+                if (lowerDecimal.digits[0] != 0) {
+                    less = 1;
+                } else {
+                    less = 0;
+                }
+                goto lower_cmp_done;
+            }
+            if (lowerDecimal.digits[0] == 0) {
+                less = 0;
+                goto lower_cmp_done;
+            }
+            if (original.exponent == lowerDecimal.exponent) {
+                lenA = original.length;
+                lenB = lowerDecimal.length;
+                n = lenA;
+                if (n > lenB) n = lenB;
+                rhs = &lowerDecimal;
+                lhs = &original;
+                for (j = 0; j < n; ++j) {
+                    if (lhs->digits[j] < rhs->digits[j]) {
+                        less = 1;
+                        goto lower_cmp_done;
+                    }
+                    if (rhs->digits[j] < lhs->digits[j]) {
+                        less = 0;
+                        goto lower_cmp_done;
+                    }
+                }
+                if (n == lenA) {
+                    for (; j < lenB; ++j) {
+                        if (rhs->digits[j] != 0) {
+                            less = 1;
+                            goto lower_cmp_done;
+                        }
+                    }
+                }
+                less = 0;
+            } else {
+                less = (original.exponent < lowerDecimal.exponent);
+            }
+        lower_cmp_done:
+            ;
+        }
+        if (less) goto lower_step;
+        fn_8022EBB8(&lowerDiffLow, &original, &lowerDecimal);
+        fn_8022EBB8(&lowerDiffHigh, &current, &original);
+        if (fn_8022F0B4(&lowerDiffLow, &lowerDiffHigh)) {
+            if ((*(volatile unsigned long long *)&result & 1ULL) != 0) {
+                result = lower.value;
+            }
+            goto finish;
+        }
+        {
+            s32 n, lenA, lenB, j;
+            const struct Decimal *lhs, *rhs;
+            if (lowerDiffLow.digits[0] == 0) {
+                if (lowerDiffHigh.digits[0] != 0) {
+                    less = 1;
+                } else {
+                    less = 0;
+                }
+                goto lower_diff_cmp_done;
+            }
+            if (lowerDiffHigh.digits[0] == 0) {
+                less = 0;
+                goto lower_diff_cmp_done;
+            }
+            if (lowerDiffLow.exponent == lowerDiffHigh.exponent) {
+                lenA = lowerDiffLow.length;
+                lenB = lowerDiffHigh.length;
+                n = lenA;
+                if (n > lenB) n = lenB;
+                rhs = &lowerDiffHigh;
+                lhs = &lowerDiffLow;
+                for (j = 0; j < n; ++j) {
+                    if (lhs->digits[j] < rhs->digits[j]) {
+                        less = 1;
+                        goto lower_diff_cmp_done;
+                    }
+                    if (rhs->digits[j] < lhs->digits[j]) {
+                        less = 0;
+                        goto lower_diff_cmp_done;
+                    }
+                }
+                if (n == lenA) {
+                    for (; j < lenB; ++j) {
+                        if (rhs->digits[j] != 0) {
+                            less = 1;
+                            goto lower_diff_cmp_done;
+                        }
+                    }
+                }
+                less = 0;
+            } else {
+                less = (lowerDiffLow.exponent < lowerDiffHigh.exponent);
+            }
+        lower_diff_cmp_done:
+            ;
+        }
+        if (less) result = lower.value;
     }
 
-    /* As in the target, inspect the result's exponent field and retain
-       a correctly rounded finite value or a special exponent. */
-    if ((bits.words.high & 0x7FF00000U) == 0x7FF00000U) {
-        fn_8022E804(&rounded, bits.value);
-        if (fn_8022F0B4(&rounded, &original) != 0) {
-            bits.words.high = 0x7FF00000U;
-            bits.words.low = 0;
-        }
-    } else if ((bits.words.high & 0x7FF00000U) == 0) {
-        fn_8022E804(&rounded, bits.value);
-    }
-
-    /* Recheck the nearest representable candidate against the original. */
-    fn_8022E804(&intermediate, bits.value);
-    if (fn_8022F0B4(&intermediate, &original) != 0) {
-        nextBits = bits;
-        nextBits.words.low++;
-        if (nextBits.words.low == 0) {
-            nextBits.words.high++;
-        }
-        fn_8022E804(&rounded, nextBits.value);
-        fn_8022EBB8(&difference3, &original, &intermediate);
-        fn_8022EBB8(&difference4, &rounded, &original);
-        if (fn_8022F0B4(&difference3, &difference4) > 0) {
-            bits = nextBits;
-        }
-    }
-
-    scaled = bits.value;
-    if (original.sign != 0) {
-        scaled = -scaled;
-    }
-    return scaled;
+finish:
+    if (original.sign != 0) result = -result;
+    return result;
 }
 
 void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x) {

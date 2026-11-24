@@ -1702,7 +1702,6 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         u8 idx;
         u8 pad;
     };
-    struct LocalTempoBig { u8 pad[0x1538]; u8 active; };
     struct LocalState {
         u8 pad0[0xA];
         u16 unkA;
@@ -1732,6 +1731,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     u8 *sequence;
     u8 *cursor;
     u8 *bank;
+    u8 *seqOff;
+    u8 *bankTbl;
     struct LocalState *state;
     u8 *node;
     u8 *next;
@@ -1758,7 +1759,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         index = *(u16 *)(data + 8);
         state = (struct LocalState *)lbl_80368968;
         bank = state->bank;
-        sequence = bank + *(u32 *)(*(u32 *)(bank + 4) + ((u32)bank + index * 4));
+        seqOff = (u8 *)(u32)*(u32 *)(bank + 4);
+        sequence = bank + *(u32 *)(seqOff + (u32)bank + (index << 2));
         channel = (u8 *)state + 0x364 + msg[0x15] * 0x2C;
 
         *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
@@ -1845,7 +1847,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         *(u16 *)(channel + 0x20) = 0;
 
         bank = ((struct LocalState *)lbl_80368968)->bank;
-        channel[0x28] = *(u8 *)(bank + msg[0x15] + *(u32 *)(bank + 8));
+        bankTbl = (u8 *)(u32)*(u32 *)(bank + 8);
+        channel[0x28] = *(u8 *)(bankTbl + (u32)bank + msg[0x15]);
 
         instrument = data[4];
         if (instrument != 0xFF) {
@@ -1993,7 +1996,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                         }
                         *(u32 *)(node + 0xC) = endTime;
                         node[0x10] = arg1;
-                        node[0x11] = ((struct LocalTempoBig *)((u8 *)lbl_80368968 + arg1 * 0x38))->active;
+                        node[0x11] = ((u8 *)lbl_80368968 + arg1 * 0x38)[0x1538];
                         prev = 0;
                         cur = *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64));
                         while (cur != 0) {

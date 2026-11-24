@@ -475,270 +475,737 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3)
 
 volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
-  void Map_FillLayer(void *, s32, s32);
-  u8 *self;
-  u8 *state;
-  u8 *read;
-  u8 *write;
-  u8 *entry;
-  s16 *distance;
-  s8 x;
-  s8 y;
-  volatile long new_var2;
-  volatile char new_var4;
-  s8 nx;
-  s8 ny;
-  u8 **new_var3;
-  s32 index;
-  s32 nextIndex;
-  s32 direction;
-  s32 mask;
-  u16 terrain;
-  u16 cost;
-  u16 oldCost;
-  u8 *new_var;
-  int new_var5;
-  volatile unsigned long new_var6;
-  u16 nextCost;
-  u8 type;
-  u8 flags;
-  u8 slot;
-  s32 i;
-  self = (u8 *) arg0;
-  state[0x4EE0] = 0;
-  x = arg1;
-  y = arg2;
-  state = self + 0x20000;
-  *((u16 *) (state + 0x4EE2)) = arg4;
-  *((u8 **) (state + 0x4ED8)) = self + 0x242D8;
-  *((u8 **) (state + 0x4EDC)) = self + 0x248D8;
-  state[0x4EE9] = arg3;
-  write = *((u8 **) (state + 0x4EDC));
-  write[0] = x;
-  write = *((u8 **) (state + 0x4EDC));
-  write[1] = y;
-  write = *((u8 **) (state + 0x4EDC));
-  write[2] = 0x20;
-  write = *((u8 **) (state + 0x4EDC));
-  *((u16 *) (write + 4)) = 0;
-  write = *((u8 **) (state + 0x4EDC));
-  *((u8 **) (state + 0x4EDC)) = write + 6;
-  new_var5 = 0x1C;
-  write = *((u8 **) (state + 0x4EDC));
-  write[2] = 0x10;
-  Map_FillLayer(self, 0xB, -1);
-  distance = *((s16 **) (self + 0x14190));
-  distance[((s8) x) + (((s8) y) << 6)] = 0;
-  for (;;)
-  {
-    slot = state[0x4EE0];
-    *((u8 **) (state + 0x4EDC)) = (self + 0x242D8) + (slot * 0x600);
-    state[0x4EE0] ^= 1;
-    slot = state[0x4EE0];
-    *((u8 **) (state + 0x4ED8)) = (self + 0x242D8) + (slot * 0x600);
-    state[0x4EE1] = 0;
-    read = *((u8 **) (state + 0x4ED8));
-    if (read[2] == 0x10)
-    {
-      break;
-    }
-    do
-    {
-      entry = *((u8 **) (state + 0x4ED8));
-      type = entry[2];
-      switch (type)
-      {
-        case 0x20:
-          mask = 0xF;
-          break;
+    void Map_FillLayer(void *, s32, s32);
+    register s8 startX = arg1;
+    register u8 *self = (u8 *)arg0;
+    register s8 startY = arg2;
+    u8 *entry;
+    u8 *write;
+    u8 *read;
+    u8 direction;
+    u8 slot;
 
-        case 0x08:
-          mask = 0xB;
-          break;
+    self[0x24EE0] = 0;
+    *(u16 *)(self + 0x24EE2) = arg4;
+    *(u8 **)(self + 0x24ED8) = self + 0x242D8;
+    *(u8 **)(self + 0x24EDC) = self + 0x248D8;
+    self[0x24EE9] = arg3;
 
-        case 0x04:
-          mask = 0xE;
-          break;
+    write = *(u8 **)(self + 0x24EDC);
+    write[0] = startX;
+    write = *(u8 **)(self + 0x24EDC);
+    write[1] = startY;
+    write = *(u8 **)(self + 0x24EDC);
+    write[2] = 0x20;
+    write = *(u8 **)(self + 0x24EDC);
+    *(u16 *)(write + 4) = 0;
+    write = *(u8 **)(self + 0x24EDC);
+    *(u8 **)(self + 0x24EDC) = write + 6;
+    write = *(u8 **)(self + 0x24EDC);
+    write[2] = 0x10;
 
-        case 0x01:
-          mask = 0x7;
-          break;
+    Map_FillLayer(self, 0xB, -1);
+    (*(s16 **)(self + 0x14190))[(s8)startX + ((s8)startY * 64)] = 0;
 
-        case 0x02:
-          mask = 0xD;
-          break;
+    for (;;) {
+        slot = self[0x24EE0];
+        *(u8 **)(self + 0x24EDC) = self + (slot * 0x600 + 0x242D8);
+        self[0x24EE0] ^= 1;
+        slot = self[0x24EE0];
+        *(u8 **)(self + 0x24ED8) = self + (slot * 0x600 + 0x242D8);
+        self[0x24EE1] = 0;
 
-        default:
-          x = 0;
-          mask = x;
-          break;
-
-      }
-
-      x = entry[0];
-      y = entry[1];
-      index = ((s8) x) + (((s8) y) << 6);
-      for (i = 0; (i + 1) < (4 + 1); i++)
-      {
-        direction = 1 << i;
-        if (!(mask & direction))
-        {
-          continue;
-        }
-        nx = x;
-        ny = y;
-        switch (direction)
-        {
-          new_var2 = x + 1;
-          case 1:
-            ny = 1;
-            ny = y - ny;
-            flags = 0x08;
+        entry = *(u8 **)(self + 0x24ED8);
+        if (entry[2] == 0x10) {
             break;
-
-          case 2:
-            nx = new_var2;
-            flags = 0x04;
-            break;
-
-          case 4:
-            nx = x - 1;
-            flags = 0x01;
-            break;
-
-          default:
-            ny = y + 1;
-            flags = 0x02;
-            break;
-
         }
 
-        ;
-        new_var4 = index;
-        nextCost = direction == 2;
-        new_var6 = self[new_var4 + 0x100D] == new_var5;
-        if (direction == 1)
-        {
-          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x8080)
-          {
-            continue;
-            if (((!arg1) && (!arg1)) && (!arg1))
-            {
+        while ((direction = (entry = *(u8 **)(self + 0x24ED8))[2]) != 0x10) {
+            switch (direction) {
+            case 0x20:
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x8080) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0808) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x08;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x4040) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0404) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x04;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x1010) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0101) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x01;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x2020) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0202) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x02;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 0x08:
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x8080) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0808) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x08;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x1010) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0101) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x01;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x2020) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0202) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x02;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 0x04:
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x4040) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0404) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x04;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x1010) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0101) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x01;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x2020) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0202) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x02;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 0x01:
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x8080) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0808) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x08;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x4040) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0404) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x04;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x1010) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0101) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x01;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 0x02:
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y - 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x8080) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0808) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x08;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextY;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextY = y + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x4040) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0404) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)x + ((s8)nextY * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = x;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = nextY;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x04;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                {
+                    u8 x, y;
+                    s32 nextX;
+                    s32 index, nextIndex;
+                    u16 terrain;
+                    s32 cost;
+                    u16 oldCost;
+                    u8 *q;
+                    entry = *(u8 **)(self + 0x24ED8);
+                    y = entry[1];
+                    x = entry[0];
+                    nextX = x + 1;
+                    index = (s8)x + ((s8)y * 64);
+                    terrain = *(u16 *)(self + 0x408E + index * 2);
+                    if ((terrain & 0x2020) == 0) {
+                        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1);
+                        if ((terrain & 0x0202) == 0) {
+                            cost++;
+                        } else if (self[index + 0x100D] == 0x1C) {
+                            cost += 2;
+                        }
+                        nextIndex = (s8)nextX + ((s8)y * 64);
+                        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex];
+                        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) {
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[0] = nextX;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[1] = y;
+                            q = *(u8 **)(self + 0x24EDC);
+                            q[2] = 0x02;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u16 *)(q + 4) = cost;
+                            q = *(u8 **)(self + 0x24EDC);
+                            *(u8 **)(self + 0x24EDC) = q + 6;
+                            self[0x24EE1]++;
+                            (*(s16 **)(self + 0x14190))[nextIndex] = cost;
+                            if ((u16)cost >= self[0x24EE9]) {
+                                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1;
+                            }
+                        }
+                    }
+                }
+                break;
             }
-          }
+            write = *(u8 **)(self + 0x24EDC);
+            write[2] = 0x10;
+            read = *(u8 **)(self + 0x24ED8);
+            *(u8 **)(self + 0x24ED8) = read + 6;
         }
-        else
-          if (nextCost != 0.0f)
-        {
-          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x4040)
-          {
-            continue;
-          }
-        }
-        else
-          if (direction == 4)
-        {
-          type = 0x408E;
-          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x1010)
-          {
-            continue;
-          }
-        }
-        else
-          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x2020)
-        {
-          continue;
-        }
-        cost = (u16) (distance[new_var4] + 1);
-        if (direction == 1)
-        {
-          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x0808)
-          {
-            cost++;
-          }
-          else
-            if (new_var6)
-          {
-            cost += 2;
-          }
-        }
-        else
-          if (nextCost != 0.0f)
-        {
-          if ((*((u16 *) ((self + type) + (new_var4 * 2)))) & 0x0404)
-          {
-            cost++;
-          }
-          else
-            if ((self[new_var4 + 0x100D] & 0xFFFFFFFFFFFFFFFFu) == new_var5)
-          {
-            cost += 2;
-          }
-        }
-        else
-          if (direction == 4)
-        {
-          if ((*((u16 *) ((self + 0x408E) + ((new_var4 & 0xFFFFFFFFFFFFFFFF) * 2)))) & 0x0101)
-          {
-            cost++;
-          }
-          else
-            if (self[new_var4 + 0x100D] == new_var5)
-          {
-            cost += 2;
-          }
-        }
-        else
-          if ((*((u16 *) ((self + 0x408E) + (new_var4 * 2)))) & 0x0202)
-        {
-          cost++;
-        }
-        else
-          if (self[new_var4 + 0x100D] == new_var5)
-        {
-          cost += 2;
-        }
-        nextCost = cost;
-        nextIndex = ((s8) nx) + (((s8) ny) << 6);
-        oldCost = distance[nextIndex];
-        new_var6 = nextCost >= oldCost;
-        if (new_var6)
-        {
-          continue;
-        }
-        if (nextCost > (*((u16 *) (state + 0x4EE2))))
-        {
-          continue;
-        }
-        write = *((u8 **) (state + 0x4EDC));
-        write[0] = nx;
-        write = *((u8 **) (state + 0x4EDC));
-        write[1] = ny;
-        write = *((u8 **) (state + 0x4EDC));
-        write[2] = flags;
-        new_var3 = (u8 **) (state + 0x4EDC);
-        write = *((u8 **) (state + 0x4EDC));
-        *((u16 *) (write + 4)) = cost;
-        write = *new_var3;
-        *new_var3 = write + 6;
-        state[0x4EE1]++;
-        distance[nextIndex] = cost;
-        if (nextCost >= state[0x4EE9])
-        {
-          *((u16 *) ((self + 0x1C18E) + (nextIndex * 2))) = 1;
-        }
-      }
-
-      write = *new_var3;
-      write[2] = 0x10;
-      new_var = *((u8 **) (state + 0x4ED8));
-      read = new_var;
-      *((u8 **) (state + 0x4ED8)) = read + 6;
-      read = new_var;
     }
-    while (read[2] != 0x10);
-  }
-
 }
 
 s16 fn_8002134C(u8 *map, s8 x, s8 y)

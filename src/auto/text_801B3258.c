@@ -9103,10 +9103,10 @@ void fn_801C45A4(void *arg0) {
     void fn_8005FEE8(void *, f32);
     void fn_80060060(void *);
     void fn_800606BC(void *);
-    void fn_80060F70(void *, s32, void *);
+    void fn_80060F70(void *, s32, f32 *);
     s32 GActor_FindNode(void *, char *);
     void PSMTXConcat(void *, void *, void *);
-    void PSMTXRotRad(void *, s32, f32, f32, f32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_8027D594[];
@@ -9123,184 +9123,462 @@ void fn_801C45A4(void *arg0) {
     extern f32 lbl_8036B434;
     extern f32 lbl_8036B438;
 
-    f32 mtxA[12];
-    f32 mtxB[12];
-    f32 mtxC[12];
-    f32 mtxD[12];
-    f32 mtxE[12];
-    f32 mtxF[12];
-    f32 mtxG[12];
-    f32 mtxH[12];
-    f32 sp104[3];
-    f32 spF8[3];
-    f32 spEC[3];
-    f32 spE0[3];
-    f32 spD4[3];
-    f32 spC8[3];
-    f32 spBC[3];
-    f32 spB0[3];
-    f32 sp5C[3];
-    f32 sp50[3];
-    void *self;
-    void *list;
-    void *n;
-    void *prev;
-    void *node;
-    void *entry;
-    s32 id;
-    s32 id2;
-    s32 id3;
-    s32 id4;
-    s32 id5;
-    f32 f31, f30, f29, ftmp;
+    typedef union {
+        f32 f[3];
+        u32 w[3];
+    } Position;
 
-    self = arg0;
-    if (*(u8 *)((u8 *)*(void **)((u8 *)self + 0x3C) + 0xB) == 0xFF
-        && (*(s32 *)((u8 *)self + 0x30) % 6) == 0) {
-        id = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0x127);
-        if (id >= 0) {
-            fn_80060F70(*(void **)((u8 *)self + 0x3C), id, sp104);
-            if (*(f32 *)&sp104[1] < lbl_8036B40C) {
-                list = *(void **)((u8 *)self + 0x44);
-                n = **(void ***)((u8 *)list + 8);
-                *(s32 *)&spBC[0] = *(s32 *)&sp104[0];
-                *(s32 *)&spBC[1] = *(s32 *)&sp104[1];
-                *(s32 *)&spBC[2] = *(s32 *)&sp104[2];
-                if (n == NULL) {
-                    n = NULL;
-                } else {
-                    *(void **)((u8 *)n + 4) = *(void **)((u8 *)list + 0x10);
-                    *(void **)n = NULL;
-                    prev = *(void **)((u8 *)list + 0x10);
-                    if (prev != NULL) {
-                        *(void **)prev = n;
-                    }
-                    if (*(void **)((u8 *)list + 0xC) == NULL) {
-                        *(void **)((u8 *)list + 0xC) = n;
-                    }
-                    *(void **)((u8 *)list + 0x10) = n;
-                    *(u8 **)((u8 *)list + 8) = *(u8 **)((u8 *)list + 8) + 4;
-                    *(s32 *)((u8 *)list + 0x14) = *(s32 *)((u8 *)list + 0x14) + 1;
+    f32 mtx6E0[12];
+    f32 mtx6B0[12];
+    f32 mtx680[12];
+    f32 mtx650[12];
+    f32 mtx620[12];
+    f32 mtx5F0[12];
+    f32 mtx5C0[12];
+    f32 mtx590[12];
+    f32 mtx560[12];
+    f32 mtx530[12];
+    f32 mtx500[12];
+    f32 mtx4D0[12];
+    f32 mtx4A0[12];
+    f32 mtx470[12];
+    f32 mtx440[12];
+    f32 mtx410[12];
+    f32 mtx3E0[12];
+    f32 mtx3B0[12];
+    f32 mtx380[12];
+    f32 mtx350[12];
+    f32 mtx320[12];
+    f32 mtx2F0[12];
+    f32 mtx2C0[12];
+    f32 mtx290[12];
+    f32 mtx260[12];
+    f32 mtx230[12];
+    f32 mtx200[12];
+    f32 mtx1D0[12];
+    f32 mtx1A0[12];
+    f32 mtx170[12];
+    f32 mtx140[12];
+    f32 mtx110[12];
+
+    Position sp104;
+    Position spF8;
+    Position spEC;
+    Position spE0;
+    Position spD4;
+    Position spC8;
+    volatile Position spBC;
+    volatile Position spB0;
+    volatile Position spA4;
+    volatile Position sp98;
+    volatile Position sp8C;
+    volatile Position sp80;
+    volatile Position sp74;
+    volatile Position sp68;
+    Position sp5C;
+    Position sp50;
+    Position sp44;
+    Position sp38;
+    Position sp2C;
+    Position sp20;
+    Position sp14;
+    Position sp8;
+
+    register u8 *self;
+    register u8 *entry;
+    register u8 *node;
+    register s32 id1;
+    register s32 id5;
+    register s32 id2;
+    register s32 id3;
+    register s32 id4;
+    u8 *list;
+    u8 *n;
+    u8 *prev;
+    f32 dx, dz, scale, angle;
+
+    self = (u8 *)arg0;
+    if ((*(u8 **)(self + 0x3C))[0xB] == 0xFF &&
+        (*(s32 *)(self + 0x30) % 6) == 0) {
+        id1 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0x127);
+        if (id1 < 0) {
+            return;
+        }
+        fn_80060F70(*(void **)(self + 0x3C), id1, sp104.f);
+        if (sp104.f[1] < lbl_8036B40C) {
+            list = *(u8 **)(self + 0x44);
+            n = **(u8 ***)(list + 8);
+            spBC = sp104;
+            if (n == 0) {
+                n = 0;
+            } else {
+                *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                *(u8 **)n = 0;
+                prev = *(u8 **)(list + 0x10);
+                if (prev != 0) {
+                    *(u8 **)prev = n;
                 }
-                if (n != NULL) {
-                    entry = (u8 *)n + 8;
-                    *(s32 *)&sp5C[0] = *(s32 *)&spBC[0];
-                    *(s32 *)&sp5C[1] = *(s32 *)&spBC[1];
-                    *(s32 *)&sp5C[2] = *(s32 *)&spBC[2];
-                    f31 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                    f30 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                    f29 = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                    ftmp = lbl_8036B430 * Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                    sp5C[0] = sp5C[0] + f31;
-                    sp5C[1] = lbl_8036B42C;
-                    sp5C[2] = sp5C[2] + f30;
-                    PSMTXRotRad(mtxA, 0x59, ftmp, sp5C[2], lbl_8036B42C, sp5C[0]);
-                    PSMTXScale(mtxB, f29, f29, f29);
-                    PSMTXTrans(mtxC, sp5C[0], sp5C[1], sp5C[2]);
-                    PSMTXConcat(mtxB, mtxA, mtxD);
-                    PSMTXConcat(mtxC, mtxD, (u8 *)entry + 0x10);
+                if (*(u8 **)(list + 0xC) == 0) {
+                    *(u8 **)(list + 0xC) = n;
+                }
+                *(u8 **)(list + 0x10) = n;
+                *(u8 ***)(list + 8) += 1;
+                *(s32 *)(list + 0x14) += 1;
+            }
+            if (n != 0) {
+                entry = n + 8;
+                sp5C = spBC;
+                dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                sp5C.f[0] += dx;
+                sp5C.f[1] = lbl_8036B42C;
+                sp5C.f[2] += dz;
+                PSMTXRotRad(mtx6B0, 0x59, lbl_8036B430 * angle);
+                PSMTXScale(mtx680, scale, scale, scale);
+                PSMTXTrans(mtx650, sp5C.f[0], sp5C.f[1], sp5C.f[2]);
+                PSMTXConcat(mtx680, mtx6B0, mtx6E0);
+                PSMTXConcat(mtx650, mtx6E0, entry + 0x10);
+                fn_8005FEE8(entry, lbl_8036B424);
+            }
+        }
+
+        id1 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0xDE);
+        id2 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0xE4);
+        id3 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0xEA);
+        id4 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0xF1);
+        id5 = GActor_FindNode(*(void **)(self + 0x3C), (char *)lbl_8027D594 + 0xF8);
+        if (id1 < 0 || id2 < 0) {
+            return;
+        }
+        fn_80060F70(*(void **)(self + 0x3C), id1, spF8.f);
+        fn_80060F70(*(void **)(self + 0x3C), id2, spEC.f);
+        fn_80060F70(*(void **)(self + 0x3C), id3, spE0.f);
+        fn_80060F70(*(void **)(self + 0x3C), id4, spD4.f);
+        fn_80060F70(*(void **)(self + 0x3C), id5, spC8.f);
+
+        if (id3 < 0 || id4 < 0) {
+            if (*(u32 *)(self + 0x34) & 1) {
+                if (spF8.f[1] < lbl_8036B40C) {
+                    spF8.f[0] = Math_Lerp(spF8.f[0], sp104.f[0], lbl_8036B434, lbl_8036B438);
+                    spF8.f[2] = Math_Lerp(spF8.f[2], sp104.f[2], lbl_8036B434, lbl_8036B438);
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    spB0 = spF8;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp50 = spB0;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp50.f[0] += dx;
+                        sp50.f[1] = lbl_8036B42C;
+                        sp50.f[2] += dz;
+                        PSMTXRotRad(mtx5F0, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx5C0, scale, scale, scale);
+                        PSMTXTrans(mtx590, sp50.f[0], sp50.f[1], sp50.f[2]);
+                        PSMTXConcat(mtx5C0, mtx5F0, mtx620);
+                        PSMTXConcat(mtx590, mtx620, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+            } else {
+                if (spEC.f[1] < lbl_8036B40C) {
+                    spEC.f[0] = Math_Lerp(spEC.f[0], sp104.f[0], lbl_8036B434, lbl_8036B438);
+                    spEC.f[2] = Math_Lerp(spEC.f[2], sp104.f[2], lbl_8036B434, lbl_8036B438);
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    spA4 = spEC;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp44 = spA4;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp44.f[0] += dx;
+                        sp44.f[1] = lbl_8036B42C;
+                        sp44.f[2] += dz;
+                        PSMTXRotRad(mtx530, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx500, scale, scale, scale);
+                        PSMTXTrans(mtx4D0, sp44.f[0], sp44.f[1], sp44.f[2]);
+                        PSMTXConcat(mtx500, mtx530, mtx560);
+                        PSMTXConcat(mtx4D0, mtx560, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+            }
+        } else {
+            if (*(u32 *)(self + 0x34) & 1) {
+                if (spF8.f[1] < lbl_8036B40C) {
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    sp98 = spF8;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp38 = sp98;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp38.f[0] += dx;
+                        sp38.f[1] = lbl_8036B42C;
+                        sp38.f[2] += dz;
+                        PSMTXRotRad(mtx470, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx440, scale, scale, scale);
+                        PSMTXTrans(mtx410, sp38.f[0], sp38.f[1], sp38.f[2]);
+                        PSMTXConcat(mtx440, mtx470, mtx4A0);
+                        PSMTXConcat(mtx410, mtx4A0, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+                if (spD4.f[1] < lbl_8036B40C) {
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    sp8C = spD4;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp2C = sp8C;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp2C.f[0] += dx;
+                        sp2C.f[1] = lbl_8036B42C;
+                        sp2C.f[2] += dz;
+                        PSMTXRotRad(mtx3B0, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx380, scale, scale, scale);
+                        PSMTXTrans(mtx350, sp2C.f[0], sp2C.f[1], sp2C.f[2]);
+                        PSMTXConcat(mtx380, mtx3B0, mtx3E0);
+                        PSMTXConcat(mtx350, mtx3E0, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+            } else {
+                if (spEC.f[1] < lbl_8036B40C) {
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    sp80 = spEC;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp20 = sp80;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp20.f[0] += dx;
+                        sp20.f[1] = lbl_8036B42C;
+                        sp20.f[2] += dz;
+                        PSMTXRotRad(mtx2F0, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx2C0, scale, scale, scale);
+                        PSMTXTrans(mtx290, sp20.f[0], sp20.f[1], sp20.f[2]);
+                        PSMTXConcat(mtx2C0, mtx2F0, mtx320);
+                        PSMTXConcat(mtx290, mtx320, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+                if (spE0.f[1] < lbl_8036B40C) {
+                    list = *(u8 **)(self + 0x44);
+                    n = **(u8 ***)(list + 8);
+                    sp74 = spE0;
+                    if (n == 0) {
+                        n = 0;
+                    } else {
+                        *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                        *(u8 **)n = 0;
+                        prev = *(u8 **)(list + 0x10);
+                        if (prev != 0) {
+                            *(u8 **)prev = n;
+                        }
+                        if (*(u8 **)(list + 0xC) == 0) {
+                            *(u8 **)(list + 0xC) = n;
+                        }
+                        *(u8 **)(list + 0x10) = n;
+                        *(u8 ***)(list + 8) += 1;
+                        *(s32 *)(list + 0x14) += 1;
+                    }
+                    if (n != 0) {
+                        entry = n + 8;
+                        sp14 = sp74;
+                        dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                        sp14.f[0] += dx;
+                        sp14.f[1] = lbl_8036B42C;
+                        sp14.f[2] += dz;
+                        PSMTXRotRad(mtx230, 0x59, lbl_8036B430 * angle);
+                        PSMTXScale(mtx200, scale, scale, scale);
+                        PSMTXTrans(mtx1D0, sp14.f[0], sp14.f[1], sp14.f[2]);
+                        PSMTXConcat(mtx200, mtx230, mtx260);
+                        PSMTXConcat(mtx1D0, mtx260, entry + 0x10);
+                        fn_8005FEE8(entry, lbl_8036B424);
+                    }
+                }
+            }
+        }
+        if (id5 >= 0) {
+            if (spC8.f[1] < lbl_8036B40C) {
+                list = *(u8 **)(self + 0x44);
+                n = **(u8 ***)(list + 8);
+                sp68 = spC8;
+                if (n == 0) {
+                    n = 0;
+                } else {
+                    *(u8 **)(n + 4) = *(u8 **)(list + 0x10);
+                    *(u8 **)n = 0;
+                    prev = *(u8 **)(list + 0x10);
+                    if (prev != 0) {
+                        *(u8 **)prev = n;
+                    }
+                    if (*(u8 **)(list + 0xC) == 0) {
+                        *(u8 **)(list + 0xC) = n;
+                    }
+                    *(u8 **)(list + 0x10) = n;
+                    *(u8 ***)(list + 8) += 1;
+                    *(s32 *)(list + 0x14) += 1;
+                }
+                if (n != 0) {
+                    entry = n + 8;
+                    sp8 = sp68;
+                    dx = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                    dz = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                    scale = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                    angle = Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000U));
+                    sp8.f[0] += dx;
+                    sp8.f[1] = lbl_8036B42C;
+                    sp8.f[2] += dz;
+                    PSMTXRotRad(mtx170, 0x59, lbl_8036B430 * angle);
+                    PSMTXScale(mtx140, scale, scale, scale);
+                    PSMTXTrans(mtx110, sp8.f[0], sp8.f[1], sp8.f[2]);
+                    PSMTXConcat(mtx140, mtx170, mtx1A0);
+                    PSMTXConcat(mtx110, mtx1A0, entry + 0x10);
                     fn_8005FEE8(entry, lbl_8036B424);
                 }
             }
-            id = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xDE);
-            id2 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xE4);
-            id3 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xEA);
-            id4 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF1);
-            id5 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF8);
-            if (id >= 0 && id2 >= 0) {
-                fn_80060F70(*(void **)((u8 *)self + 0x3C), id, spF8);
-                fn_80060F70(*(void **)((u8 *)self + 0x3C), id2, spEC);
-                fn_80060F70(*(void **)((u8 *)self + 0x3C), id3, spE0);
-                fn_80060F70(*(void **)((u8 *)self + 0x3C), id4, spD4);
-                fn_80060F70(*(void **)((u8 *)self + 0x3C), id5, spC8);
-                if (id3 >= 0 && id4 < 0 && (*(u32 *)((u8 *)self + 0x34) & 1) != 0) {
-                    if (spF8[1] < lbl_8036B40C) {
-                        spF8[0] = Math_Lerp(spF8[0], sp104[0], lbl_8036B434, lbl_8036B438);
-                        spF8[2] = Math_Lerp(spF8[2], sp104[2], lbl_8036B434, lbl_8036B438);
-                        list = *(void **)((u8 *)self + 0x44);
-                        n = **(void ***)((u8 *)list + 8);
-                        *(s32 *)&spB0[0] = *(s32 *)&spF8[0];
-                        *(s32 *)&spB0[1] = *(s32 *)&spF8[1];
-                        *(s32 *)&spB0[2] = *(s32 *)&spF8[2];
-                        if (n == NULL) {
-                            n = NULL;
-                        } else {
-                            *(void **)((u8 *)n + 4) = *(void **)((u8 *)list + 0x10);
-                            *(void **)n = NULL;
-                            prev = *(void **)((u8 *)list + 0x10);
-                            if (prev != NULL) {
-                                *(void **)prev = n;
-                            }
-                            if (*(void **)((u8 *)list + 0xC) == NULL) {
-                                *(void **)((u8 *)list + 0xC) = n;
-                            }
-                            *(void **)((u8 *)list + 0x10) = n;
-                            *(u8 **)((u8 *)list + 8) = *(u8 **)((u8 *)list + 8) + 4;
-                            *(s32 *)((u8 *)list + 0x14) = *(s32 *)((u8 *)list + 0x14) + 1;
-                        }
-                        if (n != NULL) {
-                            entry = (u8 *)n + 8;
-                            *(s32 *)&sp50[0] = *(s32 *)&spB0[0];
-                            *(s32 *)&sp50[1] = *(s32 *)&spB0[1];
-                            *(s32 *)&sp50[2] = *(s32 *)&spB0[2];
-                            f31 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                            f30 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                            f29 = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                            ftmp = lbl_8036B430 * Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000));
-                            sp50[0] = sp50[0] + f31;
-                            sp50[1] = lbl_8036B42C;
-                            sp50[2] = sp50[2] + f30;
-                            PSMTXRotRad(mtxE, 0x59, ftmp, sp50[2], lbl_8036B42C, sp50[0]);
-                            PSMTXScale(mtxF, f29, f29, f29);
-                            PSMTXTrans(mtxG, sp50[0], sp50[1], sp50[2]);
-                            PSMTXConcat(mtxF, mtxE, mtxH);
-                            PSMTXConcat(mtxG, mtxH, (u8 *)entry + 0x10);
-                            fn_8005FEE8(entry, lbl_8036B424);
-                        }
-                    }
-                }
-                *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)self + 0x34) + 1;
+        }
+        *(s32 *)(self + 0x34) += 1;
+    }
+
+    node = 0;
+    goto next_node;
+update_node:
+    entry = node + 8;
+    fn_80060060(entry);
+    fn_800606BC(entry);
+    if ((u8)(((*(u32 *)entry >> 4) & 1) ^ 1) == 0) {
+        list = *(u8 **)(self + 0x44);
+        if (node != 0) {
+            if (*(u8 **)node != 0) {
+                *(u8 **)(*(u8 **)node + 4) = *(u8 **)(node + 4);
             }
+            if (*(u8 **)(node + 4) != 0) {
+                **(u8 ***)(node + 4) = *(u8 **)node;
+            }
+            if (node == *(u8 **)(list + 0xC)) {
+                *(u8 **)(list + 0xC) = *(u8 **)node;
+            }
+            if (node == *(u8 **)(list + 0x10)) {
+                *(u8 **)(list + 0x10) = *(u8 **)(node + 4);
+            }
+            *(u8 ***)(list + 8) -= 1;
+            *(s32 *)(list + 0x14) -= 1;
+            **(u8 ***)(list + 8) = node;
         }
     }
-done:
-    node = NULL;
-    for (;;) {
-        if (node == NULL) {
-            node = *(void **)((u8 *)*(void **)((u8 *)self + 0x44) + 0xC);
-        } else {
-            node = *(void **)node;
-        }
-        if (node == NULL) {
-            break;
-        }
-        entry = (u8 *)node + 8;
-        fn_80060060(entry);
-        fn_800606BC(entry);
-        if ((u8)((((*(u32 *)((u8 *)node + 8)) >> 4) & 1) ^ 1) == 0) {
-            list = *(void **)((u8 *)self + 0x44);
-            if (node != NULL) {
-                void *nx = *(void **)node;
-                void *pv = *(void **)((u8 *)node + 4);
-                if (nx != NULL) {
-                    *(void **)((u8 *)nx + 4) = pv;
-                }
-                if (pv != NULL) {
-                    *(void **)pv = nx;
-                }
-                if (node == *(void **)((u8 *)list + 0xC)) {
-                    *(void **)((u8 *)list + 0xC) = nx;
-                }
-                if (node == *(void **)((u8 *)list + 0x10)) {
-                    *(void **)((u8 *)list + 0x10) = pv;
-                }
-                *(u8 **)((u8 *)list + 8) = *(u8 **)((u8 *)list + 8) - 4;
-                *(s32 *)((u8 *)list + 0x14) = *(s32 *)((u8 *)list + 0x14) - 1;
-                **(void ***)((u8 *)list + 8) = node;
-            }
-        }
+next_node:
+    list = *(u8 **)(self + 0x44);
+    if (node == 0) {
+        node = *(u8 **)(list + 0xC);
+    } else {
+        node = *(u8 **)node;
     }
-    *(s32 *)((u8 *)self + 0x30) = *(s32 *)((u8 *)self + 0x30) + 1;
+    if (node != 0) {
+        goto update_node;
+    }
+    *(s32 *)(self + 0x30) += 1;
 }
 
 #pragma use_lmw_stmw on

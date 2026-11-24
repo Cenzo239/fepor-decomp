@@ -654,7 +654,7 @@ BOOL fn_8020C1A4(s32 arg0, u32 arg1, void *callback) {
     Callback_80368538 = callback;
     StopAtNextInt_80368530 = 0;
 
-    if (arg0) {
+    if (arg0 != 0) {
         cmd = 0x10000;
         cmd |= 0xE4000000;
         __DIRegs[2] = arg1 | cmd;
@@ -662,7 +662,7 @@ BOOL fn_8020C1A4(s32 arg0, u32 arg1, void *callback) {
 
         timeout = (*(u32 *)0x800000F8 >> 2) * 10;
         OSCreateAlarm(AlarmForTimeout_80339ED8);
-        OSSetAlarm(AlarmForTimeout_80339ED8, (s64)timeout, AlarmHandlerForTimeout);
+        OSSetAlarm(AlarmForTimeout_80339ED8, (s64)(u32)timeout, AlarmHandlerForTimeout);
     }
 
     return TRUE;

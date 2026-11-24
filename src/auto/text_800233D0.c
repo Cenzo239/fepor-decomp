@@ -3417,7 +3417,7 @@ void fn_80028724(void) {
     battle = gBattleState;
     msg = lbl_80268E40;
     channels = gFxChannels;
-    if (!EventFlag_IsSet(battle + 0xB4, msg + 0x21E)) {
+    if (EventFlag_IsSet(battle + 0xB4, msg + 0x21E) == 0) {
         fn_80146AF0();
         Fx_FadeIn(channels, 0x3E8);
         fn_8014876C(channels, 0x64, 0x3E8);

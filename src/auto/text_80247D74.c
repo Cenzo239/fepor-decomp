@@ -768,6 +768,8 @@ s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pa
     return -1;
 }
 
+#pragma opt_propagation off
+#pragma opt_common_subs off
 s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, u8 arg7, u8 a8, u8 a9, u16 a10, u16 a11, u8 a13, s16 addVolume, u8 a14, s32 a15)
 {
   u8 *fn_802508E0(u16);
@@ -891,13 +893,13 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
               }
               else
                 if (((u32) (r + 0x10000)) != 0xFFFF)
-              {
-                result = r;
-              }
-              else
-              {
-                result = fn_802555A0(*((u16 *) entry), (u8) v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
-              }
+                {
+                  result = r;
+                }
+                else
+                {
+                  result = fn_802555A0(*((u16 *) entry), (u8) v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
+                }
             }
             else
             {
@@ -948,6 +950,8 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
   }
 
 }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 void fn_80248D28(s32 arg0)
 {
     extern s32 lbl_803689A8;

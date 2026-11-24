@@ -7200,7 +7200,7 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
     }
 }
 
-#pragma peephole off
+#pragma optimization_level 2
 void fn_802618E4(s32 arg0)
 {
     extern u8 *gSoundVoices;
@@ -7212,17 +7212,15 @@ void fn_802618E4(s32 arg0)
     off = arg0 * 0xF8;
     object = gSoundVoices + off;
 
-    if (object[0xF0] == 1) {
-        if (lbl_80368AD0 == 0) {
-            object[0xF2] = 1;
-            q = gSoundVoices;
-            q = q + off;
-            q = q + (lbl_80368AD0 << 2);
-            *(u32 *)(q + 0x24) |= 0x20;
-        }
+    if (object[0xF0] == 1 && lbl_80368AD0 == 0) {
+        object[0xF2] = 1;
+        q = gSoundVoices;
+        q = q + off;
+        q = q + (lbl_80368AD0 << 2);
+        *(u32 *)(q + 0x24) |= 0x20;
     }
 }
-#pragma peephole on
+#pragma optimization_level 4
 void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
 {
     typedef struct {
@@ -8985,379 +8983,259 @@ void Sound_MixSampleBuffers(s32 *a, s32 *b, f32 c0, f32 c1) {
 #pragma optimization_level reset
 void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
 {
-  extern f32 lbl_8036C3E0;
-  extern f32 lbl_8036C3E4;
-  extern f64 lbl_8036C3D8;
-  union 
-  {
-    f64 value;
-    u32 word[2];
-  } conversion;
-  u8 *src;
-  u8 *dst;
-  u8 *ring;
-  u8 *new_var6[2];
-  u8 *srcBuf1;
-  u8 *srcBuf2;
-  u8 *dstBuf;
-  u8 *ringBase;
-  u8 *ringCursor;
-  s32 srcW0;
-  unsigned short new_var7;
-  s32 srcR0;
-  s32 srcW1;
-  s32 srcR1;
-  s32 srcW2;
-  s32 srcR2;
-  s32 dstEnd0;
-  s32 srcEnd0;
-  s32 srcEnd1;
-  s32 srcEnd2;
-  s32 dstW0;
-  float new_var3;
-  s32 dstR0;
-  s32 dstW1;
-  s32 dstR1;
-  s32 dstW2;
-  s32 dstR2;
-  s32 dstEnd1;
-  s32 dstEnd2;
-  s32 ringCount;
-  s32 ringLast;
-  s32 new_var5;
-  volatile short new_var8;
-  f32 *new_var2;
-  s32 channel3;
-  s32 i;
-  s32 nextInput;
-  int new_var4;
-  f32 scale;
-  f32 unity;
-  f32 damp;
-  f32 gain;
-  f32 wet;
-  f32 dry;
-  f32 coeff0;
-  f32 coeff1;
-  f32 coeff2;
-  f32 srcVal0;
-  f32 srcVal1;
-  f32 srcVal2;
-  f32 dstVal0;
-  f32 dstVal1;
-  f32 dstVal2;
-  u8 *new_var;
-  f32 feedback;
-  f32 sample;
-  f32 delayed;
-  f32 sum;
-  f32 out0;
-  f32 out1;
-  f32 out2;
-  f32 stage;
-  scale = lbl_8036C3E0;
-  unity = lbl_8036C3E4;
-  damp = *((f32 *) (arg1 + 0x168));
-  gain = *((f32 *) (arg1 + 0x1A0));
-  wet = (*((f32 *) ((new_var6[0] = arg1) + 0x19C))) * unity;
-  dry = unity - wet;
-  channel3 = (arg2 << 1) + arg2;
-  src = (new_var6[0] + 0xB4) + (channel3 * 0x14);
-  dst = new_var6[0] + (channel3 * 0x14);
-  ring = arg1 + (arg2 << 2);
-  coeff0 = *((f32 *) ((arg1 + (channel3 * 4)) + 0x16C));
-  srcR0 = *((s32 *) (src + 0x04));
-  coeff1 = *((f32 *) ((arg1 + (channel3 * 4)) + 0x170));
-  coeff2 = *((f32 *) ((new_var6[0] + (channel3 * 4)) + 0x174));
-  feedback = *((f32 *) (ring + 0x190));
-  ringCount = *((s32 *) (arg1 + 0x1A4));
-  ringLast = (ringCount - 1) * 4;
-  srcW0 = *((s32 *) (src + 0x00));
-  srcW1 = *((s32 *) (src + 0x14));
-  srcR1 = *((s32 *) (src + 0x18));
-  srcW2 = *((s32 *) (src + 0x28));
-  srcR2 = *((s32 *) (src + 0x2C));
-  srcEnd0 = *((s32 *) (src + 0x08));
-  srcEnd1 = *((s32 *) (src + 0x1C));
-  srcEnd2 = *((s32 *) (src + 0x30));
-  new_var6[1] = *((u8 **) (src + 0x0C));
-  srcBuf1 = *((u8 **) (src + 0x20));
-  srcBuf2 = *((u8 **) (src + 0x34));
-  srcVal0 = *((f32 *) (src + 0x10));
-  srcVal1 = *((f32 *) (src + 0x24));
-  srcVal2 = *((f32 *) (src + 0x38));
-  dstW0 = *((s32 *) (dst + 0x00));
-  dstR0 = *((s32 *) (dst + 0x04));
-  new_var8 = *((s32 *) (dst + 0x1C));
-  dstW1 = *((s32 *) (dst + 0x14));
-  dstR1 = *((s32 *) (dst + 0x18));
-  dstW2 = *((s32 *) (dst + 0x28));
-  dstR2 = *((s32 *) (dst + 0x2C));
-  dstEnd0 = *((s32 *) (dst + 0x08));
-  dstEnd1 = new_var8;
-  dstEnd2 = *((s32 *) (dst + 0x30));
-  dstVal0 = *((f32 *) (dst + 0x10));
-  dstVal1 = *((f32 *) (dst + 0x24));
-  dstVal2 = *((f32 *) (dst + 0x38));
-  (&conversion)->word[0] = 0x43300000;
-  conversion.word[1] = ((u32) (*arg0)) ^ 0x80000000;
-  sample = (f32) (conversion.value - lbl_8036C3D8);
-  for (i = 0; i < 0x9F; ++i)
-  {
-    new_var4 = 4;
-    delayed = sample;
-    if (ringCount != 0)
-    {
-      ringBase = *((u8 **) (ring + 0x1AC));
-      ringCursor = *((u8 **) (ring + 0x1B8));
-      ringCursor += new_var4;
-      delayed = *((f32 *) (ringCursor - new_var4));
-      *((f32 *) (ringCursor - new_var4)) = sample;
-      if (ringCursor == (ringBase + ringLast))
-      {
-        if (1)
-        {
-          ringCursor = (*((u8 **) (ringBase + 0x1B8)) = ringBase);
-        }
-      }
-    }
-    out0 = (coeff0 * srcVal0) + delayed;
-    nextInput = *(++arg0);
-    out1 = delayed;
-    out1 = (coeff1 * srcVal1) + out1;
-    new_var2 = (f32 *) (new_var6[1] + srcW0);
-    *new_var2 = out0;
-    srcW0 += 4;
-    *((f32 *) (srcBuf1 + srcW1)) = out1;
-    srcVal0 = *((f32 *) (new_var6[1] + srcR0));
-    srcR0 += new_var4;
-    srcVal1 = *((f32 *) (srcBuf1 + srcR1));
-    srcW1 += new_var4;
-    srcR1 += new_var4;
-    if (srcW0 == srcEnd0)
-    {
-      srcW0 = 0;
-    }
-    if (srcR0 == srcEnd0)
-    {
-      srcR0 = 0;
-    }
-    sum = srcVal0 + srcVal1;
-    out2 = (coeff2 * srcVal2) + delayed;
-    if (srcW1 == srcEnd1)
-    {
-      srcW1 = 0;
-    }
-    if (srcR1 == srcEnd1)
-    {
-      srcR1 = 0;
-      srcR2 += new_var4;
-    }
-    new_var3 = dry * sample;
-    *((f32 *) (srcBuf2 + srcW2)) = out2;
-    srcW2 += new_var4;
-    srcVal2 = *((f32 *) (srcBuf2 + srcR2));
-    new_var7 = srcW2;
-    coeff0 += 0;
-    if (new_var7 == srcEnd2)
-    {
-      srcW2 = 0;
-    }
-    if (srcR2 == srcEnd2)
-    {
-      srcR2 = 0;
-    }
-    sum += srcVal2;
-    dstBuf = *((u8 **) (dst + 0x0C));
-    out0 = (damp * dstVal0) + sum;
-    *((f32 *) (dstBuf + dstW0)) = out0;
-    stage = dstVal0 - (damp * out0);
-    dstW0 += new_var4;
-    dstVal0 = *((f32 *) (dstBuf + dstR0));
-    dstR0 += 4 & 0xFFu;
-    dstBuf = *((u8 **) (dst + 0x20));
-    *((f32 *) (dstBuf + dstW1)) = (out1 = (damp * dstVal1) + stage);
-    if (dstW0 == dstEnd0)
-    {
-      dstW0 = 0;
-    }
-    if (dstR0 == dstEnd0)
-    {
-      dstR0 = 0;
-    }
-    stage = dstVal1 - (damp * out1);
-    dstW1 += 4;
-    dstVal1 = *((f32 *) (dstBuf + dstR1));
-    stage *= scale;
-    dstR1 += new_var4;
-    stage = (gain * feedback) + stage;
-    if (dstW1 == dstEnd1)
-    {
-      dstW1 = 0;
-    }
-    dstBuf = *((u8 **) (dst + 0x34));
-    out2 = (damp * dstVal2) + stage;
-    if (dstW0)
-    {
-    }
-    feedback = stage;
-    if (dstR1 == dstEnd1)
-    {
-      dstR1 = 0;
-    }
-    *((f32 *) (dstBuf + dstW2)) = out2;
-    stage = dstVal2 - (damp * out2);
-    dstVal2 = *((f32 *) (dstBuf + dstR2));
-    dstW2 += new_var4;
-    dstR2 += 4;
-    out0 = new_var3;
-    out1 = (wet * stage) + out0;
-    if (dstW2 == (*((s32 *) (dst + 0x30))))
-    {
-      dstW2 = 0;
-    }
-    if (dstR2 == dstEnd2)
-    {
-      dstR2 = 0;
-    }
-    conversion.word[1] = ((u32) nextInput) ^ 0x80000000;
-    sample = (f32) (conversion.value - lbl_8036C3D8);
-    *(arg0 - 1) = (s32) out1;
-  }
+    extern f32 lbl_8036C3E0;
+    extern f32 lbl_8036C3E4;
+    extern f64 lbl_8036C3D8;
 
-  delayed = sample;
-  if (ringCount != ((0, 0)))
-  {
-    ringBase = *((u8 **) (ring + 0x1AC));
-    ringCursor = *((u8 **) (ring + 0x1B8));
-    ringCursor += new_var4;
-    delayed = *((f32 *) (ringCursor - new_var4));
-    *((f32 *) (ringCursor - 4)) = sample;
-    if (ringCursor == (ringBase + ringLast))
-    {
-      ringCursor = ringBase;
-      dstW1 = 0;
-      *((u8 **) (ringBase + 0x1B8)) = ringCursor;
+    union {
+        f64 value;
+        u32 words[2];
+    } conversion;
+    register f32 scale, unity, damp, gain, wet, dry;
+    register f64 bias;
+    register f32 coeff0, coeff1, coeff2;
+    register f32 srcVal0, srcVal1, srcVal2;
+    register f32 dstVal0, dstVal1, dstVal2;
+    register f32 feedback;
+    register s32 srcW0, srcR0, srcW1, srcR1, srcW2, srcR2;
+    register s32 srcEnd0, srcEnd1, srcEnd2;
+    register s32 dstW0, dstR0, dstW1, dstR1, dstW2, dstR2;
+    register s32 dstEnd0, dstEnd1, dstEnd2;
+    register s32 ringCount, ringLast;
+    register u8 *src, *dst, *ring;
+    register u8 *srcBuf0, *srcBuf1, *srcBuf2;
+    u8 *dstBuf;
+    u8 *ringBase, *ringCursor;
+    s32 channel3, offset, i, nextInput;
+    f32 sample, delayed, sum, stage, out0, out1, out2;
+    f32 drySample;
+
+    scale = lbl_8036C3E0;
+    unity = lbl_8036C3E4;
+    bias = lbl_8036C3D8;
+    damp = *(f32 *)(arg1 + 0x168);
+    gain = *(f32 *)(arg1 + 0x1A0);
+    wet = *(f32 *)(arg1 + 0x19C) * unity;
+    dry = unity - wet;
+
+    channel3 = (arg2 << 1) + arg2;
+    offset = channel3 * 0x14;
+    src = (arg1 + 0xB4) + offset;
+    dst = arg1 + offset;
+    coeff0 = *(f32 *)(arg1 + channel3 * 4 + 0x16C);
+    coeff1 = *(f32 *)(arg1 + channel3 * 4 + 0x170);
+    coeff2 = *(f32 *)(arg1 + channel3 * 4 + 0x174);
+    feedback = *(f32 *)(arg1 + arg2 * 4 + 0x190);
+    ringCount = *(s32 *)(arg1 + 0x1A4);
+    conversion.words[0] = 0x43300000U;
+    ringLast = (ringCount - 1) * 4;
+    ring = arg1 + arg2 * 4;
+
+    srcW0 = *(s32 *)(src + 0x00);
+    srcR0 = *(s32 *)(src + 0x04);
+    srcW1 = *(s32 *)(src + 0x14);
+    srcR1 = *(s32 *)(src + 0x18);
+    srcW2 = *(s32 *)(src + 0x28);
+    srcR2 = *(s32 *)(src + 0x2C);
+    srcVal0 = *(f32 *)(src + 0x10);
+    srcVal1 = *(f32 *)(src + 0x24);
+    srcVal2 = *(f32 *)(src + 0x38);
+    srcEnd0 = *(s32 *)(src + 0x08);
+    srcEnd1 = *(s32 *)(src + 0x1C);
+    srcEnd2 = *(s32 *)(src + 0x30);
+    srcBuf0 = *(u8 **)(src + 0x0C);
+    srcBuf1 = *(u8 **)(src + 0x20);
+    srcBuf2 = *(u8 **)(src + 0x34);
+
+    dstW0 = *(s32 *)(dst + 0x00);
+    dstR0 = *(s32 *)(dst + 0x04);
+    dstW1 = *(s32 *)(dst + 0x14);
+    dstR1 = *(s32 *)(dst + 0x18);
+    dstW2 = *(s32 *)(dst + 0x28);
+    dstR2 = *(s32 *)(dst + 0x2C);
+    dstVal0 = *(f32 *)(dst + 0x10);
+    dstVal1 = *(f32 *)(dst + 0x24);
+    dstVal2 = *(f32 *)(dst + 0x38);
+    dstEnd0 = *(s32 *)(dst + 0x08);
+    dstEnd1 = *(s32 *)(dst + 0x1C);
+
+    conversion.words[1] = (u32)*arg0 ^ 0x80000000U;
+    sample = (f32)(conversion.value - bias);
+
+    for (i = 0x9F; i != 0; --i) {
+        delayed = sample;
+        if (ringCount != 0) {
+            ringBase = *(u8 **)(ring + 0x1AC);
+            ringCursor = *(u8 **)(ring + 0x1B8);
+            ringCursor += 4;
+            delayed = *(f32 *)(ringCursor - 4);
+            *(f32 *)(ringCursor - 4) = sample;
+            if ((s32)ringCursor == (s32)(ringBase + ringLast)) {
+                ringCursor = ringBase;
+            }
+            /* The target stores relative to ringBase, not ring. */
+            *(u8 **)(ringBase + 0x1B8) = ringCursor;
+        }
+
+        out0 = __fmadds(coeff0, srcVal0, delayed);
+        nextInput = *++arg0;
+        out1 = __fmadds(coeff1, srcVal1, delayed);
+        *(f32 *)(srcBuf0 + srcW0) = out0;
+        srcW0 += 4;
+        *(f32 *)(srcBuf1 + srcW1) = out1;
+        srcVal0 = *(f32 *)(srcBuf0 + srcR0);
+        srcR0 += 4;
+        srcVal1 = *(f32 *)(srcBuf1 + srcR1);
+        srcW1 += 4;
+        srcR1 += 4;
+        sum = srcVal0 + srcVal1;
+        if (srcW0 == srcEnd0) srcW0 = 0;
+        out2 = __fmadds(coeff2, srcVal2, delayed);
+        if (srcR0 == srcEnd0) srcR0 = 0;
+        *(f32 *)(srcBuf2 + srcW2) = out2;
+        srcW2 += 4;
+        if (srcW1 == srcEnd1) srcW1 = 0;
+        srcVal2 = *(f32 *)(srcBuf2 + srcR2);
+        srcR2 += 4;
+        if (srcR1 == srcEnd1) srcR1 = 0;
+        sum += srcVal2;
+
+        dstBuf = *(u8 **)(dst + 0x0C);
+        out0 = __fmadds(damp, dstVal0, sum);
+        if (srcW2 == srcEnd2) srcW2 = 0;
+        if (srcR2 == srcEnd2) srcR2 = 0;
+        nextInput = (s32)((u32)nextInput ^ 0x80000000U);
+        *(f32 *)(dstBuf + dstW0) = out0;
+        stage = __fnmsubs(damp, out0, dstVal0);
+        dstW0 += 4;
+        dstVal0 = *(f32 *)(dstBuf + dstR0);
+        dstR0 += 4;
+        dstBuf = *(u8 **)(dst + 0x20);
+        out1 = __fmadds(damp, dstVal1, stage);
+        if (dstW0 == dstEnd0) dstW0 = 0;
+        conversion.words[1] = (u32)nextInput;
+        *(f32 *)(dstBuf + dstW1) = out1;
+        stage = __fnmsubs(damp, out1, dstVal1);
+        dstW1 += 4;
+        if (dstR0 == dstEnd0) dstR0 = 0;
+        dstVal1 = *(f32 *)(dstBuf + dstR1);
+        stage *= scale;
+        dstR1 += 4;
+        stage = __fmadds(gain, feedback, stage);
+        if (dstW1 == dstEnd1) dstW1 = 0;
+        dstBuf = *(u8 **)(dst + 0x34);
+        out2 = __fmadds(damp, dstVal2, stage);
+        feedback = stage;
+        if (dstR1 == dstEnd1) dstR1 = 0;
+        *(f32 *)(dstBuf + dstW2) = out2;
+        stage = __fnmsubs(damp, out2, dstVal2);
+        dstEnd2 = *(s32 *)(dst + 0x30);
+        drySample = dry * sample;
+        dstVal2 = *(f32 *)(dstBuf + dstR2);
+        dstW2 += 4;
+        dstR2 += 4;
+        out0 = __fmadds(wet, stage, drySample);
+        if (dstW2 == dstEnd2) dstW2 = 0;
+        if (dstR2 == dstEnd2) dstR2 = 0;
+        sample = (f32)(conversion.value - bias);
+        arg0[-1] = (s32)out0;
     }
-  }
-  out0 = (coeff0 * srcVal0) + delayed;
-  out1 = (*((f32 *) (srcBuf1 + srcW1)) = (coeff1 * srcVal1) + delayed);
-  *((f32 *) (new_var6[1] + srcW0)) = out0;
-  srcW0 += 4;
-  srcVal0 = *((f32 *) (new_var6[1] + srcR0));
-  srcR0 += new_var4;
-  srcVal1 = *((f32 *) (srcBuf1 + srcR1));
-  srcW1 += new_var4;
-  srcR1 += 4;
-  if (srcW0 == srcEnd0)
-  {
-    do
-    {
+
+    /* Final sample: no speculative read beyond the input block. */
+    delayed = sample;
+    if (ringCount != 0) {
+        ringBase = *(u8 **)(ring + 0x1AC);
+        ringCursor = *(u8 **)(ring + 0x1B8);
+        ringCursor += 4;
+        delayed = *(f32 *)(ringCursor - 4);
+        *(f32 *)(ringCursor - 4) = sample;
+        if ((s32)ringCursor == (s32)(ringBase + ringLast)) {
+            ringCursor = ringBase;
+        }
+        /* The target stores relative to ringBase, not ring. */
+        *(u8 **)(ringBase + 0x1B8) = ringCursor;
     }
-    while (0);
-    srcW0 = 0;
-  }
-  if (srcR0 == srcEnd0)
-  {
-    srcR0 = 0;
-  }
-  sum = srcVal0 + srcVal1;
-  out2 = (coeff2 * srcVal2) + delayed;
-  if (srcW1 == srcEnd1)
-  {
-    srcW1 = 0;
-  }
-  if (srcR1 == srcEnd1)
-  {
-    srcR1 = 0;
-  }
-  *((f32 *) (srcBuf2 + srcW2)) = out2;
-  srcW2 += 4;
-  srcVal2 = *((f32 *) (srcBuf2 + srcR2));
-  srcR2 += 4;
-  if (srcW2 == srcEnd2)
-  {
-    srcW2 = 0;
-  }
-  if (srcR2 == srcEnd2)
-  {
-    srcR2 = 0;
-  }
-  sum += srcVal2;
-  dstBuf = *((u8 **) (dst + 0x0C));
-  ;
-  *((f32 *) (dstBuf + dstW0)) = (damp * dstVal0) + sum;
-  new_var5 = *((s32 *) (dst + 0x30));
-  stage = dstVal0 - (damp * out0);
-  dstW0 += 4;
-  dstVal0 = *((f32 *) (dstBuf + dstR0));
-  dstR0 += 4;
-  dstBuf = *((u8 **) (dst + 0x20));
-  out1 = (damp * dstVal1) + stage;
-  if (dstW0 == dstEnd0)
-  {
-    dstW0 = 0;
-  }
-  if (dstR0 == dstEnd0)
-  {
-    dstR0 = 0;
-  }
-  *((f32 *) (dstBuf + dstW1)) = out1;
-  stage = dstVal1 - (damp * out1);
-  dstW1 += 4;
-  dstVal1 = *((f32 *) (dstBuf + dstR1));
-  stage *= scale;
-  dstR1 += new_var4;
-  stage = (gain * feedback) + stage;
-  if (dstW1 == dstEnd1)
-  {
-    dstW1 = 0;
-  }
-  dstBuf = *((u8 **) (dst + 0x34));
-  out2 = (damp * dstVal2) + stage;
-  feedback = stage;
-  if (dstR1 == dstEnd1)
-  {
-    dstR1 = 0;
-  }
-  *((f32 *) (dstBuf + dstW2)) = out2;
-  stage = dstVal2 - (damp * out2);
-  dstVal2 = *((f32 *) (dstBuf + dstR2));
-  dstW2 += new_var4;
-  dstR2 += 4;
-  out0 = dry * sample;
-  out1 = (wet * stage) + out0;
-  if (dstW2 == dstEnd2)
-  {
-    dstW2 = 0;
-  }
-  if (dstR2 == new_var5)
-  {
-    dstR2 = 0;
-  }
-  *arg0 = (s32) out1;
-  channel3 = (arg2 << 1) + arg2;
-  src = (new_var6[0] + 0xB4) + (channel3 * 0x14);
-  *((s32 *) (src + 0x00)) = srcW0;
-  *((s32 *) (src + 0x04)) = srcR0;
-  *((s32 *) (src + 0x14)) = srcW1;
-  *((s32 *) (src + 0x28)) = srcW2;
-  *((s32 *) (src + 0x2C)) = srcR2;
-  *((f32 *) (src + 0x10)) = srcVal0;
-  new_var = dst + 0x04;
-  *((f32 *) (src + 0x24)) = srcVal1;
-  *((f32 *) (src + 0x38)) = srcVal2;
-  *((s32 *) (dst + 0x00)) = dstW0;
-  *((s32 *) new_var) = dstR0;
-  *((s32 *) (dst + 0x14)) = dstW1;
-  *((s32 *) (dst + 0x18)) = dstR1;
-  *((s32 *) (dst + 0x28)) = dstW2;
-  *((s32 *) (dst + 0x2C)) = dstR2;
-  *((s32 *) (src + 0x18)) = srcR1;
-  *((f32 *) (dst + 0x10)) = dstVal0;
-  *((f32 *) (dst + 0x24)) = dstVal1;
-  *((f32 *) (dst + 0x38)) = dstVal2;
-  *((f32 *) (ring + 0x190)) = feedback;
+
+    out0 = __fmadds(coeff0, srcVal0, delayed);
+    out1 = __fmadds(coeff1, srcVal1, delayed);
+    *(f32 *)(srcBuf0 + srcW0) = out0;
+    srcW0 += 4;
+    *(f32 *)(srcBuf1 + srcW1) = out1;
+    srcVal0 = *(f32 *)(srcBuf0 + srcR0);
+    srcR0 += 4;
+    srcVal1 = *(f32 *)(srcBuf1 + srcR1);
+    srcW1 += 4;
+    srcR1 += 4;
+    sum = srcVal0 + srcVal1;
+    if (srcW0 == srcEnd0) srcW0 = 0;
+    out2 = __fmadds(coeff2, srcVal2, delayed);
+    if (srcR0 == srcEnd0) srcR0 = 0;
+    *(f32 *)(srcBuf2 + srcW2) = out2;
+    srcW2 += 4;
+    if (srcW1 == srcEnd1) srcW1 = 0;
+    srcVal2 = *(f32 *)(srcBuf2 + srcR2);
+    srcR2 += 4;
+    if (srcR1 == srcEnd1) srcR1 = 0;
+    sum += srcVal2;
+
+    dstBuf = *(u8 **)(dst + 0x0C);
+    out0 = __fmadds(damp, dstVal0, sum);
+    if (srcW2 == srcEnd2) srcW2 = 0;
+    if (srcR2 == srcEnd2) srcR2 = 0;
+    *(f32 *)(dstBuf + dstW0) = out0;
+    stage = __fnmsubs(damp, out0, dstVal0);
+    dstW0 += 4;
+    dstVal0 = *(f32 *)(dstBuf + dstR0);
+    dstR0 += 4;
+    dstBuf = *(u8 **)(dst + 0x20);
+    out1 = __fmadds(damp, dstVal1, stage);
+    if (dstW0 == dstEnd0) dstW0 = 0;
+    *(f32 *)(dstBuf + dstW1) = out1;
+    stage = __fnmsubs(damp, out1, dstVal1);
+    dstW1 += 4;
+    if (dstR0 == dstEnd0) dstR0 = 0;
+    dstVal1 = *(f32 *)(dstBuf + dstR1);
+    stage *= scale;
+    dstR1 += 4;
+    stage = __fmadds(gain, feedback, stage);
+    if (dstW1 == dstEnd1) dstW1 = 0;
+    dstBuf = *(u8 **)(dst + 0x34);
+    out2 = __fmadds(damp, dstVal2, stage);
+    feedback = stage;
+    if (dstR1 == dstEnd1) dstR1 = 0;
+    *(f32 *)(dstBuf + dstW2) = out2;
+    stage = __fnmsubs(damp, out2, dstVal2);
+    dstEnd2 = *(s32 *)(dst + 0x30);
+    drySample = dry * sample;
+    dstVal2 = *(f32 *)(dstBuf + dstR2);
+    dstW2 += 4;
+    dstR2 += 4;
+    out0 = __fmadds(wet, stage, drySample);
+    if (dstW2 == dstEnd2) dstW2 = 0;
+    if (dstR2 == dstEnd2) dstR2 = 0;
+    *arg0 = (s32)out0;
+
+    channel3 = (arg2 << 1) + arg2;
+    src = (arg1 + 0xB4) + channel3 * 0x14;
+    *(s32 *)(src + 0x00) = srcW0;
+    *(s32 *)(src + 0x04) = srcR0;
+    *(s32 *)(src + 0x14) = srcW1;
+    *(s32 *)(src + 0x18) = srcR1;
+    *(s32 *)(src + 0x28) = srcW2;
+    *(s32 *)(src + 0x2C) = srcR2;
+    *(f32 *)(src + 0x10) = srcVal0;
+    *(f32 *)(src + 0x24) = srcVal1;
+    *(f32 *)(src + 0x38) = srcVal2;
+    *(s32 *)(dst + 0x00) = dstW0;
+    *(s32 *)(dst + 0x04) = dstR0;
+    *(s32 *)(dst + 0x14) = dstW1;
+    *(s32 *)(dst + 0x18) = dstR1;
+    *(s32 *)(dst + 0x28) = dstW2;
+    *(s32 *)(dst + 0x2C) = dstR2;
+    *(f32 *)(dst + 0x10) = dstVal0;
+    *(f32 *)(dst + 0x24) = dstVal1;
+    *(f32 *)(dst + 0x38) = dstVal2;
+    *(f32 *)(arg1 + arg2 * 4 + 0x190) = feedback;
 }
 
 /* Mix wet aux into ch0/ch1 if needed, then run aux FX on all three PCM channels. */

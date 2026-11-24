@@ -1202,7 +1202,7 @@ void fn_801F3E60(void *arg0) {
     void Ui_DrawRouteIconEx(s16, s16, s32);
     void *Msg_ResolveName(void *);
     void fn_80152010(s16, s16, s32, s32, s32);
-    void fn_8015F24C(s16, s16, s32, s32, s8, s32);
+    void fn_8015F24C(s16, s16, s32, s32, u8, s32);
     Color *Ui_GetColor(s32);
     u8 fn_801E3570(void *, void *);
     void fn_801F52A8(s32, s16 *);
@@ -1217,8 +1217,8 @@ void fn_801F3E60(void *arg0) {
     extern s16 lbl_803683E4[4];
     extern f32 lbl_8036B850;
     extern f32 lbl_8036B854;
-    extern f32 lbl_8036B858;
-    extern f32 lbl_8036B85C;
+    extern const f32 lbl_8036B858;
+    extern const f32 lbl_8036B85C;
     extern f32 lbl_8036B860;
     extern f32 lbl_8036B864;
     extern f32 lbl_8036B868;
@@ -1515,7 +1515,7 @@ void fn_801F3E60(void *arg0) {
                 *(f32 *)((u8 *)p + 0x30) = lbl_8036B858;
             }
         }
-        fn_8015F24C(0x2D, 0x84, 0x210, *(s16 *)((u8 *)p + 0x2A), (s8)0xB3, 0x10);
+        fn_8015F24C(0x2D, 0x84, 0x210, *(s16 *)((u8 *)p + 0x2A), 0xB3, 0x10);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036B88C);
         Prim2D_PrepareTex();

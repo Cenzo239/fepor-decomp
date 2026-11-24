@@ -501,7 +501,6 @@ void fn_80080698(void *arg0) {
     extern f32 lbl_803694A4, lbl_80369548;
     extern f32 lbl_8036942C, lbl_8036943C, lbl_80369438, lbl_803694D4, lbl_80369434;
     extern f32 lbl_80369430, lbl_80369418, lbl_80369488, lbl_8036951C, lbl_80369524;
-    extern f64 lbl_80369440, lbl_80369470;
     extern s32 gUiAtlas;
     extern u8 gUiStrings[];
     extern u8 gUiIconDrawer[];
@@ -522,6 +521,7 @@ void fn_80080698(void *arg0) {
     s32 i;
     void *letter, *text;
     s32 icon;
+    u8 *strings;
 
     y = lbl_80369580 + *(f32 *)((u8 *)arg0 + 0x18);
     unit = *(u8 **)((u8 *)*(void **)((u8 *)arg0 + 0x58) + 0x18C);
@@ -577,6 +577,7 @@ void fn_80080698(void *arg0) {
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
 
+        strings = gUiStrings;
         for (i = 0; i < 8; i++) {
             arrA[0] = lbl_8026C804[0];
             arrA[1] = lbl_8026C804[1];
@@ -587,12 +588,12 @@ void fn_80080698(void *arg0) {
             arrB[2] = lbl_8026C814[2];
             arrB[3] = lbl_8026C814[3];
             letter = WpnRank_GetLetter(Unit_GetWpnExp(*(void **)((u8 *)arg0 + 0x58), i));
-            if (Str_Cmp(letter, gUiStrings + 0x15) != 0) {
+            if (Str_Cmp(letter, strings + 0x15) != 0) {
                 wx = x + *(f32 *)&arrA[i];
                 wy = y + *(f32 *)&arrB[i];
                 if (i == 7 && Status_Test((u8 *)*(void **)((u8 *)arg0 + 0x58) + 0x1BC, 0x23)) {
                     icon = 0x53;
-                    text = Msg_Expand(gUiStrings + 0x262);
+                    text = Msg_Expand(strings + 0x262);
                 } else {
                     icon = (u8)fn_8005A310(gUiIconDrawer, i, 0);
                     text = fn_8001E5D0(i, 0);
