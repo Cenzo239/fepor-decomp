@@ -2995,7 +2995,6 @@ u8 *file=arg0;
 u8 *entry;
 u16 *fat;
 s32 result;
-s32 size;
 u8 *dirBlock;
 result=fn_80217B18(*(s32 *)file,(void **)&card);
 if(result<0) return result;
@@ -3004,8 +3003,7 @@ if(*(u16 *)(file+0x10)<5 || *(u16 *)(file+0x10)>=*(u16 *)(card+0x10) ||
 return __CARDPutControlBlock(card,-128);
 dirBlock=__CARDGetDirBlock(card);
 entry=dirBlock+(*(s32 *)(file+4)<<6);
-size=*(u32 *)(card+0xC)**(u16 *)(entry+0x38);
-if(size<=offset||size<offset+length) return __CARDPutControlBlock(card,-11);
+if(*(u16 *)(entry+0x38)**(s32 *)(card+0xC)<=offset||*(u16 *)(entry+0x38)**(s32 *)(card+0xC)<offset+length) return __CARDPutControlBlock(card,-11);
 *(void **)(card+0xC0)=file;
 *(s32 *)(file+0xC)=length;
 if(offset<*(s32 *)(file+8)){
