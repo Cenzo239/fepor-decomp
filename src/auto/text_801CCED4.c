@@ -7014,7 +7014,7 @@ void fn_801D8E80(void *arg0) {
     extern s32 lbl_803682E4;
     extern f32 lbl_8036B628;
     extern const f32 lbl_8036B62C;
-    extern f32 lbl_8036B630;
+    extern const f32 lbl_8036B630;
     extern f32 lbl_8036B634;
     extern f32 lbl_8036B638;
     extern f32 lbl_8036B63C;
