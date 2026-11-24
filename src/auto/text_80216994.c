@@ -3576,7 +3576,6 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 ret;
     u8 *base;
     CardDirEntry *slot;
-    u8 *fileNameEnd;
     u8 *fileName;
 
     if (arg1 < 0 || arg1 >= 0x7F || arg2->unk8[0] == 0xFF || arg2->unk8[0] == 0) {
@@ -3592,12 +3591,9 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     if (ret < 0) {
         return __CARDPutControlBlock((void *)sp18, ret);
     }
-    fileName = arg2->unk8;
-    fileNameEnd = (u8 *)arg2 + 0x28;
-    for (; fileName < fileNameEnd; fileName++) {
+    for (fileName = arg2->unk8; fileName < arg2->unk8 + 0x20; fileName++) {
         if (*fileName == 0) {
-            fileNameEnd = (u8 *)arg2 + 0x28;
-            while (++fileName < fileNameEnd) {
+            while (++fileName < (u8 *)&arg2->unk28) {
                 *fileName = 0;
             }
             break;
@@ -3622,10 +3618,10 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
                 }
             }
         }
+        memcpy(slot->unk8, arg2->unk8, 0x20);
+        memcpy(slot->unk0, arg2->unk0, 4);
+        memcpy(slot->unk4, arg2->unk4, 2);
     }
-    memcpy(slot->unk8, arg2->unk8, 0x20);
-    memcpy(slot->unk0, arg2->unk0, 4);
-    memcpy(slot->unk4, arg2->unk4, 2);
     slot->unk28 = arg2->unk28;
     slot->unk7 = arg2->unk7;
     slot->unk2C = arg2->unk2C;
