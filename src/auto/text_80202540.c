@@ -231,40 +231,28 @@ void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx,
   extern const f32 lbl_8036BC38;
   extern const f32 lbl_8036BC48;
   extern const f32 lbl_8036BC3C;
-  f32 tmp0;
-  f32 tmp1;
+  f32 tmp;
   f32 tmp2;
-  float new_var;
-  float new_var2;
   f32 tmp3;
-  f32 one = lbl_8036BC38;
-  f32 new_var3;
-  f32 two = lbl_8036BC48;
-  f32 zero;
-  f32 rp = r + l;
-  tmp0 = one / (r - l);
-  new_var3 = two;
-  tmp1 = one / (t - b);
-  tmp3 = tmp0 * new_var3;
+
+  tmp = lbl_8036BC38 / (r - l);
+  tmp3 = lbl_8036BC48 * tmp;
   m[0] = tmp3 * sx;
-  zero = lbl_8036BC3C;
-  m[1] = zero;
-  m[2] = zero;
-  tmp2 = tmp0 * (-rp);
-  tmp2 = sx * tmp2;
+  m[1] = lbl_8036BC3C;
+  m[2] = lbl_8036BC3C;
+  tmp2 = sx * (tmp * -(r + l));
   m[3] = tx + tmp2;
-  m[4] = zero;
-  new_var2 = two * tmp1;
-  m[5] = new_var2 * sy;
-  new_var = tmp1 * (-(t + b));
-  m[6] = zero;
-  tmp3 = new_var;
-  tmp3 = sy * tmp3;
-  m[7] = ty + tmp3;
-  m[8] = zero;
-  m[9] = zero;
-  m[10] = zero;
-  m[11] = one;
+  tmp = lbl_8036BC38 / (t - b);
+  m[4] = lbl_8036BC3C;
+  tmp3 = lbl_8036BC48 * tmp;
+  m[5] = tmp3 * sy;
+  m[6] = lbl_8036BC3C;
+  tmp2 = sy * (tmp * -(t + b));
+  m[7] = ty + tmp2;
+  m[8] = lbl_8036BC3C;
+  m[9] = lbl_8036BC3C;
+  m[10] = lbl_8036BC3C;
+  m[11] = lbl_8036BC38;
 }
 #pragma scheduling off
 f32 fn_802029C4(void) {
