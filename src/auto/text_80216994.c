@@ -3085,10 +3085,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
 
     void *card;
     u8 *entry;
-    u32 sectorSize;
     u32 start;
-    s32 length;
-    s32 boundary;
     s32 result;
     void *callback;
 
@@ -3114,19 +3111,12 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     }
     *(void **)((u8 *)card + 0xD0) = callback;
 
-    sectorSize = *(u32 *)((u8 *)card + 0xC);
-    start = *(u32 *)((u8 *)arg0 + 8) & (sectorSize - 1);
-    boundary = sectorSize - start;
-
-    length = arg2;
-    if (arg2 >= boundary) {
-        length = boundary;
-    }
-
+    start = *(u32 *)((u8 *)arg0 + 8) & (*(u32 *)((u8 *)card + 0xC) - 1);
+    arg2 = (arg2 < (s32)(*(u32 *)((u8 *)card + 0xC) - start)) ? arg2 : (s32)(*(u32 *)((u8 *)card + 0xC) - start);
     result = fn_802190A4(
         arg0[0],
-        start + sectorSize * *(u16 *)((u8 *)arg0 + 0x10),
-        length,
+        *(u32 *)((u8 *)card + 0xC) * *(u16 *)((u8 *)arg0 + 0x10) + start,
+        arg2,
         (void *)arg1,
         (void *)fn_8021C5D8
     );
