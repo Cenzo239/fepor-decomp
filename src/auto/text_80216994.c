@@ -2685,91 +2685,70 @@ after:
     }
     return result;
 }
-s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
+static inline BOOL fn_8021BDC0_CompareFileName(u8 *ent, const char *fileName)
 {
-#pragma use_lmw_stmw on
-#pragma scheduling off
-    u8 *__CARDGetDirBlock(void *);
+    char *entName;
+    char c1;
+    char c2;
+    int n;
+
+    entName = (char *)ent + 8;
+    n = 0x20;
+    while (0 <= --n) {
+        if ((c1 = *entName++) != (c2 = *fileName++)) {
+            return FALSE;
+        } else if (c2 == '\0') {
+            return TRUE;
+        }
+    }
+    if (*fileName == '\0') {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static inline s32 fn_8021BDC0_Access(void *card, u8 *ent)
+{
     s32 fn_80231944(const void *, const void *, u32);
     extern u8 lbl_8033A420[];
+    u8 *diskID = *(u8 **)((u8 *)card + 0x10C);
 
-    u8 *entry;
-    s32 i;
-    u8 *defaultCode;
-    u8 *gamecode;
+    if (ent[0] == 0xFF) {
+        return -4;
+    }
+    if (diskID == lbl_8033A420 || (fn_80231944(ent, diskID, 4) == 0 && fn_80231944(ent + 4, diskID + 4, 2) == 0)) {
+        return 0;
+    }
+    return -10;
+}
+
+#pragma push
+#pragma opt_loop_invariants off
+s32 fn_8021BDC0(void *card, char *filename, s32 *outIndex)
+{
+    u8 *__CARDGetDirBlock(void *);
+    u8 *dir;
+    u8 *ent;
+    s32 fileNo;
     s32 result;
-    char *p;
-    s8 a;
-    s8 b;
-    s32 n;
-    char *name;
 
     if (*(s32 *)card == 0) {
         return -3;
     }
-
-    entry = __CARDGetDirBlock(card);
-    defaultCode = lbl_8033A420;
-    i = 0;
-
-    do {
-        gamecode = *(u8 **)((u8 *)card + 0x10C);
-
-        if (*entry == 0xFF) {
-            result = -4;
-            goto after_check;
+    ent = __CARDGetDirBlock(card);
+    for (fileNo = 0; fileNo < 0x7F; fileNo++, ent += 0x40) {
+        result = fn_8021BDC0_Access(card, ent);
+        if (result < 0) {
+            continue;
         }
-        if (gamecode == defaultCode) {
-            goto ok;
+        if (fn_8021BDC0_CompareFileName(ent, filename)) {
+            *outIndex = fileNo;
+            return 0;
         }
-        if (fn_80231944(entry, gamecode, 4) != 0) {
-            goto bad;
-        }
-        if (fn_80231944(entry + 4, gamecode + 4, 2) != 0) {
-            goto bad;
-        }
-    ok:
-        result = 0;
-        goto after_check;
-    bad:
-        result = -10;
-    after_check:
-        if (result >= 0) {
-            p = (char *)entry + 8;
-            name = filename;
-            n = 0x20;
-            while (--n >= 0) {
-                a = *p++;
-                b = *name++;
-                if (a != b) {
-                    result = 0;
-                    goto str_done;
-                }
-                if (b == 0) {
-                    result = 1;
-                    goto str_done;
-                }
-            }
-            if ((s8)*name == 0) {
-                result = 1;
-            } else {
-                result = 0;
-            }
-        str_done:
-            if (result != 0) {
-                *outIndex = i;
-                return 0;
-            }
-        }
-
-        i += 1;
-        entry += 0x40;
-    } while (i < 0x7F);
-
+    }
     return -4;
-#pragma scheduling reset
-#pragma use_lmw_stmw reset
 }
+#pragma pop
 
 static inline s32 fn_8021BF10_GetFileNo(void *card, void *fileName, s32 *pfileNo)
 {
