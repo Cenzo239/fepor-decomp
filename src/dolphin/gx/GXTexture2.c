@@ -417,48 +417,209 @@ s32 fn_80222F10(s32 arg0) {
     return old;
 }
 
-void fn_80222F24(u32 arg0, u32 arg1)
-{
-    u32 value;
-    u32 flags;
-    u32 reg;
-    u8 b0;
-    u8 b1;
-    u8 *gx;
-
-    gx = (u8 *)__GXData;
-    arg0 <<= 2;
-    arg1 <<= 2;
-
-    value = *(u32 *)(gx + arg0 + 0x514);
-
-    reg = *(u32 *)(gx + arg1 + 0xB8);
-    reg = __rlwimi(reg, value & 0x3FF, 0, 16, 31);
-    *(u32 *)(gx + arg1 + 0xB8) = reg;
-
-    value = (value >> 10) & 0x3FF;
-    reg = *(u32 *)(gx + arg1 + 0xD8);
-    reg = __rlwimi(reg, value, 0, 16, 31);
-    *(u32 *)(gx + arg1 + 0xD8) = reg;
-
-    flags = *(u32 *)(gx + arg0 + 0x534);
-
-    reg = *(u32 *)(gx + arg1 + 0xB8);
-    b0 = (flags & 3) == 1;
-    b1 = ((flags >> 2) & 3) == 1;
-    reg = __rlwimi(reg, b0, 16, 15, 15);
-    *(u32 *)(gx + arg1 + 0xB8) = reg;
-
-    reg = *(u32 *)(gx + arg1 + 0xD8);
-    reg = __rlwimi(reg, b1, 16, 15, 15);
-    *(u32 *)(gx + arg1 + 0xD8) = reg;
-
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(gx + arg1 + 0xB8);
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = *(u32 *)(gx + arg1 + 0xD8);
-
-    *(u16 *)(gx + 2) = 0;
+typedef enum _GXAttrType {
+    GX_NONE_80222F24,
+    GX_DIRECT_80222F24,
+    GX_INDEX8,
+    GX_INDEX16_80222F24,
+} GXAttrType;
+typedef enum _GXTexMapID {
+    GX_TEXMAP0,
+    GX_TEXMAP1,
+    GX_TEXMAP2,
+    GX_TEXMAP3,
+    GX_TEXMAP4,
+    GX_TEXMAP5,
+    GX_TEXMAP6,
+    GX_TEXMAP7,
+    GX_MAX_TEXMAP,
+    GX_TEXMAP_NULL = 0xFF,
+    GX_TEX_DISABLE = 0x100,
+} GXTexMapID;
+typedef enum _GXPerf0 {
+    GX_PERF0_VERTICES,
+    GX_PERF0_CLIP_VTX,
+    GX_PERF0_CLIP_CLKS,
+    GX_PERF0_XF_WAIT_IN,
+    GX_PERF0_XF_WAIT_OUT,
+    GX_PERF0_XF_XFRM_CLKS,
+    GX_PERF0_XF_LIT_CLKS,
+    GX_PERF0_XF_BOT_CLKS,
+    GX_PERF0_XF_REGLD_CLKS,
+    GX_PERF0_XF_REGRD_CLKS,
+    GX_PERF0_CLIP_RATIO,
+    GX_PERF0_TRIANGLES,
+    GX_PERF0_TRIANGLES_CULLED,
+    GX_PERF0_TRIANGLES_PASSED,
+    GX_PERF0_TRIANGLES_SCISSORED,
+    GX_PERF0_TRIANGLES_0TEX,
+    GX_PERF0_TRIANGLES_1TEX,
+    GX_PERF0_TRIANGLES_2TEX,
+    GX_PERF0_TRIANGLES_3TEX,
+    GX_PERF0_TRIANGLES_4TEX,
+    GX_PERF0_TRIANGLES_5TEX,
+    GX_PERF0_TRIANGLES_6TEX,
+    GX_PERF0_TRIANGLES_7TEX,
+    GX_PERF0_TRIANGLES_8TEX,
+    GX_PERF0_TRIANGLES_0CLR,
+    GX_PERF0_TRIANGLES_1CLR,
+    GX_PERF0_TRIANGLES_2CLR,
+    GX_PERF0_QUAD_0CVG,
+    GX_PERF0_QUAD_NON0CVG,
+    GX_PERF0_QUAD_1CVG,
+    GX_PERF0_QUAD_2CVG,
+    GX_PERF0_QUAD_3CVG,
+    GX_PERF0_QUAD_4CVG,
+    GX_PERF0_AVG_QUAD_CNT,
+    GX_PERF0_CLOCKS,
+    GX_PERF0_NONE,
+} GXPerf0;
+typedef enum _GXPerf1 {
+    GX_PERF1_TEXELS,
+    GX_PERF1_TX_IDLE,
+    GX_PERF1_TX_REGS,
+    GX_PERF1_TX_MEMSTALL,
+    GX_PERF1_TC_CHECK1_2,
+    GX_PERF1_TC_CHECK3_4,
+    GX_PERF1_TC_CHECK5_6,
+    GX_PERF1_TC_CHECK7_8,
+    GX_PERF1_TC_MISS,
+    GX_PERF1_VC_ELEMQ_FULL,
+    GX_PERF1_VC_MISSQ_FULL,
+    GX_PERF1_VC_MEMREQ_FULL,
+    GX_PERF1_VC_STATUS7,
+    GX_PERF1_VC_MISSREP_FULL,
+    GX_PERF1_VC_STREAMBUF_LOW,
+    GX_PERF1_VC_ALL_STALLS,
+    GX_PERF1_VERTICES,
+    GX_PERF1_FIFO_REQ,
+    GX_PERF1_CALL_REQ,
+    GX_PERF1_VC_MISS_REQ,
+    GX_PERF1_CP_ALL_REQ,
+    GX_PERF1_CLOCKS,
+    GX_PERF1_NONE,
+} GXPerf1;
+typedef struct _GXTexObj {
+    u32 dummy[8];
+} GXTexObj_80222F24;
+typedef struct _GXTexRegion {
+    u32 dummy[4];
+} GXTexRegion;
+typedef struct _GXTlutRegion {
+    u32 dummy[4];
+} GXTlutRegion;
+typedef struct __GXData_struct {
+    u16 vNumNot;
+    u16 bpSentNot;
+    u16 vNum;
+    u16 vLim;
+    u32 cpEnable;
+    u32 cpStatus;
+    u32 cpClr;
+    u32 vcdLo;
+    u32 vcdHi;
+    u32 vatA[8];
+    u32 vatB[8];
+    u32 vatC[8];
+    u32 lpSize;
+    u32 matIdxA;
+    u32 matIdxB;
+    u32 indexBase[4];
+    u32 indexStride[4];
+    u32 ambColor[2];
+    u32 matColor[2];
+    u32 suTs0[8];
+    u32 suTs1[8];
+    u32 suScis0;
+    u32 suScis1;
+    u32 tref[8];
+    u32 iref;
+    u32 bpMask;
+    u32 IndTexScale0;
+    u32 IndTexScale1;
+    u32 tevc[16];
+    u32 teva[16];
+    u32 tevKsel[8];
+    u32 cmode0;
+    u32 cmode1;
+    u32 zmode;
+    u32 peCtrl;
+    u32 cpDispSrc;
+    u32 cpDispSize;
+    u32 cpDispStride;
+    u32 cpDisp;
+    u32 cpTexSrc;
+    u32 cpTexSize;
+    u32 cpTexStride;
+    u32 cpTex;
+    u8 cpTexZ;
+    u32 genMode;
+    GXTexRegion TexRegions0[8];
+    GXTexRegion TexRegions1[8];
+    GXTexRegion TexRegions2[8];
+    GXTlutRegion TlutRegions[20];
+    GXTexRegion *(*texRegionCallback)(GXTexObj_80222F24 *, GXTexMapID);
+    GXTlutRegion *(*tlutRegionCallback)(u32);
+    GXAttrType nrmType;
+    u8 hasNrms;
+    u8 hasBiNrms;
+    u32 projType;
+    f32 projMtx[6];
+    f32 vpLeft;
+    f32 vpTop;
+    f32 vpWd;
+    f32 vpHt;
+    f32 vpNearz;
+    f32 vpFarz;
+    f32 zOffset;
+    f32 zScale;
+    u32 tImage0[8];
+    u32 tMode0[8];
+    u32 texmapId[16];
+    u32 tcsManEnab;
+    u32 tevTcEnab;
+    GXPerf0 perf0;
+    GXPerf1 perf1;
+    u32 perfSel;
+    u8 inDispList;
+    u8 dlSaveContext;
+    u8 abtWaitPECopy;
+    u8 dirtyVAT;
+    u32 dirtyState;
+} GXData;
+static void fn_80222F24(u32 tmap, u32 tcoord) {
+    extern u16 * const __GXData;
+    u32 w;
+    u32 h;
+    u8 s_bias;
+    u8 t_bias;
+    w = ((int)(((*(GXData *const *)&__GXData)->tImage0[tmap]) >> (0)) & ((1 << (10)) - 1));
+    h = ((int)(((*(GXData *const *)&__GXData)->tImage0[tmap]) >> (10)) & ((1 << (10)) - 1));
+    do {
+        ((*(GXData *const *)&__GXData)->suTs0[tcoord]) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->suTs0[tcoord]), (w), (0), 32 - (0) - (16), 31 - (0)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->suTs1[tcoord]) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->suTs1[tcoord]), (h), (0), 32 - (0) - (16), 31 - (0)));
+    } while (0);
+    s_bias = ((int)(((*(GXData *const *)&__GXData)->tMode0[tmap]) >> (0)) & ((1 << (2)) - 1)) == 1;
+    t_bias = ((int)(((*(GXData *const *)&__GXData)->tMode0[tmap]) >> (2)) & ((1 << (2)) - 1)) == 1;
+    do {
+        ((*(GXData *const *)&__GXData)->suTs0[tcoord]) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->suTs0[tcoord]), (s_bias), (16), 32 - (16) - (1), 31 - (16)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->suTs1[tcoord]) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->suTs1[tcoord]), (t_bias), (16), 32 - (16) - (1), 31 - (16)));
+    } while (0);
+    do {
+        GXWGFifo.u8 = (u8)(0x61);
+        GXWGFifo.u32 = (u32)((*(GXData *const *)&__GXData)->suTs0[tcoord]);
+        ((void)0);
+    } while (0);
+    do {
+        GXWGFifo.u8 = (u8)(0x61);
+        GXWGFifo.u32 = (u32)((*(GXData *const *)&__GXData)->suTs1[tcoord]);
+        ((void)0);
+    } while (0);
+    (*(GXData *const *)&__GXData)->bpSentNot = 0;
 }
 
 void fn_80222FC4(void)

@@ -286,13 +286,190 @@ void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4
 
 void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
 
-void fn_80225034(u32 arg0, u32 *dst) {
-    double *source = (double *)((u8 *)__GXData + 0x4f4);
-    double *out = (double *)arg0;
-    double a = source[0], b = source[1], c = source[2];
-    out[0] = a;
-    out[1] = b;
-    out[2] = c;
+typedef enum _GXAttrType {
+    GX_NONE_80225034,
+    GX_DIRECT_80225034,
+    GX_INDEX8,
+    GX_INDEX16_80225034,
+} GXAttrType;
+typedef enum _GXTexMapID {
+    GX_TEXMAP0,
+    GX_TEXMAP1,
+    GX_TEXMAP2,
+    GX_TEXMAP3,
+    GX_TEXMAP4,
+    GX_TEXMAP5,
+    GX_TEXMAP6,
+    GX_TEXMAP7,
+    GX_MAX_TEXMAP,
+    GX_TEXMAP_NULL = 0xFF,
+    GX_TEX_DISABLE = 0x100,
+} GXTexMapID;
+typedef enum _GXPerf0 {
+    GX_PERF0_VERTICES,
+    GX_PERF0_CLIP_VTX,
+    GX_PERF0_CLIP_CLKS,
+    GX_PERF0_XF_WAIT_IN,
+    GX_PERF0_XF_WAIT_OUT,
+    GX_PERF0_XF_XFRM_CLKS,
+    GX_PERF0_XF_LIT_CLKS,
+    GX_PERF0_XF_BOT_CLKS,
+    GX_PERF0_XF_REGLD_CLKS,
+    GX_PERF0_XF_REGRD_CLKS,
+    GX_PERF0_CLIP_RATIO,
+    GX_PERF0_TRIANGLES,
+    GX_PERF0_TRIANGLES_CULLED,
+    GX_PERF0_TRIANGLES_PASSED,
+    GX_PERF0_TRIANGLES_SCISSORED,
+    GX_PERF0_TRIANGLES_0TEX,
+    GX_PERF0_TRIANGLES_1TEX,
+    GX_PERF0_TRIANGLES_2TEX,
+    GX_PERF0_TRIANGLES_3TEX,
+    GX_PERF0_TRIANGLES_4TEX,
+    GX_PERF0_TRIANGLES_5TEX,
+    GX_PERF0_TRIANGLES_6TEX,
+    GX_PERF0_TRIANGLES_7TEX,
+    GX_PERF0_TRIANGLES_8TEX,
+    GX_PERF0_TRIANGLES_0CLR,
+    GX_PERF0_TRIANGLES_1CLR,
+    GX_PERF0_TRIANGLES_2CLR,
+    GX_PERF0_QUAD_0CVG,
+    GX_PERF0_QUAD_NON0CVG,
+    GX_PERF0_QUAD_1CVG,
+    GX_PERF0_QUAD_2CVG,
+    GX_PERF0_QUAD_3CVG,
+    GX_PERF0_QUAD_4CVG,
+    GX_PERF0_AVG_QUAD_CNT,
+    GX_PERF0_CLOCKS,
+    GX_PERF0_NONE,
+} GXPerf0;
+typedef enum _GXPerf1 {
+    GX_PERF1_TEXELS,
+    GX_PERF1_TX_IDLE,
+    GX_PERF1_TX_REGS,
+    GX_PERF1_TX_MEMSTALL,
+    GX_PERF1_TC_CHECK1_2,
+    GX_PERF1_TC_CHECK3_4,
+    GX_PERF1_TC_CHECK5_6,
+    GX_PERF1_TC_CHECK7_8,
+    GX_PERF1_TC_MISS,
+    GX_PERF1_VC_ELEMQ_FULL,
+    GX_PERF1_VC_MISSQ_FULL,
+    GX_PERF1_VC_MEMREQ_FULL,
+    GX_PERF1_VC_STATUS7,
+    GX_PERF1_VC_MISSREP_FULL,
+    GX_PERF1_VC_STREAMBUF_LOW,
+    GX_PERF1_VC_ALL_STALLS,
+    GX_PERF1_VERTICES,
+    GX_PERF1_FIFO_REQ,
+    GX_PERF1_CALL_REQ,
+    GX_PERF1_VC_MISS_REQ,
+    GX_PERF1_CP_ALL_REQ,
+    GX_PERF1_CLOCKS,
+    GX_PERF1_NONE,
+} GXPerf1;
+typedef struct _GXTexObj {
+    u32 dummy[8];
+} GXTexObj_80225034;
+typedef struct _GXTexRegion {
+    u32 dummy[4];
+} GXTexRegion;
+typedef struct _GXTlutRegion {
+    u32 dummy[4];
+} GXTlutRegion;
+typedef struct __GXData_struct {
+    u16 vNumNot;
+    u16 bpSentNot;
+    u16 vNum;
+    u16 vLim;
+    u32 cpEnable;
+    u32 cpStatus;
+    u32 cpClr;
+    u32 vcdLo;
+    u32 vcdHi;
+    u32 vatA[8];
+    u32 vatB[8];
+    u32 vatC[8];
+    u32 lpSize;
+    u32 matIdxA;
+    u32 matIdxB;
+    u32 indexBase[4];
+    u32 indexStride[4];
+    u32 ambColor[2];
+    u32 matColor[2];
+    u32 suTs0[8];
+    u32 suTs1[8];
+    u32 suScis0;
+    u32 suScis1;
+    u32 tref[8];
+    u32 iref;
+    u32 bpMask;
+    u32 IndTexScale0;
+    u32 IndTexScale1;
+    u32 tevc[16];
+    u32 teva[16];
+    u32 tevKsel[8];
+    u32 cmode0;
+    u32 cmode1;
+    u32 zmode;
+    u32 peCtrl;
+    u32 cpDispSrc;
+    u32 cpDispSize;
+    u32 cpDispStride;
+    u32 cpDisp;
+    u32 cpTexSrc;
+    u32 cpTexSize;
+    u32 cpTexStride;
+    u32 cpTex;
+    u8 cpTexZ;
+    u32 genMode;
+    GXTexRegion TexRegions0[8];
+    GXTexRegion TexRegions1[8];
+    GXTexRegion TexRegions2[8];
+    GXTlutRegion TlutRegions[20];
+    GXTexRegion *(*texRegionCallback)(GXTexObj_80225034 *, GXTexMapID);
+    GXTlutRegion *(*tlutRegionCallback)(u32);
+    GXAttrType nrmType;
+    u8 hasNrms;
+    u8 hasBiNrms;
+    u32 projType;
+    f32 projMtx[6];
+    f32 vpLeft;
+    f32 vpTop;
+    f32 vpWd;
+    f32 vpHt;
+    f32 vpNearz;
+    f32 vpFarz;
+    f32 zOffset;
+    f32 zScale;
+    u32 tImage0[8];
+    u32 tMode0[8];
+    u32 texmapId[16];
+    u32 tcsManEnab;
+    u32 tevTcEnab;
+    GXPerf0 perf0;
+    GXPerf1 perf1;
+    u32 perfSel;
+    u8 inDispList;
+    u8 dlSaveContext;
+    u8 abtWaitPECopy;
+    u8 dirtyVAT;
+    u32 dirtyState;
+} GXData;
+static void Copy6Floats(const register f32 src[6], register volatile f32 *dest) {
+    register f32 ps01, ps23, ps45;
+    asm {
+psq_l ps01, 0(src), 0, 0
+psq_l ps23, 8(src), 0, 0
+psq_l ps45, 16(src), 0, 0
+psq_st ps01, 0(dest), 0, 0
+psq_st ps23, 8(dest), 0, 0
+psq_st ps45, 16(dest), 0, 0
+    }
+}
+void fn_80225034(f32 *vp) {
+    extern u16* __GXData;
+    Copy6Floats(&(*(GXData *const *)&__GXData)->vpLeft, vp);
 }
 
 #pragma optimization_level 2

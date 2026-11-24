@@ -213,40 +213,95 @@ u32 GXGetTexBufferSize(u16 width, u16 height, u32 fmt, u8 mipmap, u8 maxlod)
 }
 
 #pragma optimization_level 2
-void fn_8022257C(s32 fmt, u16 width, u16 height, u32 *outW, u32 *outH, u32 *outTile) {
-    s32 shiftW;
-    s32 shiftH;
-    s32 one;
-    s32 tile;
-
+#pragma push
+#pragma optimization_level 4
+typedef enum _GXTexFmt {
+    GX_TF_I4 = 0x0,
+    GX_TF_I8 = 0x1,
+    GX_TF_IA4 = 0x2,
+    GX_TF_IA8 = 0x3,
+    GX_TF_RGB565 = 0x4,
+    GX_TF_RGB5A3 = 0x5,
+    GX_TF_RGBA8 = 0x6,
+    GX_TF_CMPR = 0xE,
+    GX_CTF_R4 = 0x0 | 0x20,
+    GX_CTF_RA4 = 0x2 | 0x20,
+    GX_CTF_RA8 = 0x3 | 0x20,
+    GX_CTF_YUVA8 = 0x6 | 0x20,
+    GX_CTF_A8 = 0x7 | 0x20,
+    GX_CTF_R8 = 0x8 | 0x20,
+    GX_CTF_G8 = 0x9 | 0x20,
+    GX_CTF_B8 = 0xA | 0x20,
+    GX_CTF_RG8 = 0xB | 0x20,
+    GX_CTF_GB8 = 0xC | 0x20,
+    GX_TF_Z8 = 0x1 | 0x10,
+    GX_TF_Z16 = 0x3 | 0x10,
+    GX_TF_Z24X8 = 0x6 | 0x10,
+    GX_CTF_Z4 = 0x0 | 0x10 | 0x20,
+    GX_CTF_Z8M = 0x9 | 0x10 | 0x20,
+    GX_CTF_Z8L = 0xA | 0x10 | 0x20,
+    GX_CTF_Z16L = 0xC | 0x10 | 0x20,
+    GX_TF_A8 = GX_CTF_A8,
+} GXTexFmt;
+static void __GXGetTexTileShift(GXTexFmt fmt, u32 *rowTileS, u32 *colTileS) {
     switch (fmt) {
-    case 0x0: case 0x8: case 0xE: case 0x20: case 0x30:
-        shiftW = 3; shiftH = 3; break;
-    case 0x1: case 0x2: case 0x9: case 0x11: case 0x22: case 0x25:
-    case 0x26: case 0x27: case 0x28: case 0x39: case 0x3A:
-        shiftW = 3; shiftH = 2; break;
-    case 0x3: case 0x4: case 0x5: case 0x6: case 0xA: case 0x13:
-    case 0x16: case 0x23: case 0x29: case 0x2A: case 0x3C:
-        shiftW = 2; shiftH = 2; break;
+    case GX_TF_I4:
+    case 0x8:
+    case GX_TF_CMPR:
+    case GX_CTF_R4:
+    case GX_CTF_Z4:
+        *rowTileS = 3;
+        *colTileS = 3;
+        break;
+    case GX_TF_I8:
+    case GX_TF_IA4:
+    case 0x9:
+    case GX_TF_Z8:
+    case GX_CTF_RA4:
+    case GX_TF_A8:
+    case GX_CTF_R8:
+    case GX_CTF_G8:
+    case GX_CTF_B8:
+    case GX_CTF_Z8M:
+    case GX_CTF_Z8L:
+        *rowTileS = 3;
+        *colTileS = 2;
+        break;
+    case GX_TF_IA8:
+    case GX_TF_RGB565:
+    case GX_TF_RGB5A3:
+    case GX_TF_RGBA8:
+    case 0xA:
+    case GX_TF_Z16:
+    case GX_TF_Z24X8:
+    case GX_CTF_RA8:
+    case GX_CTF_RG8:
+    case GX_CTF_GB8:
+    case GX_CTF_Z16L:
+        *rowTileS = 2;
+        *colTileS = 2;
+        break;
     default:
-        shiftH = 0; shiftW = 0; break;
+        *rowTileS = *colTileS = 0;
+        break;
     }
-
-    if (width == 0) width = 1;
-    if (height == 0) height = 1;
-
-    one = 1;
-    *outW = ((s32)width + (one << shiftW) - 1) >> shiftW;
-    *outH = ((s32)height + (one << shiftH) - 1) >> shiftH;
-
-    if (fmt != 6 && fmt != 0x16) {
-        one = 0;
-        if (one != 0) { tile = 2; } else { tile = 1; }
-    } else {
-        tile = 2;
-    }
-    *outTile = tile;
 }
+void fn_8022257C(s32 fmt_, u16 wd, u16 ht, u32 * rowTiles, u32 * colTiles, u32 * cmpTiles) {
+    GXTexFmt fmt = (GXTexFmt)fmt_;
+    u32 texRowShift;
+    u32 texColShift;
+    __GXGetTexTileShift(fmt, &texRowShift, &texColShift);
+    if (wd == 0) {
+        wd = 1;
+    }
+    if (ht == 0) {
+        ht = 1;
+    }
+    *rowTiles = (wd + (1 << texRowShift) - 1) >> texRowShift;
+    *colTiles = (ht + (1 << texColShift) - 1) >> texColShift;
+    *cmpTiles = (fmt == GX_TF_RGBA8 || fmt == GX_TF_Z24X8) ? 2 : 1;
+}
+#pragma pop
 
 #pragma push
 #pragma optimization_level 4

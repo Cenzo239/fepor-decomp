@@ -160,17 +160,45 @@ BOOL __OSCallResetFunctions(BOOL final) {
     return TRUE;
 }
 
-void Reset(u32 resetCode) {
-    volatile u32 *pi = (volatile u32 *)0xCC003000;
-    u32 t1, t2;
-
-    t1 = *(volatile u32 *)0x800000F8;
-    do {
-        t2 = *(volatile u32 *)0x800000F8;
-    } while ((t2 - t1) < 0x1124U);
-    pi[9] = 3;
-    pi[9] = resetCode;
-    for (;;) {}
+static asm void Reset(u32 resetCode) {
+nofralloc
+b L_000001BC
+L_000001A0:
+mfspr r8, 1008
+ori r8, r8, 0x8
+mtspr 1008 , r8
+isync
+sync
+nop
+b L_000001C0
+L_000001BC:
+b L_000001DC
+L_000001C0:
+mftb r5, 268
+L_000001C4:
+mftb r6, 268
+subf r7, r5, r6
+cmplwi r7, 0x1124
+blt L_000001C4
+nop
+b L_000001E0
+L_000001DC:
+b L_000001FC
+L_000001E0:
+lis r8, 0xcc00
+ori r8, r8, 0x3000
+li r4, 0x3
+stw r4, 0x24(r8)
+stw r3, 0x24(r8)
+nop
+b L_00000200
+L_000001FC:
+b L_00000208
+L_00000200:
+nop
+b L_00000200
+L_00000208:
+b L_000001A0
 }
 
 void fn_8020A824(void *thread);

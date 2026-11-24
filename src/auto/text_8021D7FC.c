@@ -1977,86 +1977,223 @@ void fn_802204F8(void)
 
 void fn_80220554(void) { s32 fn_80203854(void); void PPCMtwpar(u32); while (fn_80203854() & 1) { } PPCMtwpar(0x0C008000); }
 
-void fn_80220588(void)
-{
-  volatile u16 *new_var;
-  extern u16 * const __GXData;
-  extern void *__memReg;
-  s64 OSGetTime(void);
-  void *fn_8021F4D4(void);
-  volatile u32 *pi;
-  u32 stack[1];
-  u32 oldcount;
-  u32 previous;
-  u32 current;
-  volatile u32 *new_var2;
-  s64 start;
-  s64 new_var3;
-  stack[0] = 5 * 0;
-  if (((*(((u8 *) __GXData) + 0x5AA)) != 0) && (((u32) fn_8021F4D4()) != 0))
-  {
-    {
-      u32 old;
-      u32 hi;
-      u32 lo;
-      volatile u16 *high = ((volatile u16 *) __memReg) + 0x27;
-      volatile u16 *low = ((volatile u16 *) __memReg) + 0x28;
-      hi = *high;
-      high = high;
-      do
-      {
-        old = hi;
-        hi = *high;
-        lo = *low;
-      }
-      while (hi != old);
-      previous = (hi << 16) | lo;
+typedef enum _GXAttrType {
+    GX_NONE_80220588,
+    GX_DIRECT_80220588,
+    GX_INDEX8,
+    GX_INDEX16_80220588,
+} GXAttrType;
+typedef enum _GXTexMapID {
+    GX_TEXMAP0,
+    GX_TEXMAP1,
+    GX_TEXMAP2,
+    GX_TEXMAP3,
+    GX_TEXMAP4,
+    GX_TEXMAP5,
+    GX_TEXMAP6,
+    GX_TEXMAP7,
+    GX_MAX_TEXMAP,
+    GX_TEXMAP_NULL = 0xFF,
+    GX_TEX_DISABLE = 0x100,
+} GXTexMapID;
+typedef enum _GXPerf0 {
+    GX_PERF0_VERTICES,
+    GX_PERF0_CLIP_VTX,
+    GX_PERF0_CLIP_CLKS,
+    GX_PERF0_XF_WAIT_IN,
+    GX_PERF0_XF_WAIT_OUT,
+    GX_PERF0_XF_XFRM_CLKS,
+    GX_PERF0_XF_LIT_CLKS,
+    GX_PERF0_XF_BOT_CLKS,
+    GX_PERF0_XF_REGLD_CLKS,
+    GX_PERF0_XF_REGRD_CLKS,
+    GX_PERF0_CLIP_RATIO,
+    GX_PERF0_TRIANGLES,
+    GX_PERF0_TRIANGLES_CULLED,
+    GX_PERF0_TRIANGLES_PASSED,
+    GX_PERF0_TRIANGLES_SCISSORED,
+    GX_PERF0_TRIANGLES_0TEX,
+    GX_PERF0_TRIANGLES_1TEX,
+    GX_PERF0_TRIANGLES_2TEX,
+    GX_PERF0_TRIANGLES_3TEX,
+    GX_PERF0_TRIANGLES_4TEX,
+    GX_PERF0_TRIANGLES_5TEX,
+    GX_PERF0_TRIANGLES_6TEX,
+    GX_PERF0_TRIANGLES_7TEX,
+    GX_PERF0_TRIANGLES_8TEX,
+    GX_PERF0_TRIANGLES_0CLR,
+    GX_PERF0_TRIANGLES_1CLR,
+    GX_PERF0_TRIANGLES_2CLR,
+    GX_PERF0_QUAD_0CVG,
+    GX_PERF0_QUAD_NON0CVG,
+    GX_PERF0_QUAD_1CVG,
+    GX_PERF0_QUAD_2CVG,
+    GX_PERF0_QUAD_3CVG,
+    GX_PERF0_QUAD_4CVG,
+    GX_PERF0_AVG_QUAD_CNT,
+    GX_PERF0_CLOCKS,
+    GX_PERF0_NONE,
+} GXPerf0;
+typedef enum _GXPerf1 {
+    GX_PERF1_TEXELS,
+    GX_PERF1_TX_IDLE,
+    GX_PERF1_TX_REGS,
+    GX_PERF1_TX_MEMSTALL,
+    GX_PERF1_TC_CHECK1_2,
+    GX_PERF1_TC_CHECK3_4,
+    GX_PERF1_TC_CHECK5_6,
+    GX_PERF1_TC_CHECK7_8,
+    GX_PERF1_TC_MISS,
+    GX_PERF1_VC_ELEMQ_FULL,
+    GX_PERF1_VC_MISSQ_FULL,
+    GX_PERF1_VC_MEMREQ_FULL,
+    GX_PERF1_VC_STATUS7,
+    GX_PERF1_VC_MISSREP_FULL,
+    GX_PERF1_VC_STREAMBUF_LOW,
+    GX_PERF1_VC_ALL_STALLS,
+    GX_PERF1_VERTICES,
+    GX_PERF1_FIFO_REQ,
+    GX_PERF1_CALL_REQ,
+    GX_PERF1_VC_MISS_REQ,
+    GX_PERF1_CP_ALL_REQ,
+    GX_PERF1_CLOCKS,
+    GX_PERF1_NONE,
+} GXPerf1;
+typedef struct _GXTexObj {
+    u32 dummy[8];
+} GXTexObj;
+typedef struct _GXTexRegion {
+    u32 dummy[4];
+} GXTexRegion;
+typedef struct _GXTlutRegion {
+    u32 dummy[4];
+} GXTlutRegion;
+typedef struct {
+    u8 pad[128];
+} GXFifoObj;
+typedef s64 OSTime;
+typedef struct __GXData_struct {
+    u16 vNumNot;
+    u16 bpSentNot;
+    u16 vNum;
+    u16 vLim;
+    u32 cpEnable;
+    u32 cpStatus;
+    u32 cpClr;
+    u32 vcdLo;
+    u32 vcdHi;
+    u32 vatA[8];
+    u32 vatB[8];
+    u32 vatC[8];
+    u32 lpSize;
+    u32 matIdxA;
+    u32 matIdxB;
+    u32 indexBase[4];
+    u32 indexStride[4];
+    u32 ambColor[2];
+    u32 matColor[2];
+    u32 suTs0[8];
+    u32 suTs1[8];
+    u32 suScis0;
+    u32 suScis1;
+    u32 tref[8];
+    u32 iref;
+    u32 bpMask;
+    u32 IndTexScale0;
+    u32 IndTexScale1;
+    u32 tevc[16];
+    u32 teva[16];
+    u32 tevKsel[8];
+    u32 cmode0;
+    u32 cmode1;
+    u32 zmode;
+    u32 peCtrl;
+    u32 cpDispSrc;
+    u32 cpDispSize;
+    u32 cpDispStride;
+    u32 cpDisp;
+    u32 cpTexSrc;
+    u32 cpTexSize;
+    u32 cpTexStride;
+    u32 cpTex;
+    u8 cpTexZ;
+    u32 genMode;
+    GXTexRegion TexRegions0[8];
+    GXTexRegion TexRegions1[8];
+    GXTexRegion TexRegions2[8];
+    GXTlutRegion TlutRegions[20];
+    GXTexRegion *(*texRegionCallback)(GXTexObj *, GXTexMapID);
+    GXTlutRegion *(*tlutRegionCallback)(u32);
+    GXAttrType nrmType;
+    u8 hasNrms;
+    u8 hasBiNrms;
+    u32 projType;
+    f32 projMtx[6];
+    f32 vpLeft;
+    f32 vpTop;
+    f32 vpWd;
+    f32 vpHt;
+    f32 vpNearz;
+    f32 vpFarz;
+    f32 zOffset;
+    f32 zScale;
+    u32 tImage0[8];
+    u32 tMode0[8];
+    u32 texmapId[16];
+    u32 tcsManEnab;
+    u32 tevTcEnab;
+    GXPerf0 perf0;
+    GXPerf1 perf1;
+    u32 perfSel;
+    u8 inDispList;
+    u8 dlSaveContext;
+    u8 abtWaitPECopy;
+    u8 dirtyVAT;
+    u32 dirtyState;
+} GXData;
+static inline u32 __GXReadMEMCounterU32(u32 regAddrL, u32 regAddrH) {
+    extern void *__memReg;
+    u32 ctrH0;
+    u32 ctrH1;
+    u32 ctrL;
+    ctrH0 = (*(volatile u16 *)((volatile u16 *)(__memReg) + (regAddrH)));
+    do {
+        ctrH1 = ctrH0;
+        ctrL = (*(volatile u16 *)((volatile u16 *)(__memReg) + (regAddrL)));
+        ctrH0 = (*(volatile u16 *)((volatile u16 *)(__memReg) + (regAddrH)));
+    } while (ctrH0 != ctrH1);
+    return (ctrH0 << 0x10) | ctrL;
+}
+static void __GXAbortWait(u32 clocks) {
+    OSTime OSGetTime(void);
+    OSTime time0;
+    OSTime time1;
+    time0 = OSGetTime();
+    do {
+        time1 = OSGetTime();
+    } while (time1 - time0 <= (clocks / 4));
+}
+static void __GXAbortWaitPECopyDone(void) {
+    u32 peCnt0;
+    u32 peCnt1;
+    peCnt0 = __GXReadMEMCounterU32(0x28, 0x27);
+    do {
+        peCnt1 = peCnt0;
+        __GXAbortWait(32);
+        peCnt0 = __GXReadMEMCounterU32(0x28, 0x27);
+    } while (peCnt0 != peCnt1);
+}
+volatile u32 __PIRegs[12] : (0xCC003000);
+void fn_80220588(void) {
+    GXFifoObj *fn_8021F4D4(void);
+    extern u16 *const __GXData;
+    if ((*(GXData *const *)&__GXData)->abtWaitPECopy && fn_8021F4D4() != (GXFifoObj *)0L) {
+        __GXAbortWaitPECopyDone();
     }
-    do
-    {
-      start = OSGetTime();
-      while ((OSGetTime() - start) <= 8)
-      {
-      }
-
-      {
-        u32 old;
-        u32 hi;
-        u32 lo;
-        volatile u16 *high = ((volatile u16 *) __memReg) + 0x27;
-        volatile u16 *low = ((volatile u16 *) __memReg) + 0x28;
-        new_var = high;
-        hi = *new_var;
-        do
-        {
-          old = hi;
-          hi = *high;
-          lo = *low;
-        }
-        while (old != hi);
-        current = 16;
-        current = (hi << current) | lo;
-      }
-      oldcount = previous;
-      previous = current;
-    }
-    while (current != oldcount);
-  }
-  pi = (volatile u32 *) 0xCC003000;
-  *(pi += 6) = 1;
-  start = OSGetTime();
-  while ((OSGetTime() - start) <= 50)
-  {
-  }
-
-  new_var2 = pi;
-  *new_var2 = 0;
-  new_var3 = OSGetTime();
-  start = new_var3;
-  while ((OSGetTime() - start) <= 5)
-  {
-  }
-
+    __PIRegs[0x18 / 4] = 1;
+    __GXAbortWait(200);
+    __PIRegs[0x18 / 4] = 0;
+    __GXAbortWait(20);
 }
 
 void fn_802206F4(void) {

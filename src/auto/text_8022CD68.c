@@ -229,30 +229,35 @@ return -1;
 }
 
 #pragma peephole off
-void fn_8022CDD0(void *arg0) {
-    u32 OSGetArenaLo(void);
-    u32 OSGetArenaHi(void);
-    void OSSetArenaLo(u32);
-    void OSReport(const char *, ...);
-    u32 fn_80204CE4(u32, u32, s32);
-    s32 fn_80204D54(u32, u32);
-    void fn_80204CD4(s32);
-    void fn_80204C58(s32, void *);
-    u32 lo, hi;
-
-    if (lbl_80366F28 == -1) {
-        OSReport(lbl_80282AE8);
-        OSReport(lbl_80282B20);
-        lo = OSGetArenaLo();
-        hi = OSGetArenaHi();
-        lo = fn_80204CE4(lo, hi, 1);
-        OSSetArenaLo(lo);
-        lo = (lo + 31) & ~31;
-        hi &= ~31;
-        fn_80204CD4(fn_80204D54(lo, hi));
-        OSSetArenaLo(hi);
+typedef int OSHeapHandle;
+inline static void InitDefaultHeap() {
+    void *fn_80204CE4(void *arenaStart, void *arenaEnd, int maxHeaps);
+    OSHeapHandle fn_80204D54(void *start, void *end);
+    OSHeapHandle fn_80204CD4(OSHeapHandle heap);
+    void OSReport(const char *message, ...);
+    void *OSGetArenaHi(void);
+    void *OSGetArenaLo(void);
+    void OSSetArenaLo(void *addr);
+    void *arenaLo;
+    void *arenaHi;
+    OSReport("GCN_Mem_Alloc.c : InitDefaultHeap. No Heap Available\n");
+    OSReport("Metrowerks CW runtime library initializing default heap\n");
+    arenaLo = OSGetArenaLo();
+    arenaHi = OSGetArenaHi();
+    arenaLo = fn_80204CE4(arenaLo, arenaHi, 1);
+    OSSetArenaLo(arenaLo);
+    arenaLo = (void *)(((u32)(arenaLo) + 0x1F) & ~(0x1F));
+    arenaHi = (void *)(((u32)(arenaHi)) & ~(0x1F));
+    fn_80204CD4(fn_80204D54(arenaLo, arenaHi));
+    OSSetArenaLo(arenaLo = arenaHi);
+}
+__declspec(weak) extern void fn_8022CDD0(void *ptr) {
+    extern s32 lbl_80366F28;
+    void fn_80204C58(OSHeapHandle heap, void *ptr);
+    if ((*(volatile OSHeapHandle *)&lbl_80366F28) == -1) {
+        InitDefaultHeap();
     }
-    fn_80204C58(lbl_80366F28, arg0);
+    fn_80204C58((*(volatile OSHeapHandle *)&lbl_80366F28), ptr);
 }
 #pragma peephole on
 void exit(void) {

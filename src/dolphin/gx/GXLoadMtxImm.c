@@ -223,31 +223,37 @@ f32 GXLoadPosMtxImm(s32 arg1) {
     return M2C_ERROR(/* psq_l unimplemented */);
 }
 
-void fn_80224DCC(f32 mtx[3][4], s32 id)
-{
-    f64 row0;
-    f64 row1;
-    f64 row2;
-    f32 c0;
-    f32 c1;
-    f32 c2;
+typedef f32 Mtx[3][4];
+static void WriteMTXPS3x3from3x4(register f32 mtx[3][4], register volatile f32 *dest) {
+    register f32 a00_a01;
+    register f32 a02_a03;
+    register f32 a10_a11;
+    register f32 a12_a13;
+    register f32 a20_a21;
+    register f32 a22_a23;
+    asm {
+psq_l a00_a01, 0x00(mtx), 0, 0
+lfs a02_a03, 0x08(mtx)
+psq_l a10_a11, 0x10(mtx), 0, 0
+lfs a12_a13, 0x18(mtx)
+psq_l a20_a21, 0x20(mtx), 0, 0
+lfs a22_a23, 0x28(mtx)
+psq_st a00_a01, 0(dest), 0, 0
+stfs a02_a03, 0(dest)
+psq_st a10_a11, 0(dest), 0, 0
+stfs a12_a13, 0(dest)
+psq_st a20_a21, 0(dest), 0, 0
+stfs a22_a23, 0(dest)
+    }
+}
+void fn_80224DCC(const Mtx mtx, u32 id) {
     u32 reg;
-
-    reg = (u32)(id * 3) + 0x400;
-    GXWGFifo.u8 = 0x10;
-    GXWGFifo.u32 = reg | 0x80000;
-    row0 = *(f64 *)&mtx[0][0];
-    c0 = mtx[0][2];
-    row1 = *(f64 *)&mtx[1][0];
-    c1 = mtx[1][2];
-    row2 = *(f64 *)&mtx[2][0];
-    c2 = mtx[2][2];
-    *(volatile f64 *)&GXWGFifo = row0;
-    GXWGFifo.f32 = c0;
-    *(volatile f64 *)&GXWGFifo = row1;
-    GXWGFifo.f32 = c1;
-    *(volatile f64 *)&GXWGFifo = row2;
-    GXWGFifo.f32 = c2;
+    u32 addr;
+    addr = id * 3 + 0x400;
+    reg = addr | 0x80000;
+    GXWGFifo.u8 = (u8)(0x10);
+    GXWGFifo.u32 = (u32)(reg);
+    WriteMTXPS3x3from3x4((void *)mtx, &GXWGFifo.f32);
 }
 
 void GXSetCurrentMtx(u32 arg0) {

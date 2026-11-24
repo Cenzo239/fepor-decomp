@@ -770,31 +770,61 @@ do_f:
     return out;
 }
 
-void fn_80233174(void *arg0, s32 arg1) {
- u8 *p, *end;
- s32 carry;
- s8 digit;
- if(arg1<0) { zero: *(s16*)((u8*)arg0+2)=0; ((u8*)arg0)[4]=1; ((u8*)arg0)[5]='0'; return; }
- if(arg1>=((u8*)arg0)[4]) return;
- p=(u8*)arg0+arg1;
- digit=p[5];
- digit=digit-'0';
- p+=5;
- if(digit==5) {
- end=(u8*)arg0+((u8*)arg0)[4]; end+=5;
- while(--end>p && (s32)*end=='0') {}
- if(end==p) carry=p[-1]&1; else carry=1;
- } else carry=digit>5;
- digit=9;
- while(arg1!=0) {
- s8 value; carry = *--p + carry; value=carry-'0';
- carry=value>digit;
- if(carry || value==0) --arg1;
- else { *p=value+'0'; break; }
- }
- if(carry) { ++*(s16*)((u8*)arg0+2); ((u8*)arg0)[4]=1; ((u8*)arg0)[5]='1'; return; }
- if(arg1==0) goto zero;
- ((u8*)arg0)[4]=arg1;
+typedef struct decimal_80233174 {
+    char sign;
+    char unk1;
+    s16 exp;
+    struct {
+        u8 length;
+        u8 text[36];
+        u8 unk41;
+    } sig;
+} decimal_80233174;
+static void fn_80233174(void *dec_, s32 new_length_) {
+    decimal_80233174 *dec = (decimal_80233174 *)dec_;
+    int new_length = (int)new_length_;
+    extern f64 exp(f64);
+    char c;
+    char *p;
+    int carry;
+    if (new_length < 0) {
+    return_zero:
+        dec->exp = 0;
+        dec->sig.length = 1;
+        *dec->sig.text = '0';
+        return;
+    }
+    if (new_length >= dec->sig.length) {
+        return;
+    }
+    p = (char *)dec->sig.text + new_length + 1;
+    c = *--p - '0';
+    if (c == 5) {
+        char *q = &((char *)dec->sig.text)[dec->sig.length];
+        while (--q > p && *q == '0')
+            ;
+        carry = (q == p) ? p[-1] & 1 : 1;
+    } else {
+        carry = (c > 5);
+    }
+    while (new_length != 0) {
+        c = *--p - '0' + carry;
+        if ((carry = (c > 9)) != 0 || c == 0) {
+            --new_length;
+        } else {
+            *p = c + '0';
+            break;
+        }
+    }
+    if (carry != 0) {
+        dec->exp += 1;
+        dec->sig.length = 1;
+        *dec->sig.text = '1';
+        return;
+    } else if (new_length == 0) {
+        goto return_zero;
+    }
+    dec->sig.length = new_length;
 }
 
 char *double2hex(char *buffer, void *format, f64 value) {

@@ -365,42 +365,280 @@ GXWGFifo.u32=v;
 __GXData[1]=0;
 }
 
-void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2)
-{
-  u32 value = 0;
-  u32 mode = 0;
-  u16 *gx;
-  u8 cmd;
-  value = __rlwimi(value, arg2, 0, 8, 31);
-  value = __rlwimi(value, 0xF4, 24, 0, 7);
-  switch (arg1)
-  {
-    case 17:
-      arg1 = 0;
-      break;
-
-    case 19:
-      arg1 = 1;
-      break;
-
-    case 22:
-      arg1 = 2;
-      break;
-
+typedef enum _GXAttrType {
+    GX_NONE_80223EA0,
+    GX_DIRECT_80223EA0,
+    GX_INDEX8,
+    GX_INDEX16_80223EA0,
+} GXAttrType;
+typedef enum _GXTexFmt {
+    GX_TF_I4 = 0x0,
+    GX_TF_I8 = 0x1,
+    GX_TF_IA4 = 0x2,
+    GX_TF_IA8 = 0x3,
+    GX_TF_RGB565 = 0x4,
+    GX_TF_RGB5A3 = 0x5,
+    GX_TF_RGBA8 = 0x6,
+    GX_TF_CMPR = 0xE,
+    GX_CTF_R4 = 0x0 | 0x20,
+    GX_CTF_RA4 = 0x2 | 0x20,
+    GX_CTF_RA8 = 0x3 | 0x20,
+    GX_CTF_YUVA8 = 0x6 | 0x20,
+    GX_CTF_A8 = 0x7 | 0x20,
+    GX_CTF_R8 = 0x8 | 0x20,
+    GX_CTF_G8 = 0x9 | 0x20,
+    GX_CTF_B8 = 0xA | 0x20,
+    GX_CTF_RG8 = 0xB | 0x20,
+    GX_CTF_GB8 = 0xC | 0x20,
+    GX_TF_Z8 = 0x1 | 0x10,
+    GX_TF_Z16 = 0x3 | 0x10,
+    GX_TF_Z24X8 = 0x6 | 0x10,
+    GX_CTF_Z4 = 0x0 | 0x10 | 0x20,
+    GX_CTF_Z8M = 0x9 | 0x10 | 0x20,
+    GX_CTF_Z8L = 0xA | 0x10 | 0x20,
+    GX_CTF_Z16L = 0xC | 0x10 | 0x20,
+    GX_TF_A8 = GX_CTF_A8,
+} GXTexFmt;
+typedef enum _GXTexMapID {
+    GX_TEXMAP0,
+    GX_TEXMAP1,
+    GX_TEXMAP2,
+    GX_TEXMAP3,
+    GX_TEXMAP4,
+    GX_TEXMAP5,
+    GX_TEXMAP6,
+    GX_TEXMAP7,
+    GX_MAX_TEXMAP,
+    GX_TEXMAP_NULL = 0xFF,
+    GX_TEX_DISABLE = 0x100,
+} GXTexMapID;
+typedef enum _GXZTexOp {
+    GX_ZT_DISABLE,
+    GX_ZT_ADD,
+    GX_ZT_REPLACE,
+    GX_MAX_ZTEXOP,
+} GXZTexOp;
+typedef enum _GXPerf0 {
+    GX_PERF0_VERTICES,
+    GX_PERF0_CLIP_VTX,
+    GX_PERF0_CLIP_CLKS,
+    GX_PERF0_XF_WAIT_IN,
+    GX_PERF0_XF_WAIT_OUT,
+    GX_PERF0_XF_XFRM_CLKS,
+    GX_PERF0_XF_LIT_CLKS,
+    GX_PERF0_XF_BOT_CLKS,
+    GX_PERF0_XF_REGLD_CLKS,
+    GX_PERF0_XF_REGRD_CLKS,
+    GX_PERF0_CLIP_RATIO,
+    GX_PERF0_TRIANGLES,
+    GX_PERF0_TRIANGLES_CULLED,
+    GX_PERF0_TRIANGLES_PASSED,
+    GX_PERF0_TRIANGLES_SCISSORED,
+    GX_PERF0_TRIANGLES_0TEX,
+    GX_PERF0_TRIANGLES_1TEX,
+    GX_PERF0_TRIANGLES_2TEX,
+    GX_PERF0_TRIANGLES_3TEX,
+    GX_PERF0_TRIANGLES_4TEX,
+    GX_PERF0_TRIANGLES_5TEX,
+    GX_PERF0_TRIANGLES_6TEX,
+    GX_PERF0_TRIANGLES_7TEX,
+    GX_PERF0_TRIANGLES_8TEX,
+    GX_PERF0_TRIANGLES_0CLR,
+    GX_PERF0_TRIANGLES_1CLR,
+    GX_PERF0_TRIANGLES_2CLR,
+    GX_PERF0_QUAD_0CVG,
+    GX_PERF0_QUAD_NON0CVG,
+    GX_PERF0_QUAD_1CVG,
+    GX_PERF0_QUAD_2CVG,
+    GX_PERF0_QUAD_3CVG,
+    GX_PERF0_QUAD_4CVG,
+    GX_PERF0_AVG_QUAD_CNT,
+    GX_PERF0_CLOCKS,
+    GX_PERF0_NONE,
+} GXPerf0;
+typedef enum _GXPerf1 {
+    GX_PERF1_TEXELS,
+    GX_PERF1_TX_IDLE,
+    GX_PERF1_TX_REGS,
+    GX_PERF1_TX_MEMSTALL,
+    GX_PERF1_TC_CHECK1_2,
+    GX_PERF1_TC_CHECK3_4,
+    GX_PERF1_TC_CHECK5_6,
+    GX_PERF1_TC_CHECK7_8,
+    GX_PERF1_TC_MISS,
+    GX_PERF1_VC_ELEMQ_FULL,
+    GX_PERF1_VC_MISSQ_FULL,
+    GX_PERF1_VC_MEMREQ_FULL,
+    GX_PERF1_VC_STATUS7,
+    GX_PERF1_VC_MISSREP_FULL,
+    GX_PERF1_VC_STREAMBUF_LOW,
+    GX_PERF1_VC_ALL_STALLS,
+    GX_PERF1_VERTICES,
+    GX_PERF1_FIFO_REQ,
+    GX_PERF1_CALL_REQ,
+    GX_PERF1_VC_MISS_REQ,
+    GX_PERF1_CP_ALL_REQ,
+    GX_PERF1_CLOCKS,
+    GX_PERF1_NONE,
+} GXPerf1;
+typedef struct _GXTexObj {
+    u32 dummy[8];
+} GXTexObj_80223EA0;
+typedef struct _GXTexRegion {
+    u32 dummy[4];
+} GXTexRegion;
+typedef struct _GXTlutRegion {
+    u32 dummy[4];
+} GXTlutRegion;
+typedef struct __GXData_struct {
+    u16 vNumNot;
+    u16 bpSentNot;
+    u16 vNum;
+    u16 vLim;
+    u32 cpEnable;
+    u32 cpStatus;
+    u32 cpClr;
+    u32 vcdLo;
+    u32 vcdHi;
+    u32 vatA[8];
+    u32 vatB[8];
+    u32 vatC[8];
+    u32 lpSize;
+    u32 matIdxA;
+    u32 matIdxB;
+    u32 indexBase[4];
+    u32 indexStride[4];
+    u32 ambColor[2];
+    u32 matColor[2];
+    u32 suTs0[8];
+    u32 suTs1[8];
+    u32 suScis0;
+    u32 suScis1;
+    u32 tref[8];
+    u32 iref;
+    u32 bpMask;
+    u32 IndTexScale0;
+    u32 IndTexScale1;
+    u32 tevc[16];
+    u32 teva[16];
+    u32 tevKsel[8];
+    u32 cmode0;
+    u32 cmode1;
+    u32 zmode;
+    u32 peCtrl;
+    u32 cpDispSrc;
+    u32 cpDispSize;
+    u32 cpDispStride;
+    u32 cpDisp;
+    u32 cpTexSrc;
+    u32 cpTexSize;
+    u32 cpTexStride;
+    u32 cpTex;
+    u8 cpTexZ;
+    u32 genMode;
+    GXTexRegion TexRegions0[8];
+    GXTexRegion TexRegions1[8];
+    GXTexRegion TexRegions2[8];
+    GXTlutRegion TlutRegions[20];
+    GXTexRegion *(*texRegionCallback)(GXTexObj_80223EA0 *, GXTexMapID);
+    GXTlutRegion *(*tlutRegionCallback)(u32);
+    GXAttrType nrmType;
+    u8 hasNrms;
+    u8 hasBiNrms;
+    u32 projType;
+    f32 projMtx[6];
+    f32 vpLeft;
+    f32 vpTop;
+    f32 vpWd;
+    f32 vpHt;
+    f32 vpNearz;
+    f32 vpFarz;
+    f32 zOffset;
+    f32 zScale;
+    u32 tImage0[8];
+    u32 tMode0[8];
+    u32 texmapId[16];
+    u32 tcsManEnab;
+    u32 tevTcEnab;
+    GXPerf0 perf0;
+    GXPerf1 perf1;
+    u32 perfSel;
+    u8 inDispList;
+    u8 dlSaveContext;
+    u8 abtWaitPECopy;
+    u8 dirtyVAT;
+    u32 dirtyState;
+} GXData;
+static struct {
+    u32 rid : 8;
+    u32 dest : 2;
+    u32 shift : 2;
+    u32 clamp : 1;
+    u32 sub : 1;
+    u32 bias : 2;
+    u32 sela : 3;
+    u32 selb : 3;
+    u32 selc : 3;
+    u32 seld : 3;
+    u32 swap : 2;
+    u32 mode : 2;
+} TEVAOpTableST1[5] = {
+    {193, 0, 0, 1, 0, 0, 7, 4, 0, 7, 0, 0},
+    {193, 0, 0, 1, 0, 0, 7, 7, 7, 0, 0, 0},
+    {193, 0, 0, 1, 0, 0, 7, 4, 0, 7, 0, 0},
+    {193, 0, 0, 1, 0, 0, 7, 7, 7, 4, 0, 0},
+    {193, 0, 0, 1, 0, 0, 7, 7, 7, 0, 0, 0},
+};
+void fn_80223EA0(s32 op_, s32 fmt_, s32 bias_) {
+    GXZTexOp op = (GXZTexOp)op_;
+    GXTexFmt fmt = (GXTexFmt)fmt_;
+    u32 bias = (u32)bias_;
+    extern u16 * const __GXData;
+    u32 zenv0;
+    u32 zenv1;
+    u32 type;
+    zenv0 = 0;
+    do {
+        (zenv0) = ((u32)__rlwimi((u32)(zenv0), (bias), (0), 32 - (0) - (24), 31 - (0)));
+    } while (0);
+    do {
+        (zenv0) = ((u32)__rlwimi((u32)(zenv0), (0xF4), (24), 32 - (24) - (8), 31 - (24)));
+    } while (0);
+    zenv1 = 0;
+    switch (fmt) {
+    case GX_TF_Z8:
+        type = 0;
+        break;
+    case GX_TF_Z16:
+        type = 1;
+        break;
+    case GX_TF_Z24X8:
+        type = 2;
+        break;
     default:
-      arg1 = 2;
-      break;
-
-  }
-
-  GXWGFifo.u8 = (cmd = 0x61);
-  ;
-  mode = __rlwimi(__rlwimi(mode, arg1, 0, 30, 31), arg0, 2, 28, 29);
-  GXWGFifo.u32 = value;
-  mode = 0xF5000000 | mode;
-  GXWGFifo.u8 = cmd;
-  GXWGFifo.u32 = mode;
-  __GXData[1] = 0;
+        type = 2;
+        break;
+    }
+    do {
+        (zenv1) = ((u32)__rlwimi((u32)(zenv1), (type), (0), 32 - (0) - (2), 31 - (0)));
+    } while (0);
+    do {
+        (zenv1) = ((u32)__rlwimi((u32)(zenv1), (op), (2), 32 - (2) - (2), 31 - (2)));
+    } while (0);
+    do {
+        (zenv1) = ((u32)__rlwimi((u32)(zenv1), (0xF5), (24), 32 - (24) - (8), 31 - (24)));
+    } while (0);
+    do {
+        GXWGFifo.u8 = (u8)(0x61);
+        GXWGFifo.u32 = (u32)(zenv0);
+        ((void)0);
+    } while (0);
+    do {
+        GXWGFifo.u8 = (u8)(0x61);
+        GXWGFifo.u32 = (u32)(zenv1);
+        ((void)0);
+    } while (0);
+    (*(GXData *const *)&__GXData)->bpSentNot = 0;
 }
 
 void GXSetTevOrder(s32 stage, s32 coord, s32 map, s32 color) {
