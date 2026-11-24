@@ -7030,7 +7030,7 @@ void fn_801D8E80(void *arg0) {
     extern f32 lbl_8036B664;
     extern f32 lbl_8036B668;
     extern f32 lbl_8036B66C;
-    extern const f64 lbl_8036B670;
+    extern f64 lbl_8036B670;
     extern f64 lbl_8036B678;
 
     u8 *st;
