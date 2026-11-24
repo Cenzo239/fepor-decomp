@@ -5164,7 +5164,6 @@ void fn_801BCCC4(void *arg0) {
         Ui_RemoveChild(self, p);
     }
 }
-#pragma optimization_level reset
 #pragma optimization_level 3
 void fn_801BCD8C(void *arg0) {
     extern u8 gUiContext[];
@@ -6403,7 +6402,6 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     ((Obj *)arg0)->m28();
     return arg0;
 }
-#pragma global_optimizer reset
 #pragma cplusplus reset
 
 #pragma cplusplus on
@@ -7229,6 +7227,8 @@ void fn_801C0A9C(void *arg0) {
     }
 }
 
+#pragma push
+#pragma global_optimizer reset
 void fn_801C0ADC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
@@ -7311,6 +7311,7 @@ void fn_801C0ADC(void *arg0) {
     }
 #pragma cplusplus reset
 }
+#pragma pop
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
@@ -8039,6 +8040,8 @@ void fn_801C1E0C(void *arg0) {
     fn_8000A248();
 }
 
+#pragma push
+#pragma optimization_level reset
 void fn_801C2084(void *arg0)
 {
     extern u32 gUiInputFlags;
@@ -8131,6 +8134,7 @@ void fn_801C2084(void *arg0)
         break;
     }
 }
+#pragma pop
 
 void fn_801C2250(void *arg0) {
     if (arg0 != NULL) {
