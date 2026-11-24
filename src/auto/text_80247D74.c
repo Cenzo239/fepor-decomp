@@ -948,7 +948,6 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
   }
 
 }
-#pragma opt_lifetimes on
 void fn_80248D28(s32 arg0)
 {
     extern s32 lbl_803689A8;
