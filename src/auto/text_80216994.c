@@ -1494,20 +1494,20 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     return fn_802195B0(chan,fat,callback);
 }
 #pragma optimization_level reset
-s32 fn_802195B0(s32 arg0, void *arg1, void *arg2) {
+s32 fn_802195B0(s32 arg0, u16 *fat, void *arg2) {
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, u32, void *);
     void fn_80219334(void);
     extern u16 __CARDBlock[];
-    u8 *entry;
+    u8 *card;
 
-    *(u16 *)((u8 *)arg1 + 4) = (u16)(*(u16 *)((u8 *)arg1 + 4) + 1);
-    entry = (u8 *)__CARDBlock + arg0 * 0x110;
-    fn_802198C0((u8 *)arg1 + 4, 0x1FFCU, arg1, (u8 *)arg1 + 2);
-    fn_80205110(arg1, 0x2000U);
-    *(void **)(entry + 0xD8) = arg2;
-    return __CARDEraseSector(arg0, *(u32 *)(entry + 0xC) * (((u32)arg1 - *(u32 *)(entry + 0x80)) >> 13), fn_80219334);
+    card = (u8 *)__CARDBlock + arg0 * 0x110;
+    ++fat[2];
+    fn_802198C0(fat + 2, 0x1FFC, fat, fat + 1);
+    fn_80205110(fat, 0x2000);
+    *(void **)(card + 0xD8) = arg2;
+    return __CARDEraseSector(arg0, (((u32)fat - *(u32 *)(card + 0x80)) / 0x2000) * *(u32 *)(card + 0xC), fn_80219334);
 }
 
 s32 __CARDGetDirBlock(void *arg0) {
