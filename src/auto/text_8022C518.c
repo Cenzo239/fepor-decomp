@@ -141,7 +141,22 @@ asm s64 __shr2u(register s64 value, register int shift) {
 }
 #pragma pop
 
-u64 __shr2i(s32 hi,u32 lo,s32 s) { s32 right; u32 low=lo>>s; low|=(u32)hi<<(32-s); right=s-32; { s32 extra=hi>>right; if(s>32) low|=extra; } return ((u64)(u32)(hi>>s)<<32)|low; }
+#pragma push
+asm s64 __shr2i(register s64 value, register int shift) {
+    nofralloc
+    subfic r8, r5, 0x20
+    subic. r9, r5, 0x20
+    srw r4, r4, r5
+    slw r10, r3, r8
+    or r4, r4, r10
+    sraw r10, r3, r9
+    ble L_8
+    or r4, r4, r10
+L_8:
+    sraw r3, r3, r5
+    blr
+}
+#pragma pop
 
 f32 fn_8022CB78(s32 hi, u32 lo) {
     u32 sign;
