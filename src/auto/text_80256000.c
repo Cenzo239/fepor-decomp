@@ -7930,20 +7930,16 @@ void fn_802627EC(u32 arg0)
     extern void ARQPostRequest();
 
     SoundAramDmaQueue *queue;
-    SoundAramDmaSlot *e;
-    u16 (*blocks)[0x28];
-    u32 base;
     u32 interrupts;
-    u32 index;
-    u32 i, j;
+    u16 *buffer;
+    u32 base;
+    u32 i;
 
     base = fn_802142B0();
-    blocks = fn_802637D0(0x500);
+    buffer = (u16 *)fn_802637D0(0x500);
 
-    for (i = 0; i < 0x10; i++) {
-        for (j = 0; j < 0x28; j++) blocks[i][j] = 0;
-    }
-    DCFlushRange(blocks, 0x500);
+    for (i = 0; i < 0x280; i++) buffer[i] = 0;
+    DCFlushRange(buffer, 0x500);
 
     queue = (SoundAramDmaQueue *)gSoundAramQueue;
     queue->count = 0;
@@ -7954,19 +7950,24 @@ void fn_802627EC(u32 arg0)
     for (;;) {
         interrupts = OSDisableInterrupts();
         if (queue->count < 0x10) {
-            index = queue->next;
-            e = &queue->slots[index];
-            e->owner = 0x2A;
-            e->type = 0;
-            e->priority = 0;
-            e->mramAddr = (s32)blocks;
-            e->aramAddr = (s32)base;
-            e->length = 0x500;
-            e->callback = Sound_AramDmaCallback;
-            e->userCb = 0;
-            e->userArg = 0;
-            ARQPostRequest(e, e->owner, e->type, e->priority, e->mramAddr,
-                           (void *)e->aramAddr, e->length, e->callback);
+            queue->slots[queue->next].owner = 0x2A;
+            queue->slots[queue->next].type = 0;
+            queue->slots[queue->next].priority = 0;
+            queue->slots[queue->next].mramAddr = (s32)buffer;
+            queue->slots[queue->next].aramAddr = (s32)base;
+            queue->slots[queue->next].length = 0x500;
+            queue->slots[queue->next].callback = Sound_AramDmaCallback;
+            queue->slots[queue->next].userCb = 0;
+            queue->slots[queue->next].userArg = 0;
+            ARQPostRequest(
+                &queue->slots[queue->next],
+                queue->slots[queue->next].owner,
+                queue->slots[queue->next].type,
+                queue->slots[queue->next].priority,
+                queue->slots[queue->next].mramAddr,
+                (void *)queue->slots[queue->next].aramAddr,
+                queue->slots[queue->next].length,
+                queue->slots[queue->next].callback);
             queue->count = (u8)(queue->count + 1);
             queue->next = (u8)((queue->next + 1) % 16);
             OSRestoreInterrupts(interrupts);
@@ -7975,7 +7976,7 @@ void fn_802627EC(u32 arg0)
         OSRestoreInterrupts(interrupts);
     }
     while (queue->count != 0) {}
-    fn_80263800(blocks);
+    fn_80263800(buffer);
     lbl_80368AF0 = base + arg0;
     if (lbl_80368AF0 > fn_802142B8()) lbl_80368AF0 = fn_802142B8();
     lbl_80368AE8 = 0;
