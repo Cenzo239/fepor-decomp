@@ -534,7 +534,7 @@ s32 fn_8000B39C(void *arg0)
 {
     u32 *base;
     s32 counter;
-    s32 key;
+    u8 key;
     u32 *ptr;
     u32 node;
 

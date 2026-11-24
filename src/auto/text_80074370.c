@@ -3306,17 +3306,13 @@ void fn_80079248(void*p){f32 Math_Ease(s32,f32,f32,f32,f32);*(s32*)((u8*)p+0x34)
 void fn_80079300(void *arg0, s8 arg1) {
     extern s16 lbl_80312060[];
     u8 *temp_r4;
-    f32 f0;
 
     if (arg1 >= 0) {
-        *(s8 *)((char *)arg0 + 0x43) = arg1;
-        f0 = (f32)lbl_80312060[arg1 * 3];
-        *(f32 *)((char *)arg0 + 0x38) = f0;
+        M2C_FIELD(arg0, s8 *, 0x43) = arg1;
+        M2C_FIELD(arg0, f32 *, 0x38) = (f32) lbl_80312060[arg1 * 3];
         temp_r4 = (u8 *)lbl_80312060 + arg1 * 6;
-        f0 = (f32)*(s16 *)(temp_r4 + 2);
-        *(f32 *)((char *)arg0 + 0x3c) = f0;
-        *(u16 *)((char *)arg0 + 0x46) =
-            (u16)(*(u16 *)((char *)arg0 + 0x46) | (s16)*(u16 *)(temp_r4 + 4));
+        M2C_FIELD(arg0, f32 *, 0x3C) = (f32) *(s16 *)(temp_r4 + 2);
+        M2C_FIELD(arg0, u16 *, 0x46) = (u16) (M2C_FIELD(arg0, u16 *, 0x46) | (s16) *(u16 *)(temp_r4 + 4));
     }
 }
 

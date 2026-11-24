@@ -362,31 +362,41 @@ extern f64 lbl_8036C148;
 
 #pragma use_lmw_stmw on
 s32 fn_8023CA4C(void) {
-extern u8 lbl_80282FD8[];
-extern ThpDecodeState *volatile lbl_80368950;
-f32 table[64];
-u32 size; u16 i; u16 row; u32 id; ThpDecodeState *state; f64 *scale;
-size=ThpReadWord()-2;
-do {
-id=ThpReadByte();
-for(i=0;i<64;i++) table[lbl_80282FD8[i]]=(f32)(u32)ThpReadByte();
-state=lbl_80368950;
-scale=(f64 *)(lbl_80282FD8+0x50);
-i=0;
-for(row=0;row<8;row++,scale++) {
-state->tables[id][(u16)(i+0)]=((f64 *)(lbl_80282FD8+0x50))[0]*((f64)table[(u16)(i+0)]* *scale);
-state->tables[id][(u16)(i+1)]=((f64 *)(lbl_80282FD8+0x50))[1]*((f64)table[(u16)(i+1)]* *scale);
-state->tables[id][(u16)(i+2)]=((f64 *)(lbl_80282FD8+0x50))[2]*((f64)table[(u16)(i+2)]* *scale);
-state->tables[id][(u16)(i+3)]=((f64 *)(lbl_80282FD8+0x50))[3]*((f64)table[(u16)(i+3)]* *scale);
-state->tables[id][(u16)(i+4)]=((f64 *)(lbl_80282FD8+0x50))[4]*((f64)table[(u16)(i+4)]* *scale);
-state->tables[id][(u16)(i+5)]=((f64 *)(lbl_80282FD8+0x50))[5]*((f64)table[(u16)(i+5)]* *scale);
-state->tables[id][(u16)(i+6)]=((f64 *)(lbl_80282FD8+0x50))[6]*((f64)table[(u16)(i+6)]* *scale);
-state->tables[id][(u16)(i+7)]=((f64 *)(lbl_80282FD8+0x50))[7]*((f64)table[(u16)(i+7)]* *scale);
-i+=8;
-}
-size-=65;
-} while((u16)size);
-return 0;
+    extern const u8 lbl_80282FD8[];
+    extern ThpDecodeState *volatile lbl_80368950;
+    f32 table[64];
+    u32 size;
+    u16 i;
+    u16 row;
+    u32 id;
+    u8 *state;
+    const f64 *scale;
+    const f64 *base;
+
+    size = ThpReadWord() - 2;
+    do {
+        id = ThpReadByte();
+        for (i = 0; i < 64; i++) {
+            table[lbl_80282FD8[i]] = (f32)(u32)ThpReadByte();
+        }
+        state = (u8 *)lbl_80368950;
+        base = (const f64 *)(lbl_80282FD8 + 0x50);
+        scale = base;
+        i = 0;
+        for (row = 0; row < 8; row++, scale++) {
+            *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = base[0] * ((f64)table[(u16)(i + 0)] * *scale);
+            *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = base[1] * ((f64)table[(u16)(i + 1)] * *scale);
+            *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = base[2] * ((f64)table[(u16)(i + 2)] * *scale);
+            *(f32 *)(state + ((u16)(i + 3) << 2) + (id << 8)) = base[3] * ((f64)table[(u16)(i + 3)] * *scale);
+            *(f32 *)(state + ((u16)(i + 4) << 2) + (id << 8)) = base[4] * ((f64)table[(u16)(i + 4)] * *scale);
+            *(f32 *)(state + ((u16)(i + 5) << 2) + (id << 8)) = base[5] * ((f64)table[(u16)(i + 5)] * *scale);
+            *(f32 *)(state + ((u16)(i + 6) << 2) + (id << 8)) = base[6] * ((f64)table[(u16)(i + 6)] * *scale);
+            *(f32 *)(state + ((u16)(i + 7) << 2) + (id << 8)) = base[7] * ((f64)table[(u16)(i + 7)] * *scale);
+            i += 8;
+        }
+        size -= 65;
+    } while ((u16)size);
+    return 0;
 }
 
 u8 fn_8023CE08(void)

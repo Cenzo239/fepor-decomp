@@ -639,28 +639,20 @@ void __GXSetTmemConfig(u32 nTmemConfig)
 }
 
 void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, u8 arg_sp8, s32 arg_spC) {
-  u32 *gx;
-  u32 value;
-  u8 flag;
-  s32 mode;
-
-  value = 0;
-  value = __rlwimi(value, arg1, 0, 30, 31);
-  flag = arg_sp8;
-  value = __rlwimi(value, arg2, 2, 28, 29);
-  mode = arg_spC;
-  value = __rlwimi(value, arg3, 4, 25, 27);
-  gx = (u32 *)__GXData;
-  value = __rlwimi(value, mode, 7, 23, 24);
-  value = __rlwimi(value, arg4, 9, 19, 22);
-  value = __rlwimi(value, arg5, 13, 16, 18);
-  value = __rlwimi(value, arg6, 16, 13, 15);
-  value = __rlwimi(value, flag, 19, 12, 12);
-  *(u8 *)0xCC008000 = 0x61;
-  value = __rlwimi(value, arg7, 20, 11, 11);
-  value = __rlwimi(value, arg0 + 0x10, 24, 0, 7);
-  *(u32 *)0xCC008000 = value;
-  *(u16 *)((u8 *)gx + 2) = 0;
+    u32 value = 0;
+    value = __rlwimi(value, arg1, 0, 30, 31);
+    value = __rlwimi(value, arg2, 2, 28, 29);
+    value = __rlwimi(value, arg3, 4, 25, 27);
+    value = __rlwimi(value, arg_spC, 7, 23, 24);
+    value = __rlwimi(value, arg4, 9, 19, 22);
+    value = __rlwimi(value, arg5, 13, 16, 18);
+    value = __rlwimi(value, arg6, 16, 13, 15);
+    value = __rlwimi(value, arg_sp8, 19, 12, 12);
+    value = __rlwimi(value, arg7, 20, 11, 11);
+    value = __rlwimi(value, arg0 + 0x10, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = value;
+    ((u16 *)__GXData)[1] = 0;
 }
 
 void fn_80223500(s32 arg0, f32 *mtx, s32 arg2) {
@@ -881,6 +873,7 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
+#pragma opt_propagation on
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
@@ -899,16 +892,15 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
     value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
   }
   cmd = 0x61;
+  ptr = (u32 *) __GXData;
   gx = __GXData;
   GXWGFifo.u8 = cmd;
-  ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;
   ptr[(0x130 / 4) + arg0] = value;
   gx[1] = 0;
 }
-
 void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;

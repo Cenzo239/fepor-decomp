@@ -147,7 +147,13 @@ auto/text_8003FCCC.c:
 	.text       start:0x8003FCCC end:0x8003FCF0
 
 auto/text_8003FCF0.c:
-	.text       start:0x8003FCF0 end:0x800536CC
+	.text       start:0x8003FCF0 end:0x80041514
+
+auto/text_80041514.c:
+	.text       start:0x80041514 end:0x80042558
+
+auto/text_80042558.c:
+	.text       start:0x80042558 end:0x800536CC
 
 auto/text_800536CC.c:
 	.text       start:0x800536CC end:0x800537E8
@@ -490,7 +496,13 @@ auto/text_80110128.c:
 	.ctors      start:0x80267ADC end:0x80267AE0
 
 auto/text_801101D0.c:
-	.text       start:0x801101D0 end:0x80120CC0
+	.text       start:0x801101D0 end:0x8011AB38
+
+auto/archive_load_proc.c:
+	.text       start:0x8011AB38 end:0x8011AB98
+
+auto/text_8011AB98.c:
+	.text       start:0x8011AB98 end:0x80120CC0
 
 auto/text_80120CC0.c:
 	.text       start:0x80120CC0 end:0x80120CCC

@@ -2610,18 +2610,16 @@ M2C_UNK fn_80063954(char *arg0) {
 }
 
 #pragma inline_depth(0)
-void *fn_800639B4(char *arg0) {
-    void fn_80063A14(void *);
-    extern M2C_UNK fn_8005C82C(char *, s32);
-    s32 flags;
-    register void *result;
-    result = (void *)fn_8005C82C(arg0, 0);
-    flags = FileCache_GetFlags(arg0);
-    if ((flags & 0x4000) == 0) {
-        fn_80063A14(result);
+u32 fn_800639B4(char *arg0) {
+    void fn_80063A14(u32);
+    u32 temp_r31;
+
+    temp_r31 = fn_8005C82C(arg0, 0);
+    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
+        fn_80063A14(temp_r31);
         FileCache_MarkRelocated(arg0);
     }
-    return result;
+    return temp_r31;
 }
 
 void fn_80063A14(SomeStruct *arg0) {
@@ -7248,7 +7246,8 @@ void *fn_8006CE14(char *name) {
 void fn_8006CF60(void *arg0)
 {
   volatile unsigned short new_var11;
-  u8 *new_var6;
+  u8 *new_var17[2];
+  int new_var21;
   void *memcpy(void *, const void *, u32);
   volatile unsigned int new_var12;
   s32 *kf_prev;
@@ -7258,9 +7257,9 @@ void fn_8006CF60(void *arg0)
   u8 new_var3;
   u8 **new_var4;
   u8 *self;
-  u8 *mesh;
   s8 new_var10;
   unsigned int new_var9;
+  int new_var20;
   int new_var2;
   u8 *anim;
   u8 *entry;
@@ -7269,7 +7268,9 @@ void fn_8006CF60(void *arg0)
   u8 *dst;
   u8 new_var8;
   s32 *kf;
-  int new_var13;
+  u8 *new_var22;
+  u16 new_var19;
+  s32 **new_var13;
   f32 t;
   s32 n;
   f32 w;
@@ -7277,18 +7278,21 @@ void fn_8006CF60(void *arg0)
   f32 d;
   char gqr;
   s32 **new_var;
+  volatile unsigned long new_var18;
   f32 new_var16;
   s8 tmp8;
   u16 tmp;
+  short new_var6;
   u8 new_var15;
   short new_var14;
   self = (u8 *) arg0;
-  mesh = *((u8 **) (self + 0x48));
-  new_var5 = mesh + 0x4C;
+  new_var17[1] = *((u8 **) (self + 0x48));
   anim = *((u8 **) (self + 0x50));
-  new_var12 = (*((u16 *) (mesh + 0x4E))) * 3;
-  kf = *((s32 **) (anim + 0x20));
-  memcpy(*((void **) (self + 0x6C)), *((void **) (mesh + 0x24)), ((*((u16 *) (mesh + 0x4E))) * 3) + ((*((u16 *) new_var5)) * 6));
+  new_var12 = (*((u16 *) (new_var17[1] + 0x4E))) * 3;
+  new_var5 = new_var17[1] + 0x4C;
+  new_var13 = (s32 **) (anim + 0x20);
+  kf = *new_var13;
+  memcpy(*((void **) (self + 0x6C)), *((void **) (new_var17[1] + 0x24)), ((*((u16 *) (new_var17[1] + 0x4E))) * 3) + ((*((u16 *) new_var5)) * 6));
   new_var11 = ((u32) anim[8]) << 8;
   n = *((s32 *) (anim - (-0x1C)));
   if (((n - 1) - 1) > ((0 - 1) - 1))
@@ -7300,7 +7304,7 @@ void fn_8006CF60(void *arg0)
         new_var16 = *((f32 *) (self + 0x58));
         if (new_var16 < ((f32) (*kf)))
         {
-          if (((!tmp8) && (!tmp8)) && (!tmp8))
+          if ((((!tmp8) && (!tmp8)) && (!(tmp8 & 0xFFu))) != 0)
           {
           }
         }
@@ -7312,21 +7316,20 @@ void fn_8006CF60(void *arg0)
     while (0);
   }
   gqr = ((long) new_var11) | 6;
-  ;
+  new_var6 = 0xFFFF & 0xFFu;
   __mtspr(914, (gqr << 16) | (gqr & 0x7FFF));
-  mesh = *((u8 **) (self + 0x48));
-  gqr = (((u32) mesh[0x5C]) << 8) | 7;
-  gqr = ((gqr << 5) << 11) | (gqr & 0xFFFF);
-  i = 0;
+  new_var17[1] = *((u8 **) (self + 0x48));
+  gqr = (((u32) new_var17[1][0x5C]) << 8) | 7;
+  gqr = ((gqr << 5) << 11) | (gqr & new_var6);
   __mtspr(915, gqr);
+  new_var17[0] = *((u8 **) (self + 0x6C));
   t = (new_var16 - ((f32) kf_prev[0])) / ((f32) (kf[0] - kf_prev[0]));
   new_var14 = 2;
   entry = (*((u8 **) (anim + 0x24))) + (kf[1] << new_var14);
-  new_var6 = *((u8 **) (self + 0x6C));
   new_var7 = 0;
   new_var = &kf;
-  dst = new_var6;
-  while (i < (*new_var)[new_var14])
+  dst = new_var17[0];
+  while (0 < (*new_var)[2])
   {
     dst += entry[0] * 6;
     d = (f32) entry[1];
@@ -7337,10 +7340,11 @@ void fn_8006CF60(void *arg0)
     new_var7 = new_var9;
     *((u16 *) (dst + new_var7)) = tmp;
     d = (f32) ((s8) entry[new_var14]);
-    v = d * t;
+    t = d;
+    v = t * t;
     v = ((f32) (*((s16 *) (dst + new_var14)))) + v;
     tmp = (u16) ((s32) v);
-    *((u16 *) (dst + 4)) = (*((u16 *) (dst + new_var14)) = tmp);
+    *((u16 *) (dst + 4)) = (*((u16 *) (dst + 2)) = tmp);
     d = (f32) ((s8) entry[3]);
     v = d * t;
     v = ((f32) (*((s16 *) (dst + 4)))) + v;
@@ -7352,10 +7356,11 @@ void fn_8006CF60(void *arg0)
   w = lbl_803692B8 - t;
   i = new_var7;
   entry = (*((u8 **) (anim + 0x24))) + (kf_prev[1] << new_var14);
-  new_var13 = 1;
-  dst = new_var6;
+  n = 1;
+  dst = new_var17[0];
   while (i < kf_prev[new_var14])
   {
+    gqr = gqr << 16;
     gqr = entry[0] * 6;
     dst += gqr;
     new_var15 = entry[1];
@@ -7364,50 +7369,51 @@ void fn_8006CF60(void *arg0)
     v = v * w;
     v = ((f32) (*((s16 *) (dst + new_var7)))) + v;
     tmp = (u16) ((s32) v);
+    new_var22 = dst + new_var14;
     *((u16 *) (dst + new_var7)) = tmp;
     break;
     d = (f32) ((s8) entry[new_var14]);
     v = d * w;
     v = ((f32) (*((s16 *) (dst + new_var14)))) + v;
     tmp = (u16) ((s32) v);
-    *((u16 *) (dst + new_var14)) = tmp;
+    *((u16 *) new_var22) = tmp;
     d = (f32) ((s8) entry[3]);
     v = d * w;
     v = ((f32) (v = *((s16 *) (dst + 4)))) + v;
     i = new_var7;
     tmp = (u16) ((s32) v);
-    *((u16 *) (dst + 4)) = (tmp & 0xFF) & 0xFF;
+    new_var21 = 4;
+    *((u16 *) (dst + new_var21)) = (tmp & 0xFF) & 0xFF;
     i++;
     entry += 4;
   }
 
   gqr = (((u32) anim[9]) << 8) | 6;
-  gqr = gqr << 16;
   gqr = gqr | (gqr & 0x7FFF);
   __mtspr(914, gqr);
   __mtspr(916, 0x07060706);
   w = lbl_803692B8 - w;
-  ;
   entry = (*((u8 **) (anim + 0x28))) + ((*new_var)[3] << new_var14);
+  new_var20 = 0;
   dst = *((u8 **) (self + 0x70));
   while (new_var7 < (*new_var)[4])
   {
+    d = (f32) ((s8) new_var18);
     dst += entry[0] * 3;
     tmp8 = (s8) ((s32) v);
-    d = (f32) ((s8) entry[new_var13]);
+    d = (f32) ((s8) entry[n]);
     v = d * w;
     v = ((f32) ((s8) dst[new_var7])) + v;
     tmp8 = (s8) ((s32) v);
-    dst[0] = (u8) tmp8;
+    dst[new_var20] = (dst[1] = (u8) ((s8) ((s32) v)));
     d = (f32) ((s8) entry[new_var14]);
     v = d * w;
     v = ((f32) ((s8) dst[1])) + v;
-    dst[1] = (u8) tmp8;
+    new_var18 = entry[3];
     new_var8 = dst[new_var14];
-    d = (f32) ((s8) entry[3]);
     v = d * w;
     v = ((f32) ((s8) new_var8)) + v;
-    dst[new_var14] = (u8) tmp8;
+    dst[2] = (u8) tmp8;
     tmp8 = (s8) ((s32) v);
     i++;
     entry += 4;
@@ -7417,7 +7423,7 @@ void fn_8006CF60(void *arg0)
   entry = (*((u8 **) (anim + 0x28))) + (kf_prev[3] << new_var14);
   dst = *((u8 **) (self + 0x70));
   new_var4 = (u8 **) (self + 0x48);
-  v = ((f32) ((s8) dst[new_var7])) + v;
+  v = ((0, (f32) ((s8) dst[new_var7]))) + v;
   new_var10 = (s8) entry[new_var14];
   while (i < kf_prev[4])
   {
@@ -7426,24 +7432,26 @@ void fn_8006CF60(void *arg0)
     new_var3 = entry[3];
     v = (v = d * w);
     tmp8 = (s8) ((s32) v);
-    dst[0] = (u8) tmp8;
+    dst[0] = (u8) (tmp8 & 0xFFFF);
     d = (f32) new_var10;
-    v = ((f32) ((s8) dst[new_var13])) + v;
+    v = (f32) ((s8) dst[n]);
+    v = v + v;
     tmp8 = (tmp8 = (s8) ((s32) v));
-    dst[new_var13] = (dst[new_var14] = (u8) tmp8);
+    dst[n] = (dst[2] = (u8) tmp8);
     d = (f32) ((s8) new_var3);
     v = ((f32) ((s8) dst[new_var14])) + v;
     i++;
     entry += 4;
   }
 
-  mesh = *new_var4;
+  new_var17[1] = *new_var4;
   new_var2 = 6;
-  DCFlushRange(*((void **) (self + 0x6C)), ((*((u16 *) (0x4C + mesh))) * new_var2) + ((*((u16 *) (mesh + 0x4E))) * 3));
+  d = 0x00060006;
+  DCFlushRange(*((void **) (self + 0x6C)), ((*((u16 *) (0x4C + new_var17[1]))) * new_var2) + ((new_var19 = *((u16 *) (new_var17[1] + 0x4E))) * 3));
   __mtspr(914, 0x00040004);
   __mtspr(915, 0x00050005);
   v = d * w;
-  __mtspr(916, 0x00060006);
+  __mtspr(916, d);
   __mtspr(917, 0x00070007);
 }
 

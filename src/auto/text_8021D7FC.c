@@ -354,7 +354,11 @@ void *GXInit(void *base, u32 size) {
     void *fifo;
     u8 *gx;
     u32 i;
+    u32 pad0, pad1, pad2;
 
+    pad0 = 0;
+    pad1 = 0;
+    pad2 = 0;
     fifo = FifoObj_8033A440;
     OSRegisterVersion(__GXVersion);
     gx = __GXData;
@@ -403,22 +407,18 @@ void *GXInit(void *base, u32 size) {
         for (i = 0; i < 8; i++) {
             u32 h = idx >> 1;
             u32 t;
-            u32 off;
             gx = __GXData;
-            off = regOff + 0x130;
-            *(u32 *)(gx + off) = 0;
-            off = regOff + 0x170;
-            *(u32 *)(gx + off) = 0;
-            off = (h << 2) + 0x100;
-            *(u32 *)(gx + off) = 0;
-            off = regOff + 0x554;
-            *(u32 *)(gx + off) = 0xFF;
             {
                 u32 o130 = regOff + 0x130;
                 u32 o170 = regOff + 0x170;
                 u32 o100 = (h << 2) + 0x100;
+                u32 o554 = regOff + 0x554;
                 u32 o1b0 = (h << 2) + 0x1B0;
                 u32 old_h = h;
+                *(u32 *)(gx + o130) = 0;
+                *(u32 *)(gx + o170) = 0;
+                *(u32 *)(gx + o100) = 0;
+                *(u32 *)(gx + o554) = 0xFF;
                 regOff += 4;
                 t = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7);
                 *(u32 *)(gx + o130) = t;

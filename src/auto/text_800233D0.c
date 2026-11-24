@@ -115,18 +115,14 @@ typedef struct {
 } Map_802CA518;
 extern Map_802CA518 gBattleMap;
 
-f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3)
-{
-  u8 *base;
-  u8 *row;
-  s32 index;
-  s16 *p;
-  base = ((u8 *) arg0) + 0x20000;
-  row = ((u8 *) arg0) + 0x10000;
-  index = arg1 + (arg2 << 6);
-  index = ((u8) arg3) + (index << 2);
-  p = (s16 *) (row + (index = index << 1));
-  return ((f32) p[0x216A]) * (*((f32 *) (base - 0x3D2C)));
+f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
+    struct MapHeight {
+        u8 pad[0x142D4];
+        s16 arr[0x4000];
+        f32 scale;
+    };
+    struct MapHeight *m = (struct MapHeight *)arg0;
+    return (f32)m->arr[((arg1 + (arg2 << 6)) << 2) + arg3] * m->scale;
 }
 
 #pragma fp_contract on
@@ -3421,7 +3417,7 @@ void fn_80028724(void) {
     battle = gBattleState;
     msg = lbl_80268E40;
     channels = gFxChannels;
-    if (!EventFlag_IsSet(battle + 0xB4, msg + 0x21E)) {
+    if (EventFlag_IsSet(battle + 0xB4, msg + 0x21E) == 0) {
         fn_80146AF0();
         Fx_FadeIn(channels, 0x3E8);
         fn_8014876C(channels, 0x64, 0x3E8);

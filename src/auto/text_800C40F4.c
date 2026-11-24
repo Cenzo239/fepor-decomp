@@ -30296,7 +30296,7 @@ void fn_800FF948(void *arg0) {
     extern void *gPadInput;
     s32 *counter;
 
-    if ((*(u32 *)((u8 *)gPadInput + 4) & 0x1100)
+    if ((*(u32 *)((u8 *)gPadInput + 4) & 0x1100) != 0
         || *(s32 *)((u8 *)arg0 + 0x64) > 0x2D) {
         Process_ClearFunc(arg0);
     } else {

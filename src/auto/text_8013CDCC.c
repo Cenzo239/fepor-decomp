@@ -586,28 +586,28 @@ void fn_8013CED0(void *arg0, void *arg1) {
     extern u8 lbl_802920E0[];
     extern u8 lbl_80291DA0[];
     extern f32 lbl_8036A6B8;
-    void **slot;
     f32 f;
+    s32 z;
 
-    slot = (void **)((u8 *)arg0 + 4);
-    *slot = gUiMenuDrawVtbl;
+    z = 0;
+    *(void **)((u8 *)arg0 + 4) = gUiMenuDrawVtbl;
     *(void **)arg0 = arg1;
     f = lbl_8036A6B8;
-    *slot = lbl_802920E0;
+    *(void **)((u8 *)arg0 + 4) = lbl_802920E0;
     *(s16 *)((u8 *)arg0 + 8) = 0x80;
     *(s16 *)((u8 *)arg0 + 0xA) = 0x9C;
     *(s16 *)((u8 *)arg0 + 0xC) = 0x160;
     *(s16 *)((u8 *)arg0 + 0xE) = 0x88;
-    *(s16 *)((u8 *)arg0 + 0x10) = 0;
-    *(s16 *)((u8 *)arg0 + 0x12) = 0;
-    *(s16 *)((u8 *)arg0 + 0x14) = 0;
-    *(s16 *)((u8 *)arg0 + 0x16) = 0;
+    *(s16 *)((u8 *)arg0 + 0x10) = z;
+    *(s16 *)((u8 *)arg0 + 0x12) = z;
+    *(s16 *)((u8 *)arg0 + 0x14) = z;
+    *(s16 *)((u8 *)arg0 + 0x16) = z;
     *(f32 *)((u8 *)arg0 + 0x18) = f;
     *(s16 *)((u8 *)arg0 + 0x1C) = 0x20;
     *(s16 *)((u8 *)arg0 + 0x1E) = 4;
-    *slot = lbl_80291DA0;
-    *(s32 *)((u8 *)arg0 + 0x20) = 0;
-    *(s8 *)((u8 *)arg0 + 0x24) = 0;
+    *(void **)((u8 *)arg0 + 4) = lbl_80291DA0;
+    *(s32 *)((u8 *)arg0 + 0x20) = z;
+    *(s8 *)((u8 *)arg0 + 0x24) = z;
 }
 #pragma opt_lifetimes reset
 #pragma cplusplus on
@@ -2924,15 +2924,33 @@ extern "C" void List_Insert(void *outNode, void *list, void *posRef, void *value
 
 #pragma cplusplus on
 extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
-struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; };
-void *self;
-void *flag;
-Obj *p;
-Obj *q;
-self = arg0;
-flag = *(void **)((u8 *)arg0+0x34);
-if(flag) { p=*(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8); } else p=0;
-if(p) { q=flag ? *(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8):0; q->v7(); }
+    struct Panel {
+        struct Obj {
+            virtual void v0() = 0;
+            virtual void v1() = 0;
+            virtual void v2() = 0;
+            virtual void v3() = 0;
+            virtual void v4() = 0;
+            virtual void v5() = 0;
+            virtual void v6() = 0;
+            virtual void v7() = 0;
+        };
+        struct Sub {
+            u32 pad0;
+            u32 pad4;
+            Obj *widget;
+        };
+        u8 pad[0x34];
+        void *flag;
+        Sub *sub;
+        Obj *get() {
+            return flag != 0 ? sub->widget : 0;
+        }
+    };
+    Panel *panel = (Panel *)arg0;
+    if (panel->get() != 0) {
+        panel->get()->v7();
+    }
 }
 
 #pragma cplusplus on

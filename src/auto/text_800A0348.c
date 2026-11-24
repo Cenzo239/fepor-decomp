@@ -67,14 +67,14 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 
 s32 fn_800A0348(s32 a, s32 b, void *arg2) {
-    extern u8 lbl_80367705;
-    u8 v = 2;
-    a = lbl_80367705;
-    b = a ^ 1;
-    lbl_80367705 = b;
-    if ((u8)b) v = 0;
-    *(u8 *)((char *)arg2 + 0x39) = v;
-    return 0;
+ extern u8 lbl_80367705;
+ s32 v=2;
+ a=lbl_80367705;
+ b=a^1;
+ lbl_80367705=b;
+ if((u8)b) v=0;
+ *(u8 *)((char *)arg2+0x39)=v;
+ return 0;
 }
 #pragma global_optimizer on
 u32 fn_800A0370(void) {
