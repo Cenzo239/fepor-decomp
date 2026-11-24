@@ -400,7 +400,6 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 
 #pragma global_optimizer on
 #pragma use_lmw_stmw on
-#pragma opt_lifetimes off
 
 void fn_80042558(void *arg0)
 {
