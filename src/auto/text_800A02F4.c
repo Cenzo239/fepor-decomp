@@ -63,14 +63,16 @@ extern u8 lbl_80367708;
 #pragma global_optimizer off
 
 #pragma scheduling off
-s32 fn_800A02F4(s32 a, s32 b, u8 *arg2) {
+#pragma push
+#pragma scheduling on
+s32 fn_800A02F4(s32 a, s32 b, u8 *item_) {
+    void *item = (void *)item_;
     extern u8 lbl_80367707;
-    s32 t = lbl_80367707;
-    s32 v = 2;
-    b = t ^ 1;
-    lbl_80367707 = b;
-    if ((u8)b) v = 0;
-    arg2[0x39] = v;
+    enum { MENU_TOGGLE_ON = 0, MENU_TOGGLE_OFF = 2 };
+
+    lbl_80367707 ^= 1;
+    *((u8 *)item + 0x39) = lbl_80367707 ? MENU_TOGGLE_ON : MENU_TOGGLE_OFF;
     return 0;
 }
+#pragma pop
 #pragma scheduling on

@@ -76,7 +76,19 @@ extern u16 jumptable_80283AE8[];
 
 #pragma optimization_level reset
 
-s32 fn_80006AF4(s32 *arg0) { s32 sum=0; s32 n=0; --arg0; do { sum+=*++arg0; } while (++n !=28); return sum; }
+asm s32 fn_80006AF4(s32 *arg0) {
+    nofralloc
+    subi r3, r3, 4
+    li r4, 0x1c
+    li r11, 0
+    mtctr r4
+@loop:
+    lwzu r12, 4(r3)
+    add r11, r11, r12
+    bdnz @loop
+    addi r3, r11, 0
+    blr
+}
 #pragma opt_unroll reset
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {

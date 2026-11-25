@@ -289,9 +289,13 @@ void fn_802038C0(void) { extern char lbl_8029B910[24]; s32 physical=*(s32*)0xC0;
 
 void __DBExceptionDestination(void);
 void fn_802038C0(void);
-void __DBExceptionDestination(void) {
- PPCMtmsr((u32)PPCMfmsr() | 0x30);
- fn_802038C0();
+asm void __DBExceptionDestination(void) {
+    void fn_802038C0(void);
+nofralloc
+mfmsr r3
+ori r3, r3, 0x30
+mtmsr r3
+b fn_802038C0
 }
 
 s32 __DBIsExceptionMarked(u8 arg0) {
@@ -552,39 +556,42 @@ void *__OSGetExceptionHandler(u8 exception) {
     return OSExceptionTable_8036847C[exception];
 }
 
-void OSDefaultExceptionHandler(void)
-{
-    /* naked: stw r0/r1/r2; stmw r6; mfspr GQR1-7; mfdsisr/mfdar; b */
+#pragma push
+typedef u8 __OSException;
+asm void OSDefaultExceptionHandler(register __OSException exception, register OSContext* context) {
+    void __OSUnhandledException(__OSException exception, OSContext *context, u32 dsisr, u32 dar);
+nofralloc
+stw r0, 0(context); stw r1, 4(context); stw r2, 8(context); stmw r6, 24(context); mfspr r0, 913; stw r0, 424(context); mfspr r0, 914; stw r0, 428(context); mfspr r0, 915; stw r0, 432(context); mfspr r0, 916; stw r0, 436(context); mfspr r0, 917; stw r0, 440(context); mfspr r0, 918; stw r0, 444(context); mfspr r0, 919; stw r0, 448(context);
+mfdsisr r5
+mfdar r6
+stwu r1, -8(r1)
+b __OSUnhandledException
 }
+#pragma pop
 
 #pragma peephole reset
+#pragma push
 void __OSPSInit(void) {
-    u32 hid;
-    extern u32 __SPR_912;
-    extern u32 __SPR_913;
-    extern u32 __SPR_914;
-    extern u32 __SPR_915;
-    extern u32 __SPR_916;
-    extern u32 __SPR_917;
-    extern u32 __SPR_918;
-    extern u32 __SPR_919;
     void ICFlashInvalidate(void);
-    u32 PPCMfhid2(void);
-    void PPCMthid2(u32);
-
-    hid = PPCMfhid2();
-    PPCMthid2(hid | 0xA0000000);
+    u32 PPCMfhid2();
+    void PPCMthid2(u32 newhid2);
+    PPCMthid2(PPCMfhid2() | 0x80000000 | 0x20000000);
     ICFlashInvalidate();
     __sync();
-    __SPR_912 = 0;
-    __SPR_913 = 0;
-    __SPR_914 = 0;
-    __SPR_915 = 0;
-    __SPR_916 = 0;
-    __SPR_917 = 0;
-    __SPR_918 = 0;
-    __SPR_919 = 0;
+    asm
+    {
+li r3, 0
+mtspr 912 , r3
+mtspr 913 , r3
+mtspr 914 , r3
+mtspr 915 , r3
+mtspr 916 , r3
+mtspr 917 , r3
+mtspr 918 , r3
+mtspr 919 , r3
+    }
 }
+#pragma pop
 
 volatile u32 __PIRegs[64] : 0xCC006000;
 #pragma peephole off
@@ -883,9 +890,45 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
 }
 #pragma use_lmw_stmw reset
 void DecrementerExceptionCallback(u8 type, OSContext *context);
-void DecrementerExceptionHandler(u8 type, OSContext *context) {
-    DecrementerExceptionCallback(type, context);
+#pragma push
+typedef s64 OSTime;
+typedef struct OSAlarm_80204ABC OSAlarm_80204ABC;
+typedef void (*OSAlarmHandler)(OSAlarm_80204ABC *alarm, OSContext *context);
+struct OSAlarm_80204ABC {
+    OSAlarmHandler handler;
+    u32 tag;
+    OSTime fire;
+    OSAlarm_80204ABC *prev;
+    OSAlarm_80204ABC *next;
+    OSTime period;
+    OSTime start;
+};
+typedef struct {
+    OSAlarm_80204ABC *head;
+    OSAlarm_80204ABC *tail;
+} OSAlarmQueue;
+static void SetTimer(OSAlarm_80204ABC *alarm) {
+    OSTime __OSGetSystemTime();
+    void PPCMtdec(u32 newDec);
+    OSTime delta = alarm->fire - __OSGetSystemTime();
+    if (delta < 0) {
+        PPCMtdec(0);
+    } else if (delta < 0x80000000) {
+        PPCMtdec((u32)delta);
+    } else {
+        PPCMtdec(0x7fffffff);
+    }
 }
+static OSAlarmQueue AlarmQueue;
+static asm void DecrementerExceptionHandler(register __OSException exception,
+register OSContext* context) {
+    void DecrementerExceptionCallback(register __OSException exception, register OSContext *context);
+nofralloc
+stw r0, 0(context); stw r1, 4(context); stw r2, 8(context); stmw r6, 24(context); mfspr r0, 913; stw r0, 424(context); mfspr r0, 914; stw r0, 428(context); mfspr r0, 915; stw r0, 432(context); mfspr r0, 916; stw r0, 436(context); mfspr r0, 917; stw r0, 440(context); mfspr r0, 918; stw r0, 444(context); mfspr r0, 919; stw r0, 448(context);
+stwu r1, -8(r1)
+b DecrementerExceptionCallback
+}
+#pragma pop
 
 #pragma peephole off
 BOOL fn_80204B0C(BOOL final) {
@@ -1116,123 +1159,242 @@ void __OSInitAudioSystem(void) {
     memcpy((void *)0x81000000, OSGetArenaHi() - 0x80, 0x80);
 }
 
-#pragma optimization_level 3
+#pragma push
+typedef u32 OSTick;
+volatile u16 __DSPRegs[] : (0xCC005000);
 void __OSStopAudioSystem(void) {
-    u32 OSGetTick(void);
-    volatile u16 *ai = (volatile u16 *)0xCC005000;
-    volatile u16 *p = ai;
-    register u32 start;
-    u16 value;
-
-    ai[5] = 0x804;
-    p[0x1b] &= ~0x8000;
-    value = *(ai += 5);
-    while (value & 0x400) value = *ai;
-    value = *ai;
-    while (value & 0x200) value = *ai;
-    p[0] = 0;
-    *ai = 0x8ac;
-    while ((((u32)p[2] << 16) | p[3]) & 0x80000000U) {}
-    start = OSGetTick();
-    while ((s32)(OSGetTick() - start) < 44) {}
-    *ai |= 1;
-    value = *ai;
-    while (value & 1) value = *ai;
+    OSTick OSGetTick(void);
+    u16 reg16;
+    u32 start_tick;
+    __DSPRegs[5] = 0x804;
+    reg16 = __DSPRegs[27];
+    __DSPRegs[27] = reg16 & ~0x8000;
+    reg16 = (__DSPRegs[5]);
+    while (reg16 & (0x400)) {
+        reg16 = (__DSPRegs[5]);
+    };
+    reg16 = (__DSPRegs[5]);
+    while (reg16 & (0x200)) {
+        reg16 = (__DSPRegs[5]);
+    };
+    __DSPRegs[5] = 0x8ac;
+    __DSPRegs[0] = 0;
+    while (((__DSPRegs[2] << 16) | __DSPRegs[3]) & 0x80000000)
+        ;
+    start_tick = OSGetTick();
+    while ((s32)(OSGetTick() - start_tick) < 0x2c)
+        ;
+    reg16 = __DSPRegs[5];
+    __DSPRegs[5] = reg16 | 1;
+    reg16 = (__DSPRegs[5]);
+    while (reg16 & (0x001)) {
+        reg16 = (__DSPRegs[5]);
+    };
 }
-#pragma optimization_level reset
-void DCEnable(void)
-{
-    __sync();
+#pragma pop
+#pragma push
+asm void DCEnable(void) {
+nofralloc
+sync
+mfspr r3, 1008
+ori r3, r3, 0x4000
+mtspr 1008 , r3
+blr
 }
+#pragma pop
 
-void DCInvalidateRange(void *addr, u32 nBytes) {
- if(nBytes>0) {
- u32 count=(nBytes+((u32)addr&31)+31)>>5;
- do { __dcbi(addr); addr=(u8 *)addr+32; } while(--count);
- }
+asm void DCInvalidateRange(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbi r0, addr
+addi addr, addr, 32
+bdnz @1
+blr
 }
 
 #pragma opt_unroll_loops off
-void DCFlushRange(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do {
-        __dcbf(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes);
-    __sync();
+#pragma push
+asm void DCFlushRange(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbf r0, addr
+addi addr, addr, 32
+bdnz @1
+sc
+blr
 }
-void fn_80205110(void *addr, u32 nBytes) { u32 count; if (nBytes <= 0) return; nBytes += (u32)addr & 31; nBytes += 31; count = nBytes >> 5; do { __dcbst((void*)0, (int)addr); addr=(u8*)addr+32; count--; } while (count); __sync(); }
+#pragma pop
+#pragma push
+asm void fn_80205110(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbst r0, addr
+addi addr, addr, 32
+bdnz @1
+sc
+blr
+}
+#pragma pop
 
-void DCFlushRangeNoSync(void *addr, u32 nBytes) {
-    if (nBytes <= 0) return;
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do { __dcbf(0, (int)addr); addr = (u8 *)addr + 32; } while (--nBytes > 0);
+asm void DCFlushRangeNoSync(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbf r0, addr
+addi addr, addr, 32
+bdnz @1
+blr
 }
 
-void fn_8020516C(void *addr, u32 nBytes) {
-    if (nBytes <= 0)
-        return;
-    nBytes += (u32)addr & 31;
-    nBytes += 31;
-    nBytes >>= 5;
-    do {
-        __dcbst(0, (int)addr);
-        addr = (u8 *)addr + 32;
-    } while (--nBytes > 0);
+asm void fn_8020516C(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbst r0, addr
+addi addr, addr, 32
+bdnz @1
+blr
 }
 
-void fn_80205198(void *addr, u32 nBytes) {
-    if (nBytes <= 0) {
-        return;
-    }
-    nBytes = (nBytes + ((u32) addr & 31) + 31) >> 5;
-    do {
-        __dcbz(addr, 0);
-        addr = (u8 *) addr + 32;
-    } while (--nBytes);
+asm void fn_80205198(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+dcbz r0, addr
+addi addr, addr, 32
+bdnz @1
+blr
 }
 
 #pragma intrinsic __icbi
-void ICInvalidateRange(void *addr, u32 nBytes) { if (nBytes <= 0) return; nBytes += (u32)addr & 31; nBytes += 31; nBytes >>= 5; do { __icbi(0, (int)addr); addr=(u8*)addr+32; } while (--nBytes); __sync(); __isync(); }
-s32 ICFlashInvalidate(void) {
-    M2C_ERROR(/* unknown instruction: mtspr HID0, $r3 */);
-    return M2C_ERROR(/* unknown instruction: mfspr $r3, HID0 */) | 0x800;
+asm void ICInvalidateRange(register void* addr, register u32 nBytes) {
+nofralloc
+cmplwi nBytes, 0
+blelr
+clrlwi r5, addr, 27
+add nBytes, nBytes, r5
+addi nBytes, nBytes, 31
+srwi nBytes, nBytes, 5
+mtctr nBytes
+@1
+icbi r0, addr
+addi addr, addr, 32
+bdnz @1
+sync
+isync
+blr
+}
+asm void ICFlashInvalidate(void) {
+nofralloc
+mfspr r3, 1008
+ori r3, r3, 0x800
+mtspr 1008 , r3
+blr
 }
 
-void ICEnable(void)
-{
-    __isync();
+asm void ICEnable(void) {
+nofralloc
+isync
+mfspr r3, 1008
+ori r3, r3, 0x8000
+mtspr 1008 , r3
+blr
 }
 
-void fn_8020521C(void) {
-    s32 var_ctr;
-    s32 var_ctr_2;
-    s32 var_r3;
-    s32 var_r3_2;
-
-    var_r3 = 0x80000000;
-    var_ctr = 0x400;
-    do {
-        M2C_PREFETCH(var_r3);
-        M2C_DCACHE_CLEAN(var_r3);
-        var_r3 += 0x20;
-        var_ctr -= 1;
-    } while (var_ctr != 0);
-    M2C_SYNC();
-    var_r3_2 = 0xE0000000;
-    var_ctr_2 = 0x200;
-    do {
-        M2C_DCACHE_BLOCK_SETZERO_LOCKED(var_r3_2);
-        var_r3_2 += 0x20;
-        var_ctr_2 -= 1;
-    } while (var_ctr_2 != 0);
+static asm void fn_8020521C(void) {
+nofralloc
+mfmsr r5
+ori r5, r5, 0x1000
+mtmsr r5
+lis r3, 0x8000
+li r4, 1024
+mtctr r4
+_touchloop:
+dcbt 0,r3
+dcbst 0,r3
+addi r3,r3,32
+bdnz _touchloop
+mfspr r4, 920
+oris r4, r4, 0x100F
+mtspr 920 , r4
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+lis r3, 0xE000
+ori r3, r3, 0x0002
+mtspr 543 , r3
+ori r3, r3, 0x01fe
+mtspr 542 , r3
+isync
+lis r3, 0xE000
+li r6, 512
+mtctr r6
+li r6, 0
+_lockloop:
+dcbz_l r6, r3
+addi r3, r3, 32
+bdnz+ _lockloop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+blr
 }
 
 void fn_802052E8(void) {
@@ -1247,21 +1409,45 @@ void fn_802052E8(void) {
     OSRestoreInterrupts(interrupts);
 }
 
-void LCDisable(void) {
- u32 count=0x200;
- u8 *addr=(u8 *)0xe0000000;
- do { __dcbi(addr); addr+=32; } while (--count);
- PPCMthid2(PPCMfhid2() & ~0x10000000U);
+asm void LCDisable(void) {
+nofralloc
+lis r3, 0xE000
+li r4, 512
+mtctr r4
+@1
+dcbi r0, r3
+addi r3, r3, 32
+bdnz @1
+mfspr r4, 920
+rlwinm r4, r4, 0, 4, 2
+mtspr 920 , r4
+blr
 }
 
-void fn_80205348(s32 arg0, s32 arg1, u32 arg2) {
-    M2C_ERROR(/* unknown instruction: mtspr DMA_U, $r6 */);
-    M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r6 */);
+asm void fn_80205348(register void* destTag, register void* srcAddr, register u32 numBlocks) {
+nofralloc
+rlwinm r6, numBlocks, 30, 27, 31
+rlwinm srcAddr, srcAddr, 0, 4, 31
+or r6, r6, srcAddr
+mtspr 922 , r6
+rlwinm r6, numBlocks, 2, 28, 29
+or r6, r6, destTag
+ori r6, r6, 0x12
+mtspr 923 , r6
+blr
 }
 
-void fn_8020536C(s32 arg0, s32 arg1, u32 arg2) {
-    M2C_ERROR(/* unknown instruction: mtspr DMA_U, $r6 */);
-    M2C_ERROR(/* unknown instruction: mtspr DMA_L, $r6 */);
+asm void fn_8020536C(register void* destAddr, register void* srcTag, register u32 numBlocks) {
+nofralloc
+rlwinm r6, numBlocks, 30, 27, 31
+rlwinm destAddr, destAddr, 0, 4, 31
+or r6, r6, destAddr
+mtspr 922 , r6
+rlwinm r6, numBlocks, 2, 28, 29
+or r6, r6, srcTag
+ori r6, r6, 0x2
+mtspr 923 , r6
+blr
 }
 
 #pragma peephole off
@@ -1290,7 +1476,15 @@ u32 fn_80205390(s32 dest, s32 src, s32 size) {
 }
 #pragma peephole reset
 extern u32 __SPR_392;
-void fn_8020543C(s32 arg0) { s32 value; do { value = ((u32)__SPR_392 >> 24) & 15; } while(value > arg0); }
+asm void fn_8020543C(register u32 len) {
+nofralloc
+@1
+mfspr r4, 920
+rlwinm r4, r4, 8, 28, 31
+cmpw r4, r3
+bgt @1
+blr
+}
 
 #pragma peephole off
 void L2GlobalInvalidate(void) {
@@ -1381,14 +1575,167 @@ void __OSCacheInit(void) {
     DBPrintf(strings + 0x1FC);
 }
 #pragma peephole on
-f64 __OSLoadFPUContext(void *arg1, f64 farg0) {
- if (*(u16*)((u8*)arg1+0x1A2)&1) return *(f64*)((u8*)arg1+0x98);
- return farg0;
+#pragma push
+static asm void __OSLoadFPUContext(register u32 dummy, register OSContext* fpucontext) {
+nofralloc
+lhz r5, fpucontext->state;
+clrlwi. r5, r5, 31
+beq _return
+lfd fp0, 400 (fpucontext)
+mtfsf 0xFF, fp0
+mfspr r5, 920
+rlwinm. r5, r5, 3, 31, 31
+beq _regular_FPRs
+psq_l fp0, 456 (fpucontext), 0, 0
+psq_l fp1, 464 (fpucontext), 0, 0
+psq_l fp2, 472 (fpucontext), 0, 0
+psq_l fp3, 480 (fpucontext), 0, 0
+psq_l fp4, 488 (fpucontext), 0, 0
+psq_l fp5, 496 (fpucontext), 0, 0
+psq_l fp6, 504 (fpucontext), 0, 0
+psq_l fp7, 512 (fpucontext), 0, 0
+psq_l fp8, 520 (fpucontext), 0, 0
+psq_l fp9, 528 (fpucontext), 0, 0
+psq_l fp10, 536 (fpucontext), 0, 0
+psq_l fp11, 544 (fpucontext), 0, 0
+psq_l fp12, 552 (fpucontext), 0, 0
+psq_l fp13, 560 (fpucontext), 0, 0
+psq_l fp14, 568 (fpucontext), 0, 0
+psq_l fp15, 576 (fpucontext), 0, 0
+psq_l fp16, 584 (fpucontext), 0, 0
+psq_l fp17, 592 (fpucontext), 0, 0
+psq_l fp18, 600 (fpucontext), 0, 0
+psq_l fp19, 608 (fpucontext), 0, 0
+psq_l fp20, 616 (fpucontext), 0, 0
+psq_l fp21, 624 (fpucontext), 0, 0
+psq_l fp22, 632 (fpucontext), 0, 0
+psq_l fp23, 640 (fpucontext), 0, 0
+psq_l fp24, 648 (fpucontext), 0, 0
+psq_l fp25, 656 (fpucontext), 0, 0
+psq_l fp26, 664 (fpucontext), 0, 0
+psq_l fp27, 672 (fpucontext), 0, 0
+psq_l fp28, 680 (fpucontext), 0, 0
+psq_l fp29, 688 (fpucontext), 0, 0
+psq_l fp30, 696 (fpucontext), 0, 0
+psq_l fp31, 704 (fpucontext), 0, 0
+_regular_FPRs:
+lfd fp0, fpucontext->fpr[0]
+lfd fp1, fpucontext->fpr[1]
+lfd fp2, fpucontext->fpr[2]
+lfd fp3, fpucontext->fpr[3]
+lfd fp4, fpucontext->fpr[4]
+lfd fp5, fpucontext->fpr[5]
+lfd fp6, fpucontext->fpr[6]
+lfd fp7, fpucontext->fpr[7]
+lfd fp8, fpucontext->fpr[8]
+lfd fp9, fpucontext->fpr[9]
+lfd fp10, fpucontext->fpr[10]
+lfd fp11, fpucontext->fpr[11]
+lfd fp12, fpucontext->fpr[12]
+lfd fp13, fpucontext->fpr[13]
+lfd fp14, fpucontext->fpr[14]
+lfd fp15, fpucontext->fpr[15]
+lfd fp16, fpucontext->fpr[16]
+lfd fp17, fpucontext->fpr[17]
+lfd fp18, fpucontext->fpr[18]
+lfd fp19, fpucontext->fpr[19]
+lfd fp20, fpucontext->fpr[20]
+lfd fp21, fpucontext->fpr[21]
+lfd fp22, fpucontext->fpr[22]
+lfd fp23, fpucontext->fpr[23]
+lfd fp24, fpucontext->fpr[24]
+lfd fp25, fpucontext->fpr[25]
+lfd fp26, fpucontext->fpr[26]
+lfd fp27, fpucontext->fpr[27]
+lfd fp28, fpucontext->fpr[28]
+lfd fp29, fpucontext->fpr[29]
+lfd fp30, fpucontext->fpr[30]
+lfd fp31, fpucontext->fpr[31]
+_return:
+blr
 }
+#pragma pop
 
-void __OSSaveFPUContext(register void *r3, register void *r4, register void *context) {
-    *(u16 *)((u8 *)context + 0x1A2) |= 1;
+#pragma push
+static asm void __OSSaveFPUContext(register u32 dummy1, register u32 dummy2, register OSContext* fpucontext) {
+nofralloc
+lhz r3, fpucontext->state
+ori r3, r3, 1
+sth r3, fpucontext->state
+stfd fp0, fpucontext->fpr[0]
+stfd fp1, fpucontext->fpr[1]
+stfd fp2, fpucontext->fpr[2]
+stfd fp3, fpucontext->fpr[3]
+stfd fp4, fpucontext->fpr[4]
+stfd fp5, fpucontext->fpr[5]
+stfd fp6, fpucontext->fpr[6]
+stfd fp7, fpucontext->fpr[7]
+stfd fp8, fpucontext->fpr[8]
+stfd fp9, fpucontext->fpr[9]
+stfd fp10, fpucontext->fpr[10]
+stfd fp11, fpucontext->fpr[11]
+stfd fp12, fpucontext->fpr[12]
+stfd fp13, fpucontext->fpr[13]
+stfd fp14, fpucontext->fpr[14]
+stfd fp15, fpucontext->fpr[15]
+stfd fp16, fpucontext->fpr[16]
+stfd fp17, fpucontext->fpr[17]
+stfd fp18, fpucontext->fpr[18]
+stfd fp19, fpucontext->fpr[19]
+stfd fp20, fpucontext->fpr[20]
+stfd fp21, fpucontext->fpr[21]
+stfd fp22, fpucontext->fpr[22]
+stfd fp23, fpucontext->fpr[23]
+stfd fp24, fpucontext->fpr[24]
+stfd fp25, fpucontext->fpr[25]
+stfd fp26, fpucontext->fpr[26]
+stfd fp27, fpucontext->fpr[27]
+stfd fp28, fpucontext->fpr[28]
+stfd fp29, fpucontext->fpr[29]
+stfd fp30, fpucontext->fpr[30]
+stfd fp31, fpucontext->fpr[31]
+mffs fp0
+stfd fp0, 400 (fpucontext)
+lfd fp0, fpucontext->fpr[0]
+mfspr r3, 920
+rlwinm. r3, r3, 3, 31, 31
+bc 12, 2, _return
+psq_st fp0, 456 (fpucontext), 0, 0
+psq_st fp1, 464 (fpucontext), 0, 0
+psq_st fp2, 472 (fpucontext), 0, 0
+psq_st fp3, 480 (fpucontext), 0, 0
+psq_st fp4, 488 (fpucontext), 0, 0
+psq_st fp5, 496 (fpucontext), 0, 0
+psq_st fp6, 504 (fpucontext), 0, 0
+psq_st fp7, 512 (fpucontext), 0, 0
+psq_st fp8, 520 (fpucontext), 0, 0
+psq_st fp9, 528 (fpucontext), 0, 0
+psq_st fp10, 536 (fpucontext), 0, 0
+psq_st fp11, 544 (fpucontext), 0, 0
+psq_st fp12, 552 (fpucontext), 0, 0
+psq_st fp13, 560 (fpucontext), 0, 0
+psq_st fp14, 568 (fpucontext), 0, 0
+psq_st fp15, 576 (fpucontext), 0, 0
+psq_st fp16, 584 (fpucontext), 0, 0
+psq_st fp17, 592 (fpucontext), 0, 0
+psq_st fp18, 600 (fpucontext), 0, 0
+psq_st fp19, 608 (fpucontext), 0, 0
+psq_st fp20, 616 (fpucontext), 0, 0
+psq_st fp21, 624 (fpucontext), 0, 0
+psq_st fp22, 632 (fpucontext), 0, 0
+psq_st fp23, 640 (fpucontext), 0, 0
+psq_st fp24, 648 (fpucontext), 0, 0
+psq_st fp25, 656 (fpucontext), 0, 0
+psq_st fp26, 664 (fpucontext), 0, 0
+psq_st fp27, 672 (fpucontext), 0, 0
+psq_st fp28, 680 (fpucontext), 0, 0
+psq_st fp29, 688 (fpucontext), 0, 0
+psq_st fp30, 696 (fpucontext), 0, 0
+psq_st fp31, 704 (fpucontext), 0, 0
+_return:
+blr
 }
+#pragma pop
 
 #pragma dont_inline on
 void OSSaveFPUContext(register void *ctx) {
@@ -1465,54 +1812,56 @@ void OSClearContext(OSContext *context) {
 }
 #pragma peephole reset
 #pragma dont_inline reset
-void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
-    u32 srr1;
-
-    *(s32 *)((u8 *)arg0 + 0x198) = arg1;
-    *(s32 *)((u8 *)arg0 + 4) = arg2;
-    srr1 = 0;
-    srr1 |= 0x9032;
-    *(s32 *)((u8 *)arg0 + 0x19C) = srr1;
-    *(s32 *)((u8 *)arg0 + 0x80) = 0;
-    *(s32 *)((u8 *)arg0 + 0x8C) = 0;
-    *(s32 *)((u8 *)arg0 + 8) = 0;
-    *(s32 *)((u8 *)arg0 + 0x34) = 0;
-    *(s32 *)((u8 *)arg0 + 0xC) = 0;
-    *(s32 *)((u8 *)arg0 + 0x10) = 0;
-    *(s32 *)((u8 *)arg0 + 0x14) = 0;
-    *(s32 *)((u8 *)arg0 + 0x18) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x20) = 0;
-    *(s32 *)((u8 *)arg0 + 0x24) = 0;
-    *(s32 *)((u8 *)arg0 + 0x28) = 0;
-    *(s32 *)((u8 *)arg0 + 0x2C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x30) = 0;
-    *(s32 *)((u8 *)arg0 + 0x38) = 0;
-    *(s32 *)((u8 *)arg0 + 0x3C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x40) = 0;
-    *(s32 *)((u8 *)arg0 + 0x44) = 0;
-    *(s32 *)((u8 *)arg0 + 0x48) = 0;
-    *(s32 *)((u8 *)arg0 + 0x4C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x50) = 0;
-    *(s32 *)((u8 *)arg0 + 0x54) = 0;
-    *(s32 *)((u8 *)arg0 + 0x58) = 0;
-    *(s32 *)((u8 *)arg0 + 0x5C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x60) = 0;
-    *(s32 *)((u8 *)arg0 + 0x64) = 0;
-    *(s32 *)((u8 *)arg0 + 0x68) = 0;
-    *(s32 *)((u8 *)arg0 + 0x6C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x70) = 0;
-    *(s32 *)((u8 *)arg0 + 0x74) = 0;
-    *(s32 *)((u8 *)arg0 + 0x78) = 0;
-    *(s32 *)((u8 *)arg0 + 0x7C) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1A4) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1A8) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1AC) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1B0) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1B4) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1B8) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1BC) = 0;
-    *(s32 *)((u8 *)arg0 + 0x1C0) = 0;
+asm void fn_80205B7C(register OSContext* context, register u32 pc, register u32 newsp) {
+    void OSClearContext(OSContext *context);
+nofralloc
+stw pc, 408 (context)
+stw newsp, 4 (context)
+li r11, 0
+ori r11, r11, 0x00008000 | 0x00000020 | 0x00000010 | 0x00000002 | 0x00001000
+stw r11, 412 (context)
+li r0, 0x0
+stw r0, 128 (context)
+stw r0, 140 (context)
+stw r2, 8 (context)
+stw r13, 52 (context)
+stw r0, 12 (context)
+stw r0, 16 (context)
+stw r0, 20 (context)
+stw r0, 24 (context)
+stw r0, 28 (context)
+stw r0, 32 (context)
+stw r0, 36 (context)
+stw r0, 40 (context)
+stw r0, 44 (context)
+stw r0, 48 (context)
+stw r0, 56 (context)
+stw r0, 60 (context)
+stw r0, 64 (context)
+stw r0, 68 (context)
+stw r0, 72 (context)
+stw r0, 76 (context)
+stw r0, 80 (context)
+stw r0, 84 (context)
+stw r0, 88 (context)
+stw r0, 92 (context)
+stw r0, 96 (context)
+stw r0, 100 (context)
+stw r0, 104 (context)
+stw r0, 108 (context)
+stw r0, 112 (context)
+stw r0, 116 (context)
+stw r0, 120 (context)
+stw r0, 124 (context)
+stw r0, 420 (context)
+stw r0, 424 (context)
+stw r0, 428 (context)
+stw r0, 432 (context)
+stw r0, 436 (context)
+stw r0, 440 (context)
+stw r0, 444 (context)
+stw r0, 448 (context)
+b OSClearContext
 }
 
 #pragma use_lmw_stmw on
@@ -1613,33 +1962,36 @@ return vprintf(msg,args);
 }
 #pragma pop
 
-void OSPanic(char *file, int line, char *fmt, ...) {
-#pragma peephole off
-#pragma inline_depth(0)
-#pragma inline off
-    struct { char gpr, fpr, reserved[2]; char *input_arg_area; char *reg_save_area; } args[1];
-    extern char lbl_8029BFB8[];
-    int vprintf(void *, void *);
-    char *msgs;
-    u32 count;
-    u32 *frame;
-    msgs = lbl_8029BFB8;
+#pragma push
+#pragma peephole on
+typedef struct {
+    char gpr;
+    char fpr;
+    char reserved[2];
+    char *input_arg_area;
+    char *reg_save_area;
+} __va_list[1];
+typedef __va_list va_list;
+void OSPanic(const char *file, int line, const char *msg, ...) {
+    int vprintf(const char *format, va_list arg);
+    u32 fn_80205B50(void);
+    extern void OSDisableInterrupts(void);
+    __declspec(weak) void OSReport(const char *msg, ...);
+    void PPCHalt();
+    va_list marker;
+    u32 i;
+    u32 *p;
     OSDisableInterrupts();
-    __builtin_va_info(&args);
-    vprintf(fmt, args);
-    OSReport(msgs, file, line);
-    OSReport(msgs + 0x18);
-    count = 0;
-    frame = fn_80205B50();
-    while (frame != 0 && frame != (u32*)0xFFFFFFFF && count++ < 16) {
-        OSReport(msgs + 0x40, frame, frame[0], frame[1]);
-        frame = (u32*)frame[0];
+    ((void)msg, __builtin_va_info(&marker));
+    vprintf(msg, marker);
+    OSReport(" in \"%s\" on line %d.\n", file, line);
+    OSReport("\nAddress:      Back Chain    LR Save\n");
+    for (i = 0, p = (u32 *)fn_80205B50(); p && (u32)p != 0xffffffff && i++ < 16; p = (u32 *)*p) {
+        OSReport("0x%08x:   0x%08x    0x%08x\n", p, p[0], p[1]);
     }
     PPCHalt();
-#pragma inline_depth(8)
-#pragma inline reset
-#pragma peephole reset
 }
+#pragma pop
 
 #pragma peephole on
 #pragma scheduling reset
@@ -2573,14 +2925,33 @@ if(arg4) *arg4=((u8*)h)[h->widthOffset+index];
 return arg0;
 }
 
-s32 OSEnableInterrupts(void) {
-    return 0;
+#pragma push
+asm BOOL OSEnableInterrupts(void) {
+nofralloc
+mfmsr r3
+ori r4, r3, 0x8000
+mtmsr r4
+rlwinm r3, r3, 17, 31, 31
+blr
 }
+#pragma pop
 
-int OSRestoreInterrupts(int enabled) {
-    (void)enabled;
-    return 0;
+#pragma push
+asm BOOL OSRestoreInterrupts(register BOOL level) {
+nofralloc
+cmpwi level, 0
+mfmsr r4
+beq _disable
+ori r5, r4, 0x8000
+b _restore
+_disable:
+rlwinm r5, r4, 0, 17, 15
+_restore:
+mtmsr r5
+rlwinm r3, r4, 17, 31, 31
+blr
 }
+#pragma pop
 
 #pragma global_optimizer reset
 void *__OSSetInterruptHandler(s32 arg0, void *arg1) {
@@ -2933,7 +3304,16 @@ void fn_8020801C(u8 unused, OSContext *context) {
     OSLoadContext(context);
 }
 
-void ExternalInterruptHandler(void) {}
+#pragma push
+static asm void ExternalInterruptHandler(register __OSException exception,
+register OSContext* context) {
+    void fn_8020801C(__OSException exception, OSContext *context);
+nofralloc
+stw r0, 0(context); stw r1, 4(context); stw r2, 8(context); stmw r6, 24(context); mfspr r0, 913; stw r0, 424(context); mfspr r0, 914; stw r0, 428(context); mfspr r0, 915; stw r0, 432(context); mfspr r0, 916; stw r0, 436(context); mfspr r0, 917; stw r0, 440(context); mfspr r0, 918; stw r0, 444(context); mfspr r0, 919; stw r0, 448(context);
+stwu r1, -0x8(r1)
+b fn_8020801C
+}
+#pragma pop
 
 int __OSModuleInit(void)
 {
@@ -2980,71 +3360,81 @@ void MEMIntrruptHandler(s32 interrupt, OSContext *context)
     __OSUnhandledException(15, context, cause, address);
   }
 }
-void Config24MB(void) {
-    register u32 zero;
-    register u32 dbatl0;
-    register u32 dbatu0;
-    register u32 dbatl2;
-    register u32 dbatu2;
-    register u32 msr;
-    register u32 lr;
-
-    zero = 0;
-    dbatl0 = 2;
-    dbatu0 = 0x800001FF;
-    dbatl2 = 0x01000002;
-    dbatu2 = 0x810000FF;
-    __isync();
-    __mtdbatu(0, zero);
-    __mtdbatl(0, dbatl0);
-    __mtdbatu(0, dbatu0);
-    __isync();
-    __mtibatu(0, zero);
-    __mtibatl(0, dbatl0);
-    __mtibatu(0, dbatu0);
-    __isync();
-    __mtdbatu(2, zero);
-    __mtdbatl(2, dbatl2);
-    __mtdbatu(2, dbatu2);
-    __isync();
-    __mtibatu(2, zero);
-    __mtibatl(2, dbatl2);
-    __mtibatu(2, dbatu2);
-    __isync();
-    msr = __mfmsr() | 0x30;
-    __mtsrr1(msr);
-    lr = __mflr();
-    __mtsrr0(lr);
-    __rfi();
+#pragma push
+static asm void Config24MB(void) {
+nofralloc
+li r7, 0x0
+lis r4, 0x0
+addi r4, r4, 0x2
+lis r3, 0x8000
+addi r3, r3, 0x1ff
+lis r6, 0x100
+addi r6, r6, 0x2
+lis r5, 0x8100
+addi r5, r5, 0xff
+isync
+mtdbatu 0, r7
+mtdbatl 0, r4
+mtdbatu 0, r3
+isync
+mtibatu 0, r7
+mtibatl 0, r4
+mtibatu 0, r3
+isync
+mtdbatu 2, r7
+mtdbatl 2, r6
+mtdbatu 2, r5
+isync
+mtibatu 2, r7
+mtibatl 2, r6
+mtibatu 2, r5
+isync
+mfmsr r3
+ori r3, r3, 0x30
+mtsrr1 r3
+mflr r3
+mtsrr0 r3
+rfi
 }
+#pragma pop
 
-void Config48MB(void) {
-    u32 zero = 0;
-    u32 l0 = 2;
-    u32 u0 = 0x800003FF;
-    u32 l2 = 0x02000002;
-    u32 u2 = 0x820001FF;
-    __isync();
-    __mtspr(536, zero);
-    __mtspr(537, l0);
-    __mtspr(536, u0);
-    __isync();
-    __mtspr(528, zero);
-    __mtspr(529, l0);
-    __mtspr(528, u0);
-    __isync();
-    __mtspr(540, zero);
-    __mtspr(541, l2);
-    __mtspr(540, u2);
-    __isync();
-    __mtspr(532, zero);
-    __mtspr(533, l2);
-    __mtspr(532, u2);
-    __isync();
-    __mtspr(27, __mfmsr() | 0x30);
-    __mtspr(26, __mflr());
-    __rfi();
+#pragma push
+static asm void Config48MB(void) {
+nofralloc
+li r7, 0x0
+lis r4, 0x0
+addi r4, r4, 0x2
+lis r3, 0x8000
+addi r3, r3, 0x3ff
+lis r6, 0x200
+addi r6, r6, 0x2
+lis r5, 0x8200
+addi r5, r5, 0x1ff
+isync
+mtdbatu 0, r7
+mtdbatl 0, r4
+mtdbatu 0, r3
+isync
+mtibatu 0, r7
+mtibatl 0, r4
+mtibatu 0, r3
+isync
+mtdbatu 2, r7
+mtdbatl 2, r6
+mtdbatu 2, r5
+isync
+mtibatu 2, r7
+mtibatl 2, r6
+mtibatu 2, r5
+isync
+mfmsr r3
+ori r3, r3, 0x30
+mtsrr1 r3
+mflr r3
+mtsrr0 r3
+rfi
 }
+#pragma pop
 
 u32 RealMode(u32 addr)
 {

@@ -1392,26 +1392,31 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     }
 }
 
-void fn_80034F40(void *arg0) {
- void *obj=M2C_FIELD(arg0,void**,0x280);
- void fn_8003868C(void*,u8); u8 fn_800386B0(void*); void fn_8003708C(void*,void*);
- u8 status=M2C_FIELD(M2C_FIELD(obj,void**,0x190),u8*,8);
- if (status==0) goto copy;
- if (status==5) {
-   M2C_FIELD((short)obj,u8*,0x19A)=M2C_FIELD(arg0,u8*,0x19A);
-   fn_8003868C(M2C_FIELD(arg0,void**,0x280),(u8)fn_800386B0(arg0));
- }
- copy:
- fn_8003708C(M2C_FIELD(arg0,void**,0x280),(u8*)arg0+0x2D7);
- obj=M2C_FIELD(arg0,void**,0x280);
- M2C_FIELD(obj,u8*,0x1B4)=M2C_FIELD(arg0,u8*,0x1B4);
- M2C_FIELD(obj,u8*,0x1B5)=M2C_FIELD(arg0,u8*,0x1B5);
- M2C_FIELD(obj,u8*,0x1B6)=M2C_FIELD((u32)arg0,u8*,0x1B6);
- M2C_FIELD(obj,u8*,0x1B7)=M2C_FIELD(arg0,u8*,0x1B7);
- M2C_FIELD(obj,u8*,0x1B8)=M2C_FIELD(arg0,u8*,0x1B8);
- M2C_FIELD(obj,u8*,0x1B9)=M2C_FIELD(arg0,u8*,0x1B9);
- M2C_FIELD((s32)obj,u8*,0x1BA)=M2C_FIELD(arg0,u8*,0x1BA);
- M2C_FIELD(obj,u8*,0x1BB)=M2C_FIELD(arg0,u8*,0x1BB);
+void fn_80034F40(void *arg0_) {
+    s8 *arg0 = (s8 *)arg0_;
+    M2C_UNK fn_8003708C();
+    M2C_UNK fn_8003868C();
+    u8 fn_800386B0();
+    u8 temp_r0;
+    s8 *temp_r3;
+    s8 *temp_r4;
+
+    temp_r4 = M2C_FIELD(arg0, s8 **, 0x280);
+    temp_r0 = M2C_FIELD(M2C_FIELD(temp_r4, s8 **, 0x190), u8 *, 8);
+    if ((temp_r0 == 0) || (temp_r0 == 5)) {
+        M2C_FIELD(temp_r4, u8 *, 0x19A) = (u8) M2C_FIELD(arg0, u8 *, 0x19A);
+        fn_8003868C(M2C_FIELD(arg0, s8 **, 0x280), fn_800386B0(arg0));
+    }
+    fn_8003708C(M2C_FIELD(arg0, s8 **, 0x280), arg0 + 0x2D7);
+    temp_r3 = M2C_FIELD(arg0, s8 **, 0x280);
+    M2C_FIELD(temp_r3, u8 *, 0x1B4) = (u8) M2C_FIELD(arg0, u8 *, 0x1B4);
+    M2C_FIELD(temp_r3, u8 *, 0x1B5) = (u8) M2C_FIELD(arg0, u8 *, 0x1B5);
+    M2C_FIELD(temp_r3, u8 *, 0x1B6) = (u8) M2C_FIELD(arg0, u8 *, 0x1B6);
+    M2C_FIELD(temp_r3, u8 *, 0x1B7) = (u8) M2C_FIELD(arg0, u8 *, 0x1B7);
+    M2C_FIELD(temp_r3, u8 *, 0x1B8) = (u8) M2C_FIELD(arg0, u8 *, 0x1B8);
+    M2C_FIELD(temp_r3, u8 *, 0x1B9) = (u8) M2C_FIELD(arg0, u8 *, 0x1B9);
+    M2C_FIELD(temp_r3, u8 *, 0x1BA) = (u8) M2C_FIELD(arg0, u8 *, 0x1BA);
+    M2C_FIELD(temp_r3, u8 *, 0x1BB) = (u8) M2C_FIELD(arg0, u8 *, 0x1BB);
 }
 
 /* Add rounded growth deltas into the unit's eight growth-progress bytes (clamp 0..255). */

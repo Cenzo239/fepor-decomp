@@ -100,24 +100,22 @@ extern u8 gFallingParticleAlphaMax;
 extern f32 gFloatZero;
 extern f32 gFloatOne;
 
-void PSMTXTrans(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
-    extern f32 lbl_8036BC38;
-    extern f32 lbl_8036BC3C;
-    f64 zero;
-    f32 one;
-
-    zero = lbl_8036BC3C;
-    one = lbl_8036BC38;
-    *(f32 *)((u8 *)arg0 + 0xC) = farg0;
-    *(f32 *)((u8 *)arg0 + 0x1C) = farg1;
-    *(f64 *)((u8 *)arg0 + 0x4) = zero;
-    *(f64 *)((u8 *)arg0 + 0x20) = zero;
-    *(f32 *)((u8 *)arg0 + 0x10) = (f32)zero;
-    *(f32 *)((u8 *)arg0 + 0x14) = one;
-    *(f32 *)((u8 *)arg0 + 0x18) = (f32)zero;
-    *(f32 *)((u8 *)arg0 + 0x28) = one;
-    *(f32 *)((u8 *)arg0 + 0x2C) = farg2;
-    *(f32 *)((u8 *)arg0 + 0x0) = one;
+typedef f32 Mtx[3][4];
+void PSMTXTrans(register Mtx m, register f32 xT, register f32 yT, register f32 zT) {
+    register f32 c0 = 0.0f;
+    register f32 c1 = 1.0f;
+    asm {
+stfs xT, 12(m)
+stfs yT, 28(m)
+psq_st c0, 4(m), 0, 0
+psq_st c0, 32(m), 0, 0
+stfs c0, 16(m)
+stfs c1, 20(m)
+stfs c0, 24(m)
+stfs c1, 40(m)
+stfs zT, 44(m)
+stfs c1, 0(m)
+    }
 }
 
 f32 fn_80202574(f64 farg0, f64 farg1, f64 farg2) {
@@ -127,20 +125,18 @@ f32 fn_80202574(f64 farg0, f64 farg1, f64 farg2) {
     return (f32) farg0;
 }
 
-void PSMTXScale(f32 *m, f32 xS, f32 yS, f32 zS)
-{
-    extern f32 lbl_8036BC3C;
-    f64 zero;
-
-    zero = lbl_8036BC3C;
-    m[0] = xS;
-    *(f64 *)(m + 1) = zero;
-    *(f64 *)(m + 3) = zero;
-    m[5] = yS;
-    *(f64 *)(m + 6) = zero;
-    *(f64 *)(m + 8) = zero;
-    m[10] = zS;
-    m[11] = (f32)zero;
+void PSMTXScale(register Mtx m, register f32 xS, register f32 yS, register f32 zS) {
+    register f32 c0 = 0.0f;
+    asm {
+stfs xS, 0(m)
+psq_st c0, 4(m), 0, 0
+psq_st c0, 12(m), 0, 0
+stfs yS, 20(m)
+psq_st c0, 24(m), 0, 0
+psq_st c0, 32(m), 0, 0
+stfs zS, 40(m)
+stfs c0, 44(m)
+    }
 }
 
 void fn_802025E8(f32 *src, f32 *dst, f32 x, f32 y, f32 z) {
@@ -322,20 +318,100 @@ void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
   m[15] = one;
 }
 
-void fn_80202BD4(f32* src, f32* dst) {
-    int i;
-    for (i = 0; i < 8; i++) {
-        dst[i] = src[i];
-    }
+#pragma push
+typedef f32 Mtx44[4][4];
+asm void fn_80202BD4(const register Mtx44 src, register Mtx44 dst) {
+nofralloc
+psq_l f1, 0x0(src), 0, 0
+psq_st f1, 0x0(dst), 0, 0
+psq_l f1, 0x8(src), 0, 0
+psq_st f1, 0x8(dst), 0, 0
+psq_l f1, 0x10(src), 0, 0
+psq_st f1, 0x10(dst), 0, 0
+psq_l f1, 0x18(src), 0, 0
+psq_st f1, 0x18(dst), 0, 0
+psq_l f1, 0x20(src), 0, 0
+psq_st f1, 0x20(dst), 0, 0
+psq_l f1, 0x28(src), 0, 0
+psq_st f1, 0x28(dst), 0, 0
+psq_l f1, 0x30(src), 0, 0
+psq_st f1, 0x30(dst), 0, 0
+psq_l f1, 0x38(src), 0, 0
+psq_st f1, 0x38(dst), 0, 0
+blr
 }
+#pragma pop
 
-void fn_80202C18(const f32 a[4][4], const f32 b[4][4], f32 out[4][4]) {
-    f32 result[4][4];
-    s32 i,j;
-    for(i=0;i<4;i++) for(j=0;j<4;j++)
-        result[i][j]=((a[i][0]*b[0][j]+a[i][1]*b[1][j])+a[i][2]*b[2][j])+a[i][3]*b[3][j];
-    for(i=0;i<4;i++) for(j=0;j<4;j++) out[i][j]=result[i][j];
+#pragma push
+asm void fn_80202C18(const register Mtx44 a, const register Mtx44 b, register Mtx44 ab) {
+nofralloc
+psq_l f0, 0x0(a), 0, 0
+psq_l f2, 0x0(b), 0, 0
+ps_muls0 f6, f2, f0
+psq_l f3, 0x10(b), 0, 0
+psq_l f4, 0x20(b), 0, 0
+ps_madds1 f6, f3, f0, f6
+psq_l f1, 0x8(a), 0, 0
+psq_l f5, 0x30(b), 0, 0
+ps_madds0 f6, f4, f1, f6
+psq_l f0, 0x10(a), 0, 0
+ps_madds1 f6, f5, f1, f6
+psq_l f1, 0x18(a), 0, 0
+ps_muls0 f8, f2, f0
+ps_madds1 f8, f3, f0, f8
+psq_l f0, 0x20(a), 0, 0
+ps_madds0 f8, f4, f1, f8
+ps_madds1 f8, f5, f1, f8
+psq_l f1, 0x28(a), 0, 0
+ps_muls0 f10, f2, f0
+ps_madds1 f10, f3, f0, f10
+psq_l f0, 0x30(a), 0, 0
+ps_madds0 f10, f4, f1, f10
+ps_madds1 f10, f5, f1, f10
+psq_l f1, 0x38(a), 0, 0
+ps_muls0 f12, f2, f0
+psq_l f2, 0x8(b), 0, 0
+ps_madds1 f12, f3, f0, f12
+psq_l f0, 0x0(a), 0, 0
+ps_madds0 f12, f4, f1, f12
+psq_l f3, 0x18(b), 0, 0
+ps_madds1 f12, f5, f1, f12
+psq_l f1, 0x8(a), 0, 0
+ps_muls0 f7, f2, f0
+psq_l f4, 0x28(b), 0, 0
+ps_madds1 f7, f3, f0, f7
+psq_l f5, 0x38(b), 0, 0
+ps_madds0 f7, f4, f1, f7
+psq_l f0, 0x10(a), 0, 0
+ps_madds1 f7, f5, f1, f7
+psq_l f1, 0x18(a), 0, 0
+ps_muls0 f9, f2, f0
+psq_st f6, 0x0(ab), 0, 0
+ps_madds1 f9, f3, f0, f9
+psq_l f0, 0x20(a), 0, 0
+ps_madds0 f9, f4, f1, f9
+psq_st f8, 0x10(ab), 0, 0
+ps_madds1 f9, f5, f1, f9
+psq_l f1, 0x28(a), 0, 0
+ps_muls0 f11, f2, f0
+psq_st f10, 0x20(ab), 0, 0
+ps_madds1 f11, f3, f0, f11
+psq_l f0, 0x30(a), 0, 0
+ps_madds0 f11, f4, f1, f11
+psq_st f12, 0x30(ab), 0, 0
+ps_madds1 f11, f5, f1, f11
+psq_l f1, 0x38(a), 0, 0
+ps_muls0 f13, f2, f0
+psq_st f7, 0x8(ab), 0, 0
+ps_madds1 f13, f3, f0, f13
+psq_st f9, 0x18(ab), 0, 0
+ps_madds0 f13, f4, f1, f13
+psq_st f11, 0x28(ab), 0, 0
+ps_madds1 f13, f5, f1, f13
+psq_st f13, 0x38(ab), 0, 0
+blr
 }
+#pragma pop
 
 #pragma ppc_intrinsics on
 s32 fn_80202D1C(f32 *src, f32 *inv) {

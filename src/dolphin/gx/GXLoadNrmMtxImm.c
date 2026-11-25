@@ -217,48 +217,87 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 #pragma peephole on
 
-#pragma optimization_level 3
-
-void fn_80224E50(f32 *mtx, u32 id, s32 type) {
+typedef enum _GXTexMtxType {
+    GX_MTX3x4,
+    GX_MTX2x4,
+} GXTexMtxType;
+typedef enum _GXPTTexMtx {
+    GX_PTTEXMTX0 = 64,
+    GX_PTTEXMTX1 = 67,
+    GX_PTTEXMTX2 = 70,
+    GX_PTTEXMTX3 = 73,
+    GX_PTTEXMTX4 = 76,
+    GX_PTTEXMTX5 = 79,
+    GX_PTTEXMTX6 = 82,
+    GX_PTTEXMTX7 = 85,
+    GX_PTTEXMTX8 = 88,
+    GX_PTTEXMTX9 = 91,
+    GX_PTTEXMTX10 = 94,
+    GX_PTTEXMTX11 = 97,
+    GX_PTTEXMTX12 = 100,
+    GX_PTTEXMTX13 = 103,
+    GX_PTTEXMTX14 = 106,
+    GX_PTTEXMTX15 = 109,
+    GX_PTTEXMTX16 = 112,
+    GX_PTTEXMTX17 = 115,
+    GX_PTTEXMTX18 = 118,
+    GX_PTTEXMTX19 = 121,
+    GX_PTIDENTITY = 125,
+} GXPTTexMtx;
+static void WriteMTXPS4x3(const register f32 mtx[3][4], register volatile f32 *dest) {
+    register f32 a00_a01;
+    register f32 a02_a03;
+    register f32 a10_a11;
+    register f32 a12_a13;
+    register f32 a20_a21;
+    register f32 a22_a23;
+    asm {
+psq_l a00_a01, 0x00(mtx), 0, 0
+psq_l a02_a03, 0x08(mtx), 0, 0
+psq_l a10_a11, 0x10(mtx), 0, 0
+psq_l a12_a13, 0x18(mtx), 0, 0
+psq_l a20_a21, 0x20(mtx), 0, 0
+psq_l a22_a23, 0x28(mtx), 0, 0
+psq_st a00_a01, 0(dest), 0, 0
+psq_st a02_a03, 0(dest), 0, 0
+psq_st a10_a11, 0(dest), 0, 0
+psq_st a12_a13, 0(dest), 0, 0
+psq_st a20_a21, 0(dest), 0, 0
+psq_st a22_a23, 0(dest), 0, 0
+    }
+}
+static void WriteMTXPS4x2(const register f32 mtx[2][4], register volatile f32 *dest) {
+    register f32 a00_a01;
+    register f32 a02_a03;
+    register f32 a10_a11;
+    register f32 a12_a13;
+    asm {
+psq_l a00_a01, 0x00(mtx), 0, 0
+psq_l a02_a03, 0x08(mtx), 0, 0
+psq_l a10_a11, 0x10(mtx), 0, 0
+psq_l a12_a13, 0x18(mtx), 0, 0
+psq_st a00_a01, 0(dest), 0, 0
+psq_st a02_a03, 0(dest), 0, 0
+psq_st a10_a11, 0(dest), 0, 0
+psq_st a12_a13, 0(dest), 0, 0
+    }
+}
+void fn_80224E50(const f32 mtx[][4], u32 id, GXTexMtxType type) {
+    u32 reg;
     u32 addr;
-    u32 size;
-    u32 shift;
-    f64 a, b, c, d, e, f;
-    register volatile u32 *fifo;
-    volatile f64 *dst;
-
-    if (id >= 0x40U) {
-        addr = ((id - 0x40) * 4) + 0x500;
+    u32 count;
+    if (id >= GX_PTTEXMTX0) {
+        addr = (id - GX_PTTEXMTX0) * 4 + 0x500;
     } else {
         addr = id * 4;
     }
-    if (type == 1) {
-        size = 8;
+    count = (type == GX_MTX2x4) ? 8 : 12;
+    reg = addr | ((count - 1) << 16);
+    GXWGFifo.u8 = (u8)(0x10);
+    GXWGFifo.u32 = (u32)(reg);
+    if (type == GX_MTX3x4) {
+        WriteMTXPS4x3(mtx, &GXWGFifo.f32);
     } else {
-        size = 0xC;
-    }
-    shift = (size - 1) << 16;
-
-    fifo = (volatile u32 *)0xCC010000;
-    *(volatile u8 *)((u8 *)fifo - 0x8000) = 0x10;
-    *(volatile u32 *)((u8 *)fifo - 0x8000) = addr | shift;
-    fifo = (volatile u32 *)((u8 *)fifo - 0x8000);
-    dst = (volatile f64 *)fifo;
-
-    if (type == 0) {
-        a = ((f64 *)mtx)[0];
-        b = ((f64 *)mtx)[1];
-        c = ((f64 *)mtx)[2];
-        d = ((f64 *)mtx)[3];
-        e = ((f64 *)mtx)[4];
-        f = ((f64 *)mtx)[5];
-        *dst = a; *dst = b; *dst = c; *dst = d; *dst = e; *dst = f;
-    } else {
-        a = ((f64 *)mtx)[0];
-        b = ((f64 *)mtx)[1];
-        c = ((f64 *)mtx)[2];
-        d = ((f64 *)mtx)[3];
-        *dst = a; *dst = b; *dst = c; *dst = d;
+        WriteMTXPS4x2(mtx, &GXWGFifo.f32);
     }
 }
-#pragma optimization_level reset

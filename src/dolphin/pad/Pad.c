@@ -1272,7 +1272,7 @@ void fn_80213CB0(s32 arg0, OSContext *context)
 void fn_80213D2C(s32 arg0, OSContext *context) {
     void OSClearContext(void *);
     void OSSetCurrentContext(void *);
-    void fn_80213DD8(void);
+    void fn_80213DD8(void *);
     extern volatile u16 __PADRegs[];
     extern s32 lbl_8036869C;
     extern s32 lbl_803686A0;
@@ -1292,7 +1292,7 @@ void fn_80213D2C(s32 arg0, OSContext *context) {
     if ((u32)lbl_8036869C != 0 && lbl_803686AC == 0) {
         lbl_803686AC = 1;
         if ((u32)lbl_803686A0 != 0) {
-            fn_80213DD8();
+            fn_80213DD8((void *)lbl_8036869C);
         } else {
             ((void (*)(void))lbl_8036869C)();
         }
@@ -1303,11 +1303,32 @@ void fn_80213D2C(s32 arg0, OSContext *context) {
     OSSetCurrentContext(context);
 }
 
-void fn_80213DD8(void) {
-    void (*funcPtr)(void) = lbl_803685E8;
-    if (funcPtr != NULL) {
-        funcPtr();
-    }
+extern s32 lbl_803686A0;
+extern s32 lbl_803686A4;
+asm void fn_80213DD8(register void* cb) {
+nofralloc
+mflr r0
+stw r0, 0x4(r1)
+stwu r1, -0x18(r1)
+stw r31, 0x14(r1)
+mr r31, r3
+lis r5, lbl_803686A4@ha
+addi r5, r5, lbl_803686A4@l
+stw r1, 0x0(r5)
+lis r5, lbl_803686A0@ha
+addi r5, r5, lbl_803686A0@l
+lwz r1, 0x0(r5)
+subi r1, r1, 0x8
+mtlr r31
+blrl
+lis r5, lbl_803686A4@ha
+addi r5, r5, lbl_803686A4@l
+lwz r1, 0x0(r5)
+lwz r0, 0x1c(r1)
+lwz r31, 0x14(r1)
+addi r1, r1, 0x18
+mtlr r0
+blr
 }
 
 #pragma peephole off

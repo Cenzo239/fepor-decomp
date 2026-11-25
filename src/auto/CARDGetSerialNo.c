@@ -190,45 +190,212 @@ void __CARDEraseCallback(s32 chan, s32 result);
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
-#pragma opt_strength_reduction off
-#pragma opt_common_subs off
-s32 fn_8021D614(s32 chan, u32 *serial)
-{
-    s32 fn_80217B18(s32, s32 *);
-    s32 __CARDPutControlBlock(void *, s32);
-    s32 card;
+#pragma push
+#pragma optimization_level 4
+typedef s64 OSTime;
+typedef struct OSContext {
+    u32 gpr[32];
+    u32 cr;
+    u32 lr;
+    u32 ctr;
+    u32 xer;
+    f64 fpr[32];
+    u32 fpscr_pad;
+    u32 fpscr;
+    u32 srr0;
+    u32 srr1;
+    u16 mode;
+    u16 state;
+    u32 gqr[8];
+    u32 psf_pad;
+    f64 psf[32];
+} OSContext;
+typedef s32 OSPriority;
+typedef struct OSThread OSThread;
+typedef struct OSMutex OSMutex;
+typedef struct OSThreadQueue OSThreadQueue;
+typedef struct OSMutexQueue OSMutexQueue;
+typedef struct OSThreadLink OSThreadLink;
+typedef struct OSMutexLink OSMutexLink;
+struct OSThreadQueue {
+    OSThread *head;
+    OSThread *tail;
+};
+struct OSThreadLink {
+    OSThread *next;
+    OSThread *prev;
+};
+struct OSMutexQueue {
+    OSMutex *head;
+    OSMutex *tail;
+};
+struct OSMutexLink {
+    OSMutex *next;
+    OSMutex *prev;
+};
+struct OSThread {
+    OSContext context;
+    u16 state;
+    u16 attr;
+    s32 suspend;
+    OSPriority priority;
+    OSPriority base;
+    void *val;
+    OSThreadQueue *queue;
+    OSThreadLink link;
+    OSThreadQueue queueJoin;
+    OSMutex *mutex;
+    OSMutexQueue queueMutex;
+    OSThreadLink linkActive;
+    u8 *stackBase;
+    u32 *stackEnd;
+    s32 error;
+    void *specific[2];
+};
+struct OSMutex {
+    OSThreadQueue queue;
+    OSThread *thread;
+    s32 count;
+    OSMutexLink link;
+};
+typedef struct OSAlarm OSAlarm;
+typedef void (*OSAlarmHandler)(OSAlarm *alarm, OSContext *context);
+struct OSAlarm {
+    OSAlarmHandler handler;
+    u32 tag;
+    OSTime fire;
+    OSAlarm *prev;
+    OSAlarm *next;
+    OSTime period;
+    OSTime start;
+};
+typedef struct DVDDiskID {
+    char gameName[4];
+    char company[2];
+    u8 diskNumber;
+    u8 gameVersion;
+    u8 streaming;
+    u8 streamingBufSize;
+    u8 padding[22];
+} DVDDiskID;
+typedef void (*DSPCallback)(void *task);
+typedef struct STRUCT_DSP_TASK DSPTaskInfo;
+typedef struct STRUCT_DSP_TASK {
+    volatile u32 state;
+    volatile u32 priority;
+    volatile u32 flags;
+    u16 *iram_mmem_addr;
+    u32 iram_length;
+    u32 iram_addr;
+    u16 *dram_mmem_addr;
+    u32 dram_length;
+    u32 dram_addr;
+    u16 dsp_init_vector;
+    u16 dsp_resume_vector;
+    DSPCallback init_cb;
+    DSPCallback res_cb;
+    DSPCallback done_cb;
+    DSPCallback req_cb;
+    DSPTaskInfo *next;
+    DSPTaskInfo *prev;
+    OSTime t_context;
+    OSTime t_task;
+} DSPTaskInfo;
+typedef void (*CARDCallback)(s32 chan, s32 result);
+typedef struct CARDFileInfo {
+    s32 chan;
+    s32 fileNo;
+    s32 offset;
+    s32 length;
+    u16 iBlock;
+} CARDFileInfo;
+typedef struct CARDDir {
+    u8 gameName[4];
+    u8 company[2];
+    u8 _padding0;
+    u8 bannerFormat;
+    u8 fileName[32];
+    u32 time;
+    u32 iconAddr;
+    u16 iconFormat;
+    u16 iconSpeed;
+    u8 permission;
+    u8 copyTimes;
+    u16 startBlock;
+    u16 length;
+    u8 _padding1[2];
+    u32 commentAddr;
+} CARDDir;
+typedef struct CARDControl {
+    BOOL attached;
     s32 result;
-    u32 check1;
-    u32 check0;
-    u32 *face;
-
-    if (chan < 0 || chan >= 2) {
-        return -0x80;
+    u16 size;
+    u16 pageSize;
+    s32 sectorSize;
+    u16 cBlock;
+    u16 vendorID;
+    s32 latency;
+    u8 id[12];
+    int mountStep;
+    int formatStep;
+    u32 scramble;
+    DSPTaskInfo task;
+    void *workArea;
+    CARDDir *currentDir;
+    u16 *currentFat;
+    OSThreadQueue threadQueue;
+    u8 cmd[9];
+    s32 cmdlen;
+    volatile u32 mode;
+    int retry;
+    int repeat;
+    u32 addr;
+    void *buffer;
+    s32 xferred;
+    u16 freeNo;
+    u16 startBlock;
+    CARDFileInfo *fileInfo;
+    CARDCallback extCallback;
+    CARDCallback txCallback;
+    CARDCallback exiCallback;
+    CARDCallback apiCallback;
+    CARDCallback xferCallback;
+    CARDCallback eraseCallback;
+    CARDCallback unlockCallback;
+    OSAlarm alarm;
+    u32 cid;
+    const DVDDiskID *diskID;
+} CARDControl;
+typedef struct CARDID {
+    u8 serial[32];
+    u16 deviceID;
+    u16 size;
+    u16 encode;
+    u8 padding[470];
+    u16 checkSum;
+    u16 checkSumInv;
+} CARDID;
+s32 fn_8021D614(s32 chan, u32 *serialNo_) {
+    u64 *serialNo = (u64 *)serialNo_;
+    s32 fn_80217B18(s32 chan, CARDControl **pcard);
+    s32 __CARDPutControlBlock(CARDControl *card, s32 result);
+    CARDControl *card;
+    s32 result;
+    CARDID *id;
+    u64 code;
+    int i;
+    if (!(0 <= chan && chan < 2)) {
+        return -128;
     }
     result = fn_80217B18(chan, &card);
     if (result < 0) {
         return result;
     }
-    check1 = 0;
-    check0 = 0;
-    face = *(u32 **)(card + 0x80);
-    {
-        u32 *q;
-        check1 ^= face[1];
-        check0 ^= face[0];
-        q = face + 2;
-        check0 ^= face[2];
-        check1 ^= q[1];
-        q = face + 4;
-        check0 ^= face[4];
-        check1 ^= q[1];
-        q = face + 6;
-        check0 ^= face[6];
-        check1 ^= q[1];
+    id = (CARDID *)card->workArea;
+    for (code = 0, i = 0; i < sizeof(id->serial) / sizeof(u64); ++i) {
+        code ^= *(u64 *)&id->serial[sizeof(u64) * i];
     }
-    serial[1] = check1;
-    serial[0] = check0;
-    return __CARDPutControlBlock((void *)card, 0);
+    *serialNo = code;
+    return __CARDPutControlBlock(card, 0);
 }
-#pragma opt_common_subs reset
-#pragma opt_strength_reduction reset
+#pragma pop

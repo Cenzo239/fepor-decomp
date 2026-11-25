@@ -1,18 +1,28 @@
 /* Functions from 0x8022C518 to 0x8022CCF8, found by decomp-toolkit. */
 #include "common.h"
 
-u32 __ptmf_scall(u32* arg0, u32 arg1) {
-    u32 r0 = arg0[0];
-    u32 r11 = arg0[1];
-    u32 r12 = arg0[2];
-    
-    arg0 = (u32*)((u8*)arg0 + r0);
-    if (r11 < 0) {
-        return 0;
-    }
-    
-    arg0 = (u32*)((u8*)arg0 + r12);
-    return arg0[arg1];
+typedef struct PTMF {
+    s32 this_delta;
+    s32 v_offset;
+    union {
+        void *f_addr;
+        s32 ve_offset;
+    } f_data;
+} PTMF;
+asm void __ptmf_scall(...)
+{
+nofralloc
+lwz r0, PTMF.this_delta(r12)
+lwz r11, PTMF.v_offset(r12)
+lwz r12, PTMF.f_data(r12)
+add r3, r3, r0
+cmpwi r11, 0
+blt- cr0, loc_0x20
+lwzx r12, r3, r12
+lwzx r12, r12, r11
+loc_0x20:
+mtctr r12
+bctr
 }
 
 u32* fn_8022C540(u32* param_1, u32 param_2) {
@@ -32,86 +42,365 @@ u32* fn_8022C540(u32* param_1, u32 param_2) {
     return result;
 }
 
-s32 __cvt_fp2unsigned(f32 farg0) {
-    extern M2C_UNK lbl_80282AD0;
-    f32 var_f2;
-    s32 temp_cr0_lt;
-    s32 var_r3;
-
-    var_r3 = 0;
-    temp_cr0_lt = farg0 < (f32) M2C_FIELD(&lbl_80282AD0, f64 *, 0);
-    M2C_ERROR(/* "fcmpu $cr6, $f1, $f3" is not supported, the first arg is not $cr0 */);
-    if (temp_cr0_lt == 0) {
-        var_r3 = -1;
-        if (temp_cr0_lt != 0) {
-            M2C_ERROR(/* "fcmpu $cr7, $f1, $f4" is not supported, the first arg is not $cr0 */);
-            var_f2 = farg0;
-            if (temp_cr0_lt == 0) {
-                var_f2 = (f32) ((f64) farg0 - M2C_FIELD(&lbl_80282AD0, f64 *, 0x10));
-            }
-            var_r3 = (s32) var_f2;
-            if (temp_cr0_lt == 0) {
-                var_r3 += 0x80000000;
-            }
-        }
-    }
-    return var_r3;
+static const u32 __constants[] = {
+    0x00000000,
+    0x00000000,
+    0x41F00000,
+    0x00000000,
+    0x41E00000,
+    0x00000000,
+};
+asm u32 __cvt_fp2unsigned(register f64 d)
+{
+nofralloc
+stwu r1,-16(r1)
+lis r4, __constants@h
+ori r4, r4, __constants@l
+li r3,0
+lfd fp0,0(r4)
+lfd fp3,8(r4)
+lfd fp4,16(r4)
+fcmpu cr0,fp1,fp0
+fcmpu cr6,fp1,fp3
+blt cr0, @exit
+addi r3,r3,-1
+bge cr6,@exit
+fcmpu cr7,fp1,fp4
+fmr fp2,fp1
+blt cr7,@1
+fsub fp2,fp1,fp4
+@1 fctiwz fp2,fp2
+stfd fp2,8(r1)
+lwz r3,12(r1)
+blt cr7,@exit
+addis r3,r3,-0x8000
+@exit:
+addi r1,r1,16
+blr
 }
 
-unsigned long long __div2u(unsigned long long a, unsigned long long b) {
-    unsigned long long q = 0, r = 0;
-    int i;
-    for (i = 64; i != 0; --i) {
-        r = (r << 1) | (a >> 63);
-        a <<= 1;
-        q <<= 1;
-        if (r >= b) {
-            r -= b;
-            q |= 1;
-        }
-    }
-    return q;
+asm void __div2u(void) {
+nofralloc
+cmpwi cr0,r3,0
+cntlzw r0,r3
+cntlzw r9,r4
+bne cr0,lab1
+addi r0,r9,32
+lab1:
+cmpwi cr0,r5,0
+cntlzw r9,r5
+cntlzw r10,r6
+bne cr0,lab2
+addi r9,r10,32
+lab2:
+cmpw cr0,r0,r9
+subfic r10,r0,64
+bgt cr0,lab9
+addi r9,r9,1
+subfic r9,r9,64
+add r0,r0,r9
+subf r9,r9,r10
+mtctr r9
+cmpwi cr0,r9,32
+addi r7,r9,-32
+blt cr0,lab3
+srw r8,r3,r7
+li r7,0
+b lab4
+lab3:
+srw r8,r4,r9
+subfic r7,r9,32
+slw r7,r3,r7
+or r8,r8,r7
+srw r7,r3,r9
+lab4:
+cmpwi cr0,r0,32
+addic r9,r0,-32
+blt cr0,lab5
+slw r3,r4,r9
+li r4,0
+b lab6
+lab5:
+slw r3,r3,r0
+subfic r9,r0,32
+srw r9,r4,r9
+or r3,r3,r9
+slw r4,r4,r0
+lab6:
+li r10,-1
+addic r7,r7,0
+lab7:
+adde r4,r4,r4
+adde r3,r3,r3
+adde r8,r8,r8
+adde r7,r7,r7
+subfc r0,r6,r8
+subfe. r9,r5,r7
+blt cr0,lab8
+mr r8,r0
+mr r7,r9
+addic r0,r10,1
+lab8:
+bdnz lab7
+adde r4,r4,r4
+adde r3,r3,r3
+blr
+lab9:
+li r4,0
+li r3,0
+blr
 }
 
-s64 __div2i(s64 a, s64 b) {
-    u32 sa=(u32)((u64)a>>32)&0x80000000;
-    u32 sb=(u32)((u64)b>>32)&0x80000000;
-    u64 n=(u64)a,d=(u64)b,r;
-    s32 nl,dl,count,shift;
-    u32 bit=0;
-    if(sa) n=-n;
-    if(sb) d=-d;
-    nl=__cntlzw((u32)(n>>32)); if(!(u32)(n>>32)) nl=__cntlzw((u32)n)+32;
-    dl=__cntlzw((u32)(d>>32)); if(!(u32)(d>>32)) dl=__cntlzw((u32)d)+32;
-    if(nl>dl) return 0;
-    shift=63-dl;
-    count=(64-nl)-shift;
-    if(count>=32) r=(u32)(n>>32)>>(count-32);
-    else r=((u64)((u32)(n>>32)>>count)<<32)|((u32)n>>count)|((u32)(n>>32)<<(32-count));
-    shift+=nl;
-    if(shift>=32) n=(u64)((u32)n<<(shift-32))<<32;
-    else n=((u64)(((u32)(n>>32)<<shift)|((u32)n>>(32-shift)))<<32)|((u32)n<<shift);
-    do {
-        u32 next=(u32)(n>>63);
-        n=n+n+bit;
-        r=r+r+next;
-        bit=0;
-        if((s64)(r-d)>=0) {r-=d;bit=1;}
-    } while(--count);
-    n=n+n+bit;
-    if(sa^sb) n=-n;
-    return n;
+asm void __div2i(void) {
+nofralloc
+stwu r1,-16(r1)
+rlwinm. r9,r3,0,0,0
+beq cr0,positive1
+subfic r4,r4,0
+subfze r3,r3
+positive1:
+stw r9,8(r1)
+rlwinm. r10,r5,0,0,0
+beq cr0,positive2
+subfic r6,r6,0
+subfze r5,r5
+positive2:
+stw r10,12(r1)
+cmpwi cr0,r3,0
+cntlzw r0,r3
+cntlzw r9,r4
+bne cr0,lab1
+addi r0,r9,32
+lab1:
+cmpwi cr0,r5,0
+cntlzw r9,r5
+cntlzw r10,r6
+bne cr0,lab2
+addi r9,r10,32
+lab2:
+cmpw cr0,r0,r9
+subfic r10,r0,64
+bgt cr0,lab9
+addi r9,r9,1
+subfic r9,r9,64
+add r0,r0,r9
+subf r9,r9,r10
+mtctr r9
+cmpwi cr0,r9,32
+addi r7,r9,-32
+blt cr0,lab3
+srw r8,r3,r7
+li r7,0
+b lab4
+lab3:
+srw r8,r4,r9
+subfic r7,r9,32
+slw r7,r3,r7
+or r8,r8,r7
+srw r7,r3,r9
+lab4:
+cmpwi cr0,r0,32
+addic r9,r0,-32
+blt cr0,lab5
+slw r3,r4,r9
+li r4,0
+b lab6
+lab5:
+slw r3,r3,r0
+subfic r9,r0,32
+srw r9,r4,r9
+or r3,r3,r9
+slw r4,r4,r0
+lab6:
+li r10,-1
+addic r7,r7,0
+lab7:
+adde r4,r4,r4
+adde r3,r3,r3
+adde r8,r8,r8
+adde r7,r7,r7
+subfc r0,r6,r8
+subfe. r9,r5,r7
+blt cr0,lab8
+mr r8,r0
+mr r7,r9
+addic r0,r10,1
+lab8:
+bdnz lab7
+adde r4,r4,r4
+adde r3,r3,r3
+lwz r9,8(r1)
+lwz r10,12(r1)
+xor. r7,r9,r10
+beq cr0,no_adjust
+cmpwi cr0,r9,0
+subfic r4,r4,0
+subfze r3,r3
+no_adjust:
+b func_end
+lab9:
+li r4,0
+li r3,0
+func_end:
+addi r1,r1,16
+blr
 }
 
-u64 __mod2u(u64 dividend, u64 divisor) { return dividend % divisor; }
+asm void __mod2u(void) {
+nofralloc
+cmpwi cr0,r3,0
+cntlzw r0,r3
+cntlzw r9,r4
+bne cr0,lab1
+addi r0,r9,32
+lab1:
+cmpwi cr0,r5,0
+cntlzw r9,r5
+cntlzw r10,r6
+bne cr0,lab2
+addi r9,r10,32
+lab2:
+cmpw cr0,r0,r9
+subfic r10,r0,64
+bgt cr0,lab9
+addi r9,r9,1
+subfic r9,r9,64
+add r0,r0,r9
+subf r9,r9,r10
+mtctr r9
+cmpwi cr0,r9,32
+addi r7,r9,-32
+blt cr0,lab3
+srw r8,r3,r7
+li r7,0
+b lab4
+lab3:
+srw r8,r4,r9
+subfic r7,r9,32
+slw r7,r3,r7
+or r8,r8,r7
+srw r7,r3,r9
+lab4:
+cmpwi cr0,r0,32
+addic r9,r0,-32
+blt cr0,lab5
+slw r3,r4,r9
+li r4,0
+b lab6
+lab5:
+slw r3,r3,r0
+subfic r9,r0,32
+srw r9,r4,r9
+or r3,r3,r9
+slw r4,r4,r0
+lab6:
+li r10,-1
+addic r7,r7,0
+lab7:
+adde r4,r4,r4
+adde r3,r3,r3
+adde r8,r8,r8
+adde r7,r7,r7
+subfc r0,r6,r8
+subfe. r9,r5,r7
+blt cr0,lab8
+mr r8,r0
+mr r7,r9
+addic r0,r10,1
+lab8:
+bdnz lab7
+mr r4,r8
+mr r3,r7
+blr
+lab9:
+blr
+}
 
-s64 __mod2i(s64 a, s64 b) {
-    return a % b;
+asm void __mod2i(void) {
+nofralloc
+cmpwi cr7,r3,0
+bge cr7,positive1
+subfic r4,r4,0
+subfze r3,r3
+positive1:
+cmpwi cr0,r5,0
+bge cr0,positive2
+subfic r6,r6,0
+subfze r5,r5
+positive2:
+cmpwi cr0,r3,0
+cntlzw r0,r3
+cntlzw r9,r4
+bne cr0,lab1
+addi r0,r9,32
+lab1:
+cmpwi cr0,r5,0
+cntlzw r9,r5
+cntlzw r10,r6
+bne cr0,lab2
+addi r9,r10,32
+lab2:
+cmpw cr0,r0,r9
+subfic r10,r0,64
+bgt cr0,lab9
+addi r9,r9,1
+subfic r9,r9,64
+add r0,r0,r9
+subf r9,r9,r10
+mtctr r9
+cmpwi cr0,r9,32
+addi r7,r9,-32
+blt cr0,lab3
+srw r8,r3,r7
+li r7,0
+b lab4
+lab3:
+srw r8,r4,r9
+subfic r7,r9,32
+slw r7,r3,r7
+or r8,r8,r7
+srw r7,r3,r9
+lab4:
+cmpwi cr0,r0,32
+addic r9,r0,-32
+blt cr0,lab5
+slw r3,r4,r9
+li r4,0
+b lab6
+lab5:
+slw r3,r3,r0
+subfic r9,r0,32
+srw r9,r4,r9
+or r3,r3,r9
+slw r4,r4,r0
+lab6:
+li r10,-1
+addic r7,r7,0
+lab7:
+adde r4,r4,r4
+adde r3,r3,r3
+adde r8,r8,r8
+adde r7,r7,r7
+subfc r0,r6,r8
+subfe. r9,r5,r7
+blt cr0,lab8
+mr r8,r0
+mr r7,r9
+addic r0,r10,1
+lab8:
+bdnz lab7
+mr r4,r8
+mr r3,r7
+lab9:
+bge cr7,no_adjust
+subfic r4,r4,0
+subfze r3,r3
+no_adjust:
+blr
 }
 
 typedef struct { u32 hi; u32 lo; } UL64;
 
-#pragma push
 asm s64 __shl2i(register s64 value, register int shift) {
     nofralloc
     subfic r8, r5, 0x20
@@ -124,9 +413,7 @@ asm s64 __shl2i(register s64 value, register int shift) {
     slw r4, r4, r5
     blr
 }
-#pragma pop
 
-#pragma push
 asm u64 __shr2u(register u64 value, register int shift) {
     nofralloc
     subfic r8, r5, 0x20
@@ -139,9 +426,7 @@ asm u64 __shr2u(register u64 value, register int shift) {
     srw r3, r3, r5
     blr
 }
-#pragma pop
 
-#pragma push
 asm s64 __shr2i(register s64 value, register int shift) {
     nofralloc
     subfic r8, r5, 0x20
@@ -156,130 +441,121 @@ L_8:
     sraw r3, r3, r5
     blr
 }
-#pragma pop
 
-f32 fn_8022CB78(s32 hi, u32 lo) {
-    u32 sign;
-    u32 lz;
-    u32 t;
-    s32 exp;
-    u32 bits_hi;
-    u32 bits_lo;
-    union { f64 d; u32 w[2]; } u;
-
-    sign = (u32)hi & 0x80000000u;
-    if (sign != 0) {
-        u64 z = 0ULL - (((u64)(u32)hi << 32) | lo);
-        hi = (s32)(z >> 32);
-        lo = (u32)z;
-    }
-
-    exp = 0;
-    if ((hi | lo) == 0) {
-        bits_hi = sign;
-        bits_lo = 0;
-        goto done;
-    }
-
-    {
-        u32 lzHi = __cntlzw((u32)hi);
-        u32 lzLo = __cntlzw(lo);
-        t = (lzHi << 26) & 0xF8000000u;
-        lz = lzHi + (((s32)t >> 31) & lzLo);
-    }
-
-    {
-        u32 r8 = 32 - lz;
-        s32 r9 = (s32)lz - 32;
-        u32 r10;
-        hi = ((u32)hi << lz);
-        r10 = lo >> r8;
-        hi = hi | r10;
-        r10 = lo << r9;
-        hi = hi | r10;
-        lo = lo << lz;
-        exp = exp - (s32)lz;
-    }
-
-    exp += 0x43E;
-
-    t = lo & 0x7FF;
-    if (t >= 0x400) {
-        if (t > 0x400 || (lo & 0x800) != 0) {
-            lo += 0x800;
-            if (lo < 0x800) {
-                hi += 1;
-                if (hi == 0)
-                    exp += 1;
-            }
-        }
-    }
-
-    bits_lo = (lo >> 11) | ((u32)hi << 21);
-    bits_hi = ((u32)exp << 20) | (((u32)hi >> 11) & 0xFFFFF);
-    bits_hi |= sign;
-
-done:
-    u.w[0] = bits_hi;
-    u.w[1] = bits_lo;
-    return (f32)u.d;
+asm void fn_8022CB78(void) {
+nofralloc
+stwu r1, -0x10(r1)
+clrrwi. r5, r3, 31
+beq positive
+subfic r4, r4, 0x0
+subfze r3, r3
+positive:
+or. r7, r3, r4
+li r6, 0x0
+beq zero
+cntlzw r7, r3
+cntlzw r8, r4
+extlwi r9, r7, 5, 26
+srawi r9, r9, 31
+and r9, r9, r8
+add r7, r7, r9
+subfic r8, r7, 0x20
+addic r9, r7, -0x20
+slw r3, r3, r7
+srw r10, r4, r8
+or r3, r3, r10
+slw r10, r4, r9
+or r3, r3, r10
+slw r4, r4, r7
+subf r6, r7, r6
+clrlwi r7, r4, 21
+cmpwi r7, 0x400
+addi r6, r6, 0x43e
+blt noround
+bgt round
+rlwinm. r7, r4, 0, 20, 20
+beq noround
+round:
+addic r4, r4, 0x800
+addze r3, r3
+addze r6, r6
+noround:
+rotrwi r4, r4, 11
+rlwimi r4, r3, 21, 0, 10
+extrwi r3, r3, 20, 1
+slwi r6, r6, 20
+or r3, r6, r3
+or r3, r5, r3
+zero:
+stw r3, 0x8(r1)
+stw r4, 0xc(r1)
+lfd f1, 0x8(r1)
+frsp f1, f1
+addi r1, r1, 0x10
+blr
 }
 
-s64 fn_8022CC2C(f64 value) {
-    register s32 hi;
-    register s32 lo;
-    s32 exp;
-    s32 sign;
-    s32 sh;
-    u32 r8;
-    s32 r9;
-    u32 r10;
-    union { f64 d; s32 w[2]; } u;
-
-    u.d = value;
-    hi = u.w[0];
-    lo = u.w[1];
-
-    exp = (s32)(((u32)hi << 1) >> 21);
-    if ((u32)exp < 0x3FFu) {
-        return 0LL;
-    }
-
-    sign = hi;
-    hi = (s32)((u32)hi & 0x000FFFFFu);
-    hi = (s32)((u32)hi | 0x00100000u);
-    sh = exp + (-0x433);
-
-    if (sh < 0) {
-        sh = -sh;
-        r8 = 0x20 - sh;
-        r9 = sh - 0x20;
-        r10 = (u32)hi << r8;
-        lo = (s32)(((u32)lo >> sh) | r10);
-        r10 = (u32)hi >> r9;
-        lo = (s32)((u32)lo | r10);
-        hi = (s32)((u32)hi >> sh);
-    } else if (sh > 10) {
-        if ((u32)sign & 0x80000000u) {
-            return (s64)0x8000000000000000ULL;
-        }
-        return (s64)0x7FFFFFFFFFFFFFFFLL;
-    } else {
-        r8 = 0x20 - sh;
-        r9 = sh - 0x20;
-        r10 = (u32)lo >> r8;
-        hi = (s32)(((u32)hi << sh) | r10);
-        r10 = (u32)lo << r9;
-        hi = (s32)((u32)hi | r10);
-        lo = (s32)((u32)lo << sh);
-    }
-
-    if ((u32)sign & 0x80000000u) {
-        u64 v = ((u64)(u32)hi << 32) | (u32)lo;
-        v = 0u - v;
-        return (s64)v;
-    }
-    return ((s64)(u32)hi << 32) | (u32)lo;
+asm void fn_8022CC2C(void)
+{
+nofralloc
+stwu r1,-16(r1)
+stfd f1,8(r1)
+lwz r3,8(r1)
+lwz r4,12(r1)
+rlwinm r5,r3,12,21,31
+cmpli cr0,0,r5,1023
+bge cr0,not_fraction
+li r3,0
+li r4,0
+b func_end
+not_fraction:
+mr r6,r3
+rlwinm r3,r3,0,12,31
+oris r3,r3,0x0010
+addi r5,r5,-1075
+cmpwi cr0,r5,0
+bge cr0,left
+neg r5,r5
+subfic r8,r5,32
+subic r9,r5,32
+srw r4,r4,r5
+slw r10,r3,r8
+or r4,r4,r10
+srw r10,r3,r9
+or r4,r4,r10
+srw r3,r3,r5
+b around
+left:
+cmpwi cr0,r5,10
+ble+ no_overflow
+rlwinm. r6,r6,0,0,0
+beq cr0,max_positive
+lis r3,0x8000
+li r4,0
+b func_end
+max_positive:
+lis r3,0x7FFF
+ori r3,r3,0xFFFF
+li r4,-1
+b func_end
+no_overflow:
+subfic r8,r5,32
+subic r9,r5,32
+slw r3,r3,r5
+srw r10,r4,r8
+or r3,r3,r10
+slw r10,r4,r9
+or r3,r3,r10
+slw r4,r4,r5
+around:
+rlwinm. r6,r6,0,0,0
+beq cr0,positive
+subfic r4,r4,0
+subfze r3,r3
+positive:
+func_end:
+addi r1,r1,16
+blr
 }
 
 typedef struct {

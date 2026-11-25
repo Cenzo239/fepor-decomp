@@ -144,22 +144,23 @@ extern s32 RunQueueHint_8036851C;
 
 #pragma use_lmw_stmw reset
 
-s64 OSGetTime(void) {
-    u32 hi;
-    u32 lo;
-    u32 hi2;
-
-    do {
-        hi = __mftbu();
-        lo = __mftb();
-        hi2 = __mftbu();
-    } while (hi != hi2);
-
-    return ((s64)hi << 32) | (s64)lo;
+typedef s64 OSTime;
+asm OSTime OSGetTime(void) {
+jump:
+nofralloc
+mftbu r3
+mftb r4
+mftbu r5
+cmpw r3, r5
+bne jump
+blr
 }
 
-s32 OSGetTick(void) {
-    return M2C_ERROR(/* unknown instruction: mftb $r3, 0x10c */);
+typedef u32 OSTick;
+asm OSTick OSGetTick(void){
+nofralloc
+mftb r3
+blr
 }
 
 #pragma peephole off

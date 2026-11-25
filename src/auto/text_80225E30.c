@@ -1818,18 +1818,24 @@ s32 fn_802287C0(s32 arg0) {
     return var_r31;
 }
 
-void fn_80228858(u32 arg0, s32 arg1) {
-    u32 address = arg0 & 0xFFFFFFF1u;
-    s32 count = arg1 + (s32)(arg0 - address);
-    do {
-        __dcbst(0, address);
-        __dcbf(0, address);
-        __sync();
-        __icbi(0, address);
-        address += 8;
-        count -= 8;
-    } while (count >= 0);
-    __isync();
+asm void fn_80228858(u32 param_1, int param_2)
+{
+nofralloc
+lis r5, 0xFFFFFFF1@h
+ori r5, r5, 0xFFFFFFF1@l
+and r5, r5, r3
+subf r3, r5, r3
+add r4, r4, r3
+loop:
+dcbst 0, r5
+dcbf 0, r5
+sync
+icbi 0, r5
+addic r5, r5, 8
+addic. r4, r4, -8
+bge loop
+isync
+blr
 }
 
 #pragma optimization_level 3
@@ -1883,22 +1889,32 @@ void fn_80228890(void *arg0, u32 arg1, u32 arg2)
     }
 }
 #pragma optimization_level reset
-s32 fn_80228950(void) {
-    return M2C_ERROR(/* unknown instruction: mtmsr $r3 */);
+asm void fn_80228950(register u32 v)
+{
+mtmsr v
+blr
 }
 
-void fn_80228958(s32 arg0, s32 arg1, s32 arg2) {
-    s32 var_r10;
-    u8 temp_r9;
-
-    var_r10 = 0;
-loop_1:
-    if (var_r10 != arg2) {
-        temp_r9 = *(u8*)(arg1 + var_r10);
-        *(u8*)(arg0 + var_r10) = temp_r9;
-        var_r10 += 1;
-        goto loop_1;
-    }
+static asm void fn_80228958(register void* dest, register const void* src, register int n, register u32 param_4, register u32 param_5)
+{
+nofralloc
+mfmsr r8
+li r10 , 0
+top_loop:
+cmpw r10 , n
+beq out_loop
+mtmsr param_5
+sync
+lbzx r9 , r10 , src
+mtmsr param_4
+sync
+stbx r9 , r10 , dest
+addi r10 , r10 , 1
+b top_loop
+out_loop:
+mtmsr r8
+sync
+blr
 }
 
 void TRKInterruptHandler(void)
@@ -1907,16 +1923,61 @@ void TRKInterruptHandler(void)
     return;
 }
 
-void TRKExceptionHandler(u16 exception) {
- extern u8 gTRKExceptionStatus_8029E574[];
- u32 pc=__mfspr(26);
- *(u16 *)(gTRKExceptionStatus_8029E574+8)=exception;
- *(u32 *)gTRKExceptionStatus_8029E574=pc;
- if (exception==0x200 || exception==0x300 || exception==0x400 ||
- exception==0x600 || exception==0x700 || exception==0x800 ||
- exception==0x1000 || exception==0x1100 || exception==0x1200 || exception==0x1300)
- __mtspr(26,pc+4);
- gTRKExceptionStatus_8029E574[0xD]=1;
+typedef struct StopInfo_PPC {
+    u32 PC;
+    u32 PCInstruction;
+    u16 exceptionID;
+} StopInfo_PPC;
+typedef struct TRKExceptionStatus {
+    StopInfo_PPC exceptionInfo;
+    u8 inTRK;
+    u8 exceptionDetected;
+} TRKExceptionStatus;
+extern u8 gTRKExceptionStatus_8029E574[];
+asm void TRKExceptionHandler(u16 r3)
+{
+nofralloc
+lis r2, gTRKExceptionStatus_8029E574@h
+ori r2, r2, gTRKExceptionStatus_8029E574@l
+sth r3, TRKExceptionStatus.exceptionInfo.exceptionID(r2)
+mfsrr0 r3
+stw r3, TRKExceptionStatus.exceptionInfo.PC(r2)
+lhz r3, TRKExceptionStatus.exceptionInfo.exceptionID(r2)
+cmpwi r3, 0x200
+beq LAB_00010ba4
+cmpwi r3, 0x300
+beq LAB_00010ba4
+cmpwi r3, 0x400
+beq LAB_00010ba4
+cmpwi r3, 0x600
+beq LAB_00010ba4
+cmpwi r3, 0x700
+beq LAB_00010ba4
+cmpwi r3, 0x800
+beq LAB_00010ba4
+cmpwi r3, 0x1000
+beq LAB_00010ba4
+cmpwi r3, 0x1100
+beq LAB_00010ba4
+cmpwi r3, 0x1200
+beq LAB_00010ba4
+cmpwi r3, 0x1300
+beq LAB_00010ba4
+b LAB_00010bb0
+LAB_00010ba4:
+mfsrr0 r3
+addi r3, r3, 0x4
+mtsrr0 r3
+LAB_00010bb0:
+lis r2, gTRKExceptionStatus_8029E574@h
+ori r2, r2, gTRKExceptionStatus_8029E574@l
+li r3, 0x1
+stb r3, TRKExceptionStatus.exceptionDetected(r2)
+mfsprg r3, 3
+mtcrf 0xff, r3
+mfsprg r2, 1
+mfsprg r3, 2
+rfi
 }
 
 void TRKInterruptHandlerEnableInterrupts(void) {
@@ -1927,14 +1988,31 @@ void TRKInterruptHandlerEnableInterrupts(void) {
 }
 
 #pragma intrinsic __mffs
-void fn_80228CDC(f64 *arg0) {
-    register f64 fpscr;
-    fpscr = __mffs();
-    *arg0 = fpscr;
+asm void fn_80228CDC(register f64*)
+{
+nofralloc
+stwu r1, -0x40(r1)
+stfd f31, 0x10(r1)
+psq_st f31, 0x20(r1),0,0
+mffs f31
+stfd f31, 0x0(r3)
+psq_l f31, 0x20(r1),0,0
+lfd f31, 0x10(r1)
+addi r1, r1, 0x40
+blr
 }
-void fn_80228D00(f64 *arg0) {
-    f64 status = *arg0;
-    __mtfsf(255, status);
+asm void fn_80228D00(register f64*)
+{
+nofralloc
+stwu r1, -0x40(r1)
+stfd f31, 0x10(r1)
+psq_st f31, 0x20(r1), 0, 0
+lfd f31, 0(r3)
+mtfsf 0xff, f31
+psq_l f31, 0x20(r1), 0, 0
+lfd f31, 0x10(r1)
+addi r1, r1, 0x40
+blr
 }
 
 s32 fn_80228D24(s32 arg0, u32 arg1, s32 *arg2, s32 arg3) {
@@ -2663,7 +2741,7 @@ s32 TRKTargetAccessDefault(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
   {
     u32 words[4];
   } ExceptionStatus;
-  extern u8 gTRKExceptionStatus_8029E574[0x10];
+  extern u8 gTRKExceptionStatus_8029E574[];
   ExceptionStatus saved;
   u8 *status;
   u32 *registers;
@@ -2939,30 +3017,42 @@ void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
         }
     }
 }
-void fn_8022AB88(s32 arg0, u32 arg1, s32 *arg2) {
-u32 fn_80214058(void);
-void fn_80214094(s32,s32,u32,u32);
-void fn_80214338(void);
-u16 fn_80214358(void);
-u16 old;
-u32 address, length, offset;
-if(arg1 >= 0x4000) {
- length=*arg2;
- if(arg1+length <= 0x08000000) {
- address=arg1 & ~31;
- length += arg1 & 31;
- length=(length+31)&~31;
- for(offset=0;offset<length;offset+=32) __dcbf((void *)arg0,offset);
- while(fn_80214058()!=0) {}
- old=fn_80214358();
- fn_80214338();
- fn_80214094(1,arg0,address,length);
- while(fn_80214358()==0) {}
- if(old==0) fn_80214338();
- } else {
- return;
- }
-}
+typedef u32 size_t;
+void fn_8022AB88(register int c, register u32 p2, void *p3) {
+    u32 fn_80214058();
+    void fn_80214094(u32 type, u32 mainmem_addr, u32 aram_addr, u32 length);
+    u16 fn_80214358();
+    u32 err;
+    int i;
+    register int counter;
+    u16 r;
+    u32 g;
+    u32 x;
+    u32 size;
+    if ((size_t)p2 < 0x4000 || p2 + *(u32 *)p3 > 0x8000000) {
+        return;
+    }
+    x = p2 & ~0x1F;
+    size = *(u32 *)p3 + (p2 & 0x1F);
+    size = (((u32)(size) + 0x1F) & ~(0x1F));
+    counter = 0;
+    for (i = 0; i < size; i += 0x20) {
+        asm {dcbi counter, c }
+        ;
+        counter += 0x20;
+    }
+    do {
+        err = fn_80214058();
+    } while (err);
+    r = fn_80214358();
+    g = 0x8000000;
+    __ARClearInterrupt();
+    fn_80214094(1, c, x, size);
+    while (!fn_80214358()) {
+    }
+    if (!r) {
+        __ARClearInterrupt();
+    }
 }
 
 s32 TRKInitializeTarget(void) {

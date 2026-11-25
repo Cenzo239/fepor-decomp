@@ -877,6 +877,45 @@ void *memmove(void *dst, const void *src, u32 n) {
     return dst;
 }
 
+typedef unsigned int uint;
+typedef u32 size_t;
+void fn_80231AB4(void *pDest, const void *pSrc, u32 len) {
+    u32 i, v1, v2;
+    uint src, ls, rs;
+    ((u8 *)pSrc) = ((u8 *)pSrc) + len;
+    ((u8 *)pDest) = ((u8 *)pDest) + len;
+    i = ((u32)pDest) & 3;
+    if (i != 0) {
+        len -= i;
+        do {
+            *--((u8 *)pDest) = *--((u8 *)pSrc);
+        } while (--i);
+    }
+    src = ((uint)(((u8 *)pSrc))) & 3;
+    ls = src << 3;
+    rs = 32 - ls;
+    ((u8 *)pSrc) += 4 - src;
+    i = len >> 3;
+    v1 = *--((u32 *)pSrc);
+    do {
+        v2 = *--((u32 *)pSrc);
+        *--((u32 *)pDest) = (v2 << ls) | (v1 >> rs);
+        v1 = *--((u32 *)pSrc);
+        *--((u32 *)pDest) = (v1 << ls) | (v2 >> rs);
+    } while (--i);
+    if (len & 4) {
+        v2 = *--((u32 *)pSrc);
+        *--((u32 *)pDest) = (v2 << ls) | (v1 >> rs);
+    }
+    len &= 3;
+    if (len != 0) {
+        ((u8 *)pSrc) += src;
+        do {
+            *--((u8 *)pDest) = *--((u8 *)pSrc);
+        } while (--len);
+    }
+}
+
 void fn_80231B60(void *dst, const void *src, u32 size) {
 u32 *d;
 u32 n, blocks;

@@ -47,19 +47,27 @@ extern s32 lbl_803676F8;
 
 #pragma opt_lifetimes off
 
+#pragma push
 #pragma opt_lifetimes on
-s32 fn_800A011C(s32 a, s32 b, void *c) {
+#pragma cplusplus off
+#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma scheduling on
+#pragma peephole on
+#pragma opt_strength_reduction on
+#pragma opt_common_subs on
+#pragma opt_loop_invariants on
+#pragma opt_propagation on
+#pragma opt_lifetimes on
+#pragma dont_inline off
+#pragma use_lmw_stmw off
+s32 fn_800A011C(s32 a, s32 b, void *item) {
     extern u8 lbl_80366E25;
-    s32 v = 2;
+    enum { MENU_TOGGLE_ON = 0, MENU_TOGGLE_OFF = 2 };
 
-    a = (u8)lbl_80366E25;
-    b = a ^ 1;
-    lbl_80366E25 = b;
-    if ((u8)b != 0) {
-        v = 0;
-    }
-    *(u8 *)((char *)c + 0x39) = v;
+    lbl_80366E25 ^= 1;
+    *((u8 *)item + 0x39) = lbl_80366E25 ? MENU_TOGGLE_ON : MENU_TOGGLE_OFF;
     return 0;
 }
-#pragma opt_lifetimes reset
+#pragma pop
 extern u8 lbl_80366E25;

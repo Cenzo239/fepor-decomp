@@ -5917,25 +5917,20 @@ void fn_80069C7C(void) {
 }
 
 #pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
 void fn_80069C98(void) {
-    void fn_802238A8(s32);
-    void fn_802238CC(s32);
-    extern s32 gMaterialStageIds[16];
     extern u8 lbl_80367304;
-    s32 *var_r31;
-    s32 var_r30;
-
+    extern u16 gMaterialStageIds[0x20];
+    void fn_802238CC(s32);
+    void fn_802238A8(s32);
+    s32 i;
     if (lbl_80367304 != 0) {
-        var_r30 = 0;
-        var_r31 = gMaterialStageIds;
-        do {
-            fn_802238CC(*var_r31);
-            var_r30 += 1;
-            var_r31 += 1;
-        } while (var_r30 < 8);
+        for (i = 0; i < 8; i++) fn_802238CC(((s32 *)gMaterialStageIds)[i]);
         fn_802238A8(0);
     }
 }
+#pragma pop
 #pragma global_optimizer off
 void *fn_80069CFC(void) {
     extern u8 lbl_80367304;
@@ -7500,15 +7495,20 @@ void fn_8006D378(s32 arg0) {
     fn_8020536C(tex + *(s32 *)(entry + 0xc), arg0, (s32)(*(u16 *)(entry + 0x10) + 0x1f) / 32);
 }
 #pragma optimization_level reset
-void fn_8006D52C(s32 arg0) {
-    register u32 gqr;
-    gqr = ((u32)arg0 << 16) + (u32)arg0;
-    *(volatile u32 *)0 = gqr;
+asm void fn_8006D52C(register u32 type) {
+    nofralloc
+    slwi r4, r3, 16
+    add r4, r4, r3
+    mtspr 0x396, r4
+    blr
 }
 
-void fn_8006D53C(register s32 arg0) {
-    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
-    *(volatile u32 *)0 = gqr;
+asm void fn_8006D53C(register u32 type) {
+    nofralloc
+    slwi r4, r3, 16
+    add r4, r4, r3
+    mtspr 0x397, r4
+    blr
 }
 
 void fn_8006D54C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -7608,49 +7608,58 @@ void fn_8006D66C(s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-f32 fn_8006D828(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 temp_r6;
-    s32 var_ctr;
-
-    temp_r6 = arg3 - 1;
-    var_ctr = temp_r6;
-    M2C_ERROR(/* unknown instruction: psq_lu $f6, 0x1($r5), 0x1, qr7 */);
-    M2C_ERROR(/* unknown instruction: psq_lu $f9, 0x8($r12), 0x0, qr0 */);
-    M2C_ERROR(/* unknown instruction: psq_lu $f10, 0x8($r12), 0x0, qr0 */);
-    M2C_ERROR(/* unknown instruction: psq_lu $f11, 0x8($r12), 0x0, qr0 */);
-    M2C_ERROR(/* unknown instruction: psq_lu $f12, 0x8($r12), 0x0, qr0 */);
-    M2C_ERROR(/* unknown instruction: psq_lu $f13, 0x8($r12), 0x0, qr0 */);
-    if (temp_r6 & temp_r6) {
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f8, $f8, $f6 */);
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f9, $f9, $f6 */);
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f10, $f10, $f6 */);
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f11, $f11, $f6 */);
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f12, $f12, $f6 */);
-        M2C_ERROR(/* unknown instruction: ps_muls0 $f13, $f13, $f6 */);
-        do {
-            M2C_ERROR(/* unknown instruction: psq_lu $f6, 0x1($r5), 0x1, qr7 */);
-            M2C_ERROR(/* unknown instruction: psq_lu $f1, 0x8($r12), 0x0, qr0 */);
-            M2C_ERROR(/* unknown instruction: psq_lu $f2, 0x8($r12), 0x0, qr0 */);
-            M2C_ERROR(/* unknown instruction: psq_lu $f3, 0x8($r12), 0x0, qr0 */);
-            M2C_ERROR(/* unknown instruction: psq_lu $f4, 0x8($r12), 0x0, qr0 */);
-            M2C_ERROR(/* unknown instruction: psq_lu $f5, 0x8($r12), 0x0, qr0 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f8, $f0, $f6, $f8 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f9, $f1, $f6, $f9 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f10, $f2, $f6, $f10 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f11, $f3, $f6, $f11 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f12, $f4, $f6, $f12 */);
-            M2C_ERROR(/* unknown instruction: ps_madds0 $f13, $f5, $f6, $f13 */);
-            var_ctr -= 1;
-        } while (var_ctr != 0);
-    }
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f0, $f8, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f2, $f8, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f3, $f12, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f4, $f9, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_merge01 $f5, $f13, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f6, $f9, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f7, $f13, $f7 */);
-    return M2C_ERROR(/* unknown instruction: ps_merge01 $f1, $f12, $f7 */);
+asm void fn_8006D828(register void *mats, register u16 *idx, register u8 *weights, register s32 n) {
+    nofralloc
+    subi r6, r6, 1
+    mtctr r6
+    subi r4, r4, 2
+    subi r5, r5, 1
+    psq_lu f6, 1(r5), 1, 7
+    lhzu r12, 2(r4)
+    mulli r12, r12, 0x30
+    add r12, r12, r3
+    psq_l f8, 0(r12), 0, 0
+    psq_lu f9, 8(r12), 0, 0
+    psq_lu f10, 8(r12), 0, 0
+    psq_lu f11, 8(r12), 0, 0
+    psq_lu f12, 8(r12), 0, 0
+    psq_lu f13, 8(r12), 0, 0
+    and. r6, r6, r6
+    beq done
+    ps_muls0 f8, f8, f6
+    ps_muls0 f9, f9, f6
+    ps_muls0 f10, f10, f6
+    ps_muls0 f11, f11, f6
+    ps_muls0 f12, f12, f6
+    ps_muls0 f13, f13, f6
+loop:
+    psq_lu f6, 1(r5), 1, 7
+    lhzu r12, 2(r4)
+    mulli r12, r12, 0x30
+    add r12, r12, r3
+    psq_l f0, 0(r12), 0, 0
+    psq_lu f1, 8(r12), 0, 0
+    psq_lu f2, 8(r12), 0, 0
+    psq_lu f3, 8(r12), 0, 0
+    psq_lu f4, 8(r12), 0, 0
+    psq_lu f5, 8(r12), 0, 0
+    ps_madds0 f8, f0, f6, f8
+    ps_madds0 f9, f1, f6, f9
+    ps_madds0 f10, f2, f6, f10
+    ps_madds0 f11, f3, f6, f11
+    ps_madds0 f12, f4, f6, f12
+    ps_madds0 f13, f5, f6, f13
+    bdnz loop
+done:
+    ps_merge00 f0, f8, f10
+    ps_merge01 f1, f12, f7
+    ps_merge11 f2, f8, f10
+    ps_merge11 f3, f12, f7
+    ps_merge00 f4, f9, f11
+    ps_merge01 f5, f13, f7
+    ps_merge11 f6, f9, f11
+    ps_merge11 f7, f13, f7
+    blr
 }
 
 void fn_8006D8E8(s32 arg0) {

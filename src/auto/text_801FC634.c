@@ -2829,28 +2829,78 @@ void PSMTXIdentity(f32 m[3][4]) {
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void PSMTXCopy(void *src, void *dst) {
-    f32 (*s)[4] = src;
-    f32 (*d)[4] = dst;
-
-    d[0][0] = s[0][0];
-    d[0][1] = s[0][1];
-    d[0][2] = s[0][2];
-    d[0][3] = s[0][3];
-    d[1][0] = s[1][0];
-    d[1][1] = s[1][1];
-    d[1][2] = s[1][2];
-    d[1][3] = s[1][3];
+typedef f32 Mtx[3][4];
+asm void PSMTXCopy(const register Mtx src, register Mtx dst) {
+psq_l f0, 0(src), 0, 0
+psq_st f0, 0(dst), 0, 0
+psq_l f1, 8(src), 0, 0
+psq_st f1, 8(dst), 0, 0
+psq_l f2, 16(src), 0, 0
+psq_st f2, 16(dst), 0, 0
+psq_l f3, 24(src), 0, 0
+psq_st f3, 24(dst), 0, 0
+psq_l f4, 32(src), 0, 0
+psq_st f4, 32(dst), 0, 0
+psq_l f5, 40(src), 0, 0
+psq_st f5, 40(dst), 0, 0
 }
 
-void PSMTXConcat(f32* mtx, f32* vec, f32* out) {
-    // Matrix (4x3) multiplied by vector (3-element) producing 4-element result
-    // Using PowerPC SIMD instructions approach
-    
-    out[0] = mtx[0] * vec[0] + mtx[1] * vec[1] + mtx[2] * vec[2];
-    out[1] = mtx[3] * vec[0] + mtx[4] * vec[1] + mtx[5] * vec[2]; 
-    out[2] = mtx[6] * vec[0] + mtx[7] * vec[1] + mtx[8] * vec[2];
-    out[3] = mtx[9] * vec[0] + mtx[10] * vec[1] + mtx[11] * vec[2];
+static f32 lbl_80366F10[2] = {
+    0.0f,
+    1.0f};
+asm void PSMTXConcat(const register Mtx a, const register Mtx b, register Mtx ab) {
+nofralloc
+stwu r1, -64(r1)
+psq_l f0, 0(a), 0, 0
+stfd f14, 8(r1)
+psq_l f6, 0(b), 0, 0
+lis r6, lbl_80366F10@ha
+psq_l f7, 8(b), 0, 0
+stfd f15, 16(r1)
+addi r6, r6, lbl_80366F10@l
+stfd f31, 40(r1)
+psq_l f8, 16(b), 0, 0
+ps_muls0 f12, f6, f0
+psq_l f2, 16(a), 0, 0
+ps_muls0 f13, f7, f0
+psq_l f31, 0(r6), 0, 0
+ps_muls0 f14, f6, f2
+psq_l f9, 24(b), 0, 0
+ps_muls0 f15, f7, f2
+psq_l f1, 8(a), 0, 0
+ps_madds1 f12, f8, f0, f12
+psq_l f3, 24(a), 0, 0
+ps_madds1 f14, f8, f2, f14
+psq_l f10, 32(b), 0, 0
+ps_madds1 f13, f9, f0, f13
+psq_l f11, 40(b), 0, 0
+ps_madds1 f15, f9, f2, f15
+psq_l f4, 32(a), 0, 0
+psq_l f5, 40(a), 0, 0
+ps_madds0 f12, f10, f1, f12
+ps_madds0 f13, f11, f1, f13
+ps_madds0 f14, f10, f3, f14
+ps_madds0 f15, f11, f3, f15
+psq_st f12, 0(ab), 0, 0
+ps_muls0 f2, f6, f4
+ps_madds1 f13, f31, f1, f13
+ps_muls0 f0, f7, f4
+psq_st f14, 16(ab), 0, 0
+ps_madds1 f15, f31, f3, f15
+psq_st f13, 8(ab), 0, 0
+ps_madds1 f2, f8, f4, f2
+ps_madds1 f0, f9, f4, f0
+ps_madds0 f2, f10, f5, f2
+lfd f14, 8(r1)
+psq_st f15, 24(ab), 0, 0
+ps_madds0 f0, f11, f5, f0
+psq_st f2, 32(ab), 0, 0
+ps_madds1 f0, f31, f5, f0
+lfd f15, 16(r1)
+psq_st f0, 40(ab), 0, 0
+lfd f31, 40(r1)
+addi r1, r1, 64
+blr
 }
 
 void fn_802020F0(f32 *src, f32 *dst) {
@@ -2878,57 +2928,122 @@ void fn_802020F0(f32 *src, f32 *dst) {
     dst[10] = src[10];
 }
 
-s32 PSMTXInverse(void *arg0) {
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f6, $f1, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f7, $f3, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f11, $f3, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f13, $f5, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f8, $f5, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f11, $f1, $f7, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f12, $f1, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f13, $f3, $f8, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f3, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f12, $f5, $f6, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f9, $f0, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f8, $f1, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_sub $f6, $f6, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f10, $f2, $f5, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f0, $f13 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f9, $f1, $f4, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f7, $f2, $f12, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f8, $f0, $f3, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f7, $f4, $f11, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_cmpo0 $cr0, $f7, $f6 */);
-    if (M2C_ERROR(/* Read from unset register $cr0_eq */)) {
-        return 0;
-    }
-    M2C_ERROR(/* unknown instruction: ps_add $f6, $f0, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f5, $f0, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_nmsub $f0, $f7, $f5, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f13, $f13, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f12, $f12, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f11, $f11, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f5, $f13, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f10, $f10, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f4, $f13, $f12 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f9, $f9, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f6, $f13, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_muls0 $f8, $f8, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f6, $f12, $f2, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_nmadd $f6, $f11, $f3, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f10, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f5, $f11, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_merge11 $f4, $f11, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f7, $f9, $f2, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_nmadd $f7, $f8, $f3, $f7 */);
-    return 1;
+asm u32 PSMTXInverse(const register Mtx src, register Mtx inv) {
+psq_l f0, 0(src), 1, 0
+psq_l f1, 4(src), 0, 0
+psq_l f2, 16(src), 1, 0
+ps_merge10 f6, f1, f0
+psq_l f3, 20(src), 0, 0
+psq_l f4, 32(src), 1, 0
+ps_merge10 f7, f3, f2
+psq_l f5, 36(src), 0, 0
+ps_mul f11, f3, f6
+ps_mul f13, f5, f7
+ps_merge10 f8, f5, f4
+ps_msub f11, f1, f7, f11
+ps_mul f12, f1, f8
+ps_msub f13, f3, f8, f13
+ps_mul f10, f3, f4
+ps_msub f12, f5, f6, f12
+ps_mul f9, f0, f5
+ps_mul f8, f1, f2
+ps_sub f6, f6, f6
+ps_msub f10, f2, f5, f10
+ps_mul f7, f0, f13
+ps_msub f9, f1, f4, f9
+ps_madd f7, f2, f12, f7
+ps_msub f8, f0, f3, f8
+ps_madd f7, f4, f11, f7
+ps_cmpo0 cr0, f7, f6
+bne skip_return
+li r3, 0
+blr
+skip_return:
+fres f0, f7
+ps_add f6, f0, f0
+ps_mul f5, f0, f0
+ps_nmsub f0, f7, f5, f6
+lfs f1, 12(src)
+ps_muls0 f13, f13, f0
+lfs f2, 28(src)
+ps_muls0 f12, f12, f0
+lfs f3, 44(src)
+ps_muls0 f11, f11, f0
+ps_merge00 f5, f13, f12
+ps_muls0 f10, f10, f0
+ps_merge11 f4, f13, f12
+ps_muls0 f9, f9, f0
+psq_st f5, 0(inv), 0, 0
+ps_mul f6, f13, f1
+psq_st f4, 16(inv), 0, 0
+ps_muls0 f8, f8, f0
+ps_madd f6, f12, f2, f6
+psq_st f10, 32(inv), 1, 0
+ps_nmadd f6, f11, f3, f6
+psq_st f9, 36(inv), 1, 0
+ps_mul f7, f10, f1
+ps_merge00 f5, f11, f6
+psq_st f8, 40(inv), 1, 0
+ps_merge11 f4, f11, f6
+psq_st f5, 8(inv), 0, 0
+ps_madd f7, f9, f2, f7
+psq_st f4, 24(inv), 0, 0
+ps_nmadd f7, f8, f3, f7
+li r3, 1
+psq_st f7, 44(inv), 1, 0
 }
 
-void fn_80202238(float* arg0, float* arg1) {
-    int i;
-    for (i = 0; i < 4; i++) {
-        arg1[i] = arg0[i];
-    }
+asm u32 fn_80202238(const register Mtx src, register Mtx invX) {
+psq_l f0, 0(src), 1, 0
+psq_l f1, 4(src), 0, 0
+psq_l f2, 16(src), 1, 0
+ps_merge10 f6, f1, f0
+psq_l f3, 20(src), 0, 0
+psq_l f4, 32(src), 1, 0
+ps_merge10 f7, f3, f2
+psq_l f5, 36(src), 0, 0
+ps_mul f11, f3, f6
+ps_merge10 f8, f5, f4
+ps_mul f13, f5, f7
+ps_msub f11, f1, f7, f11
+ps_mul f12, f1, f8
+ps_msub f13, f3, f8, f13
+ps_msub f12, f5, f6, f12
+ps_mul f10, f3, f4
+ps_mul f9, f0, f5
+ps_mul f8, f1, f2
+ps_msub f10, f2, f5, f10
+ps_msub f9, f1, f4, f9
+ps_msub f8, f0, f3, f8
+ps_mul f7, f0, f13
+ps_sub f1, f1, f1
+ps_madd f7, f2, f12, f7
+ps_madd f7, f4, f11, f7
+ps_cmpo0 cr0, f7, f1
+bne skip_return
+li r3, 0
+blr
+skip_return:
+fres f0, f7
+psq_st f1, 12(invX), 1, 0
+ps_add f6, f0, f0
+ps_mul f5, f0, f0
+psq_st f1, 28(invX), 1, 0
+ps_nmsub f0, f7, f5, f6
+psq_st f1, 44(invX), 1, 0
+ps_muls0 f13, f13, f0
+ps_muls0 f12, f12, f0
+ps_muls0 f11, f11, f0
+psq_st f13, 0(invX), 0, 0
+psq_st f12, 16(invX), 0, 0
+ps_muls0 f10, f10, f0
+ps_muls0 f9, f9, f0
+psq_st f11, 32(invX), 0, 0
+psq_st f10, 8(invX), 1, 0
+ps_muls0 f8, f8, f0
+li r3, 1
+psq_st f9, 24(invX), 1, 0
+psq_st f8, 40(invX), 1, 0
 }
 
 extern void *IDShouldBe_8036859C;
