@@ -1272,7 +1272,7 @@ void fn_80213CB0(s32 arg0, OSContext *context)
 void fn_80213D2C(s32 arg0, OSContext *context) {
     void OSClearContext(void *);
     void OSSetCurrentContext(void *);
-    void fn_80213DD8(void);
+    void fn_80213DD8(void *);
     extern volatile u16 __PADRegs[];
     extern s32 lbl_8036869C;
     extern s32 lbl_803686A0;
@@ -1292,7 +1292,7 @@ void fn_80213D2C(s32 arg0, OSContext *context) {
     if ((u32)lbl_8036869C != 0 && lbl_803686AC == 0) {
         lbl_803686AC = 1;
         if ((u32)lbl_803686A0 != 0) {
-            fn_80213DD8();
+            fn_80213DD8((void *)lbl_8036869C);
         } else {
             ((void (*)(void))lbl_8036869C)();
         }
@@ -1303,9 +1303,9 @@ void fn_80213D2C(s32 arg0, OSContext *context) {
     OSSetCurrentContext(context);
 }
 
-static u8 *lbl_803686A0;
-static u8 *lbl_803686A4;
-static asm void fn_80213DD8(register void* cb) {
+extern s32 lbl_803686A0;
+extern s32 lbl_803686A4;
+asm void fn_80213DD8(register void* cb) {
 nofralloc
 mflr r0
 stw r0, 0x4(r1)

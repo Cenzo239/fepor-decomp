@@ -1933,12 +1933,12 @@ typedef struct TRKExceptionStatus {
     u8 inTRK;
     u8 exceptionDetected;
 } TRKExceptionStatus;
-static TRKExceptionStatus gTRKExceptionStatus = {{0, 0, 0}, 1, 0};
-static asm void TRKExceptionHandler(u16 r3)
+extern u8 gTRKExceptionStatus_8029E574[];
+asm void TRKExceptionHandler(u16 r3)
 {
 nofralloc
-lis r2, gTRKExceptionStatus@h
-ori r2, r2, gTRKExceptionStatus@l
+lis r2, gTRKExceptionStatus_8029E574@h
+ori r2, r2, gTRKExceptionStatus_8029E574@l
 sth r3, TRKExceptionStatus.exceptionInfo.exceptionID(r2)
 mfsrr0 r3
 stw r3, TRKExceptionStatus.exceptionInfo.PC(r2)
@@ -1969,8 +1969,8 @@ mfsrr0 r3
 addi r3, r3, 0x4
 mtsrr0 r3
 LAB_00010bb0:
-lis r2, gTRKExceptionStatus@h
-ori r2, r2, gTRKExceptionStatus@l
+lis r2, gTRKExceptionStatus_8029E574@h
+ori r2, r2, gTRKExceptionStatus_8029E574@l
 li r3, 0x1
 stb r3, TRKExceptionStatus.exceptionDetected(r2)
 mfsprg r3, 3
@@ -2741,7 +2741,7 @@ s32 TRKTargetAccessDefault(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
   {
     u32 words[4];
   } ExceptionStatus;
-  extern u8 gTRKExceptionStatus_8029E574[0x10];
+  extern u8 gTRKExceptionStatus_8029E574[];
   ExceptionStatus saved;
   u8 *status;
   u32 *registers;
