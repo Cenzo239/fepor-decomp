@@ -11,6 +11,25 @@ u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile u8 *)0xCC008000=b;
 *(volatile u8 *)0xCC008000=a;
 }
+static inline void fn_80050E14_Body(u8 *obj, s32 zero) {
+ s32 i, offset, tableOffset, n;
+ u8 *table, *base;
+ i = offset = tableOffset = zero;
+ *(s32 *)(obj+0x14) = zero;
+ while (i < (n = *(s32 *)(obj+0x18))) {
+  base = *(u8 **)obj;
+  i++;
+  table = *(u8 **)(obj+4);
+  *(u32 *)(table+tableOffset) = (u32)base + offset;
+  offset += 20;
+  tableOffset += 4;
+ }
+ table = *(u8 **)(obj+4);
+ *(u32 *)(table+n*4) = 0;
+ *(void **)(obj+8) = *(void **)(obj+4);
+ *(s32 *)(obj+12) = 0;
+ *(s32 *)(obj+16) = 0;
+}
 typedef struct { void *ptr; u8 pad[4]; } Elem8_8003A1E0;
 static inline s32 get_4F128_id(void *arg0) {
  void *Unit_GetActiveItemPtr(void *);
