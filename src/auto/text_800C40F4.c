@@ -21861,7 +21861,10 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     return 1;
 }
 
-void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+s32 fn_800EEEF0(u8 *self, s32 path)
 {
     void fn_8006A384(void *);
     s32 GMaterial_AllocTevStage(void);
@@ -21884,8 +21887,8 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
 
     extern u8 lbl_80272C00[];
-    extern f32 lbl_80369FC8;
-    extern f32 lbl_80369FD4;
+    extern const f32 lbl_80369FC8;
+    extern const f32 lbl_80369FD4;
 
     f32 spF4[3][4];
     f32 spC4[3][4];
@@ -21893,29 +21896,26 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
     f32 sp64[3][4];
     u8 sp44[0x20];
     f32 sp2C[6];
-    f32 sp8[3];
-    f32 sp14[3];
     f32 sp20[3];
+    f32 sp14[3];
+    f32 sp8[3];
 
     u8 *tbl;
-    u8 *self;
     u8 *entry;
     u8 *map;
 
-    s32 path;
     s32 tev;
-    s32 texMap;
     s32 texCoord;
-    s32 mtxId;
+    s32 texMap;
     u16 atlasId;
+    s32 mtxId;
 
     f32 width;
     f32 height;
     f32 extent;
+    f32 scaledExtent;
     f32 mapScale;
 
-    self = (u8 *)arg0;
-    path = arg1;
     tbl = lbl_80272C00;
 
     fn_8006A384(spC4);
@@ -21924,19 +21924,19 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
     texMap = GMaterial_AllocTexMap();
     texCoord = GMaterial_AllocTexCoord();
 
-    entry = *(u8 **)(self + 0x14);
-    entry += self[6] * 0x1C;
+    entry = *(u8 **)(self + 0x14) + self[6] * 0x1C;
     atlasId = *(u16 *)(entry - 0x18);
 
     map = Map_Get();
 
     mapScale = *(f32 *)(map + 0x6C);
 
-    width = (f32)map[0x5E] * mapScale;
-    width = lbl_80369FD4 * width;
+    scaledExtent = lbl_80369FD4 * ((f32)map[0x60] * mapScale);
+    extent = scaledExtent * lbl_80369FC8;
 
-    height = (f32)map[0x5F] * mapScale;
-    height = lbl_80369FD4 * height;
+    height = lbl_80369FD4 * ((f32)map[0x5F] * mapScale);
+
+    width = lbl_80369FD4 * ((f32)map[0x5E] * mapScale);
 
     *(s32 *)&sp2C[0] = *(s32 *)(tbl + 0x1C);
     *(s32 *)&sp2C[2] = *(s32 *)(tbl + 0x24);
@@ -21948,9 +21948,7 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
     sp2C[3] = width;
     sp2C[5] = height;
 
-    extent = (f32)map[0x60] * mapScale;
-    extent = lbl_80369FD4 * extent;
-    extent = extent * lbl_80369FC8;
+
 
     *(s32 *)&sp2C[1] = *(s32 *)(tbl + 0x20);
 
@@ -22004,8 +22002,9 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32 *arg3)
     GXSetTevColorIn(tev, 0xF, 0, 8, 0xF);
     GXSetTevAlphaOp(tev, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(tev, 7, 7, 7, 0);
+    return 1;
 }
-
+#pragma pop
 s32 Map_SetupProjTexTev(void) {
     void fn_8004D5D4(void *);
     s32 Camera_Get(void);
@@ -22383,14 +22382,14 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
     f32 sp64[3][4];
     u8 sp44[0x20];
     f32 sp2C[6];
-    f32 sp8[3];
-    f32 sp14[3];
     f32 sp20[3];
-    s32 path;
-    u32 self;
-    s32 texMap;
-    s32 texCoord;
+    f32 sp14[3];
+    f32 sp8[3];
     s32 tev;
+    s32 texCoord;
+    s32 texMap;
+    u32 self;
+    s32 path;
     u8 *tbl;
     f32 half;
 
@@ -22408,10 +22407,13 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
     }
     {
         u8 *m = (u8 *)Map_Get();
-        f32 v5F = (f32)m[0x5F];
-        f32 v5E = (f32)m[0x5E];
-        s32 t60 = m[0x60];
+        f32 v5F;
+        f32 v5E;
+        s32 t60;
+        t60 = m[0x60];
         half = (f32)(t60 >> 1);
+        v5F = (f32)m[0x5F];
+        v5E = (f32)m[0x5E];
         *(s32 *)&sp2C[0] = *(s32 *)(tbl + 0x1C);
         *(s32 *)&sp2C[2] = *(s32 *)(tbl + 0x24);
         *(s32 *)&sp2C[3] = *(s32 *)(tbl + 0x28);
@@ -25550,7 +25552,10 @@ s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     return sum >> 1;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s32 fn_80230BBC(s32);
     void **Unit_GetActiveItemPtr(void *);
@@ -25564,10 +25569,11 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     extern u8 gUnits[];
     s32 dist;
     u8 *unit;
-    s32 acc;
     s8 *cur;
+    s32 acc;
     s32 sx;
-    s32 penalty;
+    u32 penalty;
+    s32 result;
     void **temp;
     u8 *inner;
     u8 lo;
@@ -25577,9 +25583,9 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     u8 *tp;
     s32 sum;
     u8 *p6;
-    s16 x;
-    s16 y;
     u8 bad;
+    s16 y;
+    s16 x;
     u8 t;
     u8 *e;
 
@@ -25625,7 +25631,7 @@ fail:
     }
     cur = (s8 *) lbl_80272E98;
     acc = 0;
-    dist = penalty + (sum >> 1);
+    result = penalty + (sum >> 1);
     while (*cur != 0x7F) {
         x = arg1 + cur[0];
         y = arg2 + cur[1];
@@ -25648,12 +25654,12 @@ fail:
         cur += 3;
     }
     p6 = gBattleMap + (sx + ((s8) arg2 << 6)) * 2;
-    dist = dist + acc;
-    dist = dist + -(M2C_FIELD(p6, s16 *, 0x610E) >> 1);
-    dist = dist - ((fn_800FCF48((s8) arg1, (s8) arg2, p6) >> 4) & 0xFFF);
-    return dist;
+    result = result + acc;
+    result = result + -(M2C_FIELD(p6, s16 *, 0x610E) >> 1);
+    result = result - ((fn_800FCF48((s8) arg1, (s8) arg2, p6) >> 4) & 0xFFF);
+    return result;
 }
-
+#pragma pop
 u8 fn_800F7D28(u8 *self,u8 *target) {
 extern u8 gBattleMap[];
 u8 Map_IsAiTerrainBlocked(s8,s8);
@@ -31800,6 +31806,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
 s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
