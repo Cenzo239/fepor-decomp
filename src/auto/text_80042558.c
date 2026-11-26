@@ -550,10 +550,10 @@ void fn_80042558(Map_80042558 *arg0)
     s32 eventIndex;
 
     for (eventIndex = 0; eventIndex < fn_8010FF88(gMapObjEventList); eventIndex++) {
-        u8 *rec = gMapObjEventList + eventIndex * 8;
-        s8 x = rec[0];
-        s8 y = rec[1];
-        switch (rec[2] - 0x21) {
+        s8 *rec = (s8 *)(gMapObjEventList + eventIndex * 8);
+        s32 x = rec[0];
+        s32 y = rec[1];
+        switch ((u8)rec[2] - 0x21) {
         case 3:
         {
             u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0xA00);
