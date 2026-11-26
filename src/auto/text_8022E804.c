@@ -19,7 +19,7 @@ static inline s32 count_trailing_zero_p(const f64 *px) {
         m = 16;
         xbits = 0xFFFFU;
         n = 0;
-        j = 32;
+        j = 0x20;
         k = m;
         while (j != 0) {
             if ((lo & xbits) == 0) {
@@ -423,7 +423,7 @@ void fn_8022E804(void *dst, f64 x) {
         ((u8 *)dst)[5] = ch;
         return;
     }
-    if (sign) {
+    if ((s8)sign != 0) {
         sp8 = -x;
     }
     f31 = fn_802382EC((s32 *)&sp10, sp8);
