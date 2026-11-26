@@ -18,6 +18,11 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
+static inline void GXWriteTevOp(volatile PPCWGPipe *fifo, u32 value) {
+    fifo->u8 = 0x61;
+    fifo->u32 = value;
+}
+
 // GXTexObj structure (from headers or similar functions)
 typedef struct {
     u32 dummy[4];
@@ -393,6 +398,7 @@ typedef struct __GXData_struct {
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
+  volatile PPCWGPipe *fifo;
   u16 *gx;
   u32 *ptr;
   u32 value;
@@ -407,13 +413,14 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
   {
     value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
   }
+  fifo = &GXWGFifo;
   cmd = 0x61;
   gx = __GXData;
-  GXWGFifo.u8 = cmd;
+  fifo->u8 = cmd;
   ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
-  GXWGFifo.u32 = value;
+  fifo->u32 = value;
   ptr[(0x130 / 4) + arg0] = value;
   gx[1] = 0;
 }
