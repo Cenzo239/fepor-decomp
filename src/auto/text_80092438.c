@@ -984,7 +984,6 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
 #pragma pop
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs off
 u8 fn_800940B0(void *arg0, void *arg1) {
     u8 fn_80105BC0(void *, s32);
     void *fn_80019E48(void *);
