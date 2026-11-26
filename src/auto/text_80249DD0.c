@@ -1803,10 +1803,10 @@ void fn_8024C5CC(u32 arg0) {
     }
 }
 #pragma optimization_level reset
-extern u8 gSoundSlots[];
 /* Find the index of an active sound slot with the given instance id, or -1. */
 s32 Sound_FindSlotById(u32 id)
 {
+  extern u8 gSoundSlots[];
   u8 *entry;
   s32 i;
   u32 slotId;
