@@ -23,6 +23,32 @@ virtual void deselect(void *, void *) = 0;
 #pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
+static inline void Terrain_HashAll(u32 *out) {
+    struct TerrainEntry {
+        u8 *name;
+        u32 unk4;
+        u32 unk8;
+    };
+    struct TerrainEntry *Terrain_GetEntry(u8);
+    struct TerrainEntry *entries;
+    u32 acc;
+    u8 *s;
+    s32 i;
+
+    entries = Terrain_GetEntry(0);
+    for (i = 0; i < 0x4D; i++) {
+        u8 b;
+        s = entries->name;
+        acc = 0;
+        while ((b = *s, (s8)b != 0)) {
+            acc += b;
+            s++;
+            acc <<= 4;
+        }
+        *out++ = acc;
+        entries++;
+    }
+}
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
         u8 *anim = *(u8 **)(p + 0x44);
@@ -228,27 +254,30 @@ return 0;
 }
 
 void fn_8005B820(void) {
-    void *fn_80019DBC(u8);
+    struct TerrainEntry {
+        u8 *name;
+        u32 unk4;
+        u32 unk8;
+    };
+    struct TerrainEntry *Terrain_GetEntry(u8);
     extern u32 lbl_802F03A8[];
+    struct TerrainEntry *entries;
     u32 *out;
-    u8 *entry;
     s32 i;
-    u32 acc;
-    u8 *s;
-    u8 b;
 
-    entry = fn_80019DBC(0);
+    entries = Terrain_GetEntry(0);
     out = lbl_802F03A8;
-    for (i = 0x4D; i != 0; i--) {
-        s = *(u8 **)entry;
-        acc = 0;
+    for (i = 0; i < 0x4D; i++) {
+        u8 *s = entries->name;
+        u32 acc = 0;
+        u8 b;
         while ((b = *s, (s8)b != 0)) {
-            acc = (acc + b) << 4;
+            acc += b;
             s++;
+            acc <<= 4;
         }
-        *out = acc;
-        out++;
-        entry += 0xC;
+        *out++ = acc;
+        entries++;
     }
 }
 
