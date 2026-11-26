@@ -1,5 +1,6 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+static inline f32 NodeLink_Ease(f32 t, f32 extent, f32 scale, f32 base) { f32 d=extent-t; return base+(scale-scale*(d*d)/(extent*extent)); }
 typedef struct NodeLinkColor { u8 r, g, b, a; } NodeLinkColor;
 static inline void NodeLinkColor_Copy(NodeLinkColor *d, const NodeLinkColor *s) { d->r=s->r; d->g=s->g; d->b=s->b; d->a=s->a; }
 typedef struct TrailNode40 { u32 v[9]; u8 r, g, b, a; } TrailNode40;
@@ -1288,8 +1289,8 @@ void GActor_SetNodeLinkActive(void *arg0, u8 arg1) {
 #pragma scheduling on
 void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     volatile u8 *vsrc = arg1;
+    u8 chk;
     u8 a;
-    s32 chk;
     u8 b;
     u8 c;
     u8 d;
