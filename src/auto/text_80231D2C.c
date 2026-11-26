@@ -983,8 +983,6 @@ char *double2hex(char *buffer, void *format, f64 value) {
     return out;
 }
 
-#pragma use_lmw_stmw on
-#pragma optimization_level 3
 char *longlong2str_802335D8(s64 value, char *buffer, void *format)
 {
     typedef struct {
@@ -1001,7 +999,7 @@ char *longlong2str_802335D8(s64 value, char *buffer, void *format)
     u64 __div2u(u32, u32, u32, u32);
     u64 __mod2u(u32, u32, u32, u32);
 
-    s64 val;
+    u64 val;
     u64 base;
     char *out;
     s32 count;
@@ -1018,7 +1016,7 @@ char *longlong2str_802335D8(s64 value, char *buffer, void *format)
     count = 0;
     *--out = 0;
 
-    if (val == 0 && f->precision == 0 && !(f->alt && f->conv == 'o')) {
+    if (value == 0 && f->precision == 0 && !(f->alt && f->conv == 'o')) {
         return out;
     }
 
@@ -1026,7 +1024,7 @@ char *longlong2str_802335D8(s64 value, char *buffer, void *format)
     case 'd':
     case 'i':
         base = 10;
-        if (val < 0) {
+        if (value < 0) {
             val = -val;
             negative = 1;
         }
@@ -1049,7 +1047,7 @@ char *longlong2str_802335D8(s64 value, char *buffer, void *format)
     do {
         digit = (u32)__mod2u((u32)((u64)val >> 32), (u32)(u64)val,
                              (u32)(base >> 32), (u32)base);
-        val = (s64)__div2u((u32)((u64)val >> 32), (u32)(u64)val,
+        val = __div2u((u32)((u64)val >> 32), (u32)(u64)val,
                            (u32)(base >> 32), (u32)base);
         if (digit < 10) {
             digit += '0';
@@ -3594,30 +3592,50 @@ f64 fn_80237C7C(s32 arg0, f64 farg0, f64 farg1) {
 }
 
 f64 fn_80237E90(f64 farg0) {
-    f64 sp8;
-    f64 z;
+    static const f64 atanhi[4] = {
+        4.63647609000806093515e-01,
+        7.85398163397448278999e-01,
+        9.82793723247329054082e-01,
+        1.57079632679489655800e+00,
+    };
+    static const f64 atanlo[4] = {
+        2.26987774529616870924e-17,
+        3.06161699786838301793e-17,
+        1.39033110312309984516e-17,
+        6.12323399573676603587e-17,
+    };
+    static const f64 aT[11] = {
+        3.33333333333329318027e-01,
+       -1.99999999998764832476e-01,
+        1.42857142725034663711e-01,
+       -1.11111104054623557880e-01,
+        9.09088713343650656196e-02,
+       -7.69187620504482999495e-02,
+        6.66107313738753120669e-02,
+       -5.83357013379057348645e-02,
+        4.97687799461593236017e-02,
+       -3.65315727442169155270e-02,
+        1.62858201153657823623e-02,
+    };
     f64 w;
+    f64 z;
     f64 s1;
     f64 s2;
     f64 a;
-    f64 *aT;
-    f64 *atanhi;
-    f64 *atanlo;
-    s32 hx;
     s32 ix;
+    s32 hx;
     s32 id;
 
-    sp8 = farg0;
-    hx = ((s32 *)&sp8)[0];
+    hx = ((s32 *)&farg0)[0];
     ix = hx & 0x7FFFFFFF;
     if (ix >= 0x44100000) {
-        if (ix > 0x7FF00000 || (ix == 0x7FF00000 && ((s32 *)&sp8)[1] != 0)) {
-            return sp8 + sp8;
+        if (ix > 0x7FF00000 || (ix == 0x7FF00000 && ((s32 *)&farg0)[1] != 0)) {
+            return farg0 + farg0;
         }
         if (hx > 0) {
-            return lbl_80282F40[3] + lbl_80282F40[3 + 4];
+            return atanhi[3] + atanlo[3];
         }
-        return -lbl_80282F40[3] - lbl_80282F40[3 + 4];
+        return -atanhi[3] - atanlo[3];
     }
     if (ix < 0x3FDC0000) {
         if (ix < 0x3E200000 && (lbl_8036C108 + farg0) > lbl_8036C110) {
@@ -3626,34 +3644,31 @@ f64 fn_80237E90(f64 farg0) {
         id = -1;
     } else {
         a = __fabs(farg0);
-        sp8 = a;
+        farg0 = a;
         if (ix < 0x3FF30000) {
             if (ix < 0x3FE60000) {
                 id = 0;
-                sp8 = ((lbl_8036C118 * a) - lbl_8036C110) / (lbl_8036C118 + a);
+                farg0 = ((lbl_8036C118 * a) - lbl_8036C110) / (lbl_8036C118 + a);
             } else {
                 id = 1;
-                sp8 = (a - lbl_8036C110) / (lbl_8036C110 + a);
+                farg0 = (a - lbl_8036C110) / (lbl_8036C110 + a);
             }
         } else if (ix < 0x40038000) {
             id = 2;
-            sp8 = (a - lbl_8036C120) / ((lbl_8036C120 * a) + lbl_8036C110);
+            farg0 = (a - lbl_8036C120) / ((lbl_8036C120 * a) + lbl_8036C110);
         } else {
             id = 3;
-            sp8 = lbl_8036C128 / a;
+            farg0 = lbl_8036C128 / a;
         }
     }
-    aT = lbl_80282F40 + 8;
-    atanhi = lbl_80282F40;
-    atanlo = lbl_80282F40 + 4;
-    z = sp8 * sp8;
+    z = farg0 * farg0;
     w = z * z;
     s1 = z * (aT[0] + w * (aT[2] + w * (aT[4] + w * (aT[6] + w * (aT[8] + w * aT[10])))));
-    s2 = w * (aT[1] + w * (aT[3] + w * (aT[5] + w * (aT[7] + w * (aT[9] + w * aT[11])))));
+    s2 = w * (aT[1] + w * (aT[3] + w * (aT[5] + w * (aT[7] + w * aT[9]))));
     if (id < 0) {
-        return sp8 - (sp8 * (s1 + s2));
+        return farg0 - farg0 * (s1 + s2);
     }
-    z = atanhi[id] - ((sp8 * (s1 + s2) - atanlo[id]) - sp8);
+    z = atanhi[id] - ((farg0 * (s1 + s2) - atanlo[id]) - farg0);
     if (hx < 0) {
         z = -z;
     }
