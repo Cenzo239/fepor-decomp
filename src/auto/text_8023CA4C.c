@@ -73,9 +73,9 @@ return *p;
 }
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *lbl_80368950;
-u8 *p = lbl_80368950->cursor;
+u16 value = (lbl_80368950->cursor[0] << 8) | lbl_80368950->cursor[1];
 lbl_80368950->cursor += 2;
-return (p[0] << 8) | p[1];
+return value;
 }
 
   static inline u8 SynthAllocateStream(void) {
