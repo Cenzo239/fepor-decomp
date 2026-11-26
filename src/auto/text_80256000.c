@@ -32,6 +32,10 @@ extern u8 lbl_8034CBB4[];
 
 typedef struct AudioGroupSlot { void *node; s32 id; void *data; } AudioGroupSlot;
 typedef struct AudioGroupState { u8 pad[8]; s16 count; u16 padA; AudioGroupSlot slots[128]; } AudioGroupState;
+static inline void *Sound_GroupNodeAt(AudioGroupState *state, s16 index) {
+    state = (AudioGroupState *)((u8 *)state + index * 12);
+    return state->slots[0].node;
+}
 typedef struct SynthMessageSlots { u8 pad[0xAC]; u32 slots[32]; } SynthMessageSlots;
 typedef struct SynthMessageQueue { u8 pad[0x444]; u32 slots[4]; } SynthMessageQueue;
 typedef struct SynthMsgSlot { u8 pad[0x444]; u32 value; } SynthMsgSlot;
@@ -2383,7 +2387,8 @@ fn_802624B8(); (*(s16 *)((u8 *)gAudioGroupState+8))++; return 1;
 return 0;
 }
 
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 3
 s32 fn_802590E0(void) {
 extern s32 *gAudioGroupState;
 void Audio_Lock(void); void Audio_Unlock(void);
@@ -2391,7 +2396,7 @@ void fn_8025D9A4(void *,u16); void fn_80245014(u16);
 void fn_802572E8(void *); void fn_80257444(void *);
 void fn_8024FACC(s32); void fn_8024FF5C(u16);
 void Sound_SetResource(s32,void *,u8,u32);
-u8 *node; s32 id; u8 *base; u16 *start; u16 *p; s16 i;
+u8 *node; u8 *base; s32 id; u16 *start; u16 *p; s16 i;
 AudioGroupState *state=(AudioGroupState *)gAudioGroupState;
 s16 n=--state->count;
 void *slot;
@@ -2422,7 +2427,7 @@ fn_8024FACC(id);
 { u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+24)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,3,1);q+=2;}else Sound_SetResource(*q++,0,3,1); } }
 if(*(u16 *)(node+6)==1) fn_8024FF5C(*(u16 *)(node+4));return 1;
 }
-#pragma opt_strength_reduction reset
+#pragma pop
 s32 fn_80259430(u16 gid,u16 sid,s32 arg2,s32 *arg3,s32 unlocked,u8 arg5) {
 extern GroupNode *lbl_80368A60;
 s32 fn_80243FB8(void*,void*,GroupItem*,s32,s32*,u8,u16);
