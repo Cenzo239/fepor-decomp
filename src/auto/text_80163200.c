@@ -2984,39 +2984,33 @@ void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
-    void *memset(void *, int, s32);
-
+    void *memset(void *, s32, s32);
     extern u8 lbl_80293D20[];
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80277A20[];
-    extern f32 lbl_8036A92C;
+    extern const f32 lbl_8036A92C;
+    void *proc;
+    u8 flag;
 
-    void *temp_r3;
-    u8 var_r0;
-    f32 f0;
-    u8 *base;
-
-    temp_r3 = Process_Find(lbl_80293D20);
-    if (temp_r3 == NULL) {
-        var_r0 = 0;
-    } else if (*(u8 *)((u8 *)temp_r3 + 0x2E) != 0) {
-        var_r0 = 0;
+    proc = Process_Find(lbl_80293D20);
+    if (proc == NULL) {
+        flag = 0;
+    } else if (*(u8 *)((u8 *)proc + 0x2E) != 0) {
+        flag = 0;
     } else {
-        var_r0 = 1;
+        flag = 1;
     }
-    if (var_r0 == 0) {
+    if (flag == 0) {
         Process_Create(lbl_80293D20, arg1);
         memset(gUnitInfoPopup, 0, 0x124);
         *(f32 *)((u8 *)arg0 + 0xDC) = farg0;
-        base = lbl_80277A20;
-        f0 = lbl_8036A92C;
         *(f32 *)((u8 *)arg0 + 0xE0) = farg1;
         *(f32 *)((u8 *)arg0 + 0xF4) = farg0;
         *(f32 *)((u8 *)arg0 + 0xF8) = farg1;
-        *(f32 *)((u8 *)arg0 + 0x10C) = f0;
-        *(f32 *)((u8 *)arg0 + 0x110) = f0;
-        fn_8005C8B4(base + 0x42);
-        Ui_PlaySeCue(base + 0x52, 0x64);
+        *(f32 *)((u8 *)arg0 + 0x10C) = lbl_8036A92C;
+        *(f32 *)((u8 *)arg0 + 0x110) = lbl_8036A92C;
+        fn_8005C8B4(lbl_80277A20 + 0x42);
+        Ui_PlaySeCue(lbl_80277A20 + 0x52, 0x64);
         Ui_ShowUnitInfoText(arg0, arg2, farg0, farg1);
     }
 }
@@ -18345,6 +18339,7 @@ void fn_80180620(void) {
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 2
+#pragma opt_propagation off
 extern "C" void fn_80180624(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
