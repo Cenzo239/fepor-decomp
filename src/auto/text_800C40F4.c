@@ -1106,6 +1106,14 @@ found4:
 #pragma global_optimizer off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
+    struct HeapLocal {
+        u32 magic;
+        char name[12];
+        u32 next;
+        u32 prev;
+        u8 *freeBlock;
+        u32 size;
+    };
     extern u32 lbl_8036786C;
     extern u32 lbl_80367864;
     extern u32 lbl_80367870;
@@ -1116,35 +1124,35 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
-    u8 *heap;
     s32 index;
+    struct HeapLocal *heap;
     u32 size;
     u32 end;
 
     size = Heap_AlignSize(arg1);
 
-    end=lbl_8036786C;
+    end = lbl_8036786C;
     if (end != 0) {
-        heap = (u8 *)(end - size);
+        heap = (struct HeapLocal *)(end - size);
     } else {
-        heap = (u8 *)(lbl_80367864 - size);
+        heap = (struct HeapLocal *)(lbl_80367864 - size);
     }
 
-    index=Heap_FindInTable(lbl_80320B88,0);
+    index = Heap_FindInTable(lbl_80320B88, 0);
 
-    Str_CopyPad(heap + 4, arg0, 0xB);
+    Str_CopyPad(heap->name, arg0, 0xB);
 
-    heap[0xF] = 0;
-    *(u32 *)(heap + 0x10) = 0;
+    heap->name[0xB] = 0;
+    heap->next = 0;
 
-    *(u32 *)(heap + 0x1C) = size;
-    *(u32 *)(heap + 0x14) = 0;
-    *(void **)(heap + 0x18) = heap + 0x20;
-    *(u32 *)heap = 0x48454150;
+    heap->size = size;
+    heap->prev = 0;
+    heap->freeBlock = (u8 *)heap + 0x20;
+    heap->magic = 0x48454150;
 
-    *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
-    *(u32 *)(*(u8 **)(heap + 0x18) + 8) = 0;
-    *(u32 *)(*(u8 **)(heap + 0x18) + 0x10) = *(u32 *)(heap + 0x1C) - 0x20;
+    *(u32 *)(heap->freeBlock + 0xC) = 0;
+    *(u32 *)(heap->freeBlock + 8) = 0;
+    *(u32 *)(heap->freeBlock + 0x10) = heap->size - 0x20;
 
     lbl_80320B88[index] = (u32)heap;
     lbl_80367870 = lbl_80320B88[index];
@@ -1158,12 +1166,14 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
         size >> 10
     );
 
-    *(u32 *)(heap + 0x10) = lbl_8036786C;
+    heap->next = lbl_8036786C;
     lbl_8036786C = (u32)heap;
 
     return index;
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 s32 Heap_Create(void *arg0, s32 arg1)
 {
     extern u8 *lbl_80367868;
@@ -1176,11 +1186,11 @@ s32 Heap_Create(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
-    s32 index;
     u32 size;
     u8 *heap;
     u8 *previous;
     void **table;
+    s32 index;
     s32 groups;
 
     size = (arg1 + 0x1F) & ~0x1F;
@@ -1225,7 +1235,7 @@ s32 Heap_Create(void *arg0, s32 arg1)
 
     return index;
 }
-
+#pragma pop
 extern u32* lbl_80367860;
 extern u32 lbl_80367864;
 extern u32* lbl_80367868;
@@ -10441,6 +10451,9 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
     String name4;
     struct Value value;
     struct Value temp;
+    struct Value temp2;
+    struct Value temp3;
+    struct Value temp4;
     s32 scratch;
     s32 scratch2;
     s32 scratch3;
@@ -10457,10 +10470,10 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
     *(u32 *)(self + 0xB4) = 0;
     *(u32 *)(self + 0xB0) = 0;
 
-    value.v[0] = 0;
-    value.v[1] = 0;
-    value.v[2] = 0;
     value.v[3] = 0;
+    value.v[2] = 0;
+    value.v[1] = 0;
+    value.v[0] = 0;
 
     String_Init(&name, lbl_80271560, &scratch);
 
@@ -10482,9 +10495,9 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
         &scratch2
     );
 
-    Xml_GetNamedValue(&temp, arg2, &name2);
+    Xml_GetNamedValue(&temp2, arg2, &name2);
 
-    self[0xB8] = temp.v[0] != 0;
+    self[0xB8] = temp2.v[0] != 0;
 
     String_Destroy(&name2, -1);
 
@@ -10494,9 +10507,9 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
         &scratch3
     );
 
-    Xml_GetNamedValue(&temp, arg2, &name3);
+    Xml_GetNamedValue(&temp3, arg2, &name3);
 
-    self[0xB9] = temp.v[0] != 0;
+    self[0xB9] = temp3.v[0] != 0;
 
     String_Destroy(&name3, -1);
 
@@ -10506,9 +10519,9 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
         &scratch4
     );
 
-    Xml_GetNamedValue(&temp, arg2, &name4);
+    Xml_GetNamedValue(&temp4, arg2, &name4);
 
-    *(u32 *)(self + 0xBC) = temp.v[0];
+    *(u32 *)(self + 0xBC) = temp4.v[0];
 
     String_Destroy(&name4, -1);
 
@@ -14985,18 +14998,17 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
+    void Prim2D_AddPrim(u8);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetScale(f32);
     void Prim2D_SetText(void *);
-    void Prim2D_SetTint(s32, s32, s32, s32);
-    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetTint(u8, u8, u8, u8);
+    void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_EndPrim(void);
     void *String_CStr(void *);
 
     void *parent;
-    unsigned int alpha;
-    s32 prim;
+    s32 alpha;
     f32 scale;
 
     parent = *(void **)((u8 *)arg0 + 0x38);
@@ -15019,12 +15031,11 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
 
     Prim2D_PrepareTex();
 
-    prim = arg5;
-    if ((u8)arg5 == 0xFF) {
-        prim = 5;
+    if (arg5 == 0xFF) {
+        arg5 = 5;
     }
 
-    Prim2D_AddPrim(prim);
+    Prim2D_AddPrim(arg5);
     Prim2D_SetPos((f32)arg1, (f32)arg2);
     scale = arg6 / lbl_80369F10;
     Prim2D_SetScale(scale);
@@ -15034,7 +15045,7 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
     Prim2D_EndPrim();
 
     if (arg4) {
-        Prim2D_AddPrim(prim);
+        Prim2D_AddPrim(arg5);
         Prim2D_SetPos((f32)arg1, (f32)arg2);
         Prim2D_SetText(String_CStr(arg3));
         Prim2D_SetScale(scale);
@@ -15137,51 +15148,57 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 }
 
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 4
 void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, s32 arg11, s32 arg12) {
-    M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
-    M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
-    M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
-    M2C_UNK Prim2D_EndPrim();
-    M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
-    M2C_UNK Prim2D_BindTexture(u32, s32, u16);
-    M2C_UNK Prim2D_PrepareTex();
-    M2C_UNK Prim2D_Begin();
-    extern f32 gPrim2DZero;
-    extern f32 gPrim2DOne;
-    s32 w;
-    s32 h;
+    void fn_800076AC(u8, u8, u8, u8);
+    void fn_80007770(f32, f32, f32, f32);
+    void fn_800077D8(f32, f32, f32, f32);
+    void fn_80007884(void);
+    void fn_80007898(s32);
+    void fn_80009D74(f32, f32, f32, f32);
+    void fn_80009F90(u32, s32, u16);
+    void fn_8000A248(void);
+    void fn_8000A258(void);
+    extern f32 lbl_80369F20;
+    extern f32 lbl_80369F24;
     s32 x2;
     s32 y2;
     s32 cols;
-    s32 v1;
-    s32 u1;
-    s32 v0;
+    s32 w;
+    s32 h;
     s32 u0;
+    s32 v0;
+    s32 u1;
+    s32 v1;
+    s32 row;
+    s32 col;
+    u32 tex;
 
     x2 = arg3 + arg6;
     y2 = arg4 + arg7;
-    if (arg2 >= M2C_FIELD(arg0, s32 *, 0x60)) {
-        arg2 = M2C_FIELD(arg0, s32 *, 0x60) - 1;
+    if (arg2 >= *(s32 *)((u8 *)arg0 + 0x60)) {
+        arg2 = *(s32 *)((u8 *)arg0 + 0x60) - 1;
     }
-    cols = M2C_FIELD(arg0, s32 *, 0x5C);
-    w = M2C_FIELD(arg0, s32 *, 0x54);
-    h = M2C_FIELD(arg0, s32 *, 0x58);
-    u0 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
-    v0 = M2C_FIELD(arg0, s32 *, 0x68) + h * (arg2 / cols);
+    cols = *(s32 *)((u8 *)arg0 + 0x5C);
+    tex = *(u32 *)((u8 *)arg0 + 0x48);
+    row = arg2 / cols;
+    w = *(s32 *)((u8 *)arg0 + 0x54);
+    h = *(s32 *)((u8 *)arg0 + 0x58);
+    col = arg2 % cols;
+    u0 = *(s32 *)((u8 *)arg0 + 0x64) + w * col;
     u1 = u0 + w;
+    v0 = *(s32 *)((u8 *)arg0 + 0x68) + h * row;
     v1 = v0 + h;
-    if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
-        Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, gPrim2DOne);
-        Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg12, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRect((f32) arg3, (f32) arg4, (f32) (x2 - arg3), (f32) (y2 - arg4));
-        Prim2D_SetUvCorners((f32) u0, (f32) v0, (f32) u1, (f32) v1);
-        Prim2D_SetColor((u8) arg8, (u8) arg9, (u8) arg10, (u8) arg11);
-        Prim2D_EndPrim();
+    if (tex != 0) {
+        fn_8000A258();
+        fn_80009D74(lbl_80369F20, lbl_80369F20, (f32)arg5, lbl_80369F24);
+        fn_80009F90(*(u32 *)((u8 *)arg0 + 0x48), arg12, (u16)*(s32 *)((u8 *)arg0 + 0x6C));
+        fn_8000A248();
+        fn_80007898(1);
+        fn_800077D8((f32)arg3, (f32)arg4, (f32)(x2 - arg3), (f32)(y2 - arg4));
+        fn_80007770((f32)u0, (f32)v0, (f32)u1, (f32)v1);
+        fn_800076AC((u8)arg8, (u8)arg9, (u8)arg10, (u8)arg11);
+        fn_80007884();
     }
 }
 #pragma pop
