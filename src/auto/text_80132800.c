@@ -1798,7 +1798,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma scheduling on
 #pragma opt_lifetimes off
 
-static inline void MenuGridPosition(s32 *arg0, const void *arg1, s32 colW, s32 kind) {
+static inline void MenuGridPosition(s32 *arg0, const void *arg1, s16 colW, s16 kind) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
     Vec2s in, out;
