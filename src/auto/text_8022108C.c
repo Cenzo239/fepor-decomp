@@ -389,6 +389,7 @@ void fn_802212C8(s32 arg0) {
  M2C_FIELD(__GXData, u32 *, 0x1E8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1E8), 0x4D, 24, 0, 7);
 }
 
+void fn_8022257C(s32, s32, s32, u32 *, u32 *, u32 *);
 void fn_802212FC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
  u32 x, y, z;
  u32 format = arg2 & 15;
@@ -399,7 +400,7 @@ void fn_802212FC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
  M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),3,15,15,16); break;
  default: M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),2,15,15,16); break;
  }
- M2C_FIELD(__GXData,u8 *,0x200) = (arg2 & 0x10) == 0x10;
+ M2C_FIELD(__GXData,u8 *,0x200) = !((arg2 & 0x10) - 0x10);
  M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),format,0,28,28);
  format &= 7;
  fn_8022257C(arg2,arg0,arg1,&x,&y,&z);
