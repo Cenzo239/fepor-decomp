@@ -83,10 +83,9 @@ static inline void Ai_TryFallbackMove(void *arg0) {
         if (gAiState[0x21C]) {
             if (x2 == (s8)gUiContext[13] && y2 == (s8)gUiContext[14]) {
                 u8 tx = ((u8 *)TargetList_GetAt(gTargetList, 0))[0];
+                u8 *p = TargetList_GetAt(gTargetList, 0);
                 fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4),
-                    (s8)tx,
-                    ((s8 *)TargetList_GetAt(gTargetList, 0))[1],
-                    -1, 0, 0);
+                    (s8)tx, (s8)p[1], -1, 0, 0);
             }
         }
     }
