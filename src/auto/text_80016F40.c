@@ -24,7 +24,7 @@ static inline u8 CamPath_FindZeroKey(s32 count, u8 **list) {
  if (count == 0) return 0;
  keys = *list;
  time = lbl_80368C88;
- for (i=count; i>0; --i,keys+=0x14) if ((f32)*(s32 *)(keys+4)==time) return 1;
+ for (i=count; i>0; --i,keys+=0x14) { keyTime = (f32)*(s32 *)(keys+4); if (keyTime==time) return 1; }
  return 0;
 }
 static inline u8 CamPath_HasInitialKey(s32 count, u8 *keys) {
