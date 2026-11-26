@@ -1292,6 +1292,8 @@ extern "C" void Ui_DrawListPanelBg(void *panel, s32 count) {
     Prim2D_PrepareTex();
 }
 
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_8013E080(void *arg0, void *arg1) {
 struct Obj { u8 pad[4];
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
@@ -1305,19 +1307,16 @@ virtual s16 getX()=0; virtual s16 getY()=0; virtual void v23()=0; virtual void v
 f32 UiWin_GetFade(void *); f32 Math_Ease(s32,f32,f32,f32,f32);
 void fn_80009C20(f32,f32,f32,f32,f32,f32,f32,f32);
 void Prim2D_Begin(void); void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte(s32); void Prim2D_PrepareTex(void);
-extern f32 lbl_8036A6C0, lbl_8036A6E0, lbl_8036A6E4;
+
 f32 y, z, fade, scale; s16 x;
 u8 focused, alpha;
 void *o;
 fade=UiWin_GetFade(arg1);
-scale=Math_Ease(5,lbl_8036A6E0,lbl_8036A6C0,fade,lbl_8036A6C0);
+scale=Math_Ease(5,0.0f,1.0f,fade,1.0f);
 Prim2D_Begin();
 o=arg0;
-z=((Obj *)o)->getZ();
-y=((Obj *)o)->getY();
-x=((Obj *)o)->getX();
-fn_80009C20(x,y,z,lbl_8036A6E0,lbl_8036A6E0,scale,scale,lbl_8036A6E0);
-Prim2D_SetColorByte((s32)(lbl_8036A6E4*fade));
+fn_80009C20(((Obj *)o)->getX(),((Obj *)o)->getY(),((Obj *)o)->getZ(),0.0f,0.0f,scale,scale,0.0f);
+Prim2D_SetColorByte((s32)(255.99f*fade));
 focused=0;
 if(*((u8 *)arg1+0x2D)==0 && *((u8 *)arg1+0x2E)==0) focused=1;
 alpha=0x40;
@@ -1325,7 +1324,7 @@ if(focused) alpha=0x80;
 Prim2D_SetAlphaByte(alpha);
 Prim2D_PrepareTex();
 }
-
+#pragma pop
 extern "C" void *GfxEnt_Get(u8);
 extern "C" void fn_8013E218(void *arg0, void *arg1) {
     struct Obj {
