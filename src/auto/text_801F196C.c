@@ -2728,51 +2728,72 @@ void fn_801F72A4(void *arg0) {
     }
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_801F7434(void *arg0) {
+    typedef struct {
+        u8 pad0[5];
+        u8 unk5;
+        s16 idx;
+        u8 pad8[0xE];
+        u8 unk16;
+        u8 unk17;
+        s16 unk18;
+        s16 unk1A;
+        s16 unk1C;
+        u8 pad1E[0xA];
+        char text[0x60];
+        u8 unk88;
+        u8 pad89[0xC];
+        u8 numLines;
+        u8 pad96[0x1A];
+        char *msgs[7];
+        u8 padCC[2];
+        char lines[5][0x40];
+    } BattlePreview;
     void Ui_PlaySeCue(void *, s32);
     char *Msg_Expand(char *);
     void *memcpy(void *, const void *, unsigned long);
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
     extern char gBattlePreviewStrings[];
-    u8 *p = *(u8 **)((u8 *)arg0 + 0x30);
-    char *src;
-    char *seg;
+    BattlePreview *p = *(BattlePreview **)((u8 *)arg0 + 0x30);
+    s8 *src;
+    s8 *seg;
     s32 len;
     s32 lines;
     u8 *dst;
-    s8 c;
 
-    p[0x88] = 1;
-    p[5] = 0;
-    p[0x16] = 1;
-    p[0x17] = 1;
-    *(s16 *)(p + 0x18) = 0;
-    *(s16 *)(p + 0x1A) = 0x1C2;
-    *(s16 *)(p + 0x1C) = 0x3D;
-    p[0xCE] = 0;
-    p[0x10E] = 0;
-    p[0x14E] = 0;
-    p[0x18E] = 0;
-    p[0x1CE] = 0;
+    p->unk88 = 1;
+    p->unk5 = 0;
+    p->unk16 = 1;
+    p->unk17 = 1;
+    p->unk18 = 0;
+    p->unk1A = 0x1C2;
+    p->unk1C = 0x3D;
+    p->lines[0][0] = 0;
+    p->lines[1][0] = 0;
+    p->lines[2][0] = 0;
+    p->lines[3][0] = 0;
+    p->lines[4][0] = 0;
 
-    src = Msg_Expand(*(char **)(p + (*(s16 *)(p + 6) << 2) + 0xB0));
-    len = 0;
-    lines = 0;
-    dst = p;
+    src = (s8 *)Msg_Expand(p->msgs[p->idx]);
+    lines = len = 0;
     seg = src;
+    dst = (u8 *)p + (lines << 6);
 
     for (;;) {
-        c = *src;
-        if (c == 0 || c == '\n') {
+        if (*src == 0 || *src == '\n') {
+            char *q;
             if (len > 0) {
                 memcpy(dst + 0xCE, seg, len);
             }
-            *(dst + len + 0xCE) = 0;
+            q = (char *)(dst + len + 0xCE);
             len = 0;
+            *q = len;
             dst += 0x40;
             lines++;
-            if ((s8)*src == 0) {
+            if (*src == 0) {
                 break;
             }
             src++;
@@ -2783,16 +2804,16 @@ void fn_801F7434(void *arg0) {
         }
     }
 
-    p[0x95] = (u8)lines;
+    p->numLines = (u8)lines;
     Ui_PlaySeCue(gBattlePreviewStrings + 0x1D2, 100);
-    strcpy((char *)(p + 0x28), gBattlePreviewStrings + 0x1EB);
-    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x1F1));
-    strcat((char *)(p + 0x28), gBattlePreviewStrings + 0x1FC);
-    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x204));
-    strcat((char *)(p + 0x28), gBattlePreviewStrings + 0x20F);
-    strcat((char *)(p + 0x28), Msg_Expand(gBattlePreviewStrings + 0x217));
+    strcpy(p->text, gBattlePreviewStrings + 0x1EB);
+    strcat(p->text, Msg_Expand(gBattlePreviewStrings + 0x1F1));
+    strcat(p->text, gBattlePreviewStrings + 0x1FC);
+    strcat(p->text, Msg_Expand(gBattlePreviewStrings + 0x204));
+    strcat(p->text, gBattlePreviewStrings + 0x20F);
+    strcat(p->text, Msg_Expand(gBattlePreviewStrings + 0x217));
 }
-
+#pragma pop
 void fn_801F75D4(void *arg0) {
     void Ui_PlaySeCue(void *,s32);
     void Process_Goto(void *,s32);
