@@ -11017,7 +11017,6 @@ void fn_801C7FC0(u32 arg0) {
 
 void *fn_801C7FE8(void *arg0) {
 #pragma cplusplus on
-    void *Heap_Alloc(s32);
     extern void *gEmptyVtbl[];
     extern const f32 lbl_8036B478;
     extern const f32 lbl_8036B498;
