@@ -8972,12 +8972,12 @@ void *fn_800DC3B8(void *); void fn_8011CA3C(void *,void *,void *); void fn_8011C
 extern char lbl_802711B0[]; extern void *lbl_80367898; extern void *lbl_803678C0;
 char sp68[40];
 String sp5C,sp50,sp44,sp38,sp2C,sp20,sp14; u32 sp10,spC,sp8;
-void *f; s32 arg0; char *path; s8 made;
+u32 path; s8 made; void *f; s32 arg0;
 void *t;
-arg0=self; made=0;
+arg0=self; path=(u32)arg1; made=0;
 f=Heap_Alloc(0x60);
-path=arg1;
-if(f){String_Init(&sp44,lbl_802711B0+0xFA,&sp10);made=1;f=Xml_ParseFile(f,path,&sp44);}
+
+if(f){String_Init(&sp44,lbl_802711B0+0xFA,&sp10);made=1;f=Xml_ParseFile(f,(void *)path,&sp44);}
 if((s8)made)String_Destroy(&sp44,-1);
 sp5C.cap=0;sp50.cap=0;sp5C.size=0;sp5C.data=0;sp5C.cap=0;sp50.size=0;sp50.data=0;sp50.cap=0;
 fn_800C8F70(f,0);
@@ -8987,10 +8987,10 @@ String_Destroy(&sp38,-1);
 String_Init(&sp2C,lbl_802711B0+0x129,&sp8);
 fn_800CA18C((void *)(arg0+0x34),M2C_FIELD(arg0,u8 **,0x3C)+M2C_FIELD(arg0,s32 *,0x38)*12,1,&sp2C);
 String_Destroy(&sp2C,-1);
-path=sp68;
+path=(u32)sp68;
 do{
 Xml_GetChildName(&sp20,f);String_Assign(&sp5C,&sp20,0,-1);String_Destroy(&sp20,-1);
-Xml_GetChildValue(sp68,f);String_AssignCStr(&sp50,path,strlen(path));
+Xml_GetChildValue(sp68,f);String_AssignCStr(&sp50,(char *)path,strlen((char *)path));
 String_Copy(&sp14,&sp5C);
 fn_800D6FA4(lbl_80367898,&sp14);
 String_Destroy(&sp14,-1);
