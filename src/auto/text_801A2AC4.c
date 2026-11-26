@@ -16,7 +16,7 @@ if(cross[0]>=0 && cross[1]>=0 && cross[2]>=0) return 1;
 return 0;
 }
 static inline u8 Battle_ItemReach(void *data) { if(data) return M2C_FIELD(data,u8 *,0x1d); return 0; }
-static inline u8 Battle_ItemRange(void *data,void *unit) { u8 Item_GetRangeForUnit(void *,void *); if(data) return Item_GetRangeForUnit(data,unit); return 0; }
+static inline u8 Battle_ItemRange(void *data,void *unit) { u32 Item_GetRangeForUnit(void *,void *); if(data) return (u8)Item_GetRangeForUnit(data,unit); return 0; }
 
 static inline u8 Battle_ItemClass(s32 unit) {
     u8 *item = *(u8 **)(unit + 0x28C);
@@ -649,7 +649,6 @@ s32 Item_GetHealAmount(void *itemDef) {
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
-#pragma global_optimizer on
 s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
 u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
@@ -660,12 +659,7 @@ void *members[3]; s32 cross[3]; s32 out;
 void *node; s32 count; s32 i; void **walk;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
 if(Status_Test((u8 *)self+0x1bc,84)) {
-node=gUnitLists[0]; count=0;
-while(node) {
-void *next=M2C_FIELD(node,void **,0x184);
-if(Status_Test((u8 *)node+0x1bc,84) && count<3) members[count++]=node;
-node=next;
-}
+count=Battle_CollectStatus(members,84);
 if(count<3) return 0;
 walk=members;
 for(i=0;i<3;i++,walk++) {
@@ -683,12 +677,7 @@ if(data) type=M2C_FIELD(data,u8 *,0x1d); else type=0;
 if(type>1) return 0;
 }}
 else if(Status_Test((u8 *)self+0x1bc,85)) {
-node=gUnitLists[0]; count=0;
-while(node) {
-void *next=M2C_FIELD(node,void **,0x184);
-if(Status_Test((u8 *)node+0x1bc,85) && count<3) members[count++]=node;
-node=next;
-}
+count=Battle_CollectStatus(members,85);
 if(count<3) return 0;
 walk=members;
 for(i=0;i<3;i++,walk++) {
@@ -702,9 +691,9 @@ if(data) type=M2C_FIELD(data,u8 *,0x12); else type=12;
 if(type!=3) return 0;
 Map_SelectRangeBuffer(gBattleMap,6); Map_FillLayer(gBattleMap,8,0);
 {u8 range; u8 reach;
-if(*item) range=(u8)Item_GetRangeForUnit(*item,*walk); else range=0;
+range=Battle_ItemRange(*item,*walk);
 data=*item;
-if(data) reach=M2C_FIELD(data,u8 *,0x1d); else reach=0;
+reach=Battle_ItemReach(data);
 unit=*walk;
 Map_FillAttackRange(gBattleMap,M2C_FIELD(unit,u8 *,0x19e),M2C_FIELD(unit,u8 *,0x19f),reach,range);
 }
@@ -716,13 +705,8 @@ u8 x=M2C_FIELD(a,u8 *,0x19e), y=M2C_FIELD(a,u8 *,0x19f);
 cross[i]=(s8)(M2C_FIELD(self,u8 *,0x47f)-y)*(s8)(M2C_FIELD(b,u8 *,0x19e)-x)
 -(s8)(M2C_FIELD(self,u8 *,0x47e)-x)*(s8)(M2C_FIELD(b,u8 *,0x19f)-y);
 }
-{u8 inside;
-if(cross[0]==0 && cross[1]==0) inside=0;
-else if(cross[0]<=0 && cross[1]<=0 && cross[2]<=0) inside=1;
-else if(cross[0]>=0 && cross[1]>=0 && cross[2]>=0) inside=1;
-else inside=0;
-if(!inside) return 0;
-}}
+if(!Battle_CrossInside(cross)) return 0;
+}
 else return 0;
 out=0;
 if(members[0]!=M2C_FIELD(self,void **,0x280)){*(void **)((u8 *)self+0xcbc+out)=members[0];out+=4;}
