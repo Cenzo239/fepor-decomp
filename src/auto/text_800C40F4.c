@@ -10568,6 +10568,9 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
+    extern const f32 lbl_80369E70;
+    extern const f32 lbl_80369E80;
+    extern const f32 lbl_80369E84;
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -10576,10 +10579,10 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     f32 z;
     f32 x;
 
-    vec[0] = 0.0f;
-    vec[1] = 0.0f;
-    vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
+    vec[0] = lbl_80369E70;
+    vec[1] = lbl_80369E70;
+    vec[2] = lbl_80369E80;
+    PSMTXRotRad(mtx, 0x59, lbl_80369E84 * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
@@ -16132,39 +16135,34 @@ void fn_800E4E5C(void *arg0) {
 
 #pragma push
 #pragma cplusplus on
-extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
+#pragma global_optimizer off
+extern "C" void fn_800E4E7C(void *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
     extern f32 lbl_80369F5C, lbl_80369F60;
-
-    f32 pos[3];
-    f32 z;
-    f32 y;
-    f32 x;
-    f32 *out;
+    struct Vec3 { f32 x, y, z; };
+    struct Vec3 pos;
+    struct Vec3 *out = (struct Vec3 *)arg0;
+    f32 z, y, x;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
         GActor_FindNode(*(void **)((u8 *)arg1 + 0xE0), arg2),
-        pos
+        &pos.x
     );
 
-    x = pos[0];
-
+    x = pos.x;
     if (x > lbl_80369F5C && x < lbl_80369F60) {
-        y = pos[1];
-        z = pos[2];
+        y = pos.y;
+        z = pos.z;
     } else {
-        z = lbl_80369F3C;
-        y = z;
-        x = z;
+        x = y = z = lbl_80369F3C;
     }
 
-    out = arg0;
-    out[0] = x;
-    out[1] = y;
-    out[2] = z;
+    out->x = x;
+    out->y = y;
+    out->z = z;
 }
 #pragma pop
 void fn_800E4F0C(void *arg0) {
