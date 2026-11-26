@@ -138,9 +138,12 @@ f32 fn_80019804(void) {
     return lbl_80368CE8;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_8001980C(void *arg0) {
     extern void *gPadInput;
-    extern f32 lbl_80368C88;
+    extern const f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
     extern f32 lbl_80368CA4;
     extern f32 lbl_80368CE4;
@@ -169,18 +172,16 @@ void fn_8001980C(void *arg0) {
         }
     } else {
         temp_r6 = M2C_FIELD(gPadInput, void **, 0);
-        scale = lbl_80368D08;
         one = lbl_80368C8C;
-        one = one - ((f32)M2C_FIELD(temp_r6, u8 *, 7) / scale);
-        one = one + ((f32)M2C_FIELD(temp_r6, u8 *, 6) / scale);
+        one = one - ((f32)M2C_FIELD(temp_r6, u8 *, 7) / lbl_80368D08);
+        one = one + ((f32)M2C_FIELD(temp_r6, u8 *, 6) / lbl_80368D08);
         M2C_FIELD(arg0, f32 *, 0x18) = M2C_FIELD(arg0, f32 *, 0x18) * one;
     }
-    zero = lbl_80368C88;
     M2C_FIELD(arg0, f32 *, 0x14) =
         -(((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 5) * lbl_80368D0C)
           - M2C_FIELD(arg0, f32 *, 0x14));
     temp_f1 = M2C_FIELD(arg0, f32 *, 0x14);
-    if (temp_f1 < zero) {
+    if (temp_f1 < lbl_80368C88) {
         M2C_FIELD(arg0, f32 *, 0x14) = temp_f1 * lbl_80368CA4;
     }
     temp_f1_2 = M2C_FIELD(arg0, f32 *, 0x14);
@@ -196,7 +197,7 @@ void fn_8001980C(void *arg0) {
     M2C_FIELD(arg0, f32 *, 4) = M2C_FIELD(arg0, f32 *, 0x10);
     M2C_FIELD(arg0, s32 *, 0x1C) = 0xFF;
 }
-
+#pragma pop
 void *fn_800199E8(void) {
     extern s32 lbl_80268330[];
     return (char *) &lbl_80268330 + 0x1D0;
