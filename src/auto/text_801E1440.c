@@ -893,6 +893,28 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
+static inline void Save_InitSuspendHeader(u8 *best, u8 saved47, u8 *battle) {
+    *(s32 *)(best + 0x4C) = 0x4000;
+    *(u32 *)(best + 0x40) = 0x4645384AU;
+    *(u32 *)(best + 0x44) = 0x20050201U;
+    *(u32 *)(best + 0x48) = 0;
+    *(u32 *)(best + 0x5C) = 0;
+    *(u32 *)(best + 0x58) = 0;
+    best[0x60] = 2;
+    best[0x61] = 0;
+    best[0x62] = saved47;
+    best[0x63] = 0;
+    best[0x64] = 0;
+    best[0x65] = 0;
+    best[0x66] = 0;
+    *(u64 *)(best + 0x58) = *(u64 *)(battle + 0x58);
+    best[0x61] = battle[0x51C];
+    best[0x64] = battle[0x10];
+    best[0x65] = battle[0x54];
+    best[0x66] = battle[0xA6];
+
+}
+
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
     return (size <= limit) ? size : 0;
@@ -1363,8 +1385,9 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, other);
 }
 
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -1407,52 +1430,9 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     } w;
     u8 *p;
 
-    off = 0x2000;
-    best = NULL;
     other = arg1;
-    i = (s32)best;
     saved47 = gSystemSave[0x47];
-    minSize = (u32)-1;
-
-#pragma global_optimizer off
-    for (ctr = 3; ctr != 0; ctr--) {
-        base = *arg0;
-        slot = base + off;
-        if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
-            hdrOk = 0;
-        } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        base = *arg0;
-        slot = base + off;
-        if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
-            hdrOk = 0;
-        } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        i += 1;
-    }
-#pragma global_optimizer reset
+    best = Save_FindUnusedSlotIn(arg0);
 
     fn_80006298(best, 0, 0x4000);
     *(s32 *)(best + 0x4C) = 0x4000;
@@ -1468,8 +1448,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     best[0x64] = 0;
     best[0x65] = 0;
     best[0x66] = 0;
-    *(u32 *)(best + 0x5C) = *(u32 *)(gBattleState + 0x5C);
-    *(u32 *)(best + 0x58) = *(u32 *)(gBattleState + 0x58);
+    *(u64 *)(best + 0x58) = *(u64 *)(gBattleState + 0x58);
     best[0x61] = gBattleState[0x51C];
     best[0x64] = gBattleState[0x10];
     best[0x65] = gBattleState[0x54];
@@ -1513,7 +1492,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     arg0[1] = best;
     *(u8 **)((u8 *)other + 0x54) = best;
 }
-
+#pragma pop
 void fn_801E2014(s32 unused, u8 arg1, s32 arg2) {
     extern u8 gSystemSave[];
     extern u8 lbl_80299E10[];
