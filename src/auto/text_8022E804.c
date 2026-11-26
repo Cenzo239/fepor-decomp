@@ -7,29 +7,59 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
-static inline s32 count_trailing_zero_u32(u32 x) {
-    u32 xbits = 0xFFFFU;
-    s32 n = 0;
-    s32 j = 32;
-    s32 m = 16;
-    s32 k = m;
-    while (j != 0) {
-        if ((x & xbits) == 0) {
-            n += k;
-            x >>= k;
-            j -= k;
-        } else if (xbits == 1) {
-            break;
+static inline s32 count_trailing_zero(f64 x) {
+    u32 *l = (u32 *)&x;
+    u32 lo = l[1];
+    u32 hi;
+    s32 n;
+    if (lo != 0) {
+        s32 m = 16;
+        u32 xbits = 0xFFFFU;
+        s32 j = 32;
+        s32 k = m;
+        n = 0;
+        while (j != 0) {
+            if ((lo & xbits) == 0) {
+                n += k;
+                lo >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
         }
-        if (m > 1) {
-            m /= 2;
+        return n;
+    } else {
+        s32 m = 16;
+        u32 xbits = 0xFFFFU;
+        s32 j = 32;
+        s32 k = m;
+        hi = l[0] | 0x100000;
+        n = 0;
+        while (j != 0) {
+            if ((hi & xbits) == 0) {
+                n += k;
+                hi >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
         }
-        if (xbits > 1) {
-            xbits >>= m;
-            k -= m;
-        }
+        return n + 32;
     }
-    return n;
 }
 
 extern f32 lbl_80367068;
