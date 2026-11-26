@@ -1133,67 +1133,72 @@ void fn_80070678(void *arg0) {
 }
 
 void fn_80070798(void *arg0, void *arg1) {
-    void *GfxEnt_Get(u8);
+    void *GfxEnt_Get(s32);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
+#pragma cplusplus on
+    struct EntObj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void *v4(void *) = 0;
+    };
+    struct SelfObj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual s16 v17() = 0;
+        virtual s16 v18() = 0;
+    };
 
-    u8 *self;
-    u8 *group;
-    u8 *entity;
-    void *obj;
-    void **vtable;
-    void *text;
+    u8 *self = (u8 *)arg0;
+    u8 *group = (u8 *)arg1;
     s32 i;
-    s32 j;
-    s32 count;
-    s32 spacing;
-    s32 x;
-    s32 y;
     s16 width;
-    s16 available;
-    u8 *first;
-
-    self = (u8 *)arg0;
-    group = (u8 *)arg1;
+    s8 count;
+    s16 spacing;
+    s16 x;
+    s16 y;
 
     *(s16 *)(self + 8) = 0;
 
-    for (i = 0; i < (s8)group[0x60]; i++) {
-        first = (u8 *)GfxEnt_Get(group[i + 0x40]);
-
-        entity = (u8 *)GfxEnt_Get(group[i + 0x40]);
-        obj = *(void **)(entity + 0x34);
-        vtable = *(void ***)obj;
-
-        text = ((void *(*)(void *, void *))vtable[6])(obj, first);
-
-        width = (s16)Text_MeasureWidth(text, -1, lbl_803692E0);
-
+    for (i = 0; i < *(s8 *)(group + 0x60); i++) {
+        width = Text_MeasureWidth(
+            (*(EntObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4(GfxEnt_Get(group[i + 0x40])),
+            -1,
+            lbl_803692E0);
         if (width >= *(s16 *)(self + 8)) {
             *(s16 *)(self + 8) = width;
         }
     }
 
-    obj = self;
-    vtable = *(void ***)(self + 4);
-    available = (s16)((s32 (*)(void *))vtable[0x14])(obj);
-
-    count = (s8)group[0x60];
-    spacing = (s16)(available / (count + 1));
+    count = *(s8 *)(group + 0x60);
+    spacing = ((SelfObj *)self)->v18() / (count + 1);
     x = spacing;
+    y = ((SelfObj *)self)->v17();
 
-    vtable = *(void ***)(self + 4);
-    y = ((s32 (*)(void *))vtable[0x13])(self);
-
-    for (j = 0; j < count; j++) {
-        entity = (u8 *)GfxEnt_Get(group[j + 0x40]);
-        *(s16 *)(entity + 0x30) = (s16)x;
-
-        entity = (u8 *)GfxEnt_Get(group[j + 0x40]);
-        *(s16 *)(entity + 0x32) = (s16)y;
-
+    for (i = 0; i < count; i++) {
+        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x30) = x;
+        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x32) = y;
         x += spacing;
     }
+#pragma cplusplus reset
 }
 
 extern u16 lbl_80286860[];
@@ -1945,21 +1950,24 @@ extern "C" void fn_80071BC0(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     s32 Text_MeasureWidth(void *, s32, f32);
-    extern f32 lbl_803692E0;
     struct T { virtual void *a()=0; virtual void *b()=0; virtual void *c()=0; virtual void *d()=0; virtual void *e(void *)=0; };
-    struct W { u8 pad[4]; virtual s32 a()=0; virtual s32 b()=0; virtual s32 c()=0; virtual s32 d()=0; virtual s32 e()=0; virtual s32 f()=0; virtual s32 g()=0; virtual s32 h()=0; virtual s32 i()=0; virtual s32 j()=0; virtual s32 k()=0; virtual s32 l()=0; virtual s32 m()=0; virtual s32 n()=0; virtual s32 o()=0; virtual s32 p()=0; virtual s32 q()=0; virtual s32 r()=0; virtual s32 s()=0; };
-    struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void *, s32)=0; virtual void s(void *)=0; };
-    void *self; void *param; void *win; s32 textWidth; void *text; s32 width;
+    struct W { u8 pad[4]; virtual s32 a()=0; virtual s32 b()=0; virtual s32 c()=0; virtual s32 d()=0; virtual s32 e()=0; virtual s32 f()=0; virtual s32 g()=0; virtual s32 h()=0; virtual s32 i()=0; virtual s32 j()=0; virtual s32 k()=0; virtual s32 l()=0; virtual s32 m()=0; virtual s32 n()=0; virtual s32 o()=0; virtual s32 p()=0; virtual s32 q()=0; virtual s32 r()=0; virtual s16 s()=0; };
+    struct S { virtual void a()=0; virtual void b()=0; virtual void c()=0; virtual void d()=0; virtual void e()=0; virtual void f()=0; virtual void g()=0; virtual void h()=0; virtual void i()=0; virtual void j()=0; virtual void k()=0; virtual void l()=0; virtual void m()=0; virtual void n()=0; virtual void o()=0; virtual void p()=0; virtual void q()=0; virtual void r(void *)=0; virtual void s(void *)=0; };
+    void *self;
+    void *param;
+    void *win;
+    s32 textWidth;
+    void *text;
 
     win = arg2;
     param = arg1;
     self = arg0;
     text = ((T *)*(void **)((u8 *)win + 0x34))->e(win);
-    textWidth = Text_MeasureWidth(text, -1, lbl_803692E0);
-    width = (s16)(*(W **)((u8 *)param + 0x3C))->s();
-    ((S *)self)->r(param, width - textWidth);
+    textWidth = Text_MeasureWidth(text, -1, 1.0f);
+    textWidth = ((*(W **)((u8 *)param + 0x3C))->s() - textWidth) / 2;
+    ((S *)self)->r(param);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos((f32)((width - textWidth + ((u32)(width - textWidth) >> 31)) >> 1), (f32)*(s16 *)((u8 *)win + 0x32));
+    Prim2D_SetPos((f32)textWidth, (f32)*(s16 *)((u8 *)win + 0x32));
     ((S *)self)->s(win);
     text = ((T *)*(void **)((u8 *)win + 0x34))->e(win);
     Prim2D_SetText(text);
