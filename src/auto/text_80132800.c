@@ -1786,36 +1786,6 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
-static inline void fn_80134C24_Body(void *obj, s32 *out) {
-Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-s32 Text_MeasureHeight(s32, f32);
-extern f32 lbl_8036A5AC;
-Vec2s o,in;
-u32 rowH;
-s32 kind,colW,quot,rem,hdiv,t;
-s16 x,y,half,off48,off4a;
-colW=*(s16*)((u8*)obj+0x44);
-kind=*(s16*)((u8*)obj+0x3e);
-quot=kind/colW;
-t=*(s16*)((u8*)obj+0x12);
-rem=*(s16*)((u8*)obj+0x16);
-rem-=t;
-rowH=*(u16*)((u8*)obj+0x46);
-off48=*(s16*)((u8*)obj+0x48);
-off4a=*(s16*)((u8*)obj+0x4a);
-t=(s16)rem;
-hdiv=t/colW;
-t=(s16)hdiv;
-rem=kind-quot*colW;
-rem=(s16)rem;
-rem=t*rem;
-x=(s16)(rem+off48);
-y=(s16)(rowH*quot+off4a);
-t=Text_MeasureHeight(-1,lbl_8036A5AC);
-half=(s16)(((s32)(s16)rowH-t)>>1);
-in.x=x; in.y=y+half;
-*out=*(s32*)fn_8013F748(obj,&o,&in);
-}
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma global_optimizer off
