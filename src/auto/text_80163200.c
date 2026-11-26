@@ -14548,8 +14548,8 @@ extern "C" void *fn_80179F8C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     ((Obj *)arg0)->m28();
     return arg0;
 }
+extern "C" void fn_80142060(void *);
 static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
-    void fn_80142060(void *);
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80292208[];
     extern const f32 gF32_1;
     void *self;
