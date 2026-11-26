@@ -159,7 +159,7 @@ typedef struct Vec2s {
 } Vec2s;
 #pragma push
 #pragma cplusplus on
-struct MenuPoint { s16 x, y; MenuPoint() {} };
+struct MenuPoint { union { struct { s16 x, y; }; u32 packed; }; MenuPoint() {} };
 #pragma pop
 
 typedef struct {
