@@ -2602,29 +2602,20 @@ u16 fn_802072A0(void) {
     extern u16 lbl_80366F48;
     extern void (*lbl_803684C0)(void);
     void fn_80207768(void);
-    s32 temp;
-    u16 val;
 
     if (lbl_80366F48 != 0xFFFF) {
         return lbl_80366F48;
     }
-    temp = *(s32 *)0x800000CC;
-    if (temp == 0)
-        goto hw;
-    if (temp < 0)
-        goto set0;
-    goto set0;
-hw:
-    if (*(u16 *)0xCC00206E & 2) {
-        val = 1;
-    } else {
-        val = 0;
+    switch (*(s32 *)0x800000CC) {
+    case 0:
+        lbl_80366F48 = (*(u16 *)0xCC00206E & 2) ? 1 : 0;
+        break;
+    case 1:
+    case 2:
+    default:
+        lbl_80366F48 = 0;
+        break;
     }
-    lbl_80366F48 = val;
-    goto after;
-set0:
-    lbl_80366F48 = 0;
-after:
     lbl_803684C0 = fn_80207768;
     return lbl_80366F48;
 }
