@@ -13,6 +13,19 @@ typedef struct {
 
 typedef struct { f32 x, y; } F32Pair;
 
+static inline f32 gx_sqrtf(f32 x) {
+    volatile f32 y;
+    if (x > 0.0f) {
+        f64 guess = __frsqrte((f64)x);
+        guess = 0.5 * guess * (3.0 - (f64)x * (guess * guess));
+        guess = 0.5 * guess * (3.0 - (f64)x * (guess * guess));
+        guess = 0.5 * guess * (3.0 - (f64)x * (guess * guess));
+        y = (f32)((f64)x * guess);
+        return y;
+    }
+    return x;
+}
+
 extern u16 lbl_80368784;
 extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
@@ -178,77 +191,40 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 #pragma use_lmw_stmw reset
 
-void fn_80224304(s16 *arg0, u16 arg1, f32 *arg2)
+void fn_80224304(s16 *table, u16 width, f32 *projmtx)
 {
-  s32 fn_8022C568(f32);
-  extern f32 lbl_8036BD58;
-  extern f32 lbl_8036BD5C;
-  extern f32 lbl_8036BD70;
-  extern f64 lbl_8036BD78;
-  extern f64 lbl_8036BD90;
-  extern f32 lbl_8036BD98;
-  extern f64 lbl_8036BDA0;
-  extern f32 lbl_8036BDA8;
-  extern f64 lbl_8036BDB0;
-  f64 f31;
-  f64 f30;
-  f32 f29;
-  f32 f28;
-  f64 f27;
-  f32 f26;
-  f32 f25;
-  f32 f24;
-  f32 f23;
-  f32 var_f0;
-  f32 temp_f1;
-  s16 *var_r30;
-  u32 var_r29;
-  f32 var_f2;
-  volatile f32 sp14;
-  if (lbl_8036BD90 == arg2[0x3C / 4])
-  {
-    temp_f1 = arg2[0x2C / 4] / (arg2[0x28 / 4] - lbl_8036BD5C);
-    f24 = temp_f1 / arg2[0];
-    var_f0 = temp_f1;
-  }
-  else
-  {
-    temp_f1 = lbl_8036BD5C / arg2[0];
-    f24 = temp_f1;
-    var_f0 = lbl_8036BD98 * temp_f1;
-  }
-  f27 = lbl_8036BDB0;
-  f26 = var_f0 * var_f0;
-  f28 = lbl_8036BD5C;
-  var_r30 = arg0;
-  f29 = lbl_8036BD58;
-  var_r29 = 0;
-  f30 = lbl_8036BD78;
-  f31 = lbl_8036BDA0;
-  f23 = lbl_8036BDA8;
-  f25 = lbl_8036BD70 / ((f32) arg1);
-  (void) f27;
-  do
-  {
-    temp_f1 = (f32) ((var_r29 + 1) << 5);
-    temp_f1 = temp_f1 * f25;
-    temp_f1 = temp_f1 * f24;
-    var_f2 = temp_f1 * temp_f1;
-    var_f2 = f28 + (var_f2 / f26);
-    if (var_f2 > f29)
-    {
-      f64 guess = __frsqrte((f64) var_f2);
-      guess = (f30 * guess) * (f31 - (((f64) var_f2) * (guess * guess)));
-      guess = (f30 * guess) * (f31 - (((f64) var_f2) * (guess * guess)));
-      guess = (f30 * guess) * (f31 - (((f64) var_f2) * (guess * guess)));
-      sp14 = (f32) (((f64) var_f2) * guess);
-      var_f2 = sp14;
+    f32 xi, scale, epsilon, nearz, f;
+    f32 x;
+    u32 i;
+    volatile f32 sp14;
+
+    if (0.0 == projmtx[0x3C / 4]) {
+        nearz = projmtx[0x2C / 4] / (projmtx[0x28 / 4] - 1.0f);
+        epsilon = nearz / projmtx[0];
+    } else {
+        epsilon = 1.0f / projmtx[0];
+        nearz = 1.73205f * epsilon;
     }
-    *var_r30 = (s16) (fn_8022C568(f23 * var_f2) & 0xFFF);
-    var_r29 += 1;
-    var_r30 += 1;
-  }
-  while (var_r29 < 10U);
+
+    xi = nearz * nearz;
+    scale = 2.0f / (f32)width;
+
+    for (i = 0; i < 10; i++) {
+        x = (f32)((i + 1) * 32);
+        x = x * scale;
+        x = x * epsilon;
+        f = x * x;
+        f = 1.0f + f / xi;
+        if (f > 0.0f) {
+            f64 guess = __frsqrte((f64)f);
+            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
+            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
+            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
+            sp14 = (f32)((f64)f * guess);
+            f = sp14;
+        }
+        table[i] = (u32)(256.0f * f) & 0xFFF;
+    }
 }
 
 void fn_802244B4(u8 arg0, u16 arg1, u16 *arg2) {
