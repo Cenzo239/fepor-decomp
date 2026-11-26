@@ -2035,7 +2035,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     }
 }
 
-#pragma cplusplus reset
+#pragma cplusplus off
 void Ui_ShowConfirmChild(void *panel) {
     u32 Ui_FindChild();
     void Ui_AddChild(void *, void *);
