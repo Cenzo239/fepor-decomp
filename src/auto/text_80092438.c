@@ -2,6 +2,12 @@
 #include "common.h"
 #include "global.h"
 
+static inline u8 Item_CheckSpecialFlags(u64 flags) {
+    if (!(flags & 8)) return 0;
+    if (flags & ((u64)0x100 << 32)) return 0;
+    return 1;
+}
+
 static inline u8 Item_CheckUnitFlags(void *unit, u64 flags) {
     u8 fn_80105BC0(void *, s32);
     if (flags & 0x200) {
@@ -902,60 +908,8 @@ u8 fn_800939FC(void *arg0, void *arg1) {
         return fn_8001C914(arg0, arg1);
     }
     if (flags & 5) {
-        t.ok = 1;
-        if (flags & 1) {
-            if (!(flags2 & 1)) {
-            } else {
-                if (flags & 0x200) {
-                    if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
-                        t.ok = 1;
-                    } else {
-                        t.ok = 0;
-                    }
-                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                } else if (flags & 2) {
-                    t.ok = t.result;
-                } else if (flags & 4) {
-                    t.ok = t.result;
-                } else if (flags & 0x40) {
-                    t.ok = 1;
-                }
-                if (t.ok == 0) {
-                    t.result = 0;
-                } else if (fn_800940B0(arg0, arg1) == 0) {
-                    t.result = 0;
-                } else {
-                    t.result = 1;
-                }
-            }
-        } else {
-            if (flags & 4) {
-                if (!(flags2 & 4)) {
-                } else {
-                    if (flags & 0x200) {
-                        if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
-                            t.ok = 1;
-                        } else {
-                            t.ok = 0;
-                        }
-                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                    } else if (flags & 2) {
-                        t.ok = t.result;
-                    } else if (flags & 4) {
-                        t.ok = t.result;
-                    } else if (flags & 0x40) {
-                        t.ok = 1;
-                    }
-                    if (t.ok == 0) {
-                        t.result = 0;
-                    } else if (fn_800940B0(arg0, arg1) == 0) {
-                        t.result = 0;
-                    } else {
-                        t.result = 1;
-                    }
-                }
-            }
-        }
+        if (flags & 1) t.result = Item_CheckUseMask(arg0, arg1, flags, 1);
+        else if (flags & 4) t.result = Item_CheckUseMask(arg0, arg1, flags, 4);
         return t.result;
     }
     if (flags & 0x18) {
@@ -1415,7 +1369,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
             return Unit_GetHeldItemSlot(arg0, 0);
         }
         var_r30 = 0;
-        var_r29 = var_r30;
+        var_r29 = 0;
         do {
             slot = Unit_GetHeldItemSlot(arg0, var_r30);
             {
