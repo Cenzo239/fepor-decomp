@@ -4008,75 +4008,36 @@ extern "C" void Ui_ClearPanelChildrenEx(void *self) {
 }
 #pragma cplusplus reset
 
-void fn_80141970(void *arg0, s32 arg1) {
-    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    extern f32 lbl_8036A730;
-    extern f32 lbl_8036A738;
-    extern f32 lbl_8036A740;
-    s32 temp_r0;
-    s32 temp_r4;
-    s32 temp_r5;
-    f32 temp_f0;
-    f32 temp_f1;
-    f32 temp_f2;
-    f32 var_f31;
-    void *var_r3;
-    void *var_r3_2;
-    void *var_r3_3;
-    void *var_r3_4;
-    temp_f2 = lbl_8036A738;
-    var_f31 = 1.0f;
-    temp_r0 = *(s32 *)((char *)arg0 + 0x40);
-    temp_r5 = *(s16 *)((char *)arg0 + 0x28) + 1;
-    switch (temp_r0) {
-    case 0:
-        if (*(u32 *)((char *)arg0 + 0x34) != 0) {
-            var_r3 = *(void **)((char *)arg0 + 0x38);
-            var_r3 = *(void **)((char *)var_r3 + 0x8);
-        } else {
-            var_r3 = NULL;
-        }
-        temp_r4 = *(s16 *)((char *)var_r3 + 0x24) + 1;
-        temp_f0 = (f32)(temp_r4 - temp_r5);
-        temp_f1 = (f32)temp_r4;
-        var_f31 = (lbl_8036A730 / temp_f1) * temp_f0;
-        break;
-    case 1:
-        if (*(u32 *)((char *)arg0 + 0x34) != 0) {
-            var_r3_2 = *(void **)((char *)arg0 + 0x38);
-            var_r3_2 = *(void **)((char *)var_r3_2 + 0x8);
-        } else {
-            var_r3_2 = NULL;
-        }
-        temp_r4 = *(s16 *)((char *)var_r3_2 + 0x24) + 1;
-        temp_r4 ^= 0x80000000;
-        temp_f0 = (f32)temp_r5;
-        temp_f1 = (f32)temp_r4;
-        var_f31 = (var_f31 / temp_f1) * temp_f0;
-        break;
-    }
-    temp_f1 = Math_Ease(5, temp_r4, lbl_8036A740, lbl_8036A730, var_f31, lbl_8036A730);
-    if (*(u8 *)((char *)arg0 + 0x44) != 0) {
-        ;
-    } else {
-        var_f31 = lbl_8036A730;
-    }
-    if (*(u32 *)((char *)arg0 + 0x34) != 0) {
-        var_r3_3 = *(void **)((char *)arg0 + 0x38);
-        var_r3_3 = *(void **)((char *)var_r3_3 + 0x8);
-    } else {
-        var_r3_3 = NULL;
-    }
-    *(f32 *)((char *)var_r3_3 + 0x2c) = var_f31;
-    if (*(u32 *)((char *)arg0 + 0x34) != 0) {
-        var_r3_4 = *(void **)((char *)arg0 + 0x38);
-        var_r3_4 = *(void **)((char *)var_r3_4 + 0x8);
-    } else {
-        var_r3_4 = NULL;
-    }
-    *(f32 *)((char *)var_r3_4 + 0x28) = temp_f1;
+#pragma push
+#pragma optimization_level 4
+void fn_80141970(void *self, s32 arg1) {
+f32 Math_Ease(s32,f32,f32,f32,f32);
+extern f32 lbl_8036A740;
+void *child;
+f32 alpha[1],t;
+s32 time,duration;
+alpha[0]=1.0f;
+time=*(s16 *)((u8 *)self+0x28)+1;
+switch(*(s32 *)((u8 *)self+0x40)) {
+case 0:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+alpha[0]=(1.0f/(f32)duration)*(f32)(duration-time);
+break;
+case 1:
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+duration=*(s16 *)((u8 *)child+0x24)+1;
+{ f32 inverse=1.0f/(f32)duration; alpha[0]=inverse*(f32)time; }
+break;
 }
-
+t=Math_Ease(5,lbl_8036A740,1.0f,alpha[0],1.0f);
+alpha[0]=*((u8 *)self+0x44)?alpha[0]:1.0f;
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x2c)=alpha[0];
+if(*(u32 *)((u8 *)self+0x34)) child=*(void **)(*(u8 **)((u8 *)self+0x38)+8); else child=0;
+*(f32 *)((u8 *)child+0x28)=t;
+}
+#pragma pop
 #pragma opt_common_subs off
 void *fn_80141B00(void *arg0, void *arg1, u8 arg2, u8 arg3) {
 void *Process_CreateChild(void *, void *);
