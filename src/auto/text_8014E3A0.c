@@ -12,7 +12,7 @@ struct EffectActorMethods {
     virtual void v7(); virtual void v8(); virtual void v9();
     virtual void v10(); virtual void v11(); virtual void v12();
     virtual void v13(); virtual void v14();
-    virtual void Move(const EffectActorVec &, s32);
+    virtual void Move(EffectActorVec, s32);
 };
 #pragma cplusplus off
 
@@ -2357,7 +2357,7 @@ extern "C" void *fn_80151D50(void *arg0, s32 arg1, s32 arg2, void *arg3, f32 *ar
     M2C_UNK alloc2;
     void *task;
     s32 id;
-    f32 x, y, z;
+    f32 x, y;
 
     String_Init(name, lbl_80277430 + 8, &alloc1);
     String_Init(kind, lbl_80277430 + 0xF, &alloc2);
@@ -2385,8 +2385,7 @@ extern "C" void *fn_80151D50(void *arg0, s32 arg1, s32 arg2, void *arg3, f32 *ar
     x = arg4[0];
     M2C_FIELD(arg0, s32 *, 0xC0) = 0;
     y = arg4[1];
-    z = arg4[2];
-    ((Effect *)arg0)->SetPos(x, y, z);
+    ((Effect *)arg0)->SetPos(x, y, arg4[2]);
     ((Effect *)arg0)->SetRot(arg5[0], arg5[1], arg5[2]);
     return arg0;
 }
