@@ -6431,9 +6431,10 @@ static inline s32 fn_8010F3F4_impl(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s1
     ax = arg1;
     ay = arg2;
     bestScore = (s32)0x80000000;
+    i = 0;
     score = 0;
 
-    for (i = 0; i < 4; i++, score = 0, dir += 2) {
+    for (; i < 4; i++, score = 0, dir += 2) {
         const s16 *heightTable;
         s32 index;
         u32 value;
