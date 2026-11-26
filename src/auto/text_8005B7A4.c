@@ -13,12 +13,12 @@ static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
 }
 
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; u8 c; s32 i; u8 *dst;
+    char *src; u8 c; s32 i; char *dst;
     src = arg1;
     if (*arg1 == '/') {
         src++;
     }
-    dst = arg0;
+    dst = (char *)arg0;
     *(s32 *)(arg0 + 0x2C) = 0;
     for (i = 0x29; i > 0; i--) {
         c = *src;
@@ -1670,19 +1670,19 @@ void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     fn_8020C6D4(arg1, arg0 + 0x40);
     arg0[0x29] = lbl_803672E8;
     *(u16 *)(arg0 + 0x32) = 0;
-    *(u16 *)(arg0 + 0x30) = arg2;
+    ((FileCacheEntry_8005BB2C *)arg0)->flags = arg2;
     *(u32 *)(arg0 + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
     *(u8 **)(arg0 + 0x6C) = arg0;
 
-    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x221)) *(u16 *)(arg0 + 0x30) |= 0xC00;
-    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x226)) *(u16 *)(arg0 + 0x30) |= 0x800;
-    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x22B)) *(u16 *)(arg0 + 0x30) |= 0x400;
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x221)) ((FileCacheEntry_8005BB2C *)arg0)->flags |= 0xC00;
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x226)) ((FileCacheEntry_8005BB2C *)arg0)->flags |= 0x800;
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x22B)) ((FileCacheEntry_8005BB2C *)arg0)->flags |= 0x400;
     *(s32 *)(arg0 + 0x3C) = (*(s32 *)(arg0 + 0x74) + 0x1F) & ~0x1F;
 
-    if (*(u16 *)(arg0 + 0x30) & 0x410) {
+    if (((FileCacheEntry_8005BB2C *)arg0)->flags & 0x410) {
         *(u32 *)(arg0 + 0x38) = fn_800C45B8(-*(s32 *)(arg0 + 0x3C), lbl_8026B330 + 5, 0);
     } else {
-        if (*(u16 *)(arg0 + 0x30) & 2) {
+        if (((FileCacheEntry_8005BB2C *)arg0)->flags & 2) {
             *(u32 *)(arg0 + 0x38) = FileCache_AllocFromHeap(*(u32 *)(arg0+0x3C)+1, *(s8 *)(arg0+0x29), arg1);
             *(u8 *)(*(u8 **)(arg0 + 0x3C) + *(u32 *)(arg0 + 0x38)) = 0;
         } else {
@@ -1693,7 +1693,7 @@ void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
         }
     }
 
-    if ((*(u16 *)(arg0 + 0x30) & 0x300) == 0x300) {
+    if ((((FileCacheEntry_8005BB2C *)arg0)->flags & 0x300) == 0x300) {
         fn_8020CB38(arg0 + 0x40, *(u32 *)(arg0 + 0x38), *(s32 *)(arg0 + 0x3C), 0, (void *)fn_8005E070, 3);
     } else {
         fn_8020CB38(arg0 + 0x40, *(u32 *)(arg0 + 0x38), *(s32 *)(arg0 + 0x3C), 0, (void *)fn_8005E070, 2);
