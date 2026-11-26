@@ -1,5 +1,27 @@
 /* Functions from 0x800A9488 to 0x800AD1F4, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 Trade_FindPreviousItem(s32 side, s32 index) {
+    extern u8 lbl_80312ACC[];
+    u8 *entry = lbl_80312ACC + (side << 7) + index * 0x10;
+    while (1) {
+        if (index < 0) break;
+        if (entry[0xC] != 0) break;
+        entry -= 0x10;
+        index--;
+    }
+    return index;
+}
+static inline s32 Trade_FindNextItem(s32 side, s32 index) {
+    extern u8 lbl_80312ACC[];
+    u8 *entry = lbl_80312ACC + (side << 7) + index * 0x10;
+    while (1) {
+        if (index >= 8) return -1;
+        if (entry[0xC] != 0) break;
+        entry += 0x10;
+        index++;
+    }
+    return index;
+}
 #pragma cplusplus on
 extern "C" void Item_Init(void *);
 extern "C" void Item_Destroy(void *, s32);
@@ -1905,6 +1927,9 @@ void fn_800ABE74(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_800AC0C0(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 fn_80166D8C(void *);
@@ -1993,23 +2018,24 @@ void fn_800AC0C0(void *arg0) {
         temp_r5 = *(s8 *)((u8 *)self + 0x40);
         temp_r4 = var_r6 - temp_r5;
         if (temp_r4 < 0 || temp_r4 > 3) {
+            s32 index;
             if (!(temp_r3 & 0x08000008)) {
                 return;
             }
-            var_r7_2 = temp_r5 + 3;
+            index = temp_r5 + 3;
             temp_r5 = temp_r8 << 7;
-            var_r5_2 = lbl_80312ACC + temp_r5 + var_r7_2 * 0x10;
+            var_r5_2 = lbl_80312ACC + temp_r5 + index * 0x10;
             while (1) {
-                if (var_r7_2 < 0) {
+                if (index < 0) {
                     break;
                 }
                 if (var_r5_2[0xC] != 0) {
                     break;
                 }
                 var_r5_2 -= 0x10;
-                var_r7_2 -= 1;
+                index -= 1;
             }
-            var_r6 = var_r7_2;
+            var_r6 = index;
         }
         *(u8 *)((u8 *)self + 0x3D) = (u8)var_r6;
         var_r7 = 1;
@@ -2057,8 +2083,7 @@ void fn_800AC0C0(void *arg0) {
         }
     }
 }
-
-#pragma global_optimizer off
+#pragma pop
 void fn_800AC400(u8 *arg0) {
     u8 *new_var;
     extern u8 lbl_80312ACC[];
