@@ -388,7 +388,8 @@ typedef struct String {
   public:
       s32 *ptr;
       s32 state;
-      SortIterator(const SortIterator &o) { ptr=o.ptr; state=o.state; }
+      SortIterator(s32 *p, s32 s) { ptr=p; state=s; }
+    SortIterator(const SortIterator &o) { ptr=o.ptr; state=o.state; }
       SortIterator &operator+=(s32 n) { ptr+=n; return *this; }
       SortIterator operator+(s32 n) const { return SortIterator(*this) += n; }
       SortOutputProxy operator*() const { return SortOutputProxy(ptr,state); }
