@@ -9,14 +9,6 @@ static inline u8 *Process_FindCodeInPool(u32 value, u8 *p)
  return 0;
 }
 
-static inline u8 *Process_FindInPool(u8 *p, u32 value)
-{
-    s32 i;
-    for (i = 0; i < 256; i++, p += 0x70) {
-        if (*(u32 *)p == value) return p;
-    }
-    return 0;
-}
 
 static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 {
