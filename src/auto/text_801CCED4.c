@@ -10284,7 +10284,7 @@ static inline u8 *Save_FindLinkedSlotIn(u8 **save, s32 id) {
     return 0;
 }
 static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
-    u8 *best; s32 i; u32 minSize; s32 off; u8 *slot; u8 valid;
+    u8 *best; s32 off; u8 *slot; u32 minSize; s32 i; u8 valid;
     best=0; i=0; minSize=-1; off=0x2000;
     for (;i<6;i++) {
         slot=*save+off;
@@ -10415,130 +10415,30 @@ void fn_801E0D30(void *arg0) {
     fn_801E0D78(&gSaveDataBase, arg0, *(s32 *) ((u8 *) arg0 + 0x60), *(s32 *) ((u8 *) arg0 + 0x64));
 }
 
-#pragma opt_strength_reduction off
-void fn_801E0D78(void **arg0, void *arg1, s32 arg2, s32 arg3) {
+#pragma push
+#pragma optimization_level 4
+void fn_801E0D78(u8 **arg0, void *arg1, s32 arg2, s32 arg3) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
     void Card_RequestWrite(void *, s32, s32, s32, void *);
     extern void *gSaveDataBase;
-
-    s32 i;
-    s32 off;
     s32 val;
     void *self;
-    s32 ctr;
     u8 *found;
-    u8 hdrOk;
     u8 *best;
-    u32 minSize;
-    u8 *slot;
-    u32 clamped;
     s32 diff;
-
-    i = 0;
-    off = 0x2000;
-    val = arg3;
-    self = arg1;
-
-    for (ctr = 2; ctr != 0; ctr--) {
-        found = (u8 *)*arg0 + off;
-        if (*(u32 *)(found + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(found + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-        } else if (arg2 != *(u8 *)(found + 0x62)) {
-        } else {
-            goto found_slot;
-        }
-        off += 0x4000;
-        found = (u8 *)*arg0 + off;
-        if (*(u32 *)(found + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(found + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-        } else if (arg2 != *(u8 *)(found + 0x62)) {
-        } else {
-            goto found_slot;
-        }
-        off += 0x4000;
-        found = (u8 *)*arg0 + off;
-        if (*(u32 *)(found + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(found + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-        } else if (arg2 != *(u8 *)(found + 0x62)) {
-        } else {
-            goto found_slot;
-        }
-        off += 0x4000;
-        i += 2;
-    }
-
-    found = NULL;
-
-found_slot:
-    best = NULL;
-    i = 0;
-    minSize = (u32)-1;
-    off = 0x2000;
-    for (ctr = 3; ctr != 0; ctr--) {
-        slot = (u8 *)*arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        slot = (u8 *)*arg0 + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        i += 1;
-    }
-
-    fn_800062CC(best, found, *(s32 *)(found + 0x4C));
-    *(u8 *)(best + 0x62) = (u8)val;
+    val=arg3;
+    self=arg1;
+    found=Save_FindLinkedSlotIn(arg0,arg2);
+    best=Save_FindUnusedSlotIn(arg0);
+    fn_800062CC(best,found,*(s32 *)(found+0x4C));
+    best[0x62]=(u8)val;
     fn_801E3CA8(best);
-    diff = (s32)best - (s32)gSaveDataBase;
-    Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
-    *(void **)((u8 *)self + 0x54) = best;
+    diff=(s32)best-(s32)gSaveDataBase;
+    Card_RequestWrite(best,*(s32 *)(best+0x4C),diff,diff,self);
+    *(void **)((u8 *)self+0x54)=best;
 }
-
-#pragma global_optimizer off
-#pragma opt_strength_reduction off
+#pragma pop
 void fn_801E1018(u8 **arg0, s32 arg1, void *arg2)
 {
   void *Process_CreateChild(void *, void *);
