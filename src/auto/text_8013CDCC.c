@@ -160,6 +160,10 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 #pragma cplusplus on
+struct MenuPopupPosition {
+ s16 x, y;
+ MenuPopupPosition(s16 xx, s16 yy): x(xx), y(yy) {}
+};
 struct MenuPopupHost {
 virtual void v0()=0;
 virtual void v1()=0;
@@ -1227,7 +1231,9 @@ void fn_8013DD1C(s32 arg0, void *arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_8013DD90(MenuDD *self,u8 *ctx) {
 void *GfxEnt_Get(s32);
 void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(); void Prim2D_SetAlphaByte(u8);
