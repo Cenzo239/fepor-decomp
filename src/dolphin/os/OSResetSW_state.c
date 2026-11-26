@@ -118,7 +118,7 @@ extern s32 lbl_80368500;
 extern s32 lbl_80368508;
 extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
-static inline u32 ResetSwitch_MicrosecondsToTicks(u32 usec) {
+static inline s64 ResetSwitch_MicrosecondsToTicks(u32 usec) {
     return (((*(u32 *)0x800000F8 >> 2) / 125000) * usec) >> 3;
 }
 static inline u32 ResetSwitch_MillisecondsToTicks(u32 msec) {
