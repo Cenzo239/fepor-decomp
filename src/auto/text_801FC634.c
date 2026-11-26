@@ -44,10 +44,12 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
+#pragma force_active on
 static u32 sFaceResAddrs[8];
 static u32 sFaceResIds[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
+#pragma force_active reset
 
 void fn_801FC634(u32 arg0, f32 farg0)
 {
@@ -1919,6 +1921,7 @@ void fn_802001F8(u32 arg0, s32 arg1) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma global_optimizer off
 void fn_80200270(void *arg0) {
     u32 *Hash_Lookup(void *);
     u32 *p;
@@ -1936,7 +1939,7 @@ void fn_80200270(void *arg0) {
         id++;
     }
 }
-
+#pragma global_optimizer reset
 u32 fn_802002F0(void *arg0) {
  u32 *Hash_Lookup(void *);
  void fn_8006EEFC(u32 *,char *);
