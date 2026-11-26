@@ -625,12 +625,13 @@ void Convoy_AddItem(void *convoy, void *item) {
     s32 fn_8001CA2C(void *);
 
     if (!Convoy_TryAddItem_inline(convoy, item)) {
-        s32 minVal = 999999;
-        s32 minIdx = -1;
         s32 i;
-        for (i = 0; i < 200; i++) {
-            if (*(void **)((u8 *)convoy + i * 8) != NULL) {
-                s32 val = fn_8001CA2C((u8 *)convoy + i * 8);
+        s32 minIdx = -1;
+        s32 minVal = 999999;
+        u8 *p = (u8 *)convoy;
+        for (i = 0; i < 200; i++, p += 8) {
+            if (*(void **)p != NULL) {
+                s32 val = fn_8001CA2C(p);
                 if (minVal > val) {
                     minVal = val;
                     minIdx = i;
