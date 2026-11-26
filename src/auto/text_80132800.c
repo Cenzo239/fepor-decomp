@@ -158,6 +158,11 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 
+typedef struct Vec2sU {
+    s16 x;
+    u16 y;
+} Vec2sU;
+
 typedef struct {
     u8 unk0;
 } Unk1;
@@ -6005,16 +6010,16 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 
 void fn_8013B254(void *arg0)
 {
-  s16 top;
+  s16 new_var;
   s16 zero;
   s16 x0;
   s16 x1;
   s16 y0;
-  void *child;
+  void *new_var3;
   s16 y1;
   s32 dx;
-  s16 *left_ptr;
-  s16 left;
+  s16 *new_var2;
+  s16 new_var4;
   s16 dy;
   s16 a;
   s16 c;
@@ -6022,19 +6027,16 @@ void fn_8013B254(void *arg0)
   s16 new_a;
   void *q;
   void *p;
-  s16 t;
-  t = *((s16 *) (((s8 *) arg0) + 0x64));
   zero = 0;
-  t += 8;
-  *((s16 *) (((s8 *) arg0) + 0x64)) = t;
-  left = *((s16 *) (((s8 *) arg0) + 0x12));
-  x0 = left;
+  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
+  new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
+  x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
   *((s16 *) (((s8 *) arg0) + 0x92)) = (s16) ((((s16) (x1 - x0)) >> 1) - 0x20);
   *((s16 *) (((s8 *) arg0) + 0x94)) = zero;
-  left_ptr = &(*((s16 *) (((s8 *) arg0) + 0x12)));
+  new_var2 = &(*((s16 *) (((s8 *) arg0) + 0x12)));
   *((s16 *) (((s8 *) arg0) + 0x96)) = zero;
-  x0 = *left_ptr;
+  x0 = *new_var2;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
   y0 = *((s16 *) (((s8 *) arg0) + 0x14));
   dx = (s16) (x1 - x0);
@@ -6048,15 +6050,15 @@ void fn_8013B254(void *arg0)
   p = *((void **) (((s8 *) arg0) + 0x48));
   a = *((s16 *) (((s8 *) p) + 0xA));
   e = *((s16 *) (((s8 *) p) + 0xE));
-  top = *((s16 *) (((s8 *) p) + 0xC));
+  new_var = *((s16 *) (((s8 *) p) + 0xC));
   new_a = (s16) (a - 0x20);
-  c = top;
+  c = new_var;
   *((s16 *) (((s8 *) p) + 0xE)) = (s16) (new_a + ((s16) (e - a)));
   *((s16 *) (((s8 *) p) + 0xA)) = new_a;
   x0 = *((s16 *) (((s8 *) p) + 0xC));
-  child = p;
-  x1 = *((s16 *) (((s8 *) child) + 0x10));
-  *((s16 *) (((s8 *) child) + 0x10)) = (s16) (c + ((s16) (x1 - x0)));
+  new_var3 = p;
+  x1 = *((s16 *) (((s8 *) new_var3) + 0x10));
+  *((s16 *) (((s8 *) new_var3) + 0x10)) = (s16) (c + ((s16) (x1 - x0)));
 }
 
 void fn_8013B308(void) {
