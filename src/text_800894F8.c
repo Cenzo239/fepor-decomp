@@ -115,23 +115,28 @@ void fn_80089554(void) {
 }
 
 #pragma global_optimizer off
-void fn_800895B8(void) {
+static inline void *Fn_800895B8_Create(s32 off) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
+    return Process_Create(lbl_80289950 + off, 7);
+}
+void fn_800895B8(void) {
+    void *Process_Create(void *, s32);
+    extern u8 lbl_80289950[0x48];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
+    u8 *base;
     void *tmp;
 
-    base = lbl_80289950;
+    base = &lbl_80289950[0];
     lbl_803674E0 = Process_Create(base, 7);
-    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
-    tmp = Process_Create((u8 *)base + 0x18, 7);
+    lbl_803674E4 = Process_Create(base + 0x58, 7);
+    tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create((u8 *)base + 0x30, 7);
+    tmp = Process_Create(base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
