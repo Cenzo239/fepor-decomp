@@ -4,7 +4,7 @@
 #include <dolphin/os.h>
 #include "global.h"
 #include "ef.h"
-static inline u32 Card_AdvanceScramble(u32 value, u32 count) {
+static inline u32 Card_AdvanceScramble(u32 count, u32 value) {
  u32 i;
  for(i=0;i<count;++i) {
   u32 bits=~((value<<23)^((value<<15)^(value^(value<<7))));
