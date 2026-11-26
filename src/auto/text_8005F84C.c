@@ -24,6 +24,7 @@ virtual void deselect(void *, void *) = 0;
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
 
+#pragma inline_depth(8)
 static inline void MenuSetup_8006F10C(void *table, void **entries, s32 arg0, s32 arg1) {
     entries[0] = table;
     *(s32 *)((u8 *)table + 4) = arg0;
