@@ -4937,10 +4937,10 @@ extern "C" void fn_801BBDA0(void *arg0) {
 }
 
 #pragma opt_propagation off
+extern "C" s16 fn_8017D604(s32, s32, u8 *);
 static inline s32 Unit_CheckGoldCost(s32 unit, s32 mode, u8 *state) {
-    s16 fn_8017D604(s32, s32, u8 *);
     s32 gold = *(s32 *)(state + 0x1C);
-    return fn_8017D604(unit, mode, state) <= gold;
+    return fn_8017D604(unit, mode, state) <= gold ? 1 : 0;
 }
 
 extern "C" s32 fn_801BC71C(s32 arg0) {
