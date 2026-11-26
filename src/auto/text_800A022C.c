@@ -72,12 +72,12 @@ void *fn_800A0250(void) {
 }
 
 #pragma optimization_level 3
-static inline u32 MenuToggle_800A0260(u32 state) {
+static inline void MenuToggle_800A0260(u32 state, void *item) {
     extern u8 lbl_80366E24;
     u32 t = lbl_80366E24 ^ 1;
     lbl_80366E24 = t;
     if ((u8)t != 0) state = 0;
-    return state;
+    *(u8 *)((u8 *)item + 0x39) = state;
 }
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
     void fn_8000BCA4(void *);
