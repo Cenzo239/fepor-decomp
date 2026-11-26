@@ -428,7 +428,7 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
 }
 #pragma pop
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 1
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
 #pragma cplusplus on
