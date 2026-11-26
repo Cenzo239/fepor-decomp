@@ -474,8 +474,9 @@ void fn_801FCCA0(void *self) {
 #pragma opt_strength_reduction off
 static inline void *Particle_FindFree(void **base) {
     s32 j;
-    for (j = 0; j < 1024; j++) {
-        if (*(s16 *)((u8 *)*base + j * 16 + 12) == 0)
+    s32 offset;
+    for (j = 0, offset = 0; j < 1024; j++, offset += 16) {
+        if (*(s16 *)((u8 *)*base + offset + 12) == 0)
             return (u8 *)*base + j * 16;
     }
     return NULL;
@@ -540,7 +541,7 @@ void fn_801FD3B4(void *arg0) {
     }
     life = ang;
     for (i = 0; i < *((u8 *)arg0 + 0x4B); i++) {
-        slot = Particle_FindFree(*(void **)((u8 *)arg0 + 0x30));
+        slot = Particle_FindFree((void **)((u8 *)arg0 + 0x30));
         if (slot == NULL) {
             break;
         }
