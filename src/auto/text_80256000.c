@@ -8683,6 +8683,8 @@ void fn_80263CF0(void *arg0) {
     fn_80263D30(M2C_FIELD(arg0, f32 *, 0x1C8), M2C_FIELD(arg0, f32 *, 0x1D0), M2C_FIELD(arg0, f32 *, 0x1CC), M2C_FIELD(arg0, f32 *, 0x1D4), M2C_FIELD(arg0, f32 *, 0x1D8), M2C_FIELD(arg0, f32 *, 0x1DC));
 }
 
+#pragma push
+#pragma optimization_level 4
 s32 fn_80263D30(
     void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6
 )
@@ -8740,13 +8742,12 @@ s32 fn_80263D30(
             *(s32 *)(record + 0xB8) = *(s32 *)(record + 0xB4) - ((s32)length >> 1) * 4;
             while (*(s32 *)(record + 0xB8) < 0) *(s32 *)(record + 0xB8) += *(s32 *)(record + 0xBC);
             *(s32 *)(record + 0xB4) = 0;
+            *(s32 *)(record + 0xB8) = 0;
             *(s32 *)(record + 0xB8) = *(s32 *)(record + 0xB4) - (s32)(lbl_802A4570[sub] * 4);
             while (*(s32 *)(record + 0xB8) < 0) *(s32 *)(record + 0xB8) += *(s32 *)(record + 0xBC);
-            value = (f32)fmod(lbl_8036C3C0, (f64)(-(s32)(lbl_802A4570[sub] * 3)) / frequency);
-            *(f32 *)(data + index * 0x14 + 0x16C) = value;
+            value = (f32)fmod(lbl_8036C3C0, (f32)((s32)lbl_802A4570[sub] * -3) / frequency);
+            *(f32 *)(data + index * 4 + 0x16C) = value;
         }
-    }
-    for (channel = 0; channel < 3; channel++) {
         for (sub = 0; sub < 2; sub++) {
             index = channel * 3 + sub;
             record = data + index * 0x14;
@@ -8759,11 +8760,10 @@ s32 fn_80263D30(
             *(s32 *)(record + 0x04) = *(s32 *)(record + 0x00) - ((s32)length >> 1) * 4;
             while (*(s32 *)(record + 0x04) < 0) *(s32 *)(record + 0x04) += *(s32 *)(record + 0x08);
             *(s32 *)(record + 0x00) = 0;
+            *(s32 *)(record + 0x04) = 0;
             *(s32 *)(record + 0x04) = *(s32 *)(record + 0x00) - (s32)(lbl_802A4570[sub + 3] * 4);
             while (*(s32 *)(record + 0x04) < 0) *(s32 *)(record + 0x04) += *(s32 *)(record + 0x08);
         }
-    }
-    for (channel = 0; channel < 3; channel++) {
         record = data + channel * 0x3C;
         length = lbl_802A4570[channel + 5] + 2;
         size = length * 4;
@@ -8774,6 +8774,7 @@ s32 fn_80263D30(
         *(s32 *)(record + 0x2C) = *(s32 *)(record + 0x28) - ((s32)length >> 1) * 4;
         while (*(s32 *)(record + 0x2C) < 0) *(s32 *)(record + 0x2C) += *(s32 *)(record + 0x30);
         *(s32 *)(record + 0x28) = 0;
+            *(s32 *)(record + 0x2C) = 0;
         *(s32 *)(record + 0x2C) = *(s32 *)(record + 0x28) - (s32)(lbl_802A4570[channel + 5] * 4);
         while (*(s32 *)(record + 0x2C) < 0) *(s32 *)(record + 0x2C) += *(s32 *)(record + 0x30);
         *(f32 *)(data + channel * 4 + 0x190) = minimum;
@@ -8785,17 +8786,17 @@ s32 fn_80263D30(
     value = *(f32 *)(data + 0x1A0);
     if (value < lbl_8036C3C8) {
         *(f32 *)(data + 0x1A0) = lbl_8036C3C8;
-        value = lbl_8036C3C8 + lbl_8036C3CC * *(f32 *)(data + 0x1A0);
-        *(f32 *)(data + 0x1A0) = lbl_8036C3AC - value;
     }
-    if (arg5 != minimum) {
+    value = lbl_8036C3C8 + lbl_8036C3CC * *(f32 *)(data + 0x1A0);
+    *(f32 *)(data + 0x1A0) = lbl_8036C3AC - value;
+    if (arg5 != lbl_8036C3A8) {
         value = lbl_8036C3BC * arg5;
         *(u32 *)(data + 0x1A4) = (u32)(s32)value;
         for (channel = 0; channel < 3; channel++) {
             record = data + channel * 4;
             size = *(u32 *)(data + 0x1A4) * 4;
             *(void **)(record + 0x1AC) = fn_802637A4(size);
-            memset(*(void **)(record + 0x1AC), 0, size);
+            memset(*(void **)(record + 0x1AC), 0, *(u32 *)(data + 0x1A4) * 4);
             *(void **)(record + 0x1B8) = *(void **)(record + 0x1AC);
         }
     } else {
@@ -8809,6 +8810,7 @@ s32 fn_80263D30(
     }
     return 1;
 }
+#pragma pop
 
 #pragma optimization_level 3
 void Sound_MixSampleBuffers(s32 *a, s32 *b, f32 c0, f32 c1) {
