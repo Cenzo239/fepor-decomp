@@ -9,8 +9,8 @@ typedef struct AramAllocSlot {
     u32 address;
 } AramAllocSlot;
 static inline void *AramCache_InsertUsed(void *best, void *alloc_list) {
-    void *iter;
     void *insert_prev;
+    void *iter;
     insert_prev = 0;
     iter = alloc_list;
     while (iter != 0) {
@@ -1818,38 +1818,7 @@ split:
     AramCache_ReplaceSlot(cell, best, rem, arg0);
 
 insert:
-    alloc_list = gAramUsedList;
-    insert_prev = 0;
-    iter = alloc_list;
-    while (iter != 0) {
-    if (insert_prev != 0) {
-        if (((AramAllocSlot *)best)->address <= ((AramAllocSlot *)insert_prev)->address) {
-            goto ins_a;
-        }
-    }
-    if (iter == 0) {
-        break;
-    }
-    if (((AramAllocSlot *)iter)->address > ((AramAllocSlot *)best)->address) {
-        goto ins_d;
-    }
-ins_a:
-    insert_prev = iter;
-    iter = ((AramAllocSlot *)iter)->next;
-    }
-ins_d:
-    ((AramAllocSlot *)best)->next = iter;
-    ((AramAllocSlot *)best)->prev = insert_prev;
-    if (iter != 0) {
-        ((AramAllocSlot *)iter)->prev = best;
-    }
-    if (insert_prev != 0) {
-        ((AramAllocSlot *)insert_prev)->next = best;
-    }
-    if (insert_prev == 0) {
-        alloc_list = best;
-    }
-    gAramUsedList = alloc_list;
+    gAramUsedList = AramCache_InsertUsed(best, gAramUsedList);
 }
 
 void fn_801ED3D4(void)
