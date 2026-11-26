@@ -9,6 +9,7 @@ static inline u8 TabMenu_IsInBand(s8 first, s8 value, s8 last) {
 }
 
 typedef struct TabListIterator { void **node; } TabListIterator;
+typedef struct Key_801E9E30 { u8 value; } Key_801E9E30;
 
 struct UnkStruct {
     u32 field_0[0x10];
@@ -2206,12 +2207,7 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
     if (rem != 0) {
         band = (s8)q + 9;
     }
-    inrange = 0;
-    if ((s8)q <= v0) {
-        if (v0 <= (s8)band) {
-            inrange = 1;
-        }
-    }
+    inrange = TabMenu_IsInBand(q, v0, band);
     if (inrange == 0) {
         if ((s8)q < v0) {
             result = fn_801E87EC(arg0, arg1);
@@ -2223,12 +2219,7 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
         if (rem != 0) {
             band = (s8)q + 9;
         }
-        inrange = 0;
-        if ((s8)q <= v1) {
-            if (v1 <= (s8)band) {
-                inrange = 1;
-            }
-        }
+        inrange = TabMenu_IsInBand(q, v1, band);
         if (inrange == 0) {
             if ((s8)q < v1) {
                 result = fn_801E87EC(arg0, arg1);
