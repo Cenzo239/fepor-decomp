@@ -1,5 +1,15 @@
 /* Functions from 0x800A39F8 to 0x800A9384, found by decomp-toolkit. */
 #include "common.h"
+
+static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
+    s32 fn_8023C56C(s32, s32, s32, s32, s32);
+    extern u8 lbl_803123A0[];
+    if (fn_8023C56C(data, *(s32 *)(state + 0x14C), *(s32 *)(state + 0x150), *(s32 *)(state + 0x154), *(s32 *)(state + 0x9C)) == 0) {
+        *(s32 *)(state + 0x158) = *(s32 *)(lbl_803123A0 + *(s32 *)(state + 0xB4) * 12 + 0xD8);
+        return 1;
+    }
+    return 0;
+}
 extern u8 lbl_8028C750[16];
 extern u16 lbl_8026E408[];
 extern void strcat(void *, s32);
