@@ -1295,56 +1295,57 @@ void fn_80185564(void *arg0) {
 }
 
 void fn_80185674(void *arg0) {
-void *Effect_Create(void*,void*);
-void Effect_SetPos(void*,f32,f32,f32);
-void fn_80185B94(void);
-void fn_80053658(void*,s32,void*);
-void GfxEnt_ForEachKey(void*,void*,void*);
-void MuFade_UnlinkSame(void*,void*);
-void *Process_CreateEx(void*,void*);
-u32 Mu_GetFlashColor(s32);
-void *fn_80185BD4(void*);
-void SeCue_PlayAt(void*,s32,f32,f32,f32);
-void DebugPrint(void*,...);
-extern u8 MoveAnim_str[],E_MuColorChange_script[];
-extern f32 lbl_8036ACFC;
-u8 *self=arg0;
-u8 *flash;
-u8 *unit;
-u8 *effect;
-u8 key[0x44];
-u32 color;
-s32 duration;
-void *cue;
-effect=Effect_Create(MoveAnim_str+0x1C1,self);
-unit=*(u8**)(self+0x30);
-Effect_SetPos(effect,*(f32*)(unit+4),*(f32*)(unit+8),*(f32*)(unit+12)-lbl_8036ACFC);
-*(void(**)(void))(*(u8**)(effect+0x30)+0x40)=fn_80185B94;
-fn_80053658(effect,0,self);
-(*(u8**)(effect+0x30))[5]=4;
-duration=16/ *(s32*)(self+0x34);
-unit=*(u8**)(self+0x30);
-*(void**)(key+0x30)=unit;
-GfxEnt_ForEachKey(E_MuColorChange_script,MuFade_UnlinkSame,key);
-flash=Process_CreateEx(E_MuColorChange_script,self);
-*(void**)(flash+0x30)=unit;
-*(s32*)(flash+0x3C)=duration;
-color=Mu_GetFlashColor(3);
-flash[0x38]=((u8*)&color)[0];
-flash[0x39]=((u8*)&color)[1];
-flash[0x3A]=((u8*)&color)[2];
-flash[0x3B]=((u8*)&color)[3];
-flash[0x34]=unit[0x24];
-flash[0x35]=unit[0x25];
-flash[0x36]=unit[0x26];
-flash[0x37]=unit[0x27];
-*(s32*)(self+0x38)=0;
-cue=fn_80185BD4(*(void**)(self+0x30));
-if(cue){
-unit=*(u8**)(self+0x30);
-SeCue_PlayAt(cue,100,*(f32*)(unit+4),*(f32*)(unit+8),*(f32*)(unit+12));
-DebugPrint(MoveAnim_str+0x1CB,cue);
-}
+    void *Effect_Create(void *, void *);
+    void Effect_SetPos(void *, f32, f32, f32);
+    void fn_80185B94(void);
+    void fn_80053658(void *, s32, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void MuFade_UnlinkSame(void *, void *);
+    void *Process_CreateEx(void *, void *);
+    u32 Mu_GetFlashColor(s32);
+    void *fn_80185BD4(void *);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
+    void DebugPrint(void *, ...);
+    extern u8 MoveAnim_str[], E_MuColorChange_script[];
+    extern f32 lbl_8036ACFC;
+    u8 *self = arg0;
+    u8 *flash;
+    u8 *unit;
+    u8 key[0x44];
+    u32 color;
+    s32 duration;
+    void *cue;
+    u8 *effect;
+
+    effect = Effect_Create(MoveAnim_str + 0x1C1, self);
+    unit = *(u8 **)(self + 0x30);
+    Effect_SetPos(effect, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12) - lbl_8036ACFC);
+    *(void (**)(void))(*(u8 **)(effect + 0x30) + 0x40) = fn_80185B94;
+    fn_80053658(effect, 0, self);
+    (*(u8 **)(effect + 0x30))[5] = 4;
+    duration = 16 / *(s32 *)(self + 0x34);
+    unit = *(u8 **)(self + 0x30);
+    *(void **)(key + 0x30) = unit;
+    GfxEnt_ForEachKey(E_MuColorChange_script, MuFade_UnlinkSame, key);
+    flash = Process_CreateEx(E_MuColorChange_script, self);
+    *(void **)(flash + 0x30) = unit;
+    *(s32 *)(flash + 0x3C) = duration;
+    color = Mu_GetFlashColor(3);
+    flash[0x38] = ((u8 *)&color)[0];
+    flash[0x39] = ((u8 *)&color)[1];
+    flash[0x3A] = ((u8 *)&color)[2];
+    flash[0x3B] = ((u8 *)&color)[3];
+    flash[0x34] = unit[0x24];
+    flash[0x35] = unit[0x25];
+    flash[0x36] = unit[0x26];
+    flash[0x37] = unit[0x27];
+    *(s32 *)(self + 0x38) = 0;
+    cue = fn_80185BD4(*(void **)(self + 0x30));
+    if (cue) {
+        unit = *(u8 **)(self + 0x30);
+        SeCue_PlayAt(cue, 100, *(f32 *)(unit + 4), *(f32 *)(unit + 8), *(f32 *)(unit + 12));
+        DebugPrint(MoveAnim_str + 0x1CB, cue);
+    }
 }
 
 void fn_801857F0(void *arg0) {
