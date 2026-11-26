@@ -2580,6 +2580,7 @@ u32 special[10];u32 fpr[10];u32 *source;u32 opcode;u32 regBits=reg<<21;u32 *vals
 return 0;
 }
 
+#pragma pop
 s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
 {
     extern u8 gTRKExceptionStatus_8029E574[];
