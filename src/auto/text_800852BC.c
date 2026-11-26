@@ -1,6 +1,7 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline int fn_80089490_Eq(void *a, void *b) { return a == b; }
 typedef struct {
     f32 x, y;
     u8 unk8[4];
@@ -1746,7 +1747,7 @@ void fn_80089460(void *arg0) {
     fn_8000BFEC(fn_80089490);
 }
 
-#pragma optimization_level 2
+#pragma opt_strength_reduction off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
@@ -1773,7 +1774,7 @@ void fn_80089490(void *arg0) {
     }
     fn_8000A408(arg0);
 }
-#pragma optimization_level reset
+#pragma opt_strength_reduction on
 s32 fn_800894F8(void) {
     void Process_UnlinkByKey(void *);
     extern u8 lbl_802899C0[];
