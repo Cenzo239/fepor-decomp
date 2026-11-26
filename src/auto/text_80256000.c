@@ -1,6 +1,10 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline void Sound_SetPanPair(u8 *entry, u16 left, u16 right);
+static inline void Sound_SetPanPair(u8 *entry, u16 left, u16 right) {
+    *(u16 *)(entry + 0xD0) = left;
+    *(u16 *)(entry + 0xD2) = right;
+    *(u32 *)(entry + 0x24) |= 0x200;
+}
 
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
