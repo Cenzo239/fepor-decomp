@@ -1,5 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline f32 Map_CenterCoord(f32 value, f32 offset) { return value + offset; }
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
@@ -3588,8 +3589,8 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
 
-#pragma global_optimizer off
-#pragma fp_contract off
+#pragma push
+#pragma opt_strength_reduction off
 void fn_80049594(void *self)
 {
   f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -3609,11 +3610,10 @@ void fn_80049594(void *self)
   u8 sp68[0x30];
   u8 sp38[0x30];
   u8 sp8[0x30];
-  f32 half;
   u8 *ent;
   u8 *map;
-  u8 *p0;
   s32 a;
+  s32 b;
   f32 f31v;
   f32 f30v;
   f32 f29v;
@@ -3622,26 +3622,22 @@ void fn_80049594(void *self)
   f32 scale;
   f32 temp_f0;
   s32 ival;
-  float new_var;
-  half = lbl_80368EE4;
   *((s32 *) (((u8 *) self) + 0x40)) = (*((s32 *) (((u8 *) self) + 0x40))) + 1;
   ival = (s32) Math_EaseOutPow(2, *((f32 *) (((u8 *) self) + 0x44)), *((f32 *) (((u8 *) self) + 0x48)), (f32) (*((s32 *) (((u8 *) self) + 0x3C))), (f32) (*((s32 *) (((u8 *) self) + 0x40))));
   *((f32 *) ((*((u8 **) (((u8 *) self) + 0x30))) + 8)) = (f32) ival;
   ent = *((u8 **) (((u8 *) self) + 0x30));
   map = (u8 *) gMap;
-  f28v = ((f32) ((s8) ent[0])) + half;
-  new_var = -((*((f32 *) (ent + 0xC))) + half);
-  f29v = new_var;
+  f28v = ((f32) ((s8) ent[0])) + 0.5f;
+  f29v = -((*((f32 *) (ent + 0xC))) + 0.5f);
   t30 = (f32) ((s8) ent[1]);
-  f31v = (*((f32 *) (ent + 8))) + half;
-  f30v = t30 + half;
+  f31v = (*((f32 *) (ent + 8))) + 0.5f;
+  f30v = t30 + 0.5f;
   if ((*((u8 *) (map + 0x68))) == 1)
   {
-    a = *((s16 *) map);
-    p0 = (u8 *) ((s32) (*((s16 *) (map + 2))));
-    a = ((s32) ((((u32) a) >> 31) + a)) >> 1;
-    f28v -= (f32) a;
-    f30v -= (f32) (((s32) ((((u32) ((s32) p0)) >> 31) + ((s32) p0))) >> 1);
+    a = *(s16 *)map / 2;
+    b = *(s16 *)(map + 2) / 2;
+    f28v -= (f32)a;
+    f30v -= (f32)b;
   }
   PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
   PSMTXRotRad(sp68, 0x59, lbl_80368EEC * f31v);
@@ -3660,8 +3656,7 @@ void fn_80049594(void *self)
     Process_ClearFunc(self);
   }
 }
-#pragma fp_contract reset
-#pragma global_optimizer reset
+#pragma pop
 void fn_8004982C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x48);
 }
@@ -8169,6 +8164,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     extern const f32 lbl_8036909C;
     void *temp_r3;
     f32 *var_r4;
+    f32 x;
     f32 z;
     f32 y;
 
@@ -8187,7 +8183,8 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     if (var_r4 != NULL) {
         z = var_r4[2];
         y = var_r4[1];
-        *(f32 *)((u8 *)temp_r3 + 0xC) = var_r4[0];
+        x = var_r4[0];
+        *(f32 *)((u8 *)temp_r3 + 0xC) = x;
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x10) = y;
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x14) = lbl_8036909C + z;
     }
