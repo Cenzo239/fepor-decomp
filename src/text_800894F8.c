@@ -13,6 +13,10 @@ extern f64 lbl_80369688;
 extern f32 lbl_803696C8;
 typedef struct { u16 a, b, c; } Fn89980Struct;
 typedef struct { f32 a, b; } FloatPair892E8;
+static inline void *Fn800895B8Create0(void *base, s32 zero) {
+    void *Process_Create(void *, s32);
+    return Process_Create((u8 *)base + zero, 7);
+}
 typedef struct {
     void *f00;
     u8 pad04[0x44];
@@ -117,7 +121,7 @@ void fn_80089554(void) {
 #pragma global_optimizer off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
-    extern u8 lbl_80289950[0x48];
+    extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
@@ -125,8 +129,8 @@ void fn_800895B8(void) {
     u8 *base;
     void *tmp;
 
-    base = &lbl_80289950[0];
-    lbl_803674E0 = Process_Create(&((u32 *)base)[0], 7);
+    base = lbl_80289950;
+    lbl_803674E0 = Process_Create(base, 7);
     lbl_803674E4 = Process_Create(base + 0x58, 7);
     tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
@@ -135,7 +139,7 @@ void fn_800895B8(void) {
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
