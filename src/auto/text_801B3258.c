@@ -4940,17 +4940,15 @@ extern "C" void fn_801BBDA0(void *arg0) {
 
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
-    s16 fn_8017D604(s32, s32, u8 *);
+    s16 fn_8017D604(s32, s16);
     extern u8 lbl_80330708[];
     s32 t;
-    u8 *state;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    state = lbl_80330708;
-    t = ((s32 *)state)[7];
-    return (fn_8017D604(arg0, 1, state) <= t) ? 1 : 0;
+    t = *(s32 *)(lbl_80330708 + 0x1C);
+    return (fn_8017D604(arg0, 1) <= t) ? 1 : 0;
 }
 #pragma opt_propagation on
 extern "C" void Ui_DetachChildSlots(void *panel) {
