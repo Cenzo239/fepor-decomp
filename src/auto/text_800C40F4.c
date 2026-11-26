@@ -331,13 +331,13 @@ typedef struct String {
       SortIterator &operator++() { ++ptr; return *this; }
       SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
   };
-static inline SortIterator Sort_CopyToIterator(s32 *begin, s32 *end, SortIterator out) {
- while (begin != end) { *out = *begin; ++out; ++begin; }
- return out;
+static inline void Sort_CopyToIterator(s32 *begin, s32 *end, SortIterator out) {
+ s32 it_mem[2]; *(SortIterator *)it_mem = out;
+ while (begin != end) { *(*(SortIterator *)it_mem) = *begin; ((SortIterator *)it_mem)->ptr++; ++begin; }
 }
-static inline SortIterator Sort_ReverseToIterator(s32 *begin, s32 *end, SortIterator out) {
- while (begin != end) { --end; *out = *end; ++out; }
- return out;
+static inline void Sort_ReverseToIterator(s32 *begin, s32 *end, SortIterator out) {
+ s32 it_mem[2]; *(SortIterator *)it_mem = out;
+ while (begin != end) { --end; *(*(SortIterator *)it_mem) = *end; ((SortIterator *)it_mem)->ptr++; }
 }
 class SortCompare {
 public:
@@ -14186,12 +14186,12 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
     void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
     void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
     SortIterator fn_800E0398(s32 *, s32 *, s32 *, s32 *, SortIterator, SortCompare);
+    s32 n = ((s32)end - (s32)begin) / 4;
     s32 *mid;
     s32 *cur;
     s32 value;
     s32 *prev, *hole;
     s32 other, key;
-    s32 n = ((s32)end - (s32)begin) / 4;
     if (n <= 0) {
         return;
     }
@@ -14248,13 +14248,13 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         s32 half_n = n / 2;
         mid = begin + half_n;
         {
+            SortCompare c(comp);
             s32 b_tmp0[2], b_tmp[2];
             *(SortIterator *)b_tmp0 = out;
             ((SortIterator *)b_tmp0)->ptr += half_n;
             *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
-            SortIterator a(out);
             SortIterator b(*(SortIterator *)b_tmp);
-            SortCompare c(comp);
+            SortIterator a(out);
             s32 left_n = ((s32)mid - (s32)begin) / 4;
             if (left_n > 1) {
                 if (left_n == 2) {
@@ -14279,6 +14279,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         }
         {
+            SortCompare c(comp);
             s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
             *(SortIterator *)b_tmp0 = out;
             ((SortIterator *)b_tmp0)->ptr += n;
@@ -14286,9 +14287,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             *(SortIterator *)a_tmp0 = out;
             ((SortIterator *)a_tmp0)->ptr += half_n;
             *(SortIterator *)a_tmp = *(SortIterator *)a_tmp0;
-            SortIterator a(*(SortIterator *)a_tmp);
             SortIterator b(*(SortIterator *)b_tmp);
-            SortCompare c(comp);
+            SortIterator a(*(SortIterator *)a_tmp);
             s32 right_n = ((s32)end - (s32)mid) / 4;
             if (right_n > 1) {
                 if (right_n == 2) {
@@ -17064,6 +17064,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     char *endptr;
     void *srcC;
     u32 one;
+    u32 oldCap;
     u32 remaining;
 
     pVec = vec;
@@ -17082,9 +17083,10 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     }
 
     size = *(u32 *)((u8 *)pVec + 4);
+    oldCap = *(u32 *)pVec;
     need = size + cnt;
 
-    if (need <= *(u32 *)pVec) {
+    if (need <= oldCap) {
         end = *(u8 **)((u8 *)pVec + 8) + size * 0x1C;
         room = (u32)(((s32)end - (s32)pPos) / 28);
 
@@ -17209,9 +17211,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         }
 
         err = __files + 0xA0;
+        remaining = cnt;
         dst = pPos;
         srcC = (u8 *)pSrc + 0xC;
-        remaining = cnt;
         while (remaining != 0) {
             *(u32 *)&st.pad[0xA8] = (u32)-1;
             if (CheckPos_800E6554(*(u32 *)pSrc, 0)) {
