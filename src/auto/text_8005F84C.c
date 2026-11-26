@@ -6561,8 +6561,12 @@ next: node=M2C_FIELD(node,void **,4);
 }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
 #pragma fp_contract off
+typedef struct { f32 axis3[3], basis3[9], axis1[3], basis1[9], direction4[3], direction[3]; } ActorBillboardVectors;
+
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
@@ -6589,12 +6593,13 @@ typedef struct { f32 v[9]; } Basis;
 
 u8 *table;
 typedef struct { f32 v[3]; } Vector;
-Vector direction,direction4;
+Vector direction;
+Vector direction4;
 Basis basis1;
 Vector axis1;
 Basis basis3;
 Vector axis3;
-s32 i; u8 *info; Basis *basis=(Basis *)lbl_8026B888; s16 *slots; u8 *transformData; s32 count; u8 *cursor; u8 *joint; u32 index;
+s32 i; void *info; Basis *basis=(Basis *)lbl_8026B888; s16 *slots; u8 *transformData; s32 count; u8 *cursor; u8 *joint; s32 index;
 f32 dot,angle,angle2,angle4;
 info=GActor_GetNodeTable(actor);
 table=M2C_FIELD(node,u8 **,0x1C);
@@ -6784,7 +6789,9 @@ GXLoadPosMtxImm(root,*slots);
 fn_80202238(root,root); fn_80224DCC(root,*slots);
 }
 }
-
+#pragma pop
+#pragma global_optimizer off
+#pragma fp_contract off
 void fn_8006C100(f32 *src, f32 *dst)
 {
     typedef struct {
