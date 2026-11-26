@@ -624,64 +624,20 @@ s32 fn_8000B4D4(void *arg0) {
     return 1;
 }
 
-s32 fn_8000B4E8(void *arg0)
-{
-    extern u8 lbl_802A66D8[];
-    s32 fn_8000C60C(void *);
-
-    u8 *ptr;
+s32 fn_8000B4E8(void *arg0) {
+    extern u8 gProcesses[];
+    void Process_Unlink(void *);
+    u8 *ptr = gProcesses;
     s32 i;
-    s32 count;
 
-    ptr = lbl_802A66D8;
-    count = 0;
-
-    for (i = 0; i < 0x20; i++) {
+    for (i = 0; i < 256; i++, ptr += 0x70) {
         if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
+            Process_Unlink(ptr);
+            break;
         }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-        ptr += 0x70;
-
-        if (ptr != (u8 *)arg0 && *(u32 *)ptr == *(u32 *)arg0) {
-            return fn_8000C60C(ptr);
-        }
-
-        count += 7;
-        ptr += 0x70;
     }
 
     *(u32 *)((u8 *)arg0 + 4) += 4;
-
     return 1;
 }
 
