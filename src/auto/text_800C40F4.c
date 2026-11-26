@@ -10585,7 +10585,6 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma cplusplus on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10610,7 +10609,6 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[1] = y;
     arg0[2] = z;
 }
-#pragma cplusplus reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -14266,6 +14264,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
     }
     if (n <= 20) {
         if (begin != end) {
+            s32 *hole, *prev; s32 value; s32 *cur; s32 other, key;
             for (cur = begin + 1; cur < end; cur++) {
                 value = *cur;
                 prev = cur;
@@ -14288,26 +14287,27 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         return;
     }
     {
-      half_n = n / 2;
-      mid = begin + half_n;
+      half_n = (n / 2) * 4;
+      mid = (s32 *)((u8 *)begin + half_n);
       {
         s32 b_tmp0[2], b_tmp[2];
         *(SortIterator *)b_tmp0 = out;
-        ((SortIterator *)b_tmp0)->ptr += half_n;
+        ((SortIterator *)b_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)b_tmp0)->ptr + half_n);
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
         Sort_BufferedHalf(begin, mid, out, *(SortIterator *)b_tmp, comp);
       }
       {
         s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
         *(SortIterator *)b_tmp0 = out;
-        ((SortIterator *)b_tmp0)->ptr += n;
+        n *= 4;
+        ((SortIterator *)b_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)b_tmp0)->ptr + n);
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
         *(SortIterator *)a_tmp0 = out;
-        ((SortIterator *)a_tmp0)->ptr += half_n;
+        ((SortIterator *)a_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)a_tmp0)->ptr + half_n);
         *(SortIterator *)a_tmp = *(SortIterator *)a_tmp0;
         Sort_BufferedHalf(mid, end, *(SortIterator *)a_tmp, *(SortIterator *)b_tmp, comp);
       }
-      fn_800E0398(begin, mid, mid, end, out, comp);
+      fn_800E0398(begin, mid, mid, (s32 *)((u8 *)begin + n), out, comp);
     }
 }
 #pragma opt_pointer_aliasing reset
@@ -17043,8 +17043,8 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
     void *pSrc;
     void *pVec;
-    void *newData;
     u32 room;
+    void *newData;
     void *end;
     u32 cnt;
     void *cur;
