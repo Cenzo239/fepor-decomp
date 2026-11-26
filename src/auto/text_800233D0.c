@@ -1,5 +1,6 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
+static inline void UiCtx_Put0(void **p, void *v) { *p = v; }
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
