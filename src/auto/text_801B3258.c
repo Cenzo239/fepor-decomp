@@ -1,5 +1,10 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static s16 fn_8017D604(s32, s32, u8 *);
+static inline s32 GoldCmp_801BC71C(s32 arg0, u8 *bs, s32 one) {
+    s32 t = *(s32 *)(bs + 0x1C);
+    return (fn_8017D604(arg0, one, bs) <= t) ? 1 : 0;
+}
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -4936,20 +4941,19 @@ extern "C" void fn_801BBDA0(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
+#pragma opt_lifetimes off
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
-    s16 fn_8017D604(s32, s32, u8 *);
-    extern u8 lbl_80330708[];
+    s16 Unit_GetGoldCost(s32, s32, u8 *);
+    extern u8 gBattleState[];
     s32 t;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    t = *(s32 *)(lbl_80330708 + 0x1C);
-    return (fn_8017D604(arg0, 1, lbl_80330708) <= t) ? 1 : 0;
+    t = *(s32 *)(gBattleState + 0x1C);
+    return (Unit_GetGoldCost(arg0, 1, gBattleState) <= t) ? 1 : 0;
 }
-#pragma global_optimizer reset
 
 #pragma cplusplus reset
 
