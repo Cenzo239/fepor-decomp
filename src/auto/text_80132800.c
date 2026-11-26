@@ -472,7 +472,10 @@ void fn_80132CDC(void) {
     Process_ClearFunc();
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_80132CFC(void *arg0) {
     void fn_801475FC(void *, s32);
     extern u8 lbl_802764BC[];
@@ -586,8 +589,9 @@ extern "C" void fn_80132CFC(void *arg0) {
         }
     }
 }
-
-#pragma global_optimizer off
+#pragma pop
+#pragma cplusplus on
+#pragma global_optimizer on
 extern "C" void fn_80132FD0(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_802764BC[];
@@ -5630,6 +5634,8 @@ void fn_8013AA60(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x18, 0x19, 0x4C, arg5);
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) {
     M2C_UNK Prim2D_AddZ(f32);
     void Text_Draw(s32, s16, s32, void *, ...);
@@ -5641,7 +5647,6 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     extern f32 lbl_8036A6B0;
     extern f32 lbl_8036A6B4;
 #pragma cplusplus on
-#pragma optimization_level 3
     struct Panel {
         virtual void v0()=0; virtual void v1()=0; virtual void v2()=0;
         virtual void v3()=0; virtual void v4()=0; virtual void v5()=0;
@@ -5683,10 +5688,9 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, s32 arg3, void *arg4, u8 arg5) 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B4);
     Prim2D_PrepareTex();
-#pragma optimization_level reset
 #pragma cplusplus reset
 }
-
+#pragma pop
 s32 fn_8013AC00(void *arg0, s32 arg1) {
     u8 (*temp_r12)(s32, s32);
 
@@ -5919,9 +5923,12 @@ extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
     };
     s16 var_r3;
     s32 temp_r4;
-    s32 temp_r7;
     s32 temp_r6;
-    s32 temp_r8;
+    s16 temp_r7;
+    s16 temp_r8;
+    s32 maxIdx;
+    s32 maxRow;
+    s32 maxOff;
     s32 t;
 
     if (arg1 != (s16)M2C_FIELD(arg0, s16 *, 0x4E)) {
@@ -5942,17 +5949,17 @@ extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
                 }
             } while (arg1 < (s16)M2C_FIELD(arg0, s16 *, 0x4E));
         } else {
-            temp_r6 = temp_r7 - 1;
-            temp_r7 = temp_r8 - 1;
-            temp_r8 = var_r3 - 1;
+            maxIdx = temp_r7 - 1;
+            maxRow = temp_r8 - 1;
+            maxOff = var_r3 - 1;
             do {
                 M2C_FIELD(arg0, s16 *, 0x4E) = (s16)(M2C_FIELD(arg0, s16 *, 0x4E) + 1);
-                if ((s16)M2C_FIELD(arg0, s16 *, 0x4E) > temp_r6) {
-                    M2C_FIELD(arg0, s16 *, 0x4E) = (s16)temp_r6;
+                if ((s16)M2C_FIELD(arg0, s16 *, 0x4E) > maxIdx) {
+                    M2C_FIELD(arg0, s16 *, 0x4E) = (s16)maxIdx;
                 }
                 t = (s16)(M2C_FIELD(arg0, s16 *, 0x4E) / temp_r4);
-                if (t < temp_r7) {
-                    if (temp_r8 == t - (s16)M2C_FIELD(arg0, s16 *, 0x56)) {
+                if (t < maxRow) {
+                    if (maxOff == t - (s16)M2C_FIELD(arg0, s16 *, 0x56)) {
                         M2C_FIELD(arg0, s16 *, 0x56) = (s16)(M2C_FIELD(arg0, s16 *, 0x56) + 1);
                     }
                 }
