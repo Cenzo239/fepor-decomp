@@ -18200,7 +18200,7 @@ void fn_8017FEF8(void *arg0) {
 #pragma peephole off
 #pragma cplusplus on
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 0
 extern "C" void fn_80180084(void *arg0)
 {
     void Process_Goto(void *, s32);
