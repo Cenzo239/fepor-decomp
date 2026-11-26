@@ -1,6 +1,7 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 typedef struct MenuSortTag { u8 value; } MenuSortTag;
+static inline void *MenuSortAddress(void *base, s32 offset) { return (u8 *)base + offset; }
 #pragma cplusplus on
 struct MenuCenteredLabel {
 virtual void v0()=0;
@@ -5108,19 +5109,15 @@ s32 fn_8014351C(void *arg0, s32 arg1) {
     return 1;
 }
 
+#pragma push
+#pragma opt_strength_reduction off
 void fn_80143570(void *arg0) {
-    void fn_80144B60(void *, u8);
-    s32 off;
-    u8 e;
-    s32 i;
-
-    off = 0;
-    for (i = 0; i != 11; i++) {
-        fn_80144B60((u8 *)arg0 + (off + 0x90), e);
-        off += 0xC;
-    }
+void fn_80144B60(void *, MenuSortTag);
+s32 i;
+MenuSortTag tag;
+for(i=0;i!=11;i++) fn_80144B60((u8 *)arg0+(i*12+0x90),tag);
 }
-
+#pragma pop
 #pragma cplusplus on
 extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
     struct Obj {
