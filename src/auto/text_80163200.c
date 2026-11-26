@@ -3022,7 +3022,6 @@ void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
 
 #pragma push
 #pragma opt_common_subs off
-#pragma global_optimizer off
 void fn_801676AC(u8 *self, s32 arg1) {
     void *memset(void *, s32, s32); void Process_ClearFunc(s32);
     f32 Math_Ease(s32, f32, f32, f32, f32); void Prim2D_Begin(void);
