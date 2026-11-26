@@ -365,30 +365,32 @@ void fn_802665F8(s32 arg0, s32 arg1)
     }
     *(s32 *)(base + 0x20) = result;
 }
-#pragma global_optimizer on
-void fn_802666F4(s32 arg0, void *arg1)
+#pragma push
+#pragma global_optimizer off
+void fn_802666F4(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
     u8 *entry;
     u8 *queue;
-    void (*callback)(s32, void *);
+    void (*callback)(s32, s32);
+    unsigned int pad;
 
     entry = lbl_803669A0 + (arg0 << 8);
     queue = entry + 0x40;
 
     if (arg1 == 0) {
         **(u8 **)(queue + 0x10) = 0;
-        *(u32 *)(queue + 0x2C) = 0;
-        *(u32 *)(queue + 0x28) = 0;
-        callback = *(void (**)(s32, void *))(queue + 0x14);
-        if (callback != 0) {
-            *(u32 *)(queue + 0x14) = 0;
-            callback(arg0, arg1);
-        }
     }
-    *(void **)(entry + 0x20) = arg1;
+    *(u32 *)(queue + 0x2C) = 0;
+    *(u32 *)(queue + 0x28) = 0;
+    callback = *(void (**)(s32, s32))(queue + 0x14);
+    if (callback) {
+        *(u32 *)(queue + 0x14) = 0;
+        callback(arg0, arg1);
+    }
+    *(s32 *)(entry + 0x20) = arg1;
 }
-#pragma global_optimizer on
+#pragma pop
 void fn_80266774(s32 arg0) {
     extern u8 lbl_803669A0[];
     void *memcpy(void *, const void *, u32);
