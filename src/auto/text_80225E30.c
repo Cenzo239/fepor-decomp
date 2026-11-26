@@ -1,5 +1,25 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+s32 fn_8022A230(u32, s32, s32);
+static inline s32 TRK_ValidateRangePart(u32 start, s32 length, s32 mode) {
+typedef struct { u32 start; u32 end; s32 readable; s32 writable; } MemRange;
+extern MemRange lbl_80282750[];
+u32 end=length+start-1;
+s32 result=0x700;
+s32 i;
+if(end<start)return result;
+for(i=0;i<1;i++){
+ if(start<=lbl_80282750[i].end && end>=lbl_80282750[i].start){
+ if((mode==0&&!lbl_80282750[i].readable)||(mode==1&&!lbl_80282750[i].writable))return 0x700;
+ result=0;
+ if(start<lbl_80282750[i].start)result=fn_8022A230(start,lbl_80282750[i].start-start,mode);
+ if(result==0 && end>lbl_80282750[i].end)result=fn_8022A230(lbl_80282750[i].end,end-lbl_80282750[i].end,mode);
+ break;
+ }
+}
+return result;
+}
+
 #include <dolphin/os.h>
 #include "global.h"
 
