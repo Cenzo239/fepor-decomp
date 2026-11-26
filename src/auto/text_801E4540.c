@@ -2107,37 +2107,30 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
     return result;
 }
 
+#pragma push
+#pragma optimization_level 2
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
     s16 v;
-    s32 q;
-    s32 r;
-    s8 lo;
+    s32 q, r, lo;
     u8 ok;
-    s32 count;
-
+    s8 count;
     count = fn_801E4A60();
-    if ((s8)count > 0) {
-        count--;
-    }
+    if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
     r = v % 32;
     lo = (s8)q + 8;
-    if (r != 0) {
-        lo = (s8)q + 9;
-    }
+    if (r != 0) lo = (s8)q + 9;
     ok = 0;
-    if (((s8)q <= (s8)count) && ((s8)count <= lo)) {
-        ok = 1;
-    }
-    if (ok == 0) {
-        M2C_FIELD(arg0, s16 *, 0x38) = (s16)(v - ((s8)((s8)q - (s8)count) << 5));
+    if ((s8)q <= count && count <= (s8)lo) ok = 1;
+    if (!ok) {
+        M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
         return 1;
     }
     return 0;
 }
-
+#pragma pop
 s32 fn_801E87EC(void *arg0, s32 arg1) {
     s8 fn_801E4A60();
     s8 fn_801E8920(void *, s32);
@@ -3666,3 +3659,6 @@ extern f32 gTabMenuOne;
 #include "ef.h"
 
 extern u16* lbl_80332020;
+static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
+    return low <= value && value <= high;
+}
