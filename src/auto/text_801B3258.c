@@ -1,10 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static s16 fn_8017D604(s32, s32, u8 *);
-static inline s32 GoldCmp_801BC71C(s32 arg0, u8 *bs, s32 one) {
-    s32 t = *(s32 *)(bs + 0x1C);
-    return (fn_8017D604(arg0, one, bs) <= t) ? 1 : 0;
-}
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
