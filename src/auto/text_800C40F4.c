@@ -13184,7 +13184,7 @@ void *fn_800DF724(void *arg0, s16 arg1) {
 #pragma cplusplus on
 #pragma optimization_level 4
 #pragma opt_propagation off
-extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
+extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *path) {
 #pragma opt_common_subs off
     struct Obj {
         u8 pad[0x10];
@@ -13233,14 +13233,12 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     void *allocC;
     void *alloc8;
     Self *self;
-    void *path;
     void *owner;
     char *p;
     u32 len;
     s32 flag;
 
     self = (Self *)arg0;
-    path = arg2;
     owner = arg1;
     self->vtbl = lbl_8028DFC8;
     self->s0.size = 0;
@@ -27447,35 +27445,28 @@ void fn_800FAD94(void *arg0) {
     extern u8 gTargetList[];
     s32 fn_80102DFC(s32, s32, s32, s32);
     u8 *TargetList_GetCurrent(void *);
-    void Ai_SetDecision(s8, s32, s8, s8, s8, s8, s8);
+    void Ai_SetDecision(u8, s32, s8, s8, s8, s8, s8);
 
     u8 *unit;
     u8 *cmd;
     s32 cmdC;
-    s8 uy;
-    s8 ux;
-    u8 *tgt;
-    s8 tx;
-    s8 ty;
-    s32 cond;
+    s32 x;
+    s32 y;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
-    ux = (s8)gUiContext[0xD];
-    uy = (s8)gUiContext[0xE];
+    x = (s8)gUiContext[0xD];
+    y = (s8)gUiContext[0xE];
     cmdC = *(s32 *)(cmd + 0xC);
-    cond = *(s32 *)(cmd + 0x10) != 0;
 
-    if ((u8)fn_80102DFC(ux, uy, cmdC, cond)) {
-        if (cond) {
-            tgt = TargetList_GetCurrent(gTargetList);
-            tx = (s8)tgt[0];
-            tgt = TargetList_GetCurrent(gTargetList);
-            ty = (s8)tgt[1];
-            Ai_SetDecision((u8)cmdC, (s32)unit, tx, cond ? ty : uy, -1, 0, 0);
-        } else {
-            *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
+    if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
+        if (*(s32 *)(cmd + 0x10) != 0) {
+            x = (s8)TargetList_GetCurrent(gTargetList)[0];
+            y = (s8)TargetList_GetCurrent(gTargetList)[1];
         }
+        Ai_SetDecision((u8)cmdC, (s32)unit, x, y, -1, 0, 0);
+    } else {
+        *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
     }
 
     if (gAiCmdIsAlt == 0) {
@@ -29770,6 +29761,7 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     s32 n;
     s32 r;
     s32 tmp;
+    u8 ordered;
 
     while (1) {
         n = end - begin;
@@ -29806,8 +29798,9 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
         if (i == begin) {
             tmp = *i; *i = *last; *last = tmp;
             ++i;
+            ordered = cmp(*begin, *(end - 1));
             last = end - 1;
-            if (!cmp(*begin, *last)) {
+            if (!ordered) {
                 while (i != end && !cmp(*begin, *i)) ++i;
                 if (i < last) {
                     tmp = *i; *i = *last; *last = tmp;
