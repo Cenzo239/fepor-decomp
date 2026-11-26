@@ -361,7 +361,7 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma optimization_level 4
+#pragma optimization_level 2
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
@@ -381,14 +381,14 @@ s32 fn_8023CA4C(void) {
         zig = lbl_80282FD8;
         p = zig;
         for (i = 0; (u16)i < 64; i += 8, p += 8) {
-            table[*p] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 1)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 2)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 3)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 4)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 5)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 6)]] = (f32)(u32)ThpCursorByte();
-            table[zig[(u16)(i + 7)]] = (f32)(u32)ThpCursorByte();
+            table[*p] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 3)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 4)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 5)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
         }
         state = (u8 *)lbl_80368950;
         i = 0;
