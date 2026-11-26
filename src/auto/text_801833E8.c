@@ -1,6 +1,62 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline s32 Map_ShowObjAtImmediate(s32 x, s32 y) {
+    s32 Map_Get(void);
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
+    void fn_800056A0(s32);
+    void MapObjEvent_Remove(void *, s32, s32, s32);
+    void *MapObjEvent_Find(void *, s32, s32, s32);
+    void MapObj_FadeIn(void *, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
+    s32 Map_CollectLinkedObjs(void *, void *, s32 *);
+    u8 MapObj_IsVisible(void *);
+    void MapObj_Show(void *, s32);
+    void fn_80044450(s32, s32);
+    void fn_80016180(void);
+    extern u8 gMapObjEventList[];
+    s32 count;
+    s32 i;
+    s32 v;
+    s32 *p;
+    s32 linked[10];
+
+    {
+        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+        if (obj == NULL) {
+            fn_800056A0(0);
+            return 0;
+        }
+        MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
+        {
+            void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+            if (ev != NULL) {
+                ((u8 *)ev)[4] = ((u8 *)ev)[5];
+            }
+        }
+        MapObj_FadeIn(obj, 0);
+    }
+    {
+        void *obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
+        if (obj != NULL) {
+            count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
+            p = linked;
+            i = 0;
+            while (i < count) {
+                v = *p;
+                if ((u8)MapObj_IsVisible((void *)v) == 0) {
+                    MapObj_Show((void *)v, 0);
+                }
+                p++;
+                i++;
+            }
+        }
+    }
+    fn_80044450(Map_Get(), 1);
+    fn_80016180();
+    return 1;
+}
+
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
@@ -14580,6 +14636,8 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     return 1;
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_8019E8B0(void *self)
 {
   extern u32 gUiInputFlags;
@@ -14643,7 +14701,7 @@ void fn_8019E8B0(void *self)
     Process_ClearFunc(self);
   }
 }
-
+#pragma pop
 s32 fn_8019EA48(void) {
     void Process_UnlinkByKey(void *);
     extern u8 lbl_80297024[];
