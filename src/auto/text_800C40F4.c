@@ -10428,7 +10428,7 @@ extern "C" void fn_800DB228(u8 *self) {
     );
 }
 #pragma cplusplus off
-void *fn_800DB338(void *arg0, void *arg1, void *arg2)
+void *fn_800DB338(u8 *self, void *arg1, void *arg2)
 {
     void *fn_800E4688(void *, void *, void *);
     void Xml_GetNamedValue(void *, void *, void *);
@@ -10444,7 +10444,6 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
         u32 v[8];
     };
 
-    u8 *self;
     String name;
     String name2;
     String name3;
@@ -10459,7 +10458,6 @@ void *fn_800DB338(void *arg0, void *arg1, void *arg2)
     s32 scratch3;
     s32 scratch4;
 
-    self = (u8 *)arg0;
 
     fn_800E4688(self, arg1, arg2);
 
