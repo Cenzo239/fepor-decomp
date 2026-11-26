@@ -1,37 +1,7 @@
 /* Functions from 0x801E4540 to 0x801EA8C0, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline s32 TabMenu_UpperBound(s32 value, s32 lower) {
-    s32 upper = lower + 8;
-    if (value % 32 != 0) upper = lower + 9;
-    return upper;
-}
-static inline s32 TabMenu_AdjustScroll(void *arg0, s8 count) {
-    s32 v;
-    s32 q, r, lower, lo;
-    u8 ok;
-    if (count > 0) count--;
-    v = M2C_FIELD(arg0, s16 *, 0x36);
-    q = v / 32;
-    lower = (s8)q;
-    r = v % 32;
-    lo = lower + 8;
-    if (r != 0) lo = lower + 9;
-    { s32 index = (s8)count; s32 upper = (s8)lo;
-    ok = 0;
-    if (lower <= index && index <= upper) ok = 1;
-    }
-    if (!ok) {
-        M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
-        return 1;
-    }
-    return 0;
-}
-static inline u8 TabMenu_InRange32(s32 low, s32 value, s32 high) {
-    u8 ok = 0;
-    if (low <= value && value <= high) ok = 1;
-    return ok;
-}
+
 static inline s32 TabMenu_ScrollUp(void *arg0, u8 *arg1, u8 var_r7) {
     void *var_r5;
     s32 var_r0;
@@ -2179,27 +2149,24 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 #pragma push
 #pragma optimization_level 3
 #pragma opt_common_subs off
-s32 fn_801E8734(void *arg0, u8 arg1) {
-    s8 fn_801E4A60(void *, u8);
+s32 fn_801E8734(void *arg0) {
+    s8 fn_801E4A60();
     s32 v;
     s32 lower;
-    s32 q;
-    s32 lo;
+    s32 q, r, lo;
     u8 ok;
     s8 count;
-    s32 index;
-    s32 upper;
-    count = fn_801E4A60(arg0, arg1);
+    count = fn_801E4A60();
     if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
     lower = (s8)q;
     lo = lower + 8;
     if (v % 32 != 0) lo = lower + 9;
-    upper = (s8)lo;
-    index = (s8)count;
+    { s32 upper = (s8)lo; s32 index = (s8)count;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
+    }
     if (!ok) {
         M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
         return 1;
@@ -2700,13 +2667,12 @@ void fn_801E8D34(u8 *arg0) {
 #pragma push
 #pragma optimization_level 3
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
     s32 top, bottom, position;
     
     u8 var_r7;
     void *var_r5;
-    s32 var_r0;
+    u8 var_r0;
     s32 var_r8;
     s32 temp_r7;
     s32 scroll;
