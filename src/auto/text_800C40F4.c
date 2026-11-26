@@ -16082,8 +16082,8 @@ void fn_800E4E5C(void *arg0) {
 #pragma cplusplus on
 extern "C" s32 GActor_FindNode(s32, s32);
 extern "C" void fn_80060F70(void *, s32, f32 *);
-#pragma cplusplus off
-void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
+#pragma cplusplus on
+extern "C" struct DirectionVector fn_800E4E7C(void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
@@ -16112,10 +16112,9 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         x = z;
     }
 
-    *arg0++ = x;
-    *arg0++ = y;
-    *arg0 = z;
+    return DirectionVector(x, y, z);
 }
+#pragma cplusplus off
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
@@ -17044,8 +17043,8 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     } st;
 
     void *pSrc;
-    void *pVec;
-    u32 room;
+    register void *pVec;
+    register u32 room;
     void *newData;
     void *end;
     u32 cnt;
