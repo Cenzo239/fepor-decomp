@@ -25768,7 +25768,14 @@ extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
   #pragma auto_inline reset
   #pragma cplusplus reset
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
+static inline u8 Map_CompareNeighborAllegiance(void *unit, void *neighbor)
+{
+    u8 Allegiance_Compare(s32, s32);
+    return Allegiance_Compare(*(s32 *)((u8 *)unit + 0x190), *(s32 *)((u8 *)neighbor + 0x190));
+}
+
 s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     u8 Allegiance_Compare(s32, s32);
     extern u8 lbl_80272E98[];
@@ -25809,7 +25816,7 @@ s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     }
     return score;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
     void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
