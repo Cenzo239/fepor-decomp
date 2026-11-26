@@ -8,6 +8,68 @@ const char stringBase0_80282C60[] =
 typedef struct FileWriteState { u8 pad[4]; u8 reservedMode : 2; u8 mode : 3; u8 buffering : 2; u8 reservedFlag : 1; u8 pad5[3]; u8 state : 3; u8 reserved : 5; } FileWriteState;
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
+static inline int msl_fflush(void *file) {
+    s32 __flush_buffer(void *, s32 *);
+    s32 __flush_all();
+    s32 fn_80231748(void *);
+    typedef struct {
+        u8 pad[4];
+        u16 pre:7;
+        u16 ioMode:3;
+        u16 rest:6;
+    } FileWord4;
+    typedef struct {
+        u8 pad[4];
+        u8 pre:2;
+        u8 state:3;
+        u8 rest:3;
+    } FileByte4;
+    typedef struct {
+        u8 pad[8];
+        u8 bufMode:3;
+        u8 rest:4;
+        u8 flag:1;
+    } FileByte8;
+    FileWord4 *w4 = (FileWord4 *)file;
+    FileByte4 *b4 = (FileByte4 *)file;
+    FileByte8 *b8 = (FileByte8 *)file;
+    s32 pos;
+
+    if (file == NULL) {
+        return __flush_all();
+    }
+    if (((u8) M2C_FIELD(file, u8 *, 0xA) != 0) || (w4->ioMode == 0)) {
+        return -1;
+    }
+    if (b4->state == 1) {
+        return 0;
+    }
+    if (b8->bufMode >= 3U) {
+        b8->bufMode = 2;
+    }
+    if (b8->bufMode == 2) {
+        M2C_FIELD(file, s32 *, 0x28) = 0;
+    }
+    if (b8->bufMode != 1) {
+        b8->bufMode = 0;
+        return 0;
+    }
+    if (w4->ioMode != 1) {
+        pos = 0;
+    } else {
+        pos = fn_80231748(file);
+    }
+    if (__flush_buffer(file, 0) != 0) {
+        M2C_FIELD(file, u8 *, 0xA) = 1U;
+        M2C_FIELD(file, s32 *, 0x28) = 0;
+        return -1;
+    }
+    b8->bufMode = 0;
+    M2C_FIELD(file, s32 *, 0x18) = pos;
+    M2C_FIELD(file, s32 *, 0x28) = 0;
+    return 0;
+}
+
 extern f32 lbl_80367068;
 extern f64 lbl_8036BE20;
 extern f64 lbl_8036BE28;
@@ -508,6 +570,8 @@ int fflush(void *file) {
     return 0;
 }
 
+#pragma push
+#pragma opt_propagation off
 s32 fn_802312B0(void *arg0) {
     s32 __flush_buffer(void *, s32 *);
     s32 fn_8022D4C8();
@@ -573,9 +637,9 @@ s32 fn_802312B0(void *arg0) {
                 M2C_FIELD(arg0, s32 *, 0x28) = 0;
             } else {
                 var_r29 = 0;
-                M2C_FIELD(arg0, s32 *, 0x18) = var_r30;
                 b8->mode = var_r29;
-                M2C_FIELD(arg0, s32 *, 0x28) = 0;
+                M2C_FIELD(arg0, s32 *, 0x18) = var_r30;
+                M2C_FIELD(arg0, s32 *, 0x28) = var_r29;
             }
         }
     }
@@ -591,7 +655,7 @@ s32 fn_802312B0(void *arg0) {
     }
     return (s32) (-var_r3 | var_r3) >> 0x1F;
 }
-
+#pragma pop
 extern s32 fn_802314D8(s32, s32, s32);
 s32 fseek(s32 arg0, s32 arg1, s32 arg2) {
 extern void __begin_critical_region(s32);
