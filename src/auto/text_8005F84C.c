@@ -8765,7 +8765,6 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2) {
     Ui_CreateMenu((u8 *)d + 0x80, fn_800C0658(), 0);
 }
 #pragma global_optimizer off
-#pragma inline_depth(8)
 void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
