@@ -10585,6 +10585,10 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
+#pragma cplusplus on
+extern "C" void PSMTXRotRad(void *, s32, f32);
+extern "C" void fn_802029C4(void *, f32 *, f32 *);
+#pragma cplusplus reset
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10597,7 +10601,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
+    PSMTXRotRad(mtx, 'Y', 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
@@ -14189,6 +14193,8 @@ static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortI
     void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
     void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
     SortIterator fn_800E0398(s32 *, s32 *, s32 *, s32 *, SortIterator, SortCompare);
+            s32 half;
+            s32 *middle;
             s32 n = ((s32)end - (s32)begin) / 4;
             if (n > 1) {
                 if (n == 2) {
@@ -14198,8 +14204,8 @@ static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortI
                 } else if (n <= 20) {
                     fn_800E0F2C(begin, end, c);
                 } else {
-                    s32 half = n / 2;
-                    s32 *middle = begin + half;
+                    half = n / 2;
+                    middle = begin + half;
                     if (n <= fn_800E2168(&b, &a)) {
                         fn_800E18B4(begin, middle, a, c);
                         fn_800E18B4(middle, end, SortIterator(fn_800E2138(&a, half)), c);
@@ -14245,7 +14251,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         key = Sort_GetKey((void *)end[-1]);
         if (Sort_GetKey((void *)value) > key) {
             s32 it_mem[2];
-            *(SortIterator *)it_mem = out;
+            it_mem[1] = out.state;
+            it_mem[0] = (s32)out.ptr;
             cur = end;
             while (begin != cur) {
                 --cur;
@@ -14254,7 +14261,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         } else {
             s32 it_mem[2];
-            *(SortIterator *)it_mem = out;
+            it_mem[1] = out.state;
+            it_mem[0] = (s32)out.ptr;
             for (cur = begin; cur != end; cur++) {
                 *(*(SortIterator *)it_mem) = *cur;
                 ((SortIterator *)it_mem)->ptr++;
@@ -14278,7 +14286,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         }
         {
             s32 it_mem[2];
-            *(SortIterator *)it_mem = out;
+            it_mem[1] = out.state;
+            it_mem[0] = (s32)out.ptr;
             for (cur = begin; cur != end; cur++) {
                 *(*(SortIterator *)it_mem) = *cur;
                 ((SortIterator *)it_mem)->ptr++;
@@ -14290,24 +14299,25 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
       half_n = (n / 2) * 4;
       mid = (s32 *)((u8 *)begin + half_n);
       {
+        SortCompare c(comp);
         s32 b_tmp0[2], b_tmp[2];
         *(SortIterator *)b_tmp0 = out;
         ((SortIterator *)b_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)b_tmp0)->ptr + half_n);
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
-        Sort_BufferedHalf(begin, mid, out, *(SortIterator *)b_tmp, comp);
+        Sort_BufferedHalf(begin, mid, out, *(SortIterator *)b_tmp, c);
       }
       {
+        SortCompare c(comp);
         s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
         *(SortIterator *)b_tmp0 = out;
-        n *= 4;
-        ((SortIterator *)b_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)b_tmp0)->ptr + n);
+        ((SortIterator *)b_tmp0)->ptr += n;
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
         *(SortIterator *)a_tmp0 = out;
         ((SortIterator *)a_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)a_tmp0)->ptr + half_n);
         *(SortIterator *)a_tmp = *(SortIterator *)a_tmp0;
         Sort_BufferedHalf(mid, end, *(SortIterator *)a_tmp, *(SortIterator *)b_tmp, comp);
       }
-      fn_800E0398(begin, mid, mid, (s32 *)((u8 *)begin + n), out, comp);
+      fn_800E0398(begin, mid, mid, begin + n, out, comp);
     }
 }
 #pragma opt_pointer_aliasing reset
