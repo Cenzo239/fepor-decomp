@@ -768,18 +768,14 @@ s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pa
     return -1;
 }
 
-#pragma opt_propagation off
-#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, u8 arg7, u8 a8, u8 a9, u16 a10, u16 a11, u8 a13, s16 addVolume, u8 a14, s32 a15)
 {
   u8 *fn_802508E0(u16);
   u8 new_var2;
   s32 fn_802482AC(u16, s16, u8, s32, u8, s32, u8, u8, u8, u8, u16, u16, u8, u8, u8, s32);
   s32 fn_802555A0(u16, u8, u8, s32, u8, s32, u8, u8, u8, u8, u16, u16, u8, u8, u8, s32);
-  s32 status;
-  s32 status2;
-  s32 new_var;
-  u32 valid;
+  s32 status; s32 status2; s32 new_var; u32 valid;
   volume = volume + addVolume;
   new_var2 = pan;
   volume = (volume > 255U) ? (255) : (volume);
@@ -793,22 +789,11 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
         r = Sound_RemapVoiceKey(key & 127, arg7, a8, 1, &status);
         valid = status == 0;
       }
-      else
-      {
-        r = -1;
-        valid = 1;
-      }
-      if (!valid)
-      {
-        return -1;
-      }
-      if (((u32) (r + 0x10000)) != 0xFFFF)
-      {
-        return r;
-      }
+      else { r = -1; valid = 1; }
+      if (!valid) return -1;
+      if (((u32) (r + 0x10000)) != 0xFFFF) return r;
       return fn_802555A0(id, volume, arg2, arg3, key, arg5, new_var2, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
     }
-
     case 0x4000:
     {
       s32 result;
@@ -825,86 +810,38 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
           s32 flags = sample & 0xC000;
           if (flags != 0x4000)
           {
-            s32 value;
-            s32 note;
-            s16 v;
-            u8 *alt;
-            u8 *row;
-            u8 newPan;
+            s32 value; s32 note; s16 v; u8 *alt; u8 *row; u8 newPan;
             if (!(entry[3] & 0x80))
             {
               alt = table + (((u8) key) << 3);
-              value = alt[3] - ((0, 0x40));
+              value = alt[3] - 0x40;
               value += new_var2;
-              if (value < 0)
-              {
-                newPan = 0;
-              }
-              else
-                if (value > 127)
-              {
-                newPan = 127;
-              }
-              else
-              {
-                newPan = (u8) value;
-              }
+              if (value < 0) newPan = 0;
+              else if (value > 127) newPan = 127;
+              else newPan = (u8) value;
             }
-            else
-            {
-              newPan = 128;
-            }
+            else newPan = 128;
             row = table + offset;
             note = low + (*((s8 *) (row + 2)));
-            if (note > 127)
-            {
-              key = 127;
-            }
-            else
-            {
-              key = note & (~(note >> 31));
-            }
+            if (note > 127) key = 127;
+            else key = note & (~(note >> 31));
             v = volume + (*((s16 *) (row + 4)));
-            if (v > 255)
-            {
-              v = 255;
-            }
-            else
-            {
-              v = v & (~(v >> 31));
-            }
+            if (v > 255) v = 255;
+            else v = v & (~(v >> 31));
             if (flags == 0)
             {
-              s32 r;
-              u8 k = key;
+              s32 r; u8 k = key;
               if (Sound_GetChanParam(0x41, arg7, a8) > 0x1F80U)
               {
                 r = Sound_RemapVoiceKey(k & 127, arg7, a8, 1, &status2);
                 valid = status2 == 0;
               }
-              else
-              {
-                r = -1;
-                valid = 1;
-              }
-              if (!valid)
-              {
-                result = -1;
-              }
-              else
-                if (((u32) (r + 0x10000)) != 0xFFFF)
-                {
-                  result = r;
-                }
-                else
-                {
-                  result = fn_802555A0(*((u16 *) entry), (u8) v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
-                }
+              else { r = -1; valid = 1; }
+              if (!valid) result = -1;
+              else if (((u32) (r + 0x10000)) != 0xFFFF) result = r;
+              else result = fn_802555A0(*((u16 *) entry), (u8) v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
             }
-            else
-            {
-              result = fn_802482AC(sample, v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
-            }
+            else result = fn_802482AC(sample, v, arg2, arg3, (u8) (key | (original & 128)), arg5, newPan, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
             goto done4000;
           }
         }
@@ -920,12 +857,9 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
           *((((u8 *) gSynthVoices) + offset) + 0x11C) = 0;
           voice = *((s32 *) ((((u8 *) gSynthVoices) + offset) + 0xEC));
         }
-
       }
-
       return result;
     }
-
     case 0x8000:
       new_var = fn_802482AC(id, volume, arg2, arg3, key, arg5, new_var2, arg7, a8, a9, a10, a11, 1, a13, a14, a15);
     {
@@ -939,19 +873,12 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
           *((((u8 *) gSynthVoices) + offset) + 0x11C) = 0;
           voice = *((s32 *) ((((u8 *) gSynthVoices) + offset) + 0xEC));
         }
-
       }
       return result;
     }
-
-    default:
-      return -1;
-
+    default: return -1;
   }
-
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
 void fn_80248D28(s32 arg0)
 {
     extern s32 lbl_803689A8;
