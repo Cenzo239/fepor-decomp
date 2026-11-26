@@ -1051,6 +1051,7 @@ extern "C" void fn_80024734(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_80024768(void *arg0) {
 void *GfxEnt_Get(u8);void Process_ClearFunc(void*);
 void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void Ui_OpenUnitInfoText(void*,void*,void*,f32,f32);
@@ -1062,6 +1063,7 @@ MenuController24768 *ctrl;
 void *item,*q;
 u8 *node;
 Selection *selected;
+u32 index;
 u32 flags;
 ctrl=*(MenuController24768**)((u8*)arg0+0x3c);flags=0;
 if(!(gUiInputFlags&0x80)){
@@ -1069,9 +1071,11 @@ if(*(s8*)((u8*)arg0+0x62)<0){ctrl->v13(arg0);return;}
 ctrl->v11(arg0);
 (*(MenuController24768**)((u8*)arg0+0x3c))->v12(arg0);
 if(*((u8*)arg0+0x2b)!=0x7b){
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);lbl_80367238=*((u8*)item+0x3a);
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);lbl_80367239=*((u8*)item+0x3b);
 }
 flags=(*(MenuController24768**)((u8*)arg0+0x3c))->v14(arg0);
@@ -1083,7 +1087,8 @@ if(flags&8)Ui_PlaySeCue(lbl_80268D90+0x43,100);
 if(flags&16)Ui_PlaySeCue(lbl_80268D90+0x53,100);
 if(flags&1){
 Process_ClearFunc(arg0);
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);
 (*(MenuItem24768**)((u8*)item+0x34))->v15(arg0,item);
 if(ctrl->v27())Ui_PlaySeCue(ctrl->v27(),100);
@@ -1096,18 +1101,22 @@ if(node[0x2c]&2){node[0x2c]&=~2;((u8*)*(void**)(node+0x18))[0x2d]--;}
 node=*(u8**)(node+0x18);
 }
 }else if(flags&32){
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);
 x=(f32)(*(s16*)((u8*)arg0+0x30)+*(s16*)((u8*)item+0x30));
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);
 y=(f32)(*(s16*)((u8*)arg0+0x32)+*(s16*)((u8*)item+0x32));
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v2();
 if(q)Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,q,x,y);
 else {
-selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+index=(u8)((Selection *)arg0)->selected;
+selected=(Selection *)((u8 *)arg0+(s8)index);
 item=GfxEnt_Get(selected->id[0]);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);
 Ui_OpenUnitInfoPopup(gUnitInfoPopup,arg0,q,x,y);
