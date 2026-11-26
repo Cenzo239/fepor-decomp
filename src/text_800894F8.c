@@ -115,11 +115,7 @@ void fn_80089554(void) {
 }
 
 #pragma global_optimizer off
-static inline void *Fn_800895B8_Create(s32 off) {
-    void *Process_Create(void *, s32);
-    extern u8 lbl_80289950[];
-    return Process_Create(lbl_80289950 + off, 7);
-}
+#pragma opt_strength_reduction off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[0x48];
