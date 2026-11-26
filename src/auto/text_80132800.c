@@ -4919,6 +4919,8 @@ extern "C" void fn_80139884(void *arg0, s32 arg1)
 struct Point_80139A50 {
     s16 x;
     s16 y;
+    Point_80139A50() {}
+    Point_80139A50(s16 xx, s16 yy) : x(xx), y(yy) {}
 };
 extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
 struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual s32 v11()=0; };
