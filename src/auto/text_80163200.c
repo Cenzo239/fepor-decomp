@@ -6346,18 +6346,20 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
 }
 
 #pragma use_lmw_stmw off
-static inline s32 SplitNewline_8016D5A8(const char *src, char *buf, register char *line1, char *line2) {
+static inline s32 SplitNewline_8016D5A8(const char *src, char *buf, char *line1, char *line2) {
     char *strcpy(char *, const char *);
     void *memcpy(void *, const void *, s32);
     s32 hasSecond = 0;
-    s32 i;
+    register char *dst;
     char *p;
+    s32 i;
     strcpy(buf, src);
-    strcpy(line1, buf);
+    dst = line1;
+    strcpy(dst, buf);
     for (p = buf, i = 0; *p != 0; p++, i++) {
         if (*p == '\n') {
-            memcpy(line1, buf, i);
-            line1[i] = 0;
+            memcpy(dst, buf, i);
+            dst[i] = 0;
             strcpy(line2, p + 1);
             hasSecond = 1;
             break;
