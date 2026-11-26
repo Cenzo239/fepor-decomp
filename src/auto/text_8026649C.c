@@ -28,6 +28,13 @@ typedef struct {
     s32 y;
 } Pair_80266D70;
 
+static inline void ClearQueueFields(u8 *queue, u8 *bytePtr, s32 zero) {
+    s32 value = zero;
+    *bytePtr = (u8)value;
+    *(u32 *)(queue + 0x2C) = value;
+    *(u32 *)(queue + 0x28) = value;
+}
+
 typedef struct Voice {
     u8 pad0[0x110];
     u64 flags;
