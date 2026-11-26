@@ -1,5 +1,9 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 Map_IsBlendRange(u8 mode) {
+    if ((u8)(mode - 1) <= 1) return 1;
+    return 0;
+}
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -186,14 +190,16 @@ outer_test:
         goto outer;
     }
 }
-#pragma opt_common_subs reset
-#pragma use_lmw_stmw reset
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
-    void fn_80022DAC(void *, s32, s32);
-    void fn_800AACDC(void *);
-    extern u8 lbl_802CA264[];
-    extern u8 lbl_80367289;
+    void Map_FillLayer(void *, s32, s32);
+    void Map_SetupUnitMoveLimit(void *);
+    extern u8 gUnitLists[];
+    extern u8 gMapBlendMode;
 
     register u16 packed;
     void *next;
@@ -238,13 +244,13 @@ void fn_8001F140(void *arg0) {
     u32 zero;
 
     OSGetTick();
-    fn_80022DAC(arg0, 9, 0);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    Map_FillLayer(arg0, 9, 0);
+    node = *(void **)(gUnitLists + 0xC);
     while (node != NULL) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
         next = *(void **)((u8 *)node + 0x184);
         if ((flags & (int)0x800) != 0 && (flags & (u32)0x010000DC) == 0) {
-            fn_800AACDC(node);
+            Map_SetupUnitMoveLimit(node);
             row = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
             row_off = row << 6;
             row_base = (u8 *)arg0 + row_off;
@@ -346,7 +352,7 @@ void fn_8001F140(void *arg0) {
 
     one = 1;
     var_r4 = one;
-    temp = (u8)(lbl_80367289 - 1);
+    temp = (u8)(gMapBlendMode - 1);
     u = (u32)(one - temp) >> 1;
     t = one | ~temp;
     if (((u32)(t - u) >> 31) == 0) {
@@ -378,6 +384,7 @@ void fn_8001F140(void *arg0) {
     }
     OSGetTick();
 }
+#pragma pop
 s32 Map_IsInViewBounds(void *arg0, s8 arg1, s8 arg2) {
     if (arg1 < (s8) M2C_FIELD(arg0, u8 *, 8)) {
         return 0;
