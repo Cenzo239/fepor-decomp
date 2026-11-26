@@ -813,6 +813,7 @@ void __GXInitGX(void) {
 }
 
 #pragma use_lmw_stmw reset
+#pragma peephole on
 
 void fn_8021EB88(s32 arg0, void *arg1)
 {
