@@ -1,6 +1,8 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+#pragma push
+#pragma inline on
 static inline void Effect_SetCenteredMapPos(void *effect, f32 height, s32 x, s32 y) {
     extern f32 lbl_8036AF80;
     void Effect_SetPos(void *, f32, f32, f32);
@@ -15035,7 +15037,7 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_8019F2D0(s32 x, s32 y)
+s32 fn_8019F2D0(s32 x, long long y)
 {
   extern u32 gUiInputFlags;
   s32 Map_Get(void);
@@ -15043,7 +15045,7 @@ s32 fn_8019F2D0(s32 x, s32 y)
   void fn_800056A0(s32);
   void MapObjEvent_Remove(void *, s32, s32, s32);
   void *MapObjEvent_Find(void *, s32, s32, s32);
-
+  s32 new_var;
   void MapObj_FadeIn(void *, s32);
   void *Map_FindObjNear(void *, s32, s32, u32, s32);
   s32 Map_CollectLinkedObjs(void *, void *, s32 *);
@@ -15070,7 +15072,8 @@ s32 fn_8019F2D0(s32 x, s32 y)
       }
       else
       {
-        MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) y, 0x21);
+        new_var = y;
+        MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
         {
           void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) y, 4);
           if (ev != NULL)
@@ -15079,7 +15082,7 @@ s32 fn_8019F2D0(s32 x, s32 y)
           }
         }
         MapObj_FadeIn(obj, 0);
-        obj = Map_FindObjNear((void *) Map_Get(), x, y, 0x800, 0);
+        obj = Map_FindObjNear((void *) Map_Get(), x, new_var, 0x800, 0);
         if (obj != NULL)
         {
           count = Map_CollectLinkedObjs((void *) Map_Get(), obj, linked);
@@ -15110,9 +15113,9 @@ s32 fn_8019F2D0(s32 x, s32 y)
       fn_800056A0(0);
       return 0;
     }
-    MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) y, 0x21);
+    MapObjEvent_Remove(gMapObjEventList, (s8) x, (s8) new_var, 0x21);
     {
-      void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) y, 4);
+      void *ev = MapObjEvent_Find(gMapObjEventList, (char) x, (char) new_var, 4);
       if (ev != NULL)
       {
         ((u8 *) ev)[4] = ((u8 *) ev)[5];
