@@ -22,6 +22,15 @@ virtual void deselect(void *, void *) = 0;
 };
 #pragma cplusplus reset
 
+static inline void *GActor_FindNodeTableIn(void *p) {
+    while (p) {
+        void *table = *(void **)((u8 *)p + 0x40);
+        if (table) return table;
+        p = *(void **)((u8 *)p + 4);
+    }
+    return 0;
+}
+
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
