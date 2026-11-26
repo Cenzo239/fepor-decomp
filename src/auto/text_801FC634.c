@@ -290,6 +290,21 @@ void fn_801FCC68(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
+static inline void *Particle_FindFree(void **base) {
+    s32 j;
+    s32 offset;
+    for (j = 0, offset = 0; j < 1024; j++, offset += 16) {
+        if (*(s16 *)((u8 *)*base + offset + 12) == 0)
+            return (u8 *)*base + j * 16;
+    }
+    return NULL;
+}
+#pragma pop
+
+#pragma use_lmw_stmw on
 void fn_801FCCA0(void *self) {
     typedef struct { f32 x, y; u8 ang, spd, pad, rnd; s16 life, age; } Part;
     void *Heap_AllocRaw(s32);
@@ -467,21 +482,6 @@ void fn_801FCCA0(void *self) {
     }
 }
 #pragma use_lmw_stmw reset
-
-#pragma use_lmw_stmw on
-#pragma push
-#pragma optimization_level 4
-#pragma opt_strength_reduction off
-static inline void *Particle_FindFree(void **base) {
-    s32 j;
-    s32 offset;
-    for (j = 0, offset = 0; j < 1024; j++, offset += 16) {
-        if (*(s16 *)((u8 *)*base + offset + 12) == 0)
-            return (u8 *)*base + j * 16;
-    }
-    return NULL;
-}
-#pragma pop
 
 #pragma push
 #pragma optimization_level 4
