@@ -5352,8 +5352,12 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
     }
 }
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma opt_loop_invariants off
+#pragma dont_inline off
+#pragma auto_inline on
+#pragma inline_max_size(1000)
+#pragma inline_depth(8)
 s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
     void *Res_GetByName(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -5380,15 +5384,7 @@ s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
                         ((u32 *)*(u32 *)(entry + 0x18))[j] = 0;
                 }
                 slots = (u32 *)*(u32 *)(entry + 0x18);
-                for (j = 0; j < 8; j++) {
-                    value = slots[j];
-                    if (value == arg2)
-                        break;
-                    if (!value) {
-                        slots[j] = arg2;
-                        break;
-                    }
-                }
+                GMaterial_InsertSlot688D4(arg2, slots);
                 *(u16 *)(entry + 4) |= arg3 & 0xc000;
             }
             off += 32;
@@ -5418,15 +5414,7 @@ s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
                     ((u32 *)*(u32 *)(found + 0x18))[j] = 0;
             }
             slots = (u32 *)*(u32 *)(found + 0x18);
-            for (j = 0; j < 8; j++) {
-                value = slots[j];
-                if (value == arg2)
-                    break;
-                if (!value) {
-                    slots[j] = arg2;
-                    break;
-                }
-            }
+            GMaterial_InsertSlot688D4(arg2, slots);
             *(u16 *)(found + 4) |= arg3 & 0xc000;
         }
         return 1;
