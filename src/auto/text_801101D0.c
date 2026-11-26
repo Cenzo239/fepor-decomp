@@ -1802,6 +1802,8 @@ extern "C" void fn_80113BA0(void *arg0) {
 }
 #pragma cplusplus reset
 
+#pragma push
+#pragma opt_common_subs off
 void fn_80113C84(void *self, s32 mode) {
     s32 strlen(char *);
     s32 fn_800DDC04(void *, void *);
@@ -1821,6 +1823,7 @@ void fn_80113C84(void *self, s32 mode) {
     String spC;
     s32 sp8;
     u32 ok;
+    s32 n;
 
     sp3C.size = 0;
     sp3C.cap = 0;
@@ -1849,7 +1852,8 @@ void fn_80113C84(void *self, s32 mode) {
         break;
     }
 
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)gActorXmlStrs + 0x478, strlen((char *)((u32)gActorXmlStrs + 0x478))) == 0) {
+    n = strlen((char *)gActorXmlStrs + 0x478);
+    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)gActorXmlStrs + 0x478, n) == 0) {
         fn_800C9ABC(&spC, fn_800C93EC(&sp3C), &sp8);
         fn_800CB8A4(&sp18, (u8 *)self + 0x154, &spC);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &sp18) != 0;
@@ -1872,7 +1876,7 @@ void fn_80113C84(void *self, s32 mode) {
     fn_800C9A60(&sp30, -1);
     fn_800C9A60(&sp3C, -1);
 }
-
+#pragma pop
 u8 fn_80113F68(void *arg0) {
     extern f32 lbl_8036A184;
     return (u8) (lbl_8036A184 != M2C_FIELD(arg0, f32 *, 0x104));
@@ -2232,6 +2236,8 @@ extern "C" void fn_801146BC(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_80114840(void *arg0) {
     void *Heap_Alloc(s32);
     void String_Init(void *, char *, void *);
@@ -2276,16 +2282,23 @@ extern "C" void fn_80114840(void *arg0) {
     void *self;
     Word3 pos;
     s8 flagA;
-    register s8 flagB;
-    register String strC;
+    s8 flagB;
     Vec3f got;
-    Word3 copyA;
-    register Word3 tmpVec;
-    Word3 copyB2;
-    register String strB;
-    register String strA;
-    Word3 copyB;
     void *obj;
+
+    self = arg0;
+    *(f32 *)&pos.z = 0.0f;
+    *(f32 *)&pos.y = 0.0f;
+    *(f32 *)&pos.x = 0.0f;
+    got = ((Actor *)self)->GetPos(0);
+    {
+    String strC;
+    Word3 copyA;
+    Word3 tmpVec;
+    Word3 copyB2;
+    String strB;
+    String strA;
+    Word3 copyB;
     Word3 tmpVec2;
     Word3 copyA2;
     String strD;
@@ -2294,11 +2307,6 @@ extern "C" void fn_80114840(void *arg0) {
     void *scratch3;
     void *scratch4;
 
-    self = arg0;
-    *(f32 *)&pos.z = lbl_8036A184;
-    *(f32 *)&pos.y = lbl_8036A184;
-    *(f32 *)&pos.x = lbl_8036A184;
-    got = ((Actor *)self)->GetPos(0);
     flagB = 0;
     flagA = 0;
     *(f32 *)&pos.y = got.y;
@@ -2347,8 +2355,10 @@ extern "C" void fn_80114840(void *arg0) {
     SeCue_PlayAt((char *)gActorXmlStrs + 0x4DA, 0x64, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
     fn_80025624(gPadInput, 4);
     *(u8 *)((u8 *)self + 0x1A4) = 1;
+    }
 }
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 typedef struct { f32 x, y, z; } PVector3;
 #pragma cplusplus on
