@@ -30,12 +30,12 @@ static inline void Terrain_HashAll(void *entries_void, u32 *out) {
         u32 unk8;
     };
     struct TerrainEntry *entries = (struct TerrainEntry *)entries_void;
-    u32 acc;
+    u8 b;
     u8 *s;
+    u32 acc;
     s32 i;
 
     for (i = 0; i < 0x4D; i++) {
-        u8 b;
         s = entries->name;
         acc = 0;
         while ((b = *s, (s8)b != 0)) {
