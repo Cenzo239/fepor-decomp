@@ -7932,6 +7932,7 @@ void fn_8006DDDC(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_loop_invariants off
+#pragma opt_common_subs off
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -8753,9 +8754,3 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 #pragma opt_common_subs on
-static inline s32 Material_TakeSlot(u8 *count, s32 *ids)
-{
-    u8 index = *count;
-    *count = index + 1;
-    return ids[index];
-}
