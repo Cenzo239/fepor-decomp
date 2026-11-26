@@ -8684,21 +8684,21 @@ void fn_80263CF0(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 s32 fn_80263D30(
     void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6
 )
 {
-    extern f32 lbl_8036C3A8;
-    extern f32 lbl_8036C3AC;
-    extern f32 lbl_8036C3B0;
-    extern f32 lbl_8036C3B4;
-    extern f32 lbl_8036C3B8;
-    extern f32 lbl_8036C3BC;
-    extern f32 lbl_8036C3C8;
-    extern f32 lbl_8036C3CC;
-    extern f64 lbl_8036C3C0;
-    extern f64 lbl_8036C3D0;
+    extern const f32 lbl_8036C3A8;
+    extern const f32 lbl_8036C3AC;
+    extern const f32 lbl_8036C3B0;
+    extern const f32 lbl_8036C3B4;
+    extern const f32 lbl_8036C3B8;
+    extern const f32 lbl_8036C3BC;
+    extern const f32 lbl_8036C3C8;
+    extern const f32 lbl_8036C3CC;
+    extern const f64 lbl_8036C3C0;
+    extern const f64 lbl_8036C3D0;
     extern u32 lbl_802A4570[];
     extern void *fn_802637A4(s32);
     extern f64 fmod(f64, f64);
