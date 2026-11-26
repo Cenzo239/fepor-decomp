@@ -935,12 +935,12 @@ void *fn_80057998(void *arg0) {
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern u8 lbl_80285BF0[];
-    extern f32 lbl_80369108;
+    extern const f32 gF32_0;
     f32 f0;
 
     *(void **)((u8 *)arg0 + 0x2C) = lbl_80285BF0;
     *(s32 *)arg0 = fn_8006D948(lbl_8026AD80 + 0xAA);
-    f0 = lbl_80369108;
+    f0 = gF32_0;
     *(s32 *)((u8 *)arg0 + 0x14) = 0;
     *(s32 *)((u8 *)arg0 + 0x18) = 0;
     *(s32 *)((u8 *)arg0 + 0x1C) = 0;
