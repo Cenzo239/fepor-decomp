@@ -18665,7 +18665,7 @@ void fn_800E8CEC(void *arg0) {
     }
 }
 
-void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
+void fn_800E8DF0(f32 *arg0, const f32 *arg1, f32 arg2) {
     f32 PSVECDistance(f32 *, f32 *);
     void fn_802031A8(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
@@ -18675,43 +18675,39 @@ void fn_800E8DF0(void *arg0, f32 *arg1, f32 arg2) {
     f32 destination[3];
     f32 delta[3];
     f32 distance;
-    f32 step;
     f32 x;
     f32 y;
     f32 z;
-    u8 *self;
 
     x = arg1[0];
     y = arg1[1];
-    *(f32 *)((u8 *)arg0 + 0x78) = x;
-    step = arg2;
+    arg0[30] = x;
     z = arg1[2];
-    *(f32 *)((u8 *)arg0 + 0x7C) = y;
-    *(f32 *)((u8 *)arg0 + 0x80) = z;
-    self = (u8 *)arg0;
+    arg0[31] = y;
+    arg0[32] = z;
 
-    current[0] = *(f32 *)(self + 0xE4);
-    current[1] = *(f32 *)(self + 0xE8);
-    current[2] = *(f32 *)(self + 0xEC);
+    current[0] = arg0[57];
+    current[1] = arg0[58];
+    current[2] = arg0[59];
 
-    destination[0] = *(f32 *)(self + 0x78);
-    destination[1] = *(f32 *)(self + 0x7C);
-    destination[2] = *(f32 *)(self + 0x80);
+    destination[0] = arg0[30];
+    destination[1] = arg0[31];
+    destination[2] = arg0[32];
 
     distance = PSVECDistance(destination, current);
 
-    if (distance < step) {
-        *(s32 *)(self + 0x9C) = 0;
+    if (distance < arg2) {
+        ((s32 *)arg0)[39] = 0;
     } else {
         fn_802031A8(destination, current, delta);
         fn_802031E8(delta, delta);
-        fn_802031CC(delta, delta, step);
+        fn_802031CC(delta, delta, arg2);
 
-        *(f32 *)(self + 0x84) = delta[0];
-        *(f32 *)(self + 0x88) = delta[1];
-        *(f32 *)(self + 0x8C) = delta[2];
+        arg0[33] = delta[0];
+        arg0[34] = delta[1];
+        arg0[35] = delta[2];
 
-        *(s32 *)(self + 0x9C) = (s32)(distance / step);
+        ((s32 *)arg0)[39] = (s32)(distance / arg2);
     }
 }
 
@@ -27438,13 +27434,13 @@ if(!gAiCmdIsAlt) obj[0x250]=index; else obj[0x251]=index;
 
 #pragma use_lmw_stmw on
 void fn_800FAD94(void *arg0) {
-    extern u8 gUiContext[];
+    extern s8 gUiContext[];
     extern u8 *gAiCmd;
     extern u8 gAiState[];
     extern s32 gAiCmdIsAlt;
     extern u8 gTargetList[];
     s32 fn_80102DFC(s32, s32, s32, s32);
-    u8 *TargetList_GetCurrent(void *);
+    s8 *TargetList_GetCurrent(void *);
     void Ai_SetDecision(u8, s32, s8, s8, s8, s8, s8);
 
     u8 *unit;
@@ -27455,18 +27451,19 @@ void fn_800FAD94(void *arg0) {
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
-    x = (s8)gUiContext[0xD];
-    y = (s8)gUiContext[0xE];
+    x = gUiContext[0xD];
+    y = gUiContext[0xE];
     cmdC = *(s32 *)(cmd + 0xC);
 
     if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
+        s32 ty = y;
         if (*(s32 *)(cmd + 0x10) != 0) {
-            x = (s8)TargetList_GetCurrent(gTargetList)[0];
-            y = (s8)TargetList_GetCurrent(gTargetList)[1];
+            x = TargetList_GetCurrent(gTargetList)[0];
+            ty = TargetList_GetCurrent(gTargetList)[1];
         }
-        Ai_SetDecision((u8)cmdC, (s32)unit, x, y, -1, 0, 0);
+        Ai_SetDecision((u8)cmdC, (s32)unit, x, ty, -1, 0, 0);
     } else {
-        *(s32 *)&gAiState[(*(s32 *)(cmd + 4) << 2) + 8] = 9;
+        *(s32 *)(gAiState + (*(s32 *)(cmd + 4) << 2) + 8) = 9;
     }
 
     if (gAiCmdIsAlt == 0) {
