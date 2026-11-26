@@ -1,6 +1,26 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline s32 fn_800A0260_Body(void *arg2, u8 x) {
+    void Process_FindByName(void *);
+    void fn_8018DC98(void);
+    void fn_8018DCC0(void);
+    extern u8 lbl_80366E24;
+    extern u8 gMenuCmdStrings[];
+    u8 t;
+    t = lbl_80366E24 ^ 1;
+    lbl_80366E24 = t;
+    if (t != 0 && x != 0) {
+        *(u8 *)((char *)arg2 + 0x39) = 0;
+    }
+    if (lbl_80366E24 != 0) {
+        Process_FindByName(gMenuCmdStrings + 0x3D0);
+        fn_8018DCC0();
+    } else {
+        fn_8018DC98();
+    }
+    return 0;
+}
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
     void *fn_80105C5C(void *, u8);
@@ -72,11 +92,11 @@ void *fn_800A0250(void) {
 }
 
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
-    void Process_FindByName(void *);
+    void fn_8000BCA4(void *);
     void fn_8018DC98(void);
     void fn_8018DCC0(void);
     extern u8 lbl_80366E24;
-    extern u8 gMenuCmdStrings[];
+    extern u8 lbl_8026D8D8[];
     u8 x = 2;
     u8 t;
 
@@ -87,7 +107,7 @@ s32 fn_800A0260(s32 a, s32 b, void *arg2) {
         *(u8 *)((char *)arg2 + 0x39) = x;
     }
     if (lbl_80366E24 != 0) {
-        Process_FindByName(gMenuCmdStrings + 0x3D0);
+        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
         fn_8018DCC0();
     } else {
         fn_8018DC98();
