@@ -1,6 +1,11 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void Effect_SetCenteredMapPos(void *effect, f32 height, s32 x, s32 y) {
+    extern f32 lbl_8036AF80;
+    void Effect_SetPos(void *, f32, f32, f32);
+    Effect_SetPos(effect, lbl_8036AF80 + (f32)x, lbl_8036AF80 + (f32)y, height);
+}
 #pragma push
 #pragma inline on
 #pragma inline_max_size(1000)
@@ -14663,8 +14668,8 @@ void fn_8019E8B0(void *self)
   void *parent;
   void *effect;
   void *host;
+  f32 y,x;
   f32 height;
-  f32 x,y;
   (void)lbl_8036AF78;
   if (gUiInputFlags & 1)
   {
@@ -14694,8 +14699,8 @@ void fn_8019E8B0(void *self)
       {
         height = Map_SampleHeight(gBattleMap, (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x50)))), (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x54)))));
         x = (f32)*(s32 *)((u8 *)self+0x50);
-        x = lbl_8036AF80 + x;
         y = (f32)*(s32 *)((u8 *)self+0x54);
+        x = lbl_8036AF80 + x;
         y = lbl_8036AF80 + y;
         Effect_SetPos(effect,x,y,height);
         break;
