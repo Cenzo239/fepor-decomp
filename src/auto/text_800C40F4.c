@@ -1106,14 +1106,6 @@ found4:
 #pragma global_optimizer off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
-    struct HeapLocal {
-        u32 magic;
-        char name[12];
-        u32 next;
-        u32 prev;
-        u8 *freeBlock;
-        u32 size;
-    };
     extern u32 lbl_8036786C;
     extern u32 lbl_80367864;
     extern u32 lbl_80367870;
@@ -1125,34 +1117,38 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void DebugPrint(const char *, ...);
 
     s32 index;
-    struct HeapLocal *heap;
+    u8 *heap;
     u32 size;
+    u8 *data;
+    u32 *table;
+    s32 groups;
     u32 end;
 
     size = Heap_AlignSize(arg1);
 
-    end = lbl_8036786C;
+    end=lbl_8036786C;
     if (end != 0) {
-        heap = (struct HeapLocal *)(end - size);
+        heap = (u8 *)(end - size);
     } else {
-        heap = (struct HeapLocal *)(lbl_80367864 - size);
+        heap = (u8 *)(lbl_80367864 - size);
     }
 
-    index = Heap_FindInTable(lbl_80320B88, 0);
+    index=Heap_FindInTable(lbl_80320B88,0);
 
-    Str_CopyPad(heap->name, arg0, 0xB);
+    Str_CopyPad(heap + 4, arg0, 0xB);
 
-    heap->name[0xB] = 0;
-    heap->next = 0;
+    heap[0xF] = 0;
+    *(u32 *)(heap + 0x10) = 0;
 
-    heap->size = size;
-    heap->prev = 0;
-    heap->freeBlock = (u8 *)heap + 0x20;
-    heap->magic = 0x48454150;
 
-    *(u32 *)(heap->freeBlock + 0xC) = 0;
-    *(u32 *)(heap->freeBlock + 8) = 0;
-    *(u32 *)(heap->freeBlock + 0x10) = heap->size - 0x20;
+    *(u32 *)(heap + 0x1C) = size;
+    *(u32 *)(heap + 0x14) = 0;
+    *(void **)(heap + 0x18) = heap + 0x20;
+    *(u32 *)heap = 0x48454150;
+
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 8) = 0;
+    *(u32 *)(*(u8 **)(heap + 0x18) + 0x10) = *(u32 *)(heap + 0x1C) - 0x20;
 
     lbl_80320B88[index] = (u32)heap;
     lbl_80367870 = lbl_80320B88[index];
@@ -1166,7 +1162,7 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
         size >> 10
     );
 
-    heap->next = lbl_8036786C;
+    *(u32 *)(heap + 0x10) = lbl_8036786C;
     lbl_8036786C = (u32)heap;
 
     return index;
@@ -22974,6 +22970,9 @@ void fn_800F0774(void) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_800F07C0(void) {
     f32 Map_SampleHeightRaw(void *, f32, f32);
     void Effect_SetPos(void *, f32, f32, f32);
@@ -22988,8 +22987,8 @@ void fn_800F07C0(void) {
     void *r31;
     u8 *data;
     void *obj;
-    f32 f30;
     f32 f31;
+    f32 f30;
     f32 half;
     s8 sx;
     s8 sy;
@@ -23022,14 +23021,14 @@ void fn_800F07C0(void) {
                 half = lbl_8036A010;
                 sx = (s8)data[2];
                 sy = (s8)data[3];
-                f30 = half + (f32)sy;
                 f31 = half + (f32)sx;
-                Effect_SetPos(r31, f30, f31, Map_SampleHeightRaw(gBattleMap, f30, f31) - lbl_8036A014);
+                f30 = half + (f32)sy;
+                Effect_SetPos(r31, f31, f30, Map_SampleHeightRaw(gBattleMap, f31, f30) - lbl_8036A014);
             }
         }
     }
 }
-
+#pragma pop
 void fn_800F07C0(void);
 
 void fn_800F09A8(s32 arg0) {
