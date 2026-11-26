@@ -4167,6 +4167,9 @@ s32 fn_8025C99C(void *arg0, s32 arg1)
 }
 
 #pragma use_lmw_stmw reset
+static inline void fn_8025C9E0_Clr(void *p, u8 zero) {
+    *(u8 *)((u8 *)p + 0xF1) = zero;
+}
 void fn_8025C9E0(void *arg0, u8 arg1)
 {
     void fn_8025CA80(void);
