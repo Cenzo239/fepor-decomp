@@ -1828,7 +1828,6 @@ in.x=x; in.y=y+half;
 #pragma global_optimizer reset
 #pragma scheduling reset
 #pragma use_lmw_stmw reset
-#pragma opt_lifetimes reset
 
 #pragma cplusplus on
 extern "C" void Ui_LayoutListPanel(void *arg0) {
