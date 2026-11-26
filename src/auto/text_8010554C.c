@@ -4780,11 +4780,44 @@ static inline s8 Ai_GetHealAmount(void *unit, void *item, void *iid1, void *iid2
     return 0;
 }
 
+static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
+    s8 Unit_GetMaxHp(void *);
+    s32 Abs(s32);
+    extern u8 lbl_80273B40[];
+    void *chosen = best;
+    s8 valBest = Ai_GetHealAmount(unit, *(void **)best, (u8 *)lbl_80273B40 + 0x1D, &lbl_80273B40[0x2B]);
+    s8 temp = valBest;
+    s8 valCur = Ai_GetHealAmount(unit, *(void **)slot, &lbl_80273B40[0x1D], (u8 *)lbl_80273B40 + 0x2B);
+
+    if (valBest != valCur) {
+        s32 missing;
+        s32 a;
+        if (valBest > valCur) {
+            temp = valCur;
+            valCur = valBest;
+            chosen = slot;
+            slot = best;
+        }
+        missing = (s8)(Unit_GetMaxHp(unit) - ((u8 *)unit)[0x1A8]);
+        a = Abs(missing - valCur);
+        if (Abs(missing - temp) <= a) {
+            return chosen;
+        }
+        return slot;
+    }
+    if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
+        return best;
+    }
+    if (*(u8 *)((u8 *)best + 4) > *(u8 *)((u8 *)slot + 4)) {
+        return slot;
+    }
+    return best;
+}
+
 #pragma optimization_level 2
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 Ai_TryUseHealItem(void *arg0) {
-    void *Item_GetByIid(void *);
     void *Unit_GetItemSlot(void *, s32);
     s8 Unit_GetMaxHp(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
@@ -4797,16 +4830,16 @@ s32 Ai_TryUseHealItem(void *arg0) {
     s32 sp8;
     s32 idx;
     s32 a;
+    s8 temp;
     s8 valCur;
+    void *chosen;
+    s32 missing;
+    s8 valBest;
     void *item;
     void *slot;
     u8 *p;
     void *best;
     s32 i;
-    void *key;
-    s8 valBest;
-    void *chosen;
-    s8 temp;
 
     best = 0;
     i = 0;
@@ -4821,24 +4854,10 @@ s32 Ai_TryUseHealItem(void *arg0) {
             if (best == 0) {
                 best = slot;
             } else {
-                key = *(void **)best;
                 chosen = best;
-                if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
-                    valBest = 0xA;
-                } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
-                    valBest = Unit_GetMaxHp(arg0);
-                } else {
-                    valBest = 0;
-                }
-                key = *(void **)slot;
+                valBest = Ai_GetHealAmount(arg0, *(void **)best, (u8 *)lbl_80273B40 + 0x1D, &lbl_80273B40[0x2B]);
                 temp = valBest;
-                if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
-                    valCur = 0xA;
-                } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
-                    valCur = Unit_GetMaxHp(arg0);
-                } else {
-                    valCur = 0;
-                }
+                valCur = Ai_GetHealAmount(arg0, *(void **)slot, &lbl_80273B40[0x1D], (u8 *)lbl_80273B40 + 0x2B);
                 if (valBest != valCur) {
                     if (valBest > valCur) {
                         temp = valCur;
@@ -4846,11 +4865,14 @@ s32 Ai_TryUseHealItem(void *arg0) {
                         chosen = slot;
                         slot = best;
                     }
-                    valBest = Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8];
-                    a = Abs(valBest - valCur);
-                    if (Abs(valBest - temp) <= a) {
+                    missing = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
+                    a = Abs(missing - valCur);
+                    if (Abs(missing - temp) > a) {
+                        goto take_slot;
+                    } else {
                         goto done_pick;
                     }
+                take_slot:
                     chosen = slot;
                 } else if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
                     chosen = best;
