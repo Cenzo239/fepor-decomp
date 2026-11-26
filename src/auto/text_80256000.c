@@ -8700,7 +8700,7 @@ void fn_80263CF0(void *arg0) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_lifetimes off
+#pragma opt_propagation off
 s32 fn_80263D30(
     void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6
 )
