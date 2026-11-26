@@ -31,10 +31,10 @@ static inline s32 DirGetDY_80042558(u8 dir)
 
 static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
 {
-    if (x < (s8)ent[4] || x > (s8)ent[6] || y < (s8)ent[5] || y > (s8)ent[7]) {
-        return 0;
+    if (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
@@ -513,13 +513,19 @@ void fn_80042558(void *arg0)
     extern u8 lbl_80367290[3];
 
     void *list[16];
-    u8 *start = gMapObjEventList;
-    u8 *rec = start;
-    s32 eventIndex = 0;
+    s32 y;
+    s32 x;
+    s32 eventIndex;
+    u8 *rec;
+    u8 *start;
+
+    start = gMapObjEventList;
+    rec = start;
+    eventIndex = 0;
 
     for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
-        s32 x = (s8)rec[0];
-        s32 y = (s8)rec[1];
+        x = (s8)rec[0];
+        y = (s8)rec[1];
         switch (rec[2] - 0x21) {
         case 3:
         {
