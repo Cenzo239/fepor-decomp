@@ -10578,6 +10578,7 @@ static inline void Copy3_800DBAB8(f32 *dst, u8 *src) {
     dst[2] = z;
 }
 #pragma global_optimizer on
+#pragma optimization_level 3
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10594,6 +10595,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
     Copy3_800DBAB8(arg0, (u8 *)arg1);
 }
+#pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
