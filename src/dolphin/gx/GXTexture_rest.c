@@ -196,7 +196,6 @@ void fn_80224304(s16 *table, u16 width, f32 *projmtx)
     f32 xi, scale, epsilon, nearz, f;
     f32 x;
     u32 i;
-    volatile f32 sp14;
 
     if (0.0 == projmtx[0x3C / 4]) {
         nearz = projmtx[0x2C / 4] / (projmtx[0x28 / 4] - 1.0f);
@@ -213,16 +212,7 @@ void fn_80224304(s16 *table, u16 width, f32 *projmtx)
         x = (f32)((i + 1) * 32);
         x = x * scale;
         x = x * epsilon;
-        f = x * x;
-        f = 1.0f + f / xi;
-        if (f > 0.0f) {
-            f64 guess = __frsqrte((f64)f);
-            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
-            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
-            guess = 0.5 * guess * (3.0 - (f64)f * (guess * guess));
-            sp14 = (f32)((f64)f * guess);
-            f = sp14;
-        }
+        f = gx_sqrtf(1.0f + (x * x) / xi);
         table[i] = (u32)(256.0f * f) & 0xFFF;
     }
 }
