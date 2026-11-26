@@ -2640,6 +2640,14 @@ s32 fn_8013FBC0(s32);
 s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
+static inline s32 *FBC8Ret(s32 *dst, s32 *src) {
+    fn_8013FBC8(dst, src);
+    return dst;
+}
+static inline s16 *FBDCRet(s16 *dst, s16 *src) {
+    fn_8013FBDC(dst, src);
+    return dst;
+}
 #pragma inline_depth(0)
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
