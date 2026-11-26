@@ -1,22 +1,7 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
 
-#pragma push
-#pragma global_optimizer off
-static inline void Card_ChecksumBlock(u16 *src, s32 length, u16 *sum, u16 *inv) {
-    s32 n;
-    *inv = 0;
-    n = length / 2;
-    *sum = 0;
-    for (; n > 0; n--) {
-        *sum += *src;
-        *inv += ~*src;
-        src++;
-    }
-    if (*sum == 0xFFFF) *sum = 0;
-    if (*inv == 0xFFFF) *inv = 0;
-}
-#pragma pop
+
 
 #include <dolphin/os.h>
 #include "global.h"
