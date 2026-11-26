@@ -761,8 +761,8 @@ void TabMenu_DrawTab2(u8 *arg0) {
     s32 y1;
     s16 y0;
     u8 *tbl74;
-    struct Node *end;
     u8 *tbl84;
+    struct Node *end;
     s8 t;
     s16 pad;
     s16 pad2;
@@ -1518,7 +1518,9 @@ void TabMenu_DrawTab0(void *self) {
         goto loop_body;
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma peephole off
 void fn_801E6CEC(void *arg0) {
     typedef struct { s16 x, y, x2, y2; } Rect;
     typedef struct { u8 r, g, b, a; } Color;
@@ -1526,7 +1528,7 @@ void fn_801E6CEC(void *arg0) {
     void Prim2D_SetColorPacked(Color *);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
-    void Prim2D_SetUvRect(f32, f32, f32, f32, f32, f32);
+    void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -1568,14 +1570,17 @@ void fn_801E6CEC(void *arg0) {
     extern f32 lbl_8036B750;
     extern f32 lbl_8036B754;
 
-    Color c1, c0;
-    Color tmp;
     u8 pal[3];
+    Color c0, c1;
+    Color tmp0, tmp1, tmp2, tmp3;
     s16 h;
-    s16 y0;
-    f32 fy0, fy1;
+    s32 y0;
+    f32 fy1, fy0;
     s16 w1, w2, w3, h2;
     s16 xL, xR;
+    s16 h2_1, w1_1, w2_1, w3_1;
+    s16 h2_2, w1_2, w2_2, w3_2;
+    s16 h2_3, w1_3, w2_3, w3_3;
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B728, gTabMenuZ, gTabMenuOne);
@@ -1588,7 +1593,11 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(gTabMenuZero, gTabMenuZero, (f32)lbl_80368304.x, (f32)lbl_80368304.y, (f32)(s16)(lbl_80368304.x2 - lbl_80368304.x), (f32)(s16)(lbl_80368304.y2 - lbl_80368304.y));
+    {
+        s16 width = lbl_80368304.x2 - lbl_80368304.x;
+        s16 height = lbl_80368304.y2 - lbl_80368304.y;
+        Prim2D_SetRectUv(0.0f, 0.0f, (f32)lbl_80368304.x, (f32)lbl_80368304.y, (f32)width, (f32)height);
+    }
     h = (s16)(lbl_80368304.y2 - lbl_80368304.y);
     c0.r = 0xC5; c0.g = 0xA6; c0.b = 0x4B; c0.a = 0xFF;
     c1.r = 0x66; c1.g = 0x45; c1.b = 0x18; c1.a = 0xFF;
@@ -1596,43 +1605,47 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(NULL, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
-    y0 = (s16)(h + 0x136);
+    y0 = h + 0x136;
+    fy1 = lbl_8036B71C + (f32)(s16)y0;
     fy0 = lbl_8036B71C + (f32)h;
-    fy1 = lbl_8036B71C + (f32)y0;
     Prim2D_SetPosCorners(lbl_8036B71C, fy0, lbl_8036B71C, fy1);
-    tmp = c0;
-    Prim2D_SetColorPacked(&tmp);
+    tmp0 = c0;
+    Prim2D_SetColorPacked(&tmp0);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTex(NULL, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     Prim2D_SetPosCorners(lbl_8036B72C, fy0, lbl_8036B72C, fy1);
-    tmp = c1;
-    Prim2D_SetColorPacked(&tmp);
+    tmp1 = c1;
+    Prim2D_SetColorPacked(&tmp1);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTex(NULL, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     Prim2D_SetPosCorners(lbl_8036B730, fy0, lbl_8036B730, fy1);
-    tmp = c0;
-    Prim2D_SetColorPacked(&tmp);
+    tmp2 = c0;
+    Prim2D_SetColorPacked(&tmp2);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTex(NULL, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     Prim2D_SetPosCorners(lbl_8036B734, fy0, lbl_8036B734, fy1);
-    tmp = c1;
-    Prim2D_SetColorPacked(&tmp);
+    tmp3 = c1;
+    Prim2D_SetColorPacked(&tmp3);
     Prim2D_EndPrim();
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xD);
     Prim2D_Begin();
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(gTabMenuZero, (f32)y0, (f32)lbl_80368344.x, (f32)lbl_80368344.y, (f32)(s16)(lbl_80368344.x2 - lbl_80368344.x), (f32)(s16)(lbl_80368344.y2 - lbl_80368344.y));
+    {
+        s16 width = lbl_80368344.x2 - lbl_80368344.x;
+        s16 height = lbl_80368344.y2 - lbl_80368344.y;
+        Prim2D_SetRectUv(gTabMenuZero, (f32)(s16)y0, (f32)lbl_80368344.x, (f32)lbl_80368344.y, (f32)width, (f32)height);
+    }
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xE);
     w1 = (s16)(lbl_80368344.x2 - lbl_80368344.x);
     w2 = (s16)(lbl_80368354.x2 - lbl_80368354.x);
@@ -1642,8 +1655,12 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    Prim2D_SetRect((f32)w1, (f32)y0, (f32)w3, (f32)h2);
-    Prim2D_SetUvRect((f32)lbl_8036834C.x, (f32)lbl_8036834C.y, (f32)lbl_8036834C.x, (f32)lbl_8036834C.y, (f32)(s16)(lbl_8036834C.x2 - lbl_8036834C.x), (f32)(s16)(lbl_8036834C.y2 - lbl_8036834C.y));
+    Prim2D_SetRect((f32)w1, (f32)(s16)y0, (f32)w3, (f32)h2);
+    {
+        s16 width = lbl_8036834C.x2 - lbl_8036834C.x;
+        s16 height = lbl_8036834C.y2 - lbl_8036834C.y;
+        Prim2D_SetUvRect((f32)lbl_8036834C.x, (f32)lbl_8036834C.y, (f32)width, (f32)height);
+    }
     fn_80007358(gTabMenuZero, gTabMenuZero);
     Prim2D_EndPrim();
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xF);
@@ -1652,7 +1669,11 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv((f32)xR, (f32)y0, (f32)lbl_80368354.x, (f32)lbl_80368354.y, (f32)(s16)(lbl_80368354.x2 - lbl_80368354.x), (f32)(s16)(lbl_80368354.y2 - lbl_80368354.y));
+    {
+        s16 width = lbl_80368354.x2 - lbl_80368354.x;
+        s16 height = lbl_80368354.y2 - lbl_80368354.y;
+        Prim2D_SetRectUv((f32)xR, (f32)(s16)y0, (f32)lbl_80368354.x, (f32)lbl_80368354.y, (f32)width, (f32)height);
+    }
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, gTabMenuZ, gTabMenuOne);
     Prim2D_PrepareTex();
@@ -1665,7 +1686,11 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
     Prim2D_SetRect(gTabMenuZero, gTabMenuZero, lbl_8036B73C, lbl_8036B740);
-    Prim2D_SetUvRect((f32)lbl_8036831C.x, (f32)lbl_8036831C.y, (f32)lbl_8036831C.x, (f32)lbl_8036831C.y, (f32)(s16)(lbl_8036831C.x2 - lbl_8036831C.x), (f32)(s16)(lbl_8036831C.y2 - lbl_8036831C.y));
+    {
+        s16 width = lbl_8036831C.x2 - lbl_8036831C.x;
+        s16 height = lbl_8036831C.y2 - lbl_8036831C.y;
+        Prim2D_SetUvRect((f32)lbl_8036831C.x, (f32)lbl_8036831C.y, (f32)width, (f32)height);
+    }
     fn_80007358(gTabMenuZero, gTabMenuZero);
     Prim2D_EndPrim();
     Prim2D_Begin();
@@ -1679,18 +1704,26 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036B748, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)(s16)(lbl_80368324.x2 - lbl_80368324.x), (f32)(s16)(lbl_80368324.y2 - lbl_80368324.y));
+    {
+        s16 width = lbl_80368324.x2 - lbl_80368324.x;
+        s16 height = lbl_80368324.y2 - lbl_80368324.y;
+        Prim2D_SetRectUv(lbl_8036B748, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)width, (f32)height);
+    }
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xA);
-    h2 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
-    w2 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
-    w3 = (s16)((0x12E - h2) - w2);
-    w1 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
+    h2_1 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
+    w2_1 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
+    w3_1 = (s16)((0x12E - h2_1) - w2_1);
+    w1_1 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
     Prim2D_Begin();
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    Prim2D_SetRect(lbl_8036B748, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
-    Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
+    Prim2D_SetRect(lbl_8036B748, (f32)(s16)(h2_1 + 4), (f32)w1_1, (f32)w3_1);
+    {
+        s16 width = lbl_8036832C.x2 - lbl_8036832C.x;
+        s16 height = lbl_8036832C.y2 - lbl_8036832C.y;
+        Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)width, (f32)height);
+    }
     fn_80007358(gTabMenuZero, gTabMenuZero);
     Prim2D_EndPrim();
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xB);
@@ -1699,24 +1732,36 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036B748, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)(s16)(lbl_80368334.x2 - lbl_80368334.x), (f32)(s16)(lbl_80368334.y2 - lbl_80368334.y));
+    {
+        s16 width = lbl_80368334.x2 - lbl_80368334.x;
+        s16 height = lbl_80368334.y2 - lbl_80368334.y;
+        Prim2D_SetRectUv(lbl_8036B748, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)width, (f32)height);
+    }
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 9);
     Prim2D_Begin();
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036B750, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)(s16)(lbl_80368324.x2 - lbl_80368324.x), (f32)(s16)(lbl_80368324.y2 - lbl_80368324.y));
+    {
+        s16 width = lbl_80368324.x2 - lbl_80368324.x;
+        s16 height = lbl_80368324.y2 - lbl_80368324.y;
+        Prim2D_SetRectUv(lbl_8036B750, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)width, (f32)height);
+    }
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xA);
-    h2 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
-    w2 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
-    w3 = (s16)((0x12E - h2) - w2);
-    w1 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
+    h2_2 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
+    w2_2 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
+    w3_2 = (s16)((0x12E - h2_2) - w2_2);
+    w1_2 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
     Prim2D_Begin();
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    Prim2D_SetRect(lbl_8036B750, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
-    Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
+    Prim2D_SetRect(lbl_8036B750, (f32)(s16)(h2_2 + 4), (f32)w1_2, (f32)w3_2);
+    {
+        s16 width = lbl_8036832C.x2 - lbl_8036832C.x;
+        s16 height = lbl_8036832C.y2 - lbl_8036832C.y;
+        Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)width, (f32)height);
+    }
     fn_80007358(gTabMenuZero, gTabMenuZero);
     Prim2D_EndPrim();
     Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xB);
@@ -1725,25 +1770,37 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_SetTex(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036B750, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)(s16)(lbl_80368334.x2 - lbl_80368334.x), (f32)(s16)(lbl_80368334.y2 - lbl_80368334.y));
+    {
+        s16 width = lbl_80368334.x2 - lbl_80368334.x;
+        s16 height = lbl_80368334.y2 - lbl_80368334.y;
+        Prim2D_SetRectUv(lbl_8036B750, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)width, (f32)height);
+    }
     if ((s32)((u8 *)arg0)[0x30] == 2) {
         Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 9);
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv(lbl_8036B754, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)(s16)(lbl_80368324.x2 - lbl_80368324.x), (f32)(s16)(lbl_80368324.y2 - lbl_80368324.y));
+        {
+            s16 width = lbl_80368324.x2 - lbl_80368324.x;
+            s16 height = lbl_80368324.y2 - lbl_80368324.y;
+            Prim2D_SetRectUv(lbl_8036B754, lbl_8036B74C, (f32)lbl_80368324.x, (f32)lbl_80368324.y, (f32)width, (f32)height);
+        }
         Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xA);
-        h2 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
-        w2 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
-        w3 = (s16)((0x12E - h2) - w2);
-        w1 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
+        h2_3 = (s16)(lbl_80368324.y2 - lbl_80368324.y);
+        w2_3 = (s16)(lbl_80368334.y2 - lbl_80368334.y);
+        w3_3 = (s16)((0x12E - h2_3) - w2_3);
+        w1_3 = (s16)(lbl_8036832C.x2 - lbl_8036832C.x);
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(9);
-        Prim2D_SetRect(lbl_8036B754, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
-        Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
+        Prim2D_SetRect(lbl_8036B754, (f32)(s16)(h2_3 + 4), (f32)w1_3, (f32)w3_3);
+        {
+            s16 width = lbl_8036832C.x2 - lbl_8036832C.x;
+            s16 height = lbl_8036832C.y2 - lbl_8036832C.y;
+            Prim2D_SetUvRect((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)width, (f32)height);
+        }
         fn_80007358(gTabMenuZero, gTabMenuZero);
         Prim2D_EndPrim();
         Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x64), lbl_80332000, 0xB);
@@ -1752,16 +1809,15 @@ void fn_801E6CEC(void *arg0) {
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv(lbl_8036B754, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)(s16)(lbl_80368334.x2 - lbl_80368334.x), (f32)(s16)(lbl_80368334.y2 - lbl_80368334.y));
+        {
+            s16 width = lbl_80368334.x2 - lbl_80368334.x;
+            s16 height = lbl_80368334.y2 - lbl_80368334.y;
+            Prim2D_SetRectUv(lbl_8036B754, (f32)xL, (f32)lbl_80368334.x, (f32)lbl_80368334.y, (f32)width, (f32)height);
+        }
     }
     fn_80057020(*(void **)((u8 *)arg0 + 0x5C));
 }
-#pragma push
-#pragma optimization_level 4
-#pragma peephole on
-#pragma opt_propagation off
-#pragma opt_lifetimes off
-#pragma opt_common_subs off
+#pragma pop
 void TabMenu_DrawHud(void *arg0) {
     f32 Math_Ease(s32, u8, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
@@ -2103,7 +2159,9 @@ void fn_801E80B4(void *arg0) {
         Ui_PlaySeCue(gTabMenuStrings + 0x13F, 0x64);
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 s32 fn_801E85A4(void *arg0, s32 arg1) {
     s8 fn_801E4A60(void);
     s32 fn_801E8734(void *, s32);
@@ -2169,10 +2227,7 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
     }
     return result;
 }
-
-#pragma push
-#pragma optimization_level 3
-#pragma opt_common_subs off
+#pragma pop
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
     s32 v;
@@ -3751,4 +3806,10 @@ extern f32 gTabMenuOne;
 #include "ef.h"
 
 extern u16* lbl_80332020;
-
+static inline u8 TabMenu_IsInBand(s8 first, s8 value, s8 last) {
+    u8 result = 0;
+    if (first <= value) {
+        if (value <= last) result = 1;
+    }
+    return result;
+}
