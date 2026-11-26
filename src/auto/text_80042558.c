@@ -48,16 +48,22 @@ static inline u8 IsInRect_80042558(MapObj_80042558 *ent, s32 x, s32 y)
     return 0;
 }
 
+typedef struct {
+    u8 pad0[6];
+    s16 count;
+    u8 pad8[0xC];
+    MapObj_80042558 *objs;
+} Map_80042558;
+
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
-    MapObj_80042558 *base;
+    Map_80042558 *map = (Map_80042558 *)arg0;
     s32 i;
-    for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
-        if (forbid != 0 && (M2C_FIELD(base[i].unk10, u32 *, 0xBC) & forbid)) continue;
-        if ((M2C_FIELD(base[i].unk10, u32 *, 0xBC) & require) != require) continue;
-        if (IsInRect_80042558(&base[i], x, y)) {
-            return (u8 *)&base[i];
+    for (i = map->count - 1; i >= 0; i--) {
+        if (forbid != 0 && (M2C_FIELD(map->objs[i].unk10, u32 *, 0xBC) & forbid)) continue;
+        if ((M2C_FIELD(map->objs[i].unk10, u32 *, 0xBC) & require) != require) continue;
+        if (IsInRect_80042558(&map->objs[i], x, y)) {
+            return (u8 *)&map->objs[i];
         }
     }
     return 0;
@@ -2864,15 +2870,14 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     extern const f32 lbl_80368F68;
     struct Work { f32 quat[4]; f32 corners[8][3]; } wk;
     u8 bufF8[0x30], bufC8[0x30], buf98[0x30], buf68[0x30], buf38[0x30], buf8[0x30];
-    u8 *e;
     f32 *c1 = &wk.corners[1][0]; f32 *c2 = &wk.corners[2][0];
     f32 *c3 = &wk.corners[3][0]; f32 *c4 = &wk.corners[4][0];
     f32 *c5 = &wk.corners[5][0]; f32 *c6 = &wk.corners[6][0];
     f32 *c7 = &wk.corners[7][0];
     u8 *sub;
     u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
-    s32 i; u32 mask = 0x10040;
-    f32 f2c, maxY, maxX, minY, minX, x, y, *p; s32 j; u8 hit;
+    s32 i; u8 *e; u32 mask = 0x10040;
+    f32 maxY, maxX, minY, minX, x, y, *p, f2c; s32 j; u8 hit;
 
     for (i = arg1; i < arg2; i++, entry += 0xB4) {
         e = entry + 0x14;
@@ -2915,19 +2920,18 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
                 PSMTXConcat(buf68, bufF8, bufF8);
                 PSMTXConcat(buf38, bufF8, bufF8); goto checks;
             case 7: PSMTXCopy(e + 0x10, bufF8); goto checks;
-            default: goto checks;
+            default: Game_Assert(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF); break;
         }
-        Game_Assert(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
         PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
         PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
         PSMTXConcat(buf68, buf8, bufF8);
         PSMTXConcat(buf98, bufF8, bufF8);
         PSMTXConcat(bufC8, bufF8, bufF8);
         PSMTXConcat(buf38, bufF8, bufF8);
+checks:
         wk.quat[0] = lbl_80368EE4; wk.quat[1] = lbl_80368EE4;
         wk.quat[2] = lbl_80368EE4; wk.quat[3] = lbl_80368F10;
         fn_80202C18(fn_80067FD0(), bufF8, bufF8);
-checks:
         wk.corners[0][0] = M2C_FIELD(sub, f32 *, 0xA4);
         wk.corners[0][1] = M2C_FIELD(sub, f32 *, 0xA8);
         wk.corners[0][2] = M2C_FIELD(sub, f32 *, 0xAC);
@@ -2963,7 +2967,7 @@ checks:
         fn_8020310C(bufF8, c7, c7);
         if (c7[0]*c7[0] < lbl_80368F5C && c7[1]*c7[1] < lbl_80368F60 && c7[2] > lbl_80368F2C && c7[2] < lbl_80368EE4) hit = 0; else hit = 1;
         if (!hit) continue;
-        if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) continue;
+        if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) goto mark;
         minX = lbl_80368F64; minY = minX; maxX = lbl_80368F68; maxY = maxX;
         f2c = lbl_80368F2C;
         p = &wk.corners[0][0];
@@ -2977,20 +2981,21 @@ checks:
             if (minX > x) minX = x; if (minY > y) minY = y;
             if (maxX < x) maxX = x; if (maxY < y) maxY = y;
         }
-        if (!(minX < lbl_80368F2C)) goto res2;
-        if (!(maxX > lbl_80368F10)) goto res2;
-        if (!(minY < lbl_80368F2C)) goto res2;
+        if (!(minX < lbl_80368F2C)) goto corners;
+        if (!(maxX > lbl_80368F10)) goto corners;
+        if (!(minY < lbl_80368F2C)) goto corners;
         if (maxY > lbl_80368F10) continue;
+corners:
         if (minX*minX < lbl_80368F10 && minY*minY < lbl_80368F10) continue;
         if (maxX*maxX < lbl_80368F10 && minY*minY < lbl_80368F10) continue;
         if (maxX*maxX < lbl_80368F10 && maxY*maxY < lbl_80368F10) continue;
         if (minX*minX < lbl_80368F10 && maxY*maxY < lbl_80368F10) continue;
-res2:
         if (minX < lbl_80368F2C && maxX > lbl_80368F10 && (minY*minY < lbl_80368F10 || maxY*maxY < lbl_80368F10)) continue;
-        if (!(minY < lbl_80368F2C)) continue;
-        if (!(maxY > lbl_80368F10)) continue;
+        if (!(minY < lbl_80368F2C)) goto mark;
+        if (!(maxY > lbl_80368F10)) goto mark;
         if (minX*minX < lbl_80368F10) continue;
         if (maxX*maxX < lbl_80368F10) continue;
+mark:
         M2C_FIELD(entry, u8 *, 2) |= 0x80;
     }
 }
