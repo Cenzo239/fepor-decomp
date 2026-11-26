@@ -3323,8 +3323,6 @@ extern "C" void Ui_ClearPanelChildrenMid(void *self) {
 #pragma cplusplus reset
 
 void fn_801406B0(void *arg0) {
-extern f32 lbl_8036A730, lbl_8036A740;
-extern f64 lbl_8036A738;
 f32 Math_Ease(s32,f32,f32,f32,f32);
 #pragma cplusplus on
 struct Point {
@@ -3337,13 +3335,9 @@ struct Target { u8 pad[0x24]; s16 duration; };
 struct Link { void *prev,*next; Target *value; };
 struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; void (Target::*callback)(Point *); Target *get() { return count ? first->value : 0; } };
 State *self=(State*)arg0;
-s16 durationInt=self->get()->duration;
-s16 timeInt=self->time;
-durationInt++;
-timeInt++;
-f32 duration=durationInt;
-f32 time=timeInt;
-f32 t=Math_Ease(5,lbl_8036A740,lbl_8036A730,(lbl_8036A730/duration)*(duration-time),lbl_8036A730);
+f32 duration = self->get()->duration + 1;
+f32 time = self->time + 1;
+f32 t=Math_Ease(5, 0.0f, 1.0f, (1.0f/duration)*(duration-time), 1.0f);
 Point p=self->end-self->start;
 p*=t;
 p+=self->start;
