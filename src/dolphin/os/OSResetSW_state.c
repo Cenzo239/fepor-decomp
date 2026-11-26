@@ -156,6 +156,65 @@ static inline s32 ResetSwitchReleased(s64 now) {
     return *(s64 *)&lbl_80368508 != 0 && now - *(s64 *)&lbl_80368508 < (s64)(((*(u32 *)0x800000F8 >> 2) / 1000) * 40);
 }
 static inline s32 ResetSwitchBlink(s64 elapsed, u32 frequency) { return ((elapsed / frequency / 2) & 1) == 0; }
+static inline s32 ResetSwitchRead(s64 now) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    s64 __OSGetSystemTime(void);
+    s64 __div2i(s64, s64);
+    s32 state;
+    s32 soft;
+    u32 freq;
+    u32 thresh;
+    s32 n;
+    s64 t;
+    s32 seconds;
+    s64 q;
+    s32 oldState;
+
+
+    if (!(*(u32 *)0xCC003000 & 0x10000)) {
+        if (lbl_803684FC == 0) {
+            state = ResetSwitchBegin(now);
+        } else {
+            state = ResetSwitchDebounced(now) ? 1 : 0;
+        }
+    } else if (lbl_803684FC != 0) {
+        oldState = lbl_80368500;
+        lbl_803684FC = 0;
+        state = oldState;
+        if (oldState != 0) {
+            (*(s64 *)&lbl_80368508) = now;
+        } else {
+            (*(s64 *)&lbl_80368508) = 0;
+        }
+    } else if ((*(s64 *)&lbl_80368508) != 0 &&
+               now - (*(s64 *)&lbl_80368508) < (s64)(((*(u32 *)0x800000F8 >> 2) / 1000) * 40)) {
+        state = 1;
+    } else {
+        (*(s64 *)&lbl_80368508) = 0;
+        state = 0;
+    }
+
+    lbl_80368500 = state;
+
+    n = *(u8 *)0x800030E3 & 0x1F;
+    if (n != 0) {
+        seconds = n * 60;
+        t = (s64)seconds * (*(u32 *)0x800000F8 >> 2) + __OSStartTime;
+        if (t < now) {
+            q = (now - t) / (s64)(*(u32 *)0x800000F8 >> 2);
+            q /= 2;
+            if ((q & 1) == 0) {
+                state = 1;
+            } else {
+                state = 0;
+            }
+        }
+    }
+
+    return state;
+}
+
 u32 __OSGetResetSWState(void);
 
 extern void OSDisableInterrupts(void);
