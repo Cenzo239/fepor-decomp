@@ -140,7 +140,7 @@ extern f64 lbl_8036A720;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
-extern f32 lbl_8036A5AC;
+extern const f32 lbl_8036A5AC;
 extern f32 lbl_8036A5B8;
 
 extern u8 gSeCueSlots[1344];
@@ -676,7 +676,7 @@ extern "C" void fn_80133230(void *self, void *other) {
     f64 fn_802380D0(f64);
     u32 OSGetTick(void);
     extern f32 lbl_8036A5A8;
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     extern f64 lbl_8036A5C0;
     extern f32 lbl_8036A5B0;
     extern f32 lbl_8036A5B4;
@@ -891,7 +891,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     u8 fn_8001D500(void *);
     u32 *Ui_GetColor(s32);
     extern u8 lbl_802764BC[];
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     extern f64 lbl_8036A5C8;
     extern f32 lbl_8036A5D0;
     struct Obj {
@@ -1017,7 +1017,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
 
 extern "C" void fn_80133C74(void *arg0)
 {
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D4;
 
     void fn_80159898(s32, s32, s32, s32, s32, s32);
@@ -1147,41 +1147,40 @@ void fn_80133E50(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma scheduling on
 #pragma opt_lifetimes off
 void fn_80133EA4(s32 *arg0, void *arg1) {
-Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-s32 Text_MeasureHeight(s32, f32);
-extern f32 lbl_8036A5AC;
-Vec2s out,in;
-u16 rowH;
-s32 kind,colW;
-s16 quot;
-s32 rem,hdiv,t;
-s16 x,y,half;
-s32 off48,off4a;
-colW=*(s16*)((u8*)arg1+0x44);
-kind=*(s16*)((u8*)arg1+0x3e);
-quot=kind/colW;
-t=*(s16*)((u8*)arg1+0x12);
-rem=*(s16*)((u8*)arg1+0x16);
-rem-=t;
-rowH=*(s16*)((u8*)arg1+0x46);
-off48=*(s16*)((u8*)arg1+0x48);
-off4a=*(s16*)((u8*)arg1+0x4a);
-t=(s16)rem;
-hdiv=t/colW;
-t=(s16)hdiv;
-rem=kind%colW;
-rem=(s16)rem;
-rem=t*rem;
-x=(s16)(rem+off48);
-y=(s16)(rowH*(s16)quot+off4a);
-t=Text_MeasureHeight(-1,lbl_8036A5AC);
-half=(s16)(((s32)(s16)rowH-t)>>1);
-if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
+    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
+    s32 Text_MeasureHeight(s32, f32);
+    Vec2s out, in;
+    u32 rowH;
+    s32 kind, colW;
+    s32 quot;
+    s32 rem, hdiv, t;
+    s16 x, y, half, off48, off4a;
+    colW = *(s16 *)((u8 *)arg1 + 0x44);
+    kind = *(s16 *)((u8 *)arg1 + 0x3e);
+    quot = kind / colW;
+    t = *(s16 *)((u8 *)arg1 + 0x12);
+    rem = *(s16 *)((u8 *)arg1 + 0x16);
+    rem -= t;
+    rowH = *(u16 *)((u8 *)arg1 + 0x46);
+    off48 = *(s16 *)((u8 *)arg1 + 0x48);
+    off4a = *(s16 *)((u8 *)arg1 + 0x4a);
+    t = (s16)rem;
+    hdiv = t / colW;
+    t = (s16)hdiv;
+    rem = kind - quot * colW;
+    rem = (s16)rem;
+    rem = t * rem;
+    x = (s16)(rem + off48);
+    y = (s16)(rowH * quot + off4a);
+    t = Text_MeasureHeight(-1, 1.0f);
+    half = (s16)(((s32)(s16)rowH - t) >> 1);
+    if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
  x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
  y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
 }
-in.x=x; in.y=y+half;
-*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
+    in.x = x;
+    in.y = (s32)y + half;
+    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
 #pragma opt_lifetimes reset
 #pragma scheduling reset
@@ -1262,7 +1261,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     void Ui_DrawIcon(void *, s16, s16, s32);
     s32 Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, s32, ...);
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D0;
     extern f32 lbl_8036A5BC;
     extern u8 gUiIconDrawer[];
@@ -1478,7 +1477,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     void fn_8000A174(s32, u16);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void fn_80009B80(s32);
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D0;
     extern f32 lbl_8036A5BC;
     extern Cells lbl_80276318;
@@ -1888,7 +1887,7 @@ void fn_80134E48(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_8029180C[];
     extern u8 lbl_80292230[];
-    extern f32 lbl_8036A5AC;
+    extern const f32 lbl_8036A5AC;
     void *new_var;
     s16 w;
     s16 h;
