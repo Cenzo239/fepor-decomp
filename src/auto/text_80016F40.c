@@ -20,7 +20,7 @@ static inline u8 CamPath_FindInitialKey(s32 count, u8 **list, f32 time) {
  return 0;
 }
 static inline u8 CamPath_FindZeroKey(s32 count, u8 **list) {
- s32 i; u8 *keys; f32 time; extern f32 lbl_80368C88;
+ s32 i; u8 *keys; f32 time; f32 keyTime; extern f32 lbl_80368C88;
  if (count == 0) return 0;
  keys = *list;
  time = lbl_80368C88;
