@@ -1110,29 +1110,8 @@ void fn_80060F70(void *actor, s32 index, f32 *out)
         return;
     }
 
-    p = actor;
-    while (p != NULL) {
-        matrices = *(void **)((u8 *)p + 0x60);
-        if (matrices == NULL) {
-            p = *(void **)((u8 *)p + 4);
-        } else {
-            goto got_matrices;
-        }
-    }
-    matrices = NULL;
-got_matrices:
-
-    p = actor;
-    while (p != NULL) {
-        model = *(void **)((u8 *)p + 0x40);
-        if (model == NULL) {
-            p = *(void **)((u8 *)p + 4);
-        } else {
-            goto got_model;
-        }
-    }
-    model = NULL;
-got_model:
+    matrices = GActor_FindInherited(actor, 0x60);
+    model = GActor_FindInherited(actor, 0x40);
 
     order = *(u32 *)((u8 *)actor + 0xc);
     bone = (u8 *)*(void **)((u8 *)model + 0xc) + index * 0xf4;
