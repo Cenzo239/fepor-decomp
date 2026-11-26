@@ -4631,6 +4631,10 @@ static inline u8 Sound_FindVel_8025DBF4(u8 *list) {
     }
 }
 
+static inline u32 Sound_ClampU8_8025DBF4(s32 x) {
+    return (u8)x <= 0x7F ? (u32)x : 0x7FU;
+}
+
 static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan, f32 fspan, f32 fvar, f32 ftime) {
     void Sound_SetParamU8(s32, u8, u32);
     void Sound_SetParamU16(s32, u8, u32);
@@ -4642,7 +4646,6 @@ static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan
     extern const f32 lbl_8036C31C;
     s32 handle;
     u32 v;
-    s32 t;
     f32 ft;
     u8 *list;
     u8 n;
@@ -4651,11 +4654,7 @@ static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan
 
     handle = *(s32 *)(voice + 0x38);
     if (*(u32 *)(voice + 0xC) & 0x100000) {
-        v = 0x7F;
-        ft = lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol);
-        t = (s32)ft;
-        if ((u8)t <= 0x7F) v = t;
-        Sound_SetParamU8(handle, 7, v);
+        Sound_SetParamU8(handle, 7, Sound_ClampU8_8025DBF4((s32)(lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol))));
     } else {
         v = 0x7F;
         ft = lbl_8036C314 * fvol;
