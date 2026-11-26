@@ -91,6 +91,56 @@ Prim2D_Begin();
 Prim2D_AddZ(lbl_80369430);
 Prim2D_PrepareTex();
 }
+
+void fn_80081E68(s32 arg0, u16 *arg1, f32 farg0, f32 farg1) {
+    extern char gUiStrings[];
+    extern f32 lbl_80369578;
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    const char *Msg_Expand(const char *);
+    void fn_8001003C(s32, s32, s32, s32, s32, f32, f32, const char *, ...);
+    f32 x;
+    s32 count;
+
+    count = 0;
+    x = 50.0f + farg0;
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
+    if (*arg1 & 0x20) {
+        fn_8001003C((s32)(x + count * 90.0f), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x289));
+        count++;
+    }
+    if (*arg1 & 0x10) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x292));
+        count++;
+    }
+    if (*arg1 & 4) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x29B));
+        count++;
+    }
+    if (*arg1 & 8) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x2A4));
+        count++;
+    }
+    if (*arg1 & 0x40) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x2AD));
+        count++;
+    }
+    if (*arg1 & 0x100) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x2B8));
+        count++;
+    }
+    if (*arg1 & 2) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x2C2));
+        count++;
+    }
+    if (*arg1 & 0x80) {
+        fn_8001003C((s32)(x + count * lbl_80369578), (s32)farg1, 2, 0, 0, 1.0f, 0.0f, Msg_Expand(gUiStrings + 0x2CB));
+    }
+}
+
 void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
     void Prim2D_EmitQuad(void);
