@@ -1,6 +1,10 @@
 /* Functions from 0x800A39F8 to 0x800A9384, found by decomp-toolkit. */
 #include "common.h"
 
+static inline s32 Movie_FrameDataOffset(u32 count) {
+    return count * 4 + 8;
+}
+
 static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
     s32 fn_8023C56C(s32, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
@@ -395,7 +399,9 @@ s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     }
     return -1;
 }
-#pragma use_lmw_stmw reset
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
 s32 fn_800A424C(s32 arg0) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -411,7 +417,7 @@ s32 fn_800A424C(s32 arg0) {
     struct SlotB {
         s32 f15c;
         s32 f160;
-        s32 f164;
+        u32 f164;
     };
     struct Obj {
         u8 pad0[0x50];
@@ -420,7 +426,7 @@ s32 fn_800A424C(s32 arg0) {
         u8 pad58[0x0c];
         s32 f64;
         s32 f68;
-        s32 f6c;
+        u32 f6c;
         u8 f70[0x28];
         s32 f98;
         s32 f9c;
@@ -431,7 +437,7 @@ s32 fn_800A424C(s32 arg0) {
         u8 fa7;
         s32 fa8;
         s32 fac;
-        s32 fb0;
+        u32 fb0;
         s32 fb4;
         s32 fb8;
         s32 fbc;
@@ -448,41 +454,41 @@ s32 fn_800A424C(s32 arg0) {
     extern struct Obj lbl_803123A0;
     struct Obj *p;
     struct Obj *r30;
-    struct Obj *r23;
-    s32 *r25;
-    s32 r26;
+    u8 *ready;
+    u8 *buffers;
     s32 r27;
+    s32 r26;
+    s32 *r25;
+    struct Obj *r23;
     s32 r24;
     s32 intr;
     s32 v;
 
     p = &lbl_803123A0;
-    if (p->slotA[p->fb4].flag == 0) {
-        return 2;
-    }
-    r25 = (s32 *)((u8 *)p->slotA[p->fb4].ptr + 8);
-    r26 = (s32)((u8 *)p->slotA[p->fb4].ptr + (p->f6c * 4 + 8));
+    ready = (u8 *)&p->slotA[0].flag;
+    if (*(s32 *)(ready + p->fb4 * 12) != 0) {
+    buffers = (u8 *)&p->slotA[0].ptr;
+    r25 = (s32 *)((u8 *)*(void **)(buffers + p->fb4 * 12) + 8);
+    r26 = p->f6c * 4 + 8;
+    r26 = (s32)*(void **)(buffers + p->fb4 * 12) + r26;
     if (p->fa7 != 0) {
         if (arg0 < 0 || (u32)arg0 >= (u32)p->f98) {
             return 4;
         }
-        if (p->slotB[p->f180].f164 == 0) {
+        if (lbl_803123A0.slotB[p->f180].f164 == 0) {
             r30 = p;
             r27 = 0;
             while (r27 < p->f6c) {
                 switch (*(r30->f70)) {
                     case 0:
-                        if (fn_8023C56C(r26, p->f14c, p->f150, p->f154, p->f9c) != 0) {
-                            return 1;
-                        }
-                        p->f158 = p->slotA[p->fb4].unk4;
+                        if (!Movie_DecodeFrame(r26, (u8 *)p)) return 1;
                         break;
                     case 1:
-                        v = fn_80243AD4(p->slotB[p->f180].f15c, r26 + (*r25 * arg0), 0);
-                        OSDisableInterrupts();
-                        p->slotB[p->f180].f164 = v;
-                        p->slotB[p->f180].f160 = p->slotB[p->f180].f15c;
-                        OSRestoreInterrupts(v);
+                        v = fn_80243AD4(lbl_803123A0.slotB[p->f180].f15c, r26 + (*r25 * arg0), 0);
+                        intr = OSDisableInterrupts();
+                        lbl_803123A0.slotB[p->f180].f164 = v;
+                        lbl_803123A0.slotB[p->f180].f160 = lbl_803123A0.slotB[p->f180].f15c;
+                        OSRestoreInterrupts(intr);
                         p->f180 = p->f180 + 1;
                         if (p->f180 >= 3) {
                             p->f180 = 0;
@@ -504,11 +510,9 @@ s32 fn_800A424C(s32 arg0) {
         r23 = p;
         r24 = 0;
         while (r24 < p->f6c) {
-            if (*(r23->f70) == 0) {
-                if (fn_8023C56C(r26, p->f14c, p->f150, p->f154, p->f9c) != 0) {
-                    return 1;
-                }
-                p->f158 = p->slotA[p->fb4].unk4;
+            switch (*(r23->f70)) { case 0:
+                if (!Movie_DecodeFrame(r26, (u8 *)p)) return 1;
+                break;
             }
             v = *r25;
             r25++;
@@ -518,10 +522,12 @@ s32 fn_800A424C(s32 arg0) {
         }
     }
 
-    p->slotA[p->fb4].flag = 0;
-    p->fb4 = (p->fb4 + 1) % 10;
+    *(s32 *)(ready + p->fb4 * 12) = 0;
+    v = p->fb4 + 1;
+    p->fb4 = v >= 10 ? 0 : v;
     intr = OSDisableInterrupts();
-    if (p->slotA[p->fb8].flag == 0 && p->fb0 == 0 && p->fac == 0 && p->fa4 == 1) {
+    p = &lbl_803123A0;
+    if (*(s32 *)(ready + p->fb8 * 12) == 0 && p->fb0 == 0 && p->fac == 0 && p->fa4 == 1) {
         if ((u32)p->fc0 > (u32)(p->f50 - 1)) {
             if (p->fa6 == 1) {
                 p->fc0 = 0;
@@ -532,7 +538,7 @@ s32 fn_800A424C(s32 arg0) {
         } else {
         block_39:
             p->fb0 = 1;
-            if (fn_8020CB38(p, (s32)p->slotA[p->fb8].ptr, p->fbc, p->fa8, fn_800A4878, 2) != 1) {
+            if (fn_8020CB38(&lbl_803123A0, (s32)*(void **)(buffers + p->fb8 * 12), lbl_803123A0.fbc, lbl_803123A0.fa8, fn_800A4878, 2) != 1) {
                 p->fb0 = 0;
                 p->fac = 1;
             }
@@ -540,9 +546,11 @@ s32 fn_800A424C(s32 arg0) {
     }
     OSRestoreInterrupts(intr);
     return 0;
+    }
+    return 2;
 }
-
-#pragma optimization_level 3
+#pragma pop
+#pragma use_lmw_stmw reset
 s32 fn_800A45C4(void) {
     void fn_8020F334(void *);
     extern u8 lbl_803123A0[];
