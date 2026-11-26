@@ -2540,6 +2540,7 @@ s32 fn_80259584(u16 gid, u16 sid, s32 arg2, s32 arg3, s32 arg4) {
     s32 ret;
     GroupNode *node;
     s32 i;
+    u8 *p;
     GroupData *data;
     u32 base;
     GroupItem *item;
@@ -2547,8 +2548,9 @@ s32 fn_80259584(u16 gid, u16 sid, s32 arg2, s32 arg3, s32 arg4) {
     void *a;
 
     for (node = lbl_80368A60; node != NULL; node = node->next) {
-        for (i = 0; i < node->count; i++) {
-            if (node->entries[i].data->id == gid) {
+        p = (u8 *)node;
+        for (i = 0; i < node->count; p += 0xC, i++) {
+            if ((*(GroupData **)(p + 0xC))->id == gid) {
                 data = node->entries[i].data;
                 if (data->type == 0) {
                     base = node->entries[i].base;
