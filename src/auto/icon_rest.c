@@ -683,8 +683,8 @@ s32 fn_800C3AB0(void *convoy, s32 name) {
 
     Item_Init(item);
     Item_SetByName(item, name);
-    item[5] = (u8)__rlwimi(item[5], 0, 7, 24, 24);
-    slot = Convoy_FindItem_inline(convoy, NULL);
+    ((ItemFlagBits *)(item + 5))->flag = 0;
+    slot = Convoy_FindEmpty_inline(convoy);
     if (slot < 0) {
         result = 0;
     } else {
