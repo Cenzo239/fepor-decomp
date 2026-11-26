@@ -1,6 +1,27 @@
 /* Functions from 0x801E4540 to 0x801EA8C0, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline s32 TabMenu_AdjustScroll(void *arg0, s8 count) {
+    s32 v;
+    s32 q, r, lower, lo;
+    u8 ok;
+    if (count > 0) count--;
+    v = M2C_FIELD(arg0, s16 *, 0x36);
+    q = v / 32;
+    lower = (s8)q;
+    r = v % 32;
+    lo = lower + 8;
+    if (r != 0) lo = lower + 9;
+    { s32 index = (s8)count; s32 upper = (s8)lo;
+    ok = 0;
+    if (lower <= index && index <= upper) ok = 1;
+    }
+    if (!ok) {
+        M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
+        return 1;
+    }
+    return 0;
+}
 static inline u8 TabMenu_InRange32(s32 low, s32 value, s32 high) {
     u8 ok = 0;
     if (low <= value && value <= high) ok = 1;
@@ -2119,19 +2140,19 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 #pragma opt_common_subs off
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
-    u8 ok;
-    s32 q, r, lower, lo;
     s32 v;
+    s32 q, r, lo, lower;
+    u8 ok;
     s8 count;
     count = fn_801E4A60();
     if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
-    lower = (s8)q;
     r = v % 32;
+    lower = (s8)q;
     lo = lower + 8;
     if (r != 0) lo = lower + 9;
-    { s32 upper = (s8)lo; s32 index = (s8)count;
+    { s32 index = (s8)count; s32 upper = (s8)lo;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
     }
@@ -2148,7 +2169,7 @@ s32 fn_801E87EC(void *arg0, s32 arg1) {
     s8 fn_801E4A60();
     s8 fn_801E8920(void *, s32);
     s8 v0, v1;
-    s32 f36, lower, rem, band, t, q, first, last;
+    s32 f36, q, rem, band, t, lower, first, last;
     u8 inrange;
     v0 = fn_801E4A60();
     v1 = fn_801E8920(arg0, arg1);
@@ -2163,7 +2184,7 @@ s32 fn_801E87EC(void *arg0, s32 arg1) {
     lower = (s8)q;
     band = lower + 8;
     if (rem) band = lower + 9;
-    { s32 upper = (s8)band; s32 index = v1;
+    { s32 index = v1; s32 upper = (s8)band;
       inrange = 0;
       if (lower <= index && index <= upper) inrange = 1;
     }
