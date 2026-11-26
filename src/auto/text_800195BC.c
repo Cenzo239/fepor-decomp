@@ -653,7 +653,6 @@ void fn_8001A5D0(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-#pragma opt_propagation off
 void fn_8001A5E4(void) {
     u8 *Hash_Lookup(char *);
     void *Heap_AllocRaw(s32);
