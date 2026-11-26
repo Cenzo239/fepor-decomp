@@ -221,65 +221,29 @@ volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
 #pragma optimization_level reset
 
-void fn_80224F04(u16 *unused)
-{
-  extern f32 lbl_8036BDC0;
-  extern f32 lbl_8036BDC4;
-  u8 *gx;
-  u32 cmd;
-  u8 tag;
-  f32 scale;
-  f32 a;
-  f32 b;
-  f32 d;
-  f32 c;
-  f32 e;
-  f32 f;
-  f32 g;
-  float new_var;
-  f32 h;
-  f32 negA;
-  f32 mul_b;
-  f32 mul_neg;
-  f32 mul_ef;
-  f32 mul_gf;
-  f32 bias;
-  f32 tmp;
+void fn_80224F04(u16 *unused) {
+    u8 *gx = (u8 *)__GXData;
+    f32 sx, sy, sz, ox, oy, oz;
+    f32 zmin, zmax;
 
-  gx = (u8 *)__GXData;
-  cmd = 0x0005101A;
-  scale = lbl_8036BDC0;
-  tag = 0x10;
-  a = *((f32 *)(gx + 0x500));
-  tmp = *((f32 *)(gx + 0x4FC));
-  b = tmp;
-  negA = -a;
-  c = *((f32 *)(gx + (((((0x4F4 & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF)));
-  new_var = b * scale;
-  mul_b = new_var;
-  d = *((f32 *)(gx + 0x4F8));
-  a = a * scale;
-  e = *((f32 *)(gx + 0x508));
-  f = *((f32 *)(gx + 0x510));
-  mul_neg = negA * scale;
-  g = *((f32 *)(gx + 0x504));
-  h = *((f32 *)(gx + 0x50C));
-  mul_ef = e * f;
-  mul_gf = g * f;
-  bias = lbl_8036BDC4;
-  GXWGFifo.u8 = tag;
-  c = c + mul_b;
-  GXWGFifo.u32 = cmd;
-  d = (float)(d + a);
-  GXWGFifo.f32 = mul_b;
-  mul_gf = mul_ef - mul_gf;
-  c = bias + c;
-  GXWGFifo.f32 = mul_neg;
-  d = bias + d;
-  GXWGFifo.f32 = mul_gf;
-  GXWGFifo.f32 = c;
-  GXWGFifo.f32 = d;
-  GXWGFifo.f32 = mul_ef + h;
+    sx = *(f32 *)(gx + 0x4FC) / 2.0f;
+    sy = -*(f32 *)(gx + 0x500) / 2.0f;
+    ox = 342.0f + (*(f32 *)(gx + 0x4F4) + (*(f32 *)(gx + 0x4FC) / 2.0f));
+    oy = 342.0f + (*(f32 *)(gx + 0x4F8) + (*(f32 *)(gx + 0x500) / 2.0f));
+
+    zmax = *(f32 *)(gx + 0x508) * *(f32 *)(gx + 0x510);
+    zmin = *(f32 *)(gx + 0x504) * *(f32 *)(gx + 0x510);
+    sz = zmax - zmin;
+    oz = zmax + *(f32 *)(gx + 0x50C);
+
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x0005101A;
+    GXWGFifo.f32 = sx;
+    GXWGFifo.f32 = sy;
+    GXWGFifo.f32 = sz;
+    GXWGFifo.f32 = ox;
+    GXWGFifo.f32 = oy;
+    GXWGFifo.f32 = oz;
 }
 
 void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) { u16 *gx; if(arg0==0) farg1-=lbl_8036BDC0; gx=__GXData; *(f32*)((char*)gx+0x4F4)=farg0; *(f32*)((char*)gx+0x4F8)=farg1; *(f32*)((char*)gx+0x4FC)=farg2; *(f32*)((char*)gx+0x500)=farg3; *(f32*)((char*)gx+0x504)=farg4; *(f32*)((char*)gx+0x508)=farg5; fn_80224F04(gx); __GXData[1]=1; }
