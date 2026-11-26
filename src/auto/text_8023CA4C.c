@@ -361,7 +361,7 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma optimization_level 2
+#pragma optimization_level 4
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
