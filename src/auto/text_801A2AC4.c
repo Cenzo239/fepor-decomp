@@ -1,6 +1,11 @@
 /* Functions from 0x801A2AC4 to 0x801A7D3C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u8 Battle_ItemClass(s32 unit) {
+    u8 *item = *(u8 **)(unit + 0x28C);
+    return item ? item[0x13] : 0xC;
+}
+
 void fn_801A2AC4(void) {
     extern u8 gMapAnimStr[];
     extern u16 lbl_80297118[];
@@ -2622,6 +2627,8 @@ void Battle_SetupUnit(void *arg0, void *arg1, s32 arg2) {
     }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
@@ -2734,8 +2741,7 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
         fn_801A94B0(self + 0x2E0);
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
