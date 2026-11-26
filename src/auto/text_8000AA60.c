@@ -2,6 +2,13 @@
 #include "common.h"
 #include "process.h"
 
+static inline u8 *Process_FindCodeInPool(u32 value, u8 *p)
+{
+ s32 i;
+ for(i=0;i<256;i++,p+=0x70) if(*(u32 *)p==value) return p;
+ return 0;
+}
+
 static inline u8 *Process_FindInPool(u8 *p, u32 value)
 {
     s32 i;
@@ -305,27 +312,11 @@ s32 fn_8000ADA0(void *arg0) {
 #pragma global_optimizer off
 s32 fn_8000ADE4(void *arg0)
 {
-    extern u8 gProcesses[];
-    s32 i;
-    u32 value;
-    u32 p;
-    u8 *tmp;
-
-    tmp = *(u8 **)((u8 *)arg0 + 4);
-    p = (u32)gProcesses;
-    value = *(u32 *)(tmp + 4);
-    for (i = 0; i < 256; i++, p += 0x70) {
-        if (*(u32 *)p == value) {
-            i = i + 0;
-            goto found;
-        }
-    }
-    p = 0;
-found:
-    if (p != 0)
-        return 0;
-    *(u8 **)((u8 *)arg0 + 4) += 8;
-    return 1;
+ extern u8 gProcesses[];
+ u8 *tmp = *(u8 **)((u8 *)arg0 + 4);
+ if (Process_FindInPool(gProcesses, *(u32 *)(tmp + 4)) != 0) return 0;
+ *(u8 **)((u8 *)arg0 + 4) += 8;
+ return 1;
 }
 #pragma global_optimizer on
 s32 fn_8000AEB4(void *arg0) {
