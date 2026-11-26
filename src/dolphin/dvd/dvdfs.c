@@ -53,7 +53,7 @@ extern u8 DummyCommandBlock_80339F80[48];
 extern u32 lbl_803685B8;
 extern void (*lbl_803685BC)(void*, void*);
 extern void stateReady(void);
-static inline s32 DVDCheckCancel(s32 resume) {
+static inline s32 DVDCheckCancel(s32 resume, u8 *base) {
     extern s32 ResumeFromHere_803685C0;
     extern u16 BB2_80339F40[];
     DVDReadyCommand *block;
