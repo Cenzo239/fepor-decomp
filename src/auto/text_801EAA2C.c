@@ -1,6 +1,15 @@
 /* Functions from 0x801EAA2C to 0x801F18D4, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void Fx_801EDFCC_Body(void *p) {
+    void fn_80146AF0(void);
+    void Fx_FadeIn(void *, s32);
+    void fn_8014876C(void *, s32, s32);
+    fn_80146AF0();
+    Fx_FadeIn(p, 0x3E8);
+    fn_8014876C(p, 0x64, 0x3E8);
+}
+
 typedef struct CameraAnimVec { f32 x, y, z; } CameraAnimVec;
 typedef struct CameraAnimState { CameraAnimVec eye, target; f32 zoom; } CameraAnimState;
 typedef struct CameraAnimProc {
