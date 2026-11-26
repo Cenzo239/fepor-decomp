@@ -1786,6 +1786,14 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
+static inline void fn_80134C24_Loads(void *arg1, s32 *outColW, s32 *outKind, s32 *outQuot) {
+    s32 colW = *(s16*)((u8*)arg1+0x44);
+    s32 kind = *(s16*)((u8*)arg1+0x3e);
+    *outColW = colW;
+    *outKind = kind;
+    *outQuot = kind / colW;
+}
+
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma global_optimizer off
@@ -1818,7 +1826,7 @@ rem=(s16)rem;
 rem=t*rem;
 x=(s16)(rem+off48);
 y=(s16)(rowH*quot+off4a);
-t=Text_MeasureHeight(-1,lbl_8036A5AC);
+t=Text_MeasureHeight(-1,*(const f32 *)&lbl_8036A5AC);
 half=(s16)(((s32)(s16)rowH-t)>>1);
 in.x=x; in.y=y+half;
 *arg0=*(s32*)fn_8013F748(arg1,&out,&in);
