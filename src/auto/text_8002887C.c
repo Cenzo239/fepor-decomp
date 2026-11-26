@@ -19,6 +19,19 @@ static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
     return NULL;
 }
 
+static inline void *map_find_coords(s8 y, s8 x, s32 *list) {
+    s32 n;
+    s32 i;
+    s32 *p;
+    n = *list;
+    p = list;
+    for (i = 0; i < n; p = (s32 *)((u8 *)p + 0x14), i++) {
+        if (x == *(s8 *)((u8 *)p + 8) && y == *(s8 *)((u8 *)p + 9))
+            return (u8 *)list + i * 0x14 + 8;
+    }
+    return NULL;
+}
+
 static inline u8 *map_first(s32 *m) {
     s32 c;
     u8 *e;
@@ -4045,7 +4058,10 @@ void fn_8002F0B0(void) {
     fn_800F20E0();
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     void fn_800F214C(void);
     void BattleState_SetCamPos(void *, f32, f32);
@@ -4053,7 +4069,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     extern s32 *gPadInput;
     extern u8 gBattleState[];
     extern s32 gTargetList[];
-    extern f32 lbl_80368E08;
+    extern const f32 lbl_80368E08;
     extern u8 lbl_802694B8[];
     struct Obj {
         u8 pad[4];
@@ -4154,6 +4170,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
 end:
     *(s32 *)arg0 = 0;
 }
+#pragma pop
 #pragma cplusplus reset
 
 s32 fn_8002F468(void) {
