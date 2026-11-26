@@ -157,6 +157,10 @@ typedef struct Vec2s {
     s16 x;
     s16 y;
 } Vec2s;
+#pragma push
+#pragma cplusplus on
+struct MenuPoint { s16 x, y; MenuPoint() {} };
+#pragma pop
 
 typedef struct {
     u8 unk0;
