@@ -7847,10 +7847,10 @@ void fn_8006DDDC(void) {
     fn_80225D6C(&sp24, &sp28, &sp1C, &sp20);
     fn_80225D6C(&sp14, &sp18, &spC, &sp10);
 
-    ne20_10 = ((sp10 - sp20) != 0);
     eq28_18 = (sp28 == sp18);
-    ne1C_C = ((spC - sp1C) != 0);
     eq24_14 = (sp24 == sp14);
+    ne20_10 = (u8)((sp10 - sp20) != 0);
+    ne1C_C = (u8)((spC - sp1C) != 0);
 
     fn_8021F168(&sp8, &sp8, &spA, &sp9, &sp8);
     OSReport(DEMOInit_str + 0x29, spA, sp9, eq28_18, eq24_14, ne20_10, ne1C_C);
