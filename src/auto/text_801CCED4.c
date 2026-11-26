@@ -1,5 +1,10 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline s16 MenuRoute_CenterOffset(s16 height) {
+    s32 Text_MeasureHeight(s32, f32);
+    extern f32 lbl_8036B5E0;
+    return (height - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1;
+}
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
@@ -1196,8 +1201,6 @@ extern "C" void Prim2D_SetTextScale(u8, f32);
 extern "C" void Prim2D_SetText(void *);
 extern "C" void Prim2D_EndPrim(void);
 #pragma cplusplus on
-#pragma push
-#pragma opt_lifetimes off
 extern "C" void fn_801CD940(void *arg0, void *arg1)
 {
     struct UiPanel_801CD940 {
@@ -1230,8 +1233,8 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     fn_801583D0(
         0,
         0,
-        (s16)(((UiPanel_801CD940 *)arg0)->right - ((UiPanel_801CD940 *)arg0)->left),
-        (s16)(((UiPanel_801CD940 *)arg0)->bottom - ((UiPanel_801CD940 *)arg0)->top),
+        (s16)(((s32)((UiPanel_801CD940 *)arg0)->right) - ((s32)((UiPanel_801CD940 *)arg0)->left)),
+        (s16)(((s32)((UiPanel_801CD940 *)arg0)->bottom) - ((s32)((UiPanel_801CD940 *)arg0)->top)),
         0xFF,
         0x10
     );
@@ -1266,7 +1269,6 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
         offset += 0x16;
     }
 }
-#pragma pop
 #pragma cplusplus off
 void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *self;
@@ -3735,6 +3737,7 @@ extern "C" void fn_801D1CAC(void *arg0) {
 #pragma cplusplus on
 #pragma optimization_level 4
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_801D1F28(void *self, void *other)
 {
     struct Obj {
@@ -8866,6 +8869,7 @@ void fn_801DDE44(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
+#pragma opt_lifetimes off
 void fn_801DDE88(s32 px, s32 py, s32 id) {
 void Prim2D_SetQuadMax(f32,f32,f32,f32);void Prim2D_SetQuadMin(f32,f32,f32,f32);
 void Prim2D_EndPrim(void);void Prim2D_AddPrim(s32);void Prim2D_BindTexture(void*,s32,s32);void Prim2D_PrepareTex(void);void Prim2D_Begin(void);u16 **fn_8006EDD8(void*,s32);
