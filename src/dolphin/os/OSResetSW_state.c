@@ -142,6 +142,7 @@ static inline s32 ResetSwitchDebounced(s64 now) {
         (s64)((((*(u32 *)0x800000F8 >> 2) / 125000) * 100) >> 3) < now - *(s64 *)&lbl_80368510;
 }
 static inline s32 ResetTimeExpired(s64 now, s64 start, u32 ticks) { return now - start > ticks; }
+static inline s64 ResetSwitchDeadline(s32 minutes, u32 ticks) { return __OSStartTime + (s64)(minutes * 60) * ticks; }
 u32 __OSGetResetSWState(void);
 
 extern void OSDisableInterrupts(void);
