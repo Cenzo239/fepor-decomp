@@ -120,6 +120,36 @@ static inline void InitUnitHireWidget(u8 *w) {
         *(s16 *)(w+0x40) = 20;
         *(s16 *)(w+0x42) = 8;
 }
+static inline void InitUnitHireWidgetRect(u8 *w, s16 x, s16 y, s16 width, s16 height) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_8029186C[];
+        *(void **)(w+0) = lbl_8028FDB0;
+        *(s32 *)(w+4) = 0;
+        *(void **)(w+0) = lbl_80292230;
+        *(s16 *)(w+8) = -1;
+        *(s16 *)(w+0xA) = x;
+        *(s16 *)(w+0xC) = y;
+        *(s16 *)(w+0xE) = x+width;
+        *(s16 *)(w+0x10) = y+height;
+        *(s16 *)(w+0x12) = 0;
+        *(s16 *)(w+0x14) = 0;
+        *(s16 *)(w+0x16) = width;
+        *(s16 *)(w+0x18) = height;
+        *(s16 *)(w+0x1A) = 0;
+        *(s16 *)(w+0x1C) = 0;
+        w[0x1E] = 255; w[0x1F] = 255; w[0x20] = 255; w[0x21] = 255;
+        *(s16 *)(w+0x22) = 0x1E0;
+        *(s16 *)(w+0x24) = 0;
+        *(f32 *)(w+0x28) = 1.0f;
+        *(f32 *)(w+0x2C) = 1.0f;
+        *(f32 *)(w+0x30) = 1.0f;
+        *(s32 *)(w+0x34) = 0;
+        *(s32 *)(w+0x38) = 0;
+        *(void **)(w+0) = lbl_8029186C;
+        *(s32 *)(w+0x3C) = 0;
+        *(s16 *)(w+0x40) = 20;
+        *(s16 *)(w+0x42) = 8;
+
+}
 struct UnitHireWidgetFields {
     void *vtable; s32 refcount;
     s16 id, x, y, right, bottom, offX, offY, width, height, scrollX, scrollY;
@@ -5219,14 +5249,15 @@ if(child) Ui_SetWidgetText(child,(u8 *)gUiUnitPanelStrings+0x1E6);
 #pragma cplusplus reset
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma opt_common_subs off
 extern "C" void fn_801BCFF4(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8000D8BC(s32, s32);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
-    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(void *, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -5243,6 +5274,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
         s16 x;
         s16 y;
         Vec2s() {}
+        Vec2s(s16 a, s16 b) : x(a), y(b) {}
         Vec2s(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; }
         Vec2s &operator=(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
@@ -5260,6 +5292,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
         s32 refcount;
     };
 
+    void Ui_SlideWidgetChild(void *, void *, const Vec2s &, s32);
     void *obj;
     register int btn;
     register u8 gate;
@@ -5296,13 +5329,8 @@ extern "C" void fn_801BCFF4(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            spC[0] = *(s16 *)((u8 *)obj + 0xA);
-            spC[1] = -0x3A;
-            Ui_SlideWidgetChild(arg0, obj, spC, 0);
-            tmp = *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x5C) + 0xC);
-            sp8[0] = 0x260;
-            sp8[1] = tmp;
-            Ui_SlideWidgetChild(arg0, *(void **)((u8 *)arg0 + 0x5C), sp8, 1);
+            Ui_SlideWidgetChild(arg0, obj, Vec2s(*(s16 *)((u8 *)obj + 0xA), -0x3A), 0);
+            Ui_SlideWidgetChild(arg0, *(void **)((u8 *)arg0 + 0x5C), Vec2s(0x260, *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x5C) + 0xC)), 1);
             temp = *(Obj **)((u8 *)arg0 + 0x5C);
             if (temp != NULL) {
                 refs = temp->refcount - 1;
@@ -5318,7 +5346,8 @@ extern "C" void fn_801BCFF4(void *arg0) {
     }
     (void)pad;
 }
-
+#pragma pop
+#pragma cplusplus on
 extern "C" void Ui_LayoutUnitHirePanel(void *panel) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
