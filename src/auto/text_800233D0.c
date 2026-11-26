@@ -1,5 +1,6 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
+static inline void UiCtx_Store0(void *dst, void *v) { *(void **)dst = v; }
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -3264,28 +3265,31 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
-#pragma peephole off
-void UiCtx_BeginMoveSelect(void **arg0, void *arg1) {
+#pragma peephole on
+void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *mapBase;
+    void **dst = (void **)arg0;
 
-    *arg0 = arg1;
+    dst[0] = arg1;
     M2C_FIELD(arg0, u8 *, 0xB) = M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = M2C_FIELD(arg1, u8 *, 0x19F);
     M2C_FIELD(arg0, s8 *, 0x11) = Unit_GetMov(arg1);
     mapBase = (u8 *)&gBattleMap;
     M2C_FIELD(arg0, s32 *, 4) = 0;
-    M2C_FIELD(arg0, s8 *, 8) = 0;
+    M2C_FIELD(arg0, u8 *, 8) = 0;
     M2C_FIELD(arg0, s8 *, 0xA) = -1;
     M2C_FIELD(arg0, s8 *, 0xD) = -1;
     M2C_FIELD(arg0, s8 *, 0xE) = -1;
     M2C_FIELD(arg0, s8 *, 0xF) = -1;
     M2C_FIELD(arg0, s8 *, 0x10) = -1;
-    M2C_FIELD(arg0, s8 *, 0x14) = 0;
-    M2C_FIELD(arg0, s8 *, 0x15) = 0;
-    M2C_FIELD(arg0, s8 *, 0x12) = 0;
-    M2C_FIELD(arg0, s8 *, 0x16) = 0;
+    M2C_FIELD(arg0, u8 *, 0x14) = 0;
+    M2C_FIELD(arg0, u8 *, 0x15) = 0;
+    M2C_FIELD(arg0, u8 *, 0x12) = 0;
+    M2C_FIELD(arg0, u8 *, 0x16) = 0;
     mapBase[(s8)M2C_FIELD(arg0, u8 *, 0xB) + ((s8)M2C_FIELD(arg0, u8 *, 0xC) << 6) + 0xD] = 0;
+    return;
+#pragma peephole off
 }
 #pragma peephole reset
 void UiCtx_Reset(void *arg0) {
