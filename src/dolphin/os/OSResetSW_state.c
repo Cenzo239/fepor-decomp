@@ -146,6 +146,28 @@ extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
 
+static inline s32 ResetSwitchTimedState(s64 now, s32 state) {
+ s32 n;
+ s64 t;
+ s32 seconds;
+ s64 q;
+    n = *(u8 *)0x800030E3 & 0x1F;
+    if (n != 0) {
+        seconds = n * 60;
+        t = (s64)seconds * (*(u32 *)0x800000F8 >> 2) + __OSStartTime;
+        if (t < now) {
+            q = (now - t) / (s64)(*(u32 *)0x800000F8 >> 2);
+            q /= 2;
+            if ((q & 1) == 0) {
+                state = 1;
+            } else {
+                state = 0;
+            }
+        }
+    }
+ return state;
+}
+
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
