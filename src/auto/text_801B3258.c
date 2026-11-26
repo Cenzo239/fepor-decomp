@@ -1,5 +1,21 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 *Battle_FindEligibleUnit(void) {
+    extern u8 gBattle[];
+    u8 *unit;
+    u8 type;
+    unit = *(u8 **)(gBattle + 0x280);
+    if (unit) {
+        type = (*(u8 **)(unit + 0x190))[8];
+        if (type == 0 || type == 5) return unit;
+    }
+    unit = *(u8 **)(gBattle + 0x560);
+    if (unit) {
+        type = (*(u8 **)(unit + 0x190))[8];
+        if (type == 0 || type == 5) return unit;
+    }
+    return 0;
+}
 static inline u8 *Battle_EligibleUnit(u8 *unit) {
     u8 type;
     if (unit) {
