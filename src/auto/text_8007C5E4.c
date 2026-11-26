@@ -1143,6 +1143,9 @@ void fn_8007DF6C(void *arg0) {
     fn_800C4588(temp_r31);
 }
 
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
 void fn_8007DFE0(void *arg0) {
  void fn_80086C14(s32,s32,f32,f32,f32,f32); void Prim2D_Begin(void); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(void);
  void Prim2D_SetTex(s32,s32); void *Unit_GetSupportPartner(void *,s32); u8 Unit_GetSupportRank(void *,s32); u8 Unit_CountSupportPartners(void *);
@@ -1150,8 +1153,8 @@ void fn_8007DFE0(void *arg0) {
  void Ui_DrawIcon(void *,s32,s32,s32); void fn_8001003C(s32,s32,s32,s32,s32,void *,...);
  extern u8 gUiStrings[],gUiIconDrawer[];
  extern f32 lbl_8036948C,lbl_80369490,lbl_80369494,lbl_80369498,lbl_8036942C,lbl_803694A0,lbl_80369438,lbl_8036949C,lbl_803694A4,lbl_80369430,lbl_80369418,lbl_803694A8,lbl_803694AC;
- f32 y,x,iconY,textY;
- void *rank; void *person; s32 i; void *unit; s32 iconX,offset; u8 id;
+ f32 y,textY,iconY,x;
+ void *rank; u8 id; s32 offset,iconX; void *unit; s32 i; void *person;
  x=lbl_8036948C+M2C_FIELD(arg0,f32 *,0x14);
  unit=M2C_FIELD(arg0,void **,0x58);
  y=lbl_80369490+M2C_FIELD(arg0,f32 *,0x18);
@@ -1164,11 +1167,10 @@ void fn_8007DFE0(void *arg0) {
  person=M2C_FIELD(partner,void **,0x188); id=M2C_FIELD(person,u8 *,0x54);
  Prim2D_Begin(); Prim2D_SetTex(0,19); Prim2D_PrepareTex();
  rank=0;
- { s32 rankOffset=0; switch(Unit_GetSupportRank(unit,i)) {case 1:rankOffset=0x201;break;case 2:rankOffset=0x206;break;case 3:rankOffset=0x20B;break;} if(rankOffset)rank=gUiStrings+rankOffset; }
+ switch(Unit_GetSupportRank(unit,i)) {case 1:rank=gUiStrings+0x201;break;case 2:rank=gUiStrings+0x206;break;case 3:rank=gUiStrings+0x20B;break;}
  if(rank) {
  void *text=fn_8003B9AC(id);
- y=textY+(f32)offset;
- fn_8001003C((s32)(x+lbl_803694A4),(s32)y,4,1,0,text,lbl_80369430,lbl_80369418);
+ fn_8001003C((s32)(x+lbl_803694A4),(s32)(y=textY+(f32)offset),4,1,0,text,lbl_80369430,lbl_80369418);
  fn_8001003C((s32)(x+lbl_803694A8),(s32)y,1,1,0,Msg_ResolveName(person),lbl_80369430,lbl_80369418);
  fn_8001003C((s32)(x+lbl_803694AC),(s32)y,1,1,0,Msg_Expand(rank),lbl_80369430,lbl_80369418);
  Ui_DrawIcon(gUiIconDrawer,iconX,(s32)(iconY+(f32)offset),fn_8003B938(id));
@@ -1178,7 +1180,7 @@ void fn_8007DFE0(void *arg0) {
  }
  Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
 }
-
+#pragma pop
 void fn_8007E2C4(void *arg0) {
 #pragma opt_common_subs off
  void Unit_FillAffinityBonuses(void *,void *);
