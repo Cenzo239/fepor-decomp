@@ -23390,14 +23390,18 @@ done:
     return;
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
-    s32 fn_8002134C(void *);
+    s32 fn_8002134C(void *, s8, s8);
     extern u8 gBattleMap[];
     void *tbl;
     u8 idx;
     s32 t;
     s32 d0;
     u8 *p;
+    u8 *q;
+    s32 i;
 
     tbl = gBattleMap;
     arg0[0x100] = (u8)(arg0[0x100] + 1);
@@ -23405,7 +23409,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
     p = arg0 + (s8)arg0[0x100];
     p[0x40] = (u8)arg2;
     idx = arg0[0x100];
-    t = fn_8002134C(tbl);
+    t = fn_8002134C(tbl, arg1, arg2);
     p = arg0 + (s8)idx;
     p[0x80] = (u8)(p[0x7F] - t);
 
@@ -23443,15 +23447,14 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
     }
 
     {
-        s32 i;
         s32 d1;
         s32 a, b, c, d;
         for (i = 1; i < (s8)arg0[0x100]; i++) {
-            p = arg0 + i;
-            b = p[0];
-            a = p[-1];
-            d = p[0x40];
-            c = p[0x3F];
+            q = arg0 + i;
+            b = q[0];
+            a = q[-1];
+            d = q[0x40];
+            c = q[0x3F];
             if ((s8)a < (s8)b) {
                 d0 = 2;
             } else if ((s8)a > (s8)b) {
@@ -23463,8 +23466,8 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
             } else {
                 d0 = 0x10;
             }
-            a = p[1];
-            c = p[0x41];
+            a = q[1];
+            c = q[0x41];
             if ((s8)b < (s8)a) {
                 d1 = 2;
             } else if ((s8)b > (s8)a) {
@@ -23479,45 +23482,45 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
             t = ((u8)d0 << 4) + (u8)d1;
             switch (t) {
             case 0x88:
-                p[0xC0] = 3;
+                q[0xC0] = 3;
                 break;
             case 0x44:
-                p[0xC0] = 0;
+                q[0xC0] = 0;
                 break;
             case 0x11:
-                p[0xC0] = 1;
+                q[0xC0] = 1;
                 break;
             case 0x22:
-                p[0xC0] = 2;
+                q[0xC0] = 2;
                 break;
             case 0x82:
-                p[0xC0] = 0xD;
+                q[0xC0] = 0xD;
                 break;
             case 0x14:
-                p[0xC0] = 0xC;
+                q[0xC0] = 0xC;
                 break;
             case 0x81:
-                p[0xC0] = 0xF;
+                q[0xC0] = 0xF;
                 break;
             case 0x24:
-                p[0xC0] = 0xE;
+                q[0xC0] = 0xE;
                 break;
             case 0x42:
-                p[0xC0] = 0x10;
+                q[0xC0] = 0x10;
                 break;
             case 0x18:
-                p[0xC0] = 0x11;
+                q[0xC0] = 0x11;
                 break;
             case 0x41:
-                p[0xC0] = 0x12;
+                q[0xC0] = 0x12;
                 break;
             case 0x28:
-                p[0xC0] = 0x13;
+                q[0xC0] = 0x13;
                 break;
             }
         }
 
-        p = arg0 + i;
+        p = arg0 + (s32)i;
         b = arg0[i];
         a = p[-1];
         d = p[0x40];
@@ -23549,7 +23552,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
         }
     }
 }
-
+#pragma pop
 void fn_800F18A4(s32 arg0,s32 arg1) {
 void fn_80060060(void *); f32 fn_80023068(void *,f32,f32); void fn_802025C0(void *,f32,f32,f32);void fn_80202540(void *,f32,f32,f32);void fn_80202300(void *,s32,f32);
 void *fn_80040844(void);void fn_80043F9C(void *,void *,f32,f32);void fn_802033AC(void *,void *);void fn_80203604(void *,void *,void *,f32);void fn_80202640(void *,void *);void fn_80201FC4(void *);void fn_80202024(void *,void *,void *);void fn_80201FF0(void *,void *);
@@ -24427,6 +24430,8 @@ void AiEval_ApplyUnitScore(void *eval, void *target) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
@@ -24453,8 +24458,6 @@ u8 fn_800F4954(s32 arg0, u8 arg1) {
     void fn_800FB96C(u8, s8, s8, void *, u8, u8, s8, s32, s32);
 
     u8 *self;
-    s32 score;
-    u8 *best;
     u8 *ctx;
     s32 xmin, ymax;
     struct { s8 x, y; u16 item; void *unit; s32 score; } result;
@@ -24465,6 +24468,8 @@ u8 fn_800F4954(s32 arg0, u8 arg1) {
     s32 y, ymin;
     u16 bestItem;
     u8 ix, iy, kind, id, bestY, bestX;
+    s32 score;
+    u8 *best;
     s32 rowOffset;
     u8 *map, *list, *entry, *item, *candidate, *tile, *row;
     u8 *cell;
@@ -24562,6 +24567,11 @@ u8 fn_800F4954(s32 arg0, u8 arg1) {
                     (s8)bestItem, 0, 0);
     return gAiState[0x21C];
 }
+#pragma pop
+#pragma opt_strength_reduction off
+#pragma opt_loop_invariants off
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 s32 Unit_IsInMovAttackRange(void *unit, void *target, void **itemSlot) {
     /* True if Manhattan distance to target is within unit mov + item attack range. */
     s32 Abs(s32);
