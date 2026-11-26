@@ -6555,6 +6555,10 @@ extern "C" void fn_800CF5B8(void *arg0) {
     *(s32 *)((u8 *)self + 0x230) = 0;
 }
 #pragma pop
+static inline s32 Scene_StringCompare(void *str, char *text) {
+    s32 String_Compare(void *, s32, s32, char *, s32);
+    return String_Compare(str, 0, *(s32 *)str, text, strlen(text));
+}
 struct ScenePosition { f32 x, y, z; };
 struct ScenePositionObject {
     u8 pad[0x40];
@@ -6576,6 +6580,9 @@ struct DebugCameraMethods {
     virtual void v8();
     virtual void SetLookAt(f32, f32, f32);
 };
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_800CFDDC(void *arg0) {
     void *fn_8002595C(s32);
     void String_Init(void *, char *, void *);
@@ -6613,7 +6620,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void fn_801126A4(void *, s32, s32);
     void fn_801C9D94(void *, void *);
     extern char lbl_802704F8[];
-    extern char **lbl_80366E48;
+    extern char *lbl_80366E48[2];
     extern void *gPadInput;
     extern s32 lbl_80367890;
     extern s8 lbl_80367894;
@@ -6624,7 +6631,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     extern f32 lbl_80369DD4;
     extern f32 lbl_80369DD8;
     extern f32 lbl_80369DDC;
-    extern f32 lbl_80369DE0;
+    extern const f32 lbl_80369DE0;
     extern f32 lbl_80369DE4;
     extern f32 lbl_80369DE8;
     extern f32 lbl_80369DEC;
@@ -6647,7 +6654,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void *scratch10;
     void *scratchC;
     void *scratch8;
-    f32 f20, f21, f22, f23, f24, f25, f26, f27, f28, f29, f30, f31;
+    f32 f21, f20, f31, f30, f29, f28, f27, f26, f25, f24, f23, f22;
     s32 pressed, held;
     void *pad;
     void *obj;
@@ -6722,8 +6729,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
         fn_800D758C(gCameraWin);
     }
     if (pressed & 0x800) {
-        msg = lbl_80366E48[lbl_80367890];
-        lbl_80367890 += 1;
+        msg = lbl_80366E48[lbl_80367890++];
         String_AssignCStr(self + 0xB8, msg, strlen(msg));
         fn_800E7B80(*(void **)(self + 4), self + 0xB8);
         self[0x196] = 0;
@@ -6764,12 +6770,16 @@ extern "C" void fn_800CFDDC(void *arg0) {
             }
             if (fn_800E8FB4(obj) != 0) {
                 u8 *stick = *(u8 **)gPadInput;
-                f32 sx = (f32)(s8)stick[3];
-                f32 sy = (f32)(s8)stick[2];
-                f29 += (f21 * sx) * lbl_80369DE0;
-                f31 += (f22 * sy) * lbl_80369DE0;
-                f29 += (f27 * sy) * lbl_80369DE0;
-                f31 += (f28 * sx) * lbl_80369DE0;
+                s32 sy = (s8)stick[2];
+                s32 sx = (s8)stick[3];
+                f32 dx = f21 * (f32)sx;
+                f29 += dx * lbl_80369DE0;
+                f32 dz = f22 * (f32)sx;
+                f31 += dz * lbl_80369DE0;
+                f32 sideX = f27 * (f32)sy;
+                f29 += sideX * lbl_80369DE0;
+                f32 sideZ = f28 * (f32)sy;
+                f31 += sideZ * lbl_80369DE0;
             } else {
                 f23 = Camera_GetFov(obj);
                 if (held & 0x40) {
@@ -6807,13 +6817,11 @@ extern "C" void fn_800CFDDC(void *arg0) {
             }
             *(f32 *)(self + 0x190) = f24;
             if (fn_800E8FB4(obj) != 0) {
-                vt = *(void **)((u8 *)obj + 0x40);
-                ((void (*)(void *, f32, f32, f32))*(void **)((u8 *)vt + 0x24))(obj, f29, f30, f31);
+                ((DebugCameraMethods *)obj)->SetPosition(f29, f30, f31);
             } else {
                 fn_800E8FBC(obj, f29, f30, f31);
             }
-            vt = *(void **)((u8 *)obj + 0x40);
-            ((void (*)(void *, f32, f32, f32))*(void **)((u8 *)vt + 0x2C))(obj, f24, f25, f26);
+            ((DebugCameraMethods *)obj)->SetLookAt(f24, f25, f26);
             if (self[0x194] != 0) {
                 Prim2D_Begin();
                 Prim2D_SetTransform(lbl_80369DC8, lbl_80369DC8, lbl_80369DC8, lbl_80369DE8);
@@ -6843,8 +6851,12 @@ extern "C" void fn_800CFDDC(void *arg0) {
         }
     }
 }
-
+#pragma pop
 #pragma cplusplus reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 
 #pragma push
 #pragma optimization_level 4
