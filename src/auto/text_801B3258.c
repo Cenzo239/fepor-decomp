@@ -6315,10 +6315,10 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     s16 spC[2];
     s16 sp8[2];
 
+    sp8[0] = 0x108;
     sp8[1] = arg3;
     spC[0] = arg1;
     spC[1] = arg2;
-    sp8[0] = 0x108;
     fn_801BEB9C(arg0, spC, sp8, arg4);
     *(void **)arg0 = lbl_802918A0;
     *(s32 *)((u8 *)arg0 + 0xCC) = 0;
@@ -7333,6 +7333,15 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
 #pragma cplusplus reset
 
 #pragma optimization_level 3
+static inline void SetHelpText_801C0F54(s32 self, void *msg) {
+    u32 Ui_FindChild(s32, s32, s32);
+    void Ui_SetWidgetText(u32, void *);
+    u32 result = Ui_FindChild(self, -0x1000, 0);
+    if (result != 0) {
+        Ui_SetWidgetText(result, msg);
+    }
+}
+
 void fn_801C0F54(s32 arg0) {
     u32 fn_8013FF94(s32, s32, s32);
     void fn_801658DC(u32, void *);
