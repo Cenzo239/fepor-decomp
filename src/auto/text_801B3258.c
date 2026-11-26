@@ -4940,15 +4940,15 @@ extern "C" void fn_801BBDA0(void *arg0) {
 
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
-    s16 fn_8017D604(s32, s16);
-    extern u8 lbl_80330708[];
+    s16 Unit_GetGoldCost(s32, s16);
+    extern u8 gBattleState[];
     s32 t;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    t = *(s32 *)(lbl_80330708 + 0x1C);
-    return (fn_8017D604(arg0, 1) <= t) ? 1 : 0;
+    t = *(s32 *)(gBattleState + 0x1C);
+    return (Unit_GetGoldCost(arg0, 1) <= t) ? 1 : 0;
 }
 #pragma opt_propagation on
 extern "C" void Ui_DetachChildSlots(void *panel) {
