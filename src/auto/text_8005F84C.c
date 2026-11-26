@@ -3,7 +3,7 @@
 #include "global.h"
 static inline void *GActor_FindInherited(void *p, u32 offset) {
     while (p) {
-        void *matrices = *(void **)((u8 *)p + 0x60);
+        void *matrices = *(void **)((u8 *)p + offset);
         if (matrices) return matrices;
         p = *(void **)((u8 *)p + 4);
     }
