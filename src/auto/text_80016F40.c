@@ -32,7 +32,7 @@ static inline u8 CamPath_FindZeroKey(s32 count, u8 **list) {
  s32 i; u8 *keys; f32 time; f32 keyTime; extern f32 lbl_80368C88;
  if (count == 0) return 0;
  keys = *list;
- time = lbl_80368C88;
+ time = 0.0f;
  for (i=count; i>0; --i,keys+=0x14) { keyTime = (f32)*(s32 *)(keys+4); if (keyTime==time) return 1; }
  return 0;
 }
