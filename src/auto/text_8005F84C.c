@@ -7681,7 +7681,6 @@ void fn_8006D8E8(s32 arg0) {
 }
 
 s32 fn_8006D910(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8006EDE8(s32 *, s32, s32);
     s32 sp8;
 
     sp8 = 0;
