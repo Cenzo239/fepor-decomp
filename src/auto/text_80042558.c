@@ -29,9 +29,20 @@ static inline s32 DirGetDY_80042558(u8 dir)
     }
 }
 
-static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
+typedef struct {
+    u8 pad0[4];
+    s8 x0;
+    s8 y0;
+    s8 x1;
+    s8 y1;
+    u8 pad8[8];
+    void *unk10;
+    u8 pad14[0xA0];
+} MapObj_80042558;
+
+static inline u8 IsInRect_80042558(MapObj_80042558 *ent, s32 x, s32 y)
 {
-    if (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]) {
+    if (x >= ent->x0 && x <= ent->x1 && y >= ent->y0 && y <= ent->y1) {
         return 1;
     }
     return 0;
@@ -39,16 +50,15 @@ static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
-    u8 *base;
-    u8 *ent;
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        base = M2C_FIELD(arg0, u8 **, 0x14);
-        ent = base + i * 0xB4;
-        if (forbid != 0 && (M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC) & forbid)) continue;
-        if ((M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC) & require) != require) continue;
+        MapObj_80042558 *base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
+        MapObj_80042558 *ent = &base[i];
+        u32 flags = M2C_FIELD(ent->unk10, u32 *, 0xBC);
+        if (forbid != 0 && (flags & forbid)) continue;
+        if ((flags & require) != require) continue;
         if (IsInRect_80042558(ent, x, y)) {
-            return base + i * 0xB4;
+            return (u8 *)&base[i];
         }
     }
     return 0;
@@ -533,15 +543,19 @@ void fn_80042558(void *arg0)
     extern u8 lbl_80367290[3];
 
     void *list[8];
-    u8 *rec;
     s32 eventIndex;
+    u8 *rec;
+    u8 *start;
 
     rec = gMapObjEventList;
+    start = rec;
     eventIndex = 0;
 
-    for (; eventIndex < fn_8010FF88(gMapObjEventList); eventIndex++, rec += 8) {
-        s32 x = (s8)rec[0];
-        s32 y = (s8)rec[1];
+    for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
+        s32 y;
+        s32 x;
+        x = (s8)rec[0];
+        y = (s8)rec[1];
         switch (rec[2] - 0x21) {
         case 3:
         {
