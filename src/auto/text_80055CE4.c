@@ -1,5 +1,6 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 NodeLink_FindChannel(u8 *flags) { if (!flags[4]) return 4; if (!flags[5]) return 5; if (!flags[6]) return 6; if (!flags[7]) return 7; return -1; }
 static inline f32 NodeLink_Ease(f32 t, f32 extent, f32 scale, f32 base) { f32 d=extent-t; return base+(scale-scale*(d*d)/(extent*extent)); }
 typedef struct NodeLinkColor { u8 r, g, b, a; } NodeLinkColor;
 static inline void NodeLinkColor_Copy(NodeLinkColor *d, const NodeLinkColor *s) { d->r=s->r; d->g=s->g; d->b=s->b; d->a=s->a; }
@@ -1177,40 +1178,22 @@ void fn_80058008(void *arg0) {
 }
 
 void fn_8005806C(void *arg0) {
-    void Process_ClearFunc(void *);
-    extern f32 gF32_0;
-    extern f32 lbl_80369158;
-    f32 dur;
-    f32 step;
-    f32 diff;
-    f32 y;
-    f32 from;
-    f32 half;
-    s32 prod;
-    u8 counter;
-    u8 byte;
-
-    ((u8 *)arg0)[0x53] = ((u8 *)arg0)[0x53] + 1;
-    if ((s32)((u8 *)arg0)[0x53] >= 0x14) {
-        ((u8 *)arg0)[0x53] = 0x14;
-        Process_ClearFunc(arg0);
-    }
-    counter = ((u8 *)arg0)[0x53];
-    byte = ((u8 *)arg0)[0x3f];
-    dur = lbl_80369158;
-    y = dur * dur;
-    from = (f32)byte;
-    step = dur - (f32)counter;
-    diff = gF32_0 - from;
-    ((u8 *)arg0)[0x3b] = (u8)(from + (diff - (diff * (step * step)) / y));
-
-    prod = *(u16 *)((u8 *)arg0 + 0x4c) * ((u8 *)arg0)[0x51];
-    counter = ((u8 *)arg0)[0x53];
-    step = dur - (f32)counter;
-    from = (f32)prod;
-    half = (f32)(prod / 2);
-    diff = half - from;
-    *(s16 *)((u8 *)arg0 + 0x4a) = (s16)(from + (diff - (diff * (step * step)) / y));
+void Process_ClearFunc(void *);
+extern const f32 gF32_0, lbl_80369158;
+f32 dur, step, diff, y, from, half;
+s32 prod;
+u8 counter, byte;
+((u8*)arg0)[0x53]++;
+if((s32)((u8*)arg0)[0x53]>=20) { ((u8*)arg0)[0x53]=20; Process_ClearFunc(arg0); }
+counter=((u8*)arg0)[0x53]; byte=((u8*)arg0)[0x3f];
+dur=lbl_80369158; y=dur*dur;
+from=(f32)byte; step=dur-(f32)counter; diff=gF32_0-from;
+((u8*)arg0)[0x3b]=(u8)(from+(diff-diff*(step*step)/y));
+prod=*(u16*)((u8*)arg0+0x4c)*((u8*)arg0)[0x51];
+counter=((u8*)arg0)[0x53];
+from=(f32)prod; half=(f32)(prod/2); diff=half-from; step=dur-(f32)counter;
+step*=step;
+*(s16*)((u8*)arg0+0x4a)=(s16)(from+(diff-diff*step/y));
 }
 
 #pragma use_lmw_stmw on
