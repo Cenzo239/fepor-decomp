@@ -159,6 +159,24 @@ typedef struct Vec2s {
     s16 x;
     s16 y;
 } Vec2s;
+#pragma cplusplus on
+struct MenuPopupHost {
+virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void setSelection(void *)=0;
+virtual s32 getPage()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual Vec2s getPosition()=0;
+};
+#pragma cplusplus reset
 
 typedef struct {
     u8 unk0;
@@ -1206,6 +1224,8 @@ void fn_8013DD1C(s32 arg0, void *arg1) {
 }
 
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 extern "C" void fn_8013DD90(MenuDD *self,u8 *ctx) {
@@ -1215,8 +1235,8 @@ void Ui_DrawRouteIconEx(s16,s32,u8);
 void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
 s32 width,height; s32 x,y; u8 idle; s32 active;
 self->v30();
-x=*(s16*)((u8*)GfxEnt_Get(ctx[*(s8*)(ctx+0x62)+0x40])+0x30);
-y=*(s16*)((u8*)GfxEnt_Get(ctx[*(s8*)(ctx+0x62)+0x40])+0x32);
+x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
+y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
 else { s32 nx=x+1; s32 ny=y+1; s32 cur=*(s16*)(ctx+0x38);
@@ -1236,6 +1256,7 @@ s32 left=x-offset;
 fn_8008AB7C((w>>1)+left,y+((s16)height>>1),w,0x17,0x19,0x4c,active);
 Prim2D_Begin(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
 }
+#pragma pop
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 extern "C" void Ui_DrawListWindowFrame(s32, s32, s32, s16, s32, s32);
