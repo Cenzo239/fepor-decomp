@@ -1,6 +1,5 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
-static inline void UiCtx_Store0(void *dst, void *v) { *(void **)dst = v; }
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -3269,9 +3268,8 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *mapBase;
-    void **dst = (void **)arg0;
 
-    dst[0] = arg1;
+    UiCtx_Store0(arg0, arg1);
     M2C_FIELD(arg0, u8 *, 0xB) = M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = M2C_FIELD(arg1, u8 *, 0x19F);
     M2C_FIELD(arg0, s8 *, 0x11) = Unit_GetMov(arg1);
