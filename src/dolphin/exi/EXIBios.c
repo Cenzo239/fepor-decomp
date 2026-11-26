@@ -838,13 +838,9 @@ void UnlockedHandler(s32 chan, void *context) {
     EXIGetID(chan, 0, &id);
 }
 
-static inline void (*EXIGetIDHandler(s32 useHandler))(s32, void *) {
-    if (useHandler) return UnlockedHandler;
-    return 0;
-}
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma scheduling off
 #pragma use_lmw_stmw on
 #pragma inline_depth(1)
@@ -856,7 +852,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     s32 enabled;
     u32 cmd;
     s32 ok;
-    void (*handler)(s32,void *);
+    register void (*handler)(s32,void *);
     extern u32 IDSerialPort1_80368800;
     void UnlockedHandler(s32, void *);
     BOOL EXIClearInterrupts(s32, BOOL, BOOL, BOOL);
