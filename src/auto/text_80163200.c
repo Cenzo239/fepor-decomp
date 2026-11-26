@@ -3034,7 +3034,9 @@ void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
 }
 
 #pragma push
+#pragma optimization_level 3
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_801676AC(u8 *self, s32 arg1) {
     void *memset(void *, s32, s32);
     void Process_ClearFunc(s32);
@@ -3207,8 +3209,8 @@ void fn_801676AC(u8 *self, s32 arg1) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetQuadMin(x, y, lbl_8036A92C, lbl_8036A92C);
-        span = *(volatile f32 *)&lbl_8036A988;
-        border = *(volatile f32 *)&lbl_8036A964;
+        span = lbl_8036A988;
+        border = lbl_8036A964;
         span = f25 - span;
         f31 = border * f26;
         Prim2D_SetQuadMax(span * f27 + x, y + f31, (f32)h, (f32)w);
@@ -3349,8 +3351,8 @@ void fn_801676AC(u8 *self, s32 arg1) {
     ty = (s32)(lbl_8036A990 + *(f32 *)(self + 0xF8));
     Prim2D_Begin();
     {
-        f32 zero = *(volatile f32 *)&lbl_8036A92C;
-        f32 one = *(volatile f32 *)&lbl_8036A944;
+        f32 zero = lbl_8036A92C;
+        f32 one = lbl_8036A944;
         Prim2D_SetTransform(zero, zero, one, one);
     }
     Prim2D_SetTex(0, 0x13);
