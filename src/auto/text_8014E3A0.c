@@ -12,7 +12,7 @@ struct EffectActorMethods {
     virtual void v7(); virtual void v8(); virtual void v9();
     virtual void v10(); virtual void v11(); virtual void v12();
     virtual void v13(); virtual void v14();
-    virtual void Move(const EffectActorVec &, s32);
+    virtual void Move(EffectActorVec, s32);
 };
 #pragma cplusplus off
 
