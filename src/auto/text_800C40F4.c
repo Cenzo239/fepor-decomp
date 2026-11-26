@@ -10567,7 +10567,6 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma opt_dead_code off
-#pragma scheduling on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -20294,10 +20293,11 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     };
     extern struct CardWork gCardWork;
 
-    Stream_800EBACC *stream;
     CardFileStatus status;
+    Stream_800EBACC *stream;
     void *fileInfo;
     s32 size;
+    s32 fileNo;
     u8 ok;
 
     if (arg0 == NULL) {
@@ -20325,7 +20325,7 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
                 gCardWork.result = fn_8021C02C(fileInfo);
                 ok = (gCardWork.result == 0 && gCardWork.busy == 0);
                 if (ok != 0) {
-                    s32 fileNo = *(s32 *)&gCardWork.fileInfo[4];
+                    fileNo = *(s32 *)&gCardWork.fileInfo[4];
                     fn_8021D004(gCardWork.chan, fileNo, &status);
                     status.commentAddress = 0x2000;
                     status.iconAddress = 0;
