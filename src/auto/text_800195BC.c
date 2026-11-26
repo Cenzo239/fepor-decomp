@@ -670,14 +670,16 @@ void fn_8001A5E4(void) {
     extern s32 lbl_803671D8;
     extern void *lbl_803671DC;
 
-    s32 count;
     u8 *ptr;
     void *rec;
     u8 *data;
     s32 i;
     u32 id;
     u32 v;
+    u32 v2;
     void *dest;
+    char *base;
+    s32 count;
 
     data = Hash_Lookup(lbl_80268510 + 0x73);
     count = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
@@ -685,9 +687,9 @@ void fn_8001A5E4(void) {
     lbl_803671D8 = count;
     lbl_803671DC = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A89C0, 0, 0x64, count);
     rec = lbl_803671DC;
+    base = lbl_80268510;
 
-    i = 0;
-    while (i < lbl_803671D8) {
+    for (i = 0; i < lbl_803671D8; i++) {
         *(s16 *)((u8 *)rec + 0x38) = i + 1;
         if (ptr == NULL) { id = 0; } else {
             id = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
@@ -714,12 +716,12 @@ void fn_8001A5E4(void) {
             ptr += 4;
         }
         *(u32 *)((u8 *)rec + 0x14) = v;
-        if (ptr == NULL) { v = 0; } else {
-            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+        if (ptr == NULL) { v2 = 0; } else {
+            v2 = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
             ptr += 4;
         }
-        fn_8001CC48((u8 *)rec + 0x2C, v);
-        *(u32 *)((u8 *)rec + 0x34) = v;
+        fn_8001CC48((u8 *)rec + 0x2C, v2);
+        *(u32 *)((u8 *)rec + 0x34) = v2;
 
         dest = (u8 *)rec + 0x1C;
         if (ptr == NULL) { v = 0; } else {
@@ -798,15 +800,15 @@ void fn_8001A5E4(void) {
         ((u8 *)rec)[0x5E] = ptr[34]; ((u8 *)rec)[0x5F] = ptr[35]; ((u8 *)rec)[0x60] = ptr[36]; ((u8 *)rec)[0x61] = ptr[37];
         ((u8 *)rec)[0x62] = ptr[38]; ((u8 *)rec)[0x63] = ptr[39];
 
-        if (fn_80234198(id, lbl_80268510 + 0x7B) != 0) {
+        if (fn_80234198(id, base + 0x7B) != 0) {
             Status_OrByName((u8 *)rec + 0x1C, (u32)(lbl_80268510 + 0x7E));
         }
         fn_8000D3EC(*(u32 *)((u8 *)rec + 0x0), rec);
         rec = (u8 *)rec + 0x64;
         ptr = (u8 *)(((u32)(ptr + 0x2B)) & ~3);
-        i++;
     }
 }
+#pragma opt_lifetimes reset
 #pragma opt_loop_invariants reset
 #pragma opt_common_subs reset
 #pragma use_lmw_stmw reset
