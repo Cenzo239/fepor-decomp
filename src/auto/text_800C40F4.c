@@ -18,7 +18,6 @@ public:
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
-static inline void Store3F(f32 *out, f32 x, f32 y, f32 z) { out[0] = x; out[1] = y; out[2] = z; }
 struct AiFields { u8 pad[4]; volatile u16 f4; volatile u8 f6; u8 pad7; u8 f8[0x10]; };
 static inline void AiFields_Set(struct AiFields *s, u16 v) { s->f4 = v; s->f6 = 2; }
 static inline void SetupCardStatus(CardFileStatus *s) {
@@ -10586,7 +10585,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma global_optimizer on
+#pragma opt_lifetimes off
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10611,6 +10610,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[1] = y;
     arg0[2] = z;
 }
+#pragma opt_lifetimes reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -16176,9 +16176,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         x = z;
     }
 
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    Store3F(arg0, x, y, z);
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
@@ -28542,7 +28540,7 @@ void fn_800FC580(void)
 
     void *result;
 
-    *(volatile u16 *)&gAiState.f4 = 0xFFFF;
+    *(volatile u16 *)&gAiState.f4 = (u16)-1;
     *(volatile u8 *)&gAiState.f6 = 2;
 
     fn_80100B08(&gAiState);
