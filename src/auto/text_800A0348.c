@@ -1,11 +1,6 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline u8 MenuCmd_CheckItem_800A3770(u8 *base, s32 item) {
-    s32 fn_8005C0AC(s32, u8 *);
-    return (u8)fn_8005C0AC(item, base + 0x7E6) != 0;
-}
-
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
     void *fn_80105C5C(void *, u8);
@@ -2277,12 +2272,11 @@ s32 fn_800A3734(s32 unused, s32 arg1) {
     return 6;
 }
 
-#pragma global_optimizer off
+#pragma dont_inline off
 void fn_800A3770(void) {
     void fn_8005B918(u8 *);
     s32 fn_8005B8CC(void);
     s32 fn_8005B8AC(s32);
-    s32 fn_8005C0AC(s32, u8 *);
     extern u8 gMenuCmdStrings[];
     extern s32 lbl_80312290[];
     extern s32 lbl_80367520;
@@ -2290,6 +2284,7 @@ void fn_800A3770(void) {
     s32 item;
     s32 count;
     s32 i;
+    s32 idx;
 
     fn_8005B918(gMenuCmdStrings + 0x7E0);
     count = fn_8005B8CC();
@@ -2297,12 +2292,14 @@ void fn_800A3770(void) {
     base = gMenuCmdStrings;
     for (i = 0; i < count; i++) {
         item = fn_8005B8AC(i);
-        if ((u8)fn_8005C0AC(item, base + 0x7E6) != 0) {
-            lbl_80312290[lbl_80367520++] = item;
+        if (MenuCmd_CheckItem_800A3770(base, item)) {
+            idx = lbl_80367520;
+            lbl_80367520 = idx + 1;
+            lbl_80312290[idx] = item;
         }
     }
 }
-#pragma global_optimizer reset
+#pragma dont_inline on
 void fn_800A3808(void) {
     M2C_UNK fn_8005B8E8();
     fn_8005B8E8();
