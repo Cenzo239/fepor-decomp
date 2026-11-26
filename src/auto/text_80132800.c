@@ -158,6 +158,8 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 
+static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
+
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
     return width / columns;
@@ -1801,18 +1803,21 @@ void fn_80134C24(s32 *arg0, const void *arg1) {
     s32 Text_MeasureHeight(s32, f32);
     Vec2s out, in;
     s16 rowH;
-    s16 kind, colW;
+    s32 colW;
+    s16 kind;
     s16 quot;
     s32 rem, hdiv, t;
     s16 x, y, half, off48, off4a;
-    colW = *(s16 *)((u8 *)arg1 + 0x44);
     kind = *(s16 *)((u8 *)arg1 + 0x3e);
+    colW = *(s16 *)((u8 *)arg1 + 0x44);
     quot = kind / colW;
     rowH = *(s16 *)((u8 *)arg1 + 0x46);
     off48 = *(s16 *)((u8 *)arg1 + 0x48);
     off4a = *(s16 *)((u8 *)arg1 + 0x4a);
     t = MenuGridColumnWidth(arg1, colW);
-    rem = t * (s16)(kind % colW);
+    rem = kind % colW;
+    rem = (s16)rem;
+    rem = t * rem;
     x = (s16)(rem + off48);
     y = (s16)((s16)rowH * (s16)quot + off4a);
     t = Text_MeasureHeight(-1, lbl_8036A5AC);
