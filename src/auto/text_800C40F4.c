@@ -11811,6 +11811,7 @@ void *fn_800DDB94(void *arg0)
     extern void *StringMap_FindOrInsert(void *);
     extern void String_Assign(void *, void *, s32, s32);
 
+    void *found;
     u32 temp[3];
 
     temp[1] = 0;
@@ -11818,7 +11819,8 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    String_Assign(temp, (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x68) + 0xC, 0, -1);
+    found = (void *)((u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x68) + 0xC);
+    String_Assign(temp, found, 0, -1);
     return Str_CStrDestroy(temp);
 }
 #pragma global_optimizer on
@@ -16175,7 +16177,9 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         x = z;
     }
 
-    Store3F(arg0, x, y, z);
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
