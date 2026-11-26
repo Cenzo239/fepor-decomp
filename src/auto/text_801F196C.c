@@ -4096,20 +4096,6 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
     M2C_FIELD(fn_801F9D50(arg1), s32 *, 0x48) = arg0;
 }
 
-static inline void Init_801F9D50(u8 *p) {
-    extern f32 lbl_8036BA00;
-    void StaffRoll_VecReserve(void *, u32);
-    if (p != NULL) {
-        u32 *vec = (u32 *)(p + 0x30);
-        *(u32 *)(p + 0x30) = 0;
-        *(u32 *)(p + 0x34) = 0;
-        vec[2] = 0;
-        *(f32 *)(p + 0x3C) = lbl_8036BA00;
-        *(u32 *)(p + 0x4C) = 0;
-        StaffRoll_VecReserve(vec, 0x28);
-    }
-}
-
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
