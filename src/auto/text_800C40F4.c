@@ -7898,32 +7898,64 @@ void fn_800D6A84(void *arg0, u32 arg1, s32 arg2) {
     }
 }
 
-void *fn_800D6AB4(String *dst, String *src) {
-void *Heap_Alloc(s32); void *memcpy(void *,const void *,u32); void fprintf(void *,const char *,...); void abort(void);
-extern char lbl_802704F8[]; extern u8 lbl_80366E50;
-u32 size;
-char *allocation, *end, *begin;
-begin=src[0].data;
-dst[0].cap=src[0].cap; end=begin+src[0].size;
-dst[0].data=0; dst[0].size=0; dst[0].cap=0;
-if(begin!=end) {
-size=end-begin; dst[0].cap=size+3-(size&3);
-allocation=Heap_Alloc(dst[0].cap+1);
-if(!allocation){fprintf(__files+0xA0,lbl_802704F8+0x999);abort();}
-dst[0].data=allocation; memcpy(dst[0].data,begin,size); dst[0].size=size; dst[0].data[size]=lbl_80366E50;
-}
-begin=src[1].data;
-dst[1].cap=src[1].cap; end=begin+src[1].size;
-dst[1].data=0; dst[1].size=0; dst[1].cap=0;
-if(begin!=end) {
-size=end-begin; dst[1].cap=size+3-(size&3);
-allocation=Heap_Alloc(dst[1].cap+1);
-if(!allocation){fprintf(__files+0xA0,lbl_802704F8+0x999);abort();}
-dst[1].data=allocation; memcpy(dst[1].data,begin,size); dst[1].size=size; dst[1].data[size]=lbl_80366E50;
-}
-return dst;
-}
+#pragma optimization_level 3
+void *fn_800D6AB4(String *dst, const String *src) {
+    void *Heap_Alloc(s32);
+    void *memcpy(void *, const void *, u32);
+    void fprintf(void *, const char *, ...);
+    void abort(void);
+    extern char lbl_802704F8[];
+    extern u8 lbl_80366E50;
 
+    {
+        u32 size;
+        char *allocation, *end, *begin;
+        dst[0].cap = src[0].cap;
+        begin = src[0].data;
+        end = begin + src[0].size;
+        dst[0].data = 0;
+        dst[0].size = 0;
+        dst[0].cap = 0;
+        if (begin != end) {
+            size = end - begin;
+            dst[0].cap = size + 3 - (size & 3);
+            allocation = Heap_Alloc(dst[0].cap + 1);
+            if (!allocation) {
+                fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
+                abort();
+            }
+            dst[0].data = allocation;
+            memcpy(dst[0].data, begin, size);
+            dst[0].size = size;
+            dst[0].data[size] = lbl_80366E50;
+        }
+    }
+    {
+        char *allocation, *end, *begin;
+        u32 size;
+        dst[1].cap = src[1].cap;
+        begin = src[1].data;
+        end = begin + src[1].size;
+        dst[1].data = 0;
+        dst[1].size = 0;
+        dst[1].cap = 0;
+        if (begin != end) {
+            size = end - begin;
+            dst[1].cap = size + 3 - (size & 3);
+            allocation = Heap_Alloc(dst[1].cap + 1);
+            if (!allocation) {
+                fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
+                abort();
+            }
+            dst[1].data = allocation;
+            memcpy(dst[1].data, begin, size);
+            dst[1].size = size;
+            dst[1].data[size] = lbl_80366E50;
+        }
+    }
+    return dst;
+}
+#pragma optimization_level 4
 void Tree_InsertFixup(void *arg0, void *arg1)
 {
     typedef struct Node {
@@ -8410,7 +8442,15 @@ extern char lbl_80271010[];
 #pragma cplusplus on
 class Object { public: char data[64]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void setup(s32,s32); };
 class Owner { public: char data[16]; virtual void v0(); virtual void v1(); virtual Object *get(char *,char *); };
-struct Entry { u32 f[32]; };
+struct Entry {
+    u32 f[32];
+    void init() {
+        f[0]=0; f[1]=0; f[2]=0; f[3]=0; f[4]=0; f[5]=0; f[6]=0; f[7]=0;
+        f[8]=0; f[9]=0; f[10]=0; f[11]=0; f[12]=0; f[13]=0; f[14]=0; f[15]=0;
+        f[16]=0; f[17]=0; f[18]=0; f[19]=0; f[20]=0; f[21]=0; f[22]=0; f[23]=0;
+        f[24]=0; f[25]=0; f[26]=0; f[27]=0; f[28]=0; f[29]=0; f[30]=0; f[31]=0;
+    }
+};
 struct Self { u8 pad[0x14]; Entry e[8]; };
 s32 i;
 *(void **)(self+0xC)=lbl_8028DDC8;
@@ -8421,14 +8461,7 @@ fn_800E8154(owner,arg4);
 *(u32 *)self=0;
 self[0x420]=fn_800DF6A8(*(void **)(self+0x10));
 for(i=0;i<8;i++) {
-    ((Self *)self)->e[i].f[0]=0; ((Self *)self)->e[i].f[1]=0; ((Self *)self)->e[i].f[2]=0; ((Self *)self)->e[i].f[3]=0;
-    ((Self *)self)->e[i].f[4]=0; ((Self *)self)->e[i].f[5]=0; ((Self *)self)->e[i].f[6]=0; ((Self *)self)->e[i].f[7]=0;
-    ((Self *)self)->e[i].f[8]=0; ((Self *)self)->e[i].f[9]=0; ((Self *)self)->e[i].f[10]=0; ((Self *)self)->e[i].f[11]=0;
-    ((Self *)self)->e[i].f[12]=0; ((Self *)self)->e[i].f[13]=0; ((Self *)self)->e[i].f[14]=0; ((Self *)self)->e[i].f[15]=0;
-    ((Self *)self)->e[i].f[16]=0; ((Self *)self)->e[i].f[17]=0; ((Self *)self)->e[i].f[18]=0; ((Self *)self)->e[i].f[19]=0;
-    ((Self *)self)->e[i].f[20]=0; ((Self *)self)->e[i].f[21]=0; ((Self *)self)->e[i].f[22]=0; ((Self *)self)->e[i].f[23]=0;
-    ((Self *)self)->e[i].f[24]=0; ((Self *)self)->e[i].f[25]=0; ((Self *)self)->e[i].f[26]=0; ((Self *)self)->e[i].f[27]=0;
-    ((Self *)self)->e[i].f[28]=0; ((Self *)self)->e[i].f[29]=0; ((Self *)self)->e[i].f[30]=0; ((Self *)self)->e[i].f[31]=0;
+    ((Self *)self)->e[i].init();
 }
 *(u32 *)(self+0x414)=0;
 *(u32 *)(self+0x418)=0;
@@ -18486,36 +18519,46 @@ void *fn_800E86A4(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_800E8714(void *arg0,s32 arg1) {
-void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
-s32 fn_800E7FB4(s32,void *);
-void *String_Init(void *,char *,void *);
-extern char lbl_802723E8[];
+#pragma push
+#pragma optimization_level 3
+void fn_800E8714(void *arg0, s32 arg1) {
+    void fn_800E3040(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    s32 fn_800E7FB4(s32, void *);
+    void *String_Init(void *, char *, void *);
+    extern char lbl_802723E8[];
+    extern const f32 lbl_80369F70;
 #pragma cplusplus on
-class Window {
-public:
-u8 pad[0x40];
-virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
-virtual void v4(); virtual void v5();
-virtual void draw(s32,s32,void *,s32,s32,f32);
-};
-String name;
-s32 scratch, item, owner;
-s32 mode=0, dx=0, dy=0;
-if(M2C_FIELD(arg0,u8 *,0x71)){mode=1;dy=2;dx=2;}
-((Window*)arg0)->draw(M2C_FIELD(arg0,s32 *,0x48)+(M2C_FIELD(arg0,s32 *,0x68)+dx),M2C_FIELD(arg0,s32 *,0x4C)+(M2C_FIELD(arg0,s32 *,0x6C)+dy),(u8*)arg0+0xAC,1,255,16.0f);
-owner=*(s32*)arg0;
-String_Init(&name,lbl_802723E8,&scratch);
-item=fn_800E7FB4(owner,&name);
-String_Destroy(&name,-1);
-if(M2C_FIELD(arg0,u8 *,0x9C)){
-fn_800E3040(item,arg1,mode,M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x4C),M2C_FIELD(arg0,s32 *,0x44),M2C_FIELD(arg0,s32 *,0x60),M2C_FIELD(arg0,s32 *,0x64),0,255,255,255,0);
-}else{
-fn_800E3040(item,arg1,mode,M2C_FIELD(arg0,s32 *,0x48),M2C_FIELD(arg0,s32 *,0x4C),M2C_FIELD(arg0,s32 *,0x44),M2C_FIELD(arg0,s32 *,0x60),M2C_FIELD(arg0,s32 *,0x64),255,255,255,255,0);
-}
+    class Window {
+    public:
+        u8 pad[0x40];
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5();
+        virtual void draw(s32, s32, void *, s32, s32, f32);
+        void drawRel(s32 x, s32 y, void *s, s32 a, s32 b, f32 f) {
+            draw(M2C_FIELD(this, s32 *, 0x48) + x, M2C_FIELD(this, s32 *, 0x4C) + y, s, a, b, f);
+        }
+    };
+    String name;
+    s32 scratch, item, owner;
+    s32 dx = 0, dy = 0, mode = 0;
+    if (M2C_FIELD(arg0, u8 *, 0x71)) {
+        mode = 1;
+        dy = 2;
+        dx = 2;
+    }
+    ((Window *)arg0)->drawRel(M2C_FIELD(arg0, s32 *, 0x68) + dx, M2C_FIELD(arg0, s32 *, 0x6C) + dy, (u8 *)arg0 + 0xAC, 1, 255, lbl_80369F70);
+    owner = *(s32 *)arg0;
+    String_Init(&name, lbl_802723E8, &scratch);
+    item = fn_800E7FB4(owner, &name);
+    String_Destroy(&name, -1);
+    if (M2C_FIELD(arg0, u8 *, 0x9C)) {
+        fn_800E3040(item, arg1, mode, M2C_FIELD(arg0, s32 *, 0x48), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, s32 *, 0x60), M2C_FIELD(arg0, s32 *, 0x64), 0, 255, 255, 255, 0);
+    } else {
+        fn_800E3040(item, arg1, mode, M2C_FIELD(arg0, s32 *, 0x48), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, s32 *, 0x60), M2C_FIELD(arg0, s32 *, 0x64), 255, 255, 255, 255, 0);
+    }
 #pragma cplusplus reset
 }
-
+#pragma pop
 void fn_800E8888(void) {
     M2C_UNK Win_UpdatePos();
     Win_UpdatePos();
