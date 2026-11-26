@@ -3228,4 +3228,4 @@ extern f32 gFloatOne;
 #include "global.h"
 
 extern u16 gGameFlags;
-static inline s32 Ui_AddTextOffset(s32 position, s32 offset) { return position + offset; }
+
