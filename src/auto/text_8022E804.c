@@ -45,9 +45,9 @@ static inline s32 count_trailing_zero(f64 x) {
         s32 k;
         m = 16;
         xbits = 0xFFFFU;
+        lo = l[0] | 0x100000;
         n = 0;
         k = m;
-        lo = l[0] | 0x100000;
         j = 32;
         while (j != 0) {
             if ((lo & xbits) == 0) {
@@ -283,8 +283,7 @@ void fn_8022E804(void *dst, f64 x) {
     f64 sp30;
     f64 sp28;
     f64 sp20;
-    f64 sp10;
-    f64 sp8;
+    s32 exp;
     s8 sign;
     f64 f31;
     s32 hx;
@@ -297,8 +296,7 @@ void fn_8022E804(void *dst, f64 x) {
     s32 expadj;
     s8 ch;
 
-    sp8 = x;
-    sign = (s8)((*(u32 *)&sp8) >> 31);
+    sign = (s8)((*(u32 *)&x) >> 31);
     if (lbl_8036BDC8 == x) {
         *(s8 *)dst = sign;
         *(s16 *)((u8 *)dst + 2) = 0;
@@ -331,7 +329,7 @@ void fn_8022E804(void *dst, f64 x) {
         *(s8 *)dst = sign;
         *(s16 *)((u8 *)dst + 2) = 0;
         ((u8 *)dst)[4] = 1;
-        sp20 = sp8;
+        sp20 = x;
         hx = *(s32 *)&sp20;
         switch (hx & 0x7FF00000) {
         case 0x7FF00000:
@@ -360,11 +358,11 @@ void fn_8022E804(void *dst, f64 x) {
         return;
     }
     if ((s8)sign != 0) {
-        sp8 = -x;
+        x = -x;
     }
-    f31 = fn_802382EC((s32 *)&sp10, sp8);
+    f31 = fn_802382EC(&exp, x);
     expadj = 0x35 - count_trailing_zero(f31);
-    fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
+    fn_8022F1C0(sp38, exp - expadj);
     fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
     uq = fn_8022CC2C(sp30);
