@@ -993,36 +993,37 @@ case 1: ((s8*)arg0)[(u16)(i+0xAC)]=fn_80147B24(*(s32*)((u8*)item+4),((u8*)item)[
 }
 
 void fn_80040DA4(void *arg0) {
-void fn_8012391C(void *); void fn_800C1BDC(void); void fn_800C1984(void); void fn_8014716C(s32);
-void fn_80067460(s32); void fn_80066F64(void); void *Light_GetChannel(s32);
-void Light_CopyChannel(void *,void *); void fn_8006720C(void *);
-void fn_800675C8(s32); void *Fog_GetColor(void); void fn_80067480(void);
-extern u8 gMapBlendMode,lbl_80367294,lbl_80367295,lbl_8036729C,lbl_80367298,lbl_8036728C,lbl_8036728D,lbl_8036728E,lbl_80367290;
-extern f32 lbl_80368EF4;
-u8 mode,enabled;
-u8 *light; u8 *fog;
-fn_8012391C(M2C_FIELD(arg0,void **,0x30));
-switch(M2C_FIELD(arg0,u8 *,0x68)) {
-case 0:
-fn_800C1BDC(); fn_800C1984();
-enabled=1; mode=gMapBlendMode-1;
-if (((u32)((~(mode)|enabled)-((u32)(1-mode)>>1))>>31)==0) enabled=0;
-if(enabled) fn_8014716C(1); else fn_8014716C(0);
-break;
-}
-fn_80067460(0); fn_80066F64();
-light=Light_GetChannel(0);
-*(f32 *)(light+0x24)=(f32)(s8)lbl_80367294;
-*(f32 *)(light+0x28)=(f32)(s8)lbl_80367295;
-light[0]=(&lbl_8036729C)[0];light[1]=(&lbl_8036729C)[1];light[2]=(&lbl_8036729C)[2];
-light[4]=(&lbl_80367298)[0];light[5]=(&lbl_80367298)[1];light[6]=(&lbl_80367298)[2];
-light=Light_GetChannel(2); Light_CopyChannel(Light_GetChannel(0),light);
-fn_8006720C((u8 *)arg0+0x70);
-fn_800675C8(0); fog=Fog_GetColor(); fn_80067480();
-fog[0]=lbl_8036728C;
-*(f32 *)(fog+4)=5.0f*((f32)(s8)lbl_8036728D * M2C_FIELD(arg0,f32 *,0x6C));
-*(f32 *)(fog+8)=5.0f*((f32)(s8)lbl_8036728E * M2C_FIELD(arg0,f32 *,0x6C));
-fog[1]=(&lbl_80367290)[0];fog[2]=(&lbl_80367290)[1];fog[3]=(&lbl_80367290)[2];
+    void fn_8012391C(void *); void fn_800C1BDC(void); void fn_800C1984(void); void fn_8014716C(s32);
+    void fn_80067460(s32); void fn_80066F64(void); void *Light_GetChannel(s32);
+    void Light_CopyChannel(void *, void *); void fn_8006720C(void *);
+    void fn_800675C8(s32); void *Fog_GetColor(void); void fn_80067480(void);
+    extern u8 gMapBlendMode, lbl_80367294, lbl_80367295, lbl_8036729C, lbl_80367298, lbl_8036728C, lbl_8036728D, lbl_8036728E, lbl_80367290;
+    extern f32 lbl_80368EF4;
+    u8 enabled;
+    u8 *light;
+    u8 *fog;
+    fn_8012391C(M2C_FIELD(arg0, void **, 0x30));
+    switch (M2C_FIELD(arg0, u8 *, 0x68)) {
+    case 0:
+        fn_800C1BDC();
+        fn_800C1984();
+        enabled = (gMapBlendMode == 1 || gMapBlendMode == 2);
+        if (enabled) fn_8014716C(1); else fn_8014716C(0);
+        break;
+    }
+    fn_80067460(0); fn_80066F64();
+    light = Light_GetChannel(0);
+    *(f32 *)(light + 0x24) = (f32)(s8)lbl_80367294;
+    *(f32 *)(light + 0x28) = (f32)(s8)lbl_80367295;
+    light[0] = (&lbl_8036729C)[0]; light[1] = (&lbl_8036729C)[1]; light[2] = (&lbl_8036729C)[2];
+    light[4] = (&lbl_80367298)[0]; light[5] = (&lbl_80367298)[1]; light[6] = (&lbl_80367298)[2];
+    light = Light_GetChannel(2); Light_CopyChannel(Light_GetChannel(0), light);
+    fn_8006720C((u8 *)arg0 + 0x70);
+    fn_800675C8(0); fog = Fog_GetColor(); fn_80067480();
+    fog[0] = lbl_8036728C;
+    *(f32 *)(fog + 4) = 5.0f * ((f32)(s8)lbl_8036728D * M2C_FIELD(arg0, f32 *, 0x6C));
+    *(f32 *)(fog + 8) = 5.0f * ((f32)(s8)lbl_8036728E * M2C_FIELD(arg0, f32 *, 0x6C));
+    fog[1] = (&lbl_80367290)[0]; fog[2] = (&lbl_80367290)[1]; fog[3] = (&lbl_80367290)[2];
 }
 
 /* Decode map header flags at +0x64 into gMapBlendMode and gBattleSkyIndex. */
