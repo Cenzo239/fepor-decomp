@@ -4915,6 +4915,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma opt_common_subs on
 #pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
 extern "C" void fn_80142ED0(Menu42 *self, s32 arg) {
 void fn_8013F748(void *,s16 *,s16 *);
 void Prim2D_ScissorFromRect(void *);
@@ -4929,7 +4930,7 @@ void *fn_8003A064(void *); void *fn_8003A114(void *);
 void *Face_Create(void *,s32);
 void fn_8007B4D8(s16,s16,s32,void *);
 void Face_ClearSlot(void *);
-extern f32 lbl_8036A770,lbl_8036A75C,lbl_8036A760,lbl_8036A758,lbl_8036A748;
+extern const f32 lbl_8036A770,lbl_8036A75C,lbl_8036A760,lbl_8036A758,lbl_8036A748;
 extern f32 lbl_80367098[];
 extern u8 lbl_80276B3C[];
 extern void (Menu42::*lbl_802922FC)(s32);
@@ -4966,8 +4967,8 @@ Prim2D_SetCallback(Prim2D_ScissorFromRect, (s16 *)((u8 *)self + 0x114));
 Prim2D_AddZ(lbl_8036A770);
 Prim2D_PrepareTex();
 {
-f32 zero = lbl_8036A75C;
 f32 f = M2C_FIELD(self, f32 *, 0x84);
+f32 zero = lbl_8036A75C;
 scroll = (s16)f;
 if (f < zero) {
 f = M2C_FIELD(self, f32 *, 0x84) + lbl_8036A760;
