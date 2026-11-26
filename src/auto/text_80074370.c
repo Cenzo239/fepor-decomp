@@ -3304,15 +3304,18 @@ void fn_800791F0(s32 arg0, s32 arg1) {
 void fn_80079248(void*p){f32 Math_Ease(s32,f32,f32,f32,f32);*(s32*)((u8*)p+0x34)+=1;*(s8*)((u8*)*(void**)((u8*)p+0x30)+0x42)=Math_Ease(0,(f32)*(s32*)((u8*)p+0x3c),(f32)*(s32*)((u8*)p+0x40),(f32)*(s32*)((u8*)p+0x34),(f32)*(s32*)((u8*)p+0x38));}
 
 void fn_80079300(void *arg0, s8 arg1) {
-    extern s16 lbl_80312060[];
-    u8 *temp_r4;
+    struct Row {
+        s16 x;
+        s16 y;
+        u16 flags;
+    };
+    extern struct Row lbl_80312060[];
 
     if (arg1 >= 0) {
         M2C_FIELD(arg0, s8 *, 0x43) = arg1;
-        M2C_FIELD(arg0, f32 *, 0x38) = (f32) lbl_80312060[arg1 * 3];
-        temp_r4 = (u8 *)lbl_80312060 + arg1 * 6;
-        M2C_FIELD(arg0, f32 *, 0x3C) = (f32) *(s16 *)(temp_r4 + 2);
-        M2C_FIELD(arg0, u16 *, 0x46) = (u16) (M2C_FIELD(arg0, u16 *, 0x46) | (s16) *(u16 *)(temp_r4 + 4));
+        M2C_FIELD(arg0, f32 *, 0x38) = (f32) lbl_80312060[arg1].x;
+        M2C_FIELD(arg0, f32 *, 0x3C) = (f32) lbl_80312060[arg1].y;
+        M2C_FIELD(arg0, u16 *, 0x46) |= (s16) lbl_80312060[arg1].flags;
     }
 }
 
