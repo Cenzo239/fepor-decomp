@@ -83,6 +83,9 @@ void fn_80089490(void *);
 
 #pragma peephole on
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80089A28(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -109,12 +112,12 @@ void fn_80089A28(void *arg0) {
     extern f32 gOrthoFar;
     extern f32 gFadeQuadZ;
     extern f32 gViewportFar;
-    extern f32 lbl_803696B4;
+    extern const f32 lbl_803696B4;
     extern f32 lbl_803696CC;
     extern f32 lbl_803696D0;
-    extern f32 lbl_803696D4;
+    extern const f32 lbl_803696D4;
 
-    u8 sp8[0x60];
+    u8 sp8[0x40];
     s32 xv[4];
     f32 f31;
     f32 f30;
@@ -210,32 +213,28 @@ void fn_80089A28(void *arg0) {
     height = 0x1C0;
 
     GXBegin(0x98, 0, 4);
-    xv[0] = (s32)f31;
-    xv[1] = (s32)(lbl_803696D4 + f31);
-    xv[2] = (s32)f31;
-    xv[3] = (s32)(lbl_803696D4 + f31);
-    *(volatile s16 *)0xCC008000 = (s16)xv[0];
+    *(volatile s16 *)0xCC008000 = (s16)f31;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = (u8)a0;
-    *(volatile s16 *)0xCC008000 = (s16)xv[1];
+    *(volatile s16 *)0xCC008000 = (s16)(lbl_803696D4 + f31);
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = (u8)a1;
-    *(volatile s16 *)0xCC008000 = (s16)xv[2];
+    *(volatile s16 *)0xCC008000 = (s16)f31;
     *(volatile s16 *)0xCC008000 = (s16)height;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = (u8)a0;
-    *(volatile s16 *)0xCC008000 = (s16)xv[3];
+    *(volatile s16 *)0xCC008000 = (s16)(lbl_803696D4 + f31);
     *(volatile s16 *)0xCC008000 = (s16)height;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
@@ -244,32 +243,28 @@ void fn_80089A28(void *arg0) {
     *(volatile u8 *)0xCC008000 = (u8)a1;
 
     GXBegin(0x98, 0, 4);
-    xv[0] = (s32)f30;
-    xv[1] = (s32)(lbl_803696B4 + f30);
-    xv[2] = (s32)f30;
-    xv[3] = (s32)(lbl_803696B4 + f30);
-    *(volatile s16 *)0xCC008000 = (s16)xv[0];
+    *(volatile s16 *)0xCC008000 = (s16)f30;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0xFF;
-    *(volatile s16 *)0xCC008000 = (s16)xv[1];
+    *(volatile s16 *)0xCC008000 = (s16)(lbl_803696B4 + f30);
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0xFF;
-    *(volatile s16 *)0xCC008000 = (s16)xv[2];
+    *(volatile s16 *)0xCC008000 = (s16)f30;
     *(volatile s16 *)0xCC008000 = (s16)height;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0xFF;
-    *(volatile s16 *)0xCC008000 = (s16)xv[3];
+    *(volatile s16 *)0xCC008000 = (s16)(lbl_803696B4 + f30);
     *(volatile s16 *)0xCC008000 = (s16)height;
     *(volatile s16 *)0xCC008000 = (s16)zero;
     *(volatile u8 *)0xCC008000 = 0;
@@ -277,7 +272,7 @@ void fn_80089A28(void *arg0) {
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = 0xFF;
 }
-
+#pragma pop
 s32 fn_80089ED8(void) {
     extern void *lbl_803674E8;
     u16 temp_r0;
