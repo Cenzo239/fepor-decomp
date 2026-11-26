@@ -1875,6 +1875,11 @@ extern "C" void fn_801CEC68(void *arg0) {
 }
 #pragma cplusplus reset
 
+void Prim2D_Begin(void);
+void Prim2D_AddZ(f32);
+void Prim2D_PrepareTex(void);
+void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
+extern f32 lbl_8036B510;
 #pragma cplusplus on
 extern "C" void fn_801CF018(void *arg0) {
     struct Obj {
