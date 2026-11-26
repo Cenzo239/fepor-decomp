@@ -2609,7 +2609,6 @@ M2C_UNK fn_80063954(char *arg0) {
     return temp_r31;
 }
 
-#pragma inline_depth(8)
 static inline void *fn_800639B4_Body(void *res, char *p) {
     M2C_UNK fn_80063A14(M2C_UNK);
     if (!(FileCache_GetFlags(p) & 0x4000)) {
