@@ -14443,6 +14443,7 @@ struct Fn_80179DEC_Ctor {
         (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
     }
 };
+#pragma opt_lifetimes off
 extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
