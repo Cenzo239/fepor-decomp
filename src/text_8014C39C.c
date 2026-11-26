@@ -265,27 +265,38 @@ void BattleState_LoadMap(void *arg0, char *arg1) {
     DebugPrint((char *)lbl_80277060 + 0x15e, str);
 }
 
-void fn_8014C880(u8 *self,s32 index,u8 *kind,u8 *number){
-struct Table {u32 *entry[10];};
-extern struct Table lbl_80277038;
-struct Table table;
-u8 *text;
-u32 **entry;
-s32 i;
-text=self+index*12+0x20;
-*number=0;*kind=2;
-table=lbl_80277038;
-for(i=0,entry=table.entry;i<10;entry++,i++){
-if(!*entry)return;
-if(*(u32*)(text+3)==**entry){
-*kind=i;break;
-}}
-if((s32)text[7]=='_'){
-text+=8;*number=0;
-while((s8)*text != 0){*number*=10;{u8 c=*text++; *number=(u8)(c+*number)-'0';}}
+#pragma use_lmw_stmw on
+void fn_8014C880(u8 *self, s32 index, u8 *kind, u8 *number) {
+    struct Table {
+        u32 *entry[10];
+    };
+    extern struct Table lbl_80277038;
+    struct Table table;
+    u8 *text;
+    u32 **entry;
+    s32 i;
+    text = self + index * 12 + 0x20;
+    *number = 0;
+    *kind = 2;
+    table = lbl_80277038;
+    for (i = 0, entry = table.entry; i < 10; entry++, i++) {
+        if (!*entry)
+            return;
+        if (*(u32 *)(text + 3) == **entry) {
+            *kind = i;
+            break;
+        }
+    }
+    if ((s32)text[7] == '_') {
+        text += 8;
+        *number = 0;
+        while ((s8)*text != 0) {
+            *number *= 10;
+            *number += *text++ - '0';
+        }
+    }
 }
-}
-
+#pragma use_lmw_stmw reset
 void fn_8014CA20(void *arg0, s32 arg1) {
     void *base = arg0;
     Msg_Expand((u8 *)base + (arg1 + 2) * 0xC + 0x20, base);
