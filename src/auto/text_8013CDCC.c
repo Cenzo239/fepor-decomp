@@ -12,7 +12,7 @@ static inline void UiUpdate_Body(void *a, void *b) {
  if (p != 0) {
   UiUpdateObj *q = 0;
   if (flag != 0) q = *(UiUpdateObj **)((u8 *)*(void **)((u8 *)b + 0x38) + 8);
-  if (q != 0) q->v7();
+  q->v7();
  }
 }
 struct MenuCenteredLabel {
