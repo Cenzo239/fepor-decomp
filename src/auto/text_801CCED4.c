@@ -1930,7 +1930,7 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
-static inline void CursorBoxBody(u8 *arg0, u8 *arg1)
+static inline void CursorBoxBody(u8 *arg1, u8 *arg0)
 {
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
     struct Line {
@@ -1957,8 +1957,8 @@ static inline void CursorBoxBody(u8 *arg0, u8 *arg1)
         *(s16 *)(arg0 + 0x40) = (*(s16 *)(arg0 + 0x40) + target + 1) >> 1;
     }
 
-    x = *(s16 *)(arg0 + 0x3E);
     y = *(s16 *)(arg0 + 0x40);
+    x = *(s16 *)(arg0 + 0x3E);
 
     selected = *(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL;
     if (selected != arg0) return;
