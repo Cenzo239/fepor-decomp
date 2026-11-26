@@ -31585,51 +31585,65 @@ extern u8 gBattleMap[];
 s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
     void fn_800FE770(s32, s32, s32, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
-    extern u8 gBattleMap[];
+    extern struct {
+        s32 width;
+        s32 height;
+        s8 xMin;
+        s8 yMin;
+        s8 xMax;
+        s8 yMax;
+        u8 pad0C;
+        u8 unitMap[8][64][64];
+        u8 pad800D[0x181];
+        s16 costMap[3][64 * 64];
+        s8 fogMap[64][64];
+    } gBattleMap;
     extern u8 gUnits[];
 
-    void *costBase;
-    void *tile;
     s16 *cost;
     s16 best;
     s16 bestX;
     s16 bestY;
     s32 y;
     s32 x;
-    s32 row;
     u8 id;
-    void *unit;
+    u8 *unit;
+    u8 *tile;
 
     best = 0x7FFF;
-    fn_800FE770((s8)*(u8 *)((u8 *)arg1 + 0x19e), (s8)*(u8 *)((u8 *)arg1 + 0x19f), 0, 5,
-                *(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4));
+    fn_800FE770(((s8 *)arg1)[0x19E], ((s8 *)arg1)[0x19F], 0, 5, gBattleMap.width * gBattleMap.height);
 
-    for (y = (s8)gBattleMap[9]; y <= (s8)gBattleMap[0xB] - 1; y++) {
-        row = (s8)y << 6;
-        for (x = (s8)gBattleMap[8]; x <= (s8)gBattleMap[0xA] - 1; x++) {
-            costBase = gBattleMap + (((s8)x + row) * 2);
-            cost = (s16 *)((u8 *)costBase + 0x610E);
-            if (*(s16 *)((u8 *)costBase + 0x610E) >= 0) {
-                tile = gBattleMap + row + (s8)x;
-                if ((*(s8 *)((u8 *)tile + 0xE18E) == 0) &&
-                    (Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0)) {
-                    id = *(u8 *)((u8 *)tile + 0xD);
-                    if (id != 0) {
-                        if (id != 0) {
-                            unit = gUnits + (id - 1) * 0x280;
-                        } else {
-                            unit = NULL;
-                        }
-                        if (filter(unit) != 0) {
-                            if (*cost < best) {
-                                best = *cost;
-                                bestX = (s16)x;
-                                bestY = (s16)y;
-                            }
-                        }
-                    }
-                }
+    for (y = gBattleMap.yMin; y <= gBattleMap.yMax - 1; y++) {
+        for (x = gBattleMap.xMin; x <= gBattleMap.xMax - 1; x++) {
+            cost = (s16 *)((u8 *)&gBattleMap + (((s8)x + ((s8)y << 6)) * 2) + 0x610E);
+            if (*cost < 0) {
+                continue;
             }
+            tile = (u8 *)&gBattleMap + ((s8)y << 6) + (s8)x;
+            if (*(s8 *)(tile + 0xE18E) != 0) {
+                continue;
+            }
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
+                continue;
+            }
+            id = tile[0xD];
+            if (id == 0) {
+                continue;
+            }
+            if (id != 0) {
+                unit = gUnits + (id - 1) * 0x280;
+            } else {
+                unit = NULL;
+            }
+            if (filter(unit) == 0) {
+                continue;
+            }
+            if (*cost >= best) {
+                continue;
+            }
+            best = *cost;
+            bestX = (s16)x;
+            bestY = (s16)y;
         }
     }
 
@@ -31637,8 +31651,9 @@ s32 fn_80101D8C(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
         *outX = bestX;
         *outY = bestY;
         return 1;
+    } else {
+        return 0;
     }
-    return 0;
 }
 #pragma optimization_level reset
 s32 Ai_FindLowestCostUnitTile(u8 (*filter)(void *), void *arg1, s16 *outX, s16 *outY) {
