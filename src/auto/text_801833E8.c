@@ -8,6 +8,7 @@ static inline void Effect_SetCenteredMapPos(void *effect, f32 height, s32 x, s32
     void Effect_SetPos(void *, f32, f32, f32);
     Effect_SetPos(effect, lbl_8036AF80 + (f32)x, lbl_8036AF80 + (f32)y, height);
 }
+#pragma pop
 
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
@@ -5044,37 +5045,30 @@ void *Ui_GetColor(u8 arg0)
   f32 wave;
   u32 ticks;
   u32 millis;
-  u32 mod;
   switch (arg0)
   {
     case 19:
     case 34:
       ticks = OSGetTick();
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
-      mod = millis % 1500;
-      wave = (f32)mod / lbl_8036AD68;
+      wave = ((f32) (millis % 1500)) / 1500.0f;
       phase = wave;
-      wave = (f32) sin(lbl_8036AD6C * phase);
-      wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
-      wave = lbl_8036AD74 * wave;
-      color[0] = (u8) (lbl_8036AD70 + wave);
-      color[1] = (u8) (lbl_8036AD7C + wave);
-      color[2] = (u8) (lbl_8036AD70 + wave);
+      wave = 92.0f * ((0.5f * (f32) sin(6.2831855f * phase)) + 0.5f);
+      color[0] = (u8) (32.0f + wave);
+      color[1] = (u8) (160.0f + wave);
+      color[2] = (u8) (32.0f + wave);
       break;
 
     case 20:
       ticks = OSGetTick();
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
-      mod = millis % 1500;
-      phase = (f32)mod / lbl_8036AD68;
-      wave = (f32) sin(lbl_8036AD6C * phase);
-      wave = (lbl_8036AD78 * wave) + lbl_8036AD78;
-      wave = lbl_8036AD80 * wave;
-      color[0] = (u8) (lbl_8036AD70 + wave);
-      color[1] = (u8) (lbl_8036AD84 + wave);
-      color[2] = (u8) (lbl_8036AD70 + wave);
+      wave = ((f32) (millis % 1500)) / 1500.0f;
+      phase = wave;
+      wave = 132.0f * ((0.5f * (f32) sin(6.2831855f * phase)) + 0.5f);
+      color[0] = (u8) (32.0f + wave);
+      color[1] = (u8) (120.0f + wave);
+      color[2] = (u8) (32.0f + wave);
       break;
-
   }
 
   return color;
