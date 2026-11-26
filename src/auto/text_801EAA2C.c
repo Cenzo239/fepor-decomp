@@ -568,7 +568,8 @@ void fn_801EB23C(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_801EB294(void *arg0)
 {
     void Process_Goto(void *, s32);
@@ -1906,112 +1907,36 @@ void fn_801ED3D4(void) {
     gAramFreeList->addr = gAramBase;
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_801ED52C(s32 arg0) {
     s32 fn_80214184(s32);
     void fn_80215D2C(void);
     s32 fn_80215F38(void);
     extern u8 gAramSlotPool[];
     extern void *gAramUsedList;
-    extern void *gAramFreeList;
+    extern AramSlot *gAramFreeList;
     extern s32 gAramBase;
     extern s32 gAramHeapSize;
-    u8 *var_r4;
-    s32 ctr1;
-    s32 ctr2;
-    s32 temp_r0;
-    s32 var_r3;
-    void *zero_ptr;
-
-    if (fn_80215F38() == 0) {
-        fn_80215D2C();
+    AramSlot *p;
+    s32 i;
+    if (fn_80215F38() == 0) fn_80215D2C();
+    p = (AramSlot *)gAramSlotPool;
+    for (i = 0; i < 256; i++, p++) {
+        p->size = 0;
+        p->flags = 0;
     }
-    var_r4 = gAramSlotPool;
-    ctr1 = 0x20;
-    for (;;) {
-        *(s32 *)(var_r4 + 0x64) = 0;
-        *(u8 *)(var_r4 + 0x53) = 0;
-        *(s32 *)(var_r4 + 0xD0) = 0;
-        *(u8 *)(var_r4 + 0xBF) = 0;
-        *(s32 *)(var_r4 + 0x13C) = 0;
-        *(u8 *)(var_r4 + 0x12B) = 0;
-        *(s32 *)(var_r4 + 0x1A8) = 0;
-        *(u8 *)(var_r4 + 0x197) = 0;
-        *(s32 *)(var_r4 + 0x214) = 0;
-        *(u8 *)(var_r4 + 0x203) = 0;
-        *(s32 *)(var_r4 + 0x280) = 0;
-        *(u8 *)(var_r4 + 0x26F) = 0;
-        *(s32 *)(var_r4 + 0x2EC) = 0;
-        *(u8 *)(var_r4 + 0x2DB) = 0;
-        *(s32 *)(var_r4 + 0x358) = 0;
-        *(u8 *)(var_r4 + 0x347) = 0;
-        var_r4 += 0x360;
-        if (--ctr1 == 0) {
-            break;
-        }
-    }
-    if (arg0 == 0) {
-        arg0 = 0x400000;
-    }
+    if (arg0 == 0) arg0 = 0x400000;
     gAramBase = fn_80214184(arg0);
-    zero_ptr = 0;
-    var_r3 = 0xFF;
     gAramHeapSize = arg0;
-    gAramUsedList = zero_ptr;
-    var_r4 = gAramSlotPool;
-    ctr2 = 0x20;
-loop_7:
-    if (*(s32 *)(var_r4 + 0x64) == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    temp_r0 = *(s32 *)(var_r4 + 0xD0);
-    var_r4 += 0x6C;
-    if (temp_r0 == 0) {
-        goto found;
-    }
-    var_r3 -= 7;
-    var_r4 += 0x6C;
-    if (--ctr2 != 0) {
-        goto loop_7;
-    }
-    var_r4 = 0;
-found:
-    gAramFreeList = var_r4;
-    *(s32 *)((u8 *)var_r4 + 0x60) = 0;
-    *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
-    *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize;
-    *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
+    gAramUsedList = 0;
+    gAramFreeList = (AramSlot *)AramFindFreeSlot();
+    gAramFreeList->next = 0;
+    gAramFreeList->prev = 0;
+    gAramFreeList->size = gAramHeapSize;
+    gAramFreeList->addr = gAramBase;
 }
-
+#pragma pop
 AramSlot *AramCache_InsertFree(AramSlot *list, AramSlot *cell)
 {
   /* Insert cell into the ARAM free list by addr, coalescing adjacent free blocks. */
@@ -3573,6 +3498,7 @@ void GActor_LoadByName(void *arg0, char *name) {
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 void fn_801EFDC8(void *arg0) {
+    struct Buf32 { u8 data[0x20]; };
     void fn_800D58C0(void);
     void String_Init(String *, char *, void *);
     void fn_800C992C(String *, char *, s32);
@@ -3580,13 +3506,13 @@ void fn_801EFDC8(void *arg0) {
     void *Xml_ParseFile(void *, String *, String *);
     void String_Destroy(String *, s32);
     void Str_CopyPad(void *, char *, s32);
-    void fn_800C908C(void *, String *, void *);
+    void fn_800C908C(void *, String *, struct Buf32 *);
     u8 Xml_AdvanceChild(void *);
     void Xml_GetChildName(String *, void *);
     void String_Assign(String *, String *, s32, s32);
     void Xml_GetChildValue(char *, void *);
     void String_AssignCStr(String *, char *, s32);
-    s32 String_Find(String *, char *, s32, s32);
+    u32 String_Find(String *, char *, s32, s32);
     void String_Substr(String *, String *, s32, s32);
     void String_JoinCStr(String *, char *, String *);
     void fn_800C99A0(String *, String *, s32, s32);
@@ -3605,8 +3531,8 @@ void fn_801EFDC8(void *arg0) {
     extern char lbl_8027F25C[];
     extern u8 gBattle[];
 
-    char buf260[0x20];
-    char buf224[0x20];
+    struct Buf32 buf244;
+    struct Buf32 buf224;
     char buf204[0x20];
     char buf1E4[0x20];
     char buf1C4[0x20];
@@ -3644,12 +3570,15 @@ void fn_801EFDC8(void *arg0) {
     void **slot;
     char *s;
     char *strBase;
-    void *self;
-    void *base;
+    char *p204;
+    char *p184;
     void *file;
     void *file2;
-    char *p204;
-    s32 i, j, pos, count, kind;
+    void *base;
+    void *self;
+    void *entry;
+    s32 i, j, count, kind;
+    u32 pos;
     s8 flag0, flag1, flag2;
 
     self = arg0;
@@ -3676,14 +3605,9 @@ void fn_801EFDC8(void *arg0) {
     str160.data = NULL;
     str160.cap = 0;
     String_Init(&spEC, gGActorPathExt + 0x240, &sp24);
-    Str_CopyPad(buf224, gGActorPathExt + 0x246, 0x20);
-    {
-        u32 *d = (u32 *)buf260;
-        u32 *s2 = (u32 *)buf224;
-        d[0] = s2[0]; d[1] = s2[1]; d[2] = s2[2]; d[3] = s2[3];
-        d[4] = s2[4]; d[5] = s2[5]; d[6] = s2[6]; d[7] = s2[7];
-    }
-    fn_800C908C(file, &spEC, buf260);
+    Str_CopyPad(&buf224, gGActorPathExt + 0x246, 0x20);
+    buf244 = buf224;
+    fn_800C908C(file, &spEC, &buf244);
     String_Destroy(&spEC, -1);
 
     p204 = buf204;
@@ -3692,12 +3616,12 @@ void fn_801EFDC8(void *arg0) {
         Xml_GetChildName(&spE0, file);
         String_Assign(&str16c, &spE0, 0, -1);
         String_Destroy(&spE0, -1);
-        Xml_GetChildValue(p204, file);
+        Xml_GetChildValue(buf204, file);
         String_AssignCStr(&str160, p204, strlen(p204));
         pos = String_Find(&str160, strBase + 0x24E, 0, strlen(strBase + 0x24E));
-        if ((u32)(pos + 0x10000) != 0xFFFFFFFFU) {
+        if (pos != 0xFFFFFFFFU) {
             String_Substr(&spD4, &str160, 0, pos);
-            String_JoinCStr(&spC8, strBase + 0x222, &spD4);
+            String_JoinCStr(&spC8, gGActorPathExt + 0x222, &spD4);
             fn_800C99A0(&str16c, &spC8, 0, -1);
             String_Destroy(&spC8, -1);
             String_Destroy(&spD4, -1);
@@ -3705,7 +3629,8 @@ void fn_801EFDC8(void *arg0) {
             String_Assign(&str160, &spBC, 0, -1);
             String_Destroy(&spBC, -1);
         }
-        String_Assign((String *)((u8 *)StringMap_FindOrInsert((u8 *)self + 4, &str16c) + 0xC), &str160, 0, -1);
+        entry = StringMap_FindOrInsert((u8 *)self + 4, &str16c);
+        String_Assign((String *)((u8 *)entry + 0xC), &str160, 0, -1);
     }
     Xml_Destroy(file, 1);
 
@@ -3738,6 +3663,7 @@ void fn_801EFDC8(void *arg0) {
     mgrs[1] = gBattle + 0x2E0;
     slot = mgrs;
     base = self;
+    p184 = buf184;
     strBase = gGActorPathExt;
     for (i = 0; i < 2; i++) {
         s = *(char **)(*(void **)((u8 *)*slot + 0x188));
@@ -3765,7 +3691,7 @@ void fn_801EFDC8(void *arg0) {
             flag0 = 1;
             String_Concat(&sp98, &str13c, &str148);
             flag1 = 1;
-            String_ConcatCStr(&sp8C, &sp98, strBase + 0x250);
+            String_ConcatCStr(&sp8C, &sp98, gGActorPathExt + 0x250);
             flag2 = 1;
             file2 = Xml_ParseFile(file2, &sp8C, &spA4);
         }
@@ -3781,11 +3707,13 @@ void fn_801EFDC8(void *arg0) {
                 String_Destroy(&sp80, -1);
                 if (String_Compare(&str154, 0, str154.data, strBase + 0x255, strlen(strBase + 0x255)) == 0) {
                     Xml_GetChildValue(buf1E4, file2);
-                    String_AssignCStr(field44, buf1E4, strlen(buf1E4));
+                    s = buf1E4;
+                    String_AssignCStr(field44, s, strlen(s));
                 }
                 if (String_Compare(&str154, 0, str154.data, strBase + 0x25B, strlen(strBase + 0x25B)) == 0) {
                     Xml_GetChildValue(buf1C4, file2);
-                    String_AssignCStr((String *)((u8 *)base + 0x2C), buf1C4, strlen(buf1C4));
+                    s = buf1C4;
+                    String_AssignCStr((String *)((u8 *)base + 0x2C), s, strlen(s));
                     break;
                 }
             }
@@ -3802,7 +3730,7 @@ void fn_801EFDC8(void *arg0) {
             flag0 = 1;
             String_Concat(&sp68, &str13c, &str148);
             flag1 = 1;
-            String_ConcatCStr(&sp5C, &sp68, strBase + 0x263);
+            String_ConcatCStr(&sp5C, &sp68, gGActorPathExt + 0x263);
             flag2 = 1;
             file2 = Xml_ParseFile(file2, &sp5C, &sp74);
         }
@@ -3821,18 +3749,22 @@ void fn_801EFDC8(void *arg0) {
             String_Assign(&str130, &sp44, 0, -1);
             String_Destroy(&sp44, -1);
             Xml_GetChildValue(buf184, file2);
-            String_AssignCStr(&str124, buf184, strlen(buf184));
-            String_Assign((String *)((u8 *)StringMap_FindOrInsert(tree, &str130) + 0xC), &str124, 0, -1);
+            String_AssignCStr(&str124, p184, strlen(p184));
+            entry = StringMap_FindOrInsert(tree, &str130);
+            String_Assign((String *)((u8 *)entry + 0xC), &str124, 0, -1);
         }
         Xml_Destroy(file2, 1);
 
-        String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x8C)) + 0xC), 0, -1);
+        entry = StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x8C));
+        String_Assign(&str124, (String *)((u8 *)entry + 0xC), 0, -1);
         if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
-            String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x5C)) + 0xC), 0, -1);
+            entry = StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x5C));
+            String_Assign(&str124, (String *)((u8 *)entry + 0xC), 0, -1);
         }
         if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
             String_Init(&sp38, (char *)classNames[kind & 3], &sp10);
-            String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, &sp38) + 0xC), 0, -1);
+            entry = StringMap_FindOrInsert(tree, &sp38);
+            String_Assign(&str124, (String *)((u8 *)entry + 0xC), 0, -1);
             String_Destroy(&sp38, -1);
         }
         if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
@@ -4135,6 +4067,10 @@ extern "C" void fn_801F1110(void *arg0, void *arg1) {
         *(s16 *)((u32)p + 0x32) -= ((Obj *)arg0)->v20();
     }
 }
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma peephole off
 extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void Prim2D_SetAlpha(s32);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -4248,8 +4184,9 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     Prim2D_AddZ(lbl_8036B800);
     Prim2D_PrepareTex();
     str = ((Obj *)arg0)->v0();
-    tmp = (f32)Text_MeasureWidth(str, -1, lbl_8036B7C8);
-    f31 = ((f32)(s16)((Obj *)arg0)->v18() - tmp) * lbl_8036B7EC;
+    f31 = (f32)Text_MeasureWidth(str, -1, lbl_8036B7C8);
+    tmp = (f32)(s16)((Obj *)arg0)->v18() - f31;
+    f31 = tmp * lbl_8036B7EC;
     str = ((Obj *)arg0)->v0();
     Text_Draw((s32)f31, 0x18, 1, str);
     row = (struct Row *)arg1;
@@ -4258,14 +4195,11 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     fn_8000D864(0, Msg_Expand(lbl_8029A734[*(u8 *)((u8 *)item + 0x3A)]));
     strcpy(sp8, Msg_Expand(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();
-    f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - Text_MeasureWidth(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
-    Text_Draw((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
-    if (f30) {
-        /* keep y in f31-phys so text/half prefer f30 */
-    }
+    f30 = (f32)(((s16)(s32)arg1 - Text_MeasureWidth(sp8, -1, lbl_8036B7C8)) / 2);
+    Text_Draw((s32)f30, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
 }
-#pragma cplusplus reset
-#pragma peephole reset
+#pragma pop
+#pragma cplusplus off
 
 s32 fn_801F1644(void *arg0, s32 unused, s8 arg2) {
     u8 fn_800A8504(s32, s8);
