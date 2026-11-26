@@ -1122,10 +1122,14 @@ void fn_801FE5B0(void *arg0) {
 #pragma global_optimizer on
 #pragma opt_common_subs on
 #pragma opt_propagation on
-static inline s32 Ui_PanelOffset(s32 extent, s32 edge, s32 adjustment) {
-    return extent - edge + adjustment;
+static inline s32 Ui_PanelOffset(s32 distance, s32 adjustment) {
+    return distance + adjustment;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
+#pragma opt_common_subs on
 void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -1157,6 +1161,7 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     s32 y2;
     s32 right;
     s32 bottom;
+    u32 edge;
     s16 x;
     s16 y;
     s16 ww;
@@ -1216,9 +1221,10 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_SetTex(&t6, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    right = ww - t6.w;
+    edge = t6.w;
+    right = ww - edge;
     right += 4;
-    Prim2D_SetRect((f32)(x + right), (f32)(y + t9.h), (f32)t6.w, (f32)(hh - (t9.h + tA.h)));
+    Prim2D_SetRect((f32)(x + right), (f32)(y + t9.h), (f32)edge, (f32)(hh - (t9.h + tA.h)));
     Prim2D_EndPrim();
 
     Prim2D_Begin();
