@@ -1,18 +1,6 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-
-static inline void DbacCopyOut(f32 *out, void *src) {
-    s32 i;
-    for (i = 0; i < 1; i++) {
-        f32 z = *(f32 *)((u8 *)src + 0x68);
-        f32 y = *(f32 *)((u8 *)src + 0x64);
-        f32 x = *(f32 *)((u8 *)src + 0x60);
-        out[0] = x;
-        out[1] = y;
-        out[2] = z;
-    }
-}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -10587,9 +10575,6 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void fn_802029C4(void *, f32 *, f32 *);
     f32 mtx[3][4];
     f32 vec[3];
-    f32 x;
-    f32 y;
-    f32 z;
 
     vec[0] = lbl_80369E70;
     vec[1] = lbl_80369E70;
@@ -10599,12 +10584,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
     *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
-    z = *(f32 *)((u8 *)arg1 + 0x68);
-    y = *(f32 *)((u8 *)arg1 + 0x64);
-    x = *(f32 *)((u8 *)arg1 + 0x60);
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    DbacCopyOut(arg0, arg1);
 }
 #pragma use_lmw_stmw reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
