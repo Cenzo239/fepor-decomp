@@ -153,7 +153,7 @@ hi=HeapC55_End((void*)lbl_8036786C,(void**)&lbl_80367864);
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
 base=(HeapC55**)lbl_80320B88;table=base;HeapC55_PrintList(table);
 }
-static inline HeapC55 *HeapC55_Best(HeapC55 *p,u32 size) { HeapC55 *best=0; u32 limit=0x7fffffff; for(;p;p=p->next) { u32 n=p->size; if(n<=limit && n>=size) { limit=n; best=p; } } return best; }
+static inline HeapC55 *HeapC55_Best(HeapC55 *p,u32 size) { u32 n; HeapC55 *best=0; u32 limit=0x7fffffff; for(;p;p=p->next) { n=p->size; if(n<=limit && n>=size) { limit=n; best=p; } } return best; }
 static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
     return Allegiance_Compare(a, b) == 1;
