@@ -8897,8 +8897,8 @@ static inline void Init_801DE274(void *arg) {
     extern char gUiSeCues[];
     char buf[0x40];
     char *cues;
-    u8 *p = (u8 *)arg;
     s32 i;
+    u8 *p = (u8 *)arg;
 
     cues = gUiSeCues;
     i = 0;
@@ -8913,27 +8913,8 @@ static inline void Init_801DE274(void *arg) {
 }
 
 void fn_801DE274(void) {
-    s32 sprintf(char *, char *, ...);
-    s32 FileCache_GetFlags(char *);
-    void fn_8006EEFC(void *, void *);
-    extern char gUiSeCues[];
     extern u8 lbl_80299A78[];
-    char buf[0x40];
-    char *cues;
-    u8 *p;
-    s32 i;
-
-    p = lbl_80299A78;
-    cues = gUiSeCues;
-    i = 0;
-    do {
-        sprintf(buf, cues + 0x661, *(s32 *)(p + 4));
-        if (FileCache_GetFlags(buf) & 0x2000) {
-            fn_8006EEFC(p + 8, buf);
-        }
-        i += 1;
-        p += 0xC;
-    } while (i < 0x28);
+    Init_801DE274(lbl_80299A78);
 }
 #pragma opt_loop_invariants reset
 
