@@ -1,6 +1,21 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void Sound_InitDelayAt(u8 *record, s32 offset, s32 samples) {
+    void *fn_802637A4(s32);
+    void *memset(void *, s32, u32);
+    extern const f32 lbl_8036C3A8;
+    s32 length = samples + 2;
+    s32 size = length * 4;
+    *(s32 *)(record + offset + 8) = size;
+    *(void **)(record + offset + 12) = fn_802637A4(size);
+    memset(*(void **)(record + offset + 12), 0, size);
+    *(f32 *)(record + offset + 16) = lbl_8036C3A8;
+    *(s32 *)(record + offset + 4) = *(s32 *)(record + offset) - (length >> 1) * 4;
+    while (*(s32 *)(record + offset + 4) < 0)
+        *(s32 *)(record + offset + 4) += *(s32 *)(record + offset + 8);
+}
+
 static inline s32 Sound_ClampMix(s32 value) {
     if (value > 0x7FFFFF) return 0x7FFFFF;
     if (value < -0x7FFFFF) return -0x7FFFFF;
