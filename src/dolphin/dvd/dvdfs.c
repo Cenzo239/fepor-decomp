@@ -191,7 +191,7 @@ static inline BOOL DVDComparePathComponent(char *path, char *name) {
     s32 fn_80230CE0(s32);
     while (*name) {
         s32 first = fn_80230CE0(*name++);
-        if (first != fn_80230CE0(*path++)) return FALSE;
+        if (fn_80230CE0(*path++) != first) return FALSE;
     }
     if (*path == '/' || *path == 0) return TRUE;
     return FALSE;
@@ -228,6 +228,8 @@ FstStringStart_80368580=(char*)(fst+MaxEntryNum_80368584);
 }
 }
 
+#pragma push
+#pragma optimization_level 4
 u32 fn_8020C3E0(char *path) {
     extern u32 __DVDLongFileNameFlag;
     extern char lbl_8029CEE8[];
@@ -327,7 +329,7 @@ u32 fn_8020C3E0(char *path) {
         path++;
     }
 }
-
+#pragma pop
 s32 fn_8020C6D4(char *path, void *info) {
 BOOL DVDGetCurrentDir(char *, u32);
 void OSReport(char *, ...);
