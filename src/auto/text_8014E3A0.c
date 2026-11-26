@@ -7328,12 +7328,12 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     if (!lbl_803680D4) {
         a0.r = 0; a0.g = 0; a0.b = 0; a0.a = 0;
-        a1.r = 0; a1.g = 0; a1.b = 0; a1.a = 0;
-        a2.r = 0; a2.g = 0; a2.b = 0; a2.a = 0xFF;
-        a3.r = 0; a3.g = 0; a3.b = 0; a3.a = 0xFF;
         lbl_80330D38[0] = a0;
+        a1.r = 0; a1.g = 0; a1.b = 0; a1.a = 0;
         lbl_80330D38[1] = a1;
+        a2.r = 0; a2.g = 0; a2.b = 0; a2.a = 0xFF;
         lbl_80330D38[2] = a2;
+        a3.r = 0; a3.g = 0; a3.b = 0; a3.a = 0xFF;
         lbl_80330D38[3] = a3;
         lbl_803680D4 = 1;
     }
