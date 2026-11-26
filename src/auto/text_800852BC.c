@@ -683,45 +683,6 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     (void)lbl_80369440;
 }
 
-static inline void Ui_DrawTexQuad_80086C14(void *atlas, s32 id, f32 x, f32 y, f32 w, f32 h, u8 colorIdx, s32 alpha) {
-    void Prim2D_EmitQuad(void);
-    void Prim2D_SetColor(s32, s32, s32, s32);
-    void Prim2D_SetQuadMax(f32, f32, f32, f32);
-    void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void Prim2D_SetPrimParam(f32);
-    void Prim2D_EndPrim(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_BindTexture(void *, s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
-    void **fn_8006EDD8(void *, s32);
-    s32 *Ui_GetColor(u8);
-    extern f32 lbl_80369418;
-    s32 color = *Ui_GetColor(colorIdx);
-    u16 *tex = (u16 *)*fn_8006EDD8(atlas, id);
-    f32 th = (f32)tex[1];
-    f32 tw = (f32)tex[0];
-    Prim2D_Begin();
-    Prim2D_BindTexture(atlas, id, 0x11);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    Prim2D_SetPrimParam(lbl_80369418);
-    Prim2D_SetQuadMin(x, y, lbl_80369418, lbl_80369418);
-    Prim2D_SetQuadMax(x + w, y + h, th, tw);
-    Prim2D_SetColor(((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2], alpha);
-    Prim2D_EmitQuad();
-    Prim2D_EndPrim();
-}
-
-static inline void Ui_DrawCorner_80086C14(void *atlas, s32 id, f32 x, f32 y) {
-    void **fn_8006EDD8(void *, s32);
-    extern f32 lbl_80369430;
-    u16 *tex = (u16 *)*fn_8006EDD8(atlas, id);
-    f32 sw = (f32)tex[0] * lbl_80369430;
-    f32 sh = (f32)tex[1] * lbl_80369430;
-    Ui_DrawTexQuad_80086C14(atlas, id, x, y, sh, sw, 1, 0xFF);
-}
-
 void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
