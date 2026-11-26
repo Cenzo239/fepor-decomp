@@ -1,5 +1,6 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+const f64 lbl_8036B670 = 4503816931318784.0;
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
