@@ -18,6 +18,11 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
+static inline void TevWriteCommand(volatile PPCWGPipe *fifo, u8 command, u32 value) {
+    fifo->u8 = command;
+    fifo->u32 = value;
+}
+
 static inline void TevStoreColor(u32 *ptr, s32 stage, u32 value, u16 *gx) {
     GXWGFifo.u32 = value;
     ptr[0x130 / 4 + stage] = value;
@@ -419,11 +424,11 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
   cmd = 0x61;
   gx = __GXData;
   GXWGFifo.u8 = cmd;
-  ptr = (u32 *) __GXData + arg0;
+  ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;
-  ptr[0x130 / 4] = value;
+  ptr[(0x130 / 4) + arg0] = value;
   gx[1] = 0;
 }
 #pragma opt_strength_reduction reset
