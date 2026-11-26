@@ -465,6 +465,9 @@ void *fn_80019F3C(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80019FC4(void)
 {
     u8 *Hash_Lookup(char *);
@@ -483,176 +486,165 @@ void fn_80019FC4(void)
     extern s32 lbl_803671E0;
     extern void *lbl_803671E4;
 
-    u8 *data;
-    u8 *entry;
-    u32 value;
     s32 count;
+    u8 *ptr;
+    void *rec;
+    u8 *data;
     s32 i;
-    u8 *records;
+    u32 v;
+    void *dest;
 
     data = Hash_Lookup(lbl_80268510 + 0x6A);
-
-    count = (data[0] << 24) +
-            (data[1] << 16) +
-            (data[2] << 8) +
-            data[3];
-
+    count = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
+    ptr = data + 4;
     lbl_803671E0 = count;
+    lbl_803671E4 = fn_8022C414(Heap_AllocRaw(count * 0x48 + 0x10), fn_8001A5D0, 0, 0x48, count);
+    rec = lbl_803671E4;
 
-    data += 4;
+    i = 0;
+    while (i < lbl_803671E0) {
+        *(u16 *)((u8 *)rec + 0xE) = i + 1;
 
-    records = fn_8022C414(
-        Heap_AllocRaw(count * 0x48 + 0x10),
-        fn_8001A5D0,
-        0,
-        0x48,
-        count
-    );
-
-    lbl_803671E4 = records;
-
-    for (i = 0; i < *(s32 *)&lbl_803671E0; i++) {
-        entry = records + i * 0x48;
-
-        *(u16 *)(entry + 0xE) = i + 1;
-
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        *(u32 *)(entry + 0x0) = value;
+        *(u32 *)((u8 *)rec + 0x0) = v;
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        *(u32 *)(entry + 0x4) = value;
+        *(u32 *)((u8 *)rec + 0x4) = v;
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        *(u32 *)(entry + 0x8) = value;
+        *(u32 *)((u8 *)rec + 0x8) = v;
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        entry[0x12] = fn_8001EB44(value);
+        ((u8 *)rec)[0x12] = fn_8001EB44(v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        entry[0x13] = fn_8001EB44(value);
+        ((u8 *)rec)[0x13] = fn_8001EB44(v);
 
-        entry[0x14] = Item_GetKindFromIid(*(u32 *)(entry + 0x0));
+        ((u8 *)rec)[0x14] = Item_GetKindFromIid(*(u32 *)((u8 *)rec + 0x0));
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        entry[0x16] = fn_8001CE78(value);
+        ((u8 *)rec)[0x16] = fn_8001CE78(v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        fn_8001DE1C(entry, value);
+        fn_8001DE1C(rec, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        dest = (u8 *)rec + 0xC;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        Unit_OrMSfxFlag(entry + 0xC, value);
+        Unit_OrMSfxFlag(dest, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        dest = (u8 *)rec + 0xC;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        Unit_OrMSfxFlag(entry + 0xC, value);
+        Unit_OrMSfxFlag(dest, v);
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        *(u32 *)(entry + 0x40) = value;
+        *(u32 *)((u8 *)rec + 0x40) = v;
 
-        if (data == 0) { value = 0; } else {
-            value = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
-            data += 4;
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+            ptr += 4;
         }
-        *(u32 *)(entry + 0x44) = value;
+        *(u32 *)((u8 *)rec + 0x44) = v;
 
-        *(u16 *)(entry + 0x10) = (data[0] << 8) + data[1];
+        *(u16 *)((u8 *)rec + 0x10) = (ptr[0] << 8) + ptr[1];
 
-        entry[0x18] = data[2];
-        entry[0x19] = data[3];
-        entry[0x1A] = data[4];
-        entry[0x1B] = data[5];
-        entry[0x1C] = data[6];
-        entry[0x1D] = data[7];
-        entry[0x1E] = data[8];
-        entry[0x15] = data[9];
-        entry[0x17] = data[10];
-        entry[0x1F] = data[11];
-        entry[0x20] = data[12];
-        entry[0x21] = data[13];
-        entry[0x22] = data[14];
-        entry[0x23] = data[15];
-        entry[0x24] = data[16];
-        entry[0x25] = data[17];
-        entry[0x26] = data[18];
-        entry[0x27] = data[19];
-        entry[0x28] = data[20];
-        entry[0x2A] = data[21];
-        entry[0x2B] = data[22];
-        entry[0x2C] = data[23];
-        entry[0x2D] = data[24];
-        entry[0x2E] = data[25];
-        entry[0x2F] = data[26];
-        entry[0x30] = data[27];
-        entry[0x31] = data[28];
-        entry[0x29] = data[29];
+        ((u8 *)rec)[0x18] = ptr[2];
+        ((u8 *)rec)[0x19] = ptr[3];
+        ((u8 *)rec)[0x1A] = ptr[4];
+        ((u8 *)rec)[0x1B] = ptr[5];
+        ((u8 *)rec)[0x1C] = ptr[6];
+        ((u8 *)rec)[0x1D] = ptr[7];
+        ((u8 *)rec)[0x1E] = ptr[8];
+        ((u8 *)rec)[0x15] = ptr[9];
+        ((u8 *)rec)[0x17] = ptr[10];
+        ((u8 *)rec)[0x1F] = ptr[11];
+        ((u8 *)rec)[0x20] = ptr[12];
+        ((u8 *)rec)[0x21] = ptr[13];
+        ((u8 *)rec)[0x22] = ptr[14];
+        ((u8 *)rec)[0x23] = ptr[15];
+        ((u8 *)rec)[0x24] = ptr[16];
+        ((u8 *)rec)[0x25] = ptr[17];
+        ((u8 *)rec)[0x26] = ptr[18];
+        ((u8 *)rec)[0x27] = ptr[19];
+        ((u8 *)rec)[0x28] = ptr[20];
+        ((u8 *)rec)[0x2A] = ptr[21];
+        ((u8 *)rec)[0x2B] = ptr[22];
+        ((u8 *)rec)[0x2C] = ptr[23];
+        ((u8 *)rec)[0x2D] = ptr[24];
+        ((u8 *)rec)[0x2E] = ptr[25];
+        ((u8 *)rec)[0x2F] = ptr[26];
+        ((u8 *)rec)[0x30] = ptr[27];
+        ((u8 *)rec)[0x31] = ptr[28];
+        ((u8 *)rec)[0x29] = ptr[29];
 
-        fn_8001E71C(entry);
+        fn_8001E71C(rec);
+        fn_8000D3EC(*(u32 *)((u8 *)rec + 0x0), rec);
 
-        fn_8000D3EC(*(u32 *)(entry + 0x0), entry);
-
-        data = (u8 *)(((u32)(data + 0x21)) & ~3);
+        rec = (u8 *)rec + 0x48;
+        ptr = (u8 *)(((u32)(ptr + 0x21)) & ~3);
+        i++;
     }
 }
-
+#pragma pop
 void fn_8001A5D0(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0xC) = 0;
     M2C_FIELD(arg0, s32 *, 0x3C) = 0;
