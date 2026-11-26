@@ -3177,7 +3177,6 @@ s32 fn_8014716C(u8 arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-#pragma opt_propagation off
 extern "C" void fn_80147188(s32 arg0) {
     void fn_800B3194(void);
     extern f32 gMsPerFrame;
@@ -3207,6 +3206,7 @@ extern "C" void fn_80147188(s32 arg0) {
     s32 arg_save;
     Entry *base;
     s32 ext;
+    s32 idx;
     s8 *str;
     s8 *a;
     s8 *b;
@@ -3295,7 +3295,7 @@ extern "C" void fn_80147188(s32 arg0) {
         } while (i < 0x1c);
     }
 
-    ext = 0;
+    idx = 0;
     str = (s8 *)((u8 *)lbl_80276BC8 + 0x8a);
     do {
         if (p->flags & 1) {
@@ -3305,7 +3305,7 @@ extern "C" void fn_80147188(s32 arg0) {
         loop:
             ca = *(s8 *)((u8 *)a);
             if (ca == 0) {
-                temp = (s8)ext;
+                temp = (s8)idx;
                 if (temp >= 0) {
                     temp = temp * 0x30;
                     {
@@ -3331,9 +3331,9 @@ extern "C" void fn_80147188(s32 arg0) {
             }
         }
     next:
-        ext += 1;
+        idx += 1;
         p += 1;
-    } while (ext < 0x1c);
+    } while (idx < 0x1c);
 
     fn_800B3194();
 }
