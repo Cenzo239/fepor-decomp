@@ -40,11 +40,11 @@ static inline s32 count_trailing_zero_p(const f64 *px) {
         return n;
     } else {
         u32 hi = l[0] | 0x100000;
+        s32 n2;
         s32 j;
-        u32 xbits;
         s32 m;
         s32 k;
-        s32 n2;
+        u32 xbits;
         m = 16;
         xbits = 0xFFFFU;
         n2 = 0;
