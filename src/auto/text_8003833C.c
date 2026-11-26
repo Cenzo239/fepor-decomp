@@ -1,5 +1,25 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline void *Unit_GetActiveItemPtr_Inline(void *arg0) {
+    s8 index;
+    if ((((u8)M2C_FIELD(arg0, u8 *, 0x1D1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1CC) != 0) index = 0;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x1D9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1D4) != 0) index = 1;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x1E1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1DC) != 0) index = 2;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x1E9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1E4) != 0) index = 3;
+    else index = -1;
+    if (index < 0) return NULL;
+    return (u8 *)arg0 + (index * 8) + 0x1CC;
+}
+static inline void *Unit_GetActiveEquipPtr_Inline(void *arg0) {
+    s8 index;
+    if ((((u8)M2C_FIELD(arg0, u8 *, 0x1F1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1EC) != 0) index = 0;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x1F9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1F4) != 0) index = 1;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x201) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1FC) != 0) index = 2;
+    else if ((((u8)M2C_FIELD(arg0, u8 *, 0x209) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x204) != 0) index = 3;
+    else index = -1;
+    if (index < 0) return NULL;
+    return (u8 *)arg0 + (index * 8) + 0x1EC;
+}
 static inline s8 Unit_39408BaseStat(void *self, s32 index) {
     void *class = *(void **)((u8 *)self + 0x18C);
     void *unit = *(void **)((u8 *)self + 0x188);
@@ -630,6 +650,7 @@ found2:
 }
 #pragma push
 #pragma optimization_level 4
+#pragma opt_strength_reduction off
 s8 fn_80038A48(void *arg0) {
     u8 fn_80105BC0(void *, s32);
     void *fn_8001CB64(void *);
