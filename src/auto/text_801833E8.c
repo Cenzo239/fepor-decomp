@@ -1782,25 +1782,25 @@ void fn_801863F8(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80186648(u8 *arg0) {
-f32 Math_EaseOutPow(s32,f32,f32,f32,f32);
-void Unit_SetWorldXY(void*,f32,f32);
-void Model_SetAlpha(void*,u8);
-void Process_ClearFunc(void*);
-extern f32 lbl_8036ACF8,lbl_8036ACEC,lbl_8036AD00,lbl_8036ACF4,gHalf;
-f32 inc=lbl_8036ACF8;
-f32 cur=*(f32*)(arg0+0x4C);
-void *model;
-s32 alpha;
-f32 x,y;
-f32 start=lbl_8036ACEC, end=lbl_8036AD00, duration=lbl_8036ACF4;
-*(f32*)(arg0+0x4C)=cur+inc;
-model=(u8*)*(void**)(arg0+0x34)+0x1C;
-alpha=(s32)Math_EaseOutPow(2,start,end,duration,*(f32*)(arg0+0x4C));
-x=Math_EaseOutPow(2,*(f32*)(arg0+0x38),gHalf+(f32)*(s32*)(arg0+0x44),lbl_8036ACF4,*(f32*)(arg0+0x4C));
-y=Math_EaseOutPow(2,*(f32*)(arg0+0x3C),gHalf+(f32)*(s32*)(arg0+0x48),lbl_8036ACF4,*(f32*)(arg0+0x4C));
-Unit_SetWorldXY(*(void**)(arg0+0x34),x,y);
-Model_SetAlpha(model,(u8)alpha);
-if(*(f32*)(arg0+0x4C)==lbl_8036ACF4)Process_ClearFunc(arg0);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    void Unit_SetWorldXY(void *, f32, f32);
+    void Model_SetAlpha(void *, u8);
+    void Process_ClearFunc(void *);
+    extern const f32 lbl_8036ACF8, lbl_8036ACEC, lbl_8036AD00, lbl_8036ACF4, gHalf;
+    void *model;
+    s32 alpha;
+    f32 x, y;
+
+    *(f32 *)(arg0 + 0x4C) += lbl_8036ACF8;
+    model = (u8 *)*(void **)(arg0 + 0x34) + 0x1C;
+    alpha = (s32)Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036AD00, lbl_8036ACF4, *(f32 *)(arg0 + 0x4C));
+    x = Math_EaseOutPow(2, *(f32 *)(arg0 + 0x38), gHalf + (f32)*(s32 *)(arg0 + 0x44), lbl_8036ACF4, *(f32 *)(arg0 + 0x4C));
+    y = Math_EaseOutPow(2, *(f32 *)(arg0 + 0x3C), gHalf + (f32)*(s32 *)(arg0 + 0x48), lbl_8036ACF4, *(f32 *)(arg0 + 0x4C));
+    Unit_SetWorldXY(*(void **)(arg0 + 0x34), x, y);
+    Model_SetAlpha(model, (u8)alpha);
+    if (*(f32 *)(arg0 + 0x4C) == lbl_8036ACF4) {
+        Process_ClearFunc(arg0);
+    }
 }
 #pragma global_optimizer on
 void fn_80186780(void *proc) {
