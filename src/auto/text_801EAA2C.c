@@ -4402,11 +4402,4 @@ extern void* lbl_8027EE08;
 #include "common.h"
 
 s32 gUiInputFlags;
-static inline void *AramCache_FindUnusedSlot(void *pool) {
-    u8 *p = pool;
-    s32 i;
-    for (i = 255; i >= 0; i--, p += 0x6C) {
-        if (*(s32 *)(p + 0x64) == 0) return p;
-    }
-    return 0;
-}
+
