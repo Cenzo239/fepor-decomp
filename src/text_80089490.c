@@ -93,7 +93,7 @@ static inline s32 IsSpecialAddr(u32 v, u8 *base, s32 off) {
 
 #pragma opt_common_subs off
 void fn_80089490(void *arg0) {
-    extern u32 lbl_80289950[];
+    extern u32 lbl_80289950[18];
     void fn_8000A408(void *);
     u8 *tbl = (u8 *)lbl_80289950;
     u8 *p;
