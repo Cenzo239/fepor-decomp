@@ -176,26 +176,33 @@ void fn_80202640(void) {
     M2C_ERROR(/* unknown instruction: ps_merge01 $f11, $f10, $f9 */);
 }
 
-void fn_802026E4(register f32 *out, register f32 *eye, register f32 *up, register f32 *target) {
-void fn_802031E8(f32*,f32*);
-void fn_80203290(f32*,f32*,f32*);
-f32 back[3],right[3],vertical[3];
-back[0]=eye[0]-target[0];
-back[1]=eye[1]-target[1];
-back[2]=eye[2]-target[2];
-fn_802031E8(back,back);
-fn_80203290(up,back,right);
-fn_802031E8(right,right);
-fn_80203290(back,right,vertical);
-out[0]=right[0];out[1]=right[1];out[2]=right[2];
-out[3]=-((f32)(eye[2]*right[2])+((f32)(eye[0]*right[0])+(f32)(eye[1]*right[1])));
-out[4]=vertical[0];out[5]=vertical[1];out[6]=vertical[2];
-out[7]=-((f32)(eye[2]*vertical[2])+((f32)(eye[0]*vertical[0])+(f32)(eye[1]*vertical[1])));
-out[8]=back[0];out[9]=back[1];out[10]=back[2];
-out[11]=-((f32)(eye[2]*back[2])+((f32)(eye[0]*back[0])+(f32)(eye[1]*back[1])));
+#pragma push
+#pragma peephole off
+void fn_802026E4(f32 *out, f32 *eye, f32 *up, f32 *target) {
+    void fn_802031E8(f32 *, f32 *);
+    void fn_80203290(f32 *, f32 *, f32 *);
+    f32 back[3], right[3], vertical[3];
+    back[0] = eye[0] - target[0];
+    back[1] = eye[1] - target[1];
+    back[2] = eye[2] - target[2];
+    fn_802031E8(back, back);
+    fn_80203290(up, back, right);
+    fn_802031E8(right, right);
+    fn_80203290(back, right, vertical);
+    out[0] = right[0];
+    out[1] = right[1];
+    out[2] = right[2];
+    out[3] = -((f32)(eye[2] * right[2]) + ((f32)(eye[0] * right[0]) + (f32)(eye[1] * right[1])));
+    out[4] = vertical[0];
+    out[5] = vertical[1];
+    out[6] = vertical[2];
+    out[7] = -((f32)(eye[2] * vertical[2]) + ((f32)(eye[0] * vertical[0]) + (f32)(eye[1] * vertical[1])));
+    out[8] = back[0];
+    out[9] = back[1];
+    out[10] = back[2];
+    out[11] = -((f32)(eye[2] * back[2]) + ((f32)(eye[0] * back[0]) + (f32)(eye[1] * back[1])));
 }
-
-#pragma scheduling off
+#pragma pop
 void fn_80202870(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     f32 fn_80238A0C(f32);
     extern f32 lbl_8036BC38, lbl_8036BC3C, lbl_8036BC40, lbl_8036BC4C, lbl_8036BC50;
