@@ -32132,6 +32132,13 @@ s32 TagWin_OnCancel(void) {
 }
 
 #pragma global_optimizer off
+static inline void TagWin_PrintSelection(char *first, char *second, s32 id) {
+    void fn_80232138(char *, ...);
+    extern char TagWin_str[];
+
+    fn_80232138(TagWin_str, first, second, id);
+}
+
 s32 TagWin_OnOk(void) {
     void *fn_800DC3C0(void *);
     void String_Init(String *, char *, void *);
@@ -32141,11 +32148,9 @@ s32 TagWin_OnOk(void) {
     void fn_800D758C(void *);
     void fn_800DA530(String *, String *, s32);
     void fn_800DA368(void);
-    void fn_80232138(char *, ...);
     extern void *lbl_80367918;
     extern void *lbl_803678A8;
     extern u16 *gWin3;
-    extern char TagWin_str[];
 
     String s34;
     String s28;
@@ -32161,7 +32166,7 @@ s32 TagWin_OnOk(void) {
     inner = *(void **)((u8 *)gWin3 + 0x424);
     id = *(s32 *)((u8 *)inner + 0xB4);
     fn_800D758C(lbl_80367918);
-    fn_80232138(TagWin_str, String_CStr(&s34), String_CStr(&s28), id);
+    TagWin_PrintSelection(String_CStr(&s34), String_CStr(&s28), id);
     String_Copy(&s1C, &s34);
     String_Copy(&s10, &s28);
     fn_800DA530(&s1C, &s10, id);
