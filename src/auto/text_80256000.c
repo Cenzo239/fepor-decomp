@@ -4645,8 +4645,8 @@ static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan
     s32 t;
     f32 ft;
     u8 *list;
-    u8 *cmd;
     u8 n;
+    u8 *cmd;
     u16 w;
 
     handle = *(s32 *)(voice + 0x38);
