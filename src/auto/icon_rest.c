@@ -7,9 +7,10 @@ typedef struct {
 } ItemFlagBits;
 
 static inline s32 Convoy_FindEmpty_inline(void *convoy) {
+    u8 *p = (u8 *)convoy;
     s32 i;
-    for (i = 0; i < 200; i++) {
-        if (*(void **)((u8 *)convoy + i * 8) == NULL) {
+    for (i = 0; i < 200; i++, p += 8) {
+        if (*(void **)p == NULL) {
             return i;
         }
     }
@@ -618,57 +619,44 @@ void fn_800C3468(void *arg0) {
 
     DebugPrint(lbl_80270088 + 0x25, count);
 }
-#pragma use_lmw_stmw reset
+#pragma dont_inline off
 void Convoy_AddItem(void *convoy, void *item) {
     void Item_Copy(void *, void *);
     void Item_Clear(void *);
     s32 fn_8001CA2C(void *);
-    s32 i;
+    s32 slot;
     u8 ok;
 
     ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
-    for (i = 0; i < 200; i++) {
-        if (*(void **)((u8 *)convoy + i * 8) == NULL) {
-            goto found1;
-        }
-    }
-    i = -1;
-found1:
-    if (i < 0) {
+    slot = Convoy_FindEmpty_inline(convoy);
+    if (slot < 0) {
         ok = 0;
     } else {
-        Item_Copy((u8 *)convoy + i * 8, item);
+        Item_Copy((u8 *)convoy + slot * 8, item);
         ok = 1;
     }
     if (!ok) {
         s32 minVal = 999999;
         s32 minIdx = -1;
-        u8 *p = (u8 *)convoy;
+        s32 i;
         for (i = 0; i < 200; i++) {
-            if (*(void **)p != NULL) {
-                s32 val = fn_8001CA2C(p);
+            if (*(void **)((u8 *)convoy + i * 8) != NULL) {
+                s32 val = fn_8001CA2C((u8 *)convoy + i * 8);
                 if (minVal > val) {
                     minVal = val;
                     minIdx = i;
                 }
             }
-            p += 8;
         }
         Item_Clear((u8 *)convoy + minIdx * 8);
         ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
-        for (i = 0; i < 200; i++) {
-            if (*(void **)((u8 *)convoy + i * 8) == NULL) {
-                goto found2;
-            }
-        }
-        i = -1;
-    found2:
-        if (i >= 0) {
-            Item_Copy((u8 *)convoy + i * 8, item);
+        slot = Convoy_FindEmpty_inline(convoy);
+        if (slot >= 0) {
+            Item_Copy((u8 *)convoy + slot * 8, item);
         }
     }
 }
-
+#pragma dont_inline reset
 void fn_800C3864(s32 arg0, s32 arg1) {
     M2C_UNK Item_Clear(s32);
     Item_Clear(arg0 + (arg1 * 8));
