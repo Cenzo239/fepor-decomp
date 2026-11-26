@@ -14383,7 +14383,6 @@ void *fn_80179D70(void *arg0, s16 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80142060(void *);
 #pragma global_optimizer on
 struct Fn_80179DEC_Ctor {
     static inline void *callBase(void *p) {
