@@ -221,6 +221,8 @@ void FallingParticle_CreateEx(u32 parent, f32 scale)
     fn_8006EEFC(&gFallingParticleTex, lbl_80281EC8 + 0x23);
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_801FCA78(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -234,7 +236,7 @@ void fn_801FCA78(void *arg0) {
     extern s32 gFallingParticleTex;
     extern f32 gFloatZero;
     extern f32 gFloatOne;
-    extern const f32 lbl_8036BB08;
+    
     extern f32 lbl_8036BAE4;
     extern f32 lbl_8036BB04;
     f32 z;
@@ -265,7 +267,7 @@ void fn_801FCA78(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(gFloatZero, gFloatZero, lbl_8036BAE4, lbl_8036BB04);
-        Prim2D_SetUvRect((f32)*(s16 *)(entry + 0x30) * lbl_8036BB08, (f32)*(s16 *)(entry + 0x32) * lbl_8036BB08, lbl_8036BAE4, lbl_8036BB04);
+        Prim2D_SetUvRect((f32)*(s16 *)(entry + 0x30) / 8.0f, (f32)*(s16 *)(entry + 0x32) / 8.0f, lbl_8036BAE4, lbl_8036BB04);
         Prim2D_SetColor(*(u8 *)(entry + 0x36), *(u8 *)(entry + 0x37), *(u8 *)(entry + 0x38), *(u8 *)(entry + 0x39));
         Prim2D_EndPrim();
         *(s16 *)(entry + 0x30) = (*(s16 *)(entry + 0x30) + (s8)*(u8 *)(entry + 0x34)) & 0xFFF;
@@ -273,7 +275,7 @@ void fn_801FCA78(void *arg0) {
         entry += 0xC;
     }
 }
-
+#pragma pop
 void fn_801FCC44(void) {
     M2C_UNK FileCache_ReleaseSlot(M2C_UNK *);
     extern M2C_UNK gFallingParticleTex;
@@ -1515,13 +1517,12 @@ extern "C" void fn_801FF50C(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 Text_MeasureHeight(s32, f32);
     void Prim2D_AddPrim(s32);
-    void Prim2D_SetPos(f32, f32);
-    void Prim2D_SetTextScale(s32, f32);
+    void Prim2D_SetPos(f32,f32);
+    void Prim2D_SetTextScale(s32,f32);
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     void Prim2D_SetAlphaByte(s32);
     extern f32 lbl_8036BB88, lbl_8036BB58, lbl_8036BB8C, lbl_8036BB90;
-    extern f64 lbl_8036BB70;
 #pragma cplusplus on
     struct Widget {
         u8 pad[4];
@@ -1551,8 +1552,8 @@ extern "C" void fn_801FF50C(void *arg0) {
         virtual void v23() = 0;
         virtual void v24() = 0;
         virtual void v25() = 0;
-        virtual void v26() = 0;
         virtual void v27() = 0;
+        virtual void v26() = 0;
         virtual void v28() = 0;
         virtual void v29() = 0;
         virtual void v30() = 0;
@@ -1571,23 +1572,23 @@ extern "C" void fn_801FF50C(void *arg0) {
     s32 top;
     s32 offset;
     s32 height;
-    s32 width;
-    Widget *self = (Widget *)arg0;
+    unsigned long width;
+    Widget *self=(Widget *)arg0;
     self->v39();
     if (fn_8013CD90(self)) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036BB88);
-        Prim2D_SetTex(0, 19);
+        Prim2D_SetTex(0,19);
         Prim2D_PrepareTex();
-        width = self->v18();
-        x = (f32)((width - Text_MeasureWidth(fn_8013CD90(self), -1, lbl_8036BB58)) >> 1);
-        height = self->v38();
-        offset = (height - Text_MeasureHeight(-1, lbl_8036BB58)) >> 1;
-        top = self->v36();
-        y = (f32)((top - self->v38()) + offset);
+        register width=self->v18();
+        x=(f32)((width - Text_MeasureWidth(fn_8013CD90(self),-1,lbl_8036BB58)) >> 1);
+        height=self->v38();
+        offset=(height-Text_MeasureHeight(-1,lbl_8036BB58)) >> 1;
+        top=self->v36();
+        y=(f32)((top-self->v38())+offset);
         Prim2D_AddPrim(6);
-        Prim2D_SetPos(x, y);
-        Prim2D_SetTextScale(1, lbl_8036BB8C);
+        Prim2D_SetPos(x,y);
+        Prim2D_SetTextScale(1,lbl_8036BB8C);
         Prim2D_SetText(fn_8013CD90(self));
         Prim2D_EndPrim();
     }
