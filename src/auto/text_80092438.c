@@ -72,6 +72,11 @@ static inline u8 Unit_CheckItemMask(void *unit, void *item, u64 flags, u64 mask)
     if (!fn_800940B0(unit, item)) return 0;
     return 1;
 }
+static inline u8 Unit_CheckItemFlag8(u64 flags) {
+    if (!(flags & 8)) return 0;
+    if (flags & ((u64)0x100 << 32)) return 0;
+    return 1;
+}
 #pragma scheduling reset
 
 /* If status 0x24-0x28 is set and the matching wpnExp slot is 0, set that slot to 1. */
@@ -976,32 +981,8 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
         return 1;
     }
     if (flags & 5) {
-        t.ok = 1;
-        if (flags & 1) {
-            if (flags2 & 1) {
-                t.ok = Unit_CheckItemState(arg0, flags);
-                if (t.ok == z) {
-                    t.result = z;
-                } else if (fn_800940B0(arg0, arg1) == z) {
-                    t.result = z;
-                } else {
-                    t.result = 1;
-                }
-            }
-        } else {
-            if (flags & 4) {
-                if (flags2 & 4) {
-                    t.ok = Unit_CheckItemState(arg0, flags);
-                    if (t.ok == z) {
-                        t.result = z;
-                    } else if (fn_800940B0(arg0, arg1) == z) {
-                        t.result = z;
-                    } else {
-                        t.result = 1;
-                    }
-                }
-            }
-        }
+        if (flags & 1) t.result = Unit_CheckItemMask(arg0, arg1, flags, 1);
+        else if (flags & 4) t.result = Unit_CheckItemMask(arg0, arg1, flags, 4);
         return t.result;
     }
     if (flags & 0x18) {
