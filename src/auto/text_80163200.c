@@ -14384,6 +14384,7 @@ void *fn_80179D70(void *arg0, s16 arg1) {
 
 #pragma cplusplus on
 #pragma global_optimizer off
+#pragma opt_common_subs off
 extern "C" void *fn_80179DEC(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
