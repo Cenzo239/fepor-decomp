@@ -1669,24 +1669,21 @@ s8 Unit_GetMagAtk(void *arg0) {
 }
 #pragma global_optimizer on
 s8 Unit_GetCarryWtLimit(void *arg0) {
-    s8 fn_80039408();
-    s8 lim;
-    void *p188;
-    void *p18c;
+    s8 fn_80039408(void *);
+    s32 p;
     s8 var_r31;
     s8 var_r3;
 
-    p18c = *(void **)((u8 *)arg0 + 0x18C);
-    p188 = *(void **)((u8 *)arg0 + 0x188);
-    lim = *(u8 *)((u8 *)p18c + 0x4D);
-    var_r31 = *(u8 *)((u8 *)p18c + 0x45) + (*(u8 *)((u8 *)arg0 + 0x1AC) + *(u8 *)((u8 *)p188 + 0x1E));
-    if (var_r31 > lim) {
-        var_r31 = lim;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1E) + *(u8 *)(p + 0x45)) + *(u8 *)((u8 *)arg0 + 0x1AC);
+    p = *(s8 *)(p + 0x4D);
+    if (var_r31 > (s8)p) {
+        var_r31 = (s8)p;
     }
     if (var_r31 < 0) {
         var_r31 = 0;
     }
-    var_r3 = var_r31 + fn_80039408();
+    var_r3 = var_r31 + fn_80039408(arg0);
     if (var_r3 < 0) {
         var_r3 = 0;
     }
