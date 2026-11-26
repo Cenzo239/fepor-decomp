@@ -20,10 +20,11 @@ static inline u8 CamPath_FindInitialKey(s32 count, u8 **list, f32 time) {
  return 0;
 }
 static inline u8 CamPath_FindZeroKey(s32 count, u8 **list) {
- s32 i; u8 *keys; extern f32 lbl_80368C88;
+ s32 i; u8 *keys; f32 time; extern f32 lbl_80368C88;
  if (count == 0) return 0;
  keys = *list;
- for (i=count; i>0; --i,keys+=0x14) if ((f32)*(s32 *)(keys+4)==lbl_80368C88) return 1;
+ time = lbl_80368C88;
+ for (i=count; i>0; --i,keys+=0x14) if ((f32)*(s32 *)(keys+4)==time) return 1;
  return 0;
 }
 static inline u8 CamPath_HasInitialKey(s32 count, u8 *keys) {
@@ -654,6 +655,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
@@ -661,8 +663,6 @@ void fn_800180F4(void *arg0, u8 arg1) {
     extern s32 gActiveCam;
     extern u8 gActiveCamIndex;
     extern u8 lbl_802CA434[];
-    extern f32 lbl_80368CA0;
-    extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
     extern f64 lbl_80368C98;
 
@@ -743,7 +743,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
         *(f32 *)(dst + 0xc) = tf;
         *(f32 *)(dst + 0x18) = tf;
     } else {
-        found = CamPath_FindInitialKey(c46, (u8 **)((u8 *)arg0 + 0x4c), lbl_80368C88);
+        found = CamPath_FindZeroKey(c46, (u8 **)((u8 *)arg0 + 0x4c));
         if ((u8)found == 0) {
 
             idx = *((u8 *)arg0 + 0x44);
