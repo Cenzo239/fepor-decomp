@@ -1721,19 +1721,3 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     return dx;
 }
 #pragma optimization_level 3
-#pragma push
-#pragma cplusplus on
-class ScrollBarDrawInterface {
-public:
- unsigned char data[0x2C];
- virtual unsigned char slot0();
- virtual unsigned char slot1();
- virtual unsigned char slot2();
- virtual unsigned char slot3();
- virtual unsigned char slot4();
- virtual unsigned char slot5();
- virtual unsigned char slot6();
- virtual unsigned char slot7();
-};
-#pragma pop
-#pragma cplusplus off
