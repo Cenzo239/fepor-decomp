@@ -71,13 +71,16 @@ u8 *p = s->cursor;
 s->cursor = p + 1;
 return *p;
 }
+static inline u16 ThpReadWordState(ThpDecodeState *s) {
+u8 *p = s->cursor;
+u16 value = p[0] << 8;
+value |= p[1];
+s->cursor = p + 2;
+return value;
+}
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *lbl_80368950;
-u8 *p = lbl_80368950->cursor;
-u16 value = p[1];
-value |= p[0] << 8;
-lbl_80368950->cursor = p + 2;
-return value;
+return ThpReadWordState(lbl_80368950);
 }
 
   static inline u8 SynthAllocateStream(void) {
