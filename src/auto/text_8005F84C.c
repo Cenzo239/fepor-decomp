@@ -7373,7 +7373,9 @@ void fn_8006CF60(void *arg0)
   __mtspr(917, 0x00070007);
 }
 
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_8006D378(s32 arg0) {
     u32 fn_80060638(void *);
     u32 fn_80060520(void *);
@@ -7391,7 +7393,6 @@ void fn_8006D378(s32 arg0) {
     u8 *mesh;
     u8 *entry;
     s32 i;
-    s32 parity;
     mesh = *(u8 **)((u8 *)fn_80060638((void *)arg0) + 0x48);
     tex = fn_80060520((void *)arg0);
     entry = *(u8 **)mesh;
@@ -7411,12 +7412,12 @@ void fn_8006D378(s32 arg0) {
         entry += 0x18;
     }
     fn_8006D828(vtx, entry, entry + 8, entry[0x13]);
-    parity = i & 1;
-    arg0 = 0xE0000000 + (parity << 12);
+    arg0 = 0xE0000000 + ((i & 1) << 12);
     fn_8006D54C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x14));
     fn_8006D66C(0, arg0 + entry[0x12], arg0 + entry[0x12], *(u16 *)(entry + 0x16));
     fn_8020536C(tex + *(s32 *)(entry + 0xc), arg0, (s32)(*(u16 *)(entry + 0x10) + 0x1f) / 32);
 }
+#pragma pop
 #pragma optimization_level reset
 asm void fn_8006D52C(register u32 type) {
     nofralloc
