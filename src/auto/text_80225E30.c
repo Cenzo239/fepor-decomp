@@ -837,9 +837,9 @@ void usr_put_initialize(void) {
 #pragma global_optimizer off
 s32 fn_80226E24(u8 *arg0) {
 s32 result=0;
-s32 ch;
+s8 ch;
 while(result==0 && (ch=(s8)*arg0++)!=0) {
-result=TRKReportChar_80226E24(ch);
+result=TRKReportCharTerminated_80226E24(ch,0);
 }
 return result;
 }
