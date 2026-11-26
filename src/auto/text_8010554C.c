@@ -1278,7 +1278,8 @@ u8 fn_80106BCC(void *name) {
     u32 cursor;
     u32 header;
     u32 data;
-    u8 counts[2];
+    struct Ret c;
+    struct Ret d;
     u8 applied;
     void *next;
     void *unit;
@@ -1296,19 +1297,19 @@ u8 fn_80106BCC(void *name) {
     if (!header) {
         data = 0;
     } else {
-        counts[0] = Bin_ReadU8(&header);
+        c.v = Bin_ReadU8(&header);
         switch (Bin_ReadU8(&header)) {
         case 2:
-            counts[1] = 0;
+            d.v = 0;
             break;
         case 3:
             Bin_ReadU8(&header);
-            counts[1] = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             Bin_ReadU32(&header);
             break;
         case 4:
             Bin_ReadU8(&header);
-            counts[1] = Bin_ReadU8(&header);
+            d.v = Bin_ReadU8(&header);
             break;
         }
         header = (header + 3) & ~3;
@@ -1324,13 +1325,13 @@ u8 fn_80106BCC(void *name) {
         next = *(void **)((u8 *)unit + 0x184);
         if (*(u32 *)((u8 *)unit + 0x1A0) & 0x400000) {
             entry = (u8 *)cursor;
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, counts[1]);
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, d.v);
             Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
             fn_80050C90(unit);
             Unit_SetModelAlpha(unit, 0);
             applied += 1;
             entry[0x3C] = *(u8 *)((u8 *)unit + 0x198);
-            if (applied == counts[0]) {
+            if (applied == c.v) {
                 break;
             }
         }
@@ -1339,12 +1340,12 @@ u8 fn_80106BCC(void *name) {
 
     {
         u8 j = applied;
-        u8 lim = counts[0];
+        u8 lim = c.v;
         register u8 zero = 0;
         while (j < lim) {
             entry = (u8 *)cursor;
             entry[0x3C] = zero;
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, counts[1]);
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, d.v);
             j += 1;
         }
     }
@@ -1531,8 +1532,8 @@ void fn_801070FC(void *name) {
 #pragma global_optimizer reset
 }
 
-#pragma use_lmw_stmw on
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
 void fn_80107294(void *name, s32 arg1) {
     u32 Hash_Lookup(void *);
     s32 Bin_ReadU8(u32 *);
@@ -1548,7 +1549,7 @@ void fn_80107294(void *name, s32 arg1) {
     u32 sp8;
     u8 sp10[0x68];
     s32 faction;
-    s32 lists;
+    struct Ret lists;
     struct Ret c;
     s32 faction_u8;
     s32 count;
@@ -1605,7 +1606,7 @@ void fn_80107294(void *name, s32 arg1) {
     }
     spC = var_r0;
     if ((u32)var_r0 != 0) {
-        lists = (s32)&gUnitLists;
+        lists.v = (s32)&gUnitLists;
         faction_u8 = (u8)faction;
         count = c.v;
         count_u8 = (u8)count;
@@ -1619,7 +1620,7 @@ void fn_80107294(void *name, s32 arg1) {
         }
         unit = Unit_FindByName(*(void **)sp10);
         if (unit == NULL) {
-            count = *(s32 *)(lists + 0x30);
+            count = *(s32 *)(lists.v + 0x30);
             var_r0 = sp10[9];
             if (var_r0 == 4) {
                 goto after_sw;
@@ -1648,8 +1649,7 @@ void fn_80107294(void *name, s32 arg1) {
         }
     }
 }
-#pragma optimization_level reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 extern void *Unit_FindByName(char *);
 #pragma optimization_level 3
@@ -3455,9 +3455,15 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
 #pragma opt_dead_assignments off
 struct UiPackedColor {
     u32 value;
+    UiPackedColor() {}
     UiPackedColor(u32 v) : value(v) {}
+    UiPackedColor(u8 r, u8 g, u8 b, u8 a) : value((r << 24) + ((g << 16) + (b << 8) + a)) {}
     UiPackedColor(const UiPackedColor &v) : value(v.value) {}
 };
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma opt_propagation off
 extern "C" void fn_8010A330(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, s32);
@@ -3465,16 +3471,8 @@ extern "C" void fn_8010A330(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
-    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(UiPackedColor, UiPackedColor, UiPackedColor, UiPackedColor);
     void Prim2D_EndPrim(void);
-    u32 sp24;
-    u32 sp20;
-    u32 sp1C;
-    u32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
     u8 *p;
 
     p = (u8 *)arg0;
@@ -3489,15 +3487,11 @@ extern "C" void fn_8010A330(void *arg0) {
         (f32)*(s16 *)(p + 0xE)
     );
     Prim2D_EmitQuad();
-    sp18 = (p[0x10] << 24) + ((p[0x11] << 16) + (p[0x12] << 8) + p[0x13]);
-    sp1C = (p[0x14] << 24) + ((p[0x15] << 16) + (p[0x16] << 8) + p[0x17]);
-    sp20 = (p[0x18] << 24) + ((p[0x19] << 16) + (p[0x1A] << 8) + p[0x1B]);
-    sp24 = (p[0x1C] << 24) + ((p[0x1D] << 16) + (p[0x1E] << 8) + p[0x1F]);
-    sp8 = sp24;
-    spC = sp20;
-    sp10 = sp1C;
-    sp14 = sp18;
-    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
+    UiPackedColor sp18 = (p[0x10] << 24) + ((p[0x11] << 16) + (p[0x12] << 8) + p[0x13]);
+    UiPackedColor sp1C = (p[0x14] << 24) + ((p[0x15] << 16) + (p[0x16] << 8) + p[0x17]);
+    UiPackedColor sp20 = (p[0x18] << 24) + ((p[0x19] << 16) + (p[0x1A] << 8) + p[0x1B]);
+    UiPackedColor sp24 = (p[0x1C] << 24) + ((p[0x1D] << 16) + (p[0x1E] << 8) + p[0x1F]);
+    Prim2D_SetCornerColors(sp18, sp1C, sp20, sp24);
     Prim2D_EndPrim();
 }
 #pragma pop
