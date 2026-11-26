@@ -1,6 +1,18 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void UnitInfo_DrawIcons(u8 *unit, s32 y, void *drawer) {
+    s32 fn_8010418C(void *, s32);
+    s32 fn_8010424C(void *);
+    void Ui_DrawIcon(void *, s32, s32, s32);
+    s32 i = 0;
+    s32 x = 0x48;
+    while (i < fn_8010424C(unit + 0x1A4)) {
+        Ui_DrawIcon(drawer, x, y, fn_8010418C(unit + 0x1A4, i));
+        x += 0x1A;
+        i++;
+    }
+}
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -98,6 +110,8 @@ void Ui_DrawCenteredMsgLines(s32 x, s32 y, u32 msg1, u32 msg2, u32 msg3) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw off
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
@@ -110,7 +124,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     s8 Unit_GetMaxHp(void *);
     s8 fn_8003A1E0(void *);
     void *Msg_Expand(char *);
-    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    void fn_8001003C(s32,s32,s32,s32,s32,f32,f32,const char *,...);
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
@@ -142,12 +156,12 @@ void UnitInfo_DrawPair(u8 *arg0) {
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
-    fn_8001003C(0x10, 0x2C, 1, 1, 0, gBattleHelpStrings + 0xFA, p, (s8)b, lbl_80369754, gZeroF, (s8)t);
+    fn_8001003C(0x10, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0xFA, p, (s8)b, (s8)t);
     t = fn_8003A1E0(self);
     p = Msg_Expand(gBattleHelpStrings + 0x126);
-    fn_8001003C(0x86, 0x2C, 1, 1, 0, gBattleHelpStrings + 0x117, p, (s8)t, lbl_80369754, gZeroF);
+    fn_8001003C(0x86, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
-    fn_8001003C(0x10, 0x48, 1, 1, 0, gBattleHelpStrings + 0x12D, p, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0x48, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
     b = 0;
     t = (s32)gUiIconDrawer;
     x = 0x48;
@@ -166,12 +180,12 @@ void UnitInfo_DrawPair(u8 *arg0) {
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
-    fn_8001003C(0x10, 0x90, 1, 1, 0, gBattleHelpStrings + 0xFA, p, (s8)b, lbl_80369754, gZeroF, (s8)t);
+    fn_8001003C(0x10, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0xFA, p, (s8)b, (s8)t);
     t = fn_8003A1E0(self);
     p = Msg_Expand(gBattleHelpStrings + 0x126);
-    fn_8001003C(0x86, 0x90, 1, 1, 0, gBattleHelpStrings + 0x117, p, (s8)t, lbl_80369754, gZeroF);
+    fn_8001003C(0x86, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
-    fn_8001003C(0x10, 0xAC, 1, 1, 0, gBattleHelpStrings + 0x12D, p, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0xAC, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
     b = 0;
     t = (s32)gUiIconDrawer;
     x = 0x48;
@@ -181,4 +195,4 @@ void UnitInfo_DrawPair(u8 *arg0) {
         b += 1;
     }
 }
-
+#pragma pop
