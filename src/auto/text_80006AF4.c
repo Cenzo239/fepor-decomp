@@ -2248,163 +2248,49 @@ void fn_8000A440(s32 arg0, s32 arg1) {
     gProcessOpcodeTables[arg0] = arg1;
 }
 
-void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
-{
-  extern u8 lbl_80267CB0[];
-  struct 
-  {
-    u32 siblingColor;
-    u32 siblingDraw;
-    u32 siblingExtra;
-    u32 childColor;
-    u32 childDraw;
-    u32 childExtra;
-    u32 currentExtra;
-    u32 currentDraw;
-    u32 currentColor;
-  } colors;
-  u8 *current;
-  u8 *node;
-  int new_var;
-  s8 *text;
-  s32 depth;
-  current = (u8 *) arg0;
-  node = *((u8 **) (current + 0x24));
-  if (node != ((unsigned long) 0))
-  {
-    if ((*((u8 **) (node + 0x24))) != 0)
-    {
-      fn_8000A454(*((void **) (node + 0x24)), arg1, arg2);
+void fn_8000A454(Process *node, s32 *arg1, s32 *arg2) {
+    struct ColorA454 {
+        u32 rgba;
+    };
+    void fn_8014BB58(s32, s32, struct ColorA454, void *);
+    extern u8 lbl_80267CB0[];
+    struct ColorA454 color;
+    s32 depth;
+
+    if (node->next != 0) {
+        fn_8000A454(node->next, arg1, arg2);
     }
+
     depth = *arg1;
-    colors.childColor = 0xFFFFFFFF;
+    *(u32 *)&color = 0xFFFFFFFF;
     *arg1 = depth + 1;
-    if (node[0x2C] & 2)
-    {
-      colors.childColor = 0xFFC0C0FF;
+    if (node->flags & 2) {
+        *(u32 *)&color = 0xFFC0C0FF;
     }
-    if (node[0x2D] != 0)
-    {
-      colors.childColor = 0xA0A0A0FF;
+    if (node->lock_cnt != 0) {
+        *(u32 *)&color = 0xA0A0A0FF;
     }
-    if (node[0x2C] & 4)
-    {
-      if ((*((u8 **) (node + 0x18)))[0x2D] != 0)
-      {
-        colors.childColor = 0xA0A0A0FF;
-      }
+    if ((node->flags & 4) && node->parent->lock_cnt != 0) {
+        *(u32 *)&color = 0xA0A0A0FF;
     }
-    if (node[0x2E] != 0)
-    {
-      colors.childColor = 0x4040FFFF;
-    }
-    colors.childDraw = colors.childColor;
-    fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.childDraw, *((void **) (node + 0x14)));
-    if ((*((u32 *) (node + 0x0C))) != 0)
-    {
-      text = *((s8 **) (node + 0x14));
-      text = text;
-      while ((*(text++)) != 0)
-      {
-      }
-
-      colors.childExtra = colors.childColor;
-      fn_8014BB58(((short) (((*arg1) + (text - text)) + 1)) * 8, (*arg2) * 8, &colors.childExtra, lbl_80267CB0 + 0x76);
-      (*arg2)++;
-    }
-    if ((*((u8 **) (node + 0x1C))) != 0)
-    {
-      fn_8000A454(*((void **) (node + 0x1C)), arg1, arg2);
-    }
-    (*arg1)--;
-  }
-  depth = *arg1;
-  colors.currentColor = 0xFFFFFFFF;
-  *arg1 = depth + 1;
-  if (current[0x2C] & 2)
-  {
-    colors.currentColor = 0xFFC0C0FF;
-  }
-  if (current[0x2D] != 0)
-  {
-    colors.currentColor = 0xA0A0A0FF;
-  }
-  if (current[0x2C] & 4)
-  {
-    if ((*((u8 **) (current + 0x18)))[0x2D] != 0)
-    {
-      colors.currentColor = 0xA0A0A0FF;
-    }
-  }
-  if (current[0x2E] != 0)
-  {
-    colors.currentColor = 0x4040FFFF;
-  }
-  colors.currentDraw = colors.currentColor;
-  fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.currentDraw, *((void **) (current + 0x14)));
-  if ((*((u32 *) (current + 0x0C))) != 0)
-  {
-    text = *((s8 **) (current + 0x14));
-    text = text;
-    while ((*(text++)) != 0)
-    {
+    if (node->pause != 0) {
+        *(u32 *)&color = 0x4040FFFF;
     }
 
-    colors.currentExtra = colors.currentColor;
-    fn_8014BB58((((*arg1) + (text - text)) + 1) * 8, (*arg2) * 8, &colors.currentExtra, lbl_80267CB0 + 0x76);
+    fn_8014BB58((*arg1) * 8, (*arg2) * 8, color, node->name);
+    if (node->post != 0) {
+        s8 *start = (s8 *)node->name;
+        s8 *p = start;
+        while (*p++ != 0) {
+        }
+        fn_8014BB58(((p - start) + 1 + (*arg1)) * 8, (*arg2) * 8, color, lbl_80267CB0 + 0x76);
+    }
     (*arg2)++;
-  }
-  node = *((u8 **) (current + 0x1C));
-  if (node != 0)
-  {
-    if ((*((u8 **) (node + 0x24))) != 0)
-    {
-      fn_8000A454(*((void **) (node + 0x24)), arg1, arg2);
-    }
-    depth = *arg1;
-    colors.siblingColor = 0xFFFFFFFF;
-    *arg1 = depth + 1;
-    if (node[0x2C] & 2)
-    {
-      colors.siblingColor = 0xFFC0C0FF;
-    }
-    if (node[0x2D] != 0)
-    {
-      colors.siblingColor = 0xA0A0A0FF;
-    }
-    if (node[0x2C] & 4)
-    {
-      if ((*((u8 **) (node + 0x18)))[0x2D] != 0)
-      {
-        colors.siblingColor = 0xA0A0A0FF;
-      }
-    }
-    if (node[0x2E] != 0)
-    {
-      colors.siblingColor = 0x4040FFFF;
-    }
-    colors.siblingDraw = colors.siblingColor;
-    fn_8014BB58((*arg1) * 8, (*arg2) * 8, &colors.siblingDraw, *((void **) (node + 0x14)));
-    if ((*((u32 *) (node + 0x0C))) != 0)
-    {
-      text = *((s8 **) (node + 0x14));
-      text = text;
-      new_var = 2;
-      while ((*(text++)) != 0)
-      {
-      }
 
-      colors.siblingExtra = colors.siblingColor;
-      fn_8014BB58(new_var * (4 * (((*arg1) + (text - text)) + 1)), (*arg2) * 8, &colors.siblingExtra, lbl_80267CB0 + 0x76);
-      (*arg2)++;
-    }
-    if ((*((u8 **) (node + 0x1C))) != 0)
-    {
-      fn_8000A454(*((void **) (node + 0x1C)), arg1, arg2);
+    if (node->child != 0) {
+        fn_8000A454(node->child, arg1, arg2);
     }
     (*arg1)--;
-  }
-  (*arg1)--;
 }
 
 void fn_8000A860(void) {
