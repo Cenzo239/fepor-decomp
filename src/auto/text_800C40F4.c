@@ -62,8 +62,8 @@ static inline s32 Ai_CountHostileNeighborsIn(AiActionMap *map, s16 x, s16 y, s16
     s16 *nb = table;
     s32 dx;
     while ((dx = nb[0]) != 0x7fff) {
-        s32 nx;
         s32 ny;
+        s32 nx;
         u8 oob;
         nx = x + dx;
         ny = y + nb[1];
@@ -30749,8 +30749,8 @@ s32 fn_80100284(void *self, u8 mode, u32 arg2, s16 *out_x, s16 *out_y) {
     s32 y, x;
     u8 *costcell;
     s32 short_y, byte_x, short_x;
-    s32 dx;
     s32 nx, ny;
+    s32 dx;
     u8 out_of_bounds, cell;
     void *unit;
     s16 cost, alt;
@@ -30796,30 +30796,7 @@ s32 fn_80100284(void *self, u8 mode, u32 arg2, s16 *out_x, s16 *out_y) {
                         goto next_x;
                 }
                 if (flags != 0) {
-                    neigh = lbl_802732A0;
-                    ncount = 0;
-                    while ((dx = *neigh) != 0x7FFF) {
-                        short_x = (s16)x;
-                        nx = short_x + dx;
-                        ny = short_y + neigh[1];
-                        out_of_bounds = 0;
-                        if (nx < map->xMin || map->xMax - 1 < nx
-                            || ny < map->yMin || map->yMax - 1 < ny) {
-                            out_of_bounds = 1;
-                        }
-                        if (!out_of_bounds) {
-                            cell = gBattleMap[(s8)nx + ((s8)ny << 6) + 0xD];
-                            if (cell != 0) {
-                                if (cell != 0)
-                                    unit = gUnits + (cell - 1) * 0x280;
-                                else
-                                    unit = NULL;
-                                if (Ai_UnitIsHostileToActive(unit) != 0)
-                                    ncount++;
-                            }
-                        }
-                        neigh += 2;
-                    }
+                    ncount = Ai_CountHostileNeighborsIn(map, (s16)x, (s16)y, lbl_802732A0);
                     if (ncount != 0)
                         goto next_x;
                 }
