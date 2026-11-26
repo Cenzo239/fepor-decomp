@@ -2641,7 +2641,6 @@ s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
 #pragma global_optimizer off
-#pragma scheduling on
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
     Vec2s sp38;
