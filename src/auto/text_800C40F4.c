@@ -133,7 +133,8 @@ typedef struct { s32 *a; s32 b; } SortIteratorFields;
 typedef struct HeapC55 HeapC55;
 struct HeapC55 { u32 unk0, unk4; HeapC55 *prev, *next; u32 size; HeapC55 *owner, *free; u32 extent; };
 static inline s32 HeapC55_FindIndex(HeapC55 **table, HeapC55 *heap) { s32 i; for(i=0;i<16;i++,table++) if(*table==heap) return i; return -1; }
-static inline void *HeapC55_End(void *end, void *fallback) { if(end) return end; return fallback; }
+static inline void *HeapC55_End(void *end, void **fallback) { if(end) return end; return *fallback; }
+static inline HeapC55 *HeapC55_Append(HeapC55 *head, HeapC55 *block) { HeapC55 *tail=head; if(head) { HeapC55 *next; while((next=tail->next)!=0) tail=next; } block->next=0; block->prev=tail; if(tail) tail->next=block; if(head) return head; return block; }
 static inline HeapC55 *HeapC55_Best(HeapC55 *p,u32 size) { HeapC55 *best=0; u32 limit=0x7fffffff; for(;p;p=p->next) { u32 n=p->size; if(n<=limit && n>=size) { limit=n; best=p; } } return best; }
 static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
@@ -1351,33 +1352,34 @@ heap->free = head;
 return;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
-#pragma use_lmw_stmw on
 void *fn_800C55B0(HeapC55 *self,s32 bytes){
 void DebugPrint(void *,...);void fn_8005BC8C(s8);
 extern u8 lbl_802700D8[];extern u8 lbl_80320B88[];
 HeapC55 *h; HeapC55 **table; u32 ext; s32 i,mb; HeapC55 *block; HeapC55 **base; u32 size; HeapC55 *p,*best,*head,*tail;u32 limit,n;u8 *lo,*hi;
 size=(bytes+0x3f)&~31;
-best=0;limit=0x7fffffff;for(p=self->free;p;p=p->next){n=p->size;if(n<=limit&&n>=size){limit=n;best=p;}}block=best;
+block=HeapC55_Best(self->free,size);
 if(block==0){mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
 DebugPrint(lbl_802700D8+0x18);
 n=mb<<20; DebugPrint(lbl_802700D8+0x1a,0x80000000U,n+0x80000000U,n);
 hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-lo);
 if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
-hi=(u8*)lbl_8036786C; if(!hi) hi=(u8*)lbl_80367864;
+hi=HeapC55_End((void*)lbl_8036786C,(void*)lbl_80367864);
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
 base=(HeapC55**)lbl_80320B88;table=base;for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
 DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
 DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
 }}
-table=base;for(i=0;i<16;i++,table++){if(*table==self)goto found;}i=-1;found:fn_8005BC8C((s8)i);
-best=0;limit=0x7fffffff;for(p=self->free;p;p=p->next){n=p->size;if(n<=limit&&n>=size){limit=n;best=p;}}block=best;
+fn_8005BC8C((s8)HeapC55_FindIndex(base,self));table=base;
+block=HeapC55_Best(self->free,size);
 mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
 DebugPrint(lbl_802700D8+0x18);
 n=mb<<20; DebugPrint(lbl_802700D8+0x1a,0x80000000U,n+0x80000000U,n);
 hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-lo);
 if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
-hi=(u8*)lbl_8036786C; if(!hi) hi=(u8*)lbl_80367864;
+hi=HeapC55_End((void*)lbl_8036786C,(void*)lbl_80367864);
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
 for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
 DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
@@ -1389,9 +1391,7 @@ if(n<64){p=block->next;head=self->free;if(p)p->prev=block->prev;p=block->prev;if
 else{block->size=n;block=(HeapC55*)((u8*)block+n);block->size=-size;block->owner=self;}
 head=self->owner;tail=head;if(head){while(tail->next)tail=tail->next;}block->next=0;block->prev=tail;if(tail)tail->next=block;if(!head)head=block;self->owner=head;return block;
 }
-
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
+#pragma pop
 s32 fn_800C5A48(s32 arg0,s32 bytes){
 HeapC55 *self=(HeapC55*)arg0;
 void DebugPrint(void *,...);void fn_8005BC8C(s8);
