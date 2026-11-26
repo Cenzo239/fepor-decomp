@@ -2837,23 +2837,9 @@ void fn_80109244(struct Arg0 *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetAlphaByte(u8);
-    extern f32 lbl_8036A134;
-    extern const f32 lbl_8036A130;
 
-    s32 i;
-    s32 rem;
-    f32 f1_2;
-    f32 pos;
     f32 f0;
     f32 f1;
-    struct Cycler2 {
-        u8 pad0[4];
-        u8 unk4;
-        u8 unk5;
-        u16 unk6;
-        u8 pad8[0xC];
-        struct UnkObject *objs[1];
-    } *outer;
 
     arg0->unk3C = arg0->unk3C + arg0->unk38;
     f0 = arg0->unk3C;
@@ -2866,23 +2852,7 @@ void fn_80109244(struct Arg0 *arg0) {
     Prim2D_SetColorByte(arg0->unk60);
     Prim2D_SetAlphaByte(arg0->unk61);
     Prim2D_PrepareTex();
-    outer = (struct Cycler2 *)arg0->unk30;
-    pos = arg0->unk3C;
-    if (outer->unk5 == 0) {
-        for (i = outer->unk4 - 1; i >= 0; i--) {
-            outer->objs[i]->v1(0xFF);
-        }
-    } else if (outer->unk5 == 2) {
-        i = (s32)pos;
-        rem = (i + 1) % outer->unk4;
-        f1_2 = lbl_8036A134 * (pos - (f32)i);
-        if (f1_2 != lbl_8036A130) {
-            outer->objs[rem]->v1((s32)f1_2);
-        }
-        outer->objs[i]->v1(0xFF);
-    } else if (outer->unk5 == 1) {
-        outer->objs[(s32)pos]->v1(0xFF);
-    }
+    Cycler_Draw(arg0->unk30, arg0->unk3C);
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_SetAlphaByte(0x80);
