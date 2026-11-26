@@ -1756,6 +1756,9 @@ void fn_80009008(void *list, s32 a, s32 b) {
         node = *(u8 **)node;
     }
 }
+#pragma push
+#pragma optimization_level 2
+#pragma opt_propagation off
 void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void PSMTXScale(void *, f32, f32, f32);
     void GXSetNumChans(s32);
@@ -1820,7 +1823,6 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         break;
     }
 
-#pragma scheduling off
     switch (temp_r31 & 0xF0) {
     case 0x0:
         fn_802245D8(0, 0, 0, 0);
@@ -1876,9 +1878,8 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
         break;
     }
-#pragma scheduling reset
 }
-
+#pragma pop
 void Prim2D_ResetState(void) {
     extern u16 gPrim2D;
 
