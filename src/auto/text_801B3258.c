@@ -1,5 +1,8 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+#pragma cplusplus on
+extern "C" void *Heap_Alloc(s32);
+#pragma cplusplus off
 static inline s32 AchieveList_GoldAt(void *arg0,s32 i) { return *(s32*)((u8*)arg0+0x200+i*4); }
 static inline s32 AchieveList_SumGoldNested(void *arg0,s32 start) {
 s32 sum=start, i;
