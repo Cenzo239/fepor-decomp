@@ -1178,12 +1178,12 @@ extern u32 gPadInput;
 #pragma cplusplus on
 #pragma opt_strength_reduction off
 extern "C" void fn_80024D74(s32 unused, void *arg1) {
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     extern u32 lbl_80367240;
     struct Item {
         virtual void v0() = 0;
         virtual void v1() = 0;
-        virtual void *v2() = 0;
+        virtual void v2() = 0;
         virtual void v3() = 0;
         virtual void v4() = 0;
         virtual void v5() = 0;
@@ -1196,15 +1196,13 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
         virtual void v12(void *, void *) = 0;
     };
     void *item;
-    u8 *p;
-    s8 idx;
+    u8 *unit;
 
     if ((((u32 *)lbl_80367240)[1] & 0x3000003U) == 0) {
         return;
     }
-    idx = *(s8 *)((u8 *)arg1 + 0x62);
-    p = (u8 *)arg1 + idx;
-    item = fn_8000B908(*(u8 *)(p + 0x40));
+    unit = (u8 *)arg1;
+    item = GfxEnt_Get(unit[0x40 + (s8)unit[0x62]]);
     (*(Item **)((u8 *)item + 0x34))->v12(arg1, item);
 }
 #pragma opt_strength_reduction reset
