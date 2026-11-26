@@ -115,11 +115,6 @@ void fn_80089554(void) {
 }
 
 #pragma global_optimizer off
-static inline void *CreateFirst_800895B8(void *base) {
-    void *fn_8000CAF0(void *, s32);
-    return fn_8000CAF0((u8 *)base + 0, 7);
-}
-
 void fn_800895B8(void) {
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80289950[];
@@ -127,11 +122,11 @@ void fn_800895B8(void) {
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    s8 *base;
+    u8 *base;
     void *tmp;
 
-    base = (s8 *)lbl_80289950;
-    lbl_803674E0 = fn_8000CAF0(base + 0, 7);
+    base = lbl_80289950;
+    lbl_803674E0 = fn_8000CAF0(base, 7);
     lbl_803674E4 = fn_8000CAF0(base + 0x58, 7);
     tmp = fn_8000CAF0(base + 0x18, 7);
     lbl_803674E8 = tmp;
