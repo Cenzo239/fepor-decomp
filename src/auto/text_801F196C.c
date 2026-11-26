@@ -4501,52 +4501,72 @@ void fn_801FA8B4(void *arg0, u8 (*compare)(void *, void *)) {
     void fn_800616A0(void *);
     void Heap_Free(void *);
 
-    List *list;
     List other;
     Node *first;
     Node *second;
     Node *node;
-    Node *last;
-    Node *previous;
-    Node *next;
-    Node *temp;
     u32 half;
+    Node *last;
+    Node *cur;
+    Node *temp;
     u32 n;
 
-    list = (List *)arg0;
-
-    switch (list->count) {
-    case 0: case 1: break;
+    switch (((List *)arg0)->count) {
+    case 0:
+    case 1:
+        break;
     case 2:
-        first = list->sentinel.next; second = first->next;
+        first = ((List *)arg0)->sentinel.next;
+        second = first->next;
         if (compare((u8 *)second + 8, (u8 *)first + 8)) {
-            temp = first->prev; first->prev = first->next; first->next = temp;
-            temp = second->prev; second->prev = second->next; second->next = temp;
-            temp = list->sentinel.prev; list->sentinel.prev = list->sentinel.next; list->sentinel.next = temp;
+            temp = first->prev;
+            first->prev = first->next;
+            first->next = temp;
+            temp = second->prev;
+            second->prev = second->next;
+            second->next = temp;
+            temp = ((List *)arg0)->sentinel.prev;
+            ((List *)arg0)->sentinel.prev = ((List *)arg0)->sentinel.next;
+            ((List *)arg0)->sentinel.next = temp;
         }
         break;
     default:
-        half = (u32)list->count >> 1; node = list->sentinel.next;
-        for (n=half;n!=0;--n) node=node->next;
-        other.count = 0; other.sentinel.prev = &other.sentinel; other.sentinel.next = &other.sentinel;
-        last = list->sentinel.prev; previous = node->prev;
-        previous->next = last->next; last->next->prev = previous;
-        other.sentinel.prev->next = node; node->prev = other.sentinel.prev;
-        other.sentinel.prev = last; last->next = &other.sentinel;
-        other.count = list->count - half; list->count = half;
-        fn_801FA8B4(list, compare); fn_801FA8B4(&other, compare);
-        fn_801FB428(list, &other, compare);
+        half = (u32)((List *)arg0)->count >> 1;
+        node = ((List *)arg0)->sentinel.next;
+        for (n = half; n != 0; --n) {
+            node = node->next;
+        }
+        other.count = 0;
+        other.sentinel.next = &other.sentinel;
+        other.sentinel.prev = &other.sentinel;
+        last = ((List *)arg0)->sentinel.prev;
+        node->prev->next = last->next;
+        last->next->prev = node->prev;
+        other.sentinel.prev->next = node;
+        node->prev = other.sentinel.prev;
+        other.sentinel.prev = last;
+        last->next = &other.sentinel;
+        other.count = ((List *)arg0)->count - half;
+        ((List *)arg0)->count = half;
+        fn_801FA8B4(arg0, compare);
+        fn_801FA8B4(&other, compare);
+        fn_801FB428(arg0, &other, compare);
         first = other.sentinel.next;
         if (first != &other.sentinel) {
             last = other.sentinel.prev;
-            first->prev->next = last->next; last->next->prev = first->prev;
+            first->prev->next = last->next;
+            last->next->prev = first->prev;
             while (first != &other.sentinel) {
-                if (&first->unit != NULL) {
-                    if (*(u32 *)((u8 *)&first->unit + 4) != 0) {
-                        fn_800616A0(*(void **)((u8 *)&first->unit + 4));
+                void **elem = &first->unit;
+                if (elem != NULL) {
+                    if (elem[1] != NULL) {
+                        fn_800616A0(elem[1]);
                     }
                 }
-                next = first->next; Heap_Free(first); first = next; other.count--;
+                cur = first;
+                first = first->next;
+                Heap_Free(cur);
+                other.count--;
             }
         }
         break;
