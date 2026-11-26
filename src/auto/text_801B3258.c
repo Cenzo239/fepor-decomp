@@ -2753,7 +2753,7 @@ void fn_801B893C(void *arg0) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-static inline void Ui_DrawSummaryRows(void *self, s32 i) {
+static inline void Ui_DrawSummaryRows(s32 i, void *self) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -13655,7 +13655,6 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     extern const f32 lbl_8036B4DC;
     extern f32 lbl_80367098[];
 
-    Obj *self;
     void *arg;
     s16 *rect;
     s16 half;
@@ -13675,6 +13674,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     void *ptr;
     s32 rowIndex;
     s16 scrollShort;
+    Obj *self;
 
     self = (Obj *)arg0;
     arg = arg1;
