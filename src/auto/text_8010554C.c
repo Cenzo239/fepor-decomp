@@ -23,7 +23,7 @@ static inline u8 fn_8010CF28_check(void *a, void *b) {
 extern double lbl_8036A128;
 extern double lbl_8036A120;
 extern f32 lbl_8036A134;
-extern f32 lbl_8036A130;
+extern const f32 lbl_8036A130;
 
 typedef struct AiParam {
     void *p;
@@ -655,6 +655,8 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_80106290(u8 *arg0)
 {
     void *fn_80107468(void *);
@@ -672,7 +674,6 @@ void fn_80106290(u8 *arg0)
     extern u8 gBattleMap[];
 
     u8 sp8[0x68];
-    u8 *self;
     u8 *base;
     u8 *entry;
     u8 *obj;
@@ -686,19 +687,20 @@ void fn_80106290(u8 *arg0)
     s32 count;
     s32 i;
     s32 offset;
-    s32 ch;
+    u32 ch;
 
-    self = arg0;
 
-    if (self[0x61] == 0) {
-        i = self[0x62];
+
+
+    if (arg0[0x61] == 0) {
+        i = arg0[0x62];
         offset = i * 0x110;
 
         goto check_first;
 
     first_loop:
-        mode = self[0x60];
-        base = *(u8 **)(self + 0x68);
+        mode = arg0[0x60];
+        base = *(u8 **)(arg0 + 0x68);
         entry = base + offset;
 
         if (mode == 2) {
@@ -883,12 +885,11 @@ void fn_80106290(u8 *arg0)
         i++;
 
     check_first:
-        count = self[0x63];
+        count = arg0[0x63];
 
         if (i < count) {
             goto first_loop;
         }
-    }
 
     i = 0;
     offset = 0;
@@ -896,12 +897,12 @@ void fn_80106290(u8 *arg0)
     goto check_second;
 
 second_loop:
-    base = *(u8 **)(self + 0x68);
+    base = *(u8 **)(arg0 + 0x68);
     entry = base + offset;
     unit = *(u8 **)(entry + 4);
 
     if (unit != 0) {
-        ch = self[0x64];
+        ch = arg0[0x64];
 
         if (ch != 0) {
             fn_80184750(unit, ch, 0, 0);
@@ -932,19 +933,19 @@ second_loop:
     i++;
 
 check_second:
-    if (i < self[0x63]) {
+    if (i < arg0[0x63]) {
         goto second_loop;
     }
 
     Map_RefreshUnitMap(gBattleMap);
     fn_800163F8();
+    }
 
-    fn_800C4588(*(void **)(self + 0x68));
+    fn_800C4588(*(void **)(arg0 + 0x68));
 
-    *(void **)(self + 0x68) = 0;
+    *(void **)(arg0 + 0x68) = 0;
 }
-
-#pragma use_lmw_stmw reset
+#pragma pop
 
 extern void Map_RefreshUnitMap(void* arg0);
 extern s32 MuEvent_Create(s32 arg0, s8 arg1, s8 arg2, void* arg3);
@@ -2635,7 +2636,7 @@ void Process_ClearFunc(void *);
 extern u32 *gPadInput;
 extern f32 lbl_8036A110;
 extern f32 lbl_8036A114;
-extern f32 lbl_8036A118;
+extern const f32 lbl_8036A118;
 extern f32 lbl_8036A11C;
 s32 held;
 f32 fb;
@@ -2690,7 +2691,7 @@ void fn_80108F38(void) {
 void fn_80108F58(void *arg0) {
     void fn_800AA1CC(void *);
     void *Sound_Create(s32, void *);
-    extern f32 lbl_8036A130;
+    extern const f32 lbl_8036A130;
     f32 f;
     void *p;
 
@@ -2836,7 +2837,7 @@ void fn_80109244(struct Arg0 *arg0) {
     extern f64 lbl_8036A128;
     extern f64 lbl_8036A120;
     extern f32 lbl_8036A134;
-    extern f32 lbl_8036A130;
+    extern const f32 lbl_8036A130;
     struct UnkCycler *outer;
     struct Arg0 *self;
     s32 i;
@@ -2898,7 +2899,7 @@ void fn_80109244(struct Arg0 *arg0) {
 
 void Sound_TweenParam(void *arg0, s32 arg1, s32 arg2, f32 arg3, f32 arg4, f32 arg5) {
 extern const f32 lbl_8036A138;
-extern f32 lbl_8036A130;
+extern const f32 lbl_8036A130;
 extern u32 gUiInputFlags;
 void *Process_Create(void *,void *);
 extern u8 lbl_8028F374[];
@@ -3057,7 +3058,7 @@ case 6: *(f32*)((u8*)target+88)=val; break;
 }
 
 f32 fn_801099A0(void *arg0, u8 arg1) {
-    extern f32 lbl_8036A130;
+    extern const f32 lbl_8036A130;
 
     switch (arg1) {
     case 0:
@@ -3284,8 +3285,8 @@ case 9: *(f32*)((u8*)arg0+0x40)=x; *(f32*)((u8*)arg0+0x44)=0.0f; break;
 }
 
 void fn_80109EEC(void *arg0) {
-    extern f32 lbl_8036A130;
-    extern f32 lbl_8036A14C;
+    extern const f32 lbl_8036A130;
+    extern const f32 lbl_8036A14C;
     f32 zero;
     void *temp_r4;
     u8 *temp_r6;
@@ -3318,11 +3319,11 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
     void fn_801FCC68(void *);
     void fn_801FC6E0(void *, f32);
     void fn_801FC634(void *, f32);
-    extern f32 lbl_8036A118;
-    extern f32 lbl_8036A130;
-    extern f32 lbl_8036A140;
-    extern f32 lbl_8036A14C;
-    extern f32 lbl_8036A150;
+    extern const f32 lbl_8036A118;
+    extern const f32 lbl_8036A130;
+    extern const f32 lbl_8036A140;
+    extern const f32 lbl_8036A14C;
+    extern const f32 lbl_8036A150;
     extern u32 lbl_8028F594[];
     extern u32 lbl_8028F5E4[];
     extern u32 lbl_8028FEEC[];
@@ -3576,8 +3577,8 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
     void fn_800071D8(u8, f32);
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
-    extern f32 lbl_8036A130;
-    extern f32 lbl_8036A118;
+    extern const f32 lbl_8036A130;
+    extern const f32 lbl_8036A118;
     extern f32 gTextScale2;
     s32 color;
     f32 drawX;
@@ -4646,9 +4647,9 @@ u8 Ai_TryEscapeMove(s32 unit) {
     return 0U;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
 #pragma optimization_level 2
-#pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 u8 Ai_TrySeekHealer(void *arg0) {
     u8 fn_80092F38(void *);
     void fn_80022DAC(void *, s32, s32);
@@ -4767,7 +4768,8 @@ u8 Ai_TrySeekHealer(void *arg0) {
                                 rem = (s8)(fn_8003B2D0(arg0) - ((u8 *)arg0)[0x1A8]);
                                 distA = fn_80230BCC(rem - hi);
                                 distB = fn_80230BCC(rem - lo);
-                                pick = (distB > distA) ? other : pick;
+                                if (distB <= distA) goto selected;
+                                pick = other;
                             } else {
                                 t = *(u8 *)((u8 *)bestItem + 4);
                                 if (*(u8 *)((u8 *)cand + 4) < t) {
@@ -4778,6 +4780,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
                                     pick = cand;
                                 }
                             }
+selected:
                             if (pick != bestItem) {
                                 bestUnit = grp;
                                 bestSlot = slot;
@@ -4802,8 +4805,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     }
     return lbl_8032B3C0[0x21C];
 }
-#pragma optimization_level reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma optimization_level 2
 #pragma use_lmw_stmw on
