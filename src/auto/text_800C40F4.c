@@ -6552,6 +6552,14 @@ extern "C" void fn_800CF5B8(void *arg0) {
     fn_800E2218(p30, *(void **)(v16 + v17));
     *(s32 *)((u8 *)self + 0x230) = 0;
 }
+struct ScenePosition { f32 x, y, z; };
+struct ScenePositionObject {
+    u8 pad[0x40];
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual ScenePosition GetPosition();
+};
 struct DebugCameraMethods {
     u8 pad[0x40];
     virtual void v0();
@@ -6835,6 +6843,9 @@ extern "C" void fn_800CFDDC(void *arg0) {
 
 #pragma cplusplus reset
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_800D06BC(u8 *self) {
     void String_Init(void *, char *, void *);
     void String_Destroy(void *, s32);
@@ -6843,7 +6854,7 @@ void fn_800D06BC(u8 *self) {
     void fn_800E9020(s32, f32 *, s32);
     void fn_800E7AD4(s32, void *, s32, u8, u8);
     u8 fn_800E8BC4(s32);
-    void Camera_GetFov(s32);
+    f32 Camera_GetFov(s32);
     void fn_800E76D0(s32, u8);
     u8 fn_800DF6A8(void *);
     void fn_800DF44C(void *, s32, f32, f32, f32);
@@ -6859,20 +6870,20 @@ void fn_800D06BC(u8 *self) {
     extern f32 lbl_80369E08;
     extern u8 *gGame;
 
-    u8 pad2[0x10];
-    f32 pad[8];
     f32 xf1[24];
     f32 xf2[24];
     f32 mid[3];
-    f32 tmp[3];
     char str0[12];
+    f32 tmp[3];
     char str1[12];
     char str2[12];
+    f32 pos[3];
+    f32 pos2[3];
+    f32 tmp2[3];
     f32 v2[3];
     f32 v1[3];
-    f32 pos[3];
     f32 scaled;
-    char scratch0[8];
+    char scratch0[4];
     char scratch1[4];
     char scratch2[4];
     f32 yOff, z1, y1, x1;
@@ -6886,8 +6897,6 @@ void fn_800D06BC(u8 *self) {
     u8 b;
     s32 i;
 
-    (void)pad;
-    (void)pad2;
     obj = *(void **)(self + 0x90);
     yOff = *(f32 *)(self + 0x18C);
     ((GetPosFn)*(void **)(*(u8 **)((u8 *)obj + 0x40) + 0x3C))(v1, obj);
@@ -6940,13 +6949,14 @@ void fn_800D06BC(u8 *self) {
         ((f32 *)(self + 0x2B0))[8] = xf1[20];
         ((f32 *)(self + 0x2B0))[9] = xf1[21];
         ((f32 *)(self + 0x2B0))[10] = xf1[22];
-        tmp[0] = mid[0];
-        tmp[1] = mid[1];
-        tmp[2] = mid[2];
+        ((f32 *)(self + 0x2B0))[11] = xf1[23];
+        ((u32 *)tmp)[0] = ((u32 *)mid)[0];
+        ((u32 *)tmp)[1] = ((u32 *)mid)[1];
+        ((u32 *)tmp)[2] = ((u32 *)mid)[2];
         fn_800E9020(handle, tmp, 0);
         flag = self[0x278];
         if (flag == 0) {
-            if (*(s32 *)(self + 0x228) == 1) {
+            if (*(s32 *)(self + 0x228) == 1 || flag != 0) {
                 String_Init(str1, lbl_802704F8 + 0x5C3, scratch1);
                 fn_800E7AD4(*(s32 *)(self + 4), str1, 0, 0, 0);
                 String_Destroy(str1, -1);
@@ -6962,10 +6972,10 @@ void fn_800D06BC(u8 *self) {
         break;
     case 2:
         if (fn_800E8BC4(handle) == 0) {
-            Camera_GetFov(handle);
+            f32 fov = Camera_GetFov(handle);
             {
                 f32 z = lbl_80369DC8;
-                fn_800DF494(xf2, z, z, z);
+                fn_800DF494(xf2, fov, z, z);
             }
             ((f32 *)(self + 0x2E0))[0] = xf2[0];
             ((f32 *)(self + 0x2E0))[1] = xf2[1];
@@ -6990,6 +7000,7 @@ void fn_800D06BC(u8 *self) {
             ((f32 *)(self + 0x310))[8] = xf2[20];
             ((f32 *)(self + 0x310))[9] = xf2[21];
             ((f32 *)(self + 0x310))[10] = xf2[22];
+            ((f32 *)(self + 0x310))[11] = xf2[23];
             *(s32 *)(self + 0x17C) = *(s32 *)(self + 0x17C) + 1;
             if (self[0x278] != 0) {
                 self[0x196] = 0;
@@ -7002,22 +7013,24 @@ void fn_800D06BC(u8 *self) {
             obj = *(void **)(self + 0x94);
             ((GetPosFn)*(void **)(*(u8 **)((u8 *)obj + 0x40) + 0x3C))(pos, obj);
             mid[0] = pos[0];
-            mid[1] = pos[1] + *(f32 *)(self + 0x18C);
+            mid[1] = pos[1];
             mid[2] = pos[2];
+            mid[1] += *(f32 *)(self + 0x18C);
         } else if (fn_800DF6A8(*(void **)(self + 0x94)) == 0) {
             obj = *(void **)(self + 0x90);
-            ((GetPosFn)*(void **)(*(u8 **)((u8 *)obj + 0x40) + 0x3C))(pos, obj);
-            mid[0] = pos[0];
-            mid[1] = pos[1] + *(f32 *)(self + 0x18C);
-            mid[2] = pos[2];
+            ((GetPosFn)*(void **)(*(u8 **)((u8 *)obj + 0x40) + 0x3C))(pos2, obj);
+            mid[0] = pos2[0];
+            mid[1] = pos2[1];
+            mid[2] = pos2[2];
+            mid[1] += *(f32 *)(self + 0x18C);
         }
         fn_800DF44C(self + 0x280, 8, mid[0], mid[1], mid[2]);
         Vec3Interp_Update(self + 0x280);
         fn_800DF430(self + 0x280, mid);
-        tmp[0] = mid[0];
-        tmp[1] = mid[1];
-        tmp[2] = mid[2];
-        fn_800E9020(handle, tmp, 0);
+        ((u32 *)tmp2)[0] = ((u32 *)mid)[0];
+        ((u32 *)tmp2)[1] = ((u32 *)mid)[1];
+        ((u32 *)tmp2)[2] = ((u32 *)mid)[2];
+        fn_800E9020(handle, tmp2, 0);
         if (self[0x278] != 0) {
             scaled = fn_80113658(*(s32 *)(self + 0x84), *(s32 *)(self + 0x88));
             scaled = lbl_80369E08 * scaled + *(f32 *)(gGame + 0x1BC);
@@ -7038,9 +7051,9 @@ void fn_800D06BC(u8 *self) {
         break;
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 #pragma cplusplus on
+#pragma inline_depth(0)
 extern "C" s32 fn_800D0C5C(void *arg0) {
 #include "fn_800D0C5C_body.inc"
     return 0;
@@ -19439,6 +19452,11 @@ gCardWork.tick=OSGetTick()-gCardWork.tick;msg=gCardStrings+0x7d;tickRate=*(u32*)
 DebugPrint(msg,gCardWork.tick/conv);
 }}
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+#pragma opt_propagation off
 void fn_800E9CE4(s32 arg0) {
     void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
@@ -19457,13 +19475,13 @@ void fn_800E9CE4(s32 arg0) {
     u8 *base;
     s32 sp8;
     u32 flag;
-    u8 ok;
+    u32 ok;
     u32 i;
     u32 t;
     s32 off;
     s32 n;
-    s32 self;
     s32 buf;
+    s32 self;
     u32 *table;
 
     self = arg0;
@@ -19479,7 +19497,7 @@ void fn_800E9CE4(s32 arg0) {
         flag = 0;
     }
     if ((u8)flag == 0) {
-        buf = *(s32 *)(base - 0x5FCC) - *(s32 *)(base - 0x5FF0);
+        buf = *(s32 *)(gCardWork + 0xA034) - *(s32 *)(gCardWork + 0xA010);
         if (*(u32 *)(buf + 0x1C00) != *(u32 *)(buf + 0x1C04)) {
             ok = 0;
         } else {
@@ -19502,20 +19520,21 @@ void fn_800E9CE4(s32 arg0) {
             crc = ~0U;
             off = 0;
             for (n = 0x380; n > 0; n--) {
-                t = (crc >> 8) ^ table[(u8)(crc ^ *((u8 *)buf + off))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 1))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 2))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 3))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 4))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 5))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 6))];
-                crc = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 7))];
+                u8 *p = (u8 *)buf + off;
                 off += 8;
+                t = (crc >> 8) ^ table[(u8)(crc ^ p[0])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[1])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[2])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[3])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[4])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[5])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[6])];
+                crc = (t >> 8) ^ table[(u8)(t ^ p[7])];
             }
             fn_800C4588(table);
             ok = (*(u32 *)(buf + 0x1C00) == (crc ^ ~0U));
         }
-        if (ok == 0) {
+        if ((u8)ok == 0) {
             fn_8006EEFC(&sp8, gCardStrings + 0x98);
             {
                 s32 *row;
@@ -19559,15 +19578,16 @@ void fn_800E9CE4(s32 arg0) {
             crc = ~0U;
             off = 0;
             for (n = 0x380; n > 0; n--) {
-                t = (crc >> 8) ^ table[(u8)(crc ^ *((u8 *)buf + off))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 1))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 2))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 3))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 4))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 5))];
-                t = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 6))];
-                crc = (t >> 8) ^ table[(u8)(t ^ *((u8 *)buf + off + 7))];
+                u8 *p = (u8 *)buf + off;
                 off += 8;
+                t = (crc >> 8) ^ table[(u8)(crc ^ p[0])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[1])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[2])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[3])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[4])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[5])];
+                t = (t >> 8) ^ table[(u8)(t ^ p[6])];
+                crc = (t >> 8) ^ table[(u8)(t ^ p[7])];
             }
             fn_80006298(buf + 0x1C00, (s32)(crc ^ ~0U), 8);
             fn_800C4588(table);
@@ -19583,8 +19603,7 @@ void fn_800E9CE4(s32 arg0) {
         }
     }
 }
-
-#pragma global_optimizer off
+#pragma pop
 void fn_800EA27C(s32 arg0) {
     struct CardWork {
         u8 workArea[0xA000];
@@ -22661,12 +22680,17 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
 }
 #pragma global_optimizer reset
 s32 fn_800EFEE0(void *arg0, s32 arg1) {
+    typedef struct {
+        f32 x;
+        f32 y;
+        f32 z;
+    } Vec;
     void *Map_Get(void);
     void *GMaterial_GetCurrent(void);
     s32 GMaterial_GetNode(void);
     void fn_8006A384(void *);
     void fn_800690D4(void *, s32, void *);
-    void Ui_LoadAtlasTex(s32, void *, u16);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTevStage(void);
     s32 GMaterial_AllocTexMap(void);
@@ -22686,10 +22710,10 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     void fn_80224E50(void *, s32, s32);
     void GXSetTevColor(s32, void *);
     void fn_8022100C(s32);
-    extern u8 lbl_80272C00[];
-    extern f32 lbl_80369FC8;
-    extern f32 lbl_80369FFC;
-    extern f32 lbl_80369FA4;
+    extern const u8 lbl_80272C00[];
+    extern const f32 lbl_80369FC8;
+    extern const f32 lbl_80369FFC;
+    extern const f32 lbl_80369FA4;
     extern u32 lbl_8036C4D0;
 
     f32 sp104[3][4];
@@ -22697,10 +22721,11 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     f32 spA4[3][4];
     f32 sp74[3][4];
     u8 sp54[0x20];
-    f32 sp3C[6];
-    f32 sp18[3];
-    f32 sp24[3];
-    f32 sp30[3];
+    Vec a_vec;
+    Vec b_vec;
+    Vec up;
+    Vec target;
+    Vec eye;
     u8 color[4];
     u32 sp10;
     u32 spC;
@@ -22715,65 +22740,41 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     s32 b;
     s32 c;
     s32 tmp;
-    u16 idx;
-    void *self;
-    s32 path;
-    s32 w20, w2c, w1c, w24, w28, w30, w34, w38, w3c;
+    s32 idx;
 
-    self = arg0;
-    path = arg1;
     cam = Map_Get();
     col = GMaterial_GetCurrent();
     col_arg = GMaterial_GetNode();
     fn_8006A384(spD4);
     fy = (f32)(s32)(0x40 - *(u8 *)((u8 *)cam + 0x5D));
     fx = (f32)(s32)(0x40 - *(u8 *)((u8 *)cam + 0x5C));
-    w20 = *(s32 *)(lbl_80272C00 + 0x20);
-    w2c = *(s32 *)(lbl_80272C00 + 0x2C);
-    w1c = *(s32 *)(lbl_80272C00 + 0x1C);
-    w24 = *(s32 *)(lbl_80272C00 + 0x24);
-    w28 = *(s32 *)(lbl_80272C00 + 0x28);
-    w30 = *(s32 *)(lbl_80272C00 + 0x30);
-    w34 = *(s32 *)(lbl_80272C00 + 0x34);
-    w38 = *(s32 *)(lbl_80272C00 + 0x38);
-    w3c = *(s32 *)(lbl_80272C00 + 0x3C);
-    *(s32 *)&sp3C[2] = w24;
-    *(s32 *)&sp3C[0] = w1c;
-    *(s32 *)&sp3C[3] = w28;
-    *(s32 *)&sp3C[5] = w30;
-    sp3C[0] = fx;
-    sp3C[2] = fy;
-    sp3C[3] = fx;
-    sp3C[5] = fy;
-    *(s32 *)&sp3C[1] = w20;
-    sp18[0] = sp3C[0];
-    *(s32 *)&sp18[1] = w20;
-    sp18[2] = sp3C[2];
-    *(s32 *)&sp3C[4] = w2c;
-    sp24[0] = sp3C[3];
-    *(s32 *)&sp24[1] = w2c;
-    sp24[2] = sp3C[5];
-    *(s32 *)&sp30[0] = w34;
-    *(s32 *)&sp30[1] = w38;
-    *(s32 *)&sp30[2] = w3c;
+    a_vec = *(const Vec *)(lbl_80272C00 + 0x1C);
+    a_vec.x = fx;
+    a_vec.z = fy;
+    eye = a_vec;
+    b_vec = *(const Vec *)(lbl_80272C00 + 0x28);
+    b_vec.x = fx;
+    b_vec.z = fy;
+    target = b_vec;
+    up = *(const Vec *)(lbl_80272C00 + 0x34);
     mtx_obj = Map_Get();
-    fn_802029C4((u8 *)mtx_obj + 0x70, sp18, sp18);
-    fn_802029C4((u8 *)mtx_obj + 0x70, sp24, sp24);
-    fn_802029C4((u8 *)mtx_obj + 0x70, sp30, sp30);
-    fn_802026E4(sp74, sp18, sp30, sp24);
+    fn_802029C4((u8 *)mtx_obj + 0x70, &eye, &eye);
+    fn_802029C4((u8 *)mtx_obj + 0x70, &target, &target);
+    fn_802029C4((u8 *)mtx_obj + 0x70, &up, &up);
+    fn_802026E4(sp74, &eye, &up, &target);
     C_MTXLightOrtho(spA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4,
-                lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+                    lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp74, spD4, sp74);
     PSMTXConcat(spA4, sp74, sp104);
-    fn_800690D4(col, col_arg, self);
+    fn_800690D4(col, col_arg, arg0);
     color[0] = (u8)((s32)(*(u8 *)((u8 *)col + 8) * 0xFF) / 128);
     color[1] = (u8)((s32)(*(u8 *)((u8 *)col + 9) * 0xFF) / 128);
     color[2] = (u8)((s32)(*(u8 *)((u8 *)col + 0xA) * 0xFF) / 128);
     color[3] = (u8)((s32)(*(u8 *)((u8 *)col + 0xB) * 0xFF) / 255);
     sp10 = *(u32 *)color;
     GXSetChanMatColor(4, &sp10);
-    idx = *(u16 *)(*(u8 **)((u8 *)self + 0x14) + 4);
-    Ui_LoadAtlasTex(path, sp54, idx);
+    idx = *(u16 *)(*(u8 **)((u8 *)arg0 + 0x14) + 4);
+    Ui_LoadAtlasTex(arg1, sp54, idx);
     a = GMaterial_AllocTexCoord();
     b = GMaterial_AllocTevStage();
     c = GMaterial_AllocTexMap();
@@ -22800,7 +22801,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     fn_802201A8(a, 0, 0, tmp, 0, 0x7D);
     b = GMaterial_AllocTevStage();
     c = GMaterial_AllocTexMap();
-    Ui_LoadAtlasTex(path, sp54, (u16)(idx + 1));
+    Ui_LoadAtlasTex(arg1, sp54, idx + 1);
     fn_80222C50(sp54, c);
     GXSetTevOrder(b, a, c, 4);
     GXSetTevColorOp(b, 0, 0, 0, 1, 0);
