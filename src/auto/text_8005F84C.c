@@ -2983,6 +2983,8 @@ done:
 }
 
 void FileCache_Load(s32);
+#pragma push
+#pragma opt_dead_code off
 u8 GMaterial_EvalAlphaAnim(void **arg0, s32 arg1, void *arg2, f32 frame) {
     extern f64 lbl_80369200;
     s32 count;
@@ -3045,7 +3047,7 @@ interpolate_ready:
     *((u8 *)arg2 + 3) = (u8)value;
     return 1;
 }
-
+#pragma pop
 u8 GMaterial_EvalColorAnim(void *arg0, s32 arg1, void *arg2, f32 farg0)
 {
     void fn_80064C4C(void *, void *, f32);
@@ -8746,6 +8748,7 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
 {
   extern u8 lbl_80311CA8[];
+  void *new_var;
   s32 fn_800C0658(void);
   void Ui_CreateMenu(void *, s32, s32);
   typedef struct 
@@ -8760,10 +8763,11 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
   Entries *entries = (Entries *) (((u32) base) + 0x6c);
   entries->e0 = table;
   table = (s32 *) entries->e0;
+  new_var = (void *) (table + 4);
   table[1] = arg0;
   entries->e1 = (void *) (table + 2);
   ((s32 *) entries->e1)[1] = arg1;
-  entries->e2 = table + 4;
+  entries->e2 = new_var;
   ((s32 *) entries->e2)[1] = arg2;
   entries->e3 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
