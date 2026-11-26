@@ -10586,7 +10586,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma optimization_level 3
-void fn_800DBAB8(f32 *arg0, void *arg1) {
+void fn_800DBAB8(f32 arg0[3], void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -10595,7 +10595,8 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     f32 z;
     f32 x;
 
-    vec[1] = vec[0] = 0.0f;
+    vec[0] = 0.0f;
+    vec[1] = 0.0f;
     vec[2] = 1.0f;
     PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
@@ -10605,9 +10606,9 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     z = *(f32 *)((u8 *)arg1 + 0x68);
     y = *(f32 *)((u8 *)arg1 + 0x64);
     x = *(f32 *)((u8 *)arg1 + 0x60);
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    *arg0++ = x;
+    *arg0++ = y;
+    *arg0 = z;
 }
 #pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
@@ -14164,18 +14165,22 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 }
 
 #pragma cplusplus on
-static inline SortIterator Sort_ReverseCopy(s32 *first, s32 *last, SortIterator result) {
+static inline void Sort_ReverseCopy(s32 *first, s32 *last, SortIterator result) {
+    s32 it_mem[2];
+    *(SortIterator *)it_mem = result;
     while (first != last) {
-        *result = *--last;
-        ++result;
+        --last;
+        *(*(SortIterator *)it_mem) = *last;
+        ((SortIterator *)it_mem)->ptr++;
     }
-    return result;
 }
-static inline SortIterator Sort_Copy(s32 *first, s32 *last, SortIterator result) {
-    for (; first != last; ++first, ++result) {
-        *result = *first;
+static inline void Sort_Copy(s32 *first, s32 *last, SortIterator result) {
+    s32 it_mem[2];
+    *(SortIterator *)it_mem = result;
+    for (; first != last; ++first) {
+        *(*(SortIterator *)it_mem) = *first;
+        ((SortIterator *)it_mem)->ptr++;
     }
-    return result;
 }
 static inline void Sort_StableSortHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare comp) {
     s32 fn_800E0340(void *, void *, void *);
@@ -17140,10 +17145,10 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     } st;
 
     void *pSrc;
-    void *pVec;
     void *end;
-    u32 cnt;
+    void *pVec;
     u32 room;
+    u32 cnt;
     void *pPos;
     void *dst;
     void *cur;
