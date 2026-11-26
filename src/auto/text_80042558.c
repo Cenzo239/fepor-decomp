@@ -78,7 +78,8 @@ static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 r
         s32 dir;
         for (dir = 0; dir < 4; dir++) {
             u8 d = DirFromIndex_80042558(dir);
-            found = FindMapObj_80042558(map, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
+            s32 dx = DirGetDX_80042558(d);
+            found = FindMapObj_80042558(map, x + dx, y + DirGetDY_80042558(d), 0, require);
             if (found != 0) {
                 return found;
             }
@@ -509,7 +510,7 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma global_optimizer on
 #pragma use_lmw_stmw on
 
-void fn_80042558(void *arg0)
+void fn_80042558(Map_80042558 *arg0)
 {
     void fn_8005FEE8(void *, f32);
     void MapObj_FadeOut(void *, s32);
