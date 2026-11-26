@@ -5,6 +5,12 @@ struct PanelInitColor {
     u8 r, g, b, a;
     PanelInitColor(u8 red, u8 green, u8 blue, u8 alpha) : r(red), g(green), b(blue), a(alpha) {}
 };
+static inline void Panel_InitPalette(void *dst, const PanelInitColor &a, const PanelInitColor &b, const PanelInitColor &c, const PanelInitColor &d) {
+    ((u32 *)dst)[0] = *(const u32 *)&a;
+    ((u32 *)dst)[1] = *(const u32 *)&b;
+    ((u32 *)dst)[2] = *(const u32 *)&c;
+    ((u32 *)dst)[3] = *(const u32 *)&d;
+}
 #pragma cplusplus reset
 
 static inline void *MsgDebug_FilterText(void *text, u8 *dst)
@@ -1195,9 +1201,9 @@ volatile unsigned long long fn_8014EFB8(void *arg0, void *arg1, void *arg2, void
 }
 
 #pragma push
-#pragma optimization_level 3
-#pragma opt_propagation off
+#pragma optimization_level 4
 #pragma opt_lifetimes off
+#pragma opt_propagation on
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
     void GXClearVtxDesc(void);
@@ -1216,7 +1222,6 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     extern f32 lbl_8036A820;
     extern f32 lbl_8036A838;
     u8 sp8[0x20];
-    void *var_r31;
     void *var_r30;
     void *var_r29;
     void *var_r28;
@@ -1224,7 +1229,6 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     u8 r5b, r4b, r3b, r0b;
     s32 ctr;
 
-    var_r31 = arg1;
     var_r30 = arg0;
     var_r29 = arg2;
     var_r28 = arg3;
@@ -1248,9 +1252,9 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         ctr = 0;
         goto check1;
         do {
-            r0b = *(u8 *)((u8 *)var_r31 + 0x28);
-            var_r28 = var_r31;
-            var_r31 = (u8 *)var_r31 + 0x2C;
+            r0b = *(u8 *)((u8 *)arg1 + 0x28);
+            var_r28 = arg1;
+            arg1 = (u8 *)arg1 + 0x2C;
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r28 + 0x1C)), 5);
                 GXBegin(0xB8, 0, 1);
@@ -1284,9 +1288,9 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         ctr = 0;
         goto check2;
         do {
-            r0b = *(u8 *)((u8 *)var_r31 + 0x28);
-            var_r29 = var_r31;
-            var_r31 = (u8 *)var_r31 + 0x2C;
+            r0b = *(u8 *)((u8 *)arg1 + 0x28);
+            var_r29 = arg1;
+            arg1 = (u8 *)arg1 + 0x2C;
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r29 + 0x1C)), 5);
                 GXBegin(0xB8, 0, 1);
@@ -7220,18 +7224,18 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s16 bottom2 = y + h;
     Color4 colors;
     Color4 corner;
-    Color c0, c1, c2, c3;
+    PanelColor c0, c1, c2, c3;
     s32 finalColor;
 
     if (lbl_803680D6 == 0) {
-        c0.r = 0; c0.g = 0; c0.b = 0; c0.a = 0;
-        c1.r = 0; c1.g = 0; c1.b = 0; c1.a = 0;
-        c2.r = 0; c2.g = 0; c2.b = 0; c2.a = 0xFF;
-        c3.r = 0; c3.g = 0; c3.b = 0; c3.a = 0xFF;
-        *(u32 *)&lbl_80330D58[0] = *(u32 *)&c0.r;
-        *(u32 *)&lbl_80330D58[4] = *(u32 *)&c1.r;
-        *(u32 *)&lbl_80330D58[8] = *(u32 *)&c2.r;
-        *(u32 *)&lbl_80330D58[0xC] = *(u32 *)&c3.r;
+        c0.rgba.r = 0; c0.rgba.g = 0; c0.rgba.b = 0; c0.rgba.a = 0;
+        c1.rgba.r = 0; c1.rgba.g = 0; c1.rgba.b = 0; c1.rgba.a = 0;
+        c2.rgba.r = 0; c2.rgba.g = 0; c2.rgba.b = 0; c2.rgba.a = 0xFF;
+        c3.rgba.r = 0; c3.rgba.g = 0; c3.rgba.b = 0; c3.rgba.a = 0xFF;
+        *(u32 *)&lbl_80330D58[0] = *(u32 *)&c0.rgba.r;
+        *(u32 *)&lbl_80330D58[4] = *(u32 *)&c1.rgba.r;
+        *(u32 *)&lbl_80330D58[8] = *(u32 *)&c2.rgba.r;
+        *(u32 *)&lbl_80330D58[0xC] = *(u32 *)&c3.rgba.r;
         lbl_803680D6 = 1;
     }
 
