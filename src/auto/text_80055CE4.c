@@ -1,5 +1,6 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+typedef struct NodeLinkColor { u8 r, g, b, a; } NodeLinkColor;
 typedef struct TrailNode40 { u32 v[9]; u8 r, g, b, a; } TrailNode40;
 static inline void TrailNode_Copy(TrailNode40 *d, const TrailNode40 *s) {
 d->v[0]=s->v[0]; d->v[1]=s->v[1]; d->v[2]=s->v[2];
@@ -1211,178 +1212,58 @@ void fn_8005806C(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_800581A4(void *arg0)
-{
-  u16 *new_var4;
-  int new_var8;
-  u16 new_var9;
-  void **new_var6;
-  f32 new_var5;
-  u8 new_var7;
-  double new_var;
-  float new_var3;
-  f32 new_var2;
-  typedef struct 
-  {
-    f32 v[9];
-    u8 b[4];
-  } Node40;
-  void fn_8005EB5C(void *, void *);
-  void fn_8005E644(void *);
-  extern f32 lbl_80369104;
-  extern f32 gF32_0;
-  extern f64 lbl_80369118;
-  extern f32 lbl_8036912C;
-  extern f32 lbl_8036915C;
-    extern f32 lbl_80369168;
-  extern u32 lbl_803690D4;
-  Node40 nodes[4];
-  Node40 *base;
-  f32 *src;
-  f32 *dst;
-  u8 *context;
-  u8 *outBase;
-  u32 color;
-  u32 colorCopy;
-  s32 i;
-  s32 k;
-  s32 index;
-  s32 count;
-  u16 start;
-  u16 length;
-  u16 capacity;
-  u16 tailCount;
-  u8 steps;
-  u8 alpha;
-  volatile u8 t;
-  f32 one;
-  f32 twice;
-  f32 cubic;
-  f32 scale;
-  f32 u;
-  f32 v;
-  f32 w;
-  f32 x;
-  f32 y;
-  f32 z;
-  f32 a;
-  f32 b;
-  f32 c;
-  f32 d;
-  f32 h0;
-  f32 h1;
-  f32 h2;
-  f32 h3;
-  f64 slopeFactor;
-  ;
-  slopeFactor = lbl_80369160;
-  one = lbl_8036912C;
-  twice = lbl_8036915C;
-  cubic = lbl_80369104;
-  i = 0;
-  while (i < ((s32) (*((u16 *) (((u8 *) arg0) + 0x4c)))))
-  {
-    base = *((Node40 **) (context + 0x40));
-    start = *((u16 *) (context + 0x48));
-    capacity = *((u16 *) (context + 0x4e));
-    if (i > 0)
-    {
-      nodes[0] = base[((start + i) - 1) % capacity];
-      new_var4 = (u16 *) (context + 0x4c);
-    }
-    else
-    {
-      nodes[0] = (*((Node40 **) (((u8 *) arg0) + (new_var8 = 0x40))))[(start + i) % capacity];
-    }
-    length = *new_var4;
-    nodes[1] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[(start + i) % capacity];
-    new_var9 = *new_var4;
-    if (i < (((s32) length) - 1))
-    {
-      nodes[2] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[((start + i) + 1) % capacity];
-    }
-    else
-    {
-      nodes[2] = nodes[1];
-    }
-    if (i < (((s32) new_var9) - 2))
-    {
-      nodes[3] = (*((Node40 **) (((u8 *) arg0) + new_var8)))[(((*((u16 *) (context + 0x48))) + i) + 2) % capacity];
-    }
-    else
-    {
-      nodes[3] = nodes[2];
-    }
-    for (t = 0; t < ((u8 *) arg0)[0x51]; t++)
-    {
-      u = (one + ((f32) t)) / ((f32) context[0x51]);
-      v = cubic * u;
-      w = u - one;
-      x = (x = one - u);
-      y = twice - v;
-      z = u * u;
-      h0 = w * w;
-      h1 = y * z;
-      h2 = u * x;
-      new_var3 = u * (w * u);
-      h3 = (one + v) * h0;
-      h0 = new_var3;
-      index = (((s32) t) + (i * context[0x51])) * 0x28;
-      dst = (f32 *) ((*((u8 **) (context + 0x44))) + index);
-      src = (f32 *) nodes;
-      for (k = 0; k < 2; k++)
-      {
-        a = h1 * src[20];
-        a = (h3 * src[10]) + a;
-        b = src[21];
-        b = h1 * b;
-        new_var5 = h2;
-        b = (h3 * src[11]) + b;
-        scale = a;
-        c = h1 * src[22];
-        c = (h3 * src[12]) + c;
-        dst[0] = (f32) ((((f64) h0) * (slopeFactor * ((f64) (src[30] - src[10])))) + (new_var = (((f64) new_var5) * (slopeFactor * ((f64) (src[20] - src[0])))) + scale));
-        dst[1] = (f32) ((((f64) h0) * (slopeFactor * ((f64) (src[31] - src[11])))) + ((((f64) new_var5) * (slopeFactor * ((f64) (src[21] - src[1])))) + b));
-        dst[2] = (f32) (((float) (((f64) h0) * (slopeFactor * ((f64) (src[32] - src[12]))))) + ((((f64) new_var5) * (slopeFactor * ((f64) (src[22] - src[2])))) + c));
-        src += 3;
-        dst += 3;
-      }
-
-    }
-
-    i++;
-  }
-
-  steps = context[0x51];
-  length = new_var9;
-  new_var2 = lbl_80369168;
-  tailCount = *((u16 *) (context + 0x4a));
-  new_var6 = (void **) (((u8 *) arg0) + (0x34 & 0xFFFFFFFF));
-  scale = ((f32) ((context[0x3b] * 0x60) / 255)) - gF32_0;
-  count = (length * steps) - tailCount;
-  for (i = 0; i < ((s32) (*((u16 *) (((u8 *) arg0) + 0x4a)))); i++)
-  {
-    index = (((unsigned short) i) + count) * 0x28;
-    alpha = (outBase[0x24] = (u8) (gF32_0 + ((((f32) i) * scale) / ((f32) (steps - 1)))));
-    outBase = (*((u8 **) (context + 0x44))) + index;
-    dst = (f32 *) outBase;
-    ((f32 *) outBase)[6] = ((f32 *) outBase)[0] + ((new_var2 * (((f32 *) outBase)[3] - ((f32 *) outBase)[0])) / lbl_8036912C);
-    ((f32 *) outBase)[7] = ((f32 *) outBase)[1] + ((new_var2 * (((f32 *) outBase)[4] - dst[1])) / lbl_8036912C);
-    if (1)
-    {
-    }
-    ((f32 *) outBase)[8] = ((f32 *) outBase)[2] + ((new_var2 * (((f32 *) outBase)[5] - ((f32 *) outBase)[2])) / lbl_8036912C);
-  }
-
-  if (((*((u16 *) (((u8 *) arg0) + 0x54))) & 4) != 0)
-  {
-    new_var7 = ((u8 *) arg0)[0x3b];
-    color = lbl_803690D4;
-    ((u8 *) (&color))[3] = (u8) (new_var7 >> 1);
-    colorCopy = color;
-    fn_8005EB5C(*((void **) (((u8 *) arg0) + 0x34)), &colorCopy);
-    fn_8005E644(*new_var6);
-  }
+void fn_800581A4(void *arg0) {
+extern const f32 lbl_80369104, gF32_0, lbl_8036912C, lbl_8036915C, lbl_80369168;
+extern u32 lbl_803690D4;
+void fn_8005EB5C(void *,void *);
+void fn_8005E644(void *);
+TrailNode40 nodes[4];
+u8 *p = arg0;
+s32 i,k,index,count;
+u32 t;
+u32 color, copy;
+f32 u,v,w,x,h0,h1,h2,h3,scale;
+f32 *src; f32 a,b,c;
+for(i=0;i<*(u16*)(p+0x4c);i++) {
+if(i>0) TrailNode_Copy(&nodes[0],&((*(TrailNode40**)(p+0x40))[(*(u16*)(p+0x4e)+*(u16*)(p+0x48)+i-1)%*(u16*)(p+0x4e)]));
+else TrailNode_Copy(&nodes[0],&((*(TrailNode40**)(p+0x40))[(*(u16*)(p+0x48)+i)%*(u16*)(p+0x4e)]));
+TrailNode_Copy(&nodes[1],&((*(TrailNode40**)(p+0x40))[(*(u16*)(p+0x48)+i)%*(u16*)(p+0x4e)]));
+if(i<*(u16*)(p+0x4c)-1) TrailNode_Copy(&nodes[2],&((*(TrailNode40**)(p+0x40))[(*(u16*)(p+0x48)+(i+1))%*(u16*)(p+0x4e)]));
+else TrailNode_Copy(&nodes[2],&(nodes[1]));
+if(i<*(u16*)(p+0x4c)-2) TrailNode_Copy(&nodes[3],&((*(TrailNode40**)(p+0x40))[(*(u16*)(p+0x48)+(i+2))%*(u16*)(p+0x4e)]));
+else TrailNode_Copy(&nodes[3],&(nodes[2]));
+for(t=0;t<p[0x51];t++) {
+u=(lbl_8036912C+(f32)t)/(f32)p[0x51];
+v=lbl_80369104*u; w=u-lbl_8036912C; x=lbl_8036912C-u;
+h0=(lbl_8036915C-v)*(u*u);
+h1=(lbl_8036912C+v)*(w*w);
+h2=u*(x*x); h3=u*(w*u);
+index=(t+i*p[0x51])*40;
+src=(f32*)nodes;
+for(k=0;k<6;k+=3) {
+a=h1*src[10]+h0*src[20]; b=h1*src[11]+h0*src[21]; c=h1*src[12]+h0*src[22];
+(*(f32**)(p+0x44)+k+index/4)[0]=h3*(lbl_80369160*(src[30]-src[10]))+(h2*(lbl_80369160*(src[20]-src[0]))+a);
+(*(f32**)(p+0x44)+k+index/4)[1]=h3*(lbl_80369160*(src[31]-src[11]))+(h2*(lbl_80369160*(src[21]-src[1]))+b);
+(*(f32**)(p+0x44)+k+index/4)[2]=h3*(lbl_80369160*(src[32]-src[12]))+(h2*(lbl_80369160*(src[22]-src[2]))+c);
+src+=3;
+}}
+}
+scale=(f32)(p[0x3b]*96/255)-gF32_0;
+count=*(u16*)(p+0x4c)*p[0x51]-*(u16*)(p+0x4a);
+for(i=0;i<*(u16*)(p+0x4a);i++){
+index=(i+count)*40;
+(*(u8**)(p+0x44))[index+36]=(u8)(gF32_0+((f32)i*scale)/(f32)(*(u16*)(p+0x4a)-1));
+src=(f32*)(*(u8**)(p+0x44)+index);
+src[6]=src[0]+lbl_80369168*(src[3]-src[0])/lbl_8036912C;
+src=(f32*)(*(u8**)(p+0x44)+index);
+src[7]=src[1]+lbl_80369168*(src[4]-src[1])/lbl_8036912C;
+src=(f32*)(*(u8**)(p+0x44)+index);
+src[8]=src[2]+lbl_80369168*(src[5]-src[2])/lbl_8036912C;
+}
+if(*(u16*)(p+0x54)&4) {
+color=lbl_803690D4; ((u8*)&color)[3]=p[0x3b]>>1; copy=color;
+fn_8005EB5C(*(void**)(p+0x34),&copy); fn_8005E644(*(void**)(p+0x34));
+}
 }
 #pragma use_lmw_stmw reset
 
