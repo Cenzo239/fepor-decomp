@@ -1798,14 +1798,19 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma scheduling on
 #pragma opt_lifetimes off
 
-static inline void MenuGridPosition(s32 *arg0, const void *arg1, s16 colW, s16 kind) {
+
+
+void fn_80134C24(s32 *arg0, const void *arg1) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
-    Vec2s in, out;
+    Vec2s out, in;
     s16 rowH;
+    s16 kind, colW;
     s16 quot;
     s32 rem, hdiv, t;
-    s16 y, x, half, off48, off4a;
+    s16 x, y, half, off48, off4a;
+    colW = *(s16 *)((u8 *)arg1 + 0x44);
+    kind = *(s16 *)((u8 *)arg1 + 0x3e);
     quot = kind / colW;
     rowH = *(s16 *)((u8 *)arg1 + 0x46);
     off48 = *(s16 *)((u8 *)arg1 + 0x48);
@@ -1821,10 +1826,6 @@ static inline void MenuGridPosition(s32 *arg0, const void *arg1, s16 colW, s16 k
     in.x = x;
     in.y = (s32)y + half;
     *arg0 = *(s32 *)fn_8013F748((void*)arg1, &out, &in);
-}
-
-void fn_80134C24(s32 *arg0, const void *arg1) {
- MenuGridPosition(arg0, arg1, *(s16 *)((u8 *)arg1 + 0x3e), *(s16 *)((u8 *)arg1 + 0x44));
 }
 #pragma peephole reset
 #pragma optimization_level reset
