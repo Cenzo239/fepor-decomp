@@ -262,6 +262,8 @@ typedef struct StreamState {
 
 extern StreamState *lbl_80368968;
 
+typedef struct SoundVoiceParams { u32 words[8]; } SoundVoiceParams;
+
 typedef struct Voice {
     u8 pad0[0x110];
     u64 flags;
@@ -6854,6 +6856,8 @@ void fn_8026171C(s32 arg0, s32 arg1) {
     gSoundVoices[arg0].unk1C = arg1;
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
                  u32 arg4, u32 arg5, u32 arg6, u32 arg7)
 {
@@ -6939,8 +6943,7 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
         fn_80261E10(arg0, arg7);
     }
 }
-
-#pragma optimization_level 2
+#pragma pop
 void fn_802618E4(s32 arg0)
 {
     extern void (*lbl_803689AC)(u32,u32);
