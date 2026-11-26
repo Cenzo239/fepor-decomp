@@ -1,7 +1,6 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
-static inline void Ui_StoreCursorTile(void *process, s8 x, s8 y) { extern u8 gUiContext[]; void Process_Goto(void *, s32); gUiContext[0xD] = x; gUiContext[0xE] = y; Process_Goto(process, 6); }
 static inline u8 Ui_IsTargetTile(s8 x, s8 y)
 {
     extern u8 gBattleMap[], gUnits[], gTargetList[];
@@ -5064,7 +5063,6 @@ sound:
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma opt_propagation off
 void fn_80119884(void *arg0)
 {
     void *Map_GetCursorUnit(void);
@@ -5239,8 +5237,8 @@ move_limit_done:
             if (gUiInputFlags & 0x400) {
                 Map_HideMoveLimitView();
             }
-            gUiContext[0xD] = (u8)cx;
-            gUiContext[0xE] = (u8)cy;
+            *(s8 *)(gUiContext + 0xD) = cx;
+            *(s8 *)(gUiContext + 0xE) = cy;
             Process_Goto(process, 6);
             Ui_PlaySeCue((const char *)(lbl_80274508 + 0x2D4), 0x64);
         } else goto cancel_menu;
