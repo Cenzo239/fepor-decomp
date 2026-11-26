@@ -1097,8 +1097,8 @@ static inline u8 Menu_InputBlocked(void) {
     return blocked;
 }
 static inline s32 Menu_CountEntries(void *self) {
-    s32 i;
     u32 *p = (u32 *)((u8 *)self + 0x3c);
+    s32 i;
     for (i=0; *p; i++,p++) {}
     return i;
 }
@@ -3730,6 +3730,11 @@ extern "C" void fn_801D1CAC(void *arg0) {
                       - (s32)*(f32 *)((u8 *)arg0 + 0x5C)));
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma global_optimizer on
+#pragma opt_propagation off
 extern "C" void fn_801D1F28(void *self, void *other)
 {
     struct Obj {
@@ -3768,6 +3773,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
     s32 x;
     s32 y;
     s32 i;
+    s16 w;
     u8 flag;
 
     ((Obj *)self)->f3();
@@ -3822,9 +3828,10 @@ extern "C" void fn_801D1F28(void *self, void *other)
         Prim2D_AddZ(lbl_8036B5F4);
         Prim2D_PrepareTex();
 
-        x = targetX - *(s16 *)((u8 *)self + 0x60) + ((s16)width >> 1) + 0x20;
+        w = (s16)width;
+        x = targetX - *(s16 *)((u8 *)self + 0x60) + (w >> 1) + 0x20;
         y = targetY + (height >> 1);
-        fn_8008AB7C(x, y, (s16)width, 0x18, 0x19, 0x33, selected);
+        fn_8008AB7C(x, y, w, 0x18, 0x19, 0x33, selected);
     }
 
     Prim2D_Begin();
@@ -3832,7 +3839,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 4
@@ -4151,17 +4158,18 @@ extern "C" void fn_801D28A8(u8 *self, s32 x, s32 y, u8 *item) {
     s32 fn_800BE798(s32); void fn_80152B4C(s16, s16, s32, s32);
     extern f32 lbl_8036B5E0;
     u8 color[4]; s32 pad; s32 disabled; void *text;
-    s16 h1; s16 h; s16 left, width; s32 half; s16 lineY;
+    s16 h; s16 left, width; s32 half; s16 lineY;
+    s32 xx, yy;
     Prim2D_Begin(); Prim2D_SetTex(0, (u16)(*(u32 *)(self + 0x34) | 0x13)); Prim2D_PrepareTex();
-    h1 = *(s16 *)(self + 0x56);
-    pad = (s16)(((s16)h1 - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1);
+    pad = *(s16 *)(self + 0x56);
+    pad = (s16)(((s16)pad - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1);
     disabled = fn_800BE890(*(s32 *)item) ? 0 : 1;
     if (*(void **)(item + 8)) text = Msg_ResolveName(*(void **)((u8 *)*(void **)(item + 8) + 0x188));
     else text = Msg_Expand(fn_800BE728(*(s32 *)item));
-    s32 yy = (s16)y;
+    yy = (s16)y;
     Text_Draw(x, (s16)(yy + pad), (u8)disabled, text);
     width = (s16)(((MenuD28 *)self)->v10() - *(s16 *)(self + 0x60) - 0x10);
-    s32 xx = (s16)x;
+    xx = (s16)x;
     left = (s16)(xx - 0x10);
     h = *(s16 *)(self + 0x56);
     half = ((s16)h - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1;
