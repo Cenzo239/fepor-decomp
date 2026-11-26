@@ -480,6 +480,7 @@ static inline void *Particle_FindFree(void *base) {
     }
     return NULL;
 }
+#pragma pop
 
 #pragma push
 #pragma optimization_level 4
