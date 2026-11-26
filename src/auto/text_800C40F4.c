@@ -14176,6 +14176,10 @@ static inline SortIterator Sort_AdvanceIterator(const SortIterator &out, s32 n) 
  ((SortIterator *)tmp)->ptr += n;
  return *(SortIterator *)tmp;
 }
+static inline void Sort_CopyStep(SortIterator &out, const s32 &value) {
+ *out = value;
+ ++out;
+}
 static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare c) {
     s32 Sort_GetKey(void *);
     s32 fn_800E0340(void *, void *, void *);
@@ -14211,8 +14215,8 @@ static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortI
             }
 }
 
-#pragma inline_max_size reset
-#pragma inline_max_total_size reset
+#pragma cplusplus on
+#pragma opt_pointer_aliasing off
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
     s32 Sort_GetKey(void *);
     s32 fn_800E0340(void *, void *, void *);
@@ -14224,6 +14228,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
     void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
     void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
     SortIterator fn_800E0398(s32 *, s32 *, s32 *, s32 *, SortIterator, SortCompare);
+    s32 half_n;
     s32 n = ((s32)end - (s32)begin) / 4;
     s32 *mid;
     s32 *cur;
@@ -14283,7 +14288,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         return;
     }
     {
-      s32 half_n = n / 2;
+      half_n = n / 2;
       mid = begin + half_n;
       {
         s32 b_tmp0[2], b_tmp[2];
@@ -14305,6 +14310,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
       fn_800E0398(begin, mid, mid, end, out, comp);
     }
 }
+#pragma opt_pointer_aliasing reset
 #pragma cplusplus off
 
 #pragma push
@@ -16104,9 +16110,9 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         x = z;
     }
 
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    *arg0++ = x;
+    *arg0++ = y;
+    *arg0 = z;
 }
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
