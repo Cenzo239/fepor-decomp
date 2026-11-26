@@ -10585,7 +10585,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma global_optimizer on
+#pragma optimization_level 3
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10610,6 +10610,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[1] = y;
     arg0[2] = z;
 }
+#pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -16147,7 +16148,10 @@ void fn_800E4E5C(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
+#pragma cplusplus on
+extern "C" s32 GActor_FindNode(s32, s32);
+extern "C" void fn_80060F70(void *, s32, f32 *);
+#pragma cplusplus off
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
@@ -16181,7 +16185,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[1] = y;
     arg0[2] = z;
 }
-#pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
@@ -16320,6 +16323,7 @@ void fn_800E51A8(void *arg0, void *arg1) {
     String_Init(arg0, lbl_802720E0 + 5, sp8);
 }
 
+void fn_8005F84C(s32, s32, s32);
 void fn_800E5200(void *arg0, u16 arg1, s32 arg2) {
     if (arg2 != 0) {
         fn_8005F84C(M2C_FIELD(arg0, s32 *, 0xE0), arg2, arg1);
