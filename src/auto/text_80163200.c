@@ -1,4 +1,8 @@
 #include "common.h"
+static inline s32 Ui_AverageCoordinate(s32 current, s32 adjusted)
+{
+    return (current + adjusted) / 2;
+}
 #pragma cplusplus on
 struct UiAnimatedSprite {
     virtual void m08(); virtual void m0C(); virtual void m10();
@@ -12195,8 +12199,8 @@ extern "C" void Ui_DrawListPanel(void *arg0, s32 arg1) {
     Ui_DrawLine(8, y, h + 8, y, 0x10, &col);
 }
 
-#pragma cplusplus on
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     void Prim2D_SetAlphaByte(u8);
     void Prim2D_AddZ(f32);
@@ -12321,8 +12325,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma pop
 
 extern "C" void fn_80176DDC(s32 arg0, void *arg1) {
     void fn_8013E300(void);
