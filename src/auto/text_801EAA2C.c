@@ -53,9 +53,11 @@ static inline void AramCache_ReplaceSlot(AramAllocSlot *cell, AramAllocSlot *bes
 }
 static inline void *AramCache_UnlinkSlot(void *head, AramAllocSlot *node) {
     if (node->next) node->next->prev = node->prev;
-    if (node->prev) node->prev->next = node->next;
-    else head = node->next;
-    return head;
+    if (node->prev) {
+        node->prev->next = node->next;
+        return head;
+    }
+    return node->next;
 }
 static inline void *AramCache_FindUnusedSlot(void *pool) {
     u8 *p = pool;
