@@ -1405,7 +1405,9 @@ if(n<64){p=block->next;head=self->free;if(p)p->prev=block->prev;p=block->prev;if
 else{block->size=n;block=(HeapC55*)((u8*)block+n);block->size=-size;block->owner=self;}
 self->owner=HeapC55_Append(self->owner,block);return block;
 }
-#pragma pop
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 s32 fn_800C5A48(s32 arg0, s32 bytes) {
     HeapC55 *self = (HeapC55 *)arg0;
     void DebugPrint(void *, ...);
@@ -1548,7 +1550,7 @@ s32 fn_800C5A48(s32 arg0, s32 bytes) {
     self->owner = block;
     return (s32)block;
 }
-#pragma global_optimizer on
+#pragma opt_common_subs on
 
 #pragma global_optimizer on
 void fn_800C5EF8(s32 arg0) {
@@ -24484,7 +24486,7 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction reset
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 0
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
