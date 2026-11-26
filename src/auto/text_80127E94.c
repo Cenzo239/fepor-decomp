@@ -99,87 +99,86 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
 }
 #pragma cplusplus reset
 
-void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
+#pragma push
+#pragma cplusplus on
+extern "C" void fn_80127F8C(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetText(void *);
-    void Prim2D_SetColor(s32,s32,s32,s32);
-    void Prim2D_SetPos(f32,f32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 Text_MeasureHeight(s32,f32);
-    s32 Text_MeasureWidth(void *,s32,f32);
+    s32 Text_MeasureHeight(s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_8036A404;
-#pragma cplusplus on
     struct Model {
         u8 pad[4];
-        virtual void v0()=0;
-        virtual void v1()=0;
-        virtual void v2()=0;
-        virtual void v3()=0;
-        virtual void v4()=0;
-        virtual void v5()=0;
-        virtual void v6()=0;
-        virtual void v7()=0;
-        virtual void v8()=0;
-        virtual void v9()=0;
-        virtual void v10()=0;
-        virtual void v11()=0;
-        virtual void v12()=0;
-        virtual void v13()=0;
-        virtual void v14()=0;
-        virtual void v15()=0;
-        virtual void v16()=0;
-        virtual void v17()=0;
-        virtual s32 width()=0;
-        virtual void v19()=0;
-        virtual s32 height()=0;
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s32 width() = 0;
+        virtual void v19() = 0;
+        virtual s32 height() = 0;
     };
     struct Item {
-        virtual void v0()=0;
-        virtual void *text()=0;
-        virtual void v2()=0;
-        virtual void v3()=0;
-        virtual void v4()=0;
-        virtual void v5()=0;
-        virtual void v6()=0;
-        virtual void v7()=0;
-        virtual void v8()=0;
-        virtual void v9()=0;
-        virtual void v10()=0;
-        virtual void v11()=0;
-        virtual void v12()=0;
-        virtual void v13()=0;
-        virtual void v14()=0;
-        virtual void v15()=0;
-        virtual void v16()=0;
-        virtual void setup(void *)=0;
+        virtual void v0() = 0;
+        virtual void *text() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void setup(void *) = 0;
     };
     f32 x;
-    s32 height,width,y;
+    s32 height, width, y;
     Model *model;
-    Item *item;
-    item=(Item *)*arg0;
-    model=M2C_FIELD(arg1,Model **,0x3c);
-    height=(s16)model->height();
-    height=(height-Text_MeasureHeight(-1,lbl_8036A404))>>1;
-    y=(s16)(M2C_FIELD(arg2,s16 *,0x32)+height);
-    model=M2C_FIELD(arg1,Model **,0x3c);
-    width=(s16)model->width();
-    x=(f32)((width-Text_MeasureWidth(item->text(),-1,lbl_8036A404))/2);
-    item->setup(arg1);
+    model = M2C_FIELD(arg1, Model **, 0x3c);
+    height = (s16)model->height();
+    height = (height - Text_MeasureHeight(-1, lbl_8036A404)) >> 1;
+    y = (s16)(M2C_FIELD(arg2, s16 *, 0x32) + height);
+    model = M2C_FIELD(arg1, Model **, 0x3c);
+    width = (s16)model->width();
+    x = (f32)((width - Text_MeasureWidth(((Item *)arg0)->text(), -1, lbl_8036A404)) / 2);
+    ((Item *)arg0)->setup(arg1);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos(x,(f32)y);
-    Prim2D_SetColor(0,0,0,255);
-    Prim2D_SetText(item->text());
+    Prim2D_SetPos(x, (f32)y);
+    Prim2D_SetColor(0, 0, 0, 255);
+    Prim2D_SetText(((Item *)arg0)->text());
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A404);
     Prim2D_PrepareTex();
-#pragma cplusplus reset
 }
-
+#pragma cplusplus off
+#pragma pop
 void fn_80128108(void) {
     extern u16 gScriptCmdNames[];
     Msg_Expand((u8 *)gScriptCmdNames + 0x5C4);
@@ -1160,44 +1159,45 @@ check:
 #pragma use_lmw_stmw on
 void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void fn_800056A0(s32);
-    void *Process_CreateChild(void *, u32);
-    void *Process_Create(void *, s32);
+    void *fn_8000CAA0(void *, u32);
+    void *fn_8000CAF0(void *, s32);
     void fn_8001EEEC(void *);
-    void *Map_Get(void);
-    void *Map_FindObjAt(void *, s32, s32, s32, s32);
+    void *fn_80040844(void);
+    void *fn_8004721C(void *, s32, s32, s32, s32);
     void fn_80049CB4(void *, void *);
     void fn_80049D30(void *);
-    void GActor_RequestRes(void *, void *, void *);
+    void fn_800558D8(void *, void *, void *);
     void *fn_800C45B8(s32, void *, s32);
-    void MapObjEvent_Remove(void *, s8, s8, s32);
-    void MapObjEvent_Push(void *, s8, s8, s32, s32);
-    void PSMTXIdentity(void *);
-    void strcpy(void *, s32);
+    void fn_8010FE08(void *, s8, s8, s32);
+    void fn_8010FEEC(void *, s8, s8, s32, s32);
+    void fn_80201FC4(void *);
+    void fn_80234450(void *, s32);
     extern u8 lbl_80275740[];
     extern u8 lbl_80290AE0[];
-    extern u8 gUiContext[];
-    extern u8 gMapObjEventList[0x200];
+    extern u8 lbl_802EF4C8[];
+    extern u8 lbl_8032BB58[0x200];
     extern u32 lbl_8036A408;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A42C;
     extern f32 lbl_8036A430;
-    u32 sp8;
+    s32 y;
     void *obj;
     void *node;
-    s32 x;
-    s32 y;
     s32 a3;
-    s32 a4;
-    u32 a5;
-    s32 dx;
-    s32 dy;
+    u32 sp8;
+    void *sub;
     f32 f42c;
+    s32 dy;
+    s32 dx;
+    unsigned int a5;
+    s32 x;
+    s32 a4;
     f32 f420;
     f32 f430;
 
-    a3 = arg3;
-    a4 = arg4;
     a5 = arg5;
+    a4 = arg4;
+    a3 = arg3;
     switch (arg2) {
     case 1:
         dx = -1;
@@ -1222,26 +1222,27 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
         break;
     }
     y = arg1 + dy;
-    MapObjEvent_Remove(gMapObjEventList, x - 1, y, 0xA);
-    MapObjEvent_Remove(gMapObjEventList, x + 1, y, 0xA);
-    MapObjEvent_Remove(gMapObjEventList, x, y - 1, 0xA);
-    MapObjEvent_Remove(gMapObjEventList, x, y + 1, 0xA);
-    MapObjEvent_Push(gMapObjEventList, x, y, 0x27, 0);
-    obj = Map_FindObjAt(Map_Get(), x, y, 0x10000, 0);
+    fn_8010FE08(lbl_8032BB58, (s8)(x - 1), (s8)y, 0xA);
+    fn_8010FE08(lbl_8032BB58, (s8)(x + 1), (s8)y, 0xA);
+    fn_8010FE08(lbl_8032BB58, (s8)x, (s8)(y - 1), 0xA);
+    fn_8010FE08(lbl_8032BB58, (s8)x, (s8)(y + 1), 0xA);
+    fn_8010FEEC(lbl_8032BB58, (s8)x, (s8)y, 0x27, 0);
+    obj = fn_8004721C(fn_80040844(), x, y, 0x10000, 0);
     if (obj == NULL) {
         fn_800056A0(0);
         return;
     }
-    if (a5 != 0) {
-        node = Process_CreateChild(lbl_80290AE0, a5);
+    if (a5) {
+        node = fn_8000CAA0(lbl_80290AE0, a5);
     } else {
-        node = Process_Create(lbl_80290AE0, 3);
+        node = fn_8000CAF0(lbl_80290AE0, 3);
     }
     *(void **)((u8 *)node + 0x30) = fn_800C45B8(-0xAC, lbl_80275740 + 0x164, 0);
     f42c = lbl_8036A42C;
     f420 = lbl_8036A420;
     f430 = lbl_8036A430;
-    *(void **)*(void **)((u8 *)node + 0x30) = obj;
+    sub = *(void **)((u8 *)node + 0x30);
+    *(void **)sub = obj;
     *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x34) = a4;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x10) = (f32)(s8)*(u8 *)obj;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x14) = (f32)(s8)*((u8 *)obj + 1);
@@ -1251,8 +1252,8 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x38) = f420;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x2C) = f430;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x30) = f420;
-    PSMTXIdentity((u8 *)*(void **)((u8 *)node + 0x30) + 0x3C);
-    strcpy((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C, a3);
+    fn_80201FC4((u8 *)*(void **)((u8 *)node + 0x30) + 0x3C);
+    fn_80234450((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C, a3);
     fn_8001EEEC((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C);
     fn_80049D30(*(void **)*(void **)((u8 *)node + 0x30));
     sp8 = lbl_8036A408;
@@ -1260,8 +1261,8 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     {
         void *child = *(void **)*(void **)((u8 *)node + 0x30);
         *(u8 *)((u8 *)child + 2) = (u8)(*(u8 *)((u8 *)child + 2) & 0xFE);
-        *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 4) = *(s32 *)gUiContext;
-        GActor_RequestRes(lbl_80275740 + 0x165, *(void **)((u8 *)node + 0x30), child);
+        *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 4) = *(s32 *)lbl_802EF4C8;
+        fn_800558D8(lbl_80275740 + 0x165, *(void **)((u8 *)node + 0x30), child);
     }
 }
 void fn_80129F68(void *arg0) {
@@ -1273,23 +1274,25 @@ void fn_80129F68(void *arg0) {
     fn_80049174(*M2C_FIELD(arg0, s32 **, 0x30), arg0, &sp8, 0xA);
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80129FA4(void *arg0) {
     void fn_80025624(s32, s32);
-    void *Map_Get(void);
+    void *fn_80040844(void);
     void fn_800498A4(void *, void *, s32, f32);
-    void Effect_SetPos(void *, f32, f32, f32);
+    void fn_800536B0(void *, f32, f32, f32);
     void *fn_80053AE8(void *, void *);
-    void SeCue_PlayAt(void *, s32, f32, f32, f32);
+    void fn_80147578(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    void PSMTXIdentity(void *);
-    void PSMTXConcat(void *, void *, void *);
+    void fn_80201FC4(void *);
+    void fn_80202024(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
-    void PSMTXTrans(void *, f32, f32, f32);
-    void PSMTXScale(void *, f32, f32, f32);
+    void fn_80202540(void *, f32, f32, f32);
+    void fn_802025C0(void *, f32, f32, f32);
     extern u8 lbl_80275740[];
-    extern s32 gPadInput;
-    extern f32 gTileCenter;
+    extern s32 lbl_80367240;
+    extern f32 lbl_8036A410;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A430;
     extern f32 lbl_8036A434;
@@ -1317,37 +1320,37 @@ void fn_80129FA4(void *arg0) {
     sub = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)sub + 0x2C) = lbl_8036A420;
     sub = *(void **)((u8 *)self + 0x30);
-    PSMTXIdentity((u8 *)sub + 0x3C);
-    cam = Map_Get();
+    fn_80201FC4((u8 *)sub + 0x3C);
+    cam = fn_80040844();
     sub = *(void **)((u8 *)self + 0x30);
     child = *(void **)sub;
     fn_802024D0(sp38, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
     sub = *(void **)((u8 *)self + 0x30);
-    PSMTXConcat(sp38, (u8 *)sub + 0x3C, (u8 *)sub + 0x3C);
-    PSMTXTrans(sp68, lbl_8036A438, lbl_8036A43C, lbl_8036A438);
+    fn_80202024(sp38, (u8 *)sub + 0x3C, (u8 *)sub + 0x3C);
+    fn_80202540(sp68, lbl_8036A438, lbl_8036A43C, lbl_8036A438);
     sub = *(void **)((u8 *)self + 0x30);
-    PSMTXConcat((u8 *)sub + 0x3C, sp68, sp38);
-    PSMTXTrans(sp68, lbl_8036A440, lbl_8036A444, lbl_8036A440);
-    PSMTXConcat(sp68, sp38, sp98);
+    fn_80202024((u8 *)sub + 0x3C, sp68, sp38);
+    fn_80202540(sp68, lbl_8036A440, lbl_8036A444, lbl_8036A440);
+    fn_80202024(sp68, sp38, sp98);
     scale = *(f32 *)((u8 *)cam + 0x6C);
-    PSMTXScale(sp8, scale, scale, scale);
-    PSMTXConcat(sp8, sp98, sp98);
+    fn_802025C0(sp8, scale, scale, scale);
+    fn_80202024(sp8, sp98, sp98);
     sub = *(void **)((u8 *)self + 0x30);
-    PSMTXTrans(sp68,
+    fn_80202540(sp68,
         lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x10) * scale),
         lbl_8036A430 * (-*(f32 *)((u8 *)sub + 0x18) * scale),
         lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x14) * scale));
-    PSMTXConcat(sp68, sp98, sp98);
-    PSMTXConcat((u8 *)cam + 0x70, sp98, (u8 *)child + 0x24);
+    fn_80202024(sp68, sp98, sp98);
+    fn_80202024((u8 *)cam + 0x70, sp98, (u8 *)child + 0x24);
     sub = *(void **)((u8 *)self + 0x30);
     unk38 = *(f32 *)((u8 *)sub + 0x38);
     unk2c = *(f32 *)((u8 *)sub + 0x2C);
     ia = (s32)(unk38 / lbl_8036A448);
     ib = (s32)((unk38 + unk2c) / lbl_8036A448);
     if (!(lbl_8036A420 != unk38 && ia == ib)) {
-        SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
-            gTileCenter + *(f32 *)((u8 *)sub + 0x10),
-            gTileCenter + *(f32 *)((u8 *)sub + 0x14),
+        fn_80147578(lbl_80275740 + 0x16F, 0x64,
+            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
+            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
     }
     sub = *(void **)((u8 *)self + 0x30);
@@ -1355,21 +1358,21 @@ void fn_80129FA4(void *arg0) {
     *(f32 *)((u8 *)sub + 0x38) = unk38 + *(f32 *)((u8 *)sub + 0x2C);
     fn_800498A4(*(void **)(*(void **)((u8 *)self + 0x30)), self, 0, unk38);
     sub = *(void **)((u8 *)self + 0x30);
-    SeCue_PlayAt(lbl_80275740 + 0x182, 0x64,
-        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
-        gTileCenter + *(f32 *)((u8 *)sub + 0x14),
+    fn_80147578(lbl_80275740 + 0x182, 0x64,
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
-    fn_80025624(gPadInput, 8);
+    fn_80025624(lbl_80367240, 8);
     fn_8018CFA4(0x1E, 6, 2, 0, self);
     path = fn_80053AE8(lbl_80275740 + 0x165, self);
     sub = *(void **)((u8 *)self + 0x30);
-    Effect_SetPos(path,
-        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
-        gTileCenter + *(f32 *)((u8 *)sub + 0x14),
+    fn_800536B0(path,
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
+        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
-    *(f32 *)((u8 *)*(void **)((u8 *)path + 0x30) + 0x18) = gTileCenter;
+    *(f32 *)((u8 *)*(void **)((u8 *)path + 0x30) + 0x18) = lbl_8036A410;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_8012A240(void) {
     M2C_UNK fn_8012A530();
     fn_8012A530();
@@ -1831,19 +1834,22 @@ void fn_8012AEC4(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_8012AF4C(void *arg0) {
-    void Process_ClearFunc(void *);
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void Model_SetAlpha(void *, s32);
-    void PSMTXConcat(void *, void *, void *);
-    void PSMTXScale(void *, f32, f32, f32);
-    void PSMTXRotRad(void *, s32, f32);
-    void PSMTXTrans(void *, f32, f32, f32);
+    void fn_8000C188(void *);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    void fn_8005F7B0(void *, s32);
+    void fn_80202024(void *, void *, void *);
+    void fn_802025C0(void *, f32, f32, f32);
+    void fn_80202300(void *, s32, f32);
+    void fn_80202540(void *, f32, f32, f32);
     f64 fn_802380D0(f32);
-    f64 sin(f32);
-    extern f32 gTileCenter;
+    f64 fn_80238638(f32);
+    extern f32 lbl_8036A410;
     extern f32 lbl_8036A420;
-    extern f32 gAlphaOpaque;
+    extern f32 lbl_8036A424;
     extern f32 lbl_8036A434;
     extern f32 lbl_8036A460;
     extern f32 lbl_8036A468;
@@ -1851,7 +1857,6 @@ void fn_8012AF4C(void *arg0) {
     extern f32 lbl_8036A474;
     extern f32 lbl_8036A470;
     extern f32 lbl_8036A478;
-    struct Sub { s8 bx; s8 by; u8 pad[6]; f32 scale; f32 z; };
 
     u8 sp98[0x30];
     u8 sp68[0x30];
@@ -1859,7 +1864,7 @@ void fn_8012AF4C(void *arg0) {
     u8 sp8[0x30];
     register void *node;
     register f32 x;
-    struct Sub *sub;
+    void *sub;
     f32 scale;
     f32 z;
     f32 y;
@@ -1867,38 +1872,38 @@ void fn_8012AF4C(void *arg0) {
 
     self = arg0;
     *(s32 *)((u8 *)self + 0x40) = *(s32 *)((u8 *)self + 0x40) + 1;
-    sub = *(struct Sub **)((u8 *)self + 0x38);
+    sub = *(void **)((u8 *)self + 0x38);
     node = (u8 *)sub + 0x14;
-    scale = sub->scale;
-    z = sub->z;
-    y = (f32)sub->by;
-    x = (f32)sub->bx;
+    scale = *(f32 *)((u8 *)sub + 8);
+    z = *(f32 *)((u8 *)sub + 0xC);
+    y = (f32)*(s8 *)((u8 *)sub + 1);
+    x = (f32)*(s8 *)((u8 *)sub + 0);
 
-    z += Math_Lerp(lbl_8036A420, lbl_8036A460, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40));
-    x = (lbl_8036A46C * (f32)sin((f32)*(s32 *)((u8 *)self + 0x40))) + x;
+    z += fn_80059F64(lbl_8036A420, lbl_8036A460, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40));
+    x = (lbl_8036A46C * (f32)fn_80238638((f32)*(s32 *)((u8 *)self + 0x40))) + x;
     y = (lbl_8036A46C * (f32)fn_802380D0((f32)*(s32 *)((u8 *)self + 0x40))) + y;
 
-    PSMTXScale(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);
-    PSMTXRotRad(sp68, 0x58, lbl_8036A474);
-    PSMTXConcat(sp68, sp98, sp8);
-    PSMTXTrans(sp38, lbl_8036A478, lbl_8036A478, lbl_8036A420);
-    PSMTXConcat(sp38, sp8, sp8);
-    PSMTXRotRad(sp68, 0x5A, lbl_8036A434 * scale);
-    PSMTXConcat(sp68, sp8, sp8);
-    PSMTXTrans(sp38, gTileCenter, gTileCenter, lbl_8036A420);
-    PSMTXConcat(sp38, sp8, sp8);
-    PSMTXTrans(sp38, x, y, z);
-    PSMTXConcat(sp38, sp8, (u8 *)node + 0x10);
+    fn_802025C0(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);
+    fn_80202300(sp68, 0x58, lbl_8036A474);
+    fn_80202024(sp68, sp98, sp8);
+    fn_80202540(sp38, lbl_8036A478, lbl_8036A478, lbl_8036A420);
+    fn_80202024(sp38, sp8, sp8);
+    fn_80202300(sp68, 0x5A, lbl_8036A434 * scale);
+    fn_80202024(sp68, sp8, sp8);
+    fn_80202540(sp38, lbl_8036A410, lbl_8036A410, lbl_8036A420);
+    fn_80202024(sp38, sp8, sp8);
+    fn_80202540(sp38, x, y, z);
+    fn_80202024(sp38, sp8, (u8 *)node + 0x10);
 
-    Model_SetAlpha(node, Math_Lerp(gAlphaOpaque, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    fn_8005F7B0(node, fn_80059F64(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
     node = (u8 *)*(void **)((u8 *)self + 0x3C) + 0x14;
-    Model_SetAlpha(node, Math_Lerp(lbl_8036A420, gAlphaOpaque, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    fn_8005F7B0(node, fn_80059F64(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
 
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
-        Process_ClearFunc(self);
+        fn_8000C188(self);
     }
 }
-
+#pragma pop
 void fn_8012B230(void *arg0) {
     u8 fn_80049D84(void *);
     void fn_800498A4(void *, s32, s32);
@@ -1916,6 +1921,8 @@ void fn_8012B230(void *arg0) {
     s32 vec[3];
     f32 x;
     f32 y;
+    f32 fx;
+    f32 fy;
     void *effect;
     void *obj;
     s32 *src;
@@ -1932,8 +1939,10 @@ void fn_8012B230(void *arg0) {
     vec[2] = src[2];
     PSMTXRotRad(mtx, 0x5A, lbl_8036A434 * *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + 8));
     fn_802029C4(mtx, vec, vec);
-    x = (gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x30)) + ((f32 *)vec)[0];
-    y = (gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x34)) + ((f32 *)vec)[1];
+    fx = gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x30);
+    fy = gTileCenter + (f32)*(s32 *)((u8 *)arg0 + 0x34);
+    x = fx + ((f32 *)vec)[0];
+    y = fy + ((f32 *)vec)[1];
     effect = Effect_Create(lbl_80275740 + 0x1A7, arg0);
     Effect_SetPos(effect, x, y, Map_SampleHeight(gBattleMap, x, y));
 }
@@ -2001,7 +2010,8 @@ void fn_8012B488(s32 arg0) {
     *(s32 *)((u8 *)self + 0x44) = 0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_common_subs off
 void fn_8012B554(void *arg0) {
     s32 Rand_Range(s32);
     void fn_8007ADC8(s32);
@@ -2011,8 +2021,10 @@ void fn_8012B554(void *arg0) {
 
     void **list;
     u8 *p;
-    s32 count;
+    unsigned int count;
     s32 i;
+    s32 remaining;
+    s32 index;
     void *sel;
     void *item;
     u8 flag;
@@ -2037,10 +2049,10 @@ void fn_8012B554(void *arg0) {
                 p += 0x20;
                 i += 1;
             }
-            count = Rand_Range(count);
+            remaining = Rand_Range(count);
             p = (u8 *)list;
-            i = 0;
-            for (; fn_8007C400() > i; ) {
+            index = 0;
+            for (; fn_8007C400() > index; ) {
                 item = *(void **)p;
                 flag = 0;
                 if ((s8)*(u8 *)((u8 *)item + 3) == (s8)*(u8 *)((u8 *)item + 5)
@@ -2048,14 +2060,14 @@ void fn_8012B554(void *arg0) {
                     flag = 1;
                 }
                 if (flag != 0) {
-                    count -= 1;
-                    if (count == 0) {
-                        sel = *(void **)((u8 *)list + (i << 5));
+                    remaining -= 1;
+                    if (remaining == 0) {
+                        sel = *(void **)((u8 *)list + (index << 5));
                         goto found1;
                     }
                 }
                 p += 0x20;
-                i += 1;
+                index += 1;
             }
             sel = NULL;
         found1:
@@ -2110,8 +2122,7 @@ void fn_8012B554(void *arg0) {
         }
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_8012B7DC(void *arg0) {
     void fn_80007124(void *);
     void fn_80007698(u8);
