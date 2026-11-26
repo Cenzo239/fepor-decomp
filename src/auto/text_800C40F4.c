@@ -4234,40 +4234,26 @@ void String_ConcatCStr(M2C_UNK *arg0, M2C_UNK *unused, s32 arg2) {
 void fn_800CB978(u8 *self) {
     char *Unit_GetMapModelName(void *);
     extern char lbl_802704F8[];
+    char *name;
+    u8 *third;
 
-    {
-        char *name = **(char ***)((u8 *)gBattle + 0x188);
-        String_AssignCStr((String *)(self + 0x20), name, strlen(name));
-    }
-    {
-        char *name = **(char ***)((u8 *)gBattle + 0x468);
-        String_AssignCStr((String *)(self + 0x2c), name, strlen(name));
-    }
-    {
-        char *name = Unit_GetMapModelName(gBattle);
-        String_AssignCStr((String *)(self + 0x44), name, strlen(name));
-    }
-    {
-        char *name = Unit_GetMapModelName((u8 *)gBattle + 0x2e0);
-        String_AssignCStr((String *)(self + 0x50), name, strlen(name));
-    }
-    {
-        u8 *third = (u8 *)gBattle + 0x5c0;
-        if (*(u32 *)(third + 0x280)) {
-            {
-                char *name = **(char ***)((u8 *)gBattle + 0x748);
-                String_AssignCStr((String *)(self + 0x38), name, strlen(name));
-            }
-            {
-                char *name = Unit_GetMapModelName(third);
-                String_AssignCStr((String *)(self + 0x5c), name, strlen(name));
-            }
-        } else {
-            u32 len = strlen(lbl_802704F8 + 0x1b0);
-            String_AssignCStr((String *)(self + 0x38), (char *)((u32)lbl_802704F8 + 0x1b0), len);
-            len = strlen(lbl_802704F8 + 0x1b0);
-            String_AssignCStr((String *)(self + 0x5c), (char *)((u32)lbl_802704F8 + 0x1b0), len);
-        }
+    name = **(char ***)((u8 *)gBattle + 0x188);
+    String_AssignCStr((String *)(self + 0x20), name, strlen(name));
+    name = **(char ***)((u8 *)gBattle + 0x468);
+    String_AssignCStr((String *)(self + 0x2c), name, strlen(name));
+    name = Unit_GetMapModelName(gBattle);
+    String_AssignCStr((String *)(self + 0x44), name, strlen(name));
+    name = Unit_GetMapModelName((u8 *)gBattle + 0x2e0);
+    String_AssignCStr((String *)(self + 0x50), name, strlen(name));
+    third = (u8 *)gBattle + 0x5c0;
+    if (*(u32 *)(third + 0x280)) {
+        name = **(char ***)((u8 *)gBattle + 0x748);
+        String_AssignCStr((String *)(self + 0x38), name, strlen(name));
+        name = Unit_GetMapModelName(third);
+        String_AssignCStr((String *)(self + 0x5c), name, strlen(name));
+    } else {
+        String_AssignCStr((String *)(self + 0x38), lbl_802704F8 + 0x1b0, strlen(lbl_802704F8 + 0x1b0));
+        String_AssignCStr((String *)(self + 0x5c), lbl_802704F8 + 0x1b0, strlen(lbl_802704F8 + 0x1b0));
     }
 }
 
