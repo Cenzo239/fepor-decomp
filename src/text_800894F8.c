@@ -114,11 +114,7 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-static inline void *CreateFirst_895B8(void *base) {
-    void *Process_Create(void *, s32);
-    return Process_Create((u8 *)base + 0, 7);
-}
-
+#pragma global_optimizer off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
@@ -126,21 +122,16 @@ void fn_800895B8(void) {
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    struct Holder {
-        u8 a[0x18];
-        u8 b[0x18];
-        u8 c[0x28];
-        u8 d[0x20];
-    };
-    struct Holder *h = (struct Holder *)lbl_80289950;
+    void *base;
     void *tmp;
 
-    lbl_803674E0 = Process_Create(h->a, 7);
-    lbl_803674E4 = Process_Create(h->d, 7);
-    tmp = Process_Create(h->b, 7);
+    base = lbl_80289950;
+    lbl_803674E0 = Process_Create((u8 *)base + 0, 7);
+    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
+    tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create(h->c, 7);
+    tmp = Process_Create((u8 *)base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
