@@ -4948,7 +4948,6 @@ extern "C" s32 fn_801BC71C(s32 arg0) {
     t = *(s32 *)(gBattleState + 0x1C);
     return (Unit_GetGoldCost(arg0, 1, gBattleState) <= t) ? 1 : 0;
 }
-#pragma optimization_level 4
 
 #pragma cplusplus on
 extern "C" void Ui_DetachChildSlots(void *panel) {
