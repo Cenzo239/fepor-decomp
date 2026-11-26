@@ -1,4 +1,14 @@
 #include "common.h"
+static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
+    u8 fn_80105BC0(void *, u8);
+    u32 *fn_8001CB64(u32);
+    if (!unit) return 1;
+    if (unit == player) return 0;
+    if (fn_80105BC0((u8 *)*(void **)((u8 *)unit + 0x18C) + 0x1C, 8)) {
+        if ((*(u64 *)fn_8001CB64((u32)item) & 0x200ULL) != 0) return 0;
+    }
+    return 1;
+}
 #pragma cplusplus on
 struct UiAnimatedSprite {
     virtual void m08(); virtual void m0C(); virtual void m10();
