@@ -1037,6 +1037,7 @@ extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
  Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)(y+16)); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
 }
 
+#pragma opt_common_subs reset
 #pragma cplusplus reset
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
@@ -1296,7 +1297,6 @@ extern "C" f32 PSVECDistance(const Vec3f &, const Vec3f &);
 extern "C" void fn_80112E30(void *arg0) {
     extern f32 lbl_8036A1A8;
     typedef void (*GetPosFn)(Vec3f *, void *, s32);
-    struct VTable { u8 pad[0x38]; GetPosFn getPos; };
     void *target;
     void *self;
     f32 dist;
@@ -1309,9 +1309,9 @@ extern "C" void fn_80112E30(void *arg0) {
     } else {
         a.z=lbl_8036A184; a.y=lbl_8036A184; a.x=lbl_8036A184;
         b.z=lbl_8036A184; b.y=lbl_8036A184; b.x=lbl_8036A184;
-        ((struct VTable *)M2C_FIELD(self, void **, 0x40))->getPos(&t1, self, 0);
+        ((GetPosFn)M2C_FIELD(M2C_FIELD(self,void **,0x40),void **,0x38))(&t1, self, 0);
         pa = a = t1;
-        ((struct VTable *)M2C_FIELD(target, void **, 0x40))->getPos(&t2, target, 0);
+        ((GetPosFn)M2C_FIELD(M2C_FIELD(target,void **,0x40),void **,0x38))(&t2, target, 0);
         pb = b = t2;
         dist = PSVECDistance(pa, pb);
     }
