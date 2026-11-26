@@ -4255,6 +4255,7 @@ s32 fn_801D2B04(void *arg0) {
     return Msg_Expand();
 }
 
+static inline s16 CalcD2B94(s16 subtrahend, void *arg1) { return M2C_FIELD(arg1, s16 *, 0x4E) - subtrahend; }
 #pragma global_optimizer off
 void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
@@ -4263,6 +4264,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     s16 temp_r6;
     s16 temp_r6_2;
     s32 temp_r7;
+    s16 subtrahend;
 #pragma cplusplus on
     struct Obj {
         virtual void v0() = 0;
@@ -4280,7 +4282,8 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
+    subtrahend = M2C_FIELD(arg1, s16 *, 0x54);
+    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - subtrahend;
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
