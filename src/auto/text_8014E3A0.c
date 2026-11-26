@@ -1,5 +1,11 @@
 /* Functions from 0x8014E3A0 to 0x801620BC, found by decomp-toolkit. */
 #include "common.h"
+#pragma cplusplus on
+struct PanelInitColor {
+    u8 r, g, b, a;
+    PanelInitColor(u8 red, u8 green, u8 blue, u8 alpha) : r(red), g(green), b(blue), a(alpha) {}
+};
+#pragma cplusplus reset
 
 static inline void *MsgDebug_FilterText(void *text, u8 *dst)
 {
@@ -1187,6 +1193,10 @@ volatile unsigned long long fn_8014EFB8(void *arg0, void *arg1, void *arg2, void
   }
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
     void GXClearVtxDesc(void);
@@ -1205,10 +1215,10 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     extern f32 lbl_8036A820;
     extern f32 lbl_8036A838;
     u8 sp8[0x20];
-    void *var_r28;
+    void *var_r31;
     void *var_r30;
     void *var_r29;
-    register void *var_r31;
+    void *var_r28;
     f32 f3, f2, f1, f0;
     u8 r5b, r4b, r3b, r0b;
     s32 ctr;
@@ -1247,8 +1257,8 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
                 f2 = *(f32 *)((u8 *)var_r28 + 4);
                 f1 = *(f32 *)((u8 *)var_r28 + 0);
                 f0 = lbl_8036A838;
-                *(volatile f32 *)0xCC008000 = f2;
                 *(volatile f32 *)0xCC008000 = f1;
+                *(volatile f32 *)0xCC008000 = f2;
                 *(volatile f32 *)0xCC008000 = f3;
                 r5b = *(u8 *)((u8 *)var_r28 + 0x28);
                 r4b = *(u8 *)((u8 *)var_r28 + 0x2B);
@@ -1256,8 +1266,8 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
                 r0b = *(u8 *)((u8 *)var_r28 + 0x29);
                 *(volatile u8 *)0xCC008000 = r0b;
                 *(volatile u8 *)0xCC008000 = r3b;
-                *(volatile u8 *)0xCC008000 = r5b;
                 *(volatile u8 *)0xCC008000 = r4b;
+                *(volatile u8 *)0xCC008000 = r5b;
                 *(volatile f32 *)0xCC008000 = f0;
                 *(volatile f32 *)0xCC008000 = f0;
             }
@@ -1291,8 +1301,8 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
                 r0b = *(u8 *)((u8 *)var_r29 + 0x29);
                 *(volatile u8 *)0xCC008000 = r0b;
                 *(volatile u8 *)0xCC008000 = r3b;
-                *(volatile u8 *)0xCC008000 = r5b;
                 *(volatile u8 *)0xCC008000 = r4b;
+                *(volatile u8 *)0xCC008000 = r5b;
             }
             ctr += 1;
         check2:
@@ -1300,7 +1310,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         } while (ctr < (s32)*(u16 *)((u8 *)var_r30 + 0x1E));
     }
 }
-
+#pragma pop
 void fn_801505A8(void *arg0,void *arg1) {
 typedef struct {u32 x,y,z;} Triple;
 typedef struct {Triple position; Triple rotation; f32 a,b,c,d; u8 e,f,g,h;} Entry;
