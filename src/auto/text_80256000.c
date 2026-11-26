@@ -1,20 +1,5 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline void Sound_InitDelay6386C(s32 length, u8 *record, f32 zero) {
-    void *fn_802637A4(s32);
-    void *memset(void *, s32, u32);
-    extern const f32 lbl_8036C378;
-    s32 size = length << 2;
-    *(s32 *)(record + 8) = size;
-    *(void **)(record + 12) = fn_802637A4(size);
-    memset(*(void **)(record + 12), 0, size);
-    *(f32 *)(record + 16) = zero;
-    *(s32 *)(record + 4) = *(s32 *)record - ((length >> 1) << 2);
-    while (*(s32 *)(record + 4) < 0)
-        *(s32 *)(record + 4) += *(s32 *)(record + 8);
-    *(s32 *)record = 0;
-    *(s32 *)(record + 4) = 0;
-}
 
 static inline s32 Sound_ClampMix(s32 value) {
     if (value > 0x7FFFFF) return 0x7FFFFF;
@@ -8531,7 +8516,7 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
     u32 sub4;
     u8 sub2;
     u8 *record;
-    u32 *tp;
+    u8 *tp;
     u32 index;
     u8 *record2;
     u32 ch2;
@@ -8600,14 +8585,14 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
         {
             u32 index2, sub4_2;
         for (sub2 = 0; sub2 < 2; sub2++) {
-            u32 *p;
+            u8 *p;
             u32 sub_u;
 
             sub4_2 = (u32)(sub2 << 2);
             sub_u = (u32)sub2;
-            p = (u32 *)((u8 *)lbl_802A4560 + sub4_2);
+            p = (u8 *)lbl_802A4560 + sub4_2;
             index2 = sub_u + ch2;
-            tp = p + 2;
+            tp = p + 8;
             record2 = data + index2 * 0x14;
 
             length = (s32)*(u32 *)tp + 2;
