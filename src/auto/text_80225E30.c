@@ -697,17 +697,6 @@ s32 fn_80226A2C(s32 *arg0, void **arg1) {
     return result;
 }
 #pragma use_lmw_stmw reset
-static inline void InitMsgBuffers(void *arg, s32 zero) {
-    s32 i;
-    u8 *queue = (u8 *)arg;
-    for (i = 0; i < 3; i++) {
-        fn_802287B8(queue);
-        fn_802287B0(queue);
-        *(u32 *)(queue + 0x4) = zero;
-        fn_802287A8(queue);
-        queue += 0x890;
-    }
-}
 int TRKInitializeMessageBuffers(void) {
     u8 *queue;
     s32 i;
