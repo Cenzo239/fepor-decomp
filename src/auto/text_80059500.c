@@ -57,7 +57,7 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   t_m1 = farg4 - one;
   h01 = (lbl_8036915C - two_t) * (farg4 * farg4);
   h00 = (one + two_t) * (t_m1 * t_m1);
-  return (f32)((f64)((t_m1 * farg4) * farg4) * HermiteTangent(farg3, farg1) +
+  return (f32)((f64)((t_m1 * farg4) * farg4) * ((f64)(farg3 - farg1) * 0.5) +
   ((f64)(((one - farg4) * (one - farg4)) * farg4) * ((f64)(farg2 - farg0) * 0.5) +
   (f64)(h00 * farg1 + h01 * farg2)));
 }
