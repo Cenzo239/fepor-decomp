@@ -1311,6 +1311,7 @@ void fn_801B04F8(void *arg0) {
 }
 
 #pragma cplusplus on
+static inline bool Shop_SelectionChanged(s16 previous, s16 current) { return previous != current; }
 extern "C" void fn_801B0564(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
