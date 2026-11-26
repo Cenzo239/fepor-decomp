@@ -8674,7 +8674,8 @@ void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
 
 #pragma push
 #pragma cplusplus on
-#pragma optimization_level 3
+#pragma optimization_level 4
+#pragma opt_propagation off
 extern "C" void fn_80171374(void *arg0) {
 #pragma opt_common_subs off
     void *Heap_Alloc(s32);
@@ -8695,7 +8696,7 @@ extern "C" void fn_80171374(void *arg0) {
     extern u8 gUnitLists[], lbl_8028FDB0[], lbl_80292230[], lbl_80292178[], lbl_80291A3C[], lbl_802919DC[], lbl_80293C84[], lbl_80293C2C[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    extern f32 gF32_1, lbl_8036AB70, lbl_8036AB78;
+    extern const f32 gF32_1, lbl_8036AB70, lbl_8036AB78;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -16082,6 +16083,19 @@ void fn_8017C478(void *arg0) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
+static inline s16 GoldCost_CalculateInline(s32 unit, s16 qty) {
+    f32 fn_80037818(s32, u8);
+    u8 fn_80105BC0(s32, s32);
+    extern f32 lbl_8036ABD8;
+    s16 cost;
+    if (qty == 0) return 0;
+    cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)qty));
+    if (fn_80105BC0(unit + 0x1BC, 0x4B)) cost = (s16)((cost * 10) / 7);
+    if (fn_80105BC0(unit + 0x1BC, 0xB)) cost /= 2;
+    if (cost < 1) cost = 1;
+    return cost;
+}
+
 void fn_8017C4BC(void *arg0) {
     f32 fn_80037818(s32, u8);
     u8 fn_800386B0(s32);
@@ -16094,6 +16108,7 @@ void fn_8017C4BC(void *arg0) {
     extern void *lbl_80367240;
     extern f32 lbl_8036ABD8;
 
+    void *self = arg0;
     u8 skip;
     u32 buttons;
     u32 can;
@@ -16114,16 +16129,16 @@ void fn_8017C4BC(void *arg0) {
 
     {
         void *p = lbl_80367240;
-        unit = *(s32 *)((u8 *)arg0 + 0x40);
+        unit = *(s32 *)((u8 *)self + 0x40);
         buttons = *(u32 *)((u8 *)p + 0x10);
         diff = (u8)fn_8003D13C(unit);
-        field = *(s16 *)((u8 *)arg0 + 0x3E);
+        field = *(s16 *)((u8 *)self + 0x3E);
         diff = diff - field;
     }
     can = (u32)(-diff & ~diff) >> 31;
     if (can != 0) {
         next = field + 1;
-        unit = *(s32 *)((u8 *)arg0 + 0x40);
+        unit = *(s32 *)((u8 *)self + 0x40);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
         if (next == 0) {
             cost = 0;
@@ -16133,7 +16148,7 @@ void fn_8017C4BC(void *arg0) {
                 cost = (s16)((cost * 10) / 7);
             }
             if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                cost /= 2;
             }
             if (cost < 1) {
                 cost = 1;
@@ -16142,11 +16157,11 @@ void fn_8017C4BC(void *arg0) {
         can = cost <= limit;
     }
     if ((u8)can != 0 && (buttons & 0x08000008)) {
-        field = *(s16 *)((u8 *)arg0 + 0x3E);
-        *(s16 *)((u8 *)arg0 + 0x3E) = field + 1;
-        next = *(s16 *)((u8 *)arg0 + 0x3E);
+        field = *(s16 *)((u8 *)self + 0x3E);
+        *(s16 *)((u8 *)self + 0x3E) = field + 1;
+        next = *(s16 *)((u8 *)self + 0x3E);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
-        unit = *(s32 *)((u8 *)arg0 + 0x40);
+        unit = *(s32 *)((u8 *)self + 0x40);
         if (next == 0) {
             cost = 0;
         } else {
@@ -16155,25 +16170,25 @@ void fn_8017C4BC(void *arg0) {
                 cost = (s16)((cost * 10) / 7);
             }
             if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                cost /= 2;
             }
             if (cost < 1) {
                 cost = 1;
             }
         }
-        *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(limit - cost);
+        *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
-        *(s16 *)((u8 *)arg0 + 0x5A) = 1;
-        *((u8 *)arg0 + 0x51) = 1;
+        *(s16 *)((u8 *)self + 0x5A) = 1;
+        *((u8 *)self + 0x51) = 1;
         return;
     }
 
-    field = *(s16 *)((u8 *)arg0 + 0x3E);
+    field = *(s16 *)((u8 *)self + 0x3E);
     if (field > 0 && (buttons & 0x04000004)) {
-        *(s16 *)((u8 *)arg0 + 0x3E) = field - 1;
-        next = *(s16 *)((u8 *)arg0 + 0x3E);
+        *(s16 *)((u8 *)self + 0x3E) = field - 1;
+        next = *(s16 *)((u8 *)self + 0x3E);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
-        unit = *(s32 *)((u8 *)arg0 + 0x40);
+        unit = *(s32 *)((u8 *)self + 0x40);
         if (next == 0) {
             cost = 0;
         } else {
@@ -16182,24 +16197,24 @@ void fn_8017C4BC(void *arg0) {
                 cost = (s16)((cost * 10) / 7);
             }
             if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                cost /= 2;
             }
             if (cost < 1) {
                 cost = 1;
             }
         }
-        *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(limit - cost);
+        *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
-        *(s16 *)((u8 *)arg0 + 0x82) = 1;
-        *((u8 *)arg0 + 0x79) = 1;
+        *(s16 *)((u8 *)self + 0x82) = 1;
+        *((u8 *)self + 0x79) = 1;
         return;
     }
 
-    diff = (u8)fn_8003D13C(*(s32 *)((u8 *)arg0 + 0x40)) - field;
+    diff = (u8)fn_8003D13C(*(s32 *)((u8 *)self + 0x40)) - field;
     can = (u32)(-diff & ~diff) >> 31;
     if (can != 0) {
-        unit = *(s32 *)((u8 *)arg0 + 0x40);
-        next = (s16)(*(s16 *)((u8 *)arg0 + 0x3E) + 1);
+        unit = *(s32 *)((u8 *)self + 0x40);
+        next = (s16)(*(s16 *)((u8 *)self + 0x3E) + 1);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
         if (next == 0) {
             cost = 0;
@@ -16209,7 +16224,7 @@ void fn_8017C4BC(void *arg0) {
                 cost = (s16)((cost * 10) / 7);
             }
             if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                cost /= 2;
             }
             if (cost < 1) {
                 cost = 1;
@@ -16220,10 +16235,10 @@ void fn_8017C4BC(void *arg0) {
     if ((u8)can != 0 && (buttons & 0x02000002)) {
         goto check_inc;
         do {
-            *(s16 *)((u8 *)arg0 + 0x3E) = (s16)(*(s16 *)((u8 *)arg0 + 0x3E) + 1);
-            next = *(s16 *)((u8 *)arg0 + 0x3E);
+            *(s16 *)((u8 *)self + 0x3E) = (s16)(*(s16 *)((u8 *)self + 0x3E) + 1);
+            next = *(s16 *)((u8 *)self + 0x3E);
             limit = *(s32 *)(lbl_80330708 + 0x1C);
-            unit = *(s32 *)((u8 *)arg0 + 0x40);
+            unit = *(s32 *)((u8 *)self + 0x40);
             if (next == 0) {
                 cost = 0;
             } else {
@@ -16232,23 +16247,23 @@ void fn_8017C4BC(void *arg0) {
                     cost = (s16)((cost * 10) / 7);
                 }
                 if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                    cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                    cost /= 2;
                 }
                 if (cost < 1) {
                     cost = 1;
                 }
             }
-            *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(limit - cost);
+            *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         check_inc:
-            if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)arg0 + 0x40)) + *(s16 *)((u8 *)arg0 + 0x3E)) == 0x64) {
+            if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)self + 0x40)) + *(s16 *)((u8 *)self + 0x3E)) == 0x64) {
                 break;
             }
-            field = *(s16 *)((u8 *)arg0 + 0x3E);
-            diff = (u8)fn_8003D13C(*(s32 *)((u8 *)arg0 + 0x40)) - field;
+            field = *(s16 *)((u8 *)self + 0x3E);
+            diff = (u8)fn_8003D13C(*(s32 *)((u8 *)self + 0x40)) - field;
             can = (u32)(-diff & ~diff) >> 31;
             if (can != 0) {
                 next = field + 1;
-                unit = *(s32 *)((u8 *)arg0 + 0x40);
+                unit = *(s32 *)((u8 *)self + 0x40);
                 limit = *(s32 *)(lbl_80330708 + 0x1C);
                 if (next == 0) {
                     cost = 0;
@@ -16258,7 +16273,7 @@ void fn_8017C4BC(void *arg0) {
                         cost = (s16)((cost * 10) / 7);
                     }
                     if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                        cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                        cost /= 2;
                     }
                     if (cost < 1) {
                         cost = 1;
@@ -16268,18 +16283,18 @@ void fn_8017C4BC(void *arg0) {
             }
         } while ((u8)can != 0);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
-        *(s16 *)((u8 *)arg0 + 0x5A) = 1;
-        *((u8 *)arg0 + 0x51) = 1;
+        *(s16 *)((u8 *)self + 0x5A) = 1;
+        *((u8 *)self + 0x51) = 1;
         return;
     }
 
-    if (*(s16 *)((u8 *)arg0 + 0x3E) > 0 && (buttons & 0x01000001)) {
+    if (*(s16 *)((u8 *)self + 0x3E) > 0 && (buttons & 0x01000001)) {
         goto check_dec;
         do {
-            *(s16 *)((u8 *)arg0 + 0x3E) = (s16)(*(s16 *)((u8 *)arg0 + 0x3E) - 1);
-            next = *(s16 *)((u8 *)arg0 + 0x3E);
+            *(s16 *)((u8 *)self + 0x3E) = (s16)(*(s16 *)((u8 *)self + 0x3E) - 1);
+            next = *(s16 *)((u8 *)self + 0x3E);
             limit = *(s32 *)(lbl_80330708 + 0x1C);
-            unit = *(s32 *)((u8 *)arg0 + 0x40);
+            unit = *(s32 *)((u8 *)self + 0x40);
             if (next == 0) {
                 cost = 0;
             } else {
@@ -16288,21 +16303,21 @@ void fn_8017C4BC(void *arg0) {
                     cost = (s16)((cost * 10) / 7);
                 }
                 if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                    cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
+                    cost /= 2;
                 }
                 if (cost < 1) {
                     cost = 1;
                 }
             }
-            *(s16 *)((u8 *)arg0 + 0x3C) = (s16)(limit - cost);
+            *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         check_dec:
-            if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)arg0 + 0x40)) + *(s16 *)((u8 *)arg0 + 0x3E)) == 0x64) {
+            if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)self + 0x40)) + *(s16 *)((u8 *)self + 0x3E)) == 0x64) {
                 break;
             }
-        } while (*(s16 *)((u8 *)arg0 + 0x3E) > 0);
+        } while (*(s16 *)((u8 *)self + 0x3E) > 0);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
-        *(s16 *)((u8 *)arg0 + 0x82) = 1;
-        *((u8 *)arg0 + 0x79) = 1;
+        *(s16 *)((u8 *)self + 0x82) = 1;
+        *((u8 *)self + 0x79) = 1;
     }
 }
 #pragma pop
