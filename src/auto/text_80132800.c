@@ -159,12 +159,6 @@ typedef struct Vec2s {
 } Vec2s;
 
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
-static inline s16 MenuGridRow(s32 index, s32 columns) { return index / columns; }
-static inline s16 MenuGridWidthForColumns(s32 columns, const void *self) {
-    s16 left = *(s16 *)((u8 *)self + 0x12);
-    s16 width = *(s16 *)((u8 *)self + 0x16) - left;
-    return width / columns;
-}
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
@@ -1812,7 +1806,7 @@ void fn_80134C24(s32 *arg0, const void *arg1) {
     s16 kind, colW;
     s16 quot;
     s32 rem, hdiv, t;
-    s16 x, y, half, off48, off4a;
+    s16 x, y, half; s32 off4a, off48;
     colW = *(s16 *)((u8 *)arg1 + 0x44);
     kind = *(s16 *)((u8 *)arg1 + 0x3e);
     quot = kind / colW;
