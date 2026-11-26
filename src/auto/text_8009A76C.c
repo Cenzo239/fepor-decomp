@@ -4,7 +4,7 @@
 
 #pragma push
 #pragma optimization_level 4
-static inline void Ui_DrawTiledBattleRow(u32 texture_arg, s32 count, s32 alpha, f32 x, f32 y) {
+static inline void Ui_DrawTiledBattleRow(s32 count, u32 texture_arg, s32 alpha, f32 x, f32 y) {
 
 void Prim2D_EmitQuad(void);
 void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
