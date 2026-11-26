@@ -10572,9 +10572,9 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
-    register f32 y;
-    register f32 z;
-    register f32 x;
+    f32 y;
+    f32 z;
+    f32 x;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
@@ -16132,6 +16132,7 @@ void fn_800E4E5C(void *arg0) {
 
 #pragma push
 #pragma cplusplus on
+#pragma peephole off
 extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
