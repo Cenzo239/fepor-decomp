@@ -91,21 +91,21 @@ static inline s32 IsSpecialAddr(u32 v, u8 *base, s32 off) {
     return v == (u32)(base + off);
 }
 
-#pragma optimization_level 4
-#pragma opt_strength_reduction on
-#pragma opt_dead_code on
+#pragma opt_common_subs off
 void fn_80089490(void *arg0) {
-    extern u8 lbl_80289950[];
+    extern u32 lbl_80289950[];
     void fn_8000A408(void *);
-    u8 *tbl = lbl_80289950;
+    u8 *tbl = (u8 *)lbl_80289950;
     u8 *p;
     u32 v;
+
     if (*(u8 *)((u8 *)arg0 + 0x2B) != 0x7B) {
         v = *(u32 *)arg0;
         p = tbl + 0x7C;
-        if (v != (u32)p && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34))
+        if (v != (u32)p && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34)) {
             fn_8000A408(arg0);
+        }
     }
 }
-#pragma optimization_level reset
+#pragma opt_common_subs reset
 
