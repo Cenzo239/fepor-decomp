@@ -1734,7 +1734,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     u8 *seqOff;
     u8 *bankTbl;
     struct LocalState *state;
-    u8 *node;
+    u32 i;
     u8 *next;
     u8 *prev;
     u8 *cur;
@@ -1749,52 +1749,54 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
     s32 temp;
     s32 key;
     s32 vel;
-    u32 i;
+    u8 *node;
+    u32 off;
+    u8 *walk;
 
     msg = (u8 *)arg0;
 
     switch (msg[0x14]) {
     case 4:
         data = *(u8 **)(msg + 0xC);
+        cursor = 0;
         index = *(u16 *)(data + 8);
         state = (struct LocalState *)lbl_80368968;
+        channel = (u8 *)state + 0x364 + msg[0x15] * 0x2C;
         bank = state->bank;
         seqOff = (u8 *)(u32)*(u32 *)(bank + 4);
         sequence = bank + *(u32 *)(seqOff + (u32)bank + (index << 2));
-        channel = (u8 *)state + 0x364 + msg[0x15] * 0x2C;
 
         *(u32 *)(channel + 8) = (u32)(sequence + 0xC);
-        *(u32 *)(channel + 0) = 0;
+        *(u32 *)(channel + 0) = (u32)cursor;
         *(u32 *)(channel + 4) = *(u32 *)data;
         *(u32 *)(channel + 0xC) = (u32)data;
 
         offset = *(u32 *)(sequence + 4);
         if (offset != 0) {
-            cursor = ((struct LocalState *)lbl_80368968)->bank + offset;
-            first = cursor[0];
-            second = cursor[1];
-            if (first == 0x80 && second == 0) {
-                cursor = 0;
-            } else {
+            walk = ((struct LocalState *)lbl_80368968)->bank + offset;
+            first = walk[0];
+            second = walk[1];
+            if (first != 0x80 || second != 0) {
                 if (first & 0x80) {
                     value = ((first & 0x7F) << 8) | second;
-                    cursor += 2;
+                    walk += 2;
                 } else {
                     value = first;
-                    cursor++;
+                    walk += 1;
                 }
-                first = cursor[0];
-                second = cursor[1];
+                first = walk[0];
+                second = walk[1];
                 if (first & 0x80) {
                     temp = (s16)(((first & 0x7F) << 8) | second);
-                    cursor += 2;
+                    walk += 2;
                     temp |= (temp << 1) & 0x8000;
                     *(s16 *)(channel + 0x16) = temp;
                 } else {
                     temp = (s8)(u8)(first | ((first << 1) & 0x80));
-                    cursor++;
+                    walk += 1;
                     *(s16 *)(channel + 0x16) = temp;
                 }
+                cursor = walk;
             }
             *(u32 *)(channel + 0x10) = (u32)cursor;
             if (cursor != 0) {
@@ -1996,7 +1998,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                         }
                         *(u32 *)(node + 0xC) = endTime;
                         node[0x10] = arg1;
-                        node[0x11] = ((u8 *)lbl_80368968 + arg1 * 0x38)[0x1538];
+                        off = (u32)arg1 * 0x38;
+                        node[0x11] = *((u8 *)lbl_80368968 + off + 0x1538);
                         prev = 0;
                         cur = *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64));
                         while (cur != 0) {
@@ -2054,8 +2057,9 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                             } else {
                                 *(u8 **)((u8 *)lbl_80368968 + (node[0x11] * 4 + 0xE64)) = *(u8 **)(node + 0);
                             }
-                            *(u32 *)(node + 0) = lbl_80368964;
-                            if (lbl_80368964 != 0) {
+                            next = (u8 *)lbl_80368964;
+                            *(u32 *)(node + 0) = (u32)next;
+                            if (next != 0) {
                                 *(u8 **)((u8 *)lbl_80368964 + 4) = node;
                             }
                             *(u32 *)(node + 4) = 0;
@@ -2158,7 +2162,6 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 
     return (StreamQueueNode *)fn_80246070(msg[0x15]);
 }
-#pragma opt_strength_reduction reset
 void fn_80246D48(void) {
     u32 i;
     StreamQueueNode *node;
