@@ -66,7 +66,7 @@ static inline s32 count_trailing_zero_p(const f64 *px) {
                 k -= m;
             }
         }
-        return n2 + 32;
+        return 32 + n2;
     }
 }
 
