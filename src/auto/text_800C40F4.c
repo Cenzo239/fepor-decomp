@@ -1,6 +1,18 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+
+static inline void DbacCopyOut(f32 *out, void *src) {
+    s32 i;
+    for (i = 0; i < 1; i++) {
+        f32 z = *(f32 *)((u8 *)src + 0x68);
+        f32 y = *(f32 *)((u8 *)src + 0x64);
+        f32 x = *(f32 *)((u8 *)src + 0x60);
+        out[0] = x;
+        out[1] = y;
+        out[2] = z;
+    }
+}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -10568,16 +10580,16 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
-    void PSMTXRotRad(void *, s32, f32);
-    void fn_802029C4(void *, f32 *, f32 *);
     extern const f32 lbl_80369E70;
     extern const f32 lbl_80369E80;
     extern const f32 lbl_80369E84;
-    f32 vec[3];
+    void PSMTXRotRad(void *, s32, f32);
+    void fn_802029C4(void *, f32 *, f32 *);
     f32 mtx[3][4];
+    f32 vec[3];
+    f32 x;
     f32 y;
     f32 z;
-    f32 x;
 
     vec[0] = lbl_80369E70;
     vec[1] = lbl_80369E70;
@@ -16153,15 +16165,17 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 
     x = pos[0];
 
-    if (x > lbl_80369F5C && x < lbl_80369F60) {
-        y = pos[1];
-        z = pos[2];
-    } else {
-        z = lbl_80369F3C;
-        y = z;
-        x = z;
+    if (x > lbl_80369F5C) {
+        if (x < lbl_80369F60) {
+            y = pos[1];
+            z = pos[2];
+            goto store;
+        }
     }
-
+    z = lbl_80369F3C;
+    y = z;
+    x = z;
+store:
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
