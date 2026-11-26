@@ -952,19 +952,19 @@ void TabMenu_DrawTab2(void *arg0) {
 #pragma push
 #pragma opt_propagation off
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
-    s32 fn_80010B78(void *, s32, f32);
-    s32 fn_800102BC(s32, f32);
-    void fn_8000A258(void);
-    void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
-    void fn_80007898(s32);
-    void fn_80007790(f32, f32, f32, f32);
-    void fn_80007668(s32 *);
-    void fn_80007884(void);
-    void fn_8001019C(s16, s16, u8, void *, ...);
-    void fn_80009C0C(f32);
-    void fn_800077D8(f32, f32, f32, f32);
-    extern f32 lbl_8036B6E8;
+    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_EndPrim(void);
+    void Text_Draw(s16, s16, u8, void *, ...);
+    void Prim2D_AddZ(f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    extern f32 gTabMenuOne;
     extern f32 lbl_8036B71C;
     extern f32 lbl_8036B720;
     extern f32 lbl_8036B724;
@@ -994,8 +994,8 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     s32 px;
     s32 py;
 
-    tw = (s16)fn_80010B78(arg6, -1, lbl_8036B6E8);
-    th = fn_800102BC(-1, lbl_8036B6E8);
+    tw = (s16)Text_MeasureWidth(arg6, -1, gTabMenuOne);
+    th = Text_MeasureHeight(-1, gTabMenuOne);
     x = arg1;
     y = arg2;
     left = (s16)(x - 1);
@@ -1031,49 +1031,49 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     fill[2] = 0x1E;
     fill[3] = 0xFF;
 
-    fn_8000A258();
-    fn_8000A174(0, 0x12);
-    fn_8000A248();
-    fn_80007898(4);
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(4);
     f_top = lbl_8036B71C + (f32)top;
     f_left = lbl_8036B71C + (f32)left;
     f_right = lbl_8036B71C + (f32)right;
-    fn_80007790(f_left, f_top, f_right, f_top);
+    Prim2D_SetPosCorners(f_left, f_top, f_right, f_top);
     sp14 = *(s32 *)border;
-    fn_80007668(&sp14);
-    fn_80007884();
+    Prim2D_SetColorPacked(&sp14);
+    Prim2D_EndPrim();
 
-    fn_8000A258();
-    fn_8000A174(0, 0x12);
-    fn_8000A248();
-    fn_80007898(4);
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(4);
     f_bottom = lbl_8036B71C + (f32)bottom;
-    fn_80007790(f_right, f_top, f_right, f_bottom);
+    Prim2D_SetPosCorners(f_right, f_top, f_right, f_bottom);
     sp10 = *(s32 *)border;
-    fn_80007668(&sp10);
-    fn_80007884();
+    Prim2D_SetColorPacked(&sp10);
+    Prim2D_EndPrim();
 
-    fn_8000A258();
-    fn_8000A174(0, 0x12);
-    fn_8000A248();
-    fn_80007898(4);
-    fn_80007790(f_right, f_bottom, f_left, f_bottom);
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(4);
+    Prim2D_SetPosCorners(f_right, f_bottom, f_left, f_bottom);
     spC = *(s32 *)border;
-    fn_80007668(&spC);
-    fn_80007884();
+    Prim2D_SetColorPacked(&spC);
+    Prim2D_EndPrim();
 
-    fn_8000A258();
-    fn_8000A174(0, 0x12);
-    fn_8000A248();
-    fn_80007898(4);
-    fn_80007790(f_left, f_bottom, f_left, f_top);
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(4);
+    Prim2D_SetPosCorners(f_left, f_bottom, f_left, f_top);
     sp8 = *(s32 *)border;
-    fn_80007668(&sp8);
-    fn_80007884();
+    Prim2D_SetColorPacked(&sp8);
+    Prim2D_EndPrim();
 
-    fn_8000A258();
-    fn_8000A174(0, 0x13);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x13);
+    Prim2D_PrepareTex();
     px = (s32)(s16)(x + half_w);
     py = y + half_h;
     mode = 0x16;
@@ -1081,23 +1081,23 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     if (arg5 != 0) {
         mode = 0x15;
     }
-    fn_8001019C((s16)px, (s16)py, (u8)mode, arg6);
+    Text_Draw((s16)px, (s16)py, (u8)mode, arg6);
 
-    fn_8000A258();
-    fn_80009C0C(lbl_8036B720);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B720);
+    Prim2D_PrepareTex();
 
-    fn_8000A258();
-    fn_8000A174(0, 0x12);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_800077D8((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x12);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetRect((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
     sp18 = *(s32 *)fill;
-    fn_80007668(&sp18);
+    Prim2D_SetColorPacked(&sp18);
 
-    fn_8000A258();
-    fn_80009C0C(lbl_8036B724);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036B724);
+    Prim2D_PrepareTex();
 }
 #pragma pop
 #pragma use_lmw_stmw on
