@@ -1,5 +1,22 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+extern u8 gBattleMap[];
+static inline void Map_LoadTileValues(s16 count, u8 *p) {
+    s32 i;
+    for (i = 0; i < count; i++, p += 3) {
+        s32 x = (s8)p[0], y = (s8)p[1];
+        *(u16 *)(gBattleMap + 0x408E + (x + (y << 6)) * 2) = p[2];
+    }
+}
+static inline void Map_LoadTileMasks(s16 count, u8 *p) {
+    s32 i;
+    for (i = 0; i < count; i++, p += 3) {
+        s32 x = (s8)p[0], y = (s8)p[1];
+        u8 v = p[2];
+        *(u16 *)(gBattleMap + 0x408E + (x + (y << 6)) * 2) = v + (((~v) << 4) & 0xF0);
+    }
+}
+
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
 static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, const s16 *upper)
@@ -1891,6 +1908,9 @@ void fn_80044BE4(void *arg0) {
     DebugPrint(lbl_8026A660 + 0x2BF, M2C_FIELD(arg0, s32 *, 0xA8));
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80045604(s32 unused) {
     void *fn_8000D2BC(void *);
     u32 fn_8000D354(void *);
@@ -1985,7 +2005,7 @@ void fn_80045604(s32 unused) {
         }
     }
 }
-
+#pragma pop
 void fn_80045B9C(void *arg0) {
     M2C_UNK fn_80067480();
     M2C_UNK fn_800675C8(M2C_UNK);
@@ -4099,8 +4119,7 @@ void fn_8004A2EC(void *arg0) {
     f32 sp8[12];
     s8 y;
     s8 x;
-    register f32 fy;
-    f32 x0, y0, x1, y1, margin, z;
+    f32 fy;
 
     if (fn_800AA188() != 0) {
         GXClearVtxDesc();
@@ -4123,10 +4142,12 @@ void fn_8004A2EC(void *arg0) {
         fn_802245D8(1, 4, 1, 0);
 
         for (y = *(s32 *)(gBattleMap + 4) - 1; y >= 0; y--) {
+            x = *(s32 *)gBattleMap - 1;
             fy = lbl_80368F8C + (f32)y;
-            for (x = *(s32 *)gBattleMap - 1; x >= 0; x--) {
+            for (; x >= 0; x--) {
                 if ((s8)gBattleMap[y * 0x40 + x + 0xE18E] == 0) {
                     if (*(s16 *)(gBattleMap + ((y * 0x40 + x) << 1) + 0x610E) >= 0) {
+                        f32 y1, x1, y0, x0, margin, z;
                         margin = *(f32 *)((u8 *)arg0 + 0x34);
                         y0 = fy - margin;
                         x0 = (f32)x;
@@ -4166,6 +4187,7 @@ void fn_8004A2EC(void *arg0) {
                         *(u8 *)0xCC008000 = lbl_80285828[0x1E];
                         *(u8 *)0xCC008000 = lbl_80285828[0x1F];
                     } else if (*(u16 *)(gBattleMap + ((y * 0x40 + x) << 1) + 0xC18E) != 0) {
+                        f32 x0, y0, x1, y1, margin, z;
                         margin = *(f32 *)((u8 *)arg0 + 0x34);
                         y0 = fy - margin;
                         x0 = (f32)x;
