@@ -1,5 +1,12 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+static inline s64 ResetSW_TimeFromWords(u32 hi, u32 lo) {
+return (s64)(((u64)hi << 32) | lo);
+}
+static inline s32 ResetSW_TimeNonzero(s64 value) {
+if(value != 0) return 1;
+return 0;
+}
 #include <dolphin/os.h>
 #include "global.h"
 extern u16 Scb_80339420[];
@@ -157,7 +164,7 @@ s32 fn_80208D18(void) {
     u32 thresh;
     s32 n;
     u64 t;
-    u64 q;
+    s64 q;
 
     enabled = OSDisableInterrupts();
     now = __OSGetSystemTime();
@@ -218,7 +225,7 @@ s32 fn_80208D18(void) {
         t = (s64)(s32)(n * 60) * (u64)freq;
  t += __OSStartTime;
         if (t < now) {
-            q = (now - t) / freq;
+            q = __div2i(now - t, (u64)freq);
             q = __div2i(q, 2);
             if ((q & 1) == 0) {
                 state = 1;
