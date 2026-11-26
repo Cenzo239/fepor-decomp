@@ -10,14 +10,17 @@ typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36];
 static inline s32 count_trailing_zero(f64 x) {
     u32 *l = (u32 *)&x;
     u32 lo = l[1];
-    u32 hi;
     s32 n;
+    u32 hi;
     if (lo != 0) {
-        u32 xbits = 0xFFFFU;
-        s32 j = 32;
-        s32 m = 16;
+        u32 xbits;
+        s32 j;
+        s32 m;
         s32 k;
+        m = 16;
+        xbits = 0xFFFFU;
         n = 0;
+        j = 32;
         k = m;
         while (j != 0) {
             if ((lo & xbits) == 0) {
@@ -37,13 +40,16 @@ static inline s32 count_trailing_zero(f64 x) {
         }
         return n;
     } else {
-        u32 xbits = 0xFFFFU;
-        s32 j = 32;
-        s32 m = 16;
+        u32 xbits;
+        s32 j;
+        s32 m;
         s32 k;
+        m = 16;
+        xbits = 0xFFFFU;
         n = 0;
         k = m;
         hi = l[0] | 0x100000;
+        j = 32;
         while (j != 0) {
             if ((hi & xbits) == 0) {
                 n += k;
