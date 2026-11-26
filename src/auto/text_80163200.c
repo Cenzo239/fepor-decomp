@@ -85,7 +85,7 @@ struct UnitItemListPanel {
     virtual s32 getRowOffset();
     virtual void v10(); virtual void v11();
     virtual s32 getItemValue(u32 *);
-    virtual void drawItem(s16, s16, s32, u32 *, s32);
+    virtual void drawItem(s16, s32, s32, u32 *, s32);
     u8 pad04[0xA - 0x4];
     s16 left, top, right, bottom;
     s16 innerL, innerT, innerR, innerB;
@@ -207,70 +207,127 @@ void fn_80163214(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 }
 
 #pragma push
+#pragma cplusplus on
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-void fn_80163228(void *arg0, s32 arg1) {
-extern f32 lbl_8036A890,lbl_8036A894,lbl_8036A898;
-void Prim2D_AddZ(f32);
-void Prim2D_ScissorFromRect(void *);
-void *Face_Create(s32,s32);
-u32 *Unit_GetItemSlot(s32,s32);
-s16 rect[4]; u8 color[4];
-s16 i, step, x, mid, y;
-u32 *item;
-s32 offset;
-void *face;
-((void (*)(void *))(*(void ***)arg0)[4])(arg0);
-fn_8008BBF8(0,0,(s16)(M2C_FIELD(arg0,s16 *,14)-M2C_FIELD(arg0,s16 *,10)),(s16)(M2C_FIELD(arg0,s16 *,16)-M2C_FIELD(arg0,s16 *,12)),0,255);
-switch(M2C_FIELD(arg0,u8 *,0x78)) {
-case 1: fn_8008B464(M2C_FIELD(arg0,s32 *,0x58),0,-98); break;
-case 2: fn_8008BA80(M2C_FIELD(arg0,s32 *,0x58),0,-38,1); break;
-}
-((void (*)(void *,s32))(*(void ***)arg0)[5])(arg0,arg1);
-{
-s16 height=M2C_FIELD(arg0,s16 *,0x18)-M2C_FIELD(arg0,s16 *,0x14);
-s16 width=M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12);
-M2C_FIELD(arg0,s16 *,0x68)=0;
-M2C_FIELD(arg0,s16 *,0x6a)=0;
-M2C_FIELD(arg0,s16 *,0x6c)=width;
-M2C_FIELD(arg0,s16 *,0x6e)=height;
-}
-fn_8013F748(arg0,(u8 *)arg0+0x68,(u8 *)arg0+0x68);
-fn_8013F748(arg0,(u8 *)arg0+0x6c,(u8 *)arg0+0x6c);
-Prim2D_Begin(); Prim2D_AddZ(lbl_8036A890);
-Prim2D_SetCallback(Prim2D_ScissorFromRect,(u8 *)arg0+0x68); Prim2D_PrepareTex();
-step=M2C_FIELD(arg0,s16 *,0x54); i=0; x=M2C_FIELD(arg0,s16 *,0x64); offset=0; mid=(step-24)>>1;
-for(;i<8;i++,offset+=step) {
-y=mid+(offset+M2C_FIELD(arg0,s16 *,0x66));
-if(i>=4 && i<=7) y+=((s32 (*)(void *))(*(void ***)arg0)[11])(arg0);
-item=Unit_GetItemSlot(M2C_FIELD(arg0,s32 *,0x58),i);
-if(*item) {
-s32 value=((s32 (*)(void *,void *))(*(void ***)arg0)[14])(arg0,item);
-((void (*)(void *,s16,s16,s32,void *,s32))(*(void ***)arg0)[15])(arg0,x,y,0,item,value);
-}
-}
-if(M2C_FIELD(arg0,u8 *,0x4a)){
-Prim2D_Begin(); Prim2D_AddZ(lbl_8036A894); Prim2D_PrepareTex();
-face=Face_Create(fn_8003A064(M2C_FIELD(arg0,s32 *,0x58)),256);
-{ s16 left=M2C_FIELD(arg0,s16 *,10); s16 width=M2C_FIELD(arg0,s16 *,14)-left;
-M2C_FIELD(face,u16 *,0x46)&=0xfffe;
-M2C_FIELD(face,u16 *,0x46)|=(s16)(left+(width>>1))<304; }
-fn_8007B4D8((s16)((s16)(M2C_FIELD(arg0,s16 *,22)-M2C_FIELD(arg0,s16 *,18))>>1),(s16)((s16)(M2C_FIELD(arg0,s16 *,24)-M2C_FIELD(arg0,s16 *,20))+M2C_FIELD(M2C_FIELD(face,void **,0x34),s16 *,30)),127,face);
-Face_ClearSlot(face);
-}
-Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
-if(M2C_FIELD(arg0,u8 *,0x4b)&&M2C_FIELD(arg0,s32 *,0x60)!=3){
-s16 h;
-((void (*)(void *,s32))(*(void ***)arg0)[4])(arg0,arg1);
-Prim2D_Begin();Prim2D_AddZ(lbl_8036A898);Prim2D_PrepareTex();
-h=M2C_FIELD(arg0,s16 *,16)-M2C_FIELD(arg0,s16 *,12);
-{ s16 w=M2C_FIELD(arg0,s16 *,14)-M2C_FIELD(arg0,s16 *,10); rect[0]=0;rect[1]=0;rect[2]=w;rect[3]=h>>1; }
-if(M2C_FIELD(arg0,s32 *,0x60)==1){rect[1]=h>>1;rect[3]+=rect[1];}
-color[0]=0;color[1]=0;color[2]=0;color[3]=128;
-Ui_DrawRect(rect[0],rect[1],16,rect,color,0,0);
-}
+extern "C" void fn_80163228(UnitItemListPanel *arg0, s32 arg1) {
+    extern f32 lbl_8036A890, lbl_8036A894, lbl_8036A898;
+    void fn_8008BBF8(s32, s32, s16, s16, s32, s32);
+    void fn_8008B464(s32, s32, s32);
+    void fn_8008BA80(s32, s32, s32, s32);
+    void fn_8013F748(void *, void *, void *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_ScissorFromRect(void *);
+    void Prim2D_SetCallback(void (*)(void *), void *);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_ClearCallbacks(void);
+    u32 *Unit_GetItemSlot(s32, s32);
+    s32 fn_8003A064(s32);
+    void *Face_Create(s32, s32);
+    void fn_8007B4D8(s16, s16, s32, void *);
+    void Face_ClearSlot(void *);
+    void Ui_DrawRect(s16, s16, s32, s16 *, u8 *, s32);
+    s16 rect[4];
+    u8 color[4];
+    s32 offset;
+    s16 i;
+    s16 step;
+    s16 x;
+    u32 *item;
+    s16 mid;
+    s32 y;
+    void *face;
+
+    arg0->prepDraw(arg1);
+    fn_8008BBF8(0, 0, (s16)(arg0->right - arg0->left), (s16)(arg0->bottom - arg0->top), 0, 255);
+    switch (arg0->headerMode) {
+    case 1:
+        fn_8008B464(arg0->unit, 0, -98);
+        break;
+    case 2:
+        fn_8008BA80(arg0->unit, 0, -38, 1);
+        break;
+    }
+    arg0->drawChild(arg1);
+    {
+        s16 height = arg0->innerB - arg0->innerT;
+        s16 width = arg0->innerR - arg0->innerL;
+        arg0->scissorRect[0] = 0;
+        arg0->scissorRect[1] = 0;
+        arg0->scissorRect[2] = width;
+        arg0->scissorRect[3] = height;
+    }
+    fn_8013F748(arg0, &arg0->scissorRect[0], &arg0->scissorRect[0]);
+    fn_8013F748(arg0, &arg0->scissorRect[2], &arg0->scissorRect[2]);
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036A890);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &arg0->scissorRect[0]);
+    Prim2D_PrepareTex();
+    step = arg0->rowHeight;
+    i = 0;
+    x = arg0->itemX;
+    offset = 0;
+    mid = (step - 24) >> 1;
+    for (; i < 8; i++, offset += step) {
+        y = (s16)(mid + (offset + arg0->itemY));
+        if (i >= 4 && i <= 7) {
+            y += arg0->getRowOffset();
+        }
+        item = Unit_GetItemSlot(arg0->unit, i);
+        if (*item != 0) {
+            s32 value = arg0->getItemValue(item);
+            arg0->drawItem(x, y, 0, item, value);
+        }
+    }
+    if (arg0->showFace) {
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036A894);
+        Prim2D_PrepareTex();
+        face = Face_Create(fn_8003A064(arg0->unit), 256);
+        {
+            s16 left = arg0->left;
+            s16 width = arg0->right - left;
+            *(u16 *)((u8 *)face + 0x46) &= 0xFFFE;
+            *(u16 *)((u8 *)face + 0x46) |= (s16)(left + (width >> 1)) < 304;
+        }
+        {
+            s16 w = arg0->innerR - arg0->innerL;
+            s16 h = arg0->innerB - arg0->innerT;
+            fn_8007B4D8((s16)(w >> 1), (s16)(h + *(s16 *)(*(u8 **)((u8 *)face + 0x34) + 0x1E)), 127, face);
+        }
+        Face_ClearSlot(face);
+    }
+    Prim2D_Begin();
+    Prim2D_ClearCallbacks();
+    Prim2D_PrepareTex();
+    if (arg0->showDim && arg0->dimMode != 3) {
+        s16 h;
+        arg0->prepDraw(arg1);
+        Prim2D_Begin();
+        Prim2D_AddZ(lbl_8036A898);
+        Prim2D_PrepareTex();
+        h = arg0->bottom - arg0->top;
+        {
+            s16 w = arg0->right - arg0->left;
+            rect[0] = 0;
+            rect[1] = 0;
+            rect[2] = w;
+            rect[3] = h >> 1;
+        }
+        if (arg0->dimMode == 1) {
+            rect[1] = h >> 1;
+            rect[3] += rect[1];
+        }
+        color[0] = 0;
+        color[1] = 0;
+        color[2] = 0;
+        color[3] = 128;
+        Ui_DrawRect(rect[0], rect[1], 16, rect, color, 0);
+    }
 }
 #pragma pop
+#pragma cplusplus off
 s32 fn_801635CC(void *arg0, void *arg1)
 {
   u8 *ctx = (u8 *) arg0;
