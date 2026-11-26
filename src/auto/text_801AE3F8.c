@@ -8,6 +8,38 @@ struct SetupMenuObj {
  virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(s32); virtual void v12(s32);
 };
 #pragma cplusplus reset
+#pragma cplusplus on
+static inline void *SetupMenu_InitInfoPanel(void *q) {
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80296150[];extern const f32 lbl_8036B0A8;
+if(q){
+*(void * *)((u8 *)q + 0x0)=lbl_8028FDB0;
+*(s32 *)((u8 *)q + 0x4)=0;
+*(void * *)((u8 *)q + 0x0)=lbl_80292230;
+*(s16 *)((u8 *)q + 0x8)=-1;
+*(s16 *)((u8 *)q + 0xa)=608;
+*(s16 *)((u8 *)q + 0xc)=264;
+*(s16 *)((u8 *)q + 0xe)=880;
+*(s16 *)((u8 *)q + 0x10)=392;
+*(s16 *)((u8 *)q + 0x12)=0;
+*(s16 *)((u8 *)q + 0x14)=0;
+*(s16 *)((u8 *)q + 0x16)=272;
+*(s16 *)((u8 *)q + 0x18)=128;
+*(s16 *)((u8 *)q + 0x1a)=0;
+*(s16 *)((u8 *)q + 0x1c)=0;
+*(u8 *)((u8 *)q + 0x1e)=0xff;
+*(u8 *)((u8 *)q + 0x1f)=0xff;
+*(u8 *)((u8 *)q + 0x20)=0xff;
+*(u8 *)((u8 *)q + 0x21)=0xff;
+*(s16 *)((u8 *)q + 0x22)=0x1f4;*(s16 *)((u8 *)q + 0x24)=0;
+*(f32 *)((u8 *)q + 0x28)=lbl_8036B0A8;
+*(f32 *)((u8 *)q + 0x2c)=lbl_8036B0A8;
+*(f32 *)((u8 *)q + 0x30)=lbl_8036B0A8;
+*(s32 *)((u8 *)q + 0x34)=0;*(s32 *)((u8 *)q + 0x38)=0;*(void * *)((u8 *)q + 0x0)=lbl_80296150;
+*(s32 *)((u8 *)q + 0x3c)=0;*(s32 *)((u8 *)q + 0x40)=0;
+((SetupMenuObj *)q)->v8();}
+return q;
+}
+#pragma cplusplus reset
 extern u8 gUiMainListPanelVtbl[];
 extern struct unk_struct lbl_80331C6C;
 
@@ -1175,6 +1207,9 @@ extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801AFF9C(void *arg0) {
+#pragma push
+#pragma optimization_level 3
+
 void *Ui_FindChild(void *,s32,s32);
 void Ui_AddChild(void *,void *);
 void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
@@ -1282,6 +1317,8 @@ q=*(void * *)((u8 *)self + 0x64);if(*(s16 *)((u8 *)q + 0xa)!=0x134){y=*(s16 *)((
 }
 TalkUi_ShowMsg(*(void * *)((u8 *)(*(void * *)((u8 *)self + 0x6c)) + 0x2c));
 q=*(void * *)((u8 *)self + 0x6c);list=*(void * *)((u8 *)q + 0x70);res=Ui_FindChild(self,-0x1000,0);if(res)Ui_SetWidgetText(res,list);
+
+#pragma pop
 }
 #pragma cplusplus reset
 
