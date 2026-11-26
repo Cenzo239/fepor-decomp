@@ -14,6 +14,7 @@ typedef struct AiActionMap {
         s16 costMap[3][64 * 64];
         s8 fogMap[64][64];
     } AiActionMap;
+static inline s16 Ai_ReadActionCost(u8 *cell) { return ((AiActionMap *)cell)->costMap[0][0]; }
 static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
     extern AiActionMap gBattleMap;
     extern u8 gUnits[];
@@ -30695,6 +30696,7 @@ s32 fn_801001F0(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_propagation off
+#pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
 s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     u8 Allegiance_Compare(s32, s32);
