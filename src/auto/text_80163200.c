@@ -2,7 +2,7 @@
 static inline s16 Ui_TextOffsetSum(s16 margin, s32 offset) { return margin + offset; }
 static inline s16 Ui_TextOffsetRight(s16 margin, s32 width, s16 avail) { return avail - (margin + width); }
 static inline s16 Ui_TextOffsetVertical(s16 margin, s32 offset) { return (margin + offset) >> 1; }
-static inline s16 Ui_CursorRowY(s32 row, s32 height, s32 top) { return row * height + top; }
+static inline s16 Ui_CursorRowY(s32 height, s32 row, s32 top) { return row * height + top; }
 static inline s16 Ui_AverageCursorCoord(s16 target, s16 current) { return (current + (target + 1)) >> 1; }
 
 static inline s16 Ui_GetCursorSlot_80163C98(void *self) { return *(s16 *)((u8 *)self + 0x4C); }
