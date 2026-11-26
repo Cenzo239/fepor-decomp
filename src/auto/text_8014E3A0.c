@@ -2669,7 +2669,7 @@ void fn_80152CAC(s16 arg0, s16 arg1, s32 arg2) {
     }
 }
 
-void fn_80152DE0(s16 x, s16 y, u8 row, u8 col, u16 texFlags) {
+void fn_80152DE0(s16 x, s16 y, u8 row, u8 col, s32 texFlags) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
     void Prim2D_Begin(void);
@@ -2678,16 +2678,11 @@ void fn_80152DE0(s16 x, s16 y, u8 row, u8 col, u16 texFlags) {
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     extern s32 gUiTexAtlas;
-    extern s32 lbl_802774D0[4][2];
+    extern const s32 lbl_802774D0[4][2];
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368038;
     s16 h;
     s16 w;
-    s32 atlas;
-    void *scratch;
-
-    atlas = gUiTexAtlas;
-    scratch = (void *)&gUiTexScratch;
-    Ui_LoadAtlasTex(atlas, scratch, lbl_802774D0[row][col]);
+    Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, lbl_802774D0[row][col]);
     h = (s16)(lbl_80368038.f6 - lbl_80368038.f2);
     w = (s16)(lbl_80368038.f4 - lbl_80368038.f0);
     if (w != 0 && h != 0) {
@@ -7505,7 +7500,10 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     Color sp10;
     Color tmp;
     Color tmp2;
-    s32 c3, c2, c1, c0;
+    s32 c3;
+    unsigned c2;
+    int c1;
+    unsigned long c0;
     s16 t1;
     register s16 t0;
     s16 w;
