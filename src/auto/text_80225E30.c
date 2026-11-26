@@ -697,7 +697,7 @@ s32 fn_80226A2C(s32 *arg0, void **arg1) {
     return result;
 }
 #pragma use_lmw_stmw reset
-static inline void InitMsgBuffers_80226AF4(void *arg) {
+static inline void InitMsgBuffers_80226AF4(void *arg, s32 zero) {
     void fn_802287B8(void *);
     void fn_802287B0(void *);
     void fn_802287A8(void *);
@@ -708,7 +708,7 @@ static inline void InitMsgBuffers_80226AF4(void *arg) {
     for (i = 0; i < 3; i++) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-        ((u32 *)queue)[1] = 0;
+        ((u32 *)queue)[1] = zero;
         fn_802287A8(queue);
         queue += 0x890;
     }
