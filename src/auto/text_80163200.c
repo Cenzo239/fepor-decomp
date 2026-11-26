@@ -64,7 +64,7 @@ struct UnitPanelView {
     virtual void setUnit(u32);
 };
 struct UnitStatPanel {
-    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v0(); virtual void v1();
     virtual void prepDraw();
     virtual void drawChild(void *);
     u8 pad08[0xA - 0x4];
