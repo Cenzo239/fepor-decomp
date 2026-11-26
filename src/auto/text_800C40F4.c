@@ -5,8 +5,9 @@ typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_8
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
 extern u8 gBattleMap[];
-s32 c=a,b=a;
+s32 c=a;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
+s32 b=a;
 if (!((u8)(t-0x26)<=1)) c=0;
 if ((u8)c==0 && t!=0x28) b=0;
 if ((u8)b==0 && t!=0x2A) a=0;
@@ -11349,6 +11350,8 @@ for (;var_r29 < (M2C_FIELD(arg0,s32 *,0x10C)+(temp_r3=M2C_FIELD(arg0,s32 *,0x108
 #pragma global_optimizer on
 #pragma opt_strength_reduction reset
 
+#pragma push
+#pragma opt_common_subs off
 void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
     void (*cb)(void *, s32, s32);
 
@@ -11376,8 +11379,9 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
             if ((u32)M2C_FIELD(arg0, s32 *, 0x110) >= (u32)M2C_FIELD(arg0, s32 *, 0xB0)) {
                 M2C_FIELD(arg0, s32 *, 0x110) = M2C_FIELD(arg0, s32 *, 0xB0) - 1;
             }
-            if (M2C_FIELD(arg0, s32 *, 0x110) >= M2C_FIELD(arg0, s32 *, 0x108) + M2C_FIELD(arg0, s32 *, 0x10C)) {
-                M2C_FIELD(arg0, s32 *, 0x108) = M2C_FIELD(arg0, s32 *, 0x108) + 1;
+            arg1 = M2C_FIELD(arg0, s32 *, 0x108);
+            if (M2C_FIELD(arg0, s32 *, 0x110) >= arg1 + M2C_FIELD(arg0, s32 *, 0x10C)) {
+                M2C_FIELD(arg0, s32 *, 0x108) = arg1 + 1;
             }
             M2C_FIELD(arg0, s32 *, 0x104) =
                 ((M2C_FIELD(arg0, s32 *, 0x64) - 0x20) * M2C_FIELD(arg0, s32 *, 0x108))
@@ -11411,8 +11415,9 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
             if ((u32)M2C_FIELD(arg0, s32 *, 0x110) >= (u32)M2C_FIELD(arg0, s32 *, 0xB0)) {
                 M2C_FIELD(arg0, s32 *, 0x110) = M2C_FIELD(arg0, s32 *, 0xB0) - 1;
             }
-            if (M2C_FIELD(arg0, s32 *, 0x110) >= M2C_FIELD(arg0, s32 *, 0x108) + M2C_FIELD(arg0, s32 *, 0x10C)) {
-                M2C_FIELD(arg0, s32 *, 0x108) = M2C_FIELD(arg0, s32 *, 0x108) + 0xA;
+            arg1 = M2C_FIELD(arg0, s32 *, 0x108);
+            if (M2C_FIELD(arg0, s32 *, 0x110) >= arg1 + M2C_FIELD(arg0, s32 *, 0x10C)) {
+                M2C_FIELD(arg0, s32 *, 0x108) = arg1 + 0xA;
             }
             M2C_FIELD(arg0, s32 *, 0x104) =
                 ((M2C_FIELD(arg0, s32 *, 0x64) - 0x20) * M2C_FIELD(arg0, s32 *, 0x108))
@@ -11424,7 +11429,7 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
         }
     }
 }
-
+#pragma pop
 void ListWin_HandleInput(void *list) {
     void Win_UpdatePos(void *);
     void Win_SetDirty(void *);
@@ -14974,13 +14979,15 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     s32 y2;
     s32 cols;
     s32 u0;
+    s32 frameMax;
 
     w = M2C_FIELD(arg0, s32 *, 0x54);
     h = M2C_FIELD(arg0, s32 *, 0x58);
+    frameMax = M2C_FIELD(arg0, s32 *, 0x60);
     x2 = arg3 + (s32)((f32)w * scale);
     y2 = arg4 + (s32)((f32)h * scale);
-    if (arg2 >= M2C_FIELD(arg0, s32 *, 0x60)) {
-        arg2 = M2C_FIELD(arg0, s32 *, 0x60) - 1;
+    if (arg2 >= frameMax) {
+        arg2 = frameMax - 1;
     }
     cols = M2C_FIELD(arg0, s32 *, 0x5C);
     u0 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
@@ -31570,9 +31577,8 @@ void Ai_FindEscapeTile(s32 a0, s32 a1, s32 a2, s32 a3) {
     Ai_FindActionTile(a0, a1, 0x2C, a2, a3);
 }
 
-#pragma opt_strength_reduction off
-#pragma dont_inline on
-#pragma global_optimizer off
+#pragma push
+#pragma opt_propagation off
 s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
  extern u8 gBattleMap[],gAiState[];
  void Map_FillLayer(void *,s32,s16);
@@ -31628,9 +31634,7 @@ s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
  if(best!=0xffff){*arg1=bestX;*arg2=bestY;return 1;}
  return 0;
 }
-#pragma global_optimizer reset
-#pragma dont_inline reset
-#pragma opt_strength_reduction reset
+#pragma pop
 s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
