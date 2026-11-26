@@ -6,13 +6,7 @@ s32 sum=start, i;
 for(i=start;i<*(s32*)((u8*)arg0+0x224);i++) sum+=AchieveList_GoldAt(arg0,i);
 return *(s32*)((u8*)arg0+0x228)+sum;
 }
-static inline s32 AchieveList_SumGoldWords(void *arg0, s32 start) {
-    u32 sum = start;
-    s32 i;
-    for(i=start;i<*(s32*)((u8*)arg0+0x224);++i)
-        sum += *(u32*)((u8*)arg0+0x200+i*4);
-    return *(s32*)((u8*)arg0+0x228)+sum;
-}
+
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
