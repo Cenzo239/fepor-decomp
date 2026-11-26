@@ -658,19 +658,11 @@ static inline s32 Convoy_FindItem_inline(void *convoy, void *item) {
     return -1;
 }
 
-s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
-    void *item;
-    s32 i;
-    s32 *p;
-    item = (void *)Item_GetByIid(arg1);
-    for (p = arg0, i = 0; i < 200; p += 2, i++) {
-        if (*(void **)p == item) goto found;
-    }
-    i = -1;
-found:
-    return i;
+#pragma dont_inline off
+s32 Convoy_FindByIid(void *arg0, s32 arg1) {
+    return Convoy_FindItem_inline(arg0, (void *)Item_GetByIid(arg1));
 }
-
+#pragma dont_inline reset
 s32 fn_800C39A4(void *convoy, void *item) {
  s32 i;
  for(i=0;i<200;i++) {
