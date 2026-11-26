@@ -26,6 +26,7 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
+extern u8 lbl_80289950[];
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
@@ -122,20 +123,19 @@ void fn_800895B8(void) {
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
-    void *tmp;
+    s8 *base = (s8 *)lbl_80289950;
+    u8 *tmp;
 
-    base = lbl_80289950;
-    lbl_803674E0 = Process_Create((u8 *)base + 0, 7);
-    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
-    tmp = Process_Create((u8 *)base + 0x18, 7);
+    lbl_803674E0 = Process_Create(base + 0, 7);
+    lbl_803674E4 = Process_Create(base + 0x58, 7);
+    tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
-    *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create((u8 *)base + 0x30, 7);
+    *(s16 *)(tmp + 0x32) = 0;
+    tmp = Process_Create(base + 0x30, 7);
     lbl_803674EC = tmp;
-    *(s16 *)((u8 *)tmp + 0x32) = 0;
+    *(s16 *)(tmp + 0x32) = 0;
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
