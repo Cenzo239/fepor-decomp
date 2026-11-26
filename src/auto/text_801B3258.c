@@ -6291,7 +6291,7 @@ s32 Ui_SkillAssignMenuItem(void *item, void *parent, void *slot) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+extern "C" void *fn_801BEB24(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     #pragma global_optimizer off
     struct Obj {
         virtual void m08() = 0;
@@ -6304,7 +6304,7 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    void fn_801BEB9C(void *, s16 *, s16 *, s16);
+    void fn_801BEB9C(void *, s16 *, s16 *, s32);
     extern u8 lbl_802918A0[];
     s16 spC[2];
     s16 sp8[2];
