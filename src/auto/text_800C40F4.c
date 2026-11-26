@@ -26890,38 +26890,63 @@ else M2C_FIELD(arg0,u8 *,0x251)++;
 }
 #pragma pop
 void fn_800F977C(void *arg0) {
-extern u8 gAiState[],gBattleMap[];
-extern u8 *gAiCmd;
-extern s32 gAiCmdIsAlt;
-u8 Ai_FindActionTile(void *,s32,s32,s16 *,s16 *);
-u8 fn_80102ACC(void *,s32,s32,s16 *,s16 *);
-s8 Unit_GetMov(void *);
-void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
-void fn_8010AEC8(void *,s32);
-s16 x,y;
-u8 *cmd;
-s32 action;
-u8 *unit;
-u8 *map;
-u8 found;
-s16 distance;
-unit=(u8 *)arg0;
-map=gBattleMap;
-cmd=gAiCmd;
-if(!(gAiState[1]&2) && !(*(u32 *)(unit+0x254)&0x03000000)) {
-action=*(s32 *)(cmd+0xc);
-if(*(s32 *)(cmd+0x10)==0) found=Ai_FindActionTile(unit,0,action,&x,&y);
-else found=fn_80102ACC(unit,0,action,&x,&y);
-if(found) {
-{ u8 *layer=map+0x10000;
-u8 *cell=(((s8)x+((s8)y<<6))*2)+layer;
-distance=*(s16 *)(cell-0x7e72); }
-if(distance<=Unit_GetMov(unit)) *(s32 *)(*(s32 *)(cmd+4)*4+gAiState+8)=8;
-Ai_SetUnitMoveTo(unit,x,y,1,*(u16 *)(gAiState+4),0,0,-1);
-if(*(s32 *)(*(s32 *)(cmd+4)*4+gAiState+8)!=8) fn_8010AEC8(unit,action);
-} else *(s32 *)(*(s32 *)(cmd+4)*4+gAiState+8)=9;
-}
-if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
+    struct AiStateLocal {
+        u8 unk0;
+        u8 unk1;
+        u8 unk2[2];
+        u16 unk4;
+        u8 unk6[2];
+        s32 unk8[16];
+    };
+    struct BattleMapLocal {
+        u8 unk0[0x818E];
+        s16 unk818E[4096];
+    };
+    extern struct AiStateLocal gAiState;
+    extern u8 gBattleMap[];
+    extern u8 *gAiCmd;
+    extern s32 gAiCmdIsAlt;
+    u8 Ai_FindActionTile(void *, s32, s32, s16 *, s16 *);
+    u8 fn_80102ACC(void *, s32, s32, s16 *, s16 *);
+    s8 Unit_GetMov(void *);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+    void fn_8010AEC8(void *, s32);
+    s16 x, y;
+    u8 *cmd;
+    s32 action;
+    u8 *unit;
+    struct BattleMapLocal *map;
+    u8 found;
+    s16 distance;
+
+    unit = (u8 *)arg0;
+    map = (struct BattleMapLocal *)gBattleMap;
+    cmd = gAiCmd;
+    if (!(gAiState.unk1 & 2) && !(*(u32 *)(unit + 0x254) & 0x03000000)) {
+        action = *(s32 *)(cmd + 0xc);
+        if (*(s32 *)(cmd + 0x10) == 0) {
+            found = Ai_FindActionTile(unit, 0, action, &x, &y);
+        } else {
+            found = fn_80102ACC(unit, 0, action, &x, &y);
+        }
+        if (found) {
+            distance = map->unk818E[(s8)x + ((s8)y << 6)];
+            if (distance <= Unit_GetMov(unit)) {
+                gAiState.unk8[*(s32 *)(cmd + 4)] = 8;
+            }
+            Ai_SetUnitMoveTo(unit, x, y, 1, gAiState.unk4, 0, 0, -1);
+            if (gAiState.unk8[*(s32 *)(cmd + 4)] != 8) {
+                fn_8010AEC8(unit, action);
+            }
+        } else {
+            gAiState.unk8[*(s32 *)(cmd + 4)] = 9;
+        }
+    }
+    if (gAiCmdIsAlt == 0) {
+        unit[0x250]++;
+    } else {
+        unit[0x251]++;
+    }
 }
 
 #pragma use_lmw_stmw reset
