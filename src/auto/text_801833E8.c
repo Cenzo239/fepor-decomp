@@ -4647,72 +4647,42 @@ void fn_8018CFA4(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_8018D034(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    f64 sin(f64);
-    void Process_Unlink(void *);
-    extern f32 lbl_8036AD58, lbl_8036AD5C, lbl_8036AD60, lbl_8036AD64;
-    typedef struct { f32 x, y, z; } Vec;
-    extern Vec lbl_802797CC;
-    Vec copy, v;
-    s32 prev;
-    s32 delta, step, current, target;
-    f32 x, z, wave;
-    void *obj;
-
-    prev = M2C_FIELD(arg0, s32 *, 0x30);
-    M2C_FIELD(arg0, s32 *, 0x30) = prev + 1;
-    target = M2C_FIELD(arg0, s32 *, 0x40);
-    current = M2C_FIELD(arg0, s32 *, 0x34);
-    if (target != current) {
-        delta = target - current;
-        step = delta / 4;
-        if (step) {
-            M2C_FIELD(arg0, s32 *, 0x34) = current + step;
-        } else {
-            M2C_FIELD(arg0, s32 *, 0x34) = current + delta;
-        }
-        if (delta < 0 && M2C_FIELD(arg0, s32 *, 0x34) < M2C_FIELD(arg0, s32 *, 0x40)) {
-            M2C_FIELD(arg0, s32 *, 0x34) = M2C_FIELD(arg0, s32 *, 0x40);
-        }
-        if (delta > 0 && M2C_FIELD(arg0, s32 *, 0x34) > M2C_FIELD(arg0, s32 *, 0x40)) {
-            M2C_FIELD(arg0, s32 *, 0x34) = M2C_FIELD(arg0, s32 *, 0x40);
-        }
-        step = prev;
-        (void)step;
-    } else {
-        step = prev;
-        (void)step;
-    }
-    wave = (f32)sin(Math_Lerp(lbl_8036AD58, lbl_8036AD5C, (f32)M2C_FIELD(arg0, s32 *, 0x38), (f32)M2C_FIELD(arg0, s32 *, 0x30)));
-    v = lbl_802797CC;
-    x = lbl_8036AD60 * wave;
-    v.x = x * (f32)M2C_FIELD(arg0, s32 *, 0x34);
-    z = lbl_8036AD64 * wave;
-    v.z = z * (f32)M2C_FIELD(arg0, s32 *, 0x34);
-    obj = M2C_FIELD(arg0, void **, 0x44);
-    copy = v;
-    M2C_FIELD(obj, f32 *, 0x58) = copy.x;
-    M2C_FIELD(obj, f32 *, 0x5C) = copy.y;
-    M2C_FIELD(obj, f32 *, 0x60) = copy.z;
-    if (M2C_FIELD(arg0, s32 *, 0x30) >= M2C_FIELD(arg0, s32 *, 0x38)) {
-        M2C_FIELD(arg0, s32 *, 0x30) = 0;
-        if (M2C_FIELD(arg0, s32 *, 0x3C) > 0) {
-            M2C_FIELD(arg0, s32 *, 0x3C)--;
-            if (M2C_FIELD(arg0, s32 *, 0x3C) == 0) {
-                Process_Unlink(arg0);
-                return;
-            }
-            goto check;
-        }
-    } else {
-    check:
-        if (M2C_FIELD(arg0, s32 *, 0x34) == 0) {
-            Process_Unlink(arg0);
-        }
-    }
+ f32 Math_Lerp(f32,f32,f32,f32); f64 sin(f64); void Process_Unlink(void *);
+ extern f32 lbl_8036AD58,lbl_8036AD5C,lbl_8036AD60,lbl_8036AD64;
+ typedef struct { f32 x,y,z; } Vec;
+ extern Vec lbl_802797CC;
+ Vec copy, v;
+ s32 delta, step, current; f32 x, z, wave; void *obj;
+ M2C_FIELD(arg0,s32 *,0x30)++;
+ if(M2C_FIELD(arg0,s32 *,0x40)!=M2C_FIELD(arg0,s32 *,0x34)) {
+ current=M2C_FIELD(arg0,s32 *,0x34); delta=M2C_FIELD(arg0,s32 *,0x40)-current; step=delta/4;
+ if(step) M2C_FIELD(arg0,s32 *,0x34)=current+step; else M2C_FIELD(arg0,s32 *,0x34)=current+delta;
+ if(delta<0 && M2C_FIELD(arg0,s32 *,0x34)<M2C_FIELD(arg0,s32 *,0x40)) M2C_FIELD(arg0,s32 *,0x34)=M2C_FIELD(arg0,s32 *,0x40);
+ if(delta>0 && M2C_FIELD(arg0,s32 *,0x34)>M2C_FIELD(arg0,s32 *,0x40)) M2C_FIELD(arg0,s32 *,0x34)=M2C_FIELD(arg0,s32 *,0x40);
+ }
+ wave=(f32)sin(Math_Lerp(lbl_8036AD58,lbl_8036AD5C,(f32)M2C_FIELD(arg0,s32 *,0x38),(f32)M2C_FIELD(arg0,s32 *,0x30)));
+ v=lbl_802797CC;
+ x=lbl_8036AD60*wave; v.x=x*(f32)M2C_FIELD(arg0,s32 *,0x34);
+ z=lbl_8036AD64*wave; v.z=z*(f32)M2C_FIELD(arg0,s32 *,0x34);
+ obj=M2C_FIELD(arg0,void **,0x44); copy=v;
+ M2C_FIELD(obj,f32 *,0x58)=copy.x; M2C_FIELD(obj,f32 *,0x5C)=copy.y; M2C_FIELD(obj,f32 *,0x60)=copy.z;
+ if(M2C_FIELD(arg0,s32 *,0x30)>=M2C_FIELD(arg0,s32 *,0x38)) {
+ M2C_FIELD(arg0,s32 *,0x30)=0;
+ if(M2C_FIELD(arg0,s32 *,0x3C)>0) {
+ M2C_FIELD(arg0,s32 *,0x3C)--;
+ if(M2C_FIELD(arg0,s32 *,0x3C)==0) { Process_Unlink(arg0); return; }
+ goto check;
+ }
+ } else {
+ check:
+ if(M2C_FIELD(arg0,s32 *,0x34)==0) Process_Unlink(arg0);
+ }
 }
-
+#pragma pop
 void fn_8018D218(void *arg0)
 {
     typedef struct { f32 x, y, z; } Vec3;
@@ -5036,6 +5006,7 @@ void *Ui_GetColor(u8 arg0)
   u8 *color = lbl_80296088 + (arg0 * 4);
   f32 wave;
   f32 phase;
+  f32 s;
   u32 ticks;
   u32 millis;
   switch (arg0)
@@ -5046,7 +5017,8 @@ void *Ui_GetColor(u8 arg0)
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
       wave = ((f32) (millis % 1500)) / 1500.0f;
       phase = wave;
-      wave = (0.5f * (f32) sin(6.2831855f * phase)) + 0.5f;
+      s = (f32) sin(6.2831855f * phase);
+      wave = (0.5f * s) + 0.5f;
       color[0] = (u8) (32.0f + 92.0f * wave);
       color[1] = (u8) (160.0f + 92.0f * wave);
       color[2] = (u8) (32.0f + 92.0f * wave);
@@ -5057,7 +5029,8 @@ void *Ui_GetColor(u8 arg0)
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
       wave = ((f32) (millis % 1500)) / 1500.0f;
       phase = wave;
-      wave = (0.5f * (f32) sin(6.2831855f * phase)) + 0.5f;
+      s = (f32) sin(6.2831855f * phase);
+      wave = (0.5f * s) + 0.5f;
       color[0] = (u8) (32.0f + 132.0f * wave);
       color[1] = (u8) (120.0f + 132.0f * wave);
       color[2] = (u8) (32.0f + 132.0f * wave);
@@ -10394,6 +10367,8 @@ s32 fn_801964C8(s32 arg0) {
     return 1;
 }
 #pragma global_optimizer on
+#pragma push
+#pragma optimization_level 1
 s32 fn_80196558(void *arg0, void *arg1) {
     s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetMagAtk(void *);
@@ -10432,7 +10407,7 @@ s32 fn_80196558(void *arg0, void *arg1) {
     else same=1;
     return same==0;
 }
-
+#pragma pop
 s32 fn_80196704(s32 arg0) {
     void fn_80094A08(s32, s32);
     s32 Game_GetState(void);
@@ -15117,7 +15092,8 @@ s32 fn_8019F2D0(s32 x, long long y)
 }
 
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 4
+#pragma opt_common_subs off
 s32 fn_8019F4A8(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
