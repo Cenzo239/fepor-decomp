@@ -1,5 +1,26 @@
 /* Functions from 0x8014E3A0 to 0x801620BC, found by decomp-toolkit. */
 #include "common.h"
+
+static inline void *MsgDebug_FilterText(void *text, u8 *dst)
+{
+    void *Msg_Expand(void *);
+    extern u8 lbl_80330C80[];
+    u8 *src = (u8 *)Msg_Expand(text);
+    u8 *lim = lbl_80330C80 + 0x46;
+    u8 ch;
+    while ((s8)(ch = *src) != 0) {
+        if ((s8)ch != 10 && ch >= 0x80) {
+            dst[0] = *src;
+            dst[1] = *++src;
+            dst += 2;
+            if (dst >= lim) break;
+        }
+        src++;
+    }
+    *dst = 0;
+    return lbl_80330C80;
+}
+
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef struct { s32 c0, c1, c2, c3; } Color4;
@@ -7182,36 +7203,49 @@ void fn_80160F00(s16 x, s16 y, u8 flag, s32 texFlags) {
         Prim2D_EndPrim();
     }
 }
-#pragma optimization_level reset
-void fn_801610A8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4) {
+#pragma push
+#pragma use_lmw_stmw on
+#pragma optimization_level 4
+#pragma opt_common_subs off
+void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(void *, u16);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32,f32,f32,f32);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetCornerColors(s32 *,s32 *,s32 *,s32 *);
+    void Prim2D_EndPrim(void);
+    void Prim2D_SetColorPacked(s32 *);
     extern s8 lbl_803680D6;
     extern s8 lbl_803680D7;
     extern u8 lbl_80330D58[];
-    extern u8 lbl_803680D8[];
+    extern u8 lbl_803680D8[8];
     extern f64 lbl_8036A868;
 
-    s16 x = arg0;
-    s16 y = arg1;
-    s16 w = arg2;
-    s16 h = arg3;
+    s32 x = (s16)arg0;
+    s32 y = (s16)arg1;
+    s32 w = (s16)arg2;
+    s32 h = (s16)arg3;
     s32 flags = arg4;
     s16 h3 = h / 3;
     s16 right = x + w;
     s16 bottom = y + h3;
     s16 bottom2 = y + h;
-    u32 colors[4];
-    u32 corner[4];
-    u8 buf[16];
+    Color4 colors;
+    Color4 corner;
+    Color c0, c1, c2, c3;
+    s32 finalColor;
 
     if (lbl_803680D6 == 0) {
-        buf[0] = 0; buf[1] = 0; buf[2] = 0; buf[3] = 0;
-        buf[4] = 0; buf[5] = 0; buf[6] = 0; buf[7] = 0xFF;
-        buf[8] = 0; buf[9] = 0; buf[10] = 0; buf[11] = 0xFF;
-        buf[12] = 0; buf[13] = 0; buf[14] = 0; buf[15] = 0xFF;
-        *(u32 *)&lbl_80330D58[0] = *(u32 *)&buf[0];
-        *(u32 *)&lbl_80330D58[4] = *(u32 *)&buf[4];
-        *(u32 *)&lbl_80330D58[8] = *(u32 *)&buf[8];
-        *(u32 *)&lbl_80330D58[0xC] = *(u32 *)&buf[12];
+        c0.r = 0; c0.g = 0; c0.b = 0; c0.a = 0;
+        c1.r = 0; c1.g = 0; c1.b = 0; c1.a = 0;
+        c2.r = 0; c2.g = 0; c2.b = 0; c2.a = 0xFF;
+        c3.r = 0; c3.g = 0; c3.b = 0; c3.a = 0xFF;
+        *(u32 *)&lbl_80330D58[0] = *(u32 *)&c0.r;
+        *(u32 *)&lbl_80330D58[4] = *(u32 *)&c1.r;
+        *(u32 *)&lbl_80330D58[8] = *(u32 *)&c2.r;
+        *(u32 *)&lbl_80330D58[0xC] = *(u32 *)&c3.r;
         lbl_803680D6 = 1;
     }
 
@@ -7224,40 +7258,36 @@ void fn_801610A8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4) {
     }
 
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(flags | 2));
+    flags |= 2;
+    Prim2D_SetTex(0, (u16)flags);
     Prim2D_PrepareTex();
 
-    colors[0] = *(u32 *)&lbl_80330D58[0];
-    colors[1] = *(u32 *)&lbl_80330D58[4];
-    colors[2] = *(u32 *)&lbl_80330D58[8];
-    colors[3] = *(u32 *)&lbl_80330D58[0xC];
+    colors = *(Color4 *)lbl_80330D58;
+    Prim2D_AddPrim(3);
 
-    Prim2D_AddPrim(3, colors[2], colors[1], colors[0], &lbl_80330D58);
-
-    Prim2D_SetRect((f32)x, (f32)y, (f32)(right - x), (f32)(bottom - y));
+    Prim2D_SetRect((f32)(s16)arg0, (f32)(s16)arg1, (f32)(s16)(right - x), (f32)(s16)(bottom - y));
     Prim2D_EmitQuad();
 
-    corner[0] = colors[0];
-    corner[1] = colors[1];
-    corner[2] = colors[2];
-    corner[3] = colors[3];
-    Prim2D_SetCornerColors((s32 *)&corner[0],
-                (s32 *)&corner[1],
-                (s32 *)&corner[2],
-                (s32 *)&corner[3],
-                colors[0], colors[1], colors[3]);
+    corner.c3 = colors.c3;
+    corner.c2 = colors.c2;
+    corner.c1 = colors.c1;
+    corner.c0 = colors.c0;
+    Prim2D_SetCornerColors((s32 *)&corner.c0,
+                (s32 *)&corner.c1,
+                (s32 *)&corner.c2,
+                (s32 *)&corner.c3);
 
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(flags | 2));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)x, (f32)bottom, (f32)(right - x), (f32)(bottom2 - bottom));
-    Prim2D_SetColorPacked((s32 *)&lbl_803680D8[0]);
+    Prim2D_SetRect((f32)(s16)arg0, (f32)bottom, (f32)(s16)(right - x), (f32)(s16)(bottom2 - bottom));
+    finalColor = *(s32 *)lbl_803680D8;
+    Prim2D_SetColorPacked(&finalColor);
     Prim2D_EndPrim();
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, u16);
