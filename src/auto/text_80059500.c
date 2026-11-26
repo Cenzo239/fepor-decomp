@@ -6,7 +6,7 @@ s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
 extern const f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 
-static inline f64 HalfD(f64 d) { return d * lbl_80369160; }
+static inline f64 HalfD(f32 d) { return (f64)d * lbl_80369160; }
 
 #pragma optimization_level reset
 
