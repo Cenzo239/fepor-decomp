@@ -1034,7 +1034,11 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
-#pragma opt_propagation on
+#pragma opt_propagation off
+static inline void GXWriteTevColorOp(volatile u8 *fifo, u32 value) {
+    *fifo = 0x61;
+    *(volatile u32 *)fifo = value;
+}
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
