@@ -104,88 +104,24 @@ void fn_8014CF10(Obj *arg0, s8 arg1, s8 arg2) {
     arg0->count = arg0->count + 1;
 }
 
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
 s8 fn_8014CF48(Obj *arg0, s32 arg1) {
-    s32 fn_80106DC8(s32, void *);
-    u8 sp8[0x80];
-    u8 *var_r4;
-    u8 *var_r5;
-    u8 *var_r6;
-    s32 temp_r6;
-    s32 var_r4i;
-    s32 temp_r3;
-    s32 ctr;
-    u8 a;
-    u8 b;
-
-    ((u8 *)arg0)[0x544] = 0;
-    temp_r3 = fn_80106DC8(arg1, sp8);
-    var_r4i = 0;
-    if (temp_r3 > 0) {
-        temp_r6 = temp_r3 - 8;
-        if (temp_r3 > 8) {
-            var_r5 = sp8;
-            for (; temp_r6 > 0; temp_r6 -= 8) {
-                b = var_r5[1];
-                a = var_r5[0];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[3];
-                a = var_r5[2];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[5];
-                a = var_r5[4];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[7];
-                a = var_r5[6];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[9];
-                a = var_r5[8];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[11];
-                a = var_r5[10];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[13];
-                a = var_r5[12];
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                var_r4i += 8;
-                ((u8 *)arg0)[0x544]++;
-                b = var_r5[15];
-                a = var_r5[14];
-                var_r5 += 0x10;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-                arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-                ((u8 *)arg0)[0x544]++;
-            }
-        }
-        var_r6 = sp8 + (var_r4i * 2);
-        for (ctr = temp_r3 - var_r4i; ctr != 0; ctr--) {
-            if (var_r4i >= temp_r3) {
-                break;
-            }
-            b = var_r6[1];
-            a = var_r6[0];
-            var_r6 += 2;
-            arg0->entries[(s8)((u8 *)arg0)[0x544]].a = a;
-            arg0->entries[(s8)((u8 *)arg0)[0x544]].b = b;
-            ((u8 *)arg0)[0x544]++;
-        }
-    }
-    return (s8)temp_r3;
+s32 fn_80106DC8(s32,void*);
+u8 buffer[128];
+s32 count;
+((u8*)arg0)[0x544]=0;
+count=fn_80106DC8(arg1,buffer);
+for(arg1=0;arg1<count;arg1++){
+u8 b=buffer[2*arg1+1];
+u8 a=buffer[2*arg1];
+arg0->entries[(s8)((u8*)arg0)[0x544]].a=a;
+arg0->entries[(s8)((u8*)arg0)[0x544]].b=b;
+((u8*)arg0)[0x544]++;
 }
-#pragma opt_strength_reduction reset
+return count;
+}
+#pragma pop
 
 void fn_8014D204(Obj *arg0, s8 arg1, s8 arg2) {
     arg0->count = 0;
