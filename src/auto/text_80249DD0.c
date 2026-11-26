@@ -441,6 +441,7 @@ void fn_80249E14(void *arg0) {
 }
 
 #pragma push
+#pragma optimization_level 3
 #pragma fp_contract off
 void fn_80249E3C(u32 arg0) {
     void fn_80254F00(u32);
@@ -1802,10 +1803,10 @@ void fn_8024C5CC(u32 arg0) {
     }
 }
 #pragma optimization_level reset
+extern u8 gSoundSlots[];
 /* Find the index of an active sound slot with the given instance id, or -1. */
 s32 Sound_FindSlotById(u32 id)
 {
-  extern u8 gSoundSlots[];
   u8 *entry;
   s32 i;
   u32 slotId;
@@ -1974,10 +1975,10 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
 
     u8 sp9;
     u8 sp8;
-    u8 *base;
-    u8 *scan;
-    u8 *slot;
     u8 *typep;
+    u8 *slot;
+    u8 *scan;
+    u8 *base;
     s32 index;
     s32 offset;
     u32 parent;
@@ -1990,34 +1991,37 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
     index=Sound_FindMatchingSlot(arg0,base);
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
-        slot = gSoundSlots + offset;
-        slot[0x59] = arg1;
-        slot[0x5C] = arg4;
+        {
+        u8 *firstSlot;
+        firstSlot = gSoundSlots + offset;
+        firstSlot[0x59] = arg1;
+        firstSlot[0x5C] = arg4;
         pan = arg2;
         span = arg3;
-        slot[0x5D] = 0;
-        slot[0x5E] = arg2;
-        slot[0x5F] = arg3;
+        firstSlot[0x5D] = 0;
+        firstSlot[0x5E] = arg2;
+        firstSlot[0x5F] = arg3;
         if (lbl_803689A4 & 1) {
             span = 0;
             pan = 0x40;
         } else if (!(lbl_803689A4 & 2)) {
             span = 0;
         }
-        slot = gSoundSlots + offset;
-        slot[0x5A] = pan;
+        firstSlot = gSoundSlots + offset;
+        firstSlot[0x5A] = pan;
         typep = gSoundSlots + 0xC;
-        slot[0x5B] = span;
+        firstSlot[0x5B] = span;
         if (typep[offset] == 2) {
-            slot = gSoundSlots + offset;
+            firstSlot = gSoundSlots + offset;
             fn_80261E6C(
-                *(s32 *)(slot + 0x4C),
+                *(s32 *)(firstSlot + 0x4C),
                 0,
-                slot[0x5A] << 16,
-                slot[0x5B] << 16,
-                lbl_8036C228 * (f32)slot[0x59],
-                lbl_8036C228 * (f32)slot[0x5C],
-                lbl_8036C228 * (f32)slot[0x5D]);
+                firstSlot[0x5A] << 16,
+                firstSlot[0x5B] << 16,
+                lbl_8036C228 * (f32)firstSlot[0x59],
+                lbl_8036C228 * (f32)firstSlot[0x5C],
+                lbl_8036C228 * (f32)firstSlot[0x5D]);
+        }
         }
         parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
@@ -2061,7 +2065,6 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
                     }
                     Audio_Unlock();
                 }
-                Audio_Unlock();
             }
             Audio_Unlock();
         }
