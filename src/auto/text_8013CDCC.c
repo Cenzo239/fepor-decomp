@@ -4911,7 +4911,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_common_subs on
 #pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
@@ -5009,11 +5009,12 @@ page = self->page();
 table = (u8 *)self + page * 12 + 0x90;
 {
 u8 *selected;
+s32 selectionOffset = (page << 1) + 0x64;
 if (*(u32 *)table == 0) selected = 0;
 else {
 node = *(u8 **)(table + 8);
 {
-s16 n = *(s16 *)((u8 *)self + page * 2 + 0x64);
+s16 n = *(s16 *)((u8 *)self + selectionOffset);
 if (n >= 0) { while (n > 0) { node = *(u8 **)(node + 4); --n; } }
 else { while (n < 0) { node = *(u8 **)(node + 0); ++n; } }
 }
