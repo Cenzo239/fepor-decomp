@@ -1,6 +1,8 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
 typedef struct StatDisplayTable { u8 pad[0x28]; s16 x[10]; s16 y[10]; u8 order[12]; } StatDisplayTable;
+static inline s16 StatDisplay_CoordAt(s16 *coords, s32 index) { return coords[index]; }
+static inline u8 StatDisplay_OrderAt(u8 *order, s32 index) { return order[index]; }
 static inline s32 Ui_ScrollDirection(s16 value) {
     if (value < 0) return -1;
     return value > 0;
@@ -400,8 +402,9 @@ void fn_801B3338(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_801B3378(void *proc) {
 extern u32 *gPadInput;
 extern u8 lbl_80297928[], gUnitStatusStr[];
@@ -427,7 +430,7 @@ u32 color; void *name; s16 width; s32 timer;
 f32 y,x,w,h,faceX;
 u8 *p;
 s32 alpha,backAlpha,skipped,stat;
-u8 *table=lbl_80297928;
+StatDisplayTable *table=(StatDisplayTable *)lbl_80297928;
 u32 pressed=gPadInput[1] & (gPadInput[2]^gPadInput[1]);
 void *effect,*face; u16 *tex;
 p=*(u8 **)((u8 *)proc+0x30);alpha=255;backAlpha=255;skipped=0;
@@ -469,7 +472,7 @@ if(*(s32 *)(p+12)>=20) {*(s32 *)(p+4)=10;*(s32 *)(p+12)=0;} break;
 case 10:
 scan:
 for(;;) {
-stat=(table+0x50)[*(s32 *)(p+8)];
+stat=table->order[*(s32 *)(p+8)];
 if(*(s32 *)(p+8)>=10) {*(s32 *)(p+4)=19; goto draw;}
 if(*(s8 *)(p+0x27+stat)) {
 *(s32 *)(p+4)=15;*(s32 *)(p+12)=0;
@@ -480,11 +483,11 @@ goto draw;
 }
 case 15:
 animate:
-stat=(table+0x50)[*(s32 *)(p+8)];
+stat=table->order[*(s32 *)(p+8)];
 if(!skipped) Ui_PlaySeCue(gUnitStatusStr+0x7F,100);
 if(*(u32 *)p&1) skipped=1;
 effect=fn_8005397C(gUnitStatusStr+0x95,proc);
-Effect_SetPos(effect,lbl_8036B0E4+(lbl_8036B0E8+(f32)((s16 *)(table+0x28))[stat]),lbl_8036B0EC+(lbl_8036B0F0+(f32)((s16 *)(table+0x3C))[stat]),lbl_8036B0C4);
+Effect_SetPos(effect,lbl_8036B0E4+(lbl_8036B0E8+(f32)table->x[stat]),lbl_8036B0EC+(lbl_8036B0F0+(f32)table->y[stat]),lbl_8036B0C4);
 ((Anim *)(p+stat*16))->state=5;
 *(s32 *)(p+4)=16; *(s32 *)(p+12)=0; ((f32 *)(p+stat*4))[14]=2.0f;
 if(*(u32 *)p&1) {*(s32 *)(p+4)=10;++*(s32 *)(p+8);*(s32 *)(p+12)=0;goto scan;} break;
