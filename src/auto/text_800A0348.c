@@ -2077,7 +2077,7 @@ s32 fn_800A320C(void) {
     return 0;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_800A3278(void *a, void *b, void *arg) {
     extern u8 gBattleState[];
     extern u8 lbl_80367558;
@@ -2086,12 +2086,12 @@ s32 fn_800A3278(void *a, void *b, void *arg) {
     u8 fn_800BDB9C(void *, s32);
     s32 index;
     u8 *base;
-    s32 col;
     s32 row;
+    u8 col;
 
-    col = *((u8 *)arg + 0x3a);
     base = (u8 *)((u32)gBattleState + 0xb4);
     row = (s8)lbl_80367558;
+    col = *((u8 *)arg + 0x3a);
     index = (row << 4) + col - 1;
 
     if (*(u32 *)(base + (index << 2)) == 0) {
@@ -2101,7 +2101,7 @@ s32 fn_800A3278(void *a, void *b, void *arg) {
     else fn_800BDB78(base, index);
     return 0;
 }
-#pragma optimization_level reset
+#pragma global_optimizer on
 void fn_800A3314(s32 arg0,s32 arg1,void *item) {
 void sprintf(void *,void *,...);
 void Prim2D_Begin(void);
