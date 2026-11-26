@@ -2,6 +2,8 @@
 #include "common.h"
 #include "global.h"
 
+typedef struct TabListIterator { void **node; } TabListIterator;
+
 struct UnkStruct {
     u32 field_0[0x10];
     u32 field_8;
@@ -1900,6 +1902,10 @@ void fn_801E7FC0(void *arg0) {
     Ui_DrawRouteIconEx(x, y, flag);
 }
 
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_801E80B4(void *arg0) {
     u8 fn_801E8B38(void *, void *, s8);
     s32 Abs(s32);
@@ -1921,7 +1927,7 @@ void fn_801E80B4(void *arg0) {
     s16 sp1C[2];
     s16 sp10[2];
     s16 sp18[2];
-    s8 old33;
+    s32 old33;
     u8 *p33;
     u32 held;
     u32 buttons;
@@ -1929,8 +1935,8 @@ void fn_801E80B4(void *arg0) {
     u32 *pad;
     u8 t;
     s32 max;
-    s16 pos;
-    s16 tgt;
+    s32 pos;
+    s32 tgt;
     s32 pos32;
     s32 tgt32;
     void *str;
@@ -1939,6 +1945,7 @@ void fn_801E80B4(void *arg0) {
     s8 mode;
     u8 b;
     s32 zero;
+    s16 scroll;
 
     pad = gPadInput;
     t = *(u8 *)((u8 *)arg0 + 0x33);
@@ -1981,12 +1988,13 @@ void fn_801E80B4(void *arg0) {
                 } else {
                     pos32 = pos;
                     tgt32 = tgt;
-                    if (pos32 < tgt32) {
+                    if ((s16)pos32 < (s16)tgt32) {
                         *(s16 *)((u8 *)arg0 + 0x36) = (s16)(*(s16 *)((u8 *)arg0 + 0x3A) + pos);
                     } else {
                         *(s16 *)((u8 *)arg0 + 0x36) = (s16)(pos - *(s16 *)((u8 *)arg0 + 0x3A));
                     }
-                    fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+                    scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), scroll);
                     if (*(s16 *)((u8 *)arg0 + 0x36) == *(s16 *)((u8 *)arg0 + 0x38)) {
                         Process_ClearFunc(arg0);
                     }
@@ -1995,10 +2003,12 @@ void fn_801E80B4(void *arg0) {
             } else if ((s8)*p33 < old33) {
                 *(s16 *)((u8 *)arg0 + 0x36) = 0;
                 *(s16 *)((u8 *)arg0 + 0x38) = 0;
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), scroll);
             } else {
                 *(s16 *)((u8 *)arg0 + 0x36) = *(s16 *)((u8 *)arg0 + 0x38);
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), scroll);
             }
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -2025,12 +2035,12 @@ void fn_801E80B4(void *arg0) {
         if (idx >= 0) {
             while (idx > 0) {
                 node = (void **)node[1];
-                idx = (s8)(idx - 1);
+                idx--;
             }
         } else {
             while (idx < 0) {
                 node = (void **)*node;
-                idx = (s8)(idx + 1);
+                idx++;
             }
         }
         mode = (s8)*(u8 *)((u8 *)arg0 + 0x30);
@@ -2065,12 +2075,13 @@ void fn_801E80B4(void *arg0) {
             } else {
                 pos32 = pos;
                 tgt32 = tgt;
-                if (pos32 < tgt32) {
+                if ((s16)pos32 < (s16)tgt32) {
                     *(s16 *)((u8 *)arg0 + 0x36) = (s16)(*(s16 *)((u8 *)arg0 + 0x3A) + pos);
                 } else {
                     *(s16 *)((u8 *)arg0 + 0x36) = (s16)(pos - *(s16 *)((u8 *)arg0 + 0x3A));
                 }
-                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), *(s16 *)((u8 *)arg0 + 0x36));
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                fn_80057860(*(void **)((u8 *)arg0 + 0x5C), scroll);
                 if (*(s16 *)((u8 *)arg0 + 0x36) == *(s16 *)((u8 *)arg0 + 0x38)) {
                     Process_ClearFunc(arg0);
                 }
@@ -2094,8 +2105,7 @@ void fn_801E80B4(void *arg0) {
         Ui_PlaySeCue(gTabMenuStrings + 0x13F, 0x64);
     }
 }
-
-#pragma global_optimizer on
+#pragma pop
 s32 fn_801E85A4(void *arg0, s32 arg1) {
     s8 fn_801E4A60(void);
     s32 fn_801E8734(void *, s32);
@@ -2498,12 +2508,13 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     }
     return var_r6;
 }
-#pragma pop
-#pragma optimization_level reset
-#pragma global_optimizer on
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_801E8D34(u8 *arg0) {
     s32 fn_801E9410(void);
-    u8 fn_801E85A4(void *, s32);
+    u8 fn_801E85A4(void *);
     s32 Abs(s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
@@ -2521,11 +2532,12 @@ void fn_801E8D34(u8 *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u8 gTabMenuStrings[];
     extern f64 lbl_8036B6E0;
+    s32 mode;
     s32 max;
-    s8 old32;
-    u32 held;
-    u32 buttons;
+    s32 old32;
     u32 cur;
+    u32 buttons;
+    u32 held;
     u32 *pad;
     u8 t;
     s32 pos32;
@@ -2534,21 +2546,20 @@ void fn_801E8D34(u8 *arg0) {
     s8 lo;
     s8 hi;
     void *str;
-    s16 spC[2];
     s16 sp14[2];
-    s16 sp8[2];
     s16 sp10[2];
+    s16 spC[2];
+    s16 sp8[2];
 
     max = fn_801E9410();
     pad = gPadInput;
-    t = *(u8 *)(arg0 + 0x32);
     held = pad[3];
     cur = pad[1];
-    old32 = (s8)t;
+    old32 = *(s8 *)(arg0 + 0x32);
     buttons = cur & (pad[2] ^ cur);
 
     if (held & 0x08000008U) {
-        t = *(volatile u8 *)(arg0 + 0x32);
+        t = *(u8 *)(arg0 + 0x32);
         if ((s8)t == 0) {
             if (buttons == held) {
                 *(u8 *)(arg0 + 0x32) = (u8)(max - 1);
@@ -2557,7 +2568,7 @@ void fn_801E8D34(u8 *arg0) {
             *(u8 *)(arg0 + 0x32) = t - 1;
         }
     } else if (held & 0x04000004U) {
-        t = *(volatile u8 *)(arg0 + 0x32);
+        t = *(u8 *)(arg0 + 0x32);
         max = max - 1;
         if ((u32)max == (u32)(s8)t) {
             if (buttons == held) {
@@ -2569,8 +2580,7 @@ void fn_801E8D34(u8 *arg0) {
     }
 
     if (old32 != (s8)*(u8 *)(arg0 + 0x32)) {
-        if (fn_801E85A4(arg0, *(u8 *)(arg0 + 0x32))) {
-#pragma optimization_level 2
+        if (fn_801E85A4(arg0)) {
             if (Abs(old32 - (s8)*(u8 *)(arg0 + 0x32)) == 1) {
                 *(s16 *)(arg0 + 0x3A) = 0x10;
                 pos32 = *(s16 *)(arg0 + 0x36);
@@ -2590,7 +2600,6 @@ void fn_801E8D34(u8 *arg0) {
                     }
                 }
                 Process_Goto(arg0, 4);
-#pragma optimization_level reset
             } else if ((s8)*(u8 *)(arg0 + 0x32) < old32) {
                 *(u8 *)(arg0 + 0x33) = 0;
                 *(s16 *)(arg0 + 0x36) = 0;
@@ -2625,8 +2634,9 @@ void fn_801E8D34(u8 *arg0) {
     if (buttons & 0x02000002U) {
         lo = fn_801E4A60(arg0, *(u8 *)(arg0 + 0x32));
         hi = fn_801E8920(arg0, *(u8 *)(arg0 + 0x32));
-        *(u8 *)(arg0 + 0x31) = 1;
-        switch ((s8)*(u8 *)(arg0 + 0x31)) {
+        mode = 1;
+        *(u8 *)(arg0 + 0x31) = mode;
+        switch (mode) {
         case 0:
             TextBanner_SetString(*(void **)(arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
             break;
@@ -2641,7 +2651,6 @@ void fn_801E8D34(u8 *arg0) {
             *(u8 *)(arg0 + 0x33) = (u8)lo;
         }
         if (fn_801E91E8(arg0, arg0 + 0x33)) {
-#pragma optimization_level 2
             *(s16 *)(arg0 + 0x3A) = 0x10;
             pos32 = *(s16 *)(arg0 + 0x36);
             tgt32 = *(s16 *)(arg0 + 0x38);
@@ -2660,7 +2669,6 @@ void fn_801E8D34(u8 *arg0) {
                 }
             }
             Process_Goto(arg0, 4);
-#pragma optimization_level reset
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
             fn_801E4900(sp8, arg0);
@@ -2679,10 +2687,7 @@ void fn_801E8D34(u8 *arg0) {
         Ui_PlaySeCue(gTabMenuStrings + 0x13F, 0x64);
     }
 }
-
-#pragma push
-#pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma pop
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
     s32 top, bottom, position;
     
