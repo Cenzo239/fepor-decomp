@@ -3620,6 +3620,14 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
 }
 
 #pragma use_lmw_stmw on
+static inline void PackColor8010A704(s32 *slot, u8 *obj, u8 alpha, s32 base) {
+    u8 *p = (u8 *)slot;
+    p[0] = obj[base];
+    p[1] = obj[base + 1];
+    p[2] = obj[base + 2];
+    p[3] = (u8)((alpha * obj[base + 3]) >> 8);
+}
+
 void fn_8010A704(void *arg0, u8 arg1) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -4035,7 +4043,7 @@ loop_slot:
                                     }
                                     if (fn_80100FD0(arg1, arg2, (s8)unit->unk19E, (s8)unit->unk19F, (u32)var_r0) != 0) {
                                         u8 var_r0_2;
-                                        s32 var_r0_3;
+                                        s16 var_r0_3;
                                         if (*item != NULL) {
                                             var_r0_2 = Item_GetRangeForUnit(*item, unit);
                                         } else {
