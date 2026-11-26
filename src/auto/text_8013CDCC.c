@@ -2933,35 +2933,14 @@ struct UUPW_Obj {
 };
 struct UUPW_Inner { u8 pad[8]; UUPW_Obj *obj; };
 struct UUPW_Panel { u8 pad[0x34]; void *flag; UUPW_Inner *inner; };
-static inline void UUPW_Do(UUPW_Panel *self, UUPW_Panel *p) {
+static inline void UUPW_Do(UUPW_Panel *self) {
+    UUPW_Panel *p = self;
     if ((self->flag ? p->inner->obj : (UUPW_Obj *)0) != 0) {
         (self->flag ? p->inner->obj : (UUPW_Obj *)0)->v7();
     }
 }
 extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-    };
-    struct Inner {
-        u8 pad[8];
-        Obj *obj;
-    };
-    struct Panel {
-        u8 pad[0x34];
-        void *flag;
-        Inner *inner;
-    };
-    Panel *p = (Panel *)arg0;
-    if ((p->flag ? p->inner->obj : (Obj *)0) != 0) {
-        (p->flag ? p->inner->obj : (Obj *)0)->v7();
-    }
+    UUPW_Do((UUPW_Panel *)arg0);
 }
 
 #pragma cplusplus on
