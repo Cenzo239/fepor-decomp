@@ -3219,23 +3219,23 @@ void fn_801B9818(void *arg0) {
         virtual void v14() = 0;
         virtual Item *get(s32) = 0;
     };
-    u32 self;
-    u32 menu;
+    register u32 self;
+    Menu *menu;
     s32 i;
     Item *item;
     void *child;
     self = (u32)arg0;
-    menu = (u32)fn_8013BC10(gUiUnitPanelStrings + 0xDF, gUiUnitPanelStrings + 0xEC);
-    M2C_FIELD((void *)menu, s16 *, 0xC) = 0xE8;
-    M2C_FIELD((void *)menu, s16 *, 8) = 0x148;
-    M2C_FIELD((void *)menu, s16 *, 0xA) = 0x38;
-    M2C_FIELD((void *)menu, u8 *, 0x24) = 1;
-    for (i = 0; ((Menu *)menu)->get(i) != 0; i++) {
-        item = ((Menu *)menu)->get(i);
+    menu = (Menu *)fn_8013BC10(gUiUnitPanelStrings + 0xDF, gUiUnitPanelStrings + 0xEC);
+    M2C_FIELD(menu, s16 *, 0xC) = 0xE8;
+    M2C_FIELD(menu, s16 *, 8) = 0x148;
+    M2C_FIELD(menu, s16 *, 0xA) = 0x38;
+    M2C_FIELD(menu, u8 *, 0x24) = 1;
+    for (i = 0; menu->get(i) != 0; i++) {
+        item = menu->get(i);
         item->set2(2);
         item->set3(3);
     }
-    Ui_CreateMenu((void *)menu, (void *)self, 0);
+    Ui_CreateMenu(menu, (void *)self, 0);
     child = Ui_FindChild((void *)self, 0x82, 0);
     String_AssignCStr((u8 *)child + 0x3C, gUiUnitPanelStrings + 0xF7, strlen((char *)gUiUnitPanelStrings + 0xF7));
     child = Ui_FindChild((void *)self, -0x1000, 0);
@@ -5125,73 +5125,41 @@ void fn_801BCCC4(void *arg0) {
         Ui_RemoveChild(self, p);
     }
 }
-#pragma optimization_level 3
-void fn_801BCD8C(void *arg0) {
+#pragma cplusplus on
+extern "C" void fn_801BCD8C(void *arg0) {
     extern u8 gUiContext[];
-    extern f32 lbl_8036B2D8;
-    void Ui_SlideWidgetChild(void *, void *, void *, s32);
+    extern const f32 lbl_8036B2D8;
+    class Pair { public: s16 x, y; Pair(s16 a, s16 b) : x(a), y(b) {} };
+    void Ui_SlideWidgetChild(void *, void *, const Pair &, s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
-    typedef struct {
-        s16 x;
-        s16 y;
-    } Pair;
-    Pair p1;
-    Pair p2;
-    Pair p3;
-    Pair p4;
     void *obj1;
-    void *obj4;
-    s32 t;
-    s32 flag;
-    f32 f;
-    void *obj3;
-    void *self;
     void *obj2;
+    void *obj3;
+    void *obj4;
 
-    flag = gUiContext[8];
     obj1 = *(void **)((u8 *)arg0 + 0x4C);
     obj2 = *(void **)((u8 *)arg0 + 0x54);
     obj3 = *(void **)((u8 *)arg0 + 0x58);
-    self = arg0;
 
-    switch (flag) {
+    switch (gUiContext[8]) {
     case 0x81:
-        t = *(s16 *)((u8 *)obj1 + 0xA);
-        t = *(s16 *)((u8 *)obj1 + 0xE) - t;
-        p1.y = *(s16 *)((u8 *)obj1 + 0xC);
-        p1.x = -(s16)t;
-        Ui_SlideWidgetChild(arg0, obj1, &p1, 1);
-
-        t = *(s16 *)((u8 *)obj2 + 0xA);
-        t = *(s16 *)((u8 *)obj2 + 0xE) - t;
-        p2.y = *(s16 *)((u8 *)obj2 + 0xC);
-        p2.x = -(s16)t;
-        Ui_SlideWidgetChild(self, obj2, &p2, 0);
-
-        t = *(s16 *)((u8 *)obj3 + 0xC);
-        p3.x = 0x260;
-        p3.y = t;
-        Ui_SlideWidgetChild(self, obj3, &p3, 0);
-
-        obj4 = *(void **)((u8 *)self + 0x5C);
-        t = *(s16 *)((u8 *)obj4 + 0xC);
-        p4.x = 0x260;
-        p4.y = t;
-        Ui_SlideWidgetChild(self, obj4, &p4, 0);
-
-        Process_ClearFunc(self);
+        Ui_SlideWidgetChild(arg0, obj1, Pair(-(s16)(*(s16 *)((u8 *)obj1 + 0xE) - *(s16 *)((u8 *)obj1 + 0xA)), *(s16 *)((u8 *)obj1 + 0xC)), 1);
+        Ui_SlideWidgetChild(arg0, obj2, Pair(-(s16)(*(s16 *)((u8 *)obj2 + 0xE) - *(s16 *)((u8 *)obj2 + 0xA)), *(s16 *)((u8 *)obj2 + 0xC)), 0);
+        Ui_SlideWidgetChild(arg0, obj3, Pair(0x260, *(s16 *)((u8 *)obj3 + 0xC)), 0);
+        obj4 = *(void **)((u8 *)arg0 + 0x5C);
+        Ui_SlideWidgetChild(arg0, obj4, Pair(0x260, *(s16 *)((u8 *)obj4 + 0xC)), 0);
+        Process_ClearFunc(arg0);
         break;
     case 0x80:
-        f = lbl_8036B2D8;
-        *(f32 *)((u8 *)obj1 + 0x30) = f;
-        *(f32 *)((u8 *)obj2 + 0x30) = f;
-        *(f32 *)((u8 *)obj3 + 0x30) = f;
+        *(f32 *)((u8 *)obj1 + 0x30) = lbl_8036B2D8;
+        *(f32 *)((u8 *)obj2 + 0x30) = lbl_8036B2D8;
+        *(f32 *)((u8 *)obj3 + 0x30) = lbl_8036B2D8;
         Process_Goto(arg0, 6);
         break;
     }
 }
-#pragma optimization_level reset
+#pragma cplusplus reset
 void fn_801BCEC4(void *arg0) {
 extern u8 gUiUnitPanelStrings[];
 void *Ui_FindChild(void *,s32,s32);
