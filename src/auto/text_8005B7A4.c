@@ -30,9 +30,9 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
         if ((s8)c == 0) {
             break;
         }
-        *(s32 *)(arg0 + 0x2C) = *(s32 *)(arg0 + 0x2C) * 0x25 + (s8)c;
         dst++;
         src++;
+        *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
     }
 
 }
