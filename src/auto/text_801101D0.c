@@ -1971,7 +1971,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     void fn_801134EC(void *, void *, void *);
     void fn_80147578(char *, s32, f32, f32, f32);
     void *fn_801992F8(void *);
-    s32 fn_80199310(void);
+    s32 fn_80199310(void *);
     void fn_80203184(void *, void *, void *);
     void fn_802031CC(void *, void *, f32);
     extern f32 fn_802032CC(const Vec3f &, const Vec3f &);
@@ -2043,7 +2043,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
                 strlen((char *)&lbl_80273DF8 + 0x1C));
 
     if (*(void **)((u8 *)arg0 + 0x11C) != 0) {
-        t = fn_80199310();
+        t = fn_80199310(*(void **)((u8 *)arg0 + 0x11C));
         fn_800DF670(*(void **)((u8 *)arg0 + 0x11C));
         if (t == 3) {
             fn_800E4FE8(*(void **)((u8 *)arg0 + 0x11C), arg0, (char *)&lbl_80273DF8 + 0xEE);
@@ -2144,11 +2144,11 @@ after_dist:
                     &sp38, *(void **)((u8 *)arg0 + 0x118), 0);
                 z = lbl_8036A184;
                 dx = adj_x - *(f32 *)((u8 *)arg0 + 0x48);
-                sp14.y = z;
                 sp14.x = sp38.x - dx;
+                sp14.y = z;
                 sp14.z = z;
-                sp20.y = z;
                 sp20.x = -*(f32 *)((u8 *)arg0 + 0x60);
+                sp20.y = z;
                 sp20.z = z;
                 fn_802031CC(&sp20, &sp20, *(f32 *)((u8 *)arg0 + 0x128) * scale);
                 fn_80203184(&sp14, &sp20, &sp14);
@@ -2394,6 +2394,8 @@ struct ActorMotionInterface {
     virtual PVector3 GetPos(s32) = 0;
     virtual void v13() = 0;
     virtual void Adjust(void *, f32, f32) = 0;
+    virtual void v15() = 0;
+    virtual u8 IsBusy() = 0;
 };
 #pragma cplusplus on
 #pragma push
@@ -2849,8 +2851,9 @@ s32 fn_80115AF0(void *actor) {
 }
 #pragma global_optimizer on
 
-#pragma global_optimizer off
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     s32 strlen(char *);
     void String_AssignCStr(void *, char *, s32);
@@ -2992,17 +2995,20 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         }
     }
     if (doMove != 0) {
-        f32 scale = *(f32 *)((u8 *)gGame + 0xDC);
+        f32 x, y, z;
+        f32 scale;
         *(u8 *)((u8 *)self + 0x195) = 1;
+        scale = *(f32 *)((u8 *)gGame + 0xDC);
         if (*(void **)((u8 *)self + 0x118) == 0) {
-            *(f32 *)&spA8.y = lbl_8036A184;
-            *(f32 *)&spA8.x = *(f32 *)((u8 *)self + 0x48);
-            *(f32 *)&spA8.z = *(f32 *)((u8 *)self + 0x50);
+            y = lbl_8036A184;
+            x = *(f32 *)((u8 *)self + 0x48);
+            z = *(f32 *)((u8 *)self + 0x50);
         } else {
-            void *oth = *(void **)((u8 *)self + 0x118);
+            void *oth;
             f32 px;
             ((GetPosFn)((void **)*(void **)((u8 *)self + 0x40))[0xE])(&sp24, self, 0);
             px = sp24.x;
+            oth = *(void **)((u8 *)self + 0x118);
             ((GetPosFn)((void **)*(void **)((u8 *)oth + 0x40))[0xE])(&sp30, oth, 0);
             spC[1] = lbl_8036A184;
             spC[2] = lbl_8036A184;
@@ -3012,10 +3018,13 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
             sp18[0] = -*(f32 *)((u8 *)self + 0x60);
             fn_802031CC(sp18, sp18, *(f32 *)((u8 *)self + 0x128) * scale);
             fn_80203184(spC, sp18, spC);
-            *(f32 *)&spA8.y = lbl_8036A184;
-            *(f32 *)&spA8.x = spC[0];
-            *(f32 *)&spA8.z = lbl_8036A184;
+            y = lbl_8036A184;
+            x = spC[0];
+            z = lbl_8036A184;
         }
+        *(f32 *)&spA8.y = y;
+        *(f32 *)&spA8.x = x;
+        *(f32 *)&spA8.z = z;
         sp9C = spA8;
         ((AdjustFn)((void **)*(void **)((u8 *)self + 0x40))[0x10])(self, (Vec3f *)&sp9C, *(f32 *)((u8 *)self + 0x124), lbl_8036A184);
         *(s32 *)((u8 *)self + 0x140) = 0;
@@ -3023,8 +3032,8 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     }
     return ret;
 }
-#pragma cplusplus reset
-#pragma global_optimizer reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma global_optimizer off
 void fn_8011631C(void *arg0, s8 arg1)
@@ -3283,8 +3292,11 @@ extern "C" void fn_80116944(void *arg0) {
     ((Obj *)arg0)->v1();
 }
 
-#pragma global_optimizer off
-#pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
     s32 strlen(char *);
     void String_AssignCStr(void *, char *, u32);
@@ -3524,8 +3536,10 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
                 strlen((char *)&gActorXmlStrs + 0x1C));
     String_Destroy(&sp8C, -1);
 }
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus on
 #pragma global_optimizer reset
+#pragma optimization_level 1
 
 #pragma optimization_level 1
 extern "C" void fn_80116F84(void *arg0, s32 *arg1) {
