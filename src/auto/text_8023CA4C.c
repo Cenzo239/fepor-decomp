@@ -1,6 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-extern f64 lbl_8036C190;
+extern const f64 lbl_8036C190;
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -361,13 +361,13 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma opt_strength_reduction on
+#pragma optimization_level 3
 s32 fn_8023CA4C(void) {
-    extern const u8 lbl_80282FD8[];
+    extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
-    const u8 *zig;
-    const u8 *p;
+    u8 *zig;
+    u8 *p;
     const f64 *base;
     u32 size;
     u32 id;
