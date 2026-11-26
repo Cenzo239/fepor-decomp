@@ -803,11 +803,14 @@ void fn_80034120(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x60) = (u8) (M2C_FIELD(arg0, u8 *, 0x60) + 1);
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_dead_assignments off
 #pragma use_lmw_stmw on
 void fn_80034130(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     void *fn_80037C20(void *);
-    u8 Rand_Chance(s16);
+    u8 Rand_Chance(s32);
     s32 Unit_GetHp(void *);
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
@@ -816,312 +819,315 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 Unit_GetLck(void *);
     s32 Unit_GetDef(void *);
     s32 Unit_GetRes(void *);
-    void BattleAnim_Queue(void *, s32);
+    void BattleAnim_Queue(void *, s32, u8);
 
-    volatile s16 gr[8];
+    s16 gr[8];
     u8 flag;
     u8 *cls;
     void **slot;
     u8 *bonus;
-    s16 v;
-    u8 g;
+    s32 i;
     s8 excess;
     s32 stat;
+    s32 adj;
     u8 *cap;
-    s16 t0, t1, t2, t3, t4, t5, t6, t7;
+    u8 g;
 
     flag = Status_Test((u8 *)arg0 + 0x1BC, 0x4B);
     cls = *(u8 **)((u8 *)arg0 + 0x188);
-    t0 = (s16)cls[0x25];
-    t1 = (s16)cls[0x26];
-    t2 = (s16)cls[0x27];
-    t3 = (s16)cls[0x28];
-    t4 = (s16)cls[0x29];
-    t5 = (s16)cls[0x2A];
-    t6 = (s16)cls[0x2B];
-    t7 = (s16)cls[0x2C];
-    gr[0] = t0;
-    gr[1] = t1;
-    gr[2] = t2;
-    gr[3] = t3;
-    gr[4] = t4;
-    gr[5] = t5;
-    gr[6] = t6;
-    gr[7] = t7;
+    for (i = 0; i < 8; i++) {
+        gr[i] = cls[0x25 + i];
+    }
     slot = (void **)fn_80037C20(arg0);
-    if (slot != NULL) {
+    if (slot != NULL && slot[0] != NULL) {
         bonus = (u8 *)slot[0];
-        if (bonus != NULL) {
-            t0 = (s8)bonus[0x2A];
-            t1 = (s8)bonus[0x2B];
-            t2 = (s8)bonus[0x2C];
-            t3 = (s8)bonus[0x2D];
-            t4 = (s8)bonus[0x2E];
-            t5 = (s8)bonus[0x2F];
-            t6 = (s8)bonus[0x30];
-            t7 = (s8)bonus[0x31];
-            gr[0] += t0;
-            gr[1] += t1;
-            gr[2] += t2;
-            gr[3] += t3;
-            gr[4] += t4;
-            gr[5] += t5;
-            gr[6] += t6;
-            gr[7] += t7;
+        for (i = 0; i < 8; i++) {
+            gr[i] += (s8)bonus[0x2A + i];
         }
     }
 
-    *(u8 *)((u8 *)arg0 + 0x2DE) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2DD) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2DC) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2DB) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2DA) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2D9) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2D8) = 0;
-    *(u8 *)((u8 *)arg0 + 0x2D7) = 0;
-
-    g = 0;
-    v = gr[0];
-    if (v >= 0x64) {
-        v -= 0x64;
-        g = 1;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+    {
+        u8 gain = 0;
+        s16 v;
+        for (i = 7; i >= 0; i--) {
+            ((u8 *)arg0)[0x2D7 + i] = gain;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
-    }
-    *(u8 *)((u8 *)arg0 + 0x2D7) = g;
-
-    g = 0;
-    v = gr[1];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+        v = gr[0];
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
-    }
-    *(u8 *)((u8 *)arg0 + 0x2D8) = g;
-
-    g = 0;
-    v = gr[2];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
-    }
-    *(u8 *)((u8 *)arg0 + 0x2D9) = g;
-
-    g = 0;
-    v = gr[3];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
+        *(u8 *)((u8 *)arg0 + 0x2D7) = gain;
     }
-    *(u8 *)((u8 *)arg0 + 0x2DA) = g;
 
-    g = 0;
-    v = gr[4];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+    {
+        s16 v = gr[1];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2D8) = gain;
     }
-    *(u8 *)((u8 *)arg0 + 0x2DB) = g;
 
-    g = 0;
-    v = gr[5];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+    {
+        s16 v = gr[2];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2D9) = gain;
     }
-    *(u8 *)((u8 *)arg0 + 0x2DC) = g;
 
-    g = 0;
-    v = gr[6];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+    {
+        s16 v = gr[3];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2DA) = gain;
     }
-    *(u8 *)((u8 *)arg0 + 0x2DD) = g;
 
-    g = 0;
-    v = gr[7];
-    if (v >= 0x64) {
-        g = 1;
-        v -= 0x64;
-    }
-    if ((s16)v >= 0x64) {
-        v -= 0x64;
-        g += 1;
-    }
-    if (flag != 0) {
-        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
-            g += 1;
+    {
+        s16 v = gr[4];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
         }
-    } else if (Rand_Chance(v) != 0) {
-        g += 1;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2DB) = gain;
     }
-    *(u8 *)((u8 *)arg0 + 0x2DE) = g;
+
+    {
+        s16 v = gr[5];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2DC) = gain;
+    }
+
+    {
+        s16 v = gr[6];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2DD) = gain;
+    }
+
+    {
+        s16 v = gr[7];
+        u8 gain = 0;
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (v >= 0x64) {
+            v -= 0x64;
+            gain += 1;
+        }
+        if (flag != 0) {
+            s32 r = v;
+            if (Rand_Chance(r) != 0 || Rand_Chance(r) != 0) {
+                gain += 1;
+            }
+        } else if (Rand_Chance(v) != 0) {
+            gain += 1;
+        }
+        *(u8 *)((u8 *)arg0 + 0x2DE) = gain;
+    }
 
     stat = Unit_GetHp(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2D7);
-    excess = (s8)((g + stat) - cap[0x4C]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x4C]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2D7) = g - excess;
     }
     stat = Unit_GetStr(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2D8);
-    excess = (s8)((g + stat) - cap[0x4D]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x4D]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2D8) = g - excess;
     }
     stat = Unit_GetMag(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2D9);
-    excess = (s8)((g + stat) - cap[0x4E]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x4E]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2D9) = g - excess;
     }
     stat = Unit_GetSkl(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DA);
-    excess = (s8)((g + stat) - cap[0x4F]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x4F]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DA) = g - excess;
     }
     stat = Unit_GetSpd(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DB);
-    excess = (s8)((g + stat) - cap[0x50]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x50]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DB) = g - excess;
     }
-    stat = Unit_GetLck(arg0);
-    g = *(u8 *)((u8 *)arg0 + 0x2DC);
-    excess = (s8)(g + (stat - 0x28));
-    if (excess >= 0) {
-        *(u8 *)((u8 *)arg0 + 0x2DC) = g - excess;
+    {
+        u32 g_lck;
+        stat = Unit_GetLck(arg0);
+        g_lck = *(u8 *)((u8 *)arg0 + 0x2DC);
+        adj = stat - 0x28;
+        adj = g_lck + adj;
+        excess = (s8)adj;
+        if (excess >= 0) {
+            *(u8 *)((u8 *)arg0 + 0x2DC) = g_lck - excess;
+        }
     }
     stat = Unit_GetDef(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DD);
-    excess = (s8)((g + stat) - cap[0x52]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x52]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DD) = g - excess;
     }
     stat = Unit_GetRes(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DE);
-    excess = (s8)((g + stat) - cap[0x53]);
+    stat = g + stat;
+    excess = (s8)(stat - cap[0x53]);
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DE) = g - excess;
     }
 
     g = *(u8 *)((u8 *)arg0 + 0x2D7);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2A);
+        BattleAnim_Queue(arg1, 0x2A, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2D8);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2B);
+        BattleAnim_Queue(arg1, 0x2B, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2D9);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2C);
+        BattleAnim_Queue(arg1, 0x2C, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DA);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2D);
+        BattleAnim_Queue(arg1, 0x2D, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DB);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2E);
+        BattleAnim_Queue(arg1, 0x2E, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DC);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x2F);
+        BattleAnim_Queue(arg1, 0x2F, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DD);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x30);
+        BattleAnim_Queue(arg1, 0x30, g);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DE);
     if ((s8)g != 0) {
-        BattleAnim_Queue(arg1, 0x31);
+        BattleAnim_Queue(arg1, 0x31, g);
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma use_lmw_stmw on
 /* Promote the foe copy, then queue battle anims for each stat gain vs the base unit. */
@@ -1500,20 +1506,242 @@ void Unit_AddGrowthProgress(void *unit, void *deltas) {
     M2C_FIELD(unit, u8 *, 0x1BB) = (u8) res;
 }
 
-void fn_800351FC(void *arg0,u8 arg1,void *arg2,void *arg3){
-void DebugPrint(void*,...);void BattleAnim_Queue(void*,s32);void fn_80034130(void*,void*);void Unit_CalcLevelUpGrowths(void*,void*);void Unit_AddGrowthProgress(void*,void*);void **fn_80037C20(void*);s8 fn_80037CCC(void*);u8 fn_800386B0(void*);u8 fn_8003D13C(void*);u8 fn_8014DA68(void);extern u8 lbl_8026A120[];extern u8 gBattle[];extern f32 lbl_80368E8C;extern f32 lbl_80368EA0;
-f32 vals[8];u8 zeros[8];u8 zeros2[8];u8 *p;void *tmp;void **pp;u8 exp;u32 i;
-if(fn_8014DA68()==0){if(arg1!=0){*(u32*)(gBattle+0xCAC)|=0x400;}exp=(u8)(arg1+fn_800386B0(arg0));if(exp>=0x64){exp-=0x64;((u8*)arg0)[0x19A]++;*(u32*)(gBattle+0xCAC)|=0x800;if((s8)((u8*)arg0)[0x19A]>0x14){*(u32*)((u8*)arg0+0x1A0)|=0x40000;*(u32*)(gBattle+0xCAC)|=0x10;}else{BattleAnim_Queue(arg3,0x29);fn_80034130(arg0,arg3);}}((u8*)arg0)[0x19B]=exp;if(fn_8003D13C(arg0)==0){((u8*)arg0)[0x19B]=0xFF;}return;}
-for(i=0;i<8;i++){vals[i]=lbl_80368EA0;}tmp=*(void**)((u8*)arg0+0x188);if(tmp!=NULL){vals[0]=lbl_80368EA0+(f32)((u8*)tmp)[0x25];vals[1]=lbl_80368EA0+(f32)((u8*)tmp)[0x26];vals[2]=lbl_80368EA0+(f32)((u8*)tmp)[0x27];vals[3]=lbl_80368EA0+(f32)((u8*)tmp)[0x28];vals[4]=lbl_80368EA0+(f32)((u8*)tmp)[0x29];vals[5]=lbl_80368EA0+(f32)((u8*)tmp)[0x2A];vals[6]=lbl_80368EA0+(f32)((u8*)tmp)[0x2B];vals[7]=lbl_80368EA0+(f32)((u8*)tmp)[0x2C];}
-DebugPrint(lbl_8026A120+0xCE);for(i=0;i<8;i++){zeros[i]=0;}DebugPrint(lbl_8026A120+0xE6,0,vals[0]);DebugPrint(lbl_8026A120+0xFA,(s8)zeros[1],vals[1]);DebugPrint(lbl_8026A120+0x10E,(s8)zeros[2],vals[2]);DebugPrint(lbl_8026A120+0x122,(s8)zeros[3],vals[3]);DebugPrint(lbl_8026A120+0x136,(s8)zeros[4],vals[4]);DebugPrint(lbl_8026A120+0x14A,(s8)zeros[5],vals[5]);DebugPrint(lbl_8026A120+0x15E,(s8)zeros[6],vals[6]);DebugPrint(lbl_8026A120+0x172,(s8)zeros[7],vals[7]);
-if(arg2!=NULL){tmp=*(void**)((u8*)arg2+0x18C);if(tmp!=NULL){vals[0]+=(f32)(s8)((u8*)tmp)[0x5C];vals[1]+=(f32)(s8)((u8*)tmp)[0x5D];vals[2]+=(f32)(s8)((u8*)tmp)[0x5E];vals[3]+=(f32)(s8)((u8*)tmp)[0x5F];vals[4]+=(f32)(s8)((u8*)tmp)[0x60];vals[5]+=(f32)(s8)((u8*)tmp)[0x61];vals[6]+=(f32)(s8)((u8*)tmp)[0x62];vals[7]+=(f32)(s8)((u8*)tmp)[0x63];}DebugPrint(lbl_8026A120+0x186);tmp=*(void**)((u8*)arg2+0x18C);if(tmp!=NULL){p=(u8*)tmp+0x5C;}else{for(i=0;i<8;i++){zeros2[i]=0;}p=zeros2;}DebugPrint(lbl_8026A120+0xE6,(s8)p[0],vals[0]);DebugPrint(lbl_8026A120+0xFA,(s8)p[1],vals[1]);DebugPrint(lbl_8026A120+0x10E,(s8)p[2],vals[2]);DebugPrint(lbl_8026A120+0x122,(s8)p[3],vals[3]);DebugPrint(lbl_8026A120+0x136,(s8)p[4],vals[4]);DebugPrint(lbl_8026A120+0x14A,(s8)p[5],vals[5]);DebugPrint(lbl_8026A120+0x15E,(s8)p[6],vals[6]);DebugPrint(lbl_8026A120+0x172,(s8)p[7],vals[7]);}
-tmp=*(void**)((u8*)arg0+0x28C);if(tmp!=NULL){vals[0]+=(f32)(s8)((u8*)tmp)[0x2A];vals[1]+=(f32)(s8)((u8*)tmp)[0x2B];vals[2]+=(f32)(s8)((u8*)tmp)[0x2C];vals[3]+=(f32)(s8)((u8*)tmp)[0x2D];vals[4]+=(f32)(s8)((u8*)tmp)[0x2E];vals[5]+=(f32)(s8)((u8*)tmp)[0x2F];vals[6]+=(f32)(s8)((u8*)tmp)[0x30];vals[7]+=(f32)(s8)((u8*)tmp)[0x31];}DebugPrint(lbl_8026A120+0x194);tmp=*(void**)((u8*)arg0+0x28C);if(tmp!=NULL){p=(u8*)tmp+0x2A;}else{p=NULL;}if(p==NULL){for(i=0;i<8;i++){zeros2[i]=0;}p=zeros2;}DebugPrint(lbl_8026A120+0xE6,(s8)p[0],vals[0]);DebugPrint(lbl_8026A120+0xFA,(s8)p[1],vals[1]);DebugPrint(lbl_8026A120+0x10E,(s8)p[2],vals[2]);DebugPrint(lbl_8026A120+0x122,(s8)p[3],vals[3]);DebugPrint(lbl_8026A120+0x136,(s8)p[4],vals[4]);DebugPrint(lbl_8026A120+0x14A,(s8)p[5],vals[5]);DebugPrint(lbl_8026A120+0x15E,(s8)p[6],vals[6]);DebugPrint(lbl_8026A120+0x172,(s8)p[7],vals[7]);
-pp=fn_80037C20(arg0);if(pp!=NULL){tmp=*pp;if(tmp!=NULL){vals[0]+=(f32)(s8)((u8*)tmp)[0x2A];vals[1]+=(f32)(s8)((u8*)tmp)[0x2B];vals[2]+=(f32)(s8)((u8*)tmp)[0x2C];vals[3]+=(f32)(s8)((u8*)tmp)[0x2D];vals[4]+=(f32)(s8)((u8*)tmp)[0x2E];vals[5]+=(f32)(s8)((u8*)tmp)[0x2F];vals[6]+=(f32)(s8)((u8*)tmp)[0x30];vals[7]+=(f32)(s8)((u8*)tmp)[0x31];}}DebugPrint(lbl_8026A120+0x1A0);if(fn_80037CCC(arg0)>=0){p=(u8*)(*fn_80037C20(arg0))+0x2A;}else{p=NULL;}if(p==NULL){for(i=0;i<8;i++){zeros2[i]=0;}p=zeros2;}DebugPrint(lbl_8026A120+0xE6,(s8)p[0],vals[0]);DebugPrint(lbl_8026A120+0xFA,(s8)p[1],vals[1]);DebugPrint(lbl_8026A120+0x10E,(s8)p[2],vals[2]);DebugPrint(lbl_8026A120+0x122,(s8)p[3],vals[3]);DebugPrint(lbl_8026A120+0x136,(s8)p[4],vals[4]);DebugPrint(lbl_8026A120+0x14A,(s8)p[5],vals[5]);DebugPrint(lbl_8026A120+0x15E,(s8)p[6],vals[6]);DebugPrint(lbl_8026A120+0x172,(s8)p[7],vals[7]);
-vals[0]=(vals[0]*(f32)arg1)/lbl_80368E8C;vals[1]=(vals[1]*(f32)arg1)/lbl_80368E8C;vals[2]=(vals[2]*(f32)arg1)/lbl_80368E8C;vals[3]=(vals[3]*(f32)arg1)/lbl_80368E8C;vals[4]=(vals[4]*(f32)arg1)/lbl_80368E8C;vals[5]=(vals[5]*(f32)arg1)/lbl_80368E8C;vals[6]=(vals[6]*(f32)arg1)/lbl_80368E8C;vals[7]=(vals[7]*(f32)arg1)/lbl_80368E8C;DebugPrint(lbl_8026A120+0x1B2,(s8)arg1);for(i=0;i<8;i++){zeros[i]=0;}DebugPrint(lbl_8026A120+0xE6,0,vals[0]);DebugPrint(lbl_8026A120+0xFA,(s8)zeros[1],vals[1]);DebugPrint(lbl_8026A120+0x10E,(s8)zeros[2],vals[2]);DebugPrint(lbl_8026A120+0x122,(s8)zeros[3],vals[3]);DebugPrint(lbl_8026A120+0x136,(s8)zeros[4],vals[4]);DebugPrint(lbl_8026A120+0x14A,(s8)zeros[5],vals[5]);DebugPrint(lbl_8026A120+0x15E,(s8)zeros[6],vals[6]);DebugPrint(lbl_8026A120+0x172,(s8)zeros[7],vals[7]);DebugPrint(lbl_8026A120+0x1D0);DebugPrint(lbl_8026A120+0x1EA);DebugPrint(lbl_8026A120+0x213,(s8)((u8*)arg0)[0x1B4],(s8)((u8*)arg0)[0x1B5],(s8)((u8*)arg0)[0x1B6],(s8)((u8*)arg0)[0x1B7],(s8)((u8*)arg0)[0x1B8],(s8)((u8*)arg0)[0x1B9],(s8)((u8*)arg0)[0x1BA],(s8)((u8*)arg0)[0x1BB]);Unit_AddGrowthProgress(arg0,vals);DebugPrint(lbl_8026A120+0x23C);DebugPrint(lbl_8026A120+0x1EA);DebugPrint(lbl_8026A120+0x213,(s8)((u8*)arg0)[0x1B4],(s8)((u8*)arg0)[0x1B5],(s8)((u8*)arg0)[0x1B6],(s8)((u8*)arg0)[0x1B7],(s8)((u8*)arg0)[0x1B8],(s8)((u8*)arg0)[0x1B9],(s8)((u8*)arg0)[0x1BA],(s8)((u8*)arg0)[0x1BB]);
-if(arg1!=0){*(u32*)(gBattle+0xCAC)|=0x400;}exp=(u8)(arg1+fn_800386B0(arg0));if(exp>=0x64){exp-=0x64;((u8*)arg0)[0x19A]++;*(u32*)(gBattle+0xCAC)|=0x800;if((s8)((u8*)arg0)[0x19A]>0x14){*(u32*)((u8*)arg0+0x1A0)|=0x40000;*(u32*)(gBattle+0xCAC)|=0x10;}else{BattleAnim_Queue(arg3,0x29);Unit_CalcLevelUpGrowths(arg0,arg3);}}((u8*)arg0)[0x19B]=exp;if(fn_8003D13C(arg0)==0){((u8*)arg0)[0x19B]=0xFF;}
+static inline s8 Unit_GetLevel_19A(void *u) {
+    return ((s8 *)u)[0x19A];
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
+    void DebugPrint(void *, ...);
+    void BattleAnim_Queue(void *, s32);
+    void fn_80034130(void *, void *);
+    void Unit_CalcLevelUpGrowths(void *, void *);
+    void Unit_AddGrowthProgress(void *, void *);
+    void **fn_80037C20(void *);
+    s8 fn_80037CCC(void *);
+    u8 fn_800386B0(void *);
+    u8 fn_8003D13C(void *);
+    u8 fn_8014DA68(void);
+    extern u8 lbl_8026A120[];
+    extern u8 gBattle[];
+    extern const f32 lbl_80368E8C;
+    extern const f32 lbl_80368EA0;
+
+    f32 vals[8];
+    s8 *p;
+    void *tmp;
+    void **pp;
+    s32 i;
+
+    if (fn_8014DA68() == 0) {
+        if (arg1 != 0) {
+            *(u32 *)(gBattle + 0xCAC) |= 0x400;
+        }
+        arg1 += fn_800386B0(arg0);
+        if (arg1 >= 0x64) {
+            arg1 -= 0x64;
+            ((u8 *)arg0)[0x19A] = ((u8 *)arg0)[0x19A] + 1;
+            *(u32 *)(gBattle + 0xCAC) |= 0x800;
+            if (0x14 < ((s8 *)arg0)[0x19A]) {
+                *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
+                *(u32 *)(gBattle + 0xCAC) |= 0x10;
+            } else {
+                BattleAnim_Queue(arg3, 0x29);
+                fn_80034130(arg0, arg3);
+            }
+        }
+        ((u8 *)arg0)[0x19B] = arg1;
+        if (fn_8003D13C(arg0) == 0) {
+            ((u8 *)arg0)[0x19B] = 0xFF;
+        }
+        return;
+    }
+
+    for (i = 7; i >= 0; i--) {
+        vals[i] = lbl_80368EA0;
+    }
+    tmp = *(void **)((u8 *)arg0 + 0x188);
+    if (tmp != NULL) {
+        for (i = 0; i < 8; i++) {
+            vals[i] = lbl_80368EA0 + (f32)((u8 *)tmp)[0x25 + i];
+        }
+    }
+    DebugPrint(lbl_8026A120 + 0xCE);
+    {
+        s8 zeros[8];
+        for (i = 7; i >= 0; i--) {
+            zeros[i] = 0;
+        }
+        p = zeros;
+        DebugPrint(lbl_8026A120 + 0xE6, 0, vals[0]);
+        DebugPrint(lbl_8026A120 + 0xFA, p[1], vals[1]);
+        DebugPrint(lbl_8026A120 + 0x10E, p[2], vals[2]);
+        DebugPrint(lbl_8026A120 + 0x122, p[3], vals[3]);
+        DebugPrint(lbl_8026A120 + 0x136, p[4], vals[4]);
+        DebugPrint(lbl_8026A120 + 0x14A, p[5], vals[5]);
+        DebugPrint(lbl_8026A120 + 0x15E, p[6], vals[6]);
+        DebugPrint(lbl_8026A120 + 0x172, p[7], vals[7]);
+    }
+
+    if (arg2 != NULL) {
+        tmp = *(void **)((u8 *)arg2 + 0x18C);
+        if (tmp != NULL) {
+            for (i = 0; i < 8; i++) {
+                vals[i] += (f32)((s8 *)tmp)[0x5C + i];
+            }
+        }
+        DebugPrint(lbl_8026A120 + 0x186);
+        {
+            s8 zeros[8];
+            p = (s8 *)*(void **)((u8 *)arg2 + 0x18C) + 0x5C;
+            if (p == NULL) {
+                for (i = 7; i >= 0; i--) {
+                    zeros[i] = 0;
+                }
+                p = zeros;
+            }
+            DebugPrint(lbl_8026A120 + 0xE6, p[0], vals[0]);
+            DebugPrint(lbl_8026A120 + 0xFA, p[1], vals[1]);
+            DebugPrint(lbl_8026A120 + 0x10E, p[2], vals[2]);
+            DebugPrint(lbl_8026A120 + 0x122, p[3], vals[3]);
+            DebugPrint(lbl_8026A120 + 0x136, p[4], vals[4]);
+            DebugPrint(lbl_8026A120 + 0x14A, p[5], vals[5]);
+            DebugPrint(lbl_8026A120 + 0x15E, p[6], vals[6]);
+            DebugPrint(lbl_8026A120 + 0x172, p[7], vals[7]);
+        }
+    }
+
+    pp = (void **)((u8 *)arg0 + 0x28C);
+    if (pp != NULL) {
+        tmp = *pp;
+        if (tmp != NULL) {
+            for (i = 0; i < 8; i++) {
+                vals[i] += (f32)((s8 *)tmp)[0x2A + i];
+            }
+        }
+    }
+    DebugPrint(lbl_8026A120 + 0x194);
+    {
+        s8 zeros[8];
+        tmp = *(void **)((u8 *)arg0 + 0x28C);
+        if (tmp != NULL) {
+            p = (s8 *)tmp + 0x2A;
+        } else {
+            p = NULL;
+        }
+        if (p == NULL) {
+            for (i = 7; i >= 0; i--) {
+                zeros[i] = 0;
+            }
+            p = zeros;
+        }
+        DebugPrint(lbl_8026A120 + 0xE6, p[0], vals[0]);
+        DebugPrint(lbl_8026A120 + 0xFA, p[1], vals[1]);
+        DebugPrint(lbl_8026A120 + 0x10E, p[2], vals[2]);
+        DebugPrint(lbl_8026A120 + 0x122, p[3], vals[3]);
+        DebugPrint(lbl_8026A120 + 0x136, p[4], vals[4]);
+        DebugPrint(lbl_8026A120 + 0x14A, p[5], vals[5]);
+        DebugPrint(lbl_8026A120 + 0x15E, p[6], vals[6]);
+        DebugPrint(lbl_8026A120 + 0x172, p[7], vals[7]);
+    }
+
+    pp = fn_80037C20(arg0);
+    if (pp != NULL) {
+        tmp = *pp;
+        if (tmp != NULL) {
+            for (i = 0; i < 8; i++) {
+                vals[i] += (f32)((s8 *)tmp)[0x2A + i];
+            }
+        }
+    }
+    DebugPrint(lbl_8026A120 + 0x1A0);
+    {
+        s8 zeros[8];
+        if (fn_80037CCC(arg0) >= 0) {
+            p = (s8 *)(*fn_80037C20(arg0)) + 0x2A;
+        } else {
+            p = NULL;
+        }
+        if (p == NULL) {
+            for (i = 7; i >= 0; i--) {
+                zeros[i] = 0;
+            }
+            p = zeros;
+        }
+        DebugPrint(lbl_8026A120 + 0xE6, p[0], vals[0]);
+        DebugPrint(lbl_8026A120 + 0xFA, p[1], vals[1]);
+        DebugPrint(lbl_8026A120 + 0x10E, p[2], vals[2]);
+        DebugPrint(lbl_8026A120 + 0x122, p[3], vals[3]);
+        DebugPrint(lbl_8026A120 + 0x136, p[4], vals[4]);
+        DebugPrint(lbl_8026A120 + 0x14A, p[5], vals[5]);
+        DebugPrint(lbl_8026A120 + 0x15E, p[6], vals[6]);
+        DebugPrint(lbl_8026A120 + 0x172, p[7], vals[7]);
+    }
+
+    vals[0] = (vals[0] * (f32)arg1) / lbl_80368E8C;
+    vals[1] = (vals[1] * (f32)arg1) / lbl_80368E8C;
+    vals[2] = (vals[2] * (f32)arg1) / lbl_80368E8C;
+    vals[3] = (vals[3] * (f32)arg1) / lbl_80368E8C;
+    vals[4] = (vals[4] * (f32)arg1) / lbl_80368E8C;
+    vals[5] = (vals[5] * (f32)arg1) / lbl_80368E8C;
+    vals[6] = (vals[6] * (f32)arg1) / lbl_80368E8C;
+    vals[7] = (vals[7] * (f32)arg1) / lbl_80368E8C;
+    DebugPrint(lbl_8026A120 + 0x1B2, arg1);
+    {
+        s8 zeros[8];
+        for (i = 7; i >= 0; i--) {
+            zeros[i] = 0;
+        }
+        p = zeros;
+        DebugPrint(lbl_8026A120 + 0xE6, 0, vals[0]);
+        DebugPrint(lbl_8026A120 + 0xFA, p[1], vals[1]);
+        DebugPrint(lbl_8026A120 + 0x10E, p[2], vals[2]);
+        DebugPrint(lbl_8026A120 + 0x122, p[3], vals[3]);
+        DebugPrint(lbl_8026A120 + 0x136, p[4], vals[4]);
+        DebugPrint(lbl_8026A120 + 0x14A, p[5], vals[5]);
+        DebugPrint(lbl_8026A120 + 0x15E, p[6], vals[6]);
+        DebugPrint(lbl_8026A120 + 0x172, p[7], vals[7]);
+    }
+    DebugPrint(lbl_8026A120 + 0x1D0);
+    DebugPrint(lbl_8026A120 + 0x1EA);
+    DebugPrint(lbl_8026A120 + 0x213,
+        ((u8 *)arg0)[0x1B4], ((u8 *)arg0)[0x1B5],
+        ((u8 *)arg0)[0x1B6], ((u8 *)arg0)[0x1B7],
+        ((u8 *)arg0)[0x1B8], ((u8 *)arg0)[0x1B9],
+        ((u8 *)arg0)[0x1BA], ((u8 *)arg0)[0x1BB]);
+    Unit_AddGrowthProgress(arg0, vals);
+    DebugPrint(lbl_8026A120 + 0x23C);
+    DebugPrint(lbl_8026A120 + 0x1EA);
+    DebugPrint(lbl_8026A120 + 0x213,
+        ((u8 *)arg0)[0x1B4], ((u8 *)arg0)[0x1B5],
+        ((u8 *)arg0)[0x1B6], ((u8 *)arg0)[0x1B7],
+        ((u8 *)arg0)[0x1B8], ((u8 *)arg0)[0x1B9],
+        ((u8 *)arg0)[0x1BA], ((u8 *)arg0)[0x1BB]);
+
+    if (arg1 != 0) {
+        *(u32 *)(gBattle + 0xCAC) |= 0x400;
+    }
+    arg1 += fn_800386B0(arg0);
+    if (arg1 >= 0x64) {
+        arg1 -= 0x64;
+        ((u8 *)arg0)[0x19A] = ((u8 *)arg0)[0x19A] + 1;
+        *(u32 *)(gBattle + 0xCAC) |= 0x800;
+        if (0x14 < ((s8 *)arg0)[0x19A]) {
+            *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
+            *(u32 *)(gBattle + 0xCAC) |= 0x10;
+        } else {
+            BattleAnim_Queue(arg3, 0x29);
+            Unit_CalcLevelUpGrowths(arg0, arg3);
+        }
+    }
+    ((u8 *)arg0)[0x19B] = arg1;
+    if (fn_8003D13C(arg0) == 0) {
+        ((u8 *)arg0)[0x19B] = 0xFF;
+    }
+}
+#pragma pop
 void fn_80036150(s32 arg0) {
     u8 fn_8003D13C(s32);
     void BattleAnim_Queue(s32, s32, s8);
