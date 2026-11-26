@@ -1,13 +1,7 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void MenuWork_InitEntries(s32 a, s32 b, s32 *table, void **entries) {
-    entries[0] = table;
-    table[1] = a;
-    entries[1] = table + 2;
-    table[3] = b;
-    entries[2] = 0;
-}
+
 
 
 
