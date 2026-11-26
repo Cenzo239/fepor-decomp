@@ -79,14 +79,6 @@ u16 value = (p[0] << 8) | p[1];
 *cursor = p + 2;
  return value;
  }
- extern f64 lbl_8036C190;
- typedef union { f64 d; struct { u32 hi, lo; } w; } ThpU32ToF64;
- static inline f64 ThpU32ToF64Value(u32 value) {
-     ThpU32ToF64 u;
-     u.w.hi = 0x43300000;
-     u.w.lo = value;
-     return u.d - lbl_8036C190;
- }
  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
