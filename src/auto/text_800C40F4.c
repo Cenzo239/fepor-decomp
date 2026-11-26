@@ -24472,7 +24472,7 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction reset
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 2
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
@@ -24487,7 +24487,7 @@ void fn_8002F728(void *);u8 Item_GetMaxRange(void *);void fn_800FDDBC(s8,s8,u8,u
 void Map_ClipRangeByFacing(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *TargetList_GetAt(void *,s32);
 void fn_8002C6F4(void *,s8,s8);void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
 u8 *map,*ctx; s32 rowOffset;u8 *row; s32 xmin,xmax,ymax;
-s32 callback; F43Range pred; F43Eval eval; struct {F43Pos pos;s32 pad;s32 score;} result;
+s32 callback; F43Eval eval; F43Range pred; struct {F43Pos pos;s32 pad;s32 score;} result;
 s16 bestY,bestX;u16 bestItem;u8 bestToY,bestToX;
 s32 index,score,x,y,ymin; s32 cx,cy,r;u8 ix,iy,kind,id;u8 *self,*entry,*candidate,*item,*list,*tile,*point;
 callback=arg0;ctx=gUiContext;map=gBattleMap;self=*(u8**)ctx;ctx[8]=arg1;
