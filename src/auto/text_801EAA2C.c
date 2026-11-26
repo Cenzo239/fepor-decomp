@@ -1383,14 +1383,12 @@ s32 fn_801EC6CC(void) {
 }
 
 #pragma global_optimizer off
-s32 fn_801EC6D4(s32 unused, void *a, void *b) {
-    void fn_80176888(void *, void *, f32, f32);
-    extern u8 lbl_8027EE08[];
-
-    fn_80176888(lbl_8027EE08 + 0x30a, a,
-                (f32)(*(s16 *)((u8 *)a + 0x30) + *(s16 *)((u8 *)b + 0x30)),
-                (f32)(*(s16 *)((u8 *)a + 0x32) + *(s16 *)((u8 *)b + 0x32)));
-    return 0x10;
+s32 fn_801EC6D4(s32 unused, void *a, void *b)
+{
+  void Ui_CreateMsgPopup(const char *, void *, f32, f32);
+  a = ((u8 *) b) + 0x30;
+  Ui_CreateMsgPopup("dummy_string_long", a, (f32) ((*((s16 *) (((u8 *) a) + 0x30))) + (*((s16 *) a))), (f32) ((*((s16 *) (((u8 *) a) + 0x32))) + (*((s16 *) (((u8 *) b) + 0x32)))));
+  return 0x10;
 }
 #pragma global_optimizer reset
 void fn_801EC74C(void) {
@@ -4401,3 +4399,8 @@ extern void* lbl_8027EE08;
 #include "common.h"
 
 s32 gUiInputFlags;
+static inline s32 PopupFromWidgets_801EC6D4(const char *msg, void *a, void *b) {
+void Ui_CreateMsgPopup(const char *, void *, f32, f32);
+Ui_CreateMsgPopup(msg,a,(f32)(*(s16*)((u8*)a+0x30)+*(s16*)((u8*)b+0x30)),(f32)(*(s16*)((u8*)a+0x32)+*(s16*)((u8*)b+0x32)));
+return 0x10;
+}
