@@ -10567,6 +10567,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma use_lmw_stmw on
+#pragma peephole on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -16142,6 +16143,7 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     f32 z;
     f32 y;
     f32 x;
+    f32 *out;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
@@ -16160,9 +16162,10 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         x = z;
     }
 
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    out = arg0;
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
 }
 #pragma pop
 void fn_800E4F0C(void *arg0) {
@@ -25881,19 +25884,19 @@ void fn_800F8538(void *arg0) {
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
+
     u8 *global;
-    u8 *state;
     s32 tmp;
-    s32 index;
     s32 ret;
 
-    global = gAiCmd;
-    state = gAiState;
+    global = (u8 *)gAiCmd;
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
+
     ret = (s8)Unit_GetMov(arg0);
-    index = *(s32 *)(global + 4);
-    *(s32 *)&state[(index << 2) + 8] = ret;
+
+    *(s32 *)&gAiState[(*(s32 *)(global + 4) << 2) + 8] = ret;
+
     if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
