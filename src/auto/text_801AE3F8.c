@@ -1445,30 +1445,35 @@ extern "C" void fn_801B0564(void *arg0) {
 }
 
 extern "C" void fn_801B0978(void *arg0) {
- void *Ui_FindChild(void *,s32,s32);
- void Ui_AddChild(void *,void *);
- void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
- void TalkUi_ShowMsg(s32);
- void Ui_BringChildToFront(void *,void *);
- void Ui_SetWidgetText(void *,s32);
- s16 a[2],b[2],c[2];
- void *p;
- u32 text;
- s16 y;
- p=Ui_FindChild(arg0,4,0);
- if(!p){p=M2C_FIELD(arg0,void **,0x4c);Ui_AddChild(arg0,p);}
- if(M2C_FIELD(p,s16 *,10)!=0x138){a[0]=0x138;a[1]=0x74;Ui_SlideWidgetChildMode1(arg0,p,a,0);}
- p=Ui_FindChild(arg0,5,0);
- if(!p){p=M2C_FIELD(arg0,void **,0x50);Ui_AddChild(arg0,p);}
- if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);b[0]=0x138;b[1]=y;Ui_SlideWidgetChildMode1(arg0,p,b,0);}
- p=Ui_FindChild(arg0,7,0);
- if(!p){p=M2C_FIELD(arg0,void **,0x58);Ui_AddChild(arg0,p);}
- if(M2C_FIELD(p,s16 *,10)!=0x138){y=M2C_FIELD(p,s16 *,12);c[0]=0x138;c[1]=y;Ui_SlideWidgetChildMode1(arg0,p,c,0);}
- Ui_BringChildToFront(arg0,p);
- TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),s32 *,0x28));
- text=M2C_FIELD(M2C_FIELD(arg0,void **,0x6c),u32 *,0x7c);
- p=Ui_FindChild(arg0,-0x1000,0);
- if(p) Ui_SetWidgetText(p,(s32)text);
+    void *Ui_FindChild(void *, s32, s32);
+    void Ui_AddChild(void *, void *);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void TalkUi_ShowMsg(s32);
+    void Ui_BringChildToFront(void *, void *);
+    void Ui_SetWidgetText(void *, s32);
+    struct Helper {
+        static void SetText(void *panel, s32 text) {
+            void *Ui_FindChild(void *, s32, s32);
+            void Ui_SetWidgetText(void *, s32);
+            void *p = Ui_FindChild(panel, -0x1000, 0);
+            if (p) Ui_SetWidgetText(p, text);
+        }
+    };
+    s16 a[2], b[2], c[2];
+    void *p;
+    s16 y;
+    p = Ui_FindChild(arg0, 4, 0);
+    if (!p) { p = M2C_FIELD(arg0, void **, 0x4c); Ui_AddChild(arg0, p); }
+    if (M2C_FIELD(p, s16 *, 10) != 0x138) { a[0] = 0x138; a[1] = 0x74; Ui_SlideWidgetChildMode1(arg0, p, a, 0); }
+    p = Ui_FindChild(arg0, 5, 0);
+    if (!p) { p = M2C_FIELD(arg0, void **, 0x50); Ui_AddChild(arg0, p); }
+    if (M2C_FIELD(p, s16 *, 10) != 0x138) { y = M2C_FIELD(p, s16 *, 12); b[0] = 0x138; b[1] = y; Ui_SlideWidgetChildMode1(arg0, p, b, 0); }
+    p = Ui_FindChild(arg0, 7, 0);
+    if (!p) { p = M2C_FIELD(arg0, void **, 0x58); Ui_AddChild(arg0, p); }
+    if (M2C_FIELD(p, s16 *, 10) != 0x138) { y = M2C_FIELD(p, s16 *, 12); c[0] = 0x138; c[1] = y; Ui_SlideWidgetChildMode1(arg0, p, c, 0); }
+    Ui_BringChildToFront(arg0, p);
+    TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x6c), s32 *, 0x28));
+    Helper::SetText(arg0, M2C_FIELD(M2C_FIELD(arg0, void **, 0x6c), s32 *, 0x7c));
 }
 
 extern "C" void fn_801B0AEC(void *arg0) {
