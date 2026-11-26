@@ -3718,6 +3718,14 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
     }
     return temp_r31;
 }
+static inline void *fn_80065EE8_Body(void *res, char *p) {
+    void fn_80065F48(void *);
+    if (!(FileCache_GetFlags(p) & 0x4000)) {
+        fn_80065F48(res);
+        FileCache_MarkRelocated(p);
+    }
+    return res;
+}
 void *fn_80065EE8(void *arg0) {
     void fn_80065F48(void *);
     void *result = (void *)fn_8005C82C(arg0, 0);
