@@ -16602,26 +16602,15 @@ void fn_8017CE1C(void *self, void *arg1) {
     }
 }
 
-#pragma cplusplus on
-void fn_8017D4B8(s32 *arg0, void *arg1) {
-    s32 *fn_8013F748(void *, s32 *, s16 *);
-    s16 sp8;
-    s16 spA;
-    s32 spC;
-    s16 r8;
-    s16 r7;
-    s16 r6;
-    s16 r0;
-
-    r8 = *(s16 *)((u8 *)arg1 + 0xC);
-    r7 = *(s16 *)((u8 *)arg1 + 0x10);
-    r6 = *(s16 *)((u8 *)arg1 + 0xA);
-    r0 = *(s16 *)((u8 *)arg1 + 0xE);
-    spA = (s16)((s16)(r7 - r8) >> 1);
-    sp8 = (s16)((s16)(r0 - r6) >> 2);
-    *arg0 = *fn_8013F748(arg1, &spC, &sp8);
+typedef struct R_8017D4B8 { u8 pad[0xa]; s16 xa, xc, xe, x10; } R_8017D4B8;
+void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
+    s32 *fn_8013F748(const void *, void *, s16 *);
+    void *spC;
+    s16 sp8[2];
+    sp8[1] = (s16)(r->x10 - r->xc) >> 1;
+    sp8[0] = (s16)(r->xe - r->xa) >> 2;
+    *ret = *fn_8013F748(r, &spC, sp8);
 }
-#pragma cplusplus off
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
