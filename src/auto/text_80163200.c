@@ -18201,7 +18201,7 @@ void fn_8017FEF8(void *arg0) {
 #pragma cplusplus on
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_80180084(void *arg0)
 {
     void Process_Goto(void *, s32);
