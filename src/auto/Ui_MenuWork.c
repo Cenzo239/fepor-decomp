@@ -1,6 +1,13 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void MenuWork_InitEntries(s32 a, s32 b, s32 *table, void **entries) {
+    entries[0] = table;
+    table[1] = a;
+    entries[1] = table + 2;
+    table[3] = b;
+    entries[2] = 0;
+}
 
 
 
@@ -530,6 +537,7 @@ static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b)
 }
 #pragma push
 #pragma opt_strength_reduction off
+#pragma opt_common_subs off
 void fn_8006F10C(s32 arg0, s32 arg1)
 {
   extern u8 lbl_80311CA8[];
@@ -546,9 +554,9 @@ void fn_8006F10C(s32 arg0, s32 arg1)
   Entries *entries = (Entries *) (base + 0x6c);
   entries->e0 = table;
   table = (s32 *)entries->e0;
-  MenuEntry_SetValue(table, arg0);
+  table[1] = arg0;
   entries->e1 = (void *)(table + 2);
-  MenuEntry_SetValue((s32 *)entries->e1, arg1);
+  ((s32 *)entries->e1)[1] = arg1;
   entries->e2 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
