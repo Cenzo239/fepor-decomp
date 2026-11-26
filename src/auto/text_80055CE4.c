@@ -1,5 +1,22 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+#pragma push
+#pragma cplusplus on
+class ScrollBarDrawInterface {
+public:
+ unsigned char data[0x2C];
+ virtual unsigned char slot0();
+ virtual unsigned char slot1();
+ virtual unsigned char slot2();
+ virtual unsigned char slot3();
+ virtual unsigned char slot4();
+ virtual unsigned char slot5();
+ virtual unsigned char slot6();
+ virtual unsigned char slot7();
+};
+#pragma pop
+#pragma cplusplus off
+
 typedef struct NodeLightPosition { f32 x,y,z; } NodeLightPosition;
 typedef struct TrailNode40 { u32 v[9]; u8 r, g, b, a; } TrailNode40;
 static inline void TrailNode_Copy(TrailNode40 *d, const TrailNode40 *s) {
