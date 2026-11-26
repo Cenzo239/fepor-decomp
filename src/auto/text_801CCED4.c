@@ -3278,7 +3278,11 @@ void fn_801D107C(void *arg0) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void fn_801D15D4(void *arg0) {
     s64 OSGetTime(void);
     s64 __div2i(s32, s32, s32, s32);
@@ -3294,6 +3298,7 @@ void fn_801D15D4(void *arg0) {
     s32 spC;
     u8 sp8[4];
     void *self;
+void *fadep;
     void *slot;
     void *p;
     void *obj;
@@ -3315,13 +3320,7 @@ void fn_801D15D4(void *arg0) {
     s64 t;
 
     self = arg0;
-    t = OSGetTime();
-    bus = *(u32 *)0x800000F8;
-    mag = 0x10624DD3;
-    bus = bus >> 2;
-    div = (u32)(((u64)mag * bus) >> 38);
-    t = __div2i((s32)(t >> 32), (s32)t, 0, (s32)div);
-    t = __mod2i((s32)(t >> 32), (s32)t, 0, 0xBB8);
+    t = OSGetTime() / (s64)((*(u32 *)0x800000F8 >> 2) / 1000) % 3000;
     *(u32 *)((u8 *)self + 0x14C) = (u32)t;
 
     if (*(u32 *)((u8 *)self + 8) & 2) {
@@ -3338,72 +3337,57 @@ void fn_801D15D4(void *arg0) {
         }
     }
 
-    p = self;
+    fadep = self;
     for (k = 10; k != 0; k--) {
-        switch ((s8)*(u8 *)((u8 *)p + 0x61)) {
+        switch ((s8)*(u8 *)((u8 *)fadep + 0x61)) {
+case 0: break;
         case 1:
-            v = *(u8 *)((u8 *)p + 0x63) + 2;
-            if (v < 0xFF) {
-                *(u8 *)((u8 *)p + 0x63) = (u8)v;
-            } else {
-                *(u8 *)((u8 *)p + 0x61) = 2;
-                *(u8 *)((u8 *)p + 0x63) = 0xFF;
-            }
+            v = *(u8 *)((u8 *)fadep + 0x63) + 2;
+            if(v >= 0xFF) { *(u8 *)((u8 *)fadep+0x61)=2; v=0xFF; }
+ *(u8 *)((u8 *)fadep+0x63)=(u8)v;
             break;
         case 2:
-            v = *(u8 *)((u8 *)p + 0x63) - 2;
-            if (v > 0x96) {
-                *(u8 *)((u8 *)p + 0x63) = (u8)v;
-            } else {
-                *(u8 *)((u8 *)p + 0x61) = 3;
-                *(u8 *)((u8 *)p + 0x63) = 0x96;
-            }
+            v = *(u8 *)((u8 *)fadep + 0x63) - 2;
+            if(v <= 0x96) { *(u8 *)((u8 *)fadep+0x61)=3; v=0x96; }
+ *(u8 *)((u8 *)fadep+0x63)=(u8)v;
             break;
         case 3:
-            if (*(u8 *)((u8 *)p + 0x60) & 1) {
-                *(u8 *)((u8 *)p + 0x61) = 4;
+            if (*(u8 *)((u8 *)fadep + 0x60) & 1) {
+                *(u8 *)((u8 *)fadep + 0x61) = 4;
             }
-            if (*(u8 *)((u8 *)p + 0x60) & 2) {
-                *(u8 *)((u8 *)p + 0x61) = 4;
+            if (*(u8 *)((u8 *)fadep + 0x60) & 2) {
+                *(u8 *)((u8 *)fadep + 0x61) = 4;
             }
             break;
         case 4:
-            v = *(u8 *)((u8 *)p + 0x63) + 2;
-            if (v < 0xFF) {
-                *(u8 *)((u8 *)p + 0x63) = (u8)v;
-            } else {
-                *(u8 *)((u8 *)p + 0x61) = 5;
-                *(u8 *)((u8 *)p + 0x63) = 0xFF;
-            }
+            v = *(u8 *)((u8 *)fadep + 0x63) + 2;
+            if(v >= 0xFF) { *(u8 *)((u8 *)fadep+0x61)=5; v=0xFF; }
+ *(u8 *)((u8 *)fadep+0x63)=(u8)v;
             break;
         case 5:
-            v = *(u8 *)((u8 *)p + 0x63) - 2;
+            v = *(u8 *)((u8 *)fadep + 0x63) - 2;
             if (v <= 0x96) {
-                fl = *(u8 *)((u8 *)p + 0x60);
+                fl = *(u8 *)((u8 *)fadep + 0x60);
                 v = 0x96;
                 if (fl & 1) {
-                    *(u8 *)((u8 *)p + 0x60) = (u8)(fl & ~3);
-                    *(u8 *)((u8 *)p + 0x61) = 3;
+                    *(u8 *)((u8 *)fadep + 0x60) = (u8)(fl & ~3);
+                    *(u8 *)((u8 *)fadep + 0x61) = 3;
                 } else if (fl & 2) {
-                    *(u8 *)((u8 *)p + 0x60) = (u8)(fl & ~1);
-                    *(u8 *)((u8 *)p + 0x61) = 4;
+                    *(u8 *)((u8 *)fadep + 0x60) = (u8)(fl & ~1);
+                    *(u8 *)((u8 *)fadep + 0x61) = 4;
                 } else {
-                    *(u8 *)((u8 *)p + 0x61) = 3;
+                    *(u8 *)((u8 *)fadep + 0x61) = 3;
                 }
             }
-            *(u8 *)((u8 *)p + 0x63) = (u8)v;
+            *(u8 *)((u8 *)fadep + 0x63) = (u8)v;
             break;
         case 0x63:
-            v = *(u8 *)((u8 *)p + 0x63) - 2;
-            if (v > 0) {
-                *(u8 *)((u8 *)p + 0x63) = (u8)v;
-            } else {
-                *(u8 *)((u8 *)p + 0x61) = 0;
-                *(u8 *)((u8 *)p + 0x63) = 0;
-            }
+            v = *(u8 *)((u8 *)fadep + 0x63) - 2;
+            if(v <= 0) {v=0; *(u8 *)((u8 *)fadep+0x61)=0;}
+ *(u8 *)((u8 *)fadep+0x63)=(u8)v;
             break;
         }
-        p = (u8 *)p + 0xE;
+        fadep = (u8 *)fadep + 0xE;
     }
 
     i = 0;
@@ -3417,6 +3401,7 @@ void fn_801D15D4(void *arg0) {
             b = ((u8 *)&sp18)[2];
         }
         switch ((s8)*(u8 *)((u8 *)slot + 0x28)) {
+case 0: case 2: case 3: break;
         case 1:
             s = (s16)(*(u8 *)((u8 *)slot + 0x29) + 5);
             if (s >= 0xFF) {
@@ -3469,8 +3454,9 @@ void fn_801D15D4(void *arg0) {
     } while (i < 7);
 
     p = self;
-    for (k = 4; k != 0; k--) {
+    for (k = 0; k < 4; k++) {
         switch ((s8)*(u8 *)((u8 *)p + 0xEC)) {
+case 0: case 2: break;
         case 1:
             v = *(u8 *)((u8 *)p + 0xF3) + 0xA;
             if (v > 0xFF) {
@@ -3489,6 +3475,7 @@ void fn_801D15D4(void *arg0) {
             break;
         }
         switch ((s8)*(u8 *)((u8 *)p + 0xF4)) {
+case 0: case 2: break;
         case 1:
             v = *(u8 *)((u8 *)p + 0xFB) + 0xA;
             if (v > 0xFF) {
@@ -3523,47 +3510,21 @@ void fn_801D15D4(void *arg0) {
     }
     *(u8 *)((u8 *)self + 0x21) = (u8)v;
 
-    {
-        u32 flags = *(u32 *)((u8 *)self + 8);
-        u32 sh = 0x800;
-        v = *(u8 *)((u8 *)self + 0x14);
-        if (flags & (sh << 0)) {
-            v = v - 2;
-            if (v < 0x32) v = 0x32;
-        } else {
-            v = v + 2;
-            if (v > 0x64) v = 0x64;
-        }
-        *(u8 *)((u8 *)self + 0x14) = (u8)v;
-
-        v = *(u8 *)((u8 *)self + 0x15);
-        if (flags & (sh << 1)) {
-            v = v - 2;
-            if (v < 0x32) v = 0x32;
-        } else {
-            v = v + 2;
-            if (v > 0x64) v = 0x64;
-        }
-        *(u8 *)((u8 *)self + 0x15) = (u8)v;
-
-        v = *(u8 *)((u8 *)self + 0x16);
-        if (flags & (sh << 2)) {
-            v = v - 2;
-            if (v < 0x32) v = 0x32;
-        } else {
-            v = v + 2;
-            if (v > 0x64) v = 0x64;
-        }
-        *(u8 *)((u8 *)self + 0x16) = (u8)v;
-    }
+for(i=0;i<3;i++) {
+ v=*((u8*)self+0x14+i);
+ if(*(u32*)((u8*)self+8)&(0x800<<i)) {v-=2;if(v<0x32)v=0x32;}
+ else {v+=2;if(v>0x64)v=0x64;}
+ *((u8*)self+0x14+i)=v;
+}
 
     if (*(u32 *)(*(u8 **)((u8 *)self + 0x24) + 8) != 0) {
         i = 0;
         p = self;
         j = 0;
-        while (i < 3) {
+        for (;;) {
             bit = 0x100 << i;
-            if (*(void **)(*(u8 **)(*(u8 **)((u8 *)self + 0x24) + 8) + i) == NULL) {
+ if(i>=3)break;
+            if (*(void **)(*(u8 **)(*(u8 **)((u8 *)self + 0x24) + 8) + i*4) == NULL) {
                 break;
             }
             if (*(u32 *)((u8 *)self + 8) & bit) {
@@ -3578,10 +3539,10 @@ void fn_801D15D4(void *arg0) {
                         break;
                     }
                     sum += ((u8 *)base)[0x13];
-                    if (*(s16 *)((u8 *)p + 0xE) < (s16)sum) {
+                    if (*(s16 *)((u8 *)p + 0xE) < sum) {
                         break;
                     }
-                    if (*(s16 *)((u8 *)p + 0xE) == (s16)sum) {
+                    if (*(s16 *)((u8 *)p + 0xE) == sum) {
                         if ((*(u16 *)((u8 *)arr[i] + j + 0x16) & 4) != 0) {
                             *(u32 *)((u8 *)self + 8) &= ~bit;
                             break;
@@ -3596,7 +3557,7 @@ void fn_801D15D4(void *arg0) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma cplusplus on
 extern "C" void fn_801D1C80(void *arg0) {
@@ -3834,8 +3795,11 @@ extern "C" void fn_801D1F28(void *self, void *other)
     Prim2D_PrepareTex();
 }
 
-#pragma global_optimizer off
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma global_optimizer off
 #pragma use_lmw_stmw on
 extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     struct Node { Node *prev; Node *next; void *obj; void *spr; void *data; };
@@ -3909,6 +3873,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     Obj *self;
     s32 arg;
     s32 visible;
+    s16 count;
     s16 index, idx0, row_h, scroll, sign, n, row, endrow;
     s16 xbase, xoff, y;
     s32 ypos;
@@ -3918,11 +3883,11 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     Node *it, *sent;
     void *spr;
     f32 fx, fy;
-    f32 sp28[2];
-    u8 sp34[0x30];
+    struct { f32 x, y, z; } sp28;
+    Pair p1, p0;
     u8 sp64[0x30];
-    Pair p[2];
-
+    u8 sp34[0x30];
+ 
     self = (Obj *)arg0;
     arg = arg1;
     self->v16();
@@ -3971,29 +3936,29 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
         sign = (s16)(scroll > 0);
     }
     if (sign > 0 && idx0 >= 0) {
-        index = (s16)(index - 1);
+        index--;
     }
     node = self->list;
     n = index;
     if (index >= 0) {
         while (n > 0) {
             node = node->next;
-            n = (s16)(n - 1);
+            n--;
         }
     } else {
         while (n < 0) {
             node = node->prev;
-            n = (s16)(n + 1);
+            n++;
         }
     }
     xbase = self->a60;
     row = (s16)((-sign & ~sign) >> 31);
     endrow = (s16)visible;
     if (sign < 0) {
-        endrow = (s16)(endrow + 1);
+        endrow++;
     }
     ypos = (s32)row * (s32)row_h;
-    for (; row < endrow; ypos += row_h, row = (s16)(row + 1), index = (s16)(index + 1)) {
+    for (; row < endrow; ypos += row_h, row++, index++) {
         if ((u32)(s16)index >= self->a6c) {
             break;
         }
@@ -4009,19 +3974,19 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
 
     index = self->a54;
     if (sign > 0 && index >= 0) {
-        index = (s16)(index - 1);
+        index--;
     }
     node = self->list;
     n = index;
     if (index >= 0) {
         while (n > 0) {
             node = node->next;
-            n = (s16)(n - 1);
+            n--;
         }
     } else {
         while (n < 0) {
             node = node->prev;
-            n = (s16)(n + 1);
+            n++;
         }
     }
     xoff = (s16)(self->a60 - 0x10);
@@ -4047,21 +4012,21 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     row = (s16)((-sign & ~sign) >> 31);
     endrow = (s16)visible;
     if (sign < 0) {
-        endrow = (s16)(endrow + 1);
+        endrow++;
     }
     ypos = (s32)row * (s32)row_h;
-    for (; row < endrow; ypos += row_h, row = (s16)(row + 1), index = (s16)(index + 1)) {
+    for (; row < endrow; ypos += row_h, row++, index++) {
         if ((u32)(s16)index >= self->a6c) {
             break;
         }
         spr = node->spr;
         y = (s16)(ypos + self->a62 + self->a56 + scroll);
-        if (spr != NULL) {
-            fx = (f32)(s16)(xoff + self->unkA);
-            fy = (f32)(s16)(y + self->unkC);
-            fn_8004BD1C(node->data, sp28, lbl_8036B604);
-            fx += sp28[0];
-            fy += sp28[1];
+        if (spr != 0) {
+            fx = (f32)(xoff + self->unkA);
+            fy = (f32)(y + self->unkC);
+            fn_8004BD1C(node->data, &sp28.x, lbl_8036B604);
+            fx += sp28.x;
+            fy += sp28.y;
             fn_80202574(sp64, (u8 *)spr + 0x10, fx, fy, (f32)self->a22);
             if (fn_800BE890(node->obj) != 0) {
                 *(u32 *)spr &= ~0x20000u;
@@ -4089,33 +4054,34 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     Prim2D_AddZ(lbl_8036B610);
     Prim2D_PrepareTex();
 
+    count = (s16)self->a6c;
     self->flag84 = (u8)(self->a54 > 0);
     {
-        s16 diff = (s16)((s16)self->a6c - (s16)self->v14());
-        self->flagAC = (u8)(self->a54 < diff);
+        s16 pos = self->a54;
+        s32 diff = count - (s16)self->v14();
+        self->flagAC = (u8)(pos < diff);
     }
     ((Sub *)((u8 *)self + 0x78))->v11(0x10);
     ((Sub *)((u8 *)self + 0xA0))->v11(0x10);
     {
         void *bar = *(void **)((u8 *)self + 0x48);
-        *(s16 *)((u8 *)bar + 0x3C) = (s16)((s16)self->a6c * row_h);
-        *(s16 *)((u8 *)bar + 0x3E) = (s16)((s16)visible * row_h);
+        *(s16 *)((u8 *)bar + 0x3C) = (s16)(count * row_h);
+        *(s16 *)((u8 *)bar + 0x3E) = (s16)(visible * row_h);
         *(s16 *)((u8 *)bar + 0x40) = (s16)((row_h * self->a54) - scroll);
     }
-    p[0].ptmf = lbl_80299980;
-    p[0].arg = arg;
-    p[1].ptmf = lbl_80299980;
-    p[1].arg = arg;
+    p1.arg = arg;
+    p0.ptmf = lbl_80299980;
+    p0.arg = arg;
+    p1.ptmf = lbl_80299980;
     it = *(Node **)((u8 *)self + 0x44);
     sent = (Node *)((u8 *)self + 0x40);
     while (it != sent) {
-        (((Sub *)it->obj)->*p[0].ptmf)(p[0].arg);
+        (((Sub *)it->obj)->*p0.ptmf)(p0.arg);
         it = it->next;
     }
 }
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
-#pragma global_optimizer reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma cplusplus reset
 
@@ -7713,245 +7679,254 @@ void fn_801D9FA4(void *arg0)
     Prim2D_PrepareTex();
 }
 
-static void fn_801DB5B4(void *arg0, void *arg1)
+#pragma push
+#pragma opt_lifetimes off
+static void fn_801DB5B4(void *arg0_p, void *arg1_p)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     char *strcpy(char *, const char *);
-    u8 *fn_801E09B4(void *);
-    u8 *fn_801E2324(void *, s32);
     void fn_801E3A60(void *, u32 *, u32 *, u32 *);
     char *Msg_Expand(void *);
 
-    extern u8 gSaveDataBase[];
+    extern u8 gSaveDataBase[8];
     extern u8 gUiSeCues[];
-    extern f32 lbl_8036B634;
-    extern f32 lbl_8036B694;
+    extern const f32 lbl_8036B634;
+    extern const f32 lbl_8036B694;
 
-    u8 *self;
-    u8 *other;
+    struct SlotInfo {
+        s16 flags;      /* 0x00 */
+        s16 state;      /* 0x02 */
+        s16 frame;      /* 0x04 */
+        s16 duration;   /* 0x06 */
+        s16 slotIdx;    /* 0x08 */
+        s16 x;          /* 0x0A */
+        s16 y;          /* 0x0C */
+        s16 startX;     /* 0x0E */
+        s16 unk10;      /* 0x10 */
+        s16 endX;       /* 0x12 */
+        s16 unk14;      /* 0x14 */
+        u8 chapter;     /* 0x16 */
+        u8 prevChapter; /* 0x17 */
+        char name[16];  /* 0x18 */
+        char prevName[16]; /* 0x28 */
+        u16 diff;       /* 0x38 */
+        u16 prevDiff;   /* 0x3A */
+        s16 alpha;      /* 0x3C */
+        s16 flashAlpha; /* 0x3E */
+        s32 hours;      /* 0x40 */
+        s32 mins;       /* 0x44 */
+        s32 secs;       /* 0x48 */
+    } *arg0 = (struct SlotInfo *)arg0_p;
+
+    struct CursorInfo {
+        u8 pad0[0x60];
+        s16 flags;      /* 0x60 */
+        s16 state;      /* 0x62 */
+        u8 pad64[4];
+        s16 x;          /* 0x68 */
+        s16 y;          /* 0x6A */
+        u8 pad6C[0xC];
+        u8 alpha;       /* 0x78 */
+    } *arg1 = (struct CursorInfo *)arg1_p;
+
+    u8 savedId;
     u8 *record;
-    u8 *check;
-    s32 frame;
-    s32 duration;
     s32 halfway;
-    s32 savedId;
-    s32 state;
-    s32 choice;
-    f32 result;
+    s32 frame;
 
-    self = (u8 *)arg0;
-    other = (u8 *)arg1;
-    state = *(s16 *)(self + 2);
-
-    switch (state) {
+    switch (arg0->state) {
     case 0:
-        *(s16 *)(self + 0) = 0;
+        arg0->flags = 0;
         break;
 
     case 0x64:
-        *(s16 *)(self + 0) |= 1;
-        *(s16 *)(self + 2) = 0x69;
-        *(s16 *)(self + 0x3C) = 0xFF;
-        *(s16 *)(self + 0xC) = (s16)((*(s16 *)(self + 8) << 6) + 0x5E);
-        if ((*(s16 *)(self + 8) % 2) == 0) {
-            *(s16 *)(self + 0xE) = -0x2F2;
-            *(s16 *)(self + 0xA) = -0x2F2;
-            *(s16 *)(self + 0x12) = 0x2E;
+        arg0->flags |= 1;
+        arg0->state = 0x69;
+        arg0->alpha = 0xFF;
+        arg0->y = (s16)((arg0->slotIdx << 6) + 0x5E);
+        if ((arg0->slotIdx % 2) == 0) {
+            arg0->startX = -0x2F2;
+            arg0->x = -0x2F2;
+            arg0->endX = 0x2E;
         } else {
-            *(s16 *)(self + 0xE) = 0x34E;
-            *(s16 *)(self + 0xA) = 0x34E;
-            *(s16 *)(self + 0x12) = 0x2E;
+            arg0->startX = 0x34E;
+            arg0->x = 0x34E;
+            arg0->endX = 0x2E;
         }
-        *(s16 *)(self + 4) = 0;
-        *(s16 *)(self + 6) = 0x14;
+        arg0->frame = 0;
+        arg0->duration = 0x14;
         /* fall through */
 
     case 0x69:
-        *(s16 *)(self + 4) = *(s16 *)(self + 4) + 1;
-        result = Math_Ease(4,
-                           (f32)*(s16 *)(self + 0xE),
-                           (f32)*(s16 *)(self + 0x12),
-                           (f32)*(s16 *)(self + 4),
-                           (f32)*(s16 *)(self + 6));
-        *(s16 *)(self + 0xA) = (s16)(s32)result;
-        if (*(s16 *)(self + 4) >= *(s16 *)(self + 6)) {
-            *(s16 *)(self + 2) = 0x6E;
+        arg0->frame++;
+        arg0->x = (s16)(s32)Math_Ease(4,
+                           (f32)arg0->startX,
+                           (f32)arg0->endX,
+                           (f32)arg0->frame,
+                           (f32)arg0->duration);
+        if (arg0->frame >= arg0->duration) {
+            arg0->state = 0x6E;
         }
         break;
 
     case 0xC8:
-        *(s16 *)(self + 0) |= 1;
-        *(s16 *)(self + 2) = 0xCD;
-        *(s16 *)(self + 0x3C) = 0xFF;
-        *(s16 *)(self + 0xC) = (s16)((*(s16 *)(self + 8) << 6) + 0x5E);
-        if ((*(s16 *)(self + 8) % 2) == 0) {
-            *(s16 *)(self + 0xE) = 0x2E;
-            *(s16 *)(self + 0xA) = 0x2E;
-            *(s16 *)(self + 0x12) = 0x34E;
+        arg0->flags |= 1;
+        arg0->state = 0xCD;
+        arg0->alpha = 0xFF;
+        arg0->y = (s16)((arg0->slotIdx << 6) + 0x5E);
+        if ((arg0->slotIdx % 2) == 0) {
+            arg0->startX = 0x2E;
+            arg0->x = 0x2E;
+            arg0->endX = 0x34E;
         } else {
-            *(s16 *)(self + 0xE) = 0x2E;
-            *(s16 *)(self + 0xA) = 0x2E;
-            *(s16 *)(self + 0x12) = -0x2F2;
+            arg0->startX = 0x2E;
+            arg0->x = 0x2E;
+            arg0->endX = -0x2F2;
         }
-        *(s16 *)(self + 4) = 0;
-        *(s16 *)(self + 6) = 0x14;
+        arg0->frame = 0;
+        arg0->duration = 0x14;
         /* fall through */
 
     case 0xCD:
-        *(s16 *)(self + 4) = *(s16 *)(self + 4) + 1;
-        result = Math_Ease(4,
-                           (f32)*(s16 *)(self + 0xE),
-                           (f32)*(s16 *)(self + 0x12),
-                           (f32)*(s16 *)(self + 4),
-                           (f32)*(s16 *)(self + 6));
-        *(s16 *)(self + 0xA) = (s16)(s32)result;
-        if (*(s16 *)(self + 4) >= *(s16 *)(self + 6)) {
-            *(s16 *)(self + 2) = 0xD2;
+        arg0->frame++;
+        arg0->x = (s16)(s32)Math_Ease(4,
+                           (f32)arg0->startX,
+                           (f32)arg0->endX,
+                           (f32)arg0->frame,
+                           (f32)arg0->duration);
+        if (arg0->frame >= arg0->duration) {
+            arg0->state = 0xD2;
         }
         break;
 
     case 0x12C:
-        *(s16 *)(self + 0) |= 0x10;
-        *(s16 *)(self + 2) = 0x131;
-        *(s16 *)(self + 0x3C) = 0xFF;
-        *(s16 *)(self + 4) = 0;
-        *(s16 *)(self + 6) = 0x46;
+        arg0->flags |= 0x10;
+        arg0->state = 0x131;
+        arg0->alpha = 0xFF;
+        arg0->frame = 0;
+        arg0->duration = 0x46;
         /* fall through */
 
     case 0x131:
-        *(s16 *)(self + 4) = *(s16 *)(self + 4) + 1;
-        frame = *(s16 *)(self + 4);
-        duration = *(s16 *)(self + 6);
-        halfway = duration / 2;
-
+        arg0->frame++;
+        halfway = arg0->duration / 2;
+        frame = arg0->frame;
         if (frame < halfway) {
-            result = Math_Ease(0, lbl_8036B634, lbl_8036B694,
+            arg0->flashAlpha = (u8)(s32)Math_Ease(0, lbl_8036B634, lbl_8036B694,
                                (f32)frame, (f32)halfway);
-            *(s16 *)(self + 0x3E) = (u8)(s32)result;
         } else {
-            result = Math_Ease(0, lbl_8036B694, lbl_8036B634,
+            arg0->flashAlpha = (u8)(s32)Math_Ease(0, lbl_8036B694, lbl_8036B634,
                                (f32)(frame - halfway), (f32)halfway);
-            *(s16 *)(self + 0x3E) = (u8)(s32)result;
         }
 
-        if (frame == halfway) {
-            if ((*(s16 *)(self + 0) & 0x20) != 0) {
-                *(u16 *)(self + 0x3A) = *(u16 *)(self + 0x38);
-                self[0x17] = self[0x16];
-                strcpy((char *)(self + 0x28), (char *)(self + 0x18));
-                *(s16 *)(self + 0x3C) = 0;
-                if ((*(s16 *)(self + 0) & 4) != 0) {
-                    *(s16 *)(self + 0) |= 0x40;
+        if (arg0->frame == arg0->duration / 2) {
+            if ((arg0->flags & 0x20) != 0) {
+                arg0->prevDiff = arg0->diff;
+                arg0->prevChapter = arg0->chapter;
+                strcpy(arg0->prevName, arg0->name);
+                arg0->alpha = 0;
+                if ((arg0->flags & 4) != 0) {
+                    arg0->flags |= 0x40;
                 } else {
-                    *(s16 *)(self + 0) &= ~0x40;
+                    arg0->flags &= ~0x40;
                 }
             } else {
-                *(s16 *)(self + 0) |= 0x20;
+                arg0->flags |= 0x20;
             }
 
-            check = fn_801E09B4(gSaveDataBase);
-            if (check != 0 && check[0x60] == 3) {
-                check = fn_801E09B4(gSaveDataBase);
-                if (check != 0 && check[0x60] == 3) {
-                    savedId = check[0x63];
-                } else {
-                    savedId = 0xFF;
-                }
+            if (SaveMenu_GetHeader(gSaveDataBase) != NULL) {
+                savedId = ((u8 *)SaveMenu_GetHeader(gSaveDataBase))[0x63];
             } else {
                 savedId = 0xFF;
             }
 
-            *(s16 *)(self + 0) |= 1;
-            *(s16 *)(self + 0) &= ~4;
-            *(s16 *)(self + 0) &= ~8;
-            *(s16 *)(self + 0) &= ~2;
+            arg0->flags |= 1;
+            arg0->flags &= ~4;
+            arg0->flags &= ~8;
+            arg0->flags &= ~2;
 
-            check = fn_801E2324(gSaveDataBase, *(s16 *)(self + 8));
-            if (check != 0 && check[0x60] == 2) {
-                record = fn_801E2324(gSaveDataBase, *(s16 *)(self + 8));
-                if (record != 0 && record[0x60] != 2) {
-                    record = 0;
+            if (SaveMenu_GetUnit(gSaveDataBase, (void *)(s32)arg0->slotIdx) != NULL) {
+                u8 *slot;
+                void *fn_801E2324(void *, void *);
+                slot = fn_801E2324(gSaveDataBase, (void *)(s32)arg0->slotIdx);
+                if (slot != NULL && slot[0x60] == 2) {
+                    record = slot;
+                } else {
+                    record = NULL;
                 }
 
-                *(s16 *)(self + 0) |= 4;
-                self[0x16] = record[0x64];
+                arg0->flags |= 4;
+                arg0->chapter = record[0x64];
 
-                if (*(s16 *)(self + 8) == (u8)savedId) {
-                    *(s16 *)(self + 0) |= 8;
-                    *(s16 *)(other + 0x60) |= 1;
-                    *(s16 *)(other + 0x62) = 0x64;
-                    other[0x78] = 0x80;
+                if (arg0->slotIdx == savedId) {
+                    arg0->flags |= 8;
+                    arg1->flags |= 1;
+                    arg1->state = 0x64;
+                    arg1->alpha = 0x80;
                 }
 
                 fn_801E3A60(record,
-                             (u32 *)(self + 0x40),
-                             (u32 *)(self + 0x44),
-                             (u32 *)(self + 0x48));
+                             (u32 *)&arg0->hours,
+                             (u32 *)&arg0->mins,
+                             (u32 *)&arg0->secs);
 
-                if (*(s32 *)(self + 0x40) >= 0x63) {
-                    *(s32 *)(self + 0x40) = 0x63;
-                    *(s32 *)(self + 0x44) = 0x3B;
-                    *(s32 *)(self + 0x48) = 0x3B;
+                if (arg0->hours >= 0x63) {
+                    arg0->hours = 0x63;
+                    arg0->mins = 0x3B;
+                    arg0->secs = 0x3B;
                 }
 
                 switch (record[0x66]) {
                 case 0:
-                    *(s16 *)(self + 0x38) = 2;
+                    arg0->diff = 2;
                     break;
                 case 1:
-                    *(s16 *)(self + 0x38) = 3;
+                    arg0->diff = 3;
                     break;
                 case 2:
                 case 3:
-                    *(s16 *)(self + 0x38) = 4;
+                    arg0->diff = 4;
                     break;
                 }
 
-                choice = record[0x65];
-                switch (choice) {
+                switch (record[0x65]) {
                 case 0:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x585));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x585));
                     break;
                 case 1:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x58E));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x58E));
                     break;
                 case 2:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x597));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x597));
                     break;
                 case 3:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x5A0));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x5A0));
                     break;
                 case 4:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x5A9));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x5A9));
                     break;
                 case 5:
-                    strcpy((char *)(self + 0x18),
-                           Msg_Expand(gUiSeCues + 0x5B2));
+                    strcpy(arg0->name, Msg_Expand(gUiSeCues + 0x5B2));
                     break;
                 case 6:
                 case 7:
                 case 8:
                 case 9:
                 default:
-                    self[0x18] = 0;
+                    arg0->name[0] = 0;
                     break;
                 }
 
             } else {
-                *(s16 *)(self + 0x38) = 2;
+                arg0->diff = 2;
             }
         }
 
-        if (*(s16 *)(self + 4) >= *(s16 *)(self + 6)) {
-            *(s16 *)(self + 0) &= ~0x10;
-            *(s16 *)(self + 2) = 0x6E;
+        if (arg0->frame >= arg0->duration) {
+            arg0->flags &= ~0x10;
+            arg0->state = 0x6E;
         }
-        *(s16 *)(self + 0) |= 2;
+        arg0->flags |= 2;
         break;
 
     case 0x6E:
@@ -7960,23 +7935,25 @@ static void fn_801DB5B4(void *arg0, void *arg1)
         break;
     }
 
-    *(s16 *)(self + 0x3C) = *(s16 *)(self + 0x3C) + 0xA;
-    if (*(s16 *)(self + 0x3C) > 0xFF) {
-        *(s16 *)(self + 0x3C) = 0xFF;
+    arg0->alpha += 0xA;
+    if (arg0->alpha > 0xFF) {
+        arg0->alpha = 0xFF;
     }
 
-    if ((*(s16 *)(self + 0) & 8) != 0 &&
-        (*(s16 *)(self + 0) & 1) != 0) {
-        *(s16 *)(other + 0x68) = *(s16 *)(self + 0xA) + 0x16;
-        *(s16 *)(other + 0x6A) = *(s16 *)(self + 0xC) + 2;
-        if ((*(s16 *)(self + 0) & 2) != 0) {
-            other[0x78] = 0x80;
+    if ((arg0->flags & 8) != 0 &&
+        (arg0->flags & 1) != 0) {
+        s16 x = arg0->x;
+        s16 y = arg0->y;
+        arg1->x = x + 0x16;
+        arg1->y = y + 2;
+        if ((arg0->flags & 2) != 0) {
+            arg1->alpha = 0x80;
         } else {
-            other[0x78] = 0x40;
+            arg1->alpha = 0x40;
         }
     }
 }
-
+#pragma pop
 void fn_801DBD84(void *arg0) {
 u8 *state=*(u8**)((u8*)arg0+0x30);
 s32 i;
@@ -8282,83 +8259,89 @@ void MsgBox_Layout(MsgBox *arg0) {
     u8 *Msg_Expand(u8 *);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern u8 gUiSeCues[];
-    extern f32 lbl_8036B630;
-    extern f32 lbl_8036B650;
-    extern f32 lbl_8036B664;
-    extern f32 lbl_8036B668;
-    extern f32 lbl_8036B698;
-    extern f32 lbl_8036B69C;
 
     f32 width0;
     f32 width1;
     f32 width2;
+    f32 width3;
     f32 gap;
-    s32 lastWidth;
     s32 width;
     s32 centeredY;
+    s32 y;
 
     switch (arg0->type) {
     case 0:
-        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5C7), -1, lbl_8036B630);
-        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5CE), -1, lbl_8036B630);
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5C7), -1, 1.0f);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5CE), -1, 1.0f);
         width = arg0->width;
         M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
         centeredY = 0x1E0 - arg0->height;
-        gap = (((f32)width - width0) - (f32)lastWidth) / lbl_8036B698;
+        gap = (((f32)width - width0) - width1) / 3.0f;
         M2C_FIELD(arg0, s16 *, 8) = centeredY / 2;
         M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
-        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
-        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x10) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(2.0f * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x14) = y + 0x12;
         return;
 
     case 1:
-        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5D4), -1, lbl_8036B630);
-        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5DE), -1, lbl_8036B630);
-        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5E6), -1, lbl_8036B630);
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5D4), -1, 1.0f);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5DE), -1, 1.0f);
+        width2 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5E6), -1, 1.0f);
         width = arg0->width;
         M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
         M2C_FIELD(arg0, s16 *, 8) = (0x1E0 - arg0->height) / 2;
-        gap = ((((f32)width - width0) - width1) - (f32)lastWidth) * lbl_8036B69C;
+        gap = ((((f32)width - width0) - width1) - width2) / 4.0f;
         M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
-        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
-        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(lbl_8036B698 * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
-        M2C_FIELD(arg0, s16 *, 0x18) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x10) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(2.0f * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x14) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(3.0f * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x18) = y + 0x12;
         return;
 
     case 2:
-        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F0), -1, lbl_8036B630);
-        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F7), -1, lbl_8036B630);
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F0), -1, 1.0f);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x5F7), -1, 1.0f);
         width = arg0->width;
         M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
         centeredY = 0x1E0 - arg0->height;
-        gap = (((f32)width - width0) - (f32)lastWidth) / lbl_8036B698;
+        gap = (((f32)width - width0) - width1) / 3.0f;
         M2C_FIELD(arg0, s16 *, 8) = centeredY / 2;
         M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
-        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
-        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x10) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(2.0f * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x14) = y + 0x12;
         return;
 
     case 3:
-        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x600), -1, lbl_8036B630);
-        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x609), -1, lbl_8036B630);
-        width2 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x612), -1, lbl_8036B630);
-        lastWidth = Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x61C), -1, lbl_8036B630);
+        width0 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x600), -1, 1.0f);
+        width1 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x609), -1, 1.0f);
+        width2 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x612), -1, 1.0f);
+        width3 = (f32)Text_MeasureWidth(Msg_Expand(gUiSeCues + 0x61C), -1, 1.0f);
         width = arg0->width;
         M2C_FIELD(arg0, s16 *, 6) = (0x260 - width) / 2;
         M2C_FIELD(arg0, s16 *, 8) = (0x1E0 - arg0->height) / 2;
-        gap = (((((f32)width - width0) - width1) - width2) - (f32)lastWidth) / lbl_8036B650;
+        gap = (((((f32)width - width0) - width1) - width2) - width3) / 5.0f;
         M2C_FIELD(arg0, s16 *, 0xE) = (s16)((f32)M2C_FIELD(arg0, s16 *, 6) + gap);
-        M2C_FIELD(arg0, s16 *, 0x10) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(lbl_8036B664 * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
-        M2C_FIELD(arg0, s16 *, 0x14) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(lbl_8036B698 * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
-        M2C_FIELD(arg0, s16 *, 0x18) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
-        M2C_FIELD(arg0, s16 *, 0x1A) = (s16)(lbl_8036B668 * gap + ((width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)) + width2));
-        M2C_FIELD(arg0, s16 *, 0x1C) = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14 + 0x12;
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x10) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x12) = (s16)(2.0f * gap + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x14) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x16) = (s16)(3.0f * gap + (width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x18) = y + 0x12;
+        M2C_FIELD(arg0, s16 *, 0x1A) = (s16)(4.0f * gap + ((width1 + ((f32)M2C_FIELD(arg0, s16 *, 6) + width0)) + width2));
+        y = M2C_FIELD(arg0, s16 *, 8) + arg0->numLines * 0x14;
+        M2C_FIELD(arg0, s16 *, 0x1C) = y + 0x12;
         return;
     }
 }
