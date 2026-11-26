@@ -1839,48 +1839,27 @@ insert:
     gAramUsedList = AramCache_InsertUsed(best, gAramUsedList);
 }
 #pragma pop
-void fn_801ED3D4(void)
-{
-  extern u8 gAramSlotPool[];
-  extern void *gAramUsedList;
-  extern void *gAramFreeList;
-  extern s32 gAramBase;
-  extern s32 gAramHeapSize;
-  AramSlot *new_var[2];
-  s32 i;
-  AramSlot *new_var2;
-  new_var2 = new_var[1];
-  new_var[0] = (AramSlot *) gAramSlotPool;
-  for (i = 0; i < 256; i++, new_var[0]++)
-  {
-    new_var[0]->size = 0;
-    new_var[0]->flags = 0;
-  }
+void fn_801ED3D4(void) {
+    extern u8 gAramSlotPool[];
+    extern void *gAramUsedList;
+    extern AramSlot *gAramFreeList;
+    extern s32 gAramBase;
+    extern s32 gAramHeapSize;
+    AramSlot *p;
+    s32 i;
 
-  gAramUsedList = 0;
-  new_var[0] = (AramSlot *) gAramSlotPool;
-  for (i = 255; i >= 0; i--, new_var[0]++)
-  {
-    if (new_var[0]->size == 0)
-    {
-      do
-      {
-        new_var[1] = new_var[0];
-        goto found;
-      }
-      while (0);
+    p = (AramSlot *)gAramSlotPool;
+    for (i = 0; i < 256; i++, p++) {
+        p->size = 0;
+        p->flags = 0;
     }
-  }
 
-  new_var[1] = 0;
-  found:
-  gAramFreeList = new_var[1];
-
-  new_var2->next = 0;
-  new_var[0] = (AramSlot *) gAramSlotPool;
-  ((AramSlot *) gAramFreeList)->prev = 0;
-  ((AramSlot *) gAramFreeList)->size = gAramHeapSize;
-  ((AramSlot *) gAramFreeList)->addr = gAramBase;
+    gAramUsedList = 0;
+    gAramFreeList = (AramSlot *)AramFindFreeSlot();
+    gAramFreeList->next = 0;
+    gAramFreeList->prev = 0;
+    gAramFreeList->size = gAramHeapSize;
+    gAramFreeList->addr = gAramBase;
 }
 
 void fn_801ED52C(s32 arg0) {
