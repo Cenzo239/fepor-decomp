@@ -3020,34 +3020,6 @@ void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     }
 }
 
-typedef union { u32 word; u8 byte[4]; } PopupColor;
-
-static inline void Popup_DrawSlice(void *tex, s32 idx, f32 x, f32 y, f32 w, f32 h, PopupColor c) {
-    void **fn_8006EDD8(void *, s32);
-    void Prim2D_Begin(void);
-    void Prim2D_BindTexture(void *, s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void Prim2D_SetQuadMax(f32, f32, f32, f32);
-    void Prim2D_SetColor(u8, u8, u8, s32);
-    void Prim2D_EmitQuad(void);
-    void Prim2D_EndPrim(void);
-    extern const f32 lbl_8036A92C;
-    u16 *dim = (u16 *)*fn_8006EDD8(tex, idx);
-    u16 th = dim[1];
-    u16 tw = dim[0];
-    Prim2D_Begin();
-    Prim2D_BindTexture(tex, idx, 0x11);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    Prim2D_SetQuadMin(x, y, lbl_8036A92C, lbl_8036A92C);
-    Prim2D_SetQuadMax(x + w, y + h, (f32)th, (f32)tw);
-    Prim2D_SetColor(c.byte[0], c.byte[1], c.byte[2], 0xFF);
-    Prim2D_EmitQuad();
-    Prim2D_EndPrim();
-}
-
 #pragma push
 #pragma opt_common_subs off
 void fn_801676AC(u8 *self, s32 arg1) {
