@@ -549,13 +549,15 @@ s32 fn_80029848(void *arg0) {
 
 #pragma cplusplus on
 extern "C" {
+#pragma push
+#pragma opt_propagation off
 void fn_80029858(s8 x, s8 y) {
     void fn_8002F6E8(void *, s8, s8, u8, s32);
     void fn_8002F728(void *);
     extern u8 lbl_80284E10[];
     extern u8 lbl_80284E20[];
-    extern u8 lbl_802EF4E0[];
-    extern u8 lbl_802CA518[];
+    extern u8 gTargetList[];
+    extern u8 gBattleMap[];
     struct Visitor {
         virtual void v0(s8, s8) = 0;
         virtual void visit(s8, s8) = 0;
@@ -564,28 +566,30 @@ void fn_80029858(s8 x, s8 y) {
         void *vtbl;
     } obj;
     u8 id;
+    bool has;
 
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284E10;
-    fn_8002F728(lbl_802EF4E0);
-    id = lbl_802CA518[x + (y << 6) + 0xD];
-    if (id != 0) {
-        fn_8002F6E8(lbl_802EF4E0, x, y, id, 1);
+    fn_8002F728(gTargetList);
+    id = gBattleMap[x + (y << 6) + 0xD];
+    has = id != 0;
+    if (has) {
+        fn_8002F6E8(gTargetList, x, y, id, 1);
     }
     if (y - 1 >= 0) {
         ((Visitor *)&obj)->visit(x, y - 1);
     }
-    if (x + 1 < *(s32 *)lbl_802CA518) {
+    if (x + 1 < *(s32 *)gBattleMap) {
         ((Visitor *)&obj)->visit(x + 1, y);
     }
-    if (y + 1 < *(s32 *)(lbl_802CA518 + 4)) {
+    if (y + 1 < *(s32 *)(gBattleMap + 4)) {
         ((Visitor *)&obj)->visit(x, y + 1);
     }
     if (x - 1 >= 0) {
         ((Visitor *)&obj)->visit(x - 1, y);
     }
 }
-
+#pragma pop
 void fn_800299B8(void *arg0) {
     void fn_8002F728(void *);
     extern u8 lbl_80284E20[];
@@ -1141,35 +1145,50 @@ extern "C" void fn_8002A63C(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8002A784(void *unit, u8 *arg1) {
-    void fn_8001EDA0(void *);
-    void fn_8002F728(void *);
+extern "C" void fn_8002A784(void *arg0, u8 *arg1) {
     extern u8 lbl_80284DB0[];
     extern u8 lbl_80284E20[];
     extern u8 gTargetList[];
     extern s32 gBattleMap[];
-    struct Visitor { virtual void v0(s8, s8) = 0; virtual void visit(s8, s8) = 0; };
-    struct { void *vtbl; u8 flag; } obj;
-    register s8 x;
-    register s8 y;
+    struct Visitor {
+        virtual void v0(s8, s8) = 0;
+        virtual void visit(s8, s8) = 0;
+    };
+    struct {
+        void *vtbl;
+        u8 flag;
+    } obj;
+    s8 y;
+    s8 x;
+    s32 ys;
+    s32 xs;
+    s32 d;
+    void *pf;
+    u8 val;
 
     obj.vtbl = lbl_80284E20;
     obj.flag = 0;
+    val = *arg1;
+    pf = &obj.flag;
     obj.vtbl = lbl_80284DB0;
-    obj.flag = *arg1;
-    fn_8001EDA0(&obj.flag);
+    obj.flag = val;
+    fn_8001EDA0(pf);
     fn_8002F728(gTargetList);
     if (obj.flag & 3) {
-        y = *((s8 *)unit + 0x19f);
-        x = *((s8 *)unit + 0x19e);
-        if (y - 1 >= 0)
-            ((Visitor *)&obj)->visit(x, y - 1);
-        if (x + 1 < gBattleMap[0])
-            ((Visitor *)&obj)->visit(x + 1, y);
-        if (y + 1 < gBattleMap[1])
-            ((Visitor *)&obj)->visit(x, y + 1);
-        if (x - 1 >= 0)
-            ((Visitor *)&obj)->visit(x - 1, y);
+        y = *((s8 *)arg0 + 0x19f);
+        x = *((s8 *)arg0 + 0x19e);
+        ys = y;
+        d = ys - 1;
+        if (d >= 0)
+            ((Visitor *)&obj)->visit(x, d);
+        xs = x;
+        if (xs + 1 < gBattleMap[0])
+            ((Visitor *)&obj)->visit(xs + 1, y);
+        if (ys + 1 < gBattleMap[1])
+            ((Visitor *)&obj)->visit(x, ys + 1);
+        d = xs - 1;
+        if (d >= 0)
+            ((Visitor *)&obj)->visit(d, y);
     }
 }
 
@@ -4356,6 +4375,8 @@ void fn_8002F82C(s32 arg0) {
     fn_8002EB54(lbl_802EFDA0, arg0);
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_8002F8DC(void) {
     void fn_8002FC64(u32,s32,s32,s32);
     void Item_Init(void *);
@@ -4389,7 +4410,7 @@ void fn_8002F8DC(void) {
         }
     }
 }
-
+#pragma pop
 void fn_8002FA54(void) {
     void MapObj_BuildAttackTargetList(void *, s32);
     void TargetList_GetAt(void *, s32);
@@ -5824,23 +5845,18 @@ extern "C" void fn_80032DB4(void *arg0, void *arg1) {
 }
 
 extern "C" void fn_80032E3C(void *arg0, void *arg1) {
-#pragma global_optimizer off
 void fn_801848D8(void *,s8,s8,s32,s32);
 void *UnitRef_GetUnit(void *);
 void Unit_FaceToward(void *,void *,s32,s32);
 void Battle_SetupPair(void *,void *,void *);
 void fn_801A7528(void *,s32);
-void fn_801A6F34(void *,u32);
+void fn_801A6F34(void *,u8);
 extern u8 gUiContext[],gBattle[];
+struct Ctx { void *unit; inline void *get() { return unit; } };
 struct Obj { u8 pad[4]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual s32 get()=0; };
 void *ref;
 register void *unit;
-u32 mode;
-u8 *battle;
-s8 a, b;
-a = (s8)((u8 *)arg1)[0x3E];
-b = (s8)((u8 *)arg1)[0x3F];
-fn_801848D8(*(void **)gUiContext,a,b,8,0);
+fn_801848D8(((Ctx *)gUiContext)->get(),(s8)((u8 *)arg1)[0x3E],(s8)((u8 *)arg1)[0x3F],8,0);
 ref=*(void **)((u8 *)arg1+0x40);
 if (ref && UnitRef_GetUnit(ref)) {
 unit=*(void **)gUiContext;
@@ -5848,12 +5864,8 @@ Unit_FaceToward(UnitRef_GetUnit(ref),unit,8,0);
 unit=*(void **)gUiContext;
 Battle_SetupPair(gBattle,unit,UnitRef_GetUnit(ref));
 fn_801A7528(gBattle,((Obj *)arg0)->get());
-battle=gBattle;
-mode=15;
-if (gUiContext[8]==0x15) mode=0x15;
-fn_801A6F34(battle,(u8)mode);
+fn_801A6F34(gBattle,gUiContext[8]==0x15 ? 0x15 : 15);
 }
-#pragma global_optimizer reset
 }
 
 #pragma cplusplus reset
