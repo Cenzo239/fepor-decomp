@@ -1794,8 +1794,8 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma global_optimizer off
-#pragma optimization_level 3
-#pragma peephole off
+#pragma optimization_level 4
+#pragma peephole on
 static inline void Fn_80134C24_Body(s32 *dst, void *arg) {
 Vec2s out,in;
 u32 rowH;
