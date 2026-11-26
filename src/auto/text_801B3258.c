@@ -9722,19 +9722,21 @@ void fn_801C6044(void *arg0) {
 
 void fn_801C60C8(void) { int pad; void fn_801C6234(void); fn_801C6234(); }
 
-void fn_801C60E8(void *arg0) {
+#pragma cplusplus on
+extern "C" void fn_801C60E8(void *arg0) {
+    extern const f32 lbl_8036B424;
     void *Heap_Alloc(s32);
     void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void (*)(void *), void *, s32, s32);
     void fn_801C7C08(void *);
     void DCFlushRange(void *, u32);
-#pragma cplusplus on
     struct Entry { u8 pad[0x1C]; };
     struct Pool {
         Entry *data;
         Entry **table, **cur;
         s32 a, b, used, count;
-        void init() {
+        void *operator new(u32 sz) { return Heap_Alloc(sz); }
+        Pool() {
             data = 0; table = 0; cur = 0; used = 0; a = 0; b = 0;
         }
         void reset() {
@@ -9745,30 +9747,24 @@ void fn_801C60E8(void *arg0) {
             cur = table; a = 0; b = 0;
         }
         void allocate(s32 n) {
-            s32 num;
             s32 bytes;
             count = n;
-            num = count;
-            bytes = num * sizeof(struct Entry);
-            data = (struct Entry *)fn_8022C414(Heap_AllocRaw(bytes + 0x10), fn_801C7C08, 0, 0x1C, num);
+            bytes = count * sizeof(struct Entry);
+            data = (struct Entry *)fn_8022C414(Heap_AllocRaw(bytes + 0x10), fn_801C7C08, 0, 0x1C, count);
             table = (struct Entry **)Heap_AllocRaw((count + 1) * 4);
             DCFlushRange(data, bytes);
             DCFlushRange(table, (count + 1) * 4);
             reset();
         }
     };
-    Pool *p = (Pool *)Heap_Alloc(0x1C);
-    if (p) p->init();
-    *(Pool **)((u8 *)arg0 + 0x44) = p;
+    *(Pool **)((u8 *)arg0 + 0x44) = new Pool();
     (*(Pool **)((u8 *)arg0 + 0x44))->allocate(16);
-    *(f32 *)((u8 *)arg0 + 0x34) = 0.0f;
-    *(f32 *)((u8 *)arg0 + 0x38) = 0.0f;
-    *(f32 *)((u8 *)arg0 + 0x3C) = 0.0f;
-    *(f32 *)((u8 *)arg0 + 0x40) = 0.0f;
-#pragma cplusplus reset
+    *(f32 *)((u8 *)arg0 + 0x34) = lbl_8036B424;
+    *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036B424;
+    *(f32 *)((u8 *)arg0 + 0x3C) = lbl_8036B424;
+    *(f32 *)((u8 *)arg0 + 0x40) = lbl_8036B424;
 }
-
-#pragma use_lmw_stmw on
+#pragma cplusplus reset
 void fn_801C6234(void *arg0) {
     s32 fn_8006135C(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
