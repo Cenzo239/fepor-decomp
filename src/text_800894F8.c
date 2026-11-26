@@ -23,6 +23,8 @@ typedef struct {
     void *f7C;
 } Struct_80089490;
 
+static inline void *Fn800895B8_Offset(void *base, s32 off) { return (u8 *)base + off; }
+
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
