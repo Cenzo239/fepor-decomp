@@ -1378,7 +1378,7 @@ return;
 void *fn_800C55B0(HeapC55 *self,s32 bytes){
 void DebugPrint(void *,...);void fn_8005BC8C(s8);
 extern u8 lbl_802700D8[];extern u8 lbl_80320B88[];
-HeapC55 *h; HeapC55 **table; u32 ext; s32 i,mb; HeapC55 *block; HeapC55 **base; u32 size; HeapC55 *p,*best,*head,*tail;u32 limit,n;u8 *lo,*hi;
+u32 size; HeapC55 **base; HeapC55 *block; s32 mb; HeapC55 **table; HeapC55 *p,*head; u32 n; u8 *lo,*hi;
 size=(bytes+0x3f)&~31;
 block=HeapC55_Best(self->free,size);
 if(block==0){mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
@@ -1405,9 +1405,7 @@ if(n<64){p=block->next;head=self->free;if(p)p->prev=block->prev;p=block->prev;if
 else{block->size=n;block=(HeapC55*)((u8*)block+n);block->size=-size;block->owner=self;}
 self->owner=HeapC55_Append(self->owner,block);return block;
 }
-#pragma global_optimizer on
-#pragma opt_common_subs off
-#pragma use_lmw_stmw on
+#pragma pop
 s32 fn_800C5A48(s32 arg0, s32 bytes) {
     HeapC55 *self = (HeapC55 *)arg0;
     void DebugPrint(void *, ...);
@@ -24486,11 +24484,11 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction reset
 #pragma push
-#pragma optimization_level 0
+#pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 u8 fn_800F43D8(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],gAiEval_UnitScoreVtbl[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
