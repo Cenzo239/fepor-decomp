@@ -163,23 +163,24 @@ void fn_801E4900(s16 *arg0, void *arg1) {
     extern s8 lbl_803682F8;
     extern f32 gTabMenuOne;
 
-    struct { s16 a; s16 b; } sp10;
-    struct { s16 a; s16 b; } spC;
-    struct { s16 a; s16 b; } sp8;
+    struct Pair { s16 a; s16 b; };
+    struct Pair sp10;
+    struct Pair spC;
+    struct Pair sp8;
     register s8 row;
-    s16 y;
     s16 x;
+    s16 y;
 
     if (lbl_803682F8 == 0) {
-        sp10.a = (u32)0x100;
+        sp10.a = 0x100;
+        sp10.b = 0x1B;
+        ((struct Pair *)lbl_80332260)[0] = sp10;
         spC.a = 0x16A;
         spC.b = 0x1B;
-        sp10.b = 0x1B;
-        sp8.b = 0x1B;
-        ((s32 *)lbl_80332260)[0] = *(s32 *)&sp10;
+        ((struct Pair *)lbl_80332260)[1] = spC;
         sp8.a = 0x1D4;
-        ((s32 *)lbl_80332260)[1] = *(s32 *)&spC;
-        ((s32 *)lbl_80332260)[2] = *(s32 *)&sp8;
+        sp8.b = 0x1B;
+        ((struct Pair *)lbl_80332260)[2] = sp8;
         lbl_803682F8 = 1;
     }
     switch (*(s8 *)((u8 *)arg1 + 0x31)) {
