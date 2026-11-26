@@ -20884,7 +20884,11 @@ s32 fn_800EC2B8(void) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma global_optimizer off
+#pragma opt_register_coloring off
+#pragma opt_propagation off
 s32 fn_800EC2E0(void) {
     s32 Rand_Range(s32);
     void BattleAnim_Queue(void *, u8, s8);
@@ -20914,20 +20918,20 @@ s32 fn_800EC2E0(void) {
     String t20;
     String t14;
     String t8;
-    void *obj;
-    char *s;
-    s32 i;
-    s32 n;
-    s32 prev;
-    s32 scale;
-    s32 cost;
+
+
     u32 packed;
+    char *s;
+    void *obj;
+    s32 cost;
+    s32 scale;
+    s32 n;
     s32 kind;
     s32 mode;
+    s32 prev;
     s32 a;
     s32 b;
-    u8 flag2;
-    s32 flag;
+    s32 i;
 
     work.size = 0;
     work.cap = 0;
@@ -21023,25 +21027,26 @@ s32 fn_800EC2E0(void) {
     }
     n = fn_800DC44C(*(void **)((u8 *)lbl_803678C0 + 0x478));
     BattleAnim_Queue((u8 *)obj + 0x454, 0x54, 0);
-    prev = -1;
+    kind = -1;
     for (i = 0; i < n; i++) {
+        prev = kind;
         packed = (u32)fn_800DC38C(*(void **)((u8 *)lbl_803678C0 + 0x478), i);
-        kind = (u8)packed;
-        mode = (u8)(packed >> 8);
-        a = (u8)(packed >> 16);
+        kind = packed & 0xFF;
+        mode = (packed >> 8) & 255;
+        a = (packed >> 16) & 255;
         b = packed >> 24;
         switch (kind) {
         case 0: scale = *(s32 *)((u8 *)obj + 0x144); break;
         case 1: scale = *(s32 *)((u8 *)obj + 0x2AC); break;
         case 2: scale = *(s32 *)((u8 *)obj + 0x414); break;
-        default: scale = 0; break;
         }
         switch (mode) {
         case 0: cost = scale; break;
         case 1: cost = scale << 2; break;
         case 2: cost = 0; break;
+        case 3:
+        case 4: cost = 0x50; break;
         case 5: cost = scale; break;
-        default: cost = 0x50; break;
         }
         switch (kind) {
         case 0: BattleAnim_Queue((u8 *)obj + 0x454, 0x20, 0); break;
@@ -21095,11 +21100,10 @@ s32 fn_800EC2E0(void) {
             break;
         case 5: BattleAnim_Queue((u8 *)obj + 0x454, 0x50, 0); break;
         }
-        prev = kind;
     }
     BattleAnim_Queue((u8 *)obj + 0x454, 0, 0);
     *(s32 *)((u8 *)obj + 0x444) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x464));
-    flag = *(s32 *)((u8 *)obj + 0x444) == 2;
+    scale = *(s32 *)((u8 *)obj + 0x444) == 2;
     if (fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x468)) == 0) {
         *(u8 *)((u8 *)obj + 0x448) = 1;
     } else {
@@ -21120,17 +21124,17 @@ s32 fn_800EC2E0(void) {
     } else {
         *(u8 *)((u8 *)obj + 0x450) = 0;
     }
-    flag2 = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x474)) == 2;
+    i = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x474)) == 2;
     fn_800D588C(obj);
-    if (flag2 != 0) {
+    if ((u8)i != 0) {
         fn_800DA31C();
     } else {
-        fn_800DA340(flag);
+        fn_800DA340(scale);
     }
     String_Destroy(&work, -1);
     return 0;
 }
-#pragma global_optimizer on
+#pragma pop
 extern void *lbl_803678C0;
 s32 fn_800ECCB8(void) {
     void *temp_r3;
