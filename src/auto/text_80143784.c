@@ -2626,6 +2626,9 @@ s32 fn_80145F58(void *arg0, void **arg1) {
     return matches;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void *fn_80145FE8(void) {
     u8 fn_800BDD08(void *, void *, void *);
     void *fn_8014D8FC(void *, void *, void *);
@@ -2633,18 +2636,19 @@ void *fn_80145FE8(void) {
     extern u8 lbl_80276BC8[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
-    s32 var_r28;
+    u8 *battle = gBattle;
     void *a;
     void *b;
+    s32 var_r28;
     void *pa;
     void *pb;
     u8 state;
 
-    pa = *(void **)(gBattle + 0x188);
-    pb = *(void **)(gBattle + 0x468);
+    pa = *(void **)(battle + 0x188);
+    pb = *(void **)(battle + 0x468);
     a = *(void **)pa;
     b = *(void **)pb;
-    state = *(u8 *)((u8 *)fn_8014D8FC(gBattleState, *(void **)(gBattle + 0x468), *(void **)(gBattle + 0x188)) + 0x3C);
+    state = *(u8 *)((u8 *)fn_8014D8FC(gBattleState, *(void **)(battle + 0x468), *(void **)(battle + 0x188)) + 0x3C);
     var_r28 = state;
     if (var_r28 >= 0x32) {
         var_r28 = var_r28 - 0x32;
@@ -2756,7 +2760,7 @@ void *fn_80145FE8(void) {
         }
         return lbl_80276BC8 + 0x28C;
     }
-    if (*(u8 *)(*(u8 **)(gBattle + 0x190) + 8) == 0) {
+    if (*(u8 *)(*(u8 **)(battle + 0x190) + 8) == 0) {
         if (var_r28 < 0x13) {
             return lbl_80276BC8 + 0x2D7;
         }
@@ -2767,7 +2771,7 @@ void *fn_80145FE8(void) {
     }
     return lbl_80276BC8 + 0x2FE;
 }
-
+#pragma pop
 s32 fn_80146AE4(void) {
     extern s32 lbl_80367AF8;
     return lbl_80367AF8 & 1;
