@@ -38,6 +38,19 @@ typedef struct PADResetState {
     u32 command[4];
 } PADResetState;
 
+static inline void PAD_EnableResetChannel(s32 chan, u32 bit) {
+    extern u32 EnabledBits;
+    extern u32 PADSpec;
+    void fn_8023BA70(s32, u32 *);
+    void fn_8023B804(s32, u32);
+    void fn_8023B894(u32);
+    u32 response[2];
+    EnabledBits |= bit;
+    fn_8023BA70(chan, response);
+    fn_8023B804(chan, PADSpec | 0x400000);
+    fn_8023B894(EnabledBits);
+}
+
 static inline void PAD_ResetNext(u8 *base) {
     extern u32 lbl_80368670;
     extern s32 lbl_80366FA4;
