@@ -29,6 +29,18 @@ static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
     return 1;
 }
 
+static inline s32 Convoy_Count_inline(void *convoy) {
+    u8 *p = (u8 *)convoy;
+    s32 count = 0;
+    s32 i;
+    for (i = 0; i < 200; p += 8, i++) {
+        if (*(void **)p != NULL) {
+            count++;
+        }
+    }
+    return count;
+}
+
 typedef struct {
     u8 unk0[8];
     u8 param;
@@ -556,16 +568,15 @@ void fn_800C3468(void *arg0) {
     u8 *fmt;
     void *unit;
     void *name;
-    s32 count;
-    s32 idx;
-    u8 *p;
     s32 j;
+    s32 count;
+    u8 *p;
 
     base = arg0;
     i = 0;
     entry = (u8 *)base;
     fmt = lbl_80270088;
-    for (; i < 0xC8; i++, entry += 8) {
+    for (; i < 200; i++, entry += 8) {
         unit = *(void **)entry;
         if (unit == NULL) {
             continue;
@@ -576,45 +587,15 @@ void fn_800C3468(void *arg0) {
             val = 0;
         }
         name = UnitRef_GetName(entry);
-        DebugPrint(fmt + 0x13, i, name, entry[4], (int)val);
+        DebugPrint(fmt + 0x13, i, name, entry[4], val);
     }
 
     count = 0;
-    idx = count;
     p = (u8 *)base;
-    for (j = 0; j < 0x14; j++) {
-        if (*(u32 *)(p + 0) != 0) {
+    for (j = 0; j < 200; p += 8, j++) {
+        if (*(void **)p != NULL) {
             count++;
         }
-        if (*(u32 *)(p + 8) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x10) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x18) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x20) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x28) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x30) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x38) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x40) != 0) {
-            count++;
-        }
-        if (*(u32 *)(p + 0x48) != 0) {
-            count++;
-        }
-        p += 0x50;
-        idx += 9;
     }
 
     DebugPrint(lbl_80270088 + 0x25, count);
