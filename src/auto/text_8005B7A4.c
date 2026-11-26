@@ -371,28 +371,13 @@ s32 fn_8005BB2C(void) {
     u8 fn_800B2FF4(s32);
     s64 OSGetTime(void);
     extern u8 gFileCache[];
-    typedef struct {
-        s8 name;
-        u8 pad[0x2F];
-        volatile u16 flags;
-        u16 ref;
-        u32 stamp;
-        u8 rest[0x7C - 0x38];
-    } Entry;
     u32 time;
-    s32 i;
 
     if ((u8)fn_800B2FF4(0) == 0) {
         return 0;
     }
     time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
-    for (i = 0; i < 1024; i++) {
-        Entry *e = &((Entry *)gFileCache)[i];
-        if (e->name != 0 && !(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
-            return 0;
-        }
-    }
-    return 1;
+    return FileCache_CheckAll_8005BB2C(time, (FileCacheEntry_8005BB2C *)gFileCache);
 }
 #pragma pop
 void fn_8005C8D8();
