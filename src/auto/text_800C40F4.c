@@ -1,5 +1,13 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
+static inline void Fn_800DBAB8_Store(f32 *dst, void *src) {
+    f32 z = *(f32 *)((u8 *)src + 0x68);
+    f32 y = *(f32 *)((u8 *)src + 0x64);
+    f32 x = *(f32 *)((u8 *)src + 0x60);
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
 #include "structs.h"
 #pragma cplusplus on
 class WindowDrawInterface {
@@ -10571,7 +10579,8 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma peephole on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -11791,13 +11800,12 @@ static inline void *Str_CStrDestroy(void *str) {
     String_Destroy(str, -1);
     return result;
 }
+#pragma global_optimizer off
 void *fn_800DDB94(void *arg0)
 {
     extern void *StringMap_FindOrInsert(void *);
     extern void String_Assign(void *, void *, s32, s32);
 
-    void *source;
-    u8 *field;
     u32 temp[3];
 
     temp[1] = 0;
@@ -11805,12 +11813,10 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    source = StringMap_FindOrInsert((u8 *)arg0 + 0x68);
-    field = (u8 *)source + 0xC;
-    String_Assign(temp, field, 0, -1);
+    String_Assign(temp, (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x68) + 0xC, 0, -1);
     return Str_CStrDestroy(temp);
 }
-
+#pragma global_optimizer on
 s32 fn_800DDC04(s32 arg0) {
     void *fn_800DE73C(s32);
     return M2C_FIELD(fn_800DE73C(arg0 + 0x58), s32 *, 0xC);
@@ -16141,8 +16147,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     void fn_80060F70(void *, s32, f32 *);
     extern f32 lbl_80369F5C, lbl_80369F60;
     extern const f32 lbl_80369F3C;
-
-    struct { f32 x, y, z; } pos;
+    f32 pos[3];
     f32 z;
     f32 y;
     f32 x;
@@ -16150,14 +16155,13 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
         GActor_FindNode(*(void **)((u8 *)arg1 + 0xE0), arg2),
-        &pos.x
+        pos
     );
 
-    x = pos.x;
-
+    x = pos[0];
     if (x > lbl_80369F5C && x < lbl_80369F60) {
-        y = pos.y;
-        z = pos.z;
+        y = pos[1];
+        z = pos[2];
     } else {
         z = lbl_80369F3C;
         y = z;
@@ -18117,9 +18121,10 @@ extern "C" void *fn_800E80D8(void *arg0, void *arg1, void *arg2) {
         virtual void v1() = 0;
         virtual void *v2(void *, void *) = 0;
     };
-    void *result;
-    result = String_CStr(arg2);
-    result = ((Obj *)arg0)->v2(String_CStr(arg1), result);
+    Obj *self = (Obj *)arg0;
+    void *a = arg1;
+    void *result = String_CStr(arg2);
+    result = self->v2(String_CStr(a), result);
     if (result != 0) fn_800DF670(result);
     return result;
 }
