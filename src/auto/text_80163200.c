@@ -3659,6 +3659,8 @@ void fn_801690B0(s32 arg0) {
   }
 
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 2
 extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     void fn_80142060(void *);
     void fn_8013BBF8(void *);
@@ -3667,8 +3669,8 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     extern u8 lbl_80292208[];
     extern u8 gUiPanelMidVtbl[];
     extern u8 gEmptyVtbl[];
-    extern f32 lbl_8036A9AC;
-    extern f32 lbl_8036A9B0;
+    extern const f32 lbl_8036A9AC;
+    extern const f32 lbl_8036A9B0;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -3685,20 +3687,20 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         virtual void v1() = 0;
     };
     void *self;
-    u8 *self2;
+    void *self2;
     f32 one;
 
     one = lbl_8036A9AC;
     self = arg0;
-    self2 = (u8 *)arg0;
+    self2 = self;
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = 0;
     *(void **)self = lbl_80292230;
     *(s16 *)((u8 *)self + 8) = -1;
     *(s16 *)((u8 *)self + 0xA) = arg1;
     *(s16 *)((u8 *)self + 0xC) = arg2;
-    *(s16 *)((u8 *)self + 0xE) = (s16)(arg1 + 0x108);
-    *(s16 *)((u8 *)self + 0x10) = (s16)(arg2 + arg3);
+    *(s16 *)((u8 *)self + 0xE) = (s16)((s16)arg1 + 0x108);
+    *(s16 *)((u8 *)self + 0x10) = (s16)((s16)arg2 + (s16)arg3);
     *(s16 *)((u8 *)self + 0x12) = 0;
     *(s16 *)((u8 *)self + 0x14) = 0;
     *(s16 *)((u8 *)self + 0x16) = 0x108;
@@ -3717,7 +3719,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     *(s32 *)((u8 *)self + 0x34) = 0;
     *(s32 *)((u8 *)self + 0x38) = 0;
     *(void **)self = lbl_80292208;
-    fn_80142060(self2 + 0x3C);
+    fn_80142060((u8 *)self2 + 0x3C);
     *(void **)self = gUiPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
@@ -3775,6 +3777,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     ((Obj *)self)->v8();
     return self;
 }
+#pragma pop
 
 extern "C" void fn_80169394(void) {
     extern u8 gBattleState[];
