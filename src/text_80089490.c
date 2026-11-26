@@ -82,7 +82,14 @@ void fn_80089490(void *);
 #pragma opt_strength_reduction off
 
 #pragma opt_propagation on
-static inline u8 *fn_80089490_add(u8 *base, s32 off) { return base + off; }
+static inline u8 *fn_80089490_add(u8 *base, s32 off) {
+    s32 i;
+    for (i = 0; i < 1; i++) {
+        base = base + off;
+    }
+    return base;
+}
+#pragma opt_propagation off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
@@ -97,7 +104,7 @@ void fn_80089490(void *arg0) {
     if (v == tbl + 0x7C) {
         return;
     }
-    p = &tbl[0];
+    p = tbl + 0;
     if (v == p) {
         return;
     }
@@ -109,3 +116,4 @@ void fn_80089490(void *arg0) {
     }
     fn_8000A408(arg0);
 }
+#pragma opt_propagation on
