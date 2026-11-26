@@ -7,7 +7,6 @@ extern u16 lbl_80285BD0[16];
 extern const f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 
 static inline f64 HalfD(f32 d) { return (f64)d * lbl_80369160; }
-static inline f64 HermTail(f64 t0, f64 h, f64 b) { return h * t0 + b; }
 
 #pragma optimization_level reset
 
