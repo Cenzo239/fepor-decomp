@@ -29,6 +29,14 @@ static inline s32 DirGetDY_80042558(u8 dir)
     }
 }
 
+static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
+{
+    if (x < (s8)ent[4] || x > (s8)ent[6] || y < (s8)ent[5] || y > (s8)ent[7]) {
+        return 0;
+    }
+    return 1;
+}
+
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
     s32 i;
@@ -37,11 +45,9 @@ static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 
         u8 *base = M2C_FIELD(arg0, u8 **, 0x14);
         u8 *ent = base + i * 0xB4;
         u32 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-        u8 hit;
         if (forbid != 0 && (flags & forbid)) continue;
         if ((flags & require) != require) continue;
-        hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-        if (hit) {
+        if (IsInRect_80042558(ent, x, y)) {
             return base + i * 0xB4;
         }
     }
@@ -506,263 +512,112 @@ void fn_80042558(void *arg0)
     extern u8 lbl_8036728E;
     extern u8 lbl_80367290[3];
 
-    u32 list[19];
+    void *list[16];
     u8 *start = gMapObjEventList;
     u8 *rec = start;
-    u8 *ent;
-    u8 *found;
     s32 eventIndex = 0;
-    s32 count;
-    s32 i;
-    s32 k;
-    s32 x;
-    s32 y;
-    s32 tx;
-    s32 ty;
-    u8 hit;
-    u32 flags;
 
     for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
-        x = (s8)rec[0];
-        y = (s8)rec[1];
+        s32 x = (s8)rec[0];
+        s32 y = (s8)rec[1];
         switch (rec[2] - 0x21) {
         case 3:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0xA00) != 0xA00) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0xA00);
             if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
-        }
             break;
+        }
         case 0:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x1000) != 0x1000) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0, 0x1000);
             if (found != 0) {
                 MapObj_FadeOut(found, 0);
-            }
-        }
-            break;
-        case 9:
-        {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x800) != 0x800) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
-            if (found == 0) {
-                s32 direction;
-                for (direction = 0; direction < 4; direction++) {
-                    s32 dx = 0;
-                    s32 dy = 0;
-                    switch (direction) {
-                    case 0: dx = 1; break;
-                    case 1: dx = -1; break;
-                    case 2: dy = -1; break;
-                    case 3: dy = 1; break;
+                found = FindMapObj_80042558(arg0, x, y, 0, 0x800);
+                if (found == 0) {
+                    s32 dir;
+                    for (dir = 0; dir < 4; dir++) {
+                        u8 d = DirFromIndex_80042558(dir);
+                        found = FindMapObj_80042558(arg0, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, 0x800);
+                        if (found != 0) break;
                     }
-                    tx = x + dx;
-                    ty = y + dy;
-                    count = M2C_FIELD(arg0, s16 *, 6);
-                    found = 0;
-                    for (i = count - 1; i >= 0; i--) {
-                        ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                        flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                        if ((flags & 0x800) != 0x800) continue;
-                        hit = (tx >= (s8)ent[4] && tx <= (s8)ent[6] && ty >= (s8)ent[5] && ty <= (s8)ent[7]);
-                        if (hit == 0) continue;
-                        found = ent;
-                        break;
+                }
+                if (found != 0) {
+                    s32 count = Map_CollectLinkedObjs(arg0, found, list);
+                    s32 k;
+                    for (k = 0; k < count; k++) {
+                        MapObj_Hide(list[k], 0);
                     }
-                    if (found != 0) break;
                 }
             }
-            if (found != 0) {
-                count = Map_CollectLinkedObjs(arg0, found, list);
-                for (k = 0; k < count; k++) {
-                    MapObj_Hide((void *)list[k], 0);
-                }
-            }
-        }
             break;
+        }
         case 1:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x800) != 0x800) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x800);
             if (found != 0) {
-                count = Map_CollectLinkedObjs(arg0, found, list);
+                s32 count = Map_CollectLinkedObjs(arg0, found, list);
+                s32 k;
                 for (k = 0; k < count; k++) {
-                    MapObj_Hide((void *)list[k], 0);
+                    MapObj_Hide(list[k], 0);
                 }
             }
-        }
             break;
+        }
         case 2:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x200) != 0x200) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x200);
             if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
-        }
             break;
+        }
         case 4:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0xA00) != 0xA00) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0xA00);
             if (found != 0) {
                 found[2] |= 1;
-                count = M2C_FIELD(arg0, s16 *, 6);
-                found = 0;
-                for (i = count - 1; i >= 0; i--) {
-                    ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                    flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                    if ((flags & 0x20000) != 0x20000) continue;
-                    hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                    if (hit == 0) continue;
-                    found = ent;
-                    break;
-                }
+                found = FindMapObj_80042558(arg0, x, y, 0, 0x20000);
                 if (found != 0) {
                     fn_8005FEE8(found + 0x14, lbl_80368F2C);
                     found[2] &= ~1;
                 }
             }
-        }
             break;
+        }
         case 5:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x800) != 0x800) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x800);
             if (found != 0) {
                 MapObj_Hide(found, 0);
             }
-        }
             break;
+        }
         case 6:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if ((flags & 0x10000) != 0x10000) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0, 0x10000);
             if (found != 0) {
                 MapObj_Hide(found, 0);
             }
-        }
             break;
+        }
         case 7:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x200) != 0x200) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x200);
             if (found != 0) {
                 fn_8005FEE8(found + 0x14, lbl_80368F2C);
             }
-        }
             break;
+        }
         case 8:
         {
-            count = M2C_FIELD(arg0, s16 *, 6);
-            found = 0;
-            for (i = count - 1; i >= 0; i--) {
-                ent = M2C_FIELD(arg0, u8 **, 0x14) + (i * 0xB4);
-                flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-                if (flags & 0x410) continue;
-                if ((flags & 0x80000) != 0x80000) continue;
-                hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
-                if (hit == 0) continue;
-                found = ent;
-                break;
-            }
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x80000);
             if (found != 0) {
                 found[2] |= 1;
             }
+            break;
         }
-            break;
-        default:
-            break;
         }
     }
 
