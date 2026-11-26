@@ -1965,38 +1965,3 @@ void *fn_8005E594(s32 arg0, u32 arg1, char *arg2) {
     return result;
 }
 #pragma dont_inline reset
-static inline void FileCache_ClearChildren_C8D8(u8 *list) {
-extern u8 gFileCache[];
-                    s32 i;
-                    u8 *item;
-                    i = 0;
-                    item = list + 8;
-                    for (; i < *(u16 *)(list + 4); item += 0x10, i++) {
-                        u8 *found;
-                        u32 j;
-                        u32 key;
-                        u8 *e;
-                        unsigned ctr;
-                        e = gFileCache;
-                        key = *(u32 *)(item + 8);
-                        j = 0;
-                        for (ctr = 0x400; ctr > 0; ctr--) {
-                            if (*(u32 *)(e + 0x38) == key) {
-                                found = gFileCache + j * 0x7C;
-                                goto found2;
-                            }
-                            e += 0x7C;
-                            j++;
-                        }
-                        found = 0;
-                    found2:
-                        if (found) {
-                            *(found) = 0;
-                            *(u32 *)(found + 0x2C) = 0;
-                            *(u16 *)(found + 0x30) = 0;
-                            *(u16 *)(found + 0x32) = 0;
-                            *(u32 *)(found + 0x38) = 0;
-                            *(u32 *)(found + 0x3C) = 0;
-                        }
-                    }
-}
