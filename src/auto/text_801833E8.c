@@ -4058,24 +4058,25 @@ void fn_8018B6A4(void *arg0) {
 }
 
 void fn_8018B6DC(void *arg0) {
-f32 fn_80059EB8(s32,s32,f32,f32);
-f32 Math_Lerp(f32,f32,f32,f32);
-void Process_ClearFunc(void*);
-void Model_SetColor(void*,u8,u8,u8);
-extern f32 lbl_8036ACEC,lbl_8036AD44;
-f32 t;
-void *model;
-s32 red,green;
-model=(u8*)*(void**)((u8*)arg0+0x30)+0x1C;
-*(s32*)((u8*)arg0+0x44)+=1;
-if(*(s32*)((u8*)arg0+0x44)>=*(s32*)((u8*)arg0+0x40)){
-*(s32*)((u8*)arg0+0x44)=*(s32*)((u8*)arg0+0x40);
-Process_ClearFunc(arg0);
-}
-t=fn_80059EB8(*(s32*)((u8*)arg0+0x40),*(s32*)((u8*)arg0+0x44),lbl_8036ACEC,lbl_8036AD44);
-red=(s32)Math_Lerp((f32)*((u8*)arg0+0x34),(f32)*((u8*)arg0+0x38),lbl_8036AD44,t);
-green=(s32)Math_Lerp((f32)*((u8*)arg0+0x35),(f32)*((u8*)arg0+0x39),lbl_8036AD44,t);
-Model_SetColor(model,(u8)red,(u8)green,(u8)(s32)Math_Lerp((f32)*((u8*)arg0+0x36),(f32)*((u8*)arg0+0x3A),lbl_8036AD44,t));
+    f32 fn_80059EB8(f32, f32, s32, s32);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
+    void Model_SetColor(void *, u8, u8, u8);
+    extern f32 lbl_8036ACEC, lbl_8036AD44;
+    f32 t;
+    void *model;
+    s32 red, green;
+
+    model = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C;
+    *(s32 *)((u8 *)arg0 + 0x44) += 1;
+    if (*(s32 *)((u8 *)arg0 + 0x44) >= *(s32 *)((u8 *)arg0 + 0x40)) {
+        *(s32 *)((u8 *)arg0 + 0x44) = *(s32 *)((u8 *)arg0 + 0x40);
+        Process_ClearFunc(arg0);
+    }
+    t = fn_80059EB8(lbl_8036ACEC, lbl_8036AD44, *(s32 *)((u8 *)arg0 + 0x40), *(s32 *)((u8 *)arg0 + 0x44));
+    red = (s32)Math_Lerp((f32)*((u8 *)arg0 + 0x34), (f32)*((u8 *)arg0 + 0x38), lbl_8036AD44, t);
+    green = (s32)Math_Lerp((f32)*((u8 *)arg0 + 0x35), (f32)*((u8 *)arg0 + 0x39), lbl_8036AD44, t);
+    Model_SetColor(model, (u8)red, (u8)green, (u8)(s32)Math_Lerp((f32)*((u8 *)arg0 + 0x36), (f32)*((u8 *)arg0 + 0x3A), lbl_8036AD44, t));
 }
 
 void fn_8018B854(void *arg0) {
