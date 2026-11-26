@@ -172,6 +172,9 @@ typedef struct MenuGridLayout {
     s16 yOffset;
 } MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
+static inline s16 MenuGridRowOffset(s16 height, s16 row, s16 offset) {
+    return height * row + offset;
+}
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
@@ -1818,22 +1821,19 @@ void fn_80134C24(s32 *arg0, const s16 *arg1) {
     s32 Text_MeasureHeight(s32, f32);
     Vec2s out, in;
     s16 rowH;
-    s16 colW, kind;
+    s16 kind, colW;
     s16 quot;
-    s32 t, hdiv, rem;
+    s32 rem, hdiv, t;
     s16 x, y, half, off48, off4a;
     colW = arg1[34];
     kind = arg1[31];
-    quot = kind / colW;
     rowH = arg1[35];
     off48 = arg1[36];
     off4a = arg1[37];
     t = MenuGridColumnWidth(arg1, colW);
-    rem = kind % colW;
-    rem = (s16)rem;
-    rem = t * rem;
+    rem = t * (s16)(kind % colW);
     x = (s16)(rem + off48);
-    y = (s16)((s16)rowH * (s16)quot + off4a);
+    y = (s16)((s16)rowH * (s16)(kind / colW) + off4a);
     t = Text_MeasureHeight(-1, lbl_8036A5AC);
     half = (s16)(((s32)(s16)rowH - t) >> 1);
     in.x = x;
