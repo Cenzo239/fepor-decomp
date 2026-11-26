@@ -26,6 +26,12 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
+static inline void *Off89490(u8 *base, s32 off) {
+    u8 *p = base;
+    s32 i;
+    for (i = 0; i < 1; i++) p = base + off;
+    return p;
+}
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
@@ -83,12 +89,13 @@ void fn_80089490(void *);
 
 #pragma opt_propagation on
 static inline u8 *fn_80089490_add(u8 *base, s32 off) { return base + off; }
-#pragma global_optimizer off
+#pragma opt_dead_code off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
-    u8 *const tbl = lbl_80289950;
+    u8 *tbl = lbl_80289950;
     void *v;
+    void *p;
 
     if (*(u8 *)((u8 *)arg0 + 0x2B) == 0x7B) {
         return;
@@ -97,7 +104,8 @@ void fn_80089490(void *arg0) {
     if (v == tbl + 0x7C) {
         return;
     }
-    if (v == tbl + 0) {
+    p = tbl + 0;
+    if (v == p) {
         return;
     }
     if (v == tbl + 0x58) {
@@ -108,4 +116,4 @@ void fn_80089490(void *arg0) {
     }
     fn_8000A408(arg0);
 }
-#pragma global_optimizer on
+#pragma opt_dead_code reset
