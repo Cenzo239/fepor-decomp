@@ -2,8 +2,8 @@
 #include "common.h"
 #include "global.h"
 static inline void GMaterial_InsertSlot688D4(u32 value, u32 *slots) {
-    s32 j;
     u32 entry;
+    s32 j;
     for (j=0;j<8;j++) {
         entry=slots[j];
         if (entry==value) break;
