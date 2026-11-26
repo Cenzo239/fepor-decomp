@@ -8,6 +8,39 @@ typedef struct AramAllocSlot {
     s32 size;
     u32 address;
 } AramAllocSlot;
+static inline void *AramCache_InsertUsed(void *best, void *alloc_list) {
+    void *iter;
+    void *insert_prev;
+    insert_prev = 0;
+    iter = alloc_list;
+    while (iter != 0) {
+    if (insert_prev != 0) {
+        if (((AramAllocSlot *)best)->address <= ((AramAllocSlot *)insert_prev)->address) {
+            goto ins_a;
+        }
+    }
+    if (iter == 0) {
+        break;
+    }
+    if (((AramAllocSlot *)iter)->address > ((AramAllocSlot *)best)->address) {
+        goto ins_d;
+    }
+ins_a:
+    insert_prev = iter;
+    iter = ((AramAllocSlot *)iter)->next;
+    }
+ins_d:
+    ((AramAllocSlot *)best)->next = iter;
+    ((AramAllocSlot *)best)->prev = insert_prev;
+    if (iter != 0) {
+        ((AramAllocSlot *)iter)->prev = best;
+    }
+    if (insert_prev != 0) {
+        ((AramAllocSlot *)insert_prev)->next = best;
+    }
+    if (insert_prev != 0) return alloc_list;
+    return best;
+}
 static inline void AramCache_ReplaceSlot(AramAllocSlot *cell, AramAllocSlot *best, u32 rem, s32 size) {
     extern void *gAramFreeList;
     cell->size = rem;
@@ -1782,20 +1815,7 @@ split:
     cell = gAramSlotPool;
     ((AramAllocSlot *)best)->size = arg0;
     cell = AramCache_FindUnusedSlot(cell);
-    ((AramAllocSlot *)cell)->size = rem;
-    ((AramAllocSlot *)cell)->address = ((AramAllocSlot *)best)->address + arg0;
-    ((AramAllocSlot *)cell)->prev = ((AramAllocSlot *)best)->prev;
-    ((AramAllocSlot *)cell)->next = ((AramAllocSlot *)best)->next;
-    next = ((AramAllocSlot *)cell)->next;
-    if (next != 0) {
-        ((AramAllocSlot *)next)->prev = cell;
-    }
-    prev = ((AramAllocSlot *)cell)->prev;
-    if (prev != 0) {
-        ((AramAllocSlot *)prev)->next = cell;
-    } else {
-        gAramFreeList = cell;
-    }
+    AramCache_ReplaceSlot(cell, best, rem, arg0);
 
 insert:
     alloc_list = gAramUsedList;
