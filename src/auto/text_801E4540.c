@@ -1,6 +1,11 @@
 /* Functions from 0x801E4540 to 0x801EA8C0, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline s32 TabMenu_UpperBound(s32 value, s32 lower) {
+    s32 upper = lower + 8;
+    if (value % 32 != 0) upper = lower + 9;
+    return upper;
+}
 static inline s32 TabMenu_AdjustScroll(void *arg0, s8 count) {
     s32 v;
     s32 q, r, lower, lo;
@@ -2142,6 +2147,9 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
     s32 v;
+    s32 lower;
+    s32 upper;
+    s32 index;
     s32 q, r, lo;
     u8 ok;
     s8 count;
@@ -2149,13 +2157,12 @@ s32 fn_801E8734(void *arg0) {
     if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
-    { s32 lower = (s8)q;
+    lower = (s8)q;
     lo = lower + 8;
     if (v % 32 != 0) lo = lower + 9;
-    { s32 upper = (s8)lo; s32 index = (s8)count;
+    { upper = (s8)lo; index = (s8)count;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
-    }
     }
     if (!ok) {
         M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
