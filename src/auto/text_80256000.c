@@ -7388,35 +7388,27 @@ void fn_80261BA0(s32 arg0) {
     *(u32 *)(ptr + 0x24) = value;
 }
 
-void fn_80261BC8(s32 arg0, u16 arg1)
-{
-  extern u8 *gSoundVoices;
-  extern u8 lbl_80368AD0;
-  u8 *entry;
-  u8 *p;
-  int new_var;
-  u8 index;
-  entry = gSoundVoices + (arg0 * 0xF8);
-  if (arg1 >= 0x4000)
-  {
-    arg1 = 0x3FFF;
-  }
-  index = *((u8 *) (entry + 0xE8));
-  if (index != 0xFF)
-  {
-    p = entry + (index << 2);
-    new_var = 0x38;
-    index = ((u32) arg1) << 4;
-    if ((*((u32 *) (p + new_var))) == index)
-    {
-      return;
+void fn_80261BC8(s32 arg0, u16 arg1) {
+    struct SoundVoice {
+        u8 pad00[0x24];
+        u32 flags[5];
+        u32 param38[44];
+        u8 idxE8;
+        u8 padE9[0xF];
+    };
+    extern struct SoundVoice *gSoundVoices;
+    extern u8 lbl_80368AD0;
+    struct SoundVoice *voice = &gSoundVoices[arg0];
+
+    if (arg1 >= 0x4000) {
+        arg1 = 0x3FFF;
     }
-  }
-  p = entry + (lbl_80368AD0 << 2);
-  *((u32 *) (p + 0x38)) = index;
-  p = entry + (lbl_80368AD0 << 2);
-  *((u32 *) (p + 0x24)) = (*((u32 *) (p + 0x24))) | 8;
-  *((u8 *) (entry + 0xE8)) = lbl_80368AD0;
+    if (voice->idxE8 != 0xFF && voice->param38[voice->idxE8] == ((u32)arg1 << 4)) {
+        return;
+    }
+    voice->param38[lbl_80368AD0] = (u32)arg1 << 4;
+    voice->flags[lbl_80368AD0] |= 8;
+    voice->idxE8 = lbl_80368AD0;
 }
 
 void fn_80261C40(s32 arg0, s32 arg1) {
