@@ -1,6 +1,8 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+#pragma push
+#pragma inline on
 static inline s32 Material_TakeSlot(u8 *count, s32 *ids)
 {
     u8 index = *count;
@@ -5626,6 +5628,7 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
 #pragma push
 #pragma use_lmw_stmw on
 #pragma optimization_level 4
+#pragma opt_common_subs off
 #pragma opt_propagation off
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_8006ECCC(void *, void *, u16);
@@ -7998,12 +8001,12 @@ void fn_8006DFD8(void) {
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
     u8 fifo[0x80];
-    s32 a;
     s32 b;
     void *buf;
     void *src;
     u8 *dst32;
     s32 timed_out;
+    s32 a;
     u8 *dst;
     u16 xfbHeight;
     volatile u8 *gx;
@@ -8147,9 +8150,7 @@ done:
         lbl_803682A4 &= ~4;
     }
     fn_802107A8();
-    if (lbl_80367318 == lbl_80367310) {
-        lbl_80367318 = lbl_80367314;
-    }
+    lbl_80367318 = lbl_80367318 == lbl_80367310 ? lbl_80367314 : lbl_80367310;
 }
 #pragma pop
 
