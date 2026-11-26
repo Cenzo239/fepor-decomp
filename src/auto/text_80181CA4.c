@@ -1,4 +1,5 @@
 #include "common.h"
+typedef struct SupportSortList { s32 count; void *prev; void *next; } SupportSortList;
 #pragma cplusplus on
 struct UiAnimatedSprite {
     virtual void m08(); virtual void m0C(); virtual void m10();
@@ -794,7 +795,9 @@ s32 fn_80181DD8(void *arg0) {
     return *(s32 *)(*(u8 **)((u8 *)arg0 + 0x188) + 0x50) != 0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80181DF0(s32 *arg0, void **arg1) {
     void *Unit_FindByPerson(void *);
     s32 Unit_FindSupportPartnerIndex(void *, void *);
@@ -827,15 +830,9 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     s32 cnt;
 
     cnt = *arg0;
-    if (cnt != 2) {
-        if (cnt >= 2) {
-            goto split;
-        }
-        if (cnt >= 0) {
-            return;
-        }
-        goto split;
-    }
+    switch (cnt) {
+    case 0: case 1: return;
+    case 2:
     node = (void **)arg0[2];
     node2 = (void **)node[1];
     idNode = node[2];
@@ -887,29 +884,11 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     }
     return;
 
-split:
+default:
     half = (u32)cnt >> 1;
     it = (void **)arg0[2];
-    if (half != 0) {
-        n = half >> 3;
-        if (n != 0) {
-            do {
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-                it = (void **)it[1];
-            } while (--n);
-        }
-        n = half & 7;
-        if (n != 0) {
-            do {
-                it = (void **)it[1];
-            } while (--n);
-        }
+    for (n = half; n != 0; --n) {
+        it = (void **)it[1];
     }
     sp14 = 0;
     sp1C = (void *)&sp18;
@@ -940,9 +919,9 @@ split:
             sp14 -= 1;
         } while (unitNode2 != (void *)&sp18);
     }
+    }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
     void *fn_80016B7C(void *);
     s32 fn_80036F5C(void *, s32);
