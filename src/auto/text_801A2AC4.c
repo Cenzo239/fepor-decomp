@@ -960,14 +960,6 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     }
 }
 #pragma opt_common_subs reset
-static inline s32 Battle_AdjustHpDelta(u8 *obj, s32 amount) {
-    s32 Unit_GetMaxHp(void *);
-    s32 fn_800AA76C(s32, s32, s32);
-    s32 hp = obj[0x488];
-    amount = fn_800AA76C((s8)hp, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)amount);
-    return (s8)amount;
-}
-
 void fn_801A4B40(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
