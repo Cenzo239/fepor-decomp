@@ -4066,13 +4066,10 @@ void fn_80016C58(void) {
 }
 #pragma optimization_level reset
 void Unit_ResetAll(void) {
-#pragma dont_inline on
-#pragma global_optimizer off
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK Unit_Clear(M2C_UNK *, s32);
     extern u8 gUnits[];
     extern u8 gUnitLists[];
-    u8 *unit;
     u8 *list;
     s32 i;
     fn_8001594C(gUnitLists, 0);
@@ -4084,14 +4081,10 @@ void Unit_ResetAll(void) {
     fn_8001594C(gUnitLists + 0x3C, 5);
     fn_8001594C(gUnitLists + 0x48, 6);
     fn_8001594C(gUnitLists + 0x54, 7);
-    i = 0;
-    unit = gUnits;
-    do {
-        Unit_Clear((M2C_UNK *)unit, i + 1);
-        fn_80015718((M2C_UNK *)list, (M2C_UNK *)unit);
-        i++;
-        unit += 0x280;
-    } while (i < 0x9F);
+    for (i = 0; i < 0x9F; i++) {
+        Unit_Clear((M2C_UNK *)(gUnits + i * 0x280), i + 1);
+        fn_80015718((M2C_UNK *)list, (M2C_UNK *)(gUnits + i * 0x280));
+    }
 }
 
 #include "common.h"
