@@ -6,6 +6,7 @@ typedef struct {
     u8 unk : 7;
 } ItemFlagBits;
 
+#pragma always_inline on
 static inline s32 Convoy_FindEmpty_inline(void *convoy) {
     s32 i;
     for (i = 0; i < 200; i++) {
@@ -27,6 +28,7 @@ static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
     Item_Copy((u8 *)convoy + slot * 8, item);
     return 1;
 }
+#pragma always_inline reset
 
 typedef struct {
     u8 unk0[8];
