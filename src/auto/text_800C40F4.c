@@ -16324,6 +16324,7 @@ void fn_800E51A8(void *arg0, void *arg1) {
 }
 
 void fn_8005F84C(s32, s32, s32);
+void fn_8005F894(s32, s32);
 void fn_800E5200(void *arg0, u16 arg1, s32 arg2) {
     if (arg2 != 0) {
         fn_8005F84C(M2C_FIELD(arg0, s32 *, 0xE0), arg2, arg1);
