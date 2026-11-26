@@ -18,23 +18,6 @@ public:
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
-struct CardWork_800EBACC {
-    u8 workArea[0xA000];
-    s32 chan;
-    volatile s32 result;
-    s32 sectorSize;
-    s32 unkA00C;
-    s32 unkA010;
-    s32 unkA014;
-    u8 unkA018;
-    u8 unkA019;
-    u8 busy;
-    u8 unkA01B;
-    u8 fileInfo[0x14];
-};
-static inline u8 CardReady_800EBACC(struct CardWork_800EBACC *cw) {
-    return cw->result == 0 && cw->busy == 0;
-}
 typedef struct MapVisibilityCell { u8 pad[0x200D]; u8 value; } MapVisibilityCell;
 typedef struct MapCostCell { u8 pad[0x610E]; s16 cost; } MapCostCell;
 typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
