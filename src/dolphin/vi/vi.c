@@ -1036,6 +1036,13 @@ path_ok:
     OSRestoreInterrupts(irq);
 }
 
+static inline u64 VIGetChangedBits(void) {
+    union { u64 value; u32 words[2]; } bits;
+    bits.words[0] = (u32)lbl_80368630;
+    bits.words[1] = (u32)lbl_80368634;
+    return bits.value;
+}
+
 static inline s32 cntlzd(u64 bit) {
     u32 hi = (u32)(bit >> 32);
     u32 lo = (u32)(bit & 0xFFFFFFFF);
@@ -1059,17 +1066,20 @@ void VIFlush(void) {
         void *unk120;
     } *vi = (void *)lbl_8033A068;
     s32 enabled;
-    s32 regIndex;
+    u32 regIndex;
+ u16 value;
 
     enabled = OSDisableInterrupts();
-    *(volatile u32 *)&lbl_80368638 |= *(volatile u32 *)&lbl_80368628;
-    *(volatile u32 *)&lbl_80368628 = 0;
-    *(volatile u64 *)&lbl_80368640 |= *(volatile u64 *)&lbl_80368630;
+    *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
+    *(u32 *)&lbl_80368628 = 0;
+    *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
+ *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
 
-    while (*(volatile u64 *)&lbl_80368630 != 0) {
-        regIndex = cntlzd(*(volatile u64 *)&lbl_80368630);
-        vi->shdwRegs[regIndex] = vi->regs[regIndex];
-        *(volatile u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
+    while (*(u64 *)&lbl_80368630 != 0) {
+        regIndex = cntlzd(*(u64 *)&lbl_80368630);
+        value = vi->regs[regIndex];
+ vi->shdwRegs[regIndex] = value;
+        *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
 
     lbl_80368608 = 1;
