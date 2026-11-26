@@ -809,7 +809,6 @@ void fn_8001A5E4(void) {
         i++;
     }
 }
-#pragma optimization_level 4
 #pragma opt_loop_invariants reset
 #pragma opt_common_subs reset
 #pragma use_lmw_stmw reset
