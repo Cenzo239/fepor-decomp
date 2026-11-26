@@ -3,7 +3,7 @@
 
 static inline s32 Battle_CollectStatus(void **members, s32 status) {
 extern void *gUnitLists[25]; u8 Status_Test(void *,s32);
-void *node=gUnitLists[0]; s32 count=0;
+s32 count; void *node; node=gUnitLists[0]; count=0;
 while(node) { void *next=M2C_FIELD(node,void **,0x184);
 if(Status_Test((u8*)node+0x1bc,status) && count<3) members[count++]=node;
 node=next;
