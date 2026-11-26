@@ -118,6 +118,12 @@ extern s32 lbl_80368500;
 extern s32 lbl_80368508;
 extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
+static inline u32 ResetSwitch_MicrosecondsToTicks(u32 usec) {
+    return (((*(u32 *)0x800000F8 >> 2) / 125000) * usec) >> 3;
+}
+static inline u32 ResetSwitch_MillisecondsToTicks(u32 msec) {
+    return ((*(u32 *)0x800000F8 >> 2) / 1000) * msec;
+}
 extern void (*lbl_803684F8)();
 
 #pragma peephole off
@@ -147,6 +153,9 @@ extern s32 RunQueueHint_8036851C;
 
 
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -156,7 +165,7 @@ s32 fn_80208D18(void) {
     s32 enabled;
     s32 pad;
     u64 now;
-    u8 soft;
+    s32 soft;
     u32 freq;
     u32 thresh;
     s32 n;
@@ -236,4 +245,4 @@ s32 fn_80208D18(void) {
     OSRestoreInterrupts(enabled);
     return state;
 }
-
+#pragma pop
