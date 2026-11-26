@@ -9799,13 +9799,13 @@ extern "C" void fn_801C60E8(void *arg0) {
 #pragma push
 #pragma optimization_level 3
 void fn_801C6234(void *arg0) {
-    s32 fn_8006135C(void *, void *);
+    s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
     void fn_80067708(s32, s32, void (*)(void), s32);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_802031E8(f32 *, f32 *);
     void fn_802029C4(void *, void *, void *);
-    f32 fn_8020322C(f32 *);
+    f32 Vec_Length(f32 *);
     f32 fn_80203270(f32 *, f32 *);
     f64 fn_80238788(f64);
     void fn_801C65E0(void);
@@ -9848,7 +9848,7 @@ void fn_801C6234(void *arg0) {
         names[2] = *(s32 *)(rodata + 0xBC);
         names[3] = *(s32 *)(rodata + 0xC0);
         do {
-            idx = fn_8006135C(*(void **)((u8 *)self + 0x30), (void *)*namep);
+            idx = GActor_FindNode(*(void **)((u8 *)self + 0x30), (void *)*namep);
             if (0 <= idx) {
                 fn_80060F70(*(void **)((u8 *)self + 0x30), idx, pos);
                 if (*(f32 *)((u8 *)walk + 0x34) > (pos[1] + lbl_8036B448) && pos[1] < lbl_8036B44C) {
@@ -9861,14 +9861,14 @@ void fn_801C6234(void *arg0) {
                     vec[2] = *(s32 *)(rodata + 0xD8);
                     {
                         void *obj = *(void **)((u8 *)self + 0x30);
-                        fn_80202024((u8 *)obj + 0x10, (u8 *)*(void **)((u8 *)obj + 0x60) + idx * 0x30, mtx);
+                        PSMTXConcat((u8 *)obj + 0x10, (u8 *)*(void **)((u8 *)obj + 0x60) + idx * 0x30, mtx);
                     }
                     mtx[0][3] = lbl_8036B424;
                     mtx[1][3] = lbl_8036B424;
                     mtx[2][3] = lbl_8036B424;
                     fn_802029C4(mtx, vec, vec);
                     ((f32 *)vec)[1] = lbl_8036B424;
-                    if (fn_8020322C((f32 *)vec) > lbl_8036B424) {
+                    if (Vec_Length((f32 *)vec) > lbl_8036B424) {
                         fn_802031E8((f32 *)vec, (f32 *)vec);
                         dot = fn_80203270((f32 *)refv, (f32 *)vec);
                         if (dot >= lbl_8036B434) {
