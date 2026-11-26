@@ -10591,13 +10591,12 @@ extern "C" void fn_802029C4(void *, f32 *, f32 *);
 #pragma cplusplus reset
 #pragma cplusplus on
 struct DirectionVector { f32 x, y, z; DirectionVector(f32 xx, f32 yy, f32 zz) : x(xx), y(yy), z(zz) {} };
-#pragma cplusplus reset
-void fn_800DBAB8(f32 *arg0, void *arg1) {
+#pragma cplusplus on
+extern "C" struct DirectionVector fn_800DBAB8(void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
-    f32 *p;
     f32 y;
     f32 z;
     f32 x;
@@ -10605,19 +10604,17 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 'Y', 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
-    p = (f32 *)((u8 *)arg1 + 0x60);
-    p[0] = vec[0];
-    p[1] = vec[1];
-    p[2] = vec[2];
-    z = p[2];
-    y = p[1];
-    x = p[0];
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
+    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
+    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
+    z = *(f32 *)((u8 *)arg1 + 0x68);
+    y = *(f32 *)((u8 *)arg1 + 0x64);
+    x = *(f32 *)((u8 *)arg1 + 0x60);
+    return DirectionVector(x,y,z);
 }
+#pragma cplusplus off
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
