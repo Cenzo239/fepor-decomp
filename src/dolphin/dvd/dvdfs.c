@@ -53,23 +53,6 @@ extern u8 DummyCommandBlock_80339F80[48];
 extern u32 lbl_803685B8;
 extern void (*lbl_803685BC)(void*, void*);
 extern void stateReady(void);
-static inline s32 DVDCheckCancel(s32 resume, u8 *base) {
-    extern s32 ResumeFromHere_803685C0;
-    extern u16 BB2_80339F40[];
-    DVDReadyCommand *block;
-    if (lbl_803685B8 != 0) {
-        ResumeFromHere_803685C0 = resume;
-        block = (DVDReadyCommand *)executing_80368598;
-        lbl_803685B8 = 0;
-        executing_80368598 = base + 0x40;
-        block->state = 10;
-        if (block->callback != NULL) block->callback(-3, block);
-        if (lbl_803685BC != NULL) lbl_803685BC(0, block);
-        stateReady();
-        return 1;
-    }
-    return 0;
-}
 s32 fn_8020F0B8(DVDReadyCommand *block, void (*callback)(s32, void *));
 extern void __DVDClearWaitingQueue(void);
 extern u8 bb2Buf_80339FF8[];
@@ -1556,7 +1539,8 @@ void stateBusy_8020E178(void *arg0) {
 #pragma global_optimizer on
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_8020E4B8(u32 arg0) {
     void __DVDStoreErrorCode(u32);
     void DVDReset(void);
@@ -1625,8 +1609,8 @@ void fn_8020E4B8(u32 arg0) {
             ResumeFromHere_803685C0 = 7;
             block = (DVDReadyCommand *)executing_80368598;
             lbl_803685B8 = 0;
+            *(s32 *)((u8 *)block + 0xC) = 0xA;
             executing_80368598 = base + 0x40;
-            block->state = 0xA;
             if (block->callback != NULL) {
                 block->callback(-3, block);
             }
@@ -1655,14 +1639,14 @@ void fn_8020E4B8(u32 arg0) {
     }
     if (flag != 0) {
         block = (DVDReadyCommand *)executing_80368598;
-        block->unk20 = block->unk20 + (block->unk1C - *(volatile u32 *)(0xCC006000 + 0x18));
+        block->unk20 = block->unk20 + (block->unk1C - __DIRegs[6]);
     }
 
     if (arg0 & 8) {
         block = (DVDReadyCommand *)executing_80368598;
         lbl_803685B8 = 0;
         executing_80368598 = base + 0x40;
-        block->state = 0xA;
+        *(s32 *)((u8 *)block + 0xC) = 0xA;
         if (block->callback != NULL) {
             block->callback(-3, block);
         }
@@ -1690,8 +1674,8 @@ void fn_8020E4B8(u32 arg0) {
             ResumeFromHere_803685C0 = 0;
             block = (DVDReadyCommand *)executing_80368598;
             lbl_803685B8 = 0;
+            *(s32 *)((u8 *)block + 0xC) = 0xA;
             executing_80368598 = base + 0x40;
-            block->state = 0xA;
             if (block->callback != NULL) {
                 block->callback(-3, block);
             }
@@ -1720,9 +1704,9 @@ void fn_8020E4B8(u32 arg0) {
                 stateBusy_8020E178(active);
                 return;
             }
-            block = active;
             executing_80368598 = base + 0x40;
-            block->state = 0;
+            active->state = 0;
+            block = active;
             if (block->callback != NULL) {
                 block->callback((s32)block->unk20, block);
             }
@@ -1751,7 +1735,7 @@ void fn_8020E4B8(u32 arg0) {
             if (CurrCommand_803685B4 == 0xB || CurrCommand_803685B4 == 0xA) {
                 val = *(volatile u32 *)(0xCC006000 + 0x20) << 2;
             } else {
-                val = *(volatile u32 *)(0xCC006000 + 0x20);
+                val = __DIRegs[8];
             }
             block = (DVDReadyCommand *)executing_80368598;
             executing_80368598 = base + 0x40;
@@ -1814,7 +1798,7 @@ void fn_8020E4B8(u32 arg0) {
                 ResumeFromHere_803685C0 = 0;
                 lbl_803685B8 = 0;
                 executing_80368598 = base + 0x40;
-                block->state = 0xA;
+                *(s32 *)((u8 *)block + 0xC) = 0xA;
                 if (block->callback != NULL) {
                     block->callback(-3, block);
                 }
