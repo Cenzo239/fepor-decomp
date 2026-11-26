@@ -4912,7 +4912,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma opt_strength_reduction off
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 #pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
 extern "C" void fn_80142ED0(Menu42 *self, s32 arg) {
@@ -4990,7 +4990,7 @@ else { while (n < 0) { node = *(u8 **)(node + 0); ++n; } }
 y = M2C_FIELD(self, s16 *, 0x8e) + M2C_FIELD(self, s16 *, 0x8a) + 4;
 x = M2C_FIELD(self, s16 *, 0x8c) + M2C_FIELD(self, s16 *, 0x88);
 {
-s16 row = (-(s16)sign & ~(s16)sign) >> 31;
+s16 row = sign > 0 ? -1 : 0;
 s32 end = (s16)rows;
 if ((s16)sign < 0) ++end;
 {
