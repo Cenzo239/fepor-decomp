@@ -2387,25 +2387,21 @@ void fn_8014571C(void) {
 }
 
 void fn_801457B4(void) {
-    void fn_8000BF00(void *);
-    void *fn_8000CAF0(void *, s32);
-    extern u8 lbl_80292558[];
+    void Process_UnlinkByKey(void *);
+    void *Process_Create(void *, s32);
+    extern u8 gBgmVolFadeProcs[];
     extern u8 lbl_8029256C[];
-    extern u8 lbl_80367AEC;
-    extern f32 lbl_8036A778;
-    extern f32 lbl_8036A77C;
-    void *temp_r3;
-    f32 a;
-    f32 b;
+    extern u8 gBgmQuietVol;
+    extern const f32 gBgmVolTimerZero;
+    extern const f32 lbl_8036A77C;
+    u8 *p;
 
-    fn_8000BF00(lbl_80292558);
-    fn_8000BF00(lbl_8029256C);
-    temp_r3 = fn_8000CAF0(lbl_8029256C, 3);
-    a = lbl_8036A778;
-    b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEC;
+    Process_UnlinkByKey(gBgmVolFadeProcs);
+    Process_UnlinkByKey(lbl_8029256C);
+    p = (u8 *)Process_Create(lbl_8029256C, 3);
+    *(f32 *)(p + 0x30) = gBgmVolTimerZero;
+    *(f32 *)(p + 0x34) = lbl_8036A77C;
+    *(f32 *)(p + 0x38) = (f32)gBgmQuietVol;
 }
 
 typedef struct BgmFadeFields { u8 pad[0x30]; f32 timer, duration, volume; } BgmFadeFields;
