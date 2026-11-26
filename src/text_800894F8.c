@@ -122,6 +122,7 @@ void fn_80089554(void) {
 }
 
 #pragma opt_propagation off
+#pragma opt_strength_reduction off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
@@ -129,16 +130,15 @@ void fn_800895B8(void) {
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    u8 *base = lbl_80289950;
+    Struct_80289950 *base = (Struct_80289950 *)lbl_80289950;
     void *tmp;
-    s32 off = 0;
 
-    lbl_803674E0 = Process_Create(base + off, 7);
-    lbl_803674E4 = Process_Create(base + 0x58, 7);
-    tmp = Process_Create(base + 0x18, 7);
+    lbl_803674E0 = Process_Create(&base->f00, 7);
+    lbl_803674E4 = Process_Create(&base->f58, 7);
+    tmp = Process_Create(&base->f18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create(base + 0x30, 7);
+    tmp = Process_Create(&base->f30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
