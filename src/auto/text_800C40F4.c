@@ -24488,7 +24488,8 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
-#pragma opt_common_subs off
+#pragma opt_common_subs on
+#pragma opt_lifetimes off
 u8 fn_800F43D8(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],gAiEval_UnitScoreVtbl[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
