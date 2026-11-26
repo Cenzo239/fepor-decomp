@@ -5542,6 +5542,14 @@ void fn_8011A4E4(s32 arg0) {
     Ui_CreateMenu(lbl_80367A40, arg0, 0);
 }
 
+static inline u8 Map_IsBlendMode(u8 mode) {
+    u8 enabled = 1;
+    if (!(1 >= (u8)(mode - 1))) enabled = 0;
+    return enabled;
+}
+
+#pragma push
+#pragma opt_lifetimes off
 void fn_8011A694(void) {
     void Unit_MoveToListHead(void *, s32);
     void Unit_MoveToList(void *, s32);
@@ -5553,12 +5561,13 @@ void fn_8011A694(void) {
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
 
-    void *next;
     void *head;
+    void *next;
     void *unit;
     void *found;
-    u8 var_r4;
-    u8 temp;
+    void *q;
+    void *p;
+    s32 var_r4;
 
     head = *(void **)gUnitLists;
     unit = *(void **)(gUnitLists + 4);
@@ -5582,29 +5591,26 @@ void fn_8011A694(void) {
     }
 
     found = Unit_FindByName(lbl_80274508 + 0x130);
-    next = *(void **)gUnitLists;
-    while (next != NULL) {
-        unit = *(void **)((u8 *)next + 0x184);
-        if (next != found) {
-            *(s16 *)((u8 *)next + 0x15C) =
+    p = *(void **)gUnitLists;
+    while (p != NULL) {
+        q = *(void **)((u8 *)p + 0x184);
+        if (p != found) {
+            *(s16 *)((u8 *)p + 0x15C) =
                 (s16)(50.0f * ((f32)*(s16 *)((u8 *)found + 0x15C) / 50.0f));
         }
-        next = unit;
+        p = q;
     }
 
     Map_RefreshUnitMap(gBattleMap);
-#pragma optimization_level 1
     var_r4 = 1;
-    temp = (u8)(gMapBlendMode - 1);
-    if (((u32)((var_r4 | ~temp) - ((u32)(var_r4 - temp) >> 1)) >> 31) == 0) {
+    if (!(1 >= (u8)(gMapBlendMode - 1))) {
         var_r4 = 0;
     }
-#pragma optimization_level reset
-    if (var_r4 != 0) {
+    if ((u8)var_r4 != 0) {
         fn_800C1060(0);
     }
 }
-
+#pragma pop
 void fn_8011A7FC(void *arg0) {
     extern u8 gUnitLists[], gTargetList[], lbl_8028F790[], lbl_80274508[], lbl_80293C84[], lbl_80293C58[];
     extern u8 lbl_80367A48;
