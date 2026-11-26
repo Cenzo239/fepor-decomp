@@ -1202,8 +1202,8 @@ void fn_80122780(void *o_) {
 }
 
 extern struct efUnit* gUiPanelFlags;
-void fn_8012282C(struct efUnit* arg0) {
-#pragma peephole off
+#pragma cplusplus on
+extern "C" void fn_8012282C(struct efUnit* arg0) {
     #pragma dont_inline on
     void UiPanel_PollSkip(u16 *);
     #pragma dont_inline reset
@@ -1211,24 +1211,44 @@ void fn_8012282C(struct efUnit* arg0) {
     extern f32 lbl_8036A2B0;
     void Process_Unlink(void *);
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    s32 i;
-    u8 *p;
-    u8 *walk;
-    u8 *entry;
+    struct Item {
+        u8 unk0;
+        u8 pad1[0x3F];
+        void *unk40;
+        inline void reset() {
+            unk0 = 0;
+            unk40 = this;
+        }
+    };
+    struct Panel {
+        u8 pad0[0x30];
+        Item *items[5];
+        u8 unk44;
+        s8 count;
+        s8 unk46;
+        u8 unk47;
+        u8 unk48;
+        inline void clear() {
+            s32 i;
+            for (i = 0; i < count; i++) {
+                if (items[i] != NULL) {
+                    items[i]->reset();
+                }
+            }
+            unk46 = 0;
+            unk47 = 0;
+            unk48 = 0;
+        }
+    };
     UiPanel_PollSkip((u16 *)&gUiPanelFlags);
     if ((gUiInputFlags & 3) || (*(u16 *)&gUiPanelFlags & 0x400)) {
         if (*(s32 *)((u8 *)arg0 + 0x3c)) {
-            p = *(u8 **)((u8 *)arg0 + 0x30);
-            for (i = 0, walk = p; i < *(s8 *)(p + 0x45); walk += 4, i++) {
-                entry = *(u8 **)(walk + 0x30);
-                if (entry) { entry[0] = 0; *(u8 **)(entry + 0x40) = entry; }
-            }
-            p[0x46] = 0; p[0x47] = 0; p[0x48] = 0;
+            ((Panel *)*(void **)((u8 *)arg0 + 0x30))->clear();
         } else {
-            p = *(u8 **)((u8 *)arg0 + 0x30);
-            entry = ((u8 **)(p + 0x30))[*(s8 *)(p + 0x46) % *(s8 *)(p + 0x45)];
-            entry[0] = 0; *(u8 **)(entry + 0x40) = entry;
-            p[0x46]++; p[0x48] = 0;
+            Panel *p = (Panel *)*(void **)((u8 *)arg0 + 0x30);
+            p->items[p->unk46 % p->count]->reset();
+            p->unk46++;
+            p->unk48 = 0;
         }
         Process_Unlink(arg0);
     } else {
@@ -1236,9 +1256,8 @@ void fn_8012282C(struct efUnit* arg0) {
         (f32)*(s32 *)((u8 *)arg0 + 0x34), lbl_8036A2B0,
         (f32)*(s16 *)((u8 *)arg0 + 0x28), (f32)*(s32 *)((u8 *)arg0 + 0x38));
     }
-#pragma peephole reset
 }
-
+#pragma cplusplus off
 extern u8 lbl_80290288[16];
 void fn_80122998(s32 arg0) {
     void Process_Create(void *, s32);
