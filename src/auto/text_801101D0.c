@@ -5567,7 +5567,7 @@ void fn_8011A694(void) {
     void *found;
     void *q;
     void *p;
-    s32 var_r4;
+    u8 blend;
 
     head = *(void **)gUnitLists;
     unit = *(void **)(gUnitLists + 4);
@@ -5602,11 +5602,8 @@ void fn_8011A694(void) {
     }
 
     Map_RefreshUnitMap(gBattleMap);
-    var_r4 = 1;
-    if (!(1 >= (u8)(gMapBlendMode - 1))) {
-        var_r4 = 0;
-    }
-    if ((u8)var_r4 != 0) {
+    blend = Map_IsBlendMode(gMapBlendMode);
+    if (blend) {
         fn_800C1060(0);
     }
 }
