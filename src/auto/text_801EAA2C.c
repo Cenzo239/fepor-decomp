@@ -8,6 +8,12 @@ typedef struct AramAllocSlot {
     s32 size;
     u32 address;
 } AramAllocSlot;
+static inline void *AramCache_UnlinkSlot(void *head, AramAllocSlot *node) {
+    if (node->next) node->next->prev = node->prev;
+    if (node->prev) node->prev->next = node->next;
+    else head = node->next;
+    return head;
+}
 static inline void *AramCache_FindUnusedSlot(void *pool) {
     u8 *p = pool;
     s32 i;
@@ -1718,12 +1724,12 @@ void fn_801ED12C(s32 arg0) {
     cell = gAramFreeList;
     goto test1;
 body1:
-    size = *(s32 *)((u8 *)cell + 0x64);
+    size = ((AramAllocSlot *)cell)->size;
     if (size >= arg0 && (u32)size <= best_size) {
         best_size = (u32)size;
         best = cell;
     }
-    cell = *(void **)((u8 *)cell + 0x60);
+    cell = ((AramAllocSlot *)cell)->next;
 test1:
     if (cell != 0) {
         goto body1;
@@ -1735,57 +1741,57 @@ test1:
     fn_801EC7B8();
 reclaim:
     best = gAramFreeList;
-    if (*(u32 *)((u8 *)best + 0x64) >= (u32)arg0) {
+    if (((AramAllocSlot *)best)->size >= (u32)arg0) {
         goto have;
     }
     node = gAramUsedList;
-    next = *(void **)((u8 *)node + 0x60);
+    next = ((AramAllocSlot *)node)->next;
     if (next != 0) {
-        *(void **)((u8 *)next + 0x5C) = *(void **)((u8 *)node + 0x5C);
+        ((AramAllocSlot *)next)->prev = ((AramAllocSlot *)node)->prev;
     }
-    prev = *(void **)((u8 *)node + 0x5C);
+    prev = ((AramAllocSlot *)node)->prev;
     if (prev != 0) {
-        *(void **)((u8 *)prev + 0x60) = *(void **)((u8 *)node + 0x60);
+        ((AramAllocSlot *)prev)->next = ((AramAllocSlot *)node)->next;
     } else {
-        gAramUsedList = *(void **)((u8 *)node + 0x60);
+        gAramUsedList = ((AramAllocSlot *)node)->next;
     }
     gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
     goto reclaim;
 
 have:
-    rem = *(u32 *)((u8 *)best + 0x64) - (u32)arg0;
+    rem = ((AramAllocSlot *)best)->size - (u32)arg0;
     if (rem >= 0x20U) {
         goto split;
     }
-    next = *(void **)((u8 *)best + 0x60);
+    next = ((AramAllocSlot *)best)->next;
     cell = gAramFreeList;
     if (next != 0) {
-        *(void **)((u8 *)next + 0x5C) = *(void **)((u8 *)best + 0x5C);
+        ((AramAllocSlot *)next)->prev = ((AramAllocSlot *)best)->prev;
     }
-    prev = *(void **)((u8 *)best + 0x5C);
+    prev = ((AramAllocSlot *)best)->prev;
     if (prev != 0) {
-        *(void **)((u8 *)prev + 0x60) = *(void **)((u8 *)best + 0x60);
+        ((AramAllocSlot *)prev)->next = ((AramAllocSlot *)best)->next;
     } else {
-        cell = *(void **)((u8 *)best + 0x60);
+        cell = ((AramAllocSlot *)best)->next;
     }
     gAramFreeList = cell;
     goto insert;
 
 split:
     cell = gAramSlotPool;
-    *(s32 *)((u8 *)best + 0x64) = arg0;
+    ((AramAllocSlot *)best)->size = arg0;
     cell = AramCache_FindUnusedSlot(cell);
-    *(u32 *)((u8 *)cell + 0x64) = rem;
-    *(u32 *)((u8 *)cell + 0x68) = *(u32 *)((u8 *)best + 0x68) + arg0;
-    *(void **)((u8 *)cell + 0x5C) = *(void **)((u8 *)best + 0x5C);
-    *(void **)((u8 *)cell + 0x60) = *(void **)((u8 *)best + 0x60);
-    next = *(void **)((u8 *)cell + 0x60);
+    ((AramAllocSlot *)cell)->size = rem;
+    ((AramAllocSlot *)cell)->address = ((AramAllocSlot *)best)->address + arg0;
+    ((AramAllocSlot *)cell)->prev = ((AramAllocSlot *)best)->prev;
+    ((AramAllocSlot *)cell)->next = ((AramAllocSlot *)best)->next;
+    next = ((AramAllocSlot *)cell)->next;
     if (next != 0) {
-        *(void **)((u8 *)next + 0x5C) = cell;
+        ((AramAllocSlot *)next)->prev = cell;
     }
-    prev = *(void **)((u8 *)cell + 0x5C);
+    prev = ((AramAllocSlot *)cell)->prev;
     if (prev != 0) {
-        *(void **)((u8 *)prev + 0x60) = cell;
+        ((AramAllocSlot *)prev)->next = cell;
     } else {
         gAramFreeList = cell;
     }
@@ -1797,31 +1803,31 @@ insert:
     goto ins_t;
 ins_b:
     if (insert_prev != 0) {
-        if (*(u32 *)((u8 *)best + 0x68) <= *(u32 *)((u8 *)insert_prev + 0x68)) {
+        if (((AramAllocSlot *)best)->address <= ((AramAllocSlot *)insert_prev)->address) {
             goto ins_a;
         }
     }
     if (iter == 0) {
         goto ins_d;
     }
-    if (*(u32 *)((u8 *)iter + 0x68) > *(u32 *)((u8 *)best + 0x68)) {
+    if (((AramAllocSlot *)iter)->address > ((AramAllocSlot *)best)->address) {
         goto ins_d;
     }
 ins_a:
     insert_prev = iter;
-    iter = *(void **)((u8 *)iter + 0x60);
+    iter = ((AramAllocSlot *)iter)->next;
 ins_t:
     if (iter != 0) {
         goto ins_b;
     }
 ins_d:
-    *(void **)((u8 *)best + 0x60) = iter;
-    *(void **)((u8 *)best + 0x5C) = insert_prev;
+    ((AramAllocSlot *)best)->next = iter;
+    ((AramAllocSlot *)best)->prev = insert_prev;
     if (iter != 0) {
-        *(void **)((u8 *)iter + 0x5C) = best;
+        ((AramAllocSlot *)iter)->prev = best;
     }
     if (insert_prev != 0) {
-        *(void **)((u8 *)insert_prev + 0x60) = best;
+        ((AramAllocSlot *)insert_prev)->next = best;
     }
     if (insert_prev == 0) {
         alloc_list = best;
