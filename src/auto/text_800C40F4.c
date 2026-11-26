@@ -2070,36 +2070,18 @@ void fn_800C7EF8(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x18) = 0;
 }
 
-s32 fn_800C7F10(void *self, void *list, s32 index) {
-    extern const char gStringErrorMsgs[];
-    u32 strlen(const char *);
-    s32 String_Compare(String *, u32, u32, const char *, u32);
-    String *String_Assign(String *, String *, s32, s32);
-    void String_Destroy(String *, s32);
-    u8 fn_800C7B04(void *, String *, void *, void *, s32);
-    u8 buffer[0x100];
-    u8 values[0x18];
-    String str;
-    String *entry;
-    s32 count;
-
-    str.cap = 0;
-    str.size = 0;
-    str.data = 0;
-    str.cap = 0;
-    while ((entry = *(String **)((u8 *)list + 8) + index,
-            String_Compare(entry, 0, entry->size, gStringErrorMsgs, strlen(gStringErrorMsgs))) != 0) {
-        index++;
-    }
-    count = 0;
-    while ((entry = String_Assign(&str, *(String **)((u8 *)list + 8) + index++, 0, -1),
-            String_Compare(entry, 0, entry->size, gStringErrorMsgs + 2, strlen(gStringErrorMsgs + 2))) != 0) {
-        if (fn_800C7B04(self, &str, values, buffer, 0)) {
-            count++;
-        }
-    }
-    String_Destroy(&str, -1);
-    return count;
+s32 fn_800C7F10(void *self,void *list,s32 index) {
+extern char gStringErrorMsgs[];
+u32 strlen(const char*);s32 String_Compare(String*,u32,u32,char*,u32);
+String *String_Assign(String*,String*,s32,s32);void String_Destroy(String*,s32);
+u8 fn_800C7B04(void*,String*,void*,void*,s32);
+u8 buffer[0x100];u8 values[0x18];String str;
+String *entry; s32 count;char *messages=gStringErrorMsgs;
+str.cap=0;str.size=0;str.data=0;str.cap=0;
+while((entry=*(String**)((u8*)list+8)+index, String_Compare(entry,0,entry->size,gStringErrorMsgs,strlen(gStringErrorMsgs)))!=0)index++;
+count=0;
+while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Compare(entry,0,entry->size,gStringErrorMsgs+2,strlen(gStringErrorMsgs+2)))!=0){if(fn_800C7B04(self,&str,values,buffer,0))count++;}
+String_Destroy(&str,-1);return count;
 }
 
 #pragma push
@@ -13870,7 +13852,9 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     return arg0;
 }
 #pragma dont_inline reset
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
 s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFields *from, SortIteratorFields *to) {
     void fn_800E0EE0(s32 *, s32 *, s32 *);
     SortIteratorFields outA, stopA, curA, outB, curB, stopB;
@@ -13931,8 +13915,7 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFi
         return first+n2;
     }
 }
-#pragma global_optimizer on
-#pragma dont_inline off
+#pragma pop
 #pragma cplusplus on
 extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first2, s32 *last2, s32 *result, SortCompare comp) {
     s32 Sort_GetKey(void *);
@@ -21467,7 +21450,8 @@ void *fn_800EE0B0(void *arg0) {
     return self;
 }
 
-#pragma cplusplus off
+#pragma push
+#pragma optimization_level 3
 void fn_800EE124(void *arg0) {
 #pragma scheduling on
 void *fn_80040844(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 fn_8006135C(void *,void *);
@@ -21507,6 +21491,7 @@ if(fn_8006135C(M2C_FIELD(arg0,void **,0x3C),lbl_80272C64+0x7F)<0)fn_800056A0(0);
 break;
 }
 }
+#pragma pop
 s32 fn_800EE490(void) {
     s32 Process_Create(void *, s32);
     void fn_800EE124(void);
@@ -30893,40 +30878,30 @@ void fn_80100B08(void)
 
 s32 fn_80100BA4(s16 x, s16 y, s16 x2, s16 y2) {
     extern u8 gBattleMap[];
-
-    s32 dx;
     s32 dy;
-    u16 flags;
+    s32 dx;
 
-    dy = ((s16)y - (s16)y2) < 0 ? -((s16)y - (s16)y2) : ((s16)y - (s16)y2);
-    dx = ((s16)x - (s16)x2) < 0 ? -((s16)x - (s16)x2) : ((s16)x - (s16)x2);
+    dy = (y - y2) < 0 ? -(y - y2) : (y - y2);
+    dx = (x - x2) < 0 ? -(x - x2) : (x - x2);
 
     if (dx + dy > 1) {
         return 0;
     }
 
-    if ((s16)y2 == (s16)y - 1) {
-        flags = *(u16 *)(gBattleMap + 0x408E +
-            ((((s8)y << 6) + (s8)x) << 1));
-        return (flags >> 3) & 1;
+    if (y2 == y - 1) {
+        return (((u16 *)(gBattleMap + 0x408E))[(s8)x + ((s8)y << 6)] >> 3) & 1;
     }
 
-    if ((s16)y2 == (s16)y + 1) {
-        flags = *(u16 *)(gBattleMap + 0x408E +
-            ((((s8)y << 6) + (s8)x) << 1));
-        return (flags >> 2) & 1;
+    if (y2 == y + 1) {
+        return (((u16 *)(gBattleMap + 0x408E))[(s8)x + ((s8)y << 6)] >> 2) & 1;
     }
 
-    if ((s16)x2 == (s16)x - 1) {
-        flags = *(u16 *)(gBattleMap + 0x408E +
-            ((((s8)y << 6) + (s8)x) << 1));
-        return flags & 1;
+    if (x2 == x - 1) {
+        return ((u16 *)(gBattleMap + 0x408E))[(s8)x + ((s8)y << 6)] & 1;
     }
 
-    if ((s16)x2 == (s16)x + 1) {
-        flags = *(u16 *)(gBattleMap + 0x408E +
-            ((((s8)y << 6) + (s8)x) << 1));
-        return (flags >> 1) & 1;
+    if (x2 == x + 1) {
+        return (((u16 *)(gBattleMap + 0x408E))[(s8)x + ((s8)y << 6)] >> 1) & 1;
     }
 
     return 0;
