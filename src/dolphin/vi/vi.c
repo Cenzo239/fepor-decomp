@@ -1048,7 +1048,7 @@ static inline s32 cntlzd(u64 bit) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma global_optimizer off
 void VIFlush(void) {
     u32 OSDisableInterrupts(void);
