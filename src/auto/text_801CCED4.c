@@ -1197,7 +1197,7 @@ extern "C" void Prim2D_SetText(void *);
 extern "C" void Prim2D_EndPrim(void);
 #pragma cplusplus on
 #pragma push
-#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_801CD940(void *arg0, void *arg1)
 {
     struct UiPanel_801CD940 {
@@ -3775,7 +3775,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
     s32 i;
     s16 w;
     s16 iconOffset;
-    s32 flag;
+    u8 flag;
 
     ((Obj *)self)->f3();
 
@@ -3805,7 +3805,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
                 flag = 1;
             }
         }
-        if ((u8)flag) {
+        if (flag) {
             if (*(u32 *)((u8 *)other + 0x34) != 0) {
                 ptr = *(void **)(*(u8 **)((u8 *)other + 0x38) + 8);
             } else {
@@ -3823,7 +3823,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
         h2 = *(s16 *)((u8 *)self + 0x56);
         i = Text_MeasureHeight(-1, lbl_8036B5E0);
         iconOffset = ((s16)h2 - i) >> 1;
-        y = iconOffset + *(s16 *)((u8 *)self + 0x52);
+        y = *(s16 *)((u8 *)self + 0x52) + iconOffset;
         Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 0x50), y, selected);
 
         Prim2D_Begin();
@@ -3831,7 +3831,9 @@ extern "C" void fn_801D1F28(void *self, void *other)
         Prim2D_PrepareTex();
 
         w = (s16)width;
-        x = targetX - *(s16 *)((u8 *)self + 0x60) + (w >> 1) + 0x20;
+        x = targetX - *(s16 *)((u8 *)self + 0x60);
+        x += w >> 1;
+        x += 0x20;
         y = targetY + (height >> 1);
         fn_8008AB7C(x, y, w, 0x18, 0x19, 0x33, selected);
     }
@@ -8864,20 +8866,6 @@ void fn_801DDE44(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
-static inline void MenuResource_DrawTexture(s32 px, s32 py, void *texture) {
-void Prim2D_SetQuadMax(f32,f32,f32,f32);void Prim2D_SetQuadMin(f32,f32,f32,f32);
-void Prim2D_EndPrim(void);void Prim2D_AddPrim(s32);void Prim2D_BindTexture(void*,s32,s32);void Prim2D_PrepareTex(void);void Prim2D_Begin(void);u16 **fn_8006EDD8(void*,s32);
-extern u8 lbl_80299A78[];extern f32 lbl_8036B634;
-u32 w,h;
-u16 *image;
-image=*fn_8006EDD8(texture,0);
-w=image[1];h=image[0];
-Prim2D_Begin();Prim2D_BindTexture(texture,0,0x11);Prim2D_PrepareTex();Prim2D_AddPrim(1);
-px=(s16)px;py=(s16)py;
-Prim2D_SetQuadMin((f32)px,(f32)py,lbl_8036B634,lbl_8036B634);
-Prim2D_SetQuadMax((f32)(px+(s32)w),(f32)(py+(s32)h),(f32)w,(f32)h);
-Prim2D_EndPrim();
-}
 void fn_801DDE88(s32 px, s32 py, s32 id) {
 void Prim2D_SetQuadMax(f32,f32,f32,f32);void Prim2D_SetQuadMin(f32,f32,f32,f32);
 void Prim2D_EndPrim(void);void Prim2D_AddPrim(s32);void Prim2D_BindTexture(void*,s32,s32);void Prim2D_PrepareTex(void);void Prim2D_Begin(void);u16 **fn_8006EDD8(void*,s32);
