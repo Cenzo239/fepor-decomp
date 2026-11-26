@@ -1,21 +1,6 @@
 /* Functions from 0x801F196C to 0x801FC620, found by decomp-toolkit. */
 #include "common.h"
-#pragma cplusplus on
-extern "C" void StaffRoll_VecReserve(void *, u32);
-inline void *operator new(unsigned long, void *p) { return p; }
-struct StaffRollVectorInit {
-    u32 start, end, capacity;
-    StaffRollVectorInit() : start(0), end(0), capacity(0) {}
-};
-struct StaffRollProcessInit {
-    u8 header[0x30];
-    StaffRollVectorInit vec;
-    f32 position;
-    u8 pad40[12];
-    u32 state;
-    StaffRollProcessInit() { extern f32 lbl_8036BA00; position = lbl_8036BA00; state = 0; StaffRoll_VecReserve(&vec, 0x28); }
-};
-#pragma cplusplus off
+
 
 typedef struct {
     u8 pad[0xB0];
