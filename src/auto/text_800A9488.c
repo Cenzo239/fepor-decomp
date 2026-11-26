@@ -1,6 +1,6 @@
 /* Functions from 0x800A9488 to 0x800AD1F4, found by decomp-toolkit. */
 #include "common.h"
-static inline s32 Trade_FindPreviousItem(s32 side, s32 index) {
+static inline s32 Trade_FindPreviousItem(s32 index, s32 side) {
     extern u8 lbl_80312ACC[];
     u8 *entry = lbl_80312ACC + (side << 7) + index * 0x10;
     while (1) {
