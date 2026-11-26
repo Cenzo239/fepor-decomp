@@ -4364,8 +4364,11 @@ void fn_8016A0CC(void *arg0) {
 done: ;
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_8016A1BC(void *arg0) {
-    extern f32 lbl_8036A9C8;
+    extern const f32 lbl_8036A9C8;
     extern char lbl_80277BC0[];
     extern s32 gUiInputFlags;
     extern s32 lbl_80367AE0;
@@ -4374,32 +4377,31 @@ void fn_8016A1BC(void *arg0) {
     extern u16 lbl_80292230[];
     extern u16 lbl_80293C84[];
     extern u16 lbl_80293C58[];
-    extern f32 lbl_8036A9CC;
-    void *fn_8014D8FC(void *, void *);
+    extern const f32 lbl_8036A9CC;
+    void *fn_8014D8FC(void *);
     void fn_80109020(u32);
-    void Sound_Create(void *, void *);
-    void fn_80109A54(s32, f32);
+    void *Sound_Create(void *, void *);
+    void fn_80109A54(void *, s32, f32);
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, void *, s32);
-    void Ui_AddChild(void *, void *, s32);
+    void Ui_AddChild(void *, void *);
     u32 Ui_FindChild(void *, s32, s32);
-    void Ui_SetWidgetText(void *);
+    void Ui_SetWidgetText(u32, void *);
     void GfxEnt_UnlinkByName(void *);
     void BgmVol_FadeOut(s32);
     void Fx_StartSlot(s32, void *, s32, s32);
     s32 strlen(void *);
     void *p = arg0;
-    void *temp_r31 = (void *)M2C_FIELD(fn_8014D8FC(&gBattleState, &gBattleState), s32 *, 0x44);
-    void *temp_r3;
+    void *temp_r3 = (void *)M2C_FIELD(fn_8014D8FC(&gBattleState), s32 *, 0x44);
     s32 temp_r5;
+    u32 child;
 
-    if (M2C_FIELD(p, s32 *, 0x40) != 0) {
-        fn_80109020(M2C_FIELD(p, s32 *, 0x40));
+    if (M2C_FIELD(p, u32 *, 0x40) != 0) {
+        fn_80109020(M2C_FIELD(p, u32 *, 0x40));
     }
-    if (temp_r31 != 0) {
-        M2C_FIELD(p, s32 *, 0x40) = (s32)(u32)temp_r31;
-        Sound_Create(temp_r31, p);
-        fn_80109A54(2, lbl_8036A9C8);
+    if (temp_r3 != 0) {
+        M2C_FIELD(p, u32 *, 0x40) = (s32)(u32)temp_r3;
+        fn_80109A54(Sound_Create(temp_r3, p), 2, lbl_8036A9C8);
     }
     temp_r3 = Heap_Alloc(0x5C);
     if (temp_r3 != NULL) {
@@ -4431,8 +4433,8 @@ void fn_8016A1BC(void *arg0) {
         M2C_FIELD(temp_r3, u32 *, 0x00) = (u32)lbl_80293C84;
         M2C_FIELD(temp_r3, s32 *, 0x3C) = 0;
         M2C_FIELD(temp_r3, s32 *, 0x40) = 0;
-        M2C_FIELD(temp_r3, s32 *, 0x40) = 0;
         M2C_FIELD(temp_r3, s32 *, 0x44) = 0;
+        M2C_FIELD(temp_r3, s32 *, 0x40) = 0;
         M2C_FIELD(temp_r3, s32 *, 0x48) = 0;
         M2C_FIELD(temp_r3, u8 *, 0x4C) = 1;
         M2C_FIELD(temp_r3, s16 *, 0x4E) = 0;
@@ -4440,7 +4442,7 @@ void fn_8016A1BC(void *arg0) {
         M2C_FIELD(temp_r3, s16 *, 0x52) = 0;
         M2C_FIELD(temp_r3, s16 *, 0x54) = 0;
         M2C_FIELD(temp_r3, u32 *, 0x00) = (u32)lbl_80293C58;
-        M2C_FIELD(temp_r3, u8 *, 0x58) = 1;
+        M2C_FIELD(temp_r3, s32 *, 0x58) = 1;
         M2C_FIELD(temp_r3, s16 *, 0x4E) = 0x30;
         M2C_FIELD(temp_r3, s16 *, 0x52) = 0x30;
     }
@@ -4449,10 +4451,11 @@ void fn_8016A1BC(void *arg0) {
     String_AssignCStr((char *)temp_r3 + 0x3C, lbl_80277BC0 + 0x13F, strlen(lbl_80277BC0 + 0x13F));
     temp_r5 = M2C_FIELD(temp_r3, s32 *, 0x34) | 0x10;
     M2C_FIELD(temp_r3, s32 *, 0x34) = temp_r5;
-    M2C_FIELD(temp_r3, u8 *, 0x58) = 1;
-    Ui_AddChild(p, temp_r3, temp_r5);
-    if (Ui_FindChild(p, -0x1000, 0) != 0U) {
-        Ui_SetWidgetText(lbl_80277BC0 + 0xF0);
+    M2C_FIELD(temp_r3, s32 *, 0x58) = 1;
+    Ui_AddChild(p, temp_r3);
+    child = Ui_FindChild(p, -0x1000, 0);
+    if (child != 0U) {
+        Ui_SetWidgetText(child, lbl_80277BC0 + 0xF0);
     }
     gUiInputFlags &= 0xFFFFFFFE;
     GfxEnt_UnlinkByName(lbl_80277BC0 + 0x50);
@@ -4462,7 +4465,7 @@ void fn_8016A1BC(void *arg0) {
         Fx_StartSlot(0, lbl_80277BC0 + 0x140, 0x64, 1);
     }
 }
-
+#pragma pop
 void fn_8016A400(void *arg0) {
 void *fn_80169948();
 s32 Ui_CreateMenu(void *, void *, s32);
@@ -11271,11 +11274,8 @@ extern "C" void fn_801752EC(void *arg0) {
     };
 
     u32 count;
+    s32 i;
     void *slot;
-    void **entry;
-    void *dst1;
-    void *unit1;
-    long i;
     void *dst2;
     void *unit2;
     void *p;
@@ -11341,29 +11341,15 @@ extern "C" void fn_801752EC(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x8A) = 2;
 
     if (fn_801EAA88() == 0) {
-        dst1 = *(void **)((u8 *)self + 0x54);
-        unit1 = *(void **)lbl_802CA264;
-        goto loop1_cond;
-    loop1_body:
-        for (i = 0; i < 4; i++) {
-            entry = fn_80037BBC(unit1, i);
+        void *dst1 = *(void **)((u8 *)self + 0x54);
+        void *unit1 = *(void **)lbl_802CA264;
+        while (unit1 != NULL) {
+        for (s32 i = 0; i < 4; i++) {
+            void **entry = fn_80037BBC(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
-            player = lbl_802EF4C8[0];
-            if (unit1 == NULL) {
-                add = 1;
-            } else if (unit1 == (void *)player) {
-                add = 0;
-            } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
-                bits = fn_8001CB64((u32)entry);
-                add = 0;
-                if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    add = 1;
-                }
-            } else {
-                add = 1;
-            }
+            add = Ui_ItemCanTransfer_801752EC(unit1, entry, (void *)lbl_802EF4C8[0]);
             if ((u8)add != 0) {
                 fn_801439F0(dst1, entry, unit1);
             }
@@ -11372,23 +11358,10 @@ extern "C" void fn_801752EC(void *arg0) {
         walk = unit1;
         while (i < 4) {
             slot = (u8 *)walk + 0x1EC;
-            if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+            if (*(u32 *)slot == 0) {
                 break;
             }
-            player = lbl_802EF4C8[0];
-            if (unit1 == NULL) {
-                add = 1;
-            } else if (unit1 == (void *)player) {
-                add = 0;
-            } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
-                bits = fn_8001CB64((u32)slot);
-                add = 0;
-                if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    add = 1;
-                }
-            } else {
-                add = 1;
-            }
+            add = Ui_ItemCanTransfer_801752EC(unit1, slot, (void *)lbl_802EF4C8[0]);
             if ((u8)add != 0) {
                 fn_801439F0(dst1, slot, unit1);
             }
@@ -11396,36 +11369,19 @@ extern "C" void fn_801752EC(void *arg0) {
             walk = (u8 *)walk + 8;
         }
         unit1 = *(void **)((u8 *)unit1 + 0x184);
-    loop1_cond:
-        if (unit1 != NULL) {
-            goto loop1_body;
         }
     }
 
     dst2 = *(void **)((u8 *)self + 0x54);
     unit2 = *(void **)(lbl_802CA264 + 0x3C);
-    goto loop2_cond;
-loop2_body:
-    for (i = 0; i < 4; i++) {
-        entry = fn_80037BBC(unit2, i);
+    while (unit2 != NULL) {
+    for (s32 i = 0; i < 4; i++) {
+        void **entry = fn_80037BBC(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }
-        player = lbl_802EF4C8[0];
-        if (unit2 == NULL) {
-            add = 1;
-        } else if (unit2 == (void *)player) {
-            add = 0;
-        } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
-            bits = fn_8001CB64((u32)entry);
-            add = 0;
-            if ((*(u64 *)bits & 0x200ULL) == 0) {
-                add = 1;
-            }
-        } else {
-            add = 1;
-        }
-        if ((u8)add != 0) {
+        add = Ui_ItemCanTransfer_801752EC(unit2, entry, (void *)lbl_802EF4C8[0]);
+            if ((u8)add != 0) {
             fn_801439F0(dst2, entry, unit2);
         }
     }
@@ -11433,33 +11389,17 @@ loop2_body:
     walk = unit2;
     while (i < 4) {
         slot = (u8 *)walk + 0x1EC;
-        if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+        if (*(u32 *)slot == 0) {
             break;
         }
-        player = lbl_802EF4C8[0];
-        if (unit2 == NULL) {
-            add = 1;
-        } else if (unit2 == (void *)player) {
-            add = 0;
-        } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
-            bits = fn_8001CB64((u32)slot);
-            add = 0;
-            if ((*(u64 *)bits & 0x200ULL) == 0) {
-                add = 1;
-            }
-        } else {
-            add = 1;
-        }
-        if ((u8)add != 0) {
+        add = Ui_ItemCanTransfer_801752EC(unit2, slot, (void *)lbl_802EF4C8[0]);
+            if ((u8)add != 0) {
             fn_801439F0(dst2, slot, unit2);
         }
         i += 1;
         walk = (u8 *)walk + 8;
     }
     unit2 = *(void **)((u8 *)unit2 + 0x184);
-loop2_cond:
-    if (unit2 != NULL) {
-        goto loop2_body;
     }
 
     if (fn_8014D8DC(lbl_80330708) != 0) {
@@ -11481,8 +11421,9 @@ loop2_cond:
     {
         void *cb = (void *)fn_80175924;
         u32 ef0 = lbl_802EF4C8[0];
-        *(void **)((u8 *)*(void **)((u8 *)self + 0x54) + 0x120) = cb;
-        *(u32 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x124) = ef0;
+        q = *(void **)((u8 *)self + 0x54);
+        *(void **)((u8 *)q + 0x120) = cb;
+        *(u32 *)((u8 *)q + 0x124) = ef0;
     }
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
 
