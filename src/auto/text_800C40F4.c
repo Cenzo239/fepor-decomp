@@ -10585,8 +10585,8 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma optimization_level 3
-void fn_800DBAB8(f32 arg0[3], void *arg1) {
+#pragma optimization_level 2
+void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -10606,9 +10606,9 @@ void fn_800DBAB8(f32 arg0[3], void *arg1) {
     z = *(f32 *)((u8 *)arg1 + 0x68);
     y = *(f32 *)((u8 *)arg1 + 0x64);
     x = *(f32 *)((u8 *)arg1 + 0x60);
-    *arg0++ = x;
-    *arg0++ = y;
-    *arg0 = z;
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
 }
 #pragma optimization_level reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
@@ -14241,7 +14241,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         mid = begin + half_n;
         {
             SortIterator a(out);
-            SortIterator b(SortIterator(out + half_n));
+            SortIterator b_tmp(out + half_n);
+            SortIterator b(b_tmp);
             SortCompare c(comp);
             s32 left_n = ((s32)mid - (s32)begin) / 4;
             if (left_n > 1) {
@@ -14267,8 +14268,10 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         }
         {
-            SortIterator a(SortIterator(out + half_n));
-            SortIterator b(SortIterator(out + n));
+            SortIterator a_tmp(out + half_n);
+            SortIterator a(a_tmp);
+            SortIterator b_tmp(out + n);
+            SortIterator b(b_tmp);
             SortCompare c(comp);
             s32 right_n = ((s32)end - (s32)mid) / 4;
             if (right_n > 1) {
@@ -16996,8 +16999,7 @@ static inline int CheckPos_800E6554(u32 n, u32 pos) {
     return pos > n;
 }
 
-#pragma global_optimizer off
-void fn_800E6554(void *vec, void *pos, u32 count, void *src)
+static inline void InsertBody_800E6554(void *vec, void *pos, u32 count, void *src)
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
     void String_Resize(void *, u32, s32);
@@ -17021,7 +17023,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *pSrc;
     void *end;
     void *pVec;
-    s32 room;
+    u32 room;
     u32 cnt;
     void *dst;
     void *pPos;
@@ -17064,9 +17066,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         end = *(u8 **)((u8 *)pVec + 8) + size * 0x1C;
         room = (u32)(((s32)end - (s32)pPos) / 28);
 
-        if (cnt > (u32)room) {
+        if (cnt > room) {
             dst = end;
-            while (cnt > (u32)room) {
+            while (cnt > room) {
                 if (dst != 0) {
                     *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
                     begin = *(char **)((u8 *)pSrc + 8);
@@ -17177,6 +17179,346 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)shift + 0x14), len);
                 }
                 *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)shift + 0x18);
+            }
+        }
+
+        err = __files + 0xA0;
+        dst = pPos;
+        srcC = (u8 *)pSrc + 0xC;
+        remaining = cnt;
+        while (remaining != 0) {
+            *(u32 *)&st.pad[0xA8] = (u32)-1;
+            n = *(u32 *)pSrc;
+            if (CheckPos_800E6554(n, 0)) {
+                fprintf(err, lbl_802720E0 + 0x52);
+                abort();
+            }
+            *(u32 *)&st.pad[0xAC] = n;
+            plen = (u32 *)&st.pad[0xA8];
+            if (*(u32 *)&st.pad[0xAC] < *(u32 *)&st.pad[0xA8]) {
+                plen = (u32 *)&st.pad[0xAC];
+            }
+            len = *plen;
+            if (dst == pSrc) {
+                fn_800C94F8(dst, 0, 0, 0, 0);
+                String_Resize(dst, len, 1);
+            } else {
+                String_Resize(dst, len, 0);
+                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), len);
+            }
+            *(u32 *)&st.pad[0xA0] = (u32)-1;
+            n = *(u32 *)((u8 *)pSrc + 0xC);
+            if (CheckPos_800E6554(n, 0)) {
+                fprintf(err, lbl_802720E0 + 0x52);
+                abort();
+            }
+            *(u32 *)&st.pad[0xA4] = n;
+            plen = (u32 *)&st.pad[0xA0];
+            if (*(u32 *)&st.pad[0xA4] < *(u32 *)&st.pad[0xA0]) {
+                plen = (u32 *)&st.pad[0xA4];
+            }
+            len = *plen;
+            if ((u8 *)dst + 0xC == (u8 *)srcC) {
+                fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
+                String_Resize((u8 *)dst + 0xC, len, 1);
+            } else {
+                String_Resize((u8 *)dst + 0xC, len, 0);
+                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
+            }
+            remaining -= 1;
+            *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
+            dst = (u8 *)dst + 0x1C;
+        }
+    } else {
+        st.cap = 0;
+        st.size = 0;
+        st.data = 0;
+
+        one = 1;
+        cap = *(u32 *)pVec;
+        if (cap != 0) {
+            one = cap;
+        }
+        cap = one;
+
+        while (need > cap) {
+            if (cap < 0x04924924U) {
+                cap *= 2;
+            } else {
+                cap = 0x09249249U;
+            }
+        }
+
+        dst = Heap_Alloc((s32)(cap * 0x1C));
+        if (dst == 0) {
+            fprintf(__files + 0xA0, lbl_802720E0 + 0xB7);
+            abort();
+        }
+
+        st.data = dst;
+        st.cap = cap;
+
+        cur = *(void **)((u8 *)pVec + 8);
+        end = (u8 *)cur + *(u32 *)((u8 *)pVec + 4) * 0x1C;
+
+        while ((u8 *)cur < (u8 *)pPos) {
+            if (dst != 0) {
+                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                begin = *(char **)((u8 *)cur + 8);
+                endptr = begin + *(u32 *)cur;
+                st.pad[0x28] = st.pad[0x2C];
+                String_InitFromRange(dst, begin, endptr, &st.pad[0x74], &st.pad[0x28]);
+                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                begin = *(char **)((u8 *)cur + 0x14);
+                endptr = begin + *(u32 *)((u8 *)cur + 0xC);
+                st.pad[0x20] = st.pad[0x24];
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x70], &st.pad[0x20]);
+                *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
+            }
+            cur = (u8 *)cur + 0x1C;
+            dst = (u8 *)dst + 0x1C;
+            st.size += 1;
+        }
+
+        while (cnt != 0) {
+            if (dst != 0) {
+                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
+                begin = *(char **)((u8 *)pSrc + 8);
+                endptr = begin + *(u32 *)pSrc;
+                st.pad[0x18] = st.pad[0x1C];
+                String_InitFromRange(dst, begin, endptr, &st.pad[0x6C], &st.pad[0x18]);
+                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)pSrc + 0x10);
+                begin = *(char **)((u8 *)pSrc + 0x14);
+                endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
+                st.pad[0x10] = st.pad[0x14];
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x68], &st.pad[0x10]);
+                *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
+            }
+            dst = (u8 *)dst + 0x1C;
+            cnt -= 1;
+            st.size += 1;
+        }
+
+        while ((u8 *)cur < (u8 *)end) {
+            if (dst != 0) {
+                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                begin = *(char **)((u8 *)cur + 8);
+                endptr = begin + *(u32 *)cur;
+                st.pad[0x8] = st.pad[0xC];
+                String_InitFromRange(dst, begin, endptr, &st.pad[0x64], &st.pad[0x8]);
+                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                begin = *(char **)((u8 *)cur + 0x14);
+                endptr = begin + *(u32 *)((u8 *)cur + 0xC);
+                st.pad[0x0] = st.pad[0x4];
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x60], &st.pad[0x0]);
+                *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
+            }
+            cur = (u8 *)cur + 0x1C;
+            dst = (u8 *)dst + 0x1C;
+            st.size += 1;
+        }
+
+        if (&st.cap != (u32 *)pVec) {
+            u32 temp;
+            void *ptr;
+            temp = st.cap;
+            st.cap = *(u32 *)pVec;
+            *(u32 *)pVec = temp;
+            ptr = st.data;
+            st.data = *(void **)((u8 *)pVec + 8);
+            *(void **)((u8 *)pVec + 8) = ptr;
+            temp = st.size;
+            st.size = *(u32 *)((u8 *)pVec + 4);
+            *(u32 *)((u8 *)pVec + 4) = temp;
+        }
+
+        fn_800E6DC8(&st.cap);
+        if (st.data != 0) {
+            Heap_Free(st.data);
+        }
+    }
+}
+
+#pragma global_optimizer off
+void fn_800E6554(void *vec, void *pos, u32 count, void *src)
+{
+    void String_InitFromRange(void *, char *, char *, void *, void *);
+    void String_Resize(void *, u32, s32);
+    void *fn_800C94F8(void *, u32, u32, u32, u32);
+    void *Heap_Alloc(s32);
+    void fn_800E6DC8(void *);
+    void Heap_Free(void *);
+    void fprintf(void *, const char *, ...);
+    void abort(void);
+    void *memcpy(void *, void *, u32);
+    extern char __files[];
+    extern char lbl_802720E0[];
+
+    struct {
+        u8 pad[0xB0];
+        u32 cap;
+        u32 size;
+        void *data;
+    } st;
+
+    void *pSrc;
+    void *end;
+    void *pVec;
+    u32 room;
+    u32 cnt;
+    void *dst;
+    void *pPos;
+    void *cur;
+    u32 len;
+    u32 cap;
+    u32 need;
+    u32 size;
+    u32 bytes;
+    void *lim;
+    u32 *plen;
+    char *err;
+    char *begin;
+    char *endptr;
+    void *srcC;
+    u32 n;
+    u32 one;
+    u32 remaining;
+
+    pVec = vec;
+    pPos = pos;
+    cnt = count;
+    pSrc = src;
+
+    if (cnt == 0) {
+        return;
+    }
+
+    if (cnt > 0x09249249U ||
+        *(u32 *)((u8 *)pVec + 4) > 0x09249249U - cnt) {
+        fprintf(__files + 0xA0, lbl_802720E0 + 0x9A);
+        abort();
+    }
+
+    size = *(u32 *)((u8 *)pVec + 4);
+    need = size + cnt;
+
+    if (need <= *(u32 *)pVec) {
+        end = *(u8 **)((u8 *)pVec + 8) + size * 0x1C;
+        room = (u32)(((s32)end - (s32)pPos) / 28);
+
+        if (cnt > room) {
+            dst = end;
+            while (cnt > room) {
+                if (dst != 0) {
+                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
+                    begin = *(char **)((u8 *)pSrc + 8);
+                    endptr = begin + *(u32 *)pSrc;
+                    st.pad[0x58] = st.pad[0x5C];
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x8C], &st.pad[0x58]);
+                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)pSrc + 0x10);
+                    begin = *(char **)((u8 *)pSrc + 0x14);
+                    endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
+                    st.pad[0x50] = st.pad[0x54];
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x88], &st.pad[0x50]);
+                    *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
+                }
+                dst = (u8 *)dst + 0x1C;
+                cnt -= 1;
+                *(u32 *)((u8 *)pVec + 4) += 1;
+            }
+
+            cur = pPos;
+            while ((u8 *)cur < (u8 *)end) {
+                if (dst != 0) {
+                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                    begin = *(char **)((u8 *)cur + 8);
+                    endptr = begin + *(u32 *)cur;
+                    st.pad[0x48] = st.pad[0x4C];
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x84], &st.pad[0x48]);
+                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                    begin = *(char **)((u8 *)cur + 0x14);
+                    endptr = begin + *(u32 *)((u8 *)cur + 0xC);
+                    st.pad[0x40] = st.pad[0x44];
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x80], &st.pad[0x40]);
+                    *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
+                }
+                cur = (u8 *)cur + 0x1C;
+                dst = (u8 *)dst + 0x1C;
+                *(u32 *)((u8 *)pVec + 4) += 1;
+            }
+        } else {
+            bytes = cnt * 0x1C;
+            dst = end;
+            cur = (u8 *)end - bytes;
+
+            while ((u8 *)cur < (u8 *)end) {
+                if (dst != 0) {
+                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                    begin = *(char **)((u8 *)cur + 8);
+                    endptr = begin + *(u32 *)cur;
+                    st.pad[0x38] = st.pad[0x3C];
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x7C], &st.pad[0x38]);
+                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                    begin = *(char **)((u8 *)cur + 0x14);
+                    endptr = begin + *(u32 *)((u8 *)cur + 0xC);
+                    st.pad[0x30] = st.pad[0x34];
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x78], &st.pad[0x30]);
+                    *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
+                }
+                cur = (u8 *)cur + 0x1C;
+                dst = (u8 *)dst + 0x1C;
+                *(u32 *)((u8 *)pVec + 4) += 1;
+            }
+
+            n = (room - cnt) * 0x1C;
+            if ((u32)((u8 *)end - n) <= (u32)pSrc && (u8 *)pSrc < (u8 *)end) {
+                pSrc = (u8 *)pSrc + bytes;
+            }
+
+            err = __files + 0xA0;
+            cur = (u8 *)pPos + n;
+            while ((u8 *)cur > (u8 *)pPos) {
+                end = (u8 *)end - 0x1C;
+                *(u32 *)&st.pad[0x98] = (u32)-1;
+                cur = (u8 *)cur - 0x1C;
+                n = *(u32 *)cur;
+                if (CheckPos_800E6554(n, 0)) {
+                    fprintf(err, lbl_802720E0 + 0x52);
+                    abort();
+                }
+                *(u32 *)&st.pad[0x9C] = n;
+                plen = (u32 *)&st.pad[0x98];
+                if (*(u32 *)&st.pad[0x9C] < *(u32 *)&st.pad[0x98]) {
+                    plen = (u32 *)&st.pad[0x9C];
+                }
+                len = *plen;
+                if (end == cur) {
+                    fn_800C94F8(end, 0, 0, 0, 0);
+                    String_Resize(end, len, 1);
+                } else {
+                    String_Resize(end, len, 0);
+                    memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)cur + 8), len);
+                }
+                *(u32 *)&st.pad[0x90] = (u32)-1;
+                n = *(u32 *)((u8 *)cur + 0xC);
+                if (CheckPos_800E6554(n, 0)) {
+                    fprintf(err, lbl_802720E0 + 0x52);
+                    abort();
+                }
+                *(u32 *)&st.pad[0x94] = n;
+                plen = (u32 *)&st.pad[0x90];
+                if (*(u32 *)&st.pad[0x94] < *(u32 *)&st.pad[0x90]) {
+                    plen = (u32 *)&st.pad[0x94];
+                }
+                len = *plen;
+                if ((u8 *)end + 0xC == (u8 *)cur + 0xC) {
+                    fn_800C94F8((u8 *)end + 0xC, 0, 0, 0, 0);
+                    String_Resize((u8 *)end + 0xC, len, 1);
+                } else {
+                    String_Resize((u8 *)end + 0xC, len, 0);
+                    memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)cur + 0x14), len);
+                }
+                *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
         }
 
