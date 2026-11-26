@@ -697,27 +697,35 @@ s32 fn_80226A2C(s32 *arg0, void **arg1) {
     return result;
 }
 #pragma use_lmw_stmw reset
+static inline void InitMsgBuffers(void *arg, s32 zero) {
+    s32 i;
+    u8 *queue = (u8 *)arg;
+    for (i = 0; i < 3; i++) {
+        fn_802287B8(queue);
+        fn_802287B0(queue);
+        *(u32 *)(queue + 0x4) = zero;
+        fn_802287A8(queue);
+        queue += 0x890;
+    }
+}
 int TRKInitializeMessageBuffers(void) {
-    extern u8 lbl_8033B078[];
-    void fn_802287B8(void *);
-    void fn_802287B0(void *);
-    void fn_802287A8(void *);
-    s32 zero;
     u8 *queue;
     s32 i;
 
-    zero = 0;
-    queue = &lbl_8033B078[0];
-    i = 0;
-    while (i < 3) {
+    queue = (u8 *)&lbl_8033B078;
+
+    for (i = 0; i < 3; i++) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-        ((u32 *)queue)[1] = zero;
+
+        *(u32 *)(queue + 0x4) = 0;
+
         fn_802287A8(queue);
-        i++;
-        queue = queue + 0x890;
+
+        queue += 0x890;
     }
-    return zero;
+
+    return 0;
 }
 
 s32 fn_80226B68(void) {
