@@ -1789,7 +1789,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma opt_lifetimes off
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma optimization_level 3
 #pragma peephole off
 void fn_80134C24(s32 *arg0, void *arg1) {
@@ -1802,7 +1802,9 @@ s32 kind,colW;
 s32 quot;
 s32 rem,hdiv,t;
 s16 x,y,half,off48,off4a;
-fn_80134C24_Loads(arg1, &colW, &kind, &quot);
+colW=*(s16*)((u8*)arg1+0x44);
+kind=*(s16*)((u8*)arg1+0x3e);
+quot=kind/colW;
 t=*(s16*)((u8*)arg1+0x12);
 rem=*(s16*)((u8*)arg1+0x16);
 rem-=t;
