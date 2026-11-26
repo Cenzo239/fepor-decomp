@@ -29727,6 +29727,13 @@ void fn_800FEC0C(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_lifetimes off
+static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
+    extern s32 lbl_80367910;
+    s32 *pivot = begin + (offset + lbl_80367910++ % 5);
+    if (lbl_80367910 >= 5) lbl_80367910 = -4;
+    return pivot;
+}
+
 void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
     void Sort_Three(s32 *, s32 *, s32 *, u8 (*)(s32, s32));
