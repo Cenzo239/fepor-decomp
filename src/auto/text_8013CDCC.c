@@ -2641,7 +2641,7 @@ s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
 #pragma global_optimizer off
-Vec2s *fn_8013F748(const void *arg0, Vec2s *arg1, Vec2s *arg2) {
+Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
     Vec2s sp38;
     Vec2s sp34;
@@ -2660,8 +2660,8 @@ Vec2s *fn_8013F748(const void *arg0, Vec2s *arg1, Vec2s *arg2) {
     u32 parent;
     u32 gp;
 
-    parent = *(const u32 *)((const u8 *)arg0 + 0x38);
-    sp3C = *(const Vec2s *)((const u8 *)arg0 + 0xA);
+    parent = *(u32 *)((u8 *)arg0 + 0x38);
+    sp3C = *(Vec2s *)((u8 *)arg0 + 0xA);
     if (parent != 0) {
         sp24 = *fn_8013FC64((Vec2s *)((u8 *)parent + 0xA));
         gp = *(u32 *)((u8 *)parent + 0x38);
@@ -2691,8 +2691,8 @@ Vec2s *fn_8013F748(const void *arg0, Vec2s *arg1, Vec2s *arg2) {
         sp3C.y = sp28.y;
     }
     sp30 = sp3C;
-    sp30.x = (s16)(sp30.x + *(const s16 *)((const u8 *)arg0 + 0x12));
-    sp30.y = (s16)(sp30.y + *(const s16 *)((const u8 *)arg0 + 0x14));
+    sp30.x = (s16)(sp30.x + *(s16 *)((u8 *)arg0 + 0x12));
+    sp30.y = (s16)(sp30.y + *(s16 *)((u8 *)arg0 + 0x14));
     sp34 = sp30;
     sp34.x = (s16)(sp34.x + arg2->x);
     sp34.y = (s16)(sp34.y + arg2->y);
@@ -2701,7 +2701,7 @@ Vec2s *fn_8013F748(const void *arg0, Vec2s *arg1, Vec2s *arg2) {
     arg1->y = sp38.y;
     return arg1;
 }
-#pragma global_optimizer reset
+#pragma global_optimizer on
 void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
     struct {
@@ -5107,6 +5107,8 @@ s32 fn_8014351C(void *arg0, s32 arg1) {
     return 1;
 }
 
+struct MenuInitTag { u8 value; };
+static inline struct MenuInitTag MenuMakeInitTag(void) { struct MenuInitTag tag; return tag; }
 void fn_80143570(void *arg0) {
     void fn_80144B60(void *, u8);
     s32 off;
