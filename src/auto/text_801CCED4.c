@@ -1922,7 +1922,10 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 }
 }
 
-extern "C" void fn_801CF134(void *arg0, void *arg1)
+#pragma use_lmw_stmw on
+#pragma optimization_level 2
+#pragma global_optimizer off
+extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -1935,34 +1938,29 @@ extern "C" void fn_801CF134(void *arg0, void *arg1)
     s16 old;
     s16 target;
     void *selected;
-    s32 x2;
-    s32 y2;
-    s32 x;
-    s32 y;
-    u8 *self;
-    u8 *parent;
+    s16 x2;
+    s16 y2;
+    s16 x;
+    s16 y;
 
-    parent = (u8 *)arg1;
-    self = (u8 *)arg0;
+    ((Obj *)arg0)->v3();
 
-    ((Obj *)self)->v3();
+    old = *(s16 *)(arg0 + 0x3E);
+    target = (s16)(*(s16 *)(arg0 + 0x3C) * 0x22 + 0xD);
 
-    old = *(s16 *)(self + 0x3E);
-    target = (s16)(*(s16 *)(self + 0x3C) * 0x22 + 0xD);
-
-    if (old == -1 && *(s16 *)(self + 0x40) == -1) {
-        *(s16 *)(self + 0x3E) = 5;
-        *(s16 *)(self + 0x40) = target;
+    if (old == -1 && *(s16 *)(arg0 + 0x40) == -1) {
+        *(s16 *)(arg0 + 0x3E) = 5;
+        *(s16 *)(arg0 + 0x40) = target;
     } else {
-        *(s16 *)(self + 0x3E) = (old + 6) >> 1;
-        *(s16 *)(self + 0x40) = (*(s16 *)(self + 0x40) + target + 1) >> 1;
+        *(s16 *)(arg0 + 0x3E) = (old + 6) >> 1;
+        *(s16 *)(arg0 + 0x40) = (*(s16 *)(arg0 + 0x40) + target + 1) >> 1;
     }
 
-    x = *(s16 *)(self + 0x3E);
-    y = *(s16 *)(self + 0x40);
+    x = *(s16 *)(arg0 + 0x3E);
+    y = *(s16 *)(arg0 + 0x40);
 
-    selected = *(u32 *)(parent + 0x34) ? *(void **)(*(u8 **)(parent + 0x38) + 8) : NULL;
-    if (selected != self) return;
+    selected = *(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL;
+    if (selected != arg0) return;
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B510);
@@ -1975,15 +1973,18 @@ extern "C" void fn_801CF134(void *arg0, void *arg1)
     color[2] = 0x12;
     color[3] = 0xFF;
 
-    Ui_DrawLine((s16)x, (s16)(y - 1), x2, (s16)(y - 1), *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)x, (s16)y2, x2, (s16)y2, *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)(x - 1), (s16)y, (s16)(x - 1), (s16)y2, *(s32 *)(self + 0x34), color);
-    Ui_DrawLine(x2, (s16)y, x2, (s16)y2, *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)x, (s16)y, x2, (s16)y, *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)x, (s16)(y2 - 1), x2, (s16)(y2 - 1), *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)x, (s16)y, (s16)x, (s16)y2, *(s32 *)(self + 0x34), color);
-    Ui_DrawLine((s16)(x2 - 1), (s16)y, (s16)(x2 - 1), (s16)y2, *(s32 *)(self + 0x34), color);
+    Ui_DrawLine((s16)x, (s16)(y - 1), x2, (s16)(y - 1), *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)x, (s16)y2, x2, (s16)y2, *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)(x - 1), (s16)y, (s16)(x - 1), (s16)y2, *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine(x2, (s16)y, x2, (s16)y2, *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)x, (s16)y, x2, (s16)y, *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)x, (s16)(y2 - 1), x2, (s16)(y2 - 1), *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)x, (s16)y, (s16)x, (s16)y2, *(s32 *)(arg0 + 0x34), color);
+    Ui_DrawLine((s16)(x2 - 1), (s16)y, (s16)(x2 - 1), (s16)y2, *(s32 *)(arg0 + 0x34), color);
 }
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus on
 extern "C" void fn_801CF324(void *arg0, s32 arg1) {
