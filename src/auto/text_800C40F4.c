@@ -14235,62 +14235,68 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         }
         return;
     }
-    mid = begin + n / 2;
     {
-        SortIterator a(out);
-        SortIterator b(out + n / 2);
-        SortCompare c(comp);
-        s32 left_n = ((s32)mid - (s32)begin) / 4;
-        if (left_n > 1) {
-            if (left_n == 2) {
-                if ((u8)fn_800E0340(&c, (void *)mid[-1], (void *)*begin)) {
-                    fn_800E2180(begin, mid - 1);
-                }
-            } else if (left_n <= 20) {
-                fn_800E0F2C(begin, mid, c);
-            } else {
-                s32 half = left_n / 2;
-                s32 *mid2 = begin + half;
-                if (left_n <= fn_800E2168(&b, &a)) {
-                    fn_800E18B4(begin, mid2, a, c);
-                    fn_800E18B4(mid2, mid, SortIterator(fn_800E2138(&a, half)), c);
-                    fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, left_n)), begin, c);
+        s32 half_n = n / 2;
+        mid = begin + half_n;
+        {
+            SortIterator a(out);
+            SortIterator b_tmp(out + half_n);
+            SortIterator b(b_tmp);
+            SortCompare c(comp);
+            s32 left_n = ((s32)mid - (s32)begin) / 4;
+            if (left_n > 1) {
+                if (left_n == 2) {
+                    if ((u8)fn_800E0340(&c, (void *)mid[-1], (void *)*begin)) {
+                        fn_800E2180(begin, mid - 1);
+                    }
+                } else if (left_n <= 20) {
+                    fn_800E0F2C(begin, mid, c);
                 } else {
-                    StableSort(begin, mid2, a, b, c);
-                    StableSort(mid2, mid, a, b, c);
-                    fn_800E14E4(begin, mid2, mid, c, ((s32)mid2 - (s32)begin) / 4, ((s32)mid - (s32)mid2) / 4, a, b);
+                    s32 half = left_n / 2;
+                    s32 *mid2 = begin + half;
+                    if (left_n <= fn_800E2168(&b, &a)) {
+                        fn_800E18B4(begin, mid2, a, c);
+                        fn_800E18B4(mid2, mid, SortIterator(fn_800E2138(&a, half)), c);
+                        fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, left_n)), begin, c);
+                    } else {
+                        StableSort(begin, mid2, a, b, c);
+                        StableSort(mid2, mid, a, b, c);
+                        fn_800E14E4(begin, mid2, mid, c, ((s32)mid2 - (s32)begin) / 4, ((s32)mid - (s32)mid2) / 4, a, b);
+                    }
                 }
             }
         }
-    }
-    {
-        SortIterator a(out + n / 2);
-        SortIterator b(out + n);
-        SortCompare c(comp);
-        s32 right_n = ((s32)end - (s32)mid) / 4;
-        if (right_n > 1) {
-            if (right_n == 2) {
-                if ((u8)fn_800E0340(&c, (void *)end[-1], (void *)*mid)) {
-                    fn_800E2180(mid, end - 1);
-                }
-            } else if (right_n <= 20) {
-                fn_800E0F2C(mid, end, c);
-            } else {
-                s32 half = right_n / 2;
-                s32 *mid2 = mid + half;
-                if (right_n <= fn_800E2168(&b, &a)) {
-                    fn_800E18B4(mid, mid2, a, c);
-                    fn_800E18B4(mid2, end, SortIterator(fn_800E2138(&a, half)), c);
-                    fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, right_n)), mid, c);
+        {
+            SortIterator a_tmp(out + half_n);
+            SortIterator a(a_tmp);
+            SortIterator b_tmp(out + n);
+            SortIterator b(b_tmp);
+            SortCompare c(comp);
+            s32 right_n = ((s32)end - (s32)mid) / 4;
+            if (right_n > 1) {
+                if (right_n == 2) {
+                    if ((u8)fn_800E0340(&c, (void *)end[-1], (void *)*mid)) {
+                        fn_800E2180(mid, end - 1);
+                    }
+                } else if (right_n <= 20) {
+                    fn_800E0F2C(mid, end, c);
                 } else {
-                    StableSort(mid, mid2, a, b, c);
-                    StableSort(mid2, end, a, b, c);
-                    fn_800E14E4(mid, mid2, end, c, ((s32)mid2 - (s32)mid) / 4, ((s32)end - (s32)mid2) / 4, a, b);
+                    s32 half = right_n / 2;
+                    s32 *mid2 = mid + half;
+                    if (right_n <= fn_800E2168(&b, &a)) {
+                        fn_800E18B4(mid, mid2, a, c);
+                        fn_800E18B4(mid2, end, SortIterator(fn_800E2138(&a, half)), c);
+                        fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, right_n)), mid, c);
+                    } else {
+                        StableSort(mid, mid2, a, b, c);
+                        StableSort(mid2, end, a, b, c);
+                        fn_800E14E4(mid, mid2, end, c, ((s32)mid2 - (s32)mid) / 4, ((s32)end - (s32)mid2) / 4, a, b);
+                    }
                 }
             }
         }
+        fn_800E0398(begin, mid, mid, end, out, comp);
     }
-    fn_800E0398(begin, mid, mid, end, out, comp);
 }
 #pragma cplusplus off
 
@@ -16983,8 +16989,8 @@ static inline void CopyString_800E6554(void *dst, u32 capacity, void *src, void 
     void String_InitFromRange(void *, char *, char *, void *, void *);
     char *begin;
     *(u32 *)((u8 *)dst + 4) = capacity;
-    *tag = value;
     begin = *(char **)((u8 *)src + 8);
+    *tag = value;
     String_InitFromRange(dst, begin, begin + *(u32 *)src, alloc, tag);
 }
 
