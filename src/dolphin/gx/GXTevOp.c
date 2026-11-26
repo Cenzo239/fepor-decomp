@@ -18,6 +18,12 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
+static inline void TevStoreColor(u32 *ptr, s32 stage, u32 value, u16 *gx) {
+    GXWGFifo.u32 = value;
+    ptr[0x130 / 4 + stage] = value;
+    gx[1] = 0;
+}
+
 
 
 // GXTexObj structure (from headers or similar functions)
@@ -392,11 +398,12 @@ typedef struct __GXData_struct {
 
 #pragma opt_propagation on
 
+#pragma opt_strength_reduction off
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
-  u32 *ptr;
   u16 *gx;
+  u32 *ptr;
   u32 value;
   ptr = (u32 *) __GXData;
   value = ptr[(0x130 / 4) + arg0];
@@ -412,14 +419,14 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
   cmd = 0x61;
   gx = __GXData;
   GXWGFifo.u8 = cmd;
-  ptr = (u32 *) __GXData;
+  ptr = (u32 *) __GXData + arg0;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;
-  ptr[(0x130 / 4) + arg0] = value;
+  ptr[0x130 / 4] = value;
   gx[1] = 0;
 }
-#pragma opt_propagation off
+#pragma opt_strength_reduction reset
 void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
