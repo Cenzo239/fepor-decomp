@@ -1882,15 +1882,6 @@ void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
 extern f32 lbl_8036B510;
 static inline void DrawHLine(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
 static inline void DrawVLine(s16 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
-static inline void UpdateCursorPos(u8 *obj, s16 old, s16 target) {
-    if (old == -1 && *(s16 *)(obj + 0x40) == -1) {
-        *(s16 *)(obj + 0x3E) = 5;
-        *(s16 *)(obj + 0x40) = target;
-    } else {
-        *(s16 *)(obj + 0x3E) = (old + 6) >> 1;
-        *(s16 *)(obj + 0x40) = (*(s16 *)(obj + 0x40) + target + 1) >> 1;
-    }
-}
 #pragma cplusplus on
 extern "C" void fn_801CF018(void *arg0) {
     struct Obj {
