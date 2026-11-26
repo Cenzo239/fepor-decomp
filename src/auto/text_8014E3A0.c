@@ -7228,8 +7228,7 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     w = (s16)arg2;
     h = (s16)arg3;
     flags = arg4;
-    bottom2 = y + h;
-    bottom2 = (s16)bottom2;
+    bottom2 = (s16)(y + h);
     h3 = h / 3;
     bottom = (s16)(y + h3);
     right = (s16)(x + w);
@@ -7480,6 +7479,17 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
+typedef struct { s32 a, b, c, d; } Quad80161B98;
+
+static inline Quad80161B98 LoadQuad80161B98(s32 *p) {
+    Quad80161B98 q;
+    q.a = p[0];
+    q.b = p[1];
+    q.c = p[2];
+    q.d = p[3];
+    return q;
+}
+
 void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s32 *arg6, s32 arg7) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(void *, u16);
@@ -7506,7 +7516,10 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     Color sp10;
     Color tmp;
     Color tmp2;
-    s32 c0, c1, c2, c3;
+    s32 c3;
+    unsigned c2;
+    int c1;
+    unsigned long c0;
     s16 t1;
     register s16 t0;
     s16 w;
@@ -7525,9 +7538,9 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     c2 = arg6[2];
     c3 = arg6[3];
     *(s32 *)&sp2C = c0;
-    *(s32 *)&sp28 = c1;
     *(s32 *)&sp24 = c2;
     *(s32 *)&sp20 = c3;
+    *(s32 *)&sp28 = c1;
     Prim2D_AddPrim(3);
     Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)w, (f32)h);
     t1 = arg5[1];
