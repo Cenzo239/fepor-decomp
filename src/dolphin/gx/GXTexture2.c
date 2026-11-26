@@ -1034,27 +1034,35 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
+static inline u32 __GxFifoTevOp(u32 value, u8 cmd, u32 fifo, s32 t4, s32 t5) {
+    *(volatile u8 *)fifo = cmd;
+    value = __rlwimi(value, t4, 19, 12, 12);
+    value = __rlwimi(value, t5, 22, 8, 9);
+    *(volatile u32 *)fifo = value;
+    return value;
+}
+
 #pragma opt_propagation off
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
-  u8 cmd;
-  u16 *gx;
-  u32 *ptr;
   u32 value;
+  u32 *ptr;
+  u16 *gx;
   ptr = (u32 *) __GXData;
   value = ptr[(0x130 / 4) + arg0];
   value = __rlwimi(value, arg1 & 0xFF, 18, 13, 13);
   if (arg1 <= 1)
   {
-    value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
+    value = __rlwimi(value, arg3, 20, 10, 11);
+    value = __rlwimi(value, arg2, 16, 14, 15);
   }
   else
   {
-    value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
+    value = __rlwimi(value, arg1, 19, 10, 11);
+    value = __rlwimi(value, 3, 16, 14, 15);
   }
-  cmd = 0x61;
   gx = __GXData;
-  GXWGFifo.u8 = cmd;
+  GXWGFifo.u8 = 0x61;
   ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
