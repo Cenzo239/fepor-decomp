@@ -1959,8 +1959,8 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
     struct Line {
-        static inline void hline(s16 x1, s16 y, s16 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
-        static inline void vline(s16 x, s16 y1, s16 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
+        static inline void hline(s32 x1, s32 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
+        static inline void vline(s32 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
     };
     u8 color[4];
     s32 old;
@@ -4272,7 +4272,12 @@ s32 fn_801D2B04(void *arg0) {
     return Msg_Expand();
 }
 
-#pragma global_optimizer reset
+#pragma global_optimizer off
+static inline void MenuSetPoint(s16 *point, s16 x, s16 y) {
+    point[0] = x;
+    point[1] = y;
+}
+
 void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
@@ -4304,6 +4309,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     pt[1] = (s16)(temp_r7 + temp_r6_2);
     *arg0 = *fn_8013F748(arg1, &spC, pt, temp_r6_2, temp_r7, temp_r6);
 }
+#pragma global_optimizer on
 void *fn_801D2C20(void) {
     extern u16 lbl_8027E0F8[];
     return &lbl_8027E0F8[0x12];
