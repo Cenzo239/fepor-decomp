@@ -1,6 +1,72 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+
+#pragma push
+#pragma optimization_level 4
+static inline void Ui_DrawTiledBattleRow(u32 texture, s32 count, s32 alpha, f32 x, f32 y) {
+
+void Prim2D_EmitQuad(void);
+void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
+void Prim2D_EndPrim(void);
+void Prim2D_AddPrim(s32);
+void Prim2D_ResetState(void);
+void Prim2D_SetColorByte(u8);
+void Prim2D_SetTransform(f32,f32,f32,f32);
+void Prim2D_BindTexture(u32,s32,s32);
+void Prim2D_PrepareTex(void);
+void Prim2D_Begin(void);
+s32 fn_8009ADC0(u32,s32,f32,f32);
+void fn_8009B028(void *,u32,s32,f32,f32);
+extern f32 lbl_803697E4;
+extern f32 lbl_803697F8;
+extern f32 lbl_803697FC;
+extern f32 lbl_80369800;
+extern f32 lbl_80369804;
+extern f32 lbl_80369808;
+extern f32 lbl_8036980C;
+extern f32 lbl_80369810;
+extern f32 lbl_80369814;
+extern f32 lbl_80369818;
+extern f32 lbl_8036981C;
+extern f32 lbl_80369820;
+extern f32 lbl_80369824;
+extern f32 lbl_80369828;
+extern f32 lbl_8036982C;
+extern f32 lbl_80369830;
+extern f32 lbl_80369834;
+extern f32 lbl_80369838;
+extern f32 lbl_8036983C;
+extern f32 lbl_80369840;
+extern f32 lbl_80369844;
+
+
+
+ s32 i, offset;
+        Prim2D_Begin();
+        Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
+        Prim2D_BindTexture(texture, 2, 0x11);
+        Prim2D_SetColorByte((u8) alpha);
+        Prim2D_PrepareTex();
+        for (i = 0, offset = i; i < count - 1; offset += 8, ++i) {
+            Prim2D_AddPrim(1);
+            Prim2D_SetRectUv((f32) offset, lbl_803697E4, lbl_803697E4, lbl_803697E4, lbl_80369810, lbl_80369810);
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
+        }
+        Prim2D_Begin();
+        Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
+        Prim2D_BindTexture(texture, 1, 0x11);
+        Prim2D_SetColorByte((u8) alpha);
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRectUv((f32) ((count - 1) * 8), lbl_80369814, lbl_803697E4, lbl_803697E4, lbl_80369818, lbl_8036981C);
+        Prim2D_EmitQuad();
+        Prim2D_EndPrim();
+        Prim2D_ResetState();
+}
+#pragma pop
+
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -126,7 +192,11 @@ void fn_8009A934(void *arg0) {
     *(s32 *)((char *)arg0 + 0x38) = fn_8006D948(lbl_8026D404 + 0xD8);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_8009A970(void *arg0) {
 void Prim2D_EmitQuad(void);
 void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
@@ -165,26 +235,26 @@ extern f32 lbl_80369844;
 
     f32 temp_f29;
     f32 temp_f2;
-    f32 temp_f31;
     f32 temp_f30;
-    s32 var_r26;
-    s32 temp_r0;
+    f32 temp_f31;
     s32 temp_r25;
-    u32 temp_r25_2;
     u32 temp_r26;
-    s32 var_r24;
-    s32 var_r27;
-    s32 var_r31;
+    s32 var_r27,var_r24;
+    u32 temp_r25_2;
+    s32 var_r26;
     u8 temp_r5;
-
+    u32 texture;
+    int var_r31;
+    s32 temp_r0;
+    u8 *battle;
     temp_r5 = *(u8 *)((u8 *)arg0 + 0x3D);
-    if ((temp_r5 != 0) && ((u32) *(u32 *)((u8 *)arg0 + 0x38) != 0U) && ((u32) (((u8) gBattleState[0x9C] >> 2U) & 1) != 1)) {
+    if ((temp_r5 != 0) && ((texture = *(u32 *)((u8 *)arg0 + 0x38)) != 0U) && ((u32) (((u8) gBattleState[0x9C] >> 2U) & 1) != 1)) {
         temp_r0 = (temp_r5 * 2) & 0x1FE;
         var_r31 = temp_r0;
         if (temp_r0 > 0xFF) {
             var_r31 = 0xFF;
         }
-        fn_8009B028(arg0, *(u32 *)((u8 *)arg0 + 0x38), var_r31, lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x30), lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x34));
+        fn_8009B028(arg0, texture, var_r31, lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x30), lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x34));
         temp_r25 = (s32) (fn_8009ADC0(*(u32 *)((u8 *)arg0 + 0x38), var_r31, lbl_803697FC + *(f32 *)((u8 *)arg0 + 0x30), lbl_80369800 + *(f32 *)((u8 *)arg0 + 0x34)) + 7) / 8;
         temp_f31 = *(f32 *)((u8 *)arg0 + 0x30);
         temp_f29 = lbl_80369804 + *(f32 *)((u8 *)arg0 + 0x34);
@@ -194,7 +264,7 @@ extern f32 lbl_80369844;
         Prim2D_BindTexture(temp_r26, 2, 0x11);
         Prim2D_SetColorByte((u8) var_r31);
         Prim2D_PrepareTex();
-        for (var_r27 = 0, var_r24 = 0; var_r27 < temp_r25 - 1; ++var_r27, var_r24 += 8) {
+        for (var_r27 = 0, var_r24 = var_r27; var_r27 < temp_r25 - 1; var_r24 += 8, ++var_r27) {
             Prim2D_AddPrim(1);
             Prim2D_SetRectUv((f32) var_r24, lbl_803697E4, lbl_803697E4, lbl_803697E4, lbl_80369810, lbl_80369810);
             Prim2D_EmitQuad();
@@ -210,7 +280,8 @@ extern f32 lbl_80369844;
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_ResetState();
-        if (*(s16 *)(gBattleState + 0x12) != 0) {
+        battle = gBattleState;
+        if (*(s16 *)(battle + 0x12) != 0) {
             temp_f29 = *(f32 *)((u8 *)arg0 + 0x30);
             temp_f31 = lbl_80369820 + *(f32 *)((u8 *)arg0 + 0x34);
             temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
@@ -220,7 +291,7 @@ extern f32 lbl_80369844;
             Prim2D_SetColorByte((u8) var_r31);
             Prim2D_PrepareTex();
             temp_r25 = 0;
-            var_r24 = 0;
+            var_r24 = temp_r25;
             do {
                 Prim2D_AddPrim(1);
                 Prim2D_SetRectUv((f32) var_r24, lbl_803697E4, lbl_803697E4, lbl_803697E4, lbl_80369810, lbl_80369810);
@@ -241,7 +312,7 @@ extern f32 lbl_80369844;
             Prim2D_ResetState();
             temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
             temp_f30 = lbl_80369828 + temp_f2;
-            var_r26 = *(s16 *)(gBattleState + 0x12);
+            var_r26 = *(s16 *)(battle + 0x12);
             temp_f29 = lbl_803697FC + *(f32 *)((u8 *)arg0 + 0x30);
             temp_r25_2 = *(u32 *)((u8 *)arg0 + 0x38);
             Prim2D_Begin();
@@ -268,6 +339,7 @@ extern f32 lbl_80369844;
         Prim2D_ResetState();
     }
 }
+#pragma pop
 s32 fn_8009ADC0(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
