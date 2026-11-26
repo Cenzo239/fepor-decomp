@@ -4936,6 +4936,9 @@ extern "C" void fn_801BBDA0(void *arg0) {
     }
 }
 
+static inline s32 CostLe(s32 cost, s32 limit) {
+    return (cost <= limit) ? 1 : 0;
+}
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
     s16 Unit_GetGoldCost(u32, s32, u8 *);
