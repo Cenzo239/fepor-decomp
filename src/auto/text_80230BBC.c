@@ -5,7 +5,7 @@ const char stringBase0_80282C60[] =
 
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-typedef struct FileWriteState { u8 pad[8]; u8 state : 3; u8 reserved : 5; } FileWriteState;
+typedef struct FileWriteState { u8 pad[4]; u8 reservedMode : 2; u8 mode : 3; u8 buffering : 2; u8 reservedFlag : 1; u8 pad5[3]; u8 state : 3; u8 reserved : 5; } FileWriteState;
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
 extern f32 lbl_80367068;
@@ -294,7 +294,7 @@ s32 fn_80230CE0(s32 arg0) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma inline_depth(0)
 u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
     s32 __flush_buffer(void *, u32 *);
@@ -316,7 +316,7 @@ u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
     u32 temp_r3_2;
     u32 temp_r4;
     u32 var_r27;
-    u8 temp_r3;
+    u32 temp_r3;
 
     if (fwide(arg3, 0) == 0) {
         fwide(arg3, -1);
@@ -342,7 +342,7 @@ u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
             if ((temp_r3 & 4) && (fseek(arg3, 0, 2) != 0)) {
                 return 0U;
             }
-            M2C_FIELD(arg3, u8 *, 8) = (u8) ((M2C_FIELD(arg3, u8 *, 8) & ~0xE0) | 0x20);
+            ((FileWriteState *)arg3)->state = 1;
             __prep_buffer(arg3);
             goto block_20;
         }
@@ -396,8 +396,8 @@ loop_26:
             M2C_FIELD(arg3, u8 *, 0xA) = 1U;
             M2C_FIELD(arg3, u32 *, 0x28) = 0U;
         }
-        M2C_FIELD(arg3, u32 *, 0x1C) = temp_r27;
         var_r28 += sp8;
+        M2C_FIELD(arg3, u32 *, 0x1C) = temp_r27;
         M2C_FIELD(arg3, u32 *, 0x20) = temp_r31;
         __prep_buffer(arg3);
         M2C_FIELD(arg3, u32 *, 0x28) = 0U;
@@ -405,7 +405,8 @@ loop_26:
     if ((u32) (((u8) M2C_FIELD(arg3, u8 *, 4) >> 1U) & 3) != 2) {
         M2C_FIELD(arg3, u32 *, 0x28) = 0U;
     }
-    return (u32) (var_r28 + (arg1 - 1)) / arg1;
+    temp_r0 = arg1 - 1;
+    return (var_r28 + temp_r0) / arg1;
 }
 #pragma pop
 u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
