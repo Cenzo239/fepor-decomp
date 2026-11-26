@@ -1,14 +1,7 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b) {
-    entries[0] = table;
-    table = entries[0];
-    table[1] = a;
-    entries[1] = table + 2;
-    entries[1][1] = b;
-    entries[2] = 0;
-}
+
 
 #pragma cplusplus on
 struct UiSelectionHandler {
