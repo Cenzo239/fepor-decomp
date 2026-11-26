@@ -1,21 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
 extern u8 gBattleMap[];
-static inline void Map_LoadTileValues(s16 count, u8 *p) {
-    s32 i;
-    for (i = 0; i < count; i++, p += 3) {
-        s32 x = (s8)p[0], y = (s8)p[1];
-        *(u16 *)(gBattleMap + 0x408E + (x + (y << 6)) * 2) = p[2];
-    }
-}
-static inline void Map_LoadTileMasks(s16 count, u8 *p) {
-    s32 i;
-    for (i = 0; i < count; i++, p += 3) {
-        s32 x = (s8)p[0], y = (s8)p[1];
-        u8 v = p[2];
-        *(u16 *)(gBattleMap + 0x408E + (x + (y << 6)) * 2) = v + (((~v) << 4) & 0xF0);
-    }
-}
 
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
@@ -1911,6 +1896,7 @@ void fn_80044BE4(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_80045604(s32 unused) {
     void *fn_8000D2BC(void *);
     u32 fn_8000D354(void *);
@@ -1921,8 +1907,8 @@ void fn_80045604(s32 unused) {
 
     s16 *data;
     s16 count;
-    s32 n;
-    u8 *p;
+    register s32 n;
+    register u8 *p;
     s32 i;
     s32 x;
     s32 y;
@@ -1937,7 +1923,7 @@ void fn_80045604(s32 unused) {
         p = (u8 *)data + 2;
         i = 0;
         n = count;
-        if (n > 0) {
+        {
             for (i = 0; i < n; i++) {
                 x = (s8)p[0];
                 y = (s8)p[1];
@@ -1954,36 +1940,10 @@ void fn_80045604(s32 unused) {
         p = (u8 *)data + 2;
         base = lbl_802CA518;
         n = count;
-        if (n > 0) {
-            pairs = (u32)n >> 1;
-            if (pairs != 0) {
-                do {
-                    x = (s8)p[0];
-                    y = (s8)p[1];
-                    v = p[2];
-                    fp = (FlagTile *)(base + ((x + (y << 6)) * 2));
-                    fp->flags = (fp->flags & ~0x0F00) | (v << 8);
-                    x = (s8)p[3];
-                    y = (s8)p[4];
-                    v = p[5];
-                    p += 6;
-                    fp = (FlagTile *)(base + ((x + (y << 6)) * 2));
-                    fp->flags = (fp->flags & ~0x0F00) | (v << 8);
-                    pairs -= 1;
-                } while (pairs != 0);
-                n &= 1;
-            }
-            if (n != 0) {
-                do {
-                    x = (s8)p[0];
-                    y = (s8)p[1];
-                    v = p[2];
-                    p += 3;
-                    fp = (FlagTile *)(base + ((x + (y << 6)) * 2));
-                    fp->flags = (fp->flags & ~0x0F00) | (v << 8);
-                    n -= 1;
-                } while (n != 0);
-            }
+        for (i = 0; i < n; i++, p += 3) {
+            x = (s8)p[0]; y = (s8)p[1]; v = p[2];
+            fp = (FlagTile *)(base + ((x + (y << 6)) * 2));
+            fp->flags = (fp->flags & ~0x0F00) | (v << 8);
         }
     }
 
@@ -1993,7 +1953,7 @@ void fn_80045604(s32 unused) {
         p = (u8 *)data + 2;
         i = 0;
         n = count;
-        if (n > 0) {
+        {
             for (i = 0; i < n; i++) {
                 x = (s8)p[0];
                 y = (s8)p[1];
