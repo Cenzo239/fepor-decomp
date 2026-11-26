@@ -70,6 +70,27 @@ checked:
     return gAiState[0x21c];
 }
 
+static inline void Ai_TryFallbackMove(void *arg0) {
+    u8 fn_801001B8(void *, s32, s16 *, s16 *);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
+    void *TargetList_GetAt(void *, s32);
+    void fn_800FB96C(s32, u8, u8, void *, s32, s32, s32, s32, s32);
+    extern u8 gAiState[], gUiContext[], gTargetList[];
+    s16 x2, y2;
+    if (!(*(u32 *)((u8 *)arg0 + 0x254) & 0x10000000)) return;
+    if (fn_801001B8(arg0, 0, &x2, &y2)) {
+        Ai_SetUnitMoveTo(arg0, x2, y2, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
+        if (gAiState[0x21C]) {
+            if (x2 == (s8)gUiContext[13] && y2 == (s8)gUiContext[14]) {
+                fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4),
+                    ((s8 *)TargetList_GetAt(gTargetList, 0))[0],
+                    ((s8 *)TargetList_GetAt(gTargetList, 0))[1],
+                    -1, 0, 0);
+            }
+        }
+    }
+}
+
 extern u8 lbl_80290AA0[0x40];
 extern u8 gMapObjEventList[0x200];
 extern u8 gBattleState[0x578];
@@ -468,8 +489,8 @@ u8 fn_801287C0(void *arg0)
     extern u8 gUiContext[];
     extern u8 gTargetList[];
 
-    u32 oldFlags;
     u8 *self;
+    u32 oldFlags;
 
     self = (u8 *)arg0;
 
