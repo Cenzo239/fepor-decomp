@@ -1,5 +1,6 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 Ui_AddTextOffset(s32 position, s32 offset) { return position + offset; }
 #include <dolphin/os.h>
 extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
