@@ -32,11 +32,6 @@ typedef struct PADStatus {
     s8 err;
 } PADStatus;
 
-typedef struct PADResetState {
-    u32 type[4];
-    PADStatus origin[4];
-    u32 command[4];
-} PADResetState;
 
 static inline void PAD_EnableResetChannel(s32 chan, u32 bit) {
     extern u32 EnabledBits;
@@ -386,15 +381,13 @@ void fn_802121E0(s32 chan, u32 type) {
     extern u16 lbl_80366FBC;
     extern u16 cmdGetOrigin;
     extern u32 lbl_80368680;
-    u32 sr[2];
+    u32 mask;
     u32 bitConst;
     u8 *padType;
     u8 *origin;
     u8 *command;
     s32 chanIdx;
-    u32 savedType;
     u32 chanBit;
-    u32 mask;
     s32 result;
 
     bitConst = 0x80000000U;
@@ -413,10 +406,7 @@ void fn_802121E0(s32 chan, u32 type) {
         if (((type & 0x18000000) != 0x08000000) || !(type & 0x01000000)) {
             PAD_ResetNext(padType);
         } else if (lbl_80366FB0 < 2) {
-            EnabledBits |= chanBit;
-            fn_8023BA70(chanIdx, sr);
-            fn_8023B804(chanIdx, PADSpec | 0x400000);
-            fn_8023B894(EnabledBits);
+            PAD_EnableResetChannel(chanIdx, chanBit);
             PAD_ResetNext(padType);
         } else {
             if (!(type & 0x80000000) || (type & 0x04000000)) {
