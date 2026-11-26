@@ -4937,20 +4937,17 @@ extern "C" void fn_801BBDA0(void *arg0) {
 }
 
 #pragma global_optimizer off
-static inline s32 UUGoldCmp(s32 arg0, s32 one) {
+extern "C" s32 fn_801BC71C(s32 arg0) {
+    u8 fn_8003D13C(void);
     s16 fn_8017D604(s32, s32, u8 *);
     extern u8 lbl_80330708[];
     s32 t;
-    t = *(s32 *)(lbl_80330708 + 0x1C);
-    return (fn_8017D604(arg0, one, lbl_80330708) <= t) ? 1 : 0;
-}
-extern "C" s32 fn_801BC71C(s32 arg0) {
-    u8 fn_8003D13C(void);
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    return UUGoldCmp(arg0, 1);
+    t = *(s32 *)(lbl_80330708 + 0x1C);
+    return (fn_8017D604(arg0, 1, lbl_80330708) <= t) ? 1 : 0;
 }
 #pragma global_optimizer reset
 
