@@ -22,6 +22,21 @@ static inline s32 TRKReportChar_80226E24(s32 ch) {
  return 0;
 }
 
+static inline s32 TRKReportCharTerminated_80226E24(s32 ch, s32 zero) {
+ void fn_80227FD0(s32);
+ s32 fn_80227FDC(void);
+ void OSReport(char *);
+ char buffer[2];
+ s32 saved;
+ saved=fn_80227FDC();
+ buffer[0]=ch;
+ buffer[1]=zero;
+ fn_80227FD0(0);
+ OSReport(buffer);
+ fn_80227FD0(saved);
+ return 0;
+}
+
 typedef struct TRKEventQueue {
     u8 unk0[4];
     s32 unk4; /* count */
@@ -821,15 +836,12 @@ void usr_put_initialize(void) {
 
 #pragma global_optimizer off
 s32 fn_80226E24(u8 *arg0) {
- void fn_80227FD0(s32);
- s32 fn_80227FDC(void);
- void OSReport(char *);
- char buffer[2]; s32 result=0; s32 saved; s32 ch;
- while (result==0 && (ch=(s8)*arg0++)!=0) {
- saved=fn_80227FDC(); buffer[0]=ch; buffer[1]=0;
- fn_80227FD0(0); OSReport(buffer); fn_80227FD0(saved); result=0;
- }
- return result;
+s32 result=0;
+s32 ch;
+while(result==0 && (ch=(s8)*arg0++)!=0) {
+result=TRKReportChar_80226E24(ch);
+}
+return result;
 }
 
 s32 TRKDispatchMessage(void *arg0) {
