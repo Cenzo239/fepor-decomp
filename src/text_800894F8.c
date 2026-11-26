@@ -26,10 +26,7 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-u8 lbl_80289950[0x18] = { 1 };
-static u8 sProcDef_80289968[0x18] = { 1 };
-static u8 sProcDef_80289980[0x28] = { 1 };
-static u8 sProcDef_802899A8[0x18] = { 1 };
+extern u8 lbl_80289950[];
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
