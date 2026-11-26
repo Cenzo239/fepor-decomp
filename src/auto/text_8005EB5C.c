@@ -293,7 +293,7 @@ void fn_8005EBCC(s32 arg0, s32 arg1) {
 
 #pragma global_optimizer off
 #pragma push
-#pragma optimization_level 0
+#pragma optimization_level 4
 #pragma global_optimizer off
 #pragma opt_propagation off
 void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
