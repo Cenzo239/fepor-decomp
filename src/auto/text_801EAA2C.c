@@ -157,6 +157,15 @@ static inline void AramCache_ClearUnusedSlots(void *pool) {
         else { scan->size = empty; scan->flags = empty; }
     }
 }
+static inline void AramCache_ClearAllSlots(void *pool) {
+    AramSlot *scan;
+    s32 j;
+    scan = (AramSlot *)pool;
+    for (j = 0; j < 256; scan++, j++) {
+        scan->size = 0;
+        scan->flags = 0;
+    }
+}
 static inline void *AramFindFreeSlot(void) {
     extern u8 gAramSlotPool[];
     u8 *slot = gAramSlotPool;
@@ -3945,35 +3954,40 @@ extern "C" void fn_801F0A74(void *arg0) {
     s16 fn_801CAF50(s32);
     u32 strlen(const char *);
     extern char gGActorPathExt[];
-    String name;
+
+    struct Obj { u8 pad[0x10]; virtual void v0() = 0; virtual void v1() = 0; virtual s32 v2(void *, void *) = 0; };
+    struct Str {
+        String s;
+        Str(void *p) {
+            u32 alloc;
+            String_Init(&s, p, &alloc);
+        }
+        ~Str() {
+            String_Destroy(&s, -1);
+        }
+    };
+    struct Actor {
+        u8 pad[0x48];
+        void *operator new(u32 sz) { return Heap_Alloc(sz); }
+        Actor(s32 a, const Str &s) {
+            fn_800E8504(this, a, (void *)&s.s);
+        }
+    };
+
+    *(Actor **)((u8 *)arg0 + 0x30) = new Actor(0, Str(gGActorPathExt + 0x221));
     String path;
-    u32 allocator1, allocator0;
-    struct Obj { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual s32 v2(void *, void *)=0; };
-    void *actor;
-    s8 constructed;
-    void *object;
-    u8 *self;
-    constructed = 0;
-    actor = Heap_Alloc(0x48);
-    self = (u8*)arg0;
-    if (actor) {
-        String_Init(&name, gGActorPathExt+0x221, &allocator0);
-        constructed=1;
-        actor=fn_800E8504(actor,0,&name);
-    }
-    *(void **)(self+0x30)=actor;
-    if (constructed) String_Destroy(&name,-1);
-    String_Init(&path,gGActorPathExt+0x273,&allocator1);
-    fn_800C992C(&path,gGActorPathExt+0x279,strlen(gGActorPathExt+0x279));
-    fn_800E8154(*(void **)(self+0x30),&path);
-    object=*(void **)(self+0x30);
-    *(s32*)(self+0x34)=((Obj*)object)->v2(gGActorPathExt+0x287,gGActorPathExt+0x293);
-    *(s16*)(self+0x4A)=fn_801CAF50(*(s32*)(self+0x34));
-    *(void **)(self+0x38)=Heap_Alloc(0x1C);
-    *(void **)(self+0x3C)=Heap_Alloc(0x1C);
-    *(void **)(self+0x40)=Heap_Alloc(0x1C);
-    *(void **)(self+0x44)=Heap_Alloc(0x1C);
-    String_Destroy(&path,-1);
+    u32 allocator1;
+    String_Init(&path, gGActorPathExt + 0x273, &allocator1);
+    fn_800C992C(&path, gGActorPathExt + 0x279, strlen(gGActorPathExt + 0x279));
+    fn_800E8154(*(void **)((u8 *)arg0 + 0x30), &path);
+    void *object = *(void **)((u8 *)arg0 + 0x30);
+    *(s32 *)((u8 *)arg0 + 0x34) = ((Obj *)object)->v2(gGActorPathExt + 0x287, gGActorPathExt + 0x293);
+    *(s16 *)((u8 *)arg0 + 0x4A) = fn_801CAF50(*(s32 *)((u8 *)arg0 + 0x34));
+    *(void **)((u8 *)arg0 + 0x38) = Heap_Alloc(0x1C);
+    *(void **)((u8 *)arg0 + 0x3C) = Heap_Alloc(0x1C);
+    *(void **)((u8 *)arg0 + 0x40) = Heap_Alloc(0x1C);
+    *(void **)((u8 *)arg0 + 0x44) = Heap_Alloc(0x1C);
+    String_Destroy(&path, -1);
 }
 
 extern "C" void fn_801F0BC4(CameraAnimProc *p) {
