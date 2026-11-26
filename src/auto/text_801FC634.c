@@ -304,7 +304,9 @@ static inline void *Particle_FindFree(void **base) {
 }
 #pragma pop
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_801FCCA0(void *self) {
     typedef struct { f32 x, y; u8 ang, spd, pad, rnd; s16 life, age; } Part;
     void *Heap_AllocRaw(s32);
@@ -320,74 +322,37 @@ void fn_801FCCA0(void *self) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
-    extern f32 gFloatZero;
-    extern f32 gFloatOne;
-    extern f32 lbl_8036BAE4;
-    extern f32 lbl_8036BAE8;
-    extern f32 lbl_8036BAEC;
+    extern const f32 gFloatZero;
+    extern const f32 gFloatOne;
+    extern const f32 lbl_8036BAE4;
+    extern const f32 lbl_8036BAE8;
+    extern const f32 lbl_8036BAEC;
     extern f64 lbl_8036BAF8;
-    extern f32 lbl_8036BB04;
-    extern f32 lbl_8036BB0C;
-    extern f32 lbl_8036BB10;
-    extern f32 lbl_8036BB14;
-    extern f32 lbl_8036BB18;
-    extern f32 lbl_8036BB1C;
-    extern f32 lbl_8036BB20;
-    extern f32 lbl_8036BB24;
-    extern f32 lbl_8036BB28;
-    extern f32 lbl_8036BB2C;
-    extern f32 lbl_8036BB30;
-    extern f32 lbl_8036BB34;
-    extern f32 lbl_8036BB38;
+    extern const f32 lbl_8036BB04;
+    extern const f32 lbl_8036BB0C;
+    extern const f32 lbl_8036BB10;
+    extern const f32 lbl_8036BB14;
+    extern const f32 lbl_8036BB18;
+    extern const f32 lbl_8036BB1C;
+    extern const f32 lbl_8036BB20;
+    extern const f32 lbl_8036BB24;
+    extern const f32 lbl_8036BB28;
+    extern const f32 lbl_8036BB2C;
+    extern const f32 lbl_8036BB30;
+    extern const f32 lbl_8036BB34;
+    extern const f32 lbl_8036BB38;
     Part *parts;
     Part *p;
     s32 i, j, off;
-    u32 k;
-    f32 f24, f26, f27, f28, f29, f30, f31;
-    f32 dx, dy, f22, f23, t;
+    u32 k, r;
+    f32 f23, dx, dy, f22, t;
     s16 life;
     u8 *b;
     u16 zero;
 
     parts = (Part *)Heap_AllocRaw(0x4000);
     *(void **)((u8 *)self + 0x30) = parts;
-    zero = 0;
-    off = 0;
-    for (i = 0; i < 0x40; i++) {
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x1C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x2C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x3C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x4C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x5C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x6C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x7C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x8C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0x9C) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xAC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xBC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xCC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xDC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xEC) = zero;
-        parts = *(Part **)((u8 *)self + 0x30);
-        *(u16 *)((u8 *)parts + off + 0xFC) = zero;
-        off += 0x100;
-    }
+    for (k = 0; k < 1024; k++) (*(Part **)((u8 *)self + 0x30))[k].life = 0;
     b = (u8 *)self;
     b[0x48] = 0x35;
     b[0x49] = 0x40;
@@ -397,20 +362,13 @@ void fn_801FCCA0(void *self) {
     b[0x4B] = 1;
     b[0x4C] = 0xA;
     b[0x4D] = 0x35;
-    b[0x4E] = (u8)-4;
+    *(s8 *)(b + 0x4E) = -4;
     b[0x4F] = 9;
-    f24 = lbl_8036BB0C;
-    f26 = lbl_8036BAE8;
-    f27 = lbl_8036BAEC;
-    f28 = lbl_8036BB14;
-    f29 = lbl_8036BB10;
-    f30 = lbl_8036BB18;
-    f31 = gFloatZero;
     for (i = 0; i < 0x1F4; i++) {
         *(f32 *)(b + 0x3C) = *(f32 *)(b + 0x34);
         *(f32 *)(b + 0x40) = *(f32 *)(b + 0x38);
-        *(f32 *)(b + 0x34) = f26 * (f32)fn_802380D0(f24 * (f32)*(s16 *)(b + 0x44)) + f27;
-        *(f32 *)(b + 0x38) = f28 * (f32)sin(f24 * (f32)*(s16 *)(b + 0x46)) + f29;
+        *(f32 *)(b + 0x34) = lbl_8036BAE8 * (f32)fn_802380D0(lbl_8036BB0C * (f32)*(s16 *)(b + 0x44)) + lbl_8036BAEC;
+        *(f32 *)(b + 0x38) = lbl_8036BB14 * (f32)sin(lbl_8036BB0C * (f32)*(s16 *)(b + 0x46)) + lbl_8036BB10;
         *(s16 *)(b + 0x44) = *(s16 *)(b + 0x44) + (s8)b[0x48];
         *(s16 *)(b + 0x46) = *(s16 *)(b + 0x46) + (s8)b[0x49];
         if (*(s16 *)(b + 0x44) >= 0x4000) {
@@ -421,26 +379,20 @@ void fn_801FCCA0(void *self) {
         }
         dx = *(f32 *)(b + 0x34) - *(f32 *)(b + 0x3C);
         dy = *(f32 *)(b + 0x38) - *(f32 *)(b + 0x40);
-        f22 = (f32)fn_80237E90(dy / dx) * f30;
-        if (dx < f31) {
+        f22 = (f32)fn_80237E90(dy / dx) * lbl_8036BB18;
+        if (dx < gFloatZero) {
             f22 += lbl_8036BB1C;
         }
-        f23 = (f32)(s32)f22;
+        f23 = f22;
         for (j = 0; j < b[0x4B]; j++) {
-            p = NULL;
-            parts = *(Part **)(b + 0x30);
-            for (k = 0; k < 0x400; k++) {
-                if (parts[k].life == 0) {
-                    p = &parts[k];
-                    break;
-                }
-            }
+            p = Particle_FindFree((void **)(b + 0x30));
             if (p == NULL) break;
             life = (s16)((Rand_Next() % 0xC8) + 0x190);
+            r = Rand_Next();
             p->x = *(f32 *)(b + 0x34);
             p->y = *(f32 *)(b + 0x38);
             p->ang = (u8)(s32)f23;
-            p->spd = (u8)(b[0x4C] + (Rand_Next() % b[0x4D]));
+            p->spd = (u8)((s8)b[0x4C] + (r % (s8)b[0x4D]));
             p->rnd = (u8)Rand_Next();
             p->life = life;
             p->age = 0;
@@ -462,9 +414,8 @@ void fn_801FCCA0(void *self) {
             Prim2D_SetColor(0xFF, 0xFF, 0, 0xFF);
             Prim2D_EndPrim();
         }
-        parts = *(Part **)(b + 0x30);
         for (j = 0; j < 0x400; j++) {
-            p = &parts[j];
+            p = &(*(Part **)(b + 0x30))[j];
             if (p->life != 0) {
                 p->age++;
                 p->life--;
@@ -481,7 +432,7 @@ void fn_801FCCA0(void *self) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma push
 #pragma optimization_level 4
@@ -1549,6 +1500,10 @@ extern "C" void fn_801FF480(void *arg0) {
     fn_801FE84C(0, 0, self->v18(), self->v19(), &sp8);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma cplusplus on
 extern "C" void fn_801FF50C(void *arg0) {
 #pragma cplusplus reset
     void *fn_8013CD90(void *);
@@ -1628,7 +1583,7 @@ extern "C" void fn_801FF50C(void *arg0) {
         height = self->v38();
         offset = (height - Text_MeasureHeight(-1, lbl_8036BB58)) >> 1;
         top = self->v36();
-        y = (f32)(offset + (top - self->v38()));
+        y = (f32)((top - self->v38()) + offset);
         Prim2D_AddPrim(6);
         Prim2D_SetPos(x, y);
         Prim2D_SetTextScale(1, lbl_8036BB8C);
@@ -1641,9 +1596,7 @@ extern "C" void fn_801FF50C(void *arg0) {
     Prim2D_PrepareTex();
 #pragma cplusplus reset
 }
-
-#pragma use_lmw_stmw on
-#pragma cplusplus on
+#pragma pop
     struct CursorTextObject {
         virtual void v0() = 0;
         virtual void *v1() = 0;
@@ -3275,3 +3228,4 @@ extern f32 gFloatOne;
 #include "global.h"
 
 extern u16 gGameFlags;
+static inline s32 Ui_AddTextOffset(s32 position, s32 offset) { return position + offset; }
