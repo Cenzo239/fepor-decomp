@@ -1,4 +1,5 @@
 #include "common.h"
+static inline s16 Ui_CursorRowY(s32 row, s32 height, s32 top) { return row * height + top; }
 static inline s16 Ui_AverageCursorCoord(s16 target, s16 current) { return (current + (target + 1)) >> 1; }
 
 static inline s16 Ui_GetCursorSlot_80163C98(void *self) { return *(s16 *)((u8 *)self + 0x4C); }
@@ -871,12 +872,12 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
     s32 height;
     u8 active;
     s16 savedHeight;
-    s16 savedX;
+    s32 savedX;
     s32 y;
     s32 x;
     s32 slot;
-    s32 row;
     s32 rowY;
+    s32 row;
     s32 rowHeight;
     s32 offset;
     u8 enabled;
@@ -894,8 +895,11 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
             M2C_FIELD(arg0,s16 *,0x50)=x;
             M2C_FIELD(arg0,s16 *,0x52)=y;
         } else {
-            M2C_FIELD(arg0,s16 *,0x50)=(M2C_FIELD(arg0,s16 *,0x50)+((s16)x+1))>>1;
-            M2C_FIELD(arg0,s16 *,0x52)=(M2C_FIELD(arg0,s16 *,0x52)+((s16)y+1))>>1;
+            s32 nextX=(s16)x+1;
+            s32 nextY;
+            M2C_FIELD(arg0,s16 *,0x50)=(M2C_FIELD(arg0,s16 *,0x50)+nextX)>>1;
+            nextY=(s16)y+1;
+            M2C_FIELD(arg0,s16 *,0x52)=(M2C_FIELD(arg0,s16 *,0x52)+nextY)>>1;
         }
         if(M2C_FIELD(arg0,u8 *,0x48)) {
             active=0;
@@ -1468,6 +1472,8 @@ extern "C" void fn_80165300(void *arg0) {
     fn_80154138(0, 0, 0x10);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma cplusplus on
 extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     void Prim2D_SetText(void *);
@@ -1494,8 +1500,8 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     s32 strlen(char *);
     extern u8 lbl_80277720[];
     extern u8 gUnitInfoPopup[];
-    extern f32 lbl_8036A8B4;
-    extern f32 lbl_8036A8B8;
+    extern const f32 lbl_8036A8B4;
+    extern const f32 lbl_8036A8B8;
 
     struct Obj {
         virtual void v0() = 0;
@@ -1532,9 +1538,9 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     s32 a1;
     s16 avail;
     Obj *self;
-    s16 t;
+    s32 t;
     s16 y;
-    s16 r;
+    s32 r;
     void *str;
     void *p;
     char *s;
@@ -1573,18 +1579,18 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
         case 1:
             str = String_CStr(&self->str_obj);
             t = self->unk4E;
-            x = (s16)(t + ((avail - Text_MeasureWidth(str, -1, lbl_8036A8B8)) >> 1));
+            x = (s16)((s16)t + ((avail - Text_MeasureWidth(str, -1, lbl_8036A8B8)) >> 1));
             break;
         case 2:
             str = String_CStr(&self->str_obj);
-            x = (s16)(self->unkE - self->unkA);
+            avail = (s16)(self->unkE - self->unkA);
             r = self->unk52;
-            x = (s16)(x - (r + Text_MeasureWidth(str, -1, lbl_8036A8B8)));
+            x = (s16)(avail - ((s16)r + Text_MeasureWidth(str, -1, lbl_8036A8B8)));
             break;
         }
-        y = (s16)(self->unk10 - self->unkC);
+        avail = (s16)(self->unk10 - self->unkC);
         t = self->unk50;
-        y = (s16)((t + (y - Text_MeasureHeight(-1, lbl_8036A8B8))) >> 1);
+        y = (s16)(((s16)t + (avail - Text_MeasureHeight(-1, lbl_8036A8B8))) >> 1);
         Prim2D_AddPrim(6);
         Prim2D_SetPos((f32)x, (f32)y);
         spC = *Ui_GetColor(self->unk4C);
@@ -1596,7 +1602,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     String_AssignCStr(&self->str_obj, s, strlen(s));
     String_Destroy(sp10, -1);
 }
-
+#pragma pop
 #pragma cplusplus on
 extern "C" void fn_8016562C(void *arg0) {
     void fn_80161364(s32, s32, s16, s16, s32);
@@ -9344,6 +9350,8 @@ u8 fn_801723A0(u32 *arg0, s32 arg1) {
     return fn_800939FC(arg1, temp_r0);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma cplusplus on
 extern "C" void fn_801723E8(void *arg0) {
     void *Heap_Alloc(s32);
@@ -9355,8 +9363,8 @@ extern "C" void fn_801723E8(void *arg0) {
     extern u16 lbl_802919DC[];
     extern u16 lbl_80293C84[];
     extern u16 lbl_80293C2C[];
-    extern f32 gF32_1;
-    extern f32 lbl_8036AB70;
+    extern const f32 gF32_1;
+    extern const f32 lbl_8036AB70;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -9476,7 +9484,8 @@ extern "C" void fn_801723E8(void *arg0) {
     *(f32 *)((u8 *)temp_r4 + 0x2C) = f0;
     Ui_AddChild(self, temp_r4);
 }
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 void Ui_RestoreUnitListPanel(void *panel) {
     /* Refresh the sub-menu, reset the inventory panel, bring the unit list to front, and refresh unit/portrait/caption. */
@@ -15084,8 +15093,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     if ((s16)temp_r25 >= 0) {
         var_r26 = 0;
         temp_r27 = *(void **)((u8 *)self + 0x4C);
-        var_r31 = var_r26;
-        do {
+        for (var_r31 = var_r26; var_r31 < 0x62; var_r31++) {
             temp_r28 = fn_80105C5C((u8 *)temp_r27 + 0x1BC, (u8)var_r31);
             if (temp_r28 != NULL) {
                 if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
@@ -15110,8 +15118,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                     }
                 }
             }
-            var_r31++;
-        } while(var_r31 < 0x62);
+        }
         temp_r4 = *(s16 *)((u8 *)self + 0x40);
         var_r31 = (s16)(((temp_r25 + var_r26) << 5) + 0x46);
         if (temp_r4 < 0 || *(s16 *)((u8 *)self + 0x42) < 0) {
@@ -15126,8 +15133,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
         if (*(u8 *)((u8 *)self + 0x3C) != 0) {
             temp_r25 = 0;
             temp_r27 = *(void **)((u8 *)self + 0x4C);
-            var_r26 = temp_r25;
-            do {
+            for (var_r26 = temp_r25; var_r26 < 0x62; var_r26++) {
                 temp_r28 = fn_80105C5C((u8 *)temp_r27 + 0x1BC, (u8)var_r26);
                 if (temp_r28 != NULL) {
                     if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
@@ -15152,8 +15158,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                         }
                     }
                 }
-                var_r26++;
-            } while(var_r26 < 0x62);
+            }
             if ((u32)temp_r25 != 0) {
                 flag = 0;
                 check = flag;
