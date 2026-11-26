@@ -3,15 +3,6 @@
 #include "structs.h"
 typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
-static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
-extern u8 gBattleMap[];
-s32 c=a,b=a;
-u8 t=(gBattleMap+x+(y<<6))[0x100D];
-if (!((u8)(t-0x26)<=1)) c=0;
-if ((u8)c==0 && t!=0x28) b=0;
-if ((u8)b==0 && t!=0x2A) a=0;
-return a;
-}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -29534,7 +29525,39 @@ Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
 Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
-s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(1,arg0,arg1); }
+static inline u8 Map_AiTerrainIs26Or27(s32 blocked, u8 terrain) {
+    u8 result = blocked;
+    if (!((u8)(terrain - 0x26) <= 1)) {
+        result = 0;
+    }
+    return result;
+}
+
+static inline u8 Map_AiTerrainIs26To28(s32 blocked, u8 terrain) {
+    u8 result = blocked;
+    if ((u8)Map_AiTerrainIs26Or27(blocked, terrain) == 0 && terrain != 0x28) {
+        result = 0;
+    }
+    return result;
+}
+
+static inline s32 Map_AiTerrainTest(s32 blocked, s8 x, s8 y) {
+    extern u8 gBattleMap[];
+    s32 result = blocked;
+    u8 terrain = (gBattleMap + x + (y << 6))[0x100D];
+    if ((u8)Map_AiTerrainIs26To28(blocked, terrain) == 0 && terrain != 0x2A) {
+        result = 0;
+    }
+    return result;
+}
+
+s32 Map_IsAiTerrainBlocked(s8 x, s8 y) {
+    extern u8 gBattleState[];
+    if (gBattleState[0x11] != 2) {
+        return 0;
+    }
+    return Map_AiTerrainTest(1, x, y);
+}
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
     return (u32) M2C_FIELD(arg0, u32 *, 0x24C) < (u32) M2C_FIELD(arg1, u32 *, 0x24C);
