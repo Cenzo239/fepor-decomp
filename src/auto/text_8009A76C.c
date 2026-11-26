@@ -42,7 +42,7 @@ extern f32 lbl_80369844;
 
 
 
- s32 i, offset;
+ s32 offset, i;
         Prim2D_Begin();
         Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
         Prim2D_BindTexture(texture, 2, 0x11);
@@ -196,7 +196,6 @@ void fn_8009A934(void *arg0) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-#pragma opt_loop_invariants off
 void fn_8009A970(void *arg0) {
 void Prim2D_EmitQuad(void);
 void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
@@ -259,57 +258,13 @@ extern f32 lbl_80369844;
         temp_f31 = *(f32 *)((u8 *)arg0 + 0x30);
         temp_f29 = lbl_80369804 + *(f32 *)((u8 *)arg0 + 0x34);
         temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
-        Prim2D_Begin();
-        Prim2D_SetTransform(temp_f31, temp_f29, lbl_80369808, lbl_8036980C);
-        Prim2D_BindTexture(temp_r26, 2, 0x11);
-        Prim2D_SetColorByte((u8) var_r31);
-        Prim2D_PrepareTex();
-        for (var_r27 = 0, var_r24 = var_r27; var_r27 < temp_r25 - 1; var_r24 += 8, ++var_r27) {
-            Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32) var_r24, lbl_803697E4, lbl_803697E4, lbl_803697E4, lbl_80369810, lbl_80369810);
-            Prim2D_EmitQuad();
-            Prim2D_EndPrim();
-        }
-        Prim2D_Begin();
-        Prim2D_SetTransform(temp_f31, temp_f29, lbl_80369808, lbl_8036980C);
-        Prim2D_BindTexture(temp_r26, 1, 0x11);
-        Prim2D_SetColorByte((u8) var_r31);
-        Prim2D_PrepareTex();
-        Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32) ((temp_r25 - 1) * 8), lbl_80369814, lbl_803697E4, lbl_803697E4, lbl_80369818, lbl_8036981C);
-        Prim2D_EmitQuad();
-        Prim2D_EndPrim();
-        Prim2D_ResetState();
+        Ui_DrawTiledBattleRow(temp_r26,temp_r25,var_r31,temp_f31,temp_f29);
         battle = gBattleState;
         if (*(s16 *)(battle + 0x12) != 0) {
             temp_f29 = *(f32 *)((u8 *)arg0 + 0x30);
             temp_f31 = lbl_80369820 + *(f32 *)((u8 *)arg0 + 0x34);
             temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
-            Prim2D_Begin();
-            Prim2D_SetTransform(temp_f29, temp_f31, lbl_80369808, lbl_8036980C);
-            Prim2D_BindTexture(temp_r26, 2, 0x11);
-            Prim2D_SetColorByte((u8) var_r31);
-            Prim2D_PrepareTex();
-            temp_r25 = 0;
-            var_r24 = temp_r25;
-            do {
-                Prim2D_AddPrim(1);
-                Prim2D_SetRectUv((f32) var_r24, lbl_803697E4, lbl_803697E4, lbl_803697E4, lbl_80369810, lbl_80369810);
-                Prim2D_EmitQuad();
-                Prim2D_EndPrim();
-                temp_r25 += 1;
-                var_r24 += 8;
-            } while (temp_r25 < 0xD);
-            Prim2D_Begin();
-            Prim2D_SetTransform(temp_f29, temp_f31, lbl_80369808, lbl_8036980C);
-            Prim2D_BindTexture(temp_r26, 1, 0x11);
-            Prim2D_SetColorByte((u8) var_r31);
-            Prim2D_PrepareTex();
-            Prim2D_AddPrim(1);
-            Prim2D_SetRectUv(lbl_80369824, lbl_80369814, lbl_803697E4, lbl_803697E4, lbl_80369818, lbl_8036981C);
-            Prim2D_EmitQuad();
-            Prim2D_EndPrim();
-            Prim2D_ResetState();
+            Ui_DrawTiledBattleRow(temp_r26,14,var_r31,temp_f29,temp_f31);
             temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
             temp_f30 = lbl_80369828 + temp_f2;
             var_r26 = *(s16 *)(battle + 0x12);
