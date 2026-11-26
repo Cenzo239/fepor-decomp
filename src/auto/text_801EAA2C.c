@@ -154,8 +154,9 @@ static inline void AramCache_ClearUnusedSlots(void *pool) {
     AramSlot *scan;
     s32 j;
     scan = (AramSlot *)pool;
+    j = 0;
     empty = 0;
-    for (j = 0; j < 256; scan++, j++) {
+    for (; j < 256; scan++, j++) {
         flags = scan->flags;
         if (flags & 1) scan->flags = flags & ~1;
         else { scan->size = empty; scan->flags = empty; }
@@ -1631,18 +1632,7 @@ void fn_801EC7B8(void) {
         }
         }
         gAramUsedList = lbl_80338E70[0];
-        {
-            s32 empty;
-            u32 flags;
-            AramSlot *scan;
-            s32 j;
-            empty=0;
-            for(j=0,scan=(AramSlot *)gAramSlotPool;j<256;scan++,j++) {
-                flags=scan->flags;
-                if(flags&1) scan->flags = flags & ~1;
-                else { scan->size=empty; scan->flags=empty; }
-            }
-        }
+        AramCache_ClearUnusedSlots((AramSlot *)gAramSlotPool);
         gAramFreeList = AramFindFreeSlot();
     *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
         *(s32 *)((u8 *)gAramFreeList + 0x60) = 0;
