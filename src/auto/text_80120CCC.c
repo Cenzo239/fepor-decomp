@@ -639,6 +639,8 @@ void fn_80121D30(void) {
     GXSetScissor(0, 0x33, 0x260, 0x177);
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_80121D60(void *arg0, u8 *arg1) {
     u8 *fn_8007C378(u8 *);
     extern u8 lbl_80274D20[];
@@ -661,7 +663,7 @@ void fn_80121D60(void *arg0, u8 *arg1) {
         bit = gUiInputFlags & 0x800;
         switch (bit) {
         case 0:
-            do {
+            while ((s8)*s != 0) {
                 c = *s;
                 s += 1;
                 if (!(gUiInputFlags & 0x800)) {
@@ -678,7 +680,7 @@ void fn_80121D60(void *arg0, u8 *arg1) {
                         M2C_FIELD(arg0, u8 *, off) = 0;
                     }
                 }
-            } while ((s8)*s != 0);
+            }
             break;
         }
         if (*(u8 *)((u8 *)arg0 + 0x400C) == 0) {
@@ -697,7 +699,7 @@ void fn_80121D60(void *arg0, u8 *arg1) {
         bit = gUiInputFlags & 0x800;
         switch (bit) {
         case 0:
-            do {
+            while ((s8)*s != 0) {
                 c = *s;
                 s += 1;
                 if (!(gUiInputFlags & 0x800)) {
@@ -714,14 +716,14 @@ void fn_80121D60(void *arg0, u8 *arg1) {
                         M2C_FIELD(arg0, u8 *, off) = 0;
                     }
                 }
-            } while ((s8)*s != 0);
+            }
             break;
         }
         s = fn_8007C378(arg1);
         bit = gUiInputFlags & 0x800;
         switch (bit) {
         case 0:
-            do {
+            while ((s8)*s != 0) {
                 c = *s;
                 s += 1;
                 if (!(gUiInputFlags & 0x800)) {
@@ -738,7 +740,7 @@ void fn_80121D60(void *arg0, u8 *arg1) {
                         M2C_FIELD(arg0, u8 *, off) = 0;
                     }
                 }
-            } while ((s8)*s != 0);
+            }
             break;
         }
         if (*(u8 *)((u8 *)arg0 + 0x400C) == 0) {
@@ -754,7 +756,7 @@ void fn_80121D60(void *arg0, u8 *arg1) {
         }
     }
 }
-
+#pragma pop
 void fn_80122000(void *arg0)
 {
     u8 *base;
