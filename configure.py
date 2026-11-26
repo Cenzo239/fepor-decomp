@@ -351,6 +351,7 @@ config.libs = [
             Object(Matching, "auto/text_8005F7F0.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_8005F84C.c"),
             Object(NonMatching, "auto/Ui_MenuWork.c"),
+            Object(NonMatching, "auto/MsgWin_Open.c"),
             Object(Matching, "auto/text_800725C8.c"),
             Object(NonMatching, "auto/text_80073394.c"),
             Object(NonMatching, "auto/text_80074370.c"),
