@@ -2024,7 +2024,9 @@ static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
     return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
-s32 AchieveList_GetTotalGold(void *arg0) { return AchieveList_SumGoldFrom(arg0, 0); }
+s32 AchieveList_GetTotalGold(void *arg0) {
+    return AchieveList_SumGoldFrom(arg0, 0);
+}
 
 s32 AchieveList_SumBonuses(void *arg0) {
     s32 n;
@@ -13772,3 +13774,10 @@ extern "C" void fn_801CCE7C(void *arg0) {
 #pragma cplusplus reset
 
 #pragma optimization_level 1
+static inline s32 AchieveList_SumGoldWords(void *arg0, s32 start) {
+    u32 sum = start;
+    s32 i;
+    for(i=start;i<*(s32*)((u8*)arg0+0x224);++i)
+        sum += *(u32*)((u8*)arg0+0x200+i*4);
+    return *(s32*)((u8*)arg0+0x228)+sum;
+}
