@@ -779,14 +779,14 @@ extern "C" void fn_80163E70(void *arg0) {
 }
 #pragma cplusplus reset
 
-void fn_80163E9C(void *arg0) {
-    u32 *Unit_GetItemSlot(s32, s16);
+#pragma push
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+extern "C" void fn_80163E9C(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     extern s32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_802776F8[];
-    s32 temp_r26;
-    u32 *temp_r27;
     s32 temp_r30;
     s16 temp_r29;
     s16 var_r31;
@@ -794,7 +794,6 @@ void fn_80163E9C(void *arg0) {
     s32 temp_r4;
     s32 temp_r6;
     void *pad_base;
-    u8 var_r0;
     u8 var_r3;
 
     var_r3 = 0;
@@ -809,59 +808,19 @@ void fn_80163E9C(void *arg0) {
         temp_r30 = temp_r6 & (*(s32 *)((u8 *)pad_base + 8) ^ temp_r6);
         var_r5 = temp_r29;
         if (temp_r4 & 0x08000008) {
-            var_r31 = temp_r29 - 1;
-            goto loop_23_check;
-        loop_23:
-            if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-                var_r0 = 0;
-            } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-                var_r0 = 0;
-            } else {
-                temp_r26 = var_r31;
-                temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
-                    var_r0 = 1;
-                } else {
-                    var_r0 = *temp_r27 != 0;
+            for (var_r31 = temp_r29 - 1; var_r31 >= 0; var_r31--) {
+                if (IsSlotAvailable(arg0, var_r31)) {
+                    break;
                 }
             }
-            if (var_r0 != 0) {
-                goto loop_23_found;
-            }
-            var_r31 -= 1;
-        loop_23_check:
-            if (var_r31 >= 0) {
-                goto loop_23;
-            }
-        loop_23_found:
             var_r5 = var_r31;
             if (var_r31 < 0) {
                 if (temp_r30 & 0x08000008) {
-                    var_r31 = 7;
-                    goto loop_44_check;
-                loop_44:
-                    if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-                        var_r0 = 0;
-                    } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-                        var_r0 = 0;
-                    } else {
-                        temp_r26 = var_r31;
-                        temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
-                            var_r0 = 1;
-                        } else {
-                            var_r0 = *temp_r27 != 0;
+                    for (var_r31 = 7; var_r31 >= 0; var_r31--) {
+                        if (IsSlotAvailable(arg0, var_r31)) {
+                            break;
                         }
                     }
-                    if (var_r0 != 0) {
-                        goto loop_44_found;
-                    }
-                    var_r31 -= 1;
-                loop_44_check:
-                    if (var_r31 >= 0) {
-                        goto loop_44;
-                    }
-                loop_44_found:
                     var_r5 = var_r31;
                 } else {
                     var_r5 = temp_r29;
@@ -872,71 +831,20 @@ void fn_80163E9C(void *arg0) {
             if (var_r31 < 0) {
                 var_r31 = 0;
             }
-            goto loop_67_check;
-        loop_67:
-            if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-                var_r0 = 0;
-            } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-                var_r0 = 0;
-            } else {
-                temp_r26 = var_r31;
-                temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
-                    var_r0 = 1;
-                } else {
-                    var_r0 = *temp_r27 != 0;
+            for (; var_r31 < 8; var_r31++) {
+                if (IsSlotAvailable(arg0, var_r31)) {
+                    break;
                 }
             }
-            if (var_r0 != 0) {
-                goto loop_67_found;
-            }
-            var_r31 += 1;
-        loop_67_check:
-            if (var_r31 < 8) {
-                goto loop_67;
-            }
-        loop_67_found:
-            {
-                s16 tmp = -1;
-                if (var_r31 < 8) {
-                    tmp = var_r31;
-                }
-                var_r5 = tmp;
-            }
+            var_r5 = (var_r31 < 8) ? var_r31 : -1;
             if (var_r5 < 0) {
                 if (temp_r30 & 0x04000004) {
-                    var_r31 = 0;
-                    goto loop_90_check;
-                loop_90:
-                    if ((var_r31 >= 0) && (var_r31 <= 3) && !(M2C_FIELD(arg0, s32 *, 0x60) & 1)) {
-                        var_r0 = 0;
-                    } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
-                        var_r0 = 0;
-                    } else {
-                        temp_r26 = var_r31;
-                        temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
-                            var_r0 = 1;
-                        } else {
-                            var_r0 = *temp_r27 != 0;
+                    for (var_r31 = 0; var_r31 < 8; var_r31++) {
+                        if (IsSlotAvailable(arg0, var_r31)) {
+                            break;
                         }
                     }
-                    if (var_r0 != 0) {
-                        goto loop_90_found;
-                    }
-                    var_r31 += 1;
-                loop_90_check:
-                    if (var_r31 < 8) {
-                        goto loop_90;
-                    }
-                loop_90_found:
-                    {
-                        s16 tmp = -1;
-                        if (var_r31 < 8) {
-                            tmp = var_r31;
-                        }
-                        var_r5 = tmp;
-                    }
+                    var_r5 = (var_r31 < 8) ? var_r31 : -1;
                 } else {
                     var_r5 = temp_r29;
                 }
@@ -948,7 +856,7 @@ void fn_80163E9C(void *arg0) {
         }
     }
 }
-
+#pragma pop
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 2
@@ -18291,6 +18199,8 @@ void fn_8017FEF8(void *arg0) {
 #pragma use_lmw_stmw off
 #pragma peephole off
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 2
 extern "C" void fn_80180084(void *arg0)
 {
     void Process_Goto(void *, s32);
@@ -18445,6 +18355,7 @@ extern "C" void fn_80180084(void *arg0)
         }
     }
 }
+#pragma pop
 
 extern "C" void fn_8018054C(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
