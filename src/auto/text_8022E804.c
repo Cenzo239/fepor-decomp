@@ -9,8 +9,8 @@ typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36];
 
 static inline s32 count_trailing_zero_p(const f64 *px) {
     const u32 *l = (const u32 *)px;
-    s32 n;
     u32 lo = l[1];
+    s32 n;
     if (lo != 0) {
         s32 j;
         u32 xbits;
@@ -345,7 +345,9 @@ void fn_8022E804(void *dst, f64 x) {
     f64 sp30;
     f64 sp28;
     f64 sp20;
-    s32 exp;
+    f64 sp18;
+    f64 sp10;
+    f64 sp8;
     s8 sign;
     f64 f31;
     s32 hx;
@@ -358,7 +360,8 @@ void fn_8022E804(void *dst, f64 x) {
     s32 expadj;
     s8 ch;
 
-    sign = (s8)((*(u32 *)&x) >> 31);
+    sp8 = x;
+    sign = (s8)((*(u32 *)&sp8) >> 31);
     if (lbl_8036BDC8 == x) {
         *(s8 *)dst = sign;
         *(s16 *)((u8 *)dst + 2) = 0;
@@ -391,7 +394,7 @@ void fn_8022E804(void *dst, f64 x) {
         *(s8 *)dst = sign;
         *(s16 *)((u8 *)dst + 2) = 0;
         ((u8 *)dst)[4] = 1;
-        sp20 = x;
+        sp20 = sp8;
         hx = *(s32 *)&sp20;
         switch (hx & 0x7FF00000) {
         case 0x7FF00000:
@@ -420,11 +423,12 @@ void fn_8022E804(void *dst, f64 x) {
         return;
     }
     if ((s8)sign != 0) {
-        x = -x;
+        sp8 = -x;
     }
-    f31 = fn_802382EC(&exp, x);
-    expadj = 0x35 - count_trailing_zero(f31);
-    fn_8022F1C0(sp38, exp - expadj);
+    f31 = fn_802382EC((s32 *)&sp10, sp8);
+    sp18 = f31;
+    expadj = 0x35 - count_trailing_zero_p(&sp18);
+    fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
     fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
     uq = fn_8022CC2C(sp30);
