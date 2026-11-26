@@ -14790,10 +14790,10 @@ void fn_800E2A00(Unit *unit, const s32 *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5
     s32 x;
     s32 y;
 
-    y = arg1[1];
-    h = arg1[3] - y;
     x = arg1[0];
     w = arg1[2] - x;
+    y = arg1[1];
+    h = arg1[3] - y;
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369F00, lbl_80369F00, (f32) *(s32 *)((u8 *)unit + 0x44), lbl_80369F04);
@@ -27442,8 +27442,8 @@ if(!gAiCmdIsAlt) obj[0x250]=index; else obj[0x251]=index;
 } else { if(!gAiCmdIsAlt) obj[0x250]++; else obj[0x251]++; }
 }
 
-#pragma use_lmw_stmw on
-void fn_800FAD94(void *arg0) {
+#pragma cplusplus on
+extern "C" void fn_800FAD94(void *arg0) {
     extern s8 gUiContext[];
     extern u8 *gAiCmd;
     extern struct { s32 pad[2]; s32 arr[1]; } gAiState;
@@ -27458,16 +27458,14 @@ void fn_800FAD94(void *arg0) {
     s32 cmdC;
     s32 x;
     s32 y;
-    s32 cond;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
     x = gUiContext[0xD];
     y = gUiContext[0xE];
-    cond = *(s32 *)(cmd + 0x10) != 0;
     cmdC = *(s32 *)(cmd + 0xC);
 
-    if ((u8)fn_80102DFC(x, y, cmdC, cond)) {
+    if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
         s32 ty = y;
         if (*(s32 *)(cmd + 0x10) != 0) {
             x = TargetList_GetCurrent(gTargetList)[0];
@@ -27484,6 +27482,7 @@ void fn_800FAD94(void *arg0) {
         unit[0x251]++;
     }
 }
+#pragma cplusplus off
 /* Find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC; does not set gAiCmdOk. */
 void AiCmd_SeekLabelNoOk(void *unit)
 {
