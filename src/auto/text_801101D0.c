@@ -952,6 +952,7 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
 }
 
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
 extern "C" void fn_80111C8C(void *arg0, void *arg1) {
     s32 strlen(char *);
     s32 String_Compare(void *, s32, void *, char *, s32);
