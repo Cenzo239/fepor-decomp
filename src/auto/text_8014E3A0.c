@@ -2,6 +2,14 @@
 #include "common.h"
 
 
+static inline void Particle_WriteColor(u8 r, u8 g, u8 b, u8 a)
+{
+    *(volatile u8 *)0xCC008000 = r;
+    *(volatile u8 *)0xCC008000 = g;
+    *(volatile u8 *)0xCC008000 = b;
+    *(volatile u8 *)0xCC008000 = a;
+}
+
 static inline void *MsgDebug_FilterText(void *text, u8 *dst)
 {
     void *Msg_Expand(void *);
@@ -254,7 +262,10 @@ extern f32 lbl_8036A820;
 extern f64 lbl_8036A828;
 extern f64 lbl_8036A830;
 extern u8 lbl_80277320[];
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_8014E864(void *arg0) {
     void *fn_80060638(void *);
     void *fn_80060664(void *);
@@ -295,20 +306,21 @@ void fn_8014E864(void *arg0) {
     u8 buf38[0x30];
     u8 buf8[0x30];
     void *unk31;
+    u8 *vp;
+    s32 vi;
+    void *vtx;
+    u8 *cursor;
+    void *base;
+    s32 off;
+    u8 *mtx;
     void *obj54;
     void *mesh;
     u8 *entry;
     void *unk22;
-    u8 *mtx;
     s32 i;
-    s32 off;
-    void *vtx;
-    void *base;
     s32 mode;
     f32 scale;
     s32 w;
-    s32 vi;
-    u8 *vp;
 
     unk31 = fn_80060638(arg0);
     fn_80060664(arg0);
@@ -321,14 +333,12 @@ void fn_8014E864(void *arg0) {
     i = 0;
     off = 0;
 
-    for (;;) {
-        if (i >= (s32)*(u16 *)((u8 *)mesh + 6)) {
-            break;
-        }
-        if ((*(u32 *)arg0 & 0x00400000) != 0) {
-            if ((*(u16 *)(entry + 6) & 0x0800) != 0) {
+    while (i < (s32)*(u16 *)((u8 *)mesh + 6)) {
+        if ((*(u32 *)arg0 & 0x00400000) == 0 || (*(u16 *)(entry + 6) & 0x0800) != 0) {
+            {
+                s32 index = *(s16 *)(entry + 0xA);
+                base = (u8 *)*(void **)((u8 *)unk31 + 0x34) + (index << 5);
                 vtx = *(void **)(*(u8 **)((u8 *)obj54 + 0x38) + off);
-                base = (u8 *)*(void **)((u8 *)unk31 + 0x34) + (*(s16 *)(entry + 0xA) << 5);
                 GXSetCullMode(1);
                 GXSetBlendMode(0, 0, 0, 1, 0, 0, 2);
                 GXSetBlendMode(2, 0, 1, 1, 0, 0, 2);
@@ -409,7 +419,7 @@ void fn_8014E864(void *arg0) {
                         fn_801502EC(entry, vtx, base, unk22);
                         break;
                     case 2:
-                        base = vtx;
+                        cursor = vtx;
                         GXClearVtxDesc();
                         GXSetVtxDesc(9, 1);
                         GXSetVtxDesc(11, 1);
@@ -420,35 +430,45 @@ void fn_8014E864(void *arg0) {
                         GXSetTevOrder(0, 0xFF, 0xFF, 4);
                         GXSetNumTexGens(0, 4);
                         fn_8022100C(0);
-                        w = (s32)(lbl_8036A81C * (f32)*(s16 *)(entry + 0x10));
                         scale = lbl_8036A81C * (f32)*(s16 *)(entry + 0x14);
+                        w = (s32)(lbl_8036A81C * (f32)*(s16 *)(entry + 0x10));
                         if (w > 0x28) {
                             w = 0x28;
                         }
                         fn_80220F44((s32)(lbl_8036A820 * (f32)w), 0);
                         for (vi = 0; vi < (s32)*(u16 *)(entry + 0x1E); vi++) {
-                            vp = (u8 *)base;
-                            base = (u8 *)base + 0x2C;
+                            vp = cursor;
+                            cursor += 0x2C;
                             if (vp[0x28] != 0) {
+                                f32 dx, dy, dz;
+                                f32 x, y, z, length;
+                                u8 r, g, b, a;
                                 GXBegin(0xA8, 0, 2);
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 0);
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 4);
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 8);
-                                *(volatile u8 *)0xCC008000 = vp[0x29];
-                                *(volatile u8 *)0xCC008000 = vp[0x2A];
-                                *(volatile u8 *)0xCC008000 = vp[0x2B];
-                                *(volatile u8 *)0xCC008000 = vp[0x28];
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 0) - *(f32 *)(vp + 0xC) * *(f32 *)(vp + 0x1C);
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 4) - *(f32 *)(vp + 0x10) * *(f32 *)(vp + 0x1C);
-                                *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 8) - *(f32 *)(vp + 0x14) * *(f32 *)(vp + 0x1C);
-                                *(volatile u8 *)0xCC008000 = vp[0x29];
-                                *(volatile u8 *)0xCC008000 = vp[0x2A];
-                                *(volatile u8 *)0xCC008000 = vp[0x2B];
-                                *(volatile u8 *)0xCC008000 = (u8)(s32)((f32)vp[0x28] * scale);
+                                z = *(f32 *)(vp + 8); y = *(f32 *)(vp + 4); x = *(f32 *)(vp + 0);
+                                *(volatile f32 *)0xCC008000 = x;
+                                *(volatile f32 *)0xCC008000 = y;
+                                *(volatile f32 *)0xCC008000 = z;
+                                a=vp[0x28]; b=vp[0x2B]; g=vp[0x2A]; r=vp[0x29];
+                                *(volatile u8 *)0xCC008000 = r;
+                                *(volatile u8 *)0xCC008000 = g;
+                                *(volatile u8 *)0xCC008000 = b;
+                                *(volatile u8 *)0xCC008000 = a;
+                                length = *(f32 *)(vp + 0x1C);
+                                dx = *(f32 *)(vp + 0xC); dy = *(f32 *)(vp + 0x10); dz = *(f32 *)(vp + 0x14);
+                                x = *(f32 *)(vp + 0) - dx * length;
+                                y = *(f32 *)(vp + 4) - dy * length;
+                                z = *(f32 *)(vp + 8) - dz * length;
+                                *(volatile f32 *)0xCC008000 = x;
+                                *(volatile f32 *)0xCC008000 = y;
+                                *(volatile f32 *)0xCC008000 = z;
+                                a=vp[0x28]; b=vp[0x2B]; g=vp[0x2A]; r=vp[0x29];
+                                *(volatile u8 *)0xCC008000 = r;
+                                *(volatile u8 *)0xCC008000 = g;
+                                *(volatile u8 *)0xCC008000 = b;
+                                *(volatile u8 *)0xCC008000 = (u8)(s32)((f32)(u32)a * scale);
                             }
                         }
                         break;
-                    case 3:
                     case 4:
                         fn_8014EFB8(arg0, entry, vtx, base, unk22);
                         break;
@@ -465,6 +485,7 @@ void fn_8014E864(void *arg0) {
     fn_802245D8(1, 4, 5, 7);
     fn_8006C6F8(arg0, 2);
 }
+#pragma pop
 volatile unsigned long long fn_8014EFB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4)
 {
   void *fn_80060664(void *);
@@ -2928,7 +2949,8 @@ void Ui_DrawAtlasLCorner(s16 x, s16 y, s32 texFlags) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_lifetimes off
 void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, u16 arg7) {
     s32 Prim2D_PushZ(f32 *);
     void Prim2D_PopZ(s32, f32);
@@ -2946,10 +2968,9 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     extern u8 gUiTexScratch[64];
     extern s32 gUiTexAtlas;
     extern struct { s16 f0, f2, f4, f6; } lbl_80367FC0, lbl_80367FC8, lbl_80367FD0, lbl_80367FA8, lbl_80367FB0, lbl_80367FB8;
-    extern f64 lbl_8036A868;
     extern f32 lbl_8036A878;
-    s32 *tbl;
     s32 saved;
+    s32 *tbl;
     f32 sp8;
     s16 w, h, y2;
     s16 mid_h, mid_w;
@@ -2958,8 +2979,8 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     saved = Prim2D_PushZ(&sp8);
     tbl = (s32 *)(lbl_80277488 + (s8)arg0 * 0x18);
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
-    w = (s16)(lbl_80367FC0.f4 - lbl_80367FC0.f0);
     h = (s16)(lbl_80367FC0.f6 - lbl_80367FC0.f2);
+    w = (s16)(lbl_80367FC0.f4 - lbl_80367FC0.f0);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
@@ -3003,8 +3024,8 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
-    w = (s16)(lbl_80367FA8.f4 - lbl_80367FA8.f0);
     h = (s16)(lbl_80367FA8.f6 - lbl_80367FA8.f2);
+    w = (s16)(lbl_80367FA8.f4 - lbl_80367FA8.f0);
     if (w != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
@@ -3046,7 +3067,7 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     }
     Prim2D_PopZ(saved, sp8);
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma use_lmw_stmw reset
 
