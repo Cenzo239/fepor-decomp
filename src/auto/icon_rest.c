@@ -30,9 +30,9 @@ static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
 }
 
 static inline s32 Convoy_Count_inline(void *convoy) {
+    u8 *p = (u8 *)convoy;
     s32 count = 0;
     s32 i;
-    u8 *p = (u8 *)convoy;
     for (i = 0; i < 200; p += 8, i++) {
         if (*(void **)p != NULL) {
             count++;
