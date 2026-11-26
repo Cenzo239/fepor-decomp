@@ -1,15 +1,6 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-extern u8 lbl_8026CC58[], lbl_8026CC5F[], lbl_8026CC67[];
-void fn_8008A5AC(void);
-void Ui_DrawColorFade(void);
-void fn_80089A28(void);
-u32 lbl_80289950[] = {
-    0x2003, (u32)lbl_8026CC58, 0x54911001, 0x201A, (u32)fn_8008A5AC, 0,
-    0x2003, (u32)lbl_8026CC5F, 0x54911001, 0x201A, (u32)Ui_DrawColorFade, 0,
-    0x2003, (u32)lbl_8026CC67, 0x54911001, 0x201A, (u32)fn_80089A28, 0
-};
 static inline int TypeEquals_80089490(u32 value, u8 *base, s32 offset) {
     return value == (u32)(base + offset);
 }
