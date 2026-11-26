@@ -820,6 +820,9 @@ void fn_801CCF88(void *arg0) {
 #pragma cplusplus reset
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void *fn_801CD0D0(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4)
 {
     extern u8 lbl_8028FDB0[];
@@ -925,7 +928,7 @@ void *fn_801CD0D0(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4)
 
     return self;
 }
-
+#pragma pop
 #pragma cplusplus on
 extern "C" void fn_801CD2AC(void *arg0) {
     void fn_80158DD8(s32, s32, s16, s16, s32, s32);
@@ -1126,17 +1129,18 @@ if(old!=*(s16*)((u8*)self+0x70)) Ui_PlaySeCue(lbl_8027DE18+8,0x64);
 }
 }
 
+#pragma push
 #pragma cplusplus on
-#pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
+#pragma use_lmw_stmw on
 extern "C" void fn_801CD764(u8 *self) {
 void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex();
 void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
 extern f32 lbl_8036B4E8;
 u8 color[4];
 s16 target; s32 old;
-s32 x,y; s16 x2,y2,ym1;
+s32 x,y,y2; s16 x2,ym1;
 ((MenuD28*)self)->v3();
 target=(s16)(*(s16*)(self+0x70)*0x16);
 if(*(s32*)(self+0x78)!=0) target=(s16)(target+0x18);
@@ -1159,9 +1163,7 @@ Ui_DrawLine((s16)x,(s16)(y2-1),x2,(s16)(y2-1),*(s32*)(self+0x34),color);
 Ui_DrawLine((s16)x,(s16)y,(s16)x,y2,*(s32*)(self+0x34),color);
 Ui_DrawLine((s16)(x2-1),(s16)y,(s16)(x2-1),y2,*(s32*)(self+0x34),color);
 }
-#pragma optimization_level reset
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 #pragma cplusplus off
 extern struct efUnit* gEfUnitArray;
 #pragma cplusplus on
@@ -1201,24 +1203,22 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     extern f32 lbl_8036B4F0;
     extern f32 lbl_8036B4F4;
 
-    s32 xOffset;
-    u32 *str;
-    s16 offset;
     s16 y;
+    s16 offset;
+    u32 *str;
     UiPanel_801CD940 *self = (UiPanel_801CD940 *)arg0;
+    void *p = arg1;
+    s32 xOffset;
 
     self->v2();
 
-    fn_801583D0(
-        0,
-        0,
-        (s16)(self->right - self->left),
-        (s16)(self->bottom - self->top),
-        0xFF,
-        0x10
-    );
+    {
+        s16 w = self->right - self->left;
+        s16 h = self->bottom - self->top;
+        fn_801583D0(0, 0, w, h, 0xFF, 0x10);
+    }
 
-    self->v3(arg1);
+    self->v3(p);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B4EC);
@@ -8880,6 +8880,7 @@ void fn_801DE074(void) {
 #pragma optimization_level 4
 #pragma global_optimizer on
 #pragma opt_loop_invariants off
+#pragma opt_common_subs off
 void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
@@ -8891,7 +8892,7 @@ s32 owner = parent;
 s32 *cursor = list;
 Process_UnlinkByKey(lbl_80299C58);
 base = lbl_80299A78;
-MenuResource_ClearIn(0, base);
+MenuResource_ClearSlots(base, 0);
 for (; (id = *cursor) != -1; cursor++) {
 p = MenuResource_FindIn(base, id);
 if (p) {
@@ -10024,6 +10025,23 @@ off+=0x4000;
 }
 return 0;
 }
+static inline u8 *Save_FindSlotById(s32 id, u8 *base)
+{
+    u8 *slot;
+    s32 off;
+    s32 i;
+    u8 valid;
+    i=0; off=0x2000;
+    for(;i<6;i++) {
+        slot=base+off;
+        if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+        else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+        else valid=1;
+        if(valid && id==slot[0x62]) return slot;
+        off+=0x4000;
+    }
+    return 0;
+}
 static inline u8 *Save_FindLinkedHeader(u8 **save)
 {
 u8 *base;
@@ -10258,8 +10276,10 @@ u8 **save=(u8 **)arg0;
 save[1]=Save_FindLinkedHeader(save);
 gSystemSave[0x47]=save[1][0x63];
 }
-#pragma cplusplus on
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes on
+#pragma cplusplus off
 void *fn_801E09B4(u8 **save) {
 u8 *slot;
 s32 off;
@@ -10278,8 +10298,7 @@ off+=0x6000;
 }
 return 0;
 }
-#pragma global_optimizer reset
-#pragma cplusplus reset
+#pragma pop
 void fn_801E0B48(s32 unused, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_CreateChild(void *, s32);
     extern u8 lbl_80299ED8[];
