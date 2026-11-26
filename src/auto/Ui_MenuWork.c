@@ -513,6 +513,15 @@ extern void FileCache_ReleaseByKey(u32);
 
 #pragma global_optimizer off
 
+typedef struct { void *e0, *e1, *e2; } MenuEntries;
+static inline void MenuInit(MenuEntries *entries, volatile s32 *table, s32 a, s32 b) {
+    entries->e0 = (void *)table;
+    table[1] = a;
+    entries->e1 = (void *)(table + 2);
+    table[3] = b;
+    entries->e2 = 0;
+}
+
 void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
