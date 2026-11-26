@@ -2165,6 +2165,9 @@ void fn_80200750(void *arg0) {
     *(s16 *)((u8 *)self + 0x3C) = 0xA;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_802007E0(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
@@ -2244,8 +2247,7 @@ void fn_802007E0(void *arg0) {
     Prim2D_AddZ(lbl_8036BBEC);
     Prim2D_PrepareTex();
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_80200A7C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
