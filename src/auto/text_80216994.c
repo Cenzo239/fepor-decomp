@@ -6,6 +6,14 @@
 #include <dolphin/os.h>
 #include "global.h"
 #include "ef.h"
+static inline u32 Card_ReverseScramble(u32 count, u32 value) {
+    u32 i;
+    for (i = 0; i < count; ++i) {
+        u32 bits = ~((value >> 23) ^ ((value >> 15) ^ (value ^ (value >> 7))));
+        value = (value >> 1) | ((bits << 30) & 0x40000000);
+    }
+    return value | (~((value >> 23) ^ ((value >> 15) ^ (value ^ (value >> 7)))) << 31);
+}
 static inline u32 Card_AdvanceScramble(u32 count, u32 value) {
  u32 i;
  for(i=0;i<count;++i) {
@@ -859,7 +867,8 @@ s32 fn_80218018(void) {
     return var_r3;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 s32 fn_802180DC(s32 chan, void *out) {
     u32 OSGetTick(void);
     void DCFlushRange(void *, u32);
@@ -899,50 +908,19 @@ s32 fn_802180DC(s32 chan, void *out) {
 
     lbl_80366FE8 = OSGetTick();
     lbl_80366FE8 = lbl_80366FE8 * 0x41C64E6D + 0x3039;
-    seed = (0x7FED8000u | ((lbl_80366FE8 >> 16) & 0x7FFF)) & 0xFFFFF000u;
+    seed = (0x7FEC8000u | ((lbl_80366FE8 >> 16) & 0x7FFF)) & 0xFFFFF000u;
 
     tick = fn_80218018();
     if (fn_80217ED4(chan, seed, spA4, tick, 0) < 0) {
         return -3;
     }
 
-    n = (tick << 3) + 1;
-    i = 0;
     scramble = seed;
-    if (n != 0) {
-        if ((u32)n > 8) {
-            rem = (u32)n - 8;
-            ctr = (rem + 7) >> 3;
-            if (rem != 0) {
-                do {
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = (scramble >> 1) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                    scramble = ((scramble >> 1) & 0x3FFFFFFF) | ((t << 30) & 0x40000000);
-                    i += 8;
-                } while (--ctr);
-            }
-        }
-        left = (s32)((u32)n - i);
-        if (i < (u32)n) {
-            do {
-                t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
-                scramble = (scramble >> 1) | ((t << 30) & 0x40000000);
-            } while (--left);
-        }
+    for (i = 0; i < (u32)((tick << 3) + 1); ++i) {
+        t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
+        scramble = (scramble >> 1) | ((t << 30) & 0x40000000);
     }
+
     t = ~((scramble >> 23) ^ ((scramble >> 15) ^ (scramble ^ (scramble >> 7))));
     scramble |= t << 31;
     *(u32 *)(card + 0x2C) = scramble;
@@ -955,187 +933,32 @@ s32 fn_802180DC(s32 chan, void *out) {
 
     scramble = *(u32 *)(card + 0x2C);
     w0 = spA4[0] ^ scramble;
-    {
-        s32 c = 4;
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-        } while (--c);
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(32, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
     scramble = *(u32 *)(card + 0x2C);
     w1 = spA4[1] ^ scramble;
-    {
-        s32 c = 4;
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-        } while (--c);
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(32, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
     scramble = *(u32 *)(card + 0x2C);
     w2 = spA4[2] ^ scramble;
-    {
-        s32 c = 4;
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-        } while (--c);
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(32, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
     scramble = *(u32 *)(card + 0x2C);
     w3 = spA4[3] ^ scramble;
-    {
-        s32 c = 4;
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-        } while (--c);
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(32, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
     scramble = *(u32 *)(card + 0x2C);
     w4 = spA4[4] ^ scramble;
-    n = tick << 3;
-    i = 0;
-    if (n != 0) {
-        if ((u32)n > 8) {
-            rem = (u32)n - 8;
-            ctr = (rem + 7) >> 3;
-            if (rem != 0) {
-                do {
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    i += 8;
-                } while (--ctr);
-            }
-        }
-        left = (s32)((u32)n - i);
-        if (i < (u32)n) {
-            do {
-                t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                scramble = (scramble << 1) | ((t >> 30) & 2);
-            } while (--left);
-        }
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(tick << 3, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
+    /* final 0x21-step and DMA setup */
     scramble = *(u32 *)(card + 0x2C);
-    i = 0;
-    {
-        s32 c = 4;
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-            i += 8;
-        } while (--c);
-    }
-    left = 0x21 - (s32)i;
-    if (i < 0x21u) {
-        do {
-            t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-            scramble = (scramble << 1) | ((t >> 30) & 2);
-        } while (--left);
-    }
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    scramble = Card_AdvanceScramble(33, scramble);
     *(u32 *)(card + 0x2C) = scramble;
 
     *(u32 *)aligned = w3;
@@ -1148,11 +971,11 @@ s32 fn_802180DC(s32 chan, void *out) {
     DCInvalidateRange((void *)aligned2, 4);
     DCFlushRange(buf, 0x10);
 
-    work[4] = 0xFF;
+    *(u32 *)(work + 4) = 0xFF;
     *(void **)(work + 0xC) = (void *)((u32)lbl_8029DA00 + 0x80000000);
     *(u32 *)(work + 0x10) = 0x160;
     *(u32 *)(work + 0x14) = 0;
-    *(u32 *)(work + 0x24) = 0x10;
+    *(u16 *)(work + 0x24) = 0x10;
     *(void **)(work + 0x28) = &fn_80218C34;
     *(u32 *)(work + 0x2C) = 0;
     *(void **)(work + 0x30) = &fn_80218CA4;
@@ -1164,7 +987,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     *((u32 *)out + 2) = w2;
     return 0;
 }
-
+#pragma pop
 void fn_80218C34(void *arg0)
 {
     extern void fn_80215F78(u32);
@@ -2433,7 +2256,11 @@ void fn_8021B2B8(s32 chan, s32 result) {
     callback(chan, result);
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_strength_reduction on
 s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
 {
     s32 fn_80217B18(s32, void **);
@@ -2455,8 +2282,6 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     u16 dsp;
     void *sram;
     s64 time;
-    u32 timeLo;
-    u32 timeHi;
     s64 seed;
     u8 *flash;
     u8 *p;
@@ -2482,8 +2307,6 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     __OSUnlockSram(0);
 
     time = OSGetTime();
-    timeHi = (u32)(time >> 32);
-    timeLo = (u32)time;
     seed = time;
     flash = __OSLockSramEx() + chan * 0xC;
     p = flash;
@@ -2492,42 +2315,42 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
 
     while (i < limit) {
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i] = (u8)((u32)seed + *p);
+        work[i] = (u8)(seed + *p);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 1] = (u8)((u32)seed + flash[i + 1]);
+        work[(s16)(i + 1)] = (u8)(seed + flash[(s16)(i + 1)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 2] = (u8)((u32)seed + flash[i + 2]);
+        work[(s16)(i + 2)] = (u8)(seed + flash[(s16)(i + 2)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 3] = (u8)((u32)seed + flash[i + 3]);
+        work[(s16)(i + 3)] = (u8)(seed + flash[(s16)(i + 3)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 4] = (u8)((u32)seed + flash[i + 4]);
+        work[(s16)(i + 4)] = (u8)(seed + flash[(s16)(i + 4)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 5] = (u8)((u32)seed + flash[i + 5]);
+        work[(s16)(i + 5)] = (u8)(seed + flash[(s16)(i + 5)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 6] = (u8)((u32)seed + flash[i + 6]);
+        work[(s16)(i + 6)] = (u8)(seed + flash[(s16)(i + 6)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i + 7] = (u8)((u32)seed + flash[i + 7]);
+        work[(s16)(i + 7)] = (u8)(seed + flash[(s16)(i + 7)]);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
 
@@ -2538,7 +2361,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     p = flash + i;
     while (i < 0xC) {
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
-        work[i] = (u8)((u32)seed + *p);
+        work[i] = (u8)(seed + *p);
         seed = (seed * 0x41C64E6D + 0x3039) >> 16;
         seed &= 0x7FFF;
         p += 1;
@@ -2548,8 +2371,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     __OSUnlockSramEx(0);
     *(u32 *)(work + 0x1C) = dsp;
     i = 0;
-    *(u32 *)(work + 0x10) = timeLo;
-    *(u32 *)(work + 0xC) = timeHi;
+    *(s64 *)(work + 0xC) = time;
     *(s16 *)(work + 0x20) = 0;
     *(u16 *)(work + 0x22) = *(u16 *)((u8 *)card + 8);
     fn_802198C0(work, 0x1FC, work + 0x1FC, work + 0x1FE);
@@ -2558,7 +2380,8 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
         block = *(u8 **)((u8 *)card + 0x80) + ((i + 1) << 13);
         memset(block, 0xFF, 0x2000);
         *(s16 *)(block + 0x1FFA) = i;
-        fn_802198C0(block, 0x1FFC, block + 0x1FFC, block + 0x1FFE);
+        p = block + 0x1FC0;
+        fn_802198C0(block, 0x1FFC, p + 0x3C, p + 0x3E);
         i += 1;
     }
 
@@ -2587,6 +2410,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     }
     return result;
 }
+#pragma pop
 void fn_8021BA54(s32 arg0, s32 arg1) {
     s32 fn_8021B3FC(s32, u16, s32);
     fn_8021B3FC(arg0, fn_80217AD8(), arg1);
