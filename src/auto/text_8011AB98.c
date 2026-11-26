@@ -358,17 +358,19 @@ void *fn_8011AC78(void *arg0)
     return result;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_lifetimes off
 void fn_8011ACFC(void) {
     void fn_8001594C(void *, s8);
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
     extern u8 gUnitLists[];
     void *list[3];
-    u32 flags;
-    u8 *iter;
-    u8 *node;
     u8 *next;
+    u8 *next3;
+    u32 flags;
+    u8 *node;
+    u8 *iter;
 
     fn_8001594C(list, 0);
     node = *(u8 **)gUnitLists;
@@ -390,8 +392,8 @@ void fn_8011ACFC(void) {
         *(u32 *)(node + 0x1A0) |= 0x010000DC;
         node = next;
     }
-    for (iter = list[0]; iter != NULL; iter = next) {
-        next = *(u8 **)(iter + 0x184);
+    for (iter = list[0]; iter != NULL; iter = next3) {
+        next3 = *(u8 **)(iter + 0x184);
         flags = *(u32 *)(iter + 0x1A0) & 0x010000DC;
         fn_800156A0(*(void **)(iter + 0x190), iter);
         fn_80015718(gUnitLists, iter);
@@ -399,7 +401,7 @@ void fn_8011ACFC(void) {
             *(u32 *)(iter + 0x1A0) |= 0x010000DC;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_8011AE2C(void *arg0) {
     M2C_UNK Unit_SetMapPos(s32, u8, u8);
     M2C_UNK fn_80050C90(s32);
