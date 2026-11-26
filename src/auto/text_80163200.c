@@ -15523,6 +15523,11 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     s32 Text_MeasureHeight(s32, f32);
     void Ui_DrawIcon(void *, s32, s32, u8);
     void Prim2D_AddPrim(s32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_EndPrim(void);
     s32 fn_8010586C(void *);
     u32 *Ui_GetColor(s32);
     extern u8 lbl_80278780[];
