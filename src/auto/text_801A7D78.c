@@ -2639,6 +2639,9 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_PrepareTex();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_801ADA50(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetColorByte(s32);
@@ -2656,18 +2659,18 @@ void fn_801ADA50(void *arg0) {
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_80057E64(void *, s32);
     void fn_80057AE0(void *);
-    extern f32 lbl_8036B094;
-    extern f32 lbl_8036B098;
-    extern f32 lbl_8036AFA0;
-    extern f32 lbl_8036AFFC;
-    extern f32 lbl_8036AF9C;
+    extern const f32 lbl_8036B094;
+    extern const f32 lbl_8036B098;
+    extern const f32 lbl_8036AFA0;
+    extern const f32 lbl_8036AFFC;
+    extern const f32 lbl_8036AF9C;
     extern u8 lbl_8027B838[];
     extern f64 lbl_8036AFC0;
-    extern f32 lbl_8036AFA8;
-    extern f32 lbl_8036AFAC;
-    extern f32 lbl_8036AFB0;
-    extern f32 lbl_8036AFB4;
-    extern f32 lbl_8036AFB8;
+    extern const f32 lbl_8036AFA8;
+    extern const f32 lbl_8036AFAC;
+    extern const f32 lbl_8036AFB0;
+    extern const f32 lbl_8036AFB4;
+    extern const f32 lbl_8036AFB8;
     typedef struct {
         u8 pad30[0x30];
         u8 unk30;
@@ -2699,14 +2702,8 @@ void fn_801ADA50(void *arg0) {
 
     self = (Obj *)arg0;
     if (!(self->unk30 & 1)) {
-        lim = lbl_8036B098;
-        b = lbl_8036B094;
-        a = self->unk40;
-        self->unk40 = a + b;
-        f1 = self->unk40;
-        if (f1 >= lim) {
-            self->unk40 = f1 - lim;
-        }
+        self->unk40 += lbl_8036B094;
+        if (self->unk40 >= lbl_8036B098) self->unk40 -= lbl_8036B098;
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_SetTransform(lbl_8036AFA0, lbl_8036AFA0, lbl_8036AFFC, lbl_8036AF9C);
@@ -2760,7 +2757,7 @@ void fn_801ADA50(void *arg0) {
         Prim2D_PrepareTex();
     }
 }
-
+#pragma pop
 void fn_801ADD58(s32 unused, s16 *p) {
     extern void GXSetScissor(s16, s16, s16, s16);
     GXSetScissor(p[0], p[1], p[2], p[3]);
