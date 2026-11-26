@@ -6417,28 +6417,30 @@ static inline s32 fn_8010F3F4_impl(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s1
     extern u32 fn_800FCF48(s8, s8);
 
     u8 *base;
-    s32 ax;
-    s32 ay;
-    s16 x;
-    s16 y;
-    s32 bestScore;
-    s32 score;
     s32 i;
+    s32 score;
+    s32 bestScore;
+    s16 y;
+    s16 x;
+    s32 ay;
+    s32 ax;
+    const s16 *dir;
 
     base = gBattleMap;
+    dir = direction;
     ax = arg1;
     ay = arg2;
     bestScore = (s32)0x80000000;
     score = 0;
 
-    for (i = 0; i < 4; i++, score = 0, direction += 2) {
+    for (i = 0; i < 4; i++, score = 0, dir += 2) {
         const s16 *heightTable;
         s32 index;
         u32 value;
 
-        x = ax + direction[0];
+        x = ax + dir[0];
         heightTable = *(s16 **)(base + 0x14190);
-        y = ay + direction[1];
+        y = ay + dir[1];
 
         index = (s8)x + ((s8)y << 6);
 
