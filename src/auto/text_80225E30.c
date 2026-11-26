@@ -2497,6 +2497,10 @@ s32 TRKTargetAccessExtended1(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4
     return arg0;
 }
 
+#pragma push
+#pragma inline_depth(10)
+#pragma inline_max_size(10000)
+#pragma inline_max_total_size(10000)
 static inline s32 TRKAccessFPRegister(u32 reg,u64 *value,s32 read) {
 extern u32 lbl_802827B0[],lbl_80282760[]; extern u8 lbl_8033CFB4[];
 void fn_80228858(void *,s32);void fn_80228CDC(f64 *);void fn_80228D00(f64 *);
