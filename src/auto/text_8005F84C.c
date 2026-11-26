@@ -23,6 +23,13 @@ virtual void deselect(void *, void *) = 0;
 #pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
+static inline void FillEntries_8006F10C(volatile void **entries, volatile s32 *table, s32 a, s32 b) {
+    entries[0] = (void *)table;
+    table[1] = a;
+    entries[1] = (void *)(table + 2);
+    table[3] = b;
+    entries[2] = 0;
+}
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
         u8 *anim = *(u8 **)(p + 0x44);
@@ -8767,16 +8774,16 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
     void Ui_CreateMenu(void *, s32, s32);
+    typedef struct { void *e0, *e1, *e2; } Entries;
     u8 *base = lbl_80311CA8;
     volatile s32 *table = (volatile s32 *)(base + 0x4c);
-    volatile void **entries = (volatile void **)(base + 0x6c);
+    volatile Entries *entries = (volatile Entries *)(base + 0x6c);
 
-    entries[0] = (void *)table;
+    entries->e0 = (void *)table;
     table[1] = arg0;
-    table += 2;
-    entries[1] = (void *)table;
-    table[1] = arg1;
-    entries[2] = 0;
+    entries->e1 = (void *)(table + 2);
+    table[3] = arg1;
+    entries->e2 = 0;
     Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 
