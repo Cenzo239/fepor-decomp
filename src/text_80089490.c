@@ -26,12 +26,6 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-static inline void *Off89490(u8 *base, s32 off) {
-    u8 *p = base;
-    s32 i;
-    for (i = 0; i < 1; i++) p = base + off;
-    return p;
-}
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
