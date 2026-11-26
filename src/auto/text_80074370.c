@@ -646,30 +646,34 @@ s32 fn_80075178(void *arg0, void *arg1, void *arg2) {
     extern u8 gUiContext[];
     struct Vtbl { u8 pad[0x5C]; s16 (*getx)(void *); };
     typedef struct Obj { u8 pad[4]; struct Vtbl *vtbl; } Obj;
+    void *self;
     s32 str;
     s16 y;
     s16 x;
+    u8 *entry;
     Obj *obj;
     void *msg;
     s32 vx;
     s32 slot;
-    if (*(((u8 *)arg2) + 0x39)) {
-        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(((u8 *)arg2) + 0x3A));
+    self = arg1;
+    entry = (u8 *)arg2;
+    if (*(entry + 0x39)) {
+        slot = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), *(entry + 0x3A));
         msg = 0;
         switch (Unit_CheckReceiveItem(*(s32 *)gUiContext, slot, gUiContext)) {
         case 1: msg = lbl_8026C0B8 + 0x1B3; break;
         case 2: msg = lbl_8026C0B8 + 0x1BA; break;
         case 3: msg = lbl_8026C0B8 + 0x1C1; break;
         }
-        y = *(s16 *)(((u8 *)arg2) + 0x32);
-        x = *(s16 *)(((u8 *)arg2) + 0x30);
-        obj = *(Obj **)((u8 *)arg1 + 0x3C);
+        y = *(s16 *)(entry + 0x32);
+        x = *(s16 *)(entry + 0x30);
+        obj = *(Obj **)((u8 *)self + 0x3C);
         str = Msg_Expand(msg);
         vx = obj->vtbl->getx(obj);
-        fn_80166AE8(vx + x, y, str, arg1);
+        fn_80166AE8(vx + x, y, str, self);
         return 0;
     }
-    gUiContext[0xA] = *(((u8 *)arg2) + 0x3A);
+    gUiContext[0xA] = *(entry + 0x3A);
     return 5;
 }
 
@@ -2052,6 +2056,8 @@ void fn_80077568(s8 *arg0) {
     *arg0 = 2;
 }
 
+#pragma push
+#pragma opt_lifetimes off
 s32 fn_80077574(void *arg0) {
 #pragma cplusplus on
     struct Flags {
@@ -2106,7 +2112,7 @@ s32 fn_80077574(void *arg0) {
 #pragma cplusplus reset
     }
 }
-
+#pragma pop
 void fn_80077694(s8 *arg0) {
     *arg0 = 1;
 }
@@ -4629,11 +4635,14 @@ void fn_8007C018(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_8007C04C(void *arg0) {
     void Prim2D_Begin(void);
-    void Prim2D_SetTransform(u8, f32, f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_80009EB0(s32, s32, u8, s32);
-    void Prim2D_SetCallback(void *, s32, void *);
+    void Prim2D_SetCallback(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -4651,11 +4660,11 @@ void fn_8007C04C(void *arg0) {
     extern f32 lbl_803693F8;
     extern f32 lbl_80366E00;
     extern void fn_8007C318(void);
-    s32 temp_r30;
     s32 temp_r31;
+    s32 temp_r30;
     s32 var_r3;
-    u16 temp_r28;
-    u32 temp_r29;
+    s32 temp_r29;
+    s32 temp_r28;
     u16 temp_r3_2;
     u8 temp_r3;
     u8 temp_r3_3;
@@ -4664,12 +4673,12 @@ void fn_8007C04C(void *arg0) {
     temp_r4 = *fn_8006EDD8(*(s32 *)((u8 *)arg0 + 0x30), 0);
     temp_r29 = *(u16 *)((u8 *)temp_r4 + 2);
     temp_r28 = *(u16 *)((u8 *)temp_r4 + 0);
-    temp_r31 = (s32)(*(f32 *)((u8 *)arg0 + 0x38) - (f32)((temp_r29 + (temp_r29 >> 31)) >> 1));
+    temp_r31 = (s32)(*(f32 *)((u8 *)arg0 + 0x38) - (f32)(temp_r29 / 2));
     temp_r30 = (s32)(*(f32 *)((u8 *)arg0 + 0x3C) - (f32)temp_r28);
     if (temp_r31 <= 0x260) {
         Prim2D_Begin();
         temp_r3 = *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x1D);
-        Prim2D_SetTransform(temp_r3, lbl_803693D4, lbl_803693D4, lbl_80366E00 + ((f32)temp_r3 / lbl_803693EC), lbl_803693D8, lbl_80366E00);
+        Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_80366E00 + ((f32)temp_r3 / lbl_803693EC), lbl_803693D8);
         fn_80009EB0(*(s32 *)((u8 *)arg0 + 0x30), 0, *(u8 *)((u8 *)arg0 + 0x40), 0x11);
         temp_r3_2 = *(u16 *)((u8 *)arg0 + 0x46);
         if ((temp_r3_2 & 0x4000) != 0) {
@@ -4678,7 +4687,7 @@ void fn_8007C04C(void *arg0) {
             } else {
                 var_r3 = __cvt_fp2unsigned(lbl_803693F8 + *(f32 *)((u8 *)arg0 + 0x38));
             }
-            Prim2D_SetCallback(&fn_8007C318, var_r3, &fn_8007C318);
+            Prim2D_SetCallback(&fn_8007C318, var_r3);
         }
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -4695,7 +4704,7 @@ void fn_8007C04C(void *arg0) {
         Prim2D_ClearCallbacks();
     }
 }
-
+#pragma pop
 void fn_8007C318(s32 unused, u32 arg1) {
     void GXSetScissor(u32, s32, u32, s32);
     GXSetScissor(arg1 >> 16, 0, arg1 & 0xFFFF, 0x1E0);
