@@ -10,6 +10,7 @@ static inline void Map_LoadOptionalFlags(void *map, char *path) {
  u16 FileCache_Probe(void *); void *Archive_LoadFlags(void *,u32);
  if(FileCache_Probe(path) != 0x8000) *(void **)((u8 *)map+0x18) = Archive_LoadFlags(path,8);
 }
+#pragma pop
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
