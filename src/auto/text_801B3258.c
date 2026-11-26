@@ -3593,81 +3593,95 @@ extern "C" void fn_801BA3E8(void *arg0) {
 
 #pragma cplusplus on
 #pragma opt_common_subs off
-extern "C" void fn_801BA47C(void *arg0) {
-    void *Heap_Alloc(s32);
-    void *Res_GetEntry(u8);
-    void Ui_AddChild(void *, void *);
-    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
-    void *fn_8013BC10(void *, void *);
-    void Ui_CreateMenu(void *, void *, s32);
-    void *Ui_FindChild(void *, s32, s32);
-    void Ui_SetWidgetText(void *, void *);
-    s32 strlen(const char *);
-    void String_AssignCStr(void *, const void *, s32);
-    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029186C[], gUiContext[], gUiUnitPanelStrings[];
-    extern f32 lbl_8036B2D8;
-    s16 pos[2];
-    s32 i;
-    UnitHireMenu *menu;
-    UnitHireItem *item;
-    u8 *w;
-    void *self = arg0;
-    void *child;
-    w = (u8 *)Heap_Alloc(0x4C);
-    if (w) {
-        *(void **)(w+0) = lbl_8028FDB0;
-        *(s32 *)(w+4) = 0;
-        *(void **)(w+0) = lbl_80292230;
-        *(s16 *)(w+8) = -1;
-        *(s16 *)(w+0xA) = 0x260;
-        *(s16 *)(w+0xC) = 0x7C;
-        *(s16 *)(w+0xE) = 0x368;
-        *(s16 *)(w+0x10) = 0x16E;
-        *(s16 *)(w+0x12) = 0;
-        *(s16 *)(w+0x14) = 0;
-        *(s16 *)(w+0x16) = 0x108;
-        *(s16 *)(w+0x18) = 0xF2;
-        *(s16 *)(w+0x1A) = 0;
-        *(s16 *)(w+0x1C) = 0;
-        w[0x1E] = 255; w[0x1F] = 255; w[0x20] = 255; w[0x21] = 255;
-        *(s16 *)(w+0x22) = 0x1E0;
-        *(s16 *)(w+0x24) = 0;
-        *(f32 *)(w+0x28) = 1.0f;
-        *(f32 *)(w+0x2C) = 1.0f;
-        *(f32 *)(w+0x30) = 1.0f;
-        *(s32 *)(w+0x34) = 0;
-        *(s32 *)(w+0x38) = 0;
-        *(void **)(w+0) = lbl_8029186C;
-        *(s32 *)(w+0x3C) = 0;
-        *(s16 *)(w+0x40) = 20;
-        *(s16 *)(w+0x42) = 8;
-        ((UnitHireWidget *)w)->init();
-    }
-    child = Res_GetEntry(gUiContext[0x14]);
-    *(s16 *)(w+8) = 0x108;
-    *(s16 *)(w+0x24) = 8;
-    *(u32 *)(w+0x34) |= 0x10;
-    *(void **)(w+0x3C) = child;
-    Ui_AddChild(self,w);
-    s16 y = *(s16 *)(w+0xC);
-    pos[0] = 0x148;
-    pos[1] = y;
-    Ui_SlideWidgetChildMode1(self,w,pos,0);
-    menu = (UnitHireMenu *)fn_8013BC10(gUiUnitPanelStrings+0x16E,gUiUnitPanelStrings+0xEC);
-    M2C_FIELD(menu,s16 *,0xC)=0xE8;
-    M2C_FIELD(menu,s16 *,8)=0x148;
-    M2C_FIELD(menu,s16 *,0xA)=0x38;
-    M2C_FIELD(menu,u8 *,0x24)=1;
-    for(i=0;menu->get(i)!=0;i++) {
-        item=menu->get(i);
-        item->set2(2);
-        item->set3(3);
-    }
-    Ui_CreateMenu(menu,self,0);
-    child=Ui_FindChild(self,0x82,0);
-    String_AssignCStr((u8 *)child+0x3C,gUiUnitPanelStrings+0xF7,strlen((char *)gUiUnitPanelStrings+0xF7));
-    child=Ui_FindChild(self,-0x1000,0);
-    if(child) Ui_SetWidgetText(child,gUiUnitPanelStrings+0xF8);
+extern "C" void fn_801BA47C(void *arg0)
+{
+  void *Heap_Alloc(s32);
+  void *Res_GetEntry(u8);
+  void Ui_AddChild(void *, void *);
+  void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+  void *fn_8013BC10(void *, void *);
+  void Ui_CreateMenu(void *, void *, s32);
+  void *Ui_FindChild(void *, s32, s32);
+  void Ui_SetWidgetText(void *, void *);
+  s32 strlen(const char *);
+  void String_AssignCStr(void *, const void *, s32);
+  extern u8 lbl_8028FDB0[];
+  extern u8 lbl_80292230[];
+  extern u8 lbl_8029186C[];
+  extern u8 gUiContext[];
+  extern u8 gUiUnitPanelStrings[];
+  extern f32 lbl_8036B2D8;
+  s16 pos[2];
+  s32 i;
+  UnitHireMenu *menu;
+  UnitHireItem *item;
+  u8 *w;
+  void *self = arg0;
+  void *child;
+  w = (u8 *) Heap_Alloc(0x4C);
+  if (w)
+  {
+    *((void **) (w + 0)) = lbl_8028FDB0;
+    *((s32 *) (w + 4)) = 0;
+    *((void **) (w + 0)) = lbl_80292230;
+    *((s16 *) (w + 8)) = -1;
+    *((s16 *) (w + 0xA)) = 0x260;
+    *((s16 *) (w + 0xC)) = 0x7C;
+    *((s16 *) (w + 0x10)) = 0x16E;
+    *((s16 *) (w + 0xE)) = 0x368;
+    *(w + 0x12) = 0;
+    *((s16 *) (w + 0x14)) = 0;
+    *((s16 *) (w + 0x16)) = 0x108;
+    *((s16 *) (w + 0x18)) = 0xF2;
+    *((s16 *) (w + 0x1A)) = 0;
+    *((s16 *) (w + 0x1C)) = 0;
+    w[0x1E] = 255;
+    w[0x1F] = 255;
+    w[0x20] = 255;
+    w[0x21] = 255;
+    *((s16 *) (w + 0x22)) = 0x1E0;
+    *((s16 *) (w + 0x24)) = 0;
+    *((f32 *) (w + 0x28)) = 1.0f;
+    *((f32 *) (w + 0x2C)) = 1.0f;
+    *((f32 *) (w + 0x30)) = 1.0f;
+    *((s32 *) (w + 0x34)) = 0;
+    *((s32 *) (w + 0x38)) = 0;
+    *((void **) (w + 0)) = lbl_8029186C;
+    *((s32 *) (w + 0x3C)) = 0;
+    *((s16 *) (w + 0x40)) = 20;
+    *((s16 *) (w + 0x42)) = 8;
+    ((UnitHireWidget *) w)->init();
+  }
+  child = Res_GetEntry(gUiContext[0x14]);
+  *((s16 *) (w + 8)) = 0x108;
+  *((s16 *) (w + 0x24)) = 8;
+  *((u32 *) (w + 0x34)) |= 0x10;
+  *((void **) (w + 0x3C)) = child;
+  Ui_AddChild(self, w);
+  s16 y = *((s16 *) (w + 0xC));
+  pos[0] = 0x148;
+  pos[1] = y;
+  Ui_SlideWidgetChildMode1(self, w, pos, 0);
+  menu = (UnitHireMenu *) fn_8013BC10(gUiUnitPanelStrings + 0x16E, gUiUnitPanelStrings + 0xEC);
+  *((s16 *) (((s8 *) menu) + 0xC)) = 0xE8;
+  *((s16 *) (((s8 *) menu) + 8)) = 0x148;
+  *((s16 *) (((s8 *) menu) + 0xA)) = 0x38;
+  *((u8 *) (((s8 *) menu) + 0x24)) = 1;
+  for (i = 0; menu->get(i) != 0; i++)
+  {
+    item = menu->get(i);
+    item->set2(2);
+    item->set3(3);
+  }
+
+  Ui_CreateMenu(menu, self, 0);
+  child = Ui_FindChild(self, 0x82, 0);
+  String_AssignCStr(((u8 *) child) + 0x3C, gUiUnitPanelStrings + 0xF7, strlen(((char *) gUiUnitPanelStrings) + 0xF7));
+  child = Ui_FindChild(self, -0x1000, 0);
+  if (child)
+  {
+    Ui_SetWidgetText(child, gUiUnitPanelStrings + 0xF8);
+  }
 }
 #pragma opt_common_subs reset
 #pragma cplusplus reset
@@ -9970,6 +9984,8 @@ get_next:
         goto loop_body;
     }
 }
+#pragma push
+#pragma optimization_level 4
 void fn_801C65E0(void *arg0) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -9995,13 +10011,13 @@ void fn_801C65E0(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
-    extern f32 lbl_8036B424;
-    extern f32 lbl_8036B430;
-    extern f32 lbl_8036B434;
-    extern f32 lbl_8036B45C;
-    extern f32 lbl_8036B460;
-    extern f32 lbl_8036B464;
-    extern f32 lbl_8036B468;
+    extern const f32 lbl_8036B424;
+    extern const f32 lbl_8036B430;
+    extern const f32 lbl_8036B434;
+    extern const f32 lbl_8036B45C;
+    extern const f32 lbl_8036B460;
+    extern const f32 lbl_8036B464;
+    extern const f32 lbl_8036B468;
     f32 mtxA[3][4];
     f32 mtxB[3][4];
     f32 mtxC[3][4];
@@ -10051,11 +10067,11 @@ void fn_801C65E0(void *arg0) {
         GXBegin(0x98, 0, 4);
         c = 0xFF;
         {
-            f64 f3 = lbl_8036B434;
+            f32 f1 = lbl_8036B464;
             f32 f2 = lbl_8036B424;
+            f32 f3 = lbl_8036B434;
             f32 f4 = -f3;
             f32 f0;
-            f32 f1 = lbl_8036B464;
             f0 = f4 + lbl_8036B468;
             *(f32 *)0xCC008000 = f3;
             *(f32 *)0xCC008000 = f2;
@@ -10097,8 +10113,7 @@ void fn_801C65E0(void *arg0) {
         fn_80066D00(-1);
     }
 }
-
-#pragma global_optimizer off
+#pragma pop
 void fn_801C68D0(u32 arg0) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
@@ -11522,13 +11537,13 @@ void fn_801C85E0(void *arg0) {
 }
 void fn_801C8E84(void) {
     void *fn_8006E658(void);
-    void VIConfigure(void *);
+    void fn_80210C70(void *);
     void fn_80221824(u8, void *, s32, void *);
     void *memcpy(void *, void *, u32);
     extern s16 lbl_80366E98;
     extern s16 lbl_80366E9A;
     extern u8 lbl_80366E9C;
-    extern s32 gGameFlags;
+    extern s32 lbl_803682A4;
     extern s8 lbl_803682B0;
     extern s8 lbl_803682B1;
     extern f32 lbl_8036B478;
@@ -11561,8 +11576,8 @@ void fn_801C8E84(void) {
     temp_r3 = fn_8006E658();
     *(s16 *)((u8 *)temp_r3 + 0xA) = (s16)(lbl_80366E98 + lbl_803682B0);
     *(s16 *)((u8 *)temp_r3 + 0xC) = (s16)(lbl_80366E9A + lbl_803682B1);
-    VIConfigure(temp_r3);
-    if (gGameFlags & 0x40) {
+    fn_80210C70(temp_r3);
+    if (lbl_803682A4 & 0x40) {
         var_f2 = lbl_8036B478;
     } else {
         var_f2 = lbl_8036B47C;
@@ -11612,6 +11627,8 @@ void fn_801C8E84(void) {
     memcpy((u8 *)temp_r3 + 0x32, &sp10, 7);
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_801C9170(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -11692,21 +11709,27 @@ void fn_801C9170(void *arg0) {
 
     if (trig & 0x100) {
         fn_801E3560(gSystemSave, lbl_803682B0, lbl_803682B1, lbl_80366E9C);
-        gBattleState[0xA3] = lbl_803682B1;
-        gBattleState[0xA2] = lbl_803682B0;
-        gBattleState[0xA1] = lbl_80366E9C;
+        b2 = lbl_80366E9C;
+        b1 = lbl_803682B1;
+        b0 = lbl_803682B0;
+        gBattleState[0xA3] = b1;
+        gBattleState[0xA2] = b0;
+        gBattleState[0xA1] = b2;
         Ui_PlaySeCue(lbl_8027D740 + 0x121, 0x64);
         Process_ClearFunc(self);
     } else if (trig & 0x200) {
-        lbl_803682B0 = gBattleState[0xA2];
-        lbl_803682B1 = gBattleState[0xA3];
-        lbl_80366E9C = gBattleState[0xA1];
+        b0 = gBattleState[0xA2];
+        b1 = gBattleState[0xA3];
+        b2 = gBattleState[0xA1];
+        lbl_803682B0 = b0;
+        lbl_803682B1 = b1;
+        lbl_80366E9C = b2;
         *(u8 *)((u8 *)self + 0x34) = 1;
         Ui_PlaySeCue(lbl_8027D740 + 0x131, 0x64);
         Process_ClearFunc(self);
     }
 }
-
+#pragma pop
 void Game_InitVideo(void) {
     /* Init VI, pick TV render modes from soft-reset, DEMOInit, then clear and copy the display. */
     void VIInit(void);
