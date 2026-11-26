@@ -587,7 +587,7 @@ void __GXInitGX(void) {
     void fn_80224860(u8, s32);
     void fn_802211D0(s32, s32, u16, u16);
     void fn_802212C8(u16, u16);
-    void fn_802216E0(u16, f32);
+    void fn_802216E0(f32);
     void fn_80221450(s32);
     void fn_80221824(u8, void *, s32, void *);
     void fn_80221A2C(s32);
@@ -611,24 +611,23 @@ void __GXInitGX(void) {
     extern GXRenderModeObj GXPal528IntDf;
     extern GXRenderModeObj GXEurgb60Hz480IntDf;
     extern GXRenderModeObj GXMpal480IntDf;
-    extern const s32 lbl_8036BCB4;
-    extern const s32 lbl_8036BCB8;
-    extern const s32 lbl_8036BCBC;
+    extern const GXColor lbl_8036BCB4;
+    extern const GXColor lbl_8036BCB8;
+    extern const GXColor lbl_8036BCBC;
     extern f32 lbl_8036BCC0;
     extern f32 lbl_8036BCC4;
 
     u8 texObj[0x20];
     f32 mtx[3][4];
-    s32 sp[9];
-    u8 *base;
+    u8 *base = lbl_8029DBA0;
+    GXColor clearColor = lbl_8036BCB4;
+    GXColor ambientColor = lbl_8036BCB8;
+    GXColor materialColor = lbl_8036BCBC;
+    GXColor copyClear, ambient0, material0, ambient1, material1, fog;
     GXRenderModeObj *rmode;
     u32 i;
     s32 xfbm;
 
-    base = lbl_8029DBA0;
-    sp[8] = lbl_8036BCB4;
-    sp[7] = lbl_8036BCB8;
-    sp[6] = lbl_8036BCBC;
 
     switch (VIGetTvFormat()) {
     case 0:
@@ -648,8 +647,8 @@ void __GXInitGX(void) {
         break;
     }
 
-    sp[5] = sp[8];
-    GXSetCopyClear(&sp[5], 0xFFFFFF);
+    copyClear = clearColor;
+    GXSetCopyClear(&copyClear, 0xFFFFFF);
 
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_802201A8(1, 1, 5, 0x3C, 0, 0x7D);
@@ -712,15 +711,15 @@ void __GXInitGX(void) {
     GXSetCullMode(0);
 
     GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
-    sp[4] = sp[7];
-    fn_80222164(4, &sp[4]);
-    sp[3] = sp[6];
-    GXSetChanMatColor(4, &sp[3]);
+    ambient0 = ambientColor;
+    fn_80222164(4, &ambient0);
+    material0 = materialColor;
+    GXSetChanMatColor(4, &material0);
     GXSetBlendMode(5, 0, 0, 1, 0, 0, 2);
-    sp[2] = sp[7];
-    fn_80222164(5, &sp[2]);
-    sp[1] = sp[6];
-    GXSetChanMatColor(5, &sp[1]);
+    ambient1 = ambientColor;
+    fn_80222164(5, &ambient1);
+    material1 = materialColor;
+    GXSetChanMatColor(5, &material1);
 
     fn_80222EB4();
     fn_80222EFC(fn_8021D7FC);
@@ -779,8 +778,8 @@ void __GXInitGX(void) {
     fn_80223678(2, 0, 0);
     fn_80223678(3, 0, 0);
 
-    sp[0] = sp[7];
-    fn_802240F0(0, &sp[0], 0.0f, lbl_8036BCC0, lbl_8036BCC4, lbl_8036BCC0);
+    fog = ambientColor;
+    fn_802240F0(0, &fog, 0.0f, lbl_8036BCC0, lbl_8036BCC4, lbl_8036BCC0);
     fn_802244B4(0, 0, 0);
     fn_802245D8(0, 4, 5, 0);
     fn_8022462C(1);
@@ -800,7 +799,7 @@ void __GXInitGX(void) {
     fn_80224860(rmode->field_rendering, xfbm);
     fn_802211D0(0, 0, rmode->fbWidth, rmode->efbHeight);
     fn_802212C8(rmode->fbWidth, rmode->efbHeight);
-    fn_802216E0(rmode->xfbHeight, (f32)rmode->xfbHeight / (f32)rmode->efbHeight);
+    fn_802216E0((f32)rmode->xfbHeight / (f32)rmode->efbHeight);
     fn_80221450(3);
     fn_80221824(rmode->aa, &rmode->sample_pattern[0][0], 1, rmode->vfilter);
     fn_80221A2C(0);
