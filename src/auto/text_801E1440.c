@@ -2308,10 +2308,10 @@ s32 SystemSave_TestFlag0(void *arg0) {
 
 #pragma opt_unroll 1
 #pragma opt_strength_reduction off
-void fn_801E3400(u8 *arg0, u8 arg1) {
+void fn_801E3400(u8 *arg0, u8 arg1)
+{
     extern u8 gBattleState[];
     s32 i;
-    s32 idx;
     u8 v;
 
     switch (gBattleState[0xa6]) {
@@ -2326,15 +2326,11 @@ void fn_801E3400(u8 *arg0, u8 arg1) {
         break;
     }
 
-    for (i = 0; i < 5; i++) {
-        idx = i + 0x12;
-        v = arg0[idx];
-        if (v == arg1) {
-            return;
-        }
+    for (i = 0; i < 30; i++) {
+        v = arg0[i + 0x12];
+        if (v == arg1) return;
         if (v == 0) {
-            arg0 += i;
-            arg0[0x12] = arg1;
+            arg0[i + 0x12] = arg1;
             return;
         }
     }
