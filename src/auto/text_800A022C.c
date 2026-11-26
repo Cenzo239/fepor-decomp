@@ -72,11 +72,6 @@ void *fn_800A0250(void) {
 }
 
 #pragma optimization_level 3
-static inline u8 MenuToggle_GetState(u8 flag) {
-    u32 state = 2;
-    if (flag != 0) state = 0;
-    return state;
-}
 static inline void MenuToggle_800A0260(u32 state, void *item) {
     extern u8 lbl_80366E24;
     u32 t = lbl_80366E24 ^ 1;
