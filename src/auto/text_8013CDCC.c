@@ -2934,17 +2934,17 @@ extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
         virtual void v4() = 0;
         virtual void v5() = 0;
         virtual void v6() = 0;
-        virtual void v7() = 0;
+        virtual void v7(void *) = 0;
     };
     struct Panel {
         u8 pad[0x34];
         void *flag;
         u8 *inner;
-        inline void *get() { return flag ? *(void **)(inner + 8) : (void *)0; }
     };
     Panel *p = (Panel *)arg0;
-    if (p->get() != 0) {
-        ((Obj *)p->get())->v7();
+    void *flag = p->flag;
+    if ((flag ? *(Obj **)(p->inner + 8) : (Obj *)0) != 0) {
+        (flag ? *(Obj **)(p->inner + 8) : (Obj *)0)->v7(arg0);
     }
 }
 
