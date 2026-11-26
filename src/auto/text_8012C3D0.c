@@ -1951,8 +1951,8 @@ void fn_8012F5CC(void *arg0) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    f32 fn_80059EB8(s32, s32, f32, f32);
+    void fn_8001003C(s32, s32, s32, s32, s32, f32, f32, void *, ...);
+    f32 fn_80059EB8(f32, s32, f32, s32);
     void *Msg_ResolveName(s32);
     void Ui_ScissorUnitListRows(void);
     extern f64 lbl_8036A4F0;
@@ -1981,7 +1981,6 @@ void fn_8012F5CC(void *arg0) {
     u8 inRange;
     u8 mode;
     void *item;
-    f32 fKeep;
     f32 f30;
     void *str;
     u8 *self;
@@ -2040,7 +2039,7 @@ void fn_8012F5CC(void *arg0) {
                 Prim2D_SetColorByte(0xFF);
                 Prim2D_SetCallback(Ui_ScissorUnitListRows, 0);
                 Prim2D_PrepareTex();
-                fn_8001003C(0, 0, icon, 1, 0, str, lbl_8036A50C, lbl_8036A510);
+                fn_8001003C(0, 0, icon, 1, 0, lbl_8036A50C, lbl_8036A510, str);
             }
             unk6A = *(s16 *)(self + 0x6A);
             f30 = (f32)(y2 - unk6A);
@@ -2080,23 +2079,24 @@ void fn_8012F5CC(void *arg0) {
     Prim2D_ClearCallbacks();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
-    fn_8001003C(0, 0, 1, 0, 1, &gUiSelectMenuStrings[0x1C3], self[0x63] + 1, lbl_8036A50C, lbl_8036A510);
-    fn_8001003C(0x10, 0, 6, 0, 1, &gUiSelectMenuStrings[0x1C6], lbl_8036A50C, lbl_8036A510);
-    fn_8001003C(0x20, 0, 6, 0, 1, (char *)gUiSelectMenuStrings + 0x1C3, self[0x6D], lbl_8036A50C, lbl_8036A510);
-    f30 = fn_80059EB8(0x40, self[0x6E], lbl_8036A510, lbl_8036A544) - lbl_8036A548;
-    fKeep = lbl_8036A4EC;
-    Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036A54C, lbl_8036A550 + (lbl_8036A518 + f30), lbl_8036A500, lbl_8036A50C);
-    Prim2D_BindTexture(*(void **)(self + 0x40), 0x12, 0x11);
-    Prim2D_SetColorByte(0xFF);
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A510, fKeep, lbl_8036A518);
-    if ((s8)self[0x67] < 0) {
-        Prim2D_SwapUvV();
+    fn_8001003C(0, 0, 1, 0, 1, lbl_8036A50C, lbl_8036A510, &gUiSelectMenuStrings[0x1C3], self[0x63] + 1);
+    fn_8001003C(0x10, 0, 6, 0, 1, lbl_8036A50C, lbl_8036A510, &gUiSelectMenuStrings[0x1C6]);
+    fn_8001003C(0x20, 0, 6, 0, 1, lbl_8036A50C, lbl_8036A510, (char *)gUiSelectMenuStrings + 0x1C3, self[0x6D]);
+    {
+        f32 f30_post = fn_80059EB8(lbl_8036A510, 0x40, lbl_8036A544, self[0x6E]) - lbl_8036A548;
+        Prim2D_Begin();
+        Prim2D_SetTransform(lbl_8036A54C, lbl_8036A550 + (lbl_8036A518 + f30_post), lbl_8036A500, lbl_8036A50C);
+        Prim2D_BindTexture(*(void **)(self + 0x40), 0x12, 0x11);
+        Prim2D_SetColorByte(0xFF);
+        Prim2D_PrepareTex();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A4EC, lbl_8036A518);
+        if ((s8)self[0x67] < 0) {
+            Prim2D_SwapUvV();
+        }
+        Prim2D_EmitQuad();
+        Prim2D_EndPrim();
     }
-    Prim2D_EmitQuad();
-    Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
 
@@ -2430,7 +2430,8 @@ void fn_801302C0(void) {
 }
 
 #pragma cplusplus reset
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 void fn_801302F4(void *arg0) {
     void Prim2D_ClearCallbacks(void);
     void Prim2D_Begin(void);
@@ -2482,10 +2483,10 @@ void fn_801302F4(void *arg0) {
             ptr += *(s8 *)((u8 *)arg0 + 0x65) * 2;
             var4 = *(s16 *)(ptr + 0x38);
         } else {
+            var6 = (s16)(((unk62 << 5) + 0x60) - temp);
             var4 = 0x28;
             var7 = 0x1B8;
             var8 = 0x16;
-            var6 = (s16)(((unk62 << 5) + 0x60) - temp);
         }
         t = *(s16 *)((u8 *)arg0 + 0x58) + var4;
         *(s16 *)((u8 *)arg0 + 0x58) = (s16)(t / 2);
@@ -2538,6 +2539,7 @@ void fn_801302F4(void *arg0) {
     fn_80057020(*(void **)((u8 *)arg0 + 0x4C));
     fn_80056B0C(*(void **)((u8 *)arg0 + 0x50));
 }
+#pragma pop
 #pragma cplusplus on
 extern "C" void fn_801305F8(void *arg0) {
     struct Obj {
