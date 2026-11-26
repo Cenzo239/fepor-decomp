@@ -1,6 +1,7 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
 typedef struct NodeLinkColor { u8 r, g, b, a; } NodeLinkColor;
+static inline void NodeLinkColor_Copy(NodeLinkColor *d, const NodeLinkColor *s) { d->r=s->r; d->g=s->g; d->b=s->b; d->a=s->a; }
 typedef struct TrailNode40 { u32 v[9]; u8 r, g, b, a; } TrailNode40;
 static inline void TrailNode_Copy(TrailNode40 *d, const TrailNode40 *s) {
 d->v[0]=s->v[0]; d->v[1]=s->v[1]; d->v[2]=s->v[2];
