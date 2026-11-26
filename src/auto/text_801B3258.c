@@ -2016,60 +2016,21 @@ s32 ScriptCmd_PlayerDeadCheck(void)
     return *(s32 *)(gUnitLists + 0x48) == 0;
 }
 
+static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
+    s32 sum = start;
+    s32 i;
+    for (i = start; i < *(s32 *)((u8 *)arg0 + 0x224); ++i)
+        sum += *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
+    return *(s32 *)((u8 *)arg0 + 0x228) + sum;
+}
+
 s32 AchieveList_GetTotalGold(void *arg0) {
-    s32 var_r8;
-    s32 temp_r4;
-    s32 temp_r6;
-    s32 temp_r0;
-    s32 var_r5;
-    s32 var_r6;
-    u32 var_ctr;
-    void *var_r7;
-
-    var_r8 = *(s32 *)((char *)arg0 + 0x224);
-    var_r6 = 0;
-    var_r5 = 0;
-
-    if (var_r8 > 0) {
-        temp_r4 = var_r8 - 8;
-
-        if (var_r8 <= 8) {
-            goto skip_loop1;
-        }
-
-        var_r7 = arg0;
-        var_ctr = ((temp_r4 + 7) >> 3);
-
-        do {
-            var_r5 += 8;
-            temp_r0 = *(s32 *)((char *)var_r7 + 0x21C);
-            temp_r6 = var_r6 + *(s32 *)((char *)var_r7 + 0x200)
-                      + *(s32 *)((char *)var_r7 + 0x204)
-                      + *(s32 *)((char *)var_r7 + 0x208)
-                      + *(s32 *)((char *)var_r7 + 0x20C)
-                      + *(s32 *)((char *)var_r7 + 0x210)
-                      + *(s32 *)((char *)var_r7 + 0x214)
-                      + *(s32 *)((char *)var_r7 + 0x218);
-            var_r7 = (char *)var_r7 + 0x20;
-            var_r6 = temp_r6 + temp_r0;
-            var_ctr--;
-        } while (var_ctr != 0);
-
-skip_loop1:
-        temp_r4 = var_r8 - var_r5;
-        if (temp_r4 > 0) {
-            s32 *var_r4_ptr = (s32 *)((char *)arg0 + (var_r5 * 4));
-
-            do {
-                temp_r0 = *var_r4_ptr;
-                var_r4_ptr++;
-                var_r6 += temp_r0;
-                temp_r4--;
-            } while (temp_r4 != 0);
-        }
+    s32 sum = 0;
+    s32 i;
+    for (i = 0; i < *(s32 *)((u8 *)arg0 + 0x224); ++i) {
+        sum += *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
     }
-
-    return *(s32 *)((char *)arg0 + 0x228) + var_r6;
+    return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
 s32 AchieveList_SumBonuses(void *arg0) {
