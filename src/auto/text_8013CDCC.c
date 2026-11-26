@@ -2640,7 +2640,8 @@ s32 fn_8013FBC0(s32);
 s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
-#pragma inline_depth(0)
+#pragma global_optimizer off
+#pragma scheduling on
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
     Vec2s sp38;
@@ -2656,23 +2657,22 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp10;
     Vec2s spC;
     Vec2s sp8;
-    void *ggf;
-    void *gp;
-    void *parent;
-    s32 *p8;
+    u32 ggf;
+    u32 parent;
+    u32 gp;
 
-    parent = *(void **)((u8 *)arg0 + 0x38);
+    parent = *(u32 *)((u8 *)arg0 + 0x38);
     sp3C = *(Vec2s *)((u8 *)arg0 + 0xA);
-    if (parent != NULL) {
+    if (parent != 0) {
         sp24 = *fn_8013FC64((Vec2s *)((u8 *)parent + 0xA));
-        gp = *(void **)((u8 *)parent + 0x38);
-        if (gp != NULL) {
+        gp = *(u32 *)((u8 *)parent + 0x38);
+        if (gp != 0) {
             sp18 = *(Vec2s *)fn_8013FBD4((s32)gp);
             if (*(u32 *)((u8 *)gp + 0x38) != 0) {
-                ggf = (void *)fn_80138AB8(gp);
+                ggf = (u32)fn_80138AB8((void *)gp);
                 fn_8013FBC8((s32 *)&spC, (s32 *)fn_8013FBD4((s32)ggf));
-                if ((u32)fn_80138AB8(ggf) != 0) {
-                    fn_8013F748((void *)fn_80138AB8(ggf), &spC, &spC);
+                if ((u32)fn_80138AB8((void *)ggf) != 0) {
+                    fn_8013F748((void *)fn_80138AB8((void *)ggf), &spC, &spC);
                 }
                 fn_8013FC28((s32 *)&sp14, (s32 *)&spC, (s16 *)fn_8013FBC0((s32)ggf));
                 fn_8013FC28((s32 *)&sp10, (s32 *)&sp14, (s16 *)&sp18);
@@ -2683,9 +2683,11 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
             fn_8013FC00((s16 *)&sp24, (s16 *)&sp1C);
         }
         fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)parent));
-        p8 = fn_8013FBC8((s32 *)&sp8, (s32 *)&sp2C);
-        fn_8013FBDC((s16 *)p8, (s16 *)&sp3C);
-        fn_8013FBC8((s32 *)&sp28, p8);
+        {
+            s32 *src = (s32 *)&sp2C;
+            s32 *fb = (s32 *)fn_8013FBC8((s32 *)&sp8, src);
+            fn_8013FBC8((s32 *)&sp28, (s32 *)fn_8013FBDC((s16 *)fb, (s16 *)&sp3C));
+        }
         sp3C.x = sp28.x;
         sp3C.y = sp28.y;
     }
@@ -2700,7 +2702,7 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     arg1->y = sp38.y;
     return arg1;
 }
-#pragma inline_depth(8)
+#pragma global_optimizer reset
 void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
     struct {
