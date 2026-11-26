@@ -19,24 +19,6 @@ static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
     return NULL;
 }
 
-static inline void map_select(void *obj, void *entry) {
-    *(void **)((u8 *)obj + 0x40) = entry;
-    if (entry) *(void **)((u8 *)obj + 0x44) = entry;
-}
-
-static inline void map_move_cursor(void *obj, s32 x, s32 y, s32 *base) {
-    extern const f32 lbl_80368E08;
-    u8 *p = (u8 *)obj;
-    p[0x3C] = p[0x3E];
-    p[0x3D] = p[0x3F];
-    *(f32 *)(p + 0x34) = lbl_80368E08 + x;
-    *(f32 *)(p + 0x38) = lbl_80368E08 + y;
-    p[0x3E] = (s32)*(f32 *)(p + 0x34);
-    p[0x3F] = (s32)*(f32 *)(p + 0x38);
-    if ((s8)p[0x3C] != (s8)p[0x3E] || (s8)p[0x3D] != (s8)p[0x3F])
-        map_select(obj, map_find_xy(base, (s8)p[0x3E], (s8)p[0x3F]));
-}
-
 static inline u8 *map_first(s32 *m) {
     s32 c;
     u8 *e;
