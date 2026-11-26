@@ -1,5 +1,22 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 Save_CheckSlotCrc(u8 *blk) {
+    void *fn_800C4638(s32, void *, s32);
+    void fn_800C4588(void *);
+    void Crc32_InitTable(void);
+    u32 Crc32_Calc(void *, void *, s32);
+    extern u8 gSaveStrings[];
+    void *buf;
+    u32 hash;
+    if (*(u32 *)(blk + 0x50) == 0x12345678U) return 1;
+    if (blk[0x60] == 1) return 1;
+    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+    Crc32_InitTable();
+    hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
+    fn_800C4588(buf);
+    if (*(u32 *)(blk + 0x50) != hash) return 0;
+    return 1;
+}
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -1089,6 +1106,7 @@ void fn_801E14F4(void *arg0) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_lifetimes off
+#pragma opt_strength_reduction off
 void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -1135,7 +1153,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     s32 n;
     u8 *found;
     u8 b;
-    u8 freeId;
+    u32 freeId;
     u8 *hp;
     u8 idx;
     u8 *p;
@@ -1194,10 +1212,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
         i += 1;
     } while (i < 5);
 
-    freeId=0;
-    for (n=1;n<40;n++) {
-        if ((s8)hist[n]==0) { freeId=(u8)n; break; }
-    }
+    freeId=(u8)Save_FindFreeId((s8 *)hist);
     best[0x61] = freeId;
     n = 0;
     best[0x64] = 1;
@@ -1566,8 +1581,12 @@ void fn_801E25EC(void) {
     fn_800E9A94();
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_801E2620(void **arg0, u8 arg1) {
     u8 fn_800EB520(void *);
     void fn_800EB760(s32);
@@ -1575,10 +1594,10 @@ void fn_801E2620(void **arg0, u8 arg1) {
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
-    void fn_8021D614(u32, s32 *, u32);
+    void fn_8021D614(u32, u64 *);
     u64 OSGetTime(void);
-    s32 fn_80211690(s32, s32);
-    u16 fn_802072A0(u32, s32, s32, s32);
+    u32 fn_80211690(void);
+    u16 fn_802072A0(u32);
     u8 fn_80209A0C(void);
     void *memset(void *, s32, u32);
     extern u8 gSaveStrings[];
@@ -1589,15 +1608,14 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u32 best_val[5];
     u8 hist[6];
     u8 *slots[2];
-    s32 spC;
-    s32 sp8;
+    u64 seed;
+    void *buf;
     s32 i;
     s32 off;
     u8 *blk;
     u8 *sys;
     u8 ok;
     u8 ok2;
-    void *buf;
     u32 hash;
     u8 *dst;
     u8 *src;
@@ -1642,7 +1660,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     best_val[4] = 0;
 
     do {
-        blk = (u8 *)*(void * volatile *)arg0 + off;
+        blk = (u8 *)*arg0 + off;
         if (*(u32 *)(blk + 0x40) != 0x4645384AU) {
             ok = 0;
         } else if (*(u32 *)(blk + 0x44) != 0x20050201U) {
@@ -1712,21 +1730,21 @@ void fn_801E2620(void **arg0, u8 arg1) {
         u8 *hp = hist;
         off = 0x2000;
         for (j = 2; j != 0; j--) {
-            blk = (u8 *)*(void * volatile *)arg0 + off;
+            blk = (u8 *)*arg0 + off;
             if (hp[0] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
                 *(u32 *)(blk + 0x40) = 0;
             }
             off += 0x4000;
-            blk = (u8 *)*(void * volatile *)arg0 + off;
+            blk = (u8 *)*arg0 + off;
             if (hp[1] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
                 *(u32 *)(blk + 0x40) = 0;
             }
             off += 0x4000;
-            blk = (u8 *)*(void * volatile *)arg0 + off;
+            blk = (u8 *)*arg0 + off;
             if (hp[2] == 0) {
                 *(u32 *)(blk + 0x40) = 0;
             } else if (blk[0x60] == 1) {
@@ -1742,7 +1760,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
         off = 0x1A000;
         i = 0;
         do {
-            *sp = (u8 *)*(void * volatile *)arg0 + off;
+            *sp = (u8 *)*arg0 + off;
             blk = *sp;
             if (*(u32 *)(blk + 0x40) != 0x4645384AU) {
                 ok = 0;
@@ -1800,7 +1818,7 @@ after_pair:
     best = NULL;
     off = 0x2000;
     for (j = 3; j != 0; j--) {
-        sys = (u8 *)*(void * volatile *)arg0 + off;
+        sys = (u8 *)*arg0 + off;
         if (*(u32 *)(sys + 0x70) != 0x53595346U) {
             ok = 0;
         } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1816,7 +1834,7 @@ after_pair:
             }
         }
         off += 0x4000;
-        sys = (u8 *)*(void * volatile *)arg0 + off;
+        sys = (u8 *)*arg0 + off;
         if (*(u32 *)(sys + 0x70) != 0x53595346U) {
             ok = 0;
         } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1833,7 +1851,7 @@ after_pair:
         }
         off += 0x4000;
     }
-    sys = (u8 *)*(void * volatile *)arg0 + 0x1A000;
+    sys = (u8 *)*arg0 + 0x1A000;
     if (*(u32 *)(sys + 0x70) != 0x53595346U) {
         ok = 0;
     } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1848,7 +1866,7 @@ after_pair:
             bestc = save_slot_size(sys);
         }
     }
-    sys = (u8 *)*(void * volatile *)arg0 + 0x20000;
+    sys = (u8 *)*arg0 + 0x20000;
     if (*(u32 *)(sys + 0x70) != 0x53595346U) {
         ok = 0;
     } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
@@ -1864,17 +1882,9 @@ after_pair:
     }
 
     if (arg1 != 0) {
-        if (best == NULL) {
-            fn_800EB760(-0x40);
-            return;
-        }
-        x0 = *(u32 *)(best + 0x78);
-        x1 = *(u32 *)(best + 0x7C);
-        if (((*(u32 *)(gSystemSave + 8) ^ x0) | (*(u32 *)(gSystemSave + 0xC) ^ x1)) == 0) {
-            return;
-        }
-        if (((*(u32 *)(gSystemSave + 8) ^ 0x01234567U) | (*(u32 *)(gSystemSave + 0xC) ^ 0x89ABCDEFU)) == 0) {
-            return;
+        if (best != NULL) {
+            if (*(u64 *)(gSystemSave + 8) == *(u64 *)(best + 0x78)) return;
+            if (*(u64 *)(gSystemSave + 8) == 0x0123456789ABCDEFULL) return;
         }
         fn_800EB760(-0x40);
         return;
@@ -1885,8 +1895,7 @@ after_pair:
         dst = gSystemSave;
         *(u32 *)(dst + 0) = *(u32 *)(src + 0);
         *(u32 *)(dst + 4) = *(u32 *)(src + 4);
-        *(u32 *)(dst + 0xC) = *(u32 *)(src + 0xC);
-        *(u32 *)(dst + 8) = *(u32 *)(src + 8);
+        *(u64 *)(dst + 8) = *(u64 *)(src + 8);
         *(u16 *)(dst + 0x10) = *(u16 *)(src + 0x10);
         dst[0x40] = src[0x40];
         dst[0x41] = src[0x41];
@@ -1921,27 +1930,17 @@ after_pair:
 
     *(u32 *)(gSystemSave + 0) = 0x53595346U;
     *(u32 *)(gSystemSave + 4) = 0x20050201U;
-    spC = 0;
-    sp8 = 0;
-    fn_8021D614(0, &sp8, 0x20050201U);
-    temp_ret = OSGetTime();
-    temp_r5 = spC;
-    temp_r4 = temp_r5 + (u32)temp_ret;
-    spC = temp_r4;
-    sp8 = sp8 + (s32)temp_ret;
-    temp_r6 = fn_80211690(temp_r4, temp_r5) * 0x7B;
-    temp_r5_2 = spC + temp_r6;
-    temp_r4_2 = sp8;
-    spC = temp_r5_2;
-    sp8 = temp_r4_2;
-    *(u32 *)(gSystemSave + 0xC) = temp_r5_2;
-    *(u32 *)(gSystemSave + 8) = temp_r4_2;
+    seed = 0;
+    fn_8021D614(0, &seed);
+    seed += OSGetTime();
+    seed += (u32)(fn_80211690() * 0x7B);
+    *(u64 *)(gSystemSave + 8) = seed;
     *(u16 *)(gSystemSave + 0x10) = 0;
     gSystemSave[0x40] = 0;
     gSystemSave[0x41] = 0;
     gSystemSave[0x42] = 0x40;
     gSystemSave[0x43] = 0;
-    if (fn_802072A0(0, temp_r4_2, temp_r5_2, temp_r6) == 1) {
+    if (fn_802072A0(0) == 1) {
         lang = 0;
     } else {
         temp_r3 = fn_80209A0C();
@@ -1976,6 +1975,7 @@ after_pair:
     *(u32 *)(gSystemSave + 0x30) = 0;
     fn_800EB760(-0x42);
 }
+#pragma pop
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
