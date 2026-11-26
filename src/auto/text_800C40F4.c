@@ -331,11 +331,13 @@ typedef struct String {
       SortIterator &operator++() { ++ptr; return *this; }
       SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
   };
-static inline void Sort_CopyToIterator(s32 *begin, s32 *end, SortIterator out) {
+static inline SortIterator Sort_CopyToIterator(s32 *begin, s32 *end, SortIterator out) {
  while (begin != end) { *out = *begin; ++out; ++begin; }
+ return out;
 }
-static inline void Sort_ReverseToIterator(s32 *begin, s32 *end, SortIterator out) {
+static inline SortIterator Sort_ReverseToIterator(s32 *begin, s32 *end, SortIterator out) {
  while (begin != end) { --end; *out = *end; ++out; }
+ return out;
 }
 class SortCompare {
 public:
@@ -14184,12 +14186,12 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
     void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
     void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
     SortIterator fn_800E0398(s32 *, s32 *, s32 *, s32 *, SortIterator, SortCompare);
-    s32 n = ((s32)end - (s32)begin) / 4;
     s32 *mid;
     s32 *cur;
     s32 value;
     s32 *prev, *hole;
     s32 other, key;
+    s32 n = ((s32)end - (s32)begin) / 4;
     if (n <= 0) {
         return;
     }
@@ -17040,6 +17042,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *pSrc;
     void *pVec;
     u32 room;
+    void *newData;
     void *end;
     u32 cnt;
     void *cur;
@@ -17047,7 +17050,6 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *dst;
     void *shift;
     u32 len;
-    u32 assignLen;
     u8 tag;
     u32 copyCap;
     u32 cap;
@@ -17218,13 +17220,13 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pad[0xAC] = *(u32 *)pSrc;
             plen = *(u32 *)&st.pad[0xAC] < *(u32 *)&st.pad[0xA8] ? (u32 *)&st.pad[0xAC] : (u32 *)&st.pad[0xA8];
-            assignLen = *plen;
+            len = *plen;
             if (dst == pSrc) {
                 fn_800C94F8(dst, 0, 0, 0, 0);
-                String_Resize(dst, assignLen, 1);
+                String_Resize(dst, len, 1);
             } else {
-                String_Resize(dst, assignLen, 0);
-                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), assignLen);
+                String_Resize(dst, len, 0);
+                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), len);
             }
             *(u32 *)&st.pad[0xA0] = (u32)-1;
             if (CheckPos_800E6554(*(u32 *)((u8 *)pSrc + 0xC), 0)) {
@@ -17233,13 +17235,13 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pad[0xA4] = *(u32 *)((u8 *)pSrc + 0xC);
             plen = *(u32 *)&st.pad[0xA4] < *(u32 *)&st.pad[0xA0] ? (u32 *)&st.pad[0xA4] : (u32 *)&st.pad[0xA0];
-            assignLen = *plen;
+            len = *plen;
             if ((u8 *)dst + 0xC == (u8 *)srcC) {
                 fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
-                String_Resize((u8 *)dst + 0xC, assignLen, 1);
+                String_Resize((u8 *)dst + 0xC, len, 1);
             } else {
-                String_Resize((u8 *)dst + 0xC, assignLen, 0);
-                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), assignLen);
+                String_Resize((u8 *)dst + 0xC, len, 0);
+                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
             }
             remaining -= 1;
             *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
@@ -17265,14 +17267,15 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
         }
 
-        dst = Heap_Alloc((s32)(cap * 0x1C));
-        if (dst == 0) {
+        newData = Heap_Alloc((s32)(cap * 0x1C));
+        if (newData == 0) {
             fprintf(__files + 0xA0, lbl_802720E0 + 0xB7);
             abort();
         }
 
-        st.data = dst;
+        st.data = newData;
         st.cap = cap;
+        dst = newData;
 
         cur = *(void **)((u8 *)pVec + 8);
         end = (u8 *)cur + *(u32 *)((u8 *)pVec + 4) * 0x1C;
