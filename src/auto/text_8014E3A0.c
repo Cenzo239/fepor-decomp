@@ -6,8 +6,8 @@ static inline void *MsgDebug_FilterText(void *text, u8 *dst)
     void *Msg_Expand(void *);
     extern u8 lbl_80330C80[];
     u8 *src = (u8 *)Msg_Expand(text);
-    u8 *lim = lbl_80330C80 + 0x46;
     u8 ch;
+    u8 *lim = lbl_80330C80 + 0x46;
     while ((s8)(ch = *src) != 0) {
         if ((s8)ch != 10 && ch >= 0x80) {
             dst[0] = *src;
@@ -208,33 +208,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     if ((u32)str == 0) {
         str = lbl_80277238 + 0x85;
     } else {
-        u8 *lim;
-        u8 var_r5;
-        dst = (char *)lbl_80330C80;
-        src = (u8 *)Msg_Expand(str);
-        lim = lbl_80330C80 + 0x46;
-        goto loop_cmp;
-    loop_body:
-        {
-            s32 t = (s8)var_r5;
-            if (t != 0xA && (u32)var_r5 >= 0x80U) {
-                dst[0] = *src;
-                dst[1] = *++src;
-                dst += 2;
-                if ((u8 *)dst >= lim) {
-                    goto loop_done;
-                }
-            }
-        }
-        src += 1;
-    loop_cmp:
-        var_r5 = *src;
-        if ((s8)var_r5 != 0) {
-            goto loop_body;
-        }
-    loop_done:
-        *dst = 0;
-        str = lbl_80330C80;
+        str = MsgDebug_FilterText(str, lbl_80330C80);
     }
     Prim2D_SetText(str);
     Prim2D_SetScale(lbl_8036A808);
