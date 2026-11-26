@@ -32395,12 +32395,3 @@ extern void *D_8036A150; // The struct 0E60 is likely a pointer to data, or a la
 
 extern char lbl_802704F8[];
 extern f32 lbl_80369E30, lbl_80369E34, lbl_80369E38, lbl_80369E3C, lbl_80369E40, lbl_80369E44, lbl_80369E48, lbl_80369E4C;
-#pragma push
-#pragma optimization_level 4
-static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
-    extern s32 lbl_80367910;
-    s32 *pivot = begin + (offset + lbl_80367910++ % 5);
-    if (lbl_80367910 >= 5) lbl_80367910 = -4;
-    return pivot;
-}
-#pragma pop
