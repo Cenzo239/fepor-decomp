@@ -4487,17 +4487,4 @@ s32 fn_80120C2C(void) {
     gUiPanelFlags |= 0x200;
     return 1;
 }
-static inline s8 TalkUi_FindSlot20354(s8 want, void *object) {
-    u8 *self = object;
-    u8 *child;
-    if (want < 0) return -1;
-    child = *(u8 **)(self + 0x48);
-    if (child && *(s8 *)(child + 0x43) == want) return 0;
-    child = *(u8 **)(self + 0x4c);
-    if (child && *(s8 *)(child + 0x43) == want) return 1;
-    child = *(u8 **)(self + 0x50);
-    if (child && *(s8 *)(child + 0x43) == want) return 2;
-    child = *(u8 **)(self + 0x54);
-    if (child && *(s8 *)(child + 0x43) == want) return 3;
-    return -1;
-}
+
