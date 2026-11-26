@@ -71,10 +71,38 @@ void *fn_800A0250(void) {
     return (char *)gMenuCmdStrings + 0x3C3;
 }
 
-s32 fn_800A0260(s32 a, s32 b, void *arg2) {
-    return fn_800A0260_Body(arg2, 2);
+#pragma optimization_level 3
+static inline u8 MenuToggle_800A0260(u8 state) {
+    extern u8 lbl_80366E24;
+    u8 t = lbl_80366E24 ^ 1;
+    lbl_80366E24 = t;
+    if (t != 0) state = 0;
+    return state;
 }
+s32 fn_800A0260(s32 a, s32 b, void *arg2) {
+    void fn_8000BCA4(void *);
+    void fn_8018DC98(void);
+    void fn_8018DCC0(void);
+    extern u8 lbl_80366E24;
+    extern u8 lbl_8026D8D8[];
+    u8 x = 2;
+    u8 t;
 
+    t = lbl_80366E24 ^ 1;
+    lbl_80366E24 = t;
+    if (t != 0) {
+        x = 0;
+        *(u8 *)((char *)arg2 + 0x39) = x;
+    }
+    if (lbl_80366E24 != 0) {
+        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
+        fn_8018DCC0();
+    } else {
+        fn_8018DC98();
+    }
+    return 0;
+}
+#pragma optimization_level reset
 u32 fn_800A02C8(void) {
     extern u8 lbl_80366E24;
     u32 var_r3;
