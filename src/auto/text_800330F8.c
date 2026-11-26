@@ -1193,31 +1193,35 @@ void Battle_QueuePromotionGains(s32 battle, void *unit) {
 }
 #pragma use_lmw_stmw reset
 
-void fn_80034A8C(void *arg0, void *arg1, u8 value, void *arg3, u8 arg4) {
- u8 fn_8003D094(void *, u8);
- u8 fn_8003D13C(void *);
- void Battle_SetupUnit(void *,void *,s32);
- s32 fn_800386B0(void *);
- void BattleAnim_Queue(void *,s32,s8);
- void fn_8014C5F4(void *,u32);
- void fn_800351FC(void *,u8,s32,void *);
- void Battle_TryStartGrowSeq(void *);
- extern u8 gBattleState[];
- struct BattleUnitView { u8 pad[0x2C9]; u8 gain; u8 pad2[0x5D6]; u8 anim[1]; };
- struct BattleUnitView *unit = arg0;
- u8 v = value;
- if (arg4) v = fn_8003D094(arg1, v);
- if (v > fn_8003D13C(arg1)) v = fn_8003D13C(arg1);
- if (v) {
-  Battle_SetupUnit(unit, arg1, -1);
-  BattleAnim_Queue(unit->anim, 0x27, (s8)fn_800386B0(arg1));
-  if (v > fn_8003D13C(arg1)) v = fn_8003D13C(arg1);
-  BattleAnim_Queue(unit->anim, 0x28, (s8)v);
-  unit->gain = v;
-  fn_8014C5F4(gBattleState, (u8)v);
-  fn_800351FC(unit, v, 0, unit->anim);
-  Battle_TryStartGrowSeq(arg3);
- }
+void fn_80034A8C(u8 *arg0, void *arg1, u8 value, void *arg3, u8 arg4) {
+    u8 fn_8003D094(void *, u8);
+    u8 fn_8003D13C(void *);
+    void Battle_SetupUnit(void *, void *, s32);
+    s32 fn_800386B0(void *);
+    void BattleAnim_Queue(void *, s32, s8);
+    void fn_8014C5F4(void *, s32);
+    void fn_800351FC(void *, u8, s32, void *);
+    void Battle_TryStartGrowSeq(void *);
+    extern u8 gBattleState[];
+
+    if (arg4) {
+        value = fn_8003D094(arg1, value);
+    }
+    if (value > fn_8003D13C(arg1)) {
+        value = fn_8003D13C(arg1);
+    }
+    if (value != 0) {
+        Battle_SetupUnit(arg0, arg1, -1);
+        BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg1));
+        if (value > fn_8003D13C(arg1)) {
+            value = fn_8003D13C(arg1);
+        }
+        BattleAnim_Queue(arg0 + 0x8A0, 0x28, (s8)value);
+        arg0[0x2C9] = value;
+        fn_8014C5F4(gBattleState, value);
+        fn_800351FC(arg0, value, 0, arg0 + 0x8A0);
+        Battle_TryStartGrowSeq(arg3);
+    }
 }
 
 /* Roll level-up growths from rates, clamp to class caps, and queue non-zero gains. */
