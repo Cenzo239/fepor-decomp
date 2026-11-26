@@ -1882,6 +1882,23 @@ void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
 extern f32 lbl_8036B510;
 static inline void DrawHLine(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
 static inline void DrawVLine(s16 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
+static inline void DrawCursorBox(u8 *obj, s32 x, s32 y) {
+    s32 x2 = (s16)(x + 0x5C);
+    s32 y2 = (s16)(y + 0x1D);
+    u8 color[4];
+    color[0] = 0x9C;
+    color[1] = 0x2F;
+    color[2] = 0x12;
+    color[3] = 0xFF;
+    DrawHLine(x, y - 1, x2, *(s32 *)(obj + 0x34), color);
+    DrawHLine(x, y2, x2, *(s32 *)(obj + 0x34), color);
+    DrawVLine(x - 1, y, y2, *(s32 *)(obj + 0x34), color);
+    DrawVLine(x2, y, y2, *(s32 *)(obj + 0x34), color);
+    DrawHLine(x, y, x2, *(s32 *)(obj + 0x34), color);
+    DrawHLine(x, y2 - 1, x2, *(s32 *)(obj + 0x34), color);
+    DrawVLine(x, y, y2, *(s32 *)(obj + 0x34), color);
+    DrawVLine(x2 - 1, y, y2, *(s32 *)(obj + 0x34), color);
+}
 #pragma cplusplus on
 extern "C" void fn_801CF018(void *arg0) {
     struct Obj {
@@ -4281,7 +4298,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
+    temp_r6 = SubSwap(M2C_FIELD(arg1, s16 *, 0x4E), M2C_FIELD(arg1, s16 *, 0x54));
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
