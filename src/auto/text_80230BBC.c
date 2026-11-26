@@ -739,7 +739,7 @@ s32 fn_80231748(void *arg0) {
  return result;
 }
 
-static inline s32 __unicode_to_UTF8_helper(char *s, u16 wchar) {
+static inline s32 __unicode_to_UTF8_helper(char *s, u32 wchar) {
     extern u32 lbl_8036BDF8;
     u32 prefixes = lbl_8036BDF8;
     s32 number_of_bytes;
@@ -757,10 +757,10 @@ static inline s32 __unicode_to_UTF8_helper(char *s, u16 wchar) {
     switch (number_of_bytes) {
         case 3:
             *--target_ptr = (wchar & 0x3F) | 0x80;
-            wchar >>= 6;
+            wchar = ((u16)wchar) >> 6;
         case 2:
             *--target_ptr = (wchar & 0x3F) | 0x80;
-            wchar >>= 6;
+            wchar = ((u16)wchar) >> 6;
         case 1:
             *--target_ptr = wchar | ((u8 *)&prefixes)[number_of_bytes];
     }
