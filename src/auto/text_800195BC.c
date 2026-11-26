@@ -652,7 +652,6 @@ void fn_8001A5D0(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-#pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
 void fn_8001A5E4(void) {
@@ -671,16 +670,15 @@ void fn_8001A5E4(void) {
     extern s32 lbl_803671D8;
     extern void *lbl_803671DC;
 
+    s32 count;
     u8 *ptr;
     void *rec;
     u8 *data;
     s32 i;
     u32 id;
     u32 v;
-    u32 v2;
     void *dest;
     char *base;
-    s32 count;
 
     data = Hash_Lookup(lbl_80268510 + 0x73);
     count = (data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3];
@@ -690,7 +688,8 @@ void fn_8001A5E4(void) {
     rec = lbl_803671DC;
     base = lbl_80268510;
 
-    for (i = 0; i < lbl_803671D8; i++) {
+    i = 0;
+    while (i < lbl_803671D8) {
         *(s16 *)((u8 *)rec + 0x38) = i + 1;
         if (ptr == NULL) { id = 0; } else {
             id = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
@@ -717,12 +716,12 @@ void fn_8001A5E4(void) {
             ptr += 4;
         }
         *(u32 *)((u8 *)rec + 0x14) = v;
-        if (ptr == NULL) { v2 = 0; } else {
-            v2 = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
+        if (ptr == NULL) { v = 0; } else {
+            v = (ptr[0] << 24) + (ptr[1] << 16) + (ptr[2] << 8) + ptr[3];
             ptr += 4;
         }
-        fn_8001CC48((u8 *)rec + 0x2C, v2);
-        *(u32 *)((u8 *)rec + 0x34) = v2;
+        fn_8001CC48((u8 *)rec + 0x2C, v);
+        *(u32 *)((u8 *)rec + 0x34) = v;
 
         dest = (u8 *)rec + 0x1C;
         if (ptr == NULL) { v = 0; } else {
@@ -807,6 +806,7 @@ void fn_8001A5E4(void) {
         fn_8000D3EC(*(u32 *)((u8 *)rec + 0x0), rec);
         rec = (u8 *)rec + 0x64;
         ptr = (u8 *)(((u32)(ptr + 0x2B)) & ~3);
+        i++;
     }
 }
 #pragma optimization_level 4
