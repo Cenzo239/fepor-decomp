@@ -146,10 +146,10 @@ extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
 
-static inline s32 ResetSwitchTimedState(s64 now, u32 state) {
+static inline s32 ResetSwitchTimedState(s64 now, s32 state) {
  s32 n;
  s64 t;
- s32 seconds;
+ s64 seconds;
  s64 q;
     n = *(u8 *)0x800030E3 & 0x1F;
     if (n != 0) {
