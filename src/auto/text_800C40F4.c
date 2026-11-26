@@ -17014,14 +17014,6 @@ static inline void InitVector_800E6554(u32 *v, u32 zero) {
     v[2] = zero;
 }
 
-static inline void CopyTaggedString_800E6554(void *dst, void *src, void *alloc) {
-    void String_InitFromRange(void *, char *, char *, void *, struct String_Init_Tag);
-    char *begin;
-    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)src + 4);
-    begin = *(char **)((u8 *)src + 8);
-    String_InitFromRange(dst, begin, begin + *(u32 *)src, alloc, String_Init_MakeTag());
-}
-
 static inline int CheckPos_800E6554(u32 n, u32 pos) {
     return pos > n;
 }
@@ -17060,7 +17052,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *pPos;
     void *dst;
     void *shift;
-    u32 len;
+    u32 len, length;
     u8 tag;
     u32 copyCap;
     u32 cap;
@@ -17103,20 +17095,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             dst = end;
             while (cnt > room) {
                 if (dst != 0) {
-                    copyCap = *(u32 *)((u8 *)pSrc + 4);
+                    { struct String_Init_Tag tag1;
+copyCap = *(u32 *)((u8 *)pSrc + 4);
 
                     *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)pSrc + 8);
                     endptr = begin + *(u32 *)pSrc;
 
-                    String_InitFromRange(dst, begin, endptr, &st.pad[0x2C], String_Init_MakeTag());
-                    copyCap = *(u32 *)((u8 *)pSrc + 0x10);
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x2C], tag1);
+}
+                    { struct String_Init_Tag tag2;
+copyCap = *(u32 *)((u8 *)pSrc + 0x10);
 
                     *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)pSrc + 0x14);
                     endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
 
-                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x28], String_Init_MakeTag());
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x28], tag2);
+}
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
                 }
                 dst = (u8 *)dst + 0x1C;
@@ -17127,20 +17123,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             cur = pPos;
             while ((u8 *)cur < (u8 *)end) {
                 if (dst != 0) {
-                    copyCap = *(u32 *)((u8 *)cur + 4);
+                    { struct String_Init_Tag tag3;
+copyCap = *(u32 *)((u8 *)cur + 4);
 
                     *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
 
-                    String_InitFromRange(dst, begin, endptr, &st.pad[0x24], String_Init_MakeTag());
-                    copyCap = *(u32 *)((u8 *)cur + 0x10);
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x24], tag3);
+}
+                    { struct String_Init_Tag tag4;
+copyCap = *(u32 *)((u8 *)cur + 0x10);
 
                     *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
 
-                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x20], String_Init_MakeTag());
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x20], tag4);
+}
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
                 cur = (u8 *)cur + 0x1C;
@@ -17154,20 +17154,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
             while ((u8 *)cur < (u8 *)end) {
                 if (dst != 0) {
-                    copyCap = *(u32 *)((u8 *)cur + 4);
+                    { struct String_Init_Tag tag5;
+copyCap = *(u32 *)((u8 *)cur + 4);
 
                     *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
 
-                    String_InitFromRange(dst, begin, endptr, &st.pad[0x1C], String_Init_MakeTag());
-                    copyCap = *(u32 *)((u8 *)cur + 0x10);
+                    String_InitFromRange(dst, begin, endptr, &st.pad[0x1C], tag5);
+}
+                    { struct String_Init_Tag tag6;
+copyCap = *(u32 *)((u8 *)cur + 0x10);
 
                     *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
 
-                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x18], String_Init_MakeTag());
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x18], tag6);
+}
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
                 cur = (u8 *)cur + 0x1C;
@@ -17231,13 +17235,13 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pad[0x4C] = *(u32 *)pSrc;
             plen = *(u32 *)&st.pad[0x4C] < *(u32 *)&st.pad[0x48] ? (u32 *)&st.pad[0x4C] : (u32 *)&st.pad[0x48];
-            len = *plen;
+            length = *plen;
             if (dst == pSrc) {
                 fn_800C94F8(dst, 0, 0, 0, 0);
-                String_Resize(dst, len, 1);
+                String_Resize(dst, length, 1);
             } else {
-                String_Resize(dst, len, 0);
-                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), len);
+                String_Resize(dst, length, 0);
+                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), length);
             }
             *(u32 *)&st.pad[0x40] = (u32)-1;
             if (CheckPos_800E6554(*(u32 *)((u8 *)pSrc + 0xC), 0)) {
@@ -17246,13 +17250,13 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pad[0x44] = *(u32 *)((u8 *)pSrc + 0xC);
             plen = *(u32 *)&st.pad[0x44] < *(u32 *)&st.pad[0x40] ? (u32 *)&st.pad[0x44] : (u32 *)&st.pad[0x40];
-            len = *plen;
+            length = *plen;
             if ((u8 *)dst + 0xC == (u8 *)srcC) {
                 fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
-                String_Resize((u8 *)dst + 0xC, len, 1);
+                String_Resize((u8 *)dst + 0xC, length, 1);
             } else {
-                String_Resize((u8 *)dst + 0xC, len, 0);
-                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
+                String_Resize((u8 *)dst + 0xC, length, 0);
+                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), length);
             }
             remaining -= 1;
             *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
@@ -17293,20 +17297,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while ((u8 *)cur < (u8 *)pPos) {
             if (dst != 0) {
-                copyCap = *(u32 *)((u8 *)cur + 4);
+                { struct String_Init_Tag tag7;
+copyCap = *(u32 *)((u8 *)cur + 4);
 
                 *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
 
-                String_InitFromRange(dst, begin, endptr, &st.pad[0x14], String_Init_MakeTag());
-                copyCap = *(u32 *)((u8 *)cur + 0x10);
+                String_InitFromRange(dst, begin, endptr, &st.pad[0x14], tag7);
+}
+                { struct String_Init_Tag tag8;
+copyCap = *(u32 *)((u8 *)cur + 0x10);
 
                 *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
 
-                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x10], String_Init_MakeTag());
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x10], tag8);
+}
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
             cur = (u8 *)cur + 0x1C;
@@ -17316,20 +17324,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while (cnt != 0) {
             if (dst != 0) {
-                copyCap = *(u32 *)((u8 *)pSrc + 4);
+                { struct String_Init_Tag tag9;
+copyCap = *(u32 *)((u8 *)pSrc + 4);
 
                 *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)pSrc + 8);
                 endptr = begin + *(u32 *)pSrc;
 
-                String_InitFromRange(dst, begin, endptr, &st.pad[0xC], String_Init_MakeTag());
-                copyCap = *(u32 *)((u8 *)pSrc + 0x10);
+                String_InitFromRange(dst, begin, endptr, &st.pad[0xC], tag9);
+}
+                { struct String_Init_Tag tag10;
+copyCap = *(u32 *)((u8 *)pSrc + 0x10);
 
                 *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)pSrc + 0x14);
                 endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
 
-                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x8], String_Init_MakeTag());
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x8], tag10);
+}
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
             }
             dst = (u8 *)dst + 0x1C;
@@ -17339,20 +17351,24 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while ((u8 *)cur < (u8 *)end) {
             if (dst != 0) {
-                copyCap = *(u32 *)((u8 *)cur + 4);
+                { struct String_Init_Tag tag11;
+copyCap = *(u32 *)((u8 *)cur + 4);
 
                 *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
 
-                String_InitFromRange(dst, begin, endptr, &st.pad[0x4], String_Init_MakeTag());
-                copyCap = *(u32 *)((u8 *)cur + 0x10);
+                String_InitFromRange(dst, begin, endptr, &st.pad[0x4], tag11);
+}
+                { struct String_Init_Tag tag12;
+copyCap = *(u32 *)((u8 *)cur + 0x10);
 
                 *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
 
-                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x0], String_Init_MakeTag());
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x0], tag12);
+}
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
             cur = (u8 *)cur + 0x1C;
