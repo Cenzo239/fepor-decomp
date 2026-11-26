@@ -9920,6 +9920,62 @@ void fn_801E0114(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+static inline u8 *Save_FindWritableHeaderIn(u8 **arg0) {
+    void fn_800062CC(void *, void *, s32);
+    void fn_801E3CA8(void *);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
+    void *fn_800C4638(s32, void *, s32);
+    void fn_800C4588(void *);
+    void Crc32_InitTable(void);
+    u32 Crc32_Calc(void *, void *, s32);
+    extern void *gSaveDataBase;
+    extern u8 gSaveStrings[];
+
+u8 *base,*dst; s32 i,off; u8 hdrOk,chkOk; void *buf; u32 sum;
+
+    i = 0;
+    off = 0x20000 - 0x6000;
+loop2:
+    dst = *arg0 + off;
+    if (*(u32 *)(dst + 0x40) != 0x4645384AU) {
+        hdrOk = 0;
+    } else if (*(u32 *)(dst + 0x44) != 0x20050201U) {
+        hdrOk = 0;
+    } else {
+        hdrOk = 1;
+    }
+    if (hdrOk == 0) {
+        return dst;
+    }
+    if (*(u32 *)(dst + 0x50) == 0x12345678U) {
+        chkOk = 1;
+    } else if (*(u8 *)(dst + 0x60) == 1) {
+        chkOk = 1;
+    } else {
+        buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+        Crc32_InitTable();
+        sum = Crc32_Calc(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
+        fn_800C4588(buf);
+        if (*(u32 *)(dst + 0x50) != sum) {
+            chkOk = 0;
+        } else {
+            chkOk = 1;
+        }
+    }
+    if (chkOk == 0) {
+        return dst;
+    }
+    i += 1;
+    off += 0x6000;
+    if (i < 2) {
+        goto loop2;
+    }
+    base = *arg0;
+    dst = base + 0x1A000;
+    if (save_slot_size(dst) < save_slot_size(base + 0x20000)) return dst;
+    return base + 0x20000;
+
+}
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
 s32 off;
@@ -9956,6 +10012,8 @@ off+=0x6000;
 }
 return 0;
 }
+#pragma push
+#pragma optimization_level 4
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
@@ -9981,89 +10039,7 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     void *buf;
     u32 sum;
 
-    off = 0x20000 - 0x6000;
-    i = 0;
-loop1:
-    base = *arg0;
-    src = base + off;
-    if (*(u32 *)(src + 0x40) != 0x4645384AU) {
-        hdrOk = 0;
-    } else if (*(u32 *)(src + 0x44) != 0x20050201U) {
-        hdrOk = 0;
-    } else {
-        hdrOk = 1;
-    }
-    if (hdrOk == 0) {
-        goto next1;
-    }
-    id = *(u8 *)(src + 0x63);
-    j = 0x2000;
-    for (ctr = 2; ctr > 0; ctr--) {
-        cand = base + j;
-        if (*(u32 *)(cand + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(cand + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            goto miss1;
-        }
-        if ((s32)id != (s32)*(u8 *)(cand + 0x62)) {
-            goto miss1;
-        }
-        goto found_pair;
-    miss1:
-        j += 0x4000;
-        cand = base + j;
-        if (*(u32 *)(cand + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(cand + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            goto miss2;
-        }
-        if ((s32)id != (s32)*(u8 *)(cand + 0x62)) {
-            goto miss2;
-        }
-        goto found_pair;
-    miss2:
-        j += 0x4000;
-        cand = base + j;
-        if (*(u32 *)(cand + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(cand + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            goto miss3;
-        }
-        if ((s32)id != (s32)*(u8 *)(cand + 0x62)) {
-            goto miss3;
-        }
-        goto found_pair;
-    miss3:
-        j += 0x4000;
-    }
-    cand = NULL;
-found_pair:
-    if (cand == NULL) {
-        goto next1;
-    }
-    goto phase2;
-next1:
-    i += 1;
-    off += 0x6000;
-    if (i < 2) {
-        goto loop1;
-    }
-    src = NULL;
+    src = Save_FindLinkedHeader(arg0);
 
 phase2:
     i = 0;
@@ -10115,9 +10091,7 @@ do_copy:
     *(u8 *)(dst + 0x60) = 1;
     Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, arg1);
 }
-
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma pop
 void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
