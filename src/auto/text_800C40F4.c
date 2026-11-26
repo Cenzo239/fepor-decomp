@@ -31,8 +31,9 @@ static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
     return Allegiance_Compare(a, b) == 1;
 }
-static inline void Init_800F20E0_Entries(u8 *base) {
+static inline void Init_800F20E0_Entries(void *arg) {
     void fn_80060060(void *);
+    u8 *base = (u8 *)arg;
     s32 i;
     i = 0;
     do {
