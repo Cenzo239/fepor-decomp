@@ -7277,27 +7277,4 @@ void fn_8013CD7C(void)
 
 #pragma optimization_level 2
 #pragma scheduling on
-static inline void MenuGridPosition(s32 *arg0, const void *arg1, s32 kind, s32 colW) {
-    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-    s32 Text_MeasureHeight(s32, f32);
-    Vec2s out, in;
-    s16 rowH;
-    s16 quot;
-    s32 rem, hdiv, t;
-    s16 x, y, half, off48, off4a;
-    quot = kind / colW;
-    rowH = *(s16 *)((u8 *)arg1 + 0x46);
-    off48 = *(s16 *)((u8 *)arg1 + 0x48);
-    off4a = *(s16 *)((u8 *)arg1 + 0x4a);
-    t = MenuGridColumnWidth(arg1, colW);
-    rem = kind % colW;
-    rem = (s16)rem;
-    rem = t * rem;
-    x = (s16)(rem + off48);
-    y = (s16)((s16)rowH * (s16)quot + off4a);
-    t = Text_MeasureHeight(-1, lbl_8036A5AC);
-    half = (s16)(((s32)(s16)rowH - t) >> 1);
-    in.x = x;
-    in.y = (s32)y + half;
-    *arg0 = *(s32 *)fn_8013F748((void*)arg1, &out, &in);
-}
+
