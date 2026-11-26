@@ -2,8 +2,9 @@
 #include "common.h"
 #include "global.h"
 static inline u8 TabMenu_InRange32(s32 low, s32 value, s32 high) {
-    if (low <= value && value <= high) return 1;
-    return 0;
+    u8 ok = 0;
+    if (low <= value && value <= high) ok = 1;
+    return ok;
 }
 static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
     return low <= value && value <= high;
@@ -2141,13 +2142,13 @@ s32 fn_801E8734(void *arg0) {
     return 0;
 }
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 2
 #pragma opt_common_subs off
 s32 fn_801E87EC(void *arg0, s32 arg1) {
     s8 fn_801E4A60();
     s8 fn_801E8920(void *, s32);
     s8 v0, v1;
-    s32 f36, q, rem, band, t, lower, first, last;
+    s32 f36, lower, rem, band, t, q, first, last;
     u8 inrange;
     v0 = fn_801E4A60();
     v1 = fn_801E8920(arg0, arg1);
@@ -2162,7 +2163,7 @@ s32 fn_801E87EC(void *arg0, s32 arg1) {
     lower = (s8)q;
     band = lower + 8;
     if (rem) band = lower + 9;
-    { s32 index = v1; s32 upper = (s8)band;
+    { s32 upper = (s8)band; s32 index = v1;
       inrange = 0;
       if (lower <= index && index <= upper) inrange = 1;
     }
