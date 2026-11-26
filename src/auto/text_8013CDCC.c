@@ -5107,16 +5107,6 @@ s32 fn_8014351C(void *arg0, s32 arg1) {
     return 1;
 }
 
-typedef struct MenuInitTag { u8 unused; } MenuInitTag;
-static inline void MenuInitRows(void *arg0, s32 off) {
-    void fn_80144B60(void *, MenuInitTag);
-    MenuInitTag tag;
-    s32 i;
-    for (i = 0; i != 11; i++) {
-        fn_80144B60((u8 *)arg0 + (off + 0x90), tag);
-        off += 0xC;
-    }
-}
 void fn_80143570(void *arg0) {
     void fn_80144B60(void *, u8);
     s32 off;
