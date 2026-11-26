@@ -9918,25 +9918,19 @@ void fn_801731FC(void *arg0) {
 }
 
 u8 fn_80173220(u32 *arg0, void *arg1) {
-    u64 *fn_8001CB64(void *);
-    u8 fn_80091EF0(void *, void *);
-    u32 *p;
-    u8 var_r4;
+    u64 *Item_GetFlagsPtr(void *);
+    s32 Unit_CanUseItem(void *, void *);
+    u8 ret;
 
-    p = arg0;
-    if (p != NULL) {
-        if (*p == 0) {
-            return 0;
-        }
-    } else {
-        p = (u32 *)fn_8001CB64(p);
+    if (arg0 == NULL || *arg0 == 0) {
+        return 0;
     }
-    if ((*(u64 *)p & 4ULL) != 0) {
-        var_r4 = 0;
+    if ((*Item_GetFlagsPtr(arg0) & 4ULL) != 0) {
+        ret = 0;
     } else {
-        var_r4 = (u8)fn_80091EF0(arg1, (void *)*arg0);
+        ret = Unit_CanUseItem(arg1, (void *)*arg0);
     }
-    return var_r4;
+    return ret;
 }
 
 #pragma cplusplus on
@@ -14443,8 +14437,10 @@ struct Fn_80179DEC_Ctor {
         (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
     }
 };
-  extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
-     void fn_80142060(void *);
+#pragma cplusplus on
+#pragma opt_lifetimes off
+extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
@@ -14463,8 +14459,8 @@ struct Fn_80179DEC_Ctor {
         virtual void m28() = 0;
     };
     u8 *p = (u8 *)arg0;
-    void *pCall = arg0;
-    Obj *pMid = (Obj *)arg0;
+    void *pCall = p;
+    Obj *pMid = (Obj *)pCall;
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
 
@@ -14521,8 +14517,8 @@ struct Fn_80179DEC_Ctor {
     ((Obj *)p)->m28();
     return arg0;
 }
-#pragma global_optimizer reset
-#pragma cplusplus reset
+#pragma opt_lifetimes reset
+#pragma cplusplus off
 
 #pragma cplusplus on
 extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
