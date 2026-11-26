@@ -1821,9 +1821,7 @@ half=(s16)(((s16)rowH-t)>>1);
 in.x=x; in.y=y+half;
 *arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
-#pragma peephole reset
-#pragma optimization_level reset
-#pragma global_optimizer reset
+#pragma opt_lifetimes reset
 #pragma scheduling reset
 #pragma use_lmw_stmw reset
 
