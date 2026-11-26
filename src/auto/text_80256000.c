@@ -2728,172 +2728,45 @@ void fn_80259D94(s32 *arg0, s16 *arg1, s32 *arg2) {
 #pragma push
 #pragma optimization_level 4
 void fn_80259E40(void *arg0, void *arg1) {
-    s32 temp_r0;
-    s32 temp_r0_2;
-    s32 temp_r0_3;
-    s32 temp_r0_4;
-    s32 temp_r0_5;
-    s32 temp_r0_6;
-    s32 temp_r0_7;
-    s32 temp_r0_8;
-    s32 temp_r0_9;
-    s32 var_r4;
-    s32 var_r5;
-    s32 var_r5_2;
-    s32 var_r5_3;
-    s32 var_r5_4;
-    s32 var_r5_5;
-    s32 var_r5_6;
-    s32 var_r5_7;
-    s32 var_r5_8;
-    void *temp_r4;
-
-    M2C_FIELD(arg1, s8 *, 0xF1) = 0;
-    M2C_FIELD(M2C_FIELD(arg1, void **, 0), s16 *, 0xE) = 0;
-    temp_r4 = M2C_FIELD(arg1, void **, 0);
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 1) {
-        var_r5 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + (s16) M2C_FIELD(temp_r4, u16 *, 0x52));
-        temp_r0 = M2C_FIELD(arg0, s32 *, 4);
-        if (temp_r0 > 0x7FFFFF) {
-
-        } else {
-            var_r5 = -0x7FFFFF;
-            if (temp_r0 < -0x7FFFFF) {
-
-            } else {
-                var_r5 = temp_r0;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 4) = var_r5;
+    void *voice;
+    M2C_FIELD(arg1, u8 *, 0xF1) = 0;
+    M2C_FIELD(M2C_FIELD(arg1, void **, 0), u16 *, 0xE) = 0;
+    voice = M2C_FIELD(arg1, void **, 0);
+    if (M2C_FIELD(voice, u16 *, 12) & 1) {
+        M2C_FIELD(arg0, s32 *, 4) += (s16)M2C_FIELD(voice, u16 *, 82);
+        M2C_FIELD(arg0, s32 *, 4) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 4));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 2) {
-        var_r5_2 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) + (s16) M2C_FIELD(temp_r4, u16 *, 0x58));
-        temp_r0_2 = M2C_FIELD(arg0, s32 *, 8);
-        if (temp_r0_2 > 0x7FFFFF) {
-
-        } else {
-            var_r5_2 = -0x7FFFFF;
-            if (temp_r0_2 < -0x7FFFFF) {
-
-            } else {
-                var_r5_2 = temp_r0_2;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 8) = var_r5_2;
+    if (M2C_FIELD(voice, u16 *, 12) & 2) {
+        M2C_FIELD(arg0, s32 *, 8) += (s16)M2C_FIELD(voice, u16 *, 88);
+        M2C_FIELD(arg0, s32 *, 8) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 8));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 4) {
-        var_r5_3 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0xC) = (s32) (M2C_FIELD(arg0, s32 *, 0xC) + (s16) M2C_FIELD(temp_r4, u16 *, 0x5E));
-        temp_r0_3 = M2C_FIELD(arg0, s32 *, 0xC);
-        if (temp_r0_3 > 0x7FFFFF) {
-
-        } else {
-            var_r5_3 = -0x7FFFFF;
-            if (temp_r0_3 < -0x7FFFFF) {
-
-            } else {
-                var_r5_3 = temp_r0_3;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0xC) = var_r5_3;
+    if (M2C_FIELD(voice, u16 *, 12) & 4) {
+        M2C_FIELD(arg0, s32 *, 12) += (s16)M2C_FIELD(voice, u16 *, 94);
+        M2C_FIELD(arg0, s32 *, 12) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 12));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x10) {
-        var_r5_4 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x10) = (s32) (M2C_FIELD(arg0, s32 *, 0x10) + (s16) M2C_FIELD(temp_r4, u16 *, 0x54));
-        temp_r0_4 = M2C_FIELD(arg0, s32 *, 0x10);
-        if (temp_r0_4 > 0x7FFFFF) {
-
-        } else {
-            var_r5_4 = -0x7FFFFF;
-            if (temp_r0_4 < -0x7FFFFF) {
-
-            } else {
-                var_r5_4 = temp_r0_4;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x10) = var_r5_4;
+    if (M2C_FIELD(voice, u16 *, 12) & 16) {
+        M2C_FIELD(arg0, s32 *, 16) += (s16)M2C_FIELD(voice, u16 *, 84);
+        M2C_FIELD(arg0, s32 *, 16) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 16));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x20) {
-        var_r5_5 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x14) = (s32) (M2C_FIELD(arg0, s32 *, 0x14) + (s16) M2C_FIELD(temp_r4, u16 *, 0x5A));
-        temp_r0_5 = M2C_FIELD(arg0, s32 *, 0x14);
-        if (temp_r0_5 > 0x7FFFFF) {
-
-        } else {
-            var_r5_5 = -0x7FFFFF;
-            if (temp_r0_5 < -0x7FFFFF) {
-
-            } else {
-                var_r5_5 = temp_r0_5;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x14) = var_r5_5;
+    if (M2C_FIELD(voice, u16 *, 12) & 32) {
+        M2C_FIELD(arg0, s32 *, 20) += (s16)M2C_FIELD(voice, u16 *, 90);
+        M2C_FIELD(arg0, s32 *, 20) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 20));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x80) {
-        var_r5_6 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x18) = (s32) (M2C_FIELD(arg0, s32 *, 0x18) + (s16) M2C_FIELD(temp_r4, u16 *, 0x60));
-        temp_r0_6 = M2C_FIELD(arg0, s32 *, 0x18);
-        if (temp_r0_6 > 0x7FFFFF) {
-
-        } else {
-            var_r5_6 = -0x7FFFFF;
-            if (temp_r0_6 < -0x7FFFFF) {
-
-            } else {
-                var_r5_6 = temp_r0_6;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x18) = var_r5_6;
+    if (M2C_FIELD(voice, u16 *, 12) & 128) {
+        M2C_FIELD(arg0, s32 *, 24) += (s16)M2C_FIELD(voice, u16 *, 96);
+        M2C_FIELD(arg0, s32 *, 24) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 24));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x200) {
-        var_r5_7 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x1C) = (s32) (M2C_FIELD(arg0, s32 *, 0x1C) + (s16) M2C_FIELD(temp_r4, u16 *, 0x56));
-        temp_r0_7 = M2C_FIELD(arg0, s32 *, 0x1C);
-        if (temp_r0_7 > 0x7FFFFF) {
-
-        } else {
-            var_r5_7 = -0x7FFFFF;
-            if (temp_r0_7 < -0x7FFFFF) {
-
-            } else {
-                var_r5_7 = temp_r0_7;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x1C) = var_r5_7;
+    if (M2C_FIELD(voice, u16 *, 12) & 512) {
+        M2C_FIELD(arg0, s32 *, 28) += (s16)M2C_FIELD(voice, u16 *, 86);
+        M2C_FIELD(arg0, s32 *, 28) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 28));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x400) {
-        var_r5_8 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x20) = (s32) (M2C_FIELD(arg0, s32 *, 0x20) + (s16) M2C_FIELD(temp_r4, u16 *, 0x5C));
-        temp_r0_8 = M2C_FIELD(arg0, s32 *, 0x20);
-        if (temp_r0_8 > 0x7FFFFF) {
-
-        } else {
-            var_r5_8 = -0x7FFFFF;
-            if (temp_r0_8 < -0x7FFFFF) {
-
-            } else {
-                var_r5_8 = temp_r0_8;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x20) = var_r5_8;
+    if (M2C_FIELD(voice, u16 *, 12) & 1024) {
+        M2C_FIELD(arg0, s32 *, 32) += (s16)M2C_FIELD(voice, u16 *, 92);
+        M2C_FIELD(arg0, s32 *, 32) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 32));
     }
-    if (M2C_FIELD(temp_r4, u16 *, 0xC) & 0x1000) {
-        var_r4 = 0x7FFFFF;
-        M2C_FIELD(arg0, s32 *, 0x24) = (s32) (M2C_FIELD(arg0, s32 *, 0x24) + (s16) M2C_FIELD(temp_r4, u16 *, 0x62));
-        temp_r0_9 = M2C_FIELD(arg0, s32 *, 0x24);
-        if (temp_r0_9 > 0x7FFFFF) {
-
-        } else {
-            var_r4 = -0x7FFFFF;
-            if (temp_r0_9 < -0x7FFFFF) {
-
-            } else {
-                var_r4 = temp_r0_9;
-            }
-        }
-        M2C_FIELD(arg0, s32 *, 0x24) = var_r4;
+    if (M2C_FIELD(voice, u16 *, 12) & 4096) {
+        M2C_FIELD(arg0, s32 *, 36) += (s16)M2C_FIELD(voice, u16 *, 98);
+        M2C_FIELD(arg0, s32 *, 36) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 36));
     }
 }
 #pragma pop
