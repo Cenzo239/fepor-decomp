@@ -1932,13 +1932,9 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
-static inline void CursorBoxBody(u8 *arg1, u8 *arg0)
+extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 {
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
-    struct Line {
-        static inline void hline(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
-        static inline void vline(s16 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
-    };
     u8 color[4];
     s32 old;
     s32 target;
@@ -1959,8 +1955,8 @@ static inline void CursorBoxBody(u8 *arg1, u8 *arg0)
         *(s16 *)(arg0 + 0x40) = (*(s16 *)(arg0 + 0x40) + target + 1) >> 1;
     }
 
-    y = *(s16 *)(arg0 + 0x40);
     x = *(s16 *)(arg0 + 0x3E);
+    y = *(s16 *)(arg0 + 0x40);
 
     selected = *(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL;
     if (selected != arg0) return;
@@ -1977,66 +1973,14 @@ static inline void CursorBoxBody(u8 *arg1, u8 *arg0)
     x2 = (s16)(x + 0x5C);
     y2 = (s16)(y + 0x1D);
 
-    Line::hline(x, y - 1, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y2, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x2, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y2 - 1, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x2 - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
-}
-extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
-{
-    struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
-    struct Line {
-        static inline void hline(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
-        static inline void vline(s16 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
-    };
-    u8 color[4];
-    s32 old;
-    s32 target;
-    s32 y, x;
-    s32 x2, y2;
-
-    ((Obj *)arg0)->v3();
-
-    old = *(s16 *)(arg0 + 0x3E);
-    target = (s16)(*(s16 *)(arg0 + 0x3C) * 0x22 + 0xD);
-
-    if (old == -1 && *(s16 *)(arg0 + 0x40) == -1) {
-        *(s16 *)(arg0 + 0x3E) = 5;
-        *(s16 *)(arg0 + 0x40) = target;
-    } else {
-        *(s16 *)(arg0 + 0x3E) = (old + 6) >> 1;
-        *(s16 *)(arg0 + 0x40) = (*(s16 *)(arg0 + 0x40) + target + 1) >> 1;
-    }
-
-    x = *(s16 *)(arg0 + 0x3E);
-    y = *(s16 *)(arg0 + 0x40);
-
-    if ((*(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL) != arg0) return;
-
-    Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B510);
-    Prim2D_PrepareTex();
-
-    color[0] = 0x9C;
-    color[1] = 0x2F;
-    color[2] = 0x12;
-    color[3] = 0xFF;
-
-    x2 = (s16)(x + 0x5C);
-    y2 = (s16)(y + 0x1D);
-
-    Line::hline(x, y - 1, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y2, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x2, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::hline(x, y2 - 1, x2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x, y, y2, *(s32 *)(arg0 + 0x34), color);
-    Line::vline(x2 - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
+    DrawHLine(x, y - 1, x2, *(s32 *)(arg0 + 0x34), color);
+    DrawHLine(x, y2, x2, *(s32 *)(arg0 + 0x34), color);
+    DrawVLine(x - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
+    DrawVLine(x2, y, y2, *(s32 *)(arg0 + 0x34), color);
+    DrawHLine(x, y, x2, *(s32 *)(arg0 + 0x34), color);
+    DrawHLine(x, y2 - 1, x2, *(s32 *)(arg0 + 0x34), color);
+    DrawVLine(x, y, y2, *(s32 *)(arg0 + 0x34), color);
+    DrawVLine(x2 - 1, y, y2, *(s32 *)(arg0 + 0x34), color);
 }
 #pragma optimization_level reset
 #pragma global_optimizer reset
