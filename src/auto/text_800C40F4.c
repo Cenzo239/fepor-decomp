@@ -14165,6 +14165,7 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 }
 
 #pragma cplusplus on
+static inline SortIterator Sort_PassIter(SortIterator it) { return it; }
 #pragma use_lmw_stmw on
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
     s32 Sort_GetKey(void *);
@@ -14240,8 +14241,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         mid = begin + half_n;
         {
             SortIterator a(out);
-            SortIterator b_tmp(out + half_n);
-            SortIterator b(b_tmp);
+            SortIterator b(SortIterator(out + half_n));
             SortCompare c(comp);
             s32 left_n = ((s32)mid - (s32)begin) / 4;
             if (left_n > 1) {
@@ -14267,10 +14267,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         }
         {
-            SortIterator a_tmp(out + half_n);
-            SortIterator a(a_tmp);
-            SortIterator b_tmp(out + n);
-            SortIterator b(b_tmp);
+            SortIterator a(SortIterator(out + half_n));
+            SortIterator b(SortIterator(out + n));
             SortCompare c(comp);
             s32 right_n = ((s32)end - (s32)mid) / 4;
             if (right_n > 1) {
@@ -17022,12 +17020,13 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
     void *pSrc;
     void *end;
-    register void *pVec;
-    u32 room;
+    void *pVec;
+    s32 room;
     u32 cnt;
     void *dst;
     void *pPos;
     void *cur;
+    void *shift;
     u32 len;
     u32 cap;
     u32 need;
@@ -17065,9 +17064,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         end = *(u8 **)((u8 *)pVec + 8) + size * 0x1C;
         room = (u32)(((s32)end - (s32)pPos) / 28);
 
-        if (cnt > room) {
+        if (cnt > (u32)room) {
             dst = end;
-            while (cnt > room) {
+            while (cnt > (u32)room) {
                 if (dst != 0) {
                     *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
                     begin = *(char **)((u8 *)pSrc + 8);
@@ -17135,12 +17134,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
 
             err = __files + 0xA0;
-            lim = (u8 *)pPos + n;
-            while ((u8 *)lim > (u8 *)pPos) {
+            shift = (u8 *)pPos + n;
+            while ((u8 *)shift > (u8 *)pPos) {
                 end = (u8 *)end - 0x1C;
                 *(u32 *)&st.pad[0x98] = (u32)-1;
-                lim = (u8 *)lim - 0x1C;
-                n = *(u32 *)lim;
+                shift = (u8 *)shift - 0x1C;
+                n = *(u32 *)shift;
                 if (CheckPos_800E6554(n, 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
@@ -17151,15 +17150,15 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     plen = (u32 *)&st.pad[0x9C];
                 }
                 len = *plen;
-                if (end == lim) {
+                if (end == shift) {
                     fn_800C94F8(end, 0, 0, 0, 0);
                     String_Resize(end, len, 1);
                 } else {
                     String_Resize(end, len, 0);
-                    memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)lim + 8), len);
+                    memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)shift + 8), len);
                 }
                 *(u32 *)&st.pad[0x90] = (u32)-1;
-                n = *(u32 *)((u8 *)lim + 0xC);
+                n = *(u32 *)((u8 *)shift + 0xC);
                 if (CheckPos_800E6554(n, 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
@@ -17170,14 +17169,14 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     plen = (u32 *)&st.pad[0x94];
                 }
                 len = *plen;
-                if ((u8 *)end + 0xC == (u8 *)lim + 0xC) {
+                if ((u8 *)end + 0xC == (u8 *)shift + 0xC) {
                     fn_800C94F8((u8 *)end + 0xC, 0, 0, 0, 0);
                     String_Resize((u8 *)end + 0xC, len, 1);
                 } else {
                     String_Resize((u8 *)end + 0xC, len, 0);
-                    memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)lim + 0x14), len);
+                    memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)shift + 0x14), len);
                 }
-                *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)lim + 0x18);
+                *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)shift + 0x18);
             }
         }
 
