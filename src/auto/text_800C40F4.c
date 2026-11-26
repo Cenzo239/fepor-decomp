@@ -18,6 +18,7 @@ public:
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
+static inline void Store3F(f32 *out, f32 x, f32 y, f32 z) { out[0] = x; out[1] = y; out[2] = z; }
 struct AiFields { u8 pad[4]; volatile u16 f4; volatile u8 f6; u8 pad7; u8 f8[0x10]; };
 static inline void AiFields_Set(struct AiFields *s, u16 v) { s->f4 = v; s->f6 = 2; }
 static inline void SetupCardStatus(CardFileStatus *s) {
@@ -28529,14 +28530,7 @@ void fn_800FC560(void) {
 #pragma global_optimizer off
 void fn_800FC580(void)
 {
-    struct AiState {
-        u8 pad[4];
-        volatile u16 f4;
-        volatile u8 f6;
-        u8 pad7;
-        u8 f8[0x10];
-    };
-    extern struct AiState gAiState;
+    extern struct AiFields gAiState;
     extern u8 gBattleMap[];
     extern u8 lbl_802731D0[];
     extern void *lbl_80367904;
@@ -28548,8 +28542,8 @@ void fn_800FC580(void)
 
     void *result;
 
-    gAiState.f4 = 0xFFFF;
-    gAiState.f6 = 2;
+    *(volatile u16 *)&gAiState.f4 = 0xFFFF;
+    *(volatile u8 *)&gAiState.f6 = 2;
 
     fn_80100B08(&gAiState);
     memset(gAiState.f8, 0, 0x10);
