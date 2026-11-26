@@ -35,6 +35,7 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
+typedef struct GXColor { u8 r, g, b, a; } GXColor;
 typedef struct GXRenderModeObj {
     u32 viTVmode;
     u16 fbWidth;
@@ -523,6 +524,11 @@ void *GXInit(void *base, u32 size) {
 #pragma opt_propagation on
 #pragma opt_common_subs on
 
+#pragma opt_lifetimes on
+#pragma opt_propagation on
+#pragma opt_common_subs on
+#pragma push
+#pragma optimization_level 4
 void __GXInitGX(void) {
     s32 VIGetTvFormat(void);
     void GXSetCopyClear(void *, s32);
@@ -605,9 +611,9 @@ void __GXInitGX(void) {
     extern GXRenderModeObj GXPal528IntDf;
     extern GXRenderModeObj GXEurgb60Hz480IntDf;
     extern GXRenderModeObj GXMpal480IntDf;
-    extern s32 lbl_8036BCB4;
-    extern s32 lbl_8036BCB8;
-    extern s32 lbl_8036BCBC;
+    extern const s32 lbl_8036BCB4;
+    extern const s32 lbl_8036BCB8;
+    extern const s32 lbl_8036BCBC;
     extern f32 lbl_8036BCC0;
     extern f32 lbl_8036BCC4;
 
@@ -811,7 +817,7 @@ void __GXInitGX(void) {
     fn_80225204(0x23, 0x16);
     fn_80225BF4();
 }
-
+#pragma pop
 #pragma use_lmw_stmw reset
 #pragma peephole on
 
