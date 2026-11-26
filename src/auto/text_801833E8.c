@@ -6715,7 +6715,7 @@ void fn_80190BBC(void *arg0) {
 
     a = p[0x46/2];
     c = p[0xC/2];
-    tmp = a + p[0x4C/2] * 2;
+    tmp = fn_80190BBC_add(p[0x4C/2] * 2, a);
     p[0x10/2] = (s16)(c + (s16)(tmp + 0x10));
     height = p[0x10/2] - p[0xC/2];
     width = p[0xE/2] - p[0xA/2];
