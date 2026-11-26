@@ -72,7 +72,7 @@ s->cursor = p + 1;
 return *p;
 }
 static inline u16 ThpReadWord(void) {
-extern ThpDecodeState *volatile lbl_80368950;
+extern ThpDecodeState *lbl_80368950;
 ThpDecodeState *s = lbl_80368950;
 u8 **cursor = &s->cursor;
 u8 *p = *cursor;
@@ -364,20 +364,21 @@ extern f64 lbl_8036C148;
 
 #pragma global_optimizer on
 s32 fn_8023CA4C(void) {
-    extern const u8 lbl_80282FD8[];
-    extern ThpDecodeState *volatile lbl_80368950;
+    extern u8 lbl_80282FD8[];
+    extern ThpDecodeState *lbl_80368950;
     f32 table[64];
     u8 *zig;
     u8 *p;
-    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
+    const f64 *aan;
     u32 size;
     s32 id;
     u32 i;
+    u32 j;
     u16 row;
-    u8 *state;
 
     size = (u16)ThpReadWord();
     size -= 2;
+    aan = (const f64 *)(lbl_80282FD8 + 0x50);
     for (;;) {
         id = ThpReadByte();
         zig = lbl_80282FD8;
@@ -392,18 +393,16 @@ s32 fn_8023CA4C(void) {
             table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
             table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
         }
-        state = (u8 *)lbl_80368950;
-        i = 0;
-        for (row = 0; row < 8; row++) {
-            *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 0)] * aan[row] * aan[0]);
-            *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 1)] * aan[row] * aan[1]);
-            *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 2)] * aan[row] * aan[2]);
-            *(f32 *)(state + ((u16)(i + 3) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 3)] * aan[row] * aan[3]);
-            *(f32 *)(state + ((u16)(i + 4) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 4)] * aan[row] * aan[4]);
-            *(f32 *)(state + ((u16)(i + 5) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 5)] * aan[row] * aan[5]);
-            *(f32 *)(state + ((u16)(i + 6) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 6)] * aan[row] * aan[6]);
-            *(f32 *)(state + ((u16)(i + 7) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 7)] * aan[row] * aan[7]);
-            i += 8;
+        j = 0;
+        for (row = 0; row < 8; j += 8, row++) {
+            lbl_80368950->tables[id][(u16)(j + 0)] = (f32)((f64)table[(u16)(j + 0)] * aan[row] * aan[0]);
+            lbl_80368950->tables[id][(u16)(j + 1)] = (f32)((f64)table[(u16)(j + 1)] * aan[row] * aan[1]);
+            lbl_80368950->tables[id][(u16)(j + 2)] = (f32)((f64)table[(u16)(j + 2)] * aan[row] * aan[2]);
+            lbl_80368950->tables[id][(u16)(j + 3)] = (f32)((f64)table[(u16)(j + 3)] * aan[row] * aan[3]);
+            lbl_80368950->tables[id][(u16)(j + 4)] = (f32)((f64)table[(u16)(j + 4)] * aan[row] * aan[4]);
+            lbl_80368950->tables[id][(u16)(j + 5)] = (f32)((f64)table[(u16)(j + 5)] * aan[row] * aan[5]);
+            lbl_80368950->tables[id][(u16)(j + 6)] = (f32)((f64)table[(u16)(j + 6)] * aan[row] * aan[6]);
+            lbl_80368950->tables[id][(u16)(j + 7)] = (f32)((f64)table[(u16)(j + 7)] * aan[row] * aan[7]);
         }
         size -= 65;
         if ((u16)size == 0) {
