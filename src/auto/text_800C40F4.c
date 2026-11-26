@@ -20567,6 +20567,7 @@ u8 fn_800EBF58(void) {
     u32 start;
     u8 result;
     s32 r;
+    u32 elapsed;
 
     start = OSGetTick();
     result = 0;
@@ -20605,7 +20606,8 @@ u8 fn_800EBF58(void) {
         }
     }
 END:
-    DebugPrint((char *)gCardStrings + 0x293, (u32)(OSGetTick() - start) / ((*(u32 *)0x800000F8 >> 2) / 1000), result);
+    elapsed = OSGetTick() - start;
+    DebugPrint((char *)gCardStrings + 0x293, elapsed / ((*(u32 *)0x800000F8 >> 2) / 1000), result);
     return result;
 }
 
@@ -26877,7 +26879,7 @@ void fn_800F9E90(void *arg0) {
     extern u8 gUiContext[];
     u8 fn_801021F0(void *, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-    u8 fn_80100BA4(s16, s16, s32, s32);
+    u8 fn_80100BA4(s16, s16, s8, s8);
     void *Unit_FindByName(void *);
     void *cmd;
     s16 x;
