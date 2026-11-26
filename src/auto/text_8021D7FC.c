@@ -2146,49 +2146,27 @@ void fn_80220588(void) {
 }
 
 void fn_802206F4(void) {
-    s64 OSGetTime(void);
-    void *fn_8021F4D4(void);
-#pragma inline_depth(0)
-#pragma inline_max_size(0)
+    GXFifoObj *fn_8021F4D4(void);
+    s32 fn_8021F3CC(void);
     extern u8 *const __GXData;
-    extern volatile u16 *__memReg;
     void __GXInitRevisionBits(void);
     void fn_80220D6C(void);
     void PPCSync(void);
-    u32 count, next;
-    u32 old, lo, hi;
-    s64 start;
-    volatile u16 *regs, *low, *high;
-    volatile u32 *reset;
-    if (__GXData[0x5AA] && fn_8021F4D4()) {
-        regs = __memReg;
-        high = regs + 0x27; low = regs + 0x28;
-        hi = *high;
-        do { old = hi; hi = *high; lo = *low; } while (hi != old);
-        count = (hi << 16) | lo;
-        do {
-            start = OSGetTime();
-            while (OSGetTime() - start <= 8) {}
-            regs = __memReg;
-            high = regs + 0x27; low = regs + 0x28;
-        hi = *high;
-            do { old = hi; hi = *high; lo = *low; } while (hi != old);
-            next = (hi << 16) | lo;
-            old = count; count = next;
-        } while (next != old);
+
+    if ((*(GXData *const *)&__GXData)->abtWaitPECopy && fn_8021F4D4() != (GXFifoObj *)0L) {
+        __GXAbortWaitPECopyDone();
     }
-    reset = (volatile u32 *)0xCC003000;
-    *(reset += 6) = 1;
-    start = OSGetTime();
-    while (OSGetTime() - start <= 50) {}
-    *reset = 0;
-    start = OSGetTime();
-    while (OSGetTime() - start <= 5) {}
-    if (fn_8021F4D4()) {
+    __PIRegs[0x18 / 4] = 1;
+    __GXAbortWait(200);
+    __PIRegs[0x18 / 4] = 0;
+    __GXAbortWait(20);
+    if (fn_8021F4D4() != (GXFifoObj *)0L) {
         fn_8021F3CC();
         __GXInitRevisionBits();
         *(u32 *)(__GXData + 0x5AC) = 0;
-        if (*(u32 *)(__GXData + 0x5AC)) fn_80220D6C();
+        if (*(u32 *)(__GXData + 0x5AC)) {
+            fn_80220D6C();
+        }
         *(volatile u32 *)0xCC008000 = 0;
         *(volatile u32 *)0xCC008000 = 0;
         *(volatile u32 *)0xCC008000 = 0;
@@ -2199,8 +2177,6 @@ void fn_802206F4(void) {
         *(volatile u32 *)0xCC008000 = 0;
         PPCSync();
     }
-#pragma inline_depth reset
-#pragma inline_max_size reset
 }
 
 void fn_802208BC(u32 token) {
