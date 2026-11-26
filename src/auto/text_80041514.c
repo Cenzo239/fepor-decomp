@@ -1,5 +1,7 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+#pragma push
+#pragma global_optimizer off
 static inline void Map_LoadOptional(void *map, char *path, s32 offset) {
  u16 FileCache_Probe(void *); s32 Archive_Load(void *);
  if(FileCache_Probe(path) != 0x8000) *(s32 *)((u8 *)map + offset) = Archive_Load(path);
