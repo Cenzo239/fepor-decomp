@@ -6687,8 +6687,11 @@ void MapOverlay_Draw(void *self) {
     Prim2D_PrepareTex();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 #pragma use_lmw_stmw off
-#pragma global_optimizer off
 void fn_8016E1B4(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
@@ -6706,10 +6709,10 @@ void fn_8016E1B4(void *arg0) {
     void Prim2D_Begin(void);
     u32 Process_FindByName(void *);
     void *Msg_Expand(void *);
-    void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
+    void fn_8001003C(s32, s32, s32, s32, s32, f32, f32, void *, ...);
     void **fn_8006EDD8(void *, s32);
     void Ui_DrawCaptionBar(void *, s32);
-    void fn_8007CD08(void *, s32, f32, f32, f32);
+    void fn_8007CD08(void *, f32, f32, f32, s32);
     void fn_8007D024(s32, s32, f32, f32, f32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void Ui_DrawRouteIconEx(s32, s32, s32);
@@ -6725,28 +6728,28 @@ void fn_8016E1B4(void *arg0) {
     extern u8 gBattleState[];
     extern f32 lbl_8036AA34;
     extern f64 lbl_8036AA40;
-    extern f32 lbl_8036AA4C;
-    extern f32 lbl_8036AA50;
+    extern const f32 lbl_8036AA4C;
+    extern const f32 lbl_8036AA50;
     extern f32 lbl_8036AAA4;
-    extern f32 lbl_8036AAB4;
-    extern f32 lbl_8036AAB8;
-    extern f32 lbl_8036AAE8;
-    extern f32 lbl_8036AAF0;
+    extern const f32 lbl_8036AAB4;
+    extern const f32 lbl_8036AAB8;
+    extern const f32 lbl_8036AAE8;
+    extern const f32 lbl_8036AAF0;
     extern f64 lbl_8036AAF8;
-    extern f32 lbl_8036AB0C;
-    extern f32 lbl_8036AB10;
+    extern const f32 lbl_8036AB0C;
+    extern const f32 lbl_8036AB10;
     extern f32 lbl_8036AB14;
     extern f32 lbl_8036AB18;
-    extern f32 lbl_8036AB30;
-    extern f32 lbl_8036AB3C;
-    extern f32 lbl_8036AB40;
-    extern f32 lbl_8036AB44;
-    extern f32 lbl_8036AB48;
-    extern f32 lbl_8036AB4C;
-    extern f32 lbl_8036AB50;
-    extern f32 lbl_8036AB54;
-    extern f32 lbl_8036AB58;
-    extern f32 lbl_8036AB5C;
+    extern const f32 lbl_8036AB30;
+    extern const f32 lbl_8036AB3C;
+    extern const f32 lbl_8036AB40;
+    extern const f32 lbl_8036AB44;
+    extern const f32 lbl_8036AB48;
+    extern const f32 lbl_8036AB4C;
+    extern const f32 lbl_8036AB50;
+    extern const f32 lbl_8036AB54;
+    extern const f32 lbl_8036AB58;
+    extern const f32 lbl_8036AB5C;
 
     u8 spC[0x84];
     u32 sp8;
@@ -6758,7 +6761,7 @@ void fn_8016E1B4(void *arg0) {
     s32 i;
     s32 split;
     s32 t;
-    s8 mode;
+    s32 mode;
     s32 x;
     s32 y;
     f32 f1;
@@ -6811,10 +6814,10 @@ void fn_8016E1B4(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    fn_8001003C(0x19C, 0x1D, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x1AC), lbl_8036AAB4, lbl_8036AA34);
-    fn_8001003C(0x19C, 0x35, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x1B4), lbl_8036AAB4, lbl_8036AA34);
-    fn_8001003C(0x1E0, 0x1D, 1, 1, 0, lbl_80277EA0 + 0x1BD, (s32)*(s16 *)(gBattleState + 0x12), lbl_8036AAB4, lbl_8036AA34);
-    fn_8001003C(0x1E0, 0x35, 1, 1, 0, lbl_80277EA0 + 0x1C1, *(s32 *)(gBattleState + 0x18), lbl_8036AAB4, lbl_8036AA34);
+    fn_8001003C(0x19C, 0x1D, 6, 1, 0, lbl_8036AAB4, lbl_8036AA34, Msg_Expand(lbl_80277EA0 + 0x1AC));
+    fn_8001003C(0x19C, 0x35, 6, 1, 0, lbl_8036AAB4, lbl_8036AA34, Msg_Expand(lbl_80277EA0 + 0x1B4));
+    fn_8001003C(0x1E0, 0x1D, 1, 1, 0, lbl_8036AAB4, lbl_8036AA34, lbl_80277EA0 + 0x1BD, (s32)*(s16 *)(gBattleState + 0x12));
+    fn_8001003C(0x1E0, 0x35, 1, 1, 0, lbl_8036AAB4, lbl_8036AA34, lbl_80277EA0 + 0x1C1, *(s32 *)(gBattleState + 0x18));
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AAB4);
     Prim2D_PrepareTex();
@@ -6826,62 +6829,53 @@ void fn_8016E1B4(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AAB8);
     Prim2D_PrepareTex();
-    mode = *(s8 *)((u8 *)self + 0x35);
-    if (*(void **)((u8 *)self + 0x40) != 0 && mode == 2) {
+    if (*(void **)((u8 *)self + 0x40) != 0 && *(s8 *)((u8 *)self + 0x35) == 2) {
         fn_8008AB7C(*(s16 *)((u8 *)self + 0x48) + 0x6F,
                     *(s16 *)((u8 *)self + 0x4A) + 0xD,
                     0xBA, 0x18, 0x19, 0x4B, 1);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036AAB8);
-        Prim2D_PrepareTex();
-    } else {
-        do {
-            if ((s8)*(u8 *)node != -1) {
+    }
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036AAB8);
+    Prim2D_PrepareTex();
+    while (node != 0) {
+            if (*(s8 *)node != -1) {
                 Prim2D_Begin();
                 Prim2D_SetTex(0, 0x13);
                 Prim2D_PrepareTex();
-                if ((s8)*(u8 *)node == 0) {
+                if (*(s8 *)node == 0) {
                     tmp = Msg_Expand((u8 *)node + 0x14);
                     f1 = *(f32 *)((u8 *)node + 4);
                     f2 = lbl_8036AAA4;
                     f3 = lbl_8036AB14;
-                    fn_8007CD08(tmp, *(s32 *)((u8 *)node + 0x10),
-                                f1 - f2, f2 + *(f32 *)((u8 *)node + 8), f3);
+                    fn_8007CD08(tmp, f1 - f2, f2 + *(f32 *)((u8 *)node + 8), f3,
+                                *(s32 *)((u8 *)node + 0x10));
                 } else {
                     tmp = Msg_Expand((u8 *)node + 0x14);
-                    fn_8001003C((s32)*(f32 *)((u8 *)node + 4),
-                                (s32)*(f32 *)((u8 *)node + 8),
-                                (u8)*(s32 *)((u8 *)node + 0x10),
-                                1, 0, tmp, lbl_8036AAB4, lbl_8036AA34);
+                    fn_8001003C((s32)*(f32 *)((u8 *)node + 4), (s32)*(f32 *)((u8 *)node + 8), (u8)*(s32 *)((u8 *)node + 0x10), 1, 0, lbl_8036AAB4, lbl_8036AA34, tmp);
                 }
-                if ((s8)*(u8 *)node != 0) {
-                    fn_8001003C((s32)(lbl_8036AB18 + *(f32 *)((u8 *)node + 4)),
-                                (s32)*(f32 *)((u8 *)node + 8),
-                                (u8)*(s32 *)((u8 *)node + 0x10),
-                                0, 0, (u8 *)lbl_80277EA0 + 0x134,
-                                *(s32 *)((u8 *)node + 0xC),
-                                lbl_8036AAB4, lbl_8036AA34);
+                if (*(s8 *)node != 0) {
+                    fn_8001003C((s32)(lbl_8036AB18 + *(f32 *)((u8 *)node + 4)), (s32)*(f32 *)((u8 *)node + 8), (u8)*(s32 *)((u8 *)node + 0x10), 0, 0, lbl_8036AAB4, lbl_8036AA34, (u8 *)lbl_80277EA0 + 0x134, *(s32 *)((u8 *)node + 0xC));
                 }
             }
             node = *(void **)((u8 *)node + 0x38);
-        } while (node != 0);
     }
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AAF0);
     Prim2D_PrepareTex();
     mode = *(s8 *)((u8 *)self + 0x35);
-    if (mode >= 2) {
-        if (mode < 4) {
-            strcpy(spC, (u8 *)lbl_80277EA0 + 0x198);
-            strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x19E));
-            strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
-            strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x1A5));
-        }
-    } else if (mode >= 0) {
+    switch (mode) {
+    case 0: case 1:
         strcpy(spC, (u8 *)lbl_80277EA0 + 0x177);
         strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x17D));
         strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
         strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x18F));
+        break;
+    case 2: case 3:
+            strcpy(spC, (u8 *)lbl_80277EA0 + 0x198);
+            strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x19E));
+            strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
+            strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x1A5));
+        break;
     }
     Ui_DrawCaptionBar(spC, 0);
     mode = *(u8 *)((u8 *)self + 0x35);
@@ -6915,7 +6909,7 @@ void fn_8016E1B4(void *arg0) {
         Prim2D_AddZ(lbl_8036AA50);
         Prim2D_PrepareTex();
     }
-    if ((s8)*(u8 *)((u8 *)self + 0x35) != 0) {
+    if (*(s8 *)((u8 *)self + 0x35) != 0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AB50);
         Prim2D_PrepareTex();
@@ -6935,7 +6929,7 @@ void fn_8016E1B4(void *arg0) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 void *fn_8016E92C(u32 arg0) {
     void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, u32);
@@ -16407,7 +16401,13 @@ extern "C" void fn_8017CC50(void *arg0, void *arg1) {
 #pragma global_optimizer reset
 #pragma dont_inline reset
 
-void fn_8017CE1C(void *self, void *arg1) {
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
+extern "C" void fn_8017CE1C(void *self, void *arg1) {
     u32 OSGetTick(void);
     void fn_80006B18(s16, s16, s32, s32, s16);
     void Prim2D_EndPrim(void);
@@ -16447,19 +16447,19 @@ void fn_8017CE1C(void *self, void *arg1) {
     s16 x;
     s16 halfW;
     s16 t26;
-    s16 t30;
+    s32 t30;
     s32 t31;
-    u8 dig;
+    s32 dig;
     u8 v;
-    f32 ftmp;
     f32 f2;
+    f32 ftmp;
     u32 tick;
     u32 bus;
     u32 tpm;
     u32 ms;
 
     a1 = arg1;
-    (*(void (**)(void *))(*(u32 *)self + 0x10))(self);
+    ((UnitStatPanel*)self)->prepDraw();
     Ui_DrawPanelDecor(0, 0,
         (s16)(*(s16 *)((u8 *)self + 0xE) - *(s16 *)((u8 *)self + 0xA)),
         (s16)(*(s16 *)((u8 *)self + 0x10) - *(s16 *)((u8 *)self + 0xC)),
@@ -16476,7 +16476,7 @@ void fn_8017CE1C(void *self, void *arg1) {
     fn_80006B18(x, t29, 0, 0, *(s16 *)((u8 *)self + 0x3C));
     Prim2D_EndPrim();
     Text_Draw(x, t29, 0x10, (u8 *)lbl_80278838 + 0x49);
-    (*(void (**)(void *, void *))(*(u32 *)self + 0x14))(self, a1);
+    ((UnitStatPanel*)self)->drawChild(a1);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036ABDC);
     Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 3));
@@ -16562,7 +16562,8 @@ void fn_8017CE1C(void *self, void *arg1) {
         fn_8001003C(halfW, t29, 1, 1, 0, (u8 *)lbl_80278838 + 0x5F, lbl_8036ABE0, lbl_8036ABE8);
     }
 }
-
+#pragma pop
+#pragma cplusplus off
 typedef struct R_8017D4B8 { u8 pad[0xa]; s16 xa, xc, xe, x10; } R_8017D4B8;
 void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
     s32 *fn_8013F748(const void *, void *, s16 *);
