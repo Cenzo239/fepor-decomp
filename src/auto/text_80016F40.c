@@ -1598,15 +1598,12 @@ void fn_800193CC(void *arg0, f32 farg0) {
 
 #pragma use_lmw_stmw on
 void fn_800193D8(void *arg0) {
-    struct Vec3 { f32 x, y, z; };
-    void fn_8005A0E0(s32, struct Vec3 *, struct Vec3 *);
-    extern struct Vec3 lbl_802682C8[4];
-    struct Vec3 points[4];
-    struct Vec3 tmp;
-    struct Vec3 min;
-    struct Vec3 max;
-    volatile struct Vec3 minOut;
-    volatile struct Vec3 maxOut;
+    void fn_8005A0E0(s32, Vec3_800193D8 *, Vec3_800193D8 *);
+    extern Vec3_800193D8 lbl_802682C8[4];
+    Vec3_800193D8 points[4];
+    Vec3_800193D8 tmp;
+    Vec3_800193D8 min;
+    Vec3_800193D8 max;
     s32 i;
 
     min.x = 1000.0f;
@@ -1626,13 +1623,7 @@ void fn_800193D8(void *arg0) {
         if (max.y < tmp.y) max.y = tmp.y;
     }
 
-    minOut = min;
-    maxOut = max;
-    *(f32 *)((u8 *)arg0 + 0x28) = *(f32 *)&minOut.x;
-    *(f32 *)((u8 *)arg0 + 0x2c) = *(f32 *)&minOut.y;
-    *(f32 *)((u8 *)arg0 + 0x30) = *(f32 *)&minOut.z;
-    *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)&maxOut.x;
-    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)&maxOut.y;
-    *(f32 *)((u8 *)arg0 + 0x3c) = *(f32 *)&maxOut.z;
+    Vec3_Copy_800193D8((Vec3_800193D8 *)((u8 *)arg0 + 0x28), min);
+    Vec3_Copy_800193D8((Vec3_800193D8 *)((u8 *)arg0 + 0x34), max);
 }
 #pragma use_lmw_stmw reset
