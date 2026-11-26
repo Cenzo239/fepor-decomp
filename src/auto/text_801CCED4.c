@@ -3114,7 +3114,11 @@ void fn_801D0480(void *arg0) {
         off2 += 2;
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma optimization_level 3
 void fn_801D107C(void *arg0) {
     void fn_80007340(void (*)(void *), void *);
     void fn_80007698(u8);
@@ -3245,9 +3249,8 @@ void fn_801D107C(void *arg0) {
         *(f32 *)(self + 0x1C));
     fn_8000A248();
 
-    i = 0;
-    ent = self;
-    do {
+    for (i=0;i<8;i++) {
+        ent=self+i*8;
         if ((s8)ent[0xEC] != 0) {
             idx = (u16)((s8)ent[0xF2] + 2);
             tex2 = fn_8006EDD8(*(void **)self, idx);
@@ -3269,16 +3272,13 @@ void fn_801D107C(void *arg0) {
             fn_80007698(ent[0xF3]);
             fn_80007884();
         }
-        i += 1;
-        ent += 8;
-    } while (8 > i);
+    }
 
     fn_8000A258();
     fn_80009B8C(0xFF);
     fn_8000A248();
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_801D15D4(void *arg0) {
     s64 OSGetTime(void);
     s64 __div2i(s32, s32, s32, s32);
