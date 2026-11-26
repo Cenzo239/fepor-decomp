@@ -16,6 +16,7 @@ s32 fn_80055C84(s32 *arg0) {
 void *Process_CreateChild(void *, s32, void *);             /* extern */
 s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
+extern f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_CreateChild(void *, s32);
     void *temp_r3;
@@ -1850,7 +1851,7 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
   extern const f32 lbl_8036912C;
-  extern f32 lbl_8036915C;
+  extern const f32 lbl_8036915C;
   f32 one;
   f32 h01;
   f32 h00;
