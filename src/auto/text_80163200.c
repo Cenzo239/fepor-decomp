@@ -12639,19 +12639,15 @@ void *fn_8017761C(void) {
     return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
-#pragma use_lmw_stmw on
 s32 fn_8017762C(void) {
     u32 *Unit_GetItemSlot(u32, s32);
     u64 *Item_GetFlagsPtr(u32 *);
     u8 Status_Test(void *, u32);
     extern u32 gUiContext[];
-    struct { s8 j; u32 z; u32 mask; } pair;
     s8 i;
     u8 unavailable;
     u32 unit;
     u32 *slot;
-    u64 *flags;
-    u32 t;
     s32 result;
 
     unavailable = 1;
@@ -12660,27 +12656,20 @@ s32 fn_8017762C(void) {
         for (i = 0; i < 8; i++) {
             slot = Unit_GetItemSlot(unit, i);
             if (*slot != 0) {
-                flags = Item_GetFlagsPtr(slot);
-                if ((*(u64 *)flags & 0x20000000000ULL) == 0) {
-                    flags = Item_GetFlagsPtr(slot);
-                    t = 0;
-                    if ((*(u64 *)flags & 0x200ULL) == 0) {
-                        unavailable = t;
+                if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x20000000000ULL) == 0) {
+                    if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x200ULL) == 0) {
+                        unavailable = 0;
                         break;
                     }
                 }
             }
         }
     } else {
-        pair.j = 0;
-        pair.mask = 0x200;
-        pair.z = pair.j;
-        for (; pair.j < 8; pair.j++) {
-            slot = Unit_GetItemSlot(unit, pair.j);
+        for (i = 0; i < 8; i++) {
+            slot = Unit_GetItemSlot(unit, i);
             if (*slot != 0) {
-                flags = Item_GetFlagsPtr(slot);
-                if ((*(u64 *)flags & ((u64)pair.mask << 32)) == 0) {
-                    unavailable = pair.z & pair.z;
+                if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x20000000000ULL) == 0) {
+                    unavailable = 0;
                     break;
                 }
             }
@@ -12692,7 +12681,6 @@ s32 fn_8017762C(void) {
     }
     return (u8)result;
 }
-#pragma use_lmw_stmw reset
 /* If entry type is 2, show a lock-message popup at parent+entry pos; else set UI command 0x87. */
 s32 Ui_SetCmd87OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
@@ -14260,50 +14248,78 @@ extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(s16 *)((u8 *)self + 0xC2) = 0;
     return self;
 }
-#pragma pop
 #pragma cplusplus on
-extern "C" void *fn_80179BC8(void *p,s32 x,s32 y,s32 w,s32 h,s32 style) {
-void fn_80142060(void *);
-void fn_80143B24(void *);
-void fn_8022C260(void *,void *,void *,s32,s32);
-s32 fn_80179D40(s32);
-void *fn_80144610(void *,s16);
-extern u8 lbl_80292208[],lbl_80292488[];
-struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; };
-extern u16 lbl_8028FDB0[],lbl_80292230[];
-M2C_FIELD(p,void **,0)=lbl_8028FDB0;
-M2C_FIELD(p,s32 *,4)=0;
-M2C_FIELD(p,void **,0)=lbl_80292230;
-M2C_FIELD(p,s16 *,8)=-1;
-M2C_FIELD(p,s16 *,10)=x;
-M2C_FIELD(p,s16 *,12)=y;
-M2C_FIELD(p,s16 *,14)=(s16)x+(s16)w;
-M2C_FIELD(p,s16 *,16)=(s16)y+(s16)h;
-M2C_FIELD(p,s16 *,18)=0; M2C_FIELD(p,s16 *,20)=0;
-M2C_FIELD(p,s16 *,22)=w; M2C_FIELD(p,s16 *,24)=h;
-M2C_FIELD(p,s16 *,26)=0; M2C_FIELD(p,s16 *,28)=0;
-M2C_FIELD(p,u8 *,30)=255; M2C_FIELD(p,u8 *,31)=255; M2C_FIELD(p,u8 *,32)=255; M2C_FIELD(p,u8 *,33)=255;
-M2C_FIELD(p,s16 *,34)=style; M2C_FIELD(p,s16 *,36)=0;
-M2C_FIELD(p,f32 *,40)=1.0f; M2C_FIELD(p,f32 *,44)=1.0f; M2C_FIELD(p,f32 *,48)=1.0f;
-M2C_FIELD(p,u32 *,52)=0; M2C_FIELD(p,u32 *,56)=0;
-void *self2 = p;
-M2C_FIELD(p,void **,0)=lbl_80292208;
-fn_80142060((u8 *)self2+0x3c);
-M2C_FIELD(p,void **,0)=lbl_80292488;
-M2C_FIELD(p,u32 *,0x48)=0;
-M2C_FIELD(p,u8 *,0x4c)=1;
-M2C_FIELD(p,u8 *,0x4d)=0;
-M2C_FIELD(p,s16 *,0x7c)=-1; M2C_FIELD(p,s16 *,0x7e)=-1;
-M2C_FIELD(p,s16 *,0x80)=0; M2C_FIELD(p,f32 *,0x84)=0.0f;
-M2C_FIELD(p,s16 *,0x88)=0; M2C_FIELD(p,s16 *,0x8a)=0;
-M2C_FIELD(p,s16 *,0x8c)=0; M2C_FIELD(p,s16 *,0x8e)=0;
-fn_8022C260((u8 *)p+0x90,(void *)fn_80179D40,(void *)fn_80144610,12,11);
-M2C_FIELD(p,u32 *,0x11c)=0; M2C_FIELD(p,u32 *,0x120)=0;
-fn_80143B24(p); ((Obj *)p)->v8(); return p;
+#pragma opt_propagation off
+extern "C" void *fn_80179BC8(void *p, s32 x, s32 y, s32 w, s32 h, s32 style) {
+    void fn_80142060(void *);
+    void fn_80143B24(void *);
+    void fn_8022C260(void *, void *, void *, s32, s32);
+    s32 fn_80179D40(s32);
+    void *fn_80144610(void *, s16);
+    extern u8 lbl_80292208[], lbl_80292488[];
+    extern u16 lbl_8028FDB0[], lbl_80292230[];
+    extern const f32 gF32_1;
+    extern const f32 lbl_8036AB70;
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+    };
+    void *self2 = p;
+    M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
+    M2C_FIELD(p, s32 *, 4) = 0;
+    M2C_FIELD(p, void **, 0) = lbl_80292230;
+    M2C_FIELD(p, s16 *, 8) = -1;
+    M2C_FIELD(p, s16 *, 10) = x;
+    M2C_FIELD(p, s16 *, 12) = y;
+    M2C_FIELD(p, s16 *, 14) = (s16)x + (s16)w;
+    M2C_FIELD(p, s16 *, 16) = (s16)y + (s16)h;
+    M2C_FIELD(p, s16 *, 18) = 0;
+    M2C_FIELD(p, s16 *, 20) = 0;
+    M2C_FIELD(p, s16 *, 22) = w;
+    M2C_FIELD(p, s16 *, 24) = h;
+    M2C_FIELD(p, s16 *, 26) = 0;
+    M2C_FIELD(p, s16 *, 28) = 0;
+    M2C_FIELD(p, u8 *, 30) = 255;
+    M2C_FIELD(p, u8 *, 31) = 255;
+    M2C_FIELD(p, u8 *, 32) = 255;
+    M2C_FIELD(p, u8 *, 33) = 255;
+    M2C_FIELD(p, s16 *, 34) = style;
+    M2C_FIELD(p, s16 *, 36) = 0;
+    M2C_FIELD(p, f32 *, 40) = gF32_1;
+    M2C_FIELD(p, f32 *, 44) = gF32_1;
+    M2C_FIELD(p, f32 *, 48) = gF32_1;
+    M2C_FIELD(p, u32 *, 52) = 0;
+    M2C_FIELD(p, u32 *, 56) = 0;
+    M2C_FIELD(p, void **, 0) = lbl_80292208;
+    fn_80142060((u8 *)self2 + 0x3c);
+    M2C_FIELD(p, void **, 0) = lbl_80292488;
+    M2C_FIELD(p, u32 *, 0x48) = 0;
+    M2C_FIELD(p, u8 *, 0x4c) = 1;
+    M2C_FIELD(p, u8 *, 0x4d) = 0;
+    M2C_FIELD(p, s16 *, 0x7c) = -1;
+    M2C_FIELD(p, s16 *, 0x7e) = -1;
+    M2C_FIELD(p, s16 *, 0x80) = 0;
+    M2C_FIELD(p, f32 *, 0x84) = lbl_8036AB70;
+    M2C_FIELD(p, s16 *, 0x88) = 0;
+    M2C_FIELD(p, s16 *, 0x8a) = 0;
+    M2C_FIELD(p, s16 *, 0x8c) = 0;
+    M2C_FIELD(p, s16 *, 0x8e) = 0;
+    fn_8022C260((u8 *)p + 0x90, (void *)fn_80179D40, (void *)fn_80144610, 12, 11);
+    M2C_FIELD(p, u32 *, 0x11c) = 0;
+    M2C_FIELD(p, u32 *, 0x120) = 0;
+    fn_80143B24(p);
+    ((Obj *)p)->v8();
+    return p;
 }
-
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma opt_propagation reset
+#pragma cplusplus off
 
 s32 fn_80179D40(s32 arg0) {
     fn_8014510C();
