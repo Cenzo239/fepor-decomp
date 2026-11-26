@@ -1122,7 +1122,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     fn_8001003C((s16)(x + 0x12), (s16)(y + 0x23), 8, 0, 0,
                 Msg_Expand(lbl_8026CC88 + 0x3B), lbl_80369704, lbl_803696E0);
     fn_8001003C((s16)(x + 0x28), (s16)(y + 0x23), 2, 0, 0,
-                lbl_8026CC88 + 0x41, (s8)((u8 *)self)[0x19A], lbl_80369704, lbl_803696E0);
+                lbl_8026CC88 + 0x41, (s32)((u8 *)self)[0x19A], lbl_80369704, lbl_803696E0);
     fn_8001003C((s16)(x + 0x4C), (s16)(y + 0x23), 8, 0, 0,
                 Msg_Expand(lbl_8026CC88 + 0x45), lbl_80369704, lbl_803696E0);
 
@@ -1137,7 +1137,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     fn_8001003C((s16)(x + 0x10), (s16)(y + 0x3A), 8, 0, 0,
                 Msg_Expand(lbl_8026CC88 + 0x50), lbl_80369704, lbl_803696E0);
     fn_8001003C((s16)(x + 0x3A), (s16)(y + 0x3A), 2, 0, 0,
-                lbl_8026CC88 + 0x41, (s8)((u8 *)self)[0x1A8], lbl_80369704, lbl_803696E0);
+                lbl_8026CC88 + 0x41, (s32)((u8 *)self)[0x1A8], lbl_80369704, lbl_803696E0);
     fn_8001003C((s16)(x + 0x54), (s16)(y + 0x3A), 0xC, 0, 0,
                 lbl_8026CC88 + 0x56, Unit_GetMaxHp(self), lbl_80369704, lbl_803696E0);
 
@@ -1374,6 +1374,9 @@ void Ui_DrawRouteIconEx(s32 arg0, s32 arg1, u8 arg2) {
     Prim2D_EndPrim();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_8008C1D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -1391,7 +1394,7 @@ void fn_8008C1D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern f32 lbl_80369704;
     extern f32 lbl_80369708;
     struct { u8 buf[0x20]; u16 w; u16 h; } sp74, sp50, sp2C, sp8;
-    u16 wide;
+    s32 wide;
     s32 wide2;
     s32 wm1;
 
@@ -1559,7 +1562,7 @@ block_6:
         Prim2D_PrepareTex();
     }
 }
-
+#pragma pop
 void fn_8008CD34(void) {
     M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex();
