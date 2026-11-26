@@ -1,4 +1,5 @@
 #include "common.h"
+typedef struct { s16 x, y; } UiCursorPoint;
 static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
     u8 fn_80105BC0(void *, u8);
     u32 *fn_8001CB64(u32);
@@ -299,10 +300,12 @@ void fn_80163708(void *arg0) {
     *(s16 *)((char *)arg0 + 0x18) = c;
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 1
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
-#pragma opt_peephole off
-void fn_80163728(void *arg0, void *arg1) {
+#pragma opt_common_subs off
+extern "C" void fn_80163728(void *arg0, void *arg1) {
     extern f32 lbl_8036A89C;
     extern f32 lbl_8036A8A0;
     extern f32 lbl_8036A890;
@@ -313,12 +316,12 @@ void fn_80163728(void *arg0, void *arg1) {
     void Ui_DrawRouteIconEx(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
     s32 var_r29;
-    s16 temp_r31;
+    s32 temp_r31;
     s32 var_r3;
     s32 temp_r5;
     u8 var_r30;
     s16 temp_r0;
-    s16 var_r28;
+    s32 var_r28;
     u8 var_r3_2;
     u32 var_r0;
     s16 temp_r24;
@@ -330,13 +333,13 @@ void fn_80163728(void *arg0, void *arg1) {
     s32 temp_r25_2_val;
     s16 temp_r25_2_final;
 
-    ((void (*)(void *))((void **)M2C_FIELD(arg0, u32 *, 0x00))[5])(arg0);
+    ((CursorRenderView *)arg0)->update(arg1);
 
     var_r3 = M2C_FIELD(arg0, s16 *, 0x4C);
-    if ((s16)var_r3 >= 0) {
+    if ((var_r3 = (s16)var_r3) >= 0) {
         temp_r31 = M2C_FIELD(arg0, s16 *, 0x54);
         var_r29 = temp_r31;
-        var_r3 = (s16)var_r3;
+        
 
         if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
             var_r3 -= 4;
@@ -356,7 +359,7 @@ void fn_80163728(void *arg0, void *arg1) {
 
         if (M2C_FIELD(arg0, u8 *, 0x48) != 0) {
             var_r30 = 0;
-            var_r3_2 = 0;
+            var_r3_2 = var_r30;
 
             if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
                 var_r3_2 = 1;
@@ -387,14 +390,14 @@ void fn_80163728(void *arg0, void *arg1) {
             Prim2D_AddZ(lbl_8036A8A0);
             Prim2D_PrepareTex();
 
-            ((void (*)(void *, s32, s16, s16, s16, u8))((void **)M2C_FIELD(arg0, u32 *, 0x00))[0x40/4])(arg0, 0, temp_r0,
+            ((CursorRenderView *)arg0)->drawRow(0, temp_r0,
                       (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)),
                       temp_r31, var_r30);
         }
     }
 
     if (M2C_FIELD(arg0, u8 *, 0x49) != 0) {
-        ((void (*)(void *, void *))((void **)M2C_FIELD(arg0, u32 *, 0x00))[5])(arg0, arg1);
+        ((CursorRenderView *)arg0)->update(arg1);
 
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A890);
@@ -420,8 +423,7 @@ void fn_80163728(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
     }
 }
-#pragma opt_peephole reset
-#pragma global_optimizer reset
+#pragma pop
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
@@ -586,7 +588,7 @@ loop_test:
 #pragma use_lmw_stmw reset
 
 #pragma push
-#pragma optimization_level 1
+#pragma opt_common_subs off
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
@@ -8590,6 +8592,8 @@ if (p) {
 }
 #pragma global_optimizer reset
 
+#pragma push
+#pragma opt_common_subs off
 void fn_80171004(void *arg0)
 {
     void *Ui_FindChild(void *, s32, s32);
@@ -8615,12 +8619,12 @@ void fn_80171004(void *arg0)
     u8 *slot;
     u8 *obj;
     void *p;
-    u32 *ctx;
     s16 pos[2];
     s16 slide[2];
     s16 height;
 
     self = (u8 *)arg0;
+    i = 0;
 
     list = *(u8 **)(self + 0x4C);
     list[0x78] = 0;
@@ -8665,10 +8669,9 @@ void fn_80171004(void *arg0)
     *(s16 *)(*(u8 **)(self + 0x54) + 8) = 0x105;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x24) = 8;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x8A) = 2;
-    *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = 0;
+    *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = i;
 
     list = *(u8 **)(self + 0x54);
-    i = 0;
     slot = (u8 *)gConvoy;
 
     do {
@@ -8682,14 +8685,12 @@ void fn_80171004(void *arg0)
 
     fn_80143570(*(void **)(self + 0x54));
 
-    ctx = (u32 *)gUiContext;
-
     list = *(u8 **)(self + 0x54);
     *(u32 *)(list + 0x11C) = 0;
 
     list = *(u8 **)(self + 0x54);
     *(void **)(list + 0x120) = (void *)fn_80175924;
-    *(u32 *)(list + 0x124) = *ctx;
+    *(void **)(list + 0x124) = *(void **)((s8 *)gUiContext + 0);
 
     list = *(u8 **)(self + 0x54);
     ((void (*)(void *))(*(void ***)list)[13])(list);
@@ -8730,7 +8731,7 @@ void fn_80171004(void *arg0)
         self
     );
 }
-
+#pragma pop
 void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
 {
   extern u16 lbl_8028FDB0[];
@@ -11276,6 +11277,7 @@ extern "C" void fn_801752EC(void *arg0) {
     u32 count;
     s32 i;
     void *slot;
+    void **entry;
     void *dst2;
     void *unit2;
     void *p;
@@ -11345,7 +11347,7 @@ extern "C" void fn_801752EC(void *arg0) {
         void *unit1 = *(void **)lbl_802CA264;
         while (unit1 != NULL) {
         for (s32 i = 0; i < 4; i++) {
-            void **entry = fn_80037BBC(unit1, i);
+            entry = fn_80037BBC(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
@@ -11376,7 +11378,7 @@ extern "C" void fn_801752EC(void *arg0) {
     unit2 = *(void **)(lbl_802CA264 + 0x3C);
     while (unit2 != NULL) {
     for (s32 i = 0; i < 4; i++) {
-        void **entry = fn_80037BBC(unit2, i);
+        entry = fn_80037BBC(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }
