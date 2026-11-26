@@ -1279,7 +1279,8 @@ s32 fn_8011C000(void) {
     return 5;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
 s32 fn_8011C018(void *self) {
 #pragma use_lmw_stmw on
     void *TargetList_GetAt(void *, s32);
@@ -1310,14 +1311,11 @@ s32 fn_8011C018(void *self) {
         if ((s8)sy >= (s8)oy) {
             continue;
         }
-        dy = (s8)sy - (s8)oy;
-        if ((s8)sy - (s8)oy < 0) {
-            dy = -dy;
-        }
+        dy = ((s8)sy - (s8)oy) < 0 ? -((s8)sy - (s8)oy) : ((s8)sy - (s8)oy);
         ox = ((u8 *)other)[0];
         sx = ((u8 *)self)[0];
         dx = (s8)sx - (s8)ox;
-        if ((s8)sx - (s8)ox < 0) {
+        if (((s8)((u8 *)self)[0] - (s8)((u8 *)other)[0]) < 0) {
             dx = -dx;
         }
         dist = (s16)(dx + dy);
@@ -1326,11 +1324,11 @@ s32 fn_8011C018(void *self) {
         }
         if (best != NULL && bestDist == dist) {
             if ((s8)((u8 *)best)[1] == (s8)oy) {
-                prefer = (s8)((u8 *)best)[0] < (s8)ox;
+                prefer = ((s8)((u8 *)best)[0] < (s8)ox);
             } else {
-                prefer = (s8)((u8 *)best)[1] < (s8)oy;
+                prefer = ((s8)((u8 *)best)[1] < (s8)oy);
             }
-            if (prefer == 0) {
+            if (!prefer) {
                 continue;
             }
         }
@@ -1345,9 +1343,7 @@ s32 fn_8011C018(void *self) {
     *(void **)((u8 *)self + 0x10) = result;
     return best != NULL;
 }
-
-#pragma use_lmw_stmw on
-#pragma global_optimizer on
+#pragma pop
 s32 fn_8011C164(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
@@ -1355,16 +1351,15 @@ s32 fn_8011C164(void *self) {
     void *best;
     s32 i;
     void *other;
+    u32 oy;
+    u32 ox;
+    u32 sy;
+    u32 sx;
     s32 dy;
     s32 dx;
     s16 dist;
     u8 prefer;
     void *result;
-    u32 oy;
-    u32 ox;
-    u32 sy;
-    u32 sx;
-    u8 *s = (u8 *)self;
 
     bestDist = 0x7FFF;
     best = NULL;
@@ -1374,14 +1369,14 @@ s32 fn_8011C164(void *self) {
             continue;
         }
         ox = ((u8 *)other)[0];
-        sx = s[0];
+        sx = ((u8 *)self)[0];
         if ((s8)sx >= (s8)ox) {
             continue;
         }
         oy = ((u8 *)other)[1];
-        sy = s[1];
+        sy = ((u8 *)self)[1];
         dy = (s8)sy - (s8)oy;
-        if (((s8)s[1] - (s8)((u8 *)other)[1]) < 0) {
+        if (((s8)((u8 *)self)[1] - (s8)((u8 *)other)[1]) < 0) {
             dy = -dy;
         }
         dx = ((s8)sx - (s8)ox) < 0 ? -((s8)sx - (s8)ox) : ((s8)sx - (s8)ox);
@@ -1391,9 +1386,9 @@ s32 fn_8011C164(void *self) {
         }
         if (best != NULL && bestDist == dist) {
             if ((s8)((u8 *)best)[0] == (s8)ox) {
-                prefer = (s8)oy < (s8)((u8 *)best)[1];
+                prefer = (s8)oy > (s8)((u8 *)best)[1];
             } else {
-                prefer = (s8)((u8 *)best)[0] < (s8)ox;
+                prefer = (s8)((u8 *)best)[0] > (s8)ox;
             }
             if (prefer == 0) {
                 continue;
@@ -1407,10 +1402,11 @@ s32 fn_8011C164(void *self) {
     } else {
         result = self;
     }
-    *(void **)(s + 0x8) = result;
+    *(void **)((u8 *)self + 0x8) = result;
     return best != NULL;
 }
-#pragma global_optimizer on
+#pragma push
+#pragma opt_propagation off
 s32 fn_8011C2B8(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
@@ -1453,9 +1449,9 @@ s32 fn_8011C2B8(void *self) {
         }
         if (best != NULL && bestDist == dist) {
             if ((s8)((u8 *)best)[1] == (s8)oy) {
-                prefer = (s8)ox < (s8)((u8 *)best)[0];
+                prefer = (s8)ox > (s8)((u8 *)best)[0];
             } else {
-                prefer = (s8)oy < (s8)((u8 *)best)[1];
+                prefer = (s8)oy > (s8)((u8 *)best)[1];
             }
             if (prefer == 0) {
                 continue;
@@ -1472,7 +1468,7 @@ s32 fn_8011C2B8(void *self) {
     *(void **)((u8 *)self + 0xC) = result;
     return best != NULL;
 }
-#pragma global_optimizer off
+#pragma pop
 s32 fn_8011C404(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
