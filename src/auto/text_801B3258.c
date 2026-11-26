@@ -7931,24 +7931,16 @@ void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *Process_Create(void *, s32);
     extern u8 lbl_8029801C[];
-    extern f32 lbl_8036B328;
-    extern f64 lbl_8036B330;
     void *obj;
-    union { f64 d; struct { u32 hi; u32 lo; } w; } conv2;
-    union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     s16 v;
 
     obj = Process_Create(lbl_8029801C, 3);
-    conv.w.hi = 0x43300000;
-    conv.w.lo = (u32)arg3 ^ 0x80000000;
-    conv2.w.hi = 0x43300000;
-    conv2.w.lo = (u32)arg4 ^ 0x80000000;
-    v = (s16)((f32)(conv.d - lbl_8036B330) / lbl_8036B328);
     *(s16 *)((u8 *)obj + 0x3C) = arg0;
     *(s16 *)((u8 *)obj + 0x3E) = arg1;
     *(s32 *)((u8 *)obj + 0x44) = arg2;
+    v = (s16)((f32)arg3 / (1000.0f / 60.0f));
     *(s16 *)((u8 *)obj + 0x36) = v;
-    *(s16 *)((u8 *)obj + 0x38) = (s16)((f32)(conv2.d - lbl_8036B330) / lbl_8036B328);
+    *(s16 *)((u8 *)obj + 0x38) = (s16)((f32)arg4 / (1000.0f / 60.0f));
     *(s16 *)((u8 *)obj + 0x3A) = v;
 }
 void fn_801C1E0C(void *arg0) {
