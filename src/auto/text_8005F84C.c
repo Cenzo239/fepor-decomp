@@ -2596,7 +2596,7 @@ void fn_80063934(void) {
     fn_8005C7E8();
 }
 
-#pragma inline_depth(0)
+#pragma inline_depth(8)
 M2C_UNK fn_80063954(char *arg0) {
     M2C_UNK fn_80063A14(M2C_UNK);
     M2C_UNK temp_r31;
