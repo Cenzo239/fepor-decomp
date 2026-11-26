@@ -11,10 +11,9 @@ static inline s32 count_trailing_zero(f64 x) {
     u32 *l = (u32 *)&x;
     u32 lo = l[1];
     s32 n;
-    u32 hi;
     if (lo != 0) {
-        u32 xbits;
         s32 j;
+        u32 xbits;
         s32 m;
         s32 k;
         m = 16;
@@ -40,20 +39,20 @@ static inline s32 count_trailing_zero(f64 x) {
         }
         return n;
     } else {
-        u32 xbits;
         s32 j;
+        u32 xbits;
         s32 m;
         s32 k;
         m = 16;
         xbits = 0xFFFFU;
         n = 0;
         k = m;
-        hi = l[0] | 0x100000;
+        lo = l[0] | 0x100000;
         j = 32;
         while (j != 0) {
-            if ((hi & xbits) == 0) {
+            if ((lo & xbits) == 0) {
                 n += k;
-                hi >>= k;
+                lo >>= k;
                 j -= k;
             } else if (xbits == 1) {
                 break;
