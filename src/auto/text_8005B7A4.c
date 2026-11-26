@@ -2,7 +2,7 @@
 #include "common.h"
 #include "global.h"
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    u8 c; s32 i; u8 *dst; char *src;
+    char *src; u8 *dst; s32 i; u8 c;
     src = arg1;
     if (*arg1 == '/') {
         src++;
