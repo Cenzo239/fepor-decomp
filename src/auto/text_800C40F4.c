@@ -10582,7 +10582,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
-    PSMTXRotRad(mtx, 0x59, 0x56 * *(f32 *)((u8 *)arg1 + 0x58));
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
