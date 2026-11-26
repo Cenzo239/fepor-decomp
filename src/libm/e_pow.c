@@ -56,6 +56,7 @@ double fn_802360C4(double x, double y)
     double z, ax, z_h, z_l, p_h, p_l;
     double y1, t1, t2, r, s, t, u, v, w;
     double ss, s2, s_h, s_l, t_h, t_l;
+    double magnitude;
 
     int i, j, k, yisint, n;
     int sign;
@@ -122,13 +123,14 @@ double fn_802360C4(double x, double y)
             return fn_80238A9C(x);
     }
 
-    ax = __fabs(x);
+    magnitude = __fabs(x);
+    ax = magnitude;
 
     if (lx == 0) {
         if (ix == 0x7ff00000 ||
             ix == 0 ||
             ix == 0x3ff00000) {
-            z = ax;
+            z = magnitude;
 
             if (hy < 0)
                 z = one / z;
