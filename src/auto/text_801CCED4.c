@@ -4273,11 +4273,6 @@ s32 fn_801D2B04(void *arg0) {
 }
 
 #pragma global_optimizer off
-static inline void MenuSetPoint(s16 *point, s16 x, s16 y) {
-    point[0] = x;
-    point[1] = y;
-}
-
 void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
