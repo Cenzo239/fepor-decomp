@@ -1786,7 +1786,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
-static inline void fn_80134C24_Body(s32 *out, void *obj) {
+static inline void fn_80134C24_Body(void *obj, s32 *out) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
 extern f32 lbl_8036A5AC;
