@@ -115,7 +115,7 @@ extern u32 lbl_80368514;
 extern s64 lbl_80368510;
 extern s32 lbl_803684FC;
 extern s32 lbl_80368500;
-extern s32 lbl_80368508;
+extern s64 lbl_80368508;
 extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
 extern void (*lbl_803684F8)();
