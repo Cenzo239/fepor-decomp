@@ -116,22 +116,22 @@ void fn_80089554(void) {
 
 #pragma global_optimizer off
 void fn_800895B8(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
+    u8 *base;
     void *tmp;
 
     base = lbl_80289950;
-    lbl_803674E0 = fn_8000CAF0(base, 7);
-    lbl_803674E4 = fn_8000CAF0((u8 *)base + 0x58, 7);
-    tmp = fn_8000CAF0((u8 *)base + 0x18, 7);
+    lbl_803674E0 = Process_Create(lbl_80289950, 7);
+    lbl_803674E4 = Process_Create(&base[0x58], 7);
+    tmp = Process_Create(&base[0x18], 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = fn_8000CAF0((u8 *)base + 0x30, 7);
+    tmp = Process_Create(&base[0x30], 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
@@ -284,3 +284,8 @@ void fn_80089970(void) {
 
 #pragma global_optimizer reset
 #pragma peephole off
+/* fn_80089490 helper: tbl + off with off carried as a runtime param. */
+static inline u8 *Tbl_80089490_At(s32 off) {
+    extern u8 lbl_80289950[];
+    return lbl_80289950 + off;
+}
