@@ -1346,12 +1346,6 @@ void fn_801FF190(s32 arg0) {
     extern u8 lbl_80281F00[], lbl_8029B5D0[], lbl_8029B69C[], lbl_803392D0[], lbl_803392DC[];
     extern s8 lbl_8036843C, lbl_8036843D;
 #pragma cplusplus on
-    struct Item {
-        u32 unk0;
-        void *str;
-        u8 unk8;
-        u8 flags;
-    };
     struct Base { u32 unk; };
     struct Obj : Base {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -1370,12 +1364,12 @@ void fn_801FF190(s32 arg0) {
         fn_8013CE10(lbl_803392DC);
         lbl_8036843D = 1;
     }
-    ((Item *)lbl_803392D0)->str = lbl_80281F00 + 0x7a;
-    ((Item *)lbl_803392D0)->unk8 = 1;
-    ((Item *)lbl_803392D0)->flags |= 1;
-    ((Item *)lbl_803392DC)->str = lbl_80281F00 + 0x88;
-    ((Item *)lbl_803392DC)->unk8 = 1;
-    ((Item *)lbl_803392DC)->flags |= 1;
+    *(void **)(lbl_803392D0 + 4) = lbl_80281F00 + 0x7a;
+    lbl_803392D0[8] = 1;
+    lbl_803392D0[9] |= 1;
+    *(void **)(lbl_803392DC + 4) = lbl_80281F00 + 0x88;
+    lbl_803392DC[8] = 1;
+    lbl_803392DC[9] |= 1;
     obj = (Obj *)Heap_Alloc(0x30);
     if (obj) {
         fn_8013CED0(obj, lbl_8029B5D0);
@@ -3225,3 +3219,26 @@ extern f32 gFloatOne;
 #include "global.h"
 
 extern u16 gGameFlags;
+#pragma cplusplus on
+    struct CursorTextObject {
+        virtual void v0() = 0;
+        virtual void *v1() = 0;
+    };
+    struct CursorWidget {
+        u8 pad[4];
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0;
+        virtual void v4() = 0; virtual void v5() = 0; virtual void v6() = 0; virtual void v7() = 0;
+        virtual void v8() = 0; virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0; virtual void v15() = 0;
+        virtual void v16() = 0; virtual void v17() = 0; virtual void v18() = 0; virtual void v19() = 0;
+        virtual s16 v20() = 0;
+        virtual void v21() = 0; virtual void v22() = 0; virtual void v23() = 0; virtual void v24() = 0;
+        virtual void v25() = 0; virtual void v26() = 0; virtual void v27() = 0; virtual void v28() = 0;
+        virtual void v29() = 0; virtual void v30() = 0; virtual void v31() = 0; virtual void v32() = 0;
+        virtual void v33() = 0; virtual void v34() = 0;
+        virtual s16 v35() = 0;
+        virtual void v36() = 0; virtual void v37() = 0;
+        virtual s16 v38() = 0;
+    };
+struct CursorTexture { u8 buf[0x20]; u16 w,h; };
+#pragma cplusplus reset
