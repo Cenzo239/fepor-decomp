@@ -399,28 +399,30 @@ typedef struct __GXData_struct {
 #pragma opt_propagation on
 
 #pragma opt_strength_reduction off
-void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5)
 {
   u8 cmd;
-  u16 *gx;
   u32 *ptr;
   u32 value;
   ptr = (u32 *) __GXData;
   value = ptr[(0x130 / 4) + arg0];
   value = __rlwimi(value, arg1 & 0xFF, 18, 13, 13);
   if (arg1 <= 1)
-    { value = __rlwimi(value, arg3, 20, 10, 11); value = __rlwimi(value, arg2, 16, 14, 15); }
+  {
+    value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
+  }
   else
-    { value = __rlwimi(value, arg1, 19, 10, 11); value = __rlwimi(value, 3, 16, 14, 15); }
+  {
+    value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
+  }
   cmd = 0x61;
-  gx = __GXData;
   GXWGFifo.u8 = cmd;
-  ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;
+  ptr = (u32 *)__GXData;
   ptr[(0x130 / 4) + arg0] = value;
-  gx[1] = 0;
+  ((u16 *)__GXData)[1] = 0;
 }
 #pragma opt_strength_reduction reset
 void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
