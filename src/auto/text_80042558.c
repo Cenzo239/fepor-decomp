@@ -50,10 +50,12 @@ static inline u8 IsInRect_80042558(MapObj_80042558 *ent, s32 x, s32 y)
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
+    MapObj_80042558 *base;
+    MapObj_80042558 *ent;
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        MapObj_80042558 *base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
-        MapObj_80042558 *ent = &base[i];
+        base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
+        ent = &base[i];
         if (forbid != 0 && (M2C_FIELD(ent->unk10, u32 *, 0xBC) & forbid)) continue;
         if ((M2C_FIELD(ent->unk10, u32 *, 0xBC) & require) != require) continue;
         if (IsInRect_80042558(ent, x, y)) {
@@ -80,117 +82,6 @@ static inline u8 *FindMapObjNear_80042558(void *arg0, s32 x, s32 y, u32 require)
         }
     }
     return 0;
-}
-
-static inline void ProcessMapObjEvents_80042558(void *arg0, u8 *events)
-{
-    void fn_8005FEE8(void *, f32);
-    void MapObj_FadeOut(void *, s32);
-    s32 Map_CollectLinkedObjs(void *, void *, void *);
-    void MapObj_Hide(void *, s32);
-    s32 fn_8010FF88(void *);
-    extern f32 lbl_80368F2C;
-
-    void *list[8];
-    s32 eventIndex;
-    u8 *rec;
-
-    rec = events;
-    for (eventIndex = 0; eventIndex < fn_8010FF88(events); eventIndex++, rec += 8) {
-        s32 x = (s8)rec[0];
-        s32 y = (s8)rec[1];
-        switch (rec[2] - 0x21) {
-        case 3:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0xA00);
-            if (found != 0) {
-                fn_8005FEE8(found + 0x14, lbl_80368F2C);
-            }
-            break;
-        }
-        case 0:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0, 0x1000);
-            if (found != 0) {
-                MapObj_FadeOut(found, 0);
-                found = FindMapObjNear_80042558(arg0, x, y, 0x800);
-                if (found != 0) {
-                    s32 count = Map_CollectLinkedObjs(arg0, found, list);
-                    s32 k;
-                    for (k = 0; k < count; k++) {
-                        MapObj_Hide(list[k], 0);
-                    }
-                }
-            }
-            break;
-        }
-        case 1:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x800);
-            if (found != 0) {
-                s32 count = Map_CollectLinkedObjs(arg0, found, list);
-                s32 k;
-                for (k = 0; k < count; k++) {
-                    MapObj_Hide(list[k], 0);
-                }
-            }
-            break;
-        }
-        case 2:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x200);
-            if (found != 0) {
-                fn_8005FEE8(found + 0x14, lbl_80368F2C);
-            }
-            break;
-        }
-        case 4:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0xA00);
-            if (found != 0) {
-                found[2] |= 1;
-                found = FindMapObj_80042558(arg0, x, y, 0, 0x20000);
-                if (found != 0) {
-                    fn_8005FEE8(found + 0x14, lbl_80368F2C);
-                    found[2] &= ~1;
-                }
-            }
-            break;
-        }
-        case 5:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x800);
-            if (found != 0) {
-                MapObj_Hide(found, 0);
-            }
-            break;
-        }
-        case 6:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0, 0x10000);
-            if (found != 0) {
-                MapObj_Hide(found, 0);
-            }
-            break;
-        }
-        case 7:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x200);
-            if (found != 0) {
-                fn_8005FEE8(found + 0x14, lbl_80368F2C);
-            }
-            break;
-        }
-        case 8:
-        {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x10, 0x80000);
-            if (found != 0) {
-                found[2] |= 1;
-            }
-            break;
-        }
-        }
-    }
 }
 
 extern f64 lbl_80368F90;
