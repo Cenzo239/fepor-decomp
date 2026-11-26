@@ -159,10 +159,6 @@ typedef struct Vec2s {
 } Vec2s;
 
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
-static inline s16 GridWidth_80134C24(const s16 *self, s32 columns) {
-    s16 width = self[11] - self[9];
-    return width / columns;
-}
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
@@ -1804,27 +1800,27 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 
 
-void fn_80134C24(s32 *arg0, const void *arg1) {
+void fn_80134C24(s32 *arg0, const s16 *arg1) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
     Vec2s out, in;
     s16 rowH;
-    s16 kind, colW;
+    s16 colW, kind;
     s16 quot;
-    s32 rem, hdiv, t;
+    s32 t, hdiv, rem;
     s16 x, y, half, off48, off4a;
-    colW = *(s16 *)((u8 *)arg1 + 0x44);
-    kind = *(s16 *)((u8 *)arg1 + 0x3e);
+    colW = arg1[34];
+    kind = arg1[31];
     quot = kind / colW;
-    rowH = *(s16 *)((u8 *)arg1 + 0x46);
-    off48 = *(s16 *)((u8 *)arg1 + 0x48);
-    off4a = *(s16 *)((u8 *)arg1 + 0x4a);
+    rowH = arg1[35];
+    off48 = arg1[36];
+    off4a = arg1[37];
     t = MenuGridColumnWidth(arg1, colW);
     rem = kind % colW;
     rem = (s16)rem;
     rem = t * rem;
     x = (s16)(rem + off48);
-    y = (s16)(off4a + (s16)quot * (s16)rowH);
+    y = (s16)((s16)rowH * (s16)quot + off4a);
     t = Text_MeasureHeight(-1, lbl_8036A5AC);
     half = (s16)(((s32)(s16)rowH - t) >> 1);
     in.x = x;
