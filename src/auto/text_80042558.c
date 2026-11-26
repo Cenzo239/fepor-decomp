@@ -40,15 +40,13 @@ static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
     s32 i;
-    s32 count = M2C_FIELD(arg0, s16 *, 6);
-    for (i = count - 1; i >= 0; i--) {
-        u8 *base = M2C_FIELD(arg0, u8 **, 0x14);
-        u8 *ent = base + i * 0xB4;
+    for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
+        u8 *ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
         u32 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
         if (forbid != 0 && (flags & forbid)) continue;
         if ((flags & require) != require) continue;
         if (IsInRect_80042558(ent, x, y)) {
-            return base + i * 0xB4;
+            return M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
         }
     }
     return 0;
@@ -522,7 +520,7 @@ void fn_80042558(void *arg0)
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
     extern f32 lbl_80368F2C;
-    extern f32 lbl_80368EF4;
+    extern const f32 lbl_80368EF4;
     extern u8 lbl_80367294;
     extern u8 lbl_80367295;
     extern u8 lbl_80367298[3];
@@ -556,15 +554,7 @@ void fn_80042558(void *arg0)
             u8 *found = FindMapObj_80042558(arg0, x, y, 0, 0x1000);
             if (found != 0) {
                 MapObj_FadeOut(found, 0);
-                found = FindMapObj_80042558(arg0, x, y, 0, 0x800);
-                if (found == 0) {
-                    s32 dir;
-                    for (dir = 0; dir < 4; dir++) {
-                        u8 d = DirFromIndex_80042558(dir);
-                        found = FindMapObj_80042558(arg0, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, 0x800);
-                        if (found != 0) break;
-                    }
-                }
+                found = FindMapObjNear_80042558(arg0, x, y, 0x800);
                 if (found != 0) {
                     s32 count = Map_CollectLinkedObjs(arg0, found, list);
                     s32 k;
@@ -634,7 +624,7 @@ void fn_80042558(void *arg0)
         }
         case 8:
         {
-            u8 *found = FindMapObj_80042558(arg0, x, y, 0x410, 0x80000);
+            u8 *found = FindMapObj_80042558(arg0, x, y, 0x10, 0x80000);
             if (found != 0) {
                 found[2] |= 1;
             }
@@ -647,19 +637,23 @@ void fn_80042558(void *arg0)
     Map_RefreshUnitMap(gBattleMap);
     fn_8012391C(M2C_FIELD(arg0, void **, 0x30));
 
-    if (M2C_FIELD(arg0, u8 *, 0x68) == 0) {
-        u8 validBlend = 1;
-        u8 tempMode;
-
+    switch (M2C_FIELD(arg0, u8 *, 0x68)) {
+    case 0:
+    {
+        u8 validBlend;
         fn_800C1BDC();
         fn_800C1984();
-        tempMode = gMapBlendMode - 1;
-        if (tempMode > validBlend) validBlend = 0;
+        validBlend = 1;
+        if ((u8)(gMapBlendMode - 1) > 1) {
+            validBlend = 0;
+        }
         if (validBlend) {
             fn_8014716C(1);
         } else {
             fn_8014716C(0);
         }
+        break;
+    }
     }
 
     fn_80067460(0);
