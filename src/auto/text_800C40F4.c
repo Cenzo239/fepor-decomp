@@ -6555,10 +6555,6 @@ extern "C" void fn_800CF5B8(void *arg0) {
     *(s32 *)((u8 *)self + 0x230) = 0;
 }
 #pragma pop
-static inline s32 Scene_StringCompare(void *str, char *text) {
-    s32 String_Compare(void *, s32, s32, char *, s32);
-    return String_Compare(str, 0, *(s32 *)str, text, strlen(text));
-}
 struct ScenePosition { f32 x, y, z; };
 struct ScenePositionObject {
     u8 pad[0x40];
