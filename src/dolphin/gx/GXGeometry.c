@@ -541,78 +541,106 @@ void fn_80225180(s32 arg0)
   __GXData[1] = 1;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma peephole off
+#pragma peephole on
 void fn_80225204(u32 perf0, u32 perf1)
 {
     u16 *gx;
     u32 val;
     s32 old;
 
-    old = M2C_FIELD(__GXData, s32 *, 0x59C);
-    if (old == 34) {
-        goto clear_perf0_cp;
-    } else if (old >= 34) {
-        goto perf0_done;
-    } else if (old < 11) {
-        if (old >= 0) {
-            goto clear_perf0_cp;
-        }
-        goto perf0_done;
-    } else if (old >= 27) {
-        goto clear_perf0_2400;
-    } else {
-        goto clear_perf0_2300;
+    switch (M2C_FIELD(__GXData, s32 *, 0x59C)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 34:
+        GXWGFifo.u8 = 0x10;
+        GXWGFifo.u32 = 0x1006;
+        GXWGFifo.u32 = 0;
+        break;
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 26:
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = 0x23000000;
+        break;
+    case 27:
+    case 28:
+    case 29:
+    case 30:
+    case 31:
+    case 32:
+    case 33:
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = 0x24000000;
+        break;
+    case 35:
+    default:
+        break;
     }
-
-clear_perf0_cp:
-    GXWGFifo.u8 = 0x10;
-    GXWGFifo.u32 = 0x1006;
-    GXWGFifo.u32 = 0;
-    goto perf0_done;
-
-clear_perf0_2300:
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = 0x23000000;
-    goto perf0_done;
-
-clear_perf0_2400:
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = 0x24000000;
-
-perf0_done:
     gx = __GXData;
-    old = M2C_FIELD(gx, s32 *, 0x5A0);
-    if (old == 21) {
-        goto clear_perf1_bp;
-    } else if (old >= 21) {
-        goto perf1_done;
-    } else if (old < 9) {
-        if (old >= 0) {
-            goto clear_perf1_bp;
-        }
-        goto perf1_done;
-    } else if (old >= 17) {
-        goto perf1_done;
-    } else {
-        goto clear_perf1_pe;
+    switch (M2C_FIELD(gx, s32 *, 0x5A0)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 21:
+        GXWGFifo.u8 = 0x61;
+        GXWGFifo.u32 = 0x67000000;
+        break;
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+        val = M2C_FIELD(gx, u32 *, 0x5A4);
+        val = __rlwimi(val, 0, 4, 24, 27);
+        M2C_FIELD(gx, u32 *, 0x5A4) = val;
+        GXWGFifo.u8 = 8;
+        GXWGFifo.u8 = 0x20;
+        GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
+        break;
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+        __cpReg[3] = 0;
+        break;
+    case 22:
+    default:
+        break;
     }
-
-clear_perf1_bp:
-    GXWGFifo.u8 = 0x61;
-    GXWGFifo.u32 = 0x67000000;
-    goto perf1_done;
-
-clear_perf1_pe:
-    val = M2C_FIELD(gx, u32 *, 0x5A4);
-    val = __rlwimi(val, 0, 4, 24, 27);
-    M2C_FIELD(gx, u32 *, 0x5A4) = val;
-    GXWGFifo.u8 = 8;
-    GXWGFifo.u8 = 0x20;
-    GXWGFifo.u32 = M2C_FIELD(gx, u32 *, 0x5A4);
-
-perf1_done:
-    __cpReg[3] = 0;
 
     gx = __GXData;
     M2C_FIELD(gx, u32 *, 0x59C) = perf0;
@@ -784,6 +812,7 @@ perf1_done:
 
     __GXData[1] = 0;
 }
+#pragma pop
 #pragma global_optimizer off
 #pragma scheduling off
 #pragma peephole on
