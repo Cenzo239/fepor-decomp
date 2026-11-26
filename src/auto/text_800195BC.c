@@ -808,6 +808,7 @@ void fn_8001A5E4(void) {
         ptr = (u8 *)(((u32)(ptr + 0x2B)) & ~3);
     }
 }
+#pragma optimization_level 4
 #pragma opt_loop_invariants reset
 #pragma opt_common_subs reset
 #pragma use_lmw_stmw reset
