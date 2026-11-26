@@ -147,8 +147,7 @@ static inline s32 ResetSwitchBegin(s64 now) {
     s32 state;
     lbl_803684FC = 1;
     state = *(s64 *)&lbl_80368508 != 0 ? 1 : 0;
-    lbl_80368514 = (u32)now;
-    lbl_80368510 = (u32)((u64)now >> 32);
+    *(s64 *)&lbl_80368510 = now;
     return state;
 }
 u32 __OSGetResetSWState(void);
