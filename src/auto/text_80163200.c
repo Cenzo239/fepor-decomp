@@ -14599,6 +14599,8 @@ static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) 
     *(void **)self = lbl_80292208;
     fn_80142060((u8 *)tmp + 0x3C);
 }
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     void fn_80142060(void *);
     void fn_8013BBF8(void *);
@@ -14679,6 +14681,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     ((Obj *)self)->v8();
     return self;
 }
+#pragma pop
 #pragma cplusplus reset
 
 void *fn_8017A238(void *arg0, s16 arg1) {
