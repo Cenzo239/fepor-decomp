@@ -40,6 +40,7 @@ static inline f64 HermTail(f64 t0, f64 h, f64 b) { return h * t0 + b; }
 
 #pragma optimization_level 3
 
+#pragma optimization_level 3
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
@@ -50,15 +51,14 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   f32 h01;
   f32 h00;
   f32 two_t;
-  f64 tangent;
   one = lbl_8036912C;
   two_t = lbl_80369104 * farg4;
   t_m1 = farg4 - one;
   h01 = ((lbl_8036915C - two_t) * (farg4 * farg4));
   h00 = ((one + two_t) * (t_m1 * t_m1));
-  tangent = (f64)(farg2-farg0)*0.5;
-  return (f32)((f64)((t_m1*farg4)*farg4) * ((f64)(farg3-farg1)*0.5)
-      + ((f64)(farg4*((one-farg4)*(one-farg4))) * tangent
-      + (f64)(h00*farg1+h01*farg2)));
+  return (f32) ((((f64) ((t_m1 * farg4) * farg4)) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (((one - farg4) * (one - farg4)) * farg4)) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
 #pragma optimization_level reset
+static inline f64 HermiteTangent(f32 a, f32 b) {
+    return (f64)(a - b) * 0.5;
+}
