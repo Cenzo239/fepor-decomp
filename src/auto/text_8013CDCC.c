@@ -165,6 +165,14 @@ struct MenuPopupPosition {
  MenuPopupPosition(s16 xx, s16 yy): x(xx), y(yy) {}
  MenuPopupPosition(const MenuPopupPosition &other) { *(u32 *)this = *(const u32 *)&other; }
 };
+static inline u8 *MenuPopup_AdvanceNode(s16 count, u8 *node) {
+ if (count >= 0) {
+  while (count > 0) { node = *(u8 **)(node + 4); --count; }
+ } else {
+  while (count < 0) { node = *(u8 **)node; ++count; }
+ }
+ return node + 8;
+}
 struct MenuPopupHost {
 virtual void v0()=0;
 virtual void v1()=0;
@@ -1235,6 +1243,7 @@ void fn_8013DD1C(s32 arg0, void *arg1) {
 #pragma global_optimizer on
 #pragma opt_common_subs off
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_8013DD90(MenuDD *self,u8 *ctx) {
 void *GfxEnt_Get(s32);
 void Prim2D_Begin(); void Prim2D_AddZ(f32); void Prim2D_PrepareTex(); void Prim2D_SetAlphaByte(u8);
@@ -1246,7 +1255,7 @@ x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
 y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { s32 ny=y+1; s32 nx=x+1; s32 cur=*(s16*)(ctx+0x38);
+else { s32 nx=x+1; s32 ny=y+1; s32 cur=*(s16*)(ctx+0x38);
 cur+=nx; *(s16*)(ctx+0x38)=cur/2;
 ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=ny/2;
 }
@@ -4328,7 +4337,11 @@ void fn_80142078(void *arg0) {
     *(s16 *)((u8 *)var_r30 + 0x8E) = (s16)temp_f1;
 }
 
-void fn_801422C0(void *arg0)
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_common_subs off
+extern "C" void fn_801422C0(void *arg0)
 {
     extern u8 gUnitInfoPopup[];
 
@@ -4342,10 +4355,10 @@ void fn_801422C0(void *arg0)
     u8 *entry;
     u8 *node;
     s32 index;
-    s16 count;
+    s32 count;
     s32 offset;
     s32 idx2;
-    s32 pos[2];
+    
     s16 x;
     s16 y;
     void *unit;
@@ -4360,11 +4373,7 @@ void fn_801422C0(void *arg0)
         child = 0;
     }
 
-    ((void (*)(void *, void *))
-        (*(void ***)((u8 *)child))[11])(
-            child,
-            *(void **)(self + 0x44)
-        );
+    ((MenuPopupHost *)child)->setSelection(*(void **)(self + 0x44));
 
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         if (*(void **)(self + 0x34) != 0) {
@@ -4373,26 +4382,25 @@ void fn_801422C0(void *arg0)
             child = 0;
         }
 
-        index = ((s32 (*)(void *))
-            (*(void ***)child)[12])(child);
+        index = ((MenuPopupHost *)child)->getPage();
 
         offset = index * 12;
-        idx2 = index * 2;
+        idx2 = index * 2 + 0x64;
         entry = child + 0x90 + offset;
 
         if (*(void **)entry == 0) {
             selected = 0;
         } else {
-            count = *(s16 *)(child + 0x64 + idx2);
+            count = *(s16 *)(child + idx2);
             node = *(u8 **)(entry + 8);
 
-            if (count >= 0) {
-                while (count > 0) {
+            if ((s16)count >= 0) {
+                while ((s16)count > 0) {
                     node = *(u8 **)(node + 4);
                     count--;
                 }
             } else {
-                while (count < 0) {
+                while ((s16)count < 0) {
                     node = *(u8 **)node;
                     count++;
                 }
@@ -4402,24 +4410,18 @@ void fn_801422C0(void *arg0)
         }
 
         if (selected != 0) {
-            unit = *(void **)selected;
             if (*(void **)(self + 0x34) != 0) {
                 child = *(u8 **)(*(u8 **)(self + 0x38) + 8);
             } else {
                 child = 0;
             }
 
-            ((void (*)(void *, void *))
-                (*(void ***)child)[15])(child, pos);
-
-            *(u32 *)((u8 *)pos + 4) = *(u32 *)pos;
-
-            x = *(s16 *)((u8 *)pos + 4);
-            y = *(s16 *)((u8 *)pos + 6);
-
+            MenuPopupPosition pos = ((MenuPopupHost *)child)->getPosition();
+            x = pos.x;
+            y = pos.y;
             Ui_ShowUnitInfoPopup(
                 gUnitInfoPopup,
-                unit,
+                *(void **)selected,
                 (f32)x,
                 (f32)y
             );
@@ -4428,7 +4430,8 @@ void fn_801422C0(void *arg0)
         }
     }
 }
-
+#pragma pop
+#pragma cplusplus reset
 void fn_8014246C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern f32 lbl_8036A75C;
