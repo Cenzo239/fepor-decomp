@@ -14205,8 +14205,8 @@ static inline void Sort_StableSortHalf(s32 *begin, s32 *end, SortIterator a, Sor
         s32 *mid = begin + half;
         if (n <= fn_800E2168(&b, &a)) {
             fn_800E18B4(begin, mid, a, comp);
-            fn_800E18B4(mid, end, fn_800E2138(&a, half), comp);
-            fn_800E1340(a, fn_800E2138(&a, half), fn_800E2138(&a, half), fn_800E2138(&a, n), begin, comp);
+            fn_800E18B4(mid, end, SortIterator(fn_800E2138(&a, half)), comp);
+            fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, n)), begin, comp);
         } else {
             StableSort(begin, mid, a, b, comp);
             StableSort(mid, end, a, b, comp);
