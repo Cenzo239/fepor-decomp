@@ -163,6 +163,7 @@ typedef struct Vec2s {
 struct MenuPopupPosition {
  s16 x, y;
  MenuPopupPosition(s16 xx, s16 yy): x(xx), y(yy) {}
+ MenuPopupPosition(const MenuPopupPosition &other) { *(u32 *)this = *(const u32 *)&other; }
 };
 struct MenuPopupHost {
 virtual void v0()=0;
@@ -1245,7 +1246,7 @@ x=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x30);
 y=*(s16*)((u8*)GfxEnt_Get(ctx[(s8)ctx[0x62]+0x40])+0x32);
 width=self->v35(); height=self->v20();
 if(*(s16*)(ctx+0x3a)<0) { *(s16*)(ctx+0x38)=x; *(s16*)(ctx+0x3a)=y; }
-else { s32 nx=x+1; s32 ny=y+1; s32 cur=*(s16*)(ctx+0x38);
+else { s32 ny=y+1; s32 nx=x+1; s32 cur=*(s16*)(ctx+0x38);
 cur+=nx; *(s16*)(ctx+0x38)=cur/2;
 ny+=*(s16*)(ctx+0x3a); *(s16*)(ctx+0x3a)=ny/2;
 }
