@@ -1,6 +1,15 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+static inline u8 Map_AiTerrainTest(s8 x, s8 y, s32 a) {
+extern u8 gBattleMap[];
+s32 b=a,c=a;
+u8 t=(gBattleMap+x+(y<<6))[0x100D];
+if (!((u8)(t-0x26)<=1)) c=0;
+if ((u8)c==0 && t!=0x28) b=0;
+if ((u8)b==0 && t!=0x2A) a=0;
+return a;
+}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -5286,16 +5295,14 @@ void fn_800CDFFC(void *arg0)
         RecordValues data;
     } LocalRecord;
 
-    u8 *self;
     u8 *record;
     u32 *table;
     u32 *valueTable;
     u32 *lookup6c;
     u32 *lookup78;
     u32 *lookupb0;
-    s32 count;
     s32 index;
-    s32 offset;
+    s32 count;
     s32 type;
     s32 field10;
     s32 field1c;
@@ -5305,7 +5312,6 @@ void fn_800CDFFC(void *arg0)
     s32 string24[3];
     s32 string18[3];
 
-    self = (u8 *)arg0;
     table = lbl_8028DA48;
 
     string24[1] = 0;
@@ -5317,15 +5323,12 @@ void fn_800CDFFC(void *arg0)
     string18[2] = 0;
     string18[1] = 0;
 
-    count = *(s32 *)(self + 0x204);
+    count = *(s32 *)((u8 *)arg0 + 0x204);
 
     fn_80232138(lbl_802704F8 + 0x3F2);
 
-    index = 0;
-    offset = 0;
-
-    while (index < count) {
-        record = *(u8 **)(self + 0x208) + offset;
+    for (index = 0; index < count; index++) {
+        record = *(u8 **)((u8 *)arg0 + 0x208) + index * 0x58;
 
         type = *(s32 *)(record + 0x18);
         field10 = *(s32 *)(record + 0x10);
@@ -5354,22 +5357,19 @@ void fn_800CDFFC(void *arg0)
             fn_80232138(
                 lbl_802704F8 + 0x41E,
                 values.data.value[8],
-                valueTable[values.data.value[0] + 1],
-                valueTable[values.data.value[1] + 1],
-                valueTable[values.data.value[2] + 1],
-                valueTable[values.data.value[3] + 1],
+                *(u32 *)((u8 *)&valueTable[values.data.value[0]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[1]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[2]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[3]] + 4),
                 values.data.value[9],
-                valueTable[values.data.value[4] + 1],
-                valueTable[values.data.value[5] + 1],
-                valueTable[values.data.value[6] + 1],
-                valueTable[values.data.value[7] + 1]
+                *(u32 *)((u8 *)&valueTable[values.data.value[4]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[5]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[6]] + 4),
+                *(u32 *)((u8 *)&valueTable[values.data.value[7]] + 4)
             );
         } else {
             fn_80232138(lbl_802704F8 + 0x462, index);
         }
-
-        index++;
-        offset += 0x58;
     }
 
     String_Destroy(string18, -1);
