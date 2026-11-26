@@ -3265,15 +3265,16 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma peephole off
+static inline void SetFirst_800283C8(void **out, void *unit) { *out = unit; }
 void UiCtx_BeginMoveSelect(void **arg0, void *arg1) {
     s8 Unit_GetMov(void *);
-    u8 *map;
+    u8 *mapBase;
 
     *arg0 = arg1;
     M2C_FIELD(arg0, u8 *, 0xB) = M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = M2C_FIELD(arg1, u8 *, 0x19F);
     M2C_FIELD(arg0, s8 *, 0x11) = Unit_GetMov(arg1);
-    map = (u8 *)&gBattleMap;
+    mapBase = (u8 *)&gBattleMap;
     M2C_FIELD(arg0, s32 *, 4) = 0;
     M2C_FIELD(arg0, s8 *, 8) = 0;
     M2C_FIELD(arg0, s8 *, 0xA) = -1;
@@ -3285,7 +3286,7 @@ void UiCtx_BeginMoveSelect(void **arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x15) = 0;
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
     M2C_FIELD(arg0, s8 *, 0x16) = 0;
-    map[(s8)M2C_FIELD(arg0, u8 *, 0xB) + ((s8)M2C_FIELD(arg0, u8 *, 0xC) << 6) + 0xD] = 0;
+    mapBase[(s8)M2C_FIELD(arg0, u8 *, 0xB) + ((s8)M2C_FIELD(arg0, u8 *, 0xC) << 6) + 0xD] = 0;
 }
 #pragma peephole reset
 void UiCtx_Reset(void *arg0) {
