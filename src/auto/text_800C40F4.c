@@ -16131,8 +16131,6 @@ void fn_800E4E5C(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma peephole off
-#pragma opt_lifetimes off
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
@@ -16167,8 +16165,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[2] = z;
     return;
 }
-#pragma opt_lifetimes reset
-#pragma peephole reset
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
