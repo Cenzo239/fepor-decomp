@@ -513,7 +513,7 @@ void TextBanner_SetString(void *arg0, u32 arg1) {
 }
 
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 #pragma opt_common_subs off
 void fn_80056B0C(void *arg0) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
