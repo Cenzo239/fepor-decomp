@@ -6346,6 +6346,29 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
 }
 
 #pragma use_lmw_stmw off
+static inline s32 SplitNewline2_8016D5A8(const char *src, char *buf, char *line1, char *line2, char **out) {
+    char *strcpy(char *, const char *);
+    void *memcpy(void *, const void *, s32);
+    register char *dst;
+    char *p;
+    s32 i;
+    s32 hasSecond = 0;
+    strcpy(buf, src);
+    dst = line1;
+    strcpy(dst, buf);
+    for (p = buf, i = 0; *p != 0; p++, i++) {
+        if (*p == '\n') {
+            memcpy(dst, buf, i);
+            dst[i] = 0;
+            strcpy(line2, p + 1);
+            hasSecond = 1;
+            break;
+        }
+    }
+    *out = dst;
+    return hasSecond;
+}
+
 static inline s32 SplitNewline_8016D5A8(const char *src, char *buf, char *line1, char *line2) {
     char *strcpy(char *, const char *);
     void *memcpy(void *, const void *, s32);
@@ -6385,9 +6408,7 @@ void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     char *fn_8014CA20(void *, s32);
     char *fn_8014CA68(void *, s32);
     u32 *fn_8018D900(s32);
-    void fn_80234450(void *, void *);
-    void *memcpy(void *, void *, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern f32 lbl_8036AA34;
     extern f32 lbl_8036AA48;
     extern f32 lbl_8036AAB4;
@@ -6398,18 +6419,18 @@ void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     extern f32 lbl_8036AB04;
     extern f32 lbl_8036AB08;
 
-    u8 sp2CC[0x40];
-    u8 sp28C[0x40];
-    u8 sp24C[0x40];
-    u8 sp20C[0x40];
-    u8 sp1CC[0x40];
-    u8 sp18C[0x40];
-    u8 sp14C[0x40];
-    u8 sp10C[0x40];
-    u8 spCC[0x40];
-    u8 sp8C[0x40];
-    u8 sp4C[0x40];
-    u8 spC[0x40];
+    char sp2CC[0x40];
+    char sp28C[0x40];
+    char sp24C[0x40];
+    char sp20C[0x40];
+    char sp1CC[0x40];
+    char sp18C[0x40];
+    char sp14C[0x40];
+    char sp10C[0x40];
+    char spCC[0x40];
+    char sp8C[0x40];
+    char sp4C[0x40];
+    char spC[0x40];
     void **tex;
     s32 split;
     s32 i;
@@ -6439,142 +6460,29 @@ void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     fn_8000A248();
 
     {
-        register u8 *p;
-        s32 ch;
-        char *src;
-        src = fn_8014CA68(lbl_80330708, 0);
-        i = 0;
-        fn_80234450(sp24C, src);
-        self = sp28C;
-        fn_80234450(self, sp24C);
-        p = sp24C;
-        split = 0;
-        goto blk1_test;
-    blk1_body:
-        if ((s8)ch == 0xA) {
-            memcpy(self, sp24C, split);
-            ((u8 *)self)[split] = 0;
-            fn_80234450(sp2CC, p + 1);
-            i = 1;
-            goto blk1_done;
-        }
-        ++p;
-        split += 1;
-    blk1_test:
-        ch = *p;
-        if ((s8)ch != 0) {
-            goto blk1_body;
-        }
-    blk1_done:
-        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB00 + farg1), 2, 0, 0, self, lbl_8036AAB4, lbl_8036AA34);
-        if (i == 1) {
+        s32 flag = SplitNewline_8016D5A8(fn_8014CA68(gBattleState, 0), sp24C, sp28C, sp2CC);
+        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB00 + farg1), 2, 0, 0, sp28C, lbl_8036AAB4, lbl_8036AA34);
+        if (flag == 1) {
             fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(lbl_8036AA48 + f29), 2, 0, 0, sp2CC, lbl_8036AAB4, lbl_8036AA34);
         }
     }
-
     {
-        u8 *p;
-        s32 ch;
-        u32 idx;
-        s32 flag;
-        char *src;
-        src = fn_8014CA68(lbl_80330708, 1);
-        flag = 0;
-        fn_80234450(sp18C, src);
-        self = sp1CC;
-        fn_80234450(self, sp18C);
-        p = sp18C;
-        idx = 0;
-        goto blk2_test;
-    blk2_body:
-        if ((s8)ch == 0xA) {
-            memcpy(self, sp18C, idx);
-            ((u8 *)self)[idx] = 0;
-            fn_80234450(sp20C, p + 1);
-            flag = 1;
-            goto blk2_done;
-        }
-        p += 1;
-        idx += 1;
-    blk2_test:
-        ch = *p;
-        if ((s8)ch != 0) {
-            goto blk2_body;
-        }
-    blk2_done:
-        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB04 + f29), 2, 0, 0, self, lbl_8036AAB4, lbl_8036AA34);
+        s32 flag = SplitNewline_8016D5A8(fn_8014CA68(gBattleState, 1), sp18C, sp1CC, sp20C);
+        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB04 + f29), 2, 0, 0, sp1CC, lbl_8036AAB4, lbl_8036AA34);
         if (flag == 1) {
             fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(lbl_8036AA48 + f29), 2, 0, 0, sp20C, lbl_8036AAB4, lbl_8036AA34);
         }
     }
-
     {
-        u8 *p;
-        s32 ch;
-        s32 idx;
-        s32 flag;
-        char *src;
-        src = fn_8014CA20(lbl_80330708, 0);
-        flag = 0;
-        fn_80234450(spCC, src);
-        self = sp10C;
-        fn_80234450(self, spCC);
-        p = spCC;
-        idx = 0;
-        goto blk3_test;
-    blk3_body:
-        if ((s8)ch == 0xA) {
-            memcpy(self, spCC, idx);
-            ((u8 *)self)[idx] = 0;
-            fn_80234450(sp14C, p + 1);
-            flag = 1;
-            goto blk3_done;
-        }
-        ++p;
-        idx += 1;
-    blk3_test:
-        ch = *p;
-        if ((s8)ch != 0) {
-            goto blk3_body;
-        }
-    blk3_done:
-        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB08 + farg1), 2, 0, 0, self, lbl_8036AAB4, lbl_8036AA34);
+        s32 flag = SplitNewline_8016D5A8(fn_8014CA20(gBattleState, 0), spCC, sp10C, sp14C);
+        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB08 + farg1), 2, 0, 0, sp10C, lbl_8036AAB4, lbl_8036AA34);
         if (flag == 1) {
             fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(lbl_8036AA48 + f29), 2, 0, 0, sp14C, lbl_8036AAB4, lbl_8036AA34);
         }
     }
-
     {
-        u8 *p;
-        s32 ch;
-        s32 idx;
-        s32 flag;
-        char *src;
-        src = fn_8014CA20(lbl_80330708, 1);
-        flag = 0;
-        fn_80234450(spC, src);
-        self = sp4C;
-        fn_80234450(self, spC);
-        p = spC;
-        idx = 0;
-        goto blk4_test;
-    blk4_body:
-        if ((s8)ch == 0xA) {
-            memcpy(self, spC, idx);
-            ((u8 *)self)[idx] = 0;
-            fn_80234450(sp8C, p + 1);
-            flag = 1;
-            goto blk4_done;
-        }
-        p++;
-        idx += 1;
-    blk4_test:
-        ch = *p;
-        if ((s8)ch != 0) {
-            goto blk4_body;
-        }
-    blk4_done:
-        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB04 + f29), 2, 0, 0, self, lbl_8036AAB4, lbl_8036AA34);
+        s32 flag = SplitNewline_8016D5A8(fn_8014CA20(gBattleState, 1), spC, sp4C, sp8C);
+        fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(f29 = lbl_8036AB04 + f29), 2, 0, 0, sp4C, lbl_8036AAB4, lbl_8036AA34);
         if (flag == 1) {
             fn_8001003C((s32)(farg0 + lbl_8036AADC), (s32)(lbl_8036AA48 + f29), 2, 0, 0, sp8C, lbl_8036AAB4, lbl_8036AA34);
         }
