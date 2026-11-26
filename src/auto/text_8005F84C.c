@@ -2609,18 +2609,24 @@ M2C_UNK fn_80063954(char *arg0) {
     return temp_r31;
 }
 
-#pragma optimization_level reset
-M2C_UNK fn_800639B4(char *arg0) {
-    M2C_UNK fn_80063A14(M2C_UNK);
-    M2C_UNK temp_r31;
-
-    temp_r31 = fn_8005C82C(arg0, 0);
-    if (!(fn_8005C6A0(arg0) & 0x4000)) {
+#pragma cplusplus on
+extern "C" void fn_80063A14(SomeStruct *);
+static inline SomeStruct *fn_800639B4_Helper(char *path, SomeStruct *result) {
+    if (!(FileCache_GetFlags(path) & 0x4000)) {
+        fn_80063A14(result);
+        FileCache_MarkRelocated(path);
+    }
+    return result;
+}
+extern "C" SomeStruct *fn_800639B4(char *arg0) {
+    SomeStruct *temp_r31 = (SomeStruct *)fn_8005C82C(arg0, 0);
+    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
-        fn_8005C5A8(arg0);
+        FileCache_MarkRelocated(arg0);
     }
     return temp_r31;
 }
+#pragma cplusplus off
 void fn_80063A14(SomeStruct *arg0) {
  void Game_Assert(void *,s32,void *);
  SomeStruct *inner;
@@ -3714,16 +3720,14 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
     }
     return temp_r31;
 }
-s32 fn_80065EE8(void *arg0) {
-    void fn_80065F48(s32);
-    u32 temp_r31;
-
-    temp_r31 = (u32)fn_8005C82C(arg0, 0);
-    if (!(FileCache_GetFlags((char *)arg0) & 0x4000)) {
-        fn_80065F48((s32)temp_r31);
+void *fn_80065EE8(void *arg0) {
+    void fn_80065F48(void *);
+    void *result = (void *)fn_8005C82C(arg0, 0);
+    if ((FileCache_GetFlags((char *)arg0) & 0x4000) == 0) {
+        fn_80065F48(result);
         FileCache_MarkRelocated((char *)arg0);
     }
-    return (s32)temp_r31;
+    return result;
 }
 
 #pragma optimization_level 2
