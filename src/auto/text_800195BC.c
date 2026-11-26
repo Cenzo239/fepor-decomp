@@ -750,7 +750,7 @@ void fn_8001A5E4(void) {
 }
 #pragma use_lmw_stmw reset
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 #pragma opt_common_subs off
 void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
