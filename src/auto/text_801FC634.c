@@ -469,6 +469,15 @@ void fn_801FCCA0(void *self) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
+static inline void *Particle_FindFree(void *base) {
+    s32 j;
+    for (j = 0; j < 1024; j++) {
+        if (*(s16 *)((u8 *)base + j * 16 + 12) == 0)
+            return (u8 *)base + j * 16;
+    }
+    return NULL;
+}
+
 void fn_801FD3B4(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1632,8 +1641,12 @@ extern "C" void fn_801FF50C(void *arg0) {
         virtual s16 v38() = 0;
     };
 struct CursorTexture { u8 buf[0x20]; u16 w,h; };
-#pragma cplusplus reset
-void fn_801FF6B8(void *arg0, void *arg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+extern "C" void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
@@ -1656,14 +1669,10 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     extern void *lbl_80368438;
     extern f32 lbl_8036BB58, lbl_8036BB78, lbl_8036BB90, lbl_8036BB94, lbl_8036BB98;
     extern f32 lbl_8036BB9C, lbl_8036BBA0, lbl_8036BBA4, lbl_8036BBA8, lbl_8036BBAC, lbl_8036BBB0;
-    extern f64 lbl_8036BB70, lbl_8036BB80;
+    extern const f64 lbl_8036BB70, lbl_8036BB80;
 
-    u16 sp5A;
-    u16 sp58;
-    u8 sp38[0x24];
-    u16 sp36;
-    u16 sp34;
-    u8 sp14[0x20];
+    CursorTexture tex0;
+    CursorTexture tex1;
     s32 sp10;
     s32 spC;
     s32 sp8;
@@ -1673,75 +1682,71 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     s16 wpad;
     s16 tw;
     s16 ax;
+    s16 posx;
+    u8 *entry;
     s16 x;
     s16 y;
     s16 half;
     s16 wide;
     s16 left;
     s16 top;
-    s16 mid;
+    s32 mid;
     s32 alpha;
     f32 pulse;
     f32 t;
     u8 flag;
     void *str;
-    s16 lx;
-    s16 ty;
+    s32 lx;
+    s32 ty;
     s16 bw;
-    s16 gap;
+    s32 gap;
 
-    glyph = GfxEnt_Get(*(u8 *)((u8 *)arg1 + (s8)*((u8 *)arg1 + 0x62) + 0x40));
+    entry = (u8 *)arg1 + (s8)*((u8 *)arg1 + 0x62);
+    glyph = GfxEnt_Get(entry[0x40]);
     gx = *(s16 *)((u8 *)glyph + 0x30);
     gy = *(s16 *)((u8 *)glyph + 0x32);
     wpad = (s16)Text_MeasureHeight(-1, lbl_8036BB58);
-    {
-        void **v = *(void ***)((u8 *)glyph + 0x34);
-        str = ((void *(*)(void *))v[3])(v);
-    }
+    str = (*(CursorTextObject **)((u8 *)glyph + 0x34))->v1();
     tw = (s16)Text_MeasureWidth(str, -1, lbl_8036BB58);
-    ax = (s16)(gx - ((s32)(((u32)tw >> 31) + tw) >> 1));
-    if (*(s16 *)((u8 *)arg1 + 0x38) < 0 || *(s16 *)((u8 *)arg1 + 0x3A) < 0) {
+    posx = *(s16 *)((u8 *)arg1 + 0x38);
+    ax = (s16)(gx - tw / 2);
+    if (posx < 0 || *(s16 *)((u8 *)arg1 + 0x3A) < 0) {
         *(s16 *)((u8 *)arg1 + 0x38) = ax;
         *(s16 *)((u8 *)arg1 + 0x3A) = gy;
     } else {
-        s32 s = *(s16 *)((u8 *)arg1 + 0x38) + ax;
-        *(s16 *)((u8 *)arg1 + 0x38) = (s16)((s32)(((u32)s >> 31) + s) >> 1);
+        s32 s = posx + ax;
+        *(s16 *)((u8 *)arg1 + 0x38) = (s16)(s / 2);
         s = *(s16 *)((u8 *)arg1 + 0x3A) + gy;
-        *(s16 *)((u8 *)arg1 + 0x3A) = (s16)((s32)(((u32)s >> 31) + s) >> 1);
+        *(s16 *)((u8 *)arg1 + 0x3A) = (s16)(s / 2);
     }
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036BB78);
     Prim2D_PrepareTex();
-    {
-        void **v = *(void ***)((u8 *)arg0 + 4);
-        t = (f32)(((s16 (*)(void *))v[0xA0 / 4])(arg0) - wpad);
-    }
+    t = (f32)(((CursorWidget *)arg0)->v38() - wpad);
+    t = lbl_8036BB90 * t;
     x = *(s16 *)((u8 *)arg1 + 0x38);
-    y = (s16)((f32)*(s16 *)((u8 *)arg1 + 0x3A) + lbl_8036BB90 * t);
-    Ui_LoadAtlasTex(lbl_80368438, sp38, 0);
-    sp58 = GXGetTexObjWidth(sp38);
-    sp5A = GXGetTexObjHeight(sp38);
+    y = (s16)((f32)*(s16 *)((u8 *)arg1 + 0x3A) + t);
+    Ui_LoadAtlasTex(lbl_80368438, tex0.buf, 0);
+    tex0.w = GXGetTexObjWidth(tex0.buf);
+    tex0.h = GXGetTexObjHeight(tex0.buf);
     Prim2D_Begin();
-    Prim2D_SetTex(sp38, 0x10);
+    Prim2D_SetTex(tex0.buf, 0x10);
     Prim2D_PrepareTex();
     {
         u32 tick = OSGetTick();
         u32 bus = *(u32 *)0x800000F8 >> 2;
-        u32 div = (u32)(((u64)0x10624DD3ULL * bus) >> 32) >> 6;
+        u32 div = bus / 1000;
         u32 ms = tick / div;
         u32 phase = ms % 500;
         pulse = lbl_8036BB9C * (lbl_8036BB58 + (f32)fn_802380D0(lbl_8036BB98 * ((f32)phase / lbl_8036BB94)));
     }
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)(x - 0x20) - pulse, lbl_8036BB90 * pulse + (f32)(y + 0xC), (f32)sp58, (f32)sp5A);
+    Prim2D_SetRect((f32)(x - 0x20) - pulse, lbl_8036BB90 * pulse + (f32)(y + 0xC), (f32)tex0.w, (f32)tex0.h);
     Prim2D_EndPrim();
     if (*(u8 *)((u8 *)arg0 + 0x24) != 0) {
         s16 w, h;
-        {
-            void **v = *(void ***)((u8 *)arg0 + 4);
-            wide = ((s16 (*)(void *))v[0x94 / 4])(arg0);
-            half = ((s16 (*)(void *))v[0x58 / 4])(arg0);
-        }
+        wide = ((CursorWidget *)arg0)->v35();
+        half = ((CursorWidget *)arg0)->v20();
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036BBA0);
         Prim2D_PrepareTex();
@@ -1756,7 +1761,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         if (flag) {
             u32 tick = OSGetTick();
             u32 bus = *(u32 *)0x800000F8 >> 2;
-            u32 div = (u32)(((u64)0x10624DD3ULL * bus) >> 32) >> 6;
+            u32 div = bus / 1000;
             u32 ms = tick / div;
             u32 phase = ms % 1500;
             alpha = (s32)(lbl_8036BBAC * (lbl_8036BB90 * (f32)fn_802380D0(lbl_8036BB98 * ((f32)phase / lbl_8036BBA4)) + lbl_8036BB90) + lbl_8036BBA8);
@@ -1764,39 +1769,40 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         if (wide < 0x50) {
             mid = 0x50;
         }
-        half = mid >> 1;
-        Ui_LoadAtlasTex(lbl_80368438, sp14, 1);
-        sp34 = GXGetTexObjWidth(sp14);
-        sp36 = GXGetTexObjHeight(sp14);
+        wide = (s16)mid;
+        half = wide >> 1;
+        Ui_LoadAtlasTex(lbl_80368438, tex1.buf, 1);
+        tex1.w = GXGetTexObjWidth(tex1.buf);
+        tex1.h = GXGetTexObjHeight(tex1.buf);
         Prim2D_Begin();
-        Prim2D_SetTex(sp14, 0x10);
+        Prim2D_SetTex(tex1.buf, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         lx = left - half;
         ty = top - 0xA;
-        Prim2D_SetRect((f32)lx, (f32)ty, (f32)sp34, (f32)sp36);
+        Prim2D_SetRect((f32)lx, (f32)ty, (f32)tex1.w, (f32)tex1.h);
         sp8 = *Ui_GetColor(0x18);
         Prim2D_SetColorPacked(&sp8);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
-        Prim2D_SetRect((f32)((left + half) - (s16)sp34), (f32)ty, (f32)sp34, (f32)sp36);
+        Prim2D_SetRect((f32)((left + half) - tex1.w), (f32)ty, (f32)tex1.w, (f32)tex1.h);
         Prim2D_SwapUvU();
         spC = *Ui_GetColor(0x18);
         Prim2D_SetColorPacked(&spC);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
-        bw = (s16)sp34;
-        gap = mid - (bw * 2);
+        bw = (s16)tex1.w;
+        gap = wide - (bw * 2);
         if (gap > 0) {
-            Ui_LoadAtlasTex(lbl_80368438, sp14, 2);
-            sp34 = GXGetTexObjWidth(sp14);
-            sp36 = GXGetTexObjHeight(sp14);
+            Ui_LoadAtlasTex(lbl_80368438, tex1.buf, 2);
+            tex1.w = GXGetTexObjWidth(tex1.buf);
+            tex1.h = GXGetTexObjHeight(tex1.buf);
             Prim2D_Begin();
-            Prim2D_SetTex(sp14, 0x10);
+            Prim2D_SetTex(tex1.buf, 0x10);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)sp36);
+            Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)tex1.h);
             sp10 = *Ui_GetColor(0x18);
             Prim2D_SetColorPacked(&sp10);
             Prim2D_SetAlpha(alpha);
@@ -1807,6 +1813,8 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
     }
 }
+#pragma pop
+#pragma cplusplus off
 s32 fn_801FFD00(const char *fmt, ...) {
     return 0;
 }
