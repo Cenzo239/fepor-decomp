@@ -1376,10 +1376,7 @@ hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-
 if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
 hi=HeapC55_End((void*)lbl_8036786C,(void**)&lbl_80367864);
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
-base=(HeapC55**)lbl_80320B88;table=base;for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
-DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
-DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
-}}
+base=(HeapC55**)lbl_80320B88;table=base;HeapC55_PrintList(table);
 fn_8005BC8C((s8)HeapC55_FindIndex(base,self));table=base;
 block=HeapC55_Best(self->free,size);
 mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
@@ -1389,18 +1386,14 @@ hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-
 if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
 hi=HeapC55_End((void*)lbl_8036786C,(void**)&lbl_80367864);
 DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
-for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
-DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
-DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
-}}
+HeapC55_PrintList(table);
 }
 n=block->size-size;
 if(n<64){p=block->next;head=self->free;if(p)p->prev=block->prev;p=block->prev;if(p)p->next=block->next;else head=block->next;self->free=head;block->owner=self;}
 else{block->size=n;block=(HeapC55*)((u8*)block+n);block->size=-size;block->owner=self;}
 self->owner=HeapC55_Append(self->owner,block);return block;
 }
-#pragma global_optimizer off
-#pragma use_lmw_stmw on
+#pragma pop
 s32 fn_800C5A48(s32 arg0, s32 bytes) {
     HeapC55 *self = (HeapC55 *)arg0;
     void DebugPrint(void *, ...);
@@ -24478,6 +24471,12 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
+#pragma opt_loop_invariants off
+#pragma use_lmw_stmw on
+#pragma opt_common_subs on
 u8 fn_800F43D8(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],gAiEval_UnitScoreVtbl[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
@@ -24536,6 +24535,7 @@ if(result.score>score){bestToX=result.pos.x;score=result.score;bestToY=result.po
 if((u32)(score+0x80000000U)!=0)fn_800FB96C(ctx[8],(s8)bestX,(s8)bestY,0,(s8)bestToX,(s8)bestToY,(s8)bestItem,0,0);
 return gAiState[0x21c];
 }
+#pragma pop
 #pragma opt_common_subs on
 #pragma opt_loop_invariants reset
 #pragma opt_strength_reduction reset
