@@ -12,6 +12,15 @@ typedef struct Vec3_800193D8 {
     f32 z;
 } Vec3_800193D8;
 
+static inline void CamPath_AppendInitial(u8 *p, s32 kind, s32 duration, Vec3_800193D8 v) {
+ Vec3_800193D8 copy; Vec3_800193D8 *dest;
+ *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=kind;
+ *(s32 *)(*(u8 **)(p+0x40)+p[0x44]*20+4)=duration;
+ copy=v;
+ dest=(Vec3_800193D8 *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
+ dest->x=copy.x;dest->y=copy.y;dest->z=copy.z;
+ p[0x44]++;
+}
 static inline u8 CamPath_FindInitialKey(s32 count, u8 **list, f32 time) {
  s32 i; u8 *keys;
  if (count == 0) return 0;
