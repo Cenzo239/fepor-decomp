@@ -25,7 +25,6 @@ static inline void *MsgDebug_FilterText(void *text, u8 *dst)
 
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
-typedef union { Color rgba; u32 word; } PanelColor;
 typedef struct { s32 c0, c1, c2, c3; } Color4;
 typedef struct { s32 c3, c2, c1, c0; } Color4rev;
 
