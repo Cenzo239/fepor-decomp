@@ -84,10 +84,7 @@ static inline s32 count_trailing_zero(f64 x) {
         n = 0;
         k = m;
         j = 32;
-        for (;;) {
-            if (j == 0) {
-                break;
-            }
+        while (j != 0) {
             if ((lo & xbits) == 0) {
                 n += k;
                 lo >>= k;
