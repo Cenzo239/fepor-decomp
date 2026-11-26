@@ -520,7 +520,6 @@ extern void FileCache_ReleaseByKey(u32);
 #pragma opt_strength_reduction off
 #pragma inline_depth(8)
 #pragma inline_max_size(256)
-static inline void MenuEntry_SetValue(s32 *entry, s32 value) { entry[1] = value; }
 static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b) {
     entries[0] = table;
     table = entries[0];
@@ -547,9 +546,9 @@ void fn_8006F10C(s32 arg0, s32 arg1)
   Entries *entries = (Entries *) (base + 0x6c);
   entries->e0 = table;
   table = (s32 *)entries->e0;
-  table[1] = arg0;
+  MenuEntry_SetValue(table, arg0);
   entries->e1 = (void *)(table + 2);
-  ((s32 *)entries->e1)[1] = arg1;
+  MenuEntry_SetValue((s32 *)entries->e1, arg1);
   entries->e2 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
