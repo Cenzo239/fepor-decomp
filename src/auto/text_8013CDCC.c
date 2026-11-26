@@ -832,10 +832,9 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     s8 maxIdx = (s8)p[0x60];
     s32 rows = self->Rows();
     s32 cols = self->Cols();
-    s16 colW = cols;
     u8 skip = 0;
-    s16 row = (s16)((s8)p[0x62] / colW);
-    s16 col = (s16)((s8)p[0x62] % colW);
+    s16 row = (s16)((s8)p[0x62] / (s16)cols);
+    s16 col = (s16)((s8)p[0x62] % (s16)cols);
     u32 trig, held, edge;
     s16 rem;
     s16 sum;
@@ -852,7 +851,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         edge = held & (gPadInput[2] ^ held);
         p[0x63] = p[0x62];
         if ((s16)cols > 1) {
-            rem = (s16)(maxIdx - row * colW);
+            rem = (s16)(maxIdx - row * (s16)cols);
             if (rem > (s16)cols)
                 rem = cols;
             if (trig & 0x01000001) {
@@ -872,7 +871,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         if (trig & 0x08000008) {
             if (row == 0) {
                 if (trig == edge) {
-                    p[0x62] = (u8)(p[0x62] + (rows - 1) * colW);
+                    p[0x62] = (u8)(p[0x62] + (rows - 1) * (s16)cols);
                     if ((s8)p[0x62] > maxIdx - 1)
                         p[0x62] = (u8)(maxIdx - 1);
                 }
@@ -882,7 +881,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         } else if (trig & 0x04000004) {
             if (row == (s16)rows - 1) {
                 if (trig == edge)
-                    p[0x62] = (u8)(p[0x62] - ((s16)rows - 1) * colW);
+                    p[0x62] = (u8)(p[0x62] - ((s16)rows - 1) * (s16)cols);
             } else {
                 p[0x62] = (u8)(p[0x62] + cols);
                 if ((s8)p[0x62] > maxIdx - 1)
@@ -4911,6 +4910,9 @@ extern "C" void fn_80142C00(void *self, void *other) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_80142ED0(Menu42 *self, s32 arg) {
 void fn_8013F748(void *,s16 *,s16 *);
 void Prim2D_ScissorFromRect(void *);
@@ -5049,6 +5051,7 @@ u8 *child = M2C_FIELD(self, u8 **, 0x48);
 cb.method = lbl_802922FC; cb.arg = arg;
 Menu42Visit(M2C_FIELD(self, void **, 0x44), (u8 *)self + 0x40, cb);
 }
+#pragma pop
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
