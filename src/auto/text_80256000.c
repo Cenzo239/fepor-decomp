@@ -9598,8 +9598,3 @@ return 0;
 }
 extern u64 lbl_8029F3D0[4];
 extern u32 lbl_8029F3F0[4];
-static inline void Sound_SetPanPair(u8 *entry, u16 left, u16 right) {
-    *(u16 *)(entry + 0xD0) = left;
-    *(u16 *)(entry + 0xD2) = right;
-    *(u32 *)(entry + 0x24) |= 0x200;
-}
