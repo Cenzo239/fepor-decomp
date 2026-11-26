@@ -31,7 +31,15 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-extern u8 lbl_80289950[];
+extern u8 lbl_8026CC58[], lbl_8026CC5F[], lbl_8026CC67[];
+void fn_8008A5AC(void);
+void Ui_DrawColorFade(void);
+void fn_80089A28(void);
+static u32 lbl_80289950[] = {
+    0x2003, (u32)lbl_8026CC58, 0x54911001, 0x201A, (u32)fn_8008A5AC, 0,
+    0x2003, (u32)lbl_8026CC5F, 0x54911001, 0x201A, (u32)Ui_DrawColorFade, 0,
+    0x2003, (u32)lbl_8026CC67, 0x54911001, 0x201A, (u32)fn_80089A28, 0
+};
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
@@ -123,20 +131,18 @@ void fn_80089554(void) {
 #pragma global_optimizer off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
-    extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    u8 *base;
+    void *base = lbl_80289950;
     void *tmp;
-    base = lbl_80289950;
-    lbl_803674E0 = MenuCreateAt(base, 0);
-    lbl_803674E4 = MenuCreateAt(base, 0x58);
-    tmp = MenuCreateAt(base, 0x18);
+    lbl_803674E0 = Process_Create(base, 7);
+    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
+    tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = MenuCreateAt(base, 0x30);
+    tmp = Process_Create((u8 *)base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
