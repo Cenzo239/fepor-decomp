@@ -4923,28 +4923,7 @@ u8 Ai_TryStealAction(void *arg0, s32 arg1) {
             while ((s8)slot < 8) {
                 entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
-                    tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
-                    if (!Unit_CanReceiveItem(arg0, entry)) {
-                        dist = -1;
-                    } else {
-                        dist = 0;
-                        goto lbl_check;
-                    lbl_body:
-                        if (*(u32 *)entry != 0) {
-                            val = *(s32 *)*(void **)entry;
-                        } else {
-                            val = 0;
-                        }
-                        if (Str_Cmp(val, t) == 0) goto lbl_done;
-                        tbl++;
-                        dist++;
-                    lbl_check:
-                        t = *tbl;
-                        if (t != 0) goto lbl_body;
-                        dist = -1;
-                    lbl_done:
-                        ;
-                    }
+                    dist = AiItemTableIndex_inl(arg0, entry);
                     if (dist >= 0) {
                         foundSlot = slot;
                         foundDist = dist;
@@ -8474,16 +8453,37 @@ void fn_80193540(void *self) {
 
 #pragma push
 #pragma optimization_level 3
+static inline u8 Unit_FindKeyInMask(s32 key, u8 *sp8) {
+    extern u8 gUnits[];
+    s8 Unit_FindItemSlot(void *, s32);
+    s32 i;
+    void *unit;
+    u8 found=0;
+    for (i = 1; i <= 0x9F; i++) {
+        if ((u8)i != 0) {
+            unit = gUnits + ((u8)i - 1) * 0x280;
+        } else {
+            unit = NULL;
+        }
+        if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
+            sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
+            (s8)Unit_FindItemSlot(unit, key) >= 0) {
+            found = 1;
+            break;
+        }
+    }
+    return found;
+}
 void fn_80193668(void *arg0) {
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, char *, u32);
     void Ui_AddChild(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
-    s32 Item_GetByIid(void *);
+    void *Item_GetByIid(void *);
     void Allegiance_FillMask(s32, void *);
-    s8 Unit_FindItemSlot(void *, s32);
-    s32 fn_800C39A4(void *, s32);
+    s8 Unit_FindItemSlot(void *, void *);
+    s32 fn_800C39A4(void *, void *);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80293C84[];
@@ -8496,7 +8496,7 @@ void fn_80193668(void *arg0) {
     u8 sp8[8];
     void *unit;
     s32 i;
-    s32 key;
+    void *key;
     u8 found;
     void *obj;
     void *self;
@@ -8551,10 +8551,10 @@ void fn_80193668(void *arg0) {
     *(s32 *)((u8 *)obj + 0x34) |= 0x10;
     *(s32 *)((u8 *)obj + 0x58) = 1;
     Ui_AddChild(self, obj);
-    key = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x68) + 0x50);
+    key = *(void **)((u8 *)*(void **)((u8 *)self + 0x68) + 0x50);
     obj = Ui_FindChild(self, -0x1000, 0);
     if (obj != NULL) {
-        Ui_SetWidgetText((u32)obj, key);
+        Ui_SetWidgetText((u32)obj, (s32)key);
     }
     found = 0;
     *(f32 *)((u8 *)self + 0x64) = lbl_8036AE20;
