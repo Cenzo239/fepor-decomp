@@ -1036,13 +1036,6 @@ path_ok:
     OSRestoreInterrupts(irq);
 }
 
-static inline u64 VIGetChangedBits(void) {
-    union { u64 value; u32 words[2]; } bits;
-    bits.words[0] = (u32)lbl_80368630;
-    bits.words[1] = (u32)lbl_80368634;
-    return bits.value;
-}
-
 static inline s32 cntlzd(u64 bit) {
     u32 hi = (u32)(bit >> 32);
     u32 lo = (u32)(bit & 0xFFFFFFFF);
