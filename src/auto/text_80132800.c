@@ -158,6 +158,10 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 
+static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
+    return (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12)) / columns;
+}
+
 
 
 typedef struct {
