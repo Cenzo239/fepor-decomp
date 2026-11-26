@@ -1,10 +1,6 @@
 /* Functions from 0x8010554C to 0x80110128, found by decomp-toolkit. */
 #include "common.h"
 
-static inline void DebugPrintEntry(const char *format, s32 index, u8 x, u8 y, u8 a, u8 b, u8 c, const char *name) {
-    void DebugPrint(const char *, ...);
-    DebugPrint(format, index, (s8)x, (s8)y, a, b, c, name);
-}
 
 typedef struct SoundTweenProc {
     u8 pad0[0x18];
@@ -1533,7 +1529,7 @@ void fn_801070FC(void *name) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_80107294(void *name, s32 arg1) {
     u32 Hash_Lookup(void *);
     s32 Bin_ReadU8(u32 *);
@@ -1549,7 +1545,7 @@ void fn_80107294(void *name, s32 arg1) {
     u32 sp8;
     u8 sp10[0x68];
     s32 faction;
-    struct Ret lists;
+    s32 lists;
     struct Ret c;
     s32 faction_u8;
     s32 count;
@@ -1606,7 +1602,7 @@ void fn_80107294(void *name, s32 arg1) {
     }
     spC = var_r0;
     if ((u32)var_r0 != 0) {
-        lists.v = (s32)&gUnitLists;
+        lists = (s32)&gUnitLists;
         faction_u8 = (u8)faction;
         count = c.v;
         count_u8 = (u8)count;
@@ -1620,7 +1616,7 @@ void fn_80107294(void *name, s32 arg1) {
         }
         unit = Unit_FindByName(*(void **)sp10);
         if (unit == NULL) {
-            count = *(s32 *)(lists.v + 0x30);
+            count = *(s32 *)(lists + 0x30);
             var_r0 = sp10[9];
             if (var_r0 == 4) {
                 goto after_sw;
@@ -3463,7 +3459,6 @@ struct UiPackedColor {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
-#pragma opt_propagation off
 extern "C" void fn_8010A330(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, s32);
@@ -3471,8 +3466,10 @@ extern "C" void fn_8010A330(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
-    void Prim2D_SetCornerColors(UiPackedColor, UiPackedColor, UiPackedColor, UiPackedColor);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EndPrim(void);
+    UiPackedColor sp24, sp20, sp1C, sp18;
+    UiPackedColor sp14, sp10, spC, sp8;
     u8 *p;
 
     p = (u8 *)arg0;
@@ -3487,11 +3484,15 @@ extern "C" void fn_8010A330(void *arg0) {
         (f32)*(s16 *)(p + 0xE)
     );
     Prim2D_EmitQuad();
-    UiPackedColor sp18 = (p[0x10] << 24) + ((p[0x11] << 16) + (p[0x12] << 8) + p[0x13]);
-    UiPackedColor sp1C = (p[0x14] << 24) + ((p[0x15] << 16) + (p[0x16] << 8) + p[0x17]);
-    UiPackedColor sp20 = (p[0x18] << 24) + ((p[0x19] << 16) + (p[0x1A] << 8) + p[0x1B]);
-    UiPackedColor sp24 = (p[0x1C] << 24) + ((p[0x1D] << 16) + (p[0x1E] << 8) + p[0x1F]);
-    Prim2D_SetCornerColors(sp18, sp1C, sp20, sp24);
+    sp18.value = ((p[0x11] << 16) + (p[0x12] << 8)) + p[0x13] + (p[0x10] << 24);
+    sp1C.value = ((p[0x15] << 16) + (p[0x16] << 8)) + p[0x17] + (p[0x14] << 24);
+    sp20.value = ((p[0x19] << 16) + (p[0x1A] << 8)) + p[0x1B] + (p[0x18] << 24);
+    sp24.value = ((p[0x1D] << 16) + (p[0x1E] << 8)) + p[0x1F] + (p[0x1C] << 24);
+    sp8.value = sp24.value;
+    spC.value = sp20.value;
+    sp10.value = sp1C.value;
+    sp14.value = sp18.value;
+    Prim2D_SetCornerColors((s32 *)&sp14, (s32 *)&sp10, (s32 *)&spC, (s32 *)&sp8);
     Prim2D_EndPrim();
 }
 #pragma pop
