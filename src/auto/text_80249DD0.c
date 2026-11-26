@@ -767,6 +767,18 @@ s32 fn_8024A6F8(void) {
 }
 
 void fn_8024A780(u8 arg0, u16 arg1, u8 arg2, u8 arg3, s32 arg4) {
+    typedef struct {
+        f32 unk00;
+        f32 unk04;
+        f32 unk08;
+        f32 unk0C;
+        f32 unk10;
+        u8 pad14[0x14];
+        s32 unk28;
+        u8 unk2C;
+        u8 unk2D;
+        u8 pad2E[2];
+    } SoundVolEntry;
     void fn_8026146C(u32 *);
     void fn_80244D64(s32);
     void fn_80244AE8(s32);
@@ -777,17 +789,13 @@ void fn_8024A780(u8 arg0, u16 arg1, u8 arg2, u8 arg3, s32 arg4) {
     extern f32 lbl_8036C1E0;
     extern f32 lbl_8036C20C;
 
-    int off;
+    SoundVolEntry *arr;
     u8 var_r4;
     u32 sp8;
     f32 f31;
-    s32 *p28;
     s32 id;
     u8 kind;
-    u8 *base;
-    u8 *p2c;
-    register f32 t;
-    u8 *e;
+    f32 t;
     long var_r28;
     u8 *var_r29;
     s32 mode;
@@ -923,26 +931,21 @@ void fn_8024A780(u8 arg0, u16 arg1, u8 arg2, u8 arg3, s32 arg4) {
         } while (var_r28 < 0x20U);
         return;
     default:
-        off = (u8)arg2 * 0x30;
-        base = (u8 *)lbl_8034C324;
-        e = base + (unsigned short)off;
-        e[0x2C] = arg3;
-        p28 = (s32 *)(e + 0x28);
-        *p28 = arg4;
-        e += 0x2C;
-        p2c = e;
+        arr = (SoundVolEntry *)lbl_8034C324;
+        arr[arg2].unk2C = arg3;
+        arr[arg2].unk28 = arg4;
         if (sp8) {
-            *(f32 *)(base + off + 8) = *(f32 *)(base + off);
-            *(f32 *)(base + off + 4) = lbl_8036C1D0 * (f32)arg0;
-            *(f32 *)(base + off + 0xC) = lbl_8036C1E0;
-            *(f32 *)(base + off + 0x10) = lbl_8036C20C / (f32)sp8;
+            arr[arg2].unk08 = arr[arg2].unk00;
+            arr[arg2].unk04 = lbl_8036C1D0 * (f32)arg0;
+            arr[arg2].unk0C = lbl_8036C1E0;
+            arr[arg2].unk10 = lbl_8036C20C / (f32)sp8;
         } else {
             t = lbl_8036C1D0 * (f32)arg0;
-            *(f32 *)(base + off + 4) = t;
-            *(f32 *)(base + off) = t;
-            id = *p28;
+            arr[arg2].unk04 = t;
+            arr[arg2].unk00 = t;
+            id = arr[arg2].unk28;
             if ((u32)(id + 0x10000) != 0xFFFFU) {
-                switch ((s32)*p2c) {
+                switch (arr[arg2].unk2C) {
                 case 1:
                     fn_80244D64(id);
                     break;
@@ -1951,6 +1954,8 @@ s32 fn_8024CE1C(s32 arg0, s32 arg1)
     return ((arg0 << 1) + 0x1F) & ~31;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
 void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
 {
@@ -1982,16 +1987,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
 
     Audio_Lock();
     base = gSoundSlots;
-    index = 0;
-    scan = base;
-    for (i = 0; i < 64; i++, scan += 0x68) {
-        if (scan[0xC] != 0 && arg0 == *(u32 *)(scan + 4)) {
-            index = i;
-            goto found1;
-        }
-    }
-    index = -1;
-found1:
+    index=Sound_FindMatchingSlot(arg0,base);
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
         slot = gSoundSlots + offset;
@@ -2026,16 +2022,7 @@ found1:
         parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             Audio_Lock();
-            index = 0;
-            scan = base;
-            for (i = 0; i < 64; i++, scan += 0x68) {
-                if (scan[0xC] != 0 && parent == *(u32 *)(scan + 4)) {
-                    index = i;
-                    goto found2;
-                }
-            }
-            index = -1;
-found2:
+            index=Sound_FindMatchingSlot(parent,base);
             if ((u32)(index + 0x10000) != 0xFFFFU) {
                 offset = index * 0x68;
                 sp8 = arg3;
@@ -2081,7 +2068,7 @@ found2:
     }
     Audio_Unlock();
 }
-
+#pragma pop
 void Sound_SetVolume(u32 arg1, u32 arg0) {
     extern u8 gSoundSlots[];
     extern u8 gSoundData[];
