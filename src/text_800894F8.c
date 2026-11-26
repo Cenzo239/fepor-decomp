@@ -23,13 +23,6 @@ typedef struct {
     void *f7C;
 } Struct_80089490;
 
-typedef struct {
-    u8 f00[0x18];
-    u8 f18[0x18];
-    u8 f30[0x28];
-    u8 f58[4];
-} Struct_80289950;
-
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
