@@ -354,11 +354,7 @@ void *GXInit(void *base, u32 size) {
     void *fifo;
     u8 *gx;
     u32 i;
-    u32 pad0, pad1, pad2;
 
-    pad0 = 0;
-    pad1 = 0;
-    pad2 = 0;
     fifo = FifoObj_8033A440;
     OSRegisterVersion(__GXVersion);
     gx = __GXData;
@@ -387,75 +383,29 @@ void *GXInit(void *base, u32 size) {
     }
 
     {
-        u32 idx;
-        u32 sh;
-        u32 a, b, regOff;
+        u32 regOff;
         u32 zero;
         gx = __GXData;
         regOff = 0;
-        idx = 0;
+        i = 0;
         *(u32 *)(gx + 0x204) = regOff;
-        sh = idx << 1;
         *(u32 *)(gx + 0x204) = __rlwimi(*(u32 *)(gx + 0x204), regOff, 24, 0, 7);
-        a = sh + 0xC0;
         *(u32 *)(gx + 0x124) = 0xFF;
-        b = sh + 0xC1;
         *(u32 *)(gx + 0x124) = __rlwimi(*(u32 *)(gx + 0x124), 0xF, 24, 0, 7);
         *(u32 *)(gx + 0x7C) = regOff;
         *(u32 *)(gx + 0x7C) = __rlwimi(*(u32 *)(gx + 0x7C), 0x22, 24, 0, 7);
 
-        for (i = 0; i < 8; i++) {
-            u32 h = idx >> 1;
-            u32 t;
+        for (; i < 16; i++, regOff += 4) {
+            u32 h = i >> 1;
             gx = __GXData;
-            {
-                u32 o130 = regOff + 0x130;
-                u32 o170 = regOff + 0x170;
-                u32 o100 = (h << 2) + 0x100;
-                u32 o554 = regOff + 0x554;
-                u32 o1b0 = (h << 2) + 0x1B0;
-                u32 old_h = h;
-                *(u32 *)(gx + o130) = 0;
-                *(u32 *)(gx + o170) = 0;
-                *(u32 *)(gx + o100) = 0;
-                *(u32 *)(gx + o554) = 0xFF;
-                regOff += 4;
-                t = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7);
-                *(u32 *)(gx + o130) = t;
-                idx += 1;
-                h = idx >> 1;
-                t = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7);
-                *(u32 *)(gx + o170) = t;
-                t = __rlwimi(*(u32 *)(gx + o1b0), old_h + 0xF6, 24, 0, 7);
-                *(u32 *)(gx + o1b0) = t;
-                a += 2;
-                b += 2;
-                t = __rlwimi(*(u32 *)(gx + o100), old_h + 0x28, 24, 0, 7);
-                *(u32 *)(gx + o100) = t;
-            }
-            {
-                u32 o130 = regOff + 0x130;
-                u32 o170 = regOff + 0x170;
-                u32 o554 = regOff + 0x554;
-                u32 o100 = (h << 2) + 0x100;
-                u32 o1b0 = (h << 2) + 0x1B0;
-                *(u32 *)(gx + o130) = 0;
-                *(u32 *)(gx + o170) = 0;
-                *(u32 *)(gx + o100) = 0;
-                *(u32 *)(gx + o554) = 0xFF;
-                regOff += 4;
-                idx += 1;
-                t = __rlwimi(*(u32 *)(gx + o130), a, 24, 0, 7);
-                *(u32 *)(gx + o130) = t;
-                a += 2;
-                t = __rlwimi(*(u32 *)(gx + o170), b, 24, 0, 7);
-                *(u32 *)(gx + o170) = t;
-                b += 2;
-                t = __rlwimi(*(u32 *)(gx + o1b0), h + 0xF6, 24, 0, 7);
-                *(u32 *)(gx + o1b0) = t;
-                t = __rlwimi(*(u32 *)(gx + o100), h + 0x28, 24, 0, 7);
-                *(u32 *)(gx + o100) = t;
-            }
+            *(u32 *)(gx + 0x130 + regOff) = 0;
+            *(u32 *)(gx + 0x170 + regOff) = 0;
+            *(u32 *)(gx + 0x100 + h * 4) = 0;
+            *(u32 *)(gx + 0x554 + regOff) = 0xFF;
+            *(u32 *)(gx + 0x130 + regOff) = __rlwimi(*(u32 *)(gx + 0x130 + regOff), i * 2 + 0xC0, 24, 0, 7);
+            *(u32 *)(gx + 0x170 + regOff) = __rlwimi(*(u32 *)(gx + 0x170 + regOff), i * 2 + 0xC1, 24, 0, 7);
+            *(u32 *)(gx + 0x1B0 + h * 4) = __rlwimi(*(u32 *)(gx + 0x1B0 + h * 4), h + 0xF6, 24, 0, 7);
+            *(u32 *)(gx + 0x100 + h * 4) = __rlwimi(*(u32 *)(gx + 0x100 + h * 4), h + 0x28, 24, 0, 7);
         }
 
         zero = 0;
@@ -1117,36 +1067,29 @@ void fn_8021F168(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3, u8 *arg4)
 
 void fn_8021F1B8(__GXFifoObj *fifo, void **read, void **write)
 {
-  u16 new_var;
-  extern void *__GXCurrentCPUFifo;
-  extern void *__GXCurrentGPFifo;
-  extern u32 *__piReg;
-  extern u16 *__cpReg;
-  if (fifo == __GXCurrentCPUFifo)
-  {
-    fifo->wrPtr = (void *)((__piReg[5] & (~0x04000000)) + 0x80000000);
-  }
-  if (fifo == __GXCurrentGPFifo)
-  {
-    u32 lo;
-    u32 hi;
-    lo = __cpReg[28];
-    hi = __cpReg[29];
-    fifo->rdPtr = (void *)((lo | (hi << 16)) + 0x80000000);
-    hi = __cpReg[25];
-    lo = (new_var = __cpReg[24]);
-    fifo->count = lo | (hi << 16);
-  }
-  else
-  {
-    fifo->count = ((u8 *)fifo->wrPtr) - ((u8 *)fifo->rdPtr);
-    if (fifo->count < 0)
-    {
-      fifo->count += fifo->size;
+    extern void *__GXCurrentCPUFifo;
+    extern void *__GXCurrentGPFifo;
+    extern volatile u32 *__piReg;
+    extern volatile u16 *__cpReg;
+    u32 val;
+
+    if (fifo == __GXCurrentCPUFifo) {
+        fifo->wrPtr = (void *)((__piReg[5] & ~0x04000000U) + 0x80000000);
     }
-  }
-  *read = fifo->rdPtr;
-  *write = fifo->wrPtr;
+    if (fifo == __GXCurrentGPFifo) {
+        val = __cpReg[29] << 16;
+        val |= __cpReg[28];
+        fifo->rdPtr = (void *)(val + 0x80000000);
+        val = __cpReg[25] << 16;
+        fifo->count = __cpReg[24] | val;
+    } else {
+        fifo->count = (u8 *)fifo->wrPtr - (u8 *)fifo->rdPtr;
+        if (fifo->count < 0) {
+            fifo->count += fifo->size;
+        }
+    }
+    *read = fifo->rdPtr;
+    *write = fifo->wrPtr;
 }
 
 s32 fn_8021F250(s32 *arg0) {
