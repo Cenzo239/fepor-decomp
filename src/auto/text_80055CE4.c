@@ -5,14 +5,14 @@
 class ScrollBarDrawInterface {
 public:
  unsigned char data[0x2C];
- virtual unsigned char slot0();
- virtual unsigned char slot1();
- virtual unsigned char slot2();
- virtual unsigned char slot3();
- virtual unsigned char slot4();
- virtual unsigned char slot5();
- virtual unsigned char slot6();
- virtual unsigned char slot7();
+ virtual int slot0();
+ virtual int slot1();
+ virtual int slot2();
+ virtual int slot3();
+ virtual int slot4();
+ virtual int slot5();
+ virtual int slot6();
+ virtual int slot7();
 };
 #pragma pop
 #pragma cplusplus off
@@ -688,7 +688,10 @@ void fn_80056B0C(void *arg0) {
 }
 #pragma pop
 
-void fn_80057020(void *arg0) {
+#pragma push
+#pragma cplusplus on
+#pragma use_lmw_stmw on
+extern "C" void fn_80057020(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -726,7 +729,7 @@ void fn_80057020(void *arg0) {
     }
     Prim2D_Begin();
     Prim2D_SetTransform((f32)temp_r29, (f32)var_r28, lbl_8036912C + *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-    Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[5](arg0), 0x11);
+    Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot3(), 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, lbl_8036914C);
@@ -734,7 +737,7 @@ void fn_80057020(void *arg0) {
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTransform((f32)temp_r29, (f32)(var_r28 + 8), lbl_8036912C + *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-    Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[6](arg0), 0x11);
+    Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot4(), 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, (f32)(var_r31 - 0x10));
@@ -743,7 +746,7 @@ void fn_80057020(void *arg0) {
     Prim2D_Begin();
     temp_r30 = var_r28 + var_r31;
     Prim2D_SetTransform((f32)temp_r29, (f32)(temp_r30 - 8), lbl_8036912C + *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-    Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[7](arg0), 0x11);
+    Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot5(), 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, lbl_8036914C);
@@ -761,7 +764,7 @@ void fn_80057020(void *arg0) {
         }
         Prim2D_Begin();
         Prim2D_SetTransform((f32)temp_r29, (f32)(var_r28 + temp_r25), *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-        Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[3](arg0), 0x11);
+        Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot1(), 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, (f32)var_r27);
@@ -772,7 +775,7 @@ void fn_80057020(void *arg0) {
         Prim2D_Begin();
         mid = var_r28 + temp_r25;
         Prim2D_SetTransform((f32)temp_r29, (f32)mid, *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-        Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[2](arg0), 0x11);
+        Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot0(), 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, lbl_8036914C);
@@ -780,7 +783,7 @@ void fn_80057020(void *arg0) {
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform((f32)temp_r29, (f32)(mid + 8), *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-        Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[3](arg0), 0x11);
+        Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot1(), 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, (f32)(var_r27 - 0x10));
@@ -788,7 +791,7 @@ void fn_80057020(void *arg0) {
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform((f32)temp_r29, (f32)(var_r27 + (mid - 8)), *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
-        Prim2D_BindTexture(*(s32 *)arg0, (u8)(*(VFn **)((u8 *)arg0 + 0x2C))[4](arg0), 0x11);
+        Prim2D_BindTexture(*(s32 *)arg0, ((ScrollBarDrawInterface *)arg0)->slot2(), 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(gF32_0, gF32_0, gF32_0, gF32_0, lbl_80369148, lbl_8036914C);
@@ -840,7 +843,8 @@ void fn_80057020(void *arg0) {
     }
     *(s32 *)((u8 *)arg0 + 0x20) = *(s32 *)((u8 *)arg0 + 0x1C);
 }
-
+#pragma pop
+#pragma cplusplus off
 /* Free up/down scroll arrows; if create, alloc new ones (kinds 8 and 4). */
 void ScrollBar_RecreateArrows(void *scrollBar, u8 create) {
     void fn_8006D8E8(void *);
