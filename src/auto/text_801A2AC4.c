@@ -15,7 +15,7 @@ if(cross[0]<=0 && cross[1]<=0 && cross[2]<=0) return 1;
 if(cross[0]>=0 && cross[1]>=0 && cross[2]>=0) return 1;
 return 0;
 }
-static inline u32 Battle_ItemReach(void *data) { if(data) return M2C_FIELD(data,u8 *,0x1d); return 0; }
+static inline u8 Battle_ItemReach(void *data) { if(data) return M2C_FIELD(data,u8 *,0x1d); return 0; }
 static inline u32 Battle_ItemRange(void *data,void *unit) { u8 Item_GetRangeForUnit(void *,void *); if(data) return (u8)Item_GetRangeForUnit(data,unit); return 0; }
 
 static inline u8 Battle_ItemClass(s32 unit) {
