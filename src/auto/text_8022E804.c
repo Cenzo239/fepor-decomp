@@ -69,6 +69,68 @@ static inline s32 count_trailing_zero_p(const f64 *px) {
         return 32 + n2;
     }
 }
+static inline s32 count_trailing_zero_mask(const f64 *px, u32 mask) {
+    const u32 *l = (const u32 *)px;
+    u32 lo = l[1];
+    if (lo) {
+        s32 n;
+        s32 j;
+        s32 m;
+        s32 k;
+        u32 xbits;
+        m = 16;
+        xbits = mask;
+        n = 0;
+        j = 0x20;
+        k = m;
+        while (j != 0) {
+            if ((lo & xbits) == 0) {
+                n += k;
+                lo >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
+        }
+        return n;
+    } else {
+        u32 hi = l[0] | 0x100000;
+        s32 n2;
+        s32 j;
+        s32 m;
+        s32 k;
+        u32 xbits;
+        m = 16;
+        xbits = mask;
+        n2 = 0;
+        k = m;
+        j = 32;
+        while (j != 0) {
+            if ((hi & xbits) == 0) {
+                n2 += k;
+                hi >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
+        }
+        return 32 + n2;
+    }
+}
 
 static inline s32 count_trailing_zero(f64 x) {
     u32 *l = (u32 *)&x;
@@ -332,7 +394,7 @@ f64 fn_802380A8(f64, f64);
 
 #pragma use_lmw_stmw on
 
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 void fn_8022E804(void *dst, f64 x) {
     u64 fn_8022CC2C(f64);
     void fn_8022F1C0(void *, s32);
@@ -344,7 +406,7 @@ void fn_8022E804(void *dst, f64 x) {
     u8 dig[0x2C]; u8 sp38[0x2C]; f64 sp30; f64 sp28; f64 sp20;
     f64 sp18; f64 sp10; f64 sp8; s8 sign; f64 f31; s32 hx;
     s32 clas; s32 clas2; u64 uq; u8 t; u8 *q; u8 *p;
-    s32 expadj; s8 ch;
+    s8 ch; s32 expadj;
     sp8 = x;
     sign = (s8)((*(u32 *)&sp8) >> 31);
     if (lbl_8036BDC8 == x) {
@@ -426,4 +488,4 @@ void fn_8022E804(void *dst, f64 x) {
     fn_80230944(dst, dig, sp38);
     *(s8 *)dst = sign;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs off
