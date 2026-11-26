@@ -3,6 +3,10 @@
 #include "global.h"
 
 typedef struct BorderColor { u32 rgba; } BorderColor;
+extern s32 Game_GetFrameCount(void);
+static inline BorderColor GetColor_8008F4BC(u8 *s, s32 idx) {
+    return (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F];
+}
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -52,200 +56,199 @@ void fn_8008F49C(void) {
     fn_8008F4BC();
 }
 
+#pragma use_lmw_stmw on
 void fn_8008F4BC(void *arg0) {
-    void fn_8000A258(void);
-    void fn_80009D74(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
-    s32 fn_80230BCC(s32);
-    void fn_80007898(s32);
-    void fn_800077D8(f32, f32, f32, f32);
-    s32 fn_800067B4(void);
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
-    void fn_800075D8(void);
-    void fn_80007884(void);
-    void fn_80007668(s32 *, s32);
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_PrepareTex(void);
+    s32 Abs(s32);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
+    s32 Game_GetFrameCount(void);
+    void Prim2D_SetCornerColors(BorderColor *, BorderColor *, BorderColor *, BorderColor *);
+    void Prim2D_EmitQuad(void);
+    void Prim2D_EndPrim(void);
+    void Prim2D_SetColorPacked(BorderColor *);
     extern f32 lbl_80369754;
-    extern f32 lbl_80369764;
+    extern f32 gZeroF;
     extern f64 lbl_80369770;
     extern f32 lbl_80369778;
     extern f32 lbl_8036977C;
 
-    s32 c0, c1, c2, c3;
-    s32 *pal;
-    f32 x0, y0, x1, y1;
-    f32 cur, step, nstep, zero;
-    f32 t;
-    s32 i, n, idx, count;
+    BorderColor d3_1, d2_1, d1_1, d0_1, c3_1, c2_1, c1_1, c0_1;
+    BorderColor d3_2, d2_2, d1_2, d0_2, c3_2, c2_2, c1_2, c0_2;
+    BorderColor d3_3, d2_3, d1_3, d0_3, c3_3, c2_3, c1_3, c0_3;
+    BorderColor d3_4, d2_4, d1_4, d0_4, c3_4, c2_4, c1_4, c0_4;
+    BorderColor e0, e1, e2, e3;
+    u8 *s;
+    f32 t, step1, ty, x0, y0, x1, y1, zero, cur, nstep;
+    s32 idx, n, i, count;
     s32 a, b;
 
-    fn_8000A258();
-    fn_80009D74(lbl_80369764, lbl_80369764, lbl_80369778, lbl_80369754);
-    fn_8000A174(0, 0);
-    fn_8000A248();
+    s = (u8 *)arg0;
+    Prim2D_Begin();
+    Prim2D_SetTransform(gZeroF, gZeroF, lbl_80369778, lbl_80369754);
+    Prim2D_SetTex(0, 0);
+    Prim2D_PrepareTex();
 
-    a = *(s32 *)((u8 *)arg0 + 0x34);
-    b = *(s32 *)((u8 *)arg0 + 0x38);
+    a = *(s32 *)(s + 0x34);
+    b = *(s32 *)(s + 0x38);
     x0 = (f32)a;
     y0 = (f32)b;
-    x1 = (f32)(a + *(s32 *)((u8 *)arg0 + 0x3C));
-    y1 = (f32)(b + *(s32 *)((u8 *)arg0 + 0x40));
+    x1 = (f32)(a + *(s32 *)(s + 0x3C));
+    y1 = (f32)(b + *(s32 *)(s + 0x40));
     t = lbl_8036977C + x0;
+
     cur = t;
     idx = 1;
-    count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
-    step = (x1 - cur) / (f32)count;
-    nstep = -step;
+    count = Abs(0xF);
+    zero = gZeroF;
+    step1 = (x1 - cur) / (f32)count;
+    nstep = -step1;
     for (i = 0; i < count; i++) {
-        fn_80007898(3);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        if (step >= zero) {
-            fn_800077D8(cur, y0, step, lbl_8036977C);
-            n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
+        Prim2D_AddPrim(3);
+        if (step1 >= zero) {
+            Prim2D_SetRect(cur, y0, step1, lbl_8036977C);
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; c3_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c2_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; c1_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c0_1 = color; }
+            Prim2D_SetCornerColors(&c0_1, &c1_1, &c2_1, &c3_1);
         } else {
-            fn_800077D8(cur + step, y0, nstep, lbl_8036977C);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            n = idx + 1;
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
+            Prim2D_SetRect(cur + step1, y0, nstep, lbl_8036977C);
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d3_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; d2_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d1_1 = color; }
+            { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; d0_1 = color; }
+            Prim2D_SetCornerColors(&d0_1, &d1_1, &d2_1, &d3_1);
         }
-        fn_800075D8();
-        fn_80007884();
-        cur += step;
-        idx += 1;
-    }
-
-    idx = 0x11;
-    cur = lbl_8036977C + y0;
-    count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
-    step = (y1 - cur) / (f32)count;
-    nstep = -step;
-    for (i = 0; i < count; i++) {
-        fn_80007898(3);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        if (step >= zero) {
-            fn_800077D8(x1, cur, lbl_8036977C, step);
-            n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        } else {
-            fn_800077D8(x1, cur + step, lbl_8036977C, nstep);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            n = idx + 1;
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        }
-        fn_800075D8();
-        fn_80007884();
-        cur += step;
-        idx += 1;
-    }
-
-    cur = x1;
-    idx = 1;
-    count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
-    step = (t - x1) / (f32)count;
-    nstep = -step;
-    for (i = 0; i < count; i++) {
-        fn_80007898(3);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        if (step >= zero) {
-            fn_800077D8(cur, y1, step, lbl_8036977C);
-            n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        } else {
-            fn_800077D8(cur + step, y1, nstep, lbl_8036977C);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            n = idx + 1;
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        }
-        fn_800075D8();
-        fn_80007884();
-        cur += step;
-        idx += 1;
-    }
-
-    cur = y1;
-    idx = 0x11;
-    count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
-    step = ((lbl_8036977C + y0) - y1) / (f32)count;
-    nstep = -step;
-    for (i = 0; i < count; i++) {
-        fn_80007898(3);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        if (step >= zero) {
-            fn_800077D8(x0, cur, lbl_8036977C, step);
-            n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        } else {
-            fn_800077D8(x0, cur + step, lbl_8036977C, nstep);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            n = idx + 1;
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
-            fn_800072B0(&c0, &c1, &c2, &c3);
-        }
-        fn_800075D8();
-        fn_80007884();
-        cur += step;
+        Prim2D_EmitQuad();
+        Prim2D_EndPrim();
+        cur += step1;
         idx += 1;
     }
 
     {
-        f32 ox = lbl_80369754 + x0;
-        f32 oy = lbl_80369754 + y0;
-        fn_80007898(1);
-        fn_800077D8(ox, oy, lbl_8036977C, lbl_8036977C);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
-        fn_80007884();
-        fn_80007898(1);
-        fn_800077D8(x1 - lbl_80369754, oy, lbl_8036977C, lbl_8036977C);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
-        fn_80007884();
-        fn_80007898(1);
-        fn_800077D8(x1 - lbl_80369754, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
-        fn_80007884();
-        fn_80007898(1);
-        fn_800077D8(ox, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
-        pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
-        fn_80007884();
+        f32 step;
+        idx = 0x11;
+        ty = lbl_8036977C + y0;
+        cur = ty;
+        count = Abs(0xF);
+        zero = gZeroF;
+        step = (y1 - cur) / (f32)count;
+        nstep = -step;
+        for (i = 0; i < count; i++) {
+            Prim2D_AddPrim(3);
+            if (step >= zero) {
+                Prim2D_SetRect(x1, cur, lbl_8036977C, step);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; c3_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; c2_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c1_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c0_2 = color; }
+                Prim2D_SetCornerColors(&c0_2, &c1_2, &c2_2, &c3_2);
+            } else {
+                Prim2D_SetRect(x1, cur + step, lbl_8036977C, nstep);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d3_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d2_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; d1_2 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; d0_2 = color; }
+                Prim2D_SetCornerColors(&d0_2, &d1_2, &d2_2, &d3_2);
+            }
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
+            cur += step;
+            idx += 1;
+        }
+    }
+
+    {
+        f32 step;
+        cur = x1;
+        idx = 1;
+        count = Abs(0xF);
+        zero = gZeroF;
+        step = (t - x1) / (f32)count;
+        nstep = -step;
+        for (i = 0; i < count; i++) {
+            Prim2D_AddPrim(3);
+            if (step >= zero) {
+                Prim2D_SetRect(cur, y1, step, lbl_8036977C);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; c3_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c2_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; c1_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c0_3 = color; }
+                Prim2D_SetCornerColors(&c0_3, &c1_3, &c2_3, &c3_3);
+            } else {
+                Prim2D_SetRect(cur + step, y1, nstep, lbl_8036977C);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d3_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; d2_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d1_3 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; d0_3 = color; }
+                Prim2D_SetCornerColors(&d0_3, &d1_3, &d2_3, &d3_3);
+            }
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
+            cur += step;
+            idx += 1;
+        }
+    }
+
+    {
+        f32 step;
+        cur = y1;
+        idx = 0x11;
+        count = Abs(0xF);
+        zero = gZeroF;
+        step = (ty - y1) / (f32)count;
+        nstep = -step;
+        for (i = 0; i < count; i++) {
+            Prim2D_AddPrim(3);
+            if (step >= zero) {
+                Prim2D_SetRect(x0, cur, lbl_8036977C, step);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; c3_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; c2_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c1_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; c0_4 = color; }
+                Prim2D_SetCornerColors(&c0_4, &c1_4, &c2_4, &c3_4);
+            } else {
+                Prim2D_SetRect(x0, cur + step, lbl_8036977C, nstep);
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d3_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(idx - Game_GetFrameCount()) & 0x1F]; d2_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[((n = idx + 1) - Game_GetFrameCount()) & 0x1F]; d1_4 = color; }
+                { BorderColor color = (*(BorderColor **)(s + 0x30))[(n - Game_GetFrameCount()) & 0x1F]; d0_4 = color; }
+                Prim2D_SetCornerColors(&d0_4, &d1_4, &d2_4, &d3_4);
+            }
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
+            cur += step;
+            idx += 1;
+        }
+    }
+
+    {
+        f32 ox, oy;
+        Prim2D_AddPrim(1);
+        ox = x0 + lbl_80369754;
+        oy = y0 + lbl_80369754;
+        Prim2D_SetRect(ox, oy, lbl_8036977C, lbl_8036977C);
+        { BorderColor color = (*(BorderColor **)(s + 0x30))[(0 - Game_GetFrameCount()) & 0x1F]; e0 = color; }
+        Prim2D_SetColorPacked(&e0);
+        Prim2D_EndPrim();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRect(x1 - lbl_80369754, oy, lbl_8036977C, lbl_8036977C);
+        { BorderColor color = (*(BorderColor **)(s + 0x30))[(0x10 - Game_GetFrameCount()) & 0x1F]; e1 = color; }
+        Prim2D_SetColorPacked(&e1);
+        Prim2D_EndPrim();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRect(x1 - lbl_80369754, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
+        { BorderColor color = (*(BorderColor **)(s + 0x30))[(0 - Game_GetFrameCount()) & 0x1F]; e2 = color; }
+        Prim2D_SetColorPacked(&e2);
+        Prim2D_EndPrim();
+        Prim2D_AddPrim(1);
+        Prim2D_SetRect(ox, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
+        { BorderColor color = (*(BorderColor **)(s + 0x30))[(0x10 - Game_GetFrameCount()) & 0x1F]; e3 = color; }
+        Prim2D_SetColorPacked(&e3);
+        Prim2D_EndPrim();
     }
 }
-
