@@ -4082,7 +4082,9 @@ loop_slot:
     }
     return 0;
 }
-#pragma pop
+#pragma push
+#pragma global_optimizer off
+#pragma opt_lifetimes on
 u8 fn_8010B30C(void *arg0, s16 arg1, s16 arg2) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
@@ -4098,108 +4100,99 @@ u8 fn_8010B30C(void *arg0, s16 arg1, s16 arg2) {
     extern s32 lbl_80273B30[];
     extern u8 gAiState[];
 
-    s16 sp10;
-    s32 sp8;
+    u8 *map = gBattleMap;
     u8 found;
+    s32 cx;
+    s32 cy;
+    s16 sp10;
     s32 *scan;
-    s32 xMin;
-    s32 yMin;
-    s32 xMax;
-    s32 yMax;
-    s32 y;
-    s32 x;
+    u8 *unit;
     s32 xShift;
-    u8 *cell;
-    void *unit;
-    s32 *ent;
-    s32 pri;
+    u8 *row;
     s32 bestPri;
+    s32 pri;
     s32 bestId;
     void *bestUnit;
+    s32 xMin;
+    s32 xMax;
+    s32 yMax;
+    s32 yMin;
+    s32 y;
+    s32 x;
+    s32 id;
+    s32 *ent;
+    s32 sp8;
 
     found = 0;
     sp10 = arg2;
     scan = &lbl_8036A158;
-    goto scan_cmp;
-scan_loop:
-    if (Status_Test((u8 *)arg0 + 0x1BC, (u8)*scan) != 0) {
-        found = 1;
-    } else {
+    while (*scan != -1) {
+        if (Status_Test((u8 *)arg0 + 0x1BC, (u8)*scan) != 0) {
+            found = 1;
+            break;
+        }
         scan += 1;
-        goto scan_cmp;
     }
-    goto scan_done;
-scan_cmp:
-    if (*scan != -1) {
-        goto scan_loop;
-    }
-scan_done:
     if (found == 0) {
         return 0;
     }
 
-    Map_SelectRangeBuffer(gBattleMap, 5);
-    Map_FillLayer(gBattleMap, 0xB, -1);
-    fn_8001F9C4(gBattleMap, (s8)arg1, (s8)sp10, 1, 0);
+    Map_SelectRangeBuffer(map, 5);
+    Map_FillLayer(map, 0xB, -1);
+    fn_8001F9C4(map, (s8)arg1, (s8)sp10, 1, 0);
 
     bestPri = 0x7F;
-    xMin = arg1 - 1;
+    cx = arg1;
+    xMin = cx - 1;
     if (xMin < (s8)gBattleMap[8]) {
         xMin = (s8)gBattleMap[8];
     }
-    yMin = sp10 - 1;
+    cy = sp10;
+    yMin = cy - 1;
     if (yMin < (s8)gBattleMap[9]) {
         yMin = (s8)gBattleMap[9];
     }
-    xMax = arg1 + 1;
+    xMax = cx + 1;
     if (xMax > (s8)gBattleMap[0xA] - 1) {
         xMax = (s8)gBattleMap[0xA] - 1;
     }
-    yMax = sp10 + 1;
+    yMax = cy + 1;
     if (yMax > (s8)gBattleMap[0xB] - 1) {
         yMax = (s8)gBattleMap[0xB] - 1;
     }
 
-    y = yMin;
-    goto outer_cmp;
-outer:
-    x = xMin;
-    xShift = (s8)y << 6;
-    goto inner_cmp;
-inner:
-    if ((*(s16 **)(gBattleMap + 0x14190))[(s8)x + xShift] >= 0) {
-        cell = gBattleMap + xShift + (s8)x;
-        if ((s8)cell[0xE18E] == 0 && Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
-            if (cell[0xD] != 0) {
-                if (cell[0xD] != 0) {
-                    unit = (u8 *)gUnits + (cell[0xD] - 1) * 0x280;
-                } else {
-                    unit = NULL;
-                }
-                if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 0) {
-                    pri = 0;
-                    ent = lbl_80273B30;
-                    goto tab_cmp;
-tab_loop:
-                    if (Status_Test((u8 *)arg0 + 0x1BC, (u8)ent[0]) == 0
-                        || ((u8 (*)(void *, void *))ent[1])(arg0, unit) == 0) {
-                        ent += 2;
-                        pri += 1;
-                        goto tab_cmp;
-                    }
-                    goto tab_found;
-tab_cmp:
-                    if ((u32)ent[1] != 0) {
-                        goto tab_loop;
-                    }
-tab_found:
-                    if ((s8)ent[0] >= 0) {
-                        if ((s8)pri <= (s8)bestPri) {
-                            if ((s8)pri != (s8)bestPri
-                                || fn_8003863C(unit) >= fn_8003863C(bestUnit)) {
-                                bestPri = pri;
-                                bestId = (s8)ent[0];
-                                bestUnit = unit;
+    for (y = yMin; y <= yMax; y++) {
+        xShift = (s8)y << 6;
+        row = gBattleMap + xShift;
+        for (x = xMin; x <= xMax; x++) {
+            if ((*(s16 **)(gBattleMap + 0x14190))[(s8)x + xShift] >= 0) {
+                unit = row + (s8)x;
+                if ((s8)unit[0xE18E] == 0 && Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
+                    if (unit[0xD] != 0) {
+                        if (unit[0xD] != 0) {
+                            unit = (u8 *)gUnits + (unit[0xD] - 1) * 0x280;
+                        } else {
+                            unit = NULL;
+                        }
+                        if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 0) {
+                            pri = 0;
+                            ent = lbl_80273B30;
+                            while ((u32)ent[1] != 0) {
+                                if (Status_Test((u8 *)arg0 + 0x1BC, (u8)ent[0]) != 0
+                                    && ((u8 (*)(void *, void *))ent[1])(arg0, unit) != 0) {
+                                    break;
+                                }
+                                ent += 2;
+                                pri += 1;
+                            }
+                            id = (s8)ent[0];
+                            if (id >= 0 && (s8)pri <= (s8)bestPri) {
+                                if ((s8)pri != (s8)bestPri
+                                    || fn_8003863C(unit) >= fn_8003863C(bestUnit)) {
+                                    bestPri = pri;
+                                    bestId = id;
+                                    bestUnit = unit;
+                                }
                             }
                         }
                     }
@@ -4207,27 +4200,16 @@ tab_found:
             }
         }
     }
-    x += 1;
-inner_cmp:
-    if (x <= xMax) {
-        goto inner;
-    }
-    y += 1;
-outer_cmp:
-    if (y <= yMax) {
-        goto outer;
-    }
 
     if ((s8)bestPri != 0x7F) {
         sp8 = 0;
         fn_800FB96C(0x12, (s8)arg1, (s8)sp10, bestUnit,
-                    *(u8 *)((u8 *)bestUnit + 0x19E),
-                    *(u8 *)((u8 *)bestUnit + 0x19F),
+                    unit[0x19E], unit[0x19F],
                     (s8)(bestId - 0x18), 0, sp8);
     }
     return gAiState[0x21C];
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 s32 fn_8010B60C(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
@@ -6897,7 +6879,7 @@ u8 fn_8010F670(void *arg0, s32 arg1) {
 void **Unit_GetHeldItemSlot(void *, s32);
 u8 fn_8009326C(void *, void *);
 extern u32 lbl_8028F5F8[48];
-extern u8 gAiState[];
+extern const u8 gAiState[];
 #pragma cplusplus on
 struct Handler {
 static u32 *Find(void *unit, u8 *item) {
