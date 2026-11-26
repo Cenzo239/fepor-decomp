@@ -7,20 +7,6 @@ extern __declspec(section ".data") u8 *gTRKInputPendingPtr;
 
 extern u16 lbl_802822F0[200]; // 400 bytes = 200 u16 values
 
-static inline s32 TRKReportChar_80226E24(s32 ch) {
- void fn_80227FD0(s32);
- s32 fn_80227FDC(void);
- void OSReport(char *);
- char buffer[2];
- s32 saved;
- saved=fn_80227FDC();
- buffer[0]=ch;
- buffer[1]=0;
- fn_80227FD0(0);
- OSReport(buffer);
- fn_80227FD0(saved);
- return 0;
-}
 
 static inline s32 TRKReportCharTerminated_80226E24(s32 ch, s32 zero) {
  void fn_80227FD0(s32);
