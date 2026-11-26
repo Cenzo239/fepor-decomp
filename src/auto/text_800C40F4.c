@@ -14907,30 +14907,35 @@ void fn_800E2B10(void *arg0, s32 arg1, s32 arg2, void *arg3, u8 arg4, u8 arg5, f
     }
 }
 
+#pragma opt_lifetimes off
 void *fn_800E2CF4(u8 *self, void *arg1, void *arg2) {
-void fn_800DF7A0(void *,void *);
-void Xml_GetNamedValue(void *,void *,void *);
-extern u16 lbl_8028E090[];
-extern char lbl_80271DB0[];
-struct Value { u32 v[8]; } value, temp;
-String name,name2;
-s32 scratch,scratch2;
-fn_800DF7A0(self,arg1);
-*(void **)(self+0x40)=lbl_8028E090;
-String_Init(&name,lbl_80271DB0,&scratch);
-Xml_GetNamedValue(&temp,arg2,&name);
-value=temp;
-String_Destroy(&name,-1);
-*(u32 *)(self+0x48)=value.v[0];
-*(u32 *)(self+0x4C)=value.v[1];
-String_Init(&name2,lbl_80271DB0+4,&scratch2);
-Xml_GetNamedValue(&temp,arg2,&name2);
-value=temp;
-String_Destroy(&name2,-1);
-self[0x50]=value.v[0]; self[0x51]=value.v[1]; self[0x52]=value.v[2]; self[0x53]=value.v[3];
-return self;
-}
+    void fn_800DF7A0(void *, void *);
+    void Xml_GetNamedValue(void *, void *, void *);
+    extern u16 lbl_8028E090[];
+    extern char lbl_80271DB0[];
+    struct Value { u32 v[8]; } value, temp, temp2;
+    String name, name2;
+    s32 scratch, scratch2;
 
+    fn_800DF7A0(self, arg1);
+    *(void **)(self + 0x40) = lbl_8028E090;
+    String_Init(&name, lbl_80271DB0, &scratch);
+    Xml_GetNamedValue(&temp, arg2, &name);
+    value = temp;
+    String_Destroy(&name, -1);
+    *(u32 *)(self + 0x48) = value.v[0];
+    *(u32 *)(self + 0x4C) = value.v[1];
+    String_Init(&name2, lbl_80271DB0 + 4, &scratch2);
+    Xml_GetNamedValue(&temp2, arg2, &name2);
+    value = temp2;
+    String_Destroy(&name2, -1);
+    self[0x50] = value.v[0];
+    self[0x51] = value.v[1];
+    self[0x52] = value.v[2];
+    self[0x53] = value.v[3];
+    return self;
+}
+#pragma opt_lifetimes on
 s32 fn_800E2E50(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x68);
 }
@@ -28402,7 +28407,7 @@ void fn_800FC150(void) {
     fn_800FF918();
 }
 
-#pragma use_lmw_stmw on
+#pragma opt_propagation off
 void fn_800FC170(u8 *arg0) {
 extern u8 gUiContext[], gAiState[];
 extern void (*lbl_8028E6F8[][6])(void *);
@@ -28430,7 +28435,7 @@ fn_8002807C(ctx); Process_Goto(arg0,0);
 return;
 setup: ai=gAiState; goto run;
 }
-#pragma use_lmw_stmw reset
+#pragma opt_propagation on
 void fn_800FC2C4(s32 arg0) {
     extern u32 gUiContext[];
     u32 fn_800FCF74(u32, s32);
