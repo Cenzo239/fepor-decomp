@@ -10442,7 +10442,7 @@ s32 fn_800DB668(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x9C) != 0;
 }
 
-void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
+void fn_800DB67C(f32 *arg0, const f32 *arg1, s32 arg2) {
     f32 PSVECDistance(f32 *, f32 *);
     void fn_802031A8(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
@@ -10454,38 +10454,36 @@ void fn_800DB67C(void *arg0, f32 *arg1, s32 arg2) {
     f32 x;
     f32 y;
     f32 z;
-    u8 *self;
 
     x = arg1[0];
     y = arg1[1];
-    *(f32 *)((u8 *)arg0 + 0x78) = x;
-    self = (u8 *)arg0;
+    arg0[30] = x;
     z = arg1[2];
-    *(f32 *)(self + 0x7C) = y;
-    *(f32 *)(self + 0x80) = z;
+    arg0[31] = y;
+    arg0[32] = z;
 
-    current[0] = *(f32 *)(self + 0x48);
-    current[1] = *(f32 *)(self + 0x4C);
-    current[2] = *(f32 *)(self + 0x50);
-    destination[0] = *(f32 *)(self + 0x78);
-    destination[1] = *(f32 *)(self + 0x7C);
-    destination[2] = *(f32 *)(self + 0x80);
+    current[0] = arg0[18];
+    current[1] = arg0[19];
+    current[2] = arg0[20];
+    destination[0] = arg0[30];
+    destination[1] = arg0[31];
+    destination[2] = arg0[32];
 
     distance = PSVECDistance(destination, current);
     if (!(distance < 0.0f)) {
         fn_802031A8(destination, current, delta);
         fn_802031E8(delta, delta);
         fn_802031CC(delta, delta, distance / (f32)arg2);
-        *(f32 *)(self + 0x84) = delta[0];
-        *(f32 *)(self + 0x88) = delta[1];
-        *(f32 *)(self + 0x8C) = delta[2];
-        *(f32 *)(self + 0x98) = 0.0f;
-        *(f32 *)(self + 0x94) = 0.0f;
-        *(f32 *)(self + 0x90) = 0.0f;
-        *(s32 *)(self + 0x9C) = arg2;
-        *(f32 *)(self + 0xA8) = 0.0f;
-        *(f32 *)(self + 0xA4) = 0.0f;
-        *(f32 *)(self + 0xA0) = 0.0f;
+        arg0[33] = delta[0];
+        arg0[34] = delta[1];
+        arg0[35] = delta[2];
+        arg0[38] = 0.0f;
+        arg0[37] = 0.0f;
+        arg0[36] = 0.0f;
+        ((s32 *)arg0)[39] = arg2;
+        arg0[42] = 0.0f;
+        arg0[41] = 0.0f;
+        arg0[40] = 0.0f;
     }
 }
 
