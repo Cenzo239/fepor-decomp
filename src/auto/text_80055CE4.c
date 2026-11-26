@@ -1,5 +1,35 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+typedef struct NodeLightPosition { f32 x,y,z; } NodeLightPosition;
+static inline void *NodeLight_Init(u8 *proc, void *arg0, u32 *color, f32 intensity, s32 channel) {
+void *Light_GetChannel(s32); void fn_80067304(void *);
+NodeLightPosition pos; u32 col; u8 *light;
+    pos = *(NodeLightPosition *)arg0;
+    col = *color;
+    proc[0x30] = channel;
+    proc[0x31] = 1;
+    *(f32 *)(proc + 0x3C) = pos.x;
+    *(f32 *)(proc + 0x40) = pos.y;
+    *(f32 *)(proc + 0x44) = pos.z;
+    *(f32 *)(proc + 0x48) = intensity;
+    proc[0x38] = ((u8 *)&col)[0];
+    proc[0x39] = ((u8 *)&col)[1];
+    proc[0x3A] = ((u8 *)&col)[2];
+    proc[0x3B] = ((u8 *)&col)[3];
+    *(u16 *)(proc + 0x36) = 0;
+    proc[0x32] = 1;
+    *(void **)(proc + 0x4C) = Light_GetChannel(channel);
+    fn_80067304(*(void **)(proc + 0x4C));
+    light = *(u8 **)(proc + 0x4C);
+    *(f32 *)(light + 8) = pos.x;
+    *(f32 *)(light + 12) = pos.y;
+    *(f32 *)(light + 16) = pos.z;
+    light = *(u8 **)(proc + 0x4C);
+    *(f32 *)(light + 0x20) = intensity;
+    *(u16 *)(proc + 0x34) = 0xA;
+    return proc;
+}
+
 static inline s32 NodeLink_FindChannel(u8 *flags) { if (!flags[4]) return 4; if (!flags[5]) return 5; if (!flags[6]) return 6; if (!flags[7]) return 7; return -1; }
 static inline f32 NodeLink_Ease(f32 t, f32 extent, f32 scale, f32 base) { f32 d=extent-t; return base+(scale-scale*(d*d)/(extent*extent)); }
 typedef struct NodeLinkColor { u8 r, g, b, a; } NodeLinkColor;
@@ -93,17 +123,7 @@ void *fn_80055DC0(void *arg0, u32 *color, u32 priority, f32 intensity)
     flags[6] = 0;
     flags[7] = 0;
     GfxEnt_ForEachKey(lbl_80285BB0, fn_80055DB0, flags);
-    if (!flags[4]) {
-        channel = 4;
-    } else if (!flags[5]) {
-        channel = 5;
-    } else if (!flags[6]) {
-        channel = 6;
-    } else if (!flags[7]) {
-        channel = 7;
-    } else {
-        channel = -1;
-    }
+    channel = NodeLink_FindChannel(flags);
     if (channel < 0) {
         return NULL;
     }
