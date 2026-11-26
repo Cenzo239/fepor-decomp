@@ -30292,9 +30292,6 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
 #pragma optimization_level 4
 #pragma global_optimizer off
 #pragma opt_common_subs off
-static inline void Ai_ScaleMoveRange(s32 *range, f32 scale) {
-    *range = (s32)((f32)*range * scale);
-}
 s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     s32 Unit_GetMov(void *);
     void *Unit_GetActiveItemPtr(void *);
