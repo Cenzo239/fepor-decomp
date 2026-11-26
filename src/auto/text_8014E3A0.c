@@ -7479,15 +7479,12 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
-typedef struct { s32 a, b, c, d; } Quad80161B98;
-
-static inline Quad80161B98 LoadQuad80161B98(s32 *p) {
-    Quad80161B98 q;
-    q.a = p[0];
-    q.b = p[1];
-    q.c = p[2];
-    q.d = p[3];
-    return q;
+static inline void Store4Desc80161B98(s32 c0, s32 c1, s32 c2, s32 c3,
+                                     void *d0, void *d1, void *d2, void *d3) {
+    *(s32 *)d0 = c0;
+    *(s32 *)d1 = c1;
+    *(s32 *)d2 = c2;
+    *(s32 *)d3 = c3;
 }
 
 void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s32 *arg6, s32 arg7) {
