@@ -1,6 +1,27 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+
+static inline u8 Item_CheckUnitFlags(void *unit, u64 flags) {
+    u8 fn_80105BC0(void *, s32);
+    if (flags & 0x200) {
+        if (fn_80105BC0((u8 *)unit + 0x1BC, 9)) return 1;
+        return 0;
+    }
+    if (((*((u8 *)unit + 0x1A5) >> 4) & 7) == 0) return 1;
+    if (flags & 2) return 0;
+    if (flags & 4) return 0;
+    if (flags & 0x40) return 1;
+    return 1;
+}
+
+static inline u8 Item_CheckUseMask(void *unit, void *item, u64 flags, u64 mask) {
+    u8 fn_800940B0(void *, void *);
+    if (!(flags & mask)) return 0;
+    if (!Item_CheckUnitFlags(unit, flags)) return 0;
+    if (!fn_800940B0(unit, item)) return 0;
+    return 1;
+}
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -829,6 +850,8 @@ u8 fn_80093708(void *arg0, void *arg1) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 3
 u8 fn_800939FC(void *arg0, void *arg1) {
     s32 fn_800061F4(void);
     u8 fn_8001C914(void *, void *);
@@ -956,7 +979,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     }
     return 0;
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 u8 fn_80093DA8(void *arg0, void *arg1) {
@@ -965,8 +988,8 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
     struct { unsigned ok : 8; unsigned result : 8; } t;
     u32 lo;
     u32 hi;
-    s64 flags;
-    s64 flags2;
+    u64 flags;
+    u64 flags2;
     u8 tmp;
     u32 z;
 
@@ -974,7 +997,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
     t.result = z;
     lo = *(u32 *)((u8 *)arg1 + 0x3C);
     hi = *(u32 *)((u8 *)arg1 + 0x38);
-    flags = lo | ((u64)hi << 32);
+    flags = ((u64)hi << 32) | lo;
     flags2 = flags;
 
     if (flags & 8) {
@@ -1370,13 +1393,14 @@ s32 Unit_TryEquipItem(s32 unit, void *item) {
     return 1;
 }
 
-#pragma use_lmw_stmw off
-#pragma optimization_level 2
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void *fn_80094CDC(void *arg0, s32 arg1) {
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_800940B0(void *, void *);
     void *fn_8009542C(void *, s32);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void **slot;
     void *obj;
     u8 ok;
@@ -1387,13 +1411,13 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
     void *entry;
 
     if (arg1 < 4) {
-        if (fn_80105BC0((u8 *)arg0 + 0x1BC, 8) != 0) {
-            return fn_80037BBC(arg0, 0);
+        if (Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
+            return Unit_GetHeldItemSlot(arg0, 0);
         }
         var_r30 = 0;
-        var_r29 = 0;
+        var_r29 = var_r30;
         do {
-            slot = fn_80037BBC(arg0, var_r30);
+            slot = Unit_GetHeldItemSlot(arg0, var_r30);
             {
                 u8 t = *((u8 *)slot + 5);
                 var_r30 += 1;
@@ -1401,7 +1425,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
             }
         } while (var_r30 < 4);
         if (arg1 >= 0) {
-            slot = fn_80037BBC(arg0, arg1);
+            slot = Unit_GetHeldItemSlot(arg0, arg1);
             obj = *slot;
             result = 0;
             flags = *(u64 *)((u8 *)obj + 0x38);
@@ -1417,7 +1441,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
         } else {
             var_r30 = 0;
             for (;;) {
-                slot = fn_80037BBC(arg0, var_r30);
+                slot = Unit_GetHeldItemSlot(arg0, var_r30);
                 obj = *slot;
                 if (((u32)(-(s32)obj | (s32)obj) >> 31) == 0) {
                     return NULL;
@@ -1428,7 +1452,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
                 if ((flags & 1) == 0) {
                 } else {
                     if (flags & 0x200) {
-                        if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
+                        if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
                             ok = 1;
                         } else {
                             ok = 0;
@@ -1522,6 +1546,8 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
         }
     }
 }
+#pragma pop
+#pragma optimization_level 2
 void *fn_80095070(void *arg0, s32 arg1) {
     u8 fn_800940B0(void *, void *);
     void *obj;
