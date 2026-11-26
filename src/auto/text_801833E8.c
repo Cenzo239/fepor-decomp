@@ -4171,26 +4171,21 @@ void fn_8018B934(void *arg0) {
 }
 #pragma fp_contract reset
 void fn_8018BA34(void *arg0) {
-    extern f64 lbl_8036ACE0;
-    extern f32 lbl_8036ACE8;
-    extern f32 lbl_8036AD2C;
-    extern f32 lbl_8036AD48;
-    register f32 scale;
-    register f32 thresh;
-    register f32 a;
-    register f32 b;
+    extern const f32 lbl_8036ACE8;
+    extern const f32 lbl_8036AD2C;
+    extern const f32 lbl_8036AD48;
+    f32 b;
+    f32 a;
     s16 raw;
     void *unit;
 
     unit = *(void **)((u8 *)arg0 + 0x30);
     raw = *(s16 *)((u8 *)unit + 0x15C);
-    thresh = lbl_8036AD2C;
-    scale = lbl_8036ACE8;
-    *(f32 *)((u8 *)arg0 + 0x40) = (f32)raw / scale;
+    *(f32 *)((u8 *)arg0 + 0x40) = (f32)raw / lbl_8036ACE8;
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x34);
     a = *(f32 *)((u8 *)arg0 + 0x40);
     b = *(f32 *)((u8 *)arg0 + 0x44);
-    if ((f32)__fabs(a - b) > thresh) {
+    if ((f32)__fabs(a - b) > lbl_8036AD2C) {
         if (a < b) {
             *(f32 *)((u8 *)arg0 + 0x40) = a + lbl_8036AD48;
         } else if (a > b) {
@@ -4198,7 +4193,6 @@ void fn_8018BA34(void *arg0) {
         }
     }
     *(s32 *)((u8 *)arg0 + 0x3C) = 0;
-    (void)lbl_8036ACE0;
 }
 
 void fn_8018BAC8(void *arg0) {
