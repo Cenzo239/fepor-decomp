@@ -6704,14 +6704,19 @@ void *fn_80190B50(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma global_optimizer off
+static inline s32 fn_80190BBC_add(s32 b, s32 x) { return b + x; }
 void fn_80190BBC(void *arg0) {
     s16 height, width;
     s32 bottom, right;
     s16 *p = (s16 *)arg0;
+    s16 a, c;
     s32 tmp;
 
-    tmp = p[0x4C/2] * 2 + p[0x46/2];
-    p[0x10/2] = (s16)(p[0xC/2] + (s16)(tmp + 0x10));
+    a = p[0x46/2];
+    c = p[0xC/2];
+    tmp = a + p[0x4C/2] * 2;
+    p[0x10/2] = (s16)(c + (s16)(tmp + 0x10));
     height = p[0x10/2] - p[0xC/2];
     width = p[0xE/2] - p[0xA/2];
     bottom = height - 8;
@@ -6721,8 +6726,7 @@ void fn_80190BBC(void *arg0) {
     p[0x16/2] = right;
     p[0x18/2] = bottom;
 }
-
-#pragma global_optimizer off
+#pragma global_optimizer on
 void *fn_80190C24(void *parent, void **names) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
