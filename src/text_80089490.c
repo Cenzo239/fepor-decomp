@@ -17,9 +17,9 @@ typedef struct {
     void *f00;
     u8 pad04[0x44];
     void *f48;
-    u8 pad50[8];
+    u8 pad50[0xC];
     void *f58;
-    u8 pad60[0x1C];
+    u8 pad60[0x24];
     void *f7C;
 } Struct_80089490;
 
@@ -83,29 +83,29 @@ void fn_80089490(void *);
 
 #pragma opt_propagation on
 static inline u8 *fn_80089490_add(u8 *base, s32 off) { return base + off; }
-#pragma opt_propagation off
+#pragma global_optimizer off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
-    u8 *tbl = lbl_80289950;
+    u8 *const tbl = lbl_80289950;
     void *v;
 
     if (*(u8 *)((u8 *)arg0 + 0x2B) == 0x7B) {
         return;
     }
     v = *(void **)arg0;
-    if (v == fn_80089490_add(tbl, 0x7C)) {
+    if (v == tbl + 0x7C) {
         return;
     }
-    if (v == fn_80089490_add(tbl, 0)) {
+    if (v == tbl + 0) {
         return;
     }
-    if (v == fn_80089490_add(tbl, 0x58)) {
+    if (v == tbl + 0x58) {
         return;
     }
-    if (v == fn_80089490_add(tbl, 0x48)) {
+    if (v == tbl + 0x48) {
         return;
     }
     fn_8000A408(arg0);
 }
-#pragma opt_propagation on
+#pragma global_optimizer on
