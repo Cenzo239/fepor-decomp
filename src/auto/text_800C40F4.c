@@ -1,6 +1,11 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+static inline void *Ai_ActionTileUnit(u8 id) {
+    extern u8 gUnits[];
+    if (id) return gUnits + (id - 1) * 0x280;
+    return NULL;
+}
 typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
@@ -30291,7 +30296,6 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
-#pragma opt_common_subs off
 s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     s32 Unit_GetMov(void *);
     void *Unit_GetActiveItemPtr(void *);
@@ -30306,7 +30310,8 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     u8 *map;
     s32 rowOff;
     u8 *row;
-    register s32 range;
+    register s8 movement;
+    s32 range;
     s32 count;
     s32 x_lo, x_hi, y_hi, y, x;
     void *u = unit;
@@ -30320,8 +30325,8 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     u8 v;
     s32 i;
 
-    range = (s8)Unit_GetMov(u);
-    range = (s32)((float)range * farg0);
+    movement = Unit_GetMov(u);
+    range = (s32)((float)movement * farg0);
     if ((u8)flg != 0) {
         slot = (void **)Unit_GetActiveItemPtr(u);
         if ((slot != 0) && (*slot != 0)) {
@@ -31744,6 +31749,8 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
@@ -31826,16 +31833,16 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                 nb = lbl_802732A0;
                 count = 0;
                 while (nb[0] != 0x7FFF) {
+                    u8 oob;
                     s32 nx;
                     s32 ny;
-                    s32 oob;
                     nx = x16 + nb[0];
                     ny = y16 + nb[1];
                     oob = 0;
-                    if (nx < (s8)gBattleMap.xMin || (s8)gBattleMap.xMax - 1 < nx || ny < (s8)gBattleMap.yMin || (s8)gBattleMap.yMax - 1 < ny) {
+                    if (nx < gBattleMap.xMin || gBattleMap.xMax - 1 < nx || ny < gBattleMap.yMin || gBattleMap.yMax - 1 < ny) {
                         oob = 1;
                     }
-                    if ((u8)oob == 0) {
+                    if (!oob) {
                         u8 nid = *((u8 *)&gBattleMap + (s8)nx + ((s8)ny << 6) + 0xD);
                         if (nid != 0) {
                             void *nunit;
@@ -31870,7 +31877,7 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     }
     return best != 0x7FFF;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
