@@ -113,6 +113,7 @@ void *fn_8000D8BC(s32 arg0, char *arg1) {
     return temp_r31 + 4;
 }
 
+#pragma opt_common_subs off
 u8 *fn_8000D910(u8 *arg0, u8 arg1) {
     u8 *Res_GetByName(u8 *);
     void fn_80231E74(u8 *, s32, void *, u8 *, ...);
@@ -125,12 +126,13 @@ u8 *fn_8000D910(u8 *arg0, u8 arg1) {
     u8 sp8[0x80];
     u8 *entry;
     u32 need;
-    u8 *dst;
     u8 *src;
+    u8 *dst;
     u8 *out;
     u8 *p;
     u8 *resolved;
-    u8 c;
+    s8 c;
+    u8 b;
     u8 c1;
     u8 sjis;
 
@@ -143,8 +145,8 @@ u8 *fn_8000D910(u8 *arg0, u8 arg1) {
             src = resolved + 1;
             need = 0;
             p = src;
-            while ((c = *p), (s8)c != 0) {
-                if ((s8)c == 0x40) {
+            while ((c = *(s8 *)p) != 0) {
+                if (c == 0x40) {
                     c1 = p[1];
                     p += 1;
                     switch ((s8)c1) {
@@ -163,8 +165,8 @@ u8 *fn_8000D910(u8 *arg0, u8 arg1) {
                     }
                 } else {
 count_body:
-                    c = *p;
-                    if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                    b = *p;
+                    if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                         (((c1 = p[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                         sjis = 1;
                     } else {
@@ -184,8 +186,8 @@ count_body:
             }
             dst = lbl_80366DA8;
             out = dst;
-            while ((c = *src), (s8)c != 0) {
-                if ((s8)c == 0x40) {
+            while ((c = *(s8 *)src) != 0) {
+                if (c == 0x40) {
                     c1 = src[1];
                     src += 1;
                     switch ((s8)c1) {
@@ -208,8 +210,8 @@ count_body:
                     }
                 } else {
 copy_body:
-                    c = *src;
-                    if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                    b = *src;
+                    if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                         (((c1 = src[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                         sjis = 1;
                     } else {
@@ -229,9 +231,9 @@ copy_body:
                     }
                 }
             }
-            *dst = 0;
-            lbl_80366DA8 = dst + 1;
-            return out;
+            *dst++ = 0;
+            lbl_80366DA8 = dst;
+            resolved = out;
         }
         return resolved;
     }
@@ -246,8 +248,8 @@ copy_body:
             src = resolved + 1;
             need = 0;
             p = src;
-            while ((c = *p), (s8)c != 0) {
-                if ((s8)c == 0x40) {
+            while ((c = *(s8 *)p) != 0) {
+                if (c == 0x40) {
                     c1 = p[1];
                     p += 1;
                     switch ((s8)c1) {
@@ -266,8 +268,8 @@ copy_body:
                     }
                 } else {
 count_body2:
-                    c = *p;
-                    if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                    b = *p;
+                    if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                         (((c1 = p[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                         sjis = 1;
                     } else {
@@ -287,8 +289,8 @@ count_body2:
             }
             dst = lbl_80366DA8;
             out = dst;
-            while ((c = *src), (s8)c != 0) {
-                if ((s8)c == 0x40) {
+            while ((c = *(s8 *)src) != 0) {
+                if (c == 0x40) {
                     c1 = src[1];
                     src += 1;
                     switch ((s8)c1) {
@@ -311,8 +313,8 @@ count_body2:
                     }
                 } else {
 copy_body2:
-                    c = *src;
-                    if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                    b = *src;
+                    if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                         (((c1 = src[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                         sjis = 1;
                     } else {
@@ -332,9 +334,9 @@ copy_body2:
                     }
                 }
             }
-            *dst = 0;
-            lbl_80366DA8 = dst + 1;
-            return out;
+            *dst++ = 0;
+            lbl_80366DA8 = dst;
+            resolved = out;
         }
         return resolved;
     }
@@ -347,8 +349,8 @@ copy_body2:
         src = resolved + 1;
         need = 0;
         p = src;
-        while ((c = *p), (s8)c != 0) {
-            if ((s8)c == 0x40) {
+        while ((c = *(s8 *)p) != 0) {
+            if (c == 0x40) {
                 c1 = p[1];
                 p += 1;
                 switch ((s8)c1) {
@@ -367,8 +369,8 @@ copy_body2:
                 }
             } else {
 count_body3:
-                c = *p;
-                if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                b = *p;
+                if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                     (((c1 = p[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                     sjis = 1;
                 } else {
@@ -388,8 +390,8 @@ count_body3:
         }
         dst = lbl_80366DA8;
         out = dst;
-        while ((c = *src), (s8)c != 0) {
-            if ((s8)c == 0x40) {
+        while ((c = *(s8 *)src) != 0) {
+            if (c == 0x40) {
                 c1 = src[1];
                 src += 1;
                 switch ((s8)c1) {
@@ -412,8 +414,8 @@ count_body3:
                 }
             } else {
 copy_body3:
-                c = *src;
-                if ((((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU))) &&
+                b = *src;
+                if ((((b >= 0x81U) && (b <= 0x9FU)) || ((b >= 0xE0U) && (b <= 0xFCU))) &&
                     (((c1 = src[1], c1 >= 0x40U) && (c1 <= 0x7EU)) || ((c1 >= 0x80U) && (c1 <= 0xFCU)))) {
                     sjis = 1;
                 } else {
@@ -433,14 +435,13 @@ copy_body3:
                 }
             }
         }
-        *dst = 0;
-        lbl_80366DA8 = dst + 1;
-        return out;
+        *dst++ = 0;
+        lbl_80366DA8 = dst;
+        resolved = out;
     }
     return resolved;
 }
-
-#pragma global_optimizer off
+#pragma optimization_level reset
 u8 *Msg_Expand(u8 *arg0) {
     u8 *Res_GetByName(u8 *);
     void strcpy(u8 *, void *);
