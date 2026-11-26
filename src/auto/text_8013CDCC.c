@@ -173,6 +173,7 @@ static inline u8 *MenuPopup_AdvanceNode(s16 count, u8 *node) {
  }
  return node + 8;
 }
+static inline u8 *MenuPopup_AdvanceNode(u8 *node, s16 count) { return MenuPopup_AdvanceNode(count, node); }
 struct MenuPopupHost {
 virtual void v0()=0;
 virtual void v1()=0;
@@ -4355,7 +4356,7 @@ extern "C" void fn_801422C0(void *arg0)
     u8 *entry;
     u8 *node;
     s32 index;
-    s32 count;
+    s16 count;
     s32 offset;
     s32 idx2;
     
@@ -4391,22 +4392,7 @@ extern "C" void fn_801422C0(void *arg0)
         if (*(void **)entry == 0) {
             selected = 0;
         } else {
-            count = *(s16 *)(child + idx2);
-            node = *(u8 **)(entry + 8);
-
-            if ((s16)count >= 0) {
-                while ((s16)count > 0) {
-                    node = *(u8 **)(node + 4);
-                    count--;
-                }
-            } else {
-                while ((s16)count < 0) {
-                    node = *(u8 **)node;
-                    count++;
-                }
-            }
-
-            selected = node + 8;
+            selected = MenuPopup_AdvanceNode(*(s16 *)(child + idx2), *(u8 **)(entry + 8));
         }
 
         if (selected != 0) {
