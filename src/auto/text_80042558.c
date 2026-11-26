@@ -41,12 +41,13 @@ static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 
 {
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        u8 *ent = M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
+        u8 *base = M2C_FIELD(arg0, u8 **, 0x14);
+        u8 *ent = base + i * 0xB4;
         u32 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
         if (forbid != 0 && (flags & forbid)) continue;
         if ((flags & require) != require) continue;
         if (IsInRect_80042558(ent, x, y)) {
-            return M2C_FIELD(arg0, u8 **, 0x14) + i * 0xB4;
+            return base + i * 0xB4;
         }
     }
     return 0;
