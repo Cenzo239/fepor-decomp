@@ -1,6 +1,7 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline u8 *Menu89490_Offset(u8 *base, s32 offset) { return base + offset; }
 typedef struct {
     f32 x, y;
     u8 unk8[4];
@@ -93,12 +94,12 @@ void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
     u8 *tbl = lbl_80289950;
-    u8 *p;
+    u32 p;
     u32 v;
 
     if (*(u8 *)((u8 *)arg0 + 0x2B) != 0x7B) {
         v = *(u32 *)arg0;
-        p = tbl + 0x7C;
+        p = (u32)tbl + 0x7C;
         if (v != (u32)p && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34)) {
             fn_8000A408(arg0);
         }
