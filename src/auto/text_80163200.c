@@ -77,6 +77,33 @@ struct UnitStatPanel {
     s16 bonus;
     void *unit;
 };
+struct UnitItemListPanel {
+    virtual void v0(); virtual void v1();
+    virtual void prepDraw(s32);
+    virtual void drawChild(s32);
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual s32 getRowOffset();
+    virtual void v10(); virtual void v11();
+    virtual s32 getItemValue(u32 *);
+    virtual void drawItem(s16, s16, s32, u32 *, s32);
+    u8 pad04[0xA - 0x4];
+    s16 left, top, right, bottom;
+    s16 innerL, innerT, innerR, innerB;
+    u8 pad1A[0x4A - 0x1A];
+    u8 showFace;
+    u8 showDim;
+    u8 pad4C[0x54 - 0x4C];
+    s16 rowHeight;
+    u8 pad56[0x58 - 0x56];
+    s32 unit;
+    u8 pad5C[0x60 - 0x5C];
+    s32 dimMode;
+    s16 itemX;
+    s16 itemY;
+    s16 scissorRect[4];
+    u8 pad70[0x78 - 0x70];
+    u8 headerMode;
+};
 #pragma cplusplus reset
 #pragma opt_common_subs off
 static inline void init_761F8_base(void *p,s16 x,s16 y,s16 w,s16 h,s16 style) {
@@ -179,6 +206,9 @@ void fn_80163214(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     *(s16*)((u8*)arg0 + 6) = arg4;
 }
 
+#pragma push
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_80163228(void *arg0, s32 arg1) {
 extern f32 lbl_8036A890,lbl_8036A894,lbl_8036A898;
 void Prim2D_AddZ(f32);
@@ -240,7 +270,7 @@ color[0]=0;color[1]=0;color[2]=0;color[3]=128;
 Ui_DrawRect(rect[0],rect[1],16,rect,color,0,0);
 }
 }
-
+#pragma pop
 s32 fn_801635CC(void *arg0, void *arg1)
 {
   u8 *ctx = (u8 *) arg0;
@@ -2635,26 +2665,29 @@ s32 Ui_IsUnitInfoPopupOpen(void) {
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
 #pragma global_optimizer off
+#pragma opt_propagation off
 void Ui_ShowUnitInfoPopup(void *arg0, void **arg1, f32 farg0, f32 farg1) {
     u8 *Msg_Expand(void *);
     void *fn_8001ED1C(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void *Item_GetFlagsPtr(void **);
     void *memcpy(void *, void *, u32);
-    extern f32 lbl_8036A93C;
-    extern f32 lbl_8036A940;
-    extern f32 lbl_8036A944;
-    extern f32 lbl_8036A948;
-    extern f32 lbl_8036A94C;
-    extern f32 lbl_8036A950;
-    extern f32 lbl_8036A954;
-    extern f32 lbl_8036A958;
-    extern f32 lbl_8036A95C;
-    extern f32 lbl_8036A960;
-    extern f32 lbl_8036A964;
-    extern f32 lbl_8036A968;
-    extern f32 lbl_8036A96C;
+    extern const f32 lbl_8036A93C;
+    extern const f32 lbl_8036A940;
+    extern const f32 lbl_8036A944;
+    extern const f32 lbl_8036A948;
+    extern const f32 lbl_8036A94C;
+    extern const f32 lbl_8036A950;
+    extern const f32 lbl_8036A954;
+    extern const f32 lbl_8036A958;
+    extern const f32 lbl_8036A95C;
+    extern const f32 lbl_8036A960;
+    extern const f32 lbl_8036A964;
+    extern const f32 lbl_8036A968;
+    extern const f32 lbl_8036A96C;
 
     u8 *var_r29;
     s32 var_r28;
@@ -2674,13 +2707,11 @@ void Ui_ShowUnitInfoPopup(void *arg0, void **arg1, f32 farg0, f32 farg1) {
     u8 var_r0_4;
     s32 var_idx;
     u8 var_z;
-    s32 lim;
     void *temp_r3_3;
     void *temp_r3_4;
     void *temp_r3_5;
     u64 flags;
 
-    lim = -1;
     if (!(*(u32 *)arg0 & 1)) {
         *(f32 *)((u8 *)arg0 + 0xe4) = *(f32 *)((u8 *)arg0 + 0xdc);
         *(f32 *)((u8 *)arg0 + 0xe8) = *(f32 *)((u8 *)arg0 + 0xe0);
@@ -2709,7 +2740,7 @@ loop_3:
         var_idx = var_r27 + 4;
         var_z = 0;
         var_r25[var_idx] = var_z;
-        temp_r3_2 = Text_MeasureWidth(var_r25 + 4, lim, lbl_8036A944);
+        temp_r3_2 = Text_MeasureWidth(var_r25 + 4, -1, lbl_8036A944);
         var_r25 += 0x40;
         var_r26 += 1;
         if (temp_r3_2 > var_r28) {
@@ -2807,6 +2838,7 @@ after_type:
         *(s32 *)((u8 *)arg0 + 0xcc) = 8;
     }
 }
+#pragma pop
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
