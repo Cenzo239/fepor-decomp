@@ -353,20 +353,31 @@ void fn_80267000(void) {
 
 static volatile u32 gExi2Regs_80267004[16] : 0xCC006800;
 
+static inline void EXI2_Select_80267004(void) {
+    gExi2Regs_80267004[10] = (gExi2Regs_80267004[10] & 0x405) | 0xC0;
+}
+
+static inline void EXI2_Deselect_80267004(void) {
+    gExi2Regs_80267004[10] = gExi2Regs_80267004[10] & 0x405;
+}
+
+static inline void EXI2_Sync_80267004(void) {
+    while (gExi2Regs_80267004[13] & 1) {
+    }
+}
+
 static inline s32 EXI2_ReadStatus_80267004(s32 *status) {
     s32 fn_802677E4(s32 *, s32, s32);
     s32 cmd;
     s32 err;
 
-    gExi2Regs_80267004[10] = (gExi2Regs_80267004[10] & 0x405) | 0xC0;
+    EXI2_Select_80267004();
     cmd = 0x40000000;
     err = !fn_802677E4(&cmd, 2, 1);
-    while (gExi2Regs_80267004[13] & 1) {
-    }
+    EXI2_Sync_80267004();
     err |= !fn_802677E4(status, 4, 0);
-    while (gExi2Regs_80267004[13] & 1) {
-    }
-    gExi2Regs_80267004[10] = gExi2Regs_80267004[10] & 0x405;
+    EXI2_Sync_80267004();
+    EXI2_Deselect_80267004();
     return !err;
 }
 
@@ -375,12 +386,11 @@ static inline s32 EXI2_WriteMailbox_80267004(s32 mail) {
     s32 cmd;
     s32 err;
 
-    gExi2Regs_80267004[10] = (gExi2Regs_80267004[10] & 0x405) | 0xC0;
+    EXI2_Select_80267004();
     cmd = mail;
     err = !fn_802677E4(&cmd, 4, 1);
-    while (gExi2Regs_80267004[13] & 1) {
-    }
-    gExi2Regs_80267004[10] = gExi2Regs_80267004[10] & 0x405;
+    EXI2_Sync_80267004();
+    EXI2_Deselect_80267004();
     return !err;
 }
 
