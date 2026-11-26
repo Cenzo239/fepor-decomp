@@ -3726,6 +3726,7 @@ static inline void *fn_80065EE8_Body(void *res, char *p) {
     }
     return res;
 }
+#pragma inline_depth(4)
 void *fn_80065EE8(void *arg0) {
     void fn_80065F48(void *);
     void *result = (void *)fn_8005C82C(arg0, 0);
@@ -3735,6 +3736,7 @@ void *fn_80065EE8(void *arg0) {
     }
     return result;
 }
+#pragma inline_depth(0)
 
 #pragma optimization_level 2
 void fn_80065F48(void *arg0) {
