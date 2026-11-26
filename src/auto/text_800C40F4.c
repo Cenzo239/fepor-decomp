@@ -10569,6 +10569,11 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
+static inline void Copy3_800DBAB8(f32 *dst, f32 x, f32 y, f32 z) {
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
 #pragma global_optimizer on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
@@ -16136,6 +16141,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     void fn_80060F70(void *, s32, f32 *);
     extern f32 lbl_80369F5C, lbl_80369F60;
     extern const f32 lbl_80369F3C;
+
     f32 pos[3];
     f32 z;
     f32 y;
@@ -16148,6 +16154,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     );
 
     x = pos[0];
+
     if (x > lbl_80369F5C && x < lbl_80369F60) {
         y = pos[1];
         z = pos[2];
@@ -16160,7 +16167,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
-    return;
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
@@ -20308,38 +20314,43 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     }
     size = Stream_LoadFile(stream, arg0);
     DebugPrint(gCardStrings + 0x288, size);
-    if (size > 0) {
-        fn_800EBF58();
-        fn_8021CDC4(gCardWork.chan, arg1);
-        fileInfo = gCardWork.fileInfo;
-        gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
-        ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-        if (ok != 0) {
-            gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
-            ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-            if (ok != 0) {
-                gCardWork.result = fn_8021C02C(fileInfo);
-                ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-                if (ok != 0) {
-                    fileNo = *(s32 *)&gCardWork.fileInfo[4];
-                    fn_8021D004(gCardWork.chan, fileNo, &status);
-                    status.commentAddress = 0x2000;
-                    status.iconAddress = 0;
-                    status.bannerFormat = (status.bannerFormat & ~3) | 1;
-                    status.iconFormat = (status.iconFormat & ~3) | 1;
-                    status.iconSpeed = (status.iconSpeed & ~3) | 3;
-                    status.iconFormat = (status.iconFormat & ~0xC) | 4;
-                    status.iconSpeed = (status.iconSpeed & ~0xC) | 8;
-                    status.iconFormat = (status.iconFormat & ~0x30) | 0x10;
-                    status.iconSpeed = (status.iconSpeed & ~0x30) | 0x30;
-                    status.iconFormat = status.iconFormat & ~0xC0;
-                    status.iconSpeed = status.iconSpeed & ~0xC0;
-                    status.bannerFormat = (status.bannerFormat & ~4) | 4;
-                    fn_8021D28C(gCardWork.chan, fileNo, &status);
-                }
-            }
-        }
+    if (size <= 0) {
+        goto cleanup;
     }
+    fn_800EBF58();
+    fn_8021CDC4(gCardWork.chan, arg1);
+    fileInfo = gCardWork.fileInfo;
+    gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
+    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+    if (ok == 0) {
+        goto cleanup;
+    }
+    gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
+    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+    if (ok == 0) {
+        goto cleanup;
+    }
+    gCardWork.result = fn_8021C02C(fileInfo);
+    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+    if (ok == 0) {
+        goto cleanup;
+    }
+    fileNo = *(s32 *)&gCardWork.fileInfo[4];
+    fn_8021D004(gCardWork.chan, fileNo, &status);
+    status.commentAddress = 0x2000;
+    status.iconAddress = 0;
+    status.bannerFormat = (status.bannerFormat & ~3) | 1;
+    status.iconFormat = (status.iconFormat & ~3) | 1;
+    status.iconSpeed = (status.iconSpeed & ~3) | 3;
+    status.iconFormat = (status.iconFormat & ~0xC) | 4;
+    status.iconSpeed = (status.iconSpeed & ~0xC) | 8;
+    status.iconFormat = (status.iconFormat & ~0x30) | 0x10;
+    status.iconSpeed = (status.iconSpeed & ~0x30) | 0x30;
+    status.iconFormat = status.iconFormat & ~0xC0;
+    status.iconSpeed = status.iconSpeed & ~0xC0;
+    status.bannerFormat = (status.bannerFormat & ~4) | 4;
+    fn_8021D28C(gCardWork.chan, fileNo, &status);
+cleanup:
     delete stream;
 }
 #pragma dont_inline off
