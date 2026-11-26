@@ -1,8 +1,12 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline int MenuTypeExcluded(u32 value, u8 *base, s32 first) {
-    return value == (u32)(base + 0x7c) || value == (u32)(base + first) || value == (u32)(base + 0x58) || value == (u32)(base + 0x48);
+static inline void MenuTypeCleanup(void *arg0, u8 *base, s32 first) {
+    void fn_8000A408(void *);
+    if (*(u8 *)((u8 *)arg0 + 0x2b) != 0x7b) {
+        u32 value = *(u32 *)arg0;
+        if (value != (u32)(base + 0x7c) && value != (u32)(base + first) && value != (u32)(base + 0x58) && value != (u32)(base + 0x48)) fn_8000A408(arg0);
+    }
 }
 static inline int TypeEquals_80089490(u32 value, u8 *base, s32 offset) {
     return value == (u32)(base + offset);
