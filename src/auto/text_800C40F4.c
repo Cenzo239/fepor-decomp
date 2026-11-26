@@ -16166,7 +16166,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     return;
 }
 #pragma global_optimizer on
-#pragma scheduling reset
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
