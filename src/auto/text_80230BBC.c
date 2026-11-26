@@ -5,6 +5,7 @@ const char stringBase0_80282C60[] =
 
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+typedef struct FileWriteState { u8 pad[8]; u8 state : 3; u8 reserved : 5; } FileWriteState;
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
 extern f32 lbl_80367068;
@@ -292,13 +293,16 @@ s32 fn_80230CE0(s32 arg0) {
  return ((u8 *)lbl_8029E9A8)[(u8)arg0];
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma inline_depth(0)
 u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
     s32 __flush_buffer(void *, u32 *);
-    u32 __memrchr(u32, M2C_UNK);
+    u32 __memrchr(u32, s32, u32);
     M2C_UNK __stdio_atexit();
     s32 fseek(void *, M2C_UNK, M2C_UNK);
     s32 fwide(void *, M2C_UNK);
-    M2C_UNK memcpy(u32, u32);
+    void *memcpy(void *, const void *, u32);
     u32 sp8;
     s32 var_r31;
     u32 var_r30;
@@ -333,7 +337,7 @@ u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
         var_r31 = 0;
     }
     if (!(((u8) M2C_FIELD(arg3, u8 *, 8) >> 5U) & 7)) {
-        temp_r3 = (u8) M2C_FIELD(arg3, u8 *, 4) >> 3U;
+        temp_r3 = ((u8) M2C_FIELD(arg3, u8 *, 4) >> 3U) & 7;
         if (temp_r3 & 2) {
             if ((temp_r3 & 4) && (fseek(arg3, 0, 2) != 0)) {
                 return 0U;
@@ -361,13 +365,13 @@ loop_26:
             sp8 = var_r29;
         }
         if (((u32) (((u8) M2C_FIELD(arg3, u8 *, 4) >> 1U) & 3) == 1) && (sp8 != 0)) {
-            var_r27 = __memrchr(var_r30, 0xA);
+            var_r27 = __memrchr(var_r30, 0xA, sp8);
             if (var_r27 != 0U) {
                 sp8 = (var_r27 + 1) - var_r30;
             }
         }
         if (sp8 != 0) {
-            memcpy(M2C_FIELD(arg3, u32 *, 0x24), var_r30);
+            memcpy((void *)M2C_FIELD(arg3, u32 *, 0x24), (void *)var_r30, sp8);
             var_r30 += sp8;
             var_r28 += sp8;
             var_r29 -= sp8;
@@ -403,7 +407,7 @@ loop_26:
     }
     return (u32) (var_r28 + (arg1 - 1)) / arg1;
 }
-
+#pragma pop
 u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
 {
     extern void __begin_critical_region(s32);
