@@ -430,6 +430,8 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
+#pragma push
+#pragma optimization_level 3
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -479,7 +481,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A114(void *);
     void *Face_Create(void *, s32);
-    void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
+    void fn_8007B4D8(s16, s16, s32, void *);
     void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A890;
@@ -579,13 +581,14 @@ loop_test:
         y1 = self->unk18;
         t = *(s16 *)((u8 *)info + 0x1E);
         dh = (s16)(y1 - y0);
-        fn_8007B4D8((s16)(dw >> 1), (s16)(dh + t), 0x7F, obj, y0, dw);
+        fn_8007B4D8((s16)(dw >> 1), (s16)(dh + t), 0x7F, obj);
         Face_ClearSlot(obj);
     }
 
     Prim2D_Begin();
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
+#pragma pop
 }
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -2499,14 +2502,17 @@ Xml_GetNamedValue(named,xml,tag);
 String_Destroy(tag,-1);
 fmt=(char *)lbl_80277990;
 for(i=0;i<16;i++) {
+u32 idx;
 off=i*4;
 sprintf(name,fmt+0x2A,i);
 String_Init(str,name,scratchStr);
-*(void **)((u8 *)self+0xAC+off)=fn_800E7DF8(owner,str);
+idx=off+0xAC;
+*(void **)((u8 *)self+idx)=fn_800E7DF8(owner,str);
 String_Destroy(str,-1);
 Xml_AdvanceChild(xml);
 Xml_GetChildValue(child,xml);
-*(f32 *)((u8 *)self+0xEC+off)=child[0];
+idx=off+0xEC;
+*(f32 *)((u8 *)self+idx)=child[0];
 }
 M2C_FIELD(self,f32 *,0x13C)=0.0f;
 M2C_FIELD(self,f32 *,0x138)=0.0f;
@@ -2945,11 +2951,9 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
     extern u8 lbl_80293D20[];
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80277A20[];
-    extern f32 lbl_8036A92C;
+    extern const f32 lbl_8036A92C;
     void *proc;
     u8 flag;
-    f32 z;
-    u8 *sfx;
 
     proc = Process_Find(lbl_80293D20);
     if (proc == NULL) {
@@ -2963,14 +2967,12 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
         Process_Create(lbl_80293D20, arg1);
         memset(gUnitInfoPopup, 0, 0x124);
         *(f32 *)((u8 *)arg0 + 0xDC) = farg0;
-        z = lbl_8036A92C;
-        sfx = lbl_80277A20;
         *(f32 *)((u8 *)arg0 + 0xE0) = farg1;
         *(f32 *)((u8 *)arg0 + 0xF4) = farg0;
         *(f32 *)((u8 *)arg0 + 0xF8) = farg1;
-        *(f32 *)((u8 *)arg0 + 0x10C) = z;
-        *(f32 *)((u8 *)arg0 + 0x110) = z;
-        fn_8005C8B4(sfx + 0x42);
+        *(f32 *)((u8 *)arg0 + 0x10C) = lbl_8036A92C;
+        *(f32 *)((u8 *)arg0 + 0x110) = lbl_8036A92C;
+        fn_8005C8B4(lbl_80277A20 + 0x42);
         Ui_PlaySeCue(lbl_80277A20 + 0x52, 0x64);
         Ui_ShowUnitInfoPopup(arg0, arg2, farg0, farg1);
     }
@@ -13071,6 +13073,8 @@ void *fn_801780A8(void) {
     return (char *)&gUiMsgStrings + 0x55B;
 }
 
+#pragma push
+#pragma opt_propagation off
 s32 fn_801780B8(void *arg0) {
 u8 fn_8014D8DC(void *);
 void *Item_GetFlagsPtr(void *);
@@ -13100,7 +13104,7 @@ if(flag) { M2C_FIELD(arg0,u8 *,4)=1; return 2; }
 if(200-fn_800C3E54(gConvoy)<=0) { M2C_FIELD(arg0,u8 *,4)=2; return 2; }
 return 0;
 }
-
+#pragma pop
 /* If the list option is disabled (state 2), show a help popup for the selected submenu index; otherwise set UI command 0x83 and advance the list panel. */
 s32 Ui_ConfirmListCmd83(void *menu, void *parent, void *item) {
     void Process_Goto(void *, u8);
@@ -16766,23 +16770,25 @@ extern "C" void *Ui_DtorGoldCostPanel(void *self, s16 doFree) {
 }
 
 extern "C" void fn_8017D8CC(void *arg0) {
-extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
-s16 h = M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
-s16 w = M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
-M2C_FIELD(arg0,s16 *,0x12)=3;
-M2C_FIELD(arg0,s16 *,0x14)=5;
-M2C_FIELD(arg0,s16 *,0x16)=w-3;
-M2C_FIELD(arg0,s16 *,0x18)=h-5;
-h=M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
-w=M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
-M2C_FIELD(arg0,s16 *,0x52)=w>>2;
-M2C_FIELD(arg0,s16 *,0x54)=(s16)(lbl_8036ABC0*h-lbl_8036ABC4);
-M2C_FIELD(arg0,s16 *,0x56)=0;
-h=M2C_FIELD(arg0,s16 *,0x10)-M2C_FIELD(arg0,s16 *,0xC);
-w=M2C_FIELD(arg0,s16 *,0xE)-M2C_FIELD(arg0,s16 *,0xA);
-M2C_FIELD(arg0,s16 *,0x7A)=w>>2;
-M2C_FIELD(arg0,s16 *,0x7C)=(s16)(lbl_8036ABC0*h+lbl_8036ABC8);
-M2C_FIELD(arg0,s16 *,0x7E)=0;
+    extern const f32 lbl_8036ABC0, lbl_8036ABC4, lbl_8036ABC8;
+    s16 h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
+    s16 w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
+    s32 right = w - 3;
+    s32 bottom = h - 5;
+    M2C_FIELD(arg0, s16 *, 0x12) = 3;
+    M2C_FIELD(arg0, s16 *, 0x14) = 5;
+    M2C_FIELD(arg0, s16 *, 0x16) = right;
+    M2C_FIELD(arg0, s16 *, 0x18) = bottom;
+    h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
+    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
+    M2C_FIELD(arg0, s16 *, 0x52) = w >> 2;
+    M2C_FIELD(arg0, s16 *, 0x54) = (s16)(lbl_8036ABC0 * h - lbl_8036ABC4);
+    M2C_FIELD(arg0, s16 *, 0x56) = 0;
+    h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
+    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
+    M2C_FIELD(arg0, s16 *, 0x7A) = w >> 2;
+    M2C_FIELD(arg0, s16 *, 0x7C) = (s16)(lbl_8036ABC0 * h + lbl_8036ABC8);
+    M2C_FIELD(arg0, s16 *, 0x7E) = 0;
 }
 
 #pragma cplusplus reset
@@ -18336,8 +18342,9 @@ void fn_80180620(void) {
 
 }
 
-#pragma use_lmw_stmw on
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 2
 extern "C" void fn_80180624(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
@@ -18359,8 +18366,6 @@ extern "C" void fn_80180624(void *arg0) {
     struct PairBig {
         s16 x;
         s16 y;
-        s32 _pad;
-        s32 _pad2;
     };
     struct Obj {
         virtual void v0() = 0;
@@ -18475,8 +18480,8 @@ extern "C" void fn_80180624(void *arg0) {
         }
     }
 }
-
-#pragma global_optimizer off
+#pragma pop
+#pragma cplusplus on
 extern "C" void fn_80180928(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void *Ui_ListGetSelected(void *);
