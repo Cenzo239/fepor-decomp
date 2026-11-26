@@ -22,7 +22,6 @@ typedef struct {
     u8 pad5C[0x20];
     void *f7C;
 } Struct_80089490;
-typedef struct { u8 f[0x80]; } Struct_80089490Bytes;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
